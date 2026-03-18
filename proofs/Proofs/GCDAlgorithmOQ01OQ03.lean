@@ -1,31 +1,26 @@
 import Proofs.GCDAlgorithmOQ01
-import Mathlib.Tactic
+import Mathlib
 
 /-
-# Removing the 10^20 Restriction from Lamé's 5-Digit Bound
+# Golden Ratio Fibonacci Identity for GCD Algorithm Bounds
 
 ## Research Problem: gcd-algorithm-oq-01-oq-03
-Can the 5-digit bound be extended beyond b < 10^20?
 
-## What This Proves
-The existing GCDAlgorithmOQ01.lean proves Lamé's 5-digit bound
-(euclideanSteps a b ≤ 5 * decimalDigits b) only for b < 10^20,
-using interval_cases + native_decide to verify fib(5k+2) ≥ 10^k for k ≤ 20.
+### Part I: Removing the 10^20 Restriction (Pure Arithmetic)
+Proves fib(5k+2) ≥ 10^k for ALL k using only Fibonacci recurrence,
+extending Lamé's 5-digit bound to all b with no restriction.
 
-This file removes the restriction entirely by proving fib(5k+2) ≥ 10^k
-for ALL k, using only Fibonacci recurrence identities:
+### Part II: Binet's Formula (Golden Ratio Connection)
+Proves the golden ratio Fibonacci identity:
+    fib(n) = (φⁿ - ψⁿ) / √5
+where φ = (1+√5)/2 and ψ = (1-√5)/2.
 
-**Key identity**: fib(n+5) = 5·fib(n+1) + 3·fib(n)
-**Growth bound**: fib(5k+7) ≥ 10·fib(5k+2)
-**Main result**: fib(5k+2) ≥ 10^k for all k
-
-No golden ratio, no real analysis — pure natural number arithmetic.
+This explains WHY the 5-digit bound works: φ⁵ ≈ 11.09 > 10.
 
 ## Status
-- [x] Five-step Fibonacci identity
-- [x] Multiplicative growth: fib(5(k+1)+2) ≥ 10·fib(5k+2)
-- [x] Main bound: fib(5k+2) ≥ 10^k for all k
-- [x] Generalized Lamé 5-digit bound (no restriction on b)
+- [x] Part I: Five-step identity, growth bound, generalized Lamé bound
+- [x] Part II: Binet's formula, golden ratio properties, φ⁵ > 10
+- [x] Nearest integer property: fib(n) is the closest integer to φⁿ/√5
 - Axiom count: 0
 - Sorry count: 0
 -/
@@ -104,4 +99,182 @@ theorem lame_five_digit_bound_general (a b : ℕ) (hb : 0 < b) :
 example : euclideanSteps 48 18 ≤ 5 * decimalDigits 18 := by native_decide
 example : euclideanSteps 1000 373 ≤ 5 * decimalDigits 373 := by native_decide
 
+/-! ## Part II: Binet's Formula (Golden Ratio Connection)
+
+This section proves the golden ratio Fibonacci identity and derives consequences.
+While Part I gives a self-contained arithmetic proof, Part II explains the
+deeper structure: the golden ratio governs Fibonacci growth, and φ⁵ > 10
+is the reason 5 decimal digits correspond to one Euclidean step. -/
+
 end GCDAlgorithmOQ01OQ03
+
+namespace GCDAlgorithmOQ01OQ03.Binet
+
+open GCDAlgorithmOQ01
+
+/-- The golden ratio: φ = (1 + √5)/2 ≈ 1.618... -/
+noncomputable def goldenPhi : ℝ := (1 + Real.sqrt 5) / 2
+
+/-- The golden ratio conjugate: ψ = (1 - √5)/2 ≈ -0.618... -/
+noncomputable def goldenPsi : ℝ := (1 - Real.sqrt 5) / 2
+
+/-! ### Algebraic Properties of √5, φ, and ψ -/
+
+theorem sqrt5_pos : (0 : ℝ) < Real.sqrt 5 := Real.sqrt_pos_of_pos (by norm_num)
+
+theorem sqrt5_ne_zero : Real.sqrt 5 ≠ 0 := ne_of_gt sqrt5_pos
+
+theorem sqrt5_sq : Real.sqrt 5 * Real.sqrt 5 = 5 :=
+  Real.mul_self_sqrt (by norm_num : (0 : ℝ) ≤ 5)
+
+theorem sqrt5_gt_two : Real.sqrt 5 > 2 := by
+  have h := sqrt5_sq
+  nlinarith [sqrt5_pos]
+
+/-- φ - ψ = √5 (the fundamental gap). -/
+theorem phi_sub_psi : goldenPhi - goldenPsi = Real.sqrt 5 := by
+  unfold goldenPhi goldenPsi; ring
+
+/-- φ + ψ = 1 (Vieta's formula for x² - x - 1 = 0). -/
+theorem phi_add_psi : goldenPhi + goldenPsi = 1 := by
+  unfold goldenPhi goldenPsi; ring
+
+/-- φ · ψ = -1 (Vieta's formula for x² - x - 1 = 0). -/
+theorem phi_mul_psi : goldenPhi * goldenPsi = -1 := by
+  unfold goldenPhi goldenPsi
+  ring_nf
+  rw [Real.sq_sqrt (show (5 : ℝ) ≥ 0 by norm_num)]
+  ring
+
+/-- φ² = φ + 1 (defining property of the golden ratio). -/
+theorem phi_sq : goldenPhi ^ 2 = goldenPhi + 1 := by
+  unfold goldenPhi
+  ring_nf
+  rw [Real.sq_sqrt (show (5 : ℝ) ≥ 0 by norm_num)]
+  ring
+
+/-- ψ² = ψ + 1 (conjugate satisfies the same quadratic). -/
+theorem psi_sq : goldenPsi ^ 2 = goldenPsi + 1 := by
+  unfold goldenPsi
+  ring_nf
+  rw [Real.sq_sqrt (show (5 : ℝ) ≥ 0 by norm_num)]
+  ring
+
+/-- φ > 0 (the golden ratio is positive). -/
+theorem phi_pos : goldenPhi > 0 := by
+  unfold goldenPhi
+  linarith [sqrt5_pos]
+
+/-! ### Binet's Formula -/
+
+/-- **Binet's formula**: fib(n) = (φⁿ - ψⁿ) / √5.
+
+This is one of the most elegant identities in number theory. It connects
+the discrete Fibonacci recurrence to continuous exponential growth via
+the golden ratio. The proof uses paired induction with φ² = φ + 1
+and ψ² = ψ + 1. -/
+private theorem binet_pair (n : ℕ) :
+    (Nat.fib n : ℝ) = (goldenPhi ^ n - goldenPsi ^ n) / Real.sqrt 5 ∧
+    (Nat.fib (n + 1) : ℝ) = (goldenPhi ^ (n + 1) - goldenPsi ^ (n + 1)) / Real.sqrt 5 := by
+  induction n with
+  | zero =>
+    constructor
+    · -- fib(0) = 0 = (1 - 1)/√5
+      rw [pow_zero, pow_zero, sub_self, zero_div]; norm_cast
+    · -- fib(1) = 1 = (φ - ψ)/√5 = √5/√5
+      show (Nat.fib 1 : ℝ) = (goldenPhi ^ 1 - goldenPsi ^ 1) / Real.sqrt 5
+      rw [Nat.fib_one, Nat.cast_one, pow_one, pow_one, phi_sub_psi, div_self sqrt5_ne_zero]
+  | succ n ih =>
+    obtain ⟨ih_n, ih_n1⟩ := ih
+    constructor
+    · exact ih_n1
+    · -- fib(n+2) = fib(n) + fib(n+1), then use IH
+      have hfib : (Nat.fib (n + 2) : ℝ) = (Nat.fib n : ℝ) + (Nat.fib (n + 1) : ℝ) := by
+        exact_mod_cast Nat.fib_add_two
+      rw [show n + 1 + 1 = n + 2 from rfl, hfib, ih_n, ih_n1, ← add_div]
+      congr 1
+      -- φ^(n+2) - ψ^(n+2) = (φ^n - ψ^n) + (φ^(n+1) - ψ^(n+1))
+      have e1 : goldenPhi ^ (n + 2) = goldenPhi ^ n * goldenPhi ^ 2 := by ring
+      have e2 : goldenPsi ^ (n + 2) = goldenPsi ^ n * goldenPsi ^ 2 := by ring
+      rw [e1, e2, phi_sq, psi_sq]
+      ring
+
+theorem binet_formula (n : ℕ) :
+    (Nat.fib n : ℝ) = (goldenPhi ^ n - goldenPsi ^ n) / Real.sqrt 5 :=
+  (binet_pair n).1
+
+/-! ### Consequences of Binet's Formula -/
+
+/-- |ψ| < 1, so ψⁿ → 0 as n → ∞. -/
+theorem abs_psi_lt_one : |goldenPsi| < 1 := by
+  have h1 : Real.sqrt 5 > 1 := by linarith [sqrt5_gt_two]
+  have hneg : goldenPsi < 0 := by unfold goldenPsi; linarith
+  have hgt : goldenPsi > -1 := by
+    unfold goldenPsi
+    have : Real.sqrt 5 < 3 := by nlinarith [sqrt5_sq, sqrt5_pos]
+    linarith
+  rw [abs_lt]
+  exact ⟨by linarith, by linarith⟩
+
+/-- fib(n) is within 1/2 of φⁿ/√5 (nearest integer property). -/
+theorem fib_nearest_integer (n : ℕ) :
+    |(Nat.fib n : ℝ) - goldenPhi ^ n / Real.sqrt 5| < 1 / 2 := by
+  rw [binet_formula]
+  have hsimpl : (goldenPhi ^ n - goldenPsi ^ n) / Real.sqrt 5 - goldenPhi ^ n / Real.sqrt 5 =
+      -(goldenPsi ^ n) / Real.sqrt 5 := by ring
+  rw [hsimpl, neg_div, abs_neg, abs_div, abs_of_pos sqrt5_pos, abs_pow]
+  -- Goal: |goldenPsi| ^ n / Real.sqrt 5 < 1 / 2
+  have h1 : |goldenPsi| ^ n ≤ 1 := pow_le_one₀ (abs_nonneg _) (le_of_lt abs_psi_lt_one)
+  have h2 := sqrt5_gt_two
+  have h3ne : Real.sqrt 5 ≠ 0 := ne_of_gt sqrt5_pos
+  -- Clear all denominators, then solve by nlinarith
+  field_simp [h3ne]
+  nlinarith
+
+/-! ### Why 5 Digits Per Step: φ⁵ > 10 -/
+
+/-- Powers of the golden ratio reduced via φ² = φ + 1. -/
+theorem phi_pow3 : goldenPhi ^ 3 = 2 * goldenPhi + 1 := by
+  calc goldenPhi ^ 3 = goldenPhi ^ 2 * goldenPhi := by ring
+    _ = (goldenPhi + 1) * goldenPhi := by rw [phi_sq]
+    _ = goldenPhi ^ 2 + goldenPhi := by ring
+    _ = (goldenPhi + 1) + goldenPhi := by rw [phi_sq]
+    _ = 2 * goldenPhi + 1 := by ring
+
+theorem phi_pow4 : goldenPhi ^ 4 = 3 * goldenPhi + 2 := by
+  calc goldenPhi ^ 4 = goldenPhi ^ 3 * goldenPhi := by ring
+    _ = (2 * goldenPhi + 1) * goldenPhi := by rw [phi_pow3]
+    _ = 2 * goldenPhi ^ 2 + goldenPhi := by ring
+    _ = 2 * (goldenPhi + 1) + goldenPhi := by rw [phi_sq]
+    _ = 3 * goldenPhi + 2 := by ring
+
+theorem phi_pow5 : goldenPhi ^ 5 = 5 * goldenPhi + 3 := by
+  calc goldenPhi ^ 5 = goldenPhi ^ 4 * goldenPhi := by ring
+    _ = (3 * goldenPhi + 2) * goldenPhi := by rw [phi_pow4]
+    _ = 3 * goldenPhi ^ 2 + 2 * goldenPhi := by ring
+    _ = 3 * (goldenPhi + 1) + 2 * goldenPhi := by rw [phi_sq]
+    _ = 5 * goldenPhi + 3 := by ring
+
+/-- **φ⁵ > 10**: The golden ratio explanation for Lamé's 5-digit bound.
+    Since fib(n) ≈ φⁿ/√5 and φ⁵ > 10, each group of 5 Fibonacci indices
+    multiplies the value by more than 10, consuming one decimal digit. -/
+theorem phi_pow5_gt_10 : goldenPhi ^ 5 > 10 := by
+  rw [phi_pow5]
+  have : goldenPhi > 7 / 5 := by
+    unfold goldenPhi
+    have hsq := sqrt5_sq
+    have hpos := sqrt5_pos
+    have : Real.sqrt 5 > 9 / 5 := by nlinarith
+    linarith
+  linarith
+
+/-! ### Verification Examples -/
+
+example : (Nat.fib 0 : ℝ) = (goldenPhi ^ 0 - goldenPsi ^ 0) / Real.sqrt 5 :=
+  binet_formula 0
+example : (Nat.fib 1 : ℝ) = (goldenPhi ^ 1 - goldenPsi ^ 1) / Real.sqrt 5 :=
+  binet_formula 1
+example : (Nat.fib 10 : ℝ) = (goldenPhi ^ 10 - goldenPsi ^ 10) / Real.sqrt 5 :=
+  binet_formula 10
+
+end GCDAlgorithmOQ01OQ03.Binet

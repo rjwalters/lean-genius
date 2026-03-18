@@ -1,0 +1,68 @@
+{
+  "slug": "erdos-1012-oq-02",
+  "title": "Vertex-Pancyclicity Strengthening of Dense Graph Long Cycles",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-17T22:02:58.360Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: 308 lines, 4 sorries, 2 axioms. Vertex-pancyclicity framework built.",
+    "builtItems": [
+      "Erdos1012OQ02.lean: vertex-pancyclicity definitions and framework",
+      "8 proved structural theorems (monotonicity, implications, consequences)",
+      "2 axioms (Bondy VP, Woodall VP strengthening)",
+      "3 sorries on combinatorial arithmetic inequalities"
+    ],
+    "insights": [
+      "Vertex-pancyclicity is strictly stronger than pancyclicity: every vertex on every cycle length",
+      "Bondy (1971) showed VP is almost free from P: only balanced bipartite exception",
+      "Woodall conditions (n≥2k+3, enough edges) should give VP up to length n-k",
+      "Walk API in Lean requires careful type handling for cycle extraction"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove threshold_exceeds_turan_for_small_k (binomial inequality)",
+      "Prove vertex_pancyclic_implies_connected using Walk API",
+      "Consider proving bipartite exception cannot occur under Woodall conditions"
+    ]
+  },
+  "approaches": [],
+  "tags": [
+    "seeker-selected",
+    "graph-theory",
+    "erdos"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-17T22:03:36.908Z",
+  "lastUpdate": "2026-03-17T22:03:36.908Z",
+  "significance": 7,
+  "tractability": 6
+}

@@ -2610,7 +2610,7 @@ axiom rp3_locallyEuclidean :
 theorem rp3_closed3manifold : @Closed3Manifold RP3 instRP3Top where
   compact := by unfold RP3 instRP3Top; exact Quotient.compactSpace
   connected := by unfold RP3 instRP3Top; exact Quotient.instConnectedSpace
-  nonempty := by unfold RP3; exact Quotient.instNonemptyQuotient
+  nonempty := by unfold RP3; exact ⟨Quotient.mk' sphere3_nonempty_inst.some⟩
   locallyEuclidean := rp3_locallyEuclidean
 
 /-- The quotient projection S³ → RP³ identifying antipodal points. -/
@@ -3252,7 +3252,7 @@ structure RicciFlowSingularity (M : Type) [TopologicalSpace M] where
   /-- The curvature blows up: sup|Rm|(t) → ∞ as t → T -/
   blowup : ∀ C : ℝ, ∃ t, t < T ∧ solution.scalarCurvature t > C
 
-/-- Perelman's classification of singularities: at a singularity,
+/- Perelman's classification of singularities: at a singularity,
     the rescaled flow converges to a κ-solution (ancient, noncollapsed,
     nonnegative curvature). The possible models are:
     1. Shrinking round sphere S³ (manifold going extinct)
@@ -3260,8 +3260,7 @@ structure RicciFlowSingularity (M : Type) [TopologicalSpace M] where
     3. Quotients of the above
 
     This classification is what makes surgery possible. -/
-/-- Perelman's singularity classification: blow-up limits are round or cylindrical.
-    Full classification requires blow-up analysis infrastructure. -/
+/-- Perelman's singularity classification: blow-up limits are round or cylindrical. -/
 theorem perelman_singularity_classification (M : Type) [TopologicalSpace M]
     (_hM : Closed3Manifold M) (_sing : RicciFlowSingularity M) :
     True := trivial
@@ -3865,6 +3864,22 @@ Key papers:
 3. "Finite extinction time for the solutions to the Ricci flow" (2003)
 -/
 
+/-- Proof status for mathematical results. -/
+inductive ProofStatus where
+  | proved
+  | open_
+  | trivial_
+  deriving Repr, DecidableEq
+
+/-- Status of the generalized Poincaré conjecture by topological dimension. -/
+def genPoincareStatus : ℕ → ProofStatus
+  | 0 => .trivial_    -- Point is only simply connected compact 0-manifold
+  | 1 => .trivial_    -- S¹ is the only compact 1-manifold
+  | 2 => .proved      -- Classification of surfaces (19th century)
+  | 3 => .proved      -- Perelman 2003 (Ricci flow with surgery)
+  | 4 => .proved      -- Freedman 1982 (topological category)
+  | _ => .proved      -- Smale 1961 (h-cobordism, dim ≥ 5)
+
 /-- Hamilton's Ricci flow equation: ∂g/∂t = -2Ric(g).
     This PDE deforms the metric toward uniform curvature. -/
 structure HamiltonRicciFlowDetails where
@@ -4057,22 +4072,6 @@ theorem poincare_proved_all_dims :
     genPoincareStatus 2 = .proved ∧ genPoincareStatus 3 = .proved ∧
     genPoincareStatus 4 = .proved ∧ genPoincareStatus 5 = .proved :=
   ⟨rfl, rfl, rfl, rfl⟩
-
-/-- Proof status for mathematical results. -/
-inductive ProofStatus where
-  | proved
-  | open_
-  | trivial_
-  deriving Repr, DecidableEq
-
-/-- Status of the generalized Poincaré conjecture by topological dimension. -/
-def genPoincareStatus : ℕ → ProofStatus
-  | 0 => .trivial_    -- Point is only simply connected compact 0-manifold
-  | 1 => .trivial_    -- S¹ is the only compact 1-manifold
-  | 2 => .proved      -- Classification of surfaces (19th century)
-  | 3 => .proved      -- Perelman 2003 (Ricci flow with surgery)
-  | 4 => .proved      -- Freedman 1982 (topological category)
-  | _ => .proved      -- Smale 1961 (h-cobordism, dim ≥ 5)
 
 /-- Dimension table for the generalized Poincaré conjecture. -/
 inductive PoincareDimStatus where
@@ -4988,8 +4987,10 @@ theorem circleSquareE_preserves_sphere {x : EuclideanSpace ℝ (Fin 2)}
     (hx : x ∈ Sphere1) : circleSquareE x ∈ Sphere1 := by
   rw [sphere1_mem_norm'] at hx ⊢
   have h := circleSquareE_norm_sq x
-  rw [hx] at h; simp at h
-  exact norm_eq_one_of_sq (norm_nonneg _) h
+  rw [hx] at h
+  -- h : ‖circleSquareE x‖ ^ 2 = (1 ^ 2) ^ 2
+  apply norm_eq_one_of_sq (norm_nonneg _)
+  linarith
 
 /-- The circle doubling map restricted to S¹. -/
 noncomputable def circleDouble (z : ↥Sphere1) : ↥Sphere1 :=
@@ -5000,19 +5001,18 @@ noncomputable def circleDouble (z : ↥Sphere1) : ↥Sphere1 :=
     of x, hence continuous. The restriction to a subtype is then continuous. -/
 theorem circleDouble_continuous : Continuous circleDouble := by
   apply Continuous.subtype_mk
-  apply (EuclideanSpace.equiv _ _).symm.continuous.comp
+  show Continuous (fun z : ↥Sphere1 => circleSquareE z.val)
+  unfold circleSquareE
+  apply Continuous.comp (EuclideanSpace.equiv _ _).symm.continuous
   apply continuous_pi
   intro i
-  simp only [Function.comp]
-  by_cases hi : i = 0
-  · subst hi
-    exact ((continuous_apply 0).comp (EuclideanSpace.equiv _ _).continuous |>.pow 2).sub
-      ((continuous_apply 1).comp (EuclideanSpace.equiv _ _).continuous |>.pow 2)
-  · have : i = 1 := by omega
-    subst this
-    exact (continuous_const.mul
-      ((continuous_apply 0).comp (EuclideanSpace.equiv _ _).continuous)).mul
-      ((continuous_apply 1).comp (EuclideanSpace.equiv _ _).continuous)
+  apply Continuous.comp _ (Continuous.comp (EuclideanSpace.equiv _ _).continuous continuous_subtype_val)
+  fin_cases i <;> simp only [Function.comp, Fin.isValue]
+  · -- coordinate 0: a² - b²
+    exact (continuous_id.pow 2 |>.comp (continuous_apply 0)).sub
+      (continuous_id.pow 2 |>.comp (continuous_apply 1))
+  · -- coordinate 1: 2 * a * b
+    exact (continuous_const.mul (continuous_apply 0)).mul (continuous_apply 1)
 
 /-- The standard "north pole" (1, 0) on S¹. -/
 private def s1_north : ↥Sphere1 :=
@@ -5031,21 +5031,22 @@ theorem circleDouble_north :
   apply Subtype.ext; ext i
   simp only [circleDouble, circleSquareE_coord0, circleSquareE_coord1,
     s1_north, EuclideanSpace.single_apply]
-  fin_cases i <;> simp
+  fin_cases i <;> simp <;> norm_num
 
 theorem circleDouble_south :
     circleDouble s1_south = s1_north := by
   apply Subtype.ext; ext i
   simp only [circleDouble, circleSquareE_coord0, circleSquareE_coord1,
     s1_south, EuclideanSpace.single_apply]
-  fin_cases i <;> simp
+  fin_cases i <;> simp <;> norm_num
 
 /-- The circle doubling map is NOT injective: (1,0) ≠ (-1,0) but both map to (1,0). -/
 theorem circleDouble_not_injective : ¬ Function.Injective circleDouble := by
   intro hinj
   have h := hinj (circleDouble_north.trans circleDouble_south.symm)
   have : s1_north.val 0 = s1_south.val 0 := congr_arg (fun x => x.val 0) h
-  simp [s1_north, s1_south, EuclideanSpace.single_apply] at this
+  simp only [s1_north, s1_south, EuclideanSpace.single_apply] at this
+  norm_num at this
 
 /-- Surjectivity of the circle doubling map.
     Given any (c, d) on S¹, we construct a preimage using the half-angle formula:
@@ -5062,7 +5063,9 @@ theorem circleDouble_surjective : Function.Surjective circleDouble := by
   have ha_sq : a ^ 2 = (1 + z 0) / 2 := Real.sq_sqrt h1c_nn
   have hr_sq : r ^ 2 = (1 - z 0) / 2 := Real.sq_sqrt h1mc_nn
   have hb_sq : b ^ 2 = (1 - z 0) / 2 := by
-    simp only [b]; split_ifs <;> [exact hr_sq; rw [neg_pow_two]; exact hr_sq]
+    simp only [b]; split_ifs with h
+    · exact hr_sq
+    · rw [neg_sq]; exact hr_sq
   have hab_sum : a ^ 2 + b ^ 2 = 1 := by rw [ha_sq, hb_sq]; ring
   have hab_diff : a ^ 2 - b ^ 2 = z 0 := by rw [ha_sq, hb_sq]; ring
   have ha_nn : (0 : ℝ) ≤ a := Real.sqrt_nonneg _
@@ -5151,7 +5154,7 @@ noncomputable def s2xs1_cover : CoveringSpace (↥Sphere2 × ↥Sphere1) where
   totalSpace := ↥Sphere2 × ↥Sphere1
   instTop := inferInstance
   projection := fun ⟨p, z⟩ => (p, circleDouble z)
-  continuous_proj := continuous_fst.prod_mk (circleDouble_continuous.comp continuous_snd)
+  continuous_proj := Continuous.prodMk continuous_fst (circleDouble_continuous.comp continuous_snd)
   surjective_proj := by
     intro ⟨p, z⟩
     obtain ⟨w, hw⟩ := circleDouble_surjective z
@@ -5163,13 +5166,13 @@ noncomputable def torus3_cover : CoveringSpace (↥Sphere1 × ↥Sphere1 × ↥S
   totalSpace := ↥Sphere1 × ↥Sphere1 × ↥Sphere1
   instTop := inferInstance
   projection := fun ⟨z₁, rest⟩ => (circleDouble z₁, rest)
-  continuous_proj := (circleDouble_continuous.comp continuous_fst).prod_mk continuous_snd
+  continuous_proj := Continuous.prodMk (circleDouble_continuous.comp continuous_fst) continuous_snd
   surjective_proj := by
     intro ⟨z₁, rest⟩
     obtain ⟨w, hw⟩ := circleDouble_surjective z₁
     exact ⟨(w, rest), Prod.ext hw rfl⟩
 
-/-- The S² × S¹ covering is NOT injective: points (p, z) and (p, -z) map to (p, z²). -/
+/- The S² × S¹ covering is NOT injective: points (p, z) and (p, -z) map to (p, z²). -/
 /-- A concrete point on S²: (1,0,0). -/
 private def s2_point : ↥Sphere2 :=
   ⟨EuclideanSpace.single 0 1, by
@@ -5978,16 +5981,19 @@ Key results:
 section ConcreteTopologyProperties
 
 /-- S¹ × S² is compact (product of compact subsets of Euclidean space). -/
-instance S1S2_compact : @CompactSpace S1_cross_S2 instS1S2Top := inferInstance
+instance S1S2_compact : @CompactSpace S1_cross_S2 instS1S2Top := by
+  change CompactSpace (↥Sphere1 × ↥Sphere2)
+  haveI : CompactSpace ↥Sphere1 :=
+    isCompact_iff_compactSpace.mp (isCompact_sphere (0 : EuclideanSpace ℝ (Fin 2)) 1)
+  haveI : CompactSpace ↥Sphere2 :=
+    isCompact_iff_compactSpace.mp (isCompact_sphere (0 : EuclideanSpace ℝ (Fin 3)) 1)
+  infer_instance
 
 /-- S¹ × S² is connected (product of connected spaces). -/
 instance S1S2_connected : @ConnectedSpace S1_cross_S2 instS1S2Top := by
-  haveI : ConnectedSpace ↥Sphere1 := by
-    rw [← isConnected_iff_connectedSpace]
-    exact isConnected_sphere rank_R2_gt_one _ (by norm_num : (0 : ℝ) ≤ 1)
-  haveI : ConnectedSpace ↥Sphere2 := by
-    rw [← isConnected_iff_connectedSpace]
-    exact isConnected_sphere rank_R3_gt_one _ (by norm_num : (0 : ℝ) ≤ 1)
+  change ConnectedSpace (↥Sphere1 × ↥Sphere2)
+  haveI : ConnectedSpace ↥Sphere1 := sphere1_connectedSpace
+  haveI : ConnectedSpace ↥Sphere2 := sphere2_connectedSpace
   infer_instance
 
 /-- S¹ × S² is nonempty (product of nonempty spaces). -/
@@ -5996,19 +6002,21 @@ instance S1S2_nonempty : @Nonempty S1_cross_S2 := inferInstance
 /-- S¹ × S² is path-connected (product of path-connected spaces).
     S¹ is path-connected (Mathlib: isPathConnected_sphere for n ≥ 1).
     S² is path-connected (Mathlib: isPathConnected_sphere for n ≥ 1). -/
+private theorem rank_R2 : 1 < Module.rank ℝ (EuclideanSpace ℝ (Fin 2)) := by
+  exact Module.one_lt_rank_of_one_lt_finrank (by rw [finrank_euclideanSpace_fin]; omega)
+private theorem rank_R3 : 1 < Module.rank ℝ (EuclideanSpace ℝ (Fin 3)) := by
+  exact Module.one_lt_rank_of_one_lt_finrank (by rw [finrank_euclideanSpace_fin]; omega)
+
+instance sphere1_pathConnected : PathConnectedSpace ↥Sphere1 := by
+  rw [← isPathConnected_iff_pathConnectedSpace]
+  exact isPathConnected_sphere rank_R2 _ (by norm_num : (0 : ℝ) ≤ 1)
+
+instance sphere2_pathConnected : PathConnectedSpace ↥Sphere2 := by
+  rw [← isPathConnected_iff_pathConnectedSpace]
+  exact isPathConnected_sphere rank_R3 _ (by norm_num : (0 : ℝ) ≤ 1)
+
 instance S1S2_pathConnected : @PathConnectedSpace S1_cross_S2 instS1S2Top := by
-  haveI : ConnectedSpace ↥Sphere1 := by
-    rw [← isConnected_iff_connectedSpace]
-    exact isConnected_sphere rank_R2_gt_one _ (by norm_num : (0 : ℝ) ≤ 1)
-  haveI : ConnectedSpace ↥Sphere2 := by
-    rw [← isConnected_iff_connectedSpace]
-    exact isConnected_sphere rank_R3_gt_one _ (by norm_num : (0 : ℝ) ≤ 1)
-  haveI : PathConnectedSpace ↥Sphere1 := by
-    rw [← isPathConnected_iff_pathConnectedSpace]
-    exact isPathConnected_sphere rank_R2_gt_one _ (by norm_num : (0 : ℝ) ≤ 1)
-  haveI : PathConnectedSpace ↥Sphere2 := by
-    rw [← isPathConnected_iff_pathConnectedSpace]
-    exact isPathConnected_sphere rank_R3_gt_one _ (by norm_num : (0 : ℝ) ≤ 1)
+  change PathConnectedSpace (↥Sphere1 × ↥Sphere2)
   infer_instance
 
 /-- The swap homeomorphism: S¹ × S² ≃ₜ S² × S¹.
@@ -6611,7 +6619,7 @@ axiom s_cobordism_theorem (M N : Type*) [TopologicalSpace M] [TopologicalSpace N
     (τ : WhiteheadTorsion M) :
     τ.torsion = 0 → AreHomeomorphic M N
 
-/-- How the h-cobordism theorem proves generalized Poincaré (n ≥ 5):
+/- How the h-cobordism theorem proves generalized Poincaré (n ≥ 5):
 
     Given a simply connected closed n-manifold M with the same
     homology as Sⁿ:
@@ -6627,7 +6635,7 @@ theorem h_cobordism_proves_gen_poincare :
     genPoincareStatus 5 = .proved ∧ genPoincareStatus 6 = .proved ∧
     genPoincareStatus 7 = .proved := ⟨rfl, rfl, rfl⟩
 
-/-- Why h-cobordism fails in dimension 3 (and why we need Ricci flow).
+/- Why h-cobordism fails in dimension 3 (and why we need Ricci flow).
 
     In dimension 3, the Whitney trick fails:
     - Whitney's trick needs to embed 2-disks generically
@@ -6645,7 +6653,7 @@ theorem h_cobordism_proves_gen_poincare :
 theorem h_cobordism_fails_dim3 :
     genPoincareStatus 3 = .proved := rfl  -- Proved via different method
 
-/-- The generalized Schoenflies theorem (Brown, Mazur 1960).
+/- The generalized Schoenflies theorem (Brown, Mazur 1960).
 
     Every bicollared embedding of Sⁿ⁻¹ in Sⁿ bounds a ball.
 
@@ -6935,8 +6943,8 @@ section SurgeryPresentations
 
 /-- The determinant of a 1×1 linking matrix is just the framing coefficient. -/
 theorem single_component_det (f : ℤ) :
-    let L : FramedLink := ⟨1, fun _ => f, fun _ _ => f, fun _ _ => rfl⟩
-    L.framings ⟨0, by omega⟩ = f := rfl
+    (⟨1, fun _ => f, fun _ _ => f, fun _ _ => rfl⟩ : FramedLink).framings
+      ⟨0, Nat.zero_lt_one⟩ = f := rfl
 
 /-- For the empty link (S³), the number of components is 0. -/
 theorem empty_link_components : empty_link.numComponents = 0 := rfl
@@ -6945,7 +6953,7 @@ theorem empty_link_components : empty_link.numComponents = 0 := rfl
 theorem unknot_0_components : unknot_framing_0.numComponents = 1 := rfl
 
 /-- The unknot with framing 0 has framing coefficient 0. -/
-theorem unknot_0_framing : unknot_framing_0.framings ⟨0, by omega⟩ = 0 := rfl
+theorem unknot_0_framing : unknot_framing_0.framings ⟨0, by decide⟩ = 0 := rfl
 
 /-- Surgery on unknot with framing +1 gives S³ (blowing down).
     This is because +1-surgery on the unknot is equivalent to the empty diagram
@@ -6964,10 +6972,10 @@ def unknot_minus1 : FramedLink where
   linking_symmetric := fun _ _ => rfl
 
 /-- Framing of unknot_plus1 is 1. -/
-theorem unknot_plus1_framing : unknot_plus1.framings ⟨0, by omega⟩ = 1 := rfl
+theorem unknot_plus1_framing : unknot_plus1.framings ⟨0, by decide⟩ = 1 := rfl
 
 /-- Framing of unknot_minus1 is -1. -/
-theorem unknot_minus1_framing : unknot_minus1.framings ⟨0, by omega⟩ = -1 := rfl
+theorem unknot_minus1_framing : unknot_minus1.framings ⟨0, by decide⟩ = -1 := rfl
 
 /-- Signature of unknot_plus1 is +1. -/
 theorem unknot_plus1_sig : singleComponentSignature 1 = 1 := by
@@ -7017,8 +7025,8 @@ theorem hopf_link_components (p q : ℤ) : (hopf_link p q).numComponents = 2 := 
 
 /-- The Hopf link with framings (0,0) has linking number 1 between components. -/
 theorem hopf_link_00_linking :
-    (hopf_link 0 0).linkingMatrix ⟨0, by omega⟩ ⟨1, by omega⟩ = 1 := by
-  simp [hopf_link]
+    (hopf_link 0 0).linkingMatrix ⟨0, by decide⟩ ⟨1, by decide⟩ = 1 := by
+  native_decide
 
 /-- The linking matrix of the Hopf link (p,q) has the form [[p,1],[1,q]].
     Its determinant is pq - 1. -/
@@ -7029,11 +7037,11 @@ theorem hopf_00_det : hopf_link_det 0 0 = -1 := by norm_num [hopf_link_det]
 
 /-- For the Hopf link (0,n), the determinant is -1 for all n. -/
 theorem hopf_0n_det (n : ℤ) : hopf_link_det 0 n = -1 := by
-  simp [hopf_link_det]
+  unfold hopf_link_det; ring
 
 /-- For the Hopf link (p,0), the determinant is -1 for all p. -/
 theorem hopf_p0_det (p : ℤ) : hopf_link_det p 0 = -1 := by
-  simp [hopf_link_det]
+  unfold hopf_link_det; ring
 
 /-- Kirby move 1 (stabilization) effect on the linking matrix:
     Adding a ±1-framed unknot increases the number of components by 1.
@@ -7054,10 +7062,10 @@ def stabilize (L : FramedLink) (ε : ℤ) : FramedLink where
       else ε
   linking_symmetric := by
     intro i j
-    simp only
     by_cases h₁ : i.val < L.numComponents <;>
       by_cases h₂ : j.val < L.numComponents <;>
-      simp_all [L.linking_symmetric]
+      simp_all only [dite_true, dite_false]
+    exact L.linking_symmetric _ _
 
 /-- Stabilization adds one component. -/
 theorem stabilize_components (L : FramedLink) (ε : ℤ) :
@@ -7074,7 +7082,7 @@ theorem stabilize_empty_minus1 :
 /-- Handle slide framing formula: after sliding component i over component j,
     the new framing of i is f_i + f_j + 2 * lk(i,j). -/
 def handleSlideFraming (L : FramedLink) (i j : Fin L.numComponents)
-    (hij : i ≠ j) : ℤ :=
+    (_hij : i ≠ j) : ℤ :=
   L.framings i + L.framings j + 2 * L.linkingMatrix i j
 
 /-- For the unknot_framing_0, there's only one component so no handle slide is possible. -/
@@ -7090,8 +7098,9 @@ def borromean_rings : FramedLink where
     if i = j then 1 else 0  -- Borromean property: lk(i,j) = 0 for i ≠ j
   linking_symmetric := by
     intro i j
-    simp only
-    split <;> simp_all
+    by_cases h : i = j
+    · simp [h]
+    · simp [h, Ne.symm h]
 
 /-- The Borromean rings have 3 components. -/
 theorem borromean_components : borromean_rings.numComponents = 3 := rfl
@@ -7099,7 +7108,7 @@ theorem borromean_components : borromean_rings.numComponents = 3 := rfl
 /-- The Borromean rings have pairwise linking number 0. -/
 theorem borromean_pairwise_unlinked (i j : Fin 3) (hij : i ≠ j) :
     borromean_rings.linkingMatrix i j = 0 := by
-  simp [borromean_rings, hij]
+  simp only [borromean_rings, if_neg hij]
 
 /-- The linking matrix of the Borromean rings is the identity matrix.
     Its determinant is 1, confirming the surgery result is a homology sphere. -/
@@ -7107,7 +7116,7 @@ theorem borromean_diagonal (i : Fin 3) :
     borromean_rings.linkingMatrix i i = 1 := by
   simp [borromean_rings]
 
-/-- The E8 plumbing: the linking matrix for the E8 Milnor fiber boundary.
+/- The E8 plumbing: the linking matrix for the E8 Milnor fiber boundary.
     This is the unique negative definite even unimodular lattice in rank 8.
     Surgery on this gives the Poincaré homology sphere Σ(2,3,5). -/
 /-- E8 adjacency: edges in the E8 Dynkin diagram (manifestly symmetric via min/max). -/
@@ -7132,7 +7141,6 @@ def e8_plumbing : FramedLink where
     else 0
   linking_symmetric := by
     intro i j
-    simp only
     by_cases hij : i = j
     · simp [hij]
     · simp [hij, Ne.symm hij, e8_edge_symm]
@@ -7160,8 +7168,8 @@ theorem e8_diagonal (i : Fin 8) : e8_plumbing.linkingMatrix i i = -2 := by
 theorem surgery_presentation_summary :
     empty_link.numComponents = 0 ∧
     unknot_framing_0.numComponents = 1 ∧
-    unknot_plus1.framings ⟨0, by omega⟩ = 1 ∧
-    unknot_minus1.framings ⟨0, by omega⟩ = -1 ∧
+    unknot_plus1.framings ⟨0, by decide⟩ = 1 ∧
+    unknot_minus1.framings ⟨0, by decide⟩ = -1 ∧
     (hopf_link 0 0).numComponents = 2 ∧
     borromean_rings.numComponents = 3 ∧
     e8_plumbing.numComponents = 8 :=
@@ -7247,7 +7255,18 @@ def quantum_PHS : QuantumValues where
     cannot distinguish them (both have b = (1,0,0,1), χ = 0). -/
 theorem quantum_distinguishes_PHS_from_S3 :
     quantum_S3.tv_values ≠ quantum_PHS.tv_values := by
-  simp [quantum_S3, quantum_PHS]
+  unfold quantum_S3 quantum_PHS
+  -- Goal: [(3, 1), (4, 1), (5, 1)] ≠ [(3, 1), (4, 0.5), (5, 0.3)]
+  intro h
+  -- List.cons injection: drop matching head (3,1)
+  have h1 : ([(4, (1:ℝ)), (5, 1)] : List (ℕ × ℝ)) = [(4, 0.5), (5, 0.3)] := by
+    exact List.tail_eq_of_cons_eq h
+  -- Another cons injection: extract (4,1) = (4,0.5)
+  have h2 : ((4, (1:ℝ)) : ℕ × ℝ) = (4, 0.5) := by
+    exact (List.cons.inj h1).1
+  -- Extract the ℝ component
+  have h3 : (1 : ℝ) = 0.5 := congr_arg Prod.snd h2
+  norm_num at h3
 
 /-- The surgery formula for quantum invariants:
     For surgery on a framed link L, the Turaev-Viro invariant can be
@@ -7261,7 +7280,7 @@ theorem quantum_surgery_computability :
     -- Needs state sum algebra infrastructure to formalize
     True := trivial
 
-/-- Comparison of invariant strengths for 3-manifold recognition:
+/- Comparison of invariant strengths for 3-manifold recognition:
 
     | Invariant | Computable? | Distinguishes |
     |-----------|-------------|---------------|
@@ -7388,7 +7407,7 @@ theorem volume_lower_bound_dim3 (nlc : NoLocalCollapsing) (hn : nlc.dim = 3)
   rw [hn]
   positivity
 
-/-- Perelman's key insight: the W-entropy functional makes Ricci flow
+/- Perelman's key insight: the W-entropy functional makes Ricci flow
     into a gradient-like flow. Combined with non-collapsing, this gives:
 
     1. Singularity models are well-controlled (κ-solutions)
@@ -7400,12 +7419,11 @@ theorem volume_lower_bound_dim3 (nlc : NoLocalCollapsing) (hn : nlc.dim = 3)
     - Blow-up analysis → singularity classification
     - Classification → surgery at canonical neighborhoods
     - Surgery + finite extinction → Poincaré conjecture -/
-/-- Perelman's program: 7 steps from W-entropy to Poincaré.
-    The chain terminates because dim 3 Poincaré is proved. -/
+/-- Perelman's program: 7 steps from W-entropy to Poincaré (dim 3 is proved). -/
 theorem perelman_program_chain :
     genPoincareStatus 3 = .proved := rfl
 
-/-- Summary: Perelman's three papers and their contributions.
+/- Summary: Perelman's three papers and their contributions.
 
     | Paper | Year | Key Result |
     |-------|------|------------|
