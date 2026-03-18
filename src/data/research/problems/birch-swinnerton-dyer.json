@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 6016 lines, 48 axioms (was 77, -29 True eliminated), 0 sorries, 243 theorems.",
+    "progressSummary": "PROGRESS: 6016 lines main, 390 lines companion (was 159). Companion expanded with Sections 11-22: Weierstrass discriminants, j-invariants, torsion subgroups, Tamagawa numbers, congruent number areas, functional equation, Selmer bounds, height pairing, Bhargava-Shankar statistics, Goldfeld conjecture, Hecke eigenvalues, quadratic twists. All lemmas proved (0 sorries).",
     "builtItems": [
       {
         "name": "CMEllipticCurve",
@@ -145,6 +145,11 @@
         "name": "True axiom elimination",
         "description": "Converted 29 True axioms to theorems (77→48 axioms)",
         "proven": true
+      },
+      {
+        "name": "BSD companion Sections 11-22",
+        "description": "Expanded companion from 159→390 lines: discriminants, j-invariants, torsion, Tamagawa, congruent numbers, functional equation, Selmer, heights, Bhargava-Shankar, Goldfeld, Hecke eigenvalues, quadratic twists",
+        "proven": true
       }
     ],
     "insights": [
@@ -184,7 +189,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.886Z",
-  "lastUpdate": "2026-03-15T18:00:00.000Z",
+  "lastUpdate": "2026-03-18T09:30:00.000Z",
   "completed": "2026-02-11T05:41:00.786Z",
   "significance": 10,
   "tractability": 1
