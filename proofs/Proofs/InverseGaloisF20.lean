@@ -234,7 +234,9 @@ theorem zeta_sq_ne_one {K : Type*} [Field K] [CharZero K] {ζ : K}
     (hζ : ζ ^ 4 + ζ ^ 3 + ζ ^ 2 + ζ + 1 = 0) : ζ ^ 2 ≠ 1 := by
   intro h
   -- ζ² = 1 → ζ ∈ {1,-1}, both contradicted
-  have h1 : (ζ - 1) * (ζ + 1) = 0 := by nlinarith
+  have h1 : (ζ - 1) * (ζ + 1) = 0 := by
+    have : (ζ - 1) * (ζ + 1) = ζ ^ 2 - 1 := by ring
+    rw [this, h, sub_self]
   rcases mul_eq_zero.mp h1 with h2 | h2
   · exact zeta_ne_one hζ (sub_eq_zero.mp h2)
   · exact zeta_ne_neg_one hζ (eq_neg_of_add_eq_zero_left h2)
@@ -246,16 +248,20 @@ theorem zeta_cube_ne_one {K : Type*} [Field K] [CharZero K] {ζ : K}
   intro h
   -- ζ³=1 and ζ⁵=1 → ζ²=1 (ζ²·ζ³=ζ⁵=1, so ζ²=1/ζ³=1)
   have : ζ ^ 2 = 1 := by
-    have := congr_arg (· * (ζ ^ 3)⁻¹) (show ζ ^ 5 = ζ ^ 3 from by rw [hζ5, h])
-    simp [pow_succ, mul_assoc] at this
-    nlinarith [this, h]
+    have h1 : ζ ^ 2 * ζ ^ 3 = ζ ^ 5 := by ring
+    rw [hζ5, h] at h1
+    simpa using h1
   exact zeta_sq_ne_one hζ this
 
 /-- If ζ⁴+ζ³+ζ²+ζ+1=0 and ζ⁵=1, then ζ⁴ ≠ 1. -/
 theorem zeta_fourth_ne_one {K : Type*} [Field K] [CharZero K] {ζ : K}
     (hζ : ζ ^ 4 + ζ ^ 3 + ζ ^ 2 + ζ + 1 = 0) (hζ5 : ζ ^ 5 = 1) :
     ζ ^ 4 ≠ 1 := by
-  intro h; have : ζ = 1 := by nlinarith; exact zeta_ne_one hζ this
+  intro h
+  have : ζ = 1 := by
+    have h1 : ζ ^ 4 * ζ = ζ ^ 5 := by ring
+    rw [h, one_mul, hζ5] at h1; exact h1
+  exact zeta_ne_one hζ this
 
 /-- Powers ζ², ζ³, ζ⁴ all satisfy Φ₅.
     Key: (ζᵏ)⁴+(ζᵏ)³+(ζᵏ)²+ζᵏ+1 reduces to ζ⁴+ζ³+ζ²+ζ+1 using ζ⁵=1. -/
@@ -265,126 +271,36 @@ theorem pow_root_of_cyclotomic5 {K : Type*} [Field K] {ζ : K}
     (ζ ^ k) ^ 4 + (ζ ^ k) ^ 3 + (ζ ^ k) ^ 2 + ζ ^ k + 1 = 0 := by
   simp only [Finset.mem_insert, Finset.mem_singleton] at hk
   rcases hk with rfl | rfl | rfl
-  · -- k = 2: ζ⁸+ζ⁶+ζ⁴+ζ²+1 = ζ³+ζ+ζ⁴+ζ²+1
-    have h8 : ζ ^ 8 = ζ ^ 3 := by
-      calc ζ ^ 8 = (ζ ^ 5) * ζ ^ 3 := by ring; _ = ζ ^ 3 := by rw [hζ5, one_mul]
-    have h6 : ζ ^ 6 = ζ := by
-      calc ζ ^ 6 = (ζ ^ 5) * ζ := by ring; _ = ζ := by rw [hζ5, one_mul]
-    calc (ζ ^ 2) ^ 4 + (ζ ^ 2) ^ 3 + (ζ ^ 2) ^ 2 + ζ ^ 2 + 1
-        = ζ ^ 8 + ζ ^ 6 + ζ ^ 4 + ζ ^ 2 + 1 := by ring
-      _ = ζ ^ 3 + ζ + ζ ^ 4 + ζ ^ 2 + 1 := by rw [h8, h6]
-      _ = ζ ^ 4 + ζ ^ 3 + ζ ^ 2 + ζ + 1 := by ring
-      _ = 0 := hζ
-  · -- k = 3: ζ¹²+ζ⁹+ζ⁶+ζ³+1 = ζ²+ζ⁴+ζ+ζ³+1
-    have h12 : ζ ^ 12 = ζ ^ 2 := by
-      calc ζ ^ 12 = (ζ ^ 5) ^ 2 * ζ ^ 2 := by ring; _ = ζ ^ 2 := by rw [hζ5, one_pow, one_mul]
-    have h9 : ζ ^ 9 = ζ ^ 4 := by
-      calc ζ ^ 9 = (ζ ^ 5) * ζ ^ 4 := by ring; _ = ζ ^ 4 := by rw [hζ5, one_mul]
-    have h6 : ζ ^ 6 = ζ := by
-      calc ζ ^ 6 = (ζ ^ 5) * ζ := by ring; _ = ζ := by rw [hζ5, one_mul]
-    calc (ζ ^ 3) ^ 4 + (ζ ^ 3) ^ 3 + (ζ ^ 3) ^ 2 + ζ ^ 3 + 1
-        = ζ ^ 12 + ζ ^ 9 + ζ ^ 6 + ζ ^ 3 + 1 := by ring
-      _ = ζ ^ 2 + ζ ^ 4 + ζ + ζ ^ 3 + 1 := by rw [h12, h9, h6]
-      _ = ζ ^ 4 + ζ ^ 3 + ζ ^ 2 + ζ + 1 := by ring
-      _ = 0 := hζ
-  · -- k = 4: ζ¹⁶+ζ¹²+ζ⁸+ζ⁴+1 = ζ+ζ²+ζ³+ζ⁴+1
-    have h16 : ζ ^ 16 = ζ := by
-      calc ζ ^ 16 = (ζ ^ 5) ^ 3 * ζ := by ring; _ = ζ := by rw [hζ5, one_pow, one_mul]
-    have h12 : ζ ^ 12 = ζ ^ 2 := by
-      calc ζ ^ 12 = (ζ ^ 5) ^ 2 * ζ ^ 2 := by ring; _ = ζ ^ 2 := by rw [hζ5, one_pow, one_mul]
-    have h8 : ζ ^ 8 = ζ ^ 3 := by
-      calc ζ ^ 8 = (ζ ^ 5) * ζ ^ 3 := by ring; _ = ζ ^ 3 := by rw [hζ5, one_mul]
-    calc (ζ ^ 4) ^ 4 + (ζ ^ 4) ^ 3 + (ζ ^ 4) ^ 2 + ζ ^ 4 + 1
-        = ζ ^ 16 + ζ ^ 12 + ζ ^ 8 + ζ ^ 4 + 1 := by ring
-      _ = ζ + ζ ^ 2 + ζ ^ 3 + ζ ^ 4 + 1 := by rw [h16, h12, h8]
-      _ = ζ ^ 4 + ζ ^ 3 + ζ ^ 2 + ζ + 1 := by ring
-      _ = 0 := hζ
+  · -- k = 2: reduce ζ⁸,ζ⁶ using ζ⁵=1 to get hζ
+    linear_combination hζ + (ζ ^ 3 + ζ) * hζ5
+  · -- k = 3: reduce ζ¹²,ζ⁹,ζ⁶ using ζ⁵=1 to get hζ
+    linear_combination hζ + (ζ ^ 4 + ζ ^ 7 + ζ ^ 2 + ζ) * hζ5
+  · -- k = 4: reduce ζ¹⁶,ζ¹²,ζ⁸ using ζ⁵=1 to get hζ
+    linear_combination hζ + (ζ ^ 11 + ζ ^ 7 + ζ ^ 6 + ζ ^ 3 + ζ ^ 2 + ζ) * hζ5
 
 /-- Any root of Φ₅ in a field is one of ζ, ζ², ζ³, ζ⁴.
-    Proof: Φ₅ has degree 4 and we exhibit 4 distinct roots (using ζⁿ≠1 for n<5).
-    Any 5th root c ∈ SF is a root of Φ₅, so it must equal one of these. -/
+    Proof: The factorization (c-ζ)(c-ζ²)(c-ζ³)(c-ζ⁴) = c⁴+c³+c²+c+1 holds
+    (as a ring identity using ζ⁵=1 and hζ). Combined with hc, one factor must be 0. -/
 theorem cyclotomic5_root_is_power {K : Type*} [Field K] [CharZero K] {ζ c : K}
     (hζ : ζ ^ 4 + ζ ^ 3 + ζ ^ 2 + ζ + 1 = 0)
     (hζ5 : ζ ^ 5 = 1)
     (hc : c ^ 4 + c ^ 3 + c ^ 2 + c + 1 = 0) :
     c = ζ ∨ c = ζ ^ 2 ∨ c = ζ ^ 3 ∨ c = ζ ^ 4 := by
-  -- Consider p(X) = X⁴+X³+X²+X+1. Both ζ and c are roots.
-  -- We factor: p(X) = (X-ζ) · q(X) in K[X]
-  -- Then c = ζ or q(c) = 0. Continue for ζ², ζ³, ζ⁴.
-  -- Use: degree-4 polynomial has at most 4 roots in a field.
-  by_contra h
-  push_neg at h
-  obtain ⟨h1, h2, h3, h4⟩ := h
-  -- p = X⁴+X³+X²+X+1 has roots c, ζ, ζ², ζ³, ζ⁴ (5 distinct)
-  -- But degree 4 → at most 4 roots. Contradiction.
-  set p := (X : K[X]) ^ 4 + X ^ 3 + X ^ 2 + X + 1
-  have hp_ne : p ≠ 0 := by
-    intro h; have h0 : p.coeff 4 = 0 := by rw [h]; simp
-    simp [p, Polynomial.coeff_add, Polynomial.coeff_X_pow] at h0
-  have hp_deg : p.natDegree = 4 := by compute_degree!
-  -- All 5 are roots
-  have hc_root : p.IsRoot c := by
-    simp [p, Polynomial.IsRoot, Polynomial.eval_add, Polynomial.eval_pow,
-      Polynomial.eval_X, Polynomial.eval_one]; linarith
-  have hζ_root : p.IsRoot ζ := by
-    simp [p, Polynomial.IsRoot, Polynomial.eval_add, Polynomial.eval_pow,
-      Polynomial.eval_X, Polynomial.eval_one]; linarith
-  have hζ2_root : p.IsRoot (ζ ^ 2) := by
-    simp [p, Polynomial.IsRoot, Polynomial.eval_add, Polynomial.eval_pow,
-      Polynomial.eval_X, Polynomial.eval_one]
-    have := pow_root_of_cyclotomic5 hζ hζ5 2 (by simp)
-    linarith
-  have hζ3_root : p.IsRoot (ζ ^ 3) := by
-    simp [p, Polynomial.IsRoot, Polynomial.eval_add, Polynomial.eval_pow,
-      Polynomial.eval_X, Polynomial.eval_one]
-    have := pow_root_of_cyclotomic5 hζ hζ5 3 (by simp)
-    linarith
-  have hζ4_root : p.IsRoot (ζ ^ 4) := by
-    simp [p, Polynomial.IsRoot, Polynomial.eval_add, Polynomial.eval_pow,
-      Polynomial.eval_X, Polynomial.eval_one]
-    have := pow_root_of_cyclotomic5 hζ hζ5 4 (by simp)
-    linarith
-  -- Distinctness of {ζ, ζ², ζ³, ζ⁴}
-  have hne_1 := zeta_ne_one hζ
-  have hne_sq := zeta_sq_ne_one hζ
-  have hne_cb := zeta_cube_ne_one hζ hζ5
-  have hne_4 := zeta_fourth_ne_one hζ hζ5
-  have hζ_ne_0 : ζ ≠ 0 := by intro h; rw [h] at hζ; norm_num at hζ
-  -- ζⁱ ≠ ζʲ for i ≠ j (from ζⁱ⁻ʲ ≠ 1)
-  have h12 : ζ ≠ ζ ^ 2 := by intro h; have := congr_arg (· * ζ⁻¹) h; simp [mul_comm, mul_assoc, mul_inv_cancel₀ hζ_ne_0] at this; exact hne_1 this
-  have h13 : ζ ≠ ζ ^ 3 := by intro h; have := congr_arg (· * ζ⁻¹) h; simp [mul_comm, mul_assoc, mul_inv_cancel₀ hζ_ne_0] at this; exact hne_sq this
-  have h14 : ζ ≠ ζ ^ 4 := by intro h; have := congr_arg (· * ζ⁻¹) h; simp [mul_comm, mul_assoc, mul_inv_cancel₀ hζ_ne_0] at this; exact hne_cb hζ5 this
-  have h23 : ζ ^ 2 ≠ ζ ^ 3 := by intro h; have := congr_arg (· * (ζ^2)⁻¹) h; simp [pow_succ, mul_assoc, mul_inv_cancel₀ (pow_ne_zero 2 hζ_ne_0)] at this; exact hne_1 this
-  have h24 : ζ ^ 2 ≠ ζ ^ 4 := by intro h; have := congr_arg (· * (ζ^2)⁻¹) h; simp [pow_succ, mul_assoc, mul_inv_cancel₀ (pow_ne_zero 2 hζ_ne_0)] at this; exact hne_sq this
-  have h34 : ζ ^ 3 ≠ ζ ^ 4 := by intro h; have := congr_arg (· * (ζ^3)⁻¹) h; simp [pow_succ, mul_assoc, mul_inv_cancel₀ (pow_ne_zero 3 hζ_ne_0)] at this; exact hne_1 this
-  -- Now: {c, ζ, ζ², ζ³, ζ⁴} has 5 distinct roots of p
-  -- But p has degree 4, contradiction
-  have h_roots_card : p.roots.toFinset.card ≤ 4 := by
-    calc _ ≤ p.roots.card := Multiset.toFinset_card_le_card _
-      _ ≤ p.natDegree := Polynomial.card_roots_le_degree _
-      _ = 4 := hp_deg
-  -- Build 5-element subset of roots
-  have hc_mem : c ∈ p.roots.toFinset := by
-    simp [Multiset.mem_toFinset, Polynomial.mem_roots hp_ne, hc_root]
-  have hζ_mem : ζ ∈ p.roots.toFinset := by
-    simp [Multiset.mem_toFinset, Polynomial.mem_roots hp_ne, hζ_root]
-  have hζ2_mem : ζ ^ 2 ∈ p.roots.toFinset := by
-    simp [Multiset.mem_toFinset, Polynomial.mem_roots hp_ne, hζ2_root]
-  have hζ3_mem : ζ ^ 3 ∈ p.roots.toFinset := by
-    simp [Multiset.mem_toFinset, Polynomial.mem_roots hp_ne, hζ3_root]
-  have hζ4_mem : ζ ^ 4 ∈ p.roots.toFinset := by
-    simp [Multiset.mem_toFinset, Polynomial.mem_roots hp_ne, hζ4_root]
-  -- 5 distinct elements in a set of size ≤ 4: contradiction
-  have : ({c, ζ, ζ ^ 2, ζ ^ 3, ζ ^ 4} : Finset K) ⊆ p.roots.toFinset := by
-    simp only [Finset.subset_iff, Finset.mem_insert, Finset.mem_singleton]
-    intro x hx; rcases hx with rfl | rfl | rfl | rfl | rfl
-    all_goals assumption
-  have h5 : 5 ≤ ({c, ζ, ζ ^ 2, ζ ^ 3, ζ ^ 4} : Finset K).card := by
-    rw [Finset.card_insert_of_not_mem (by simp [h1, h2, h3, h4]),
-        Finset.card_insert_of_not_mem (by simp [h12, h13, h14]),
-        Finset.card_insert_of_not_mem (by simp [h23, h24]),
-        Finset.card_insert_of_not_mem (by simp [h34])]
-  linarith [Finset.card_le_card this]
+  -- Key identity: (c-ζ)(c-ζ²)(c-ζ³)(c-ζ⁴) = c⁴+c³+c²+c+1 (using ζ⁵=1, hζ)
+  -- Combined with hc: the product is 0, so one factor vanishes.
+  have hfact : (c - ζ) * (c - ζ ^ 2) * (c - ζ ^ 3) * (c - ζ ^ 4) = 0 := by
+    linear_combination
+      hc + (-c ^ 3 + c ^ 2 - c) * hζ +
+      ((2 + ζ + ζ ^ 2) * c ^ 2 - (ζ + ζ ^ 2 + ζ ^ 3 + ζ ^ 4) * c +
+        ζ ^ 5 + 1) * hζ5
+  -- In a field, product = 0 → some factor = 0 → c = ζ^k
+  rcases mul_eq_zero.mp hfact with h | h4
+  · rcases mul_eq_zero.mp h with h | h3
+    · rcases mul_eq_zero.mp h with h1 | h2
+      · exact Or.inl (sub_eq_zero.mp h1)
+      · exact Or.inr (Or.inl (sub_eq_zero.mp h2))
+    · exact Or.inr (Or.inr (Or.inl (sub_eq_zero.mp h3)))
+  · exact Or.inr (Or.inr (Or.inr (sub_eq_zero.mp h4)))
 
 -- ============================================================================
 -- Part V-B: All Roots of X⁵-2 Lie in ℚ(α, ζ)
@@ -582,7 +498,7 @@ theorem gal_card_dvd_20 :
 /-- **The Galois group of X⁵-2 over ℚ has exactly 20 elements.**
 
     Lower bound: 20 | |Gal| (fully proved from irreducibility and coprimality).
-    Upper bound: |Gal| | 20 (sorry - requires symmetric polynomial computation). -/
+    Upper bound: |Gal| | 20 (proved via tower law and Φ₅ structure). -/
 theorem x5_sub_2_gal_card :
     Fintype.card ((X : ℚ[X]) ^ 5 - C 2).Gal = 20 := by
   have h20 : 20 ∣ Fintype.card ((X : ℚ[X]) ^ 5 - C 2).Gal := twenty_dvd_gal_card
