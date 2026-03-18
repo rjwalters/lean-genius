@@ -1418,6 +1418,7 @@ import Proofs.FundamentalTheoremAlgebra
 import Proofs.FundamentalTheoremCalculus
 import Proofs.GCDAlgorithm
 import Proofs.GCDAlgorithmOQ01
+import Proofs.GCDAlgorithmOQ01OQ03
 import Proofs.GaussWilsonNonCyclic
 import Proofs.GelfondSchneider
 import Proofs.GeneralQuartic
