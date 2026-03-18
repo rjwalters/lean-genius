@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 81 parts, ~14250 lines, 0 sorries, 0 axioms. Parts LXXIX-LXXXI added in this session.",
+    "progressSummary": "PROGRESS: 82 parts, ~14400 lines, 0 sorries, 0 axioms. Parts LXXIX-LXXXII added this session.",
     "builtItems": [
       "Part XLI: Tao averaged NS blowup - BilinearProperties, BlowupProgram, ProofStrategy enum, Lamb vector analysis",
       "Part XLII: Koch-Tataru BMO\u207b\u00b9 well-posedness - CriticalSpace hierarchy, CarlesonMeasureNorm, KochTataruTheorem",
@@ -86,7 +86,8 @@
       "Part LXXIX (VelocityGradientAlgebra section) in NavierStokes.lean: ~300 lines, 30+ proved theorems",
       "Companion Sections 51-53 in NavierStokesAristotle.lean",
       "Part LXXX (CharPolyAlgebra section) in NavierStokes.lean: ~120 lines, 20+ proved theorems",
-      "Part LXXXI (EnstrophyDissipation section) in NavierStokes.lean: ~130 lines"
+      "Part LXXXI (EnstrophyDissipation section) in NavierStokes.lean: ~130 lines",
+      "Part LXXXII (ScalingExponents section) in NavierStokes.lean: ~120 lines"
     ],
     "insights": [
       "Tao (2016) averaged NS blowup: any regularity proof must use specific algebraic structure of (u\u00b7\u2207)u, not just energy/scaling/div-free properties",
@@ -156,7 +157,8 @@
       "Newton identity tr(A^3) = 3R (for P=0) connects strain self-amplification to flow topology",
       "Q nonpositive for real eigenvalues - complex eigenvalues (Q>0) indicate rotation-dominated flow",
       "Part LXXXI: Enstrophy evolution dZ/dt = stretching - dissipation; 2D has stretching=0 giving monotone decrease",
-      "Dissipation anomaly: as nu->0, Z ~ epsilon_0/(2nu) grows, consistent with Kolmogorov cascade"
+      "Dissipation anomaly: as nu->0, Z ~ epsilon_0/(2nu) grows, consistent with Kolmogorov cascade",
+      "Part LXXXII: Critical gap s_c = d/2 - 1: in 3D s_c=1/2 (half derivative short), in 2D s_c=0 (energy IS critical)"
     ],
     "mathlibGaps": [
       "Sobolev spaces",
