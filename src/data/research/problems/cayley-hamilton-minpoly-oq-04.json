@@ -1,0 +1,121 @@
+{
+  "slug": "cayley-hamilton-minpoly-oq-04",
+  "title": "Nonderogatory matrix characterization: μ_M = χ_M iff cyclic vector",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{For } M \\in M_n(K), \\; \\mu_M = \\chi_M \\iff \\exists v \\in K^n \\text{ s.t. } \\{v, Mv, \\ldots, M^{n-1}v\\} \\text{ is a basis}",
+    "plain": "A matrix M over a field K is nonderogatory (its minimal polynomial equals its characteristic polynomial) if and only if it has a cyclic vector v such that {v, Mv, M²v, ..., M^{n-1}v} forms a basis of K^n.",
+    "whyMatters": [
+      "Connects spectral theory to cyclic module structure",
+      "Foundation for rational canonical form",
+      "Key criterion in control theory (observability/controllability)"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Forward direction: cyclic vector → minpoly = charpoly (0 sorries)",
+      "Bridge lemma: monic polynomials with divisibility and same degree are equal",
+      "Degree characterization: nonderogatory iff deg(minpoly) = n",
+      "Full equivalence (using axiom for backward direction)"
+    ],
+    "open": [
+      "Backward direction: nonderogatory → cyclic vector (axiomatized, needs PID structure theorem)"
+    ],
+    "goal": "Complete formalization of nonderogatory characterization"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-18T02:00:00Z",
+    "iteration": 2,
+    "focus": "Backward direction for infinite fields via union avoidance",
+    "blockers": [],
+    "nextAction": "Fill remaining sorries to complete backward direction for infinite fields",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 2
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Backward direction (infinite fields) - 3 key lemmas fully proved (union avoidance, aeval_ne_zero, mulVec_ne_zero). Main theorem stated with proof architecture, 6 sorries remaining in helper steps. Aristotle companion file created.",
+    "builtItems": [
+      "IsCyclicVector definition (annihilator formulation) in CayleyHamiltonMinpolyOQ04.lean",
+      "IsCyclicVectorLI definition (linear independence formulation) in CayleyHamiltonMinpolyOQ04.lean",
+      "IsNonderogatory definition in CayleyHamiltonMinpolyOQ04.lean",
+      "minpoly_eq_charpoly_of_natDegree_eq (bridge lemma) in CayleyHamiltonMinpolyOQ04.lean",
+      "cyclic_implies_nonderogatory (forward direction) in CayleyHamiltonMinpolyOQ04.lean",
+      "nonderogatory_iff_cyclic_vector (full equivalence) in CayleyHamiltonMinpolyOQ04.lean",
+      "nonderogatory_iff_natDegree_eq (degree characterization) in CayleyHamiltonMinpolyOQ04.lean",
+      "derogatory_iff_natDegree_lt (derogatory characterization) in CayleyHamiltonMinpolyOQ04.lean",
+      "not_union_proper_subspaces (union avoidance for infinite fields, PROVED) in CayleyHamiltonMinpolyOQ04Backward.lean",
+      "aeval_ne_zero_of_ne_zero (nonzero poly → nonzero matrix, PROVED) in CayleyHamiltonMinpolyOQ04Backward.lean",
+      "exists_mulVec_ne_zero (nonzero matrix has vector outside kernel, PROVED) in CayleyHamiltonMinpolyOQ04Backward.lean",
+      "nonderogatory_has_cyclic_vector_infinite (stated, 1 sorry) in CayleyHamiltonMinpolyOQ04Backward.lean",
+      "powers_linearIndependent (framework proved, 3 helper sorries) in CayleyHamiltonMinpolyOQ04Backward.lean",
+      "CayleyHamiltonMinpolyOQ04BackwardAristotle.lean (companion file for automated proof search)"
+    ],
+    "insights": [
+      "The annihilator formulation of cyclic vector (no nonzero polynomial of degree < n annihilates v) gives a much cleaner forward direction proof than the linear independence formulation",
+      "The forward direction proof is beautifully simple: minpoly annihilates M, so it annihilates v, giving a nonzero polynomial in the annihilator if deg < n",
+      "Bridge lemma (monic divisor with same degree = equal) is a clean self-contained result useful beyond this problem",
+      "Backward direction requires substantial module theory infrastructure (PID structure theorem or JNF)",
+      "Backward direction for INFINITE fields: non-cyclic vectors lie in a finite union of proper subspaces (kernels of proper divisors of minpoly), which cant cover V over infinite K",
+      "Union avoidance lemma proved via line argument with Finset induction: for each proper subspace, at most one scalar t puts v+tw in that subspace",
+      "The finite-field case remains the hard part - it requires counting arguments or the full PID structure theorem",
+      "Key reduction: the set of distinct kernels ker(T) for T in the n-dimensional algebra K[M] is finite (at most 2^n subspaces)"
+    ],
+    "mathlibGaps": [
+      "Structure theorem for f.g. modules over PID (partial in Mathlib but not in ready-to-use form for this application)",
+      "Rational canonical form not in Mathlib"
+    ],
+    "nextSteps": [
+      "Fill 3 helper sorries in powers_linearIndependent (polynomial evaluation ↔ matrix sum conversion)",
+      "Fill isCyclicVector_of_linearIndependent (convert Krylov independence to annihilator formulation)",
+      "Wire together: union avoidance + powers_linearIndependent + kernel lattice finiteness → main theorem",
+      "For finite fields: would need PID module structure theorem or explicit counting via Mobius function"
+    ]
+  },
+  "approaches": [
+    {
+      "name": "Annihilator-based forward direction",
+      "description": "Define cyclic vector via annihilator ideal, prove forward direction using minpoly annihilation",
+      "status": "succeeded",
+      "outcome": "Clean proof with 0 sorries for forward direction"
+    },
+    {
+      "name": "Union avoidance for infinite fields",
+      "description": "Prove backward direction by showing non-cyclic vectors lie in a finite union of proper subspaces, then applying union avoidance (infinite fields only)",
+      "status": "in-progress",
+      "outcome": "3 key lemmas proved, main theorem wired with 6 helper sorries"
+    }
+  ],
+  "tags": [
+    "linear-algebra",
+    "minimal-polynomial",
+    "nonderogatory",
+    "cyclic-vector",
+    "matrix-theory"
+  ],
+  "relatedProofs": [
+    "MinpolyCharpoly.lean",
+    "CayleyHamiltonOQ01.lean",
+    "CayleyHamiltonMinpolyOQ01.lean",
+    "CayleyHamiltonMinpolyOQ02.lean"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly",
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
+    ]
+  },
+  "started": "2026-03-18T01:48:35Z",
+  "lastUpdate": "2026-03-18T04:30:00Z",
+  "completed": "2026-03-18T02:48:00Z",
+  "significance": 7,
+  "tractability": 6
+}

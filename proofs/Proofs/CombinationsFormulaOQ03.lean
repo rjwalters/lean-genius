@@ -301,6 +301,76 @@ example : qBinom q 4 2 = 1 + q + 2 * q ^ 2 + q ^ 3 + q ^ 4 := by
 
 end Verifications
 
+-- ============================================================
+-- Part VII: Absorption Identity
+-- ============================================================
+
+/-- **q-Absorption Identity**:
+    [n+1 choose k+1]_q · [k+1]_q = [n+1]_q · [n choose k]_q.
+
+    This is the q-analog of the classical absorption identity
+    C(n+1, k+1) · (k+1) = (n+1) · C(n, k), and is a fundamental
+    tool in q-combinatorics. The proof uses induction on n,
+    applying the q-Pascal recurrence at each step.
+
+    Key algebraic steps in the inductive case:
+    1. Expand qBinom(n+2, k+1) via Pascal
+    2. Apply IH at (n, k) and (n, k-1) to simplify
+    3. Recombine via Pascal backwards to close the induction -/
+theorem qBinom_absorption (q : R) : ∀ (n k : ℕ), k ≤ n →
+    qBinom q (n + 1) (k + 1) * qNumber q (k + 1) = qNumber q (n + 1) * qBinom q n k
+  | 0, 0, _ => by simp [qBinom, qNumber]
+  | n + 1, 0, _ => by
+    rw [qBinom_one_right, qNumber_one, mul_one, mul_one]
+  | n + 1, k + 1, hk => by
+    have hk' : k ≤ n := by omega
+    have hk1 : k + 1 ≤ n + 1 := by omega
+    -- Expand using Pascal: [n+2, k+2] = [n+1, k+1] + q^{k+2} · [n+1, k+2]
+    rw [qBinom_pascal]
+    -- Distribute multiplication
+    rw [add_mul]
+    -- Apply IH at (n, k+1) to second term
+    rw [mul_assoc, qBinom_absorption q n (k + 1) hk1]
+    -- Expand [k+2]_q = 1 + q · [k+1]_q in first term
+    rw [qNumber_succ q (k + 1)]
+    rw [mul_add, mul_one]
+    -- Apply IH at (n, k) to part of first term
+    rw [mul_comm (qBinom q (n + 1) (k + 1)) (q * qNumber q (k + 1)),
+        mul_assoc, qBinom_absorption q n k hk']
+    -- Now have: [n+1, k+1] + q · [n+1]_q · [n, k] + q^{k+2} · [n+1]_q · [n, k+1]
+    -- Need: [n+2]_q · [n+1, k+1]
+    -- Factor q · [n+1]_q out of last two terms
+    rw [← mul_assoc, ← mul_assoc q, ← mul_add (q * qNumber q (n + 1))]
+    -- Combine [n,k] + q^{k+1} · [n,k+1] = [n+1, k+1] via Pascal
+    rw [show q ^ (k + 2) = q * q ^ (k + 1) from by ring]
+    rw [mul_assoc q (q ^ (k + 1)), ← mul_assoc (q * qNumber q (n + 1)),
+        mul_comm (q * qNumber q (n + 1)) (q ^ (k + 1)),
+        mul_assoc (q ^ (k + 1))]
+    rw [← mul_add (q * qNumber q (n + 1))]
+    rw [← qBinom_pascal]
+    -- Now have: [n+1, k+1] + q · [n+1]_q · [n+1, k+1] = (1 + q · [n+1]_q) · [n+1, k+1]
+    rw [← add_mul, ← qNumber_succ]
+
+/-- **q-Absorption at q = 1** verifies the classical identity:
+    C(n+1, k+1) · (k+1) = (n+1) · C(n, k). -/
+theorem absorption_at_one (n k : ℕ) (hk : k ≤ n) :
+    Nat.choose (n + 1) (k + 1) * (k + 1) = (n + 1) * Nat.choose n k := by
+  have h := qBinom_absorption (1 : ℤ) n k hk
+  rw [qBinom_at_one, qBinom_at_one, qNumber_at_one, qNumber_at_one] at h
+  exact_mod_cast h
+
+-- ============================================================
+-- Part VIII: Concrete Absorption Verifications
+-- ============================================================
+
+/-- Verification: [4,2]_q · [2]_q = [4]_q · [3,1]_q over ℤ at q = 2. -/
+example : qBinom (2 : ℤ) 4 2 * qNumber (2 : ℤ) 2 = qNumber (2 : ℤ) 4 * qBinom (2 : ℤ) 3 1 := by
+  native_decide
+
+/-- Verification: [5,3]_q · [3]_q = [5]_q · [4,2]_q over ℤ at q = 2. -/
+example : qBinom (2 : ℤ) 5 3 * qNumber (2 : ℤ) 3 = qNumber (2 : ℤ) 5 * qBinom (2 : ℤ) 4 2 := by
+  native_decide
+
 end QBinomialCoefficients
 
 -- ============================================================

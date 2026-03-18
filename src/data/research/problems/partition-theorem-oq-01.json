@@ -20,11 +20,7 @@
     "since": "2026-03-17T17:30:00Z",
     "iteration": 5,
     "focus": "GF coefficient bridge infrastructure",
-    "blockers": [
-      "10+ pre-existing build errors from duplicate declarations (partGF, subsetsWithSum, partGF_constantCoeff, partGF_empty)",
-      "API drift errors (Finset.mem_empty, omega failures)",
-      "File needs structural deduplication before new theorems can be added"
-    ],
+    "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
       "total": 0,
@@ -33,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Last sorry ELIMINATED. File now 0 sorries, 3 axioms. distinctPartGF_coeff_eq_card was a duplicate of distinctPartGF_coeff.",
+    "progressSummary": "PROGRESS: Step 7e COMPLETE. partGF bridge theorem proved (Part XLVI). 0 new errors. 3 axioms remain.",
     "builtItems": [
       "distinctPartGF: generating function ∏(1+X^k) as PowerSeries ℤ",
       "schurModGF, rr1ModGF: specialized GFs for partition identities",
@@ -62,7 +58,10 @@
       "subsetsWithSum_empty: base case for empty set",
       "subsetsWithSum_insert: insert recursion (card decomposition into containing/not containing k)",
       "distinctPartGF_coeff_eq_card: bridge theorem structure (sorry in inductive step)",
-      "Eliminated last sorry in distinctPartGF_coeff_eq_card by delegating to already-proved distinctPartGF_coeff"
+      "Eliminated last sorry in distinctPartGF_coeff_eq_card by delegating to already-proved distinctPartGF_coeff",
+      "partRemoveOne: remove one copy of k from partition parts (Part XLV)",
+      "partitionsFrom_insert_rec: insert recursion for partition counts (Part XLV)",
+      "partGF_coeff_eq_partitionsFrom: GF coefficient = partition count bridge theorem (Part XLVI)"
     ],
     "insights": [
       "All 3 axioms encode deep partition identities (RR1, RR2, Schur)",
@@ -86,18 +85,20 @@
       "Insert recursion for subset counts mirrors (1+X^k)*F convolution",
       "Antidiagonal sum simplification is the remaining technical crux",
       "distinctPartGF_coeff_eq_card was a duplicate of distinctPartGF_coeff (proved at line 1936) — the sorry was unnecessary",
-      "Build has 10+ errors from duplicate declarations (partGF, subsetsWithSum, etc.) — file needs deduplication before new work",
-      "partGF_coeff_insert (GF recursion) is proved but combinatorial counterpart partitionsFrom_insert_card is NOT — this blocks partGF_coeff bridge"
+      "partitionsFrom_insert_rec: partitions from S∪{k} decompose by usage of k, matching GF recursion",
+      "partGF_coeff_eq_partitionsFrom: bridge theorem proved by double induction (Finset.induction + Nat.strongRecOn)",
+      "The bijection for insert recursion uses remove-one-k / add-one-k operations on Nat.Partition",
+      "Step 7e COMPLETE: coeff n (partGF S) = |partitionsFrom S n| for all S ⊆ ℕ₊"
     ],
     "mathlibGaps": [
       "No partition generating function infrastructure",
       "No bijective proof machinery for partition identities"
     ],
     "nextSteps": [
-      "Fill sorry in distinctPartGF_coeff_eq_card: simplify antidiagonal convolution sum",
-      "Prove analogous bridge for partGF (parts with repetition)",
-      "Connect subsetsWithSum to schurModPartitions via partition-subset bijection",
-      "Use both bridges + GF identity to eliminate schur_partition_identity_corrected axiom"
+      "Fix pre-existing Mathlib API errors in Parts XXXIX-XLIII (duplicate partGF, geomSeries issues)",
+      "Specialize partGF_coeff_eq_partitionsFrom for RR1/RR2 mod-side sets",
+      "Build gap-side generating function characterization (step 8)",
+      "Compose mod-side GF = gap-side GF to prove partition identities (step 9)"
     ]
   },
   "approaches": [],

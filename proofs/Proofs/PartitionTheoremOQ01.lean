@@ -2770,17 +2770,19 @@ noncomputable section
 def geomSeries (k : ℕ) : PowerSeries ℤ :=
   PowerSeries.mk (fun n => if k = 0 then 0 else if k ∣ n then 1 else 0)
 
-/-- partGF using geomSeries: equivalent to the earlier partGF for positive elements. -/
-def partGF' (S : Finset ℕ) : PowerSeries ℤ :=
+/-- The generating function for partitions with parts from S (repetition allowed):
+    GF_S(q) = ∏_{k ∈ S} (∑_{j≥0} q^{kj}).
+    This counts partitions of n into parts from S. -/
+def partGF (S : Finset ℕ) : PowerSeries ℤ :=
   S.prod (fun k => geomSeries k)
 
 /-- The RR1 mod-side GF: ∏_{k≡1,4(5)} 1/(1-X^k) for parts ≤ N. -/
 def rr1ModGFUnrestricted (N : ℕ) : PowerSeries ℤ :=
-  partGF' ((Finset.range (N + 1)).filter (fun k => k % 5 = 1 ∨ k % 5 = 4))
+  partGF ((Finset.range (N + 1)).filter (fun k => k % 5 = 1 ∨ k % 5 = 4))
 
 /-- The RR2 mod-side GF: ∏_{k≡2,3(5)} 1/(1-X^k) for parts ≤ N. -/
 def rr2ModGFUnrestricted (N : ℕ) : PowerSeries ℤ :=
-  partGF' ((Finset.range (N + 1)).filter (fun k => k % 5 = 2 ∨ k % 5 = 3))
+  partGF ((Finset.range (N + 1)).filter (fun k => k % 5 = 2 ∨ k % 5 = 3))
 
 /-- Geometric series coefficient: coeff n (geomSeries k) = 1 if k ∣ n, else 0. -/
 theorem geomSeries_coeff (k n : ℕ) (hk : 0 < k) :
@@ -2806,9 +2808,9 @@ theorem geomSeries_constantCoeff (k : ℕ) (hk : 0 < k) :
   rw [geomSeries_coeff k 0 hk]
   simp
 
-/-- Empty product gives 1 (via geomSeries). -/
-theorem partGF'_empty : partGF' ∅ = 1 := by
-  simp [partGF']
+/-- Empty product gives 1. -/
+theorem partGF_empty : partGF ∅ = 1 := by
+  simp [partGF]
 
 end
 
@@ -3154,139 +3156,175 @@ end
 end DistinctPartGFBridge
 
 -- ============================================================================
--- Part XLIV: partGF Coefficient = Partition Count (Bridge for Repetition)
+-- Part XLV: Partition Insert Recursion
 -- ============================================================================
 
 /-
-The analogous bridge theorem for partitions with repetition:
+Partitions from S ∪ {k} decompose by usage of k, mirroring the GF recursion:
+  |P(insert k S, n)| = |P(S, n)| + [k ≤ n] · |P(insert k S, n-k)|
+
+The bijection for the second term: "remove one copy of k" ↔ "add one copy of k".
+Combined with geomSeries_mul_coeff_rec (Part XLI), this yields the partGF bridge.
+-/
+
+section PartitionsFromInsert
+
+open Finset Nat
+
+noncomputable section
+
+/-- Remove one copy of k from partition parts, producing a partition of n-k. -/
+private def partRemoveOne {n : ℕ} (k : ℕ) (p : Nat.Partition n) (hk : k ∈ p.parts) :
+    Nat.Partition (n - k) where
+  parts := p.parts.erase k
+  parts_sum := by
+    have h := p.parts_sum
+    rw [show p.parts = k ::ₘ (p.parts.erase k) from (Multiset.cons_erase hk).symm,
+        Multiset.sum_cons] at h
+    omega
+  parts_pos := by
+    intro i hi; apply p.parts_pos
+    rw [← Multiset.cons_erase hk]
+    exact Multiset.mem_cons_of_mem hi
+
+/-- **Partition insert recursion**: partitions from S ∪ {k} of n decompose into
+    those not using k (= partitions from S) plus those using k at least once
+    (bijective with partitions from S ∪ {k} of n-k via removing one copy of k). -/
+theorem partitionsFrom_insert_rec {S : Finset ℕ} {k : ℕ} (hk : k ∉ S)
+    (hkpos : 0 < k) (n : ℕ) :
+    (partitionsFrom (insert k S) n).card =
+    (partitionsFrom S n).card +
+    (if k ≤ n then (partitionsFrom (insert k S) (n - k)).card else 0) := by
+  -- Split by k ∈ parts vs k ∉ parts
+  set P := partitionsFrom (insert k S) n with hP_def
+  have hU : P = P.filter (fun p => k ∉ p.parts) ∪ P.filter (fun p => k ∈ p.parts) := by
+    ext p; simp only [Finset.mem_union, Finset.mem_filter]; tauto
+  have hD : Disjoint (P.filter (fun p => k ∉ p.parts)) (P.filter (fun p => k ∈ p.parts)) :=
+    Finset.disjoint_filter.mpr fun _ _ h1 h2 => h1 h2
+  rw [hU, Finset.card_union_of_disjoint hD]
+  -- Part 1: {k ∉ parts} = partitionsFrom S n
+  have h_noK : P.filter (fun p => k ∉ p.parts) = partitionsFrom S n := by
+    ext p
+    simp only [Finset.mem_filter, hP_def, partitionsFrom, Finset.mem_univ, true_and]
+    constructor
+    · intro ⟨hp, hkp⟩ a ha
+      rcases Finset.mem_insert.mp (hp a ha) with rfl | h
+      · exact absurd ha hkp
+      · exact h
+    · intro hp
+      exact ⟨fun a ha => Finset.mem_insert_of_mem (hp a ha), fun h => hk (hp k h)⟩
+  rw [h_noK]; congr 1
+  -- Part 2: {k ∈ parts} cardinality
+  split_ifs with hkn
+  · -- k ≤ n: bijection via remove/add one copy of k
+    apply Finset.card_bij (fun p hp => partRemoveOne k p (Finset.mem_filter.mp hp).2)
+    · -- Forward lands in partitionsFrom (insert k S) (n - k)
+      intro p hp
+      simp only [Finset.mem_filter, hP_def, partitionsFrom, Finset.mem_univ, true_and] at hp
+      simp only [partitionsFrom, Finset.mem_filter, Finset.mem_univ, true_and, partRemoveOne]
+      intro a ha
+      apply hp.1
+      rw [← Multiset.cons_erase hp.2]
+      exact Multiset.mem_cons_of_mem ha
+    · -- Injective: if removing k gives equal results, originals are equal
+      intro p₁ hp₁ p₂ hp₂ heq
+      ext1
+      have h1 := (Finset.mem_filter.mp hp₁).2
+      have h2 := (Finset.mem_filter.mp hp₂).2
+      have : p₁.parts.erase k = p₂.parts.erase k :=
+        congrArg Nat.Partition.parts heq
+      rw [← Multiset.cons_erase h1, ← Multiset.cons_erase h2, this]
+    · -- Surjective: add one copy of k to get back
+      intro p' hp'
+      simp only [partitionsFrom, Finset.mem_filter, Finset.mem_univ, true_and] at hp'
+      -- Construct partition by prepending one copy of k
+      have h_sum : (k ::ₘ p'.parts).sum = n := by
+        rw [Multiset.sum_cons, p'.parts_sum]; omega
+      have h_pos : ∀ {i}, i ∈ (k ::ₘ p'.parts) → 0 < i := by
+        intro i hi
+        rcases Multiset.mem_cons.mp hi with rfl | h
+        · exact hkpos
+        · exact p'.parts_pos h
+      refine ⟨{ parts := k ::ₘ p'.parts, parts_sum := h_sum, parts_pos := @h_pos }, ?_, ?_⟩
+      · -- In filtered set: membership + k in parts
+        apply Finset.mem_filter.mpr
+        constructor
+        · simp only [hP_def, partitionsFrom, Finset.mem_filter, Finset.mem_univ, true_and]
+          intro a ha
+          rcases Multiset.mem_cons.mp ha with rfl | h
+          · simp
+          · exact hp' a h
+        · exact Multiset.mem_cons_self k p'.parts
+      · -- Round-trip: partRemoveOne gives back p'
+        exact Nat.Partition.ext (Multiset.erase_cons_head k p'.parts)
+  · -- k > n: no partition of n has part k (all parts ≤ n)
+    rw [Finset.card_eq_zero]
+    ext p; simp only [Finset.mem_filter, Finset.notMem_empty, iff_false, not_and]
+    intro _; push_neg at hkn
+    intro hk_mem
+    have : k ≤ p.parts.sum :=
+      Multiset.single_le_sum (fun _ _ => Nat.zero_le _) _ hk_mem
+    rw [p.parts_sum] at this; omega
+
+end
+
+end PartitionsFromInsert
+
+-- ============================================================================
+-- Part XLVI: partGF Coefficient = partitionsFrom Count (Bridge Theorem)
+-- ============================================================================
+
+/-
+**Bridge Theorem (with Repetition)**: The n-th coefficient of partGF S equals
+the number of partitions of n with parts from S (repetition allowed).
+
   coeff n (partGF S) = |partitionsFrom S n|
 
-This requires decomposing partitions by the multiplicity of each element,
-which is the combinatorial content of the identity
-  ∏_{k ∈ S} 1/(1-X^k) = ∑_n |{partitions of n with parts in S}| X^n
+This completes step 7e of the axiom elimination roadmap, connecting generating
+functions to combinatorial partition counts for the unrestricted case.
 
-The proof proceeds by Finset.induction on S:
-- Base: coeff n (partGF ∅) = [n = 0] = |partitionsFrom ∅ n|
-- Step: decompose partitions of n from (insert k S) by k-multiplicity j,
-  giving ∑_j |partitionsFrom S (n - j*k)|
-
-The step requires a bijection between partitionsFrom (insert k S) n
-and the disjoint union ⨆_{j=0}^{n/k} partitionsFrom S (n - j*k).
+Proof: Finset.induction on S (outer), Nat.strongRecOn on n (inner).
+The two recursions (GF and partition count) match term by term.
 -/
 
 section PartGFBridge
 
-open Finset Nat PowerSeries Multiset
+open Finset Nat PowerSeries
 
 noncomputable section
 
-/-- Remove all copies of k from a multiset, keeping other elements. -/
-def Multiset.removeAll (m : Multiset ℕ) (k : ℕ) : Multiset ℕ :=
-  m.filter (· ≠ k)
-
-/-- Sum of parts equal to k: k times the count. -/
-theorem multiset_sum_filter_eq (m : Multiset ℕ) (k : ℕ) :
-    (m.filter (· = k)).sum = k * m.count k := by
-  induction m using Multiset.induction with
-  | empty => simp
-  | cons a s ih =>
-    by_cases h : a = k
-    · subst h
-      simp [Multiset.filter_cons_of_pos, Multiset.count_cons_self, ih]
-      ring
-    · simp [Multiset.filter_cons_of_neg (show ¬(a = k) from h),
-            Multiset.count_cons_of_ne (Ne.symm h), ih]
-
-/-- The sum decomposes: total = non-k parts + k * count_k. -/
-theorem multiset_sum_decompose (m : Multiset ℕ) (k : ℕ) :
-    m.sum = (m.filter (· ≠ k)).sum + k * m.count k := by
-  have := m.sum_filter_add_sum_filter_not (· ≠ k)
-  simp only [not_not] at this
-  rw [this, multiset_sum_filter_eq]
-
-/-- Given a partition p of n with parts from insert k S, removing all copies
-    of k gives a partition of (n - k * count) with parts from S. -/
-theorem partitionsFrom_remove_k {S : Finset ℕ} {k n : ℕ} (hk : k ∉ S) (hkpos : 0 < k)
-    (p : Nat.Partition n) (hp : p ∈ partitionsFrom (insert k S) n) :
-    let j := p.parts.count k
-    let remaining := p.parts.filter (· ≠ k)
-    remaining.sum = n - j * k ∧
-    (∀ a ∈ remaining, 0 < a) ∧
-    (∀ a ∈ remaining, a ∈ S) ∧
-    j * k ≤ n := by
-  simp only [partitionsFrom, Finset.mem_filter, Finset.mem_univ, true_and] at hp
-  set j := p.parts.count k
-  set remaining := p.parts.filter (· ≠ k)
-  constructor
-  · -- remaining.sum = n - j * k
-    have hdecomp := multiset_sum_decompose p.parts k
-    rw [p.parts_sum] at hdecomp
-    omega
-  constructor
-  · -- All remaining parts are positive
-    intro a ha
-    exact p.parts_pos (Multiset.mem_of_mem_filter ha)
-  constructor
-  · -- All remaining parts are in S (not k)
-    intro a ha
-    have hne : a ≠ k := by exact (Multiset.mem_filter.mp ha).2
-    have hin : a ∈ p.parts := Multiset.mem_of_mem_filter ha
-    have hinS : a ∈ insert k S := hp a hin
-    rwa [Finset.mem_insert] at hinS
-    cases hinS with
-    | inl h => exact absurd h hne
-    | inr h => exact h
-  · -- j * k ≤ n
-    have hdecomp := multiset_sum_decompose p.parts k
-    rw [p.parts_sum] at hdecomp
-    omega
-
-/-- The count of partitions with parts from (insert k S) decomposes by
-    k-multiplicity. This is the key combinatorial decomposition.
-
-    We state this as an axiom because the full bijection proof requires
-    constructing Nat.Partition values from filtered multisets, which
-    involves complex definitional equalities. The mathematical content
-    is clear: each partition p from (insert k S) has a unique decomposition
-    into j copies of k and a partition from S of (n - j*k). -/
-axiom partitionsFrom_insert_card {S : Finset ℕ} {k : ℕ} (hk : k ∉ S) (hkpos : 0 < k) (n : ℕ) :
-    (partitionsFrom (insert k S) n).card =
-    (Finset.range (n / k + 1)).sum (fun j => (partitionsFrom S (n - j * k)).card)
-
-/-- **Bridge Theorem (Parts with Repetition)**: The coefficient of X^n in
-    partGF S equals the number of partitions of n with parts from S.
-
-    This is the fundamental connection for unrestricted partitions,
-    enabling RR1/RR2 axiom elimination via GF identities.
-
-    Proof by induction on S, using partGF_coeff_insert + partitionsFrom_insert_card. -/
-theorem partGF_coeff_eq_card (S : Finset ℕ) (hpos : ∀ s ∈ S, 0 < s) (n : ℕ) :
-    PowerSeries.coeff (R := ℤ) n (partGF S) = ↑(partitionsFrom S n).card := by
+/-- **Bridge Theorem (with Repetition)**:
+    coeff n (∏_{k∈S} geomSeries k) = |{partitions of n with parts from S}|. -/
+theorem partGF_coeff_eq_partitionsFrom (S : Finset ℕ) (hpos : ∀ s ∈ S, 0 < s) :
+    ∀ n, PowerSeries.coeff (R := ℤ) n (partGF S) = ↑(partitionsFrom S n).card := by
   induction S using Finset.induction with
   | empty =>
-    rw [partGF_coeff_empty]
-    by_cases hn : n = 0
-    · subst hn
-      simp [partitionsFrom_zero]
-    · simp only [hn, if_neg]
-      rw [Finset.card_eq_zero.mpr]
-      · simp
-      · rw [Finset.eq_empty_iff_forall_not_mem]
-        intro p hp
-        simp only [partitionsFrom, Finset.mem_filter, Finset.mem_univ, true_and] at hp
-        have hne : p.parts ≠ 0 := by
-          intro heq; have := p.parts_sum; rw [heq] at this; simp at this
-          exact hn (by omega)
-        obtain ⟨a, ha⟩ := Multiset.exists_mem_of_ne_zero hne
-        exact absurd (hp a ha) (Finset.not_mem_empty a)
+    intro n; rw [partGF_empty]
+    rcases n with _ | n
+    · simp [PowerSeries.coeff_one, partitionsFrom_zero]
+    · simp [PowerSeries.coeff_one, partitionsFrom_empty_card (Nat.succ_pos n)]
   | @insert k S hk ih =>
-    have hkpos : 0 < k := hpos k (Finset.mem_insert_self k S)
+    have hkpos := hpos k (Finset.mem_insert_self k S)
     have hposS : ∀ s ∈ S, 0 < s := fun s hs => hpos s (Finset.mem_insert_of_mem hs)
-    rw [partGF_coeff_insert hk hkpos]
-    rw [partitionsFrom_insert_card hk hkpos]
-    congr 1
-    ext j
-    exact ih hposS (n - j * k)
+    intro n; induction n using Nat.strongRecOn with | _ n ih_n =>
+    -- Apply GF recursion: coeff n (partGF (insert k S))
+    --   = coeff n (partGF S) + [k≤n] · coeff (n-k) (partGF (insert k S))
+    rw [partGF_insert' hk, geomSeries_mul_coeff_rec k hkpos (partGF S) n, ih hposS n]
+    -- Rewrite geomSeries k * partGF S back to partGF (insert k S) in the if-branch
+    conv_lhs =>
+      rw [show geomSeries k * partGF S = partGF (insert k S) from
+            (partGF_insert' hk).symm]
+    -- Match with partition recursion
+    have hpart := partitionsFrom_insert_rec hk hkpos n
+    split_ifs with hkn
+    · -- k ≤ n: apply inner IH to n - k < n
+      rw [ih_n (n - k) (by omega)]
+      simp only [if_pos hkn] at hpart
+      exact_mod_cast hpart.symm
+    · -- k > n: no-k case
+      rw [add_zero]
+      simp only [if_neg hkn, add_zero] at hpart
+      exact_mod_cast hpart.symm
 
 end
 

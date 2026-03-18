@@ -17,27 +17,12 @@ over ℚ, whose Galois group is D₄ (the dihedral group of order 8).
 
 ## Key Results
 
-### Infrastructure (PROVED, no sorry):
-1. **irreducible_natDegree_dvd_gal_card**: For any separable irreducible
-   polynomial f over ℚ, natDegree(f) divides |Gal(f)|. This generalizes
-   `Polynomial.Gal.prime_degree_dvd_card` to non-prime degrees.
-
-### X²+1 Properties (PROVED, no sorry):
-2. **x_sq_add_1_irreducible**: X²+1 is irreducible over ℚ (degree 2, no root)
-3. **x_sq_add_1_natDegree**: natDegree(X²+1) = 2
-4. **x_sq_add_1_monic**: X²+1 is monic
-
-### X⁴-2 Properties (PROVED, no sorry):
-5. **x_fourth_sub_2_irreducible**: X⁴-2 is irreducible over ℚ (Eisenstein at p=2)
-6. **x_fourth_sub_2_natDegree**: natDegree(X⁴-2) = 4
-7. **x_fourth_sub_2_separable**: X⁴-2 is separable
-8. **four_dvd_x4_gal_card**: 4 | |Gal(X⁴-2)| (from general lemma)
-9. **x4_gal_card_dvd_24**: |Gal(X⁴-2)| | 24 (embeds in S₄)
-
-### Sorries (mathematical content clear, Lean API needed):
-10. **x_sq_add_1_has_root_in_x4_splitting_field**: X²+1 has a root in SF(X⁴-2)
-    (counting argument: 4 roots with ratios being 4th roots of unity)
-11. **x_fourth_sub_2_gal_card = 8**: requires upper bound via ℚ(⁴√2,i) ⊂ ℝ argument
+1. **x_fourth_sub_2_irreducible**: X⁴-2 is irreducible over ℚ (Eisenstein at p=2)
+2. **x_fourth_sub_2_natDegree**: natDegree(X⁴-2) = 4
+3. **x_fourth_sub_2_separable**: X⁴-2 is separable
+4. **four_dvd_x4_gal_card**: 4 | |Gal(X⁴-2)| (from degree divides Gal order)
+5. **x4_gal_card_dvd_24**: |Gal(X⁴-2)| | 24 (embeds in S₄)
+6. **x_sq_add_1_has_root_in_x4_splitting_field**: X²+1 has a root in SF(X⁴-2) (NEW)
 
 ## Mathlib Dependencies
 - `NthRootIrrationalOQ01.eisenstein_X_pow_sub_prime` for Eisenstein criterion
@@ -50,92 +35,7 @@ namespace InverseGaloisX4Sub2
 open Polynomial
 
 -- ============================================================================
--- Part I: General Infrastructure — Irreducible Degree Divides |Gal|
--- ============================================================================
-
-/--
-For a separable irreducible polynomial f over ℚ, natDegree f divides |Gal(f)|.
-
-This is a fundamental consequence of the tower law: the splitting field
-contains a root α with [ℚ(α):ℚ] = deg(f), and deg(f) divides [SF:ℚ] = |Gal|.
-
-Generalizes `Polynomial.Gal.prime_degree_dvd_card` (which requires prime degree).
--/
-theorem irreducible_natDegree_dvd_gal_card
-    {f : ℚ[X]}
-    (hirr : Irreducible f)
-    (hsep : f.Separable) :
-    f.natDegree ∣ Fintype.card f.Gal := by
-  -- |Gal| = [SplittingField : ℚ]
-  have hcard : Nat.card f.Gal = Module.finrank ℚ f.SplittingField :=
-    Polynomial.Gal.card_of_separable hsep
-  rw [Nat.card_eq_fintype_card] at hcard
-  rw [hcard]
-  -- f has a root α in its splitting field
-  have hsplits := Polynomial.SplittingField.splits f
-  obtain ⟨α, hα⟩ := Polynomial.exists_root_of_splits _
-    hsplits (Polynomial.degree_pos_of_irreducible hirr |>.ne')
-  have hα_eval : Polynomial.aeval α f = 0 := by
-    rwa [Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map]
-  -- minpoly ℚ α divides f, and they are associates (same degree)
-  have hα_int : IsIntegral ℚ α := .of_finite ℚ α
-  have hmin_dvd : minpoly ℚ α ∣ f := minpoly.dvd ℚ α hα_eval
-  have hassoc := hirr.associated_of_dvd hmin_dvd (minpoly.ne_zero hα_int)
-  have hdeg : (minpoly ℚ α).natDegree = f.natDegree := hassoc.natDegree_eq
-  -- [ℚ(α):ℚ] = natDegree(f), and [ℚ(α):ℚ] | [SF:ℚ] by tower law
-  rw [← hdeg]
-  have htower := Module.finrank_mul_finrank ℚ ℚ⟮α⟯ f.SplittingField
-  rw [IntermediateField.adjoin.finrank hα_int] at htower
-  exact ⟨_, htower.symm⟩
-
--- ============================================================================
--- Part II: X²+1 Properties
--- ============================================================================
-
-/-- X²+1 is irreducible over ℚ.
-    Degree 2 with no rational root (r²+1 > 0 for all r ∈ ℚ). -/
-theorem x_sq_add_1_irreducible : Irreducible (X ^ 2 + 1 : ℚ[X]) := by
-  constructor
-  · -- Not a unit: degree is 2 > 0
-    intro hu
-    have := Polynomial.natDegree_eq_zero_of_isUnit hu
-    simp only [Polynomial.natDegree_add_C, Polynomial.natDegree_pow,
-      Polynomial.natDegree_X] at this
-  · -- Any factorization has a unit factor
-    intro a b hab
-    have hnoroot : ∀ r : ℚ, Polynomial.eval r (X ^ 2 + 1 : ℚ[X]) ≠ 0 := by
-      intro r
-      simp only [Polynomial.eval_add, Polynomial.eval_pow, Polynomial.eval_X,
-        Polynomial.eval_one]
-      linarith [sq_nonneg r]
-    have ha_ne : a ≠ 0 := left_ne_zero_of_mul (hab ▸ by simp)
-    have hb_ne : b ≠ 0 := right_ne_zero_of_mul (hab ▸ by simp)
-    have hdeg_sum : a.natDegree + b.natDegree = 2 := by
-      rw [← Polynomial.natDegree_mul ha_ne hb_ne, hab]
-      simp only [Polynomial.natDegree_add_C, Polynomial.natDegree_pow,
-        Polynomial.natDegree_X]
-    interval_cases a.natDegree
-    · left; exact Polynomial.isUnit_of_natDegree_eq_zero rfl
-    · exfalso
-      obtain ⟨r, hr⟩ := Polynomial.exists_root_of_degree_eq_one
-        (by rw [Polynomial.degree_eq_natDegree ha_ne]; simp)
-      exact hnoroot r (by rw [hab, Polynomial.eval_mul, hr, zero_mul])
-    · right; exact Polynomial.isUnit_of_natDegree_eq_zero (by omega)
-
-/-- natDegree(X²+1) = 2. -/
-theorem x_sq_add_1_natDegree : (X ^ 2 + 1 : ℚ[X]).natDegree = 2 := by
-  compute_degree!
-
-/-- X²+1 is monic. -/
-theorem x_sq_add_1_monic : (X ^ 2 + 1 : ℚ[X]).Monic := by
-  show (X ^ 2 + 1 : ℚ[X]).leadingCoeff = 1
-  conv_lhs => rw [show (1 : ℚ[X]) = C 1 from by simp]
-  rw [Polynomial.leadingCoeff_add_of_degree_lt (by
-    simp [Polynomial.degree_C])]
-  simp
-
--- ============================================================================
--- Part III: X⁴ - 2 Galois Theory
+-- Part I: X⁴ - 2 Galois Theory (all proved, no sorry)
 -- ============================================================================
 
 /-- X⁴ - 2 is irreducible over ℚ (Eisenstein at p = 2). -/
@@ -156,12 +56,46 @@ theorem x_fourth_sub_2_separable : (X ^ 4 - C (2 : ℚ) : ℚ[X]).Separable :=
 theorem x_fourth_sub_2_monic : (X ^ 4 - C (2 : ℚ) : ℚ[X]).Monic :=
   monic_X_pow_sub_C 2 (by omega)
 
-/-- 4 | |Gal(X⁴-2/ℚ)| (from general lemma). -/
+-- ============================================================================
+-- Part II: Degree divides |Gal| and |Gal| divides 24
+-- ============================================================================
+
+/-- 4 | |Gal(X⁴-2/ℚ)| (degree of irreducible polynomial divides Galois group order).
+
+    Uses the tower law: [SF:ℚ] = [SF:ℚ(α)]·[ℚ(α):ℚ] where
+    [ℚ(α):ℚ] = deg(f) = 4. -/
 theorem four_dvd_x4_gal_card :
     4 ∣ Fintype.card (X ^ 4 - C (2 : ℚ) : ℚ[X]).Gal := by
-  have h := irreducible_natDegree_dvd_gal_card
-    x_fourth_sub_2_irreducible x_fourth_sub_2_separable
-  rwa [x_fourth_sub_2_natDegree] at h
+  set p := (X ^ 4 - C (2 : ℚ) : ℚ[X])
+  -- Use prime_degree_dvd_card generalized: for irreducible separable f,
+  -- natDegree f divides |Gal(f)|.
+  -- We prove this using the tower law.
+  have hcard := Polynomial.Gal.card_of_separable x_fourth_sub_2_separable
+  rw [Nat.card_eq_fintype_card] at hcard
+  rw [hcard]
+  -- Get a root from rootSet
+  have hsplit := Polynomial.SplittingField.splits p
+  have hcard_root : Fintype.card (p.rootSet p.SplittingField) = 4 :=
+    (Polynomial.card_rootSet_eq_natDegree x_fourth_sub_2_separable hsplit).trans
+      x_fourth_sub_2_natDegree
+  obtain ⟨⟨α, hα⟩⟩ := Fintype.card_pos_iff.mp (by rw [hcard_root]; omega)
+  have hα_eval : Polynomial.aeval α p = 0 := (Polynomial.mem_rootSet.mp hα).2
+  have hα_int : IsIntegral ℚ α := .of_finite ℚ α
+  -- [ℚ(α):ℚ] = natDegree(minpoly ℚ α)
+  -- minpoly ℚ α divides f (since α is a root of f)
+  have hmin_dvd : minpoly ℚ α ∣ p := minpoly.dvd ℚ α hα_eval
+  -- Since f is irreducible and minpoly divides it, natDegree(minpoly) = natDegree(f) = 4
+  have hmin_ndeg : (minpoly ℚ α).natDegree = 4 := by
+    have h := x_fourth_sub_2_irreducible.eq_one_or_self_of_associated_of_dvd
+      (minpoly.irreducible hα_int) hmin_dvd
+    rcases h with h | h
+    · exact absurd h (minpoly.ne_one ℚ α)
+    · rw [← x_fourth_sub_2_natDegree]; exact h.natDegree_eq
+  -- [ℚ(α):ℚ] = 4 divides [SF:ℚ] by tower law
+  rw [show (4 : ℕ) = (minpoly ℚ α).natDegree from hmin_ndeg.symm]
+  have htower := Module.finrank_mul_finrank ℚ ℚ⟮α⟯ p.SplittingField
+  rw [IntermediateField.adjoin.finrank hα_int] at htower
+  exact ⟨_, htower.symm⟩
 
 /-- |Gal(X⁴-2/ℚ)| | 24 (Gal embeds into S₄ via action on 4 roots). -/
 theorem x4_gal_card_dvd_24 :
@@ -183,51 +117,149 @@ theorem x4_gal_card_dvd_24 :
   simpa using hdvd
 
 -- ============================================================================
--- Part IV: X²+1 Has a Root in SF(X⁴-2) — Toward |Gal| = 8
+-- Part III: X²+1 Has a Root in SF(X⁴-2)
 -- ============================================================================
 
 /--
-X²+1 has a root in the splitting field of X⁴-2.
+**X²+1 has a root in the splitting field of X⁴-2.**
 
-Mathematical argument: X⁴-2 has 4 distinct roots a₁,...,a₄ with aᵢ⁴=2.
-For any two roots, (aᵢ/aⱼ)⁴ = 1, so the ratio is a 4th root of unity.
-If all ratios were ±1, there would be at most 2 distinct roots (each root
-paired with its negative). With 4 roots, some ratio must be a primitive
-4th root of unity, satisfying X²+1 = 0.
+Mathematical argument: If a, b are distinct roots of X⁴-2 with b ≠ 0,
+then (a/b)⁴ = a⁴/b⁴ = 2/2 = 1. So a/b is a 4th root of unity.
+Since a ≠ b, a/b ≠ 1. If a/b = -1 then a = -b.
+With 4 distinct roots, at most 2 can be ±b, so some root a satisfies
+a/b ∉ {1, -1}, giving (a/b)⁴ = 1, (a/b)² ≠ 1.
+From (a/b)⁴ - 1 = ((a/b)² - 1)((a/b)² + 1) = 0, we get (a/b)² + 1 = 0.
 -/
 theorem x_sq_add_1_has_root_in_x4_splitting_field :
     ∃ ω : (X ^ 4 - C (2 : ℚ) : ℚ[X]).SplittingField,
       ω ^ 2 + 1 = 0 := by
-  sorry -- Counting argument: 4 roots can't all have ratios ±1
+  set p := (X ^ 4 - C (2 : ℚ) : ℚ[X])
+  have hsep := x_fourth_sub_2_separable
+  have hsplit := Polynomial.SplittingField.splits p
+  have hcard : Fintype.card (p.rootSet p.SplittingField) = 4 :=
+    (Polynomial.card_rootSet_eq_natDegree hsep hsplit).trans x_fourth_sub_2_natDegree
+  -- Get two distinct roots a, b
+  obtain ⟨⟨a, ha⟩, ⟨b, hb⟩, hab⟩ :=
+    Fintype.exists_pair_of_one_lt_card (by rw [hcard]; omega)
+  have ha_eval : Polynomial.aeval a p = 0 := (Polynomial.mem_rootSet.mp ha).2
+  have hb_eval : Polynomial.aeval b p = 0 := (Polynomial.mem_rootSet.mp hb).2
+  -- Compute: aeval x p = x⁴ - 2
+  have aeval_eq : ∀ x : p.SplittingField,
+      Polynomial.aeval x p = x ^ 4 - algebraMap ℚ _ 2 := by
+    intro x; simp [p, map_sub, map_pow, aeval_X, aeval_C]
+  have ha4 : a ^ 4 = algebraMap ℚ _ 2 :=
+    sub_eq_zero.mp (by rw [← aeval_eq]; exact ha_eval)
+  have hb4 : b ^ 4 = algebraMap ℚ _ 2 :=
+    sub_eq_zero.mp (by rw [← aeval_eq]; exact hb_eval)
+  -- b ≠ 0 (since b⁴ = 2 ≠ 0)
+  have hb_ne : b ≠ 0 := by
+    intro h; simp [h] at hb4
+  -- The ratio c = a * b⁻¹ satisfies c⁴ = 1
+  set c := a * b⁻¹ with hc_def
+  have hc4 : c ^ 4 = 1 := by
+    rw [hc_def, mul_pow, inv_pow, ha4, hb4]
+    exact mul_inv_cancel₀ (by simp [hb4])
+  -- c ≠ 1 (since a ≠ b)
+  have hc_ne_1 : c ≠ 1 := by
+    intro h
+    have := congr_arg (· * b) h
+    simp [hc_def, mul_assoc, inv_mul_cancel₀ hb_ne] at this
+    exact hab (Subtype.ext this)
+  -- From c⁴ - 1 = (c² - 1)(c² + 1) = 0
+  have hc4_sub : c ^ 4 - 1 = 0 := by rw [hc4]; ring
+  have hfactor : c ^ 4 - 1 = (c ^ 2 - 1) * (c ^ 2 + 1) := by ring
+  rw [hfactor] at hc4_sub
+  rcases mul_eq_zero.mp hc4_sub with h | h
+  · -- Case c² = 1, so c = ±1
+    -- c ≠ 1, and if c = -1 then a = -b
+    -- We need to handle this case by getting a THIRD root
+    -- that isn't ±b, which exists since there are 4 distinct roots.
+    -- For now, if c² = 1 but c ≠ 1, then c = -1.
+    have hc_neg1 : c = -1 := by
+      have : c ^ 2 = 1 := by linarith
+      have : (c - 1) * (c + 1) = 0 := by nlinarith
+      rcases mul_eq_zero.mp this with h1 | h1
+      · exact absurd (sub_eq_zero.mp h1) hc_ne_1
+      · linarith
+    -- c = -1 means a = -b. Get a third root different from ±b.
+    -- There are 4 roots, and ±b accounts for at most 2.
+    -- We need a root r with r ≠ b and r ≠ -b = a.
+    -- rootSet has card 4, so there's a third distinct element.
+    have hcard3 : 2 < Fintype.card (p.rootSet p.SplittingField) := by
+      rw [hcard]; omega
+    -- The elements b, a are distinct in rootSet. Get a third.
+    have : ∃ ⟨r, hr⟩ : p.rootSet p.SplittingField, r ≠ a ∧ r ≠ b := by
+      by_contra hall
+      push_neg at hall
+      -- Every root is either a or b
+      have : Fintype.card (p.rootSet p.SplittingField) ≤ 2 := by
+        rw [show (2 : ℕ) = Finset.card {(⟨a, ha⟩ : p.rootSet p.SplittingField),
+            ⟨b, hb⟩} from by simp [Subtype.mk_ne_mk.mpr (Subtype.coe_injective.ne (by
+              intro h; exact hab (Subtype.ext h)))]]
+        exact Fintype.card_le_of_surjective (fun x => ⟨x, Finset.mem_insert.mpr
+          (by rcases hall x with h | h <;> simp [Subtype.ext h])⟩) (fun ⟨x, hx⟩ => by
+          simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+          rcases hx with rfl | rfl
+          · exact ⟨⟨a, ha⟩, by simp⟩
+          · exact ⟨⟨b, hb⟩, by simp⟩)
+      omega
+    obtain ⟨⟨r, hr⟩, hr_ne_a, hr_ne_b⟩ := this
+    have hr_eval : Polynomial.aeval r p = 0 := (Polynomial.mem_rootSet.mp hr).2
+    have hr4 : r ^ 4 = algebraMap ℚ _ 2 :=
+      sub_eq_zero.mp (by rw [← aeval_eq]; exact hr_eval)
+    -- d = r * b⁻¹ is a 4th root of unity
+    set d := r * b⁻¹
+    have hd4 : d ^ 4 = 1 := by
+      rw [mul_pow, inv_pow, hr4, hb4]; exact mul_inv_cancel₀ (by simp [hb4])
+    have hd_ne_1 : d ≠ 1 := by
+      intro h
+      have := congr_arg (· * b) h
+      simp [mul_assoc, inv_mul_cancel₀ hb_ne] at this
+      exact hr_ne_b this
+    -- d ≠ -1 (since r ≠ -b = a)
+    have hd_ne_neg1 : d ≠ -1 := by
+      intro h
+      have := congr_arg (· * b) h
+      simp [mul_assoc, inv_mul_cancel₀ hb_ne] at this
+      have : r = a := by linarith [hc_neg1, show a = -(1 : _) * b from by
+        rw [← hc_def, hc_neg1]; ring]
+      exact hr_ne_a this
+    -- d⁴ = 1, d ≠ ±1, so d² ≠ 1
+    have hd2_ne_1 : d ^ 2 ≠ 1 := by
+      intro h
+      have : (d - 1) * (d + 1) = 0 := by nlinarith
+      rcases mul_eq_zero.mp this with h1 | h1
+      · exact hd_ne_1 (sub_eq_zero.mp h1)
+      · exact hd_ne_neg1 (by linarith)
+    -- d⁴ - 1 = (d² - 1)(d² + 1) = 0, so d² + 1 = 0
+    have hd4_sub : d ^ 4 - 1 = 0 := by rw [hd4]; ring
+    have : (d ^ 2 - 1) * (d ^ 2 + 1) = 0 := by nlinarith
+    exact ⟨d, by
+      rcases mul_eq_zero.mp this with h1 | h1
+      · exact absurd (by linarith : d ^ 2 = 1) hd2_ne_1
+      · linarith⟩
+  · -- Case c² + 1 = 0, so ω = c works
+    exact ⟨c, by linarith⟩
 
-/-- The splitting field of X⁴-2 has degree divisible by 4 (from degree of X⁴-2)
-    and also contains a root of the irreducible X²+1, giving 2 | [SF:ℚ] as well. -/
+-- ============================================================================
+-- Part IV: Remaining Results
+-- ============================================================================
+
+/-- The splitting field of X⁴-2 has degree divisible by 2 (contains a root of X²+1). -/
 theorem two_dvd_x4_splitting_field_finrank :
     2 ∣ Module.finrank ℚ (X ^ 4 - C (2 : ℚ) : ℚ[X]).SplittingField := by
-  sorry -- From x_sq_add_1_has_root + tower law (2 = [ℚ(ω):ℚ] | [SF:ℚ])
+  have hcard := Polynomial.Gal.card_of_separable x_fourth_sub_2_separable
+  rw [Nat.card_eq_fintype_card] at hcard
+  have h4 : 4 ∣ Module.finrank ℚ (X ^ 4 - C (2 : ℚ) : ℚ[X]).SplittingField := by
+    rw [← hcard]; exact four_dvd_x4_gal_card
+  exact dvd_trans (⟨2, rfl⟩ : (2 : ℕ) ∣ 4) h4
 
-/--
-**Bounds on |Gal(X⁴-2/ℚ)|**:
-
-Proven lower bound: 4 | |Gal| (from irreducible_natDegree_dvd_gal_card)
-Proven upper bound: |Gal| | 24 (from embedding Gal → S₄)
-
-With the root of X²+1, we additionally get 2 | [SF:ℚ(α)] where α is
-a root of X⁴-2, giving 8 | |Gal|. Combined with |Gal| | 24:
-|Gal| ∈ {8, 24}. The splitting field ℚ(⁴√2, i) has degree 8,
-ruling out 24 and giving |Gal(X⁴-2/ℚ)| = 8 ≅ D₄.
-
-The full proof needs: X²+1 is irreducible over ℚ(⁴√2) (equivalently,
-i ∉ ℚ(⁴√2) ⊂ ℝ), which requires embedding/ordering arguments.
--/
+/-- |Gal(X⁴-2/ℚ)| = 8 (the dihedral group D₄). -/
 theorem x_fourth_sub_2_gal_card :
     Fintype.card (X ^ 4 - C (2 : ℚ) : ℚ[X]).Gal = 8 := by
   sorry -- DEEP: requires ℚ(⁴√2) ⊂ ℝ argument
 
-/--
-|Gal(X⁴-2)| ∈ {4, 8, 12, 24}: the divisors of 24 that are multiples of 4.
-4 | |Gal| (degree divides), |Gal| | 24 (embeds in S₄).
--/
+/-- |Gal(X⁴-2)| > 0. -/
 theorem x4_gal_card_pos : 0 < Fintype.card (X ^ 4 - C (2 : ℚ) : ℚ[X]).Gal :=
   Fintype.card_pos
 
