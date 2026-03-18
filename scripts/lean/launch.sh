@@ -877,13 +877,14 @@ cmd_health() {
     fi
 
     # Print table header
-    printf "%-22s %-8s %-10s %-7s %-5s %-10s\n" "Agent" "PID" "Elapsed" "CPU" "Net" "Status"
-    printf "%-22s %-8s %-10s %-7s %-5s %-10s\n" "-----" "---" "-------" "---" "---" "------"
+    printf "%-22s %-8s %-10s %-7s %-5s %-6s %-10s\n" "Agent" "PID" "Elapsed" "CPU" "Net" "Fails" "Status"
+    printf "%-22s %-8s %-10s %-7s %-5s %-6s %-10s\n" "-----" "---" "-------" "---" "---" "-----" "------"
 
     local stuck_count=0
     local running_count=0
     local completed_count=0
     local idle_count=0
+    local failing_count=0
 
     while IFS= read -r session; do
         [[ -z "$session" ]] && continue
@@ -899,6 +900,14 @@ cmd_health() {
         local status
         status=$(get_agent_status "$session")
 
+        # Get consecutive failure count
+        local failures
+        failures=$(get_consecutive_failures "$session")
+        local fail_display="$failures"
+        if [[ "$failures" -ge "$CONSECUTIVE_FAILURE_THRESHOLD" ]]; then
+            fail_display="${RED}${failures}${NC}"
+        fi
+
         # Script-based agents (e.g., Aristotle): show pane process info
         if is_script_based_agent "$session"; then
             local status_display
@@ -908,8 +917,13 @@ cmd_health() {
                     running_count=$((running_count + 1))
                     ;;
                 COMPLETED)
-                    status_display="${GREEN}COMPLETED${NC}"
-                    completed_count=$((completed_count + 1))
+                    if [[ "$failures" -ge "$CONSECUTIVE_FAILURE_THRESHOLD" ]]; then
+                        status_display="${RED}FAILING${NC}"
+                        failing_count=$((failing_count + 1))
+                    else
+                        status_display="${GREEN}COMPLETED${NC}"
+                        completed_count=$((completed_count + 1))
+                    fi
                     ;;
                 *)
                     status_display="${YELLOW}$status${NC}"
@@ -917,7 +931,7 @@ cmd_health() {
             esac
             local elapsed_human
             elapsed_human=$(get_elapsed_human "$pane_pid")
-            printf "%-22s %-8s %-10s %-7s %-5s " "$session" "$pane_pid" "$elapsed_human" "-" "-"
+            printf "%-22s %-8s %-10s %-7s %-5s %-6b " "$session" "$pane_pid" "$elapsed_human" "-" "-" "$fail_display"
             echo -e "$status_display (script)"
             continue
         fi
@@ -930,12 +944,17 @@ cmd_health() {
             # No claude process
             local status_display
             if [[ "$status" == "COMPLETED" ]]; then
-                status_display="${GREEN}COMPLETED${NC}"
-                completed_count=$((completed_count + 1))
+                if [[ "$failures" -ge "$CONSECUTIVE_FAILURE_THRESHOLD" ]]; then
+                    status_display="${RED}FAILING${NC}"
+                    failing_count=$((failing_count + 1))
+                else
+                    status_display="${GREEN}COMPLETED${NC}"
+                    completed_count=$((completed_count + 1))
+                fi
             else
                 status_display="${YELLOW}$status${NC}"
             fi
-            printf "%-22s %-8s %-10s %-7s %-5s " "$session" "-" "-" "-" "-"
+            printf "%-22s %-8s %-10s %-7s %-5s %-6b " "$session" "-" "-" "-" "-" "$fail_display"
             echo -e "$status_display"
         else
             local elapsed_human
@@ -954,8 +973,13 @@ cmd_health() {
                     stuck_count=$((stuck_count + 1))
                     ;;
                 IDLE)
-                    status_display="${BLUE}IDLE${NC}"
-                    idle_count=$((idle_count + 1))
+                    if [[ "$failures" -ge "$CONSECUTIVE_FAILURE_THRESHOLD" ]]; then
+                        status_display="${RED}FAILING${NC}"
+                        failing_count=$((failing_count + 1))
+                    else
+                        status_display="${BLUE}IDLE${NC}"
+                        idle_count=$((idle_count + 1))
+                    fi
                     ;;
                 RUNNING)
                     status_display="${GREEN}RUNNING${NC}"
@@ -966,7 +990,7 @@ cmd_health() {
                     ;;
             esac
 
-            printf "%-22s %-8s %-10s %-7s %-5s " "$session" "$claude_pid" "$elapsed_human" "${cpu}%" "$net_status"
+            printf "%-22s %-8s %-10s %-7s %-5s %-6b " "$session" "$claude_pid" "$elapsed_human" "${cpu}%" "$net_status" "$fail_display"
             echo -e "$status_display"
         fi
     done <<< "$sessions"
@@ -976,12 +1000,19 @@ cmd_health() {
     if [[ $idle_count -gt 0 ]]; then
         summary+=", ${BLUE}$idle_count idle${NC}"
     fi
+    if [[ $failing_count -gt 0 ]]; then
+        summary+=", ${RED}$failing_count failing${NC}"
+    fi
     summary+=", ${RED}$stuck_count stuck${NC}"
     echo -e "$summary"
 
     if [[ $stuck_count -gt 0 ]]; then
         echo ""
         echo -e "${YELLOW}Stuck agents detected. Use './scripts/lean/launch.sh stop --force' to kill them.${NC}"
+    fi
+    if [[ $failing_count -gt 0 ]]; then
+        echo ""
+        echo -e "${YELLOW}Failing agents detected (${CONSECUTIVE_FAILURE_THRESHOLD}+ consecutive failures). Check logs and restart.${NC}"
     fi
 
     return $stuck_count
