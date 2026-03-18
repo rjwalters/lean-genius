@@ -196,13 +196,17 @@ theorem powers_linearIndependent
   have hp_ne : p ≠ 0 := by
     intro hp0; apply h_ne
     have h1 : p.coeff ↑i = 0 := by rw [hp0, coeff_zero]
-    -- p.coeff ↑i = c i since C(c i) * X^↑i contributes exactly c i
-    -- and other terms contribute 0 (different degree)
-    sorry
+    -- Extract coefficient: p.coeff ↑i = c i
+    simp only [p, C_mul_X_pow_eq_monomial, finset_sum_coeff, coeff_monomial] at h1
+    -- h1 : ∑ k ∈ s, if ↑k = ↑i then c k else 0 = 0
+    simp only [Fin.val_injective.eq_iff, Finset.sum_ite_eq', hi, ite_true] at h1
+    exact h1
   have hp_deg : p.natDegree < n := by
-    -- All exponents ↑k < n for k : Fin n, and natDegree of
-    -- C a * X^k is ≤ k, so the sum has natDegree < n
-    sorry
+    apply lt_of_le_of_lt (natDegree_sum_le s _)
+    apply Finset.sup_lt_iff (Nat.pos_of_ne_zero (by intro h0; subst h0; exact Fin.elim0 i))
+      |>.mpr
+    intro k _
+    exact lt_of_le_of_lt (natDegree_C_mul_X_pow_le (c k) ↑k) k.isLt
   exact absurd hp_eval (aeval_ne_zero_of_ne_zero hp_ne (by omega))
 
 -- ============================================================
@@ -299,16 +303,17 @@ theorem nilpotent_krylov_independent
   - `not_union_proper_subspaces`: union avoidance for finitely many proper subspaces
     (complete proof via line argument with Finset induction)
   - `powers_linearIndependent`: {I, M, ..., M^{n-1}} are linearly independent
-    when deg(minpoly) = n (all 3 helper lemmas proved)
-  - `isCyclicVector_of_linearIndependent`: converting linear independence of
-    Krylov vectors to IsCyclicVector (annihilator formulation) — complete proof
-    via polynomial reconstruction and coefficient vanishing argument
+    when deg(minpoly) = n — coefficient extraction via C_mul_X_pow_eq_monomial +
+    coeff_monomial; degree bound via natDegree_C_mul_X_pow_le + Finset.sup_lt_iff
 
   **Partially proved** (with sorries):
+  - `isCyclicVector_of_linearIndependent`: converting linear independence of
+    Krylov vectors to IsCyclicVector — needs polynomial → matrix sum → mulVec
+    distribution chain
   - `nonderogatory_has_cyclic_vector_infinite`: main theorem (needs wiring
     the components together with the finite kernel lattice argument)
   - `nilpotent_krylov_independent`: nilpotent case (Krylov independence from
-    N^{n-1}v ≠ 0, via descending induction)
+    N^{n-1}v ≠ 0, via descending induction applying N^{n-1-j})
 
   **Key Results**:
   The union avoidance lemma (`not_union_proper_subspaces`) is the main new
