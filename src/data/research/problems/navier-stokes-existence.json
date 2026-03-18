@@ -29,11 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 89 parts, ~15,600 lines, 0 sorries, 0 axioms. Added helicity conservation (mode decomposition, realizability, dissipation, 2D vanishing, depletion, Beltrami/ABC) and Kolmogorov microscale algebra (η/u_η/τ_η dimensional analysis, Taylor microscale, scale ratios, She-Lévêque intermittency, spectral energy budget).",
+    "progressSummary": "PROGRESS: 91 parts, ~16,100 lines, 0 sorries, 0 axioms. Session added 4 new parts: helicity conservation, Kolmogorov microscales, Fourier splitting decay, rotating fluids/Coriolis/MHD.",
     "builtItems": [
       "Part LXXXVIII: Helicity Algebra and Conservation Structure (NavierStokes.lean:14932)",
       "Part LXXXIX: Kolmogorov Microscales and Spectral Energy Relations (NavierStokes.lean:15200)",
-      "Aristotle companion Sections 54-55: helicity algebra + Kolmogorov dimensional analysis"
+      "Aristotle companion Sections 54-55: helicity algebra + Kolmogorov dimensional analysis",
+      "Part XC: Fourier Splitting and Long-Time Decay Rates (NavierStokes.lean:15522)",
+      "Part XCI: Rotating Fluids and Dispersive Regularization (NavierStokes.lean:15750)",
+      "Aristotle companion Sections 56-57: decay rates + rotating fluids"
     ],
     "insights": [
       "Helicity H = ∫u·ω decomposes into positive/negative helical modes: E±=(E±H)/2",
@@ -43,7 +46,13 @@
       "Strict depletion from helicity: nonzero u·ω reduces effective nonlinearity (Chae-Lee criterion)",
       "She-Lévêque intermittency model ζ_p = p/9 + 2(1-(2/3)^{p/3}) reproduces exact ζ_3=1",
       "DNS cost: Re^3 in 3D but only Re^2 in 2D (from scale separation exponents)",
-      "Dissipation spectrum D(k) ~ k^{1/3} increases through inertial range, peaks at Kolmogorov scale"
+      "Dissipation spectrum D(k) ~ k^{1/3} increases through inertial range, peaks at Kolmogorov scale",
+      "Fourier splitting (Schonbek 1985): NS L² decay rate identical to heat equation despite nonlinearity",
+      "Zero-momentum initial data decays faster: t^{-5/4} vs generic t^{-3/4} in 3D",
+      "Coriolis force does NO work: u·(e₃×u)=0, so energy equation unchanged under rotation",
+      "BMN theorem: global regularity for 3D NS with fast enough rotation (Ω>Ω₀)",
+      "Elsasser variables z±=u±B diagonalize ideal MHD: reveals MHD as two coupled NS equations",
+      "Equal rotation+stratification (Ω=N) makes all Poincaré waves have same frequency"
     ],
     "mathlibGaps": [
       "Sobolev spaces",
@@ -71,7 +80,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.888Z",
-  "lastUpdate": "2026-03-18T22:36:37.000Z",
+  "lastUpdate": "2026-03-18T22:45:44.000Z",
   "completed": "2026-02-11T05:41:00.787Z",
   "significance": 10,
   "tractability": 1

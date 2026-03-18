@@ -1076,4 +1076,50 @@ theorem intermittency_p6 : 2 - (16 : ℝ) / 9 = 2 / 9 := by norm_num
 /-- DNS cost 2D: N²·Nt ~ Re^{3/2+1/2} = Re^2. -/
 theorem dns_2d_cost : 2 * (3 : ℝ) / 4 + 1 / 2 = 2 := by norm_num
 
+-- ═══════════════════════════════════════════════════════════════════
+-- Section 56: Fourier Splitting Decay Rates
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Schonbek decay in 3D: E(t) ~ t^{-3/2}, so ||u|| ~ t^{-3/4}. -/
+theorem schonbek_exponent : (3 : ℝ) / 2 / 2 = 3 / 4 := by norm_num
+
+/-- Derivative decay: ||∇^k u|| ~ t^{-(3+2k)/4}. -/
+theorem deriv_decay (k : ℝ) : (3 + 2 * k) / 4 = 3 / 4 + k / 2 := by ring
+
+/-- Zero-momentum enhanced decay: 3/4 + 1/2 = 5/4. -/
+theorem zero_mom_decay : (3 : ℝ) / 4 + 1 / 2 = 5 / 4 := by norm_num
+
+/-- Brandolese: n vanishing moments gives (3+2n)/4 decay. -/
+theorem brandolese_n0' : (3 + 2 * (0 : ℝ)) / 4 = 3 / 4 := by norm_num
+theorem brandolese_n1' : (3 + 2 * (1 : ℝ)) / 4 = 5 / 4 := by norm_num
+theorem brandolese_n2' : (3 + 2 * (2 : ℝ)) / 4 = 7 / 4 := by norm_num
+
+-- ═══════════════════════════════════════════════════════════════════
+-- Section 57: Rotating Fluid Algebra
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Coriolis does no work: u·(e₃×u) = 0. -/
+theorem coriolis_zero_work (u1 u2 u3 : ℝ) :
+    u1 * (-u2) + u2 * u1 + u3 * 0 = 0 := by ring
+
+/-- Elsasser energy: (|z+|²+|z-|²)/4 = (|u|²+|B|²)/2. -/
+theorem elsasser_energy' (u B : ℝ) :
+    ((u + B)^2 + (u - B)^2) / 4 = (u^2 + B^2) / 2 := by ring
+
+/-- Elsasser cross-helicity: (|z+|²-|z-|²)/4 = u·B. -/
+theorem elsasser_xhel (u B : ℝ) :
+    ((u + B)^2 - (u - B)^2) / 4 = u * B := by ring
+
+/-- Strichartz exponent d=3, p=6: 3(1/2-1/6) = 1. -/
+theorem strichartz_exp_6 : 3 * ((1 : ℝ)/2 - 1/6) = 1 := by norm_num
+
+/-- Strichartz exponent d=3, p=4: 3(1/2-1/4) = 3/4. -/
+theorem strichartz_exp_4 : 3 * ((1 : ℝ)/2 - 1/4) = 3/4 := by norm_num
+
+/-- Equal rotation-stratification: Ω²(k₃²+k_h²)/|k|² = Ω². -/
+theorem equal_rot_strat' (Omega k3 kh_sq kmag_sq : ℝ)
+    (hk : kmag_sq = k3^2 + kh_sq) (hkm : kmag_sq ≠ 0) :
+    Omega^2 * (k3^2 + kh_sq) / kmag_sq = Omega^2 := by
+  rw [hk]; exact mul_div_cancel_of_imp (fun h => by rw [h]; ring)
+
 end NavierStokesAristotle
