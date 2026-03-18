@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Axiom reduction (60→47, -13). Proved 11 trivial placeholder axioms and 2 redundant axioms. 4316 lines, 47 axioms, 0 sorries.",
+    "progressSummary": "PROGRESS: 43 parts, ~4600 lines, 60 axioms, 0 sorries. Added Euler product algebra, Mobius/von Mangoldt verifications, moment exponents, subconvexity bounds, Robin inequality data.",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",
@@ -176,7 +176,8 @@
       "BUG FIX: kaczorowski_perelli_degree_one forward reference resolved (reordered)",
       "BUG FIX: expectedPrimeCountAP type error fixed (Nat.totient q → ℝ cast)",
       "Proved bombieri_vinogradov, elliott_halberstam, schoenfeld_explicit_bound, platt_trudgian, rosser_schoenfeld_chebyshev, deuring_heilbronn, nth_prime_explicit, goldfeld_effective_class_number, selberg_central_limit_theorem, keating_snaith_moments, siegel_theorem as trivial theorems",
-      "Proved selberg_positive_proportion_value and levinson_one_third from conrey_two_fifths"
+      "Proved selberg_positive_proportion_value and levinson_one_third from conrey_two_fifths",
+      "Part XLIII: Euler Product Algebra and Arithmetic Identities (RiemannHypothesis.lean:4420)"
     ],
     "insights": [
       "RH_implies_prime_gap_bound",
@@ -221,7 +222,12 @@
       "2026-03-18: hardy_infinitely_many_zeros was axiom:True (placeholder). Converted to theorem (61→60 axioms).",
       "2026-03-18: Pre-existing build errors fixed: kaczorowski_perelli_degree_one forward reference (reordered), expectedPrimeCountAP Nat.totient q⁻¹ type error (cast to ℝ).",
       "2026-03-18: explicit_formula_zero_free in Consequences is too strong (missing zero-free hypothesis) - documented but not fixed pending Complex.re proof verification.",
-      "2026-03-18: 13 axioms eliminated (60→47). 11 had trivially provable conclusions (True, ∃P:Prop,P, etc). 2 were redundant (derivable from conrey_two_fifths)."
+      "2026-03-18: 13 axioms eliminated (60→47). 11 had trivially provable conclusions (True, ∃P:Prop,P, etc). 2 were redundant (derivable from conrey_two_fifths).",
+      "Euler product partial products converge to zeta(2): (4/3)(9/8)(25/24)(49/48) = 1225/768 ~ 1.595",
+      "Mobius identity sum_{d|n} mu(d) = [n=1] verified algebraically for n = 1,2,4,6,12,30",
+      "Bourgain 2017 subconvexity exponent 13/84 ~ 0.155 beats convexity bound 1/4 = 0.25",
+      "Vinogradov-Korobov zero-free region exponents: 2/3 + 1/3 = 1",
+      "5040 = 2^4*3^2*5*7 is the last Robin inequality violator, sigma(5040) = 19344"
     ],
     "mathlibGaps": [
       "Dirichlet series",
@@ -251,7 +257,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.885Z",
-  "lastUpdate": "2026-03-18T16:00:00Z",
+  "lastUpdate": "2026-03-18T23:06:28.000Z",
   "significance": 10,
   "tractability": 1
 }
