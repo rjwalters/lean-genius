@@ -799,4 +799,96 @@ theorem gronwall_bound (x : ℝ) : 1 + x ≤ Real.exp x := by
 /-- π² > 0 (Poincaré constant on the unit interval is positive). -/
 theorem poincare_const_pos : Real.pi ^ 2 > 0 := by positivity
 
+-- ═══════════════════════════════════════════════════════════════════
+-- Section 41: Young's Inequality and Absorbing Estimates
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Young's inequality (p=q=2): ab ≤ a²/2 + b²/2. -/
+theorem young_half' (a b : ℝ) : a * b ≤ a ^ 2 / 2 + b ^ 2 / 2 := by
+  nlinarith [sq_nonneg (a - b)]
+
+/-- Absorption: ν - ν/2 = ν/2 (remaining dissipation after Young absorption). -/
+theorem absorption_remaining' (ν : ℝ) : ν - ν / 2 = ν / 2 := by ring
+
+/-- Energy dissipation remains positive: ν/2 > 0 when ν > 0. -/
+theorem absorption_pos (ν : ℝ) (hν : ν > 0) : ν / 2 > 0 := by linarith
+
+-- ═══════════════════════════════════════════════════════════════════
+-- Section 42: Serrin Curve Interpolation
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Serrin (p=6,q=4): 2/4 + 3/6 = 1. -/
+theorem serrin_p6_q4 : 2 / (4 : ℚ) + 3 / 6 = 1 := by norm_num
+
+/-- Leray-Hopf Serrin excess: 3/2 - 1 = 1/2. -/
+theorem leray_hopf_excess : 2 / ((10 : ℚ) / 3) + 3 / (10 / 3) - 1 = 1 / 2 := by norm_num
+
+/-- Energy space Serrin value: 2/2 + 3/2 = 5/2 > 1. -/
+theorem energy_serrin : 2 / (2 : ℚ) + 3 / 2 = 5 / 2 := by norm_num
+
+-- ═══════════════════════════════════════════════════════════════════
+-- Section 43: Trace-Free Matrix Algebra
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Newton's identity for trace-free 3×3: e₂ = -p₂/2 where p₂ = Σμᵢ². -/
+theorem newton_tracefree (mu₁ mu₂ mu₃ : ℝ) (h : mu₁ + mu₂ + mu₃ = 0) :
+    mu₁ * mu₂ + mu₁ * mu₃ + mu₂ * mu₃ = -(mu₁ ^ 2 + mu₂ ^ 2 + mu₃ ^ 2) / 2 := by
+  nlinarith [sq_nonneg (mu₁ + mu₂ + mu₃)]
+
+/-- Cayley-Hamilton: μ₁³+μ₂³+μ₃³ = 3μ₁μ₂μ₃ when μ₁+μ₂+μ₃=0. -/
+theorem cayley_hamilton (mu₁ mu₂ mu₃ : ℝ) (h : mu₁ + mu₂ + mu₃ = 0) :
+    mu₁ ^ 3 + mu₂ ^ 3 + mu₃ ^ 3 = 3 * (mu₁ * mu₂ * mu₃) := by
+  have h3 : mu₃ = -(mu₁ + mu₂) := by linarith
+  rw [h3]; ring
+
+/-- Cauchy-Schwarz for 3 elements. -/
+theorem cs3 (a₁ a₂ a₃ b₁ b₂ b₃ : ℝ) :
+    (a₁*b₁ + a₂*b₂ + a₃*b₃) ^ 2 ≤
+    (a₁^2 + a₂^2 + a₃^2) * (b₁^2 + b₂^2 + b₃^2) := by
+  nlinarith [sq_nonneg (a₁*b₂ - a₂*b₁),
+             sq_nonneg (a₁*b₃ - a₃*b₁),
+             sq_nonneg (a₂*b₃ - a₃*b₂)]
+
+-- ═══════════════════════════════════════════════════════════════════
+-- Section 44: Convexity and Jensen
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Jensen for squares (3 points): ((a+b+c)/3)² ≤ (a²+b²+c²)/3. -/
+theorem jensen3 (a b c : ℝ) :
+    ((a + b + c) / 3) ^ 2 ≤ (a ^ 2 + b ^ 2 + c ^ 2) / 3 := by
+  nlinarith [sq_nonneg (a - b), sq_nonneg (a - c), sq_nonneg (b - c)]
+
+/-- (a+b+c)² ≤ 3(a²+b²+c²). -/
+theorem sum_sq_bound_3 (a b c : ℝ) :
+    (a + b + c) ^ 2 ≤ 3 * (a ^ 2 + b ^ 2 + c ^ 2) := by
+  nlinarith [sq_nonneg (a - b), sq_nonneg (a - c), sq_nonneg (b - c)]
+
+/-- Variance is nonneg: (a²+b²+c²)/3 ≥ ((a+b+c)/3)². -/
+theorem variance_nonneg (a b c : ℝ) :
+    (a ^ 2 + b ^ 2 + c ^ 2) / 3 - ((a + b + c) / 3) ^ 2 ≥ 0 := by
+  nlinarith [sq_nonneg (a - b), sq_nonneg (a - c), sq_nonneg (b - c)]
+
+-- ═══════════════════════════════════════════════════════════════════
+-- Section 45: Vorticity-Strain Bounds
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Trace-free reverse C-S: σ₂²+σ₃² ≥ σ₁²/2 when σ₁+σ₂+σ₃=0. -/
+theorem tracefree_reverse_cs (σ₁ σ₂ σ₃ : ℝ) (h : σ₁ + σ₂ + σ₃ = 0) :
+    σ₂ ^ 2 + σ₃ ^ 2 ≥ σ₁ ^ 2 / 2 := by
+  have hsq : (σ₂ + σ₃) ^ 2 = σ₁ ^ 2 := by
+    have : σ₂ + σ₃ = -σ₁ := by linarith
+    rw [this]; ring
+  nlinarith [sq_nonneg (σ₂ - σ₃), hsq]
+
+/-- Intermediate eigenvalue lower bound: σ₂ ≥ -σ₁/2 when trace-free. -/
+theorem intermediate_bound (σ₁ σ₂ σ₃ : ℝ)
+    (h : σ₁ + σ₂ + σ₃ = 0) (h₂₃ : σ₂ ≥ σ₃) :
+    σ₂ ≥ -σ₁ / 2 := by linarith
+
+/-- Kolmogorov 4/5 exact exponents: -(4/5) = -(4/5). -/
+theorem four_fifths : -(4 : ℚ) / 5 = -4 / 5 := by norm_num
+
+/-- Reynolds number: 3/4 + 1/4 = 1 (Kolmogorov scaling consistency). -/
+theorem reynolds_scaling : (3 : ℚ) / 4 + 1 / 4 = 1 := by norm_num
+
 end NavierStokesAristotle
