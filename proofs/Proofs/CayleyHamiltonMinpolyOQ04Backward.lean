@@ -195,14 +195,22 @@ theorem powers_linearIndependent
     exact hc
   have hp_ne : p ≠ 0 := by
     intro hp0; apply h_ne
-    have h1 : p.coeff ↑i = 0 := by rw [hp0, coeff_zero]
-    -- p.coeff ↑i = c i since C(c i) * X^↑i contributes exactly c i
-    -- and other terms contribute 0 (different degree)
-    sorry
+    have h1 : p.coeff ↑i = 0 := by rw [hp0, Polynomial.coeff_zero]
+    simp only [p, Polynomial.finset_sum_coeff, Polynomial.coeff_C_mul_X_pow] at h1
+    -- h1 : ∑ k ∈ s, if ↑i = ↑k then c k else 0 = 0
+    -- The sum picks out c i (when k = i) and 0 otherwise
+    rw [Finset.sum_eq_single i (fun k _ hne =>
+      if_neg (fun h => hne (Fin.ext (h.symm)))) (fun h => absurd hi h)] at h1
+    simp at h1
+    exact h1
   have hp_deg : p.natDegree < n := by
-    -- All exponents ↑k < n for k : Fin n, and natDegree of
-    -- C a * X^k is ≤ k, so the sum has natDegree < n
-    sorry
+    have h_each : ∀ k ∈ s, (C (c k) * X ^ (k : ℕ)).natDegree ≤ n - 1 :=
+      fun k _ => le_trans (Polynomial.natDegree_C_mul_X_pow_le (c k) ↑k) (by omega)
+    have h_le := Polynomial.natDegree_sum_le_of_forall_le s
+      (fun k => C (c k) * X ^ (k : ℕ)) h_each
+    show p.natDegree < n
+    unfold_let p
+    omega
   exact absurd hp_eval (aeval_ne_zero_of_ne_zero hp_ne (by omega))
 
 -- ============================================================
@@ -217,9 +225,9 @@ theorem isCyclicVector_of_linearIndependent
     (hli : LinearIndependent K (fun k : Fin n => (M ^ (k : ℕ)).mulVec v)) :
     IsCyclicVector M v := by
   intro p hp hann
-  -- p(M)v = 0. Write p = ∑ aᵢ Xⁱ for i < n (since deg(p) < n).
-  -- Then p(M)v = ∑ aᵢ Mⁱv = 0.
-  -- By linear independence of {Mⁱv}, all aᵢ = 0, so p = 0.
+  -- Strategy: p(M)v = ∑_{k < n} (p.coeff k) • (M^k)v = 0
+  -- By linear independence of {M^k v}, all p.coeff k = 0, so p = 0.
+  -- The key step is decomposing (aeval M p).mulVec v as such a sum.
   sorry
 
 -- ============================================================
@@ -282,9 +290,28 @@ theorem nilpotent_krylov_independent
     (hnil : N ^ n = 0)
     (v : Fin n → K) (hv : (N ^ (n - 1)).mulVec v ≠ 0) :
     LinearIndependent K (fun k : Fin n => (N ^ (k : ℕ)).mulVec v) := by
-  -- Induction: apply N^{n-1-j} for j = 0, 1, ..., extracting c_j = 0
-  -- from the relation ∑_k c_k N^{k+n-1-j} v = 0 using nilpotency.
-  sorry
+  -- Proof: smallest counterexample argument.
+  -- If ∑ c_k N^k v = 0 with some c_j ≠ 0, take j maximal with c_j ≠ 0.
+  -- Apply N^{n-1-j}: all terms with k > j vanish (N^{k+n-1-j} = 0 since
+  -- k+n-1-j ≥ n), all terms with k < j give N^{k+n-1-j} = N^m with m < n-1.
+  -- The j-th term gives c_j · N^{n-1} v. But c_j ≠ 0, so N^{n-1} v = 0,
+  -- contradicting hv.
+  rw [linearIndependent_iff']
+  intro s c hsc i hi
+  -- Assume for contradiction c i ≠ 0
+  by_contra h_ci
+  -- Apply N^{n-1-i} to the relation ∑ c_k N^k v = 0
+  -- We get: ∑ c_k N^{k+n-1-i} v = 0
+  have key : (N ^ (n - 1)).mulVec v = 0 := by
+    -- hsc gives ∑_{k ∈ s} c k • N^k v = 0
+    -- Apply N^{n-1-↑i} to both sides
+    -- For k = i: N^{↑i + (n-1-↑i)} v = N^{n-1} v with coefficient c i
+    -- For k > i: N^{k + (n-1-↑i)} v = 0 since k + (n-1-↑i) ≥ n
+    -- For k < i: similarly treated
+    -- Net result: c_i · N^{n-1} v + (terms with N^{≥n} = 0 or lower powers)
+    -- This requires careful index manipulation; use sorry for now
+    sorry
+  exact hv key
 
 -- ============================================================
 -- Summary
