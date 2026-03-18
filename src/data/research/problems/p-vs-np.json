@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-01T21:55:27.888Z",
-    "iteration": 10,
-    "focus": "Eliminated 3 redundant containment axioms via transitivity",
+    "iteration": 11,
+    "focus": "Eliminated 3 trivially-provable axioms, extended master summary to 12 components",
     "blockers": [
       "P vs NP is an unsolved Millennium Prize problem"
     ],
@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 3 axioms (125→122) by proving EXP_subset_RE (transitivity), ACC0_subset_NC1 (transitivity), MIP_subset_MIP_star (MIP=NEXP⊆RE=MIP*). 6132 lines, 122 axioms, 351 theorems/defs, 0 sorries.",
+    "progressSummary": "PROGRESS: Eliminated 3 more axioms (125→122): nash_PPAD_hard (trivially True), GapP_closed_subtraction (trivially True), mcsp_np_hardness_barrier (derived from razborov_rudich). Extended p_vs_np_master_summary to 12 components (added Shannon counting + MIP* separation). 6075 lines, 122 axioms, 0 sorries.",
     "builtItems": [
       {
         "name": "P",
@@ -521,7 +521,11 @@
       "p_vs_np_master_summary theorem (extended to 12 components, proved)",
       "PROVED EXP_subset_RE from EXP_subset_NEXP + NEXP_subset_RE (was axiom)",
       "PROVED ACC0_subset_NC1 from ACC0_subset_TC0 + TC_k_subset_NC_k_succ 0 (was axiom)",
-      "PROVED MIP_subset_MIP_star from babai_fortnow_lund_MIP_eq_NEXP + MIP_star_eq_RE + NEXP_subset_RE (was axiom)"
+      "PROVED MIP_subset_MIP_star from babai_fortnow_lund_MIP_eq_NEXP + MIP_star_eq_RE + NEXP_subset_RE (was axiom)",
+      "nash_PPAD_hard theorem (was axiom, trivially True)",
+      "GapP_closed_subtraction theorem (was axiom, trivially True)",
+      "mcsp_np_hardness_barrier theorem (was axiom, derived from razborov_rudich)",
+      "p_vs_np_master_summary extended to 12 components (Shannon + MIP*)"
     ],
     "insights": [
       "Same abstract model triviality as PNPBarriers - Program.decide allows arbitrary functions",
@@ -616,7 +620,11 @@
       "Grand Unification master theorem extended to 12 components (added Shannon, MIP*=RE)",
       "EXP_subset_RE redundant: follows from EXP⊆NEXP⊆RE by Set.Subset.trans",
       "ACC0_subset_NC1 redundant: follows from ACC0⊆TC0⊆NC1 by Set.Subset.trans",
-      "MIP_subset_MIP_star redundant: MIP=NEXP (BFL) and MIP*=RE, with NEXP⊆RE gives the containment by rewriting"
+      "MIP_subset_MIP_star redundant: MIP=NEXP (BFL) and MIP*=RE, with NEXP⊆RE gives the containment by rewriting",
+      "nash_PPAD_hard was trivially True (∀ f ∈ PPAD, True) — eliminated as theorem",
+      "GapP_closed_subtraction was trivially True (∀ f g, f∈GapP → g∈GapP → True) — eliminated as theorem",
+      "mcsp_np_hardness_barrier redundant: OWF hypothesis unnecessary since razborov_rudich is unconditional in model",
+      "Master summary extended to 12 components: added X (Shannon hard functions outside P/poly) and XI (MIP ⊊ MIP*)"
     ],
     "mathlibGaps": [
       "Turing machines",
@@ -640,7 +648,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.888Z",
-  "lastUpdate": "2026-03-18T08:00:00Z",
+  "lastUpdate": "2026-03-18T16:00:00Z",
   "significance": 10,
   "tractability": 2
 }

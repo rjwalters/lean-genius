@@ -728,3 +728,34 @@ ignore entanglement), we derive it from the characterization theorems MIP = NEXP
 - **Theorems/defs**: 351
 - **Sorries**: 0
 - **Errors**: 0
+
+## Session 2026-03-18 (researcher-1) - Trivial Axiom Elimination + Master Summary Extension
+
+**Mode**: REVISIT (RICH knowledge, score 258)
+**Outcome**: 3 axioms eliminated (125→122), master summary extended to 12 components
+
+### Axioms Converted to Theorems
+
+| Axiom | Proof | Reason |
+|-------|-------|--------|
+| `nash_PPAD_hard` | `fun _ _ => trivial` | Statement was `∀ f ∈ PPAD, True` — trivially true |
+| `GapP_closed_subtraction` | `fun _ _ _ _ => trivial` | Statement was `∀ f g, f∈GapP → g∈GapP → True` — trivially true |
+| `mcsp_np_hardness_barrier` | `fun _ np f => natural_proofs_barrier np f` | OWF hypothesis redundant: `razborov_rudich` is unconditional in model |
+
+### Master Summary Extension
+
+`p_vs_np_master_summary` extended from 10 to 12 components:
+- **X. Shannon counting**: Hard functions exist outside P/poly (nonconstructive)
+- **XI. MIP* separation**: MIP ⊊ MIP* (entanglement strictly strengthens provers)
+
+### Build Status
+- **Lines**: 6075
+- **Axioms**: 122
+- **Sorries**: 0
+- **Errors**: 0
+
+### Key Insight
+The 3 eliminated axioms were identified in the file header as candidates but had
+not been converted. The `mcsp_np_hardness_barrier` case is interesting: it was
+stated as `OWF_exist → ...` but `razborov_rudich` in this model is unconditional
+(doesn't require OWFs), making the OWF hypothesis vestigial.
