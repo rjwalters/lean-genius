@@ -4,9 +4,27 @@
 
 Rogers-Ramanujan and Schur partition identities formalized in Lean 4.
 
+## Session 2026-03-18 (researcher-4) - Fix Build Errors
+
+**Mode**: REVISIT (RICH knowledge score 62)
+**Outcome**: progress — fixed 2 build-breaking issues + added RR1/RR2 GF bridge
+
+### What I Did
+
+1. **Fixed duplicate `partGF_constantCoeff`**: Two definitions with same name (different signatures). Deleted the redundant second one.
+2. **Fixed `partGF_insert'` geomSeries mismatch**: Added `geomPow_eq_geomSeries` bridge lemma.
+3. **Added Part XLVII: RR1/RR2 Mod-Side GF Bridge**: `rr1Mod_card_eq_gf_coeff` and `rr2Mod_card_eq_gf_coeff` connecting partition counts to GF coefficients.
+4. **Updated stale roadmap**: Marked steps 7d-7f as complete.
+
+### Files Modified
+
+- `proofs/Proofs/PartitionTheoremOQ01.lean` — 2 fixes + Part XLVII (+65 lines)
+
+---
+
 ## Current State
 
-**Status**: 0 sorries, 3 axioms, ~2510 lines (sorry-free!)
+**Status**: 0 sorries, 3 axioms, ~3485 lines (sorry-free!)
 **File**: `proofs/Proofs/PartitionTheoremOQ01.lean`
 
 ## Key Results (All Proved)

@@ -2540,8 +2540,9 @@ end PartGFRepetition
   7a. ✅ Define partGF = ∏_{k ∈ S} geomPow k [RR mod-side, allows repetition]
   7b. ✅ Prove (1-X^k) * geomPow k = 1 (fundamental identity)
   7c. ✅ Connect RR1/RR2 mod definitions to partitionsFrom
-  7d. 🔲 Prove coeff_geomPow_mul convolution formula
-  7e. 🔲 Prove partGF_coeff: coeff n (partGF S) = |partitionsFrom S n|
+  7d. ✅ Prove geomSeries_mul_coeff_sum convolution formula (Part XLI)
+  7e. ✅ Prove partGF_coeff_eq_card: coeff n (partGF S) = |partitionsFrom S n| (Part XLV)
+  7f. ✅ Specialize for RR1/RR2: |rr1Mod5 n| = coeff n (partGF (rr1ModSet n)) (Part XLVII)
   8.  🔲 Build gap-side generating function characterization
   9.  🔲 Compose to prove identities
 -/
@@ -3017,10 +3018,14 @@ theorem partGF_coeff_empty (n : ℕ) :
   rw [partGF_empty]
   simp [PowerSeries.coeff_one]
 
-/-- Product recursion for partGF. -/
-theorem partGF_insert' {S : Finset ℕ} {k : ℕ} (hk : k ∉ S) :
+/-- geomPow and geomSeries agree for k > 0. -/
+theorem geomPow_eq_geomSeries (k : ℕ) (hk : 0 < k) : geomPow k = geomSeries k := by
+  ext n; simp [geomPow, geomSeries, Nat.pos_iff_ne_zero.mp hk, PowerSeries.coeff_mk]
+
+/-- Product recursion for partGF (using geomSeries). -/
+theorem partGF_insert' {S : Finset ℕ} {k : ℕ} (hk : k ∉ S) (hkpos : 0 < k) :
     partGF (insert k S) = geomSeries k * partGF S := by
-  simp only [partGF, Finset.prod_insert hk]
+  rw [partGF, Finset.prod_insert hk, geomPow_eq_geomSeries k hkpos]; rfl
 
 /-- **Insert recursion for partGF coefficients**: choosing j copies of k,
     then partitioning the remainder from S. -/
@@ -3029,21 +3034,8 @@ theorem partGF_coeff_insert {S : Finset ℕ} {k : ℕ} (hk : k ∉ S)
     PowerSeries.coeff (R := ℤ) n (partGF (insert k S)) =
     (Finset.range (n / k + 1)).sum (fun j =>
       PowerSeries.coeff (R := ℤ) (n - j * k) (partGF S)) := by
-  rw [partGF_insert' hk]
+  rw [partGF_insert' hk hkpos]
   exact geomSeries_mul_coeff_sum k hkpos (partGF S) n
-
-/-- Constant term of partGF is always 1 (empty partition). -/
-theorem partGF_constantCoeff (S : Finset ℕ) (hpos : ∀ s ∈ S, 0 < s) :
-    PowerSeries.coeff (R := ℤ) 0 (partGF S) = 1 := by
-  induction S using Finset.induction with
-  | empty => simp [partGF_empty, PowerSeries.coeff_one]
-  | @insert k S hk ih =>
-    have hposS : ∀ s ∈ S, 0 < s := fun s hs => hpos s (Finset.mem_insert_of_mem hs)
-    have hkpos : 0 < k := hpos k (Finset.mem_insert_self k S)
-    rw [partGF_coeff_insert hk hkpos]
-    have : 0 / k = 0 := Nat.zero_div k
-    rw [this]
-    simp [ih hposS]
 
 end
 
@@ -3494,3 +3486,67 @@ theorem partGF_coeff_eq_card (S : Finset ℕ) (hpos : ∀ s ∈ S, 0 < s) (n : �
 end
 
 end PartGFBridge
+
+-- ============================================================================
+-- Part XLVII: RR1/RR2 Mod-Side GF Bridge
+-- ============================================================================
+
+/-
+Specialize the partGF bridge theorem (Part XLV) for the Rogers-Ramanujan
+mod-side sets. This completes step 7f in the axiom elimination roadmap.
+
+For RR1: parts ≡ 1 or 4 (mod 5), repetition allowed
+For RR2: parts ≡ 2 or 3 (mod 5), repetition allowed
+
+The bridge: |rr1Mod5Partitions n| = coeff n (partGF (rr1ModSet n))
+-/
+
+section RRModGFBridge
+
+open Finset Nat PowerSeries
+
+noncomputable section
+
+/-- The set of positive integers ≤ n that are ≡ 1 or 4 (mod 5). -/
+def rr1ModSet (n : ℕ) : Finset ℕ :=
+  (Finset.range (n + 1)).filter (fun k => k > 0 ∧ (k % 5 = 1 ∨ k % 5 = 4))
+
+/-- The set of positive integers ≤ n that are ≡ 2 or 3 (mod 5). -/
+def rr2ModSet (n : ℕ) : Finset ℕ :=
+  (Finset.range (n + 1)).filter (fun k => k > 0 ∧ (k % 5 = 2 ∨ k % 5 = 3))
+
+/-- All elements of rr1ModSet are positive. -/
+theorem rr1ModSet_pos (n : ℕ) : ∀ s ∈ rr1ModSet n, 0 < s := by
+  intro s hs
+  simp only [rr1ModSet, Finset.mem_filter] at hs
+  exact hs.2.1
+
+/-- All elements of rr2ModSet are positive. -/
+theorem rr2ModSet_pos (n : ℕ) : ∀ s ∈ rr2ModSet n, 0 < s := by
+  intro s hs
+  simp only [rr2ModSet, Finset.mem_filter] at hs
+  exact hs.2.1
+
+/-- **RR1 Mod-Side GF Bridge**: The count of RR1 mod partitions equals the
+    coefficient of X^n in partGF over the appropriate residue class set.
+
+    |rr1Mod5Partitions n| = coeff n (partGF {k ∈ [1..n] : k ≡ 1,4 mod 5}) -/
+theorem rr1Mod_card_eq_gf_coeff (n : ℕ) :
+    ↑(RogersRamanujan.rr1Mod5Partitions n).card =
+    PowerSeries.coeff (R := ℤ) n (partGF (rr1ModSet n)) := by
+  rw [rr1Mod5_eq_partitionsFrom n]
+  rw [partGF_coeff_eq_card (rr1ModSet n) (rr1ModSet_pos n) n]
+
+/-- **RR2 Mod-Side GF Bridge**: The count of RR2 mod partitions equals the
+    coefficient of X^n in partGF over the appropriate residue class set.
+
+    |rr2Mod5Partitions n| = coeff n (partGF {k ∈ [1..n] : k ≡ 2,3 mod 5}) -/
+theorem rr2Mod_card_eq_gf_coeff (n : ℕ) :
+    ↑(RogersRamanujan.rr2Mod5Partitions n).card =
+    PowerSeries.coeff (R := ℤ) n (partGF (rr2ModSet n)) := by
+  rw [rr2Mod5_eq_partitionsFrom n]
+  rw [partGF_coeff_eq_card (rr2ModSet n) (rr2ModSet_pos n) n]
+
+end
+
+end RRModGFBridge
