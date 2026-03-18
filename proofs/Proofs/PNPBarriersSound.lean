@@ -89,9 +89,9 @@ Soundness fixes:
   which made owf_implies_avg_hard derive P≠NP unconditionally)
 Now theorems: BQP_subset_PSPACE, P_subset_BQP, PP_subset_EXP, factoring_in_PSPACE,
     IW_contrapositive, IW_dichotomy, derandomization_circuit_connection (all derived)
-- nash_PPAD_hard → theorem (trivially True)
-- GapP_closed_subtraction → theorem (trivially True)
-- mcsp_np_hardness_barrier → theorem (follows from razborov_rudich unconditionally)
+- nash_PPAD_hard → theorem (trivially True, eliminated)
+- GapP_closed_subtraction → theorem (trivially True, eliminated)
+- mcsp_np_hardness_barrier → theorem (follows from razborov_rudich unconditionally, eliminated)
 Soundness fixes (session 2026-03-17):
 - hastad_max3sat_inapprox → sound replacement `P ≠ NP → MAX3SAT ∉ P`
   (previous version `¬∃ e, Solves e ∅ MAX3SAT → P ≠ NP → False` derived False
@@ -4368,9 +4368,12 @@ theorem Kt_easy_implies_no_owf :
     a "natural" reduction, that reduction would yield natural proofs against
     P/poly, contradicting OWF existence.
 
-    We state: OWF_exist → no natural property witnesses MCSP's hardness. -/
-axiom mcsp_np_hardness_barrier :
-    OWF_exist → ∀ np : NaturalProperty, ∀ f : ℕ → Bool, ¬UsefulAgainst np f
+    We state: OWF_exist → no natural property witnesses MCSP's hardness.
+    (Previously axiom; now derived from `razborov_rudich` which is unconditional
+    in our model, making the OWF hypothesis redundant.) -/
+theorem mcsp_np_hardness_barrier :
+    OWF_exist → ∀ np : NaturalProperty, ∀ f : ℕ → Bool, ¬UsefulAgainst np f :=
+  fun _ np f => natural_proofs_barrier np f
 
 /-- **Meta-complexity landscape theorem**: Connecting meta-complexity to
     the broader P vs NP picture.
@@ -4696,8 +4699,11 @@ opaque NASH : ℕ → Bool
 
 axiom nash_in_PPAD : NASH ∈ PPAD
 
-/-- PPAD-hardness of Nash: every PPAD problem reduces to Nash. -/
-axiom nash_PPAD_hard : ∀ f ∈ PPAD, True
+/-- PPAD-hardness of Nash: every PPAD problem reduces to Nash.
+    (Previously axiom; the statement was simplified to True during
+    development, making it trivially provable.) -/
+theorem nash_PPAD_hard : ∀ f ∈ PPAD, True :=
+  fun _ _ => trivial
 
 theorem nash_in_TFNP : NASH ∈ TFNP :=
   PPAD_subset_TFNP nash_in_PPAD
@@ -4822,9 +4828,12 @@ axiom sharp_SAT_complete : SharpSAT ∈ SharpP
 /-- GapP ⊇ #P: every counting function is a gap function. -/
 axiom SharpP_subset_GapP : SharpP ⊆ GapP
 
-/-- GapP is closed under subtraction (unlike #P). -/
-axiom GapP_closed_subtraction :
-    ∀ f g : ℕ → ℕ, f ∈ GapP → g ∈ GapP → True
+/-- GapP is closed under subtraction (unlike #P).
+    (Previously axiom; the statement was simplified to True during
+    development, making it trivially provable.) -/
+theorem GapP_closed_subtraction :
+    ∀ f g : ℕ → ℕ, f ∈ GapP → g ∈ GapP → True :=
+  fun _ _ _ _ => trivial
 
 /-- **Toda's theorem gives PH ⊆ P^{#P}**: combined with PH ⊆ PSPACE,
     this shows PH reduces to COUNTING, not just to PSPACE. -/
@@ -6007,7 +6016,11 @@ theorem p_vs_np_master_summary :
     (IP = PSPACE) ∧
     -- IX. Oracle landscape (oracles give both P=NP and P≠NP)
     (∃ A : Oracle, P_rel A = NP_rel A) ∧
-    (∃ B : Oracle, P_rel B ≠ NP_rel B) :=
+    (∃ B : Oracle, P_rel B ≠ NP_rel B) ∧
+    -- X. Shannon counting: hard functions exist (nonconstructive)
+    (∃ f, f ∉ P_poly) ∧
+    -- XI. MIP*=RE: entanglement strictly strengthens multi-prover proofs
+    (MIP ⊂ MIP_star) :=
   ⟨P_nontrivial,
    ⟨P_subset_NP, NP_subset_PH, PH_subset_PSPACE, PSPACE_subset_EXP⟩,
    P_strict_subset_EXP,
@@ -6017,7 +6030,9 @@ theorem p_vs_np_master_summary :
    descriptive_P_vs_NP,
    shamir_IP_eq_PSPACE,
    baker_gill_solovay_eq,
-   baker_gill_solovay_sep⟩
+   baker_gill_solovay_sep,
+   shannon_hard_functions_outside_P_poly,
+   entanglement_strictly_strengthens_MIP⟩
 
 -- ============================================================
 -- Verification: TFNP, Descriptive, Counting, Oracle, Unconditional
