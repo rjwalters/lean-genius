@@ -2239,16 +2239,30 @@ the Turán inequalities alone give.
   and the Turán inequalities", Trans. AMS 296, pp. 521-541
 -/
 
+/-- The sequence of ξ-function derivatives at the origin: ξ^{(n)}(0).
+
+These are the Taylor coefficients of the completed Riemann ξ-function.
+The Turán inequalities assert log-concavity-like bounds on this sequence.
+
+**SOUNDNESS NOTE**: Must be opaque, not a concrete function. If defined as
+`fun _ => 0`, the Turán inequalities would be trivially true (0² ≥ 0) without
+encoding any mathematical content. -/
+opaque xiDerivative : ℕ → ℝ
+
 /-- The Turán inequalities for ξ-function derivatives.
 
 The completed Riemann ξ-function satisfies Newton's inequalities:
   (ξ^{(n)}(0))² ≥ (n/(n+1)) · ξ^{(n-1)}(0) · ξ^{(n+1)}(0) for n ≥ 1.
 
 This is a PROVED result (Csordas-Norfolk-Varga, 1986), not a conjecture.
-It is a necessary condition for all zeros of ξ to be real (i.e., for RH). -/
+It is a necessary condition for all zeros of ξ to be real (i.e., for RH).
+
+**SOUNDNESS FIX (2026-03-18)**: Previously used `∃ (ξ_deriv : ℕ → ℝ), ...`
+which was vacuously true (take the zero function). Now uses the opaque
+`xiDerivative` to give the axiom genuine mathematical content. -/
 axiom turanInequalities :
-  ∀ n : ℕ, n ≥ 1 → ∃ (ξ_deriv : ℕ → ℝ),
-    (ξ_deriv n)^2 ≥ (n : ℝ) / (n + 1) * ξ_deriv (n - 1) * ξ_deriv (n + 1)
+  ∀ n : ℕ, n ≥ 1 →
+    (xiDerivative n)^2 ≥ (n : ℝ) / (n + 1) * xiDerivative (n - 1) * xiDerivative (n + 1)
 
 /-- The Turán coefficient n/(n+1) is strictly less than 1 (PROVED).
 
@@ -2919,6 +2933,14 @@ axiom selberg_degree_conjecture :
 axiom selberg_degree_zero :
     ∀ F : SelbergClassFunction, F.degree = 0 → ∀ n : ℕ, n ≥ 2 → F.coeff n = 0
 
+/-- Kaczorowski-Perelli structure theorem (2011):
+    Functions of degree 1 in the extended Selberg class
+    are products of shifted Dirichlet L-functions. -/
+axiom kaczorowski_perelli_degree_one :
+    ∀ F : SelbergClassFunction, F.degree = 1 →
+      ∃ q : ℕ, q ≥ 1 ∧ F.conductor = q ∧
+      ∀ n : ℕ, n ≥ 1 → ‖F.coeff n‖ ≤ 1
+
 /-- Degree 1 elements include Riemann zeta and Dirichlet L-functions.
     PROVED from Kaczorowski-Perelli (stronger result). -/
 theorem selberg_degree_one_classification :
@@ -2932,14 +2954,6 @@ theorem selberg_degree_one_classification :
 /-- Grand RH (Selberg class version) implies our RH.
     ζ(s) is in the Selberg class, so Grand RH applied to ζ gives RH. -/
 axiom GrandRH_implies_our_RH : GrandRH → _root_.RiemannHypothesis
-
-/-- Kaczorowski-Perelli structure theorem (2011):
-    Functions of degree 1 in the extended Selberg class
-    are products of shifted Dirichlet L-functions. -/
-axiom kaczorowski_perelli_degree_one :
-    ∀ F : SelbergClassFunction, F.degree = 1 →
-      ∃ q : ℕ, q ≥ 1 ∧ F.conductor = q ∧
-      ∀ n : ℕ, n ≥ 1 → ‖F.coeff n‖ ≤ 1
 
 /-- Bombieri's refinement: conditional on GRH, the Selberg class
     is closed under Rankin-Selberg convolution -/
@@ -3011,12 +3025,16 @@ axiom skewes_number_conditional :
 
 /-- The explicit formula relates prime counting to zeros:
     ψ(x) = x - Σ_ρ x^ρ/ρ - log(2π) - (1/2)log(1 - x⁻²)
-    Under RH, all ρ have Re(ρ) = 1/2, giving the optimal error term.
+    Under RH, all ρ have Re(ρ) = 1/2, giving the optimal error term O(√x log²x).
 
-    The proof requires the Weil explicit formula and Perron's formula (not in Mathlib). -/
+    The proof requires the Weil explicit formula and Perron's formula (not in Mathlib).
+
+    **BUG FIX (2026-03-18)**: Removed trailing `* x` from the bound. The previous
+    version stated `x^{1/2} * log²(x) * x = x^{3/2} * log²(x)`, which is weaker
+    than even the unconditional PNT error. The correct bound under RH is O(√x log²x). -/
 axiom rh_explicit_formula_optimal :
     _root_.RiemannHypothesis → ∀ x : ℝ, x ≥ 2 →
-      |chebyshevPsi' ⌊x⌋₊ - x| ≤ x ^ (1/2 : ℝ) * (Real.log x) ^ 2 * x
+      |chebyshevPsi' ⌊x⌋₊ - x| ≤ x ^ (1/2 : ℝ) * (Real.log x) ^ 2
 
 /-- Connection: explicit estimates → zero-free regions → PNT error terms.
     This closes the conceptual loop between Parts XXX and XXXII.
@@ -3430,11 +3448,21 @@ axiom GRH_linnik_improvement :
       ∃ p : ℕ, Nat.Prime p ∧ p ≡ a [MOD q] ∧ (p : ℝ) ≤ (q : ℝ) ^ 2 * (Real.log q) ^ 2
 
 /-- Under GRH, Artin's primitive root conjecture holds (Hooley, 1967):
-    for any non-square integer a ≠ 0, ±1, a is a primitive root mod ∞ many primes. -/
+    for any non-square integer a ≠ 0, ±1, a is a primitive root mod ∞ many primes.
+
+    **SOUNDNESS FIX (2026-03-18)**: Added parentheses around `(¬∃ b : ℤ, a = b ^ 2)`.
+    Without them, the `∃` scope extends over the `→`, making the axiom parse as
+    `¬(∃ b, a = b² → ∀ N, ∃ p, Prime p ∧ p > N)` which is `False` for any a
+    (since `∀ N, ∃ p, Prime p ∧ p > N` is unconditionally true).
+
+    NOTE: The conclusion `∀ N, ∃ p, Prime p ∧ p > N` is simplified — it asserts
+    infinitely many primes exist (trivially true) rather than the full primitive
+    root condition. The intended meaning (from Hooley 1967) is that a is a
+    primitive root modulo infinitely many primes. -/
 axiom GRH_artin_conjecture :
     GeneralizedRiemannHypothesis →
     ∀ a : ℤ, a ≠ 0 → a ≠ 1 → a ≠ -1 →
-      ¬∃ b : ℤ, a = b ^ 2 →
+      (¬∃ b : ℤ, a = b ^ 2) →
         ∀ N : ℕ, ∃ p : ℕ, Nat.Prime p ∧ p > N
 
 /-- GRH implies efficient deterministic compositeness testing (PROVED from axiom):
@@ -3503,7 +3531,7 @@ theorem primeCountAP_trivial (x : ℝ) :
     By Dirichlet's theorem, primes are equidistributed among the φ(q)
     reduced residue classes mod q. The expected count is π(x)/φ(q). -/
 noncomputable def expectedPrimeCountAP (x : ℝ) (q : ℕ) : ℝ :=
-  Nat.totient q⁻¹ * x / Real.log x
+  (Nat.totient q : ℝ)⁻¹ * x / Real.log x
 
 /-- **Axiom (Bombieri-Vinogradov 1965): RH on average.**
 
@@ -3913,13 +3941,17 @@ section CriticalLineZeros
     N(T) counts all non-trivial zeros up to height T. -/
 opaque criticalLineProportion : ℝ
 
-/-- **Axiom (Hardy 1914): Infinitely many zeros on the critical line.**
+/-- **Hardy (1914): Infinitely many zeros on the critical line.**
 
     N₀(T) → ∞ as T → ∞. This was the first result showing that
-    ζ has zeros on Re(s) = 1/2, not just in the critical strip. -/
-axiom hardy_infinitely_many_zeros :
+    ζ has zeros on Re(s) = 1/2, not just in the critical strip.
+
+    NOTE: This was a `True`-concluding axiom (placeholder). Converted to theorem
+    to eliminate a vacuous axiom. The substantive Hardy result is already stated
+    as `hardy_infinitely_many_on_critical_line` in Part V (line ~411). -/
+theorem hardy_infinitely_many_zeros :
     -- N₀(T) → ∞ as T → ∞
-    True -- This is unconditional
+    True := trivial
 
 /-- **Axiom (Selberg 1942): Positive proportion on the critical line.**
 
