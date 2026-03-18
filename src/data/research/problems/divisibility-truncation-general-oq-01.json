@@ -1,0 +1,83 @@
+{
+  "slug": "divisibility-truncation-general-oq-01",
+  "title": "Unified Osculator Theorem: Merge Positive and Negative Cases",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "d ∣ n ↔ d ∣ (n/10 + c·(n%10)) for any c with d | (10c-1)",
+    "plain": "Can the positive and negative osculator theorems be merged into a single theorem with a signed osculator c ∈ ℤ?",
+    "whyMatters": [
+      "Eliminates redundancy between two separate truncation theorems",
+      "Shows negative osculator is just the positive case with negated c",
+      "Reveals dual osculator structure: c₊ + c₋ ≡ 0 (mod d)"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "unified_osculator: single theorem for all truncation rules",
+      "neg_osculator_from_unified: negative case derived from positive",
+      "dual_osculators_sum: c₊ + c₋ divisible by d",
+      "All specific cases recovered: 7, 11, 13, 17, 19"
+    ],
+    "open": [],
+    "goal": "Complete unification achieved"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-18T08:30:00Z",
+    "iteration": 1,
+    "focus": "Unified osculator theorem",
+    "blockers": [],
+    "nextAction": "None - formalization complete",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: 159 lines, 0 sorries, 0 axioms. Unified osculator theorem merging positive/negative cases into a single statement.",
+    "builtItems": [
+      "unified_osculator: the single parameterized theorem",
+      "neg_osculator_from_unified: derivation of negative case",
+      "dual_osculators_sum: c₊ + c₋ relationship proved",
+      "5 specific case verifications: d=7,11,13,17,19"
+    ],
+    "insights": [
+      "truncation_pos already works with c ∈ ℤ - negative osculator is c := -c_neg",
+      "10*(-c) - 1 = -(10c + 1), so dvd_neg.mpr handles the sign change",
+      "Dual osculators satisfy d | (c₊ + c₋) via summing the two divisibility conditions"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [
+    {
+      "name": "Sign absorption",
+      "description": "Use unified_osculator with negative c to derive negative osculator case",
+      "status": "successful",
+      "outcome": "Complete unification with 0 sorries"
+    }
+  ],
+  "tags": [
+    "seeker-selected",
+    "algebra",
+    "divisibility",
+    "number-theory"
+  ],
+  "relatedProofs": [
+    "divisibility-truncation-general",
+    "divisibility-rules"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-18T08:15:00Z",
+  "lastUpdate": "2026-03-18T08:30:00Z",
+  "significance": 6,
+  "tractability": 7
+}

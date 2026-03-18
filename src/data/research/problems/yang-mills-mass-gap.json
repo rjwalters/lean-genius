@@ -19,7 +19,7 @@
     "phase": "NEW",
     "since": "2026-01-01T21:55:27.887Z",
     "iteration": 2,
-    "focus": "Chiral SB, center vortex, stochastic quantization (Parts LXXV-LXXVII)",
+    "focus": "Haag theorem, Coulomb gauge, spectral positivity (Parts LXXXVI-LXXXVIII)",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Parts LXXXIV-LXXXV. File now 11,864 lines, 0 sorries. Fradkin-Shenker confinement-Higgs complementarity, Millennium Problem proof landscape.",
+    "progressSummary": "PROGRESS: Added Parts LXXXVI-LXXXVIII. File now 12,527 lines. Haag theorem (interaction picture fails), Coulomb gauge confinement (Zwanziger inequality), spectral positivity violation (KL representation). Fixed 5 pre-existing name conflicts.",
     "builtItems": [
       "Part LVIII: Schwinger Model — SchwingerParams, schwingerMass, schwingerMassSq, MultiFlavorSchwinger, etaPrimeMass",
       "Part LIX: Yang-Mills Gradient Flow — GradientFlowParams, smoothingRadius, FlowedEnergyDensity, ReferenceScale, WScale",
@@ -47,7 +47,10 @@
       "Part LXXVI: Center Vortex Model — vortex area law, Nality, confinement criterion",
       "Part LXXVII: Stochastic Quantization — Parisi-Wu, Langevin convergence, Fokker-Planck",
       "Part LXXXIV: Confinement-Higgs complementarity - GaugeHiggsCouplings, PhaseRegion, fradkin_shenker_theorem, thooft_complementarity, AdjointHiggsPhase, elitzur_theorem, banks_rabinovici_phase_structure",
-      "Part LXXXV: Millennium proof landscape - MillenniumSolution, ProofApproach, lattice_strong_coupling_gap, balaban_uv_stability, continuum_limit_gap_persistence, dimension_difficulty_spectrum"
+      "Part LXXXV: Millennium proof landscape - MillenniumSolution, ProofApproach, lattice_strong_coupling_gap, balaban_uv_stability, continuum_limit_gap_persistence, dimension_difficulty_spectrum",
+      "Part LXXXVI: Haag Theorem — HaagQFTData, UnitaryEquivalence, InteractionPicture, instanton non-perturbative effects, gluon DOF counting",
+      "Part LXXXVII: Coulomb Gauge Confinement — CoulombGaugeParams, GribovRegion, CoulombLatticeData, RefinedGZPropagator, Zwanziger inequality, ghost enhancement",
+      "Part LXXXVIII: Spectral Positivity Violation — SpectralData, kl_positive, spectrally_confined, ComplexPoleData, RefinedGZPropagator complex poles, quark/gluon confinement via KL"
     ],
     "insights": [
       "Schwinger model mass gap m = e/√π is exactly computable and positive (proved m > 0, m² > 0)",
@@ -92,7 +95,15 @@
       "Mass gap and confinement are logically independent: mass gap without confinement (Higgs phase), confinement without mass gap (possible at critical points), both together (pure YM)",
       "Elitzur theorem (1975): local gauge symmetry NEVER breaks spontaneously — the Higgs mechanism is not SSB of gauge symmetry",
       "The essential tension: asymptotic freedom forces β→∞ (weak coupling) while mass gap lives at strong coupling — must show mass gap persists through the crossover",
-      "Balaban (1983-89) proved UV stability for 4D lattice YM — deepest existing partial result but did not obtain continuum limit or mass gap"
+      "Balaban (1983-89) proved UV stability for 4D lattice YM — deepest existing partial result but did not obtain continuum limit or mass gap",
+      "Haag theorem (1955): No unitary map between free and interacting QFT — the interaction picture fails in rigorous QFT. Free gluon Fock space ≠ physical YM Hilbert space",
+      "Non-perturbative effects exp(-8π²/g²) are invisible to perturbation theory — mass gap Δ ~ Λ_QCD cannot be seen order by order",
+      "Coulomb gauge: Zwanziger inequality σ_C ≥ σ_W — Coulomb string tension bounds Wilson string tension from above. Lattice confirms σ_C/σ_W ≈ 2-3 for SU(2)",
+      "Gribov copies: After Coulomb gauge fixing, residual copies exist. Gribov region Ω (FP operator ≥ 0) restricts functional integral. Ghost propagator enhanced near Gribov horizon",
+      "GZ gluon propagator D(p²) = p²/(p⁴ + γ⁴) vanishes at p=0 (gluon not physical particle) and has maximum at p² = γ² with D_max = 1/(2γ²)",
+      "Källén-Lehmann spectral representation: ρ(σ) ≥ 0 required for physical asymptotic states. Gluon propagator VIOLATES this (complex poles) → gluons are confined",
+      "Refined GZ propagator complex poles: discriminant M⁴ - 4λ⁴ < 0 for lattice-fitted parameters (M ≈ 0.5 GeV, λ ≈ 0.65 GeV). Complex poles = no positive spectral density = confinement",
+      "Mass gap is NOT the gluon mass parameter but the lightest KL-positive state (0⁺⁺ glueball at ~1.73 GeV). Gluons violate KL positivity and do not appear in the physical spectrum"
     ],
     "mathlibGaps": [
       "Principal bundles",
@@ -118,7 +129,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.887Z",
-  "lastUpdate": "2026-03-17T22:30:00.000Z",
+  "lastUpdate": "2026-03-18T09:50:00.000Z",
   "completed": "2026-03-13T17:50:22.123Z",
   "significance": 10,
   "tractability": 1
