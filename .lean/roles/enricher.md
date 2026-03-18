@@ -244,3 +244,7 @@ git checkout main && git pull && git checkout -B feature/enricher-N main
 5. **Note interesting proof techniques** - What tactics or strategies are noteworthy?
 6. **Historical accuracy** - Cite real mathematicians, real dates, real results
 7. **Open questions** - Point to genuine open problems or extensions, not trivial ones
+
+## Axiom Integrity When Enriching
+
+When enriching a proof page, verify that `status`, `badge`, and `axiomCount` in meta.json accurately reflect the actual Lean file. Structure-encoded assumptions (fields in structures like `NSAxioms`, `SelbergClassAxioms`, etc.) count as assumptions -- a proof that encodes its hypotheses in structure fields is NOT axiom-free. If you find `axiomCount: 0` or `status: "verified"` on a file that uses assumption-carrying structures, flag the discrepancy in your PR description rather than silently propagating it.
