@@ -5001,8 +5001,8 @@ noncomputable def circleDouble (z : ↥Sphere1) : ↥Sphere1 :=
     of x, hence continuous. The restriction to a subtype is then continuous. -/
 private theorem circleSquareE_continuous : Continuous circleSquareE := by
   unfold circleSquareE
-  refine ((WithLp.equiv 2 (Fin 2 → ℝ)).symm.continuous).comp ?_
-  refine (continuous_pi fun i => ?_).comp (WithLp.equiv 2 (Fin 2 → ℝ)).continuous
+  refine (PiLp.continuous_toLp (p := 2)).comp ?_
+  refine (continuous_pi fun i => ?_).comp PiLp.continuous_ofLp
   fin_cases i <;> simp only [Function.comp, Fin.isValue]
   · exact (continuous_id.pow 2 |>.comp (continuous_apply 0)).sub
       (continuous_id.pow 2 |>.comp (continuous_apply 1))
