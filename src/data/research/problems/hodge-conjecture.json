@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "DEEP_DIVE",
     "since": "2026-03-15T10:25:00.000Z",
-    "iteration": 5,
-    "focus": "Added Tate conjecture section with ℓ-adic cohomology, Frobenius, and Hodge-Tate comparison",
+    "iteration": 6,
+    "focus": "Eliminated 4 redundant codim-1 HC axioms via Lefschetz (1,1)",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Parts XLIII-LII: Enriques surfaces, abelian fourfolds, Hodge diamond constraints, Lefschetz hyperplane, Grassmannians, complete intersections, toric varieties, products analysis, Chern classes/vector bundles, case summary. 7287 lines, 135 axioms, 309 theorems/defs, 0 sorries.",
+    "progressSummary": "PROGRESS: Eliminated 4 axioms (135→131) by proving bloch_srinivas_diagonal, hodge_for_cy3_codim1, verbitsky_hyperkaehler, hodge_for_uniruled_codim1 from Lefschetz (1,1). 7315 lines, 131 axioms, 309 theorems/defs, 0 sorries.",
     "builtItems": [
       "Proved directSumHodge (PureHodgeStructure construction) in HodgeConjecture.lean",
       "Proved directSum_inl, directSum_inr (injection morphisms) in HodgeConjecture.lean",
@@ -274,7 +274,11 @@
       "chern_class_is_algebraic axiom: c_i(E) algebraic for i ≤ rank(E)",
       "tangent_bundle_exists axiom: TX exists with rank = dim(X)",
       "PROVED line_bundle_first_chern: c₁(L) is algebraic (1,1)-class",
-      "PROVED chern_character_degrees: ch(E) gives r+1 algebraic class degrees"
+      "PROVED chern_character_degrees: ch(E) gives r+1 algebraic class degrees",
+      "PROVED bloch_srinivas_diagonal from lefschetz_1_1_theorem_axiom (was axiom)",
+      "PROVED hodge_for_cy3_codim1 from lefschetz_1_1_theorem_axiom (was axiom)",
+      "PROVED verbitsky_hyperkaehler from lefschetz_1_1_theorem_axiom (was axiom)",
+      "PROVED hodge_for_uniruled_codim1 from lefschetz_1_1_theorem_axiom (was axiom)"
     ],
     "insights": [
       "Millennium Prize problem, wide open - no known attack strategy",
@@ -378,7 +382,12 @@
       "Products with curves: all Hodge classes on X × C come from algebraic sources. The mixed Künneth term H^{p,p-1}⊗H^{0,1} has no (p,p) component.",
       "Chern classes c_i(E) ∈ H^{2i}(X,Z) ∩ H^{i,i} are automatically algebraic. Tangent bundle TX provides algebraic classes in all even degrees ≤ 2dim(X).",
       "The transcendental Hodge classes (those NOT expressible as Chern characters) are where HC is genuinely hard. Chern theory resolves the easy part automatically.",
-      "Line bundle first Chern class c_1(L) gives algebraic (1,1)-class. Lefschetz (1,1) theorem is the converse: every rational (1,1)-class comes from a divisor."
+      "Line bundle first Chern class c_1(L) gives algebraic (1,1)-class. Lefschetz (1,1) theorem is the converse: every rational (1,1)-class comes from a divisor.",
+      "bloch_srinivas_diagonal is redundant with Lefschetz (1,1): both assert HC codim 1 for all projective varieties",
+      "All codim-1 HC axioms (CY3, hyperkaehler, uniruled) are instances of Lefschetz (1,1) theorem",
+      "deligne_mixed_hodge_structure cannot be converted: MixedHodgeStructure is Type not Prop, needs universe polymorphism",
+      "lefschetz_to_tate blocked by universe metavar: HodgeConjectureFullStatement.{v} cannot unify across composition",
+      "lefschetz_standard_implies_hodge blocked by forward reference to lefschetz_implies_standard_conjectures (Part XXXVI)"
     ],
     "mathlibGaps": [
       "Complex manifolds",
@@ -409,7 +418,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.887Z",
-  "lastUpdate": "2026-03-17T17:00:00.000Z",
+  "lastUpdate": "2026-03-18T07:40:00Z",
   "significance": 10,
   "tractability": 1
 }

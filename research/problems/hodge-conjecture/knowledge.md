@@ -561,3 +561,40 @@ Abelian varieties are where the Hodge conjecture is best understood: HC for g=1 
 2. Add abelian variety endomorphism algebra (Albert classification, Mumford-Tate group)
 3. Add Hodge-Deligne polynomial and motivic measures
 4. Formalize Voisin's diagonal decomposition approach
+
+## Session 2026-03-18 (researcher-5) - Axiom Elimination via Lefschetz (1,1)
+
+**Mode**: REVISIT (RICH knowledge, score 267)
+**Outcome**: 4 axioms eliminated (135→131)
+
+### Changes
+
+Identified 4 axioms that are redundant with `lefschetz_1_1_theorem_axiom`, which already proves HC in codimension 1 for ALL smooth projective varieties:
+
+| Axiom | Line | Why Redundant |
+|-------|------|---------------|
+| `bloch_srinivas_diagonal` | 5240 | Same type as Lefschetz (1,1) |
+| `hodge_for_cy3_codim1` | 5129 | Lefschetz on `.toProjectiveVariety` |
+| `verbitsky_hyperkaehler` | 5142 | Lefschetz on `.toProjectiveVariety` |
+| `hodge_for_uniruled_codim1` | 3158 | Lefschetz unfolded to `isAlgebraicClass` |
+
+### Also Attempted (Reverted)
+
+| Axiom | Issue | Resolution |
+|-------|-------|------------|
+| `deligne_mixed_hodge_structure` | `MixedHodgeStructure` is Type, not Prop | Universe polymorphism needed; axiom kept |
+| `lefschetz_standard_implies_hodge` | Forward reference to `lefschetz_implies_standard_conjectures` | Would need file restructuring; axiom kept |
+| `lefschetz_to_tate` | Universe level metavar in `HodgeConjectureFullStatement` | Lean 4 limitation; axiom kept |
+
+### Key Insight
+
+The Lefschetz (1,1) theorem (HC codim 1) is so general that many "special case" axioms
+(CY3, hyperkähler, uniruled, Bloch-Srinivas) are strict consequences. Any axiom asserting
+HC in codimension 1 for a subclass of varieties is redundant.
+
+### Build Status
+- **Lines**: 7315
+- **Axioms**: 131
+- **Theorems/defs**: 309
+- **Sorries**: 0
+- **Errors**: 0
