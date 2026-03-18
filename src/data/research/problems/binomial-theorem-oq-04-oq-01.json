@@ -1,0 +1,95 @@
+{
+  "slug": "binomial-theorem-oq-04-oq-01",
+  "title": "Combinatorial Proof of Vandermonde Identity via Explicit Bijection",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Nat.choose (m + n) r = ∑ k ∈ Finset.range (r + 1), Nat.choose m k * Nat.choose n (r - k)",
+    "plain": "Can Vandermonde's identity be proved combinatorially via an explicit bijection on Finsets, rather than through the algebraic Nat.add_choose_eq route?",
+    "whyMatters": [
+      "Provides a genuinely combinatorial proof independent of the algebraic approach",
+      "The split-merge bijection has direct combinatorial meaning (partitioning subsets by threshold)",
+      "Demonstrates Lean 4 can express explicit bijection arguments on Finsets"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "vandermonde_combinatorial: C(m+n,r) = Σ C(m,k)·C(n,r-k) via explicit bijection",
+      "sum_squares_combinatorial: C(2n,n) = Σ C(n,k)² via bijection + symmetry",
+      "card_fiber: Each fiber (subsets with k elements below threshold) has size C(m,k)·C(n,r-k)",
+      "Split-merge round-trip: lowPart_merge, highPart_merge, merge_lowPart_highPart are inverses",
+      "lowPart_card_add_highPart_card: partition of cardinality via low/high split"
+    ],
+    "open": [],
+    "goal": "Complete combinatorial proof achieved"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-18T07:30:00Z",
+    "iteration": 1,
+    "focus": "Explicit bijection proof of Vandermonde's identity",
+    "blockers": [],
+    "nextAction": "None - formalization complete",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: 299 lines, 0 sorries, 0 axioms. Combinatorial proof of Vandermonde via explicit split-merge bijection on Finsets. Does NOT use Nat.add_choose_eq.",
+    "builtItems": [
+      "lowPart/highPart: split subset at threshold m",
+      "merge: inverse of split (union with shifted image)",
+      "Round-trip proofs: split(merge(A,B)) = (A,B) and merge(split(S)) = S",
+      "fiber: r-subsets classified by low part cardinality",
+      "card_fiber: bijection to product via card_bij",
+      "vandermonde_combinatorial: main theorem via biUnion of disjoint fibers",
+      "sum_squares_combinatorial: C(2n,n) = Σ C(n,k)² corollary"
+    ],
+    "insights": [
+      "omega cannot beta-reduce (fun x => x - m) a to a - m; need explicit 'have : a - m = b - m := hab'",
+      "card_biUnion requires PairwiseDisjoint not the explicit ∀∀∀ form",
+      "card_image_of_injOn (not card_image_of_injective) needed for non-globally-injective functions",
+      "Finset.sum_card_fiberwise may not exist in current Mathlib; use biUnion + card_biUnion instead"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [
+    {
+      "name": "Split-Merge Bijection",
+      "description": "Split r-subsets of {0,...,m+n-1} at threshold m into low/high parts, use card_bij for fiber bijection",
+      "status": "successful",
+      "outcome": "Complete proof with 0 sorries"
+    }
+  ],
+  "tags": [
+    "seeker-selected",
+    "combinatorics",
+    "binomial-coefficients",
+    "vandermonde",
+    "bijection",
+    "finset"
+  ],
+  "relatedProofs": [
+    "binomial-theorem",
+    "binomial-theorem-oq-04"
+  ],
+  "references": {
+    "papers": [
+      "Vandermonde (1772), Mémoire sur des irrationnelles de différents ordres"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Finset.Powerset"
+    ]
+  },
+  "started": "2026-03-18T06:53:00Z",
+  "lastUpdate": "2026-03-18T07:30:00Z",
+  "significance": 7,
+  "tractability": 7
+}

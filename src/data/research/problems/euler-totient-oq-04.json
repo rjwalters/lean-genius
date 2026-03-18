@@ -1,0 +1,88 @@
+{
+  "slug": "euler-totient-oq-04",
+  "title": "Divisor Sum Identity via GCD Partition",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "n.divisors.sum (fun d => Nat.totient (n / d)) = n",
+    "plain": "Prove the identity n = Σ_{d|n} φ(n/d) by explicitly constructing the partition of {0,...,n-1} into GCD classes S_d = {k : gcd(k,n) = d}, showing each has φ(n/d) elements.",
+    "whyMatters": [
+      "Fundamental identity in analytic number theory connecting totient to divisor sums",
+      "Constructive proof reveals the partition-of-unity structure behind the identity",
+      "Probabilistic interpretation: P(gcd(k,n)=d) = φ(n/d)/n"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "divisor_sum_totient_div: n = Σ_{d|n} φ(n/d) via explicit GCD partition",
+      "divisor_sum_totient: cross-validation with Mathlib's Nat.sum_totient",
+      "partition_of_unity: Σ_{d|n} φ(n/d)/n = 1 over ℚ",
+      "card_gcdClass_eq_totient: |S_d| = φ(n/d) via explicit bijection k ↦ k/d",
+      "GCD classes partition {0,...,n-1}: pairwise disjoint and cover range n"
+    ],
+    "open": [],
+    "goal": "Complete formalization achieved"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-18T06:45:00Z",
+    "iteration": 1,
+    "focus": "Divisor sum identity via constructive GCD partition",
+    "blockers": [],
+    "nextAction": "None - formalization complete",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: 231 lines, 0 sorries, 0 axioms. Explicit constructive proof of n = Σ φ(n/d) via GCD class partition with bijection k ↦ k/d. Includes partition-of-unity ℚ formulation and concrete verifications.",
+    "builtItems": [
+      "gcdClass definition and mem_gcdClass characterization",
+      "card_gcdClass_eq_totient via Finset.card_bij (bijection proof)",
+      "divisor_sum_totient_div (main identity)",
+      "partition_of_unity (probabilistic formulation over ℚ)",
+      "Concrete verifications for n=6,12,30 and GCD class sizes"
+    ],
+    "insights": [
+      "Bijection k ↦ k/d from S_d to coprime residues of n/d gives constructive cardinality proof",
+      "GCD class disjointness is immediate from gcd uniqueness",
+      "Partition of unity Σ φ(n/d)/n = 1 has clean proof via sum_div and div_eq_one_iff"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [
+    {
+      "name": "Explicit GCD Partition",
+      "description": "Partition {0,...,n-1} by GCD classes, count via bijection to coprime residues",
+      "status": "successful",
+      "outcome": "Complete proof with 0 sorries"
+    }
+  ],
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "euler-totient",
+    "divisor-sum",
+    "partition-of-unity"
+  ],
+  "relatedProofs": [
+    "euler-totient"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.Data.Nat.GCD.Basic"
+    ]
+  },
+  "started": "2026-03-18T06:45:00Z",
+  "lastUpdate": "2026-03-18T06:45:00Z",
+  "significance": 7,
+  "tractability": 7
+}
