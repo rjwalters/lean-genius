@@ -19,7 +19,9 @@ import {
   BookOpen,
   Beaker,
   FileText,
-  Archive
+  Archive,
+  Code2,
+  Github
 } from 'lucide-react'
 
 function isValidFormalStatement(formal: string | undefined): boolean {
@@ -40,7 +42,7 @@ export function ResearchProblemPage() {
   const { slug } = useParams<{ slug: string }>()
   const [problem, setProblem] = useState<ResearchProblem | null>(null)
   const [loading, setLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState<'overview' | 'approaches' | 'knowledge'>('overview')
+  const [activeTab, setActiveTab] = useState<'overview' | 'approaches' | 'formalization' | 'knowledge'>('overview')
   const [expandedApproaches, setExpandedApproaches] = useState<string[]>([])
   const [expandedSessions, setExpandedSessions] = useState<string[]>([])
   const [showArchived, setShowArchived] = useState(false)
@@ -107,6 +109,12 @@ export function ResearchProblemPage() {
   const builtItemsCount = problem.knowledge.builtItems?.length || 0
   const insightsCount = problem.knowledge.insights?.length || 0
   const knowledgeItemCount = builtItemsCount + insightsCount
+  const hasLeanFiles = problem.leanFiles && problem.leanFiles.length > 0
+  const leanFilesCount = problem.leanFiles?.length || 0
+  const leanTotalLines = problem.leanFiles?.reduce((s, f) => s + f.lineCount, 0) || 0
+  const leanTotalTheorems = problem.leanFiles?.reduce((s, f) => s + f.theoremCount, 0) || 0
+  const leanTotalAxioms = problem.leanFiles?.reduce((s, f) => s + f.axiomCount, 0) || 0
+  const leanTotalSorries = problem.leanFiles?.reduce((s, f) => s + f.sorryCount, 0) || 0
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -167,6 +175,18 @@ export function ResearchProblemPage() {
                   <span>{new Date(problem.completed).toLocaleDateString()}</span>
                 </div>
               )}
+              {hasLeanFiles && (
+                <>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Lean Files</span>
+                    <span>{leanFilesCount}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Lean Lines</span>
+                    <span>{leanTotalLines.toLocaleString()}</span>
+                  </div>
+                </>
+              )}
             </div>
 
             {/* Linked Proof */}
@@ -193,6 +213,7 @@ export function ResearchProblemPage() {
                 {[
                   { id: 'overview', label: 'Overview', icon: Target },
                   { id: 'approaches', label: 'Approaches', icon: Beaker },
+                  ...(hasLeanFiles ? [{ id: 'formalization', label: 'Formalization', icon: Code2 }] : []),
                   { id: 'knowledge', label: 'Knowledge', icon: Lightbulb }
                 ].map((tab) => {
                   const Icon = tab.icon
@@ -209,6 +230,11 @@ export function ResearchProblemPage() {
                     >
                       <Icon className="h-4 w-4" />
                       <span className="text-sm font-medium">{tab.label}</span>
+                      {tab.id === 'formalization' && leanFilesCount > 0 && (
+                        <span className="text-xs bg-muted px-1.5 py-0.5 rounded">
+                          {leanFilesCount}
+                        </span>
+                      )}
                       {tab.id === 'knowledge' && knowledgeItemCount > 0 && (
                         <span className="text-xs bg-muted px-1.5 py-0.5 rounded">
                           {knowledgeItemCount}
@@ -360,15 +386,18 @@ export function ResearchProblemPage() {
                       <BookOpen className="h-5 w-5 text-annotation" />
                       Related Proofs
                     </h2>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-3">
                       {problem.relatedProofs.map((proofSlug) => (
                         <Link
                           key={proofSlug}
                           to={`/proof/${proofSlug}`}
-                          className="inline-flex items-center gap-1 px-3 py-1.5 bg-card border border-border rounded-lg text-sm hover:border-annotation/50 transition-colors"
+                          className="inline-flex items-center gap-2 px-4 py-2 bg-card border border-border rounded-lg text-sm hover:border-annotation/50 transition-colors group"
                         >
-                          <BookOpen className="h-3 w-3 text-muted-foreground" />
-                          {proofSlug}
+                          <BookOpen className="h-4 w-4 text-annotation" />
+                          <span className="font-medium">{proofSlug}</span>
+                          <span className="text-xs text-muted-foreground group-hover:text-annotation transition-colors">
+                            View proof
+                          </span>
                         </Link>
                       ))}
                     </div>
@@ -510,6 +539,122 @@ export function ResearchProblemPage() {
                     })}
                   </div>
                 )}
+              </div>
+            )}
+
+            {activeTab === 'formalization' && hasLeanFiles && (
+              <div className="space-y-6">
+                <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                  <Code2 className="h-5 w-5 text-annotation" />
+                  Lean Formalization
+                </h2>
+
+                {/* Summary Banner */}
+                <div className="bg-card border border-border rounded-lg p-5">
+                  <h3 className="text-sm font-semibold text-muted-foreground mb-4 uppercase tracking-wide">
+                    Formalization Summary
+                  </h3>
+                  <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+                    <div className="text-center">
+                      <p className="text-2xl font-bold">{leanFilesCount}</p>
+                      <p className="text-xs text-muted-foreground mt-1">Files</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-2xl font-bold">{leanTotalLines.toLocaleString()}</p>
+                      <p className="text-xs text-muted-foreground mt-1">Lines of Lean</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-2xl font-bold text-green-400">{leanTotalTheorems}</p>
+                      <p className="text-xs text-muted-foreground mt-1">Theorems</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-2xl font-bold text-blue-400">{leanTotalAxioms}</p>
+                      <p className="text-xs text-muted-foreground mt-1">Axioms</p>
+                    </div>
+                    <div className="text-center">
+                      <p className={`text-2xl font-bold ${leanTotalSorries === 0 ? 'text-green-400' : 'text-red-400'}`}>
+                        {leanTotalSorries}
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-1">Sorries</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* File List */}
+                <div className="space-y-3">
+                  {problem.leanFiles!.map((file) => {
+                    const matchingProof = problem.relatedProofs.find((slug) =>
+                      file.path.toLowerCase().includes(slug.toLowerCase().replace(/-/g, ''))
+                    )
+                    return (
+                      <div
+                        key={file.path}
+                        className="bg-card border border-border rounded-lg p-4"
+                      >
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-2 mb-2">
+                              <code className="text-sm font-mono font-semibold text-foreground">
+                                {file.filename}
+                              </code>
+                              {file.isAristotle && (
+                                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-500/20 text-amber-400">
+                                  Proof Search Target
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-xs text-muted-foreground font-mono mb-3">
+                              {file.path}
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs bg-muted text-muted-foreground">
+                                {file.lineCount.toLocaleString()} lines
+                              </span>
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs bg-green-500/15 text-green-400">
+                                {file.theoremCount} theorems
+                              </span>
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs bg-blue-500/15 text-blue-400">
+                                {file.axiomCount} axioms
+                              </span>
+                              <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs ${
+                                file.sorryCount === 0
+                                  ? 'bg-green-500/15 text-green-400'
+                                  : 'bg-red-500/15 text-red-400'
+                              }`}>
+                                {file.sorryCount} {file.sorryCount === 1 ? 'sorry' : 'sorries'}
+                              </span>
+                              {file.defCount > 0 && (
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs bg-purple-500/15 text-purple-400">
+                                  {file.defCount} defs
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex flex-col gap-2 flex-shrink-0">
+                            <a
+                              href={file.githubUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-muted hover:bg-muted/80 rounded transition-colors"
+                            >
+                              <Github className="h-3.5 w-3.5" />
+                              View on GitHub
+                            </a>
+                            {matchingProof && (
+                              <Link
+                                to={`/proof/${matchingProof}`}
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-annotation bg-annotation/10 hover:bg-annotation/20 rounded transition-colors"
+                              >
+                                <BookOpen className="h-3.5 w-3.5" />
+                                View in Gallery
+                              </Link>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
               </div>
             )}
 

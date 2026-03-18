@@ -1024,4 +1024,56 @@ theorem trace_omega_sq' (ω₁₂ ω₁₃ ω₂₃ : ℝ) :
     (-ω₁₃)*ω₁₃ + (-ω₂₃)*ω₂₃ + 0*0 =
     -(ω₁₂^2 + ω₁₃^2 + ω₂₃^2) * 2 := by ring
 
+-- ═══════════════════════════════════════════════════════════════════
+-- Section 54: Helicity Algebra
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Helicity mode decomposition: E+ = (E+H)/2. -/
+theorem helicity_mode_ep (E H : ℝ) :
+    (E + H) / 2 + (E - H) / 2 = E := by ring
+
+/-- Helicity mode decomposition: E+ - E- = H. -/
+theorem helicity_mode_diff (E H : ℝ) :
+    (E + H) / 2 - (E - H) / 2 = H := by ring
+
+/-- E² - H² = 4·E+·E- (energy-helicity product identity). -/
+theorem energy_helicity_product' (Ep Em : ℝ) :
+    (Ep + Em)^2 - (Ep - Em)^2 = 4 * Ep * Em := by ring
+
+/-- Helicity vanishes in 2D: u·ω = 0 when u = (u1,u2,0), ω = (0,0,ω3). -/
+theorem helicity_2d_zero (u1 u2 ω3 : ℝ) :
+    u1 * 0 + u2 * 0 + 0 * ω3 = 0 := by ring
+
+-- ═══════════════════════════════════════════════════════════════════
+-- Section 55: Kolmogorov Dimensional Analysis
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Kolmogorov η dimensional check: 2a+2b=1, a+3b=0 gives a=3/4, b=-1/4. -/
+theorem kolmogorov_dim_L : 2 * (3 : ℝ) / 4 + 2 * (-(1 : ℝ) / 4) = 1 := by norm_num
+theorem kolmogorov_dim_T : (3 : ℝ) / 4 + 3 * (-(1 : ℝ) / 4) = 0 := by norm_num
+
+/-- Local Re at Kolmogorov scale is 1: ν exponents sum to 0. -/
+theorem kolmogorov_re_check : (1 : ℝ) / 4 + 3 / 4 - 1 = 0 := by norm_num
+
+/-- Scale ratio consistency: η/L = (η/λ)·(λ/L), exponents: -1/4 + -1/2 = -3/4. -/
+theorem scale_ratio_sum : -(1 : ℝ) / 4 + (-(1 : ℝ) / 2) = -(3 / 4) := by norm_num
+
+/-- Dissipation spectrum exponent in inertial range: k^(2-5/3) = k^{1/3}. -/
+theorem dissipation_exponent : 2 - (5 : ℝ) / 3 = 1 / 3 := by norm_num
+
+/-- K41 4/5 law: ζ_3 = 3/3 = 1 (exact result). -/
+theorem k41_third_order : (3 : ℝ) / 3 = 1 := by norm_num
+
+/-- She-Lévêque: ζ_3 = 3/9 + 2(1-2/3) = 1/3 + 2/3 = 1. -/
+theorem she_leveque_check : (3 : ℝ) / 9 + 2 * (1 - 2 / 3) = 1 := by norm_num
+
+/-- She-Lévêque: ζ_6 = 6/9 + 2(1-(2/3)²) = 2/3 + 10/9 = 16/9. -/
+theorem she_leveque_p6 : (6 : ℝ) / 9 + 2 * (1 - (2 / 3)^2) = 16 / 9 := by norm_num
+
+/-- Intermittency correction at p=6: 2 - 16/9 = 2/9. -/
+theorem intermittency_p6 : 2 - (16 : ℝ) / 9 = 2 / 9 := by norm_num
+
+/-- DNS cost 2D: N²·Nt ~ Re^{3/2+1/2} = Re^2. -/
+theorem dns_2d_cost : 2 * (3 : ℝ) / 4 + 1 / 2 = 2 := by norm_num
+
 end NavierStokesAristotle

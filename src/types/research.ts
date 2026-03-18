@@ -334,6 +334,7 @@ export interface ResearchProblem {
   tags: string[]
   relatedProofs: string[]
   references: ResearchReferences
+  leanFiles?: LeanFileInfo[]
 
   started: string
   lastUpdate?: string
