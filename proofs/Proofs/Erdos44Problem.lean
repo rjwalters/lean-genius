@@ -172,24 +172,141 @@ theorem maxSidonSubsetCard_icc_bound (N : ℕ) (hN : 1 ≤ N) (A : Finset ℕ)
 
 /- ## Part 3: Lower Bound - Existence of Sidon sets -/
 
+/-- Core lemma: sums of powers of 2 determine exponents uniquely.
+    2^a + 2^b = 2^c + 2^d with a ≤ b, c ≤ d implies a = c and b = d.
+
+    Proof by strong induction on a + c using parity:
+    - a = 0, c = 0: cancel 1's, conclude b = d from injectivity of 2^(·)
+    - a = 0, c ≥ 1: LHS = 1 + 2^b is odd (for b ≥ 1) but RHS is even. Contradiction.
+    - a ≥ 1, c = 0: symmetric
+    - a ≥ 1, c ≥ 1: divide everything by 2, apply induction hypothesis -/
+private lemma pow2_sum_inj : ∀ (n : ℕ) (a b c d : ℕ),
+    a + c ≤ n → a ≤ b → c ≤ d →
+    2 ^ a + 2 ^ b = 2 ^ c + 2 ^ d → a = c ∧ b = d := by
+  intro n
+  induction n with
+  | zero =>
+    intro a b c d hacn hab hcd heq
+    have ha : a = 0 := by omega
+    have hc : c = 0 := by omega
+    subst ha; subst hc
+    simp only [pow_zero] at heq
+    have hbd : 2 ^ b = 2 ^ d := by omega
+    constructor
+    · rfl
+    · by_contra hne
+      rcases Nat.lt_or_gt_of_ne hne with h | h
+      · exact absurd (Nat.pow_lt_pow_right (by norm_num : 1 < 2) h) (by omega)
+      · exact absurd (Nat.pow_lt_pow_right (by norm_num : 1 < 2) h) (by omega)
+  | succ n ih =>
+    intro a b c d hacn hab hcd heq
+    by_cases ha : a = 0
+    · subst ha
+      by_cases hc : c = 0
+      · -- a = 0, c = 0: cancel the 1's
+        subst hc
+        simp only [pow_zero] at heq
+        have hbd : 2 ^ b = 2 ^ d := by omega
+        constructor
+        · rfl
+        · by_contra hne
+          rcases Nat.lt_or_gt_of_ne hne with h | h
+          · exact absurd (Nat.pow_lt_pow_right (by norm_num : 1 < 2) h) (by omega)
+          · exact absurd (Nat.pow_lt_pow_right (by norm_num : 1 < 2) h) (by omega)
+      · -- a = 0, c ≥ 1: parity contradiction
+        exfalso
+        have hc' : 1 ≤ c := by omega
+        have hd' : 1 ≤ d := by omega
+        -- LHS = 1 + 2^b
+        simp only [pow_zero] at heq
+        by_cases hb : b = 0
+        · -- LHS = 2, RHS ≥ 2^1 + 2^1 = 4
+          subst hb; simp only [pow_zero] at heq
+          have : 2 ^ c ≥ 2 := Nat.one_le_pow c 2 (by norm_num) |>.trans_lt (by omega) |>.le
+          have : 2 ^ d ≥ 2 := Nat.one_le_pow d 2 (by norm_num) |>.trans_lt (by omega) |>.le
+          omega
+        · -- LHS = 1 + 2^b is odd, RHS is even
+          have hb' : 1 ≤ b := by omega
+          -- 2 divides RHS since c ≥ 1 and d ≥ 1
+          have hrhs_even : 2 ∣ (2 ^ c + 2 ^ d) := by
+            have h1 : 2 ∣ 2 ^ c := dvd_pow_self 2 (by omega : c ≠ 0)
+            have h2 : 2 ∣ 2 ^ d := dvd_pow_self 2 (by omega : d ≠ 0)
+            exact dvd_add h1 h2
+          -- But LHS = 1 + 2^b is odd
+          have hlhs_odd : ¬ 2 ∣ (1 + 2 ^ b) := by
+            have h2b : 2 ∣ 2 ^ b := dvd_pow_self 2 (by omega : b ≠ 0)
+            intro ⟨m, hm⟩
+            have : 2 ∣ (1 + 2 ^ b - 2 ^ b) := Nat.dvd_sub' ⟨m, hm⟩ h2b
+            simp at this
+          exact hlhs_odd (heq ▸ hrhs_even)
+    · by_cases hc : c = 0
+      · -- a ≥ 1, c = 0: symmetric parity contradiction
+        exfalso
+        have ha' : 1 ≤ a := by omega
+        have hb' : 1 ≤ b := by omega
+        simp only [pow_zero] at heq
+        by_cases hd : d = 0
+        · subst hd; simp only [pow_zero] at heq
+          have : 2 ^ a ≥ 2 := Nat.one_le_pow a 2 (by norm_num) |>.trans_lt (by omega) |>.le
+          have : 2 ^ b ≥ 2 := Nat.one_le_pow b 2 (by norm_num) |>.trans_lt (by omega) |>.le
+          omega
+        · have hd' : 1 ≤ d := by omega
+          have hlhs_even : 2 ∣ (2 ^ a + 2 ^ b) := by
+            have h1 : 2 ∣ 2 ^ a := dvd_pow_self 2 (by omega : a ≠ 0)
+            have h2 : 2 ∣ 2 ^ b := dvd_pow_self 2 (by omega : b ≠ 0)
+            exact dvd_add h1 h2
+          have hrhs_odd : ¬ 2 ∣ (1 + 2 ^ d) := by
+            have h2d : 2 ∣ 2 ^ d := dvd_pow_self 2 (by omega : d ≠ 0)
+            intro ⟨m, hm⟩
+            have : 2 ∣ (1 + 2 ^ d - 2 ^ d) := Nat.dvd_sub' ⟨m, hm⟩ h2d
+            simp at this
+          exact hrhs_odd (heq.symm ▸ hlhs_even)
+      · -- a ≥ 1, c ≥ 1: divide by 2 and recurse
+        have ha' : 1 ≤ a := by omega
+        have hc' : 1 ≤ c := by omega
+        have hb' : 1 ≤ b := by omega
+        have hd' : 1 ≤ d := by omega
+        -- Factor: 2^a = 2 * 2^(a-1), etc.
+        have heq' : 2 ^ (a - 1) + 2 ^ (b - 1) = 2 ^ (c - 1) + 2 ^ (d - 1) := by
+          have fa : 2 ^ a = 2 * 2 ^ (a - 1) := by
+            conv_lhs => rw [show a = (a - 1) + 1 from by omega, pow_succ']
+          have fb : 2 ^ b = 2 * 2 ^ (b - 1) := by
+            conv_lhs => rw [show b = (b - 1) + 1 from by omega, pow_succ']
+          have fc : 2 ^ c = 2 * 2 ^ (c - 1) := by
+            conv_lhs => rw [show c = (c - 1) + 1 from by omega, pow_succ']
+          have fd : 2 ^ d = 2 * 2 ^ (d - 1) := by
+            conv_lhs => rw [show d = (d - 1) + 1 from by omega, pow_succ']
+          rw [fa, fb, fc, fd] at heq
+          omega
+        have ⟨hac, hbd⟩ := ih (a - 1) (b - 1) (c - 1) (d - 1)
+          (by omega) (by omega) (by omega) heq'
+        exact ⟨by omega, by omega⟩
+
 /-- Powers of 2 form a Sidon set: {2^0, 2^1, 2^2, ...} = {1, 2, 4, 8, ...}
 
 This is because 2^a + 2^b = 2^c + 2^d (with a ≤ b, c ≤ d) implies (a,b) = (c,d)
-by uniqueness of binary representation.
-
-**Proof sketch**: If 2^a + 2^b = 2^c + 2^d with a ≤ b, c ≤ d, then:
-- Case a < b, c < d: Factor as 2^a(1 + 2^(b-a)) = 2^c(1 + 2^(d-c)).
-  By 2-adic valuation (since 1 + 2^k is odd for k > 0), we get a = c.
-  Then 1 + 2^(b-a) = 1 + 2^(d-c), so b - a = d - c, hence b = d.
-- Case a = b (doubled): 2·2^a = 2^(a+1) = 2^c + 2^d.
-  If c < d, factor RHS as 2^c(1 + 2^(d-c)). Comparing 2-adic valuations:
-  v_2(LHS) = a+1, v_2(RHS) = c. So a+1 = c, but then 1 + 2^(d-c) = 1, impossible since d > c.
-  So c = d, giving 2·2^a = 2·2^c, hence a = c = b = d.
-
-**Proof status**: HARD - requires careful 2-adic valuation arguments.
-The key insight is comparing 2-adic valuations on both sides.
--/
-axiom isSidon_powers_of_two (k : ℕ) : IsSidon ((range k).image (2 ^ ·))
+by uniqueness of binary representation. Proof by strong induction on the minimum
+exponent, using parity to match the lowest bit position. -/
+theorem isSidon_powers_of_two (k : ℕ) : IsSidon ((range k).image (2 ^ ·)) := by
+  intro x y u v hx hy hu hv hxy huv heq
+  -- Extract exponents from membership in image
+  rw [mem_image] at hx hy hu hv
+  obtain ⟨a, _, rfl⟩ := hx
+  obtain ⟨b, _, rfl⟩ := hy
+  obtain ⟨c, _, rfl⟩ := hu
+  obtain ⟨d, _, rfl⟩ := hv
+  -- Convert ordering on 2^(·) to ordering on exponents
+  have hab : a ≤ b := by
+    by_contra h
+    push_neg at h
+    exact absurd (Nat.pow_lt_pow_right (by norm_num : 1 < 2) h) (by omega)
+  have hcd : c ≤ d := by
+    by_contra h
+    push_neg at h
+    exact absurd (Nat.pow_lt_pow_right (by norm_num : 1 < 2) h) (by omega)
+  -- Apply the core uniqueness lemma
+  have ⟨hac, hbd⟩ := pow2_sum_inj (a + c) a b c d le_rfl hab hcd heq
+  exact ⟨congr_arg (2 ^ ·) hac, congr_arg (2 ^ ·) hbd⟩
 
 /-- There exists a Sidon set of size at least √N / 2 in {1,...,N}.
 
