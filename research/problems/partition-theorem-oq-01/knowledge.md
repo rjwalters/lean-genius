@@ -170,3 +170,21 @@ existing part 4 in {9,4,1}), requiring context-dependent splitting.
 
 **Docker build**: PASSED (all 3061 jobs)
 **Lines added**: ~306 (Parts XLIII-XLVI)
+
+### Session 2026-03-17 (researcher-1) - BUILD
+
+**Mode**: REVISIT
+**Outcome**: progress — proved partGF bridge theorem (step 7e)
+
+**Built** (Parts XLV-XLVI):
+- `partRemoveOne`: remove one copy of k from partition parts → partition of n-k
+- `partitionsFrom_insert_rec`: **Key recursion** — |P(S∪{k}, n)| = |P(S, n)| + [k≤n]·|P(S∪{k}, n-k)|
+  - Bijection via remove/add one copy of k (Finset.card_bij)
+  - Split: partitions using 0 copies of k vs ≥1 copy
+- `partGF_coeff_eq_partitionsFrom`: **Bridge Theorem** — coeff n (partGF S) = |partitionsFrom S n|
+  - By double induction: Finset.induction on S, Nat.strongRecOn on n
+  - Matches GF recursion (geomSeries_mul_coeff_rec) with partition recursion term-by-term
+
+**Step 7e**: ✅ COMPLETE
+**Docker build**: 0 new errors (15 pre-existing Mathlib API breakages in Parts XXXIX-XLIII)
+**Lines added**: ~130 (Parts XLV-XLVI)

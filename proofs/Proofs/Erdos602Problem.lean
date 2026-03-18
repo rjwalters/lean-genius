@@ -64,7 +64,7 @@ def HasFiniteIntersection (A : SetFamily U I) (i j : I) : Prop :=
 
 -- Intersection has cardinality ≠ 1
 def IntersectionNotOne (A : SetFamily U I) (i j : I) : Prop :=
-  Cardinal.mk (A i ∩ A j) ≠ 1
+  Cardinal.mk ↥(A i ∩ A j) ≠ 1
 
 -- Combined condition for distinct pairs
 def ValidIntersection (A : SetFamily U I) (i j : I) : Prop :=
@@ -119,7 +119,7 @@ def FamilyHasPropertyB (A : SetFamily U I) : Prop :=
 
 -- Erdős's question: does every Erdős family have Property B?
 def ErdosQuestion602 : Prop :=
-  ∀ (U : Type*) (I : Type*) (A : SetFamily U I),
+  ∀ (U : Type) (I : Type) (A : SetFamily U I),
     IsErdosFamily A → FamilyHasPropertyB A
 
 /-
@@ -133,7 +133,7 @@ def ErdosConjecture602 : Prop := ErdosQuestion602
 
 -- Equivalently: no Erdős family is a counterexample
 def NoCounterexample : Prop :=
-  ¬∃ (U : Type*) (I : Type*) (A : SetFamily U I),
+  ¬∃ (U : Type) (I : Type) (A : SetFamily U I),
     IsErdosFamily A ∧ ¬FamilyHasPropertyB A
 
 -- These should be equivalent
@@ -193,10 +193,40 @@ def CountableIndex (I : Type*) : Prop := Cardinal.mk I ≤ Cardinal.aleph0
 def IsDisjointFamily (A : SetFamily U I) : Prop :=
   ∀ i j, i ≠ j → A i ∩ A j = ∅
 
-theorem disjoint_has_property_b {A : SetFamily U I} (hA : IsDisjointFamily A) :
+theorem disjoint_has_property_b {A : SetFamily U I} (hA : IsDisjointFamily A)
+    (hge2 : ∀ i, ∃ x y, x ∈ A i ∧ y ∈ A i ∧ x ≠ y) :
     FamilyHasPropertyB A := by
-  -- For disjoint family, color each set with both colors
-  sorry -- Requires constructing explicit coloring
+  -- Strategy: pick one element from each A i, color it true, everything else false.
+  -- Each A i has ≥ 2 elements, so one is true and at least one is false.
+  choose a ha using fun i => (hge2 i)
+  choose b hb using fun i => ha i
+  classical
+  -- Define coloring: element gets true iff it's the chosen representative of some A i
+  set c : TwoColoring U := fun u => if ∃ i, u = a i then true else false with hc_def
+  refine ⟨c, fun i hm => ?_⟩
+  obtain ⟨hai, hbi, hab_ne⟩ := hb i
+  -- a i is always colored true (since ∃ j, a i = a j with j = i)
+  have hca : c (a i) = true := if_pos ⟨i, rfl⟩
+  rcases hm with h_all_true | h_all_false
+  · -- All elements of A i colored true
+    -- b i ∈ A i, so c (b i) = true, meaning ∃ j, b i = a j
+    have hcb := h_all_true (b i) hbi
+    -- If no j satisfies b i = a j, then c (b i) = false, contradiction
+    by_cases hex : ∃ j, b i = a j
+    · obtain ⟨j, hjb⟩ := hex
+      by_cases hij : i = j
+      · exact hab_ne (hij ▸ hjb.symm)
+      · -- b i ∈ A i and b i = a j ∈ A j, but A i ∩ A j = ∅
+        have hmem : b i ∈ A i ∩ A j := ⟨hbi, hjb ▸ (hb j).1⟩
+        rw [hA i j hij] at hmem
+        exact hmem.elim
+    · -- c (b i) = false contradicts h_all_true
+      simp only [hc_def, if_neg hex] at hcb
+      exact absurd hcb (by decide)
+  · -- All elements of A i colored false, but c (a i) = true
+    have hca' := h_all_false (a i) hai
+    rw [hca] at hca'
+    exact absurd hca' (by decide)
 
 -- Almost disjoint families (finite intersections) are the interesting case
 def IsAlmostDisjoint (A : SetFamily U I) : Prop :=
@@ -215,23 +245,21 @@ def Is2ChromaticForcing (A : SetFamily U I) : Prop :=
 
 -- Counterexample would require this
 theorem counterexample_structure :
-    (∃ (U : Type*) (I : Type*) (A : SetFamily U I),
+    (∃ (U : Type) (I : Type) (A : SetFamily U I),
       IsErdosFamily A ∧ Is2ChromaticForcing A) ↔ ¬ErdosConjecture602 := by
   constructor
-  · intro ⟨U, I, A, hE, hF⟩ h602
-    have hB := h602 U I A hE
-    obtain ⟨c, hc⟩ := hB
+  · rintro ⟨U, I, A, hE, hF⟩ h602
+    obtain ⟨c, hc⟩ := h602 U I A hE
     obtain ⟨i, hi⟩ := hF c
     exact hc i hi
   · intro h
+    unfold ErdosConjecture602 ErdosQuestion602 at h
     push_neg at h
-    simp only [ErdosConjecture602, ErdosQuestion602, FamilyHasPropertyB,
-               IsValidColoring] at h
     obtain ⟨U, I, A, hE, hA⟩ := h
-    refine ⟨U, I, A, hE, ?_⟩
-    intro c
-    push_neg at hA
-    exact hA c
+    refine ⟨U, I, A, hE, fun c => ?_⟩
+    by_contra hm
+    push_neg at hm
+    exact hA ⟨c, hm⟩
 
 /-
 # Part 10: Problem Status
@@ -245,7 +273,7 @@ def erdos_602_status : String := "OPEN"
 -- Main formal statement
 theorem erdos_602_statement :
     ErdosConjecture602 ↔
-    ∀ (U : Type*) (I : Type*) (A : SetFamily U I),
+    ∀ (U : Type) (I : Type) (A : SetFamily U I),
       IsErdosFamily A → FamilyHasPropertyB A := by
   rfl
 
