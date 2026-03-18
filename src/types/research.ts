@@ -343,8 +343,6 @@ export interface ResearchProblem {
 
   significance?: number
   tractability?: number
-
-  leanFiles?: LeanFileInfo[]
 }
 
 /**
