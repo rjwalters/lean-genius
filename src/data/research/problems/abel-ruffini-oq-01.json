@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ASSESSED: InverseGaloisX4Sub2.lean has 1 real sorry (gal_card=8, requires ℚ(⁴√2)⊂ℝ argument). InverseGalois.lean has 2 real sorries: IGP conjecture (intentional OPEN) and symmetric_group_realizable (needs Hilbert irreducibility, not in Mathlib). InverseGaloisF20.lean and InverseGaloisD4.lean are both 0-sorry. No changes needed.",
+    "progressSummary": "PROGRESS: Removed redundant InverseGaloisX4Sub2.lean (D4 already has complete proof). Fixed and verified EulerTotientOQ04.lean (2 Mathlib API fixes, builds with 0 sorries, ~230 lines).",
     "builtItems": [
       "InverseGalois.lean: cyclotomic Galois theory, S₃ realization via Gal(X³-2)≅S₃ (905 lines, builds)",
       "InverseGaloisD4.lean: D₄ realization via |Gal(X⁴-2)| = 8 (666 lines, builds)",
@@ -54,8 +54,7 @@
       "The factorization (c-ζ)(c-ζ²)(c-ζ³)(c-ζ⁴) = c⁴+c³+c²+c+1 can be verified purely by ring arithmetic using hζ and hζ5",
       "InverseGaloisX4Sub2.lean was fully redundant with InverseGaloisD4.lean which already proves |Gal(X⁴-2)|=8 with 0 sorries via ℝ embedding argument",
       "Nat.eq_of_mul_eq_left renamed to mul_left_cancel₀ in recent Mathlib",
-      "Nat.mul_lt_mul_left replaces omega for multiplicative goals in Nat",
-      "InverseGaloisF20.lean actually has 0 sorries (grep count of 1 was matching a comment). The gal_card_dvd_20 is fully proved via tower argument."
+      "Nat.mul_lt_mul_left replaces omega for multiplicative goals in Nat"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -85,7 +84,7 @@
     "mathlib": []
   },
   "started": "2026-02-21T19:21:07.129Z",
-  "lastUpdate": "2026-03-17T23:15:00.000Z",
+  "lastUpdate": "2026-03-18T05:00:00.000Z",
   "significance": 6,
   "tractability": 6
 }
