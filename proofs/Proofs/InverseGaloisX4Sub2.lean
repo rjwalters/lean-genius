@@ -6,6 +6,7 @@ import Mathlib.FieldTheory.AbelRuffini
 import Mathlib.RingTheory.Polynomial.Eisenstein.Criterion
 import Mathlib.RingTheory.Polynomial.GaussLemma
 import Proofs.NthRootIrrationalOQ01
+import Proofs.InverseGaloisD4
 
 /-
 # Inverse Galois Problem: X⁴ - 2 and the Dihedral Group D₄
@@ -254,10 +255,11 @@ theorem two_dvd_x4_splitting_field_finrank :
     rw [← hcard]; exact four_dvd_x4_gal_card
   exact dvd_trans (⟨2, rfl⟩ : (2 : ℕ) ∣ 4) h4
 
-/-- |Gal(X⁴-2/ℚ)| = 8 (the dihedral group D₄). -/
+/-- |Gal(X⁴-2/ℚ)| = 8 (the dihedral group D₄).
+    Proved via the ℝ-embedding argument in InverseGaloisD4. -/
 theorem x_fourth_sub_2_gal_card :
-    Fintype.card (X ^ 4 - C (2 : ℚ) : ℚ[X]).Gal = 8 := by
-  sorry -- DEEP: requires ℚ(⁴√2) ⊂ ℝ argument
+    Fintype.card (X ^ 4 - C (2 : ℚ) : ℚ[X]).Gal = 8 :=
+  InverseGaloisD4.x4_sub_2_gal_card
 
 /-- |Gal(X⁴-2)| > 0. -/
 theorem x4_gal_card_pos : 0 < Fintype.card (X ^ 4 - C (2 : ℚ) : ℚ[X]).Gal :=
