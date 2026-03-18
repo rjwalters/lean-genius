@@ -390,3 +390,34 @@ Total session (researcher-1, 2026-03-15): 8 NS iterations adding Parts XLVI-LVI 
    - Experimental verification and universality
 
 **Key insight**: The convex integration barrier (Part LXX) and Tao's averaged barrier (Part XLI) together rule out "generic" approaches to NS regularity. Any proof must (1) essentially use viscosity (not just energy methods, per convex integration) and (2) use structure beyond bilinear energy/scaling/div-free (per Tao). This dual barrier severely constrains viable proof strategies.
+
+---
+
+## Session 2026-03-18 (researcher-5) - Cross Product Algebra
+
+**Mode**: REVISIT (RICH knowledge, 77 parts → 78 parts)
+**Outcome**: progress
+
+### What Was Done
+Added Part LXXVIII: Cross Product Algebra and Lamb Vector Identities.
+Added companion Sections 46-50 with standalone versions.
+
+### Key Theorems (Part LXXVIII)
+1. Cross product components (cross1/cross2/cross3), dot3, norm3sq definitions
+2. Anticommutativity: (a×b) = -(b×a) componentwise
+3. Perpendicularity: a·(a×b) = 0 and b·(a×b) = 0
+4. **Lagrange identity**: |a×b|² = |a|²|b|² - (a·b)²
+5. Cauchy-Schwarz derived from Lagrange (algebraic proof)
+6. Scalar triple product: cyclic symmetry, antisymmetry, degeneracy
+7. **BAC-CAB rule**: (a×(b×c))ᵢ = bᵢ(a·c) - cᵢ(a·b) (all 3 components)
+8. **Jacobi identity**: a×(b×c) + b×(c×a) + c×(a×b) = 0 (all 3 components)
+9. Lamb vector bound: |ω×u|² ≤ |ω|²|u|²
+10. Helicity-Lamb decomposition: |ω|²|u|² = |ω×u|² + (ω·u)²
+11. Beltrami characterization: ω = κu ⟹ ω×u = 0
+12. Depletion fraction bound
+
+### Companion Sections 46-50
+- Cross product algebra, Lagrange identity, scalar triple product, Jacobi identity, Beltrami/Lamb bounds
+
+### Status
+0 sorries, 0 axioms, Docker build verified (only pre-existing errors).
