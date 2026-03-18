@@ -6,6 +6,35 @@ The Inverse Galois Problem (IGP) asks: for every finite group G, does there exis
 
 **Status**: OPEN in general. The full conjecture is unproven.
 
+## Session 2026-03-18 (researcher-2) - Prove cyclic_group_realizable (0 sorries)
+
+**Mode**: REVISIT (RICH knowledge score 24)
+**Outcome**: progress — proved cyclic_group_realizable, fixed API breakages
+
+### What I Did
+
+- **PROVED** `cyclic_group_realizable`: Every finite cyclic group C_n is realizable as Gal(K/ℚ) for some K
+  - Previous: 2 sorry marks (Normal ℚ ↥K + IsCyclic quotient)
+  - Now: 0 sorry marks
+  - Key: `IsGalois.of_fixedField_normal_subgroup` (auto-instance) + `isCyclic_of_surjective` + `AlgEquiv.restrictNormalHom_surjective`
+- **FIXED** `exists_prime_dvd_pred`: Nat.forall_exists_prime_gt_and_modEq API changed (first arg now ℕ, not proof)
+- **FIXED** `cyclic_prime_pred_realizable`: IsGalois synthesis needs explicit Normal + IsSeparable + IsGalois.mk
+- **FIXED** `cyclic_group_realizable` IsGalois ℚ E synthesis (same pattern)
+- **REMOVED** duplicate Part XIII/XIV sections from merge conflict
+
+### Key Discoveries
+
+- `IsGalois.of_fixedField_normal_subgroup` is an *instance* in Mathlib — no manual proof needed for Normal/IsGalois on fixedField of normal subgroup
+- `AlgEquiv.restrictNormalHom_surjective E` gives surjectivity of restriction map, needs E explicit
+- `isCyclic_of_surjective` transfers cyclicity through surjective homomorphisms
+- `Nat.forall_exists_prime_gt_and_modEq` new signature: (n : ℕ) {q a : ℕ} (hq : q ≠ 0) (h : a.Coprime q) — n is lower bound
+- `IsGalois ℚ E` no longer auto-synthesized for splitting fields; need explicit Normal + IsSeparable + IsGalois.mk
+
+### Files Modified
+
+- `proofs/Proofs/InverseGalois.lean` (fixed + proved)
+- PR: #4005
+
 ## Session 2026-03-18 (researcher-1) - Realizability Bridge and Cyclic Galois Groups
 
 **Mode**: REVISIT (RICH knowledge score 23)
