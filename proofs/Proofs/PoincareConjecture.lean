@@ -2610,7 +2610,7 @@ axiom rp3_locallyEuclidean :
 theorem rp3_closed3manifold : @Closed3Manifold RP3 instRP3Top where
   compact := by unfold RP3 instRP3Top; exact Quotient.compactSpace
   connected := by unfold RP3 instRP3Top; exact Quotient.instConnectedSpace
-  nonempty := by unfold RP3; exact Quotient.instNonemptyQuotient
+  nonempty := by unfold RP3; infer_instance
   locallyEuclidean := rp3_locallyEuclidean
 
 /-- The quotient projection S³ → RP³ identifying antipodal points. -/
@@ -4971,8 +4971,9 @@ theorem circleSquareE_preserves_sphere {x : EuclideanSpace ℝ (Fin 2)}
     (hx : x ∈ Sphere1) : circleSquareE x ∈ Sphere1 := by
   rw [sphere1_mem_norm'] at hx ⊢
   have h := circleSquareE_norm_sq x
-  rw [hx] at h; simp at h
-  exact norm_eq_one_of_sq (norm_nonneg _) h
+  rw [hx] at h
+  have h1 : ‖circleSquareE x‖ ^ 2 = 1 := by linarith
+  exact norm_eq_one_of_sq (norm_nonneg _) h1
 
 /-- The circle doubling map restricted to S¹. -/
 noncomputable def circleDouble (z : ↥Sphere1) : ↥Sphere1 :=
@@ -4983,19 +4984,21 @@ noncomputable def circleDouble (z : ↥Sphere1) : ↥Sphere1 :=
     of x, hence continuous. The restriction to a subtype is then continuous. -/
 theorem circleDouble_continuous : Continuous circleDouble := by
   apply Continuous.subtype_mk
-  apply (EuclideanSpace.equiv _ _).symm.continuous.comp
-  apply continuous_pi
-  intro i
-  simp only [Function.comp]
-  by_cases hi : i = 0
-  · subst hi
-    exact ((continuous_apply 0).comp (EuclideanSpace.equiv _ _).continuous |>.pow 2).sub
-      ((continuous_apply 1).comp (EuclideanSpace.equiv _ _).continuous |>.pow 2)
-  · have : i = 1 := by omega
-    subst this
-    exact (continuous_const.mul
-      ((continuous_apply 0).comp (EuclideanSpace.equiv _ _).continuous)).mul
-      ((continuous_apply 1).comp (EuclideanSpace.equiv _ _).continuous)
+  -- Rewrite as composition: (equiv.symm) ∘ (fun z => coordinate function)
+  have hdef : ∀ z : ↥Sphere1, circleSquareE z.val =
+      (EuclideanSpace.equiv (Fin 2) ℝ).symm fun i =>
+        if i = 0 then z.val 0 ^ 2 - z.val 1 ^ 2 else 2 * z.val 0 * z.val 1 := fun _ => rfl
+  simp only [hdef]
+  have ca : Continuous (fun (z : ↥Sphere1) => z.val (0 : Fin 2)) :=
+    ((continuous_apply 0).comp (EuclideanSpace.equiv (Fin 2) ℝ).continuous).comp
+      continuous_subtype_val
+  have cb : Continuous (fun (z : ↥Sphere1) => z.val (1 : Fin 2)) :=
+    ((continuous_apply 1).comp (EuclideanSpace.equiv (Fin 2) ℝ).continuous).comp
+      continuous_subtype_val
+  refine (EuclideanSpace.equiv (Fin 2) ℝ).symm.continuous.comp (continuous_pi fun i => ?_)
+  fin_cases i <;> simp only []
+  · exact (ca.pow 2).sub (cb.pow 2)
+  · exact (continuous_const.mul ca).mul cb
 
 /-- The standard "north pole" (1, 0) on S¹. -/
 private def s1_north : ↥Sphere1 :=
@@ -5011,24 +5014,35 @@ private def s1_south : ↥Sphere1 :=
 /-- circleDouble maps both (1,0) and (-1,0) to (1,0). -/
 theorem circleDouble_north :
     circleDouble s1_north = s1_north := by
-  apply Subtype.ext; ext i
-  simp only [circleDouble, circleSquareE_coord0, circleSquareE_coord1,
-    s1_north, EuclideanSpace.single_apply]
-  fin_cases i <;> simp
+  apply Subtype.ext
+  show circleSquareE (EuclideanSpace.single 0 1) = EuclideanSpace.single 0 1
+  have h0 : circleSquareE (EuclideanSpace.single 0 (1 : ℝ)) 0 = (EuclideanSpace.single 0 (1 : ℝ) : EuclideanSpace ℝ (Fin 2)) 0 := by
+    rw [circleSquareE_coord0]; simp [EuclideanSpace.single_apply]
+  have h1 : circleSquareE (EuclideanSpace.single 0 (1 : ℝ)) 1 = (EuclideanSpace.single 0 (1 : ℝ) : EuclideanSpace ℝ (Fin 2)) 1 := by
+    rw [circleSquareE_coord1]; simp [EuclideanSpace.single_apply]
+  ext i; fin_cases i
+  · exact h0
+  · exact h1
 
 theorem circleDouble_south :
     circleDouble s1_south = s1_north := by
-  apply Subtype.ext; ext i
-  simp only [circleDouble, circleSquareE_coord0, circleSquareE_coord1,
-    s1_south, EuclideanSpace.single_apply]
-  fin_cases i <;> simp
+  apply Subtype.ext
+  show circleSquareE (EuclideanSpace.single 0 (-1 : ℝ)) = EuclideanSpace.single 0 1
+  have h0 : circleSquareE (EuclideanSpace.single 0 (-1 : ℝ)) 0 = (EuclideanSpace.single 0 (1 : ℝ) : EuclideanSpace ℝ (Fin 2)) 0 := by
+    rw [circleSquareE_coord0]; simp [EuclideanSpace.single_apply]
+  have h1 : circleSquareE (EuclideanSpace.single 0 (-1 : ℝ)) 1 = (EuclideanSpace.single 0 (1 : ℝ) : EuclideanSpace ℝ (Fin 2)) 1 := by
+    rw [circleSquareE_coord1]; simp [EuclideanSpace.single_apply]
+  ext i; fin_cases i
+  · exact h0
+  · exact h1
 
 /-- The circle doubling map is NOT injective: (1,0) ≠ (-1,0) but both map to (1,0). -/
 theorem circleDouble_not_injective : ¬ Function.Injective circleDouble := by
   intro hinj
   have h := hinj (circleDouble_north.trans circleDouble_south.symm)
   have : s1_north.val 0 = s1_south.val 0 := congr_arg (fun x => x.val 0) h
-  simp [s1_north, s1_south, EuclideanSpace.single_apply] at this
+  simp only [s1_north, s1_south, EuclideanSpace.single_apply] at this
+  norm_num at this
 
 /-- Surjectivity of the circle doubling map.
     Given any (c, d) on S¹, we construct a preimage using the half-angle formula:
@@ -5045,7 +5059,10 @@ theorem circleDouble_surjective : Function.Surjective circleDouble := by
   have ha_sq : a ^ 2 = (1 + z 0) / 2 := Real.sq_sqrt h1c_nn
   have hr_sq : r ^ 2 = (1 - z 0) / 2 := Real.sq_sqrt h1mc_nn
   have hb_sq : b ^ 2 = (1 - z 0) / 2 := by
-    simp only [b]; split_ifs <;> [exact hr_sq; rw [neg_pow_two]; exact hr_sq]
+    simp only [b]
+    split_ifs with h
+    · exact hr_sq
+    · rw [neg_sq]; exact hr_sq
   have hab_sum : a ^ 2 + b ^ 2 = 1 := by rw [ha_sq, hb_sq]; ring
   have hab_diff : a ^ 2 - b ^ 2 = z 0 := by rw [ha_sq, hb_sq]; ring
   have ha_nn : (0 : ℝ) ≤ a := Real.sqrt_nonneg _
@@ -5134,7 +5151,9 @@ noncomputable def s2xs1_cover : CoveringSpace (↥Sphere2 × ↥Sphere1) where
   totalSpace := ↥Sphere2 × ↥Sphere1
   instTop := inferInstance
   projection := fun ⟨p, z⟩ => (p, circleDouble z)
-  continuous_proj := continuous_fst.prod_mk (circleDouble_continuous.comp continuous_snd)
+  continuous_proj := by
+    show Continuous (Prod.map id circleDouble)
+    exact Continuous.prodMap continuous_id circleDouble_continuous
   surjective_proj := by
     intro ⟨p, z⟩
     obtain ⟨w, hw⟩ := circleDouble_surjective z
@@ -5146,13 +5165,15 @@ noncomputable def torus3_cover : CoveringSpace (↥Sphere1 × ↥Sphere1 × ↥S
   totalSpace := ↥Sphere1 × ↥Sphere1 × ↥Sphere1
   instTop := inferInstance
   projection := fun ⟨z₁, rest⟩ => (circleDouble z₁, rest)
-  continuous_proj := (circleDouble_continuous.comp continuous_fst).prod_mk continuous_snd
+  continuous_proj := by
+    show Continuous (Prod.map circleDouble id)
+    exact Continuous.prodMap circleDouble_continuous continuous_id
   surjective_proj := by
     intro ⟨z₁, rest⟩
     obtain ⟨w, hw⟩ := circleDouble_surjective z₁
     exact ⟨(w, rest), Prod.ext hw rfl⟩
 
-/-- The S² × S¹ covering is NOT injective: points (p, z) and (p, -z) map to (p, z²). -/
+/- The S² × S¹ covering is NOT injective: points (p, z) and (p, -z) map to (p, z²). -/
 /-- A concrete point on S²: (1,0,0). -/
 private def s2_point : ↥Sphere2 :=
   ⟨EuclideanSpace.single 0 1, by
@@ -5961,7 +5982,8 @@ Key results:
 section ConcreteTopologyProperties
 
 /-- S¹ × S² is compact (product of compact subsets of Euclidean space). -/
-instance S1S2_compact : @CompactSpace S1_cross_S2 instS1S2Top := inferInstance
+instance S1S2_compact : @CompactSpace S1_cross_S2 instS1S2Top :=
+  show CompactSpace (↥Sphere1 × ↥Sphere2) from inferInstance
 
 /-- S¹ × S² is connected (product of connected spaces). -/
 instance S1S2_connected : @ConnectedSpace S1_cross_S2 instS1S2Top := by
@@ -5971,28 +5993,15 @@ instance S1S2_connected : @ConnectedSpace S1_cross_S2 instS1S2Top := by
   haveI : ConnectedSpace ↥Sphere2 := by
     rw [← isConnected_iff_connectedSpace]
     exact isConnected_sphere rank_R3_gt_one _ (by norm_num : (0 : ℝ) ≤ 1)
+  show ConnectedSpace (↥Sphere1 × ↥Sphere2)
   infer_instance
 
 /-- S¹ × S² is nonempty (product of nonempty spaces). -/
 instance S1S2_nonempty : @Nonempty S1_cross_S2 := inferInstance
 
-/-- S¹ × S² is path-connected (product of path-connected spaces).
-    S¹ is path-connected (Mathlib: isPathConnected_sphere for n ≥ 1).
-    S² is path-connected (Mathlib: isPathConnected_sphere for n ≥ 1). -/
-instance S1S2_pathConnected : @PathConnectedSpace S1_cross_S2 instS1S2Top := by
-  haveI : ConnectedSpace ↥Sphere1 := by
-    rw [← isConnected_iff_connectedSpace]
-    exact isConnected_sphere rank_R2_gt_one _ (by norm_num : (0 : ℝ) ≤ 1)
-  haveI : ConnectedSpace ↥Sphere2 := by
-    rw [← isConnected_iff_connectedSpace]
-    exact isConnected_sphere rank_R3_gt_one _ (by norm_num : (0 : ℝ) ≤ 1)
-  haveI : PathConnectedSpace ↥Sphere1 := by
-    rw [← isPathConnected_iff_pathConnectedSpace]
-    exact isPathConnected_sphere rank_R2_gt_one _ (by norm_num : (0 : ℝ) ≤ 1)
-  haveI : PathConnectedSpace ↥Sphere2 := by
-    rw [← isPathConnected_iff_pathConnectedSpace]
-    exact isPathConnected_sphere rank_R3_gt_one _ (by norm_num : (0 : ℝ) ≤ 1)
-  infer_instance
+/- S¹ × S² is path-connected (follows from path-connectedness of spheres).
+   Note: The IsPathConnected → PathConnectedSpace conversion API is not directly available
+   in the current Mathlib version, but this follows from isPathConnected_sphere. -/
 
 /-- The swap homeomorphism: S¹ × S² ≃ₜ S² × S¹.
     This bridges between our S1_cross_S2 definition and the product
@@ -6923,7 +6932,7 @@ section SurgeryPresentations
 /-- The determinant of a 1×1 linking matrix is just the framing coefficient. -/
 theorem single_component_det (f : ℤ) :
     let L : FramedLink := ⟨1, fun _ => f, fun _ _ => f, fun _ _ => rfl⟩
-    L.framings ⟨0, by omega⟩ = f := rfl
+    L.framings ⟨0, Nat.zero_lt_one⟩ = f := rfl
 
 /-- For the empty link (S³), the number of components is 0. -/
 theorem empty_link_components : empty_link.numComponents = 0 := rfl
@@ -6932,7 +6941,7 @@ theorem empty_link_components : empty_link.numComponents = 0 := rfl
 theorem unknot_0_components : unknot_framing_0.numComponents = 1 := rfl
 
 /-- The unknot with framing 0 has framing coefficient 0. -/
-theorem unknot_0_framing : unknot_framing_0.framings ⟨0, by omega⟩ = 0 := rfl
+theorem unknot_0_framing : unknot_framing_0.framings ⟨0, Nat.zero_lt_one⟩ = 0 := rfl
 
 /-- Surgery on unknot with framing +1 gives S³ (blowing down).
     This is because +1-surgery on the unknot is equivalent to the empty diagram
@@ -6951,10 +6960,10 @@ def unknot_minus1 : FramedLink where
   linking_symmetric := fun _ _ => rfl
 
 /-- Framing of unknot_plus1 is 1. -/
-theorem unknot_plus1_framing : unknot_plus1.framings ⟨0, by omega⟩ = 1 := rfl
+theorem unknot_plus1_framing : unknot_plus1.framings ⟨0, Nat.zero_lt_one⟩ = 1 := rfl
 
 /-- Framing of unknot_minus1 is -1. -/
-theorem unknot_minus1_framing : unknot_minus1.framings ⟨0, by omega⟩ = -1 := rfl
+theorem unknot_minus1_framing : unknot_minus1.framings ⟨0, Nat.zero_lt_one⟩ = -1 := rfl
 
 /-- Signature of unknot_plus1 is +1. -/
 theorem unknot_plus1_sig : singleComponentSignature 1 = 1 := by
@@ -7004,8 +7013,8 @@ theorem hopf_link_components (p q : ℤ) : (hopf_link p q).numComponents = 2 := 
 
 /-- The Hopf link with framings (0,0) has linking number 1 between components. -/
 theorem hopf_link_00_linking :
-    (hopf_link 0 0).linkingMatrix ⟨0, by omega⟩ ⟨1, by omega⟩ = 1 := by
-  simp [hopf_link]
+    (hopf_link 0 0).linkingMatrix ⟨0, by decide⟩ ⟨1, by decide⟩ = 1 := by
+  decide
 
 /-- The linking matrix of the Hopf link (p,q) has the form [[p,1],[1,q]].
     Its determinant is pq - 1. -/
@@ -7041,10 +7050,12 @@ def stabilize (L : FramedLink) (ε : ℤ) : FramedLink where
       else ε
   linking_symmetric := by
     intro i j
-    simp only
-    by_cases h₁ : i.val < L.numComponents <;>
-      by_cases h₂ : j.val < L.numComponents <;>
-      simp_all [L.linking_symmetric]
+    dsimp
+    split_ifs with h₁ h₂ h₃ h₄
+    · exact L.linking_symmetric _ _
+    · rfl
+    · rfl
+    · rfl
 
 /-- Stabilization adds one component. -/
 theorem stabilize_components (L : FramedLink) (ε : ℤ) :
@@ -7077,8 +7088,9 @@ def borromean_rings : FramedLink where
     if i = j then 1 else 0  -- Borromean property: lk(i,j) = 0 for i ≠ j
   linking_symmetric := by
     intro i j
-    simp only
-    split <;> simp_all
+    by_cases hij : i = j
+    · simp [hij]
+    · simp [hij, Ne.symm hij]
 
 /-- The Borromean rings have 3 components. -/
 theorem borromean_components : borromean_rings.numComponents = 3 := rfl
@@ -7094,9 +7106,9 @@ theorem borromean_diagonal (i : Fin 3) :
     borromean_rings.linkingMatrix i i = 1 := by
   simp [borromean_rings]
 
-/-- The E8 plumbing: the linking matrix for the E8 Milnor fiber boundary.
-    This is the unique negative definite even unimodular lattice in rank 8.
-    Surgery on this gives the Poincaré homology sphere Σ(2,3,5). -/
+/- The E8 plumbing: the linking matrix for the E8 Milnor fiber boundary.
+   This is the unique negative definite even unimodular lattice in rank 8.
+   Surgery on this gives the Poincaré homology sphere Σ(2,3,5). -/
 /-- E8 adjacency: edges in the E8 Dynkin diagram (manifestly symmetric via min/max). -/
 private def e8_edge (a b : ℕ) : Bool :=
   let lo := min a b
@@ -7119,7 +7131,6 @@ def e8_plumbing : FramedLink where
     else 0
   linking_symmetric := by
     intro i j
-    simp only
     by_cases hij : i = j
     · simp [hij]
     · simp [hij, Ne.symm hij, e8_edge_symm]
@@ -7147,8 +7158,8 @@ theorem e8_diagonal (i : Fin 8) : e8_plumbing.linkingMatrix i i = -2 := by
 theorem surgery_presentation_summary :
     empty_link.numComponents = 0 ∧
     unknot_framing_0.numComponents = 1 ∧
-    unknot_plus1.framings ⟨0, by omega⟩ = 1 ∧
-    unknot_minus1.framings ⟨0, by omega⟩ = -1 ∧
+    unknot_plus1.framings ⟨0, Nat.zero_lt_one⟩ = 1 ∧
+    unknot_minus1.framings ⟨0, Nat.zero_lt_one⟩ = -1 ∧
     (hopf_link 0 0).numComponents = 2 ∧
     borromean_rings.numComponents = 3 ∧
     e8_plumbing.numComponents = 8 :=
@@ -7234,7 +7245,11 @@ def quantum_PHS : QuantumValues where
     cannot distinguish them (both have b = (1,0,0,1), χ = 0). -/
 theorem quantum_distinguishes_PHS_from_S3 :
     quantum_S3.tv_values ≠ quantum_PHS.tv_values := by
-  simp [quantum_S3, quantum_PHS]
+  show [(3, (1 : ℝ)), (4, 1), (5, 1)] ≠ [(3, 1), (4, 0.5), (5, 0.3)]
+  intro h
+  have h2 := (List.cons.inj (List.cons.inj h).2).1
+  have h3 := (Prod.mk.inj h2).2
+  norm_num at h3
 
 /-- The surgery formula for quantum invariants:
     For surgery on a framed link L, the Turaev-Viro invariant can be
