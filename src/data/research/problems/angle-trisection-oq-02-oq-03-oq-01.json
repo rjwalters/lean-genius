@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROVED galois_conjugate_count - AngleTrisectionOQ02OQ03.lean now has 0 sorries, 0 axioms",
+    "progressSummary": "PROGRESS: Fixed 2 build errors in OQ02OQ03.lean - now builds cleanly (0 errors). 2 axioms remain. OQ02OQ03OQ01 has 10 API drift errors.",
     "builtItems": [
       "Section XVI: Primitive Root Properties and Separability (zeta_ne_zero, zeta_pow_n_eq_one, minpoly_cos_separable, minpoly_cos_natDegree_pos, zeta_pow_pred_eq_conj, cos_eq_zeta_pow_re, sin_eq_zeta_pow_im, zeta_pow_norm_one, cos_2k_pi_div_n_bound)",
       "Section XVII: Cyclotomic Polynomial Connection (zeta_is_root_of_xn_sub_one, cyclotomic_natDegree_eq_totient)",
@@ -52,7 +52,9 @@
       "dvd_pow_two_is_pow_two: helper theorem for forward direction of Gauss-Wantzel",
       "gauss_wantzel_theorem: PROVED (was axiom) via direct degree argument from OQ02OQ03OQ01",
       "minpoly_cos_natDegree_eq: exported theorem in OQ02OQ03OQ01 for natDeg(minpoly ℚ cos) = φ(n)/2",
-      "galois_conjugate_count: 80-line proof eliminating last sorry in AngleTrisectionOQ02OQ03.lean"
+      "galois_conjugate_count: 80-line proof eliminating last sorry in AngleTrisectionOQ02OQ03.lean",
+      "Fixed build error: galois_conjugate_count congr issue (Nat.Coprime.symm → Nat.coprime_comm via Finset.filter_congr)",
+      "Fixed build error: omega failure by adding hk_pos_mem/hj_pos hypothesis to scope"
     ],
     "insights": [
       "Complex.exp_two_pi_mul_I gives exp(2πi)=1 directly for proving ζ^n=1",
@@ -98,7 +100,9 @@
       "Key insight: constructibility ↔ cos lies in 2-power extension, and degree of minpoly divides extension degree (tower law)",
       "dvd_pow_two_is_pow_two helper: positive divisor of 2^m is a power of 2 (by induction + prime factorization)",
       "All 3 axioms in OQ02OQ03.lean eliminated: gauss_wantzel_theorem, cos_minpoly_gal_card, wantzel_galois_characterization",
-      "galois_conjugate_count PROVED: coprime residues pair via k↦n-k (fixed-point free involution), cos injective on lower half (strictAntiOn_cos on [0,π]), |image| = |lower half| = φ(n)/2"
+      "galois_conjugate_count PROVED: coprime residues pair via k↦n-k (fixed-point free involution), cos injective on lower half (strictAntiOn_cos on [0,π]), |image| = |lower half| = φ(n)/2",
+      "Nat.Coprime.symm gives point-wise symmetry but congr 1 fails because filter predicates are different functions; use Finset.filter_congr with Nat.coprime_comm iff instead",
+      "omega in tactic blocks lacks outer scope hypotheses; must explicitly introduce needed bounds like hk_pos_mem k hkS before omega"
     ],
     "mathlibGaps": [
       "Maximal real subfield of cyclotomic field not in Mathlib",

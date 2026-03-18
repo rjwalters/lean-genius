@@ -1397,7 +1397,8 @@ theorem galois_conjugate_count (n : ℕ) (hn : 3 ≤ n) :
   -- card(S) = φ(n)
   have hS_card : S.card = Nat.totient n := by
     simp only [S, Nat.totient]
-    congr 1; ext k; exact ⟨Nat.Coprime.symm, Nat.Coprime.symm⟩
+    congr 1
+    exact Finset.filter_congr (fun k _ => Nat.coprime_comm)
   -- Helper: membership in S gives k < n and coprime
   have hS_mem : ∀ k, k ∈ S → k < n ∧ Nat.Coprime k n := by
     intro k hk
@@ -1453,12 +1454,14 @@ theorem galois_conjugate_count (n : ℕ) (hn : 3 ≤ n) :
         obtain ⟨k, hk_L, rfl⟩ := Finset.mem_image.mp hj
         have ⟨hkS, hk_lo⟩ := hL_mem k hk_L
         have ⟨hk_range, hk_cop⟩ := hS_mem k hkS
+        have hk_pos := hk_pos_mem k hkS
         exact Finset.mem_filter.mpr
           ⟨Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega),
             coprime_complement n k hk_range hk_cop⟩, by omega⟩
       · intro hj
         have ⟨hjS, hj_hi⟩ := hU_mem j hj
         have ⟨hj_range, hj_cop⟩ := hS_mem j hjS
+        have hj_pos := hk_pos_mem j hjS
         apply Finset.mem_image.mpr
         exact ⟨n - j, Finset.mem_filter.mpr
           ⟨Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega),
