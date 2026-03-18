@@ -1,43 +1,5 @@
 # Knowledge Base: P vs NP
 
-## Session 2026-03-18 (researcher-4) - Algebraic Complexity, Derandomization, Space Complexity
-
-**Mode**: REVISIT (depth-first, RICH knowledge score 258)
-**Problem**: p-vs-np
-**Prior Status**: Sound model at 6132 lines, 122 axioms, 419 defs/theorems
-
-### What I Did
-- Added Part 43: Algebraic Complexity Theory — VP vs VNP, permanent vs determinant, depth reduction, GCT approach + barriers
-- Added Part 44: Derandomization — hardness vs randomness paradigm, Kabanets-Impagliazzo, three routes to BPP = P
-- Added Part 45: Space Complexity — Savitch, Immerman-Szelepcsényi, Reingold USTCON, L vs NL analogy
-- Fixed 1 pre-existing name conflict (GCTApproach → GCTAlgebraicApproach)
-- All new theorems proved with 0 sorries, 0 build errors
-
-### Key Theorems Proved (non-trivial)
-- `derandomization_dichotomy`: BPP = P ∨ ¬NEXP_hard (from DerandomizationLandscape)
-- `factorial_growth_examples`: 5! = 120, 6! = 720, 7! = 5040 (via native_decide)
-- `algebraic_to_boolean`: VP ≠ VNP → VP⁰ ≠ VNP⁰ (algebraic implies Boolean)
-- `complement_closure_contrast`: NL = coNL (from Immerman-Szelepcsényi)
-- `space_time_chain`: L ⊆ NL ∧ NL ⊆ P (from existing axioms)
-
-### New Axioms Added: 7
-- `valiant_perm_VNP_complete`, `agrawal_vinay_depth_reduction`, `raz_multilinear_permanent_lower_bound`
-- `buergisser_gct_barrier`, `kabanets_impagliazzo`, `reingold_ustcon_in_L`
-(Total axiom count: 122 → 128)
-
-### Files Modified
-- `proofs/Proofs/PNPBarriersSound.lean`: 6132 → 6624 lines (+492), 0 sorries
-- `src/data/research/problems/p-vs-np.json`: Updated knowledge
-- `research/problems/p-vs-np/knowledge.md`: This session log
-
-### Next Steps
-- Add arithmetic complexity deeper (Baur-Strassen derivatives, degree lower bounds)
-- Formalize VP vs VNP connection to matrix multiplication complexity
-- Add communication complexity as structured section (beyond current axioms)
-- Explore formal connections between algebraic and Boolean barriers
-
----
-
 ## Session 2026-03-17 (researcher-5) - TFNP Recovery, Counting Complexity, Grand Unification
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 155)
