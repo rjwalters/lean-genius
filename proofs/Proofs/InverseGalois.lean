@@ -592,18 +592,22 @@ theorem no_root_of_irreducible_degree_ndvd
   intro x hroot
   apply hndvd
   -- minpoly F x divides p (since aeval x p = 0)
+  have hx_int : IsIntegral F x := .of_finite F x
   have hdvd : minpoly F x ∣ p := minpoly.dvd F x hroot
-  -- Since p is irreducible and minpoly divides p, they are associated
-  have hassoc := hp.associated_of_dvd hdvd (minpoly.ne_zero_of_finite F x)
+  -- Since both are irreducible and minpoly divides p, they are associated
+  have hmin_irr := minpoly.irreducible hx_int
+  have hassoc := hmin_irr.associated_of_dvd hp hdvd
   -- So natDegree(minpoly) = natDegree(p)
   have hdegeq : (minpoly F x).natDegree = p.natDegree := by
-    have := hassoc.natDegree_eq
-    rwa [this]
+    obtain ⟨u, hu⟩ := hassoc
+    rw [← hu]
+    exact (Polynomial.natDegree_mul_isUnit (isUnit_unit u)).symm
   -- [F(x):F] = natDegree(minpoly F x), and [F(x):F] divides [K:F] by tower law
   rw [← hdegeq]
-  have hx_int : IsIntegral F x := .of_finite F x
-  have htower := FiniteDimensional.finrank_mul_finrank F F⟮x⟯ K
-  rw [IntermediateField.adjoin.finrank hx_int] at htower
+  set Fx : IntermediateField F K := IntermediateField.adjoin F {x}
+  have htower := Module.finrank_mul_finrank F Fx K
+  rw [show Module.finrank F Fx = (minpoly F x).natDegree from
+    IntermediateField.adjoin.finrank hx_int] at htower
   exact ⟨_, htower.symm⟩
 
 /-- X²+X+1 is the 3rd cyclotomic polynomial, and is irreducible over ℚ. -/
@@ -618,8 +622,8 @@ theorem x_sq_add_x_add_1_irreducible :
 
 theorem x_sq_add_x_add_1_natDegree :
     (X ^ 2 + X + 1 : ℚ[X]).natDegree = 2 := by
-  rw [x_sq_add_x_add_1_eq_cyclotomic_3]
-  simp [Polynomial.natDegree_cyclotomic]
+  rw [x_sq_add_x_add_1_eq_cyclotomic_3, Polynomial.natDegree_cyclotomic]
+  decide
 
 /--
 X²+X+1 has no root in any degree 3 extension of ℚ, because its degree 2
@@ -639,7 +643,7 @@ This is the difference-of-cubes identity.
 -/
 theorem x_cube_sub_factor {R : Type*} [CommRing R] (α : R) :
     (X : R[X]) ^ 3 - C (α ^ 3) = (X - C α) * (X ^ 2 + C α * X + C (α ^ 2)) := by
-  ring
+  simp only [map_pow, map_mul]; ring
 
 /--
 If β is a root of X²+αX+α² and α is invertible, then β/α (= β * α⁻¹)
@@ -652,8 +656,15 @@ theorem root_of_cofactor_gives_cube_root_of_unity
     (hroot : β ^ 2 + α * β + α ^ 2 = 0) :
     (β * α⁻¹) ^ 2 + (β * α⁻¹) + 1 = 0 := by
   have hα2 : α ^ 2 ≠ 0 := pow_ne_zero 2 hα
-  field_simp
-  nlinarith [hroot]
+  suffices h : α ^ 2 * ((β * α⁻¹) ^ 2 + (β * α⁻¹) + 1) = 0 from
+    (mul_eq_zero.mp h).resolve_left hα2
+  have hi : α * α⁻¹ = 1 := mul_inv_cancel₀ hα
+  have hi2 : α ^ 2 * α⁻¹ ^ 2 = 1 := by rw [← mul_pow, hi, one_pow]
+  have hi1 : α ^ 2 * α⁻¹ = α := by rw [sq, mul_assoc, hi, mul_one]
+  have expand : α ^ 2 * (β * α⁻¹) ^ 2 = β ^ 2 * (α ^ 2 * α⁻¹ ^ 2) := by ring
+  have expand2 : α ^ 2 * (β * α⁻¹) = β * (α ^ 2 * α⁻¹) := by ring
+  rw [mul_add, mul_add, expand, hi2, mul_one, expand2, hi1, mul_one]
+  linarith [hroot]
 
 /--
 In AdjoinRoot(X³-2), the quotient polynomial X²+αX+α² (where α = root)
@@ -667,17 +678,19 @@ theorem x_cube_sub_2_monic : (X ^ 3 - C (2 : ℚ) : ℚ[X]).Monic :=
 -- Helper: Module.finrank ℚ (AdjoinRoot (X³-2)) = 3
 theorem adjoin_root_x_cube_sub_2_finrank :
     Module.finrank ℚ (AdjoinRoot (X ^ 3 - C (2 : ℚ) : ℚ[X])) = 3 := by
-  have hpb := AdjoinRoot.powerBasis x_cube_sub_2_monic
-  rw [hpb.finrank, AdjoinRoot.powerBasis_dim, x_cube_sub_2_natDegree]
+  have hpb := AdjoinRoot.powerBasis x_cube_sub_2_monic.ne_zero
+  rw [hpb.finrank]
+  exact x_cube_sub_2_natDegree
 
 -- Helper: AdjoinRoot.root of X³-2 is nonzero (since α³ = 2 ≠ 0)
 theorem adjoin_root_x_cube_sub_2_root_ne_zero :
     AdjoinRoot.root (X ^ 3 - C (2 : ℚ) : ℚ[X]) ≠ 0 := by
   intro h
   have heval := AdjoinRoot.eval₂_root (X ^ 3 - C (2 : ℚ) : ℚ[X])
-  simp [map_sub, map_ofNat] at heval
-  rw [h] at heval
-  simp at heval
+  simp only [Polynomial.eval₂_sub, Polynomial.eval₂_pow, Polynomial.eval₂_X,
+    Polynomial.eval₂_C, h, zero_pow (by decide : 3 ≠ 0), zero_sub, neg_eq_zero,
+    map_ofNat] at heval
+  exact absurd heval two_ne_zero
 
 -- Helper: connecting ring-level equation to aeval
 theorem aeval_x_sq_add_x_add_1 {K : Type*} [CommRing K] [Algebra ℚ K] (x : K) :
@@ -725,7 +738,12 @@ theorem cube_root_ratio_satisfies_cyclotomic
     exact (mul_eq_zero.mp h0).resolve_left hsub
   -- Now divide by b² to get (a/b)² + (a/b) + 1 = 0
   have hb2 : b ^ 2 ≠ 0 := pow_ne_zero 2 hb
-  have : (a * b⁻¹) ^ 2 + (a * b⁻¹) + 1 = (a ^ 2 + a * b + b ^ 2) * (b⁻¹) ^ 2 := by ring
+  have : (a * b⁻¹) ^ 2 + (a * b⁻¹) + 1 = (a ^ 2 + a * b + b ^ 2) * (b⁻¹) ^ 2 := by
+    have h1 : b ^ 2 * b⁻¹ ^ 2 = 1 := by rw [← mul_pow, mul_inv_cancel₀ hb, one_pow]
+    have h2 : b * b⁻¹ ^ 2 = b⁻¹ := by rw [sq, ← mul_assoc, mul_inv_cancel₀ hb, one_mul]
+    have expand : (a ^ 2 + a * b + b ^ 2) * b⁻¹ ^ 2 =
+        a ^ 2 * b⁻¹ ^ 2 + a * (b * b⁻¹ ^ 2) + b ^ 2 * b⁻¹ ^ 2 := by ring
+    rw [expand, h1, h2]; ring
   rw [this, hcofactor, zero_mul]
 
 -- Helper: X³-2 is separable (irreducible in char 0)
@@ -748,6 +766,7 @@ theorem gal_card_dvd_six :
     ⟨Polynomial.SplittingField.splits p⟩
   -- Gal embeds injectively into Perm(rootSet) via galActionHom
   have hinj := Polynomial.Gal.galActionHom_injective p p.SplittingField
+  haveI : DecidableEq (↥(p.rootSet p.SplittingField)) := Classical.typeDecidableEq _
   -- By Lagrange, |Gal| divides |Perm(rootSet)|
   have hdvd : Nat.card p.Gal ∣ Nat.card (Equiv.Perm (p.rootSet p.SplittingField)) :=
     Subgroup.card_dvd_of_injective _ hinj
@@ -820,9 +839,12 @@ theorem two_dvd_splitting_field_finrank :
     rw [← hmin, x_sq_add_x_add_1_natDegree]
   -- natDegree(minpoly) divides finrank (tower law)
   have hω_int : IsIntegral ℚ ω := .of_finite ℚ ω
-  have htower := Module.finrank_mul_finrank ℚ ℚ⟮ω⟯
+  set Kω : IntermediateField ℚ (X ^ 3 - C (2 : ℚ) : ℚ[X]).SplittingField :=
+    IntermediateField.adjoin ℚ {ω}
+  have htower := Module.finrank_mul_finrank ℚ Kω
     (X ^ 3 - C (2 : ℚ) : ℚ[X]).SplittingField
-  rw [IntermediateField.adjoin.finrank hω_int, hdeg] at htower
+  rw [show Module.finrank ℚ Kω = (minpoly ℚ ω).natDegree from
+    IntermediateField.adjoin.finrank hω_int, hdeg] at htower
   exact ⟨_, htower.symm⟩
 
 theorem splitting_field_x_cube_sub_2_finrank :
@@ -882,6 +904,7 @@ theorem x_cube_sub_2_gal_iso_s3_proved :
     ⟨Polynomial.SplittingField.splits p⟩
   -- galActionHom is injective
   have hinj := Polynomial.Gal.galActionHom_injective p p.SplittingField
+  haveI : DecidableEq (↥(p.rootSet p.SplittingField)) := Classical.typeDecidableEq _
   -- |rootSet| = 3
   have hcard_root : Fintype.card (p.rootSet p.SplittingField) = 3 := by
     rw [Polynomial.card_rootSet_eq_natDegree x_cube_sub_2_separable
@@ -900,7 +923,119 @@ theorem x_cube_sub_2_gal_iso_s3_proved :
   -- Transfer via rootSet ≃ Fin 3
   have hfin : p.rootSet p.SplittingField ≃ Fin 3 :=
     Fintype.equivFinOfCardEq hcard_root
-  exact ⟨hiso.trans (Equiv.permCongr hfin)⟩
+  exact ⟨hiso.trans { hfin.permCongr with
+    map_mul' := fun f g => by ext x; simp [Equiv.permCongr_apply] }⟩
+
+-- ============================================================================
+-- Part XIII: (ℤ/nℤ)ˣ Realizability Bridge
+-- ============================================================================
+
+/-
+## Part XIII: (ℤ/nℤ)ˣ is Realizable over ℚ
+
+The cyclotomic Galois theory (Parts II-IV) establishes Gal(Φₙ/ℚ) ≅ (ℤ/nℤ)ˣ.
+Here we package this as a formal realizability statement: the group (ℤ/nℤ)ˣ
+appears as the Galois group of a Galois extension of ℚ.
+
+This covers:
+- Cyclic groups C_{p-1} for primes p (since (ℤ/pℤ)ˣ ≅ C_{p-1})
+- Products like C₂ × C₂ (since (ℤ/8ℤ)ˣ ≅ C₂ × C₂)
+- All groups of the form (ℤ/nℤ)ˣ for n > 0
+-/
+
+/-- (ℤ/nℤ)ˣ is realizable as a Galois group over ℚ.
+    Witness: K = SplittingField(Φₙ(X)) with Gal(K/ℚ) ≅ (ℤ/nℤ)ˣ. -/
+theorem units_zmod_realizable (n : ℕ) [NeZero n] :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K), Nonempty ((ZMod n)ˣ ≃* (K ≃ₐ[ℚ] K)) := by
+  let p := Polynomial.cyclotomic n ℚ
+  have : Normal ℚ p.SplittingField := inferInstance
+  have : Algebra.IsSeparable ℚ p.SplittingField := inferInstance
+  exact ⟨p.SplittingField,
+    inferInstance, inferInstance, inferInstance,
+    IsGalois.mk,
+    ⟨(cyclotomic_galois_group_iso_units_zmod n).symm⟩⟩
+
+-- ============================================================================
+-- Part XIV: Toward Cyclic Group Realizability
+-- ============================================================================
+
+/-
+## Part XIV: Toward General Cyclic Group Realizability
+
+**Goal**: Every finite cyclic group C_n is realizable as a Galois group over ℚ.
+
+**Proof strategy** (requires Dirichlet's theorem + Galois correspondence):
+1. By Dirichlet's theorem (`Nat.forall_exists_prime_gt_and_modEq` from
+   `Mathlib.NumberTheory.LSeries.PrimesInAP`, wrapped in `Proofs.DirichletsTheorem`),
+   for any n > 0, there exists a prime p ≡ 1 (mod n), giving n | (p-1).
+2. The p-th cyclotomic field has Galois group (ℤ/pℤ)ˣ ≅ C_{p-1} (Part II-III).
+3. Since n | (p-1), the cyclic group C_{p-1} has a unique subgroup of order (p-1)/n.
+4. By the Galois correspondence (`IsGalois.intermediateFieldEquivSubgroup` from
+   `Mathlib.FieldTheory.Galois.Basic`), the fixed field K of this subgroup satisfies:
+   - [K:ℚ] = n
+   - K/ℚ is Galois (since (ℤ/pℤ)ˣ is abelian, all subgroups are normal)
+   - Gal(K/ℚ) ≅ C_{p-1} / subgroup ≅ C_n
+
+**What's proven below**: For prime p, the cyclotomic Galois group is cyclic of
+order p-1. This combines our cyclotomic theory with the standard result that
+finite field unit groups are cyclic.
+
+**What's sorry**: The general cyclic realizability. The Galois correspondence step
+(constructing intermediate fields from subgroups and showing the quotient Galois
+group has the right structure) needs careful type-level plumbing.
+
+**Mathlib infrastructure available but not yet connected**:
+- `IntermediateField.fixedField` — maps subgroup to fixed field
+- `IntermediateField.finrank_fixedField_eq_card` — [L:fixedField(H)] = |H|
+- `IsGalois.intermediateFieldEquivSubgroup` — the Galois correspondence
+- `Nat.forall_exists_prime_gt_and_modEq` — Dirichlet's theorem (in Proofs.DirichletsTheorem)
+-/
+
+/-- For prime p, the Galois group of the p-th cyclotomic polynomial is cyclic.
+    This follows from the isomorphism Gal ≅ (ℤ/pℤ)ˣ and the fact that the
+    units of a finite field form a cyclic group (FiniteField.isCyclic). -/
+theorem prime_cyclotomic_galois_isCyclic (p : ℕ) [hp : Fact (Nat.Prime p)] :
+    IsCyclic (Polynomial.cyclotomic p ℚ).Gal := by
+  let e := cyclotomic_galois_group_iso_units_zmod p
+  obtain ⟨g, hg⟩ := IsCyclic.exists_generator (α := (ZMod p)ˣ)
+  exact ⟨⟨e.symm g, fun x => by
+    obtain ⟨n, hn⟩ := hg (e x)
+    exact ⟨n, by
+      show e.symm g ^ n = x
+      have hn' : g ^ n = e x := hn
+      rw [← map_zpow e.symm, hn', e.symm_apply_apply]⟩⟩⟩
+
+/-- For prime p, the Galois group of the p-th cyclotomic polynomial has order p-1.
+    Combined with `prime_cyclotomic_galois_isCyclic`, this shows that C_{p-1}
+    is realizable for every prime p. -/
+theorem prime_cyclotomic_galois_card (p : ℕ) [Fact (Nat.Prime p)] :
+    Fintype.card (Polynomial.cyclotomic p ℚ).Gal = p - 1 := by
+  rw [cyclotomic_galois_group_card]
+  exact Nat.totient_prime (Fact.out)
+
+/-- Every finite cyclic group C_n is realizable as a Galois group over ℚ.
+
+    Proof uses Dirichlet's theorem (primes in arithmetic progressions) and
+    the Galois correspondence for intermediate fields of cyclotomic extensions.
+    See Part XIV documentation above for the full proof strategy.
+
+    **Status**: sorry — the Dirichlet step is in Mathlib (and in
+    `Proofs.DirichletsTheorem`), but connecting the Galois correspondence
+    for intermediate fields requires additional type-level work. -/
+theorem cyclic_group_realizable (n : ℕ) (hn : 0 < n) :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K),
+      IsCyclic (K ≃ₐ[ℚ] K) ∧ Fintype.card (K ≃ₐ[ℚ] K) = n := by
+  sorry
+  -- Proof outline:
+  -- 1. By Dirichlet (Nat.forall_exists_prime_gt_and_modEq), ∃ prime p ≡ 1 (mod n)
+  -- 2. Gal(ℚ(ζ_p)/ℚ) ≅ (ℤ/pℤ)ˣ ≅ C_{p-1} with n | (p-1)
+  -- 3. Let H = unique subgroup of (ℤ/pℤ)ˣ of order (p-1)/n
+  -- 4. K = IntermediateField.fixedField (H mapped to Gal via the isomorphism)
+  -- 5. [K:ℚ] = |Gal|/|H| = (p-1)/((p-1)/n) = n
+  -- 6. K/ℚ is Galois (H is normal since (ℤ/pℤ)ˣ is abelian)
+  -- 7. Gal(K/ℚ) ≅ (ℤ/pℤ)ˣ / H ≅ C_n
 
 -- ============================================================================
 -- Part XIII: (ℤ/nℤ)ˣ Realizability Bridge
