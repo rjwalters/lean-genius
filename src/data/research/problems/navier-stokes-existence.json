@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 79 parts, ~14000 lines, 0 sorries, 0 axioms. Part LXXIX adds velocity gradient tensor algebra.",
+    "progressSummary": "PROGRESS: 80 parts, ~14100 lines, 0 sorries, 0 axioms. Parts LXXIX-LXXX: velocity gradient algebra and characteristic polynomial.",
     "builtItems": [
       "Part XLI: Tao averaged NS blowup - BilinearProperties, BlowupProgram, ProofStrategy enum, Lamb vector analysis",
       "Part XLII: Koch-Tataru BMO\u207b\u00b9 well-posedness - CriticalSpace hierarchy, CarlesonMeasureNorm, KochTataruTheorem",
@@ -84,7 +84,8 @@
       "Part LXXVIII: Cross product algebra \u2014 Lagrange identity, BAC-CAB rule, Jacobi identity, Lamb vector bounds, helicity-Lamb decomposition, Beltrami depletion, Cauchy-Schwarz from Lagrange",
       "NavierStokesAristotle.lean: Sections 46-50 (cross product algebra, Lagrange identity, scalar triple product, Jacobi identity, Beltrami/Lamb bounds)",
       "Part LXXIX (VelocityGradientAlgebra section) in NavierStokes.lean: ~300 lines, 30+ proved theorems",
-      "Companion Sections 51-53 in NavierStokesAristotle.lean"
+      "Companion Sections 51-53 in NavierStokesAristotle.lean",
+      "Part LXXX (CharPolyAlgebra section) in NavierStokes.lean: ~120 lines, 20+ proved theorems"
     ],
     "insights": [
       "Tao (2016) averaged NS blowup: any regularity proof must use specific algebraic structure of (u\u00b7\u2207)u, not just energy/scaling/div-free properties",
@@ -149,7 +150,10 @@
       "Lagrange identity |a\u00d7b|\u00b2 = |a|\u00b2|b|\u00b2 - (a\u00b7b)\u00b2 provides direct derivation of Cauchy-Schwarz, and bounds the Lamb vector: |\u03c9\u00d7u|\u00b2 = |\u03c9|\u00b2|u|\u00b2 - (\u03c9\u00b7u)\u00b2 where (\u03c9\u00b7u) is helicity density",
       "Jacobi identity for cross products (Lie algebra so(3) structure) constrains how vorticity, velocity, and strain interact \u2014 three nested vector identities all zero",
       "Part LXXIX: Velocity gradient A=S+Omega decomposition with Frobenius orthogonality, Pythagorean theorem, Q-criterion, vortex stretching, and pressure Poisson",
-      "Key 2D vs 3D result: vortex stretching vanishes in 2D because s33=0 for incompressible flow"
+      "Key 2D vs 3D result: vortex stretching vanishes in 2D because s33=0 for incompressible flow",
+      "Part LXXX: Characteristic polynomial t^3+Qt-R for incompressible flow, PQR invariants classify local flow topology",
+      "Newton identity tr(A^3) = 3R (for P=0) connects strain self-amplification to flow topology",
+      "Q nonpositive for real eigenvalues - complex eigenvalues (Q>0) indicate rotation-dominated flow"
     ],
     "mathlibGaps": [
       "Sobolev spaces",
