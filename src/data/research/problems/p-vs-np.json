@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 3 axioms (125→122) by proving EXP_subset_RE (transitivity), ACC0_subset_NC1 (transitivity), MIP_subset_MIP_star (MIP=NEXP⊆RE=MIP*). 6132 lines, 122 axioms, 351 theorems/defs, 0 sorries.",
+    "progressSummary": "PROGRESS: Soundness fix (SunflowerFree opaque) + 6 axiom eliminations (122→119). Build passes with 0 sorries, 119 axioms, 6059 lines.",
     "builtItems": [
       {
         "name": "P",
@@ -521,7 +521,42 @@
       "p_vs_np_master_summary theorem (extended to 12 components, proved)",
       "PROVED EXP_subset_RE from EXP_subset_NEXP + NEXP_subset_RE (was axiom)",
       "PROVED ACC0_subset_NC1 from ACC0_subset_TC0 + TC_k_subset_NC_k_succ 0 (was axiom)",
-      "PROVED MIP_subset_MIP_star from babai_fortnow_lund_MIP_eq_NEXP + MIP_star_eq_RE + NEXP_subset_RE (was axiom)"
+      "PROVED MIP_subset_MIP_star from babai_fortnow_lund_MIP_eq_NEXP + MIP_star_eq_RE + NEXP_subset_RE (was axiom)",
+      {
+        "name": "SunflowerFree_opaque",
+        "description": "Made SunflowerFree opaque to fix soundness bug (previously derived False)",
+        "proven": true
+      },
+      {
+        "name": "hastad_switching_lemma_proved",
+        "description": "Converted from axiom to theorem (trivially True)",
+        "proven": true
+      },
+      {
+        "name": "rossman_clique_formula_proved",
+        "description": "Converted from axiom to theorem (trivially True)",
+        "proven": true
+      },
+      {
+        "name": "grochow_pitassi_IPS_proved",
+        "description": "Converted from axiom to theorem (trivially True)",
+        "proven": true
+      },
+      {
+        "name": "mcsp_np_hardness_barrier_proved",
+        "description": "Converted from axiom to theorem (follows from razborov_rudich)",
+        "proven": true
+      },
+      {
+        "name": "nash_PPAD_hard_proved",
+        "description": "Converted from axiom to theorem (trivially True)",
+        "proven": true
+      },
+      {
+        "name": "GapP_closed_subtraction_proved",
+        "description": "Converted from axiom to theorem (trivially True)",
+        "proven": true
+      }
     ],
     "insights": [
       "Same abstract model triviality as PNPBarriers - Program.decide allows arbitrary functions",
@@ -616,7 +651,10 @@
       "Grand Unification master theorem extended to 12 components (added Shannon, MIP*=RE)",
       "EXP_subset_RE redundant: follows from EXP⊆NEXP⊆RE by Set.Subset.trans",
       "ACC0_subset_NC1 redundant: follows from ACC0⊆TC0⊆NC1 by Set.Subset.trans",
-      "MIP_subset_MIP_star redundant: MIP=NEXP (BFL) and MIP*=RE, with NEXP⊆RE gives the containment by rewriting"
+      "MIP_subset_MIP_star redundant: MIP=NEXP (BFL) and MIP*=RE, with NEXP⊆RE gives the containment by rewriting",
+      "SunflowerFree def was trivially True, combined with erdos_rado_sunflower derived False - fixed by making opaque",
+      "Three placeholder axioms (hastad_switching_lemma, rossman_clique_formula, grochow_pitassi_IPS) ended with True and were convertible to theorems",
+      "Three regression axioms (mcsp_np_hardness_barrier, nash_PPAD_hard, GapP_closed_subtraction) were supposed to be theorems per header - converted back"
     ],
     "mathlibGaps": [
       "Turing machines",
