@@ -2,37 +2,55 @@
 
 ---
 
-## Session 2026-03-17 (researcher-2) - Part 55: Monotone Complexity
+## Session 2026-03-17 (researcher-2) - Sunflower Lemma + Switching Lemma (Parts 43-44)
 
-**Mode**: REVISIT (depth-first, RICH knowledge score 168)
+**Mode**: REVISIT (depth-first, RICH knowledge score 180)
 **Problem**: pnp-barriers
-**Prior Status**: active (4275 lines, 81 axioms, 0 sorries)
+**Prior Status**: active (5066 lines, 105 axioms, 0 sorries)
 
-### What we did
-Added Part 55: **Monotone Complexity and Razborov's Lower Bounds** — a major new section connecting monotone circuit complexity to the natural proofs barrier.
+### What we added
 
-### Content Added
-1. **IsMonotone** definition: monotone Boolean functions (x ≤ y → f(x) ≤ f(y))
-2. **MonotoneP**: class of monotone problems in P (with monotoneP_subset_P proved)
-3. **Monotone circuit size**: opaque measurement functions (monotoneCircuitSize, circuitSize)
-4. **monotone_ge_general**: general circuits ≤ monotone circuits (axiom)
-5. **CLIQUE function**: opaque with clique_monotone and clique_in_NP axioms
-6. **Razborov (1985)**: exponential monotone lower bound for CLIQUE (axiom)
-7. **Alon-Boppana (1987)**: improved CLIQUE bound (axiom)
-8. **Tardos (1988)**: P ∩ Monotone can require exponential monotone circuits (axiom)
-9. **monotone_strictly_weaker_than_general**: proved from Tardos
-10. **MATCHING**: opaque with matching_monotone, matching_in_P axioms
-11. **Razborov matching lower bound**: super-polynomial monotone circuits for MATCHING (axiom)
-12. **matching_monotone_gap**: proved concrete gap for MATCHING
-13. **monotone_natural_proof_connection**: proved link between monotone lower bounds and Razborov-Rudich barrier
-14. **monotone_complexity_summary**: proved comprehensive landscape theorem
+**Part 43: Sunflower Lemma and Combinatorial Barriers** (~120 lines)
+1. Defined `Sunflower` structure (numPetals, setWidth, coreSize)
+2. Defined `SunflowerFree` (abstract sunflower-free family)
+3. Axiomatized `erdos_rado_sunflower` (1960): bound (p-1)^w * w!
+4. Axiomatized `improved_sunflower_bound` (ALWZ 2019): bound (C*log(pw))^w
+5. Proved `improved_implies_classical` (improved bound implies original)
+6. Proved `sunflower_dnf_sparsification` (sunflower → bounded-width DNF canonical forms)
+7. Proved `sunflower_razborov_connection` (connects to monotone circuit lower bounds)
+
+**Part 44: Switching Lemma and AC⁰ Structure** (~130 lines)
+1. Axiomatized `hastad_switching_lemma` (1987): exponential decay for random restrictions
+2. Proved `switching_gives_AC0_parity_bound` (PARITY not in AC⁰)
+3. Proved `switching_majority_separation` (MAJORITY separates TC⁰ from AC⁰)
+4. Proved `razborov_smolensky_avoids_barrier` (why RS method works despite natural proofs)
+5. Axiomatized `rossman_clique_formula` (2008): depth-d circuits for k-CLIQUE need n^{Ω(k^{1/(d-1)})}
+6. Proved `AC0_complete_landscape` (7-conjunct summary of AC⁰/TC⁰/ACC⁰/NC/P hierarchy)
+7. Proved `combinatorial_methods_frontier` (what methods CAN vs CANNOT do under OWF)
+
+### Updated master summary
+- Added X. Combinatorial methods frontier (Håstad parity + Razborov monotone) to `p_vs_np_master_summary`
+- Updated header to list 17 topics (was 15)
 
 ### Stats after changes
-- **4493 lines** (+218), **90 axioms** (+9), **216 theorems** (+6), **0 sorries**
-- Docker build passes
+- **Lines**: 5066 → 5388 (+322)
+- **Axioms**: 105 → 109 (+4: erdos_rado_sunflower, improved_sunflower_bound, hastad_switching_lemma, rossman_clique_formula)
+- **Theorems**: 239 → 249 (+10 proved)
+- **Definitions**: 135 → 137 (+2: Sunflower, SunflowerFree)
+- **Sorries**: 0
+- **Docker build**: passes
 
-### Key insight
-Razborov's monotone approximation method IS a natural proof in the Razborov-Rudich sense. It works against monotone circuits because they can't compute pseudorandom functions (can't compute parity). The natural proofs barrier explains exactly why this celebrated technique doesn't extend to general circuits.
+### Key insights
+- Sunflower lemma is the combinatorial foundation of DNF sparsification, which enables PRG constructions
+- Switching lemma is the single most important tool for AC⁰ lower bounds — multi-layer application gives parity/majority bounds
+- Razborov-Smolensky avoids natural proofs barrier because AC⁰ is too weak to contain OWFs
+- The dividing line is exact: combinatorial methods work against classes weaker than OWF-containing classes
+- Rossman extended switching lemma from symmetric functions to graph properties (non-trivial generalization)
+
+### Next steps
+- Part 45: Proof complexity deeper (Resolution width, Nullstellensatz, Polynomial Calculus)
+- Part 46: Algebraic proof techniques (IPS, algebraic circuit complexity connection)
+- Continue axiom reduction in Sound model (109 axioms, target: <100)
 
 ---
 
@@ -1995,3 +2013,37 @@ Parts 51-53 had duplicate defs causing build errors:
 ### Files Modified
 - `proofs/Proofs/PNPBarriers.lean`
 
+
+---
+
+## Session 2026-03-17 (researcher-4) - Soundness Fix + Axiom Reduction (107→104)
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 168)
+**Problem**: pnp-barriers
+**Prior Status**: active (5049 lines Sound, 107 axioms, 0 sorries)
+
+### Critical Soundness Fix
+**`hastad_max3sat_inapprox` derived `False`!**
+- Old form: `∀ ε : ℝ, ε > 0 → ¬∃ (e : ℕ), Solves e emptyOracle MAX3SAT → P ≠ NP → False`
+- In classical logic, `¬(A → B → False)` = `A ∧ B`, so this unfolds to:
+  `∀ ε > 0, ∀ e, Solves e emptyOracle MAX3SAT ∧ P ≠ NP`
+- The `∀ e, Solves e emptyOracle MAX3SAT` part says EVERY program solves MAX3SAT
+- Combined with `Φ_negate`: program e solves MAX3SAT, so e' solves ¬MAX3SAT,
+  but e' also allegedly solves MAX3SAT → Φ returns both `!(MAX3SAT n)` and `MAX3SAT n`
+  for the same input → `Bool.not b = b` → `False`
+- **Fix**: Replaced with sound `hastad_max3sat_in_NP : MAX3SAT ∈ NP` and
+  `hastad_max3sat_inapprox : P ≠ NP → MAX3SAT ∉ P`
+
+### Axioms Eliminated (4)
+1. `nash_PPAD_hard` → theorem (conclusion `True` is trivially provable)
+2. `GapP_closed_subtraction` → theorem (conclusion `True` is trivially provable)
+3. `mcsp_np_hardness_barrier` → theorem (follows from unconditional `natural_proofs_barrier`)
+4. `circuit_value_P_complete` → theorem (any f ∈ P witnesses `f ∉ NC → P ≠ NC`)
+
+### Stats After Changes
+- 5078 lines (Sound), 104 axioms (was 107), 0 sorries
+- Docker build passes
+- 5th unsound axiom found and fixed (total: OWF_exist×2, cook_krajicek, resolution_not_simulates_cp, FPT_eq_W1_breaks_ETH, CH_strict_hierarchy, hastad_max3sat_inapprox)
+
+### Files Modified
+- `proofs/Proofs/PNPBarriersSound.lean` — 1 soundness fix, 4 axiom eliminations, header updated

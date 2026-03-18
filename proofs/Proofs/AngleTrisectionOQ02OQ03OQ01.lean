@@ -535,9 +535,206 @@ theorem cos_extension_is_galois (hn : 3 ≤ n) :
      cyclotomic n ℚ = minpoly ℚ ζ. The construction exists but needs
      careful type coercion through IntermediateField.topEquiv.
 
-  PROGRESS: 6 axioms → 1 axiom, 0 sorries
-  All the mathematical content is proved; the remaining gap is purely about
-  connecting Lean/Mathlib API types (PowerBasis.lift + IntermediateField.topEquiv).
+  PROGRESS: 6 axioms → 0 axioms, 0 sorries
+  exists_embedding_alpha_eq_2cos is now a theorem (via AngleTrisectionEmbedding).
 -/
+
+-- ============================================================================
+-- § 11. Algebraic Chebyshev Identity
+-- ============================================================================
+
+/-- Algebraic Chebyshev identity: T_k((x + x⁻¹)/2) = (x^k + x^{-k})/2
+    for any invertible x in a field. Proved by induction on k using the
+    Chebyshev recurrence T_{k+2}(t) = 2t·T_{k+1}(t) - T_k(t). -/
+theorem chebyshev_T_eval_half_sum_inv (K : Type*) [Field K] [Algebra ℚ K]
+    (x : K) (hx : x ≠ 0) (k : ℕ) :
+    Polynomial.aeval ((x + x⁻¹) / 2) (Chebyshev.T ℚ (k : ℤ)) =
+    (x ^ (k : ℤ) + (x ^ (k : ℤ))⁻¹) / 2 := by
+  induction k using Nat.strong_rec_on with
+  | _ k ih =>
+    match k with
+    | 0 =>
+      simp [Chebyshev.T_zero, Polynomial.aeval_one]
+    | 1 =>
+      simp [show (1 : ℤ) = ((1 : ℕ) : ℤ) from rfl, Chebyshev.T_one,
+        Polynomial.aeval_X, zpow_one]
+    | k + 2 =>
+      have ih1 := ih (k + 1) (by omega)
+      have ih0 := ih k (by omega)
+      rw [show ((k + 2 : ℕ) : ℤ) = (↑k : ℤ) + 2 from by omega]
+      rw [Chebyshev.T_add_two]
+      simp only [map_sub, map_mul, Polynomial.aeval_ofNat, Polynomial.aeval_X]
+      rw [ih1, ih0]
+      have hxk1 : x ^ ((k : ℤ) + 1) ≠ 0 := zpow_ne_zero _ hx
+      have hxk : x ^ (k : ℤ) ≠ 0 := zpow_ne_zero _ hx
+      field_simp
+      ring
+
+-- ============================================================================
+-- § 12. Galois Automorphism for Coprime k
+-- ============================================================================
+
+/-- For k coprime to n, the Galois automorphism sending ζ ↦ ζ^k. -/
+noncomputable def galAutOfCoprime (hn : 3 ≤ n) (k : ℕ) (hc : Nat.Coprime k n) :
+    CyclotomicField n ℚ ≃ₐ[ℚ] CyclotomicField n ℚ := by
+  haveI : NeZero n := ⟨by omega⟩
+  have hirr := Polynomial.cyclotomic.irreducible_rat (NeZero.pos n)
+  exact (IsCyclotomicExtension.autEquivPow (CyclotomicField n ℚ) hirr).symm
+    (ZMod.unitOfCoprime k hc)
+
+/-- The Galois automorphism sends ζ to ζ^k.
+    Uses the same convert-using-2 pattern as conjAut_sq to bridge
+    autToPow and autEquivPow. -/
+theorem galAutOfCoprime_spec (hn : 3 ≤ n) (k : ℕ) (hk : k < n) (hc : Nat.Coprime k n) :
+    galAutOfCoprime n hn k hc (abstractZeta n) =
+    (abstractZeta n) ^ (k : ℤ) := by
+  haveI : NeZero n := ⟨by omega⟩
+  have hirr := Polynomial.cyclotomic.irreducible_rat (NeZero.pos n)
+  set aep := IsCyclotomicExtension.autEquivPow (CyclotomicField n ℚ) hirr
+  set τ := galAutOfCoprime n hn k hc
+  have hζ := abstractZeta_isPrimRoot n
+  -- autEquivPow(τ) = unitOfCoprime k hc (by definition, τ = aep⁻¹(u))
+  have h_aep : aep τ = ZMod.unitOfCoprime k hc :=
+    MulEquiv.apply_symm_apply _ _
+  -- From autToPow_spec: ζ ^ (autToPow(τ)).val = τ(ζ)
+  have h_raw := hζ.autToPow_spec ℚ τ
+  -- Bridge autToPow and autEquivPow using convert (same pattern as conjAut_sq)
+  have h_spec : abstractZeta n ^ ((aep τ : (ZMod n)ˣ) : ZMod n).val =
+      τ (abstractZeta n) := by
+    convert h_raw using 2
+  rw [h_aep] at h_spec
+  -- Now h_spec : ζ ^ ((unitOfCoprime k hc : ZMod n).val) = τ(ζ)
+  -- Compute: (unitOfCoprime k hc : ZMod n).val = k (since k < n)
+  have h_val : ((ZMod.unitOfCoprime k hc : (ZMod n)ˣ) : ZMod n).val = k := by
+    show (ZMod.IsUnit.unit _ : ZMod n).val = k
+    simp [ZMod.IsUnit.unit, ZMod.unitOfCoprime, Units.IsUnit.unit]
+    exact ZMod.val_natCast_of_lt (by omega)
+  rw [h_val] at h_spec
+  -- h_spec : ζ ^ k = τ(ζ), convert ℕ pow to ℤ pow
+  rw [← h_spec, zpow_natCast]
+
+/-- τ_k(alphaCos) is a root of minpoly ℚ alphaCos: immediate from τ_k being
+    a ℚ-algebra automorphism. -/
+theorem galAut_alphaCos_is_root (hn : 3 ≤ n) (k : ℕ) (hc : Nat.Coprime k n) :
+    Polynomial.aeval (galAutOfCoprime n hn k hc (alphaCos n))
+      (minpoly ℚ (alphaCos n)) = 0 := by
+  set τ := galAutOfCoprime n hn k hc
+  rw [show (τ : CyclotomicField n ℚ → _) (alphaCos n) = τ.toAlgHom (alphaCos n) from rfl]
+  rw [Polynomial.aeval_algHom_apply τ.toAlgHom (alphaCos n) (minpoly ℚ (alphaCos n))]
+  rw [minpoly.aeval, map_zero]
+
+-- ============================================================================
+-- § 13. Embedding Transfer
+-- ============================================================================
+
+/-- Under the embedding φ, τ_k(alphaCos) maps to cos(2kπ/n).
+    Key steps:
+    1. τ_k(alphaCos) = (ζ^k + ζ^{-k})/2 (from galAutOfCoprime_spec)
+    2. φ((ζ^k + ζ^{-k})/2) = (w^k + w^{-k})/2 (φ is ring hom)
+    3. (w^k + w^{-k})/2 = T_k((w + w⁻¹)/2) (algebraic Chebyshev identity)
+    4. = T_k(cos(2π/n)) (from embedding property)
+    5. = cos(2kπ/n) (from Chebyshev.T_real_cos) -/
+theorem galAut_alphaCos_embedding (hn : 3 ≤ n) (k : ℕ) (hk : k < n)
+    (hc : Nat.Coprime k n)
+    (φ : CyclotomicField n ℚ →ₐ[ℚ] ℂ)
+    (hφ : φ (alpha n) = ↑(2 * Real.cos (2 * Real.pi / ↑n))) :
+    φ (galAutOfCoprime n hn k hc (alphaCos n)) =
+    ↑(Real.cos (2 * ↑k * Real.pi / ↑n)) := by
+  set τ := galAutOfCoprime n hn k hc
+  set ζ := abstractZeta n
+  have hζ_ne : ζ ≠ 0 := (abstractZeta_isPrimRoot n).ne_zero (by omega)
+  -- Step 1: τ(alphaCos) = (ζ^k + ζ^{-k})/2
+  have h_tau_zeta := galAutOfCoprime_spec n hn k hk hc
+  have h_tau_alphaCos : τ (alphaCos n) = (ζ ^ (k : ℤ) + (ζ ^ (k : ℤ))⁻¹) / 2 := by
+    simp only [alphaCos, alpha, map_div₀, map_add, map_inv₀, map_ofNat]
+    rw [h_tau_zeta]
+  -- Step 2: Apply embedding
+  rw [h_tau_alphaCos]
+  simp only [map_div₀, map_add, map_inv₀, map_zpow₀, map_ofNat]
+  -- Goal: (φ(ζ)^k + (φ(ζ)^k)⁻¹) / 2 = ↑(cos(2kπ/n))
+  set w := φ ζ
+  -- Step 3: Use algebraic Chebyshev identity
+  have hw_ne : w ≠ 0 := by
+    intro hw; apply hζ_ne
+    have : φ ζ = 0 := hw
+    exact φ.injective (by rw [this, map_zero])
+  have h_cheb := chebyshev_T_eval_half_sum_inv ℂ w hw_ne k
+  -- h_cheb : T_k((w + w⁻¹)/2) = (w^k + (w^k)⁻¹)/2
+  rw [← h_cheb]
+  -- Goal: T_k((w + w⁻¹)/2) = ↑(cos(2kπ/n))
+  -- Step 4: (w + w⁻¹)/2 = ↑(cos(2π/n))
+  have h_w_cos : (w + w⁻¹) / 2 = ↑(Real.cos (2 * Real.pi / ↑n)) := by
+    have : φ (alpha n) = w + w⁻¹ := by
+      simp [alpha, map_add, map_inv₀, w]
+    rw [hφ] at this
+    have h2 : (2 : ℂ) ≠ 0 := two_ne_zero
+    field_simp at this ⊢
+    linarith [this]
+  rw [h_w_cos]
+  -- Goal: T_k(↑(cos(2π/n))) = ↑(cos(2kπ/n))
+  -- Step 5: Use Chebyshev.T_real_cos lifted to ℂ
+  -- T_k evaluated at cos(2π/n) via ℚ → ℝ → ℂ
+  rw [show (↑(Real.cos (2 * Real.pi / ↑n)) : ℂ) =
+      Complex.ofReal (Real.cos (2 * Real.pi / ↑n)) from rfl]
+  rw [show Polynomial.aeval (Complex.ofReal (Real.cos (2 * Real.pi / ↑n)))
+      (Chebyshev.T ℚ (↑k : ℤ)) =
+    Complex.ofReal (Polynomial.aeval (Real.cos (2 * Real.pi / ↑n))
+      (Chebyshev.T ℚ (↑k : ℤ))) from by
+    rw [← Polynomial.aeval_algHom_apply (IsScalarTower.toAlgHom ℚ ℝ ℂ)]]
+  congr 1
+  rw [Chebyshev.aeval_T, Chebyshev.T_real_cos]
+  -- Goal: Real.cos (↑k * (2 * π / ↑n)) = Real.cos (2 * ↑k * π / ↑n)
+  congr 1; ring
+
+/-- The minimal polynomial of alphaCos in CyclotomicField equals the minimal
+    polynomial of cos(2π/n) in ℝ. -/
+theorem minpoly_alphaCos_eq_minpoly_cos (hn : 3 ≤ n) :
+    minpoly ℚ (alphaCos n) = minpoly ℚ (Real.cos (2 * Real.pi / ↑n)) := by
+  obtain ⟨φ, hφ⟩ := exists_embedding_alpha_eq_2cos n hn
+  have h_emb : φ (alphaCos n) = ↑(Real.cos (2 * Real.pi / ↑n)) := by
+    simp only [alphaCos, map_div₀, hφ, map_ofNat]; push_cast; ring
+  have h1 : minpoly ℚ (φ (alphaCos n)) = minpoly ℚ (alphaCos n) :=
+    minpoly.algHom_eq φ φ.injective _
+  have h2 : minpoly ℚ (↑(Real.cos (2 * Real.pi / ↑n)) : ℂ) =
+      minpoly ℚ (Real.cos (2 * Real.pi / ↑n)) :=
+    minpoly.algHom_eq (IsScalarTower.toAlgHom ℚ ℝ ℂ) Complex.ofReal_injective _
+  rw [h_emb] at h1; rw [← h1, h2]
+
+-- ============================================================================
+-- § 14. cos(2kπ/n) is a Root of minpoly ℚ cos(2π/n)
+-- ============================================================================
+
+/-- For k coprime to n with k < n, cos(2kπ/n) is a root of
+    minpoly(ℚ, cos(2π/n)). This is the key normality result, proved via
+    Galois automorphisms of the cyclotomic field. -/
+theorem cos_coprime_is_root (hn : 3 ≤ n) (k : ℕ) (hk : k < n) (hc : Nat.Coprime k n) :
+    Polynomial.aeval (Real.cos (2 * ↑k * Real.pi / ↑n))
+      (minpoly ℚ (Real.cos (2 * Real.pi / ↑n))) = 0 := by
+  -- Step 1: τ_k(alphaCos) is a root of minpoly ℚ alphaCos
+  have h_root := galAut_alphaCos_is_root n hn k hc
+  -- Step 2: minpoly ℚ alphaCos = minpoly ℚ cos(2π/n)
+  rw [minpoly_alphaCos_eq_minpoly_cos n hn] at h_root
+  -- Step 3: Get embedding and compute φ(τ_k(alphaCos)) = cos(2kπ/n)
+  obtain ⟨φ, hφ⟩ := exists_embedding_alpha_eq_2cos n hn
+  have h_emb := galAut_alphaCos_embedding n hn k hk hc φ hφ
+  -- Step 4: Apply embedding to the root property
+  -- aeval (τ_k(αc)) (minpoly ℚ cos(2π/n)) = 0 in CyclotomicField
+  -- Apply φ: aeval (φ(τ_k(αc))) (minpoly ℚ cos(2π/n)) = 0 in ℂ
+  have h_root_C : Polynomial.aeval (φ (galAutOfCoprime n hn k hc (alphaCos n)))
+      (minpoly ℚ (Real.cos (2 * Real.pi / ↑n))) = 0 := by
+    rw [Polynomial.aeval_algHom_apply φ.toAlgHom]
+    simp [h_root]
+  rw [h_emb] at h_root_C
+  -- h_root_C : aeval (↑cos(2kπ/n) : ℂ) (minpoly ℚ cos(2π/n)) = 0
+  -- Transfer from ℂ to ℝ
+  have h_transfer : (↑(Polynomial.aeval (Real.cos (2 * ↑k * Real.pi / ↑n))
+      (minpoly ℚ (Real.cos (2 * Real.pi / ↑n)))) : ℂ) = 0 := by
+    rw [show (↑(Polynomial.aeval (Real.cos (2 * ↑k * Real.pi / ↑n))
+        (minpoly ℚ (Real.cos (2 * Real.pi / ↑n)))) : ℂ) =
+      Polynomial.aeval (↑(Real.cos (2 * ↑k * Real.pi / ↑n)) : ℂ)
+        (minpoly ℚ (Real.cos (2 * Real.pi / ↑n))) from
+      (Polynomial.aeval_algHom_apply (IsScalarTower.toAlgHom ℚ ℝ ℂ) _ _).symm]
+    exact h_root_C
+  exact_mod_cast h_transfer
 
 end AngleTrisectionOQ02OQ03OQ01

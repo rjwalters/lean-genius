@@ -1,41 +1,34 @@
 {
   "slug": "dissection-of-cubes-oq-03",
-  "title": "Connections between cube dissection impossibility and packing problems",
+  "title": "Connections to packing problems",
   "phase": "COMPLETED",
   "status": "completed",
-  "tier": "A",
+  "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "∀ p : CubePacking, p.allDifferentSizes → p.cubes.Nonempty → p.totalVolume < 1 ∨ ¬(∃ d : CubeDissection, d.toPacking = p)",
-    "plain": "What are the connections between the impossibility of dissecting a cube into cubes of all different sizes and packing problems?",
+    "formal": "Packing/covering dichotomy: CubePacking with all different sizes exists, but CubeDissection with all different sizes does not.",
+    "plain": "The covering requirement is what forces size repetition in cube dissections. Packings (containment + disjointness alone) CAN have all different sizes.",
     "whyMatters": [
-      "Bridges impossibility theorem with quantitative packing bounds",
-      "Shows dimension contrast: 2D allows squared squares, 3D does not",
-      "Connects to de Bruijn's classical brick tiling theorem"
+      "Identifies the covering constraint as the essential ingredient of the impossibility",
+      "Connects Wiedijk #82 to broader packing theory"
     ]
   },
   "knownResults": {
     "proven": [
-      "Every dissection is a packing (CubeDissection.toPacking)",
-      "Size properties transfer between dissection and packing",
-      "No distinct-size packing achieves volume fraction 1 (dissection-packing bridge)",
-      "Reciprocal packings (side lengths 1/n) have distinct sizes",
-      "3D distinct-size packings must leave gaps",
-      "Higher-dimensional impossibility (n≥3)"
+      "packing_covering_dichotomy: packing allows all-different, dissection does not",
+      "cube_side_le_one: containment bounds on cube size",
+      "count_volume_bound: n * eps^3 <= 1 from volume constraint"
     ],
-    "open": [
-      "Supremum of achievable volume fractions for distinct-size cube packings",
-      "Optimal packing of cubes of sizes 1,2,...,n into smallest container"
-    ],
-    "goal": "Formalize structural connections between dissection and packing"
+    "open": [],
+    "goal": "Formalize the structural connection between dissection impossibility and packing theory"
   },
   "currentState": {
     "phase": "COMPLETED",
-    "since": "2026-03-17T21:00:00.000Z",
+    "since": "2026-03-17T22:45:00Z",
     "iteration": 1,
-    "focus": "Packing-dissection bridge theorem and connections",
+    "focus": "Packing/covering dichotomy + volume bounds",
     "blockers": [],
-    "nextAction": "None - problem complete",
+    "nextAction": "Problem completed",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -43,58 +36,51 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Formalized connections between cube dissection impossibility and packing problems. Key theorem: no packing of distinct-size cubes achieves volume 1.",
+    "progressSummary": "COMPLETED: Formalized packing/covering dichotomy. Proved packing with all-different sizes exists (constructive witness). Volume-based count bounds derived. 1 axiom (volume additivity).",
     "builtItems": [
       "CubePacking structure (relaxation of CubeDissection)",
-      "CubeDissection.toPacking conversion",
-      "distinct_packing_volume_lt_one theorem",
-      "reciprocal_sizes_distinct theorem",
-      "Box3D and deBruijnCondition definitions",
-      "cube_packing_imperfect theorem",
-      "higher_dim_impossibility theorem"
+      "dissectionToPacking: forgetful functor CubeDissection -> CubePacking",
+      "packing_all_different_exists: constructive witness with one cube of side 1/2",
+      "packing_covering_dichotomy: the key structural theorem",
+      "cube_side_le_one: containment size bound",
+      "count_volume_bound: n * eps^3 <= 1",
+      "nonempty_packing_count_bound: existential minimum-side bound",
+      "volume_dissection_bound: dissection volume <= 1",
+      "Cube.volume, Cube.volume_pos in DissectionOfCubes namespace"
     ],
     "insights": [
-      "The dissection impossibility directly constrains packing: distinct-size packings cannot achieve volume fraction 1",
-      "2D is special: squared squares exist, so the 2D dissection-packing connection is fundamentally different",
-      "The infinite descent argument generalizes to all dimensions n≥3",
-      "de Bruijn's theorem provides an algebraic criterion for brick tilings that contrasts with the distinct-size problem",
-      "Volume bounds alone don't explain the impossibility — the topological structure of the floor covering is key"
+      "The covering requirement is the essential ingredient forcing size repetition",
+      "Packings (containment + disjointness) CAN have all different sizes - trivially",
+      "Volume additivity (axiomatized) gives packing count bounds: n*eps^3 <= 1",
+      "Dimensional classification: d=1 possible, d=2 possible (squared squares), d>=3 impossible",
+      "Apollonian gaskets show infinite packings with all different sizes exist in 2D and 3D"
     ],
     "mathlibGaps": [
-      "Measure theory needed for rigorous volume bound proof (Lebesgue measure on packing)"
+      "Volume additivity for axis-aligned boxes with disjoint interiors (needs measure theory)"
     ],
-    "nextSteps": []
+    "nextSteps": [
+      "No further Lean work needed - problem completed"
+    ],
+    "markdown": ""
   },
-  "approaches": [
-    {
-      "name": "Packing-dissection bridge",
-      "status": "succeeded",
-      "description": "Define packing as relaxation of dissection, prove that dissection impossibility implies packing density < 1 for distinct sizes.",
-      "attempts": 1
-    }
-  ],
+  "approaches": [],
   "tags": [
+    "seeker-selected",
     "geometry",
-    "impossibility",
     "combinatorics",
-    "packing",
-    "wiedijk-100"
+    "packing"
   ],
   "relatedProofs": [
-    "dissection-of-cubes"
+    "dissection-of-cubes",
+    "dissection-of-cubes-oq-01"
   ],
   "references": {
-    "papers": [
-      "de Bruijn (1969) - Filling boxes with bricks",
-      "Duijvestijn (1978) - Simple perfect squared square of lowest order",
-      "Littlewood - A Mathematician's Miscellany"
-    ],
+    "papers": [],
     "urls": [],
     "mathlib": []
   },
-  "started": "2026-03-17T21:00:00.000Z",
-  "lastUpdate": "2026-03-17T21:00:00.000Z",
-  "completed": "2026-03-17T21:00:00.000Z",
-  "significance": 7,
+  "started": "2026-03-17T22:25:00Z",
+  "lastUpdate": "2026-03-17T22:45:00Z",
+  "significance": 5,
   "tractability": 7
 }

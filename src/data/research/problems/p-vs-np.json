@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-01T21:55:27.888Z",
-    "iteration": 8,
-    "focus": "OWF, Five Worlds, average-case, proof complexity, grand unification of 7 routes to P≠NP",
+    "iteration": 9,
+    "focus": "Shannon counting, Kannan theorem, MIP*=RE (Parts 43-45)",
     "blockers": [
       "P vs NP is an unsolved Millennium Prize problem"
     ],
@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: PNPBarriersSound.lean at 5049 lines (+452), 0 sorries. Recovered lost TFNP/Descriptive Complexity content (331 lines from PR #3824). Added Counting Complexity extensions (GapP, #SAT). Added Oracle Separations section (Bennett-Gill). Added Unconditional Lower Bounds summary. Added Grand Unification master theorem connecting all 15 areas. New: NEXP_not_in_AC0 theorem proved from Williams.",
+    "progressSummary": "PROGRESS: PNPBarriersSound.lean at 5397 lines (+331), 0 sorries. Added Shannon counting (Part 43), Kannan unconditional circuit lower bounds (Part 44), MIP*=RE entangled provers (Part 45). Grand Unification extended to 12 components. 505 total declarations.",
     "builtItems": [
       {
         "name": "P",
@@ -488,7 +488,37 @@
       "oracle_technique_landscape theorem (proved: BGS + algebrization + IP=PSPACE)",
       "unconditional_lower_bounds theorem (proved: 5 unconditional results consolidated)",
       "unconditional_vs_conditional theorem (proved: gap between known and wanted)",
-      "p_vs_np_master_summary theorem (proved: grand unification of 11 components)"
+      "p_vs_np_master_summary theorem (proved: grand unification of 11 components)",
+      "numBoolFunctions def (2^{2^n} Boolean functions on n variables)",
+      "numCircuitsOfSize opaque def (circuit counting function)",
+      "circuit_count_bound axiom ((4(s+n))^{2s} bound)",
+      "shannon_counting axiom (∃ f needing 2^n/(2n) gates)",
+      "shannon_hard_functions_outside_P_poly axiom (∃ f ∉ P/poly)",
+      "shannon_np_gap theorem (proved: hard functions exist + NP gap)",
+      "SIZE def (circuit size class)",
+      "P_subset_SIZE theorem (proved: P ⊆ P/poly)",
+      "kannan_theorem axiom (∀ k≥1, ∃ f ∈ Σ₂∩Π₂ not in SIZE(n^k))",
+      "kannan_Sigma2_not_in_SIZE theorem (proved: Σ₂ escapes each SIZE)",
+      "kannan_vs_shannon theorem (proved: comparison of the two bounds)",
+      "kannan_karp_lipton_tension theorem (proved: Kannan + KL connection)",
+      "RE opaque def (recursively enumerable)",
+      "MIP_star opaque def (entangled multi-prover IP)",
+      "MIP opaque def (classical multi-prover IP)",
+      "coRE opaque def (complement of RE)",
+      "R_decidable def (RE ∩ coRE)",
+      "EXP_subset_RE axiom",
+      "RE_undecidable axiom (∃ f ∈ RE \\ R)",
+      "NEXP_subset_RE axiom",
+      "MIP_subset_MIP_star axiom",
+      "NEXP_ne_RE axiom",
+      "babai_fortnow_lund_MIP_eq_NEXP axiom (MIP = NEXP)",
+      "MIP_star_eq_RE axiom (MIP* = RE, JNVWY 2020)",
+      "entanglement_strictly_strengthens_MIP theorem (proved: MIP ⊊ MIP*)",
+      "MIP_hierarchy theorem (proved: IP/MIP/MIP* hierarchy)",
+      "MIP_ne_MIP_star theorem (proved)",
+      "connes_embedding_refuted def + theorem (proved)",
+      "entanglement_power_gap theorem (proved: MIP ⊊ MIP* + characterizations)",
+      "p_vs_np_master_summary theorem (extended to 12 components, proved)"
     ],
     "insights": [
       "Same abstract model triviality as PNPBarriers - Program.decide allows arbitrary functions",
@@ -568,7 +598,19 @@
       "Bennett-Gill (1981) formalized as theorem (not axiom): separating oracles exist AND collapsing oracles exist - both from BGS",
       "Grand Unification master theorem connects 11 major components in single statement: sound model, containments, separations, barriers, counting, TFNP, descriptive, interactive proofs, oracle landscape",
       "Counting complexity extended: GapP (signed counting), SharpSAT (#P-complete), counting_captures_PH connecting Toda to VP/VNP",
-      "Unconditional lower bounds consolidated: P⊊EXP + NEXP⊄ACC0 + NEXP⊄AC0 + Hastad + Razborov in single theorem"
+      "Unconditional lower bounds consolidated: P⊊EXP + NEXP⊄ACC0 + NEXP⊄AC0 + Hastad + Razborov in single theorem",
+      "PvsNP.lean model is unsound: Program.decide is arbitrary Lean function, so P=NP=PSPACE=EXP=Set.univ. Axiom P_ne_EXP derives False in this model.",
+      "104 remaining axioms in PNPBarriersSound.lean are mostly about opaque types (circuit families, PH levels, parameterized classes) - further reduction needs non-opaque definitions or new structural axioms",
+      "Shannon (1949) counting argument formalized: most Boolean functions need Ω(2^n/n) circuit gates - axiomatized with circuit_count_bound",
+      "Shannon hard functions exist outside P/poly but proof is nonconstructive - the NP gap remains",
+      "SIZE(s(n)) class defined as {f | HasCircuitsOfSize f s}, connecting to P/poly",
+      "Kannan (1982): for every k≥1, ∃f ∈ Σ₂∩Π₂ not in SIZE(n^k) - strongest unconditional circuit lower bound for explicit class",
+      "Kannan + Karp-Lipton tension: even if NP⊆P/poly, Σ₂ (which equals PH under collapse) still has hard-for-SIZE(n^k) functions",
+      "MIP* = RE (JNVWY 2020): entangled multi-prover proofs verify all r.e. languages - most surprising 21st century complexity result",
+      "MIP = NEXP (Babai-Fortnow-Lund 1991) but MIP* = RE - entanglement strictly strengthens provers",
+      "MIP ⊊ MIP* proved from NEXP_ne_RE + MIP_subset_MIP_star + the two characterizations",
+      "Connes embedding conjecture refuted as corollary of MIP*=RE",
+      "Grand Unification master theorem extended to 12 components (added Shannon, MIP*=RE)"
     ],
     "mathlibGaps": [
       "Turing machines",

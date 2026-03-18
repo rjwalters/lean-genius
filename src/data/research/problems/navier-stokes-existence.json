@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: NavierStokes.lean at 12,348 lines. Parts LXX-LXXII covering convex integration (h-principle, Onsager, Buckmaster-Vicol), regularity criteria compendium (all known sufficient conditions), blowup classification (Type I exclusion, Type II open). 0 sorries, 0 axioms.",
+    "progressSummary": "PROGRESS: NavierStokes.lean at 12,726 lines. Parts LXX-LXXV (session total: 6 new parts). Comprehensive formalization covering 75 parts of NS regularity theory. 0 sorries, 0 axioms.",
     "builtItems": [
       "Part XLI: Tao averaged NS blowup - BilinearProperties, BlowupProgram, ProofStrategy enum, Lamb vector analysis",
       "Part XLII: Koch-Tataru BMO⁻¹ well-posedness - CriticalSpace hierarchy, CarlesonMeasureNorm, KochTataruTheorem",
@@ -72,7 +72,11 @@
       "Part LXX: Convex integration and wild solutions - h-principle, Onsager conjecture, DLS scheme, Mikado flows, Buckmaster-Vicol NS non-uniqueness, convex integration barrier",
       "Part LXXI: Regularity criteria compendium - velocity/vorticity/pressure/strain/geometric/one-component/scaling-critical criteria, regularity gap analysis",
       "Part LXXII: Blowup scenarios and Type classification - Type I/II taxonomy, Type I exclusion (Seregin/ESŠ), self-similar exclusion, DSS solutions, blowup rate bounds, spatial concentration, Millennium reduction",
-      "NavierStokesAristotle.lean: Sections 31-33 (convex integration, regularity criteria, blowup classification constants)"
+      "NavierStokesAristotle.lean: Sections 31-33 (convex integration, regularity criteria, blowup classification constants)",
+      "Part LXXIII: Turbulence models and closure - Reynolds decomposition, Boussinesq hypothesis, k-ε model, LES, DNS cost scaling, moment hierarchy unclosability",
+      "Part LXXIV: Topological methods - helicity conservation, Kelvin circulation, vortex reconnection, topological blowup constraints, Arnold energy bound",
+      "NavierStokesAristotle.lean: Sections 34-35 (turbulence model constants, topological constants)",
+      "Part LXXV: Millennium Problem prospects - Kenig-Merle program (Morawetz gap), geometric program (direction control gap), probabilistic methods, sufficient conditions, known barriers, expert consensus"
     ],
     "insights": [
       "Tao (2016) averaged NS blowup: any regularity proof must use specific algebraic structure of (u·∇)u, not just energy/scaling/div-free properties",
@@ -124,7 +128,10 @@
       "Combined Tao + convex integration barrier: proof must use BOTH viscosity AND specific bilinear (u·∇)u structure — rules out generic energy/scaling approaches",
       "Type I blowup (self-similar rate) is EXCLUDED by Seregin (2012) + ESŠ backward uniqueness — the Millennium Problem reduces to excluding Type II blowup only",
       "Discretely self-similar solutions exist (Bradshaw-Tsai 2019) but are not excluded by the ESŠ machinery — potential counterexample pathway",
-      "Regularity gap is exactly 1/2: Leray-Hopf gives 2/2+3/6=3/2, Serrin needs ≤1; closing this gap requires nonlinear structure, not interpolation"
+      "Regularity gap is exactly 1/2: Leray-Hopf gives 2/2+3/6=3/2, Serrin needs ≤1; closing this gap requires nonlinear structure, not interpolation",
+      "The closure problem is a fundamental obstacle distinct from regularity: the n-th moment equation involves (n+1)-th moment, creating an unclosable infinite hierarchy",
+      "Vortex reconnection only occurs with viscosity (breaks Kelvin circulation); reconnection cascades are a potential blowup mechanism",
+      "Arnold energy lower bound: linked vortex tubes with circulations Γ₁,Γ₂ and linking number L satisfy E ≥ c|Γ₁Γ₂L| — topology constrains dynamics"
     ],
     "mathlibGaps": [
       "Sobolev spaces",

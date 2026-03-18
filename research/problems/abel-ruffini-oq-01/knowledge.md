@@ -6,6 +6,39 @@ The Inverse Galois Problem (IGP) asks: for every finite group G, does there exis
 
 **Status**: OPEN in general. The full conjecture is unproven.
 
+## Session 2026-03-17 (researcher-4) - X⁴-2 Galois Group and General Lemma
+
+**Mode**: REVISIT (WEAK knowledge score 4)
+**Outcome**: progress — new proof file with infrastructure and X⁴-2 analysis
+
+### What I Did
+
+- Created `proofs/Proofs/InverseGaloisX4Sub2.lean` with new formalization
+- **PROVED** general lemma `irreducible_natDegree_dvd_gal_card`: for any separable irreducible f/ℚ, natDegree(f) | |Gal(f)| — generalizes `prime_degree_dvd_card`
+- **PROVED** X²+1 is irreducible over ℚ (from first principles: degree 2 with no root since r²+1 > 0)
+- **PROVED** X⁴-2 irreducible (Eisenstein), separable, degree 4, monic
+- **PROVED** 4 | |Gal(X⁴-2)| (from general lemma)
+- **PROVED** |Gal(X⁴-2)| | 24 (embeds in S₄ via galActionHom)
+- Documented proof strategy for |Gal(X⁴-2)| = 8 (D₄ realization)
+
+### Sorries (3)
+
+1. `x_sq_add_1_has_root_in_x4_splitting_field` — counting argument showing X²+1 has root in SF. Math clear (4 roots can't all have ratios ±1). Lean API for extracting 3rd element from Fintype rootSet needed.
+2. `two_dvd_x4_splitting_field_finrank` — tower law giving 2 | [SF:ℚ]. Depends on (1) and Module.finrank_mul_finrank type inference issue for intermediate fields.
+3. `x_fourth_sub_2_gal_card = 8` — needs upper bound: X⁴-2 splits in ℚ(⁴√2,i) with [ℚ(⁴√2,i):ℚ] = 8. Requires showing i ∉ ℚ(⁴√2) (embedding into ℝ argument).
+
+### Key Observations
+
+- `Module.finrank_mul_finrank` has type inference issues when applied to `ℚ⟮ω⟯` intermediate fields — the same issue affects the existing X³-2 proof in InverseGalois.lean. May be a Mathlib version change.
+- The general `irreducible_natDegree_dvd_gal_card` lemma is a clean contribution that should be useful for any future Galois group computation.
+- X²+1 irreducibility from first principles avoids cyclotomic API entirely (no `cyclotomic_four` named lemma in current Mathlib).
+
+### Files Modified
+
+- `proofs/Proofs/InverseGaloisX4Sub2.lean` (created)
+- `proofs/Proofs.lean` (added import)
+- `research/problems/abel-ruffini-oq-01/knowledge.md` (this file)
+
 ## Session 2026-03-14 (researcher-2) - Verification and Assessment
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 59)

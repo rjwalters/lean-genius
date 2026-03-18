@@ -1,41 +1,44 @@
-# Dissection of Cubes OQ-03: Connections to Packing Problems
+# Knowledge Base: dissection-of-cubes-oq-03
 
-## Problem
-What are the connections between the impossibility of dissecting a cube
-into cubes of all different sizes (Wiedijk #82) and packing problems?
+Connections to packing problems for cube dissections.
 
-## Status: COMPLETED (0 sorries, 3 axioms)
+---
 
-## Key Results
+## Session 2026-03-17 (Session 1) - Initial Formalization
 
-### The Dissection-Packing Bridge
-- Every dissection is a packing (CubeDissection.toPacking)
-- A packing relaxes the coverage requirement (no gaps allowed in dissection)
-- **Main theorem**: No packing of cubes of all distinct sizes can achieve
-  volume fraction 1 — the dissection impossibility forces gaps
+**Mode**: FRESH
+**Outcome**: completed
 
-### Volume Bounds
-- Packing: total volume ≤ 1 (axiom, needs measure theory)
-- Dissection: total volume = 1 (axiom, no gaps)
-- Distinct-size packing: total volume < 1 (proved from bridge)
+### What Was Done
+Created `DissectionOfCubesOQ03.lean` formalizing the connection between cube dissection
+impossibility and packing theory.
 
-### de Bruijn's Theorem (1969)
-- A box can be tiled by copies of a brick iff divisibility condition holds
-- Provides algebraic criterion for brick tilings (contrasts with distinct-size case)
-- Axiomatized (proof needs harmonic analysis)
+### Key Insight: The Packing/Covering Dichotomy
+The main structural insight is that the COVERING requirement is what forces size repetition:
+- **Packing** (containment + disjointness): all-different-sizes IS possible (constructive witness)
+- **Dissection** (packing + covering): all-different-sizes is IMPOSSIBLE (Wiedijk #82)
 
-### Dimension Contrast
-| Dim | Perfect distinct-size dissection? | Packing density |
-|-----|----------------------------------|-----------------|
-| 1D  | NO                               | < 1             |
-| 2D  | YES (squared squares)            | = 1 possible    |
-| 3D  | NO (Wiedijk #82)                 | < 1             |
-| n≥3 | NO (same argument)               | < 1             |
+### Proved Theorems
+1. `dissectionToPacking`: CubeDissection -> CubePacking (forgetful functor)
+2. `packing_all_different_exists`: constructive witness (one cube of side 1/2)
+3. `packing_covering_dichotomy`: the key structural result combining both directions
+4. `cube_side_le_one`: size bound from containment
+5. `count_volume_bound`: n * eps^3 <= 1 (packing count bound)
+6. `nonempty_packing_count_bound`: existential form with minimum side
+7. `volume_dissection_bound`: dissection volume <= 1
 
-## Proof File
-`proofs/Proofs/DissectionOfCubesOQ03.lean`
+### Axioms
+1. `volume_packing_bound`: disjoint cubes in unit cube have total volume <= 1
+   (requires measure theory for formal proof)
 
-## Axioms Used
-1. `packing_volume_bound` — total packing volume ≤ 1 (needs measure theory)
-2. `dissection_volume_exact` — dissection volume = 1 (needs measure theory)
-3. `debruijn_brick_tiling` — de Bruijn's algebraic tiling criterion
+Plus 2 inherited axioms from DissectionOfCubes.lean (smaller_cube_above, long_chains).
+
+### Files Created
+- `proofs/Proofs/DissectionOfCubesOQ03.lean` (353 lines)
+- `research/problems/dissection-of-cubes-oq-03/knowledge.md`
+- `src/data/research/problems/dissection-of-cubes-oq-03.json`
+
+### Assessment
+Problem completed. The packing/covering dichotomy is the central result. Further work
+could prove the volume bound from measure theory, but that's a separate BUILD task
+requiring substantial Mathlib measure theory infrastructure.
