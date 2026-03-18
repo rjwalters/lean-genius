@@ -1,0 +1,96 @@
+{
+  "slug": "area-of-circle-oq-03-oq-01",
+  "title": "Convergence Rate of Inscribed Polygon Area: |A_n - πr²| = O(1/n²)",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "∀ n ≥ 1, |inscribedArea(n, r) - πr²| ≤ 2π³r²/(3n²)",
+    "plain": "The area of a regular inscribed n-gon converges to πr² at rate O(1/n²). Specifically, 0 ≤ πr² - Aₙ ≤ 2π³r²/(3n²).",
+    "whyMatters": [
+      "Quantifies Archimedes' exhaustion method with explicit error bounds",
+      "Classical result connecting geometry and analysis",
+      "Demonstrates Taylor remainder techniques in formal proof"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "sin²(x) ≤ x² for x ≥ 0",
+      "cos(x) ≥ 1 - x²/2 for x ≥ 0 (via half-angle identity)",
+      "sin(x) ≥ x - x³/6 for x ≥ 0 (via MVT + cos bound)",
+      "inscribedArea(n, r) ≤ πr² for r ≥ 0",
+      "πr² - inscribedArea(n, r) ≤ 2π³r²/(3n²) for n ≥ 1",
+      "|inscribedArea(n, r) - πr²| ≤ 2π³r²/(3n²) (absolute value form)",
+      "0 < πr² - inscribedArea(n, r) for n ≥ 3, r > 0"
+    ],
+    "open": [],
+    "goal": "Formalize the O(1/n²) convergence rate of inscribed polygon areas"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-18T12:50:00Z",
+    "iteration": 1,
+    "focus": "All theorems proved",
+    "blockers": [],
+    "nextAction": "None - problem complete",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: 233 lines, 0 sorries, 0 axioms. Full proof chain from Taylor bounds to convergence rate. All 7 theorems proved.",
+    "builtItems": [
+      "sin_sq_le_sq: sin²(x) ≤ x² via factoring (x-sin)(x+sin) ≥ 0",
+      "cos_ge_one_sub_sq_div_two: cos bound via half-angle identity + sin² bound",
+      "sin_ge_sub_cube_div_six: Taylor lower bound via MVT on g(x)=sin(x)-x+x³/6",
+      "inscribed_area_upper: Aₙ ≤ πr² via sin(x) < x",
+      "inscribed_area_rate_bound: main O(1/n²) bound",
+      "inscribed_area_convergence_rate: absolute value form",
+      "inscribed_area_error_positive: strict positivity for n ≥ 3, r > 0"
+    ],
+    "insights": [
+      "Chain of trig bounds: sin²≤x² → cos≥1-x²/2 → sin≥x-x³/6 is the natural proof path",
+      "MVT approach for sin≥x-x³/6: set g(x)=sin(x)-x+x³/6, show g'≥0 via cos bound, then g(x)≥g(0)=0",
+      "The key algebraic step: n/2·(u-u³/6) = π - 2π³/(3n²) where u=2π/n, via field_simp+ring",
+      "Mathlib's Real.sin_lt gives sin(x)<x for x>0 directly"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [
+    {
+      "name": "Taylor-MVT chain",
+      "status": "succeeded",
+      "description": "Build chain of trigonometric bounds from sin²≤x² through MVT to rate bound",
+      "attempts": 1
+    }
+  ],
+  "tags": [
+    "seeker-selected",
+    "analysis",
+    "geometry",
+    "convergence-rate",
+    "archimedes"
+  ],
+  "relatedProofs": [
+    "area-of-circle"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Real.sin_lt",
+      "Real.cos_two_mul",
+      "Real.sin_sq_add_cos_sq",
+      "exists_hasDerivAt_eq_slope"
+    ]
+  },
+  "started": "2026-03-18T12:50:00Z",
+  "lastUpdate": "2026-03-18T12:50:00Z",
+  "completed": "2026-03-18T12:50:00Z",
+  "significance": 7,
+  "tractability": 7
+}

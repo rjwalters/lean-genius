@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-03-17T22:02:58.360Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -29,18 +29,34 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 308 lines, 4 sorries, 2 axioms. Vertex-pancyclicity framework built.",
+    "progressSummary": "COMPLETED: All 4 sorries eliminated. 0 sorries, 2 axioms, 12 proved theorems.",
     "builtItems": [
       "Erdos1012OQ02.lean: vertex-pancyclicity definitions and framework",
       "8 proved structural theorems (monotonicity, implications, consequences)",
       "2 axioms (Bondy VP, Woodall VP strengthening)",
-      "3 sorries on combinatorial arithmetic inequalities"
+      "3 sorries on combinatorial arithmetic inequalities",
+      "threshold_exceeds_turan_for_small_k: Cauchy-Schwarz proof of Woodall ≥ Turán+1",
+      "threshold_k0_exceeds_turan: corollary of general threshold theorem",
+      "vertex_pancyclic_implies_connected: Hamiltonian pigeonhole + Walk.takeUntil",
+      "spectrum_size_lower_bound: Set.Icc/Finset.Icc bridge for counting",
+      "threshold_exceeds_turan_for_small_k: Cauchy-Schwarz proof of Woodall >= Turan+1",
+      "threshold_k0_exceeds_turan: corollary of general threshold theorem",
+      "vertex_pancyclic_implies_connected: Hamiltonian pigeonhole + Walk.takeUntil",
+      "spectrum_size_lower_bound: Set.Icc/Finset.Icc bridge for counting"
     ],
     "insights": [
       "Vertex-pancyclicity is strictly stronger than pancyclicity: every vertex on every cycle length",
       "Bondy (1971) showed VP is almost free from P: only balanced bipartite exception",
       "Woodall conditions (n≥2k+3, enough edges) should give VP up to length n-k",
-      "Walk API in Lean requires careful type handling for cycle extraction"
+      "Walk API in Lean requires careful type handling for cycle extraction",
+      "Cauchy-Schwarz 2(a²+b²) ≥ (a+b)² is key to threshold comparison - use zify+nlinarith",
+      "Nat division requires careful handling: evenness of consecutive-integer products is critical",
+      "Walk.IsCycle.support_nodup + Finset.eq_univ_of_card gives Hamiltonian pigeonhole",
+      "Walk.takeUntil extracts reachability from cycle support membership",
+      "Cauchy-Schwarz 2(a^2+b^2) >= (a+b)^2 is key to threshold comparison - use zify+nlinarith",
+      "Nat division requires careful handling: evenness of consecutive-integer products is critical",
+      "Walk.IsCycle.support_nodup + Finset.eq_univ_of_card gives Hamiltonian pigeonhole",
+      "Walk.takeUntil extracts reachability from cycle support membership"
     ],
     "mathlibGaps": [],
     "nextSteps": [

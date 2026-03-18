@@ -227,47 +227,164 @@ write_cycle_separator() {
     fi
 }
 
-# Check if error is recoverable
-is_recoverable_error() {
+# --- Error Classification ---
+# Different errors need different responses. We classify into:
+#   TOKEN_EXPIRED  - 401 auth error, token needs refresh (skip this token)
+#   TOKEN_EXHAUSTED - "hit your limit", quota used up (rotate to next token)
+#   CWD_DELETED    - working directory was removed (exit for respawn)
+#   RECOVERABLE    - transient error (retry with backoff)
+#   FATAL          - non-recoverable (exit)
+
+classify_error() {
     local output="$1"
     local exit_code="$2"
 
-    # Timeout from 'timeout' command (SIGTERM)
-    if [[ "$exit_code" -eq 124 ]]; then
-        return 0
+    # Timeout from 'timeout' command — productive cycle, not an error
+    if [[ "$exit_code" -eq 124 || "$exit_code" -eq 137 ]]; then
+        echo "TIMEOUT"
+        return
     fi
 
-    # Timeout with SIGKILL (process didn't respond to SIGTERM)
-    if [[ "$exit_code" -eq 137 ]]; then
-        return 0
+    # Working directory deleted (worktree cleaned up)
+    if echo "$output" | grep -qi "current working directory was deleted"; then
+        echo "CWD_DELETED"
+        return
     fi
 
-    # "No messages returned" - API error, likely rate limit or temporary issue
-    if echo "$output" | grep -q "No messages returned"; then
-        return 0
+    # Token expired (401 auth error) — this specific token is bad
+    if echo "$output" | grep -qi "401.*authentication_error\|OAuth token has expired\|token.*expired"; then
+        echo "TOKEN_EXPIRED"
+        return
     fi
 
-    # Rate limit errors
+    # Token exhausted (quota used up) — rotate to next
+    if echo "$output" | grep -qi "hit your limit\|hit.your.limit"; then
+        echo "TOKEN_EXHAUSTED"
+        return
+    fi
+
+    # Rate limit (429) — transient, retry with backoff
     if echo "$output" | grep -qi "rate.limit\|too.many.requests\|429"; then
-        return 0
+        echo "RECOVERABLE"
+        return
     fi
 
-    # Server errors
+    # Server errors — transient
     if echo "$output" | grep -qi "500\|502\|503\|504\|internal.server.error\|service.unavailable"; then
-        return 0
+        echo "RECOVERABLE"
+        return
     fi
 
-    # Network errors
+    # Network errors — transient
     if echo "$output" | grep -qi "ECONNREFUSED\|ETIMEDOUT\|network.error"; then
-        return 0
+        echo "RECOVERABLE"
+        return
     fi
 
-    # Non-zero exit that might be transient
+    # "No messages returned" — transient API issue
+    if echo "$output" | grep -q "No messages returned"; then
+        echo "RECOVERABLE"
+        return
+    fi
+
+    # Non-zero exit — treat as recoverable in daemon mode
     if [[ "$exit_code" -ne 0 ]]; then
-        return 0
+        echo "RECOVERABLE"
+        return
     fi
 
+    echo "SUCCESS"
+}
+
+# Legacy wrapper for existing callers
+is_recoverable_error() {
+    local classification
+    classification=$(classify_error "$1" "$2")
+    [[ "$classification" != "FATAL" && "$classification" != "SUCCESS" ]]
+}
+
+# --- Token Management ---
+# Track bad tokens (expired/invalid) so we skip them on rotation.
+# File-based so all agents can share the state.
+_bad_tokens_file="${_tokens_dir:-.loom/tokens}/.bad_tokens"
+
+# Mark a token as bad (expired/invalid)
+mark_token_bad() {
+    local token_name="$1"
+    local reason="$2"
+    local timestamp
+    timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+    echo "$timestamp $token_name $reason" >> "$_bad_tokens_file" 2>/dev/null
+    log_warn "Marked token '$token_name' as bad: $reason"
+}
+
+# Check if a token is marked bad
+is_token_bad() {
+    local token_name="$1"
+    [[ -f "$_bad_tokens_file" ]] && grep -q " $token_name " "$_bad_tokens_file" 2>/dev/null
+}
+
+# Try rotating to a working token (skip bad ones)
+rotate_to_working_token() {
+    local _repo_root="${REPO_ROOT:-$(cd "$(dirname "$0")/../.." && pwd)}"
+    local _tokens_dir="$_repo_root/.loom/tokens"
+
+    if [[ ! -d "$_tokens_dir" ]] || ! ls "$_tokens_dir"/*.token &>/dev/null; then
+        return 1
+    fi
+
+    local _token_files=("$_tokens_dir"/*.token)
+    local _count=${#_token_files[@]}
+    local _tried=0
+
+    while [[ $_tried -lt $_count ]]; do
+        local _idx=$(( RANDOM % _count ))
+        local _selected="${_token_files[$_idx]}"
+        local _acct
+        _acct=$(basename "$_selected" .token)
+
+        if is_token_bad "$_acct"; then
+            _tried=$((_tried + 1))
+            continue
+        fi
+
+        local _token
+        _token=$(tr -d '[:space:]' < "$_selected")
+        if [[ -n "$_token" ]]; then
+            export CLAUDE_CODE_OAUTH_TOKEN="$_token"
+            log_info "Rotated to token: $_acct"
+            return 0
+        fi
+        _tried=$((_tried + 1))
+    done
+
+    log_error "All $_count tokens are marked bad or empty"
     return 1
+}
+
+# Clean up bad tokens file periodically (entries older than 6 hours)
+cleanup_bad_tokens() {
+    [[ -f "$_bad_tokens_file" ]] || return
+    local cutoff
+    cutoff=$(date -u -v-6H +"%Y-%m-%dT%H:%M:%SZ" 2>/dev/null || date -u -d '6 hours ago' +"%Y-%m-%dT%H:%M:%SZ" 2>/dev/null)
+    if [[ -n "$cutoff" ]]; then
+        local tmp
+        tmp=$(mktemp)
+        awk -v cutoff="$cutoff" '$1 >= cutoff' "$_bad_tokens_file" > "$tmp" 2>/dev/null
+        mv "$tmp" "$_bad_tokens_file" 2>/dev/null
+    fi
+}
+
+# --- Pre-flight Checks ---
+
+# Verify the working directory still exists (worktree not deleted)
+check_cwd_exists() {
+    if [[ ! -d "$(pwd)" ]]; then
+        log_error "Working directory no longer exists — worktree was likely deleted"
+        log_error "Exiting so the daemon can respawn with a fresh worktree"
+        return 1
+    fi
+    return 0
 }
 
 # Liveness check: if claude produces 0 bytes of output after this many seconds,
@@ -422,6 +539,15 @@ run_daemon() {
             exit 0
         fi
 
+        # Check working directory still exists (worktree not deleted)
+        if ! check_cwd_exists; then
+            log_error "Daemon exiting: working directory deleted"
+            exit 1
+        fi
+
+        # Periodically clean up stale bad-token entries
+        cleanup_bad_tokens
+
         # Pre-flight usage check
         if ! check_usage_limits; then
             log_warn "Daemon: waiting for usage limits (backoff: ${backoff}s)"
@@ -441,75 +567,82 @@ run_daemon() {
         run_claude_once
         local exit_code=$?
 
-        # Timeout (124) means the agent ran for the full CLAUDE_TIMEOUT duration.
-        # That's a productive cycle, not an error — treat it like success.
-        if [[ $exit_code -eq 0 || $exit_code -eq 124 ]]; then
-            if [[ $exit_code -eq 124 ]]; then
-                log_info "Daemon cycle $cycle: completed (hit ${CLAUDE_TIMEOUT}s timeout)"
-            else
+        # Classify the error to determine response
+        local error_class
+        error_class=$(classify_error "$LAST_OUTPUT" "$exit_code")
+
+        case "$error_class" in
+            SUCCESS)
                 log_success "Daemon cycle $cycle: Claude completed successfully"
-            fi
-            # Reset backoff on normal completion
-            backoff=$INITIAL_BACKOFF
-            consecutive_failures=0
-            cycle=$((cycle + 1))
-            continue
-        fi
-
-        consecutive_failures=$((consecutive_failures + 1))
-
-        # Check if this is a recoverable error (in daemon mode, most errors are recoverable)
-        if is_recoverable_error "$LAST_OUTPUT" "$exit_code"; then
-            log_warn "Daemon cycle $cycle: recoverable error (exit code: $exit_code, consecutive failures: $consecutive_failures)"
-
-            if echo "$LAST_OUTPUT" | grep -q "No messages returned"; then
-                log_warn "Error: No messages returned from API"
-            fi
-
-            # Check stop signal before waiting
-            if check_stop_signal; then
-                log_info "Daemon exiting due to stop signal"
-                exit 0
-            fi
-
-            log_info "Daemon: waiting ${backoff}s before retry..."
-            sleep $backoff
-
-            # Exponential backoff (capped at MAX_BACKOFF)
-            backoff=$((backoff * 2))
-            [[ $backoff -gt $MAX_BACKOFF ]] && backoff=$MAX_BACKOFF
-
-            cycle=$((cycle + 1))
-        else
-            # Even "non-recoverable" errors get retried in daemon mode
-            log_warn "Daemon cycle $cycle: error that would be fatal in normal mode (exit code: $exit_code)"
-            log_warn "Daemon mode: retrying anyway after ${MAX_BACKOFF}s"
-
-            # Check stop/wake signals before waiting
-            if check_stop_signal; then
-                log_info "Daemon exiting due to stop signal"
-                exit 0
-            fi
-            if check_wake_signal; then
+                backoff=$INITIAL_BACKOFF
+                consecutive_failures=0
                 cycle=$((cycle + 1))
                 continue
-            fi
+                ;;
+            TIMEOUT)
+                log_info "Daemon cycle $cycle: completed (hit ${CLAUDE_TIMEOUT}s timeout)"
+                backoff=$INITIAL_BACKOFF
+                consecutive_failures=0
+                cycle=$((cycle + 1))
+                continue
+                ;;
+            CWD_DELETED)
+                log_error "Daemon cycle $cycle: working directory was deleted"
+                log_error "Exiting so the daemon can respawn with a fresh worktree"
+                exit 1
+                ;;
+            TOKEN_EXPIRED)
+                consecutive_failures=$((consecutive_failures + 1))
+                local _current_acct
+                _current_acct=$(basename "$(ls -t "${_tokens_dir:-/dev/null}"/*.token 2>/dev/null | head -1)" .token 2>/dev/null || echo "unknown")
+                log_warn "Daemon cycle $cycle: token expired (401) — marking bad and rotating"
+                mark_token_bad "$_current_acct" "expired"
+                if rotate_to_working_token; then
+                    log_info "Retrying immediately with new token"
+                    cycle=$((cycle + 1))
+                    continue
+                else
+                    log_error "All tokens expired — waiting ${MAX_BACKOFF}s before retry"
+                    sleep $MAX_BACKOFF
+                    # Clean bad tokens to retry them after cooldown
+                    rm -f "$_bad_tokens_file" 2>/dev/null
+                    cycle=$((cycle + 1))
+                    continue
+                fi
+                ;;
+            TOKEN_EXHAUSTED)
+                consecutive_failures=$((consecutive_failures + 1))
+                log_warn "Daemon cycle $cycle: token quota exhausted — rotating"
+                if rotate_to_working_token; then
+                    log_info "Retrying immediately with new token"
+                    cycle=$((cycle + 1))
+                    continue
+                else
+                    log_warn "All tokens exhausted — entering long backoff (${MAX_BACKOFF}s)"
+                    backoff=$MAX_BACKOFF
+                fi
+                ;;
+            RECOVERABLE)
+                consecutive_failures=$((consecutive_failures + 1))
+                log_warn "Daemon cycle $cycle: recoverable error (exit code: $exit_code, consecutive failures: $consecutive_failures)"
+                ;;
+            *)
+                consecutive_failures=$((consecutive_failures + 1))
+                log_warn "Daemon cycle $cycle: unclassified error (exit code: $exit_code, consecutive failures: $consecutive_failures)"
+                ;;
+        esac
 
-            # Sleep in increments so wake/stop signals are checked every 30s
-            local slept=0
-            while [[ $slept -lt $MAX_BACKOFF ]]; do
-                sleep 30
-                ((slept+=30))
-                if check_stop_signal; then
-                    log_info "Daemon exiting due to stop signal"
-                    exit 0
-                fi
-                if check_wake_signal; then
-                    break
-                fi
-            done
-            cycle=$((cycle + 1))
+        # Common backoff logic for recoverable/unclassified errors
+        if check_stop_signal; then
+            log_info "Daemon exiting due to stop signal"
+            exit 0
         fi
+
+        log_info "Daemon: waiting ${backoff}s before retry..."
+        sleep $backoff
+        backoff=$((backoff * 2))
+        [[ $backoff -gt $MAX_BACKOFF ]] && backoff=$MAX_BACKOFF
+        cycle=$((cycle + 1))
     done
 }
 

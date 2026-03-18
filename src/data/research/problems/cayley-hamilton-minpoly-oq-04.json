@@ -40,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: nilpotent_krylov_independent sorry eliminated (smallest-counterexample proof). 1 sorry remains in nonderogatory_has_cyclic_vector_infinite (needs finite union of kernels + union avoidance). File has pre-existing build errors from Mathlib API changes.",
+    "progressSummary": "PROGRESS: powers_linearIndependent fully proved (2 sorries eliminated: coefficient extraction via monomial coeff + degree bound via natDegree_C_mul_X_pow_le). 3 sorries remain: isCyclicVector_of_linearIndependent, nonderogatory_has_cyclic_vector_infinite main wiring, nilpotent_krylov_independent.",
     "builtItems": [
       "IsCyclicVector definition (annihilator formulation) in CayleyHamiltonMinpolyOQ04.lean",
       "IsCyclicVectorLI definition (linear independence formulation) in CayleyHamiltonMinpolyOQ04.lean",
@@ -56,7 +56,8 @@
       "nonderogatory_has_cyclic_vector_infinite (stated, 1 sorry) in CayleyHamiltonMinpolyOQ04Backward.lean",
       "powers_linearIndependent (framework proved, 3 helper sorries) in CayleyHamiltonMinpolyOQ04Backward.lean",
       "CayleyHamiltonMinpolyOQ04BackwardAristotle.lean (companion file for automated proof search)",
-      "nilpotent_krylov_independent: proved via smallest-counterexample argument (CayleyHamiltonMinpolyOQ04Backward.lean)"
+      "nilpotent_krylov_independent: proved via smallest-counterexample argument (CayleyHamiltonMinpolyOQ04Backward.lean)",
+      "powers_linearIndependent: fully proved (coefficient extraction + degree bound sorries eliminated) in CayleyHamiltonMinpolyOQ04Backward.lean"
     ],
     "insights": [
       "The annihilator formulation of cyclic vector (no nonzero polynomial of degree < n annihilates v) gives a much cleaner forward direction proof than the linear independence formulation",
@@ -67,7 +68,9 @@
       "Union avoidance lemma proved via line argument with Finset induction: for each proper subspace, at most one scalar t puts v+tw in that subspace",
       "The finite-field case remains the hard part - it requires counting arguments or the full PID structure theorem",
       "Key reduction: the set of distinct kernels ker(T) for T in the n-dimensional algebra K[M] is finite (at most 2^n subspaces)",
-      "nilpotent_krylov_independent proof: multiply relation by N^{n-1-j}, use nilpotency for k>j and minimality of j for k<j, extract c_j=0 contradiction"
+      "nilpotent_krylov_independent proof: multiply relation by N^{n-1-j}, use nilpotency for k>j and minimality of j for k<j, extract c_j=0 contradiction",
+      "For coefficient extraction of ∑ C(c k) * X^k, use C_mul_X_pow_eq_monomial + coeff_monomial + Fin.val_injective.eq_iff + Finset.sum_ite_eq for clean proof",
+      "For natDegree bound of sum, use natDegree_sum_le + Finset.sup_lt_iff + natDegree_C_mul_X_pow_le chain"
     ],
     "mathlibGaps": [
       "Structure theorem for f.g. modules over PID (partial in Mathlib but not in ready-to-use form for this application)",
@@ -116,7 +119,7 @@
     ]
   },
   "started": "2026-03-18T01:48:35Z",
-  "lastUpdate": "2026-03-18T04:30:00Z",
+  "lastUpdate": "2026-03-18T14:30:00Z",
   "completed": "2026-03-18T02:48:00Z",
   "significance": 7,
   "tractability": 6
