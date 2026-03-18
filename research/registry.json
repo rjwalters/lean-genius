@@ -252,8 +252,8 @@
       "phase": "COMPLETED",
       "path": "fast",
       "started": "2026-01-01T05:32:39.478Z",
-      "status": "graduated",
-      "lastUpdate": "2026-03-17T05:34:02.816Z",
+      "status": "blocked",
+      "lastUpdate": "2026-03-17T22:03:36.915Z",
       "completed": "2026-02-11T05:41:00.789Z"
     },
     {
@@ -342,8 +342,8 @@
       "phase": "COMPLETED",
       "path": "full",
       "started": "2026-01-01T21:55:27.885Z",
-      "status": "graduated",
-      "lastUpdate": "2026-03-15T17:29:13.117Z",
+      "status": "blocked",
+      "lastUpdate": "2026-03-17T22:03:36.890Z",
       "completed": "2026-03-15T17:29:13.116Z"
     },
     {
@@ -351,8 +351,8 @@
       "phase": "COMPLETED",
       "path": "full",
       "started": "2026-01-01T21:55:27.886Z",
-      "status": "graduated",
-      "lastUpdate": "2026-03-15T19:52:05.271Z",
+      "status": "blocked",
+      "lastUpdate": "2026-03-17T22:03:36.889Z",
       "completed": "2026-02-11T05:41:00.786Z"
     },
     {
@@ -360,8 +360,8 @@
       "phase": "COMPLETED",
       "path": "full",
       "started": "2026-01-01T21:55:27.887Z",
-      "status": "graduated",
-      "lastUpdate": "2026-03-16T16:51:32.260Z",
+      "status": "blocked",
+      "lastUpdate": "2026-03-17T22:03:36.890Z",
       "completed": "2026-03-16T16:51:32.259Z"
     },
     {
@@ -378,8 +378,8 @@
       "phase": "COMPLETED",
       "path": "full",
       "started": "2026-01-01T21:55:27.887Z",
-      "status": "graduated",
-      "lastUpdate": "2026-03-15T22:28:57.349Z",
+      "status": "blocked",
+      "lastUpdate": "2026-03-17T22:03:36.890Z",
       "completed": "2026-03-15T22:28:57.349Z"
     },
     {
@@ -387,8 +387,8 @@
       "phase": "COMPLETED",
       "path": "full",
       "started": "2026-01-01T21:55:27.888Z",
-      "status": "graduated",
-      "lastUpdate": "2026-03-15T19:52:05.272Z",
+      "status": "blocked",
+      "lastUpdate": "2026-03-17T22:03:36.890Z",
       "completed": "2026-02-11T05:41:00.787Z"
     },
     {
@@ -4515,11 +4515,11 @@
     },
     {
       "slug": "bezout-identity-oq-03-oq-01-oq-02",
-      "phase": "NEW",
+      "phase": "OBSERVE",
       "path": "fast",
       "started": "2026-03-13T03:56:04.575Z",
       "status": "active",
-      "lastUpdate": "2026-03-13T03:56:04.575Z"
+      "lastUpdate": "2026-03-18T00:40:48.127Z"
     },
     {
       "slug": "euler-polyhedral-formula-oq-01-oq-04",
@@ -4532,11 +4532,11 @@
     },
     {
       "slug": "angle-trisection-oq-04",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-03-14T19:01:45.290Z",
-      "status": "active",
-      "lastUpdate": "2026-03-14T19:01:45.329Z"
+      "status": "completed",
+      "lastUpdate": "2026-03-17T20:30:00.000Z"
     },
     {
       "slug": "cauchy-schwarz-oq-04",
@@ -4580,11 +4580,11 @@
     },
     {
       "slug": "dissection-of-cubes-oq-03",
-      "phase": "NEW",
+      "phase": "OBSERVE",
       "path": "full",
       "started": "2026-03-15T12:11:41.205Z",
       "status": "active",
-      "lastUpdate": "2026-03-15T12:11:41.205Z"
+      "lastUpdate": "2026-03-18T00:40:48.128Z"
     },
     {
       "slug": "euler-totient-oq-04",
@@ -4609,6 +4609,46 @@
       "started": "2026-03-15T12:11:41.208Z",
       "status": "active",
       "lastUpdate": "2026-03-15T12:11:41.208Z"
+    },
+    {
+      "slug": "area-of-circle-oq-03-oq-01",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-03-17T22:03:36.897Z",
+      "status": "active",
+      "lastUpdate": "2026-03-17T22:03:36.897Z"
+    },
+    {
+      "slug": "binomial-theorem-oq-04-oq-01",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-03-17T22:03:36.898Z",
+      "status": "active",
+      "lastUpdate": "2026-03-17T22:03:36.898Z"
+    },
+    {
+      "slug": "divisibility-truncation-general-oq-01",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-03-17T22:03:36.907Z",
+      "status": "active",
+      "lastUpdate": "2026-03-17T22:03:36.907Z"
+    },
+    {
+      "slug": "elementary-quadratic-reciprocity-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-03-17T22:03:36.908Z",
+      "status": "active",
+      "lastUpdate": "2026-03-17T22:03:36.908Z"
+    },
+    {
+      "slug": "erdos-1012-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-03-17T22:03:36.908Z",
+      "status": "active",
+      "lastUpdate": "2026-03-17T22:03:36.908Z"
     }
   ],
   "config": {

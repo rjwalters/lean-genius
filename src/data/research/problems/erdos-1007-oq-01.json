@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1007-oq-01",
   "title": "Minimum edges for graph dimension d in general",
-  "phase": "COMPLETED",
-  "status": "completed",
+  "phase": "OBSERVE",
+  "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-03-17T22:30:00Z",
-    "iteration": 6,
-    "focus": "Final cleanup and completion",
+    "phase": "ACT",
+    "since": "2026-03-06T22:03:59.699Z",
+    "iteration": 4,
+    "focus": "K_3 embedding, dim bounds, file cleanup",
     "blockers": [],
-    "nextAction": "Problem completed - all theoretical results proved",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: dim(K_n)=n-1 fully proved (both directions). 9 axioms remain (all computational: minEdgesForDim definition + 6 known values + 2 general bounds). Cleaned up trivial placeholder. All next steps from prior sessions resolved.",
+    "progressSummary": "COMPLETED: 1321 lines, 0 sorries, 9 computational axioms. dim(K_n)=n-1 fully proved. All provable mathematics formalized. Remaining axioms encode computational search results (House 2013, Chaffee-Noble 2016). Fixed duplicate theorem bug and dead code.",
     "builtItems": [
       "optimal_implies_quadratic theorem (§11)",
       "choose_two_le_sq helper: C(d+1,2) <= d^2 for d>=1 (§11)",
@@ -50,7 +50,9 @@
       "regSimplexEmbed_dist_sq: ‖f(i)-f(k)‖²=1 (was sorry)",
       "sq_dist_of_sqrt_one: extract squared distance from sqrt-based unit_edges condition",
       "unit_embedding_dim_lower_bound: K_n unit embedding in R^d implies d >= n-1 (general theorem)",
-      "complete_graph_dim_ge_tight: dim(K_n) >= n-1 (was axiom, now proved theorem)"
+      "complete_graph_dim_ge_tight: dim(K_n) >= n-1 (was axiom, now proved theorem)",
+      "unit_embedding_dim_lower_bound: general theorem factored from complete_graph_dim_ge_tight (§20)",
+      "complete_graph_witnesses_dim: dim(K_{d+1}) = d for d ≥ 1 (§20)"
     ],
     "insights": [
       "optimal_implies_quadratic: complete graph optimality conjecture implies Theta(d^2) growth with c1=1/2, c2=1",
@@ -69,13 +71,16 @@
       "Key algebraic argument: from sum c_i g(i) = 0, inner products give c_k = -S for all k. Then S = (n-1)(-S) implies S = 0",
       "Uses Mathlib LinearIndependent.fintype_card_le_finrank and Module.finrank_fin_fun for dimension bound",
       "Also proved general unit_embedding_dim_lower_bound: any unit embedding of K_n in R^d requires d >= n-1",
-      "All 4 prior nextSteps resolved: dim(K_n)<=n-1 via regSimplexEmbed (avoided ONB), dim(K_n)>=n-1 via linear independence (avoided Matrix.PosDef), K_4<=3 explicit embedding done, general result established",
-      "Remaining 9 axioms are irreducible: minEdgesForDim is axiomatized (constructive definition requires exhaustive graph enumeration), known values from computational searches, general bounds encode structural facts about the axiomatized function",
-      "Removed trivial upper_bound_from_exact_dim placeholder (was True := trivial) and replaced with documentation connecting complete_graph_dim_exact to the axiom"
+      "Duplicate complete_graph_dim_ge_tight bug fixed: renamed first to unit_embedding_dim_lower_bound (general lemma about any embedding)",
+      "Removed dead code: centered_dot_product and centered_dot_product_diag referenced undefined unit_embed_dist_sq",
+      "Added complete_graph_witnesses_dim: substantive theorem replacing True placeholder, proves dim(K_{d+1})=d",
+      "All 9 remaining axioms are irreducible: they encode computational search results (House 2013, Chaffee-Noble 2016) that cannot be proved without implementing graph search algorithms"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "No further Lean work possible without new mathematical breakthroughs on minEdges(d) for d>=6"
+      "Problem complete — all provable mathematics formalized",
+      "9 axioms encode computational search results, not eliminable without graph search algorithm",
+      "If Lean4 gains native_decide for larger search spaces, axioms could become theorems"
     ],
     "markdown": "# Knowledge Base: erdos-1007-oq-01\n\nMinimum edges for graph dimension d in general.\n\n---\n\n## Session 2026-03-14 (Session 2) - Soundness Fix\n\n**Mode**: REVISIT (depth-first, MODERATE knowledge)\n**Outcome**: progress — eliminated unsound axiom, improved formalization\n\n### What Was Done\n- **Found soundness bug**: `hasUnitEmbedding_exists'` axiom claimed every graph (including\n  those with self-loops) has a unit embedding. Self-loops require ‖0‖ = 1 = impossible.\n  This axiom could derive `False` for any graph with `adj v v`.\n- **Fixed by elimination**: Reorganized file to move simplex embedding infrastructure (§7)\n  before `graphDimension'` definition (§1), allowing `graphDimension'` to use the\n  proved `hasUnitEmbedding_exists_irrefl` theorem instead of the unsound axiom.\n- Added `Irreflexive adj` hypothesis to `graphDimension'`, `minEdgesForDim_le`,\n  and `minEdgesForDim_achieved` — mathematically correct since we only study simple graphs.\n- Axiom count: 12 → 11. All remaining axioms are sound (encode computational search\n  results and rigidity bounds not provable in Lean).\n\n### Files Modified\n- `proofs/Proofs/Erdos1007OQ01.lean` — reorganized, eliminated axiom\n\n---\n\n## Session 2026-03-11 (Session 1) - Survey\n\n**Mode**: FRESH\n**Outcome**: surveyed\n\n### Key Findings\n- OQ01 file fully proved: 25+ theorems, 0 sorries, 12 axioms (now 11 after Session 2)\n- Simplex embedding construction: K_n embeds in ℝⁿ as unit distances (complete proof)\n- Deficiency function δ(d) = C(d+1,2) - minEdges(d) with d=4 as unique anomaly\n- optimal_implies_monotone: complete graph optimality conjecture → monotonicity (proved)\n- Growth rate analysis with verified successive differences\n\n### Assessment\n- All provable theorems already proved\n- Axioms encode known values (House 2013, Chaffee-Noble 2016) and search properties\n- General minEdges(d) is genuinely open\n- To make further progress, would need dim(K_n) = n-1 rigidity argument (non-trivial)\n"
   },
@@ -92,7 +97,7 @@
     "mathlib": []
   },
   "started": "2026-03-07T18:02:01.176Z",
-  "lastUpdate": "2026-03-17T22:30:00Z",
+  "lastUpdate": "2026-03-15T09:45:00Z",
   "significance": 6,
   "tractability": 5
 }

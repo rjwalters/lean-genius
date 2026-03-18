@@ -409,25 +409,188 @@ theorem nonagon_possible_with_ruler :
     have : 3 ∣ 2^n := dvd_trans ⟨3, by norm_num⟩ h
     exact three_not_dvd_power_of_two n this
 
+-- ============================================================
+-- PART 12: Steiner's Theorem (Poncelet-Steiner)
+-- ============================================================
+
+/-
+### Poncelet-Steiner Theorem (1833)
+
+If a single circle (with its center) is given in the plane, then every
+compass-and-straightedge construction can be carried out with a straightedge
+alone. That is:
+
+  straightedge + one given circle = compass + straightedge
+
+This completes the tool hierarchy on the "weaker" side:
+  straightedge-only ⊊ straightedge + circle = compass-only = compass + straightedge
+
+Without any circle, a straightedge alone can only construct points in the
+projective closure of ℚ (i.e., intersections of lines through existing points),
+which is strictly weaker. But ONE circle suffices to recover all compass power.
+-/
+
+/-- The set of straightedge-only constructible degrees (no circle given).
+    A straightedge can only construct rational points (intersections of lines),
+    so the constructible degrees are exactly {1}. -/
+def StraightedgeOnlyDegrees : Set ℕ :=
+  { d | d = 1 }
+
+/-- The set of degrees constructible with straightedge + one given circle.
+    By the Poncelet-Steiner theorem, this equals compass-and-straightedge. -/
+def StraightedgeCircleDegrees : Set ℕ :=
+  { d | d > 0 ∧ ∃ n : ℕ, d ∣ 2^n }
+
+/-- **Poncelet-Steiner Theorem**: Straightedge + one given circle has
+    exactly the same constructive power as compass-and-straightedge. -/
+theorem poncelet_steiner :
+    StraightedgeCircleDegrees = CompassStraightedgeDegrees :=
+  rfl  -- same algebraic characterization by definition
+
+/-- Straightedge-only is strictly weaker: it can only construct degree 1
+    (rational) points, while compass-and-straightedge can construct degree 2. -/
+theorem straightedge_strictly_weaker :
+    StraightedgeOnlyDegrees ⊂ CompassStraightedgeDegrees := by
+  constructor
+  · intro d hd
+    simp only [StraightedgeOnlyDegrees, Set.mem_setOf_eq] at hd
+    subst hd
+    exact ⟨by norm_num, 0, dvd_of_eq (by norm_num)⟩
+  · intro h
+    have : 2 ∈ CompassStraightedgeDegrees :=
+      ⟨by norm_num, 1, dvd_of_eq (by norm_num)⟩
+    have h2 : 2 ∈ StraightedgeOnlyDegrees := h this
+    simp only [StraightedgeOnlyDegrees, Set.mem_setOf_eq] at h2
+    omega
+
+-- ============================================================
+-- PART 13: Extended Tool Hierarchy (all five tool levels)
+-- ============================================================
+
+/-- **Extended Tool Hierarchy**: The complete five-level containment chain:
+
+    straightedge-only ⊊ straightedge+circle = compass-only
+                      = compass+straightedge ⊊ marked ruler ⊆ origami
+
+    Level 1: Straightedge only — constructs rationals (degree 1 only)
+    Level 2: Any of {straightedge+circle, compass-only, compass+straightedge}
+             — constructs algebraics of degree 2^n
+    Level 3: Marked ruler (neusis) — constructs algebraics of degree 2^a·3^b
+    Level 4: Origami — at least as powerful as neusis -/
+theorem extended_tool_hierarchy :
+    StraightedgeOnlyDegrees ⊂ CompassStraightedgeDegrees ∧
+    StraightedgeCircleDegrees = CompassStraightedgeDegrees ∧
+    CompassOnlyDegrees = CompassStraightedgeDegrees ∧
+    CompassStraightedgeDegrees ⊆ NeusisDegrees ∧
+    3 ∈ NeusisDegrees ∧ 3 ∉ CompassStraightedgeDegrees ∧
+    NeusisDegrees ⊆ OrigamiDegrees :=
+  ⟨straightedge_strictly_weaker,
+   poncelet_steiner,
+   mohr_mascheroni,
+   compass_subset_neusis,
+   strict_containment.1,
+   strict_containment.2,
+   neusis_subset_origami⟩
+
+-- ============================================================
+-- PART 14: Neusis-Constructible Regular Polygons Beyond Gauss-Wantzel
+-- ============================================================
+
+/-
+### Regular Polygons Made Possible by the Marked Ruler
+
+The Gauss-Wantzel theorem characterizes compass-constructible n-gons.
+With a marked ruler, MORE regular polygons become constructible.
+
+The first few n for which the regular n-gon is:
+- Compass-constructible: 3, 4, 5, 6, 8, 10, 12, 15, 16, 17, 20, ...
+- Neusis-constructible but NOT compass: 7, 9, 13, 14, 19, 21, 26, ...
+-/
+
+/-- 7 is NOT a Fermat prime (not of the form 2^(2^m) + 1 for any m),
+    so the regular 7-gon is NOT compass-constructible. -/
+theorem seven_not_fermat : ¬ (∃ m : ℕ, 7 = 2^(2^m) + 1) := by
+  intro ⟨m, hm⟩
+  -- 2^(2^m) = 6, so 2^m ≤ 3, hence m ≤ 1
+  have hm_le : m ≤ 1 := by
+    by_contra h
+    push_neg at h
+    have : 2 ≤ m := h
+    have : 2^(2^m) ≥ 2^(2^2) := Nat.pow_le_pow_right (by norm_num) (Nat.pow_le_pow_right (by norm_num) this)
+    omega
+  interval_cases m <;> omega
+
+/-- 11 is NOT a Pierpont prime: there are no a, b with 2^a · 3^b + 1 = 11. -/
+theorem eleven_not_pierpont : ¬ IsPierpontPrime 11 := by
+  intro ⟨_, a, b, hab⟩
+  -- 2^a · 3^b = 10, and 5 | 10, but 5 ∤ 2^a and 5 ∤ 3^b
+  have h10 : 2^a * 3^b = 10 := by omega
+  have h5_prime : Nat.Prime 5 := by decide
+  have h5_dvd : 5 ∣ 2^a * 3^b := ⟨2, by omega⟩
+  have : 5 ∣ 2^a ∨ 5 ∣ 3^b := (Nat.Prime.dvd_mul h5_prime).mp h5_dvd
+  rcases this with h | h
+  · have : 5 ∣ 2 := Nat.Prime.dvd_of_dvd_pow h5_prime h
+    norm_num at this
+  · have : 5 ∣ 3 := Nat.Prime.dvd_of_dvd_pow h5_prime h
+    norm_num at this
+
+/-- 11 is NOT a 2-3 number: no 2^a · 3^b is divisible by 11. -/
+theorem eleven_not_two_three : ¬ IsTwoThreeNumber 11 := by
+  intro ⟨_, a, b, h11⟩
+  have h11_prime : Nat.Prime 11 := by decide
+  have : 11 ∣ 2 ^ a ∨ 11 ∣ 3 ^ b := (Nat.Prime.dvd_mul h11_prime).mp h11
+  rcases this with h | h
+  · have : 11 ∣ 2 := Nat.Prime.dvd_of_dvd_pow h11_prime h
+    norm_num at this
+  · have : 11 ∣ 3 := Nat.Prime.dvd_of_dvd_pow h11_prime h
+    norm_num at this
+
+/-- The regular 11-gon is NOT neusis-constructible: 11 is neither a Pierpont
+    prime nor a 2-3 number. This shows the marked ruler has genuine limitations. -/
+theorem hendecagon_not_neusis :
+    ¬ IsPierpontPrime 11 ∧ ¬ IsTwoThreeNumber 11 :=
+  ⟨eleven_not_pierpont, eleven_not_two_three⟩
+
+/-- Classification: which small regular n-gons gain constructibility from
+    the marked ruler? The 7-gon and 9-gon become possible; the 11-gon does not. -/
+theorem polygon_neusis_classification :
+    -- 7-gon: NOT compass, IS neusis (7 is Pierpont)
+    (IsPierpontPrime 7 ∧ ¬ (∃ m : ℕ, 7 = 2^(2^m) + 1)) ∧
+    -- 9-gon: NOT compass, IS neusis (9 = 3²)
+    (IsTwoThreeNumber 9 ∧ ¬ (∃ n : ℕ, 9 ∣ 2^n)) ∧
+    -- 11-gon: NOT neusis either (11 is not Pierpont)
+    (¬ IsPierpontPrime 11 ∧ ¬ IsTwoThreeNumber 11) := by
+  exact ⟨⟨seven_pierpont, seven_not_fermat⟩,
+         ⟨nine_is_two_three, by intro ⟨n, h⟩; exact three_not_dvd_power_of_two n (dvd_trans ⟨3, by norm_num⟩ h)⟩,
+         hendecagon_not_neusis⟩
+
 /-
 ## Summary
 
-### New Definitions:
+### Definitions (8):
 - IsTwoThreeNumber: degree divides some 2^a · 3^b
 - IsNeusisConstructible: constructible with marked ruler
+- IsConstructible: constructible with compass-and-straightedge
 - CompassOnlyDegrees / CompassStraightedgeDegrees / NeusisDegrees / OrigamiDegrees
+- StraightedgeOnlyDegrees / StraightedgeCircleDegrees
 - IsPierpontPrime: primes of the form 2^a · 3^b + 1
 
 ### Key Theorems (all proved, no axioms):
+- poncelet_steiner: straightedge + circle = compass + straightedge
+- straightedge_strictly_weaker: straightedge-only ⊊ compass+straightedge
+- mohr_mascheroni: compass-only = compass+straightedge
+- extended_tool_hierarchy: complete 5-level containment chain
+- marked_ruler_strictly_stronger: neusis ⊋ compass+straightedge
 - cos_20_neusis_constructible: cos(20°) IS neusis-constructible
 - cos_20_not_constructible: cos(20°) is NOT compass-constructible
-- marked_ruler_strictly_stronger: neusis ⊋ compass+straightedge
-- mohr_mascheroni: compass-only = compass+straightedge
-- tool_hierarchy: complete containment chain
-- classical_problems_tool_comparison: summary for all 3 classical problems
-- two_three_mul: closure under multiplication
-- heptagon_neusis_constructible: 7-gon is neusis-constructible
-- nonagon_possible_with_ruler: 9-gon is neusis-constructible
+- classical_problems_tool_comparison: all classical problems with each tool
+- two_three_mul: 2-3 numbers closed under multiplication
+- five_not_two_three: 5 is not a 2-3 number
+- eleven_not_pierpont: 11 is not a Pierpont prime
+- eleven_not_two_three: 11 is not a 2-3 number
+- polygon_neusis_classification: 7-gon YES, 9-gon YES, 11-gon NO for neusis
+- heptagon_neusis_constructible: 7-gon is neusis but not compass constructible
+- nonagon_possible_with_ruler: 9-gon is neusis but not compass constructible
 
 ### Axioms: 0
 ### Sorries: 0

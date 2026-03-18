@@ -2,6 +2,58 @@
 
 ---
 
+## Session 2026-03-17 (researcher-2) - Sunflower Lemma + Switching Lemma (Parts 43-44)
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 180)
+**Problem**: pnp-barriers
+**Prior Status**: active (5066 lines, 105 axioms, 0 sorries)
+
+### What we added
+
+**Part 43: Sunflower Lemma and Combinatorial Barriers** (~120 lines)
+1. Defined `Sunflower` structure (numPetals, setWidth, coreSize)
+2. Defined `SunflowerFree` (abstract sunflower-free family)
+3. Axiomatized `erdos_rado_sunflower` (1960): bound (p-1)^w * w!
+4. Axiomatized `improved_sunflower_bound` (ALWZ 2019): bound (C*log(pw))^w
+5. Proved `improved_implies_classical` (improved bound implies original)
+6. Proved `sunflower_dnf_sparsification` (sunflower → bounded-width DNF canonical forms)
+7. Proved `sunflower_razborov_connection` (connects to monotone circuit lower bounds)
+
+**Part 44: Switching Lemma and AC⁰ Structure** (~130 lines)
+1. Axiomatized `hastad_switching_lemma` (1987): exponential decay for random restrictions
+2. Proved `switching_gives_AC0_parity_bound` (PARITY not in AC⁰)
+3. Proved `switching_majority_separation` (MAJORITY separates TC⁰ from AC⁰)
+4. Proved `razborov_smolensky_avoids_barrier` (why RS method works despite natural proofs)
+5. Axiomatized `rossman_clique_formula` (2008): depth-d circuits for k-CLIQUE need n^{Ω(k^{1/(d-1)})}
+6. Proved `AC0_complete_landscape` (7-conjunct summary of AC⁰/TC⁰/ACC⁰/NC/P hierarchy)
+7. Proved `combinatorial_methods_frontier` (what methods CAN vs CANNOT do under OWF)
+
+### Updated master summary
+- Added X. Combinatorial methods frontier (Håstad parity + Razborov monotone) to `p_vs_np_master_summary`
+- Updated header to list 17 topics (was 15)
+
+### Stats after changes
+- **Lines**: 5066 → 5388 (+322)
+- **Axioms**: 105 → 109 (+4: erdos_rado_sunflower, improved_sunflower_bound, hastad_switching_lemma, rossman_clique_formula)
+- **Theorems**: 239 → 249 (+10 proved)
+- **Definitions**: 135 → 137 (+2: Sunflower, SunflowerFree)
+- **Sorries**: 0
+- **Docker build**: passes
+
+### Key insights
+- Sunflower lemma is the combinatorial foundation of DNF sparsification, which enables PRG constructions
+- Switching lemma is the single most important tool for AC⁰ lower bounds — multi-layer application gives parity/majority bounds
+- Razborov-Smolensky avoids natural proofs barrier because AC⁰ is too weak to contain OWFs
+- The dividing line is exact: combinatorial methods work against classes weaker than OWF-containing classes
+- Rossman extended switching lemma from symmetric functions to graph properties (non-trivial generalization)
+
+### Next steps
+- Part 45: Proof complexity deeper (Resolution width, Nullstellensatz, Polynomial Calculus)
+- Part 46: Algebraic proof techniques (IPS, algebraic circuit complexity connection)
+- Continue axiom reduction in Sound model (109 axioms, target: <100)
+
+---
+
 ## Session 2026-03-15 (researcher-3) - Soundness Fix + Axiom Reduction (89→84)
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 109)
@@ -1961,3 +2013,37 @@ Parts 51-53 had duplicate defs causing build errors:
 ### Files Modified
 - `proofs/Proofs/PNPBarriers.lean`
 
+
+---
+
+## Session 2026-03-17 (researcher-4) - Soundness Fix + Axiom Reduction (107→104)
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 168)
+**Problem**: pnp-barriers
+**Prior Status**: active (5049 lines Sound, 107 axioms, 0 sorries)
+
+### Critical Soundness Fix
+**`hastad_max3sat_inapprox` derived `False`!**
+- Old form: `∀ ε : ℝ, ε > 0 → ¬∃ (e : ℕ), Solves e emptyOracle MAX3SAT → P ≠ NP → False`
+- In classical logic, `¬(A → B → False)` = `A ∧ B`, so this unfolds to:
+  `∀ ε > 0, ∀ e, Solves e emptyOracle MAX3SAT ∧ P ≠ NP`
+- The `∀ e, Solves e emptyOracle MAX3SAT` part says EVERY program solves MAX3SAT
+- Combined with `Φ_negate`: program e solves MAX3SAT, so e' solves ¬MAX3SAT,
+  but e' also allegedly solves MAX3SAT → Φ returns both `!(MAX3SAT n)` and `MAX3SAT n`
+  for the same input → `Bool.not b = b` → `False`
+- **Fix**: Replaced with sound `hastad_max3sat_in_NP : MAX3SAT ∈ NP` and
+  `hastad_max3sat_inapprox : P ≠ NP → MAX3SAT ∉ P`
+
+### Axioms Eliminated (4)
+1. `nash_PPAD_hard` → theorem (conclusion `True` is trivially provable)
+2. `GapP_closed_subtraction` → theorem (conclusion `True` is trivially provable)
+3. `mcsp_np_hardness_barrier` → theorem (follows from unconditional `natural_proofs_barrier`)
+4. `circuit_value_P_complete` → theorem (any f ∈ P witnesses `f ∉ NC → P ≠ NC`)
+
+### Stats After Changes
+- 5078 lines (Sound), 104 axioms (was 107), 0 sorries
+- Docker build passes
+- 5th unsound axiom found and fixed (total: OWF_exist×2, cook_krajicek, resolution_not_simulates_cp, FPT_eq_W1_breaks_ETH, CH_strict_hierarchy, hastad_max3sat_inapprox)
+
+### Files Modified
+- `proofs/Proofs/PNPBarriersSound.lean` — 1 soundness fix, 4 axiom eliminations, header updated

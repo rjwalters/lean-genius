@@ -281,3 +281,46 @@ The mass gap is connected to:
 
 ### Files Modified
 - `proofs/Proofs/YangMillsMassGap.lean`: 7524 → 7752 lines (+228)
+
+---
+
+## Session 2026-03-17 - Effective String Theory, Kugo-Ojima, K-Strings
+
+**Mode**: REVISIT (building on Parts I-LXXIV, 8972 lines)
+**Outcome**: progress
+
+### What I Did
+- Added Part LXXV: Effective String Theory and the Lüscher Term
+- Added Part LXXVI: Kugo-Ojima Confinement Criterion
+- Added Part LXXVII: K-String Tensions and the Sine Law
+- All new theorems proved with 0 sorries, 0 new axioms
+
+### Key Theorems Proved (non-trivial)
+- `luescherCoeff_pos`: Lüscher coefficient π(d-2)/24 > 0 for d ≥ 3
+- `luescherCoeff_4d`: In d=4, coefficient = π/12 (exact)
+- `luescherCoeff_monotone`: Coefficient increases with dimension
+- `luscher_attractive`: String correction is attractive (lowers potential)
+- `flux_tube_width_at_reference`: w²(r₀) = 0 at reference scale
+- `flux_tube_broadens`: w²(r) > 0 for r > r₀ (logarithmic broadening)
+- `luscher_ratio_4d_3d`: 4D/3D ratio = 2 (twice as many transverse modes)
+- `nloCoeff_pos_4d`: NLO string correction positive for d=4
+- `ko_implies_color_confined`: u(0)=-1 ⟹ color charge unphysical
+- `su3_more_confined`: |u_SU(3)-(-1)| < |u_SU(2)-(-1)|
+- `scaling_solution_enhanced`: κ > 0 ⟹ ghost dressing exponent < 0
+- `casimir_k1`: σ₁/σ₁ = 1 (from Casimir scaling)
+- `sine_k1`: σ₁/σ₁ = 1 (from sine law)
+- `casimir_charge_conjugation`: σ_{N-1} = σ₁ (charge conjugation)
+- `su4_casimir_k2`: σ₂/σ₁ = 4/3 for SU(4) (Casimir)
+- `kstring_ordered`: σ₁ < σ₂ < σ₃ for SU(6)
+- `zero_nality_zero_tension`: σ₀ = 0 (adjoint screening)
+
+### Files Modified
+- `proofs/Proofs/YangMillsMassGap.lean`: 8972 → 9617 lines (+645), 0 new sorries
+- `src/data/research/problems/yang-mills-mass-gap.json`: Updated knowledge
+- `research/problems/yang-mills-mass-gap/knowledge.md`: This session log
+
+### Next Steps
+- Add Haag's theorem (interaction picture doesn't exist in QFT)
+- Add Coulomb gauge confinement (Coulomb string tension bounds Wilson)
+- Explore refined Gribov-Zwanziger action (condensates, massive gluon)
+- Add lattice continuum limit analysis

@@ -31,12 +31,14 @@ the conditional probability equals the classical ballot result.
 - [x] Projection from multi-candidate to ±1 sequences
 - [x] Prefix sum preservation under projection
 - [x] "Leads all combined" ↔ projected sequence has all positive prefix sums
-- [x] Key structural lemmas
+- [x] Key structural lemmas (invariance, relabeling)
 - [x] Concrete verification examples
-- [x] Projection lands in countedSequence (connection to Mathlib)
-- [x] Multi-candidate sequence space definition
-- [x] Fiber uniformity theorem (uniform preimage sizes)
-- [x] Reduction to classical ballot theorem
+- [x] Projection lands in countedSequence (bridge to Mathlib)
+- [x] Multi-candidate counted sequence space definition
+- [x] Fiber structural analysis (leader position determination)
+- [x] Positive fiber dichotomy (all-or-nothing by target membership)
+- [x] Main theorem: uniformOn = (a-b)/(a+b) via Ballot.ballot_problem
+- Axiom count: 2 (fiber counting, condCount transfer)
 
 ## References
 - Bertrand (1887): Original 2-candidate ballot problem
@@ -309,18 +311,12 @@ theorem multi_candidate_ballot_bounds (a b : ℕ) (hab : b < a) :
 
 end BallotTheorem
 
-/-! ## Part VII: Fiber Uniformity — The Counting Argument
+/-! ## Part VII: Fiber Analysis and Structural Lemmas
 
-The key combinatorial fact: each ±1 sequence in countedSequence a b has exactly
-the same number of multi-candidate preimages under projection. This is because
-the preimage consists of all ways to assign opponent labels (from Fin (m-1)) to
-the b positions with -1, which is the multinomial coefficient b!/(a₁!·...·aₘ₋₁!).
+The key structural facts: projection fibers are well-behaved, and fiber
+membership is determined entirely by leader-position agreement. -/
 
-Since this count is independent of WHICH ±1 sequence we pick (it depends only
-on the vote profile, not the arrangement), the conditional probability on
-multi-candidate sequences equals the conditional probability on ±1 sequences. -/
-
-section FiberUniformity
+section FiberAnalysis
 
 /-- The fiber (preimage) of a ±1 sequence under projection: the set of
     multi-candidate sequences that project to a given ±1 sequence. -/
@@ -354,8 +350,6 @@ theorem fiber_same_leader_positions {α : Type*} [DecidableEq α] (leader : α)
     have := congr_arg List.length hs; simp [project] at this; omega
   have hit : i < t.length := by
     have := congr_arg List.length ht; simp [project] at this; omega
-  -- Helper: for any u with project leader u = target,
-  -- u[i]? = some leader ↔ target[i]? = some 1
   have key : ∀ (u : List α), project leader u = target → (hui : i < u.length) →
       (u[i]? = some leader ↔ target[i]? = some 1) := by
     intro u hu hui
@@ -368,90 +362,183 @@ theorem fiber_same_leader_positions {α : Type*} [DecidableEq α] (leader : α)
     · intro heq; split_ifs at heq with h; exact h
   exact (key s hs his).trans (key t ht hit).symm
 
-/-- **Fiber Uniformity Theorem**
+end FiberAnalysis
 
-    For m ≥ 2 candidates with a fixed vote profile (a₁, ..., aₘ₋₁) summing to b,
-    every ±1 sequence in countedSequence a b has the same number of multi-candidate
-    preimages. Specifically, the fiber size equals the multinomial coefficient
-    b! / (a₁! · ... · aₘ₋₁!).
+/-! ## Part VIII: Proper Reduction to Classical Ballot Theorem
 
-    This follows because:
-    1. The projection fixes which positions are leader/opponent votes
-    2. The fiber consists exactly of all ways to assign m-1 opponent labels
-       to the b opponent positions, respecting vote counts
-    3. This is a multinomial counting problem with a unique answer
+We define multi-candidate counted sequences and the "stays positive"
+property, then reduce to Mathlib's `Ballot.ballot_problem` via
+fiber uniformity. -/
 
-    Since this fiber size is independent of WHICH ±1 sequence we pick,
-    the conditional probability on multi-candidate sequences reduces to
-    the conditional probability on ±1 sequences. -/
-theorem fiber_uniformity_principle
-    {m : ℕ} (hm : m ≥ 2)
-    (a b : ℕ) (hab : b < a)
-    (target1 target2 : List ℤ)
-    (h1 : target1 ∈ Ballot.countedSequence a b)
-    (h2 : target2 ∈ Ballot.countedSequence a b) :
-    -- The fibers over target1 and target2 have equal cardinality
-    -- (as multisets of Fin m-valued sequences)
-    ∀ (profile : Fin m → ℕ) (_ : profile ⟨0, by omega⟩ = a)
-      (_ : ∑ i : Fin m, profile i = a + b),
-    Nat.factorial b / (∏ i : { i : Fin m // i ≠ ⟨0, by omega⟩ },
-      Nat.factorial (profile i)) =
-    Nat.factorial b / (∏ i : { i : Fin m // i ≠ ⟨0, by omega⟩ },
-      Nat.factorial (profile i)) := by
-  intros; rfl
+section ProperReduction
 
-/-- **Multi-Candidate Ballot Theorem (Reduction to Classical)**
+open Ballot ProbabilityTheory
+
+-- MeasurableSpace instances for uniformOn
+-- (discrete σ-algebra; needed since List types are not automatically measurable)
+noncomputable instance instMSListInt : MeasurableSpace (List ℤ) := ⊤
+noncomputable instance instMSFinSeq {m : ℕ} : MeasurableSpace (FinSequence m) := ⊤
+
+/-- The set of multi-candidate sequences with exactly `a` leader votes
+    and total length `a + b`. This is the multi-candidate analogue of
+    Mathlib's `countedSequence a b`. -/
+def multiCountedSequence (m : ℕ) (hm : m ≥ 1) (a b : ℕ) : Set (FinSequence m) :=
+  {s | s.count (leader m hm) = a ∧ s.length = a + b}
+
+/-- The set of multi-candidate sequences whose ±1 projection stays positive.
+    This pulls back Mathlib's `staysPositive` through our projection map,
+    ensuring exact compatibility with the classical ballot theorem. -/
+def multiStaysPositive (m : ℕ) (hm : m ≥ 1) : Set (FinSequence m) :=
+  {s | project (leader m hm) s ∈ Ballot.staysPositive}
+
+/-- The projection sends multi-candidate counted sequences to classical
+    counted sequences. This is the bridge between our setting and Mathlib's. -/
+theorem project_multi_to_counted {m : ℕ} (hm : m ≥ 1) {a b : ℕ}
+    {s : FinSequence m} (hs : s ∈ multiCountedSequence m hm a b) :
+    project (leader m hm) s ∈ Ballot.countedSequence a b := by
+  obtain ⟨hcount, hlen⟩ := hs
+  exact project_mem_countedSequence (leader m hm) s hcount hlen
+
+/-- Membership in `multiStaysPositive` is determined entirely by the
+    ±1 projection — it does not depend on how opponent votes are distributed. -/
+theorem multi_stays_iff_projected {m : ℕ} (hm : m ≥ 1) (s : FinSequence m) :
+    s ∈ multiStaysPositive m hm ↔
+    project (leader m hm) s ∈ Ballot.staysPositive :=
+  Iff.rfl
+
+/-- The restricted fiber: multi-candidate counted sequences projecting to
+    a given ±1 target. This is the set whose uniform cardinality (across
+    all targets) enables the reduction. -/
+def multiProjectionFiber (m : ℕ) (hm : m ≥ 1) (a b : ℕ) (target : List ℤ) :
+    Set (FinSequence m) :=
+  multiCountedSequence m hm a b ∩ projectionFiber (leader m hm) target
+
+/-- The "stays positive" fiber: the subset of a fiber whose members
+    also land in `staysPositive`. -/
+def multiPositiveFiber (m : ℕ) (hm : m ≥ 1) (a b : ℕ) (target : List ℤ) :
+    Set (FinSequence m) :=
+  multiProjectionFiber m hm a b target ∩ multiStaysPositive m hm
+
+/-- For sequences in a fiber over target, "stays positive" is determined
+    by whether the target itself stays positive. This is because the
+    projection IS the target. -/
+theorem fiber_stays_iff_target {m : ℕ} (hm : m ≥ 1) (a b : ℕ)
+    (target : List ℤ) (s : FinSequence m)
+    (hs : s ∈ multiProjectionFiber m hm a b target) :
+    s ∈ multiStaysPositive m hm ↔ target ∈ Ballot.staysPositive := by
+  obtain ⟨_, hproj⟩ := hs
+  simp only [multiStaysPositive, Set.mem_setOf_eq, projectionFiber,
+             Set.mem_setOf_eq] at hproj ⊢
+  rw [hproj]
+
+/-- Fiber uniformity for the "stays positive" subset:
+    If target ∈ staysPositive, then the positive fiber equals the full fiber;
+    if target ∉ staysPositive, the positive fiber is empty. -/
+theorem positive_fiber_dichotomy {m : ℕ} (hm : m ≥ 1) (a b : ℕ)
+    (target : List ℤ) :
+    (target ∈ Ballot.staysPositive →
+      multiPositiveFiber m hm a b target = multiProjectionFiber m hm a b target) ∧
+    (target ∉ Ballot.staysPositive →
+      multiPositiveFiber m hm a b target = ∅) := by
+  constructor
+  · intro htarget
+    ext s
+    simp only [multiPositiveFiber, Set.mem_inter_iff, and_iff_left_iff_imp]
+    intro hs
+    exact (fiber_stays_iff_target hm a b target s hs).mpr htarget
+  · intro htarget
+    ext s
+    simp only [multiPositiveFiber, Set.mem_inter_iff, Set.mem_empty_iff_false,
+               iff_false, not_and]
+    intro hs
+    exact (fiber_stays_iff_target hm a b target s hs).not.mpr htarget
+
+/-
+**Fiber Uniformity (axiomatized counting step)**
+
+For m ≥ 2 candidates, the fiber size over any target in countedSequence a b
+is the same: it equals the multinomial coefficient for distributing opponent
+labels among the b opponent positions. This is independent of WHICH positions
+are opponent positions (determined by the target), depending only on HOW MANY
+there are (always b).
+
+Proved structurally:
+- Leader positions determined by target (fiber_same_leader_positions)
+- Opponent positions are the complement (exactly b positions)
+- Fiber = all ways to assign (m-1) opponent labels to b positions
+
+The counting step (multinomial = multinomial) is axiomatized since
+formalizing Finset-based multinomial bijections would require ~500 lines
+of combinatorial infrastructure not in Mathlib.
+-/
+axiom fiber_card_uniform (m : ℕ) (hm : 2 ≤ m) (a b : ℕ)
+    (t1 t2 : List ℤ)
+    (h1 : t1 ∈ Ballot.countedSequence a b)
+    (h2 : t2 ∈ Ballot.countedSequence a b) :
+    Set.ncard (multiProjectionFiber m (by omega) a b t1) =
+    Set.ncard (multiProjectionFiber m (by omega) a b t2)
+
+/-
+**Conditional probability transfer (axiomatized)**
+
+When a surjection f : A → B has uniform fiber sizes (every element of B
+has the same number of preimages in A), and P ⊆ A is the preimage of
+Q ⊆ B, then uniformOn A P = uniformOn B Q.
+
+This is a standard fact from combinatorics: uniform fibers mean the
+surjection pushes uniform measure to uniform measure. The proof
+requires measure-theoretic infrastructure for `uniformOn` over
+finite sets that would be substantial to build.
+-/
+axiom uniformOn_fiber_transfer (m : ℕ) (hm : 2 ≤ m) (a b : ℕ)
+    (hab : b < a) :
+    ProbabilityTheory.uniformOn (multiCountedSequence m (by omega) a b)
+      (multiStaysPositive m (by omega)) =
+    ProbabilityTheory.uniformOn (Ballot.countedSequence a b)
+      Ballot.staysPositive
+
+/-- **Multi-Candidate Ballot Theorem**
 
     In an election with m ≥ 2 candidates where candidate 0 receives `a` votes
-    and all other candidates receive a combined total of `b` votes, with a > b,
-    the probability that candidate 0 leads all opponents combined throughout
+    and all other candidates receive a combined `b` votes, with a > b, the
+    probability that candidate 0 leads all opponents combined throughout
     the counting is:
 
       P = (a - b) / (a + b)
 
-    **Proof**: By the projection invariance theorem (Part III), whether candidate 0
-    leads all opponents combined depends only on the ±1 projection. By fiber
-    uniformity (above), the projection maps the uniform distribution on
-    multi-candidate sequences to the uniform distribution on ±1 sequences.
-    The classical ballot theorem (Wiedijk #30) then gives the result. -/
-theorem multi_candidate_ballot_reduction
-    (a b : ℕ) (hab : b < a) :
-    -- The multi-candidate ballot probability equals the classical formula
-    (a - b : ℚ) / (a + b) = (a - b : ℚ) / (a + b) := by
-  -- The projection-invariance theorem (leadsAllThroughout_of_same_projection)
-  -- shows the "leads all combined" property depends only on the ±1 projection.
-  -- The fiber uniformity theorem shows uniform fibers.
-  -- Mathlib's ballot_problem gives the classical result.
-  rfl
+    **Proof chain:**
+    1. `multi_stays_iff_projected`: The "stays positive" property depends
+       only on the ±1 projection, not on opponent label distribution.
+    2. `fiber_card_uniform`: Each ±1 target has the same number of
+       multi-candidate preimages (multinomial coefficient).
+    3. `uniformOn_fiber_transfer`: Uniform fibers preserve
+       conditional probability under projection.
+    4. `Ballot.ballot_problem`: The classical ballot theorem gives
+       uniformOn (countedSequence a b) staysPositive = (a-b)/(a+b).
 
-end FiberUniformity
+    Steps 1 and the structural parts of 2 are proved. The counting
+    in step 2 and the measure transfer in step 3 are axiomatized.
+    Step 4 is Mathlib's Wiedijk #30. -/
+theorem multi_candidate_ballot (m : ℕ) (hm : 2 ≤ m) (a b : ℕ) (hab : b < a) :
+    ProbabilityTheory.uniformOn (multiCountedSequence m (by omega) a b)
+      (multiStaysPositive m (by omega)) =
+    (↑a - ↑b) / (↑a + ↑b) := by
+  rw [uniformOn_fiber_transfer m hm a b hab]
+  exact Ballot.ballot_problem b a hab
 
-/-! ## Part VIII: Conditional Probability Framework
+end ProperReduction
 
-We set up the conditional counting framework to state the theorem
-in terms of Mathlib's `condCount`, matching the classical ballot theorem. -/
+/-! ## Part IX: Reference — The Classical Ballot Theorem
 
-/-! ## Part IX: Connection to Mathlib's Classical Ballot Theorem
+Mathlib's `Ballot.ballot_problem` (Wiedijk #30) states:
+  `uniformOn (countedSequence p q) staysPositive = (p - q) / (p + q)`
 
-The final piece: Mathlib's `Ballot.ballot_problem` proves that the conditional
-probability of staying positive over `countedSequence p q` equals `(p-q)/(p+q)`.
+Our contribution is the REDUCTION from m ≥ 2 candidates to this classical
+2-candidate result, via:
+- Projection invariance (Part III): property depends only on ±1 projection
+- Fiber uniformity (Part VIII): uniform fibers preserve conditional probability
+- Classical ballot theorem (Part IX): gives the formula -/
 
-Our contribution is the REDUCTION: the multi-candidate problem with m ≥ 2 candidates
-reduces to this classical 2-candidate result via projection invariance (Part III)
-and fiber uniformity (Part VII).
-
-The complete chain:
-1. Multi-candidate "leads all combined" ↔ projected ±1 sequence has positive prefix sums
-   (by `leadsAllThroughout_of_same_projection` and `leadsAll_iff_projection_positive`)
-2. Projection lands in countedSequence a b (by `project_mem_countedSequence`)
-3. Fibers are uniform → conditional probability is preserved
-4. Classical ballot theorem gives (a-b)/(a+b)
-
-See `Archive.Wiedijk100Theorems.BallotProblem` for the classical result:
-  `ballot_problem : condCount (countedSequence p q) staysPositive = (p - q) / (p + q)`
--/
-
--- Reference: the classical result we reduce to
 #check @Ballot.ballot_problem
 
 /-! ## Part VI: Concrete Examples -/

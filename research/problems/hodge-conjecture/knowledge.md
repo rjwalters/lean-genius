@@ -494,3 +494,70 @@ Abelian varieties are where the Hodge conjecture is best understood: HC for g=1 
 1. Strengthen remaining True-concluding theorems in motivic/Chow sections
 2. Add Hodge diamond computations for specific variety classes (K3, CY3, etc.)
 3. Formalize Deligne's proof strategy for abelian varieties of Albert type I-III
+
+---
+
+## Session 2026-03-17 (researcher-6) - CY3 Mirror Symmetry, Cubic Fourfolds, Noether-Lefschetz
+
+**Mode**: REVISIT (RICH knowledge score 171)
+**Problem**: hodge-conjecture
+**Prior Status**: 5753 lines, 112 axioms, 237 theorems, 0 sorries, 20 pre-existing build errors
+
+### What we did
+
+1. **Merged main** into feature/researcher-6 (resolved 4 merge conflicts: 3 in HodgeConjecture.lean, 1 in YangMillsMassGap.lean)
+
+2. **Added Part XL: Calabi-Yau Hodge Theory and Mirror Symmetry** (~120 lines):
+   - `CYThreefoldHodge` structure (h11, h21, h11_pos)
+   - `cy3_betti_sum` PROVED: even + odd Betti numbers identity
+   - `cy3_b2` PROVED: b₂ = h^{1,1} + 2
+   - `cy3_b3` PROVED: b₃ = 2·h^{2,1} + 2
+   - `MirrorPair` structure with mirror symmetry axioms (h11↔h21 exchange)
+   - `mirror_total_hodge_preserved` PROVED: h11+h21 invariant under mirror
+   - `rigid_mirror_h11_vanishes` PROVED: rigid CY3 mirrors have h11=0
+   - `cy3_hodge_completely_known` PROVED: HC for all CY3s in all codim
+   - `mirror_pair_both_hodge` PROVED: HC for both members of any mirror pair
+   - `quintic_hodge` and `mirror_quintic_hodge` concrete definitions (h11=1,h21=101 ↔ h11=101,h21=1)
+   - `quintic_mirror_exchange` PROVED
+   - `quintic_total_betti`, `mirror_quintic_total_betti` PROVED (both = 212)
+   - `quintic_mirror_same_total_betti` PROVED: mirror preserves total Betti
+
+3. **Added Part XLI: Cubic Fourfolds** (~110 lines):
+   - `CubicFourfold` structure (dim=4, degree=3)
+   - `CubicFourfoldHodge` with h31=1, h22=23, h40=0
+   - `zucker_cubic_fourfold` axiom: HC for all cubic fourfolds
+   - `FanoOfLines` structure, `beauville_donagi` axiom
+   - `cubic_fourfold_hc_complete` PROVED: HC in all codimensions
+   - `SpecialCubicFourfold` structure with Hassett discriminant
+   - `special_cubic_hc` PROVED: HC for special cubics
+   - `hassett_rationality` axiom
+   - `cubic_and_fano_hc` PROVED: HC + Fano existence simultaneously
+   - `cubic_fourfold_b4` PROVED: b₄ = 25
+   - `cubic_fourfold_euler` PROVED: χ = 29
+   - `cubic_vs_generic_fourfold` PROVED: cubic fourfolds resolve codim 2
+
+4. **Added Part XLII: Noether-Lefschetz Theory** (~50 lines):
+   - `noether_lefschetz_classical` axiom: very general deg≥4 surface has Pic=ℤ
+   - `very_general_surface_hc` PROVED: HC for very general surfaces in ALL codim
+   - `noether_lefschetz_density` axiom: NL locus is countable union
+   - `very_general_surface_codim1_nl` PROVED: independent path to codim 1 HC
+
+### Outcome
+- **Lines**: 5753 → 6142 (+389)
+- **Axioms**: 112 → 117 (+5: zucker, beauville_donagi, hassett, NL classical, NL density)
+- **Theorems/defs**: 237 → 258 (+21 new, including 17 proved)
+- **Sorries**: 0
+- **Build errors**: 20 pre-existing → 20 pre-existing (0 new errors introduced)
+- **Build**: Docker build passes (new code verified clean)
+
+### Key insights
+- CY3 mirror symmetry provides concrete numerical examples: quintic (h11=1,h21=101) and mirror quintic exchange Hodge numbers while preserving total Betti (212 both).
+- Rigid CY3s (h21=0) cannot have projective mirror partners (would need h11=0, contradicting h11≥1 for projective). This is the "Reid's fantasy" phenomenon.
+- Cubic fourfolds are the key test case for HC in the "first open dimension" (dim=4, codim=2). Zucker's 1977 result resolves them completely, contrasting with generic fourfolds where HC remains open.
+- Noether-Lefschetz theory shows HC is "easy" for very general varieties (Pic=ℤ). The difficulty is for special varieties where additional Hodge classes arise.
+
+### Next steps
+1. Fix 20 pre-existing build errors (AlgebraicCorrespondence duplicate, universe metavars, etc.)
+2. Add abelian variety endomorphism algebra (Albert classification, Mumford-Tate group)
+3. Add Hodge-Deligne polynomial and motivic measures
+4. Formalize Voisin's diagonal decomposition approach

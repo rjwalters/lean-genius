@@ -215,6 +215,12 @@ launch_agent() {
     # Create or update worktree
     create_worktree
 
+    # Symlink OAuth tokens so the claude-wrapper can find them in the worktree
+    if [[ -d "$REPO_ROOT/.loom/tokens" ]]; then
+        mkdir -p "$WORKTREE_PATH/.loom" 2>/dev/null || true
+        ln -sfn "$REPO_ROOT/.loom/tokens" "$WORKTREE_PATH/.loom/tokens"
+    fi
+
     # Check pool depth first
     local available
     available=$(check_pool_depth)
