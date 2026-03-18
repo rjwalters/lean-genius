@@ -190,11 +190,19 @@ theorem powers_linearIndependent
   -- p(M) = ∑ c_k M^k = 0 (from hc), p ≠ 0 (c_i ≠ 0), deg(p) < n
   -- This contradicts minimality of minpoly (degree n)
   have hp_eval : aeval M p = 0 := by
-    sorry -- converting between ∑ c_k • M^k = 0 and aeval M (∑ C(c_k) X^k) = 0
+    simp only [p, map_sum, map_mul, map_pow, aeval_C, aeval_X]
+    simp only [Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]
+    exact hc
   have hp_ne : p ≠ 0 := by
-    sorry -- c_i ≠ 0 implies polynomial is nonzero at coefficient i
+    suffices h : p.coeff (i : ℕ) ≠ 0 from fun heq => h (by rw [heq]; simp)
+    simp only [p, finset_sum_coeff, coeff_C_mul_X_pow, Fin.val_injective.eq_iff,
+      Finset.sum_ite_eq', hi, ↓reduceIte]
+    exact h_ne
   have hp_deg : p.natDegree < n := by
-    sorry -- all exponents k < n, so natDegree < n
+    apply (natDegree_sum_le s _).trans_lt
+    rw [Finset.sup_lt_iff (by omega : 0 < n)]
+    intro k _
+    exact (natDegree_C_mul_X_pow_le (c k) (k : ℕ)).trans_lt k.isLt
   exact absurd hp_eval (aeval_ne_zero_of_ne_zero hp_ne (by omega))
 
 -- ============================================================
@@ -209,10 +217,36 @@ theorem isCyclicVector_of_linearIndependent
     (hli : LinearIndependent K (fun k : Fin n => (M ^ (k : ℕ)).mulVec v)) :
     IsCyclicVector M v := by
   intro p hp hann
-  -- p(M)v = 0. Write p = ∑ aᵢ Xⁱ for i < n (since deg(p) < n).
-  -- Then p(M)v = ∑ aᵢ Mⁱv = 0.
-  -- By linear independence of {Mⁱv}, all aᵢ = 0, so p = 0.
-  sorry
+  rw [linearIndependent_iff'] at hli
+  -- Reconstruct p as a finite sum over Fin n
+  let q := ∑ k : Fin n, C (p.coeff (k : ℕ)) * X ^ (k : ℕ)
+  have hqp : q = p := by
+    ext i
+    simp only [q, finset_sum_coeff, coeff_C_mul_X_pow, Fin.val_injective.eq_iff,
+      Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte]
+    split
+    · rfl
+    next hi => exact (Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)).symm
+  -- aeval M p = ∑ k, p.coeff k • M^k
+  have heval : aeval M p = ∑ k : Fin n, p.coeff (k : ℕ) • M ^ (k : ℕ) := by
+    conv_lhs => rw [← hqp]
+    simp only [q, map_sum, map_mul, map_pow, aeval_C, aeval_X,
+      Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]
+  -- Distribute mulVec: (∑ aₖ • M^k).mulVec v = ∑ aₖ • (M^k v)
+  have hsum : ∑ k : Fin n, p.coeff (k : ℕ) • (M ^ (k : ℕ)).mulVec v = 0 := by
+    have h_distrib : (∑ k : Fin n, p.coeff ↑k • M ^ (↑k : ℕ)).mulVec v =
+        ∑ k : Fin n, p.coeff ↑k • (M ^ (↑k : ℕ)).mulVec v := by
+      simp only [Finset.sum_mulVec, Matrix.smul_mulVec_assoc]
+    rw [← h_distrib, ← heval]; exact hann
+  -- Linear independence forces all coefficients to zero
+  have hcoeff : ∀ k : Fin n, p.coeff (k : ℕ) = 0 :=
+    hli Finset.univ (fun k => p.coeff (k : ℕ)) hsum
+  -- p = 0 since all coefficients vanish
+  ext i
+  simp only [Polynomial.coeff_zero]
+  by_cases hi : i < n
+  · exact hcoeff ⟨i, hi⟩
+  · exact Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)
 
 -- ============================================================
 -- PART V: Main Theorem
@@ -293,11 +327,12 @@ theorem nilpotent_krylov_independent
   - `not_union_proper_subspaces`: union avoidance for finitely many proper subspaces
     (complete proof via line argument with Finset induction)
   - `powers_linearIndependent`: {I, M, ..., M^{n-1}} are linearly independent
-    when deg(minpoly) = n
+    when deg(minpoly) = n (all 3 helper lemmas proved)
+  - `isCyclicVector_of_linearIndependent`: converting linear independence of
+    Krylov vectors to IsCyclicVector (annihilator formulation) — complete proof
+    via polynomial reconstruction and coefficient vanishing argument
 
   **Partially proved** (with sorries):
-  - `isCyclicVector_of_linearIndependent`: converting linear independence of
-    Krylov vectors to IsCyclicVector (annihilator formulation)
   - `nonderogatory_has_cyclic_vector_infinite`: main theorem (needs wiring
     the components together with the finite kernel lattice argument)
   - `nilpotent_krylov_independent`: nilpotent case (Krylov independence from
