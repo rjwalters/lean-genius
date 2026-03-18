@@ -215,198 +215,365 @@ theorem pow5_eq_one_of_cyclotomic5_root {K : Type*} [Field K] {ζ : K}
   have h2 : ζ ^ 5 - 1 = 0 := by rw [h1, hζ, mul_zero]
   exact sub_eq_zero.mp h2
 
-/-- c⁵ = 1 implies c = 1 or Φ₅(c) = 0. -/
-theorem fifth_root_unity_cases {K : Type*} [Field K] {c : K} (h : c ^ 5 = 1) :
-    c = 1 ∨ c ^ 4 + c ^ 3 + c ^ 2 + c + 1 = 0 := by
-  have h0 : (c - 1) * (c ^ 4 + c ^ 3 + c ^ 2 + c + 1) = 0 := by
-    have : (c - 1) * (c ^ 4 + c ^ 3 + c ^ 2 + c + 1) = c ^ 5 - 1 := by ring
-    rw [this, h, sub_self]
-  rcases mul_eq_zero.mp h0 with h1 | h2
-  · left; exact sub_eq_zero.mp h1
-  · right; exact h2
+-- ============================================================================
+-- Part V-A: Fifth Roots of Unity — Powers of ζ
+-- ============================================================================
 
-/-- Any root c of Φ₅ equals ζᵏ for some k ∈ {1,2,3,4}.
+/-- If ζ⁴+ζ³+ζ²+ζ+1=0 then ζ ≠ 1. -/
+theorem zeta_ne_one {K : Type*} [Field K] [CharZero K] {ζ : K}
+    (hζ : ζ ^ 4 + ζ ^ 3 + ζ ^ 2 + ζ + 1 = 0) : ζ ≠ 1 := by
+  intro h; rw [h] at hζ; norm_num at hζ
 
-    The polynomial identity (c-ζ)(c-ζ²)(c-ζ³)(c-ζ⁴) = c⁴+c³+c²+c+1
-    uses ζ⁵=1 and Φ₅(ζ)=0 (elementary symmetric polynomials: σ₁=-1, σ₂=1, σ₃=-1, σ₄=1). -/
-theorem cyclotomic5_root_is_power {K : Type*} [Field K] [CharZero K]
-    {ζ c : K} (hζ : ζ ^ 4 + ζ ^ 3 + ζ ^ 2 + ζ + 1 = 0)
+/-- If ζ⁴+ζ³+ζ²+ζ+1=0 then ζ ≠ -1. -/
+theorem zeta_ne_neg_one {K : Type*} [Field K] [CharZero K] {ζ : K}
+    (hζ : ζ ^ 4 + ζ ^ 3 + ζ ^ 2 + ζ + 1 = 0) : ζ ≠ -1 := by
+  intro h; rw [h] at hζ; norm_num at hζ
+
+/-- If ζ⁴+ζ³+ζ²+ζ+1=0 then ζ² ≠ 1. -/
+theorem zeta_sq_ne_one {K : Type*} [Field K] [CharZero K] {ζ : K}
+    (hζ : ζ ^ 4 + ζ ^ 3 + ζ ^ 2 + ζ + 1 = 0) : ζ ^ 2 ≠ 1 := by
+  intro h
+  -- ζ² = 1 → ζ ∈ {1,-1}, both contradicted
+  have h1 : (ζ - 1) * (ζ + 1) = 0 := by nlinarith
+  rcases mul_eq_zero.mp h1 with h2 | h2
+  · exact zeta_ne_one hζ (sub_eq_zero.mp h2)
+  · exact zeta_ne_neg_one hζ (eq_neg_of_add_eq_zero_left h2)
+
+/-- If ζ⁴+ζ³+ζ²+ζ+1=0 and ζ⁵=1, then ζ³ ≠ 1. -/
+theorem zeta_cube_ne_one {K : Type*} [Field K] [CharZero K] {ζ : K}
+    (hζ : ζ ^ 4 + ζ ^ 3 + ζ ^ 2 + ζ + 1 = 0) (hζ5 : ζ ^ 5 = 1) :
+    ζ ^ 3 ≠ 1 := by
+  intro h
+  -- ζ³=1 and ζ⁵=1 → ζ²=1 (ζ²·ζ³=ζ⁵=1, so ζ²=1/ζ³=1)
+  have : ζ ^ 2 = 1 := by
+    have := congr_arg (· * (ζ ^ 3)⁻¹) (show ζ ^ 5 = ζ ^ 3 from by rw [hζ5, h])
+    simp [pow_succ, mul_assoc] at this
+    nlinarith [this, h]
+  exact zeta_sq_ne_one hζ this
+
+/-- If ζ⁴+ζ³+ζ²+ζ+1=0 and ζ⁵=1, then ζ⁴ ≠ 1. -/
+theorem zeta_fourth_ne_one {K : Type*} [Field K] [CharZero K] {ζ : K}
+    (hζ : ζ ^ 4 + ζ ^ 3 + ζ ^ 2 + ζ + 1 = 0) (hζ5 : ζ ^ 5 = 1) :
+    ζ ^ 4 ≠ 1 := by
+  intro h; have : ζ = 1 := by nlinarith; exact zeta_ne_one hζ this
+
+/-- Powers ζ², ζ³, ζ⁴ all satisfy Φ₅.
+    Key: (ζᵏ)⁴+(ζᵏ)³+(ζᵏ)²+ζᵏ+1 reduces to ζ⁴+ζ³+ζ²+ζ+1 using ζ⁵=1. -/
+theorem pow_root_of_cyclotomic5 {K : Type*} [Field K] {ζ : K}
+    (hζ : ζ ^ 4 + ζ ^ 3 + ζ ^ 2 + ζ + 1 = 0) (hζ5 : ζ ^ 5 = 1)
+    (k : ℕ) (hk : k ∈ ({2, 3, 4} : Finset ℕ)) :
+    (ζ ^ k) ^ 4 + (ζ ^ k) ^ 3 + (ζ ^ k) ^ 2 + ζ ^ k + 1 = 0 := by
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hk
+  rcases hk with rfl | rfl | rfl
+  · -- k = 2: ζ⁸+ζ⁶+ζ⁴+ζ²+1 = ζ³+ζ+ζ⁴+ζ²+1
+    have h8 : ζ ^ 8 = ζ ^ 3 := by
+      calc ζ ^ 8 = (ζ ^ 5) * ζ ^ 3 := by ring; _ = ζ ^ 3 := by rw [hζ5, one_mul]
+    have h6 : ζ ^ 6 = ζ := by
+      calc ζ ^ 6 = (ζ ^ 5) * ζ := by ring; _ = ζ := by rw [hζ5, one_mul]
+    calc (ζ ^ 2) ^ 4 + (ζ ^ 2) ^ 3 + (ζ ^ 2) ^ 2 + ζ ^ 2 + 1
+        = ζ ^ 8 + ζ ^ 6 + ζ ^ 4 + ζ ^ 2 + 1 := by ring
+      _ = ζ ^ 3 + ζ + ζ ^ 4 + ζ ^ 2 + 1 := by rw [h8, h6]
+      _ = ζ ^ 4 + ζ ^ 3 + ζ ^ 2 + ζ + 1 := by ring
+      _ = 0 := hζ
+  · -- k = 3: ζ¹²+ζ⁹+ζ⁶+ζ³+1 = ζ²+ζ⁴+ζ+ζ³+1
+    have h12 : ζ ^ 12 = ζ ^ 2 := by
+      calc ζ ^ 12 = (ζ ^ 5) ^ 2 * ζ ^ 2 := by ring; _ = ζ ^ 2 := by rw [hζ5, one_pow, one_mul]
+    have h9 : ζ ^ 9 = ζ ^ 4 := by
+      calc ζ ^ 9 = (ζ ^ 5) * ζ ^ 4 := by ring; _ = ζ ^ 4 := by rw [hζ5, one_mul]
+    have h6 : ζ ^ 6 = ζ := by
+      calc ζ ^ 6 = (ζ ^ 5) * ζ := by ring; _ = ζ := by rw [hζ5, one_mul]
+    calc (ζ ^ 3) ^ 4 + (ζ ^ 3) ^ 3 + (ζ ^ 3) ^ 2 + ζ ^ 3 + 1
+        = ζ ^ 12 + ζ ^ 9 + ζ ^ 6 + ζ ^ 3 + 1 := by ring
+      _ = ζ ^ 2 + ζ ^ 4 + ζ + ζ ^ 3 + 1 := by rw [h12, h9, h6]
+      _ = ζ ^ 4 + ζ ^ 3 + ζ ^ 2 + ζ + 1 := by ring
+      _ = 0 := hζ
+  · -- k = 4: ζ¹⁶+ζ¹²+ζ⁸+ζ⁴+1 = ζ+ζ²+ζ³+ζ⁴+1
+    have h16 : ζ ^ 16 = ζ := by
+      calc ζ ^ 16 = (ζ ^ 5) ^ 3 * ζ := by ring; _ = ζ := by rw [hζ5, one_pow, one_mul]
+    have h12 : ζ ^ 12 = ζ ^ 2 := by
+      calc ζ ^ 12 = (ζ ^ 5) ^ 2 * ζ ^ 2 := by ring; _ = ζ ^ 2 := by rw [hζ5, one_pow, one_mul]
+    have h8 : ζ ^ 8 = ζ ^ 3 := by
+      calc ζ ^ 8 = (ζ ^ 5) * ζ ^ 3 := by ring; _ = ζ ^ 3 := by rw [hζ5, one_mul]
+    calc (ζ ^ 4) ^ 4 + (ζ ^ 4) ^ 3 + (ζ ^ 4) ^ 2 + ζ ^ 4 + 1
+        = ζ ^ 16 + ζ ^ 12 + ζ ^ 8 + ζ ^ 4 + 1 := by ring
+      _ = ζ + ζ ^ 2 + ζ ^ 3 + ζ ^ 4 + 1 := by rw [h16, h12, h8]
+      _ = ζ ^ 4 + ζ ^ 3 + ζ ^ 2 + ζ + 1 := by ring
+      _ = 0 := hζ
+
+/-- Any root of Φ₅ in a field is one of ζ, ζ², ζ³, ζ⁴.
+    Proof: Φ₅ has degree 4 and we exhibit 4 distinct roots (using ζⁿ≠1 for n<5).
+    Any 5th root c ∈ SF is a root of Φ₅, so it must equal one of these. -/
+theorem cyclotomic5_root_is_power {K : Type*} [Field K] [CharZero K] {ζ c : K}
+    (hζ : ζ ^ 4 + ζ ^ 3 + ζ ^ 2 + ζ + 1 = 0)
+    (hζ5 : ζ ^ 5 = 1)
     (hc : c ^ 4 + c ^ 3 + c ^ 2 + c + 1 = 0) :
     c = ζ ∨ c = ζ ^ 2 ∨ c = ζ ^ 3 ∨ c = ζ ^ 4 := by
-  have h5 := pow5_eq_one_of_cyclotomic5_root hζ
-  have hprod : (c - ζ) * (c - ζ ^ 2) * (c - ζ ^ 3) * (c - ζ ^ 4) = 0 := by
-    have key : (c - ζ) * (c - ζ ^ 2) * (c - ζ ^ 3) * (c - ζ ^ 4) =
-        c ^ 4 + c ^ 3 + c ^ 2 + c + 1 := by
-      linear_combination
-        (-c ^ 3 + c ^ 2 - c) * hζ +
-        ((ζ ^ 2 + ζ + 2) * c ^ 2 - (ζ ^ 4 + ζ ^ 3 + ζ ^ 2 + ζ) * c +
-          ζ ^ 5 + 1) * h5
-    rw [key, hc]
-  rcases mul_eq_zero.mp hprod with h | h
-  · rcases mul_eq_zero.mp h with h | h
-    · rcases mul_eq_zero.mp h with h | h
-      · left; exact sub_eq_zero.mp h
-      · right; left; exact sub_eq_zero.mp h
-    · right; right; left; exact sub_eq_zero.mp h
-  · right; right; right; exact sub_eq_zero.mp h
+  -- Consider p(X) = X⁴+X³+X²+X+1. Both ζ and c are roots.
+  -- We factor: p(X) = (X-ζ) · q(X) in K[X]
+  -- Then c = ζ or q(c) = 0. Continue for ζ², ζ³, ζ⁴.
+  -- Use: degree-4 polynomial has at most 4 roots in a field.
+  by_contra h
+  push_neg at h
+  obtain ⟨h1, h2, h3, h4⟩ := h
+  -- p = X⁴+X³+X²+X+1 has roots c, ζ, ζ², ζ³, ζ⁴ (5 distinct)
+  -- But degree 4 → at most 4 roots. Contradiction.
+  set p := (X : K[X]) ^ 4 + X ^ 3 + X ^ 2 + X + 1
+  have hp_ne : p ≠ 0 := by
+    intro h; have h0 : p.coeff 4 = 0 := by rw [h]; simp
+    simp [p, Polynomial.coeff_add, Polynomial.coeff_X_pow] at h0
+  have hp_deg : p.natDegree = 4 := by compute_degree!
+  -- All 5 are roots
+  have hc_root : p.IsRoot c := by
+    simp [p, Polynomial.IsRoot, Polynomial.eval_add, Polynomial.eval_pow,
+      Polynomial.eval_X, Polynomial.eval_one]; linarith
+  have hζ_root : p.IsRoot ζ := by
+    simp [p, Polynomial.IsRoot, Polynomial.eval_add, Polynomial.eval_pow,
+      Polynomial.eval_X, Polynomial.eval_one]; linarith
+  have hζ2_root : p.IsRoot (ζ ^ 2) := by
+    simp [p, Polynomial.IsRoot, Polynomial.eval_add, Polynomial.eval_pow,
+      Polynomial.eval_X, Polynomial.eval_one]
+    have := pow_root_of_cyclotomic5 hζ hζ5 2 (by simp)
+    linarith
+  have hζ3_root : p.IsRoot (ζ ^ 3) := by
+    simp [p, Polynomial.IsRoot, Polynomial.eval_add, Polynomial.eval_pow,
+      Polynomial.eval_X, Polynomial.eval_one]
+    have := pow_root_of_cyclotomic5 hζ hζ5 3 (by simp)
+    linarith
+  have hζ4_root : p.IsRoot (ζ ^ 4) := by
+    simp [p, Polynomial.IsRoot, Polynomial.eval_add, Polynomial.eval_pow,
+      Polynomial.eval_X, Polynomial.eval_one]
+    have := pow_root_of_cyclotomic5 hζ hζ5 4 (by simp)
+    linarith
+  -- Distinctness of {ζ, ζ², ζ³, ζ⁴}
+  have hne_1 := zeta_ne_one hζ
+  have hne_sq := zeta_sq_ne_one hζ
+  have hne_cb := zeta_cube_ne_one hζ hζ5
+  have hne_4 := zeta_fourth_ne_one hζ hζ5
+  have hζ_ne_0 : ζ ≠ 0 := by intro h; rw [h] at hζ; norm_num at hζ
+  -- ζⁱ ≠ ζʲ for i ≠ j (from ζⁱ⁻ʲ ≠ 1)
+  have h12 : ζ ≠ ζ ^ 2 := by intro h; have := congr_arg (· * ζ⁻¹) h; simp [mul_comm, mul_assoc, mul_inv_cancel₀ hζ_ne_0] at this; exact hne_1 this
+  have h13 : ζ ≠ ζ ^ 3 := by intro h; have := congr_arg (· * ζ⁻¹) h; simp [mul_comm, mul_assoc, mul_inv_cancel₀ hζ_ne_0] at this; exact hne_sq this
+  have h14 : ζ ≠ ζ ^ 4 := by intro h; have := congr_arg (· * ζ⁻¹) h; simp [mul_comm, mul_assoc, mul_inv_cancel₀ hζ_ne_0] at this; exact hne_cb hζ5 this
+  have h23 : ζ ^ 2 ≠ ζ ^ 3 := by intro h; have := congr_arg (· * (ζ^2)⁻¹) h; simp [pow_succ, mul_assoc, mul_inv_cancel₀ (pow_ne_zero 2 hζ_ne_0)] at this; exact hne_1 this
+  have h24 : ζ ^ 2 ≠ ζ ^ 4 := by intro h; have := congr_arg (· * (ζ^2)⁻¹) h; simp [pow_succ, mul_assoc, mul_inv_cancel₀ (pow_ne_zero 2 hζ_ne_0)] at this; exact hne_sq this
+  have h34 : ζ ^ 3 ≠ ζ ^ 4 := by intro h; have := congr_arg (· * (ζ^3)⁻¹) h; simp [pow_succ, mul_assoc, mul_inv_cancel₀ (pow_ne_zero 3 hζ_ne_0)] at this; exact hne_1 this
+  -- Now: {c, ζ, ζ², ζ³, ζ⁴} has 5 distinct roots of p
+  -- But p has degree 4, contradiction
+  have h_roots_card : p.roots.toFinset.card ≤ 4 := by
+    calc _ ≤ p.roots.card := Multiset.toFinset_card_le_card _
+      _ ≤ p.natDegree := Polynomial.card_roots_le_degree _
+      _ = 4 := hp_deg
+  -- Build 5-element subset of roots
+  have hc_mem : c ∈ p.roots.toFinset := by
+    simp [Multiset.mem_toFinset, Polynomial.mem_roots hp_ne, hc_root]
+  have hζ_mem : ζ ∈ p.roots.toFinset := by
+    simp [Multiset.mem_toFinset, Polynomial.mem_roots hp_ne, hζ_root]
+  have hζ2_mem : ζ ^ 2 ∈ p.roots.toFinset := by
+    simp [Multiset.mem_toFinset, Polynomial.mem_roots hp_ne, hζ2_root]
+  have hζ3_mem : ζ ^ 3 ∈ p.roots.toFinset := by
+    simp [Multiset.mem_toFinset, Polynomial.mem_roots hp_ne, hζ3_root]
+  have hζ4_mem : ζ ^ 4 ∈ p.roots.toFinset := by
+    simp [Multiset.mem_toFinset, Polynomial.mem_roots hp_ne, hζ4_root]
+  -- 5 distinct elements in a set of size ≤ 4: contradiction
+  have : ({c, ζ, ζ ^ 2, ζ ^ 3, ζ ^ 4} : Finset K) ⊆ p.roots.toFinset := by
+    simp only [Finset.subset_iff, Finset.mem_insert, Finset.mem_singleton]
+    intro x hx; rcases hx with rfl | rfl | rfl | rfl | rfl
+    all_goals assumption
+  have h5 : 5 ≤ ({c, ζ, ζ ^ 2, ζ ^ 3, ζ ^ 4} : Finset K).card := by
+    rw [Finset.card_insert_of_not_mem (by simp [h1, h2, h3, h4]),
+        Finset.card_insert_of_not_mem (by simp [h12, h13, h14]),
+        Finset.card_insert_of_not_mem (by simp [h23, h24]),
+        Finset.card_insert_of_not_mem (by simp [h34])]
+  linarith [Finset.card_le_card this]
 
-/-- Every root of X⁵-2 lies in ℚ⟮α,ζ⟯. For any root r: (r/α)⁵=1,
-    so r/α = 1 or a power of ζ. -/
-theorem f20_roots_in_adjoin
+-- ============================================================================
+-- Part V-B: All Roots of X⁵-2 Lie in ℚ(α, ζ)
+-- ============================================================================
+
+/-- Every root of X⁵-2 in the splitting field lies in ℚ⟮α,ζ⟯.
+    For any root r: (r/α)⁵ = 1, so r/α is a 5th root of unity.
+    By cyclotomic5_root_is_power, r/α ∈ {1,ζ,ζ²,ζ³,ζ⁴} ⊂ ℚ(α,ζ). -/
+theorem roots_in_adjoin_f20
     {α ζ : (X ^ 5 - C (2 : ℚ) : ℚ[X]).SplittingField}
     (hα : Polynomial.aeval α (X ^ 5 - C (2 : ℚ) : ℚ[X]) = 0)
-    (hζ : ζ ^ 4 + ζ ^ 3 + ζ ^ 2 + ζ + 1 = 0) (hα_ne : α ≠ 0) :
+    (hζ : ζ ^ 4 + ζ ^ 3 + ζ ^ 2 + ζ + 1 = 0)
+    (hα_ne : α ≠ 0) :
     ∀ r, r ∈ (X ^ 5 - C (2 : ℚ) : ℚ[X]).rootSet
       (X ^ 5 - C (2 : ℚ) : ℚ[X]).SplittingField →
     r ∈ (IntermediateField.adjoin ℚ ({α, ζ} :
       Set (X ^ 5 - C (2 : ℚ) : ℚ[X]).SplittingField) : Set _) := by
   intro r hr
-  set K := IntermediateField.adjoin ℚ ({α, ζ} :
-    Set (X ^ 5 - C (2 : ℚ) : ℚ[X]).SplittingField)
-  have hα_K : (α : (X ^ 5 - C (2 : ℚ) : ℚ[X]).SplittingField) ∈ K := by
-    apply IntermediateField.subset_adjoin; exact Set.mem_insert α {ζ}
-  have hζ_K : (ζ : (X ^ 5 - C (2 : ℚ) : ℚ[X]).SplittingField) ∈ K := by
-    apply IntermediateField.subset_adjoin
-    exact Set.mem_insert_of_mem α rfl
   have hr_eval : Polynomial.aeval r (X ^ 5 - C (2 : ℚ) : ℚ[X]) = 0 :=
     (Polynomial.mem_rootSet.mp hr).2
-  have hα5 : α ^ 5 = algebraMap ℚ _ 2 := by
-    have h := hα; rw [map_sub, map_pow, aeval_X, aeval_C] at h; exact sub_eq_zero.mp h
-  have hr5 : r ^ 5 = algebraMap ℚ _ 2 := by
-    have h := hr_eval; rw [map_sub, map_pow, aeval_X, aeval_C] at h; exact sub_eq_zero.mp h
-  set c := r * α⁻¹
+  -- α⁵ = 2 and r⁵ = 2
+  have aeval_eq : ∀ x : (X ^ 5 - C (2 : ℚ) : ℚ[X]).SplittingField,
+      Polynomial.aeval x (X ^ 5 - C (2 : ℚ) : ℚ[X]) = x ^ 5 - algebraMap ℚ _ 2 := by
+    intro x; simp [map_sub, map_pow, aeval_X, aeval_C]
+  have hα5 : α ^ 5 = algebraMap ℚ _ 2 :=
+    sub_eq_zero.mp (by rw [← aeval_eq]; exact hα)
+  have hr5 : r ^ 5 = algebraMap ℚ _ 2 :=
+    sub_eq_zero.mp (by rw [← aeval_eq]; exact hr_eval)
+  -- c = r/α satisfies c⁵ = 1
+  set c := r * α⁻¹ with hc_def
   have hc5 : c ^ 5 = 1 := by
-    simp only [c]; rw [mul_pow, inv_pow, hr5, hα5]; field_simp
-  rcases fifth_root_unity_cases hc5 with hc1 | hc_phi
-  · have : r = α := by
-      have h2 : r = c * α := by
-        show r = r * α⁻¹ * α
-        rw [mul_assoc, inv_mul_cancel₀ hα_ne, mul_one]
-      rw [h2, hc1, one_mul]
-    rw [this]; exact hα_K
-  · have hr_c : r = c * α := by
-      show r = r * α⁻¹ * α
-      rw [mul_assoc, inv_mul_cancel₀ hα_ne, mul_one]
-    have hc_K : c ∈ K := by
-      rcases cyclotomic5_root_is_power hζ hc_phi with h | h | h | h
-      · rw [h]; exact hζ_K
-      · rw [h]; exact pow_mem hζ_K 2
-      · rw [h]; exact pow_mem hζ_K 3
-      · rw [h]; exact pow_mem hζ_K 4
-    rw [hr_c]; exact K.mul_mem hc_K hα_K
+    simp only [c, mul_pow, inv_pow, hr5, hα5]; field_simp
+  have hζ5 := pow5_eq_one_of_cyclotomic5_root hζ
+  set K := IntermediateField.adjoin ℚ ({α, ζ} :
+    Set (X ^ 5 - C (2 : ℚ) : ℚ[X]).SplittingField)
+  -- α and ζ are in K
+  have hα_K : α ∈ (K : Set _) := by
+    apply IntermediateField.subset_adjoin; exact Set.mem_insert α {ζ}
+  have hζ_K : ζ ∈ (K : Set _) := by
+    apply IntermediateField.subset_adjoin
+    exact Set.mem_insert_iff.mpr (Or.inr rfl)
+  -- Helper: recover r from c
+  have hr_of_c : r = c * α := by rw [hc_def, mul_assoc, inv_mul_cancel₀ hα_ne, mul_one]
+  -- c = 1 case: r = α ∈ K
+  by_cases hc1 : c = 1
+  · rw [hr_of_c, hc1, one_mul]; exact hα_K
+  · -- c ≠ 1: c is a root of Φ₅
+    have hcΦ : c ^ 4 + c ^ 3 + c ^ 2 + c + 1 = 0 := by
+      have hab : r ≠ α := by
+        intro h
+        have : c = 1 := by rw [hc_def, h, mul_inv_cancel₀ hα_ne]
+        exact hc1 this
+      exact fifth_root_ratio_satisfies_cyclotomic5 (by rw [hr5, hα5]) hab hα_ne
+    -- c is a power of ζ
+    rcases cyclotomic5_root_is_power hζ hζ5 hcΦ with hc_eq | hc_eq | hc_eq | hc_eq
+    · rw [hr_of_c, hc_eq]; exact K.mul_mem hζ_K hα_K
+    · rw [hr_of_c, hc_eq, show ζ ^ 2 = ζ * ζ from by ring]
+      exact K.mul_mem (K.mul_mem hζ_K hζ_K) hα_K
+    · rw [hr_of_c, hc_eq, show ζ ^ 3 = ζ * ζ * ζ from by ring]
+      exact K.mul_mem (K.mul_mem (K.mul_mem hζ_K hζ_K) hζ_K) hα_K
+    · rw [hr_of_c, hc_eq, show ζ ^ 4 = ζ * ζ * ζ * ζ from by ring]
+      exact K.mul_mem (K.mul_mem (K.mul_mem (K.mul_mem hζ_K hζ_K) hζ_K) hζ_K) hα_K
 
-/-- SF(X⁵-2) = ℚ⟮α,ζ⟯. -/
-theorem f20_adjoin_eq_top
+/-- The splitting field of X⁵-2 equals ℚ⟮α,ζ⟯. -/
+theorem adjoin_alpha_zeta_eq_top_f20
     {α ζ : (X ^ 5 - C (2 : ℚ) : ℚ[X]).SplittingField}
     (hα : Polynomial.aeval α (X ^ 5 - C (2 : ℚ) : ℚ[X]) = 0)
-    (hζ : ζ ^ 4 + ζ ^ 3 + ζ ^ 2 + ζ + 1 = 0) (hα_ne : α ≠ 0) :
+    (hζ : ζ ^ 4 + ζ ^ 3 + ζ ^ 2 + ζ + 1 = 0)
+    (hα_ne : α ≠ 0) :
     IntermediateField.adjoin ℚ ({α, ζ} :
       Set (X ^ 5 - C (2 : ℚ) : ℚ[X]).SplittingField) = ⊤ := by
   set K := IntermediateField.adjoin ℚ ({α, ζ} :
     Set (X ^ 5 - C (2 : ℚ) : ℚ[X]).SplittingField)
+  have h_roots : ↑((X ^ 5 - C (2 : ℚ) : ℚ[X]).rootSet
+    (X ^ 5 - C (2 : ℚ) : ℚ[X]).SplittingField) ⊆ (K : Set _) :=
+    fun r hr => roots_in_adjoin_f20 hα hζ hα_ne r hr
   have h_sub : Algebra.adjoin ℚ (↑((X ^ 5 - C (2 : ℚ) : ℚ[X]).rootSet
     (X ^ 5 - C (2 : ℚ) : ℚ[X]).SplittingField)) ≤ K.toSubalgebra :=
-    Algebra.adjoin_le (fun x hx => f20_roots_in_adjoin hα hζ hα_ne x hx)
+    Algebra.adjoin_le (fun x hx => h_roots hx)
   have h_top : Algebra.adjoin ℚ (↑((X ^ 5 - C (2 : ℚ) : ℚ[X]).rootSet
     (X ^ 5 - C (2 : ℚ) : ℚ[X]).SplittingField)) = ⊤ :=
     IsSplittingField.adjoin_rootSet'
   have h_K_top : K.toSubalgebra = ⊤ := le_antisymm le_top (h_top ▸ h_sub)
   rw [← IntermediateField.top_toSubalgebra] at h_K_top
-  exact IntermediateField.toSubalgebra_injective h_K_top
+  exact (IntermediateField.toSubalgebra_injective h_K_top)
+
+-- ============================================================================
+-- Part V-C: The Upper Bound — |Gal(X⁵-2)| divides 20
+-- ============================================================================
 
 set_option synthInstance.maxHeartbeats 80000 in
 set_option maxHeartbeats 800000 in
-/-- |Gal(X⁵-2/ℚ)| divides 20. SF = ℚ(α,ζ₅) with tower law. -/
+/-- |Gal(X⁵-2/ℚ)| divides 20.
+
+    Proof:
+    1. 20 | |Gal| (from twenty_dvd_gal_card)
+    2. SF = ℚ(α,ζ₅) where [ℚ(α):ℚ] = 5 and [SF:ℚ(α)] ≤ 4
+    3. So [SF:ℚ] ≤ 20, hence |Gal| ≤ 20
+    4. Combined: |Gal| = 20 -/
 theorem gal_card_dvd_20 :
     Fintype.card ((X : ℚ[X]) ^ 5 - C 2).Gal ∣ 20 := by
   set p := (X : ℚ[X]) ^ 5 - C 2 with hp_def
   set E := p.SplittingField
+  -- |Gal| = finrank
   have hcard_eq : Fintype.card p.Gal = Module.finrank ℚ E := by
     have := Polynomial.Gal.card_of_separable x_fifth_sub_2_separable
     rw [Nat.card_eq_fintype_card] at this; exact this
-  rw [hcard_eq]
+  -- Lower bound: 20 | |Gal|
+  have h20_dvd := twenty_dvd_gal_card
+  have hpos : 0 < Fintype.card p.Gal := Fintype.card_pos
+  -- Get α (root of p) in E
   have hsplit := Polynomial.SplittingField.splits p
   have hcard_root : Fintype.card (p.rootSet E) = 5 :=
     (Polynomial.card_rootSet_eq_natDegree x_fifth_sub_2_separable hsplit).trans
       x_fifth_sub_2_natDegree
-  obtain ⟨⟨α, hα_mem⟩⟩ := Fintype.card_pos_iff.mp (by rw [hcard_root]; omega)
+  obtain ⟨⟨α, hα_mem⟩⟩ :=
+    Fintype.card_pos_iff.mp (by rw [hcard_root]; omega)
   have hα : Polynomial.aeval α p = 0 := (Polynomial.mem_rootSet.mp hα_mem).2
   have hα_ne : α ≠ 0 := by
-    intro h; have h2 := hα; rw [map_sub, map_pow, aeval_X, aeval_C, h,
-      zero_pow (by omega)] at h2; simp at h2
+    intro h; have := hα; simp [hp_def, map_sub, map_pow, aeval_X, aeval_C] at this
+    rw [h, zero_pow (by omega : 5 ≠ 0)] at this; simp at this
+  -- Get ζ (root of Φ₅) in E
   obtain ⟨ζ, hζ⟩ := cyclotomic_5_has_root_in_splitting_field
-  have hK_top := f20_adjoin_eq_top hα hζ hα_ne
+  -- SF = ℚ(α,ζ)
+  have hK_top := adjoin_alpha_zeta_eq_top_f20 hα hζ hα_ne
+  -- Set up Kα = ℚ(α)
   set Kα := IntermediateField.adjoin ℚ ({α} : Set E)
+  -- [Kα : ℚ] = 5
   have hα_int : IsIntegral ℚ α := .of_finite ℚ α
   have hminp : minpoly ℚ α = p :=
-    (minpoly.eq_of_irreducible_of_monic x_fifth_sub_2_irreducible hα x_fifth_sub_2_monic).symm
+    (minpoly.eq_of_irreducible_of_monic x_fifth_sub_2_irreducible hα
+      x_fifth_sub_2_monic).symm
   have hKα_fr : Module.finrank ℚ Kα = 5 := by
     rw [IntermediateField.adjoin.finrank hα_int, hminp, x_fifth_sub_2_natDegree]
+  -- Tower law: [E:ℚ] = [E:Kα] * 5
   have htower := Module.finrank_mul_finrank ℚ Kα E
   rw [hKα_fr] at htower
-  suffices h4 : Module.finrank Kα E ∣ 4 by
-    rw [← htower]; exact mul_dvd_mul_left 5 h4
+  -- Show [E:Kα] ≤ 4 via Kα⟮ζ⟯ = ⊤
   set Kαζ := IntermediateField.adjoin (↥Kα) ({ζ} : Set E)
   have hKαζ_top : Kαζ = ⊤ := by
     have h_le : IntermediateField.adjoin ℚ ({α, ζ} : Set E) ≤
         Kαζ.restrictScalars ℚ := by
       apply IntermediateField.adjoin_le_iff.mpr
       intro x hx; show x ∈ (Kαζ : Set E)
-      rcases hx with h_eq | hx
+      rcases Set.mem_insert_iff.mp hx with h_eq | hx
       · rw [h_eq]
-        apply (bot_le : (⊥ : IntermediateField (↥Kα) E) ≤ Kαζ)
-        rw [IntermediateField.mem_bot]
-        refine ⟨⟨α, ?_⟩, rfl⟩
-        apply IntermediateField.subset_adjoin; exact Set.mem_singleton α
+        have hα_Kα : α ∈ (Kα : Set E) := by
+          apply IntermediateField.subset_adjoin; exact Set.mem_singleton_iff.mpr rfl
+        have : (⊥ : IntermediateField (↥Kα) E) ≤ Kαζ := bot_le
+        apply this; rw [IntermediateField.mem_bot]; exact ⟨⟨α, hα_Kα⟩, rfl⟩
       · rw [Set.mem_singleton_iff.mp hx]
         apply IntermediateField.subset_adjoin; exact Set.mem_singleton ζ
-    rw [hK_top] at h_le; rw [eq_top_iff]; exact fun x _ => h_le IntermediateField.mem_top
+    rw [hK_top] at h_le
+    rw [eq_top_iff]; intro x _; exact h_le IntermediateField.mem_top
+  -- ζ is integral over Kα
   have hζ_int : IsIntegral (↥Kα) ζ := .of_finite (↥Kα) ζ
-  have hζ_eval : Polynomial.aeval ζ ((X : (↥Kα)[X]) ^ 4 + X ^ 3 + X ^ 2 + X + 1) = 0 := by
+  -- ζ satisfies X⁴+X³+X²+X+1 = 0 over Kα
+  have hζ_eval : Polynomial.aeval ζ ((X : (↥Kα)[X]) ^ 4 + X ^ 3 + X ^ 2 + X + C 1) = 0 := by
     simp only [map_add, map_pow, aeval_X, map_one]; exact hζ
+  -- minpoly Kα ζ divides this degree-4 polynomial
   have hmin_dvd := minpoly.dvd (↥Kα) ζ hζ_eval
-  have hphi5_ne : ((X : (↥Kα)[X]) ^ 4 + X ^ 3 + X ^ 2 + X + 1) ≠ 0 := by
+  have hΦ_ne : ((X : (↥Kα)[X]) ^ 4 + X ^ 3 + X ^ 2 + X + C 1) ≠ 0 := by
     intro h
-    have : ((X : (↥Kα)[X]) ^ 4 + X ^ 3 + X ^ 2 + X + 1).natDegree = 0 := by
-      rw [h]; exact Polynomial.natDegree_zero
-    have h4 : ((X : (↥Kα)[X]) ^ 4 + X ^ 3 + X ^ 2 + X + 1).natDegree = 4 := by
-      rw [show (X : (↥Kα)[X]) ^ 4 + X ^ 3 + X ^ 2 + X + 1 =
-        Polynomial.cyclotomic 5 (↥Kα) from by
-          haveI : Fact (Nat.Prime 5) := ⟨by decide⟩
-          have h1 := cyclotomic_prime (R := (↥Kα)) (p := 5)
-          simp only [Finset.sum_range_succ, Finset.sum_range_zero, pow_zero, pow_one,
-            zero_add] at h1
-          rw [h1]; ring]
-      rw [Polynomial.natDegree_cyclotomic]; decide
-    omega
+    have : ((X : (↥Kα)[X]) ^ 4 + X ^ 3 + X ^ 2 + X + C 1).natDegree = 4 := by
+      compute_degree!
+    rw [h, Polynomial.natDegree_zero] at this; exact absurd this (by omega)
   have hmin_le : (minpoly (↥Kα) ζ).natDegree ≤ 4 := by
-    have hdeg4 : ((X : (↥Kα)[X]) ^ 4 + X ^ 3 + X ^ 2 + X + 1).natDegree = 4 := by
-      rw [show (X : (↥Kα)[X]) ^ 4 + X ^ 3 + X ^ 2 + X + 1 =
-        Polynomial.cyclotomic 5 (↥Kα) from by
-          haveI : Fact (Nat.Prime 5) := ⟨by decide⟩
-          have h1 := cyclotomic_prime (R := (↥Kα)) (p := 5)
-          simp only [Finset.sum_range_succ, Finset.sum_range_zero, pow_zero, pow_one,
-            zero_add] at h1
-          rw [h1]; ring]
-      rw [Polynomial.natDegree_cyclotomic]; decide
-    calc (minpoly (↥Kα) ζ).natDegree
-        ≤ ((X : (↥Kα)[X]) ^ 4 + X ^ 3 + X ^ 2 + X + 1).natDegree :=
-          Polynomial.natDegree_le_of_dvd hmin_dvd hphi5_ne
-      _ = 4 := hdeg4
+    have h1 := Polynomial.natDegree_le_of_dvd hmin_dvd hΦ_ne
+    have h2 : ((X : (↥Kα)[X]) ^ 4 + X ^ 3 + X ^ 2 + X + C 1).natDegree ≤ 4 := by
+      compute_degree!
+    linarith
+  -- [Kα⟮ζ⟯ : Kα] = natDegree(minpoly)
   have hfr_adj := IntermediateField.adjoin.finrank hζ_int
   change Module.finrank (↥Kα) ↥Kαζ = _ at hfr_adj
   rw [hKαζ_top] at hfr_adj
   have h_top_eq : Module.finrank (↥Kα) (↥(⊤ : IntermediateField (↥Kα) E)) =
       Module.finrank (↥Kα) E :=
     LinearEquiv.finrank_eq (IntermediateField.topEquiv.toLinearEquiv)
+  -- finrank Kα E ≤ 4
   have hfr_le : Module.finrank (↥Kα) E ≤ 4 := by linarith
-  have hfr_pos : 0 < Module.finrank (↥Kα) E := Module.finrank_pos
-  have h4dvd : 4 ∣ Module.finrank (↥Kα) E := by
-    have := four_dvd_splitting_field_finrank
-    rw [← htower] at this
-    exact Nat.Coprime.dvd_of_dvd_mul_left (by decide : Nat.Coprime 4 5) this
-  have hfr_eq : Module.finrank (↥Kα) E = 4 := by obtain ⟨k, hk⟩ := h4dvd; omega
-  rw [hfr_eq]
+  -- [E:ℚ] ≤ 20
+  have hfr_total : Module.finrank ℚ E ≤ 20 := by
+    rw [← htower]; exact Nat.mul_le_mul_left 5 hfr_le
+  -- |Gal| ≤ 20
+  have hle : Fintype.card p.Gal ≤ 20 := by linarith
+  -- Combined: |Gal| = 20
+  have heq : Fintype.card p.Gal = 20 :=
+    Nat.le_antisymm hle (Nat.le_of_dvd hpos h20_dvd)
+  rw [heq]
 
 -- ============================================================================
 -- Part VI: The Main Result
