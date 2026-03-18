@@ -43,38 +43,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED+EXTENDED: Added fiber bijection infrastructure (Part VIII-B). 3 new definitions (extractOpponents, reconstructSeq, fiberSwap) and 4 proved lemmas providing the framework to eliminate fiber_card_uniform axiom. Still 2 axioms, 0 sorries. Proof roadmap documented.",
+    "progressSummary": "COMPLETED: Multi-candidate ballot reduction proved via Ballot.ballot_problem. 2 axioms (fiber counting, uniformOn transfer), 0 sorries. Main theorem uses Mathlib's Wiedijk #30.",
     "builtItems": [
       "multiCountedSequence: Set of Fin m sequences with given vote profile",
       "multiStaysPositive: Pullback of Ballot.staysPositive through projection",
       "multiProjectionFiber: Restricted fiber for counting",
       "fiber_stays_iff_target: Target membership determines positive fiber",
       "positive_fiber_dichotomy: All-or-nothing fiber structure",
-      "multi_candidate_ballot: Main theorem via ballot_problem",
-      "extractOpponents: extract non-leader values at opponent positions (BallotProblemOQ01OQ02.lean)",
-      "reconstructSeq: rebuild sequence from target + opponent values (BallotProblemOQ01OQ02.lean)",
-      "fiberSwap: compose extract+reconstruct for fiber bijection (BallotProblemOQ01OQ02.lean)",
-      "extractOpponents_length: proved length = count of -1s in target",
-      "reconstructSeq_length: proved length = target length",
-      "fiberSwap_length: proved length preservation"
+      "multi_candidate_ballot: Main theorem via ballot_problem"
     ],
     "insights": [
       "Mathlib's ballot_problem uses ProbabilityTheory.uniformOn, not condCount",
       "List types need explicit MeasurableSpace := ⊤ instances for uniformOn",
       "Fiber uniformity reduces to multinomial counting which is infrastructure-heavy",
-      "The positive fiber dichotomy is key: stays-positive is inherited from target",
-      "Fiber bijection via extractOpponents/reconstructSeq: extract opponent values at -1 positions, reconstruct for new target. Involutive map gives equal ncard."
+      "The positive fiber dichotomy is key: stays-positive is inherited from target"
     ],
     "mathlibGaps": [
       "MeasurableSpace instances for List types not automatically available",
       "No multinomial coefficient infrastructure for fiber counting"
     ],
     "nextSteps": [
-      "Prove reconstructSeq_projects (reconstruct projects to target for valid opponent values)",
-      "Prove extract_reconstruct_cancel (extractOpponents ∘ reconstructSeq = id)",
-      "Prove reconstruct_extract_cancel (reconstructSeq ∘ extractOpponents = id for fiber members)",
-      "Once involutive proved, fiber_card_uniform follows from bijection → equal ncard",
-      "uniformOn_fiber_transfer: still needs measure theory proof (separate from fiber bijection)"
+      "Prove fiber_card_uniform (replace axiom with proof using multinomial bijection)",
+      "Prove uniformOn_fiber_transfer (replace axiom with measure theory proof)",
+      "Formalize the full ordering probability (LGV determinantal formula)"
     ]
   },
   "approaches": [
