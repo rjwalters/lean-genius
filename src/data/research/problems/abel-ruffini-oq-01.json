@@ -18,13 +18,13 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-02-21T19:21:07.129Z",
-    "iteration": 5,
-    "focus": "Removed redundant X4Sub2 file (D4 has complete proof). Fixed EulerTotientOQ04 Mathlib API.",
+    "iteration": 6,
+    "focus": "Proved cyclic_group_realizable (0 sorries). Removed duplicate code. Fixed Dirichlet API.",
     "blockers": [
       "Kronecker-Weber not in Mathlib",
       "Hilbert irreducibility not in Mathlib"
     ],
-    "nextAction": "Fix Mathlib API breakages in Parts IX-XII, then complete cyclic_group_realizable",
+    "nextAction": "Fix pre-existing Mathlib API breakages in Parts IX-XII (X³-2 computation)",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED+VERIFIED: InverseGalois.lean (2 blocked sorries: open conjecture + Hilbert irreducibility), InverseGaloisD4.lean (0 sorries), InverseGaloisF20.lean (0 sorries, build errors FIXED). All provable mathematics formalized.",
+    "progressSummary": "COMPLETED: cyclic_group_realizable fully proved (0 sorries). InverseGalois.lean Part XIV complete. Only 2 intentional sorries remain (open conjecture + Hilbert irreducibility).",
     "builtItems": [
       "InverseGalois.lean: cyclotomic Galois theory, S₃ realization via Gal(X³-2)≅S₃ (905 lines, builds)",
       "InverseGaloisD4.lean: D₄ realization via |Gal(X⁴-2)| = 8 (666 lines, builds)",
@@ -43,7 +43,9 @@
       "solvable_iff_solvable_galois_group: Abel-Ruffini connection (proven)",
       "Rewrote pow_root_of_cyclotomic5: 3 cases proved via linear_combination (was broken calc chains)",
       "Rewrote cyclotomic5_root_is_power: factorization approach via linear_combination (was broken root-counting with deprecated Mathlib API)",
-      "Fixed zeta_sq_ne_one, zeta_cube_ne_one, zeta_fourth_ne_one: replaced nlinarith with explicit algebraic proofs"
+      "Fixed zeta_sq_ne_one, zeta_cube_ne_one, zeta_fourth_ne_one: replaced nlinarith with explicit algebraic proofs",
+      "cyclic_group_realizable: every finite cyclic group C_n realizable as Galois group over ℚ (FULLY PROVED, 0 sorries)",
+      "exists_prime_dvd_pred: Dirichlet theorem application (fixed for new Mathlib API)"
     ],
     "insights": [
       "Cyclotomic irreducibility over ℚ IS in Mathlib: Polynomial.cyclotomic.irreducible_rat",
@@ -55,7 +57,10 @@
       "InverseGaloisX4Sub2.lean was fully redundant with InverseGaloisD4.lean which already proves |Gal(X⁴-2)|=8 with 0 sorries via ℝ embedding argument",
       "Nat.eq_of_mul_eq_left renamed to mul_left_cancel₀ in recent Mathlib",
       "Nat.mul_lt_mul_left replaces omega for multiplicative goals in Nat",
-      "InverseGaloisF20.lean build errors were fixed (previously reported as broken, now builds cleanly with 0 sorries)"
+      "InverseGaloisF20.lean build errors were fixed (previously reported as broken, now builds cleanly with 0 sorries)",
+      "IsGalois.of_fixedField_normal_subgroup: instance giving IsGalois for fixedField of normal subgroup",
+      "IsGalois.normalAutEquivQuotient: Gal(fixedField H/K) ≃* Gal(L/K) ⧸ H — maps FROM quotient TO fixedField Galois group",
+      "Nat.forall_exists_prime_gt_and_modEq API changed: now takes (n : ℕ) {q a : ℕ} (hq : q ≠ 0) (h : a.Coprime q)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
