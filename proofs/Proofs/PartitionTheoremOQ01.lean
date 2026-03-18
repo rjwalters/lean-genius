@@ -3154,7 +3154,104 @@ end
 end DistinctPartGFBridge
 
 -- ============================================================================
--- Part XLIV: partGF Coefficient = Partition Count (Bridge for Repetition)
+-- Part XLIV: partitionsFrom Structural Lemmas
+-- ============================================================================
+
+/-
+Building toward step 7e: partGF_coeff : coeff n (partGF S) = (partitionsFrom S n).card
+
+Key structural lemmas for partitionsFrom that enable the inductive proof.
+-/
+
+section PartitionsFromStructural
+
+open Finset Nat
+
+/-- **Subset monotonicity**: If S ⊆ T, then partitions from S are partitions from T. -/
+theorem partitionsFrom_subset {S T : Finset ℕ} (h : S ⊆ T) (n : ℕ) :
+    partitionsFrom S n ⊆ partitionsFrom T n := by
+  intro p hp
+  simp only [partitionsFrom, Finset.mem_filter, Finset.mem_univ, true_and] at *
+  exact fun a ha => h (hp a ha)
+
+/-- **partitionsFrom is antitone in the constraint**: fewer allowed parts means
+    fewer partitions. -/
+theorem partitionsFrom_card_mono {S T : Finset ℕ} (h : S ⊆ T) (n : ℕ) :
+    (partitionsFrom S n).card ≤ (partitionsFrom T n).card :=
+  Finset.card_le_card (partitionsFrom_subset h n)
+
+/-- **Singleton base case**: partitions of n from {k} are counted by divisibility.
+    If k ∣ n, there is exactly one such partition (n/k copies of k).
+    If k ∤ n, there are none. -/
+theorem partitionsFrom_singleton_card (k n : ℕ) (hk : 0 < k) :
+    (partitionsFrom {k} n).card = if k ∣ n then 1 else 0 := by
+  split_ifs with hdvd
+  · -- k ∣ n: exactly one partition (n/k copies of k)
+    rw [Finset.card_eq_one]
+    -- The unique partition: n/k copies of k
+    obtain ⟨m, rfl⟩ := hdvd
+    have hsum : (Multiset.replicate m k).sum = m * k := by
+      simp [Multiset.sum_replicate]
+    have hpos : ∀ a ∈ (Multiset.replicate m k), 0 < a := by
+      simp; exact hk
+    refine ⟨⟨Multiset.replicate m k, hsum, hpos⟩, ?_⟩
+    ext p
+    simp only [partitionsFrom, Finset.mem_filter, Finset.mem_univ, true_and,
+               Finset.mem_singleton]
+    constructor
+    · intro hp
+      ext a
+      -- All parts of p are k (since parts ∈ {k})
+      have hall : ∀ a ∈ p.parts, a = k := fun a ha => by
+        have := hp a ha; simp at this; exact this
+      simp only [Multiset.count_replicate]
+      by_cases hak : a = k
+      · subst hak
+        -- Count of k in p = m, since all parts are k and sum = m*k
+        have hparts : p.parts = Multiset.replicate (Multiset.card p.parts) k := by
+          ext b
+          simp only [Multiset.count_replicate]
+          split_ifs with hbk
+          · subst hbk; rfl
+          · exact Multiset.count_eq_zero.mpr (fun h => hbk (hall b h))
+        have hcard : Multiset.card p.parts = m := by
+          have := p.parts_sum
+          rw [hparts, Multiset.sum_replicate] at this
+          omega
+        rw [hparts, Multiset.count_replicate, if_pos rfl, hcard]
+      · rw [if_neg hak]
+        exact Multiset.count_eq_zero.mpr (fun h => hak (hall a h))
+    · intro hp; subst hp
+      simp [Multiset.mem_replicate, hk.ne']
+  · -- k ∤ n: no partitions
+    rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_not_mem]
+    intro p hp
+    simp only [partitionsFrom, Finset.mem_filter, Finset.mem_univ, true_and] at hp
+    have hall : ∀ a ∈ p.parts, a = k := fun a ha => by
+      have := hp a ha; simp at this; exact this
+    have : p.parts.sum = Multiset.card p.parts * k := by
+      rw [show p.parts = Multiset.replicate (Multiset.card p.parts) k from by
+        ext b; simp [Multiset.count_replicate]; by_cases hbk : b = k
+        · subst hbk; rfl
+        · exact Multiset.count_eq_zero.mpr (fun h => hbk (hall b h))]
+      simp [Multiset.sum_replicate]
+    rw [p.parts_sum] at this
+    exact hdvd ⟨Multiset.card p.parts, this.symm⟩
+
+/-- **partGF coefficient for singleton agrees with partitionsFrom count**.
+    This is the base case for the partGF_coeff induction. -/
+theorem partGF_coeff_eq_partitionsFrom_singleton (k : ℕ) (hk : 0 < k) (n : ℕ) :
+    PowerSeries.coeff (R := ℤ) n (partGF {k}) =
+    ↑(partitionsFrom {k} n).card := by
+  rw [partitionsFrom_singleton_card k n hk]
+  simp only [partGF, Finset.prod_singleton]
+  rw [geomSeries_coeff k n hk]
+  split_ifs <;> simp
+
+end PartitionsFromStructural
+
+-- ============================================================================
+-- Part XLV: partGF Coefficient = Partition Count (Bridge for Repetition)
 -- ============================================================================
 
 /-
