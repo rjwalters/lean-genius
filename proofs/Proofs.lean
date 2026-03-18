@@ -1366,6 +1366,7 @@ import Proofs.InfinitudePrimes4k3
 import Proofs.IntermediateValueTheorem
 import Proofs.InverseGalois
 import Proofs.InverseGaloisD4
+import Proofs.InverseGaloisF20
 import Proofs.InverseGaloisX4Sub2
 import Proofs.IsoperimetricTheorem
 import Proofs.IsoscelesTriangle

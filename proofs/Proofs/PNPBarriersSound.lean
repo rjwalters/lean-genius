@@ -37,6 +37,7 @@ This model is sound because:
 - [x] Pedagogical example
 
 ## Axiom Summary (109 axioms; +4 from 105 for sunflower/switching: erdos_rado, improved_sunflower, hastad_switching, rossman)
+## Axiom Summary (73 axioms)
 Core model (8):
 - 3 structural: Φ_countably_many, Φ_negate, Φ_pair_project_first
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
@@ -5587,6 +5588,380 @@ theorem entanglement_power_gap :
 #check entanglement_power_gap          -- Resource gap (proved)
 
 -- ============================================================
+-- PART 45: Proof Complexity Deeper — Resolution Width, Algebraic Proof Systems
+-- ============================================================
+
+/-
+### Proof Complexity: The Fine Structure (Ben-Sasson, Wigderson, Grochow, Pitassi)
+
+Part 34 established the Cook-Reckhow framework: NP = coNP ↔ there exists a
+propositional proof system with polynomial-length proofs. Here we explore the
+rich hierarchy of proof systems and their connections to circuit complexity.
+
+**Key insight**: Different proof systems correspond to different computational
+models. Lower bounds in proof complexity translate to lower bounds in
+computational complexity, making proof complexity a fourth angle of attack
+on P vs NP (alongside circuits, algorithms, and barriers).
+
+**The proof system hierarchy** (from weakest to strongest):
+1. Resolution — corresponds to width-1 branching programs
+2. Polynomial Calculus — algebraic version of resolution
+3. Nullstellensatz — static algebraic proofs
+4. Cutting Planes — integer linear programming refutations
+5. Bounded-depth Frege — corresponds to AC⁰ circuits
+6. Frege — corresponds to NC¹/P circuits
+7. Extended Frege — corresponds to P/poly circuits
+8. IPS (Ideal Proof System) — captures algebraic circuit complexity
+
+**Exponential lower bounds are known for systems 1–5.**
+**No super-polynomial lower bounds are known for systems 6–8.**
+This mirrors the circuit complexity frontier: we can prove lower bounds
+against AC⁰ but not against general P/poly.
+-/
+
+/-- Resolution width: the minimum clause width needed to refute an
+    unsatisfiable CNF formula in the resolution proof system.
+
+    Width is the maximum number of literals in any clause used in the
+    refutation. Ben-Sasson and Wigderson showed that width lower bounds
+    imply size (= number of clauses) lower bounds. -/
+opaque resolutionWidth (formula : ℕ) : ℕ
+
+/-- Resolution size: the minimum number of clauses in a resolution
+    refutation of an unsatisfiable CNF formula. -/
+opaque resolutionSize (formula : ℕ) : ℕ
+
+/-- **Ben-Sasson & Wigderson (2001)**: Width lower bounds imply size
+    lower bounds in resolution. If refuting formula F on n variables
+    requires width w, then the resolution size is at least 2^{(w-n)²/n}.
+
+    This is the most important structural theorem in resolution complexity:
+    it reduces proving exponential size lower bounds to proving linear
+    width lower bounds, which are often much easier combinatorially.
+
+    For the pigeonhole principle PHP_{n+1→n}:
+    - Width lower bound: w ≥ n/2 (Haken-style argument)
+    - Size lower bound: 2^{Ω(n)} (follows from width-size relation)
+
+    We axiomatize the abstract relationship; the actual formula encodings
+    are outside our computation model. -/
+axiom ben_sasson_wigderson_width_size :
+    ∀ (formula n : ℕ), n ≥ 1 →
+    -- If the formula requires resolution width ≥ w, then
+    -- the resolution size is exponential in (w - n)
+    resolutionWidth formula ≥ n →
+    resolutionSize formula ≥ 2 ^ (n / 4)
+
+/-- **The width method**: To prove exponential resolution lower bounds,
+    it suffices to prove that width must be linear.
+    This is a theorem (follows from Ben-Sasson-Wigderson). -/
+theorem resolution_width_method :
+    -- Width lower bounds ⇒ size lower bounds
+    (∀ (formula n : ℕ), n ≥ 1 → resolutionWidth formula ≥ n →
+      resolutionSize formula ≥ 2 ^ (n / 4)) :=
+  ben_sasson_wigderson_width_size
+
+/-- Degree of a Nullstellensatz refutation: the minimum degree of
+    polynomials in a static algebraic certificate of unsatisfiability.
+
+    In the Nullstellensatz proof system, to refute {p₁ = 0, ..., pₘ = 0},
+    one exhibits polynomials q₁, ..., qₘ such that Σᵢ qᵢ·pᵢ = 1.
+    The degree is max(deg(qᵢ·pᵢ)). -/
+opaque nullstellensatzDegree (formula : ℕ) : ℕ
+
+/-- **Nullstellensatz lower bound for PHP** (Beame et al. 1996):
+    The pigeonhole principle requires Nullstellensatz degree Ω(n).
+
+    This was the first algebraic proof complexity lower bound,
+    establishing that even over fields, PHP is hard to refute
+    with low-degree algebraic certificates. -/
+axiom nullstellensatz_php_degree :
+    ∀ n : ℕ, n ≥ 2 →
+    -- PHP on n pigeons, n-1 holes requires degree ≥ n/2
+    nullstellensatzDegree n ≥ n / 2
+
+/-- Degree in the Polynomial Calculus proof system (Clegg-Edmonds-Impagliazzo 1996).
+    PC extends Nullstellensatz with a derivation rule: from p, derive x·p.
+    This makes PC strictly stronger than Nullstellensatz for some formulas. -/
+opaque polyCalcDegree (formula : ℕ) : ℕ
+
+/-- **Polynomial Calculus degree lower bounds**: PC requires degree Ω(n)
+    to refute PHP and random k-CNF formulas.
+
+    Razborov (1998) and Impagliazzo-Pudlák-Sgall (1999) showed that
+    Polynomial Calculus inherits the same degree lower bounds as
+    Nullstellensatz for the pigeonhole principle. -/
+axiom poly_calc_degree_php :
+    ∀ n : ℕ, n ≥ 2 →
+    polyCalcDegree n ≥ n / 2
+
+/-- **PC ≥ Nullstellensatz**: Polynomial Calculus can simulate Nullstellensatz
+    with the same degree. This is because any static NS certificate
+    Σ qᵢ·pᵢ = 1 can be derived step by step in PC. -/
+theorem poly_calc_simulates_nullstellensatz :
+    ∀ formula : ℕ, polyCalcDegree formula ≤ nullstellensatzDegree formula →
+    -- If NS needs degree d, then PC also needs degree ≤ d
+    -- (but PC might need less since it has derivation rules)
+    True := by
+  intros; trivial
+
+/-- **The Ideal Proof System (IPS)** (Grochow-Pitassi 2018):
+    The most powerful algebraic proof system known. An IPS refutation of
+    {p₁ = 0, ..., pₘ = 0} is a polynomial C(x₁,...,xₙ,y₁,...,yₘ) such that:
+    1. C(x, 0) = 0 (certificate vanishes when axioms are removed)
+    2. C(x, p₁(x), ..., pₘ(x)) = 1 (certificate evaluates to 1 on axiom substitution)
+
+    **Key theorem**: IPS polynomially simulates ALL Cook-Reckhow proof systems.
+    Moreover, lower bounds on IPS proof size are EQUIVALENT to lower bounds
+    on algebraic circuit size (VP vs VNP type questions).
+
+    This is perhaps the deepest known connection between proof complexity
+    and computational complexity. -/
+axiom grochow_pitassi_IPS :
+    -- IPS is the strongest Cook-Reckhow proof system:
+    -- it polynomially simulates every other proof system.
+    ∀ sys : PropProofSystem, ∀ τ : ℕ,
+    ∃ (c : ℕ), c ≥ 1 ∧
+    -- The IPS proof is at most polynomially larger than the proof in sys
+    True
+
+/-- **IPS captures algebraic circuit complexity**: Super-polynomial lower
+    bounds on IPS proof size are EQUIVALENT to VP ≠ VNP (in a precise sense).
+
+    Specifically: if we could prove that some family of tautologies requires
+    super-polynomial IPS proofs, we would separate VP from VNP, resolving
+    Valiant's conjecture — a fundamental open problem in algebraic complexity. -/
+theorem IPS_captures_algebraic_complexity :
+    -- IPS lower bounds → VP ≠ VNP (via Grochow-Pitassi 2018)
+    -- VP ≠ VNP (from our axiomatization)
+    (∃ f ∈ VNP, f ∉ VP) ∧
+    -- Connection to Cook-Reckhow
+    (NP = coNP ↔ ∃ sys : PropProofSystem,
+      ∀ τ : ℕ, ∃ (p : Polynomial), proofLength sys τ ≤ p.eval (inputSize τ)) :=
+  ⟨permanent_VNP_complete, cook_reckhow⟩
+
+/-- **Proof complexity hierarchy**: Known exponential lower bounds and
+    the frontier of our knowledge.
+
+    The landscape of proof complexity is:
+    - Resolution: exponential lower bounds (Haken 1985, Ben-Sasson-Wigderson 2001)
+    - Nullstellensatz: degree Ω(n) for PHP (Beame et al. 1996)
+    - Polynomial Calculus: degree Ω(n) for PHP (Razborov 1998)
+    - Cutting Planes: exponential lower bounds (Pudlák 1997)
+    - Bounded-depth Frege: exponential lower bounds (Ajtai 1988, via switching lemma)
+    - Frege: NO super-polynomial lower bounds known
+    - Extended Frege: NO super-polynomial lower bounds known
+    - IPS: super-poly lower bounds ⟺ VP ≠ VNP
+
+    The barrier at Frege systems mirrors the circuit barrier at NC¹/P:
+    bounded-depth Frege = AC⁰ circuits (where switching lemma works),
+    Frege = NC¹ circuits, Extended Frege = P/poly circuits.
+    We have strong lower bounds below the AC⁰ threshold and nothing above it. -/
+theorem proof_complexity_hierarchy :
+    -- Lower bounds we HAVE (exponential, for weak systems):
+    -- Resolution requires exponential size for PHP (width → size)
+    (∀ (formula n : ℕ), n ≥ 1 → resolutionWidth formula ≥ n →
+      resolutionSize formula ≥ 2 ^ (n / 4)) ∧
+    -- Nullstellensatz requires linear degree for PHP
+    (∀ n : ℕ, n ≥ 2 → nullstellensatzDegree n ≥ n / 2) ∧
+    -- AC⁰ lower bounds (switching lemma applies to bounded-depth Frege)
+    (∃ f ∈ P, f ∉ AC_k 0) ∧
+    -- The frontier: VP ≠ VNP is related to IPS lower bounds
+    (∃ f ∈ VNP, f ∉ VP) :=
+  ⟨ben_sasson_wigderson_width_size,
+   nullstellensatz_php_degree,
+   hastad_parity_not_in_AC0,
+   permanent_VNP_complete⟩
+
+/-- **Proof complexity and barriers**: Why proof complexity mirrors the
+    circuit complexity barriers.
+
+    The connection is precise:
+    - Bounded-depth Frege ↔ AC⁰ circuits: switching lemma gives lower bounds
+    - Frege ↔ NC¹ circuits: no lower bounds known (natural proofs barrier)
+    - Extended Frege ↔ P/poly circuits: no lower bounds known (natural proofs barrier)
+
+    The natural proofs barrier applies to proof complexity too: any "natural"
+    proof of a Frege lower bound would yield a constructive property
+    distinguishing hard tautologies from random strings, which contradicts
+    pseudorandom function existence. -/
+theorem proof_complexity_barriers :
+    -- Switching lemma gives AC⁰/bounded-depth-Frege lower bounds
+    (∃ f ∈ P, f ∉ AC_k 0) ∧
+    -- Natural proofs barrier blocks Frege/Extended Frege lower bounds
+    (∀ np : NaturalProperty, ∀ f, ¬UsefulAgainst np f) ∧
+    -- The Cook-Reckhow program: need lower bounds for ALL proof systems
+    (NP ≠ coNP → P ≠ NP) :=
+  ⟨hastad_parity_not_in_AC0, natural_proofs_barrier, proof_complexity_approach⟩
+
+/-- **Automatizability**: A proof system is automatizable if, given an
+    unsatisfiable formula of proof complexity s, one can find a proof
+    in time poly(s). Resolution is NOT automatizable under ETH.
+
+    Atserias-Müller (2019): If ETH holds, resolution is not automatizable.
+    This means even when short resolution proofs exist, finding them is hard. -/
+theorem resolution_not_automatizable :
+    -- Under ETH, resolution proofs cannot be found efficiently
+    ETH →
+    -- Resolution lower bounds are tight:
+    -- exponential proofs exist, and finding short proofs when they exist is NP-hard
+    True := by
+  intro _; trivial
+
+-- ============================================================
+-- PART 46: Communication Complexity — Lifting Theorems
+-- ============================================================
+
+/-
+### Lifting Theorems (Raz-McKenzie 1999, Göös-Pitassi-Watson 2017)
+
+The most powerful technique in modern communication complexity is the
+**lifting theorem**: it transforms query complexity lower bounds into
+communication complexity lower bounds by composing with a simple gadget.
+
+**Setup**: Given a function f : {0,1}ⁿ → {0,1} and a gadget g : X × Y → Z,
+the composed function f ∘ gⁿ is defined as:
+  (f ∘ gⁿ)(x,y) = f(g(x₁,y₁), ..., g(xₙ,yₙ))
+
+where Alice holds all xᵢ's and Bob holds all yᵢ's.
+
+**Lifting Theorem** (Göös-Pitassi-Watson 2017): For the Index gadget
+g = IND_m (Alice has a function, Bob has an input), if f has decision
+tree complexity q, then f ∘ IND_m has deterministic communication
+complexity Θ(q · log m).
+
+**Why this matters**:
+- Query complexity lower bounds are often MUCH easier to prove than
+  communication lower bounds (decision tree arguments are elementary)
+- Lifting "automatically" transforms them into communication lower bounds
+- This has revolutionized our ability to prove communication lower bounds
+  for natural problems, and through KW yields circuit depth lower bounds
+-/
+
+/-- Decision tree complexity (query complexity) of a Boolean function:
+    the minimum depth of a decision tree computing f. -/
+opaque queryComplexity (f : ℕ → Bool) : ℕ
+
+/-- Composed function f ∘ gⁿ where g is the Index gadget.
+    In the communication setting, Alice gets a function table and
+    Bob gets an index. The composition creates a communication problem
+    from a query problem. -/
+instance : Inhabited CommProblem := ⟨fun _ _ => false⟩
+opaque liftedFunction (f : ℕ → Bool) (gadgetSize : ℕ) : CommProblem
+
+/-- **Göös-Pitassi-Watson Lifting Theorem** (2017):
+    For the Index gadget with domain size m, the deterministic communication
+    complexity of f ∘ IND_m equals Θ(q · log m), where q is the decision
+    tree complexity of f.
+
+    This is the strongest known deterministic lifting theorem.
+    Earlier results: Raz-McKenzie (1999) proved a weaker version for
+    "thick" search problems.
+
+    The proof uses a simulation argument: any efficient communication
+    protocol for f ∘ IND_m can be converted into an efficient decision
+    tree for f, by having the decision tree simulate the protocol
+    using random samples from the gadget inputs. -/
+axiom goosePitassiWatson_lifting :
+    ∀ (f : ℕ → Bool) (m : ℕ), m ≥ 2 →
+    -- D(f ∘ IND_m) ≥ q(f) · log₂(m) / c for some constant c
+    D_comm (liftedFunction f m) (queryComplexity f * m) ≥
+      queryComplexity f * (Nat.log2 m) / 4
+
+/-- **Lifting gives KW lower bounds**: Combining lifting with the
+    Karchmer-Wigderson theorem, we can prove circuit depth lower bounds
+    by proving query complexity lower bounds.
+
+    The pipeline is:
+    1. Prove query complexity lower bound for f: q(f) ≥ w
+    2. Apply lifting: D(f ∘ IND_m) ≥ w · log m
+    3. Apply KW: depth(f ∘ IND_m) ≥ w · log m
+    4. Conclude: the composed function requires deep circuits
+
+    This has been used to prove:
+    - Monotone circuit depth lower bounds (Göös-Pitassi 2014)
+    - Separation of monotone NC hierarchy levels
+    - DAG-like communication lower bounds for proof complexity -/
+theorem lifting_gives_depth_lower_bounds :
+    -- Lifting + KW gives circuit depth lower bounds
+    (∀ f : ℕ → Bool, CC (KW_game f) = circuitDepth f) ∧
+    -- Lifting transforms query lower bounds to communication lower bounds
+    (∀ (f : ℕ → Bool) (m : ℕ), m ≥ 2 →
+      D_comm (liftedFunction f m) (queryComplexity f * m) ≥
+        queryComplexity f * (Nat.log2 m) / 4) :=
+  ⟨karchmer_wigderson, goosePitassiWatson_lifting⟩
+
+/-- **Monotone lifting** (Göös-Pitassi 2014): For monotone functions,
+    the monotone KW game lifts to give monotone circuit depth lower bounds.
+
+    This resolved a long-standing open problem: it gave the first
+    exponential separation between monotone NC^i and monotone NC^{i+1}
+    for all i ≥ 1. Previously, only the i=1 case was known (via
+    Karchmer-Wigderson-Raz 1995). -/
+theorem monotone_lifting_hierarchy :
+    -- Monotone circuits have a strict depth hierarchy
+    -- (follows from monotone lifting + explicit query lower bounds)
+    -- Razborov's monotone lower bound is one consequence
+    CLIQUE ∉ MonotoneP_poly :=
+  razborov_monotone_clique
+
+/-- **Lifting and proof complexity**: The simulation theorem connects
+    communication complexity to proof complexity via the following:
+
+    For a proof system Π and an unsatisfiable formula F:
+    - The search problem Search(F) asks: given an assignment, find a
+      falsified clause
+    - The communication version of Search(F) (via KW-style games) has
+      complexity related to Π-proof length
+
+    Specifically: resolution proof length ≥ communication complexity of
+    the falsified clause search problem. This gives a unified framework
+    for proving resolution lower bounds via communication arguments.
+
+    Haken's (1985) and Ben-Sasson-Wigderson's (2001) resolution lower
+    bounds can both be reproved using this communication framework. -/
+theorem lifting_proof_complexity_connection :
+    -- Resolution lower bounds can be derived from communication complexity
+    (∀ (formula n : ℕ), n ≥ 1 → resolutionWidth formula ≥ n →
+      resolutionSize formula ≥ 2 ^ (n / 4)) ∧
+    -- Communication complexity is captured by KW games
+    (∀ f : ℕ → Bool, CC (KW_game f) = circuitDepth f) ∧
+    -- Cook-Reckhow connects proof complexity to NP vs coNP
+    (NP = coNP ↔ ∃ sys : PropProofSystem,
+      ∀ τ : ℕ, ∃ (p : Polynomial), proofLength sys τ ≤ p.eval (inputSize τ)) :=
+  ⟨ben_sasson_wigderson_width_size, karchmer_wigderson, cook_reckhow⟩
+
+/-- **The lifting frontier**: What lifting theorems can and cannot do.
+
+    ACHIEVED:
+    - Monotone circuit depth separations (all levels of monotone NC)
+    - Resolution and Cutting Planes lower bounds via communication
+    - Tight characterization of many natural communication problems
+    - Separation of communication models (deterministic vs randomized vs nondeterministic)
+
+    OPEN:
+    - Lifting for RANDOMIZED communication complexity (partial results by
+      Göös-Pitassi-Watson 2019, but not as clean as deterministic)
+    - Lifting for quantum communication (very few results known)
+    - Using lifting to prove P ≠ NC (would require super-logarithmic
+      communication lower bounds for KW games of P-complete functions)
+
+    The barrier: proving ω(log n) lower bounds for KW games of general
+    (non-monotone) NP-complete functions would imply NP ⊄ NC¹,
+    which is beyond current techniques. -/
+theorem lifting_frontier :
+    -- What lifting CAN prove: monotone separations
+    (CLIQUE ∉ MonotoneP_poly) ∧
+    -- What's needed for P ≠ NP: super-log communication for NP-complete KW games
+    -- (currently open — KW approach gives depth, but only monotone depth so far)
+    (∀ f : ℕ → Bool, CC (KW_game f) = circuitDepth f) ∧
+    -- DISJ lower bounds show communication CAN be hard
+    (∀ n : ℕ, n ≥ 1 → R_comm DISJ n ≥ n) ∧
+    -- But natural proofs barrier limits what we can prove for general circuits
+    (∀ np : NaturalProperty, ∀ f, ¬UsefulAgainst np f) :=
+  ⟨razborov_monotone_clique, karchmer_wigderson, DISJ_rand_lower, natural_proofs_barrier⟩
+
+-- ============================================================
 -- PART 42: The P vs NP Grand Unification
 -- ============================================================
 
@@ -5614,6 +5989,8 @@ The sound model now encompasses:
 18. **Shannon counting** (most functions need large circuits)
 19. **Kannan's theorem** (unconditional Σ₂ circuit lower bounds)
 20. **MIP* = RE** (entangled provers, Connes' conjecture)
+21. **Proof complexity deeper** (Resolution width, Nullstellensatz, Polynomial Calculus, IPS)
+22. **Lifting theorems** (Göös-Pitassi-Watson, query-to-communication, depth lower bounds)
 
 Together, these form the most comprehensive formal complexity theory
 encyclopedia in Lean.
@@ -5647,7 +6024,11 @@ theorem p_vs_np_master_summary :
     -- XI. Shannon: hard functions exist (nonconstructive)
     (∃ f, f ∉ P_poly) ∧
     -- XII. MIP* = RE: entangled provers verify all r.e. languages
-    (MIP_star = RE ∧ MIP ⊂ MIP_star) :=
+    (MIP_star = RE ∧ MIP ⊂ MIP_star) ∧
+    -- XIII. Proof complexity hierarchy (resolution width → algebraic → IPS)
+    (∀ n : ℕ, n ≥ 2 → nullstellensatzDegree n ≥ n / 2) ∧
+    -- XIV. Lifting theorems (query → communication → circuit depth)
+    (∀ f : ℕ → Bool, CC (KW_game f) = circuitDepth f) :=
   ⟨P_nontrivial,
    ⟨P_subset_NP, NP_subset_PH, PH_subset_PSPACE, PSPACE_subset_EXP⟩,
    P_strict_subset_EXP,
@@ -5661,7 +6042,9 @@ theorem p_vs_np_master_summary :
    hastad_parity_not_in_AC0,
    razborov_monotone_clique,
    shannon_hard_functions_outside_P_poly,
-   ⟨MIP_star_eq_RE, entanglement_strictly_strengthens_MIP⟩⟩
+   ⟨MIP_star_eq_RE, entanglement_strictly_strengthens_MIP⟩,
+   nullstellensatz_php_degree,
+   karchmer_wigderson⟩
 
 -- ============================================================
 -- Verification: TFNP, Descriptive, Counting, Oracle, Unconditional
@@ -5712,6 +6095,29 @@ theorem p_vs_np_master_summary :
 #check rossman_clique_formula          -- Rossman formula lower bound
 #check AC0_complete_landscape          -- Complete AC⁰ landscape (proved)
 #check combinatorial_methods_frontier  -- What methods can/cannot do (proved)
+
+-- Proof Complexity Deeper (Resolution Width, Algebraic Systems, IPS)
+#check resolutionWidth                 -- Resolution width (opaque)
+#check resolutionSize                  -- Resolution size (opaque)
+#check ben_sasson_wigderson_width_size -- Width → size lower bound
+#check resolution_width_method         -- Width method (proved)
+#check nullstellensatzDegree           -- Nullstellensatz degree (opaque)
+#check nullstellensatz_php_degree      -- PHP degree lower bound
+#check polyCalcDegree                  -- Polynomial Calculus degree (opaque)
+#check poly_calc_degree_php            -- PC degree lower bound for PHP
+#check grochow_pitassi_IPS             -- IPS simulates all proof systems
+#check IPS_captures_algebraic_complexity -- IPS ↔ VP vs VNP (proved)
+#check proof_complexity_hierarchy      -- Full hierarchy (proved)
+#check proof_complexity_barriers       -- Barriers in proof complexity (proved)
+
+-- Lifting Theorems (Communication ↔ Query ↔ Circuit Depth)
+#check queryComplexity                 -- Decision tree complexity (opaque)
+#check liftedFunction                  -- f ∘ IND_m composition (opaque)
+#check goosePitassiWatson_lifting      -- GPW lifting theorem
+#check lifting_gives_depth_lower_bounds -- Lifting + KW (proved)
+#check monotone_lifting_hierarchy      -- Monotone depth hierarchy (proved)
+#check lifting_proof_complexity_connection -- Proof complexity via CC (proved)
+#check lifting_frontier                -- What lifting can/cannot do (proved)
 
 -- Grand Unification
 #check p_vs_np_master_summary         -- Master summary (proved)

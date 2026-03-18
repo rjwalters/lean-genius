@@ -20,7 +20,11 @@
     "since": "2026-03-17T17:30:00Z",
     "iteration": 2,
     "focus": "GF coefficient bridge infrastructure",
-    "blockers": [],
+    "blockers": [
+      "10+ pre-existing build errors from duplicate declarations (partGF, subsetsWithSum, partGF_constantCoeff, partGF_empty)",
+      "API drift errors (Finset.mem_empty, omega failures)",
+      "File needs structural deduplication before new theorems can be added"
+    ],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
       "total": 0,
@@ -89,6 +93,7 @@
       "partitionsFrom_subset: monotonicity in the part set S (proved)",
       "partitionsFrom_singleton_card: exactly 1 partition when k|n, 0 otherwise (proved)",
       "partGF_coeff_eq_partitionsFrom_singleton: GF=count bridge for |S|=1 (proved)",
+      "partGF_coeff_insert (GF recursion) is proved but combinatorial counterpart partitionsFrom_insert_card is NOT — this blocks partGF_coeff bridge",
       "Pre-existing build failures: 17 errors from Mathlib API changes (not from new additions)"
     ],
     "mathlibGaps": [
