@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-01T21:55:27.888Z",
-    "iteration": 9,
-    "focus": "Shannon counting, Kannan theorem, MIP*=RE (Parts 43-45)",
+    "iteration": 10,
+    "focus": "Eliminated 3 redundant containment axioms via transitivity",
     "blockers": [
       "P vs NP is an unsolved Millennium Prize problem"
     ],
@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: PNPBarriersSound.lean at 5397 lines (+331), 0 sorries. Added Shannon counting (Part 43), Kannan unconditional circuit lower bounds (Part 44), MIP*=RE entangled provers (Part 45). Grand Unification extended to 12 components. 505 total declarations.",
+    "progressSummary": "PROGRESS: Eliminated 3 axioms (125→122) by proving EXP_subset_RE (transitivity), ACC0_subset_NC1 (transitivity), MIP_subset_MIP_star (MIP=NEXP⊆RE=MIP*). 6132 lines, 122 axioms, 351 theorems/defs, 0 sorries.",
     "builtItems": [
       {
         "name": "P",
@@ -518,7 +518,10 @@
       "MIP_ne_MIP_star theorem (proved)",
       "connes_embedding_refuted def + theorem (proved)",
       "entanglement_power_gap theorem (proved: MIP ⊊ MIP* + characterizations)",
-      "p_vs_np_master_summary theorem (extended to 12 components, proved)"
+      "p_vs_np_master_summary theorem (extended to 12 components, proved)",
+      "PROVED EXP_subset_RE from EXP_subset_NEXP + NEXP_subset_RE (was axiom)",
+      "PROVED ACC0_subset_NC1 from ACC0_subset_TC0 + TC_k_subset_NC_k_succ 0 (was axiom)",
+      "PROVED MIP_subset_MIP_star from babai_fortnow_lund_MIP_eq_NEXP + MIP_star_eq_RE + NEXP_subset_RE (was axiom)"
     ],
     "insights": [
       "Same abstract model triviality as PNPBarriers - Program.decide allows arbitrary functions",
@@ -610,7 +613,10 @@
       "MIP = NEXP (Babai-Fortnow-Lund 1991) but MIP* = RE - entanglement strictly strengthens provers",
       "MIP ⊊ MIP* proved from NEXP_ne_RE + MIP_subset_MIP_star + the two characterizations",
       "Connes embedding conjecture refuted as corollary of MIP*=RE",
-      "Grand Unification master theorem extended to 12 components (added Shannon, MIP*=RE)"
+      "Grand Unification master theorem extended to 12 components (added Shannon, MIP*=RE)",
+      "EXP_subset_RE redundant: follows from EXP⊆NEXP⊆RE by Set.Subset.trans",
+      "ACC0_subset_NC1 redundant: follows from ACC0⊆TC0⊆NC1 by Set.Subset.trans",
+      "MIP_subset_MIP_star redundant: MIP=NEXP (BFL) and MIP*=RE, with NEXP⊆RE gives the containment by rewriting"
     ],
     "mathlibGaps": [
       "Turing machines",
@@ -634,7 +640,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.888Z",
-  "lastUpdate": "2026-03-14T21:00:00.000Z",
+  "lastUpdate": "2026-03-18T08:00:00Z",
   "significance": 10,
   "tractability": 2
 }

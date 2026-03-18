@@ -3116,8 +3116,11 @@ axiom ACC0_subset_TC0 : ACC0 ⊆ TC_k 0
 
 /-- ACC⁰ ⊆ NC¹: ACC⁰ is contained in NC¹.
     Barrington's theorem shows bounded-width branching programs (= NC¹)
-    can simulate ACC⁰. -/
-axiom ACC0_subset_NC1 : ACC0 ⊆ NC_k 1
+    can simulate ACC⁰.
+
+    **PROVED** by transitivity: ACC⁰ ⊆ TC⁰ ⊆ NC¹. Was axiom, now theorem. -/
+theorem ACC0_subset_NC1 : ACC0 ⊆ NC_k 1 :=
+  Set.Subset.trans ACC0_subset_TC0 (TC_k_subset_NC_k_succ 0)
 
 /-- The circuit hierarchy with ACC⁰ interleaved:
     AC⁰ ⊆ ACC⁰ ⊆ TC⁰ ⊆ NC¹ ⊆ NC ⊆ P ⊆ NP. -/
@@ -5476,8 +5479,13 @@ opaque coRE : Set (ℕ → Bool)
 /-- R (recursive/decidable): R = RE ∩ coRE. -/
 def R_decidable : Set (ℕ → Bool) := RE ∩ coRE
 
-/-- EXP ⊆ RE: every decidable language is recognizable. -/
-axiom EXP_subset_RE : EXP ⊆ RE
+/-- NEXP ⊆ RE: nondeterministic exponential time is recursively enumerable. -/
+axiom NEXP_subset_RE : NEXP ⊆ RE
+
+/-- **PROVED: EXP ⊆ RE** by transitivity: EXP ⊆ NEXP ⊆ RE.
+    Was axiom, now theorem. -/
+theorem EXP_subset_RE : EXP ⊆ RE :=
+  Set.Subset.trans EXP_subset_NEXP NEXP_subset_RE
 
 /-- RE is strictly larger than any decidable class:
     the halting problem is in RE \ R. -/
@@ -5497,12 +5505,11 @@ axiom babai_fortnow_lund_MIP_eq_NEXP : MIP = NEXP
     - Self-testing of quantum states -/
 axiom MIP_star_eq_RE : MIP_star = RE
 
-/-- NEXP ⊆ RE: nondeterministic exponential time is recursively enumerable. -/
-axiom NEXP_subset_RE : NEXP ⊆ RE
-
-/-- MIP ⊆ MIP*: classical multi-prover protocols are a special case
-    of entangled protocols (provers can ignore entanglement). -/
-axiom MIP_subset_MIP_star : MIP ⊆ MIP_star
+/-- **PROVED: MIP ⊆ MIP*** by the chain MIP = NEXP ⊆ RE = MIP*.
+    Was axiom, now theorem. -/
+theorem MIP_subset_MIP_star : MIP ⊆ MIP_star := by
+  rw [babai_fortnow_lund_MIP_eq_NEXP, MIP_star_eq_RE]
+  exact NEXP_subset_RE
 
 /-- NEXP ≠ RE: RE contains undecidable problems that no
     time-bounded class can solve. -/

@@ -701,3 +701,30 @@ Consequences:
 **Build**: Docker build passes, 0 errors, 0 sorries, 4021 lines.
 
 **Outcome**: COMPLETED - Comprehensive Five Worlds formalization with full structural proofs.
+
+## Session 2026-03-18 (researcher-5) - Axiom Elimination via Transitivity
+
+**Mode**: REVISIT (RICH knowledge, score 252)
+**Outcome**: 3 axioms eliminated (125→122)
+
+### Axioms Converted
+
+| Axiom | Proof | Chain |
+|-------|-------|-------|
+| `EXP_subset_RE` | `Set.Subset.trans EXP_subset_NEXP NEXP_subset_RE` | EXP ⊆ NEXP ⊆ RE |
+| `ACC0_subset_NC1` | `Set.Subset.trans ACC0_subset_TC0 (TC_k_subset_NC_k_succ 0)` | ACC⁰ ⊆ TC⁰ ⊆ NC¹ |
+| `MIP_subset_MIP_star` | `rw [MIP_eq_NEXP, MIP_star_eq_RE]; exact NEXP_subset_RE` | MIP = NEXP ⊆ RE = MIP* |
+
+### Key Insight
+
+Containment axioms between complexity classes can sometimes be eliminated by composing
+existing characterization theorems (equalities) with simpler containments. The `MIP ⊆ MIP*`
+case is particularly nice: rather than axiomatizing the direct containment (provers can
+ignore entanglement), we derive it from the characterization theorems MIP = NEXP and MIP* = RE.
+
+### Build Status
+- **Lines**: 6132
+- **Axioms**: 122
+- **Theorems/defs**: 351
+- **Sorries**: 0
+- **Errors**: 0
