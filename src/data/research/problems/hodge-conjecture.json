@@ -17,9 +17,9 @@
   },
   "currentState": {
     "phase": "DEEP_DIVE",
-    "since": "2026-03-15T10:25:00.000Z",
-    "iteration": 5,
-    "focus": "Added Tate conjecture section with ℓ-adic cohomology, Frobenius, and Hodge-Tate comparison",
+    "since": "2026-03-18T06:30:00Z",
+    "iteration": 6,
+    "focus": "Added Parts LIX-LXII: Du Bois singularities, derived categories, integral Hodge theory, Hodge loci",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Parts LIII-LV: Kuga-Satake construction (K3 ↔ abelian variety bridge), Deligne's absolute Hodge cycles (HC-TC equivalence for abelian varieties), Beauville-Bogomolov decomposition (hyperkähler K3^[2] type, BBF form). Strengthened lefschetz_hyperplane from True to HC transfer. 7680 lines, 140 axioms, 319 theorems/defs, 0 sorries. 14 new theorems/defs including k3_hilb2_dim, hodge_conjecture_k3_hilb2_extremes, bb_frontier_summary.",
+    "progressSummary": "PROGRESS: Added Parts LIX-LXII: Du Bois singularities (k-Du Bois, Steenbrink MHS, Kollár-Kovács), derived categories (Fourier-Mukai, Orlov, Kuznetsov K3 category), integral Hodge theory (AHSS, Steenrod, Brauer groups, Totaro/Kollár counterexamples), Hodge loci and period domains. Converted 4 axioms to theorems. 9119 lines, 160 axioms, 315 theorems, 0 sorries.",
     "builtItems": [
       "Proved directSumHodge (PureHodgeStructure construction) in HodgeConjecture.lean",
       "Proved directSum_inl, directSum_inr (injection morphisms) in HodgeConjecture.lean",
@@ -292,7 +292,21 @@
       "PROVED hodge_conjecture_k3_hilb2_extremes: HC for K3^[2] in codim 0 and 4",
       "PROVED bb_decomp_codim1_known: HC codim 1 for c₁=0 varieties",
       "PROVED bb_frontier_summary: all BB factors share (dim≥4, codim≥2) frontier",
-      "Strengthened lefschetz_hyperplane: True → HC transfer statement"
+      "Strengthened lefschetz_hyperplane: True → HC transfer statement",
+      "Part LIX: DuBoisComplex, DuBoisSingularity, RationalSingularity, SemiLogCanonical, KDuBois structures",
+      "PROVED rational_implies_du_bois, singularity_hierarchy, smooth_mhs_is_pure, k_du_bois_duality, nc_weight_range",
+      "Part LX: BoundedDerivedCategory, FourierMukaiTransform, DerivedTorelli, KuznetsovCategory, SemiorthogonalDecomposition structures",
+      "PROVED kuznetsov_hochschild_dim (=2), kuznetsov_mukai_rank (=24), derived_equiv_preserves_k3_hodge, cubic_fourfold_sod_components (=4)",
+      "Axiom fm_preserves_algebraicity: FM equivalence transfers HC between varieties",
+      "Axiom kuznetsov_conjecture: cubic fourfold rationality ↔ K3 realization",
+      "Part LXI: IntegralHodgeClass, AtiyahHirzebruchSS, SteenrodObstruction, TotaroCounterexample, BrauerGroup structures",
+      "PROVED ihc_counterexample_dimension (dim≥7, codim=2), kollar_degree_bound (d≥5), ihc_status_regions (5 regions)",
+      "Axiom ct_voisin_unramified_cohomology: IHC codim 2 ↔ H³_nr vanishing",
+      "Part LXII: HodgeLociComponent, NoetherLefschetzLocus, PeriodDomainData structures",
+      "PROVED hodge_locus_codim_bound (≥1), nl_moduli_dim_quartic (=19), nl_moduli_dim_quintic (=40)",
+      "PROVED period_domain_dim_k3 (=20), siegel_dim (≥1), siegel_dim_examples (1,3,6)",
+      "PROVED generic_vs_special: extra Hodge classes reduce moduli dimension",
+      "Converted deligne_ks_absolute, clemens_griffiths_criterion, clemens_griffiths_theorem, cubic_threefold_fourfold_connection from axioms to theorems"
     ],
     "insights": [
       "Millennium Prize problem, wide open - no known attack strategy",
@@ -408,7 +422,18 @@
       "K3^[2] has b₂ = 23 = b₂(K3) + 1. Extra class from exceptional divisor of Hilbert-Chow morphism. HC in codim 1 holds (Lefschetz).",
       "Beauville-Bogomolov-Fujiki form: quadratic form on H² of hyperkähler, signature (3, b₂-3). Generalizes K3 intersection form.",
       "BB decomposition frontier: all three classes (torus/CY/HK) share same open case structure — dim ≥ 4, codim ≥ 2. Matches general frontier.",
-      "Strengthened lefschetz_hyperplane from trivial True conclusion to HC transfer: Y's HC implies X's HC below middle dimension."
+      "Strengthened lefschetz_hyperplane from trivial True conclusion to HC transfer: Y's HC implies X's HC below middle dimension.",
+      "Du Bois singularities generalize rational singularities; hierarchy: smooth ⊂ rational ⊂ Du Bois. SLC ⟹ Du Bois (Kollár-Kovács).",
+      "k-Du Bois: X is k-DB if Gr^p_{DB} ≅ Ω^p for p≤k. Full (dim X)-DB ⟹ smooth (Saito). k-DB + (n-k-1)-DB ⟹ smooth (duality).",
+      "Orlov representability: every derived equivalence D^b(X)≅D^b(Y) is a Fourier-Mukai transform. The kernel P lives on X×Y.",
+      "Kuznetsov K3 category 𝒜_X ⊂ D^b(cubic fourfold): Hochschild dim=2, Mukai rank=24 (matching K3). Rationality conjecture: X rational ↔ 𝒜_X ≅ D^b(K3).",
+      "SOD D^b(X₄) = ⟨𝒜_X, 𝒪, 𝒪(1), 𝒪(2)⟩ decomposes HC: proving HC for each component suffices.",
+      "IHC fails: Atiyah-Hirzebruch (dim≥7, codim 2, torsion), Totaro (non-torsion on rationally connected), Kollár (degree≥5 hypersurfaces in ℙ⁴).",
+      "Brauer group controls IHC in codim 2: IHC ↔ Br(X) generated by algebraic Brauer classes.",
+      "Colliot-Thélène-Voisin: IHC codim 2 ↔ H³_nr(X, ℚ/ℤ) = 0 (unramified cohomology criterion).",
+      "Noether-Lefschetz moduli: quartic surfaces in ℙ³ have 19-dim moduli, quintic have 40-dim. NL locus has codim 1 (divisorial).",
+      "Period domain for K3: dim = 22 - 1 - 1 = 20 (one complex parameter for H^{2,0} line, minus Ω·Ω = 0 constraint).",
+      "Siegel upper half-space ℍ_g has dim g(g+1)/2: g=1→1, g=2→3, g=3→6. Parametrizes abelian variety Hodge structures."
     ],
     "mathlibGaps": [
       "Complex manifolds",
