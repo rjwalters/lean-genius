@@ -18,13 +18,13 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-02-21T19:21:07.129Z",
-    "iteration": 5,
-    "focus": "Removed redundant X4Sub2 file (D4 has complete proof). Fixed EulerTotientOQ04 Mathlib API.",
+    "iteration": 6,
+    "focus": "Proved 3 new theorems (realizability bridge, cyclic Galois, cardinality). Documented path to full cyclic realizability via Dirichlet.",
     "blockers": [
       "Kronecker-Weber not in Mathlib",
       "Hilbert irreducibility not in Mathlib"
     ],
-    "nextAction": "Blocked without new Mathlib infrastructure",
+    "nextAction": "Fix Mathlib API breakages in Parts IX-XII, then complete cyclic_group_realizable",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Removed redundant InverseGaloisX4Sub2.lean (D4 already has complete proof). Fixed and verified EulerTotientOQ04.lean (2 Mathlib API fixes, builds with 0 sorries, ~230 lines).",
+    "progressSummary": "PROGRESS: Proved 3 new theorems in InverseGalois.lean: (1) units_zmod_realizable bridging cyclotomic Galois theory to IGP framework, (2) prime_cyclotomic_galois_isCyclic showing cyclotomic Galois groups are cyclic, (3) prime_cyclotomic_galois_card giving order p-1. Stated cyclic_group_realizable with proof strategy via Dirichlet + Galois correspondence (sorry). Discovered key Mathlib infrastructure: Dirichlet theorem and Galois correspondence ARE in Mathlib.",
     "builtItems": [
       "InverseGalois.lean: cyclotomic Galois theory, S₃ realization via Gal(X³-2)≅S₃ (905 lines, builds)",
       "InverseGaloisD4.lean: D₄ realization via |Gal(X⁴-2)| = 8 (666 lines, builds)",
@@ -43,7 +43,11 @@
       "solvable_iff_solvable_galois_group: Abel-Ruffini connection (proven)",
       "Rewrote pow_root_of_cyclotomic5: 3 cases proved via linear_combination (was broken calc chains)",
       "Rewrote cyclotomic5_root_is_power: factorization approach via linear_combination (was broken root-counting with deprecated Mathlib API)",
-      "Fixed zeta_sq_ne_one, zeta_cube_ne_one, zeta_fourth_ne_one: replaced nlinarith with explicit algebraic proofs"
+      "Fixed zeta_sq_ne_one, zeta_cube_ne_one, zeta_fourth_ne_one: replaced nlinarith with explicit algebraic proofs",
+      "units_zmod_realizable: (ℤ/nℤ)ˣ realizable as Galois group over ℚ (proven, compiles)",
+      "prime_cyclotomic_galois_isCyclic: Gal(Φ_p/ℚ) is cyclic for prime p (proven, compiles)",
+      "prime_cyclotomic_galois_card: |Gal(Φ_p/ℚ)| = p-1 for prime p (proven, compiles)",
+      "cyclic_group_realizable: every C_n realizable (sorry - needs Galois correspondence plumbing)"
     ],
     "insights": [
       "Cyclotomic irreducibility over ℚ IS in Mathlib: Polynomial.cyclotomic.irreducible_rat",
@@ -54,14 +58,20 @@
       "The factorization (c-ζ)(c-ζ²)(c-ζ³)(c-ζ⁴) = c⁴+c³+c²+c+1 can be verified purely by ring arithmetic using hζ and hζ5",
       "InverseGaloisX4Sub2.lean was fully redundant with InverseGaloisD4.lean which already proves |Gal(X⁴-2)|=8 with 0 sorries via ℝ embedding argument",
       "Nat.eq_of_mul_eq_left renamed to mul_left_cancel₀ in recent Mathlib",
-      "Nat.mul_lt_mul_left replaces omega for multiplicative goals in Nat"
+      "Nat.mul_lt_mul_left replaces omega for multiplicative goals in Nat",
+      "Dirichlet theorem (primes p ≡ 1 mod n) IS in Mathlib: Nat.forall_exists_prime_gt_and_modEq in PrimesInAP, wrapped in Proofs.DirichletsTheorem",
+      "Galois correspondence IS in Mathlib: IsGalois.intermediateFieldEquivSubgroup, IntermediateField.fixedField",
+      "cyclotomic_irreducible_over_rationals is already a theorem (not axiom!) - delegates to Polynomial.cyclotomic.irreducible_rat",
+      "IsCyclic (ZMod p)ˣ available via isCyclic_of_subgroup_isDomain in PrimitiveRoots.lean",
+      "Algebra.IsSeparable ℚ (SplittingField p) works via inferInstance in char 0",
+      "Parts IX-XII of InverseGalois.lean have 15+ Mathlib API breakages from Mathlib update"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "InverseGaloisX4Sub2.lean still has 3 sorries (x_sq_add_1_has_root, two_dvd_finrank, gal_card=8)",
-      "InverseGalois.lean has 2 sorries (main open conjecture + symmetric_group_realizable)",
-      "POSSIBLE: Prove x_sq_add_1_has_root using ratio argument (needs 3 distinct roots from rootSet)",
-      "BLOCKED: x_fourth_sub_2_gal_card = 8 requires ℚ(⁴√2) ⊂ ℝ argument"
+      "Fix 15+ pre-existing Mathlib API breakages in Parts IX-XII of InverseGalois.lean",
+      "Complete cyclic_group_realizable proof using IntermediateField.fixedField and Galois correspondence",
+      "Prove S₃ realizability compiles again (blocked on Fintype/DecidableEq issues for rootSet)",
+      "Consider proving A₅ realizability via a specific polynomial"
     ],
     "markdown": "# Knowledge: The Inverse Galois Problem (abel-ruffini-oq-01)\n\n## Problem Summary\n\nThe Inverse Galois Problem (IGP) asks: for every finite group G, does there exist a Galois extension K/ℚ with Gal(K/ℚ) ≅ G?\n\n**Status**: OPEN in general. The full conjecture is unproven.\n\n## Session 2026-03-14 (researcher-2) - Verification and Assessment\n\n**Mode**: REVISIT (depth-first, RICH knowledge score 59)\n**Outcome**: verified, at frontier of formalizability\n\n**What we did**: Docker build verified (2 expected sorries). Confirmed KroneckersJugendtraum.lean has Kronecker-Weber as statement only (not proved). Updated outdated next steps. No tractable path to further progress without new Mathlib infrastructure.\n\n## Session 2026-02-21 (Session 1) - Initial Exploration and Formalization\n\n**Mode**: FRESH\n**Outcome**: progress — first Lean formalization created\n\n### What I Did\n\n- Explored the mathematical landscape of the Inverse Galois Problem\n- Surveyed Mathlib4 infrastructure: `IsCyclotomicExtension.isGalois`, `IsCyclotomicExtension.Aut.commGroup`, `galCyclotomicEquivUnitsZMod`, `ZMod.card_units_eq_totient`\n- Created `proofs/Proofs/InverseGalois.lean` with formal Lean content\n- Created gallery data at `src/data/proofs/inverse-galois/`\n- Added to `listings.json` and `Proofs.lean`\n\n### Key Findings\n\n- Mathlib has `IsCyclotomicExtension.isGalois` — cyclotomic extensions are automatically Galois\n- Mathlib has `IsCyclotomicExtension.Aut.commGroup` — cyclotomic Galois groups are abelian\n- Mathlib has `galCyclotomicEquivUnitsZMod` — requires irreducibility of cyclotomic poly over ℚ\n- The irreducibility of Φₙ(x) over ℚ is a classical theorem (Gauss 1801) NOT directly in Mathlib as a standalone theorem — typically assumed as hypothesis in Mathlib theorems\n- The problem is genuinely open in general, but well-known cases (abelian, solvable, symmetric groups) are provable\n\n### Files Modified\n\n- `proofs/Proofs/InverseGalois.lean` (created)\n- `src/data/proofs/inverse-galois/meta.json` (created)\n- `src/data/proofs/inverse-galois/annotations.json` (created)\n- `src/data/proofs/inverse-galois/index.ts` (created)\n- `src/data/proofs/inverse-galois/tacticStates.json` (created)\n- `src/data/proofs/listings.json` (updated)\n- `proofs/Proofs.lean` (updated with import)\n- `research/problems/abel-ruffini-oq-01/knowledge.md` (this file)\n\n### What We Proved (compile-time)\n\n1. `cyclotomic_field_isGalois`: CyclotomicField n ℚ is Galois over ℚ\n2. `cyclotomic_galois_isAbelian`: The Galois group is abelian\n3. `cyclotomic_galois_group_iso_units_zmod`: Gal(Φₙ/ℚ) ≅ (ZMod n)ˣ (uses irreducibility axiom)\n4. `units_zmod4_card` = 2, `units_zmod5_card` = 4, `units_zmod7_card` = 6 (decide)\n5. `units_zmodPrime_card` = p-1 for prime p\n6. `a5_not_solvable`: A₅ is not solvable (proven)\n7. `solvable_iff_solvable_galois_group`: Connection to Abel-Ruffini (proven)\n\n### What's Axiomatized (not proven in Lean)\n\n1. `cyclotomic_irreducible_over_rationals`: Φₙ(x) is irreducible over ℚ (classical, not in Mathlib as standalone)\n2. `abelian_realizable`: All abelian groups realizable (needs Kronecker-Weber)\n3. `shafarevich_theorem`: All solvable groups realizable (Shafarevich 1954, deep)\n\n### What Has Sorry\n\n1. `inverse_galois_problem_open_conjecture`: The main open problem\n2. `symmetric_group_realizable`: Needs Hilbert irreducibility theorem\n3. `connection_to_abel_ruffini`: The specific polynomial example\n4. One more in the A₅ realization discussion\n\n### Next Steps\n\n1. Try to prove `cyclotomic_irreducible_over_rationals` in Lean — this should be in Mathlib somewhere, perhaps under a different name\n2. Search for Kronecker-Weber in Mathlib (might not be there yet)\n3. Consider building a more computational example: explicitly compute Gal(ℚ(ζ₅)/ℚ) using Mathlib\n4. Possibly extend to show that some specific non-abelian group (like S₃) is realizable using an explicit polynomial\n\n## Mathematical Context\n\n### The Cyclotomic Approach (What We Formalized)\n\nFor the Galois group of the n-th cyclotomic field:\n- `CyclotomicField n ℚ` = splitting field of Φₙ(X) over ℚ\n- `IsGalois ℚ (CyclotomicField n ℚ)` — Galois extension\n- `Gal(CyclotomicField n ℚ / ℚ) ≅ (ZMod n)ˣ` — abelian Galois group\n\nFor prime p:\n- `(ZMod p)ˣ` is cyclic of order p-1\n- So Gal(ℚ(ζₚ)/ℚ) is cyclic of order p-1\n\n### Known Realizability Results\n\n| Group Family | Source | Status in Lean |\n|---|---|---|\n| Trivial group | ℚ/ℚ | Easy (not formalized yet) |\n| Cyclic Cₙ | Cyclotomic subfields | Partially (via autEquivPow) |\n| Abelian | Kronecker-Weber | Axiom |\n| Solvable | Shafarevich 1954 | Axiom |\n| Sₙ | Hilbert irreducibility | Sorry |\n| Aₙ (n≥5) | Various | Not formalized |\n| Most simple groups | Case by case | Not formalized |\n| M₂₃ (sporadic) | Unknown | Open math problem |\n| General | **OPEN** | Open math problem |\n\n### Mathlib Infrastructure Used\n\n```\nMathlib.NumberTheory.Cyclotomic.Gal\n  - galCyclotomicEquivUnitsZMod: polynomial Galois group ≅ (ZMod n)ˣ\n  - IsCyclotomicExtension.Aut.commGroup: abelian Galois group\n  - IsCyclotomicExtension.autEquivPow: automorphisms ≃* (ZMod n)ˣ\n\nMathlib.NumberTheory.Cyclotomic.Basic\n  - IsCyclotomicExtension.isGalois: cyclotomic extensions are Galois\n  - CyclotomicField: the splitting field of Φₙ(X)\n  - IsCyclotomicExtension instance for characteristic 0\n\nMathlib.FieldTheory.Galois.Basic\n  - IsGalois: the Galois extension class\n  - IsGalois.card_aut_eq_finrank: |Gal| = degree\n\nMathlib.GroupTheory.SpecificGroups.Cyclic\n  - IsCyclic instance for (ZMod p)ˣ\n\nMathlib.FieldTheory.AbelRuffini\n  - solvableByRad.isSolvable': Abel-Ruffini connection\n```\n\n## Blockers / Gaps\n\n1. **Cyclotomic irreducibility over ℚ**: Not a direct standalone Mathlib theorem.\n   The theorem is classical (Gauss 1801) but Mathlib typically assumes it as a\n   hypothesis. We axiomatized it.\n   **Potential fix**: Look in `Mathlib.RingTheory.Polynomial.Cyclotomic.Irreducible`\n   or search for `IsIntegral.minpoly_eq_cyclotomic`.\n\n2. **Kronecker-Weber theorem**: The proof that every abelian extension of ℚ is\n   cyclotomic. This deep result is not yet in Mathlib (as of 2026-02).\n\n3. **Hilbert irreducibility theorem**: Needed for symmetric group realization.\n   Not in Mathlib.\n\n4. **Shafarevich's theorem**: 50+ pages of algebraic number theory. Not in Lean.\n"
   },

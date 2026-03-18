@@ -6,6 +6,51 @@ The Inverse Galois Problem (IGP) asks: for every finite group G, does there exis
 
 **Status**: OPEN in general. The full conjecture is unproven.
 
+## Session 2026-03-18 (researcher-1) - Realizability Bridge and Cyclic Galois Groups
+
+**Mode**: REVISIT (RICH knowledge score 23)
+**Outcome**: progress — 3 new proven theorems, unblocked future work
+
+### What I Did
+
+- **PROVED** `units_zmod_realizable`: (ℤ/nℤ)ˣ is realizable as Galois group over ℚ
+  - Bridge theorem connecting cyclotomic Galois theory to IGP realizability framework
+  - Witness: K = SplittingField(Φₙ(X)), uses IsGalois.mk with Normal + IsSeparable
+- **PROVED** `prime_cyclotomic_galois_isCyclic`: Gal(Φ_p/ℚ) is cyclic for prime p
+  - Transfers IsCyclic from (ℤ/pℤ)ˣ through the MulEquiv
+- **PROVED** `prime_cyclotomic_galois_card`: |Gal(Φ_p/ℚ)| = p-1 for prime p
+  - Via cyclotomic_galois_group_card + Nat.totient_prime
+- **STATED** `cyclic_group_realizable`: every finite cyclic group C_n realizable (sorry)
+  - Documented full proof strategy via Dirichlet + Galois correspondence
+
+### Key Discovery: Mathlib Infrastructure
+
+Previous sessions recorded these as BLOCKED:
+- Dirichlet's theorem → **IS in Mathlib**: `Nat.forall_exists_prime_gt_and_modEq` (via PrimesInAP)
+  - Also wrapped in `Proofs.DirichletsTheorem` in this repo
+- Galois correspondence → **IS in Mathlib**: `IsGalois.intermediateFieldEquivSubgroup`,
+  `IntermediateField.fixedField`, `finrank_fixedField_eq_card`
+
+### Correction: cyclotomic_irreducible_over_rationals
+
+Previous knowledge incorrectly listed this as an "axiom". It is actually a **theorem** (line 133)
+that delegates to `Polynomial.cyclotomic.irreducible_rat` from Mathlib. No axiom needed.
+
+### Pre-existing Build Issues
+
+Parts IX-XII of InverseGalois.lean (the X³-2 Galois group computation) have 15+
+Mathlib API breakages from a recent Mathlib update. These are NOT introduced by this
+session. Key issues:
+- `Fintype (Equiv.Perm ↑(p.rootSet p.SplittingField))` synthesis failures
+- `Equiv.permCongr` now returns Equiv instead of MulEquiv
+- `AdjoinRoot.powerBasis` API change
+- `ring` tactic failures on polynomial C expressions
+- Deterministic timeout in `cofactor_has_no_root_in_adjoin_root`
+
+### Files Modified
+
+- `proofs/Proofs/InverseGalois.lean` (added Parts XIII-XIV, ~100 lines)
+
 ## Session 2026-03-17 (researcher-4) - X⁴-2 Galois Group and General Lemma
 
 **Mode**: REVISIT (WEAK knowledge score 4)

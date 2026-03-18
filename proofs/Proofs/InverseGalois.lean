@@ -902,4 +902,115 @@ theorem x_cube_sub_2_gal_iso_s3_proved :
     Fintype.equivFinOfCardEq hcard_root
   exact ⟨hiso.trans (Equiv.permCongr hfin)⟩
 
+-- ============================================================================
+-- Part XIII: (ℤ/nℤ)ˣ Realizability Bridge
+-- ============================================================================
+
+/-
+## Part XIII: (ℤ/nℤ)ˣ is Realizable over ℚ
+
+The cyclotomic Galois theory (Parts II-IV) establishes Gal(Φₙ/ℚ) ≅ (ℤ/nℤ)ˣ.
+Here we package this as a formal realizability statement: the group (ℤ/nℤ)ˣ
+appears as the Galois group of a Galois extension of ℚ.
+
+This covers:
+- Cyclic groups C_{p-1} for primes p (since (ℤ/pℤ)ˣ ≅ C_{p-1})
+- Products like C₂ × C₂ (since (ℤ/8ℤ)ˣ ≅ C₂ × C₂)
+- All groups of the form (ℤ/nℤ)ˣ for n > 0
+-/
+
+/-- (ℤ/nℤ)ˣ is realizable as a Galois group over ℚ.
+    Witness: K = SplittingField(Φₙ(X)) with Gal(K/ℚ) ≅ (ℤ/nℤ)ˣ. -/
+theorem units_zmod_realizable (n : ℕ) [NeZero n] :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K), Nonempty ((ZMod n)ˣ ≃* (K ≃ₐ[ℚ] K)) := by
+  let p := Polynomial.cyclotomic n ℚ
+  have : Normal ℚ p.SplittingField := inferInstance
+  have : Algebra.IsSeparable ℚ p.SplittingField := inferInstance
+  exact ⟨p.SplittingField,
+    inferInstance, inferInstance, inferInstance,
+    IsGalois.mk,
+    ⟨(cyclotomic_galois_group_iso_units_zmod n).symm⟩⟩
+
+-- ============================================================================
+-- Part XIV: Toward Cyclic Group Realizability
+-- ============================================================================
+
+/-
+## Part XIV: Toward General Cyclic Group Realizability
+
+**Goal**: Every finite cyclic group C_n is realizable as a Galois group over ℚ.
+
+**Proof strategy** (requires Dirichlet's theorem + Galois correspondence):
+1. By Dirichlet's theorem (`Nat.forall_exists_prime_gt_and_modEq` from
+   `Mathlib.NumberTheory.LSeries.PrimesInAP`, wrapped in `Proofs.DirichletsTheorem`),
+   for any n > 0, there exists a prime p ≡ 1 (mod n), giving n | (p-1).
+2. The p-th cyclotomic field has Galois group (ℤ/pℤ)ˣ ≅ C_{p-1} (Part II-III).
+3. Since n | (p-1), the cyclic group C_{p-1} has a unique subgroup of order (p-1)/n.
+4. By the Galois correspondence (`IsGalois.intermediateFieldEquivSubgroup` from
+   `Mathlib.FieldTheory.Galois.Basic`), the fixed field K of this subgroup satisfies:
+   - [K:ℚ] = n
+   - K/ℚ is Galois (since (ℤ/pℤ)ˣ is abelian, all subgroups are normal)
+   - Gal(K/ℚ) ≅ C_{p-1} / subgroup ≅ C_n
+
+**What's proven below**: For prime p, the cyclotomic Galois group is cyclic of
+order p-1. This combines our cyclotomic theory with the standard result that
+finite field unit groups are cyclic.
+
+**What's sorry**: The general cyclic realizability. The Galois correspondence step
+(constructing intermediate fields from subgroups and showing the quotient Galois
+group has the right structure) needs careful type-level plumbing.
+
+**Mathlib infrastructure available but not yet connected**:
+- `IntermediateField.fixedField` — maps subgroup to fixed field
+- `IntermediateField.finrank_fixedField_eq_card` — [L:fixedField(H)] = |H|
+- `IsGalois.intermediateFieldEquivSubgroup` — the Galois correspondence
+- `Nat.forall_exists_prime_gt_and_modEq` — Dirichlet's theorem (in Proofs.DirichletsTheorem)
+-/
+
+/-- For prime p, the Galois group of the p-th cyclotomic polynomial is cyclic.
+    This follows from the isomorphism Gal ≅ (ℤ/pℤ)ˣ and the fact that the
+    units of a finite field form a cyclic group (FiniteField.isCyclic). -/
+theorem prime_cyclotomic_galois_isCyclic (p : ℕ) [hp : Fact (Nat.Prime p)] :
+    IsCyclic (Polynomial.cyclotomic p ℚ).Gal := by
+  let e := cyclotomic_galois_group_iso_units_zmod p
+  obtain ⟨g, hg⟩ := IsCyclic.exists_generator (α := (ZMod p)ˣ)
+  exact ⟨⟨e.symm g, fun x => by
+    obtain ⟨n, hn⟩ := hg (e x)
+    exact ⟨n, by
+      show e.symm g ^ n = x
+      have hn' : g ^ n = e x := hn
+      rw [← map_zpow e.symm, hn', e.symm_apply_apply]⟩⟩⟩
+
+/-- For prime p, the Galois group of the p-th cyclotomic polynomial has order p-1.
+    Combined with `prime_cyclotomic_galois_isCyclic`, this shows that C_{p-1}
+    is realizable for every prime p. -/
+theorem prime_cyclotomic_galois_card (p : ℕ) [Fact (Nat.Prime p)] :
+    Fintype.card (Polynomial.cyclotomic p ℚ).Gal = p - 1 := by
+  rw [cyclotomic_galois_group_card]
+  exact Nat.totient_prime (Fact.out)
+
+/-- Every finite cyclic group C_n is realizable as a Galois group over ℚ.
+
+    Proof uses Dirichlet's theorem (primes in arithmetic progressions) and
+    the Galois correspondence for intermediate fields of cyclotomic extensions.
+    See Part XIV documentation above for the full proof strategy.
+
+    **Status**: sorry — the Dirichlet step is in Mathlib (and in
+    `Proofs.DirichletsTheorem`), but connecting the Galois correspondence
+    for intermediate fields requires additional type-level work. -/
+theorem cyclic_group_realizable (n : ℕ) (hn : 0 < n) :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K),
+      IsCyclic (K ≃ₐ[ℚ] K) ∧ Fintype.card (K ≃ₐ[ℚ] K) = n := by
+  sorry
+  -- Proof outline:
+  -- 1. By Dirichlet (Nat.forall_exists_prime_gt_and_modEq), ∃ prime p ≡ 1 (mod n)
+  -- 2. Gal(ℚ(ζ_p)/ℚ) ≅ (ℤ/pℤ)ˣ ≅ C_{p-1} with n | (p-1)
+  -- 3. Let H = unique subgroup of (ℤ/pℤ)ˣ of order (p-1)/n
+  -- 4. K = IntermediateField.fixedField (H mapped to Gal via the isomorphism)
+  -- 5. [K:ℚ] = |Gal|/|H| = (p-1)/((p-1)/n) = n
+  -- 6. K/ℚ is Galois (H is normal since (ℤ/pℤ)ˣ is abelian)
+  -- 7. Gal(K/ℚ) ≅ (ℤ/pℤ)ˣ / H ≅ C_n
+
 end InverseGaloisProblem
