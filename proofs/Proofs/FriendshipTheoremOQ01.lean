@@ -32,12 +32,6 @@ eigenvalue analysis: A² = (k-1)I + J forces eigenvalues ±√(k-1),
 and the trace condition forces k = 2.
 
 Status: 1 axiom (spectral eigenvalue step), 0 sorries
-
-New in this revision:
-- `ucn_ne_left`, `ucn_ne_right`: UCN distinctness from endpoints
-- `friendship_separation`: Neighborhoods of adjacent vertices are separated
-- `ucn_involutive`: UCN is an involution on N(u) (partner swapping)
-- `ucn_unique_in_neighborhood`: Partner is the unique neighbor within N(u)
 -/
 
 namespace FriendshipTheoremOQ01
@@ -89,60 +83,6 @@ lemma ucn_unique (hF : IsFriendshipGraph G) (u v w : V) (huv : u ≠ v)
     rw [SimpleGraph.mem_commonNeighbors]; exact ⟨h1, h2⟩
   rw [ucn_spec G hF u v huv] at hmem
   exact Set.mem_singleton_iff.mp hmem
-
--- ============================================================================
--- Part I-B: Structural Properties of UCN
--- ============================================================================
-
-/-- ucn(u,v) ≠ u (since otherwise u would be adjacent to itself). -/
-lemma ucn_ne_left (hF : IsFriendshipGraph G) (u v : V) (huv : u ≠ v) :
-    ucn G hF u v huv ≠ u :=
-  fun h => G.loopless u (h ▸ ucn_adj_left G hF u v huv)
-
-/-- ucn(u,v) ≠ v (since otherwise v would be adjacent to itself). -/
-lemma ucn_ne_right (hF : IsFriendshipGraph G) (u v : V) (huv : u ≠ v) :
-    ucn G hF u v huv ≠ v :=
-  fun h => G.loopless v (h ▸ ucn_adj_right G hF u v huv)
-
-/-- **Separation lemma**: For adjacent u and v, any other neighbor x of u
-    has u as its unique common neighbor with v.
-
-    This is immediate: u ~ x and u ~ v, so u ∈ commonNeighbors(x, v).
-    By friendship uniqueness, u is the ONLY common neighbor.
-
-    Key consequence: the neighborhoods N(u) \ {v} and N(v) \ {u} are
-    "separated" by the friendship condition — no vertex besides u is
-    adjacent to both a non-v neighbor of u and v itself. -/
-lemma friendship_separation (hF : IsFriendshipGraph G) (u v x : V)
-    (hxv : x ≠ v) (hadj_uv : G.Adj u v) (hadj_ux : G.Adj u x) :
-    ucn G hF x v hxv = u := by
-  have hu_cn : u ∈ G.commonNeighbors x v :=
-    (SimpleGraph.mem_commonNeighbors G).mpr ⟨G.symm hadj_ux, hadj_uv⟩
-  rw [ucn_spec G hF x v hxv] at hu_cn
-  exact (Set.mem_singleton_iff.mp hu_cn).symm
-
-/-- **Partner involution**: The ucn map is an involution on N(u):
-    ucn(u, ucn(u, v)) = v for any v ∈ N(u).
-
-    Proof: Let w = ucn(u,v). Then w ~ u and w ~ v.
-    Since v ~ u (given) and w ~ v, v is a common neighbor
-    of u and w. By uniqueness, v = ucn(u, w). -/
-lemma ucn_involutive (hF : IsFriendshipGraph G) (u v : V) (huv : u ≠ v)
-    (hadj : G.Adj u v) :
-    ucn G hF u (ucn G hF u v huv) (ucn_ne_left G hF u v huv) = v := by
-  have hv_cn : v ∈ G.commonNeighbors u (ucn G hF u v huv) :=
-    (SimpleGraph.mem_commonNeighbors G).mpr
-      ⟨hadj, G.symm (ucn_adj_right G hF u v huv)⟩
-  rw [ucn_spec G hF u (ucn G hF u v huv) (ucn_ne_left G hF u v huv)] at hv_cn
-  exact (Set.mem_singleton_iff.mp hv_cn).symm
-
-/-- The partner of v in N(u) is the unique neighbor of v within N(u).
-    If w ∈ N(u), w ~ v, then w = ucn(u,v). -/
-lemma ucn_unique_in_neighborhood (hF : IsFriendshipGraph G) (u v w : V)
-    (huv : u ≠ v) (huw : u ≠ w) (hvw : v ≠ w)
-    (hadj_uv : G.Adj u v) (hadj_uw : G.Adj u w) (hadj_vw : G.Adj v w) :
-    w = ucn G hF u v huv :=
-  ucn_unique G hF u v w huv (G.symm hadj_uw) (G.symm hadj_vw)
 
 -- ============================================================================
 -- Part II: A² Off-Diagonal Identity
@@ -377,10 +317,6 @@ theorem regular_friendship_has_universal (hF : IsFriendshipGraph G)
 | `ucn_spec` | lemma | commonNeighbors = {ucn} |
 | `ucn_adj_left/right` | lemma | ucn is adjacent to both vertices |
 | `ucn_unique` | lemma | Any common neighbor equals ucn |
-| `ucn_ne_left/right` | lemma | ucn ≠ u and ucn ≠ v |
-| `friendship_separation` | lemma | ∀ x ∈ N(u)\{v}: ucn(x,v) = u |
-| `ucn_involutive` | lemma | ucn(u, ucn(u,v)) = v |
-| `ucn_unique_in_neighborhood` | lemma | w ∈ N(u), w ~ v ⟹ w = ucn(u,v) |
 | `common_neighbor_finset_card` | theorem | |N(u) ∩ N(v)| = 1 (A² identity) |
 | `counting_disjoint` | lemma | Partition fibers are disjoint |
 | `counting_cover` | lemma | Partition fibers cover V \ {u} |
@@ -415,10 +351,6 @@ This file provides the infrastructure to eliminate the axiom
 -/
 
 #check ucn
-#check ucn_ne_left
-#check friendship_separation
-#check ucn_involutive
-#check ucn_unique_in_neighborhood
 #check common_neighbor_finset_card
 #check counting_identity
 #check regular_friendship_card
