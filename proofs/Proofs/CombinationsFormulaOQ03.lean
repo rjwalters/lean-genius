@@ -601,6 +601,119 @@ example : qBinom (2 : ℤ) 4 1 * qNumber (2 : ℤ) 3 = qBinom (2 : ℤ) 4 2 * qN
 
 end SymmetryVerifications
 
+-- ============================================================
+-- Part XIII: q-Vandermonde Identity
+-- ============================================================
+
+/-- **q-Vandermonde Identity** (q-Chu-Vandermonde convolution):
+    ∑_{j=0}^{k} q^{(k-j)(m-j)} · [m,j]_q · [n,k-j]_q = [m+n,k]_q.
+
+    This is the q-analog of the classical Vandermonde identity
+    ∑ C(m,j)·C(n,k-j) = C(m+n,k). When q is a prime power, it counts
+    k-dimensional subspaces of F_q^{m+n} by decomposing according to
+    their intersection with a fixed m-dimensional subspace.
+
+    The proof uses induction on m. The key step expands [m+1,j+1]_q
+    via the q-Pascal recurrence, splits the sum, applies the inductive
+    hypothesis at (m,k) and (m,k+1), and closes with Pascal. -/
+theorem qBinom_vandermonde (q : R) (n : ℕ) : ∀ (m k : ℕ),
+    ∑ j ∈ Finset.range (k + 1),
+      q ^ ((k - j) * (m - j)) * qBinom q m j * qBinom q n (k - j) = qBinom q (m + n) k
+  | 0, k => by
+    rw [zero_add]
+    rw [Finset.sum_eq_single 0
+      (fun j _ hj => by
+        rcases j with _ | j
+        · exact absurd rfl hj
+        · simp [qBinom_zero_succ])
+      (fun h => absurd (Finset.mem_range.mpr (Nat.zero_lt_succ k)) h)]
+    simp
+  | m + 1, 0 => by
+    simp [Finset.sum_range_one]
+  | m + 1, k + 1 => by
+    have ih_k := qBinom_vandermonde q n m k
+    have ih_k1 := qBinom_vandermonde q n m (k + 1)
+    -- Rewrite target via Pascal: [m+1+n,k+1] = [m+n,k] + q^{k+1}·[m+n,k+1]
+    conv_rhs =>
+      rw [show m + 1 + n = (m + n) + 1 from by omega, qBinom_pascal]
+    rw [← ih_k, ← ih_k1]
+    -- Peel off j=0 from LHS: ∑_{j=0}^{k+1} f(j) = f(0) + ∑_{j=0}^{k} f(j+1)
+    rw [show k + 1 + 1 = 1 + (k + 1) from by omega, Finset.sum_range_add,
+        Finset.sum_range_one]
+    simp only [Nat.sub_zero, qBinom_zero_right, one_mul]
+    -- Simplify subscripts in the shifted sum
+    have h_simp : ∀ j ∈ Finset.range (k + 1),
+        q ^ ((k + 1 - (j + 1)) * ((m + 1) - (j + 1))) *
+          qBinom q (m + 1) (j + 1) * qBinom q n (k + 1 - (j + 1)) =
+        q ^ ((k - j) * (m - j)) * qBinom q (m + 1) (j + 1) * qBinom q n (k - j) := by
+      intro j hj
+      have hj' : j < k + 1 := Finset.mem_range.mp hj
+      congr 1; congr 1; congr 1 <;> omega
+    rw [Finset.sum_congr rfl h_simp]
+    -- Apply Pascal: [m+1,j+1] = [m,j] + q^{j+1}·[m,j+1]
+    have h_pascal : ∀ j ∈ Finset.range (k + 1),
+        q ^ ((k - j) * (m - j)) * qBinom q (m + 1) (j + 1) * qBinom q n (k - j) =
+        q ^ ((k - j) * (m - j)) * qBinom q m j * qBinom q n (k - j) +
+        q ^ ((k - j) * (m - j) + (j + 1)) * qBinom q m (j + 1) * qBinom q n (k - j) := by
+      intro j _
+      rw [qBinom_pascal q m j, add_mul, mul_assoc (q ^ ((k - j) * (m - j)))]
+      congr 1
+      rw [← mul_assoc, ← pow_add]
+    rw [Finset.sum_congr rfl h_pascal, Finset.sum_add_distrib]
+    -- Now: q^{(k+1)(m+1)}·[n,k+1] + sum_first + sum_second = sum_k + q^{k+1}·sum_{k+1}
+    -- where sum_first is exactly sum_k.
+    -- Combine q^{(k+1)(m+1)}·[n,k+1] + sum_second into q^{k+1}·sum_{k+1}
+    -- by expanding sum_{k+1} = (j=0 term) + ∑_{j=0}^{k} (shifted terms)
+    conv_rhs =>
+      arg 2; arg 2
+      rw [show k + 1 + 1 = 1 + (k + 1) from by omega, Finset.sum_range_add,
+          Finset.sum_range_one]
+      simp only [Nat.sub_zero, qBinom_zero_right, one_mul]
+    rw [mul_add]
+    -- RHS: sum_k + (q^{k+1}·q^{(k+1)m}·[n,k+1] + q^{k+1}·∑ shifted)
+    -- First: q^{k+1}·q^{(k+1)m} = q^{(k+1)(m+1)}
+    have h_exp0 : q ^ (k + 1) * (q ^ ((k + 1) * m) * qBinom q n (k + 1)) =
+        q ^ ((k + 1) * (m + 1)) * qBinom q n (k + 1) := by
+      rw [← mul_assoc, ← pow_add]; congr 1; ring
+    rw [h_exp0]
+    -- Now both sides have the form: q^{(k+1)(m+1)}·[n,k+1] + X + Y = Y + q^{(k+1)(m+1)}·[n,k+1] + Z
+    -- Cancel and match sum_second = q^{k+1}·∑ shifted
+    ring_nf
+    -- Match the remaining sums term by term
+    congr 1
+    -- Simplify shifted subscripts on RHS
+    have h_rhs_simp : ∀ j ∈ Finset.range (k + 1),
+        q ^ ((k + 1 - (j + 1)) * (m - (j + 1))) * qBinom q m (j + 1) *
+          qBinom q n (k + 1 - (j + 1)) =
+        q ^ ((k - j) * (m - (j + 1))) * qBinom q m (j + 1) * qBinom q n (k - j) := by
+      intro j hj
+      have hj' : j < k + 1 := Finset.mem_range.mp hj
+      congr 1; congr 1; congr 1 <;> omega
+    rw [Finset.sum_congr rfl h_rhs_simp, ← Finset.mul_sum]
+    -- Goal: ∑ q^{(k-j)(m-j)+j+1}·[m,j+1]·[n,k-j] = q^{k+1}·∑ q^{(k-j)(m-j-1)}·[m,j+1]·[n,k-j]
+    rw [Finset.mul_sum]
+    apply Finset.sum_congr rfl
+    intro j hj
+    -- Term-by-term: q^{(k-j)(m-j)+j+1} = q^{k+1+(k-j)(m-(j+1))}
+    by_cases hjm : j + 1 ≤ m
+    · -- Exponents match when j+1 ≤ m
+      have h_exp : (k - j) * (m - j) + (j + 1) = (k + 1) + (k - j) * (m - (j + 1)) := by omega
+      rw [show q ^ ((k - j) * (m - j) + (j + 1)) = q ^ ((k + 1) + (k - j) * (m - (j + 1)))
+        from by rw [h_exp], pow_add]
+      ring
+    · -- When j+1 > m, [m,j+1] = 0 so both sides vanish
+      have hzero : qBinom q m (j + 1) = 0 := qBinom_eq_zero_of_lt q m (j + 1) (by omega)
+      simp [hzero]
+
+/-- **Classical Vandermonde at q=1**: ∑ C(m,j)·C(n,k-j) = C(m+n,k).
+    Derived from the q-Vandermonde identity by specializing at q = 1. -/
+theorem vandermonde_at_one (m n k : ℕ) :
+    ∑ j ∈ Finset.range (k + 1),
+      Nat.choose m j * Nat.choose n (k - j) = Nat.choose (m + n) k := by
+  have h := qBinom_vandermonde (1 : ℤ) n m k
+  simp only [one_pow, one_mul, qBinom_at_one] at h
+  exact_mod_cast h
+
 end QBinomialCoefficients
 
 -- ============================================================
