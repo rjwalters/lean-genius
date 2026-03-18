@@ -3017,10 +3017,14 @@ theorem partGF_coeff_empty (n : ℕ) :
   rw [partGF_empty]
   simp [PowerSeries.coeff_one]
 
-/-- Product recursion for partGF. -/
-theorem partGF_insert' {S : Finset ℕ} {k : ℕ} (hk : k ∉ S) :
+/-- geomPow and geomSeries agree for k > 0. -/
+theorem geomPow_eq_geomSeries (k : ℕ) (hk : 0 < k) : geomPow k = geomSeries k := by
+  ext n; simp [geomPow, geomSeries, Nat.pos_iff_ne_zero.mp hk, PowerSeries.coeff_mk]
+
+/-- Product recursion for partGF (using geomSeries). -/
+theorem partGF_insert' {S : Finset ℕ} {k : ℕ} (hk : k ∉ S) (hkpos : 0 < k) :
     partGF (insert k S) = geomSeries k * partGF S := by
-  simp only [partGF, Finset.prod_insert hk]
+  rw [partGF, Finset.prod_insert hk, geomPow_eq_geomSeries k hkpos]; rfl
 
 /-- **Insert recursion for partGF coefficients**: choosing j copies of k,
     then partitioning the remainder from S. -/
@@ -3029,21 +3033,8 @@ theorem partGF_coeff_insert {S : Finset ℕ} {k : ℕ} (hk : k ∉ S)
     PowerSeries.coeff (R := ℤ) n (partGF (insert k S)) =
     (Finset.range (n / k + 1)).sum (fun j =>
       PowerSeries.coeff (R := ℤ) (n - j * k) (partGF S)) := by
-  rw [partGF_insert' hk]
+  rw [partGF_insert' hk hkpos]
   exact geomSeries_mul_coeff_sum k hkpos (partGF S) n
-
-/-- Constant term of partGF is always 1 (empty partition). -/
-theorem partGF_constantCoeff (S : Finset ℕ) (hpos : ∀ s ∈ S, 0 < s) :
-    PowerSeries.coeff (R := ℤ) 0 (partGF S) = 1 := by
-  induction S using Finset.induction with
-  | empty => simp [partGF_empty, PowerSeries.coeff_one]
-  | @insert k S hk ih =>
-    have hposS : ∀ s ∈ S, 0 < s := fun s hs => hpos s (Finset.mem_insert_of_mem hs)
-    have hkpos : 0 < k := hpos k (Finset.mem_insert_self k S)
-    rw [partGF_coeff_insert hk hkpos]
-    have : 0 / k = 0 := Nat.zero_div k
-    rw [this]
-    simp [ih hposS]
 
 end
 
