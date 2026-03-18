@@ -1394,6 +1394,7 @@ import Proofs.EulerPolyhedralOQ01OQ04
 import Proofs.EulerPolyhedralOQ02
 import Proofs.EulerPolyhedralOQ02OQ01
 import Proofs.EulerTotient
+import Proofs.EulerTotientOQ04
 import Proofs.FactorRemainderTheorem
 import Proofs.FairGamesTheorem
 import Proofs.FairGamesTheoremOQ01
@@ -1467,7 +1468,6 @@ import Proofs.IntermediateValueTheorem
 import Proofs.InverseGalois
 import Proofs.InverseGaloisD4
 import Proofs.InverseGaloisF20
-import Proofs.InverseGaloisX4Sub2
 import Proofs.IsoperimetricTheorem
 import Proofs.IsoscelesTriangle
 import Proofs.KeplerConjecture
