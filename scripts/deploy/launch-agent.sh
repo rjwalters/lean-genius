@@ -121,6 +121,13 @@ create_worktree() {
         print_warning "No .env found - deploys will fail without CLOUDFLARE_ACCOUNT_ID"
     fi
 
+    # Symlink OAuth tokens so the claude-wrapper can find them in the worktree
+    if [[ -d "$REPO_ROOT/.loom/tokens" ]]; then
+        mkdir -p "$WORKTREE_PATH/.loom" 2>/dev/null || true
+        ln -sfn "$REPO_ROOT/.loom/tokens" "$WORKTREE_PATH/.loom/tokens"
+        print_info "Linked .loom/tokens for OAuth token rotation"
+    fi
+
     # Install node dependencies in worktree
     if [[ -f "$WORKTREE_PATH/package.json" ]]; then
         print_info "Installing node dependencies..."
