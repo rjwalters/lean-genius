@@ -222,18 +222,77 @@ theorem vertex_pancyclic_implies_connected (G : SimpleGraph V)
     (hV : 3 ≤ Fintype.card V)
     (h : isVertexPancyclicGraphUpTo G (Fintype.card V)) :
     G.Connected := by
-  sorry -- Walk API type mismatch; conceptually correct but needs careful Walk construction
+  rw [SimpleGraph.connected_iff]
+  constructor
+  · -- Show Preconnected: any two vertices are reachable
+    intro u w
+    -- u lies on a cycle of length |V| ≥ 3
+    obtain ⟨wu, hwuc, hwul⟩ := h u (Fintype.card V) hV le_rfl
+    -- All vertices are in wu.support since the cycle visits |V| vertices.
+    -- wu.support.tail has Nodup (from IsCycle) and length = |V|.
+    have htail_nd : wu.support.tail.Nodup := hwuc.support_nodup
+    have htail_len : wu.support.tail.length = Fintype.card V := by
+      simp [List.length_tail, wu.length_support, hwul]
+    -- Nodup list of length |V| from type V must contain all elements
+    have htail_univ : wu.support.tail.toFinset = Finset.univ := by
+      apply Finset.eq_univ_of_card
+      rw [List.toFinset_card_of_nodup htail_nd, htail_len]
+    have hw_mem : w ∈ wu.support := by
+      have : w ∈ wu.support.tail :=
+        List.mem_toFinset.mp (htail_univ ▸ Finset.mem_univ w)
+      exact List.tail_subset _ this
+    exact (wu.takeUntil w hw_mem).reachable
+  · -- Show Nonempty V
+    exact Fintype.card_pos_iff.mp (by omega)
 
 -- ============================================================================
 -- Part VI: Edge Threshold Comparison
 -- ============================================================================
 
 /-- The Woodall threshold exceeds n²/4 for small k relative to n.
-    This connects Woodall's conditions to Bondy's vertex-pancyclicity. -/
+    This connects Woodall's conditions to Bondy's vertex-pancyclicity.
+
+    Proof: Setting a = n-k-1, b = k+2, a+b = n+1, we have the identity
+    2*(a*(a-1) + b*(b-1)) + 1 = n² + (a-b)².  Since (a-b)² ≥ 0,
+    we get C(a,2) + C(b,2) ≥ n²/4, so the threshold = C(a,2) + C(b,2) + 1 ≥ n²/4 + 1. -/
 theorem threshold_exceeds_turan_for_small_k (n k : ℕ)
-    (hn : n ≥ 2 * k + 3) (hk : k ≤ n / 4) :
+    (hn : n ≥ 2 * k + 3) (_hk : k ≤ n / 4) :
     edgeThreshold n k ≥ n ^ 2 / 4 + 1 := by
-  sorry -- Combinatorial inequality: requires careful binomial arithmetic
+  -- Substitute n = 2k+3+c for c ≥ 0
+  obtain ⟨c, rfl⟩ : ∃ c, n = 2 * k + 3 + c := ⟨n - (2 * k + 3), by omega⟩
+  unfold edgeThreshold
+  rw [Nat.choose_two_right, Nat.choose_two_right]
+  have h1 : 2 * k + 3 + c - k - 1 = k + 2 + c := by omega
+  have h2 : (k + 2 + c) - 1 = k + 1 + c := by omega
+  have h3 : k + 2 - 1 = k + 1 := by omega
+  rw [h1, h2, h3]
+  -- Goal: (k+2+c)*(k+1+c)/2 + (k+2)*(k+1)/2 + 1 ≥ (2*k+3+c)^2/4 + 1
+  suffices h : (2 * k + 3 + c) ^ 2 / 4 ≤
+      (k + 2 + c) * (k + 1 + c) / 2 + (k + 2) * (k + 1) / 2 by omega
+  -- Both products are even (consecutive integers), factor out
+  obtain ⟨p, hp⟩ := Nat.even_mul_succ_self (k + 1 + c)
+  obtain ⟨q, hq⟩ := Nat.even_mul_succ_self (k + 1)
+  have hp' : (k + 2 + c) * (k + 1 + c) = 2 * p := by
+    have : (k + 1 + c) + 1 = k + 2 + c := by omega
+    rw [mul_comm, this] at hp; omega
+  have hq' : (k + 2) * (k + 1) = 2 * q := by
+    have : (k + 1) + 1 = k + 2 := by omega
+    rw [mul_comm, this] at hq; omega
+  rw [hp', hq']
+  -- Simplify 2*p/2 = p, 2*q/2 = q
+  have hp2 : 2 * p / 2 = p := Nat.mul_div_cancel_left p (by omega)
+  have hq2 : 2 * q / 2 = q := Nat.mul_div_cancel_left q (by omega)
+  rw [hp2, hq2]
+  -- Goal: (2*k+3+c)^2/4 ≤ p + q
+  -- Key identity: 4*(p+q) + 1 = (2*k+3+c)^2 + c^2
+  have hident : 4 * (p + q) + 1 = (2 * k + 3 + c) ^ 2 + c ^ 2 := by
+    have : 2 * ((k + 2 + c) * (k + 1 + c) + (k + 2) * (k + 1)) + 1 =
+        (2 * k + 3 + c) ^ 2 + c ^ 2 := by ring
+    rw [hp', hq'] at this; omega
+  -- (2*k+3+c)^2 ≤ 4*(p+q) + 1 since c^2 ≥ 0
+  set X := (2 * k + 3 + c) ^ 2
+  have hbound : X ≤ 4 * (p + q) + 1 := by linarith [hident, Nat.zero_le (c ^ 2)]
+  omega
 
 /-- For k = 0: the Woodall threshold is C(n-1,2) + 2 = n(n-1)/2 + 1,
     which far exceeds n²/4 + 1 for n ≥ 3. -/
@@ -241,8 +300,30 @@ theorem threshold_k0_exceeds_turan (n : ℕ) (hn : n ≥ 3) :
     edgeThreshold n 0 ≥ n ^ 2 / 4 + 1 := by
   unfold edgeThreshold
   simp only [Nat.sub_zero]
-  -- C(n-1, 2) + C(2, 2) + 1 = n(n-1)/2 + 1 + 1 ≥ n²/4 + 1
-  sorry -- Arithmetic inequality
+  have hc22 : Nat.choose 2 2 = 1 := by decide
+  rw [hc22, Nat.choose_two_right]
+  have hsub : n - 1 - 1 = n - 2 := by omega
+  rw [hsub]
+  -- Goal: (n-1)*(n-2)/2 + 1 + 1 ≥ n^2/4 + 1
+  suffices h : n ^ 2 / 4 ≤ (n - 1) * (n - 2) / 2 + 1 by omega
+  rcases le_or_gt n 5 with hsmall | hlarge
+  · -- n ∈ {3, 4, 5}: check directly
+    interval_cases n <;> omega
+  · -- n ≥ 6: algebraic bound
+    have hkey : n ^ 2 ≤ 2 * ((n - 1) * (n - 2)) := by
+      obtain ⟨a, rfl⟩ : ∃ a, n = a + 6 := ⟨n - 6, by omega⟩
+      have h5 : a + 6 - 1 = a + 5 := by omega
+      have h4 : a + 6 - 2 = a + 4 := by omega
+      rw [h5, h4]
+      have hexp1 : (a + 6) ^ 2 = a ^ 2 + 12 * a + 36 := by ring
+      have hexp2 : 2 * ((a + 5) * (a + 4)) = 2 * a ^ 2 + 18 * a + 40 := by ring
+      linarith [sq_nonneg a]
+    calc n ^ 2 / 4
+        ≤ 2 * ((n - 1) * (n - 2)) / 4 := Nat.div_le_div_right hkey
+      _ = (n - 1) * (n - 2) / 2 := by
+          rw [show (4 : ℕ) = 2 * 2 from by omega]
+          exact Nat.mul_div_mul_left _ _ (by omega)
+      _ ≤ (n - 1) * (n - 2) / 2 + 1 := Nat.le_add_right _ _
 
 -- ============================================================================
 -- Part VII: The Pancyclicity Spectrum
@@ -263,7 +344,19 @@ theorem spectrum_contains_range (G : SimpleGraph V) (v : V) (m : ℕ)
 theorem spectrum_size_lower_bound (G : SimpleGraph V) (v : V) (m : ℕ)
     (h : isVertexPancyclicUpTo G v m) (hm : 3 ≤ m) :
     m - 2 ≤ Set.ncard (pancyclicSpectrum G v ∩ Set.Icc 3 m) := by
-  sorry -- Counting: {3,4,...,m} has m-2 elements, all in the spectrum
+  -- Set.Icc 3 m ⊆ pancyclicSpectrum G v (from spectrum_contains_range)
+  have hsub : Set.Icc 3 m ⊆ pancyclicSpectrum G v ∩ Set.Icc 3 m :=
+    Set.subset_inter (spectrum_contains_range G v m h) Set.Subset.rfl
+  -- pancyclicSpectrum G v ∩ Set.Icc 3 m is finite
+  have hfin : (pancyclicSpectrum G v ∩ Set.Icc 3 m).Finite :=
+    Set.Finite.subset (Set.finite_Icc 3 m) Set.inter_subset_right
+  calc m - 2
+      = Set.ncard (Set.Icc 3 m : Set ℕ) := by
+        rw [Set.ncard_eq_toFinset_card']
+        simp only [Set.toFinset_Icc, Nat.card_Icc]
+        omega
+    _ ≤ Set.ncard (pancyclicSpectrum G v ∩ Set.Icc 3 m) :=
+        Set.ncard_le_ncard hsub hfin
 
 -- ============================================================================
 -- Part VIII: Summary
@@ -272,7 +365,7 @@ theorem spectrum_size_lower_bound (G : SimpleGraph V) (v : V) (m : ℕ)
 /-
 ## Results Status
 
-### PROVED (0 sorries from axioms):
+### PROVED (0 sorries):
 1. vertexPancyclic_implies_pancyclic: VP → P
 2. hasCycleThroughVertex_implies_hasCycleOfLength: vertex cycle → graph cycle
 3. isPancyclicUpTo_mono: pancyclicity monotone in bound
@@ -281,15 +374,16 @@ theorem spectrum_size_lower_bound (G : SimpleGraph V) (v : V) (m : ℕ)
 6. every_vertex_on_long_cycle: all vertices on (n-k)-cycles
 7. every_vertex_on_triangle: all vertices on triangles
 8. spectrum_contains_range: VP spectrum contains {3,...,m}
+9. vertex_pancyclic_implies_connected: VP graph is connected (Walk API)
+10. threshold_exceeds_turan_for_small_k: binomial inequality (QM-AM identity)
+11. threshold_k0_exceeds_turan: arithmetic for k=0 case
+12. spectrum_size_lower_bound: counting via Set.ncard
 
 ### Axioms (2):
 1. bondy_vertex_pancyclic: Bondy's VP theorem (1971)
 2. woodall_vertex_pancyclic: Woodall conditions → vertex-pancyclicity
 
-### Sorries (3, combinatorial arithmetic):
-1. threshold_exceeds_turan_for_small_k: binomial inequality
-2. threshold_k0_exceeds_turan: arithmetic for k=0 case
-3. spectrum_size_lower_bound: counting argument
+### Sorries: 0
 
 ### Proof Architecture
 ```
@@ -299,9 +393,15 @@ woodall_vertex_pancyclic (axiom)
   └──→ vertexPancyclic_implies_pancyclic
 
 bondy_vertex_pancyclic (axiom)
-  └──→ (structural: bipartite exception analysis)
+  └──→ threshold_exceeds_turan_for_small_k (connects to Bondy)
 
-isVertexPancyclicUpTo_mono → spectrum_contains_range
+vertex_pancyclic_implies_connected ← isVertexPancyclicGraphUpTo
+  └──→ uses Walk.IsCycle.support_nodup + pigeonhole
+
+threshold_k0_exceeds_turan ← Nat.choose_two_right + algebraic bound
+threshold_exceeds_turan_for_small_k ← QM-AM identity: 2S+1 = n²+c²
+
+spectrum_contains_range → spectrum_size_lower_bound (via Set.ncard)
 ```
 -/
 

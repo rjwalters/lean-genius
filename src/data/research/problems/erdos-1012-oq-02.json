@@ -29,24 +29,30 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 308 lines, 4 sorries, 2 axioms. Vertex-pancyclicity framework built.",
+    "progressSummary": "COMPLETED: 0 sorries, 2 axioms, 12 proved theorems. All sorry obligations eliminated.",
     "builtItems": [
       "Erdos1012OQ02.lean: vertex-pancyclicity definitions and framework",
       "8 proved structural theorems (monotonicity, implications, consequences)",
       "2 axioms (Bondy VP, Woodall VP strengthening)",
-      "3 sorries on combinatorial arithmetic inequalities"
+      "3 sorries on combinatorial arithmetic inequalities",
+      "Proved threshold_exceeds_turan_for_small_k via QM-AM identity",
+      "Proved threshold_k0_exceeds_turan via algebraic substitution",
+      "Proved vertex_pancyclic_implies_connected via Walk API + pigeonhole",
+      "Proved spectrum_size_lower_bound via Set.ncard monotonicity"
     ],
     "insights": [
       "Vertex-pancyclicity is strictly stronger than pancyclicity: every vertex on every cycle length",
       "Bondy (1971) showed VP is almost free from P: only balanced bipartite exception",
       "Woodall conditions (n≥2k+3, enough edges) should give VP up to length n-k",
-      "Walk API in Lean requires careful type handling for cycle extraction"
+      "Walk API in Lean requires careful type handling for cycle extraction",
+      "QM-AM identity 2S+1=n²+c² gives threshold ≥ n²/4+1 for all valid k",
+      "Walk.IsCycle.support_nodup + pigeonhole gives VP ⟹ connected",
+      "Products of consecutive ℕ always even—key for division-free proofs"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove threshold_exceeds_turan_for_small_k (binomial inequality)",
-      "Prove vertex_pancyclic_implies_connected using Walk API",
-      "Consider proving bipartite exception cannot occur under Woodall conditions"
+      "File is complete—no remaining sorries",
+      "Consider creating Aristotle companion file for the 2 axioms"
     ]
   },
   "approaches": [],
