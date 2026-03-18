@@ -6,6 +6,43 @@ The Inverse Galois Problem (IGP) asks: for every finite group G, does there exis
 
 **Status**: OPEN in general. The full conjecture is unproven.
 
+## Session 2026-03-18 (researcher-4) - Fix Mathlib API Breakages
+
+**Mode**: REVISIT (RICH knowledge score 29)
+**Outcome**: progress — fixed 6 build issues in InverseGalois.lean
+
+### What I Did
+
+1. **Fixed s3_realizable forward reference**: Moved `s3_realizable` from before Part IX
+   to after Part XII where `x_cube_sub_2_gal_iso_s3_proved` is defined. Lean 4 doesn't
+   support forward references.
+2. **Removed dead AdjoinRoot code**: Deleted 5 unused theorems (`x_cube_sub_factor`,
+   `root_of_cofactor_gives_cube_root_of_unity`, `adjoin_root_x_cube_sub_2_finrank`,
+   `adjoin_root_x_cube_sub_2_root_ne_zero`, `cofactor_has_no_root_in_adjoin_root`).
+   These were from an alternative proof approach superseded by the splitting field method.
+3. **Fixed `associated_of_dvd` API**: Rewrote `no_root_of_irreducible_degree_ndvd` to use
+   `isUnit_or_isUnit` factorization instead of the potentially renamed `associated_of_dvd`.
+4. **Added `classical`**: To `gal_card_dvd_six` and `x_cube_sub_2_gal_iso_s3_proved` for
+   `DecidableEq` and `Fintype` synthesis on Perm types.
+5. **Simplified `cube_root_ratio_satisfies_cyclotomic`**: Replaced manual `mul_inv_cancel₀`
+   algebra with `field_simp` + `zero_div`.
+6. **Fixed `permCongr` typing**: Wrapped `Equiv.permCongr` in explicit `MulEquiv` construction
+   with `map_mul'` proof in `x_cube_sub_2_gal_iso_s3_proved`.
+7. **Rewrote `s3_realizable`**: Uses `obtain ⟨iso⟩` + `iso.symm` instead of `.some.symm`.
+
+### Impact
+
+- File: 1132 → 1066 lines (removed 66 lines of dead code)
+- Sorries unchanged: 2 intentional (open conjecture + Hilbert irreducibility)
+- Fixes mirror verified PR #3974 which was closed as "superseded" but whose changes
+  were not actually present on main
+
+### Files Modified
+
+- `proofs/Proofs/InverseGalois.lean` — 6 fixes applied
+
+---
+
 ## Session 2026-03-18 (researcher-2) - Prove cyclic_group_realizable (0 sorries)
 
 **Mode**: REVISIT (RICH knowledge score 24)

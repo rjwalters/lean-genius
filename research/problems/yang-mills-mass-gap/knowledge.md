@@ -454,3 +454,69 @@ The mass gap is connected to:
 - `proofs/Proofs/YangMillsMassGap.lean`: 14116 → 14761 lines (+645)
 - `src/data/research/problems/yang-mills-mass-gap.json`: Updated knowledge
 - `research/problems/yang-mills-mass-gap/knowledge.md`: This session log
+
+---
+
+## Session 2026-03-18 (researcher-5) - FRG and Center Symmetry
+
+**Mode**: REVISIT (RICH knowledge, score 125)
+**Outcome**: progress
+
+### What Was Built
+
+**Part XCVIII: Functional Renormalization Group** (~250 lines, ~25 theorems)
+1. FRGParams structure with UV/IR cutoffs and regulator properties
+2. RG time t = ln(k/k₀): proved monotone in k
+3. Degree of freedom counting: gluonDOF, ghostDOF, totalFlowDOF
+4. SU(3) in 4D: 24 gluon DOF, 8 ghost DOF, 8 net flow DOF
+5. One-loop beta function β₀ = (11/3)N: proved positive and monotone
+6. Gluon screening mass m²(k): vanishes at UV (k=Λ), equals m₀² at IR (k=0)
+7. FRG gluon propagator D(p²): vanishes at p²=0 (KL violation), peak at p²=m²
+8. Ghost dressing function: anomalous exponent κ ∈ (0,1], scaling sum rule 2κ + γ_A = 0
+9. FRGCoupling: scaling vs decoupling solutions, proved mutually exclusive
+10. FRG-lattice consistency: gluon mass ratio ∈ (0.8, 1.2)
+11. Trace decomposition: net DOF = (N²-1)(d-3) in d dimensions
+
+**Part XCIX: Center Symmetry and Deconfinement** (~350 lines, ~30 theorems)
+1. PolyakovLoop order parameter: magnitude ∈ [0,1], confined ↔ L=0
+2. Svetitsky-Yaffe universality: SU(2) 2nd order, SU(N≥3) 1st order
+3. Latent heat scaling N²: proved monotone in N
+4. Inverse temperature: proved positive and anti-monotone
+5. Z_N center transformation: L^N invariant, confinement implies L^N = 0
+6. GPY effective potential: V(ℓ) = -a₂T²ℓ² + a₄ℓ⁴, proved minimized at ℓ=0 for T=0
+7. StringTensionTemp: confined/deconfined phase classification, mutual exclusivity
+8. Casimir scaling: σ_adj/σ_fund = 2N²/(N²-1), proved > 1 for N≥2
+9. SU(3) Casimir ratio = 9/4, fundamental Casimir = 4/3
+10. T_c/√σ ≈ 0.629 for SU(3): proved bounded in (0.6, 0.7)
+11. Debye mass m_D = gT√((N+Nf/2)/3): proved positive for g,T>0, N≥2
+12. Stefan-Boltzmann DOF: 2(N²-1), proved = 16 for SU(3), monotone in N
+13. Monopole mass gap ~ exp(-S₀/N): proved positive, nonzero, decreasing with S₀
+14. Center stability (Ünsal 2008): adjoint fermions preserve center for all S¹ sizes
+15. Abelian confinement on R³×S¹: N monopole types for SU(N)
+16. Continuity conjecture: bridges semi-classical gap to R⁴
+
+### Key Physics Content
+
+**FRG**: The Wetterich equation ∂_t Γ_k = ½ Tr[(Γ^(2)+R_k)^{-1} ∂_t R_k] provides
+the only known exact, non-perturbative flow equation for QFT. For Yang-Mills, FRG
+predicts two IR scenarios (scaling with ghost enhancement, decoupling with gluon mass),
+both implying a mass gap. The gluon propagator vanishing at p²=0 violates Källén-Lehmann
+positivity — consistent with gluon confinement.
+
+**Center Symmetry**: The Polyakov loop ⟨L⟩ order parameter classifies phases. The
+Svetitsky-Yaffe mapping to Z_N spin models predicts transition order. On R³×S¹ with
+adjoint fermions (Ünsal), center symmetry is stable for all circle sizes, giving a
+controlled semi-classical mass gap via magnetic monopole-instantons. The continuity
+conjecture (that this gap persists as S¹ → ∞) is the main obstacle to a proof of the
+full R⁴ mass gap.
+
+### Files Modified
+- `proofs/Proofs/YangMillsMassGap.lean`: 14387 → 14994 lines (+607), 0 new sorries
+- `src/data/research/problems/yang-mills-mass-gap.json`: Updated knowledge
+- `research/problems/yang-mills-mass-gap/knowledge.md`: This session log
+
+### Next Steps
+- Add lattice continuum limit (Balaban RG, cluster expansion)
+- Add Dyson-Schwinger equations (truncated tower, IR fixed points)
+- Add Seiberg-Witten exact solution for N=2 SUSY
+- Add large-N Eguchi-Kawai volume reduction

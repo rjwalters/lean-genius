@@ -38,22 +38,6 @@
     "nextSteps": [],
     "markdown": "# Knowledge Base: cube-root-2-irrational\n\n## Problem Understanding\n\n### Initial Assumptions\nWhat we thought the problem was:\n- Need complex multiplicity argument (like √2 proof mentions)\n- Might need Eisenstein criterion or Rational Root Theorem\n- Parity argument won't work for cubes\n\n### Actual Structure\nWhat we discovered:\n- Mathlib has a simpler theorem: `irrational_nrt_of_notint_nrt`\n- Only need to prove: (1) x^n = m, (2) x is not an integer\n- The \"not an integer\" proof reduces to \"2 is not a perfect cube\"\n\n### The \"Aha\" Moment\nThe key insight that unlocked the solution:\n- The `irrational_nrt_of_notint_nrt` theorem is simpler than multiplicity-based approaches\n- Proving \"2 is not a perfect cube\" just requires checking n ∈ {1} (bound elimination)\n\n---\n\n## Insights\n\n### Theorems That Worked\n\n| Theorem | Module | When to Use |\n|---------|--------|-------------|\n| `irrational_nrt_of_notint_nrt` | `Mathlib.Data.Real.Irrational` | Prove n-th roots irrational when base isn't perfect power |\n| `Real.rpow_natCast` | `Mathlib.Analysis.SpecialFunctions.Pow.Real` | Convert between `rpow` and `^` |\n| `Real.rpow_mul` | `Mathlib.Analysis.SpecialFunctions.Pow.Real` | Simplify `(x^a)^b = x^(a*b)` |\n\n### Tactic Pattern: nlinarith with powers\n```lean\n-- Problem: nlinarith fails on n^k expressions\n-- Solution: nlinarith handles products, not powers\nhave : n ^ 3 = n * n * n := by ring\nrw [this]\nnlinarith\n```\n\n### Tactic Pattern: Bound elimination for perfect powers\n```lean\n-- When: Proving \"m is not a perfect k-th power\" for small m\nhave h1 : 0 < n := by  -- eliminate n ≤ 0\n  by_contra h; push_neg at h\n  have : n ^ k ≤ 0 := by [rewrite to product, nlinarith]\n  omega\nhave h2 : n < bound := by  -- eliminate n ≥ bound\n  by_contra h; push_neg at h\n  have : n ^ k ≥ bound^k := by [rewrite to product, nlinarith]\n  omega\n-- Now n in small range\nhave : n = only_option := by omega\n```\n\n### Tactic Pattern: Real power identity\n```lean\n-- Proving (m^(1/n))^n = m for real rpow\nunfold my_nrt_def\nrw [← Real.rpow_natCast]\nrw [← Real.rpow_mul (by norm_num : (0 : ℝ) ≤ m)]\nnorm_num\n```\n\n---\n\n## Dead Ends\n\n### Approaches NOT Taken\n| Approach | Why We Skipped It |\n|----------|-------------------|\n| Multiplicity argument | `irrational_nrt_of_notint_nrt` was simpler |\n| Eisenstein criterion | Overkill for single irrationality |\n| Rational Root Theorem | More complex than needed |\n\n### Tactics That Failed\n| Tactic | Why It Failed | Alternative |\n|--------|---------------|-------------|\n| `interval_cases n` (initially) | No bounds on n established | Manually prove bounds first |\n| `nlinarith` on `n^3` directly | Doesn't understand powers | Rewrite to `n*n*n` first |\n\n---\n\n## Generalizations\n\nThis proof pattern applies to:\n- ∛3, ∛5, ∛6, ... (any non-perfect cube)\n- ⁴√2, ⁴√3, ... (any non-perfect 4th power)\n- General: m^(1/n) where m is not k^n for any integer k\n\nFor variants, change:\n- The base m (adjust bounds accordingly)\n- The exponent n (adjust perfect power check)\n\n---\n\n## Future Research\n\n- ∛3 is irrational (direct application)\n- Replace axiom `cbrt_two_irrational` in GelfondSchneider.lean\n- Create helper theorem `irrational_nrt_of_not_perfect_power`\n"
   },
-  "approaches": [
-    {
-      "id": "approach-01",
-      "name": "Hypothesis: Not-Integer Approach (via irrational_nrt_of_notint_nrt)",
-      "status": "active",
-      "hypothesis": "",
-      "strategy": "",
-      "risks": [],
-      "attempts": [
-        {
-          "file": "attempt-01.lean",
-          "succeeded": false
-        }
-      ]
-    }
-  ],
   "tags": [
     "number-theory",
     "irrationality",

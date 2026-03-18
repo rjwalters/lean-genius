@@ -17,9 +17,10 @@ import {
   Target,
   Lightbulb,
   BookOpen,
-  Beaker,
   FileText,
-  Archive
+  Archive,
+  Code2,
+  Github
 } from 'lucide-react'
 
 function isValidFormalStatement(formal: string | undefined): boolean {
@@ -33,14 +34,19 @@ function isValidFormalStatement(formal: string | undefined): boolean {
   return true
 }
 
+/** Default number of items to show before requiring expand */
+const COLLAPSED_ITEM_LIMIT = 20
+
 export function ResearchProblemPage() {
   const { slug } = useParams<{ slug: string }>()
   const [problem, setProblem] = useState<ResearchProblem | null>(null)
   const [loading, setLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState<'overview' | 'approaches' | 'knowledge'>('overview')
-  const [expandedApproaches, setExpandedApproaches] = useState<string[]>([])
+  const [activeTab, setActiveTab] = useState<'overview' | 'formalization' | 'knowledge'>('overview')
   const [expandedSessions, setExpandedSessions] = useState<string[]>([])
   const [showArchived, setShowArchived] = useState(false)
+  const [showAllBuiltItems, setShowAllBuiltItems] = useState(false)
+  const [showAllInsights, setShowAllInsights] = useState(false)
+  const [showSessionNotes, setShowSessionNotes] = useState(false)
 
   useEffect(() => {
     if (!slug) return
@@ -56,12 +62,6 @@ export function ResearchProblemPage() {
         setLoading(false)
       })
   }, [slug])
-
-  const toggleApproach = (id: string) => {
-    setExpandedApproaches((prev) =>
-      prev.includes(id) ? prev.filter((a) => a !== id) : [...prev, id]
-    )
-  }
 
   const toggleSession = (filename: string) => {
     setExpandedSessions((prev) =>
@@ -98,6 +98,15 @@ export function ResearchProblemPage() {
   }
 
   const isGraduated = problem.status === 'graduated'
+  const builtItemsCount = problem.knowledge.builtItems?.length || 0
+  const insightsCount = problem.knowledge.insights?.length || 0
+  const knowledgeItemCount = builtItemsCount + insightsCount
+  const hasLeanFiles = problem.leanFiles && problem.leanFiles.length > 0
+  const leanFilesCount = problem.leanFiles?.length || 0
+  const leanTotalLines = problem.leanFiles?.reduce((s, f) => s + f.lineCount, 0) || 0
+  const leanTotalTheorems = problem.leanFiles?.reduce((s, f) => s + f.theoremCount, 0) || 0
+  const leanTotalAxioms = problem.leanFiles?.reduce((s, f) => s + f.axiomCount, 0) || 0
+  const leanTotalSorries = problem.leanFiles?.reduce((s, f) => s + f.sorryCount, 0) || 0
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -141,12 +150,12 @@ export function ResearchProblemPage() {
             {/* Quick Stats */}
             <div className="space-y-3">
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Approaches</span>
-                <span>{problem.approaches.length}</span>
+                <span className="text-muted-foreground">Built Items</span>
+                <span>{builtItemsCount}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Attempts</span>
-                <span>{problem.currentState.attemptCounts.total}</span>
+                <span className="text-muted-foreground">Insights</span>
+                <span>{insightsCount}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Started</span>
@@ -157,6 +166,18 @@ export function ResearchProblemPage() {
                   <span className="text-muted-foreground">Completed</span>
                   <span>{new Date(problem.completed).toLocaleDateString()}</span>
                 </div>
+              )}
+              {hasLeanFiles && (
+                <>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Lean Files</span>
+                    <span>{leanFilesCount}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Lean Lines</span>
+                    <span>{leanTotalLines.toLocaleString()}</span>
+                  </div>
+                </>
               )}
             </div>
 
@@ -183,7 +204,7 @@ export function ResearchProblemPage() {
               <nav className="flex gap-6">
                 {[
                   { id: 'overview', label: 'Overview', icon: Target },
-                  { id: 'approaches', label: 'Approaches', icon: Beaker },
+                  ...(hasLeanFiles ? [{ id: 'formalization', label: 'Formalization', icon: Code2 }] : []),
                   { id: 'knowledge', label: 'Knowledge', icon: Lightbulb }
                 ].map((tab) => {
                   const Icon = tab.icon
@@ -200,9 +221,14 @@ export function ResearchProblemPage() {
                     >
                       <Icon className="h-4 w-4" />
                       <span className="text-sm font-medium">{tab.label}</span>
-                      {tab.id === 'approaches' && (
+                      {tab.id === 'formalization' && leanFilesCount > 0 && (
                         <span className="text-xs bg-muted px-1.5 py-0.5 rounded">
-                          {problem.approaches.length}
+                          {leanFilesCount}
+                        </span>
+                      )}
+                      {tab.id === 'knowledge' && knowledgeItemCount > 0 && (
+                        <span className="text-xs bg-muted px-1.5 py-0.5 rounded">
+                          {knowledgeItemCount}
                         </span>
                       )}
                     </button>
@@ -283,6 +309,67 @@ export function ResearchProblemPage() {
                   </div>
                 </section>
 
+                {/* Research Progress */}
+                {(problem.knowledge.progressSummary || builtItemsCount > 0) && (
+                  <section>
+                    <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                      <CheckCircle2 className="h-5 w-5 text-annotation" />
+                      Research Progress
+                    </h2>
+
+                    {/* Progress Summary */}
+                    {problem.knowledge.progressSummary && (
+                      <div className="bg-annotation/10 border border-annotation/30 rounded-lg p-4 mb-4">
+                        <p className="text-sm text-foreground">{problem.knowledge.progressSummary}</p>
+                      </div>
+                    )}
+
+                    {/* Built Items */}
+                    {builtItemsCount > 0 && (
+                      <div className="space-y-2">
+                        <p className="text-sm font-medium text-muted-foreground mb-2">
+                          What We've Built ({builtItemsCount} items)
+                        </p>
+                        <div className="space-y-1.5">
+                          {(problem.knowledge.builtItems || [])
+                            .slice(0, showAllBuiltItems ? undefined : COLLAPSED_ITEM_LIMIT)
+                            .map((item, i) => (
+                              <div key={i} className="flex items-start gap-2 py-1">
+                                <CheckCircle2 className="h-3.5 w-3.5 text-green-400 mt-0.5 flex-shrink-0" />
+                                <div className="min-w-0">
+                                  <code className="text-xs font-mono text-annotation">{item.name}</code>
+                                  {item.description && (
+                                    <span className="text-xs text-muted-foreground ml-2">
+                                      -- {item.description}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            ))}
+                        </div>
+                        {builtItemsCount > COLLAPSED_ITEM_LIMIT && (
+                          <button
+                            onClick={() => setShowAllBuiltItems(!showAllBuiltItems)}
+                            className="flex items-center gap-1 text-xs text-annotation hover:underline mt-2"
+                          >
+                            {showAllBuiltItems ? (
+                              <>
+                                <ChevronDown className="h-3 w-3" />
+                                Show fewer
+                              </>
+                            ) : (
+                              <>
+                                <ChevronRight className="h-3 w-3" />
+                                Show all {builtItemsCount} items
+                              </>
+                            )}
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </section>
+                )}
+
                 {/* Related Proofs */}
                 {problem.relatedProofs.length > 0 && (
                   <section>
@@ -290,15 +377,18 @@ export function ResearchProblemPage() {
                       <BookOpen className="h-5 w-5 text-annotation" />
                       Related Proofs
                     </h2>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-3">
                       {problem.relatedProofs.map((proofSlug) => (
                         <Link
                           key={proofSlug}
                           to={`/proof/${proofSlug}`}
-                          className="inline-flex items-center gap-1 px-3 py-1.5 bg-card border border-border rounded-lg text-sm hover:border-annotation/50 transition-colors"
+                          className="inline-flex items-center gap-2 px-4 py-2 bg-card border border-border rounded-lg text-sm hover:border-annotation/50 transition-colors group"
                         >
-                          <BookOpen className="h-3 w-3 text-muted-foreground" />
-                          {proofSlug}
+                          <BookOpen className="h-4 w-4 text-annotation" />
+                          <span className="font-medium">{proofSlug}</span>
+                          <span className="text-xs text-muted-foreground group-hover:text-annotation transition-colors">
+                            View proof
+                          </span>
                         </Link>
                       ))}
                     </div>
@@ -326,120 +416,119 @@ export function ResearchProblemPage() {
               </div>
             )}
 
-            {activeTab === 'approaches' && (
-              <div className="space-y-4">
+            {activeTab === 'formalization' && hasLeanFiles && (
+              <div className="space-y-6">
                 <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  <Beaker className="h-5 w-5 text-annotation" />
-                  Approaches Tried
+                  <Code2 className="h-5 w-5 text-annotation" />
+                  Lean Formalization
                 </h2>
-                {problem.approaches.length === 0 ? (
-                  <p className="text-muted-foreground text-center py-8">
-                    No approaches documented yet.
-                  </p>
-                ) : (
-                  <div className="space-y-3">
-                    {problem.approaches.map((approach, index) => {
-                      const isExpanded = expandedApproaches.includes(approach.id)
-                      const statusColor = approach.status === 'completed' ? '#22C55E' :
-                        approach.status === 'abandoned' ? '#EF4444' : '#F59E0B'
 
-                      return (
-                        <div
-                          key={approach.id}
-                          className="bg-card border border-border rounded-lg overflow-hidden"
-                        >
-                          <button
-                            onClick={() => toggleApproach(approach.id)}
-                            className="w-full px-4 py-3 flex items-center justify-between hover:bg-muted/50 transition-colors"
-                          >
-                            <div className="flex items-center gap-3">
-                              <span className="text-sm text-muted-foreground">
-                                #{index + 1}
-                              </span>
-                              <span className="font-medium">{approach.name}</span>
-                              <span
-                                className="px-2 py-0.5 rounded text-xs font-medium capitalize"
-                                style={{
-                                  backgroundColor: `${statusColor}20`,
-                                  color: statusColor
-                                }}
-                              >
-                                {approach.status}
-                              </span>
-                              <span className="text-xs text-muted-foreground">
-                                {approach.attempts.length} attempt{approach.attempts.length !== 1 ? 's' : ''}
-                              </span>
-                            </div>
-                            {isExpanded ? (
-                              <ChevronDown className="h-4 w-4 text-muted-foreground" />
-                            ) : (
-                              <ChevronRight className="h-4 w-4 text-muted-foreground" />
-                            )}
-                          </button>
-                          {isExpanded && (
-                            <div className="px-4 pb-4 border-t border-border pt-4 space-y-4">
-                              {approach.strategy && (
-                                <div>
-                                  <p className="text-sm font-medium mb-1">Strategy</p>
-                                  <p className="text-sm text-muted-foreground whitespace-pre-wrap">
-                                    {approach.strategy}
-                                  </p>
-                                </div>
-                              )}
-                              {approach.attempts.length > 0 && (
-                                <div>
-                                  <p className="text-sm font-medium mb-2">Attempts</p>
-                                  <div className="space-y-1">
-                                    {approach.attempts.map((attempt, i) => (
-                                      <div
-                                        key={i}
-                                        className="flex items-center gap-2 text-sm"
-                                      >
-                                        {attempt.succeeded ? (
-                                          <CheckCircle2 className="h-3 w-3 text-green-400" />
-                                        ) : (
-                                          <AlertCircle className="h-3 w-3 text-red-400" />
-                                        )}
-                                        <span className="font-mono text-xs text-muted-foreground">
-                                          {attempt.file}
-                                        </span>
-                                      </div>
-                                    ))}
-                                  </div>
-                                </div>
-                              )}
-                              {approach.postMortem && (
-                                <div className="p-3 bg-red-500/5 border border-red-500/20 rounded">
-                                  <p className="text-sm font-medium text-red-400 mb-2">Post-Mortem</p>
-                                  {approach.postMortem.whatFailed.length > 0 && (
-                                    <div className="mb-2">
-                                      <p className="text-xs text-red-400/70 mb-1">What Failed:</p>
-                                      <ul className="list-disc list-inside text-sm text-muted-foreground">
-                                        {approach.postMortem.whatFailed.map((item, i) => (
-                                          <li key={i}>{item}</li>
-                                        ))}
-                                      </ul>
-                                    </div>
-                                  )}
-                                  {approach.postMortem.lessonsLearned.length > 0 && (
-                                    <div>
-                                      <p className="text-xs text-yellow-400/70 mb-1">Lessons Learned:</p>
-                                      <ul className="list-disc list-inside text-sm text-muted-foreground">
-                                        {approach.postMortem.lessonsLearned.map((item, i) => (
-                                          <li key={i}>{item}</li>
-                                        ))}
-                                      </ul>
-                                    </div>
-                                  )}
-                                </div>
-                              )}
-                            </div>
-                          )}
-                        </div>
-                      )
-                    })}
+                {/* Summary Banner */}
+                <div className="bg-card border border-border rounded-lg p-5">
+                  <h3 className="text-sm font-semibold text-muted-foreground mb-4 uppercase tracking-wide">
+                    Formalization Summary
+                  </h3>
+                  <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+                    <div className="text-center">
+                      <p className="text-2xl font-bold">{leanFilesCount}</p>
+                      <p className="text-xs text-muted-foreground mt-1">Files</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-2xl font-bold">{leanTotalLines.toLocaleString()}</p>
+                      <p className="text-xs text-muted-foreground mt-1">Lines of Lean</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-2xl font-bold text-green-400">{leanTotalTheorems}</p>
+                      <p className="text-xs text-muted-foreground mt-1">Theorems</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-2xl font-bold text-blue-400">{leanTotalAxioms}</p>
+                      <p className="text-xs text-muted-foreground mt-1">Axioms</p>
+                    </div>
+                    <div className="text-center">
+                      <p className={`text-2xl font-bold ${leanTotalSorries === 0 ? 'text-green-400' : 'text-red-400'}`}>
+                        {leanTotalSorries}
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-1">Sorries</p>
+                    </div>
                   </div>
-                )}
+                </div>
+
+                {/* File List */}
+                <div className="space-y-3">
+                  {problem.leanFiles!.map((file) => {
+                    const matchingProof = problem.relatedProofs.find((slug) =>
+                      file.path.toLowerCase().includes(slug.toLowerCase().replace(/-/g, ''))
+                    )
+                    return (
+                      <div
+                        key={file.path}
+                        className="bg-card border border-border rounded-lg p-4"
+                      >
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-2 mb-2">
+                              <code className="text-sm font-mono font-semibold text-foreground">
+                                {file.filename}
+                              </code>
+                              {file.isAristotle && (
+                                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-500/20 text-amber-400">
+                                  Proof Search Target
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-xs text-muted-foreground font-mono mb-3">
+                              {file.path}
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs bg-muted text-muted-foreground">
+                                {file.lineCount.toLocaleString()} lines
+                              </span>
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs bg-green-500/15 text-green-400">
+                                {file.theoremCount} theorems
+                              </span>
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs bg-blue-500/15 text-blue-400">
+                                {file.axiomCount} axioms
+                              </span>
+                              <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs ${
+                                file.sorryCount === 0
+                                  ? 'bg-green-500/15 text-green-400'
+                                  : 'bg-red-500/15 text-red-400'
+                              }`}>
+                                {file.sorryCount} {file.sorryCount === 1 ? 'sorry' : 'sorries'}
+                              </span>
+                              {file.defCount > 0 && (
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs bg-purple-500/15 text-purple-400">
+                                  {file.defCount} defs
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex flex-col gap-2 flex-shrink-0">
+                            <a
+                              href={file.githubUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-muted hover:bg-muted/80 rounded transition-colors"
+                            >
+                              <Github className="h-3.5 w-3.5" />
+                              View on GitHub
+                            </a>
+                            {matchingProof && (
+                              <Link
+                                to={`/proof/${matchingProof}`}
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-annotation bg-annotation/10 hover:bg-annotation/20 rounded transition-colors"
+                              >
+                                <BookOpen className="h-3.5 w-3.5" />
+                                View in Gallery
+                              </Link>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
               </div>
             )}
 
@@ -450,16 +539,172 @@ export function ResearchProblemPage() {
                   Research Knowledge Base
                 </h2>
 
-                {/* Full markdown content if available */}
-                {problem.knowledge.markdown ? (
-                  <section className="prose prose-invert prose-sm max-w-none">
-                    <MarkdownMath>{problem.knowledge.markdown}</MarkdownMath>
+                {/* Always show structured data first */}
+
+                {/* Progress Summary */}
+                {problem.knowledge.progressSummary && (
+                  <section>
+                    <h3 className="text-sm font-semibold text-muted-foreground mb-2 uppercase tracking-wide">
+                      Progress Summary
+                    </h3>
+                    <div className="bg-annotation/10 border border-annotation/30 rounded-lg p-4">
+                      <p className="text-sm text-foreground">{problem.knowledge.progressSummary}</p>
+                    </div>
                   </section>
-                ) : null}
+                )}
+
+                {/* Built Items */}
+                {builtItemsCount > 0 && (
+                  <section>
+                    <h3 className="text-sm font-semibold text-muted-foreground mb-2 uppercase tracking-wide">
+                      What We've Built ({builtItemsCount})
+                    </h3>
+                    <div className="space-y-2">
+                      {(problem.knowledge.builtItems || [])
+                        .slice(0, showAllBuiltItems ? undefined : COLLAPSED_ITEM_LIMIT)
+                        .map((item, i) => (
+                          <div key={i} className="flex items-start gap-3 p-2 bg-card border border-border rounded">
+                            <CheckCircle2 className="h-4 w-4 text-green-400 mt-0.5 flex-shrink-0" />
+                            <div>
+                              <code className="text-sm font-mono text-annotation">{item.name}</code>
+                              {item.description && (
+                                <span className="text-sm text-muted-foreground ml-2">-- {item.description}</span>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                    {builtItemsCount > COLLAPSED_ITEM_LIMIT && (
+                      <button
+                        onClick={() => setShowAllBuiltItems(!showAllBuiltItems)}
+                        className="flex items-center gap-1 text-sm text-annotation hover:underline mt-3"
+                      >
+                        {showAllBuiltItems ? (
+                          <>
+                            <ChevronDown className="h-4 w-4" />
+                            Show fewer
+                          </>
+                        ) : (
+                          <>
+                            <ChevronRight className="h-4 w-4" />
+                            Show all {builtItemsCount} items
+                          </>
+                        )}
+                      </button>
+                    )}
+                  </section>
+                )}
+
+                {/* Technical Insights */}
+                {insightsCount > 0 && (
+                  <section>
+                    <h3 className="text-sm font-semibold text-muted-foreground mb-2 uppercase tracking-wide">
+                      Technical Insights ({insightsCount})
+                    </h3>
+                    <ul className="space-y-2">
+                      {(problem.knowledge.insights || [])
+                        .slice(0, showAllInsights ? undefined : COLLAPSED_ITEM_LIMIT)
+                        .map((insight, i) => (
+                          <li key={i} className="flex items-start gap-2">
+                            <Lightbulb className="h-4 w-4 text-yellow-400 mt-0.5 flex-shrink-0" />
+                            <span className="text-muted-foreground">{insight}</span>
+                          </li>
+                        ))}
+                    </ul>
+                    {insightsCount > COLLAPSED_ITEM_LIMIT && (
+                      <button
+                        onClick={() => setShowAllInsights(!showAllInsights)}
+                        className="flex items-center gap-1 text-sm text-annotation hover:underline mt-3"
+                      >
+                        {showAllInsights ? (
+                          <>
+                            <ChevronDown className="h-4 w-4" />
+                            Show fewer
+                          </>
+                        ) : (
+                          <>
+                            <ChevronRight className="h-4 w-4" />
+                            Show all {insightsCount} insights
+                          </>
+                        )}
+                      </button>
+                    )}
+                  </section>
+                )}
+
+                {/* Mathlib Gaps */}
+                {problem.knowledge.mathlibGaps.length > 0 && (
+                  <section>
+                    <h3 className="text-sm font-semibold text-muted-foreground mb-2 uppercase tracking-wide">
+                      Mathlib Gaps
+                    </h3>
+                    <div className="p-4 bg-orange-500/5 border border-orange-500/20 rounded-lg">
+                      <p className="text-xs text-orange-400 mb-2">What Mathlib is missing:</p>
+                      <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
+                        {problem.knowledge.mathlibGaps.map((gap, i) => (
+                          <li key={i}>{gap}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </section>
+                )}
+
+                {/* Next Steps */}
+                {problem.knowledge.nextSteps.length > 0 && (
+                  <section>
+                    <h3 className="text-sm font-semibold text-muted-foreground mb-2 uppercase tracking-wide">
+                      Next Steps
+                    </h3>
+                    <ol className="list-decimal list-inside space-y-2 text-muted-foreground">
+                      {problem.knowledge.nextSteps.map((step, i) => (
+                        <li key={i}>{step}</li>
+                      ))}
+                    </ol>
+                  </section>
+                )}
+
+                {/* Empty state when no structured data at all */}
+                {!problem.knowledge.progressSummary &&
+                 builtItemsCount === 0 &&
+                 insightsCount === 0 &&
+                 problem.knowledge.mathlibGaps.length === 0 &&
+                 problem.knowledge.nextSteps.length === 0 &&
+                 !problem.knowledge.markdown &&
+                 (!problem.knowledge.archivedSessions || problem.knowledge.archivedSessions.length === 0) && (
+                  <p className="text-muted-foreground text-center py-8">
+                    No knowledge documented yet.
+                  </p>
+                )}
+
+                {/* Session Notes (markdown) - collapsible */}
+                {problem.knowledge.markdown && (
+                  <section className="border-t border-border pt-6">
+                    <button
+                      onClick={() => setShowSessionNotes(!showSessionNotes)}
+                      className="w-full flex items-center justify-between p-3 bg-card border border-border rounded-lg hover:bg-muted/50 transition-colors"
+                    >
+                      <div className="flex items-center gap-3">
+                        <FileText className="h-5 w-5 text-muted-foreground" />
+                        <span className="font-medium">Session Notes</span>
+                        <span className="text-xs text-muted-foreground">Full research log</span>
+                      </div>
+                      {showSessionNotes ? (
+                        <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                      ) : (
+                        <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                      )}
+                    </button>
+                    {showSessionNotes && (
+                      <div className="mt-3 prose prose-invert prose-sm max-w-none">
+                        <MarkdownMath>{problem.knowledge.markdown}</MarkdownMath>
+                      </div>
+                    )}
+                  </section>
+                )}
 
                 {/* Archived Sessions */}
                 {problem.knowledge.archivedSessions && problem.knowledge.archivedSessions.length > 0 && (
-                  <section className="mt-8 border-t border-border pt-6">
+                  <section className="border-t border-border pt-6">
                     <button
                       onClick={() => setShowArchived(!showArchived)}
                       className="w-full flex items-center justify-between p-3 bg-card border border-border rounded-lg hover:bg-muted/50 transition-colors"
@@ -519,96 +764,6 @@ export function ResearchProblemPage() {
                       </div>
                     )}
                   </section>
-                )}
-
-                {!problem.knowledge.markdown && (
-                  <>
-                    {/* Fallback to structured data */}
-                    {problem.knowledge.progressSummary && (
-                      <section>
-                        <h3 className="text-sm font-semibold text-muted-foreground mb-2 uppercase tracking-wide">
-                          Progress Summary
-                        </h3>
-                        <p className="text-muted-foreground">{problem.knowledge.progressSummary}</p>
-                      </section>
-                    )}
-
-                    {problem.knowledge.builtItems && problem.knowledge.builtItems.length > 0 && (
-                      <section>
-                        <h3 className="text-sm font-semibold text-muted-foreground mb-2 uppercase tracking-wide">
-                          What We've Built
-                        </h3>
-                        <div className="space-y-2">
-                          {problem.knowledge.builtItems.map((item, i) => (
-                            <div key={i} className="flex items-start gap-3 p-2 bg-card border border-border rounded">
-                              <CheckCircle2 className="h-4 w-4 text-green-400 mt-0.5 flex-shrink-0" />
-                              <div>
-                                <code className="text-sm font-mono text-annotation">{item.name}</code>
-                                {item.description && (
-                                  <span className="text-sm text-muted-foreground ml-2">— {item.description}</span>
-                                )}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </section>
-                    )}
-
-                    {problem.knowledge.insights.length > 0 && !problem.knowledge.builtItems?.length && (
-                      <section>
-                        <h3 className="text-sm font-semibold text-muted-foreground mb-2 uppercase tracking-wide">
-                          Technical Insights
-                        </h3>
-                        <ul className="space-y-2">
-                          {problem.knowledge.insights.map((insight, i) => (
-                            <li key={i} className="flex items-start gap-2">
-                              <Lightbulb className="h-4 w-4 text-yellow-400 mt-0.5 flex-shrink-0" />
-                              <span className="text-muted-foreground">{insight}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </section>
-                    )}
-
-                    {problem.knowledge.mathlibGaps.length > 0 && (
-                      <section>
-                        <h3 className="text-sm font-semibold text-muted-foreground mb-2 uppercase tracking-wide">
-                          Mathlib Gaps
-                        </h3>
-                        <div className="p-4 bg-orange-500/5 border border-orange-500/20 rounded-lg">
-                          <p className="text-xs text-orange-400 mb-2">What Mathlib is missing:</p>
-                          <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
-                            {problem.knowledge.mathlibGaps.map((gap, i) => (
-                              <li key={i}>{gap}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      </section>
-                    )}
-
-                    {problem.knowledge.nextSteps.length > 0 && (
-                      <section>
-                        <h3 className="text-sm font-semibold text-muted-foreground mb-2 uppercase tracking-wide">
-                          Next Steps
-                        </h3>
-                        <ol className="list-decimal list-inside space-y-2 text-muted-foreground">
-                          {problem.knowledge.nextSteps.map((step, i) => (
-                            <li key={i}>{step}</li>
-                          ))}
-                        </ol>
-                      </section>
-                    )}
-
-                    {problem.knowledge.insights.length === 0 &&
-                     (!problem.knowledge.builtItems || problem.knowledge.builtItems.length === 0) &&
-                     problem.knowledge.mathlibGaps.length === 0 &&
-                     problem.knowledge.nextSteps.length === 0 &&
-                     !problem.knowledge.progressSummary && (
-                      <p className="text-muted-foreground text-center py-8">
-                        No knowledge documented yet.
-                      </p>
-                    )}
-                  </>
                 )}
               </div>
             )}

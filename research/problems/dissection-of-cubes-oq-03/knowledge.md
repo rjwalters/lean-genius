@@ -39,3 +39,9 @@ into cubes of all different sizes (Wiedijk #82) and packing problems?
 1. `packing_volume_bound` — total packing volume ≤ 1 (needs measure theory)
 2. `dissection_volume_exact` — dissection volume = 1 (needs measure theory)
 3. `debruijn_brick_tiling` — de Bruijn's algebraic tiling criterion
+
+## Approaches Explored
+
+### Packing-dissection bridge
+**Status**: succeeded
+Define packing as relaxation of dissection, prove that dissection impossibility implies packing density < 1 for distinct sizes.

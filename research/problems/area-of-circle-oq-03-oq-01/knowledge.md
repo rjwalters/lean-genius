@@ -29,3 +29,9 @@ The file `proofs/Proofs/AreaOfCircleOQ03OQ01.lean` was already fully proved (233
 
 ### Files
 - `proofs/Proofs/AreaOfCircleOQ03OQ01.lean` (233 lines, fully proved)
+
+## Approaches Explored
+
+### Taylor-MVT chain
+**Status**: succeeded
+Build chain of trigonometric bounds from sin²≤x² through MVT to rate bound

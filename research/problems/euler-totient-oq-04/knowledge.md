@@ -23,3 +23,10 @@ and committed as part of abel-ruffini-oq-01 research. The proof:
 5. Includes partition-of-unity formulation over ℚ
 6. Cross-validates with Mathlib's Nat.sum_totient
 7. Concrete verifications for n=6, 12, 30
+
+## Approaches Explored
+
+### Explicit GCD Partition
+**Status**: successful
+Partition {0,...,n-1} by GCD classes, count via bijection to coprime residues
+**Outcome**: Complete proof with 0 sorries

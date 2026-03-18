@@ -43,3 +43,10 @@ fall below threshold m.
 ### Files Created
 
 - `proofs/Proofs/BinomialTheoremOQ04OQ01.lean` (299 lines, 0 sorries, 0 axioms)
+
+## Approaches Explored
+
+### Split-Merge Bijection
+**Status**: successful
+Split r-subsets of {0,...,m+n-1} at threshold m into low/high parts, use card_bij for fiber bijection
+**Outcome**: Complete proof with 0 sorries
