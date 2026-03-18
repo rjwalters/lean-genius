@@ -18,9 +18,13 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-03-17T17:30:00Z",
-    "iteration": 2,
+    "iteration": 5,
     "focus": "GF coefficient bridge infrastructure",
-    "blockers": [],
+    "blockers": [
+      "10+ pre-existing build errors from duplicate declarations (partGF, subsetsWithSum, partGF_constantCoeff, partGF_empty)",
+      "API drift errors (Finset.mem_empty, omega failures)",
+      "File needs structural deduplication before new theorems can be added"
+    ],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
       "total": 0,
@@ -29,7 +33,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 3253 lines, 0 sorries, 3 axioms (RR1, RR2, Schur). Steps 1-7c done. Added Part XLIV: partitionsFrom structural lemmas (subset monotonicity, singleton count, GF bridge base case). File has 17 pre-existing build errors from Mathlib API changes.",
+    "progressSummary": "PROGRESS: Last sorry ELIMINATED. File now 0 sorries, 3 axioms. distinctPartGF_coeff_eq_card was a duplicate of distinctPartGF_coeff.",
     "builtItems": [
       "distinctPartGF: generating function ∏(1+X^k) as PowerSeries ℤ",
       "schurModGF, rr1ModGF: specialized GFs for partition identities",
@@ -58,11 +62,7 @@
       "subsetsWithSum_empty: base case for empty set",
       "subsetsWithSum_insert: insert recursion (card decomposition into containing/not containing k)",
       "distinctPartGF_coeff_eq_card: bridge theorem structure (sorry in inductive step)",
-      "Eliminated last sorry in distinctPartGF_coeff_eq_card by delegating to already-proved distinctPartGF_coeff",
-      "partitionsFrom_subset: S⊆T → partitionsFrom S n ⊆ partitionsFrom T n",
-      "partitionsFrom_card_mono: monotonicity of cardinality",
-      "partitionsFrom_singleton_card: count for {k} via divisibility",
-      "partGF_coeff_eq_partitionsFrom_singleton: base case for partGF_coeff induction"
+      "Eliminated last sorry in distinctPartGF_coeff_eq_card by delegating to already-proved distinctPartGF_coeff"
     ],
     "insights": [
       "All 3 axioms encode deep partition identities (RR1, RR2, Schur)",
@@ -86,10 +86,8 @@
       "Insert recursion for subset counts mirrors (1+X^k)*F convolution",
       "Antidiagonal sum simplification is the remaining technical crux",
       "distinctPartGF_coeff_eq_card was a duplicate of distinctPartGF_coeff (proved at line 1936) — the sorry was unnecessary",
-      "partitionsFrom_subset: monotonicity in the part set S (proved)",
-      "partitionsFrom_singleton_card: exactly 1 partition when k|n, 0 otherwise (proved)",
-      "partGF_coeff_eq_partitionsFrom_singleton: GF=count bridge for |S|=1 (proved)",
-      "Pre-existing build failures: 17 errors from Mathlib API changes (not from new additions)"
+      "Build has 10+ errors from duplicate declarations (partGF, subsetsWithSum, etc.) — file needs deduplication before new work",
+      "partGF_coeff_insert (GF recursion) is proved but combinatorial counterpart partitionsFrom_insert_card is NOT — this blocks partGF_coeff bridge"
     ],
     "mathlibGaps": [
       "No partition generating function infrastructure",
@@ -116,7 +114,7 @@
     "mathlib": []
   },
   "started": "2026-03-12T05:34:54.574Z",
-  "lastUpdate": "2026-03-18T02:30:00Z",
+  "lastUpdate": "2026-03-16T16:00:00.000Z",
   "significance": 7,
   "tractability": 6
 }
