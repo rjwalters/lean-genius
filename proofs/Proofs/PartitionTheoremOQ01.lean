@@ -3291,15 +3291,17 @@ theorem multiset_sum_filter_eq (m : Multiset ℕ) (k : ℕ) :
     · subst h
       simp [Multiset.filter_cons_of_pos, Multiset.count_cons_self, ih]
       ring
-    · simp [Multiset.filter_cons_of_neg (show ¬(a = k) from h),
-            Multiset.count_cons_of_ne (Ne.symm h), ih]
+    · simp only [Multiset.filter_cons, if_neg h,
+            Multiset.count_cons_of_ne (Ne.symm h), Multiset.zero_add]
+      exact ih
 
 /-- The sum decomposes: total = non-k parts + k * count_k. -/
 theorem multiset_sum_decompose (m : Multiset ℕ) (k : ℕ) :
     m.sum = (m.filter (· ≠ k)).sum + k * m.count k := by
-  have := m.sum_filter_add_sum_filter_not (· ≠ k)
-  simp only [not_not] at this
-  rw [this, multiset_sum_filter_eq]
+  have h1 := m.sum_filter_add_sum_filter_not (· ≠ k)
+  simp only [not_not] at h1
+  rw [multiset_sum_filter_eq] at h1
+  linarith
 
 /-- Given a partition p of n with parts from insert k S, removing all copies
     of k gives a partition of (n - k * count) with parts from S. -/
@@ -3312,12 +3314,13 @@ theorem partitionsFrom_remove_k {S : Finset ℕ} {k n : ℕ} (hk : k ∉ S) (hkp
     (∀ a ∈ remaining, a ∈ S) ∧
     j * k ≤ n := by
   simp only [partitionsFrom, Finset.mem_filter, Finset.mem_univ, true_and] at hp
-  set j := p.parts.count k
-  set remaining := p.parts.filter (· ≠ k)
+  set j := p.parts.count k with hj_def
+  set remaining := p.parts.filter (· ≠ k) with hrem_def
   constructor
   · -- remaining.sum = n - j * k
     have hdecomp := multiset_sum_decompose p.parts k
-    rw [p.parts_sum] at hdecomp
+    rw [p.parts_sum, ← hj_def, ← hrem_def] at hdecomp
+    have := Nat.mul_comm k j
     omega
   constructor
   · -- All remaining parts are positive
@@ -3329,26 +3332,125 @@ theorem partitionsFrom_remove_k {S : Finset ℕ} {k n : ℕ} (hk : k ∉ S) (hkp
     have hne : a ≠ k := by exact (Multiset.mem_filter.mp ha).2
     have hin : a ∈ p.parts := Multiset.mem_of_mem_filter ha
     have hinS : a ∈ insert k S := hp a hin
-    rwa [Finset.mem_insert] at hinS
+    rw [Finset.mem_insert] at hinS
     cases hinS with
     | inl h => exact absurd h hne
     | inr h => exact h
   · -- j * k ≤ n
     have hdecomp := multiset_sum_decompose p.parts k
-    rw [p.parts_sum] at hdecomp
+    rw [p.parts_sum, ← hj_def, ← hrem_def] at hdecomp
+    have := Nat.mul_comm k j
     omega
 
-/-- The count of partitions with parts from (insert k S) decomposes by
-    k-multiplicity. This is the key combinatorial decomposition.
+/-- A multiset decomposes as its non-k elements plus replicated k elements. -/
+private theorem multiset_eq_filter_add_replicate (m : Multiset ℕ) (k : ℕ) :
+    m = m.filter (· ≠ k) + Multiset.replicate (m.count k) k := by
+  ext a
+  simp only [Multiset.count_add, Multiset.count_filter, Multiset.count_replicate]
+  by_cases h : a = k
+  · subst h; simp
+  · simp [h, Ne.symm h]
 
-    We state this as an axiom because the full bijection proof requires
-    constructing Nat.Partition values from filtered multisets, which
-    involves complex definitional equalities. The mathematical content
-    is clear: each partition p from (insert k S) has a unique decomposition
-    into j copies of k and a partition from S of (n - j*k). -/
-axiom partitionsFrom_insert_card {S : Finset ℕ} {k : ℕ} (hk : k ∉ S) (hkpos : 0 < k) (n : ℕ) :
+/-- The count of partitions with parts from (insert k S) decomposes by
+    k-multiplicity. Each partition has a unique decomposition into j copies
+    of k and a partition from S of (n - j*k). -/
+theorem partitionsFrom_insert_card {S : Finset ℕ} {k : ℕ} (hk : k ∉ S) (hkpos : 0 < k) (n : ℕ) :
     (partitionsFrom (insert k S) n).card =
-    (Finset.range (n / k + 1)).sum (fun j => (partitionsFrom S (n - j * k)).card)
+    (Finset.range (n / k + 1)).sum (fun j => (partitionsFrom S (n - j * k)).card) := by
+  -- Decompose by k-multiplicity using fiberwise summation
+  have h_fib := Finset.card_eq_sum_card_fiberwise
+    (s := partitionsFrom (insert k S) n)
+    (f := fun (p : Nat.Partition n) => p.parts.count k)
+    (t := Finset.range (n / k + 1))
+    (fun p _ => by
+      simp only [Finset.mem_coe, Finset.mem_range]
+      have hd := multiset_sum_decompose p.parts k
+      rw [p.parts_sum] at hd
+      have := Nat.mul_comm k (p.parts.count k)
+      exact Nat.lt_succ_of_le (Nat.le_div_iff_mul_le hkpos |>.mpr (by omega)))
+  rw [h_fib]
+  apply Finset.sum_congr rfl
+  intro j hj
+  have hjk : j * k ≤ n := by
+    rw [Finset.mem_range] at hj
+    exact le_trans (Nat.mul_le_mul_right k (by omega)) (Nat.div_mul_le_self n k)
+  -- Bijection between the j-fiber and partitionsFrom S (n - j * k)
+  apply Finset.card_bij
+    -- Forward map: remove all copies of k
+    (fun p hp => by
+      have hmem := (Finset.mem_filter.mp hp).1
+      have hcount' : p.parts.count k = j := by simpa using (Finset.mem_filter.mp hp).2
+      have facts := partitionsFrom_remove_k hk hkpos p hmem
+      have hsum : (p.parts.filter (· ≠ k)).sum = n - j * k := by
+        have := facts.1; rw [hcount'] at this; exact this
+      exact { parts := p.parts.filter (· ≠ k),
+              parts_sum := hsum,
+              parts_pos := fun h => facts.2.1 _ h })
+  -- Forward map lands in partitionsFrom S (n - j * k)
+  · intro p hp
+    simp only [partitionsFrom, Finset.mem_filter, Finset.mem_univ, true_and]
+    exact (partitionsFrom_remove_k hk hkpos p (Finset.mem_filter.mp hp).1).2.2.1
+  -- Injectivity: same filter(≠k) parts + same count k ⟹ same partition
+  · intro p₁ hp₁ p₂ hp₂ heq
+    have hc₁ : p₁.parts.count k = j := by simpa using (Finset.mem_filter.mp hp₁).2
+    have hc₂ : p₂.parts.count k = j := by simpa using (Finset.mem_filter.mp hp₂).2
+    have heq_filter : p₁.parts.filter (· ≠ k) = p₂.parts.filter (· ≠ k) :=
+      congrArg Nat.Partition.parts heq
+    exact Nat.Partition.ext (by
+      calc p₁.parts
+          = p₁.parts.filter (· ≠ k) + Multiset.replicate (p₁.parts.count k) k :=
+            multiset_eq_filter_add_replicate p₁.parts k
+        _ = p₂.parts.filter (· ≠ k) + Multiset.replicate (p₂.parts.count k) k := by
+            rw [heq_filter, hc₁, hc₂]
+        _ = p₂.parts := (multiset_eq_filter_add_replicate p₂.parts k).symm)
+  -- Surjectivity: given q from S of (n - j*k), add j copies of k
+  · intro q hq
+    have hq_parts : ∀ a ∈ q.parts, a ∈ S := by
+      simp only [partitionsFrom, Finset.mem_filter, Finset.mem_univ, true_and] at hq; exact hq
+    have hcount_zero : q.parts.count k = 0 :=
+      Multiset.count_eq_zero.mpr (fun h => hk (hq_parts k h))
+    -- Construct p = q.parts + replicate j k
+    have p_sum : (q.parts + Multiset.replicate j k).sum = n := by
+      rw [Multiset.sum_add, q.parts_sum, Multiset.sum_replicate, smul_eq_mul]; omega
+    -- The partition p
+    let p_mk : Nat.Partition n :=
+      { parts := q.parts + Multiset.replicate j k
+        parts_sum := p_sum
+        parts_pos := fun hi => by
+          rw [Multiset.mem_add] at hi
+          rcases hi with h | h
+          · exact q.parts_pos h
+          · exact (Multiset.mem_replicate.mp h).2 ▸ hkpos }
+    refine ⟨p_mk, ?_, ?_⟩
+    -- p is in the fiber
+    · rw [Finset.mem_filter]
+      refine ⟨?_, ?_⟩
+      · simp only [partitionsFrom, Finset.mem_filter, Finset.mem_univ, true_and, p_mk]
+        intro a ha
+        rw [Multiset.mem_add] at ha
+        rcases ha with h | h
+        · exact Finset.mem_insert_of_mem (hq_parts a h)
+        · exact (Multiset.mem_replicate.mp h).2 ▸ Finset.mem_insert_self k S
+      · -- count k = j
+        dsimp only [p_mk]
+        rw [Multiset.count_add, Multiset.count_replicate_self, hcount_zero, zero_add]
+    -- forward(p) = q: filter(≠k)(q.parts + replicate j k) = q.parts
+    · apply Nat.Partition.ext
+      dsimp only [p_mk]
+      rw [Multiset.filter_add]
+      have h1 : (Multiset.replicate j k).filter (· ≠ k) = 0 := by
+        ext a
+        simp only [Multiset.count_filter, Multiset.count_replicate, Multiset.count_zero]
+        by_cases h : a = k
+        · simp [h]
+        · simp [h, Ne.symm h]
+      have h2 : q.parts.filter (· ≠ k) = q.parts := by
+        ext a
+        simp only [Multiset.count_filter]
+        by_cases h : a = k
+        · subst h; simp [hcount_zero]
+        · simp [h]
+      rw [h1, h2, Multiset.add_zero]
 
 /-- **Bridge Theorem (Parts with Repetition)**: The coefficient of X^n in
     partGF S equals the number of partitions of n with parts from S.
@@ -3359,30 +3461,34 @@ axiom partitionsFrom_insert_card {S : Finset ℕ} {k : ℕ} (hk : k ∉ S) (hkpo
     Proof by induction on S, using partGF_coeff_insert + partitionsFrom_insert_card. -/
 theorem partGF_coeff_eq_card (S : Finset ℕ) (hpos : ∀ s ∈ S, 0 < s) (n : ℕ) :
     PowerSeries.coeff (R := ℤ) n (partGF S) = ↑(partitionsFrom S n).card := by
+  revert n hpos
   induction S using Finset.induction with
   | empty =>
+    intro hpos n
     rw [partGF_coeff_empty]
     by_cases hn : n = 0
     · subst hn
       simp [partitionsFrom_zero]
-    · simp only [hn, if_neg]
+    · simp only [hn, ↓reduceIte]
       rw [Finset.card_eq_zero.mpr]
       · simp
-      · rw [Finset.eq_empty_iff_forall_not_mem]
+      · rw [Finset.eq_empty_iff_forall_notMem]
         intro p hp
         simp only [partitionsFrom, Finset.mem_filter, Finset.mem_univ, true_and] at hp
         have hne : p.parts ≠ 0 := by
           intro heq; have := p.parts_sum; rw [heq] at this; simp at this
           exact hn (by omega)
         obtain ⟨a, ha⟩ := Multiset.exists_mem_of_ne_zero hne
-        exact absurd (hp a ha) (Finset.not_mem_empty a)
+        exact absurd (hp a ha) (Finset.notMem_empty a)
   | @insert k S hk ih =>
+    intro hpos n
     have hkpos : 0 < k := hpos k (Finset.mem_insert_self k S)
     have hposS : ∀ s ∈ S, 0 < s := fun s hs => hpos s (Finset.mem_insert_of_mem hs)
     rw [partGF_coeff_insert hk hkpos]
     rw [partitionsFrom_insert_card hk hkpos]
-    congr 1
-    ext j
+    push_cast
+    apply Finset.sum_congr rfl
+    intro j _
     exact ih hposS (n - j * k)
 
 end
