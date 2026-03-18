@@ -387,9 +387,11 @@ check_cwd_exists() {
     return 0
 }
 
-# Liveness check: if claude produces 0 bytes of output after this many seconds,
-# assume it's hung on startup and kill it early (instead of waiting full CLAUDE_TIMEOUT).
-LIVENESS_TIMEOUT="${LIVENESS_TIMEOUT:-300}"  # 5 minutes (large CLAUDE.md + prompts need time)
+# Liveness check: verify claude establishes an API connection within this timeout.
+# NOTE: claude -p buffers ALL stdout until the session completes — tool-heavy prompts
+# produce 0 bytes of stdout for the entire run. We cannot use file size as a signal.
+# Instead, check for ESTABLISHED TCP connections (sign of API communication).
+LIVENESS_TIMEOUT="${LIVENESS_TIMEOUT:-120}"  # 2 minutes to establish API connection
 
 # Run Claude once and return exit code
 run_claude_once() {
@@ -409,34 +411,45 @@ run_claude_once() {
 
     # Run in background so we can monitor for startup hangs
     timeout --kill-after=30 "$CLAUDE_TIMEOUT" claude -p --dangerously-skip-permissions "$PROMPT" < /dev/null > "$tmpfile" 2>&1 &
-    local claude_pid=$!
+    local timeout_pid=$!
 
-    # Liveness monitor: wait up to LIVENESS_TIMEOUT for first output byte.
-    local waited=0
-    while [[ $waited -lt $LIVENESS_TIMEOUT ]]; do
-        if ! kill -0 "$claude_pid" 2>/dev/null; then break; fi
-        local file_size
-        file_size=$(stat -f%z "$tmpfile" 2>/dev/null || stat -c%s "$tmpfile" 2>/dev/null || echo "0")
-        if [[ "$file_size" -gt 0 ]]; then break; fi
-        sleep 5
-        waited=$((waited + 5))
-    done
+    # Find the actual claude child process (timeout -> claude)
+    sleep 2
+    local claude_pid=""
+    claude_pid=$(pgrep -P "$timeout_pid" 2>/dev/null | head -1)
 
-    # If process is still running but produced no output, it's hung
-    if kill -0 "$claude_pid" 2>/dev/null; then
-        local file_size
-        file_size=$(stat -f%z "$tmpfile" 2>/dev/null || stat -c%s "$tmpfile" 2>/dev/null || echo "0")
-        if [[ "$file_size" -eq 0 && $waited -ge $LIVENESS_TIMEOUT ]]; then
-            log_warn "Liveness check failed: 0 bytes output after ${LIVENESS_TIMEOUT}s — killing hung process (PID $claude_pid)"
-            kill "$claude_pid" 2>/dev/null; sleep 2; kill -9 "$claude_pid" 2>/dev/null
-            wait "$claude_pid" 2>/dev/null
+    # Liveness monitor: wait for claude to establish an API connection.
+    # A healthy claude connects within seconds. A hung one never connects.
+    if [[ -n "$claude_pid" ]]; then
+        local waited=0
+        local connected=false
+        while [[ $waited -lt $LIVENESS_TIMEOUT ]]; do
+            if ! kill -0 "$timeout_pid" 2>/dev/null; then break; fi
+            # Check for any ESTABLISHED TCP connection (API communication)
+            if lsof -Pan -p "$claude_pid" -i 2>/dev/null | grep -q ESTABLISHED; then
+                connected=true
+                break
+            fi
+            sleep 5
+            waited=$((waited + 5))
+        done
+
+        if [[ "$connected" == "false" ]] && kill -0 "$timeout_pid" 2>/dev/null; then
+            log_warn "Liveness check failed: no API connection after ${LIVENESS_TIMEOUT}s — killing hung process (PID $claude_pid)"
+            kill "$timeout_pid" 2>/dev/null; sleep 2; kill -9 "$timeout_pid" 2>/dev/null
+            wait "$timeout_pid" 2>/dev/null
             rm -f "$tmpfile"
-            LAST_OUTPUT="Liveness check failed: no output after ${LIVENESS_TIMEOUT}s"
+            LAST_OUTPUT="Liveness check failed: no API connection after ${LIVENESS_TIMEOUT}s"
             return 1
+        fi
+
+        if [[ "$connected" == "true" ]]; then
+            log_info "Claude connected to API (${waited}s)"
         fi
     fi
 
-    wait "$claude_pid" 2>/dev/null
+    # Wait for claude to finish (either naturally or via timeout)
+    wait "$timeout_pid" 2>/dev/null
     exit_code=$?
 
     if [[ -n "$LOG_FILE" ]]; then cat "$tmpfile" >> "$LOG_FILE"; fi
