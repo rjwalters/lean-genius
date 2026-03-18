@@ -1,7 +1,7 @@
 {
   "slug": "hodge-conjecture",
   "title": "Hodge Conjecture",
-  "phase": "OBSERVE",
+  "phase": "ORIENT",
   "status": "blocked",
   "tier": "S",
   "path": "full",
@@ -411,7 +411,9 @@
     "topology",
     "open-conjecture"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "hodge-conjecture"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -420,5 +422,18 @@
   "started": "2026-01-01T21:55:27.887Z",
   "lastUpdate": "2026-03-18T07:40:00Z",
   "significance": 10,
-  "tractability": 1
+  "tractability": 1,
+  "leanFiles": [
+    {
+      "path": "Proofs/HodgeConjecture.lean",
+      "filename": "HodgeConjecture.lean",
+      "lineCount": 8065,
+      "theoremCount": 288,
+      "axiomCount": 119,
+      "defCount": 63,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HodgeConjecture.lean"
+    }
+  ]
 }
