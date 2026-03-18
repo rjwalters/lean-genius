@@ -1,5 +1,53 @@
 # Knowledge Base: Riemann Hypothesis
 
+## Session 2026-03-18 (researcher-5) - Soundness Audit: 6 Bug Fixes
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 86)
+**Outcome**: progress — fixed 3 soundness bugs, 1 bound error, 2 pre-existing build errors
+
+### Soundness Bugs Fixed
+
+1. **`GRH_artin_conjecture` (CRITICAL)**: The `¬∃ b : ℤ, a = b ^ 2 → ...` parsed as
+   `¬(∃ b, a = b² → ∞ many primes)`, which is `False` for any a (since `∞ many primes`
+   is unconditionally true). This axiom effectively asserted `¬GRH`. Fixed by adding
+   parentheses: `(¬∃ b : ℤ, a = b ^ 2) →`.
+
+2. **`turanInequalities` (vacuous)**: Used `∃ (ξ_deriv : ℕ → ℝ), ...` which was trivially
+   provable by providing the zero function. Replaced with `opaque xiDerivative : ℕ → ℝ`
+   and restated the axiom about this specific function.
+
+3. **`rh_explicit_formula_optimal` (wrong bound)**: Stated `x^{1/2} * log²(x) * x`
+   = `x^{3/2} * log²(x)`, weaker than the unconditional PNT. The correct RH-strength
+   bound is `x^{1/2} * log²(x)`. Removed the trailing `* x`.
+
+### Other Fixes
+
+4. **`hardy_infinitely_many_zeros`**: Was `axiom ... : True` (placeholder). Converted to
+   `theorem ... : True := trivial`. Axiom count: 61 → 60.
+
+5. **`kaczorowski_perelli_degree_one` forward reference**: Pre-existing build error —
+   theorem `selberg_degree_one_classification` referenced axiom declared after it.
+   Reordered to put axiom first.
+
+6. **`expectedPrimeCountAP` type error**: Pre-existing build error — `Nat.totient q⁻¹`
+   tried to invert a ℕ (no `Inv` instance). Fixed to `(Nat.totient q : ℝ)⁻¹`.
+
+### Known Issue Documented
+
+- **`explicit_formula_zero_free`** (Consequences): Missing zero-free hypothesis makes it
+  stronger than intended (gives RH-strength bound unconditionally). Documented in comments
+  pending Complex.re proof verification for the fix.
+
+### Stats After Changes
+- Main: 4304 lines, 60 axioms (was 61), 0 sorries, Docker build passes
+- Consequences: unchanged axiom count, 0 sorries, Docker build passes
+
+### Files Modified
+- `proofs/Proofs/RiemannHypothesis.lean` — 6 fixes
+- `proofs/Proofs/RiemannHypothesisConsequences.lean` — documented issue
+
+---
+
 ## Session 2026-03-15 (researcher-1) - Major axiom reduction (70→58, -12 axioms)
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 64)

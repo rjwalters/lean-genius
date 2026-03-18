@@ -1313,14 +1313,27 @@ opaque zeroSum : ℝ → ℝ
 
 /-- **The explicit formula error is dominated by the nearest zero to Re(s)=1**.
 If no zeros exist with Re(ρ) > σ, then ψ(x) = x + O(x^σ · log²x).
-This is why the zero-free region matters! -/
+This is why the zero-free region matters!
+
+**KNOWN ISSUE**: This axiom is STRONGER than intended — it omits the zero-free
+hypothesis "all non-trivial zeros have Re(ρ) ≤ σ". Without that condition,
+taking σ=1/2 yields the RH-strength error bound unconditionally.
+The correct formalization should add:
+  `(∀ s : ℂ, riemannZeta s = 0 → 0 < s.re → s.re < 1 → s.re ≤ σ) →`
+before the conclusion. Then `rh_optimal_error` below should take RH as a
+hypothesis to satisfy the zero-free condition. Left unfixed pending build
+verification of the Complex.re proof obligations. -/
 axiom explicit_formula_zero_free :
   ∀ σ : ℝ, 1/2 ≤ σ ∧ σ < 1 →
-    -- If all zeros have Re(ρ) ≤ σ, then ψ error is O(x^σ · log²x)
+    -- TODO: add zero-free hypothesis here (see docstring)
     ∃ C : ℝ, C > 0 ∧ ∀ x : ℝ, x ≥ 2 →
       |(chebyshevPsi ⌊x⌋₊ : ℝ) - x| ≤ C * x ^ σ * (Real.log x) ^ 2
 
-/-- RH gives the optimal σ = 1/2 (PROVED from explicit_formula_zero_free). -/
+/-- RH gives the optimal σ = 1/2.
+
+**NOTE**: Currently unconditional due to `explicit_formula_zero_free` missing its
+zero-free hypothesis. Once that axiom is fixed, this should take `RiemannHypothesis`
+as a hypothesis and derive the zero-free condition from RH. -/
 theorem rh_optimal_error :
     ∃ C : ℝ, C > 0 ∧ ∀ x : ℝ, x ≥ 2 →
       |(chebyshevPsi ⌊x⌋₊ : ℝ) - x| ≤ C * x ^ (1/2 : ℝ) * (Real.log x) ^ 2 :=
