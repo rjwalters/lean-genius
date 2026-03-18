@@ -68,7 +68,6 @@ export function ResearchCard({ problem }: ResearchCardProps) {
 
       {/* Stats */}
       <div className="flex items-center gap-4 text-xs text-muted-foreground mb-4">
-        <span>{problem.approachCount} approach{problem.approachCount !== 1 ? 'es' : ''}</span>
         <span>{problem.attemptCount} attempt{problem.attemptCount !== 1 ? 's' : ''}</span>
         {problem.significance && (
           <span>Significance: {problem.significance}/10</span>

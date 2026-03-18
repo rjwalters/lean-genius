@@ -46,3 +46,9 @@ of constructible numbers:
 - Part 13: Extended tool hierarchy (5 levels)
 - Part 14: Regular polygon neusis-constructibility classification
 - All additions proved without axioms or sorries
+
+## Approaches Explored
+
+### Algebraic degree characterization
+**Status**: succeeded
+Model each tool via the set of degrees of minimal polynomials it can construct. Prove containment/equality/strict-containment between these degree sets.

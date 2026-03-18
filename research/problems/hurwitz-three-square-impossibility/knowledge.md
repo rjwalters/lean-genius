@@ -208,3 +208,9 @@ To complete the proof, we need to:
 3. Fill the Parseval identity sorry
 4. Integrate helper lemmas into HurwitzTheorem.lean
 5. Complete the proof and remove the axiom
+
+## Approaches Explored
+
+### Diagonal Constraint
+**Status**: active
+**Strategy**: The key insight is that the existing proof is missing one crucial constraint - the "diagonal constraint" that comes from `|mul(e₁+e₂, e₁+e₂)|² = 4`.

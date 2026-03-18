@@ -101,3 +101,8 @@ For variants, change:
 - ∛3 is irrational (direct application)
 - Replace axiom `cbrt_two_irrational` in GelfondSchneider.lean
 - Create helper theorem `irrational_nrt_of_not_perfect_power`
+
+## Approaches Explored
+
+### Hypothesis: Not-Integer Approach (via irrational_nrt_of_notint_nrt)
+**Status**: active

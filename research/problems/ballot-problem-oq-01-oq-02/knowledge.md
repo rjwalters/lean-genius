@@ -71,3 +71,9 @@ Lindström-Gessel-Viennot determinantal formula). This is stated but not proved.
 - Added 2 axioms (fiber counting, measure transfer)
 - Main theorem proved: `rw [uniformOn_fiber_transfer]; exact Ballot.ballot_problem`
 - Added MeasurableSpace instances for uniformOn compatibility
+
+## Approaches Explored
+
+### Projection-fiber reduction
+**Status**: succeeded
+Project multi-candidate → ±1, prove fiber uniformity, invoke ballot_problem

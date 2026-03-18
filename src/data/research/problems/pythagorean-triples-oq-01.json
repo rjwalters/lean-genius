@@ -1,7 +1,7 @@
 {
   "slug": "pythagorean-triples-oq-01",
   "title": "Density of primitive Pythagorean triples with hypotenuse ≤ N ~ N/(2π)",
-  "phase": "DEEP_DIVE",
+  "phase": "ORIENT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -182,23 +182,6 @@
       "Consider creating an Aristotle companion file for any routine lemmas extracted from the analysis."
     ]
   },
-  "approaches": [
-    {
-      "name": "Density decomposition via telescoping",
-      "status": "succeeded",
-      "description": "Decompose count/N into (count/coprime) × (coprime/sector) × (sector/N) and prove each factor converges. Main theorems proved from 3 axioms."
-    },
-    {
-      "name": "Parity partition infrastructure",
-      "status": "succeeded",
-      "description": "Define bothOddCoprimeCount, prove exact partition identity, reduce parity axiom to 1/3 density statement, prove OE=OO bijection in triangle."
-    },
-    {
-      "name": "Parity equidistribution via boundary analysis",
-      "status": "planned",
-      "description": "Extend triangle OE=OO bijection to circle sector by bounding boundary discrepancy as O(√N)/O(N) → 0."
-    }
-  ],
   "tags": [
     "seeker-selected",
     "number-theory",
@@ -207,7 +190,8 @@
     "pythagorean-triples"
   ],
   "relatedProofs": [
-    "pythagorean-triples"
+    "pythagorean-triples",
+    "pythagorean-triples-oq-01"
   ],
   "references": {
     "papers": [],
@@ -220,5 +204,40 @@
   "started": "2026-03-12T05:34:54.574Z",
   "lastUpdate": "2026-03-15T13:30:00.000Z",
   "significance": 7,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/PythagoreanTriples.lean",
+      "filename": "PythagoreanTriples.lean",
+      "lineCount": 269,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTriples.lean"
+    },
+    {
+      "path": "Proofs/PythagoreanTriplesOQ01.lean",
+      "filename": "PythagoreanTriplesOQ01.lean",
+      "lineCount": 2486,
+      "theoremCount": 117,
+      "axiomCount": 7,
+      "defCount": 39,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTriplesOQ01.lean"
+    },
+    {
+      "path": "Proofs/PythagoreanTriplesOQ01Aristotle.lean",
+      "filename": "PythagoreanTriplesOQ01Aristotle.lean",
+      "lineCount": 168,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTriplesOQ01Aristotle.lean"
+    }
+  ]
 }
