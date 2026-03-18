@@ -2,6 +2,26 @@
 
 Lean Genius is a formal mathematics project that formalizes mathematical theorems and problems (including Erdős problems) in Lean 4 and presents them in an interactive web gallery.
 
+## Making Code Changes
+
+**Always work in a branch and worktree when editing code.** Direct pushes to main are blocked by branch protection. Multiple agents run concurrently and can overwrite uncommitted changes on main.
+
+```bash
+# Create a worktree for your changes
+git worktree add .claude/worktrees/my-fix -b fix/my-fix main
+cd .claude/worktrees/my-fix
+
+# Make changes, commit, push, create PR
+git add ... && git commit -m "..." && git push -u origin fix/my-fix
+gh pr create --title "..." --body "..."
+
+# Return to main when done
+cd /Users/rwalters/GitHub/lean-genius
+git worktree remove .claude/worktrees/my-fix
+```
+
+Or use the Claude Code `isolation: "worktree"` agent option for automatic worktree management.
+
 ## Two Orchestration Systems
 
 This project uses **two distinct AI agent orchestration systems** for different purposes:
