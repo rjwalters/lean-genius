@@ -19,7 +19,7 @@
     "phase": "ACT",
     "since": "2026-02-21T19:21:07.129Z",
     "iteration": 6,
-    "focus": "Proved cyclic_group_realizable (0 sorries). Removed duplicate code. Fixed Dirichlet API.",
+    "focus": "Mathlib API compatibility fixes",
     "blockers": [
       "Kronecker-Weber not in Mathlib",
       "Hilbert irreducibility not in Mathlib"
@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: cyclic_group_realizable fully proved (0 sorries). InverseGalois.lean Part XIV complete. Only 2 intentional sorries remain (open conjecture + Hilbert irreducibility).",
+    "progressSummary": "PROGRESS: Fixed 6 Mathlib API breakages in InverseGalois.lean. Forward reference, dead code, associated_of_dvd, classical, field_simp, permCongr. 1066 lines, 2 intentional sorries, 0 axioms.",
     "builtItems": [
       "InverseGalois.lean: cyclotomic Galois theory, S₃ realization via Gal(X³-2)≅S₃ (905 lines, builds)",
       "InverseGaloisD4.lean: D₄ realization via |Gal(X⁴-2)| = 8 (666 lines, builds)",
@@ -45,7 +45,13 @@
       "Rewrote cyclotomic5_root_is_power: factorization approach via linear_combination (was broken root-counting with deprecated Mathlib API)",
       "Fixed zeta_sq_ne_one, zeta_cube_ne_one, zeta_fourth_ne_one: replaced nlinarith with explicit algebraic proofs",
       "cyclic_group_realizable: every finite cyclic group C_n realizable as Galois group over ℚ (FULLY PROVED, 0 sorries)",
-      "exists_prime_dvd_pred: Dirichlet theorem application (fixed for new Mathlib API)"
+      "exists_prime_dvd_pred: Dirichlet theorem application (fixed for new Mathlib API)",
+      "Fixed s3_realizable forward reference bug (moved after Part XII)",
+      "Removed 5 dead AdjoinRoot theorems (66 lines)",
+      "Rewrote no_root_of_irreducible_degree_ndvd with isUnit_or_isUnit approach",
+      "Added classical to gal_card_dvd_six and x_cube_sub_2_gal_iso_s3_proved",
+      "Simplified cube_root_ratio_satisfies_cyclotomic via field_simp",
+      "Fixed permCongr Equiv→MulEquiv in x_cube_sub_2_gal_iso_s3_proved"
     ],
     "insights": [
       "Cyclotomic irreducibility over ℚ IS in Mathlib: Polynomial.cyclotomic.irreducible_rat",
@@ -60,7 +66,10 @@
       "InverseGaloisF20.lean build errors were fixed (previously reported as broken, now builds cleanly with 0 sorries)",
       "IsGalois.of_fixedField_normal_subgroup: instance giving IsGalois for fixedField of normal subgroup",
       "IsGalois.normalAutEquivQuotient: Gal(fixedField H/K) ≃* Gal(L/K) ⧸ H — maps FROM quotient TO fixedField Galois group",
-      "Nat.forall_exists_prime_gt_and_modEq API changed: now takes (n : ℕ) {q a : ℕ} (hq : q ≠ 0) (h : a.Coprime q)"
+      "Nat.forall_exists_prime_gt_and_modEq API changed: now takes (n : ℕ) {q a : ℕ} (hq : q ≠ 0) (h : a.Coprime q)",
+      "PR #3974 was closed as superseded but its changes were NOT present on main - always verify closures",
+      "AdjoinRoot approach (cofactor_has_no_root) is dead code when splitting field approach is used",
+      "classical is more robust than haveI : DecidableEq for Perm/Fintype synthesis"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -90,7 +99,7 @@
     "mathlib": []
   },
   "started": "2026-02-21T19:21:07.129Z",
-  "lastUpdate": "2026-03-18T05:00:00.000Z",
+  "lastUpdate": "2026-03-18T23:00:00Z",
   "significance": 6,
   "tractability": 6
 }
