@@ -37,6 +37,10 @@ q-binomial coefficients arise naturally in:
 - [x] Penultimate entry: [n+1 choose n]_q = [n+1]_q
 - [x] Row absorption: [n,k]_q · [n-k]_q = [n,k+1]_q · [k+1]_q
 - [x] SYMMETRY: [n,k]_q = [n,n-k]_q
+- [x] Second q-Pascal: [n+1,k+1]_q = q^{n-k}·[n,k]_q + [n,k+1]_q
+- [x] Column sum (q-hockey stick): ∑ q^{(k+1)(n-i)}·[i,k]_q = [n+1,k+1]_q
+- [x] Classical hockey stick at q=1: ∑ C(i,k) = C(n+1,k+1)
+- [x] Specialization at q=0: [n,k]_0 = 1 for k ≤ n
 
 ## Mathlib Dependencies
 - `Mathlib.Data.Nat.Choose.Basic` : Ordinary binomial coefficients and Pascal's identity
@@ -478,7 +482,106 @@ theorem qBinom_symm (q : R) : ∀ (n k : ℕ), k ≤ n →
       linear_combination qBinom q n k * g1 - qBinom q n (k + 1) * g2 - (q - 1) * ra
 
 -- ============================================================
--- Part X: Symmetry Verifications
+-- Part X: Second q-Pascal Recurrence
+-- ============================================================
+
+/-- **Second q-Pascal Identity**:
+    [n+1 choose k+1]_q = q^{n-k} · [n choose k]_q + [n choose k+1]_q.
+
+    While the first q-Pascal identity weights the upper term by q^{k+1},
+    this form weights the lower term by q^{n-k}. The two forms reflect
+    the two ways of decomposing a subspace counting problem.
+
+    Proof: Apply symmetry to reduce to the first Pascal identity. -/
+theorem qBinom_pascal' (q : R) (n k : ℕ) (hk : k + 1 ≤ n + 1) :
+    qBinom q (n + 1) (k + 1) = q ^ (n - k) * qBinom q n k + qBinom q n (k + 1) := by
+  -- Use symmetry: [n+1,k+1] = [n+1,n-k]
+  rw [qBinom_symm q (n + 1) (k + 1) hk, show n + 1 - (k + 1) = n - k from by omega]
+  -- Apply first Pascal to [n+1,n-k]:
+  -- Need n-k = (n-k-1)+1 or n-k = 0
+  rcases Nat.eq_or_lt_of_le (show k ≤ n from by omega) with rfl | hlt
+  · -- k = n: [n+1,0] = 1 = q^0 · [n,n] + [n,n+1] = 1 + 0
+    simp [qBinom_eq_zero_of_lt q n (n + 1) (by omega)]
+  · -- k < n: n-k ≥ 1, so write n-k = (n-k-1)+1
+    conv_lhs => rw [show (n - k : ℕ) = (n - k - 1) + 1 from by omega]
+    rw [qBinom_pascal, show n - k - 1 + 1 = n - k from by omega]
+    -- [n,n-k-1] = [n,k+1] by symmetry
+    rw [qBinom_symm q n (n - k - 1) (by omega), show n - (n - k - 1) = k + 1 from by omega]
+    -- [n,n-k] = [n,k] by symmetry
+    rw [qBinom_symm q n (n - k) (by omega), show n - (n - k) = k from by omega]
+    ring
+
+-- ============================================================
+-- Part XI: Column Sum Identity (q-Hockey Stick)
+-- ============================================================
+
+/-- **q-Column Sum Identity** (q-Hockey Stick):
+    ∑_{i=0}^{n} q^{(k+1)(n-i)} · [i choose k]_q = [n+1 choose k+1]_q.
+
+    This is the q-analog of the classical hockey stick identity
+    ∑_{i=k}^{n} C(i,k) = C(n+1, k+1). When q = 1, each term
+    q^{(k+1)(n-i)} becomes 1 and we recover the classical sum.
+
+    When q is a prime power, this counts (k+1)-dimensional subspaces
+    of F_q^{n+1} by the position of a distinguished basis vector.
+
+    The proof uses induction on n, splitting off the last term and
+    factoring q^{k+1} from the remaining sum to apply the IH,
+    then closing with the q-Pascal recurrence. -/
+theorem qBinom_column_sum (q : R) (k : ℕ) : ∀ n : ℕ,
+    ∑ i ∈ Finset.range (n + 1),
+      q ^ ((k + 1) * (n - i)) * qBinom q i k = qBinom q (n + 1) (k + 1)
+  | 0 => by
+    simp only [Finset.sum_range_one, Nat.sub_zero, Nat.mul_zero, pow_zero, one_mul]
+    cases k with
+    | zero => simp [qBinom]
+    | succ k => simp [qBinom]
+  | n + 1 => by
+    -- Split off the last term (i = n+1)
+    rw [Finset.sum_range_succ]
+    simp only [Nat.sub_self, Nat.mul_zero, pow_zero, one_mul]
+    -- Factor q^{k+1} from the remaining sum
+    have h_factor : ∀ i ∈ Finset.range (n + 1),
+        q ^ ((k + 1) * (n + 1 - i)) * qBinom q i k =
+        q ^ (k + 1) * (q ^ ((k + 1) * (n - i)) * qBinom q i k) := by
+      intro i hi
+      have hi' : i ≤ n := by
+        simp only [Finset.mem_range] at hi; omega
+      have h_exp : (k + 1) * (n + 1 - i) = (k + 1) * (n - i) + (k + 1) := by omega
+      rw [h_exp, pow_add]; ring
+    rw [Finset.sum_congr rfl h_factor, ← Finset.mul_sum]
+    -- Apply IH and Pascal
+    rw [qBinom_column_sum q k n, add_comm]
+    exact (qBinom_pascal q (n + 1) k).symm
+
+/-- **Classical Hockey Stick at q=1**: ∑_{i=0}^{n} C(i,k) = C(n+1, k+1).
+    Derived from the q-column sum identity by specializing at q = 1. -/
+theorem hockey_stick_at_one (k n : ℕ) :
+    ∑ i ∈ Finset.range (n + 1), Nat.choose i k = Nat.choose (n + 1) (k + 1) := by
+  have h := qBinom_column_sum (1 : ℤ) k n
+  simp only [one_pow, one_mul] at h
+  simp only [qBinom_at_one] at h
+  exact_mod_cast h
+
+-- ============================================================
+-- Part XII: Specialization at q = 0
+-- ============================================================
+
+/-- **Specialization at q = 0**: [n choose k]_0 = 1 when k ≤ n.
+
+    At q = 0, the q-Pascal recurrence becomes [n+1,k+1]_0 = [n,k]_0 + 0 = [n,k]_0
+    since 0^{k+1} = 0. By induction, every q-binomial with k ≤ n equals 1.
+    This reflects the fact that over F_1 (the "field with one element"),
+    there is exactly one k-dimensional subspace of any n-dimensional space. -/
+theorem qBinom_at_zero : ∀ (n k : ℕ), k ≤ n → qBinom (0 : R) n k = 1
+  | _, 0, _ => by simp
+  | 0, _ + 1, h => absurd h (by omega)
+  | n + 1, k + 1, h => by
+    rw [qBinom_pascal, qBinom_at_zero n k (by omega),
+        zero_pow (by omega : k + 1 ≠ 0), zero_mul, add_zero]
+
+-- ============================================================
+-- Part XII: Symmetry Verifications
 -- ============================================================
 
 section SymmetryVerifications
