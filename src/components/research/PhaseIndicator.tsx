@@ -40,8 +40,8 @@ export function PhaseIndicator({
   showLabel = true,
   className = ''
 }: PhaseIndicatorProps) {
-  const info = PHASE_INFO[phase]
-  const Icon = PHASE_ICONS[phase]
+  const info = PHASE_INFO[phase] ?? PHASE_INFO['NEW']
+  const Icon = PHASE_ICONS[phase] ?? PHASE_ICONS['NEW']
 
   const sizeClasses = {
     sm: 'px-2 py-0.5 text-xs',

@@ -1,7 +1,7 @@
 {
   "slug": "pythagorean-triples-oq-01",
   "title": "Density of primitive Pythagorean triples with hypotenuse ≤ N ~ N/(2π)",
-  "phase": "DEEP_DIVE",
+  "phase": "ORIENT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -207,7 +207,8 @@
     "pythagorean-triples"
   ],
   "relatedProofs": [
-    "pythagorean-triples"
+    "pythagorean-triples",
+    "pythagorean-triples-oq-01"
   ],
   "references": {
     "papers": [],
@@ -220,5 +221,40 @@
   "started": "2026-03-12T05:34:54.574Z",
   "lastUpdate": "2026-03-15T13:30:00.000Z",
   "significance": 7,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/PythagoreanTriples.lean",
+      "filename": "PythagoreanTriples.lean",
+      "lineCount": 269,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTriples.lean"
+    },
+    {
+      "path": "Proofs/PythagoreanTriplesOQ01.lean",
+      "filename": "PythagoreanTriplesOQ01.lean",
+      "lineCount": 2486,
+      "theoremCount": 117,
+      "axiomCount": 7,
+      "defCount": 39,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTriplesOQ01.lean"
+    },
+    {
+      "path": "Proofs/PythagoreanTriplesOQ01Aristotle.lean",
+      "filename": "PythagoreanTriplesOQ01Aristotle.lean",
+      "lineCount": 168,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTriplesOQ01Aristotle.lean"
+    }
+  ]
 }

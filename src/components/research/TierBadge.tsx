@@ -17,7 +17,7 @@ export function TierBadge({
   showLabel = true,
   className = ''
 }: TierBadgeProps) {
-  const info = TIER_INFO[tier]
+  const info = TIER_INFO[tier] ?? TIER_INFO['C']
 
   const sizeClasses = size === 'sm'
     ? 'h-5 w-5 text-[10px]'
