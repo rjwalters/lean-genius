@@ -156,3 +156,36 @@ correct approach for a Millennium Prize open conjecture.
 
 **No further work needed** unless Mathlib adds elliptic curve L-functions, at which point
 some axioms could be converted to theorems.
+
+### Assessment: 2026-03-18
+
+**Current Status**: COMPLETED - Quality improvement pass (True elimination)
+
+**Formalization**: `BirchSwinnertonDyer.lean` (6026 lines)
+- 59 axioms (was 48): 11 new axioms with real mathematical content replacing True placeholders
+- 0 sorries, 390 lines companion (unchanged)
+- 24 True→real conversions total
+
+**True Placeholder Elimination**:
+Converted 24 `theorem X : True := trivial` statements and structure fields to real content:
+
+*New axioms (11)*: Euler system rank bound (≤ 1), functional equation Λ(s)=w·Λ(2-s),
+Tunnell decidability, Sato-Tate equidistribution (trace takes both signs), AGM convergence,
+Rubin CM-BSD (algebraicRank = analyticRank for CM), Bhargava-Shankar (∃ rank 0 and rank 1),
+positive proportion rank-0 BSD, CM L-function factorization, Deuring supersingular primes
+
+*Proved theorems (8)*: BSD_is_hard/summary/rank_2_challenge/grand_summary/computational_status
+all proved via `bsdStatus` computation (`rfl`), bloch_kato_landscape pair
+
+*Structure fields (3)*: KolyvaginResult.sha_finite → 0 < shaOrder E,
+HeegnerPointData.heegner_hypothesis → Nat.Coprime D (conductor E),
+GrossZagierData.gross_zagier → nontorsion → analyticRank E = 1
+
+*Concrete definitions (2)*: modular_degree_11a and modular_degree_37a as
+ModularParametrization instances with actual numeric values
+
+**Remaining True (7 structure fields)**: MordellWeilGroup.finitely_generated,
+ModularForm.transform/holomorphic_at_cusps, CanonicalHeight.zero_iff_torsion,
+IwasawaData.kato_divisibility, IwasawaMainConjecture.kato/skinner_urban/main_conjecture.
+These require infrastructure (Module.Finite, modular transformation groups, Iwasawa algebras)
+that doesn't exist in the formalization.
