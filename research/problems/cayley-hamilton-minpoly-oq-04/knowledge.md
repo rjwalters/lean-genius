@@ -46,11 +46,27 @@ Three approaches exist:
    proper divisors d of minpoly
 All require substantial infrastructure not readily available in Mathlib.
 
+### Backward Direction via Union Avoidance (Session 2)
+Over infinite fields, the backward direction has a clean proof:
+1. Non-cyclic vectors lie in ker(g(M)) for proper divisors g of minpoly
+2. Each ker(g(M)) is proper (g(M) ≠ 0 since deg(g) < deg(minpoly))
+3. The monic divisors of minpoly form a finite set → finite union
+4. Over infinite K, V ≠ finite union of proper subspaces → cyclic vectors exist
+
+The union avoidance lemma is proved by Finset induction with a line argument:
+for v ∉ W_k and w ∉ W₁∪...∪W_{k-1}, the line {v+tw} meets each W_i in
+at most one point (if two points, w ∈ W_i by subtraction, contradiction).
+Since K is infinite and there are only finitely many bad t values, a good t exists.
+
+**Finite fields remain open**: the union avoidance argument fails (K is finite),
+and the backward direction requires the PID structure theorem or explicit counting.
+
 ---
 
 ## Dead Ends
 
-None — the annihilator approach worked on first attempt.
+None — the annihilator approach worked on first attempt for the forward direction.
+For the backward direction, the direct polynomial approach works for infinite fields.
 
 ---
 
@@ -66,3 +82,15 @@ None — the annihilator approach worked on first attempt.
   - `nonderogatory_iff_cyclic_vector` - full equivalence
   - `nonderogatory_iff_natDegree_eq` - degree characterization
   - `derogatory_iff_natDegree_lt` - derogatory characterization
+
+- `proofs/Proofs/CayleyHamiltonMinpolyOQ04Backward.lean` (6 sorries, 0 axioms)
+  - `not_union_proper_subspaces` - PROVED: union avoidance for infinite fields
+  - `aeval_ne_zero_of_ne_zero` - PROVED: nonzero poly → nonzero matrix
+  - `exists_mulVec_ne_zero` - PROVED: nonzero matrix has vector outside kernel
+  - `powers_linearIndependent` - framework proved, 3 helper sorries
+  - `isCyclicVector_of_linearIndependent` - 1 sorry
+  - `nonderogatory_has_cyclic_vector_infinite` - main theorem, 1 sorry (wiring)
+  - `nilpotent_krylov_independent` - 1 sorry
+
+- `proofs/Proofs/CayleyHamiltonMinpolyOQ04BackwardAristotle.lean`
+  - Aristotle companion file with 5 routine lemmas for automated proof search
