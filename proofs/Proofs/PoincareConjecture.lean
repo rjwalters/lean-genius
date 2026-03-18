@@ -4999,20 +4999,19 @@ noncomputable def circleDouble (z : ↥Sphere1) : ↥Sphere1 :=
 /-- The circle doubling map is continuous.
     Each coordinate of circleSquareE is a polynomial in the coordinates
     of x, hence continuous. The restriction to a subtype is then continuous. -/
+private theorem circleSquareE_continuous : Continuous circleSquareE := by
+  unfold circleSquareE
+  refine ((WithLp.equiv 2 (Fin 2 → ℝ)).symm.continuous).comp ?_
+  refine (continuous_pi fun i => ?_).comp (WithLp.equiv 2 (Fin 2 → ℝ)).continuous
+  fin_cases i <;> simp only [Function.comp, Fin.isValue]
+  · exact (continuous_id.pow 2 |>.comp (continuous_apply 0)).sub
+      (continuous_id.pow 2 |>.comp (continuous_apply 1))
+  · exact (continuous_const.mul (continuous_apply 0)).mul (continuous_apply 1)
+
 theorem circleDouble_continuous : Continuous circleDouble := by
   apply Continuous.subtype_mk
   show Continuous (fun z : ↥Sphere1 => circleSquareE z.val)
-  unfold circleSquareE
-  apply Continuous.comp (EuclideanSpace.equiv _ _).symm.continuous
-  apply continuous_pi
-  intro i
-  apply Continuous.comp _ (Continuous.comp (EuclideanSpace.equiv _ _).continuous continuous_subtype_val)
-  fin_cases i <;> simp only [Function.comp, Fin.isValue]
-  · -- coordinate 0: a² - b²
-    exact (continuous_id.pow 2 |>.comp (continuous_apply 0)).sub
-      (continuous_id.pow 2 |>.comp (continuous_apply 1))
-  · -- coordinate 1: 2 * a * b
-    exact (continuous_const.mul (continuous_apply 0)).mul (continuous_apply 1)
+  exact circleSquareE_continuous.comp continuous_subtype_val
 
 /-- The standard "north pole" (1, 0) on S¹. -/
 private def s1_north : ↥Sphere1 :=
@@ -5028,17 +5027,23 @@ private def s1_south : ↥Sphere1 :=
 /-- circleDouble maps both (1,0) and (-1,0) to (1,0). -/
 theorem circleDouble_north :
     circleDouble s1_north = s1_north := by
-  apply Subtype.ext; ext i
-  simp only [circleDouble, circleSquareE_coord0, circleSquareE_coord1,
-    s1_north, EuclideanSpace.single_apply]
-  fin_cases i <;> simp <;> norm_num
+  apply Subtype.ext; ext i; fin_cases i
+  · change circleSquareE s1_north.val 0 = s1_north.val 0
+    rw [circleSquareE_coord0]
+    simp [s1_north, EuclideanSpace.single_apply]
+  · change circleSquareE s1_north.val 1 = s1_north.val 1
+    rw [circleSquareE_coord1]
+    simp [s1_north, EuclideanSpace.single_apply]
 
 theorem circleDouble_south :
     circleDouble s1_south = s1_north := by
-  apply Subtype.ext; ext i
-  simp only [circleDouble, circleSquareE_coord0, circleSquareE_coord1,
-    s1_south, EuclideanSpace.single_apply]
-  fin_cases i <;> simp <;> norm_num
+  apply Subtype.ext; ext i; fin_cases i
+  · change circleSquareE s1_south.val 0 = s1_north.val 0
+    rw [circleSquareE_coord0]
+    simp [s1_south, s1_north, EuclideanSpace.single_apply]
+  · change circleSquareE s1_south.val 1 = s1_north.val 1
+    rw [circleSquareE_coord1]
+    simp [s1_south, s1_north, EuclideanSpace.single_apply]
 
 /-- The circle doubling map is NOT injective: (1,0) ≠ (-1,0) but both map to (1,0). -/
 theorem circleDouble_not_injective : ¬ Function.Injective circleDouble := by
@@ -6015,9 +6020,15 @@ instance sphere2_pathConnected : PathConnectedSpace ↥Sphere2 := by
   rw [← isPathConnected_iff_pathConnectedSpace]
   exact isPathConnected_sphere rank_R3 _ (by norm_num : (0 : ℝ) ≤ 1)
 
-instance S1S2_pathConnected : @PathConnectedSpace S1_cross_S2 instS1S2Top := by
-  change PathConnectedSpace (↥Sphere1 × ↥Sphere2)
-  infer_instance
+instance S1S2_pathConnected : @PathConnectedSpace S1_cross_S2 instS1S2Top where
+  nonempty := by
+    obtain ⟨a⟩ := sphere1_pathConnected.nonempty
+    obtain ⟨b⟩ := sphere2_pathConnected.nonempty
+    exact ⟨(a, b)⟩
+  joined := fun x y => by
+    obtain ⟨p1⟩ := sphere1_pathConnected.joined x.1 y.1
+    obtain ⟨p2⟩ := sphere2_pathConnected.joined x.2 y.2
+    exact ⟨p1.prod p2⟩
 
 /-- The swap homeomorphism: S¹ × S² ≃ₜ S² × S¹.
     This bridges between our S1_cross_S2 definition and the product

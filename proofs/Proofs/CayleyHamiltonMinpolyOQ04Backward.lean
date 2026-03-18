@@ -195,14 +195,20 @@ theorem powers_linearIndependent
     exact hc
   have hp_ne : p ≠ 0 := by
     intro hp0; apply h_ne
-    have h1 : p.coeff ↑i = 0 := by rw [hp0, coeff_zero]
-    -- p.coeff ↑i = c i since C(c i) * X^↑i contributes exactly c i
-    -- and other terms contribute 0 (different degree)
-    sorry
+    have h_coeff : p.coeff ↑i = c i := by
+      simp only [p, coeff_sum, coeff_C_mul]
+      rw [Finset.sum_eq_single i
+        (fun k _ hk => by simp [show (k : ℕ) ≠ (i : ℕ) from fun h => hk (Fin.ext h)])
+        (fun h => absurd hi h)]
+      simp
+    rw [hp0, coeff_zero] at h_coeff; exact h_coeff.symm
   have hp_deg : p.natDegree < n := by
-    -- All exponents ↑k < n for k : Fin n, and natDegree of
-    -- C a * X^k is ≤ k, so the sum has natDegree < n
-    sorry
+    have hn : 0 < n := by have := i.isLt; omega
+    apply (Polynomial.natDegree_sum_le s _).trans_lt
+    rw [Finset.sup_lt_iff (by omega : (0 : ℕ) < n)]
+    intro k _
+    rw [C_mul_X_pow_eq_monomial]
+    exact Polynomial.natDegree_monomial_le.trans_lt k.isLt
   exact absurd hp_eval (aeval_ne_zero_of_ne_zero hp_ne (by omega))
 
 -- ============================================================
@@ -220,7 +226,50 @@ theorem isCyclicVector_of_linearIndependent
   -- p(M)v = 0. Write p = ∑ aᵢ Xⁱ for i < n (since deg(p) < n).
   -- Then p(M)v = ∑ aᵢ Mⁱv = 0.
   -- By linear independence of {Mⁱv}, all aᵢ = 0, so p = 0.
-  sorry
+  by_contra hp_ne
+  -- Since p ≠ 0 and natDegree < n, ∃ d < n with p.coeff d ≠ 0
+  obtain ⟨d, hd_lt, hd_ne⟩ : ∃ d : ℕ, d < n ∧ p.coeff d ≠ 0 := by
+    by_contra h; push_neg at h
+    apply hp_ne; ext i; simp only [coeff_zero]
+    by_cases hi : i < n
+    · exact h i hi
+    · exact Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)
+  -- Rewrite (aeval M p).mulVec v as a sum of Krylov vectors
+  rw [linearIndependent_iff'] at hli
+  -- The sum ∑ k : Fin n, (p.coeff ↑k) • (M ^ ↑k).mulVec v = 0
+  have key : ∑ k : Fin n, (p.coeff ↑k) • (M ^ (↑k : ℕ)).mulVec v = 0 := by
+    -- Express aeval M p as a sum of matrix powers applied to v
+    -- Step 1: aeval M p = ∑ i ∈ range n, (p.coeff i) • M ^ i
+    have h_aeval_sum : aeval M p = ∑ i ∈ Finset.range n, (p.coeff i) • M ^ i := by
+      have hle : p.natDegree + 1 ≤ n := Nat.succ_le_of_lt hp
+      rw [aeval_def, eval₂_eq_sum_range]
+      simp only [Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]
+      apply Finset.sum_subset (Finset.range_mono hle)
+      intro i _ hi
+      rw [Finset.mem_range] at hi; push_neg at hi
+      rw [Polynomial.coeff_eq_zero_of_natDegree_lt (by omega), zero_smul]
+    -- Step 2: Reindex from range n to Fin n
+    have h_reindex : ∑ i ∈ Finset.range n, (p.coeff i) • M ^ i =
+        ∑ k : Fin n, (p.coeff ↑k) • M ^ (↑k : ℕ) := by
+      rw [← Fin.sum_univ_eq_sum_range]
+    -- Steps 3+4: (∑ cᵢ • Aᵢ) *ᵥ v = ∑ cᵢ • (Aᵢ *ᵥ v)
+    -- Proved by: scalar extraction + Finset induction for sum distribution
+    have h_dist : (∑ k : Fin n, (p.coeff ↑k) • M ^ (↑k : ℕ)) *ᵥ v =
+        ∑ k : Fin n, (p.coeff ↑k) • (M ^ (↑k : ℕ) *ᵥ v) := by
+      simp_rw [← Matrix.smul_mulVec]
+      -- Goal: (∑ k, c k • A k) *ᵥ v = ∑ k, (c k • A k) *ᵥ v
+      -- This is: sum of matrices applied to v = sum of each applied to v
+      have : ∀ (t : Finset (Fin n)) (f : Fin n → Matrix (Fin n) (Fin n) K),
+          (∑ i ∈ t, f i) *ᵥ v = ∑ i ∈ t, f i *ᵥ v := by
+        intro t f
+        induction t using Finset.induction_on with
+        | empty => simp [Matrix.zero_mulVec]
+        | @insert a s' has' ih =>
+          simp only [Finset.sum_insert has', Matrix.add_mulVec, ih]
+      exact this Finset.univ _
+    rw [← h_dist, ← h_reindex, ← h_aeval_sum]; exact hann
+  -- Apply linear independence to get p.coeff d = 0
+  exact hd_ne (hli Finset.univ (fun k => p.coeff ↑k) key ⟨d, hd_lt⟩ (Finset.mem_univ _))
 
 -- ============================================================
 -- PART V: Main Theorem
@@ -282,9 +331,59 @@ theorem nilpotent_krylov_independent
     (hnil : N ^ n = 0)
     (v : Fin n → K) (hv : (N ^ (n - 1)).mulVec v ≠ 0) :
     LinearIndependent K (fun k : Fin n => (N ^ (k : ℕ)).mulVec v) := by
-  -- Induction: apply N^{n-1-j} for j = 0, 1, ..., extracting c_j = 0
-  -- from the relation ∑_k c_k N^{k+n-1-j} v = 0 using nilpotency.
-  sorry
+  -- Apply N^{n-1-j} to the relation ∑ c_k N^k v = 0
+  -- For k > j: N^{k+n-1-j} = 0 (nilpotent since k+n-1-j ≥ n)
+  -- For k < j: c_k = 0 by earlier steps (ascending induction on j)
+  -- For k = j: c_j N^{n-1} v = 0, so c_j = 0 (since N^{n-1}v ≠ 0)
+  rw [linearIndependent_iff']
+  intro s c hc
+  -- Show c j = 0 for all j ∈ s, by strong induction on j.val
+  suffices ∀ (m : ℕ) (j : Fin n), j.val = m → j ∈ s → c j = 0 by
+    intro j hj; exact this j.val j rfl hj
+  intro m
+  induction m using Nat.strongRecOn with
+  | _ m ih =>
+    intro j hj_val hj_mem
+    -- Apply mulVecLin (N^{n-1-j}) to both sides of hc
+    -- This distributes through sums and scalars by linearity
+    have h_apply : ∑ k ∈ s, c k • ((N ^ (n - 1 - j.val + ↑k)) *ᵥ v) = 0 := by
+      have h1 := congr_arg (Matrix.mulVecLin (N ^ (n - 1 - j.val))) hc
+      simp only [map_zero, map_sum, map_smul, Matrix.mulVecLin_apply,
+        Matrix.mulVec_mulVec, ← pow_add] at h1
+      exact h1
+    -- Split the sum: for k > j, N^{n-1-j+k} has exponent ≥ n, so = 0
+    -- for k < j, c_k = 0 by induction
+    -- for k = j, exponent = n-1, contribution = c_j • N^{n-1} v
+    -- All terms except k = j vanish, giving c_j • N^{n-1} v = 0
+    have h_vanish : ∀ k ∈ s, k ≠ j → c k • (N ^ (n - 1 - j.val + k.val) *ᵥ v) = 0 := by
+      intro k hk hk_ne
+      by_cases hlt : k.val < j.val
+      · -- k < j: c_k = 0 by induction
+        have := ih k.val (by omega) k rfl hk
+        simp [this]
+      · -- k > j: exponent ≥ n, so N^exponent = 0
+        push_neg at hlt
+        have hk_gt : j.val < k.val :=
+          lt_of_le_of_ne hlt (fun h => hk_ne (Fin.ext h.symm))
+        have hexp : n ≤ n - 1 - j.val + k.val := by omega
+        have : N ^ (n - 1 - j.val + k.val) = 0 := by
+          rw [← Nat.sub_add_cancel hexp, pow_add]
+          simp [hnil]
+        simp [this]
+    -- Now simplify the sum: only k = j contributes
+    have h_single : ∑ k ∈ s, c k • (N ^ (n - 1 - j.val + k.val) *ᵥ v) =
+        c j • (N ^ (n - 1) *ᵥ v) := by
+      rw [← Finset.add_sum_erase s _ hj_mem]
+      simp only [show n - 1 - j.val + j.val = n - 1 by omega]
+      have h_rest : ∑ k ∈ s.erase j, c k • (N ^ (n - 1 - j.val + k.val) *ᵥ v) = 0 :=
+        Finset.sum_eq_zero fun k hk =>
+          h_vanish k (Finset.mem_of_mem_erase hk) (Finset.ne_of_mem_erase hk)
+      rw [h_rest, add_zero]
+    rw [h_single] at h_apply
+    -- c_j • N^{n-1} v = 0 with N^{n-1} v ≠ 0 implies c_j = 0
+    rcases smul_eq_zero.mp h_apply with h | h
+    · exact h
+    · exact absurd h hv
 
 -- ============================================================
 -- Summary
