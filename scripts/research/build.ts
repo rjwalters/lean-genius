@@ -2,9 +2,14 @@
 /**
  * Research Data Build Script
  *
- * Processes research/ directory markdown files into JSON for the website:
- * 1. research-listings.json - lightweight gallery data
+ * Builds research data for the website:
+ * 1. research-listings.json - lightweight gallery index (always rebuilt)
  * 2. Individual problem JSON files for detail pages
+ *
+ * Strategy: Committed JSON files in src/data/research/problems/ are the
+ * source of truth. The build preserves them as-is (updating only registry
+ * metadata like phase/status/dates). Markdown-to-JSON generation is used
+ * only as a fallback for NEW problems that don't yet have a JSON file.
  *
  * Run: npx tsx scripts/research/build.ts
  */
@@ -599,7 +604,7 @@ function generateListing(problem: ResearchProblem): ResearchListing {
   return {
     slug: problem.slug,
     title: problem.title,
-    description: problem.problemStatement.plain || problem.title,
+    description: problem.problemStatement?.plain || problem.title,
     phase: problem.phase,
     status: problem.status,
     tier: problem.tier,
@@ -608,8 +613,8 @@ function generateListing(problem: ResearchProblem): ResearchListing {
     started: problem.started,
     lastUpdate: problem.lastUpdate,
     completed: problem.completed,
-    attemptCount: problem.currentState.attemptCounts.total,
-    approachCount: problem.approaches.length,
+    attemptCount: problem.currentState?.attemptCounts?.total ?? 0,
+    approachCount: problem.approaches?.length ?? 0,
     linkedProof: problem.linkedProof,
     significance: problem.significance,
     tractability: problem.tractability
@@ -617,10 +622,44 @@ function generateListing(problem: ResearchProblem): ResearchListing {
 }
 
 /**
+ * Load an existing committed JSON file for a problem.
+ * Returns the parsed ResearchProblem if the file exists, null otherwise.
+ */
+function loadExistingProblemJson(slug: string): ResearchProblem | null {
+  const jsonPath = path.join(PROBLEMS_OUTPUT_DIR, `${slug}.json`)
+  if (!fs.existsSync(jsonPath)) {
+    return null
+  }
+  try {
+    const content = fs.readFileSync(jsonPath, 'utf-8')
+    return JSON.parse(content) as ResearchProblem
+  } catch {
+    console.warn(`  Warning: Failed to parse existing JSON for ${slug}, will regenerate from markdown`)
+    return null
+  }
+}
+
+/**
+ * Update registry-derived fields on an existing problem JSON.
+ * The registry may have more current phase/status/dates than the committed JSON.
+ */
+function updateRegistryFields(problem: ResearchProblem, entry: RegistryEntry): ResearchProblem {
+  return {
+    ...problem,
+    phase: entry.phase,
+    status: entry.status,
+    path: entry.path,
+    started: entry.started,
+    lastUpdate: entry.lastUpdate ?? problem.lastUpdate,
+    completed: entry.completed ?? problem.completed,
+  }
+}
+
+/**
  * Main build function
  */
 function build(): void {
-  console.log('🔬 Building research data...\n')
+  console.log('Building research data...\n')
 
   // Read registry
   const registryPath = path.join(RESEARCH_DIR, 'registry.json')
@@ -639,6 +678,8 @@ function build(): void {
   // Process each problem
   const problems: ResearchProblem[] = []
   const listings: ResearchListing[] = []
+  let preservedCount = 0
+  let generatedCount = 0
 
   for (const entry of registry.problems) {
     // Skip template-derived problems (low-value stamp collecting)
@@ -647,19 +688,34 @@ function build(): void {
       continue
     }
 
-    console.log(`   Processing ${entry.slug}...`)
-    const problem = processProblem(entry.slug, entry)
-    if (problem) {
+    // Strategy: Use committed JSON as source of truth if it exists.
+    // Only fall back to generating from markdown for new problems.
+    const existingProblem = loadExistingProblemJson(entry.slug)
+
+    if (existingProblem) {
+      // Existing committed JSON found - preserve it, just update registry fields
+      const problem = updateRegistryFields(existingProblem, entry)
       problems.push(problem)
       listings.push(generateListing(problem))
+      preservedCount++
+      console.log(`   Preserved ${entry.slug} (from committed JSON)`)
+    } else {
+      // No existing JSON - generate from markdown (new problem bootstrap)
+      console.log(`   Generating ${entry.slug} (new, from markdown)...`)
+      const problem = processProblem(entry.slug, entry)
+      if (problem) {
+        problems.push(problem)
+        listings.push(generateListing(problem))
+        generatedCount++
 
-      // Write individual problem JSON
-      const outputPath = path.join(PROBLEMS_OUTPUT_DIR, `${entry.slug}.json`)
-      fs.writeFileSync(outputPath, JSON.stringify(problem, null, 2) + '\n')
+        // Write individual problem JSON only for newly generated problems
+        const outputPath = path.join(PROBLEMS_OUTPUT_DIR, `${entry.slug}.json`)
+        fs.writeFileSync(outputPath, JSON.stringify(problem, null, 2) + '\n')
+      }
     }
   }
 
-  // Write listings
+  // Write listings index (always rebuilt from the loaded problem data)
   const listingsPath = path.join(OUTPUT_DIR, 'research-listings.json')
   fs.writeFileSync(listingsPath, JSON.stringify(listings, null, 2) + '\n')
 
@@ -667,27 +723,18 @@ function build(): void {
   const activeCount = listings.filter(l => l.status === 'active').length
   const graduatedCount = listings.filter(l => l.status === 'graduated').length
 
-  console.log(`\n📊 Summary:`)
+  console.log(`\nSummary:`)
   console.log(`   Active:    ${activeCount} problems`)
   console.log(`   Graduated: ${graduatedCount} problems`)
   console.log(`   Total:     ${problems.length} problems`)
-  // Clean stale problem JSON files that were not regenerated
-  const generatedSlugs = new Set(problems.map(p => p.slug))
-  const existingFiles = fs.readdirSync(PROBLEMS_OUTPUT_DIR).filter(f => f.endsWith('.json'))
-  let removedCount = 0
-  for (const file of existingFiles) {
-    const slug = file.replace('.json', '')
-    if (!generatedSlugs.has(slug)) {
-      fs.unlinkSync(path.join(PROBLEMS_OUTPUT_DIR, file))
-      removedCount++
-    }
-  }
+  console.log(`   Preserved: ${preservedCount} (from committed JSON)`)
+  console.log(`   Generated: ${generatedCount} (new, from markdown)`)
 
-  console.log(`\n✅ Generated research-listings.json (${Math.round(fs.statSync(listingsPath).size / 1024)}KB)`)
-  console.log(`   Generated ${problems.length} individual problem files`)
-  if (removedCount > 0) {
-    console.log(`   Removed ${removedCount} stale problem files`)
-  }
+  // NOTE: We intentionally do NOT delete JSON files that are not in the registry.
+  // They may be legitimate committed data from researchers.
+
+  console.log(`\nGenerated research-listings.json (${Math.round(fs.statSync(listingsPath).size / 1024)}KB)`)
+  console.log(`   ${problems.length} problems in listings index`)
 }
 
 // Run
