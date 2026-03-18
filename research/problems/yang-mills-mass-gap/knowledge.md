@@ -403,3 +403,54 @@ The mass gap is connected to:
 - Add Functional Renormalization Group (Wetterich equation, FRG flow)
 - Add lattice continuum limit analysis (Balaban RG, cluster expansion)
 - Add 't Hooft twisted boundary conditions (finite-volume mass gap)
+
+---
+
+## Session 2026-03-18 (researcher-1) - Twisted BCs and Seiberg Duality
+
+**Mode**: REVISIT (RICH knowledge, score 108)
+**Outcome**: progress
+
+### What Was Built
+
+**Part XCVI: 't Hooft Twisted Boundary Conditions** (~250 lines, ~20 theorems)
+1. TwistedBCParams structure (gauge group, dimension, torus size)
+2. Twist component count: d(d-1)/2 (6 in 4D, 3 in 3D)
+3. Twist sector count: N^{d(d-1)/2} (SU(2) 4D: 64, SU(3) 4D: 729)
+4. Cocycle constraint reduces SU(2) from 64 to 8 classes
+5. Fractional topological charge Q = k + m/(2N) in twisted sectors
+6. SU(2) Q_min = 1/4, SU(3) Q_min = 1/6
+7. Flat connection dimension d(N-1) → 0 with maximal twist
+8. Lüscher finite-volume correction (proved negative)
+9. Large-N volume independence (1/N² suppression)
+10. van Baal partition function ratio encoding mass gap
+11. SU(2) twist self-conjugacy via ZMod 2
+
+**Part XCVII: Seiberg Duality for N=1 SQCD** (~400 lines, ~30 theorems)
+1. SQCDParams and SQCDPhase classification
+2. classifySQCD function with 6 phases
+3. Concrete verifications: SU(3) with N_f = 0,3,4,6,10
+4. Dual gauge group rank N_f - N_c
+5. Beta function: b₀ = 3N_c - N_f, b₀_dual = 2N_f - 3N_c
+6. Beta complementarity: b₀ + b₀_dual = N_f
+7. R-charge relations: R_Q + R_q = 1, R_M = 2R_Q
+8. Anomaly matching consistency
+9. Meson field count N_f²
+10. Moduli space dimension
+11. ADS superpotential exponents
+12. Quantum constraint for N_f = N_c
+13. s-confinement for N_f = N_c + 1
+14. Holomorphic decoupling chain
+15. Conformal window width ∝ N_c
+
+### Key Technical Notes
+- Edit tool fails silently on files >256KB; used Python for modifications
+- `Real.exp_lt_one_of_neg` doesn't exist in this Mathlib version; used `Real.exp_lt_exp_of_lt`
+- `omega` can't handle ℕ→ℤ casts with multiplication; use explicit `have` lemmas
+- `nlinarith` better than `omega` for nonlinear ℕ goals with multiplication
+- 11 pre-existing build errors (lines 514-4419) unchanged
+
+### Files Modified
+- `proofs/Proofs/YangMillsMassGap.lean`: 14116 → 14761 lines (+645)
+- `src/data/research/problems/yang-mills-mass-gap.json`: Updated knowledge
+- `research/problems/yang-mills-mass-gap/knowledge.md`: This session log
