@@ -184,8 +184,27 @@ GrossZagierData.gross_zagier → nontorsion → analyticRank E = 1
 *Concrete definitions (2)*: modular_degree_11a and modular_degree_37a as
 ModularParametrization instances with actual numeric values
 
-**Remaining True (7 structure fields)**: MordellWeilGroup.finitely_generated,
-ModularForm.transform/holomorphic_at_cusps, CanonicalHeight.zero_iff_torsion,
-IwasawaData.kato_divisibility, IwasawaMainConjecture.kato/skinner_urban/main_conjecture.
-These require infrastructure (Module.Finite, modular transformation groups, Iwasawa algebras)
-that doesn't exist in the formalization.
+**Remaining True (7→2 after this pass)**: Previous count was 7+7=14 True fields across
+the file (7 from prior assessment + 7 more discovered). This pass converted 12:
+
+*Structure field conversions (8)*:
+- TunnellData.squarefree → Squarefree n (Mathlib type, 5 instances updated with `by decide`)
+- IwasawaMainConjecture.good_ordinary → GoodOrdinaryReduction E p (new def: p ∤ conductor ∧ p ∤ a_p)
+- PadicLFunction.good_ordinary → same GoodOrdinaryReduction predicate
+- ModularForm.transform → periodic: f(τ+1) = f(τ) (consequence of Γ₀(N) action)
+- ModularForm.holomorphic_at_cusps → bounded_at_cusp: ∃ C, Im(τ) ≥ 1 → |f(τ)| ≤ C
+- CanonicalHeight.zero_iff_torsion → zero_iff: height x = 0 → x = 0 (positive definiteness)
+- IwasawaMainConjecture.kato → L(E,1)≠0 → algebraicRank E = 0
+- IwasawaMainConjecture.skinner_urban → algebraicRank E = 0 → L(E,1) ≠ 0
+- IwasawaMainConjecture.main_conjecture → algebraicRank E = 0 ↔ L(E,1) ≠ 0
+
+*Parameter conversions (2)*:
+- BSD_CM_rank_zero_axiom: (hCM : True) → (hCM : HasCM E) via new axiom HasCM
+- BSD_CM_rank_zero: same
+
+*New interpolation field (1)*:
+- PadicLFunction.interpolation → (ord_vanishing = 0) ↔ (LFunction E 1 ≠ 0)
+
+**Remaining True (2)**: MordellWeilGroup.finitely_generated (needs Module.Finite ℤ),
+EulerSystem.norm_compatible (needs Galois cohomology infrastructure).
+These genuinely cannot be typed without infrastructure that doesn't exist in the formalization.
