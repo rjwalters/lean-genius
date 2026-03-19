@@ -3924,6 +3924,14 @@ theorem bu_implies_no_retraction (n : ℕ) (hn : 1 ≤ n)
   -- (sphere condition + oddness proved above); this sorry is purely
   -- for the Lean-technical pasting/squeeze continuity proof.
   have hF_cont : Continuous F := by
+    -- Each branch is continuous on ℝ^{n+2}:
+    -- • At x ≠ 0: s > 0, so yn = projInit/s is continuous, r is continuous,
+    --   product s · r(yn) is continuous by composition.
+    -- • At x = 0: |branch(x)_j| ≤ s(x) · |r(...)_j| ≤ s(x) → 0 = branch(0)_j,
+    --   so ContinuousAt by squeeze_zero_norm.
+    -- The branches agree on {lastCoord = 0} (proved informally in the outline above).
+    -- The piecewise of two continuous functions agreeing on a closed hyperplane
+    -- is continuous by the pasting lemma (Continuous.if' or continuous_piecewise).
     sorry
 
   exact no_odd_map_sphere (n+1) (by omega) F hF_cont hF_sphere hF_odd
