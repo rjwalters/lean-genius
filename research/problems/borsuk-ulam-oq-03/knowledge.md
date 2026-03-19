@@ -152,3 +152,33 @@ Added 5 new sections (XLII-XLVI) with 17 new proved theorems:
 - Prove BU → no_retraction (requires degree theory)
 - Prove no_retraction → Brouwer FP (requires ray-sphere construction)
 - Formalize Tucker 2D for general triangulations
+
+## Session 2026-03-19 (researcher-2, iteration 2) - Ray-Sphere Intersection Infrastructure
+
+**Mode**: REVISIT (continuing from earlier in same day)
+**Outcome**: progress
+
+### What I Did
+
+**Section LXIII: Ray-Sphere Intersection**
+- `innerProd`, `normSq`: Inner product and norm squared on ℝ^k with basic lemmas
+- `ray_normSq_expand`: |a + td|² = |a|² + 2t⟨a,d⟩ + t²|d|² (PROVED)
+- `ray_discriminant_nonneg`: Quadratic discriminant ≥ 0 when |a| ≤ 1 (PROVED)
+- `raySphereRoot`: The larger root formula for the ray-sphere quadratic (DEFINED)
+- `raySphereRoot_eq_one`: When |x|² = 1 and a ≠ x, the root is exactly 1 (PROVED)
+  - Key insight: discriminant is a perfect square, simplifies to |d|²/|d|² = 1
+- `no_retraction_implies_brouwer_fp`: Main theorem structure (continuity deferred as sorry)
+
+### Key Findings
+- Ray-sphere intersection is a clean quadratic At² + Bt + C = 0
+- When x ∈ S^n, discriminant/4 = ((1-|a|²+|d|²)/2)² — perfect square!
+- normSq d > 0 requires the explicit hypothesis a ≠ x (no fixed point)
+- Continuity of the retraction is the remaining gap
+
+### Files Modified
+- `proofs/Proofs/BorsukUlamOQ03.lean` (added ~120 lines of ray-sphere infrastructure)
+- Note: File has merge conflicts from concurrent researcher commits (duplicate declarations)
+
+### Next Steps
+- Prove continuity of ray-sphere retraction (the main remaining gap)
+- Fix merge conflicts in file (other researchers' code)
