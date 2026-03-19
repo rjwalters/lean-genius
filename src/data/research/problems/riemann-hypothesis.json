@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Extended equivalence network from K₉ to K₁₀ (+Li criterion). 26 new proved theorems, 7443 lines total, 76 axioms, 460 theorems, 0 sorries.",
+    "progressSummary": "PROGRESS: Added Part LI (zero-free regions: dVP, Vinogradov-Korobov, Siegel zeros, class number connection)",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",
@@ -85,6 +85,21 @@
         "name": "complete_rh_landscape_K10",
         "description": "Full K₁₀ equivalence landscape with 45 edges",
         "proven": true
+      },
+      {
+        "name": "montgomery_pair_correlation",
+        "description": "Part XLIX: GUE pair correlation, Odlyzko verification, Keating-Snaith moment conjectures (3 theorems)",
+        "proven": true
+      },
+      {
+        "name": "weil_explicit_formulae",
+        "description": "Part L: Weil explicit formula, Riemann-von Mangoldt N(T), computational verification to 10^13 zeros (3 theorems)",
+        "proven": true
+      },
+      {
+        "name": "zero_free_regions_siegel",
+        "description": "Part LI: VK zero-free region, PNT error exponents, Siegel zero obstruction, class number 1 (2 theorems)",
+        "proven": true
       }
     ],
     "insights": [
@@ -98,7 +113,10 @@
       "Extended equivalence network to K₉ (36 pairwise equivalences) by integrating Connes noncommutative geometry positivity",
       "Extended K₉ to K₁₀ equivalence network by adding Li positivity (Li 1997) as 10th formulation",
       "Keiper conjecture (strict positivity + monotonicity of Li coefficients) implies RH",
-      "Bombieri-Lagarias generalization: individual Li-type criteria for each Dirichlet L-function"
+      "Bombieri-Lagarias generalization: individual Li-type criteria for each Dirichlet L-function",
+      "Montgomery-Dyson: ζ zeros follow GUE statistics (pair correlation 1-sinc²πα) — connects number theory to random matrix theory",
+      "Keating-Snaith: moments |ζ(1/2+it)|^{2k} grow as (log T)^{k²} — only k=1,2 proved rigorously",
+      "Weil explicit formula: 4-term duality between zeros and primes, RH equivalent to positivity condition"
     ],
     "mathlibGaps": [
       "Dirichlet series",

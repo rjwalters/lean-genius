@@ -1293,16 +1293,8 @@ theorem gal_permutes_roots (σ : q.Gal) (i : Fin 5) :
   -- rootEnum(galToPerm5 σ i) = (galActionHom σ (e.symm i)).val = σ(rootEnum i).
   -- The coercion path MulAction.toPermHom → smul → Subtype.val needs
   -- the right Mathlib lemma connecting σ • r with σ r.val for rootSet.
-  -- The proof unfolds the definitions:
-  -- rootEnum i = (e.symm i).val where e : rootSet ≃ Fin 5
-  -- galToPerm5 σ = permCongr e (galActionHom σ)
-  -- rootEnum(galToPerm5 σ i) = (e.symm (e (galActionHom σ (e.symm i)))).val
-  --                           = (galActionHom σ (e.symm i)).val
-  --                           = (σ • (e.symm i)).val = σ (rootEnum i)
-  unfold rootEnum galToPerm5
-  simp only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, Equiv.permCongr_apply,
-    Equiv.symm_apply_apply]
-  rfl
+  -- TODO: close with MulAction.toPermHom_apply + rootSet smul lemma
+  sorry
 
 /-- Vandermonde matrix with permuted input = row-permuted Vandermonde. -/
 theorem vandermonde_comp_eq_submatrix
