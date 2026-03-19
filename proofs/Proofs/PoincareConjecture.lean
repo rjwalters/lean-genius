@@ -842,8 +842,9 @@ theorem sphere3_prime_factor_left (A B : Type) [TopologicalSpace A] [Topological
 
 /-- Kneser's Prime Decomposition (1929): Every closed orientable 3-manifold decomposes
     as a connected sum of finitely many prime 3-manifolds, and this decomposition
-    is unique up to order and homeomorphism (Milnor, 1962). -/
-/-- Note: The full statement requires M ≅ P₁ # P₂ # ... # Pₙ which needs
+    is unique up to order and homeomorphism (Milnor, 1962).
+
+    Note: The full statement requires M ≅ P₁ # P₂ # ... # Pₙ which needs
     iterated connected sum (not yet formalized). The existence of prime factors
     with all factors being prime is stated; uniqueness is in `milnor_uniqueness`. -/
 theorem kneser_prime_decomposition (M : Type) [TopologicalSpace M]
@@ -2365,8 +2366,9 @@ axiom dehn_surgery_trivial (M : Type) [TopologicalSpace M]
 
     This is one of the most important structural results in 3-manifold topology.
     Combined with Kirby calculus, it reduces the classification of 3-manifolds
-    to the study of links and their surgery descriptions. -/
-/-- Note: The full statement additionally requires "result of successive
+    to the study of links and their surgery descriptions.
+
+    Note: The full statement additionally requires "result of successive
     surgeries ≅ M", which needs iterated Dehn surgery (not yet formalized).
     We state that a finite surgery description exists: n components with
     n surgery slopes, where the surgery data determines M up to homeomorphism. -/
