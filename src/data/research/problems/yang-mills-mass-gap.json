@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Parts CXXXVI-CXXXVII (strong-weak continuity, mass gap summary) \u2014 +176 lines, 16 theorems, 0 sorries",
+    "progressSummary": "PROGRESS: Added Part CXXXVIII (Adjoint String Breaking) \u2014 +102 lines, 13 theorems, 0 sorries. Session total: 15 parts, 188 theorems, +1939 lines",
     "builtItems": [
       "Part C: OS Axioms - transfer matrix, Schwinger functions, spectral gap, Euclidean propagator (~30 theorems)",
       "Part CI: Resurgence - beta function, running coupling, renormalons, instanton factors, bions (~25 theorems)",
@@ -62,7 +62,8 @@
       "Part CXXXIV: Confinement Criteria Summary \u2014 Wilson, Kugo-Ojima, center symmetry, dual superconductor, Casimir\u2192N-ality (~110 lines, 10 theorems)",
       "Part CXXXV: Millennium Prize Statement \u2014 Jaffe-Witten formulation, three requirements, current status (~75 lines, 8 theorems)",
       "Part CXXXVI: Strong-to-Weak Coupling Continuity \u2014 no phase transition, analyticity, gap persists (~110 lines, 10 theorems)",
-      "Part CXXXVII: Mass Gap Summary \u2014 137 sections, ~21500 lines, 500+ theorems, evidence synthesis (~65 lines, 6 theorems)"
+      "Part CXXXVII: Mass Gap Summary \u2014 137 sections, ~21500 lines, 500+ theorems, evidence synthesis (~65 lines, 6 theorems)",
+      "Part CXXXVIII: Adjoint String Breaking \u2014 N-ality classification, Casimir scaling, gluelump mass, string breaking distance (~100 lines, 13 theorems)"
     ],
     "insights": [
       "OS axioms (5) provide Euclidean formulation; reconstruction gives Wightman QFT",
@@ -120,7 +121,8 @@
       "Millennium Prize requires ALL THREE: existence + OS axioms + mass gap \u2014 no partial result suffices",
       "2D YM fully solved (Driver-Sengupta-Levy); 3D and 4D remain completely open",
       "SU(N) free energy Z(\u03b2) is analytic \u2014 no phase transition at any \u03b2 (contrast: compact U(1) has transition at \u03b2_c\u22481.01)",
-      "Strong coupling m\u2080 ~ -ln(\u03b2/2N\u00b2) >> 0 is continuously connected to weak coupling m\u2080 ~ \u039b_QCD"
+      "Strong coupling m\u2080 ~ -ln(\u03b2/2N\u00b2) >> 0 is continuously connected to weak coupling m\u2080 ~ \u039b_QCD",
+      "Mass gap is a VACUUM property independent of test sources: m\u2080=1.71 GeV exists even though adjoint strings break"
     ],
     "mathlibGaps": [
       "Principal bundles",
