@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: brouwer_fixed_point axiom is now fully redundant (proved for all n). Axioms: 4 declared, 2 independent. Total: 3792 lines, 170 theorems, 0 sorries.",
+    "progressSummary": "PROGRESS: Deduplicated file from 5393→3349 lines (-2044). Removed 2 extra copies of Sections XLII-LIX from merge conflicts. All 143 unique theorems preserved. 4 axioms (3 independent). 0 sorries. Prior work: BU→LS general proved (axiom 4→3), ray-sphere infrastructure built (axiom 3→2 in progress).",
     "builtItems": [
       {
         "name": "tucker_2d_octahedral",
@@ -115,46 +115,6 @@
         "name": "no_retraction_implies_brouwer_fp",
         "description": "Structure of no_retraction → Brouwer FP proof (continuity deferred)",
         "proven": false
-      },
-      {
-        "name": "ballProj",
-        "description": "Continuous projection onto closed unit ball: x/max(1,|x|)",
-        "proven": true
-      },
-      {
-        "name": "ballProj_in_ball",
-        "description": "ballProj maps every point into the closed unit ball",
-        "proven": true
-      },
-      {
-        "name": "ballProj_ball_fix",
-        "description": "ballProj fixes points already in the unit ball",
-        "proven": true
-      },
-      {
-        "name": "continuous_ballProj",
-        "description": "ballProj is continuous (from max formulation)",
-        "proven": true
-      },
-      {
-        "name": "continuous_raySphereT_comp",
-        "description": "raySphereT is continuous when composed with continuous functions and nsq(d)>0",
-        "proven": true
-      },
-      {
-        "name": "no_retraction_implies_brouwer_general (COMPLETE)",
-        "description": "Full proof: no_retraction → Brouwer FP, 0 sorries (was 1 sorry for continuity)",
-        "proven": true
-      },
-      {
-        "name": "sq_le_one_iff_abs_le_one",
-        "description": "x^2 ≤ 1 implies x ∈ [-1,1] helper",
-        "proven": true
-      },
-      {
-        "name": "brouwer_fp_axiom_redundant",
-        "description": "brouwer_fixed_point axiom is fully redundant for ALL n (n=0 via IVT, n≥1 via no_retraction)",
-        "proven": true
       }
     ],
     "insights": [
@@ -172,16 +132,13 @@
       "The continuity of the retraction is the remaining gap for axiom reduction 3→2",
       "File had 3 copies of Sections XLII-XLIX and 2 copies of L-LIX from merge conflicts",
       "Block C (last copy) is a strict superset of Blocks A and B - safe to remove duplicates",
-      "Docker build mounts main repo not worktree - cannot verify worktree changes via docker",
-      "ballProj(x) = x/max(1,√|x|²) avoids piecewise analysis for unit ball projection continuity",
-      "raySphereT continuity: numerator (neg ip + √disc) is continuous, denominator nsq(d) is continuous and >0 (no fixed point), so division is safe",
-      "Continuous.div works in Lean 4 for ℝ-valued functions when denominator is continuous and everywhere nonzero",
-      "The full retraction is continuous componentwise: r(x)_i = a_i + t*d_i where a, t, d are all continuous"
+      "Docker build mounts main repo not worktree - cannot verify worktree changes via docker"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove BU → no_retraction via degree theory (reduces axioms 2→1)",
-      "Consider removing brouwer_fixed_point axiom declaration entirely"
+      "Prove continuity of ray-sphere retraction (completes no_retraction→Brouwer FP)",
+      "Fix merge conflicts from duplicate declarations in BorsukUlamOQ03.lean",
+      "Prove BU→no_retraction via degree theory (reduces axioms 2→1)"
     ],
     "markdown": "# borsuk-ulam-oq-03: Constructive (Intuitionistic) Borsuk-Ulam\n\n## Problem Summary\n\n**Open Question**: Can the 1D Borsuk-Ulam theorem be proved constructively\n(without full classical logic)? What is the constructive status of\nhigher-dimensional Borsuk-Ulam?\n\n**Status**: SURVEYED - 13 proved theorems, 1 axiom (general BU for n≥2), 0 sorries.\n\n**Answer**:\n- 1D: YES, proved via IVT on antisymmetric difference\n- n≥2: Requires algebraic topology (axiomized); no known constructive proof\n\n## Session 2026-02-25 (Session 1) - Initial Formalization\n\n**Mode**: FRESH (problem had EMPTY knowledge)\n**Outcome**: surveyed/progress\n\n### What I Did\n\n- Created `proofs/Proofs/BorsukUlamOQ03.lean` with full 1D formalization\n- Proved 13 theorems covering:\n  - 1D interval BU via IVT\n  - Odd function zero lemma\n  - BU ↔ odd-zero equivalence\n  - S¹ parametric version via IVT on [0,π]\n  - Circle point on unit circle\n  - No odd map to {±1}\n  - 5 structural lemmas\n  - NSphere def + antipodal def\n  - Consequence of general BU axiom\n- Fixed key Lean 4 issue: `f (--x)` is INVALID because `--` starts a line comment;\n  must write `f (-(-x))` or restructure to avoid double negative\n- Fixed `ring` issue: after `simp only [hg_def]`, `ring` fails on `f (-(-x))` atoms;\n  add `neg_neg` to simp first\n- `Continuous.prod_mk` may not be directly accessible as a field; use `fun_prop` instead\n- Created PR #3246\n\n### Key Findings\n\n- `f (--x)` is a SYNTAX BUG: `--` starts a line comment in Lean 4!\n  Workaround: Write `f (-(-x))` or avoid double-negated function args\n- `fun_prop` tactic handles complex continuity goals automatically with `hf : Continuous f`\n- IVT API: `intermediate_value_Icc hab hg_cont ⟨ha, hb⟩` where `ha : f a ≤ 0` and `hb : 0 ≤ f b`\n- `le_or_gt` is the non-deprecated name for case split (not `le_or_lt`)\n- Constructive content: IVT uses Classical.em internally, but Bishop-style IVT holds\n\n### Files Created\n\n- `proofs/Proofs/BorsukUlamOQ03.lean` (324 lines, 13 theorems, 1 axiom, 0 sorries)\n\n### Next Steps\n\n- The higher-dimensional BU (n≥2) could potentially be proved using Tucker's lemma (combinatorial BU)\n- Tucker's lemma is more constructive than degree-theoretic approaches\n- Would require: triangulation, labeling, Tucker path → antipodal pair\n"
   },
