@@ -429,6 +429,13 @@ theorem no_subgroup_order_15 (H : Subgroup (Equiv.Perm (Fin 5)))
     Order 15 → contradicts no_subgroup_order_15. -/
 theorem no_subgroup_order_30 (H : Subgroup (Equiv.Perm (Fin 5)))
     (hcard : Nat.card H = 30) : False := by
+  -- PROOF SKETCH (sorry — needs coset action + A₅ simplicity):
+  -- H.normalCore ≤ H is normal in S₅ with |normalCore| ≤ 30.
+  -- normalCore ∩ A₅ is normal in A₅ (simple).
+  -- Case A₅ ≤ normalCore: |A₅|=60 > 30, impossible.
+  -- Case normalCore ∩ A₅ = {1}: sign|_normalCore injective → |normalCore| ≤ 2.
+  --   Coset action S₅ → Perm(S₅/H) = S₄: |S₅|/|normalCore| ≤ 24 → |normalCore| ≥ 5.
+  --   5 ≤ 2 contradiction.
   sorry
 
 /-- |Gal(q)| ≠ 15: Gal embeds into S₅ which has no subgroup of order 15. -/
