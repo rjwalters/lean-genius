@@ -413,6 +413,59 @@ recover_server_completed() {
             done
         fi
 
+        # Fallback 1: try "import Proofs.XXX" patterns in the file content
+        if [[ -z "$target_file" ]]; then
+            local module_name=""
+            module_name=$(grep -oP '^import\s+Proofs\.(\w+)' "$tmp_solution" 2>/dev/null | head -1 | sed 's/^import Proofs\.//' ) || true
+            if [[ -n "$module_name" && -f "$PROOFS_DIR/${module_name}.lean" ]]; then
+                target_file="$PROOFS_DIR/${module_name}.lean"
+            fi
+        fi
+
+        # Fallback 2: extract Erdos problem number from file content and try
+        # common filename patterns. Most solution files reference "Erdos Problem #NNN"
+        # or use "ErdosNNN" in definitions/theorems even without a namespace.
+        if [[ -z "$target_file" ]]; then
+            local erdos_num=""
+            # Try: "Erdős Problem #NNN" or "Erdos Problem #NNN" in comments
+            erdos_num=$(grep -oP '(?:Erdős|Erdos)\s+Problem\s+#\K\d+' "$tmp_solution" 2>/dev/null | head -1) || true
+            # Try: "erdosproblems.com/NNN" URL
+            if [[ -z "$erdos_num" ]]; then
+                erdos_num=$(grep -oP 'erdosproblems\.com/\K\d+' "$tmp_solution" 2>/dev/null | head -1) || true
+            fi
+            # Try: "ErdosNNN" in definition/theorem names
+            if [[ -z "$erdos_num" ]]; then
+                erdos_num=$(grep -oP '\bErdos(\d+)\b' "$tmp_solution" 2>/dev/null | head -1 | grep -oP '\d+') || true
+            fi
+
+            if [[ -n "$erdos_num" ]]; then
+                for candidate in \
+                    "$PROOFS_DIR/Erdos${erdos_num}Problem.lean" \
+                    "$PROOFS_DIR/Erdos${erdos_num}Aristotle.lean" \
+                    "$PROOFS_DIR/Erdos${erdos_num}ProblemProvable.lean" \
+                    "$PROOFS_DIR/Erdos${erdos_num}.lean"; do
+                    if [[ -f "$candidate" ]]; then
+                        target_file="$candidate"
+                        break
+                    fi
+                done
+            fi
+        fi
+
+        # Fallback 3: if namespace was found but didn't match directly, try
+        # with "Erdos" prefix variations (e.g., namespace "Erdos1005" -> Erdos1005Problem.lean)
+        if [[ -z "$target_file" && -n "$lean_basename" ]]; then
+            for candidate in \
+                "$PROOFS_DIR/${lean_basename}Problem.lean" \
+                "$PROOFS_DIR/${lean_basename}Aristotle.lean" \
+                "$PROOFS_DIR/${lean_basename}ProblemProvable.lean"; do
+                if [[ -f "$candidate" ]]; then
+                    target_file="$candidate"
+                    break
+                fi
+            done
+        fi
+
         if [[ -z "$target_file" ]]; then
             echo -e "  ${YELLOW}Cannot map to local file (no namespace match), saving to results${NC}"
             mv "$tmp_solution" "$RESULTS_DIR/recovered-${pid}.lean"

@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 102 parts, ~18,394 lines, 0 sorries, 0 axioms. Session added Part CI (Stochastic NS: Itô correction, Hairer-Mattingly ergodicity, Markov selection, RSH, attractors) and Part CII (Euler: Kato inviscid limit, Prandtl layers, Onsager-K41, Hou-Luo blowup, Yudovich uniqueness).",
+    "progressSummary": "PROGRESS: Added Parts CV-CVI (critical spaces, Koch-Tataru BMO⁻¹, mild solutions, Kato inviscid limit, Prandtl boundary layer)",
     "builtItems": [
       "Part LXXXVIII: Helicity Algebra and Conservation Structure (NavierStokes.lean:14932)",
       "Part LXXXIX: Kolmogorov Microscales and Spectral Energy Relations (NavierStokes.lean:15200)",
@@ -50,7 +50,9 @@
       "Part C: Critical Exponent Unification and Scaling Atlas (NavierStokes.lean:17412)",
       "Part CI: Stochastic Navier-Stokes and Noise Regularization (NavierStokes.lean:17683)",
       "Part CII: Euler Equations and the Inviscid Limit (NavierStokes.lean:18007)",
-      "Aristotle companion Sections 66-67: stochastic NS constants + Euler/inviscid limit constants"
+      "Aristotle companion Sections 66-67: stochastic NS constants + Euler/inviscid limit constants",
+      "Part CV: Critical Spaces — critical Sobolev exponent, Koch-Tataru BMO⁻¹ sharpness, mild solution contraction (3 theorems)",
+      "Part CVI: Euler-NS Inviscid Limit — Kato criterion, Prandtl boundary layer, anomalous dissipation connection (2 theorems)"
     ],
     "insights": [
       "Helicity H = ∫u·ω decomposes into positive/negative helical modes: E±=(E±H)/2",
