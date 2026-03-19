@@ -532,10 +532,26 @@ theorem no_subgroup_order_30 (H : Subgroup (Equiv.Perm (Fin 5)))
     -- |range signH| = |ℤˣ| = 2 (surjective). So |ker| = 30/2 = 15.
     -- ker signH ≅ K.subgroupOf H, so |K| = 15.
     have hK_card : Nat.card K = 15 := by
-      sorry -- First isomorphism theorem: |ker| = |H|/|ℤˣ| = 30/2 = 15, then K ≅ ker
-    exact no_subgroup_order_15 (K.map H.subtype) (by
-      rw [Nat.card_congr (Subgroup.equivMapOfInjective K H.subtype Subtype.val_injective).symm]
-      exact hK_card)
+      -- First isomorphism theorem: H/ker(signH) ≅ ℤˣ, so |ker| = |H|/|ℤˣ| = 30/2 = 15
+      -- Step 1: Index of ker(signH) in H = |ℤˣ| = 2
+      have h_index : signH.ker.index = 2 := by
+        -- By first isomorphism theorem, H/ker ≅ range(signH) = ℤˣ (surjective)
+        have h_equiv := QuotientGroup.quotientKerEquivOfSurjective signH hsurj
+        rw [Subgroup.index, Nat.card_congr h_equiv.toEquiv]
+        -- Nat.card ℤˣ = 2
+        rw [Nat.card_eq_fintype_card]
+        native_decide
+      -- Step 2: Lagrange: |ker| * 2 = 30
+      have h_lagrange := Subgroup.card_mul_index signH.ker
+      rw [h_index, hcard] at h_lagrange
+      -- Step 3: |ker(signH)| = 15
+      have h_ker : Nat.card (↥signH.ker) = 15 := by omega
+      -- Step 4: ker(signH) = K.subgroupOf H, so |K.subgroupOf H| = 15
+      rw [hker_eq] at h_ker
+      -- Step 5: |K.subgroupOf H| = |K| since K ≤ H (K = H ⊓ A₅)
+      rw [Nat.card_eq_fintype_card] at h_ker ⊢
+      rwa [Fintype.card_subgroupOf (show K ≤ H from inf_le_left)] at h_ker
+    exact no_subgroup_order_15 K hK_card
 
 /-- |Gal(q)| ≠ 15: Gal embeds into S₅ which has no subgroup of order 15. -/
 theorem gal_card_ne_15 : Fintype.card q.Gal ≠ 15 := by
@@ -870,9 +886,9 @@ Groups NOT YET realized in our formalization:
 
 ### Structural lemmas (Part IV-A):
 15. no_subgroup_order_15: S₅ has no subgroup of order 15 (PROVED — Sylow + native_decide)
-16. no_subgroup_order_30: S₅ has no subgroup of order 30 (1 sorry — first isom. thm step)
+16. no_subgroup_order_30: S₅ has no subgroup of order 30 (PROVED — 0 sorries)
     Case 1 (H ≤ A₅): PROVED via A₅ simplicity
-    Case 2 (H ⊄ A₅): sorry on |ker(sign|_H)| = 15 via first isom. thm
+    Case 2 (H ⊄ A₅): PROVED via first isomorphism theorem (|ker(sign|_H)| = 30/2 = 15)
 17. gal_card_ne_15: |Gal| ≠ 15 (via embedding + #15)
 18. gal_card_ne_30: |Gal| ≠ 30 (via embedding + #16)
 
