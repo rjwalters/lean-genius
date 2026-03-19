@@ -16,8 +16,8 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 42,
-    "assumptions": "42 axiom declarations: Perelman Ricci flow surgery (finite extinction), Novikov compact leaf theorem (foliations), generalized Poincaré in dimensions 2/4/≥5, simply connected S³ (needs Seifert-van Kampen), S³ non-contractible (needs homology), topological constructions (connected sum type, Dehn surgery type), classification results (JSJ decomposition/uniqueness, h/s-cobordism), 3-manifold topology (Heegaard splitting, Waldhausen genus-0, Property P, prime decomposition, irreducibility), counterexample structures (Poincaré homology sphere, Whitehead manifold), covering space theory (sc_covering_injective), Kahn-Markovic surface subgroup, Agol virtual Haken/fibering, Gordon-Luecke knot complement determination.",
+    "axiomCount": 38,
+    "assumptions": "38 axiom declarations: Perelman Ricci flow surgery (finite extinction), Novikov compact leaf theorem (foliations), generalized Poincaré in dimensions 2/4/≥5, simply connected S³ (needs Seifert-van Kampen), S³ non-contractible (needs homology), topological constructions (connected sum type, Dehn surgery type), classification results (JSJ decomposition/uniqueness, h/s-cobordism), 3-manifold topology (Heegaard splitting, Waldhausen genus-0, Property P, prime decomposition, irreducibility), counterexample structures (Poincaré homology sphere, Whitehead manifold), covering space theory (sc_covering_injective).",
     "mathlibDependencies": [
       {
         "theorem": "SimplyConnectedSpace",
@@ -75,16 +75,16 @@
       "590 theorems proved, 137 structures defined, 218 definitions, 82 parts across 11574 lines"
     ],
     "leanFile": {
-      "lineCount": 11574,
-      "theoremCount": 590,
+      "lineCount": 12221,
+      "theoremCount": 619,
       "lemmaCount": 0,
       "defCount": 218,
-      "axiomCount": 42,
+      "axiomCount": 38,
       "sorryCount": 0,
       "structureCount": 137,
       "instanceCount": 21,
-      "parts": 82,
-      "note": "Single file formalization. 82 parts covering: topology of S³ and S^n, closed manifolds, simple connectivity, Perelman's proof strategy, counterexamples, geometrization, connected sum theory, covering spaces, Hopf fibration, knot surgery, JSJ decomposition, foliations, Papakyriakopoulos results, Heegaard Floer homology, L-space conjecture, contact structures, Virtual Haken conjecture and Wise's program, Gordon-Luecke theorem and knot complements."
+      "parts": 84,
+      "note": "Single file formalization. 84 parts covering: topology of S³ and S^n, closed manifolds, simple connectivity, Perelman's proof strategy, counterexamples, geometrization, connected sum theory, covering spaces, Hopf fibration, knot surgery, JSJ decomposition, foliations, Papakyriakopoulos results, Heegaard Floer homology, L-space conjecture, contact structures, Virtual Haken conjecture, Gordon-Luecke theorem, SL(2,C) character varieties, Hempel distance and MCG complexity."
     },
     "dateAdded": "12/29/25",
     "millenniumProblem": "poincare"
