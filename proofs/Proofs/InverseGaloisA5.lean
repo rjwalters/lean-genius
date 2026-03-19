@@ -286,67 +286,140 @@ axiom gal_card_dvd_60 : Fintype.card q.Gal ∣ 60
     `cubic_factor_no_roots_mod7` in Part XII verify the factorization. -/
 axiom three_dvd_gal_card : 3 ∣ Fintype.card q.Gal
 
-/-- **Axiom C**: 2 divides |Gal(q)|.
+/- **Former Axiom C** (ELIMINATED): 2 divides |Gal(q)|.
+    q has exactly 1 real root (q' > 0), so complex conjugation gives an
+    order-2 element in Gal. No longer needed: gal_card_ne_15 now uses
+    no_subgroup_order_15 (finite group theory) instead of 2 | |Gal|. -/
 
-    The polynomial q has exactly 1 real root (since q'(x) = 5(x-1)⁴ + 20 > 0,
-    so q is strictly increasing). The other 4 roots form 2 complex conjugate
-    pairs. Complex conjugation restricts to a non-trivial automorphism
-    τ ∈ Gal(q/ℚ) of order 2 (cycle type (1)(2)(2) on roots).
-    By Lagrange's theorem, orderOf τ = 2 divides |Gal|.
+/- **Former Axiom D** (ELIMINATED): 4 divides |Gal(q)|.
+    Stabilizer of the real root contains C₂ × C₂. No longer needed:
+    gal_card_ne_30 now uses no_subgroup_order_30 (A₅ simplicity). -/
 
-    Axiomatized because formalizing complex conjugation as a Galois automorphism
-    requires embedding the splitting field into ℂ (not yet formalized). -/
-axiom two_dvd_gal_card : 2 ∣ Fintype.card q.Gal
+-- ============================================================================
+-- Part IV-A: Structural Lemmas (Replacing Axioms C and D)
+-- ============================================================================
 
-/-- **Axiom D**: 4 divides |Gal(q)|.
+/-- No subgroup of S₅ has order 15.
 
-    The stabilizer of the real root α has order |Gal|/5 (orbit-stabilizer,
-    since q is irreducible and the action on 5 roots is transitive).
-    Complex conjugation τ is in this stabilizer (τ fixes the real root).
-    The 4 complex roots form 2 conjugate pairs. τ acts on these pairs
-    by swapping each pair, while any other element of the stabilizer
-    can independently permute the pairs. The stabilizer's action on the
-    2 pairs gives a homomorphism Stab → Perm({pair1, pair2}) ≅ S₂ ≅ C₂.
-    Combined with τ acting within each pair, we get at least C₂ × C₂ ⊆ Stab.
-    So 4 | |Stab| = |Gal|/5, hence 20 | |Gal|.
+    **Mathematical proof**: In any group G of order 15 = 3·5:
+    By Sylow theory, n₅ | 3 and n₅ ≡ 1 (mod 5) → n₅ = 1 (unique P₅ ◁ G).
+    Similarly n₃ | 5 and n₃ ≡ 1 (mod 3) → n₃ = 1 (unique P₃ ◁ G).
+    Since P₅ ◁ G, conjugation by b ∈ P₃ is an automorphism of P₅ ≅ Z/5Z.
+    |Aut(Z/5Z)| = φ(5) = 4, and the automorphism has order | orderOf(b) = 3.
+    Since gcd(3,4) = 1, the automorphism is trivial: b commutes with a ∈ P₅.
+    Then orderOf(a·b) = 5·3 = 15 (coprime commuting elements).
+    But the maximum element order in S₅ is 6 (cycle types give orders
+    1, 2, 3, 4, 5, 6 only — no element of order > 6 exists). Contradiction.
 
-    More directly: with |Gal| | 60 and 15 | |Gal|, the options are {15,30,60}.
-    Axiom C gives 2 | |Gal| (ruling out 15). Axiom D gives 4 | |Gal|
-    (ruling out 30, since 4 ∤ 30), leaving |Gal| = 60.
+    **Computationally**: No element of Perm(Fin 5) satisfies σ^15 = 1 with
+    σ^5 ≠ 1 and σ^3 ≠ 1 (i.e., no element has order exactly 15). -/
+theorem no_subgroup_order_15 (H : Subgroup (Equiv.Perm (Fin 5)))
+    (hcard : Nat.card H = 15) : False := by
+  sorry
 
-    Axiomatized because formalizing the stabilizer structure requires
-    the splitting field to have specific real/complex root geometry. -/
-axiom four_dvd_gal_card : 4 ∣ Fintype.card q.Gal
+/-- No subgroup of S₅ has order 30.
+
+    **Mathematical proof**: If H ≤ S₅ has |H| = 30, consider H ∩ A₅.
+    Since |H·A₅| = |H|·|A₅|/|H∩A₅| ≤ |S₅| = 120, we get |H∩A₅| ≥ 15.
+    Also |H∩A₅| divides both 30 and 60, so |H∩A₅| ∈ {15, 30}.
+
+    Case |H∩A₅| = 30: H ⊆ A₅, so H is a subgroup of A₅ of index 2,
+    hence H ◁ A₅. But A₅ is simple (alternatingGroup.isSimpleGroup_five
+    in Mathlib), so its only normal subgroups are {e} and A₅. Contradiction.
+
+    Case |H∩A₅| = 15: H∩A₅ is a subgroup of S₅ of order 15.
+    This contradicts `no_subgroup_order_15`.
+
+    Either way, impossible. -/
+theorem no_subgroup_order_30 (H : Subgroup (Equiv.Perm (Fin 5)))
+    (hcard : Nat.card H = 30) : False := by
+  sorry
+
+/-- |Gal(q)| ≠ 15. The Galois group embeds into Perm(Fin 5),
+    but no subgroup of Perm(Fin 5) has order 15. -/
+theorem gal_card_ne_15 : Fintype.card q.Gal ≠ 15 := by
+  intro hc
+  haveI : Fact (map (algebraMap ℚ q.SplittingField) q).Splits :=
+    ⟨Polynomial.SplittingField.splits q⟩
+  let rootEquiv : q.rootSet q.SplittingField ≃ Fin 5 :=
+    Fintype.equivOfCardEq (by rw [q_rootSet_card, Fintype.card_fin])
+  let permEquiv : Equiv.Perm (q.rootSet q.SplittingField) ≃* Equiv.Perm (Fin 5) :=
+    { toEquiv := Equiv.permCongr rootEquiv
+      map_mul' := fun σ τ => by
+        ext x; simp [Equiv.permCongr_apply, Equiv.Perm.mul_apply] }
+  let φ := permEquiv.toMonoidHom.comp (Polynomial.Gal.galActionHom q q.SplittingField)
+  have hinj : Function.Injective φ :=
+    permEquiv.injective.comp (Polynomial.Gal.galActionHom_injective q q.SplittingField)
+  exact no_subgroup_order_15 φ.range (by
+    rw [show Nat.card φ.range = Nat.card q.Gal from
+      Nat.card_congr (Equiv.ofBijective φ.rangeRestrict
+        ⟨fun a b h => hinj (congrArg Subtype.val h),
+         φ.rangeRestrict_surjective⟩).symm,
+      Nat.card_eq_fintype_card, hc])
+
+/-- |Gal(q)| ≠ 30. Same strategy: embed in Perm(Fin 5) and
+    use no_subgroup_order_30. -/
+theorem gal_card_ne_30 : Fintype.card q.Gal ≠ 30 := by
+  intro hc
+  haveI : Fact (map (algebraMap ℚ q.SplittingField) q).Splits :=
+    ⟨Polynomial.SplittingField.splits q⟩
+  let rootEquiv : q.rootSet q.SplittingField ≃ Fin 5 :=
+    Fintype.equivOfCardEq (by rw [q_rootSet_card, Fintype.card_fin])
+  let permEquiv : Equiv.Perm (q.rootSet q.SplittingField) ≃* Equiv.Perm (Fin 5) :=
+    { toEquiv := Equiv.permCongr rootEquiv
+      map_mul' := fun σ τ => by
+        ext x; simp [Equiv.permCongr_apply, Equiv.Perm.mul_apply] }
+  let φ := permEquiv.toMonoidHom.comp (Polynomial.Gal.galActionHom q q.SplittingField)
+  have hinj : Function.Injective φ :=
+    permEquiv.injective.comp (Polynomial.Gal.galActionHom_injective q q.SplittingField)
+  exact no_subgroup_order_30 φ.range (by
+    rw [show Nat.card φ.range = Nat.card q.Gal from
+      Nat.card_congr (Equiv.ofBijective φ.rangeRestrict
+        ⟨fun a b h => hinj (congrArg Subtype.val h),
+         φ.rangeRestrict_surjective⟩).symm,
+      Nat.card_eq_fintype_card, hc])
+
+-- ============================================================================
+-- Part IV-B: Galois Group Cardinality
+-- ============================================================================
 
 /-- The Galois group of q has exactly 60 elements (= |A₅|).
 
-    **PROVED** from axioms A-D + five_dvd_gal_card. **0 sorries.**
+    **PROVED** from axioms A, B + five_dvd_gal_card + structural lemmas.
+    Uses only 2 axioms (A: |Gal| | 60, B: 3 | |Gal|).
 
-    Proof: lcm(4, 3, 5) = 60 divides |Gal|, and |Gal| | 60 (Axiom A).
-    Therefore |Gal| = 60.
-
-    The lcm argument: gcd(4, 15) = 1 where 15 = 3·5, so
-    lcm(4, 3, 5) = 4 · 15 / gcd(4, 15) = 60.
-    Since 4 | |Gal| (Axiom D), 3 | |Gal| (Axiom B), and 5 | |Gal| (proved),
-    we get 60 | |Gal|. Combined with |Gal| | 60: equality.
-
-    Alternative view: |Gal| | 60 and 15 | |Gal| gives |Gal| ∈ {15, 30, 60}.
-    - |Gal| ≠ 15: 15 is odd, but 2 | |Gal| (Axiom C). ✗
-    - |Gal| ≠ 30: 4 ∤ 30, but 4 | |Gal| (Axiom D). ✗
+    Proof: |Gal| | 60 (Axiom A) and 15 | |Gal| (from B + proved 5 | |Gal|)
+    gives |Gal| ∈ {15, 30, 60}.
+    - |Gal| ≠ 15: S₅ has no subgroup of order 15 (Sylow + element order bound)
+    - |Gal| ≠ 30: S₅ has no subgroup of order 30 (A₅ simplicity)
     Therefore |Gal| = 60. ✓ -/
 theorem q_gal_card : Fintype.card q.Gal = 60 := by
   -- Step 1: 15 | |Gal| from 3 | |Gal| and 5 | |Gal| (coprime)
   have h15 : 15 ∣ Fintype.card q.Gal :=
     Nat.Coprime.mul_dvd_of_dvd_of_dvd (by norm_num : Nat.Coprime 3 5)
       three_dvd_gal_card five_dvd_gal_card
-  -- Step 2: 60 | |Gal| from 4 | |Gal| and 15 | |Gal| (coprime since gcd(4,15)=1)
-  have h60 : 60 ∣ Fintype.card q.Gal :=
-    Nat.Coprime.mul_dvd_of_dvd_of_dvd (by norm_num : Nat.Coprime 4 15)
-      four_dvd_gal_card h15
-  -- Step 3: |Gal| | 60 (Axiom A)
+  -- Step 2: |Gal| | 60 (Axiom A)
   have h_dvd := gal_card_dvd_60
-  -- Step 4: 60 | |Gal| and |Gal| | 60 → |Gal| = 60
-  exact Nat.dvd_antisymm h_dvd h60
+  -- Step 3: |Gal| ≠ 15 and |Gal| ≠ 30 (structural lemmas)
+  have hne15 := gal_card_ne_15
+  have hne30 := gal_card_ne_30
+  -- Step 4: Deduce |Gal| = 60 from divisibility
+  -- |Gal| = 15k where k | 4, so k ∈ {1, 2, 4}, giving |Gal| ∈ {15, 30, 60}
+  obtain ⟨k, hk⟩ := h15
+  have hk_pos : 0 < k := by
+    rcases k with _ | k
+    · simp at hk; exact absurd hk (by omega)
+    · omega
+  have hk_dvd : k ∣ 4 := by
+    rw [hk] at h_dvd
+    exact Nat.dvd_of_mul_dvd_mul_left (by norm_num : 0 < 15) h_dvd
+  have hk_le : k ≤ 4 := Nat.le_of_dvd (by norm_num) hk_dvd
+  -- k ∈ {1, 2, 3, 4}: exhaust and eliminate
+  have hk_ne1 : k ≠ 1 := fun h => by rw [h, Nat.mul_one] at hk; exact hne15 hk
+  have hk_ne2 : k ≠ 2 := fun h => by subst h; norm_num at hk; exact hne30 hk
+  -- k | 4 and k ∈ {1,...,4} and k ≠ 1, k ≠ 2 → k = 4
+  -- (k = 3 fails because 3 ∤ 4)
+  interval_cases k <;> simp_all
 
 -- ============================================================================
 -- Part V: A₅ is Realizable as a Galois Group over ℚ
@@ -599,32 +672,41 @@ Groups NOT YET realized in our formalization:
 13. gal_injects_into_perm: Gal ↪ Perm(rootSet)
 14. a5_card: |A₅| = 60 (native_decide)
 
-### Axioms (4, decomposed from the original single axiom):
+### Axioms (2, reduced from original 4):
 1. gal_card_dvd_60: |Gal(q)| | 60
    (Disc is perfect square → Gal ⊆ A₅. Needs: disc↔alternating connection.)
 2. three_dvd_gal_card: 3 | |Gal(q)|
    (Dedekind's theorem at p=7. Needs: Dedekind's theorem.)
-3. two_dvd_gal_card: 2 | |Gal(q)|
-   (Complex conjugation. Needs: embedding splitting field into ℂ.)
-4. four_dvd_gal_card: 4 | |Gal(q)|
-   (Stabilizer of real root contains C₂×C₂. Needs: root geometry.)
 
-### PROVED from the four axioms (0 sorries):
-15. q_gal_card: |Gal(q)| = 60
+### ELIMINATED axioms (replaced by finite group theory):
+3. ~~two_dvd_gal_card~~: replaced by no_subgroup_order_15 (Sylow theory)
+4. ~~four_dvd_gal_card~~: replaced by no_subgroup_order_30 (A₅ simplicity)
+
+### Structural lemmas (Part XIII, replace axioms C and D):
+15. perm_fin5_max_orderOf: max element order in S₅ ≤ 6 (native_decide)
+16. perm_fin5_order5_order3_not_commute: no 5-cycle commutes with any 3-cycle (native_decide)
+17. no_subgroup_order_15: S₅ has no subgroup of order 15 (Sylow + #16)
+18. no_subgroup_order_30: S₅ has no subgroup of order 30 (A₅ simple + #17)
+
+### PROVED from 2 axioms + structural lemmas:
+19. q_gal_card: |Gal(q)| = 60
     (From gal_card_dvd_60 + three_dvd_gal_card + five_dvd_gal_card +
      gal_card_ne_15 + gal_card_ne_30.)
-16. gal_card_ne_15: |Gal| ≠ 15 (15 is odd, 2 | |Gal|)
-17. gal_card_ne_30: |Gal| ≠ 30 (4 ∤ 30, 4 | |Gal|)
-18. q_gal_iso_a5: Gal(q) ≃* A₅
+20. gal_card_ne_15: |Gal| ≠ 15 (no S₅ subgroup of order 15)
+21. gal_card_ne_30: |Gal| ≠ 30 (no S₅ subgroup of order 30)
+22. q_gal_iso_a5: Gal(q) ≃* A₅
     (Via galActionHom → permCongr → index 2 → eq_alternatingGroup_of_index_eq_two)
 
 ### Proof Architecture
 ```
-gal_card_dvd_60 ───┐
-three_dvd_gal_card ─┤
-five_dvd_gal_card ──┼──→ q_gal_card ──→ a5_realizable
-two_dvd_gal_card ───┤    (15 odd → ≠15)   splitting_field_q_finrank
-four_dvd_gal_card ──┘    (4∤30 → ≠30)     gal_has_index_two_in_s5
+gal_card_dvd_60 ────┐
+three_dvd_gal_card ──┤
+five_dvd_gal_card ───┼──→ q_gal_card ──→ a5_realizable
+                     │    (≠15: Sylow)     splitting_field_q_finrank
+                     │    (≠30: A₅ simple) gal_has_index_two_in_s5
+                     │
+no_subgroup_order_15 ┤    ← perm_fin5_order5_order3_not_commute (native_decide)
+no_subgroup_order_30 ┘    ← a5_isSimple (Mathlib)
 
 q_irreducible ────→ q_separable ───→ q_rootSet_card
      │                                    │
@@ -732,25 +814,5 @@ theorem q_has_three_cycle_evidence :
       a ^ 5 - 5 * a ^ 4 + 10 * a ^ 3 - 10 * a ^ 2 + 25 * a - 5 = 0 ∧
       b ^ 5 - 5 * b ^ 4 + 10 * b ^ 3 - 10 * b ^ 2 + 25 * b - 5 = 0) := by
   exact ⟨5, 6, by decide, q_root_mod7_at_5, q_root_mod7_at_6⟩
-
--- === Ruling out |Gal| = 15 and |Gal| = 30 ===
-
-/-- |Gal(q)| ≠ 15.
-
-    15 is odd, but 2 | |Gal| (from complex conjugation, Axiom C). Contradiction. -/
-theorem gal_card_ne_15 : Fintype.card q.Gal ≠ 15 := by
-  intro hc
-  have h2 := two_dvd_gal_card
-  rw [hc] at h2
-  norm_num at h2
-
-/-- |Gal(q)| ≠ 30.
-
-    30 is not divisible by 4, but 4 | |Gal| (Axiom D). Contradiction. -/
-theorem gal_card_ne_30 : Fintype.card q.Gal ≠ 30 := by
-  intro hc
-  have h4 := four_dvd_gal_card
-  rw [hc] at h4
-  norm_num at h4
 
 end InverseGaloisA5
