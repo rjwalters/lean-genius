@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Parts CXXVII-CXXVIII (Balaban RG program, Haag-Kastler algebraic QFT, +694 lines, 15 theorems, 0 sorries)",
+    "progressSummary": "PROGRESS: Added Parts CXXIX-CXXX (functional integral measures, Dirac spectral geometry, +12 theorems, 0 sorries)",
     "builtItems": [
       "Part C: OS Axioms - transfer matrix, Schwinger functions, spectral gap, Euclidean propagator (~30 theorems)",
       "Part CI: Resurgence - beta function, running coupling, renormalons, instanton factors, bions (~25 theorems)",
@@ -53,7 +53,9 @@
       "Part CXXV: Gross-Neveu Model — dynamical mass, condensate, kink solitons, free energy (~150 lines, 11 theorems)",
       "Part CXXVI: 't Hooft Model (QCD2) — string tension, meson spectrum, Regge slope, confinement (~165 lines, 16 theorems)",
       "Part CXXVII: Balaban RG — block-spin transformation, Gaussian dominance, axial gauge, small/large field decomposition, propagator estimates, coupling flow, MRS loop vertex expansion (~350 lines, 8 theorems)",
-      "Part CXXVIII: Haag-Kastler Algebraic QFT — axiom framework, mass gap as spectral condition, Reeh-Schlieder, Borchers modular theory, DHR superselection/confinement, Haag-Ruelle scattering, Fredenhagen-Marcu criterion (~340 lines, 7 theorems)"
+      "Part CXXVIII: Haag-Kastler Algebraic QFT — axiom framework, mass gap as spectral condition, Reeh-Schlieder, Borchers modular theory, DHR superselection/confinement, Haag-Ruelle scattering, Fredenhagen-Marcu criterion (~340 lines, 7 theorems)",
+      "Part CXXIX: Functional Integral Measures — Wilson action, Symanzik improvement, Osterwalder-Seiler strong coupling, reflection positivity, cluster expansion, thermodynamic limit (6 theorems)",
+      "Part CXXX: Dirac Spectral Geometry — Atiyah-Singer index, Banks-Casher relation, RMT universality, Nielsen-Ninomiya doubling, Weyl law, Witten-Veneziano formula (6 theorems)"
     ],
     "insights": [
       "OS axioms (5) provide Euclidean formulation; reconstruction gives Wightman QFT",
@@ -105,7 +107,9 @@
       "Balaban gap: large field estimates incomplete in 4D — this is the remaining obstacle in the most rigorous approach",
       "Haag-Kastler: mass gap is spectral condition spec(P²) ∩ (0,m²) = ∅ in the algebraic framework",
       "DHR superselection: confinement = triviality of sector category (only singlet representations appear)",
-      "Fredenhagen-Marcu: rigorous confinement criterion via open Wilson line order parameter ρ(R) → 0"
+      "Fredenhagen-Marcu: rigorous confinement criterion via open Wilson line order parameter ρ(R) → 0",
+      "Cluster expansion converges only for β < 2, but physical SU(3) is at β ≈ 6 — this gap is why rigorous construction is hard",
+      "Nielsen-Ninomiya: 2^d fermion doublers on lattice; Ginsparg-Wilson relation resolves this with exact lattice chirality"
     ],
     "mathlibGaps": [
       "Principal bundles",
