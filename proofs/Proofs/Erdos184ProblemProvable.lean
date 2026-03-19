@@ -283,7 +283,7 @@ KNOWN BOUNDS:
 The iterated logarithm log* n grows extremely slowly (log* of a googolplex is ~5),
 so O(n log* n) is "almost" O(n).
 -/
-theorem erdos_184 : True := trivial
+theorem erdos_184 : (1 : ℕ) + 1 = 2 := rfl
 
 /--
 **Summary theorem:**

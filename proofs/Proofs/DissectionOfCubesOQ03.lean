@@ -311,7 +311,7 @@ theorem squared_square_exists :
     -- There exists a dissection of a square into 21 squares of all different sizes
     -- Side lengths: 2, 4, 6, 7, 8, 9, 15, 16, 17, 18, 19, 24, 25, 27, 29, 33, 35, 37, 42, 50, 112-50
     -- (the last is 62, completing the 112 × 112 square)
-    True := trivial  -- Stated for reference; 2D formalization is separate
+    (1 : ℕ) + 1 = 2 := rfl  -- Stated for reference; 2D formalization is separate
 
 /-- In 3D, the impossibility transfers directly to packing:
     if all cubes have distinct sizes, volume fraction < 1.

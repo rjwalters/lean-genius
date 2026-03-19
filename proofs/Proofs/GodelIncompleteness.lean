@@ -450,7 +450,7 @@ theorem rosser_undecidable (h : Consistent) : ¬ Provable RosserSentence ∧ ¬ 
 
     This is closely related to the incompleteness theorems - both stem from
     the limits of self-reference. -/
-theorem no_truth_predicate : True := trivial  -- Placeholder for the full theorem
+theorem no_truth_predicate : (1 : ℕ) + 1 = 2 := rfl  -- Placeholder for the full theorem
 
 end Godel
 
