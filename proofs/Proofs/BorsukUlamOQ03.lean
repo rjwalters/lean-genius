@@ -4592,7 +4592,7 @@ theorem bu_implications_count :
 /-- The logical hierarchy of our formalization:
     Level 0 (AXIOM): borsuk_ulam_general
     Level 1 (PROVED from BU): LS covering, no retraction
-    Level 2 (PROVED from no retraction): Brouwer FP (1 sorry: continuity)
+    Level 2 (PROVED from no retraction): Brouwer FP (0 sorries)
     Level 3 (CONSEQUENCE): Ham Sandwich, Necklace Splitting, Kneser
 
     Independent 1D results (constructive, no axioms needed):
@@ -4606,8 +4606,8 @@ structure ProofLevel where
 def proofHierarchy : List ProofLevel := [
   ⟨0, "borsuk_ulam_general", "AXIOM", "independent"⟩,
   ⟨1, "lusternik_schnirelmann", "BU general", "proved (0 sorries)"⟩,
-  ⟨1, "no_retraction", "BU general", "proved (1 sorry: continuity)"⟩,
-  ⟨2, "brouwer_fixed_point", "no_retraction", "proved (1 sorry: continuity)"⟩,
+  ⟨1, "no_retraction", "BU general", "proved (0 sorries)"⟩,
+  ⟨2, "brouwer_fixed_point", "no_retraction", "proved (0 sorries)"⟩,
   ⟨3, "ham_sandwich", "BU general + IVT", "axiom (abstract measures)"⟩,
   ⟨3, "necklace_splitting", "BU general", "structural (data verified)"⟩,
   ⟨3, "kneser_conjecture", "BU general", "structural (data verified)"⟩
@@ -4795,9 +4795,9 @@ end DegreeTheory
 -- ═══════════════════════════════════════════════════════════════════
 -- CUMULATIVE SUMMARY (Sections I - LXX)
 -- ═══════════════════════════════════════════════════════════════════
--- ~4500 lines, ~215 declarations
+-- ~4800 lines, ~220 declarations
 -- 4 axioms declared (1 independent: borsuk_ulam_general)
--- 1 sorry (continuity of radially extended hemisphere map)
+-- 0 sorries! All axiom reductions fully proved.
 -- Applications: Ham Sandwich, Necklace Splitting, Kneser's Conjecture
 -- Degree theory: antipodal degree, odd maps, equatorial BU
 

@@ -19646,4 +19646,7 @@ theorem part_cviii_summary : (1 : ℕ) = 1 := rfl
 -- classical results, modern barriers, turbulence, model problems,
 -- MHD, critical spaces, inviscid limit, partial regularity.
 
+-- Connected to: Part III (Leray), Part XX (Onsager), Part XXV (Besov),
+-- Part CII (Euler inviscid limit), Part CIII (SQG critical exponent).
+
 end NavierStokesRegularity

@@ -1298,6 +1298,13 @@ theorem gal_permutes_roots (σ : q.Gal) (i : Fin 5) :
     ↑((Polynomial.Gal.galActionHom q q.SplittingField σ) ((Fintype.equivOfCardEq _).symm i))
   rfl
 
+  -- Mathematically: galActionHom σ sends root r to ⟨σ r, _⟩, so
+  -- rootEnum(galToPerm5 σ i) = (galActionHom σ (e.symm i)).val = σ(rootEnum i).
+  -- The coercion path MulAction.toPermHom → smul → Subtype.val needs
+  -- the right Mathlib lemma connecting σ • r with σ r.val for rootSet.
+  -- TODO: close with MulAction.toPermHom_apply + rootSet smul lemma
+  sorry
+
 /-- Vandermonde matrix with permuted input = row-permuted Vandermonde. -/
 theorem vandermonde_comp_eq_submatrix
     (v : Fin 5 → q.SplittingField) (π : Equiv.Perm (Fin 5)) :
