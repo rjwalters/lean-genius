@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Parts 35-36 (derandomization P=BPP, hardness vs randomness, communication complexity, KW approach, lifting theorems)",
+    "progressSummary": "PROGRESS: Added Parts 33-34 (algebrization barrier, GCT, AC⁰[p] lower bounds, monotone circuits, Williams NEXP⊄ACC⁰, Toda PH⊆P^#P)",
     "builtItems": [
       {
         "name": "P",
@@ -599,16 +599,6 @@
       {
         "name": "circuit_lower_bounds",
         "description": "Part 34: Razborov-Smolensky AC⁰[p], monotone circuit bounds, Williams NEXP⊄ACC⁰, Toda PH⊆P^#P (4 theorems)",
-        "proven": true
-      },
-      {
-        "name": "derandomization",
-        "description": "Part 35: P=BPP conjecture, Nisan-Wigderson PRG, hardness-randomness connection (2 theorems)",
-        "proven": true
-      },
-      {
-        "name": "communication_complexity",
-        "description": "Part 36: Yao CC, KW theorem, lifting theorems for circuit bounds (2 theorems)",
         "proven": true
       }
     ],
