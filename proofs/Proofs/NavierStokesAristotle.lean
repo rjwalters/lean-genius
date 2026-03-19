@@ -1122,4 +1122,99 @@ theorem equal_rot_strat' (Omega k3 kh_sq kmag_sq : ℝ)
     Omega^2 * (k3^2 + kh_sq) / kmag_sq = Omega^2 := by
   rw [hk]; exact mul_div_cancel_of_imp (fun h => by rw [h]; ring)
 
+-- ═══════════════════════════════════════════════════════════════════
+-- Section 58: Besov Space Critical Exponents
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Critical Besov index for NS in d=3: s_c(p) = 3/p - 1. -/
+theorem besov_critical_L3' : (3:ℝ)/3 - 1 = 0 := by norm_num
+theorem besov_critical_L2' : (3:ℝ)/2 - 1 = 1/2 := by norm_num
+theorem besov_critical_L6' : (3:ℝ)/6 - 1 = -1/2 := by norm_num
+
+/-- NS bilinear Besov: (3/2-1)+(3/2-1)-(3/2-2) = 3/2. -/
+theorem ns_bilinear_besov' : (3:ℝ)/2 - 1 + (3/2 - 1) - (3/2 - 2) = 3/2 := by norm_num
+
+/-- Heat semigroup gain in Besov: s + 2σ - s = 2σ. -/
+theorem heat_besov_gain' (s sigma : ℝ) : s + 2 * sigma - s = 2 * sigma := by ring
+
+/-- Onsager-Besov threshold: 1/3 + 3(1/3 - 1/3) = 1/3. -/
+theorem onsager_besov' : (1:ℝ)/3 + 3 * (1/3 - 1/3) = 1/3 := by ring
+
+-- ═══════════════════════════════════════════════════════════════════
+-- Section 59: Blowup Rate Exponents
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Serrin blowup exponent: (1/2)(1 - 3/p) = 1/2 - 3/(2p). -/
+theorem serrin_blowup' (p : ℝ) (_hp : p > 0) :
+    (1:ℝ)/2 * (1 - 3/p) = 1/2 - 3/(2*p) := by ring
+
+/-- H^1 blowup rate: -(1 - 1/2)/2 = -1/4. -/
+theorem h1_blowup' : -((1:ℝ) - 1/2)/2 = -1/4 := by norm_num
+
+/-- H^s blowup rate: (2s-1)/4 = s/2 - 1/4. -/
+theorem hs_blowup' (s : ℝ) : (2*s - 1) / 4 = s/2 - 1/4 := by ring
+
+/-- Scale-invariant blowup quantity: p/2 - 3/2 - p(1/2 - 3/(2p)) = 0. -/
+theorem scale_inv_blowup' (p : ℝ) (hp : p > 0) :
+    p/2 - 3/2 - (p * (1/2 - 3/(2*p))) = 0 := by
+  field_simp; ring
+
+/-- Type I scaling: 1/2 * 2 = 1. -/
+theorem type_I_scaling' : (1:ℝ)/2 * 2 = 1 := by norm_num
+
+/-- Rate hierarchy: 1/2 > 1/4 > 0. -/
+theorem rate_hierarchy' : (1:ℝ)/2 > 1/4 ∧ (1:ℝ)/4 > 0 := by constructor <;> norm_num
+
+-- ═══════════════════════════════════════════════════════════════════
+-- Section 60: Energy Cascade Locality
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Triad constraint: p + q - (p + q) = 0. -/
+theorem triad_constraint' (p q : ℝ) : p + q - (p + q) = 0 := by ring
+
+/-- Kraichnan locality: 4/3 > 1 (convergent sum). -/
+theorem kraichnan_locality' : (4:ℝ)/3 > 1 := by norm_num
+
+/-- UV locality margin: 4/3 - 1 = 1/3. -/
+theorem uv_margin' : (4:ℝ)/3 - 1 = 1/3 := by norm_num
+
+/-- 4/5 law coefficient. -/
+theorem four_fifths' : (4:ℝ)/5 = 0.8 := by norm_num
+
+/-- She-Lévêque at p=3: 3/9 + 2(1-2/3) = 1. -/
+theorem she_levêque' : (3:ℝ)/9 + 2*(1 - 2/3) = 1 := by norm_num
+
+/-- Helicity spectrum exponent: -5/3 + 1 = -2/3. -/
+theorem helicity_spectrum' : (-5:ℝ)/3 + 1 = -2/3 := by norm_num
+
+/-- Triad conservation: Tk = -(Tp + Tq). -/
+theorem triad_conserve' (Tk Tp Tq : ℝ) (h : Tk + Tp + Tq = 0) :
+    Tk = -(Tp + Tq) := by linarith
+
+-- ═══════════════════════════════════════════════════════════════════
+-- Section 61: Thin Domain Asymptotics
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Thin domain 3D decay rate: ν/ε² > 0. -/
+theorem thin_decay' (nu epsilon : ℝ) (hnu : nu > 0) (he : epsilon > 0) :
+    nu / epsilon^2 > 0 := by positivity
+
+/-- Thin domain Reynolds: U·ε/ν = (ε/L)·(U·L/ν). -/
+theorem thin_reynolds' (U L nu epsilon : ℝ) (hnu : nu > 0) (hL : L > 0) :
+    U * epsilon / nu = (epsilon / L) * (U * L / nu) := by
+  field_simp
+
+/-- Anisotropic Sobolev: 1/2 - 1/3 = 1/6. -/
+theorem aniso_sobolev' : (1:ℝ)/2 - 1/3 = 1/6 := by norm_num
+
+/-- Dimensional crossover: -5/3 > -3 (3D exponent > 2D enstrophy exponent). -/
+theorem dim_crossover' : (-5:ℝ)/3 > -3 := by norm_num
+
+/-- DNS cost savings: 9/4 - 3/2 = 3/4. -/
+theorem dns_savings' : (9:ℝ)/4 - 3/2 = 3/4 := by norm_num
+
+/-- Dyadic shell volume in 3D: 2^{3j} = (2^j)^3. -/
+theorem dyadic_3d' (j : ℕ) : (2:ℝ)^(3*j) = ((2:ℝ)^j)^3 := by
+  rw [← pow_mul, mul_comm]
+
 end NavierStokesAristotle

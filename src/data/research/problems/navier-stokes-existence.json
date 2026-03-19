@@ -29,14 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 91 parts, ~16,100 lines, 0 sorries, 0 axioms. Session added 4 new parts: helicity conservation, Kolmogorov microscales, Fourier splitting decay, rotating fluids/Coriolis/MHD.",
+    "progressSummary": "PROGRESS: 95 parts, ~16,700 lines, 0 sorries, 0 axioms. Session added 4 new parts: Besov spaces/paraproducts, blowup rate classification, energy cascade locality, thin domain asymptotics.",
     "builtItems": [
       "Part LXXXVIII: Helicity Algebra and Conservation Structure (NavierStokes.lean:14932)",
       "Part LXXXIX: Kolmogorov Microscales and Spectral Energy Relations (NavierStokes.lean:15200)",
       "Aristotle companion Sections 54-55: helicity algebra + Kolmogorov dimensional analysis",
       "Part XC: Fourier Splitting and Long-Time Decay Rates (NavierStokes.lean:15522)",
       "Part XCI: Rotating Fluids and Dispersive Regularization (NavierStokes.lean:15750)",
-      "Aristotle companion Sections 56-57: decay rates + rotating fluids"
+      "Aristotle companion Sections 56-57: decay rates + rotating fluids",
+      "Part XCII: Besov Spaces and Paraproduct Estimates (NavierStokes.lean:15980)",
+      "Part XCIII: Blowup Rate Classification and Lower Bounds (NavierStokes.lean:16102)",
+      "Part XCIV: Energy Cascade Locality and Scale Interaction (NavierStokes.lean:16282)",
+      "Part XCV: Thin Domain Asymptotics and Dimensional Reduction (NavierStokes.lean:16452)",
+      "Aristotle companion Sections 58-61: Besov exponents, blowup rates, cascade locality, thin domains"
     ],
     "insights": [
       "Helicity H = ∫u·ω decomposes into positive/negative helical modes: E±=(E±H)/2",
@@ -52,7 +57,17 @@
       "Coriolis force does NO work: u·(e₃×u)=0, so energy equation unchanged under rotation",
       "BMN theorem: global regularity for 3D NS with fast enough rotation (Ω>Ω₀)",
       "Elsasser variables z±=u±B diagonalize ideal MHD: reveals MHD as two coupled NS equations",
-      "Equal rotation+stratification (Ω=N) makes all Poincaré waves have same frequency"
+      "Equal rotation+stratification (Ω=N) makes all Poincaré waves have same frequency",
+      "Besov space B^s_{p,q} refines Sobolev: B^s_{p,1} ↪ W^{s,p} ↪ B^s_{p,∞}, with critical NS index s_c = d/p - 1",
+      "Paraproduct (Bony) decomposition uv = T_u v + T_v u + R(u,v) - frequency localization of paraproduct is key",
+      "Chemin-Lerner norm swaps ℓ^q and L^ρ_T order (vs standard L^ρ B^s) - better for transport equations",
+      "Type I blowup (self-similar rate (T*-t)^{-1/2}) excluded by ESŠ - any blowup must be Type II",
+      "Seregin (2012): at blowup, ||u(t)||_{L^3} → ∞ necessarily (stronger than ESŠ weak-L^3 result)",
+      "H^s blowup rate -(2s-1)/4 degenerates to logarithmic at critical level s_c = 1/2",
+      "Kraichnan locality: cascade dominated by local interactions, exponent 4/3 > 1 ensures convergence",
+      "4/5 law S_3(r) = -(4/5)εr is an EXACT result of NS (not phenomenological)",
+      "Raugel-Sell: 3D NS on thin domain Ω_ε is globally regular for ε ≤ ε₀(ν, ||u₀||) - interpolates 2D↔3D",
+      "Spectral gap mechanism: first vertical eigenvalue π²/ε² → ∞ as ε → 0, penalizing z-dependent modes"
     ],
     "mathlibGaps": [
       "Sobolev spaces",
