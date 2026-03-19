@@ -473,3 +473,35 @@ Clean build with 2 expected sorries (down from original 2 sorries, now with proo
 ### Next Steps
 - Prove no_subgroup_order_30 via sign homomorphism and A₅ simplicity
 - After that: q_gal_card has 0 structural sorries
+
+---
+
+## Session 2026-03-19 (researcher-3) - A₅ Simplicity Argument
+
+**Mode**: REVISIT (RICH knowledge, score 95)
+**Outcome**: progress
+
+### What I Did
+- Filled sorry 3 (A₅ simplicity) in `no_subgroup_order_30`: complete proof of Case 1
+- Reduced structural sorries from 3 → 2
+- Case 1 proof structure:
+  1. K = H ⊓ A₅ has |K| = 30 = |H|, so K = H (via `Subgroup.eq_of_le_of_Nat_card_le`)
+  2. Therefore H ≤ A₅
+  3. H as subgroup of A₅ has card 30, A₅ has card 60, so index = 2
+  4. Index-2 subgroups are normal (`Subgroup.Normal.of_index_eq_two`)
+  5. A₅ is simple (`Equiv.Perm.isSimpleGroup_five`)
+  6. H ≠ ⊥ (card 30 ≠ 1) and H ≠ ⊤ (card 30 ≠ 60) → contradiction
+
+### Remaining 2 Sorries
+1. `K.relindex H ∣ 2` - Need: ker(sign|_H) has index dividing |ℤˣ|=2
+2. `Nat.card K = 30 ∨ Nat.card K = 15` - Need: Lagrange from relindex
+
+Both express the same fact: the sign homomorphism restricted to H has kernel of index 1 or 2. 
+Possible Mathlib paths:
+- `MonoidHom.index_ker_dvd` or similar for sorry 1
+- `Subgroup.Nat_card_dvd_of_le` + arithmetic for sorry 2
+
+### Files Modified
+- `proofs/Proofs/InverseGaloisA5.lean`: Reduced sorries 3→2, added A₅ simplicity proof
+- `src/data/research/problems/abel-ruffini-oq-01.json`: Updated knowledge
+- `research/problems/abel-ruffini-oq-01/knowledge.md`: This session log

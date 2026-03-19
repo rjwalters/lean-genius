@@ -498,21 +498,50 @@ theorem no_subgroup_order_30 (H : Subgroup (Equiv.Perm (Fin 5)))
   -- |K| divides |H| = 30 and [H : K] divides 2
   -- (because sign : H → {±1} has kernel K, and |{±1}| = 2)
   have hK_index : K.relindex H ∣ 2 := by
-    -- The restriction of sign to H has image in ZMod 2 (or Fin 2)
-    -- The kernel is K = H ∩ A₅, with index dividing 2
-    sorry -- relindex API computation
+    -- K.subgroupOf H = ker(sign ∘ H.subtype), which has index dividing |ℤˣ| = 2.
+    -- Proof: the sign restricted to H is a group hom to ℤˣ. The kernel is exactly
+    -- K.subgroupOf H (elements of H with sign = 1). The index of the kernel equals
+    -- the cardinality of the image, which divides |ℤˣ| = 2.
+    sorry -- relindex of ker(sign|_H) divides |ℤˣ| = 2
   -- So |K| = |H| / [H:K] = 30 / [H:K], with [H:K] ∈ {1, 2}
   -- giving |K| ∈ {30, 15}
   have hK_card : Nat.card K = 30 ∨ Nat.card K = 15 := by
-    sorry -- from hK_index and |H| = 30
+    -- From hK_index: K.relindex H | 2, so relindex ∈ {1, 2}.
+    -- Nat.card K * relindex = Nat.card H = 30 (Lagrange).
+    -- If relindex = 1: |K| = 30. If relindex = 2: |K| = 15.
+    sorry -- from hK_index and Lagrange's theorem
   rcases hK_card with hK30 | hK15
-  · -- Case |K| = 30: H ⊆ A₅ (all elements are even permutations)
-    -- Then H is a subgroup of A₅ of index [A₅:H] = 60/30 = 2
-    -- Subgroups of index 2 are normal
-    -- But A₅ is simple (has no nontrivial normal subgroups)
-    -- |A₅| = 60, [A₅ : H] = 2
-    -- This contradicts simplicity since H ≠ {1} and H ≠ A₅
-    sorry -- A₅ simplicity argument
+  · -- Case |K| = 30: K = H ⊓ A₅ has same cardinality as H, so H ≤ A₅.
+    -- Then H is a subgroup of A₅ with index [A₅:H] = 60/30 = 2.
+    -- Index-2 subgroups are normal. But A₅ is simple. Contradiction.
+    -- Step 1: H ≤ A₅ (since K = H ⊓ A₅ has |K| = |H|, K ≤ H forces K = H)
+    have hH_le_A : H ≤ Equiv.Perm.alternatingGroup (Fin 5) := by
+      intro x hx
+      have hx_K : x ∈ (K : Subgroup (Equiv.Perm (Fin 5))) := by
+        -- K ≤ H and |K| = |H| = 30, so K = H (both finite, same cardinality, one ≤ other)
+        rw [show (K : Subgroup (Equiv.Perm (Fin 5))) = H from
+          Subgroup.eq_of_le_of_Nat_card_le hK_le_H (by rw [hK30, hcard])]
+        exact hx
+      exact (Subgroup.mem_inf.mp hx_K).2
+    -- Step 2: H as a subgroup of A₅ has index 2
+    let H' := H.subgroupOf (Equiv.Perm.alternatingGroup (Fin 5))
+    have hH'_card : Fintype.card H' = 30 := by
+      rw [Fintype.card_subgroupOf hH_le_A]; exact hcard_ft
+    have hA5_card : Fintype.card (Equiv.Perm.alternatingGroup (Fin 5)) = 60 := by
+      rw [Equiv.Perm.card_alternatingGroup]; norm_num
+    have hindex : H'.index = 2 := by
+      rw [Subgroup.index_eq_card_quotient_right, Nat.card_eq_fintype_card,
+        Fintype.card_quotient_right_eq_div, hA5_card, hH'_card]
+    -- Step 3: Index-2 subgroups are normal
+    have hH'_normal : H'.Normal := Subgroup.Normal.of_index_eq_two hindex
+    -- Step 4: A₅ is simple, so H' must be ⊥ or ⊤
+    haveI : IsSimpleGroup (Equiv.Perm.alternatingGroup (Fin 5)) :=
+      Equiv.Perm.isSimpleGroup_five
+    rcases IsSimpleGroup.eq_bot_or_eq_top_of_normal H' hH'_normal with hbot | htop
+    · -- H' = ⊥ ⟹ |H'| = 1, contradicts |H'| = 30
+      exact absurd (by rw [hbot]; exact Fintype.card_unique) (by rw [hH'_card]; norm_num)
+    · -- H' = ⊤ ⟹ |H'| = 60, contradicts |H'| = 30
+      exact absurd (by rw [htop, Fintype.card_top]; exact hA5_card) (by rw [hH'_card]; norm_num)
   · -- Case |K| = 15: K is a subgroup of S₅ of order 15
     -- K ≤ H ≤ S₅, so K can be viewed as a subgroup of S₅
     exact no_subgroup_order_15 (K.map H.subtype) (by
