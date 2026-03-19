@@ -353,6 +353,55 @@ theorem euler_product_nonvanishing {s : ℂ} (hs : 1 < s.re) :
   rw [zeta_euler_product hs]
   exact zeta_nonzero_for_re_gt_one hs
 
+/-- **PNT-strength non-vanishing** (PROVED from Mathlib): ζ(s) ≠ 0 for Re(s) ≥ 1.
+
+    This is strictly stronger than `zeta_nonzero_for_re_gt_one` (Re(s) > 1),
+    including the boundary line Re(s) = 1. The proof of ζ(1+it) ≠ 0 for t ∈ ℝ
+    is due to Hadamard and de la Vallée Poussin (1896, independently) and is
+    equivalent to the Prime Number Theorem.
+
+    Mathlib's proof uses the classical 3-4-1 inequality:
+      3 + 4cos(θ) + cos(2θ) = 2(1 + cos(θ))² ≥ 0 -/
+theorem zeta_nonzero_for_re_ge_one {s : ℂ} (hs : 1 ≤ s.re) : riemannZeta s ≠ 0 :=
+  riemannZeta_ne_zero_of_one_le_re hs
+
+/-- Specialization: ζ(1 + it) ≠ 0 for all real t (PROVED).
+
+    This is the PNT in disguise: the Prime Number Theorem is equivalent to
+    the non-vanishing of ζ on the line Re(s) = 1. -/
+theorem zeta_nonzero_on_one_line (t : ℝ) : riemannZeta (1 + ↑t * Complex.I) ≠ 0 :=
+  zeta_nonzero_for_re_ge_one (by simp [Complex.add_re, Complex.mul_re, Complex.I_re, Complex.I_im])
+
+/-- **Zeros cannot have Re(s) ≥ 1** (PROVED from PNT-strength non-vanishing).
+
+    If ζ(s) = 0, then Re(s) < 1. This eliminates the right half-plane. -/
+theorem zeta_zero_re_lt_one {s : ℂ} (hz : riemannZeta s = 0) : s.re < 1 := by
+  by_contra h_ge
+  push_neg at h_ge
+  exact zeta_nonzero_for_re_ge_one h_ge hz
+
+/-- **Non-trivial zeros must have Re(s) < 1** (PROVED).
+
+    A non-trivial zero is one that is in the critical strip (not a trivial zero
+    at -2, -4, ...) and not at the pole s = 1. Such zeros must satisfy Re(s) < 1,
+    which narrows the search space to the left of Re(s) = 1.
+
+    Combined with the functional equation (which shows Re(s) > 0 for non-trivial
+    zeros — see the main file), this gives 0 < Re(s) < 1 strictly. -/
+theorem nontrivial_zero_re_lt_one {s : ℂ}
+    (hz : riemannZeta s = 0) : s.re < 1 :=
+  zeta_zero_re_lt_one hz
+
+/-- **RH can be restated using just Re(s) < 1** (PROVED):
+    All zeros of ζ in the region Re(s) < 1 that are not trivial have Re(s) = 1/2.
+    The condition Re(s) < 1 is automatic (from `zeta_zero_re_lt_one`). -/
+theorem rh_restated_with_zero_bound (h : RiemannHypothesis) (s : ℂ)
+    (hz : riemannZeta s = 0)
+    (hnt : ¬∃ n : ℕ, s = -2 * (↑n + 1))
+    (h1 : s ≠ 1) :
+    s.re = 1/2 ∧ s.re < 1 :=
+  ⟨h s hz hnt h1, zeta_zero_re_lt_one hz⟩
+
 /-- The critical strip is 0 < Re(s) < 1.
 Non-trivial zeros can only occur here (by non-vanishing for Re(s) > 1
 and the functional equation). -/
