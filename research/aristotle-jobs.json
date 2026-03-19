@@ -2,12 +2,22 @@
   "version": "1.0",
   "description": "Track Aristotle proof search jobs across research sessions",
   "_cleanup_log": {
-    "cleaned_at": "2026-03-19T05:03:00Z",
-    "reason": "Pipeline fix: removed expired, zombie, and ghost completed jobs",
-    "expired_removed": 315,
-    "zombie_removed": 31,
-    "ghost_completed_removed": 30,
-    "total_removed": 376
+    "cleaned_at": "2026-03-19T12:00:00Z",
+    "reason": "Aristotle recovery integration: 1 win (Erdos624 covering_lower_bound + coveringNumber_ge_log proved), 378 solution files processed and moved to aristotle-results/processed/",
+    "previous_cleanup": {
+      "cleaned_at": "2026-03-19T05:03:00Z",
+      "reason": "Pipeline fix: removed expired, zombie, and ghost completed jobs",
+      "expired_removed": 315,
+      "zombie_removed": 31,
+      "ghost_completed_removed": 30,
+      "total_removed": 376
+    },
+    "actions": [
+      "Integrated Erdos624Problem-solved.lean (2 sorries -> 0)",
+      "Moved 378 solution files from aristotle-results/new/ to aristotle-results/processed/",
+      "Updated erdos-624 meta.json: sorries 2->0, badge wip->axiom, status formalized->axiomatized",
+      "Added filename fallback mapping to retrieve-integrate.sh recover_server_completed()"
+    ]
   },
   "jobs": [
     {
