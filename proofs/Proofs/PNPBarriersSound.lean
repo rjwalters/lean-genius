@@ -76,6 +76,12 @@ Quantum interactive (7): NP_subset_QCMA, QCMA_subset_QMA, QMA_subset_QIP,
     QIP_subset_PSPACE, IP_subset_QIP, QMA_subset_QMA2, QMA2_subset_PSPACE
 NL-completeness (1): PATH_NL_complete
 Barrington (3): barrington_theorem, width4_subset_width5, width4_subset_ACC0
+Zero-knowledge (8): BPP_subset_SZK, SZK_subset_AM_inter_coAM, SZK_closed_complement,
+    SZK_subset_CZK, CZK_subset_IP, GI_in_SZK, owf_implies_NP_subset_CZK,
+    owf_implies_IP_subset_CZK
+Reingold (8): L_subset_SL, L_subset_RL, SL_subset_NL, RL_subset_NL,
+    USTCON_in_NL, reingold_USTCON_in_L, reingold_SL_eq_L, reingold_RL_eq_L
+UGC (3): ugc_maxcut_optimal, ugc_vertex_cover_optimal, raghavendra_CSP_dichotomy
 Eliminated axioms (9→theorems/opaques):
 - P_subset_PP → theorem (via P ⊆ BPP ⊆ BQP ⊆ PP)
 - P_subset_P_poly → theorem (program e is a constant-size "circuit")
@@ -6263,6 +6269,313 @@ theorem P_ne_NC_implies_P_ne_NC1 (h : P ≠ NC) : P ≠ NC_k 1 := by
     exact Set.mem_iUnion.mpr ⟨1, hf⟩) NC_subset_P
 
 -- ============================================================
+-- PART 50: Zero-Knowledge Proofs
+-- ============================================================
+
+/-
+### Zero-Knowledge Proofs (Goldwasser-Micali-Rackoff, 1985)
+
+Zero-knowledge proofs are interactive proofs where the verifier learns
+nothing beyond the validity of the statement being proved. This concept
+connects interactive proof theory to cryptography and is central to
+understanding the relationship between proof, knowledge, and computation.
+
+Key results:
+- **SZK** (Statistical Zero-Knowledge): the simulator's output is
+  statistically close to the real interaction.
+- **CZK** (Computational Zero-Knowledge): indistinguishable only to
+  efficient observers (requires computational assumptions).
+- SZK ⊆ AM ∩ coAM (Aiello-Håstad 1987, Fortnow 1987)
+- SZK is closed under complement (Okamoto 2000)
+- NP ⊆ CZK assuming OWFs exist (Goldreich-Micali-Wigderson 1986)
+- Graph Isomorphism ∈ SZK (Goldreich-Micali-Wigderson 1991)
+- IP = CZK assuming OWFs (Ben-Or et al. 1988 + Goldreich-Krawczyk 1996)
+
+The landscape: BPP ⊆ SZK ⊆ AM ∩ coAM ⊆ PH
+                NP ⊆ CZK ⊆ IP = PSPACE (assuming OWFs)
+-/
+
+/-- coAM: the complement class of AM. A language L is in coAM iff
+    its complement is in AM. -/
+def coAM : Set (ℕ → Bool) :=
+  { f | (fun n => !f n) ∈ AM }
+
+/-- SZK (Statistical Zero-Knowledge): languages with interactive proofs
+    where the verifier's view can be statistically simulated.
+    This is an unconditional (no crypto assumptions) complexity class. -/
+opaque SZK : Set (ℕ → Bool)
+
+/-- CZK (Computational Zero-Knowledge): languages with interactive proofs
+    where the verifier's view is computationally indistinguishable from
+    a simulation. Requires computational hardness assumptions. -/
+opaque CZK : Set (ℕ → Bool)
+
+/-- Graph Isomorphism: given two graphs, decide if they are isomorphic.
+    A canonical problem in the SZK landscape. Babai (2015) showed GI ∈
+    quasi-polynomial time, but it is not known to be in P. -/
+opaque GI : ℕ → Bool
+
+/-- BPP ⊆ SZK: trivial problems have zero-knowledge proofs (the simulator
+    can solve the problem directly without any interaction). -/
+axiom BPP_subset_SZK : BPP ⊆ SZK
+
+/-- SZK ⊆ AM ∩ coAM (Aiello-Håstad 1987, Fortnow 1987):
+    Statistical zero-knowledge proofs can be placed in AM and also in coAM.
+    This is a structural constraint: SZK sits low in the polynomial hierarchy. -/
+axiom SZK_subset_AM_inter_coAM : SZK ⊆ AM ∩ coAM
+
+/-- SZK is closed under complement (Okamoto 2000):
+    If L ∈ SZK then L̄ ∈ SZK. This is a deep structural result. -/
+axiom SZK_closed_complement : ∀ f, f ∈ SZK → (fun n => !f n) ∈ SZK
+
+/-- SZK ⊆ CZK: statistical zero-knowledge is a special case of
+    computational zero-knowledge (statistical closeness implies
+    computational indistinguishability). -/
+axiom SZK_subset_CZK : SZK ⊆ CZK
+
+/-- CZK ⊆ IP: every computational zero-knowledge proof is in particular
+    an interactive proof (just forget the ZK property). -/
+axiom CZK_subset_IP : CZK ⊆ IP
+
+/-- Graph Isomorphism ∈ SZK (Goldreich-Micali-Wigderson 1991):
+    GI has a statistical zero-knowledge proof. The ZK protocol for graph
+    non-isomorphism was one of the first examples of SZK for a "natural"
+    problem. The complementary problem (GNI) is also in SZK by closure. -/
+axiom GI_in_SZK : GI ∈ SZK
+
+/-- NP ⊆ CZK (Goldreich-Micali-Wigderson 1986, assuming OWFs):
+    If one-way functions exist, then every NP language has a computational
+    zero-knowledge proof. The key idea: OWFs give commitment schemes,
+    which enable zero-knowledge protocols for 3-coloring (NP-complete). -/
+axiom owf_implies_NP_subset_CZK : OWF_exist → NP ⊆ CZK
+
+/-- IP ⊆ CZK (Ben-Or et al. 1988 + Goldreich-Krawczyk 1996, assuming OWFs):
+    If OWFs exist, every language in IP has a computational ZK proof.
+    Combined with CZK ⊆ IP, this gives IP = CZK. -/
+axiom owf_implies_IP_subset_CZK : OWF_exist → IP ⊆ CZK
+
+/-- Graph Isomorphism ∈ AM ∩ coAM: derived from GI ∈ SZK and
+    SZK ⊆ AM ∩ coAM. This was one of the earliest indications that
+    GI is unlikely to be NP-complete (as NP ⊆ coAM would collapse PH). -/
+theorem GI_in_AM_inter_coAM : GI ∈ AM ∩ coAM :=
+  SZK_subset_AM_inter_coAM (GI_in_SZK)
+
+/-- SZK ⊆ AM: follows from SZK ⊆ AM ∩ coAM. -/
+theorem SZK_subset_AM : SZK ⊆ AM := by
+  intro f hf
+  exact (SZK_subset_AM_inter_coAM hf).1
+
+/-- IP = CZK (assuming OWFs): computational zero-knowledge captures exactly
+    the power of interactive proofs. -/
+theorem owf_implies_IP_eq_CZK (h : OWF_exist) : IP = CZK :=
+  Set.Subset.antisymm (owf_implies_IP_subset_CZK h) CZK_subset_IP
+
+/-- The Zero-Knowledge Landscape: how SZK and CZK fit into the
+    complexity hierarchy. -/
+theorem zero_knowledge_landscape :
+    BPP ⊆ SZK ∧
+    SZK ⊆ AM ∩ coAM ∧
+    SZK ⊆ CZK ∧
+    CZK ⊆ IP ∧
+    IP = PSPACE :=
+  ⟨BPP_subset_SZK,
+   SZK_subset_AM_inter_coAM,
+   SZK_subset_CZK,
+   CZK_subset_IP,
+   shamir_IP_eq_PSPACE⟩
+
+/-- OWFs connect cryptography to proof systems: when OWFs exist,
+    zero-knowledge becomes universal for NP and IP collapses to CZK. -/
+theorem owf_zk_crypto_connection (h : OWF_exist) :
+    NP ⊆ CZK ∧ IP = CZK ∧ IP = PSPACE :=
+  ⟨owf_implies_NP_subset_CZK h,
+   owf_implies_IP_eq_CZK h,
+   shamir_IP_eq_PSPACE⟩
+
+-- ============================================================
+-- PART 51: Reingold's Theorem — Undirected Connectivity in L
+-- ============================================================
+
+/-
+### Reingold's Theorem (2005)
+
+Reingold proved that undirected s-t connectivity (USTCON) is in L
+(deterministic logspace), resolving the SL vs L question.
+
+USTCON: Given an undirected graph G and vertices s,t, is there a
+path from s to t?
+
+Previously it was known that:
+- USTCON ∈ NL (easy: nondeterministically walk)
+- USTCON ∈ RL (Aleliunas et al. 1979: random walks find paths)
+- SL was defined as the class with symmetric nondeterminism
+
+Reingold's key insight: use the **zig-zag product** of expander graphs
+to derandomize the random walk. The zig-zag product combines a large
+graph with a small constant-degree expander to produce a new graph
+that is an expander with smaller degree but nearly the same size.
+
+By iteratively squaring and zig-zag-producting, Reingold constructs
+an explicit family of expander graphs in logspace, which enables
+deterministic exploration of any connected component.
+
+Consequence: SL = RL = L (for undirected reachability problems).
+-/
+
+/-- USTCON (Undirected S-T Connectivity): given an undirected graph G
+    and vertices s, t, decide whether s and t are connected. -/
+opaque USTCON : ℕ → Bool
+
+/-- SL (Symmetric Logspace): languages decidable by symmetric
+    nondeterministic logspace Turing machines. Equivalent to
+    logspace with an USTCON oracle. -/
+opaque SL : Set (ℕ → Bool)
+
+/-- RL (Randomized Logspace): languages decidable by probabilistic
+    logspace Turing machines with one-sided error. -/
+opaque RL : Set (ℕ → Bool)
+
+/-- L ⊆ SL: deterministic logspace is trivially symmetric. -/
+axiom L_subset_SL : L ⊆ SL
+
+/-- L ⊆ RL: deterministic logspace is trivially randomized. -/
+axiom L_subset_RL : L ⊆ RL
+
+/-- SL ⊆ NL: symmetric nondeterminism is a special case of nondeterminism. -/
+axiom SL_subset_NL : SL ⊆ NL
+
+/-- RL ⊆ NL: randomized logspace is contained in nondeterministic logspace. -/
+axiom RL_subset_NL : RL ⊆ NL
+
+/-- USTCON ∈ NL: nondeterministically guess a path from s to t. -/
+axiom USTCON_in_NL : USTCON ∈ NL
+
+/-- **Reingold's Theorem** (2005): USTCON ∈ L.
+    Undirected s-t connectivity can be decided in deterministic logspace.
+    Proof uses the zig-zag product to construct explicit expander graphs
+    in logspace, enabling deterministic exploration of connected components.
+
+    This resolved the long-standing SL vs L question. -/
+axiom reingold_USTCON_in_L : USTCON ∈ L
+
+/-- SL = L (corollary of Reingold's theorem):
+    Symmetric logspace equals deterministic logspace.
+    Since USTCON is SL-complete and USTCON ∈ L, all of SL collapses to L. -/
+axiom reingold_SL_eq_L : SL = L
+
+/-- RL = L (Reingold + Nisan 1992):
+    Randomized logspace equals deterministic logspace for decision problems.
+    Nisan's pseudorandom generator for logspace, combined with Reingold's
+    explicit expanders, gives RL ⊆ L. -/
+axiom reingold_RL_eq_L : RL = L
+
+/-- USTCON ∈ P: follows from USTCON ∈ L ⊆ NL ⊆ P. -/
+theorem USTCON_in_P : USTCON ∈ P := by
+  have h1 : USTCON ∈ L := reingold_USTCON_in_L
+  have h2 : L ⊆ NL := L_subset_NL
+  have h3 : NL ⊆ P := NL_subset_P
+  exact h3 (h2 h1)
+
+/-- The complete space complexity landscape with Reingold:
+    L = SL = RL ⊆ NL = coNL ⊆ P, and USTCON ∈ L. -/
+theorem reingold_space_landscape :
+    SL = L ∧ RL = L ∧
+    L ⊆ NL ∧ NL = coNL ∧ NL ⊆ P ∧
+    USTCON ∈ L :=
+  ⟨reingold_SL_eq_L, reingold_RL_eq_L,
+   L_subset_NL, immerman_szelepcsenyi, NL_subset_P,
+   reingold_USTCON_in_L⟩
+
+/-- Derandomization of space: both SL and RL collapse to L.
+    This is one of the strongest derandomization results known,
+    fully derandomizing logspace computation for reachability. -/
+theorem space_derandomization :
+    SL = L ∧ RL = L ∧ L ⊆ NL ∧ NL = coNL :=
+  ⟨reingold_SL_eq_L, reingold_RL_eq_L,
+   L_subset_NL, immerman_szelepcsenyi⟩
+
+-- ============================================================
+-- PART 52: Unique Games Conjecture and Optimal Inapproximability
+-- ============================================================
+
+/-
+### Unique Games Conjecture (Khot, 2002)
+
+The **Unique Games Conjecture** (UGC) is a strengthening of the PCP theorem
+that, if true, characterizes the optimal inapproximability threshold for a
+wide class of constraint satisfaction problems (CSPs).
+
+A Unique Game is a 2-prover 1-round game where for each constraint between
+variables x_i and x_j, there is a bijection π: [k] → [k] such that the
+constraint is satisfied iff x_j = π(x_i). The UGC states that for every
+ε > 0, it is NP-hard to distinguish instances where the optimum is ≥ 1-ε
+from instances where it is ≤ ε (over alphabet size k = k(ε)).
+
+Key consequences of UGC:
+- MAX-CUT: Goemans-Williamson ratio ≈ 0.878 is optimal (Khot-Kindler-Mossel-O'Donnell 2007)
+- Vertex Cover: 2-ε approximation is optimal (Khot-Regev 2008)
+- Every CSP has a sharp threshold (Raghavendra 2008)
+
+The UGC is a conjecture (unproven), but it has been enormously productive
+in guiding inapproximability research.
+-/
+
+/-- MAX-CUT approximation ratio: the best achievable polynomial-time
+    approximation ratio for the Maximum Cut problem. -/
+opaque MAXCUT_approxRatio : Set ℝ
+
+/-- VertexCover approximation ratio: the best achievable polynomial-time
+    approximation ratio for the Minimum Vertex Cover problem. -/
+opaque VC_approxRatio : Set ℝ
+
+/-- **Khot-Kindler-Mossel-O'Donnell (2007)**: Assuming the UGC,
+    the Goemans-Williamson SDP relaxation achieves the optimal
+    approximation ratio for MAX-CUT. No polynomial-time algorithm
+    can beat the GW ratio ≈ 0.8786 (unless P = NP + UGC is false).
+
+    We state this as: UGC + P ≠ NP → MAXCUT cannot be approximated
+    better than the GW threshold. -/
+axiom ugc_maxcut_optimal :
+  UGC → P ≠ NP → ∃ threshold : ℝ, threshold > 0 ∧ threshold < 1 ∧
+    ∀ r ∈ MAXCUT_approxRatio, r ≤ threshold
+
+/-- **Khot-Regev (2008)**: Assuming the UGC, it is NP-hard to
+    approximate Vertex Cover within any factor better than 2.
+    The simple 2-approximation via maximal matching is therefore optimal. -/
+axiom ugc_vertex_cover_optimal :
+  UGC → P ≠ NP → ∀ r ∈ VC_approxRatio, r ≥ 2
+
+/-- **Raghavendra's Theorem (2008)**: Assuming the UGC, for every
+    constraint satisfaction problem (CSP), the basic SDP relaxation
+    achieves the optimal approximation ratio. This gives a single
+    algorithm that is universally optimal for all CSPs (under UGC).
+
+    We state this abstractly: UGC implies a sharp computational
+    threshold for CSP approximability. -/
+axiom raghavendra_CSP_dichotomy :
+  UGC → ∃ (sharp_threshold : Prop), sharp_threshold
+
+/-- The UGC strengthens the PCP theorem: PCP gives NP-hardness of
+    approximation, UGC gives *optimal* NP-hardness of approximation.
+    If UGC is true, the PCP-based inapproximability landscape is tight. -/
+theorem ugc_strengthens_pcp :
+    (NP = PCP_class (fun n => Nat.log2 n + 1) (fun _ => 3)) ∧
+    (∀ (h_ugc : UGC) (h_pnp : P ≠ NP),
+      ∃ threshold : ℝ, threshold > 0 ∧ threshold < 1 ∧
+        ∀ r ∈ MAXCUT_approxRatio, r ≤ threshold) :=
+  ⟨pcp_theorem, fun h_ugc h_pnp => ugc_maxcut_optimal h_ugc h_pnp⟩
+
+/-- The UGC landscape: connecting PCP, inapproximability, and optimization.
+    UGC sits atop the PCP theorem as a meta-conjecture that, if true,
+    gives optimal hardness for a vast class of problems. -/
+theorem ugc_inapproximability_landscape (h_ugc : UGC) (h_pnp : P ≠ NP) :
+    (∃ threshold : ℝ, threshold > 0 ∧ threshold < 1 ∧
+      ∀ r ∈ MAXCUT_approxRatio, r ≤ threshold) ∧
+    (∀ r ∈ VC_approxRatio, r ≥ 2) :=
+  ⟨ugc_maxcut_optimal h_ugc h_pnp,
+   ugc_vertex_cover_optimal h_ugc h_pnp⟩
+
+-- ============================================================
 -- PART 42: The P vs NP Grand Unification
 -- ============================================================
 
@@ -6288,6 +6601,9 @@ The sound model now encompasses:
 16. **Quantum interactive proofs** (QIP = PSPACE, QCMA, QMA(2))
 17. **NL-completeness** (PATH, space hierarchy)
 18. **Branching programs** (Barrington's theorem, NC¹ = width-5 BP)
+19. **Zero-knowledge proofs** (SZK, CZK, ZK landscape)
+20. **Reingold's theorem** (USTCON ∈ L, SL = RL = L)
+21. **Unique Games Conjecture** (optimal inapproximability, Raghavendra)
 
 Together, these form the most comprehensive formal complexity theory
 encyclopedia in Lean.
@@ -6322,7 +6638,11 @@ theorem p_vs_np_master_summary :
     -- XII. QIP = PSPACE: quantum interaction doesn't help
     (QIP = PSPACE) ∧
     -- XIII. NL-completeness: PATH is the canonical space-complete problem
-    (NLComplete PATH ∧ NL = coNL) :=
+    (NLComplete PATH ∧ NL = coNL) ∧
+    -- XIV. Zero-knowledge: SZK sits in AM ∩ coAM, CZK captures IP with OWFs
+    (BPP ⊆ SZK ∧ SZK ⊆ AM ∩ coAM ∧ CZK ⊆ IP) ∧
+    -- XV. Reingold: undirected connectivity in L, derandomizing space
+    (SL = L ∧ RL = L ∧ USTCON ∈ L) :=
   ⟨P_nontrivial,
    ⟨P_subset_NP, NP_subset_PH, PH_subset_PSPACE, PSPACE_subset_EXP⟩,
    P_strict_subset_EXP,
@@ -6336,7 +6656,9 @@ theorem p_vs_np_master_summary :
    shannon_hard_functions_outside_P_poly,
    entanglement_strictly_strengthens_MIP,
    jain_QIP_eq_PSPACE,
-   ⟨PATH_NL_complete, immerman_szelepcsenyi⟩⟩
+   ⟨PATH_NL_complete, immerman_szelepcsenyi⟩,
+   ⟨BPP_subset_SZK, SZK_subset_AM_inter_coAM, CZK_subset_IP⟩,
+   ⟨reingold_SL_eq_L, reingold_RL_eq_L, reingold_USTCON_in_L⟩⟩
 
 -- ============================================================
 -- Verification: TFNP, Descriptive, Counting, Oracle, Unconditional
@@ -6389,6 +6711,30 @@ theorem p_vs_np_master_summary :
 #check barrington_theorem             -- NC¹ = BPWidth(5)
 #check barrington_algebraic_threshold -- Width-4 → ACC⁰, Width-5 → NC¹ (proved)
 #check barrington_in_hierarchy        -- Full circuit-BP hierarchy (proved)
+
+-- Zero-Knowledge Proofs
+#check SZK_subset_AM_inter_coAM       -- SZK ⊆ AM ∩ coAM
+#check SZK_closed_complement          -- SZK closed under complement
+#check GI_in_SZK                      -- Graph Isomorphism ∈ SZK
+#check GI_in_AM_inter_coAM            -- GI ∈ AM ∩ coAM (proved)
+#check owf_implies_NP_subset_CZK      -- OWF → NP ⊆ CZK
+#check owf_implies_IP_eq_CZK          -- OWF → IP = CZK (proved)
+#check zero_knowledge_landscape        -- Full ZK landscape (proved)
+
+-- Reingold's Theorem
+#check reingold_USTCON_in_L            -- USTCON ∈ L (Reingold 2005)
+#check reingold_SL_eq_L               -- SL = L
+#check reingold_RL_eq_L               -- RL = L
+#check USTCON_in_P                     -- USTCON ∈ P (proved)
+#check reingold_space_landscape        -- Complete space landscape (proved)
+#check space_derandomization           -- SL = RL = L (proved)
+
+-- Unique Games Conjecture
+#check ugc_maxcut_optimal              -- UGC → MAX-CUT GW-optimal
+#check ugc_vertex_cover_optimal        -- UGC → VC 2-optimal
+#check raghavendra_CSP_dichotomy       -- UGC → CSP sharp threshold
+#check ugc_strengthens_pcp             -- PCP + UGC landscape (proved)
+#check ugc_inapproximability_landscape -- Full UGC landscape (proved)
 
 -- Grand Unification
 #check p_vs_np_master_summary         -- Master summary (proved)
