@@ -425,7 +425,7 @@ theorem no_subgroup_order_15 (H : Subgroup (Equiv.Perm (Fin 5)))
       -- this : τ * σ⁻¹ * τ⁻¹ ∈ ↑P₅
       have hprod := (↑P₅ : Subgroup ↥H).mul_mem hσ_mem this
       -- hprod : σ * (τ * σ⁻¹ * τ⁻¹) ∈ ↑P₅
-      convert hprod using 1; group
+      convert hprod using 1
     have hc₃ : c ∈ (↑P₃ : Subgroup ↥H) := by
       rw [hc_def]; show σ * τ * σ⁻¹ * τ⁻¹ ∈ ↑P₃
       have := hN₃.conj_mem τ hτ_mem σ
