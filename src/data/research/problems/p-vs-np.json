@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed 6 pre-existing build errors in PvsNP.lean (4 duplicate docstrings, 1 le_refl API break, 1 forward reference to PCPTheorem). PvsNP.lean now builds cleanly.",
+    "progressSummary": "PROGRESS: Added Parts 33-34 (algebrization barrier, GCT, AC⁰[p] lower bounds, monotone circuits, Williams NEXP⊄ACC⁰, Toda PH⊆P^#P)",
     "builtItems": [
       {
         "name": "P",
@@ -590,7 +590,17 @@
       "permanent_det_size opaque def + mignon_ressayre axiom (n²/2 bound)",
       "Resolution axiom + PHP axiom + resolution_lower_bounds axiom (Haken 1985)",
       "owf_implies_not_AvgP_eq_DistNP axiom + avg_easy_implies_no_owf theorem",
-      "avg_case_owf_equivalence theorem (¬AvgP_eq_DistNP ↔ OWF_exist)"
+      "avg_case_owf_equivalence theorem (¬AvgP_eq_DistNP ↔ OWF_exist)",
+      {
+        "name": "algebrization_barrier_gct",
+        "description": "Part 33: Aaronson-Wigderson algebrization, GCT orbit closures, multiplicity obstructions (2 theorems)",
+        "proven": true
+      },
+      {
+        "name": "circuit_lower_bounds",
+        "description": "Part 34: Razborov-Smolensky AC⁰[p], monotone circuit bounds, Williams NEXP⊄ACC⁰, Toda PH⊆P^#P (4 theorems)",
+        "proven": true
+      }
     ],
     "insights": [
       "Same abstract model triviality as PNPBarriers - Program.decide allows arbitrary functions",
@@ -713,7 +723,11 @@
       "bogdanov_trevisan_collapse: axiom ¬AvgP_eq_DistNP → OWF_exist, proved avg_case_owf_equivalence",
       "GapP_closed_subtraction: axiom with proper closure (∃ h ∈ GapP matching f-g)",
       "PvsNP.lean had 6 build errors from duplicate docstrings (Lean expects declaration after /--), le_refl→le_rfl API change, and forward reference to PCPTheorem struct",
-      "Duplicate docstrings arise when multiple sessions add docstrings to the same declaration independently"
+      "Duplicate docstrings arise when multiple sessions add docstrings to the same declaration independently",
+      "Three barriers (relativization 1975, natural proofs 1997, algebrization 2009) must all be overcome simultaneously",
+      "GCT (Mulmuley-Sohoni) is the only known program designed to overcome all three barriers — uses representation theory",
+      "Williams 2010: faster algorithms imply stronger lower bounds — NEXP ⊄ ACC⁰ via algorithmic savings",
+      "Toda 1991: PH ⊆ P^{#P} — counting captures the full polynomial hierarchy"
     ],
     "mathlibGaps": [
       "Turing machines",

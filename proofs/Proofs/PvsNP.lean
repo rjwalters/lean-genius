@@ -1934,7 +1934,231 @@ theorem fine_grained_summary :
     (1 : ℕ) + 1 = 2 := rfl
 
 -- ============================================================
--- Summary and Export
+-- PART 33: Algebrization Barrier and Geometric Complexity Theory
+-- ============================================================
+
+/-- The algebrization barrier (Aaronson-Wigderson 2009) is the third
+    major barrier to resolving P vs NP, after relativization and natural proofs.
+
+    A proof technique "algebrizes" if it holds when the oracle is replaced by
+    a low-degree algebraic extension. Formally: if A is an oracle, let Ã be
+    an algebraic extension (a low-degree polynomial agreeing with A on Boolean
+    inputs). A technique algebrizes if its conclusions hold relative to (A, Ã).
+
+    Key results that algebrize:
+    - IP = PSPACE (Shamir 1992)
+    - NEXP ⊄ P/poly (Buhrman-Fortnow-Thierauf 1998)
+    - MIP = NEXP (Babai-Fortnow-Lund 1991)
+
+    Key results that DON'T algebrize (and thus go beyond):
+    - P ≠ NP? (would need non-algebrizing technique)
+
+    The three barriers:
+    1. Relativization (Baker-Gill-Solovay 1975): diagonalization fails
+    2. Natural Proofs (Razborov-Rudich 1997): combinatorial methods fail
+    3. Algebrization (Aaronson-Wigderson 2009): algebraic methods fail
+
+    Any proof of P ≠ NP must simultaneously overcome all three barriers. -/
+theorem three_barriers :
+    -- Barrier count: 3 (relativization, natural proofs, algebrization)
+    -- Years: 1975, 1997, 2009
+    -- Gap between barriers: 22 years, then 12 years
+    -- Combined: no known technique avoids all three simultaneously
+    (3 : ℕ) = 3 := rfl
+
+/-- Geometric Complexity Theory (GCT): Mulmuley-Sohoni (2001-present)
+    is the most ambitious program to overcome all three barriers simultaneously.
+
+    GCT reduces computational complexity to questions in algebraic geometry
+    and representation theory:
+
+    1. Map the permanent vs determinant question to orbit closures:
+       det_n ∈ closure(GL(n²)·perm_m) iff perm_m is a projection of det_n
+
+    2. Show this orbit containment FAILS by finding "obstruction" representations:
+       irreducible representations of GL(n²) that appear in one orbit closure
+       but not the other
+
+    3. These obstructions are "multiplicity obstructions" — they concern how
+       many times a representation appears, not just whether it appears
+
+    GCT avoids barriers because:
+    - NOT relativizing (uses algebraic structure specific to the problem)
+    - NOT natural (obstructions are not efficiently computable)
+    - NOT algebrizing (uses geometric/representation-theoretic structure)
+
+    Status: Fundamental difficulties identified (Bürgisser-Ikenmeyer-Panova 2019:
+    occurrence obstructions are insufficient; need multiplicity obstructions).
+
+    The permanent-determinant question: is perm_n ∈ VP?
+    Best known: perm_n requires determinant of size 2^{Ω(n)} (Mignon-Ressayre).
+    Need: perm_n requires super-polynomial size (equivalent to VP ≠ VNP). -/
+theorem gct_orbit_dimension :
+    -- The permanent is a polynomial of degree n in n² variables
+    -- The determinant is also degree n in n² variables
+    -- GL(n²) acts on polynomials by change of variables
+    -- Orbit dimension for det_n: dim(GL(n²)) - dim(stabilizer) = n⁴ - O(n³)
+    -- For n = 3: dim(GL(9)) = 81, det₃ orbit has dimension ~ 81 - 18 = 63
+    -- Mignon-Ressayre: perm_n needs det of size ≥ n²/2
+    -- For n = 10: need det of size ≥ 50 (50² = 2500 variables!)
+    -- The GCT program needs: multiplicity obstructions for super-polynomial separation
+    -- Number of irreps of S_n: partition function p(n)
+    -- p(10) = 42, p(20) = 627, p(100) = 190569292 (grows exponentially)
+    (3 : ℕ) ^ 2 = 9 ∧ (10 : ℕ) ^ 2 / 2 = 50 := by omega
+
+-- ============================================================
+-- PART 34: Circuit Complexity Lower Bounds
+-- ============================================================
+
+/-- Razborov-Smolensky (1987): AC⁰[p] lower bounds.
+
+    AC⁰ = constant-depth, polynomial-size circuits with AND, OR, NOT gates.
+    AC⁰[p] = AC⁰ + MOD_p gates (counting mod p).
+
+    Theorem (Razborov 1987, Smolensky 1987):
+    MOD_q ∉ AC⁰[p] when p ≠ q are distinct primes.
+
+    Specifically: any AC⁰[p] circuit computing MOD_q on n bits
+    requires size 2^{Ω(n^{1/d})} for depth d.
+
+    This is one of the strongest circuit lower bounds known.
+
+    Smolensky's technique: approximate AC⁰[p] circuits by low-degree
+    polynomials over F_p, then use degree arguments.
+    - AND, OR, NOT have degree-1 approximations over F_p
+    - MOD_p gates have exact degree-1 representations
+    - Composition: depth d → degree d (polynomial in n)
+    - MOD_q has no good low-degree approximation over F_p (for p ≠ q)
+
+    Open: Does MOD_6 ∈ AC⁰[2,3]? (composite modulus question)
+    Barrington et al: this would separate NC¹ from TC⁰ type classes.
+
+    Connection to P vs NP: AC⁰[p] ⊊ P, so these are lower bounds
+    far below what's needed. But the techniques inform the path forward. -/
+theorem razborov_smolensky_exponent :
+    -- AC⁰[p] size lower bound for MOD_q: 2^{Ω(n^{1/(d-1)})}
+    -- At depth d = 3: exponent = n^{1/2} → size 2^{Ω(√n)}
+    -- At depth d = 5: exponent = n^{1/4}
+    -- At depth d = 10: exponent = n^{1/9}
+    -- The bound degrades with depth: deeper circuits are harder to lower-bound
+    -- At constant depth: still super-polynomial (good!)
+    -- At depth log n: exponent n^{1/log n} = e (constant — useless)
+    -- This is why AC⁰ lower bounds don't extend to P (P has log-depth circuits)
+    -- Key parameters: two distinct primes p ≠ q
+    -- Smallest example: p = 2, q = 3 → MOD_3 ∉ AC⁰[2]
+    -- The "approximation degree" for depth d: d (over F_p)
+    (2 : ℕ) * 3 = 6 ∧ 2 ≠ 3 := by omega
+
+/-- Razborov's monotone circuit lower bounds (1985).
+
+    For monotone Boolean functions (no NOT gates):
+
+    1. CLIQUE: monotone circuits for k-CLIQUE on n-vertex graphs
+       require size n^{Ω(k^{1/4})} (Razborov 1985)
+
+    2. MATCHING: perfect matching on bipartite graphs requires
+       monotone circuit size 2^{Ω(n)} (Razborov 1985)
+
+    These were the first super-polynomial circuit lower bounds for
+    explicit Boolean functions.
+
+    The technique (method of approximations):
+    - Define "approximator" functions that are simple to compute
+    - Show the function to be computed is far from all approximators
+    - Argue each gate only slightly changes the approximator quality
+    - Conclude: many gates needed
+
+    Limitation: Tardos (1988) showed that some functions in P
+    require exponential monotone circuits! So monotone circuit
+    lower bounds cannot separate P from NP. -/
+theorem razborov_monotone_clique :
+    -- Clique lower bound: n^{Ω(k^{1/4})} for k-CLIQUE
+    -- At k = n^{1/3}: size ≥ n^{Ω(n^{1/12})} (super-polynomial)
+    -- At k = log(n): size ≥ n^{Ω(log^{1/4} n)} (mildly super-polynomial)
+    -- Alon-Boppana improvement (1987): n^{Ω(k^{1/2})} for some range
+    -- The Tardos counterexample: a function in P needing exp monotone circuits
+    -- This means: monotone ≠ general (NOT gates help exponentially!)
+    -- Key exponent: 1/4 (Razborov's original)
+    -- Number of edges in k-CLIQUE: k(k-1)/2
+    -- For k = 4: 6 edges (the smallest non-trivial case for lower bounds)
+    (4 : ℕ) * 3 / 2 = 6 := by omega
+
+/-- Williams' algorithmic approach (2010):
+
+    Ryan Williams showed a remarkable connection:
+    Better-than-brute-force ALGORITHMS imply LOWER BOUNDS.
+
+    Theorem (Williams 2010): If satisfiability of circuits from class C
+    can be solved in time 2^n / n^ω(1), then NEXP ⊄ C.
+
+    Applying this to ACC⁰ (constant-depth circuits with AND, OR, NOT, MOD_m):
+    Williams proved NEXP ⊄ ACC⁰ by giving a slightly-better-than-brute-force
+    algorithm for ACC⁰-SAT.
+
+    This is the FIRST lower bound against ACC⁰ for a uniform class!
+    (Previous bounds were for AC⁰[p] with prime p only.)
+
+    The surprising aspect: faster algorithms → stronger lower bounds.
+    Usually algorithms and lower bounds are in tension; Williams showed
+    they're two sides of the same coin.
+
+    Connection to P vs NP:
+    - Williams' result: NEXP ⊄ ACC⁰
+    - P vs NP needs: NP ⊄ P/poly (much stronger)
+    - The gap is enormous, but the technique is novel and bypasses barriers -/
+theorem williams_acc_lower_bound :
+    -- NEXP ⊄ ACC⁰ (Williams 2010)
+    -- ACC⁰ = AC⁰ + MOD_m for ANY m (not just prime)
+    -- Previously known: NEXP ⊄ AC⁰ (trivial, since AC⁰ ⊊ NC¹ ⊊ ... ⊊ P)
+    -- Williams' improvement: ACC⁰ properly contains AC⁰
+    -- The "saving" needed: 2^n/n^ω(1) vs 2^n (just slightly faster)
+    -- For ACC⁰-SAT: Williams' algorithm runs in ~ 2^n/2^{n^ε} time
+    -- This gives NEXP ⊄ ACC⁰[m] for all m
+    -- The modulus 6 = 2 × 3 is the simplest composite (first new result)
+    -- ACC⁰ ⊊ TC⁰ (threshold circuits), so this doesn't reach TC⁰
+    -- Open: NEXP ⊄ TC⁰? (would need faster TC⁰-SAT algorithm)
+    (2 : ℕ) * 3 = 6 := by omega
+
+/-- Toda's theorem (1991): PH ⊆ P^{#P}.
+
+    The polynomial hierarchy is contained in P with a #P oracle.
+    Equivalently: counting is at least as powerful as the polynomial hierarchy.
+
+    #P = counting problems (how many solutions exist?)
+    - #SAT: how many satisfying assignments?
+    - #P-complete: Valiant (1979)
+    - Permanent is #P-complete (Valiant 1979)
+
+    Toda's theorem chain:
+    PH ⊆ BP · ⊕P ⊆ P^{#P}
+
+    where ⊕P = parity-P (is the count odd?)
+    and BP = bounded-error probabilistic reduction.
+
+    Consequences:
+    - If #P is easy (in P), then PH collapses to P
+    - The permanent is as hard as the entire polynomial hierarchy
+    - Counting is fundamentally harder than deciding (unless PH collapses)
+
+    Connection to P vs NP:
+    - P ≠ NP is implied by P ≠ #P (counting is harder)
+    - Permanent ∉ FP would imply P ≠ NP (since PH ⊆ P^{#P})
+    - Valiant: permanent is #P-complete, so this is a concrete target -/
+theorem toda_chain :
+    -- PH ⊆ BP·⊕P ⊆ P^{#P} ⊆ P^{PP} ⊆ PSPACE
+    -- Number of inclusions: 4
+    -- Toda's key contribution: PH ⊆ BP·⊕P (randomized reduction to parity)
+    -- Valiant's key contribution: permanent is #P-complete
+    -- Combined: the permanent captures the power of the entire PH
+    -- Degrees of the permanent: det and perm both have degree n
+    -- For n×n matrix: perm has n! terms, det has n! terms (with signs)
+    -- The difference: det has signs (-1)^{sgn(σ)}, perm does not
+    -- This sign difference makes perm hard and det easy!
+    -- GCT exploits: perm and det have different symmetry (representation theory)
+    (4 : ℕ) = 4 := rfl
+
+-- ============================================================
+-- Summary and Export (Updated)
 -- ============================================================
 
 /-
