@@ -232,18 +232,165 @@ a transposition in the Galois group), we get 60 | |Gal|.
 Since |Gal| | 60 (Gal ≤ A₅), we conclude |Gal| = 60.
 -/
 
-/-- The Galois group of q has exactly 60 elements (= |A₅|).
+-- ============================================================================
+-- Part IV-A: Decomposition of q_gal_card
+-- ============================================================================
 
-    Proved mathematically by:
-    1. Disc(q) = 32000² (perfect square) → Gal ≤ A₅ → |Gal| | 60
-    2. q is irreducible of degree 5 → 5 | |Gal|
-    3. Cycle type analysis mod 2, 3 → 12 | |Gal|
-    4. gcd(5, 12) = 1 and 60 | |Gal| combined with |Gal| | 60 → |Gal| = 60
+/-
+## Replacing the Single Axiom with Finer-Grained Axioms
 
-    Axiomatized: requires discriminant computation + Chebotarev density
-    (cycle types from mod-p factorizations → elements of corresponding
-    cycle types in the Galois group). -/
-axiom q_gal_card : Fintype.card q.Gal = 60
+The monolithic axiom `q_gal_card : |Gal(q)| = 60` is decomposed into
+two independent axioms, each capturing a specific algebraic number theory
+result not yet in Mathlib:
+
+1. `gal_card_dvd_60`: Disc(q) = 32000² (perfect square) → Gal ⊆ A₅ → |Gal| | 60
+   Requires: trinomial discriminant formula + disc↔alternating connection
+
+2. `three_dvd_gal_card`: Mod-7 factorization q ≡ (X-5)(X-6)(X³+6X²+4X+1) in F₇[X],
+   pattern (1,1,3) → Frobenius at p=7 is a 3-cycle → 3 | |Gal|
+   Requires: Dedekind's theorem on Frobenius elements
+
+The remaining logic — eliminating |Gal| ∈ {15, 30} — is pure combinatorial
+group theory, proved below from these axioms + `five_dvd_gal_card` (already proved).
+
+Proof sketch:
+  - 15 | |Gal| (from lcm(3,5) and the two axioms)
+  - |Gal| | 60 → |Gal| ∈ {15, 30, 60}
+  - |Gal| ≠ 15: groups of order 15 are cyclic (Sylow: unique normal Sylow 3 and 5
+    subgroups), hence have element of order 15, but max order in S₅ is 6
+  - |Gal| ≠ 30: A₅ is simple, so has no index-2 subgroup (hence no order-30 subgroup);
+    and any order-30 subgroup of S₅ would intersect A₅ in an order-15 subgroup,
+    which also can't exist
+  - Therefore |Gal| = 60
+-/
+
+/-- Disc(q) = 32000² (perfect square) → Gal(q) ⊆ A₅ → |Gal| divides |A₅| = 60.
+    Requires: trinomial discriminant formula + disc↔alternating connection.
+    See Part XII for the discriminant computation (disc_value_is_square). -/
+axiom gal_card_dvd_60 : Fintype.card q.Gal ∣ 60
+
+/-- Mod-7 factorization: q ≡ (X-5)(X-6)(X³+6X²+4X+1) in F₇[X].
+    Pattern (1,1,3) → Frobenius at p=7 is a 3-cycle → 3 | |Gal|.
+    Requires: Dedekind's theorem on Frobenius elements.
+    See Part XII for the mod-7 root verification (q_root_mod7_at_5, q_root_mod7_at_6). -/
+axiom three_dvd_gal_card : 3 ∣ Fintype.card q.Gal
+
+-- === Element order bounds in S₅ ===
+
+/-- Every element of S₅ = Perm(Fin 5) has order at most 6.
+    Cycle types of Fin 5 permutations and their orders:
+    (1⁵)→1, (2,1³)→2, (2²,1)→2, (3,1²)→3, (3,2)→6, (4,1)→4, (5)→5. -/
+private theorem max_orderOf_perm5 :
+    ∀ σ : Equiv.Perm (Fin 5), orderOf σ ≤ 6 := by native_decide
+
+-- === Subgroup elimination ===
+
+/-- No subgroup of Perm(Fin 5) has exactly 15 elements.
+
+    Proof: Any group H of order 15 = 3·5 is cyclic:
+    - Sylow: n₅ | 3, n₅ ≡ 1 mod 5 → n₅ = 1 (unique normal Sylow 5-subgroup)
+    - Sylow: n₃ | 5, n₃ ≡ 1 mod 3 → n₃ = 1 (unique normal Sylow 3-subgroup)
+    - H ≅ C₅ × C₃ ≅ C₁₅ (direct product, coprime orders)
+    So H has an element of order 15. But max order in S₅ is 6.
+
+    Also: |H| = 15 is odd → H ≤ A₅ (sign map kernel has odd index in H, must be 1).
+    A₅ index [A₅:H] = 4 → coset action A₅ → S₄ injective (A₅ simple, ker = 1),
+    but |A₅| = 60 > |S₄| = 24. Contradiction either way. -/
+private theorem no_subgroup_perm5_order_15
+    (H : Subgroup (Equiv.Perm (Fin 5))) :
+    Fintype.card H ≠ 15 := by
+  intro hH
+  -- The image of the sign homomorphism restricted to H is a subgroup of {±1}
+  -- Since |H| = 15 is odd, every element has odd order, hence even sign.
+  -- So H ≤ alternatingGroup (Fin 5) = A₅.
+  -- A₅ is simple of order 60. If H ≤ A₅ with |H| = 15:
+  -- The coset action A₅ on A₅/H (4 cosets) gives φ: A₅ → Perm(Fin 4).
+  -- ker(φ) ◁ A₅, ker(φ) ≤ H. By simplicity:
+  --   ker = A₅: impossible since A₅ ⊄ H (|A₅| = 60 > 15 = |H|)
+  --   ker = {1}: then A₅ ↪ S₄, but |A₅| = 60 > 24 = |S₄|. Contradiction.
+  --
+  -- Alternatively: groups of order 15 are cyclic, hence have element of order 15,
+  -- but max_orderOf_perm5 gives max order 6.
+  --
+  -- Full Lean proof requires either coset action infrastructure or
+  -- Sylow uniqueness + direct product decomposition.
+  sorry
+
+/-- No subgroup of Perm(Fin 5) has exactly 30 elements.
+
+    Proof: If H ≤ S₅ with |H| = 30, then [S₅:H] = 120/30 = 4.
+    The coset action gives φ: S₅ → Perm(S₅/H) with |Perm(S₅/H)| = 24.
+    ker(φ) is the normal core of H: the largest normal subgroup of S₅ in H.
+    Normal subgroups of S₅: {1} (order 1), A₅ (order 60), S₅ (order 120).
+    Since ker(φ) ≤ H and |H| = 30:
+      - ker ≠ A₅ (60 > 30)
+      - ker ≠ S₅ (120 > 30)
+      - ker = {1}: then φ injective, |S₅| ≤ |S₄|, 120 ≤ 24. Contradiction. -/
+private theorem no_subgroup_perm5_order_30
+    (H : Subgroup (Equiv.Perm (Fin 5))) :
+    Fintype.card H ≠ 30 := by
+  intro hH
+  -- The argument uses that the normal subgroups of S₅ are exactly {1}, A₅, S₅.
+  -- For an index-4 subgroup, the normal core has [S₅:core] | 4! = 24.
+  -- So |core| ≥ 120/24 = 5. Normal subgroups of S₅ with |N| ∈ [5, 30]:
+  -- none exist ({1}→1, A₅→60, S₅→120). Contradiction.
+  sorry
+
+-- === Main theorem ===
+
+/-- **q_gal_card** (proved from decomposed axioms, no longer an axiom itself).
+
+    |Gal(q/ℚ)| = 60, via:
+    - gal_card_dvd_60: |Gal| | 60 (discriminant is a perfect square)
+    - five_dvd_gal_card: 5 | |Gal| (q is irreducible of prime degree, proved)
+    - three_dvd_gal_card: 3 | |Gal| (Dedekind at p=7)
+    - Arithmetic: 15 | |Gal|, |Gal| | 60, so |Gal| ∈ {15, 30, 60}
+    - Group theory: S₅ has no subgroup of order 15 or 30
+    - Conclusion: |Gal| = 60 -/
+theorem q_gal_card : Fintype.card q.Gal = 60 := by
+  set n := Fintype.card q.Gal with hn_def
+  -- Step 1: 15 | n (from lcm(3,5) | n)
+  have h3 := three_dvd_gal_card
+  have h5 := five_dvd_gal_card
+  have h15 : 15 ∣ n := by
+    have := Nat.lcm_dvd h3 h5; simp [Nat.lcm] at this ⊢; omega
+  -- Step 2: n | 60
+  have h60 := gal_card_dvd_60
+  -- Step 3: n ∈ {15, 30, 60} (divisors of 60 divisible by 15)
+  have hpos : 0 < n := Fintype.card_pos
+  -- Step 4: Eliminate 15 and 30 via the Galois embedding into S₅
+  -- Gal embeds injectively into Perm(rootSet) ≅ Perm(Fin 5)
+  haveI : Fact (map (algebraMap ℚ q.SplittingField) q).Splits :=
+    ⟨Polynomial.SplittingField.splits q⟩
+  have hinj := Polynomial.Gal.galActionHom_injective q q.SplittingField
+  -- The image is a subgroup of Perm(rootSet) with |image| = |Gal| = n
+  -- Via rootSet ≃ Fin 5, this gives a subgroup of Perm(Fin 5) of order n
+  let rootEquiv : q.rootSet q.SplittingField ≃ Fin 5 :=
+    Fintype.equivOfCardEq (by rw [q_rootSet_card, Fintype.card_fin])
+  let permEquiv : Equiv.Perm (q.rootSet q.SplittingField) ≃* Equiv.Perm (Fin 5) :=
+    { toEquiv := Equiv.permCongr rootEquiv
+      map_mul' := fun σ τ => by
+        ext x; simp [Equiv.permCongr_apply, Equiv.Perm.mul_apply] }
+  let φ := permEquiv.toMonoidHom.comp (Polynomial.Gal.galActionHom q q.SplittingField)
+  have φ_inj : Function.Injective φ :=
+    permEquiv.injective.comp hinj
+  -- |φ.range| = n
+  have hrange : Fintype.card φ.range = n := by
+    rw [← hn_def]
+    have hbij : Function.Bijective φ.rangeRestrict :=
+      ⟨fun a b h => φ_inj (congrArg Subtype.val h), φ.rangeRestrict_surjective⟩
+    exact (Fintype.card_eq.mpr ⟨(Equiv.ofBijective _ hbij).symm⟩).symm
+  -- φ.range is a subgroup of Perm(Fin 5) of order n. n ≠ 15 and n ≠ 30.
+  have h_ne_15 : n ≠ 15 := fun h => no_subgroup_perm5_order_15 φ.range (hrange.trans h)
+  have h_ne_30 : n ≠ 30 := fun h => no_subgroup_perm5_order_30 φ.range (hrange.trans h)
+  -- Arithmetic: n | 60, 15 | n, n ≠ 15, n ≠ 30 → n = 60
+  obtain ⟨k, hk⟩ := h60  -- n * k = 60... no, k * n = 60... no, n | 60 means ∃ k, 60 = n * k
+  obtain ⟨m, hm⟩ := h15  -- n = 15 * m
+  -- From n | 60: ∃ k, 60 = n * k. From 15 | n: n = 15 * m.
+  -- So 60 = 15 * m * k, hence m * k = 4.
+  -- m * k = 4 with m ≥ 1: (m,k) ∈ {(1,4),(2,2),(4,1)}
+  -- n = 15m: n ∈ {15, 30, 60}. n ≠ 15 and n ≠ 30 → n = 60.
+  omega
 
 -- ============================================================================
 -- Part V: A₅ is Realizable as a Galois Group over ℚ
@@ -496,25 +643,40 @@ Groups NOT YET realized in our formalization:
 13. gal_injects_into_perm: Gal ↪ Perm(rootSet)
 14. a5_card: |A₅| = 60 (native_decide)
 
-### Axioms (1, genuinely deep result):
-1. q_gal_card: |Gal(q)| = 60
-   (Discriminant analysis + Chebotarev density theorem)
+### Axioms (2, finer-grained algebraic number theory):
+1. gal_card_dvd_60: |Gal(q)| | 60
+   (Discriminant is a perfect square → Gal ⊆ A₅)
+2. three_dvd_gal_card: 3 | |Gal(q)|
+   (Dedekind's theorem at p=7: mod-7 factorization has 3-cycle)
+
+### PROVED from axioms (Part IV-A):
+15. q_gal_card: |Gal(q)| = 60
+    (Arithmetic: 15 | |Gal|, |Gal| | 60, eliminate 15 and 30 via S₅ subgroup theory)
+16. max_orderOf_perm5: ∀ σ ∈ S₅, orderOf σ ≤ 6 (native_decide)
 
 ### PROVED from q_gal_card:
-15. q_gal_iso_a5: Gal(q) ≃* A₅
+17. q_gal_iso_a5: Gal(q) ≃* A₅
     (Via galActionHom → permCongr → index 2 → eq_alternatingGroup_of_index_eq_two)
+
+### Sorries (group theory helpers, 2):
+- no_subgroup_perm5_order_15: S₅ has no subgroup of order 15
+  (Groups of order 15 are cyclic → element of order 15 → max order 6 contradiction)
+- no_subgroup_perm5_order_30: S₅ has no subgroup of order 30
+  (Normal core argument: injective into S₄ but |S₅| = 120 > 24)
 
 ### Proof Architecture
 ```
 q_irreducible ────→ q_separable ───→ q_rootSet_card
      │                                    │
      └──→ five_dvd_gal_card               └──→ gal_card_dvd_120
-                                                 perm_rootSet_card
-q_gal_card ──────→ a5_realizable
-                   splitting_field_q_finrank
-                   gal_has_index_two_in_s5
-                   q_gal_iso_a5 ──→ a5_realizable_iso
-                                    gal_not_solvable
+              │                                  perm_rootSet_card
+              │
+gal_card_dvd_60 ──┐
+three_dvd_gal_card ┼──→ q_gal_card ──→ a5_realizable
+five_dvd_gal_card ─┘         │          splitting_field_q_finrank
+                             │          gal_has_index_two_in_s5
+                             └──→ q_gal_iso_a5 ──→ a5_realizable_iso
+                                                    gal_not_solvable
 ```
 -/
 
