@@ -357,10 +357,12 @@ the L-function has analytic continuation and functional equation.
 structure ModularForm (k N : ℕ) where
   /-- The modular form as a function on the upper half-plane -/
   toFun : ℂ → ℂ
-  /-- Weight k transformation property -/
-  transform : True  -- Placeholder for actual transformation law
-  /-- Holomorphy at cusps -/
-  holomorphic_at_cusps : True
+  /-- Periodicity: f(τ + 1) = f(τ), the simplest consequence of the weight k
+      transformation law for (1 1; 0 1) ∈ Γ₀(N) -/
+  periodic : ∀ τ : ℂ, toFun (τ + 1) = toFun τ
+  /-- Bounded growth at cusps: |f(τ)| stays bounded as Im(τ) → ∞.
+      Equivalent to the q-expansion Σ aₙ qⁿ having no negative powers of q. -/
+  bounded_at_cusp : ∃ C : ℝ, ∀ τ : ℂ, τ.im ≥ 1 → Complex.abs (toFun τ) ≤ C
 
 /-- **The Modularity Theorem** (Wiles 1995, Breuil-Conrad-Diamond-Taylor 2001)
 
@@ -595,6 +597,11 @@ theorem BSD_rank_one (E : EllipticCurveQ)
     : algebraicRank E = 1 ∧ analyticRank E = 1 :=
   ⟨BSD_rank_one_axiom E hL0 hrank, hrank⟩
 
+/-- E has complex multiplication: End(E) ⊗ ℚ ≅ K for some imaginary quadratic K.
+    CM curves have larger endomorphism rings than the generic Z, enabling
+    L-function factorization into Hecke characters. -/
+axiom HasCM : EllipticCurveQ → Prop
+
 /-- **Axiom: CM Case (Coates-Wiles 1977)**
 
     For CM elliptic curves with L(E, 1) ≠ 0, the rank is 0.
@@ -602,7 +609,7 @@ theorem BSD_rank_one (E : EllipticCurveQ)
     quadratic field) that enables direct L-function analysis.
     This is a proven theorem (Coates-Wiles 1977). -/
 axiom BSD_CM_rank_zero_axiom (E : EllipticCurveQ)
-    (hCM : True) (hL : LFunction E 1 ≠ 0) :
+    (hCM : HasCM E) (hL : LFunction E 1 ≠ 0) :
     algebraicRank E = 0
 
 /-- **CM Case (Coates-Wiles 1977)**
@@ -612,7 +619,7 @@ axiom BSD_CM_rank_zero_axiom (E : EllipticCurveQ)
     These curves have extra structure (endomorphisms by an imaginary
     quadratic field) that makes them more tractable. -/
 theorem BSD_CM_rank_zero (E : EllipticCurveQ)
-    (hCM : True) -- Placeholder: E has CM
+    (hCM : HasCM E)
     (hL : LFunction E 1 ≠ 0) :
     algebraicRank E = 0 :=
   BSD_CM_rank_zero_axiom E hCM hL
@@ -1599,8 +1606,9 @@ structure CanonicalHeight (E : EllipticCurveQ) where
   height : ℝ → ℝ  -- Simplified: maps abstract point index to height value
   /-- ĥ(P) ≥ 0 for all P -/
   nonneg : ∀ x, height x ≥ 0
-  /-- ĥ(P) = 0 iff P is torsion -/
-  zero_iff_torsion : True  -- Placeholder for proper characterization
+  /-- Positive definiteness: ĥ(P) = 0 iff P is torsion.
+      In our simplified ℝ model (mod torsion), this says ĥ(x) = 0 → x = 0. -/
+  zero_iff : ∀ x, height x = 0 → x = 0
   /-- Quadratic: ĥ(nP) = n²·ĥ(P) -/
   quadratic : ∀ n : ℤ, ∀ x, height (n * x) = n^2 * height x
 
@@ -2920,6 +2928,12 @@ axiom lambda_ge_rank (E : EllipticCurveQ) (iw : IwasawaData E)
     (hmu : iw.mu = 0) :
     iw.lambda ≥ algebraicRank E
 
+/-- Good ordinary reduction: E has good reduction at p (p ∤ N) and
+    the trace of Frobenius a_p is not divisible by p. This is the condition
+    required for the Mazur-Swinnerton-Dyer p-adic L-function and Iwasawa theory. -/
+def GoodOrdinaryReduction (E : EllipticCurveQ) (p : ℕ) [Fact (Nat.Prime p)] : Prop :=
+  ¬(p ∣ conductor E) ∧ ¬((p : ℤ) ∣ traceOfFrobenius E p)
+
 /-- The Iwasawa Main Conjecture (IMC) for elliptic curves.
 
     Let E/ℚ be an elliptic curve and p an odd prime of good ordinary reduction.
@@ -2940,13 +2954,16 @@ structure IwasawaMainConjecture (E : EllipticCurveQ) where
   hp : Nat.Prime p
   hp_odd : p ≥ 3
   /-- E has good ordinary reduction at p -/
-  good_ordinary : True
-  /-- Kato's divisibility: algebraic side divides analytic side -/
-  kato : True  -- char_Λ(X^∨) | L_p(E)
-  /-- Skinner-Urban's divisibility: analytic divides algebraic -/
-  skinner_urban : True  -- L_p(E) | char_Λ(X^∨)
-  /-- Combined: equality of ideals -/
-  main_conjecture : True  -- char_Λ(X^∨) = (L_p(E))
+  good_ordinary : @GoodOrdinaryReduction E p ⟨hp⟩
+  /-- Kato's divisibility (2004): char_Λ(X^∨) | L_p(E).
+      Key consequence: L(E,1) ≠ 0 implies rank 0 and finite Sha. -/
+  kato : LFunction E 1 ≠ 0 → algebraicRank E = 0
+  /-- Skinner-Urban divisibility (2014): L_p(E) | char_Λ(X^∨).
+      Key consequence: algebraicRank E = 0 implies L(E,1) ≠ 0. -/
+  skinner_urban : algebraicRank E = 0 → LFunction E 1 ≠ 0
+  /-- Combined: equality of characteristic ideals char_Λ(X^∨) = (L_p(E)).
+      Consequence: rank 0 ↔ L(E,1) ≠ 0 (BSD rank 0 for this curve). -/
+  main_conjecture : algebraicRank E = 0 ↔ LFunction E 1 ≠ 0
 
 /-- From the Iwasawa Main Conjecture, one can derive BSD for curves
     with analytic rank 0 or 1 (recovering Kolyvagin's results
@@ -2995,14 +3012,15 @@ structure PadicLFunction (E : EllipticCurveQ) where
   p : ℕ
   hp : Nat.Prime p
   /-- E has good ordinary reduction at p -/
-  good_ordinary : True
+  good_ordinary : @GoodOrdinaryReduction E p ⟨hp⟩
   /-- The value at s = 1 (p-adic interpolation of L(E,1)/Ω) -/
   value_at_one : ℝ  -- representing p-adic value
   /-- The order of vanishing at s = 1 -/
   ord_vanishing : ℕ
-  /-- Interpolation property: L_p(E, 1) = (1 - α_p⁻¹)² · L(E, 1)/Ω_E
-      where α_p is the unit root of x² - a_p x + p -/
-  interpolation : True
+  /-- Interpolation: the p-adic L-function vanishes at s=1 iff the complex one does.
+      This follows from L_p(E, 1) = (1 - α_p⁻¹)² · L(E, 1)/Ω_E where
+      (1 - α_p⁻¹)² ≠ 0 for good ordinary reduction. -/
+  interpolation : (ord_vanishing = 0) ↔ (LFunction E 1 ≠ 0)
 
 /-- For split multiplicative reduction, the p-adic BSD conjecture
     involves an extra factor: the ℒ-invariant.
@@ -3102,7 +3120,7 @@ by ternary quadratic forms is zero.
     BSD implies:    n squarefree, f(n) = 2g(n) ⟹ n congruent -/
 structure TunnellData (n : ℕ) where
   /-- n is squarefree -/
-  squarefree : True
+  squarefree : Squarefree n
   /-- f(n): representations by the first form -/
   f_count : ℕ
   /-- g(n): representations by the second form -/
@@ -3149,7 +3167,7 @@ axiom tunnell_reverse_conditional (n : ℕ) (hn : n > 0) (td : TunnellData n) :
     Since f(5) = 2·g(5), Tunnell's criterion predicts 5 is congruent.
     Indeed, 5 is the area of the 20/3, 3/2, 41/6 right triangle. -/
 def tunnell_5 : TunnellData 5 where
-  squarefree := trivial
+  squarefree := by decide
   f_count := 4
   g_count := 2
 
@@ -3164,7 +3182,7 @@ theorem tunnell_5_criterion : TunnellCriterion 5 tunnell_5 := by
     Actual: f(6) = 2, g(6) = 1
     So f(6) = 2·g(6), predicting 6 is congruent. ✓ -/
 def tunnell_6 : TunnellData 6 where
-  squarefree := trivial
+  squarefree := by decide
   f_count := 2
   g_count := 1
 
@@ -3178,7 +3196,7 @@ theorem tunnell_6_criterion : TunnellCriterion 6 tunnell_6 := by
     f(1) = 2 ≠ 2·2 = 2·g(1) = 4
     So 1 is NOT congruent. ✓ (consistent with one_not_congruent) -/
 def tunnell_1 : TunnellData 1 where
-  squarefree := trivial
+  squarefree := by decide
   f_count := 2
   g_count := 2
 
@@ -3192,7 +3210,7 @@ theorem tunnell_1_not_congruent : ¬TunnellCriterion 1 tunnell_1 := by
     f(2) = 2 ≠ 4 = 2·g(2)
     So 2 is NOT congruent. ✓ (consistent with two_not_congruent) -/
 def tunnell_2 : TunnellData 2 where
-  squarefree := trivial
+  squarefree := by decide
   f_count := 2
   g_count := 2
 
@@ -3209,7 +3227,7 @@ theorem tunnell_2_not_congruent : ¬TunnellCriterion 2 tunnell_2 := by
     f(3) = 4 ≠ 8 = 2·4 = 2·g(3)
     So 3 is NOT congruent. ✓ -/
 def tunnell_3 : TunnellData 3 where
-  squarefree := trivial
+  squarefree := by decide
   f_count := 4
   g_count := 4
 

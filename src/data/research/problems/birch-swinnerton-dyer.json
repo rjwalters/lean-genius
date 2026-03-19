@@ -29,11 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Second quality pass - converted 28 True placeholders to real mathematical content (axioms with typed statements, proved theorems)",
+    "progressSummary": "PROGRESS: Third quality pass - converted 12 more True placeholders to real mathematical content. Down from 14 True fields to 2.",
     "builtItems": [
       "28 True→real conversions in BirchSwinnertonDyer.lean (Parts VIII-LV)",
       "2 proved theorems: parity_conjecture from axiom, bsd_current_status from computation",
-      "File now 6032 lines, 181 insertions / 175 deletions"
+      "File now 6032 lines, 181 insertions / 175 deletions",
+      "TunnellData.squarefree: True→Squarefree n (Mathlib type, 5 construction sites updated)",
+      "GoodOrdinaryReduction predicate: p ∤ conductor ∧ p ∤ a_p (used in IwasawaMainConjecture, PadicLFunction)",
+      "ModularForm.periodic: f(τ+1) = f(τ) (replaces transform: True)",
+      "ModularForm.bounded_at_cusp: bounded growth as Im(τ)→∞ (replaces holomorphic_at_cusps: True)",
+      "HasCM axiom predicate for EllipticCurveQ (replaces hCM: True parameters)",
+      "CanonicalHeight.zero_iff: positive definiteness ĥ(x)=0→x=0 (replaces zero_iff_torsion: True)",
+      "IwasawaMainConjecture.kato/skinner_urban/main_conjecture: L(E,1)≠0 ↔ rank=0",
+      "PadicLFunction.interpolation: ord_vanishing=0 ↔ L(E,1)≠0"
     ],
     "insights": [
       "Gross-Zagier-Kolyvagin theorem can be expressed as axiom: analyticRank E ≤ 1 → algebraicRank E = analyticRank E",
@@ -41,7 +49,10 @@
       "BSD_rank_one axiom improved: hL1:True → hrank:analyticRank E = 1 (proper typing)",
       "bsd_current_status converted from True to proved theorem using bsdStatus computation",
       "IwasawaData.kato_divisibility converted from True to lambda ≥ algebraicRank E",
-      "19 True placeholders remain - all genuine infrastructure gaps (Iwasawa ideals, modular forms, reduction types)"
+      "19 True placeholders remain - all genuine infrastructure gaps (Iwasawa ideals, modular forms, reduction types)",
+      "12 True→real conversions possible without new infrastructure; 2 remaining (finitely_generated, norm_compatible) genuinely require Module.Finite and Galois cohomology",
+      "GoodOrdinaryReduction = p ∤ conductor ∧ p ∤ traceOfFrobenius is the standard definition from arithmetic geometry",
+      "IMC kato/skinner_urban fields can be expressed as rank-0 ↔ L≠0 using existing algebraicRank/LFunction defs"
     ],
     "mathlibGaps": [
       "Torsion subgroup",
@@ -69,7 +80,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.886Z",
-  "lastUpdate": "2026-03-18T22:00:00.000Z",
+  "lastUpdate": "2026-03-19T00:00:00Z",
   "completed": "2026-02-11T05:41:00.786Z",
   "significance": 10,
   "tractability": 1
