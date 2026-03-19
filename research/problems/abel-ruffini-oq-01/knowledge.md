@@ -505,3 +505,52 @@ Possible Mathlib paths:
 - `proofs/Proofs/InverseGaloisA5.lean`: Reduced sorries 3→2, added A₅ simplicity proof
 - `src/data/research/problems/abel-ruffini-oq-01.json`: Updated knowledge
 - `research/problems/abel-ruffini-oq-01/knowledge.md`: This session log
+
+---
+
+## Session 2026-03-19 (researcher-2) - Vandermonde Framework (Part XIII)
+
+**Mode**: REVISIT (RICH knowledge, score 97)
+**Outcome**: progress — decomposed gal_card_dvd_60 axiom
+
+### What I Did
+
+Added Part XIII to InverseGaloisA5.lean: Vandermonde framework for the
+discriminant-alternating group connection. This decomposes the opaque axiom
+`gal_card_dvd_60` into a fully-proved structural theorem plus a more transparent gap.
+
+### Proved Theorems (all 0 sorries, Docker verified)
+
+1. `galToPerm5`: canonical injection Gal(q) →* Perm(Fin 5)
+2. `galToPerm5_injective`: injectivity of the above
+3. `galSign`: sign of Galois element (even/odd root permutation)
+4. `gal_range_le_alternating_of_all_even`: Gal image ⊆ A₅ when all signs = 1
+5. `gal_card_dvd_60_of_all_even`: even perms only → |Gal| | 60 (Lagrange + |A₅|=60)
+6. `rootEnum`: canonical root enumeration Fin 5 → SplittingField q
+7. `rootEnum_is_root`: each rootEnum value is a root of q
+8. `rootEnum_injective`: roots are distinct (from separability)
+9. `vandermondeProduct`: Vandermonde det of roots in splitting field
+10. `vandermondeProduct_ne_zero`: Vandermonde product nonzero
+
+### Axiom Decomposition
+
+| Before | After |
+|--------|-------|
+| `gal_card_dvd_60` (opaque) | `gal_card_dvd_60_of_all_even` (PROVED) + `all_gal_signs_positive` (gap) |
+| Requires: disc↔alternating theory | Requires: disc(f) = Δ² identity only |
+
+The gap `all_gal_signs_positive` follows from:
+1. disc(q) = vandermondeProduct² (standard textbook identity — NOT in Mathlib)
+2. vandermondeProduct² = (algebraMap ℚ _ 32000)² (from 1 + trinomial_disc_computation)
+3. vandermondeProduct ∈ ℚ (from 2 + domain property)
+4. σ(vandermondeProduct) = vandermondeProduct (from 3, σ fixes ℚ)
+5. σ(vandermondeProduct) = galSign(σ) • vandermondeProduct (Vandermonde permutation)
+6. galSign(σ) = 1 (from 4, 5, vandermondeProduct_ne_zero)
+
+Only step 1 is unproved — connecting Polynomial.disc (resultant-based) to
+Matrix.det_vandermonde (product-of-differences-based).
+
+### File Stats
+
+InverseGaloisA5.lean: 1198 lines (was 963), 0 sorries, 2 axioms, Docker verified.
+PR: #4127
