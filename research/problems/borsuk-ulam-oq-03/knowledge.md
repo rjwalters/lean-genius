@@ -335,3 +335,46 @@ Added 5 new sections (XLII-XLVI) with 17 new proved theorems:
 
 ### Stats
 - **Lines**: 3890, **Declarations**: 189, **Axioms**: 4 (1 independent), **Sorries**: 2
+
+## Session 2026-03-19 (researcher-7) - Ball Projection + Retraction Continuity
+
+**Mode**: REVISIT (RICH knowledge from 8+ prior sessions)
+**Outcome**: progress (sorry elimination)
+
+### What I Did
+
+**Compilation bug fix**:
+- Added missing `retractT` definition (was referenced but never defined)
+- Added `retractT_eq_raySphereT` and `retractT_on_sphere` helper theorems
+
+**Section LXV: Ball Projection Infrastructure**:
+- `continuous_nsq'`: nsq is continuous (polynomial in coordinates)
+- `ballProj`: x ↦ x/max(1,√nsq(x)), maps ℝ^k → B^k
+- `continuous_ballProj`: ballProj is globally continuous
+- `ballProj_in_ball`: nsq(ballProj(x)) ≤ 1
+- `ballProj_fix_ball`: ballProj(x) = x when nsq(x) ≤ 1
+
+**Section LXV-B: Complete proof of no_retraction_implies_brouwer_fp**:
+- Eliminated sorry #1 (retraction continuity)
+- Key insight: compose f with ballProj to get a SINGLE formula retraction
+  r(x) = f(p(x)) + t(x)·(p(x) - f(p(x))) — no piecewise definition needed
+- Continuity proved by decomposition: each component (A, B, disc, √, t, r_j)
+  is a composition of continuous functions
+- Division by A = nsq(d) is safe because A > 0 everywhere (f has no fixed point
+  in the ball, and ballProj maps everything to the ball)
+
+### Key Findings
+
+- ballProj approach completely avoids piecewise continuity analysis
+- The max formulation max(1, √nsq(x)) is trivially continuous and always > 0
+- retractT and raySphereT are the same value: B²-A(C-1) = B²+A(1-C)
+- Continuous.div + hA_ne handles the raySphereT division cleanly
+
+### Stats
+- **Lines**: 4087 (from 3940, +147 net)
+- **Axioms**: 5 declared, 1 independent (borsuk_ulam_general)
+- **Sorries**: 1 (down from 2) — hemisphere map continuity remains
+
+### Next Steps
+- Prove hemisphere odd map continuity (pasting lemma for closed hemispheres)
+- Or reformulate g to avoid piecewise, similar to ballProj approach
