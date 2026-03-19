@@ -2,7 +2,7 @@
   "id": "riemann-hypothesis",
   "title": "The Riemann Hypothesis",
   "slug": "riemann-hypothesis",
-  "description": "A comprehensive formalization of the Riemann Hypothesis (6809 lines, 384 proved theorems, 75 axioms, 0 sorries). States RH using Mathlib's zeta function, proves GRH→RH, establishes 8 equivalent formulations with a complete 28-way cross-equivalence network, shows ¬RH forces 4 distinct off-line zeros, and covers the Selberg class, de Bruijn-Newman constant, random matrix theory, and arithmetic consequences.",
+  "description": "A comprehensive formalization of the Riemann Hypothesis (7048 lines, 434 proved theorems, 75 axioms, 0 sorries). States RH using Mathlib's zeta function, proves GRH→RH, establishes 9 equivalent formulations (including Connes' noncommutative geometry) with a complete 36-way cross-equivalence network K₉, shows ¬RH forces 4 distinct off-line zeros, and covers the Selberg class, de Bruijn-Newman constant, random matrix theory, and arithmetic consequences.",
   "meta": {
     "status": "axiomatized",
     "tags": [
@@ -41,14 +41,14 @@
     ],
     "originalContributions": [
       "Formal statement of RH using Mathlib's zeta function",
-      "8 equivalent formulations stated (Robin, Mertens, Lagarias, Speiser, Weil, Nyman-Beurling, de Bruijn-Newman, prime counting)",
+      "9 equivalent formulations stated (Robin, Mertens, Lagarias, Speiser, Weil, Nyman-Beurling, de Bruijn-Newman, prime counting, Connes positivity)",
       "GRH→RH proved from Mathlib's LFunction_modOne_eq",
-      "Complete pairwise equivalence network (28 cross-equivalences proved)",
+      "Complete pairwise equivalence network K₉ (36 cross-equivalences proved)",
       "Counterexample structure: ¬RH implies 4 distinct off-line zeros (proved)",
       "Failure consequences: violation of any formulation forces off-line zeros (proved)",
-      "GRH comprehensive: all 8 formulations + Lindelof from GRH (proved)",
+      "GRH comprehensive: all 9 formulations + Lindelof from GRH (proved)",
       "Zeta conjugation symmetry for Re(s)>1 proved from Dirichlet series",
-      "384 proved theorems/lemmas across both files, 0 sorries"
+      "434 proved theorems/lemmas across both files, 0 sorries"
     ],
     "dateAdded": "12/27/25",
     "hilbertNumber": 8,
@@ -101,11 +101,11 @@
       "title": "Parts XXXIX-XLVI: Structure Theorems (All Proved)",
       "startLine": 3800,
       "endLine": 5155,
-      "summary": "Siegel zeros, critical line proportion (Conrey 2/5), completed zeta structure, analytic properties, equivalence network (28 pairwise equivalences), Euler product algebra, counterexample structure (¬RH→4 off-line zeros), failure consequences, GRH comprehensive (GRH implies all 8+Lindelof)."
+      "summary": "Siegel zeros, critical line proportion (Conrey 2/5), completed zeta structure, analytic properties, equivalence network K₉ (36 pairwise equivalences including Connes' positivity), Euler product algebra, counterexample structure (¬RH→4 off-line zeros), failure consequences, GRH comprehensive (GRH implies all 9+Lindelof)."
     }
   ],
   "conclusion": {
-    "summary": "The Riemann Hypothesis remains one of the deepest unsolved problems in mathematics. This formalization (6809 lines, 384 theorems, 75 axioms, 0 sorries) provides:\n\n1. A precise formal statement using Mathlib's riemannZeta function\n2. 8 equivalent formulations with a complete pairwise equivalence network (28 cross-equivalences proved)\n3. GRH→RH proved from Mathlib's Dirichlet L-function infrastructure\n4. Counterexample structure: ¬RH forces 4 distinct off-line zeros\n5. Deep theory: Selberg class, de Bruijn-Newman constant, random matrix connections\n6. Arithmetic consequences: explicit prime bounds, Linnik constant, Bombieri-Vinogradov\n\nThe 'axiom' badge indicates this formalization assumes deep mathematical results as axioms.",
+    "summary": "The Riemann Hypothesis remains one of the deepest unsolved problems in mathematics. This formalization (7048 lines, 434 theorems, 75 axioms, 0 sorries) provides:\n\n1. A precise formal statement using Mathlib's riemannZeta function\n2. 9 equivalent formulations with a complete K₉ equivalence network (36 cross-equivalences proved)\n3. GRH→RH proved from Mathlib's Dirichlet L-function infrastructure\n4. Counterexample structure: ¬RH forces 4 distinct off-line zeros\n5. Deep theory: Selberg class, de Bruijn-Newman constant, random matrix connections\n6. Arithmetic consequences: explicit prime bounds, Linnik constant, Bombieri-Vinogradov\n7. Connes' noncommutative geometry positivity connected to all other formulations\n\nThe 'axiom' badge indicates this formalization assumes deep mathematical results as axioms.",
     "implications": "If RH is true, it would:\n- Give the best possible error term in the Prime Number Theorem\n- Provide tight bounds on prime gaps: p_{n+1} - p_n = O(sqrt(p_n) log^2 p_n)\n- Enable effective bounds in many number-theoretic problems\n- Have implications for the security analysis of cryptographic systems\n\nIf RH is false, it would be equally revolutionary, revealing unexpected structure in the distribution of primes.",
     "openQuestions": [
       "Is RH true? (The $1 million question)",
