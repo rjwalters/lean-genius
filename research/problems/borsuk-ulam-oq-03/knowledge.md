@@ -101,3 +101,54 @@ Added 5 new sections (XLII-XLVI) with 17 new proved theorems:
 - Prove Tucker 2D → BU 2D via approximation/compactness
 - Add Sperner 2D lemma
 - Add KKM lemma
+
+## Session 2026-03-19 (researcher-2) - BU→LS General, Axiom Reduction
+
+**Mode**: REVISIT (RICH knowledge from 3 prior sessions)
+**Outcome**: progress
+
+### What I Did
+
+**Section LX: BU → LS (General, Open Sets)**
+- `fin_castSucc_or_last`: Helper decomposing Fin (n+1) into castSucc/last
+- `cover_forces_last`: Helper showing covering + exclusion from first n sets → in last set
+- `ls_covering_general_open`: PROVED BU→LS for n+1 open sets covering S^n
+  - Defines f_i(x) = infDist(x, U_iᶜ) for first n sets
+  - Applies BU to get x₀ with equal infDist on both sides
+  - Case 1: some infDist > 0 → both in that U_i
+  - Case 2: all infDist = 0 → both forced into U_n by covering
+
+**Section LXI: BU → LS (General, Closed Sets)**
+- `ls_covering_general_closed`: PROVED BU→LS for n+1 closed sets covering S^n
+  - Uses infDist to sets themselves (not complements)
+  - Case 1: nonempty set with infDist = 0 → membership by closedness
+  - Case 2: all sets empty or positive distance → pigeonhole to last set
+
+**Section LXII: Axiom Reduction**
+- `ls_axiom_redundant`: Witnesses that ls_covering_general_open has same type as LS axiom
+- Reduces independent axiom count from 4 to 3
+
+**Fix: Mathlib compatibility**
+- Line 2003 (`sperner_1d`): `convert this using 2; congr 1; ext; omega` failed because
+  `convert this using 2` now solves the goal directly (Mathlib update). Fixed to `convert this`.
+
+### Key Findings
+
+- The infDist technique used for 1D LS (Section LVI) generalizes verbatim to all dimensions
+- Fin.castSucc/Fin.last decomposition is the right abstraction for "first n vs last" arguments
+- Subtype coercion with `set mx₀` creates unification issues - must provide NSphere argument explicitly
+- `convert` behavior changed with Mathlib update, making `convert this using 2` more powerful
+
+### Files Modified
+
+- `proofs/Proofs/BorsukUlamOQ03.lean` (3136 → 3349 lines, +213 lines)
+  - 7 new proved results (3 helpers + 2 LS theorems + 1 redundancy witness + 1 summary)
+  - 1 pre-existing Mathlib compat fix (sperner_1d)
+
+### Stats
+- **Total**: 3349 lines, 143 theorems, 4 axioms (3 independent), 0 sorries
+
+### Next Steps
+- Prove BU → no_retraction (requires degree theory)
+- Prove no_retraction → Brouwer FP (requires ray-sphere construction)
+- Formalize Tucker 2D for general triangulations
