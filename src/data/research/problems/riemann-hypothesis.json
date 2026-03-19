@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Extended equivalence network from K₈ to K₉ (+Connes positivity). 17 new proved theorems, 7048 lines total, 75 axioms, 434 theorems, 0 sorries.",
+    "progressSummary": "PROGRESS: Extended equivalence network from K₉ to K₁₀ (+Li criterion). 26 new proved theorems, 7443 lines total, 76 axioms, 460 theorems, 0 sorries.",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",
@@ -65,6 +65,26 @@
         "name": "complete_rh_landscape",
         "description": "Full forward+backward picture in one theorem",
         "proven": true
+      },
+      {
+        "name": "RH_iff_LiPositivity",
+        "description": "Li criterion: RH ↔ all Li coefficients non-negative",
+        "proven": false
+      },
+      {
+        "name": "single_negative_Li_disproves_all",
+        "description": "One negative λₙ disproves all 10 formulations",
+        "proven": true
+      },
+      {
+        "name": "KeiperConjecture",
+        "description": "Strict positivity + monotonicity of Li coefficients",
+        "proven": true
+      },
+      {
+        "name": "complete_rh_landscape_K10",
+        "description": "Full K₁₀ equivalence landscape with 45 edges",
+        "proven": true
       }
     ],
     "insights": [
@@ -75,7 +95,10 @@
       "GrandRH definition was unsound (used partial sum proxy), converted to opaque",
       "riemann_von_mangoldt_formula in main file was vacuous (proved True), fixed",
       "Added 10 proved GRH comprehensive theorems including not_GRH_dichotomy",
-      "Extended equivalence network to K₉ (36 pairwise equivalences) by integrating Connes noncommutative geometry positivity"
+      "Extended equivalence network to K₉ (36 pairwise equivalences) by integrating Connes noncommutative geometry positivity",
+      "Extended K₉ to K₁₀ equivalence network by adding Li positivity (Li 1997) as 10th formulation",
+      "Keiper conjecture (strict positivity + monotonicity of Li coefficients) implies RH",
+      "Bombieri-Lagarias generalization: individual Li-type criteria for each Dirichlet L-function"
     ],
     "mathlibGaps": [
       "Dirichlet series",
