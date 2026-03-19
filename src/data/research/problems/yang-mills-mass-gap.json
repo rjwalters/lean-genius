@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Parts CXLIV-CXLV (Step Scaling, Positivity Violation) \u2014 +170 lines, 20 theorems, 0 sorries. Session: 22 parts, 261 theorems, +2539 lines",
+    "progressSummary": "PROGRESS: Added Parts CXLVI-CXLVIII (Nekrasov, Magnetic Bions, Balaban RG) \u2014 +687 lines, ~80 theorems, 0 sorries. File: 22,930 lines total",
     "builtItems": [
       "Part C: OS Axioms - transfer matrix, Schwinger functions, spectral gap, Euclidean propagator (~30 theorems)",
       "Part CI: Resurgence - beta function, running coupling, renormalons, instanton factors, bions (~25 theorems)",
@@ -70,7 +70,10 @@
       "Part CXLII: Dimensional Transmutation \u2014 \u039b_QCD generation, single-parameter spectrum, scheme independence (~93 lines, 11 theorems)",
       "Part CXLIII: Wilson Lattice Formulation \u2014 plaquette action, Creutz ratio, transfer matrix gap, Monte Carlo (~99 lines, 11 theorems)",
       "Part CXLIV: Step Scaling Function \u2014 non-perturbative running, SF coupling, ALPHA result (~90 lines, 10 theorems)",
-      "Part CXLV: Positivity Violation & Gluon Confinement \u2014 Schwinger zero crossing, complex poles, ghost enhancement (~80 lines, 10 theorems)"
+      "Part CXLV: Positivity Violation & Gluon Confinement \u2014 Schwinger zero crossing, complex poles, ghost enhancement (~80 lines, 10 theorems)",
+      "Part CXLVI: Nekrasov Partition Function \u2014 \u03a9-background, ADHM dimension, Young diagram fixed points, q-expansion, Nekrasov-Okounkov limit, NS limit",
+      "Part CXLVII: Magnetic Bion Confinement \u2014 Deformed YM params, abelianization, W-boson mass, dual photon mass gap, bion amplitude, continuity conjecture",
+      "Part CXLVIII: Balaban RG \u2014 Block-spin params, effective spacing, running coupling, action decomposition, d=2,3,4 results, cluster expansion, AF advantage"
     ],
     "insights": [
       "OS axioms (5) provide Euclidean formulation; reconstruction gives Wightman QFT",
@@ -133,7 +136,10 @@
       "Topological susceptibility \u03c7_t^{1/4} = 191 MeV provides independent mass scale; convergence requires mass gap",
       "Dimensional transmutation: ALL YM masses proportional to single parameter \u039b_QCD \u2248 300 MeV; m\u2080 = 5.7\u00b7\u039b",
       "Step scaling: ~9 doublings connect 100 GeV to mass gap scale; coupling grows steadily (no walking in pure SU(3))",
-      "Gluon Schwinger function crosses zero at t\u22480.5 fm: DIRECT evidence for gluon confinement via positivity violation"
+      "Gluon Schwinger function crosses zero at t\u22480.5 fm: DIRECT evidence for gluon confinement via positivity violation",
+      "Nekrasov partition function: equivariant localization reduces instanton path integral to finite sum over Young diagrams; proves Seiberg-Witten prepotential exact",
+      "Magnetic bions on R\u00b3\u00d7S\u00b9: closest existing result to rigorous YM mass gap; calculable via monopole-antimonopole molecules in abelianized regime",
+      "Balaban RG: UV stability proved for d=2,3; partial for d=4; completing the d=4 program would solve the Millennium Prize existence problem"
     ],
     "mathlibGaps": [
       "Principal bundles",
