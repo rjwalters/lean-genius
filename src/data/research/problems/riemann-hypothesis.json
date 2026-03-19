@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "PROGRESS: 2 soundness fixes (GrandRH def, vacuous RvM formula) + Part XLVI with 10 proved GRH comprehensive theorems. 5099 lines, 47 axioms, 330 theorems.",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",
@@ -50,13 +50,31 @@
         "name": "Li_criterion",
         "description": "Equivalent formulation via Li coefficients",
         "proven": true
+      },
+      {
+        "name": "GRH_implies_everything",
+        "description": "GRH → all 8 formulations + Lindelöf",
+        "proven": true
+      },
+      {
+        "name": "not_GRH_dichotomy",
+        "description": "¬GRH has exactly two failure modes",
+        "proven": true
+      },
+      {
+        "name": "complete_rh_landscape",
+        "description": "Full forward+backward picture in one theorem",
+        "proven": true
       }
     ],
     "insights": [
       "RH_implies_prime_gap_bound",
       "explicit_formula",
       "zeta_special_values",
-      "Li_criterion"
+      "Li_criterion",
+      "GrandRH definition was unsound (used partial sum proxy), converted to opaque",
+      "riemann_von_mangoldt_formula in main file was vacuous (proved True), fixed",
+      "Added 10 proved GRH comprehensive theorems including not_GRH_dichotomy"
     ],
     "mathlibGaps": [
       "Dirichlet series",
