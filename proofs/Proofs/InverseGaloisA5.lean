@@ -480,73 +480,62 @@ theorem no_subgroup_order_15 (H : Subgroup (Equiv.Perm (Fin 5)))
 theorem no_subgroup_order_30 (H : Subgroup (Equiv.Perm (Fin 5)))
     (hcard : Nat.card H = 30) : False := by
   haveI : Finite H := Nat.finite_of_card_ne_zero (by rw [hcard]; norm_num)
-  haveI : Fintype H := Fintype.ofFinite H
+  haveI hft : Fintype H := Fintype.ofFinite H
   have hcard_ft : Fintype.card H = 30 := by rwa [Nat.card_eq_fintype_card] at hcard
-  -- The sign homomorphism sign : H → ZMod 2
-  -- The kernel K = H ∩ alternatingGroup has index 1 or 2
-  -- |K| ∈ {15, 30} by Lagrange (index of kernel divides |{±1}| = 2)
-  -- Case 1: |K| = 30 → H ⊆ A₅ → [A₅ : H] = 2 → H normal in A₅
-  --   But A₅ is simple. Contradiction.
-  -- Case 2: |K| = 15 → contradicts no_subgroup_order_15
-  --
-  -- We formalize this by considering H ⊓ alternatingGroup (Fin 5).
-  -- The sign restricted to H is a homomorphism to ZMod 2.
-  -- Its kernel has index dividing 2 in H.
-  let K := H ⊓ Equiv.Perm.alternatingGroup (Fin 5)
-  have hK_le_H : K ≤ H := inf_le_left
-  have hK_le_A : K ≤ Equiv.Perm.alternatingGroup (Fin 5) := inf_le_right
-  -- |K| divides |H| = 30 and [H : K] divides 2
-  -- (because sign : H → {±1} has kernel K, and |{±1}| = 2)
-  have hK_index : K.relindex H ∣ 2 := by
-    -- K.subgroupOf H = ker(sign ∘ H.subtype), which has index dividing |ℤˣ| = 2.
-    -- Proof: the sign restricted to H is a group hom to ℤˣ. The kernel is exactly
-    -- K.subgroupOf H (elements of H with sign = 1). The index of the kernel equals
-    -- the cardinality of the image, which divides |ℤˣ| = 2.
-    sorry -- relindex of ker(sign|_H) divides |ℤˣ| = 2
-  -- So |K| = |H| / [H:K] = 30 / [H:K], with [H:K] ∈ {1, 2}
-  -- giving |K| ∈ {30, 15}
-  have hK_card : Nat.card K = 30 ∨ Nat.card K = 15 := by
-    -- From hK_index: K.relindex H | 2, so relindex ∈ {1, 2}.
-    -- Nat.card K * relindex = Nat.card H = 30 (Lagrange).
-    -- If relindex = 1: |K| = 30. If relindex = 2: |K| = 15.
-    sorry -- from hK_index and Lagrange's theorem
-  rcases hK_card with hK30 | hK15
-  · -- Case |K| = 30: K = H ⊓ A₅ has same cardinality as H, so H ≤ A₅.
-    -- Then H is a subgroup of A₅ with index [A₅:H] = 60/30 = 2.
-    -- Index-2 subgroups are normal. But A₅ is simple. Contradiction.
-    -- Step 1: H ≤ A₅ (since K = H ⊓ A₅ has |K| = |H|, K ≤ H forces K = H)
-    have hH_le_A : H ≤ Equiv.Perm.alternatingGroup (Fin 5) := by
-      intro x hx
-      have hx_K : x ∈ (K : Subgroup (Equiv.Perm (Fin 5))) := by
-        -- K ≤ H and |K| = |H| = 30, so K = H (both finite, same cardinality, one ≤ other)
-        rw [show (K : Subgroup (Equiv.Perm (Fin 5))) = H from
-          Subgroup.eq_of_le_of_Nat_card_le hK_le_H (by rw [hK30, hcard])]
-        exact hx
-      exact (Subgroup.mem_inf.mp hx_K).2
-    -- Step 2: H as a subgroup of A₅ has index 2
+  -- Strategy: split on whether H ≤ A₅ (avoids relindex API entirely).
+  -- Case 1 (H ≤ A₅): index-2 subgroup of simple A₅ → contradiction.
+  -- Case 2 (H ⊄ A₅): sign|_H surjective, ker = H ∩ A₅ has order 15 → contradiction.
+  by_cases hle : H ≤ Equiv.Perm.alternatingGroup (Fin 5)
+  · -- Case 1: H ≤ A₅. Then [A₅ : H] = 60/30 = 2, H is normal, contradicts A₅ simple.
     let H' := H.subgroupOf (Equiv.Perm.alternatingGroup (Fin 5))
     have hH'_card : Fintype.card H' = 30 := by
-      rw [Fintype.card_subgroupOf hH_le_A]; exact hcard_ft
+      rw [Fintype.card_subgroupOf hle]; exact hcard_ft
     have hA5_card : Fintype.card (Equiv.Perm.alternatingGroup (Fin 5)) = 60 := by
       rw [Equiv.Perm.card_alternatingGroup]; norm_num
     have hindex : H'.index = 2 := by
       rw [Subgroup.index_eq_card_quotient_right, Nat.card_eq_fintype_card,
         Fintype.card_quotient_right_eq_div, hA5_card, hH'_card]
-    -- Step 3: Index-2 subgroups are normal
     have hH'_normal : H'.Normal := Subgroup.Normal.of_index_eq_two hindex
-    -- Step 4: A₅ is simple, so H' must be ⊥ or ⊤
     haveI : IsSimpleGroup (Equiv.Perm.alternatingGroup (Fin 5)) :=
       Equiv.Perm.isSimpleGroup_five
     rcases IsSimpleGroup.eq_bot_or_eq_top_of_normal H' hH'_normal with hbot | htop
-    · -- H' = ⊥ ⟹ |H'| = 1, contradicts |H'| = 30
-      exact absurd (by rw [hbot]; exact Fintype.card_unique) (by rw [hH'_card]; norm_num)
-    · -- H' = ⊤ ⟹ |H'| = 60, contradicts |H'| = 30
-      exact absurd (by rw [htop, Fintype.card_top]; exact hA5_card) (by rw [hH'_card]; norm_num)
-  · -- Case |K| = 15: K is a subgroup of S₅ of order 15
-    -- K ≤ H ≤ S₅, so K can be viewed as a subgroup of S₅
+    · exact absurd (by rw [hbot]; exact Fintype.card_unique) (by rw [hH'_card]; norm_num)
+    · exact absurd (by rw [htop, Fintype.card_top]; exact hA5_card) (by rw [hH'_card]; norm_num)
+  · -- Case 2: H ⊄ A₅. The sign hom restricted to H is surjective,
+    -- so its kernel (= H ∩ A₅) has |H|/|ℤˣ| = 30/2 = 15 elements.
+    let K := H ⊓ Equiv.Perm.alternatingGroup (Fin 5)
+    -- The sign restricted to H: signH : H →* ℤˣ
+    let signH : H →* ℤˣ := Equiv.Perm.sign.comp H.subtype
+    -- signH is surjective because H contains an odd permutation
+    have hsurj : Function.Surjective signH := by
+      push_neg at hle
+      obtain ⟨σ, hσH, hσ_not_A⟩ := hle
+      rw [Equiv.Perm.mem_alternatingGroup] at hσ_not_A
+      intro y
+      rcases Int.units_eq_one_or y with hy | hy
+      · exact ⟨⟨1, H.one_mem⟩, by simp [signH, hy]⟩
+      · refine ⟨⟨σ, hσH⟩, ?_⟩
+        simp only [signH, MonoidHom.coe_comp, Function.comp_apply, Subgroup.coe_subtype,
+          Subgroup.coe_mk]
+        rw [hy]
+        rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h1 | h1
+        · exact absurd h1 hσ_not_A
+        · exact h1
+    -- The kernel of signH equals K.subgroupOf H
+    have hker_eq : signH.ker = K.subgroupOf H := by
+      ext ⟨x, hx⟩
+      simp only [MonoidHom.mem_ker, signH, MonoidHom.coe_comp, Function.comp_apply,
+        Subgroup.coe_subtype, Subgroup.mem_subgroupOf, Subgroup.mem_inf]
+      exact ⟨fun h => ⟨hx, Equiv.Perm.mem_alternatingGroup.mpr h⟩,
+             fun ⟨_, h⟩ => Equiv.Perm.mem_alternatingGroup.mp h⟩
+    -- |ker signH| * |range signH| = |H| by first isomorphism theorem.
+    -- |range signH| = |ℤˣ| = 2 (surjective). So |ker| = 30/2 = 15.
+    -- ker signH ≅ K.subgroupOf H, so |K| = 15.
+    have hK_card : Nat.card K = 15 := by
+      sorry -- First isomorphism theorem: |ker| = |H|/|ℤˣ| = 30/2 = 15, then K ≅ ker
     exact no_subgroup_order_15 (K.map H.subtype) (by
       rw [Nat.card_congr (Subgroup.equivMapOfInjective K H.subtype Subtype.val_injective).symm]
-      exact hK15)
+      exact hK_card)
 
 /-- |Gal(q)| ≠ 15: Gal embeds into S₅ which has no subgroup of order 15. -/
 theorem gal_card_ne_15 : Fintype.card q.Gal ≠ 15 := by
@@ -880,8 +869,10 @@ Groups NOT YET realized in our formalization:
 4. ~~four_dvd_gal_card~~: replaced by no_subgroup_order_30 (A₅ simple)
 
 ### Structural lemmas (Part IV-A):
-15. no_subgroup_order_15: S₅ has no subgroup of order 15 (sorry — Sylow)
-16. no_subgroup_order_30: S₅ has no subgroup of order 30 (sorry — A₅ simple)
+15. no_subgroup_order_15: S₅ has no subgroup of order 15 (PROVED — Sylow + native_decide)
+16. no_subgroup_order_30: S₅ has no subgroup of order 30 (1 sorry — first isom. thm step)
+    Case 1 (H ≤ A₅): PROVED via A₅ simplicity
+    Case 2 (H ⊄ A₅): sorry on |ker(sign|_H)| = 15 via first isom. thm
 17. gal_card_ne_15: |Gal| ≠ 15 (via embedding + #15)
 18. gal_card_ne_30: |Gal| ≠ 30 (via embedding + #16)
 
