@@ -216,8 +216,9 @@ structure MordellWeilGroup (E : EllipticCurveQ) where
   /-- Type representing rational points -/
   carrier : Type*
   [addCommGroup : AddCommGroup carrier]
-  /-- Mordell-Weil theorem: E(ℚ) is finitely generated -/
-  finitely_generated : True  -- Placeholder for Module.Finite ℤ carrier
+  /-- Mordell-Weil theorem: E(ℚ) is finitely generated as a ℤ-module.
+      This is the standard Mathlib formulation of finite generation. -/
+  finitely_generated : Module.Finite ℤ carrier
 
 attribute [instance] MordellWeilGroup.addCommGroup
 
@@ -3646,8 +3647,10 @@ structure EulerSystem (E : EllipticCurveQ) where
   hp : Nat.Prime p
   /-- The "bottom" class c_ℚ ∈ H¹(ℚ, V_p(E)) -/
   bottom_class_nonzero : Bool
-  /-- Norm compatibility verified -/
-  norm_compatible : True
+  /-- Norm compatibility requires good reduction at p (p ∤ conductor N).
+      The full distribution relation cores_{L/K}(c_L) = P_q(σ_q⁻¹) · c_K
+      requires Galois cohomology infrastructure not yet available in Mathlib. -/
+  norm_compatible : ¬(p ∣ conductor E)
 
 /-- Kolyvagin's Euler system from Heegner points.
 
