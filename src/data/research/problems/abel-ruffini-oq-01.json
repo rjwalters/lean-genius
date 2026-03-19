@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-02-21T19:21:07.129Z",
-    "iteration": 6,
-    "focus": "Mathlib API compatibility fixes",
+    "iteration": 7,
+    "focus": "Proved a5_not_solvable in InverseGaloisA5.lean (was axiom)",
     "blockers": [
       "Kronecker-Weber not in Mathlib",
       "Hilbert irreducibility not in Mathlib"
@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed 6 Mathlib API breakages in InverseGalois.lean. Forward reference, dead code, associated_of_dvd, classical, field_simp, permCongr. 1066 lines, 2 intentional sorries, 0 axioms.",
+    "progressSummary": "PROGRESS: Proved a5_not_solvable in InverseGaloisA5.lean — A₅ is not solvable, proved via short exact sequence 1→A₅→S₅→ℤ/2→1 using Equiv.Perm.not_solvable from Mathlib. Reduced axioms from 6 to 5. 0 sorries.",
     "builtItems": [
       "InverseGalois.lean: cyclotomic Galois theory, S₃ realization via Gal(X³-2)≅S₃ (905 lines, builds)",
       "InverseGaloisD4.lean: D₄ realization via |Gal(X⁴-2)| = 8 (666 lines, builds)",
@@ -51,7 +51,8 @@
       "Rewrote no_root_of_irreducible_degree_ndvd with isUnit_or_isUnit approach",
       "Added classical to gal_card_dvd_six and x_cube_sub_2_gal_iso_s3_proved",
       "Simplified cube_root_ratio_satisfies_cyclotomic via field_simp",
-      "Fixed permCongr Equiv→MulEquiv in x_cube_sub_2_gal_iso_s3_proved"
+      "Fixed permCongr Equiv→MulEquiv in x_cube_sub_2_gal_iso_s3_proved",
+      "a5_not_solvable theorem (was axiom): ¬IsSolvable (alternatingGroup (Fin 5)) proved in InverseGaloisA5.lean"
     ],
     "insights": [
       "Cyclotomic irreducibility over ℚ IS in Mathlib: Polynomial.cyclotomic.irreducible_rat",
@@ -69,7 +70,8 @@
       "Nat.forall_exists_prime_gt_and_modEq API changed: now takes (n : ℕ) {q a : ℕ} (hq : q ≠ 0) (h : a.Coprime q)",
       "PR #3974 was closed as superseded but its changes were NOT present on main - always verify closures",
       "AdjoinRoot approach (cofactor_has_no_root) is dead code when splitting field approach is used",
-      "classical is more robust than haveI : DecidableEq for Perm/Fintype synthesis"
+      "classical is more robust than haveI : DecidableEq for Perm/Fintype synthesis",
+      "a5_not_solvable proved via solvable_of_ker_le_range: if A₅ solvable → S₅ solvable via A₅↪S₅↠ℤ/2, contradicting Equiv.Perm.not_solvable"
     ],
     "mathlibGaps": [],
     "nextSteps": [
