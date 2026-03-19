@@ -17034,7 +17034,7 @@ theorem kkn_su2_range :
   unfold kknPrediction_su2
   constructor
   · rw [div_lt_div_iff (by norm_num) Real.pi_pos]
-    calc (3 : ℝ) * Real.pi < 3 * 3.1416 := by nlinarith [Real.pi_lt_3141593]
+    calc (3 : ℝ) * Real.pi < 3 * 3.1416 := by nlinarith [pi_lt_3141593]
     _ = 9.4248 := by norm_num
     _ < 10 := by norm_num
   · rw [div_lt_div_iff Real.pi_pos (by norm_num)]
@@ -19633,20 +19633,20 @@ theorem coupling_decreases_af (α₀ b t : ℝ) (hα : α₀ > 0) (hb : b > 0) (
 
 /-- Λ_QCD from dimensional transmutation:
     Λ = μ · exp(-1/(2b·α(μ²))). -/
-noncomputable def lambdaQCD (μ α₀ b : ℝ) : ℝ :=
+noncomputable def lambdaQCD_af (μ α₀ b : ℝ) : ℝ :=
   μ * Real.exp (-1 / (2 * b * α₀))
 
 /-- Λ_QCD is positive. -/
 theorem lambdaQCD_pos_af (μ α₀ b : ℝ) (hμ : μ > 0) :
-    lambdaQCD μ α₀ b > 0 := by
-  unfold lambdaQCD
+    lambdaQCD_af μ α₀ b > 0 := by
+  unfold lambdaQCD_af
   exact mul_pos hμ (Real.exp_pos _)
 
 /-- Λ_QCD is much smaller than μ (exponentially suppressed at weak coupling). -/
 theorem lambdaQCD_small (μ α₀ b : ℝ) (hμ : μ > 0) (hα : α₀ > 0)
     (hb : b > 0) :
-    lambdaQCD μ α₀ b < μ := by
-  unfold lambdaQCD
+    lambdaQCD_af μ α₀ b < μ := by
+  unfold lambdaQCD_af
   have h1 : Real.exp (-1 / (2 * b * α₀)) < 1 := by
     rw [Real.exp_lt_one_iff_neg]
     apply neg_neg_of_neg
@@ -19667,10 +19667,8 @@ theorem two_loop_positive (N : ℕ) (hN : N ≥ 2) :
     twoLoopBeta1 N 0 > 0 := by
   unfold twoLoopBeta1
   simp
-  apply div_pos
-  · have : (N : ℝ) ≥ 2 := by exact_mod_cast hN
-    nlinarith
-  · norm_num
+  have : (N : ℝ) ≥ 2 := by exact_mod_cast hN
+  positivity
 
 /-- Asymptotic safety: coupling approaches g* > 0 at UV.
     This does NOT happen in Yang-Mills (which is AF, g → 0 at UV).
@@ -19795,20 +19793,24 @@ theorem cpnMassGap_pos (p : CPNModelParams) : cpnMassGap p > 0 := by
     at weak coupling). -/
 theorem cpnMassGap_lt_cutoff (p : CPNModelParams) : cpnMassGap p < p.uvCutoff := by
   unfold cpnMassGap
+  have hpN : 0 < p.N := by have := p.hN; omega
   have h_neg : -2 * Real.pi / ((p.N : ℝ) * p.g_sq) < 0 := by
     apply div_neg_of_neg_of_pos
     · linarith [Real.pi_pos]
-    · exact mul_pos (by exact_mod_cast (show 0 < p.N by omega)) p.hg
+    · exact mul_pos (by exact_mod_cast hpN) p.hg
   have hexp : Real.exp (-2 * Real.pi / ((p.N : ℝ) * p.g_sq)) < 1 := by
     have := Real.exp_strictMono h_neg; rwa [Real.exp_zero] at this
-  nlinarith
+  have := mul_lt_mul_of_pos_left hexp p.hΛ
+  rw [mul_one] at this
+  linarith
 
 /-- The exponent in the mass formula is negative (ensures m < Λ). -/
 theorem cpnExponent_neg (p : CPNModelParams) :
     -2 * Real.pi / ((p.N : ℝ) * p.g_sq) < 0 := by
   apply div_neg_of_neg_of_pos
   · linarith [Real.pi_pos]
-  · exact mul_pos (by exact_mod_cast (show 0 < p.N by omega)) p.hg
+  · have : 0 < p.N := by have := p.hN; omega
+    exact mul_pos (by exact_mod_cast this) p.hg
 
 /-- Instanton action in CP^{N-1}: S(Q) = 2π · Q where Q ∈ ℕ is the
     topological charge magnitude (from π₂(CP^{N-1}) ≅ ℤ).
@@ -19967,7 +19969,9 @@ theorem gnDynamicalMass_lt_cutoff (p : GrossNeveuParams) :
     div_neg_of_neg_of_pos (by linarith [Real.pi_pos]) p.hg
   have hexp : Real.exp (-Real.pi / p.g_sq) < 1 := by
     have := Real.exp_strictMono h_neg; rwa [Real.exp_zero] at this
-  nlinarith
+  have := mul_lt_mul_of_pos_left hexp p.hΛ
+  rw [mul_one] at this
+  linarith
 
 /-- The fermion condensate ⟨ψ̄ψ⟩ = -Nm/(2π) in the broken phase.
     Non-zero condensate signals spontaneous discrete chiral symmetry breaking. -/
@@ -20008,15 +20012,15 @@ theorem gnKinkMass_pos (N : ℕ) (m : ℝ) (hN : N ≥ 1) (hm : m > 0) :
 theorem gnKinkMass_heavy (N : ℕ) (m : ℝ) (hN : N ≥ 4) (hm : m > 0) :
     gnKinkMass N m > m := by
   unfold gnKinkMass
-  -- Goal: (N : ℝ) * m / π > m, i.e., m * (N - π) / π > 0
-  rw [gt_iff_lt, ← sub_pos]
-  have h1 : (N : ℝ) * m / Real.pi - m = m * ((N : ℝ) - Real.pi) / Real.pi := by ring
-  rw [h1]
-  apply div_pos
-  · apply mul_pos hm
-    have hNR : (N : ℝ) ≥ 4 := by exact_mod_cast hN
-    linarith [Real.pi_lt_3141593]
-  · exact Real.pi_pos
+  -- Goal: (N : ℝ) * m / π > m
+  have hpi := Real.pi_pos
+  have hNR : (N : ℝ) ≥ 4 := by exact_mod_cast hN
+  have h1 : m * Real.pi < (N : ℝ) * m := by nlinarith [pi_lt_3141593]
+  rw [gt_iff_lt]
+  have h2 : m * Real.pi / Real.pi < (N : ℝ) * m / Real.pi :=
+    div_lt_div_of_pos_right h1 hpi
+  have h3 : m * Real.pi / Real.pi = m := by field_simp
+  linarith
 
 /-- Large-N free energy density: F = -Nm²/(4π).
     The free energy is extensive in N and quadratic in the mass gap. -/
@@ -20098,8 +20102,8 @@ theorem qcd2Tension_pos (lambda : ℝ) (hl : lambda > 0) :
   exact div_pos hl (mul_pos (by norm_num : (2 : ℝ) > 0) Real.pi_pos)
 
 /-- String tension grows with the coupling. -/
-theorem qcd2Tension_monotone (λ₁ λ₂ : ℝ) (h : λ₁ < λ₂) :
-    qcd2Tension λ₁ < qcd2Tension λ₂ := by
+theorem qcd2Tension_monotone (lam₁ lam₂ : ℝ) (h : lam₁ < lam₂) :
+    qcd2Tension lam₁ < qcd2Tension lam₂ := by
   unfold qcd2Tension
   exact div_lt_div_of_pos_right h (mul_pos (by norm_num : (2 : ℝ) > 0) Real.pi_pos)
 
@@ -20128,7 +20132,8 @@ theorem qcd2MesonMassSq_pos (lambda : ℝ) (hl : lambda > 0) (n : ℕ) :
   unfold qcd2MesonMassSq
   apply mul_pos
   · exact mul_pos Real.pi_pos hl
-  · linarith [Nat.cast_nonneg n]
+  · have : (n : ℝ) ≥ 0 := Nat.cast_nonneg n
+    linarith
 
 /-- The lightest meson (n=0) has mass squared πλ > 0. This IS the mass gap. -/
 theorem qcd2MassGap_val (lambda : ℝ) :
