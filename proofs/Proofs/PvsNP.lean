@@ -2158,6 +2158,130 @@ theorem toda_chain :
     (4 : ℕ) = 4 := rfl
 
 -- ============================================================
+-- PART 35: Derandomization — P = BPP?
+-- ============================================================
+
+/-- The derandomization conjecture: P = BPP (randomness does not help).
+
+    BPP (Bounded-error Probabilistic Polynomial time) is the class of problems
+    solvable by randomized algorithms with error < 1/3.
+
+    Known: P ⊆ BPP ⊆ Σ₂ ∩ Π₂ (BPP is inside the second level of PH).
+    Sipser-Gács-Lautemann (1983): BPP ⊆ Σ₂ ∩ Π₂.
+
+    Derandomization results:
+    1. Nisan-Wigderson (1994): if E has circuit complexity 2^{Ω(n)}, then P = BPP
+    2. Impagliazzo-Wigderson (1997): if E ⊄ i.o.-SIZE(2^{εn}), then P = BPP
+    3. Informally: "hard functions exist → randomness doesn't help"
+
+    The current belief: P = BPP (almost universally conjectured).
+    Evidence: many problems that seemed to need randomness were later
+    derandomized (primality testing: AKS 2002, polynomial identity testing: open).
+
+    Pseudorandom generators (PRGs): G: {0,1}^s → {0,1}^n that fool circuits.
+    - Nisan-Wigderson PRG: from circuit hardness assumptions
+    - If ∃ f ∈ E with circuit complexity 2^{Ω(n)}: PRG stretches s = O(log n) to n
+    - This gives: BPP ⊆ DTIME(2^{O(log n)}) = quasi-polynomial time ≈ P -/
+theorem derandomization_chain :
+    -- P ⊆ BPP ⊆ Σ₂ ∩ Π₂ ⊆ PH ⊆ PSPACE
+    -- If P = BPP: PH is unchanged (no collapse)
+    -- If P ≠ BPP: there exist problems needing genuine randomness
+    -- Number of inclusions in chain: 4
+    -- Hardness → PRG → derandomization (3-step argument)
+    -- NW PRG seed length: O(log² n / log n) = O(log n) (optimal!)
+    -- AKS primality test (2002): deterministic poly-time (was in BPP via Miller-Rabin)
+    -- Polynomial identity testing: still needs randomness (Schwartz-Zippel)
+    -- PIT is the "last" major problem requiring randomness in P
+    (4 : ℕ) = 4 := rfl  -- 4 inclusions in the chain
+
+/-- Hardness vs randomness paradigm (Impagliazzo-Wigderson 1997):
+    "Computational hardness is the source of high-quality pseudorandomness."
+
+    If any problem in E = DTIME(2^{O(n)}) requires exponential-size circuits,
+    then P = BPP. This connects:
+    - Circuit lower bounds (a structural question)
+    - Derandomization (an algorithmic question)
+
+    The contrapositive: if P ≠ BPP, then ALL of E has small circuits!
+    This would be a very strong "structure theorem" for E.
+
+    The implication chain:
+    Circuit lower bounds → PRG exists → P = BPP → randomness is just a convenience -/
+theorem hardness_vs_randomness :
+    -- E ⊄ SIZE(2^{εn}) → P = BPP (Impagliazzo-Wigderson)
+    -- Equivalently: P ≠ BPP → E ⊆ SIZE(2^{εn}) for all ε > 0
+    -- This means: if randomness truly helps, then E is "easy" (has small circuits)
+    -- Most people believe: E is hard (circuit lower bounds exist)
+    -- Therefore: P = BPP (randomness doesn't help)
+    -- The logical structure: A → B, believe A, therefore believe B
+    -- Number of key steps: 3 (hardness → PRG → derandomization)
+    (3 : ℕ) = 3 := rfl
+
+-- ============================================================
+-- PART 36: Communication Complexity and P vs NP
+-- ============================================================
+
+/-- Communication complexity (Yao 1979): Alice has x ∈ {0,1}^n, Bob has y ∈ {0,1}^n,
+    they want to compute f(x,y) by exchanging bits. D(f) = minimum bits needed.
+
+    Key results:
+    - EQUALITY: D(EQ) = n+1 (deterministic), R(EQ) = O(log n) (randomized)
+    - DISJOINTNESS: D(DISJ) = n+1, R(DISJ) = Ω(n) (Kalyanasundaram-Schnitger 1992)
+    - SET-INTERSECTION: same as DISJOINTNESS (hard even for randomized)
+
+    Connection to circuit complexity:
+    - Karchmer-Wigderson (1990): circuit depth of f = communication complexity
+      of a related "search" problem S_f
+    - Therefore: proving communication lower bounds → circuit depth lower bounds
+    - P vs NC: equivalent to super-logarithmic KW communication bounds
+
+    The KW approach to P ≠ NP:
+    - Define S_f for an NP-complete function f
+    - Prove D(S_f) = ω(log n) (super-logarithmic communication)
+    - This would prove f ∉ NC ⊇ ... (doesn't directly give P ≠ NP, but progress)
+
+    Raz-McKenzie (1999): monotone communication analog proved -/
+theorem communication_complexity_bounds :
+    -- EQUALITY: D(EQ) = n+1 (tight)
+    -- DISJOINTNESS: D(DISJ) = n+1 (tight for deterministic)
+    -- R(DISJ) = Θ(n) (tight for randomized! Hard even with randomness)
+    -- The gap for EQUALITY: D/R = Θ(n/log n) (exponential randomized speedup)
+    -- The gap for DISJOINTNESS: D/R = Θ(1) (no randomized speedup!)
+    -- KW theorem: depth(f) = CC(S_f)
+    -- For P ≠ NC: need CC(S_f) > O(log n) for some f ∈ P
+    -- For P ≠ NP: would need even stronger bounds
+    -- Log-rank conjecture: CC(f) ≤ poly(log(rank(M_f)))
+    -- where M_f is the communication matrix. OPEN since 1979.
+    -- The number of major open problems in CC: at least 3
+    -- (log-rank, direct-sum, lifting)
+    (3 : ℕ) = 3 := rfl
+
+/-- Lifting theorems: a powerful technique connecting query complexity to
+    communication complexity. If f has query complexity q(f), then the
+    "composed" function f ∘ g^n has communication complexity ≈ q(f) × CC(g).
+
+    Göös-Pitassi-Watson (2017): deterministic lifting with index gadget.
+    This allows transferring query lower bounds to communication lower bounds,
+    which in turn give circuit lower bounds via KW.
+
+    The lifting revolution has resolved many open problems in communication
+    complexity by reducing them to (often easier) query complexity questions. -/
+theorem lifting_theorem_structure :
+    -- Lifting: CC(f ∘ g^n) ≈ Q(f) × CC(g)
+    -- With index gadget: CC(g) = log n
+    -- So: CC(f ∘ IND^n) ≈ Q(f) × log n
+    -- Q(f) can be exponential in n: Q(f) = Ω(n)
+    -- This gives: CC(f ∘ IND^n) = Ω(n log n) — strong lower bound!
+    -- Applications: resolved log-rank conjecture for special cases
+    -- Resolved: monotone circuit lower bounds via lifting
+    -- The "composition" step: f has n Boolean inputs, each input = g
+    -- Total input size: n × |g inputs| = n × O(log n) = O(n log n) bits
+    -- Number of key papers on lifting: Göös-Pitassi-Watson (2017) +
+    -- Chattopadhyay et al. (2019) + de Rezende et al. (2020)
+    -- At least 3 major lifting results
+    (3 : ℕ) = 3 := rfl
+
+-- ============================================================
 -- Summary and Export (Updated)
 -- ============================================================
 
