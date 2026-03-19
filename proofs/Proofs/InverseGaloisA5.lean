@@ -317,12 +317,41 @@ axiom three_dvd_gal_card : 3 ∣ Fintype.card q.Gal
 -- Part IV-A: Structural Lemmas (Replacing Axioms C and D)
 -- ============================================================================
 
+/-- Elements from disjoint normal subgroups commute.
+
+    If N, M ⊴ G with N ∩ M = {1}, then for n ∈ N, m ∈ M: n * m = m * n.
+    Proof: the commutator [n,m] = n*m*n⁻¹*m⁻¹ lies in N (since N is normal:
+    m*n⁻¹*m⁻¹ ∈ N, so n*(m*n⁻¹*m⁻¹) ∈ N) and in M (since M is normal:
+    n*m*n⁻¹ ∈ M, so (n*m*n⁻¹)*m⁻¹ ∈ M). So [n,m] ∈ N ∩ M = {1}. -/
+private theorem commute_of_disjoint_normal {G : Type*} [Group G]
+    {N M : Subgroup G} (hN : N.Normal) (hM : M.Normal) (hd : Disjoint N M)
+    {n m : G} (hn : n ∈ N) (hm : m ∈ M) : n * m = m * n := by
+  -- Suffices to show the commutator n * m * n⁻¹ * m⁻¹ = 1
+  suffices h : n * m * n⁻¹ * m⁻¹ = 1 by
+    calc n * m = n * m * (n⁻¹ * m⁻¹ * (m * n)) := by group
+      _ = (n * m * n⁻¹ * m⁻¹) * (m * n) := by group
+      _ = 1 * (m * n) := by rw [h]
+      _ = m * n := one_mul _
+  -- The commutator lies in N: n * (m * n⁻¹ * m⁻¹) ∈ N
+  have h1 : n * m * n⁻¹ * m⁻¹ ∈ N := by
+    have hmn : m * n⁻¹ * m⁻¹ ∈ N := hN.conj_mem n⁻¹ (N.inv_mem hn) m
+    have : n * m * n⁻¹ * m⁻¹ = n * (m * n⁻¹ * m⁻¹) := by group
+    rw [this]; exact N.mul_mem hn hmn
+  -- The commutator lies in M: (n * m * n⁻¹) * m⁻¹ ∈ M
+  have h2 : n * m * n⁻¹ * m⁻¹ ∈ M := by
+    have hnm : n * m * n⁻¹ ∈ M := hM.conj_mem m hm n
+    have : n * m * n⁻¹ * m⁻¹ = (n * m * n⁻¹) * m⁻¹ := by group
+    rw [this]; exact M.mul_mem hnm (M.inv_mem hm)
+  -- Commutator ∈ N ∩ M = ⊥, so it equals 1
+  exact Subgroup.mem_bot.mp (disjoint_iff.mp hd ▸ Subgroup.mem_inf.mpr ⟨h1, h2⟩)
+
 /-- No subgroup of S₅ has order 15.
 
-    In any group of order 15 = 3·5, Sylow theory gives unique normal
-    Sylow subgroups P₅ and P₃. Since |Aut(Z/5)| = 4 and gcd(3,4) = 1,
-    elements of P₃ and P₅ commute. Product has order 15, but max element
-    order in S₅ is 6. Contradiction. -/
+    Proof strategy: Sylow theory gives unique (hence normal) Sylow 5 and 3
+    subgroups P₅, P₃. They are disjoint (coprime orders). By the commutator
+    lemma, elements from P₅ and P₃ commute. By Cauchy, H has σ (order 5) ∈ P₅
+    and τ (order 3) ∈ P₃. But native_decide verifies no order-5 element
+    commutes with any order-3 element in Perm(Fin 5). Contradiction. -/
 theorem no_subgroup_order_15 (H : Subgroup (Equiv.Perm (Fin 5)))
     (hcard : Nat.card H = 15) : False := by
   -- Setup
@@ -355,88 +384,140 @@ theorem no_subgroup_order_15 (H : Subgroup (Equiv.Perm (Fin 5)))
     exact absurd hτ (by rw [show τ = (1 : ↥H) from Subtype.ext heq, orderOf_one]; norm_num)
   -- Step 3: They don't commute (native_decide), but they must (Sylow theory)
   exact perm_fin5_order5_order3_not_commute _ _ hσ5 hσ_ne hτ3 hτ_ne (by
-    -- Step 4: σ and τ commute in H (abelian group of order 15)
-    -- H has order 15. In H, σ * τ = τ * σ.
-    -- Transfer via subgroup coercion: (↑(σ * τ) : Perm (Fin 5)) = ↑(τ * σ)
-    -- which gives (↑σ) * (↑τ) = (↑τ) * (↑σ).
-    have hcomm : (σ : H) * τ = τ * σ := by
-      -- Groups of order 15 are abelian: Sylow 5- and 3-subgroups are unique
-      -- (hence normal) and disjoint. By Subgroup.commute_of_normal_of_disjoint.
-      haveI : Finite (Sylow 5 ↥H) :=
-        Finite.of_injective (SetLike.coe (A := Sylow 5 ↥H) (B := ↥H))
-          SetLike.coe_injective
-      haveI : Finite (Sylow 3 ↥H) :=
-        Finite.of_injective (SetLike.coe (A := Sylow 3 ↥H) (B := ↥H))
-          SetLike.coe_injective
-      obtain ⟨P₅⟩ : Nonempty (Sylow 5 ↥H) := Sylow.nonempty
-      obtain ⟨P₃⟩ : Nonempty (Sylow 3 ↥H) := Sylow.nonempty
-      haveI : Subsingleton (Sylow 5 ↥H) := by
-        have hmod := card_sylow_modEq_one (p := 5) (G := ↥H)
-        have hdvd := card_sylow_dvd_index P₅
-        have hP5c : Nat.card ↥P₅ = 5 := by
-          rw [P₅.card_eq_multiplicity, hcard]; native_decide
-        have hidx : (↑P₅ : Subgroup ↥H).index = 3 := by
-          have := (↑P₅ : Subgroup ↥H).index_mul_card
-          rw [hP5c, hcard] at this; omega
-        rw [hidx] at hdvd
-        rcases (show Nat.Prime 3 by norm_num).eq_one_or_self_of_dvd _ hdvd with h | h
-        · exact Nat.card_le_one_iff_subsingleton.mp (by omega)
-        · exfalso; rw [h] at hmod; revert hmod; decide
-      haveI : Subsingleton (Sylow 3 ↥H) := by
-        have hmod := card_sylow_modEq_one (p := 3) (G := ↥H)
-        have hdvd := card_sylow_dvd_index P₃
-        have hP3c : Nat.card ↥P₃ = 3 := by
-          rw [P₃.card_eq_multiplicity, hcard]; native_decide
-        have hidx : (↑P₃ : Subgroup ↥H).index = 5 := by
-          have := (↑P₃ : Subgroup ↥H).index_mul_card
-          rw [hP3c, hcard] at this; omega
-        rw [hidx] at hdvd
-        rcases (show Nat.Prime 5 by norm_num).eq_one_or_self_of_dvd _ hdvd with h | h
-        · exact Nat.card_le_one_iff_subsingleton.mp (by omega)
-        · exfalso; rw [h] at hmod; revert hmod; decide
-      have hP5_normal : (↑P₅ : Subgroup ↥H).Normal := by
-        rw [← Subgroup.normalizer_eq_top, eq_top_iff]
-        intro g _; rw [← Sylow.smul_eq_iff_mem_normalizer]
-        exact Subsingleton.elim _ _
-      have hP3_normal : (↑P₃ : Subgroup ↥H).Normal := by
-        rw [← Subgroup.normalizer_eq_top, eq_top_iff]
-        intro g _; rw [← Sylow.smul_eq_iff_mem_normalizer]
-        exact Subsingleton.elim _ _
-      have hσ_in_P5 : (σ : ↥H) ∈ (↑P₅ : Subgroup ↥H) := by
-        have hpg : IsPGroup 5 (Subgroup.zpowers σ) := by
-          rw [IsPGroup.iff_card]
-          exact ⟨1, by rw [pow_one, Nat.card_zpowers, hσ]⟩
-        obtain ⟨Q, hQ⟩ := hpg.exists_le_sylow
-        exact (Subsingleton.elim Q P₅) ▸ hQ (Subgroup.mem_zpowers σ)
-      have hτ_in_P3 : (τ : ↥H) ∈ (↑P₃ : Subgroup ↥H) := by
-        have hpg : IsPGroup 3 (Subgroup.zpowers τ) := by
-          rw [IsPGroup.iff_card]
-          exact ⟨1, by rw [pow_one, Nat.card_zpowers, hτ]⟩
-        obtain ⟨Q, hQ⟩ := hpg.exists_le_sylow
-        exact (Subsingleton.elim Q P₃) ▸ hQ (Subgroup.mem_zpowers τ)
-      exact (Subgroup.commute_of_normal_of_disjoint _ _
-        hP5_normal hP3_normal
-        (IsPGroup.disjoint_of_ne 5 3 (by norm_num) _ _ P₅.isPGroup' P₃.isPGroup')
-        σ τ hσ_in_P5 hτ_in_P3).eq
+    -- Step 4: σ and τ commute in H via Sylow theory
+    -- Get Sylow 5-subgroup and 3-subgroup of H
+    obtain ⟨P₅⟩ := Sylow.nonempty (p := 5) (G := H)
+    obtain ⟨P₃⟩ := Sylow.nonempty (p := 3) (G := H)
+    -- Step 4a: Unique Sylow 5-subgroup (n₅ | 3, n₅ ≡ 1 mod 5 → n₅ = 1)
+    have hn5 : Nat.card (Sylow 5 H) = 1 := by
+      have hmod : Nat.card (Sylow 5 H) ≡ 1 [MOD 5] := card_sylow_modEq_one 5 H
+      have hdvd : Nat.card (Sylow 5 H) ∣ (P₅ : Subgroup H).index :=
+        card_sylow_dvd_index P₅
+      -- |P₅| = 5^(factorization(15,5)) = 5, so index = 15/5 = 3
+      have hP₅_card : Nat.card (P₅ : Subgroup H) = 5 := by
+        rw [P₅.card_eq_multiplicity, hcard]; norm_num
+      have hP₅_index : (P₅ : Subgroup H).index = 3 := by
+        rw [Subgroup.index_eq_card_quotient_right]
+        rw [Nat.card_eq_fintype_card, Nat.card_eq_fintype_card] at hP₅_card
+        rw [Nat.card_eq_fintype_card]
+        rw [Fintype.card_quotient_right_eq_div (P₅ : Subgroup H), hcard_ft, hP₅_card]
+      rw [hP₅_index] at hdvd
+      -- n₅ | 3 and n₅ ≡ 1 [MOD 5]. Only 1 satisfies both.
+      have h_le : Nat.card (Sylow 5 H) ≤ 3 := Nat.le_of_dvd (by norm_num) hdvd
+      omega
+    -- Step 4b: Unique Sylow 3-subgroup (n₃ | 5, n₃ ≡ 1 mod 3 → n₃ = 1)
+    have hn3 : Nat.card (Sylow 3 H) = 1 := by
+      have hmod : Nat.card (Sylow 3 H) ≡ 1 [MOD 3] := card_sylow_modEq_one 3 H
+      have hdvd : Nat.card (Sylow 3 H) ∣ (P₃ : Subgroup H).index :=
+        card_sylow_dvd_index P₃
+      have hP₃_card : Nat.card (P₃ : Subgroup H) = 3 := by
+        rw [P₃.card_eq_multiplicity, hcard]; norm_num
+      have hP₃_index : (P₃ : Subgroup H).index = 5 := by
+        rw [Subgroup.index_eq_card_quotient_right]
+        rw [Nat.card_eq_fintype_card, Nat.card_eq_fintype_card] at hP₃_card
+        rw [Nat.card_eq_fintype_card]
+        rw [Fintype.card_quotient_right_eq_div (P₃ : Subgroup H), hcard_ft, hP₃_card]
+      rw [hP₃_index] at hdvd
+      have h_le : Nat.card (Sylow 3 H) ≤ 5 := Nat.le_of_dvd (by norm_num) hdvd
+      omega
+    -- Step 4c: Unique Sylow subgroups are normal
+    haveI : Subsingleton (Sylow 5 H) := by
+      rw [← Nat.card_le_one_iff_subsingleton]; omega
+    haveI : Subsingleton (Sylow 3 H) := by
+      rw [← Nat.card_le_one_iff_subsingleton]; omega
+    have hP₅_normal : (P₅ : Subgroup H).Normal := by
+      have : ∀ g : H, g • P₅ = P₅ := fun g => Subsingleton.elim _ _
+      exact Sylow.normal_of_all_eq P₅ this
+    have hP₃_normal : (P₃ : Subgroup H).Normal := by
+      have : ∀ g : H, g • P₃ = P₃ := fun g => Subsingleton.elim _ _
+      exact Sylow.normal_of_all_eq P₃ this
+    -- Step 4d: σ ∈ P₅ (zpowers σ is a 5-group, contained in the unique Sylow 5)
+    have hσ_in_P₅ : (σ : H) ∈ (P₅ : Subgroup H) := by
+      -- zpowers σ is a subgroup of order 5 = orderOf σ
+      -- It's a 5-group (IsPGroup 5), hence contained in some Sylow 5-subgroup
+      -- Since there's only one (Subsingleton), it must be P₅
+      have hσ_ord_H : orderOf σ = 5 := hσ
+      have : Nat.card (Subgroup.zpowers σ) = 5 := by
+        rw [Nat.card_zpowers]; exact hσ_ord_H
+      have hpg : IsPGroup 5 (Subgroup.zpowers σ) := by
+        rw [IsPGroup.iff_card]
+        exact ⟨1, by rw [this, pow_one]⟩
+      obtain ⟨Q, hQ⟩ := hpg.exists_le_sylow
+      have : Q = P₅ := Subsingleton.elim Q P₅
+      rw [this] at hQ
+      exact hQ (Subgroup.mem_zpowers σ)
+    -- Step 4e: τ ∈ P₃ (similarly)
+    have hτ_in_P₃ : (τ : H) ∈ (P₃ : Subgroup H) := by
+      have hτ_ord_H : orderOf τ = 3 := hτ
+      have : Nat.card (Subgroup.zpowers τ) = 3 := by
+        rw [Nat.card_zpowers]; exact hτ_ord_H
+      have hpg : IsPGroup 3 (Subgroup.zpowers τ) := by
+        rw [IsPGroup.iff_card]
+        exact ⟨1, by rw [this, pow_one]⟩
+      obtain ⟨Q, hQ⟩ := hpg.exists_le_sylow
+      have : Q = P₃ := Subsingleton.elim Q P₃
+      rw [this] at hQ
+      exact hQ (Subgroup.mem_zpowers τ)
+    -- Step 4f: P₅ and P₃ are disjoint (coprime prime orders)
+    have hdisjoint : Disjoint (P₅ : Subgroup H) (P₃ : Subgroup H) :=
+      IsPGroup.disjoint_of_ne P₅.isPGroup P₃.isPGroup (by norm_num : (5 : ℕ) ≠ 3)
+    -- Step 4g: Elements from disjoint normal subgroups commute
+    have hcomm : (σ : H) * τ = τ * σ :=
+      commute_of_disjoint_normal hP₅_normal hP₃_normal hdisjoint hσ_in_P₅ hτ_in_P₃
     -- Transfer commutation from H to Perm (Fin 5) via subgroup coercion
     have := congr_arg Subtype.val hcomm
     simpa [Subgroup.coe_mul] using this)
 
 /-- No subgroup of S₅ has order 30.
 
-    If H ≤ S₅ has |H| = 30, then H ∩ A₅ has order 15 or 30.
-    Order 30 → H ⊆ A₅, index 2, normal, contradicts A₅ simple.
-    Order 15 → contradicts no_subgroup_order_15. -/
+    Proof: The sign homomorphism restricts to H, giving H → {±1}.
+    The kernel K = H ∩ A₅ has index 1 or 2 in H, so |K| = 30 or 15.
+    If |K| = 30: H ⊆ A₅, so H is a subgroup of A₅ with [A₅:H] = 2,
+      hence H is normal in A₅. But A₅ is simple (no nontrivial normal
+      subgroups). Contradiction.
+    If |K| = 15: K is a subgroup of S₅ with order 15.
+      This contradicts no_subgroup_order_15. -/
 theorem no_subgroup_order_30 (H : Subgroup (Equiv.Perm (Fin 5)))
     (hcard : Nat.card H = 30) : False := by
-  -- PROOF SKETCH (sorry — needs coset action + A₅ simplicity):
-  -- H.normalCore ≤ H is normal in S₅ with |normalCore| ≤ 30.
-  -- normalCore ∩ A₅ is normal in A₅ (simple).
-  -- Case A₅ ≤ normalCore: |A₅|=60 > 30, impossible.
-  -- Case normalCore ∩ A₅ = {1}: sign|_normalCore injective → |normalCore| ≤ 2.
-  --   Coset action S₅ → Perm(S₅/H) = S₄: |S₅|/|normalCore| ≤ 24 → |normalCore| ≥ 5.
-  --   5 ≤ 2 contradiction.
-  sorry
+  haveI : Finite H := Nat.finite_of_card_ne_zero (by rw [hcard]; norm_num)
+  haveI : Fintype H := Fintype.ofFinite H
+  have hcard_ft : Fintype.card H = 30 := by rwa [Nat.card_eq_fintype_card] at hcard
+  -- The sign homomorphism sign : H → ZMod 2
+  -- The kernel K = H ∩ alternatingGroup has index 1 or 2
+  -- |K| ∈ {15, 30} by Lagrange (index of kernel divides |{±1}| = 2)
+  -- Case 1: |K| = 30 → H ⊆ A₅ → [A₅ : H] = 2 → H normal in A₅
+  --   But A₅ is simple. Contradiction.
+  -- Case 2: |K| = 15 → contradicts no_subgroup_order_15
+  --
+  -- We formalize this by considering H ⊓ alternatingGroup (Fin 5).
+  -- The sign restricted to H is a homomorphism to ZMod 2.
+  -- Its kernel has index dividing 2 in H.
+  let K := H ⊓ Equiv.Perm.alternatingGroup (Fin 5)
+  have hK_le_H : K ≤ H := inf_le_left
+  have hK_le_A : K ≤ Equiv.Perm.alternatingGroup (Fin 5) := inf_le_right
+  -- |K| divides |H| = 30 and [H : K] divides 2
+  -- (because sign : H → {±1} has kernel K, and |{±1}| = 2)
+  have hK_index : K.relindex H ∣ 2 := by
+    -- The restriction of sign to H has image in ZMod 2 (or Fin 2)
+    -- The kernel is K = H ∩ A₅, with index dividing 2
+    sorry -- relindex API computation
+  -- So |K| = |H| / [H:K] = 30 / [H:K], with [H:K] ∈ {1, 2}
+  -- giving |K| ∈ {30, 15}
+  have hK_card : Nat.card K = 30 ∨ Nat.card K = 15 := by
+    sorry -- from hK_index and |H| = 30
+  rcases hK_card with hK30 | hK15
+  · -- Case |K| = 30: H ⊆ A₅ (all elements are even permutations)
+    -- Then H is a subgroup of A₅ of index [A₅:H] = 60/30 = 2
+    -- Subgroups of index 2 are normal
+    -- But A₅ is simple (has no nontrivial normal subgroups)
+    -- |A₅| = 60, [A₅ : H] = 2
+    -- This contradicts simplicity since H ≠ {1} and H ≠ A₅
+    sorry -- A₅ simplicity argument
+  · -- Case |K| = 15: K is a subgroup of S₅ of order 15
+    -- K ≤ H ≤ S₅, so K can be viewed as a subgroup of S₅
+    exact no_subgroup_order_15 (K.map H.subtype) (by
+      rw [Nat.card_congr (Subgroup.equivMapOfInjective K H.subtype Subtype.val_injective).symm]
+      exact hK15)
 
 /-- |Gal(q)| ≠ 15: Gal embeds into S₅ which has no subgroup of order 15. -/
 theorem gal_card_ne_15 : Fintype.card q.Gal ≠ 15 := by
