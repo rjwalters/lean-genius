@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 1210 lines, 2 sorries (IGP open conjecture + Hilbert irred.), 0 axioms. Part XV adds totient computations, non-cyclicity proofs for (Z/8Z)* and (Z/12Z)*, and Klein four-group (C2xC2) realizability.",
+    "progressSummary": "PROGRESS: ~1420 lines (main file), 2 sorries (IGP open conjecture + Hilbert irred.), 0 axioms. Part XVI extends census to order ≤8: 14/15 groups realized (C₂×C₄ via 15th cyclotomic, C₂³ via 24th cyclotomic). Only Q₈ missing.",
     "builtItems": [
       "InverseGalois.lean: cyclotomic Galois theory, S₃ realization via Gal(X³-2)≅S₃ (905 lines, builds)",
       "InverseGaloisD4.lean: D₄ realization via |Gal(X⁴-2)| = 8 (666 lines, builds)",
@@ -62,7 +62,13 @@
       "Part XV: totient computations (φ(n) for n=2..12 by decide)",
       "zmod8_units_sq_eq_one, zmod12_units_sq_eq_one (exponent 2 by decide)",
       "zmod8_units_not_cyclic, zmod12_units_not_cyclic (proved via order contradiction)",
-      "klein_four_realized (C2×C2 via 8th cyclotomic, sorry-free)"
+      "klein_four_realized (C2×C2 via 8th cyclotomic, sorry-free)",
+      "Part XVI: Order 7-8 census, C₂×C₄ and C₂³ realizability (InverseGalois.lean:1214)",
+      "c2_times_c4_realized: C₂×C₄ via 15th cyclotomic field (sorry-free, Docker verified)",
+      "c2_cubed_realized: C₂³ via 24th cyclotomic field (sorry-free, Docker verified)",
+      "zmod15_units_not_cyclic, zmod15_units_no_order_8, zmod15_units_has_order_4",
+      "zmod24_units_not_cyclic, zmod24_units_sq_eq_one, zmod24_units_no_order_4",
+      "Totient computations: φ(7,9,11,15,16,20,24) by decide"
     ],
     "insights": [
       "Cyclotomic irreducibility over ℚ IS in Mathlib: Polynomial.cyclotomic.irreducible_rat",
@@ -93,7 +99,12 @@
       "(Z/8Z)* and (Z/12Z)* both have exponent 2: every element squares to 1",
       "Klein four-group V4 ≅ (Z/8Z)* is realizable via 8th cyclotomic field Galois group",
       "All 8 groups of order ≤ 6 are now realized: C1-C6 (cyclic), V4 (cyclotomic), S3 (X³-2)",
-      "Non-cyclicity proof pattern: generator would have order |G|, but exponent computation shows ord ≤ 2"
+      "Non-cyclicity proof pattern: generator would have order |G|, but exponent computation shows ord ≤ 2",
+      "(ℤ/15ℤ)ˣ ≅ C₂ × C₄: φ(15)=8, exponent 4, not cyclic — realizes C₂×C₄ as Galois group",
+      "(ℤ/24ℤ)ˣ ≅ C₂³: φ(24)=8, exponent 2 (all elements square to 1) — realizes C₂×C₂×C₂",
+      "(ℤ/16ℤ)ˣ ≅ (ℤ/20ℤ)ˣ ≅ C₂ × C₄: multiple cyclic moduli give same abstract group",
+      "Grand census: 14/15 groups of order ≤ 8 realized with sorry-free proofs (only Q₈ missing)",
+      "Non-cyclicity proof pattern: compute exponent by decide, contradict with orderOf = |G| argument"
     ],
     "mathlibGaps": [],
     "nextSteps": [
