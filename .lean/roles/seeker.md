@@ -51,6 +51,14 @@ This creates `.lean/research/problems.json` with all 400+ open problems.
 | **hard** | 🟠 | Major obstacles known | Weeks to months |
 | **moonshot** | 🔴 | Open problem, fame awaits | Years+ |
 
+## Pool Refresh (Every Cycle)
+
+Before selecting problems, refresh the candidate pool to include newly enriched gallery proofs:
+
+1. Extract problems from gallery: `npx tsx .lean/scripts/extract-problems.ts --json > .lean/research/problems.json`
+2. Sync to candidate pool: `python3 research/db/sync_pool.py`
+3. Proceed with selection from the refreshed pool
+
 ## Selection Process
 
 ### Step 1: Load Problem Registry
