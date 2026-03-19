@@ -50,10 +50,10 @@
       }
     ],
     "leanFile": {
-      "lineCount": 6053,
-      "structureCount": 78,
+      "lineCount": 6516,
+      "structureCount": 79,
       "axiomCount": 91,
-      "theoremCount": 194,
+      "theoremCount": 210,
       "lemmaCount": 3,
       "defCount": 142,
       "imports": [
@@ -483,7 +483,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The BSD Conjecture remains one of the deepest open problems in mathematics. This formalization spans 6506 lines across 57 parts with 213 theorems/lemmas, 142 definitions, 78 structures, and 91 axioms (+ 3 structure-encoded assumptions). It covers the full landscape of BSD: from the core conjecture statement through Selmer groups, Iwasawa theory, Kolyvagin's Euler system, the Bloch-Kato generalization, Tunnell's theorem, the Langlands program, modularity (Wiles-BCDT), arithmetic statistics (Bhargava-Shankar), and explicit computational verifications for curves 11a1, 37a, and 389a. The Koblitz correspondence, j-invariant classification, point doubling, and Hadamard bounds are all fully proved.",
+    "summary": "The BSD Conjecture remains one of the deepest open problems in mathematics. This formalization spans 6516 lines across 57 parts with 213 theorems/lemmas, 142 definitions, 79 structures, and 91 axioms (+ 3 structure-encoded assumptions). It covers the full landscape of BSD: from the core conjecture statement through Selmer groups, Iwasawa theory, Kolyvagin's Euler system, the Bloch-Kato generalization, Tunnell's theorem, the Langlands program, modularity (Wiles-BCDT), arithmetic statistics (Bhargava-Shankar), and explicit computational verifications for curves 11a1, 37a, and 389a. The Koblitz correspondence, j-invariant classification, point doubling, and Hadamard bounds are all fully proved.",
     "implications": "A proof of BSD would have profound consequences: it would provide an algorithm for computing the rank of any elliptic curve (via L-function computation), resolve the congruent number problem completely, establish finiteness of the Shafarevich-Tate group, and represent a landmark in the Langlands program connecting arithmetic and automorphic forms.",
     "openQuestions": [
       "Is the Shafarevich-Tate group always finite? (Implied by strong BSD, wide open in general)",
