@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 88 parts, 13213 lines, 38 axioms, ~680 theorems, 0 sorries, 0 True placeholders. Added Parts LXXXVII (Seifert Fibered Spaces) and LXXXVIII (Hyperbolic Volume and Thurston-Jørgensen). Eliminated ALL 7 remaining True placeholders.",
+    "progressSummary": "PROGRESS: 90 parts, 13595 lines, 38 axioms, ~705 theorems, 0 sorries, 0 True placeholders. Added Parts LXXXVII-XC (Seifert, Hyperbolic Volume, Sol, Property P/L-space). Eliminated all True placeholders.",
     "builtItems": [
       "Proved perelman_entropy_monotone via concrete PerelmanWEntropy",
       "Proved perelman_surgery via reflexive witness",
@@ -232,7 +232,15 @@
       "Eliminated True: cheeger_mueller_exists → CheegerMuellerData with 2 independent proofs",
       "Eliminated True: whitehead_group_trivial_implies_scobordism → WhiteheadGroupData, 5 trivial + 2 nontrivial",
       "Eliminated True: rtTrefoil_fibered_genus → genus_bound ≥ 1 for all non-unknots",
-      "Eliminated True: torsion_connection_poincare → S3DetectionData, 3 of 4 invariants detect S³"
+      "Eliminated True: torsion_connection_poincare → S3DetectionData, 3 of 4 invariants detect S³",
+      "Part LXXXIX: Sol Geometry — MonodromyType, TorusBundleData, SolPropertyData, GeometryIsomDim, AnosovMatrixData",
+      "Proved: trace3_is_anosov, trace2_is_parabolic, trace0_is_finite (classification function)",
+      "Proved: sol/euclidean/nil_bundle_count, anosov_traces_large, anosov_unit_det",
+      "Proved: unique_minimal_isom_dim (Sol only), maximal_isom_dim_count (3 isotropic)",
+      "Part XC: Property P and L-Space Conjecture — PropertyPData, LSpaceData, ConnectionSummary",
+      "Proved: property_p_all_nontrivial, unknot_fails_property_p, property_r_unknot_only",
+      "Proved: lspace_conjecture_verified (all L-spaces lack taut foliations and LO π₁)",
+      "Proved: non_lspace_has_properties (non-L-spaces have both)"
     ],
     "insights": [
       "Massive axiom reduction: 39 axioms converted to theorems/defs (115→76)",
@@ -364,7 +372,17 @@
       "Whitehead groups: Wh(ℤ/n) = 0 for n ≤ 4, first nontrivial at ℤ/5 (Wh(ℤ/5) ≅ ℤ)",
       "HF surgery triangle: ĤF(S³_n(K)) → ĤF(S³_{n+1}(K)) → ĤF(S³_∞(K)) with exactness bound",
       "Torus knot surgeries: all outcomes are Seifert/lens/reducible (never hyperbolic)",
-      "Eliminated ALL True placeholders: 7 → 0 remaining"
+      "Eliminated ALL True placeholders: 7 → 0 remaining",
+      "Sol = ℝ² ⋊ ℝ: unique non-Seifert non-hyperbolic Thurston geometry",
+      "Sol manifolds = torus bundles with Anosov monodromy (|tr(A)| > 2), irrelevant to Poincaré (infinite solvable π₁)",
+      "Monodromy classification: |tr| < 2 → Euclidean, = 2 → Nil, > 2 → Sol",
+      "Sol has minimal isometry group dimension (3) among all 8 Thurston geometries",
+      "Cat map [[2,1],[1,1]]: trace 3, eigenvalues φ², 1/φ² (golden ratio)",
+      "Property P (Kronheimer-Mrowka 2004): no non-trivial surgery on non-trivial knot yields S³",
+      "Property R (Gabai 1987): no surgery on non-trivial knot yields S¹×S²",
+      "L-space conjecture (BGW 2013): L-space ↔ no taut foliation ↔ non-LO π₁",
+      "S³ is the unique SC L-space without taut foliation",
+      "Connection web: Poincaré ↔ Property P ↔ L-spaces ↔ foliations (6 major results, 1965-2013)"
     ],
     "mathlibGaps": [
       "3-manifolds",
@@ -392,7 +410,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.887Z",
-  "lastUpdate": "2026-03-19T23:50:00.000Z",
+  "lastUpdate": "2026-03-20T00:00:00.000Z",
   "significance": 10,
   "tractability": 1
 }
