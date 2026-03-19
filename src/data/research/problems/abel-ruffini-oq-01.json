@@ -18,13 +18,13 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-02-21T19:21:07.129Z",
-    "iteration": 7,
-    "focus": "InverseGaloisA5: eliminated 4/6 axioms (q_irreducible, q_natDegree, a5_not_solvable, gal_not_solvable)",
+    "iteration": 8,
+    "focus": "InverseGaloisA5: eliminated 5/6 axioms. q_gal_iso_a5 now PROVED from q_gal_card via eq_alternatingGroup_of_index_eq_two",
     "blockers": [
       "Kronecker-Weber not in Mathlib",
       "Hilbert irreducibility not in Mathlib"
     ],
-    "nextAction": "Only q_gal_card and q_gal_iso_a5 remain as axioms (require discriminant computation)",
+    "nextAction": "Only q_gal_card remains (requires discriminant computation + Chebotarev density). Also fixed Mathlib API breaks: q_irreducible (norm_cast), gal_not_solvable (solvable_of_surjective)",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "InverseGaloisA5.lean: 6 axioms → 2 axioms. Proved q_irreducible (Eisenstein), a5_not_solvable, gal_not_solvable, q_natDegree. Only q_gal_card (discriminant+Chebotarev) and q_gal_iso_a5 (index-2 uniqueness) remain as axioms.",
+    "progressSummary": "InverseGaloisA5.lean: 6 axioms → 1 axiom. Proved q_gal_iso_a5 from q_gal_card by showing galActionHom image has index 2 in Perm(Fin 5) and applying Mathlib eq_alternatingGroup_of_index_eq_two. Only q_gal_card (discriminant+Chebotarev) remains.",
     "builtItems": [
       "InverseGalois.lean: cyclotomic Galois theory, S₃ realization via Gal(X³-2)≅S₃ (905 lines, builds)",
       "InverseGaloisD4.lean: D₄ realization via |Gal(X⁴-2)| = 8 (666 lines, builds)",
@@ -55,7 +55,10 @@
       "InverseGaloisA5.lean: q_irreducible proved via Eisenstein at p=5 (was axiom)",
       "InverseGaloisA5.lean: a5_not_solvable proved via solvable_of_ker_le_range (was axiom)",
       "InverseGaloisA5.lean: gal_not_solvable proved via MulEquiv transfer (was axiom)",
-      "InverseGaloisA5.lean: q_natDegree proved via compute_degree! (was axiom)"
+      "InverseGaloisA5.lean: q_natDegree proved via compute_degree! (was axiom)",
+      "InverseGaloisA5.lean: q_gal_iso_a5 PROVED from q_gal_card (was axiom) via index-2 subgroup uniqueness",
+      "InverseGaloisA5.lean: fixed q_irreducible for Mathlib v4.26.0 (norm_cast replaces coefficient simp)",
+      "InverseGaloisA5.lean: fixed gal_not_solvable for Mathlib v4.26.0 (explicit MonoidHom surjectivity)"
     ],
     "insights": [
       "Cyclotomic irreducibility over ℚ IS in Mathlib: Polynomial.cyclotomic.irreducible_rat",
@@ -77,7 +80,12 @@
       "Eisenstein criterion for compound polynomials: use interval_cases k + norm_num after simp on coefficient lemmas (coeff_sub, coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X)",
       "IsPrimitive.Int.irreducible_iff_irreducible_map_cast: Gauss lemma for ℤ→ℚ irreducibility transfer",
       "solvable_of_ker_le_range: transfers solvability through short exact sequences (A_n → S_n → ℤ/2)",
-      "compute_degree! handles natDegree for compound polynomial expressions over any ring"
+      "compute_degree! handles natDegree for compound polynomial expressions over any ring",
+      "Equiv.Perm.eq_alternatingGroup_of_index_eq_two: any index-2 subgroup of Perm(α) equals alternatingGroup(α)",
+      "galActionHom composed with permCongr gives injection Gal →* Perm(Fin 5); range has index 2 → equals A₅",
+      "MulEquiv.ofBijective + MulEquiv.subgroupCongr constructs Gal ≃* A₅ from subgroup equality",
+      "Polynomial.map_* simp lemmas + norm_cast closes ℤ→ℚ polynomial equality (replaces broken Int.cast_ite approach)",
+      "solvable_of_surjective takes (f : G →* H) implicit; for MulEquiv, construct surjectivity via e.symm explicitly"
     ],
     "mathlibGaps": [],
     "nextSteps": [
