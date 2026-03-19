@@ -5986,24 +5986,24 @@ theorem thurston_norm_trivial_for_homology_sphere (b : BettiNumbers3)
 structure FiberedStructure where
   /-- Genus of the fiber surface -/
   fiberGenus : ℕ
-  /-- The fiber surface is connected -/
-  fiberConnected : True
-  /-- The manifold fibers: has a circle direction -/
-  hasFibration : True
+  /-- Euler characteristic of the fiber surface: χ = 2 - 2g -/
+  fiberEulerChar : ℤ
+  /-- The Euler characteristic is consistent with genus -/
+  eulerCharConsistent : fiberEulerChar = 2 - 2 * (fiberGenus : ℤ)
 
-/-- S¹ × S² is fibered with genus-0 fiber (S²). -/
+/-- S¹ × S² is fibered with genus-0 fiber (S²). χ(S²) = 2. -/
 def fiberedS1xS2 : FiberedStructure where
   fiberGenus := 0
-  fiberConnected := trivial
-  hasFibration := trivial
+  fiberEulerChar := 2
+  eulerCharConsistent := by norm_num
 
 /-- T³ fibers over S¹ in multiple ways.
     Taking any coordinate circle: T³ = T² ×_{id} S¹.
-    The fiber is T² (genus 1). -/
+    The fiber is T² (genus 1). χ(T²) = 0. -/
 def fiberedT3 : FiberedStructure where
   fiberGenus := 1
-  fiberConnected := trivial
-  hasFibration := trivial
+  fiberEulerChar := 0
+  eulerCharConsistent := by norm_num
 
 /-- A homology sphere cannot fiber over S¹ (b₁ = 0 means no fibration).
     This rules out S³ and Σ(2,3,5) from having a fibered structure. -/
@@ -6462,18 +6462,22 @@ theorem spherical_group_order_pos (g : SphericalGroupType) : g.order ≥ 1 := by
 structure SphericalSpaceForm where
   /-- The type of the acting group -/
   groupType : SphericalGroupType
-  /-- The quotient is a closed 3-manifold -/
-  isClosed : True  -- represented by membership in the classification
+  /-- The order of the fundamental group π₁(S³/Γ) = |Γ| -/
+  pi1_order : ℕ
+  /-- The order matches the group type -/
+  order_consistent : pi1_order = groupType.order
 
 /-- The trivial space form: S³/ℤ₁ = S³ itself. -/
 def trivialSpaceForm : SphericalSpaceForm where
   groupType := .cyclic 1 (by omega)
-  isClosed := trivial
+  pi1_order := 1
+  order_consistent := rfl
 
 /-- Lens space L(p,q) as a space form: S³/ℤₚ. -/
 def lensSpaceForm (p : ℕ) (hp : p ≥ 1) : SphericalSpaceForm where
   groupType := .cyclic p hp
-  isClosed := trivial
+  pi1_order := p
+  order_consistent := rfl
 
 /-- RP³ as a space form: S³/ℤ₂ = L(2,1). -/
 def rp3SpaceForm : SphericalSpaceForm :=
@@ -6484,11 +6488,13 @@ def rp3SpaceForm : SphericalSpaceForm :=
     via its identification with SL₂(𝔽₅) ⊂ SU(2) ≅ S³. -/
 def poincareHomologySphereForm : SphericalSpaceForm where
   groupType := .binaryIcosahedral
-  isClosed := trivial
+  pi1_order := 120
+  order_consistent := rfl
 
-/-- The fundamental group order of a spherical space form. -/
-def SphericalSpaceForm.pi1_order (s : SphericalSpaceForm) : ℕ :=
-  s.groupType.order
+/-- The fundamental group order equals the acting group's order. -/
+theorem SphericalSpaceForm.pi1_order_eq_group_order (s : SphericalSpaceForm) :
+    s.pi1_order = s.groupType.order :=
+  s.order_consistent
 
 /-- The trivial space form has trivial fundamental group. -/
 theorem trivial_form_trivial_pi1 : trivialSpaceForm.pi1_order = 1 := rfl
@@ -6506,20 +6512,21 @@ theorem space_form_order_one_iff_cyclic1 (s : SphericalSpaceForm) :
     s.pi1_order = 1 ↔ ∃ (h : 1 ≥ 1), s.groupType = .cyclic 1 h := by
   constructor
   · intro h
+    have hord : s.groupType.order = 1 := by rw [← s.order_consistent]; exact h
     cases hs : s.groupType with
     | cyclic n hn =>
-      simp [SphericalSpaceForm.pi1_order, SphericalGroupType.order, hs] at h
+      simp [SphericalGroupType.order, hs] at hord
       exact ⟨by omega, by cases s; simp_all⟩
     | binaryDihedral n hn =>
-      simp only [SphericalSpaceForm.pi1_order, SphericalGroupType.order, hs] at h; omega
+      simp only [SphericalGroupType.order, hs] at hord; omega
     | binaryTetrahedral =>
-      simp [SphericalSpaceForm.pi1_order, SphericalGroupType.order, hs] at h
+      simp [SphericalGroupType.order, hs] at hord
     | binaryOctahedral =>
-      simp [SphericalSpaceForm.pi1_order, SphericalGroupType.order, hs] at h
+      simp [SphericalGroupType.order, hs] at hord
     | binaryIcosahedral =>
-      simp [SphericalSpaceForm.pi1_order, SphericalGroupType.order, hs] at h
+      simp [SphericalGroupType.order, hs] at hord
   · rintro ⟨_, h⟩
-    simp [SphericalSpaceForm.pi1_order, SphericalGroupType.order, h]
+    rw [s.order_consistent, h]; rfl
 
 /-- Among spherical space forms, the only one with trivial fundamental
     group is S³ itself. This is a concrete manifestation of the
@@ -6577,8 +6584,7 @@ theorem poincare_spherical_connection :
     rp3SpaceForm.pi1_order > 1 ∧
     poincareHomologySphereForm.pi1_order > 1 := by
   refine ⟨sphere3_simply_connected, rfl, ?_, ?_⟩ <;>
-  simp [rp3SpaceForm, poincareHomologySphereForm, lensSpaceForm,
-        SphericalSpaceForm.pi1_order, SphericalGroupType.order]
+  simp [rp3SpaceForm, poincareHomologySphereForm, lensSpaceForm]
 
 /-- The total number of spherical space forms up to homeomorphism is infinite
     (because lens spaces L(n,q) exist for all n ≥ 1), but the number of
