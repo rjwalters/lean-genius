@@ -198,10 +198,15 @@ fi
 # Submit to Aristotle
 log_info "Submitting to Aristotle (async)..."
 
-OUTPUT_FILE="${LEAN_FILE%.lean}-solved.lean"
+# Create a project directory with the lean file and Lean project metadata
+SUBMIT_DIR=$(mktemp -d "${TMPDIR:-/tmp}/aristotle-submit-XXXXXX")
+cp "$LEAN_FILE" "$SUBMIT_DIR/"
+cp "$PROJECT_ROOT/proofs/lakefile.toml" "$SUBMIT_DIR/"
+cp "$PROJECT_ROOT/proofs/lean-toolchain" "$SUBMIT_DIR/"
 
-# Run aristotle with --no-wait
-SUBMIT_OUTPUT=$(cd "$PROJECT_ROOT/proofs" && uvx --from aristotlelib aristotle prove-from-file "$LEAN_FILE" --output-file "$OUTPUT_FILE" --no-wait 2>&1)
+# Run aristotle submit (default is async, no --wait needed)
+SUBMIT_OUTPUT=$(uvx --from aristotlelib aristotle submit --project-dir "$SUBMIT_DIR" "Prove all sorry lemmas in $(basename "$LEAN_FILE")" 2>&1)
+rm -rf "$SUBMIT_DIR"
 
 # Extract project ID from output
 PROJECT_ID=$(echo "$SUBMIT_OUTPUT" | grep -oE "[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | head -1)
@@ -262,5 +267,5 @@ echo "Check status with:"
 echo "  ./research/scripts/aristotle-status.sh"
 echo ""
 echo "Or manually:"
-echo "  uvx --from aristotlelib aristotle status $PROJECT_ID"
+echo "  uvx --from aristotlelib aristotle list --limit 5"
 echo "============================================"

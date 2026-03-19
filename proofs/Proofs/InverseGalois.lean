@@ -1712,7 +1712,7 @@ theorem zmod33_units_not_cyclic : ¬ IsCyclic (ZMod 33)ˣ := by
   have hcard : Fintype.card (ZMod 33)ˣ = 20 := by
     rw [ZMod.card_units_eq_totient]; decide
   have hord : orderOf g = 20 := by
-    rw [← hcard]
+    rw [← hcard, ← Nat.card_eq_fintype_card]
     exact orderOf_eq_card_of_forall_mem_zpowers hg
   have h10 : g ^ 10 = 1 := zmod33_units_exp_10 g
   have h20_dvd_10 : 20 ∣ 10 := by
@@ -1720,9 +1720,9 @@ theorem zmod33_units_not_cyclic : ¬ IsCyclic (ZMod 33)ˣ := by
     exact orderOf_dvd_of_pow_eq_one h10
   omega
 
-/-- (ℤ/33ℤ)ˣ has an element of order 10 (e.g. 2 mod 33 has order 10). -/
+/-- (ℤ/33ℤ)ˣ has an element of order 10. -/
 theorem zmod33_units_has_order_10 : ∃ x : (ZMod 33)ˣ, orderOf x = 10 := by
-  exact ⟨(2 : ZMod 33)ˣ, by decide⟩
+  native_decide
 
 /-- (ℤ/33ℤ)ˣ ≅ C₂ × C₁₀: order 20, exponent 10, not cyclic, has element of order 10.
     This realizes C₂ × C₁₀ as a Galois group over ℚ. -/
@@ -1767,7 +1767,7 @@ theorem zmod35_units_not_cyclic : ¬ IsCyclic (ZMod 35)ˣ := by
   have hcard : Fintype.card (ZMod 35)ˣ = 24 := by
     rw [ZMod.card_units_eq_totient]; decide
   have hord : orderOf g = 24 := by
-    rw [← hcard]
+    rw [← hcard, ← Nat.card_eq_fintype_card]
     exact orderOf_eq_card_of_forall_mem_zpowers hg
   have h12 : g ^ 12 = 1 := zmod35_units_exp_12 g
   have h24_dvd_12 : 24 ∣ 12 := by
