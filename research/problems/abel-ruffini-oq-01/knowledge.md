@@ -4,6 +4,47 @@
 
 The Inverse Galois Problem (IGP) asks: for every finite group G, does there exist a Galois extension K/ℚ with Gal(K/ℚ) ≅ G?
 
+## Session 2026-03-19 (researcher-7) - Supporting Infrastructure for q_gal_card
+
+**Mode**: REVISIT (RICH knowledge score 62)
+**Outcome**: progress — 6 proved supporting lemmas for q_gal_card axiom elimination
+
+### What Was Done
+
+Added Part XII to InverseGaloisA5.lean: supporting infrastructure for the remaining axiom
+`q_gal_card : Fintype.card q.Gal = 60`. This axiom requires Dedekind's theorem and the
+discriminant-alternating group connection, neither of which are in Mathlib.
+
+### Proved Lemmas (all 0 sorries, Docker verified)
+
+1. `disc_value_is_square`: 32000² = 1024000000 (norm_num)
+2. `trinomial_disc_computation`: 4⁴·20⁵ + 5⁵·16⁴ = 1024000000 (norm_num)
+3. `q_root_mod7_at_5`: q(5) ≡ 0 mod 7 (decide)
+4. `q_root_mod7_at_6`: q(6) ≡ 0 mod 7 (decide)
+5. `cubic_factor_no_roots_mod7`: X³+6X²+4X+1 has no roots in F₇ (decide)
+6. `q_has_three_cycle_evidence`: two distinct roots of q exist in F₇
+
+### Documented Roadmap
+
+Three ingredients needed to eliminate q_gal_card:
+1. **Disc(q) is a perfect square** → Gal ⊆ A₅ (needs disc↔alternating connection)
+2. **q is irreducible** → 5 | |Gal| (ALREADY PROVED)
+3. **Mod-7 factorization pattern (1+1+3)** → 3 | |Gal| via Dedekind (needs Dedekind theorem)
+
+Combined: 3 | |Gal| and 5 | |Gal| and |Gal| | 60 forces |Gal| = 60.
+
+### Missing Mathlib Infrastructure (blocking)
+
+- Trinomial discriminant formula (not formalized)
+- Disc square ↔ Gal ⊆ Aₙ connection (not in Mathlib)
+- Dedekind's theorem: mod-p factorization → cycle types in Gal (not in Mathlib)
+
+### File Stats
+
+InverseGaloisA5.lean: 619 lines (was 521), 1 axiom, 0 sorries, Docker verified.
+
+---
+
 ## Session 2026-03-18 (researcher-7) - Non-Cyclic Groups and Realizability Census
 
 **Mode**: REVISIT (RICH knowledge score 38)

@@ -518,4 +518,102 @@ q_gal_card ──────→ a5_realizable
 ```
 -/
 
+-- ============================================================================
+-- Part XII: Supporting Infrastructure for q_gal_card
+-- ============================================================================
+
+/-
+## Roadmap to Eliminating the q_gal_card Axiom
+
+The proof that |Gal(q)| = 60 requires three ingredients:
+
+### Ingredient 1: Discriminant (Gal ⊆ A₅)
+
+Disc(q) = Disc(p) where p = X⁵ + 20X + 16.
+For trinomials X^n + aX + b, the discriminant formula gives:
+  Disc = (-1)^{n(n-1)/2} · [(-1)^{n-1} (n-1)^{n-1} a^n + n^n b^{n-1}]
+
+For n=5, a=20, b=16:
+  Disc = 4⁴ · 20⁵ + 5⁵ · 16⁴ = 819200000 + 204800000 = 1024000000 = 32000²
+
+Since Disc is a perfect square, Gal(q) ⊆ A₅, hence |Gal| | 60.
+This eliminates S₅ (order 120) as a possibility.
+
+### Ingredient 2: Irreducibility (5 | |Gal|)
+
+Already proved as `five_dvd_gal_card`. Combined with |Gal| | 60:
+  |Gal| ∈ {5, 10, 15, 20, 30, 60}
+
+Among transitive subgroups of A₅:
+  |Gal| ∈ {5, 10, 20, 60}
+
+### Ingredient 3: Mod-7 factorization (3 | |Gal|)
+
+q ≡ (X-5)(X-6)(X³ + 6X² + 4X + 1) mod 7
+The cubic factor has no roots in F₇ (checked by exhaustion), hence irreducible.
+
+By Dedekind's theorem: this factorization pattern (1+1+3) implies the Galois
+group contains an element with a 3-cycle. Hence 3 | |Gal|.
+
+Combined with |Gal| ∈ {5, 10, 20, 60} and 3 | |Gal|:
+  |Gal| = 60  (since 3 ∤ 5, 3 ∤ 10, 3 ∤ 20)
+
+### What's Missing in Mathlib
+
+| Infrastructure | Status | Needed For |
+|----------------|--------|------------|
+| Trinomial discriminant formula | Not in Mathlib | Ingredient 1 |
+| Disc square → Gal ⊆ Aₙ | Not in Mathlib | Ingredient 1 |
+| Dedekind's theorem | Not in Mathlib | Ingredient 3 |
+| Polynomial factorization over finite fields | Partial | Ingredient 3 |
+
+### Monotonicity and Real Root Count
+
+The derivative q'(x) = 5(x-1)⁴ + 20 > 0 for all x ∈ ℝ.
+So q is strictly increasing, hence has exactly 1 real root.
+This means complex conjugation acts on the 5 roots with cycle type (1)(2)(2),
+giving an element of order 2 in Gal, hence 2 | |Gal|.
+(Already implied by ingredients 1+2, but provides independent confirmation.)
+-/
+
+-- === Discriminant Arithmetic ===
+
+/-- The claimed discriminant value 1024000000 = 32000². -/
+theorem disc_value_is_square : (32000 : ℤ) ^ 2 = 1024000000 := by norm_num
+
+/-- Trinomial discriminant formula verification for p = X⁵ + 20X + 16:
+    Disc = 4⁴·20⁵ + 5⁵·16⁴ = 819200000 + 204800000 = 1024000000. -/
+theorem trinomial_disc_computation :
+    (4 : ℤ) ^ 4 * 20 ^ 5 + 5 ^ 5 * 16 ^ 4 = 1024000000 := by norm_num
+
+-- === Mod-7 Factorization Verification ===
+
+/-- q(5) ≡ 0 (mod 7): the polynomial q has a root at x = 5 in F₇.
+    Computation: 5⁵ - 5·5⁴ + 10·5³ - 10·5² + 25·5 - 5
+               = 3125 - 3125 + 1250 - 250 + 125 - 5 = 1120 = 160·7. -/
+theorem q_root_mod7_at_5 : (5 : ZMod 7) ^ 5 - 5 * 5 ^ 4 + 10 * 5 ^ 3
+    - 10 * 5 ^ 2 + 25 * 5 - 5 = (0 : ZMod 7) := by decide
+
+/-- q(6) ≡ 0 (mod 7): the polynomial q has a root at x = 6 in F₇. -/
+theorem q_root_mod7_at_6 : (6 : ZMod 7) ^ 5 - 5 * 6 ^ 4 + 10 * 6 ^ 3
+    - 10 * 6 ^ 2 + 25 * 6 - 5 = (0 : ZMod 7) := by decide
+
+/-- The remaining cubic factor X³ + 6X² + 4X + 1 has no roots in F₇.
+    This means it is irreducible over F₇ (degree 3, no roots → irreducible). -/
+theorem cubic_factor_no_roots_mod7 :
+    ∀ x : ZMod 7, x ^ 3 + 6 * x ^ 2 + 4 * x + 1 ≠ (0 : ZMod 7) := by decide
+
+/-- The factorization pattern of q mod 7 is (1)(1)(3):
+    two linear factors and one irreducible cubic.
+    By Dedekind's theorem (not yet in Mathlib), this implies the Galois group
+    contains an element of order 3. Combined with 5 | |Gal| and |Gal| | 60,
+    this forces |Gal| = 60. -/
+theorem q_has_three_cycle_evidence :
+    -- q has exactly 2 roots in F₇ (verified above), leaving a degree-3 irreducible factor.
+    -- Under Dedekind's theorem, this gives an element of order 3 in Gal.
+    (∃ a b : ZMod 7, a ≠ b ∧
+      a ^ 5 - 5 * a ^ 4 + 10 * a ^ 3 - 10 * a ^ 2 + 25 * a - 5 = 0 ∧
+      b ^ 5 - 5 * b ^ 4 + 10 * b ^ 3 - 10 * b ^ 2 + 25 * b - 5 = 0) := by
+  exact ⟨5, 6, by decide, q_root_mod7_at_5, q_root_mod7_at_6⟩
+
 end InverseGaloisA5
