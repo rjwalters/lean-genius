@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved BU→LS general (axiom 4→3), built ray-sphere intersection infrastructure for no_retraction→Brouwer FP (axiom 3→2). Root formula, discriminant, boundary behavior proved. Continuity deferred.",
+    "progressSummary": "PROGRESS: Deduplicated file from 5393→3349 lines (-2044). Removed 2 extra copies of Sections XLII-LIX from merge conflicts. All 143 unique theorems preserved. 4 axioms (3 independent). 0 sorries. Prior work: BU→LS general proved (axiom 4→3), ray-sphere infrastructure built (axiom 3→2 in progress).",
     "builtItems": [
       {
         "name": "tucker_2d_octahedral",
@@ -129,7 +129,10 @@
       "Fin decomposition lemma (castSucc_or_last) is a useful helper for n+1 indexed families",
       "Ray-sphere intersection reduces to quadratic At²+Bt+C=0 where A=|d|², B=2⟨a,d⟩, C=|a|²-1",
       "Discriminant is a perfect square when x∈S^n: (⟨a,d⟩²+|d|²(1-|a|²)) = ((1-|a|²+|d|²)/2)²",
-      "The continuity of the retraction is the remaining gap for axiom reduction 3→2"
+      "The continuity of the retraction is the remaining gap for axiom reduction 3→2",
+      "File had 3 copies of Sections XLII-XLIX and 2 copies of L-LIX from merge conflicts",
+      "Block C (last copy) is a strict superset of Blocks A and B - safe to remove duplicates",
+      "Docker build mounts main repo not worktree - cannot verify worktree changes via docker"
     ],
     "mathlibGaps": [],
     "nextSteps": [

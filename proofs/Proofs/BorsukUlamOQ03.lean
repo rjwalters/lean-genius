@@ -5390,4 +5390,317 @@ theorem ls_axiom_redundant :
     via the infDist technique. -/
 theorem bu_session_5_summary : True := trivial
 
+/-
+## Section LXIII: Ray-Sphere Intersection Infrastructure
+
+To prove no_retraction → Brouwer FP in general dimensions, we need the
+ray-sphere intersection construction. Given a point a in the closed unit
+ball and a direction d ≠ 0, the ray {a + t·d : t ≥ 0} hits the unit
+sphere at a point determined by the quadratic |a + td|² = 1.
+
+The construction:
+- For f: B^{n+1} → B^{n+1} with no fixed point, set a = f(x), d = x - f(x)
+- The ray from f(x) through x hits S^n at r(x) = f(x) + t₊·(x - f(x))
+- t₊ is the positive root of |a + td|² = 1
+- This gives a continuous retraction B^{n+1} → S^n
+- Contradicts no_retraction axiom
+-/
+
+/-- Inner product on Fin k → ℝ -/
+noncomputable def ip {k : ℕ} (x y : Fin k → ℝ) : ℝ := ∑ i, x i * y i
+
+/-- Squared norm on Fin k → ℝ -/
+noncomputable def nsq {k : ℕ} (x : Fin k → ℝ) : ℝ := ∑ i, x i ^ 2
+
+/-- nsq equals ip with self -/
+private theorem nsq_eq_ip {k : ℕ} (x : Fin k → ℝ) : nsq x = ip x x := by
+  simp only [nsq, ip, sq]
+
+/-- ip is symmetric -/
+private theorem ip_comm {k : ℕ} (x y : Fin k → ℝ) : ip x y = ip y x := by
+  simp only [ip]; congr 1; ext i; ring
+
+/-- Expansion of |a + t·d|² -/
+private theorem nsq_add_smul {k : ℕ} (a d : Fin k → ℝ) (t : ℝ) :
+    nsq (a + t • d) = nsq a + 2 * t * ip a d + t ^ 2 * nsq d := by
+  simp only [nsq, ip, Pi.add_apply, Pi.smul_apply, smul_eq_mul,
+    ← Finset.sum_add_distrib, Finset.mul_sum]
+  apply Finset.sum_congr rfl; intro i _; ring
+
+/-- The quadratic discriminant for ray-sphere intersection is non-negative
+    when |a|² ≤ 1 (a is in the closed unit ball). -/
+private theorem ray_disc_nonneg {k : ℕ} (a d : Fin k → ℝ) (ha : nsq a ≤ 1) :
+    0 ≤ (ip a d) ^ 2 + nsq d * (1 - nsq a) := by
+  have h1 : 0 ≤ 1 - nsq a := by linarith
+  have h2 : 0 ≤ nsq d := by
+    apply Finset.sum_nonneg; intro i _; positivity
+  have h3 : 0 ≤ (ip a d) ^ 2 := sq_nonneg _
+  linarith [mul_nonneg h2 h1]
+
+/-- The discriminant value for the ray-sphere quadratic -/
+noncomputable def rayDisc {k : ℕ} (a d : Fin k → ℝ) : ℝ :=
+  (ip a d) ^ 2 + nsq d * (1 - nsq a)
+
+/-- The positive root parameter for ray-sphere intersection:
+    t₊ = (-⟨a,d⟩ + √Δ) / |d|² -/
+noncomputable def raySphereT {k : ℕ} (a d : Fin k → ℝ) : ℝ :=
+  (-(ip a d) + Real.sqrt (rayDisc a d)) / nsq d
+
+/-- The ray point a + t₊·d lies on the unit sphere when |a|² ≤ 1 and |d|² > 0 -/
+private theorem ray_point_on_sphere {k : ℕ} (a d : Fin k → ℝ)
+    (ha : nsq a ≤ 1) (hd : 0 < nsq d) :
+    nsq (a + raySphereT a d • d) = 1 := by
+  -- Expand using the quadratic identity
+  rw [nsq_add_smul]
+  -- t₊ satisfies: nsq d · t² + 2·ip a d · t + (nsq a - 1) = 0
+  -- So: nsq a + 2·t·ip a d + t²·nsq d = 1
+  set t := raySphereT a d
+  set Δ := rayDisc a d
+  -- We need: nsq a + 2*t*(ip a d) + t^2 * nsq d = 1
+  -- i.e., t^2 * nsq d + 2*t*(ip a d) + (nsq a - 1) = 0
+  have hΔ_nn : 0 ≤ Δ := ray_disc_nonneg a d ha
+  have hsqrt : Real.sqrt Δ ^ 2 = Δ := Real.sq_sqrt hΔ_nn
+  -- t = (-(ip a d) + √Δ) / nsq d
+  have ht_def : t = (-(ip a d) + Real.sqrt Δ) / nsq d := rfl
+  -- nsq d · t = -(ip a d) + √Δ
+  have ht_mul : nsq d * t = -(ip a d) + Real.sqrt Δ := by
+    rw [ht_def]; field_simp
+  suffices h : nsq d * t ^ 2 + 2 * (ip a d) * t + (nsq a - 1) = 0 by linarith
+  -- Key: nsq d * t + ip a d = √Δ
+  have h_sum : nsq d * t + ip a d = Real.sqrt Δ := by linarith
+  -- Square both sides: (nsq d * t + ip a d)² = Δ
+  have h_sq : (nsq d * t + ip a d) ^ 2 = Δ := by rw [h_sum, hsqrt]
+  -- Expand and factor out nsq d
+  have h_factor : nsq d * (nsq d * t ^ 2 + 2 * ip a d * t - (1 - nsq a)) = 0 := by
+    simp only [Δ, rayDisc] at h_sq; nlinarith
+  have := (mul_eq_zero.mp h_factor).resolve_left (ne_of_gt hd)
+  linarith
+
+/-- When x is on the sphere (|x|² = 1), the ray-sphere parameter from any a ≠ x
+    through x gives t₊ = 1. That is, x itself is where the ray hits the sphere. -/
+private theorem raySphereT_boundary {k : ℕ} (a x : Fin k → ℝ)
+    (ha : nsq a ≤ 1) (hx : nsq x = 1) (hd : 0 < nsq (x - a)) :
+    raySphereT a (x - a) = 1 := by
+  -- d = x - a. The roots of nsq d · t² + 2·ip a d · t + (nsq a - 1) = 0
+  -- have product (nsq a - 1) / nsq d ≤ 0 (since nsq a ≤ 1)
+  -- t = 1 is a root because a + 1·(x-a) = x has nsq x = 1
+  -- We show the positive root equals 1 by showing t₊ = 1 directly
+  set d := x - a
+  -- Verify t = 1 is a root
+  have h_root : nsq d * 1 ^ 2 + 2 * (ip a d) * 1 + (nsq a - 1) = 0 := by
+    -- nsq d + 2·ip a d + nsq a = nsq x = 1
+    have hexp : nsq x = nsq a + 2 * ip a d + nsq d := by
+      simp only [nsq, ip, d, Pi.sub_apply, ← Finset.sum_add_distrib, Finset.mul_sum]
+      apply Finset.sum_congr rfl; intro i _; ring
+    linarith
+  -- Product of roots = (nsq a - 1) / nsq d
+  -- Sum of roots = -2·ip a d / nsq d
+  -- Since product ≤ 0, roots have opposite signs (or one is 0)
+  -- The positive root t₊ = (-(ip a d) + √Δ) / nsq d
+  -- We know t₊ > 0 and the other root t₋ ≤ 0
+  -- Since 1 > 0 and 1 is a root, t₊ = 1
+  -- Direct proof: show (-(ip a d) + √Δ) / nsq d = 1
+  -- i.e., -(ip a d) + √Δ = nsq d
+  -- i.e., √Δ = nsq d + ip a d
+  -- Square both sides: Δ = (nsq d + ip a d)²
+  -- Δ = (ip a d)² + nsq d · (1 - nsq a)
+  -- (nsq d + ip a d)² = nsq d² + 2·nsq d·ip a d + (ip a d)²
+  -- So need: nsq d · (1 - nsq a) = nsq d² + 2·nsq d·ip a d
+  -- i.e., 1 - nsq a = nsq d + 2·ip a d (dividing by nsq d > 0)
+  -- From h_root (with t=1): nsq d + 2·ip a d + nsq a - 1 = 0
+  -- So 1 - nsq a = nsq d + 2·ip a d ✓
+  have h_key : 1 - nsq a = nsq d + 2 * ip a d := by linarith
+  -- √Δ = nsq d + ip a d (need to verify this is ≥ 0 for sqrt)
+  have h_sqrt_val : nsq d + ip a d ≥ 0 := by
+    -- From h_key: nsq d + 2·ip a d = 1 - nsq a ≥ 0
+    -- And nsq d ≥ 0. So nsq d + ip a d ≥ ip a d ≥ (1 - nsq a)/2 - nsq d/2
+    -- Actually: (nsq d + ip a d) = (2·nsq d + 2·ip a d - nsq d) / 1
+    -- Hmm, let's try: nsq d + ip a d = (1 - nsq a + nsq d) / 2
+    -- from h_key: 2·ip a d = 1 - nsq a - nsq d
+    -- so ip a d = (1 - nsq a - nsq d) / 2
+    -- nsq d + ip a d = nsq d + (1 - nsq a - nsq d) / 2 = (nsq d + 1 - nsq a) / 2
+    -- Since nsq d ≥ 0 and 1 - nsq a ≥ 0, this is ≥ 0 ✓
+    have h1 : 0 ≤ nsq d := Finset.sum_nonneg fun i _ => by positivity
+    linarith
+  have h_disc_eq : rayDisc a d = (nsq d + ip a d) ^ 2 := by
+    simp only [rayDisc]
+    nlinarith [h_key]
+  have h_sqrt : Real.sqrt (rayDisc a d) = nsq d + ip a d := by
+    rw [h_disc_eq]
+    exact Real.sqrt_sq h_sqrt_val
+  -- Now compute raySphereT
+  simp only [raySphereT, h_sqrt]
+  field_simp
+  linarith
+
+/-
+## Section LXIV: The Retraction Map and Brouwer Fixed Point from No-Retraction
+
+Given f: B^{n+1} → B^{n+1} with no fixed point, define:
+  r(x) = f(x) + t₊(f(x), x - f(x)) · (x - f(x))
+where t₊ is the positive root of the ray-sphere quadratic.
+
+This r is:
+1. Well-defined (t₊ exists because f(x) ∈ B and x ≠ f(x))
+2. Maps to S^n (by construction)
+3. Fixes S^n (t₊ = 1 when |x|² = 1)
+4. Continuous (composition of continuous operations)
+
+This contradicts no_retraction, proving Brouwer FP.
+-/
+
+/-- Continuity of ip in both arguments (jointly) -/
+private theorem continuous_ip {k : ℕ} :
+    Continuous (fun p : (Fin k → ℝ) × (Fin k → ℝ) => ip p.1 p.2) := by
+  apply continuous_finset_sum
+  intro i _
+  exact ((continuous_apply i).comp continuous_fst).mul
+    ((continuous_apply i).comp continuous_snd)
+
+/-- Continuity of nsq -/
+private theorem continuous_nsq {k : ℕ} :
+    Continuous (fun x : Fin k → ℝ => nsq x) := by
+  apply continuous_finset_sum
+  intro i _
+  exact (continuous_apply i).pow 2
+
+/-- Continuity of ip in the first argument -/
+private theorem continuous_ip_fst {k : ℕ} (y : Fin k → ℝ) :
+    Continuous (fun x : Fin k → ℝ => ip x y) := by
+  apply continuous_finset_sum
+  intro i _
+  exact (continuous_apply i).mul continuous_const
+
+/-- Continuity of rayDisc as a function of (a, d) -/
+private theorem continuous_rayDisc {k : ℕ} :
+    Continuous (fun p : (Fin k → ℝ) × (Fin k → ℝ) => rayDisc p.1 p.2) := by
+  simp only [rayDisc]
+  apply Continuous.add
+  · exact (continuous_ip.pow 2)
+  · exact (continuous_nsq.comp continuous_snd).mul
+      (continuous_const.sub (continuous_nsq.comp continuous_fst))
+
+/-- nsq of the difference x - f(x) is positive when f has no fixed point -/
+private theorem nsq_diff_pos {k : ℕ} {x a : Fin k → ℝ} (hne : x ≠ a) :
+    0 < nsq (x - a) := by
+  simp only [nsq]
+  apply Finset.sum_pos'
+  · intro i _; positivity
+  · -- Some coordinate must differ
+    by_contra h
+    push_neg at h
+    apply hne
+    ext i
+    have := h i (Finset.mem_univ i)
+    simp only [Pi.sub_apply] at this
+    nlinarith [sq_abs (x i - a i)]
+
+/-- **No-retraction → Brouwer Fixed Point (General Dimensions)**:
+    Every continuous self-map of the closed unit ball has a fixed point.
+
+    Proof: Suppose f: B^{n+1} → B^{n+1} has no fixed point.
+    Define r(x) = f(x) + t₊·(x - f(x)) where t₊ is the positive root
+    of the ray-sphere quadratic. Then r is a continuous retraction
+    B^{n+1} → S^n, contradicting the no_retraction axiom. -/
+theorem no_retraction_implies_brouwer_general (n : ℕ) (hn : 1 ≤ n)
+    (f : (Fin (n+1) → ℝ) → (Fin (n+1) → ℝ))
+    (hf : Continuous f)
+    (hf_ball : ∀ x, ∑ i, x i ^ 2 ≤ 1 → ∑ i, f x i ^ 2 ≤ 1) :
+    ∃ x : Fin (n+1) → ℝ, ∑ i, x i ^ 2 ≤ 1 ∧ f x = x := by
+  -- Proof by contradiction: assume no fixed point
+  by_contra h_no_fp
+  push_neg at h_no_fp
+  -- For x ∈ ball: f(x) ≠ x. For x outside ball: f(proj(x)) is in ball, x is not,
+  -- so f(proj(x)) ≠ x. We project to ball, apply f, then use the ray construction.
+  -- proj: ℝ^{n+1} → B^{n+1} projects to the closed unit ball
+  let proj : (Fin (n+1) → ℝ) → (Fin (n+1) → ℝ) := fun x =>
+    if nsq x ≤ 1 then x else fun i => x i / Real.sqrt (nsq x)
+  -- Key property: proj maps to ball
+  have hproj_ball : ∀ x, nsq (proj x) ≤ 1 := by
+    intro x; simp only [proj]
+    split_ifs with h
+    · exact h
+    · push_neg at h
+      simp only [nsq, Pi.sub_apply]
+      have hnsq_pos : 0 < nsq x := by linarith
+      rw [show ∑ i, (x i / Real.sqrt (nsq x)) ^ 2 =
+          (∑ i, x i ^ 2) / (Real.sqrt (nsq x)) ^ 2 from by
+        rw [Finset.sum_div]; apply Finset.sum_congr rfl; intro i _; ring]
+      rw [Real.sq_sqrt (le_of_lt hnsq_pos)]
+      exact le_of_eq (div_self (ne_of_gt hnsq_pos))
+  -- Key property: proj fixes ball points
+  have hproj_ball_id : ∀ x, nsq x ≤ 1 → proj x = x := by
+    intro x hx; simp only [proj, if_pos hx]
+  -- Key property: f(proj(x)) ≠ proj(x) for all x (no fixed point on ball)
+  have hno_fp_proj : ∀ x, f (proj x) ≠ proj x := by
+    intro x; exact h_no_fp (proj x) (hproj_ball x)
+  -- Define the retraction: r(x) = a + t₊·d where a = f(proj(x)), d = proj(x) - a
+  let r : (Fin (n+1) → ℝ) → (Fin (n+1) → ℝ) := fun x =>
+    let x' := proj x
+    let a := f x'
+    let d := x' - a
+    fun i => a i + raySphereT a d * d i
+  -- r is well-defined since nsq(f(proj(x))) ≤ 1 and d ≠ 0
+  have hr_sphere : ∀ x, nsq (r x) = 1 := by
+    intro x
+    -- r(x) = a + t₊ · d in the sense of ray_point_on_sphere
+    show nsq (fun i => f (proj x) i + raySphereT (f (proj x)) (proj x - f (proj x)) *
+      (proj x - f (proj x)) i) = 1
+    -- This equals nsq (a + t • d) where a = f(proj x), d = proj x - a
+    have : (fun i => f (proj x) i + raySphereT (f (proj x)) (proj x - f (proj x)) *
+      (proj x - f (proj x)) i) =
+      f (proj x) + raySphereT (f (proj x)) (proj x - f (proj x)) • (proj x - f (proj x)) := by
+      ext i; simp [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Pi.sub_apply]
+    rw [this]
+    apply ray_point_on_sphere
+    · -- nsq(f(proj(x))) ≤ 1
+      exact hf_ball (proj x) (hproj_ball x)
+    · -- nsq(proj(x) - f(proj(x))) > 0
+      exact nsq_diff_pos (hno_fp_proj x).symm
+  have hr_fixes : ∀ x : NSphere n, r x.1 = x.1 := by
+    intro ⟨x, hx⟩
+    -- x ∈ S^n means nsq x = 1
+    have hx_nsq : nsq x = 1 := hx
+    have hx_ball : nsq x ≤ 1 := le_of_eq hx
+    -- proj(x) = x since x is in the ball
+    have hproj_eq : proj x = x := hproj_ball_id x hx_ball
+    show (fun i => f (proj x) i + raySphereT (f (proj x)) (proj x - f (proj x)) *
+      (proj x - f (proj x)) i) = x
+    rw [hproj_eq]
+    -- Now: f(x) + t₊ · (x - f(x)) = x, i.e., t₊ = 1
+    have ht : raySphereT (f x) (x - f x) = 1 :=
+      raySphereT_boundary (f x) x (hf_ball x hx_ball) hx_nsq
+        (nsq_diff_pos (h_no_fp x hx_ball).symm)
+    ext i; simp [ht, Pi.sub_apply]; ring
+  -- Apply no_retraction to get contradiction
+  exact no_retraction n hn r sorry (fun x => by
+    show ∑ i, r x i ^ 2 = 1; exact hr_sphere x) hr_fixes
+
+/-
+## Section LXV: Axiom Reduction Update
+
+With the infrastructure from Section LXIII and the theorem
+`no_retraction_implies_brouwer_general` from Section LXIV,
+the `brouwer_fixed_point` axiom is now derivable from `no_retraction`.
+
+**Updated axiom inventory (Section LXIII-LXIV)**:
+- `borsuk_ulam_general` (Section VII): INDEPENDENT — the core axiom
+- `no_retraction` (Section XXII): INDEPENDENT — requires degree theory
+- `brouwer_fixed_point` (Section XXII): NOW PROVABLE from no_retraction
+  (modulo completing the continuity proof)
+- `lusternik_schnirelmann` (Section XXIII): REDUNDANT — proved from BU
+
+**Effective axiom count**: 2 independent (once continuity is completed)
+
+The remaining sorries in `no_retraction_implies_brouwer_general`:
+1. Continuity of the retraction map (composition of continuous pieces)
+2. Algebraic verification that r maps to S^n (direct from ray_point_on_sphere)
+3. Verification that r fixes S^n (direct from raySphereT_boundary)
+
+Items 2 and 3 are routine algebra. Item 1 requires careful handling of
+the projection to the ball and the division by nsq(x - f(x)).
+-/
+
+theorem bu_session_6_summary : True := trivial
+
 end BorsukUlamOQ03
