@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated sorry #1 (retraction continuity) using ballProj approach. Added retractT definition (was missing). 1 sorry remains (hemisphere map continuity in bu_implies_no_retraction).",
+    "progressSummary": "PROGRESS: Added Section LXIX with 12 new declarations for radial extension continuity infrastructure. Reformulated g as explicit piecewise of radialBranch1/radialBranch2 and proved equivalence. Sorry reduced from \"prove all continuity\" to \"4-case ContinuousAt argument with pre-built bounds\".",
     "builtItems": [
       {
         "name": "tucker_2d_octahedral",
@@ -43,12 +43,12 @@
       },
       {
         "name": "bu_implies_brouwer_1d",
-        "description": "BU → Brouwer FP in 1D via IVT on f(x)-x",
+        "description": "BU \u2192 Brouwer FP in 1D via IVT on f(x)-x",
         "proven": true
       },
       {
         "name": "no_retraction_1d",
-        "description": "No continuous retraction [-1,1]→{-1,1} fixing boundary",
+        "description": "No continuous retraction [-1,1]\u2192{-1,1} fixing boundary",
         "proven": true
       },
       {
@@ -73,17 +73,17 @@
       },
       {
         "name": "kkm_implies_no_retraction_1d",
-        "description": "KKM → no-retraction in 1D (formal implication proved)",
+        "description": "KKM \u2192 no-retraction in 1D (formal implication proved)",
         "proven": true
       },
       {
         "name": "ls_covering_general_open",
-        "description": "BU→LS for general n (open sets): n+1 open sets covering S^n => one contains antipodal pair",
+        "description": "BU\u2192LS for general n (open sets): n+1 open sets covering S^n => one contains antipodal pair",
         "proven": true
       },
       {
         "name": "ls_covering_general_closed",
-        "description": "BU→LS for general n (closed sets): n+1 closed sets covering S^n => one contains antipodal pair",
+        "description": "BU\u2192LS for general n (closed sets): n+1 closed sets covering S^n => one contains antipodal pair",
         "proven": true
       },
       {
@@ -93,17 +93,17 @@
       },
       {
         "name": "innerProd/normSq",
-        "description": "Inner product and norm squared on Fin k → ℝ, with expansion theorem",
+        "description": "Inner product and norm squared on Fin k \u2192 \u211d, with expansion theorem",
         "proven": true
       },
       {
         "name": "ray_discriminant_nonneg",
-        "description": "Quadratic discriminant for ray-sphere intersection is non-negative when |a|≤1",
+        "description": "Quadratic discriminant for ray-sphere intersection is non-negative when |a|\u22641",
         "proven": true
       },
       {
         "name": "raySphereRoot",
-        "description": "Larger root of ray-sphere quadratic: t₊ formula",
+        "description": "Larger root of ray-sphere quadratic: t\u208a formula",
         "proven": true
       },
       {
@@ -113,7 +113,7 @@
       },
       {
         "name": "no_retraction_implies_brouwer_fp",
-        "description": "Structure of no_retraction → Brouwer FP proof (continuity deferred)",
+        "description": "Structure of no_retraction \u2192 Brouwer FP proof (continuity deferred)",
         "proven": false
       },
       {
@@ -128,12 +128,12 @@
       },
       {
         "name": "discrim_perfect_square",
-        "description": "Discriminant is (A+B)² when A+2B+C=0",
+        "description": "Discriminant is (A+B)\u00b2 when A+2B+C=0",
         "proven": true
       },
       {
         "name": "ip_le_one",
-        "description": "Inner product ⟨fx,x⟩ ≤ 1 from Cauchy-Schwarz",
+        "description": "Inner product \u27e8fx,x\u27e9 \u2264 1 from Cauchy-Schwarz",
         "proven": true
       },
       {
@@ -178,7 +178,7 @@
       },
       {
         "name": "retractT_on_sphere",
-        "description": "retractT maps to S^n: nsq(a+t·d)=1",
+        "description": "retractT maps to S^n: nsq(a+t\u00b7d)=1",
         "proven": true
       },
       {
@@ -188,7 +188,7 @@
       },
       {
         "name": "ballProj",
-        "description": "Ball projection: x/max(1,√nsq(x))",
+        "description": "Ball projection: x/max(1,\u221ansq(x))",
         "proven": true
       },
       {
@@ -205,44 +205,48 @@
         "name": "ballProj_fix_ball",
         "description": "ballProj fixes points in the ball",
         "proven": true
-      }
+      },
+      "Section LXIX: normSqrt, continuous_normSqrt, component_le_one_of_on_sphere, radialBranch1/2, radialBranch*_bound, equator_proj_on_sphere, radial_branches_agree_on_equator",
+      "Reformulated g = piecewise(branch1, branch2) without dite, proved equivalence with original g"
     ],
     "insights": [
       "Tucker 2D for the 4-vertex octahedral triangulation is provable by exhaustive case analysis over 4^3=64 labelings",
       "Label exhaustion principle: when boundary labels come from different pairs of {-2,-1,1,2}, they exhaust the label set, forcing interior vertex to be complementary",
       "All 1D equivalences (BU, Tucker, Sperner, Brouwer FP, no-retraction) are formally derivable from IVT in Lean",
-      "KKM 1D proof uses infDist to both sets, then IVT on their difference - same technique as LS for S¹",
+      "KKM 1D proof uses infDist to both sets, then IVT on their difference - same technique as LS for S\u00b9",
       "Sperner 2D for minimal triangulation is trivial: any label c produces exactly one rainbow sub-triangle",
-      "The KKM→no-retraction direction is clean: preimages of {-1} and {1} form a closed cover satisfying KKM hypotheses",
-      "BU→LS general proof: same infDist technique as 1D, but using Fin.castSucc/Fin.last decomposition for the pigeonhole step",
+      "The KKM\u2192no-retraction direction is clean: preimages of {-1} and {1} form a closed cover satisfying KKM hypotheses",
+      "BU\u2192LS general proof: same infDist technique as 1D, but using Fin.castSucc/Fin.last decomposition for the pigeonhole step",
       "The LS axiom is now provably redundant - BU_general alone implies it via infDist to set complements",
       "Fin decomposition lemma (castSucc_or_last) is a useful helper for n+1 indexed families",
-      "Ray-sphere intersection reduces to quadratic At²+Bt+C=0 where A=|d|², B=2⟨a,d⟩, C=|a|²-1",
-      "Discriminant is a perfect square when x∈S^n: (⟨a,d⟩²+|d|²(1-|a|²)) = ((1-|a|²+|d|²)/2)²",
-      "The continuity of the retraction is the remaining gap for axiom reduction 3→2",
-      "retractT_eq_one_on_sphere proved via perfect square: A+2B+C=nsq(x)-1=0 gives Δ=(A+B)², so √Δ=A+B and t₊=1",
-      "Cauchy-Schwarz gives ip(fx,x)≤1 when nsq(fx)≤1 and nsq(x)=1, needed for A+B≥0",
-      "File had 3 copies of Sections XLII-XLIX from merge conflicts; deduplicated 5393→3670 lines",
-      "BU→no_retraction via hemisphere folding: define odd map g on S^{n+1} by folding upper/lower hemispheres through retraction",
+      "Ray-sphere intersection reduces to quadratic At\u00b2+Bt+C=0 where A=|d|\u00b2, B=2\u27e8a,d\u27e9, C=|a|\u00b2-1",
+      "Discriminant is a perfect square when x\u2208S^n: (\u27e8a,d\u27e9\u00b2+|d|\u00b2(1-|a|\u00b2)) = ((1-|a|\u00b2+|d|\u00b2)/2)\u00b2",
+      "The continuity of the retraction is the remaining gap for axiom reduction 3\u21922",
+      "retractT_eq_one_on_sphere proved via perfect square: A+2B+C=nsq(x)-1=0 gives \u0394=(A+B)\u00b2, so \u221a\u0394=A+B and t\u208a=1",
+      "Cauchy-Schwarz gives ip(fx,x)\u22641 when nsq(fx)\u22641 and nsq(x)=1, needed for A+B\u22650",
+      "File had 3 copies of Sections XLII-XLIX from merge conflicts; deduplicated 5393\u21923670 lines",
+      "BU\u2192no_retraction via hemisphere folding: define odd map g on S^{n+1} by folding upper/lower hemispheres through retraction",
       "Oddness proof works on S^{n+1} (not globally) because equator case uses r fixing S^n",
       "Global piecewise continuity is the main remaining gap - branches agree on equator only for S^{n+1} points",
-      "hemisphereOddMap piecewise branches only agree on S^{n+1} equator, NOT globally on {x_{n+2}=0} — the simple if-then-else is NOT globally continuous",
-      "Radial extension g(x) = |x| · h(x/|x|) fixes continuity: h restricted to S^{n+1} is continuous (pasting lemma, branches agree on equator), and |g(x)| = |x| → 0 at origin",
+      "hemisphereOddMap piecewise branches only agree on S^{n+1} equator, NOT globally on {x_{n+2}=0} \u2014 the simple if-then-else is NOT globally continuous",
+      "Radial extension g(x) = |x| \u00b7 h(x/|x|) fixes continuity: h restricted to S^{n+1} is continuous (pasting lemma, branches agree on equator), and |g(x)| = |x| \u2192 0 at origin",
       "For ContinuousOn.if on S^{n+1}: upper/lower hemispheres are closed, branches agree on equator because r fixes S^n, so pasting lemma applies",
-      "Pre-existing Mathlib API breaks in Part LXIII-LXIV: pow_le_pow_left renamed, field_simp/nlinarith changes — need Doctor/Builder to fix",
-      "ballProj(x) = x/max(1,√nsq(x)) avoids piecewise definitions entirely for the retraction",
-      "Retraction r(x) = f(p(x)) + t(x)·(p(x)-f(p(x))) is a SINGLE formula for all x ∈ ℝ^{n+1}",
+      "Pre-existing Mathlib API breaks in Part LXIII-LXIV: pow_le_pow_left renamed, field_simp/nlinarith changes \u2014 need Doctor/Builder to fix",
+      "ballProj(x) = x/max(1,\u221ansq(x)) avoids piecewise definitions entirely for the retraction",
+      "Retraction r(x) = f(p(x)) + t(x)\u00b7(p(x)-f(p(x))) is a SINGLE formula for all x \u2208 \u211d^{n+1}",
       "nsq(d(x)) > 0 everywhere because f has no fixed point in the ball and ballProj maps to the ball",
-      "Continuous.div with A_ne (∀ x, A x ≠ 0) handles the division by nsq in the raySphereT formula",
-      "retractT and raySphereT are algebraically identical: B²-A(C-1) = B²+A(1-C)"
+      "Continuous.div with A_ne (\u2200 x, A x \u2260 0) handles the division by nsq in the raySphereT formula",
+      "retractT and raySphereT are algebraically identical: B\u00b2-A(C-1) = B\u00b2+A(1-C)",
+      "Radial extension continuity decomposes into 4 cases: (a) upper half-space, (b) lower half-space, (c) equator x\u22600, (d) origin. Infrastructure lemmas now cover all needed bounds and equator matching."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove hemisphere odd map continuity (pasting lemma for closed hemispheres) - the 1 remaining sorry",
-      "Alternatively: reformulate g to avoid piecewise, similar to ballProj approach for retraction",
-      "Update meta.json and gallery data to reflect current state"
+      "Apply continuous_piecewise or ContinuousAt case analysis using radialBranch*_bound and radial_branches_agree_on_equator",
+      "Case (d) at origin: use squeeze_zero_norm or Metric.tendsto_nhds with radialBranch*_bound \u2264 normSqrt \u2192 0",
+      "Case (a)/(b): g locally equals branch1/branch2 in open half-space; prove branch continuity on {normSqrt > 0} via Continuous.div",
+      "Case (c): branches agree at equator + both continuous \u2192 ContinuousAt"
     ],
-    "markdown": "# borsuk-ulam-oq-03: Constructive (Intuitionistic) Borsuk-Ulam\n\n## Problem Summary\n\n**Open Question**: Can the 1D Borsuk-Ulam theorem be proved constructively\n(without full classical logic)? What is the constructive status of\nhigher-dimensional Borsuk-Ulam?\n\n**Status**: SURVEYED - 13 proved theorems, 1 axiom (general BU for n≥2), 0 sorries.\n\n**Answer**:\n- 1D: YES, proved via IVT on antisymmetric difference\n- n≥2: Requires algebraic topology (axiomized); no known constructive proof\n\n## Session 2026-02-25 (Session 1) - Initial Formalization\n\n**Mode**: FRESH (problem had EMPTY knowledge)\n**Outcome**: surveyed/progress\n\n### What I Did\n\n- Created `proofs/Proofs/BorsukUlamOQ03.lean` with full 1D formalization\n- Proved 13 theorems covering:\n  - 1D interval BU via IVT\n  - Odd function zero lemma\n  - BU ↔ odd-zero equivalence\n  - S¹ parametric version via IVT on [0,π]\n  - Circle point on unit circle\n  - No odd map to {±1}\n  - 5 structural lemmas\n  - NSphere def + antipodal def\n  - Consequence of general BU axiom\n- Fixed key Lean 4 issue: `f (--x)` is INVALID because `--` starts a line comment;\n  must write `f (-(-x))` or restructure to avoid double negative\n- Fixed `ring` issue: after `simp only [hg_def]`, `ring` fails on `f (-(-x))` atoms;\n  add `neg_neg` to simp first\n- `Continuous.prod_mk` may not be directly accessible as a field; use `fun_prop` instead\n- Created PR #3246\n\n### Key Findings\n\n- `f (--x)` is a SYNTAX BUG: `--` starts a line comment in Lean 4!\n  Workaround: Write `f (-(-x))` or avoid double-negated function args\n- `fun_prop` tactic handles complex continuity goals automatically with `hf : Continuous f`\n- IVT API: `intermediate_value_Icc hab hg_cont ⟨ha, hb⟩` where `ha : f a ≤ 0` and `hb : 0 ≤ f b`\n- `le_or_gt` is the non-deprecated name for case split (not `le_or_lt`)\n- Constructive content: IVT uses Classical.em internally, but Bishop-style IVT holds\n\n### Files Created\n\n- `proofs/Proofs/BorsukUlamOQ03.lean` (324 lines, 13 theorems, 1 axiom, 0 sorries)\n\n### Next Steps\n\n- The higher-dimensional BU (n≥2) could potentially be proved using Tucker's lemma (combinatorial BU)\n- Tucker's lemma is more constructive than degree-theoretic approaches\n- Would require: triangulation, labeling, Tucker path → antipodal pair\n"
+    "markdown": "# borsuk-ulam-oq-03: Constructive (Intuitionistic) Borsuk-Ulam\n\n## Problem Summary\n\n**Open Question**: Can the 1D Borsuk-Ulam theorem be proved constructively\n(without full classical logic)? What is the constructive status of\nhigher-dimensional Borsuk-Ulam?\n\n**Status**: SURVEYED - 13 proved theorems, 1 axiom (general BU for n\u22652), 0 sorries.\n\n**Answer**:\n- 1D: YES, proved via IVT on antisymmetric difference\n- n\u22652: Requires algebraic topology (axiomized); no known constructive proof\n\n## Session 2026-02-25 (Session 1) - Initial Formalization\n\n**Mode**: FRESH (problem had EMPTY knowledge)\n**Outcome**: surveyed/progress\n\n### What I Did\n\n- Created `proofs/Proofs/BorsukUlamOQ03.lean` with full 1D formalization\n- Proved 13 theorems covering:\n  - 1D interval BU via IVT\n  - Odd function zero lemma\n  - BU \u2194 odd-zero equivalence\n  - S\u00b9 parametric version via IVT on [0,\u03c0]\n  - Circle point on unit circle\n  - No odd map to {\u00b11}\n  - 5 structural lemmas\n  - NSphere def + antipodal def\n  - Consequence of general BU axiom\n- Fixed key Lean 4 issue: `f (--x)` is INVALID because `--` starts a line comment;\n  must write `f (-(-x))` or restructure to avoid double negative\n- Fixed `ring` issue: after `simp only [hg_def]`, `ring` fails on `f (-(-x))` atoms;\n  add `neg_neg` to simp first\n- `Continuous.prod_mk` may not be directly accessible as a field; use `fun_prop` instead\n- Created PR #3246\n\n### Key Findings\n\n- `f (--x)` is a SYNTAX BUG: `--` starts a line comment in Lean 4!\n  Workaround: Write `f (-(-x))` or avoid double-negated function args\n- `fun_prop` tactic handles complex continuity goals automatically with `hf : Continuous f`\n- IVT API: `intermediate_value_Icc hab hg_cont \u27e8ha, hb\u27e9` where `ha : f a \u2264 0` and `hb : 0 \u2264 f b`\n- `le_or_gt` is the non-deprecated name for case split (not `le_or_lt`)\n- Constructive content: IVT uses Classical.em internally, but Bishop-style IVT holds\n\n### Files Created\n\n- `proofs/Proofs/BorsukUlamOQ03.lean` (324 lines, 13 theorems, 1 axiom, 0 sorries)\n\n### Next Steps\n\n- The higher-dimensional BU (n\u22652) could potentially be proved using Tucker's lemma (combinatorial BU)\n- Tucker's lemma is more constructive than degree-theoretic approaches\n- Would require: triangulation, labeling, Tucker path \u2192 antipodal pair\n"
   },
   "tags": [
     "seeker-selected",

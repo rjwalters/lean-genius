@@ -378,3 +378,44 @@ Added 5 new sections (XLII-XLVI) with 17 new proved theorems:
 ### Next Steps
 - Prove hemisphere odd map continuity (pasting lemma for closed hemispheres)
 - Or reformulate g to avoid piecewise, similar to ballProj approach
+
+---
+
+## Session 2026-03-19 (researcher-3) - Radial Extension Continuity Infrastructure
+
+**Mode**: REVISIT (RICH knowledge, score 65)
+**Outcome**: progress (infrastructure for sorry elimination)
+
+### What I Did
+
+**Section LXIX: Radial Extension Continuity Infrastructure** (~160 lines, 12 declarations):
+- `normSqrt`: √(Σ x²) as a named function
+- `continuous_normSqrt`: proved continuous (sqrt ∘ sum of squares)
+- `normSqrt_nonneg`, `normSqrt_eq_zero_iff`, `normSqrt_zero`: basic properties
+- `component_le_one_of_on_sphere`: |r(y)_j| ≤ 1 when r maps to S^n
+- `radialBranch1`, `radialBranch2`: globally defined (with 0/0=0 convention)
+- `radialBranch1_zero`, `radialBranch2_zero`: both branches are 0 at origin
+- `radialBranch1_bound`, `radialBranch2_bound`: |branch(x)_j| ≤ normSqrt(x)
+- `equator_proj_on_sphere`: when x_{n+1}=0, proj(x/s) ∈ S^n
+- `radial_branches_agree_on_equator`: branch1 = branch2 when x_{n+1} = 0
+
+**Reformulation of g**:
+- Proved g = if 0 ≤ x_{n+1} then radialBranch1 else radialBranch2 (eliminates dite)
+- Reduced sorry from "prove entire continuity" to "prove component-wise ContinuousAt"
+
+### Key Finding
+The sorry reduces to a 4-case ContinuousAt argument:
+(a) x₀_{n+1} > 0: g = branch1 in open neighborhood, branch1 continuous on {normSqrt > 0}
+(b) x₀_{n+1} < 0: g = branch2 in open neighborhood
+(c) x₀_{n+1} = 0, x₀ ≠ 0: branches agree (radial_branches_agree_on_equator) + both continuous
+(d) x₀ = 0: |g(x)_j| ≤ normSqrt(x) → 0 by squeeze (radialBranch*_bound + continuous_normSqrt)
+
+### Stats
+- **Lines**: 4304 (from 4087, +217)
+- **Declarations**: ~200 (12 new)
+- **Sorries**: 1 (same, but much more tractable now)
+
+### Next Steps (for sorry elimination)
+1. Prove branch1/branch2 are continuous on {normSqrt > 0} using Continuous.div
+2. Use Metric.tendsto_nhds for squeeze at origin
+3. Combine with ContinuousAt case analysis
