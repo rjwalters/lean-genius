@@ -3516,6 +3516,25 @@ theorem ip_le_one (k : ℕ) (x fx : Fin k → ℝ)
 theorem discrim_perfect_square (A B C : ℝ) (h : A + 2 * B + C = 0) :
     B ^ 2 - A * C = (A + B) ^ 2 := by nlinarith
 
+/-- The retraction parameter for the ray-sphere construction.
+    Equivalent to raySphereT with sign convention matching Section LXIV.
+    retractT(a, d) = (-⟨a,d⟩ + √(⟨a,d⟩² - |d|²·(|a|²-1))) / |d|² -/
+noncomputable def retractT (k : ℕ) (a d : Fin k → ℝ) (ha : nsq k a ≤ 1)
+    (hd : 0 < nsq k d) : ℝ :=
+  (-(ip k a d) + Real.sqrt ((ip k a d) ^ 2 - nsq k d * (nsq k a - 1))) / nsq k d
+
+/-- retractT and raySphereT compute the same value
+    (the sign conventions are algebraically equivalent). -/
+theorem retractT_eq_raySphereT (k : ℕ) (a d : Fin k → ℝ) (ha : nsq k a ≤ 1)
+    (hd : 0 < nsq k d) : retractT k a d ha hd = raySphereT k a d ha hd := by
+  unfold retractT raySphereT; congr 2; ring
+
+/-- The retraction point lies on the unit sphere: nsq(a + retractT·d) = 1. -/
+theorem retractT_on_sphere (k : ℕ) (a d : Fin k → ℝ) (ha : nsq k a ≤ 1)
+    (hd : 0 < nsq k d) :
+    nsq k (fun i => a i + retractT k a d ha hd * d i) = 1 := by
+  rw [retractT_eq_raySphereT]; exact raySphereT_on_sphere k a d ha hd
+
 /-- **retractT = 1 on the sphere**: When |x|² = 1 and |f(x)|² ≤ 1,
     the retraction parameter is exactly 1, so r(x) = f(x) + 1·(x - f(x)) = x.
 
@@ -3572,6 +3591,72 @@ the independent axiom count from 3 to 2.
 7. This contradicts no_retraction.
 -/
 
+/-
+## Section LXV: Ball Projection and Continuity Infrastructure
+
+The ball projection p(x) = x/max(1,√nsq(x)) maps all of ℝ^k into the
+closed unit ball, fixes points already in the ball, and is globally
+continuous. This enables defining the retraction as a SINGLE formula
+(no piecewise), making continuity straightforward.
+-/
+
+/-- nsq is continuous (sum of squares of coordinates is a polynomial). -/
+theorem continuous_nsq' (k : ℕ) : Continuous (fun x : Fin k → ℝ => nsq k x) := by
+  unfold nsq; exact continuous_finset_sum _ fun i _ => (continuous_apply i).pow 2
+
+/-- Ball projection: x ↦ x / max(1, √(nsq x)). Maps ℝ^k → B^k. -/
+noncomputable def ballProj (k : ℕ) (x : Fin k → ℝ) : Fin k → ℝ :=
+  fun i => x i / max 1 (Real.sqrt (nsq k x))
+
+/-- The ballProj denominator is always positive. -/
+theorem ballProj_denom_pos (k : ℕ) (x : Fin k → ℝ) :
+    0 < max 1 (Real.sqrt (nsq k x)) :=
+  lt_of_lt_of_le one_pos (le_max_left _ _)
+
+/-- ballProj is continuous. -/
+theorem continuous_ballProj (k : ℕ) :
+    Continuous (fun x : Fin k → ℝ => ballProj k x) := by
+  apply continuous_pi; intro i
+  show Continuous (fun x => x i / max 1 (Real.sqrt (nsq k x)))
+  exact (continuous_apply i).div
+    (continuous_const.max (Real.continuous_sqrt.comp (continuous_nsq' k)))
+    (fun x => ne_of_gt (ballProj_denom_pos k x))
+
+/-- ballProj maps to the closed unit ball: nsq(ballProj(x)) ≤ 1. -/
+theorem ballProj_in_ball (k : ℕ) (x : Fin k → ℝ) :
+    nsq k (ballProj k x) ≤ 1 := by
+  unfold ballProj nsq
+  set m := max 1 (Real.sqrt (∑ i : Fin k, x i ^ 2))
+  have hm_pos : 0 < m := ballProj_denom_pos k x
+  simp_rw [div_pow, ← Finset.sum_div]
+  rw [div_le_one (pow_pos hm_pos 2)]
+  have hle : Real.sqrt (∑ i : Fin k, x i ^ 2) ≤ m := le_max_right _ _
+  have hnn : 0 ≤ ∑ i : Fin k, x i ^ 2 :=
+    Finset.sum_nonneg fun i _ => sq_nonneg _
+  calc ∑ i : Fin k, x i ^ 2
+      = Real.sqrt (∑ i : Fin k, x i ^ 2) ^ 2 := (Real.sq_sqrt hnn).symm
+    _ ≤ m ^ 2 := by nlinarith [Real.sqrt_nonneg (∑ i : Fin k, x i ^ 2)]
+
+/-- ballProj fixes points already in the ball. -/
+theorem ballProj_fix_ball (k : ℕ) (x : Fin k → ℝ) (hx : nsq k x ≤ 1) :
+    ballProj k x = x := by
+  ext i; show x i / max 1 (Real.sqrt (nsq k x)) = x i
+  have h : Real.sqrt (nsq k x) ≤ 1 := by
+    rw [← Real.sqrt_one]; exact Real.sqrt_le_sqrt hx
+  rw [max_eq_left h, div_one]
+
+/-
+## Section LXV-B: No-Retraction → Brouwer FP (Complete Proof)
+
+Using the ball projection from Section LXV and the ray-sphere intersection
+from Sections LXIII-LXIV, we construct a retraction from ℝ^{n+1} to S^n.
+
+**Key insight**: By composing f with ballProj, the retraction is defined
+by a SINGLE formula for all x ∈ ℝ^{n+1} (no piecewise):
+  r(x) = f(p(x)) + t(x) · (p(x) - f(p(x)))
+where p = ballProj and t is the raySphereT formula.
+-/
+
 /-- **no_retraction → brouwer_fixed_point**: If there is no continuous
     retraction from ℝ^{n+1} to S^n fixing S^n, then every continuous
     map f: B^{n+1} → B^{n+1} has a fixed point.
@@ -3584,47 +3669,109 @@ theorem no_retraction_implies_brouwer_fp (n : ℕ) (hn : 1 ≤ n)
     (hf : Continuous f)
     (hf_ball : ∀ x, ∑ i, x i ^ 2 ≤ 1 → ∑ i, f x i ^ 2 ≤ 1) :
     ∃ x : Fin (n+1) → ℝ, ∑ i, x i ^ 2 ≤ 1 ∧ f x = x := by
-  -- Proof by contradiction: assume f has no fixed point in B^{n+1}
   by_contra hno_fp
   push_neg at hno_fp
-  -- Every point in the ball is NOT a fixed point of f
-  have hno_fix : ∀ x, ∑ i, x i ^ 2 ≤ 1 → f x ≠ x := by
-    intro x hx
-    exact fun heq => hno_fp x hx heq
-  -- We need to construct a retraction r: ℝ^{n+1} → S^n fixing S^n.
-  -- For x in B^{n+1}: r(x) = f(x) + t₊(x) · (x - f(x))
-  -- For x outside: r(x) = x / |x|
-  -- This requires showing continuity, which is technically involved.
-  -- We defer the construction details and use the algebraic infrastructure
-  -- from Sections LXIII-LXIV to demonstrate the logical reduction.
-  -- The retraction maps to S^n (retractT_on_sphere) and fixes S^n
-  -- (retractT_eq_one_on_sphere). Continuity of the composition follows
-  -- from Real.continuous_sqrt and the hypothesis that f has no fixed point
-  -- (ensuring the denominator |x - f(x)|² > 0 on the ball).
-  exact absurd rfl (by
-    -- The construction requires showing that the retraction defined by
-    -- ray-sphere intersection is continuous. The key components:
-    -- 1. x ↦ f(x) is continuous (hypothesis hf)
-    -- 2. x ↦ x - f(x) is continuous (continuous_id.sub hf)
-    -- 3. x ↦ nsq(x - f(x)) is continuous (continuous polynomial)
-    -- 4. x ↦ nsq(x - f(x)) > 0 on ball (no fixed point)
-    -- 5. x ↦ ip(f(x), x - f(x)) is continuous (continuous polynomial)
-    -- 6. x ↦ √(discriminant(x)) is continuous (Real.continuous_sqrt ∘ continuous polynomial)
-    -- 7. x ↦ retractT(x) is continuous (continuous division by positive function)
-    -- 8. r(x) = f(x) + retractT(x) · (x - f(x)) is continuous
-    -- The pasting with radial projection on {|x| > 1} is continuous
-    -- since both formulas agree on S^n (retractT = 1).
-    sorry)
+  -- Ball projection: maps everything to B^{n+1}
+  set k := n + 1
+  set p := ballProj k with hp_def
+  have hp_cont : Continuous p := continuous_ballProj k
+  have hp_ball : ∀ x, nsq k (p x) ≤ 1 := ballProj_in_ball k
+  have hp_fix : ∀ x, nsq k x ≤ 1 → p x = x := ballProj_fix_ball k
+  -- f(p(x)) is in the ball
+  have hfp_ball : ∀ x, nsq k (f (p x)) ≤ 1 := by
+    intro x; show ∑ i, f (p x) i ^ 2 ≤ 1
+    exact hf_ball (p x) (hp_ball x)
+  -- f has no fixed point in the ball
+  have hno_fix : ∀ y, nsq k y ≤ 1 → f y ≠ y := by
+    intro y hy heq; exact hno_fp y hy heq
+  -- p(x) ≠ f(p(x)) for all x (since p(x) ∈ ball and f has no fixed point)
+  have hd_ne : ∀ x, (fun i => p x i - f (p x) i) ≠ 0 := by
+    intro x heq
+    have : p x = f (p x) := by ext i; have := congr_fun heq i; linarith
+    exact hno_fix (p x) (hp_ball x) this.symm
+  -- A(x) = nsq(p(x) - f(p(x))) > 0 everywhere
+  have hA_pos : ∀ x, 0 < nsq k (fun i => p x i - f (p x) i) := by
+    intro x
+    rw [lt_iff_le_and_ne]
+    exact ⟨nsq_nonneg _ _, fun h => hd_ne x ((nsq_eq_zero_iff _ _).mp h.symm)⟩
+  have hA_ne : ∀ x, nsq k (fun i => p x i - f (p x) i) ≠ 0 :=
+    fun x => ne_of_gt (hA_pos x)
+  -- Define the retraction using EXPLICIT FORMULA (no proof arguments, no piecewise)
+  -- r_j(x) = f(p(x))_j + t(x) · (p(x)_j - f(p(x))_j)
+  -- where t = (-B + √(B² + A·(1-C))) / A
+  -- with A = nsq(d), B = ip(f(p(x)), d), C = nsq(f(p(x))), d = p(x) - f(p(x))
+  let r : (Fin k → ℝ) → (Fin k → ℝ) := fun x =>
+    let a := f (p x)
+    let d := fun i => p x i - a i
+    let A := nsq k d
+    let B := ip k a d
+    let disc := B ^ 2 + A * (1 - nsq k a)
+    fun j => a j + ((-B + Real.sqrt disc) / A) * d j
+  -- r maps to S^n: nsq(r(x)) = 1
+  have hr_sphere : ∀ x, ∑ i, r x i ^ 2 = 1 := by
+    intro x
+    have key := raySphereT_on_sphere k (f (p x))
+      (fun i => p x i - f (p x) i) (hfp_ball x) (hA_pos x)
+    convert key using 2; ext i; simp only [r]; congr 1; congr 1
+    unfold raySphereT; rfl
+  -- r fixes S^n: for x₀ ∈ S^n, r(x₀) = x₀
+  have hr_fixes : ∀ x₀ : NSphere n, r x₀.1 = x₀.1 := by
+    intro ⟨x₀, hx₀⟩
+    have hx₀_ball : nsq k x₀ ≤ 1 := by show ∑ i, x₀ i ^ 2 ≤ 1; linarith
+    have hp_x₀ : p x₀ = x₀ := hp_fix x₀ hx₀_ball
+    ext j; show r x₀ j = x₀ j; simp only [r, hp_x₀]
+    -- Need t(x₀) = 1, then f(x₀)_j + 1 · (x₀ j - f(x₀) j) = x₀ j
+    have ht : (-(ip k (f x₀) (fun i => x₀ i - f x₀ i)) +
+      Real.sqrt ((ip k (f x₀) (fun i => x₀ i - f x₀ i)) ^ 2 +
+      nsq k (fun i => x₀ i - f x₀ i) * (1 - nsq k (f x₀)))) /
+      nsq k (fun i => x₀ i - f x₀ i) = 1 := by
+      have h1 := retractT_eq_one_on_sphere k x₀ (f x₀)
+        (by show nsq k x₀ = 1; exact hx₀)
+        (by show nsq k (f x₀) ≤ 1; rw [← hp_x₀]; exact hfp_ball x₀)
+        (by rw [← hp_x₀]; exact hA_pos x₀)
+      rw [← retractT_eq_raySphereT] at h1
+      convert h1 using 2; unfold retractT; congr 2; ring
+    rw [ht]; ring
+  -- r is continuous: composition of continuous functions with A > 0 everywhere
+  have hr_cont : Continuous r := by
+    apply continuous_pi; intro j
+    have h_fp : Continuous (fun x => f (p x)) := hf.comp hp_cont
+    have h_d : Continuous (fun x : Fin k → ℝ => fun i => p x i - f (p x) i) :=
+      continuous_pi fun i =>
+        ((continuous_apply i).comp hp_cont).sub ((continuous_apply i).comp h_fp)
+    have h_A : Continuous (fun x => nsq k (fun i => p x i - f (p x) i)) :=
+      (continuous_nsq' k).comp h_d
+    have h_B : Continuous (fun x =>
+        ip k (f (p x)) (fun i => p x i - f (p x) i)) := by
+      unfold ip; exact continuous_finset_sum _ fun i _ =>
+        ((continuous_apply i).comp h_fp).mul
+          (((continuous_apply i).comp hp_cont).sub ((continuous_apply i).comp h_fp))
+    have h_C : Continuous (fun x => nsq k (f (p x))) :=
+      (continuous_nsq' k).comp h_fp
+    have h_disc : Continuous (fun x =>
+        (ip k (f (p x)) (fun i => p x i - f (p x) i)) ^ 2 +
+        nsq k (fun i => p x i - f (p x) i) * (1 - nsq k (f (p x)))) :=
+      (h_B.pow 2).add (h_A.mul (continuous_const.sub h_C))
+    have h_t : Continuous (fun x =>
+        (-(ip k (f (p x)) (fun i => p x i - f (p x) i)) +
+         Real.sqrt ((ip k (f (p x)) (fun i => p x i - f (p x) i)) ^ 2 +
+           nsq k (fun i => p x i - f (p x) i) * (1 - nsq k (f (p x))))) /
+        nsq k (fun i => p x i - f (p x) i)) :=
+      (h_B.neg.add (Real.continuous_sqrt.comp h_disc)).div h_A hA_ne
+    exact ((continuous_apply j).comp h_fp).add
+      (h_t.mul (((continuous_apply j).comp hp_cont).sub
+        ((continuous_apply j).comp h_fp)))
+  -- Apply no_retraction axiom to derive contradiction
+  exact no_retraction n hn r hr_cont hr_sphere hr_fixes
 
-/-- The brouwer_fixed_point axiom is conditionally redundant given no_retraction.
+/-- The brouwer_fixed_point axiom is now fully redundant given no_retraction.
     `no_retraction_implies_brouwer_fp` proves the same statement as the axiom,
-    using only the no_retraction axiom.
+    using only the no_retraction axiom. **0 sorries**.
 
     **Updated axiom inventory**:
     - `borsuk_ulam_general`: INDEPENDENT (requires algebraic topology)
     - `no_retraction`: INDEPENDENT (requires degree theory from BU)
     - `brouwer_fixed_point`: REDUNDANT via `no_retraction_implies_brouwer_fp`
-      (modulo continuity of the ray-sphere retraction)
     - `lusternik_schnirelmann`: REDUNDANT via `ls_covering_general_open`
 
     **Effective independent axiom count**: 2 (BU_general + no_retraction)
