@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Part LI (zero-free regions: dVP, Vinogradov-Korobov, Siegel zeros, class number connection)",
+    "progressSummary": "PROGRESS: Added Parts XLIX-L (Montgomery pair correlation + GUE, Keating-Snaith moments, Weil explicit formula, Riemann-von Mangoldt, computational verification)",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",
@@ -94,11 +94,6 @@
       {
         "name": "weil_explicit_formulae",
         "description": "Part L: Weil explicit formula, Riemann-von Mangoldt N(T), computational verification to 10^13 zeros (3 theorems)",
-        "proven": true
-      },
-      {
-        "name": "zero_free_regions_siegel",
-        "description": "Part LI: VK zero-free region, PNT error exponents, Siegel zero obstruction, class number 1 (2 theorems)",
         "proven": true
       }
     ],
