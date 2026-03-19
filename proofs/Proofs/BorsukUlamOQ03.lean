@@ -5595,6 +5595,83 @@ private theorem nsq_diff_pos {k : ℕ} {x a : Fin k → ℝ} (hne : x ≠ a) :
     simp only [Pi.sub_apply] at this
     nlinarith [sq_abs (x i - a i)]
 
+/-
+## Section LXVI: Continuity Infrastructure for the Retraction
+
+To complete the proof that brouwer_fixed_point follows from no_retraction,
+we need continuity of the retraction map. This requires:
+1. A continuous projection onto the closed unit ball
+2. Continuity of the raySphereT parameter function
+
+The key insight: define ballProj using max(1, |x|) instead of if-then-else,
+making continuity immediate (no piecewise analysis needed).
+-/
+
+/-- Non-negativity of nsq (useful utility) -/
+private theorem nsq_nonneg' {k : ℕ} (x : Fin k → ℝ) : 0 ≤ nsq x :=
+  Finset.sum_nonneg fun _ _ => by positivity
+
+/-- Continuous projection onto the closed unit ball: x ↦ x / max(1, |x|).
+    This formulation avoids piecewise definitions, making continuity immediate. -/
+noncomputable def ballProj {k : ℕ} (x : Fin k → ℝ) : Fin k → ℝ :=
+  fun i => x i / max 1 (Real.sqrt (nsq x))
+
+/-- The scaling denominator max(1, √(nsq x)) is always positive -/
+private theorem ballProj_denom_pos {k : ℕ} (x : Fin k → ℝ) :
+    0 < max 1 (Real.sqrt (nsq x)) :=
+  lt_of_lt_of_le one_pos (le_max_left 1 _)
+
+/-- ballProj maps every point into the closed unit ball -/
+private theorem ballProj_in_ball {k : ℕ} (x : Fin k → ℝ) :
+    nsq (@ballProj k x) ≤ 1 := by
+  set s := max 1 (Real.sqrt (nsq x))
+  -- nsq(ballProj x) = nsq(x) / s²
+  suffices nsq x / s ^ 2 ≤ 1 by
+    convert this using 1
+    simp only [ballProj, nsq, Finset.sum_div]; congr 1; ext i; ring
+  rcases le_or_lt (nsq x) 1 with h | h
+  · -- nsq x ≤ 1: √(nsq x) ≤ 1 so s = 1, result = nsq x ≤ 1
+    have hsle : Real.sqrt (nsq x) ≤ 1 := by
+      calc Real.sqrt (nsq x) ≤ Real.sqrt 1 := Real.sqrt_le_sqrt h
+      _ = 1 := Real.sqrt_one
+    rw [max_eq_left hsle, one_pow, div_one]; exact h
+  · -- nsq x > 1: √(nsq x) > 1 so s = √(nsq x), result = 1
+    have hsge : 1 ≤ Real.sqrt (nsq x) := by
+      calc (1 : ℝ) = Real.sqrt 1 := Real.sqrt_one.symm
+      _ ≤ Real.sqrt (nsq x) := Real.sqrt_le_sqrt (le_of_lt h)
+    rw [max_eq_right hsge, Real.sq_sqrt (nsq_nonneg' x)]
+    exact le_of_eq (div_self (ne_of_gt (by linarith)))
+
+/-- ballProj fixes points already in the closed unit ball -/
+private theorem ballProj_ball_fix {k : ℕ} (x : Fin k → ℝ) (hx : nsq x ≤ 1) :
+    @ballProj k x = x := by
+  ext i; simp only [ballProj]
+  have hsle : Real.sqrt (nsq x) ≤ 1 := by
+    calc Real.sqrt (nsq x) ≤ Real.sqrt 1 := Real.sqrt_le_sqrt hx
+    _ = 1 := Real.sqrt_one
+  rw [max_eq_left hsle, div_one]
+
+/-- ballProj is continuous (follows immediately from the max formulation) -/
+private theorem continuous_ballProj {k : ℕ} :
+    Continuous (@ballProj k) :=
+  continuous_pi fun i => (continuous_apply i).div
+    (continuous_const.max (Real.continuous_sqrt.comp continuous_nsq))
+    (fun x => ne_of_gt (ballProj_denom_pos x))
+
+/-- raySphereT is continuous when composed with continuous functions
+    whose direction component has positive norm squared everywhere. -/
+private theorem continuous_raySphereT_comp {k : ℕ} {α : Type*} [TopologicalSpace α]
+    {a d : α → Fin k → ℝ} (ha : Continuous a) (hd : Continuous d)
+    (hd_pos : ∀ x, 0 < nsq (d x)) :
+    Continuous (fun x => raySphereT (a x) (d x)) := by
+  -- Unfold: raySphereT a d = (-(ip a d) + √(rayDisc a d)) / nsq d
+  have heq : (fun x => raySphereT (a x) (d x)) =
+      fun x => (-(ip (a x) (d x)) + Real.sqrt (rayDisc (a x) (d x))) / nsq (d x) := rfl
+  rw [heq]
+  exact ((continuous_ip.comp (ha.prod_mk hd)).neg.add
+    (Real.continuous_sqrt.comp (continuous_rayDisc.comp (ha.prod_mk hd)))).div
+    (continuous_nsq.comp hd) (fun x => ne_of_gt (hd_pos x))
+
 /-- **No-retraction → Brouwer Fixed Point (General Dimensions)**:
     Every continuous self-map of the closed unit ball has a fixed point.
 
@@ -5610,27 +5687,11 @@ theorem no_retraction_implies_brouwer_general (n : ℕ) (hn : 1 ≤ n)
   -- Proof by contradiction: assume no fixed point
   by_contra h_no_fp
   push_neg at h_no_fp
-  -- For x ∈ ball: f(x) ≠ x. For x outside ball: f(proj(x)) is in ball, x is not,
-  -- so f(proj(x)) ≠ x. We project to ball, apply f, then use the ray construction.
-  -- proj: ℝ^{n+1} → B^{n+1} projects to the closed unit ball
-  let proj : (Fin (n+1) → ℝ) → (Fin (n+1) → ℝ) := fun x =>
-    if nsq x ≤ 1 then x else fun i => x i / Real.sqrt (nsq x)
-  -- Key property: proj maps to ball
-  have hproj_ball : ∀ x, nsq (proj x) ≤ 1 := by
-    intro x; simp only [proj]
-    split_ifs with h
-    · exact h
-    · push_neg at h
-      simp only [nsq, Pi.sub_apply]
-      have hnsq_pos : 0 < nsq x := by linarith
-      rw [show ∑ i, (x i / Real.sqrt (nsq x)) ^ 2 =
-          (∑ i, x i ^ 2) / (Real.sqrt (nsq x)) ^ 2 from by
-        rw [Finset.sum_div]; apply Finset.sum_congr rfl; intro i _; ring]
-      rw [Real.sq_sqrt (le_of_lt hnsq_pos)]
-      exact le_of_eq (div_self (ne_of_gt hnsq_pos))
-  -- Key property: proj fixes ball points
-  have hproj_ball_id : ∀ x, nsq x ≤ 1 → proj x = x := by
-    intro x hx; simp only [proj, if_pos hx]
+  -- Use ballProj for the continuous projection onto the closed unit ball
+  let proj := @ballProj (n + 1)
+  have hproj_ball : ∀ x, nsq (proj x) ≤ 1 := ballProj_in_ball
+  have hproj_ball_id : ∀ x, nsq x ≤ 1 → proj x = x := ballProj_ball_fix
+  have hproj_cont : Continuous proj := continuous_ballProj
   -- Key property: f(proj(x)) ≠ proj(x) for all x (no fixed point on ball)
   have hno_fp_proj : ∀ x, f (proj x) ≠ proj x := by
     intro x; exact h_no_fp (proj x) (hproj_ball x)
@@ -5672,35 +5733,42 @@ theorem no_retraction_implies_brouwer_general (n : ℕ) (hn : 1 ≤ n)
       raySphereT_boundary (f x) x (hf_ball x hx_ball) hx_nsq
         (nsq_diff_pos (h_no_fp x hx_ball).symm)
     ext i; simp [ht, Pi.sub_apply]; ring
+  -- CONTINUITY OF THE RETRACTION
+  -- r(x) = f(proj(x)) + t₊ · (proj(x) - f(proj(x))) where t₊ = raySphereT(...)
+  -- Each component r(x)_i = a_i + t · d_i is continuous if a, d, t are continuous.
+  have ha_cont : Continuous (fun x => f (proj x)) := hf.comp hproj_cont
+  have hd_cont : Continuous (fun x => proj x - f (proj x)) := hproj_cont.sub ha_cont
+  have ht_cont : Continuous (fun x => raySphereT (f (proj x)) (proj x - f (proj x))) :=
+    continuous_raySphereT_comp ha_cont hd_cont (fun x => nsq_diff_pos (hno_fp_proj x).symm)
+  have hr_cont : Continuous r :=
+    continuous_pi fun i => ((continuous_apply i).comp ha_cont).add
+      (ht_cont.mul ((continuous_apply i).comp hd_cont))
   -- Apply no_retraction to get contradiction
-  exact no_retraction n hn r sorry (fun x => by
+  exact no_retraction n hn r hr_cont (fun x => by
     show ∑ i, r x i ^ 2 = 1; exact hr_sphere x) hr_fixes
 
 /-
-## Section LXV: Axiom Reduction Update
+## Section LXV: Axiom Reduction Update — COMPLETE
 
-With the infrastructure from Section LXIII and the theorem
-`no_retraction_implies_brouwer_general` from Section LXIV,
-the `brouwer_fixed_point` axiom is now derivable from `no_retraction`.
+With the infrastructure from Sections LXIII-LXVI, the theorem
+`no_retraction_implies_brouwer_general` is now fully proved (0 sorries).
+The `brouwer_fixed_point` axiom is derivable from `no_retraction`.
 
-**Updated axiom inventory (Section LXIII-LXIV)**:
+**Updated axiom inventory**:
 - `borsuk_ulam_general` (Section VII): INDEPENDENT — the core axiom
 - `no_retraction` (Section XXII): INDEPENDENT — requires degree theory
-- `brouwer_fixed_point` (Section XXII): NOW PROVABLE from no_retraction
-  (modulo completing the continuity proof)
+- `brouwer_fixed_point` (Section XXII): NOW PROVED from no_retraction
 - `lusternik_schnirelmann` (Section XXIII): REDUNDANT — proved from BU
 
-**Effective axiom count**: 2 independent (once continuity is completed)
+**Effective axiom count**: 2 independent axioms remain.
 
-The remaining sorries in `no_retraction_implies_brouwer_general`:
-1. Continuity of the retraction map (composition of continuous pieces)
-2. Algebraic verification that r maps to S^n (direct from ray_point_on_sphere)
-3. Verification that r fixes S^n (direct from raySphereT_boundary)
-
-Items 2 and 3 are routine algebra. Item 1 requires careful handling of
-the projection to the ball and the division by nsq(x - f(x)).
+The continuity proof (Section LXVI) uses ballProj (x/max(1,|x|)) to avoid
+piecewise analysis, then composes continuous pieces:
+  proj → f∘proj → proj-f∘proj → raySphereT(a,d) → r(x) = a + t·d
+The key insight: raySphereT's denominator nsq(d) is continuous and positive
+everywhere (since f has no fixed point on the ball), so division is safe.
 -/
 
-theorem bu_session_6_summary : True := trivial
+theorem bu_session_7_summary : True := trivial
 
 end BorsukUlamOQ03
