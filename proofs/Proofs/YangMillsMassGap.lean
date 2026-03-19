@@ -510,7 +510,7 @@ theorem wilson_loop_trivial {G : Type*} [CompactSimpleGaugeGroup G]
     W.value A = 1 :=
   h_unit A
 
-/-- The Wilson loop is multiplicative under composition of loops.
+/- The Wilson loop is multiplicative under composition of loops.
     W(C₁ · C₂) relates to W(C₁) and W(C₂). -/
 
 /-- **The Area Law**: For confining theories, the Wilson loop expectation value
@@ -3201,7 +3201,7 @@ structure TopologicalSusceptibility where
   chi_t : ℝ
   chi_t_pos : chi_t > 0
 
-/-- The topological susceptibility is related to the eta' meson mass
+/- The topological susceptibility is related to the eta' meson mass
     via the Witten-Veneziano formula (with fermions):
     m²_{η'} ∝ 2N_f · χ_t
     In pure gauge theory (no fermions), χ_t is positive and
@@ -3309,7 +3309,7 @@ theorem partitionContribution_decay (R : GaugeRepresentation)
   unfold partitionContribution
   have hdim : (R.dim : ℝ)^2 > 0 := sq_pos_of_pos (by exact_mod_cast R.dim_pos)
   apply mul_lt_mul_of_pos_left _ hdim
-  apply Real.exp_lt_exp_of_lt
+  apply Real.exp_strictMono
   have hgc : g^2 * R.casimir > 0 := mul_pos (sq_pos_of_pos hg) hC
   have hgc2 : g ^ 2 * R.casimir / 2 > 0 := by positivity
   nlinarith
@@ -3398,8 +3398,12 @@ theorem suN_massGap_monotone (N M : ℕ) (hN : N ≥ 2) (hM : M ≥ N) (g : ℝ)
   -- i.e., NM(N-M) < -(M-N)
   -- i.e., NM(N-M) + (M-N) < 0
   -- i.e., (N-M)(NM + 1) < 0  ← true since N < M and NM+1 > 0
-  have hg2 := sq_pos_of_pos hg
-  nlinarith [mul_pos hNr hMr, sq_nonneg (hMr - hNr)]
+  have hg2 : g ^ 2 > 0 := by positivity
+  have hMN_pos : (M : ℝ) - (N : ℝ) > 0 := by linarith
+  have hNM_prod : (N : ℝ) * (M : ℝ) > 0 := mul_pos hNr hMr
+  have hNM_plus1 : (N : ℝ) * (M : ℝ) + 1 > 0 := by linarith
+  -- (N²-1)·M < (M²-1)·N ⟺ (M-N)(NM+1) > 0
+  nlinarith [mul_pos hMN_pos hNM_plus1]
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XLII: CONFINEMENT CRITERIA AND WILSON LOOP CHARACTERIZATION
@@ -3449,16 +3453,14 @@ theorem creutz_ratio_area_law (sigma : ℝ) (hsig : sigma > 0) :
     cr.chi I J hI hJ = sigma := by
   intro cr I J hI hJ
   simp only [CreutzRatio.chi]
-  -- W(I,J)·W(I-1,J-1) / (W(I,J-1)·W(I-1,J)) = exp(-σ)
-  -- because -σIJ - σ(I-1)(J-1) + σI(J-1) + σ(I-1)J = -σ
-  rw [show cr.wilsonLoop I J = Real.exp (-(sigma * I * J)) from rfl]
-  rw [show cr.wilsonLoop (I-1) (J-1) = Real.exp (-(sigma * (I-1) * (J-1))) from rfl]
-  rw [show cr.wilsonLoop I (J-1) = Real.exp (-(sigma * I * (J-1))) from rfl]
-  rw [show cr.wilsonLoop (I-1) J = Real.exp (-(sigma * (I-1) * J)) from rfl]
-  rw [← Real.exp_add, ← Real.exp_add, div_eq_mul_inv, ← Real.exp_neg, ← Real.exp_add,
-      ← Real.exp_add, Real.log_exp]
-  ring_nf
-  push_cast
+  -- Each cr.wilsonLoop call reduces to exp(-(sigma * ↑n * ↑m)) by beta reduction
+  have h1 : cr.wilsonLoop I J = Real.exp (-(sigma * ↑I * ↑J)) := rfl
+  have h2 : cr.wilsonLoop (I-1) (J-1) = Real.exp (-(sigma * ↑(I-1) * ↑(J-1))) := rfl
+  have h3 : cr.wilsonLoop I (J-1) = Real.exp (-(sigma * ↑I * ↑(J-1))) := rfl
+  have h4 : cr.wilsonLoop (I-1) J = Real.exp (-(sigma * ↑(I-1) * ↑J)) := rfl
+  rw [h1, h2, h3, h4]
+  simp only [← Real.exp_add, ← Real.exp_sub, Real.log_exp]
+  push_cast [Nat.cast_sub hI, Nat.cast_sub hJ]
   ring
 
 /-- The static quark-antiquark potential in the fundamental representation.
@@ -3513,7 +3515,6 @@ theorem stringTension_largeN_scaling (N : ℕ) (hN : N ≥ 2) (g : ℝ) :
     suN_massGap_2D N hN g = tHooftCoupling₂ N g * ((N : ℝ)^2 - 1) / (4 * (N : ℝ)^2) := by
   unfold suN_massGap_2D tHooftCoupling₂
   field_simp
-  ring
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XLIII: SUMMARY (UPDATED)
@@ -3844,7 +3845,7 @@ structure GribovData where
   /-- Whether the Faddeev-Popov operator has zero modes -/
   has_zero_modes : Bool
 
-/-- Singer's theorem (1978): For non-abelian gauge theories on compact
+/- Singer's theorem (1978): For non-abelian gauge theories on compact
     manifolds, there is NO continuous global gauge fixing.
 
     More precisely: the gauge bundle G → A → A/G is non-trivial
@@ -3997,7 +3998,7 @@ structure AnomalyCoefficient where
   coeff : ℝ
   hcoeff_pos : coeff > 0
 
-/-- The Adler-Bardeen theorem: the chiral anomaly receives contributions
+/- The Adler-Bardeen theorem: the chiral anomaly receives contributions
     ONLY from one-loop diagrams. Higher-loop corrections vanish exactly.
 
     This is remarkable: most quantum corrections are perturbative series
@@ -4050,7 +4051,7 @@ structure BanksCasherRelation where
   /-- The chiral condensate ⟨ψ̄ψ⟩ = -πρ(0)/V -/
   condensate : ℝ
 
-/-- For QCD (SU(3) with N_f = 3 light quarks):
+/- For QCD (SU(3) with N_f = 3 light quarks):
     ρ(0) > 0 → chiral condensate ≠ 0 → pions are pseudo-Goldstone bosons.
 
     The pion mass comes from the explicit chiral symmetry breaking
@@ -4085,6 +4086,8 @@ theorem eta_prime_massive (wv : WittenVeneziano) :
   rw [wv.hm]
   have hNf := wv.hNf
   have : (↑wv.N_f : ℝ) > 0 := by exact_mod_cast (show 0 < wv.N_f by omega)
+  have hchi := wv.hchi
+  have hfpi := wv.hfpi
   positivity
 
 end ChiralAnomaly
@@ -4298,8 +4301,10 @@ theorem plaquette_action_bounded (w : WilsonPlaquetteAction) :
   constructor
   · apply mul_nonneg (le_of_lt w.hbeta)
     linarith [w.htrace_bound.2]
-  · have : 1 - w.plaquette_trace ≤ 2 := by linarith [w.htrace_bound.1]
-    nlinarith
+  · have h1 : 1 - w.plaquette_trace ≤ 2 := by linarith [w.htrace_bound.1]
+    calc w.beta * (1 - w.plaquette_trace)
+        ≤ w.beta * 2 := mul_le_mul_of_nonneg_left h1 (le_of_lt w.hbeta)
+      _ = 2 * w.beta := by ring
 
 /-- The full Wilson action on a lattice.
 
@@ -4416,7 +4421,8 @@ theorem strong_coupling_plaquette_small (N : ℕ) (hN : N ≥ 2) (beta : ℝ)
   calc beta / (2 * (↑N : ℝ) ^ 2) < 1 / (2 * (↑N : ℝ) ^ 2) := by
         apply div_lt_div_of_pos_right hsmall h2N2_pos
     _ ≤ 1 / (2 * 4) := by
-        apply div_le_div_of_nonneg_left (by linarith : (0 : ℝ) < 1) h24_pos (by linarith)
+        rw [div_le_div_iff₀ h2N2_pos h24_pos]
+        nlinarith
 
 /-- Lattice spacing and physical scale.
 
@@ -14221,7 +14227,7 @@ theorem van_baal_partition_ratio (Delta V : ℝ) (hD : Delta > 0) (hV : V > 0) :
     Real.exp (-Delta * V) < 1 := by
   have h : -Delta * V < 0 := by nlinarith
   rw [show (1 : ℝ) = Real.exp 0 from (Real.exp_zero).symm]
-  exact Real.exp_lt_exp_of_lt h
+  exact Real.exp_strictMono h
 
 /-- SU(2) twists are self-conjugate. -/
 theorem su2_twist_self_conjugate (n : ZMod 2) : n = -n := by
@@ -14479,8 +14485,9 @@ theorem gluon_dof_monotone_colors (N₁ N₂ d : ℕ) (hN₁ : N₁ ≥ 2) (hN�
     gluonDOF N₁ d < gluonDOF N₂ d := by
   unfold gluonDOF
   apply Nat.mul_lt_mul_of_pos_right
-  · have : N₁ ^ 2 < N₂ ^ 2 := by nlinarith [sq_nonneg N₁, sq_nonneg N₂]
-    omega
+  · have h1 : N₁ ^ 2 < N₂ ^ 2 := by nlinarith [sq_nonneg N₁, sq_nonneg N₂]
+    have h2 : 1 ≤ N₁ ^ 2 := by nlinarith
+    exact Nat.sub_lt_sub_right h2 h1
   · omega
 
 /-- The one-loop beta function coefficient for SU(N) in d=4.
@@ -14510,13 +14517,14 @@ noncomputable def gluonScreeningMass (m0_sq Λ k : ℝ) : ℝ :=
 theorem screening_mass_at_zero (m0_sq Λ : ℝ) (hΛ : Λ ≠ 0) :
     gluonScreeningMass m0_sq Λ 0 = m0_sq := by
   unfold gluonScreeningMass
-  simp [hΛ]
+  simp
 
 /-- At k = Λ (UV), the screening mass vanishes (perturbative regime). -/
 theorem screening_mass_at_uv (m0_sq Λ : ℝ) (hΛ : Λ ≠ 0) :
     gluonScreeningMass m0_sq Λ Λ = 0 := by
   unfold gluonScreeningMass
   field_simp
+  ring
 
 /-- Positive bare mass means positive IR mass gap. -/
 theorem screening_mass_positive_at_zero (m0_sq Λ : ℝ) (hΛ : Λ ≠ 0)
@@ -14544,6 +14552,7 @@ theorem frg_prop_at_peak (Z m_sq : ℝ) (hm : m_sq ≠ 0) :
     frgGluonProp Z m_sq m_sq = Z / (3 * m_sq) := by
   unfold frgGluonProp
   simp [hm]
+  field_simp
   ring
 
 /-- Ghost dressing function enhancement: Z_gh(p²) ~ (p²/Λ²)^{-κ} where κ > 0.
@@ -14608,8 +14617,8 @@ theorem frg_lattice_consistency (m_frg m_lat : ℝ) (hf : 0 < m_frg) (hl : 0 < m
     (hratio : 0.8 * m_lat ≤ m_frg) (hratio2 : m_frg ≤ 1.2 * m_lat) :
     m_frg / m_lat ≤ 1.2 ∧ 0.8 ≤ m_frg / m_lat := by
   constructor
-  · rw [div_le_iff hl]; linarith
-  · rw [le_div_iff hl]; linarith
+  · rw [div_le_iff₀ hl]; linarith
+  · rw [le_div_iff₀ hl]; linarith
 
 /-- FRG flow equation structure: ∂_t Γ_k = ½ Tr[...].
     The trace sums over all field species with appropriate signs. -/
@@ -14782,7 +14791,7 @@ theorem polyakov_power_nonneg (N : ℕ) (L_mag : ℝ) (hL : 0 ≤ L_mag) :
 /-- In confinement: L = 0 implies L^N = 0. -/
 theorem confined_power_zero (N : ℕ) (hN : N ≥ 1) :
     polyakovPowerInvariant N 0 = 0 := by
-  unfold polyakovPowerInvariant; simp
+  unfold polyakovPowerInvariant; simp [show N ≠ 0 from by omega]
 
 /-- The Gross-Pisarski-Yaffe (GPY) effective potential for the Polyakov loop.
     V_eff(ℓ) = -a₂T²ℓ² + a₄ℓ⁴ + ... where ℓ = ⟨L⟩.
@@ -14856,7 +14865,7 @@ theorem casimir_ratio_gt_one (N : ℕ) (hN : N ≥ 2) :
   unfold casimirRatio
   have hNq : (N : ℚ) ≥ 2 := by exact_mod_cast hN
   have hN2 : (N : ℚ) ^ 2 - 1 > 0 := by nlinarith [sq_nonneg (N : ℚ)]
-  rw [gt_iff_lt, lt_div_iff hN2]
+  rw [gt_iff_lt, lt_div_iff₀ hN2]
   nlinarith [sq_nonneg (N : ℚ)]
 
 /-- The critical temperature for SU(N) in the large-N limit scales as T_c ∝ √σ.
@@ -14921,8 +14930,9 @@ theorem sb_dof_monotone (N₁ N₂ : ℕ) (hN₁ : N₁ ≥ 2) (hN₂ : N₂ ≥
     (h : N₁ < N₂) :
     stefanBoltzmannDOF N₁ < stefanBoltzmannDOF N₂ := by
   unfold stefanBoltzmannDOF
-  have : N₁ ^ 2 < N₂ ^ 2 := by nlinarith [sq_nonneg N₁, sq_nonneg N₂]
-  omega
+  have h1 : N₁ ^ 2 < N₂ ^ 2 := by nlinarith [sq_nonneg N₁, sq_nonneg N₂]
+  have h2 : 1 ≤ N₁ ^ 2 := by nlinarith
+  exact Nat.mul_lt_mul_of_pos_left (Nat.sub_lt_sub_right h2 h1) (by omega)
 
 /-- Adjoint Polyakov loop ⟨L_adj⟩: invariant under Z_N, does not serve as
     order parameter for center symmetry.
@@ -14944,11 +14954,11 @@ def monopoleTypes (N : ℕ) : ℕ := N
 
 /-- SU(2) on R³ × S¹: 2 monopole types (BPS + KK). -/
 theorem su2_monopoles : monopoleTypes 2 = 2 := by
-  unfold monopoleTypes
+  unfold monopoleTypes; rfl
 
 /-- SU(3) on R³ × S¹: 3 monopole types. -/
 theorem su3_monopoles : monopoleTypes 3 = 3 := by
-  unfold monopoleTypes
+  unfold monopoleTypes; rfl
 
 /-- Dual photon mass from monopole-instanton gas (Polyakov mechanism).
     Mass gap: m_gap ~ exp(-S_0/N) where S_0 = 8π²/g². -/
