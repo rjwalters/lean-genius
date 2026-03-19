@@ -317,18 +317,39 @@ axiom three_dvd_gal_card : 3 ∣ Fintype.card q.Gal
 -- Part IV-A: Structural Lemmas (Replacing Axioms C and D)
 -- ============================================================================
 
+/-- Elements of disjoint normal subgroups commute.
+    The commutator n*m*n⁻¹*m⁻¹ lies in both N (by normality of N) and M
+    (by normality of M), hence in N ⊓ M = ⊥, so it equals 1. -/
+private lemma commute_of_normal_of_disjoint {G : Type*} [Group G]
+    {N M : Subgroup G} (hN : N.Normal) (hM : M.Normal) (hd : Disjoint N M)
+    {n m : G} (hn : n ∈ N) (hm : m ∈ M) : n * m = m * n := by
+  -- Commutator lies in N: n ∈ N and m*n⁻¹*m⁻¹ ∈ N (by normality)
+  have h1 : n * m * n⁻¹ * m⁻¹ ∈ N := by
+    have := N.mul_mem hn (hN.conj_mem n⁻¹ (N.inv_mem hn) m)
+    convert this using 1; group
+  -- Commutator lies in M: n*m*n⁻¹ ∈ M (by normality) and m⁻¹ ∈ M
+  have h2 : n * m * n⁻¹ * m⁻¹ ∈ M :=
+    M.mul_mem (hM.conj_mem m hm n) (M.inv_mem hm)
+  -- Commutator lies in N ⊓ M = ⊥, hence equals 1
+  have h3 := (disjoint_iff.mp hd) ▸ (Subgroup.mem_inf.mpr ⟨h1, h2⟩)
+  have h4 : n * m * n⁻¹ * m⁻¹ = 1 := Subgroup.mem_bot.mp h3
+  -- Rearrange: n*m*n⁻¹*m⁻¹*(m*n) = n*m by group, and LHS = 1*(m*n) = m*n
+  have lhs : n * m * n⁻¹ * m⁻¹ * (m * n) = n * m := by group
+  rw [h4, one_mul] at lhs; exact lhs.symm
+
 /-- No subgroup of S₅ has order 15.
 
     In any group of order 15 = 3·5, Sylow theory gives unique normal
-    Sylow subgroups P₅ and P₃. Since |Aut(Z/5)| = 4 and gcd(3,4) = 1,
-    elements of P₃ and P₅ commute. Product has order 15, but max element
-    order in S₅ is 6. Contradiction. -/
+    Sylow subgroups P₅ and P₃. Elements of these disjoint normal subgroups
+    commute. But native_decide verifies that no order-5 element of S₅
+    commutes with any order-3 element. Contradiction. -/
 theorem no_subgroup_order_15 (H : Subgroup (Equiv.Perm (Fin 5)))
     (hcard : Nat.card H = 15) : False := by
   -- Setup
   haveI : Finite H := Nat.finite_of_card_ne_zero (by rw [hcard]; norm_num)
   haveI hft : Fintype H := Fintype.ofFinite H
   have hcard_ft : Fintype.card H = 15 := by rwa [Nat.card_eq_fintype_card] at hcard
+  have hcard15 : Nat.card (↥H) = 15 := by rw [Nat.card_eq_fintype_card]; exact hcard_ft
   haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
   haveI : Fact (Nat.Prime 3) := ⟨by norm_num⟩
   -- Step 1: Cauchy — elements of order 5 and 3
@@ -424,19 +445,93 @@ theorem no_subgroup_order_15 (H : Subgroup (Equiv.Perm (Fin 5)))
 
 /-- No subgroup of S₅ has order 30.
 
-    If H ≤ S₅ has |H| = 30, then H ∩ A₅ has order 15 or 30.
+    If H ≤ S₅ has |H| = 30, consider H ∩ A₅ via the sign homomorphism.
+    [H : H ∩ A₅] ∈ {1, 2}, so |H ∩ A₅| ∈ {15, 30}.
     Order 30 → H ⊆ A₅, index 2, normal, contradicts A₅ simple.
-    Order 15 → contradicts no_subgroup_order_15. -/
+    Order 15 → contradicts no_subgroup_order_15 (PROVED above). -/
 theorem no_subgroup_order_30 (H : Subgroup (Equiv.Perm (Fin 5)))
     (hcard : Nat.card H = 30) : False := by
-  -- PROOF SKETCH (sorry — needs coset action + A₅ simplicity):
-  -- H.normalCore ≤ H is normal in S₅ with |normalCore| ≤ 30.
-  -- normalCore ∩ A₅ is normal in A₅ (simple).
-  -- Case A₅ ≤ normalCore: |A₅|=60 > 30, impossible.
-  -- Case normalCore ∩ A₅ = {1}: sign|_normalCore injective → |normalCore| ≤ 2.
-  --   Coset action S₅ → Perm(S₅/H) = S₄: |S₅|/|normalCore| ≤ 24 → |normalCore| ≥ 5.
-  --   5 ≤ 2 contradiction.
-  sorry
+  -- Finiteness setup
+  haveI : Finite ↥H := Nat.finite_of_card_ne_zero (by rw [hcard]; norm_num)
+  haveI : Fintype ↥H := Fintype.ofFinite _
+  -- Case split: is every element of H even (H ≤ A₅)?
+  by_cases h_le : H ≤ alternatingGroup (Fin 5)
+  · -- Case 1: H ≤ A₅. Then H.subgroupOf A₅ has index 2, hence normal.
+    -- But A₅ is simple — no proper nontrivial normal subgroup. Contradiction.
+    haveI : IsSimpleGroup (alternatingGroup (Fin 5)) := alternatingGroup.isSimpleGroup_five
+    set H' := H.subgroupOf (alternatingGroup (Fin 5))
+    haveI : Finite ↥H' := inferInstance
+    haveI : Fintype ↥H' := Fintype.ofFinite _
+    -- |H'| = |H| = 30 (H ≤ A₅ so the inclusion is a bijection)
+    have hmap : H'.map (alternatingGroup (Fin 5)).subtype = H := by
+      rw [Subgroup.subgroupOf_map_subtype]; exact inf_eq_left.mpr h_le
+    have hH'_card : Nat.card ↥H' = 30 := by
+      have h1 : Nat.card ↥H' = Nat.card ↥(H'.map (alternatingGroup (Fin 5)).subtype) :=
+        Nat.card_congr (H'.equivMapOfInjective _ Subtype.val_injective).toEquiv
+      rw [hmap] at h1; rw [h1, hcard]
+    -- |A₅| = 60
+    have hA₅_card : Nat.card (alternatingGroup (Fin 5)) = 60 := by
+      rw [Nat.card_eq_fintype_card]; native_decide
+    -- [A₅ : H'] = 2
+    have hH'_idx : H'.index = 2 := by
+      have := Subgroup.card_mul_index H'
+      rw [hH'_card, hA₅_card] at this; omega
+    -- Index 2 → normal
+    haveI : H'.Normal := Subgroup.normal_of_index_eq_two hH'_idx
+    -- By simplicity, H' = ⊥ or H' = ⊤
+    rcases IsSimpleGroup.eq_bot_or_eq_top H' with h | h
+    · -- H' = ⊥ → |H'| = 1, contradicts |H'| = 30
+      have : Nat.card ↥H' = 1 := by rw [h]; exact Nat.card_unique
+      omega
+    · -- H' = ⊤ → |H'| = |A₅| = 60, contradicts |H'| = 30
+      have : Nat.card ↥H' = 60 := by
+        rw [h, Nat.card_congr Subgroup.topEquiv.toEquiv, hA₅_card]
+      omega
+  · -- Case 2: H ⊄ A₅ → ∃ odd perm σ ∈ H → |H ∩ A₅| = 15 → contradiction
+    push_neg at h_le
+    obtain ⟨σ, hσH, hσA⟩ := h_le
+    rw [Equiv.Perm.mem_alternatingGroup] at hσA
+    have hσ_sign : Equiv.Perm.sign σ = -1 := by
+      rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h
+      · exact absurd h hσA
+      · exact h
+    -- The sign map restricted to H
+    set signH : ↥H →* ℤˣ := Equiv.Perm.sign.comp H.subtype
+    -- signH is surjective: image contains both 1 (identity) and -1 (σ)
+    have hsurj : Function.Surjective signH := by
+      intro u; rcases Int.units_eq_one_or u with h | h
+      · exact ⟨⟨1, H.one_mem⟩, by simp [signH, MonoidHom.comp_apply, h]⟩
+      · exact ⟨⟨σ, hσH⟩, by simp [signH, MonoidHom.comp_apply, hσ_sign, h]⟩
+    -- ker(signH) is a normal subgroup of H
+    haveI : (MonoidHom.ker signH).Normal := MonoidHom.normal_ker signH
+    -- [H : ker] = |ℤˣ| = 2 (first isomorphism theorem)
+    have hker_idx : (MonoidHom.ker signH).index = 2 := by
+      rw [Subgroup.index]
+      have hiso := QuotientGroup.quotientKerEquivOfSurjective signH hsurj
+      rw [Nat.card_congr hiso.toEquiv, Nat.card_eq_fintype_card (α := ℤˣ)]
+      decide
+    -- |ker(signH)| = 15 (by Lagrange: 30 = |ker| × 2)
+    have hker_card : Nat.card (MonoidHom.ker signH) = 15 := by
+      have := Subgroup.card_mul_index (MonoidHom.ker signH)
+      rw [hcard, hker_idx] at this; omega
+    -- ker(signH).map H.subtype = H ⊓ A₅ (even elements of H)
+    have hker_map : (MonoidHom.ker signH).map H.subtype = H ⊓ alternatingGroup (Fin 5) := by
+      ext x; simp only [Subgroup.mem_map, MonoidHom.mem_ker, Subgroup.mem_inf,
+        Equiv.Perm.mem_alternatingGroup]
+      constructor
+      · rintro ⟨⟨y, hyH⟩, hy_ker, rfl⟩
+        simp [signH, MonoidHom.comp_apply] at hy_ker
+        exact ⟨hyH, hy_ker⟩
+      · rintro ⟨hxH, hx_sign⟩
+        exact ⟨⟨x, hxH⟩, by simp [signH, MonoidHom.comp_apply, hx_sign], rfl⟩
+    -- |H ⊓ A₅| = |ker(signH)| = 15
+    have hK_card : Nat.card (H ⊓ alternatingGroup (Fin 5)) = 15 := by
+      rw [← hker_map]
+      rw [← Nat.card_congr ((MonoidHom.ker signH).equivMapOfInjective H.subtype
+        Subtype.val_injective).toEquiv]
+      exact hker_card
+    -- H ⊓ A₅ is a subgroup of S₅ of order 15 — contradiction!
+    exact no_subgroup_order_15 (H ⊓ alternatingGroup (Fin 5)) hK_card
 
 /-- |Gal(q)| ≠ 15: Gal embeds into S₅ which has no subgroup of order 15. -/
 theorem gal_card_ne_15 : Fintype.card q.Gal ≠ 15 := by
@@ -770,8 +865,8 @@ Groups NOT YET realized in our formalization:
 4. ~~four_dvd_gal_card~~: replaced by no_subgroup_order_30 (A₅ simple)
 
 ### Structural lemmas (Part IV-A):
-15. no_subgroup_order_15: S₅ has no subgroup of order 15 (sorry — Sylow)
-16. no_subgroup_order_30: S₅ has no subgroup of order 30 (sorry — A₅ simple)
+15. no_subgroup_order_15: S₅ has no subgroup of order 15 (**PROVED** — Sylow + commutator)
+16. no_subgroup_order_30: S₅ has no subgroup of order 30 (**PROVED** — A₅ simple + sign hom)
 17. gal_card_ne_15: |Gal| ≠ 15 (via embedding + #15)
 18. gal_card_ne_30: |Gal| ≠ 30 (via embedding + #16)
 

@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: PROVED no_subgroup_order_15 via Sylow theory + commute_of_normal_of_disjoint. 1 sorry remains: no_subgroup_order_30 (needs coset action + A5 simplicity).",
+    "progressSummary": "PROGRESS: Both no_subgroup_order_15 and no_subgroup_order_30 FULLY PROVED (0 sorries). File compiles with Docker. 2 axioms remain (gal_card_dvd_60, three_dvd_gal_card). 34 theorems/lemmas, all proved.",
     "builtItems": [
       "InverseGalois.lean: cyclotomic Galois theory, S₃ realization via Gal(X³-2)≅S₃ (905 lines, builds)",
       "InverseGaloisD4.lean: D₄ realization via |Gal(X⁴-2)| = 8 (666 lines, builds)",
@@ -114,11 +114,9 @@
         "description": "Full proof structure for S₅ has no subgroup of order 15 (1 sorry: Sylow commutation)",
         "proven": false
       },
-      {
-        "name": "no_subgroup_order_15",
-        "description": "S5 has no subgroup of order 15 (PROVED, 0 sorries, Docker verified)",
-        "proven": true
-      }
+      "commute_of_normal_of_disjoint: generic lemma for disjoint normal subgroups (22 lines)",
+      "no_subgroup_order_15: full Sylow theory proof replacing sorry (~125 lines)",
+      "no_subgroup_order_30: full proof via sign hom + A₅ simplicity (~60 lines)"
     ],
     "insights": [
       "Cyclotomic irreducibility over ℚ IS in Mathlib: Polynomial.cyclotomic.irreducible_rat",
@@ -165,11 +163,9 @@
       "Cauchy theorem (exists_prime_orderOf_dvd_card) + native_decide non-commutativity gives clean no_subgroup_order_15 architecture",
       "Key insight: Subtype.ext converts (σ : Perm(Fin 5)) = 1 to σ = (1 : ↥H), enabling orderOf_one rewrite",
       "calc with congr 1 avoids rw motive errors for pow_orderOf_eq_one substitution",
-      "Subtype.val transfer: prove in H → congr_arg Subtype.val + Subgroup.coe_mul → Perm(Fin 5)",
-      "Sylow proof of σ*τ=τ*σ: n₅=1 (card_sylow_modEq_one + card_sylow_dvd_index), P₅ normal (sylow_normal_of_unique), σ∈P₅ (IsPGroup.exists_le_sylow), P₅ abelian (isCyclic_of_prime_card), c=σ⁻¹*τστ⁻¹∈P₅ has c⁵=1, then Aut(C₅)=4 and gcd(3,4)=1 gives c=1",
-      "Finite (Sylow p G) not auto-derived for finite groups; use Finite.of_injective SetLike.coe SetLike.coe_injective",
-      "Subgroup.commute_of_normal_of_disjoint is the key lemma for showing groups of order pq (p,q prime, p nmid q-1) are abelian",
-      "IsPGroup.disjoint_of_ne: p-groups for distinct primes are automatically disjoint"
+      "commute_of_normal_of_disjoint: Elements of disjoint normal subgroups commute via commutator argument",
+      "no_subgroup_order_15: Full Sylow theory proof (Cauchy + unique Sylow + normality + commutator + disjointness + zpowers)",
+      "no_subgroup_order_30: Sign homomorphism case split - H≤A₅ contradicts simplicity, H⊄A₅ gives |H∩A₅|=15 contradicting order-15 theorem"
     ],
     "mathlibGaps": [],
     "nextSteps": [
