@@ -154,13 +154,19 @@ You are the **seeker** agent. Your mission is to keep the research pipeline fed 
    fi
    \`\`\`
 
-2. **Check candidate pool depth**
+2. **Refresh candidate pool** (picks up newly enriched gallery proofs)
+   \`\`\`bash
+   npx tsx .lean/scripts/extract-problems.ts --json > .lean/research/problems.json 2>/dev/null
+   python3 research/db/sync_pool.py 2>/dev/null
+   \`\`\`
+
+3. **Check candidate pool depth**
    \`\`\`bash
    AVAILABLE=\$(jq '[.candidates[] | select(.status == "available")] | length' .lean/state/candidate-pool.json)
    echo "Available problems: \$AVAILABLE (threshold: $THRESHOLD)"
    \`\`\`
 
-3. **If pool is low (< $THRESHOLD available), run selection**
+4. **If pool is low (< $THRESHOLD available), run selection**
    - Use the /seeker skill to select and initialize new problems
    - Run: \`/seeker --refresh\` to extract new problems from gallery
    - Or run: \`/seeker\` to select from existing pool
@@ -175,17 +181,17 @@ You are the **seeker** agent. Your mission is to keep the research pipeline fed 
      $REPO_ROOT/scripts/lean/update-stats.sh problem-selected
      \`\`\`
 
-4. **If pool is adequate, report status and wait**
+5. **If pool is adequate, report status and wait**
    - Run: \`/seeker --status\` to generate a status report
    - Log the report
 
-5. **Wait for next interval**
+6. **Wait for next interval**
    \`\`\`bash
    echo "Next check in $INTERVAL minutes..."
    sleep ${INTERVAL}m
    \`\`\`
 
-6. **Repeat from step 1**
+7. **Repeat from step 1**
 
 ## Start Now
 
