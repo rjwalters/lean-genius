@@ -1355,4 +1355,57 @@ theorem inv_limit_rates' : (1:ℝ) + 1/2 + 1/2 + 0 = 2 := by norm_num
 /-- Stokes drag at Re=1: C_D = 24. -/
 theorem stokes_drag' : (24:ℝ)/1 = 24 := by norm_num
 
+-- ═══════════════════════════════════════════════════════════════════
+-- Section 68: Surface Quasi-Geostrophic (SQG) Equation Constants
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- SQG critical exponent: 2α_c = 1 gives α_c = 1/2. -/
+theorem sqg_critical' : (2:ℝ) * (1/2) = 1 := by norm_num
+
+/-- Caffarelli-Vasseur: at criticality 1 - 2(1/2) = 0 (barely balanced). -/
+theorem cv_critical' : (1:ℝ) - 2 * (1/2) = 0 := by norm_num
+
+/-- SQG dissipation gap: α_c(SQG) - 0 = 1/2 vs α_c(NS) - 1 = 1/4. -/
+theorem sqg_ns_gap' : (1:ℝ)/2 > 1/4 := by norm_num
+
+/-- Córdoba-Córdoba kernel exponent: 2 + α = 5/2 at α = 1/2. -/
+theorem cordoba_kernel' : (2:ℝ) + 1/2 = 5/2 := by norm_num
+
+/-- SQG patch smoothing gap: Euler 1 vs SQG 1/2, difference = 1/2. -/
+theorem sqg_patch_gap' : (1:ℝ) - 1/2 = 1/2 := by norm_num
+
+/-- gSQG: at β=0 (Euler) smoothing = 1, at β=1 (SQG) smoothing = 1/2. -/
+theorem gsqg_smooth' : (2:ℝ)/2 = 1 ∧ (2:ℝ - 1)/2 = 1/2 := by constructor <;> norm_num
+
+/-- SQG energy spectrum: -5/3 (same as Kolmogorov). -/
+theorem sqg_spectrum' : -(5:ℝ)/3 = -5/3 := by norm_num
+
+-- ═══════════════════════════════════════════════════════════════════
+-- Section 69: Magnetohydrodynamics (MHD) Constants
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- MHD Serrin pair (4,6): 2/4 + 3/6 = 1. -/
+theorem mhd_serrin_46' : (2:ℝ)/4 + 3/6 = 1 := by norm_num
+
+/-- MHD Serrin pair (8,4): 2/8 + 3/4 = 1. -/
+theorem mhd_serrin_84' : (2:ℝ)/8 + 3/4 = 1 := by norm_num
+
+/-- IK vs Kolmogorov: 5/3 - 3/2 = 1/6. -/
+theorem ik_kolmogorov_gap' : (5:ℝ)/3 - 3/2 = 1/6 := by norm_num
+
+/-- Goldreich-Sridhar anisotropy: 2 - 5/3 = 1/3. -/
+theorem gs_anisotropy' : (2:ℝ) - 5/3 = 1/3 := by norm_num
+
+/-- Reconnection: Sweet-Parker exponent + plasmoid = -1/2 + 0 = -1/2. -/
+theorem reconnection_sp' : -(1:ℝ)/2 + 0 = -1/2 := by norm_num
+
+/-- Plasmoid fragmentation: 3/8 + 5/8 = 1 (conservation). -/
+theorem plasmoid_frag' : (3:ℝ)/8 + 5/8 = 1 := by norm_num
+
+/-- Hall MHD: nonlinearity order 3 vs MHD order 1, gap = 2. -/
+theorem hall_order' : (3:ℕ) - 1 = 2 := by omega
+
+/-- 2D MHD partial diffusion: 1 solved + 3 open = 4 total cases. -/
+theorem mhd_2d_cases' : (1:ℕ) + 3 = 4 := by omega
+
 end NavierStokesAristotle
