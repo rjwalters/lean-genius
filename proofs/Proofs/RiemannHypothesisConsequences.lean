@@ -1315,29 +1315,31 @@ opaque zeroSum : ℝ → ℝ
 If no zeros exist with Re(ρ) > σ, then ψ(x) = x + O(x^σ · log²x).
 This is why the zero-free region matters!
 
-**KNOWN ISSUE**: This axiom is STRONGER than intended — it omits the zero-free
-hypothesis "all non-trivial zeros have Re(ρ) ≤ σ". Without that condition,
-taking σ=1/2 yields the RH-strength error bound unconditionally.
-The correct formalization should add:
-  `(∀ s : ℂ, riemannZeta s = 0 → 0 < s.re → s.re < 1 → s.re ≤ σ) →`
-before the conclusion. Then `rh_optimal_error` below should take RH as a
-hypothesis to satisfy the zero-free condition. Left unfixed pending build
-verification of the Complex.re proof obligations. -/
+The zero-free hypothesis states: all non-trivial zeros of ζ have Re(ρ) ≤ σ.
+Without this condition, the bound would be vacuously strong. -/
 axiom explicit_formula_zero_free :
   ∀ σ : ℝ, 1/2 ≤ σ ∧ σ < 1 →
-    -- TODO: add zero-free hypothesis here (see docstring)
+    (∀ s : ℂ, riemannZeta s = 0 → 0 < s.re → s.re < 1 → s.re ≤ σ) →
     ∃ C : ℝ, C > 0 ∧ ∀ x : ℝ, x ≥ 2 →
       |(chebyshevPsi ⌊x⌋₊ : ℝ) - x| ≤ C * x ^ σ * (Real.log x) ^ 2
 
-/-- RH gives the optimal σ = 1/2.
-
-**NOTE**: Currently unconditional due to `explicit_formula_zero_free` missing its
-zero-free hypothesis. Once that axiom is fixed, this should take `RiemannHypothesis`
-as a hypothesis and derive the zero-free condition from RH. -/
-theorem rh_optimal_error :
+/-- RH gives the optimal σ = 1/2: under RH all zeros have Re(ρ) = 1/2,
+so the zero-free condition holds with σ = 1/2. -/
+theorem rh_optimal_error (h : RiemannHypothesis) :
     ∃ C : ℝ, C > 0 ∧ ∀ x : ℝ, x ≥ 2 →
-      |(chebyshevPsi ⌊x⌋₊ : ℝ) - x| ≤ C * x ^ (1/2 : ℝ) * (Real.log x) ^ 2 :=
-  explicit_formula_zero_free (1/2) ⟨le_refl _, by norm_num⟩
+      |(chebyshevPsi ⌊x⌋₊ : ℝ) - x| ≤ C * x ^ (1/2 : ℝ) * (Real.log x) ^ 2 := by
+  apply explicit_formula_zero_free (1/2) ⟨le_refl _, by norm_num⟩
+  intro s hs hpos hlt
+  have hnt : ¬∃ n : ℕ, s = -2 * ((↑n : ℂ) + 1) := by
+    rintro ⟨n, rfl⟩
+    -- Trivial zeros have Re = -2(n+1) ≤ -2 < 0, contradicting 0 < Re(s)
+    have : (-2 * ((↑n : ℂ) + 1)) = (↑((-2 : ℝ) * ((↑n : ℝ) + 1)) : ℂ) := by push_cast; ring
+    rw [this, Complex.ofReal_re] at hpos
+    linarith [Nat.cast_nonneg (α := ℝ) n]
+  have hne1 : s ≠ 1 := by
+    intro heq; rw [heq] at hlt; simp at hlt
+  -- RH gives Re(s) = 1/2, hence Re(s) ≤ 1/2
+  linarith [h s hs hnt hne1]
 
 /-- The PNT error is weaker than the RH error for large x (structural).
 √x log²x grows slower than x exp(-c√(log x)) is not literally true for all x,
