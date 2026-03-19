@@ -2,7 +2,7 @@
   "id": "riemann-hypothesis",
   "title": "The Riemann Hypothesis",
   "slug": "riemann-hypothesis",
-  "description": "A comprehensive formalization of the Riemann Hypothesis (7048 lines, 434 proved theorems, 75 axioms, 0 sorries). States RH using Mathlib's zeta function, proves GRH→RH, establishes 9 equivalent formulations (including Connes' noncommutative geometry) with a complete 36-way cross-equivalence network K₉, shows ¬RH forces 4 distinct off-line zeros, and covers the Selberg class, de Bruijn-Newman constant, random matrix theory, and arithmetic consequences.",
+  "description": "A comprehensive formalization of the Riemann Hypothesis (7547 lines, 472 proved theorems, 77 axioms, 0 sorries). States RH using Mathlib's zeta function, proves GRH→RH, establishes 11 equivalent formulations (K₁₁: Robin, Lagarias, Mertens, PrimeCounting, de Bruijn-Newman, Weil, Speiser, Connes, Li, Baez-Duarte) with a complete 55-way cross-equivalence network, shows ¬RH forces 4 distinct off-line zeros, and covers the Selberg class, random matrix theory, and arithmetic consequences.",
   "meta": {
     "status": "axiomatized",
     "tags": [
@@ -15,8 +15,8 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 75,
-    "assumptions": "75 axiom declarations across two files (63 main + 12 consequences). Main file: RH equivalences (Robin, Mertens, Nyman-Beurling, Lagarias, Speiser, Weil positivity, de Bruijn-Newman), partial results (Hardy, Selberg, Conrey 2/5, Montgomery pair correlation), Selberg class axioms (orthonormality, degree conjecture, Grand RH), zero-free regions (classical, Vinogradov-Korobov), explicit estimates (Rosser-Schoenfeld, Dusart, Schoenfeld), Siegel zeros, Bombieri-Vinogradov, Elliott-Halberstam, and cryptographic consequences. Consequences file: Mertens bound, Li criterion, Riemann-von Mangoldt formula, zero density estimates, Chebyshev bounds, explicit formula, Selberg class, Hadamard product. The Riemann Hypothesis itself remains an open conjecture.",
+    "axiomCount": 77,
+    "assumptions": "77 axiom declarations across two files (65 main + 12 consequences). Main file: RH equivalences (Robin, Mertens, Nyman-Beurling, Lagarias, Speiser, Weil positivity, de Bruijn-Newman, Li positivity, Baez-Duarte convergence, Connes positivity), partial results (Hardy, Selberg, Conrey 2/5, Montgomery pair correlation), Selberg class axioms (orthonormality, degree conjecture, Grand RH), zero-free regions (classical, Vinogradov-Korobov), explicit estimates (Rosser-Schoenfeld, Dusart, Schoenfeld), Siegel zeros, Bombieri-Vinogradov, Elliott-Halberstam, and cryptographic consequences. Consequences file: Mertens bound, Li criterion, Riemann-von Mangoldt formula, zero density estimates, Chebyshev bounds, explicit formula, Selberg class, Hadamard product. The Riemann Hypothesis itself remains an open conjecture.",
     "mathlibDependencies": [
       {
         "theorem": "riemannZeta",
