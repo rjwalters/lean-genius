@@ -5014,11 +5014,6 @@ theorem GRH_implies_Lambda_zero (h : GeneralizedRiemannHypothesis) :
     deBruijnNewmanConstant = 0 :=
   RH_iff_deBruijnNewman_eq_zero.mp (GRH_implies_RH h)
 
-/-- **GRH implies Speiser's criterion** (PROVED).
-    Chain: GRH → RH → Speiser. -/
-theorem GRH_implies_Speiser (h : GeneralizedRiemannHypothesis) : SpeiserCriterion :=
-  RH_iff_Speiser.mp (GRH_implies_RH h)
-
 /-- **GRH implies Weil positivity** (PROVED).
     Chain: GRH → RH → WeilPositivity. -/
 theorem GRH_implies_WeilPositivity (h : GeneralizedRiemannHypothesis) : WeilPositivity :=
@@ -5075,14 +5070,13 @@ theorem not_GRH_dichotomy (h : ¬GeneralizedRiemannHypothesis) :
   by_cases hRH : RiemannHypothesis
   · -- RH holds, so the failure must be in some Dirichlet L-function
     right
-    constructor
-    · exact hRH
-    · -- GRH fails means ∃ some L-function zero off the line
-      by_contra hall
-      push_neg at hall
-      exact h (fun N _ χ s hz hpos hlt => by
-        by_contra hne
-        exact hall N ‹_› χ s ⟨hz, hpos, hlt, hne⟩)
+    refine ⟨hRH, ?_⟩
+    -- GRH fails means ∃ some L-function zero off the line
+    by_contra hall
+    apply h
+    intro N inst χ s hz hpos hlt
+    by_contra hne
+    exact hall ⟨N, inst, χ, s, hz, hpos, hlt, hne⟩
   · left; exact hRH
 
 /-- **The conjecture hierarchy is a proper chain** (PROVED):
