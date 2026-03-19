@@ -155,7 +155,7 @@
       "Can the formalization be extended to complex inner product spaces using `inner_mul_le_norm_mul_norm`?",
       "[RESOLVED] The integral form (Bunyakovsky-Schwarz) has been formalized - see `cauchy-schwarz-integral` proof.",
       "Can Hölder's inequality be formalized as a generalization, recovering Cauchy-Schwarz for $p=q=2$?",
-      "Can the equality condition be strengthened to give the exact proportionality constant $c = \\langle u,v\\rangle/\\|v\\|^2$?"
+      "[RESOLVED] The equality condition has been strengthened to give the exact proportionality constant $c = \\langle u,v\\rangle/\\|v\\|^2$ - see `cauchy-schwarz-oq-04` proof."
     ]
   }
 }

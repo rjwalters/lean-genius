@@ -1,0 +1,86 @@
+[
+  {
+    "id": "csoq04-projcoeff",
+    "proofId": "cauchy-schwarz-oq-04",
+    "type": "concept",
+    "range": { "startLine": 29, "endLine": 33 },
+    "title": "Projection Coefficient Definition",
+    "content": "Defines projCoeff(u, v) = inner(u, v) / norm(v)^2 and proj(u, v) = projCoeff(u, v) * v. This is the orthogonal projection of u onto the span of v.",
+    "mathContext": "The projection coefficient $c = \\langle u,v\\rangle/\\|v\\|^2$ is the unique scalar minimizing $\\|u - cv\\|$. It appears in regression ($\\hat{\\beta} = \\text{Cov}(X,Y)/\\text{Var}(Y)$), matched filtering, and Gram-Schmidt orthogonalization.",
+    "significance": "key",
+    "relatedConcepts": ["orthogonal projection", "inner product", "regression coefficient"],
+    "prerequisites": ["InnerProductSpace", "NormedAddCommGroup"]
+  },
+  {
+    "id": "csoq04-orthogonal-residual",
+    "proofId": "cauchy-schwarz-oq-04",
+    "type": "theorem",
+    "range": { "startLine": 42, "endLine": 48 },
+    "title": "Residual Orthogonality",
+    "content": "The residual $u - \\text{proj}(u,v)$ is orthogonal to $v$: $\\langle u - \\text{proj}(u,v), v\\rangle = 0$. Proved by expanding inner_sub_left and inner_smul_left, then cancelling via div_mul_cancel.",
+    "mathContext": "This is the defining property of orthogonal projection: the error $u - \\hat{u}$ is perpendicular to the approximation subspace $\\text{span}(v)$. This is the normal equation in least-squares theory.",
+    "significance": "key",
+    "relatedConcepts": ["orthogonality", "normal equations", "inner_sub_left"],
+    "prerequisites": ["projCoeff", "proj"]
+  },
+  {
+    "id": "csoq04-norm-decomposition",
+    "proofId": "cauchy-schwarz-oq-04",
+    "type": "theorem",
+    "range": { "startLine": 51, "endLine": 65 },
+    "title": "Pythagorean Norm Decomposition",
+    "content": "Derives $\\|u\\|^2 = (\\text{projCoeff})^2 \\|v\\|^2 + \\|u - \\text{proj}(u,v)\\|^2$. Uses norm_add_sq_real with the orthogonal decomposition $u = \\text{proj}(u,v) + (u - \\text{proj}(u,v))$.",
+    "mathContext": "The Pythagorean theorem for orthogonal decomposition: $\\|u\\|^2 = \\|\\hat{u}\\|^2 + \\|u - \\hat{u}\\|^2$. The term $(\\text{projCoeff})^2\\|v\\|^2$ accounts for the component along $v$, and $\\|u - \\text{proj}\\|^2$ is the orthogonal residual.",
+    "significance": "critical",
+    "relatedConcepts": ["Pythagorean theorem", "orthogonal decomposition", "norm_add_sq_real"],
+    "prerequisites": ["proj_orthogonal", "norm_smul"]
+  },
+  {
+    "id": "csoq04-exact-constant",
+    "proofId": "cauchy-schwarz-oq-04",
+    "type": "theorem",
+    "range": { "startLine": 74, "endLine": 91 },
+    "title": "CS Equality Gives Exact Constant",
+    "content": "When $|\\langle u,v\\rangle| = \\|u\\|\\|v\\|$ and $v \\neq 0$, then $u = \\text{projCoeff}(u,v) \\cdot v$. The proof shows that CS equality forces $\\|u - \\text{proj}(u,v)\\|^2 = 0$ via the Pythagorean decomposition.",
+    "mathContext": "cs_equality_exact_constant: The key step is $\\text{projCoeff}^2\\|v\\|^2 = \\|u\\|^2$ (from squaring the CS equality and simplifying), which combined with the Pythagorean identity forces the residual norm to vanish.",
+    "significance": "critical",
+    "relatedConcepts": ["Cauchy-Schwarz equality", "proportionality constant", "zero residual"],
+    "prerequisites": ["norm_sq_decomposition", "sub_eq_zero"]
+  },
+  {
+    "id": "csoq04-biconditional",
+    "proofId": "cauchy-schwarz-oq-04",
+    "type": "theorem",
+    "range": { "startLine": 110, "endLine": 112 },
+    "title": "Full Biconditional Characterization",
+    "content": "cs_equality_iff_exact_constant: $|\\langle u,v\\rangle| = \\|u\\|\\|v\\| \\iff u = \\text{projCoeff}(u,v) \\cdot v$. Combines forward (residual vanishing) and reverse (direct computation) directions.",
+    "mathContext": "This is the strongest form of the Cauchy-Schwarz equality condition: not just that proportionality exists, but the exact constant is $\\langle u,v\\rangle/\\|v\\|^2$.",
+    "significance": "critical",
+    "relatedConcepts": ["biconditional", "cs_equality_exact_constant", "cs_equality_of_exact_constant"],
+    "prerequisites": ["cs_equality_exact_constant", "cs_equality_of_exact_constant"]
+  },
+  {
+    "id": "csoq04-finite-sum",
+    "proofId": "cauchy-schwarz-oq-04",
+    "type": "theorem",
+    "range": { "startLine": 208, "endLine": 268 },
+    "title": "Finite Sum Exact Constant via Lagrange Identity",
+    "content": "For sequences $a, b : \\text{Fin}\\,n \\to \\mathbb{R}$ with $b$ nonzero: if $(\\sum a_ib_i)^2 = (\\sum a_i^2)(\\sum b_i^2)$, then $a_i = \\frac{\\sum a_jb_j}{\\sum b_j^2} \\cdot b_i$ for all $i$.",
+    "mathContext": "finite_sum_exact_constant: The proof uses the Lagrange identity $\\sum_{i,j}(a_ib_j - a_jb_i)^2 = 2((\\sum a_i^2)(\\sum b_i^2) - (\\sum a_ib_i)^2)$. Equality forces all cross-terms $a_ib_j = a_jb_i$, giving the common ratio $a_i/b_i = \\sum a_jb_j / \\sum b_j^2$.",
+    "significance": "critical",
+    "relatedConcepts": ["Lagrange identity", "cross-term vanishing", "sum_eq_zero_iff_of_nonneg", "Finset"],
+    "prerequisites": ["sq_nonneg", "sum_pos'", "field_simp"]
+  },
+  {
+    "id": "csoq04-geometric",
+    "proofId": "cauchy-schwarz-oq-04",
+    "type": "concept",
+    "range": { "startLine": 160, "endLine": 186 },
+    "title": "Geometric Sign Interpretation",
+    "content": "When CS equality holds: projCoeff > 0 iff inner(u,v) > 0 (same direction), projCoeff < 0 iff inner(u,v) < 0 (opposite direction). This gives the sign of the proportionality constant from the angle between vectors.",
+    "mathContext": "Since $\\text{projCoeff} = \\langle u,v\\rangle/\\|v\\|^2$ and $\\|v\\|^2 > 0$, the sign of projCoeff equals the sign of $\\langle u,v\\rangle$. Same-direction vectors have positive inner product; opposite-direction vectors have negative inner product.",
+    "significance": "key",
+    "relatedConcepts": ["vector direction", "positive inner product", "div_pos"],
+    "prerequisites": ["projCoeff_pos_of_inner_pos", "projCoeff_neg_of_inner_neg"]
+  }
+]
