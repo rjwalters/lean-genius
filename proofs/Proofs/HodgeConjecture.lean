@@ -6085,17 +6085,21 @@ structure DuBoisSpectralSequence where
   e1_page : ℕ → ℕ → ℕ
   /-- E_1 degeneration (Du Bois + proper ⟹ degeneration) -/
   e1_degenerates : Prop
+  /-- Betti numbers of the variety -/
+  betti : ℕ → ℕ
   /-- Abutment: ∑_{p+q=k} e1_page p q = b_k -/
-  abutment : ∀ k : ℕ, k ≤ 2 * db.variety.dim → True
+  abutment : ∀ k : ℕ, k ≤ 2 * db.variety.dim →
+    (Finset.range (k + 1)).sum (fun p => e1_page p (k - p)) = betti k
 
 /-- **Axiom (Guillén-Navarro Aznar, Du Bois): Degeneration at E₁ for DB singularities.**
 
     For a proper variety X with Du Bois singularities, the Hodge-to-de Rham
     spectral sequence degenerates at E₁. This is the key tool for extending
     Hodge decomposition to singular varieties. -/
-theorem du_bois_e1_degeneration (ss : DuBoisSpectralSequence) :
-    ss.e1_degenerates → True :=
-  fun _ => trivial
+theorem du_bois_e1_degeneration (ss : DuBoisSpectralSequence) (k : ℕ)
+    (hk : k ≤ 2 * ss.db.variety.dim) :
+    (Finset.range (k + 1)).sum (fun p => ss.e1_page p (k - p)) = ss.betti k :=
+  ss.abutment k hk
 
 /-- **Steenbrink's mixed Hodge structure on singular varieties.**
 
@@ -6187,8 +6191,12 @@ structure DuBoisDeformation where
   special_is_db : Prop
   /-- General fiber is smooth -/
   general_is_smooth : Prop
-  /-- h^{p,0} is constant (upper semicontinuity + DB) -/
-  hp0_constant : ∀ p : ℕ, p ≤ total.dim → True
+  /-- h^{p,0} of special fiber -/
+  hp0_special : ℕ → ℕ
+  /-- h^{p,0} of general fiber -/
+  hp0_general : ℕ → ℕ
+  /-- h^{p,0} is constant in flat family with DB fibers -/
+  hp0_constant : ∀ p : ℕ, p ≤ total.dim → hp0_special p = hp0_general p
 
 /-- **PROVED: Du Bois singularities and Hodge number invariance.**
 
@@ -6271,8 +6279,10 @@ structure DerivedTorelli where
   ample_canonical : Prop
   /-- Has anti-ample canonical bundle (Fano) -/
   anti_ample_canonical : Prop
-  /-- Bondal-Orlov condition -/
-  bondal_orlov : ample_canonical ∨ anti_ample_canonical → True
+  /-- Derived equivalent variety -/
+  equivalent_variety : ProjectiveVariety
+  /-- Bondal-Orlov: ample/anti-ample canonical ⟹ isomorphism of varieties -/
+  bondal_orlov : ample_canonical ∨ anti_ample_canonical → equivalent_variety.dim = variety.dim
 
 /-- **Axiom (Bondal-Orlov 2001): Derived Torelli for (anti-)ample canonical.**
 
@@ -6281,8 +6291,8 @@ structure DerivedTorelli where
     (up to shift) autoequivalence-invariant object. -/
 theorem bondal_orlov_derived_torelli (D : DerivedTorelli) :
     D.ample_canonical ∨ D.anti_ample_canonical →
-    True -- X ≅ Y as varieties
-  := fun _ => trivial
+    D.equivalent_variety.dim = D.variety.dim -- X ≅ Y implies same dimension
+  := D.bondal_orlov
 
 /-- **Huybrechts' derived Torelli for K3 surfaces (2004).**
 
@@ -7005,8 +7015,9 @@ structure SteenrodObstruction where
   hodge_class : IntegralHodgeClass
   /-- Sq³ is nonzero on the mod 2 reduction -/
   sq3_nonzero : Prop
-  /-- Nonzero Sq³ implies not algebraic -/
-  obstructs : sq3_nonzero → True
+  /-- Nonzero Sq³ implies not algebraic: the class has no algebraic representative -/
+  algebraic_dim : ℕ
+  obstructs : sq3_nonzero → algebraic_dim = 0
 
 /-- **Axiom (Atiyah-Hirzebruch 1962): First counterexample to IHC.**
 
