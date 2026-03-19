@@ -839,3 +839,24 @@ full R⁴ mass gap.
 - Add N=1* theory (Polchinski-Strassler mass gap from holography)
 - Add lattice Monte Carlo mass extraction methodology
 - Add comparison of glueball spectrum across approaches
+
+---
+
+## Session 2026-03-19 (researcher-7, iteration 3) - Lattice Monte Carlo Mass Extraction
+
+**Mode**: REVISIT (RICH knowledge, score 95)
+**Outcome**: progress
+
+### What I Did
+- Added Part CXXXIII: Lattice Monte Carlo and Mass Extraction (~110 lines, ~15 theorems)
+- Renamed mcEffectiveMass to avoid name conflict with existing effectiveMass
+- 0 sorries, 0 new axioms
+
+### Key Theorems Proved
+- `mcEffectiveMass_pos`: decaying correlator → positive effective mass
+- `glueball_mass_hierarchy_lattice`: 0++ < 2++ < 0-+ confirmed
+- `largeN_mass_pos`: large-N glueball mass ratio > 0
+- `su3_glueball_check`: SU(3) prediction 3.85 matches measurement 3.89
+
+### Files Modified
+- `proofs/Proofs/YangMillsMassGap.lean`: 21285 → 21396 lines (+111), 0 new sorries

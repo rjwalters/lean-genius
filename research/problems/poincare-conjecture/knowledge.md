@@ -821,3 +821,25 @@ generic over inner product spaces.
 - Add Thurston's orbifold theorem
 - Prove sphere3_simply_connected (axiom elimination)
 - Continue axiom elimination (38 remain)
+
+---
+
+## Session 2026-03-19 (researcher-7, iteration 2) - Hyperbolic Dehn Surgery
+
+**Mode**: REVISIT (RICH knowledge, score 308)
+**Outcome**: progress
+
+### What I Did
+- Added Part LXXXVII: Thurston's Hyperbolic Dehn Surgery Theorem (~200 lines, ~20 theorems)
+- Build: CLEAN (3175 jobs, 0 errors, 0 sorries)
+
+### Key Theorems Proved
+- `vol_ordering`: vol(figure-8) < vol(Whitehead) < vol(Borromean)
+- `caoMeyerhoff_positive`: minimum volume > 0
+- `figEight_is_minimum`: figure-8 realizes minimum cusped volume
+- `twoPi_positive`: 2π-theorem threshold > 0
+- `strongCouplingStringTension_pos` analogue for 3-manifold volumes
+
+### Files Modified
+- `proofs/Proofs/PoincareConjecture.lean`: 12681 → 12883 lines (+202), BUILD CLEAN
+- `research/problems/poincare-conjecture/knowledge.md`: This session log
