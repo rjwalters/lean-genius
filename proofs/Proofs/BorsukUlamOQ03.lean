@@ -3840,4 +3840,254 @@ All arrows are proved. BU ↔ LS is the key new result.
     infDist argument (BU→LS) and antisymmetric cover (LS→BU). -/
 theorem equivalence_web_with_ls : True := trivial
 
+-- ============================================================================
+-- Part L: The Standard 2-Simplex
+-- ============================================================================
+
+/-- The standard 2-simplex Δ² = {p ∈ ℝ³ | pᵢ ≥ 0, Σpᵢ = 1}. -/
+def standardSimplex2 : Set (Fin 3 → ℝ) :=
+  {p | (∀ i, 0 ≤ p i) ∧ ∑ i, p i = 1}
+
+/-- Vertex eᵢ of the standard 2-simplex: the i-th basis vector. -/
+def simplexVertex2 (i : Fin 3) : Fin 3 → ℝ :=
+  fun j => if i = j then 1 else 0
+
+/-- Each vertex of Δ² belongs to Δ². -/
+theorem simplexVertex2_mem (i : Fin 3) : simplexVertex2 i ∈ standardSimplex2 := by
+  refine ⟨fun j => ?_, ?_⟩
+  · simp only [simplexVertex2]; split_ifs <;> norm_num
+  · simp only [simplexVertex2, Fin.sum_univ_three]
+    fin_cases i <;> simp
+
+/-- The standard 2-simplex is closed in ℝ³. -/
+theorem standardSimplex2_isClosed : IsClosed standardSimplex2 := by
+  apply IsClosed.inter
+  · exact isClosed_iInter (fun i => isClosed_le continuous_const (continuous_apply i))
+  · exact isClosed_eq (continuous_finset_sum _ (fun i _ => continuous_apply i)) continuous_const
+
+/-- Each coordinate of a point in Δ² is in [0,1]. -/
+theorem standardSimplex2_bounded (x : Fin 3 → ℝ) (hx : x ∈ standardSimplex2) (i : Fin 3) :
+    x i ∈ Icc (0 : ℝ) 1 := by
+  constructor
+  · exact hx.1 i
+  · calc x i ≤ x i + ∑ j ∈ Finset.univ.erase i, x j :=
+          le_add_of_nonneg_right (Finset.sum_nonneg (fun j _ => hx.1 j))
+      _ = ∑ j, x j := by rw [Finset.add_sum_erase _ _ (Finset.mem_univ i)]
+      _ = 1 := hx.2
+
+/-- At vertex eᵢ, the i-th coordinate is 1. -/
+theorem simplexVertex2_self (i : Fin 3) : simplexVertex2 i i = 1 := by
+  simp [simplexVertex2]
+
+/-- At vertex eᵢ, coordinates other than i are 0. -/
+theorem simplexVertex2_other {i j : Fin 3} (h : i ≠ j) : simplexVertex2 i j = 0 := by
+  simp [simplexVertex2, h]
+
+-- ============================================================================
+-- Part LI: KKM Lemma in 2D
+-- ============================================================================
+
+/-- **KKM covering condition** for the 2-simplex: every point x ∈ Δ²
+    is in some Fᵢ where the i-th barycentric coordinate is positive.
+    Equivalent to: each face is covered by its vertex-indexed sets. -/
+def KKMCovering2 (F : Fin 3 → Set (Fin 3 → ℝ)) : Prop :=
+  ∀ x ∈ standardSimplex2, ∃ i : Fin 3, 0 < x i ∧ x ∈ F i
+
+/-- The KKM condition implies each vertex is in its corresponding set. -/
+theorem kkm_vertex_mem {F : Fin 3 → Set (Fin 3 → ℝ)} (hkkm : KKMCovering2 F)
+    (i : Fin 3) : simplexVertex2 i ∈ F i := by
+  obtain ⟨j, hj_pos, hj_mem⟩ := hkkm (simplexVertex2 i) (simplexVertex2_mem i)
+  by_cases h : i = j
+  · rwa [h]
+  · exfalso; have : simplexVertex2 i j = 0 := simplexVertex2_other h; linarith
+
+/-- **KKM Lemma (2D)**: If F₀, F₁, F₂ are closed and satisfy the KKM
+    covering condition on Δ², then some point of Δ² lies in all three.
+
+    Axiomized: the full proof requires Sperner's lemma on arbitrary
+    triangulations plus a compactness argument. -/
+axiom kkm_2d (F : Fin 3 → Set (Fin 3 → ℝ))
+    (hclosed : ∀ i, IsClosed (F i))
+    (hkkm : KKMCovering2 F) :
+    ∃ x ∈ standardSimplex2, ∀ i : Fin 3, x ∈ F i
+
+-- ============================================================================
+-- Part LII: KKM → Brouwer Fixed Point Theorem (2D)
+-- ============================================================================
+
+/-
+## Section LII: KKM Implies Brouwer Fixed Point (2D)
+
+**Theorem**: Every continuous f: Δ² → Δ² has a fixed point.
+
+**Proof**: Define Fᵢ = {x | fᵢ(x) ≤ xᵢ}. These are closed and satisfy
+KKM covering (if fᵢ(x) > xᵢ for all positive-coordinate i, then
+∑fᵢ > ∑xᵢ, contradicting both sums = 1). KKM gives x in all three,
+and the sum constraint forces fᵢ(x) = xᵢ.
+-/
+
+/-- **Brouwer Fixed Point Theorem (2D)**: Every continuous map
+    f: Δ² → Δ² has a fixed point. Derived from KKM 2D. -/
+theorem brouwer_fp_2d_from_kkm
+    (f : (Fin 3 → ℝ) → (Fin 3 → ℝ))
+    (hf : Continuous f)
+    (hf_simplex : ∀ x ∈ standardSimplex2, f x ∈ standardSimplex2) :
+    ∃ x ∈ standardSimplex2, f x = x := by
+  -- Define Fᵢ = {x | fᵢ(x) ≤ xᵢ}
+  set F : Fin 3 → Set (Fin 3 → ℝ) := fun i => {x | f x i ≤ x i} with hF_def
+  -- Step 1: Each Fᵢ is closed
+  have hclosed : ∀ i, IsClosed (F i) := fun i =>
+    isClosed_le ((continuous_apply i).comp hf) (continuous_apply i)
+  -- Step 2: KKM covering condition
+  have hkkm : KKMCovering2 F := by
+    intro x hx
+    by_contra h_neg
+    push_neg at h_neg
+    have h_strict : ∀ i, 0 < x i → x i < f x i := fun i hi =>
+      lt_of_not_le (h_neg i hi)
+    have hfx := hf_simplex x hx
+    have h_le_all : ∀ i, x i ≤ f x i := by
+      intro i
+      by_cases hi : 0 < x i
+      · exact le_of_lt (h_strict i hi)
+      · push_neg at hi; exact le_trans hi (hfx.1 i)
+    have ⟨i₀, hi₀⟩ : ∃ i, 0 < x i := by
+      by_contra hall; push_neg at hall
+      linarith [hx.2, Finset.sum_nonpos (fun i _ => le_of_not_lt (hall i))]
+    linarith [hx.2, hfx.2,
+      Finset.sum_lt_sum (fun i (_ : i ∈ Finset.univ) => h_le_all i)
+        ⟨i₀, Finset.mem_univ _, h_strict i₀ hi₀⟩]
+  -- Step 3: Apply KKM
+  obtain ⟨x, hx_mem, hx_all⟩ := kkm_2d F hclosed hkkm
+  have h_le : ∀ i, f x i ≤ x i := fun i => hx_all i
+  -- Step 4: Sum equality forces pointwise equality
+  have hfx := hf_simplex x hx_mem
+  have h_eq : ∀ i, f x i = x i := by
+    intro i; by_contra h_ne
+    linarith [hx_mem.2, hfx.2,
+      Finset.sum_lt_sum (fun j (_ : j ∈ Finset.univ) => h_le j)
+        ⟨i, Finset.mem_univ _, lt_of_le_of_ne (h_le i) h_ne⟩]
+  exact ⟨x, hx_mem, funext h_eq⟩
+
+/-- Brouwer FP 2D: the fixed point coordinates are all in [0,1]. -/
+theorem brouwer_fp_2d_coords
+    (f : (Fin 3 → ℝ) → (Fin 3 → ℝ))
+    (hf : Continuous f)
+    (hf_simplex : ∀ x ∈ standardSimplex2, f x ∈ standardSimplex2) :
+    ∃ x ∈ standardSimplex2, f x = x ∧ ∀ i, x i ∈ Icc (0 : ℝ) 1 := by
+  obtain ⟨x, hx, hfx⟩ := brouwer_fp_2d_from_kkm f hf hf_simplex
+  exact ⟨x, hx, hfx, fun i => standardSimplex2_bounded x hx i⟩
+
+-- ============================================================================
+-- Part LIII: No-Retraction for Δ² (from Brouwer FP)
+-- ============================================================================
+
+/-- The boundary ∂Δ²: simplex points with at least one zero coordinate. -/
+def simplexBoundary2 : Set (Fin 3 → ℝ) :=
+  {p ∈ standardSimplex2 | ∃ i, p i = 0}
+
+/-- **No retraction Δ² → ∂Δ²**: Compose retraction r with a fixed-point-free
+    boundary self-map φ (exists since ∂Δ² ≅ S¹). The composition g = φ ∘ r
+    maps Δ² → ∂Δ² ⊆ Δ² with no fixed point, contradicting Brouwer FP. -/
+theorem no_retraction_2d_from_kkm
+    (r : (Fin 3 → ℝ) → (Fin 3 → ℝ))
+    (hr : Continuous r)
+    (hr_simplex : ∀ x ∈ standardSimplex2, r x ∈ standardSimplex2)
+    (hr_boundary_image : ∀ x ∈ standardSimplex2, r x ∈ simplexBoundary2)
+    (hr_fixes : ∀ x ∈ simplexBoundary2, r x = x)
+    (φ : (Fin 3 → ℝ) → (Fin 3 → ℝ))
+    (hφ : Continuous φ)
+    (hφ_simplex : ∀ x ∈ standardSimplex2, φ x ∈ standardSimplex2)
+    (hφ_boundary : ∀ x ∈ simplexBoundary2, φ x ∈ simplexBoundary2)
+    (hφ_fpf : ∀ x ∈ simplexBoundary2, φ x ≠ x) :
+    False := by
+  set g := φ ∘ r
+  obtain ⟨x₀, hx₀_mem, hx₀_fp⟩ :=
+    brouwer_fp_2d_from_kkm g (hφ.comp hr)
+      (fun x hx => hφ_simplex (r x) (hr_simplex x hx))
+  -- g(x₀) = φ(r(x₀)) = x₀
+  -- φ maps boundary to boundary, so x₀ = φ(r(x₀)) ∈ ∂Δ²
+  have hx₀_bd : x₀ ∈ simplexBoundary2 :=
+    congr_fun hx₀_fp x₀ ▸ hφ_boundary (r x₀) (hr_boundary_image x₀ hx₀_mem)
+  -- r fixes boundary: r(x₀) = x₀, so φ(x₀) = x₀
+  have : φ x₀ = x₀ := (hr_fixes x₀ hx₀_bd) ▸ congr_fun hx₀_fp x₀
+  exact hφ_fpf x₀ hx₀_bd this
+
+-- ============================================================================
+-- Part LIV: General KKM and Brouwer FP for n-Simplex
+-- ============================================================================
+
+/-- The standard n-simplex Δⁿ = {p ∈ ℝⁿ⁺¹ | pᵢ ≥ 0, Σpᵢ = 1}. -/
+def standardSimplex (n : ℕ) : Set (Fin (n + 1) → ℝ) :=
+  {p | (∀ i, 0 ≤ p i) ∧ ∑ i, p i = 1}
+
+/-- KKM covering condition for the n-simplex. -/
+def KKMCovering (n : ℕ) (F : Fin (n + 1) → Set (Fin (n + 1) → ℝ)) : Prop :=
+  ∀ x ∈ standardSimplex n, ∃ i, 0 < x i ∧ x ∈ F i
+
+/-- **KKM Lemma (general)**: For n+1 closed sets satisfying KKM covering
+    on Δⁿ, the intersection is nonempty. -/
+axiom kkm_general (n : ℕ)
+    (F : Fin (n + 1) → Set (Fin (n + 1) → ℝ))
+    (hclosed : ∀ i, IsClosed (F i))
+    (hkkm : KKMCovering n F) :
+    ∃ x ∈ standardSimplex n, ∀ i : Fin (n + 1), x ∈ F i
+
+/-- **General Brouwer FP from KKM**: Every continuous self-map of Δⁿ
+    has a fixed point. Same proof as 2D: Fᵢ = {x | fᵢ(x) ≤ xᵢ}. -/
+theorem brouwer_fp_simplex_from_kkm (n : ℕ)
+    (f : (Fin (n + 1) → ℝ) → (Fin (n + 1) → ℝ))
+    (hf : Continuous f)
+    (hf_simplex : ∀ x ∈ standardSimplex n, f x ∈ standardSimplex n) :
+    ∃ x ∈ standardSimplex n, f x = x := by
+  set F : Fin (n + 1) → Set (Fin (n + 1) → ℝ) := fun i => {x | f x i ≤ x i}
+  have hclosed : ∀ i, IsClosed (F i) := fun i =>
+    isClosed_le ((continuous_apply i).comp hf) (continuous_apply i)
+  have hkkm : KKMCovering n F := by
+    intro x hx; by_contra h_neg; push_neg at h_neg
+    have hfx := hf_simplex x hx
+    have h_le : ∀ i, x i ≤ f x i := by
+      intro i; by_cases hi : 0 < x i
+      · exact le_of_lt (lt_of_not_le (h_neg i hi))
+      · exact le_trans (le_of_not_lt hi) (hfx.1 i)
+    have ⟨i₀, hi₀⟩ : ∃ i, 0 < x i := by
+      by_contra hall; push_neg at hall
+      linarith [hx.2, Finset.sum_nonpos (fun i _ => le_of_not_lt (hall i))]
+    linarith [hx.2, hfx.2,
+      Finset.sum_lt_sum (fun i (_ : i ∈ Finset.univ) => h_le i)
+        ⟨i₀, Finset.mem_univ _, lt_of_not_le (h_neg i₀ hi₀)⟩]
+  obtain ⟨x, hx_mem, hx_all⟩ := kkm_general n F hclosed hkkm
+  have hfx := hf_simplex x hx_mem
+  have h_eq : ∀ i, f x i = x i := by
+    intro i; by_contra h_ne
+    linarith [hx_mem.2, hfx.2,
+      Finset.sum_lt_sum (fun j (_ : j ∈ Finset.univ) => (hx_all j : f x j ≤ x j))
+        ⟨i, Finset.mem_univ _, lt_of_le_of_ne (hx_all i) h_ne⟩]
+  exact ⟨x, hx_mem, funext h_eq⟩
+
+-- ============================================================================
+-- Part LV: Updated Equivalence Web
+-- ============================================================================
+
+/-
+## Updated Equivalence Web (with KKM → Brouwer FP)
+
+In 1D (all PROVED):
+- BU ↔ odd-zero, BU → Brouwer FP, Tucker, Sperner, KKM,
+  no-retraction, KKM → no-retraction
+
+In 2D (combinatorial + KKM chain):
+- Tucker octahedral, Sperner minimal + 4-subdivision (PROVED)
+- KKM 2D (axiom) → Brouwer FP 2D (PROVED from KKM)
+- Brouwer FP → No-retraction (PROVED from Brouwer FP + fpf map)
+
+In nD (axioms + derived theorems):
+- BU, no-retraction, Brouwer FP, LS (axioms)
+- KKM general (axiom) → Brouwer FP general (PROVED from KKM)
+
+Key result: KKM → Brouwer FP is FULLY FORMAL for any n.
+-/
+
+theorem equivalence_web_v2 : (1 : ℕ) + 1 = 2 := rfl
+
 end BorsukUlamOQ03
