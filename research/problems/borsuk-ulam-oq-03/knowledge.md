@@ -6,7 +6,7 @@
 (without full classical logic)? What is the constructive status of
 higher-dimensional Borsuk-Ulam?
 
-**Status**: 111 proved theorems, 4 axioms, 0 sorries (2237 lines).
+**Status**: 127 proved theorems, 5 axioms, 0 sorries (3055 lines).
 
 **Answer**:
 - 1D: YES, proved via IVT on antisymmetric difference
@@ -101,3 +101,61 @@ Added 5 new sections (XLII-XLVI) with 17 new proved theorems:
 - Prove Tucker 2D → BU 2D via approximation/compactness
 - Add Sperner 2D lemma
 - Add KKM lemma
+
+## Session 2026-03-19 (researcher-7) - Equivalence Web Expansion
+
+**Mode**: REVISIT (existing knowledge from Sessions 1-3)
+**Outcome**: progress
+
+### What I Did
+
+Added 8 new sections (L-LVII) with ~16 new theorems and 1 new axiom:
+
+**Section L: KKM 2D (Triangle Covering Lemma)**
+- `stdTriangle`: Standard triangle definition in ℝ²
+- `kkm_2d`: KKM lemma for 2D (AXIOMATIZED as 5th axiom, equivalent to Brouwer FP)
+
+**Section LI: Weather Theorem**
+- `weather_theorem_1func`: For f with f(0)=f(2π), antipodal coincidence exists (PROVED from IVT)
+- `weather_theorem_periodic`: For 2π-periodic f (PROVED from IVT)
+- `weather_theorem_two_functions_s2`: Two functions on S² (PROVED from BU axiom for n=2)
+- **CORRECTED**: The two-function weather theorem is FALSE on S¹! Counterexample: f=cos, g=sin.
+
+**Section LII: Necklace Splitting**
+- `necklace_splitting_1cut`: CDF bisection via IVT (PROVED)
+- `discrete_necklace_1color`: Discrete version for monotone integer functions (PROVED by induction)
+
+**Section LIII: BU Consequences**
+- `no_injection_sphere_to_rn`: No continuous injection S^n → ℝ^n (PROVED from BU axiom)
+- `ls_coloring_has_antipodal`: LS coloring has antipodal monochromatic pair (PROVED from LS axiom)
+
+**Section LIV: Ham-Sandwich 2D**
+- `ham_sandwich_2d_core`: Odd periodic function must vanish (PROVED from IVT)
+
+**Section LV: Discrete BU**
+- `discrete_borsuk_ulam_bool`: Boolean labels, direct from Tucker (PROVED)
+- `discrete_borsuk_ulam_circle`: Circular Boolean version (PROVED)
+
+**Section LVI: Generalized IVP (Unifying Principle)**
+- `generalized_ivp`: f≤g at a, g≤f at b → f=g somewhere (PROVED)
+- `bu_from_generalized_ivp`: BU 1D as instance of generalized IVP (PROVED)
+
+**Section LVII: Updated Equivalence Web Summary**
+
+### Key Findings
+
+- The two-function weather theorem on S¹ is FALSE: f(θ)=cos(θ), g(θ)=sin(θ) gives f(θ)=f(θ+π) only at θ=π/2,3π/2 but g never agrees at these points. You need S² (n=2) for two simultaneous functions.
+- All 1D results reduce to the Generalized IVP: f≤g at one end, g≤f at the other, continuous → crossing exists
+- discrete_necklace_1color uses induction: count goes from 0 to 2m in steps of ≤1, must pass through m
+- KKM 2D ↔ Brouwer FP ↔ BU ↔ no-retraction ↔ LS (all equivalent for n ≥ 2)
+
+### Files Modified
+
+- `proofs/Proofs/BorsukUlamOQ03.lean` (2506 → 3055 lines, +549 lines)
+
+### Next Steps
+
+- Prove KKM 2D from Brouwer FP by formalizing barycentric coordinates
+- Extend discrete BU to integer labels (Tucker complementary edge)
+- Add Knaster theorem (fixed-point free involution version of BU)
+- Formalize topological degree for S¹ maps and connect to BU
