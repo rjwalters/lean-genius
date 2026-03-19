@@ -569,6 +569,99 @@ theorem sphere3_closedManifold : Closed3Manifold (↥Sphere3) :=
    sphere3_locally_euclidean⟩
 
 /- ===============================================================================
+PART XVI-B: GENERAL SPHERE LOCALLY EUCLIDEAN
+===============================================================================
+
+Generalize the stereographic projection proof to all Sⁿ ⊂ ℝⁿ⁺¹.
+-/
+
+/-- The orthogonal complement of a unit vector in ℝⁿ⁺¹ is homeomorphic to ℝⁿ. -/
+private noncomputable def orthCompHomeomorphN (n : ℕ) (v : EuclideanSpace ℝ (Fin (n + 1)))
+    (hv : ‖v‖ = 1) :
+    ↥(Submodule.span ℝ {v})ᗮ ≃ₜ EuclideanSpace ℝ (Fin n) := by
+  have hne : v ≠ 0 := by intro h; rw [h, norm_zero] at hv; exact one_ne_zero hv.symm
+  have hdim : Module.finrank ℝ ↥(Submodule.span ℝ {v})ᗮ = n := by
+    have h1 : Module.finrank ℝ (EuclideanSpace ℝ (Fin (n + 1))) = n + 1 :=
+      finrank_euclideanSpace_fin
+    have h2 : Module.finrank ℝ
+        (Submodule.span ℝ ({v} : Set (EuclideanSpace ℝ (Fin (n + 1))))) = 1 := by
+      rw [finrank_span_singleton hne]
+    have h3 := Submodule.finrank_add_finrank_orthogonal
+      (Submodule.span ℝ ({v} : Set (EuclideanSpace ℝ (Fin (n + 1)))))
+    omega
+  let b := stdOrthonormalBasis ℝ ↥(Submodule.span ℝ {v})ᗮ
+  have hcard : Fintype.card (Fin (Module.finrank ℝ ↥(Submodule.span ℝ {v})ᗮ)) = n := by
+    simp [hdim]
+  let bn := b.reindex (Fintype.equivFinOfCardEq hcard)
+  exact bn.repr.toHomeomorph
+
+/-- Stereographic chart for Sⁿ ⊂ ℝⁿ⁺¹ from a unit vector, mapping to ℝⁿ. -/
+private noncomputable def sphereChartN (n : ℕ) (v : EuclideanSpace ℝ (Fin (n + 1)))
+    (hv : ‖v‖ = 1) :
+    OpenPartialHomeomorph ↥(Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1)
+      (EuclideanSpace ℝ (Fin n)) :=
+  (stereographic hv).transHomeomorph (orthCompHomeomorphN n v hv)
+
+/-- On the unit sphere in ℝⁿ⁺¹, no point equals its antipode (since ‖x‖ = 1 ≠ 0). -/
+private lemma sphere_ne_neg_general {n : ℕ}
+    (x : ↥(Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1)) :
+    x ≠ ⟨-(x : EuclideanSpace ℝ (Fin (n + 1))),
+      mem_sphere_zero_iff_norm.mpr
+        (by rw [norm_neg]; exact mem_sphere_zero_iff_norm.mp x.2)⟩ := by
+  intro h
+  have heq : (x : EuclideanSpace ℝ (Fin (n + 1))) =
+      -(x : EuclideanSpace ℝ (Fin (n + 1))) :=
+    congr_arg Subtype.val h
+  have hx_norm : ‖(x : EuclideanSpace ℝ (Fin (n + 1)))‖ = 1 :=
+    mem_sphere_zero_iff_norm.mp x.2
+  have h2 : (x : EuclideanSpace ℝ (Fin (n + 1))) +
+      (x : EuclideanSpace ℝ (Fin (n + 1))) = 0 := by
+    nth_rw 1 [heq]; exact neg_add_cancel _
+  have h3 : (2 : ℝ) • (x : EuclideanSpace ℝ (Fin (n + 1))) = 0 := by
+    rw [two_smul]; exact h2
+  have h4 : (x : EuclideanSpace ℝ (Fin (n + 1))) = 0 := by
+    have : (2 : ℝ) ≠ 0 := by norm_num
+    exact (smul_eq_zero.mp h3).resolve_left this
+  rw [h4] at hx_norm
+  simp at hx_norm
+
+/-- Every sphere Sⁿ ⊂ ℝⁿ⁺¹ is locally Euclidean: every point has a neighborhood
+    homeomorphic to ℝⁿ, via stereographic projection from the antipodal point. -/
+theorem sphere_n_locally_euclidean (n : ℕ) :
+    ∀ x : ↥(Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1),
+      ∃ U : Set ↥(Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1),
+        IsOpen U ∧ x ∈ U ∧
+        Nonempty (U ≃ₜ EuclideanSpace ℝ (Fin n)) := by
+  intro x
+  have hneg : ‖-(x : EuclideanSpace ℝ (Fin (n + 1)))‖ = 1 := by
+    rw [norm_neg]; exact mem_sphere_zero_iff_norm.mp x.2
+  let chart := sphereChartN n (-(x : EuclideanSpace ℝ (Fin (n + 1)))) hneg
+  use chart.source, chart.open_source
+  constructor
+  · simp only [chart, sphereChartN, OpenPartialHomeomorph.transHomeomorph_source]
+    rw [stereographic_source]
+    simp only [Set.mem_compl_iff, Set.mem_singleton_iff]
+    exact sphere_ne_neg_general x
+  · have htarget : chart.target = Set.univ := by
+      simp only [chart, sphereChartN, OpenPartialHomeomorph.transHomeomorph_target]
+      rw [stereographic_target]
+      simp
+    exact ⟨chart.toHomeomorphSourceTarget.trans
+      (Homeomorph.setCongr htarget |>.trans (Homeomorph.Set.univ _))⟩
+
+/-- Sⁿ is a closed n-manifold for n ≥ 1 (compact, connected, nonempty, locally Euclidean). -/
+noncomputable def closedManifold_sphere_n (n : ℕ) (hn : 1 ≤ n) :
+    ClosedManifold n
+      ↥(Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1) where
+  compact := isCompact_iff_compactSpace.mp (isCompact_sphere 0 1)
+  connected := by
+    rw [← isConnected_iff_connectedSpace]
+    exact isConnected_sphere (rank_gt_one_of_ge_one n hn) _
+      (by norm_num : (0 : ℝ) ≤ 1)
+  nonempty := (sphere_n_nonempty n).to_subtype
+  locallyEuclidean := sphere_n_locally_euclidean n
+
+/- ===============================================================================
 PART XVII: SIMPLE CONNECTIVITY OF SPHERES
 =============================================================================== -/
 
