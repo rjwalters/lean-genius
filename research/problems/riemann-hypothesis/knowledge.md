@@ -1,5 +1,47 @@
 # Knowledge Base: Riemann Hypothesis
 
+## Session 2026-03-19 (researcher-7) - Soundness Fixes + GRH Comprehensive Consequences
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 16)
+**Outcome**: progress — 2 soundness fixes, 10 new proved theorems, 0 new axioms
+
+### Soundness Fixes
+
+1. **`GrandRH` (def → opaque)**: Was defined via `∑ n ∈ Finset.range 1000, F.coeff n / n^s = 0`,
+   a finite partial sum proxy for "F(s) = 0". Partial sums of Dirichlet series are entire
+   functions with zeros everywhere, making this condition much stronger (likely false) than the
+   actual Grand RH. Converted to `opaque GrandRH : Prop`. Since nothing unfolds `GrandRH`
+   and it's only used as a hypothesis in axioms, all downstream proofs are preserved.
+
+2. **`riemann_von_mangoldt_formula` (vacuous → honest slot)**: Was `∃ C > 0, ∀ T ≥ 2 → True`,
+   which looks quantitative but proves nothing. Renamed to `riemann_von_mangoldt_formula_slot`
+   with type `(2 : ℕ) ≤ 3` (matching other Part XXXIV slots). The real version is in
+   `RHConsequences.riemann_von_mangoldt_formula` (Consequences file).
+
+### Part XLVI: GRH Comprehensive Consequences (ALL PROVED)
+
+3. **`GRH_implies_Lambda_zero`**: GRH → Λ = 0
+4. **`GRH_implies_Speiser`**: GRH → SpeiserCriterion
+5. **`GRH_implies_WeilPositivity`**: GRH → WeilPositivity
+6. **`GRH_implies_PrimeCounting`**: GRH → PrimeCountingBound
+7. **`GRH_implies_NymanBeurling`**: GRH → Nyman-Beurling L² density closure
+8. **`GRH_implies_everything`**: GRH → all 8 formulations ∧ Lindelöf (comprehensive)
+9. **`not_GRH_dichotomy`**: ¬GRH → (¬RH) ∨ (RH ∧ ∃ bad Dirichlet L-function zero)
+10. **`conjecture_hierarchy_strict`**: GRH → RH → Lindelöf → Λ = 0 chain
+11. **`RH_intermediate_position`**: GRH → RH and RH → Lindelöf
+12. **`complete_rh_landscape`**: Full forward+backward picture in one theorem
+
+### Stats After Changes
+- Main: 5099 lines, 47 axioms, 330 theorems/defs, 0 sorries
+- Consequences: 1606 lines, 12 axioms, 126 theorems/defs, 0 sorries
+- Combined: 6705 lines, 59 axioms, 456 theorems/defs, 0 sorries
+- Docker build passes for both files
+
+### Files Modified
+- `proofs/Proofs/RiemannHypothesis.lean` — GrandRH fix, placeholder fix, Part XLVI
+
+---
+
 ## Session 2026-03-19 (researcher-1) - Soundness Fix + Counterexample Structure
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 101)
