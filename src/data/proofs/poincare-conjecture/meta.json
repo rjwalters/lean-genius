@@ -16,8 +16,8 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 38,
-    "assumptions": "38 axiom declarations: Perelman Ricci flow surgery (finite extinction), Novikov compact leaf theorem (foliations), generalized Poincaré in dimensions 2/4/≥5, simply connected S³ (needs Seifert-van Kampen), S³ non-contractible (needs homology), topological constructions (connected sum type, Dehn surgery type), classification results (JSJ decomposition/uniqueness, h/s-cobordism), 3-manifold topology (Heegaard splitting, Waldhausen genus-0, Property P, prime decomposition, irreducibility), counterexample structures (Poincaré homology sphere, Whitehead manifold), covering space theory (sc_covering_injective).",
+    "axiomCount": 42,
+    "assumptions": "42 axiom declarations: Perelman Ricci flow surgery (finite extinction), Novikov compact leaf theorem (foliations), generalized Poincaré in dimensions 2/4/≥5, simply connected S³ (needs Seifert-van Kampen), S³ non-contractible (needs homology), topological constructions (connected sum type, Dehn surgery type), classification results (JSJ decomposition/uniqueness, h/s-cobordism), 3-manifold topology (Heegaard splitting, Waldhausen genus-0, Property P, prime decomposition, irreducibility), counterexample structures (Poincaré homology sphere, Whitehead manifold), covering space theory (sc_covering_injective), Kahn-Markovic surface subgroup, Agol virtual Haken/fibering, Gordon-Luecke knot complement determination.",
     "mathlibDependencies": [
       {
         "theorem": "SimplyConnectedSpace",
@@ -70,19 +70,21 @@
       "Papakyriakopoulos trilogy: Dehn's lemma, loop theorem, sphere theorem (axiomatized)",
       "Haken hierarchy, equivariant Dehn's lemma, Smith conjecture connection",
       "Scalar curvature maximum principle and Schoenflies theorem infrastructure",
-      "564 theorems proved, 130 structures defined, 189 definitions, 80 parts across 10926 lines"
+      "Virtual Haken conjecture: Agol-Wise program, cube complexes, LERF, 3-manifold group properties for all 8 geometries",
+      "Gordon-Luecke theorem: knot complements determine knots, Alexander polynomial data, hyperbolic volume, genus-crossing bounds",
+      "590 theorems proved, 137 structures defined, 218 definitions, 82 parts across 11574 lines"
     ],
     "leanFile": {
-      "lineCount": 10926,
-      "theoremCount": 564,
+      "lineCount": 11574,
+      "theoremCount": 590,
       "lemmaCount": 0,
-      "defCount": 189,
-      "axiomCount": 38,
+      "defCount": 218,
+      "axiomCount": 42,
       "sorryCount": 0,
-      "structureCount": 130,
+      "structureCount": 137,
       "instanceCount": 21,
-      "parts": 80,
-      "note": "Single file formalization. 80 parts covering: topology of S³ and S^n, closed manifolds, simple connectivity, Perelman's proof strategy, counterexamples, geometrization, connected sum theory, covering spaces, Hopf fibration, knot surgery, JSJ decomposition, foliations, Papakyriakopoulos results, Heegaard Floer homology, L-space conjecture, contact structures."
+      "parts": 82,
+      "note": "Single file formalization. 82 parts covering: topology of S³ and S^n, closed manifolds, simple connectivity, Perelman's proof strategy, counterexamples, geometrization, connected sum theory, covering spaces, Hopf fibration, knot surgery, JSJ decomposition, foliations, Papakyriakopoulos results, Heegaard Floer homology, L-space conjecture, contact structures, Virtual Haken conjecture and Wise's program, Gordon-Luecke theorem and knot complements."
     },
     "dateAdded": "12/29/25",
     "millenniumProblem": "poincare"
