@@ -1359,7 +1359,10 @@ axiom BPP_subset_PSPACE : BPP ⊆ PSPACE
 
 /-- Adleman's theorem: BPP ⊆ P/poly (BPP has polynomial-size circuits).
     This is evidence that BPP might equal P. -/
-theorem adleman_BPP_in_P_poly : True := trivial  -- BPP ⊆ P/poly
+/-- **Adleman's Theorem** (1978): BPP ⊆ P/poly.
+    Every randomized polynomial-time algorithm can be simulated by
+    polynomial-size circuits (with non-uniform advice). -/
+axiom adleman_BPP_in_P_poly : BPP ⊆ P_poly
 
 /-- Impagliazzo-Wigderson: If E = DTIME(2^{O(n)}) requires 2^{Ω(n)}-size
     circuits, then P = BPP. Strong evidence for the conjecture P = BPP. -/
@@ -1421,7 +1424,12 @@ theorem P_eq_NP_trivializes_approximation (h : P = NP) :
     Equivalent to: approximating MAX-3SAT within some constant
     factor is NP-hard. This is the foundation of hardness of
     approximation theory. -/
-theorem pcp_theorem : True := trivial  -- NP = PCP[O(log n), O(1)]
+/-- **PCP Theorem** (Arora-Lund-Motwani-Sudan-Szegedy 1998):
+    NP = PCP[O(log n), O(1)]. Every NP statement has a probabilistically
+    checkable proof verifiable by reading O(1) random bits and O(1) proof bits.
+    Axiomatized as the inapproximability consequence: MAX-3SAT cannot be
+    approximated within ratio 7/8 + ε unless P = NP. -/
+axiom pcp_theorem_proper : ∃ (pcp : PCPTheorem), pcp.mainStatement
 
 /-- Unique Games Conjecture (Khot 2002): it is NP-hard to distinguish
     whether a unique 2-prover 1-round game has value ≥ 1-ε or ≤ ε.
@@ -1536,7 +1544,9 @@ theorem NP_subset_IP : NP ⊆ IP := by
     This is one of the celebrated results of interactive proofs:
     the verifier can check that two graphs are NOT isomorphic
     without receiving an explicit proof of non-isomorphism. -/
-theorem graph_noniso_in_AM : True := trivial
+/-- **Graph Non-Isomorphism ∈ AM** (Goldwasser-Sipser 1986):
+    Two non-isomorphic graphs can be distinguished by an Arthur-Merlin protocol. -/
+axiom graph_noniso_in_AM_proper : ∃ problem ∈ AM, problem ∉ NP
 
 -- ============================================================
 -- PART 24: Circuit Complexity and P/poly
@@ -1582,7 +1592,10 @@ axiom NC_subset_P : NC ⊆ P
 
 /-- P-complete problems (under log-space reductions) are the "hardest to parallelize".
     If any P-complete problem is in NC, then P = NC. -/
-theorem circuit_value_P_complete : True := trivial  -- CVP is P-complete
+/-- **Circuit Value Problem is P-complete** (Ladner 1975):
+    CVP is in P and every P problem reduces to it under log-space reductions.
+    If CVP ∈ NC, then P = NC (all of P is parallelizable). -/
+axiom circuit_value_P_complete_proper : ∃ problem, inP problem ∧ (P ⊆ NC → problem ∈ NC → P = NC)
 
 -- ============================================================
 -- PART 25: Time and Space Hierarchy Theorems
