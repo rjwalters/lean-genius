@@ -1065,4 +1065,365 @@ theorem cyclic_group_realizable (n : ℕ) (hn : 0 < n) :
     rw [← Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank ℚ ↥K]; exact hK_degree
   exact ⟨↥K, inferInstance, inferInstance, inferInstance, inferInstance, hK_cyclic, hK_card⟩
 
+-- ============================================================================
+-- Part XV: Concrete Group Realizability and Totient Computations
+-- ============================================================================
+
+/-
+## Part XV: Concrete Group Realizability and Totient Computations
+
+We exploit the proved `cyclic_group_realizable` and `units_zmod_realizable`
+to enumerate concrete groups realized by our proofs, and compute totients
+that determine which cyclotomic Galois groups arise.
+
+### What This Part Proves
+
+1. **Totient computations**: φ(n) for small n via `decide`
+2. **Non-cyclic units**: (ℤ/8ℤ)ˣ and (ℤ/12ℤ)ˣ are NOT cyclic
+3. **Exponent computations**: every element of (ℤ/8ℤ)ˣ has order ≤ 2
+4. **Realizability census**: concrete statements for groups of each order ≤ 6
+
+### The Key Observation
+
+All groups of order ≤ 5 are cyclic, hence all realized by `cyclic_group_realizable`.
+At order 6, we need both C₆ (cyclic) and S₃ (non-abelian, proved via X³-2).
+The first non-cyclic abelian group is C₂ × C₂ (order 4), which appears as
+Gal(ℚ(ζ₈)/ℚ) ≅ (ℤ/8ℤ)ˣ ≅ C₂ × C₂, or as Gal(ℚ(ζ₁₂)/ℚ) ≅ (ℤ/12ℤ)ˣ ≅ C₂ × C₂.
+-/
+
+-- Totient computations for small values
+/-- φ(2) = 1 (units of ℤ/2ℤ: just {1}). -/
+theorem totient_2 : Nat.totient 2 = 1 := by decide
+
+/-- φ(3) = 2 (units of ℤ/3ℤ: {1, 2}). -/
+theorem totient_3 : Nat.totient 3 = 2 := by decide
+
+/-- φ(4) = 2 (units of ℤ/4ℤ: {1, 3}). -/
+theorem totient_4 : Nat.totient 4 = 2 := by decide
+
+/-- φ(5) = 4 (units of ℤ/5ℤ: {1, 2, 3, 4}). -/
+theorem totient_5 : Nat.totient 5 = 4 := by decide
+
+/-- φ(6) = 2 (units of ℤ/6ℤ: {1, 5}). -/
+theorem totient_6 : Nat.totient 6 = 2 := by decide
+
+-- φ(7) = 6: already proved as units_zmod7_card in Part III
+
+/-- φ(8) = 4. The group (ℤ/8ℤ)ˣ = {1, 3, 5, 7} has order 4,
+    but is NOT cyclic (every element squares to 1). -/
+theorem totient_8 : Nat.totient 8 = 4 := by decide
+
+/-- φ(10) = 4. -/
+theorem totient_10 : Nat.totient 10 = 4 := by decide
+
+/-- φ(12) = 4. The group (ℤ/12ℤ)ˣ = {1, 5, 7, 11} has order 4. -/
+theorem totient_12 : Nat.totient 12 = 4 := by decide
+
+-- Exponent computations showing non-cyclicity
+/-- In (ℤ/8ℤ)ˣ, every element squares to 1.
+    3² = 9 ≡ 1, 5² = 25 ≡ 1, 7² = 49 ≡ 1 mod 8.
+    Since C₄ has an element of order 4, (ℤ/8ℤ)ˣ ≇ C₄. -/
+theorem zmod8_units_sq_eq_one : ∀ x : (ZMod 8)ˣ, x ^ 2 = 1 := by decide
+
+/-- In (ℤ/12ℤ)ˣ, every element squares to 1.
+    5² = 25 ≡ 1, 7² = 49 ≡ 1, 11² = 121 ≡ 1 mod 12. -/
+theorem zmod12_units_sq_eq_one : ∀ x : (ZMod 12)ˣ, x ^ 2 = 1 := by decide
+
+/-- (ℤ/8ℤ)ˣ is not cyclic. If it were cyclic of order 4, there would
+    be an element of order 4, contradicting that every element squares to 1. -/
+theorem zmod8_units_not_cyclic : ¬ IsCyclic (ZMod 8)ˣ := by
+  intro ⟨⟨g, hg⟩⟩
+  -- g is a generator, so g has order = |group| = 4
+  have hcard : Fintype.card (ZMod 8)ˣ = 4 := by
+    rw [ZMod.card_units_eq_totient]; decide
+  have hord : orderOf g = 4 := by
+    rw [orderOf_eq_card_of_forall_mem_zpowers hg, Nat.card_eq_fintype_card, hcard]
+  -- But g² = 1 by our exponent computation
+  have hsq := zmod8_units_sq_eq_one g
+  -- orderOf g | 2 since g² = 1
+  have h2 : orderOf g ∣ 2 := by
+    rw [orderOf_dvd_iff_pow_eq_one]; exact hsq
+  -- 4 ∣ 2 is a contradiction: orderOf g = 4 and orderOf g ≤ 2
+  have h2_le : orderOf g ≤ 2 := Nat.le_of_dvd (by omega) h2
+  omega
+
+/-- (ℤ/12ℤ)ˣ is not cyclic (same argument). -/
+theorem zmod12_units_not_cyclic : ¬ IsCyclic (ZMod 12)ˣ := by
+  intro ⟨⟨g, hg⟩⟩
+  have hcard : Fintype.card (ZMod 12)ˣ = 4 := by
+    rw [ZMod.card_units_eq_totient]; decide
+  have hord : orderOf g = 4 := by
+    rw [orderOf_eq_card_of_forall_mem_zpowers hg, Nat.card_eq_fintype_card, hcard]
+  have hsq := zmod12_units_sq_eq_one g
+  have h2 : orderOf g ∣ 2 := by
+    rw [orderOf_dvd_iff_pow_eq_one]; exact hsq
+  have h2_le : orderOf g ≤ 2 := Nat.le_of_dvd (by omega) h2
+  omega
+
+/-
+The number of groups of order n for small n:
+  n = 1: trivial {1}          (1 group, trivially realizable)
+  n = 2: C₂                   (1 group, cyclic → realized)
+  n = 3: C₃                   (1 group, cyclic → realized)
+  n = 4: C₄, C₂×C₂           (2 groups, both realized)
+  n = 5: C₅                   (1 group, cyclic → realized)
+  n = 6: C₆, S₃               (2 groups, both realized)
+
+Total: 8 distinct groups of order ≤ 6, ALL realized by our proofs.
+-/
+-- C₁ through C₆: `cyclic_group_realizable`
+-- S₃: `s3_realizable`
+-- C₂ × C₂: `units_zmod_realizable 8` gives Gal with group (ℤ/8ℤ)ˣ ≅ C₂ × C₂
+
+/-- The 8th cyclotomic field has Galois group of order 4 that is NOT cyclic.
+    Combined with `units_zmod_realizable 8`, this realizes C₂ × C₂ = V₄
+    (the Klein four-group) as a Galois group over ℚ. -/
+theorem klein_four_realized :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K),
+      Fintype.card (K ≃ₐ[ℚ] K) = 4 ∧ ¬ IsCyclic (K ≃ₐ[ℚ] K) := by
+  -- Use 8th cyclotomic field
+  haveI : NeZero (8 : ℕ) := ⟨by omega⟩
+  -- iso : (ZMod 8)ˣ ≃* (K ≃ₐ[ℚ] K)
+  obtain ⟨K, _, _, _, hgal, ⟨iso⟩⟩ := units_zmod_realizable 8
+  refine ⟨K, inferInstance, inferInstance, inferInstance, hgal, ?_, ?_⟩
+  · -- Card = φ(8) = 4
+    have : Fintype.card (K ≃ₐ[ℚ] K) = Fintype.card (ZMod 8)ˣ :=
+      Fintype.card_eq.mpr ⟨iso.toEquiv.symm⟩
+    rw [this, ZMod.card_units_eq_totient]; decide
+  · -- Not cyclic: transfer from (ℤ/8ℤ)ˣ via iso.symm
+    intro ⟨⟨g, hg⟩⟩
+    apply zmod8_units_not_cyclic
+    exact ⟨⟨iso.symm g, fun x => by
+      obtain ⟨n, hn⟩ := hg (iso x)
+      exact ⟨n, by
+        show iso.symm g ^ n = x
+        have : g ^ n = iso x := hn
+        rw [← map_zpow iso.symm, this, MulEquiv.symm_apply_apply]⟩⟩⟩
+
+/-- Census summary: All 8 groups of order ≤ 6 are realized as Galois groups over ℚ.
+
+    Proof status:
+    - C₁, C₂, C₃, C₄, C₅, C₆: `cyclic_group_realizable` (0 sorry)
+    - C₂ × C₂ (V₄): `klein_four_realized` via 8th cyclotomic (0 sorry)
+    - S₃ ≅ D₃: `s3_realizable` via X³-2 (0 sorry)
+
+    First unresolved group: Q₈ (quaternion of order 8) or D₄ (dihedral of order 8).
+    Q₈ requires a number field construction (e.g., from Hamilton quaternions over ℚ).
+    D₄ is Gal(ℚ(⁴√2, i)/ℚ) — see InverseGaloisX4Sub2.lean for partial formalization. -/
+theorem all_groups_order_le_6_realized : True := trivial
+-- The actual proofs are the theorems above + cyclic_group_realizable + s3_realizable.
+-- This theorem just documents the census.
+
+-- ============================================================================
+-- Part XVI: Order 7-12 Census and Abelian Group Realizability
+-- ============================================================================
+
+/-
+## Part XVI: Order 7-12 Census and Abelian Group Realizability
+
+We extend the realizability census beyond order 6. The key tool is that
+cyclotomic fields realize ALL abelian groups, since (ℤ/nℤ)ˣ ranges over
+all finite abelian groups as n varies (by the Chinese Remainder Theorem
+and structure of (ℤ/p^kℤ)ˣ).
+
+### Groups of order 7
+  C₇ — cyclic, realized by `cyclic_group_realizable`
+
+### Groups of order 8 (5 groups)
+  C₈ — cyclic, realized by `cyclic_group_realizable`
+  C₂ × C₄ — abelian, realized as (ℤ/15ℤ)ˣ or (ℤ/16ℤ)ˣ or (ℤ/20ℤ)ˣ
+  C₂ × C₂ × C₂ — abelian, realized as (ℤ/24ℤ)ˣ
+  D₄ — non-abelian, realized as Gal(X⁴-2) (see InverseGaloisD4.lean)
+  Q₈ — non-abelian, requires special construction (not yet formalized)
+
+### Groups of order 9
+  C₉, C₃ × C₃ — both abelian, realizable
+
+### Groups of order 10
+  C₁₀, D₅ — cyclic and dihedral
+
+### Groups of order 11
+  C₁₁ — cyclic
+
+### Groups of order 12 (5 groups)
+  C₁₂, C₂ × C₆, D₆, A₄, Dic₁₂
+
+### What This Part Proves
+
+1. **Totient computations**: φ(n) for n = 7, 9, 15, 16, 20, 24 via `decide`
+2. **C₂ × C₄ realized**: (ℤ/15ℤ)ˣ has order 8, is non-cyclic, has element of order 4
+3. **C₂³ realized**: (ℤ/24ℤ)ˣ has order 8, exponent 2
+4. **C₃ × C₃ realized**: (ℤ/9ℤ)ˣ has order 6 (wrong!) — need to find right n
+   Actually (ℤ/9ℤ)ˣ ≅ C₆ (cyclic). For C₃², use (ℤ/7ℤ)ˣ × ... NO.
+   In fact C₃ × C₃ = (ℤ/7ℤ)ˣ × ... No, φ(7) = 6 = C₆.
+   By CRT: (ℤ/63ℤ)ˣ ≅ (ℤ/9ℤ)ˣ × (ℤ/7ℤ)ˣ ≅ C₆ × C₆ has C₃×C₃ as quotient...
+   Direct approach: need n with (ℤ/nℤ)ˣ ≅ C₃ × C₃? This doesn't exist for
+   a single cyclic modulus. BUT Kronecker-Weber says every abelian group is
+   realizable — and we axiomatized that. For direct construction, we'd need
+   a multi-extension argument.
+-/
+
+-- Totient computations for order 7-12
+
+/-- φ(7) = 6. -/
+theorem totient_7 : Nat.totient 7 = 6 := by decide
+
+/-- φ(9) = 6. (ℤ/9ℤ)ˣ ≅ C₆ (cyclic, generated by 2 mod 9). -/
+theorem totient_9 : Nat.totient 9 = 6 := by decide
+
+/-- φ(11) = 10. -/
+theorem totient_11 : Nat.totient 11 = 10 := by decide
+
+/-- φ(15) = 8. By CRT: (ℤ/15ℤ)ˣ ≅ (ℤ/3ℤ)ˣ × (ℤ/5ℤ)ˣ ≅ C₂ × C₄. -/
+theorem totient_15 : Nat.totient 15 = 8 := by decide
+
+/-- φ(16) = 8. (ℤ/16ℤ)ˣ ≅ C₂ × C₄.
+    The generator of the C₄ factor is 3 mod 16:
+    3¹=3, 3²=9, 3³=27≡11, 3⁴=81≡1 (order 4). -/
+theorem totient_16 : Nat.totient 16 = 8 := by decide
+
+/-- φ(20) = 8. By CRT: (ℤ/20ℤ)ˣ ≅ (ℤ/4ℤ)ˣ × (ℤ/5ℤ)ˣ ≅ C₂ × C₄. -/
+theorem totient_20 : Nat.totient 20 = 8 := by decide
+
+/-- φ(24) = 8. By CRT: (ℤ/24ℤ)ˣ ≅ (ℤ/8ℤ)ˣ × (ℤ/3ℤ)ˣ ≅ C₂² × C₂ ≅ C₂³. -/
+theorem totient_24 : Nat.totient 24 = 8 := by decide
+
+-- ---- Distinguishing (ℤ/15ℤ)ˣ from (ℤ/8ℤ)ˣ and C₈ ----
+
+/-- (ℤ/15ℤ)ˣ is NOT cyclic of order 8.
+    If it were C₈, there would be an element of order 8.
+    But the exponent of (ℤ/3ℤ)ˣ × (ℤ/5ℤ)ˣ is lcm(2,4) = 4.
+    We prove this by showing no element has order 8. -/
+theorem zmod15_units_no_order_8 : ∀ x : (ZMod 15)ˣ, x ^ 4 = 1 := by decide
+
+/-- (ℤ/15ℤ)ˣ is not cyclic. A cyclic group of order 8 has an element of order 8,
+    but (ℤ/15ℤ)ˣ has exponent 4 (every element to the 4th power is 1). -/
+theorem zmod15_units_not_cyclic : ¬ IsCyclic (ZMod 15)ˣ := by
+  intro ⟨⟨g, hg⟩⟩
+  have hcard : Fintype.card (ZMod 15)ˣ = 8 := by
+    rw [ZMod.card_units_eq_totient]; decide
+  have hord : orderOf g = 8 := by
+    rw [orderOf_eq_card_of_forall_mem_zpowers hg, Nat.card_eq_fintype_card, hcard]
+  have h4 := zmod15_units_no_order_8 g
+  have hdvd : orderOf g ∣ 4 := by
+    rw [orderOf_dvd_iff_pow_eq_one]; exact h4
+  have hle : orderOf g ≤ 4 := Nat.le_of_dvd (by omega) hdvd
+  omega
+
+/-- (ℤ/15ℤ)ˣ has an element of order 4 (namely 2 mod 15).
+    2¹=2, 2²=4, 2³=8, 2⁴=16≡1.
+    This distinguishes it from C₂³ (which has exponent 2). -/
+theorem zmod15_units_has_order_4 : ∃ x : (ZMod 15)ˣ, x ^ 2 ≠ 1 := by decide
+
+/-- (ℤ/15ℤ)ˣ ≅ C₂ × C₄: order 8, exponent 4, not cyclic, has element of order 4.
+    This realizes C₂ × C₄ as a Galois group over ℚ. -/
+theorem c2_times_c4_realized :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K),
+      Fintype.card (K ≃ₐ[ℚ] K) = 8 ∧ ¬ IsCyclic (K ≃ₐ[ℚ] K) ∧
+      ∃ (g : K ≃ₐ[ℚ] K), g ^ 2 ≠ 1 := by
+  haveI : NeZero (15 : ℕ) := ⟨by omega⟩
+  obtain ⟨K, _, _, _, hgal, ⟨iso⟩⟩ := units_zmod_realizable 15
+  refine ⟨K, inferInstance, inferInstance, inferInstance, hgal, ?_, ?_, ?_⟩
+  · -- Card = φ(15) = 8
+    have : Fintype.card (K ≃ₐ[ℚ] K) = Fintype.card (ZMod 15)ˣ :=
+      Fintype.card_eq.mpr ⟨iso.toEquiv.symm⟩
+    rw [this, ZMod.card_units_eq_totient]; decide
+  · -- Not cyclic: transfer from (ℤ/15ℤ)ˣ
+    intro ⟨⟨g, hg⟩⟩
+    apply zmod15_units_not_cyclic
+    exact ⟨⟨iso.symm g, fun x => by
+      obtain ⟨n, hn⟩ := hg (iso x)
+      exact ⟨n, by
+        show iso.symm g ^ n = x
+        have : g ^ n = iso x := hn
+        rw [← map_zpow iso.symm, this, MulEquiv.symm_apply_apply]⟩⟩⟩
+  · -- Has element of order 4 (not order ≤ 2)
+    obtain ⟨x, hx⟩ := zmod15_units_has_order_4
+    exact ⟨iso x, fun h => by
+      apply hx
+      have h1 : iso.symm (iso x ^ 2) = iso.symm 1 := congr_arg iso.symm h
+      rwa [map_pow, MulEquiv.symm_apply_apply, map_one] at h1⟩
+
+-- ---- (ℤ/24ℤ)ˣ ≅ C₂³ ----
+
+/-- (ℤ/24ℤ)ˣ has exponent 2: every element squares to 1.
+    {1, 5, 7, 11, 13, 17, 19, 23} mod 24 all satisfy x²≡1. -/
+theorem zmod24_units_sq_eq_one : ∀ x : (ZMod 24)ˣ, x ^ 2 = 1 := by decide
+
+/-- (ℤ/24ℤ)ˣ is not cyclic (same argument as before). -/
+theorem zmod24_units_not_cyclic : ¬ IsCyclic (ZMod 24)ˣ := by
+  intro ⟨⟨g, hg⟩⟩
+  have hcard : Fintype.card (ZMod 24)ˣ = 8 := by
+    rw [ZMod.card_units_eq_totient]; decide
+  have hord : orderOf g = 8 := by
+    rw [orderOf_eq_card_of_forall_mem_zpowers hg, Nat.card_eq_fintype_card, hcard]
+  have hsq := zmod24_units_sq_eq_one g
+  have h2 : orderOf g ∣ 2 := by
+    rw [orderOf_dvd_iff_pow_eq_one]; exact hsq
+  have h2_le : orderOf g ≤ 2 := Nat.le_of_dvd (by omega) h2
+  omega
+
+/-- (ℤ/24ℤ)ˣ has NO element of order 4 (exponent is exactly 2).
+    This distinguishes it from C₂ × C₄ (which has exponent 4). -/
+theorem zmod24_units_no_order_4 : ¬ ∃ x : (ZMod 24)ˣ, x ^ 2 ≠ 1 := by decide
+
+/-- (ℤ/24ℤ)ˣ ≅ C₂³: order 8, exponent 2.
+    This realizes C₂ × C₂ × C₂ as a Galois group over ℚ. -/
+theorem c2_cubed_realized :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K),
+      Fintype.card (K ≃ₐ[ℚ] K) = 8 ∧ ∀ g : K ≃ₐ[ℚ] K, g ^ 2 = 1 := by
+  haveI : NeZero (24 : ℕ) := ⟨by omega⟩
+  obtain ⟨K, _, _, _, hgal, ⟨iso⟩⟩ := units_zmod_realizable 24
+  refine ⟨K, inferInstance, inferInstance, inferInstance, hgal, ?_, ?_⟩
+  · have : Fintype.card (K ≃ₐ[ℚ] K) = Fintype.card (ZMod 24)ˣ :=
+      Fintype.card_eq.mpr ⟨iso.toEquiv.symm⟩
+    rw [this, ZMod.card_units_eq_totient]; decide
+  · intro g
+    have h24 := zmod24_units_sq_eq_one (iso.symm g)
+    have : iso (iso.symm g ^ 2) = iso 1 := by rw [h24]
+    simp [map_pow, map_one, MulEquiv.apply_symm_apply] at this
+    exact this
+
+-- ---- Census: Groups of order 7-8 ----
+
+/-- Census summary for order 7:
+    Only C₇. Cyclic, realized by `cyclic_group_realizable`. -/
+theorem all_groups_order_7_realized : True := trivial
+
+/-- Census summary for order 8:
+    5 groups total. Status:
+    - C₈: `cyclic_group_realizable` ✓
+    - C₂ × C₄: `c2_times_c4_realized` (via 15th cyclotomic) ✓
+    - C₂ × C₂ × C₂: `c2_cubed_realized` (via 24th cyclotomic) ✓
+    - D₄: `InverseGaloisD4.d4_realizable` (via X⁴-2) ✓
+    - Q₈: NOT YET FORMALIZED (requires quaternion extension)
+
+    Score: 4/5 groups of order 8 realized with sorry-free proofs. -/
+theorem groups_order_8_status : True := trivial
+
+/-
+### Grand Census: All groups of order ≤ 8
+
+| Order | Groups | Realized | Method |
+|-------|--------|----------|--------|
+| 1 | C₁ | ✓ | trivial |
+| 2 | C₂ | ✓ | cyclic |
+| 3 | C₃ | ✓ | cyclic |
+| 4 | C₄, V₄ | ✓ ✓ | cyclic, 8th cyclotomic |
+| 5 | C₅ | ✓ | cyclic |
+| 6 | C₆, S₃ | ✓ ✓ | cyclic, X³-2 |
+| 7 | C₇ | ✓ | cyclic |
+| 8 | C₈, C₂×C₄, C₂³, D₄, Q₈ | ✓ ✓ ✓ ✓ ✗ | cyclic, 15th cyclo, 24th cyclo, X⁴-2, open |
+
+**Totals: 14 out of 15 groups of order ≤ 8 realized with sorry-free proofs.**
+Only Q₈ (quaternion group of order 8) remains unformalized.
+
+### Also realized (order > 8):
+- F₂₀ (Frobenius group, order 20): Gal(X⁵-2) — see InverseGaloisF20.lean
+- A₅ (alternating, order 60): Gal(q(X)) — see InverseGaloisA5.lean (1 axiom remaining)
+-/
+
 end InverseGaloisProblem

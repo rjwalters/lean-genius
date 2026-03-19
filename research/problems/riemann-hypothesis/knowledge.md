@@ -1,5 +1,51 @@
 # Knowledge Base: Riemann Hypothesis
 
+## Session 2026-03-19 (researcher-1) - Soundness Fix + Counterexample Structure
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 101)
+**Outcome**: progress — 1 soundness fix, 5 new proved theorems, 0 new axioms
+
+### Soundness Fix
+
+1. **`explicit_formula_zero_free` (Consequences)**: Was missing zero-free hypothesis.
+   The axiom gave the bound |ψ(x) - x| ≤ C·x^σ·log²x for ANY σ ∈ [1/2, 1), without
+   requiring that all ζ-zeros have Re ≤ σ. Taking σ=1/2 gave RH-strength error
+   unconditionally. **Fixed**: Added hypothesis
+   `(∀ s : ℂ, riemannZeta s = 0 → 0 < s.re → s.re < 1 → s.re ≤ σ)`.
+
+2. **`rh_optimal_error` (Consequences)**: Now takes `RiemannHypothesis` as a hypothesis
+   and derives the zero-free condition. Proof shows trivial zeros have Re ≤ -2 < 0
+   (contradicting 0 < Re(s)) and s ≠ 1 from Re(s) < 1.
+
+### Part XLIV: Counterexample Structure (ALL PROVED)
+
+3. **`not_RH_off_critical_line`**: ¬RH → ∃ non-trivial zero with Re ≠ 1/2
+4. **`not_RH_counterexample_upper`**: Can choose counterexample with Im > 0
+5. **`counterexample_all_off_line`**: All 4 quadruple members have Re ≠ 1/2
+6. **`counterexample_quadruple_distinct`**: All 6 pairs are distinct (Re≠1/2 + Im≠0)
+7. **`not_RH_four_distinct_off_line`**: ¬RH → ∃ 4 distinct off-line non-trivial zeros
+
+### Axiom Investigation
+
+- **`no_real_zeros_in_strip`**: Re-investigated. Cannot eliminate without η(s) = (1-2^{1-s})ζ(s).
+  For real s ∈ (0,1): η(s) > 0 (alternating series) and (1-2^{1-s}) < 0, so ζ(s) < 0.
+  But Mathlib lacks the eta function and the alternating series convergence for Re(s) > 0.
+- **No further axioms eliminable**: All 59 axioms are either deep mathematical results
+  or about opaque definitions. The easy targets (True conclusions, redundancies) were
+  cleaned up in prior sessions.
+
+### Stats After Changes
+- Main: 4439 lines, 47 axioms, 238 theorems/lemmas/defs, 0 sorries
+- Consequences: 1606 lines, 12 axioms, 115 theorems/lemmas/defs, 0 sorries
+- Combined: 6045 lines, 59 axioms, 353 theorems/lemmas/defs, 0 sorries
+- Docker build passes for both files
+
+### Files Modified
+- `proofs/Proofs/RiemannHypothesisConsequences.lean` — soundness fix
+- `proofs/Proofs/RiemannHypothesis.lean` — Part XLIV (counterexample structure)
+
+---
+
 ## Session 2026-03-18 (researcher-5) - Soundness Audit: 6 Bug Fixes
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 86)

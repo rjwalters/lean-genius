@@ -4,6 +4,80 @@
 
 The Inverse Galois Problem (IGP) asks: for every finite group G, does there exist a Galois extension K/ℚ with Gal(K/ℚ) ≅ G?
 
+## Session 2026-03-19 (researcher-7) - Supporting Infrastructure for q_gal_card
+
+**Mode**: REVISIT (RICH knowledge score 62)
+**Outcome**: progress — 6 proved supporting lemmas for q_gal_card axiom elimination
+
+### What Was Done
+
+Added Part XII to InverseGaloisA5.lean: supporting infrastructure for the remaining axiom
+`q_gal_card : Fintype.card q.Gal = 60`. This axiom requires Dedekind's theorem and the
+discriminant-alternating group connection, neither of which are in Mathlib.
+
+### Proved Lemmas (all 0 sorries, Docker verified)
+
+1. `disc_value_is_square`: 32000² = 1024000000 (norm_num)
+2. `trinomial_disc_computation`: 4⁴·20⁵ + 5⁵·16⁴ = 1024000000 (norm_num)
+3. `q_root_mod7_at_5`: q(5) ≡ 0 mod 7 (decide)
+4. `q_root_mod7_at_6`: q(6) ≡ 0 mod 7 (decide)
+5. `cubic_factor_no_roots_mod7`: X³+6X²+4X+1 has no roots in F₇ (decide)
+6. `q_has_three_cycle_evidence`: two distinct roots of q exist in F₇
+
+### Documented Roadmap
+
+Three ingredients needed to eliminate q_gal_card:
+1. **Disc(q) is a perfect square** → Gal ⊆ A₅ (needs disc↔alternating connection)
+2. **q is irreducible** → 5 | |Gal| (ALREADY PROVED)
+3. **Mod-7 factorization pattern (1+1+3)** → 3 | |Gal| via Dedekind (needs Dedekind theorem)
+
+Combined: 3 | |Gal| and 5 | |Gal| and |Gal| | 60 forces |Gal| = 60.
+
+### Missing Mathlib Infrastructure (blocking)
+
+- Trinomial discriminant formula (not formalized)
+- Disc square ↔ Gal ⊆ Aₙ connection (not in Mathlib)
+- Dedekind's theorem: mod-p factorization → cycle types in Gal (not in Mathlib)
+
+### File Stats
+
+InverseGaloisA5.lean: 619 lines (was 521), 1 axiom, 0 sorries, Docker verified.
+
+---
+
+## Session 2026-03-18 (researcher-7) - Non-Cyclic Groups and Realizability Census
+
+**Mode**: REVISIT (RICH knowledge score 38)
+**Outcome**: progress — proved V₄ realizability, non-cyclicity of (ℤ/8ℤ)ˣ and (ℤ/12ℤ)ˣ
+
+### What I Did
+
+1. **Totient computations**: φ(n) for n = 2, 3, 4, 5, 6, 8, 10, 12 via `decide`
+2. **Exponent computations**: `zmod8_units_sq_eq_one` and `zmod12_units_sq_eq_one` — every element of (ℤ/8ℤ)ˣ and (ℤ/12ℤ)ˣ squares to 1 (by `decide`)
+3. **Non-cyclicity proofs**: `zmod8_units_not_cyclic` and `zmod12_units_not_cyclic` — if cyclic of order 4, generator would have order 4, but exponent ≤ 2 gives contradiction
+4. **Klein four-group realizability**: `klein_four_realized` — the 8th cyclotomic field has Galois group of order 4 that is NOT cyclic (hence C₂ × C₂), via `units_zmod_realizable 8`
+5. **Realizability census**: documented all 8 groups of order ≤ 6 as realized:
+   - C₁ through C₆: `cyclic_group_realizable`
+   - C₂ × C₂ (V₄): `klein_four_realized`
+   - S₃: `s3_realizable`
+
+### Key Insight
+
+The non-cyclicity proof pattern is clean: if G is cyclic with generator g, then orderOf g = |G|. But if we can show every element has order ≤ k < |G| (via `decide` on the finite group), we get a contradiction. For (ℤ/8ℤ)ˣ and (ℤ/12ℤ)ˣ, `decide` verifies g² = 1 for all g, so order ≤ 2 < 4 = |G|.
+
+### Files Modified
+
+- `proofs/Proofs/InverseGalois.lean` (1068 → ~1210 lines, Part XV added)
+- Docker build: clean (2 intentional sorries unchanged)
+
+### Next Steps
+
+- First unresolved non-abelian group: Q₈ (quaternion, order 8) — requires explicit number field construction
+- D₄ (dihedral, order 8) — partially formalized in InverseGaloisX4Sub2.lean (not yet integrated)
+- All groups of order ≤ 7 are now covered (7 is prime, C₇ is cyclic)
+- Order 8 has 5 groups: C₈ (done), C₄×C₂ (abelian axiom), C₂³ (abelian axiom), D₄ (partial), Q₈ (open)
+
+
 **Status**: OPEN in general. The full conjecture is unproven.
 
 ## Session 2026-03-18 (researcher-4) - Eliminate A₅ Axioms (6→2)

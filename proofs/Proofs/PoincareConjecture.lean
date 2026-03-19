@@ -254,7 +254,7 @@ theorem thurston_geometry_count : Fintype.card ThurstonGeometry = 8 := by
 
 /-- Geometrization Conjecture (Perelman 2003): Every closed 3-manifold decomposes
     into pieces each carrying one of Thurston's eight geometries. -/
-theorem thurston_geometrization (M : Type) [TopologicalSpace M] (hM : Closed3Manifold M) :
+theorem thurston_geometrization (M : Type) [TopologicalSpace M] (_hM : Closed3Manifold M) :
   ∃ (pieces : List (GeometricPiece M)), pieces.length ≥ 1 :=
   ⟨[⟨Set.univ, ThurstonGeometry.spherical⟩], by norm_num⟩
 
@@ -749,7 +749,7 @@ theorem sphere3_prime_factor_left (A B : Type) [TopologicalSpace A] [Topological
     as a connected sum of finitely many prime 3-manifolds, and this decomposition
     is unique up to order and homeomorphism (Milnor, 1962). -/
 theorem kneser_prime_decomposition (M : Type) [TopologicalSpace M]
-    (hM : Closed3Manifold M) :
+    (_hM : Closed3Manifold M) :
     ∃ (n : ℕ) (factors : Fin n → Type),
       (∀ i, ∃ (inst : TopologicalSpace (factors i)),
         ∃ (hcm : @Closed3Manifold (factors i) inst),
@@ -1500,7 +1500,7 @@ theorem lens_pi1_order (L : LensSpaceParams) : L.p ≥ 1 := L.hp
 /-- Necessary condition for lens space homeomorphism:
     L(p,q) ≅ L(p,q') requires q' ≡ ±q (mod p) or q'q ≡ ±1 (mod p). -/
 theorem lens_homeomorphism_necessary (L₁ L₂ : LensSpaceParams)
-    (hsamep : L₁.p = L₂.p) :
+    (_hsamep : L₁.p = L₂.p) :
     -- L₁ ≅ L₂ only if one of these conditions holds:
     (L₂.q % L₁.p = L₁.q % L₁.p) ∨
     (L₂.q % L₁.p = (-L₁.q) % L₁.p) ∨
@@ -2082,14 +2082,14 @@ theorem heegaard_characterization_S3 (M : Type) [TopologicalSpace M]
     exact waldhausen_genus0 M hM h hg
 
 /-- Lens spaces L(p,q) with p ≥ 2 have Heegaard genus 1 (two solid tori). -/
-theorem lens_heegaard_genus1 (L : LensSpaceParams) (hp : L.p ≥ 2) :
+theorem lens_heegaard_genus1 (L : LensSpaceParams) (_hp : L.p ≥ 2) :
     ∃ h : HeegaardSplitting Unit, h.genus = 1 :=
   ⟨⟨1, ⟨1⟩, ⟨1⟩, ⟨rfl, rfl⟩⟩, rfl⟩
 
 /-- Heegaard genus is additive under connected sum: g(M # N) = g(M) + g(N).
     This is a classical result in 3-manifold topology. -/
 theorem heegaard_genus_additive (M N : Type) [TopologicalSpace M] [TopologicalSpace N]
-    (hM : Closed3Manifold M) (hN : Closed3Manifold N)
+    (hM : Closed3Manifold M) (_hN : Closed3Manifold N)
     (sM : HeegaardSplitting M) (sN : HeegaardSplitting N) :
     ∃ (P : Type) (_ : TopologicalSpace P) (_ : Closed3Manifold P)
       (sP : HeegaardSplitting P), sP.genus = sM.genus + sN.genus :=
@@ -2164,7 +2164,7 @@ theorem genus1_classification :
     3-manifold become isotopic after a finite number of stabilizations
     (increasing the genus by 1). -/
 theorem reidemeister_singer (M : Type) [TopologicalSpace M]
-    (hM : Closed3Manifold M)
+    (_hM : Closed3Manifold M)
     (s1 s2 : HeegaardSplitting M) :
     ∃ (k1 k2 : ℕ), s1.genus + k1 = s2.genus + k2 :=
   ⟨s2.genus, s1.genus, by omega⟩
@@ -2242,11 +2242,6 @@ axiom instDehnSurgeryTop (M : Type) [TopologicalSpace M]
     (K : Knot M) (s : SurgerySlope) :
     TopologicalSpace (DehnSurgeryResult M K s)
 
-/-- Dehn surgery on a knot in a closed 3-manifold produces a closed 3-manifold. -/
-axiom dehn_surgery_closed (M : Type) [TopologicalSpace M]
-    (hM : Closed3Manifold M) (K : Knot M) (s : SurgerySlope) :
-    @Closed3Manifold (DehnSurgeryResult M K s) (instDehnSurgeryTop M K s)
-
 /-- Trivial surgery (slope ∞ = 1/0) gives back the original manifold. -/
 axiom dehn_surgery_trivial (M : Type) [TopologicalSpace M]
     (K : Knot M) :
@@ -2261,9 +2256,9 @@ axiom dehn_surgery_trivial (M : Type) [TopologicalSpace M]
     Combined with Kirby calculus, it reduces the classification of 3-manifolds
     to the study of links and their surgery descriptions. -/
 theorem lickorish_wallace (M : Type) [TopologicalSpace M]
-    (hM : Closed3Manifold M) :
-    ∃ (n : ℕ) (knots : Fin n → Knot (↥Sphere3))
-      (slopes : Fin n → SurgerySlope), True :=
+    (_hM : Closed3Manifold M) :
+    ∃ (n : ℕ) (_knots : Fin n → Knot (↥Sphere3))
+      (_slopes : Fin n → SurgerySlope), True :=
     -- Full statement: the result of successive surgeries is homeomorphic to M
     -- Simplified here; full version needs iterated surgery
     ⟨0, Fin.elim0, Fin.elim0, trivial⟩
@@ -3066,8 +3061,8 @@ axiom milnor_uniqueness (M : Type) [TopologicalSpace M]
     (hM : Closed3Manifold M) :
     ∀ (m n : ℕ) (P : Fin m → Type) (Q : Fin n → Type)
       [∀ i, TopologicalSpace (P i)] [∀ j, TopologicalSpace (Q j)]
-      (hP : ∀ i, ∃ h : @Closed3Manifold (P i) _, @IsPrime3Manifold (P i) _ h)
-      (hQ : ∀ j, ∃ h : @Closed3Manifold (Q j) _, @IsPrime3Manifold (Q j) _ h),
+      (_hP : ∀ i, ∃ h : @Closed3Manifold (P i) _, @IsPrime3Manifold (P i) _ h)
+      (_hQ : ∀ j, ∃ h : @Closed3Manifold (Q j) _, @IsPrime3Manifold (Q j) _ h),
     -- If both decompositions represent M, then m = n
     m = n
 
@@ -3166,8 +3161,8 @@ structure RicciFlowSolution (M : Type) [TopologicalSpace M] where
     the Ricci flow ∂g/∂t = -2 Ric(g) has a unique smooth solution
     for a short time t ∈ [0, ε) with g(0) = g₀. -/
 theorem hamilton_short_time_existence (M : Type) [TopologicalSpace M]
-    (hM : Closed3Manifold M) :
-    ∃ (sol : RicciFlowSolution M), True :=
+    (_hM : Closed3Manifold M) :
+    ∃ (_sol : RicciFlowSolution M), True :=
   ⟨⟨1, by norm_num, fun _ => 0, fun _ _ _ => ⟨0, by simp⟩⟩, trivial⟩
 
 /-- The scalar curvature satisfies a maximum principle under Ricci flow:
@@ -3189,7 +3184,7 @@ axiom scalar_curvature_max_principle (M : Type) [TopologicalSpace M]
 
     This was the first major application of Ricci flow to topology. -/
 theorem hamilton_sphere_theorem (M : Type) [TopologicalSpace M]
-    (hM : Closed3Manifold M) :
+    (_hM : Closed3Manifold M) :
     -- If M admits a metric with positive Ricci curvature...
     (∃ (sol : RicciFlowSolution M), sol.scalarCurvature 0 > 0) →
     -- ...then M is a spherical space form (quotient of S³)
@@ -3204,7 +3199,7 @@ theorem hamilton_sphere_theorem (M : Type) [TopologicalSpace M]
     positive Ricci curvature, then M ≅ S³. -/
 theorem positive_ricci_SC_is_S3 (M : Type) [TopologicalSpace M]
     (hM : Closed3Manifold M) (hsc : SimplyConnectedSpace M)
-    (hRic : ∃ (sol : RicciFlowSolution M), sol.scalarCurvature 0 > 0) :
+    (_hRic : ∃ (sol : RicciFlowSolution M), sol.scalarCurvature 0 > 0) :
     AreHomeomorphic M Sphere3 :=
   -- Direct from Poincaré (Hamilton gives an independent path for this case)
   poincare_conjecture_holds M hM hsc
@@ -3232,8 +3227,8 @@ structure PerelmanWEntropyData (M : Type) [TopologicalSpace M] where
     This prevents the geometry from becoming infinitely thin (collapsing)
     and is essential for taking limits of Ricci flow solutions. -/
 theorem perelman_no_local_collapsing (M : Type) [TopologicalSpace M]
-    (hM : Closed3Manifold M)
-    (sol : RicciFlowSolution M) :
+    (_hM : Closed3Manifold M)
+    (_sol : RicciFlowSolution M) :
     ∃ (κ : ℝ) (r₀ : ℝ), κ > 0 ∧ r₀ > 0 :=
   ⟨1, 1, by norm_num, by norm_num⟩
 
@@ -3292,8 +3287,8 @@ structure RicciFlowWithSurgery (M : Type) [TopologicalSpace M] where
     disappear. The surgery analysis shows the only topology compatible
     with this extinction is S³ (or a connected sum of S³'s, which is S³). -/
 theorem perelman_finite_extinction_detailed (M : Type) [TopologicalSpace M]
-    (hM : Closed3Manifold M) (hsc : SimplyConnectedSpace M) :
-    ∃ (rfs : RicciFlowWithSurgery M) (T : ℝ), T > 0 :=
+    (_hM : Closed3Manifold M) (_hsc : SimplyConnectedSpace M) :
+    ∃ (_rfs : RicciFlowWithSurgery M) (T : ℝ), T > 0 :=
   ⟨⟨0, Fin.elim0, fun i => Fin.elim0 i⟩, 1, by norm_num⟩
 
 /-- The complete proof of the Poincaré conjecture via Ricci flow:
@@ -3324,7 +3319,7 @@ theorem three_proofs_agree (M : Type) [TopologicalSpace M]
     -- All three characterizations hold simultaneously
     AreHomeomorphic M Sphere3 ∧
     (∃ h : HeegaardSplitting M, h.genus = 0) ∧
-    (∃ (rfs : RicciFlowWithSurgery M) (T : ℝ), T > 0) := by
+    (∃ (_rfs : RicciFlowWithSurgery M) (T : ℝ), T > 0) := by
   refine ⟨poincare_conjecture_holds M hM hsc, ?_, ?_⟩
   · exact poincare_implies_genus0 M hM hsc
   · exact perelman_finite_extinction_detailed M hM hsc
@@ -3512,7 +3507,7 @@ def simplicialVolumeT3 : SimplicialVolume3 :=
 
 /-- Only hyperbolic geometry gives positive simplicial volume. -/
 theorem gromov_norm_zero_non_hyperbolic (sv : SimplicialVolume3)
-    (h : sv.geometry ≠ ThurstonGeometry.hyperbolic) :
+    (_h : sv.geometry ≠ ThurstonGeometry.hyperbolic) :
     sv.gromovNorm = 0 ∨ True := Or.inr trivial
 -- Full version: sv.gromovNorm = 0, but requires integration of Gromov norm with geometry
 
@@ -3685,7 +3680,7 @@ theorem SC_atoroidal (M : Type) [TopologicalSpace M]
 /-- An atoroidal manifold has trivial JSJ decomposition: one piece, no cutting tori.
     (Note: the single piece can be BOTH Seifert and atoroidal, e.g., S³.) -/
 theorem atoroidal_trivial_jsj (M : Type) [TopologicalSpace M]
-    (hM : Closed3Manifold M) (hirr : IsIrreducible3Manifold M hM)
+    (hM : Closed3Manifold M) (_hirr : IsIrreducible3Manifold M hM)
     (_hator : IsAtoroidal M hM) :
     ∃ (pieces : Fin 1 → JSJPiece M),
       (pieces ⟨0, Nat.zero_lt_one⟩).pieceType = JSJPieceType.atoroidal :=
@@ -3716,14 +3711,14 @@ theorem full_decomposition_chain (M : Type) [TopologicalSpace M]
 /-- For a general irreducible 3-manifold, JSJ + geometrization assigns geometries. -/
 theorem jsj_implies_geometrization (M : Type) [TopologicalSpace M]
     (hM : Closed3Manifold M) (hirr : IsIrreducible3Manifold M hM) :
-    ∃ (n : ℕ) (pieces : Fin n → JSJPiece M) (_geoms : Fin n → ThurstonGeometry),
+    ∃ (n : ℕ) (_pieces : Fin n → JSJPiece M) (_geoms : Fin n → ThurstonGeometry),
       n ≥ 1 := by
   obtain ⟨n, pieces, hn, _⟩ := jsj_decomposition M hM hirr
   exact ⟨n, pieces, fun _ => ThurstonGeometry.spherical, hn⟩
 
 /-- JSJ is finer than prime decomposition: prime cuts along S², JSJ cuts along T². -/
 theorem jsj_refines_prime (M : Type) [TopologicalSpace M]
-    (hM : Closed3Manifold M) :
+    (_hM : Closed3Manifold M) :
     ∃ (nPrime : ℕ), nPrime ≥ 1 := ⟨1, by omega⟩
 
 /-- RP³ is a Seifert fibered space (Hopf fibration on S³ descends to RP³). -/
@@ -3762,8 +3757,8 @@ theorem knot_trichotomy_jsj : True := trivial
     STAGE 1 (Kneser-Milnor): Cut along S² into prime pieces
     STAGE 2 (JSJ): Cut along T² into geometric pieces -/
 theorem two_stage_paradigm (M : Type) [TopologicalSpace M]
-    (hM : Closed3Manifold M) :
-    (∃ n : ℕ, True) ∧ True := ⟨⟨1, trivial⟩, trivial⟩
+    (_hM : Closed3Manifold M) :
+    (∃ _n : ℕ, True) ∧ True := ⟨⟨1, trivial⟩, trivial⟩
 
 end JacoShalenJohannson
 
@@ -3781,7 +3776,7 @@ section GraphManifoldsThurstonNorm
 
 /-- A graph manifold is a 3-manifold whose JSJ pieces are all Seifert fibered. -/
 def IsGraphManifold (M : Type) [TopologicalSpace M]
-    (hM : Closed3Manifold M) (hirr : IsIrreducible3Manifold M hM) : Prop :=
+    (hM : Closed3Manifold M) (_hirr : IsIrreducible3Manifold M hM) : Prop :=
   ∃ (n : ℕ) (pieces : Fin n → JSJPiece M),
     ∀ i, (pieces i).pieceType = JSJPieceType.seifert
 
@@ -4549,7 +4544,7 @@ theorem cyclicRotation_continuous (p : ℕ) (q : ℤ) :
 
 /-- Applying the cyclic rotation p times gives a full 2π rotation,
     which is the identity. This is the key periodicity property. -/
-theorem cyclicRotation_period_identity (p : ℕ) (hp : p ≥ 1) (q : ℤ) :
+theorem cyclicRotation_period_identity (p : ℕ) (hp : p ≥ 1) (_q : ℤ) :
     -- After p applications, angle α = 2π/p becomes 2π (identity)
     -- and angle β = 2πq/p becomes 2πq (also identity)
     p * lensAngle1 p = 2 * Real.pi := by
@@ -4621,7 +4616,7 @@ theorem lens_nontrivial_pi1_criterion (L : LensSpaceParams) (hp : L.p ≥ 2) :
     This is because if ζ · (z₁,z₂) = (z₁,z₂) with ζ ≠ 1,
     then z₁ = ζ z₁ and z₂ = ζ^q z₂, so z₁ = z₂ = 0,
     contradicting |z₁|² + |z₂|² = 1. -/
-theorem cyclic_action_free (p : ℕ) (hp : p ≥ 2) (q : ℤ) :
+theorem cyclic_action_free (p : ℕ) (hp : p ≥ 2) (_q : ℤ) :
     -- For the generator (angle α = 2π/p with p ≥ 2):
     -- cos α ≠ 1 (since 0 < α < 2π), so the only fixed point would need x₀=x₁=0
     -- Similarly for the second block, x₂=x₃=0, contradicting ‖x‖=1
@@ -4800,14 +4795,14 @@ theorem pi1_nontrivial_of_multisheeted_covering (X : Type*) [TopologicalSpace X]
 /-- Euler characteristic multiplicativity: for a d-fold covering E → X,
     χ(E) = d · χ(X). Since all closed orientable 3-manifolds have χ = 0,
     this is trivially satisfied: 0 = d · 0. -/
-theorem euler_char_covering_multiplicativity (d : ℕ) (bBase bTotal : BettiNumbers3) :
+theorem euler_char_covering_multiplicativity (_d : ℕ) (bBase bTotal : BettiNumbers3) :
     eulerChar3 bBase = 0 ∧ eulerChar3 bTotal = 0 :=
   ⟨euler_char_closed_3mfd bBase, euler_char_closed_3mfd bTotal⟩
 
 /-- A simply connected closed 3-manifold cannot be a nontrivial quotient.
     If M ≅ S³ (by Poincaré), then the only covering of M is M itself. -/
 theorem sc_3mfd_is_own_universal_cover (M : Type) [TopologicalSpace M]
-    (hM : Closed3Manifold M) (hsc : SimplyConnectedSpace M)
+    (_hM : Closed3Manifold M) (hsc : SimplyConnectedSpace M)
     (cov : CoveringSpace M) (hconn : @ConnectedSpace cov.totalSpace cov.instTop) :
     Function.Bijective cov.projection :=
   sc_covering_bijective M hsc cov hconn
@@ -5000,13 +4995,18 @@ noncomputable def circleDouble (z : ↥Sphere1) : ↥Sphere1 :=
     Each coordinate of circleSquareE is a polynomial in the coordinates
     of x, hence continuous. The restriction to a subtype is then continuous. -/
 private theorem circleSquareE_continuous : Continuous circleSquareE := by
-  unfold circleSquareE
-  refine (PiLp.continuous_toLp (p := 2)).comp ?_
-  refine (continuous_pi fun i => ?_).comp PiLp.continuous_ofLp
-  fin_cases i <;> simp only [Function.comp, Fin.isValue]
-  · exact (continuous_id.pow 2 |>.comp (continuous_apply 0)).sub
-      (continuous_id.pow 2 |>.comp (continuous_apply 1))
-  · exact (continuous_const.mul (continuous_apply 0)).mul (continuous_apply 1)
+  -- Eta-expand so simp can see circleSquareE applied to an argument
+  show Continuous fun x : EuclideanSpace ℝ (Fin 2) => circleSquareE x
+  have h : ∀ x : EuclideanSpace ℝ (Fin 2),
+      circleSquareE x = (EuclideanSpace.equiv (Fin 2) ℝ).symm fun i =>
+        if i = 0 then x 0 ^ 2 - x 1 ^ 2 else 2 * x 0 * x 1 := fun _ => rfl
+  simp only [h]
+  have c : ∀ j, Continuous (fun x : EuclideanSpace ℝ (Fin 2) => x j) :=
+    fun j => (continuous_apply j).comp (EuclideanSpace.equiv (Fin 2) ℝ).continuous
+  refine (EuclideanSpace.equiv (Fin 2) ℝ).symm.continuous.comp (continuous_pi fun i => ?_)
+  fin_cases i
+  · exact (c 0 |>.pow 2).sub (c 1 |>.pow 2)
+  · exact (continuous_const.mul (c 0)).mul (c 1)
 
 theorem circleDouble_continuous : Continuous circleDouble := by
   apply Continuous.subtype_mk
@@ -5044,6 +5044,7 @@ theorem circleDouble_south :
   · change circleSquareE s1_south.val 1 = s1_north.val 1
     rw [circleSquareE_coord1]
     simp [s1_south, s1_north, EuclideanSpace.single_apply]
+
 
 /-- The circle doubling map is NOT injective: (1,0) ≠ (-1,0) but both map to (1,0). -/
 theorem circleDouble_not_injective : ¬ Function.Injective circleDouble := by
@@ -6029,6 +6030,7 @@ instance S1S2_pathConnected : @PathConnectedSpace S1_cross_S2 instS1S2Top where
     obtain ⟨p1⟩ := sphere1_pathConnected.joined x.1 y.1
     obtain ⟨p2⟩ := sphere2_pathConnected.joined x.2 y.2
     exact ⟨p1.prod p2⟩
+
 
 /-- The swap homeomorphism: S¹ × S² ≃ₜ S² × S¹.
     This bridges between our S1_cross_S2 definition and the product
