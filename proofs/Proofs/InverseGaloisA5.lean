@@ -325,7 +325,42 @@ axiom three_dvd_gal_card : 3 ∣ Fintype.card q.Gal
     order in S₅ is 6. Contradiction. -/
 theorem no_subgroup_order_15 (H : Subgroup (Equiv.Perm (Fin 5)))
     (hcard : Nat.card H = 15) : False := by
-  sorry
+  -- Setup
+  haveI : Finite H := Nat.finite_of_card_ne_zero (by rw [hcard]; norm_num)
+  haveI hft : Fintype H := Fintype.ofFinite H
+  have hcard_ft : Fintype.card H = 15 := by rwa [Nat.card_eq_fintype_card] at hcard
+  haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
+  haveI : Fact (Nat.Prime 3) := ⟨by norm_num⟩
+  -- Step 1: Cauchy — elements of order 5 and 3
+  obtain ⟨σ, hσ⟩ := exists_prime_orderOf_dvd_card (p := 5)
+    (show 5 ∣ Fintype.card H by rw [hcard_ft]; norm_num)
+  obtain ⟨τ, hτ⟩ := exists_prime_orderOf_dvd_card (p := 3)
+    (show 3 ∣ Fintype.card H by rw [hcard_ft]; norm_num)
+  -- Step 2: Transfer to Perm(Fin 5)
+  have hσ5 : (σ : Equiv.Perm (Fin 5)) ^ 5 = 1 := by
+    have : σ ^ 5 = (1 : ↥H) :=
+      calc σ ^ 5 = σ ^ orderOf σ := by congr 1; exact hσ.symm
+        _ = 1 := pow_orderOf_eq_one σ
+    simpa using congr_arg Subtype.val this
+  have hσ_ne : (σ : Equiv.Perm (Fin 5)) ≠ 1 := by
+    intro heq
+    exact absurd hσ (by rw [show σ = (1 : ↥H) from Subtype.ext heq, orderOf_one]; norm_num)
+  have hτ3 : (τ : Equiv.Perm (Fin 5)) ^ 3 = 1 := by
+    have : τ ^ 3 = (1 : ↥H) :=
+      calc τ ^ 3 = τ ^ orderOf τ := by congr 1; exact hτ.symm
+        _ = 1 := pow_orderOf_eq_one τ
+    simpa using congr_arg Subtype.val this
+  have hτ_ne : (τ : Equiv.Perm (Fin 5)) ≠ 1 := by
+    intro heq
+    exact absurd hτ (by rw [show τ = (1 : ↥H) from Subtype.ext heq, orderOf_one]; norm_num)
+  -- Step 3: They don't commute (native_decide), but they must (Sylow theory)
+  exact perm_fin5_order5_order3_not_commute _ _ hσ5 hσ_ne hτ3 hτ_ne (by
+    -- Step 4: Sylow theory proves σ and τ commute in H
+    -- Both Sylow subgroups are unique (n₅ = 1, n₃ = 1), hence normal.
+    -- Elements of disjoint normal subgroups commute.
+    -- The proof uses: Cauchy, Sylow counting, normality, zpowers ≤ Sylow,
+    -- disjointness (coprime orders), commutator argument.
+    sorry)
 
 /-- No subgroup of S₅ has order 30.
 
