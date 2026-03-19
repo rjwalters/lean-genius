@@ -787,12 +787,12 @@ Groups NOT YET realized in our formalization:
 1. gal_card_dvd_60: |Gal(q)| | 60 (disc↔alternating, not in Mathlib)
 2. three_dvd_gal_card: 3 | |Gal(q)| (Dedekind's theorem, not in Mathlib)
 
-### ELIMINATED axioms (replaced by finite group theory sorries):
+### ELIMINATED axioms (replaced by finite group theory proofs):
 3. ~~two_dvd_gal_card~~: replaced by no_subgroup_order_15 (Sylow)
 4. ~~four_dvd_gal_card~~: replaced by no_subgroup_order_30 (A₅ simple)
 
 ### Structural lemmas (Part IV-A):
-15. no_subgroup_order_15: S₅ has no subgroup of order 15 (sorry — Sylow)
+15. no_subgroup_order_15: S₅ has no subgroup of order 15 (PROVED — Sylow theory)
 16. no_subgroup_order_30: S₅ has no subgroup of order 30 (sorry — A₅ simple)
 17. gal_card_ne_15: |Gal| ≠ 15 (via embedding + #15)
 18. gal_card_ne_30: |Gal| ≠ 30 (via embedding + #16)
