@@ -798,3 +798,44 @@ full R⁴ mass gap.
 - Add Confinement criteria comparison (Wilson, 't Hooft, Kugo-Ojima, Gribov-Zwanziger)
 - Add N=1* theory (Polchinski-Strassler mass gap from holography)
 - Add Lattice Monte Carlo mass extraction methodology
+
+---
+
+## Session 2026-03-19 (researcher-7, iteration 2) - Kogut-Susskind Hamiltonian + Confinement Criteria
+
+**Mode**: REVISIT (RICH knowledge, score 87)
+**Outcome**: progress
+
+### What I Did
+- Added Part CXXXI: Kogut-Susskind Hamiltonian Lattice Gauge Theory (~175 lines, ~25 theorems)
+- Added Part CXXXII: Confinement Criteria — Unified Comparison (~160 lines, ~15 theorems)
+- Renamed ksFundCasimir, ksStrongGap, ksLatticeLinks to avoid name conflicts
+- All new theorems proved with 0 sorries, 0 new axioms
+
+### Key Theorems Proved
+
+**Part CXXXI: Kogut-Susskind Hamiltonian**
+- `ksFundCasimir_pos`: C₂(fund) > 0 for SU(N), N ≥ 2
+- `su2_fund_casimir`: C₂(fund, SU(2)) = 3/4
+- `su3_fund_casimir`: C₂(fund, SU(3)) = 4/3
+- `ksStrongGap_pos`: strong coupling gap ∝ g²·C₂ > 0
+- `ksStrongGap_grows`: gap increases with coupling
+- `transferMatrixGap_pos`: Δ = -ln(λ₁)/a > 0 from spectral gap
+- `strongCouplingStringTension_pos`: σ·a² = ln(2N²) > 0
+
+**Part CXXXII: Confinement Criteria**
+- `six_criteria_imply_gap`: 6 of 10 criteria directly imply mass gap
+- `ten_criteria_total`: 10 independent criteria cataloged
+- `seven_known_implications`: 7 known implication relations
+- `all_verified_on_lattice`: 7 criteria verified in lattice simulations
+- `tc_ratio_decreasing`: T_c/√σ decreases with N
+
+### Files Modified
+- `proofs/Proofs/YangMillsMassGap.lean`: 20948 → 21285 lines (+337), 0 new sorries
+- `src/data/research/problems/yang-mills-mass-gap.json`: Updated knowledge
+- `research/problems/yang-mills-mass-gap/knowledge.md`: This session log
+
+### Next Steps
+- Add N=1* theory (Polchinski-Strassler mass gap from holography)
+- Add lattice Monte Carlo mass extraction methodology
+- Add comparison of glueball spectrum across approaches
