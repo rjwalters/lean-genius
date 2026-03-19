@@ -45,6 +45,16 @@ over ℚ, covering abelian, solvable non-abelian, and non-solvable cases.
 set_option linter.unusedVariables false
 set_option linter.unusedSimpArgs false
 
+-- === Computational lemma (BEFORE `open scoped Classical` for native_decide) ===
+
+/-- No element of order 5 commutes with any element of order 3 in S₅.
+    Reformulated without `orderOf` (noncomputable): σ^5=1 ∧ σ≠1 means order 5,
+    τ^3=1 ∧ τ≠1 means order 3. Verified over all 14400 pairs. -/
+theorem perm_fin5_order5_order3_not_commute :
+    ∀ (σ τ : Equiv.Perm (Fin 5)),
+      σ ^ 5 = 1 → σ ≠ 1 → τ ^ 3 = 1 → τ ≠ 1 → σ * τ ≠ τ * σ := by
+  native_decide
+
 open scoped Classical
 
 namespace InverseGaloisA5
