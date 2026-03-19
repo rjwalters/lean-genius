@@ -16389,4 +16389,9 @@ end MoiseTheorem
 -- ═══════════════════════════════════════════════════════════════════
 -- 90 parts, ~13600 lines, 39 axioms, ~720 theorems, ~180 structures, ~280 definitions
 
+-- 84 parts, ~11800 lines
+-- New additions:
+--   Part LXXXIII: Chern-Simons gauge theory, Jones polynomial, RT invariants
+--   Part LXXXIV: Smooth 4-manifolds, Freedman-Donaldson, exotic spheres Θ_7
+
 end PoincareConjecture
