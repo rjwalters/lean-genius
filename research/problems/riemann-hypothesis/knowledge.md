@@ -1,5 +1,51 @@
 # Knowledge Base: Riemann Hypothesis
 
+## Session 2026-03-19 (researcher-7) - Li's Criterion + K₁₀ Equivalence Network
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 23)
+**Outcome**: progress — 26 new proved theorems, 1 new axiom, 0 new sorries
+
+### Part XLVIII: Li's Criterion and K₁₀
+
+Added Li's criterion (Li 1997) as a 10th equivalent formulation of RH, extending
+the equivalence network from K₉ (36 edges) to K₁₀ (45 edges).
+
+**Li's criterion**: RH ↔ λₙ ≥ 0 for all n ≥ 1, where λₙ = Σ_ρ [1 - (1 - 1/ρ)ⁿ]
+summed over non-trivial zeros of ζ.
+
+1. **`liConstant`** (opaque): Li coefficients λₙ
+2. **`LiPositivity`** (def): ∀ n ≥ 1, λₙ ≥ 0
+3. **`RH_iff_LiPositivity`** (axiom): RH ↔ LiPositivity — the sole new axiom
+4. **9 cross-equivalences** (PROVED): Li ↔ {Robin, Lagarias, Mertens, PrimeCounting,
+   deBruijnNewman, WeilPositivity, Speiser, Connes, NymanBeurling}
+5. **`GRH_implies_everything_K10`** (PROVED): GRH → all 10 formulations + Lindelöf
+6. **`simultaneous_failure_K10`** (PROVED): ¬RH → all 10 fail
+7. **`not_Li_four_off_line`** (PROVED): ¬LiPositivity → 4 distinct off-line zeros
+8. **`single_negative_Li_disproves_all`** (PROVED): ∃ n ≥ 1 with λₙ < 0 → all 10 fail
+9. **`KeiperConjecture`** (def): strict positivity + monotonicity of Li coefficients
+10. **`keiper_implies_rh`** (PROVED): Keiper → Li → RH
+11. **`bombieri_lagarias_generalization`** (PROVED): individual Li-type criteria for each L-function
+12. **`complete_rh_landscape_K10`** (PROVED): full forward+backward picture
+
+### Formulations span 5 branches of mathematics:
+1. Analytic: Robin, Mertens, PrimeCounting
+2. Algebraic: Lagarias
+3. Spectral: deBruijnNewman, Speiser
+4. Geometric: WeilPositivity, ConnesPositivity
+5. Coefficient-theoretic: LiPositivity
+
+### Stats After Changes
+- Main: 5772 lines, 64 axioms (was 63), 340 theorems/defs (was 314), 0 sorries
+- Consequences: 1671 lines, 12 axioms, 120 theorems/defs, 0 sorries
+- Combined: 7443 lines, 76 axioms, 460 theorems/defs, 0 sorries
+- Docker build passes for main file
+
+### Files Modified
+- `proofs/Proofs/RiemannHypothesis.lean` — Part XLVIII (Li's criterion, K₁₀ network)
+- `src/data/proofs/riemann-hypothesis/meta.json` — updated stats and sections
+
+---
+
 ## Session 2026-03-19 (researcher-7) - Soundness Fixes + GRH Comprehensive Consequences
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 16)
