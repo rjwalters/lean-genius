@@ -3778,11 +3778,11 @@ theorem no_odd_map_sphere (n : ℕ) (hn : 1 ≤ n)
     BU applied to F̃ gives x₀ ∈ S^{n+1} with F̃(x₀) = F̃(-x₀) = g(-x₀) = -g(x₀).
     So g(x₀) = -g(x₀), hence g(x₀) = 0, contradicting ‖g(x₀)‖ = 1.
 
-    The `sorry` below is for the Lean-technical continuity proof of the
-    radial extension (a standard analysis construction). The mathematical
-    argument is complete: pasting is continuous on S^{n+1} (both branches are
-    continuous, agree on the closed equator), and the radial extension preserves
-    continuity (standard for cone constructions). -/
+    The continuity proof uses three cases: at points with x_last > 0 or < 0,
+    F agrees with one branch in a neighborhood (composition of continuous
+    functions); at the equator (x_last = 0), both branches converge to the
+    same limit since r fixes S^n points; at the origin, a squeeze argument
+    bounds |F(x)| ≤ ‖x‖ → 0. -/
 theorem bu_implies_no_retraction (n : ℕ) (hn : 1 ≤ n)
     (r : (Fin (n+1) → ℝ) → (Fin (n+1) → ℝ))
     (hr_cont : Continuous r)
@@ -3921,18 +3921,135 @@ theorem bu_implies_no_retraction (n : ℕ) (hn : 1 ≤ n)
   --
   -- This is a standard radial cone extension argument from analysis.
   -- The mathematical argument for BU → No-Retraction is complete
-  -- (sphere condition + oddness proved above); this sorry is purely
-  -- for the Lean-technical pasting/squeeze continuity proof.
+  -- (sphere condition + oddness proved above); the continuity proof
+  -- uses case analysis + squeeze at origin + composition away from origin.
   have hF_cont : Continuous F := by
-    -- Each branch is continuous on ℝ^{n+2}:
-    -- • At x ≠ 0: s > 0, so yn = projInit/s is continuous, r is continuous,
-    --   product s · r(yn) is continuous by composition.
-    -- • At x = 0: |branch(x)_j| ≤ s(x) · |r(...)_j| ≤ s(x) → 0 = branch(0)_j,
-    --   so ContinuousAt by squeeze_zero_norm.
-    -- The branches agree on {lastCoord = 0} (proved informally in the outline above).
-    -- The piecewise of two continuous functions agreeing on a closed hyperplane
-    -- is continuous by the pasting lemma (Continuous.if' or continuous_piecewise).
-    sorry
+    -- ===== Infrastructure =====
+    -- s (the Euclidean norm) is continuous
+    have hs_cont : Continuous s :=
+      continuous_sqrt.comp (continuous_finset_sum _ fun i _ => (continuous_apply i).pow 2)
+    have hs_nonneg : ∀ x, 0 ≤ s x := fun x => Real.sqrt_nonneg _
+    have hs_zero : s 0 = 0 := by
+      show Real.sqrt (∑ i : Fin (n+2), (0 : Fin (n+2) → ℝ) i ^ 2) = 0
+      simp [Pi.zero_apply, Finset.sum_const_zero, Real.sqrt_zero]
+    have hs_pos : ∀ (a : Fin (n+2) → ℝ), a ≠ 0 → 0 < s a := by
+      intro a ha
+      have ⟨i, hi⟩ : ∃ i, a i ≠ 0 := by
+        by_contra hall; push_neg at hall; exact ha (funext hall)
+      exact Real.sqrt_pos_of_pos (Finset.sum_pos' (fun k _ => sq_nonneg (a k))
+        ⟨i, Finset.mem_univ i, by positivity⟩)
+    -- yn is ContinuousAt at any a ≠ 0
+    have hyn_ca : ∀ (a : Fin (n+2) → ℝ), a ≠ 0 → ContinuousAt yn a := by
+      intro a ha; apply continuousAt_pi.mpr; intro i
+      exact (continuous_apply (Fin.castSucc i)).continuousAt.div
+        hs_cont.continuousAt (ne_of_gt (hs_pos a ha))
+    -- Upper branch ContinuousAt at a ≠ 0
+    have hU_ca : ∀ (j : Fin (n+1)) (a : Fin (n+2) → ℝ), a ≠ 0 →
+        ContinuousAt (fun x => s x * r (yn x) j) a := fun j a ha =>
+      hs_cont.continuousAt.mul
+        ((continuous_apply j).continuousAt.comp (hr_cont.continuousAt.comp (hyn_ca a ha)))
+    -- Lower branch ContinuousAt at a ≠ 0
+    have hL_ca : ∀ (j : Fin (n+1)) (a : Fin (n+2) → ℝ), a ≠ 0 →
+        ContinuousAt (fun x => -(s x * r (fun i => -(yn x i)) j)) a := by
+      intro j a ha
+      have hyn_neg : ContinuousAt (fun x => fun i => -(yn x i)) a :=
+        continuousAt_pi.mpr (fun i => (continuousAt_pi.mp (hyn_ca a ha) i).neg)
+      exact (hs_cont.continuousAt.mul
+        ((continuous_apply j).continuousAt.comp (hr_cont.continuousAt.comp hyn_neg))).neg
+    -- Norm bounds: each branch is bounded by s(x)
+    have hU_bnd : ∀ (j : Fin (n+1)) (x : Fin (n+2) → ℝ),
+        ‖s x * r (yn x) j‖ ≤ s x := by
+      intro j x
+      rw [Real.norm_eq_abs, abs_mul, abs_of_nonneg (hs_nonneg x)]
+      calc s x * |r (yn x) j| ≤ s x * 1 :=
+            mul_le_mul_of_nonneg_left (hr_bound _ j) (hs_nonneg x)
+        _ = s x := mul_one _
+    have hL_bnd : ∀ (j : Fin (n+1)) (x : Fin (n+2) → ℝ),
+        ‖-(s x * r (fun i => -(yn x i)) j)‖ ≤ s x := by
+      intro j x
+      rw [norm_neg, Real.norm_eq_abs, abs_mul, abs_of_nonneg (hs_nonneg x)]
+      calc s x * |r (fun i => -(yn x i)) j| ≤ s x * 1 :=
+            mul_le_mul_of_nonneg_left (hr_bound _ j) (hs_nonneg x)
+        _ = s x := mul_one _
+    -- Helper: if both branches tend to L, piecewise tends to L
+    have tendsto_if_eq : ∀ {f₁ f₂ : (Fin (n+2) → ℝ) → ℝ} {p : (Fin (n+2) → ℝ) → Prop}
+        [DecidablePred p] {a : Fin (n+2) → ℝ} {L : ℝ},
+        Filter.Tendsto f₁ (𝓝 a) (𝓝 L) → Filter.Tendsto f₂ (𝓝 a) (𝓝 L) →
+        Filter.Tendsto (fun x => if p x then f₁ x else f₂ x) (𝓝 a) (𝓝 L) := by
+      intro f₁ f₂ p _ a L h₁ h₂ U hU
+      exact (Filter.inter_mem (h₁ hU) (h₂ hU)).mono fun x ⟨hx₁, hx₂⟩ => by
+        split_ifs <;> assumption
+    -- Tendsto upper to 0 at origin (squeeze)
+    have hU_lim0 : ∀ j, Filter.Tendsto (fun x => s x * r (yn x) j) (𝓝 0) (𝓝 0) := by
+      intro j; apply squeeze_zero_norm
+      · exact Filter.Eventually.of_forall (hU_bnd j)
+      · rw [← hs_zero]; exact hs_cont.continuousAt.tendsto
+    -- Tendsto lower to 0 at origin (squeeze)
+    have hL_lim0 : ∀ j, Filter.Tendsto
+        (fun x => -(s x * r (fun i => -(yn x i)) j)) (𝓝 0) (𝓝 0) := by
+      intro j; apply squeeze_zero_norm
+      · exact Filter.Eventually.of_forall (hL_bnd j)
+      · rw [← hs_zero]; exact hs_cont.continuousAt.tendsto
+    -- ===== Main proof: component-wise continuity =====
+    apply continuous_pi; intro j
+    rw [continuous_iff_continuousAt]; intro a
+    by_cases hpos : 0 < a (Fin.last (n+1))
+    · -- Case 1: a_last > 0. F = upper branch in an open neighborhood.
+      have ha : a ≠ 0 := by intro h; subst h; simp [Pi.zero_apply] at hpos
+      have hU_nhd : {x : Fin (n+2) → ℝ | 0 < x (Fin.last (n+1))} ∈ 𝓝 a :=
+        ((continuous_apply _).isOpen_preimage _ isOpen_Ioi).mem_nhds hpos
+      exact (hU_ca j a ha).congr
+        (Filter.eventually_of_mem hU_nhd fun x (hx : 0 < x _) => by
+          show s x * r (yn x) j =
+            if 0 ≤ x (Fin.last (n+1)) then s x * r (yn x) j
+            else -(s x * r (fun i => -(yn x i)) j)
+          rw [if_pos (le_of_lt hx)])
+    · push_neg at hpos  -- hpos : a (Fin.last (n+1)) ≤ 0
+      by_cases hneg : a (Fin.last (n+1)) < 0
+      · -- Case 2: a_last < 0. F = lower branch in an open neighborhood.
+        have ha : a ≠ 0 := by intro h; subst h; simp [Pi.zero_apply] at hneg
+        have hU_nhd : {x : Fin (n+2) → ℝ | x (Fin.last (n+1)) < 0} ∈ 𝓝 a :=
+          ((continuous_apply _).isOpen_preimage _ isOpen_Iio).mem_nhds hneg
+        exact (hL_ca j a ha).congr
+          (Filter.eventually_of_mem hU_nhd fun x (hx : x _ < 0) => by
+            show -(s x * r (fun i => -(yn x i)) j) =
+              if 0 ≤ x (Fin.last (n+1)) then s x * r (yn x) j
+              else -(s x * r (fun i => -(yn x i)) j)
+            rw [if_neg (not_le.mpr hx)])
+      · -- Case 3: a_last = 0. Both branches converge to the same limit.
+        push_neg at hneg  -- hneg : 0 ≤ a (Fin.last (n+1))
+        have ha_eq : a (Fin.last (n+1)) = 0 := le_antisymm hpos hneg
+        -- F(a)_j = upper(a) since 0 ≤ 0
+        rw [show (fun x => if 0 ≤ x (Fin.last (n+1)) then s x * r (yn x) j
+              else -(s x * r (fun i => -(yn x i)) j)) a = s a * r (yn a) j from by
+          rw [show (0 : ℝ) ≤ a (Fin.last (n+1)) from by linarith]; simp]
+        by_cases ha : a = 0
+        · -- Sub-case 3a: a = 0. Both squeeze to 0.
+          subst ha
+          rw [show s 0 * r (yn 0) j = 0 from by rw [hs_zero]; ring]
+          exact tendsto_if_eq (hU_lim0 j) (hL_lim0 j)
+        · -- Sub-case 3b: a ≠ 0, a_last = 0. Equator.
+          -- yn(a) ∈ S^n since a_last = 0 and ||a|| > 0
+          have hs_ne : s a ≠ 0 := ne_of_gt (hs_pos a ha)
+          have hyn_sq : ∑ i : Fin (n+1), (yn a i) ^ 2 = 1 := by
+            show ∑ i, (a (Fin.castSucc i) / s a) ^ 2 = 1
+            simp only [div_pow]; rw [Finset.sum_div]
+            have hsplit := fin_sum_split n (fun i => a i ^ 2)
+            have hs_sq := Real.sq_sqrt (Finset.sum_nonneg fun i _ => sq_nonneg (a i))
+            rw [show ∑ i : Fin (n+1), a (Fin.castSucc i) ^ 2 = s a ^ 2 from by
+              nlinarith [show a (Fin.last (n+1)) ^ 2 = 0 from by rw [ha_eq]; ring]]
+            exact div_self (pow_ne_zero 2 hs_ne)
+          have hyn_neg_sq : ∑ i : Fin (n+1), (-(yn a i)) ^ 2 = 1 := by
+            simp [neg_sq]; exact hyn_sq
+          -- Lower branch at a equals upper branch at a
+          have hLU : -(s a * r (fun i => -(yn a i)) j) = s a * r (yn a) j := by
+            rw [show r (fun i => -(yn a i)) j = -(yn a j) from
+                congr_fun (hr_fixes ⟨fun i => -(yn a i), hyn_neg_sq⟩) j,
+              show r (yn a) j = yn a j from
+                congr_fun (hr_fixes ⟨yn a, hyn_sq⟩) j]
+            ring
+          exact tendsto_if_eq (hU_ca j a ha).tendsto
+            (by rw [← hLU]; exact (hL_ca j a ha).tendsto)
 
   exact no_odd_map_sphere (n+1) (by omega) F hF_cont hF_sphere hF_odd
 
@@ -3951,24 +4068,17 @@ borsuk_ulam_general ──→ no_retraction (Section LXV)
 The proof uses `borsuk_ulam_general` for S^{n+1} (one dimension higher than
 the retraction domain), so the universal quantification over all n ≥ 1 is essential.
 
-**Remaining sorry**: The `bu_implies_no_retraction` proof has 1 sorry for the
-continuity of the hemisphere extension (the radially-scaled pasting map).
-The proof structure is:
-1. Define F̃ = hemisphere pasting scaled by ‖x‖ (DONE)
-2. Prove F̃ maps S^{n+1} to S^n (DONE: split on sign of lastCoord)
-3. Prove F̃ is odd on S^{n+1} (DONE: case split with equator agreement via hr_fixes)
-4. Prove F̃ is continuous (SORRY: pasting + squeeze at origin)
-5. Apply no_odd_map_sphere (DONE)
+**Sorries**: 0. All continuity arguments are now formalized.
 
-The continuity proof requires:
-  (a) Each branch (s·r(yn) and -(s·r(-yn))) is continuous on ℝ^{n+2}:
-      at x ≠ 0 by composition (s > 0), at x = 0 by squeeze (|branch| ≤ s → 0).
-  (b) Branches agree on {lastCoord = 0} (proved informally, would use hr_fixes).
-  (c) Pasting lemma for closed half-spaces (standard topology result).
+The continuity proof for `bu_implies_no_retraction` uses:
+  (a) At a_last > 0: F = upper branch in open neighborhood (composition)
+  (b) At a_last < 0: F = lower branch in open neighborhood (composition)
+  (c) At a_last = 0: Both branches converge to same limit (r fixes S^n)
+  (d) At origin: Squeeze argument (|F(x)| ≤ ‖x‖ → 0)
 
 **Mathematical completeness**:
 - `no_odd_map_sphere`: FULLY PROVED (BU → no odd S^n → S^{n-1})
-- `bu_implies_no_retraction`: sphere + oddness PROVED, 1 sorry (continuity)
+- `bu_implies_no_retraction`: FULLY PROVED (BU → no retraction B^n → S^{n-1})
 - `brouwer_fp_iff_no_retraction`: FULLY PROVED (Section LXIII)
 - `bu_implies_ls_sketch`: sketch only (partition of unity, same as before)
 -/
