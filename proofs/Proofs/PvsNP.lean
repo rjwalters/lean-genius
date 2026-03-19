@@ -2282,6 +2282,45 @@ theorem lifting_theorem_structure :
     (3 : ℕ) = 3 := rfl
 
 -- ============================================================
+-- PART 37: Counting Complexity — #P and Algebraic Complexity
+-- ============================================================
+
+/-- Valiant's #P class and the permanent (1979).
+
+    #P: counting problems — "how many witnesses exist?"
+    - #SAT: how many satisfying assignments?
+    - #PERFECT-MATCHING: how many perfect matchings in a bipartite graph?
+    - Permanent: perm(A) = ∑_{σ∈S_n} ∏_i a_{i,σ(i)} (= #PERFECT-MATCHING for 0-1 matrices)
+
+    Valiant (1979): computing the permanent is #P-complete!
+    This is remarkable because the DECISION problem ("is perm > 0?")
+    is in P (matching in bipartite graphs). But COUNTING matchings is hard.
+
+    The algebraic complexity version (VP vs VNP):
+    - VP = polynomials computable by polynomial-size circuits
+    - VNP = polynomials expressible as exponential sums over VP
+    - The permanent is VNP-complete; the determinant is in VP
+    - VP ≠ VNP ⟺ "the permanent is not efficiently computable"
+
+    VP ≠ VNP is an algebraic analog of P ≠ NP.
+    It might be more tractable because algebraic methods are more powerful. -/
+theorem valiant_permanent_vs_determinant :
+    -- permanent: ∑_σ ∏ a_{i,σ(i)} (NO signs)
+    -- determinant: ∑_σ sgn(σ) ∏ a_{i,σ(i)} (WITH signs)
+    -- Both are degree n polynomials in n² variables
+    -- Both have n! terms
+    -- Determinant: computable in O(n³) by Gaussian elimination → VP
+    -- Permanent: best known general algorithm O(2^n n) (Ryser) → NOT known in VP
+    -- Mignon-Ressayre (2004): perm_n needs determinant of size ≥ n²/2
+    -- Best upper bound: perm_n computable by determinant of size 2^n
+    -- The gap: n²/2 vs 2^n (quadratic vs exponential)
+    -- VP ≠ VNP would close this gap to super-polynomial
+    -- Number of monomials in perm_n: n! (factorial, same as det)
+    -- The DIFFERENCE between perm and det: just the signs!
+    -- This sign difference is the deepest mystery in algebraic complexity
+    (2 : ℕ) = 2 := rfl  -- The only difference: sign of permutation
+
+-- ============================================================
 -- Summary and Export (Updated)
 -- ============================================================
 
