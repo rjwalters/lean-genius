@@ -182,7 +182,7 @@ structure ClosedManifold (n : ℕ) (M : Type*) [TopologicalSpace M] : Prop where
   connected : ConnectedSpace M
   nonempty : Nonempty M
   locallyEuclidean : ∀ x : M, ∃ U : Set M, IsOpen U ∧ x ∈ U ∧
-    ∃ (_e : U ≃ₜ EuclideanSpace ℝ (Fin n)), True
+    Nonempty (U ≃ₜ EuclideanSpace ℝ (Fin n))
 
 abbrev Closed3Manifold (M : Type*) [TopologicalSpace M] := ClosedManifold 3 M
 
@@ -542,7 +542,7 @@ private lemma sphere_ne_neg (x : ↥(Metric.sphere (0 : EuclideanSpace ℝ (Fin 
     orthonormal basis for the orthogonal complement, to get a homeomorphism from a
     neighborhood of x onto R³. -/
 theorem sphere3_locally_euclidean : ∀ x : ↥Sphere3, ∃ U : Set ↥Sphere3, IsOpen U ∧ x ∈ U ∧
-    ∃ (_e : U ≃ₜ EuclideanSpace ℝ (Fin 3)), True := by
+    Nonempty (U ≃ₜ EuclideanSpace ℝ (Fin 3)) := by
   intro x
   have hneg : ‖-(x : EuclideanSpace ℝ (Fin 4))‖ = 1 := by
     rw [norm_neg]; exact mem_sphere_zero_iff_norm.mp x.2
@@ -557,8 +557,8 @@ theorem sphere3_locally_euclidean : ∀ x : ↥Sphere3, ∃ U : Set ↥Sphere3, 
       simp only [chart, sphereChartToR3, OpenPartialHomeomorph.transHomeomorph_target]
       rw [stereographic_target]
       simp
-    refine ⟨chart.toHomeomorphSourceTarget.trans ?_, trivial⟩
-    exact Homeomorph.setCongr htarget |>.trans (Homeomorph.Set.univ _)
+    exact ⟨chart.toHomeomorphSourceTarget.trans
+      (Homeomorph.setCongr htarget |>.trans (Homeomorph.Set.univ _))⟩
 
 /-- S³ is a closed 3-manifold: compact, connected, nonempty, and locally Euclidean. -/
 theorem sphere3_closedManifold : Closed3Manifold (↥Sphere3) :=
@@ -2601,7 +2601,7 @@ instance instRP3Top : TopologicalSpace RP3 := by
     (the antipodal action is free), but requires etale map theory. -/
 axiom rp3_locallyEuclidean :
     ∀ x : RP3, ∃ U : Set RP3, @IsOpen RP3 instRP3Top U ∧ x ∈ U ∧
-      ∃ (_e : U ≃ₜ EuclideanSpace ℝ (Fin 3)), True
+      Nonempty (U ≃ₜ EuclideanSpace ℝ (Fin 3))
 
 /-- RP³ is a closed 3-manifold.
     Compact, connected, and nonempty are proved from quotient instances.
