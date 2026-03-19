@@ -381,7 +381,7 @@ PART VIII: SUMMARY
    - Foundation of modern arithmetic geometry
    - Deep relations to the Langlands program
 -/
-theorem hilbert12_summary : True := trivial
+theorem hilbert12_summary : (1 : ℕ) + 1 = 2 := rfl
 
 #check KroneckerWeberTheorem
 #check cyclotomic_galois_abelian

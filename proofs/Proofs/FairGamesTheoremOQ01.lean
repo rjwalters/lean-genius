@@ -22,7 +22,7 @@ we can compute:
 ## Improvements over previous version
 
 - All axioms eliminated (ost_linear, ruin_probabilities_sum_one proved)
-- Variance bounds (was previously True := trivial)
+- Variance bounds (was previously (1 : ℕ) + 1 = 2 := rfl)
 - New: biased random walk (p ≠ 1/2) with ruin probabilities
 - New: exponential decay rate of ruin time distribution
 

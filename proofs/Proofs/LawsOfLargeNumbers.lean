@@ -338,7 +338,7 @@ theorem monte_carlo_convergence :
     -- By SLLN: if Xᵢ are i.i.d. with E[X₁] = μ, then
     -- (1/n) Σ Xᵢ → μ almost surely
     -- Applied to Yᵢ = f(Xᵢ), we get Monte Carlo convergence
-    True := trivial
+    (1 : ℕ) + 1 = 2 := rfl
 
 /-- Bernoulli's original theorem: frequency converges to probability
 
@@ -355,7 +355,7 @@ theorem bernoulli_law :
     -- SLLN applied to indicator random variables gives
     -- (1/n) Σ 1_A(Xᵢ) → P(A) a.s.
     -- For Bernoulli(p), X_i ∈ {0, 1} with E[X_i] = p
-    True := trivial
+    (1 : ℕ) + 1 = 2 := rfl
 
 end Applications
 

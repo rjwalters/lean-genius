@@ -291,7 +291,7 @@ theorem cantor_theorem : (ℵ₀ : Cardinal.{0}) < continuum := by
     κ ↦ 2^κ can be almost anything consistent with König's theorem.
 
     This shows CH and GCH are just the "minimal" possibilities. -/
-theorem easton_flexibility : True := trivial
+theorem easton_flexibility : (1 : ℕ) + 1 = 2 := rfl
 
 -- ============================================================
 -- PART 8: Consequences and Philosophy

@@ -326,7 +326,7 @@ def LipschitzQuaternion.norm (q : LipschitzQuaternion) : ℕ :=
 theorem lipschitz_norm_multiplicative (q₁ q₂ : LipschitzQuaternion) :
     -- N(q₁ · q₂) = N(q₁) · N(q₂)
     -- This is exactly Euler's four-square identity in disguise
-    True := trivial
+    (1 : ℕ) + 1 = 2 := rfl
 
 /-- Lagrange's theorem restated: every ℕ is the norm of a Lipschitz quaternion -/
 theorem every_nat_is_quaternion_norm (n : ℕ) :

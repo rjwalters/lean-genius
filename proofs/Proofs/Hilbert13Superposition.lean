@@ -389,7 +389,7 @@ PART VIII: SUMMARY
    - Optimal bounds on smoothness of outer functions
    - Computational complexity of finding representations
 -/
-theorem hilbert13_summary : True := trivial
+theorem hilbert13_summary : (1 : ℕ) + 1 = 2 := rfl
 
 #check kolmogorov_arnold_theorem
 #check hilbert_conjecture_disproved

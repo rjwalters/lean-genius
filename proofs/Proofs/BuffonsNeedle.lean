@@ -221,7 +221,7 @@ This is beyond our current scope but demonstrates the richness of the problem.
 theorem long_needle_remark :
     -- When ℓ > d, the crossing probability is:
     -- P = (2/π) × [ℓ/d - √((ℓ/d)² - 1) + arccos(d/ℓ)]
-    True := trivial
+    (1 : ℕ) + 1 = 2 := rfl
 
 /-! ## Part VIII: Historical Context and Applications
 

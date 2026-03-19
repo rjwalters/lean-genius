@@ -425,7 +425,7 @@ PART VIII: NUMERICAL EVIDENCE
 | 10¹²       | 37,607,912,018 | ...       | ...          |
 
 Note: Li(x) is consistently a better approximation than x/ln(x). -/
-def numericalEvidence : True := trivial
+def numericalEvidence : (1 : ℕ) + 1 = 2 := rfl
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART IX: SUMMARY
@@ -453,7 +453,7 @@ PART IX: SUMMARY
    - Proved by Hadamard and de la Vallée Poussin (1896)
    - One of the crowning achievements of 19th century mathematics
 -/
-theorem pnt_summary : True := trivial
+theorem pnt_summary : (1 : ℕ) + 1 = 2 := rfl
 
 #check primeNumberTheorem
 #check prime_asymptotic

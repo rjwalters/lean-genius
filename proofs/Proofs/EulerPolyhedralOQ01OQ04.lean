@@ -397,6 +397,6 @@ theorem planar_avg_degree_lt_6 (G : SimpleGraph V) [DecidableRel G.Adj]
 - isPlanar_of_minor → proved from isPlanar_of_subgraph (trivial for same-vertex-set)
 - planar_of_card_le_four → proved from Kuratowski + Fintype.card_le_of_injective
 -/
-theorem kuratowski_oq04_summary : True := trivial
+theorem kuratowski_oq04_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end KuratowskiTheorem

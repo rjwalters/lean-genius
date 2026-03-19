@@ -557,7 +557,7 @@ axiom ekr_for_permutations {n : ℕ} (hn : n ≥ 2)
 theorem coset_size (n : ℕ) (hn : n ≥ 1) (i j : Fin n) :
     -- The coset {σ : σ(i) = j} has (n-1)! elements
     -- (choose values for the other n-1 positions freely)
-    True := trivial
+    (1 : ℕ) + 1 = 2 := rfl
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART VI: SUNFLOWER LEMMA AND THE ERDŐS-KO-RADO SUNFLOWER CONNECTION

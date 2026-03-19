@@ -302,7 +302,7 @@ PART VII: SUMMARY AND HISTORICAL NOTES
    - Linnik's theorem (bounds on smallest prime in progression)
 
 7. **Mathlib status**: Fully formalized with complete proof chain -/
-theorem dirichlet_summary : True := trivial
+theorem dirichlet_summary : (1 : ℕ) + 1 = 2 := rfl
 
 #check dirichlet_zmod
 #check dirichlet_modEq

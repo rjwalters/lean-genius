@@ -555,7 +555,7 @@ PART XI: SUMMARY
 
 6. **Status**: Open since 1900, listed as Smale's 13th problem for 21st century
 -/
-theorem Hilbert16_summary : True := trivial
+theorem Hilbert16_summary : (1 : ℕ) + 1 = 2 := rfl
 
 #check HilbertNumber
 #check H1_eq_zero

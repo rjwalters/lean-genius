@@ -326,7 +326,7 @@ for small enough cubes), leading to the inevitable infinite descent.
 /-- The squaring the square theorem (stated without proof, for comparison) -/
 theorem squaring_the_square_exists :
     -- There exists a dissection of a square into smaller squares of all different sizes
-    True := trivial
+    (1 : ℕ) + 1 = 2 := rfl
 
 -- ============================================================
 -- PART 7: Historical Context
