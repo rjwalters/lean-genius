@@ -4285,6 +4285,17 @@ theorem bu_implies_no_retraction (n : ℕ) (hn : 1 ≤ n)
         exact Filter.mem_of_superset (Filter.inter_mem h1 h2) fun x ⟨hx1, hx2⟩ => by
           simp only [Set.mem_preimage] at hx1 hx2 ⊢
           split_ifs <;> assumption
+
+    -- For each component j, we have a piecewise scalar function
+    -- bounded by normSqrt, which vanishes at 0.
+    -- Both branches are continuous on {normSqrt > 0} and bounded → 0 at origin.
+    -- The branches agree when x_{n+1} = 0.
+    sorry -- TODO: apply continuous_piecewise or ContinuousAt case analysis
+    -- Proof sketch (verified mathematically, needs Lean formalization):
+    -- (a) ContinuousAt at x₀ with x₀_{n+1} > 0: g = branch1 in open nbhd, branch1 is cts
+    -- (b) ContinuousAt at x₀ with x₀_{n+1} < 0: g = branch2 in open nbhd, branch2 is cts
+    -- (c) ContinuousAt at x₀ with x₀_{n+1} = 0, x₀ ≠ 0: branches agree + both cts
+    -- (d) ContinuousAt at 0: |g(x)_j| ≤ normSqrt(x) → 0 (squeeze via radialBranch*_bound)
   -- Apply BU for S^{n+1}
   have hBU := borsuk_ulam_general (n+1) (by omega) g hg_cont
   obtain ⟨x₀, hx₀⟩ := hBU
@@ -4385,6 +4396,21 @@ All 4 axioms declared, 3 are now theorems. **0 sorries remaining!**
   (b) x₀_{n+1} < 0: g = branch2 in open neighborhood
   (c) x₀_{n+1} = 0: filter argument using both branches → same limit
   (d) x₀ = 0: squeeze via bounds + normSqrt → 0
+
+**Grand total**: ~4300 lines, ~200 declarations, 4 axioms (1 independent),
+1 sorry (piecewise continuity of radial extension in bu_implies_no_retraction).
+
+**Remaining work**:
+- Prove component-wise continuity of the piecewise radial extension (the 1 sorry).
+  Infrastructure is now in place:
+  - `radialBranch1_bound`, `radialBranch2_bound`: ‖branch_j(x)‖ ≤ normSqrt(x)
+  - `radial_branches_agree_on_equator`: branches match when x_{n+1} = 0
+  - `continuous_normSqrt`: normSqrt is continuous with normSqrt(0) = 0
+  - Proof strategy: ContinuousAt at each point via 4-case analysis
+    (a) x₀_{n+1} > 0: g = branch1 in open nbhd
+    (b) x₀_{n+1} < 0: g = branch2 in open nbhd
+    (c) x₀_{n+1} = 0, x₀ ≠ 0: branches agree + both cts
+    (d) x₀ = 0: squeeze via bounds + normSqrt → 0
 -/
 theorem bu_session_7_summary : True := trivial
 
