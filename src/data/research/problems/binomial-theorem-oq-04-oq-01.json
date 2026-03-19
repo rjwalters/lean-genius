@@ -29,9 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED - 299 lines, 0 sorries, 0 axioms.",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Fully proved, 0 sorries. ? lines.",
+    "builtItems": [
+      "Lean formalization complete"
+    ],
+    "insights": [
+      "Proof verified: 0 sorries via grep",
+      "Lean file exists and compiles",
+      "Ready for gallery publication"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# binomial-theorem-oq-04-oq-01: Combinatorial Vandermonde via Explicit Bijection\n\n## Problem Summary\n\n**Open Question**: Can Vandermonde's identity C(m+n,r) = Σ C(m,k)·C(n,r-k) be proved\ncombinatorially via an explicit bijection on Finsets, rather than through the algebraic\nNat.add_choose_eq route?\n\n**Answer**: YES. Proved via explicit split-merge bijection.\n\n**Status**: COMPLETED - 299 lines, 0 sorries, 0 axioms.\n\n## Session 2026-03-18 - Full Proof\n\n**Mode**: FRESH\n**Outcome**: completed\n\n### Approach: Split-Merge Bijection\n\nThe key idea: partition r-element subsets of {0,...,m+n-1} by how many elements\nfall below threshold m.\n\n**Forward map (split)**: S ↦ (lowPart m S, highPart m S)\n- lowPart: S ∩ {0,...,m-1}\n- highPart: (S ∩ {m,...,m+n-1}).image (· - m)\n\n**Inverse map (merge)**: (A, B) ↦ A ∪ B.image (· + m)\n\n**Main proof structure**:\n1. Show split and merge are inverses (round-trip properties)\n2. Define `fiber m n r k` = {S ∈ powersetCard r (range (m+n)) | |lowPart m S| = k}\n3. Show fibers are pairwise disjoint and cover all of powersetCard\n4. Show each fiber has size C(m,k)·C(n,r-k) via card_bij\n5. Sum via card_biUnion to get Vandermonde\n\n### Lean 4 Technical Notes\n\n- `omega` cannot beta-reduce `(fun x => x - m) a` to `a - m`; need explicit coercion\n- `card_biUnion` expects `PairwiseDisjoint` (not explicit ∀∀∀ quantifiers)\n- Use `card_image_of_injOn` for subtraction (not globally injective)\n- Use `biUnion + card_biUnion` instead of `sum_card_fiberwise` (may not exist)\n\n### Files Created\n\n- `proofs/Proofs/BinomialTheoremOQ04OQ01.lean` (299 lines, 0 sorries, 0 axioms)\n"
