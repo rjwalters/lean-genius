@@ -55,6 +55,15 @@ theorem perm_fin5_order5_order3_not_commute :
       σ ^ 5 = 1 → σ ≠ 1 → τ ^ 3 = 1 → τ ≠ 1 → σ * τ ≠ τ * σ := by
   native_decide
 
+/-- No element of S₅ has order exactly 15.
+    Equivalently: if σ^15 = 1, then σ^5 = 1 or σ^3 = 1.
+    (Max element order in S₅ is 6, so orders ∈ {1,2,3,4,5,6}.
+    Divisors of 15 in this set: {1,3,5}. If σ^15=1, orderOf σ | 15,
+    so orderOf σ ∈ {1,3,5}, hence σ^5=1 or σ^3=1.) -/
+theorem perm_fin5_no_order_15 :
+    ∀ σ : Equiv.Perm (Fin 5), σ ^ 15 = 1 → σ ^ 5 = 1 ∨ σ ^ 3 = 1 := by
+  native_decide
+
 open scoped Classical
 
 namespace InverseGaloisA5
