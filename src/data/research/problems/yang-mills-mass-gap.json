@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Parts CXXX-CXXXII (Loop Equations, RMT, Scale Setting) \u2014 +406 lines, 44 theorems, 0 sorries",
+    "progressSummary": "PROGRESS: Added Parts CXXXIII-CXXXV (Vacuum Wavefunctional, Confinement Criteria, Millennium Prize Statement) \u2014 +319 lines, 29 theorems, 0 sorries",
     "builtItems": [
       "Part C: OS Axioms - transfer matrix, Schwinger functions, spectral gap, Euclidean propagator (~30 theorems)",
       "Part CI: Resurgence - beta function, running coupling, renormalons, instanton factors, bions (~25 theorems)",
@@ -57,7 +57,10 @@
       "Part CXXIX: 't Hooft Model (QCD2) \u2014 exact meson spectrum m\u00b2_n=\u03c0\u03bb(n+1), Regge slope, string tension duality (~170 lines, 16 theorems)",
       "Part CXXX: Migdal-Makeenko Loop Equations \u2014 Wilson loop area law, large-N factorization, master field, Nambu-Goto action, Eguchi-Kawai (~130 lines, 16 theorems)",
       "Part CXXXI: Random Matrix Theory \u2014 Dyson classification, level repulsion, Wigner semicircle, Banks-Casher, Tracy-Widom (~130 lines, 15 theorems)",
-      "Part CXXXII: Scale Setting \u2014 Sommer r\u2080, Wilson flow t\u2080/w\u2080, physical mass gap 1710 MeV, universality, large-N stability (~145 lines, 13 theorems)"
+      "Part CXXXII: Scale Setting \u2014 Sommer r\u2080, Wilson flow t\u2080/w\u2080, physical mass gap 1710 MeV, universality, large-N stability (~145 lines, 13 theorems)",
+      "Part CXXXIII: Vacuum Wavefunctional \u2014 perturbative vs massive kernel, spectral gap, Gribov strong-coupling ansatz (~135 lines, 11 theorems)",
+      "Part CXXXIV: Confinement Criteria Summary \u2014 Wilson, Kugo-Ojima, center symmetry, dual superconductor, Casimir\u2192N-ality (~110 lines, 10 theorems)",
+      "Part CXXXV: Millennium Prize Statement \u2014 Jaffe-Witten formulation, three requirements, current status (~75 lines, 8 theorems)"
     ],
     "insights": [
       "OS axioms (5) provide Euclidean formulation; reconstruction gives Wightman QFT",
@@ -109,7 +112,11 @@
       "Eguchi-Kawai reduction: single plaquette at N=\u221e captures full volume dynamics",
       "GUE spacing ratio 0.60 >> Poisson 0.39: spectral rigidity implies structured mass spectrum",
       "Physical mass gap: m\u2080\u207a\u207a = 1710(50)(80) MeV, above proton mass (938 MeV)",
-      "m\u2080/\u221a\u03c3 = 3.55(12) varies < 1% across SU(3)-SU(8): mass gap is universal in N"
+      "m\u2080/\u221a\u03c3 = 3.55(12) varies < 1% across SU(3)-SU(8): mass gap is universal in N",
+      "Perturbative kernel K=1/(2|p|) \u2192 gapless; massive kernel K=1/(2\u221a(p\u00b2+m\u00b2)) \u2192 mass gap m",
+      "Gribov strong-coupling: \u03a8\u2080 ~ exp(-\u03c3\u222b|A|) \u2014 linear (not quadratic) in |A| signals confinement",
+      "Millennium Prize requires ALL THREE: existence + OS axioms + mass gap \u2014 no partial result suffices",
+      "2D YM fully solved (Driver-Sengupta-Levy); 3D and 4D remain completely open"
     ],
     "mathlibGaps": [
       "Principal bundles",
