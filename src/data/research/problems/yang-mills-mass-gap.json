@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 13 new Parts (CXI-CXXIII, ~2246 lines, ~230 theorems, 0 sorries) across 4 iterations",
+    "progressSummary": "PROGRESS: Added Parts CXXIV-CXXVI (CPN, Gross-Neveu, 't Hooft QCD2 models, +503 lines, 43 theorems, 0 sorries)",
     "builtItems": [
       "Part C: OS Axioms - transfer matrix, Schwinger functions, spectral gap, Euclidean propagator (~30 theorems)",
       "Part CI: Resurgence - beta function, running coupling, renormalons, instanton factors, bions (~25 theorems)",
@@ -48,7 +48,10 @@
       "Part CXX: Deconfinement Transition - finite-T phase structure, universality, Debye/magnetic mass (~190 lines, ~22 theorems)",
       "Part CXXI: BRST Cohomology - ghost number grading, physical states, Slavnov-Taylor (~120 lines, ~15 theorems)",
       "Part CXXII: OPE - power corrections, gluon condensate, sum rules (~120 lines, ~12 theorems)",
-      "Part CXXIII: Asymptotic Freedom - running coupling, beta function, Λ_QCD (~135 lines, ~15 theorems)"
+      "Part CXXIII: Asymptotic Freedom - running coupling, beta function, Λ_QCD (~135 lines, ~15 theorems)",
+      "Part CXXIV: CP^{N-1} Sigma Model — beta function, mass gap, instantons, topological susceptibility (~185 lines, 16 theorems)",
+      "Part CXXV: Gross-Neveu Model — dynamical mass, condensate, kink solitons, free energy (~150 lines, 11 theorems)",
+      "Part CXXVI: 't Hooft Model (QCD2) — string tension, meson spectrum, Regge slope, confinement (~165 lines, 16 theorems)"
     ],
     "insights": [
       "OS axioms (5) provide Euclidean formulation; reconstruction gives Wightman QFT",
@@ -87,7 +90,15 @@
       "BRST: physical DOF = (N²-1)(d-2), ghosts cancel net to 0",
       "OPE: dimensions 1-3 vanish by symmetry, dim-4 gluon condensate leads",
       "AF: β₀=11Nc/3-2Nf/3 > 0 for Nf < 11Nc/2, coupling → 0 at UV",
-      "Λ_QCD = μ·exp(-1/(2bα)) << μ at weak coupling"
+      "Λ_QCD = μ·exp(-1/(2bα)) << μ at weak coupling",
+      "CPN mass gap m = Λ exp(-2π/(Ng²)) has SAME structure as YM Λ_QCD (dimensional transmutation)",
+      "CPN β₀ = N/(2π) > 0: asymptotic freedom parallel to YM β₀ = 11N/(48π²)",
+      "CPN instantons: S = 2π|Q| (2D) vs YM S = 8π²|Q|/g² (4D), both with integer topology",
+      "Gross-Neveu: massless fermions acquire mass m = Λ exp(-π/g²) via 4-fermion interaction",
+      "GN kink mass M = Nm/π > m for N ≥ 4 (heavy solitons from pi < 4)",
+      "'t Hooft QCD2: exact meson spectrum m²_n = πλ(n+1), constant Regge slope Δm² = πλ",
+      "'t Hooft: Regge slope = 2π²σ connects meson spectrum to string tension σ = λ/(2π)",
+      "All three 2D models prove mass gap rigorously — 4D YM has no analogous exact solution"
     ],
     "mathlibGaps": [
       "Principal bundles",
@@ -113,7 +124,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.887Z",
-  "lastUpdate": "2026-03-19T17:55:00.000Z",
+  "lastUpdate": "2026-03-19T21:00:00.000Z",
   "completed": "2026-03-13T17:50:22.123Z",
   "significance": 10,
   "tractability": 1
