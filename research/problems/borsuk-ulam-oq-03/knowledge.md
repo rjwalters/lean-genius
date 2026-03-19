@@ -6,7 +6,7 @@
 (without full classical logic)? What is the constructive status of
 higher-dimensional Borsuk-Ulam?
 
-**Status**: 168 proved theorems, 4 axioms (2 independent), 0 sorries (3730 lines).
+**Status**: 111 proved theorems, 4 axioms, 0 sorries (2237 lines).
 
 **Answer**:
 - 1D: YES, proved via IVT on antisymmetric difference
@@ -182,49 +182,3 @@ Added 5 new sections (XLII-XLVI) with 17 new proved theorems:
 ### Next Steps
 - Prove continuity of ray-sphere retraction (the main remaining gap)
 - Fix merge conflicts in file (other researchers' code)
-
-## Session 2026-03-19 (researcher-3) - Continuity Proof Complete
-
-**Mode**: REVISIT (RICH knowledge from 4 prior sessions)
-**Outcome**: progress (major milestone - axiom reduction)
-
-### What I Did
-
-**Section LXVI: Continuity Infrastructure for the Retraction**
-- `nsq_nonneg'`: Non-negativity of norm squared (utility)
-- `ballProj`: Continuous projection onto closed unit ball: x ↦ x/max(1,|x|) (DEFINED)
-- `ballProj_denom_pos`: max(1,√(nsq x)) is always positive (PROVED)
-- `ballProj_in_ball`: ballProj maps every point into the closed unit ball (PROVED)
-- `ballProj_ball_fix`: ballProj fixes points already in the ball (PROVED)
-- `continuous_ballProj`: ballProj is continuous (PROVED - trivial from max formulation)
-- `continuous_raySphereT_comp`: raySphereT is continuous when composed with continuous
-  functions and nsq(d)>0 everywhere (PROVED)
-
-**Theorem completion: no_retraction_implies_brouwer_general**
-- Refactored to use `ballProj` instead of piecewise `if-then-else` projection
-- Added complete continuity chain: proj → f∘proj → proj-f∘proj → raySphereT → r
-- **Filled the sorry**: `Continuous r` now proved via `continuous_pi` + composition
-- **Result**: 0 sorries remaining (was 1)
-- **Axiom reduction**: brouwer_fixed_point is now provable from no_retraction
-- **Effective axiom count**: 2 independent (borsuk_ulam_general + no_retraction)
-
-### Key Findings
-- The max formulation `x/max(1,|x|)` completely avoids piecewise continuity analysis
-- `Continuous.div` in Lean 4 handles f/g when g is continuous and everywhere nonzero
-- The retraction's continuity decomposes cleanly: each component a_i + t·d_i is
-  a sum of products of continuous scalar and vector-component functions
-- `continuous_raySphereT_comp` as a standalone helper makes the proof modular
-
-### Files Modified
-- `proofs/Proofs/BorsukUlamOQ03.lean` (3662 → 3730 lines, +68 lines net)
-  - 7 new proved results (5 ballProj lemmas + 1 raySphereT continuity + 1 summary)
-  - 1 sorry eliminated (continuity of retraction)
-  - Refactored no_retraction_implies_brouwer_general to use ballProj
-
-### Stats
-- **Total**: 3730 lines, 168 theorems, 4 axioms (2 independent), 0 sorries
-
-### Next Steps
-- Prove BU → no_retraction via degree theory (reduces axioms 2→1)
-- Add explicit witness that brouwer_fixed_point axiom is redundant
-- Clean up: remove the brouwer_fixed_point axiom since it's now a theorem
