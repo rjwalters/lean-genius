@@ -17034,7 +17034,7 @@ theorem kkn_su2_range :
   unfold kknPrediction_su2
   constructor
   · rw [div_lt_div_iff (by norm_num) Real.pi_pos]
-    calc (3 : ℝ) * Real.pi < 3 * 3.1416 := by nlinarith [Real.pi_lt_3141593]
+    calc (3 : ℝ) * Real.pi < 3 * 3.1416 := by nlinarith [pi_lt_3141593]
     _ = 9.4248 := by norm_num
     _ < 10 := by norm_num
   · rw [div_lt_div_iff Real.pi_pos (by norm_num)]
@@ -19633,20 +19633,20 @@ theorem coupling_decreases_af (α₀ b t : ℝ) (hα : α₀ > 0) (hb : b > 0) (
 
 /-- Λ_QCD from dimensional transmutation:
     Λ = μ · exp(-1/(2b·α(μ²))). -/
-noncomputable def lambdaQCD (μ α₀ b : ℝ) : ℝ :=
+noncomputable def lambdaQCD_af (μ α₀ b : ℝ) : ℝ :=
   μ * Real.exp (-1 / (2 * b * α₀))
 
 /-- Λ_QCD is positive. -/
 theorem lambdaQCD_pos_af (μ α₀ b : ℝ) (hμ : μ > 0) :
-    lambdaQCD μ α₀ b > 0 := by
-  unfold lambdaQCD
+    lambdaQCD_af μ α₀ b > 0 := by
+  unfold lambdaQCD_af
   exact mul_pos hμ (Real.exp_pos _)
 
 /-- Λ_QCD is much smaller than μ (exponentially suppressed at weak coupling). -/
 theorem lambdaQCD_small (μ α₀ b : ℝ) (hμ : μ > 0) (hα : α₀ > 0)
     (hb : b > 0) :
-    lambdaQCD μ α₀ b < μ := by
-  unfold lambdaQCD
+    lambdaQCD_af μ α₀ b < μ := by
+  unfold lambdaQCD_af
   have h1 : Real.exp (-1 / (2 * b * α₀)) < 1 := by
     rw [Real.exp_lt_one_iff_neg]
     apply neg_neg_of_neg
@@ -19667,10 +19667,8 @@ theorem two_loop_positive (N : ℕ) (hN : N ≥ 2) :
     twoLoopBeta1 N 0 > 0 := by
   unfold twoLoopBeta1
   simp
-  apply div_pos
-  · have : (N : ℝ) ≥ 2 := by exact_mod_cast hN
-    nlinarith
-  · norm_num
+  have : (N : ℝ) ≥ 2 := by exact_mod_cast hN
+  positivity
 
 /-- Asymptotic safety: coupling approaches g* > 0 at UV.
     This does NOT happen in Yang-Mills (which is AF, g → 0 at UV).
@@ -20017,7 +20015,7 @@ theorem gnKinkMass_heavy (N : ℕ) (m : ℝ) (hN : N ≥ 4) (hm : m > 0) :
   -- Goal: (N : ℝ) * m / π > m
   have hpi := Real.pi_pos
   have hNR : (N : ℝ) ≥ 4 := by exact_mod_cast hN
-  have h1 : m * Real.pi < (N : ℝ) * m := by nlinarith [Real.pi_lt_3141593]
+  have h1 : m * Real.pi < (N : ℝ) * m := by nlinarith [pi_lt_3141593]
   rw [gt_iff_lt]
   have h2 : m * Real.pi / Real.pi < (N : ℝ) * m / Real.pi :=
     div_lt_div_of_pos_right h1 hpi
@@ -20134,7 +20132,8 @@ theorem qcd2MesonMassSq_pos (lambda : ℝ) (hl : lambda > 0) (n : ℕ) :
   unfold qcd2MesonMassSq
   apply mul_pos
   · exact mul_pos Real.pi_pos hl
-  · linarith [Nat.cast_nonneg n]
+  · have : (n : ℝ) ≥ 0 := Nat.cast_nonneg n
+    linarith
 
 /-- The lightest meson (n=0) has mass squared πλ > 0. This IS the mass gap. -/
 theorem qcd2MassGap_val (lambda : ℝ) :
