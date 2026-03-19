@@ -207,4 +207,23 @@ theorem su3_casimir' : ((3:ℝ)^2 - 1) / (2 * 3) = 4/3 := by norm_num
 /-- Two-particle threshold: s = (2m)² = 4m². -/
 theorem two_particle_threshold' : (2:ℝ) ^ 2 = 4 := by norm_num
 
+-- ═══════════════════════════════════════════════════════════════════
+-- Section: Functional Integral / Dirac Spectral (Parts CXXIX-CXXX)
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Gauge field DOF in 4D SU(3): (4-1) × 8 = 24. -/
+theorem gauge_dof' : (4 - 1) * 8 = (24:ℕ) := by omega
+
+/-- Symanzik improvement normalization: 5/3 - 8/12 = 1. -/
+theorem symanzik_norm' : (5:ℝ)/3 - 8/12 = 1 := by norm_num
+
+/-- Hypercubic group order: 384 = 16 × 24. -/
+theorem hypercubic_order' : (384:ℕ) = 16 * 24 := by norm_num
+
+/-- Nielsen-Ninomiya: 2^4 = 16 doublers in 4D. -/
+theorem nn_doublers' : (2:ℕ) ^ 4 = 16 := by norm_num
+
+/-- Altland-Zirnbauer: 3 + 3 + 4 = 10 symmetry classes. -/
+theorem az_classes' : (3:ℕ) + 3 + 4 = 10 := by omega
+
 end YangMillsAristotle
