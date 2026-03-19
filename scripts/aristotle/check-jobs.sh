@@ -268,6 +268,19 @@ reconcile_server_projects() {
                 echo -e "    ${GREEN}Added to tracking${NC}"
             fi
         elif [[ "$status" == "IN_PROGRESS" || "$status" == "QUEUED" ]]; then
+            # Only re-adopt if we can map the filename to a real local proof file
+            local can_map_active=false
+            if [[ -n "${fname:-}" && "$fname" != "null" ]]; then
+                if [[ -f "$PROJECT_ROOT/proofs/Proofs/$fname" ]]; then
+                    can_map_active=true
+                fi
+            fi
+
+            if [[ "$can_map_active" == false ]]; then
+                echo -e "  ${YELLOW}SKIP:${NC} $pid ($status, file: ${fname:-unknown}) — cannot map to local proof file, skipping"
+                continue
+            fi
+
             # Re-adopt active projects as submitted so the agent monitors them
             echo -e "  ${CYAN}RE-ADOPT:${NC} $pid ($status, file: ${fname:-unknown}) → submitted"
 
@@ -276,7 +289,7 @@ reconcile_server_projects() {
                 now=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
                 local tmp_file
                 tmp_file=$(mktemp)
-                jq --arg pid "$pid" --arg fname "${fname:-unknown}" \
+                jq --arg pid "$pid" --arg fname "proofs/Proofs/${fname}" \
                    --arg prob "$problem_id" --arg now "$now" --arg sstat "$status" '
                     .jobs += [{
                         project_id: $pid,
@@ -290,6 +303,20 @@ reconcile_server_projects() {
                 echo -e "    ${GREEN}Re-adopted as submitted${NC}"
             fi
         elif [[ "$status" == "COMPLETE" ]]; then
+            # Only re-adopt if we can map the filename to a real local proof file
+            local can_map=false
+            if [[ -n "${fname:-}" && "$fname" != "null" ]]; then
+                local proof_basename="${fname%.lean}"
+                if [[ -f "$PROJECT_ROOT/proofs/Proofs/$fname" ]]; then
+                    can_map=true
+                fi
+            fi
+
+            if [[ "$can_map" == false ]]; then
+                echo -e "  ${YELLOW}SKIP:${NC} $pid (COMPLETE, file: ${fname:-unknown}) — cannot map to local proof file, skipping"
+                continue
+            fi
+
             # Re-adopt completed projects for integration
             echo -e "  ${GREEN}RE-ADOPT:${NC} $pid (COMPLETE, file: ${fname:-unknown}) → completed"
 
@@ -298,7 +325,7 @@ reconcile_server_projects() {
                 now=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
                 local tmp_file
                 tmp_file=$(mktemp)
-                jq --arg pid "$pid" --arg fname "${fname:-unknown}" \
+                jq --arg pid "$pid" --arg fname "proofs/Proofs/${fname}" \
                    --arg prob "$problem_id" --arg now "$now" '
                     .jobs += [{
                         project_id: $pid,

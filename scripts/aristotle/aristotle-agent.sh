@@ -236,12 +236,18 @@ run_cycle() {
 
     # Step 1: Check job status
     echo -e "${CYAN}[1/4] Checking job status...${NC}"
-    "$SCRIPT_DIR/check-jobs.sh" --update 2>/dev/null || true
+    if ! "$SCRIPT_DIR/check-jobs.sh" --update 2>&1; then
+        echo -e "${YELLOW}WARNING: check-jobs.sh failed — continuing with stale status${NC}"
+    fi
     echo ""
 
     # Step 2: Retrieve and integrate completed
     echo -e "${CYAN}[2/4] Retrieving completed solutions...${NC}"
-    "$SCRIPT_DIR/retrieve-integrate.sh" 2>/dev/null || true
+    local retrieve_exit=0
+    "$SCRIPT_DIR/retrieve-integrate.sh" 2>&1 || retrieve_exit=$?
+    if [[ "$retrieve_exit" -ne 0 ]]; then
+        echo -e "${YELLOW}WARNING: retrieve-integrate.sh exited with code $retrieve_exit — some jobs may not have been processed${NC}"
+    fi
     echo ""
 
     # Step 3: Commit and create/update PR for integrated proofs
