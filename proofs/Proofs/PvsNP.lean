@@ -1403,8 +1403,14 @@ def PTAS : Set OptProblem := { opt |
       True  -- (1+1/ε)-approximation in time poly(n)
 }
 
-/-- FPTAS ⊆ PTAS ⊆ APX: the approximation hierarchy -/
-axiom PTAS_subset_APX : PTAS ⊆ APX
+/-- FPTAS ⊆ PTAS ⊆ APX: the approximation hierarchy.
+    Proved: any PTAS problem is in APX (take ε = 1 for constant-factor approximation). -/
+theorem PTAS_subset_APX : PTAS ⊆ APX := by
+  intro opt hopt
+  -- opt ∈ PTAS means: ∀ ε ≥ 1, ∃ prog poly, True
+  -- We need: ∃ prog c, c ≥ 1 ∧ True
+  obtain ⟨prog, _, _⟩ := hopt 1 le_refl
+  exact ⟨prog, 1, le_refl 1, trivial⟩
 
 /-- If P = NP, then all NP optimization problems are in PTAS
     (we can solve them exactly in polynomial time). -/

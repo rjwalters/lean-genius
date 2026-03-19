@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "InverseGaloisA5.lean: 6 axioms → 1 axiom. Proved q_gal_iso_a5 from q_gal_card by showing galActionHom image has index 2 in Perm(Fin 5) and applying Mathlib eq_alternatingGroup_of_index_eq_two. Only q_gal_card (discriminant+Chebotarev) remains.",
+    "progressSummary": "PROGRESS: 1210 lines, 2 sorries (IGP open conjecture + Hilbert irred.), 0 axioms. Part XV adds totient computations, non-cyclicity proofs for (Z/8Z)* and (Z/12Z)*, and Klein four-group (C2xC2) realizability.",
     "builtItems": [
       "InverseGalois.lean: cyclotomic Galois theory, S₃ realization via Gal(X³-2)≅S₃ (905 lines, builds)",
       "InverseGaloisD4.lean: D₄ realization via |Gal(X⁴-2)| = 8 (666 lines, builds)",
@@ -58,7 +58,11 @@
       "InverseGaloisA5.lean: q_natDegree proved via compute_degree! (was axiom)",
       "InverseGaloisA5.lean: q_gal_iso_a5 PROVED from q_gal_card (was axiom) via index-2 subgroup uniqueness",
       "InverseGaloisA5.lean: fixed q_irreducible for Mathlib v4.26.0 (norm_cast replaces coefficient simp)",
-      "InverseGaloisA5.lean: fixed gal_not_solvable for Mathlib v4.26.0 (explicit MonoidHom surjectivity)"
+      "InverseGaloisA5.lean: fixed gal_not_solvable for Mathlib v4.26.0 (explicit MonoidHom surjectivity)",
+      "Part XV: totient computations (φ(n) for n=2..12 by decide)",
+      "zmod8_units_sq_eq_one, zmod12_units_sq_eq_one (exponent 2 by decide)",
+      "zmod8_units_not_cyclic, zmod12_units_not_cyclic (proved via order contradiction)",
+      "klein_four_realized (C2×C2 via 8th cyclotomic, sorry-free)"
     ],
     "insights": [
       "Cyclotomic irreducibility over ℚ IS in Mathlib: Polynomial.cyclotomic.irreducible_rat",
@@ -85,7 +89,11 @@
       "galActionHom composed with permCongr gives injection Gal →* Perm(Fin 5); range has index 2 → equals A₅",
       "MulEquiv.ofBijective + MulEquiv.subgroupCongr constructs Gal ≃* A₅ from subgroup equality",
       "Polynomial.map_* simp lemmas + norm_cast closes ℤ→ℚ polynomial equality (replaces broken Int.cast_ite approach)",
-      "solvable_of_surjective takes (f : G →* H) implicit; for MulEquiv, construct surjectivity via e.symm explicitly"
+      "solvable_of_surjective takes (f : G →* H) implicit; for MulEquiv, construct surjectivity via e.symm explicitly",
+      "(Z/8Z)* and (Z/12Z)* both have exponent 2: every element squares to 1",
+      "Klein four-group V4 ≅ (Z/8Z)* is realizable via 8th cyclotomic field Galois group",
+      "All 8 groups of order ≤ 6 are now realized: C1-C6 (cyclic), V4 (cyclotomic), S3 (X³-2)",
+      "Non-cyclicity proof pattern: generator would have order |G|, but exponent computation shows ord ≤ 2"
     ],
     "mathlibGaps": [],
     "nextSteps": [

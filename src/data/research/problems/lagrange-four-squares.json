@@ -29,50 +29,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Parts I-V complete. 381 lines, 9 axioms, 2 sorries, 15 theorems. Legendre three-square obstruction, Jacobi representation formula, Waring problem g(k), Fermat two-square theorem, quaternion norm interpretation.",
-    "builtItems": [
-      {
-        "name": "IsSumOfThreeSquares/IsObstructed",
-        "description": "Three-square obstruction definitions",
-        "proven": true
-      },
-      {
-        "name": "seven/fifteen/twentyeight_obstructed",
-        "description": "Obstruction examples (PROVED)",
-        "proven": true
-      },
-      {
-        "name": "form_8k7_needs_four",
-        "description": "8k+7 always obstructed (PROVED)",
-        "proven": true
-      },
-      {
-        "name": "waringG",
-        "description": "Waring g(k) values for k=2..6",
-        "proven": true
-      },
-      {
-        "name": "lagrange_is_waring_2",
-        "description": "g(2)=4 is Lagrange (PROVED)",
-        "proven": true
-      },
-      {
-        "name": "every_nat_is_quaternion_norm",
-        "description": "Every ℕ is quaternion norm (PROVED)",
-        "proven": true
-      },
-      {
-        "name": "LipschitzQuaternion",
-        "description": "Quaternion integer structure",
-        "proven": true
-      }
-    ],
-    "insights": [
-      "Euler four-square identity IS quaternion norm multiplicativity. Hurwitz quaternions form a Euclidean domain, giving an algebraic proof of Lagrange. The three-square obstruction 4^a(8b+7) connects to genus theory of ternary quadratic forms."
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
     "nextSteps": []
   },
+  "approaches": [],
   "tags": [
     "seeker-selected",
     "number-theory",

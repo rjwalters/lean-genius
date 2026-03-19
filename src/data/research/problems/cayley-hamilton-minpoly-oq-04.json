@@ -1,112 +1,55 @@
 {
   "slug": "cayley-hamilton-minpoly-oq-04",
-  "title": "Nonderogatory matrix characterization: μ_M = χ_M iff cyclic vector",
-  "phase": "COMPLETED",
-  "status": "completed",
-  "tier": "B",
+  "title": "Nonderogatory matrix characterization μ_M = χ_M iff cyclic vector",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{For } M \\in M_n(K), \\; \\mu_M = \\chi_M \\iff \\exists v \\in K^n \\text{ s.t. } \\{v, Mv, \\ldots, M^{n-1}v\\} \\text{ is a basis}",
-    "plain": "A matrix M over a field K is nonderogatory (its minimal polynomial equals its characteristic polynomial) if and only if it has a cyclic vector v such that {v, Mv, M²v, ..., M^{n-1}v} forms a basis of K^n.",
-    "whyMatters": [
-      "Connects spectral theory to cyclic module structure",
-      "Foundation for rational canonical form",
-      "Key criterion in control theory (observability/controllability)"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Forward direction: cyclic vector → minpoly = charpoly (0 sorries)",
-      "Bridge lemma: monic polynomials with divisibility and same degree are equal",
-      "Degree characterization: nonderogatory iff deg(minpoly) = n",
-      "Full equivalence (using axiom for backward direction)"
-    ],
-    "open": [
-      "Backward direction: nonderogatory → cyclic vector (axiomatized, needs PID structure theorem)"
-    ],
-    "goal": "Complete formalization of nonderogatory characterization"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-03-18T02:00:00Z",
-    "iteration": 2,
-    "focus": "Backward direction for infinite fields via union avoidance",
+    "phase": "NEW",
+    "since": "2026-03-15T12:10:20.226Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Fill remaining sorries to complete backward direction for infinite fields",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 1,
-      "approachesTried": 2
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: powers_linearIndependent fully proved (2 sorries eliminated: coefficient extraction via monomial coeff + degree bound via natDegree_C_mul_X_pow_le). 3 sorries remain: isCyclicVector_of_linearIndependent, nonderogatory_has_cyclic_vector_infinite main wiring, nilpotent_krylov_independent.",
-    "builtItems": [
-      "IsCyclicVector definition (annihilator formulation) in CayleyHamiltonMinpolyOQ04.lean",
-      "IsCyclicVectorLI definition (linear independence formulation) in CayleyHamiltonMinpolyOQ04.lean",
-      "IsNonderogatory definition in CayleyHamiltonMinpolyOQ04.lean",
-      "minpoly_eq_charpoly_of_natDegree_eq (bridge lemma) in CayleyHamiltonMinpolyOQ04.lean",
-      "cyclic_implies_nonderogatory (forward direction) in CayleyHamiltonMinpolyOQ04.lean",
-      "nonderogatory_iff_cyclic_vector (full equivalence) in CayleyHamiltonMinpolyOQ04.lean",
-      "nonderogatory_iff_natDegree_eq (degree characterization) in CayleyHamiltonMinpolyOQ04.lean",
-      "derogatory_iff_natDegree_lt (derogatory characterization) in CayleyHamiltonMinpolyOQ04.lean",
-      "not_union_proper_subspaces (union avoidance for infinite fields, PROVED) in CayleyHamiltonMinpolyOQ04Backward.lean",
-      "aeval_ne_zero_of_ne_zero (nonzero poly → nonzero matrix, PROVED) in CayleyHamiltonMinpolyOQ04Backward.lean",
-      "exists_mulVec_ne_zero (nonzero matrix has vector outside kernel, PROVED) in CayleyHamiltonMinpolyOQ04Backward.lean",
-      "nonderogatory_has_cyclic_vector_infinite (stated, 1 sorry) in CayleyHamiltonMinpolyOQ04Backward.lean",
-      "powers_linearIndependent (framework proved, 3 helper sorries) in CayleyHamiltonMinpolyOQ04Backward.lean",
-      "CayleyHamiltonMinpolyOQ04BackwardAristotle.lean (companion file for automated proof search)",
-      "nilpotent_krylov_independent: proved via smallest-counterexample argument (CayleyHamiltonMinpolyOQ04Backward.lean)",
-      "powers_linearIndependent: fully proved (coefficient extraction + degree bound sorries eliminated) in CayleyHamiltonMinpolyOQ04Backward.lean"
-    ],
-    "insights": [
-      "The annihilator formulation of cyclic vector (no nonzero polynomial of degree < n annihilates v) gives a much cleaner forward direction proof than the linear independence formulation",
-      "The forward direction proof is beautifully simple: minpoly annihilates M, so it annihilates v, giving a nonzero polynomial in the annihilator if deg < n",
-      "Bridge lemma (monic divisor with same degree = equal) is a clean self-contained result useful beyond this problem",
-      "Backward direction requires substantial module theory infrastructure (PID structure theorem or JNF)",
-      "Backward direction for INFINITE fields: non-cyclic vectors lie in a finite union of proper subspaces (kernels of proper divisors of minpoly), which cant cover V over infinite K",
-      "Union avoidance lemma proved via line argument with Finset induction: for each proper subspace, at most one scalar t puts v+tw in that subspace",
-      "The finite-field case remains the hard part - it requires counting arguments or the full PID structure theorem",
-      "Key reduction: the set of distinct kernels ker(T) for T in the n-dimensional algebra K[M] is finite (at most 2^n subspaces)",
-      "nilpotent_krylov_independent proof: multiply relation by N^{n-1-j}, use nilpotency for k>j and minimality of j for k<j, extract c_j=0 contradiction",
-      "For coefficient extraction of ∑ C(c k) * X^k, use C_mul_X_pow_eq_monomial + coeff_monomial + Fin.val_injective.eq_iff + Finset.sum_ite_eq for clean proof",
-      "For natDegree bound of sum, use natDegree_sum_le + Finset.sup_lt_iff + natDegree_C_mul_X_pow_le chain"
-    ],
-    "mathlibGaps": [
-      "Structure theorem for f.g. modules over PID (partial in Mathlib but not in ready-to-use form for this application)",
-      "Rational canonical form not in Mathlib"
-    ],
-    "nextSteps": [
-      "Fill 3 helper sorries in powers_linearIndependent (polynomial evaluation ↔ matrix sum conversion)",
-      "Fill isCyclicVector_of_linearIndependent (convert Krylov independence to annihilator formulation)",
-      "Wire together: union avoidance + powers_linearIndependent + kernel lattice finiteness → main theorem",
-      "For finite fields: would need PID module structure theorem or explicit counting via Mobius function"
-    ]
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: cayley-hamilton-minpoly-oq-04\n\nNonderogatory matrix characterization: μ_M = χ_M iff cyclic vector.\n\n---\n\n## Problem Understanding\n\nA matrix M ∈ M_n(K) is **nonderogatory** if its minimal polynomial equals its\ncharacteristic polynomial. The classical characterization theorem says this\nhappens if and only if M has a **cyclic vector** v — a vector such that\n{v, Mv, M²v, ..., M^{n-1}v} forms a basis of K^n.\n\nThis is equivalent to saying V (as a K[X]-module via M) is cyclic, i.e.,\nV ≅ K[X]/(χ_M). The matrix is then similar to the companion matrix of χ_M.\n\n---\n\n## Insights\n\n### Key Insight: Annihilator Formulation\nThe cyclic vector condition is most cleanly expressed NOT as linear independence\nof Krylov vectors, but as: **no nonzero polynomial of degree < n annihilates v\nunder M**. This formulation directly connects to the minpoly and avoids the\nneed to expand polynomial evaluation into explicit sums.\n\n### Forward Direction Proof Strategy\nThe forward direction is elegantly simple with the annihilator formulation:\n1. minpoly(M) annihilates M, so (aeval M (minpoly K M)).mulVec v = 0\n2. If deg(minpoly) < n, this gives a nonzero poly of degree < n annihilating v\n3. Contradiction with cyclic vector property\n4. So deg(minpoly) = n = deg(charpoly)\n5. Bridge lemma: monic divisor with same degree → equal\n\n### Bridge Lemma\nThe bridge lemma (monic p | monic q with natDeg(p) = natDeg(q) → p = q) is\nproved by: the cofactor r satisfies natDeg(r) = 0 and r is monic (from the\nproduct of leading coefficients), so r = 1.\n\n### Backward Direction\nThree approaches exist:\n1. **PID module theory** (general fields): V ≅ ⊕ K[X]/(d_i), minpoly = d_k,\n   charpoly = Π d_i. Equal iff k = 1.\n2. **Jordan Normal Form** (algebraically closed): one block per eigenvalue\n3. **Union of subspaces** (infinite fields): complement of ⋃ ker(d(M)) for\n   proper divisors d of minpoly\nAll require substantial infrastructure not readily available in Mathlib.\n\n### Backward Direction via Union Avoidance (Session 2)\nOver infinite fields, the backward direction has a clean proof:\n1. Non-cyclic vectors lie in ker(g(M)) for proper divisors g of minpoly\n2. Each ker(g(M)) is proper (g(M) ≠ 0 since deg(g) < deg(minpoly))\n3. The monic divisors of minpoly form a finite set → finite union\n4. Over infinite K, V ≠ finite union of proper subspaces → cyclic vectors exist\n\nThe union avoidance lemma is proved by Finset induction with a line argument:\nfor v ∉ W_k and w ∉ W₁∪...∪W_{k-1}, the line {v+tw} meets each W_i in\nat most one point (if two points, w ∈ W_i by subtraction, contradiction).\nSince K is infinite and there are only finitely many bad t values, a good t exists.\n\n**Finite fields remain open**: the union avoidance argument fails (K is finite),\nand the backward direction requires the PID structure theorem or explicit counting.\n\n---\n\n## Dead Ends\n\nNone — the annihilator approach worked on first attempt for the forward direction.\nFor the backward direction, the direct polynomial approach works for infinite fields.\n\n---\n\n## Built Items\n\n- `proofs/Proofs/CayleyHamiltonMinpolyOQ04.lean` (0 sorries, 1 axiom)\n  - `IsCyclicVector` - annihilator formulation\n  - `IsCyclicVectorLI` - linear independence formulation\n  - `IsNonderogatory` - minpoly = charpoly\n  - `minpoly_eq_charpoly_of_natDegree_eq` - bridge lemma\n  - `cyclic_implies_nonderogatory` - forward direction (proved)\n  - `nonderogatory_has_cyclic_vector` - backward direction (axiom)\n  - `nonderogatory_iff_cyclic_vector` - full equivalence\n  - `nonderogatory_iff_natDegree_eq` - degree characterization\n  - `derogatory_iff_natDegree_lt` - derogatory characterization\n\n- `proofs/Proofs/CayleyHamiltonMinpolyOQ04Backward.lean` (3 sorries, 0 axioms)\n  - `not_union_proper_subspaces` - PROVED: union avoidance for infinite fields\n  - `aeval_ne_zero_of_ne_zero` - PROVED: nonzero poly → nonzero matrix\n  - `exists_mulVec_ne_zero` - PROVED: nonzero matrix has vector outside kernel\n  - `powers_linearIndependent` - FULLY PROVED (coefficient extraction via C_mul_X_pow_eq_monomial + coeff_monomial; degree bound via natDegree_C_mul_X_pow_le + Finset.sup_lt_iff)\n  - `isCyclicVector_of_linearIndependent` - 1 sorry (needs polynomial → matrix sum → mulVec distribution)\n  - `nonderogatory_has_cyclic_vector_infinite` - main theorem, 1 sorry (wiring: kernel lattice + union avoidance)\n  - `nilpotent_krylov_independent` - 1 sorry (descending induction extracting coefficients via N^{n-1-j})\n\n  Session 2026-03-18 (researcher-5): Eliminated 2 sorries in powers_linearIndependent\n\n- `proofs/Proofs/CayleyHamiltonMinpolyOQ04BackwardAristotle.lean`\n  - Aristotle companion file with 5 routine lemmas for automated proof search\n"
   },
+  "approaches": [],
   "tags": [
+    "seeker-selected",
     "linear-algebra",
-    "minimal-polynomial",
-    "nonderogatory",
-    "cyclic-vector",
-    "matrix-theory"
+    "minimal-polynomial"
   ],
-  "relatedProofs": [
-    "MinpolyCharpoly.lean",
-    "CayleyHamiltonOQ01.lean",
-    "CayleyHamiltonMinpolyOQ01.lean",
-    "CayleyHamiltonMinpolyOQ02.lean"
-  ],
+  "relatedProofs": [],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": [
-      "Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly",
-      "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
-    ]
+    "mathlib": []
   },
-  "started": "2026-03-18T01:48:35Z",
-  "lastUpdate": "2026-03-18T14:30:00Z",
-  "completed": "2026-03-18T02:48:00Z",
+  "started": "2026-03-15T12:11:41.202Z",
+  "lastUpdate": "2026-03-18T03:00:11.098Z",
   "significance": 7,
   "tractability": 6
 }

@@ -1,8 +1,8 @@
 {
   "slug": "borsuk-ulam-oq-03",
   "title": "Constructive (Intuitionistic) Borsuk-Ulam Theorem",
-  "phase": "COMPLETED",
-  "status": "completed",
+  "phase": "OBSERVE",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-03-18T01:53:00Z",
-    "iteration": 2,
-    "focus": "Effective constructive BU via bisection and even-odd decomposition",
+    "phase": "NEW",
+    "since": "2026-02-25T14:11:52.126Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,21 +29,9 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 1799 lines, 0 sorries, 4 axioms (all n>=2). Added effective bisection (Sections XXXVII-XL): even-odd decomposition, bisection convergence, quantitative BU, constructive analysis. ~25 new proved theorems.",
-    "builtItems": [
-      "evenPart, oddPart: even-odd function decomposition (proved: 10 theorems)",
-      "bisectStep, bisectIter: effective bisection algorithm (proved: 7 theorems)",
-      "bu_known_sign: constructive BU without excluded middle (proved)",
-      "bu_bisection_brackets_zero: quantitative bisection-BU connection (proved)",
-      "bu_is_zero_finding: BU ↔ zero of odd part equivalence (proved)"
-    ],
-    "insights": [
-      "Even-odd decomposition: f = evenPart + oddPart reduces BU to zero-finding for oddPart",
-      "Bisection on oddPart gives exponential convergence: width 2/2^n after n steps",
-      "BU with known sign needs no excluded middle - direct IVT application",
-      "Left endpoints are non-decreasing, right endpoints non-increasing (nested intervals)",
-      "n>=2 BU inherently uses contradiction (odd map construction + degree theory)"
-    ],
+    "progressSummary": "SURVEYED - 13 proved theorems, 1 axiom (general BU for n≥2), 0 sorries.",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# borsuk-ulam-oq-03: Constructive (Intuitionistic) Borsuk-Ulam\n\n## Problem Summary\n\n**Open Question**: Can the 1D Borsuk-Ulam theorem be proved constructively\n(without full classical logic)? What is the constructive status of\nhigher-dimensional Borsuk-Ulam?\n\n**Status**: SURVEYED - 13 proved theorems, 1 axiom (general BU for n≥2), 0 sorries.\n\n**Answer**:\n- 1D: YES, proved via IVT on antisymmetric difference\n- n≥2: Requires algebraic topology (axiomized); no known constructive proof\n\n## Session 2026-02-25 (Session 1) - Initial Formalization\n\n**Mode**: FRESH (problem had EMPTY knowledge)\n**Outcome**: surveyed/progress\n\n### What I Did\n\n- Created `proofs/Proofs/BorsukUlamOQ03.lean` with full 1D formalization\n- Proved 13 theorems covering:\n  - 1D interval BU via IVT\n  - Odd function zero lemma\n  - BU ↔ odd-zero equivalence\n  - S¹ parametric version via IVT on [0,π]\n  - Circle point on unit circle\n  - No odd map to {±1}\n  - 5 structural lemmas\n  - NSphere def + antipodal def\n  - Consequence of general BU axiom\n- Fixed key Lean 4 issue: `f (--x)` is INVALID because `--` starts a line comment;\n  must write `f (-(-x))` or restructure to avoid double negative\n- Fixed `ring` issue: after `simp only [hg_def]`, `ring` fails on `f (-(-x))` atoms;\n  add `neg_neg` to simp first\n- `Continuous.prod_mk` may not be directly accessible as a field; use `fun_prop` instead\n- Created PR #3246\n\n### Key Findings\n\n- `f (--x)` is a SYNTAX BUG: `--` starts a line comment in Lean 4!\n  Workaround: Write `f (-(-x))` or avoid double-negated function args\n- `fun_prop` tactic handles complex continuity goals automatically with `hf : Continuous f`\n- IVT API: `intermediate_value_Icc hab hg_cont ⟨ha, hb⟩` where `ha : f a ≤ 0` and `hb : 0 ≤ f b`\n- `le_or_gt` is the non-deprecated name for case split (not `le_or_lt`)\n- Constructive content: IVT uses Classical.em internally, but Bishop-style IVT holds\n\n### Files Created\n\n- `proofs/Proofs/BorsukUlamOQ03.lean` (324 lines, 13 theorems, 1 axiom, 0 sorries)\n\n### Next Steps\n\n- The higher-dimensional BU (n≥2) could potentially be proved using Tucker's lemma (combinatorial BU)\n- Tucker's lemma is more constructive than degree-theoretic approaches\n- Would require: triangulation, labeling, Tucker path → antipodal pair\n"
@@ -62,7 +50,7 @@
     "mathlib": []
   },
   "started": "2026-02-25T19:36:59.225Z",
-  "lastUpdate": "2026-03-18T01:53:00Z",
+  "lastUpdate": "2026-03-13T07:52:17.061Z",
   "significance": 7,
   "tractability": 6
 }

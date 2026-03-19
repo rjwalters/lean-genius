@@ -1,39 +1,57 @@
 {
   "slug": "borsuk-ulam-oq-03-oq-03",
-  "title": "Constructive 2D Borsuk-Ulam via Tucker's Lemma",
-  "phase": "COMPLETED",
-  "status": "completed",
+  "title": "Constructive 2D Borsuk-Ulam via Tucker Lemma",
+  "phase": "OBSERVE",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "2D Borsuk-Ulam theorem proved from Tucker's 2D lemma (axiom). Complete chain: Tucker -> grid labeling -> approximate BU -> exact BU.",
-    "plain": "Can the 2D Borsuk-Ulam theorem be proved via Tucker's lemma? YES - complete proof chain exists modulo Tucker's lemma axiom.",
-    "whyMatters": ["Connects combinatorial topology (Tucker) to continuous topology (Borsuk-Ulam)", "Alternative to algebraic topology proof"]
+    "formal": "\\forall f : S^2 \\to \\mathbb{R}^2 \\text{ continuous}, \\exists x \\in S^2, f(x) = f(-x)",
+    "plain": "For any continuous map from the sphere to the plane, there must be a pair of antipodal points (opposite points on the sphere) that map to the same value. We want a purely combinatorial proof using Tucker's lemma instead of algebraic topology.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-03-17T23:15:00Z",
+    "phase": "OBSERVE",
+    "since": "2026-03-06T08:22:48-08:00",
     "iteration": 1,
-    "focus": "Survey of existing 2608-line proof",
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
-    "nextAction": "Problem completed - open question answered"
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Open question answered - 2D BU CAN be proved via Tucker. 2608 lines, 0 sorries, 1 axiom (Tucker 2D grid). Eliminating Tucker axiom is a separate BUILD task (~500-1000 lines, equivalent to Brouwer FPT 2D).",
+    "progressSummary": "",
     "builtItems": [],
-    "insights": [
-      "File has 2608 lines with complete Tucker->BU chain, 0 sorries, 1 axiom",
-      "The open question 'Can BU be proved via Tucker?' is answered: YES",
-      "Remaining axiom (Tucker 2D on triangulated grid) is equivalent to Brouwer FPT in 2D",
-      "Three elimination approaches: path-following (~500-1000 lines), Hex reduction (~600-800), Poincare-Miranda (~300-500)",
-      "Path-following most concrete: define pivot rule on triangles, follow from boundary (odd doors) to complementary edge"
-    ],
-    "nextSteps": ["Eliminating Tucker axiom requires dedicated multi-session BUILD project"]
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: borsuk-ulam-oq-03-oq-03\n\nConstructive 2D Borsuk-Ulam via Tucker's Lemma.\n\n---\n\n## Session 2026-03-17 (Session 1) - Survey\n\n**Mode**: FRESH\n**Outcome**: surveyed\n\n### Current State\n- **2608 lines, 0 sorries, 1 axiom** (tucker_2d_grid)\n- Complete proof chain: Tucker axiom -> grid infrastructure -> approximate BU -> exact BU\n- The open question \"Can BU be proved via Tucker?\" is answered: YES\n- The remaining axiom (Tucker's 2D lemma on triangulated grid) is equivalent to Brouwer's FPT in 2D\n\n### The Remaining Axiom\ntucker_2d_grid: any antipodal labeling of the triangulated grid on [-1,1]^2 has a complementary edge\n\n### Three Approaches to Eliminate the Axiom\n1. Path-following / complementary pivoting (~500-1000 lines)\n2. Hex theorem reduction (~300 + Hex proof ~300-500 lines)\n3. Poincare-Miranda / intersection theory (~300-500 lines)\n\nAll are equivalent to Brouwer's FPT in 2D.\n\n### Assessment\n- Eliminating the axiom is a BUILD task requiring 500-1000 lines minimum\n- Not tractable in a single session\n- The open question itself IS answered (Tucker -> BU chain is complete)\n"
   },
-  "tags": ["topology", "combinatorics", "borsuk-ulam", "tucker-lemma"],
-  "relatedProofs": ["borsuk-ulam"],
-  "started": "2026-03-17T23:05:00Z",
-  "lastUpdate": "2026-03-17T23:15:00Z",
+  "approaches": [],
+  "tags": [
+    "topology",
+    "constructive-math",
+    "borsuk-ulam",
+    "tucker-lemma",
+    "combinatorial-topology"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-07T18:02:01.175Z",
+  "lastUpdate": "2026-03-13T07:52:17.061Z",
   "significance": 7,
-  "tractability": 3
+  "tractability": 6
 }

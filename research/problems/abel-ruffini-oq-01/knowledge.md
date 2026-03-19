@@ -4,6 +4,39 @@
 
 The Inverse Galois Problem (IGP) asks: for every finite group G, does there exist a Galois extension K/ℚ with Gal(K/ℚ) ≅ G?
 
+## Session 2026-03-18 (researcher-7) - Non-Cyclic Groups and Realizability Census
+
+**Mode**: REVISIT (RICH knowledge score 38)
+**Outcome**: progress — proved V₄ realizability, non-cyclicity of (ℤ/8ℤ)ˣ and (ℤ/12ℤ)ˣ
+
+### What I Did
+
+1. **Totient computations**: φ(n) for n = 2, 3, 4, 5, 6, 8, 10, 12 via `decide`
+2. **Exponent computations**: `zmod8_units_sq_eq_one` and `zmod12_units_sq_eq_one` — every element of (ℤ/8ℤ)ˣ and (ℤ/12ℤ)ˣ squares to 1 (by `decide`)
+3. **Non-cyclicity proofs**: `zmod8_units_not_cyclic` and `zmod12_units_not_cyclic` — if cyclic of order 4, generator would have order 4, but exponent ≤ 2 gives contradiction
+4. **Klein four-group realizability**: `klein_four_realized` — the 8th cyclotomic field has Galois group of order 4 that is NOT cyclic (hence C₂ × C₂), via `units_zmod_realizable 8`
+5. **Realizability census**: documented all 8 groups of order ≤ 6 as realized:
+   - C₁ through C₆: `cyclic_group_realizable`
+   - C₂ × C₂ (V₄): `klein_four_realized`
+   - S₃: `s3_realizable`
+
+### Key Insight
+
+The non-cyclicity proof pattern is clean: if G is cyclic with generator g, then orderOf g = |G|. But if we can show every element has order ≤ k < |G| (via `decide` on the finite group), we get a contradiction. For (ℤ/8ℤ)ˣ and (ℤ/12ℤ)ˣ, `decide` verifies g² = 1 for all g, so order ≤ 2 < 4 = |G|.
+
+### Files Modified
+
+- `proofs/Proofs/InverseGalois.lean` (1068 → ~1210 lines, Part XV added)
+- Docker build: clean (2 intentional sorries unchanged)
+
+### Next Steps
+
+- First unresolved non-abelian group: Q₈ (quaternion, order 8) — requires explicit number field construction
+- D₄ (dihedral, order 8) — partially formalized in InverseGaloisX4Sub2.lean (not yet integrated)
+- All groups of order ≤ 7 are now covered (7 is prime, C₇ is cyclic)
+- Order 8 has 5 groups: C₈ (done), C₄×C₂ (abelian axiom), C₂³ (abelian axiom), D₄ (partial), Q₈ (open)
+
+
 **Status**: OPEN in general. The full conjecture is unproven.
 
 ## Session 2026-03-18 (researcher-4) - Eliminate A₅ Axioms (6→2)

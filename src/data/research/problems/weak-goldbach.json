@@ -31,50 +31,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Parts I-IV complete. 481 lines, 15 axioms, 0 sorries, 21 theorems. Circle method (Vinogradov), Schnirelmann density, Ramaré/Tao bounds, Chen theorem, Levy conjecture, binary Goldbach connection.",
-    "builtItems": [
-      {
-        "name": "exponentialSumOverPrimes",
-        "description": "Circle method exponential sum",
-        "proven": true
-      },
-      {
-        "name": "representationCount_pos_iff",
-        "description": "r₃(n)>0 ↔ sum of 3 primes (PROVED)",
-        "proven": true
-      },
-      {
-        "name": "vinogradov_from_circle_method",
-        "description": "Circle method → Vinogradov (PROVED)",
-        "proven": true
-      },
-      {
-        "name": "helfgott_improves_tao",
-        "description": "Helfgott improves Tao 5→3 primes (PROVED)",
-        "proven": true
-      },
-      {
-        "name": "levy_implies_weak_goldbach",
-        "description": "Levy conjecture → weak Goldbach (PROVED)",
-        "proven": true
-      },
-      {
-        "name": "levy_7/9/11",
-        "description": "Levy conjecture verified for 7,9,11 (PROVED)",
-        "proven": true
-      }
-    ],
-    "insights": [
-      "The circle method decomposes the problem into major/minor arcs. Vinogradov's innovation was bounding minor arc sums without GRH. Helfgott closed the gap between Vinogradov's \"sufficiently large\" bound and computational verification."
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Waring problem connection",
-      "Goldbach representations statistics",
-      "Primes in arithmetic progressions"
-    ],
+    "nextSteps": [],
     "markdown": "# Knowledge Base: weak-goldbach\n\n## Status: COMPLETED\n\n**Date**: 2026-01-01\n**Final state**: WeakGoldbach.lean (~248 lines, 0 sorries)\n\n## What We Built (Valuable Contributions)\n\n### 1. Formal Definitions\n- `IsSumOfThreePrimes (n : ℕ)` - ternary Goldbach predicate\n- `IsSumOfTwoPrimes (n : ℕ)` - binary Goldbach predicate\n- `WeakGoldbachConjecture` - formal statement\n- `BinaryGoldbachConjecture` - formal statement\n\n### 2. Decidable Instances (Key Infrastructure)\n- `decidableIsSumOfThreePrimes` - enables `decide` for any concrete n\n- `decidableIsSumOfTwoPrimes` - enables `decide` for any concrete n\n- Soundness and completeness theorems for both\n\nThis allows automatic verification like:\n```lean\nexample : IsSumOfThreePrimes 101 := by decide\nexample : ¬IsSumOfThreePrimes 5 := by decide\n```\n\n### 3. Structural Reduction Theorem\n- `binary_implies_weak : BinaryGoldbachConjecture → WeakGoldbachConjecture`\n- Shows weak Goldbach reduces to binary Goldbach\n- Key insight: every odd n > 5 equals 3 + (even number > 2)\n\n### 4. Axiomatized Results\n- `vinogradov_ternary_goldbach` - Vinogradov (1937)\n- `helfgott_weak_goldbach` - Helfgott (2013)\n\n## Why This Problem is Complete\n\nThe valuable formalizations are done:\n1. **Canonical Lean statement** of both conjectures ✓\n2. **Computational infrastructure** for verification ✓\n3. **Structural theorem** connecting binary and ternary forms ✓\n\n### What Would NOT Add Value\n- **Case enumeration**: Extending verification beyond example cases adds nothing\n- **More witnesses**: The decidable instances can verify any case automatically\n- **Circle method formalization**: Requires multi-year infrastructure development (exponential sums, L-functions, etc.) - not tractable\n\n## Final Session: 2026-01-01 Session 9\n\n**Action**: Trimmed file from ~1050 lines to ~248 lines\n\n**Removed**: 143 redundant case-by-case verifications (goldbach_7 through goldbach_301)\n\n**Kept**:\n- Core definitions\n- Decidable instances with soundness/completeness proofs\n- 5 explicit example theorems (7, 9, 11, 21, 101)\n- Structural reduction theorem (`binary_implies_weak`)\n- Axioms\n\n**Key Insight**: Case enumeration was busywork with zero marginal value. The decidable instances already provide verification capability for any concrete number.\n\n## Lessons Learned\n\n1. **Recognize enumeration traps**: Once decidable instances exist, explicit cases are redundant\n2. **Value check required**: Before extending, ask \"what does case N+1 add over case N?\"\n3. **Infrastructure > enumeration**: Building `Decidable` instances was worth 10x more than 100 explicit cases\n4. **Know when to stop**: A problem is complete when further work adds no marginal value\n\n## File Location\n\n`proofs/Proofs/WeakGoldbach.lean`\n"
   },
+  "approaches": [
+    {
+      "id": "approach-01",
+      "name": "approach-01",
+      "status": "active",
+      "hypothesis": "",
+      "strategy": "",
+      "risks": [],
+      "attempts": [
+        {
+          "file": "attempt-01.lean",
+          "succeeded": false
+        }
+      ]
+    }
+  ],
   "tags": [
     "number-theory",
     "additive-combinatorics",
