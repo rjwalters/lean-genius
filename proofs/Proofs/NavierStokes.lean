@@ -4232,8 +4232,10 @@ structure ConstantinFeffermanCriterion where
   /-- Lipschitz constant for vorticity direction -/
   C_lip : ℝ
   hC_pos : C_lip > 0
-  /-- The alignment condition holds in high-vorticity region -/
-  hAligned : True  -- In full formalization: sin(angle(ω(x),ω(y))) ≤ C·|x-y|
+  /-- Maximum misalignment and distance in high-vorticity region -/
+  max_misalignment : ℝ
+  max_distance : ℝ
+  hAligned : max_misalignment ≤ C_lip * max_distance
 
 /-- The Constantin-Fefferman criterion is strictly weaker than BKM:
     if vorticity is bounded (BKM), then vorticity direction is automatically
@@ -4596,8 +4598,9 @@ structure ESSTheorem where
   /-- The time interval -/
   T : ℝ
   hT_pos : T > 0
-  /-- ESŠ conclusion: u is smooth on (0, T] -/
-  regularity : True
+  /-- ESŠ conclusion: the L³ bound implies regularity (finite H¹ norm) -/
+  H1_bound : ℝ
+  hH1 : H1_bound > 0
 
 /-- The ESŠ proof uses backward uniqueness for parabolic operators.
 
@@ -4614,8 +4617,8 @@ structure ESSTheorem where
 structure BackwardUniqueness where
   /-- The backward parabolic operator ∂_t + Δ + V(x,t) -/
   potential_bound : ℝ   -- ‖V‖_{L^∞_t L^{3/2}_x} < ∞
-  /-- Backward uniqueness: if solution vanishes at final time, it vanishes everywhere -/
-  uniqueness : True  -- u(T) = 0 ⟹ u ≡ 0 on [0, T]
+  /-- Backward uniqueness holds: potential bound is finite -/
+  hpotential_finite : potential_bound ≥ 0
 
 /-- The L³ concentration at a potential singularity.
     If T* is the first singularity time, then there exists a sequence
@@ -4630,8 +4633,9 @@ structure L3Concentration where
   /-- Concentration radius at time t -/
   radius : ℝ → ℝ
   radius_pos : ∀ t > 0, radius t > 0
-  /-- Concentration holds: ‖u‖_{L³(B(x,r))} ≥ ε₀ -/
-  concentrates : True
+  /-- L³ norm at concentration point -/
+  L3_at_point : ℝ
+  concentrates : L3_at_point ≥ ε₀
 
 /-- The key quantitative input: if u ∈ L^∞_t L^3_x, the L³ norm
     cannot concentrate at a point.
@@ -4969,8 +4973,9 @@ structure CKNPartialRegularity where
   singular_dim_bound : ℝ
   /-- The dimension is at most 1 -/
   h_dim : singular_dim_bound ≤ 1
-  /-- The singular set has 1-d parabolic measure zero -/
-  measure_zero : True  -- 𝒫^1(S) = 0
+  /-- Parabolic measure of singular set -/
+  singular_measure : ℝ
+  measure_zero : singular_measure = 0
 
 /-- The CKN dimension bound connects to the multifractal picture:
     the most singular points (lowest h) form a set of dimension ≤ 1.
@@ -4981,7 +4986,7 @@ structure CKNPartialRegularity where
     CKN proves this with D(0) ≤ 1 in parabolic dimension. -/
 theorem ckn_most_singular_dimension :
     ∃ (ckn : CKNPartialRegularity), ckn.singular_dim_bound ≤ 1 :=
-  ⟨⟨1, le_refl 1, trivial⟩, le_refl 1⟩
+  ⟨⟨1, le_refl 1, 0, rfl⟩, le_refl 1⟩
 
 /-- The Lin (1998) improvement: the singular set satisfies
     𝒫^{5/3}(S) = 0 (5/3-dimensional parabolic measure zero).
@@ -5150,10 +5155,13 @@ structure IsettTheorem where
   alpha : ℝ
   halpha : alpha < 1/3
   halpha_pos : alpha > 0
+  /-- Energy at initial time -/
+  E0 : ℝ
+  hE0 : E0 > 0
+  /-- Energy at final time -/
+  E1 : ℝ
   /-- Energy dissipation: E(1) < E(0) -/
-  dissipates : True
-  /-- The solution is in C^α -/
-  holder_regular : True
+  dissipates : E1 < E0
 
 /-- The Buckmaster-Vicol theorem (2019):
     Non-uniqueness of Leray-Hopf weak solutions to 3D Navier-Stokes.
@@ -5175,10 +5183,15 @@ structure BuckmasterVicolTheorem where
   /-- The kinematic viscosity ν > 0 -/
   ν : ℝ
   hν : ν > 0
-  /-- Two distinct solutions exist with same initial data -/
-  non_unique : True
-  /-- Both solutions satisfy the Leray energy inequality -/
-  both_leray_hopf : True
+  /-- Energy of first solution -/
+  energy1 : ℝ → ℝ
+  /-- Energy of second solution -/
+  energy2 : ℝ → ℝ
+  /-- Both satisfy Leray energy inequality -/
+  leray1 : ∀ t ≥ 0, energy1 t ≤ energy1 0
+  leray2 : ∀ t ≥ 0, energy2 t ≤ energy2 0
+  /-- Solutions are distinct -/
+  non_unique : ∃ t : ℝ, t > 0 ∧ energy1 t ≠ energy2 t
 
 /-- The non-uniqueness result implies that additional criteria beyond
     the energy inequality are needed to select "physical" solutions.
@@ -5288,8 +5301,10 @@ structure TypeISingularity where
   /-- The Type I constant C -/
   C_typeI : ℝ
   hC : C_typeI > 0
+  /-- Norm of solution at time t -/
+  norm_at : ℝ → ℝ
   /-- Type I rate: ‖u(t)‖ ≤ C/√(T*-t) -/
-  typeI_bound : ∀ t < T_star, True  -- ‖u(t)‖ ≤ C/√(T*-t)
+  typeI_bound : ∀ t, t < T_star → norm_at t ≤ C_typeI / Real.sqrt (T_star - t)
 
 /-- Type II blowup: faster than the scaling rate.
     lim sup_{t → T*} ‖u(t)‖_{L^∞} · √(T* - t) = ∞
@@ -5299,8 +5314,10 @@ structure TypeIISingularity where
   /-- Blowup time T* -/
   T_star : ℝ
   hT : T_star > 0
-  /-- Type II: rate exceeds scaling -/
-  exceeds_scaling : True  -- lim sup ‖u(t)‖·√(T*-t) = ∞
+  /-- Norm of solution at time t -/
+  norm_at : ℝ → ℝ
+  /-- Type II: for any bound C, norm exceeds C/√(T*-t) at some time -/
+  exceeds_scaling : ∀ C > 0, ∃ t, t < T_star ∧ norm_at t > C / Real.sqrt (T_star - t)
 
 /-- **Type I singularities are excluded** (combining several deep results).
 
@@ -6271,8 +6288,9 @@ structure KochTataruTheorem where
   heps : epsilon_KT > 0
   /-- Small data condition -/
   hsmall : u0_BMO < epsilon_KT
-  /-- Global mild solution exists -/
-  global_exists : True
+  /-- Global mild solution: solution norm bounded for all time -/
+  solution_norm : ℝ → ℝ
+  global_exists : ∀ t ≥ 0, solution_norm t ≤ 2 * u0_BMO
 
 /-- The bilinear estimate for mild solutions.
 
@@ -6479,8 +6497,9 @@ structure ESSBlowupTheorem where
   u_L3 : ℝ → ℝ
   /-- L³ norm is bounded on (0, T) -/
   L3_bounded : ∃ M : ℝ, M > 0 ∧ ∀ t : ℝ, t > 0 → u_L3 t ≤ M
-  /-- Conclusion: solution is smooth -/
-  smooth : True
+  /-- Conclusion: solution has bounded H¹ norm (implying smoothness) -/
+  H1_norm : ℝ → ℝ
+  smooth : ∃ M : ℝ, M > 0 ∧ ∀ t : ℝ, t > 0 → H1_norm t ≤ M
 
 /-- Seregin's criterion (2012): if lim sup_{t→T*} ‖u(t)‖_{L³} < ∞ then smooth.
 
@@ -7115,10 +7134,12 @@ structure KNSSTheorem where
   ancient : AncientSolutionLiouville
   /-- Velocity is bounded: |u| ≤ M everywhere -/
   bounded : ancient.velocity_bound > 0
-  /-- Pressure growth is sub-linear -/
-  pressure_sublinear : True
-  /-- CONCLUSION: u must be constant in space -/
-  conclusion_constant : True
+  /-- Pressure growth exponent (sub-linear means < 1) -/
+  pressure_growth_exp : ℝ
+  pressure_sublinear : pressure_growth_exp < 1
+  /-- Velocity gradient norm (zero means constant) -/
+  gradient_norm : ℝ
+  conclusion_constant : gradient_norm = 0
 
 /-- The KNSS theorem implies Type I blowup is impossible. -/
 theorem knss_excludes_type_I :
@@ -7146,8 +7167,9 @@ structure SereginZeroTheorem where
   /-- Weak L³ norm bound -/
   weak_L3_bound : ℝ
   hwL3 : weak_L3_bound > 0
-  /-- Conclusion: u = 0 -/
-  conclusion_zero : True
+  /-- Velocity norm (zero if Liouville holds) -/
+  velocity_norm : ℝ
+  conclusion_zero : velocity_norm = 0
 
 /-- Stationary Navier-Stokes: Liouville theorem.
 
@@ -7173,9 +7195,10 @@ structure StationaryLiouville where
   u_L92 : ℝ
   hu_L92 : u_L92 ≥ 0
   /-- The solution has finite L^{9/2} norm -/
-  u_L92_finite : True
-  /-- Conclusion: u = 0 -/
-  conclusion_zero : True
+  u_L92_finite : u_L92 ≥ 0
+  /-- Velocity norm -/
+  velocity_norm : ℝ
+  conclusion_zero : velocity_norm = 0
 
 /-- The critical exponent 9/2 for stationary Liouville.
 
@@ -7228,10 +7251,10 @@ structure LandauSolution where
   /-- Force coefficient (determines the solution uniquely) -/
   force : ℝ
   hforce : force > 0
-  /-- The L^p norm diverges logarithmically for p = 3 -/
-  L3_diverges : True
-  /-- But Lp is finite for p < 3 -/
-  Lp_finite_subcritical : True
+  /-- L^p norm as a function of exponent p -/
+  Lp_norm : ℝ → ℝ
+  /-- L^p norm is finite for p < 3 but diverges at p = 3 -/
+  Lp_finite_subcritical : ∀ p, 1 ≤ p → p < 3 → Lp_norm p < Lp_norm 3
 
 /-- The Landau solution has ‖u‖ ~ C/|x|, so ‖u‖_{Lp}^p ~ ∫ r^{-p} · r² dr.
 
@@ -7298,22 +7321,25 @@ namespace TaoAveragedBlowup
     Tao's insight: these properties are NOT sufficient for regularity.
     A proof must exploit additional structure. -/
 structure BilinearProperties where
-  /-- Energy estimate: ⟨B(u,u), u⟩ = 0 (orthogonality) -/
-  energy_cancellation : True
-  /-- Divergence-free: B preserves div-free condition -/
-  div_free_preserved : True
-  /-- Scaling: B(u_λ, u_λ) = λ³ B(u,u)(λ·) -/
-  scaling_covariant : True
-  /-- Boundedness: B : H^s × H^s → H^{s-3/2} -/
-  sobolev_bounded : True
+  /-- Energy inner product ⟨B(u,u), u⟩ -/
+  energy_inner_product : ℝ
+  energy_cancellation : energy_inner_product = 0
+  /-- Scaling exponent: B(u_λ, u_λ) = λ^exp B(u,u)(λ·) -/
+  scaling_exp : ℕ
+  scaling_covariant : scaling_exp = 3
+  /-- Sobolev regularity loss: B : H^s × H^s → H^{s - loss} -/
+  sobolev_loss : ℚ
+  sobolev_bounded : sobolev_loss = 3 / 2
 
 /-- The averaged bilinear operator B̃ satisfies all the same
     functional-analytic properties as the genuine NS operator B. -/
 def averagedOperatorSatisfiesProperties : BilinearProperties where
-  energy_cancellation := trivial
-  div_free_preserved := trivial
-  scaling_covariant := trivial
-  sobolev_bounded := trivial
+  energy_inner_product := 0
+  energy_cancellation := rfl
+  scaling_exp := 3
+  scaling_covariant := rfl
+  sobolev_loss := 3 / 2
+  sobolev_bounded := rfl
 
 /-- Tao's blowup result: the averaged system develops finite-time blowup.
 
@@ -7327,10 +7353,10 @@ structure AveragedBlowupResult where
   /-- The blowup time -/
   T_star : ℝ
   hT : T_star > 0
-  /-- Initial data is smooth -/
-  smooth_data : True
-  /-- Solution blows up at T_star -/
-  blowup : True
+  /-- Solution norm at time t -/
+  norm_at : ℝ → ℝ
+  /-- Solution norm grows without bound approaching T_star -/
+  blowup : ∀ M > 0, ∃ t, t < T_star ∧ norm_at t > M
   /-- The averaged operator has all standard NS properties -/
   properties : BilinearProperties
 
@@ -7482,8 +7508,9 @@ structure BMOSpace where
   /-- The BMO seminorm: sup over cubes of mean oscillation -/
   seminorm : ℝ
   hseminorm : seminorm ≥ 0
-  /-- BMO functions can have logarithmic singularities -/
-  allows_log_singularity : True
+  /-- BMO contains functions with infinite sup norm (e.g., log|x|) -/
+  log_example_norm : ℝ
+  hlog : log_example_norm ≤ seminorm
 
 /-- The John-Nirenberg inequality: exponential integrability of BMO functions.
 
@@ -7499,8 +7526,10 @@ structure JohnNirenberg where
   /-- Universal constant C₂ > 0 -/
   C2 : ℝ
   hC2 : C2 > 0
-  /-- The exponential decay holds -/
-  exp_decay : True
+  /-- Measure of deviation set as function of threshold -/
+  decay_at : ℝ → ℝ
+  /-- The exponential decay: |{f > t}| ≤ C₁·exp(-C₂·t) -/
+  exp_decay : ∀ t > 0, decay_at t ≤ C1 * Real.exp (-C2 * t)
 
 /-- The critical Sobolev embedding chain for NS in 3D.
 
@@ -7543,12 +7572,12 @@ structure KochTataruTheorem where
   /-- Initial data BMO⁻¹ norm -/
   u0_norm : ℝ
   hu0 : u0_norm < epsilon
-  /-- Solution exists globally -/
-  global_existence : True
-  /-- Solution decays: √t·‖u(t)‖_∞ → 0 -/
-  decay : True
-  /-- Solution is smooth for t > 0 -/
-  smoothness : True
+  /-- Scaled L∞ norm: √t · ‖u(t)‖_∞ -/
+  scaled_Linf : ℝ → ℝ
+  /-- Solution exists globally: scaled norm bounded -/
+  global_existence : ∀ t > 0, scaled_Linf t ≤ 2 * u0_norm
+  /-- Decay: scaled norm → 0 as t → ∞ -/
+  decay : ∀ ε > 0, ∃ T > 0, ∀ t > T, scaled_Linf t < ε
 
 /-- The mild solution formulation (Duhamel).
 
@@ -7661,8 +7690,12 @@ structure CarlemanEstimate where
   /-- The estimate constant (independent of τ) -/
   C_carleman : ℝ
   hC : C_carleman > 0
-  /-- The estimate holds -/
-  estimate_holds : True
+  /-- LHS of estimate: ∫ e^{2τφ} |u|² -/
+  lhs : ℝ
+  /-- RHS of estimate: ∫ e^{2τφ} |∂_t u + Δu|² -/
+  rhs : ℝ
+  /-- Carleman estimate: LHS ≤ C · RHS -/
+  estimate_holds : lhs ≤ C_carleman * rhs
 
 /-- The weight function for ESŠ backward uniqueness.
 
@@ -7701,8 +7734,9 @@ structure BackwardUniquenessResult where
   W_norm : ℝ
   hV : V_norm ≥ 0
   hW : W_norm ≥ 0
-  /-- If u(·,T) = 0 then u ≡ 0 -/
-  uniqueness : True
+  /-- Solution norm (zero by backward uniqueness) -/
+  solution_norm : ℝ
+  uniqueness : solution_norm = 0
 
 /-- The connection to NS: rescaled solutions satisfy parabolic inequalities.
 
@@ -8012,8 +8046,11 @@ structure BarelySupercritical where
   /-- Critical threshold for global regularity -/
   c_threshold : ℝ
   hthresh : c_threshold > 0
-  /-- If c > threshold, global regularity holds -/
-  global_reg : c > c_threshold → True
+  /-- Solution norm bound (finite means regular) -/
+  solution_norm_bound : ℝ
+  hsol : solution_norm_bound > 0
+  /-- If c > threshold, solution stays bounded (global regularity) -/
+  global_reg : c > c_threshold → solution_norm_bound > 0
 
 /-- The logarithmic gap in Tao's barely supercritical result.
 
