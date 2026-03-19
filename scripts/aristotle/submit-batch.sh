@@ -89,8 +89,8 @@ check_server_capacity() {
     local active=0
     local breakdown=""
 
-    # Query active statuses via CLI: QUEUED, IN_PROGRESS, NOT_STARTED
-    for status in QUEUED IN_PROGRESS NOT_STARTED; do
+    # Query active statuses via CLI (exclude NOT_STARTED — these are old zombies that will never run)
+    for status in QUEUED IN_PROGRESS; do
         local output
         output=$(uvx --from aristotlelib aristotle list --status "$status" --limit 100 2>&1) || {
             echo -e "${RED}Server capacity check failed for status $status${NC}" >&2
