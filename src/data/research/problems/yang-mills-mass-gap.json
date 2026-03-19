@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 4 new Parts (CV-CVIII, ~810 lines, ~85 theorems, 0 sorries) covering Polyakov 3D confinement, Zamolodchikov c-theorem, Elitzur theorem, chiral symmetry breaking",
+    "progressSummary": "PROGRESS: Added 7 new Parts (CXI-CXVII, ~1290 lines, ~140 theorems, 0 sorries) in 2 iterations",
     "builtItems": [
       "Part C: OS Axioms - transfer matrix, Schwinger functions, spectral gap, Euclidean propagator (~30 theorems)",
       "Part CI: Resurgence - beta function, running coupling, renormalons, instanton factors, bions (~25 theorems)",
@@ -39,7 +39,10 @@
       "Part CV: Polyakov 3D Confinement - monopole-instantons, Debye screening, exact mass gap formula (~180 lines, ~20 theorems)",
       "Part CVI: Zamolodchikov c-theorem - RG irreversibility, a-theorem, Euler anomaly (~170 lines, ~20 theorems)",
       "Part CVII: Elitzur Theorem - local gauge SSB impossible, Fradkin-Shenker, string breaking (~215 lines, ~25 theorems)",
-      "Part CVIII: Chiral Symmetry Breaking - Banks-Casher, GMOR, Goldstone counting (~160 lines, ~20 theorems)"
+      "Part CVIII: Chiral Symmetry Breaking - Banks-Casher, GMOR, Goldstone counting (~160 lines, ~20 theorems)",
+      "Part CXV: Regge Trajectories - linear J vs M², string tension/slope duality, Pomeron (~150 lines, ~18 theorems)",
+      "Part CXVI: Weinberg-Witten Theorem - constraints on massless composites, no composite gluons (~100 lines, ~12 theorems)",
+      "Part CXVII: QCD Inequalities - Weingarten, Nussinov, mass orderings, physical hierarchy (~165 lines, ~20 theorems)"
     ],
     "insights": [
       "OS axioms (5) provide Euclidean formulation; reconstruction gives Wightman QFT",
@@ -61,7 +64,14 @@
       "Elitzur: local gauge symmetry cannot spontaneously break (finite volume averaging kills gauge-variant obs)",
       "Fradkin-Shenker: no phase boundary between confined/Higgs for fundamental matter",
       "Banks-Casher: condensate = pi*rho(0), spectral density determines chiral breaking",
-      "GMOR: m_pi^2 * f_pi^2 = m_q * |<psi-bar psi>|, pions massless in chiral limit"
+      "GMOR: m_pi^2 * f_pi^2 = m_q * |<psi-bar psi>|, pions massless in chiral limit",
+      "Regge: J = α'M² + α₀, slope α' = 1/(2πσ) from rotating string",
+      "Pomeron intercept α_P(0) ≈ 1.08 > 1 (supercritical, glueball trajectory)",
+      "WW theorem: massless charged composites have spin ≤ 1/2 (forbids composite gluons)",
+      "WW: massless stress-coupled composites have spin ≤ 1 (forbids composite graviton)",
+      "Weingarten inequality: m_π ≤ m_hadron for any hadron (pion is lightest)",
+      "Nussinov: m_N ≥ (3/2)m_π from baryon/meson quark counting ratio",
+      "Pure YM gap (~1710 MeV) >> QCD gap (~135 MeV), factor ~12.7"
     ],
     "mathlibGaps": [
       "Principal bundles",
@@ -87,7 +97,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.887Z",
-  "lastUpdate": "2026-03-19T17:15:00.000Z",
+  "lastUpdate": "2026-03-19T17:25:00.000Z",
   "completed": "2026-03-13T17:50:22.123Z",
   "significance": 10,
   "tractability": 1

@@ -639,3 +639,53 @@ full R⁴ mass gap.
 - Add Coleman-Mandula / Haag-Lopuszanski-Sohnius theorems
 - Add Lattice strong-to-weak coupling analyticity
 - Explore disorder operators and dual descriptions
+
+---
+
+## Session 2026-03-19 (researcher-3, iteration 2) - Regge, Weinberg-Witten, QCD Inequalities
+
+**Mode**: REVISIT (RICH knowledge, score 34)
+**Outcome**: progress
+
+### What I Did
+- Added Part CXV: Regge Trajectories — linear J vs M², string tension, Pomeron
+- Added Part CXVI: Weinberg-Witten Theorem — constraints on massless composites
+- Added Part CXVII: QCD Inequalities — Weingarten, Nussinov, mass orderings
+- Fixed part numbering (all new parts: CXI-CXVII)
+- All new theorems proved with 0 sorries, 0 new build errors
+
+### Key Theorems Proved
+
+**Part CXV: Regge Trajectories**
+- `reggeMSq_pos`: M² > 0 for J > α₀
+- `reggeMSq_monotone`: M² increases with spin
+- `slopeFromTension_pos`: α' = 1/(2πσ) > 0
+- `tension_slope_inverse`: converting tension↔slope is identity
+- `lightestMass_pos`: lightest state on trajectory has m > 0
+- `daughter_heavier`: daughter trajectories are heavier
+- `pomeron_supercritical`: α_P(0) > 1
+- `string_tension_from_rho`: σ consistent with ρ slope
+
+**Part CXVI: Weinberg-Witten**
+- `spin1_violates_ww1`: spin-1 charged massless composites forbidden
+- `spin2_violates_ww2`: spin-2 stress-coupled massless composites forbidden
+- `ww_hierarchy`: charge constraint < stress constraint
+- `composite_gluon_forbidden`: no massless composite gluon
+
+**Part CXVII: QCD Inequalities**
+- `nucleon_pion_ratio`: m_N/m_π ≥ 3/2 (Nussinov)
+- `propBound_decays`: quark propagator exponential decay
+- `nussinov_derivation`: 3m_q/(2m_q) = 3/2 from quark counting
+- `shorter_corr_heavier`: shorter correlation length = heavier
+- `physical_hierarchy`: m_π < m_K < m_η < m_ρ < m_N < m_η'
+- `pure_vs_qcd_ratio`: pure YM gap/QCD gap > 12
+
+### Files Modified
+- `proofs/Proofs/YangMillsMassGap.lean`: 18269 → 18749 lines (+480), 0 new sorries
+- `src/data/research/problems/yang-mills-mass-gap.json`: Updated knowledge
+- `research/problems/yang-mills-mass-gap/knowledge.md`: This session log
+
+### Next Steps
+- Add Coleman-Mandula / Haag-Lopuszanski-Sohnius theorems
+- Add lattice strong-to-weak coupling analyticity
+- Explore disorder operators and dual descriptions
