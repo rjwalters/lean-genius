@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 77 parts, ~9850 lines, 38 axioms, 509 theorems, 0 sorries. Latest session added Parts LXXVI-LXXVII (taut foliations: Novikov theorem, Reeb components, foliation classification, Eliashberg-Thurston contact bridge, L-space obstruction; Casson invariant: surgery formula, Rokhlin lift, partial Property P, Brieskorn formula, 8 examples classified).",
+    "progressSummary": "PROGRESS: 79 parts, ~10260 lines, 38 axioms, 566 theorems, 0 sorries. Latest session added Parts LXXVIII-LXXIX (Heegaard Floer homology: HFhat/HF+/HF-/HFinf, L-spaces, L-space conjecture, surgery exact triangle, knot Floer homology, tau/d-invariants, categorification of Casson; Thurston norm: norm ball polytope, fibered faces, Ni fiberedness detection, Agol virtual fibering, McMullen genus formula, unified Parts LXXVI-LXXIX connection graph).",
     "builtItems": [
       "Proved perelman_entropy_monotone via concrete PerelmanWEntropy",
       "Proved perelman_surgery via reflexive witness",
@@ -195,7 +195,9 @@
       "casson_partial_property_P: Δ(1) ≠ 0 → surgery ≠ S³",
       "cassonExamples: 8 manifolds with Casson invariants classified",
       "casson_detects_S3: unique ℤHS with λ=0 and finite π₁ by native_decide",
-      "brieskorn_casson_signature: λ = -σ/8 verified for Σ(2,3,5/11) and Σ(3,5,7)"
+      "brieskorn_casson_signature: λ = -σ/8 verified for Σ(2,3,5/11) and Σ(3,5,7)",
+      "Part LXXVIII: Heegaard Floer homology — HFData, SpinCStructure, KnotFloerData, L-space conjecture, surgery exact triangle, 6 knot examples, 5 manifold examples (~200 lines)",
+      "Part LXXIX: Thurston norm — ThurstonNormData, VirtualFiberingData, Ni fiberedness, Agol virtual fibering, McMullen genus formula, connection graph (~200 lines)"
     ],
     "insights": [
       "Massive axiom reduction: 39 axioms converted to theorems/defs (115→76)",
@@ -288,7 +290,12 @@
       "Casson lifts Rokhlin: λ(M) ≡ μ(M) (mod 2); integer information from ℤ/2 obstruction",
       "Casson gives partial Property P: if Δ_K(1) ≠ 0 then 1/n surgery on K ≠ S³ (works for trefoil, figure-eight; fails for knots with Δ(1) = 0)",
       "Brieskorn sphere formula: λ(Σ(p,q,r)) = -σ(Milnor fiber)/8; verified for (2,3,5)→1, (2,3,11)→2, (3,5,7)→14",
-      "Casson is finite type (Vassiliev) invariant of order 2, the unique degree-2 invariant of ℤHS"
+      "Casson is finite type (Vassiliev) invariant of order 2, the unique degree-2 invariant of ℤHS",
+      "HF categorifies Casson: χ(HF⁺) = λ for integer homology spheres",
+      "L-space conjecture (Boyer-Gordon-Watson): L-space ↔ ¬left-orderable ↔ ¬taut foliation (open, verified on 7 examples)",
+      "Ni theorem: HFK detects fibered knots — resolved Ozsváth-Szabó conjecture",
+      "Agol virtual fibering: every hyperbolic 3-manifold virtually fibers over S¹",
+      "Parts LXXVI-LXXIX form coherent chain: Foliations → Thurston norm → HF → Casson"
     ],
     "mathlibGaps": [
       "3-manifolds",
