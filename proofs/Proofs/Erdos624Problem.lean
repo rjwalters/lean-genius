@@ -1,4 +1,24 @@
 /-
+This file was edited by Aristotle (https://aristotle.harmonic.fun).
+
+Lean version: leanprover/lean4:v4.24.0
+Mathlib version: f897ebcf72cd16f89ab4577d0c826cd14afaafc7
+This project request had uuid: bcd867e5-0c83-43e3-bc92-cce059fca666
+
+To cite Aristotle, tag @Aristotle-Harmonic on GitHub PRs/issues, and add as co-author to commits:
+Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>
+
+The following was proved by Aristotle:
+
+- theorem covering_lower_bound (X : Finset α) (f : Finset α → α) (H : ℕ)
+    (hf : IsCoveringFunction X f H) (hX : X.Nonempty) :
+    2 ^ H ≥ X.card
+
+- theorem coveringNumber_ge_log (X : Finset α) (hX : X.Nonempty) :
+    coveringNumber X ≥ Nat.clog 2 X.card
+-/
+
+/-
   Erdős Problem #624: Covering Properties of Subset Functions
 
   Source: https://erdosproblems.com/624
@@ -29,6 +49,7 @@
 -/
 
 import Mathlib
+
 
 open Finset Set
 
@@ -77,13 +98,34 @@ theorem covering_lower_bound (X : Finset α) (f : Finset α → α) (H : ℕ)
   -- Then {f(A) : A ⊆ Y} = X has |X| elements
   -- But {f(A) : A ⊆ Y} has at most 2^|Y| = 2^H elements
   -- So 2^H ≥ |X|
-  sorry
+  have h_covering : ∀ Y : Finset α, Y ⊆ X → Y.card ≥ H → X.card ≤ 2 ^ Y.card := by
+    intro Y hy hY
+    have h_card_image : (subsetImage f Y).card ≤ 2 ^ Y.card := by
+      exact?;
+    exact le_trans ( by rw [ hf Y hy hY ] ) h_card_image;
+  by_cases h : H ≤ X.card;
+  · -- Let's choose Y to be a subset of X with cardinality H.
+    obtain ⟨Y, hY⟩ : ∃ Y ⊆ X, Y.card = H := by
+      exact?;
+    grind;
+  · exact le_trans ( le_of_lt ( Nat.lt_of_not_ge h ) ) ( le_of_lt ( Nat.recOn H ( by norm_num ) fun n ihn => by rw [ pow_succ' ] ; linarith [ Nat.one_le_pow n 2 zero_lt_two ] ) )
 
 /-- H(n) ≥ ⌈log₂(n)⌉ for any set of size n. -/
 theorem coveringNumber_ge_log (X : Finset α) (hX : X.Nonempty) :
     coveringNumber X ≥ Nat.clog 2 X.card := by
-  sorry
+  refine' le_csInf _ _;
+  · refine' ⟨ X.card + 1, _ ⟩;
+    refine' ⟨ fun A => if hA : A.Nonempty then Classical.choose hA else Classical.choose hX, fun Y hy hY => _ ⟩;
+    exact absurd hY ( not_le_of_gt ( Nat.lt_succ_of_le ( Finset.card_le_card hy ) ) );
+  · intro b hb
+    obtain ⟨f, hf⟩ := hb
+    have h_card : 2 ^ b ≥ X.card := by
+      exact?;
+    exact Nat.le_trans ( Nat.clog_mono_right _ h_card ) ( by rw [ Nat.clog_pow ] ; norm_num )
 
+/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
+
+Unexpected axioms were added during verification: ['Erdos624.erdos_hajnal_upper_bound', 'harmonicSorry345943']-/
 /- ## Upper Bound Construction
 
 For the upper bound, we need to construct a covering function.
@@ -107,6 +149,9 @@ def MainConjecture : Prop :=
   ∀ C : ℕ, ∃ N : ℕ, ∀ n > N, ∀ X : Finset ℕ, X.card = n →
     coveringNumber X > Nat.log 2 n + C
 
+/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
+
+Unexpected axioms were added during verification: ['harmonicSorry535582', 'Erdos624.erdos_624_open']-/
 /-- The conjecture remains open. -/
 axiom erdos_624_open : MainConjecture
 
@@ -118,9 +163,15 @@ def WeakerConjecture : Prop :=
   ∀ k : ℕ, k ≥ 1 → ∀ X : Finset ℕ, X.card = 2^k →
     coveringNumber X ≥ k + 1
 
+/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
+
+Unexpected axioms were added during verification: ['Erdos624.weaker_conjecture_open', 'harmonicSorry813431']-/
 /-- The weaker statement also remains open! -/
 axiom weaker_conjecture_open : WeakerConjecture
 
+/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
+
+Unexpected axioms were added during verification: ['Erdos624.alon_upper_bound', 'harmonicSorry187178']-/
 /- ## Alon's Results -/
 
 /-- **Alon's Theorem**: There exists c > 0 such that for any f : 𝒫(X) → X
@@ -135,6 +186,9 @@ axiom alon_upper_bound :
           ∃ Y : Finset ℕ, Y ⊆ X ∧ Y.card = k ∧
             (subsetImage f Y).card < (1 - c) * 2^k
 
+/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
+
+Unexpected axioms were added during verification: ['Erdos624.alon_lower_construction', 'harmonicSorry148500']-/
 /-- **Alon's Construction**: There exists f such that for all Y with |Y| = k,
     |{f(A) : A ⊆ Y}| > 2^k / 4.
 

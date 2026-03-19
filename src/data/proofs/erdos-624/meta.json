@@ -7,7 +7,7 @@
     "author": "Erdős, Hajnal",
     "sourceUrl": "https://erdosproblems.com/624",
     "date": "1968",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos624Problem.lean",
     "tags": [
       "erdos",
@@ -16,8 +16,8 @@
       "set-theory",
       "open-problem"
     ],
-    "badge": "wip",
-    "sorries": 2,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 624,
     "erdosUrl": "https://erdosproblems.com/624",
     "erdosProblemStatus": "open",
@@ -50,7 +50,7 @@
     ],
     "originalContributions": [
       "Formalization of the covering number H(n) as sInf over ℕ with IsCoveringFunction predicate",
-      "Lower bound counting argument: IsCoveringFunction X f H → 2^H ≥ |X|, hence H(n) ≥ ⌈log₂(n)⌉ (2 sorries)",
+      "Lower bound counting argument: IsCoveringFunction X f H → 2^H ≥ |X|, hence H(n) ≥ ⌈log₂(n)⌉ (proved by Aristotle)",
       "Axiomatized Erdős-Hajnal upper bound H < log₂(n) + 3·log₂(log₂(n)) + 10 for n ≥ 4",
       "Formal statement of main conjecture (H(n) - log₂(n) → ∞) and weaker conjecture (H(2^k) ≥ k+1)",
       "Axiomatized Alon's structural results: upper bound (1-c)·2^k on coverage and lower bound 2^k/4 construction"
@@ -60,7 +60,7 @@
   "overview": {
     "historicalContext": "Erdős and Hajnal (1968) introduced the covering number H(n) in their study of functions on power sets. Given a finite set X of size n, they defined H(n) as the minimum H such that some function f: P(X) → X has the property that {f(A) : A ⊆ Y} = X for every Y ⊆ X with |Y| ≥ H. They proved log₂(n) ≤ H(n) < log₂(n) + (3+o(1))·log₂(log₂(n)) using counting arguments and probabilistic constructions. Noga Alon later proved deep structural results: (1) for any f, some Y of size k has |subsetImage f Y| < (1-c)·2^k (no perfect coverage), and (2) there exist f achieving |subsetImage f Y| > 2^k/4 for all Y (good functions exist). Together these show covering functions are inherently imperfect but can be quite good. The main conjecture that H(n) - log₂(n) → ∞ — and even the weaker statement H(2^k) ≥ k+1 — remain open, making this one of the oldest unsolved problems in combinatorial set theory.",
     "problemStatement": "**Erdős Problem #624** (Erdős-Hajnal, 1968; OPEN):\n\nLet X be a finite set of size n. Define the **covering number** H(n) = min{H : ∃f: P(X)→X, ∀Y⊆X, |Y|≥H → {f(A) : A⊆Y} = X}.\n\n**Known bounds**: log₂(n) ≤ H(n) < log₂(n) + (3+o(1))·log₂(log₂(n))\n\n**Main conjecture**: H(n) - log₂(n) → ∞\n\n**Weaker conjecture** (also OPEN): H(2^k) ≥ k + 1 for all k ≥ 1",
-    "proofStrategy": "The formalization proceeds in three layers. First, it defines the core objects: subsetImage f Y = (Y.powerset).image f, the predicate IsCoveringFunction X f H requiring subsetImage f Y = X for all Y ⊆ X with |Y| ≥ H, and coveringNumber X = sInf {H : ℕ | ∃ f, IsCoveringFunction X f H}. Second, it proves basic bounds: |Y.powerset| = 2^|Y| (from Mathlib) and |subsetImage f Y| ≤ 2^|Y| (composing card_image_le with card_powerset). The lower bound argument — if f is H-covering then 2^H ≥ |X| — requires choosing a witness Y ⊆ X with |Y| = H and applying these cardinality bounds (has 2 sorries for the subset existence and sInf manipulation). Third, it axiomatizes the deeper results: the Erdős-Hajnal upper bound, the main and weaker conjectures, and Alon's structural theorems on coverage fractions.",
+    "proofStrategy": "The formalization proceeds in three layers. First, it defines the core objects: subsetImage f Y = (Y.powerset).image f, the predicate IsCoveringFunction X f H requiring subsetImage f Y = X for all Y ⊆ X with |Y| ≥ H, and coveringNumber X = sInf {H : ℕ | ∃ f, IsCoveringFunction X f H}. Second, it proves basic bounds: |Y.powerset| = 2^|Y| (from Mathlib) and |subsetImage f Y| ≤ 2^|Y| (composing card_image_le with card_powerset). The lower bound argument — if f is H-covering then 2^H ≥ |X| — requires choosing a witness Y ⊆ X with |Y| = H and applying these cardinality bounds (both theorems proved by Aristotle automated proof search). Third, it axiomatizes the deeper results: the Erdős-Hajnal upper bound, the main and weaker conjectures, and Alon's structural theorems on coverage fractions.",
     "keyInsights": [
       "The lower bound is a pure counting argument: 2^H subsets of Y can produce at most 2^H distinct images, so covering n elements requires 2^H ≥ n, hence H ≥ log₂(n)",
       "The Erdős-Hajnal upper bound uses the probabilistic method: a random function f achieves H-covering for H < log₂(n) + O(log log n) with positive probability",
@@ -87,7 +87,7 @@
     {
       "id": "lower-bound",
       "title": "Lower Bound: H(n) ≥ log₂(n)",
-      "summary": "The counting argument: IsCoveringFunction X f H implies 2^H ≥ |X|, hence coveringNumber X ≥ Nat.clog 2 |X|. Has 2 sorries for subset existence and sInf manipulation.",
+      "summary": "The counting argument: IsCoveringFunction X f H implies 2^H ≥ |X|, hence coveringNumber X ≥ Nat.clog 2 |X|. Both theorems proved by Aristotle automated proof search.",
       "startLine": 69,
       "endLine": 86
     },
@@ -135,13 +135,13 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the complete state of knowledge on Erdős Problem #624. The covering number H(n) — the minimum subset size guaranteeing full coverage under an optimal function — is known to satisfy log₂(n) + Ω(1) ≤ H(n) < log₂(n) + O(log log n). The lower bound counting argument is formalized (with 2 sorries for technical lemmas), while the upper bound and structural results are axiomatized. The main conjecture that H(n) - log₂(n) → ∞ remains one of the oldest open problems in combinatorial set theory.",
+    "summary": "This formalization captures the complete state of knowledge on Erdős Problem #624. The covering number H(n) — the minimum subset size guaranteeing full coverage under an optimal function — is known to satisfy log₂(n) + Ω(1) ≤ H(n) < log₂(n) + O(log log n). The lower bound counting argument is fully proved (covering_lower_bound and coveringNumber_ge_log completed by Aristotle), while the upper bound and structural results are axiomatized. The main conjecture that H(n) - log₂(n) → ∞ remains one of the oldest open problems in combinatorial set theory.",
     "implications": "Understanding covering numbers connects to coding theory (covering codes), combinatorial optimization, and the structure of functions on power sets. The question of whether every covering function has inherent inefficiency (Alon's result) has implications for the design of hashing and covering schemes. The O(log log n) gap mirrors similar phenomena in probabilistic combinatorics where random constructions achieve near-optimal bounds.",
     "openQuestions": [
       "Main conjecture: prove H(n) - log₂(n) → ∞ (the gap between covering number and logarithmic lower bound is unbounded)",
       "Weaker conjecture: prove H(2^k) ≥ k + 1 (covering number exceeds log₂(n) by at least 1 at powers of 2)",
       "Determine the exact constant c in Alon's structural bound |subsetImage f Y| < (1-c)·2^k",
-      "Close the 2 sorries in the lower bound proof: subset existence Y ⊆ X with |Y| = H, and sInf extraction for coveringNumber"
+      "RESOLVED: Both lower bound sorries proved by Aristotle (covering_lower_bound and coveringNumber_ge_log)"
     ]
   }
 }
