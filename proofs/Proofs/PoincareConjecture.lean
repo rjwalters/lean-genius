@@ -15841,4 +15841,7 @@ end MoiseTheorem
 -- ═══════════════════════════════════════════════════════════════════
 -- 90 parts, ~13600 lines, 39 axioms, ~720 theorems, ~180 structures, ~280 definitions
 
+-- ═══════════════════════════════════════════════════════════════════
+-- 88 parts, ~13200 lines, 38 axioms, ~690 theorems, ~170 structures, ~260 definitions
+
 end PoincareConjecture
