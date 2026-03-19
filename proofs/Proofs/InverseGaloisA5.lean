@@ -360,22 +360,64 @@ theorem no_subgroup_order_15 (H : Subgroup (Equiv.Perm (Fin 5)))
     -- Transfer via subgroup coercion: (↑(σ * τ) : Perm (Fin 5)) = ↑(τ * σ)
     -- which gives (↑σ) * (↑τ) = (↑τ) * (↑σ).
     have hcomm : (σ : H) * τ = τ * σ := by
-      -- PROOF STRATEGY (verified mathematically, Lean formalization in progress):
-      -- 1. Get Sylow 5-subgroup P₅ via Sylow.nonempty
-      -- 2. |P₅| = 5 (P₅.card_eq_multiplicity + 15.factorization 5 = 1)
-      -- 3. index(P₅) = 3 (index_mul_card + omega)
-      -- 4. n₅ = 1 (card_sylow_modEq_one + card_sylow_dvd_index → n₅ | 3, n₅ ≡ 1 mod 5)
-      -- 5. P₅ is normal (Subsingleton → sylow_normal_of_unique)
-      -- 6. σ ∈ P₅ (IsPGroup.iff_card + exists_le_sylow + Subsingleton.elim)
-      -- 7. τστ⁻¹ ∈ P₅ (Normal.conj_mem)
-      -- 8. P₅ is abelian (isCyclic_of_prime_card → mul_comm)
-      -- 9. c = σ⁻¹ * τστ⁻¹ ∈ P₅, c⁵ = 1 (orderOf_dvd_natCard)
-      -- 10. The conjugation automorphism of P₅ ≅ C₅ by τ has order | 3.
-      --     |Aut(C₅)| = |(ℤ/5ℤ)*| = 4, gcd(3,4) = 1, so automorphism = id.
-      --     Therefore τστ⁻¹ = σ, c = 1. Equivalently: c³ = 1 from the Aut argument,
-      --     combined with c⁵ = 1 and gcd(3,5) = 1 gives c = 1.
-      -- 11. σ * τ = τ * σ (from τστ⁻¹ = σ by group algebra).
-      sorry
+      -- Groups of order 15 are abelian: Sylow 5- and 3-subgroups are unique
+      -- (hence normal) and disjoint. By Subgroup.commute_of_normal_of_disjoint.
+      haveI : Finite (Sylow 5 ↥H) :=
+        Finite.of_injective (SetLike.coe (A := Sylow 5 ↥H) (B := ↥H))
+          SetLike.coe_injective
+      haveI : Finite (Sylow 3 ↥H) :=
+        Finite.of_injective (SetLike.coe (A := Sylow 3 ↥H) (B := ↥H))
+          SetLike.coe_injective
+      obtain ⟨P₅⟩ : Nonempty (Sylow 5 ↥H) := Sylow.nonempty
+      obtain ⟨P₃⟩ : Nonempty (Sylow 3 ↥H) := Sylow.nonempty
+      haveI : Subsingleton (Sylow 5 ↥H) := by
+        have hmod := card_sylow_modEq_one (p := 5) (G := ↥H)
+        have hdvd := card_sylow_dvd_index P₅
+        have hP5c : Nat.card ↥P₅ = 5 := by
+          rw [P₅.card_eq_multiplicity, hcard]; native_decide
+        have hidx : (↑P₅ : Subgroup ↥H).index = 3 := by
+          have := (↑P₅ : Subgroup ↥H).index_mul_card
+          rw [hP5c, hcard] at this; omega
+        rw [hidx] at hdvd
+        rcases (show Nat.Prime 3 by norm_num).eq_one_or_self_of_dvd _ hdvd with h | h
+        · exact Nat.card_le_one_iff_subsingleton.mp (by omega)
+        · exfalso; rw [h] at hmod; revert hmod; decide
+      haveI : Subsingleton (Sylow 3 ↥H) := by
+        have hmod := card_sylow_modEq_one (p := 3) (G := ↥H)
+        have hdvd := card_sylow_dvd_index P₃
+        have hP3c : Nat.card ↥P₃ = 3 := by
+          rw [P₃.card_eq_multiplicity, hcard]; native_decide
+        have hidx : (↑P₃ : Subgroup ↥H).index = 5 := by
+          have := (↑P₃ : Subgroup ↥H).index_mul_card
+          rw [hP3c, hcard] at this; omega
+        rw [hidx] at hdvd
+        rcases (show Nat.Prime 5 by norm_num).eq_one_or_self_of_dvd _ hdvd with h | h
+        · exact Nat.card_le_one_iff_subsingleton.mp (by omega)
+        · exfalso; rw [h] at hmod; revert hmod; decide
+      have hP5_normal : (↑P₅ : Subgroup ↥H).Normal := by
+        rw [← Subgroup.normalizer_eq_top, eq_top_iff]
+        intro g _; rw [← Sylow.smul_eq_iff_mem_normalizer]
+        exact Subsingleton.elim _ _
+      have hP3_normal : (↑P₃ : Subgroup ↥H).Normal := by
+        rw [← Subgroup.normalizer_eq_top, eq_top_iff]
+        intro g _; rw [← Sylow.smul_eq_iff_mem_normalizer]
+        exact Subsingleton.elim _ _
+      have hσ_in_P5 : (σ : ↥H) ∈ (↑P₅ : Subgroup ↥H) := by
+        have hpg : IsPGroup 5 (Subgroup.zpowers σ) := by
+          rw [IsPGroup.iff_card]
+          exact ⟨1, by rw [pow_one, Nat.card_zpowers, hσ]⟩
+        obtain ⟨Q, hQ⟩ := hpg.exists_le_sylow
+        exact (Subsingleton.elim Q P₅) ▸ hQ (Subgroup.mem_zpowers σ)
+      have hτ_in_P3 : (τ : ↥H) ∈ (↑P₃ : Subgroup ↥H) := by
+        have hpg : IsPGroup 3 (Subgroup.zpowers τ) := by
+          rw [IsPGroup.iff_card]
+          exact ⟨1, by rw [pow_one, Nat.card_zpowers, hτ]⟩
+        obtain ⟨Q, hQ⟩ := hpg.exists_le_sylow
+        exact (Subsingleton.elim Q P₃) ▸ hQ (Subgroup.mem_zpowers τ)
+      exact (Subgroup.commute_of_normal_of_disjoint _ _
+        hP5_normal hP3_normal
+        (IsPGroup.disjoint_of_ne 5 3 (by norm_num) _ _ P₅.isPGroup' P₃.isPGroup')
+        σ τ hσ_in_P5 hτ_in_P3).eq
     -- Transfer commutation from H to Perm (Fin 5) via subgroup coercion
     have := congr_arg Subtype.val hcomm
     simpa [Subgroup.coe_mul] using this)
