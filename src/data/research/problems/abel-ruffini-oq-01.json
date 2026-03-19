@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Established proof architecture for no_subgroup_order_15 via Cauchy+non-commutativity. Outer structure compiles (Docker verified). 1 sorry remains (Sylow commutation of order-5 and order-3 elements). no_subgroup_order_30 scaffolded.",
+    "progressSummary": "PROGRESS: Restructured no_subgroup_order_15 with Subtype.val transfer pattern. 1 sorry: σ*τ=τ*σ in H via Sylow theory. 1 sorry in no_subgroup_order_30.",
     "builtItems": [
       "InverseGalois.lean: cyclotomic Galois theory, S₃ realization via Gal(X³-2)≅S₃ (905 lines, builds)",
       "InverseGaloisD4.lean: D₄ realization via |Gal(X⁴-2)| = 8 (666 lines, builds)",
@@ -159,7 +159,8 @@
       "(ℤ/40ℤ)ˣ ≅ C₂² × C₄: φ(40)=16, exponent 4 (all x⁴=1), not cyclic, has order-4 elements",
       "Cauchy theorem (exists_prime_orderOf_dvd_card) + native_decide non-commutativity gives clean no_subgroup_order_15 architecture",
       "Key insight: Subtype.ext converts (σ : Perm(Fin 5)) = 1 to σ = (1 : ↥H), enabling orderOf_one rewrite",
-      "calc with congr 1 avoids rw motive errors for pow_orderOf_eq_one substitution"
+      "calc with congr 1 avoids rw motive errors for pow_orderOf_eq_one substitution",
+      "Subtype.val transfer: prove in H → congr_arg Subtype.val + Subgroup.coe_mul → Perm(Fin 5)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
