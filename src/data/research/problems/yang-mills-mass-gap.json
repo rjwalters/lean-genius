@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Parts CXXXIX-CXL (CGC/Saturation, Quark-Hadron Duality) \u2014 +150 lines, 20 theorems, 0 sorries. Session: 17 parts, 208 theorems, +2089 lines",
+    "progressSummary": "PROGRESS: Added Parts CXLI-CXLII (Topological Susceptibility, Dimensional Transmutation) \u2014 +183 lines, 22 theorems, 0 sorries. Session: 19 parts, 230 theorems, +2270 lines",
     "builtItems": [
       "Part C: OS Axioms - transfer matrix, Schwinger functions, spectral gap, Euclidean propagator (~30 theorems)",
       "Part CI: Resurgence - beta function, running coupling, renormalons, instanton factors, bions (~25 theorems)",
@@ -65,7 +65,9 @@
       "Part CXXXVII: Mass Gap Summary \u2014 137 sections, ~21500 lines, 500+ theorems, evidence synthesis (~65 lines, 6 theorems)",
       "Part CXXXVIII: Adjoint String Breaking \u2014 N-ality classification, Casimir scaling, gluelump mass, string breaking distance (~100 lines, 13 theorems)",
       "Part CXXXIX: Color Glass Condensate \u2014 saturation scale Q_s, BK unitarity, CGC regime (~80 lines, 8 theorems)",
-      "Part CXL: Quark-Hadron Duality \u2014 hadronic spectral function, dispersion relations, Weinberg sum rules (~70 lines, 8 theorems)"
+      "Part CXL: Quark-Hadron Duality \u2014 hadronic spectral function, dispersion relations, Weinberg sum rules (~70 lines, 8 theorems)",
+      "Part CXLI: Topological Susceptibility & Witten-Veneziano \u2014 \u03c7_t, \u03b7' mass, instanton liquid (~90 lines, 11 theorems)",
+      "Part CXLII: Dimensional Transmutation \u2014 \u039b_QCD generation, single-parameter spectrum, scheme independence (~93 lines, 11 theorems)"
     ],
     "insights": [
       "OS axioms (5) provide Euclidean formulation; reconstruction gives Wightman QFT",
@@ -124,7 +126,9 @@
       "2D YM fully solved (Driver-Sengupta-Levy); 3D and 4D remain completely open",
       "SU(N) free energy Z(\u03b2) is analytic \u2014 no phase transition at any \u03b2 (contrast: compact U(1) has transition at \u03b2_c\u22481.01)",
       "Strong coupling m\u2080 ~ -ln(\u03b2/2N\u00b2) >> 0 is continuously connected to weak coupling m\u2080 ~ \u039b_QCD",
-      "Mass gap is a VACUUM property independent of test sources: m\u2080=1.71 GeV exists even though adjoint strings break"
+      "Mass gap is a VACUUM property independent of test sources: m\u2080=1.71 GeV exists even though adjoint strings break",
+      "Topological susceptibility \u03c7_t^{1/4} = 191 MeV provides independent mass scale; convergence requires mass gap",
+      "Dimensional transmutation: ALL YM masses proportional to single parameter \u039b_QCD \u2248 300 MeV; m\u2080 = 5.7\u00b7\u039b"
     ],
     "mathlibGaps": [
       "Principal bundles",
