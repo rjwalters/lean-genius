@@ -392,3 +392,42 @@ Mathlib.FieldTheory.AbelRuffini
    Not in Mathlib.
 
 4. **Shafarevich's theorem**: 50+ pages of algebraic number theory. Not in Lean.
+
+## Session 2026-03-19 (researcher-7) - Proof Architecture for no_subgroup_order_15
+
+**Mode**: REVISIT (RICH knowledge score 88)
+**Outcome**: progress — established full proof architecture for Sylow helper lemma
+
+### What Was Done
+
+Proved the outer structure of `no_subgroup_order_15` (S₅ has no subgroup of order 15):
+1. Cauchy's theorem (`exists_prime_orderOf_dvd_card`) gives σ of order 5, τ of order 3 in H
+2. Coercion to Perm(Fin 5): σ^5=1, σ≠1, τ^3=1, τ≠1 (via `calc` + `congr 1` + `Subtype.ext`)
+3. `perm_fin5_order5_order3_not_commute` (native_decide) gives immediate contradiction
+4. Reduced to: prove σ and τ commute via Sylow theory (1 sorry)
+
+Also resolved merge conflict (InverseGaloisA5.lean) from concurrent researcher activity.
+
+### Key Discoveries
+
+- `exists_prime_orderOf_dvd_card` needs `Fintype` (not `Finite`) and `Fintype.card` (not `Nat.card`)
+- `pow_orderOf_eq_one σ` + `hσ : orderOf σ = 5`: use `calc` with `congr 1; exact hσ.symm` (avoids rw motive error)
+- `Subtype.ext heq` converts `(σ : Perm(Fin 5)) = 1` to `σ = (1 : ↥H)` cleanly
+- `simpa using congr_arg Subtype.val this` handles subtype→parent type coercion for pow/one
+
+### Remaining Sorries
+
+1. **Sylow commutation** (in `no_subgroup_order_15`): Show σ*τ = τ*σ via:
+   - n₅ = 1, n₃ = 1 (Sylow counting)
+   - P₅, P₃ normal (Subsingleton → normal)
+   - σ ∈ P₅, τ ∈ P₃ (IsPGroup.exists_le_sylow)
+   - Commutator [σ,τ] ∈ P₅ ∩ P₃ = ⊥
+
+2. **no_subgroup_order_30**: Two cases:
+   - H ⊆ A₅: index 2 → normal → contradicts A₅ simple (alternatingGroup.isSimpleGroup_five)
+   - H ⊄ A₅: sign kernel argument gives |H ∩ A₅| = 15
+
+### Docker Build
+
+Clean build with 2 expected sorries (down from original 2 sorries, now with proof structure established).
+
