@@ -450,12 +450,40 @@
       "id": "additional-congruent",
       "title": "Parts XLVIII-XLIX: Additional Congruent Number Results (PROVED)",
       "startLine": 5450,
-      "endLine": 5534,
+      "endLine": 5574,
       "summary": "**Fully proved**: additional congruent number verifications ($n = 13, 14, 15, 21, 22, 23$) with discriminant computations. Parametric properties of congruent number curves."
+    },
+    {
+      "id": "cm-curves-bsd",
+      "title": "Parts L-LI: CM Curves and BSD for Abelian Varieties",
+      "startLine": 5575,
+      "endLine": 5782,
+      "summary": "Arithmetic of CM elliptic curves and BSD. CM L-function factorization, Deuring supersingular primes, Rubin's CM-BSD theorem. Generalization to abelian varieties: Mordell-Weil for A(Q), Selmer groups, Sha finiteness conjecture."
+    },
+    {
+      "id": "iwasawa-kolyvagin",
+      "title": "Parts LII-LIII: Iwasawa Theory and Kolyvagin's Euler System",
+      "startLine": 5783,
+      "endLine": 5914,
+      "summary": "Iwasawa main conjecture for elliptic curves (Kato, Skinner-Urban). Good ordinary reduction. p-adic L-function interpolation. Kolyvagin's Euler system for BSD rank ≤ 1: norm-compatible classes, rank bound, Sha finiteness."
+    },
+    {
+      "id": "padic-recent",
+      "title": "Parts LIV-LV: p-Adic BSD and Recent Progress",
+      "startLine": 5915,
+      "endLine": 6053,
+      "summary": "p-adic BSD conjecture and special value formulas. p-adic regulator and Perrin-Riou formalism. Recent progress: Bhargava-Shankar average Selmer (avg rank < 1), positive proportion BSD results, higher rank challenges."
+    },
+    {
+      "id": "modularity-statistics",
+      "title": "Parts LVI-LVII: Modularity and Arithmetic Statistics",
+      "startLine": 6054,
+      "endLine": 6506,
+      "summary": "Modularity theorem (Wiles-BCDT): every E/Q is modular. Manin constant, functional equation, conductor bounds, Fermat connection. Arithmetic statistics: Bhargava-Shankar avg|Sel_n| = σ(n), Goldfeld conjecture, Katz-Sarnak symmetry, BSD verified for ≥66-87% of curves."
     }
   ],
   "conclusion": {
-    "summary": "The BSD Conjecture remains one of the deepest open problems in mathematics. This formalization is the largest in the gallery at 6053 lines with 194 theorems, 3 lemmas, 142 definitions, 78 structures, and 91 axioms for inherently deep results. It provides a comprehensive framework spanning the full landscape of BSD: from the core conjecture statement through Selmer groups, Iwasawa theory, the Bloch-Kato generalization, Tunnell's theorem, the Langlands program, and explicit computational verifications for curves 11a1, 37a, and 389a. The Koblitz correspondence, j-invariant classification, point doubling, and Hadamard bounds are all fully proved.",
+    "summary": "The BSD Conjecture remains one of the deepest open problems in mathematics. This formalization spans 6506 lines across 57 parts with 213 theorems/lemmas, 142 definitions, 78 structures, and 91 axioms (+ 3 structure-encoded assumptions). It covers the full landscape of BSD: from the core conjecture statement through Selmer groups, Iwasawa theory, Kolyvagin's Euler system, the Bloch-Kato generalization, Tunnell's theorem, the Langlands program, modularity (Wiles-BCDT), arithmetic statistics (Bhargava-Shankar), and explicit computational verifications for curves 11a1, 37a, and 389a. The Koblitz correspondence, j-invariant classification, point doubling, and Hadamard bounds are all fully proved.",
     "implications": "A proof of BSD would have profound consequences: it would provide an algorithm for computing the rank of any elliptic curve (via L-function computation), resolve the congruent number problem completely, establish finiteness of the Shafarevich-Tate group, and represent a landmark in the Langlands program connecting arithmetic and automorphic forms.",
     "openQuestions": [
       "Is the Shafarevich-Tate group always finite? (Implied by strong BSD, wide open in general)",
