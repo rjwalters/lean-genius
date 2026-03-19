@@ -17,7 +17,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 38,
-    "assumptions": "38 axiom declarations: Perelman Ricci flow surgery (finite extinction), Novikov compact leaf theorem (foliations), generalized Poincare in dimensions 2/4/≥5, topological constructions (connected sum, Dehn surgery), classification results (JSJ, h/s-cobordism), 3-manifold topology (Heegaard, Waldhausen, Property P, prime decomposition), counterexample structures (Poincare homology sphere, Whitehead manifold).",
+    "assumptions": "38 axiom declarations: Perelman Ricci flow surgery (finite extinction), Novikov compact leaf theorem (foliations), generalized Poincare in dimensions 2/4/≥5, topological constructions (connected sum, Dehn surgery), classification results (JSJ, h/s-cobordism), 3-manifold topology (Heegaard, Waldhausen, Property P, prime decomposition), counterexample structures (Poincare homology sphere, Whitehead manifold). No new axioms added in Parts LXXVIII-LXXIX.",
     "mathlibDependencies": [
       {
         "theorem": "SimplyConnectedSpace",
@@ -220,7 +220,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The Poincaré Conjecture is SOLVED (Perelman, 2002–2003): every simply connected, closed 3-manifold is homeomorphic to S³. The formalization provides ~9850 lines covering 77 parts, with 509 theorems/lemmas and 38 axioms. Coverage includes Ricci flow, surgery theory, κ-solutions, normal surfaces, taut foliations, Casson invariant, and computational complexity.",
+    "summary": "The Poincaré Conjecture is SOLVED (Perelman, 2002–2003): every simply connected, closed 3-manifold is homeomorphic to S³. The formalization provides ~10560 lines covering 79 parts, with 546 theorems/lemmas and 38 axioms. Coverage includes Ricci flow, surgery theory, κ-solutions, normal surfaces, taut foliations, Casson invariant, Heegaard Floer homology, the L-space conjecture, and computational complexity.",
     "implications": "Perelman's proof also established Thurston's Geometrization Conjecture, revolutionizing 3-manifold topology. The Ricci flow technique has since been applied to the differentiable sphere theorem (Brendle–Schoen 2009), classification of manifolds with positive isotropic curvature, and the study of Kähler–Ricci flow in complex geometry.",
     "openQuestions": [
       "The smooth 4-dimensional Poincaré conjecture: is every smooth homotopy 4-sphere diffeomorphic to $S^4$?",
