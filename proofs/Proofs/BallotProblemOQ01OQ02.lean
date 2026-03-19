@@ -38,7 +38,7 @@ the conditional probability equals the classical ballot result.
 - [x] Fiber structural analysis (leader position determination)
 - [x] Positive fiber dichotomy (all-or-nothing by target membership)
 - [x] Main theorem: uniformOn = (a-b)/(a+b) via Ballot.ballot_problem
-- Axiom count: 2 (fiber counting, condCount transfer)
+- Axiom count: 1 (condCount transfer; fiber counting PROVED via fiberSwap bijection)
 
 ## References
 - Bertrand (1887): Original 2-candidate ballot problem
@@ -454,31 +454,6 @@ theorem positive_fiber_dichotomy {m : ℕ} (hm : m ≥ 1) (a b : ℕ)
     exact (fiber_stays_iff_target hm a b target s hs).not.mpr htarget
 
 /-
-**Fiber Uniformity (axiomatized counting step)**
-
-For m ≥ 2 candidates, the fiber size over any target in countedSequence a b
-is the same: it equals the multinomial coefficient for distributing opponent
-labels among the b opponent positions. This is independent of WHICH positions
-are opponent positions (determined by the target), depending only on HOW MANY
-there are (always b).
-
-Proved structurally:
-- Leader positions determined by target (fiber_same_leader_positions)
-- Opponent positions are the complement (exactly b positions)
-- Fiber = all ways to assign (m-1) opponent labels to b positions
-
-The counting step (multinomial = multinomial) is axiomatized since
-formalizing Finset-based multinomial bijections would require ~500 lines
-of combinatorial infrastructure not in Mathlib.
--/
-axiom fiber_card_uniform (m : ℕ) (hm : 2 ≤ m) (a b : ℕ)
-    (t1 t2 : List ℤ)
-    (h1 : t1 ∈ Ballot.countedSequence a b)
-    (h2 : t2 ∈ Ballot.countedSequence a b) :
-    Set.ncard (multiProjectionFiber m (by omega) a b t1) =
-    Set.ncard (multiProjectionFiber m (by omega) a b t2)
-
-/-
 **Conditional probability transfer (axiomatized)**
 
 When a surjection f : A → B has uniform fiber sizes (every element of B
@@ -545,15 +520,6 @@ section FiberBijection
     the list of opponent candidate labels (in positional order). -/
 def extractOpponents {m : ℕ} (s : List (Fin m)) (target : List ℤ) : List (Fin m) :=
   (s.zip target).filterMap fun p => if p.2 = -1 then some p.1 else none
-
-/-- The length of extractOpponents equals the number of -1 entries in target
-    (when s and target have the same length). -/
-theorem extractOpponents_length {m : ℕ} (s : List (Fin m)) (target : List ℤ)
-    (hlen : s.length = target.length) :
-    (extractOpponents s target).length = (target.filter (· = -1)).length := by
-  -- Note: List.length_filterMap was renamed in a Mathlib update.
-  -- This proof is subsumed by extractOpponents_count below.
-  sorry
 
 /-- Reconstruct a multi-candidate sequence from a ±1 target and a list of
     opponent values. At positions where target = 1, emit leader; at positions
@@ -695,19 +661,19 @@ theorem reconstructSeq_projects (m : ℕ) (hm : m ≥ 1) :
       show project (leader m hm) (leader m hm :: reconstructSeq m hm ts ops) = 1 :: ts
       rw [project_cons, if_pos rfl]; congr 1
       apply ih ops hops _ hts
-      rw [List.count_cons_of_ne (show (1 : ℤ) ≠ -1 from by omega)] at hlen
+      rw [List.count_cons_of_ne (show (1 : ℤ) ≠ -1 from by decide)] at hlen
       exact hlen
     · have ht_neg : t = -1 := ht.resolve_left h1
       subst ht_neg
-      rw [List.count_cons_self] at hlen
+      simp only [List.count_cons_self] at hlen
       match ops with
-      | [] => omega
+      | [] => exact absurd hlen (by simp [List.length])
       | v :: rest =>
         -- reconstructSeq (-1 :: ts) (v :: rest) ≡ v :: reconstructSeq ts rest (definitional)
         show project (leader m hm) (v :: reconstructSeq m hm ts rest) = -1 :: ts
         rw [project_cons, if_neg (hops v (by simp))]; congr 1
         apply ih rest (fun w hw => hops w (mem_cons_of_mem v hw)) _ hts
-        omega
+        simp [List.length] at hlen; linarith
 
 /-- Cancellation: extract ∘ reconstruct = id on opponent lists. -/
 theorem extract_reconstruct_cancel (m : ℕ) (hm : m ≥ 1) :
@@ -733,19 +699,19 @@ theorem extract_reconstruct_cancel (m : ℕ) (hm : m ≥ 1) :
       show extractOpponents (leader m hm :: reconstructSeq m hm ts ops) ((1 : ℤ) :: ts) = ops
       rw [extractOpponents_cons_one]
       apply ih ops hops _ hts
-      rw [List.count_cons_of_ne (show (1 : ℤ) ≠ -1 from by omega)] at hlen
+      rw [List.count_cons_of_ne (show (1 : ℤ) ≠ -1 from by decide)] at hlen
       exact hlen
     · have ht_neg : t = -1 := ht.resolve_left h1
       subst ht_neg
-      rw [List.count_cons_self] at hlen
+      simp only [List.count_cons_self] at hlen
       match ops with
-      | [] => omega
+      | [] => exact absurd hlen (by simp [List.length])
       | v :: rest =>
         -- reconstructSeq (-1 :: ts) (v :: rest) ≡ v :: reconstructSeq ts rest (definitional)
         show extractOpponents (v :: reconstructSeq m hm ts rest) ((-1 : ℤ) :: ts) = v :: rest
         rw [extractOpponents_cons_neg]; congr 1
         apply ih rest (fun w hw => hops w (mem_cons_of_mem v hw)) _ hts
-        omega
+        simp [List.length] at hlen; linarith
 
 /-- The length of extractOpponents equals the count of -1 in target
     (for fiber members). Direct proof avoiding filter/count conversion. -/
@@ -765,12 +731,12 @@ theorem extractOpponents_count {m : ℕ} (hm : m ≥ 1) :
     · have htarget : target = (1 : ℤ) :: project (leader m hm) xs := by
         rw [← hproj, project_cons, if_pos hx]
       rw [htarget, extractOpponents_cons_one,
-        List.count_cons_of_ne (show (1 : ℤ) ≠ -1 from by omega)]
+        List.count_cons_of_ne (show (1 : ℤ) ≠ -1 from by decide)]
       exact ih _ rfl
     · have htarget : target = (-1 : ℤ) :: project (leader m hm) xs := by
         rw [← hproj, project_cons, if_neg hx]
       rw [htarget, extractOpponents_cons_neg, List.count_cons_self, List.length_cons]
-      have := ih _ rfl; omega
+      have := ih _ rfl; linarith
 
 /-- fiberSwap t2→t1 ∘ fiberSwap t1→t2 = id on fiber members.
     This is the key cancellation showing the fiber bijection is involutive. -/
@@ -791,6 +757,125 @@ theorem fiberSwap_cancel {m : ℕ} (hm : m ≥ 1)
   exact reconstruct_extract_cancel hm s t1 hproj
 
 end FiberBijection
+
+/-! ## Part VIII-C: Fiber Cardinality (Axiom Elimination)
+
+Using the fiberSwap bijection from Part VIII-B, we prove that all fibers
+over countedSequence targets have equal ncard, eliminating the
+`fiber_card_uniform` axiom. -/
+
+section FiberCardinality
+
+open Ballot ProbabilityTheory
+
+/-- Helper: for a list of ±1 values with count 1 = a and count (-1) = b,
+    the length is a + b. -/
+private theorem pm1_length_eq {a b : ℕ} (l : List ℤ)
+    (hpm : ∀ x ∈ l, x = (1 : ℤ) ∨ x = -1)
+    (hc1 : l.count 1 = a) (hcn : l.count (-1) = b) :
+    l.length = a + b := by
+  induction l generalizing a b with
+  | nil => simp_all
+  | cons x xs ih =>
+    have hxs : ∀ y ∈ xs, y = (1 : ℤ) ∨ y = -1 :=
+      fun y hy => hpm y (List.mem_cons_of_mem x hy)
+    rcases hpm x (List.mem_cons_self ..) with rfl | rfl
+    · -- x = 1
+      simp only [List.count_cons_self, List.count_cons_of_ne (by decide : (1 : ℤ) ≠ -1),
+        List.length_cons] at hc1 hcn ⊢
+      have := ih hxs (by omega : xs.count 1 = a - 1) hcn; omega
+    · -- x = -1
+      simp only [List.count_cons_self, List.count_cons_of_ne (by decide : (-1 : ℤ) ≠ 1),
+        List.length_cons] at hc1 hcn ⊢
+      have := ih hxs hc1 (by omega : xs.count (-1) = b - 1); omega
+
+/-- fiberSwap maps multiProjectionFiber(t1) into multiProjectionFiber(t2).
+    This is the key structural lemma enabling the axiom elimination. -/
+theorem fiberSwap_mem_multiProjectionFiber {m : ℕ} (hm1 : m ≥ 1)
+    {a b : ℕ} {t1 t2 : List ℤ}
+    (ht1 : t1 ∈ Ballot.countedSequence a b)
+    (ht2 : t2 ∈ Ballot.countedSequence a b)
+    {s : FinSequence m} (hs : s ∈ multiProjectionFiber m hm1 a b t1) :
+    fiberSwap m hm1 t1 t2 s ∈ multiProjectionFiber m hm1 a b t2 := by
+  obtain ⟨⟨hcount, hlen⟩, hproj⟩ := hs
+  obtain ⟨ht1_c1, ht1_cn, ht1_pm⟩ := ht1
+  obtain ⟨ht2_c1, ht2_cn, ht2_pm⟩ := ht2
+  have hops_nl := extractOpponents_nonleader hm1 s t1 hproj
+  have hops_len : (extractOpponents s t1).length = t2.count (-1) := by
+    rw [extractOpponents_count hm1 s t1 hproj]; linarith
+  refine ⟨⟨?_, ?_⟩, ?_⟩
+  · -- Leader count preserved
+    have h_proj2 := reconstructSeq_projects m hm1 t2 (extractOpponents s t1)
+      hops_nl hops_len ht2_pm
+    rw [← project_count_one (leader m hm1) (fiberSwap m hm1 t1 t2 s)]
+    show (project (leader m hm1) (fiberSwap m hm1 t1 t2 s)).count 1 = a
+    rw [show fiberSwap m hm1 t1 t2 s =
+      reconstructSeq m hm1 t2 (extractOpponents s t1) from rfl]
+    rw [h_proj2, ht2_c1]
+  · -- Length preserved
+    rw [fiberSwap_length m hm1 t1 t2 s]
+    exact pm1_length_eq t2 ht2_pm ht2_c1 ht2_cn
+  · -- Projection preserved
+    exact reconstructSeq_projects m hm1 t2 (extractOpponents s t1)
+      hops_nl hops_len ht2_pm
+
+/-- The multiProjectionFiber is finite (subset of fixed-length lists over Fin m). -/
+theorem multiProjectionFiber_finite (m : ℕ) (hm1 : m ≥ 1) (a b : ℕ)
+    (t : List ℤ) :
+    (multiProjectionFiber m hm1 a b t).Finite := by
+  suffices h : {l : List (Fin m) | l.length = a + b}.Finite by
+    exact h.subset (fun s hs => hs.1.2)
+  apply Set.Finite.subset (Set.finite_range (List.ofFn : (Fin (a + b) → Fin m) → _))
+  intro l (hl : l.length = a + b)
+  refine ⟨fun i => l.get ⟨i.val, by omega⟩, ?_⟩
+  apply List.ext_get (by simp [hl])
+  intro i hi1 _
+  simp
+
+/-- **Fiber cardinality theorem** (previously axiomatized).
+    For m ≥ 2 candidates, the fiber size over any target in countedSequence a b
+    is the same. Proved via the fiberSwap bijection. -/
+theorem fiber_card_uniform (m : ℕ) (hm : 2 ≤ m) (a b : ℕ)
+    (t1 t2 : List ℤ)
+    (h1 : t1 ∈ Ballot.countedSequence a b)
+    (h2 : t2 ∈ Ballot.countedSequence a b) :
+    Set.ncard (multiProjectionFiber m (by omega) a b t1) =
+    Set.ncard (multiProjectionFiber m (by omega) a b t2) := by
+  have hm1 : m ≥ 1 := by omega
+  have ht1_pm : ∀ x ∈ t1, x = (1 : ℤ) ∨ x = -1 := h1.2.2
+  have ht2_pm : ∀ x ∈ t2, x = (1 : ℤ) ∨ x = -1 := h2.2.2
+  have hcount : t1.count (-1) = t2.count (-1) := by
+    have := h1.2.1; have := h2.2.1; linarith
+  have fin1 := multiProjectionFiber_finite m hm1 a b t1
+  have fin2 := multiProjectionFiber_finite m hm1 a b t2
+  -- Injection t1 → t2
+  have inj12 : Set.InjOn (fiberSwap m hm1 t1 t2)
+      (multiProjectionFiber m hm1 a b t1) := by
+    intro s1 hs1 s2 hs2 heq
+    have := congr_arg (fiberSwap m hm1 t2 t1) heq
+    rw [fiberSwap_cancel hm1 t1 t2 s1 hs1.2 ht2_pm hcount,
+        fiberSwap_cancel hm1 t1 t2 s2 hs2.2 ht2_pm hcount] at this
+    exact this
+  have maps12 : Set.MapsTo (fiberSwap m hm1 t1 t2)
+      (multiProjectionFiber m hm1 a b t1) (multiProjectionFiber m hm1 a b t2) :=
+    fun _ hs => fiberSwap_mem_multiProjectionFiber hm1 h1 h2 hs
+  -- Injection t2 → t1
+  have inj21 : Set.InjOn (fiberSwap m hm1 t2 t1)
+      (multiProjectionFiber m hm1 a b t2) := by
+    intro s1 hs1 s2 hs2 heq
+    have := congr_arg (fiberSwap m hm1 t1 t2) heq
+    rw [fiberSwap_cancel hm1 t2 t1 s1 hs1.2 ht1_pm hcount.symm,
+        fiberSwap_cancel hm1 t2 t1 s2 hs2.2 ht1_pm hcount.symm] at this
+    exact this
+  have maps21 : Set.MapsTo (fiberSwap m hm1 t2 t1)
+      (multiProjectionFiber m hm1 a b t2) (multiProjectionFiber m hm1 a b t1) :=
+    fun _ hs => fiberSwap_mem_multiProjectionFiber hm1 h2 h1 hs
+  -- ncard ≤ in both directions → equality
+  exact le_antisymm
+    (Set.ncard_le_ncard_of_injOn _ maps12 inj12 fin2)
+    (Set.ncard_le_ncard_of_injOn _ maps21 inj21 fin1)
+
+end FiberCardinality
 
 /-! ## Part IX: Reference — The Classical Ballot Theorem
 
