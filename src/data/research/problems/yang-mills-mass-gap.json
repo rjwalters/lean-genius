@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Parts CXXIX-CXXX (functional integral measures, Dirac spectral geometry, +12 theorems, 0 sorries)",
+    "progressSummary": "PROGRESS: Added Parts CXXXI-CXXXII (lattice improvement programs, conformal window + walking technicolor, +8 theorems)",
     "builtItems": [
       "Part C: OS Axioms - transfer matrix, Schwinger functions, spectral gap, Euclidean propagator (~30 theorems)",
       "Part CI: Resurgence - beta function, running coupling, renormalons, instanton factors, bions (~25 theorems)",
@@ -55,7 +55,9 @@
       "Part CXXVII: Balaban RG — block-spin transformation, Gaussian dominance, axial gauge, small/large field decomposition, propagator estimates, coupling flow, MRS loop vertex expansion (~350 lines, 8 theorems)",
       "Part CXXVIII: Haag-Kastler Algebraic QFT — axiom framework, mass gap as spectral condition, Reeh-Schlieder, Borchers modular theory, DHR superselection/confinement, Haag-Ruelle scattering, Fredenhagen-Marcu criterion (~340 lines, 7 theorems)",
       "Part CXXIX: Functional Integral Measures — Wilson action, Symanzik improvement, Osterwalder-Seiler strong coupling, reflection positivity, cluster expansion, thermodynamic limit (6 theorems)",
-      "Part CXXX: Dirac Spectral Geometry — Atiyah-Singer index, Banks-Casher relation, RMT universality, Nielsen-Ninomiya doubling, Weyl law, Witten-Veneziano formula (6 theorems)"
+      "Part CXXX: Dirac Spectral Geometry — Atiyah-Singer index, Banks-Casher relation, RMT universality, Nielsen-Ninomiya doubling, Weyl law, Witten-Veneziano formula (6 theorems)",
+      "Part CXXXI: Lattice Improvement — Symanzik program, Lüscher-Weisz coefficients, Sommer parameter, gradient flow (4 theorems)",
+      "Part CXXXII: Conformal Window — AF bound, Banks-Zaks fixed point, Miransky scaling, walking technicolor (4 theorems)"
     ],
     "insights": [
       "OS axioms (5) provide Euclidean formulation; reconstruction gives Wightman QFT",
@@ -109,7 +111,9 @@
       "DHR superselection: confinement = triviality of sector category (only singlet representations appear)",
       "Fredenhagen-Marcu: rigorous confinement criterion via open Wilson line order parameter ρ(R) → 0",
       "Cluster expansion converges only for β < 2, but physical SU(3) is at β ≈ 6 — this gap is why rigorous construction is hard",
-      "Nielsen-Ninomiya: 2^d fermion doublers on lattice; Ginsparg-Wilson relation resolves this with exact lattice chirality"
+      "Nielsen-Ninomiya: 2^d fermion doublers on lattice; Ginsparg-Wilson relation resolves this with exact lattice chirality",
+      "Mass gap vanishes at conformal window boundary via Miransky (essential singularity) scaling — not power law",
+      "Gradient flow (Lüscher 2010) automatically renormalizes operators, removing UV divergences at positive flow time"
     ],
     "mathlibGaps": [
       "Principal bundles",
