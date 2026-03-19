@@ -18,13 +18,13 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-02-21T19:21:07.129Z",
-    "iteration": 10,
-    "focus": "Extended census to 21 groups, decomposed q_gal_card axiom",
+    "iteration": 11,
+    "focus": "Part XIV: Vandermonde chain proving gal_card_dvd_60 from transparent axiom",
     "blockers": [
       "Kronecker-Weber not in Mathlib",
       "Hilbert irreducibility not in Mathlib"
     ],
-    "nextAction": "Only q_gal_card remains (requires discriminant computation + Chebotarev density). Also fixed Mathlib API breaks: q_irreducible (norm_cast), gal_not_solvable (solvable_of_surjective)",
+    "nextAction": "Close 2 sorries in gal_permutes_roots and gal_acts_on_vandermondeProduct (coercion alignment)",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Part XIII added to InverseGaloisA5.lean. Decomposed gal_card_dvd_60 axiom into proved structural theorem (gal_card_dvd_60_of_all_even) + transparent gap (disc=Δ² identity). Built rootEnum, vandermondeProduct, galToPerm5, galSign infrastructure. 963→1198 lines, 0 sorries, 2 axioms.",
+    "progressSummary": "PROGRESS: Part XIV adds Vandermonde permutation chain (steps 2-6) proving gal_card_dvd_60 from transparent axiom vandermondeProduct_sq_eq. 1198→1397 lines, 2+1=3 axioms (gal_card_dvd_60 now derivable), 2 sorries (coercion alignment). Also fixed 2 Mathlib API breaks.",
     "builtItems": [
       "InverseGalois.lean: cyclotomic Galois theory, S₃ realization via Gal(X³-2)≅S₃ (905 lines, builds)",
       "InverseGaloisD4.lean: D₄ realization via |Gal(X⁴-2)| = 8 (666 lines, builds)",
@@ -154,7 +154,16 @@
         "name": "vandermondeProduct",
         "description": "Vandermonde determinant of q roots, proved nonzero (vandermondeProduct_ne_zero)",
         "proven": true
-      }
+      },
+      "Part XIV: Vandermonde permutation chain (steps 2-6) proving all_gal_signs_positive",
+      "vandermondeProduct_sq_eq axiom (transparent): Δ² = disc(q) = 32000²",
+      "vandermondeProduct_eq_pm_32000: Δ = ±32000 from domain property",
+      "vandermondeProduct_in_rat_range: Δ ∈ range(algebraMap ℚ F)",
+      "gal_fixes_vandermondeProduct: σ(Δ) = Δ via AlgEquiv.commutes",
+      "vandermonde_comp_eq_submatrix + vandermonde_perm_det: det(V∘π) = sign(π)·det(V)",
+      "all_gal_signs_positive: ∀ σ, galSign σ = 1 (from chain)",
+      "gal_card_dvd_60_proved: |Gal| ∣ 60 proved from transparent axiom",
+      "Fixed Mathlib v4.26.0 API breaks: Subgroup.card_dvd_of_le (Nat.card→Fintype.card), Finset.prod_ne_zero"
     ],
     "insights": [
       "Cyclotomic irreducibility over ℚ IS in Mathlib: Polynomial.cyclotomic.irreducible_rat",
@@ -209,7 +218,11 @@
       "The gap reduces to one standard identity: disc(f) = vandermondeProduct² (Polynomial.disc vs Matrix.det_vandermonde)",
       "rootEnum : Fin 5 → SplittingField q gives canonical root enumeration; injective from separability",
       "vandermondeProduct := det(Matrix.vandermonde rootEnum) is nonzero (proved from root distinctness)",
-      "galToPerm5 : q.Gal →* Perm(Fin 5) is the canonical injection; galSign σ = Perm.sign(galToPerm5 σ)"
+      "galToPerm5 : q.Gal →* Perm(Fin 5) is the canonical injection; galSign σ = Perm.sign(galToPerm5 σ)",
+      "gal_card_dvd_60 axiom is now DERIVABLE from vandermondeProduct_sq_eq (disc=Δ²)",
+      "AlgEquiv coercion paths differ: σ vs σ.toAlgHom.toRingHom need explicit alignment for RingHom.map_det",
+      "MulAction.toPermHom is the underlying API for galActionHom on rootSet - needs careful coercion work",
+      "sq_sub_sq gives (a+b)(a-b)=0 for domain reasoning without linear order"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -237,7 +250,7 @@
     "mathlib": []
   },
   "started": "2026-02-21T19:21:07.129Z",
-  "lastUpdate": "2026-03-19T14:00:00.000Z",
+  "lastUpdate": "2026-03-19T19:30:00.000Z",
   "significance": 6,
   "tractability": 6
 }
