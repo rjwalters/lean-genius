@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-02-21T19:21:07.129Z",
-    "iteration": 8,
-    "focus": "InverseGaloisA5: eliminated 5/6 axioms. q_gal_iso_a5 now PROVED from q_gal_card via eq_alternatingGroup_of_index_eq_two",
+    "iteration": 9,
+    "focus": "Extended census to order 12, added C₂×C₆ via 21st cyclotomic",
     "blockers": [
       "Kronecker-Weber not in Mathlib",
       "Hilbert irreducibility not in Mathlib"
@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: ~1420 lines (main file), 2 sorries (IGP open conjecture + Hilbert irred.), 0 axioms. Part XVI extends census to order ≤8: 14/15 groups realized (C₂×C₄ via 15th cyclotomic, C₂³ via 24th cyclotomic). Only Q₈ missing.",
+    "progressSummary": "PROGRESS: Added C₂×C₆ via 21st cyclotomic. Extended census to order 12. 1506 lines, 81 theorems, 2 axioms, 2 sorries. 19 groups realized sorry-free.",
     "builtItems": [
       "InverseGalois.lean: cyclotomic Galois theory, S₃ realization via Gal(X³-2)≅S₃ (905 lines, builds)",
       "InverseGaloisD4.lean: D₄ realization via |Gal(X⁴-2)| = 8 (666 lines, builds)",
@@ -68,7 +68,17 @@
       "c2_cubed_realized: C₂³ via 24th cyclotomic field (sorry-free, Docker verified)",
       "zmod15_units_not_cyclic, zmod15_units_no_order_8, zmod15_units_has_order_4",
       "zmod24_units_not_cyclic, zmod24_units_sq_eq_one, zmod24_units_no_order_4",
-      "Totient computations: φ(7,9,11,15,16,20,24) by decide"
+      "Totient computations: φ(7,9,11,15,16,20,24) by decide",
+      {
+        "name": "c2_times_c6_realized",
+        "description": "C₂×C₆ realized via 21st cyclotomic field (sorry-free)",
+        "proven": true
+      },
+      {
+        "name": "zmod21_units_not_cyclic",
+        "description": "(ℤ/21ℤ)ˣ is not cyclic (exponent 6 < order 12)",
+        "proven": true
+      }
     ],
     "insights": [
       "Cyclotomic irreducibility over ℚ IS in Mathlib: Polynomial.cyclotomic.irreducible_rat",
@@ -104,7 +114,8 @@
       "(ℤ/24ℤ)ˣ ≅ C₂³: φ(24)=8, exponent 2 (all elements square to 1) — realizes C₂×C₂×C₂",
       "(ℤ/16ℤ)ˣ ≅ (ℤ/20ℤ)ˣ ≅ C₂ × C₄: multiple cyclic moduli give same abstract group",
       "Grand census: 14/15 groups of order ≤ 8 realized with sorry-free proofs (only Q₈ missing)",
-      "Non-cyclicity proof pattern: compute exponent by decide, contradict with orderOf = |G| argument"
+      "Non-cyclicity proof pattern: compute exponent by decide, contradict with orderOf = |G| argument",
+      "(ℤ/21ℤ)ˣ ≅ C₂ × C₆: φ(21)=12, exponent lcm(2,6)=6, has element of order 6 — realizes C₂×C₆ as Galois group"
     ],
     "mathlibGaps": [],
     "nextSteps": [
