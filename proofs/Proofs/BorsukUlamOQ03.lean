@@ -317,10 +317,15 @@ theorem no_equivariant_map_sphere (n : ℕ) (hn : 1 ≤ n)
 -/
 
 /-- Summary of the constructive status of Borsuk-Ulam:
-
-    1D: Proved constructively via IVT in this file
-    nD: Requires algebraic topology (axiomized) -/
-theorem bu_constructive_summary : (1 : ℕ) + 1 = 2 := rfl
+    1D: Proved constructively via IVT in this file.
+    nD: Requires algebraic topology (axiomized). -/
+theorem bu_constructive_summary :
+    -- 1D BU: constructive via IVT
+    (∀ f : ℝ → ℝ, Continuous f → ∃ x : ℝ, x ∈ Icc (-1:ℝ) 1 ∧ f x = f (-x)) ∧
+    -- 1D odd function zero: constructive
+    (∀ f : ℝ → ℝ, Continuous f → (∀ x : ℝ, f (-x) = -f x) →
+      ∃ x : ℝ, x ∈ Icc (-1:ℝ) 1 ∧ f x = 0) :=
+  ⟨borsuk_ulam_interval, odd_continuous_has_zero⟩
 
 /-
 ## Section IX: The Interval Version Has a Trivial Witness
@@ -860,7 +865,11 @@ axiom brouwer_fixed_point (n : ℕ)
     for n ≥ 2. This demonstrates the constructive/classical divide:
     - 1D: Constructive (IVT)
     - nD: Classical (requires BU → no retraction → FP chain) -/
-theorem brouwer_1d_is_constructive : (1 : ℕ) + 1 = 2 := rfl
+theorem brouwer_1d_is_constructive :
+    ∀ f : ℝ → ℝ, Continuous f →
+    (∀ x ∈ Icc (-1:ℝ) 1, f x ∈ Icc (-1:ℝ) 1) →
+    ∃ x : ℝ, x ∈ Icc (-1:ℝ) 1 ∧ f x = x :=
+  brouwer_fixed_point_1d
 
 /-
 ## Section XXIII: Lusternik-Schnirelmann for S^n (from BU Axiom)
@@ -891,8 +900,14 @@ axiom lusternik_schnirelmann (n : ℕ) (hn : 1 ≤ n)
     BU gives x with f(x) = f(-x), i.e., d(x, ∂U_i) = d(-x, ∂U_i).
     The (n+1)-th set catches x and -x by pigeonhole.
 
-    We record this logical implication. -/
-theorem bu_implies_ls_sketch : (1 : ℕ) + 1 = 2 := rfl
+    We record this logical implication: 1D LS is a proved theorem
+    (lusternik_schnirelman_symmetric). -/
+theorem bu_implies_ls_sketch :
+    ∀ (a : ℝ), 0 < a → ∀ (A B : Set ℝ),
+    IsClosed A → IsClosed B → (∀ x ∈ Icc (-a) a, x ∈ A ∨ x ∈ B) →
+    (∃ x ∈ Icc (-a) a, x ∈ A ∧ -x ∈ A) ∨
+    (∃ x ∈ Icc (-a) a, x ∈ B ∧ -x ∈ B) :=
+  lusternik_schnirelman_symmetric
 
 /-
 ## Section XXIV: Topological Dimension and BU
@@ -952,7 +967,8 @@ theorem invariance_of_dimension (n m : ℕ) (hn : 1 ≤ n) (hm : 1 ≤ m) (hnm :
 
     In this formalization, we prove it directly from the BU axiom
     (for n ≥ 2) using the dimension-reducing non-injectivity lemma. -/
-theorem invariance_of_dimension_from_bu : (1 : ℕ) + 1 = 2 := rfl
+def invariance_of_dimension_from_bu :=
+  @invariance_of_dimension
 
 /-
 ## Section XXVI: BU for n=1 in General Form (Proved Constructively)
@@ -1067,7 +1083,8 @@ theorem borsuk_ulam_n1
     Higher-dimensional BU requires algebraic topology and is
     not known to have a fully constructive proof. Tucker's lemma
     provides a combinatorial/constructive foundation for 1D. -/
-theorem bu_complete_summary : (1 : ℕ) + 1 = 2 := rfl
+def bu_complete_summary :=
+  PProd.mk borsuk_ulam_interval brouwer_fixed_point_1d
 
 /-
 ## Section XXVII: Tucker's Parity Lemma
@@ -1270,7 +1287,7 @@ theorem lusternik_schnirelman_S1' (A B : Set (ℝ × ℝ))
 
     The file now contains a complete constructive toolkit for 1D
     Borsuk-Ulam and its combinatorial/topological consequences. -/
-theorem bu_updated_summary : (1 : ℕ) + 1 = 2 := rfl
+def bu_updated_summary := tucker_parity
 
 /-
 ## Section XXX: Antipodal Zero Pairing on S¹
@@ -1794,7 +1811,8 @@ theorem bu_is_zero_finding (f : ℝ → ℝ) (hf : Continuous f) :
     - 1D BU is constructive modulo sign determination at endpoints
     - Bisection gives O(log(1/ε)) algorithm for ε-approximate BU
     - n ≥ 2 BU inherently uses contradiction (degree theory) -/
-theorem bu_final_summary : (1 : ℕ) + 1 = 2 := rfl
+def bu_final_summary :=
+  PProd.mk borsuk_ulam_interval (PProd.mk odd_continuous_has_zero brouwer_fixed_point_1d)
 
 /-
 ## Section XLII: Tucker's 2D Lemma (Octahedral Triangulation)
@@ -1958,78 +1976,60 @@ theorem sperner_1d (n : ℕ) (L : Fin (n + 2) → Bool)
     (hL0 : L 0 = false)
     (hLn : L (Fin.last (n + 1)) = true) :
     ∃ i : Fin (n + 1), L i.castSucc = false ∧ L i.succ = true := by
-  -- Tucker gives an adjacent sign change
-  have hne : L 0 ≠ L (Fin.last (n + 1)) := by rw [hL0, hLn]; decide
-  obtain ⟨i, hi⟩ := tucker_1d_sign_change n L hne
-  -- The sign change must be false→true (not true→false) by an invariant argument
-  -- Actually, both directions are possible. But at least one false→true exists.
-  -- We use a direct induction argument instead.
-  -- Induction: find the FIRST position where L changes from false to true
-  suffices ∃ i : Fin (n + 1), L i.castSucc = false ∧ L i.succ = true by exact this
-  -- There exists a minimal k with L(k) = true
-  have hex : ∃ k : Fin (n + 2), L k = true := ⟨Fin.last (n + 1), hLn⟩
-  -- Let k be the smallest such index
-  have : ∃ k : ℕ, k < n + 2 ∧ L ⟨k, by omega⟩ = true ∧
-    ∀ j : ℕ, j < k → L ⟨j, by omega⟩ = false := by
-    -- The set of true indices is nonempty (contains n+1)
-    -- Pick the minimum
-    by_contra h
-    push_neg at h
-    have : ∀ k : ℕ, k < n + 2 → L ⟨k, by omega⟩ = true →
-      ∃ j : ℕ, j < k ∧ L ⟨j, by omega⟩ = true := by
-      intro k hk hLk
-      rcases h k hk hLk with ⟨j, hj, hLj⟩
-      exact ⟨j, hj, by simp [Bool.eq_false_iff] at hLj; exact Bool.not_not.mp (Bool.eq_false_iff.not.mp (by push_neg; exact hLj))⟩
-    -- This gives an infinite descent, contradiction
-    -- Simpler: 0 is false, so 0 is not in the set.
-    -- If every true index has a smaller true index, and 0 is false,
-    -- then by well-founded descent there are no true indices. But n+1 is true.
-    have h0 : L ⟨0, by omega⟩ = false := hL0
-    -- Strong induction: every k < n+2 with L(k) = true has a predecessor
-    -- But the set of predecessors is strictly decreasing, bounded below by 0
-    -- with L(0) = false. Contradiction.
-    have : ∀ k : ℕ, k < n + 2 → L ⟨k, by omega⟩ = false := by
-      intro k hk
-      induction k with
-      | zero => exact hL0
-      | succ m ih =>
-        by_contra hLm
-        simp [Bool.eq_false_iff] at hLm
-        have hLm_true : L ⟨m + 1, hk⟩ = true := hLm
-        rcases h (m + 1) hk hLm_true with ⟨j, hj, hLj⟩
-        have := ih (by omega)
-        simp [Bool.eq_false_iff] at hLj
-        rw [this] at hLj
-        exact absurd hLj (by decide)
-    exact absurd (this (n + 1) (by omega)) (by rw [hLn]; decide)
-  obtain ⟨k, hk_bound, hk_true, hk_min⟩ := this
-  -- k ≥ 1 since L(0) = false
-  have hk_pos : 0 < k := by
-    by_contra h
-    push_neg at h
-    interval_cases k
-    rw [hL0] at hk_true
-    exact absurd hk_true (by decide)
-  -- So k-1 exists and L(k-1) = false, L(k) = true
-  refine ⟨⟨k - 1, by omega⟩, ?_, ?_⟩
-  · -- L(k-1) = false
-    have := hk_min (k - 1) (by omega)
-    convert this using 1
-    congr 1; ext; simp; omega
-  · -- L(k) = true
-    convert hk_true using 1
-    congr 1; ext; simp; omega
+  -- Lift L to ℕ → Bool (padding with false outside [0, n+1])
+  let L' : ℕ → Bool := fun k => if h : k < n + 2 then L ⟨k, h⟩ else false
+  have hL'0 : L' 0 = false := by
+    show (if h : (0:ℕ) < n + 2 then L ⟨0, h⟩ else false) = false
+    rw [dif_pos (by omega)]; exact hL0
+  have hL'last : L' (n + 1) = true := by
+    show (if h : n + 1 < n + 2 then L ⟨n + 1, h⟩ else false) = true
+    rw [dif_pos (by omega)]; exact hLn
+  -- Find the minimum k with L'(k) = true via Nat.find
+  have hex : ∃ k, L' k = true := ⟨n + 1, hL'last⟩
+  let k₀ := Nat.find hex
+  have hk₀_true : L' k₀ = true := Nat.find_spec hex
+  have hk₀_min : ∀ j, j < k₀ → L' j ≠ true := fun j hj => Nat.find_min hex hj
+  -- k₀ ≥ 1 since L'(0) = false
+  have hk₀_pos : 0 < k₀ := by
+    suffices k₀ ≠ 0 by omega
+    intro heq
+    have : L' 0 = true := heq ▸ hk₀_true
+    rw [hL'0] at this; exact absurd this (by decide)
+  -- k₀ ≤ n + 1 since L'(n+1) = true
+  have hk₀_le : k₀ ≤ n + 1 := by
+    by_contra hc; push_neg at hc
+    exact hk₀_min (n + 1) hc hL'last
+  -- Extract Fin-level facts
+  have hk₀_lt : k₀ < n + 2 := by omega
+  have hkm1_lt : k₀ - 1 < n + 2 := by omega
+  have hkm1_bound : k₀ - 1 < n + 1 := by omega
+  have hLk₀ : L ⟨k₀, hk₀_lt⟩ = true := by
+    have h := hk₀_true
+    change (if hk : k₀ < n + 2 then L ⟨k₀, hk⟩ else false) = true at h
+    rwa [dif_pos hk₀_lt] at h
+  have hLkm1 : L ⟨k₀ - 1, hkm1_lt⟩ = false := by
+    have hne : L' (k₀ - 1) ≠ true := hk₀_min (k₀ - 1) (by omega)
+    have hf : L' (k₀ - 1) = false := by
+      cases h : L' (k₀ - 1) with
+      | false => rfl
+      | true => exact absurd h hne
+    change (if hk : k₀ - 1 < n + 2 then L ⟨k₀ - 1, hk⟩ else false) = false at hf
+    rwa [dif_pos hkm1_lt] at hf
+  -- The witness: i = ⟨k₀ - 1, _⟩
+  refine ⟨⟨k₀ - 1, hkm1_bound⟩, ?_, ?_⟩
+  · -- L(castSucc i) = false
+    exact hLkm1
+  · -- L(succ i) = true
+    have heq : (⟨k₀ - 1, hkm1_bound⟩ : Fin (n + 1)).succ = ⟨k₀, hk₀_lt⟩ := by
+      ext; show (k₀ - 1) + 1 = k₀; omega
+    rw [heq]; exact hLk₀
 
 /-- **Sperner implies Brouwer FP (1D sketch)**: Sperner's lemma gives a
     complete edge [i/(n+1), (i+1)/(n+1)] with labels 0 and 1. Taking n → ∞
     gives a fixed point by compactness. In 1D, this is just the IVT argument
     discretized. We record this logical connection. -/
-theorem sperner_implies_brouwer_1d_sketch :
-    (∀ n : ℕ, ∀ L : Fin (n + 2) → Bool,
-      L 0 = false → L (Fin.last (n + 1)) = true →
-      ∃ i : Fin (n + 1), L i.castSucc = false ∧ L i.succ = true) →
-    True := by
-  intro _; trivial
+def sperner_implies_brouwer_1d_sketch :=
+  PProd.mk sperner_1d brouwer_fixed_point_1d
 
 /-
 ## Section XLIV: Formal Equivalence Chain (1D)
@@ -2152,7 +2152,8 @@ theorem no_retraction_implies_brouwer_1d :
     - No-retraction 1D ✓ (Section XLIV)
     - BU → Brouwer FP ✓ (Section XLIV, bu_implies_brouwer_1d)
     - No-retraction proved ✓ (Section XLIV, no_retraction_1d) -/
-theorem equivalence_chain_1d_summary : (1 : ℕ) + 1 = 2 := rfl
+def equivalence_chain_1d_summary :=
+  PProd.mk borsuk_ulam_interval (PProd.mk sperner_1d (PProd.mk brouwer_fixed_point_1d no_retraction_1d))
 
 /-
 ## Section XLV: Tucker-BU Bridge (Why Tucker ↔ BU)
@@ -2184,26 +2185,46 @@ theorem tucker_path_following_1d (n : ℕ) (s : Fin (n + 2) → Bool)
     -- Find the FIRST sign change (minimal i with s(i) ≠ s(i+1))
     ∃ i : Fin (n + 1), s i.castSucc ≠ s i.succ ∧
       ∀ j : Fin (n + 1), j < i → s j.castSucc = s j.succ := by
-  -- Find minimum i with s(i) ≠ s(i+1) using well-founded recursion
-  -- The set of sign-change indices is nonempty (by Tucker 1D)
+  -- Lift s to ℕ → Bool
+  let s' : ℕ → Bool := fun k => if hk : k < n + 2 then s ⟨k, hk⟩ else false
+  -- There exists a sign change (from Tucker 1D)
   have ⟨i, hi⟩ := tucker_1d_sign_change n s h
-  -- Use well-ordering to find the minimum
-  have : ∃ k : ℕ, k < n + 1 ∧ s (⟨k, by omega⟩ : Fin (n + 2)) ≠
-    s (⟨k + 1, by omega⟩ : Fin (n + 2)) := by
-    exact ⟨i.val, i.isLt, by convert hi using 2 <;> ext <;> simp⟩
-  -- Find the minimum such k
-  obtain ⟨k, hk_bound, hk_change, hk_min⟩ :=
-    Nat.findX (p := fun k => k < n + 1 ∧ s (⟨k, by omega⟩ : Fin (n + 2)) ≠
-      s (⟨k + 1, by omega⟩ : Fin (n + 2))) ⟨_, this⟩
-  refine ⟨⟨k, hk_bound.1⟩, ?_, ?_⟩
-  · convert hk_change.2 using 2 <;> ext <;> simp
-  · intro j hj
+  -- Express as a predicate on ℕ
+  let P : ℕ → Prop := fun k => k < n + 1 ∧ s' k ≠ s' (k + 1)
+  have hex : ∃ k, P k := by
+    refine ⟨i.val, i.isLt, ?_⟩
+    show (if hk : i.val < n + 2 then s ⟨i.val, hk⟩ else false) ≠
+         (if hk : i.val + 1 < n + 2 then s ⟨i.val + 1, hk⟩ else false)
+    rw [dif_pos (show i.val < n + 2 by omega), dif_pos (show i.val + 1 < n + 2 by omega)]
+    convert hi using 2
+  -- Find minimum sign change using Nat.find
+  let k₀ := Nat.find hex
+  have hk₀ : P k₀ := Nat.find_spec hex
+  have hk₀_min : ∀ j, j < k₀ → ¬P j := fun j hj => Nat.find_min hex hj
+  -- Extract facts
+  have hk₀_bound : k₀ < n + 1 := hk₀.1
+  have hk₀_lt : k₀ < n + 2 := by omega
+  have hk₀1_lt : k₀ + 1 < n + 2 := by omega
+  -- Convert s' sign change to s sign change
+  have hs_change : s ⟨k₀, hk₀_lt⟩ ≠ s ⟨k₀ + 1, hk₀1_lt⟩ := by
+    have h := hk₀.2
+    change (if hk : k₀ < n + 2 then s ⟨k₀, hk⟩ else false) ≠
+           (if hk : k₀ + 1 < n + 2 then s ⟨k₀ + 1, hk⟩ else false) at h
+    rwa [dif_pos hk₀_lt, dif_pos hk₀1_lt] at h
+  -- The witness
+  refine ⟨⟨k₀, hk₀_bound⟩, ?_, ?_⟩
+  · -- Sign change at k₀
+    convert hs_change using 2
+  · -- Minimality: no sign changes before k₀
+    intro j hj
     by_contra hj_ne
-    have := hk_min j.val (by
-      constructor
-      · exact Nat.lt_of_lt_of_le (Fin.lt_iff_val_lt_val.mp hj) (le_refl _)
-      · convert hj_ne using 2 <;> ext <;> simp)
-    omega
+    have : P j.val := by
+      refine ⟨j.isLt, ?_⟩
+      show (if hk : j.val < n + 2 then s ⟨j.val, hk⟩ else false) ≠
+           (if hk : j.val + 1 < n + 2 then s ⟨j.val + 1, hk⟩ else false)
+      rw [dif_pos (show j.val < n + 2 by omega), dif_pos (show j.val + 1 < n + 2 by omega)]
+      convert hj_ne using 2
+    exact absurd this (hk₀_min j.val (Fin.lt_def.mp hj))
 
 /-
 ## Section XLVI: Updated Summary
@@ -2232,7 +2253,8 @@ theorem tucker_path_following_1d (n : ℕ) (s : Fin (n + 2) → Bool)
     - Commentary: why Tucker's lemma is more constructive than BU in higher dim
 
     **Grand total**: 94 + ~12 = ~106 proved results, 4 axioms, 0 sorries. -/
-theorem bu_session_summary_xlii_xlv : (1 : ℕ) + 1 = 2 := rfl
+def bu_session_summary_xlii_xlv :=
+  PProd.mk (@tucker_2d_octahedral) (PProd.mk sperner_1d (PProd.mk bu_implies_brouwer_1d no_retraction_1d))
 
 /-
 ## Section XLVII: Sperner's 2D Lemma (Minimal Triangulation)
@@ -2356,34 +2378,30 @@ theorem kkm_1d (A₀ A₁ : Set ℝ)
   have hA₀_ne : A₀.Nonempty := ⟨0, h0⟩
   have hA₁_ne : A₁.Nonempty := ⟨1, h1⟩
   set f := fun x : ℝ => Metric.infDist x A₁ - Metric.infDist x A₀ with hf_def
-  have hf_cont : Continuous f := by unfold_let f; fun_prop
+  have hf_cont : Continuous f := by
+    show Continuous (fun x => Metric.infDist x A₁ - Metric.infDist x A₀)
+    exact (Metric.continuous_infDist_pt A₁).sub (Metric.continuous_infDist_pt A₀)
   have hf0 : 0 ≤ f 0 := by
     simp only [hf_def, sub_nonneg]
-    exact le_of_eq (Metric.infDist_zero_of_mem h0).symm ▸ Metric.infDist_nonneg
+    rw [Metric.infDist_zero_of_mem h0]; exact Metric.infDist_nonneg
   have hf1 : f 1 ≤ 0 := by
     simp only [hf_def, sub_nonpos]
-    exact le_of_eq (Metric.infDist_zero_of_mem h1).symm ▸ Metric.infDist_nonneg
+    rw [Metric.infDist_zero_of_mem h1]; exact Metric.infDist_nonneg
   obtain ⟨x, hx_mem, hx_zero⟩ :=
     intermediate_value_Icc' (by norm_num : (0:ℝ) ≤ 1) hf_cont.continuousOn ⟨hf1, hf0⟩
   refine ⟨x, hx_mem, ?_, ?_⟩
-  · -- x ∈ A₀: infDist(x, A₀) = 0 since infDist(x, A₁) = infDist(x, A₀)
-    -- and both are nonneg, and their difference is 0
-    have h_eq : Metric.infDist x A₁ = Metric.infDist x A₀ := by
+  · have h_eq : Metric.infDist x A₁ = Metric.infDist x A₀ := by
       simp only [hf_def] at hx_zero; linarith
-    -- By covering, x ∈ A₀ ∨ x ∈ A₁
     rcases hcover x hx_mem with h | h
     · exact h
-    · -- x ∈ A₁ means infDist(x, A₁) = 0, so infDist(x, A₀) = 0, so x ∈ A₀
-      have := Metric.infDist_zero_of_mem h
+    · have := Metric.infDist_zero_of_mem h
       rw [this] at h_eq
       rw [← hA₀_closed.closure_eq]
       exact (Metric.mem_closure_iff_infDist_zero hA₀_ne).mpr h_eq.symm
-  · -- x ∈ A₁: symmetric argument
-    have h_eq : Metric.infDist x A₁ = Metric.infDist x A₀ := by
+  · have h_eq : Metric.infDist x A₁ = Metric.infDist x A₀ := by
       simp only [hf_def] at hx_zero; linarith
     rcases hcover x hx_mem with h | h
-    · -- x ∈ A₀ means infDist(x, A₀) = 0, so infDist(x, A₁) = 0, so x ∈ A₁
-      have := Metric.infDist_zero_of_mem h
+    · have := Metric.infDist_zero_of_mem h
       rw [this] at h_eq
       rw [← hA₁_closed.closure_eq]
       exact (Metric.mem_closure_iff_infDist_zero hA₁_ne).mpr h_eq
@@ -2397,17 +2415,18 @@ theorem kkm_1d_symmetric (A₀ A₁ : Set ℝ)
     (h0 : (-1:ℝ) ∈ A₀) (h1 : (1:ℝ) ∈ A₁)
     (hcover : ∀ x ∈ Icc (-1:ℝ) 1, x ∈ A₀ ∨ x ∈ A₁) :
     ∃ x ∈ Icc (-1:ℝ) 1, x ∈ A₀ ∧ x ∈ A₁ := by
-  -- Same proof technique: IVT on infDist difference
   have hA₀_ne : A₀.Nonempty := ⟨-1, h0⟩
   have hA₁_ne : A₁.Nonempty := ⟨1, h1⟩
   set f := fun x : ℝ => Metric.infDist x A₁ - Metric.infDist x A₀ with hf_def
-  have hf_cont : Continuous f := by unfold_let f; fun_prop
+  have hf_cont : Continuous f := by
+    show Continuous (fun x => Metric.infDist x A₁ - Metric.infDist x A₀)
+    exact (Metric.continuous_infDist_pt A₁).sub (Metric.continuous_infDist_pt A₀)
   have hf0 : 0 ≤ f (-1) := by
     simp only [hf_def, sub_nonneg]
-    exact le_of_eq (Metric.infDist_zero_of_mem h0).symm ▸ Metric.infDist_nonneg
+    rw [Metric.infDist_zero_of_mem h0]; exact Metric.infDist_nonneg
   have hf1 : f 1 ≤ 0 := by
     simp only [hf_def, sub_nonpos]
-    exact le_of_eq (Metric.infDist_zero_of_mem h1).symm ▸ Metric.infDist_nonneg
+    rw [Metric.infDist_zero_of_mem h1]; exact Metric.infDist_nonneg
   obtain ⟨x, hx_mem, hx_zero⟩ :=
     intermediate_value_Icc' (by norm_num : (-1:ℝ) ≤ 1) hf_cont.continuousOn ⟨hf1, hf0⟩
   refine ⟨x, hx_mem, ?_, ?_⟩
@@ -2459,7 +2478,9 @@ theorem kkm_implies_no_retraction_1d :
     · right; exact h
   obtain ⟨x, _, hx_both⟩ := hkkm A₀ A₁ hA₀_closed hA₁_closed h0 h1 hcover
   -- x ∈ A₀ means r(x) = -1, x ∈ A₁ means r(x) = 1
-  linarith [hx_both.1, hx_both.2]
+  have h1 : r x = -1 := hx_both.1
+  have h2 : r x = 1 := hx_both.2
+  linarith
 
 /-
 ## Section XLIX: The Equivalence Web (Summary)
@@ -2501,7 +2522,9 @@ In nD (AXIOMIZED, n ≥ 2):
 
     In 1D, all nodes are PROVED. In nD, the axioms (BU, no-retraction,
     Brouwer FP, LS) are independent formal axioms but mathematically equivalent. -/
-theorem equivalence_web_summary : (1 : ℕ) + 1 = 2 := rfl
+def equivalence_web_summary :=
+  PProd.mk borsuk_ulam_interval (PProd.mk sperner_1d (PProd.mk brouwer_fixed_point_1d
+    (PProd.mk (@invariance_of_dimension) (PProd.mk kkm_1d no_retraction_1d))))
 
 /-
 ## Section XLII: Tucker's 2D Lemma (Octahedral Triangulation)
@@ -3197,7 +3220,6 @@ In nD (AXIOMIZED, n ≥ 2):
 
     In 1D, all nodes are PROVED. In nD, the axioms (BU, no-retraction,
     Brouwer FP, LS) are independent formal axioms but mathematically equivalent. -/
-theorem equivalence_web_summary : True := trivial
 
 /-
 ## Section L: The Complete 1D Equivalence Chain (Formal Composition)
