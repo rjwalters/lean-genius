@@ -357,10 +357,93 @@ theorem no_subgroup_order_15 (H : Subgroup (Equiv.Perm (Fin 5)))
   exact perm_fin5_order5_order3_not_commute _ _ hσ5 hσ_ne hτ3 hτ_ne (by
     -- Step 4: Sylow theory proves σ and τ commute in H
     -- Both Sylow subgroups are unique (n₅ = 1, n₃ = 1), hence normal.
-    -- Elements of disjoint normal subgroups commute.
-    -- The proof uses: Cauchy, Sylow counting, normality, zpowers ≤ Sylow,
-    -- disjointness (coprime orders), commutator argument.
-    sorry)
+    -- Elements of disjoint normal subgroups commute via commutator argument.
+    -- Transfer commutativity from H to Perm(Fin 5)
+    suffices hsuff : (σ : ↥H) * τ = τ * σ by
+      have h1 := congr_arg Subtype.val hsuff
+      simp only [Subgroup.coe_mul] at h1; exact h1
+    -- Sylow 5-subgroup is unique (n₅ | 3 and n₅ ≡ 1 mod 5, so n₅ = 1)
+    have hn₅ : Nat.card (Sylow 5 ↥H) = 1 := by
+      have h_mod := card_sylow_modEq_one 5 ↥H
+      obtain ⟨P⟩ := Sylow.nonempty (p := 5) (G := ↥H)
+      have h_P_card : Nat.card (↑P : Subgroup ↥H) = 5 := by
+        rw [P.card_eq_multiplicity, hcard]; norm_num
+      have h_idx : (↑P : Subgroup ↥H).index = 3 := by
+        have := (↑P : Subgroup ↥H).index_mul_card; rw [h_P_card, hcard] at this; omega
+      have h_dvd := card_sylow_dvd_index P; rw [h_idx] at h_dvd
+      rcases (by norm_num : Nat.Prime 3).eq_one_or_self_of_dvd _ h_dvd with h | h
+      · exact h
+      · exfalso; rw [h] at h_mod; simp [Nat.ModEq] at h_mod
+    haveI : Subsingleton (Sylow 5 ↥H) := by
+      obtain ⟨x, hx⟩ := Nat.card_eq_one.mp hn₅
+      exact ⟨fun a b => (hx a).trans (hx b).symm⟩
+    -- Sylow 3-subgroup is unique (n₃ | 5 and n₃ ≡ 1 mod 3, so n₃ = 1)
+    have hn₃ : Nat.card (Sylow 3 ↥H) = 1 := by
+      have h_mod := card_sylow_modEq_one 3 ↥H
+      obtain ⟨P⟩ := Sylow.nonempty (p := 3) (G := ↥H)
+      have h_P_card : Nat.card (↑P : Subgroup ↥H) = 3 := by
+        rw [P.card_eq_multiplicity, hcard]; norm_num
+      have h_idx : (↑P : Subgroup ↥H).index = 5 := by
+        have := (↑P : Subgroup ↥H).index_mul_card; rw [h_P_card, hcard] at this; omega
+      have h_dvd := card_sylow_dvd_index P; rw [h_idx] at h_dvd
+      rcases (by norm_num : Nat.Prime 5).eq_one_or_self_of_dvd _ h_dvd with h | h
+      · exact h
+      · exfalso; rw [h] at h_mod; simp [Nat.ModEq] at h_mod
+    haveI : Subsingleton (Sylow 3 ↥H) := by
+      obtain ⟨x, hx⟩ := Nat.card_eq_one.mp hn₃
+      exact ⟨fun a b => (hx a).trans (hx b).symm⟩
+    -- Get the unique Sylow subgroups (normal by uniqueness)
+    obtain ⟨P₅⟩ := Sylow.nonempty (p := 5) (G := ↥H)
+    obtain ⟨P₃⟩ := Sylow.nonempty (p := 3) (G := ↥H)
+    haveI hN₅ : (↑P₅ : Subgroup ↥H).Normal := by
+      apply Subgroup.Normal.mk; intro n hn g
+      have : g • P₅ = P₅ := Subsingleton.elim _ _
+      rw [Sylow.smul_eq_iff_mem_normalizer] at this
+      exact (Subgroup.mem_normalizer_iff.mp this).mp hn
+    haveI hN₃ : (↑P₃ : Subgroup ↥H).Normal := by
+      apply Subgroup.Normal.mk; intro n hn g
+      have : g • P₃ = P₃ := Subsingleton.elim _ _
+      rw [Sylow.smul_eq_iff_mem_normalizer] at this
+      exact (Subgroup.mem_normalizer_iff.mp this).mp hn
+    -- σ ∈ P₅ (order-5 element in the unique Sylow 5-subgroup)
+    have hσ_mem : σ ∈ (↑P₅ : Subgroup ↥H) := by
+      have h_pg : IsPGroup 5 (Subgroup.zpowers σ) :=
+        IsPGroup.iff_card.mpr ⟨1, by rw [pow_one, Nat.card_zpowers, hσ]⟩
+      obtain ⟨Q, hQ⟩ := h_pg.exists_le_sylow
+      exact (show Q = P₅ from Subsingleton.elim Q P₅) ▸ hQ (Subgroup.mem_zpowers σ)
+    -- τ ∈ P₃ (order-3 element in the unique Sylow 3-subgroup)
+    have hτ_mem : τ ∈ (↑P₃ : Subgroup ↥H) := by
+      have h_pg : IsPGroup 3 (Subgroup.zpowers τ) :=
+        IsPGroup.iff_card.mpr ⟨1, by rw [pow_one, Nat.card_zpowers, hτ]⟩
+      obtain ⟨Q, hQ⟩ := h_pg.exists_le_sylow
+      exact (show Q = P₃ from Subsingleton.elim Q P₃) ▸ hQ (Subgroup.mem_zpowers τ)
+    -- Commutator c = σ * τ * σ⁻¹ * τ⁻¹ lies in both P₅ and P₃
+    set c := σ * τ * σ⁻¹ * τ⁻¹ with hc_def
+    have hc₅ : c ∈ (↑P₅ : Subgroup ↥H) := by
+      rw [hc_def]; show σ * τ * σ⁻¹ * τ⁻¹ ∈ ↑P₅
+      have := hN₅.conj_mem σ⁻¹ ((↑P₅ : Subgroup ↥H).inv_mem hσ_mem) τ
+      -- this : τ * σ⁻¹ * τ⁻¹ ∈ ↑P₅
+      have hprod := (↑P₅ : Subgroup ↥H).mul_mem hσ_mem this
+      -- hprod : σ * (τ * σ⁻¹ * τ⁻¹) ∈ ↑P₅
+      convert hprod using 1; group
+    have hc₃ : c ∈ (↑P₃ : Subgroup ↥H) := by
+      rw [hc_def]; show σ * τ * σ⁻¹ * τ⁻¹ ∈ ↑P₃
+      have := hN₃.conj_mem τ hτ_mem σ
+      -- this : σ * τ * σ⁻¹ ∈ ↑P₃
+      exact (↑P₃ : Subgroup ↥H).mul_mem this ((↑P₃ : Subgroup ↥H).inv_mem hτ_mem)
+    -- P₅ ∩ P₃ = ⊥ (coprime orders: elements in both have p-power and q-power order)
+    have hc_one : c = 1 := by
+      have ⟨k₅, hk₅⟩ := P₅.isPGroup' ⟨c, hc₅⟩
+      have ⟨k₃, hk₃⟩ := P₃.isPGroup' ⟨c, hc₃⟩
+      have h5 : orderOf c ∣ 5 ^ k₅ := orderOf_dvd_of_pow_eq_one (by
+        simpa using congr_arg Subtype.val hk₅)
+      have h3 : orderOf c ∣ 3 ^ k₃ := orderOf_dvd_of_pow_eq_one (by
+        simpa using congr_arg Subtype.val hk₃)
+      have hcop : Nat.Coprime (5 ^ k₅) (3 ^ k₃) := Nat.Coprime.pow_pow (by norm_num)
+      exact orderOf_eq_one_iff.mp (Nat.dvd_one.mp (hcop ▸ Nat.dvd_gcd h5 h3))
+    -- c = 1 means σ * τ * σ⁻¹ * τ⁻¹ = 1, hence σ * τ = τ * σ
+    have key : σ * τ = σ * τ * σ⁻¹ * τ⁻¹ * (τ * σ) := by group
+    rw [hc_def ▸ hc_one, one_mul] at key; exact key)
 
 /-- No subgroup of S₅ has order 30.
 

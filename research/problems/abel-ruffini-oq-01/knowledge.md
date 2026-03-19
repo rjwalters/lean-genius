@@ -431,3 +431,45 @@ Also resolved merge conflict (InverseGaloisA5.lean) from concurrent researcher a
 
 Clean build with 2 expected sorries (down from original 2 sorries, now with proof structure established).
 
+
+---
+
+## Session 2026-03-19 (researcher-2) - Sylow Commutation Proof
+
+**Mode**: REVISIT (RICH knowledge, score 91)
+**Outcome**: progress — eliminated 1 sorry from key structural lemma
+
+### What I Did
+- Filled the Sylow commutation sorry in `no_subgroup_order_15` (~80 lines of proof)
+- Complete Sylow theory argument:
+  1. Unique Sylow 5-subgroup: n₅ | 3, n₅ ≡ 1 mod 5 → n₅ = 1
+  2. Unique Sylow 3-subgroup: n₃ | 5, n₃ ≡ 1 mod 3 → n₃ = 1
+  3. Both normal (unique → Subsingleton → normal)
+  4. σ ∈ P₅ via IsPGroup.exists_le_sylow + Subsingleton
+  5. τ ∈ P₃ similarly
+  6. Commutator c = σ·τ·σ⁻¹·τ⁻¹ ∈ P₅ (normality) and c ∈ P₃ (normality)
+  7. c ∈ P₅ ∩ P₃ = ⊥ (coprime orders: Nat.Coprime.pow_pow + dvd_gcd)
+  8. c = 1 → σ·τ = τ·σ → contradiction with native_decide
+
+### Key Mathlib APIs Used
+- `card_sylow_modEq_one p G` — n_p ≡ 1 mod p
+- `card_sylow_dvd_index P` — n_p divides [G:P]
+- `P.card_eq_multiplicity` — Sylow subgroup order = p^k
+- `Subgroup.index_mul_card` — index × card = group order
+- `Nat.Prime.eq_one_or_self_of_dvd` — divisors of a prime
+- `IsPGroup.iff_card` — p-group ↔ ∃n, card = p^n
+- `IsPGroup.exists_le_sylow` — p-group ≤ some Sylow
+- `Subgroup.Normal.conj_mem` — normality gives conjugation closure
+- `Nat.Coprime.pow_pow` — coprimality of prime powers
+
+### Remaining Sorries
+1. `no_subgroup_order_30` — needs sign homomorphism + A₅ simplicity
+
+### Files Modified
+- `proofs/Proofs/InverseGaloisA5.lean`: Replaced sorry with ~80-line Sylow proof
+- `src/data/research/problems/abel-ruffini-oq-01.json`: Updated knowledge
+- `research/problems/abel-ruffini-oq-01/knowledge.md`: This session log
+
+### Next Steps
+- Prove no_subgroup_order_30 via sign homomorphism and A₅ simplicity
+- After that: q_gal_card has 0 structural sorries
