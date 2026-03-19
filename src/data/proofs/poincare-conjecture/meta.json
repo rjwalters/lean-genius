@@ -17,7 +17,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 38,
-    "assumptions": "38 axiom declarations: Perelman Ricci flow surgery (finite extinction), Novikov compact leaf theorem (foliations), generalized Poincare in dimensions 2/4/≥5, topological constructions (connected sum, Dehn surgery), classification results (JSJ, h/s-cobordism), 3-manifold topology (Heegaard, Waldhausen, Property P, prime decomposition), counterexample structures (Poincare homology sphere, Whitehead manifold). No new axioms added in Parts LXXVIII-LXXIX.",
+    "assumptions": "38 axiom declarations: Perelman Ricci flow surgery (finite extinction), Novikov compact leaf theorem (foliations), generalized Poincaré in dimensions 2/4/≥5, simply connected S³ (needs Seifert-van Kampen), S³ non-contractible (needs homology), topological constructions (connected sum type, Dehn surgery type), classification results (JSJ decomposition/uniqueness, h/s-cobordism), 3-manifold topology (Heegaard splitting, Waldhausen genus-0, Property P, prime decomposition, irreducibility), counterexample structures (Poincaré homology sphere, Whitehead manifold), covering space theory (sc_covering_injective).",
     "mathlibDependencies": [
       {
         "theorem": "SimplyConnectedSpace",
@@ -70,19 +70,19 @@
       "Papakyriakopoulos trilogy: Dehn's lemma, loop theorem, sphere theorem (axiomatized)",
       "Haken hierarchy, equivariant Dehn's lemma, Smith conjecture connection",
       "Scalar curvature maximum principle and Schoenflies theorem infrastructure",
-      "587 theorems proved, 107 structures defined, 185 definitions, 80 parts across 10955 lines"
+      "564 theorems proved, 130 structures defined, 189 definitions, 80 parts across 10926 lines"
     ],
     "leanFile": {
-      "lineCount": 10955,
-      "theoremCount": 587,
-      "lemmaCount": 2,
-      "defCount": 185,
-      "axiomCount": 41,
+      "lineCount": 10926,
+      "theoremCount": 564,
+      "lemmaCount": 0,
+      "defCount": 189,
+      "axiomCount": 38,
       "sorryCount": 0,
-      "structureCount": 107,
+      "structureCount": 130,
       "instanceCount": 21,
       "parts": 80,
-      "note": "Single file formalization. 80 parts covering: topology of S³ and S^n, closed manifolds, simple connectivity, Perelman's proof strategy, counterexamples, geometrization, connected sum theory, covering spaces, Hopf fibration, knot surgery, JSJ decomposition, foliations, Papakyriakopoulos results."
+      "note": "Single file formalization. 80 parts covering: topology of S³ and S^n, closed manifolds, simple connectivity, Perelman's proof strategy, counterexamples, geometrization, connected sum theory, covering spaces, Hopf fibration, knot surgery, JSJ decomposition, foliations, Papakyriakopoulos results, Heegaard Floer homology, L-space conjecture, contact structures."
     },
     "dateAdded": "12/29/25",
     "millenniumProblem": "poincare"
@@ -241,7 +241,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The Poincaré Conjecture is SOLVED (Perelman, 2002–2003): every simply connected, closed 3-manifold is homeomorphic to S³. The formalization provides ~10560 lines covering 79 parts, with 546 theorems/lemmas and 38 axioms. Coverage includes Ricci flow, surgery theory, κ-solutions, normal surfaces, taut foliations, Casson invariant, Heegaard Floer homology, the L-space conjecture, and computational complexity.",
+    "summary": "The Poincaré Conjecture is SOLVED (Perelman, 2002–2003): every simply connected, closed 3-manifold is homeomorphic to S³. The formalization provides 10926 lines covering 80 parts, with 564 theorems and 38 axioms. Coverage includes Ricci flow, surgery theory, κ-solutions, normal surfaces, taut foliations, Casson invariant, Heegaard Floer homology, the L-space conjecture, contact structures, and computational complexity.",
     "implications": "Perelman's proof also established Thurston's Geometrization Conjecture, revolutionizing 3-manifold topology. The Ricci flow technique has since been applied to the differentiable sphere theorem (Brendle–Schoen 2009), classification of manifolds with positive isotropic curvature, and the study of Kähler–Ricci flow in complex geometry.",
     "openQuestions": [
       "The smooth 4-dimensional Poincaré conjecture: is every smooth homotopy 4-sphere diffeomorphic to $S^4$?",
