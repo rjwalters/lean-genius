@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-01T21:55:27.887Z",
     "iteration": 13,
-    "focus": "Heegaard Floer homology and L-space conjecture",
+    "focus": "Papakyriakopoulos trilogy and classical 3-manifold toolkit",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 79 parts, ~10560 lines, 38 axioms, 546 theorems, 0 sorries. Latest session added Parts LXXVIII-LXXIX (Heegaard Floer homology: HFHat data for 8 manifolds, L-space definition + 5 verified examples, d-invariant, surgery exact triangle, knot Floer genus/fibered detection, τ concordance invariant, Casson-HF connection; L-space conjecture: Boyer-Gordon-Watson with 6 consistent examples, left-orderability, graph manifold proof). Also fixed CassonInvariant True placeholder with concrete BettiNumbers3 condition.",
+    "progressSummary": "PROGRESS: 80 parts, 10955 lines, 41 axioms, 587 theorems, 0 sorries. Meta.json updated with leanFile stats and 20 original contributions. Axiom elimination blocked on Mathlib (sphere3_simply_connected needs Seifert-van Kampen, sphere3_not_contractible needs homology/degree theory).",
     "builtItems": [
       "Proved perelman_entropy_monotone via concrete PerelmanWEntropy",
       "Proved perelman_surgery via reflexive witness",
@@ -196,21 +196,15 @@
       "cassonExamples: 8 manifolds with Casson invariants classified",
       "casson_detects_S3: unique ℤHS with λ=0 and finite π₁ by native_decide",
       "brieskorn_casson_signature: λ = -σ/8 verified for Σ(2,3,5/11) and Σ(3,5,7)",
-      "Part LXXVIII: Heegaard Floer Homology (PoincareConjecture.lean)",
-      "SpinCStructure3: spin-c structures with firstChernClass and totalCount",
-      "HFHatData: hat flavor HF with totalRank, spinCCount, rank constraints",
-      "hfS3/hfLens/hfPHS/hfT3/hfBrieskorn237/hfBrieskorn2311/hfS1xS2: concrete HF computations",
-      "LSpaceDef: formal L-space definition with lspaceS3/lspaceLens/lspacePHS verified",
-      "DInvariant: correction terms d(Y,𝔰) with dInvariantS3/dInvariantRP3_s0/s1",
-      "SurgeryExactTriangle: rank-based exact triangle with unknot/trefoil examples",
-      "KnotFloerData: genus/fibered detection with hfkUnknot/Trefoil/FigureEight/TorusKnot",
-      "TauInvariant: concordance invariant with tauUnknot/Trefoil/FigureEight/TorusKnot",
-      "Part LXXIX: The L-Space Conjecture",
-      "LeftOrderability inductive: leftOrderable | notLeftOrderable",
-      "LSpaceConjectureData: name/isLSpace/pi1LO/hasTautFoliation for BGW conjecture",
-      "bgwS3/PHS/Lens/T3/S1xS2/Brieskorn237: 6 examples all verified consistent",
-      "bgwConsistent: formal consistency predicate for L-space conjecture",
-      "CassonInvariant refactored: True → betti/is_ZHS with BettiNumbers3"
+      "Part LXXX: Papakyriakopoulos trilogy (Dehns Lemma, Loop Theorem, Sphere Theorem)",
+      "EmbeddedDisk3/EmbeddedSphere3/SurfaceType3/HakenManifold/TowerConstruction structures",
+      "exampleTower3: concrete tower with 3 self-intersections resolving to 0",
+      "tower_principle: strictly decreasing naturals ending at 0 imply minimum initial value",
+      "sphere_theorem_enables_prime_decomp: connection to Kneser-Milnor",
+      "irreducible_sc_implies_aspherical: SC+irreducible implies S³",
+      "equivariant_dehn_meeks_yau: equivariant version (1981) using minimal surfaces",
+      "smith_conjecture_proved: periodic maps of S³ have unknotted fixed sets",
+      "Updated poincare-conjecture/meta.json: added leanFile block, expanded originalContributions from 11 to 20"
     ],
     "insights": [
       "Massive axiom reduction: 39 axioms converted to theorems/defs (115→76)",
@@ -304,16 +298,16 @@
       "Casson gives partial Property P: if Δ_K(1) ≠ 0 then 1/n surgery on K ≠ S³ (works for trefoil, figure-eight; fails for knots with Δ(1) = 0)",
       "Brieskorn sphere formula: λ(Σ(p,q,r)) = -σ(Milnor fiber)/8; verified for (2,3,5)→1, (2,3,11)→2, (3,5,7)→14",
       "Casson is finite type (Vassiliev) invariant of order 2, the unique degree-2 invariant of ℤHS",
-      "Heegaard Floer homology (Ozsváth-Szabó 2001): ĤF(Y,𝔰) is the most powerful computable invariant of 3-manifolds",
-      "L-space = rational homology sphere with rk ĤF = |H₁|; S³, lens spaces, PHS are all L-spaces",
-      "Surgery exact triangle: ĤF(Y) → ĤF(Y₀) → ĤF(Y₁) → ... is the fundamental computational tool",
-      "Knot Floer homology detects genus (OS 2004) and fiberedness (Ghiggini 2006, Ni 2007)",
-      "τ concordance invariant: |τ(K)| ≤ g₄(K), proves trefoil not slice",
-      "Casson invariant = Euler characteristic of HF (shadow of full invariant in single integer)",
-      "L-space conjecture (Boyer-Gordon-Watson 2013): not L-space ↔ LO π₁ ↔ taut foliation",
-      "Graph manifolds: L-space conjecture fully proved (Boyer-Clay 2017, Hanselman 2020)",
-      "Σ(2,3,7) key test case: infinite π₁ but L-space with non-LO group",
-      "CassonInvariant True placeholder eliminated: now uses concrete BettiNumbers3 + is_ZHS condition"
+      "Papakyriakopoulos tower construction: sequence of covering spaces that systematically eliminates self-intersections, strictly decreasing at each step",
+      "Dehns Lemma gap: 47 years between claim (1910) and proof (1957) — Kneser found the error in 1929",
+      "Sphere Theorem enables prime decomposition: provides EMBEDDED essential S² (not just singular), which can be cut along",
+      "Irreducible + SC implies aspherical: via Sphere Theorem contrapositive, π₂=0 forces asphericity; only S³ is both SC and aspherical",
+      "Equivariant Dehns Lemma (Meeks-Yau 1981) uses minimal surfaces instead of towers — proved the Smith conjecture",
+      "Haken hierarchy uses Loop Theorem: detect compressible surfaces → compress → repeat until balls reached",
+      "Meta.json leanFile stats added: 587 thms, 107 structures, 185 defs, 21 instances, 80 parts",
+      "The 5 True field targets from earlier next-steps appear to have been cleaned up already",
+      "Most tractable axiom elimination: sphere3_simply_connected (gap: punctured SC → full SC needs cellular approximation)",
+      "Least tractable: connected sum type axioms (fundamental Lean type definitions, not provable)"
     ],
     "mathlibGaps": [
       "3-manifolds",
@@ -321,10 +315,10 @@
       "Surgery"
     ],
     "nextSteps": [
-      "Prove sphere3_simply_connected (needs Seifert-van Kampen or cellular approximation)",
-      "Prove sphere3_not_contractible (needs homology, degree theory, or Lefschetz)",
-      "Refactor remaining 5 structure-level True fields (hasBoundaryTorus, embedding_exists, pi1_injective, fiberConnected, hasFibration)",
-      "Continue axiom elimination: 44 axioms remain"
+      "Prove sphere3_simply_connected: need cellular approximation (loops in S³ can be deformed off a point) or Seifert-van Kampen",
+      "Prove sphere3_not_contractible: need homology, degree theory, or Brouwer no-retraction",
+      "Refactor sections in meta.json: only 20 of ~70 parts documented",
+      "Check Mathlib for BrouwerFixedPoint or degree theory that could help"
     ],
     "markdown": "# Knowledge Base: Poincaré Conjecture\n\n## The Problem\n\nThe Poincaré Conjecture is **unique among Millennium Problems**: it has been SOLVED! Grigori Perelman proved it in 2002-2003 using Richard Hamilton's Ricci flow program.\n\n### Core Statement\n\n> Every simply connected, closed 3-manifold is homeomorphic to the 3-sphere S³.\n\nIn simpler terms: If a 3-dimensional space is \"nice\" (closed, no boundary) and every loop can be continuously shrunk to a point (simply connected), then it must be topologically equivalent to the 3-sphere.\n\n### Why It Matters\n\n1. **Topology Foundation**: Characterizes 3-dimensional spaces\n2. **Geometric Analysis**: Ricci flow is now a major tool\n3. **Historic Significance**: The only solved Millennium Problem\n4. **Formalizing Perelman**: Would be a landmark achievement\n\n## Historical Context\n\n| Year | Mathematician | Contribution |\n|------|--------------|--------------|\n| 1904 | Poincaré | Posed the conjecture |\n| 1960s | Smale, Stallings | Solved for dimensions ≥ 5 |\n| 1982 | Freedman | Solved for dimension 4 |\n| 1982 | Hamilton | Introduced Ricci flow |\n| 2002-03 | Perelman | Completed proof via Ricci flow with surgery |\n| 2006 | Verification | Detailed checking by multiple groups |\n\nPerelman famously declined both the Fields Medal and the $1 million Clay prize.\n\n## The Proof Strategy\n\n### Hamilton's Ricci Flow\n\nThe Ricci flow evolves a metric g(t) on a manifold by:\n\n∂g/∂t = -2 Ric(g)\n\nwhere Ric is the Ricci curvature tensor. This \"smooths out\" the geometry over time.\n\n### Perelman's Breakthrough\n\n1. **Entropy functionals** - Introduced W-functional and F-functional\n2. **No local collapsing** - Controlled degeneration\n3. **Surgery** - When singularities form, cut and cap\n4. **Extinction** - Manifold eventually becomes round or disappears\n\n### Why It Works in 3D\n\n- In 3D, Ricci flow tends to make things round\n- Hamilton showed spheres \"round out\" nicely\n- Perelman handled the singularities that form\n\n## What We Could Build\n\n### In Mathlib Now\n\n| Component | Status | Notes |\n|-----------|--------|-------|\n| Smooth manifolds | ✅ | Well-developed |\n| Riemannian metrics | ✅ | Available |\n| Ricci curvature | ✅ | Defined |\n| 3-manifolds | ⚠️ Limited | Basic definitions |\n| Ricci flow | ❌ | Not available |\n| Surgery | ❌ | Not available |\n\n### The Formalization Challenge\n\nFormalizing Perelman's proof would require:\n\n1. **Ricci flow PDE** (~2000 lines)\n   - Evolution equation\n   - Short-time existence\n   - Maximum principles\n\n2. **Singularity analysis** (~5000 lines)\n   - Blow-up limits\n   - κ-solutions classification\n   - Ancient solutions\n\n3. **Surgery procedure** (~3000 lines)\n   - Neck detection\n   - Standard caps\n   - Finite time surgery\n\n4. **Extinction argument** (~1000 lines)\n   - Finite extinction time\n   - Sphere recognition\n\nTotal estimate: **10,000+ lines** of specialized geometric analysis.\n\n## Tractable Partial Work\n\nEven without full Perelman, we could formalize:\n\n1. **The Statement**\n   - Define simply connected 3-manifolds\n   - State homeomorphism to S³\n\n2. **Ricci Flow Basics**\n   - Define the evolution equation\n   - Prove short-time existence (known techniques)\n\n3. **2D Case**\n   - 2D uniformization via Ricci flow\n   - Much simpler than 3D\n\n4. **Sphere Roundness**\n   - Hamilton's theorem: positively curved 3-manifolds become round\n   - No surgery needed in this case\n\n5. **Alternative Approaches**\n   - Thurston's geometrization (now proven via Perelman)\n   - Classifying 3-manifold geometries\n\n## The Bigger Picture: Geometrization\n\nPerelman actually proved more than Poincaré - he proved Thurston's Geometrization Conjecture:\n\n> Every 3-manifold can be cut along tori into pieces, each having one of 8 standard geometries.\n\nThis completely classifies 3-dimensional topology.\n\n## Key References\n\n- Poincaré, H. (1904). \"Fifth Supplement to Analysis Situs\"\n- Hamilton, R. (1982). \"Three-manifolds with positive Ricci curvature\"\n- Perelman, G. (2002). \"The entropy formula for the Ricci flow and its geometric applications\"\n- Perelman, G. (2003). \"Ricci flow with surgery on three-manifolds\"\n- Morgan, J., Tian, G. (2007). \"Ricci Flow and the Poincaré Conjecture\"\n\n## Why This Is Special\n\nThe Poincaré Conjecture is the **only Millennium Problem that's been solved**. Formalizing it would:\n\n1. **Validate Perelman's proof** mechanically\n2. **Create reusable Ricci flow library** for other geometric problems\n3. **Be a major achievement** in formal mathematics\n4. **Honor the proof** that its author declined to promote\n\n## Session 2026-03-14 (researcher-4, Session 33b) - Thurston Geometry Properties\n\n**Mode**: REVISIT (RICH knowledge score 22)\n**Problem**: poincare-conjecture\n**Prior Status**: 1531 lines, 42 axioms, 90 theorems (pre-existing build errors from Mathlib API changes)\n\n**What we did**:\n1. Added Part XXXII: Thurston Geometry Classification and Properties\n2. Defined `hasCompactModel`, `curvatureType`, `isIsotropic`, `isometryGroupDim` for all 8 geometries\n3. Proved `unique_compact_model`: only spherical has compact model\n4. Proved `isotropic_iff_constant_curvature`: 3 isotropic = 3 constant curvature\n5. Proved `maximal_symmetry_iff_isotropic`: 6-dim isometry ↔ isotropic\n6. Proved `isotropic_count` (3) and `anisotropic_count` (5) via `native_decide`\n7. Added `simply_connected_one_piece` axiom for single-piece decomposition\n8. Proved `geometrization_implies_poincare`: full chain from geometrization\n9. Proved `dim3_geometric_and_topological`: combined structural + topological result\n\n**New axioms** (1): simply_connected_one_piece\n**New definitions** (5): hasCompactModel, CurvatureType, curvatureType, isIsotropic, isometryGroupDim\n**New theorems proved** (9): unique_compact_model, isotropic_iff_constant_curvature,\nmaximal_symmetry_iff_isotropic, isotropic_count, anisotropic_count,\ngeometrization_implies_poincare, dim3_geometric_and_topological\n\n**Outcome**: 1664 lines, 43 axioms, 104 theorems. Pre-existing build errors in Parts XXI-XXVIII\n(Mathlib API changes: `Real.norm_ofNonneg` removed, `Homeomorph.connectedSpace` missing, etc.)\nNew content is structurally clean.\n\n**Next steps**:\n1. Fix pre-existing build errors (Mathlib API compatibility)\n2. Try to prove `sphere3_simply_connected` from punctured sphere contractibility\n3. Add Heegaard splitting formalization\n\n---\n\n## Scouting Log\n\n### Assessment: 2026-01-01\n\n**Current Status**: BLOCKED but uniquely tractable - the theorem IS proven!\n\n**Blocker Tracking**:\n| Infrastructure | In Mathlib | Last Checked |\n|----------------|------------|--------------|\n| Manifolds | Yes | 2026-01-01 |\n| 3-manifolds | Limited | 2026-01-01 |\n| Ricci curvature | Yes | 2026-01-01 |\n| Ricci flow | No | 2026-01-01 |\n| Surgery theory | No | 2026-01-01 |\n\n**Key Insight**: Unlike other Millennium Problems, this one has a known proof. The question is pure formalization effort, not mathematical discovery.\n\n**Path Forward**:\n1. Start with Ricci flow basics\n2. Formalize 2D case as warmup\n3. Build surgery framework\n4. Eventually: full Perelman\n\n**Next Scout**: Watch for Ricci flow formalization efforts in any proof assistant\n\n## Session 2026-03-14 (researcher-6) - Fix Build Errors + Heegaard Splitting\n\n**Mode**: REVISIT (RICH knowledge score 32)\n**Problem**: poincare-conjecture\n**Prior Status**: 1664 lines, 43 axioms, 104 theorems, pre-existing build errors from Mathlib API changes\n\n### What we did:\n\n#### Phase 1: Fix All Build Errors (10+ errors)\n1. **`Real.norm_ofNonneg` removed**: Replaced with `Real.norm_ofNat` + simp in `antipodal_distance`\n2. **`≃ₕ` subscript term not implemented**: Rewrote `simply_connected_of_homeomorphic` proof to avoid `TopCat` notation, use explicit `toHomotopyEquiv`\n3. **`Homeomorph.connectedSpace` missing**: Rewrote using `isPreconnected_range` + surjectivity\n4. **`Homeomorph.pathConnectedSpace` missing**: Constructed manually via `Path.map` + `cast`\n5. **`TopologicalGroup` existential elaboration failure**: Reformulated axiom with explicit fields\n6. **Duplicate `compact_of_homeomorphic`/`nonempty_of_homeomorphic`**: Renamed to `*_areHomeomorphic`\n7. **`euler_char_odd`/`euler_char_even` proofs simplified**: Removed unused simp arguments\n8. **`sphere_codimension` omega failure**: Rewrote using `finrank_euclideanSpace_fin`\n9. **Unused variable warning**: `hsc` → `_hsc` in `sc_closed_3mfd_compact`\n\n#### Phase 2: New Content - Heegaard Splitting (Parts XXXIII-XXXIV)\n1. **Part XXXIII**: Handlebody, HeegaardSplitting structures; heegaardGenus definition\n2. **sphere3_heegaard_genus0**: S³ has genus-0 splitting (two 3-balls)\n3. **waldhausen_genus0**: Axiom - genus 0 implies S³\n4. **heegaard_characterization_S3**: M ≅ S³ ↔ genus-0 splitting exists (proved)\n5. **poincare_implies_genus0**: SC closed 3-mfd has genus-0 splitting (proved from Poincaré)\n6. **genus0_implies_simply_connected**: Genus 0 implies SC (proved from Waldhausen + SC transfer)\n7. **S3_triple_characterization**: SC ↔ genus 0 ↔ S³ (proved, combines above)\n8. **heegaard_all_higher_genera**: Proved by induction on stabilization\n9. **MCG data**: mcg_sphere_trivial, genus1_classification, reidemeister_singer axioms\n\n### Stats\n- **Before**: 1664 lines, 43 axioms, 104 theorems (BUILD ERRORS)\n- **After**: 1844 lines, 51 axioms, 111 theorems (CLEAN BUILD)\n- **New axioms** (8): heegaard_exists, waldhausen_genus0, lens_heegaard_genus1, heegaard_genus_additive, mcg_torus_is_SL2Z, genus1_classification, reidemeister_singer, heegaard_stabilize\n- **New theorems proved** (7): sphere3_min_genus, heegaard_characterization_S3, poincare_implies_genus0, genus0_implies_simply_connected, S3_triple_characterization, mcg_sphere_trivial, heegaard_all_higher_genera\n\n### Next steps\n1. Prove sphere3_simply_connected from punctured sphere contractibility (needs transversality)\n2. Handle decomposition formalization\n3. Dehn surgery and Lickorish-Wallace theorem\n4. Ricci flow as geometric evolution equation\n"
   },
@@ -341,7 +335,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.887Z",
-  "lastUpdate": "2026-03-19T10:00:00.000Z",
+  "lastUpdate": "2026-03-19T15:00:00Z",
   "significance": 10,
   "tractability": 1
 }

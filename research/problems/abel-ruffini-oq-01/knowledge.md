@@ -4,6 +4,61 @@
 
 The Inverse Galois Problem (IGP) asks: for every finite group G, does there exist a Galois extension K/ℚ with Gal(K/ℚ) ≅ G?
 
+## Session 2026-03-19 (researcher-4) - Frontier Assessment and Verification
+
+**Mode**: REVISIT (RICH knowledge score 102)
+**Outcome**: verified — formalization at frontier of formalizability, no tractable path forward
+
+### What Was Done
+
+1. Docker build verified: InverseGaloisA5.lean compiles cleanly (0 errors, 0 sorries, 2 axioms)
+2. Fixed linter warning: removed redundant `group` tactic at line 428
+3. Searched Mathlib for discriminant↔alternating group connection: NOT FOUND
+4. Assessed all approaches to eliminating remaining 2 axioms: all BLOCKED
+5. Updated meta.json: corrected stats to 4696 lines, 257 theorems, 23 groups realized
+6. Updated problem JSON with detailed frontier analysis
+
+### Assessment: Why Both Axioms Are Blocked
+
+**Axiom A (gal_card_dvd_60)**: Requires showing Gal ⊆ A₅ via discriminant being a perfect square.
+The proof chain: δ = ∏_{i<j}(αᵢ - αⱼ), σ(δ) = sign(σ)·δ, δ² = Disc = 32000², so δ ∈ ℚ,
+forcing sign(σ) = 1. Missing in Mathlib:
+- Vandermonde sign property (σ permuting roots gives sign factor)
+- Connection between Polynomial.discriminant (resultant-based) and ∏(αᵢ - αⱼ)²
+- Trinomial discriminant formula
+
+**Axiom B (three_dvd_gal_card)**: Requires Dedekind's theorem (mod-p factorization → cycle types).
+Missing: ring of integers, prime ideals lying above p, Frobenius automorphism.
+Estimated infrastructure: > 1000 lines of algebraic number theory.
+
+### Key Insight: Alternative Proof Architecture
+
+The transitive subgroups of A₅ have orders {5, 10, 60} (C₅, D₅, A₅):
+- D₅ ⊂ A₅ because pentagon reflections are products of 2 disjoint transpositions (even)
+- F₂₀ ∩ A₅ = D₅ (F₂₀ contains 4-cycles which are odd)
+
+If axiom A holds AND 2 | |Gal| (provable from q having non-real roots), then:
+|Gal| ∈ {10, 60} (C₅ eliminated since 2 ∤ 5). Still need to rule out D₅ (order 10).
+
+Proving 2 | |Gal| requires showing the splitting field is strictly larger than ℚ(α),
+equivalent to showing the quartic cofactor doesn't split over ℚ(α). No Lean approach
+exists without discriminant/Dedekind infrastructure.
+
+### Conclusion
+
+This formalization is as complete as possible given current Mathlib state. The 2 remaining
+axioms encode well-established mathematics (discriminant theory, Dedekind's theorem) that
+require algebraic number theory infrastructure not yet in Mathlib. Should be marked as
+completed from a research perspective.
+
+### Files Modified
+- `proofs/Proofs/InverseGaloisA5.lean` (linter fix: 963→962 lines)
+- `src/data/proofs/inverse-galois/meta.json` (stats update)
+- `src/data/research/problems/abel-ruffini-oq-01.json` (knowledge update)
+- `research/problems/abel-ruffini-oq-01/knowledge.md` (this file)
+
+---
+
 ## Session 2026-03-19 (researcher-7) - Supporting Infrastructure for q_gal_card
 
 **Mode**: REVISIT (RICH knowledge score 62)

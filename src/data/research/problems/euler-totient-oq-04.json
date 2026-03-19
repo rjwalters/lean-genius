@@ -29,9 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED - 231 lines, 0 sorries, 0 axioms.",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Fully proved, 0 sorries. ? lines.",
+    "builtItems": [
+      "Lean formalization complete"
+    ],
+    "insights": [
+      "Proof verified: 0 sorries via grep",
+      "Lean file exists and compiles",
+      "Ready for gallery publication"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# euler-totient-oq-04: Divisor Sum Identity via GCD Partition\n\n## Problem Summary\n\n**Problem**: Prove n = Σ_{d|n} φ(n/d) constructively via GCD class partition.\n\n**Status**: COMPLETED - 231 lines, 0 sorries, 0 axioms.\n\n## Session 2026-03-18 - Verification and Metadata\n\n**Mode**: REVISIT (proof already existed from abel-ruffini-oq-01 work)\n**Outcome**: completed\n\n### Existing Proof\n\n`proofs/Proofs/EulerTotientOQ04.lean` (231 lines, 0 sorries) was already created\nand committed as part of abel-ruffini-oq-01 research. The proof:\n\n1. Defines GCD classes S_d(n) = {k ∈ {0,...,n-1} : gcd(k,n) = d}\n2. Shows they partition {0,...,n-1} (disjoint + cover)\n3. Proves |S_d| = φ(n/d) via explicit bijection k ↦ k/d using Finset.card_bij\n4. Derives n = Σ_{d|n} φ(n/d) by summing cardinalities\n5. Includes partition-of-unity formulation over ℚ\n6. Cross-validates with Mathlib's Nat.sum_totient\n7. Concrete verifications for n=6, 12, 30\n"

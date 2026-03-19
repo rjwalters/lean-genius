@@ -29,9 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Full proof of exact proportionality constant for Cauchy-Schwarz equality. 288 lines, 0 sorries, 0 axioms. Both inner product space and finite sum versions proved.",
+    "builtItems": [
+      "projCoeff and proj definitions for orthogonal projection",
+      "cs_equality_exact_constant and cs_equality_iff_exact_constant (biconditional)",
+      "finite_sum_exact_constant via Lagrange identity"
+    ],
+    "insights": [
+      "CS equality holds iff u = (⟨u,v⟩/‖v‖²)·v, proved via residual norm decomposition",
+      "Lagrange identity connects finite sum CS equality to cross-term vanishing: a_i·b_j = a_j·b_i",
+      "projCoeff is linear in first arg and satisfies projCoeff(cv, v) = c",
+      "Geometric interpretation: projCoeff > 0 iff same direction, < 0 iff opposite"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: cauchy-schwarz-oq-04\n\nCauchy-Schwarz Equality: Exact Proportionality Constant.\n\n---\n\n## Session 2026-03-17 (Session 1) - Survey\n\n**Mode**: FRESH\n**Outcome**: completed (already fully proved)\n\n### Finding\nFile `CauchySchwarzOQ04.lean` already exists with 288 lines, 0 axioms, 0 sorries.\nProves the exact proportionality constant: when |inner u v| = norm u * norm v,\nu = (inner u v / norm v^2) * v (orthogonal projection coefficient).\nNo additional work needed.\n"
