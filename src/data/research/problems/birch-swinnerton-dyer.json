@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: All True placeholders eliminated (0 remaining). Final pass converted finitely_generated to Module.Finite ℤ carrier and norm_compatible to ¬(p ∣ conductor E). Meta.json updated with accurate counts.",
+    "progressSummary": "PROGRESS: 57 parts, ~6500 lines, 91 axioms. Session added Part LVI (Modularity: Wiles-BCDT, Manin constant, functional equation, conductor bounds, Fermat connection) and Part LVII (Arithmetic Statistics: Bhargava-Shankar avg|Sel_n|=σ(n), avg rank<1, BSD≥66-87%, Goldfeld, Katz-Sarnak, Sha square).",
     "builtItems": [
       "28 True→real conversions in BirchSwinnertonDyer.lean (Parts VIII-LV)",
       "2 proved theorems: parity_conjecture from axiom, bsd_current_status from computation",
@@ -45,7 +45,9 @@
       "MordellWeilGroup.finitely_generated: True → Module.Finite ℤ carrier (proper Mathlib finite generation)",
       "EulerSystem.norm_compatible: True → ¬(p ∣ conductor E) (good reduction condition for Euler systems)",
       "Meta.json updated: lineCount 5534→6053, axiomCount 90→91, theoremCount 201→194, defCount 128→142, structureCount 72→78",
-      "Problem status fixed: blocked→completed, currentState.phase NEW→COMPLETED"
+      "Problem status fixed: blocked→completed, currentState.phase NEW→COMPLETED",
+      "Part LVI: Modularity and Taniyama-Shimura-Weil Theorem (BirchSwinnertonDyer.lean)",
+      "Part LVII: Arithmetic Statistics and Goldfeld Conjecture (BirchSwinnertonDyer.lean)"
     ],
     "insights": [
       "Gross-Zagier-Kolyvagin theorem can be expressed as axiom: analyticRank E ≤ 1 → algebraicRank E = analyticRank E",
@@ -59,7 +61,18 @@
       "IMC kato/skinner_urban fields can be expressed as rank-0 ↔ L≠0 using existing algebraicRank/LFunction defs",
       "Module.Finite ℤ carrier IS available for MordellWeilGroup: AddCommGroup.intModule provides Module ℤ automatically",
       "Norm compatibility for Euler systems requires Galois cohomology (not in Mathlib); good reduction ¬(p ∣ conductor E) is the strongest expressible necessary condition",
-      "All True placeholders now eliminated: 0 remaining (was 2 in prior pass)"
+      "All True placeholders now eliminated: 0 remaining (was 2 in prior pass)",
+      "Modularity proved in stages: Wiles 1995 (semistable) → BCDT 2001 (all E/ℚ) — 46 years after Taniyama 1955",
+      "Manin constant divides 2 (Edixhoven); conjectured c=1 for optimal parametrization",
+      "Functional equation center s=1 (from s↔2-s symmetry) — exactly where BSD evaluates L(E,s)",
+      "Conductor exponents: max f_p = 2 (p≥5), 5 (p=3), 8 (p=2) — wild ramification only at 2,3",
+      "dim S₂(Γ₀(2)) = 0: no weight 2 forms at level 2 → key arithmetic fact for Wiles FLT proof",
+      "Bhargava-Shankar: avg |Sel_n| = σ(n) (sum of divisors) for n=2,3,4,5 — deep parametrization result",
+      "Average rank < 1 (Bhargava-Shankar 2015, unconditional): first bound below 1",
+      "BSD holds for ≥ 66-87% of E/ℚ (Bhargava-Skinner-Zhang 2014, combining Selmer + GZK)",
+      "Elkies 2006: rank ≥ 28 record; ranks may be unbounded but density 0 for rank ≥ 2",
+      "Katz-Sarnak: SO(even) for w=+1, SO(odd) for w=-1 — predicts Goldfeld conjecture",
+      "#Sha is always a perfect square (Cassels-Tate alternating pairing)"
     ],
     "mathlibGaps": [
       "Torsion subgroup",

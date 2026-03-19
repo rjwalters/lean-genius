@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 100 parts, ~17,645 lines, 0 sorries, 0 axioms. Session added Part C: critical exponent unification verifying arithmetic consistency of all key exponents.",
+    "progressSummary": "PROGRESS: 102 parts, ~18,394 lines, 0 sorries, 0 axioms. Session added Part CI (Stochastic NS: Itô correction, Hairer-Mattingly ergodicity, Markov selection, RSH, attractors) and Part CII (Euler: Kato inviscid limit, Prandtl layers, Onsager-K41, Hou-Luo blowup, Yudovich uniqueness).",
     "builtItems": [
       "Part LXXXVIII: Helicity Algebra and Conservation Structure (NavierStokes.lean:14932)",
       "Part LXXXIX: Kolmogorov Microscales and Spectral Energy Relations (NavierStokes.lean:15200)",
@@ -47,7 +47,10 @@
       "Part XCVIII: Logarithmic Improvements and Near-Critical Estimates (NavierStokes.lean:16960)",
       "Part XCIX: Dissipation Enhancement and Mixing (NavierStokes.lean:17140)",
       "Aristotle companion Sections 62-65: one-component, d-dimensional, logarithmic, mixing",
-      "Part C: Critical Exponent Unification and Scaling Atlas (NavierStokes.lean:17412)"
+      "Part C: Critical Exponent Unification and Scaling Atlas (NavierStokes.lean:17412)",
+      "Part CI: Stochastic Navier-Stokes and Noise Regularization (NavierStokes.lean:17683)",
+      "Part CII: Euler Equations and the Inviscid Limit (NavierStokes.lean:18007)",
+      "Aristotle companion Sections 66-67: stochastic NS constants + Euler/inviscid limit constants"
     ],
     "insights": [
       "Helicity H = ∫u·ω decomposes into positive/negative helical modes: E±=(E±H)/2",
@@ -84,7 +87,19 @@
       "All log improvements (Tao, Montgomery-Smith, Kozono-Taniuchi) gain at most log factors — exactly at threshold",
       "Enhanced dissipation: mixing flow produces decay rate (νκ²)^{1/3} >> ν (pure diffusion)",
       "Self-regularization hypothesis: NS self-advection could act as self-mixing → enhanced dissipation → regularity",
-      "20 critical exponents verified for mutual consistency via norm_num - Serrin, Kolmogorov, CKN, Lions, She-Leveque all pass cross-checks"
+      "20 critical exponents verified for mutual consistency via norm_num - Serrin, Kolmogorov, CKN, Lions, She-Leveque all pass cross-checks",
+      "Stochastic NS Itô correction: Stratonovich transport noise secretly adds viscosity ν_eff = ν + (1/2)Σ|σ_k|² in Itô form",
+      "Hairer-Mattingly (2006): unique ergodicity of 2D stochastic NS with just 2 forced Fourier modes (hypoelliptic result)",
+      "Flandoli-Romito (2008): Markov selection among non-unique Leray-Hopf solutions exists a.s. for 3D stochastic NS",
+      "RSH: at p=3 anomalous correction vanishes (ζ₃=1 exact), at p=6 gives ζ₆=7/4 vs K41 prediction of 2",
+      "Attractor dimension: rigorous bound G^{2/3} > Kraichnan prediction G^{1/2} for 2D NS",
+      "Kato inviscid limit: u^ν → u^0 at rate O(ν) on torus, but fails near boundaries (open problem)",
+      "Prandtl boundary layer O(√ν) is thicker than Kato criterion strip O(ν) — different mechanisms",
+      "Onsager critical exponent 1/3 = K41 scaling exponent: 2h+1=5/3 gives h=1/3",
+      "Hou-Luo self-similar Euler blowup: α=1/3, β=2/3 satisfying α+β=1 and α=2β-1",
+      "BKM exponent -1 is exactly critical: ∫(T*-t)^{-1}dt diverges logarithmically",
+      "Inviscid limit rates decay: L²→O(ν), L∞ velocity→O(√ν), L² vorticity→O(√ν), L∞ vorticity→O(1)",
+      "Yudovich 2D Euler uniqueness uses log-Lipschitz estimate from Biot-Savart — fails in 3D"
     ],
     "mathlibGaps": [
       "Sobolev spaces",

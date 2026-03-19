@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 2 soundness fixes (GrandRH def, vacuous RvM formula) + Part XLVI with 10 proved GRH comprehensive theorems. 5099 lines, 47 axioms, 330 theorems.",
+    "progressSummary": "PROGRESS: Extended equivalence network from K₈ to K₉ (+Connes positivity). 17 new proved theorems, 7048 lines total, 75 axioms, 434 theorems, 0 sorries.",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",
@@ -74,7 +74,8 @@
       "Li_criterion",
       "GrandRH definition was unsound (used partial sum proxy), converted to opaque",
       "riemann_von_mangoldt_formula in main file was vacuous (proved True), fixed",
-      "Added 10 proved GRH comprehensive theorems including not_GRH_dichotomy"
+      "Added 10 proved GRH comprehensive theorems including not_GRH_dichotomy",
+      "Extended equivalence network to K₉ (36 pairwise equivalences) by integrating Connes noncommutative geometry positivity"
     ],
     "mathlibGaps": [
       "Dirichlet series",
