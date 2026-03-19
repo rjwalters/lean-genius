@@ -4397,20 +4397,17 @@ All 4 axioms declared, 3 are now theorems. **0 sorries remaining!**
   (c) x₀_{n+1} = 0: filter argument using both branches → same limit
   (d) x₀ = 0: squeeze via bounds + normSqrt → 0
 
-**Grand total**: ~4300 lines, ~200 declarations, 4 axioms (1 independent),
-1 sorry (piecewise continuity of radial extension in bu_implies_no_retraction).
+**Grand total**: ~4400 lines, ~200 declarations, 4 axioms (1 independent), 0 sorries.
 
-**Remaining work**:
-- Prove component-wise continuity of the piecewise radial extension (the 1 sorry).
-  Infrastructure is now in place:
-  - `radialBranch1_bound`, `radialBranch2_bound`: ‖branch_j(x)‖ ≤ normSqrt(x)
-  - `radial_branches_agree_on_equator`: branches match when x_{n+1} = 0
-  - `continuous_normSqrt`: normSqrt is continuous with normSqrt(0) = 0
-  - Proof strategy: ContinuousAt at each point via 4-case analysis
-    (a) x₀_{n+1} > 0: g = branch1 in open nbhd
-    (b) x₀_{n+1} < 0: g = branch2 in open nbhd
-    (c) x₀_{n+1} = 0, x₀ ≠ 0: branches agree + both cts
-    (d) x₀ = 0: squeeze via bounds + normSqrt → 0
+**Key proof**: The radial extension continuity was proved in Section LXIX using:
+- `radialBranch1_bound`, `radialBranch2_bound`: |branch_j(x)| ≤ normSqrt(x)
+- `radial_branches_agree_on_equator`: branches match when x_{n+1} = 0
+- `continuous_normSqrt`: normSqrt is continuous with normSqrt(0) = 0
+- ContinuousAt at each point via 4-case analysis:
+  (a) x₀_{n+1} > 0: g = branch1 in open neighborhood
+  (b) x₀_{n+1} < 0: g = branch2 in open neighborhood
+  (c) x₀_{n+1} = 0: filter argument using both branches → same limit
+  (d) x₀ = 0: squeeze via bounds + normSqrt → 0
 -/
 theorem bu_session_7_summary : True := trivial
 
