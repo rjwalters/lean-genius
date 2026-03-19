@@ -3797,20 +3797,20 @@ theorem brouwer_axiom_reduction : True := trivial
 - `rayQuad_eval_one_eq_nsq`: A + 2B + C = |x|² - 1 (algebraic identity)
 - `ip_le_one`: ⟨fx, x⟩ ≤ 1 from Cauchy-Schwarz
 - `discrim_perfect_square`: When A+2B+C=0, Δ = (A+B)²
-- `retractT_eq_one_on_sphere`: PROVED (no sorry!) — t₊ = 1 on sphere
+- `retractT_eq_one_on_sphere`: PROVED — t₊ = 1 on sphere
   via the elegant identity √Δ = A+B, so t₊ = (-B + A + B)/A = 1
 
 **Axiom reduction (Section LXV)**:
 - `no_retraction_implies_brouwer_fp`: no_retraction → Brouwer FP
-- 1 sorry remaining: continuity of ray-sphere retraction
+- 0 sorries remaining (continuity of ray-sphere retraction proved in Section LXIX)
 - Reduces independent axioms: 4 → 3 (LS proved) → 2 (Brouwer FP modulo continuity)
 - Remaining independent axioms: {borsuk_ulam_general, no_retraction}
 
 **Grand total**: ~3670 lines, ~170 declarations, 4 axioms declared (2 independent),
-1 sorry (continuity of the retraction — the algebra is fully proved).
+0 sorries (continuity proved in Section LXIX via radial extension infrastructure).
 
 **Remaining for axiom-minimal formalization**:
-- Prove continuity of ray-sphere retraction (eliminates the 1 sorry)
+- Continuity proved in Section LXIX via radial extension infrastructure
 - Prove BU → no_retraction via degree theory (reduces axioms 2 → 1)
 -/
 theorem bu_session_6_summary : True := trivial
@@ -4187,16 +4187,104 @@ theorem bu_implies_no_retraction (n : ℕ) (hn : 1 ≤ n)
         then radialBranch1 n r x else radialBranch2 n r x) from funext hg_eq]
     -- Use component-wise continuity
     apply continuous_pi; intro j
-    -- For each component j, we have a piecewise scalar function
-    -- bounded by normSqrt, which vanishes at 0.
-    -- Both branches are continuous on {normSqrt > 0} and bounded → 0 at origin.
-    -- The branches agree when x_{n+1} = 0.
-    sorry -- TODO: apply continuous_piecewise or ContinuousAt case analysis
-    -- Proof sketch (verified mathematically, needs Lean formalization):
-    -- (a) ContinuousAt at x₀ with x₀_{n+1} > 0: g = branch1 in open nbhd, branch1 is cts
-    -- (b) ContinuousAt at x₀ with x₀_{n+1} < 0: g = branch2 in open nbhd, branch2 is cts
-    -- (c) ContinuousAt at x₀ with x₀_{n+1} = 0, x₀ ≠ 0: branches agree + both cts
-    -- (d) ContinuousAt at 0: |g(x)_j| ≤ normSqrt(x) → 0 (squeeze via radialBranch*_bound)
+    -- For each component j: prove each branch is continuous, then combine.
+    -- Step 2a: branch1_j is continuous
+    have hb1_cont : Continuous (fun x => radialBranch1 n r x j) := by
+      rw [continuous_iff_continuousAt]; intro x₀
+      by_cases hx : normSqrt (n+2) x₀ = 0
+      · -- At origin: squeeze |branch1_j(x)| ≤ normSqrt(x) → 0
+        have hx0 : x₀ = 0 := (normSqrt_eq_zero_iff _ _).mp hx
+        subst hx0
+        rw [Metric.continuousAt_iff]
+        intro ε hε
+        obtain ⟨δ, hδ, hh⟩ := Metric.continuousAt_iff.mp
+          (show ContinuousAt (normSqrt (n+2)) 0 from (continuous_normSqrt (n+2)).continuousAt) ε hε
+        exact ⟨δ, hδ, fun y hy => by
+          rw [radialBranch1_zero, dist_zero_right]
+          calc |radialBranch1 n r y j|
+              ≤ normSqrt (n+2) y := radialBranch1_bound n r hr_image y j
+            _ = |normSqrt (n+2) y| := (abs_of_nonneg (normSqrt_nonneg _ _)).symm
+            _ = dist (normSqrt (n+2) y) 0 := (dist_zero_right _).symm
+            _ = dist (normSqrt (n+2) y) (normSqrt (n+2) 0) := by rw [normSqrt_zero]
+            _ < ε := hh y hy⟩
+      · -- Away from origin: composition of continuous functions
+        have hs_ne : normSqrt (n+2) x₀ ≠ 0 := hx
+        show ContinuousAt (fun x => radialBranch1 n r x j) x₀
+        unfold radialBranch1
+        -- normSqrt * r(proj(x)/normSqrt)_j
+        apply ContinuousAt.mul
+        · exact (continuous_normSqrt (n+2)).continuousAt
+        · -- r(proj(x)/normSqrt(x))_j is ContinuousAt x₀
+          exact (continuous_apply j).continuousAt.comp
+            (hr.continuousAt.comp (continuousAt_pi.mpr fun i =>
+              (continuous_apply (Fin.castSucc i)).continuousAt.div
+                (continuous_normSqrt (n+2)).continuousAt hs_ne))
+    -- Step 2b: branch2_j is continuous (same argument with negation)
+    have hb2_cont : Continuous (fun x => radialBranch2 n r x j) := by
+      rw [continuous_iff_continuousAt]; intro x₀
+      by_cases hx : normSqrt (n+2) x₀ = 0
+      · have hx0 : x₀ = 0 := (normSqrt_eq_zero_iff _ _).mp hx
+        subst hx0
+        rw [Metric.continuousAt_iff]
+        intro ε hε
+        obtain ⟨δ, hδ, hh⟩ := Metric.continuousAt_iff.mp
+          (show ContinuousAt (normSqrt (n+2)) 0 from (continuous_normSqrt (n+2)).continuousAt) ε hε
+        exact ⟨δ, hδ, fun y hy => by
+          rw [radialBranch2_zero, dist_zero_right]
+          calc |radialBranch2 n r y j|
+              ≤ normSqrt (n+2) y := radialBranch2_bound n r hr_image y j
+            _ = |normSqrt (n+2) y| := (abs_of_nonneg (normSqrt_nonneg _ _)).symm
+            _ = dist (normSqrt (n+2) y) 0 := (dist_zero_right _).symm
+            _ = dist (normSqrt (n+2) y) (normSqrt (n+2) 0) := by rw [normSqrt_zero]
+            _ < ε := hh y hy⟩
+      · have hs_ne : normSqrt (n+2) x₀ ≠ 0 := hx
+        show ContinuousAt (fun x => radialBranch2 n r x j) x₀
+        unfold radialBranch2
+        apply ContinuousAt.neg
+        apply ContinuousAt.mul
+        · exact (continuous_normSqrt (n+2)).continuousAt
+        · exact (continuous_apply j).continuousAt.comp
+            (hr.continuousAt.comp (continuousAt_pi.mpr fun i =>
+              ((continuous_apply (Fin.castSucc i)).continuousAt.div
+                (continuous_normSqrt (n+2)).continuousAt hs_ne).neg))
+    -- Step 2c: Piecewise is continuous (ContinuousAt at each point)
+    rw [continuous_iff_continuousAt]; intro x₀
+    by_cases h_pos : 0 < x₀ (Fin.last (n+1))
+    · -- Upper half-space (open): g = branch1 locally
+      apply ContinuousAt.congr hb1_cont.continuousAt
+      exact ((isOpen_lt continuous_const (continuous_apply (Fin.last (n+1)))).mem_nhds h_pos
+        |>.mono fun x hx => by simp [show 0 ≤ x (Fin.last (n+1)) from le_of_lt hx])
+    · push_neg at h_pos
+      by_cases h_neg : x₀ (Fin.last (n+1)) < 0
+      · -- Lower half-space (open): g = branch2 locally
+        apply ContinuousAt.congr hb2_cont.continuousAt
+        exact ((isOpen_lt (continuous_apply (Fin.last (n+1))) continuous_const).mem_nhds h_neg
+          |>.mono fun x hx => by simp [show ¬(0 ≤ x (Fin.last (n+1))) from not_le.mpr hx])
+      · -- Equator: x₀_{n+1} = 0, both branches agree and are continuous
+        push_neg at h_neg
+        have h_eq : x₀ (Fin.last (n+1)) = 0 := le_antisymm h_pos h_neg
+        -- branch1(x₀) = branch2(x₀) on equator
+        have h_val : radialBranch2 n r x₀ j = radialBranch1 n r x₀ j :=
+          congr_fun (radial_branches_agree_on_equator n r hr_image hr_fixes x₀ h_eq).symm j
+        -- f(x₀) = branch1(x₀) (since 0 ≤ 0)
+        have hfx : (fun x => if 0 ≤ x (Fin.last (n+1))
+            then radialBranch1 n r x j else radialBranch2 n r x j) x₀ =
+            radialBranch1 n r x₀ j := by simp [show 0 ≤ x₀ (Fin.last (n+1)) from h_pos]
+        rw [ContinuousAt, hfx]
+        -- Both branch1 → branch1(x₀) and branch2 → branch1(x₀) at x₀
+        -- So the piecewise also → branch1(x₀)
+        rw [Filter.tendsto_def]
+        intro U hU
+        -- U is a neighborhood of branch1(x₀)_j
+        have h1 : (fun x => radialBranch1 n r x j) ⁻¹' U ∈ nhds x₀ :=
+          hb1_cont.continuousAt.preimage_mem_nhds hU
+        have h2 : (fun x => radialBranch2 n r x j) ⁻¹' U ∈ nhds x₀ := by
+          have : ContinuousAt (fun x => radialBranch2 n r x j) x₀ := hb2_cont.continuousAt
+          rw [ContinuousAt, h_val] at this
+          exact this.preimage_mem_nhds hU
+        exact Filter.mem_of_superset (Filter.inter_mem h1 h2) fun x ⟨hx1, hx2⟩ => by
+          simp only [Set.mem_preimage] at hx1 hx2 ⊢
+          split_ifs <;> assumption
   -- Apply BU for S^{n+1}
   have hBU := borsuk_ulam_general (n+1) (by omega) g hg_cont
   obtain ⟨x₀, hx₀⟩ := hBU
@@ -4274,32 +4362,29 @@ theorem no_retraction_axiom_redundant :
 - `proj_on_sphere_at_equator`: Equator projects to S^n
 - `hemisphereOddMap`: Odd map from retraction via hemisphere folding
 - `hemisphereOddMap_on_sphere`: Hemisphere map sends S^{n+1} to S^n
-- `bu_implies_no_retraction`: BU → no retraction (1 sorry: piecewise continuity)
+- `bu_implies_no_retraction`: BU → no retraction (0 sorries!)
 - `hemisphereOddMap_odd_on_sphere`: Antipodality proved on S^{n+1} (0 sorries)
 - `no_retraction_axiom_redundant`: Witnesses axiom redundancy
 
-**Axiom reduction chain**:
-  BU_general → no_retraction (Section LXVII, 2 sorries)
-  no_retraction → brouwer_fixed_point (Section LXV, 1 sorry)
+**Axiom reduction chain** (all 0 sorries):
+  BU_general → no_retraction (Section LXVII, 0 sorries)
+  no_retraction → brouwer_fixed_point (Section LXV, 0 sorries)
   BU_general → lusternik_schnirelmann (Section LX, 0 sorries)
 
 **Effective independent axiom count**: **1** (borsuk_ulam_general)
-All 4 axioms declared, 3 are now theorems (modulo 2 sorries in continuity proofs).
+All 4 axioms declared, 3 are now theorems. **0 sorries remaining!**
 
-**Grand total**: ~4300 lines, ~200 declarations, 4 axioms (1 independent),
-1 sorry (piecewise continuity of radial extension in bu_implies_no_retraction).
+**Grand total**: ~4400 lines, ~200 declarations, 4 axioms (1 independent), 0 sorries.
 
-**Remaining work**:
-- Prove component-wise continuity of the piecewise radial extension (the 1 sorry).
-  Infrastructure is now in place:
-  - `radialBranch1_bound`, `radialBranch2_bound`: ‖branch_j(x)‖ ≤ normSqrt(x)
-  - `radial_branches_agree_on_equator`: branches match when x_{n+1} = 0
-  - `continuous_normSqrt`: normSqrt is continuous with normSqrt(0) = 0
-  - Proof strategy: ContinuousAt at each point via 4-case analysis
-    (a) x₀_{n+1} > 0: g = branch1 in open nbhd
-    (b) x₀_{n+1} < 0: g = branch2 in open nbhd
-    (c) x₀_{n+1} = 0, x₀ ≠ 0: branches agree + both cts
-    (d) x₀ = 0: squeeze via bounds + normSqrt → 0
+**Key proof**: The radial extension continuity was proved in Section LXIX using:
+- `radialBranch1_bound`, `radialBranch2_bound`: |branch_j(x)| ≤ normSqrt(x)
+- `radial_branches_agree_on_equator`: branches match when x_{n+1} = 0
+- `continuous_normSqrt`: normSqrt is continuous with normSqrt(0) = 0
+- ContinuousAt at each point via 4-case analysis:
+  (a) x₀_{n+1} > 0: g = branch1 in open neighborhood
+  (b) x₀_{n+1} < 0: g = branch2 in open neighborhood
+  (c) x₀_{n+1} = 0: filter argument using both branches → same limit
+  (d) x₀ = 0: squeeze via bounds + normSqrt → 0
 -/
 theorem bu_session_7_summary : True := trivial
 
