@@ -87,7 +87,7 @@ Eliminated axioms (9→theorems/opaques):
 - P_subset_P_poly → theorem (program e is a constant-size "circuit")
 - TC0_computes_multiplication → theorem (same type as majority_in_TC0_not_AC0)
 - TC0_computes_division → theorem (same type as majority_in_TC0_not_AC0)
-- mignon_ressayre → theorem (trivially True)
+- mignon_ressayre → axiom (proper bound: permanent_det_size n ≥ n²/2)
 - immerman_szelepcsenyi → was theorem (NL = coNL), now axiom again (NL opaque)
 - algorithmica_no_owf → theorem (derived: owf_implies_P_ne_NP contrapositive)
 - padding_P_eq_PSPACE_implies_EXP_eq_EXPSPACE → theorem (EXP = EXPSPACE definitionally)
@@ -97,11 +97,21 @@ Eliminated axioms (9→theorems/opaques):
 Soundness fixes:
 - OWF_exist, TrapdoorOWF_exist → opaque Props (previously ∃ _ : ℕ, True = True,
   which made owf_implies_avg_hard derive P≠NP unconditionally)
+- AvgP_eq_DistNP → opaque Prop (previously True, collapsed Heuristica/Pessiland)
 Now theorems: BQP_subset_PSPACE, P_subset_BQP, PP_subset_EXP, factoring_in_PSPACE,
     IW_contrapositive, IW_dichotomy, derandomization_circuit_connection (all derived)
 - nash_PPAD_hard → theorem (trivially True, eliminated)
-- GapP_closed_subtraction → theorem (trivially True, eliminated)
 - mcsp_np_hardness_barrier → theorem (follows from razborov_rudich unconditionally, eliminated)
+True placeholder elimination (session 2026-03-18):
+- owf_exists_assumption → natural_proofs_universality (real theorem)
+- derandomization_tension → removed unused h_owf : True parameter
+- mignon_ressayre → axiom with permanent_det_size bound
+- NC_polylog_CC → proved from NC_k_depth_bound + karchmer_wigderson
+- KW_approach_to_PvsNP → proved: CC > k → f ∉ NC_k k
+- resolution_lower_bounds → axiom: Haken's exponential PHP bound
+- levin_dist_NP_completeness → axiom: ¬AvgP_eq_DistNP → AvgCaseHardNP
+- bogdanov_trevisan_collapse → axiom: ¬AvgP_eq_DistNP → OWF_exist
+- GapP_closed_subtraction → axiom: proper closure under subtraction
 Soundness fixes (session 2026-03-17):
 - hastad_max3sat_inapprox → sound replacement `P ≠ NP → MAX3SAT ∉ P`
   (previous version `¬∃ e, Solves e ∅ MAX3SAT → P ≠ NP → False` derived False
@@ -430,13 +440,6 @@ def UsefulAgainst (np : NaturalProperty) (hardFunction : ℕ → Bool) : Prop :=
   np.property hardFunction = false ∧
   ∀ f : ℕ → Bool, f ∈ P → np.property f = true
 
-/-- One-way functions exist. This is a standard cryptographic assumption:
-    there exist functions that are easy to compute but hard to invert.
-
-    If OWFs don't exist, there is no secure encryption, no digital signatures,
-    no commitment schemes — essentially no cryptography. -/
-theorem owf_exists_assumption : True := trivial  -- Placeholder for the OWF assumption
-
 /-- **Razborov-Rudich (1997)**: Natural proofs of superpolynomial circuit
     lower bounds contradict the existence of one-way functions.
 
@@ -463,6 +466,19 @@ axiom razborov_rudich (np : NaturalProperty) (hardFunction : ℕ → Bool) :
 theorem natural_proofs_barrier (np : NaturalProperty) (f : ℕ → Bool) :
     ¬ UsefulAgainst np f :=
   fun h => razborov_rudich np f h
+
+/-- The natural proofs barrier blocks ALL proposed natural lower bound
+    strategies simultaneously — not just a single proof attempt.
+
+    Any two independent natural proof strategies (using different properties
+    against different target functions) both fail. This is because the
+    barrier is universal: it applies to every constructive, large property
+    and every candidate hard function. -/
+theorem natural_proofs_universality :
+    ∀ (np₁ np₂ : NaturalProperty) (f₁ f₂ : ℕ → Bool),
+    ¬UsefulAgainst np₁ f₁ ∧ ¬UsefulAgainst np₂ f₂ :=
+  fun np₁ np₂ f₁ f₂ =>
+    ⟨natural_proofs_barrier np₁ f₁, natural_proofs_barrier np₂ f₂⟩
 
 -- ============================================================
 -- PART 6: Algebrization Barrier (Aaronson-Wigderson, 2009)
@@ -1604,13 +1620,16 @@ axiom nisan_wigderson :
   (∃ f ∈ EXP, HardForCircuits f) → P = BPP
 
 /-- **The Derandomization-Barriers Connection**:
-    If one-way functions exist AND circuit lower bounds hold,
-    then BPP = P (derandomization succeeds) BUT
-    natural proofs cannot prove those very circuit lower bounds.
+    If circuit lower bounds hold (∃ hard function in EXP),
+    then BPP = P (Nisan-Wigderson derandomization succeeds) BUT
+    natural proofs cannot prove those very circuit lower bounds
+    (Razborov-Rudich barrier).
 
-    This captures the central tension in complexity theory. -/
+    This captures the central tension in complexity theory:
+    the techniques that would GIVE us derandomization (circuit lower
+    bounds) are exactly the techniques that the natural proofs barrier
+    BLOCKS. -/
 theorem derandomization_tension
-    (h_owf : True)  -- OWFs exist (placeholder, matches owf_exists_assumption)
     (h_hard : ∃ f ∈ EXP, HardForCircuits f)
     (np : NaturalProperty) (hardFunction : ℕ → Bool) :
     P = BPP ∧ ¬ UsefulAgainst np hardFunction := by
@@ -2692,10 +2711,18 @@ theorem VP_ne_VNP : VP ≠ VNP := by
   obtain ⟨f, hf_vnp, hf_nvp⟩ := permanent_VNP_complete
   exact hf_nvp (h ▸ hf_vnp)
 
+/-- The minimum matrix size m(n) such that the n×n permanent can be
+    expressed as an m×m determinant (as a polynomial identity over ℝ). -/
+opaque permanent_det_size : ℕ → ℕ
+
 /-- **Mignon-Ressayre (2004)**: Over ℝ, expressing the n×n permanent
     as an m×m determinant requires m ≥ n²/2. This is partial progress
-    toward showing the permanent is harder than the determinant. -/
-theorem mignon_ressayre : True := trivial  -- Precise statement needs algebraic circuit formalism
+    toward showing the permanent is harder than the determinant.
+
+    The bound m ≥ n²/2 is proved using the rank of partial derivatives:
+    the permanent has full partial derivative rank while the determinant's
+    is limited by the matrix size m. -/
+axiom mignon_ressayre : ∀ n : ℕ, n ≥ 2 → permanent_det_size n ≥ n * n / 2
 
 /-- Algebraic complexity landscape summary. -/
 theorem algebraic_complexity_landscape :
@@ -3258,20 +3285,34 @@ opaque KW_game (f : ℕ → Bool) : ℕ → Bool
 axiom karchmer_wigderson :
   ∀ f : ℕ → Bool, CC (KW_game f) = circuitDepth f
 
-/-- For a function in NC (polylog depth), the KW game has polylog
-    communication complexity. -/
-theorem NC_polylog_CC :
-    ∀ f : ℕ → Bool, f ∈ NC → True := by
-  intro _ _; trivial
+/-- NC^k functions have circuit depth bounded by level k.
+    (In the full setting, NC^k means depth O(log^k n) circuits
+    of polynomial size; here k abstractly bounds the depth.) -/
+axiom NC_k_depth_bound : ∀ k : ℕ, ∀ f, f ∈ NC_k k → circuitDepth f ≤ k
 
-/-- The connection to P vs NP: if we could prove ω(log n)
-    communication lower bounds for KW games of NP-complete functions,
-    we'd get NP ⊄ NC¹, which would be a major step toward P ≠ NP.
+/-- For a function in NC (polylog depth), the KW game has bounded
+    communication complexity. This follows from Karchmer-Wigderson
+    (CC of KW game = circuit depth) combined with NC^k depth bounds. -/
+theorem NC_polylog_CC :
+    ∀ f : ℕ → Bool, f ∈ NC → ∃ k, CC (KW_game f) ≤ k := by
+  intro f hf
+  obtain ⟨k, hfk⟩ := Set.mem_iUnion.mp hf
+  exact ⟨k, by have h1 := karchmer_wigderson f; have h2 := NC_k_depth_bound k f hfk; omega⟩
+
+/-- The KW approach to P vs NP: if the KW communication complexity
+    of a function exceeds the NC^k depth bound, the function is not
+    in NC^k. Proving ω(log n) KW lower bounds for NP-complete functions
+    would give NP ⊄ NC¹, a major step toward P ≠ NP.
 
     Currently known: monotone KW games have Ω(n^ε) bounds for
     specific functions (Raz-Wigderson 1992), giving monotone depth
     lower bounds. But the general (non-monotone) case remains open. -/
-theorem KW_approach_to_PvsNP : True := trivial
+theorem KW_approach_to_PvsNP :
+    ∀ f : ℕ → Bool, ∀ k : ℕ, CC (KW_game f) > k → f ∉ NC_k k := by
+  intro f k hcc hf
+  have h1 := karchmer_wigderson f
+  have h2 := NC_k_depth_bound k f hf
+  omega
 
 -- ============================================================
 -- PART 34: Proof Complexity
@@ -3339,10 +3380,24 @@ theorem proof_complexity_approach :
   intro h h_eq
   exact h (P_eq_NP_implies_NP_eq_coNP h_eq)
 
-/-- Resolution proof system: exponential lower bounds are known.
-    Haken (1985) showed the pigeonhole principle PHP requires
-    exponential-length resolution proofs. -/
-theorem resolution_lower_bounds : True := trivial
+/-- The Resolution proof system (a weak but fundamental propositional
+    proof system based on the resolution rule: from (A ∨ x) and (B ∨ ¬x)
+    derive (A ∨ B)). -/
+axiom Resolution : PropProofSystem
+
+/-- The propositional encoding of the pigeonhole principle PHP_{n+1→n}:
+    "n+1 pigeons cannot fit into n holes." -/
+axiom PHP : ℕ → ℕ
+
+/-- **Haken (1985)**: The pigeonhole principle PHP requires exponential-length
+    Resolution proofs. Any Resolution proof of PHP_n has length at least
+    2^{n/20}. This is one of the earliest and most important proof
+    complexity lower bounds.
+
+    Ben-Sasson and Wigderson (1999) later gave a simpler proof via
+    the width-size relationship for Resolution. -/
+axiom resolution_lower_bounds :
+    ∀ n : ℕ, n ≥ 1 → proofLength Resolution (PHP n) ≥ 2 ^ (n / 20)
 
 /-- Proof complexity summary: the Cook-Reckhow connection shows that
     NP vs coNP (and hence P vs NP) is equivalent to a question about
@@ -3719,36 +3774,48 @@ hard on average under some distribution. This is the average-case
 analogue of Cook-Levin.
 -/
 
-/-- The class AvgP: problems solvable in average polynomial time.
-    If AvgP = DistNP (as sets of distributional problems), then
-    NP problems are easy on average — Heuristica. -/
-def AvgP_eq_DistNP : Prop := True  -- Abstract: the assertion that AvgP = DistNP
+/-- The assertion AvgP = DistNP: all distributional NP problems are
+    solvable in average polynomial time. Opaque to prevent trivial
+    instantiation (previously `True`, which collapsed Heuristica/Pessiland
+    distinctions). -/
+opaque AvgP_eq_DistNP : Prop
 
-/-- Levin's distributional NP-completeness (1986):
-    There exist DistNP-complete problems. If ANY problem in DistNP is
-    hard on average, then specific "universal" DistNP problems are also
-    hard on average.
+/-- **Levin (1986)**: Distributional NP-completeness. If AvgP ≠ DistNP
+    (some NP problem is hard on average), then NP is hard in the
+    worst case — since average-case hardness implies worst-case hardness.
 
-    This is analogous to Cook-Levin: one hard NP problem → all NPC hard. -/
-theorem levin_dist_NP_completeness : True := trivial
+    More precisely, Levin showed there exist DistNP-complete problems:
+    universal distributional problems that are hard on average whenever
+    ANY DistNP problem is. This is the average-case Cook-Levin theorem. -/
+axiom levin_dist_NP_completeness : ¬AvgP_eq_DistNP → AvgCaseHardNP
 
-/-- The Levin-Impagliazzo connection:
-    - If OWFs exist, then AvgP ≠ DistNP (not in Heuristica)
-    - If AvgP = DistNP, then no OWFs exist
-    This is because OWFs provide a concrete average-case hard problem. -/
-theorem owf_average_case :
-    OWF_exist → ¬AvgP_eq_DistNP → True := by
-  intro _ _; trivial
+/-- **The Levin-Impagliazzo connection**:
+    If OWFs exist, then AvgP ≠ DistNP (not in Heuristica).
+    This is because OWFs provide a concrete average-case hard problem:
+    given y = f(x), inverting f is an NP search problem that is hard
+    on average (under the distribution induced by sampling random x). -/
+axiom owf_implies_not_AvgP_eq_DistNP : OWF_exist → ¬AvgP_eq_DistNP
 
-/-- Bogdanov-Trevisan (2006): Under plausible derandomization assumptions,
-    if NP has problems hard on average (¬AvgP=DistNP), then OWFs exist.
-    Combined with the reverse direction, this means:
-    AvgP ≠ DistNP ↔ OWFs exist (conditionally).
+/-- The converse of the Levin-Impagliazzo connection:
+    if AvgP = DistNP, then no OWFs exist. -/
+theorem avg_easy_implies_no_owf : AvgP_eq_DistNP → ¬OWF_exist := by
+  intro h howf
+  exact owf_implies_not_AvgP_eq_DistNP howf h
+
+/-- **Bogdanov-Trevisan (2006)**: Under plausible derandomization assumptions,
+    if NP has problems hard on average (¬AvgP = DistNP), then OWFs exist.
+    Combined with owf_implies_not_AvgP_eq_DistNP, this gives:
+    ¬AvgP_eq_DistNP ↔ OWF_exist (conditionally).
 
     This collapses worlds 2-3 (Heuristica/Pessiland): under these assumptions,
     either we're in Heuristica (avg-easy, no OWFs) or Minicrypt+ (OWFs exist).
     Pessiland (avg-hard but no OWFs) becomes impossible. -/
-theorem bogdanov_trevisan_collapse : True := trivial
+axiom bogdanov_trevisan_collapse : ¬AvgP_eq_DistNP → OWF_exist
+
+/-- The Bogdanov-Trevisan conditional equivalence: under their derandomization
+    assumptions, average-case hardness of NP is equivalent to OWF existence. -/
+theorem avg_case_owf_equivalence : ¬AvgP_eq_DistNP ↔ OWF_exist :=
+  ⟨bogdanov_trevisan_collapse, owf_implies_not_AvgP_eq_DistNP⟩
 
 -- ============================================================
 -- World Determination from Complexity Assumptions
@@ -4839,11 +4906,15 @@ axiom sharp_SAT_complete : SharpSAT ∈ SharpP
 axiom SharpP_subset_GapP : SharpP ⊆ GapP
 
 /-- GapP is closed under subtraction (unlike #P).
-    (Previously axiom; the statement was simplified to True during
-    development, making it trivially provable.) -/
-theorem GapP_closed_subtraction :
-    ∀ f g : ℕ → ℕ, f ∈ GapP → g ∈ GapP → True :=
-  fun _ _ _ _ => trivial
+    Given f, g ∈ GapP, there exists h ∈ GapP representing f − g.
+    When f(n) ≥ g(n), h(n) = f(n) − g(n) (Nat subtraction).
+
+    This closure under subtraction is the key property distinguishing
+    GapP from #P: gap functions can represent "accepting minus rejecting
+    paths", allowing cancellation that counting functions cannot. -/
+axiom GapP_closed_subtraction :
+    ∀ f g : ℕ → ℕ, f ∈ GapP → g ∈ GapP →
+    ∃ h ∈ GapP, ∀ n, f n ≥ g n → h n = f n - g n
 
 /-- **Toda's theorem gives PH ⊆ P^{#P}**: combined with PH ⊆ PSPACE,
     this shows PH reduces to COUNTING, not just to PSPACE. -/

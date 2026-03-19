@@ -97,6 +97,23 @@ count_sorries() {
     grep -c "sorry" "$1" 2>/dev/null || echo 0
 }
 
+# Count theorems proved (sorries eliminated) by comparing original and solution
+count_theorems_proved() {
+    local original="$1"
+    local solution="$2"
+
+    # Count sorry occurrences in each file (grep -c counts lines, but that's close enough)
+    local orig_count new_count
+    orig_count=$(grep -c "sorry" "$original" 2>/dev/null || echo 0)
+    new_count=$(grep -c "sorry" "$solution" 2>/dev/null || echo 0)
+
+    local proved=$((orig_count - new_count))
+    if [[ "$proved" -lt 0 ]]; then
+        proved=0
+    fi
+    echo "$proved"
+}
+
 # Integrate a solution
 integrate_solution() {
     local job="$1"
@@ -108,16 +125,44 @@ integrate_solution() {
     local basename=$(basename "$original_file" .lean)
     local solution_file="$RESULTS_DIR/${basename}-solved.lean"
 
+    # --- Ghost/stale job detection ---
+    # If the file path points to a temp directory and the file doesn't exist,
+    # this is a ghost job from reconciliation. Mark it stale and skip.
+    if [[ "$original_file" == /var/folders/* || "$original_file" == /tmp/* ]]; then
+        if [[ ! -f "$original_file" ]]; then
+            echo -e "  ${YELLOW}WARNING:${NC} Job $project_id ($problem_id) has temp file path that no longer exists: $original_file"
+            echo -e "  ${YELLOW}Marking as stale (ghost job from reconciliation)${NC}"
+            if [[ "$DRY_RUN" != true ]]; then
+                update_job_status "$project_id" "stale" "Ghost job: temp file path no longer exists ($original_file)"
+            fi
+            return 1
+        fi
+    fi
+
     # If the file path is a temp/absolute path (from preprocessing), map to proofs/Proofs/
     local original_path
     if [[ "$original_file" == /* ]]; then
         original_path="$PROOFS_DIR/${basename}.lean"
         if [[ ! -f "$original_path" ]]; then
-            echo -e "  ${YELLOW}Temp path, no matching proof file: $original_path${NC}"
-            original_path="$PROJECT_ROOT/$original_file"
+            echo -e "  ${RED}ERROR:${NC} Job $project_id ($problem_id): temp path, no matching proof file found"
+            echo -e "  ${RED}  Looked for:${NC} $original_path"
+            echo -e "  ${RED}  Original file field:${NC} $original_file"
+            echo -e "  ${RED}  Basename used:${NC} ${basename}.lean"
+            if [[ "$DRY_RUN" != true ]]; then
+                update_job_status "$project_id" "stale" "Cannot map temp path to proof file: looked for $PROOFS_DIR/${basename}.lean"
+            fi
+            return 1
         fi
     else
         original_path="$PROJECT_ROOT/$original_file"
+        if [[ ! -f "$original_path" ]]; then
+            echo -e "  ${RED}ERROR:${NC} Job $project_id ($problem_id): original file does not exist"
+            echo -e "  ${RED}  Path:${NC} $original_path"
+            if [[ "$DRY_RUN" != true ]]; then
+                update_job_status "$project_id" "stale" "Original file missing: $original_path"
+            fi
+            return 1
+        fi
     fi
 
     if [[ "$is_companion" == "true" ]]; then
@@ -134,7 +179,7 @@ integrate_solution() {
         result=$(retrieve_solution "$project_id" "$solution_file")
 
         if echo "$result" | grep -q "ERROR"; then
-            echo -e "  ${RED}Retrieve failed:${NC} $result"
+            echo -e "  ${RED}ERROR:${NC} Retrieve failed for job $project_id ($problem_id): $result"
 
             # If project no longer exists on server, mark as expired
             if echo "$result" | grep -q "not found"; then
@@ -161,7 +206,9 @@ integrate_solution() {
         echo -e "  Solution sorries: $new_sorries"
 
         if [[ "$new_sorries" -lt "$orig_sorries" ]]; then
-            echo -e "  ${GREEN}Improvement!${NC} ($orig_sorries -> $new_sorries)"
+            local theorems_proved
+            theorems_proved=$(count_theorems_proved "$original_path" "$solution_file")
+            echo -e "  ${GREEN}Improvement!${NC} ($orig_sorries -> $new_sorries, $theorems_proved theorems proved)"
 
             if [[ "$DRY_RUN" == true ]]; then
                 echo -e "  ${YELLOW}[DRY RUN]${NC} Would copy to $original_path"
@@ -169,11 +216,7 @@ integrate_solution() {
                 # Backup original
                 cp "$original_path" "$original_path.bak"
 
-                # Copy solution (strip Aristotle header comments if any)
-                # Keep everything after the first non-comment line
-                sed '/^\/\*/,/^\*\//d; /^--.*Aristotle/d' "$solution_file" > "$original_path"
-
-                # Actually, let's just copy directly - the header is informative
+                # Copy solution directly - the header is informative
                 cp "$solution_file" "$original_path"
 
                 echo -e "  ${GREEN}Integrated${NC}"
@@ -188,10 +231,10 @@ integrate_solution() {
                 # Move to processed
                 mv "$solution_file" "$PROCESSED_DIR/"
 
-                # Update job status
+                # Update job status with theorems_proved
                 local outcome_note="$new_sorries sorries remaining"
                 [[ "$is_companion" == "true" ]] && outcome_note="$new_sorries sorries remaining (companion file — merge into ${basename/Aristotle/Problem}.lean)"
-                update_job_status "$project_id" "integrated" "$outcome_note"
+                update_job_status_with_theorems "$project_id" "integrated" "$outcome_note" "$theorems_proved"
 
                 # Create completion signal for daemon stats tracking
                 local completions_dir="$PROJECT_ROOT/.loom/signals/completions"
@@ -203,7 +246,7 @@ integrate_solution() {
 
             if [[ "$DRY_RUN" != true ]]; then
                 mv "$solution_file" "$PROCESSED_DIR/" 2>/dev/null || true
-                update_job_status "$project_id" "integrated" "Already had 0 sorries"
+                update_job_status_with_theorems "$project_id" "integrated" "Already had 0 sorries" "0"
             fi
         else
             echo -e "  ${YELLOW}No improvement${NC} ($orig_sorries -> $new_sorries)"
@@ -213,6 +256,11 @@ integrate_solution() {
                 update_job_status "$project_id" "completed" "$new_sorries sorries remaining"
             fi
         fi
+    else
+        echo -e "  ${RED}ERROR:${NC} Job $project_id ($problem_id): solution_file or original_path missing after retrieval"
+        [[ ! -f "$solution_file" ]] && echo -e "  ${RED}  Missing solution:${NC} $solution_file"
+        [[ ! -f "$original_path" ]] && echo -e "  ${RED}  Missing original:${NC} $original_path"
+        return 1
     fi
 
     return 0
@@ -227,6 +275,22 @@ update_job_status() {
     local tmp_file=$(mktemp)
     jq --arg pid "$project_id" --arg status "$status" --arg outcome "$outcome" '
         .jobs |= map(if .project_id == $pid then .status = $status | .outcome = $outcome else . end)
+    ' "$JOBS_FILE" > "$tmp_file" && mv "$tmp_file" "$JOBS_FILE"
+}
+
+# Update job status with theorems_proved count
+update_job_status_with_theorems() {
+    local project_id="$1"
+    local status="$2"
+    local outcome="$3"
+    local theorems_proved="$4"
+
+    local tmp_file=$(mktemp)
+    jq --arg pid "$project_id" --arg status "$status" --arg outcome "$outcome" \
+       --argjson proved "${theorems_proved:-0}" '
+        .jobs |= map(if .project_id == $pid then
+            .status = $status | .outcome = $outcome | .theorems_proved = $proved
+        else . end)
     ' "$JOBS_FILE" > "$tmp_file" && mv "$tmp_file" "$JOBS_FILE"
 }
 

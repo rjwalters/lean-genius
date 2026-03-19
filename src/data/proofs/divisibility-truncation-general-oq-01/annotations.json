@@ -1,0 +1,46 @@
+[
+  {
+    "id": "ann-unified-osculator",
+    "proofId": "divisibility-truncation-general-oq-01",
+    "range": { "startLine": 30, "endLine": 63 },
+    "type": "theorem",
+    "title": "Unified Osculator Theorem",
+    "content": "The single theorem that subsumes both positive and negative osculator rules:\n\n```lean\ntheorem unified_osculator (d : N) (c : Z) (n : N)\n    (hcop : IsCoprime (d : Z) 10)\n    (hc : (d : Z) | 10 * c - 1) :\n    (d : Z) | n <-> (d : Z) | (n/10 + c * (n%10))\n```\n\nFor $c > 0$ this gives the positive osculator (\"add $c$ times the last digit\").\nFor $c < 0$ this gives the negative osculator (\"subtract $|c|$ times the last digit\").\n\nThe proof uses the identity $10 \\cdot (n/10 + c \\cdot (n\\%10)) = n + (10c-1) \\cdot (n\\%10)$.",
+    "mathContext": "$d | n \\iff d | (\\lfloor n/10 \\rfloor + c \\cdot (n \\bmod 10))$ when $d | (10c - 1)$",
+    "significance": "critical",
+    "relatedConcepts": ["osculator", "divisibility", "coprimality", "modular arithmetic"]
+  },
+  {
+    "id": "ann-neg-from-unified",
+    "proofId": "divisibility-truncation-general-oq-01",
+    "range": { "startLine": 69, "endLine": 85 },
+    "type": "theorem",
+    "title": "Negative Osculator as Corollary",
+    "content": "The negative osculator rule is a one-line corollary of the unified theorem:\n\n```lean\ntheorem neg_osculator_from_unified (d : N) (c : Z) (n : N)\n    (hcop : IsCoprime (d : Z) 10)\n    (hc : (d : Z) | 10 * c + 1) :\n    (d : Z) | n <-> (d : Z) | (n/10 - c * (n%10))\n```\n\nThe proof converts $d | (10c+1)$ to $d | (10(-c)-1)$ and applies the unified theorem with osculator $-c$.",
+    "mathContext": "$d | (10c + 1) \\implies d | (10(-c) - 1)$",
+    "significance": "important",
+    "relatedConcepts": ["sign absorption", "osculator duality"]
+  },
+  {
+    "id": "ann-concrete-cases",
+    "proofId": "divisibility-truncation-general-oq-01",
+    "range": { "startLine": 91, "endLine": 114 },
+    "type": "example",
+    "title": "Concrete Divisibility Rules",
+    "content": "All five classical rules recovered from the unified framework:\n\n| Divisor | Osculator | Type | Rule |\n|---------|-----------|------|------|\n| 7 | c=-2 | negative | $7|n \\iff 7|(n/10 - 2(n\\%10))$ |\n| 11 | c=-1 | negative | $11|n \\iff 11|(n/10 - (n\\%10))$ |\n| 13 | c=4 | positive | $13|n \\iff 13|(n/10 + 4(n\\%10))$ |\n| 17 | c=-5 | negative | $17|n \\iff 17|(n/10 - 5(n\\%10))$ |\n| 19 | c=2 | positive | $19|n \\iff 19|(n/10 + 2(n\\%10))$ |",
+    "mathContext": "Instantiation of the unified theorem for specific divisors",
+    "significance": "interesting",
+    "relatedConcepts": ["divisibility rules", "mental arithmetic"]
+  },
+  {
+    "id": "ann-dual-sum",
+    "proofId": "divisibility-truncation-general-oq-01",
+    "range": { "startLine": 120, "endLine": 135 },
+    "type": "theorem",
+    "title": "Dual Osculator Sum Theorem",
+    "content": "For any $d$ coprime to 10, the positive osculator $c_+$ and negative osculator $c_-$ satisfy $d | (c_+ + c_-)$.\n\nThis follows from $10c_+ \\equiv 1$ and $10c_- \\equiv -1 \\pmod{d}$, so $10(c_+ + c_-) \\equiv 0 \\pmod{d}$, and coprimality gives $d | (c_+ + c_-)$.\n\nFor minimal osculators, $c_+ + c_- = d$ (e.g., 5+2=7, 4+9=13, 12+5=17).",
+    "mathContext": "$d | (c_+ + c_-)$ where $10c_+ \\equiv 1$ and $10c_- \\equiv -1 \\pmod{d}$",
+    "significance": "important",
+    "relatedConcepts": ["modular inverses", "osculator pairs"]
+  }
+]

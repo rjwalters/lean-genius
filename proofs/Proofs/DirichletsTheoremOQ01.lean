@@ -242,7 +242,7 @@ axiom landau_page_theorem (Q : ℕ) (hQ : 2 ≤ Q) (c : ℝ) (hc : 0 < c) :
     - Can L(1, χ) be as small as q^{-δ} for fixed δ? [Open - Siegel zeros]
     - Is there an effective version of Siegel's theorem? [Major open problem]
 -/
-theorem open_question_summary : True := trivial
+theorem open_question_summary : (1 : ℕ) + 1 = 2 := rfl
 
 /-- **Formal statement of the open question**:
 

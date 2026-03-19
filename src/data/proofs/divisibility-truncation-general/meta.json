@@ -108,7 +108,7 @@
     "summary": "The truncation method generalizes to a complete parametric framework. Two theorems (`truncation_pos` and `truncation_neg`) cover all cases: for any d coprime to 10, there exist osculator constants c (the multiplicative inverse of ±10 mod d) giving divisibility tests. The proof uses a single algebraic identity and the `IsCoprime` machinery of Mathlib.",
     "implications": "This unification has both mathematical and pedagogical value:\n- **Mathematical**: Shows the truncation method is not a collection of ad-hoc tricks but a single algebraic phenomenon.\n- **Computational**: Given any d coprime to 10, one can immediately compute the osculator and generate a divisibility test.\n- **Formal verification**: The parametric theorem is easier to maintain and extend than individual proofs.\n\nThe framework also extends to multi-digit truncation (the OQ-02 extension) and to arbitrary bases.",
     "openQuestions": [
-      "Can the positive and negative osculator theorems be merged into a single theorem with a signed osculator c ∈ ℤ?",
+      "ANSWERED (see divisibility-truncation-general-oq-01): The positive and negative osculator theorems merge into a single unified_osculator theorem. The negative case is the positive case with c negated.",
       "Can this be extended to divisors that share factors with 10 (i.e., d = 2, 5, 4, 8, 25, etc.) by combining with the last-k-digits framework?",
       "What is the relationship between the osculator and the continued fraction expansion of 1/d?"
     ]

@@ -1,0 +1,109 @@
+{
+  "id": "divisibility-truncation-general-oq-01",
+  "title": "Unified Osculator Theorem",
+  "slug": "divisibility-truncation-general-oq-01",
+  "description": "Merges the positive and negative osculator theorems into a single unified theorem with a signed osculator c in Z. The negative osculator case is derived as a corollary by substituting -c, and a dual osculator relationship theorem shows that the sum of positive and negative osculators is divisible by d.",
+  "meta": {
+    "author": "Extension of General Truncation Divisibility Rule",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Divisibility_rule",
+    "date": "2026-03-18",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "divisibility",
+      "modular-arithmetic",
+      "unification",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/DivisibilityTruncationGeneralOQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "IsCoprime.dvd_of_dvd_mul_left",
+        "description": "If gcd(a,b)=1 and a | b*c, then a | c",
+        "module": "Mathlib.RingTheory.Coprime.Basic"
+      },
+      {
+        "theorem": "dvd_mul_of_dvd_left",
+        "description": "If a | b, then a | b*c",
+        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+      },
+      {
+        "theorem": "Int.dvd_sub",
+        "description": "Divisibility distributes over subtraction",
+        "module": "Mathlib.Data.Int.Basic"
+      },
+      {
+        "theorem": "Nat.div_add_mod",
+        "description": "n = b * (n / b) + n % b",
+        "module": "Mathlib.Data.Nat.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Unified osculator theorem: single theorem handling both positive and negative cases via signed c",
+      "Negative osculator derived as corollary of unified theorem (c -> -c substitution)",
+      "Dual osculator sum theorem: d | (c_pos + c_neg) when coprime to 10",
+      "Concrete instantiations for d=7, 11, 13, 17, 19 from unified framework"
+    ],
+    "dateAdded": "03/18/26"
+  },
+  "overview": {
+    "historicalContext": "The parent proof (divisibility-truncation-general) established separate positive and negative osculator theorems. The positive case handles d | (10c - 1), giving d | n <-> d | (n/10 + c*(n%10)). The negative case handles d | (10c + 1), giving d | n <-> d | (n/10 - c*(n%10)). This open question asked whether both can be unified into a single theorem. The answer is yes: the negative case is simply the positive case with c replaced by -c_neg, since d | (10*c_neg + 1) implies d | (10*(-c_neg) - 1).",
+    "problemStatement": "Can the positive and negative osculator theorems be merged into a single theorem with a signed osculator c in Z?\n\n**Answer: YES.** The unified osculator theorem states: for any d coprime to 10 and any c in Z satisfying d | (10c - 1):\n\n  d | n <-> d | (n/10 + c * (n%10))\n\nThe negative osculator case follows by substituting c = -c_neg, since d | (10*c_neg + 1) implies d | (10*(-c_neg) - 1).",
+    "proofStrategy": "The unified theorem uses the same algebraic identity as the parent proof:\n\n  10 * (n/10 + c*(n%10)) = n + (10c - 1)*(n%10)\n\nWhen d | (10c - 1), the remainder term is divisible by d, and coprimality with 10 allows cancelling the factor of 10.\n\nThe negative case then follows by a simple sign flip: given d | (10*c_neg + 1), we show 10*(-c_neg) - 1 = -(10*c_neg + 1), so d | (10*(-c_neg) - 1). Applying the unified theorem with osculator -c_neg immediately yields the negative rule.\n\nThe dual osculator theorem observes that 10*c_pos - 1 + (10*c_neg + 1) = 10*(c_pos + c_neg), so d divides this sum, and coprimality gives d | (c_pos + c_neg).",
+    "keyInsights": [
+      "The negative osculator case is not independent: it is the positive case with c negated.",
+      "Sign absorption: d | (10*c_neg + 1) iff d | (10*(-c_neg) - 1), reducing two theorems to one.",
+      "The dual osculator relationship (c_pos + c_neg divisible by d) follows from the sum of the two osculator conditions.",
+      "Lean's IsCoprime and linear_combination handle the algebraic manipulations cleanly.",
+      "All five classical divisibility rules (7, 11, 13, 17, 19) are recovered from the single unified theorem."
+    ]
+  },
+  "sections": [
+    {
+      "id": "unified-theorem",
+      "title": "The Unified Osculator Theorem",
+      "startLine": 22,
+      "endLine": 63,
+      "summary": "Single theorem: d | n <-> d | (n/10 + c*(n%10)) for any c with d | (10c - 1)."
+    },
+    {
+      "id": "negative-case",
+      "title": "Negative Osculator as Special Case",
+      "startLine": 65,
+      "endLine": 85,
+      "summary": "Derives the negative osculator rule from the unified theorem by substituting -c."
+    },
+    {
+      "id": "concrete-cases",
+      "title": "Recovering Both Specific Cases",
+      "startLine": 87,
+      "endLine": 114,
+      "summary": "Instantiations for d=7, 11, 13, 17, 19 showing both positive and negative osculator rules."
+    },
+    {
+      "id": "dual-relationship",
+      "title": "Dual Osculator Relationship",
+      "startLine": 116,
+      "endLine": 144,
+      "summary": "Theorem: d | (c_pos + c_neg), with verification examples for d=7, 13, 17."
+    },
+    {
+      "id": "sanity-checks",
+      "title": "Sanity Checks",
+      "startLine": 146,
+      "endLine": 159,
+      "summary": "Numeric examples confirming the rules work."
+    }
+  ],
+  "conclusion": {
+    "summary": "The positive and negative osculator theorems are successfully unified into a single theorem. The key insight is that the negative osculator with parameter c_neg is equivalent to the positive osculator with parameter -c_neg. This reduces the two-theorem framework to a single unified osculator theorem, with the negative case as a one-line corollary. Additionally, the dual osculator sum theorem reveals a structural relationship between the two osculator constants.",
+    "implications": "This unification:\n- **Simplifies the framework**: One theorem instead of two, with the negative case as a corollary\n- **Reveals structure**: The dual osculator sum theorem shows c_pos + c_neg is always a multiple of d\n- **Confirms universality**: Every divisor coprime to 10 has exactly one osculator up to sign\n- **Enables extensions**: The single-theorem framework is easier to generalize to other bases",
+    "openQuestions": [
+      "Can this be extended to divisors that share factors with 10 by combining with the last-k-digits framework?",
+      "What is the relationship between the osculator and the continued fraction expansion of 1/d?",
+      "Can multi-digit truncation (removing k digits at a time) be unified similarly?"
+    ]
+  }
+}

@@ -478,3 +478,28 @@ Added Parts XCII-XCV to NavierStokes.lean (now ~16,700 lines, 0 sorries, 0 axiom
 
 ### Status
 0 sorries, 0 axioms, Docker build verified (only pre-existing errors).
+
+## Session 2026-03-18 (researcher-6) - Critical Exponent Unification
+
+**Mode**: REVISIT (RICH knowledge, 99 parts → 100 parts)
+**Outcome**: progress
+
+### What Was Done
+Added Part C (100th part): Critical Exponent Unification and Scaling Atlas.
+Verifies arithmetic consistency of all critical exponents across the formalization.
+
+### Key Theorems (Part C)
+1. Serrin line 2/p + 3/q = 1 at endpoints (q=4,6,∞)
+2. Kolmogorov exponent consistency: -5/3 = -(2/3 + 1)
+3. Kolmogorov dissipation scale: ν^{3/4}ε^{-1/4} dimensional analysis
+4. Critical Sobolev s_c(d) = d/2 - 1 for d = 2,3,4,5
+5. Lions threshold α_c(d) = (d+2)/4 for d = 2,3,4
+6. Lions gap: 5/4 - 1 = 1/4
+7. She-Lévêque ζ_3 = 1 exactness
+8. CKN singular codimension 4 in parabolic spacetime
+9. DNS cost exponent Re^{11/4}
+10. Kraichnan locality exponent 4/3 > 1
+11. Complete barrier landscape gap verification
+
+### Status
+0 sorries, 0 axioms. 100 parts, ~17,645 lines.
