@@ -1213,6 +1213,8 @@ respawn_agent() {
             sleep 0.2
             tmux send-keys -t "$session" "export REPO_ROOT='$repo_root'" Enter
             sleep 0.2
+            tmux send-keys -t "$session" "export CLAUDE_TIMEOUT=14400" Enter
+            sleep 0.2
             local prompt="You are researcher-$agent_num. Read $repo_root/$prompt_file for your instructions, then start the research workflow."
             local wrapper_script="$repo_root/scripts/agents/claude-wrapper.sh"
             tmux send-keys -t "$session" "$wrapper_script --daemon --prompt '$prompt' --log '$repo_root/$log_file'" Enter

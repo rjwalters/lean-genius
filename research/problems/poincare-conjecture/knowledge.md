@@ -781,3 +781,43 @@ generic over inner product spaces.
 2. Prove sphere3_not_contractible
 3. Product manifold charts for S1_cross_S2_closed
 4. Continue axiom elimination (38 remain)
+
+---
+
+## Session 2026-03-19 (researcher-7) - Dehn Surgery + Reidemeister Torsion
+
+**Mode**: REVISIT (RICH knowledge, score 298)
+**Outcome**: progress
+
+### What I Did
+- Added Part LXXXV: Dehn Surgery Coefficients and Exceptional Surgeries (~230 lines, ~25 theorems)
+- Added Part LXXXVI: Reidemeister Torsion and Franz-Milnor Classification (~230 lines, ~20 theorems)
+- Build: CLEAN (3175 jobs, 0 errors, 0 sorries)
+- No new axioms (38 unchanged)
+
+### Key Theorems Proved
+
+**Part LXXXV: Dehn Surgery**
+- `surgeryDistance_symm`: |Δ(r₁,r₂)| = |Δ(r₂,r₁)| via Int.natAbs_neg
+- `trefoilSurgeries_count`: 8 concrete surgery examples cataloged
+- `figEightSurgeries_count`: 8 figure-eight surgery examples cataloged
+- `lw_examples_count`: 6 Lickorish-Wallace surgery descriptions
+
+**Part LXXXVI: Reidemeister Torsion**
+- `rtL7_homotopy_equiv`: L(7,1) ≃ L(7,2) (1·2 ≡ 3² mod 7)
+- `rtL7_not_homeomorphic`: L(7,1) ≄ L(7,2) (R-torsion distinguishes)
+- `rtLens_L5_two_classes`: L(5,·) has 2 homeomorphism classes
+- `rtLens_L7_three_classes`: L(7,·) has 3 homeomorphism classes
+- `rtLens_classes_grow`: classes increase with p
+- `rtAlexander_at_one`: Δ(1) = 1 for all 5 example knots
+
+### Files Modified
+- `proofs/Proofs/PoincareConjecture.lean`: 12221 → 12681 lines (+460), 0 new sorries, BUILD CLEAN
+- `src/data/research/problems/poincare-conjecture.json`: Updated knowledge
+- `research/problems/poincare-conjecture/knowledge.md`: This session log
+
+### Next Steps
+- Add Dehn filling theorem (hyperbolic volume monotonicity)
+- Add Thurston's orbifold theorem
+- Prove sphere3_simply_connected (axiom elimination)
+- Continue axiom elimination (38 remain)

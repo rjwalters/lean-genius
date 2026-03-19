@@ -4,6 +4,61 @@
 
 The Inverse Galois Problem (IGP) asks: for every finite group G, does there exist a Galois extension K/ℚ with Gal(K/ℚ) ≅ G?
 
+## Session 2026-03-19 (researcher-4) - Frontier Assessment and Verification
+
+**Mode**: REVISIT (RICH knowledge score 102)
+**Outcome**: verified — formalization at frontier of formalizability, no tractable path forward
+
+### What Was Done
+
+1. Docker build verified: InverseGaloisA5.lean compiles cleanly (0 errors, 0 sorries, 2 axioms)
+2. Fixed linter warning: removed redundant `group` tactic at line 428
+3. Searched Mathlib for discriminant↔alternating group connection: NOT FOUND
+4. Assessed all approaches to eliminating remaining 2 axioms: all BLOCKED
+5. Updated meta.json: corrected stats to 4696 lines, 257 theorems, 23 groups realized
+6. Updated problem JSON with detailed frontier analysis
+
+### Assessment: Why Both Axioms Are Blocked
+
+**Axiom A (gal_card_dvd_60)**: Requires showing Gal ⊆ A₅ via discriminant being a perfect square.
+The proof chain: δ = ∏_{i<j}(αᵢ - αⱼ), σ(δ) = sign(σ)·δ, δ² = Disc = 32000², so δ ∈ ℚ,
+forcing sign(σ) = 1. Missing in Mathlib:
+- Vandermonde sign property (σ permuting roots gives sign factor)
+- Connection between Polynomial.discriminant (resultant-based) and ∏(αᵢ - αⱼ)²
+- Trinomial discriminant formula
+
+**Axiom B (three_dvd_gal_card)**: Requires Dedekind's theorem (mod-p factorization → cycle types).
+Missing: ring of integers, prime ideals lying above p, Frobenius automorphism.
+Estimated infrastructure: > 1000 lines of algebraic number theory.
+
+### Key Insight: Alternative Proof Architecture
+
+The transitive subgroups of A₅ have orders {5, 10, 60} (C₅, D₅, A₅):
+- D₅ ⊂ A₅ because pentagon reflections are products of 2 disjoint transpositions (even)
+- F₂₀ ∩ A₅ = D₅ (F₂₀ contains 4-cycles which are odd)
+
+If axiom A holds AND 2 | |Gal| (provable from q having non-real roots), then:
+|Gal| ∈ {10, 60} (C₅ eliminated since 2 ∤ 5). Still need to rule out D₅ (order 10).
+
+Proving 2 | |Gal| requires showing the splitting field is strictly larger than ℚ(α),
+equivalent to showing the quartic cofactor doesn't split over ℚ(α). No Lean approach
+exists without discriminant/Dedekind infrastructure.
+
+### Conclusion
+
+This formalization is as complete as possible given current Mathlib state. The 2 remaining
+axioms encode well-established mathematics (discriminant theory, Dedekind's theorem) that
+require algebraic number theory infrastructure not yet in Mathlib. Should be marked as
+completed from a research perspective.
+
+### Files Modified
+- `proofs/Proofs/InverseGaloisA5.lean` (linter fix: 963→962 lines)
+- `src/data/proofs/inverse-galois/meta.json` (stats update)
+- `src/data/research/problems/abel-ruffini-oq-01.json` (knowledge update)
+- `research/problems/abel-ruffini-oq-01/knowledge.md` (this file)
+
+---
+
 ## Session 2026-03-19 (researcher-7) - Supporting Infrastructure for q_gal_card
 
 **Mode**: REVISIT (RICH knowledge score 62)
@@ -505,3 +560,52 @@ Possible Mathlib paths:
 - `proofs/Proofs/InverseGaloisA5.lean`: Reduced sorries 3→2, added A₅ simplicity proof
 - `src/data/research/problems/abel-ruffini-oq-01.json`: Updated knowledge
 - `research/problems/abel-ruffini-oq-01/knowledge.md`: This session log
+
+---
+
+## Session 2026-03-19 (researcher-2) - Vandermonde Framework (Part XIII)
+
+**Mode**: REVISIT (RICH knowledge, score 97)
+**Outcome**: progress — decomposed gal_card_dvd_60 axiom
+
+### What I Did
+
+Added Part XIII to InverseGaloisA5.lean: Vandermonde framework for the
+discriminant-alternating group connection. This decomposes the opaque axiom
+`gal_card_dvd_60` into a fully-proved structural theorem plus a more transparent gap.
+
+### Proved Theorems (all 0 sorries, Docker verified)
+
+1. `galToPerm5`: canonical injection Gal(q) →* Perm(Fin 5)
+2. `galToPerm5_injective`: injectivity of the above
+3. `galSign`: sign of Galois element (even/odd root permutation)
+4. `gal_range_le_alternating_of_all_even`: Gal image ⊆ A₅ when all signs = 1
+5. `gal_card_dvd_60_of_all_even`: even perms only → |Gal| | 60 (Lagrange + |A₅|=60)
+6. `rootEnum`: canonical root enumeration Fin 5 → SplittingField q
+7. `rootEnum_is_root`: each rootEnum value is a root of q
+8. `rootEnum_injective`: roots are distinct (from separability)
+9. `vandermondeProduct`: Vandermonde det of roots in splitting field
+10. `vandermondeProduct_ne_zero`: Vandermonde product nonzero
+
+### Axiom Decomposition
+
+| Before | After |
+|--------|-------|
+| `gal_card_dvd_60` (opaque) | `gal_card_dvd_60_of_all_even` (PROVED) + `all_gal_signs_positive` (gap) |
+| Requires: disc↔alternating theory | Requires: disc(f) = Δ² identity only |
+
+The gap `all_gal_signs_positive` follows from:
+1. disc(q) = vandermondeProduct² (standard textbook identity — NOT in Mathlib)
+2. vandermondeProduct² = (algebraMap ℚ _ 32000)² (from 1 + trinomial_disc_computation)
+3. vandermondeProduct ∈ ℚ (from 2 + domain property)
+4. σ(vandermondeProduct) = vandermondeProduct (from 3, σ fixes ℚ)
+5. σ(vandermondeProduct) = galSign(σ) • vandermondeProduct (Vandermonde permutation)
+6. galSign(σ) = 1 (from 4, 5, vandermondeProduct_ne_zero)
+
+Only step 1 is unproved — connecting Polynomial.disc (resultant-based) to
+Matrix.det_vandermonde (product-of-differences-based).
+
+### File Stats
+
+InverseGaloisA5.lean: 1198 lines (was 963), 0 sorries, 2 axioms, Docker verified.
+PR: #4127

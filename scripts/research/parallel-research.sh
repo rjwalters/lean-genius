@@ -231,7 +231,7 @@ launch_agent() {
     # Launch in tmux with resilient wrapper for error handling
     local wrapper_script="$REPO_ROOT/scripts/agents/claude-wrapper.sh"
     tmux new-session -d -s "$session_name" -c "$worktree_path" \
-        "ENHANCER_ID=researcher-$agent_num REPO_ROOT=$REPO_ROOT $wrapper_script --daemon --prompt 'You are researcher-$agent_num. Read $prompt_file for your instructions, then start the research workflow.' --log '$log_file'"
+        "ENHANCER_ID=researcher-$agent_num REPO_ROOT=$REPO_ROOT CLAUDE_TIMEOUT=14400 $wrapper_script --daemon --prompt 'You are researcher-$agent_num. Read $prompt_file for your instructions, then start the research workflow.' --log '$log_file'"
 
     print_success "Launched $session_name (worktree: $worktree_path)"
 }
