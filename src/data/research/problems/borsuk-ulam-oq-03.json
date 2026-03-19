@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-02-25T14:11:52.126Z",
-    "iteration": 5,
-    "focus": "Ray-sphere intersection for no_retraction→Brouwer FP",
+    "iteration": 6,
+    "focus": "Deduplication + no_retraction→Brouwer FP via ray-sphere",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved BU→LS general (axiom 4→3), built ray-sphere intersection infrastructure for no_retraction→Brouwer FP (axiom 3→2). Root formula, discriminant, boundary behavior proved. Continuity deferred.",
+    "progressSummary": "PROGRESS: Deduplicated file (5393→3670 lines). Built full ray-sphere intersection infrastructure. Proved retractT_eq_one_on_sphere cleanly via perfect square identity. Proved no_retraction→Brouwer FP (1 sorry: continuity). Independent axiom count: 2 (BU_general + no_retraction).",
     "builtItems": [
       {
         "name": "tucker_2d_octahedral",
@@ -115,6 +115,26 @@
         "name": "no_retraction_implies_brouwer_fp",
         "description": "Structure of no_retraction → Brouwer FP proof (continuity deferred)",
         "proven": false
+      },
+      {
+        "name": "retractT_eq_one_on_sphere",
+        "description": "Retraction parameter equals 1 on sphere (proved via perfect square identity)",
+        "proven": true
+      },
+      {
+        "name": "no_retraction_implies_brouwer_fp",
+        "description": "no_retraction axiom implies brouwer_fixed_point (1 sorry: continuity)",
+        "proven": false
+      },
+      {
+        "name": "discrim_perfect_square",
+        "description": "Discriminant is (A+B)² when A+2B+C=0",
+        "proven": true
+      },
+      {
+        "name": "ip_le_one",
+        "description": "Inner product ⟨fx,x⟩ ≤ 1 from Cauchy-Schwarz",
+        "proven": true
       }
     ],
     "insights": [
@@ -129,13 +149,15 @@
       "Fin decomposition lemma (castSucc_or_last) is a useful helper for n+1 indexed families",
       "Ray-sphere intersection reduces to quadratic At²+Bt+C=0 where A=|d|², B=2⟨a,d⟩, C=|a|²-1",
       "Discriminant is a perfect square when x∈S^n: (⟨a,d⟩²+|d|²(1-|a|²)) = ((1-|a|²+|d|²)/2)²",
-      "The continuity of the retraction is the remaining gap for axiom reduction 3→2"
+      "The continuity of the retraction is the remaining gap for axiom reduction 3→2",
+      "retractT_eq_one_on_sphere proved via perfect square: A+2B+C=nsq(x)-1=0 gives Δ=(A+B)², so √Δ=A+B and t₊=1",
+      "Cauchy-Schwarz gives ip(fx,x)≤1 when nsq(fx)≤1 and nsq(x)=1, needed for A+B≥0",
+      "File had 3 copies of Sections XLII-XLIX from merge conflicts; deduplicated 5393→3670 lines"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove continuity of ray-sphere retraction (completes no_retraction→Brouwer FP)",
-      "Fix merge conflicts from duplicate declarations in BorsukUlamOQ03.lean",
-      "Prove BU→no_retraction via degree theory (reduces axioms 2→1)"
+      "Prove continuity of the ray-sphere retraction (eliminates 1 sorry in no_retraction_implies_brouwer_fp)",
+      "Prove BU → no_retraction via degree theory (reduces axioms 2→1)"
     ],
     "markdown": "# borsuk-ulam-oq-03: Constructive (Intuitionistic) Borsuk-Ulam\n\n## Problem Summary\n\n**Open Question**: Can the 1D Borsuk-Ulam theorem be proved constructively\n(without full classical logic)? What is the constructive status of\nhigher-dimensional Borsuk-Ulam?\n\n**Status**: SURVEYED - 13 proved theorems, 1 axiom (general BU for n≥2), 0 sorries.\n\n**Answer**:\n- 1D: YES, proved via IVT on antisymmetric difference\n- n≥2: Requires algebraic topology (axiomized); no known constructive proof\n\n## Session 2026-02-25 (Session 1) - Initial Formalization\n\n**Mode**: FRESH (problem had EMPTY knowledge)\n**Outcome**: surveyed/progress\n\n### What I Did\n\n- Created `proofs/Proofs/BorsukUlamOQ03.lean` with full 1D formalization\n- Proved 13 theorems covering:\n  - 1D interval BU via IVT\n  - Odd function zero lemma\n  - BU ↔ odd-zero equivalence\n  - S¹ parametric version via IVT on [0,π]\n  - Circle point on unit circle\n  - No odd map to {±1}\n  - 5 structural lemmas\n  - NSphere def + antipodal def\n  - Consequence of general BU axiom\n- Fixed key Lean 4 issue: `f (--x)` is INVALID because `--` starts a line comment;\n  must write `f (-(-x))` or restructure to avoid double negative\n- Fixed `ring` issue: after `simp only [hg_def]`, `ring` fails on `f (-(-x))` atoms;\n  add `neg_neg` to simp first\n- `Continuous.prod_mk` may not be directly accessible as a field; use `fun_prop` instead\n- Created PR #3246\n\n### Key Findings\n\n- `f (--x)` is a SYNTAX BUG: `--` starts a line comment in Lean 4!\n  Workaround: Write `f (-(-x))` or avoid double-negated function args\n- `fun_prop` tactic handles complex continuity goals automatically with `hf : Continuous f`\n- IVT API: `intermediate_value_Icc hab hg_cont ⟨ha, hb⟩` where `ha : f a ≤ 0` and `hb : 0 ≤ f b`\n- `le_or_gt` is the non-deprecated name for case split (not `le_or_lt`)\n- Constructive content: IVT uses Classical.em internally, but Bishop-style IVT holds\n\n### Files Created\n\n- `proofs/Proofs/BorsukUlamOQ03.lean` (324 lines, 13 theorems, 1 axiom, 0 sorries)\n\n### Next Steps\n\n- The higher-dimensional BU (n≥2) could potentially be proved using Tucker's lemma (combinatorial BU)\n- Tucker's lemma is more constructive than degree-theoretic approaches\n- Would require: triangulation, labeling, Tucker path → antipodal pair\n"
   },
