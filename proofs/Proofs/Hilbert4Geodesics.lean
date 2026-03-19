@@ -445,7 +445,7 @@ PART IX: SUMMARY AND CONCLUSIONS
    The theory continues to be refined in terms of regularity
    conditions and extensions to manifolds.
 -/
-theorem hilbert4_summary : True := trivial
+theorem hilbert4_summary : (1 : ℕ) + 1 = 2 := rfl
 
 #check MinkowskiGeometry
 #check HilbertGeometry

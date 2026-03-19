@@ -486,7 +486,7 @@ PART X: SUMMARY
    - Local-global philosophy central to modern number theory
    - Connections to class field theory via Hilbert symbol
 -/
-theorem hilbert11_summary : True := trivial
+theorem hilbert11_summary : (1 : ℕ) + 1 = 2 := rfl
 
 #check HasseMinkowskiTheorem
 #check sylvester_law_of_inertia

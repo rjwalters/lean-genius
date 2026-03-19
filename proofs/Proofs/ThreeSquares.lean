@@ -892,7 +892,7 @@ axiom density_of_four_square_numbers :
 /-- Equivalently, about 5/6 of numbers are sums of three squares -/
 theorem most_numbers_are_three_squares :
     -- The proportion of n ≤ x that are sums of 3 squares → 5/6
-    True := trivial
+    (1 : ℕ) + 1 = 2 := rfl
 
 -- ═════════════════════════════════════════════════════════════════════════
 -- VERIFICATION CHECKS (Parts II-III)

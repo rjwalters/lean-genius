@@ -1670,4 +1670,136 @@ theorem c2_sq_times_c4_realized :
     simp [map_pow, map_one, MulEquiv.apply_symm_apply] at this
     exact this
 
+-- ============================================================================
+-- Part XVIII: Order 20 and 24 Abelian Groups
+-- ============================================================================
+
+/-
+## Part XVIII: Extending the Census to Orders 20 and 24
+
+New abelian group realizations via cyclotomic fields:
+
+- **C₂ × C₁₀**: realized as (ℤ/33ℤ)ˣ
+  33 = 3 × 11, φ(33) = φ(3)·φ(11) = 2·10 = 20
+  (ℤ/33ℤ)ˣ ≅ (ℤ/3ℤ)ˣ × (ℤ/11ℤ)ˣ ≅ C₂ × C₁₀
+  Exponent = lcm(2, 10) = 10, so not cyclic (exponent 10 < order 20)
+
+- **C₂ × C₁₂**: realized as (ℤ/35ℤ)ˣ
+  35 = 5 × 7, φ(35) = φ(5)·φ(7) = 4·6 = 24
+  (ℤ/35ℤ)ˣ ≅ (ℤ/5ℤ)ˣ × (ℤ/7ℤ)ˣ ≅ C₄ × C₆
+  But C₄ × C₆ ≅ C₂ × C₁₂ (since C₄ × C₆ ≅ C₂ × C₂ × C₃ × ... hmm)
+  Actually C₄ × C₆: exponent = lcm(4,6) = 12, order 24, not cyclic.
+
+- **C₂ × C₆ × C₂**: realized as (ℤ/36ℤ)ˣ
+  36 = 4 × 9, φ(36) = φ(4)·φ(9) = 2·6 = 12
+  (ℤ/36ℤ)ˣ ≅ (ℤ/4ℤ)ˣ × (ℤ/9ℤ)ˣ ≅ C₂ × C₆
+  Already realized as (ℤ/21ℤ)ˣ! Skip.
+-/
+
+-- ---- (ℤ/33ℤ)ˣ ≅ C₂ × C₁₀ (order 20) ----
+
+/-- φ(33) = 20. -/
+theorem totient_33 : Nat.totient 33 = 20 := by decide
+
+/-- (ℤ/33ℤ)ˣ has exponent 10: every element to the 10th power is 1.
+    Since (ℤ/33ℤ)ˣ ≅ C₂ × C₁₀, exponent = lcm(2,10) = 10. -/
+theorem zmod33_units_exp_10 : ∀ x : (ZMod 33)ˣ, x ^ 10 = 1 := by decide
+
+/-- (ℤ/33ℤ)ˣ is NOT cyclic. A cyclic group of order 20 has an element of order 20,
+    but (ℤ/33ℤ)ˣ has exponent 10. -/
+theorem zmod33_units_not_cyclic : ¬ IsCyclic (ZMod 33)ˣ := by
+  intro ⟨⟨g, hg⟩⟩
+  have hcard : Fintype.card (ZMod 33)ˣ = 20 := by
+    rw [ZMod.card_units_eq_totient]; decide
+  have hord : orderOf g = 20 := by
+    rw [← hcard]
+    exact orderOf_eq_card_of_forall_mem_zpowers hg
+  have h10 : g ^ 10 = 1 := zmod33_units_exp_10 g
+  have h20_dvd_10 : 20 ∣ 10 := by
+    rw [← hord]
+    exact orderOf_dvd_of_pow_eq_one h10
+  omega
+
+/-- (ℤ/33ℤ)ˣ has an element of order 10 (e.g. 2 mod 33 has order 10). -/
+theorem zmod33_units_has_order_10 : ∃ x : (ZMod 33)ˣ, orderOf x = 10 := by
+  exact ⟨(2 : ZMod 33)ˣ, by decide⟩
+
+/-- (ℤ/33ℤ)ˣ ≅ C₂ × C₁₀: order 20, exponent 10, not cyclic, has element of order 10.
+    This realizes C₂ × C₁₀ as a Galois group over ℚ. -/
+theorem c2_times_c10_realized :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K),
+      Fintype.card (K ≃ₐ[ℚ] K) = 20 ∧ ¬ IsCyclic (K ≃ₐ[ℚ] K) ∧
+      ∀ g : K ≃ₐ[ℚ] K, g ^ 10 = 1 := by
+  haveI : NeZero (33 : ℕ) := ⟨by omega⟩
+  obtain ⟨K, _, _, _, hgal, ⟨iso⟩⟩ := units_zmod_realizable 33
+  refine ⟨K, inferInstance, inferInstance, inferInstance, hgal, ?_, ?_, ?_⟩
+  · have : Fintype.card (K ≃ₐ[ℚ] K) = Fintype.card (ZMod 33)ˣ :=
+      Fintype.card_eq.mpr ⟨iso.toEquiv.symm⟩
+    rw [this, ZMod.card_units_eq_totient]; decide
+  · intro ⟨⟨g, hg⟩⟩
+    apply zmod33_units_not_cyclic
+    exact ⟨⟨iso.symm g, fun x => by
+      obtain ⟨n, hn⟩ := hg (iso x)
+      exact ⟨n, by
+        show iso.symm g ^ n = x
+        have : g ^ n = iso x := hn
+        rw [← map_zpow iso.symm, this, MulEquiv.symm_apply_apply]⟩⟩⟩
+  · intro g
+    have h := zmod33_units_exp_10 (iso.symm g)
+    have : iso (iso.symm g ^ 10) = iso 1 := by rw [h]
+    simp [map_pow, map_one, MulEquiv.apply_symm_apply] at this
+    exact this
+
+-- ---- (ℤ/35ℤ)ˣ ≅ C₄ × C₆ (order 24) ----
+
+/-- φ(35) = 24. -/
+theorem totient_35 : Nat.totient 35 = 24 := by decide
+
+/-- (ℤ/35ℤ)ˣ has exponent 12: every element to the 12th power is 1.
+    Since (ℤ/35ℤ)ˣ ≅ C₄ × C₆, exponent = lcm(4,6) = 12. -/
+theorem zmod35_units_exp_12 : ∀ x : (ZMod 35)ˣ, x ^ 12 = 1 := by decide
+
+/-- (ℤ/35ℤ)ˣ is NOT cyclic. A cyclic group of order 24 has an element of order 24,
+    but (ℤ/35ℤ)ˣ has exponent 12. -/
+theorem zmod35_units_not_cyclic : ¬ IsCyclic (ZMod 35)ˣ := by
+  intro ⟨⟨g, hg⟩⟩
+  have hcard : Fintype.card (ZMod 35)ˣ = 24 := by
+    rw [ZMod.card_units_eq_totient]; decide
+  have hord : orderOf g = 24 := by
+    rw [← hcard]
+    exact orderOf_eq_card_of_forall_mem_zpowers hg
+  have h12 : g ^ 12 = 1 := zmod35_units_exp_12 g
+  have h24_dvd_12 : 24 ∣ 12 := by
+    rw [← hord]
+    exact orderOf_dvd_of_pow_eq_one h12
+  omega
+
+/-- (ℤ/35ℤ)ˣ ≅ C₄ × C₆: order 24, exponent 12, not cyclic.
+    This realizes C₄ × C₆ as a Galois group over ℚ. -/
+theorem c4_times_c6_realized :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K),
+      Fintype.card (K ≃ₐ[ℚ] K) = 24 ∧ ¬ IsCyclic (K ≃ₐ[ℚ] K) ∧
+      ∀ g : K ≃ₐ[ℚ] K, g ^ 12 = 1 := by
+  haveI : NeZero (35 : ℕ) := ⟨by omega⟩
+  obtain ⟨K, _, _, _, hgal, ⟨iso⟩⟩ := units_zmod_realizable 35
+  refine ⟨K, inferInstance, inferInstance, inferInstance, hgal, ?_, ?_, ?_⟩
+  · have : Fintype.card (K ≃ₐ[ℚ] K) = Fintype.card (ZMod 35)ˣ :=
+      Fintype.card_eq.mpr ⟨iso.toEquiv.symm⟩
+    rw [this, ZMod.card_units_eq_totient]; decide
+  · intro ⟨⟨g, hg⟩⟩
+    apply zmod35_units_not_cyclic
+    exact ⟨⟨iso.symm g, fun x => by
+      obtain ⟨n, hn⟩ := hg (iso x)
+      exact ⟨n, by
+        show iso.symm g ^ n = x
+        have : g ^ n = iso x := hn
+        rw [← map_zpow iso.symm, this, MulEquiv.symm_apply_apply]⟩⟩⟩
+  · intro g
+    have h := zmod35_units_exp_12 (iso.symm g)
+    have : iso (iso.symm g ^ 12) = iso 1 := by rw [h]
+    simp [map_pow, map_one, MulEquiv.apply_symm_apply] at this
+    exact this
+
 end InverseGaloisProblem

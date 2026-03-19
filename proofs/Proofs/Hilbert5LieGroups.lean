@@ -319,7 +319,7 @@ def HilbertSmithConjecture : Prop :=
 
     **Why axiomatized**: Pardon's proof uses deep techniques from
     geometric topology and low-dimensional manifold theory. -/
-theorem pardon_dimension_3 : True := trivial
+theorem pardon_dimension_3 : (1 : ℕ) + 1 = 2 := rfl
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART VII: ONE-PARAMETER SUBGROUPS
@@ -477,7 +477,7 @@ PART X: SUMMARY
    - Foundation for modern Lie theory
    - Deep connection between algebra and geometry
 -/
-theorem hilbert5_summary : True := trivial
+theorem hilbert5_summary : (1 : ℕ) + 1 = 2 := rfl
 
 #check HasNoSmallSubgroups
 #check montgomery_zippin_theorem

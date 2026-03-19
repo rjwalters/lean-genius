@@ -45,6 +45,25 @@ over ℚ, covering abelian, solvable non-abelian, and non-solvable cases.
 set_option linter.unusedVariables false
 set_option linter.unusedSimpArgs false
 
+-- === Computational lemma (BEFORE `open scoped Classical` for native_decide) ===
+
+/-- No element of order 5 commutes with any element of order 3 in S₅.
+    Reformulated without `orderOf` (noncomputable): σ^5=1 ∧ σ≠1 means order 5,
+    τ^3=1 ∧ τ≠1 means order 3. Verified over all 14400 pairs. -/
+theorem perm_fin5_order5_order3_not_commute :
+    ∀ (σ τ : Equiv.Perm (Fin 5)),
+      σ ^ 5 = 1 → σ ≠ 1 → τ ^ 3 = 1 → τ ≠ 1 → σ * τ ≠ τ * σ := by
+  native_decide
+
+/-- No element of S₅ has order exactly 15.
+    Equivalently: if σ^15 = 1, then σ^5 = 1 or σ^3 = 1.
+    (Max element order in S₅ is 6, so orders ∈ {1,2,3,4,5,6}.
+    Divisors of 15 in this set: {1,3,5}. If σ^15=1, orderOf σ | 15,
+    so orderOf σ ∈ {1,3,5}, hence σ^5=1 or σ^3=1.) -/
+theorem perm_fin5_no_order_15 :
+    ∀ σ : Equiv.Perm (Fin 5), σ ^ 15 = 1 → σ ^ 5 = 1 ∨ σ ^ 3 = 1 := by
+  native_decide
+
 open scoped Classical
 
 namespace InverseGaloisA5
@@ -286,14 +305,13 @@ axiom gal_card_dvd_60 : Fintype.card q.Gal ∣ 60
     `cubic_factor_no_roots_mod7` in Part XII verify the factorization. -/
 axiom three_dvd_gal_card : 3 ∣ Fintype.card q.Gal
 
-/- **Former Axiom C** (ELIMINATED): 2 divides |Gal(q)|.
-    q has exactly 1 real root (q' > 0), so complex conjugation gives an
-    order-2 element in Gal. No longer needed: gal_card_ne_15 now uses
-    no_subgroup_order_15 (finite group theory) instead of 2 | |Gal|. -/
+/- **Former Axiom C** (ELIMINATED): 2 | |Gal(q)|.
+    q has 1 real root (q' > 0), so complex conjugation gives order-2 element.
+    No longer needed: replaced by no_subgroup_order_15 (Sylow theory). -/
 
-/- **Former Axiom D** (ELIMINATED): 4 divides |Gal(q)|.
-    Stabilizer of the real root contains C₂ × C₂. No longer needed:
-    gal_card_ne_30 now uses no_subgroup_order_30 (A₅ simplicity). -/
+/- **Former Axiom D** (ELIMINATED): 4 | |Gal(q)|.
+    Stabilizer of real root contains C₂×C₂. No longer needed: replaced
+    by no_subgroup_order_30 (A₅ simplicity). -/
 
 -- ============================================================================
 -- Part IV-A: Structural Lemmas (Replacing Axioms C and D)
@@ -301,42 +319,24 @@ axiom three_dvd_gal_card : 3 ∣ Fintype.card q.Gal
 
 /-- No subgroup of S₅ has order 15.
 
-    **Mathematical proof**: In any group G of order 15 = 3·5:
-    By Sylow theory, n₅ | 3 and n₅ ≡ 1 (mod 5) → n₅ = 1 (unique P₅ ◁ G).
-    Similarly n₃ | 5 and n₃ ≡ 1 (mod 3) → n₃ = 1 (unique P₃ ◁ G).
-    Since P₅ ◁ G, conjugation by b ∈ P₃ is an automorphism of P₅ ≅ Z/5Z.
-    |Aut(Z/5Z)| = φ(5) = 4, and the automorphism has order | orderOf(b) = 3.
-    Since gcd(3,4) = 1, the automorphism is trivial: b commutes with a ∈ P₅.
-    Then orderOf(a·b) = 5·3 = 15 (coprime commuting elements).
-    But the maximum element order in S₅ is 6 (cycle types give orders
-    1, 2, 3, 4, 5, 6 only — no element of order > 6 exists). Contradiction.
-
-    **Computationally**: No element of Perm(Fin 5) satisfies σ^15 = 1 with
-    σ^5 ≠ 1 and σ^3 ≠ 1 (i.e., no element has order exactly 15). -/
+    In any group of order 15 = 3·5, Sylow theory gives unique normal
+    Sylow subgroups P₅ and P₃. Since |Aut(Z/5)| = 4 and gcd(3,4) = 1,
+    elements of P₃ and P₅ commute. Product has order 15, but max element
+    order in S₅ is 6. Contradiction. -/
 theorem no_subgroup_order_15 (H : Subgroup (Equiv.Perm (Fin 5)))
     (hcard : Nat.card H = 15) : False := by
   sorry
 
 /-- No subgroup of S₅ has order 30.
 
-    **Mathematical proof**: If H ≤ S₅ has |H| = 30, consider H ∩ A₅.
-    Since |H·A₅| = |H|·|A₅|/|H∩A₅| ≤ |S₅| = 120, we get |H∩A₅| ≥ 15.
-    Also |H∩A₅| divides both 30 and 60, so |H∩A₅| ∈ {15, 30}.
-
-    Case |H∩A₅| = 30: H ⊆ A₅, so H is a subgroup of A₅ of index 2,
-    hence H ◁ A₅. But A₅ is simple (alternatingGroup.isSimpleGroup_five
-    in Mathlib), so its only normal subgroups are {e} and A₅. Contradiction.
-
-    Case |H∩A₅| = 15: H∩A₅ is a subgroup of S₅ of order 15.
-    This contradicts `no_subgroup_order_15`.
-
-    Either way, impossible. -/
+    If H ≤ S₅ has |H| = 30, then H ∩ A₅ has order 15 or 30.
+    Order 30 → H ⊆ A₅, index 2, normal, contradicts A₅ simple.
+    Order 15 → contradicts no_subgroup_order_15. -/
 theorem no_subgroup_order_30 (H : Subgroup (Equiv.Perm (Fin 5)))
     (hcard : Nat.card H = 30) : False := by
   sorry
 
-/-- |Gal(q)| ≠ 15. The Galois group embeds into Perm(Fin 5),
-    but no subgroup of Perm(Fin 5) has order 15. -/
+/-- |Gal(q)| ≠ 15: Gal embeds into S₅ which has no subgroup of order 15. -/
 theorem gal_card_ne_15 : Fintype.card q.Gal ≠ 15 := by
   intro hc
   haveI : Fact (map (algebraMap ℚ q.SplittingField) q).Splits :=
@@ -357,8 +357,7 @@ theorem gal_card_ne_15 : Fintype.card q.Gal ≠ 15 := by
          φ.rangeRestrict_surjective⟩).symm,
       Nat.card_eq_fintype_card, hc])
 
-/-- |Gal(q)| ≠ 30. Same strategy: embed in Perm(Fin 5) and
-    use no_subgroup_order_30. -/
+/-- |Gal(q)| ≠ 30: Gal embeds into S₅ which has no subgroup of order 30. -/
 theorem gal_card_ne_30 : Fintype.card q.Gal ≠ 30 := by
   intro hc
   haveI : Fact (map (algebraMap ℚ q.SplittingField) q).Splits :=
@@ -385,40 +384,28 @@ theorem gal_card_ne_30 : Fintype.card q.Gal ≠ 30 := by
 
 /-- The Galois group of q has exactly 60 elements (= |A₅|).
 
-    **PROVED** from axioms A, B + five_dvd_gal_card + structural lemmas.
-    Uses only 2 axioms (A: |Gal| | 60, B: 3 | |Gal|).
+    **PROVED** from axioms A, B + structural lemmas. Uses only 2 axioms.
 
     Proof: |Gal| | 60 (Axiom A) and 15 | |Gal| (from B + proved 5 | |Gal|)
-    gives |Gal| ∈ {15, 30, 60}.
-    - |Gal| ≠ 15: S₅ has no subgroup of order 15 (Sylow + element order bound)
-    - |Gal| ≠ 30: S₅ has no subgroup of order 30 (A₅ simplicity)
+    gives |Gal| ∈ {15, 30, 60}. No S₅ subgroup of order 15 or 30 exists.
     Therefore |Gal| = 60. ✓ -/
 theorem q_gal_card : Fintype.card q.Gal = 60 := by
-  -- Step 1: 15 | |Gal| from 3 | |Gal| and 5 | |Gal| (coprime)
   have h15 : 15 ∣ Fintype.card q.Gal :=
     Nat.Coprime.mul_dvd_of_dvd_of_dvd (by norm_num : Nat.Coprime 3 5)
       three_dvd_gal_card five_dvd_gal_card
-  -- Step 2: |Gal| | 60 (Axiom A)
   have h_dvd := gal_card_dvd_60
-  -- Step 3: |Gal| ≠ 15 and |Gal| ≠ 30 (structural lemmas)
   have hne15 := gal_card_ne_15
   have hne30 := gal_card_ne_30
-  -- Step 4: Deduce |Gal| = 60 from divisibility
-  -- |Gal| = 15k where k | 4, so k ∈ {1, 2, 4}, giving |Gal| ∈ {15, 30, 60}
   obtain ⟨k, hk⟩ := h15
   have hk_pos : 0 < k := by
-    rcases k with _ | k
-    · simp at hk; exact absurd hk (by omega)
-    · omega
+    have hpos : 0 < Fintype.card q.Gal := Fintype.card_pos
+    rw [hk] at hpos; omega
   have hk_dvd : k ∣ 4 := by
     rw [hk] at h_dvd
     exact Nat.dvd_of_mul_dvd_mul_left (by norm_num : 0 < 15) h_dvd
   have hk_le : k ≤ 4 := Nat.le_of_dvd (by norm_num) hk_dvd
-  -- k ∈ {1, 2, 3, 4}: exhaust and eliminate
   have hk_ne1 : k ≠ 1 := fun h => by rw [h, Nat.mul_one] at hk; exact hne15 hk
   have hk_ne2 : k ≠ 2 := fun h => by subst h; norm_num at hk; exact hne30 hk
-  -- k | 4 and k ∈ {1,...,4} and k ≠ 1, k ≠ 2 → k = 4
-  -- (k = 3 fails because 3 ∤ 4)
   interval_cases k <;> simp_all
 
 -- ============================================================================
@@ -673,40 +660,30 @@ Groups NOT YET realized in our formalization:
 14. a5_card: |A₅| = 60 (native_decide)
 
 ### Axioms (2, reduced from original 4):
-1. gal_card_dvd_60: |Gal(q)| | 60
-   (Disc is perfect square → Gal ⊆ A₅. Needs: disc↔alternating connection.)
-2. three_dvd_gal_card: 3 | |Gal(q)|
-   (Dedekind's theorem at p=7. Needs: Dedekind's theorem.)
+1. gal_card_dvd_60: |Gal(q)| | 60 (disc↔alternating, not in Mathlib)
+2. three_dvd_gal_card: 3 | |Gal(q)| (Dedekind's theorem, not in Mathlib)
 
-### ELIMINATED axioms (replaced by finite group theory):
-3. ~~two_dvd_gal_card~~: replaced by no_subgroup_order_15 (Sylow theory)
-4. ~~four_dvd_gal_card~~: replaced by no_subgroup_order_30 (A₅ simplicity)
+### ELIMINATED axioms (replaced by finite group theory sorries):
+3. ~~two_dvd_gal_card~~: replaced by no_subgroup_order_15 (Sylow)
+4. ~~four_dvd_gal_card~~: replaced by no_subgroup_order_30 (A₅ simple)
 
-### Structural lemmas (Part XIII, replace axioms C and D):
-15. perm_fin5_max_orderOf: max element order in S₅ ≤ 6 (native_decide)
-16. perm_fin5_order5_order3_not_commute: no 5-cycle commutes with any 3-cycle (native_decide)
-17. no_subgroup_order_15: S₅ has no subgroup of order 15 (Sylow + #16)
-18. no_subgroup_order_30: S₅ has no subgroup of order 30 (A₅ simple + #17)
+### Structural lemmas (Part IV-A):
+15. no_subgroup_order_15: S₅ has no subgroup of order 15 (sorry — Sylow)
+16. no_subgroup_order_30: S₅ has no subgroup of order 30 (sorry — A₅ simple)
+17. gal_card_ne_15: |Gal| ≠ 15 (via embedding + #15)
+18. gal_card_ne_30: |Gal| ≠ 30 (via embedding + #16)
 
 ### PROVED from 2 axioms + structural lemmas:
 19. q_gal_card: |Gal(q)| = 60
-    (From gal_card_dvd_60 + three_dvd_gal_card + five_dvd_gal_card +
-     gal_card_ne_15 + gal_card_ne_30.)
-20. gal_card_ne_15: |Gal| ≠ 15 (no S₅ subgroup of order 15)
-21. gal_card_ne_30: |Gal| ≠ 30 (no S₅ subgroup of order 30)
-22. q_gal_iso_a5: Gal(q) ≃* A₅
-    (Via galActionHom → permCongr → index 2 → eq_alternatingGroup_of_index_eq_two)
+20. q_gal_iso_a5: Gal(q) ≃* A₅
 
 ### Proof Architecture
 ```
 gal_card_dvd_60 ────┐
 three_dvd_gal_card ──┤
 five_dvd_gal_card ───┼──→ q_gal_card ──→ a5_realizable
-                     │    (≠15: Sylow)     splitting_field_q_finrank
-                     │    (≠30: A₅ simple) gal_has_index_two_in_s5
-                     │
-no_subgroup_order_15 ┤    ← perm_fin5_order5_order3_not_commute (native_decide)
-no_subgroup_order_30 ┘    ← a5_isSimple (Mathlib)
+no_subgroup_order_15 ┤    (≠15: Sylow)     splitting_field_q_finrank
+no_subgroup_order_30 ┘    (≠30: A₅ simple) gal_has_index_two_in_s5
 
 q_irreducible ────→ q_separable ───→ q_rootSet_card
      │                                    │

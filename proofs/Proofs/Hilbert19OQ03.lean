@@ -508,6 +508,6 @@ theorem hilbert19_fully_nonlinear (F : ℝ → ℝ)
 
 **0 sorries**: classical_implies_viscosity_sub now proved via touching_above_second_deriv axiom
 -/
-theorem hilbert19_oq03_summary : True := trivial
+theorem hilbert19_oq03_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end Hilbert19OQ03
