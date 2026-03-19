@@ -367,31 +367,31 @@ theorem no_subgroup_order_15 (H : Subgroup (Equiv.Perm (Fin 5)))
       have h_mod := card_sylow_modEq_one 5 ↥H
       obtain ⟨P⟩ := Sylow.nonempty (p := 5) (G := ↥H)
       have h_P_card : Nat.card (↑P : Subgroup ↥H) = 5 := by
-        rw [P.card_eq_multiplicity, hcard]; norm_num
+        rw [P.card_eq_multiplicity, hcard]; native_decide
       have h_idx : (↑P : Subgroup ↥H).index = 3 := by
         have := (↑P : Subgroup ↥H).index_mul_card; rw [h_P_card, hcard] at this; omega
-      have h_dvd := card_sylow_dvd_index P; rw [h_idx] at h_dvd
+      have h_dvd := Sylow.card_dvd_index P; rw [h_idx] at h_dvd
       rcases (by norm_num : Nat.Prime 3).eq_one_or_self_of_dvd _ h_dvd with h | h
       · exact h
       · exfalso; rw [h] at h_mod; simp [Nat.ModEq] at h_mod
     haveI : Subsingleton (Sylow 5 ↥H) := by
-      obtain ⟨x, hx⟩ := Nat.card_eq_one.mp hn₅
-      exact ⟨fun a b => (hx a).trans (hx b).symm⟩
+      haveI := Fintype.ofFinite (Sylow 5 ↥H)
+      rw [← Fintype.card_le_one_iff_subsingleton, ← Nat.card_eq_fintype_card]; omega
     -- Sylow 3-subgroup is unique (n₃ | 5 and n₃ ≡ 1 mod 3, so n₃ = 1)
     have hn₃ : Nat.card (Sylow 3 ↥H) = 1 := by
       have h_mod := card_sylow_modEq_one 3 ↥H
       obtain ⟨P⟩ := Sylow.nonempty (p := 3) (G := ↥H)
       have h_P_card : Nat.card (↑P : Subgroup ↥H) = 3 := by
-        rw [P.card_eq_multiplicity, hcard]; norm_num
+        rw [P.card_eq_multiplicity, hcard]; native_decide
       have h_idx : (↑P : Subgroup ↥H).index = 5 := by
         have := (↑P : Subgroup ↥H).index_mul_card; rw [h_P_card, hcard] at this; omega
-      have h_dvd := card_sylow_dvd_index P; rw [h_idx] at h_dvd
+      have h_dvd := Sylow.card_dvd_index P; rw [h_idx] at h_dvd
       rcases (by norm_num : Nat.Prime 5).eq_one_or_self_of_dvd _ h_dvd with h | h
       · exact h
       · exfalso; rw [h] at h_mod; simp [Nat.ModEq] at h_mod
     haveI : Subsingleton (Sylow 3 ↥H) := by
-      obtain ⟨x, hx⟩ := Nat.card_eq_one.mp hn₃
-      exact ⟨fun a b => (hx a).trans (hx b).symm⟩
+      haveI := Fintype.ofFinite (Sylow 3 ↥H)
+      rw [← Fintype.card_le_one_iff_subsingleton, ← Nat.card_eq_fintype_card]; omega
     -- Get the unique Sylow subgroups (normal by uniqueness)
     obtain ⟨P₅⟩ := Sylow.nonempty (p := 5) (G := ↥H)
     obtain ⟨P₃⟩ := Sylow.nonempty (p := 3) (G := ↥H)
@@ -399,12 +399,12 @@ theorem no_subgroup_order_15 (H : Subgroup (Equiv.Perm (Fin 5)))
       apply Subgroup.Normal.mk; intro n hn g
       have : g • P₅ = P₅ := Subsingleton.elim _ _
       rw [Sylow.smul_eq_iff_mem_normalizer] at this
-      exact (Subgroup.mem_normalizer_iff.mp this).mp hn
+      exact ((Subgroup.mem_normalizer_iff.mp this) n).mp hn
     haveI hN₃ : (↑P₃ : Subgroup ↥H).Normal := by
       apply Subgroup.Normal.mk; intro n hn g
       have : g • P₃ = P₃ := Subsingleton.elim _ _
       rw [Sylow.smul_eq_iff_mem_normalizer] at this
-      exact (Subgroup.mem_normalizer_iff.mp this).mp hn
+      exact ((Subgroup.mem_normalizer_iff.mp this) n).mp hn
     -- σ ∈ P₅ (order-5 element in the unique Sylow 5-subgroup)
     have hσ_mem : σ ∈ (↑P₅ : Subgroup ↥H) := by
       have h_pg : IsPGroup 5 (Subgroup.zpowers σ) :=
@@ -439,11 +439,10 @@ theorem no_subgroup_order_15 (H : Subgroup (Equiv.Perm (Fin 5)))
         simpa using congr_arg Subtype.val hk₅)
       have h3 : orderOf c ∣ 3 ^ k₃ := orderOf_dvd_of_pow_eq_one (by
         simpa using congr_arg Subtype.val hk₃)
-      have hcop : Nat.Coprime (5 ^ k₅) (3 ^ k₃) := Nat.Coprime.pow_pow (by norm_num)
+      have hcop : Nat.Coprime (5 ^ k₅) (3 ^ k₃) := (by norm_num : Nat.Coprime 5 3).pow k₅ k₃
       exact orderOf_eq_one_iff.mp (Nat.dvd_one.mp (hcop ▸ Nat.dvd_gcd h5 h3))
     -- c = 1 means σ * τ * σ⁻¹ * τ⁻¹ = 1, hence σ * τ = τ * σ
-    have key : σ * τ = σ * τ * σ⁻¹ * τ⁻¹ * (τ * σ) := by group
-    rw [hc_def ▸ hc_one, one_mul] at key; exact key)
+    rw [show σ * τ = c * (τ * σ) from by simp only [hc_def]; group, hc_one, one_mul])
 
 /-- No subgroup of S₅ has order 30.
 
@@ -452,12 +451,57 @@ theorem no_subgroup_order_15 (H : Subgroup (Equiv.Perm (Fin 5)))
     Order 15 → contradicts no_subgroup_order_15. -/
 theorem no_subgroup_order_30 (H : Subgroup (Equiv.Perm (Fin 5)))
     (hcard : Nat.card H = 30) : False := by
-  -- Proof by contradiction using sign homomorphism and A₅ simplicity.
-  -- Case 1: All elements even → H ⊆ A₅ → [A₅:H] = 2 → H ⊴ A₅ → contradicts isSimpleGroup_five
-  -- Case 2: ∃ odd element → |H ∩ A₅| = 15 → contradicts no_subgroup_order_15
-  -- Key APIs: Equiv.Perm.sign, Equiv.Perm.mem_alternatingGroup,
-  --   alternatingGroup.isSimpleGroup_five, Subgroup.Normal.of_index_eq_two
-  sorry
+  -- Setup
+  haveI : Finite H := Nat.finite_of_card_ne_zero (by rw [hcard]; norm_num)
+  haveI : Fintype H := Fintype.ofFinite H
+  -- Case split: either H ⊆ A₅ or ∃ odd permutation in H
+  by_cases hle : H ≤ alternatingGroup (Fin 5)
+  · -- Case 1: H ⊆ A₅ → [A₅:H] = 2 → H ⊴ A₅ → contradicts A₅ simple
+    let H' := H.subgroupOf (alternatingGroup (Fin 5))
+    have hH'_card : Nat.card ↥H' = 30 := by
+      rw [show Nat.card ↥H' = Nat.card ↥H from
+        Nat.card_congr (Subgroup.subgroupOfEquivOfLe hle).toEquiv, hcard]
+    have hA5_card : Nat.card (alternatingGroup (Fin 5) : Type _) = 60 := by
+      rw [Nat.card_eq_fintype_card]; decide
+    have hindex : H'.index = 2 := by
+      have := Subgroup.card_mul_index H'
+      rw [hA5_card, hH'_card] at this; omega
+    haveI : H'.Normal := Subgroup.normal_of_index_eq_two hindex
+    rcases alternatingGroup.isSimpleGroup_five.eq_bot_or_eq_top_of_normal H' inferInstance
+      with h | h
+    · rw [h] at hH'_card; simp at hH'_card
+    · rw [h, Nat.card_congr Subgroup.topEquiv.toEquiv, hA5_card] at hH'_card
+      norm_num at hH'_card
+  · -- Case 2: ∃ odd permutation → H ∩ A₅ has order 15 → contradicts no_subgroup_order_15
+    obtain ⟨x, hxH, hxA⟩ : ∃ x ∈ H, x ∉ alternatingGroup (Fin 5) := by
+      by_contra h; push_neg at h; exact hle h
+    let signH : ↥H →* ℤˣ := Equiv.Perm.sign.comp H.subtype
+    let K := signH.ker.map H.subtype
+    have hK_card : Nat.card ↥K = 15 := by
+      have h_eq : Nat.card ↥K = Nat.card ↥signH.ker :=
+        (Nat.card_congr
+          (signH.ker.equivMapOfInjective H.subtype Subtype.val_injective).toEquiv).symm
+      rw [h_eq]
+      have h_mul := Subgroup.card_mul_index signH.ker
+      have h_idx_dvd : signH.ker.index ∣ 2 := by
+        have h_iso : signH.ker.index = Nat.card ↥signH.range := by
+          rw [Subgroup.index]
+          exact Nat.card_congr (QuotientGroup.quotientKerEquivRange signH).toEquiv
+        rw [h_iso]
+        calc Nat.card ↥signH.range
+            ∣ Nat.card ℤˣ := Subgroup.card_subgroup_dvd_card signH.range
+          _ = 2 := by rw [Nat.card_eq_fintype_card]; decide
+      have h_idx_ne : signH.ker.index ≠ 1 := by
+        intro heq
+        have hker_top : signH.ker = ⊤ := Subgroup.index_eq_one.mp heq
+        have : (⟨x, hxH⟩ : ↥H) ∈ signH.ker := hker_top ▸ Subgroup.mem_top _
+        rw [MonoidHom.mem_ker] at this
+        simp only [signH, MonoidHom.comp_apply, Subgroup.coe_subtype] at this
+        exact hxA (Equiv.Perm.mem_alternatingGroup.mpr this)
+      have h_idx : signH.ker.index = 2 :=
+        (Nat.Prime.eq_one_or_self_of_dvd (by norm_num) _ h_idx_dvd).resolve_left h_idx_ne
+      rw [hcard, h_idx] at h_mul; omega
+    exact no_subgroup_order_15 K hK_card
 
 
 /-- |Gal(q)| ≠ 15: Gal embeds into S₅ which has no subgroup of order 15. -/
@@ -793,7 +837,7 @@ Groups NOT YET realized in our formalization:
 
 ### Structural lemmas (Part IV-A):
 15. no_subgroup_order_15: S₅ has no subgroup of order 15 (PROVED — Sylow theory)
-16. no_subgroup_order_30: S₅ has no subgroup of order 30 (sorry — A₅ simple)
+16. no_subgroup_order_30: S₅ has no subgroup of order 30 (PROVED — sign hom + A₅ simple)
 17. gal_card_ne_15: |Gal| ≠ 15 (via embedding + #15)
 18. gal_card_ne_30: |Gal| ≠ 30 (via embedding + #16)
 

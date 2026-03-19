@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Filled Sylow sorry in no_subgroup_order_15 (was the main structural sorry). 1 sorry remains (no_subgroup_order_30, needs A\u2085 simplicity).",
+    "progressSummary": "PROGRESS: no_subgroup_order_30 PROVED (sign hom + A5 simplicity). Also fixed Mathlib v4.26.0 API breaks in no_subgroup_order_15. q_gal_card now has 0 structural sorries (only 2 mathematical axioms remain: gal_card_dvd_60, three_dvd_gal_card).",
     "builtItems": [
       "InverseGalois.lean: cyclotomic Galois theory, S\u2083 realization via Gal(X\u00b3-2)\u2245S\u2083 (905 lines, builds)",
       "InverseGaloisD4.lean: D\u2084 realization via |Gal(X\u2074-2)| = 8 (666 lines, builds)",
@@ -114,7 +114,17 @@
         "description": "Full proof structure for S\u2085 has no subgroup of order 15 (1 sorry: Sylow commutation)",
         "proven": false
       },
-      "no_subgroup_order_15: Sylow sorry filled \u2014 full Sylow theory proof (unique P\u2085/P\u2083, normality, membership via zpowers, commutator argument, coprime disjointness)"
+      "no_subgroup_order_15: Sylow sorry filled \u2014 full Sylow theory proof (unique P\u2085/P\u2083, normality, membership via zpowers, commutator argument, coprime disjointness)",
+      {
+        "name": "no_subgroup_order_30",
+        "description": "S5 has no subgroup of order 30 (sign hom + A5 simplicity, sorry-free)",
+        "proven": true
+      },
+      {
+        "name": "no_subgroup_order_15_api_fix",
+        "description": "Fixed Mathlib v4.26.0 API breaks: Sylow.card_dvd_index, native_decide for padicValNat, Coprime.pow, Fintype subsingleton",
+        "proven": true
+      }
     ],
     "insights": [
       "Cyclotomic irreducibility over \u211a IS in Mathlib: Polynomial.cyclotomic.irreducible_rat",
@@ -162,13 +172,14 @@
       "Key insight: Subtype.ext converts (\u03c3 : Perm(Fin 5)) = 1 to \u03c3 = (1 : \u21a5H), enabling orderOf_one rewrite",
       "calc with congr 1 avoids rw motive errors for pow_orderOf_eq_one substitution",
       "Sylow commutation in no_subgroup_order_15 proved: unique P\u2085,P\u2083 \u2192 normal \u2192 commutator in P\u2085\u2229P\u2083=\u22a5 \u2192 commute",
-      "Key Mathlib APIs: card_sylow_modEq_one, card_sylow_dvd_index, IsPGroup.iff_card, IsPGroup.exists_le_sylow, Normal.conj_mem"
+      "Key Mathlib APIs: card_sylow_modEq_one, card_sylow_dvd_index, IsPGroup.iff_card, IsPGroup.exists_le_sylow, Normal.conj_mem",
+      "no_subgroup_order_30 proof strategy: by_cases H \u2264 A5. Case 1: subgroupOf + index 2 normal + A5 simple. Case 2: sign|_H surjective \u2192 ker has index 2 \u2192 15 elements \u2192 contradicts order_15",
+      "Mathlib v4.26.0 changes: card_sylow_dvd_index \u2192 Sylow.card_dvd_index, Nat.card_eq_one removed, Nat.Coprime.pow_pow \u2192 Coprime.pow m n, card_eq_multiplicity uses padicValNat (need native_decide)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove no_subgroup_order_30: sign hom restriction \u2192 H\u2286A\u2085 contradicts simplicity, or |H\u2229A\u2085|=15 contradicts no_subgroup_order_15",
-      "After no_subgroup_order_30: q_gal_card has 0 structural sorries (only 2 mathematical axioms remain)",
-      "Update doc comments in InverseGaloisA5.lean to reflect sorry-free status of no_subgroup_order_15"
+      "Only 2 mathematical axioms remain: gal_card_dvd_60 (disc square \u2192 Gal \u2264 A5) and three_dvd_gal_card (Dedekind at p=7)",
+      "Both axioms require Dedekind and discriminant theory not in Mathlib \u2014 these are the true frontier"
     ],
     "markdown": "# Knowledge: The Inverse Galois Problem (abel-ruffini-oq-01)\n\n## Problem Summary\n\nThe Inverse Galois Problem (IGP) asks: for every finite group G, does there exist a Galois extension K/\u211a with Gal(K/\u211a) \u2245 G?\n\n**Status**: OPEN in general. The full conjecture is unproven.\n\n## Session 2026-03-14 (researcher-2) - Verification and Assessment\n\n**Mode**: REVISIT (depth-first, RICH knowledge score 59)\n**Outcome**: verified, at frontier of formalizability\n\n**What we did**: Docker build verified (2 expected sorries). Confirmed KroneckersJugendtraum.lean has Kronecker-Weber as statement only (not proved). Updated outdated next steps. No tractable path to further progress without new Mathlib infrastructure.\n\n## Session 2026-02-21 (Session 1) - Initial Exploration and Formalization\n\n**Mode**: FRESH\n**Outcome**: progress \u2014 first Lean formalization created\n\n### What I Did\n\n- Explored the mathematical landscape of the Inverse Galois Problem\n- Surveyed Mathlib4 infrastructure: `IsCyclotomicExtension.isGalois`, `IsCyclotomicExtension.Aut.commGroup`, `galCyclotomicEquivUnitsZMod`, `ZMod.card_units_eq_totient`\n- Created `proofs/Proofs/InverseGalois.lean` with formal Lean content\n- Created gallery data at `src/data/proofs/inverse-galois/`\n- Added to `listings.json` and `Proofs.lean`\n\n### Key Findings\n\n- Mathlib has `IsCyclotomicExtension.isGalois` \u2014 cyclotomic extensions are automatically Galois\n- Mathlib has `IsCyclotomicExtension.Aut.commGroup` \u2014 cyclotomic Galois groups are abelian\n- Mathlib has `galCyclotomicEquivUnitsZMod` \u2014 requires irreducibility of cyclotomic poly over \u211a\n- The irreducibility of \u03a6\u2099(x) over \u211a is a classical theorem (Gauss 1801) NOT directly in Mathlib as a standalone theorem \u2014 typically assumed as hypothesis in Mathlib theorems\n- The problem is genuinely open in general, but well-known cases (abelian, solvable, symmetric groups) are provable\n\n### Files Modified\n\n- `proofs/Proofs/InverseGalois.lean` (created)\n- `src/data/proofs/inverse-galois/meta.json` (created)\n- `src/data/proofs/inverse-galois/annotations.json` (created)\n- `src/data/proofs/inverse-galois/index.ts` (created)\n- `src/data/proofs/inverse-galois/tacticStates.json` (created)\n- `src/data/proofs/listings.json` (updated)\n- `proofs/Proofs.lean` (updated with import)\n- `research/problems/abel-ruffini-oq-01/knowledge.md` (this file)\n\n### What We Proved (compile-time)\n\n1. `cyclotomic_field_isGalois`: CyclotomicField n \u211a is Galois over \u211a\n2. `cyclotomic_galois_isAbelian`: The Galois group is abelian\n3. `cyclotomic_galois_group_iso_units_zmod`: Gal(\u03a6\u2099/\u211a) \u2245 (ZMod n)\u02e3 (uses irreducibility axiom)\n4. `units_zmod4_card` = 2, `units_zmod5_card` = 4, `units_zmod7_card` = 6 (decide)\n5. `units_zmodPrime_card` = p-1 for prime p\n6. `a5_not_solvable`: A\u2085 is not solvable (proven)\n7. `solvable_iff_solvable_galois_group`: Connection to Abel-Ruffini (proven)\n\n### What's Axiomatized (not proven in Lean)\n\n1. `cyclotomic_irreducible_over_rationals`: \u03a6\u2099(x) is irreducible over \u211a (classical, not in Mathlib as standalone)\n2. `abelian_realizable`: All abelian groups realizable (needs Kronecker-Weber)\n3. `shafarevich_theorem`: All solvable groups realizable (Shafarevich 1954, deep)\n\n### What Has Sorry\n\n1. `inverse_galois_problem_open_conjecture`: The main open problem\n2. `symmetric_group_realizable`: Needs Hilbert irreducibility theorem\n3. `connection_to_abel_ruffini`: The specific polynomial example\n4. One more in the A\u2085 realization discussion\n\n### Next Steps\n\n1. Try to prove `cyclotomic_irreducible_over_rationals` in Lean \u2014 this should be in Mathlib somewhere, perhaps under a different name\n2. Search for Kronecker-Weber in Mathlib (might not be there yet)\n3. Consider building a more computational example: explicitly compute Gal(\u211a(\u03b6\u2085)/\u211a) using Mathlib\n4. Possibly extend to show that some specific non-abelian group (like S\u2083) is realizable using an explicit polynomial\n\n## Mathematical Context\n\n### The Cyclotomic Approach (What We Formalized)\n\nFor the Galois group of the n-th cyclotomic field:\n- `CyclotomicField n \u211a` = splitting field of \u03a6\u2099(X) over \u211a\n- `IsGalois \u211a (CyclotomicField n \u211a)` \u2014 Galois extension\n- `Gal(CyclotomicField n \u211a / \u211a) \u2245 (ZMod n)\u02e3` \u2014 abelian Galois group\n\nFor prime p:\n- `(ZMod p)\u02e3` is cyclic of order p-1\n- So Gal(\u211a(\u03b6\u209a)/\u211a) is cyclic of order p-1\n\n### Known Realizability Results\n\n| Group Family | Source | Status in Lean |\n|---|---|---|\n| Trivial group | \u211a/\u211a | Easy (not formalized yet) |\n| Cyclic C\u2099 | Cyclotomic subfields | Partially (via autEquivPow) |\n| Abelian | Kronecker-Weber | Axiom |\n| Solvable | Shafarevich 1954 | Axiom |\n| S\u2099 | Hilbert irreducibility | Sorry |\n| A\u2099 (n\u22655) | Various | Not formalized |\n| Most simple groups | Case by case | Not formalized |\n| M\u2082\u2083 (sporadic) | Unknown | Open math problem |\n| General | **OPEN** | Open math problem |\n\n### Mathlib Infrastructure Used\n\n```\nMathlib.NumberTheory.Cyclotomic.Gal\n  - galCyclotomicEquivUnitsZMod: polynomial Galois group \u2245 (ZMod n)\u02e3\n  - IsCyclotomicExtension.Aut.commGroup: abelian Galois group\n  - IsCyclotomicExtension.autEquivPow: automorphisms \u2243* (ZMod n)\u02e3\n\nMathlib.NumberTheory.Cyclotomic.Basic\n  - IsCyclotomicExtension.isGalois: cyclotomic extensions are Galois\n  - CyclotomicField: the splitting field of \u03a6\u2099(X)\n  - IsCyclotomicExtension instance for characteristic 0\n\nMathlib.FieldTheory.Galois.Basic\n  - IsGalois: the Galois extension class\n  - IsGalois.card_aut_eq_finrank: |Gal| = degree\n\nMathlib.GroupTheory.SpecificGroups.Cyclic\n  - IsCyclic instance for (ZMod p)\u02e3\n\nMathlib.FieldTheory.AbelRuffini\n  - solvableByRad.isSolvable': Abel-Ruffini connection\n```\n\n## Blockers / Gaps\n\n1. **Cyclotomic irreducibility over \u211a**: Not a direct standalone Mathlib theorem.\n   The theorem is classical (Gauss 1801) but Mathlib typically assumes it as a\n   hypothesis. We axiomatized it.\n   **Potential fix**: Look in `Mathlib.RingTheory.Polynomial.Cyclotomic.Irreducible`\n   or search for `IsIntegral.minpoly_eq_cyclotomic`.\n\n2. **Kronecker-Weber theorem**: The proof that every abelian extension of \u211a is\n   cyclotomic. This deep result is not yet in Mathlib (as of 2026-02).\n\n3. **Hilbert irreducibility theorem**: Needed for symmetric group realization.\n   Not in Mathlib.\n\n4. **Shafarevich's theorem**: 50+ pages of algebraic number theory. Not in Lean.\n"
   },
@@ -190,7 +201,7 @@
     "mathlib": []
   },
   "started": "2026-02-21T19:21:07.129Z",
-  "lastUpdate": "2026-03-19T12:00:00.000Z",
+  "lastUpdate": "2026-03-19T14:00:00.000Z",
   "significance": 6,
   "tractability": 6
 }
