@@ -1,80 +1,55 @@
 {
   "slug": "euler-totient-oq-04",
-  "title": "Divisor Sum Identity via GCD Partition",
-  "phase": "COMPLETED",
-  "status": "completed",
-  "tier": "B",
+  "title": "Divisor sum identity n = Σ φ(d) from Mathlib partition-of-unity",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
   "path": "fast",
   "problemStatement": {
-    "formal": "n.divisors.sum (fun d => Nat.totient (n / d)) = n",
-    "plain": "Prove the identity n = Σ_{d|n} φ(n/d) by explicitly constructing the partition of {0,...,n-1} into GCD classes S_d = {k : gcd(k,n) = d}, showing each has φ(n/d) elements.",
-    "whyMatters": [
-      "Fundamental identity in analytic number theory connecting totient to divisor sums",
-      "Constructive proof reveals the partition-of-unity structure behind the identity",
-      "Probabilistic interpretation: P(gcd(k,n)=d) = φ(n/d)/n"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "divisor_sum_totient_div: n = Σ_{d|n} φ(n/d) via explicit GCD partition",
-      "divisor_sum_totient: cross-validation with Mathlib's Nat.sum_totient",
-      "partition_of_unity: Σ_{d|n} φ(n/d)/n = 1 over ℚ",
-      "card_gcdClass_eq_totient: |S_d| = φ(n/d) via explicit bijection k ↦ k/d",
-      "GCD classes partition {0,...,n-1}: pairwise disjoint and cover range n"
-    ],
+    "proven": [],
     "open": [],
-    "goal": "Complete formalization achieved"
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-03-18T06:45:00Z",
+    "phase": "NEW",
+    "since": "2026-03-15T12:10:20.233Z",
     "iteration": 1,
-    "focus": "Divisor sum identity via constructive GCD partition",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "None - formalization complete",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 231 lines, 0 sorries, 0 axioms. Explicit constructive proof of n = Σ φ(n/d) via GCD class partition with bijection k ↦ k/d. Includes partition-of-unity ℚ formulation and concrete verifications.",
-    "builtItems": [
-      "gcdClass definition and mem_gcdClass characterization",
-      "card_gcdClass_eq_totient via Finset.card_bij (bijection proof)",
-      "divisor_sum_totient_div (main identity)",
-      "partition_of_unity (probabilistic formulation over ℚ)",
-      "Concrete verifications for n=6,12,30 and GCD class sizes"
-    ],
-    "insights": [
-      "Bijection k ↦ k/d from S_d to coprime residues of n/d gives constructive cardinality proof",
-      "GCD class disjointness is immediate from gcd uniqueness",
-      "Partition of unity Σ φ(n/d)/n = 1 has clean proof via sum_div and div_eq_one_iff"
-    ],
+    "progressSummary": "COMPLETED - 231 lines, 0 sorries, 0 axioms.",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [],
+    "markdown": "# euler-totient-oq-04: Divisor Sum Identity via GCD Partition\n\n## Problem Summary\n\n**Problem**: Prove n = Σ_{d|n} φ(n/d) constructively via GCD class partition.\n\n**Status**: COMPLETED - 231 lines, 0 sorries, 0 axioms.\n\n## Session 2026-03-18 - Verification and Metadata\n\n**Mode**: REVISIT (proof already existed from abel-ruffini-oq-01 work)\n**Outcome**: completed\n\n### Existing Proof\n\n`proofs/Proofs/EulerTotientOQ04.lean` (231 lines, 0 sorries) was already created\nand committed as part of abel-ruffini-oq-01 research. The proof:\n\n1. Defines GCD classes S_d(n) = {k ∈ {0,...,n-1} : gcd(k,n) = d}\n2. Shows they partition {0,...,n-1} (disjoint + cover)\n3. Proves |S_d| = φ(n/d) via explicit bijection k ↦ k/d using Finset.card_bij\n4. Derives n = Σ_{d|n} φ(n/d) by summing cardinalities\n5. Includes partition-of-unity formulation over ℚ\n6. Cross-validates with Mathlib's Nat.sum_totient\n7. Concrete verifications for n=6, 12, 30\n"
   },
+  "approaches": [],
   "tags": [
     "seeker-selected",
     "number-theory",
-    "euler-totient",
-    "divisor-sum",
-    "partition-of-unity"
+    "mathlib"
   ],
-  "relatedProofs": [
-    "euler-totient"
-  ],
+  "relatedProofs": [],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": [
-      "Mathlib.Data.Nat.Totient",
-      "Mathlib.Data.Nat.GCD.Basic"
-    ]
+    "mathlib": []
   },
-  "started": "2026-03-18T06:45:00Z",
-  "lastUpdate": "2026-03-18T06:45:00Z",
+  "started": "2026-03-15T12:11:41.207Z",
+  "lastUpdate": "2026-03-18T07:52:58.911Z",
   "significance": 7,
   "tractability": 7
 }

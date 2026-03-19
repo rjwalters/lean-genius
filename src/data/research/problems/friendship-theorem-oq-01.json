@@ -1,112 +1,55 @@
 {
   "slug": "friendship-theorem-oq-01",
   "title": "Spectral proof of Friendship Theorem via Mathlib linear algebra",
-  "phase": "COMPLETED",
-  "status": "completed",
+  "phase": "OBSERVE",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "∀ G : SimpleGraph V, IsFriendshipGraph G → Fintype.card V ≥ 3 → ∃ c, IsUniversalVertex G c",
-    "plain": "In any finite simple graph where every pair of distinct vertices has exactly one common neighbor, there exists a vertex adjacent to all other vertices. This is proved using spectral methods: the adjacency matrix equation A² = (k-1)I + J leads to eigenvalue constraints that force the existence of a universal vertex.",
-    "whyMatters": [
-      "Fundamental result in extremal graph theory",
-      "Connects spectral graph theory to structural results",
-      "The spectral proof technique (A² analysis) is broadly applicable"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "UCN extraction and uniqueness (ucn, ucn_spec, ucn_unique)",
-      "UCN structural properties (ucn_ne_left/right, friendship_separation, ucn_involutive)",
-      "A² off-diagonal identity: |N(u) ∩ N(v)| = 1 for u ≠ v",
-      "Counting identity partition: disjoint fibers, full cover, n-1 = Σ(deg(v)-1)",
-      "Regular friendship constraint: n = k(k-1)+1",
-      "Number theory: s | s²+1 → s = 1",
-      "Regular friendship → n = 3 (triangle)",
-      "Regular friendship → universal vertex"
-    ],
-    "open": [
-      "Remove spectral axiom using Mathlib eigenvalue decomposition",
-      "Prove 'no universal → regular' to eliminate base file axiom 1"
-    ],
-    "goal": "Complete spectral proof of Friendship Theorem"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-03-18T03:57:00Z",
-    "iteration": 2,
-    "focus": "Structural lemmas: separation, involution, neighborhood properties",
-    "blockers": [
-      "Spectral axiom elimination requires Mathlib eigenvalue decomposition for real symmetric matrices",
-      "'No universal → regular' requires spectral/algebraic methods; no clean combinatorial proof known"
-    ],
-    "nextAction": "Explore Mathlib spectral theory API for axiom elimination",
+    "phase": "NEW",
+    "since": "2026-03-15T12:10:20.234Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 2,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: FriendshipTheoremOQ01.lean has 0 sorries, 1 axiom. Full combinatorial infrastructure proved: UCN extraction/uniqueness, A² off-diagonal identity, counting partition (disjoint+cover+identity), regular constraint n=k(k-1)+1, number theory s|s²+1→s=1, regular→triangle→universal. New: separation lemma (neighborhoods of adjacent vertices are separated), partner involution (ucn is involutive on N(u)). The single axiom 'spectral_regular_friendship' captures eigenvalue analysis: k-regular friendship with k≥2 → k=2.",
-    "builtItems": [
-      "ucn, ucn_spec, ucn_adj_left, ucn_adj_right, ucn_unique (proved) in FriendshipTheoremOQ01.lean",
-      "ucn_ne_left, ucn_ne_right (proved) - UCN distinctness from endpoints",
-      "friendship_separation (proved) - For adj u,v: ucn(x,v) = u for all x ∈ N(u)\\{v}",
-      "ucn_involutive (proved) - ucn(u, ucn(u,v)) = v for v ∈ N(u)",
-      "ucn_unique_in_neighborhood (proved) - partner is unique neighbor within N(u)",
-      "common_neighbor_finset_card (proved) - |N(u) ∩ N(v)| = 1 (A² identity)",
-      "counting_disjoint, counting_cover, counting_identity (proved) - partition infrastructure",
-      "regular_friendship_card (proved) - n = k(k-1)+1",
-      "dvd_sq_add_one_imp_one (proved) - s | s²+1 → s = 1",
-      "spectral_regular_friendship (axiom) - k-regular friendship k≥2 → k=2",
-      "regular_friendship_is_triangle (proved) - k-regular friendship → n = 3",
-      "regular_friendship_has_universal (proved) - k-regular friendship → universal vertex"
-    ],
-    "insights": [
-      "A² = (k-1)I + J is the heart of the spectral proof - each entry counts common neighbors",
-      "Separation lemma: for adj u,v, ucn(x,v) = u for ALL x ∈ N(u)\\{v} — neighborhoods are fully separated",
-      "Partner involution: v ↦ ucn(u,v) is a fixed-point-free involution on N(u), implying deg(u) is always even",
-      "The counting identity uses an explicit partition V\\{u} = ⊔_{v∈N(u)} (N(v)\\{u}) with disjoint fibers",
-      "Adjacent vertices do NOT always have same degree (windmill counterexample: deg(center)=4, deg(petal)=2)",
-      "'No universal → regular' inherently requires spectral/algebraic methods — no clean combinatorial proof exists",
-      "Eigenvalue integrality is the deepest part: requires spectral decomposition of A²=(k-1)I+J"
-    ],
-    "mathlibGaps": [
-      "No ready-to-use spectral decomposition for real symmetric matrices in convenient graph theory form",
-      "adjMatrix squared connection to common neighbors not directly available as a lemma",
-      "No built-in all-ones matrix definition in Mathlib"
-    ],
-    "nextSteps": [
-      "Explore Mathlib.LinearAlgebra.Matrix.Spectrum for eigenvalue decomposition to eliminate spectral axiom",
-      "Investigate whether Mathlib's IsHermitian.eigenvalues can be applied to adjacency matrices",
-      "Consider formalizing A² = (k-1)I + J as a matrix equation (requires SimpleGraph.adjMatrix)",
-      "The number theory step (dvd_sq_add_one_imp_one) is proved — only the LA step remains"
-    ]
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: friendship-theorem-oq-01\n\nSpectral proof of Friendship Theorem via Mathlib linear algebra.\n\n---\n\n## Problem Understanding\n\nThe Friendship Theorem (Erdos-Renyi-Sos, 1966): In any finite simple graph where\nevery pair of distinct vertices has exactly one common neighbor, there exists a\nvertex adjacent to all other vertices (a \"universal friend\" or \"politician\").\n\nThe spectral proof has two main components:\n1. **Regularity**: No universal vertex implies the graph is regular. Requires\n   spectral/algebraic methods — no clean combinatorial proof known.\n2. **Spectral contradiction**: A k-regular friendship graph satisfies A^2 = (k-1)I + J.\n   Eigenvalue analysis shows k must equal 2, leaving only the triangle.\n\n---\n\n## Current File State\n\n**FriendshipTheoremOQ01.lean**: 0 sorries, 1 axiom\n\n### Proved Results (18 lemmas/theorems)\n\n| Part | Result | Description |\n|------|--------|-------------|\n| I | `ucn`, `ucn_spec` | UCN extraction and singleton characterization |\n| I | `ucn_adj_left`, `ucn_adj_right` | UCN is adjacent to both vertices |\n| I | `ucn_unique` | Any common neighbor equals UCN |\n| I-B | `ucn_ne_left`, `ucn_ne_right` | UCN ≠ u and UCN ≠ v |\n| I-B | `friendship_separation` | For adj u,v: ucn(x,v) = u for all x ∈ N(u)\\{v} |\n| I-B | `ucn_involutive` | ucn(u, ucn(u,v)) = v (partner involution) |\n| I-B | `ucn_unique_in_neighborhood` | Partner is unique neighbor within N(u) |\n| II | `common_neighbor_finset_card` | |N(u) ∩ N(v)| = 1 (A² off-diagonal) |\n| III | `counting_disjoint` | Partition fibers are pairwise disjoint |\n| III | `counting_cover` | Partition fibers cover V \\ {u} |\n| III | `counting_identity` | n-1 = Σ_{v∈N(u)} (deg(v)-1) |\n| IV | `regular_friendship_card` | n = k(k-1)+1 for k-regular |\n| V | `dvd_sq_add_one_imp_one` | s | s²+1 → s = 1 |\n| VI | `regular_friendship_is_triangle` | k-regular friendship → n = 3 |\n| VI | `regular_friendship_has_universal` | k-regular friendship → universal vertex |\n\n### Single Axiom\n\n`spectral_regular_friendship`: In a k-regular friendship graph with k ≥ 2, k = 2.\n\n---\n\n## Insights\n\n### Separation Lemma (Session 2)\nFor adjacent u, v: ucn(x, v) = u for ALL x ∈ N(u) \\ {v}.\nNeighborhoods of adjacent vertices are completely separated.\n\n### Partner Involution (Session 2)\nv ↦ ucn(u, v) is a fixed-point-free involution on N(u).\nConsequence: deg(u) is always even in a friendship graph.\n\n### Adjacent Same Degree is FALSE (Session 2)\nWindmill W₂: center deg=4, petals deg=2. Both adjacent.\n\"No universal → regular\" requires algebraic methods.\n\n### Matrix Identity A^2 = (k-1)I + J\n- (A^2)_{ij} = common neighbor count = 1 (off-diag) or k (diag)\n- Eigenvalues: k and ±sqrt(k-1)\n- trace(A) = 0 forces k-1 to be a perfect square, then s|s²+1→s=1→k=2\n\n---\n\n## Dead Ends\n\n- **Bijection N(u) → N(v)**: Map x ↦ ucn(x,v) sends ALL of N(u)\\{v} to u.\n  Not injective for deg(u) > 2. Cannot prove adjacent same degree this way.\n- **Counting identity alone**: Consistent with any degree sequence.\n\n---\n\n## Remaining Work\n\nEliminate the spectral axiom via:\n1. Adjacency matrix for SimpleGraph (in Mathlib)\n2. A² = (k-1)I + J as matrix equation\n3. Eigenvalue decomposition (in Mathlib for real symmetric)\n4. Trace = sum of eigenvalues → integrality constraint\n5. Application of dvd_sq_add_one_imp_one (proved)\n"
   },
+  "approaches": [],
   "tags": [
     "seeker-selected",
     "graph-theory",
-    "spectral-methods",
-    "linear-algebra",
-    "friendship-theorem"
+    "spectral-methods"
   ],
-  "relatedProofs": [
-    "FriendshipTheorem.lean",
-    "FriendshipTheoremOQ02.lean"
-  ],
+  "relatedProofs": [],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": [
-      "Mathlib.Combinatorics.SimpleGraph.AdjMatrix",
-      "Mathlib.Combinatorics.SimpleGraph.DegreeSum",
-      "Mathlib.LinearAlgebra.Matrix.Trace"
-    ]
+    "mathlib": []
   },
   "started": "2026-03-15T12:11:41.208Z",
-  "lastUpdate": "2026-03-18T08:21:00Z",
+  "lastUpdate": "2026-03-18T05:02:47.339Z",
   "significance": 7,
-  "tractability": 6,
-  "completed": "2026-03-18T03:57:00Z"
+  "tractability": 6
 }
