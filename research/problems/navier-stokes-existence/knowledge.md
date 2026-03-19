@@ -421,3 +421,60 @@ Added companion Sections 46-50 with standalone versions.
 
 ### Status
 0 sorries, 0 axioms, Docker build verified (only pre-existing errors).
+
+## Session 2026-03-18 (researcher-7) - Harmonic Analysis and Refined Estimates
+
+**Mode**: REVISIT (RICH knowledge, 91 parts → 95 parts)
+**Outcome**: progress
+
+### What Was Done
+Added Parts XCII-XCV to NavierStokes.lean (now ~16,700 lines, 0 sorries, 0 axioms):
+
+1. **Part XCII: Besov Spaces and Paraproduct Estimates**
+   - Bernstein inequality exponent non-negativity
+   - Critical Besov index s_c = d/p - 1 at key values (L^3, L^2, L^6)
+   - Paraproduct frequency localization and remainder bounds
+   - Chemin-Lerner time-frequency norm ordering (Minkowski direction)
+   - Vishik 2D Euler endpoint, Onsager-Besov threshold
+   - GKP minimal blowup element in critical Besov
+   - Heat semigroup Besov gain, NS bilinear Besov estimate
+
+2. **Part XCIII: Blowup Rate Classification and Lower Bounds**
+   - Type I (self-similar) rate (T*-t)^{-1/2} and Type II (faster)
+   - Leray L^3 lower bound, Serrin class rates for all p
+   - H^s blowup rate -(2s-1)/4, degenerating at s_c = 1/2
+   - ESŠ Type I exclusion, Seregin L^3 necessity
+   - BKM vorticity integral condition, Robinson-Sadowski log rate
+   - Scale-invariant blowup quantities, Type II gap characterization
+   - Dimensional analysis of blowup scales
+
+3. **Part XCIV: Energy Cascade Locality and Scale Interaction**
+   - Triadic interaction constraint k = p + q
+   - Kraichnan IR/UV locality (exponent 4/3 > 1, convergent)
+   - Scale-by-scale energy balance (Duchon-Robert)
+   - Triad conservation (detailed balance)
+   - Kolmogorov 4/5 law (exact NS result), K41 scaling
+   - She-Lévêque intermittency check (ζ_3 = 1)
+   - Galilean invariance of NS, helicity cascade spectrum
+
+4. **Part XCV: Thin Domain Asymptotics and Dimensional Reduction**
+   - Poincaré constant π²/ε² → ∞ on thin domains
+   - Spectral gap mechanism: z-dependent modes penalized
+   - 3D→2D energy decomposition and exponential decay of 3D part
+   - Raugel-Sell global existence for ε ≤ ε₀
+   - Critical Re_ε = U·ε/ν, anisotropic Sobolev improvement
+   - Convergence rate ε^{1/2} to 2D solution
+   - Attractor dimension convergence, rotating thin domains
+   - Dimensional crossover 3D↔2D, DNS cost savings Re^{3/4}
+
+### Companion Sections 58-61
+- Besov critical exponents, blowup rate exponents, energy cascade locality, thin domain asymptotics
+
+### Key Insights
+- Besov spaces provide the sharpest function space framework for NS: s_c = d/p - 1 unifies all critical space results
+- Type I blowup excluded (ESŠ) narrows all blowup to Type II, but the gap at exactly rate 1/2 is delicate
+- Energy cascade is LOCAL (Kraichnan exponent 4/3 > 1), justifying the self-similar inertial range
+- Thin domain global regularity (Raugel-Sell) is the only known interpolation between solved-2D and open-3D
+
+### Status
+0 sorries, 0 axioms, Docker build verified (only pre-existing errors).

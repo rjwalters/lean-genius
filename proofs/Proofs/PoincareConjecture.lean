@@ -5045,6 +5045,7 @@ theorem circleDouble_south :
     rw [circleSquareE_coord1]
     simp [s1_south, s1_north, EuclideanSpace.single_apply]
 
+
 /-- The circle doubling map is NOT injective: (1,0) ≠ (-1,0) but both map to (1,0). -/
 theorem circleDouble_not_injective : ¬ Function.Injective circleDouble := by
   intro hinj
@@ -6029,6 +6030,7 @@ instance S1S2_pathConnected : @PathConnectedSpace S1_cross_S2 instS1S2Top where
     obtain ⟨p1⟩ := sphere1_pathConnected.joined x.1 y.1
     obtain ⟨p2⟩ := sphere2_pathConnected.joined x.2 y.2
     exact ⟨p1.prod p2⟩
+
 
 /-- The swap homeomorphism: S¹ × S² ≃ₜ S² × S¹.
     This bridges between our S1_cross_S2 definition and the product
