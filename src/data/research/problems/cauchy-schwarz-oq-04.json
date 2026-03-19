@@ -1,8 +1,8 @@
 {
   "slug": "cauchy-schwarz-oq-04",
   "title": "Cauchy-Schwarz Equality Condition Strengthening",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
@@ -16,16 +16,16 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-03-14T19:18:15-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "phase": "COMPLETED",
+    "since": "2026-03-19T19:00:00.000Z",
+    "iteration": 2,
+    "focus": "Gallery entry created, proof complete",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "None - problem is complete",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
@@ -33,7 +33,8 @@
     "builtItems": [
       "projCoeff and proj definitions for orthogonal projection",
       "cs_equality_exact_constant and cs_equality_iff_exact_constant (biconditional)",
-      "finite_sum_exact_constant via Lagrange identity"
+      "finite_sum_exact_constant via Lagrange identity",
+      "src/data/proofs/cauchy-schwarz-oq-04/ - Gallery entry with meta.json, annotations.json, index.ts"
     ],
     "insights": [
       "CS equality holds iff u = (⟨u,v⟩/‖v‖²)·v, proved via residual norm decomposition",
@@ -45,12 +46,20 @@
     "nextSteps": [],
     "markdown": "# Knowledge Base: cauchy-schwarz-oq-04\n\nCauchy-Schwarz Equality: Exact Proportionality Constant.\n\n---\n\n## Session 2026-03-17 (Session 1) - Survey\n\n**Mode**: FRESH\n**Outcome**: completed (already fully proved)\n\n### Finding\nFile `CauchySchwarzOQ04.lean` already exists with 288 lines, 0 axioms, 0 sorries.\nProves the exact proportionality constant: when |inner u v| = norm u * norm v,\nu = (inner u v / norm v^2) * v (orthogonal projection coefficient).\nNo additional work needed.\n"
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Residual norm decomposition",
+      "status": "successful",
+      "description": "Define projCoeff, prove residual orthogonality, use Pythagorean decomposition to show CS equality forces zero residual",
+      "outcome": "Complete proof with 0 sorries, 0 axioms, 288 lines"
+    }
+  ],
   "tags": [
     "analysis",
     "inner-product-spaces",
     "cauchy-schwarz",
-    "extension"
+    "extension",
+    "completed"
   ],
   "relatedProofs": [],
   "references": {
@@ -59,7 +68,7 @@
     "mathlib": []
   },
   "started": "2026-03-14T19:01:45.297Z",
-  "lastUpdate": "2026-03-14T19:01:45.329Z",
+  "lastUpdate": "2026-03-19T19:00:00.000Z",
   "significance": 5,
   "tractability": 7
 }
