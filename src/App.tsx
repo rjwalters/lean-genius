@@ -1,16 +1,17 @@
-import { lazy, Suspense } from 'react'
+import { Suspense } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from '@/contexts/AuthContext'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
+import { lazyWithRetry } from '@/utils/lazyWithRetry'
 
-// Lazy load pages for code splitting
-const HomePage = lazy(() => import('@/pages/HomePage').then(m => ({ default: m.HomePage })))
-const ProofPage = lazy(() => import('@/pages/ProofPage').then(m => ({ default: m.ProofPage })))
-const ResearchPage = lazy(() => import('@/pages/ResearchPage').then(m => ({ default: m.ResearchPage })))
-const ResearchProblemPage = lazy(() => import('@/pages/ResearchProblemPage').then(m => ({ default: m.ResearchProblemPage })))
-const SubmitPage = lazy(() => import('@/pages/SubmitPage').then(m => ({ default: m.SubmitPage })))
-const AboutPage = lazy(() => import('@/pages/AboutPage').then(m => ({ default: m.AboutPage })))
-const ErdosPage = lazy(() => import('@/pages/ErdosPage').then(m => ({ default: m.ErdosPage })))
+// Lazy load pages with auto-reload on stale chunk errors
+const HomePage = lazyWithRetry(() => import('@/pages/HomePage').then(m => ({ default: m.HomePage })))
+const ProofPage = lazyWithRetry(() => import('@/pages/ProofPage').then(m => ({ default: m.ProofPage })))
+const ResearchPage = lazyWithRetry(() => import('@/pages/ResearchPage').then(m => ({ default: m.ResearchPage })))
+const ResearchProblemPage = lazyWithRetry(() => import('@/pages/ResearchProblemPage').then(m => ({ default: m.ResearchProblemPage })))
+const SubmitPage = lazyWithRetry(() => import('@/pages/SubmitPage').then(m => ({ default: m.SubmitPage })))
+const AboutPage = lazyWithRetry(() => import('@/pages/AboutPage').then(m => ({ default: m.AboutPage })))
+const ErdosPage = lazyWithRetry(() => import('@/pages/ErdosPage').then(m => ({ default: m.ErdosPage })))
 
 function LoadingSpinner() {
   return (
