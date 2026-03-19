@@ -77,14 +77,43 @@ Windmill W₂: center deg=4, petals deg=2. Both adjacent.
 
 ---
 
-## Remaining Work
+## Remaining Work: Detailed Spectral Axiom Elimination Plan
 
-Eliminate the spectral axiom via:
-1. Adjacency matrix for SimpleGraph (in Mathlib)
-2. A² = (k-1)I + J as matrix equation
-3. Eigenvalue decomposition (in Mathlib for real symmetric)
-4. Trace = sum of eigenvalues → integrality constraint
-5. Application of dvd_sq_add_one_imp_one (proved)
+### Step 1: Matrix Identity A² = (k-1)I + J (~100 lines)
+**Mathlib import**: `Mathlib.Combinatorics.SimpleGraph.AdjMatrix`
+- Define A = G.adjMatrix ℝ
+- Show (A²)ᵢᵢ = deg(i) = k (diagonal = degree)
+- Show (A²)ᵢⱼ = |N(i)∩N(j)| = 1 for i≠j (uses `common_neighbor_finset_card`)
+- Conclude A² = (k-1)·I + J
+
+### Step 2: Eigenvalue Analysis (~200-300 lines)
+**Mathlib imports**: `Mathlib.Analysis.InnerProductSpace.Spectrum`
+- Show A = G.adjMatrix ℝ is symmetric (Matrix.IsHermitian)
+- By spectral theorem: A has real eigenvalues with integer multiplicities
+- A𝟙 = k𝟙 (k-regular), so k is an eigenvalue
+- For v ⊥ 𝟙: A²v = (k-1)v (since Jv = 0), so eigenvalues are ±√(k-1)
+
+### Step 3: Trace Constraint (~50 lines)
+- trace(A) = ∑ᵢ Aᵢᵢ = 0 (no self-loops)
+- trace(A) = sum of eigenvalues = k + m₊·√(k-1) - m₋·√(k-1) = 0
+- So k + (m₊ - m₋)·√(k-1) = 0
+
+### Step 4: Integrality → k = 2 (~50 lines)
+- If √(k-1) irrational: m₊ = m₋ and k = 0, contradiction
+- So k-1 = s² for integer s ≥ 1
+- m₊ - m₋ = -(s²+1)/s must be integer → s | (s²+1)
+- By `dvd_sq_add_one_imp_one`: s = 1, so k = 2
+
+### Mathlib Dependencies (v4.26.0)
+| API | Module | Available? |
+|-----|--------|-----------|
+| `SimpleGraph.adjMatrix` | `Mathlib.Combinatorics.SimpleGraph.AdjMatrix` | Yes |
+| `Matrix.trace` | `Mathlib.LinearAlgebra.Trace` | Yes |
+| `Matrix.IsHermitian` | `Mathlib.Analysis.InnerProductSpace.Spectrum` | Yes |
+| `Matrix.IsHermitian.eigenvalues` | same | Yes |
+| eigenvalue multiplicity → trace | gap? | Needs verification |
+
+### Estimated Effort: 350-450 lines, 2-3 sessions
 
 ## Approaches Explored
 
@@ -92,3 +121,13 @@ Eliminate the spectral axiom via:
 **Status**: succeeded
 Prove A²=(k-1)I+J for regular friendship graph, derive eigenvalue constraints
 **Outcome**: Full proof architecture with 0 sorries and 1 axiom (spectral eigenvalue step)
+
+## Session History
+
+### Session 2026-03-19 (researcher-4) - Survey/Assessment
+- Assessed spectral axiom elimination feasibility
+- Documented 4-step proof strategy with Mathlib API dependencies
+- Key finding: the spectral theorem for real symmetric matrices IS in Mathlib
+- Key gap: connecting eigenvalue multiplicities to trace constraint
+- Decision: SURVEY — multi-session task, needs eigenvalue theory formalization
+- Status: knowledge documented, ready for DEEP DIVE in next session
