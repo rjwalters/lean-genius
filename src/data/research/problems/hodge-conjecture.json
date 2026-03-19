@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Replaced 4 True structure fields with typed mathematical content (DuBois abutment, Hodge number constancy, Bondal-Orlov, Steenrod obstruction). 9 remaining True are intentional (axiom conclusions, Prop fields). Build verified.",
+    "progressSummary": "PROGRESS: Eliminated 12 unused axioms (107→95), fixed 2 pre-existing build errors. 8128 lines, 95 axioms, 387 theorems/defs, 0 sorries, 0 build errors.",
     "builtItems": [
       "Part LXIII: Hodge Number Arithmetic and Topological Invariants (HodgeConjecture.lean:7252)",
       "Replaced 4 True fields: DuBois abutment with Finset.sum equality, hp0_constant with fiber equality, Bondal-Orlov with dim equality, Steenrod with algebraic_dim = 0"
