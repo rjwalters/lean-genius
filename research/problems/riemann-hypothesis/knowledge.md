@@ -3,7 +3,7 @@
 ## Session 2026-03-19 (researcher-7) - Soundness Fixes + GRH Comprehensive Consequences
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 16)
-**Outcome**: progress — 2 soundness fixes, 10 new proved theorems, 0 new axioms
+**Outcome**: progress — 2 soundness fixes, 15 new proved theorems, 0 new axioms
 
 ### Soundness Fixes
 
@@ -31,14 +31,23 @@
 11. **`RH_intermediate_position`**: GRH → RH and RH → Lindelöf
 12. **`complete_rh_landscape`**: Full forward+backward picture in one theorem
 
+### PNT-Strength Non-Vanishing (Consequences file)
+
+13. **`zeta_nonzero_for_re_ge_one`**: ζ(s) ≠ 0 for Re(s) ≥ 1 (PNT-strength, from Mathlib)
+14. **`zeta_nonzero_on_one_line`**: ζ(1 + it) ≠ 0 for all real t (PNT in disguise)
+15. **`zeta_zero_re_lt_one`**: ζ(s) = 0 → Re(s) < 1 (right half-plane eliminated)
+16. **`nontrivial_zero_re_lt_one`**: same, specialized
+17. **`rh_restated_with_zero_bound`**: RH → zeros have Re = 1/2 ∧ Re < 1
+
 ### Stats After Changes
 - Main: 5099 lines, 47 axioms, 330 theorems/defs, 0 sorries
-- Consequences: 1606 lines, 12 axioms, 126 theorems/defs, 0 sorries
-- Combined: 6705 lines, 59 axioms, 456 theorems/defs, 0 sorries
+- Consequences: 1655 lines, 12 axioms, 131 theorems/defs, 0 sorries
+- Combined: 6754 lines, 59 axioms, 461 theorems/defs, 0 sorries
 - Docker build passes for both files
 
 ### Files Modified
 - `proofs/Proofs/RiemannHypothesis.lean` — GrandRH fix, placeholder fix, Part XLVI
+- `proofs/Proofs/RiemannHypothesisConsequences.lean` — PNT-strength non-vanishing
 
 ---
 
