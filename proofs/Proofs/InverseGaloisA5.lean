@@ -285,55 +285,54 @@ private theorem max_orderOf_perm5 :
 
 -- === Subgroup elimination ===
 
+/-- In Perm(Fin 5), no element of order 5 commutes with any element of order 3.
+    The centralizer of a 5-cycle in S₅ is ⟨σ⟩ itself (order 5, no element of
+    order 3). Verified computationally over all 24 × 20 = 480 pairs. -/
+private theorem five_cycle_three_cycle_not_commute :
+    ∀ σ τ : Equiv.Perm (Fin 5), orderOf σ = 5 → orderOf τ = 3 →
+      σ * τ ≠ τ * σ := by native_decide
+
 /-- No subgroup of Perm(Fin 5) has exactly 15 elements.
 
-    Proof: Any group H of order 15 = 3·5 is cyclic:
-    - Sylow: n₅ | 3, n₅ ≡ 1 mod 5 → n₅ = 1 (unique normal Sylow 5-subgroup)
-    - Sylow: n₃ | 5, n₃ ≡ 1 mod 3 → n₃ = 1 (unique normal Sylow 3-subgroup)
-    - H ≅ C₅ × C₃ ≅ C₁₅ (direct product, coprime orders)
-    So H has an element of order 15. But max order in S₅ is 6.
+    Proof sketch using five_cycle_three_cycle_not_commute:
+    1. By Cauchy: H has elements σ of order 5, τ of order 3
+    2. Sylow: n₅ | 3, n₅ ≡ 1 mod 5 → n₅ = 1; n₃ | 5, n₃ ≡ 1 mod 3 → n₃ = 1
+    3. Both Sylow subgroups normal → H ≅ C₅ × C₃ → H abelian
+    4. So σ and τ commute in S₅
+    5. But five_cycle_three_cycle_not_commute says they can't. Contradiction.
 
-    Also: |H| = 15 is odd → H ≤ A₅ (sign map kernel has odd index in H, must be 1).
-    A₅ index [A₅:H] = 4 → coset action A₅ → S₄ injective (A₅ simple, ker = 1),
-    but |A₅| = 60 > |S₄| = 24. Contradiction either way. -/
+    The sorry is for step 3: the pq group theorem (|G| = pq, p < q,
+    p ∤ q-1 → G cyclic). For 15 = 3·5 with 3 ∤ 4, this gives H ≅ C₁₅. -/
 private theorem no_subgroup_perm5_order_15
     (H : Subgroup (Equiv.Perm (Fin 5))) :
     Fintype.card H ≠ 15 := by
   intro hH
-  -- The image of the sign homomorphism restricted to H is a subgroup of {±1}
-  -- Since |H| = 15 is odd, every element has odd order, hence even sign.
-  -- So H ≤ alternatingGroup (Fin 5) = A₅.
-  -- A₅ is simple of order 60. If H ≤ A₅ with |H| = 15:
-  -- The coset action A₅ on A₅/H (4 cosets) gives φ: A₅ → Perm(Fin 4).
-  -- ker(φ) ◁ A₅, ker(φ) ≤ H. By simplicity:
-  --   ker = A₅: impossible since A₅ ⊄ H (|A₅| = 60 > 15 = |H|)
-  --   ker = {1}: then A₅ ↪ S₄, but |A₅| = 60 > 24 = |S₄|. Contradiction.
-  --
-  -- Alternatively: groups of order 15 are cyclic, hence have element of order 15,
-  -- but max_orderOf_perm5 gives max order 6.
-  --
-  -- Full Lean proof requires either coset action infrastructure or
-  -- Sylow uniqueness + direct product decomposition.
+  -- The key computational fact (five_cycle_three_cycle_not_commute) is proved.
+  -- What remains is showing H is abelian, via:
+  --   Sylow uniqueness (n₅ = 1, n₃ = 1) → normal Sylow subgroups
+  --   → direct product C₅ × C₃ → abelian
+  -- This is the pq group theorem, standard but not yet formalized here.
   sorry
 
 /-- No subgroup of Perm(Fin 5) has exactly 30 elements.
 
-    Proof: If H ≤ S₅ with |H| = 30, then [S₅:H] = 120/30 = 4.
-    The coset action gives φ: S₅ → Perm(S₅/H) with |Perm(S₅/H)| = 24.
-    ker(φ) is the normal core of H: the largest normal subgroup of S₅ in H.
-    Normal subgroups of S₅: {1} (order 1), A₅ (order 60), S₅ (order 120).
-    Since ker(φ) ≤ H and |H| = 30:
-      - ker ≠ A₅ (60 > 30)
-      - ker ≠ S₅ (120 > 30)
-      - ker = {1}: then φ injective, |S₅| ≤ |S₄|, 120 ≤ 24. Contradiction. -/
+    Proof: reduces to the order-15 case via the sign homomorphism.
+    If H ≤ S₅ with |H| = 30, consider H ∩ ker(sign) = H ∩ A₅.
+    Since [H : H∩A₅] | [S₅ : A₅] = 2, we get |H∩A₅| ∈ {15, 30}.
+    - |H∩A₅| = 30: H ≤ A₅, [A₅:H] = 2, H ◁ A₅ (index 2 → normal),
+      but A₅ is simple. Contradiction.
+    - |H∩A₅| = 15: contradicts no_subgroup_perm5_order_15.
+
+    Alternative proof: [S₅:H] = 4, coset action gives S₅ → S₄.
+    Kernel ≤ H is normal in S₅. Normal subgroups of S₅: {1}(1), A₅(60), S₅(120).
+    All have |N| > 30 or |N| = 1. If kernel = {1}: S₅ ↪ S₄, 120 ≤ 24. ⊥ -/
 private theorem no_subgroup_perm5_order_30
     (H : Subgroup (Equiv.Perm (Fin 5))) :
     Fintype.card H ≠ 30 := by
   intro hH
-  -- The argument uses that the normal subgroups of S₅ are exactly {1}, A₅, S₅.
-  -- For an index-4 subgroup, the normal core has [S₅:core] | 4! = 24.
-  -- So |core| ≥ 120/24 = 5. Normal subgroups of S₅ with |N| ∈ [5, 30]:
-  -- none exist ({1}→1, A₅→60, S₅→120). Contradiction.
+  -- Both proof strategies require infrastructure not yet built:
+  -- Strategy 1: Sign map → A₅ simplicity + no_subgroup_perm5_order_15
+  -- Strategy 2: Coset action → normal core → classification of normal subgroups
   sorry
 
 -- === Main theorem ===
