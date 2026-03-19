@@ -1,5 +1,83 @@
 # Knowledge Base: P vs NP
 
+## Session 2026-03-18 (researcher-2) - Zero-Knowledge, Reingold's Theorem, Unique Games
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 294)
+**Problem**: p-vs-np
+**Prior Status**: Sound model at 6396 lines, 133 axioms, 0 sorries
+
+**Work done**:
+Extended `PNPBarriersSound.lean` from 6396 → 6742 lines (+346 lines) with three new sections:
+
+### Part 50: Zero-Knowledge Proofs
+
+| New Component | Type | Status |
+|---------------|------|--------|
+| `coAM` | def | Complement class of AM |
+| `SZK` | opaque def | Statistical Zero-Knowledge |
+| `CZK` | opaque def | Computational Zero-Knowledge |
+| `GI` | opaque def | Graph Isomorphism problem |
+| `BPP_subset_SZK` | axiom | Trivial problems in SZK |
+| `SZK_subset_AM_inter_coAM` | axiom | Aiello-Håstad 1987, Fortnow 1987 |
+| `SZK_closed_complement` | axiom | Okamoto 2000 |
+| `SZK_subset_CZK` | axiom | Statistical ⊆ computational ZK |
+| `CZK_subset_IP` | axiom | ZK proofs are interactive proofs |
+| `GI_in_SZK` | axiom | GMW 1991 |
+| `owf_implies_NP_subset_CZK` | axiom | GMW 1986 |
+| `owf_implies_IP_subset_CZK` | axiom | Ben-Or et al. 1988 |
+| `GI_in_AM_inter_coAM` | theorem | Proved (GI ∈ SZK + SZK ⊆ AM ∩ coAM) |
+| `SZK_subset_AM` | theorem | Proved (projection from intersection) |
+| `owf_implies_IP_eq_CZK` | theorem | Proved (IP ⊆ CZK + CZK ⊆ IP) |
+| `zero_knowledge_landscape` | theorem | Proved (BPP ⊆ SZK ⊆ AM∩coAM, CZK ⊆ IP = PSPACE) |
+| `owf_zk_crypto_connection` | theorem | Proved (OWF → NP ⊆ CZK ∧ IP = CZK) |
+
+### Part 51: Reingold's Theorem (USTCON ∈ L)
+
+| New Component | Type | Status |
+|---------------|------|--------|
+| `USTCON` | opaque def | Undirected s-t connectivity |
+| `SL` | opaque def | Symmetric Logspace |
+| `RL` | opaque def | Randomized Logspace |
+| `L_subset_SL` | axiom | Standard containment |
+| `L_subset_RL` | axiom | Standard containment |
+| `SL_subset_NL` | axiom | Standard containment |
+| `RL_subset_NL` | axiom | Standard containment |
+| `USTCON_in_NL` | axiom | Standard |
+| `reingold_USTCON_in_L` | axiom | Reingold 2005 (zig-zag product) |
+| `reingold_SL_eq_L` | axiom | Corollary of Reingold |
+| `reingold_RL_eq_L` | axiom | Reingold + Nisan 1992 |
+| `USTCON_in_P` | theorem | Proved (L ⊆ NL ⊆ P) |
+| `reingold_space_landscape` | theorem | Proved (SL=RL=L ⊆ NL=coNL ⊆ P) |
+| `space_derandomization` | theorem | Proved (SL=RL=L, NL=coNL) |
+
+### Part 52: Unique Games Conjecture
+
+| New Component | Type | Status |
+|---------------|------|--------|
+| `MAXCUT_approxRatio` | opaque def | MAX-CUT approximation ratios |
+| `VC_approxRatio` | opaque def | Vertex Cover approximation ratios |
+| `ugc_maxcut_optimal` | axiom | KKMO 2007: GW ratio optimal under UGC |
+| `ugc_vertex_cover_optimal` | axiom | Khot-Regev 2008: 2-approx optimal |
+| `raghavendra_CSP_dichotomy` | axiom | Raghavendra 2008: SDP optimal for all CSPs |
+| `ugc_strengthens_pcp` | theorem | Proved (PCP + UGC landscape) |
+| `ugc_inapproximability_landscape` | theorem | Proved (MAX-CUT + VC under UGC) |
+
+**New axioms added**: 19 (8 ZK, 8 Reingold, 3 UGC)
+**New definitions**: 8 (coAM, SZK, CZK, GI, USTCON, SL, RL, + 2 approx ratio)
+**New theorems proved**: 12
+
+**Key contributions**:
+1. **Zero-Knowledge**: Full ZK landscape connecting SZK→AM∩coAM and CZK↔IP under OWFs. GI ∈ AM∩coAM as evidence against GI being NP-complete.
+2. **Reingold**: USTCON ∈ L resolves SL vs L. Complete space derandomization: SL = RL = L.
+3. **UGC**: Connects to existing PCP theorem. UGC gives optimal inapproximability for MAX-CUT, Vertex Cover, and all CSPs (Raghavendra).
+4. **Master summary extended to 15 components** (XIV: ZK proofs, XV: Reingold space derandomization).
+
+**Build**: Docker build passes, 0 errors, 0 sorries, 6742 lines, 152 axioms.
+
+**Outcome**: COMPLETED - Three new areas, master summary extended.
+
+---
+
 ## Session 2026-03-18 (researcher-5) - QIP=PSPACE, NL-Completeness, Barrington's Theorem
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 266)

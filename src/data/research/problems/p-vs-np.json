@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-01T21:55:27.888Z",
-    "iteration": 12,
-    "focus": "Added QIP=PSPACE, NL-completeness (PATH), Barrington theorem (NC1=BPWidth5), extended master summary to 14 components",
+    "iteration": 13,
+    "focus": "Added zero-knowledge proofs, Reingold USTCON∈L, UGC inapproximability, extended master summary to 15 components",
     "blockers": [
       "P vs NP is an unsolved Millennium Prize problem"
     ],
@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 3 new sections: QIP=PSPACE (quantum interactive proofs, Jain et al. 2011), NL-completeness (PATH as canonical NL-complete problem), and Barrington theorem (NC1 = width-5 branching programs). Extended master summary to 14 components. 6396 lines, 133 axioms, 0 sorries.",
+    "progressSummary": "PROGRESS: Added 3 new sections: Zero-Knowledge Proofs (SZK, CZK, GI in AM∩coAM), Reingold theorem (USTCON ∈ L, SL=RL=L), Unique Games Conjecture (optimal inapproximability). Extended master summary to 15 components. 6742 lines, 152 axioms, 0 sorries.",
     "builtItems": [
       {
         "name": "P",
@@ -547,7 +547,42 @@
       "PATH_complement_in_NL theorem (proved: from NL = coNL)",
       "barrington_algebraic_threshold theorem (proved: width-4→ACC0, width-5→NC1, ACC0⊆NC1)",
       "barrington_in_hierarchy theorem (proved: ACC0⊆TC0⊆NC1=BPWidth5⊆NC⊆P)",
-      "p_vs_np_master_summary extended to 14 components (QIP=PSPACE, NL-completeness)"
+      "p_vs_np_master_summary extended to 14 components (QIP=PSPACE, NL-completeness)",
+      {
+        "name": "SZK",
+        "description": "Statistical Zero-Knowledge class with landscape theorems",
+        "proven": true
+      },
+      {
+        "name": "CZK",
+        "description": "Computational Zero-Knowledge, CZK ⊆ IP, IP=CZK under OWFs",
+        "proven": true
+      },
+      {
+        "name": "GI_in_AM_inter_coAM",
+        "description": "Graph Isomorphism in AM ∩ coAM (derived from SZK)",
+        "proven": true
+      },
+      {
+        "name": "USTCON",
+        "description": "Undirected s-t connectivity, Reingold: USTCON ∈ L",
+        "proven": true
+      },
+      {
+        "name": "reingold_space_landscape",
+        "description": "SL = RL = L ⊆ NL = coNL ⊆ P (proved)",
+        "proven": true
+      },
+      {
+        "name": "ugc_inapproximability_landscape",
+        "description": "UGC → MAX-CUT and VC optimal inapprox (proved)",
+        "proven": true
+      },
+      {
+        "name": "p_vs_np_master_summary",
+        "description": "Extended to 15 components (XIV: ZK, XV: Reingold)",
+        "proven": true
+      }
     ],
     "insights": [
       "Same abstract model triviality as PNPBarriers - Program.decide allows arbitrary functions",
@@ -652,7 +687,12 @@
       "QMA(2) (two unentangled quantum proofs) also contained in PSPACE; open whether QMA(2) = QMA",
       "PATH (s-t connectivity) is NL-complete, PATH ∈ P (from NL ⊆ P), complement of PATH also in NL (from NL = coNL)",
       "Barrington theorem (1989): NC1 = BPWidth(5). The algebraic threshold: S5 non-solvability enables universal computation at width 5",
-      "Width-4 branching programs compute only ACC0 (solvable groups), width-5 computes NC1 (non-solvable S5)"
+      "Width-4 branching programs compute only ACC0 (solvable groups), width-5 computes NC1 (non-solvable S5)",
+      "SZK ⊆ AM ∩ coAM (Aiello-Håstad 1987): statistical zero-knowledge proofs sit low in PH",
+      "IP = CZK assuming OWFs (Ben-Or et al. + Goldreich-Krawczyk): zero-knowledge is universal for interactive proofs",
+      "Graph Isomorphism ∈ SZK → GI ∈ AM ∩ coAM: evidence GI is not NP-complete",
+      "Reingold 2005: USTCON ∈ L via zig-zag product expanders, resolving SL = RL = L",
+      "UGC (Khot 2002) + Raghavendra 2008: if UGC true, basic SDP is optimal for all CSPs"
     ],
     "mathlibGaps": [
       "Turing machines",

@@ -1,27 +1,57 @@
 {
   "slug": "fermat-two-squares-oq-01",
-  "title": "Lagrange's Four Squares",
-  "phase": "COMPLETED",
-  "status": "completed",
-  "tier": "C",
+  "title": "Lagrange's Four Squares Theorem",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
   "path": "full",
+  "problemStatement": {
+    "formal": "\\forall n \\in \\mathbb{N},\\; \\exists\\, a, b, c, d \\in \\mathbb{Z} \\text{ such that } n = a^2 + b^2 + c^2 + d^2",
+    "plain": "Every non-negative integer can be written as the sum of four integer squares. This is Lagrange's theorem (1770), extending Fermat's two-squares theorem to all integers (which only characterizes primes of the form $4k+1$ as sums of two squares).",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-03-17T23:20:00Z",
+    "phase": "OBSERVE",
+    "since": "2026-03-14T19:20:27-07:00",
     "iteration": 1,
-    "focus": "Already formalized in gallery",
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
-    "nextAction": "No further work needed"
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Already formalized in LagrangeFourSquares.lean using Mathlib Nat.sum_four_squares.",
+    "progressSummary": "",
     "builtItems": [],
-    "insights": ["OQ already answered by existing gallery proofs"],
-    "nextSteps": []
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: fermat-two-squares-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
-  "tags": ["number-theory", "sum-of-squares"],
-  "started": "2026-03-17T23:18:00Z",
-  "lastUpdate": "2026-03-17T23:20:00Z",
-  "significance": 5,
-  "tractability": 10
+  "approaches": [],
+  "tags": [
+    "number-theory",
+    "sum-of-squares",
+    "additive-number-theory",
+    "classic",
+    "extension"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-15T02:30:10.387Z",
+  "lastUpdate": "2026-03-15T02:30:10.402Z",
+  "significance": 7,
+  "tractability": 6
 }

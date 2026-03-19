@@ -1,92 +1,55 @@
 {
   "slug": "dissection-of-cubes-oq-03",
-  "title": "Connections between cube dissection impossibility and packing problems",
-  "phase": "COMPLETED",
-  "status": "completed",
+  "title": "Formalize geometric covering axiom without external axioms",
+  "phase": "OBSERVE",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "∀ p : CubePacking, p.allDifferentSizes → p.cubes.Nonempty → p.totalVolume < 1 ∨ ¬(∃ d : CubeDissection, d.toPacking = p)",
-    "plain": "What are the connections between the impossibility of dissecting a cube into cubes of all different sizes and packing problems?",
-    "whyMatters": [
-      "Bridges impossibility theorem with quantitative packing bounds",
-      "Shows dimension contrast: 2D allows squared squares, 3D does not",
-      "Connects to de Bruijn's classical brick tiling theorem"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Every dissection is a packing (CubeDissection.toPacking)",
-      "Size properties transfer between dissection and packing",
-      "No distinct-size packing achieves volume fraction 1 (dissection-packing bridge)",
-      "Reciprocal packings (side lengths 1/n) have distinct sizes",
-      "3D distinct-size packings must leave gaps",
-      "Higher-dimensional impossibility (n≥3)"
-    ],
-    "open": [
-      "Supremum of achievable volume fractions for distinct-size cube packings",
-      "Optimal packing of cubes of sizes 1,2,...,n into smallest container"
-    ],
-    "goal": "Formalize structural connections between dissection and packing"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-03-17T21:00:00.000Z",
+    "phase": "NEW",
+    "since": "2026-03-15T12:10:20.231Z",
     "iteration": 1,
-    "focus": "Packing-dissection bridge theorem and connections",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "None - problem complete",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Formalized connections between cube dissection impossibility and packing problems. Key theorem: no packing of distinct-size cubes achieves volume 1.",
-    "builtItems": [
-      "CubePacking structure (relaxation of CubeDissection)",
-      "CubeDissection.toPacking conversion",
-      "distinct_packing_volume_lt_one theorem",
-      "reciprocal_sizes_distinct theorem",
-      "Box3D and deBruijnCondition definitions",
-      "cube_packing_imperfect theorem",
-      "higher_dim_impossibility theorem"
-    ],
-    "insights": [
-      "The dissection impossibility directly constrains packing: distinct-size packings cannot achieve volume fraction 1",
-      "2D is special: squared squares exist, so the 2D dissection-packing connection is fundamentally different",
-      "The infinite descent argument generalizes to all dimensions n≥3",
-      "de Bruijn's theorem provides an algebraic criterion for brick tilings that contrasts with the distinct-size problem",
-      "Volume bounds alone don't explain the impossibility — the topological structure of the floor covering is key"
-    ],
-    "mathlibGaps": [
-      "Measure theory needed for rigorous volume bound proof (Lebesgue measure on packing)"
-    ],
-    "nextSteps": []
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Dissection of Cubes OQ-03: Connections to Packing Problems\n\n## Problem\nWhat are the connections between the impossibility of dissecting a cube\ninto cubes of all different sizes (Wiedijk #82) and packing problems?\n\n## Status: COMPLETED (0 sorries, 3 axioms)\n\n## Key Results\n\n### The Dissection-Packing Bridge\n- Every dissection is a packing (CubeDissection.toPacking)\n- A packing relaxes the coverage requirement (no gaps allowed in dissection)\n- **Main theorem**: No packing of cubes of all distinct sizes can achieve\n  volume fraction 1 — the dissection impossibility forces gaps\n\n### Volume Bounds\n- Packing: total volume ≤ 1 (axiom, needs measure theory)\n- Dissection: total volume = 1 (axiom, no gaps)\n- Distinct-size packing: total volume < 1 (proved from bridge)\n\n### de Bruijn's Theorem (1969)\n- A box can be tiled by copies of a brick iff divisibility condition holds\n- Provides algebraic criterion for brick tilings (contrasts with distinct-size case)\n- Axiomatized (proof needs harmonic analysis)\n\n### Dimension Contrast\n| Dim | Perfect distinct-size dissection? | Packing density |\n|-----|----------------------------------|-----------------|\n| 1D  | NO                               | < 1             |\n| 2D  | YES (squared squares)            | = 1 possible    |\n| 3D  | NO (Wiedijk #82)                 | < 1             |\n| n≥3 | NO (same argument)               | < 1             |\n\n## Proof File\n`proofs/Proofs/DissectionOfCubesOQ03.lean`\n\n## Axioms Used\n1. `packing_volume_bound` — total packing volume ≤ 1 (needs measure theory)\n2. `dissection_volume_exact` — dissection volume = 1 (needs measure theory)\n3. `debruijn_brick_tiling` — de Bruijn's algebraic tiling criterion\n"
   },
+  "approaches": [],
   "tags": [
+    "seeker-selected",
     "geometry",
-    "impossibility",
-    "combinatorics",
-    "packing",
-    "wiedijk-100"
+    "formalization"
   ],
-  "relatedProofs": [
-    "dissection-of-cubes"
-  ],
+  "relatedProofs": [],
   "references": {
-    "papers": [
-      "de Bruijn (1969) - Filling boxes with bricks",
-      "Duijvestijn (1978) - Simple perfect squared square of lowest order",
-      "Littlewood - A Mathematician's Miscellany"
-    ],
+    "papers": [],
     "urls": [],
     "mathlib": []
   },
-  "started": "2026-03-17T21:00:00.000Z",
-  "lastUpdate": "2026-03-17T21:00:00.000Z",
-  "completed": "2026-03-17T21:00:00.000Z",
+  "started": "2026-03-15T12:11:41.205Z",
+  "lastUpdate": "2026-03-18T00:40:48.128Z",
   "significance": 7,
-  "tractability": 7
+  "tractability": 6
 }
