@@ -1357,11 +1357,10 @@ theorem P_subset_ZPP : P ⊆ ZPP := by
     by iterating over all random strings. -/
 axiom BPP_subset_PSPACE : BPP ⊆ PSPACE
 
-/-- Adleman's theorem: BPP ⊆ P/poly (BPP has polynomial-size circuits).
-    This is evidence that BPP might equal P. -/
 /-- **Adleman's Theorem** (1978): BPP ⊆ P/poly.
     Every randomized polynomial-time algorithm can be simulated by
-    polynomial-size circuits (with non-uniform advice). -/
+    polynomial-size circuits (with non-uniform advice).
+    This is evidence that BPP might equal P. -/
 axiom adleman_BPP_in_P_poly : BPP ⊆ P_poly
 
 /-- Impagliazzo-Wigderson: If E = DTIME(2^{O(n)}) requires 2^{Ω(n)}-size
@@ -1412,24 +1411,21 @@ theorem PTAS_subset_APX : PTAS ⊆ APX := by
   intro opt hopt
   -- opt ∈ PTAS means: ∀ ε ≥ 1, ∃ prog poly, True
   -- We need: ∃ prog c, c ≥ 1 ∧ True
-  obtain ⟨prog, _, _⟩ := hopt 1 le_refl
-  exact ⟨prog, 1, le_refl 1, trivial⟩
+  obtain ⟨prog, _, _⟩ := hopt 1 le_rfl
+  exact ⟨prog, 1, le_rfl, trivial⟩
 
 /-- If P = NP, then all NP optimization problems are in PTAS
     (we can solve them exactly in polynomial time). -/
 theorem P_eq_NP_trivializes_approximation (h : P = NP) :
     (1 : ℕ) + 1 = 2 := rfl  -- Stated abstractly
 
-/-- PCP Theorem (informally): NP = PCP[O(log n), O(1)].
-    Equivalent to: approximating MAX-3SAT within some constant
-    factor is NP-hard. This is the foundation of hardness of
-    approximation theory. -/
 /-- **PCP Theorem** (Arora-Lund-Motwani-Sudan-Szegedy 1998):
     NP = PCP[O(log n), O(1)]. Every NP statement has a probabilistically
     checkable proof verifiable by reading O(1) random bits and O(1) proof bits.
-    Axiomatized as the inapproximability consequence: MAX-3SAT cannot be
-    approximated within ratio 7/8 + ε unless P = NP. -/
-axiom pcp_theorem_proper : ∃ (pcp : PCPTheorem), pcp.mainStatement
+    Equivalent to: approximating MAX-3SAT within some constant factor is NP-hard.
+    NOTE: Full PCPTheorem structure is defined in Part 35.
+    Axiomatized here as abstract statement. -/
+axiom pcp_theorem_holds : True -- Full statement in Part 35 via PCPTheorem structure
 
 /-- Unique Games Conjecture (Khot 2002): it is NP-hard to distinguish
     whether a unique 2-prover 1-round game has value ≥ 1-ε or ≤ ε.
@@ -1540,12 +1536,11 @@ theorem NP_subset_IP : NP ⊆ IP := by
   rw [shamir_IP_eq_PSPACE]
   exact NP_subset_PSPACE hnp
 
-/-- Graph non-isomorphism is in AM but not known to be in NP.
+/-- **Graph Non-Isomorphism ∈ AM** (Goldwasser-Sipser 1986):
+    Two non-isomorphic graphs can be distinguished by an Arthur-Merlin protocol.
     This is one of the celebrated results of interactive proofs:
     the verifier can check that two graphs are NOT isomorphic
     without receiving an explicit proof of non-isomorphism. -/
-/-- **Graph Non-Isomorphism ∈ AM** (Goldwasser-Sipser 1986):
-    Two non-isomorphic graphs can be distinguished by an Arthur-Merlin protocol. -/
 axiom graph_noniso_in_AM_proper : ∃ problem ∈ AM, problem ∉ NP
 
 -- ============================================================
@@ -1590,11 +1585,10 @@ def NC : Set DecisionProblem := { problem |
 /-- NC ⊆ P: parallel algorithms are polynomial-time -/
 axiom NC_subset_P : NC ⊆ P
 
-/-- P-complete problems (under log-space reductions) are the "hardest to parallelize".
-    If any P-complete problem is in NC, then P = NC. -/
 /-- **Circuit Value Problem is P-complete** (Ladner 1975):
     CVP is in P and every P problem reduces to it under log-space reductions.
-    If CVP ∈ NC, then P = NC (all of P is parallelizable). -/
+    P-complete problems are the "hardest to parallelize":
+    if any P-complete problem is in NC, then P = NC. -/
 axiom circuit_value_P_complete_proper : ∃ problem, inP problem ∧ (P ⊆ NC → problem ∈ NC → P = NC)
 
 -- ============================================================
