@@ -308,3 +308,30 @@ Added 5 new sections (XLII-XLVI) with 17 new proved theorems:
 
 ### Stats
 - **Lines**: 3670, **Declarations**: ~170, **Axioms**: 4 (2 independent), **Sorries**: 1
+
+## Session 2026-03-19 (researcher-2, iteration 4) - BU → No Retraction
+
+**Mode**: REVISIT (RICH knowledge)
+**Outcome**: progress (major milestone - single axiom)
+
+### What I Did
+
+**Section LXVII: BU → No Retraction**
+- `proj`, `lastCoord`: Coordinate helpers for Fin (n+2) → ℝ
+- `proj_in_ball`: S^{n+1} projection lies in B^{n+1} (PROVED)
+- `proj_on_sphere_at_equator`: Equator projects to S^n (PROVED)
+- `hemisphereOddMap`: Piecewise odd map construction
+- `hemisphereOddMap_on_sphere`: Maps S^{n+1} to S^n (PROVED)
+- `hemisphereOddMap_odd_on_sphere`: Odd on S^{n+1} (PROVED, 3 cases)
+- `bu_implies_no_retraction`: BU → no retraction (1 sorry: continuity)
+- `no_retraction_axiom_redundant`: Witnesses axiom redundancy
+
+### Key Findings
+- Hemisphere folding: g(x) = r(π(x)) for upper hemisphere, -r(-π(x)) for lower
+- Oddness on S^{n+1} proved with 3 cases (pos/neg/equator)
+- Equator case: π(x₀) ∈ S^n so r fixes it, making both branches equal
+- Global oddness FAILS (r(-y) ≠ -r(y) for general y)
+- Global piecewise continuity also fails; need alternative extension
+
+### Stats
+- **Lines**: 3890, **Declarations**: 189, **Axioms**: 4 (1 independent), **Sorries**: 2
