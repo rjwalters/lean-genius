@@ -1217,4 +1217,92 @@ theorem dns_savings' : (9:ℝ)/4 - 3/2 = 3/4 := by norm_num
 theorem dyadic_3d' (j : ℕ) : (2:ℝ)^(3*j) = ((2:ℝ)^j)^3 := by
   rw [← pow_mul, mul_comm]
 
+-- ═══════════════════════════════════════════════════════════════════
+-- Section 62: One-Component Regularity Criteria
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Neustupa-Penel endpoint: 3/(1/2) = 6. -/
+theorem np_endpoint' : (3:ℝ) / (1/2) = 6 := by norm_num
+
+/-- Kukavica-Ziane gradient scaling: 2/p + 3/q = 2 equivalence. -/
+theorem kz_scaling' (p q : ℝ) (_ : p > 0) (_ : q > 0) :
+    2 - 2/p - 3/q = 0 ↔ 2/p + 3/q = 2 := by constructor <;> intro h <;> linarith
+
+/-- One-component criteria RHS hierarchy: 1/2 < 1 < 2. -/
+theorem criteria_hierarchy' : (1:ℝ)/2 < 1 ∧ (1:ℝ) < 2 := by
+  constructor <;> norm_num
+
+/-- Serrin exponent at (4,6): 2/4 + 3/6 = 1. -/
+theorem serrin_4_6' : (2:ℝ)/4 + 3/6 = 1 := by norm_num
+
+-- ═══════════════════════════════════════════════════════════════════
+-- Section 63: d-Dimensional Critical Scaling
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Critical Sobolev: s_c = d/2 - 1 = (d-2)/2. -/
+theorem sc_ring' (d : ℝ) : d/2 - 1 = (d - 2)/2 := by ring
+
+/-- s_c at d=1 through d=5. -/
+theorem sc_1' : (1:ℝ)/2 - 1 = -1/2 := by norm_num
+theorem sc_2' : (2:ℝ)/2 - 1 = 0 := by norm_num
+theorem sc_3' : (3:ℝ)/2 - 1 = 1/2 := by norm_num
+theorem sc_4' : (4:ℝ)/2 - 1 = 1 := by norm_num
+theorem sc_5' : (5:ℝ)/2 - 1 = 3/2 := by norm_num
+
+/-- Lions threshold: α_c(d) = (d+2)/4 = 1/2 + d/4. -/
+theorem lions_ring' (d : ℝ) : (d + 2) / 4 = 1/2 + d/4 := by ring
+
+/-- Lions gap: α_c - 1 = (d-2)/4. -/
+theorem lions_gap' (d : ℝ) : (d + 2)/4 - 1 = (d - 2)/4 := by ring
+
+/-- Lions gap at d=3: exactly 1/4. -/
+theorem lions_gap_3' : ((3:ℝ) + 2)/4 - 1 = 1/4 := by norm_num
+
+/-- Vorticity components d(d-1)/2. -/
+theorem vort_d2' : 2 * (2 - 1) / 2 = 1 := by norm_num
+theorem vort_d3' : 3 * (3 - 1) / 2 = 3 := by norm_num
+theorem vort_d4' : 4 * (4 - 1) / 2 = 6 := by norm_num
+
+/-- DNS cost 3d/4. -/
+theorem dns_d2' : 3 * (2:ℝ) / 4 = 3/2 := by norm_num
+theorem dns_d3' : 3 * (3:ℝ) / 4 = 9/4 := by norm_num
+theorem dns_d4' : 3 * (4:ℝ) / 4 = 3 := by norm_num
+
+/-- Kolmogorov dimensional analysis: 2a+2b=1, a+3b=0 → a=3/4, b=-1/4. -/
+theorem kolmogorov_da' :
+    2 * (3:ℝ)/4 + 2 * (-1/4) = 1 ∧ (3:ℝ)/4 + 3 * (-1/4) = 0 := by
+  constructor <;> norm_num
+
+-- ═══════════════════════════════════════════════════════════════════
+-- Section 64: Logarithmic Improvements
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Sobolev gap: 1/2 - (1/2)/3 = 1/3. -/
+theorem sobolev_gap' : (1:ℝ)/2 - (1/2)/3 = 1/3 := by norm_num
+
+/-- Time integrability: 2/4 + 3/3 = 3/2 > 1. -/
+theorem time_gap' : (2:ℝ)/4 + 3/3 = 3/2 := by norm_num
+
+/-- Fundamental gap: 3/2 - 1 = 1/2. -/
+theorem fund_gap' : (3:ℝ)/2 - 1 = 1/2 := by norm_num
+
+/-- Regularity moduli: h < h^{1/2} (for 0 < h < 1) concretized. -/
+theorem moduli_order' : (1:ℝ)/100 < 1/10 := by norm_num
+
+-- ═══════════════════════════════════════════════════════════════════
+-- Section 65: Dissipation Enhancement
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Shear enhancement: 1 - 1/3 = 2/3. -/
+theorem shear_exp' : (1:ℝ) - 1/3 = 2/3 := by norm_num
+
+/-- Taylor dispersion at Pe=100: 100²/48 = 625/3. -/
+theorem taylor_100' : (100:ℝ)^2 / 48 = 625/3 := by norm_num
+
+/-- Cat map discriminant: 3² - 4 = 5. -/
+theorem cat_disc' : (3:ℝ)^2 - 4 * 1 = 5 := by norm_num
+
+/-- Enhanced dissipation gain exponent: 2/3 > 0. -/
+theorem enhanced_gain' : (2:ℝ)/3 > 0 := by norm_num
+
 end NavierStokesAristotle
