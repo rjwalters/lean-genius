@@ -751,3 +751,33 @@ generic over inner product spaces.
 2. Prove sphere3_not_contractible (homology, degree theory, or Brouwer)
 3. Build product manifold chart infrastructure to eliminate S1_cross_S2_closed axiom
 4. Continue axiom elimination (38 remain)
+
+## Session 2026-03-19 (researcher-7, iteration 2) - 3-Manifold Group Theory
+
+**Mode**: REVISIT (RICH knowledge, depth-first)
+**Problem**: poincare-conjecture
+**Prior Status**: 11118 lines, 38 axioms, 569 theorems (from iteration 1)
+
+### What we did
+
+**Added Part LXXXII: Group-Theoretic Properties of 3-Manifold Groups**
+1. `GroupProperty` structure with 6 Boolean fields
+2. Concrete instances for 6 standard groups (trivial, ℤ, ℤ³, ℤ/2, I*₁₂₀, hyperbolic)
+3. `KneserConjecture`: free product ↔ connected sum
+4. `ScottCore`: f.g. subgroups in compact cores
+5. `GrowthRate` classification: polynomial vs exponential
+6. `groupGrowthRate`: concrete classification for all geometry types
+7. `LERFProperty` + `lerfExamples`: all 8 geometries LERF
+8. `heegaard_genus_bound`: genus ≥ rank for S³, S¹×S², T³
+
+### Outcome
+- **Lines**: 11118 → 11429 (+311)
+- **Axioms**: 38 (unchanged)
+- **Theorems**: 569 → 578 (+9 proved)
+- **Build**: CLEAN (3175 jobs, warnings only)
+
+### Next steps
+1. Prove sphere3_simply_connected
+2. Prove sphere3_not_contractible
+3. Product manifold charts for S1_cross_S2_closed
+4. Continue axiom elimination (38 remain)

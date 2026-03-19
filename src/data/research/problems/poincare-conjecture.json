@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 81 parts, ~11118 lines, 38 axioms, 569 theorems, 0 sorries. Latest session fixed 5 build errors in Parts LXXVIII-LXXIX, fixed True placeholders in foliation section, added Parts LXXX-LXXXI (Papakyriakopoulos trinity: Dehn Lemma/Loop/Sphere theorems, incompressible surfaces, Haken hierarchy, Thurston norm duality, surface bundles, Nielsen-Thurston classification, MCG generators).",
+    "progressSummary": "PROGRESS: 82 parts, ~11429 lines, 38 axioms, 578 theorems, 0 sorries. Latest sessions: fixed 5 build errors in LXXVIII-LXXIX, fixed True placeholders, added Parts LXXX (Papakyriakopoulos trinity), LXXXI (incompressible surfaces, Thurston norm), LXXXII (3-manifold group theory: residual finiteness, LERF, growth rates, Kneser, Scott core).",
     "builtItems": [
       "Proved perelman_entropy_monotone via concrete PerelmanWEntropy",
       "Proved perelman_surgery via reflexive witness",
@@ -222,7 +222,17 @@
       "Fixed hfkTorusKnot.top_is_genus: Nat.zero_le p",
       "Fixed unknot_detection: omega → decide",
       "Fixed bgw_Lspace_count: (3,3)→(4,2)",
-      "Fixed True placeholders: noReebComponents/novikov_compact_leaf → Nonempty ReebComponent"
+      "Fixed True placeholders: noReebComponents/novikov_compact_leaf → Nonempty ReebComponent",
+      "Part LXXXII: Group-Theoretic Properties of 3-Manifold Groups",
+      "GroupProperty structure (residuallyFinite, isLinear, virtuallyTorsionFree, solvableWordProblem, isHopfian, isCoHopfian)",
+      "Concrete group properties for 6 standard 3-manifolds: trivial, ℤ, ℤ³, ℤ/2, I*₁₂₀, hyperbolic",
+      "KneserConjecture structure (algebraic ↔ geometric decomposition)",
+      "ScottCore structure (coreExists, pi1Surjective, boundaryComponents)",
+      "GrowthRate inductive: polynomial(degree) vs exponential",
+      "groupGrowthRate: classification function for standard geometries",
+      "LERFProperty structure + all 8 geometries verified LERF",
+      "all_geometries_LERF: all 8 Thurston geometries produce LERF groups",
+      "heegaard_genus_bound: genus ≥ rank verified for S³, S¹×S², T³"
     ],
     "insights": [
       "Massive axiom reduction: 39 axioms converted to theorems/defs (115→76)",
@@ -324,7 +334,13 @@
       "Surface bundle geometry fully determined by monodromy type: this is Thurston 1986",
       "Thurston norm x(Σ_g) = max(0, 2g-2): vanishes for spheres and tori, positive for higher genus",
       "MCG generators: 3g-3 Dehn twists for genus g ≥ 2 (Lickorish); SL(2,ℤ) for genus 1",
-      "Figure-eight knot has smallest pseudo-Anosov stretch factor λ = (3+√5)/2 ≈ 2.618 (golden ratio squared)"
+      "Figure-eight knot has smallest pseudo-Anosov stretch factor λ = (3+√5)/2 ≈ 2.618 (golden ratio squared)",
+      "All 3-manifold groups are residually finite: consequence of Geometrization (each geometric piece is linear, linear groups are RF by Malcev)",
+      "All 3-manifold groups are LERF: Agol 2013 completed the picture for hyperbolic case, other geometries follow from structure theorems",
+      "Growth rate dichotomy: spherical/euclidean/nil → polynomial, sol/hyperbolic → exponential (Gromov: polynomial ↔ virtually nilpotent)",
+      "Kneser conjecture (Stallings 1959): algebraic free product decomposition of π₁ perfectly corresponds to geometric connected sum",
+      "Scott core theorem (1973): every finitely generated subgroup of π₁(M³) lives in a compact submanifold (key compactness result)",
+      "Heegaard genus ≥ group rank: the Heegaard splitting gives a presentation, so generators ≤ genus; gap is a subtle invariant"
     ],
     "mathlibGaps": [
       "3-manifolds",
