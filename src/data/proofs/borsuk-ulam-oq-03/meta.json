@@ -23,6 +23,8 @@
     ],
     "badge": "axiom",
     "sorries": 0,
+    "axiomCount": 7,
+    "assumptions": "7 axiom declarations: borsuk_ulam_general (n≥2), no_retraction (n≥1), brouwer_fixed_point (nD), lusternik_schnirelmann (n≥1), kkm_2d (simplex version), kkm_general (nD), kkm_2d_triangle (explicit triangle version). All are equivalent deep topological results requiring algebraic topology for n≥2. The 1D cases are proved directly from IVT.",
     "mathlibDependencies": [
       {
         "theorem": "intermediate_value_Icc",
