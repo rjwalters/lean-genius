@@ -16,8 +16,8 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 41,
-    "assumptions": "41 axiom declarations: Perelman Ricci flow surgery (finite extinction), Novikov compact leaf theorem (foliations), generalized Poincare in dimensions 2/4/≥5, topological constructions (connected sum, Dehn surgery), classification results (JSJ, h/s-cobordism), 3-manifold topology (Heegaard, Waldhausen, Property P, prime decomposition), counterexample structures (Poincare homology sphere, Whitehead manifold), Papakyriakopoulos trilogy (Dehn's lemma, loop theorem, sphere theorem).",
+    "axiomCount": 38,
+    "assumptions": "38 axiom declarations: Perelman Ricci flow surgery (finite extinction), Novikov compact leaf theorem (foliations), generalized Poincare in dimensions 2/4/≥5, topological constructions (connected sum, Dehn surgery), classification results (JSJ, h/s-cobordism), 3-manifold topology (Heegaard, Waldhausen, Property P, prime decomposition), counterexample structures (Poincare homology sphere, Whitehead manifold).",
     "mathlibDependencies": [
       {
         "theorem": "SimplyConnectedSpace",
@@ -211,13 +211,6 @@
       "startLine": 629,
       "endLine": 698,
       "summary": "Catalogues all proved results (15+) and axiomatized components (~12), with `#check` statements verifying each declaration."
-    },
-    {
-      "id": "papakyriakopoulos",
-      "title": "Part LXXX: Dehn's Lemma, Loop Theorem, and Sphere Theorem",
-      "startLine": 10537,
-      "endLine": 10920,
-      "summary": "The Papakyriakopoulos trilogy (1957-1960): Dehn's Lemma (singular→embedded disks), Loop Theorem (compressibility detection), Sphere Theorem (essential S²). Tower construction formalized with concrete examples. Applications: prime decomposition, Haken hierarchy, irreducibility + SC ⟹ S³. Equivariant Dehn's Lemma (Meeks-Yau 1981) and Smith conjecture. 3 new axioms, 12 proved theorems, 4 structures, 2 definitions."
     }
   ],
   "crossReferences": [
@@ -227,7 +220,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The Poincaré Conjecture is SOLVED (Perelman, 2002–2003): every simply connected, closed 3-manifold is homeomorphic to S³. The formalization provides ~10955 lines covering 80 parts, with 558 theorems and 41 axioms. Coverage includes Ricci flow, surgery theory, κ-solutions, normal surfaces, taut foliations, Casson invariant, Heegaard Floer homology, the L-space conjecture, computational complexity, and the Papakyriakopoulos trilogy (Dehn's lemma, loop theorem, sphere theorem).",
+    "summary": "The Poincaré Conjecture is SOLVED (Perelman, 2002–2003): every simply connected, closed 3-manifold is homeomorphic to S³. The formalization provides ~9850 lines covering 77 parts, with 509 theorems/lemmas and 38 axioms. Coverage includes Ricci flow, surgery theory, κ-solutions, normal surfaces, taut foliations, Casson invariant, and computational complexity.",
     "implications": "Perelman's proof also established Thurston's Geometrization Conjecture, revolutionizing 3-manifold topology. The Ricci flow technique has since been applied to the differentiable sphere theorem (Brendle–Schoen 2009), classification of manifolds with positive isotropic curvature, and the study of Kähler–Ricci flow in complex geometry.",
     "openQuestions": [
       "The smooth 4-dimensional Poincaré conjecture: is every smooth homotopy 4-sphere diffeomorphic to $S^4$?",

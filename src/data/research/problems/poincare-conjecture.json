@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "NEW",
     "since": "2026-01-01T21:55:27.887Z",
-    "iteration": 13,
-    "focus": "Papakyriakopoulos trilogy and classical 3-manifold toolkit",
+    "iteration": 12,
+    "focus": "Taut foliations and Casson invariant",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 80 parts, ~10955 lines, 41 axioms, 558 theorems, 0 sorries. Latest session added Part LXXX (Papakyriakopoulos trilogy: Dehns Lemma, Loop Theorem, Sphere Theorem, tower construction, Haken hierarchy, equivariant Dehns Lemma, Smith conjecture).",
+    "progressSummary": "PROGRESS: 77 parts, ~9850 lines, 38 axioms, 509 theorems, 0 sorries. Latest session added Parts LXXVI-LXXVII (taut foliations: Novikov theorem, Reeb components, foliation classification, Eliashberg-Thurston contact bridge, L-space obstruction; Casson invariant: surgery formula, Rokhlin lift, partial Property P, Brieskorn formula, 8 examples classified).",
     "builtItems": [
       "Proved perelman_entropy_monotone via concrete PerelmanWEntropy",
       "Proved perelman_surgery via reflexive witness",
@@ -195,15 +195,7 @@
       "casson_partial_property_P: Δ(1) ≠ 0 → surgery ≠ S³",
       "cassonExamples: 8 manifolds with Casson invariants classified",
       "casson_detects_S3: unique ℤHS with λ=0 and finite π₁ by native_decide",
-      "brieskorn_casson_signature: λ = -σ/8 verified for Σ(2,3,5/11) and Σ(3,5,7)",
-      "Part LXXX: Papakyriakopoulos trilogy (Dehns Lemma, Loop Theorem, Sphere Theorem)",
-      "EmbeddedDisk3/EmbeddedSphere3/SurfaceType3/HakenManifold/TowerConstruction structures",
-      "exampleTower3: concrete tower with 3 self-intersections resolving to 0",
-      "tower_principle: strictly decreasing naturals ending at 0 imply minimum initial value",
-      "sphere_theorem_enables_prime_decomp: connection to Kneser-Milnor",
-      "irreducible_sc_implies_aspherical: SC+irreducible implies S³",
-      "equivariant_dehn_meeks_yau: equivariant version (1981) using minimal surfaces",
-      "smith_conjecture_proved: periodic maps of S³ have unknotted fixed sets"
+      "brieskorn_casson_signature: λ = -σ/8 verified for Σ(2,3,5/11) and Σ(3,5,7)"
     ],
     "insights": [
       "Massive axiom reduction: 39 axioms converted to theorems/defs (115→76)",
@@ -296,13 +288,7 @@
       "Casson lifts Rokhlin: λ(M) ≡ μ(M) (mod 2); integer information from ℤ/2 obstruction",
       "Casson gives partial Property P: if Δ_K(1) ≠ 0 then 1/n surgery on K ≠ S³ (works for trefoil, figure-eight; fails for knots with Δ(1) = 0)",
       "Brieskorn sphere formula: λ(Σ(p,q,r)) = -σ(Milnor fiber)/8; verified for (2,3,5)→1, (2,3,11)→2, (3,5,7)→14",
-      "Casson is finite type (Vassiliev) invariant of order 2, the unique degree-2 invariant of ℤHS",
-      "Papakyriakopoulos tower construction: sequence of covering spaces that systematically eliminates self-intersections, strictly decreasing at each step",
-      "Dehns Lemma gap: 47 years between claim (1910) and proof (1957) — Kneser found the error in 1929",
-      "Sphere Theorem enables prime decomposition: provides EMBEDDED essential S² (not just singular), which can be cut along",
-      "Irreducible + SC implies aspherical: via Sphere Theorem contrapositive, π₂=0 forces asphericity; only S³ is both SC and aspherical",
-      "Equivariant Dehns Lemma (Meeks-Yau 1981) uses minimal surfaces instead of towers — proved the Smith conjecture",
-      "Haken hierarchy uses Loop Theorem: detect compressible surfaces → compress → repeat until balls reached"
+      "Casson is finite type (Vassiliev) invariant of order 2, the unique degree-2 invariant of ℤHS"
     ],
     "mathlibGaps": [
       "3-manifolds",
@@ -330,7 +316,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.887Z",
-  "lastUpdate": "2026-03-19T15:00:00Z",
+  "lastUpdate": "2026-03-19T10:00:00.000Z",
   "significance": 10,
   "tractability": 1
 }
