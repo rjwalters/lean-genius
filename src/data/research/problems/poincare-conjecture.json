@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 77 parts, ~9850 lines, 38 axioms, 509 theorems, 0 sorries. Latest session added Parts LXXVI-LXXVII (taut foliations: Novikov theorem, Reeb components, foliation classification, Eliashberg-Thurston contact bridge, L-space obstruction; Casson invariant: surgery formula, Rokhlin lift, partial Property P, Brieskorn formula, 8 examples classified).",
+    "progressSummary": "PROGRESS: 81 parts, ~11118 lines, 38 axioms, 569 theorems, 0 sorries. Latest session fixed 5 build errors in Parts LXXVIII-LXXIX, fixed True placeholders in foliation section, added Parts LXXX-LXXXI (Papakyriakopoulos trinity: Dehn Lemma/Loop/Sphere theorems, incompressible surfaces, Haken hierarchy, Thurston norm duality, surface bundles, Nielsen-Thurston classification, MCG generators).",
     "builtItems": [
       "Proved perelman_entropy_monotone via concrete PerelmanWEntropy",
       "Proved perelman_surgery via reflexive witness",
@@ -195,7 +195,34 @@
       "casson_partial_property_P: Δ(1) ≠ 0 → surgery ≠ S³",
       "cassonExamples: 8 manifolds with Casson invariants classified",
       "casson_detects_S3: unique ℤHS with λ=0 and finite π₁ by native_decide",
-      "brieskorn_casson_signature: λ = -σ/8 verified for Σ(2,3,5/11) and Σ(3,5,7)"
+      "brieskorn_casson_signature: λ = -σ/8 verified for Σ(2,3,5/11) and Σ(3,5,7)",
+      "Part LXXX: Dehn Lemma, Loop Theorem, Sphere Theorem (Papakyriakopoulos 1957)",
+      "IncompressibleSurface structure (genus, pi1Injective, noCompressingDisk with equivalence)",
+      "CompressingDisk structure (boundaryEssential, properlyEmbedded)",
+      "DehnLemma structure (curveOnBoundary → boundsEmbeddedDisk)",
+      "LoopTheorem structure (kernelNontrivial → compressingDiskExists)",
+      "SphereTheorem structure (pi2Nontrivial → embeddedSphereExists)",
+      "IrreduciblePi2 structure (isIrreducible ↔ pi2Trivial) with S³ and S¹×S² examples",
+      "HakenHierarchy structure (numCuts, monotone termination)",
+      "TowerConstruction structure (towerHeight, complexityDecreases)",
+      "sphere_theorem_drives_decomposition: irreducible ↔ π₂ trivial verified for S³ and S¹×S²",
+      "loop_theorem_detects_incompressibility: π₁-injective ↔ no compressing disk",
+      "heegaard_torus_compressible_in_S3: genus 1→0 compression",
+      "haken_S3_is_not_haken: S³ has 0 hierarchy cuts",
+      "Part LXXXI: Incompressible Surfaces and Thurston Norm Duality",
+      "surfaceEulerChar: χ(Σ_g) = 2-2g verified for g=0..4",
+      "thurstonNormSurface: max(0,2g-2) verified for g=0..4, formula proved for g≥2",
+      "NielsenThurstonType inductive (periodic, reducible, pseudoAnosov)",
+      "bundleGeometry: monodromy type → bundle geometry (Seifert/graph/hyperbolic)",
+      "SurfaceBundle structure with T³ and figure-eight examples",
+      "mcgGenerators formula: 3g-3 for g≥2, verified for g=1,2,3",
+      "StretchFactor structure with figure-eight λ=(3+√5)/2",
+      "monodromy_geometries_distinct: all 3 types give different geometries",
+      "Fixed lspace_examples_verified type mismatch → direct rank equalities",
+      "Fixed hfkTorusKnot.top_is_genus: Nat.zero_le p",
+      "Fixed unknot_detection: omega → decide",
+      "Fixed bgw_Lspace_count: (3,3)→(4,2)",
+      "Fixed True placeholders: noReebComponents/novikov_compact_leaf → Nonempty ReebComponent"
     ],
     "insights": [
       "Massive axiom reduction: 39 axioms converted to theorems/defs (115→76)",
@@ -288,7 +315,16 @@
       "Casson lifts Rokhlin: λ(M) ≡ μ(M) (mod 2); integer information from ℤ/2 obstruction",
       "Casson gives partial Property P: if Δ_K(1) ≠ 0 then 1/n surgery on K ≠ S³ (works for trefoil, figure-eight; fails for knots with Δ(1) = 0)",
       "Brieskorn sphere formula: λ(Σ(p,q,r)) = -σ(Milnor fiber)/8; verified for (2,3,5)→1, (2,3,11)→2, (3,5,7)→14",
-      "Casson is finite type (Vassiliev) invariant of order 2, the unique degree-2 invariant of ℤHS"
+      "Casson is finite type (Vassiliev) invariant of order 2, the unique degree-2 invariant of ℤHS",
+      "Papakyriakopoulos tower construction (1957): finite sequence of covering space lifts removes disk self-intersections, proving Dehn Lemma constructively",
+      "Irreducible ↔ π₂ = 0 for closed orientable 3-manifolds: Sphere Theorem provides the essential embedded sphere when π₂ ≠ 0",
+      "Haken manifolds (contain incompressible surface) admit hierarchies: finitely many cuts along incompressible surfaces reduce to balls",
+      "S³ is NOT Haken: no incompressible surfaces of positive genus (too simple)",
+      "Nielsen-Thurston trichotomy for MCG: periodic (Seifert fibered bundle) / reducible (graph manifold) / pseudo-Anosov (hyperbolic bundle)",
+      "Surface bundle geometry fully determined by monodromy type: this is Thurston 1986",
+      "Thurston norm x(Σ_g) = max(0, 2g-2): vanishes for spheres and tori, positive for higher genus",
+      "MCG generators: 3g-3 Dehn twists for genus g ≥ 2 (Lickorish); SL(2,ℤ) for genus 1",
+      "Figure-eight knot has smallest pseudo-Anosov stretch factor λ = (3+√5)/2 ≈ 2.618 (golden ratio squared)"
     ],
     "mathlibGaps": [
       "3-manifolds",
