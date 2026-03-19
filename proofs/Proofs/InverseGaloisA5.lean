@@ -452,7 +452,13 @@ theorem no_subgroup_order_15 (H : Subgroup (Equiv.Perm (Fin 5)))
     Order 15 → contradicts no_subgroup_order_15. -/
 theorem no_subgroup_order_30 (H : Subgroup (Equiv.Perm (Fin 5)))
     (hcard : Nat.card H = 30) : False := by
+  -- Proof by contradiction using sign homomorphism and A₅ simplicity.
+  -- Case 1: All elements even → H ⊆ A₅ → [A₅:H] = 2 → H ⊴ A₅ → contradicts isSimpleGroup_five
+  -- Case 2: ∃ odd element → |H ∩ A₅| = 15 → contradicts no_subgroup_order_15
+  -- Key APIs: Equiv.Perm.sign, Equiv.Perm.mem_alternatingGroup,
+  --   alternatingGroup.isSimpleGroup_five, Subgroup.Normal.of_index_eq_two
   sorry
+
 
 /-- |Gal(q)| ≠ 15: Gal embeds into S₅ which has no subgroup of order 15. -/
 theorem gal_card_ne_15 : Fintype.card q.Gal ≠ 15 := by
