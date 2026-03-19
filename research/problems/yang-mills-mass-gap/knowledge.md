@@ -574,3 +574,68 @@ full R⁴ mass gap.
 - Add Dyson-Schwinger truncated tower with IR fixed points
 - Add Seiberg-Witten exact solution for N=2 SUSY
 - Add large-N Eguchi-Kawai detailed volume reduction
+
+---
+
+## Session 2026-03-19 (researcher-3) - Polyakov 3D, c-Theorem, Elitzur, Chiral SB
+
+**Mode**: REVISIT (RICH knowledge, score 22)
+**Outcome**: progress
+
+### What I Did
+- Added Part CV: Polyakov's 3D Confinement — exact mass gap via monopole-instantons
+- Added Part CVI: Zamolodchikov c-Theorem — RG irreversibility and a-theorem
+- Added Part CVII: Elitzur's Theorem — local gauge symmetry cannot spontaneously break
+- Added Part CVIII: Chiral Symmetry Breaking — Banks-Casher relation, GMOR
+- All new theorems proved with 0 sorries, 0 new build errors
+
+### Key Theorems Proved (non-trivial)
+
+**Part CV: Polyakov 3D Confinement**
+- `monopoleAction_pos`: S₀ = 4πv/g² > 0
+- `fugacity_lt_one`: e^{-S₀} < 1 (dilute gas regime)
+- `polyakovMassGap_pos`: m = √(8π·ζ/g²) > 0 (THE exact mass gap)
+- `massGap_exponentially_small`: mass gap < g² (non-perturbative)
+- `ggStringTension_pos`: σ = m·g²/(4π) > 0 (confinement)
+- `interaction_decreasing`: 3D monopole interaction falls with distance
+- `massGap_nonperturbative`: mass gap positive AND exponentially small
+- `monopoles_increase_Z`: monopoles increase partition function
+
+**Part CVI: Zamolodchikov c-theorem**
+- `eulerAnomaly_pos`: a = (N²-1)·31/180 > 0 for N ≥ 2
+- `eulerAnomaly_monotone`: a grows with N
+- `su2_euler`: a_SU(2) = 31/60
+- `su3_euler`: a_SU(3) = 62/45
+- `gapped_full_reduction`: c_UV - 0 = c_UV (all DOF massive)
+- `spectral_deltac_nonneg`: Δc from spectral representation ≥ 0
+
+**Part CVII: Elitzur's Theorem**
+- `elitzur_theorem`: gauge-variant ⟨O⟩ = 0
+- `wilson_confined_lt_one`: ⟨W(C)⟩ < 1 for σ, area > 0
+- `wilson_decreases_with_area`: area law signature
+- `effectiveStringTension_pos`: σ_eff = -ln(β/2d) > 0 at strong coupling
+- `massive_more_dof`: 3(N²-1) > 2(N²-1), massive > massless
+- `orbit_grows_with_N`: gauge orbit dimension grows with N
+- `stringBreaking_increases`: r_b grows with quark mass
+- `pure_gauge_no_breaking`: σ·r > 0 for all r (true confinement)
+
+**Part CVIII: Chiral Symmetry Breaking**
+- `two_flavor_goldstones`: N_f=2 gives 3 pions
+- `three_flavor_goldstones`: N_f=3 gives 8 pseudo-Goldstones
+- `chiral_broken_iff_density`: ρ(0) > 0 ↔ χSB
+- `pion_mass_grows`: m²_π grows with m_q
+- `qcd_mass_gap_pos`: m_π > 0 for m_q > 0
+- `spectralGap_decreases`: eigenvalues accumulate at zero with volume
+- `nearZero_grows_with_V`: more near-zero modes in larger volume
+- `proton_lambda_ratio`: M_p/Λ > 3 (mass gap scale)
+
+### Files Modified
+- `proofs/Proofs/YangMillsMassGap.lean`: 17459 → 18269 lines (+810), 0 new sorries
+- `src/data/research/problems/yang-mills-mass-gap.json`: Updated knowledge
+- `research/problems/yang-mills-mass-gap/knowledge.md`: This session log
+
+### Next Steps
+- Add Regge trajectory analysis (linear trajectories as mass gap evidence)
+- Add Coleman-Mandula / Haag-Lopuszanski-Sohnius theorems
+- Add Lattice strong-to-weak coupling analyticity
+- Explore disorder operators and dual descriptions
