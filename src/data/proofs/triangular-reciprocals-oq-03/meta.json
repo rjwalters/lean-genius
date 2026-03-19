@@ -1,0 +1,68 @@
+{
+  "id": "triangular-reciprocals-oq-03",
+  "title": "Alternating Sum of Triangular Reciprocals",
+  "slug": "triangular-reciprocals-oq-03",
+  "description": "The alternating sum of reciprocals of triangular numbers equals 4·ln(2) - 2: ∑(-1)^{n+1}·2/(n(n+1)) = 4·ln(2) - 2 ≈ 0.7726.",
+  "meta": {
+    "author": "Classical (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Triangular_number",
+    "date": "Classical",
+    "status": "axiomatized",
+    "tags": ["analysis", "series", "classic", "intermediate"],
+    "proofRepoPath": "Proofs/TriangularReciprocalAlternatingOQ03.lean",
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 2,
+    "assumptions": "Two axioms encode the alternating harmonic series (Mercator series at x=1). Proving these requires Abel's theorem for boundary convergence of power series, not yet in Mathlib.",
+    "mathlibDependencies": [
+      {"theorem": "HasSum.mul_left", "description": "Scalar multiplication of convergent series", "module": "Mathlib.Topology.Algebra.InfiniteSum.Ring"},
+      {"theorem": "HasSum.sub", "description": "Difference of convergent series", "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"},
+      {"theorem": "Real.log", "description": "Natural logarithm", "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"}
+    ],
+    "originalContributions": [
+      "Alternating triangular reciprocals = 4·ln(2) - 2 via partial fractions",
+      "Unscaled corollary: ∑(-1)^{n+1}/(n(n+1)) = 2·ln(2) - 1",
+      "Summability of the alternating series"
+    ],
+    "dateAdded": "03/19/26"
+  },
+  "overview": {
+    "historicalContext": "This identity extends the classical result ∑2/(n(n+1)) = 2 (proved by Leibniz in 1673 via telescoping) to its alternating variant. The alternating harmonic series ln(2) = 1 - 1/2 + 1/3 - ⋯ was first computed by Mercator (1668) using the power series for log(1+x). The alternating triangular reciprocal series combines both ideas: partial fractions reduce it to two instances of the Mercator series.",
+    "problemStatement": "**Alternating Triangular Reciprocals**:\n\n$$\\sum_{n=1}^{\\infty} (-1)^{n+1} \\cdot \\frac{2}{n(n+1)} = 4\\ln 2 - 2 \\approx 0.7726$$",
+    "proofStrategy": "Use partial fractions: (-1)^{n+1}·2/(n(n+1)) = 2·(-1)^{n+1}/n - 2·(-1)^{n+1}/(n+1). This splits the series into the alternating harmonic series (= ln 2) and its shifted variant (= 1 - ln 2). Combining: 2·ln(2) - 2·(1 - ln(2)) = 4·ln(2) - 2.",
+    "keyInsights": [
+      "Partial fractions split each alternating term into a difference of two simpler alternating terms",
+      "The shifted alternating harmonic series ∑(-1)^{n+1}/(n+1) = 1 - ln(2) follows from the standard series by removing the first term and negating",
+      "The result 4·ln(2) - 2 ≈ 0.7726 shows the alternating sum converges to a transcendental number, unlike the non-alternating case which equals exactly 2"
+    ]
+  },
+  "sections": [
+    {"id": "axioms", "title": "Alternating Harmonic Series (Axiomatized)", "startLine": 27, "endLine": 44, "summary": "Two axioms encoding the Mercator series at x=1: the alternating harmonic series = ln(2) and its shifted variant = 1 - ln(2). These require Abel's theorem for boundary convergence."},
+    {"id": "main-theorem", "title": "Main Theorem", "startLine": 46, "endLine": 80, "summary": "The core result: HasSum for ∑(-1)^{n+1}·2/(n(n+1)) = 4·ln(2) - 2. Proof via funext partial fractions, then combining two HasSum results with mul_left and sub."},
+    {"id": "corollary", "title": "Unscaled Corollary", "startLine": 82, "endLine": 130, "summary": "Derives ∑(-1)^{n+1}/(n(n+1)) = 2·ln(2) - 1 by dividing the main result by 2 using const_smul with 2⁻¹."},
+    {"id": "summability", "title": "Summability", "startLine": 132, "endLine": 140, "summary": "The alternating series is summable, derived directly from the main HasSum result."},
+    {"id": "examples", "title": "Finite Partial Sums", "startLine": 142, "endLine": 163, "summary": "Computes S₁ = 1, S₂ = 2/3, S₃ = 5/6, S₄ = 11/15 via norm_num, showing oscillation around the limit 4·ln(2) - 2."}
+  ],
+  "crossReferences": [
+    {
+      "targetId": "triangular-reciprocals",
+      "relationship": "extends",
+      "description": "Extends the non-alternating result ∑2/(n(n+1)) = 2 to its alternating variant. Both use partial fractions and telescoping ideas."
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "related",
+      "description": "Both are classical infinite series with exact closed-form sums. The alternating geometric series ∑(-1)^n·r^n = 1/(1+r) and alternating triangular reciprocals both involve sign-alternating terms."
+    }
+  ],
+  "conclusion": {
+    "summary": "The alternating triangular reciprocal series identity is fully verified modulo two well-known axioms (the Mercator series). The proof cleanly decomposes the alternating product series into two standard alternating series using partial fractions.",
+    "implications": "This demonstrates that alternating figurate number reciprocals yield transcendental values (4·ln(2) - 2) even when the non-alternating counterpart (2) is rational. The technique generalizes: ∑(-1)^{n+1}/(n(n+k)) can be similarly decomposed into k shifted alternating harmonic series.",
+    "openQuestions": [
+      "Prove the alternating harmonic series = ln(2) without axioms (requires Abel's theorem in Lean)",
+      "Generalize to ∑(-1)^{n+1}/(n(n+k)) for arbitrary k",
+      "Formalize the connection to the digamma function: ∑(-1)^{n+1}/(n(n+1)) = 2·ψ(1) + 2·γ where γ is the Euler-Mascheroni constant"
+    ]
+  },
+  "relatedProofs": ["triangular-reciprocals", "geometric-series"]
+}
