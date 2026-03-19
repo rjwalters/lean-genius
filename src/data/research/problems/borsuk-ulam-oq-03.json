@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-02-25T14:11:52.126Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Tucker 2D octahedral, Sperner 1D, BU→Brouwer FP 1D, no-retraction 1D, path-following",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -30,10 +30,45 @@
   },
   "knowledge": {
     "progressSummary": "SURVEYED - 13 proved theorems, 1 axiom (general BU for n≥2), 0 sorries.",
-    "builtItems": [],
-    "insights": [],
+    "builtItems": [
+      {
+        "name": "tucker_2d_octahedral",
+        "description": "Tucker 2D lemma for octahedral triangulation (4+1 vertices), proved by case analysis",
+        "proven": true
+      },
+      {
+        "name": "sperner_1d",
+        "description": "Sperner 1D lemma: complete edge exists in {0,1}-labeling with boundary constraint",
+        "proven": true
+      },
+      {
+        "name": "bu_implies_brouwer_1d",
+        "description": "BU → Brouwer FP in 1D via IVT on f(x)-x",
+        "proven": true
+      },
+      {
+        "name": "no_retraction_1d",
+        "description": "No continuous retraction [-1,1]→{-1,1} fixing boundary",
+        "proven": true
+      },
+      {
+        "name": "tucker_path_following_1d",
+        "description": "First sign change with minimality (path-following algorithm)",
+        "proven": true
+      }
+    ],
+    "insights": [
+      "Tucker 2D for the 4-vertex octahedral triangulation is provable by exhaustive case analysis over 4^3=64 labelings",
+      "Label exhaustion principle: when boundary labels come from different pairs of {-2,-1,1,2}, they exhaust the label set, forcing interior vertex to be complementary",
+      "All 1D equivalences (BU, Tucker, Sperner, Brouwer FP, no-retraction) are formally derivable from IVT in Lean"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Formalize Tucker 2D for general triangulations (not just octahedral)",
+      "Prove Tucker 2D → BU 2D via approximation/compactness argument",
+      "Add Sperner 2D lemma (triangulation of triangle with proper labeling)",
+      "Add KKM lemma as equivalent formulation"
+    ],
     "markdown": "# borsuk-ulam-oq-03: Constructive (Intuitionistic) Borsuk-Ulam\n\n## Problem Summary\n\n**Open Question**: Can the 1D Borsuk-Ulam theorem be proved constructively\n(without full classical logic)? What is the constructive status of\nhigher-dimensional Borsuk-Ulam?\n\n**Status**: SURVEYED - 13 proved theorems, 1 axiom (general BU for n≥2), 0 sorries.\n\n**Answer**:\n- 1D: YES, proved via IVT on antisymmetric difference\n- n≥2: Requires algebraic topology (axiomized); no known constructive proof\n\n## Session 2026-02-25 (Session 1) - Initial Formalization\n\n**Mode**: FRESH (problem had EMPTY knowledge)\n**Outcome**: surveyed/progress\n\n### What I Did\n\n- Created `proofs/Proofs/BorsukUlamOQ03.lean` with full 1D formalization\n- Proved 13 theorems covering:\n  - 1D interval BU via IVT\n  - Odd function zero lemma\n  - BU ↔ odd-zero equivalence\n  - S¹ parametric version via IVT on [0,π]\n  - Circle point on unit circle\n  - No odd map to {±1}\n  - 5 structural lemmas\n  - NSphere def + antipodal def\n  - Consequence of general BU axiom\n- Fixed key Lean 4 issue: `f (--x)` is INVALID because `--` starts a line comment;\n  must write `f (-(-x))` or restructure to avoid double negative\n- Fixed `ring` issue: after `simp only [hg_def]`, `ring` fails on `f (-(-x))` atoms;\n  add `neg_neg` to simp first\n- `Continuous.prod_mk` may not be directly accessible as a field; use `fun_prop` instead\n- Created PR #3246\n\n### Key Findings\n\n- `f (--x)` is a SYNTAX BUG: `--` starts a line comment in Lean 4!\n  Workaround: Write `f (-(-x))` or avoid double-negated function args\n- `fun_prop` tactic handles complex continuity goals automatically with `hf : Continuous f`\n- IVT API: `intermediate_value_Icc hab hg_cont ⟨ha, hb⟩` where `ha : f a ≤ 0` and `hb : 0 ≤ f b`\n- `le_or_gt` is the non-deprecated name for case split (not `le_or_lt`)\n- Constructive content: IVT uses Classical.em internally, but Bishop-style IVT holds\n\n### Files Created\n\n- `proofs/Proofs/BorsukUlamOQ03.lean` (324 lines, 13 theorems, 1 axiom, 0 sorries)\n\n### Next Steps\n\n- The higher-dimensional BU (n≥2) could potentially be proved using Tucker's lemma (combinatorial BU)\n- Tucker's lemma is more constructive than degree-theoretic approaches\n- Would require: triangulation, labeling, Tucker path → antipodal pair\n"
   },
   "tags": [
