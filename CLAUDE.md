@@ -252,6 +252,30 @@ $ lake build Proofs.Something
 
 ---
 
+# Axiom Integrity Policy
+
+Structure-encoded hypotheses (fields in structures/typeclasses such as `NSAxioms`, `SelbergClassAxioms`, `RHAxioms`) are mathematical assumptions. Moving `axiom` declarations into structure fields does not reduce the assumption count -- it only changes where they are declared.
+
+**Rules for all agents:**
+- `axiomCount` in meta.json must reflect ALL assumptions: `axiom` declarations + assumption-carrying structure fields
+- When reporting "0 axioms" or "axiom-free", confirm there are no assumptions encoded in structures
+- Restructuring axioms into structures is a valid proof architecture choice, but it does not change the mathematical status
+- `grep -c "^axiom "` alone is NOT sufficient to count assumptions — always inspect structure fields too
+
+**Status field definitions** (meta.json `status` and `badge`):
+
+| Status | Badge | Meaning | Requirements |
+|--------|-------|---------|--------------|
+| `verified` | `original` or `verified` | Fully machine-checked, no assumptions | 0 sorries, 0 `axiom` declarations, 0 structure-encoded assumptions |
+| `axiomatized` | `axiom` | Formalized with stated assumptions | Has `axiom` declarations OR structure-encoded assumptions |
+| `formalized` | varies | Lean formalization exists | Has sorries remaining |
+
+- Millennium Prize problems, Clay problems, and open conjectures: always `"axiomatized"` (these have unproven hypotheses by definition)
+- Never use `"conditional"` — use `"axiomatized"` and describe the conditions in the `assumptions` field
+- When in doubt, use `"axiomatized"` — overclaiming `"verified"` damages credibility
+
+---
+
 # Aristotle (Proof Search)
 
 Aristotle is an external proof search tool for Lean 4. It can automatically prove theorem sorries by searching for proofs.

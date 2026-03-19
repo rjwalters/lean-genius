@@ -6,7 +6,7 @@
   "meta": {
     "author": "Stephen Cook (1971)",
     "date": "1971",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/PvsNP.lean",
     "tags": [
       "computability",
@@ -14,8 +14,10 @@
       "millennium-prize",
       "intermediate"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
+    "axiomCount": 18,
+    "assumptions": "18 axiom declarations encoding standard complexity theory results: Cook-Levin theorem (SAT is NP-complete), Ladner's theorem (NP-intermediate problems exist if P!=NP), polynomial hierarchy (sigma monotone, collapse), space complexity inclusions (NP in PSPACE, PSPACE in EXPTIME, Savitch, Immerman-Szelepcsenyi), TQBF PSPACE-completeness, BPP in PSPACE, PTAS in APX, one-way functions iff PRGs, Shamir IP=PSPACE, AM in Pi2, P in P/poly, Karp-Lipton, NC in P, and P!=EXP. The P vs NP question itself remains open.",
     "mathlibDependencies": [
       {
         "theorem": "Mathlib.Logic.Basic",

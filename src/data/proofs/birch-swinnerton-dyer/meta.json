@@ -6,15 +6,17 @@
   "meta": {
     "author": "Birch & Swinnerton-Dyer (1965)",
     "date": "1965",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "number-theory",
       "elliptic-curves",
       "millennium-prize",
       "advanced"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
+    "axiomCount": 90,
+    "assumptions": "90 axiom declarations encoding core BSD infrastructure (algebraic rank, torsion, L-function, conductor, root number, analytic rank, periods, regulators, Sha order, Tamagawa numbers), proven BSD cases (rank 0 via Kolyvagin, rank 1 via Gross-Zagier, CM via Coates-Wiles), the Gross-Zagier formula, Hasse bound, specific curve data (cremona11a1, curve37a, curve389a L-values and ranks), congruent number results, parity conjecture, BSD generalizations (number fields, abelian varieties), Iwasawa theory, Tunnell's theorem, Sato-Tate, Cremona database verification, CM L-function factorization, and Euler system bounds. The BSD conjecture itself remains open.",
     "mathlibDependencies": [
       {
         "theorem": "WeierstrassCurve",
@@ -50,7 +52,7 @@
     "leanFile": {
       "lineCount": 5534,
       "structureCount": 72,
-      "axiomCount": 45,
+      "axiomCount": 90,
       "theoremCount": 201,
       "lemmaCount": 3,
       "defCount": 128,

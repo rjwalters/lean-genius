@@ -21,7 +21,7 @@ polynomial with Galois group A₅ over ℚ.
 **Discriminant**: Disc(q) = Disc(p) = 2¹⁶ · 5⁶ = (2⁸ · 5³)² = 32000².
 Since the discriminant is a perfect square, Gal(q/ℚ) ≤ A₅.
 
-**Irreducibility**: q satisfies Eisenstein's criterion at p = 5:
+**Irreducibility**: q satisfies Eisenstein's criterion at p = 5 (PROVED in Lean):
 - All non-leading coefficients divisible by 5: -5, 25, -10, 10, -5  ✓
 - Constant term -5 not divisible by 25                                ✓
 - Leading coefficient 1 not divisible by 5                            ✓
@@ -89,22 +89,79 @@ By Eisenstein's criterion, q is irreducible over ℤ.
 By Gauss's lemma (monic → primitive → ℤ-irreducible ⟹ ℚ-irreducible),
 q is irreducible over ℚ.
 
-Axiomatized because the coefficient extraction from a compound polynomial
-expression in Lean requires extensive simp lemma engineering.
+PROVED: Eisenstein conditions verified via interval_cases + norm_num on
+each coefficient position. The ℤ→ℚ transfer uses IsPrimitive.Int.irreducible_iff_irreducible_map_cast.
 -/
+
+/-- The ℤ[X] version of q for Eisenstein criterion application. -/
+private noncomputable def q_int : ℤ[X] :=
+  X ^ 5 - C 5 * X ^ 4 + C 10 * X ^ 3 - C 10 * X ^ 2 + C 25 * X - C 5
+
+/-- q_int has degree 5. -/
+private theorem q_int_degree : q_int.degree = 5 := by
+  unfold q_int; compute_degree!
+
+/-- q_int has natDegree 5. -/
+private theorem q_int_natDegree : q_int.natDegree = 5 := by
+  unfold q_int; compute_degree!
+
+/-- q_int is monic (leading coefficient = 1). -/
+private theorem q_int_monic : q_int.Monic := by
+  rw [Polynomial.Monic, Polynomial.leadingCoeff, q_int_natDegree]
+  unfold q_int
+  simp only [coeff_sub, coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X]
+  norm_num
+
+/-- q_int is irreducible over ℤ, by Eisenstein's criterion at p = 5. -/
+private theorem q_int_irreducible : Irreducible q_int := by
+  apply Polynomial.irreducible_of_eisenstein_criterion (P := Ideal.span {(5 : ℤ)})
+  · -- (5) is a prime ideal in ℤ
+    rw [Ideal.span_singleton_prime (show (5 : ℤ) ≠ 0 from by norm_num)]
+    exact Int.prime_iff_natAbs_prime.mpr (by norm_num)
+  · -- leadingCoeff ∉ (5)
+    rw [show q_int.leadingCoeff = 1 from q_int_monic, Ideal.mem_span_singleton]
+    norm_num
+  · -- ∀ k < degree, coeff k ∈ (5)
+    intro k hk
+    rw [q_int_degree] at hk
+    have hkn : k < 5 := WithBot.coe_lt_coe.mp hk
+    simp only [Ideal.mem_span_singleton]
+    unfold q_int
+    simp only [coeff_sub, coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X]
+    interval_cases k <;> norm_num
+  · -- 0 < degree
+    rw [q_int_degree]; exact_mod_cast Nat.zero_lt_succ 4
+  · -- coeff 0 ∉ (5)²
+    rw [Ideal.span_singleton_pow, Ideal.mem_span_singleton]
+    unfold q_int
+    simp only [coeff_sub, coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X]
+    norm_num
+  · -- isPrimitive: monic → primitive
+    exact q_int_monic.isPrimitive
 
 /-- q is irreducible over ℚ.
 
     Proof: Eisenstein's criterion at p = 5 gives ℤ-irreducibility.
-    Gauss's lemma (monic = primitive) transfers to ℚ. -/
-axiom q_irreducible : Irreducible q
+    Gauss's lemma (monic → primitive) transfers to ℚ. -/
+theorem q_irreducible : Irreducible q := by
+  have hprim := q_int_monic.isPrimitive
+  have hirr := (IsPrimitive.Int.irreducible_iff_irreducible_map_cast hprim).mp q_int_irreducible
+  convert hirr using 1
+  unfold q q_int
+  ext k
+  simp [coeff_sub, coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X, Int.cast_ite]
 
 -- ============================================================================
 -- Part III: Basic Structural Properties
 -- ============================================================================
 
-/-- q has degree 5. -/
-axiom q_natDegree : q.natDegree = 5
+/-- q has degree 5.
+
+    Proof: unfold the definition and use Mathlib's `compute_degree!` tactic,
+    which handles natDegree computation for compound polynomial expressions. -/
+theorem q_natDegree : q.natDegree = 5 := by
+  unfold q
+  compute_degree!
 
 /-- q is separable (irreducible in characteristic 0). -/
 theorem q_separable : q.Separable := q_irreducible.separable
@@ -291,16 +348,28 @@ theorem a5_card : Fintype.card (alternatingGroup (Fin 5)) = 60 := by
     abelian quotient (ℤ/2), S₅ would also be solvable. But S₅ is not
     solvable for n ≥ 5 (Mathlib: Equiv.Perm.not_solvable).
 
-    Axiomatized: requires careful Mathlib API navigation for the
-    solvable extension argument. -/
-axiom a5_not_solvable : ¬IsSolvable (alternatingGroup (Fin 5))
+    Proof: assume IsSolvable A₅, transfer to S₅ via the short exact sequence
+    A₅ → S₅ → ℤ/2 (ker ≤ range of sign), then contradict Perm.not_solvable. -/
+theorem a5_not_solvable : ¬IsSolvable (alternatingGroup (Fin 5)) := by
+  intro h
+  have : IsSolvable (Equiv.Perm (Fin 5)) := by
+    apply solvable_of_ker_le_range
+      (alternatingGroup (Fin 5)).subtype
+      Equiv.Perm.sign
+    intro x hx
+    rw [MonoidHom.mem_ker] at hx
+    exact ⟨⟨x, Equiv.Perm.mem_alternatingGroup.mpr hx⟩, rfl⟩
+  exact Equiv.Perm.not_solvable (Fin 5) (by simp) this
 
 /-- The Galois group we constructed is not solvable.
     This shows the realization goes beyond Shafarevich's theorem.
 
-    Proof: Gal ≅ A₅ (axiom), and A₅ is not solvable.
-    Axiomatized for the same API reason as a5_not_solvable. -/
-axiom gal_not_solvable : ¬IsSolvable q.Gal
+    Proof: Gal ≅ A₅ (via q_gal_iso_a5), and A₅ is not solvable.
+    Transfer non-solvability through the MulEquiv. -/
+theorem gal_not_solvable : ¬IsSolvable q.Gal := by
+  intro h
+  obtain ⟨e⟩ := q_gal_iso_a5
+  exact a5_not_solvable (isSolvable_of_surjective e.toMonoidHom e.surjective)
 
 -- ============================================================================
 -- Part IX: Connection to Original Polynomial
@@ -375,33 +444,27 @@ Groups NOT YET realized in our formalization:
 /-
 ## Results Status
 
-### PROVED (from axioms, 0 sorries):
-1. a5_realizable: ∃ K/ℚ Galois with |Aut| = 60
-2. a5_realizable_iso: ∃ K/ℚ Galois with Gal ≅ A₅
-3. splitting_field_q_finrank: [K:ℚ] = 60
-4. q_separable: q is separable over ℚ
-5. q_rootSet_card: |rootSet(q)| = 5
-6. five_dvd_gal_card: 5 | |Gal(q)|
-7. gal_card_dvd_120: |Gal(q)| | 120
-8. gal_has_index_two_in_s5: 2·|Gal| = |S₅|
-9. gal_injects_into_perm: Gal ↪ Perm(rootSet)
-10. a5_card: |A₅| = 60
-11. a5_not_solvable: A₅ is not solvable
-12. gal_not_solvable: Gal(q/ℚ) is not solvable
+### PROVED (0 sorries):
+1. q_irreducible: Irreducible q (Eisenstein at p=5 + Gauss lemma)
+2. q_natDegree: q.natDegree = 5 (compute_degree!)
+3. a5_not_solvable: ¬IsSolvable A₅ (ker ≤ range + Perm.not_solvable)
+4. gal_not_solvable: ¬IsSolvable Gal(q) (transfer via MulEquiv)
+5. a5_realizable: ∃ K/ℚ Galois with |Aut| = 60
+6. a5_realizable_iso: ∃ K/ℚ Galois with Gal ≅ A₅
+7. splitting_field_q_finrank: [K:ℚ] = 60
+8. q_separable: q is separable over ℚ
+9. q_rootSet_card: |rootSet(q)| = 5
+10. five_dvd_gal_card: 5 | |Gal(q)|
+11. gal_card_dvd_120: |Gal(q)| | 120
+12. gal_has_index_two_in_s5: 2·|Gal| = |S₅|
+13. gal_injects_into_perm: Gal ↪ Perm(rootSet)
+14. a5_card: |A₅| = 60 (native_decide)
 
-### Axioms (6):
-1. q_irreducible: Irreducible q
-   (Eisenstein at p=5; coefficient verification pending)
-2. q_natDegree: q.natDegree = 5
-   (Polynomial degree computation)
-3. q_gal_card: |Gal(q)| = 60
-   (Discriminant analysis + Chebotarev density)
-4. q_gal_iso_a5: Gal(q) ≃* A₅
-   (Index-2 subgroup uniqueness + discriminant sign)
-5. a5_not_solvable: ¬IsSolvable A₅
-   (Classical; Mathlib API navigation pending)
-6. gal_not_solvable: ¬IsSolvable Gal(q)
-   (Transfer from a5_not_solvable via q_gal_iso_a5)
+### Axioms (2, genuinely deep results):
+1. q_gal_card: |Gal(q)| = 60
+   (Discriminant analysis + Chebotarev density theorem)
+2. q_gal_iso_a5: Gal(q) ≃* A₅
+   (Index-2 subgroup uniqueness + discriminant sign computation)
 
 ### Proof Architecture
 ```

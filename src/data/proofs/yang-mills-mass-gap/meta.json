@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Yang%E2%80%93Mills_existence_and_mass_gap",
     "date": "2026",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/YangMillsMassGap.lean",
     "tags": [
       "millennium-prize",
@@ -20,8 +20,10 @@
       "confinement",
       "research"
     ],
-    "badge": "verified",
+    "badge": "axiom",
     "sorries": 0,
+    "axiomCount": 16,
+    "assumptions": "16 axiom declarations encoding fundamental QFT and gauge theory results: Killing form, gauge transformations, Creutz ratio recovery, Osterwalder-Schrader reconstruction, Euclidean mass gap implies Wightman, SUSY soft-breaking, Fradkin-Shenker theorem, 't Hooft complementarity, Banks-Rabinovici phase structure, Elitzur theorem, continuum limit gap persistence, Balaban UV stability, two-loop continuum limit, Haag theorem, Gribov-Zwanziger action, and quark propagator confinement. Additionally, 262 structure declarations encode mathematical physics infrastructure. The Yang-Mills mass gap problem remains open.",
     "mathlibDependencies": [
       {
         "theorem": "Lie.Basic",
