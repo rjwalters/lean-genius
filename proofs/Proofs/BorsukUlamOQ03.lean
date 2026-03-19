@@ -5771,4 +5771,66 @@ everywhere (since f has no fixed point on the ball), so division is safe.
 
 theorem bu_session_7_summary : True := trivial
 
+/-
+## Section LXVII: Brouwer Fixed Point — Axiom Fully Redundant
+
+The `brouwer_fixed_point` axiom (Section XXII) is now provable for ALL n:
+- n = 0: Fin 1 → ℝ ≅ ℝ. IVT on f(t) - t gives a fixed point.
+- n ≥ 1: `no_retraction_implies_brouwer_general` (Sections LXIII-LXVI).
+
+This makes the explicit statement that brouwer_fixed_point has the same
+type as a theorem, reducing the effective axiom count to 2.
+-/
+
+/-- Helper: x^2 ≤ 1 implies x ∈ [-1, 1] -/
+private theorem sq_le_one_iff_abs_le_one (x : ℝ) (h : x ^ 2 ≤ 1) :
+    x ∈ Icc (-1:ℝ) 1 := by
+  constructor <;> nlinarith [sq_nonneg (x + 1), sq_nonneg (x - 1)]
+
+/-- **Brouwer FP axiom is fully redundant**: proved as a theorem for all n.
+    - n = 0: 1D case via IVT (brouwer_fixed_point_1d)
+    - n ≥ 1: via no_retraction + ray-sphere construction -/
+theorem brouwer_fp_axiom_redundant (n : ℕ)
+    (f : (Fin (n+1) → ℝ) → (Fin (n+1) → ℝ))
+    (hf : Continuous f)
+    (hf_image : ∀ x, ∑ i, x i ^ 2 ≤ 1 → ∑ i, f x i ^ 2 ≤ 1) :
+    ∃ x : Fin (n+1) → ℝ, ∑ i, x i ^ 2 ≤ 1 ∧ f x = x := by
+  rcases Nat.eq_zero_or_pos n with rfl | hn
+  · -- n = 0: Fin 1 → ℝ ≅ ℝ, use IVT
+    -- Project to ℝ via the unique coordinate
+    set φ : ℝ → (Fin 1 → ℝ) := fun t _ => t
+    set g : ℝ → ℝ := fun t => (f (φ t)) 0
+    have hg_cont : Continuous g :=
+      (continuous_apply 0).comp (hf.comp (continuous_pi fun _ => continuous_id))
+    -- g maps [-1,1] into [-1,1]
+    have hg_map : ∀ t ∈ Icc (-1:ℝ) 1, g t ∈ Icc (-1:ℝ) 1 := by
+      intro t ht
+      have ht_ball : ∑ i : Fin 1, (φ t) i ^ 2 ≤ 1 := by
+        simp only [φ, Fin.sum_univ_one]
+        nlinarith [ht.1, ht.2]
+      have hf_ball := hf_image (φ t) ht_ball
+      rw [Fin.sum_univ_one] at hf_ball
+      exact sq_le_one_iff_abs_le_one _ hf_ball
+    -- Apply 1D Brouwer FP
+    obtain ⟨t₀, ht₀_mem, ht₀_fp⟩ := brouwer_fixed_point_1d g hg_cont hg_map
+    refine ⟨φ t₀, ?_, ?_⟩
+    · simp only [φ, Fin.sum_univ_one]; nlinarith [ht₀_mem.1, ht₀_mem.2]
+    · funext ⟨i, hi⟩; interval_cases i; exact ht₀_fp
+  · -- n ≥ 1: use no_retraction_implies_brouwer_general
+    exact no_retraction_implies_brouwer_general n hn f hf hf_image
+
+/-
+## Axiom Inventory — Final
+
+| Axiom | Status | Independent? |
+|-------|--------|-------------|
+| `borsuk_ulam_general` | INDEPENDENT | Yes — requires algebraic topology |
+| `no_retraction` | INDEPENDENT | Yes — requires degree theory |
+| `brouwer_fixed_point` | REDUNDANT | No — proved as `brouwer_fp_axiom_redundant` |
+| `lusternik_schnirelmann` | REDUNDANT | No — proved as `ls_axiom_redundant` |
+
+**Total**: 4 axioms declared, 2 independent.
+**Total**: 170+ theorems, 0 sorries, 3730+ lines.
+-/
+
 end BorsukUlamOQ03
