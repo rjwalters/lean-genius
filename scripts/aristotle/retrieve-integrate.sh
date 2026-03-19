@@ -55,41 +55,74 @@ fi
 
 mkdir -p "$RESULTS_DIR" "$PROCESSED_DIR"
 
-# Python script to retrieve solution
-PYTHON_RETRIEVE='
-import asyncio
-import sys
-from aristotlelib import Project
-
-async def retrieve(project_id, output_path):
-    try:
-        projects, _ = await Project.list_projects()
-        project = next((p for p in projects if p.project_id == project_id), None)
-
-        if not project:
-            print(f"ERROR: Project {project_id} not found")
-            return False
-
-        if project.status.name != "COMPLETE":
-            print(f"ERROR: Project not complete (status: {project.status.name})")
-            return False
-
-        await project.get_solution(output_path)
-        print(f"SUCCESS: Retrieved to {output_path}")
-        return True
-    except Exception as e:
-        print(f"ERROR: {e}")
-        return False
-
-asyncio.run(retrieve(sys.argv[1], sys.argv[2]))
-'
-
-# Retrieve a single solution
+# Retrieve a single solution using the Aristotle CLI.
+# The CLI downloads a gzip tar archive; we extract the lean file from it.
 retrieve_solution() {
     local project_id="$1"
     local output_path="$2"
 
-    uvx --from aristotlelib python3 -c "$PYTHON_RETRIEVE" "$project_id" "$output_path" 2>&1
+    local tmp_dir
+    tmp_dir=$(mktemp -d "${TMPDIR:-/tmp}/aristotle-retrieve-XXXXXX")
+    local archive_path="$tmp_dir/result.tar.gz"
+
+    # Download the result archive
+    local cli_output
+    cli_output=$(uvx --from aristotlelib aristotle result "$project_id" --destination "$archive_path" 2>&1) || {
+        rm -rf "$tmp_dir"
+        # Check for common error patterns
+        if echo "$cli_output" | grep -qi "not found\|404\|does not exist"; then
+            echo "ERROR: Project $project_id not found on server"
+        else
+            echo "ERROR: Failed to retrieve $project_id: $cli_output"
+        fi
+        return 1
+    }
+
+    # The result is a gzip-compressed tar archive containing output.lean
+    local extract_dir="$tmp_dir/extracted"
+    mkdir -p "$extract_dir"
+
+    # Decompress and extract
+    if file "$archive_path" | grep -q "gzip"; then
+        gunzip -f "$archive_path" 2>/dev/null
+        local tar_path="${archive_path%.gz}"
+        [[ ! -f "$tar_path" ]] && tar_path="$archive_path"  # gunzip may rename in place
+        tar xf "$tar_path" -C "$extract_dir" 2>/dev/null || {
+            rm -rf "$tmp_dir"
+            echo "ERROR: Failed to extract archive for $project_id"
+            return 1
+        }
+    elif file "$archive_path" | grep -q "tar"; then
+        tar xf "$archive_path" -C "$extract_dir" 2>/dev/null || {
+            rm -rf "$tmp_dir"
+            echo "ERROR: Failed to extract archive for $project_id"
+            return 1
+        }
+    else
+        # Might be a plain lean file
+        cp "$archive_path" "$extract_dir/output.lean" 2>/dev/null || {
+            rm -rf "$tmp_dir"
+            echo "ERROR: Unknown file format for result of $project_id"
+            return 1
+        }
+    fi
+
+    # Find the lean file in the extracted directory
+    local lean_file
+    lean_file=$(find "$extract_dir" -name "*.lean" -type f | head -1)
+
+    if [[ -z "$lean_file" || ! -f "$lean_file" ]]; then
+        rm -rf "$tmp_dir"
+        echo "ERROR: No .lean file found in result archive for $project_id"
+        return 1
+    fi
+
+    # Copy to the desired output path
+    cp "$lean_file" "$output_path"
+    rm -rf "$tmp_dir"
+
+    echo "SUCCESS: Retrieved to $output_path"
+    return 0
 }
 
 # Count sorries in a file
@@ -294,14 +327,202 @@ update_job_status_with_theorems() {
     ' "$JOBS_FILE" > "$tmp_file" && mv "$tmp_file" "$JOBS_FILE"
 }
 
+# Recover completed jobs from the Aristotle server that are not tracked locally.
+# Downloads each result, maps it to a local proof file, and integrates if possible.
+recover_server_completed() {
+    echo -e "${BLUE}=== Recovering Completed Server Jobs ===${NC}"
+    echo ""
+
+    # Get completed projects from server
+    local output
+    output=$(uvx --from aristotlelib aristotle list --status COMPLETE --limit 100 2>&1) || {
+        echo -e "${RED}Failed to query server for completed projects${NC}"
+        return 1
+    }
+
+    # Parse project IDs from the table output
+    local server_ids
+    server_ids=$(echo "$output" | grep -oE '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' 2>/dev/null)
+
+    if [[ -z "$server_ids" ]]; then
+        echo "No completed projects found on server"
+        return 0
+    fi
+
+    local total_server
+    total_server=$(echo "$server_ids" | wc -l | tr -d ' ')
+    echo "Found $total_server completed projects on server"
+
+    # Get locally tracked project IDs
+    local tracked_ids
+    tracked_ids=$(jq -r '.jobs[].project_id // empty' "$JOBS_FILE" 2>/dev/null | sort -u)
+
+    local recovered=0
+    local skipped=0
+    local failed_recover=0
+
+    while IFS= read -r pid; do
+        [[ -z "$pid" ]] && continue
+
+        # Skip if already tracked locally
+        if echo "$tracked_ids" | grep -q "^${pid}$"; then
+            continue
+        fi
+
+        echo -e "${CYAN}Recovering:${NC} $pid"
+
+        if [[ "$DRY_RUN" == true ]]; then
+            echo -e "  ${YELLOW}[DRY RUN]${NC} Would attempt recovery"
+            ((recovered++))
+            continue
+        fi
+
+        # Download the result to a temp location
+        local tmp_solution
+        tmp_solution=$(mktemp "${TMPDIR:-/tmp}/aristotle-recover-XXXXXX.lean")
+        local result
+        result=$(retrieve_solution "$pid" "$tmp_solution")
+
+        if echo "$result" | grep -q "ERROR"; then
+            echo -e "  ${RED}Failed to retrieve:${NC} $result"
+            rm -f "$tmp_solution"
+            ((failed_recover++))
+            continue
+        fi
+
+        # Try to identify the original file from the solution content
+        # Look for filename hints in the Aristotle header comment
+        local original_basename=""
+        original_basename=$(grep -oP 'project request had uuid: \K.*' "$tmp_solution" 2>/dev/null | head -1) || true
+
+        # Try to find the Lean module name from the file content
+        # Look for namespace or import patterns that might hint at the original file
+        local lean_basename=""
+        # Check if there's a namespace declaration
+        lean_basename=$(grep -oP '^namespace\s+\K\w+' "$tmp_solution" 2>/dev/null | head -1) || true
+
+        # Try to map the namespace to a file
+        local target_file=""
+        if [[ -n "$lean_basename" ]]; then
+            # Check common naming patterns
+            for candidate in "$PROOFS_DIR/${lean_basename}.lean" "$PROOFS_DIR/${lean_basename}Problem.lean" "$PROOFS_DIR/${lean_basename}Aristotle.lean"; do
+                if [[ -f "$candidate" ]]; then
+                    target_file="$candidate"
+                    break
+                fi
+            done
+        fi
+
+        if [[ -z "$target_file" ]]; then
+            echo -e "  ${YELLOW}Cannot map to local file (no namespace match), saving to results${NC}"
+            mv "$tmp_solution" "$RESULTS_DIR/recovered-${pid}.lean"
+
+            # Track in jobs.json
+            local now
+            now=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+            local tmp_file
+            tmp_file=$(mktemp)
+            jq --arg pid "$pid" --arg now "$now" '
+                .jobs += [{
+                    project_id: $pid,
+                    file: "unknown",
+                    problem_id: ("recovered-" + ($pid | split("-") | .[0])),
+                    submitted: "unknown",
+                    status: "completed",
+                    notes: ("Recovered from server at " + $now + ". File mapping unknown — saved to aristotle-results/new/")
+                }]
+            ' "$JOBS_FILE" > "$tmp_file" && mv "$tmp_file" "$JOBS_FILE"
+
+            ((recovered++))
+            continue
+        fi
+
+        local target_basename
+        target_basename=$(basename "$target_file" .lean)
+        local problem_id
+        problem_id=$(echo "$target_basename" | sed 's/Problem$//' | sed 's/Aristotle$//' | tr '[:upper:]' '[:lower:]' | sed 's/erdos/erdos-/')
+
+        echo -e "  ${GREEN}Mapped to:${NC} $target_file"
+
+        # Compare sorry counts
+        local orig_sorries new_sorries
+        orig_sorries=$(count_sorries "$target_file")
+        new_sorries=$(count_sorries "$tmp_solution")
+
+        echo -e "  Original sorries: $orig_sorries, Solution sorries: $new_sorries"
+
+        local now
+        now=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+        if [[ "$new_sorries" -lt "$orig_sorries" ]]; then
+            local theorems_proved=$((orig_sorries - new_sorries))
+            echo -e "  ${GREEN}Improvement!${NC} ($theorems_proved theorems proved)"
+
+            # Backup and integrate
+            cp "$target_file" "$target_file.bak"
+            cp "$tmp_solution" "$target_file"
+            mv "$tmp_solution" "$PROCESSED_DIR/recovered-${pid}.lean"
+
+            # Track in jobs.json
+            local tmp_jq
+            tmp_jq=$(mktemp)
+            jq --arg pid "$pid" --arg file "proofs/Proofs/${target_basename}.lean" \
+               --arg prob "$problem_id" --arg now "$now" \
+               --argjson proved "$theorems_proved" '
+                .jobs += [{
+                    project_id: $pid,
+                    file: $file,
+                    problem_id: $prob,
+                    submitted: "unknown",
+                    status: "integrated",
+                    outcome: ("\($proved) theorems proved via server recovery"),
+                    theorems_proved: $proved,
+                    notes: ("Recovered and integrated from server at " + $now)
+                }]
+            ' "$JOBS_FILE" > "$tmp_jq" && mv "$tmp_jq" "$JOBS_FILE"
+
+            ((recovered++))
+        else
+            echo -e "  ${YELLOW}No improvement${NC}"
+            mv "$tmp_solution" "$PROCESSED_DIR/recovered-${pid}.lean"
+
+            # Track in jobs.json
+            local tmp_jq
+            tmp_jq=$(mktemp)
+            jq --arg pid "$pid" --arg file "proofs/Proofs/${target_basename}.lean" \
+               --arg prob "$problem_id" --arg now "$now" '
+                .jobs += [{
+                    project_id: $pid,
+                    file: $file,
+                    problem_id: $prob,
+                    submitted: "unknown",
+                    status: "completed",
+                    outcome: "No improvement (recovered from server)",
+                    notes: ("Recovered from server at " + $now + ". No sorry reduction.")
+                }]
+            ' "$JOBS_FILE" > "$tmp_jq" && mv "$tmp_jq" "$JOBS_FILE"
+
+            ((skipped++))
+        fi
+    done <<< "$server_ids"
+
+    echo ""
+    echo -e "${GREEN}Recovered: $recovered${NC}"
+    if [[ "$skipped" -gt 0 ]]; then
+        echo -e "${YELLOW}No improvement: $skipped${NC}"
+    fi
+    if [[ "$failed_recover" -gt 0 ]]; then
+        echo -e "${RED}Failed: $failed_recover${NC}"
+    fi
+}
+
 # Main logic
 main() {
     echo -e "${BLUE}=== Aristotle Retrieve & Integrate ===${NC}"
     echo ""
 
     if [[ ! -f "$JOBS_FILE" ]]; then
-        echo "No jobs file found"
-        exit 0
+        echo '{"jobs": []}' > "$JOBS_FILE"
     fi
 
     # Find completed jobs that haven't been integrated
@@ -309,37 +530,45 @@ main() {
     completed_jobs=$(jq -c '.jobs[] | select(.status == "completed")' "$JOBS_FILE")
 
     if [[ -z "$completed_jobs" ]]; then
-        echo "No completed jobs to process"
+        echo "No locally tracked completed jobs to process"
 
         # Check for jobs that need status update
         echo ""
         echo "Checking submitted jobs for completion..."
         "$SCRIPT_DIR/check-jobs.sh" --update
-        exit 0
-    fi
 
-    local count=$(echo "$completed_jobs" | wc -l | tr -d ' ')
-    echo "Found $count completed jobs to process"
-    echo ""
+        # Re-check after status update
+        completed_jobs=$(jq -c '.jobs[] | select(.status == "completed")' "$JOBS_FILE")
+    fi
 
     local integrated=0
     local failed=0
 
-    while IFS= read -r job; do
-        [[ -z "$job" ]] && continue
-
-        if integrate_solution "$job"; then
-            ((integrated++))
-        else
-            ((failed++))
-        fi
+    if [[ -n "$completed_jobs" ]]; then
+        local count=$(echo "$completed_jobs" | wc -l | tr -d ' ')
+        echo "Found $count completed jobs to process"
         echo ""
-    done <<< "$completed_jobs"
 
-    echo -e "${GREEN}Processed: $integrated${NC}"
-    if [[ "$failed" -gt 0 ]]; then
-        echo -e "${RED}Failed: $failed${NC}"
+        while IFS= read -r job; do
+            [[ -z "$job" ]] && continue
+
+            if integrate_solution "$job"; then
+                ((integrated++))
+            else
+                ((failed++))
+            fi
+            echo ""
+        done <<< "$completed_jobs"
+
+        echo -e "${GREEN}Processed: $integrated${NC}"
+        if [[ "$failed" -gt 0 ]]; then
+            echo -e "${RED}Failed: $failed${NC}"
+        fi
     fi
+
+    # Also attempt to recover untracked completed jobs from the server
+    echo ""
+    recover_server_completed
 }
 
 main

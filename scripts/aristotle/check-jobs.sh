@@ -46,85 +46,106 @@ if [[ -z "${ARISTOTLE_API_KEY:-}" ]]; then
     fi
 fi
 
-# Python script to check job status
-PYTHON_CHECK='
-import asyncio
-import json
-import sys
-from aristotlelib import Project
+# Parse project entries from 'aristotle list' table output.
+# Each line matching a UUID pattern is a project entry.
+# Format: ID STATUS CREATED PROGRESS
+# Example: 5b609df4-dcc6-4e9b-8742-d0b4560f222b COMPLETE 2 days ago 100%
+parse_list_output() {
+    local output="$1"
+    # Extract lines that start with a UUID
+    echo "$output" | grep -E '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' | while read -r line; do
+        local pid status progress
+        pid=$(echo "$line" | awk '{print $1}')
+        status=$(echo "$line" | awk '{print $2}')
+        # Progress is the last field, may be "100%" or "-"
+        progress=$(echo "$line" | awk '{print $NF}' | sed 's/%//')
+        [[ "$progress" == "-" ]] && progress="0"
+        echo "$pid|$status|$progress"
+    done
+}
 
-async def check_jobs():
-    jobs_file = sys.argv[1]
+# Query the Aristotle server for all projects across all statuses.
+# Builds a combined JSON result compatible with the rest of the script.
+# Output format: {"submitted": N, "results": [...], "server_projects": [...]}
+# Look up a project ID in the server data string.
+# Args: project_id, all_server_projects (pipe-delimited lines: pid|status|progress)
+# Outputs: status|progress or empty string if not found
+lookup_server_project() {
+    local target_pid="$1"
+    local server_data="$2"
+    echo "$server_data" | grep "^${target_pid}|" | head -1 | cut -d'|' -f2-
+}
 
-    with open(jobs_file) as f:
-        data = json.load(f)
-
-    submitted = [j for j in data.get("jobs", []) if j.get("status") == "submitted"]
-
-    # Always query server for reconciliation (even with 0 submitted jobs)
-    try:
-        projects, _ = await Project.list_projects()
-        project_map = {p.project_id: p for p in projects}
-    except Exception as e:
-        print(json.dumps({"error": str(e)}))
-        return
-
-    if not submitted:
-        # Still return server projects for reconciliation
-        all_server = []
-        for p in projects:
-            all_server.append({
-                "project_id": p.project_id,
-                "status": p.status.name,
-                "percent": p.percent_complete or 0,
-                "file_name": getattr(p, "file_name", None)
-            })
-        print(json.dumps({"submitted": 0, "results": [], "server_projects": all_server}))
-        return
-
-    results = []
-    for job in submitted:
-        pid = job.get("project_id")
-        problem_id = job.get("problem_id", "unknown")
-
-        if pid in project_map:
-            p = project_map[pid]
-            results.append({
-                "problem_id": problem_id,
-                "project_id": pid,
-                "status": p.status.name,
-                "percent": p.percent_complete or 0
-            })
-        else:
-            results.append({
-                "problem_id": problem_id,
-                "project_id": pid,
-                "status": "NOT_FOUND",
-                "percent": 0
-            })
-
-    # Also return all server projects for reconciliation
-    all_server = []
-    for p in projects:
-        all_server.append({
-            "project_id": p.project_id,
-            "status": p.status.name,
-            "percent": p.percent_complete or 0,
-            "file_name": getattr(p, "file_name", None)
-        })
-
-    print(json.dumps({
-        "submitted": len(submitted),
-        "results": results,
-        "server_projects": all_server
-    }))
-
-asyncio.run(check_jobs())
-'
-
-# Run status check
 run_check() {
-    uvx --from aristotlelib python3 -c "$PYTHON_CHECK" "$JOBS_FILE" 2>&1
+    local all_server_projects=""
+    local all_statuses="NOT_STARTED QUEUED IN_PROGRESS COMPLETE COMPLETE_WITH_ERRORS OUT_OF_BUDGET FAILED CANCELED"
+
+    # Fetch all projects from server
+    for status in $all_statuses; do
+        local output
+        output=$(uvx --from aristotlelib aristotle list --status "$status" --limit 100 2>&1) || continue
+
+        local parsed
+        parsed=$(parse_list_output "$output")
+        if [[ -n "$parsed" ]]; then
+            if [[ -n "$all_server_projects" ]]; then
+                all_server_projects="$all_server_projects
+$parsed"
+            else
+                all_server_projects="$parsed"
+            fi
+        fi
+    done
+
+    # Get submitted jobs from local tracking
+    local submitted_jobs
+    submitted_jobs=$(jq -c '.jobs[] | select(.status == "submitted")' "$JOBS_FILE" 2>/dev/null)
+    local submitted_count=0
+    [[ -n "$submitted_jobs" ]] && submitted_count=$(echo "$submitted_jobs" | wc -l | tr -d ' ')
+
+    # Build results JSON for submitted jobs
+    local results_json="[]"
+    if [[ -n "$submitted_jobs" ]]; then
+        while IFS= read -r job; do
+            [[ -z "$job" ]] && continue
+            local pid prob
+            pid=$(echo "$job" | jq -r '.project_id')
+            prob=$(echo "$job" | jq -r '.problem_id // "unknown"')
+
+            local server_status="NOT_FOUND"
+            local server_progress="0"
+            local server_entry
+            server_entry=$(lookup_server_project "$pid" "$all_server_projects")
+            if [[ -n "$server_entry" ]]; then
+                server_status=$(echo "$server_entry" | cut -d'|' -f1)
+                server_progress=$(echo "$server_entry" | cut -d'|' -f2)
+            fi
+
+            results_json=$(echo "$results_json" | jq \
+                --arg pid "$pid" --arg prob "$prob" \
+                --arg status "$server_status" --argjson percent "${server_progress:-0}" \
+                '. += [{"project_id": $pid, "problem_id": $prob, "status": $status, "percent": $percent}]')
+        done <<< "$submitted_jobs"
+    fi
+
+    # Build server_projects JSON array for reconciliation
+    local server_json="[]"
+    if [[ -n "$all_server_projects" ]]; then
+        while IFS='|' read -r pid status progress; do
+            [[ -z "$pid" ]] && continue
+            # CLI list does not provide file_name; use null
+            server_json=$(echo "$server_json" | jq \
+                --arg pid "$pid" --arg status "$status" \
+                --argjson percent "${progress:-0}" \
+                '. += [{"project_id": $pid, "status": $status, "percent": $percent, "file_name": null}]')
+        done <<< "$all_server_projects"
+    fi
+
+    # Output combined JSON
+    jq -n --argjson submitted "$submitted_count" \
+          --argjson results "$results_json" \
+          --argjson server "$server_json" \
+          '{"submitted": $submitted, "results": $results, "server_projects": $server}'
 }
 
 # Categorize failure based on job outcome text and file content

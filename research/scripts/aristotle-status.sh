@@ -53,81 +53,143 @@ fi
 # Create results directory if needed
 mkdir -p "$RESULTS_DIR"
 
-# Python script to check all jobs
-PYTHON_SCRIPT='
-import asyncio
-import json
-import sys
-import os
-from aristotlelib import Project
+# Parse project entries from 'aristotle list' table output.
+parse_list_entries() {
+    local output="$1"
+    echo "$output" | grep -E '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' | while read -r line; do
+        local pid status progress
+        pid=$(echo "$line" | awk '{print $1}')
+        status=$(echo "$line" | awk '{print $2}')
+        progress=$(echo "$line" | awk '{print $NF}' | sed 's/%//')
+        [[ "$progress" == "-" ]] && progress="0"
+        echo "$pid|$status|$progress"
+    done
+}
 
-async def check_all():
-    jobs_file = sys.argv[1]
-    retrieve = sys.argv[2] == "true"
-    results_dir = sys.argv[3]
+# Build a server project map from all statuses via CLI
+build_server_map() {
+    local all_statuses="NOT_STARTED QUEUED IN_PROGRESS COMPLETE COMPLETE_WITH_ERRORS OUT_OF_BUDGET FAILED CANCELED"
+    for status in $all_statuses; do
+        local output
+        output=$(uvx --from aristotlelib aristotle list --status "$status" --limit 100 2>&1) || continue
+        parse_list_entries "$output"
+    done
+}
 
-    with open(jobs_file) as f:
-        data = json.load(f)
+# Look up a project ID in server data (pipe-delimited: pid|status|progress)
+lookup_server_entry() {
+    local target_pid="$1"
+    local server_data="$2"
+    echo "$server_data" | grep "^${target_pid}|" | head -1 | cut -d'|' -f2-
+}
 
-    # Get submitted jobs
-    submitted = [j for j in data.get("jobs", []) if j.get("status") == "submitted"]
+# Run the status check using CLI
+check_and_build_output() {
+    # Build server data (pipe-delimited lines: pid|status|progress)
+    local server_data
+    server_data=$(build_server_map)
 
-    if not submitted:
-        print(json.dumps({"submitted": [], "results": []}))
+    # Get submitted jobs from local tracking
+    local submitted_jobs
+    submitted_jobs=$(jq -c '.jobs[] | select(.status == "submitted")' "$JOBS_FILE" 2>/dev/null)
+
+    if [[ -z "$submitted_jobs" ]]; then
+        echo '{"submitted": 0, "results": []}'
         return
+    fi
 
-    # Check status via API
-    try:
-        projects, _ = await Project.list_projects()
-        project_map = {p.project_id: p for p in projects}
-    except Exception as e:
-        print(json.dumps({"error": str(e)}))
-        return
+    local submitted_count
+    submitted_count=$(echo "$submitted_jobs" | wc -l | tr -d ' ')
 
-    results = []
-    for job in submitted:
-        pid = job.get("project_id")
-        problem_id = job.get("problem_id", "unknown")
+    # Build results
+    local results_json="[]"
+    while IFS= read -r job; do
+        [[ -z "$job" ]] && continue
+        local pid prob
+        pid=$(echo "$job" | jq -r '.project_id')
+        prob=$(echo "$job" | jq -r '.problem_id // "unknown"')
 
-        if pid in project_map:
-            p = project_map[pid]
-            status = p.status.name
-            percent = p.percent_complete or 0
+        local server_status="NOT_FOUND"
+        local server_progress="0"
+        local retrieved=""
 
-            result = {
-                "problem_id": problem_id,
-                "project_id": pid[:8],
-                "status": status,
-                "percent": percent,
-                "file_name": p.file_name
-            }
+        local server_entry
+        server_entry=$(lookup_server_entry "$pid" "$server_data")
+        if [[ -n "$server_entry" ]]; then
+            server_status=$(echo "$server_entry" | cut -d'|' -f1)
+            server_progress=$(echo "$server_entry" | cut -d'|' -f2)
+        fi
 
-            # Retrieve if complete and requested
-            if status == "COMPLETE" and retrieve:
-                try:
-                    base = os.path.basename(p.file_name or f"{problem_id}.lean")
-                    output = os.path.join(results_dir, base.replace(".lean", "-solved.lean"))
-                    await p.get_solution(output)
-                    result["retrieved"] = output
-                except Exception as e:
-                    result["retrieve_error"] = str(e)
+        # Retrieve if complete and requested
+        if [[ "$server_status" == "COMPLETE" && "$RETRIEVE" == true ]]; then
+            local base="${prob}.lean"
+            local output_file="$RESULTS_DIR/${base%.lean}-solved.lean"
 
-            results.append(result)
-        else:
-            results.append({
-                "problem_id": problem_id,
-                "project_id": pid[:8] if pid else "unknown",
-                "status": "NOT_FOUND",
-                "percent": 0
-            })
+            local retrieve_result
+            retrieve_result=$(retrieve_solution_cli "$pid" "$output_file" 2>&1)
+            if echo "$retrieve_result" | grep -q "SUCCESS"; then
+                retrieved="$output_file"
+            fi
+        fi
 
-    print(json.dumps({"submitted": len(submitted), "results": results}))
+        results_json=$(echo "$results_json" | jq \
+            --arg pid "${pid:0:8}" --arg prob "$prob" \
+            --arg status "$server_status" --argjson percent "${server_progress:-0}" \
+            --arg retrieved "$retrieved" \
+            '. += [{"project_id": $pid, "problem_id": $prob, "status": $status, "percent": $percent, "retrieved": (if $retrieved != "" then $retrieved else null end)}]')
+    done <<< "$submitted_jobs"
 
-asyncio.run(check_all())
-'
+    jq -n --argjson submitted "$submitted_count" --argjson results "$results_json" \
+        '{"submitted": $submitted, "results": $results}'
+}
 
-# Run the Python script
-OUTPUT=$(uvx --from aristotlelib python3 -c "$PYTHON_SCRIPT" "$JOBS_FILE" "$RETRIEVE" "$RESULTS_DIR" 2>&1)
+# Retrieve a solution using the CLI (for --retrieve mode)
+retrieve_solution_cli() {
+    local project_id="$1"
+    local output_path="$2"
+
+    local tmp_dir
+    tmp_dir=$(mktemp -d "${TMPDIR:-/tmp}/aristotle-retrieve-XXXXXX")
+    local archive_path="$tmp_dir/result.tar.gz"
+
+    local cli_output
+    cli_output=$(uvx --from aristotlelib aristotle result "$project_id" --destination "$archive_path" 2>&1) || {
+        rm -rf "$tmp_dir"
+        echo "ERROR: Failed to retrieve $project_id"
+        return 1
+    }
+
+    # Extract lean file from archive
+    local extract_dir="$tmp_dir/extracted"
+    mkdir -p "$extract_dir"
+
+    if file "$archive_path" | grep -q "gzip"; then
+        gunzip -f "$archive_path" 2>/dev/null
+        local tar_path="${archive_path%.gz}"
+        [[ ! -f "$tar_path" ]] && tar_path="$archive_path"
+        tar xf "$tar_path" -C "$extract_dir" 2>/dev/null
+    elif file "$archive_path" | grep -q "tar"; then
+        tar xf "$archive_path" -C "$extract_dir" 2>/dev/null
+    else
+        cp "$archive_path" "$extract_dir/output.lean" 2>/dev/null
+    fi
+
+    local lean_file
+    lean_file=$(find "$extract_dir" -name "*.lean" -type f | head -1)
+
+    if [[ -n "$lean_file" && -f "$lean_file" ]]; then
+        cp "$lean_file" "$output_path"
+        rm -rf "$tmp_dir"
+        echo "SUCCESS: Retrieved to $output_path"
+        return 0
+    else
+        rm -rf "$tmp_dir"
+        echo "ERROR: No lean file in result archive"
+        return 1
+    fi
+}
+
+OUTPUT=$(check_and_build_output)
 
 # Check for errors
 if echo "$OUTPUT" | grep -q '"error"'; then

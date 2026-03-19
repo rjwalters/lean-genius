@@ -82,71 +82,42 @@ count_active_jobs() {
 # Server capacity limit (hard limit is 5, use safe margin)
 SERVER_CAPACITY_LIMIT=3
 
-# Query server for actual active project count
-# Returns JSON: {"active": N, "breakdown": {...}, "zombies_ignored": N}
-PYTHON_CAPACITY_CHECK='
-import asyncio
-import json
-from aristotlelib import Project
-
-async def check_capacity():
-    try:
-        projects, _ = await Project.list_projects()
-    except Exception as e:
-        print(json.dumps({"error": str(e)}))
-        return
-
-    active_statuses = {"QUEUED", "IN_PROGRESS", "NOT_STARTED"}
-    breakdown = {}
-    active = 0
-    zombies = 0
-    for p in projects:
-        name = p.status.name
-        if name in active_statuses:
-            # NOT_STARTED with no file are zombies from failed uploads - skip them
-            if name == "NOT_STARTED" and not getattr(p, "file_name", None):
-                zombies += 1
-                continue
-            active += 1
-            breakdown[name] = breakdown.get(name, 0) + 1
-
-    result = {"active": active, "breakdown": breakdown}
-    if zombies > 0:
-        result["zombies_ignored"] = zombies
-    print(json.dumps(result))
-
-asyncio.run(check_capacity())
-'
-
-# Check server capacity. Returns 0 if under limit, 1 if at/over limit.
+# Check server capacity using the Aristotle CLI.
+# Returns 0 if under limit, 1 if at/over limit.
 # Sets SERVER_ACTIVE to the count.
 check_server_capacity() {
-    local output
-    output=$(uvx --from aristotlelib python3 -c "$PYTHON_CAPACITY_CHECK" 2>&1)
+    local active=0
+    local breakdown=""
 
-    # Check for errors
-    if echo "$output" | jq -e '.error' >/dev/null 2>&1; then
-        local error
-        error=$(echo "$output" | jq -r '.error')
-        echo -e "${RED}Server capacity check failed: $error${NC}" >&2
-        echo -e "${YELLOW}Proceeding with local count only${NC}" >&2
-        SERVER_ACTIVE=-1
-        return 0  # Don't block on API errors, fall back to local count
-    fi
+    # Query active statuses via CLI: QUEUED, IN_PROGRESS, NOT_STARTED
+    for status in QUEUED IN_PROGRESS NOT_STARTED; do
+        local output
+        output=$(uvx --from aristotlelib aristotle list --status "$status" --limit 100 2>&1) || {
+            echo -e "${RED}Server capacity check failed for status $status${NC}" >&2
+            echo -e "${YELLOW}Proceeding with local count only${NC}" >&2
+            SERVER_ACTIVE=-1
+            return 0
+        }
 
-    SERVER_ACTIVE=$(echo "$output" | jq -r '.active')
-    local breakdown
-    breakdown=$(echo "$output" | jq -r '.breakdown | to_entries | map("\(.key): \(.value)") | join(", ")')
+        # Count lines that look like project entries (UUID at start of line)
+        local count
+        count=$(echo "$output" | grep -cE '^[0-9a-f]{8}-' 2>/dev/null || true)
+
+        if [[ "$count" -gt 0 ]]; then
+            active=$((active + count))
+            if [[ -n "$breakdown" ]]; then
+                breakdown="$breakdown, $status: $count"
+            else
+                breakdown="$status: $count"
+            fi
+        fi
+    done
+
+    SERVER_ACTIVE="$active"
 
     echo "Server active projects: $SERVER_ACTIVE (limit: $SERVER_CAPACITY_LIMIT)"
-    if [[ -n "$breakdown" && "$breakdown" != "" ]]; then
+    if [[ -n "$breakdown" ]]; then
         echo "  Breakdown: $breakdown"
-    fi
-
-    local zombies
-    zombies=$(echo "$output" | jq -r '.zombies_ignored // 0')
-    if [[ "$zombies" -gt 0 ]]; then
-        echo -e "  ${YELLOW}Ignoring $zombies zombie projects (NOT_STARTED with no file)${NC}"
     fi
 
     if [[ "$SERVER_ACTIVE" -ge "$SERVER_CAPACITY_LIMIT" ]]; then
@@ -205,11 +176,25 @@ submit_file() {
         return 0
     fi
 
-    # Use aristotlelib to submit (prove-from-file is the new command)
+    # Determine the project directory for submission.
+    # The preprocessor creates a temp dir with the lean file + lakefile.toml + lean-toolchain.
+    # If preprocessing was done, use that temp dir. Otherwise, create one for the raw file.
+    local project_dir=""
+    if [[ -n "$preprocessed_tmp" && -f "$preprocessed_tmp" ]]; then
+        project_dir="$(dirname "$preprocessed_tmp")"
+    else
+        # Create a temp project dir with the file and Lean project metadata
+        project_dir=$(mktemp -d "${TMPDIR:-/tmp}/aristotle-submit-XXXXXX")
+        cp "$submit_file" "$project_dir/"
+        cp "$PROJECT_ROOT/proofs/lakefile.toml" "$project_dir/"
+        cp "$PROJECT_ROOT/proofs/lean-toolchain" "$project_dir/"
+    fi
+
+    # Submit using the new Aristotle CLI (default is async, no --wait needed)
     local output
-    output=$(uvx --from aristotlelib aristotle prove-from-file "$submit_file" --no-wait 2>&1) || {
-        # Clean up temp file
-        [[ -n "$preprocessed_tmp" && -f "$preprocessed_tmp" ]] && rm -rf "$(dirname "$preprocessed_tmp")"
+    output=$(uvx --from aristotlelib aristotle submit --project-dir "$project_dir" "Prove all sorry lemmas in $(basename "$submit_file")" 2>&1) || {
+        # Clean up temp directory
+        rm -rf "$project_dir"
 
         # Check for rate limiting (429) - stop batch immediately
         if echo "$output" | grep -qi "429\|rate.limit\|too many\|already have.*projects"; then
@@ -221,10 +206,10 @@ submit_file() {
         return 1
     }
 
-    # Clean up temp file after submission
-    [[ -n "$preprocessed_tmp" && -f "$preprocessed_tmp" ]] && rm -rf "$(dirname "$preprocessed_tmp")"
+    # Clean up temp directory after submission
+    rm -rf "$project_dir"
 
-    # Extract project ID from output
+    # Extract project ID from output (format: "INFO - Project created: <UUID>")
     local project_id=$(echo "$output" | grep -oE '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' | head -1)
 
     if [[ -z "$project_id" ]]; then
