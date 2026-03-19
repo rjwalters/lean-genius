@@ -379,9 +379,8 @@ theorem q_gal_card : Fintype.card q.Gal = 60 := by
   have hne30 := gal_card_ne_30
   obtain ⟨k, hk⟩ := h15
   have hk_pos : 0 < k := by
-    rcases k with _ | k
-    · simp at hk; exact absurd hk (by omega)
-    · omega
+    have hpos : 0 < Fintype.card q.Gal := Fintype.card_pos
+    rw [hk] at hpos; omega
   have hk_dvd : k ∣ 4 := by
     rw [hk] at h_dvd
     exact Nat.dvd_of_mul_dvd_mul_left (by norm_num : 0 < 15) h_dvd
