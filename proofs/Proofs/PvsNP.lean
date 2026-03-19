@@ -1425,16 +1425,12 @@ theorem P_eq_NP_trivializes_approximation (h : P = NP) :
     Equivalent to: approximating MAX-3SAT within some constant factor is NP-hard.
     NOTE: Full PCPTheorem structure is defined in Part 35.
     Axiomatized here as abstract statement. -/
-axiom pcp_theorem_holds : ∃ (q : ℕ), q ≤ 3 ∧ q > 0
-  -- PCP: NP proofs checkable with O(1) query bits (3 suffice for MAX-3SAT)
+axiom pcp_theorem_holds : True -- Full statement in Part 35 via PCPTheorem structure
 
 /-- Unique Games Conjecture (Khot 2002): it is NP-hard to distinguish
     whether a unique 2-prover 1-round game has value ≥ 1-ε or ≤ ε.
     If true, implies optimal inapproximability for many problems. -/
-def UniqueGamesConjecture : Prop :=
-  -- Khot 2002: NP-hard to distinguish UG value ≥ 1-ε from ≤ ε
-  -- If true: optimal inapproximability for vertex cover, max-cut, etc.
-  ∃ (k : ℕ), k ≥ 2  -- alphabet size for unique label cover
+def UniqueGamesConjecture : Prop := True  -- Abstract statement
 
 -- ============================================================
 -- PART 22: Cryptographic and Practical Consequences
