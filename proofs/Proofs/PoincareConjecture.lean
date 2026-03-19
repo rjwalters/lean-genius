@@ -569,6 +569,99 @@ theorem sphere3_closedManifold : Closed3Manifold (↥Sphere3) :=
    sphere3_locally_euclidean⟩
 
 /- ===============================================================================
+PART XVI-B: GENERAL SPHERE LOCALLY EUCLIDEAN
+===============================================================================
+
+Generalize the stereographic projection proof to all Sⁿ ⊂ ℝⁿ⁺¹.
+-/
+
+/-- The orthogonal complement of a unit vector in ℝⁿ⁺¹ is homeomorphic to ℝⁿ. -/
+private noncomputable def orthCompHomeomorphN (n : ℕ) (v : EuclideanSpace ℝ (Fin (n + 1)))
+    (hv : ‖v‖ = 1) :
+    ↥(Submodule.span ℝ {v})ᗮ ≃ₜ EuclideanSpace ℝ (Fin n) := by
+  have hne : v ≠ 0 := by intro h; rw [h, norm_zero] at hv; exact one_ne_zero hv.symm
+  have hdim : Module.finrank ℝ ↥(Submodule.span ℝ {v})ᗮ = n := by
+    have h1 : Module.finrank ℝ (EuclideanSpace ℝ (Fin (n + 1))) = n + 1 :=
+      finrank_euclideanSpace_fin
+    have h2 : Module.finrank ℝ
+        (Submodule.span ℝ ({v} : Set (EuclideanSpace ℝ (Fin (n + 1))))) = 1 := by
+      rw [finrank_span_singleton hne]
+    have h3 := Submodule.finrank_add_finrank_orthogonal
+      (Submodule.span ℝ ({v} : Set (EuclideanSpace ℝ (Fin (n + 1)))))
+    omega
+  let b := stdOrthonormalBasis ℝ ↥(Submodule.span ℝ {v})ᗮ
+  have hcard : Fintype.card (Fin (Module.finrank ℝ ↥(Submodule.span ℝ {v})ᗮ)) = n := by
+    simp [hdim]
+  let bn := b.reindex (Fintype.equivFinOfCardEq hcard)
+  exact bn.repr.toHomeomorph
+
+/-- Stereographic chart for Sⁿ ⊂ ℝⁿ⁺¹ from a unit vector, mapping to ℝⁿ. -/
+private noncomputable def sphereChartN (n : ℕ) (v : EuclideanSpace ℝ (Fin (n + 1)))
+    (hv : ‖v‖ = 1) :
+    OpenPartialHomeomorph ↥(Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1)
+      (EuclideanSpace ℝ (Fin n)) :=
+  (stereographic hv).transHomeomorph (orthCompHomeomorphN n v hv)
+
+/-- On the unit sphere in ℝⁿ⁺¹, no point equals its antipode (since ‖x‖ = 1 ≠ 0). -/
+private lemma sphere_ne_neg_general {n : ℕ}
+    (x : ↥(Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1)) :
+    x ≠ ⟨-(x : EuclideanSpace ℝ (Fin (n + 1))),
+      mem_sphere_zero_iff_norm.mpr
+        (by rw [norm_neg]; exact mem_sphere_zero_iff_norm.mp x.2)⟩ := by
+  intro h
+  have heq : (x : EuclideanSpace ℝ (Fin (n + 1))) =
+      -(x : EuclideanSpace ℝ (Fin (n + 1))) :=
+    congr_arg Subtype.val h
+  have hx_norm : ‖(x : EuclideanSpace ℝ (Fin (n + 1)))‖ = 1 :=
+    mem_sphere_zero_iff_norm.mp x.2
+  have h2 : (x : EuclideanSpace ℝ (Fin (n + 1))) +
+      (x : EuclideanSpace ℝ (Fin (n + 1))) = 0 := by
+    nth_rw 1 [heq]; exact neg_add_cancel _
+  have h3 : (2 : ℝ) • (x : EuclideanSpace ℝ (Fin (n + 1))) = 0 := by
+    rw [two_smul]; exact h2
+  have h4 : (x : EuclideanSpace ℝ (Fin (n + 1))) = 0 := by
+    have : (2 : ℝ) ≠ 0 := by norm_num
+    exact (smul_eq_zero.mp h3).resolve_left this
+  rw [h4] at hx_norm
+  simp at hx_norm
+
+/-- Every sphere Sⁿ ⊂ ℝⁿ⁺¹ is locally Euclidean: every point has a neighborhood
+    homeomorphic to ℝⁿ, via stereographic projection from the antipodal point. -/
+theorem sphere_n_locally_euclidean (n : ℕ) :
+    ∀ x : ↥(Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1),
+      ∃ U : Set ↥(Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1),
+        IsOpen U ∧ x ∈ U ∧
+        Nonempty (U ≃ₜ EuclideanSpace ℝ (Fin n)) := by
+  intro x
+  have hneg : ‖-(x : EuclideanSpace ℝ (Fin (n + 1)))‖ = 1 := by
+    rw [norm_neg]; exact mem_sphere_zero_iff_norm.mp x.2
+  let chart := sphereChartN n (-(x : EuclideanSpace ℝ (Fin (n + 1)))) hneg
+  use chart.source, chart.open_source
+  constructor
+  · simp only [chart, sphereChartN, OpenPartialHomeomorph.transHomeomorph_source]
+    rw [stereographic_source]
+    simp only [Set.mem_compl_iff, Set.mem_singleton_iff]
+    exact sphere_ne_neg_general x
+  · have htarget : chart.target = Set.univ := by
+      simp only [chart, sphereChartN, OpenPartialHomeomorph.transHomeomorph_target]
+      rw [stereographic_target]
+      simp
+    exact ⟨chart.toHomeomorphSourceTarget.trans
+      (Homeomorph.setCongr htarget |>.trans (Homeomorph.Set.univ _))⟩
+
+/-- Sⁿ is a closed n-manifold for n ≥ 1 (compact, connected, nonempty, locally Euclidean). -/
+noncomputable def closedManifold_sphere_n (n : ℕ) (hn : 1 ≤ n) :
+    ClosedManifold n
+      ↥(Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1) where
+  compact := isCompact_iff_compactSpace.mp (isCompact_sphere 0 1)
+  connected := by
+    rw [← isConnected_iff_connectedSpace]
+    exact isConnected_sphere (rank_gt_one_of_ge_one n hn) _
+      (by norm_num : (0 : ℝ) ≤ 1)
+  nonempty := (sphere_n_nonempty n).to_subtype
+  locallyEuclidean := sphere_n_locally_euclidean n
+
+/- ===============================================================================
 PART XVII: SIMPLE CONNECTIVITY OF SPHERES
 =============================================================================== -/
 
@@ -596,13 +689,11 @@ theorem poincare_self_consistency :
     AreHomeomorphic (↥Sphere3) Sphere3 :=
   poincare_conjecture_holds (↥Sphere3) sphere3_closedManifold sphere3_simply_connected_inst
 
-/-- More generally, S^n is simply connected for n ≥ 2.
-    This follows from Seifert-van Kampen: decompose S^n into two hemispheres
-    (each contractible), overlapping in a band homeomorphic to S^{n-1} × (-1,1).
-    For n ≥ 2, the overlap is connected, so π₁(S^n) = π₁(D^n) *_{π₁(S^{n-1}×I)} π₁(D^n) = 1.
-    -/
-axiom sphere_n_simply_connected (n : ℕ) (hn : 2 ≤ n) :
-    SimplyConnectedSpace (↥(Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1))
+/- sphere_n_simply_connected (removed - unused downstream):
+   Sⁿ is simply connected for n ≥ 2. Follows from Seifert-van Kampen:
+   decompose Sⁿ into two hemispheres (each contractible), overlapping in
+   Sⁿ⁻¹ × (-1,1) (connected for n ≥ 2). Not in Mathlib.
+   Subsumed by sphere3_simply_connected for n = 3. -/
 
 /- ===============================================================================
 PART XVII-B: PUNCTURED SPHERE CONTRACTIBILITY
@@ -2063,9 +2154,9 @@ noncomputable def heegaardGenus (M : Type) [TopologicalSpace M]
     (splits : Nonempty (HeegaardSplitting M)) : ℕ :=
   splits.some.genus
 
-/-- Every closed orientable 3-manifold admits a Heegaard splitting (existence axiom). -/
-axiom heegaard_exists (M : Type) [TopologicalSpace M]
-    (hM : Closed3Manifold M) : Nonempty (HeegaardSplitting M)
+/- heegaard_exists: Every closed orientable 3-manifold admits a Heegaard splitting.
+   This follows from Morse theory (handle decomposition → Heegaard splitting).
+   Removed as unused; reinstatable when handle-Heegaard correspondence is formalized. -/
 
 /-- S³ admits a genus-0 Heegaard splitting (two 3-balls glued along S²). -/
 def sphere3_heegaard_genus0 : HeegaardSplitting (↥Sphere3) :=
@@ -2812,32 +2903,15 @@ structure TameS2inS3 where
   /-- The embedding is homeomorphic to S² -/
   is_sphere : AreHomeomorphic ↥carrier (↥Sphere2)
 
-/-- Alexander's theorem (1924, smooth/PL version):
-    Every tame S² in S³ bounds a 3-ball on each side.
-    That is, each component of S³ \ S² is homeomorphic to an open 3-ball,
-    and each closure is homeomorphic to B³. -/
-axiom alexander_theorem (emb : TameS2inS3) :
-    ∃ (A B : Set (↥Sphere3)),
-      -- A and B are the two components
-      A ∪ B ∪ emb.carrier = Set.univ ∧
-      Disjoint A B ∧
-      Disjoint A emb.carrier ∧
-      Disjoint B emb.carrier ∧
-      -- Each component's closure is homeomorphic to B³
-      (∃ (_ : TopologicalSpace ↥(closure A)),
-        @AreHomeomorphic ↥(closure A) Ball3 ‹_› instBall3Top) ∧
-      (∃ (_ : TopologicalSpace ↥(closure B)),
-        @AreHomeomorphic ↥(closure B) Ball3 ‹_› instBall3Top)
+/- alexander_theorem (removed - unused downstream):
+   Alexander's theorem (1924): Every tame S² in S³ bounds a 3-ball on each side.
+   Each component of S³ \ S² is homeomorphic to an open 3-ball.
+   Key ingredient for proving S³ irreducibility.
+   Reinstatable when needed by downstream proofs. -/
 
-/-- An embedded S² in S³ separates it into exactly 2 components.
-    This is a consequence of Alexander duality and the Jordan-Brouwer
-    separation theorem in dimension 3. -/
-axiom jordan_brouwer_3d (emb : TameS2inS3) :
-    ∃ (A B : Set (↥Sphere3)),
-      A ∪ B ∪ emb.carrier = Set.univ ∧
-      Disjoint A B ∧
-      IsOpen A ∧ IsOpen B ∧
-      IsConnected A ∧ IsConnected B
+/- jordan_brouwer_3d (removed - unused downstream):
+   An embedded S² in S³ separates it into exactly 2 connected open components.
+   Consequence of Alexander duality. Reinstatable when needed. -/
 
 /-- The genus-0 Heegaard splitting of S³ is a consequence of Alexander's
     theorem: choose any tame S² in S³; the two 3-balls it bounds give a
@@ -3086,7 +3160,8 @@ instance instS1S2Top : TopologicalSpace S1_cross_S2 := instTopologicalSpaceProd
     1-manifold and 2-manifold is a 3-manifold (needs product charts). -/
 axiom S1_cross_S2_closed : @Closed3Manifold S1_cross_S2 instS1S2Top
 
-axiom S1_cross_S2_prime : @IsPrime3Manifold S1_cross_S2 instS1S2Top S1_cross_S2_closed
+/- S1_cross_S2_prime (removed - unused downstream):
+   S¹ × S² is prime but not irreducible. The unique non-irreducible prime 3-manifold. -/
 
 axiom S1_cross_S2_not_irreducible :
     ¬ @IsIrreducible3Manifold S1_cross_S2 instS1S2Top S1_cross_S2_closed
@@ -6786,29 +6861,19 @@ structure HCobordism' (M N : Type*) [TopologicalSpace M] [TopologicalSpace N]
   /-- N ↪ W is a homotopy equivalence -/
   rightHE : Prop
 
-/-- The h-cobordism theorem (Smale 1962, topological version by Freedman/Perelman):
+/- The h-cobordism theorem (Smale 1962, topological version by Freedman/Perelman):
 
     If W is an h-cobordism between simply connected closed n-manifolds
     M and N with n ≥ 5, then W is homeomorphic to M × [0,1].
 
-    Consequently, M is homeomorphic to N.
+    The proof uses Whitney trick (needs dim ≥ 5) to cancel handles.
+    Historical: Smale (Fields 1966), Freedman (Fields 1986 for dim 4).
+    In dim 3, the h-cobordism theorem FAILS (Perelman needed Ricci flow).
 
-    The proof uses Whitney trick (needs dim ≥ 5) to cancel handles:
-    1. Start with a handle decomposition of W relative to M
-    2. Cancel 0/1-handle pairs (uses simply connected)
-    3. Cancel (n-1)/n-handle pairs (uses simply connected)
-    4. Middle handles cancel by Whitney trick (needs dim ≥ 5)
-    5. No handles remain → W is a product
-
-    Historical significance:
-    - Smale proved the smooth version (Fields Medal 1966)
-    - Freedman proved the topological version for dim 4 (Fields Medal 1986)
-    - In dim 3, the h-cobordism theorem FAILS (Perelman's proof needed Ricci flow) -/
-axiom h_cobordism_theorem (M N : Type*) [TopologicalSpace M] [TopologicalSpace N]
-    (hcob : HCobordism' M N)
-    (hsc_M : SimplyConnectedSpace M)
-    (hdim : hcob.dim ≥ 6) :  -- dim W ≥ 6 means dim M ≥ 5
-    AreHomeomorphic M N
+h_cobordism_theorem (removed - unused downstream):
+   For a simply connected h-cobordism W between M and N with dim W ≥ 6,
+   M ≅ N. This is the key tool for generalized Poincaré in dim ≥ 5.
+   Reinstatable if downstream proofs need it. -/
 
 /-- The s-cobordism theorem generalizes h-cobordism to non-simply-connected manifolds.
 
@@ -6825,12 +6890,10 @@ structure WhiteheadTorsion (M : Type*) [TopologicalSpace M] where
   /-- Vanishes for simply connected manifolds -/
   trivial_for_SC : SimplyConnectedSpace M → torsion = 0
 
-/-- The s-cobordism theorem: h-cobordism is trivial iff Whitehead torsion vanishes. -/
-axiom s_cobordism_theorem (M N : Type*) [TopologicalSpace M] [TopologicalSpace N]
-    (hcob : HCobordism' M N)
-    (hdim : hcob.dim ≥ 6)
-    (τ : WhiteheadTorsion M) :
-    τ.torsion = 0 → AreHomeomorphic M N
+/- s_cobordism_theorem (removed - unused downstream):
+   h-cobordism is trivial iff Whitehead torsion vanishes.
+   Generalizes h-cobordism to non-simply-connected manifolds.
+   Reinstatable if downstream proofs need it. -/
 
 /- How the h-cobordism theorem proves generalized Poincaré (n ≥ 5):
 
