@@ -24,16 +24,22 @@
       "Unscaled corollary: ∑(-1)^{n+1}/(n(n+1)) = 2·ln(2) - 1",
       "Summability of the alternating series"
     ],
+    "references": [
+      {"authors": "N. Mercator", "title": "Logarithmotechnia", "year": "1668", "venue": "London", "note": "First computation of ln(2) via alternating harmonic series"},
+      {"authors": "G. W. Leibniz", "title": "Letter to Huygens", "year": "1673", "venue": "Correspondence", "note": "Evaluation of ∑2/(n(n+1)) = 2 via telescoping"},
+      {"authors": "N. H. Abel", "title": "Untersuchungen über die Reihe...", "year": "1826", "venue": "Journal für die reine und angewandte Mathematik", "note": "Abel's theorem on boundary convergence of power series"}
+    ],
     "dateAdded": "03/19/26"
   },
   "overview": {
-    "historicalContext": "This identity extends the classical result ∑2/(n(n+1)) = 2 (proved by Leibniz in 1673 via telescoping) to its alternating variant. The alternating harmonic series ln(2) = 1 - 1/2 + 1/3 - ⋯ was first computed by Mercator (1668) using the power series for log(1+x). The alternating triangular reciprocal series combines both ideas: partial fractions reduce it to two instances of the Mercator series.",
+    "historicalContext": "The triangular numbers $T_n = n(n+1)/2$ — 1, 3, 6, 10, 15, ... — were studied by the Pythagoreans (circa 500 BCE) as figurate numbers representing dots in triangular arrays. The sum of their reciprocals $\\sum 1/T_n = \\sum 2/(n(n+1)) = 2$ was computed by Leibniz in 1673 using partial fractions and telescoping, making it one of the earliest evaluations of an infinite series.\n\nThe alternating harmonic series $\\ln 2 = 1 - 1/2 + 1/3 - \\cdots$ was first computed by Nicolaus Mercator in 1668 by integrating the geometric series $1/(1+x) = 1 - x + x^2 - \\cdots$ and evaluating at $x = 1$. The boundary convergence at $x = 1$ is delicate — the power series for $\\ln(1+x)$ converges only conditionally there — and rigorous justification requires Abel's theorem (1826) on limits of power series at boundary points.\n\nThe alternating triangular reciprocal identity $\\sum (-1)^{n+1} \\cdot 2/(n(n+1)) = 4\\ln 2 - 2$ combines both strands: partial fractions decompose the series into two instances of the Mercator series. The appearance of $\\ln 2$ in a sum involving figurate numbers illustrates the deep connection between combinatorial number theory and transcendental analysis.",
     "problemStatement": "**Alternating Triangular Reciprocals**:\n\n$$\\sum_{n=1}^{\\infty} (-1)^{n+1} \\cdot \\frac{2}{n(n+1)} = 4\\ln 2 - 2 \\approx 0.7726$$",
     "proofStrategy": "Use partial fractions: (-1)^{n+1}·2/(n(n+1)) = 2·(-1)^{n+1}/n - 2·(-1)^{n+1}/(n+1). This splits the series into the alternating harmonic series (= ln 2) and its shifted variant (= 1 - ln 2). Combining: 2·ln(2) - 2·(1 - ln(2)) = 4·ln(2) - 2.",
     "keyInsights": [
       "Partial fractions split each alternating term into a difference of two simpler alternating terms",
       "The shifted alternating harmonic series ∑(-1)^{n+1}/(n+1) = 1 - ln(2) follows from the standard series by removing the first term and negating",
-      "The result 4·ln(2) - 2 ≈ 0.7726 shows the alternating sum converges to a transcendental number, unlike the non-alternating case which equals exactly 2"
+      "The result 4·ln(2) - 2 ≈ 0.7726 shows the alternating sum converges to a transcendental number, unlike the non-alternating case which equals exactly 2",
+      "**Abel's theorem barrier**: The axiomatization is forced by a real gap in Mathlib, not by mathematical difficulty. Abel's theorem (1826) guarantees that if ∑aₙxⁿ converges at x = R, then limₓ→R⁻ ∑aₙxⁿ = ∑aₙRⁿ. This is a fundamental result in analysis whose formalization would unlock many similar series evaluations."
     ]
   },
   "sections": [
