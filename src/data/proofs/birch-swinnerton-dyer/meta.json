@@ -15,8 +15,8 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 94,
-    "assumptions": "94 axiom declarations encoding core BSD infrastructure (algebraic rank, torsion, L-function, conductor, root number, analytic rank, periods, regulators, Sha order, Tamagawa numbers), proven BSD cases (rank 0 via Kolyvagin, rank 1 via Gross-Zagier, CM via Coates-Wiles), the Gross-Zagier formula, Hasse bound, specific curve data (cremona11a1, curve37a, curve389a L-values and ranks), congruent number results, parity conjecture, BSD generalizations (number fields, abelian varieties), Iwasawa theory, Tunnell's theorem, Sato-Tate, Cremona database verification, CM L-function factorization, Euler system bounds, HasCM predicate, function field BSD (Tate's theorem), 2-descent rank bounds, and Greenberg's mu=0 conjecture for Hida families. Additionally, 3 structure-encoded assumptions: MordellWeilGroup.finitely_generated (Module.Finite Z carrier), GrossZagierData.gross_zagier (nontorsion Heegner implies analytic rank 1), KolyvaginResult.sha_finite (positive Sha order). The BSD conjecture itself remains open.",
+    "axiomCount": 105,
+    "assumptions": "102 axiom declarations + 3 structure-encoded assumptions = 105 total. Encodes core BSD infrastructure (algebraic rank, torsion, L-function, conductor, root number, analytic rank, periods, regulators, Sha order, Tamagawa numbers), proven BSD cases (rank 0 via Kolyvagin, rank 1 via Gross-Zagier, CM via Coates-Wiles), the Gross-Zagier formula, Hasse bound, specific curve data (cremona11a1, curve37a, curve389a L-values and ranks), congruent number results, parity conjecture, BSD generalizations (number fields, abelian varieties), Iwasawa theory, Tunnell's theorem, Sato-Tate, Cremona database verification, CM L-function factorization, Euler system bounds, HasCM predicate, function field BSD (Tate's theorem), 2-descent rank bounds, and Greenberg's mu=0 conjecture for Hida families. Additionally, 3 structure-encoded assumptions: MordellWeilGroup.finitely_generated (Module.Finite Z carrier), GrossZagierData.gross_zagier (nontorsion Heegner implies analytic rank 1), KolyvaginResult.sha_finite (positive Sha order). The BSD conjecture itself remains open.",
     "mathlibDependencies": [
       {
         "theorem": "WeierstrassCurve",
@@ -50,10 +50,10 @@
       }
     ],
     "leanFile": {
-      "lineCount": 7313,
-      "structureCount": 87,
-      "axiomCount": 94,
-      "theoremCount": 239,
+      "lineCount": 7894,
+      "structureCount": 96,
+      "axiomCount": 102,
+      "theoremCount": 245,
       "lemmaCount": 3,
       "defCount": 143,
       "imports": [
@@ -99,7 +99,11 @@
       "Point doubling formula on Weierstrass curves (fully proved)",
       "Rank-2 height pairing with Hadamard bound (proved)",
       "Langlands program connection via automorphic L-functions",
-      "Goldfeld conjecture and rank distribution framework"
+      "Goldfeld conjecture and rank distribution framework",
+      "BSD over totally real fields: TotallyRealBSD structure, Yuan-Zhang-Zhang generalization, Jacquet-Langlands correspondence",
+      "Nekovář's Selmer complexes: SelmerComplex with Euler characteristic, PadicHeightPairing, Tamagawa Number Conjecture hierarchy",
+      "Anticyclotomic Iwasawa theory: AnticyclotomicData, Bertolini-Darmon rank 0, Cornut-Vatsal non-vanishing, Castella IMC, BigHeegnerPoint",
+      "BSD algorithms: DokchitserAlgorithm, TateAlgorithm, CremonaEntry with 3M+ curves, Heegner point computation, LMFDB"
     ],
     "dateAdded": "12/29/25",
     "millenniumProblem": "bsd",
@@ -480,10 +484,101 @@
       "startLine": 6054,
       "endLine": 6506,
       "summary": "Modularity theorem (Wiles-BCDT): every E/Q is modular. Manin constant, functional equation, conductor bounds, Fermat connection. Arithmetic statistics: Bhargava-Shankar avg|Sel_n| = σ(n), Goldfeld conjecture, Katz-Sarnak symmetry, BSD verified for ≥66-87% of curves."
+    },
+    {
+      "id": "padic-bsd-euler",
+      "title": "Part LVIII: p-adic BSD and p-adic L-functions",
+      "startLine": 6516,
+      "endLine": 6569,
+      "summary": "p-adic BSD conjecture and Euler factor analysis. Mazur-Tate-Teitelbaum exceptional zero phenomenon at split multiplicative primes. L-invariant for exceptional zeros. Greenberg-Stevens proof of MTT. Three prime types: ordinary good, supersingular good, bad reduction."
+    },
+    {
+      "id": "euler-systems-gzk",
+      "title": "Part LIX: Euler Systems and Kolyvagin's Theorem",
+      "startLine": 6571,
+      "endLine": 6636,
+      "summary": "Euler systems (Kolyvagin-Rubin-Kato): most powerful tool for BSD. Norm compatibility, Kolyvagin's theorem for rank ≤ 1, the rank 2 barrier. Gross-Zagier formula with three ingredients. Beilinson-Flach elements (Kings-Loeffler-Zerbes 2017)."
+    },
+    {
+      "id": "sha-visibility",
+      "title": "Part LX: Congruences and Visibility of Sha",
+      "startLine": 6642,
+      "endLine": 6700,
+      "summary": "Sha(E/K) as locally trivial torsors. Visibility (Cremona-Mazur): rational points on other abelian varieties create Sha elements via congruences. Manin constant: Cesnavičius (2022) proved c_E = 1 for semistable curves. BSD formula components."
+    },
+    {
+      "id": "congruent-bsd",
+      "title": "Part LXI: Congruent Number Problem and BSD",
+      "startLine": 6702,
+      "endLine": 6746,
+      "summary": "Congruent number problem (>1000 years old) equivalent to BSD for E_n: y² = x³ - n²x. Tunnell's algorithm (polynomial time, conditional on BSD). Examples: n = 5,6,7 congruent; n = 1,2,3 not congruent. CM by ℤ[i]. Pythagorean triple verification."
+    },
+    {
+      "id": "iwasawa-mc",
+      "title": "Part LXII: Iwasawa Main Conjecture and BSD",
+      "startLine": 6748,
+      "endLine": 6790,
+      "summary": "Iwasawa main conjecture char_Λ(Sel(E/ℚ_∞)^∨) = (L_p(E)). Kato (2004): analytic divides algebraic. Skinner-Urban (2014): algebraic divides analytic. Wan (2014): supersingular case. μ = 0 conjecture proved by Kato."
+    },
+    {
+      "id": "function-field-bsd",
+      "title": "Part LXIII: BSD over Function Fields",
+      "startLine": 6792,
+      "endLine": 6904,
+      "summary": "Function field BSD: L-function is a polynomial (trivial analytic continuation). FunctionFieldBSD structure. Tate (1966): proved for constant curves. Ulmer (2002): arbitrarily large rank over 𝔽_p(t). Artin-Tate conjecture as surface analogue. PPVW tension with number field behavior."
+    },
+    {
+      "id": "descent-2selmer",
+      "title": "Part LXIV: Descent Theory and 2-Selmer Groups",
+      "startLine": 6906,
+      "endLine": 7040,
+      "summary": "Classical descent theory from Fermat. TwoDescentData structure with rank bounds. Bhargava-Shankar parametrization: avg |Sel_n| = σ(n) for n = 2,3,4,5 via binary quartic forms. 2-descent for congruent number curves. Average rank < 0.885."
+    },
+    {
+      "id": "hida-theory",
+      "title": "Part LXV: Hida Theory and p-adic Variation of BSD",
+      "startLine": 7042,
+      "endLine": 7154,
+      "summary": "HidaFamily structure: p-adic interpolation of modular forms across weights. Greenberg's μ = 0 conjecture for Hida families. Weight specialization to classical BSD. Two-variable main conjecture (Ochiai 2006). Emerton's completed cohomology."
+    },
+    {
+      "id": "rmt-bsd",
+      "title": "Part LXVI: BSD and Random Matrix Theory",
+      "startLine": 7156,
+      "endLine": 7311,
+      "summary": "RMTSymmetryType inductive (SO_even/SO_odd). Katz-Sarnak density conjecture: 50% rank 0, 50% rank 1, avg rank = 1/2. Keating-Snaith moment exponents k(k-1)/2. PPVW heuristic: ranks bounded over ℚ with transition at r₀ ≈ 21-22."
+    },
+    {
+      "id": "totally-real-bsd",
+      "title": "Part LXVII: BSD over Totally Real Fields",
+      "startLine": 7313,
+      "endLine": 7449,
+      "summary": "TotallyRealBSD structure with degree, class number, root number. Yuan-Zhang-Zhang (2013): generalized Gross-Zagier for totally real F. Kolyvagin over F. JacquetLanglands structure: transfers automorphic forms to Shimura curves. Modularity partial over real quadratic fields (FLHT 2015)."
+    },
+    {
+      "id": "nekovar-selmer",
+      "title": "Part LXVIII: Nekovář's Selmer Complexes and p-adic Heights",
+      "startLine": 7451,
+      "endLine": 7591,
+      "summary": "SelmerComplex structure: derived-category formulation of BSD. BSD formula = Euler characteristic. PadicHeightPairing: non-degeneracy ↔ p-adic BSD. Tamagawa Number Conjecture (Bloch-Kato-Fontaine-Perrin-Riou) as ultimate BSD generalization. Hierarchy: class number formula ⊂ BSD ⊂ Bloch-Kato ⊂ equivariant TNC."
+    },
+    {
+      "id": "anticyclotomic",
+      "title": "Part LXIX: Anticyclotomic Iwasawa Theory and Heegner Points",
+      "startLine": 7593,
+      "endLine": 7741,
+      "summary": "AnticyclotomicData structure. Bertolini-Darmon (2005): anticyclotomic p-adic L-functions, rank 0. Cornut-Vatsal non-vanishing: Heegner points non-torsion for most characters. Castella (2022): anticyclotomic IMC. BigHeegnerPoint structure (Howard 2004). ± decomposition of Selmer."
+    },
+    {
+      "id": "bsd-algorithms",
+      "title": "Part LXX: BSD Algorithms and Effective Methods",
+      "startLine": 7743,
+      "endLine": 7893,
+      "summary": "DokchitserAlgorithm: L(E,s) to arbitrary precision in Õ(N^{1/2}). TateAlgorithm: Kodaira types and Tamagawa numbers (exact). CremonaEntry: database of 3+ million curves verified. LMFDB scope. Heegner point algorithm for rank 1 generators. 9 imaginary quadratic fields with class number 1."
     }
   ],
   "conclusion": {
-    "summary": "The BSD Conjecture remains one of the deepest open problems in mathematics. This formalization spans 6516 lines across 57 parts with 213 theorems/lemmas, 142 definitions, 79 structures, and 91 axioms (+ 3 structure-encoded assumptions). It covers the full landscape of BSD: from the core conjecture statement through Selmer groups, Iwasawa theory, Kolyvagin's Euler system, the Bloch-Kato generalization, Tunnell's theorem, the Langlands program, modularity (Wiles-BCDT), arithmetic statistics (Bhargava-Shankar), and explicit computational verifications for curves 11a1, 37a, and 389a. The Koblitz correspondence, j-invariant classification, point doubling, and Hadamard bounds are all fully proved.",
+    "summary": "The BSD Conjecture remains one of the deepest open problems in mathematics. This formalization spans 7894 lines across 70 parts with 248 theorems/lemmas, 143 definitions, 96 structures, and 102 axiom declarations (+ 3 structure-encoded assumptions = 105 total). It covers the full landscape of BSD: from the core conjecture statement through Selmer groups, Iwasawa theory, Kolyvagin's Euler system, the Bloch-Kato generalization, Tunnell's theorem, the Langlands program, modularity (Wiles-BCDT), arithmetic statistics (Bhargava-Shankar), function field BSD (Tate), descent theory, Hida families, random matrix theory, BSD over totally real fields (Yuan-Zhang-Zhang), Nekovář's Selmer complexes, anticyclotomic Iwasawa theory (Castella), and computational algorithms (Cremona database). The Koblitz correspondence, j-invariant classification, point doubling, and Hadamard bounds are all fully proved.",
     "implications": "A proof of BSD would have profound consequences: it would provide an algorithm for computing the rank of any elliptic curve (via L-function computation), resolve the congruent number problem completely, establish finiteness of the Shafarevich-Tate group, and represent a landmark in the Langlands program connecting arithmetic and automorphic forms.",
     "openQuestions": [
       "Is the Shafarevich-Tate group always finite? (Implied by strong BSD, wide open in general)",
