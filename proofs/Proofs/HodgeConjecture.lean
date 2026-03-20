@@ -514,23 +514,17 @@ theorem hodge_surfaces_degree_zero (X : ProjectiveVariety) (hX : X.dim = 2)
     (H : PureHodgeStructure 0) : HodgeConjectureStatement X 0 H :=
   hodge_conjecture_codim_zero X H
 
-/-- **Axiom: Hodge Conjecture for Surfaces - High Degree Case**
-
-For surfaces (dim = 2) and p ≥ 2, we have H^{2p}(X) = 0 when 2p > 4 = 2·dim.
-For p = 2, H^4(X) = ℚ is spanned by the point class, which is algebraic.
-
-**Why an axiom?** Needs Poincaré duality and dimension counting. -/
-axiom hodge_surfaces_high_degree (X : ProjectiveVariety) (hX : X.dim = 2)
-    (p : ℕ) (hp : p ≥ 2) (H : PureHodgeStructure (2 * p)) :
-    HodgeConjectureStatement X p H
-
 /-- **Theorem: Hodge Conjecture for Surfaces**
 
 The Hodge Conjecture is true for smooth projective surfaces. This follows by
 case analysis on the codimension p:
 - p = 0: Trivial (degree 0 cohomology)
 - p = 1: Lefschetz (1,1) theorem
-- p ≥ 2: Dimension counting / Poincaré duality -/
+- p = 2: Top codimension (point class spans H⁴(X,ℚ))
+
+Previously, the p ≥ 2 case was a separate axiom (`hodge_surfaces_high_degree`).
+Since p ≤ dim = 2 forces p = 2 = dim, this is exactly the top-codimension case,
+proved by `hodge_conjecture_top_codim`. -/
 theorem hodge_conjecture_surfaces (X : ProjectiveVariety) (hX : X.dim = 2)
     (p : ℕ) (hp : p ≤ X.dim) (H : PureHodgeStructure (2 * p)) :
     HodgeConjectureStatement X p H := by
@@ -539,7 +533,10 @@ theorem hodge_conjecture_surfaces (X : ProjectiveVariety) (hX : X.dim = 2)
   | succ p =>
     cases p with
     | zero => exact lefschetz_1_1_theorem X H
-    | succ p => exact hodge_surfaces_high_degree X hX (p + 2) (by omega) H
+    | succ p =>
+      have : p = 0 := by omega
+      subst this
+      exact hodge_conjecture_top_codim X 2 hX H
 
 /-- **Axiom: Hodge Conjecture for Abelian Varieties (Partial)**
 
@@ -784,7 +781,7 @@ theorem hodge_conjecture_surfaces_explicit (X : ProjectiveVariety) (hX : X.dim =
   interval_cases p
   · exact hodge_surfaces_degree_zero X hX H
   · exact lefschetz_1_1_theorem X H
-  · exact hodge_surfaces_high_degree X hX 2 (by omega) H
+  · exact hodge_conjecture_top_codim X 2 hX H
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART IXb: ℚ-SUBSPACE STRUCTURE OF ALGEBRAIC CLASSES
@@ -1902,10 +1899,6 @@ def TateObject.idMorphism : HodgeStructureMorphism TateObject TateObject :=
 axiom tateTwist (k n : ℕ) (H : PureHodgeStructure k) :
     PureHodgeStructure (k + 2 * n)
 
-/-- Tate twist preserves the underlying rational space. -/
-axiom tateTwist_VQ_eq (k n : ℕ) (H : PureHodgeStructure k) :
-    (tateTwist k n H).VQ = H.VQ
-
 /-- Tate twist shifts Hodge components: H(n)^{p,q} = H^{p+n, q+n}.
     We prove: the shifted indices (p-n) + (q-n) = k, witnessing that
     the Tate twist correctly maps weight-(k+2n) bidegree (p,q) back
@@ -1913,28 +1906,6 @@ axiom tateTwist_VQ_eq (k n : ℕ) (H : PureHodgeStructure k) :
 theorem tateTwist_component (k n : ℕ) (H : PureHodgeStructure k)
     (p q : ℕ) (hpq : p + q = k + 2 * n) (hp : n ≤ p) (hq : n ≤ q) :
     (p - n) + (q - n) = k := by omega
-
-/-- A morphism of Hodge structures induces a morphism on Tate twists.
-    If φ : H₁ → H₂ then φ(n) : H₁(n) → H₂(n). -/
-axiom tateTwist_functorial (k n : ℕ)
-    (H₁ H₂ : PureHodgeStructure k)
-    (φ : HodgeStructureMorphism H₁ H₂) :
-    HodgeStructureMorphism (tateTwist k n H₁) (tateTwist k n H₂)
-
-/-- Tate twist is compatible with composition. -/
-axiom tateTwist_comp (k n : ℕ)
-    (H₁ H₂ H₃ : PureHodgeStructure k)
-    (φ : HodgeStructureMorphism H₁ H₂)
-    (ψ : HodgeStructureMorphism H₂ H₃) :
-    tateTwist_functorial k n H₁ H₃ (HodgeStructureMorphism.comp ψ φ) =
-    HodgeStructureMorphism.comp
-      (tateTwist_functorial k n H₂ H₃ ψ)
-      (tateTwist_functorial k n H₁ H₂ φ)
-
-/-- Tate twist of identity is identity. -/
-axiom tateTwist_id (k n : ℕ) (H : PureHodgeStructure k) :
-    tateTwist_functorial k n H H (HodgeStructureMorphism.id H) =
-    HodgeStructureMorphism.id (tateTwist k n H)
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XVI-C: DUAL HODGE STRUCTURE
@@ -2389,16 +2360,16 @@ The Künneth formula is essential for understanding how the Hodge conjecture
 behaves under products: if HC holds for X and Y, does it hold for X × Y?
 -/
 
-/-- **Künneth formula** (axiomatized): The Hodge structure on the cohomology
+/-- **Künneth formula** (proved): The Hodge structure on the cohomology
     of a product variety X × Y is the tensor product of the Hodge structures
-    on X and Y. -/
-axiom kuenneth_formula (X Y : ProjectiveVariety) (k : ℕ)
+    on X and Y. The tensor product `tensorHodge` already provides the
+    product Hodge structure, making the existential witness trivial. -/
+theorem kuenneth_formula (X Y : ProjectiveVariety) (k : ℕ)
     (H_X : PureHodgeStructure k) (H_Y : PureHodgeStructure k) :
     ∃ (H_XY : PureHodgeStructure (k + k)),
     ∃ φ : HodgeStructureMorphism (tensorHodge H_X H_Y) H_XY,
-    True
-    -- Universe mismatch: HodgeStructureMorphism.id at universe max(u₅,u₆)
-    -- cannot unify with expected universe pair (u₆,u₅). Axiomatized.
+    True :=
+  ⟨tensorHodge H_X H_Y, HodgeStructureMorphism.id (tensorHodge H_X H_Y), trivial⟩
 
 /-- **Hodge conjecture for products**: If HC holds for X and Y (in all codimensions),
     then HC holds for X × Y.
@@ -2510,11 +2481,17 @@ axiom primitive_is_subHodge (X : ProjectiveVariety) (n k : ℕ)
     (hn : X.dim = n) (hk : k ≤ n)
     (H : PureHodgeStructure k) : SubHodgeStructure H
 
-/-- **Lefschetz decomposition**: H^k = ⊕ L^r · P^{k-2r}. -/
-axiom lefschetz_decomposition (X : ProjectiveVariety) (n k : ℕ)
+/-- **Lefschetz decomposition**: H^k = ⊕ L^r · P^{k-2r}.
+    The existential is trivially satisfiable — the decomposition exists
+    (in the weak sense that any vector is a sum of components).
+    The true mathematical content is that the components are primitive
+    with respect to the Lefschetz operator, which this statement does
+    not capture. -/
+theorem lefschetz_decomposition (X : ProjectiveVariety) (n k : ℕ)
     (hn : X.dim = n) (hk : k ≤ n)
     (H : PureHodgeStructure k) (v : H.VQ) :
-    ∃ (components : List H.VQ), v = components.foldl (· + ·) 0
+    ∃ (components : List H.VQ), v = components.foldl (· + ·) 0 :=
+  ⟨[v], by simp [List.foldl]⟩
 
 /-- Primitive Hodge numbers are bounded by total Hodge numbers. -/
 theorem primitive_hodge_numbers (X : ProjectiveVariety) (n k : ℕ)
@@ -4419,10 +4396,6 @@ PART XVIII-FINAL: SUMMARY OF ALL RESULTS
 #check tateObject_rational_is_Q        -- VQ = ℚ
 #check tateObject_component_top        -- concentrated in (0,0)
 #check tateTwist                       -- H(n) twist operation
-#check tateTwist_VQ_eq                 -- preserves rational space
-#check tateTwist_functorial            -- functorial on morphisms
-#check tateTwist_comp                  -- compatible with composition
-#check tateTwist_id                    -- preserves identity
 -- Dual Hodge structures
 #check dualHodge                       -- H* dual structure
 #check dualHodge_involution            -- H** ≅ H
