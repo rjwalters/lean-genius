@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Part XX session - ELIMINATED gal_card_dvd_60 axiom by file reorganization. Moved consumer code (q_gal_card, q_gal_iso_a5, etc.) after producer (gal_card_dvd_60_proved). Axiom count: 5→4 (3 independent). One sorry added for rootSet SMul coercion diamond in gal_permutes_roots (Lean 4 elaboration issue, not mathematical).",
+    "progressSummary": "Deep analysis of gal_permutes_roots sorry: identified Lean 4 typeclass diamond as root cause. The sorry is mathematical trivial but formally blocked by MonoidHom.mk' coercion + Algebra E E instance diamond.",
     "builtItems": [
       "InverseGalois.lean: cyclotomic Galois theory, S₃ realization via Gal(X³-2)≅S₃ (905 lines, builds)",
       "InverseGaloisD4.lean: D₄ realization via |Gal(X⁴-2)| = 8 (666 lines, builds)",
@@ -229,7 +229,11 @@
       "Moving the Vandermonde chain (Parts XIII-XIV) before q_gal_card causes elaboration failures: the change+rfl proof in gal_permutes_roots depends on instance resolution context that differs at the earlier file position",
       "The (Z/nZ)* cyclotomic approach is exhausted for abelian groups up to order 24; remaining groups (C3^2, C4^2, C2^4, Q8) require Galois correspondence or non-cyclotomic constructions",
       "gal_card_dvd_60 axiom ELIMINATED by file reorganization: moved Parts IV-B through VII (q_gal_card and dependents) after Part XIV (gal_card_dvd_60_proved). One sorry added for rootSet coercion diamond (↑(σ•r)=σ↑r) — Lean 4 elaboration issue, not mathematical.",
-      "gal_permutes_roots proof rewritten without context-sensitive change+rfl pattern: uses unfold+simp+dsimp to handle MulEquiv struct unfolding; coercion gap needs restrict_smul+restrictNormalHom identity"
+      "gal_permutes_roots proof rewritten without context-sensitive change+rfl pattern: uses unfold+simp+dsimp to handle MulEquiv struct unfolding; coercion gap needs restrict_smul+restrictNormalHom identity",
+      "gal_permutes_roots sorry is blocked by Lean 4 typeclass diamond: galActionHom uses galAction SMul (via rootsEquivRoots) while direct AlgEquiv application uses a different coercion path. Both compute the same field element but definitional equality fails.",
+      "MonoidHom.mk'_apply gives function equality (⇑(mk' f hf) = f), not pointwise. Need congr_fun to apply at a point.",
+      "AlgEquiv.restrictNormal_commutes + algebraMap E E = id proves restrictNormal σ E = σ pointwise, but bridging to Gal.restrict σ requires MonoidHom.mk' coercion + Algebra E E instance diamond (Algebra.id vs DivisionRing.toRatAlgebra)",
+      "Three approaches attempted: (1) change+rfl (context-sensitive, fails), (2) restrict_smul + restrict_splitting_eq (blocked by typeclass diamond), (3) convert (generates σ•r = restrict σ•r subgoal, same diamond)"
     ],
     "mathlibGaps": [],
     "nextSteps": [

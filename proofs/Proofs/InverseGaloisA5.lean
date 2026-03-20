@@ -1127,19 +1127,28 @@ theorem gal_fixes_vandermondeProduct (σ : q.Gal) :
 theorem gal_permutes_roots (σ : q.Gal) (i : Fin 5) :
     σ (rootEnum i) = rootEnum (galToPerm5 σ i) := by
   -- rootEnum i = (e.symm i).val, galToPerm5 σ = permCongr e ∘ galActionHom σ
-  -- Unfold definitions and simplify MulEquiv struct
   unfold rootEnum galToPerm5
   simp only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulEquiv.coe_mk,
     Equiv.toFun_as_coe, Equiv.permCongr_apply, Equiv.symm_apply_apply]
-  -- Goal: σ ↑(e.symm i) = ↑(galActionHom σ (e.symm i))
-  -- galActionHom σ r = σ • r, and ↑(σ • r) = σ ↑r for rootSet elements.
-  -- This is mathematically trivial but involves a Lean 4 coercion diamond:
-  -- SMul on rootSet goes through rootsEquivRoots (not direct Subtype construction),
-  -- so ↑(σ • r) and σ ↑r have different definitional unfolding paths.
-  -- The original proof uses `change+rfl` which is context-sensitive.
-  -- TODO: Close via restrict_smul + restrictNormalHom_id when Mathlib provides the latter.
-  unfold Polynomial.Gal.galActionHom
-  dsimp [MulAction.toPermHom, MulAction.toPerm]
+  -- Goal: σ ↑r = ↑(galActionHom q _ σ r)
+  -- This is mathematically trivial (σ applied to a root = the corresponding permuted root)
+  -- but blocked by a Lean 4 coercion diamond:
+  --
+  -- The gap: galActionHom uses galAction SMul (via rootsEquivRoots), while the LHS
+  -- uses direct AlgEquiv application. These give the same field element but through
+  -- different definitional paths that Lean's kernel cannot unify.
+  --
+  -- Attempted approaches (all blocked by the same diamond):
+  --   1. change+rfl: fails because rfl can't unify through FunLike coercion layers
+  --   2. restrict_smul + restrict_splitting_eq: restrict_splitting_eq requires bridging
+  --      MonoidHom.mk'(restrictNormal) ↔ restrictNormal, blocked by Algebra E E
+  --      typeclass diamond (Algebra.id vs DivisionRing.toRatAlgebra)
+  --   3. galActionHom_restrict: same typeclass mismatch on Gal ↔ AlgEquiv coercion
+  --
+  -- Resolution requires either:
+  --   (a) A Mathlib lemma: Polynomial.Gal.restrict_eq_restrictNormal (bridge lemma)
+  --   (b) Or: AlgEquiv.restrictNormalHom_id (restrict to same field = id)
+  --   (c) Or: fixing the Algebra E E instance diamond in Lean 4
   sorry
 
 /-- Vandermonde matrix with permuted input = row-permuted Vandermonde. -/
