@@ -503,3 +503,47 @@ Verifies arithmetic consistency of all critical exponents across the formalizati
 
 ### Status
 0 sorries, 0 axioms. 100 parts, ~17,645 lines.
+
+## Session 2026-03-20 (researcher-5) - NS-Adjacent Systems
+
+**Mode**: REVISIT (RICH knowledge, 114 parts → 117 parts)
+**Outcome**: progress
+
+### What Was Done
+Added Parts CXV-CXVII to NavierStokes.lean (now ~21,510 lines, 0 sorries, 0 axioms):
+
+1. **Part CXV: Compressible Navier-Stokes and Density-Dependent Flows**
+   - Lions (1998) isentropic existence: global weak solutions for γ > d/2
+   - Feireisl extension to γ > 3/2 via oscillation defect measures
+   - Effective viscous flux F = p - (2μ+λ)div(u): elliptic regularity gain
+   - Vacuum degeneracy: Xin (1998) blowup for compactly supported smooth data
+   - Mach number limit Ma → 0: acoustic filtering, convergence rate O(Ma)
+   - Compressible blowup criteria: density concentration (Huang-Li-Xin 2011)
+
+2. **Part CXVI: Primitive Equations of Ocean and Atmosphere (Cao-Titi 2007)**
+   - Hydrostatic approximation: δ = H/L << 1 eliminates vertical momentum
+   - Vertical velocity w = -∫ div_H(v) dz' is DIAGNOSTIC (one derivative gain)
+   - Cao-Titi (2007): global H¹ strong solutions for 3D PE
+   - Key mechanism: energy estimate reduces from 6th power (critical) to 4th (subcritical)
+   - Regularity hierarchy: 2D NS ← PE ← Thin NS ← (gap) → 3D NS
+   - The 1/2-derivative NS gap is exactly filled by hydrostatic w regularity
+
+3. **Part CXVII: Boussinesq Equations and Thermal Convection**
+   - Buoyancy coupling is energy-neutral (cancellation in total energy)
+   - Chae (2006): ν > 0, κ = 0 globally regular in 2D
+   - Hou-Li (2005): ν = 0, κ > 0 globally regular in 2D
+   - Fractional critical line α + β = 1 (shared dissipation budget)
+   - Rayleigh-Bénard: Ra_c ≈ 1708, Nusselt scaling 1/3 vs 1/2 debate
+   - 3D Boussinesq: at least as hard as 3D NS (open)
+
+### Companion Sections 76-78
+- Compressible NS constants, primitive equation powers, Boussinesq fields/scaling
+
+### Key Insights
+- Cao-Titi PE result shows 3D NS difficulty is localized in vertical momentum equation
+- Compressible NS has fundamentally different blowup: density, not vorticity
+- Partial dissipation miracle (one of ν, κ suffices) is purely 2D — fails in 3D
+- Mach limit is a singular perturbation analogous to inviscid limit (different parameter)
+
+### Status
+0 sorries, 0 axioms. 117 parts, ~21,510 lines. Docker build verified.
