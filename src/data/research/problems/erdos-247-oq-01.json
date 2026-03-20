@@ -29,12 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 2 of 3 axioms. Proved pow2_strong_growth (2^k dominates any polynomial) using explicit witness k=C*(t+1)^(t+1) and chain of inequalities. Proved factorial_strong_growth derived from pow2_strong_growth + (k+1)! >= 2^k. Only erdos_transcendence_strong remains (deep 1975 result, not provable from Mathlib).",
+    "progressSummary": "PROGRESS: Formalized growth condition gap. Proved strong_implies_weak, squareSeq_has_weak_growth, squareSeq_not_strong_growth (all sorry-free). Only erdos_transcendence_strong axiom remains.",
     "builtItems": [
       "pow2_ge_succ: n+1 ≤ 2^n (helper lemma)",
       "factorial_ge_pow2: 2^k ≤ (k+1)! (helper lemma)",
       "pow2_strong_growth: theorem (was axiom)",
-      "factorial_strong_growth: theorem (was axiom)"
+      "factorial_strong_growth: theorem (was axiom)",
+      "strong_implies_weak: HasStrongGrowth → HasWeakGrowth (sorry-free)",
+      "squareSeq_has_weak_growth: (k+1)² satisfies weak growth (sorry-free)",
+      "squareSeq_not_strong_growth: (k+1)² does NOT satisfy strong growth (sorry-free)"
     ],
     "insights": [
       "Parent file has clean infrastructure: lacunarySum, HasWeakGrowth, HasStrongGrowth, squareSeq",
@@ -44,7 +47,10 @@
       "The open question is specifically about n_k = k^2 (quadratic growth) - between linear and superpolynomial",
       "Proof strategy for pow2_strong_growth: witness k = C*(t+1)^(t+1), chain 2^k ≥ (n+1)^(t+1) > C*(t+1)^t * n^t = C*k^t where n = C*(t+1)^t",
       "factorial_strong_growth follows elegantly from pow2_strong_growth + factorial_ge_pow2",
-      "gcongr tactic handles monotonicity arguments cleanly in Lean 4"
+      "gcongr tactic handles monotonicity arguments cleanly in Lean 4",
+      "squareSeq is the canonical example in the gap: weak growth YES, strong growth NO",
+      "(k+1)² ≤ 4k² for k≥1 is the key bound (factoring as (3k+1)(k-1) ≥ 0)",
+      "strong_implies_weak is immediate: take t=1 in the strong condition"
     ],
     "mathlibGaps": [
       "Transcendence theory for lacunary series"
@@ -70,7 +76,7 @@
     "mathlib": []
   },
   "started": "2026-03-20T14:00:00.000Z",
-  "lastUpdate": "2026-03-20T15:00:00.000Z",
+  "lastUpdate": "2026-03-20T19:15:00.000Z",
   "significance": 8,
   "tractability": 3
 }
