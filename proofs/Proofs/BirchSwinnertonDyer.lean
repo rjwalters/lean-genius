@@ -1420,10 +1420,9 @@ PART X: WHY BSD IS HARD
     4. **Analytic difficulties**: Computing ord_{s=1} L(E, s) for rank ≥ 2
        requires careful analysis of higher derivatives.
 -/
-/-- BSD is open for rank ≥ 2: no Euler system construction is known. -/
-theorem BSD_is_hard : bsdStatus 2 = .open_ := rfl
+/- (BSD_is_hard moved to Part LI where bsdStatus is defined)
 
-/- **Average Rank Results** (Bhargava-Shankar 2010-2015)
+**Average Rank Results** (Bhargava-Shankar 2010-2015)
 
     The average rank of elliptic curves over ℚ is less than 1.
     Specifically, at least 50% of curves have rank 0 or 1.
@@ -1520,11 +1519,9 @@ PART XII: SUMMARY AND SIGNIFICANCE
 
 6. **Status**: Open since 1965, $1M Millennium Prize
 -/
-/-- BSD rank 0 and rank 1 are proved; rank ≥ 2 is open. -/
-theorem BSD_summary : bsdStatus 0 = .proved ∧ bsdStatus 1 = .proved ∧ bsdStatus 2 = .open_ :=
-  ⟨rfl, rfl, rfl⟩
+/- (BSD_summary moved to Part LI where bsdStatus is defined)
 
-/- ═══════════════════════════════════════════════════════════════════════════════
+═══════════════════════════════════════════════════════════════════════════════
 PART XIII: SELMER GROUPS AND DESCENT
 ═══════════════════════════════════════════════════════════════════════════════
 
@@ -1775,8 +1772,8 @@ theorem euler_product_factor_bound (p : ℕ) (hp : p ≥ 5) (ap : ℤ)
     normalized traces a_p/(2√p) in [-1,1] w.r.t. the semicircle measure.
     Mean zero means the density of primes with a_p > 0 equals 1/2. -/
 axiom sato_tate_mean_zero (E : EllipticCurveQ) :
-    (∃ p : ℕ, Nat.Prime p ∧ traceOfFrobenius E p > 0) ∧
-    (∃ p : ℕ, Nat.Prime p ∧ traceOfFrobenius E p < 0)
+    (∃ p : ℕ, ∃ _ : Fact (Nat.Prime p), traceOfFrobenius E p > 0) ∧
+    (∃ p : ℕ, ∃ _ : Fact (Nat.Prime p), traceOfFrobenius E p < 0)
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XVI: MAZUR'S TORSION THEOREM - THE 15 GROUPS
@@ -2677,6 +2674,13 @@ theorem bsd_rank1_proved : bsdStatus 1 = .proved := rfl
 
 /-- BSD is open for analytic rank 2 and beyond. -/
 theorem bsd_rank2_open : bsdStatus 2 = .open_ := rfl
+
+/-- BSD is open for rank ≥ 2: no Euler system construction is known. -/
+theorem BSD_is_hard : bsdStatus 2 = .open_ := rfl
+
+/-- BSD rank 0 and rank 1 are proved; rank ≥ 2 is open. -/
+theorem BSD_summary : bsdStatus 0 = .proved ∧ bsdStatus 1 = .proved ∧ bsdStatus 2 = .open_ :=
+  ⟨rfl, rfl, rfl⟩
 
 /-- The proportion of curves with analytic rank 0 or 1 is expected to be 100%
     (Goldfeld + Katz-Sarnak). So BSD is "proved for 100% of curves" in the
