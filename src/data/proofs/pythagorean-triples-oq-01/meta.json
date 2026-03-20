@@ -2,12 +2,12 @@
   "id": "pythagorean-triples-oq-01",
   "title": "Density of Primitive Pythagorean Triples",
   "slug": "pythagorean-triples-oq-01",
-  "description": "Proves that the number of primitive Pythagorean triples with hypotenuse c ≤ N is asymptotically N/(2π). Decomposes the result into sector lattice point density (π/8), coprime fraction (6/π²), and parity correction (2/3). Includes parity involutions, column decomposition, and computational verification. 2075 lines, 97 theorems, 3 axioms, 0 sorries.",
+  "description": "Proves that the number of primitive Pythagorean triples with hypotenuse c ≤ N is asymptotically N/(2π). Decomposes the result into sector lattice point density (π/8), coprime fraction (6/π²), and parity correction (2/3). Includes parity involutions, column decomposition, and computational verification. 97 theorems, 7 axioms, 0 sorries.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Pythagorean_triple#Generating_a_triple",
     "date": "2026",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/PythagoreanTriplesOQ01.lean",
     "tags": [
       "number-theory",
@@ -17,7 +17,8 @@
       "asymptotics",
       "research"
     ],
-    "badge": "verified",
+    "badge": "axiom",
+    "assumptions": "7 axiom declarations encoding deep analytic number theory results: sector lattice point density (π/8, from Gauss circle problem), coprime fraction in sector (6/π², from Möbius inversion), bothOdd fraction (1/3, from parity equidistribution), r2 positivity criterion, r2 average order, Landau two-squares counting, and primitive-by-leg density. Full proofs would require sieve methods or complex analysis beyond current Mathlib.",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -36,6 +37,11 @@
       "EO coprime density analysis via GCD halving",
       "Computational verification for N = 0, 4, 5, 13, 25, 50",
       "Column-sum decomposition separating m-parity classes"
+    ],
+    "references": [
+      {"authors": "D. N. Lehmer", "title": "Asymptotic evaluation of certain totient sums", "year": "1900", "venue": "American Journal of Mathematics", "note": "Early work on the density of primitive Pythagorean triples"},
+      {"authors": "E. Cesàro", "title": "Question 75 (Solution)", "year": "1883", "venue": "Mathesis 3, 224-225", "note": "Probability that two random integers are coprime is 6/π²"},
+      {"authors": "C. F. Gauss", "title": "Disquisitiones Arithmeticae", "year": "1801", "venue": "Leipzig", "note": "Gauss circle problem: lattice points in circular regions"}
     ],
     "dateAdded": "03/14/26",
     "relatedProblems": [
@@ -165,7 +171,7 @@
     }
   ],
   "conclusion": {
-    "summary": "A thorough formalization of the primitive Pythagorean triple density theorem, establishing $\\text{primitiveTripleCount}(N)/N \\to 1/(2\\pi)$ via a clean three-factor decomposition. The proof comprises 97 theorems, 3 axioms (encoding deep analytic number theory), and 0 sorries across 2485 lines. The three axioms isolate precisely the analytic content (Gauss circle problem, Möbius inversion, parity equidistribution) that would require sieve methods or complex analysis to prove formally.",
+    "summary": "A thorough formalization of the primitive Pythagorean triple density theorem, establishing $\\text{primitiveTripleCount}(N)/N \\to 1/(2\\pi)$ via a clean three-factor decomposition. The proof comprises 97 theorems, 7 axioms (encoding deep analytic number theory), and 0 sorries. The axioms isolate analytic content (Gauss circle problem, Möbius inversion, parity equidistribution, Landau two-squares counting) that would require sieve methods or complex analysis to prove formally.",
     "implications": "**Significance**\n\n1. **First mechanized proof**: This appears to be the first formal verification of the $N/(2\\pi)$ density result for primitive Pythagorean triples in any proof assistant.\n2. **Modular architecture**: The three-factor decomposition into geometry ($\\pi/8$), number theory ($6/\\pi^2$), and combinatorics ($2/3$) makes each component independently verifiable and replaceable.\n3. **Bijective technique**: The parity involution $(m,n) \\mapsto (m, m-n)$ is a general technique applicable to any coprime-parity counting problem, not just Pythagorean triples.\n4. **Computational confidence**: Verification of counting functions for $N = 0, 4, 5, 13, 25, 50, 100$ via native_decide confirms the formalized definitions match the intended mathematical objects.\n5. **Connection to $\\zeta(2)$**: The coprime density factor $6/\\pi^2 = 1/\\zeta(2)$ links this result to the Basel problem, demonstrating how the Riemann zeta function controls the distribution of coprime pairs.",
     "openQuestions": [
       "Can the sector lattice point density axiom ($\\pi/8$) be proved from Gauss circle problem results in Mathlib, using the error term $O(\\sqrt{N})$?",
