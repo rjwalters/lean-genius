@@ -64,14 +64,31 @@ theorem alternating_valid : IsValid alternating := by
     obtain ⟨k, rfl⟩ := h
     simp [pow_succ, pow_mul]
 
+/-- Consecutive pairs cancel: sum of 2 more terms equals the same sum.
+    (-1)^(a+k) + (-1)^(a+k+1) = 0 for all a, k. -/
+private theorem alternating_pair_cancel (a k : ℕ) :
+    apPartialSum alternating a 1 (k + 2) = apPartialSum alternating a 1 k := by
+  simp only [apPartialSum, Finset.sum_range_succ]
+  unfold alternating
+  ring_nf
+
 /-- For d = 1 (consecutive integers), alternating partial sums have |sum| ≤ 1.
-    This is because consecutive (-1)^n terms cancel in pairs. -/
-axiom alternating_d1_bound (a k : ℕ) :
-    (apPartialSum alternating a 1 k).natAbs ≤ 1
-    -- Proof requires showing that the geometric series
-    -- Σ_{i=0}^{k-1} (-1)^{a+i} = (-1)^a · (1-(-1)^k)/2
-    -- has absolute value 0 or 1 depending on parity of k.
-    -- Axiomatized: the parity case analysis is routine but long.
+    PROVED: Consecutive (-1)^n terms cancel in pairs. For even k the sum is 0;
+    for odd k the sum is (-1)^a, both with absolute value ≤ 1. -/
+theorem alternating_d1_bound (a k : ℕ) :
+    (apPartialSum alternating a 1 k).natAbs ≤ 1 := by
+  -- Reduce to k = 0 or k = 1 by repeatedly removing pairs
+  -- Reduce to k = 0 or k = 1 by pair cancellation, then check both cases
+  induction k using Nat.strongRecOn with
+  | _ k ih =>
+    match k with
+    | 0 => simp [apPartialSum]
+    | 1 =>
+      simp only [apPartialSum, Finset.sum_range_succ, Finset.sum_range_zero]
+      unfold alternating; simp
+    | k + 2 =>
+      rw [alternating_pair_cancel]
+      exact ih k (by omega)
 
 /-- For d = 2 (every other integer), alternating gives discrepancy 0 or k.
     If a is even: all terms are +1, sum = k.
@@ -85,11 +102,8 @@ theorem alternating_d2_all_same (a k : ℕ) :
     simp only [apPartialSum, Finset.sum_range_succ] at *
     rw [ih]
     unfold alternating
-    push_cast
-    ring_nf
-    congr 1
-    ring_nf
-    rfl
+    rw [show a + n * 2 = a + 2 * n from by ring, pow_add, pow_mul, neg_one_sq, one_pow, mul_one]
+    push_cast; ring
 
 -- ============================================================================
 -- Part III: Constant and Random Colorings
@@ -118,7 +132,6 @@ def modColoring (m : ℕ) : Coloring := fun n =>
 theorem mod2_is_alternating_like (n : ℕ) :
     modColoring 2 n = if n % 2 = 0 then 1 else -1 := by
   simp [modColoring]
-  omega
 
 -- ============================================================================
 -- Part V: Discrepancy Bounds
@@ -138,7 +151,7 @@ theorem disc_trivial_upper (f : Coloring) (hf : IsValid f) (a d k : ℕ) :
           have : (f (a + n * d)).natAbs = 1 := by rcases hv with h | h <;> simp [h]
           omega
 
-/-- Small cases: specific four-square decompositions showing small discrepancies exist. -/
+-- Small cases: specific four-square decompositions showing small discrepancies exist.
 
 /-- For k = 1, any valid coloring has discrepancy exactly 1. -/
 theorem disc_length_1 (f : Coloring) (hf : IsValid f) (a d : ℕ) :
@@ -212,8 +225,8 @@ theorem h1_is_1 :
   exact ⟨alternating, alternating_valid, fun a k _ => alternating_d1_bound a k⟩
 
 /-- Simple verification: alternating sum for 3 consecutive terms starting at 0. -/
-example : apPartialSum alternating 0 1 3 = -1 := by
-  simp [apPartialSum, alternating, Finset.sum_range_succ]
+example : apPartialSum alternating 0 1 3 = 1 := by
+  native_decide
 
 /-- Simple verification: alternating sum for 4 consecutive terms starting at 0. -/
 example : apPartialSum alternating 0 1 4 = 0 := by
