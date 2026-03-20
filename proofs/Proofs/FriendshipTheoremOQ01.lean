@@ -973,4 +973,55 @@ The single remaining axiom `charpoly_eigenvalue_data` can be proved using:
 5. `adjMatrix_trace_zero` = 0 → trace constraint on s-eigenvalue multiplicities
 -/
 
+-- ============================================================================
+-- Part XVIII: Annihilating Polynomial (aeval form)
+-- ============================================================================
+
+open Polynomial in
+/-- **Annihilating polynomial**: the polynomial (X-k)(X²-(k-1)) kills A.
+    Bridges `adjMatrix_functional_eq` to `Polynomial.aeval` form. -/
+theorem annihilating_polynomial (hF : IsFriendshipGraph G) (k : ℕ) (hk : k ≥ 1)
+    (hreg : ∀ v : V, G.degree v = k) :
+    aeval (G.adjMatrix ℤ)
+      ((X - C (↑k : ℤ)) * (X ^ 2 - C (↑k - 1 : ℤ))) = 0 := by
+  simp only [map_mul, map_sub, aeval_X, aeval_C,
+    Algebra.algebraMap_eq_smul_one, sq, ← sub_smul]
+  exact adjMatrix_functional_eq G hF k hk hreg
+
+-- ============================================================================
+-- Part XIX: det(kI - A) = 0 (k is an eigenvalue)
+-- ============================================================================
+
+/-- Over an integral domain: if M·v = 0 and v ≠ 0, then det(M) = 0. -/
+theorem det_eq_zero_of_mulVec_eq_zero
+    {M : Matrix V V ℤ} {v : V → ℤ} (hv : v ≠ 0) (hMv : M.mulVec v = 0) :
+    M.det = 0 := by
+  have hdetv : M.det • v = 0 := by
+    calc M.det • v
+        = (M.det • (1 : Matrix V V ℤ)).mulVec v := by
+            simp [Matrix.one_mulVec]
+      _ = (M.adjugate * M).mulVec v := by rw [Matrix.adjugate_mul]
+      _ = M.adjugate.mulVec (M.mulVec v) := by rw [Matrix.mulVec_mulVec]
+      _ = M.adjugate.mulVec 0 := by rw [hMv]
+      _ = 0 := by rw [Matrix.mulVec_zero]
+  obtain ⟨i, hi⟩ : ∃ i, v i ≠ 0 := by
+    by_contra h; push_neg at h; exact hv (funext h)
+  have := congr_fun hdetv i
+  simp only [Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at this
+  exact (mul_eq_zero.mp this).resolve_right hi
+
+/-- **det(kI - A) = 0**: k is a root of the characteristic polynomial. -/
+theorem det_kI_sub_adjMatrix_eq_zero (k : ℕ) (hreg : ∀ v : V, G.degree v = k)
+    [Nonempty V] :
+    (↑k • (1 : Matrix V V ℤ) - G.adjMatrix ℤ).det = 0 := by
+  apply det_eq_zero_of_mulVec_eq_zero (v := fun _ => (1 : ℤ))
+  · intro h
+    have := congr_fun h (Classical.arbitrary V)
+    norm_num at this
+  · ext i
+    simp only [Matrix.sub_mulVec, Pi.sub_apply, Pi.zero_apply,
+      Matrix.smul_mulVec_assoc, Matrix.one_mulVec, Pi.smul_apply, smul_eq_mul, mul_one]
+    rw [adjMatrix_mulVec_ones G k hreg i]
+    ring
+
 end FriendshipTheoremOQ01
