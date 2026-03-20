@@ -1506,9 +1506,35 @@ theorem prod_eval_derivative_eq_resultant :
 
 /-- Res(q, q') = disc(q) over ℚ (for monic q with degree 5).
     From `resultant_deriv`: Res = (-1)^10 · 1 · disc = disc. -/
+private theorem q_derivative_natDegree : (Polynomial.derivative q).natDegree = 4 := by
+  unfold q; simp only [Polynomial.derivative_sub, Polynomial.derivative_add,
+    Polynomial.derivative_C_mul, Polynomial.derivative_pow,
+    Polynomial.derivative_X, Polynomial.derivative_C]
+  compute_degree!
+
 theorem resultant_eq_disc_q :
     Polynomial.resultant q (Polynomial.derivative q) = Polynomial.discr q := by
-  sorry
+  -- Resultant default args are natDegree, need to match resultant_deriv's bounds
+  -- resultant_deriv uses q.natDegree and (q.natDegree - 1)
+  -- We need (derivative q).natDegree = q.natDegree - 1 = 4
+  have hnd : (Polynomial.derivative q).natDegree = q.natDegree - 1 := by
+    rw [q_natDegree, q_derivative_natDegree]
+  -- Unfold default args to explicit bounds
+  show q.resultant (Polynomial.derivative q) q.natDegree (Polynomial.derivative q).natDegree =
+    Polynomial.discr q
+  rw [hnd]
+  -- Now: q.resultant q' q.natDegree (q.natDegree - 1) = disc q
+  have hdeg : (0 : WithBot ℕ) < q.degree := by unfold q; compute_degree!
+  have h := Polynomial.resultant_deriv hdeg
+  -- h : q.resultant q' q.natDegree (q.natDegree - 1) = (-1)^{n(n-1)/2} * lc * disc
+  rw [q_natDegree] at h ⊢
+  simp only [show 5 * (5 - 1) / 2 = 10 from by norm_num] at h
+  rw [pow_succ, pow_succ, pow_succ, pow_succ, pow_succ,
+    pow_succ, pow_succ, pow_succ, pow_succ, pow_succ, pow_zero,
+    neg_one_mul, neg_neg, neg_one_mul, neg_neg, neg_one_mul, neg_neg,
+    neg_one_mul, neg_neg, neg_one_mul, neg_neg, one_mul] at h
+  rw [q_monic.leadingCoeff, one_mul] at h
+  exact h
 
 -- Step H: Discriminant computation
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1517,7 +1543,11 @@ theorem resultant_eq_disc_q :
     The discriminant of X⁵ - 5X⁴ + 10X³ - 10X² + 25X - 5
     equals 2¹⁶ · 5⁶ = 1024000000. -/
 theorem disc_q_val : Polynomial.discr q = (1024000000 : ℚ) := by
-  sorry
+  -- disc(q) = Res(q, q') · (-1)^{n(n-1)/2} / lc(q)
+  -- For monic q degree 5: disc = Res(q, q')
+  -- Res is a 9×9 Sylvester matrix determinant over ℚ
+  -- native_decide should handle this (computable determinant)
+  native_decide
 
 -- Step I: Transfer resultant through algebraMap
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1527,7 +1557,15 @@ theorem disc_q_val : Polynomial.discr q = (1024000000 : ℚ) := by
 theorem resultant_transfer :
     Polynomial.resultant q_SF (Polynomial.derivative q_SF) =
     algebraMap ℚ SF (Polynomial.resultant q (Polynomial.derivative q)) := by
-  sorry
+  -- q_SF = map (algebraMap ℚ SF) q
+  -- derivative(q_SF) = map (algebraMap ℚ SF) (derivative q) [derivative commutes with map]
+  -- resultant_map_map: Res(map φ f, map φ g) m n = φ(Res(f,g) m n)
+  show (Polynomial.map (algebraMap ℚ SF) q).resultant
+    (Polynomial.derivative (Polynomial.map (algebraMap ℚ SF) q)) =
+    algebraMap ℚ SF (q.resultant (Polynomial.derivative q))
+  rw [Polynomial.derivative_map]
+  exact Polynomial.resultant_map_map q (Polynomial.derivative q)
+    q.natDegree (Polynomial.derivative q).natDegree (algebraMap ℚ SF)
 
 -- Step J: Assemble the proof
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
