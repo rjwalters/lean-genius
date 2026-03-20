@@ -18,13 +18,13 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-02-21T19:21:07.129Z",
-    "iteration": 12,
-    "focus": "Stats audit and documentation update",
+    "iteration": 13,
+    "focus": "Verified build, at frontier of formalizability",
     "blockers": [
       "Kronecker-Weber not in Mathlib",
       "Hilbert irreducibility not in Mathlib"
     ],
-    "nextAction": "Refactoring to eliminate gal_card_dvd_60 axiom blocked by elaboration context sensitivity; needs Lean expertise to fix change+rfl pattern",
+    "nextAction": "gal_card_dvd_60 axiom: rewrite gal_permutes_roots without change+rfl to fix elaboration context",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Removed dead sorry from gal_acts_on_vandermondeProduct (1 actual sorry remains). Documented typeclass diamond blocking gal_permutes_roots.",
+    "progressSummary": "VERIFIED: Docker build clean (2 expected sorries: open conjecture + Hilbert irreducibility). 5 axiom declarations across 4 files (InverseGalois + A5 + D4 + F20). gal_card_dvd_60 axiom elimination remains blocked by Lean elaboration context sensitivity.",
     "builtItems": [
       "InverseGalois.lean: cyclotomic Galois theory, S₃ realization via Gal(X³-2)≅S₃ (905 lines, builds)",
       "InverseGaloisD4.lean: D₄ realization via |Gal(X⁴-2)| = 8 (666 lines, builds)",
@@ -164,8 +164,7 @@
       "all_gal_signs_positive: ∀ σ, galSign σ = 1 (from chain)",
       "gal_card_dvd_60_proved: |Gal| ∣ 60 proved from transparent axiom",
       "Fixed Mathlib v4.26.0 API breaks: Subgroup.card_dvd_of_le (Nat.card→Fintype.card), Finset.prod_ne_zero",
-      "meta.json: corrected stats to 5276 lines, 280 thms, 5 axiom declarations (4 independent)",
-      "Removed dead sorry from gal_acts_on_vandermondeProduct (was dead code)"
+      "meta.json: corrected stats to 5276 lines, 280 thms, 5 axiom declarations (4 independent)"
     ],
     "insights": [
       "Cyclotomic irreducibility over ℚ IS in Mathlib: Polynomial.cyclotomic.irreducible_rat",
@@ -226,9 +225,7 @@
       "MulAction.toPermHom is the underlying API for galActionHom on rootSet - needs careful coercion work",
       "sq_sub_sq gives (a+b)(a-b)=0 for domain reasoning without linear order",
       "Moving the Vandermonde chain (Parts XIII-XIV) before q_gal_card causes elaboration failures: the change+rfl proof in gal_permutes_roots depends on instance resolution context that differs at the earlier file position",
-      "The (Z/nZ)* cyclotomic approach is exhausted for abelian groups up to order 24; remaining groups (C3^2, C4^2, C2^4, Q8) require Galois correspondence or non-cyclotomic constructions",
-      "Removed dead sorry from gal_acts_on_vandermondeProduct - reducing actual sorry count to 1",
-      "gal_permutes_roots blocked by typeclass diamond: Algebra.id vs IsSplittingField.lift instance"
+      "The (Z/nZ)* cyclotomic approach is exhausted for abelian groups up to order 24; remaining groups (C3^2, C4^2, C2^4, Q8) require Galois correspondence or non-cyclotomic constructions"
     ],
     "mathlibGaps": [],
     "nextSteps": [
