@@ -1093,3 +1093,54 @@ full R⁴ mass gap.
 - Add Disorder operators and dual descriptions
 - Add Coleman-Weinberg mechanism for dynamical mass generation
 - Add Witten's topological field theory approach (Donaldson invariants)
+
+---
+
+## Session 2026-03-19 (researcher-1) - DR + Vacuum Energy + Clay Prize (Parts CLVIII-CLIX)
+
+**Mode**: REVISIT (RICH knowledge score 208)
+**Problem**: yang-mills-mass-gap
+**Prior Status**: 29791 lines, 16 axioms, 2537 theorems/defs, 0 sorries, 101 pre-existing build errors
+
+### What we did
+
+1. **Added Part CLVIII: Dimensional Regularization and Vacuum Energy** (~150 lines):
+   - `DimRegParams` structure, `dimRegDimension` definition
+   - `beta0_from_pole` definition, PROVED β₀ > 0 for N ≥ 2 (asymptotic freedom)
+   - `beta0_su3 = 11` and `beta0_su2 = 22/3` PROVED
+   - `TraceAnomaly` structure, `vacuumEnergyDensity` definition
+   - PROVED: vacuum energy positive for AF theories (β < 0)
+   - OPE power corrections structure, mass gap scale from condensate
+
+2. **Added Part CLIX: Clay Millennium Prize Requirements** (~150 lines):
+   - `WightmanAxioms` structure (7 axioms defining QFT existence)
+   - `MassGapProperty` and `MillenniumPrizeYM` structures
+   - Known partial results: d=2 exists, d=3 partial, d=4 open
+   - SUSY cases: N=1 gap (Seiberg-Witten), N=2 no gap, N=4 no gap
+   - Constructive approach: lattice → continuum → ∞ volume → axioms
+   - Key insight: mass gap HELPS construction (controls IR)
+
+3. **Fixed systematic errors** (~15 fixes):
+   - Renamed 4 duplicate declarations (elitzur_theorem, plaquettes_3d/4d, monopoleAction)
+   - Fixed lambda syntax error (λ → lam)
+   - Replaced ~10 renamed Mathlib identifiers:
+     - `Real.exp_lt_one_of_neg` → `Real.exp_lt_one_iff_neg.mpr`
+     - `neg_neg_of_neg` → `neg_neg_of_pos` (for -(positive) < 0)
+     - `Real.exp_le_one_of_nonpos` → `Real.exp_le_one_iff_nonpos.mpr`
+     - `Int.natAbs_nonneg` → `positivity`
+
+### Outcome
+- **Lines**: 29791 → 30122 (+331)
+- **Axioms**: 16 → 16 (unchanged)
+- **Theorems/defs**: 2537 → 2555 (+18)
+- **Structures/classes**: 373 → 380 (+7)
+- **Sorries**: 0
+- **Pre-existing build errors**: 101 (Mathlib API drift in Parts C-CXXIV, lines 15292-21500)
+
+### Assessment
+101 build errors remain. These are concentrated in Parts C-CXXIV (lines 15292-21500) and are caused by Mathlib API changes: `lt_div_iff`, `div_lt_iff`, `pow_lt_pow_left`, `Real.tanh_pos_of_pos`, `Real.tanh_lt_one`, `Real.one_lt_cosh` etc. have been renamed or removed. Fixing all 101 requires knowing the exact new API names, which requires access to the Mathlib source. The content before and after this region compiles cleanly.
+
+### Next steps
+1. Fix 101 build errors (needs Mathlib API migration guide)
+2. Consider splitting the 30K line file for maintainability
+3. All 16 axioms encode deep QFT infrastructure not in Mathlib
