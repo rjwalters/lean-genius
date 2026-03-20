@@ -1494,13 +1494,19 @@ theorem ordered_root_diff_prod_eq_vandermonde_sq :
   congr 1
   -- Need: ∏_i ∏_{j>i} (αᵢ-αⱼ) = ∏_i ∏_{j>i} (αⱼ-αᵢ)
   -- Each factor (αᵢ-αⱼ) = -(αⱼ-αᵢ), and there are 10 such factors
-  -- (-1)^10 = 1, so the products are equal
-  have h_neg : ∀ i j : Fin 5, rootEnum i - rootEnum j = -(rootEnum j - rootEnum i) := by
-    intros; ring
-  simp_rw [h_neg]
-  simp only [Finset.prod_neg_distrib, neg_neg]
-  -- Goal: (-1)^|Ioi i| for each i, then product = (-1)^(total) · VP = VP
-  sorry
+  -- Each (αᵢ-αⱼ) = -(αⱼ-αᵢ), factor out negatives
+  simp_rw [show ∀ i j : Fin 5, rootEnum i - rootEnum j = -(rootEnum j - rootEnum i) from
+    fun _ _ => by ring]
+  simp only [Finset.prod_neg]
+  -- Each inner product becomes (-1)^|Ioi i| * ∏_{j>i} (αⱼ-αᵢ)
+  rw [Finset.prod_mul_distrib]
+  -- Need: (∏_i (-1)^|Ioi i|) * VP = VP, i.e., (-1)^(∑|Ioi i|) = 1
+  suffices h : ∏ i : Fin 5, (-1 : q.SplittingField) ^ (Finset.Ioi i).card = 1 by
+    rw [h, one_mul]
+  rw [Finset.prod_pow_eq_pow_sum]
+  -- ∑ i : Fin 5, |Ioi i| = 4+3+2+1+0 = 10
+  have hsum : ∑ i : Fin 5, (Finset.Ioi i).card = 10 := by decide
+  rw [hsum, show (10 : ℕ) = 2 * 5 from by norm_num, pow_mul, neg_one_sq, one_pow]
 
 -- Step B: Connect derivative evaluation to root differences
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
