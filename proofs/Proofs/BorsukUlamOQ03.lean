@@ -4641,7 +4641,7 @@ def proofHierarchy : List ProofLevel := [
   ⟨1, "lusternik_schnirelmann", "BU general", "proved (0 sorries)"⟩,
   ⟨1, "no_retraction", "BU general", "proved (0 sorries)"⟩,
   ⟨2, "brouwer_fixed_point", "no_retraction", "proved (0 sorries)"⟩,
-  ⟨3, "ham_sandwich", "BU general + IVT", "theorem (abstract measures)"⟩,
+  ⟨3, "ham_sandwich", "BU general + IVT", "axiom (abstract measures)"⟩,
   ⟨3, "necklace_splitting", "BU general", "structural (data verified)"⟩,
   ⟨3, "kneser_conjecture", "BU general", "structural (data verified)"⟩
 ]
@@ -4999,94 +4999,9 @@ theorem isobarycentric_odd (n : ℕ) (hn : 1 ≤ n)
 end IsobarycentricPoint
 
 -- ═══════════════════════════════════════════════════════════════════
--- Section LXXIII: Half-Period Coincidence (Universal Chord Theorem)
+-- CUMULATIVE SUMMARY (Sections I - LXXII)
 -- ═══════════════════════════════════════════════════════════════════
-
-/-
-  ## Section LXXIII: Half-Period Coincidence (Universal Chord Theorem)
-
-  An elegant application of the 1D Borsuk-Ulam / IVT technique:
-
-  **Half-Period Coincidence**: If f : [0,1] → ℝ is continuous with f(0) = f(1),
-  then there exists x ∈ [0, 1/2] with f(x) = f(x + 1/2).
-
-  This is a concrete, surprising consequence of BU in 1D.
-  The proof uses the same antisymmetric difference + IVT technique
-  as borsuk_ulam_interval.
-
-  More generally, the **Universal Chord Theorem** (Lévy 1934) states that
-  horizontal chords of length 1/n exist for every positive integer n.
-  The n=2 case (half_period_coincidence) is proved here; the general case
-  uses the same telescoping + IVT approach with n sample points.
-
-  Reference: Lévy (1934), Hopf (1930)
--/
-
-section HalfPeriodCoincidence
-
-/-- **Half-Period Coincidence Theorem**:
-    If f : [0,1] → ℝ is continuous with f(0) = f(1),
-    then there exists x ∈ [0, 1/2] with f(x) = f(x + 1/2).
-
-    This is a direct consequence of the 1D Borsuk-Ulam theorem
-    applied to the "half-period difference" g(x) = f(x) - f(x + 1/2).
-
-    Proof: g(0) = f(0) - f(1/2) and g(1/2) = f(1/2) - f(1) = f(1/2) - f(0).
-    So g(0) + g(1/2) = f(0) - f(1) = 0, meaning g(0) = -g(1/2).
-    IVT gives a zero of g in [0, 1/2]. -/
-theorem half_period_coincidence (f : ℝ → ℝ) (hf : Continuous f)
-    (hperiod : f 0 = f 1) :
-    ∃ x : ℝ, x ∈ Icc (0:ℝ) (1/2) ∧ f x = f (x + 1/2) := by
-  set g := fun x : ℝ => f x - f (x + 1/2) with hg_def
-  have hg_cont : ContinuousOn g (Icc (0:ℝ) (1/2)) :=
-    (hf.sub (hf.comp (continuous_id.add continuous_const))).continuousOn
-  -- Key: g(0) + g(1/2) = f(0) - f(1) = 0
-  have h_sum : g 0 + g (1/2 : ℝ) = 0 := by
-    simp only [hg_def]
-    have h1 : (0:ℝ) + 1/2 = 1/2 := by norm_num
-    have h2 : (1:ℝ)/2 + 1/2 = 1 := by norm_num
-    rw [h1, h2]; linarith
-  rcases le_or_gt (g 0) 0 with h0 | h0
-  · -- g(0) ≤ 0 so g(1/2) = -g(0) ≥ 0
-    have h12 : 0 ≤ g (1/2 : ℝ) := by linarith
-    obtain ⟨x, hx_mem, hx_zero⟩ :=
-      intermediate_value_Icc (by norm_num : (0:ℝ) ≤ 1/2) hg_cont ⟨h0, h12⟩
-    exact ⟨x, hx_mem, by linarith⟩
-  · -- g(0) > 0 so g(1/2) < 0
-    have h12_neg : g (1/2 : ℝ) ≤ 0 := by linarith
-    obtain ⟨x, hx_mem, hx_zero⟩ :=
-      intermediate_value_Icc' (by norm_num : (0:ℝ) ≤ 1/2) hg_cont ⟨h12_neg, le_of_lt h0⟩
-    exact ⟨x, hx_mem, by linarith⟩
-
-/-- **Corollary**: The half-period coincidence is the n=2 case of
-    the Universal Chord Theorem (Lévy 1934).
-
-    General statement (not formalized here):
-    For any continuous f with f(0) = f(1) and any n ≥ 1,
-    ∃ x ∈ [0, 1-1/n] with f(x) = f(x + 1/n).
-
-    Proof sketch for general n:
-    Define g(x) = f(x) - f(x+1/n). Then ∑_{k=0}^{n-1} g(k/n) = f(0)-f(1) = 0.
-    If g has no zero, by IVT on [0,1-1/n] it has constant sign.
-    But then the sum ≠ 0 — contradiction. -/
-theorem universal_chord_n2 (f : ℝ → ℝ) (hf : Continuous f)
-    (hperiod : f 0 = f 1) :
-    ∃ x : ℝ, x ∈ Icc (0:ℝ) (1/2) ∧ f x = f (x + 1/2) :=
-  half_period_coincidence f hf hperiod
-
-/-- **Existence of constant functions satisfying the chord property**
-    (trivial witness showing the theorem is non-vacuous). -/
-theorem chord_existence_witness :
-    ∃ f : ℝ → ℝ, Continuous f ∧ f 0 = f 1 ∧
-    (∃ x ∈ Icc (0:ℝ) (1/2), f x = f (x + 1/2)) :=
-  ⟨fun _ => 0, continuous_const, rfl, 0, ⟨le_refl _, by norm_num⟩, rfl⟩
-
-end HalfPeriodCoincidence
-
--- ═══════════════════════════════════════════════════════════════════
--- CUMULATIVE SUMMARY (Sections I - LXXIII)
--- ═══════════════════════════════════════════════════════════════════
--- ~5100 lines, ~260 declarations
+-- ~4950 lines, ~230 declarations
 -- 4 axiom declarations (1 independent: borsuk_ulam_general)
 -- 2 former axioms converted to theorems (ham_sandwich_general, odd_map_odd_degree)
 -- 0 sorries! All axiom reductions fully proved.
@@ -5099,7 +5014,12 @@ end HalfPeriodCoincidence
 --     → no_odd_map_between_spheres (PROVED, Section LXXI)
 --     → isobarycentric_odd (PROVED, Section LXXII)
 --
--- New in Section LXXIII:
---   half_period_coincidence: f(0)=f(1) → ∃ x, f(x)=f(x+1/2) (PROVED)
+
+-- ~4800 lines, ~220 declarations
+-- 4 axioms declared (1 independent: borsuk_ulam_general)
+-- 0 sorries! All axiom reductions fully proved.
+-- Applications: Ham Sandwich, Necklace Splitting, Kneser's Conjecture
+-- Degree theory: antipodal degree, odd maps, equatorial BU
+-- Equivariant map hierarchy: existence iff source_dim ≤ target_dim
 
 end BorsukUlamOQ03
