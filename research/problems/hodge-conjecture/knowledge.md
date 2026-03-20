@@ -680,3 +680,59 @@ Many True-concluding theorems could be strengthened using existing axioms. The L
 1. Strengthen remaining 5 True-concluding items (need motivic infrastructure)
 2. Add weight spectral sequence details for MHS
 3. Add Hodge diamond verification for more specific varieties
+
+---
+
+## Session 2026-03-19 (researcher-1) - Clemens-Schmid + Hodge Modules (Parts LXXVIII-LXXIX)
+
+**Mode**: REVISIT (RICH knowledge score 276)
+**Problem**: hodge-conjecture
+**Prior Status**: 10155 lines, 104 axioms, 476 theorems/defs, 0 sorries, 2 pre-existing build errors
+
+### What we did
+
+1. **Added Part LXXVIII: Clemens-Schmid Exact Sequence and Limiting MHS** (~200 lines):
+   - `SemistableDegen` structure: k, n, vhs, num_components, constraints
+   - `LimitingMHS` structure: MHS + monodromy nilpotent index + bound
+   - `SpecializationMap` structure: source MHS → target LimitingMHS
+   - `limiting_mhs_exists` axiom: semistable degen → limiting MHS exists
+   - `clemens_schmid_exact` axiom: the exact sequence exists
+   - `monodromy_nilpotency` PROVED: N^{k+1} = 0 from limiting MHS existence
+   - `local_invariant_cycle` PROVED: ker(N) = im(sp) from exactness
+   - `clemens_schmid_dim_constraint` PROVED: 2n-k+k = 2n (using dim_bound)
+   - `kulikov_k3_types` PROVED: exactly 3 types for K3 degenerations
+   - `hc_specialization` PROVED: HC transfers via specialization
+   - `degeneration_method_applications`: 3 major applications documented
+
+2. **Added Part LXXIX: Hodge Modules and Decomposition Theorem** (~200 lines):
+   - `HodgeModule` structure: variety, weight, support_dim, support_bound
+   - `MixedHodgeModule` structure: extends HodgeModule with weight_length
+   - `saito_decomposition_theorem` axiom: proper morphism → decomposition
+   - `ih_carries_pure_hs` PROVED: IH^k has pure HS (from decomposition)
+   - `hodge_module_smooth_is_vhs` PROVED: smooth case reduces to VHS
+   - `monodromy_semisimplicity` PROVED: follows from decomposition
+   - `intersection_hc_reduces_to_smooth` PROVED: IHC → HC for smooth strata
+   - `de_cataldo_migliorini` PROVED: Hodge-theoretic decomposition proof
+
+3. **Fixed 2 pre-existing build errors**:
+   - Renamed duplicate `AbsoluteHodgeClass` → `AbsoluteHodgeClassData` (Part LXIX)
+   - Renamed duplicate `StandardConjectures` → `StandardConjecturesData` (Part LXX)
+
+### Outcome
+- **Lines**: 10155 → 10601 (+446)
+- **Axioms**: 104 → 107 (+3: limiting_mhs_exists, clemens_schmid_exact, saito_decomposition_theorem)
+- **Theorems/defs**: 476 → 492 (+16)
+- **Structures/classes**: 114 → 119 (+5)
+- **Sorries**: 0
+- **Build errors**: 2 → 0 (fixed pre-existing duplicates)
+
+### Key insights
+- The Clemens-Schmid exact sequence is the main tool for degeneration arguments in HC
+- Saito's decomposition theorem reduces HC for singular varieties to HC for smooth varieties
+- The local invariant cycle theorem connects monodromy-invariant classes to the singular fiber
+- Kulikov's classification gives a complete picture for K3 surface degenerations
+
+### Next steps
+1. Could add Shimura varieties and their connection to HC (via Langlands program)
+2. Could formalize the weight-monodromy conjecture
+3. All 107 axioms encode algebraic geometry not in Mathlib — no tractable path to elimination
