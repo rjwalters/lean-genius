@@ -280,587 +280,14 @@ theorem not yet in Mathlib:
   Therefore |Gal| = 60.
 -/
 
-/-- **Axiom A**: |Gal(q)| divides 60.
-
-    The discriminant of q equals 32000² (a perfect square). By the classical
-    theorem connecting discriminant sign to the alternating group, every
-    element of Gal(q) acts as an even permutation on the roots. Since
-    the even permutations of 5 elements form A₅ (order 60), |Gal| | 60.
-
-    Axiomatized because Mathlib lacks the disc↔alternating connection.
-    Supporting evidence: `disc_value_is_square` and `trinomial_disc_computation`
-    in Part XII verify Disc = 1024000000 = 32000² arithmetically. -/
-axiom gal_card_dvd_60 : Fintype.card q.Gal ∣ 60
-
-/-- **Axiom B**: 3 divides |Gal(q)|.
-
-    By Dedekind's theorem at p = 7: q mod 7 factors as (X-5)(X-6)(cubic)
-    where the cubic X³+6X²+4X+1 is irreducible over F₇ (no roots by
-    exhaustive check, hence irreducible for degree 3). The factorization
-    pattern (1,1,3) implies Gal contains a Frobenius element with a 3-cycle,
-    hence an element of order divisible by 3.
-
-    Axiomatized because Mathlib lacks Dedekind's theorem.
-    Supporting evidence: `q_root_mod7_at_5`, `q_root_mod7_at_6`, and
-    `cubic_factor_no_roots_mod7` in Part XII verify the factorization. -/
-axiom three_dvd_gal_card : 3 ∣ Fintype.card q.Gal
-
-/- **Former Axiom C** (ELIMINATED): 2 | |Gal(q)|.
-    q has 1 real root (q' > 0), so complex conjugation gives order-2 element.
-    No longer needed: replaced by no_subgroup_order_15 (Sylow theory). -/
-
-/- **Former Axiom D** (ELIMINATED): 4 | |Gal(q)|.
-    Stabilizer of real root contains C₂×C₂. No longer needed: replaced
-    by no_subgroup_order_30 (A₅ simplicity). -/
 
 -- ============================================================================
--- Part IV-A: Structural Lemmas (Replacing Axioms C and D)
+-- (Parts XII-XIV relocated here to eliminate gal_card_dvd_60 axiom)
 -- ============================================================================
-
-/-- No subgroup of S₅ has order 15.
-
-    In any group of order 15 = 3·5, Sylow theory gives unique normal
-    Sylow subgroups P₅ and P₃. Since |Aut(Z/5)| = 4 and gcd(3,4) = 1,
-    elements of P₃ and P₅ commute. Product has order 15, but max element
-    order in S₅ is 6. Contradiction. -/
-theorem no_subgroup_order_15 (H : Subgroup (Equiv.Perm (Fin 5)))
-    (hcard : Nat.card H = 15) : False := by
-  -- Setup
-  haveI : Finite H := Nat.finite_of_card_ne_zero (by rw [hcard]; norm_num)
-  haveI hft : Fintype H := Fintype.ofFinite H
-  have hcard_ft : Fintype.card H = 15 := by rwa [Nat.card_eq_fintype_card] at hcard
-  haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
-  haveI : Fact (Nat.Prime 3) := ⟨by norm_num⟩
-  -- Step 1: Cauchy — elements of order 5 and 3
-  obtain ⟨σ, hσ⟩ := exists_prime_orderOf_dvd_card (p := 5)
-    (show 5 ∣ Fintype.card H by rw [hcard_ft]; norm_num)
-  obtain ⟨τ, hτ⟩ := exists_prime_orderOf_dvd_card (p := 3)
-    (show 3 ∣ Fintype.card H by rw [hcard_ft]; norm_num)
-  -- Step 2: Transfer to Perm(Fin 5)
-  have hσ5 : (σ : Equiv.Perm (Fin 5)) ^ 5 = 1 := by
-    have : σ ^ 5 = (1 : ↥H) :=
-      calc σ ^ 5 = σ ^ orderOf σ := by congr 1; exact hσ.symm
-        _ = 1 := pow_orderOf_eq_one σ
-    simpa using congr_arg Subtype.val this
-  have hσ_ne : (σ : Equiv.Perm (Fin 5)) ≠ 1 := by
-    intro heq
-    exact absurd hσ (by rw [show σ = (1 : ↥H) from Subtype.ext heq, orderOf_one]; norm_num)
-  have hτ3 : (τ : Equiv.Perm (Fin 5)) ^ 3 = 1 := by
-    have : τ ^ 3 = (1 : ↥H) :=
-      calc τ ^ 3 = τ ^ orderOf τ := by congr 1; exact hτ.symm
-        _ = 1 := pow_orderOf_eq_one τ
-    simpa using congr_arg Subtype.val this
-  have hτ_ne : (τ : Equiv.Perm (Fin 5)) ≠ 1 := by
-    intro heq
-    exact absurd hτ (by rw [show τ = (1 : ↥H) from Subtype.ext heq, orderOf_one]; norm_num)
-  -- Step 3: They don't commute (native_decide), but they must (Sylow theory)
-  exact perm_fin5_order5_order3_not_commute _ _ hσ5 hσ_ne hτ3 hτ_ne (by
-    -- Step 4: Sylow theory proves σ and τ commute in H
-    -- Both Sylow subgroups are unique (n₅ = 1, n₃ = 1), hence normal.
-    -- Elements of disjoint normal subgroups commute via commutator argument.
-    -- Transfer commutativity from H to Perm(Fin 5)
-    suffices hsuff : (σ : ↥H) * τ = τ * σ by
-      have h1 := congr_arg Subtype.val hsuff
-      simp only [Subgroup.coe_mul] at h1; exact h1
-    -- Sylow 5-subgroup is unique (n₅ | 3 and n₅ ≡ 1 mod 5, so n₅ = 1)
-    have hn₅ : Nat.card (Sylow 5 ↥H) = 1 := by
-      have h_mod := card_sylow_modEq_one 5 ↥H
-      obtain ⟨P⟩ := Sylow.nonempty (p := 5) (G := ↥H)
-      have h_P_card : Nat.card (↑P : Subgroup ↥H) = 5 := by
-        rw [P.card_eq_multiplicity, hcard]; native_decide
-      have h_idx : (↑P : Subgroup ↥H).index = 3 := by
-        have := (↑P : Subgroup ↥H).index_mul_card; rw [h_P_card, hcard] at this; omega
-      have h_dvd := Sylow.card_dvd_index P; rw [h_idx] at h_dvd
-      rcases (by norm_num : Nat.Prime 3).eq_one_or_self_of_dvd _ h_dvd with h | h
-      · exact h
-      · exfalso; rw [h] at h_mod; simp [Nat.ModEq] at h_mod
-    haveI : Subsingleton (Sylow 5 ↥H) := by
-      haveI := Fintype.ofFinite (Sylow 5 ↥H)
-      rw [← Fintype.card_le_one_iff_subsingleton, ← Nat.card_eq_fintype_card]; omega
-    -- Sylow 3-subgroup is unique (n₃ | 5 and n₃ ≡ 1 mod 3, so n₃ = 1)
-    have hn₃ : Nat.card (Sylow 3 ↥H) = 1 := by
-      have h_mod := card_sylow_modEq_one 3 ↥H
-      obtain ⟨P⟩ := Sylow.nonempty (p := 3) (G := ↥H)
-      have h_P_card : Nat.card (↑P : Subgroup ↥H) = 3 := by
-        rw [P.card_eq_multiplicity, hcard]; native_decide
-      have h_idx : (↑P : Subgroup ↥H).index = 5 := by
-        have := (↑P : Subgroup ↥H).index_mul_card; rw [h_P_card, hcard] at this; omega
-      have h_dvd := Sylow.card_dvd_index P; rw [h_idx] at h_dvd
-      rcases (by norm_num : Nat.Prime 5).eq_one_or_self_of_dvd _ h_dvd with h | h
-      · exact h
-      · exfalso; rw [h] at h_mod; simp [Nat.ModEq] at h_mod
-    haveI : Subsingleton (Sylow 3 ↥H) := by
-      haveI := Fintype.ofFinite (Sylow 3 ↥H)
-      rw [← Fintype.card_le_one_iff_subsingleton, ← Nat.card_eq_fintype_card]; omega
-    -- Get the unique Sylow subgroups (normal by uniqueness)
-    obtain ⟨P₅⟩ := Sylow.nonempty (p := 5) (G := ↥H)
-    obtain ⟨P₃⟩ := Sylow.nonempty (p := 3) (G := ↥H)
-    haveI hN₅ : (↑P₅ : Subgroup ↥H).Normal := by
-      apply Subgroup.Normal.mk; intro n hn g
-      have : g • P₅ = P₅ := Subsingleton.elim _ _
-      rw [Sylow.smul_eq_iff_mem_normalizer] at this
-      exact ((Subgroup.mem_normalizer_iff.mp this) n).mp hn
-    haveI hN₃ : (↑P₃ : Subgroup ↥H).Normal := by
-      apply Subgroup.Normal.mk; intro n hn g
-      have : g • P₃ = P₃ := Subsingleton.elim _ _
-      rw [Sylow.smul_eq_iff_mem_normalizer] at this
-      exact ((Subgroup.mem_normalizer_iff.mp this) n).mp hn
-    -- σ ∈ P₅ (order-5 element in the unique Sylow 5-subgroup)
-    have hσ_mem : σ ∈ (↑P₅ : Subgroup ↥H) := by
-      have h_pg : IsPGroup 5 (Subgroup.zpowers σ) :=
-        IsPGroup.iff_card.mpr ⟨1, by rw [pow_one, Nat.card_zpowers, hσ]⟩
-      obtain ⟨Q, hQ⟩ := h_pg.exists_le_sylow
-      exact (show Q = P₅ from Subsingleton.elim Q P₅) ▸ hQ (Subgroup.mem_zpowers σ)
-    -- τ ∈ P₃ (order-3 element in the unique Sylow 3-subgroup)
-    have hτ_mem : τ ∈ (↑P₃ : Subgroup ↥H) := by
-      have h_pg : IsPGroup 3 (Subgroup.zpowers τ) :=
-        IsPGroup.iff_card.mpr ⟨1, by rw [pow_one, Nat.card_zpowers, hτ]⟩
-      obtain ⟨Q, hQ⟩ := h_pg.exists_le_sylow
-      exact (show Q = P₃ from Subsingleton.elim Q P₃) ▸ hQ (Subgroup.mem_zpowers τ)
-    -- Commutator c = σ * τ * σ⁻¹ * τ⁻¹ lies in both P₅ and P₃
-    set c := σ * τ * σ⁻¹ * τ⁻¹ with hc_def
-    have hc₅ : c ∈ (↑P₅ : Subgroup ↥H) := by
-      rw [hc_def]; show σ * τ * σ⁻¹ * τ⁻¹ ∈ ↑P₅
-      have := hN₅.conj_mem σ⁻¹ ((↑P₅ : Subgroup ↥H).inv_mem hσ_mem) τ
-      -- this : τ * σ⁻¹ * τ⁻¹ ∈ ↑P₅
-      have hprod := (↑P₅ : Subgroup ↥H).mul_mem hσ_mem this
-      -- hprod : σ * (τ * σ⁻¹ * τ⁻¹) ∈ ↑P₅
-      convert hprod using 1
-    have hc₃ : c ∈ (↑P₃ : Subgroup ↥H) := by
-      rw [hc_def]; show σ * τ * σ⁻¹ * τ⁻¹ ∈ ↑P₃
-      have := hN₃.conj_mem τ hτ_mem σ
-      -- this : σ * τ * σ⁻¹ ∈ ↑P₃
-      exact (↑P₃ : Subgroup ↥H).mul_mem this ((↑P₃ : Subgroup ↥H).inv_mem hτ_mem)
-    -- P₅ ∩ P₃ = ⊥ (coprime orders: elements in both have p-power and q-power order)
-    have hc_one : c = 1 := by
-      have ⟨k₅, hk₅⟩ := P₅.isPGroup' ⟨c, hc₅⟩
-      have ⟨k₃, hk₃⟩ := P₃.isPGroup' ⟨c, hc₃⟩
-      have h5 : orderOf c ∣ 5 ^ k₅ := orderOf_dvd_of_pow_eq_one (by
-        simpa using congr_arg Subtype.val hk₅)
-      have h3 : orderOf c ∣ 3 ^ k₃ := orderOf_dvd_of_pow_eq_one (by
-        simpa using congr_arg Subtype.val hk₃)
-      have hcop : Nat.Coprime (5 ^ k₅) (3 ^ k₃) := (by norm_num : Nat.Coprime 5 3).pow k₅ k₃
-      exact orderOf_eq_one_iff.mp (Nat.dvd_one.mp (hcop ▸ Nat.dvd_gcd h5 h3))
-    -- c = 1 means σ * τ * σ⁻¹ * τ⁻¹ = 1, hence σ * τ = τ * σ
-    rw [show σ * τ = c * (τ * σ) from by simp only [hc_def]; group, hc_one, one_mul])
-
-/-- No subgroup of S₅ has order 30.
-
-    If H ≤ S₅ has |H| = 30, then H ∩ A₅ has order 15 or 30.
-    Order 30 → H ⊆ A₅, index 2, normal, contradicts A₅ simple.
-    Order 15 → contradicts no_subgroup_order_15. -/
-theorem no_subgroup_order_30 (H : Subgroup (Equiv.Perm (Fin 5)))
-    (hcard : Nat.card H = 30) : False := by
-  -- Setup
-  haveI : Finite H := Nat.finite_of_card_ne_zero (by rw [hcard]; norm_num)
-  haveI : Fintype H := Fintype.ofFinite H
-  -- Case split: either H ⊆ A₅ or ∃ odd permutation in H
-  by_cases hle : H ≤ alternatingGroup (Fin 5)
-  · -- Case 1: H ⊆ A₅ → [A₅:H] = 2 → H ⊴ A₅ → contradicts A₅ simple
-    let H' := H.subgroupOf (alternatingGroup (Fin 5))
-    have hH'_card : Nat.card ↥H' = 30 := by
-      rw [show Nat.card ↥H' = Nat.card ↥H from
-        Nat.card_congr (Subgroup.subgroupOfEquivOfLe hle).toEquiv, hcard]
-    have hA5_card : Nat.card (alternatingGroup (Fin 5) : Type _) = 60 := by
-      rw [Nat.card_eq_fintype_card]; decide
-    have hindex : H'.index = 2 := by
-      have := Subgroup.card_mul_index H'
-      rw [hA5_card, hH'_card] at this; omega
-    haveI : H'.Normal := Subgroup.normal_of_index_eq_two hindex
-    rcases alternatingGroup.isSimpleGroup_five.eq_bot_or_eq_top_of_normal H' inferInstance
-      with h | h
-    · rw [h] at hH'_card; simp at hH'_card
-    · rw [h, Nat.card_congr Subgroup.topEquiv.toEquiv, hA5_card] at hH'_card
-      norm_num at hH'_card
-  · -- Case 2: ∃ odd permutation → H ∩ A₅ has order 15 → contradicts no_subgroup_order_15
-    obtain ⟨x, hxH, hxA⟩ : ∃ x ∈ H, x ∉ alternatingGroup (Fin 5) := by
-      by_contra h; push_neg at h; exact hle h
-    let signH : ↥H →* ℤˣ := Equiv.Perm.sign.comp H.subtype
-    let K := signH.ker.map H.subtype
-    have hK_card : Nat.card ↥K = 15 := by
-      have h_eq : Nat.card ↥K = Nat.card ↥signH.ker :=
-        (Nat.card_congr
-          (signH.ker.equivMapOfInjective H.subtype Subtype.val_injective).toEquiv).symm
-      rw [h_eq]
-      have h_mul := Subgroup.card_mul_index signH.ker
-      have h_idx_dvd : signH.ker.index ∣ 2 := by
-        have h_iso : signH.ker.index = Nat.card ↥signH.range := by
-          rw [Subgroup.index]
-          exact Nat.card_congr (QuotientGroup.quotientKerEquivRange signH).toEquiv
-        rw [h_iso]
-        calc Nat.card ↥signH.range
-            ∣ Nat.card ℤˣ := Subgroup.card_subgroup_dvd_card signH.range
-          _ = 2 := by rw [Nat.card_eq_fintype_card]; decide
-      have h_idx_ne : signH.ker.index ≠ 1 := by
-        intro heq
-        have hker_top : signH.ker = ⊤ := Subgroup.index_eq_one.mp heq
-        have : (⟨x, hxH⟩ : ↥H) ∈ signH.ker := hker_top ▸ Subgroup.mem_top _
-        rw [MonoidHom.mem_ker] at this
-        simp only [signH, MonoidHom.comp_apply, Subgroup.coe_subtype] at this
-        exact hxA (Equiv.Perm.mem_alternatingGroup.mpr this)
-      have h_idx : signH.ker.index = 2 :=
-        (Nat.Prime.eq_one_or_self_of_dvd (by norm_num) _ h_idx_dvd).resolve_left h_idx_ne
-      rw [hcard, h_idx] at h_mul; omega
-    exact no_subgroup_order_15 K hK_card
-
-
-/-- |Gal(q)| ≠ 15: Gal embeds into S₅ which has no subgroup of order 15. -/
-theorem gal_card_ne_15 : Fintype.card q.Gal ≠ 15 := by
-  intro hc
-  haveI : Fact (map (algebraMap ℚ q.SplittingField) q).Splits :=
-    ⟨Polynomial.SplittingField.splits q⟩
-  let rootEquiv : q.rootSet q.SplittingField ≃ Fin 5 :=
-    Fintype.equivOfCardEq (by rw [q_rootSet_card, Fintype.card_fin])
-  let permEquiv : Equiv.Perm (q.rootSet q.SplittingField) ≃* Equiv.Perm (Fin 5) :=
-    { toEquiv := Equiv.permCongr rootEquiv
-      map_mul' := fun σ τ => by
-        ext x; simp [Equiv.permCongr_apply, Equiv.Perm.mul_apply] }
-  let φ := permEquiv.toMonoidHom.comp (Polynomial.Gal.galActionHom q q.SplittingField)
-  have hinj : Function.Injective φ :=
-    permEquiv.injective.comp (Polynomial.Gal.galActionHom_injective q q.SplittingField)
-  exact no_subgroup_order_15 φ.range (by
-    rw [show Nat.card φ.range = Nat.card q.Gal from
-      Nat.card_congr (Equiv.ofBijective φ.rangeRestrict
-        ⟨fun a b h => hinj (congrArg Subtype.val h),
-         φ.rangeRestrict_surjective⟩).symm,
-      Nat.card_eq_fintype_card, hc])
-
-/-- |Gal(q)| ≠ 30: Gal embeds into S₅ which has no subgroup of order 30. -/
-theorem gal_card_ne_30 : Fintype.card q.Gal ≠ 30 := by
-  intro hc
-  haveI : Fact (map (algebraMap ℚ q.SplittingField) q).Splits :=
-    ⟨Polynomial.SplittingField.splits q⟩
-  let rootEquiv : q.rootSet q.SplittingField ≃ Fin 5 :=
-    Fintype.equivOfCardEq (by rw [q_rootSet_card, Fintype.card_fin])
-  let permEquiv : Equiv.Perm (q.rootSet q.SplittingField) ≃* Equiv.Perm (Fin 5) :=
-    { toEquiv := Equiv.permCongr rootEquiv
-      map_mul' := fun σ τ => by
-        ext x; simp [Equiv.permCongr_apply, Equiv.Perm.mul_apply] }
-  let φ := permEquiv.toMonoidHom.comp (Polynomial.Gal.galActionHom q q.SplittingField)
-  have hinj : Function.Injective φ :=
-    permEquiv.injective.comp (Polynomial.Gal.galActionHom_injective q q.SplittingField)
-  exact no_subgroup_order_30 φ.range (by
-    rw [show Nat.card φ.range = Nat.card q.Gal from
-      Nat.card_congr (Equiv.ofBijective φ.rangeRestrict
-        ⟨fun a b h => hinj (congrArg Subtype.val h),
-         φ.rangeRestrict_surjective⟩).symm,
-      Nat.card_eq_fintype_card, hc])
-
--- ============================================================================
--- Part IV-B: Galois Group Cardinality
--- ============================================================================
-
-/-- The Galois group of q has exactly 60 elements (= |A₅|).
-
-    **PROVED** from axioms A, B + structural lemmas. Uses only 2 axioms.
-
-    Proof: |Gal| | 60 (Axiom A) and 15 | |Gal| (from B + proved 5 | |Gal|)
-    gives |Gal| ∈ {15, 30, 60}. No S₅ subgroup of order 15 or 30 exists.
-    Therefore |Gal| = 60. ✓ -/
-theorem q_gal_card : Fintype.card q.Gal = 60 := by
-  have h15 : 15 ∣ Fintype.card q.Gal :=
-    Nat.Coprime.mul_dvd_of_dvd_of_dvd (by norm_num : Nat.Coprime 3 5)
-      three_dvd_gal_card five_dvd_gal_card
-  have h_dvd := gal_card_dvd_60
-  have hne15 := gal_card_ne_15
-  have hne30 := gal_card_ne_30
-  obtain ⟨k, hk⟩ := h15
-  have hk_pos : 0 < k := by
-    have hpos : 0 < Fintype.card q.Gal := Fintype.card_pos
-    rw [hk] at hpos; omega
-  have hk_dvd : k ∣ 4 := by
-    rw [hk] at h_dvd
-    exact Nat.dvd_of_mul_dvd_mul_left (by norm_num : 0 < 15) h_dvd
-  have hk_le : k ≤ 4 := Nat.le_of_dvd (by norm_num) hk_dvd
-  have hk_ne1 : k ≠ 1 := fun h => by rw [h, Nat.mul_one] at hk; exact hne15 hk
-  have hk_ne2 : k ≠ 2 := fun h => by subst h; norm_num at hk; exact hne30 hk
-  interval_cases k <;> simp_all
-
--- ============================================================================
--- Part V: A₅ is Realizable as a Galois Group over ℚ
--- ============================================================================
-
-/-- The splitting field of q is a Galois extension of ℚ. -/
-instance : Normal ℚ q.SplittingField := inferInstance
-instance : Algebra.IsSeparable ℚ q.SplittingField := inferInstance
-
-/-- **A₅ Realizability Theorem**
-
-    There exists a Galois extension K/ℚ with exactly 60 automorphisms
-    (= |A₅|). Specifically, K = SplittingField(X⁵ - 5X⁴ + 10X³ - 10X² + 25X - 5).
-
-    This is the first non-solvable group realized in our formalization,
-    extending the Inverse Galois Problem beyond Shafarevich's theorem. -/
-theorem a5_realizable :
-    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
-      (_ : IsGalois ℚ K),
-      Fintype.card (K ≃ₐ[ℚ] K) = 60 :=
-  ⟨q.SplittingField,
-    inferInstance, inferInstance, inferInstance, IsGalois.mk,
-    q_gal_card⟩
-
-/-- The splitting field of q has ℚ-dimension 60. -/
-theorem splitting_field_q_finrank :
-    Module.finrank ℚ q.SplittingField = 60 := by
-  have hcard_eq_nat : Nat.card q.Gal = Module.finrank ℚ q.SplittingField :=
-    Polynomial.Gal.card_of_separable q_separable
-  rw [Nat.card_eq_fintype_card] at hcard_eq_nat
-  rw [← hcard_eq_nat]
-  exact q_gal_card
-
--- ============================================================================
--- Part VI: Galois Group Isomorphism with A₅
--- ============================================================================
-
-/-
-Since |Gal(q/ℚ)| = 60 = |Perm(rootSet)|/2 and Gal embeds into S₅ = Perm(rootSet)
-via galActionHom, the image has index 2 in S₅. The unique subgroup of index 2
-in S₅ is A₅ (the kernel of the sign homomorphism). Therefore Gal ≅ A₅.
--/
 
 /-- The map (algebraMap ...) q splits in the splitting field (needed for galActionHom). -/
 instance q_splits_fact : Fact (map (algebraMap ℚ q.SplittingField) q).Splits :=
   ⟨Polynomial.SplittingField.splits q⟩
-
-/-- The Galois action on roots gives an injection Gal → Perm(rootSet). -/
-theorem gal_injects_into_perm :
-    Function.Injective (Polynomial.Gal.galActionHom q q.SplittingField) :=
-  Polynomial.Gal.galActionHom_injective q q.SplittingField
-
-/-- |Gal| = 60 and 120 = 5!, so Gal has index 2 in S₅. -/
-theorem gal_has_index_two : 2 * Fintype.card q.Gal = 120 := by
-  rw [q_gal_card]
-
-/-- The Galois group of q is isomorphic to A₅ (= alternatingGroup (Fin 5)).
-
-    **Proof strategy**: Compose galActionHom with permCongr to get an injection
-    φ : Gal →* Perm(Fin 5). Since |Gal| = 60 and |Perm(Fin 5)| = 120,
-    the image φ.range has index 2. By Mathlib's
-    `Equiv.Perm.eq_alternatingGroup_of_index_eq_two`, φ.range = alternatingGroup(Fin 5).
-    Therefore Gal ≅ φ.range ≅ A₅. -/
-theorem q_gal_iso_a5 :
-    Nonempty (q.Gal ≃* alternatingGroup (Fin 5)) := by
-  -- Step 1: Build composite injection Gal →* Perm(Fin 5)
-  -- Equivalence rootSet ≃ Fin 5 (since |rootSet| = 5)
-  let rootEquiv : q.rootSet q.SplittingField ≃ Fin 5 :=
-    Fintype.equivOfCardEq (by rw [q_rootSet_card, Fintype.card_fin])
-  -- MulEquiv Perm(rootSet) ≃* Perm(Fin 5) via conjugation
-  let permEquiv : Equiv.Perm (q.rootSet q.SplittingField) ≃* Equiv.Perm (Fin 5) :=
-    { toEquiv := Equiv.permCongr rootEquiv
-      map_mul' := fun σ τ => by
-        ext x; simp [Equiv.permCongr_apply, Equiv.Perm.mul_apply] }
-  -- Composite: Gal →* Perm(Fin 5)
-  let φ := permEquiv.toMonoidHom.comp (Polynomial.Gal.galActionHom q q.SplittingField)
-  -- Step 2: φ is injective
-  have hinj : Function.Injective φ :=
-    permEquiv.injective.comp (Polynomial.Gal.galActionHom_injective q q.SplittingField)
-  -- Step 3: φ.range has index 2 in Perm(Fin 5)
-  have hindex : φ.range.index = 2 := by
-    have hlagrange := Subgroup.card_mul_index φ.range
-    -- |φ.range| = |Gal| = 60 via the bijection Gal ≃ φ.range
-    have hrange : Nat.card φ.range = 60 := by
-      have hbij : Function.Bijective φ.rangeRestrict :=
-        ⟨fun a b h => hinj (congrArg Subtype.val h), φ.rangeRestrict_surjective⟩
-      rw [show Nat.card φ.range = Nat.card q.Gal from
-        (Nat.card_congr (Equiv.ofBijective _ hbij).symm)]
-      rw [Nat.card_eq_fintype_card, q_gal_card]
-    -- |Perm(Fin 5)| = 120
-    have hperm : Nat.card (Equiv.Perm (Fin 5)) = 120 := by
-      rw [Nat.card_eq_fintype_card, Fintype.card_perm, Fintype.card_fin]
-      norm_num
-    rw [hrange, hperm] at hlagrange; omega
-  -- Step 4: The unique index-2 subgroup of S₅ is A₅ (Mathlib)
-  have heq : φ.range = alternatingGroup (Fin 5) :=
-    Equiv.Perm.eq_alternatingGroup_of_index_eq_two hindex
-  -- Step 5: Construct MulEquiv: Gal ≃* φ.range ≃* A₅
-  exact ⟨(MulEquiv.ofBijective φ.rangeRestrict
-    ⟨fun a b h => hinj (congrArg Subtype.val h),
-     φ.rangeRestrict_surjective⟩).trans (MulEquiv.subgroupCongr heq)⟩
-
-/-- **A₅ Realizability (Isomorphism Version)**
-
-    A₅ is realizable as a Galois group over ℚ, with explicit isomorphism. -/
-theorem a5_realizable_iso :
-    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
-      (_ : IsGalois ℚ K),
-      Nonempty (alternatingGroup (Fin 5) ≃* (K ≃ₐ[ℚ] K)) :=
-  ⟨q.SplittingField,
-    inferInstance, inferInstance, inferInstance, IsGalois.mk,
-    q_gal_iso_a5.map MulEquiv.symm⟩
-
--- ============================================================================
--- Part VII: Non-Solvability — Beyond Shafarevich
--- ============================================================================
-
-/-
-A₅ is significant because:
-1. It is the smallest non-abelian simple group (order 60)
-2. It is NOT solvable (well-known, proved below)
-3. Its realizability is NOT covered by:
-   - Kronecker-Weber theorem (abelian groups only)
-   - Shafarevich's theorem (solvable groups only)
-4. This is the first explicit construction beyond the solvable barrier
-   in our formalization of the Inverse Galois Problem
--/
-
-/-- A₅ has 60 elements. -/
-theorem a5_card : Fintype.card (alternatingGroup (Fin 5)) = 60 := by
-  native_decide
-
-/-- A₅ is not solvable.
-
-    If A₅ were solvable, then since A₅ is a normal subgroup of S₅ with
-    abelian quotient (ℤ/2), S₅ would also be solvable. But S₅ is not
-    solvable for n ≥ 5 (Mathlib: Equiv.Perm.not_solvable).
-
-    Proof: assume IsSolvable A₅, transfer to S₅ via the short exact sequence
-    A₅ → S₅ → ℤ/2 (ker ≤ range of sign), then contradict Perm.not_solvable. -/
-theorem a5_not_solvable : ¬IsSolvable (alternatingGroup (Fin 5)) := by
-  intro h
-  have : IsSolvable (Equiv.Perm (Fin 5)) := by
-    apply solvable_of_ker_le_range
-      (alternatingGroup (Fin 5)).subtype
-      Equiv.Perm.sign
-    intro x hx
-    rw [MonoidHom.mem_ker] at hx
-    exact ⟨⟨x, Equiv.Perm.mem_alternatingGroup.mpr hx⟩, rfl⟩
-  exact Equiv.Perm.not_solvable (Fin 5) (by simp) this
-
-/-- The Galois group we constructed is not solvable.
-    This shows the realization goes beyond Shafarevich's theorem.
-
-    Proof: Gal ≅ A₅ (via q_gal_iso_a5), and A₅ is not solvable.
-    Transfer non-solvability through the MulEquiv. -/
-theorem gal_not_solvable : ¬IsSolvable q.Gal := by
-  intro h
-  obtain ⟨e⟩ := q_gal_iso_a5
-  haveI := h
-  exact a5_not_solvable (solvable_of_surjective
-    (f := e.toMonoidHom) (fun b => ⟨e.symm b, e.apply_symm_apply b⟩))
-
--- ============================================================================
--- Part IX: Connection to Original Polynomial
--- ============================================================================
-
-/-
-The polynomial q(x) = x⁵ - 5x⁴ + 10x³ - 10x² + 25x - 5 is related to
-p(x) = x⁵ + 20x + 16 by the linear change of variable x ↦ x + 1:
-
-  q(x) = p(x - 1) = (x-1)⁵ + 20(x-1) + 16
-
-Verification:
-  (x-1)⁵ = x⁵ - 5x⁴ + 10x³ - 10x² + 5x - 1
-  20(x-1) = 20x - 20
-  Sum: x⁵ - 5x⁴ + 10x³ - 10x² + 25x - 5  ✓
-
-Since linear translations are ring automorphisms of ℚ[X], the splitting
-fields of p and q are isomorphic. In particular:
-  Gal(q/ℚ) ≅ Gal(p/ℚ) ≅ A₅
-
-The discriminant is invariant under translation:
-  Disc(q) = Disc(p) = 2¹⁶ · 5⁶ = 32000² = 1024000000
--/
-
-/-- The "nicer" form of the polynomial: X⁵ + 20X + 16.
-    Related to q by the translation x ↦ x + 1. -/
-noncomputable def p : ℚ[X] := X ^ 5 + C 20 * X + C 16
-
--- ============================================================================
--- Part X: Comparison with Other Realizations
--- ============================================================================
-
-/-
-## Gallery of Galois Group Realizations over ℚ
-
-| Group | Order | Type | Polynomial | File |
-|-------|-------|------|------------|------|
-| V₄ | 4 | Abelian | X⁴-2 subfield | InverseGaloisX4Sub2 |
-| S₃ | 6 | Solvable | X³-2 | InverseGalois |
-| D₄ | 8 | Solvable | X⁴-2 | InverseGaloisD4 |
-| F₂₀ | 20 | Solvable | X⁵-2 | InverseGaloisF20 |
-| **A₅** | **60** | **Non-solvable** | **q** | **This file** |
-
-A₅ is the smallest non-solvable case. All previous realizations have
-solvable Galois groups, consistent with Shafarevich's theorem.
-A₅ is the first group whose realizability requires going beyond
-class field theory and the theory of solvable extensions.
-
-## What Makes A₅ Special
-
-- Smallest non-abelian simple group
-- First group not covered by Shafarevich's theorem
-- Isomorphic to: PSL(2,4) ≅ PSL(2,5) ≅ icosahedral rotation group
-- Has no normal subgroups other than {e} and A₅ (simple)
-- Its non-solvability is the reason the general quintic cannot
-  be solved by radicals (Abel-Ruffini theorem)
-
-## Remaining Challenges for the IGP
-
-Groups NOT YET realized in our formalization:
-- S₅ (order 120) — would come from polynomial with non-square discriminant
-- A₄ (order 12) — the next non-abelian solvable case after D₄
-- PSL(2,7) (order 168) — smallest simple group not isomorphic to cyclic or A₅
-- M₁₁, M₁₂ (sporadic) — Mathieu groups (small sporadic groups)
-- M₂₃ (order 10200960) — STILL OPEN mathematically!
--/
-
--- ============================================================================
--- Part XI: Summary
--- ============================================================================
-
-/-
-## Results Status
-
-### PROVED (0 sorries):
-1. q_irreducible: Irreducible q (Eisenstein at p=5 + Gauss lemma)
-2. q_natDegree: q.natDegree = 5 (compute_degree!)
-3. a5_not_solvable: ¬IsSolvable A₅ (ker ≤ range + Perm.not_solvable)
-4. gal_not_solvable: ¬IsSolvable Gal(q) (transfer via MulEquiv)
-5. a5_realizable: ∃ K/ℚ Galois with |Aut| = 60
-6. a5_realizable_iso: ∃ K/ℚ Galois with Gal ≅ A₅
-7. splitting_field_q_finrank: [K:ℚ] = 60
-8. q_separable: q is separable over ℚ
-9. q_rootSet_card: |rootSet(q)| = 5
-10. five_dvd_gal_card: 5 | |Gal(q)|
-11. gal_card_dvd_120: |Gal(q)| | 120
-12. gal_has_index_two_in_s5: 2·|Gal| = |S₅|
-13. gal_injects_into_perm: Gal ↪ Perm(rootSet)
-14. a5_card: |A₅| = 60 (native_decide)
-
-### Axioms (2, reduced from original 4):
-1. gal_card_dvd_60: |Gal(q)| | 60 (disc↔alternating, not in Mathlib)
-2. three_dvd_gal_card: 3 | |Gal(q)| (Dedekind's theorem, not in Mathlib)
-
-### ELIMINATED axioms (replaced by finite group theory proofs):
-3. ~~two_dvd_gal_card~~: replaced by no_subgroup_order_15 (Sylow)
-4. ~~four_dvd_gal_card~~: replaced by no_subgroup_order_30 (A₅ simple)
-
-### Structural lemmas (Part IV-A):
-15. no_subgroup_order_15: S₅ has no subgroup of order 15 (PROVED — Sylow theory)
-16. no_subgroup_order_30: S₅ has no subgroup of order 30 (PROVED — sign hom + A₅ simple)
-17. gal_card_ne_15: |Gal| ≠ 15 (via embedding + #15)
-18. gal_card_ne_30: |Gal| ≠ 30 (via embedding + #16)
-
-### PROVED from 2 axioms + structural lemmas:
-19. q_gal_card: |Gal(q)| = 60
-20. q_gal_iso_a5: Gal(q) ≃* A₅
-
-### Proof Architecture
-```
-gal_card_dvd_60 ────┐
-three_dvd_gal_card ──┤
-five_dvd_gal_card ───┼──→ q_gal_card ──→ a5_realizable
-no_subgroup_order_15 ┤    (≠15: Sylow)     splitting_field_q_finrank
-no_subgroup_order_30 ┘    (≠30: A₅ simple) gal_has_index_two_in_s5
-
-q_irreducible ────→ q_separable ───→ q_rootSet_card
-     │                                    │
-     └──→ five_dvd_gal_card               └──→ gal_card_dvd_120
-
-q_gal_card ──→ q_gal_iso_a5 ──→ a5_realizable_iso
-                                  gal_not_solvable
-```
--/
 
 -- ============================================================================
 -- Part XII: Supporting Infrastructure for q_gal_card
@@ -1093,7 +520,7 @@ theorem gal_card_dvd_60_of_all_even
   have hdvd : Fintype.card galToPerm5.range ∣ Fintype.card (alternatingGroup (Fin 5)) := by
     rw [← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card]
     exact Subgroup.card_dvd_of_le hle
-  rw [a5_card] at hdvd
+  rw [show Fintype.card (alternatingGroup (Fin 5)) = 60 from by native_decide] at hdvd
   rw [← hcard_range]
   exact hdvd
 
@@ -1449,5 +876,582 @@ This requires a file restructuring pass.
 (resultant Res(f,f')) with Matrix.det_vandermonde (∏_{i<j}(rⱼ-rᵢ)). This is
 a standard identity but not yet available in Mathlib.
 -/
+
+/-- **Theorem** (was Axiom A): |Gal(q)| divides 60.
+
+    Proved via the Vandermonde discriminant argument (Parts XII-XIV above):
+    every Galois element acts as an even permutation on roots (since disc
+    is a perfect square), so Gal embeds into A₅ and |Gal| | 60 by Lagrange.
+    Depends on `vandermondeProduct_sq_eq` axiom (the disc = Δ² identity). -/
+theorem gal_card_dvd_60 : Fintype.card q.Gal ∣ 60 := gal_card_dvd_60_proved
+
+/-- **Axiom B**: 3 divides |Gal(q)|.
+
+    By Dedekind's theorem at p = 7: q mod 7 factors as (X-5)(X-6)(cubic)
+    where the cubic X³+6X²+4X+1 is irreducible over F₇ (no roots by
+    exhaustive check, hence irreducible for degree 3). The factorization
+    pattern (1,1,3) implies Gal contains a Frobenius element with a 3-cycle,
+    hence an element of order divisible by 3.
+
+    Axiomatized because Mathlib lacks Dedekind's theorem.
+    Supporting evidence: `q_root_mod7_at_5`, `q_root_mod7_at_6`, and
+    `cubic_factor_no_roots_mod7` in Part XII verify the factorization. -/
+axiom three_dvd_gal_card : 3 ∣ Fintype.card q.Gal
+
+/- **Former Axiom C** (ELIMINATED): 2 | |Gal(q)|.
+    q has 1 real root (q' > 0), so complex conjugation gives order-2 element.
+    No longer needed: replaced by no_subgroup_order_15 (Sylow theory). -/
+
+/- **Former Axiom D** (ELIMINATED): 4 | |Gal(q)|.
+    Stabilizer of real root contains C₂×C₂. No longer needed: replaced
+    by no_subgroup_order_30 (A₅ simplicity). -/
+
+-- ============================================================================
+-- Part IV-A: Structural Lemmas (Replacing Axioms C and D)
+-- ============================================================================
+
+/-- No subgroup of S₅ has order 15.
+
+    In any group of order 15 = 3·5, Sylow theory gives unique normal
+    Sylow subgroups P₅ and P₃. Since |Aut(Z/5)| = 4 and gcd(3,4) = 1,
+    elements of P₃ and P₅ commute. Product has order 15, but max element
+    order in S₅ is 6. Contradiction. -/
+theorem no_subgroup_order_15 (H : Subgroup (Equiv.Perm (Fin 5)))
+    (hcard : Nat.card H = 15) : False := by
+  -- Setup
+  haveI : Finite H := Nat.finite_of_card_ne_zero (by rw [hcard]; norm_num)
+  haveI hft : Fintype H := Fintype.ofFinite H
+  have hcard_ft : Fintype.card H = 15 := by rwa [Nat.card_eq_fintype_card] at hcard
+  haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
+  haveI : Fact (Nat.Prime 3) := ⟨by norm_num⟩
+  -- Step 1: Cauchy — elements of order 5 and 3
+  obtain ⟨σ, hσ⟩ := exists_prime_orderOf_dvd_card (p := 5)
+    (show 5 ∣ Fintype.card H by rw [hcard_ft]; norm_num)
+  obtain ⟨τ, hτ⟩ := exists_prime_orderOf_dvd_card (p := 3)
+    (show 3 ∣ Fintype.card H by rw [hcard_ft]; norm_num)
+  -- Step 2: Transfer to Perm(Fin 5)
+  have hσ5 : (σ : Equiv.Perm (Fin 5)) ^ 5 = 1 := by
+    have : σ ^ 5 = (1 : ↥H) :=
+      calc σ ^ 5 = σ ^ orderOf σ := by congr 1; exact hσ.symm
+        _ = 1 := pow_orderOf_eq_one σ
+    simpa using congr_arg Subtype.val this
+  have hσ_ne : (σ : Equiv.Perm (Fin 5)) ≠ 1 := by
+    intro heq
+    exact absurd hσ (by rw [show σ = (1 : ↥H) from Subtype.ext heq, orderOf_one]; norm_num)
+  have hτ3 : (τ : Equiv.Perm (Fin 5)) ^ 3 = 1 := by
+    have : τ ^ 3 = (1 : ↥H) :=
+      calc τ ^ 3 = τ ^ orderOf τ := by congr 1; exact hτ.symm
+        _ = 1 := pow_orderOf_eq_one τ
+    simpa using congr_arg Subtype.val this
+  have hτ_ne : (τ : Equiv.Perm (Fin 5)) ≠ 1 := by
+    intro heq
+    exact absurd hτ (by rw [show τ = (1 : ↥H) from Subtype.ext heq, orderOf_one]; norm_num)
+  -- Step 3: They don't commute (native_decide), but they must (Sylow theory)
+  exact perm_fin5_order5_order3_not_commute _ _ hσ5 hσ_ne hτ3 hτ_ne (by
+    -- Step 4: Sylow theory proves σ and τ commute in H
+    -- Both Sylow subgroups are unique (n₅ = 1, n₃ = 1), hence normal.
+    -- Elements of disjoint normal subgroups commute via commutator argument.
+    -- Transfer commutativity from H to Perm(Fin 5)
+    suffices hsuff : (σ : ↥H) * τ = τ * σ by
+      have h1 := congr_arg Subtype.val hsuff
+      simp only [Subgroup.coe_mul] at h1; exact h1
+    -- Sylow 5-subgroup is unique (n₅ | 3 and n₅ ≡ 1 mod 5, so n₅ = 1)
+    have hn₅ : Nat.card (Sylow 5 ↥H) = 1 := by
+      have h_mod := card_sylow_modEq_one 5 ↥H
+      obtain ⟨P⟩ := Sylow.nonempty (p := 5) (G := ↥H)
+      have h_P_card : Nat.card (↑P : Subgroup ↥H) = 5 := by
+        rw [P.card_eq_multiplicity, hcard]; native_decide
+      have h_idx : (↑P : Subgroup ↥H).index = 3 := by
+        have := (↑P : Subgroup ↥H).index_mul_card; rw [h_P_card, hcard] at this; omega
+      have h_dvd := Sylow.card_dvd_index P; rw [h_idx] at h_dvd
+      rcases (by norm_num : Nat.Prime 3).eq_one_or_self_of_dvd _ h_dvd with h | h
+      · exact h
+      · exfalso; rw [h] at h_mod; simp [Nat.ModEq] at h_mod
+    haveI : Subsingleton (Sylow 5 ↥H) := by
+      haveI := Fintype.ofFinite (Sylow 5 ↥H)
+      rw [← Fintype.card_le_one_iff_subsingleton, ← Nat.card_eq_fintype_card]; omega
+    -- Sylow 3-subgroup is unique (n₃ | 5 and n₃ ≡ 1 mod 3, so n₃ = 1)
+    have hn₃ : Nat.card (Sylow 3 ↥H) = 1 := by
+      have h_mod := card_sylow_modEq_one 3 ↥H
+      obtain ⟨P⟩ := Sylow.nonempty (p := 3) (G := ↥H)
+      have h_P_card : Nat.card (↑P : Subgroup ↥H) = 3 := by
+        rw [P.card_eq_multiplicity, hcard]; native_decide
+      have h_idx : (↑P : Subgroup ↥H).index = 5 := by
+        have := (↑P : Subgroup ↥H).index_mul_card; rw [h_P_card, hcard] at this; omega
+      have h_dvd := Sylow.card_dvd_index P; rw [h_idx] at h_dvd
+      rcases (by norm_num : Nat.Prime 5).eq_one_or_self_of_dvd _ h_dvd with h | h
+      · exact h
+      · exfalso; rw [h] at h_mod; simp [Nat.ModEq] at h_mod
+    haveI : Subsingleton (Sylow 3 ↥H) := by
+      haveI := Fintype.ofFinite (Sylow 3 ↥H)
+      rw [← Fintype.card_le_one_iff_subsingleton, ← Nat.card_eq_fintype_card]; omega
+    -- Get the unique Sylow subgroups (normal by uniqueness)
+    obtain ⟨P₅⟩ := Sylow.nonempty (p := 5) (G := ↥H)
+    obtain ⟨P₃⟩ := Sylow.nonempty (p := 3) (G := ↥H)
+    haveI hN₅ : (↑P₅ : Subgroup ↥H).Normal := by
+      apply Subgroup.Normal.mk; intro n hn g
+      have : g • P₅ = P₅ := Subsingleton.elim _ _
+      rw [Sylow.smul_eq_iff_mem_normalizer] at this
+      exact ((Subgroup.mem_normalizer_iff.mp this) n).mp hn
+    haveI hN₃ : (↑P₃ : Subgroup ↥H).Normal := by
+      apply Subgroup.Normal.mk; intro n hn g
+      have : g • P₃ = P₃ := Subsingleton.elim _ _
+      rw [Sylow.smul_eq_iff_mem_normalizer] at this
+      exact ((Subgroup.mem_normalizer_iff.mp this) n).mp hn
+    -- σ ∈ P₅ (order-5 element in the unique Sylow 5-subgroup)
+    have hσ_mem : σ ∈ (↑P₅ : Subgroup ↥H) := by
+      have h_pg : IsPGroup 5 (Subgroup.zpowers σ) :=
+        IsPGroup.iff_card.mpr ⟨1, by rw [pow_one, Nat.card_zpowers, hσ]⟩
+      obtain ⟨Q, hQ⟩ := h_pg.exists_le_sylow
+      exact (show Q = P₅ from Subsingleton.elim Q P₅) ▸ hQ (Subgroup.mem_zpowers σ)
+    -- τ ∈ P₃ (order-3 element in the unique Sylow 3-subgroup)
+    have hτ_mem : τ ∈ (↑P₃ : Subgroup ↥H) := by
+      have h_pg : IsPGroup 3 (Subgroup.zpowers τ) :=
+        IsPGroup.iff_card.mpr ⟨1, by rw [pow_one, Nat.card_zpowers, hτ]⟩
+      obtain ⟨Q, hQ⟩ := h_pg.exists_le_sylow
+      exact (show Q = P₃ from Subsingleton.elim Q P₃) ▸ hQ (Subgroup.mem_zpowers τ)
+    -- Commutator c = σ * τ * σ⁻¹ * τ⁻¹ lies in both P₅ and P₃
+    set c := σ * τ * σ⁻¹ * τ⁻¹ with hc_def
+    have hc₅ : c ∈ (↑P₅ : Subgroup ↥H) := by
+      rw [hc_def]; show σ * τ * σ⁻¹ * τ⁻¹ ∈ ↑P₅
+      have := hN₅.conj_mem σ⁻¹ ((↑P₅ : Subgroup ↥H).inv_mem hσ_mem) τ
+      -- this : τ * σ⁻¹ * τ⁻¹ ∈ ↑P₅
+      have hprod := (↑P₅ : Subgroup ↥H).mul_mem hσ_mem this
+      -- hprod : σ * (τ * σ⁻¹ * τ⁻¹) ∈ ↑P₅
+      convert hprod using 1
+    have hc₃ : c ∈ (↑P₃ : Subgroup ↥H) := by
+      rw [hc_def]; show σ * τ * σ⁻¹ * τ⁻¹ ∈ ↑P₃
+      have := hN₃.conj_mem τ hτ_mem σ
+      -- this : σ * τ * σ⁻¹ ∈ ↑P₃
+      exact (↑P₃ : Subgroup ↥H).mul_mem this ((↑P₃ : Subgroup ↥H).inv_mem hτ_mem)
+    -- P₅ ∩ P₃ = ⊥ (coprime orders: elements in both have p-power and q-power order)
+    have hc_one : c = 1 := by
+      have ⟨k₅, hk₅⟩ := P₅.isPGroup' ⟨c, hc₅⟩
+      have ⟨k₃, hk₃⟩ := P₃.isPGroup' ⟨c, hc₃⟩
+      have h5 : orderOf c ∣ 5 ^ k₅ := orderOf_dvd_of_pow_eq_one (by
+        simpa using congr_arg Subtype.val hk₅)
+      have h3 : orderOf c ∣ 3 ^ k₃ := orderOf_dvd_of_pow_eq_one (by
+        simpa using congr_arg Subtype.val hk₃)
+      have hcop : Nat.Coprime (5 ^ k₅) (3 ^ k₃) := (by norm_num : Nat.Coprime 5 3).pow k₅ k₃
+      exact orderOf_eq_one_iff.mp (Nat.dvd_one.mp (hcop ▸ Nat.dvd_gcd h5 h3))
+    -- c = 1 means σ * τ * σ⁻¹ * τ⁻¹ = 1, hence σ * τ = τ * σ
+    rw [show σ * τ = c * (τ * σ) from by simp only [hc_def]; group, hc_one, one_mul])
+
+/-- No subgroup of S₅ has order 30.
+
+    If H ≤ S₅ has |H| = 30, then H ∩ A₅ has order 15 or 30.
+    Order 30 → H ⊆ A₅, index 2, normal, contradicts A₅ simple.
+    Order 15 → contradicts no_subgroup_order_15. -/
+theorem no_subgroup_order_30 (H : Subgroup (Equiv.Perm (Fin 5)))
+    (hcard : Nat.card H = 30) : False := by
+  -- Setup
+  haveI : Finite H := Nat.finite_of_card_ne_zero (by rw [hcard]; norm_num)
+  haveI : Fintype H := Fintype.ofFinite H
+  -- Case split: either H ⊆ A₅ or ∃ odd permutation in H
+  by_cases hle : H ≤ alternatingGroup (Fin 5)
+  · -- Case 1: H ⊆ A₅ → [A₅:H] = 2 → H ⊴ A₅ → contradicts A₅ simple
+    let H' := H.subgroupOf (alternatingGroup (Fin 5))
+    have hH'_card : Nat.card ↥H' = 30 := by
+      rw [show Nat.card ↥H' = Nat.card ↥H from
+        Nat.card_congr (Subgroup.subgroupOfEquivOfLe hle).toEquiv, hcard]
+    have hA5_card : Nat.card (alternatingGroup (Fin 5) : Type _) = 60 := by
+      rw [Nat.card_eq_fintype_card]; decide
+    have hindex : H'.index = 2 := by
+      have := Subgroup.card_mul_index H'
+      rw [hA5_card, hH'_card] at this; omega
+    haveI : H'.Normal := Subgroup.normal_of_index_eq_two hindex
+    rcases alternatingGroup.isSimpleGroup_five.eq_bot_or_eq_top_of_normal H' inferInstance
+      with h | h
+    · rw [h] at hH'_card; simp at hH'_card
+    · rw [h, Nat.card_congr Subgroup.topEquiv.toEquiv, hA5_card] at hH'_card
+      norm_num at hH'_card
+  · -- Case 2: ∃ odd permutation → H ∩ A₅ has order 15 → contradicts no_subgroup_order_15
+    obtain ⟨x, hxH, hxA⟩ : ∃ x ∈ H, x ∉ alternatingGroup (Fin 5) := by
+      by_contra h; push_neg at h; exact hle h
+    let signH : ↥H →* ℤˣ := Equiv.Perm.sign.comp H.subtype
+    let K := signH.ker.map H.subtype
+    have hK_card : Nat.card ↥K = 15 := by
+      have h_eq : Nat.card ↥K = Nat.card ↥signH.ker :=
+        (Nat.card_congr
+          (signH.ker.equivMapOfInjective H.subtype Subtype.val_injective).toEquiv).symm
+      rw [h_eq]
+      have h_mul := Subgroup.card_mul_index signH.ker
+      have h_idx_dvd : signH.ker.index ∣ 2 := by
+        have h_iso : signH.ker.index = Nat.card ↥signH.range := by
+          rw [Subgroup.index]
+          exact Nat.card_congr (QuotientGroup.quotientKerEquivRange signH).toEquiv
+        rw [h_iso]
+        calc Nat.card ↥signH.range
+            ∣ Nat.card ℤˣ := Subgroup.card_subgroup_dvd_card signH.range
+          _ = 2 := by rw [Nat.card_eq_fintype_card]; decide
+      have h_idx_ne : signH.ker.index ≠ 1 := by
+        intro heq
+        have hker_top : signH.ker = ⊤ := Subgroup.index_eq_one.mp heq
+        have : (⟨x, hxH⟩ : ↥H) ∈ signH.ker := hker_top ▸ Subgroup.mem_top _
+        rw [MonoidHom.mem_ker] at this
+        simp only [signH, MonoidHom.comp_apply, Subgroup.coe_subtype] at this
+        exact hxA (Equiv.Perm.mem_alternatingGroup.mpr this)
+      have h_idx : signH.ker.index = 2 :=
+        (Nat.Prime.eq_one_or_self_of_dvd (by norm_num) _ h_idx_dvd).resolve_left h_idx_ne
+      rw [hcard, h_idx] at h_mul; omega
+    exact no_subgroup_order_15 K hK_card
+
+
+/-- |Gal(q)| ≠ 15: Gal embeds into S₅ which has no subgroup of order 15. -/
+theorem gal_card_ne_15 : Fintype.card q.Gal ≠ 15 := by
+  intro hc
+  haveI : Fact (map (algebraMap ℚ q.SplittingField) q).Splits :=
+    ⟨Polynomial.SplittingField.splits q⟩
+  let rootEquiv : q.rootSet q.SplittingField ≃ Fin 5 :=
+    Fintype.equivOfCardEq (by rw [q_rootSet_card, Fintype.card_fin])
+  let permEquiv : Equiv.Perm (q.rootSet q.SplittingField) ≃* Equiv.Perm (Fin 5) :=
+    { toEquiv := Equiv.permCongr rootEquiv
+      map_mul' := fun σ τ => by
+        ext x; simp [Equiv.permCongr_apply, Equiv.Perm.mul_apply] }
+  let φ := permEquiv.toMonoidHom.comp (Polynomial.Gal.galActionHom q q.SplittingField)
+  have hinj : Function.Injective φ :=
+    permEquiv.injective.comp (Polynomial.Gal.galActionHom_injective q q.SplittingField)
+  exact no_subgroup_order_15 φ.range (by
+    rw [show Nat.card φ.range = Nat.card q.Gal from
+      Nat.card_congr (Equiv.ofBijective φ.rangeRestrict
+        ⟨fun a b h => hinj (congrArg Subtype.val h),
+         φ.rangeRestrict_surjective⟩).symm,
+      Nat.card_eq_fintype_card, hc])
+
+/-- |Gal(q)| ≠ 30: Gal embeds into S₅ which has no subgroup of order 30. -/
+theorem gal_card_ne_30 : Fintype.card q.Gal ≠ 30 := by
+  intro hc
+  haveI : Fact (map (algebraMap ℚ q.SplittingField) q).Splits :=
+    ⟨Polynomial.SplittingField.splits q⟩
+  let rootEquiv : q.rootSet q.SplittingField ≃ Fin 5 :=
+    Fintype.equivOfCardEq (by rw [q_rootSet_card, Fintype.card_fin])
+  let permEquiv : Equiv.Perm (q.rootSet q.SplittingField) ≃* Equiv.Perm (Fin 5) :=
+    { toEquiv := Equiv.permCongr rootEquiv
+      map_mul' := fun σ τ => by
+        ext x; simp [Equiv.permCongr_apply, Equiv.Perm.mul_apply] }
+  let φ := permEquiv.toMonoidHom.comp (Polynomial.Gal.galActionHom q q.SplittingField)
+  have hinj : Function.Injective φ :=
+    permEquiv.injective.comp (Polynomial.Gal.galActionHom_injective q q.SplittingField)
+  exact no_subgroup_order_30 φ.range (by
+    rw [show Nat.card φ.range = Nat.card q.Gal from
+      Nat.card_congr (Equiv.ofBijective φ.rangeRestrict
+        ⟨fun a b h => hinj (congrArg Subtype.val h),
+         φ.rangeRestrict_surjective⟩).symm,
+      Nat.card_eq_fintype_card, hc])
+
+-- ============================================================================
+-- Part IV-B: Galois Group Cardinality
+-- ============================================================================
+
+/-- The Galois group of q has exactly 60 elements (= |A₅|).
+
+    **PROVED** from axioms A, B + structural lemmas. Uses only 2 axioms.
+
+    Proof: |Gal| | 60 (Axiom A) and 15 | |Gal| (from B + proved 5 | |Gal|)
+    gives |Gal| ∈ {15, 30, 60}. No S₅ subgroup of order 15 or 30 exists.
+    Therefore |Gal| = 60. ✓ -/
+theorem q_gal_card : Fintype.card q.Gal = 60 := by
+  have h15 : 15 ∣ Fintype.card q.Gal :=
+    Nat.Coprime.mul_dvd_of_dvd_of_dvd (by norm_num : Nat.Coprime 3 5)
+      three_dvd_gal_card five_dvd_gal_card
+  have h_dvd := gal_card_dvd_60
+  have hne15 := gal_card_ne_15
+  have hne30 := gal_card_ne_30
+  obtain ⟨k, hk⟩ := h15
+  have hk_pos : 0 < k := by
+    have hpos : 0 < Fintype.card q.Gal := Fintype.card_pos
+    rw [hk] at hpos; omega
+  have hk_dvd : k ∣ 4 := by
+    rw [hk] at h_dvd
+    exact Nat.dvd_of_mul_dvd_mul_left (by norm_num : 0 < 15) h_dvd
+  have hk_le : k ≤ 4 := Nat.le_of_dvd (by norm_num) hk_dvd
+  have hk_ne1 : k ≠ 1 := fun h => by rw [h, Nat.mul_one] at hk; exact hne15 hk
+  have hk_ne2 : k ≠ 2 := fun h => by subst h; norm_num at hk; exact hne30 hk
+  interval_cases k <;> simp_all
+
+-- ============================================================================
+-- Part V: A₅ is Realizable as a Galois Group over ℚ
+-- ============================================================================
+
+/-- The splitting field of q is a Galois extension of ℚ. -/
+instance : Normal ℚ q.SplittingField := inferInstance
+instance : Algebra.IsSeparable ℚ q.SplittingField := inferInstance
+
+/-- **A₅ Realizability Theorem**
+
+    There exists a Galois extension K/ℚ with exactly 60 automorphisms
+    (= |A₅|). Specifically, K = SplittingField(X⁵ - 5X⁴ + 10X³ - 10X² + 25X - 5).
+
+    This is the first non-solvable group realized in our formalization,
+    extending the Inverse Galois Problem beyond Shafarevich's theorem. -/
+theorem a5_realizable :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K),
+      Fintype.card (K ≃ₐ[ℚ] K) = 60 :=
+  ⟨q.SplittingField,
+    inferInstance, inferInstance, inferInstance, IsGalois.mk,
+    q_gal_card⟩
+
+/-- The splitting field of q has ℚ-dimension 60. -/
+theorem splitting_field_q_finrank :
+    Module.finrank ℚ q.SplittingField = 60 := by
+  have hcard_eq_nat : Nat.card q.Gal = Module.finrank ℚ q.SplittingField :=
+    Polynomial.Gal.card_of_separable q_separable
+  rw [Nat.card_eq_fintype_card] at hcard_eq_nat
+  rw [← hcard_eq_nat]
+  exact q_gal_card
+
+-- ============================================================================
+-- Part VI: Galois Group Isomorphism with A₅
+-- ============================================================================
+
+/-
+Since |Gal(q/ℚ)| = 60 = |Perm(rootSet)|/2 and Gal embeds into S₅ = Perm(rootSet)
+via galActionHom, the image has index 2 in S₅. The unique subgroup of index 2
+in S₅ is A₅ (the kernel of the sign homomorphism). Therefore Gal ≅ A₅.
+-/
+
+-- (q_splits_fact moved to before Parts XII-XIV)
+
+/-- The Galois action on roots gives an injection Gal → Perm(rootSet). -/
+theorem gal_injects_into_perm :
+    Function.Injective (Polynomial.Gal.galActionHom q q.SplittingField) :=
+  Polynomial.Gal.galActionHom_injective q q.SplittingField
+
+/-- |Gal| = 60 and 120 = 5!, so Gal has index 2 in S₅. -/
+theorem gal_has_index_two : 2 * Fintype.card q.Gal = 120 := by
+  rw [q_gal_card]
+
+/-- The Galois group of q is isomorphic to A₅ (= alternatingGroup (Fin 5)).
+
+    **Proof strategy**: Compose galActionHom with permCongr to get an injection
+    φ : Gal →* Perm(Fin 5). Since |Gal| = 60 and |Perm(Fin 5)| = 120,
+    the image φ.range has index 2. By Mathlib's
+    `Equiv.Perm.eq_alternatingGroup_of_index_eq_two`, φ.range = alternatingGroup(Fin 5).
+    Therefore Gal ≅ φ.range ≅ A₅. -/
+theorem q_gal_iso_a5 :
+    Nonempty (q.Gal ≃* alternatingGroup (Fin 5)) := by
+  -- Step 1: Build composite injection Gal →* Perm(Fin 5)
+  -- Equivalence rootSet ≃ Fin 5 (since |rootSet| = 5)
+  let rootEquiv : q.rootSet q.SplittingField ≃ Fin 5 :=
+    Fintype.equivOfCardEq (by rw [q_rootSet_card, Fintype.card_fin])
+  -- MulEquiv Perm(rootSet) ≃* Perm(Fin 5) via conjugation
+  let permEquiv : Equiv.Perm (q.rootSet q.SplittingField) ≃* Equiv.Perm (Fin 5) :=
+    { toEquiv := Equiv.permCongr rootEquiv
+      map_mul' := fun σ τ => by
+        ext x; simp [Equiv.permCongr_apply, Equiv.Perm.mul_apply] }
+  -- Composite: Gal →* Perm(Fin 5)
+  let φ := permEquiv.toMonoidHom.comp (Polynomial.Gal.galActionHom q q.SplittingField)
+  -- Step 2: φ is injective
+  have hinj : Function.Injective φ :=
+    permEquiv.injective.comp (Polynomial.Gal.galActionHom_injective q q.SplittingField)
+  -- Step 3: φ.range has index 2 in Perm(Fin 5)
+  have hindex : φ.range.index = 2 := by
+    have hlagrange := Subgroup.card_mul_index φ.range
+    -- |φ.range| = |Gal| = 60 via the bijection Gal ≃ φ.range
+    have hrange : Nat.card φ.range = 60 := by
+      have hbij : Function.Bijective φ.rangeRestrict :=
+        ⟨fun a b h => hinj (congrArg Subtype.val h), φ.rangeRestrict_surjective⟩
+      rw [show Nat.card φ.range = Nat.card q.Gal from
+        (Nat.card_congr (Equiv.ofBijective _ hbij).symm)]
+      rw [Nat.card_eq_fintype_card, q_gal_card]
+    -- |Perm(Fin 5)| = 120
+    have hperm : Nat.card (Equiv.Perm (Fin 5)) = 120 := by
+      rw [Nat.card_eq_fintype_card, Fintype.card_perm, Fintype.card_fin]
+      norm_num
+    rw [hrange, hperm] at hlagrange; omega
+  -- Step 4: The unique index-2 subgroup of S₅ is A₅ (Mathlib)
+  have heq : φ.range = alternatingGroup (Fin 5) :=
+    Equiv.Perm.eq_alternatingGroup_of_index_eq_two hindex
+  -- Step 5: Construct MulEquiv: Gal ≃* φ.range ≃* A₅
+  exact ⟨(MulEquiv.ofBijective φ.rangeRestrict
+    ⟨fun a b h => hinj (congrArg Subtype.val h),
+     φ.rangeRestrict_surjective⟩).trans (MulEquiv.subgroupCongr heq)⟩
+
+/-- **A₅ Realizability (Isomorphism Version)**
+
+    A₅ is realizable as a Galois group over ℚ, with explicit isomorphism. -/
+theorem a5_realizable_iso :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K),
+      Nonempty (alternatingGroup (Fin 5) ≃* (K ≃ₐ[ℚ] K)) :=
+  ⟨q.SplittingField,
+    inferInstance, inferInstance, inferInstance, IsGalois.mk,
+    q_gal_iso_a5.map MulEquiv.symm⟩
+
+-- ============================================================================
+-- Part VII: Non-Solvability — Beyond Shafarevich
+-- ============================================================================
+
+/-
+A₅ is significant because:
+1. It is the smallest non-abelian simple group (order 60)
+2. It is NOT solvable (well-known, proved below)
+3. Its realizability is NOT covered by:
+   - Kronecker-Weber theorem (abelian groups only)
+   - Shafarevich's theorem (solvable groups only)
+4. This is the first explicit construction beyond the solvable barrier
+   in our formalization of the Inverse Galois Problem
+-/
+
+/-- A₅ has 60 elements. -/
+theorem a5_card : Fintype.card (alternatingGroup (Fin 5)) = 60 := by
+  native_decide
+
+/-- A₅ is not solvable.
+
+    If A₅ were solvable, then since A₅ is a normal subgroup of S₅ with
+    abelian quotient (ℤ/2), S₅ would also be solvable. But S₅ is not
+    solvable for n ≥ 5 (Mathlib: Equiv.Perm.not_solvable).
+
+    Proof: assume IsSolvable A₅, transfer to S₅ via the short exact sequence
+    A₅ → S₅ → ℤ/2 (ker ≤ range of sign), then contradict Perm.not_solvable. -/
+theorem a5_not_solvable : ¬IsSolvable (alternatingGroup (Fin 5)) := by
+  intro h
+  have : IsSolvable (Equiv.Perm (Fin 5)) := by
+    apply solvable_of_ker_le_range
+      (alternatingGroup (Fin 5)).subtype
+      Equiv.Perm.sign
+    intro x hx
+    rw [MonoidHom.mem_ker] at hx
+    exact ⟨⟨x, Equiv.Perm.mem_alternatingGroup.mpr hx⟩, rfl⟩
+  exact Equiv.Perm.not_solvable (Fin 5) (by simp) this
+
+/-- The Galois group we constructed is not solvable.
+    This shows the realization goes beyond Shafarevich's theorem.
+
+    Proof: Gal ≅ A₅ (via q_gal_iso_a5), and A₅ is not solvable.
+    Transfer non-solvability through the MulEquiv. -/
+theorem gal_not_solvable : ¬IsSolvable q.Gal := by
+  intro h
+  obtain ⟨e⟩ := q_gal_iso_a5
+  haveI := h
+  exact a5_not_solvable (solvable_of_surjective
+    (f := e.toMonoidHom) (fun b => ⟨e.symm b, e.apply_symm_apply b⟩))
+
+-- ============================================================================
+-- Part IX: Connection to Original Polynomial
+-- ============================================================================
+
+/-
+The polynomial q(x) = x⁵ - 5x⁴ + 10x³ - 10x² + 25x - 5 is related to
+p(x) = x⁵ + 20x + 16 by the linear change of variable x ↦ x + 1:
+
+  q(x) = p(x - 1) = (x-1)⁵ + 20(x-1) + 16
+
+Verification:
+  (x-1)⁵ = x⁵ - 5x⁴ + 10x³ - 10x² + 5x - 1
+  20(x-1) = 20x - 20
+  Sum: x⁵ - 5x⁴ + 10x³ - 10x² + 25x - 5  ✓
+
+Since linear translations are ring automorphisms of ℚ[X], the splitting
+fields of p and q are isomorphic. In particular:
+  Gal(q/ℚ) ≅ Gal(p/ℚ) ≅ A₅
+
+The discriminant is invariant under translation:
+  Disc(q) = Disc(p) = 2¹⁶ · 5⁶ = 32000² = 1024000000
+-/
+
+/-- The "nicer" form of the polynomial: X⁵ + 20X + 16.
+    Related to q by the translation x ↦ x + 1. -/
+noncomputable def p : ℚ[X] := X ^ 5 + C 20 * X + C 16
+
+-- ============================================================================
+-- Part X: Comparison with Other Realizations
+-- ============================================================================
+
+/-
+## Gallery of Galois Group Realizations over ℚ
+
+| Group | Order | Type | Polynomial | File |
+|-------|-------|------|------------|------|
+| V₄ | 4 | Abelian | X⁴-2 subfield | InverseGaloisX4Sub2 |
+| S₃ | 6 | Solvable | X³-2 | InverseGalois |
+| D₄ | 8 | Solvable | X⁴-2 | InverseGaloisD4 |
+| F₂₀ | 20 | Solvable | X⁵-2 | InverseGaloisF20 |
+| **A₅** | **60** | **Non-solvable** | **q** | **This file** |
+
+A₅ is the smallest non-solvable case. All previous realizations have
+solvable Galois groups, consistent with Shafarevich's theorem.
+A₅ is the first group whose realizability requires going beyond
+class field theory and the theory of solvable extensions.
+
+## What Makes A₅ Special
+
+- Smallest non-abelian simple group
+- First group not covered by Shafarevich's theorem
+- Isomorphic to: PSL(2,4) ≅ PSL(2,5) ≅ icosahedral rotation group
+- Has no normal subgroups other than {e} and A₅ (simple)
+- Its non-solvability is the reason the general quintic cannot
+  be solved by radicals (Abel-Ruffini theorem)
+
+## Remaining Challenges for the IGP
+
+Groups NOT YET realized in our formalization:
+- S₅ (order 120) — would come from polynomial with non-square discriminant
+- A₄ (order 12) — the next non-abelian solvable case after D₄
+- PSL(2,7) (order 168) — smallest simple group not isomorphic to cyclic or A₅
+- M₁₁, M₁₂ (sporadic) — Mathieu groups (small sporadic groups)
+- M₂₃ (order 10200960) — STILL OPEN mathematically!
+-/
+
+-- ============================================================================
+-- Part XI: Summary
+-- ============================================================================
+
+/-
+## Results Status
+
+### PROVED (0 sorries):
+1. q_irreducible: Irreducible q (Eisenstein at p=5 + Gauss lemma)
+2. q_natDegree: q.natDegree = 5 (compute_degree!)
+3. a5_not_solvable: ¬IsSolvable A₅ (ker ≤ range + Perm.not_solvable)
+4. gal_not_solvable: ¬IsSolvable Gal(q) (transfer via MulEquiv)
+5. a5_realizable: ∃ K/ℚ Galois with |Aut| = 60
+6. a5_realizable_iso: ∃ K/ℚ Galois with Gal ≅ A₅
+7. splitting_field_q_finrank: [K:ℚ] = 60
+8. q_separable: q is separable over ℚ
+9. q_rootSet_card: |rootSet(q)| = 5
+10. five_dvd_gal_card: 5 | |Gal(q)|
+11. gal_card_dvd_120: |Gal(q)| | 120
+12. gal_has_index_two_in_s5: 2·|Gal| = |S₅|
+13. gal_injects_into_perm: Gal ↪ Perm(rootSet)
+14. a5_card: |A₅| = 60 (native_decide)
+
+### Axioms (2, reduced from original 4):
+1. gal_card_dvd_60: |Gal(q)| | 60 (disc↔alternating, not in Mathlib)
+2. three_dvd_gal_card: 3 | |Gal(q)| (Dedekind's theorem, not in Mathlib)
+
+### ELIMINATED axioms (replaced by finite group theory proofs):
+3. ~~two_dvd_gal_card~~: replaced by no_subgroup_order_15 (Sylow)
+4. ~~four_dvd_gal_card~~: replaced by no_subgroup_order_30 (A₅ simple)
+
+### Structural lemmas (Part IV-A):
+15. no_subgroup_order_15: S₅ has no subgroup of order 15 (PROVED — Sylow theory)
+16. no_subgroup_order_30: S₅ has no subgroup of order 30 (PROVED — sign hom + A₅ simple)
+17. gal_card_ne_15: |Gal| ≠ 15 (via embedding + #15)
+18. gal_card_ne_30: |Gal| ≠ 30 (via embedding + #16)
+
+### PROVED from 2 axioms + structural lemmas:
+19. q_gal_card: |Gal(q)| = 60
+20. q_gal_iso_a5: Gal(q) ≃* A₅
+
+### Proof Architecture
+```
+gal_card_dvd_60 ────┐
+three_dvd_gal_card ──┤
+five_dvd_gal_card ───┼──→ q_gal_card ──→ a5_realizable
+no_subgroup_order_15 ┤    (≠15: Sylow)     splitting_field_q_finrank
+no_subgroup_order_30 ┘    (≠30: A₅ simple) gal_has_index_two_in_s5
+
+q_irreducible ────→ q_separable ───→ q_rootSet_card
+     │                                    │
+     └──→ five_dvd_gal_card               └──→ gal_card_dvd_120
+
+q_gal_card ──→ q_gal_iso_a5 ──→ a5_realizable_iso
+                                  gal_not_solvable
+```
+-/
+
 
 end InverseGaloisA5
