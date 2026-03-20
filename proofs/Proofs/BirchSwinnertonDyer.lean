@@ -5842,7 +5842,7 @@ axiom mazur_mu_conjecture (E : EllipticCurveQ)
     Proved by Skinner-Urban (2014) for ordinary primes with conditions.
     This is captured by the IwasawaMainConjecture structure. -/
 axiom iwasawa_main_conjecture (E : EllipticCurveQ) :
-    ∃ (imc : IwasawaMainConjecture E), imc.hp_odd ≤ imc.p
+    ∃ (imc : IwasawaMainConjecture E), imc.p ≥ 3
 
 /-- Kato's Euler system implies one divisibility of the Main Conjecture:
     (Lₚ(E)) | char(X). This gives an upper bound on the Selmer group
