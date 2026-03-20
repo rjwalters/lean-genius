@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Parts XCI-XCII (h-cobordism theorem, Whitney trick, TQFT axioms, Verlinde formula)",
+    "progressSummary": "PROGRESS: Added Parts XCIV-XCVI (Sphere Theorems, Kneser-Milnor, Finite Extinction) — +700 lines, ~65 theorems, 0 sorries. File: 17,118 lines total",
     "builtItems": [
       "Proved perelman_entropy_monotone via concrete PerelmanWEntropy",
       "Proved perelman_surgery via reflexive witness",
@@ -223,7 +223,10 @@
       "Part XCIII: h-Cobordism Theorem and Dimensions 3 vs ≥5 (~170 lines, ~10 theorems)",
       "Part XCIV: Comparison Geometry for Ricci Flow (~170 lines, ~6 theorems)",
       "Part XCV: Perelman Surgery Algorithm (~170 lines, ~6 theorems)",
-      "Part XCVI: Finite Extinction — Why Simply Connected Implies S³ (~180 lines, ~6 theorems)"
+      "Part XCVI: Finite Extinction — Why Simply Connected Implies S³ (~180 lines, ~6 theorems)",
+      "Part XCIV: Sphere Theorems — Berger-Klingenberg (1/4-pinched), Brendle-Schoen (differentiable), Hamilton (Ric>0), Grove-Shiohama (diameter), Cheng (maximal diameter), Perelman hierarchy (~250 lines, ~20 theorems)",
+      "Part XCV: Kneser-Milnor Prime Decomposition — connected sums, prime types, van Kampen free product, reduction to irreducible case, Hurewicz chain, sphere theorem (~220 lines, ~20 theorems)",
+      "Part XCVI: Finite Extinction Time — width functional, scalar curvature blowup, surgery finiteness, S³ extinction time, Colding-Minicozzi estimate, dimension specificity (~230 lines, ~20 theorems)"
     ],
     "insights": [
       "Massive axiom reduction: 39 axioms converted to theorems/defs (115→76)",
@@ -358,7 +361,17 @@
       "Surgery removes S² necks, caps with hemispheres, decreases topological complexity",
       "Colding-Minicozzi width: dW/dt ≤ -4π → extinction in T ≤ W₀/(4π)",
       "Simply connected → finite extinction → M = S³ (complete proof chain: 8 steps)",
-      "99 years from Poincaré question (1904) to Perelman proof (2003)"
+      "99 years from Poincaré question (1904) to Perelman proof (2003)",
+      "Brendle-Schoen (2009): 1/4-pinched → diffeomorphic to S^n, using Ricci flow (exotic spheres cannot be 1/4-pinched)",
+      "Hamilton 1982: Ric > 0 on M³ → diffeo S³/Γ was the birth of the Ricci flow program",
+      "In dim 3: Ric determines full Riemann (both have 6 independent components)",
+      "Perelman is the strongest sphere theorem: just π₁ = 1 → diffeo S³ (no curvature assumption)",
+      "Kneser-Milnor reduces Poincaré to irreducible case: M = P₁ # ... # P_k, each P_i simply connected",
+      "Van Kampen: π₁(M#N) = π₁(M) * π₁(N); free product trivial → each factor trivial",
+      "S² × S¹ is the ONLY non-irreducible prime 3-manifold (π₁ = ℤ, rules it out for simply connected)",
+      "Finite extinction: dW/dt ≤ -4π + (3/4)R_min·W; the 4π comes from Gauss-Bonnet χ(S²)=2",
+      "Round S³(r) extinct at t = r²/4; standard S³(1) extinct at T = 1/4",
+      "Perelman wrote 68 pages; verification took 1,242 pages (18:1 ratio)"
     ],
     "mathlibGaps": [
       "3-manifolds",

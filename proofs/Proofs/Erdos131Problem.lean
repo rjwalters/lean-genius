@@ -53,29 +53,54 @@ def IsNonDividingAlt (A : Finset ℕ) : Prop :=
   ∀ a ∈ A, ∀ B : Finset ℕ, B ⊆ A → a ∉ B → B.Nonempty →
     ¬(a ∣ B.sum id)
 
-/-- The two definitions are equivalent for sets with at least 2 elements -/
-theorem nondividing_equiv (A : Finset ℕ) (hA : A.card ≥ 2) :
-    IsNonDividing A ↔ IsNonDividingAlt A := by
-  sorry
+/-- IsNonDividingAlt is strictly stronger than IsNonDividing:
+    Alt requires no element divides ANY nonempty subset sum (including singletons),
+    while the standard version only forbids divisibility of sums of ≥ 2 elements.
+    Counterexample for the converse: {2, 4} satisfies IsNonDividing (vacuously,
+    since no S ⊆ {4} or S ⊆ {2} has card ≥ 2) but NOT IsNonDividingAlt
+    (since 2 ∈ {2,4}, B = {4}, and 2 ∣ 4). -/
+theorem nondividingAlt_implies_nondividing (A : Finset ℕ) :
+    IsNonDividingAlt A → IsNonDividing A := by
+  intro hAlt a ha S hS hCard hdvd
+  have hne : S.Nonempty := Finset.card_pos.mp (by omega)
+  have ha_notin : a ∉ S := fun h => (Finset.mem_erase.mp (hS h)).1 rfl
+  have hSA : S ⊆ A := hS.trans (Finset.erase_subset a A)
+  exact hAlt a ha S hSA ha_notin hne hdvd
+
+/-- Counterexample: {2, 4} is non-dividing (vacuously) but not non-dividing-alt -/
+theorem nondividing_not_iff_alt :
+    ∃ A : Finset ℕ, A.card ≥ 2 ∧ IsNonDividing A ∧ ¬IsNonDividingAlt A := by
+  refine ⟨{2, 4}, by simp, ?_, ?_⟩
+  · -- {2,4} is non-dividing: erase sets have card ≤ 1
+    intro a ha S hS hCard
+    simp only [Finset.mem_insert, Finset.mem_singleton] at ha
+    rcases ha with rfl | rfl
+    · have : S.card ≤ (({2, 4} : Finset ℕ).erase 2).card := Finset.card_le_card hS
+      simp at this; omega
+    · have : S.card ≤ (({2, 4} : Finset ℕ).erase 4).card := Finset.card_le_card hS
+      simp at this; omega
+  · -- {2,4} is NOT non-dividing-alt: a=2, B={4}, 2 ∣ 4
+    intro h
+    apply h 2 (by simp) {4} (by simp) (by simp) (by simp)
+    simp [Finset.sum_singleton]
 
 /-- A set is non-averaging if no element is the average of distinct others -/
 def IsNonAveraging (A : Finset ℕ) : Prop :=
   ∀ a ∈ A, ∀ S : Finset ℕ, S ⊆ A.erase a → S.card ≥ 2 →
-    (S.sum id : ℚ) / S.card ≠ a
+    ↑(S.sum id) / (S.card : ℚ) ≠ (a : ℚ)
 
 /- ## Relationship: Non-dividing implies Non-averaging -/
 
 /-- Every non-dividing set is non-averaging -/
-theorem nondividing_implies_nonaveraging (A : Finset ℕ) (hA : A.card ≥ 2)
+theorem nondividing_implies_nonaveraging (A : Finset ℕ) (_hA : A.card ≥ 2)
     (hND : IsNonDividing A) : IsNonAveraging A := by
-  intro a ha S hS hCard
-  intro hAvg
+  unfold IsNonAveraging
+  intro a ha S hS hCard hAvg
   -- If S.sum / |S| = a, then S.sum = a * |S|, so a | S.sum
   have hdiv : a ∣ S.sum id := by
-    have : (S.sum id : ℚ) = a * S.card := by
-      rw [hAvg, mul_comm]
-      ring
-    sorry -- Extract divisibility from the rational equation
+    have hcard_ne : (S.card : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+    have h : (↑(S.sum id) : ℚ) = ↑a * ↑S.card := (div_eq_iff hcard_ne).mp hAvg
+    exact ⟨S.card, by exact_mod_cast h⟩
   exact hND a ha S hS hCard hdiv
 
 /- ## The Function F(N) -/
@@ -88,7 +113,14 @@ noncomputable def F (N : ℕ) : ℕ :=
 /-- F is monotonic in N -/
 theorem F_monotonic : ∀ N M : ℕ, N ≤ M → F N ≤ F M := by
   intro N M hNM
-  sorry
+  simp only [F]
+  apply Finset.sup_le
+  intro A hA
+  simp only [Finset.mem_filter, Finset.mem_powerset] at hA
+  have hAM : A ⊆ Finset.Icc 1 M := by
+    exact hA.1.trans (Finset.Icc_subset_Icc_right hNM)
+  exact Finset.le_sup (Finset.mem_filter.mpr
+    ⟨Finset.mem_powerset.mpr hAM, hAM, hA.2.2⟩)
 
 /- ## Upper Bounds -/
 
@@ -156,50 +188,45 @@ theorem erdos_original_conjecture_false :
 /- ## Small Examples -/
 
 /-- {1} is trivially non-dividing -/
-theorem singleton_nondividing (n : ℕ) (hn : n ≥ 1) :
+theorem singleton_nondividing (n : ℕ) (_hn : n ≥ 1) :
     IsNonDividing {n} := by
+  unfold IsNonDividing
   intro a ha S hS hCard
-  simp only [Finset.mem_singleton] at ha
-  subst ha
-  -- S ⊆ {n}.erase n = ∅, but S has ≥ 2 elements
-  simp at hS
-  have : S = ∅ := Finset.subset_empty.mp hS
-  rw [this] at hCard
-  simp at hCard
+  exfalso
+  have h1 : S.card ≤ ({n} : Finset ℕ).card :=
+    (Finset.card_le_card hS).trans Finset.card_erase_le
+  simp at h1
+  omega
 
 /-- {2, 3} is non-dividing: 2 ∤ 3 and 3 ∤ 2 -/
 theorem two_three_nondividing : IsNonDividing {2, 3} := by
   intro a ha S hS hCard
   simp only [Finset.mem_insert, Finset.mem_singleton] at ha
   rcases ha with rfl | rfl
-  · -- a = 2: S ⊆ {2,3}.erase 2 = {3}, but |S| ≥ 2, contradiction
-    have hle : S.card ≤ 1 := by
-      have : S ⊆ {3} := by
-        intro x hx
-        have := hS hx
-        simp [Finset.mem_erase] at this
-        exact this.2
-      calc S.card ≤ ({3} : Finset ℕ).card := Finset.card_le_card this
-        _ = 1 := by rfl
-    omega
-  · -- a = 3: S ⊆ {2,3}.erase 3 = {2}, but |S| ≥ 2, contradiction
-    have hle : S.card ≤ 1 := by
-      have : S ⊆ {2} := by
-        intro x hx
-        have := hS hx
-        simp [Finset.mem_erase] at this
-        exact this.2
-      calc S.card ≤ ({2} : Finset ℕ).card := Finset.card_le_card this
-        _ = 1 := by rfl
-    omega
+  · -- a = 2: S ⊆ {2,3}.erase 2, which has card 1
+    have : S.card ≤ (({2, 3} : Finset ℕ).erase 2).card := Finset.card_le_card hS
+    simp at this; omega
+  · -- a = 3: S ⊆ {2,3}.erase 3, which has card 1
+    have : S.card ≤ (({2, 3} : Finset ℕ).erase 3).card := Finset.card_le_card hS
+    simp at this; omega
 
-/-- Primes form a non-dividing set in their range -/
-theorem primes_nondividing_example :
-    ∀ N : ℕ, IsNonDividing (Finset.filter Nat.Prime (Finset.Icc 2 N)) := by
-  intro N a ha S hS hCard
-  simp at ha
-  -- Prime a cannot divide sum of other primes (if all > a)
-  sorry
+/-- Primes do NOT generally form a non-dividing set:
+    {2, 3, 5} fails because 2 ∣ (3 + 5) = 8.
+    In fact, any set containing 2 and two odd primes whose sum is even
+    violates the non-dividing property. -/
+theorem primes_not_nondividing :
+    ¬IsNonDividing {2, 3, 5} := by
+  intro h
+  apply h 2 (by simp) {3, 5}
+  · -- {3,5} ⊆ {2,3,5}.erase 2
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    simp only [Finset.mem_erase, Finset.mem_insert, Finset.mem_singleton]
+    rcases hx with rfl | rfl <;> constructor <;> omega
+  · -- card ≥ 2
+    simp
+  · -- 2 ∣ (3 + 5) = 8
+    simp [Finset.sum_insert, Finset.sum_singleton]
 
 /- ## Connection to Non-Averaging Sets -/
 
@@ -210,7 +237,21 @@ noncomputable def g (N : ℕ) : ℕ :=
 
 /-- F(N) ≤ g(N) since non-dividing implies non-averaging -/
 theorem F_le_g (N : ℕ) : F N ≤ g N := by
-  sorry
+  simp only [F, g]
+  apply Finset.sup_le
+  intro A hA
+  have hAmem : A ∈ Finset.powerset (Finset.Icc 1 N) :=
+    (Finset.mem_filter.mp hA).1
+  have hAcond := (Finset.mem_filter.mp hA).2
+  have hAsub : A ⊆ Finset.Icc 1 N := hAcond.1
+  have hAnd : IsNonDividing A := hAcond.2
+  have hNA : IsNonAveraging A := by
+    unfold IsNonAveraging
+    intro a ha S hS hScard
+    intro hAvg
+    have hcard_ne : (S.card : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+    exact hAnd a ha S hS hScard ⟨S.card, by exact_mod_cast (div_eq_iff hcard_ne).mp hAvg⟩
+  exact Finset.le_sup (Finset.mem_filter.mpr ⟨Finset.mem_powerset.mpr hAsub, hAsub, hNA⟩)
 
 /-- Pham-Zakharov's bound on g(N) implies bound on F(N) -/
 theorem pham_zakharov_chain :
