@@ -1,0 +1,69 @@
+{
+  "slug": "erdos-247-oq-01",
+  "title": "Transcendence of Lacunary Sum 1/2^(k^2)",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Is sum(k=1..inf) 1/2^(k^2) transcendental? More generally, for n_k with lim sup n_k/k = inf, is sum 1/2^(n_k) transcendental?",
+    "plain": "Erdos 247: Is the sum 1/2 + 1/16 + 1/512 + 1/65536 + ... transcendental?",
+    "whyMatters": [
+      "Connects to Liouville-type approximation theory",
+      "Gap between weak and strong growth conditions for lacunary sums"
+    ]
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-20T14:00:00.000Z",
+    "iteration": 1,
+    "focus": "Initial survey",
+    "blockers": [
+      "Transcendence of lacunary sums under weak growth is genuinely open"
+    ],
+    "nextAction": "Try to eliminate provable axioms (factorial_strong_growth, pow2_strong_growth)",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEY: Erdos247Problem.lean has 142 lines, 0 sorries, 3 axioms. Two axioms (factorial_strong_growth, pow2_strong_growth) are provable - exponential/factorial growth dominates polynomials. The main conjecture (weak growth implies transcendence) is genuinely open.",
+    "builtItems": [],
+    "insights": [
+      "Parent file has clean infrastructure: lacunarySum, HasWeakGrowth, HasStrongGrowth, squareSeq",
+      "erdos_transcendence_strong (axiom): deep transcendence result from Erdos 1975 - not provable from Mathlib",
+      "factorial_strong_growth (axiom): PROVABLE - factorial dominates any polynomial",
+      "pow2_strong_growth (axiom): PROVABLE - 2^k dominates any polynomial",
+      "The open question is specifically about n_k = k^2 (quadratic growth) - between linear and superpolynomial"
+    ],
+    "mathlibGaps": [
+      "Transcendence theory for lacunary series"
+    ],
+    "nextSteps": [
+      "Prove factorial_strong_growth from Mathlib growth lemmas",
+      "Prove pow2_strong_growth from exponential > polynomial"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "transcendence",
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-247"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://erdosproblems.com/247"
+    ],
+    "mathlib": []
+  },
+  "started": "2026-03-20T14:00:00.000Z",
+  "lastUpdate": "2026-03-20T14:00:00.000Z",
+  "significance": 8,
+  "tractability": 3
+}
