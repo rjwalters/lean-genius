@@ -1,84 +1,98 @@
-{
-  "annotations": [
-    {
-      "id": "euler-formula-bridge",
-      "type": "insight",
-      "targetLines": [30, 78],
-      "title": "Euler's Formula Bridge",
-      "content": "The fundamental connection ζₙ = exp(2πi/n) = cos(2π/n) + i·sin(2π/n) bridges complex exponentials to trigonometric functions. This decomposition enables extracting the real part cos(2π/n) from the algebraic object ζₙ.",
-      "tags": ["complex-analysis", "euler-formula", "roots-of-unity"]
-    },
-    {
-      "id": "conjugation-inverse",
-      "type": "technique",
-      "targetLines": [50, 70],
-      "title": "Conjugation as Inversion on the Unit Circle",
-      "content": "For |ζₙ| = 1, complex conjugation equals inversion: conj(ζₙ) = ζₙ⁻¹. This gives the crucial identity ζₙ + ζₙ⁻¹ = 2cos(2π/n), connecting the cyclotomic field element to the real cosine value.",
-      "tags": ["unit-circle", "conjugation", "cyclotomic-fields"]
-    },
-    {
-      "id": "zeta-pow-unity",
-      "type": "proof-step",
-      "targetLines": [79, 111],
-      "title": "Primitive Root of Unity",
-      "content": "ζₙⁿ = exp(2πi·n/n) = exp(2πi) = 1. This fundamental property makes ζₙ a root of xⁿ - 1, hence algebraic over ℚ. The proof uses Euler's formula and the periodicity of exp.",
-      "tags": ["roots-of-unity", "algebraicity"]
-    },
-    {
-      "id": "chebyshev-connection",
-      "type": "insight",
-      "targetLines": [154, 186],
-      "title": "Chebyshev Polynomial Framework",
-      "content": "Mathlib's Chebyshev polynomials satisfy Tₙ(cos θ) = cos(nθ). This provides an explicit polynomial relationship: if cos(2π/n) = c, then Tₙ(c) = cos(2π) = 1. So cos(2π/n) is a root of Tₙ(x) - 1, giving algebraicity via a concrete polynomial.",
-      "tags": ["chebyshev-polynomials", "trigonometry", "algebraicity"]
-    },
-    {
-      "id": "cyclotomic-degree",
-      "type": "proof-step",
-      "targetLines": [187, 204],
-      "title": "Cyclotomic Polynomial Degree",
-      "content": "The cyclotomic polynomial Φₙ(x) has degree φ(n) and is irreducible over ℚ. These are deep results from Mathlib (natDegree_cyclotomic and cyclotomic.irreducible_rat) that establish [ℚ(ζₙ):ℚ] = φ(n).",
-      "tags": ["cyclotomic-polynomials", "euler-totient", "irreducibility"]
-    },
-    {
-      "id": "complex-conj-order-two",
-      "type": "insight",
-      "targetLines": [206, 261],
-      "title": "Complex Conjugation Has Order 2 via Galois Theory",
-      "content": "The key proved result: using galCyclotomicEquivUnitsZMod (Gal(ℚ(ζₙ)/ℚ) ≅ (ℤ/nℤ)*), the element -1 ∈ (ℤ/nℤ)* corresponds to complex conjugation. For n ≥ 3, -1 ≠ 1 in (ℤ/nℤ)* (since n ∤ 2), giving a non-trivial automorphism σ with σ² = id. This is the deepest result proved without axioms.",
-      "tags": ["galois-theory", "conjugation", "automorphism", "cyclotomic-fields"]
-    },
-    {
-      "id": "galois-isomorphism",
-      "type": "technique",
-      "targetLines": [220, 240],
-      "title": "galCyclotomicEquivUnitsZMod in Action",
-      "content": "Mathlib's galCyclotomicEquivUnitsZMod provides the isomorphism Gal(ℚ(ζₙ)/ℚ) ≅ (ℤ/nℤ)*. This transforms the abstract question 'does conjugation have order 2?' into the concrete arithmetic question 'is -1 ≠ 1 in (ℤ/nℤ)*?', which reduces to 'does n divide 2?'.",
-      "tags": ["galois-theory", "mathlib", "cyclotomic-fields"]
-    },
-    {
-      "id": "axiom-chain",
-      "type": "insight",
-      "targetLines": [262, 371],
-      "title": "Three-Axiom Dependency Chain",
-      "content": "The remaining axioms form a clear chain: (1) maximal_real_subfield_degree: [ℚ(ζₙ)⁺:ℚ] = φ(n)/2, (2) cos_minimal_poly_degree: minimal polynomial of cos(2π/n) has degree φ(n)/2, (3) cos_extension_is_galois: ℚ(cos(2π/n))/ℚ is Galois. Each depends on the previous, requiring ~490 lines of Galois theory to eliminate.",
-      "tags": ["axioms", "galois-theory", "constructibility"]
-    },
-    {
-      "id": "cos-algebraic",
-      "type": "proof-step",
-      "targetLines": [340, 371],
-      "title": "cos(2π/n) is Algebraic over ℚ",
-      "content": "The final derived result: cos(2π/n) = (ζₙ + ζₙ⁻¹)/2 is algebraic over ℚ because ζₙ is algebraic (root of Φₙ) and algebraic numbers form a field. This connects cyclotomic theory to constructibility: the degree of the minimal polynomial determines whether cos(2π/n) is constructible.",
-      "tags": ["algebraicity", "constructibility", "cyclotomic-fields"]
-    },
-    {
-      "id": "constructibility-criterion",
-      "type": "context",
-      "targetLines": [1, 30],
-      "title": "The Gauss-Wantzel Constructibility Criterion",
-      "content": "A regular n-gon is constructible by compass and straightedge iff n is a product of a power of 2 and distinct Fermat primes (primes of the form 2^(2^k) + 1). Equivalently, cos(2π/n) is constructible iff its minimal polynomial has degree a power of 2, which happens iff φ(n)/2 is a power of 2. This file builds the algebraic infrastructure connecting cyclotomic fields to this criterion.",
-      "tags": ["constructibility", "gauss-wantzel", "fermat-primes"]
-    }
-  ]
-}
+[
+  {
+    "id": "ann-cyclotomic-setup",
+    "proofId": "angle-trisection-oq-02-oq-03-oq-01",
+    "range": { "startLine": 30, "endLine": 55 },
+    "type": "definition",
+    "title": "Cyclotomic Field Setup",
+    "content": "Establishes the fundamental properties of $\\mathbb{Q}(\\zeta_n)$: it is a Galois extension of $\\mathbb{Q}$ (via `IsCyclotomicExtension.isGalois`), finite-dimensional with $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}] = \\varphi(n)$ (where $\\varphi$ is Euler's totient), and contains a canonical primitive $n$-th root of unity $\\zeta_n$. These are all Mathlib results, wrapped here for convenient reference throughout the proof.",
+    "mathContext": "$[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}] = \\varphi(n)$, where $\\zeta_n$ is a primitive $n$-th root of unity and $\\Phi_n(x)$ is irreducible over $\\mathbb{Q}$",
+    "significance": "key",
+    "relatedConcepts": ["cyclotomic field", "Galois extension", "Euler totient", "primitive root of unity"],
+    "prerequisites": ["IsCyclotomicExtension", "cyclotomic.irreducible_rat", "FiniteDimensional"]
+  },
+  {
+    "id": "ann-conj-aut-definition",
+    "proofId": "angle-trisection-oq-02-oq-03-oq-01",
+    "range": { "startLine": 61, "endLine": 72 },
+    "type": "definition",
+    "title": "Complex Conjugation Automorphism via fromZetaAut",
+    "content": "Defines the automorphism $\\sigma: \\mathbb{Q}(\\zeta_n) \\to \\mathbb{Q}(\\zeta_n)$ that sends $\\zeta_n \\mapsto \\zeta_n^{-1}$, using Mathlib's `fromZetaAut`. This is the abstract algebraic analogue of complex conjugation: since $|\\zeta_n| = 1$ on the unit circle, $\\overline{\\zeta_n} = \\zeta_n^{-1}$. The automorphism is uniquely determined by its action on the generator $\\zeta_n$, since $\\mathbb{Q}(\\zeta_n) = \\mathbb{Q}[\\zeta_n]$.",
+    "mathContext": "$\\sigma(\\zeta_n) = \\zeta_n^{-1}$; for $|\\zeta_n| = 1$, this is $\\overline{\\zeta_n}$",
+    "significance": "key",
+    "relatedConcepts": ["complex conjugation", "field automorphism", "fromZetaAut", "unit circle"],
+    "prerequisites": ["IsCyclotomicExtension.fromZetaAut", "IsPrimitiveRoot"]
+  },
+  {
+    "id": "ann-conj-ne-one",
+    "proofId": "angle-trisection-oq-02-oq-03-oq-01",
+    "range": { "startLine": 74, "endLine": 90 },
+    "type": "insight",
+    "title": "Conjugation Is Non-Trivial for n >= 3",
+    "content": "Proves $\\sigma \\neq \\mathrm{id}$ when $n \\geq 3$. The argument: if $\\sigma = \\mathrm{id}$, then $\\zeta_n^{-1} = \\zeta_n$, so $\\zeta_n^2 = 1$, meaning $\\mathrm{ord}(\\zeta_n) | 2$. But $\\mathrm{ord}(\\zeta_n) = n \\geq 3$, contradicting $n | 2$. This is why $n \\geq 3$ is needed: for $n = 1$, $\\zeta_1 = 1$; for $n = 2$, $\\zeta_2 = -1 = \\zeta_2^{-1}$, so conjugation IS trivial in those cases.",
+    "mathContext": "$n \\geq 3 \\implies \\sigma \\neq \\mathrm{id}$, since $\\zeta_n^{-1} = \\zeta_n$ would force $n | 2$",
+    "significance": "key",
+    "relatedConcepts": ["order of element", "primitive root", "non-trivial automorphism"],
+    "prerequisites": ["orderOf", "IsPrimitiveRoot.eq_orderOf"]
+  },
+  {
+    "id": "ann-conj-sq",
+    "proofId": "angle-trisection-oq-02-oq-03-oq-01",
+    "range": { "startLine": 92, "endLine": 127 },
+    "type": "technique",
+    "title": "Conjugation Squared Is Identity",
+    "content": "Proves $\\sigma^2 = \\mathrm{id}$ by showing $(-1)^2 = 1$ in $(\\mathbb{Z}/n\\mathbb{Z})^*$. The proof uses `autEquivPow` to translate the automorphism group to $(\\mathbb{Z}/n\\mathbb{Z})^*$, identifies $\\sigma$ with $-1$ (since $\\sigma(\\zeta_n) = \\zeta_n^{-1} = \\zeta_n^{n-1}$), then computes $(-1)(-1) = 1$. This is the deepest result in the file, combining Galois theory with modular arithmetic. The conclusion $\\mathrm{ord}(\\sigma) = 2$ follows from $\\sigma^2 = 1$ and $\\sigma \\neq \\mathrm{id}$.",
+    "mathContext": "$\\sigma^2 = \\mathrm{id}$ via $(-1)^2 = 1$ in $(\\mathbb{Z}/n\\mathbb{Z})^*$; hence $\\mathrm{ord}(\\sigma) = 2$ for $n \\geq 3$",
+    "significance": "key",
+    "relatedConcepts": ["autEquivPow", "units of ZMod", "order of automorphism", "Galois group computation"],
+    "prerequisites": ["IsCyclotomicExtension.autEquivPow", "ZMod.val", "orderOf_eq_prime"]
+  },
+  {
+    "id": "ann-fixed-field-degree",
+    "proofId": "angle-trisection-oq-02-oq-03-oq-01",
+    "range": { "startLine": 129, "endLine": 166 },
+    "type": "insight",
+    "title": "Fixed Field Degree: The Key Result",
+    "content": "The central theorem: the maximal real subfield $F = \\mathbb{Q}(\\zeta_n)^{\\langle \\sigma \\rangle}$ satisfies $[F:\\mathbb{Q}] = \\varphi(n)/2$. The proof uses the tower law: $\\varphi(n) = [\\mathbb{Q}(\\zeta_n):\\mathbb{Q}] = [\\mathbb{Q}(\\zeta_n):F] \\cdot [F:\\mathbb{Q}]$. Since $[\\mathbb{Q}(\\zeta_n):F] = |\\langle \\sigma \\rangle| = 2$ (Artin's fixed field theorem via `finrank_fixedField_eq_card`), we get $[F:\\mathbb{Q}] = \\varphi(n)/2$. This degree determines constructibility: a regular $n$-gon is constructible iff $\\varphi(n)/2$ is a power of 2.",
+    "mathContext": "$[\\mathbb{Q}(\\zeta_n)^{\\langle \\sigma \\rangle}:\\mathbb{Q}] = \\varphi(n)/2$, via tower law $\\varphi(n) = 2 \\cdot [F:\\mathbb{Q}]$",
+    "significance": "key",
+    "relatedConcepts": ["fixed field", "tower law", "Artin's theorem", "constructibility degree criterion"],
+    "prerequisites": ["IntermediateField.fixedField", "finrank_fixedField_eq_card", "Module.finrank_mul_finrank"]
+  },
+  {
+    "id": "ann-alpha-quadratic",
+    "proofId": "angle-trisection-oq-02-oq-03-oq-01",
+    "range": { "startLine": 172, "endLine": 185 },
+    "type": "technique",
+    "title": "Zeta Satisfies a Quadratic Over Alpha",
+    "content": "Defines $\\alpha = \\zeta_n + \\zeta_n^{-1}$ (which equals $2\\cos(2\\pi/n)$ under the complex embedding) and proves $\\zeta_n^2 - \\alpha \\zeta_n + 1 = 0$. This means $\\zeta_n$ is a root of $X^2 - \\alpha X + 1$, so $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}(\\alpha)] \\leq 2$. Combined with the fixed field result, this shows $\\alpha$ generates the maximal real subfield. The proof uses `field_simp` and `ring` after clearing the inverse.",
+    "mathContext": "$\\alpha = \\zeta_n + \\zeta_n^{-1}$; $\\zeta_n^2 - \\alpha \\zeta_n + 1 = 0$, so $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}(\\alpha)] \\leq 2$",
+    "significance": "supporting",
+    "relatedConcepts": ["minimal polynomial", "quadratic extension", "maximal real subfield generator"],
+    "prerequisites": ["IsPrimitiveRoot", "field_simp"]
+  },
+  {
+    "id": "ann-embedding-bridge",
+    "proofId": "angle-trisection-oq-02-oq-03-oq-01",
+    "range": { "startLine": 187, "endLine": 200 },
+    "type": "technique",
+    "title": "Embedding into Complex Numbers",
+    "content": "Constructs an algebra homomorphism $\\mathbb{Q}(\\zeta_n) \\hookrightarrow \\mathbb{C}$ using `IsAlgClosed.lift`, which maps the abstract $\\zeta_n$ to a concrete primitive $n$-th root of unity in $\\mathbb{C}$. Under this embedding, $\\alpha = \\zeta_n + \\zeta_n^{-1}$ maps to $w + w^{-1}$ for some primitive root $w$. This bridge connects the abstract algebraic results (degree computation) to concrete trigonometric values ($\\cos(2\\pi/n)$).",
+    "mathContext": "$\\mathbb{Q}(\\zeta_n) \\hookrightarrow \\mathbb{C}$; $\\zeta_n \\mapsto w$ where $w^n = 1$ and $w + w^{-1} = 2\\cos(2\\pi/n)$",
+    "significance": "supporting",
+    "relatedConcepts": ["algebraic closure", "field embedding", "IsAlgClosed.lift", "concrete vs abstract roots"],
+    "prerequisites": ["IsAlgClosed", "IsPrimitiveRoot.map_of_injective"]
+  },
+  {
+    "id": "ann-constructibility-context",
+    "proofId": "angle-trisection-oq-02-oq-03-oq-01",
+    "range": { "startLine": 1, "endLine": 18 },
+    "type": "context",
+    "title": "The Gauss-Wantzel Constructibility Problem",
+    "content": "The Gauss-Wantzel theorem (Gauss 1796, Wantzel 1837) characterizes which regular polygons are constructible by compass and straightedge: a regular $n$-gon is constructible iff $n = 2^a p_1 p_2 \\cdots p_k$ where the $p_i$ are distinct Fermat primes ($p = 2^{2^m} + 1$). The algebraic criterion is that $\\cos(2\\pi/n)$ must be constructible, which requires its minimal polynomial to have degree a power of 2. Since this degree is $\\varphi(n)/2$, the condition becomes: $\\varphi(n)$ must be a power of 2, which is exactly the Gauss-Wantzel characterization.",
+    "mathContext": "Regular $n$-gon constructible $\\iff$ $\\varphi(n)$ is a power of 2 $\\iff$ $n = 2^a p_1 \\cdots p_k$ with distinct Fermat primes $p_i$",
+    "significance": "key",
+    "relatedConcepts": ["Gauss-Wantzel theorem", "compass and straightedge", "Fermat primes", "constructible numbers"],
+    "prerequisites": ["Euler totient", "field extension degree"]
+  }
+]
