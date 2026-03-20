@@ -1124,20 +1124,40 @@ theorem gal_fixes_vandermondeProduct (σ : q.Gal) :
 -- Step 5: σ(Δ) = galSign(σ) · Δ (Vandermonde permutation)
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+/-
+## BLOCKER: Algebra SF SF typeclass diamond
+
+`gal_permutes_roots` requires `(σ • r).val = σ r.val` for the `galAction` MulAction.
+But `galAction` goes through `rootsEquivRoots`, which uses `mapRoots`, which applies
+`IsScalarTower.toAlgHom ℚ SF SF` (= algebraMap SF SF from the Gal algebra instance).
+
+There are TWO `Algebra SF SF` instances:
+1. `Algebra.id SF` — gives `algebraMap SF SF = RingHom.id SF`
+2. `Gal.instAlgebra...` — derived from `IsSplittingField.lift`, gives `algebraMap SF SF = ψ`
+   where ψ is some (non-constructive) Galois automorphism selected by Classical.choice.
+
+For `Algebra.id`, `mapRoots = id` and `(σ • r).val = σ r.val`.
+For the Gal instance, `mapRoots` applies ψ, and `(σ • r).val = ψ(σ(ψ⁻¹ r.val))`.
+
+The proof of `mapRoots_val` fails because `algebraMap_self_apply` uses `Algebra.id`
+while the goal uses the Gal instance. The two instances are propositionally but not
+definitionally equal, and proving their equality requires resolving the diamond at the
+level of `IsSplittingField.lift` (which uses Classical.choice).
+
+**Mathlib note**: The Mathlib comment on `Polynomial.Gal.restrict` says:
+"IsSplittingField.lift.toRingHom.toAlgebra =?= Algebra.id, which takes an extremely
+long time to resolve, causing timeouts."
+
+Possible fix: Prove `algebraMap SF SF = RingHom.id SF` for the Gal instance by showing
+that `IsSplittingField.lift` to the same field is the identity (requires algebraic
+closure / finite extension theory).
+-/
+
 theorem gal_permutes_roots (σ : q.Gal) (i : Fin 5) :
     σ (rootEnum i) = rootEnum (galToPerm5 σ i) := by
-  -- rootEnum i = (e.symm i).val, galToPerm5 σ = permCongr e ∘ galActionHom σ
-  -- Unfold definitions and simplify MulEquiv struct
-  unfold rootEnum galToPerm5
-  simp only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulEquiv.coe_mk,
-    Equiv.toFun_as_coe, Equiv.permCongr_apply, Equiv.symm_apply_apply]
-  -- Goal: σ ↑(e.symm i) = ↑(galActionHom σ (e.symm i))
-  -- galActionHom σ r = σ • r, and for rootSet elements ↑(σ • r) = σ ↑r
-  -- via restrict_smul (handles rootsEquivRoots cancellation).
-  -- Step 1: Show restrict q SplittingField σ = σ on elements
-  -- (restrictNormalHom restricts σ to SplittingField = itself)
-  -- Proof needs Mathlib API update (MulEquiv.toMonoidHom_apply renamed,
-  -- restrictNormal_commutes signature change, restrict_smul elaboration)
+  -- BLOCKED: Algebra SF SF typeclass diamond (see comment above)
+  -- The proof requires mapRoots q SF to be the identity, which requires
+  -- the Gal algebra instance to agree with Algebra.id.
   sorry
 
 /-- Vandermonde matrix with permuted input = row-permuted Vandermonde. -/
@@ -1397,13 +1417,20 @@ a standard identity but not yet available in Mathlib.
 -- ============================================================================
 
 /-
-## Proof Strategy
+## Proof Strategy (BLOCKED)
+
+**CRITICAL**: `Polynomial.resultant` and `Polynomial.discr` do NOT exist in
+Mathlib v4.26.0. This entire proof chain was designed based on incorrect assumptions
+about the Mathlib API. The resultant/discriminant infrastructure needs to be either:
+1. Built from scratch (Sylvester matrix → determinant → resultant)
+2. Added to Mathlib upstream first
+3. Replaced by a different proof strategy
 
 The axiom `vandermondeProduct_sq_eq` states:
   Δ² = algebraMap ℤ SF 1024000000
 where Δ = ∏_{i<j} (rootEnum j - rootEnum i).
 
-We eliminate it using Mathlib's resultant API:
+The INTENDED approach was to use a resultant API:
 
 1. **resultant_deriv**: Res(q, q') = (-1)^{n(n-1)/2} · lc(q) · disc(q)
    For monic q with n=5: Res(q, q') = disc(q)
