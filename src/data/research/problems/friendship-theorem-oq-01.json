@@ -50,7 +50,9 @@
       "charpoly_eigenvalue_data: refined axiom (replaces spectral_regular_friendship)",
       "spectral_regular_friendship: NOW A THEOREM from charpoly_eigenvalue_data",
       "annihilating_polynomial: aeval A ((X-k)(X²-(k-1))) = 0 (PROVED via Polynomial.aeval bridge)",
-      "minpoly_dvd_annihilating: minpoly ℤ A | (X-k)(X²-(k-1)) (correct but times out at 800K heartbeats)"
+      "minpoly_dvd_annihilating: minpoly ℤ A | (X-k)(X²-(k-1)) (correct but times out at 800K heartbeats)",
+      "det_eq_zero_of_mulVec_eq_zero: M·v=0, v≠0 → det(M)=0 via adjugate (PROVED)",
+      "det_kI_sub_adjMatrix_eq_zero: det(kI-A)=0 for k-regular friendship (PROVED)"
     ],
     "insights": [
       "Proof verified: 0 sorries via grep",
@@ -74,7 +76,8 @@
       "nsmul and Nat.cast are distinct in Lean 4: n•(1:ℤ) needs explicit lemma to equal ↑n",
       "Elimination path fully mapped: minpoly.dvd → irreducibility of X²-(k-1) → charpoly factorization → trace coefficient → eigenvalue existence contradiction",
       "Polynomial.aeval bridge: simp with [map_mul, map_sub, aeval_X, aeval_C, Algebra.algebraMap_eq_smul_one, sq, ← sub_smul] converts matrix equation to polynomial evaluation",
-      "minpoly.dvd over Matrix V V ℤ causes timeout due to heavy Algebra/IsIntegral instance resolution"
+      "minpoly.dvd over Matrix V V ℤ causes timeout due to heavy Algebra/IsIntegral instance resolution",
+      "det(M)=0 from nontrivial kernel over integral domain: uses adj(M)·M = det(M)·I, then det·v=0 with v≠0 forces det=0"
     ],
     "mathlibGaps": [
       "Full spectral theorem for real symmetric matrices in a form that gives integer eigenvalue multiplicities",

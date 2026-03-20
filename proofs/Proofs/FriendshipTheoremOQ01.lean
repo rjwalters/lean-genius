@@ -882,4 +882,49 @@ for `Algebra ℤ (Matrix V V ℤ)` and `IsIntegral ℤ (G.adjMatrix ℤ)`.
 Optimization: provide instances explicitly or work over ℚ.
 -/
 
+-- ============================================================================
+-- Part XV: det(kI - A) = 0 (k is an eigenvalue)
+-- ============================================================================
+
+/-- Over an integral domain: if M·v = 0 and v ≠ 0, then det(M) = 0.
+    Uses the adjugate identity adj(M)·M = det(M)·I:
+    det(M)·v = adj(M)·(M·v) = adj(M)·0 = 0, and v ≠ 0 forces det(M) = 0. -/
+theorem det_eq_zero_of_mulVec_eq_zero
+    {M : Matrix V V ℤ} {v : V → ℤ} (hv : v ≠ 0) (hMv : M.mulVec v = 0) :
+    M.det = 0 := by
+  -- From adj(M) * M = det(M) • I, deduce det(M) • v = 0
+  have hdetv : M.det • v = 0 := by
+    calc M.det • v
+        = (M.det • (1 : Matrix V V ℤ)).mulVec v := by
+            simp [Matrix.smul_mulVec, Matrix.one_mulVec]
+      _ = (M.adjugate * M).mulVec v := by rw [Matrix.adjugate_mul]
+      _ = M.adjugate.mulVec (M.mulVec v) := by rw [Matrix.mulVec_mulVec]
+      _ = M.adjugate.mulVec 0 := by rw [hMv]
+      _ = 0 := by rw [Matrix.mulVec_zero]
+  -- v ≠ 0 means some entry is nonzero
+  obtain ⟨i, hi⟩ : ∃ i, v i ≠ 0 := by
+    by_contra h; push_neg at h; exact hv (funext h)
+  -- det(M) * v(i) = 0 and v(i) ≠ 0 forces det(M) = 0
+  have := congr_fun hdetv i
+  simp only [Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at this
+  exact (mul_eq_zero.mp this).resolve_right hi
+
+/-- **det(kI - A) = 0**: The matrix kI - A has a nontrivial kernel (the all-ones
+    vector), so its determinant is zero.
+    This means k is a root of the characteristic polynomial det(XI - A). -/
+theorem det_kI_sub_adjMatrix_eq_zero (k : ℕ) (hreg : ∀ v : V, G.degree v = k)
+    [Nonempty V] :
+    (↑k • (1 : Matrix V V ℤ) - G.adjMatrix ℤ).det = 0 := by
+  apply det_eq_zero_of_mulVec_eq_zero (v := fun _ => (1 : ℤ))
+  · -- 𝟙 = (fun _ => 1) ≠ 0 since V is nonempty
+    intro h
+    have := congr_fun h (Classical.arbitrary V)
+    norm_num at this
+  · -- (kI - A) · 𝟙 = k𝟙 - A𝟙 = k𝟙 - k𝟙 = 0
+    ext i
+    simp only [Matrix.sub_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec,
+      Pi.sub_apply, Pi.smul_apply, Pi.zero_apply, smul_eq_mul]
+    rw [adjMatrix_mulVec_ones G k hreg i]
+    ring
+
 end FriendshipTheoremOQ01
