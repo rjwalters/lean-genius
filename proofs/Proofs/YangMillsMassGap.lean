@@ -15811,8 +15811,7 @@ theorem entropic_op_growth (N₁ N₂ : ℕ) (hN₁ : N₁ ≥ 2) (h : N₁ < N�
     entropicOrderParameter N₁ < entropicOrderParameter N₂ := by
   unfold entropicOrderParameter
   apply pow_lt_pow_left (Nat.cast_lt.mpr h)
-  · exact Nat.cast_nonneg
-  · omega
+  exact Nat.cast_nonneg
 
 /-- SU(3) entropic jump: ΔS ~ 9 (in appropriate units). -/
 theorem entropic_op_su3 : entropicOrderParameter 3 = 9 := by
@@ -15983,8 +15982,7 @@ theorem planar_fe_growth (N₁ N₂ : ℕ) (f : ℝ) (hN₁ : N₁ ≥ 2) (hN₂
   unfold planarFreeEnergy
   apply mul_lt_mul_of_pos_right _ hf
   apply pow_lt_pow_left (Nat.cast_lt.mpr h)
-  · exact Nat.cast_nonneg
-  · omega
+  exact Nat.cast_nonneg
 
 /-- Meson width at large N: Γ ~ 1/N. Mesons become stable at N = ∞. -/
 noncomputable def mesonWidth (N : ℕ) (c : ℝ) : ℝ := c / N
@@ -16691,7 +16689,6 @@ theorem scalar_glueball_gap (kappa_sq : ℝ) (hk : 0 < kappa_sq) :
     softWallMassSq ⟨kappa_sq, 0, hk⟩ 1 = 4 * kappa_sq := by
   unfold softWallMassSq
   simp
-  ring
 
 /-- The soft-wall mass gap squared is positive. -/
 theorem soft_wall_gap_pos (kappa_sq : ℝ) (hk : 0 < kappa_sq) :
@@ -20258,7 +20255,6 @@ theorem monopole_vs_instanton_action (N : ℕ) (hN : N ≥ 2) (g_sq : ℝ) (hg :
   have hN' : (N : ℝ) > 0 := by exact_mod_cast (show 0 < N by omega)
   have hN'' : (N : ℝ) ≠ 0 := ne_of_gt hN'
   field_simp
-  ring
 
 /-- The mass gap from monopole-instanton effects on R³ × S¹.
     In the center-symmetric vacuum, the dual photon gets a mass:
