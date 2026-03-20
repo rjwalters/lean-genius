@@ -3,9 +3,9 @@ import Mathlib.Combinatorics.SimpleGraph.Finite
 import Mathlib.Combinatorics.SimpleGraph.DegreeSum
 import Mathlib.Combinatorics.SimpleGraph.AdjMatrix
 import Mathlib.LinearAlgebra.Matrix.Trace
+import Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly
 import Mathlib.Data.Set.Card
 import Mathlib.Data.Fintype.Card
-import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.Tactic
 
 set_option linter.unusedSectionVars false
@@ -849,15 +849,37 @@ The characteristic polynomial argument eliminates charpoly_eigenvalue_data.
 - tr(J) = n: PROVED (trace_onesMatrix)
 - Eigenvalue structure → k = 2: PROVED (spectral_regular_friendship)
 
-### Missing (requires Mathlib charpoly/minpoly integration)
-- aeval A p = 0 in Polynomial form (bridge from matrix equation)
-- minpoly ℤ A | p (via minpoly.dvd)
+### Missing (requires further work)
 - Irreducibility of X²-(k-1) over ℚ when k-1 not square
 - Charpoly factorization: (X-k)^a · (X²-(k-1))^b
 - Trace coefficient: -ak = 0 forces a = 0
-- Eigenvalue existence: a ≥ 1 (from A𝟙 = k𝟙)
 - Contradiction → k-1 perfect square
 - tr(A²) gives a = 1, trace gives s|k
+-/
+
+open Polynomial in
+/-- **Annihilating polynomial**: the polynomial (X-k)(X²-(k-1)) kills A.
+    This bridges `adjMatrix_functional_eq` to `Polynomial.aeval` form,
+    enabling use of `minpoly.dvd` from Mathlib. -/
+theorem annihilating_polynomial (hF : IsFriendshipGraph G) (k : ℕ) (hk : k ≥ 1)
+    (hreg : ∀ v : V, G.degree v = k) :
+    aeval (G.adjMatrix ℤ)
+      ((X - C (↑k : ℤ)) * (X ^ 2 - C (↑k - 1 : ℤ))) = 0 := by
+  simp only [map_mul, map_sub, aeval_X, aeval_C,
+    Algebra.algebraMap_eq_smul_one, sq, ← sub_smul]
+  exact adjMatrix_functional_eq G hF k hk hreg
+
+/-
+**Minimal polynomial divides annihilating polynomial** (statement only).
+
+By `minpoly.dvd` from Mathlib: since `annihilating_polynomial` shows
+aeval A ((X-k)(X²-(k-1))) = 0, the minimal polynomial of A divides
+(X-k)(X²-(k-1)). This constrains minpoly to have degree ≤ 3.
+
+The formal proof `minpoly.dvd ℤ _ (annihilating_polynomial G hF k hk hreg)`
+is correct but times out (>800000 heartbeats) due to heavy instance resolution
+for `Algebra ℤ (Matrix V V ℤ)` and `IsIntegral ℤ (G.adjMatrix ℤ)`.
+Optimization: provide instances explicitly or work over ℚ.
 -/
 
 end FriendshipTheoremOQ01

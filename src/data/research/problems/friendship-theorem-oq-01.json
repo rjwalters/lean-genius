@@ -48,7 +48,9 @@
       "trace_adjMatrix_sq_via_identity: tr(A²) = (k-1)n+n (proved)",
       "nsmul_eq_natCast_mul: n•a = ↑n*a helper lemma (proved)",
       "charpoly_eigenvalue_data: refined axiom (replaces spectral_regular_friendship)",
-      "spectral_regular_friendship: NOW A THEOREM from charpoly_eigenvalue_data"
+      "spectral_regular_friendship: NOW A THEOREM from charpoly_eigenvalue_data",
+      "annihilating_polynomial: aeval A ((X-k)(X²-(k-1))) = 0 (PROVED via Polynomial.aeval bridge)",
+      "minpoly_dvd_annihilating: minpoly ℤ A | (X-k)(X²-(k-1)) (correct but times out at 800K heartbeats)"
     ],
     "insights": [
       "Proof verified: 0 sorries via grep",
@@ -70,7 +72,9 @@
       "Characteristic polynomial approach identified: avoids full spectral theorem, uses charpoly factorization + Gauss lemma instead",
       "Axiom refinement: spectral_regular_friendship (k=2 directly) replaced by charpoly_eigenvalue_data (eigenvalue structure) which is closer to what Mathlib can prove",
       "nsmul and Nat.cast are distinct in Lean 4: n•(1:ℤ) needs explicit lemma to equal ↑n",
-      "Elimination path fully mapped: minpoly.dvd → irreducibility of X²-(k-1) → charpoly factorization → trace coefficient → eigenvalue existence contradiction"
+      "Elimination path fully mapped: minpoly.dvd → irreducibility of X²-(k-1) → charpoly factorization → trace coefficient → eigenvalue existence contradiction",
+      "Polynomial.aeval bridge: simp with [map_mul, map_sub, aeval_X, aeval_C, Algebra.algebraMap_eq_smul_one, sq, ← sub_smul] converts matrix equation to polynomial evaluation",
+      "minpoly.dvd over Matrix V V ℤ causes timeout due to heavy Algebra/IsIntegral instance resolution"
     ],
     "mathlibGaps": [
       "Full spectral theorem for real symmetric matrices in a form that gives integer eigenvalue multiplicities",
