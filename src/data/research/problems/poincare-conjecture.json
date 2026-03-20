@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Part LXXXVI (HF homology structure, L-space conjecture unifying foliations/left-orderability/HF)",
+    "progressSummary": "PROGRESS: Added Parts XCI-XCIII (Papakyriakopoulos tower, Smith conjecture, h-cobordism theorem, ~26 theorems)",
     "builtItems": [
       "Proved perelman_entropy_monotone via concrete PerelmanWEntropy",
       "Proved perelman_surgery via reflexive witness",
@@ -215,7 +215,10 @@
       "gordon_luecke axiom: knots determined by complements",
       "Proved: volume_ordering, genus_crossing_bound, fibered_genus_alexander, bridge_crossing_bound",
       "Part LXXXIII: Chern-Simons Theory — CS level, Jones polynomial, volume conjecture, RT/Kirby invariants (3 theorems)",
-      "Part LXXXIV: Smooth 4-Manifolds — generalized Poincaré status, Freedman classification, exotic spheres Θ_7=Z_28 (3 theorems)"
+      "Part LXXXIV: Smooth 4-Manifolds — generalized Poincaré status, Freedman classification, exotic spheres Θ_7=Z_28 (3 theorems)",
+      "Part XCI: Papakyriakopoulos Tower — Loop Theorem, Sphere Theorem, Dehn Lemma (~190 lines, ~8 theorems)",
+      "Part XCII: Smith Conjecture — Fixed Points of Cyclic Actions on S³ (~130 lines, ~8 theorems)",
+      "Part XCIII: h-Cobordism Theorem and Dimensions 3 vs ≥5 (~170 lines, ~10 theorems)"
     ],
     "insights": [
       "Massive axiom reduction: 39 axioms converted to theorems/defs (115→76)",
@@ -327,7 +330,15 @@
       "For fibered knots: genus(K) = deg(Δ_K)/2. Non-fibered knots satisfy genus ≤ deg(Δ)/2 (inequality).",
       "Kahn-Markovic (2012): closed hyperbolic 3-manifolds contain nearly totally geodesic immersed surfaces — proved via exponential mixing of the frame flow",
       "Smooth Poincaré conjecture open ONLY in dimension 4 — all other dimensions solved",
-      "Θ_7 = Z_28: exotic 7-spheres discovered by Milnor (1956) — first evidence of exotic smooth structures"
+      "Θ_7 = Z_28: exotic 7-spheres discovered by Milnor (1956) — first evidence of exotic smooth structures",
+      "Papakyriakopoulos tower construction: lifts to covering spaces to resolve self-intersections, terminates finitely",
+      "Loop theorem generalizes Dehn lemma: if π₁(∂M)→π₁(M) non-injective, find embedded compressing disk",
+      "Sphere theorem: π₂(M)≠0 gives embedded S², used for prime decomposition",
+      "Equivariant versions (Meeks-Yau 1981): can find G-invariant embedded surfaces, needed for Smith conjecture",
+      "Smith conjecture: cyclic action on S³ with 1-dim fixed set must have unknotted fixed set",
+      "h-cobordism fails in dim 3: Whitney trick needs dim ≥ 5, Freedman works topologically in dim 4",
+      "Dimension 3 is isolated: not enough room for h-cobordism, not low enough for classification",
+      "Exotic spheres: |Θ₃|=1 (Perelman), |Θ₇|=28 (Milnor), |Θ₄|=? (open!)"
     ],
     "mathlibGaps": [
       "3-manifolds",
