@@ -16639,7 +16639,7 @@ theorem hopf_antipodal_invariant :
   intro ⟨x, hx⟩
   simp only [hopfMap, antipodalHomeomorph, antipodalMap]
   ext i
-  fin_cases i <;> simp <;> ring
+  fin_cases i <;> simp [neg_mul, mul_neg]
 
 /-- The Hopf map respects the antipodal equivalence relation:
     if x ~ y (i.e., y = x or y = -x), then π(x) = π(y).
