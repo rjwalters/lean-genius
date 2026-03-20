@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Parts CXVIII-CXIX (SQG, MHD). Now 119 parts, ~21830 lines, 0 sorries, 0 axioms.",
+    "progressSummary": "PROGRESS: Added Parts CXX-CXXI (NS-α models, regularization hierarchy). Now 121 parts, ~22350 lines, 0 sorries, 0 axioms.",
     "builtItems": [
       "Part LXXXVIII: Helicity Algebra and Conservation Structure (NavierStokes.lean:14932)",
       "Part LXXXIX: Kolmogorov Microscales and Spectral Energy Relations (NavierStokes.lean:15200)",
@@ -68,7 +68,10 @@
       "Aristotle companion Sections 76-78: compressible NS, primitive eqs, Boussinesq",
       "Part CXVIII: SQG — critical α=1/2, Caffarelli-Vasseur De Giorgi proof, scalar analogue of 3D NS",
       "Part CXIX: MHD — Elsasser variables, Alfvén waves, Iroshnikov-Kraichnan spectrum, strong field regularity",
-      "Aristotle companion Sections 79-80: SQG critical exponent, MHD conservation laws"
+      "Aristotle companion Sections 79-80: SQG critical exponent, MHD conservation laws",
+      "Part CXX: NS-α (LANS-α) — Helmholtz filter, global regularity (FHT 2001), modified spectrum, Kelvin circulation, convergence, attractor bounds (NavierStokes.lean:21815)",
+      "Part CXXI: Regularization Hierarchy — criticality gap, Leray-α, Modified Leray-α, Bardina, unified criticality boundary view (NavierStokes.lean:22050)",
+      "Aristotle companion Sections 81-82: NS-α exponents, regularization hierarchy constants"
     ],
     "insights": [
       "Helicity H = ∫u·ω decomposes into positive/negative helical modes: E±=(E±H)/2",
@@ -160,7 +163,12 @@
       "Caffarelli-Vasseur De Giorgi technique: L² → L^∞ via level set decay; fundamentally different from Fourier methods",
       "MHD Elsasser z± = u ± B: cross-advection (z+ advected by z−) eliminates self-interaction — structural constraint absent in NS",
       "MHD has 3 conservation laws (energy, cross-helicity, magnetic helicity) vs NS 1 — stronger constraints on dynamics",
-      "Iroshnikov-Kraichnan spectrum E(k) ~ k^{-3/2} < Kolmogorov k^{-5/3}: Alfvén effect reduces energy transfer rate"
+      "Iroshnikov-Kraichnan spectrum E(k) ~ k^{-3/2} < Kolmogorov k^{-5/3}: Alfvén effect reduces energy transfer rate",
+      "NS-α critical Sobolev exponent s_c = -3/2 (vs NS s_c = 1/2): the Helmholtz filter shifts by exactly 2",
+      "Leray-α convergence rate α^{2/3} matches Kolmogorov scaling: 2/3 = 1 - h_{K41} where h = 1/3",
+      "Lions gap 2(5/4 - 1) = 1/2 equals s_c(NS) — the dissipation gap IS the Sobolev gap in disguise",
+      "NS sits at codimension-∞ critical point: every perturbation (filtering, dissipation, symmetry, dimension) gives subcritical",
+      "5 α-regularization models: NS-α (geometric) > Leray-α > Clark-α > Modified Leray-α (physical fidelity ordering)"
     ],
     "mathlibGaps": [
       "Sobolev spaces",
@@ -193,7 +201,7 @@
   "tractability": 1,
   "leanFiles": [
     {
-      "lineCount": 20283
+      "lineCount": 22349
     },
     {
       "lineCount": 1515

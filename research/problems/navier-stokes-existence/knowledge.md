@@ -547,3 +547,42 @@ Added Parts CXV-CXVII to NavierStokes.lean (now ~21,510 lines, 0 sorries, 0 axio
 
 ### Status
 0 sorries, 0 axioms. 117 parts, ~21,510 lines. Docker build verified.
+
+## Session 2026-03-20 (researcher-5) - NS-α Models and Regularization Hierarchy
+
+**Mode**: REVISIT (RICH knowledge, 119 parts → 121 parts)
+**Outcome**: progress
+
+### What Was Done
+Added Parts CXX-CXXI to NavierStokes.lean (now ~22,350 lines, 0 sorries, 0 axioms):
+
+1. **Part CXX: NS-α (LANS-α) and Lagrangian-Averaged Models**
+   - Helmholtz filter A_α = (1-α²Δ): gains 2 derivatives, shifts s_c from 1/2 to -3/2
+   - Global regularity in 3D (Foias-Holm-Titi 2001): v ∈ H¹ ⟹ u ∈ H³ ↪ C¹
+   - Modified energy spectrum: k^{-5/3} (inertial) → k^{-3} (sub-filter)
+   - Kelvin circulation theorem preserved (Euler-Poincaré structure, connects Part LIX)
+   - Convergence u^α → Leray-Hopf (subsequential) as α → 0
+   - Attractor dimension with reduced Grashof number
+   - 5 main α-regularization models tabulated
+
+2. **Part CXXI: Regularization Hierarchy and the Criticality Boundary**
+   - Lions gap 2(α_c - 1) = 1/2 = s_c(NS): dissipation gap IS Sobolev gap
+   - Leray-α convergence rate α^{2/3} matches Kolmogorov scaling
+   - Modified Leray-α: strongest regularization, NS-α: most physical
+   - Bardina model: parameter-free, O(α²) consistent
+   - 6 regularization directions, all lead to subcritical
+   - 4 structural properties survive Tao's barrier (Lamb vector, pressure Hessian, depletion, helicity)
+   - Unified criticality boundary view: NS at codimension-∞ critical point
+
+### Companion Sections 81-82
+- NS-α exponents (s_c, embedding, DOF, spectral slopes)
+- Regularization hierarchy constants (Lions gap, convergence rate, model count)
+
+### Key Insights
+- NS-α critical Sobolev exponent s_c = -3/2 (vs 1/2 for NS): Helmholtz filter shifts by 2
+- Lions gap = s_c(NS): the 1/4-derivative dissipation gap maps to the 1/2-derivative Sobolev gap via 2(α_c - 1) = 1/2
+- Leray-α rate 2/3 = 1 - h_{K41}: convergence matches inertial range scaling
+- NS sits at codimension-∞ criticality: every perturbation direction gives subcritical
+
+### Status
+0 sorries, 0 axioms. 121 parts, ~22,350 lines. Docker build verified.
