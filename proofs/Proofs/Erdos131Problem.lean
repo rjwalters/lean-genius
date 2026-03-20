@@ -136,12 +136,38 @@ theorem pham_zakharov_upper_bound :
     ∀ N : ℕ, N ≥ 2 → (F N : ℝ) ≤ (N : ℝ)^(1/4 + ε N) := by
   sorry -- Pham-Zakharov (2024), via non-averaging connection
 
-/-- The original question "Is F(N) > N^{1/2 - o(1)}?" is answered NO -/
+/-- The original question "Is F(N) > N^{1/2 - o(1)}?" is answered NO.
+    Proof: instantiate with ε ≡ 0, then F(N) > N^{1/2} for large N.
+    But Pham-Zakharov gives F(N) ≤ N^{1/4+o(1)} < N^{1/2}, contradiction. -/
 theorem original_question_answered_no :
     ¬(∀ (ε : ℕ → ℝ), (∀ δ > 0, ∃ N₀, ∀ N ≥ N₀, |ε N| < δ) →
       ∃ N₀, ∀ N ≥ N₀, (F N : ℝ) > (N : ℝ)^(1/2 - ε N)) := by
-  -- Follows from Pham-Zakharov: F(N) ≤ N^{1/4+o(1)} < N^{1/2-o(1)} for large N
-  sorry
+  intro h
+  obtain ⟨ε', hε', hbound⟩ := pham_zakharov_upper_bound
+  -- Apply h to ε ≡ 0 (trivially o(1))
+  obtain ⟨N₀, hN₀⟩ := h (fun _ => 0)
+    (fun δ hδ => ⟨0, fun _ _ => by simpa using hδ⟩)
+  -- Get N₁ where |ε'(N)| < 1/4
+  obtain ⟨N₁, hN₁⟩ := hε' (1/4) (by positivity)
+  -- Pick M ≥ max(N₀, N₁, 2)
+  set M := max N₀ (max N₁ 2)
+  -- F(M) > M^(1/2) (from h with ε = 0, since 1/2 - 0 = 1/2)
+  have hF_lower := hN₀ M (le_max_left _ _)
+  simp only [sub_zero] at hF_lower
+  -- F(M) ≤ M^(1/4 + ε'(M)) (from Pham-Zakharov)
+  have hF_upper := hbound M
+    (le_trans (le_max_right N₁ 2) (le_max_right N₀ _))
+  -- 1/4 + ε'(M) < 1/2 (from |ε'(M)| < 1/4, so ε'(M) < 1/4)
+  have hexp_lt : 1/4 + ε' M < 1/2 := by
+    linarith [(abs_lt.mp (hN₁ M
+      (le_trans (le_max_left N₁ 2) (le_max_right N₀ _)))).2]
+  -- M > 1 as ℝ (since M ≥ 2)
+  have hM_gt : (1 : ℝ) < (↑M : ℝ) := by
+    exact_mod_cast (show 1 < M by omega)
+  -- M^(1/4 + ε'(M)) < M^(1/2) by rpow monotonicity
+  have hrpow := rpow_lt_rpow_of_exponent_lt hM_gt hexp_lt
+  -- Contradiction: F(M) ≤ M^(1/4+ε'(M)) < M^(1/2) < F(M)
+  linarith
 
 /- ## Lower Bounds -/
 
