@@ -2,12 +2,12 @@
   "id": "navier-stokes-existence",
   "title": "Navier-Stokes Existence and Smoothness",
   "slug": "navier-stokes-existence",
-  "description": "Comprehensive formalization of the Navier-Stokes existence and smoothness problem (Millennium Prize). Includes complete 2D global existence proof (no axioms), 3D conditional regularity via blow-up classification, and 40 parts covering: ancient solutions, ESS theorem, CKN partial regularity, Leray-Hopf theory, Serrin regularity, BKM criterion, weak-strong uniqueness, Kolmogorov turbulence, Onsager conjecture, convex integration, Fujita-Kato mild solutions, helicity, and Liouville theorems. 7272 lines, 326 definitions/theorems, 0 sorries, 0 axioms.",
+  "description": "Comprehensive formalization of the Navier-Stokes existence and smoothness problem (Millennium Prize). Includes complete 2D global existence proof (no axioms), 3D conditional regularity via NSAxioms structure (5 structure-encoded assumptions), and 110 parts covering the full landscape of NS theory: ancient solutions, ESS theorem, CKN partial regularity, Leray-Hopf theory, Serrin regularity, BKM criterion, weak-strong uniqueness, Kolmogorov turbulence, Onsager conjecture, convex integration, Fujita-Kato mild solutions, helicity, Liouville theorems, Tao barrier, Koch-Tataru, backward uniqueness, geometric regularity, profile decomposition, global attractors, determining modes, and exact turbulence results. 20,000+ lines, 1200+ definitions/theorems, 0 sorries, 5 structure-encoded assumptions (NSAxioms).",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://www.claymath.org/millennium/navier-stokes-equation/",
     "date": "2026",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/NavierStokes.lean",
     "tags": [
       "millennium-prize",
@@ -19,8 +19,10 @@
       "regularity",
       "research"
     ],
-    "badge": "verified",
+    "badge": "axiom",
     "sorries": 0,
+    "axiomCount": 5,
+    "assumptions": "NSAxioms structure with 5 fields: Type II exponent bound, spectral gap on dissipation scale, theta dynamics bound, blowup rate estimate, BKM criterion. These encode the physical hypotheses needed for conditional 3D regularity.",
     "mathlibDependencies": [
       {
         "theorem": "Real.tendsto_exp_div_pow_atTop",
@@ -63,7 +65,7 @@
     "relatedProblems": []
   },
   "overview": {
-    "historicalContext": "**Navier-Stokes Existence and Smoothness (Millennium Prize Problem)**\n\nThe Navier-Stokes equations describe fluid motion: $\\partial_t u + (u \\cdot \\nabla)u = \\nu\\Delta u - \\nabla p + f$ with $\\nabla \\cdot u = 0$. The Millennium Prize asks whether smooth solutions exist globally in 3D. Leray (1934) proved weak solutions exist; Ladyzhenskaya (1962/1969) solved the 2D case; Caffarelli-Kohn-Nirenberg (1982) showed the 3D singular set has Hausdorff dimension at most 1. The 3D problem remains open after 90+ years.\n\nThis formalization is the largest single proof file in the gallery at 7272 lines, containing 326 definitions and theorems with 0 sorries and 0 axioms.",
+    "historicalContext": "**Navier-Stokes Existence and Smoothness (Millennium Prize Problem)**\n\nThe Navier-Stokes equations describe fluid motion: $\\partial_t u + (u \\cdot \\nabla)u = \\nu\\Delta u - \\nabla p + f$ with $\\nabla \\cdot u = 0$. The Millennium Prize asks whether smooth solutions exist globally in 3D. Leray (1934) proved weak solutions exist; Ladyzhenskaya (1962/1969) solved the 2D case; Caffarelli-Kohn-Nirenberg (1982) showed the 3D singular set has Hausdorff dimension at most 1. The 3D problem remains open after 90+ years.\n\nThis formalization is the largest single proof file in the gallery at 20,000+ lines across 110 parts, containing 1200+ definitions/theorems with 0 sorries. The 3D conditional result uses the NSAxioms structure (5 structure-encoded assumptions).",
     "problemStatement": "**Millennium Prize Problem**: In 3D, prove existence and smoothness of solutions to the Navier-Stokes equations for all smooth initial data, or provide a counterexample showing finite-time blowup.\n\n**2D Result (PROVEN)**: Global existence and uniqueness holds because vortex stretching vanishes and enstrophy is bounded.\n\n**3D Conditional Result (PROVEN)**: Under the NSAxioms structure (physical hypotheses), global regularity follows from Type I exclusion (ESS theorem) and Type II exclusion (stability analysis).",
     "proofStrategy": "The formalization has two main threads:\n\n**2D (Complete)**: The scalar vorticity equation has no stretching term, so enstrophy $\\int|\\omega|^2$ satisfies $E' = -2\\nu P \\leq 0$. This gives global bounds, preventing blowup.\n\n**3D (Conditional)**: Blowup is classified as Type I ($\\|u\\| \\sim (T-t)^{-1/2}$) or Type II (faster). Type I is excluded by the ESS theorem (bounded ancient solutions are zero via Liouville). Type II is excluded by stability analysis ($\\beta_{\\text{eff}} \\to 0$). Together: no blowup is possible under the NSAxioms hypotheses.\n\nThe file also develops extensive supporting theory across 40 parts.",
     "keyInsights": [
@@ -191,8 +193,8 @@
     }
   ],
   "conclusion": {
-    "summary": "This is the largest proof formalization in the gallery: 7272 lines, 326 definitions/theorems, 0 sorries, 0 axioms. It provides a complete 2D Navier-Stokes proof and conditional 3D regularity, plus comprehensive coverage of modern NS theory across 40 parts. All 35 original axioms were eliminated through proof or dead-code removal.",
-    "implications": "**Mathematical Significance**\n\n1. **2D Completeness**: The 2D global existence proof is fully verified without any axioms, formalizing Ladyzhenskaya's classical result.\n2. **3D Architecture**: The conditional 3D result demonstrates how the Millennium Problem reduces to excluding two types of singularity.\n3. **Theory Coverage**: The file serves as a formal reference for modern NS theory: Leray-Hopf, Serrin, CKN, BKM, Fujita-Kato, Koch-Tataru, Onsager, convex integration.\n4. **Axiom Elimination**: The systematic elimination of all 35 axioms demonstrates the power of iterative formalization.",
+    "summary": "This is the largest proof formalization in the gallery: 20,000+ lines, 1200+ definitions/theorems, 0 sorries, across 110 parts. It provides a complete 2D Navier-Stokes proof and conditional 3D regularity (via NSAxioms structure with 5 assumptions), plus comprehensive coverage of modern NS theory including global attractors, determining modes, and exact turbulence results (Kolmogorov 4/5 law).",
+    "implications": "**Mathematical Significance**\n\n1. **2D Completeness**: The 2D global existence proof is fully verified without any axioms, formalizing Ladyzhenskaya's classical result.\n2. **3D Architecture**: The conditional 3D result demonstrates how the Millennium Problem reduces to excluding two types of singularity (via NSAxioms structure with 5 assumptions).\n3. **Theory Coverage**: 110 parts serve as a comprehensive formal reference for modern NS theory: Leray-Hopf, Serrin, CKN, BKM, Fujita-Kato, Koch-Tataru, Onsager, convex integration, global attractors, determining modes, Kolmogorov exact laws, stochastic NS, MHD, and more.\n4. **Finite-Dimensional Dynamics**: Part CIX formalizes that NS dynamics is eventually determined by finitely many modes (dim(A) ≤ cG^{2/3}), connecting infinite-dimensional PDE theory to finite-dimensional dynamical systems.",
     "openQuestions": [
       "Can the NSAxioms hypotheses be proved from first principles to resolve the Millennium Problem?",
       "Can the CKN partial regularity be extended to show the singular set is empty?",
