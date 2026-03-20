@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "VERIFIED: Docker build clean (2 expected sorries: open conjecture + Hilbert irreducibility). 5 axiom declarations across 4 files (InverseGalois + A5 + D4 + F20). gal_card_dvd_60 axiom elimination remains blocked by Lean elaboration context sensitivity.",
+    "progressSummary": "PROGRESS: Investigated InverseGaloisA5 build errors. 3 errors from Mathlib API change (MulEquiv.toMonoidHom_apply renamed). Complex proof of gal_permutes_roots needs Galois theory API expert.",
     "builtItems": [
       "InverseGalois.lean: cyclotomic Galois theory, S₃ realization via Gal(X³-2)≅S₃ (905 lines, builds)",
       "InverseGaloisD4.lean: D₄ realization via |Gal(X⁴-2)| = 8 (666 lines, builds)",
@@ -225,7 +225,8 @@
       "MulAction.toPermHom is the underlying API for galActionHom on rootSet - needs careful coercion work",
       "sq_sub_sq gives (a+b)(a-b)=0 for domain reasoning without linear order",
       "Moving the Vandermonde chain (Parts XIII-XIV) before q_gal_card causes elaboration failures: the change+rfl proof in gal_permutes_roots depends on instance resolution context that differs at the earlier file position",
-      "The (Z/nZ)* cyclotomic approach is exhausted for abelian groups up to order 24; remaining groups (C3^2, C4^2, C2^4, Q8) require Galois correspondence or non-cyclotomic constructions"
+      "The (Z/nZ)* cyclotomic approach is exhausted for abelian groups up to order 24; remaining groups (C3^2, C4^2, C2^4, Q8) require Galois correspondence or non-cyclotomic constructions",
+      "InverseGaloisA5.lean has 3 build errors from Mathlib API change: MulEquiv.toMonoidHom_apply removed/renamed, affects gal_permutes_roots proof (lines 1127-1155). Requires understanding of Polynomial.Gal.restrict and AlgEquiv.restrictNormal API."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -255,7 +256,7 @@
     "mathlib": []
   },
   "started": "2026-02-21T19:21:07.129Z",
-  "lastUpdate": "2026-03-19T21:00:00.000Z",
+  "lastUpdate": "2026-03-20T17:00:00.000Z",
   "significance": 6,
   "tractability": 6
 }
