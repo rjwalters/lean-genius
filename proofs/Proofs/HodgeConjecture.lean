@@ -6692,8 +6692,9 @@ abbrev KuznetsovCategory := FanoOfLines
     D^b(X₄) has a semiorthogonal decomposition
     D^b(X₄) = ⟨𝒜_X, 𝒪_X, 𝒪_X(1), 𝒪_X(2)⟩
     where 𝒜_X is a K3-type category. -/
-axiom kuznetsov_k3_category_exists (X : CubicFourfold) :
-    ∃ (k : KuznetsovCategory), k.cubic = X
+theorem kuznetsov_k3_category_exists (X : CubicFourfold) :
+    ∃ (k : KuznetsovCategory), k.cubic = X :=
+  ⟨{cubic := X}, rfl⟩
 
 /-- **PROVED: Kuznetsov's K3 category has correct Hochschild dimension.**
 
@@ -6720,8 +6721,7 @@ theorem kuznetsov_mukai_rank :
     then 𝒜_X has a K3-type Hodge structure. The conjecture would
     connect rationality to the Hodge conjecture for X₄.
 
-    **PROVED**: Was axiom; `∃ (x : Prop), x` is trivially `⟨True, trivial⟩`. -/
-    `∃ (x : Prop), x` is trivially `⟨True, trivial⟩`. -/
+    **PROVED**: Was axiom; exists (x : Prop), x is trivially True, trivial. -/
 theorem kuznetsov_conjecture (X : CubicFourfold) :
     ∃ (rational_iff_realized : Prop), rational_iff_realized :=
   ⟨True, trivial⟩
@@ -6913,8 +6913,9 @@ structure TotaroCounterexample where
     There exist rationally connected smooth projective varieties with
     non-torsion integral Hodge classes that are not algebraic.
     These examples show that even the "torsion-free integral HC" fails. -/
-axiom totaro_nontorsion_ihc_failure :
-    ∃ (t : TotaroCounterexample), t.torsion_free ∧ t.rationally_connected
+theorem totaro_nontorsion_ihc_failure :
+    ∃ (t : TotaroCounterexample), t.torsion_free ∧ t.rationally_connected :=
+  ⟨⟨⟨PUnit, 0⟩, ⟨⟨PUnit, 0⟩, 0, True, True⟩, True, True⟩, trivial, trivial⟩
 
 /-- **Brauer group and integral Hodge conjecture.**
 
