@@ -1291,9 +1291,17 @@ theorem gal_permutes_roots (σ : q.Gal) (i : Fin 5) :
     σ (rootEnum i) = rootEnum (galToPerm5 σ i) := by
   -- rootEnum i = (e.symm i).val, galToPerm5 σ = permCongr e ∘ galActionHom σ
   -- After unfolding: σ r.val = (galActionHom σ r).val = (σ • r).val = σ r.val
-  -- Galois action permutes roots: σ maps rootEnum i to rootEnum (galToPerm5 σ i)
   unfold rootEnum galToPerm5
-  simp
+  simp only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, Equiv.permCongr_apply,
+    Equiv.symm_apply_apply]
+  -- Goal: σ ↑(e.symm i) = ↑(galActionHom σ (e.symm i))
+  -- galActionHom = MulAction.toPermHom, so galActionHom σ r = σ • r
+  -- (σ • r).val = σ r.val by MulAction on rootSet
+  change σ ↑((Fintype.equivOfCardEq _).symm i) =
+    ↑((MulAction.toPermHom q.Gal (q.rootSet q.SplittingField) σ)
+      ((Fintype.equivOfCardEq _).symm i))
+  rw [MulAction.toPermHom_apply]
+  rfl
 
 /-- Vandermonde matrix with permuted input = row-permuted Vandermonde. -/
 theorem vandermonde_comp_eq_submatrix
