@@ -4,6 +4,64 @@
 
 The Inverse Galois Problem (IGP) asks: for every finite group G, does there exist a Galois extension K/ℚ with Gal(K/ℚ) ≅ G?
 
+## Session 2026-03-19 (researcher-6) - Stats Audit and Axiom Elimination Attempt
+
+**Mode**: REVISIT (RICH knowledge score 122)
+**Outcome**: documentation — corrected stats, attempted axiom elimination refactoring
+
+### What Was Done
+
+1. Audited all 6 InverseGalois files: corrected line counts, theorem counts, axiom counts
+2. Attempted to eliminate redundant `gal_card_dvd_60` axiom by moving Vandermonde chain (Parts XIII-XIV) before Part IV-B
+3. Refactoring FAILED: `gal_permutes_roots` proof uses `change ... ; rfl` pattern that is sensitive to elaboration context — moving it earlier in the file causes `Fintype q.SplittingField` synthesis failure
+4. Updated meta.json with accurate stats: 5276 lines, 280 theorems, 5 axiom declarations (4 independent), 2 sorries
+5. Documented that gal_card_dvd_60 is DERIVABLE but not yet eliminated
+
+### Corrected Stats
+
+| File | Lines | Thms | Axioms | Sorries |
+|------|-------|------|--------|---------|
+| InverseGalois.lean | 1940 | 113 | 2 | 2 |
+| InverseGaloisA5.lean | 1408 | 47 | 3 (1 derivable) | 0 |
+| InverseGaloisD4.lean | 680 | 27 | 0 | 0 |
+| InverseGaloisF20.lean | 529 | 27 | 0 | 0 |
+| AbelRuffiniGaloisExtensions.lean | 534 | 57 | 0 | 0 |
+| AbelRuffini.lean | 185 | 9 | 0 | 0 |
+| **Total** | **5276** | **280** | **5 (4 indep.)** | **2** |
+
+### How to Eliminate gal_card_dvd_60 Axiom
+
+The `gal_permutes_roots` proof at line 1290 uses:
+```lean
+change σ ↑((Fintype.equivOfCardEq _).symm i) =
+  ↑((Polynomial.Gal.galActionHom q q.SplittingField σ) ((Fintype.equivOfCardEq _).symm i))
+rfl
+```
+
+This `change` + `rfl` pattern depends on the elaboration context at that file position. When moved earlier, the `_` wildcards resolve differently, causing a `Fintype q.SplittingField` synthesis failure.
+
+**Fix approach**: Replace with the more robust approach from `TestGalApi.lean`:
+```lean
+-- Use Polynomial.Gal.restrict_smul and MulAction.toPermHom_apply
+-- instead of change + rfl
+```
+
+This would allow moving the Vandermonde chain before Part IV-B and eliminating the axiom.
+
+### Census Completeness Analysis
+
+The (ℤ/nℤ)ˣ cyclotomic approach is now exhausted for orders ≤ 24. Groups NOT achievable as single (ℤ/nℤ)ˣ:
+- C₃² (order 9), C₄² (order 16), C₂⁴ (order 16): require Galois correspondence
+- Q₈ (order 8): requires quaternion extension
+- A₄, D₅, D₆, Dic₁₂: require discriminant theory (same gap as A₅)
+
+### Files Modified
+- `src/data/proofs/inverse-galois/meta.json` (corrected stats)
+- `src/data/research/problems/abel-ruffini-oq-01.json` (session update)
+- `research/problems/abel-ruffini-oq-01/knowledge.md` (this file)
+
+---
+
 ## Session 2026-03-19 (researcher-4) - Frontier Assessment and Verification
 
 **Mode**: REVISIT (RICH knowledge score 102)
