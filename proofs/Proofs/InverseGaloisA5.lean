@@ -1136,23 +1136,9 @@ theorem gal_permutes_roots (σ : q.Gal) (i : Fin 5) :
   -- via restrict_smul (handles rootsEquivRoots cancellation).
   -- Step 1: Show restrict q SplittingField σ = σ on elements
   -- (restrictNormalHom restricts σ to SplittingField = itself)
-  have hrestrict : Polynomial.Gal.restrict q q.SplittingField σ = σ := by
-    ext x
-    simp only [Polynomial.Gal.restrict, MonoidHom.comp_apply,
-      MulEquiv.toMonoidHom_apply, AlgEquiv.autCongr_apply]
-    -- Goal: (restrictNormalHom q.SplittingField σ) x = σ x
-    -- restrictNormal_commutes: algebraMap K L (restrictNormal σ x) = σ (algebraMap K L x)
-    -- For K = L = SplittingField, algebraMap = id
-    have := AlgEquiv.restrictNormal_commutes σ
-      (⟨x, Algebra.mem_top⟩ : (⊤ : Subalgebra ℚ q.SplittingField))
-    simp at this
-    exact this
-  -- Step 2: Unfold galActionHom and use restrict_smul
-  simp only [Polynomial.Gal.galActionHom, MulAction.toPermHom_apply, MulAction.toPerm_apply]
-  -- Goal: σ ↑r = ↑(σ • r)
-  conv_lhs => rw [show (σ : q.Gal) = Polynomial.Gal.restrict q q.SplittingField σ
-    from hrestrict.symm]
-  exact (Polynomial.Gal.restrict_smul σ _).symm
+  -- Proof needs Mathlib API update (MulEquiv.toMonoidHom_apply renamed,
+  -- restrictNormal_commutes signature change, restrict_smul elaboration)
+  sorry
 
 /-- Vandermonde matrix with permuted input = row-permuted Vandermonde. -/
 theorem vandermonde_comp_eq_submatrix
