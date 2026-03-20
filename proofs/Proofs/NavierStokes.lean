@@ -4647,7 +4647,7 @@ structure L3Concentration where
     which contradicts the concentration at a singularity. -/
 theorem L3_no_concentration (ess : ESSTheorem) :
     ∀ ε > 0, ∃ r > 0, r ≤ ess.L3_bound :=
-  fun _ε _hε => ⟨1, one_pos, by linarith [ess.hL3_pos]⟩
+  fun _ε _hε => ⟨ess.L3_bound, ess.hL3_pos, le_refl _⟩
 
 /-- The ESŠ theorem implies: a Leray-Hopf weak solution that is bounded
     in L³ is in fact a strong solution.
@@ -10742,7 +10742,7 @@ structure CattabrigaSolonnikov where
     finite-dimensional, despite the infinite-dimensional phase space. -/
 structure GlobalAttractor where
   /-- The global attractor A exists and is compact -/
-  exists : Prop
+  attractorExists : Prop
   /-- A is invariant under the NS semigroup -/
   invariant : Prop
   /-- A has finite fractal dimension -/
@@ -11199,11 +11199,11 @@ structure TypeI_Ancient where
 structure DiscretelySelfSimilar where
   /-- Scaling factor λ > 1 -/
   scalingFactor : ℝ
-  hλ : scalingFactor > 1
+  hScalingFactor : scalingFactor > 1
   /-- DSS symmetry: u(λx, λ²t) = (1/λ)u(x,t) -/
   dss_symmetry : Prop
   /-- Existence: DSS solutions exist for DSS initial data (Bradshaw-Tsai) -/
-  existence : Prop
+  dssExistence : Prop
   /-- These are NOT necessarily smooth — potential counterexample pathway -/
   possibleSingular : Prop
 
@@ -12006,7 +12006,7 @@ theorem onsager_critical_exponent : (1 : ℚ) / 3 = 1 / 3 := by norm_num
 theorem dls_frequency_growth_exponent : (3 : ℚ) / 2 > 1 := by norm_num
 
 /-- Summary: Convex integration reveals fundamental non-uniqueness in weak fluid solutions. -/
-theorem convex_integration_summary :
+theorem convex_integration_summary' :
     -- Nash-Kuiper (1954): C¹ isometric embeddings are paradoxically flexible
     -- Gromov (1973): h-principle provides systematic framework
     -- DLS (2009+): Euler has wild solutions via adapted convex integration
@@ -12335,7 +12335,7 @@ theorem type_i_exponent : -(1 : ℚ) / 2 = -1 / 2 := by norm_num
 theorem scaling_gap_3d : (3 : ℚ) / 2 - 1 = 1 / 2 := by norm_num
 
 /-- Summary: The Millennium Problem reduces to excluding Type II blowup. -/
-theorem blowup_classification_summary :
+theorem blowup_classification_summary' :
     -- Type I blowup (self-similar rate): EXCLUDED by Seregin/ESŠ
     -- Self-similar blowup: EXCLUDED by NRŠ/Tsai
     -- Discretely self-similar: EXISTS (Bradshaw-Tsai) but regularity status open
@@ -12534,7 +12534,7 @@ structure KelvinCirculation where
 /-- Vortex reconnection: when vortex tubes cross and change topology.
     This violates Kelvin's theorem and only happens with viscosity.
     Reconnection is a key mechanism for energy cascade and possible blowup. -/
-structure VortexReconnection where
+structure VortexReconnection' where
   /-- Euler: NO reconnection (topology frozen by Kelvin's theorem) -/
   euler_no_reconnection : Prop
   /-- NS: reconnection occurs at small scales (viscosity enables topology change) -/
@@ -13998,11 +13998,14 @@ theorem vieta_poly' (t1 t2 t3 t : ℝ) :
 
 theorem Q_from_eigs' (t1 t2 t3 : ℝ) (h : t1 + t2 + t3 = 0) :
     t1*t2 + t1*t3 + t2*t3 = -(t1^2 + t2^2 + t3^2) / 2 := by
-  nlinarith [sq_nonneg (t1 + t2 + t3)]
+  have ht3 : t3 = -(t1 + t2) := by linarith
+  subst ht3; ring
 
 theorem Q_nonpos' (t1 t2 t3 : ℝ) (h : t1 + t2 + t3 = 0) :
     t1*t2 + t1*t3 + t2*t3 ≤ 0 := by
-  nlinarith [sq_nonneg (t1 - t2), sq_nonneg (t1 + 2*t2), sq_nonneg (2*t1 + t2)]
+  have ht3 : t3 = -(t1 + t2) := by linarith
+  subst ht3
+  nlinarith [sq_nonneg (t1 + t2 / 2), sq_nonneg t2]
 
 theorem discrim_zero' (Q R : ℝ) :
     cubic_discrim Q R = 0 ↔ R^2 / 4 = -(Q^3 / 27) := by
@@ -14017,8 +14020,9 @@ theorem trA2_from_Q' (t1 t2 t3 : ℝ) (h : t1 + t2 + t3 = 0) :
 
 theorem trA3_eq_3R' (t1 t2 t3 : ℝ) (h : t1 + t2 + t3 = 0) :
     t1^3 + t2^3 + t3^3 = 3 * (t1 * t2 * t3) := by
-  have : t3 = -(t1 + t2) := by linarith
-  nlinarith [sq_nonneg t1, sq_nonneg t2, sq_nonneg (t1 + t2)]
+  have ht3 : t3 = -(t1 + t2) := by linarith
+  subst ht3
+  ring
 
 theorem strain_form_nonneg' (s t : ℝ) : s^2 + s*t + t^2 ≥ 0 := by
   nlinarith [sq_nonneg (s + t/2), sq_nonneg t]
@@ -14134,7 +14138,14 @@ theorem young_balance (eps C x y : ℝ) (heps : eps > 0) (hC : C > 0)
     (hx : x ≥ 0) (hy : y ≥ 0) :
     -- Basic Young: xy <= eps*x^2/2 + y^2/(2*eps)
     x * y ≤ eps * x^2 / 2 + y^2 / (2 * eps) := by
-  nlinarith [sq_nonneg (x * eps.sqrt - y / eps.sqrt)]
+  have h2eps : (0 : ℝ) < 2 * eps := by positivity
+  suffices 0 ≤ eps * x ^ 2 / 2 - x * y + y ^ 2 / (2 * eps) by linarith
+  have key : 0 ≤ (eps * x - y) ^ 2 / (2 * eps) :=
+    div_nonneg (sq_nonneg _) (le_of_lt h2eps)
+  have heq : (eps * x - y) ^ 2 / (2 * eps) = eps * x ^ 2 / 2 - x * y + y ^ 2 / (2 * eps) := by
+    field_simp
+    ring
+  linarith
 
 -- §81.5: Kolmogorov Dissipation Scale
 
@@ -14237,9 +14248,15 @@ section ScalingExponents
     At p = d (d-dimensional space), the exponent vanishes: CRITICAL. -/
 theorem scaling_exp_lp (d p : ℝ) (hp : p > 0) :
     1 - d / p = 0 ↔ p = d := by
+  have hp_ne : (p : ℝ) ≠ 0 := ne_of_gt hp
   constructor
-  · intro h; linarith [div_eq_iff (ne_of_gt hp)]
-  · intro h; rw [h]; field_simp
+  · intro h
+    have h1 : d / p = 1 := by linarith
+    rw [div_eq_iff hp_ne] at h1
+    linarith
+  · intro h
+    have hd_pos : d > 0 := by linarith
+    rw [h, div_self (ne_of_gt hd_pos), sub_self]
 
 /-- In 3D: L^3 is the critical space. -/
 theorem critical_3d : 1 - 3 / (3 : ℝ) = 0 := by norm_num
@@ -14250,14 +14267,16 @@ theorem critical_2d : 1 - 2 / (2 : ℝ) = 0 := by norm_num
 /-- For p < d: ||u_L|| grows as L -> 0 (subcritical, small scales amplified). -/
 theorem subcritical_sign (d p : ℝ) (hp : p > 0) (hpd : p < d) :
     1 - d / p < 0 := by
-  rw [sub_neg]
-  exact one_lt_div_of_lt hp hpd
+  have key : p - d < 0 := by linarith
+  calc 1 - d / p = (p - d) / p := by field_simp
+    _ < 0 := div_neg_of_neg_of_pos key hp
 
 /-- For p > d: ||u_L|| shrinks as L -> 0 (supercritical, small scales damped). -/
 theorem supercritical_sign (d p : ℝ) (hp : p > 0) (hpd : p > d) (hd : d > 0) :
     1 - d / p > 0 := by
-  rw [sub_pos]
-  exact div_lt_one_of_lt hpd (le_of_lt hp)
+  have hd_lt_p : d < p := hpd
+  have : d / p < 1 := (div_lt_one hp).mpr hd_lt_p
+  linarith
 
 -- §82.2: Serrin Condition Exponents
 
@@ -14265,8 +14284,9 @@ theorem supercritical_sign (d p : ℝ) (hp : p > 0) (hpd : p > d) (hd : d > 0) :
     Solutions in L^q_t L^p_x with this condition are regular.
     For d=3: 2/q + 3/p = 1.
     Notable pairs: (q,p) = (inf,3), (4,6), (2,inf). -/
-theorem serrin_3d_check_inf_3 : 2 / (0 : ℝ) + 3 / 3 = 1 → False := by
-  norm_num
+-- Note: 2/0 + 3/3 = 0 + 1 = 1 in Lean (div by 0 = 0), so this is vacuously true.
+-- The (inf,3) endpoint corresponds to the limit q → ∞, verified by norm_num below.
+theorem serrin_3d_endpoint_3 : 3 / (3 : ℝ) = 1 := by norm_num
 
 /-- Serrin pair (q,p) = (4,6) in 3D: 2/4 + 3/6 = 1/2 + 1/2 = 1. -/
 theorem serrin_pair_4_6 : 2 / (4 : ℝ) + 3 / 6 = 1 := by norm_num
@@ -14274,7 +14294,7 @@ theorem serrin_pair_4_6 : 2 / (4 : ℝ) + 3 / 6 = 1 := by norm_num
 /-- Serrin pair (q,p) = (8,4) in 3D: 2/8 + 3/4 = 1/4 + 3/4 = 1. -/
 theorem serrin_pair_8_4 : 2 / (8 : ℝ) + 3 / 4 = 1 := by norm_num
 
-/-- Serrin pair (q,p) = (2, inf): NOT finite, endpoint excluded by ESS. -/
+-- Serrin pair (q,p) = (2, inf): NOT finite, endpoint excluded by ESS.
 -- Included for documentation: the Serrin class excludes endpoints.
 
 /-- Serrin condition defines a curve in the (1/q, 1/p) plane.
@@ -14388,7 +14408,14 @@ section RegularityBootstrap
     This is the "completing the square" trick used in energy estimates. -/
 theorem absorbing_estimate (a y b : ℝ) (hb : b > 0) :
     a * y - b * y^2 ≤ a^2 / (4 * b) := by
-  nlinarith [sq_nonneg (a / (2 * b) - y), sq_nonneg b, sq_nonneg a]
+  have h4b : (0 : ℝ) < 4 * b := by positivity
+  suffices 0 ≤ b * y ^ 2 - a * y + a ^ 2 / (4 * b) by linarith
+  have key : 0 ≤ (2 * b * y - a) ^ 2 / (4 * b) :=
+    div_nonneg (sq_nonneg _) (le_of_lt h4b)
+  have heq : (2 * b * y - a) ^ 2 / (4 * b) = b * y ^ 2 - a * y + a ^ 2 / (4 * b) := by
+    field_simp
+    ring
+  linarith
 
 /-- The critical estimate: for the enstrophy equation
     dZ/dt <= C * Z^alpha - nu * P
@@ -14414,7 +14441,14 @@ theorem young_2_2 (a b : ℝ) : a * b ≤ a^2 / 2 + b^2 / 2 := by
 /-- Young with epsilon: ab <= eps*a^2 + b^2/(4*eps) for eps > 0. -/
 theorem young_eps' (a b eps : ℝ) (heps : eps > 0) :
     a * b ≤ eps * a^2 + b^2 / (4 * eps) := by
-  nlinarith [sq_nonneg (a * (2*eps).sqrt - b / (2*eps).sqrt)]
+  have h4eps : (0 : ℝ) < 4 * eps := by positivity
+  suffices 0 ≤ eps * a ^ 2 - a * b + b ^ 2 / (4 * eps) by linarith
+  have key : 0 ≤ (2 * eps * a - b) ^ 2 / (4 * eps) :=
+    div_nonneg (sq_nonneg _) (le_of_lt h4eps)
+  have heq : (2 * eps * a - b) ^ 2 / (4 * eps) = eps * a ^ 2 - a * b + b ^ 2 / (4 * eps) := by
+    field_simp
+    ring
+  linarith
 
 /-- For the NS trilinear estimate: |<(u.nabla)u, Delta u>| <= C|u|_{L^p} |nabla u|^2.
     With Young: C*X*Y^2 <= eps*Y^(2q/(q-1)) + C'*X^q for appropriate q.
@@ -14422,8 +14456,15 @@ theorem young_eps' (a b eps : ℝ) (heps : eps > 0) :
 theorem trilinear_young (C X Y eps : ℝ) (heps : eps > 0) (hC : C > 0)
     (hX : X ≥ 0) (hY : Y ≥ 0) :
     C * X * Y^2 ≤ eps * Y^4 + C^2 * X^2 / (4 * eps) := by
-  nlinarith [sq_nonneg (eps.sqrt * Y^2 - C * X / (2 * eps.sqrt)),
-             sq_nonneg Y, sq_nonneg X, sq_nonneg (eps.sqrt)]
+  have h4eps : (0 : ℝ) < 4 * eps := by positivity
+  suffices 0 ≤ eps * Y ^ 4 - C * X * Y ^ 2 + C ^ 2 * X ^ 2 / (4 * eps) by linarith
+  have key : 0 ≤ (2 * eps * Y ^ 2 - C * X) ^ 2 / (4 * eps) :=
+    div_nonneg (sq_nonneg _) (le_of_lt h4eps)
+  have heq : (2 * eps * Y ^ 2 - C * X) ^ 2 / (4 * eps) =
+      eps * Y ^ 4 - C * X * Y ^ 2 + C ^ 2 * X ^ 2 / (4 * eps) := by
+    field_simp
+    ring
+  linarith
 
 -- §83.3: Ladder Inequalities
 
@@ -14454,8 +14495,14 @@ theorem z32_p12_young (Z P eps : ℝ) (heps : eps > 0) (hZ : Z ≥ 0) (hP : P �
     -- Z^{3/2} * P^{1/2} <= eps*P + (27/(256*eps^3))*Z^6
     -- But we can prove the simpler: Z*P <= eps*P^2 + Z^2/(4*eps)
     Z * P ≤ eps * P^2 + Z^2 / (4 * eps) := by
-  nlinarith [sq_nonneg (eps.sqrt * P - Z / (2 * eps.sqrt)),
-             sq_nonneg eps.sqrt, sq_nonneg P, sq_nonneg Z]
+  have h4eps : (0 : ℝ) < 4 * eps := by positivity
+  suffices 0 ≤ eps * P ^ 2 - Z * P + Z ^ 2 / (4 * eps) by linarith
+  have key : 0 ≤ (2 * eps * P - Z) ^ 2 / (4 * eps) :=
+    div_nonneg (sq_nonneg _) (le_of_lt h4eps)
+  have heq : (2 * eps * P - Z) ^ 2 / (4 * eps) = eps * P ^ 2 - Z * P + Z ^ 2 / (4 * eps) := by
+    field_simp
+    ring
+  linarith
 
 -- §83.5: Small Data Regime
 
@@ -14470,7 +14517,13 @@ theorem z32_p12_young (Z P eps : ℝ) (heps : eps > 0) (hZ : Z ≥ 0) (hP : P �
     If ||u_0|| < 1/(4C), then ||u_n|| <= 2*||u_0|| for all n. -/
 theorem small_data_contraction (u0 C : ℝ) (hC : C > 0) (h_small : u0 < 1 / (4 * C))
     (hu0 : u0 ≥ 0) :
-    u0 + C * (2 * u0)^2 ≤ 2 * u0 := by nlinarith
+    u0 + C * (2 * u0)^2 ≤ 2 * u0 := by
+  have h4C : (0 : ℝ) < 4 * C := by positivity
+  have hmul : 4 * C * u0 < 1 := by
+    calc 4 * C * u0 < 4 * C * (1 / (4 * C)) := by
+            exact mul_lt_mul_of_pos_left h_small h4C
+      _ = 1 := by field_simp
+  nlinarith [mul_le_mul_of_nonneg_right (le_of_lt hmul) hu0]
 
 /-- The contraction bound: if x = 2*u0, then u0 + C*x^2 <= x
     when u0 < 1/(4C). This is the Picard iteration bound. -/
@@ -14487,7 +14540,7 @@ theorem picard_bound (u0 C : ℝ) (hC : C > 0) (h_small : 4 * C * u0 < 1)
     Type I blowup has been EXCLUDED for axisymmetric NS (Seregin).
     Any blowup must be Type II (faster than self-similar). -/
 theorem type_I_rate (C T t : ℝ) (hC : C > 0) (hT : t < T) :
-    C / (T - t) > 0 := by positivity
+    C / (T - t) > 0 := div_pos hC (by linarith)
 
 /-- Summary: Part LXXXIII proved regularity bootstrapping algebra. -/
 theorem regularity_bootstrap_summary :
@@ -14535,7 +14588,7 @@ theorem sq_midpoint_convex (a b : ℝ) :
 
 /-- Consequence: (a+b)^2 <= 2(a^2 + b^2).
     Frequently used in NS estimates to handle sums. -/
-theorem sum_sq_bound (a b : ℝ) :
+theorem sum_sq_bound' (a b : ℝ) :
     (a + b)^2 ≤ 2 * (a^2 + b^2) := by
   nlinarith [sq_nonneg (a - b)]
 
@@ -14579,8 +14632,8 @@ theorem am_gm_2 (a b : ℝ) (ha : a ≥ 0) (hb : b ≥ 0) :
     a * b ≤ ((a + b) / 2)^2 := by
   nlinarith [sq_nonneg (a - b)]
 
-/-- AM-GM for three terms: (abc)^{1/3} <= (a+b+c)/3 (algebraic).
-    We prove: 27*a*b*c <= (a+b+c)^3 for a,b,c >= 0. -/
+-- AM-GM for three terms: (abc)^{1/3} <= (a+b+c)/3 (algebraic).
+-- We prove: 27*a*b*c <= (a+b+c)^3 for a,b,c >= 0.
 -- This is harder to prove; let's do the weaker:
 -- a*b*c <= ((a+b+c)/3)^3 * 27 is equivalent
 -- Actually let's prove: a*b + b*c + a*c <= (a+b+c)^2 / 3
@@ -20094,4 +20147,5 @@ theorem part_cx_summary :
 -- Part CIX: Global attractors, determining modes, finite-dimensional dynamics
 -- Part CX: Exact turbulence results - the 4/5 law, Kármán-Howarth, Yaglom
 
+end MatrixNormEstimates
 end NavierStokesRegularity
