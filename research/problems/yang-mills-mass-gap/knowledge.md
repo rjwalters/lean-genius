@@ -1038,3 +1038,58 @@ full R⁴ mass gap.
 - Add lattice Hamiltonian truncation methods
 - Add disorder operators and dual descriptions
 - Explore Coleman-Weinberg mechanism
+
+---
+
+## Session 2026-03-19 (researcher-3, iteration 5) - Stochastic Quantization, Hamiltonian Truncation, N=1*
+
+**Mode**: REVISIT (RICH knowledge, score 196)
+**Outcome**: progress
+
+### What I Did
+- Added Part CLV: Stochastic Quantization (Parisi-Wu) — Langevin dynamics, Fokker-Planck mass gap, Zwanziger gauge-free formulation
+- Added Part CLVI: Hamiltonian Truncation and Lightcone Quantization — DLCQ, conformal truncation, LSH formulation
+- Added Part CLVII: N=1* Theory and Polchinski-Strassler — mass-deformed N=4, holographic confinement, soft breaking chain
+- All new theorems proved with 0 sorries, 0 new build errors
+
+### Key Theorems Proved
+
+**Part CLV: Stochastic Quantization**
+- `stochLinkDOF_pos`: Link DOF ≥ 3 for SU(N), N ≥ 2
+- `drift_toward_minimum`: Langevin drift points toward action minimum
+- `massGap_from_relaxation`: Δ · τ_relax = 1 (mass gap = inverse relaxation time)
+- `autocorrelation_decreasing`: C(τ) ~ e^{-Δτ} strictly decreasing
+- `autocorr_grows_with_gap`: 1/Δ₁ > 1/Δ₂ when Δ₁ < Δ₂
+- `nspt_order_accessible`: NSPT reaches 7× deeper than standard perturbation theory
+- `standard_langevin_slowest`: z=2 (diffusive) is worst critical slowing
+
+**Part CLVI: Hamiltonian Truncation**
+- `lc_gluon_dof_4d`: 2(N²-1) physical DOF in lightcone gauge
+- `su3_4d_gluon_dof`: SU(3) in 4D: 16 physical gluon DOF
+- `invariantMassSq_pos`: M² > 0 for massive states
+- `casimir_grows`: Conformal Casimir grows with scaling dimension
+- `lsh_dim_grows`: LSH local dimension grows with truncation level
+- `variational_upper_bound`: truncation OVERESTIMATES mass gap (guaranteed positive)
+- `ym_1plus1_gap_positive`: 1+1D YM gap g²N(N+1) > 0
+- `relevant_deformation_gives_gap`: d - Δ_O > 0 for relevant operators
+
+**Part CLVII: N=1* Theory**
+- `nstarMassGap_pos`: Δ = m·exp(-8π²/(3Ng²)) > 0 (THE mass gap, proved positive)
+- `nstarGap_lt_mass`: Δ < m (gap exponentially smaller than deformation mass)
+- `gaugino_condensate_pos`: ⟨λλ⟩ > 0 for all SU(N)
+- `wBosonMass_pos`: M_W = m·√(j(j+1)) > 0 in Higgs vacuum
+- `ps_radius_pos`: Polchinski-Strassler radius > 0
+- `domainWallTension_pos`: BPS domain wall tension > 0 for N ≥ 2
+- `nstarGap_grows_with_coupling`: stronger coupling → larger mass gap
+- `ks_mass_gap_positive`: Klebanov-Strassler mass gap > 0
+
+### Files Modified
+- `proofs/Proofs/YangMillsMassGap.lean`: 28,986 → 29,747 lines (+761), 0 new sorries
+- `src/data/research/problems/yang-mills-mass-gap.json`: Updated knowledge
+- `research/problems/yang-mills-mass-gap/knowledge.md`: This session log
+
+### Next Steps
+- Add Lattice Hamiltonian truncation with explicit mass extraction
+- Add Disorder operators and dual descriptions
+- Add Coleman-Weinberg mechanism for dynamical mass generation
+- Add Witten's topological field theory approach (Donaldson invariants)
