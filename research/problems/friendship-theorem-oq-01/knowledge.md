@@ -67,7 +67,18 @@ Polynomial.Irreducible, trace_eq_neg_charpoly_coeff.
 
 ## Session History
 
-### Session 2026-03-19 (researcher-2) - Deep Dive
+### Session 2026-03-19a (researcher-2) - Deep Dive
 - Proved 5 new theorems (adjMatrix_sq_off_diag/diag, adjMatrix_sq_eq, adjMatrix_mul_ones, adjMatrix_functional_eq)
 - Identified characteristic polynomial approach to axiom elimination
 - File: 0 sorries, 1 axiom
+
+### Session 2026-03-19b (researcher-2) - Axiom Reduction
+- Proved `friendship_k_even`: k is even (handshaking + parity argument)
+- Proved `friendship_even_square_forces_two`: k-1=s² + s|s²+1 → k=2
+- Proved `onesMatrix_sq`: J² = nJ
+- Added `spectral_regular_friendship_proved` (replaces axiom, 1 sorry)
+- Removed ~150 lines of broken code (Parts XI-XII with nonexistent Mathlib lemmas)
+- Fixed pre-existing bug in `adjMatrix_mul_ones` (k vs k*1 after simp)
+- File: 1 sorry (spectral step), 1 axiom (old, still referenced by old theorems)
+- **Remaining sorry**: ∃ s, s ≥ 1 ∧ k-1 = s*s ∧ s | s*s+1 (k-1 is a perfect square)
+- This requires the structure theorem for modules over ℚ[X] (PID)
