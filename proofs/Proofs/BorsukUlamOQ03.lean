@@ -5050,7 +5050,10 @@ theorem tverberg_r2_is_bu (d : ℕ) :
 /-- Tverberg number is symmetric: T(d, r) increases linearly in both d and r. -/
 theorem tverberg_number_monotone (d₁ d₂ r : ℕ) (h : d₁ ≤ d₂) :
     tverbergNumber d₁ r ≤ tverbergNumber d₂ r := by
-  simp [tverbergNumber]; omega
+  simp only [tverbergNumber]
+  have : (r - 1) * (d₁ + 1) ≤ (r - 1) * (d₂ + 1) :=
+    Nat.mul_le_mul_left _ (by omega)
+  omega
 
 /-- Concrete Tverberg numbers for small dimensions. -/
 def tverbergExamples : List TverbergData := [
@@ -5094,7 +5097,7 @@ inductive TverbergStatus
 /-- Map partition numbers to their Tverberg status. -/
 def tverbergStatusByR (r : ℕ) : TverbergStatus :=
   if Nat.Prime r then .proved
-  else if r.isPrimePow then .proved
+  else if IsPrimePow r then .proved
   else .disproved  -- for sufficiently large d
 
 /-- All primes satisfy topological Tverberg. -/
@@ -5103,7 +5106,8 @@ theorem tverberg_primes :
     tverbergStatusByR 3 = .proved ∧
     tverbergStatusByR 5 = .proved ∧
     tverbergStatusByR 7 = .proved := by
-  simp [tverbergStatusByR]
+  simp only [tverbergStatusByR]
+  exact ⟨if_pos (by decide), if_pos (by decide), if_pos (by decide), if_pos (by decide)⟩
 
 /-- r = 6 is the smallest counterexample (composite, not prime power). -/
 theorem tverberg_6_fails :
