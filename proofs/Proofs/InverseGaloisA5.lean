@@ -1450,14 +1450,56 @@ private noncomputable abbrev q_SF : Polynomial SF := Polynomial.map (algebraMap 
 
 /-- The product over all ordered pairs (i,j) with i≠j of (rootEnum i - rootEnum j)
     equals the Vandermonde product squared. For n=5, (-1)^{C(5,2)} = 1. -/
+/-- General lemma: for a function v : Fin n → R in a commutative ring,
+    the product ∏_i ∏_{j<i} (v i - v j) equals the Vandermonde product ∏_{i<j} (v j - v i).
+    This is because swapping indices (i,j) ↔ (j,i) just relabels the same set of pairs. -/
+private theorem prod_Iio_eq_vandermonde {n : ℕ} {R : Type*} [CommRing R]
+    (v : Fin n → R) :
+    (∏ i : Fin n, ∏ j in Finset.Iio i, (v i - v j)) =
+    ∏ i : Fin n, ∏ j in Finset.Ioi i, (v j - v i) := by
+  -- Both sides are products over the same set of pairs {(i,j) : i > j} vs {(i,j) : i < j}
+  -- related by (i,j) → (j,i) and (v i - v j) → (v j' - v i') where i'=j, j'=i
+  rw [Finset.prod_sigma', Finset.prod_sigma']
+  apply Finset.prod_nbij (fun ⟨i, j⟩ => ⟨j, i⟩)
+  · intro ⟨i, j⟩ h
+    simp only [Finset.mem_sigma, Finset.mem_univ, Finset.mem_Ioi, Finset.mem_Iio, true_and] at h ⊢
+    exact h
+  · intro ⟨i₁, j₁⟩ ⟨i₂, j₂⟩ _ _ h
+    simp only [Sigma.mk.inj_iff] at h
+    exact Sigma.mk.inj_iff.mpr ⟨h.2, h.1⟩
+  · intro ⟨i, j⟩ h
+    simp only [Finset.mem_sigma, Finset.mem_univ, Finset.mem_Ioi, true_and] at h
+    exact ⟨⟨j, i⟩, by simp [Finset.mem_sigma, Finset.mem_Iio, h], by simp⟩
+  · intro ⟨i, j⟩ _; rfl
+
 theorem ordered_root_diff_prod_eq_vandermonde_sq :
     (∏ i : Fin 5, ∏ j in Finset.univ.erase i, (rootEnum i - rootEnum j)) =
     vandermondeProduct ^ 2 := by
-  -- vandermondeProduct = det(vandermonde(rootEnum)) = ∏_{i<j} (rootEnum j - rootEnum i)
   unfold vandermondeProduct
-  rw [Matrix.det_vandermonde]
-  -- Goal: ∏_i ∏_{j≠i} (αᵢ - αⱼ) = (∏_{i<j} (αⱼ - αᵢ))²
-  -- Split ordered pairs into i<j and i>j, then pair up
+  rw [Matrix.det_vandermonde, sq]
+  -- Split erase i = Iio i ∪ Ioi i (partition of {j ≠ i})
+  conv_lhs =>
+    arg 2; ext i
+    rw [show Finset.univ.erase i = Finset.Iio i ∪ Finset.Ioi i from by
+      ext j; simp [Finset.mem_erase, Finset.mem_Iio, Finset.mem_Ioi, ne_iff_lt_or_gt]]
+    rw [Finset.prod_union (by
+      rw [Finset.disjoint_left]; intro j hj1 hj2
+      simp [Finset.mem_Iio] at hj1; simp [Finset.mem_Ioi] at hj2; omega)]
+  rw [Finset.prod_mul_distrib]
+  -- LHS = (∏_i ∏_{j<i} (αᵢ-αⱼ)) * (∏_i ∏_{j>i} (αᵢ-αⱼ))
+  -- First factor: ∏_i ∏_{j<i} (αᵢ-αⱼ) = VP (index swap bijection)
+  rw [prod_Iio_eq_vandermonde]
+  -- Second factor: ∏_i ∏_{j>i} (αᵢ-αⱼ) = ∏_i ∏_{j>i} -(αⱼ-αᵢ)
+  --   = (-1)^10 · VP = VP (since C(5,2)=10, even)
+  congr 1
+  -- Need: ∏_i ∏_{j>i} (αᵢ-αⱼ) = ∏_i ∏_{j>i} (αⱼ-αᵢ)
+  -- Each factor (αᵢ-αⱼ) = -(αⱼ-αᵢ), and there are 10 such factors
+  -- (-1)^10 = 1, so the products are equal
+  have h_neg : ∀ i j : Fin 5, rootEnum i - rootEnum j = -(rootEnum j - rootEnum i) := by
+    intros; ring
+  simp_rw [h_neg]
+  simp only [Finset.prod_neg_distrib, neg_neg]
+  -- Goal: (-1)^|Ioi i| for each i, then product = (-1)^(total) · VP = VP
   sorry
 
 -- Step B: Connect derivative evaluation to root differences
