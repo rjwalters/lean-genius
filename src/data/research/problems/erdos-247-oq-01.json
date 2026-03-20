@@ -16,12 +16,12 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-20T15:00:00.000Z",
-    "iteration": 2,
-    "focus": "Axiom elimination: prove growth lemmas",
+    "iteration": 3,
+    "focus": "Liouville proof for factorial case (axiom-free)",
     "blockers": [
       "Transcendence of lacunary sums under weak growth is genuinely open"
     ],
-    "nextAction": "Only erdos_transcendence_strong axiom remains (deep result, not provable)",
+    "nextAction": "Prove 9 sorry lemmas in Aristotle companion file, then integrate",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 1,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Formalized growth condition gap. Proved strong_implies_weak, squareSeq_has_weak_growth, squareSeq_not_strong_growth (all sorry-free). Only erdos_transcendence_strong axiom remains.",
+    "progressSummary": "PROGRESS: Added Part VIII - direct Liouville proof structure for factorial transcendence. Proved strictMono_add_le, factorial_mul_lt, factorial_mul_add_one_lt. Main theorem factorial_sum_liouville outlined with 7 sorries. Created Aristotle companion file with 9 targets.",
     "builtItems": [
       "pow2_ge_succ: n+1 ≤ 2^n (helper lemma)",
       "factorial_ge_pow2: 2^k ≤ (k+1)! (helper lemma)",
@@ -37,7 +37,13 @@
       "factorial_strong_growth: theorem (was axiom)",
       "strong_implies_weak: HasStrongGrowth → HasWeakGrowth (sorry-free)",
       "squareSeq_has_weak_growth: (k+1)² satisfies weak growth (sorry-free)",
-      "squareSeq_not_strong_growth: (k+1)² does NOT satisfy strong growth (sorry-free)"
+      "squareSeq_not_strong_growth: (k+1)² does NOT satisfy strong growth (sorry-free)",
+      "strictMono_add_le: n(N)+k ≤ n(N+k) for strict mono ℕ-sequences (sorry-free)",
+      "factorial_mul_lt: m*(m+1)! < (m+2)! (sorry-free)",
+      "factorial_mul_add_one_lt: m*(m+1)!+1 < (m+2)! (sorry-free)",
+      "factorial_sum_liouville: Liouville proof structure (7 sorries)",
+      "factorial_sum_transcendental_liouville: axiom-free transcendence (depends on liouville)",
+      "Erdos247Aristotle.lean: 9 Aristotle targets for routine lemmas"
     ],
     "insights": [
       "Parent file has clean infrastructure: lacunarySum, HasWeakGrowth, HasStrongGrowth, squareSeq",
@@ -50,13 +56,20 @@
       "gcongr tactic handles monotonicity arguments cleanly in Lean 4",
       "squareSeq is the canonical example in the gap: weak growth YES, strong growth NO",
       "(k+1)² ≤ 4k² for k≥1 is the key bound (factoring as (3k+1)(k-1) ≥ 0)",
-      "strong_implies_weak is immediate: take t=1 in the strong condition"
+      "strong_implies_weak is immediate: take t=1 in the strong condition",
+      "Factorial lacunary sum IS a Liouville number because n_{k+1}/n_k = k+2 → ∞",
+      "2^k lacunary sum is NOT Liouville (ratio always 2), so axiom still needed for that case",
+      "Key Liouville inequality: m*(m+1)!+1 < (m+2)! ⟺ 2*(m+1)! > 1 (always true)",
+      "Liouville.transcendental in Mathlib gives Transcendental ℤ, needs conversion to Transcendental ℚ",
+      "Import path: Mathlib.NumberTheory.Transcendental.Liouville.Basic"
     ],
     "mathlibGaps": [
       "Transcendence theory for lacunary series"
     ],
     "nextSteps": [
-      "erdos_transcendence_strong is the only remaining axiom - needs Liouville approximation theory not in Mathlib"
+      "Aristotle: prove 9 companion file lemmas (summability, tsum splitting, tail bounds)",
+      "After Aristotle: integrate proved lemmas back into main file",
+      "The axiom erdos_transcendence_strong is still needed for 2^k case and general strong growth"
     ]
   },
   "tags": [
