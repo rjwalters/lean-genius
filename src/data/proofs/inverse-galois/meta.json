@@ -51,7 +51,7 @@
         "Mathlib.RingTheory.Polynomial.GaussLemma",
         "Mathlib.NumberTheory.LSeries.PrimesInAP"
       ],
-      "note": "Total across 6 files: InverseGalois.lean (1940 lines, 113 thms, 2 axioms, 2 sorries), InverseGaloisA5.lean (1397 lines, 47 thms, 2 axioms, 1 sorry [coercion diamond]), InverseGaloisD4.lean (680 lines, 27 thms, 0 axioms, 0 sorries), InverseGaloisF20.lean (529 lines, 27 thms, 0 axioms, 0 sorries), AbelRuffiniGaloisExtensions.lean (534 lines, 57 thms, 0 sorries), AbelRuffini.lean (185 lines, 9 thms, 0 sorries)"
+      "note": "Total across 6 files: InverseGalois.lean (1881 lines, 113 thms, 2 axioms, 2 sorries), InverseGaloisA5.lean (1591 lines, 47 thms, 2 axioms, 9 sorries [1 gal_permutes_roots + 8 vandermondeElimination chain]), InverseGaloisD4.lean (682 lines, 29 thms, 0 axioms, 0 sorries — FULLY PROVED), InverseGaloisF20.lean (529 lines, 27 thms, 0 axioms, 0 sorries), AbelRuffiniGaloisExtensions.lean (534 lines, 57 thms, 0 sorries), AbelRuffini.lean (185 lines, 9 thms, 0 sorries)"
     },
     "mathlibDependencies": [
       {

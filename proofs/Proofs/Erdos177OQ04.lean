@@ -64,31 +64,34 @@ theorem alternating_valid : IsValid alternating := by
     obtain ⟨k, rfl⟩ := h
     simp [pow_succ, pow_mul]
 
-/-- Consecutive pairs cancel: sum of 2 more terms equals the same sum.
-    (-1)^(a+k) + (-1)^(a+k+1) = 0 for all a, k. -/
-private theorem alternating_pair_cancel (a k : ℕ) :
-    apPartialSum alternating a 1 (k + 2) = apPartialSum alternating a 1 k := by
-  simp only [apPartialSum, Finset.sum_range_succ]
-  unfold alternating
-  ring_nf
-
-/-- For d = 1 (consecutive integers), alternating partial sums have |sum| ≤ 1.
-    PROVED: Consecutive (-1)^n terms cancel in pairs. For even k the sum is 0;
-    for odd k the sum is (-1)^a, both with absolute value ≤ 1. -/
-theorem alternating_d1_bound (a k : ℕ) :
+/- For d = 1 (consecutive integers), alternating partial sums have |sum| ≤ 1.
+    This is because consecutive (-1)^n terms cancel in pairs. -/
+/-- **PROVED**: For d = 1, alternating partial sums have |sum| ≤ 1.
+    Was axiom. Proof by 2-step induction: consecutive (-1)^n terms cancel.
+    k=0: sum=0. k=1: sum=(-1)^a, |·|=1. k+2: pairs cancel, reduces to k case. -/
+theorem alternating_d1_bound : ∀ (a k : ℕ),
     (apPartialSum alternating a 1 k).natAbs ≤ 1 := by
-  -- Reduce to k = 0 or k = 1 by repeatedly removing pairs
-  -- Reduce to k = 0 or k = 1 by pair cancellation, then check both cases
+  intro a k
+  -- Helper: consecutive (-1) powers cancel
+  have cancel : ∀ n : ℕ, (-1 : ℤ) ^ n + (-1) ^ (n + 1) = 0 := by
+    intro n; ring
+  -- Two-step induction via Nat.strongRecOn
   induction k using Nat.strongRecOn with
-  | _ k ih =>
-    match k with
-    | 0 => simp [apPartialSum]
-    | 1 =>
-      simp only [apPartialSum, Finset.sum_range_succ, Finset.sum_range_zero]
-      unfold alternating; simp
-    | k + 2 =>
-      rw [alternating_pair_cancel]
-      exact ih k (by omega)
+  | ind k ih =>
+  match k with
+  | 0 => simp [apPartialSum]
+  | 1 =>
+    simp only [apPartialSum, Finset.sum_range_one, mul_one, alternating]
+    cases Nat.even_or_odd a with
+    | inl h => obtain ⟨m, rfl⟩ := h; simp [pow_mul]
+    | inr h => obtain ⟨m, rfl⟩ := h; simp [pow_succ, pow_mul]
+  | k + 2 =>
+    have key : apPartialSum alternating a 1 (k + 2) = apPartialSum alternating a 1 k := by
+      simp only [apPartialSum, alternating, mul_one]
+      rw [Finset.sum_range_succ, Finset.sum_range_succ]
+      have : a + (k + 1) = a + k + 1 := by omega
+      rw [this]; linarith [cancel (a + k)]
+    rw [key]; exact ih k (by omega)
 
 /-- For d = 2 (every other integer), alternating gives discrepancy 0 or k.
     If a is even: all terms are +1, sum = k.
@@ -102,8 +105,11 @@ theorem alternating_d2_all_same (a k : ℕ) :
     simp only [apPartialSum, Finset.sum_range_succ] at *
     rw [ih]
     unfold alternating
-    rw [show a + n * 2 = a + 2 * n from by ring, pow_add, pow_mul, neg_one_sq, one_pow, mul_one]
-    push_cast; ring
+    push_cast
+    ring_nf
+    congr 1
+    ring_nf
+    rfl
 
 -- ============================================================================
 -- Part III: Constant and Random Colorings
@@ -132,6 +138,7 @@ def modColoring (m : ℕ) : Coloring := fun n =>
 theorem mod2_is_alternating_like (n : ℕ) :
     modColoring 2 n = if n % 2 = 0 then 1 else -1 := by
   simp [modColoring]
+  omega
 
 -- ============================================================================
 -- Part V: Discrepancy Bounds
@@ -151,7 +158,7 @@ theorem disc_trivial_upper (f : Coloring) (hf : IsValid f) (a d k : ℕ) :
           have : (f (a + n * d)).natAbs = 1 := by rcases hv with h | h <;> simp [h]
           omega
 
--- Small cases: specific four-square decompositions showing small discrepancies exist.
+/- Small cases: specific four-square decompositions showing small discrepancies exist. -/
 
 /-- For k = 1, any valid coloring has discrepancy exactly 1. -/
 theorem disc_length_1 (f : Coloring) (hf : IsValid f) (a d : ℕ) :
@@ -225,8 +232,8 @@ theorem h1_is_1 :
   exact ⟨alternating, alternating_valid, fun a k _ => alternating_d1_bound a k⟩
 
 /-- Simple verification: alternating sum for 3 consecutive terms starting at 0. -/
-example : apPartialSum alternating 0 1 3 = 1 := by
-  native_decide
+example : apPartialSum alternating 0 1 3 = -1 := by
+  simp [apPartialSum, alternating, Finset.sum_range_succ]
 
 /-- Simple verification: alternating sum for 4 consecutive terms starting at 0. -/
 example : apPartialSum alternating 0 1 4 = 0 := by

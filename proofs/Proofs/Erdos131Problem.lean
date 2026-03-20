@@ -262,6 +262,45 @@ theorem primes_not_nondividing :
   · -- 2 ∣ (3 + 5) = 8
     simp [Finset.sum_insert, Finset.sum_singleton]
 
+/- ## Structural Results -/
+
+/-- Element 1 cannot belong to any non-dividing set of size ≥ 3:
+    Since 1 divides every natural number, the non-dividing condition
+    for a = 1 fails whenever there exists S ⊆ A \ {1} with |S| ≥ 2. -/
+theorem one_not_in_large_nondividing (A : Finset ℕ) (h1 : 1 ∈ A) (hcard : A.card ≥ 3) :
+    ¬IsNonDividing A := by
+  intro hND
+  have herase_card : (A.erase 1).card ≥ 2 := by
+    rw [Finset.card_erase_of_mem h1]; omega
+  exact hND 1 h1 (A.erase 1) (Finset.Subset.refl _) herase_card (one_dvd _)
+
+/-- Helper: if S ⊆ T, |S| ≥ 2, and |T| ≤ 2, then S = T -/
+private lemma finset_eq_of_subset_of_card_two {S T : Finset ℕ}
+    (hsub : S ⊆ T) (hS : S.card ≥ 2) (hT : T.card ≤ 2) : S = T :=
+  Finset.eq_of_subset_of_card_le hsub (by omega)
+
+/-- {2, 4, 5} is non-dividing: 2 ∤ 9, 4 ∤ 7, 5 ∤ 6.
+    This provides F(5) ≥ 3, a concrete lower bound. -/
+theorem two_four_five_nondividing : IsNonDividing ({2, 4, 5} : Finset ℕ) := by
+  intro a ha S hS hCard hdvd
+  simp only [Finset.mem_insert, Finset.mem_singleton] at ha
+  rcases ha with rfl | rfl | rfl
+  · -- a = 2: S ⊆ {4,5}, S = {4,5}, sum = 9, 2 ∤ 9
+    have hle : (({2, 4, 5} : Finset ℕ).erase 2).card ≤ 2 := by decide
+    have hseq : S = ({2, 4, 5} : Finset ℕ).erase 2 :=
+      finset_eq_of_subset_of_card_two hS hCard hle
+    subst hseq; exact absurd hdvd (by decide)
+  · -- a = 4: S ⊆ {2,5}, S = {2,5}, sum = 7, 4 ∤ 7
+    have hle : (({2, 4, 5} : Finset ℕ).erase 4).card ≤ 2 := by decide
+    have hseq : S = ({2, 4, 5} : Finset ℕ).erase 4 :=
+      finset_eq_of_subset_of_card_two hS hCard hle
+    subst hseq; exact absurd hdvd (by decide)
+  · -- a = 5: S ⊆ {2,4}, S = {2,4}, sum = 6, 5 ∤ 6
+    have hle : (({2, 4, 5} : Finset ℕ).erase 5).card ≤ 2 := by decide
+    have hseq : S = ({2, 4, 5} : Finset ℕ).erase 5 :=
+      finset_eq_of_subset_of_card_two hS hCard hle
+    subst hseq; exact absurd hdvd (by decide)
+
 /- ## Connection to Non-Averaging Sets -/
 
 /-- The non-averaging function g(N) from Problem #186 -/
