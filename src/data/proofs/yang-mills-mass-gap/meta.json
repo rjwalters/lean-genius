@@ -65,6 +65,14 @@
       "Donaldson theory and TQFT connections to Yang-Mills",
       "Transfer matrix formalism and finite-volume mass gap"
     ],
+    "references": [
+      {"authors": "C. N. Yang, R. L. Mills", "title": "Conservation of Isotopic Spin and Isotopic Gauge Invariance", "year": "1954", "venue": "Physical Review 96, 191–195", "note": "Original paper introducing non-abelian gauge fields"},
+      {"authors": "K. G. Wilson", "title": "Confinement of Quarks", "year": "1974", "venue": "Physical Review D10, 2445", "note": "Lattice gauge theory, Wilson loops, area law confinement criterion"},
+      {"authors": "D. J. Gross, F. Wilczek", "title": "Ultraviolet Behavior of Non-Abelian Gauge Theories", "year": "1973", "venue": "Physical Review Letters 30, 1343", "note": "Discovery of asymptotic freedom (Nobel Prize 2004)"},
+      {"authors": "A. Jaffe, E. Witten", "title": "Quantum Yang-Mills Theory", "year": "2000", "venue": "Clay Mathematics Institute Millennium Prize Problems", "note": "Official problem statement for the Yang-Mills mass gap"},
+      {"authors": "G. 't Hooft", "title": "A Planar Diagram Theory for Strong Interactions", "year": "1974", "venue": "Nuclear Physics B72, 461", "note": "Large-N expansion connecting gauge theory to string theory"},
+      {"authors": "V. N. Gribov", "title": "Quantization of Non-Abelian Gauge Theories", "year": "1978", "venue": "Nuclear Physics B139, 1", "note": "Discovery of Gribov copies obstructing global gauge fixing"}
+    ],
     "dateAdded": "03/14/26",
     "relatedProblems": [
       {
@@ -104,7 +112,8 @@
       "Center symmetry Z_N classifies confinement: unbroken ↔ confined, broken ↔ deconfined",
       "Creutz ratios χ(I,J) = -ln(W(I,J)·W(I-1,J-1)/(W(I,J-1)·W(I-1,J))) extract string tension from lattice data",
       "Gribov copies obstruct global gauge fixing (Singer's theorem), requiring non-perturbative methods",
-      "The 16 axioms are all intentional physics foundations, not mathematical gaps"
+      "The 16 axioms are all intentional physics foundations, not mathematical gaps",
+      "**Dimension matters**: 2D Yang-Mills is exactly solvable with a computable mass gap, 3D has partial results, but 4D is where gauge boson self-interaction, asymptotic freedom, and confinement combine to create the Millennium Prize challenge"
     ]
   },
   "sections": [

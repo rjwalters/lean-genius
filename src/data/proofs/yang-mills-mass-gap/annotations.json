@@ -194,6 +194,58 @@
       "relatedConcepts": ["constructive QFT", "Glimm-Jaffe", "lattice continuum limit", "functional measure"],
       "prerequisites": ["MeasureTheory", "latticeYangMillsAction"],
       "tags": ["constructive-qft", "rigorous", "continuum-limit"]
+    },
+    {
+      "id": "maxwell-as-u1",
+      "proofId": "yang-mills-mass-gap",
+      "type": "insight",
+      "range": { "startLine": 309, "endLine": 341 },
+      "title": "Maxwell's Equations as U(1) Yang-Mills",
+      "content": "Demonstrates that classical electromagnetism is the abelian ($\\mathrm{U}(1)$) special case of Yang-Mills theory. In the abelian case, the Lie bracket $[A_\\mu, A_\\nu] = 0$ vanishes, so the field strength simplifies to $F_{\\mu\\nu} = \\partial_\\mu A_\\nu - \\partial_\\nu A_\\mu$ (no self-interaction), and the Yang-Mills equations $D_\\mu F^{\\mu\\nu} = 0$ reduce to Maxwell's free-space equations $\\partial_\\mu F^{\\mu\\nu} = 0$. The electromagnetic tensor has exactly 6 independent components (3 electric + 3 magnetic), proved via `native_decide`. This embedding shows that Yang-Mills theory is a genuine non-abelian generalization of electromagnetism.",
+      "mathContext": "$G = \\mathrm{U}(1)$: $[A_\\mu, A_\\nu] = 0$, $F_{\\mu\\nu} = \\partial_\\mu A_\\nu - \\partial_\\nu A_\\mu$, $\\partial_\\mu F^{\\mu\\nu} = 0$ (Maxwell)",
+      "significance": "supporting",
+      "relatedConcepts": ["Maxwell's equations", "abelian gauge theory", "electromagnetic tensor", "U(1) symmetry"],
+      "prerequisites": ["ElectromagneticTensor", "minkowskiMetric"],
+      "tags": ["maxwell", "abelian", "electromagnetism"]
+    },
+    {
+      "id": "energy-momentum-tensor",
+      "proofId": "yang-mills-mass-gap",
+      "type": "definition",
+      "range": { "startLine": 461, "endLine": 471 },
+      "title": "Energy-Momentum Tensor",
+      "content": "Defines the energy-momentum tensor $T^{\\mu\\nu}$ for the Yang-Mills field, encoding the distribution of energy, momentum, and stress in the gauge field. Key proved properties: symmetry $T^{\\mu\\nu} = T^{\\nu\\mu}$ (required by angular momentum conservation) and non-negative energy density $T^{00} \\geq 0$ (the field carries positive energy). The energy density $T^{00} = \\text{Tr}(E^2 + B^2)/2$ is the chromoelectric and chromomagnetic energy, generalizing the electromagnetic energy density.",
+      "mathContext": "$T^{\\mu\\nu} = \\text{Tr}(F^{\\mu\\rho} F^\\nu{}_\\rho) - \\frac{1}{4} \\eta^{\\mu\\nu} \\text{Tr}(F_{\\rho\\sigma} F^{\\rho\\sigma})$, $T^{\\mu\\nu} = T^{\\nu\\mu}$, $T^{00} \\geq 0$",
+      "significance": "supporting",
+      "relatedConcepts": ["stress-energy tensor", "energy conservation", "Noether's theorem", "chromoelectric field"],
+      "prerequisites": ["fieldStrength", "minkowskiMetric"],
+      "tags": ["energy-momentum", "conservation-law", "classical-field-theory"]
+    },
+    {
+      "id": "large-n-thooft",
+      "proofId": "yang-mills-mass-gap",
+      "type": "insight",
+      "range": { "startLine": 2060, "endLine": 2100 },
+      "title": "Large-N Limit and 't Hooft Coupling",
+      "content": "Formalizes the 't Hooft large-$N$ expansion (1974): in the limit $N \\to \\infty$ with $\\lambda = g^2 N$ fixed, the Casimir per color $C_2(\\text{fund})/N \\to 1/2$ at rate $O(1/N^2)$, the adjoint Casimir per color equals exactly 1 for all $N$, and the Casimir ratio $C_2(\\text{adj})/C_2(\\text{fund}) \\geq 2$ with equality in the limit. The 't Hooft string tension $\\sigma \\cdot N \\to \\lambda/2$ remains finite, indicating confinement persists at large $N$. This expansion connects gauge theory to string theory (each Feynman diagram is weighted by $N^{2-2g}$ where $g$ is the genus).",
+      "mathContext": "$\\lambda = g^2 N$ ('t Hooft coupling); $C_2(\\text{fund})/N = \\frac{1}{2} - \\frac{1}{2N^2}$; $\\sigma N \\to \\lambda/2$ as $N \\to \\infty$",
+      "significance": "supporting",
+      "relatedConcepts": ["1/N expansion", "planar limit", "string theory", "Casimir operator", "topological expansion"],
+      "prerequisites": ["suNCasimirFundamental", "suNCasimirAdjoint"],
+      "tags": ["large-n", "thooft", "planar-limit"]
+    },
+    {
+      "id": "grand-summary-roadmap",
+      "proofId": "yang-mills-mass-gap",
+      "type": "context",
+      "range": { "startLine": 6516, "endLine": 6547 },
+      "title": "Grand Summary: Status by Dimension",
+      "content": "Summarizes the status of the Yang-Mills mass gap problem across dimensions. In 2D, the mass gap is exactly computed ($\\Delta = g^2 C_2/2$) and rigorously constructed (Driver 1989, Sengupta 1997). In 3D, partial results exist via regularity structures. In 4D, the mass gap remains the Millennium Prize target — lattice simulations provide strong numerical evidence ($\\Delta \\sim 440$ MeV for QCD), but no rigorous proof exists. The formalization identifies five ingredients any proof likely needs: (1) rigorous path integral measure, (2) UV renormalization, (3) IR control (confinement), (4) Osterwalder-Schrader verification, (5) non-perturbative methods.",
+      "mathContext": "2D: $\\Delta = g^2 C_2(\\text{adj})/2$ (exact); 4D: $\\Delta > 0$? ($\\$1M$ prize); any proof needs: measure $+$ UV $+$ IR $+$ OS $+$ non-perturbative",
+      "significance": "key",
+      "relatedConcepts": ["Millennium Prize", "dimensional dependence", "rigorous QFT", "Clay Mathematics Institute"],
+      "prerequisites": ["all prior parts"],
+      "tags": ["summary", "millennium-prize", "open-problem"]
     }
   ]
 }
