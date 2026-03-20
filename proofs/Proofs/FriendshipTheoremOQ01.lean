@@ -5,7 +5,6 @@ import Mathlib.Combinatorics.SimpleGraph.AdjMatrix
 import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.Data.Set.Card
 import Mathlib.Data.Fintype.Card
-import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.Tactic
 
 set_option linter.unusedSectionVars false
@@ -461,29 +460,18 @@ theorem adjMatrix_trace_zero :
 theorem adjMatrix_sq_off_diag (hF : IsFriendshipGraph G)
     (u v : V) (huv : u ≠ v) :
     (G.adjMatrix ℤ * G.adjMatrix ℤ) u v = 1 := by
-  rw [Matrix.mul_apply]
-  -- The sum counts common neighbors of u and v
-  -- Each w contributes A_{u,w} * A_{w,v} = [u~w] * [w~v]
-  have h1 := common_neighbor_finset_card G hF u v huv
-  -- Strategy: show the sum equals the cardinality of N(u) ∩ N(v) = 1
+  rw [G.adjMatrix_mul_apply]
   simp only [SimpleGraph.adjMatrix_apply]
-  -- After simp: sum of ite products → count of w where Adj u w ∧ Adj v w
-  -- Each term is (if G.Adj u w then 1 else 0) * (if G.Adj w v then 1 else 0)
-  sorry
+  rw [Finset.sum_boole]
+  have hfilt : (G.neighborFinset u).filter (fun w => G.Adj w v) =
+      G.neighborFinset u ∩ G.neighborFinset v := by
+    ext w; simp [SimpleGraph.mem_neighborFinset, G.adj_comm]
+  rw [hfilt, common_neighbor_finset_card G hF u v huv]; norm_cast
 
-/-- **A² diagonal**: (A²)ᵢᵢ = deg(i).
-
-    Each neighbor w of i contributes 1 to the sum:
-    (A²)ᵢᵢ = Σ_w Aᵢw · Awᵢ = Σ_w [i~w]² = Σ_w [i~w] = deg(i).
-
-    For k-regular: (A²)ᵢᵢ = k. -/
+/-- **A² diagonal**: (A²)ᵢᵢ = deg(i). Mathlib: `adjMatrix_mul_self_apply_self`. -/
 theorem adjMatrix_sq_diag (u : V) :
-    (G.adjMatrix ℤ * G.adjMatrix ℤ) u u = G.degree u := by
-  rw [Matrix.mul_apply]
-  simp only [SimpleGraph.adjMatrix_apply]
-  -- Each term: (if G.Adj u w then 1 else 0) * (if G.Adj w u then 1 else 0)
-  -- Since G.Adj u w ↔ G.Adj w u, this equals (if G.Adj u w then 1 else 0)
-  sorry
+    (G.adjMatrix ℤ * G.adjMatrix ℤ) u u = G.degree u :=
+  G.adjMatrix_mul_self_apply_self u
 
 /-
 ## Roadmap to Axiom Elimination
@@ -533,146 +521,93 @@ in Mathlib) with tr(A) = sum of eigenvalues and the A² eigenvalue constraint.
 #check regular_friendship_has_universal
 
 -- ============================================================================
--- Part VIII: Adjacency Matrix Infrastructure
+-- Part X: Full Matrix Equation A² = (k-1)I + J
 -- ============================================================================
+
+/-- The all-ones matrix J: every entry is 1. -/
+noncomputable def onesMatrix (V : Type*) [Fintype V] [DecidableEq V] : Matrix V V ℤ :=
+  Matrix.of fun _ _ => 1
+
+/-- **A² = (k-1)I + J** for k-regular friendship graphs. -/
+theorem adjMatrix_sq_eq (hF : IsFriendshipGraph G) (k : ℕ) (hk : k ≥ 1)
+    (hreg : ∀ v : V, G.degree v = k) :
+    G.adjMatrix ℤ * G.adjMatrix ℤ = (↑k - 1 : ℤ) • (1 : Matrix V V ℤ) + onesMatrix V := by
+  ext i j
+  simp only [Matrix.mul_apply, Matrix.smul_apply, Matrix.one_apply, onesMatrix, Matrix.of_apply,
+    Matrix.add_apply, smul_eq_mul]
+  by_cases hij : i = j
+  · subst hij; rw [if_pos rfl, mul_one]
+    have := adjMatrix_sq_diag G i
+    rw [Matrix.mul_apply] at this; rw [this, hreg i]; omega
+  · rw [if_neg hij, mul_zero]
+    have := adjMatrix_sq_off_diag G hF i j hij
+    rw [Matrix.mul_apply] at this; linarith
+
+-- ============================================================================
+-- Part XI: All-Ones Eigenvector (A𝟙 = k𝟙) and AJ = kJ
+-- ============================================================================
+
+/-- **Row sums**: A · (fun _ => 1) = k for k-regular. (A𝟙 = k𝟙) -/
+theorem adjMatrix_mulVec_ones (k : ℕ) (hreg : ∀ v : V, G.degree v = k) (i : V) :
+    (G.adjMatrix ℤ).mulVec (fun _ => 1) i = ↑k := by
+  change (G.adjMatrix ℤ).mulVec (Function.const V 1) i = ↑k
+  rw [SimpleGraph.adjMatrix_mulVec_const_apply, mul_one, hreg i]
+
+/-- **AJ = kJ**: Adjacency matrix times all-ones matrix = k times all-ones. -/
+theorem adjMatrix_mul_ones (k : ℕ) (hreg : ∀ v : V, G.degree v = k) :
+    G.adjMatrix ℤ * onesMatrix V = ↑k • onesMatrix V := by
+  ext i j
+  simp only [Matrix.mul_apply, Matrix.smul_apply, onesMatrix, Matrix.of_apply, smul_eq_mul,
+    mul_one, SimpleGraph.adjMatrix_apply]
+  trans ↑((Finset.univ.filter fun w => G.Adj i w).card)
+  · rw [← Finset.sum_boole]
+  · congr 1
+    have : (Finset.univ.filter fun w => G.Adj i w) = G.neighborFinset i := by
+      ext w; simp [SimpleGraph.mem_neighborFinset]
+    rw [this, ← SimpleGraph.degree]; exact hreg i
+
+-- ============================================================================
+-- Part XII: Functional Equation (A-kI)(A²-(k-1)I) = 0
+-- ============================================================================
+
+/-- **Functional equation**: A satisfies (X-k)(X²-(k-1)) = 0.
+    Proof: (A-kI)(A²-(k-1)I) = (A-kI)J = AJ - kJ = kJ - kJ = 0. -/
+theorem adjMatrix_functional_eq (hF : IsFriendshipGraph G) (k : ℕ) (hk : k ≥ 1)
+    (hreg : ∀ v : V, G.degree v = k) :
+    (G.adjMatrix ℤ - ↑k • (1 : Matrix V V ℤ)) *
+    (G.adjMatrix ℤ * G.adjMatrix ℤ - (↑k - 1 : ℤ) • (1 : Matrix V V ℤ)) = 0 := by
+  have hJ : G.adjMatrix ℤ * G.adjMatrix ℤ - (↑k - 1 : ℤ) • (1 : Matrix V V ℤ) =
+      onesMatrix V := by
+    rw [adjMatrix_sq_eq G hF k hk hreg, add_sub_cancel_left]
+  rw [hJ, sub_mul, adjMatrix_mul_ones G k hreg, smul_mul_assoc, Matrix.one_mul, sub_self]
 
 /-
-## Adjacency Matrix A² = (k-1)I + J
+## Roadmap to Complete Axiom Elimination
 
-For a k-regular friendship graph G on n vertices:
-- The adjacency matrix A = G.adjMatrix ℝ is symmetric with 0/1 entries
-- A²_{ij} = |N(i) ∩ N(j)|
-- For i ≠ j: A²_{ij} = 1 (friendship property)
-- For i = i: A²_{ii} = deg(i) = k (self-loops counted as common neighbors)
-- Therefore A² = (k-1)·I + J where J is the all-ones matrix
+### Proved in this revision (0 sorries, 1 axiom)
+- A² off-diagonal: (A²)ᵢⱼ = 1 for i ≠ j (`adjMatrix_sq_off_diag`)
+- A² diagonal: (A²)ᵢᵢ = deg(i) (`adjMatrix_sq_diag`)
+- A² = (k-1)I + J for k-regular friendship (`adjMatrix_sq_eq`)
+- AJ = kJ for k-regular graphs (`adjMatrix_mul_ones`)
+- (A-kI)(A²-(k-1)I) = 0 functional equation (`adjMatrix_functional_eq`)
+- tr(A) = 0 (`adjMatrix_trace_zero`)
+- s | s²+1 → s = 1 (`dvd_sq_add_one_imp_one`)
 
-This is the key matrix identity that enables the spectral argument.
+### Remaining: Characteristic Polynomial Argument
 
-We prove this using SimpleGraph.adjMatrix from Mathlib.
+Step 1: From (A-kI)(A²-(k-1)I) = 0, minpoly(A) | (X-k)(X²-(k-1)).
+Step 2: k-eigenspace is 1-dimensional (Jv=nv forces v∝𝟏).
+Step 3: charpoly = (X-k)·q(X), q ∈ ℤ[X].
+Step 4: If k-1 not square → X²-(k-1) irreducible → coeff(X^{n-1}) = -k ≠ 0.
+Step 5: k-1 = s², tr = k+(b₊-b₋)s = 0 → s|s²+1 → s=1 → k=2.
+
+Mathlib deps: charpoly, minpoly.dvd, Polynomial.Irreducible, trace_eq_neg_charpoly_coeff.
 -/
 
-section AdjMatrixInfrastructure
-
-variable (G : SimpleGraph V)
-variable [DecidableRel G.Adj]
-
-/-- The adjacency matrix has zero trace (no self-loops in a simple graph). -/
-theorem adjMatrix_trace_zero :
-    Matrix.trace (G.adjMatrix ℝ) = 0 := by
-  simp only [Matrix.trace, Matrix.diag, SimpleGraph.adjMatrix_apply]
-  apply Finset.sum_eq_zero
-  intro i _
-  simp
-
-end AdjMatrixInfrastructure
-
--- ============================================================================
--- Part IX: Spectral Axiom Decomposition
--- ============================================================================
-
-/-
-## Decomposed Spectral Argument
-
-The single `spectral_regular_friendship` axiom can be decomposed into
-more precisely targeted lemmas, each closer to what Mathlib provides:
-
-Step 1: A² = (k-1)I + J [combinatorial, from friendship + regularity]
-Step 2: Characteristic polynomial of A factors as (x-k)(x²-(k-1))^m [algebra]
-Step 3: trace(A) = 0 = k + (m₊ - m₋)√(k-1) [linear algebra]
-Step 4: √(k-1) must be integer s, and s|s²+1 → s=1 → k=2 [number theory, PROVED]
-
-We axiomatize Step 2-3 as a single cleaner axiom and prove the
-rest from the infrastructure above.
--/
-
-section SpectralDecomposition
-
-variable (G : SimpleGraph V)
-variable [DecidableRel G.Adj]
-
-/-- **Axiom (trace-eigenvalue connection)**:
-    For a k-regular simple graph with A² = (k-1)I + J:
-    - The eigenvalues of A are: k (once) and ±√(k-1) (with multiplicities m₊, m₋)
-    - trace(A) = k + (m₊ - m₋)·√(k-1) = 0
-    - m₊ + m₋ = n - 1
-
-    Combined with tr(A) = 0 (proved above), this forces:
-    - If √(k-1) is irrational: m₊ = m₋ and k = 0 (contradiction with k ≥ 2)
-    - So k-1 = s² for integer s, and (m₊ - m₋) = -(s²+1)/s
-    - Integrality requires s | (s²+1)
-
-    This axiom encodes the spectral theorem for real symmetric matrices
-    applied to the adjacency matrix. It is weaker than the full spectral
-    theorem — only the consequence for regular graphs with the specific
-    A² identity.
-
-    Note: Mathlib has `Matrix.IsHermitian.eigenvalues` which could prove
-    this, but connecting it to `SimpleGraph.adjMatrix` requires additional
-    infrastructure for eigenvalue multiplicity and the integer constraint. -/
-axiom trace_eigenvalue_regular
-    (hF : IsFriendshipGraph G)
-    (k : ℕ) (hk : k ≥ 2) (hreg : ∀ v : V, G.degree v = k) :
-    ∃ s : ℕ, s ≥ 1 ∧ k - 1 = s * s ∧ s ∣ (s * s + 1)
-
-/-- From the trace-eigenvalue axiom, k = 2.
-    This replaces `spectral_regular_friendship` with a more precisely
-    targeted axiom that only requires the eigenvalue-trace connection. -/
-theorem spectral_from_trace (hF : IsFriendshipGraph G)
-    (k : ℕ) (hk : k ≥ 2) (hreg : ∀ v : V, G.degree v = k) :
-    k = 2 := by
-  obtain ⟨s, hs1, hk_eq, hdvd⟩ := trace_eigenvalue_regular G hF k hk hreg
-  have hs_one : s = 1 := dvd_sq_add_one_imp_one s hs1 hdvd
-  subst hs_one; omega
-
-end SpectralDecomposition
-
--- ============================================================================
--- Part X: Mathlib API Survey
--- ============================================================================
-
-/-
-## Available Mathlib APIs for Full Axiom Elimination
-
-The following Mathlib modules provide the infrastructure to fully
-eliminate the remaining axiom:
-
-1. **SimpleGraph.adjMatrix** (imported):
-   - `G.adjMatrix R` : adjacency matrix over ring R
-   - `adjMatrix_apply` : entry is `if G.Adj i j then 1 else 0`
-   - `adjMatrix_symmetric` : G.adjMatrix R is symmetric
-
-2. **Matrix.trace** (imported):
-   - `Matrix.trace A` = Σᵢ Aᵢᵢ
-
-3. **Matrix.IsHermitian** (available in Mathlib):
-   - `A.IsHermitian` for real symmetric matrices
-   - `IsHermitian.eigenvalues` : Fin n → ℝ
-
-4. **Matrix.charpoly** (available in Mathlib):
-   - `A.charpoly` : characteristic polynomial
-   - Cayley-Hamilton: `A.charpoly.aeval A = 0`
-
-5. **Polynomial.roots** (available in Mathlib):
-   - `p.roots` : multiset of roots
-   - Connection to eigenvalue multiplicities
-
-### Path to Full Elimination
-
-The `trace_eigenvalue_regular` axiom can be proved by:
-
-1. Show `(G.adjMatrix ℝ).IsHermitian` (from `adjMatrix_symmetric`)
-2. Show A² = (k-1)·1 + J (from friendship + regularity, partially done above)
-3. Derive that charpoly divides (X - k)(X² - (k-1))^m
-4. Use trace = sum of eigenvalues (from Mathlib)
-5. Apply the rationality/integrality argument
-
-The main gap is step 3-4: connecting the A² identity to the characteristic
-polynomial factorization and then to eigenvalue multiplicities.
--/
-
--- Verification checks
-#check SimpleGraph.adjMatrix
-#check Matrix.trace
-#check @SimpleGraph.adjMatrix_apply
+#check adjMatrix_sq_off_diag
+#check adjMatrix_sq_diag
+#check adjMatrix_sq_eq
+#check adjMatrix_mul_ones
+#check adjMatrix_functional_eq
 
 end FriendshipTheoremOQ01
