@@ -17,19 +17,19 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-03-19T22:00:00.000Z",
-    "iteration": 3,
-    "focus": "Axiom elimination: charpoly_eigenvalue_data remains",
-    "blockers": [],
-    "nextAction": "Prove k-1 is a perfect square via charpoly/module theory",
+    "since": "2026-03-20T00:00:00.000Z",
+    "iteration": 4,
+    "focus": "Build fixed, all warnings resolved. 1 axiom remains (charpoly_eigenvalue_data).",
+    "blockers": ["Mathlib spectral theorem integration needed for axiom elimination"],
+    "nextAction": "Prove charpoly_eigenvalue_data from Mathlib Matrix.IsHermitian.eigenvalues",
     "attemptCounts": {
-      "total": 3,
+      "total": 4,
       "currentApproach": 2,
       "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated sorry (was in spectral_regular_friendship_proved). Refined monolithic axiom into charpoly_eigenvalue_data (eigenvalue multiplicities). Proved k=2 from axiom via divisibility arithmetic. Added tr(A²)=nk and tr(J)=n. File: 821 lines, 0 sorries, 1 axiom.",
+    "progressSummary": "PROGRESS: Fixed 4 build errors (Nat.dvd_sub', Nat.eq_one_of_self_mul_self_dvd removed from Mathlib, rwa [sq] pattern mismatch, nlinarith nonlinear failure). Resolved all linter warnings (unused variables, unused simp args, no-op push_cast). File: ~970 lines, 0 sorries, 1 axiom (charpoly_eigenvalue_data), 0 warnings.",
     "builtItems": [
       "Lean formalization complete",
       "Part VIII: Adjacency Matrix Infrastructure — adjMatrix_trace_zero PROVED (tr(A)=0 for simple graph), imports for SimpleGraph.AdjMatrix and Matrix.Trace verified",
@@ -76,7 +76,10 @@
       "The spectral step reduces to: k-1 is a perfect square. This requires the structure theorem for Q[X]-modules (irred factors of charpoly divide minpoly)",
       "Eigenvalue axiom decomposition: single axiom ∃(s,mp,mm) with k-1=s², mp+mm+1=n, k+(mp-mm)s=0 suffices for full proof",
       "Key algebra: from trace constraint (mm-mp)s=k and k=s²+1, s|k implies s|s²+1, so s=1 by dvd_sq_add_one_imp_one",
-      "Elimination path: Matrix.IsHermitian → eigenvalue structure → charpoly factors over ℚ → integrality forces k-1 perfect square"
+      "Elimination path: Matrix.IsHermitian → eigenvalue structure → charpoly factors over ℚ → integrality forces k-1 perfect square",
+      "Build fix: Nat.dvd_sub' and Nat.eq_one_of_self_mul_self_dvd were removed/renamed in Mathlib. Replaced k_equals_two_from_perfect_square proof to call dvd_sq_add_one_imp_one directly instead.",
+      "Build fix: spectral_conclusion used rwa [sq] to convert s^2 to s*s, but hypothesis already used s*s form. Fixed by passing hypothesis directly.",
+      "Build fix: nlinarith cannot handle k*(k-1)>=1 from k>=2 directly; replaced with explicit Nat.mul_le_mul + omega chain."
     ],
     "mathlibGaps": [
       "Full spectral theorem for real symmetric matrices in a form that gives integer eigenvalue multiplicities",
@@ -104,7 +107,7 @@
     "mathlib": []
   },
   "started": "2026-03-15T12:11:41.208Z",
-  "lastUpdate": "2026-03-19T23:00:00.000Z",
+  "lastUpdate": "2026-03-20T00:00:00.000Z",
   "significance": 7,
   "tractability": 6
 }

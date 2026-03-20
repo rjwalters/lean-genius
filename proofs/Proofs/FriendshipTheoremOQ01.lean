@@ -148,8 +148,8 @@ lemma ucn_involutive (hF : IsFriendshipGraph G) (u v : V) (huv : u ≠ v)
 /-- The partner of v in N(u) is the unique neighbor of v within N(u).
     If w ∈ N(u), w ~ v, then w = ucn(u,v). -/
 lemma ucn_unique_in_neighborhood (hF : IsFriendshipGraph G) (u v w : V)
-    (huv : u ≠ v) (huw : u ≠ w) (hvw : v ≠ w)
-    (hadj_uv : G.Adj u v) (hadj_uw : G.Adj u w) (hadj_vw : G.Adj v w) :
+    (huv : u ≠ v) (_huw : u ≠ w) (_hvw : v ≠ w)
+    (_hadj_uv : G.Adj u v) (hadj_uw : G.Adj u w) (hadj_vw : G.Adj v w) :
     w = ucn G hF u v huv :=
   ucn_unique G hF u v w huv hadj_uw hadj_vw
 
@@ -309,7 +309,7 @@ theorem dvd_sq_add_one_imp_one (s : ℕ) (hs : s ≥ 1) (h : s ∣ s * s + 1) :
   -- hc : s * s + 1 = s * c
   -- In ℤ: s * (c - s) = 1, forcing s = 1
   have hc1 : c ≥ 1 := by nlinarith
-  have key : (s : ℤ) * ((c : ℤ) - s) = 1 := by push_cast at hc ⊢; linarith
+  have key : (s : ℤ) * ((c : ℤ) - s) = 1 := by linarith
   have hle : (s : ℤ) ≤ 1 := by
     by_contra hgt; push_neg at hgt
     have hcs : (c : ℤ) - s ≥ 1 := by
@@ -474,7 +474,7 @@ This file provides the infrastructure to eliminate the axiom
     (adjMatrix ℤ)ᵢᵢ = 0 for any simple graph. -/
 theorem adjMatrix_diag_zero (v : V) :
     (G.adjMatrix ℤ) v v = 0 := by
-  simp [SimpleGraph.adjMatrix_apply, G.loopless v]
+  simp [SimpleGraph.adjMatrix_apply]
 
 /-- The trace of the adjacency matrix is zero for any simple graph.
     This follows because adjMatrix has 0 on the diagonal (no self-loops).
@@ -484,7 +484,7 @@ theorem adjMatrix_diag_zero (v : V) :
     In the spectral proof: tr(A) = Σ eigenvalues = k + (mp - mm)√(k-1) = 0. -/
 theorem adjMatrix_trace_zero :
     Matrix.trace (G.adjMatrix ℤ) = 0 := by
-  simp [Matrix.trace, Matrix.diag, SimpleGraph.adjMatrix_apply, SimpleGraph.loopless]
+  simp [Matrix.trace, Matrix.diag, SimpleGraph.adjMatrix_apply]
 
 -- ============================================================================
 -- Part IX: A² Matrix Equation (Toward Axiom Elimination)
@@ -622,7 +622,7 @@ That's the clean version. Let me formalize what we can.
 /-- The diagonal entry of A² equals the degree.
     (A²)_{ii} = |{j : j ~ i}| = deg(i).
     For k-regular: (A²)_{ii} = k. -/
-theorem a_squared_diagonal (hF : IsFriendshipGraph G) (u : V) :
+theorem a_squared_diagonal (_hF : IsFriendshipGraph G) (u : V) :
     (G.neighborFinset u).card = G.degree u :=
   rfl
 
@@ -651,23 +651,26 @@ theorem eigenvalue_on_one_perp (k : ℕ) (hk : k ≥ 2) :
     (This is already proved as dvd_sq_add_one_imp_one above.) -/
 theorem spectral_conclusion (s : ℕ) (hs : s ≥ 1) (hdvd : s ∣ s * s + 1) :
     s = 1 :=
-  dvd_sq_add_one_imp_one s hs (by rwa [sq])
+  dvd_sq_add_one_imp_one s hs hdvd
 
 /-- Reformulation: if k-1 is a perfect square s² and the trace constraint
     forces s | k = s²+1, then k = 2. -/
 theorem k_equals_two_from_perfect_square (k s : ℕ) (hk : k ≥ 2)
     (h_sq : k - 1 = s * s) (h_dvd : s ∣ k) : k = 2 := by
-  -- From h_sq: k = s*s + 1 (since k ≥ 2 > 0)
+  -- s ≥ 1 (from k ≥ 2 and k - 1 = s*s)
+  have hs_pos : s ≥ 1 := by
+    by_contra h; push_neg at h
+    -- s = 0, but then k - 1 = 0, contradicting k ≥ 2
+    interval_cases s
+    omega
+  -- k = s*s + 1
   have hk_eq : k = s * s + 1 := by omega
-  -- From h_dvd and hk_eq: s | s*s + 1
-  rw [hk_eq] at h_dvd
-  -- s | s*s + 1 and s | s*s, so s | 1, so s = 1
-  have h1 : s ∣ s * s := dvd_mul_left s s
-  have h3 : s * s + 1 - s * s = 1 := by omega
-  have h4 : s ∣ s * s + 1 - s * s := Nat.dvd_sub' h_dvd h1
-  rw [h3] at h4
-  have hs1 : s = 1 := Nat.eq_one_of_self_mul_self_dvd s (by rwa [Nat.dvd_one] at h4)
-  omega
+  -- s | k = s*s+1
+  have h_sdvd : s ∣ s * s + 1 := hk_eq ▸ h_dvd
+  -- s | s*s+1 → s = 1
+  have hs1 : s = 1 := dvd_sq_add_one_imp_one s hs_pos h_sdvd
+  -- k = 1*1+1 = 2
+  subst hs1; omega
 
 -- ============================================================================
 -- Part XII: Trace Constraint and Integrality
@@ -675,7 +678,7 @@ theorem k_equals_two_from_perfect_square (k s : ℕ) (hk : k ≥ 2)
 
 /-- In a simple graph, the trace of the adjacency matrix is zero.
     tr(A) = Σᵢ A_{ii} = 0 (no self-loops). -/
-theorem trace_adjacency_zero (hF : IsFriendshipGraph G) :
+theorem trace_adjacency_zero (_hF : IsFriendshipGraph G) :
     -- For simple graph: ∀ v, ¬G.Adj v v (no loops)
     ∀ v : V, ¬G.Adj v v :=
   fun v => G.loopless v
@@ -695,12 +698,14 @@ theorem trace_adjacency_zero (hF : IsFriendshipGraph G) :
     For these to be non-negative integers, √(k-1) must divide k.
     Since k = (k-1) + 1 = s² + 1 (where s = √(k-1)):
     s | s²+1 → s = 1 → k = 2. -/
-theorem trace_forces_perfect_square (k n : ℕ) (hk : k ≥ 2) (hn : n = k * (k - 1) + 1)
+theorem trace_forces_perfect_square (k n : ℕ) (hk : k ≥ 2) (_hn : n = k * (k - 1) + 1)
     -- The trace constraint: k + (m₊ - m₋)·s = 0 where s² = k-1
     -- requires k-1 to be a perfect square
     -- (otherwise √(k-1) irrational → m₊ = m₋ → k = 0, contradiction)
     : k * (k - 1) ≥ 1 := by
-  nlinarith
+  have h1 : k - 1 ≥ 1 := by omega
+  calc k * (k - 1) ≥ 2 * 1 := Nat.mul_le_mul hk h1
+    _ ≥ 1 := by omega
 
 /-- The complete spectral argument in number-theoretic form.
     Given: n = k(k-1) + 1, k ≥ 2
@@ -722,7 +727,7 @@ noncomputable def onesMatrix (V : Type*) [Fintype V] [DecidableEq V] : Matrix V 
   Matrix.of fun _ _ => 1
 
 /-- **A² = (k-1)I + J** for k-regular friendship graphs. -/
-theorem adjMatrix_sq_eq (hF : IsFriendshipGraph G) (k : ℕ) (hk : k ≥ 1)
+theorem adjMatrix_sq_eq (hF : IsFriendshipGraph G) (k : ℕ) (_hk : k ≥ 1)
     (hreg : ∀ v : V, G.degree v = k) :
     G.adjMatrix ℤ * G.adjMatrix ℤ = (↑k - 1 : ℤ) • (1 : Matrix V V ℤ) + onesMatrix V := by
   ext i j
@@ -750,7 +755,7 @@ theorem adjMatrix_mulVec_ones (k : ℕ) (hreg : ∀ v : V, G.degree v = k) (i : 
 theorem adjMatrix_mul_ones (k : ℕ) (hreg : ∀ v : V, G.degree v = k) :
     G.adjMatrix ℤ * onesMatrix V = ↑k • onesMatrix V := by
   ext i j
-  simp only [Matrix.mul_apply, Matrix.smul_apply, onesMatrix, Matrix.of_apply, smul_eq_mul,
+  simp only [Matrix.mul_apply, Matrix.smul_apply, onesMatrix, Matrix.of_apply,
     mul_one, SimpleGraph.adjMatrix_apply]
   trans ↑((Finset.univ.filter fun w => G.Adj i w).card)
   · rw [← Finset.sum_boole]
@@ -908,7 +913,7 @@ theorem trace_onesMatrix :
 /-- **tr(A²) = n·k** for a k-regular friendship graph.
     Proof: (A²)_{ii} = deg(i) = k for all i, so tr(A²) = Σ k = nk.
     Equivalently: A² = (k-1)I + J, so tr(A²) = (k-1)n + n = kn. -/
-theorem trace_adjMatrix_sq (hF : IsFriendshipGraph G) (k : ℕ) (hk : k ≥ 1)
+theorem trace_adjMatrix_sq (_hF : IsFriendshipGraph G) (k : ℕ) (_hk : k ≥ 1)
     (hreg : ∀ v : V, G.degree v = k) :
     Matrix.trace (G.adjMatrix ℤ * G.adjMatrix ℤ) = ↑(Fintype.card V) * ↑k := by
   have h : ∀ i : V, (G.adjMatrix ℤ * G.adjMatrix ℤ) i i = ↑k := by
