@@ -154,6 +154,14 @@ theorem pow2_sum_transcendental :
 
 /- ## Part VI: The Gap Between Conditions -/
 
+/-- Strong growth implies weak growth: take t = 1 in the strong condition. -/
+theorem strong_implies_weak (n : ℕ → ℕ) : HasStrongGrowth n → HasWeakGrowth n := by
+  intro hsg C
+  obtain ⟨k, hk_pos, hk⟩ := hsg 1 (by omega) C
+  exact ⟨k, hk_pos, by simpa using hk⟩
+
+-- The converse is false: squareSeq has weak but not strong growth (see below).
+
 /-- Example: n_k = k² grows faster than linear but not faster than k². -/
 def squareSeq : ℕ → ℕ := fun k => (k + 1)^2
 
@@ -164,7 +172,32 @@ theorem square_strictMono : StrictMono squareSeq := by
   have : a + 1 < b + 1 := Nat.add_lt_add_right hab 1
   exact Nat.pow_lt_pow_left this (by omega)
 
-/-- The sum Σ 1/2^{k²} - transcendence is OPEN. -/
+/-- squareSeq has weak growth: (k+1)²/k → ∞.
+    Witness: k = C+1, then (C+2)² = C²+4C+4 > C²+C = C(C+1). -/
+theorem squareSeq_has_weak_growth : HasWeakGrowth squareSeq := by
+  intro C
+  refine ⟨C + 1, by omega, ?_⟩
+  simp only [squareSeq]
+  -- Goal: (C+1+1)^2 > C*(C+1)
+  -- (C+2)^2 = C^2 + 4C + 4, C*(C+1) = C^2 + C, difference = 3C + 4 > 0
+  nlinarith
+
+/-- squareSeq does NOT have strong growth: at t=2, (k+1)² ≤ 4k² for all k ≥ 1.
+    This formalizes the gap: squareSeq satisfies the OPEN conjecture's hypothesis
+    but NOT Erdős's 1975 theorem. Whether Σ 1/2^{k²} is transcendental is open. -/
+theorem squareSeq_not_strong_growth : ¬HasStrongGrowth squareSeq := by
+  intro hsg
+  obtain ⟨k, hk_pos, hk⟩ := hsg 2 (by omega) 4
+  simp only [squareSeq] at hk
+  -- hk : (k+1)^2 > 4*k^2, but (k+1)^2 ≤ 4*k^2 for k ≥ 1
+  -- Since (k+1)^2 = k^2 + 2k + 1 and 4k^2 - k^2 - 2k - 1 = 3k^2 - 2k - 1 = (3k+1)(k-1) ≥ 0
+  have h : (k + 1) ^ 2 ≤ 4 * k ^ 2 := by nlinarith
+  omega
+
+/-- The sum Σ 1/2^{k²} - transcendence is OPEN.
+    By squareSeq_has_weak_growth, it meets Erdős's weak condition.
+    By squareSeq_not_strong_growth, it does NOT meet the strong condition.
+    Erdős's 1975 theorem (erdos_transcendence_strong) does not apply. -/
 noncomputable def square_sum : ℝ := lacunarySum squareSeq
 
 /- ## Part VII: Summary -/
