@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Part LXXI (known cases by codimension/variety type, Voisin integral HC counterexamples)",
+    "progressSummary": "PROGRESS: Added Parts LXXII-LXXIII (Hodge loci/Noether-Lefschetz + Hard Lefschetz consequences). NL generic ρ=1 for deg ≥ 4, CDK algebraicity, K3 lattice structure, specialization principle, Lefschetz (1,1) uniqueness, primitive decomposition, HR signature.",
     "builtItems": [
       "Part LXIII: Hodge Number Arithmetic and Topological Invariants (HodgeConjecture.lean:7252)",
       "Replaced 4 True fields: DuBois abutment with Finset.sum equality, hp0_constant with fiber equality, Bondal-Orlov with dim equality, Steenrod with algebraic_dim = 0",
@@ -48,7 +48,9 @@
         "name": "standard_conjectures_motives",
         "description": "Part LXX: Grothendieck standard conjectures B/C/D, motive category proposals (2 theorems + 1 structure)",
         "proven": true
-      }
+      },
+      "Part LXXII: Hodge Loci and Noether-Lefschetz Theory — NL generic ρ=1, CDK algebraicity, Green codimension bound, K3 lattice U³⊕E₈(-1)², specialization principle",
+      "Part LXXIII: Lefschetz Hyperplane and Hard Lefschetz Consequences — Hard Lefschetz duality for HC, Lefschetz (1,1) uniqueness analysis, primitive decomposition, Hodge-Riemann signature period-4 pattern"
     ],
     "insights": [
       "Noether formula 12χ(𝒪)=K²+χ_top verified for K3 (24=0+24), Enriques (12=0+12), general type",
@@ -66,7 +68,13 @@
       "6 axioms eliminated: abelian_hodge_numbers, abelian_betti_number, lefschetz_standard_implies_hodge, 3 others via reordering",
       "All 100 axioms verified as actively used (grep analysis). Previous suggestion of 12 unused axioms is outdated.",
       "Deligne 1982: all Hodge classes on abelian varieties are absolute Hodge — strongest known evidence toward HC for abelian varieties",
-      "Standard conjectures B+D would imply HC; Conjecture A already proved by Deligne via Weil conjectures"
+      "Standard conjectures B+D would imply HC; Conjecture A already proved by Deligne via Weil conjectures",
+      "Noether-Lefschetz: generic surface deg ≥ 4 has ρ=1, NL codimension ≥ d-3 (Green). Explains why HC is hard: most varieties have few Hodge classes",
+      "K3 moduli: period domain dim 20, ρ=k family has dim 20-k. K3 lattice U³⊕E₈(-1)² rank 22 sig (3,19)",
+      "CDK algebraicity of Hodge loci is evidence FOR HC — geometric structure is algebraic even without assuming HC",
+      "Lefschetz (1,1) proof uses exponential sequence, which exists ONLY for codim 1 — no analogue for higher codimension",
+      "Hard Lefschetz reduces HC: only need codim ≤ n/2. Dim 4: 1 open codim, dim 6: 2, dim n: ⌊n/2⌋-1",
+      "Hodge-Riemann signature pattern +,+,-,-,+,+,-,- has period 4 from p(p-1)/2 mod 2"
     ],
     "mathlibGaps": [
       "Complex manifolds",
