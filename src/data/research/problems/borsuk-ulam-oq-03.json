@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "MAINTENANCE: Fixed all Mathlib v4.26.0 build errors. Key fix: set→let to avoid variable shadowing. File compiles clean with 0 sorries.",
+    "progressSummary": "MAINTENANCE: Fixed meta.json sorry count (1 sorry at line 4305, not 0). File has 4 axioms, 1 sorry (continuity of piecewise extension). ~230 declarations, ~4300 lines.",
     "builtItems": [
       {
         "name": "tucker_2d_octahedral",
@@ -239,7 +239,8 @@
       "Continuous.div with A_ne (∀ x, A x ≠ 0) handles the division by nsq in the raySphereT formula",
       "retractT and raySphereT are algebraically identical: B²-A(C-1) = B²+A(1-C)",
       "Radial extension continuity decomposes into 4 cases: (a) upper half-space, (b) lower half-space, (c) equator x≠0, (d) origin. Infrastructure lemmas now cover all needed bounds and equator matching.",
-      "MAJOR MILESTONE: ALL sorries eliminated! Radial extension continuity proved via 4-case ContinuousAt: (a/b) open half-spaces locally equal to branches, (c) equator filter argument with both branches → same limit, (d) origin squeeze via normSqrt bound."
+      "MAJOR MILESTONE: ALL sorries eliminated! Radial extension continuity proved via 4-case ContinuousAt: (a/b) open half-spaces locally equal to branches, (c) equator filter argument with both branches → same limit, (d) origin squeeze via normSqrt bound.",
+      "meta.json had incorrect sorry count (0 vs actual 1). Sorry at line 4305 is a ContinuousAt proof for piecewise function with 4 cases."
     ],
     "mathlibGaps": [],
     "nextSteps": [
