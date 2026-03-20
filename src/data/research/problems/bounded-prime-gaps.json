@@ -22,7 +22,8 @@
       "BoundedPrimeGapsOQ01.lean: 438 lines, 0 axioms — verified extensions",
       "BoundedPrimeGapsOQ03.lean: 279 lines, 1 axiom (engelsma_lower_bound) — Engelsma optimality",
       "BoundedPrimeGapsSieve.lean: ~380 lines, 0 axioms (down from 2) — sieve reduction theorems",
-      "BoundedPrimeGapsTPC.lean: 281 lines, 0 axioms — twin prime conjecture connections"
+      "BoundedPrimeGapsTPC.lean: 281 lines, 0 axioms — twin prime conjecture connections",
+      "Part XVIII: Brun theorem and twin prime constant — Brun's constant, Hardy-Littlewood C₂ Euler product factors, convergence proof, full gap bound hierarchy"
     ],
     "insights": [
       "Zhang's bound H ≤ 70,000,000 (2013) → Maynard H ≤ 600 → Polymath H ≤ 246",
@@ -31,7 +32,9 @@
       "6 axioms encode deep sieve theory results (Bombieri-Vinogradov, Selberg sieve)",
       "polymath_bounded_gaps_246 is a consequence of maynard_tao_sieve + polymath50Tuple (proved)",
       "bounded_gaps_conditional_EH is a consequence of maynard_tao_sieve_eh + {0,2,6,8,12} quintuple (proved)",
-      "The 4 remaining axioms (3 sieve + 1 Engelsma) are genuinely deep results requiring infrastructure not in Mathlib"
+      "The 4 remaining axioms (3 sieve + 1 Engelsma) are genuinely deep results requiring infrastructure not in Mathlib",
+      "Twin prime Euler product factor p(p-2)/(p-1)² < 1 proved for all p ≥ 3 (product converges)",
+      "Full gap hierarchy: TPC(2) ≤ GEH(6) ≤ EH(12) ≤ Polymath(246) ≤ Maynard(4680) ≤ Zhang(70M)"
     ],
     "nextSteps": []
   },
