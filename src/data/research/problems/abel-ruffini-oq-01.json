@@ -18,13 +18,13 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-02-21T19:21:07.129Z",
-    "iteration": 15,
-    "focus": "Proved q_SF_eq_prod_linear (splitting field factorization) and prod_Iio_eq_vandermonde",
+    "iteration": 14,
+    "focus": "D4 sorry elimination complete; D4 and F20 fully proved",
     "blockers": [
       "Kronecker-Weber not in Mathlib",
       "Hilbert irreducibility not in Mathlib"
     ],
-    "nextAction": "Prove eval_derivative_q_at_root (depends on q_SF_eq_prod_linear), ordered_root_diff_prod_eq_vandermonde_sq, then blocked: resultant/discr not in Mathlib",
+    "nextAction": "Eliminate vandermondeProduct_sq_eq axiom in A5 (8 sorries in chain) or address gal_permutes_roots sorry",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved 3 new theorems in InverseGaloisA5.lean (9→7 sorries): q_monic (monicity of q), prod_Iio_eq_vandermonde (Finset product reindexing via prod_comm), q_SF_eq_prod_linear (splitting field factorization via coprime divisibility). Docker build verified.",
+    "progressSummary": "VERIFIED: InverseGaloisD4.lean now 0 sorries, 0 axioms (eliminated 3 sorries: x_sq_add_1_irreducible via Phi_4, x_sq_add_1_natDegree via compute_degree, adjoin_root_x4_sub_2_finrank via AdjoinRoot.powerBasis). 4 axiom declarations remain across 2 files (InverseGalois.lean + A5). D4 and F20 are fully proved.",
     "builtItems": [
       "InverseGalois.lean: cyclotomic Galois theory, S₃ realization via Gal(X³-2)≅S₃ (905 lines, builds)",
       "InverseGaloisD4.lean: D₄ realization via |Gal(X⁴-2)| = 8 (666 lines, builds)",
@@ -179,21 +179,6 @@
         "name": "adjoin_root_x4_sub_2_finrank_proved",
         "description": "finrank = 4 via AdjoinRoot.powerBasis",
         "proven": true
-      },
-      {
-        "name": "q_monic",
-        "description": "q is monic (leading coefficient 1)",
-        "proven": true
-      },
-      {
-        "name": "prod_Iio_eq_vandermonde",
-        "description": "∏_i ∏_{j<i} (v i - v j) = ∏_i ∏_{j>i} (v j - v i) via Finset.prod_comm",
-        "proven": true
-      },
-      {
-        "name": "q_SF_eq_prod_linear",
-        "description": "q_SF = ∏ (X - C rootEnum i) via coprime divisibility + degree",
-        "proven": true
       }
     ],
     "insights": [
@@ -259,10 +244,7 @@
       "cyclotomic_prime_pow_eq_geom_sum takes explicit (hp : Nat.Prime p) not Fact instance",
       "AdjoinRoot.powerBasis takes (h : f ne 0) not (h : f.Monic) in current Mathlib",
       "InverseGaloisD4.lean now fully sorry-free and axiom-free (was 3 sorries)",
-      "Polynomial.leadingCoeff_mul in domain gives leadingCoeff(P*r) = lc(P)*lc(r), combined with Monic for degree extraction",
-      "Finset.prod_comm' swaps nested product order with membership condition: b < a ↔ a > b",
-      "IsCoprime via Bezout: u*(X-Cα) + v*(X-Cβ) = 1 where u=C((β-α)⁻¹), ring handles polynomial simplification but not C coercion, use map_sub",
-      "Finset.prod_dvd_of_coprime requires ∀ i ∈ Finset.univ form (not bare ∀ i)"
+      "gal_permutes_roots goal after simp: sigma r.val = rootsEquivRoots(sigma smul rootsEquivRoots.symm(r)).val. The Galois smul on rootSet goes through Gal.rootsEquivRoots round-trip, not direct application. Need commutation lemma between rootsEquivRoots and the smul action."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -292,7 +274,7 @@
     "mathlib": []
   },
   "started": "2026-02-21T19:21:07.129Z",
-  "lastUpdate": "2026-03-20T22:30:00.000Z",
+  "lastUpdate": "2026-03-20T18:30:00.000Z",
   "significance": 6,
   "tractability": 6
 }
