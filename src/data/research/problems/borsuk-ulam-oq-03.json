@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-02-25T14:11:52.126Z",
-    "iteration": 9,
-    "focus": "Mathlib v4.26.0 compatibility fixes - all build errors resolved",
+    "iteration": 10,
+    "focus": "Quality improvements: True placeholders replaced, build verified",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "MAINTENANCE: Fixed all Mathlib v4.26.0 build errors. Key fix: set→let to avoid variable shadowing. File compiles clean with 0 sorries.",
+    "progressSummary": "QUALITY: Replaced 2 True placeholders with real theorems (bu_iff_no_odd_map, isobarycentric_point_general), removed 9 session summary placeholders, fixed pre-existing build error (duplicate proofHierarchy). Docker build verified.",
     "builtItems": [
       {
         "name": "tucker_2d_octahedral",
@@ -208,7 +208,17 @@
       },
       "Section LXIX: normSqrt, continuous_normSqrt, component_le_one_of_on_sphere, radialBranch1/2, radialBranch*_bound, equator_proj_on_sphere, radial_branches_agree_on_equator",
       "Reformulated g = piecewise(branch1, branch2) without dite, proved equivalence with original g",
-      "PROVED bu_implies_no_retraction with 0 sorries: full radial extension continuity via branch decomposition + ContinuousAt case analysis + filter-based equator argument"
+      "PROVED bu_implies_no_retraction with 0 sorries: full radial extension continuity via branch decomposition + ContinuousAt case analysis + filter-based equator argument",
+      {
+        "name": "bu_iff_no_odd_map",
+        "description": "Formal iff: BU ↔ no continuous odd map S^n → S^{n-1}",
+        "proven": true
+      },
+      {
+        "name": "isobarycentric_point_general",
+        "description": "BU + sum constraint → all n+1 functions agree at antipodal pair",
+        "proven": true
+      }
     ],
     "insights": [
       "Tucker 2D for the 4-vertex octahedral triangulation is provable by exhaustive case analysis over 4^3=64 labelings",
@@ -239,7 +249,8 @@
       "Continuous.div with A_ne (∀ x, A x ≠ 0) handles the division by nsq in the raySphereT formula",
       "retractT and raySphereT are algebraically identical: B²-A(C-1) = B²+A(1-C)",
       "Radial extension continuity decomposes into 4 cases: (a) upper half-space, (b) lower half-space, (c) equator x≠0, (d) origin. Infrastructure lemmas now cover all needed bounds and equator matching.",
-      "MAJOR MILESTONE: ALL sorries eliminated! Radial extension continuity proved via 4-case ContinuousAt: (a/b) open half-spaces locally equal to branches, (c) equator filter argument with both branches → same limit, (d) origin squeeze via normSqrt bound."
+      "MAJOR MILESTONE: ALL sorries eliminated! Radial extension continuity proved via 4-case ContinuousAt: (a/b) open half-spaces locally equal to branches, (c) equator filter argument with both branches → same limit, (d) origin squeeze via normSqrt bound.",
+      "Dangling docstrings (/-- without declaration) cause parse errors in Lean 4; converting True:=trivial removals requires also converting /-- to /-"
     ],
     "mathlibGaps": [],
     "nextSteps": [
