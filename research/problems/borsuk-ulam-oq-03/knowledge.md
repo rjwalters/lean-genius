@@ -461,3 +461,36 @@ The complete axiom reduction chain is now sorry-free:
 - BU_general → lusternik_schnirelmann (Section LX, 0 sorries)
 
 All 3 derived axioms are fully proved from the single axiom borsuk_ulam_general.
+
+## Session 2026-03-19 (researcher-3, iteration 3) - Mathlib v4.26.0 Compat Fixes
+
+**Mode**: REVISIT (RICH knowledge, maintenance)
+**Outcome**: completed (build fix)
+
+### What I Did
+
+Fixed all build errors caused by Lean 4 v4.26.0 / Mathlib updates:
+
+**Critical fix: `set k := n+1` → `let k := n+1`**
+- In Lean 4 v4.26.0, `set` renames hypothesis variables when their type is modified by substitution
+- `f : (Fin (n+1) → ℝ) → ...` became `f✝` after `set k := n+1` replaced `n+1` with `k`
+- Fix: Use `let` (non-substituting) instead of `set`
+
+**Tactic fixes:**
+- `congr 1; ext i; ring` → `Finset.sum_congr rfl fun i _ => by ring` (ext/ring under binder)
+- `Fin.sum_univ_castSucc; ring` → explicit `linarith` with sum lemma (`ring` can't cancel Finset.sum terms)
+- `nlinarith [abs_nonneg ...]` → `nlinarith [sq_abs ..., sq_nonneg (|x| - 1)]` (stronger hints needed)
+- `unfold_let A B` → `simp only [A, B]` (unfold_let removed/deprecated)
+- `field_simp` → `div_eq_iff (ne_of_gt hA_pos)` (field_simp too aggressive)
+- `rw [div_pow, ...]` → `simp only [div_pow]; rw [...]` (div_pow can't match under binders via rw)
+- `rw [normSqrt_eq_zero_iff]; rfl` → `rw [normSqrt_eq_zero_iff]` (rfl now redundant)
+
+### Key Findings
+
+- **Lean 4 v4.26.0 `set` behavior change**: `set x := expr` now renames hypothesis variables whose types contain `expr`, creating inaccessible `f✝` bindings. Use `let` instead when you don't need substitution in hypotheses.
+- **`ring` limitation**: Cannot cancel `Finset.sum` terms (e.g., `∑ i, a i = (∑ i, a i + b) - b`). Use `linarith` with the sum decomposition lemma as a hypothesis.
+- **`nlinarith` on absolute values**: Needs explicit `sq_abs` and `sq_nonneg (|x| - 1)` hints to derive `|x| ≤ 1` from `x^2 ≤ 1`.
+
+### Stats
+- **Lines**: 4825, **Declarations**: 247, **Sorries**: 0, **Axioms**: 6 (1 independent)
+- PR #4165 created

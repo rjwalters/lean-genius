@@ -2,7 +2,7 @@
   "id": "inverse-galois",
   "title": "The Inverse Galois Problem",
   "slug": "inverse-galois",
-  "description": "A comprehensive formalization of the Inverse Galois Problem across 6 Lean files (4696 lines, 257 theorems). We prove explicit Galois group realizations for 23 finite groups including the first non-solvable case (A₅ via Gal(x⁵-5x⁴+10x³-10x²+25x-5) with Sylow-theoretic proof), D₄ via X⁴-2, F₂₀ via X⁵-2, and a systematic census of all groups of order ≤ 8 via cyclotomic fields.",
+  "description": "A comprehensive formalization of the Inverse Galois Problem across 6 Lean files (5276 lines, 280 theorems). We prove explicit Galois group realizations for 23 finite groups including the first non-solvable case (A₅ via Gal(x⁵-5x⁴+10x³-10x²+25x-5) with Sylow-theoretic proof and Vandermonde discriminant analysis), D₄ via X⁴-2, F₂₀ via X⁵-2, and a systematic census of all groups of order ≤ 8 via cyclotomic fields.",
   "meta": {
     "author": "David Hilbert (1892), Igor Shafarevich (1954), various",
     "date": "1892",
@@ -27,14 +27,14 @@
     ],
     "badge": "axiom",
     "sorries": 2,
-    "axiomCount": 4,
-    "assumptions": "4 axiom declarations across 2 files: (1) abelian_realizable — all finite abelian groups are realizable (needs Kronecker-Weber, not in Mathlib), (2) shafarevich_theorem — all finite solvable groups are realizable (deep class field theory, not in Mathlib), (3) gal_card_dvd_60 — discriminant of q is a perfect square so Gal(q) ⊆ A₅ (needs disc↔alternating connection, not in Mathlib), (4) three_dvd_gal_card — mod-7 factorization gives 3-cycle in Gal(q) via Dedekind's theorem (not in Mathlib). All 4 axioms are well-established mathematical results blocked on Mathlib infrastructure. 257 theorems/lemmas, 7 definitions, 2 sorries (the open conjecture + Hilbert irreducibility).",
+    "axiomCount": 5,
+    "assumptions": "5 axiom declarations across 2 files (4 independent): (1) abelian_realizable — all finite abelian groups are realizable (needs Kronecker-Weber, not in Mathlib), (2) shafarevich_theorem — all finite solvable groups are realizable (deep class field theory, not in Mathlib), (3) gal_card_dvd_60 — DERIVABLE from (5), kept for file ordering (needs refactoring to eliminate), (4) three_dvd_gal_card — mod-7 factorization gives 3-cycle in Gal(q) via Dedekind's theorem (not in Mathlib), (5) vandermondeProduct_sq_eq — disc(q) = Vandermonde product squared (standard identity, not yet in Mathlib). Note: axiom (3) is proved as gal_card_dvd_60_proved via the Vandermonde permutation chain from axiom (5). 280 theorems/lemmas, 9 definitions, 2 sorries (the open conjecture + Hilbert irreducibility).",
     "leanFile": {
-      "lineCount": 4696,
-      "theoremCount": 257,
-      "lemmaCount": 0,
-      "defCount": 7,
-      "axiomCount": 4,
+      "lineCount": 5276,
+      "theoremCount": 280,
+      "lemmaCount": 1,
+      "defCount": 9,
+      "axiomCount": 5,
       "sorryCount": 2,
       "imports": [
         "Mathlib.NumberTheory.Cyclotomic.Basic",
@@ -51,7 +51,7 @@
         "Mathlib.RingTheory.Polynomial.GaussLemma",
         "Mathlib.NumberTheory.LSeries.PrimesInAP"
       ],
-      "note": "Total across 6 files: InverseGalois.lean (1805 lines, 102 thms, 2 axioms, 2 sorries), InverseGaloisA5.lean (962 lines, 33 thms, 2 axioms, 0 sorries), InverseGaloisD4.lean (680 lines, 27 thms, 0 axioms, 0 sorries), InverseGaloisF20.lean (529 lines, 27 thms, 0 axioms, 0 sorries), AbelRuffiniGaloisExtensions.lean (534 lines, 59 thms, 0 sorries), AbelRuffini.lean (185 lines, 9 thms, 0 sorries)"
+      "note": "Total across 6 files: InverseGalois.lean (1940 lines, 113 thms, 2 axioms, 2 sorries), InverseGaloisA5.lean (1408 lines, 47 thms, 3 axioms [1 derivable], 0 sorries), InverseGaloisD4.lean (680 lines, 27 thms, 0 axioms, 0 sorries), InverseGaloisF20.lean (529 lines, 27 thms, 0 axioms, 0 sorries), AbelRuffiniGaloisExtensions.lean (534 lines, 57 thms, 0 sorries), AbelRuffini.lean (185 lines, 9 thms, 0 sorries)"
     },
     "mathlibDependencies": [
       {
@@ -115,7 +115,9 @@
       "Order 16 abelian groups: C₂×C₈ via (ℤ/32ℤ)ˣ, C₂²×C₄ via (ℤ/40ℤ)ˣ",
       "Order 20-24 abelian groups: C₂×C₁₀ via (ℤ/33ℤ)ˣ, C₄×C₆ via (ℤ/35ℤ)ˣ",
       "S_n solvable iff n ≤ 4 (sharp threshold, 59 theorems in extension file)",
-      "23 groups realized with sorry-free proofs across orders 1-60"
+      "23 groups realized with sorry-free proofs across orders 1-60",
+      "Vandermonde permutation chain: gal_card_dvd_60 derived from transparent vandermondeProduct_sq_eq axiom",
+      "Order 20-24 extended census: C₂²×C₆ via (ℤ/84ℤ)ˣ, C₄×C₆ via (ℤ/35ℤ)ˣ"
     ],
     "dateAdded": "02/21/26",
     "researchStatus": "ongoing",
@@ -213,7 +215,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The Inverse Galois Problem remains one of the great open questions in algebra. Across 4696 lines in 6 files (257 theorems, 4 axioms, 2 sorries), we formalize: the IGP conjecture, cyclotomic Galois theory with Gal(ℚ(ζₙ)/ℚ) ≅ (ℤ/nℤ)ˣ, explicit realizations for S₃ (X³-2), D₄ (X⁴-2), F₂₀ (X⁵-2), and A₅ (x⁵-5x⁴+10x³-10x²+25x-5), the sharp solvability threshold S_n solvable iff n ≤ 4, and a comprehensive census of 23 groups. The A₅ realization (962 lines) is the crown jewel: the first non-solvable group realized, using Eisenstein's criterion, Sylow theory, and the uniqueness of the index-2 subgroup A₅ in S₅. The 4 remaining axioms represent 4 well-known theorems blocked on Mathlib infrastructure (Kronecker-Weber, Shafarevich, discriminant↔alternating connection, Dedekind's theorem).",
+    "summary": "The Inverse Galois Problem remains one of the great open questions in algebra. Across 5276 lines in 6 files (280 theorems, 5 axiom declarations [4 independent], 2 sorries), we formalize: the IGP conjecture, cyclotomic Galois theory with Gal(ℚ(ζₙ)/ℚ) ≅ (ℤ/nℤ)ˣ, explicit realizations for S₃ (X³-2), D₄ (X⁴-2), F₂₀ (X⁵-2), and A₅ (x⁵-5x⁴+10x³-10x²+25x-5), the sharp solvability threshold S_n solvable iff n ≤ 4, and a comprehensive census of 23 groups. The A₅ realization (1408 lines) is the crown jewel: the first non-solvable group realized, using Eisenstein's criterion, Sylow theory, Vandermonde discriminant analysis, and the uniqueness of the index-2 subgroup A₅ in S₅. The 4 independent axioms represent well-known theorems blocked on Mathlib infrastructure (Kronecker-Weber, Shafarevich, disc=Vandermonde² identity, Dedekind's theorem).",
     "implications": "The IGP has profound implications:\n\n1. **ABSOLUTE GALOIS GROUP**: A positive answer would mean the absolute Galois group Gal(ℚ̄/ℚ) surjects onto every finite group — revealing its structure.\n\n2. **GALOIS REPRESENTATIONS**: The IGP is connected to the theory of Galois representations, central to the Langlands program and the proof of Fermat's Last Theorem.\n\n3. **ARITHMETIC GEOMETRY**: Via Grothendieck's programme, the IGP connects to the study of algebraic curves and their fundamental groups.\n\n4. **ALGORITHM DESIGN**: Positive answers might come with explicit polynomial constructions, useful for cryptography and computation.\n\n5. **DIFFERENTIAL GALOIS THEORY**: The analogous question for differential equations (Kovacic's problem) has been solved, suggesting approaches for the classical case.",
     "openQuestions": [
       "Does every finite group appear as a Galois group over ℚ?",

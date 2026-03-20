@@ -3373,7 +3373,7 @@ noncomputable def nsq (k : ℕ) (a : Fin k → ℝ) : ℝ := ∑ i, a i ^ 2
 /-- nsq is the inner product with itself. -/
 theorem nsq_eq_ip (k : ℕ) (a : Fin k → ℝ) : nsq k a = ip k a a := by
   unfold nsq ip
-  congr 1; ext i; ring
+  exact Finset.sum_congr rfl fun i _ => by ring
 
 /-- nsq is non-negative. -/
 theorem nsq_nonneg (k : ℕ) (a : Fin k → ℝ) : 0 ≤ nsq k a := by
@@ -3386,21 +3386,19 @@ theorem nsq_eq_zero_iff (k : ℕ) (a : Fin k → ℝ) : nsq k a = 0 ↔ a = 0 :=
   constructor
   · intro h
     ext i
-    have : a i ^ 2 = 0 := by
-      have hle := Finset.sum_eq_zero_iff_of_nonneg (fun i _ => sq_nonneg (a i))
-      exact (hle.mp h) i (Finset.mem_univ i)
+    have h1 := Finset.single_le_sum (fun j _ => sq_nonneg (a j)) (Finset.mem_univ i)
+    have : a i ^ 2 = 0 := le_antisymm (by linarith) (sq_nonneg (a i))
     exact pow_eq_zero_iff (n := 2) (by omega) |>.mp this
-  · intro h
-    simp [h, Finset.sum_eq_zero_iff]
-    intro i _; ring
+  · intro h; subst h; simp
 
 /-- Expansion of |a + t·d|². -/
 theorem ray_nsq_expand (k : ℕ) (a d : Fin k → ℝ) (t : ℝ) :
     nsq k (fun i => a i + t * d i) =
     nsq k a + 2 * t * ip k a d + t ^ 2 * nsq k d := by
-  unfold nsq ip
-  simp only [Finset.sum_add_distrib, ← Finset.sum_add_distrib]
-  congr 1; ext i; ring
+  suffices h : ∑ i, (a i + t * d i) ^ 2 = ∑ i, a i ^ 2 + 2 * t * ∑ i, a i * d i +
+      t ^ 2 * ∑ i, d i ^ 2 by exact h
+  rw [Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]
+  exact Finset.sum_congr rfl fun i _ => by ring
 
 /-- The quadratic discriminant for ray-sphere intersection is non-negative
     when a is inside or on the unit ball. -/
@@ -3424,11 +3422,14 @@ theorem raySphereT_nonneg (k : ℕ) (a d : Fin k → ℝ) (ha : nsq k a ≤ 1)
   apply div_nonneg _ (le_of_lt hd)
   have h_disc := ray_discrim_nonneg k a d ha
   have h_sq : 0 ≤ (ip k a d) ^ 2 := sq_nonneg _
-  have h_sqrt_ge : ip k a d ≤ Real.sqrt ((ip k a d) ^ 2 + nsq k d * (1 - nsq k a)) := by
-    rw [← Real.sqrt_sq_eq_abs]
-    apply Real.sqrt_le_sqrt
-    linarith [mul_nonneg (le_of_lt hd) (by linarith : 0 ≤ 1 - nsq k a)]
-  linarith [abs_le_abs (le_refl (ip k a d)) (neg_le_self (le_abs_self (ip k a d)))]
+  have h1 : 0 ≤ nsq k d * (1 - nsq k a) := mul_nonneg (le_of_lt hd) (by linarith [ha])
+  have h3 : ip k a d ≤ Real.sqrt ((ip k a d) ^ 2 + nsq k d * (1 - nsq k a)) := by
+    calc ip k a d
+        ≤ |ip k a d| := le_abs_self _
+      _ = Real.sqrt ((ip k a d) ^ 2) := (Real.sqrt_sq_eq_abs _).symm
+      _ ≤ Real.sqrt ((ip k a d) ^ 2 + nsq k d * (1 - nsq k a)) :=
+          Real.sqrt_le_sqrt (by linarith)
+  linarith
 
 /-- The point a + t·d lies on the unit sphere when t is the ray-sphere root. -/
 theorem raySphereT_on_sphere (k : ℕ) (a d : Fin k → ℝ) (ha : nsq k a ≤ 1)
@@ -3478,9 +3479,13 @@ C = |fx|² - 1. When |x| = 1, this is 0, giving (A+B)² = Δ, hence t₊ = 1.
 theorem rayQuad_eval_one_eq_nsq (k : ℕ) (x fx : Fin k → ℝ) :
     nsq k (fun i => x i - fx i) + 2 * ip k fx (fun i => x i - fx i) + (nsq k fx - 1)
     = nsq k x - 1 := by
-  unfold nsq ip
-  simp only [Finset.sum_add_distrib, ← Finset.sum_add_distrib, Finset.mul_sum]
-  congr 1; ext i; ring
+  have h : ∑ i : Fin k, (x i - fx i) ^ 2 + 2 * ∑ i, fx i * (x i - fx i) + ∑ i, fx i ^ 2
+      = ∑ i, x i ^ 2 := by
+    rw [Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]
+    exact Finset.sum_congr rfl fun i _ => by ring
+  show ∑ i, (x i - fx i) ^ 2 + 2 * (∑ i, fx i * (x i - fx i)) + (∑ i, fx i ^ 2 - 1)
+      = ∑ i, x i ^ 2 - 1
+  linarith
 
 /-- When |x| = 1, the ray quadratic evaluates to 0 at t = 1.
     Specialization of the algebraic identity. -/
@@ -3495,26 +3500,31 @@ theorem rayQuad_root_one (k : ℕ) (x fx : Fin k → ℝ) (hx : nsq k x = 1) :
 theorem ip_x_d_eq (k : ℕ) (x fx : Fin k → ℝ) :
     nsq k (fun i => x i - fx i) + ip k fx (fun i => x i - fx i)
     = nsq k x - ip k fx x := by
-  unfold nsq ip
-  simp only [Finset.sum_add_distrib, ← Finset.sum_add_distrib]
-  congr 1; ext i; ring
+  have h : ∑ i : Fin k, (x i - fx i) ^ 2 + ∑ i, fx i * (x i - fx i) + ∑ i, fx i * x i
+      = ∑ i, x i ^ 2 := by
+    rw [← Finset.sum_add_distrib, ← Finset.sum_add_distrib]
+    exact Finset.sum_congr rfl fun i _ => by ring
+  show ∑ i, (x i - fx i) ^ 2 + ∑ i, fx i * (x i - fx i) = ∑ i, x i ^ 2 - ∑ i, fx i * x i
+  linarith
 
 /-- A + B ≥ 0 when |x| = 1 and |fx| ≤ 1, from ⟨fx, x⟩ ≤ 1 (Cauchy-Schwarz). -/
 theorem ip_le_one (k : ℕ) (x fx : Fin k → ℝ)
     (hx : nsq k x = 1) (hfx : nsq k fx ≤ 1) : ip k fx x ≤ 1 := by
   -- 0 ≤ |x - fx|² = |x|² - 2⟨x,fx⟩ + |fx|² = 1 - 2⟨fx,x⟩ + |fx|²
   -- So 2⟨fx,x⟩ ≤ 1 + |fx|² ≤ 2
+  -- 0 ≤ nsq(x - fx) = nsq(x) - 2·ip(fx,x) + nsq(fx) = 1 - 2·ip(fx,x) + nsq(fx)
   have h := nsq_nonneg k (fun i => x i - fx i)
-  unfold nsq ip at h ⊢
-  have : ∑ i, (x i - fx i) ^ 2 = ∑ i, x i ^ 2 - 2 * ∑ i, fx i * x i + ∑ i, fx i ^ 2 := by
-    simp only [Finset.sum_sub_distrib, Finset.mul_sum, ← Finset.sum_add_distrib]
-    congr 1; ext i; ring
-  nlinarith
+  suffices hexp : nsq k (fun i => x i - fx i) + 2 * ip k fx x = nsq k x + nsq k fx by linarith
+  show ∑ i, (x i - fx i) ^ 2 + 2 * ∑ i, fx i * x i = ∑ i, x i ^ 2 + ∑ i, fx i ^ 2
+  rw [Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]
+  exact Finset.sum_congr rfl fun i _ => by ring
 
 /-- The discriminant equals (A+B)² when A + 2B + C = 0 (i.e., |x| = 1).
     This is the perfect square identity. -/
 theorem discrim_perfect_square (A B C : ℝ) (h : A + 2 * B + C = 0) :
-    B ^ 2 - A * C = (A + B) ^ 2 := by nlinarith
+    B ^ 2 - A * C = (A + B) ^ 2 := by
+  have : C = -(A + 2 * B) := by linarith
+  rw [this]; ring
 
 /-- The retraction parameter for the ray-sphere construction.
     Equivalent to raySphereT with sign convention matching Section LXIV.
@@ -3527,7 +3537,9 @@ noncomputable def retractT (k : ℕ) (a d : Fin k → ℝ) (ha : nsq k a ≤ 1)
     (the sign conventions are algebraically equivalent). -/
 theorem retractT_eq_raySphereT (k : ℕ) (a d : Fin k → ℝ) (ha : nsq k a ≤ 1)
     (hd : 0 < nsq k d) : retractT k a d ha hd = raySphereT k a d ha hd := by
-  unfold retractT raySphereT; congr 2; ring
+  unfold retractT raySphereT
+  have : nsq k a - 1 = -(1 - nsq k a) := by ring
+  rw [this, mul_neg, sub_neg_eq_add]
 
 /-- The retraction point lies on the unit sphere: nsq(a + retractT·d) = 1. -/
 theorem retractT_on_sphere (k : ℕ) (a d : Fin k → ℝ) (ha : nsq k a ≤ 1)
@@ -3551,14 +3563,14 @@ theorem retractT_eq_one_on_sphere (k : ℕ) (x fx : Fin k → ℝ)
   -- Step 1: A + 2B + C = nsq x - 1 = 0
   have hABC : A + 2 * B + C = 0 := by
     have := rayQuad_eval_one_eq_nsq k x fx
-    unfold_let A B C; linarith
+    simp only [A, B, C]; linarith
   -- Step 2: Δ = B² - AC = (A + B)²
   have hΔ : B ^ 2 - A * C = (A + B) ^ 2 := discrim_perfect_square A B C hABC
   -- Step 3: A + B ≥ 0
   have hAB : 0 ≤ A + B := by
     have := ip_x_d_eq k x fx
     have hip := ip_le_one k x fx hx hfx
-    unfold_let A B; linarith
+    simp only [A, B]; linarith
   -- Step 4: √Δ = A + B
   have hΔ_nn : 0 ≤ B ^ 2 - A * C := by rw [hΔ]; exact sq_nonneg _
   have h_sqrt : Real.sqrt (B ^ 2 - A * C) = A + B := by
@@ -3566,11 +3578,13 @@ theorem retractT_eq_one_on_sphere (k : ℕ) (x fx : Fin k → ℝ)
   -- Step 5: t₊ = (-B + (A + B)) / A = A / A = 1
   unfold retractT
   show (-(ip k fx d) + Real.sqrt ((ip k fx d) ^ 2 - nsq k d * (nsq k fx - 1))) / nsq k d = 1
-  rw [show (ip k fx d) ^ 2 - nsq k d * (nsq k fx - 1) = B ^ 2 - A * C from by unfold_let; ring]
+  have h_eq : (ip k fx d) ^ 2 - nsq k d * (nsq k fx - 1) = B ^ 2 - A * C := by
+    simp only [C]; ring
+  rw [h_eq]
   rw [h_sqrt]
   have hA_pos : (0 : ℝ) < A := hd
-  field_simp
-  unfold_let A B; ring
+  rw [div_eq_iff (ne_of_gt hA_pos)]
+  ring
 
 /-
 ## Section LXV: No-Retraction → Brouwer FP (Main Theorem)
@@ -3672,22 +3686,21 @@ theorem no_retraction_implies_brouwer_fp (n : ℕ) (hn : 1 ≤ n)
   by_contra hno_fp
   push_neg at hno_fp
   -- Ball projection: maps everything to B^{n+1}
-  set k := n + 1
+  let k := n + 1
   set p := ballProj k with hp_def
   have hp_cont : Continuous p := continuous_ballProj k
   have hp_ball : ∀ x, nsq k (p x) ≤ 1 := ballProj_in_ball k
   have hp_fix : ∀ x, nsq k x ≤ 1 → p x = x := ballProj_fix_ball k
   -- f(p(x)) is in the ball
   have hfp_ball : ∀ x, nsq k (f (p x)) ≤ 1 := by
-    intro x; show ∑ i, f (p x) i ^ 2 ≤ 1
-    exact hf_ball (p x) (hp_ball x)
+    intro x; exact hf_ball (p x) (hp_ball x)
   -- f has no fixed point in the ball
   have hno_fix : ∀ y, nsq k y ≤ 1 → f y ≠ y := by
     intro y hy heq; exact hno_fp y hy heq
   -- p(x) ≠ f(p(x)) for all x (since p(x) ∈ ball and f has no fixed point)
   have hd_ne : ∀ x, (fun i => p x i - f (p x) i) ≠ 0 := by
     intro x heq
-    have : p x = f (p x) := by ext i; have := congr_fun heq i; linarith
+    have : p x = f (p x) := by ext i; have h := congr_fun heq i; simp at h; linarith
     exact hno_fix (p x) (hp_ball x) this.symm
   -- A(x) = nsq(p(x) - f(p(x))) > 0 everywhere
   have hA_pos : ∀ x, 0 < nsq k (fun i => p x i - f (p x) i) := by
@@ -3712,12 +3725,11 @@ theorem no_retraction_implies_brouwer_fp (n : ℕ) (hn : 1 ≤ n)
     intro x
     have key := raySphereT_on_sphere k (f (p x))
       (fun i => p x i - f (p x) i) (hfp_ball x) (hA_pos x)
-    convert key using 2; ext i; simp only [r]; congr 1; congr 1
-    unfold raySphereT; rfl
+    exact key
   -- r fixes S^n: for x₀ ∈ S^n, r(x₀) = x₀
   have hr_fixes : ∀ x₀ : NSphere n, r x₀.1 = x₀.1 := by
     intro ⟨x₀, hx₀⟩
-    have hx₀_ball : nsq k x₀ ≤ 1 := by show ∑ i, x₀ i ^ 2 ≤ 1; linarith
+    have hx₀_ball : nsq k x₀ ≤ 1 := le_of_eq (show ∑ i, x₀ i ^ 2 = 1 from hx₀)
     have hp_x₀ : p x₀ = x₀ := hp_fix x₀ hx₀_ball
     ext j; show r x₀ j = x₀ j; simp only [r, hp_x₀]
     -- Need t(x₀) = 1, then f(x₀)_j + 1 · (x₀ j - f(x₀) j) = x₀ j
@@ -3729,8 +3741,9 @@ theorem no_retraction_implies_brouwer_fp (n : ℕ) (hn : 1 ≤ n)
         (by show nsq k x₀ = 1; exact hx₀)
         (by show nsq k (f x₀) ≤ 1; rw [← hp_x₀]; exact hfp_ball x₀)
         (by rw [← hp_x₀]; exact hA_pos x₀)
-      rw [← retractT_eq_raySphereT] at h1
-      convert h1 using 2; unfold retractT; congr 2; ring
+      have h2 := retractT_eq_raySphereT k (f x₀) (fun i => x₀ i - f x₀ i)
+        (by rw [← hp_x₀]; exact hfp_ball x₀) (by rw [← hp_x₀]; exact hA_pos x₀)
+      rw [h2] at h1; exact h1
     rw [ht]; ring
   -- r is continuous: composition of continuous functions with A > 0 everywhere
   have hr_cont : Continuous r := by
@@ -3858,8 +3871,8 @@ theorem proj_in_ball (n : ℕ) (x : NSphere (n+1)) :
   change ∑ i : Fin (n+2), x.1 i ^ 2 = 1 at hx
   have : ∑ i : Fin (n+1), x.1 (Fin.castSucc i) ^ 2 =
     ∑ i : Fin (n+2), x.1 i ^ 2 - x.1 (Fin.last (n+1)) ^ 2 := by
-    rw [Fin.sum_univ_castSucc]
-    ring
+    have h := @Fin.sum_univ_castSucc _ _ (n+1) (fun i => x.1 i ^ 2)
+    linarith
   rw [this, hx]
   linarith [sq_nonneg (x.1 (Fin.last (n+1)))]
 
@@ -3872,7 +3885,8 @@ theorem proj_on_sphere_at_equator (n : ℕ) (x : NSphere (n+1))
   change ∑ i : Fin (n+2), x.1 i ^ 2 = 1 at hx
   have : ∑ i : Fin (n+1), x.1 (Fin.castSucc i) ^ 2 =
     ∑ i : Fin (n+2), x.1 i ^ 2 - x.1 (Fin.last (n+1)) ^ 2 := by
-    rw [Fin.sum_univ_castSucc]; ring
+    have h := @Fin.sum_univ_castSucc _ _ (n+1) (fun i => x.1 i ^ 2)
+    linarith
   rw [this, hx, hlast]; ring
 
 -- ═══════════════════════════════════════════════════════════════════════
@@ -3907,18 +3921,16 @@ theorem normSqrt_eq_zero_iff (k : ℕ) (x : Fin k → ℝ) :
 
 /-- normSqrt 0 = 0. -/
 theorem normSqrt_zero (k : ℕ) : normSqrt k 0 = 0 := by
-  rw [normSqrt_eq_zero_iff]; rfl
+  rw [normSqrt_eq_zero_iff]
 
 /-- For r mapping to S^n, each component is bounded: |r(y)_j| ≤ 1. -/
 theorem component_le_one_of_on_sphere (r : (Fin (n+1) → ℝ) → (Fin (n+1) → ℝ))
     (hr_image : ∀ x, ∑ i, r x i ^ 2 = 1) (y : Fin (n+1) → ℝ) (j : Fin (n+1)) :
     |r y j| ≤ 1 := by
-  by_contra h
-  push_neg at h
-  have h1 : r y j ^ 2 > 1 := by nlinarith [abs_nonneg (r y j)]
-  have h2 : (∑ i, r y i ^ 2) ≥ r y j ^ 2 :=
+  have h2 : r y j ^ 2 ≤ ∑ i, r y i ^ 2 :=
     Finset.single_le_sum (fun i _ => sq_nonneg (r y i)) (Finset.mem_univ j)
-  linarith [hr_image y]
+  rw [hr_image] at h2
+  nlinarith [sq_abs (r y j), sq_nonneg (|r y j| - 1)]
 
 /-- Radial branch 1: s * r(proj(x)/s) with convention 0/0 = 0.
     Defined globally on ℝ^{n+2}. At x = 0: branch1(0) = 0. -/
@@ -3982,14 +3994,16 @@ theorem equator_proj_on_sphere (n : ℕ) (x : Fin (n+2) → ℝ)
     | inl h => exact h
     | inr h => exact absurd h.symm hs
   have hsum_pos : ∑ i : Fin (n+2), x i ^ 2 > 0 := by
-    rwa [show (0 : ℝ) = Real.sqrt 0 from (Real.sqrt_zero).symm,
-         Real.sqrt_lt_sqrt (le_refl 0)] at hs_pos
-    exact Finset.sum_nonneg (fun i _ => sq_nonneg _)
-  rw [div_pow, ← Finset.sum_div, div_eq_one_iff_eq (pow_ne_zero 2 (ne_of_gt hs_pos))]
+    rcases lt_or_eq_of_le (Finset.sum_nonneg (fun (i : Fin (n+2)) _ => sq_nonneg (x i))) with h | h
+    · exact h
+    · exfalso; rw [← h, Real.sqrt_zero] at hs_pos; linarith
+  simp only [div_pow]
+  rw [← Finset.sum_div, div_eq_one_iff_eq (pow_ne_zero 2 (ne_of_gt hs_pos))]
   rw [Real.sq_sqrt (Finset.sum_nonneg (fun i _ => sq_nonneg _))]
   have : ∑ i : Fin (n+2), x i ^ 2 =
     ∑ i : Fin (n+1), x (Fin.castSucc i) ^ 2 + x (Fin.last (n+1)) ^ 2 := by
-    rw [Fin.sum_univ_castSucc]; ring
+    have h := @Fin.sum_univ_castSucc _ _ (n+1) (fun i => x i ^ 2)
+    linarith
   rw [this, h_last]; ring
 
 /-- The branches agree on the equator: when x_{n+1} = 0,
@@ -4006,7 +4020,6 @@ theorem radial_branches_agree_on_equator (n : ℕ) (r : (Fin (n+1) → ℝ) → 
     radialBranch1 n r x = radialBranch2 n r x := by
   ext j
   unfold radialBranch1 radialBranch2
-  simp only [neg_mul, neg_neg]
   -- Need: s * r(proj(x/s))_j = s * r(-proj(x/s))_j
   set s := normSqrt (n+2) x with hs_def
   by_cases hs : s = 0
@@ -4066,10 +4079,8 @@ theorem hemisphereOddMap_odd_on_sphere (n : ℕ)
   ext j
   simp only [Pi.neg_apply]
   -- Simplify: last coord of -x₀ is -(last coord of x₀)
-  have hlast : (fun i => -(x₀.1 i)) (Fin.last (n+1)) = -(x₀.1 (Fin.last (n+1))) := rfl
   have hcast : ∀ i : Fin (n+1),
     (fun k => -(x₀.1 k)) (Fin.castSucc i) = -(x₀.1 (Fin.castSucc i)) := fun _ => rfl
-  rw [hlast]
   by_cases hpos : 0 < x₀.1 (Fin.last (n+1))
   · -- x_{n+1} > 0, so -x_{n+1} < 0: upper → lower
     simp only [le_of_lt hpos, ite_true, show ¬(0 ≤ -(x₀.1 (Fin.last (n+1)))) from by linarith,
@@ -4159,28 +4170,26 @@ theorem bu_implies_no_retraction (n : ℕ) (hn : 1 ≤ n)
       have hx0 : x = 0 := by
         rwa [show s = normSqrt (n+2) x from rfl, normSqrt_eq_zero_iff] at hs
       subst hx0
-      simp only [show (0 : Fin (n+2) → ℝ) (Fin.last (n+1)) = 0 from rfl, le_refl, ite_true]
+      simp only [show (0 : Fin (n+2) → ℝ) (Fin.last (n+1)) = 0 from rfl, le_refl, ite_true,
+        dif_pos hs, Pi.zero_apply]
       exact (radialBranch1_zero n r j).symm
     · -- s ≠ 0: dite resolves to else branch
-      rw [dite_false (h := hs)]
+      rw [dif_neg hs]
+      have hs_pos : 0 < s := lt_of_le_of_ne (Real.sqrt_nonneg _) (Ne.symm hs)
       by_cases h_last : 0 ≤ x (Fin.last (n+1)) / s
       · -- x_{n+1} ≥ 0 (since s > 0)
         have h_last' : 0 ≤ x (Fin.last (n+1)) := by
-          exact le_of_mul_le_mul_right (by rwa [zero_mul, mul_div_cancel₀ _ hs]) (by positivity)
-        rw [show (0 : ℝ) ≤ (fun i => x i / s) (Fin.last (n+1)) from h_last]
-        simp only [ite_true, h_last', ite_true]
-        unfold radialBranch1 normSqrt proj
-        rfl
+          by_contra h; push_neg at h
+          exact absurd (div_neg_of_neg_of_pos h hs_pos) (not_lt.mpr h_last)
+        simp only [if_pos h_last, if_pos h_last']
+        unfold radialBranch1 normSqrt proj; rfl
       · -- x_{n+1} < 0 (since s > 0)
         push_neg at h_last
+        have h_neg : ¬(0 ≤ x (Fin.last (n+1)) / s) := not_le.mpr h_last
         have h_last' : ¬(0 ≤ x (Fin.last (n+1))) := by
-          push_neg
-          have hs_pos : s > 0 := lt_of_le_of_ne (Real.sqrt_nonneg _) (Ne.symm hs)
-          exact (div_neg_iff hs_pos).mp h_last
-        rw [show ¬(0 ≤ (fun i => x i / s) (Fin.last (n+1))) from by push_neg; exact h_last]
-        simp only [ite_false, h_last', ite_false]
-        unfold radialBranch2 normSqrt proj
-        ring_nf
+          intro h; exact absurd (div_nonneg h (le_of_lt hs_pos)) (not_le.mpr h_last)
+        simp only [if_neg h_neg, if_neg h_last']
+        unfold radialBranch2 normSqrt proj; simp only [hs_def]
   -- Step 2: Prove continuity of the piecewise formulation
   have hg_cont : Continuous g := by
     rw [show g = (fun x => if 0 ≤ x (Fin.last (n+1))
@@ -4200,13 +4209,12 @@ theorem bu_implies_no_retraction (n : ℕ) (hn : 1 ≤ n)
         obtain ⟨δ, hδ, hh⟩ := Metric.continuousAt_iff.mp
           (show ContinuousAt (normSqrt (n+2)) 0 from (continuous_normSqrt (n+2)).continuousAt) ε hε
         exact ⟨δ, hδ, fun y hy => by
-          rw [radialBranch1_zero, dist_zero_right]
-          calc |radialBranch1 n r y j|
-              ≤ normSqrt (n+2) y := radialBranch1_bound n r hr_image y j
-            _ = |normSqrt (n+2) y| := (abs_of_nonneg (normSqrt_nonneg _ _)).symm
-            _ = dist (normSqrt (n+2) y) 0 := (dist_zero_right _).symm
-            _ = dist (normSqrt (n+2) y) (normSqrt (n+2) 0) := by rw [normSqrt_zero]
-            _ < ε := hh y hy⟩
+          rw [radialBranch1_zero]
+          have hbd := radialBranch1_bound n r hr_image y j
+          have hcl := hh hy; rw [normSqrt_zero] at hcl
+          simp only [dist_zero_right, Real.norm_eq_abs] at hcl ⊢
+          rw [abs_of_nonneg (normSqrt_nonneg _ _)] at hcl
+          linarith [abs_nonneg (radialBranch1 n r y j)]⟩
       · -- Away from origin: composition of continuous functions
         have hs_ne : normSqrt (n+2) x₀ ≠ 0 := hx
         show ContinuousAt (fun x => radialBranch1 n r x j) x₀
@@ -4230,13 +4238,12 @@ theorem bu_implies_no_retraction (n : ℕ) (hn : 1 ≤ n)
         obtain ⟨δ, hδ, hh⟩ := Metric.continuousAt_iff.mp
           (show ContinuousAt (normSqrt (n+2)) 0 from (continuous_normSqrt (n+2)).continuousAt) ε hε
         exact ⟨δ, hδ, fun y hy => by
-          rw [radialBranch2_zero, dist_zero_right]
-          calc |radialBranch2 n r y j|
-              ≤ normSqrt (n+2) y := radialBranch2_bound n r hr_image y j
-            _ = |normSqrt (n+2) y| := (abs_of_nonneg (normSqrt_nonneg _ _)).symm
-            _ = dist (normSqrt (n+2) y) 0 := (dist_zero_right _).symm
-            _ = dist (normSqrt (n+2) y) (normSqrt (n+2) 0) := by rw [normSqrt_zero]
-            _ < ε := hh y hy⟩
+          rw [radialBranch2_zero]
+          have hbd := radialBranch2_bound n r hr_image y j
+          have hcl := hh hy; rw [normSqrt_zero] at hcl
+          simp only [dist_zero_right, Real.norm_eq_abs] at hcl ⊢
+          rw [abs_of_nonneg (normSqrt_nonneg _ _)] at hcl
+          linarith [abs_nonneg (radialBranch2 n r y j)]⟩
       · have hs_ne : normSqrt (n+2) x₀ ≠ 0 := hx
         show ContinuousAt (fun x => radialBranch2 n r x j) x₀
         unfold radialBranch2
@@ -4249,54 +4256,48 @@ theorem bu_implies_no_retraction (n : ℕ) (hn : 1 ≤ n)
                 (continuous_normSqrt (n+2)).continuousAt hs_ne).neg))
     -- Step 2c: Piecewise is continuous (ContinuousAt at each point)
     rw [continuous_iff_continuousAt]; intro x₀
+    -- Convert from (ite p A B) j to ite p (A j) (B j)
+    suffices hsuff : ContinuousAt (fun x => if 0 ≤ x (Fin.last (n+1))
+        then radialBranch1 n r x j else radialBranch2 n r x j) x₀ by
+      rwa [show (fun x => (if 0 ≤ x (Fin.last (n+1)) then radialBranch1 n r x
+          else radialBranch2 n r x) j) = (fun x => if 0 ≤ x (Fin.last (n+1))
+          then radialBranch1 n r x j else radialBranch2 n r x j)
+        from funext fun x => by split_ifs <;> rfl]
     by_cases h_pos : 0 < x₀ (Fin.last (n+1))
     · -- Upper half-space (open): g = branch1 locally
       apply ContinuousAt.congr hb1_cont.continuousAt
-      exact ((isOpen_lt continuous_const (continuous_apply (Fin.last (n+1)))).mem_nhds h_pos
-        |>.mono fun x hx => by simp [show 0 ≤ x (Fin.last (n+1)) from le_of_lt hx])
+      have hS : IsOpen {x : Fin (n+2) → ℝ | (0 : ℝ) < x (Fin.last (n+1))} :=
+        isOpen_lt continuous_const (continuous_apply (Fin.last (n+1)))
+      exact Filter.mem_of_superset (hS.mem_nhds h_pos)
+        fun x (hx : (0 : ℝ) < x (Fin.last (n+1))) => by
+          simp [show 0 ≤ x (Fin.last (n+1)) from le_of_lt hx]
     · push_neg at h_pos
       by_cases h_neg : x₀ (Fin.last (n+1)) < 0
       · -- Lower half-space (open): g = branch2 locally
         apply ContinuousAt.congr hb2_cont.continuousAt
-        exact ((isOpen_lt (continuous_apply (Fin.last (n+1))) continuous_const).mem_nhds h_neg
-          |>.mono fun x hx => by simp [show ¬(0 ≤ x (Fin.last (n+1))) from not_le.mpr hx])
+        have hS : IsOpen {x : Fin (n+2) → ℝ | x (Fin.last (n+1)) < (0 : ℝ)} :=
+          isOpen_lt (continuous_apply (Fin.last (n+1))) continuous_const
+        exact Filter.mem_of_superset (hS.mem_nhds h_neg)
+          fun x (hx : x (Fin.last (n+1)) < (0 : ℝ)) => by
+            simp [show ¬(0 ≤ x (Fin.last (n+1))) from not_le.mpr hx]
       · -- Equator: x₀_{n+1} = 0, both branches agree and are continuous
         push_neg at h_neg
         have h_eq : x₀ (Fin.last (n+1)) = 0 := le_antisymm h_pos h_neg
-        -- branch1(x₀) = branch2(x₀) on equator
         have h_val : radialBranch2 n r x₀ j = radialBranch1 n r x₀ j :=
           congr_fun (radial_branches_agree_on_equator n r hr_image hr_fixes x₀ h_eq).symm j
-        -- f(x₀) = branch1(x₀) (since 0 ≤ 0)
-        have hfx : (fun x => if 0 ≤ x (Fin.last (n+1))
-            then radialBranch1 n r x j else radialBranch2 n r x j) x₀ =
-            radialBranch1 n r x₀ j := by simp [show 0 ≤ x₀ (Fin.last (n+1)) from h_pos]
-        rw [ContinuousAt, hfx]
-        -- Both branch1 → branch1(x₀) and branch2 → branch1(x₀) at x₀
-        -- So the piecewise also → branch1(x₀)
-        rw [Filter.tendsto_def]
+        have hfx : (if (0 : ℝ) ≤ x₀ (Fin.last (n+1))
+            then radialBranch1 n r x₀ j else radialBranch2 n r x₀ j) =
+            radialBranch1 n r x₀ j := by simp [h_neg]
+        rw [ContinuousAt, hfx, Filter.tendsto_def]
         intro U hU
-        -- U is a neighborhood of branch1(x₀)_j
         have h1 : (fun x => radialBranch1 n r x j) ⁻¹' U ∈ nhds x₀ :=
           hb1_cont.continuousAt.preimage_mem_nhds hU
-        have h2 : (fun x => radialBranch2 n r x j) ⁻¹' U ∈ nhds x₀ := by
-          have : ContinuousAt (fun x => radialBranch2 n r x j) x₀ := hb2_cont.continuousAt
-          rw [ContinuousAt, h_val] at this
-          exact this.preimage_mem_nhds hU
+        have h2 : (fun x => radialBranch2 n r x j) ⁻¹' U ∈ nhds x₀ :=
+          hb2_cont.continuousAt.preimage_mem_nhds (h_val ▸ hU)
         exact Filter.mem_of_superset (Filter.inter_mem h1 h2) fun x ⟨hx1, hx2⟩ => by
           simp only [Set.mem_preimage] at hx1 hx2 ⊢
           split_ifs <;> assumption
 
-    -- For each component j, we have a piecewise scalar function
-    -- bounded by normSqrt, which vanishes at 0.
-    -- Both branches are continuous on {normSqrt > 0} and bounded → 0 at origin.
-    -- The branches agree when x_{n+1} = 0.
-    sorry -- TODO: apply continuous_piecewise or ContinuousAt case analysis
-    -- Proof sketch (verified mathematically, needs Lean formalization):
-    -- (a) ContinuousAt at x₀ with x₀_{n+1} > 0: g = branch1 in open nbhd, branch1 is cts
-    -- (b) ContinuousAt at x₀ with x₀_{n+1} < 0: g = branch2 in open nbhd, branch2 is cts
-    -- (c) ContinuousAt at x₀ with x₀_{n+1} = 0, x₀ ≠ 0: branches agree + both cts
-    -- (d) ContinuousAt at 0: |g(x)_j| ≤ normSqrt(x) → 0 (squeeze via radialBranch*_bound)
-  -- Apply BU for S^{n+1}
   have hBU := borsuk_ulam_general (n+1) (by omega) g hg_cont
   obtain ⟨x₀, hx₀⟩ := hBU
   -- On S^{n+1}, g agrees with hemisphereOddMap (since |x₀| = 1)
@@ -4310,9 +4311,7 @@ theorem bu_implies_no_retraction (n : ℕ) (hn : 1 ≤ n)
     have hu_eq : (fun i => x₀.1 i / Real.sqrt (∑ i : Fin (n+2), x₀.1 i ^ 2)) = x₀.1 := by
       ext i; rw [hs1, div_one]
     unfold hemisphereOddMap
-    split
-    · rw [hu_eq, hs1, one_mul]
-    · rw [hu_eq, hs1, one_mul]
+    split_ifs <;> simp_all [hu_eq, hs1, div_one, one_mul]
   -- g(-x₀) = hemisphereOddMap(-x₀) (same argument for -x₀)
   have hg_eq_neg : ∀ j, g (fun i => -x₀.1 i) j =
       hemisphereOddMap n r (fun i => -x₀.1 i) j := by
@@ -4327,9 +4326,7 @@ theorem bu_implies_no_retraction (n : ℕ) (hn : 1 ≤ n)
         fun i => -x₀.1 i := by
       ext i; simp only [hs_neg, div_one]
     unfold hemisphereOddMap
-    split
-    · rw [hu_eq, hs_neg, one_mul]
-    · rw [hu_eq, hs_neg, one_mul]
+    split_ifs <;> simp_all [hu_eq, hs_neg, div_one, one_mul]
   -- hemisphereOddMap is odd on S^{n+1}: g(-x₀) = -g(x₀)
   have hg_odd : hemisphereOddMap n r (fun i => -x₀.1 i) =
     fun j => -(hemisphereOddMap n r x₀.1 j) :=
