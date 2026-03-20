@@ -1,0 +1,49 @@
+{
+  "slug": "erdos-131-oq-01",
+  "title": "Erdős #131: Non-Dividing Sets Growth Rate",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\exists H, F(N) \\leq N^{1/4+o(1)} \\text{ and } F(N) \\geq \\exp(c\\sqrt{\\log N})",
+    "plain": "Determine the growth rate of F(N), the maximal size of a non-dividing subset of {1,...,N}. Known: N^{1/5} ≤ F(N) ≤ N^{1/4+o(1)}."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-20",
+    "iteration": 1,
+    "focus": "Formalization with definitions, implications, examples, bound comparisons"
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Erdős 131 formalized with core definitions (IsNonDividing, IsNonAveraging, F(N)), proved implications (nondividing→nonaveraging, F≤g), concrete examples, and exponent comparisons. 6 sorries for known results not in Mathlib.",
+    "builtItems": [
+      "IsNonDividing, IsNonDividingAlt, IsNonAveraging definitions",
+      "nondividingAlt_implies_nondividing proved",
+      "nondividing_not_iff_alt: {2,4} distinguishes the two definitions",
+      "nondividing_implies_nonaveraging proved",
+      "F(N) defined, F_monotonic proved",
+      "F_le_g proved (non-dividing ≤ non-averaging function)",
+      "Concrete examples: {2,3} non-dividing, {2,3,5} NOT non-dividing, {3,5,7} NOT non-dividing",
+      "Exponent comparisons: 1/4 < 1/2, 1/5 < 1/4, gap = 1/20"
+    ],
+    "insights": [
+      "Non-dividing sets are strictly contained in non-averaging sets (F ≤ g)",
+      "Pham-Zakharov 2024: upper bound N^{1/4+o(1)} via non-averaging connection",
+      "Finding non-dividing sets of size ≥ 3 is nontrivial: {3,5,7} fails because 3|12",
+      "The polynomial exponent gap between upper (1/4) and lower (1/5) bounds is 1/20",
+      "Original conjecture F(N) < (log N)^O(1) was disproved by Straus's subexponential lower bound"
+    ],
+    "nextSteps": [
+      "Prove ELRSS upper bound (requires combinatorial argument)",
+      "Construct explicit large non-dividing sets for lower bounds",
+      "Connect to Erdős Problem #186 (non-averaging sets) more deeply"
+    ]
+  },
+  "tags": ["erdos", "number-theory", "combinatorics", "non-dividing-sets"],
+  "started": "2026-03-20T14:00:00Z",
+  "lastUpdate": "2026-03-20T14:30:00Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [{"lineCount": 310}]
+}
