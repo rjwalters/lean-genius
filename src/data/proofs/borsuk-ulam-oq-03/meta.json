@@ -2,7 +2,7 @@
   "id": "borsuk-ulam-oq-03",
   "title": "Constructive Borsuk-Ulam Theorem and Equivalences",
   "slug": "borsuk-ulam-oq-03",
-  "description": "Comprehensive formalization of the Borsuk-Ulam theorem (~4800 lines, ~220 declarations, 0 sorries). Includes: constructive 1D BU via IVT, Tucker's 2D lemma, Sperner's lemma, KKM lemma, formal equivalence chains, Lusternik-Schnirelmann covering theorem, no-retraction theorem, Brouwer fixed-point theorem, ray-sphere intersection infrastructure, and a complete axiom reduction chain showing all 4 core axioms reduce to a single independent axiom (borsuk_ulam_general). Applications include Ham Sandwich theorem, Necklace Splitting, and Kneser's conjecture. Degree theory section covers antipodal degree and odd maps.",
+  "description": "Comprehensive formalization of the Borsuk-Ulam theorem (~5000 lines, ~230 declarations, 0 sorries). Includes: constructive 1D BU via IVT, Tucker's 2D lemma, Sperner's lemma, KKM lemma, formal equivalence chains, Lusternik-Schnirelmann covering theorem, no-retraction theorem, Brouwer fixed-point theorem, ray-sphere intersection infrastructure, and a complete axiom reduction chain showing all 4 core axioms reduce to a single independent axiom (borsuk_ulam_general). Applications include Ham Sandwich theorem, Necklace Splitting, Kneser's conjecture, no-odd-map-between-spheres obstruction, equivariant map hierarchy, and isobarycentric point theorem. Degree theory section covers antipodal degree and odd maps.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Borsuk%E2%80%93Ulam_theorem",
@@ -22,12 +22,13 @@
       "research",
       "lusternik-schnirelmann",
       "ham-sandwich",
-      "degree-theory"
+      "degree-theory",
+      "equivariant-maps"
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 6,
-    "assumptions": "6 axiom declarations: borsuk_ulam_general (n≥1), no_retraction (n≥1, REDUNDANT - proved from BU), brouwer_fixed_point (nD, REDUNDANT - proved from no_retraction), lusternik_schnirelmann (n≥1, REDUNDANT - proved from BU), ham_sandwich_general (applications), odd_map_odd_degree (degree theory). Only 3 are independent: borsuk_ulam_general + ham_sandwich_general + odd_map_odd_degree. The 1D cases are all proved directly from IVT with 0 axioms.",
+    "axiomCount": 4,
+    "assumptions": "4 axiom declarations: borsuk_ulam_general (n>=1, INDEPENDENT), no_retraction (n>=1, REDUNDANT - proved from BU via hemisphere folding), brouwer_fixed_point (nD, REDUNDANT - proved from no_retraction via ray-sphere retraction), lusternik_schnirelmann (n>=1, REDUNDANT - proved from BU via infDist). Only 1 independent axiom: borsuk_ulam_general. Two former axioms (ham_sandwich_general, odd_map_odd_degree) converted to theorems. The 1D cases are all proved directly from IVT with 0 axioms.",
     "mathlibDependencies": [
       {
         "theorem": "intermediate_value_Icc",
@@ -36,29 +37,40 @@
       },
       {
         "theorem": "Real.cos_sq_add_sin_sq",
-        "description": "cos²θ + sin²θ = 1: unit circle parametrization",
+        "description": "cos^2 + sin^2 = 1: unit circle parametrization",
         "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
       },
       {
         "theorem": "isCompact_Icc",
         "description": "Closed bounded intervals are compact",
         "module": "Mathlib.Topology.Order.Basic"
+      },
+      {
+        "theorem": "Metric.infDist",
+        "description": "Distance to a set, used for LS and KKM proofs",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
       }
     ],
     "originalContributions": [
       "1D Borsuk-Ulam on [-1,1] via IVT on antisymmetric difference g(x)=f(x)-f(-x)",
-      "1D Borsuk-Ulam on S^1 via trigonometric parametrization and IVT on [0,π]",
-      "Equivalence: BU ↔ odd continuous functions have zeros",
-      "No odd continuous map to {±1} exists (1D no-retraction theorem)",
-      "Tucker's 1D combinatorial lemma via Fin.induction",
-      "1D Brouwer fixed-point theorem via IVT (independent proof)",
-      "Coincidence set {x | f(x)=f(-x)} is compact; unique at 0 for strictly monotone f",
-      "Circle BU is genuinely non-trivial (no self-antipodal points in (0,π))"
+      "1D Borsuk-Ulam on S^1 via trigonometric parametrization and IVT on [0,pi]",
+      "Equivalence: BU <-> odd continuous functions have zeros",
+      "No odd continuous map to {+/-1} exists (1D no-retraction theorem)",
+      "Tucker's 1D and 2D combinatorial lemmas",
+      "Sperner's 1D and 2D lemmas for finite triangulations",
+      "KKM 1D lemma via infDist (proved) with KKM -> no-retraction implication",
+      "Complete axiom reduction chain: BU -> no_retraction -> Brouwer FP, BU -> LS (all 0 sorries)",
+      "Ray-sphere intersection via quadratic formula with perfect-square discriminant identity",
+      "Ball projection x/max(1,|x|) avoiding piecewise continuity entirely",
+      "Radial extension continuity via 4-case ContinuousAt decomposition",
+      "No odd map S^n -> S^{n-1} from BU (sphere-to-sphere obstruction)",
+      "Isobarycentric point theorem for odd functions from BU",
+      "Equivariant map hierarchy: existence iff source_dim <= target_dim"
     ],
     "references": [
       {
         "authors": "K. Borsuk",
-        "title": "Drei Sätze über die n-dimensionale euklidische Sphäre",
+        "title": "Drei Satze uber die n-dimensionale euklidische Sphare",
         "year": "1933",
         "venue": "Fundamenta Mathematicae",
         "note": "Original Borsuk-Ulam theorem"
@@ -69,83 +81,87 @@
         "year": "1946",
         "venue": "Proceedings of the First Canadian Mathematical Congress",
         "note": "Tucker's combinatorial lemma, discrete analog of BU"
+      },
+      {
+        "authors": "J. Matousek",
+        "title": "Using the Borsuk-Ulam Theorem",
+        "year": "2003",
+        "venue": "Universitext, Springer",
+        "note": "Comprehensive reference for BU applications"
       }
     ],
     "dateAdded": "2026-02-26",
     "mathlib_version": "4.26.0",
-    "axioms": 6
+    "axioms": 4
   },
   "overview": {
-    "historicalContext": "**Constructive Borsuk-Ulam**\n\nThe Borsuk-Ulam theorem states that every continuous map f: S^n → ℝ^n has an antipodal pair: a point x with f(x) = f(-x). The classical proof for n ≥ 2 uses algebraic topology (Brouwer degree or homology), which is inherently non-constructive.\n\nFor n = 1, however, the theorem reduces to the Intermediate Value Theorem: define g(x) = f(x) - f(-x), observe g is antisymmetric (g(-a) = -g(a)), and apply IVT to find a zero. This argument is constructive in the sense that it produces a witness via IVT.\n\n**Tucker's Lemma**\n\nThe combinatorial analog: any signed labeling of a subdivided interval with opposite signs at the endpoints must have a sign-change edge. This is the discrete foundation for constructive Borsuk-Ulam proofs.",
-    "problemStatement": "**The Open Question**\n\nCan the 1D Borsuk-Ulam theorem be proved constructively? What is the constructive status of higher-dimensional BU?\n\n**Answer**\n\n- 1D: YES — proved via IVT on the antisymmetric difference\n- S^1 circle: YES — proved via trigonometric parametrization\n- Higher dimensions: Axiomatized (requires algebraic topology not in Mathlib)",
-    "proofStrategy": "**Strategy: IVT on the Antisymmetric Difference**\n\n1. Given continuous f: [-1,1] → ℝ, define g(x) = f(x) - f(-x)\n2. Observe g is antisymmetric: g(-1) = -g(1)\n3. Case split on sign of g(-1):\n   - g(-1) ≤ 0 → g(1) ≥ 0 → IVT gives zero in [-1,1]\n   - g(-1) > 0 → g(1) < 0 → IVT' gives zero in [-1,1]\n4. g(x₀) = 0 means f(x₀) - f(-x₀) = 0, i.e., f(x₀) = f(-x₀)\n\nThe circle version uses the same idea with θ ∈ [0,π] parametrizing antipodal pairs.",
+    "historicalContext": "**Constructive Borsuk-Ulam**\n\nThe Borsuk-Ulam theorem states that every continuous map f: S^n -> R^n has an antipodal pair: a point x with f(x) = f(-x). The classical proof for n >= 2 uses algebraic topology (Brouwer degree or homology), which is inherently non-constructive.\n\nFor n = 1, however, the theorem reduces to the Intermediate Value Theorem: define g(x) = f(x) - f(-x), observe g is antisymmetric (g(-a) = -g(a)), and apply IVT to find a zero. This argument is constructive in the sense that it produces a witness via IVT.\n\n**Tucker's Lemma**\n\nThe combinatorial analog: any signed labeling of a subdivided interval with opposite signs at the endpoints must have a sign-change edge. This is the discrete foundation for constructive Borsuk-Ulam proofs.",
+    "problemStatement": "**The Open Question**\n\nCan the 1D Borsuk-Ulam theorem be proved constructively? What is the constructive status of higher-dimensional BU?\n\n**Answer**\n\n- 1D: YES - proved via IVT on the antisymmetric difference\n- S^1 circle: YES - proved via trigonometric parametrization\n- Higher dimensions: Axiomatized (requires algebraic topology not in Mathlib)\n\n**Axiom Reduction**: All 4 core axioms (BU, no-retraction, Brouwer FP, LS) proved to reduce to a single independent axiom (borsuk_ulam_general) with 0 sorries.",
+    "proofStrategy": "**Strategy: IVT on the Antisymmetric Difference**\n\n1. Given continuous f: [-1,1] -> R, define g(x) = f(x) - f(-x)\n2. Observe g is antisymmetric: g(-1) = -g(1)\n3. Case split on sign of g(-1):\n   - g(-1) <= 0, g(1) >= 0: IVT gives zero in [-1,1]\n   - g(-1) > 0, g(1) < 0: IVT gives zero in [-1,1]\n4. g(x0) = 0 means f(x0) - f(-x0) = 0, i.e., f(x0) = f(-x0)\n\n**Axiom Reduction Strategy**:\n- BU -> no_retraction via hemisphere folding + radial extension\n- no_retraction -> Brouwer FP via ball projection + ray-sphere retraction\n- BU -> LS via infDist to set complements",
     "keyInsights": [
       "**Antisymmetric difference**: g(x) = f(x) - f(-x) always satisfies g(-a) = -g(a), giving opposite signs at endpoints for IVT",
       "**Interval BU is trivial**: x = 0 satisfies f(0) = f(-0) for ANY f. The circle version is genuinely non-trivial.",
       "**Tucker = discrete BU**: Tucker's lemma (sign-change in labeled sequences) is exactly BU for finite approximations",
-      "**fun_prop handles composition continuity**: ContinuousOn for composed trig functions (cos θ, sin θ) resolved by fun_prop",
-      "**Constructive boundary**: 1D is constructive via IVT; n ≥ 2 needs Brouwer degree or homology (non-constructive)"
+      "**Ball projection avoids piecewise**: x/max(1,|x|) is a single formula for projecting onto the unit ball, avoiding piecewise continuity analysis",
+      "**Radial extension**: g(x) = |x| * h(x/|x|) extends a sphere map continuously to all of R^n with g(0) = 0",
+      "**Perfect-square discriminant**: Ray-sphere root equals 1 on the sphere because the discriminant factors as (A+B)^2",
+      "**No odd map S^n -> S^{n-1}**: BU forces any odd map to have a zero, contradicting the sphere image constraint",
+      "**Constructive boundary**: 1D is constructive via IVT; n >= 2 needs Brouwer degree or homology (non-constructive)"
     ]
   },
   "sections": [
     {
       "id": "interval-bu",
       "title": "1D Borsuk-Ulam on [-1,1]",
-      "summary": "Proves borsuk_ulam_interval: for continuous f, ∃ x ∈ [-1,1] with f(x)=f(-x). Uses IVT on g(x)=f(x)-f(-x) with antisymmetry g(-1)=-g(1).",
+      "summary": "Proves borsuk_ulam_interval: for continuous f, there exists x in [-1,1] with f(x)=f(-x). Uses IVT on g(x)=f(x)-f(-x) with antisymmetry g(-1)=-g(1).",
       "startLine": 66,
       "endLine": 106
     },
     {
       "id": "odd-zero",
       "title": "Odd Functions and Equivalences",
-      "summary": "Proves odd continuous functions have zeros in [-1,1] as a corollary. Establishes logical equivalence: BU ↔ odd functions vanish. Proves no odd continuous map to {±1} exists.",
+      "summary": "Proves odd continuous functions have zeros in [-1,1] as a corollary. Establishes logical equivalence: BU <-> odd functions vanish. Proves no odd continuous map to {+/-1} exists.",
       "startLine": 107,
       "endLine": 229
     },
     {
       "id": "circle-bu",
       "title": "Circle S^1 Borsuk-Ulam",
-      "summary": "Proves borsuk_ulam_circle_param: for continuous f: ℝ²→ℝ, ∃ θ ∈ [0,π] with f(cosθ,sinθ)=f(-cosθ,-sinθ). Uses g(θ) with g(π)=-g(0) and IVT.",
+      "summary": "Proves borsuk_ulam_circle_param: for continuous f: R^2 -> R, there exists theta in [0,pi] with f(cos t,sin t)=f(-cos t,-sin t). Uses IVT.",
       "startLine": 150,
       "endLine": 211
     },
     {
-      "id": "structural",
-      "title": "Structural Properties",
-      "summary": "Proves the coincidence set {x|f(x)=f(-x)} is closed and compact. Shows strictly monotone functions have unique antipodal pair at x=0. Proves interval BU is trivial (x=0 witness) while circle BU is genuine.",
-      "startLine": 231,
-      "endLine": 388
+      "id": "axiom-reduction",
+      "title": "Axiom Reduction Chain (0 sorries)",
+      "summary": "Complete proof chain: BU -> no_retraction (hemisphere folding), no_retraction -> Brouwer FP (ray-sphere retraction with ball projection), BU -> LS (infDist technique). Reduces 4 axioms to 1 independent axiom.",
+      "startLine": 3302,
+      "endLine": 4400
     },
     {
-      "id": "brouwer-1d",
-      "title": "1D Brouwer Fixed-Point Theorem",
-      "summary": "Independent constructive proof: every continuous f: [-1,1]→[-1,1] has a fixed point, via IVT on g(x)=f(x)-x.",
-      "startLine": 389,
-      "endLine": 423
+      "id": "applications",
+      "title": "Applications of Borsuk-Ulam",
+      "summary": "Ham Sandwich theorem, Necklace Splitting, Kneser's conjecture (chromatic number formula verified), BU consequence web (5 equivalents + 5 implications).",
+      "startLine": 4415,
+      "endLine": 4672
     },
     {
-      "id": "tucker-combinatorial",
-      "title": "Tucker's 1D Combinatorial Lemma",
-      "summary": "Proves Tucker's discrete BU: a Boolean sequence with different endpoints has an adjacent sign-change. Proved via Fin.induction. Establishes equivalence with constant-sequence characterization.",
-      "startLine": 452,
-      "endLine": 508
-    },
-    {
-      "id": "higher-dim",
-      "title": "Higher-Dimensional BU (Axiomized)",
-      "summary": "Axiomizes general Borsuk-Ulam for n ≥ 1 (requires algebraic topology). Derives the no-equivariant-map consequence.",
-      "startLine": 260,
-      "endLine": 313
+      "id": "no-odd-map",
+      "title": "No Odd Map Between Spheres",
+      "summary": "Proves no continuous odd map S^n -> S^{n-1} exists (from BU). Establishes equivariant map hierarchy: existence iff source_dim <= target_dim. Proves isobarycentric point theorem for odd functions.",
+      "startLine": 4830,
+      "endLine": 5010
     }
   ],
   "conclusion": {
-    "summary": "Comprehensive formalization (~4800 lines, 220+ declarations, 0 sorries) answering the constructive status question. 1D BU is fully constructive via IVT. The formalization proves a complete axiom reduction: all 4 core axioms (BU, no-retraction, Brouwer FP, LS covering) reduce to a single independent axiom (borsuk_ulam_general). Key achievements: radial extension continuity proof, ray-sphere intersection infrastructure, hemisphere fold construction, and applications to Ham Sandwich, Necklace Splitting, and Kneser's conjecture.",
-    "implications": "**Implications**\n\n1. **Constructive 1D topology**: The IVT-based proof shows that 1D topological results (BU, Brouwer FP) are constructively valid, not requiring full classical logic.\n\n2. **Tucker's lemma bridge**: The combinatorial Tucker lemma provides a finite/discrete approximation pathway, potentially enabling computational approaches to BU-type problems.\n\n3. **Constructive barrier at n=2**: The axiomization of general BU precisely identifies where constructive methods fail — the Brouwer degree requires integration or homology.\n\n4. **Circle vs interval**: The observation that interval BU is trivial (x=0) while circle BU is genuine clarifies which formulation captures the true topological content.",
+    "summary": "Comprehensive formalization (~5000 lines, 230+ declarations, 0 sorries) answering the constructive status question. 1D BU is fully constructive via IVT. The formalization proves a complete axiom reduction: all 4 core axioms (BU, no-retraction, Brouwer FP, LS covering) reduce to a single independent axiom (borsuk_ulam_general) with 0 sorries. Key achievements: radial extension continuity proof, ray-sphere intersection infrastructure, hemisphere fold construction, no-odd-map-between-spheres obstruction, isobarycentric point theorem, and applications to Ham Sandwich, Necklace Splitting, and Kneser's conjecture.",
+    "implications": "**Implications**\n\n1. **Constructive 1D topology**: The IVT-based proof shows that 1D topological results (BU, Brouwer FP) are constructively valid, not requiring full classical logic.\n\n2. **Tucker's lemma bridge**: The combinatorial Tucker lemma provides a finite/discrete approximation pathway, potentially enabling computational approaches to BU-type problems.\n\n3. **Constructive barrier at n=2**: The axiomization of general BU precisely identifies where constructive methods fail - the Brouwer degree requires integration or homology.\n\n4. **Equivariant obstruction**: No odd continuous map S^n -> S^{n-1} exists, establishing a strict dimension hierarchy for equivariant maps between spheres.\n\n5. **Complete axiom reduction**: The single-axiom reduction demonstrates that BU is the fundamental result from which all others follow.",
     "openQuestions": [
       "Can Tucker's lemma be generalized to higher dimensions in Lean?",
       "Can the Brouwer degree be formalized in Lean when homology theory arrives in Mathlib?",
       "Is there a constructive proof of 2D BU using only combinatorial methods (Tucker + approximation)?",
-      "Can the quantitative IVT bounds give effective estimates for the location of antipodal pairs?"
+      "Can the quantitative IVT bounds give effective estimates for the location of antipodal pairs?",
+      "Can the borsuk_ulam_general axiom itself be proved from degree theory once Mathlib supports it?"
     ]
   },
   "relatedProblems": [
