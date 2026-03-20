@@ -1289,26 +1289,11 @@ theorem gal_fixes_vandermondeProduct (σ : q.Gal) :
     So rootEnum(galToPerm5 σ i) = (galActionHom σ (e.symm i)).val = σ(rootEnum i). -/
 theorem gal_permutes_roots (σ : q.Gal) (i : Fin 5) :
     σ (rootEnum i) = rootEnum (galToPerm5 σ i) := by
-  -- Mathematically: galActionHom σ sends root r to ⟨σ r, _⟩, so
-  -- rootEnum(galToPerm5 σ i) = (galActionHom σ (e.symm i)).val = σ(rootEnum i).
-  -- The coercion path MulAction.toPermHom → smul → Subtype.val needs
-  -- the right Mathlib lemma connecting σ • r with σ r.val for rootSet.
-  -- The proof unfolds the definitions:
-  -- rootEnum i = (e.symm i).val where e : rootSet ≃ Fin 5
-  -- galToPerm5 σ = permCongr e (galActionHom σ)
-  -- rootEnum(galToPerm5 σ i) = (e.symm (e (galActionHom σ (e.symm i)))).val
-  --                           = (galActionHom σ (e.symm i)).val
-  --                           = (σ • (e.symm i)).val = σ (rootEnum i)
+  -- rootEnum i = (e.symm i).val, galToPerm5 σ = permCongr e ∘ galActionHom σ
+  -- After unfolding: σ r.val = (galActionHom σ r).val = (σ • r).val = σ r.val
+  -- Galois action permutes roots: σ maps rootEnum i to rootEnum (galToPerm5 σ i)
   unfold rootEnum galToPerm5
-  simp only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, Equiv.permCongr_apply,
-    Equiv.symm_apply_apply]
-  -- Goal: σ ↑r = ↑(galActionHom σ r) where r : rootSet q SF
-  -- Mathematically: the Galois action on rootSet lifts to the field,
-  -- i.e., (σ • r).val = σ r.val. This is the definition of the SMul
-  -- instance on rootSet, but the coercion path through galActionHom →
-  -- MulAction.toPerm → SMul doesn't reduce to rfl after Mathlib v4.26.0.
-  -- Previously closed by `rfl`.
-  sorry
+  simp
 
 /-- Vandermonde matrix with permuted input = row-permuted Vandermonde. -/
 theorem vandermonde_comp_eq_submatrix
@@ -1356,12 +1341,6 @@ theorem gal_acts_on_vandermondeProduct (σ : q.Gal) :
     exact gal_map_vandermonde_entry σ i j
   · -- Step 3: det(V(rootEnum ∘ π)) = sign(π) · det(V)
     exact vandermonde_perm_det rootEnum (galToPerm5 σ)
-
-  -- σ(det V) = det(V(rootEnum ∘ π)) = sign(π) · det(V)
-  -- Proof: RingHom.map_det + gal_permutes_roots + vandermonde_perm_det
-  -- Blocked by coercion alignment: RingHom.map_det produces mapMatrix form,
-  -- while gal_permutes_roots provides Matrix.map form.
-  sorry
 
 -- Step 6: galSign(σ) = 1 for all σ
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
