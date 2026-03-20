@@ -18,13 +18,13 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-02-21T19:21:07.129Z",
-    "iteration": 13,
-    "focus": "Fixed gal_permutes_roots via restrict-based galToPerm5",
+    "iteration": 14,
+    "focus": "Eliminated gal_card_dvd_60 axiom via file reorganization",
     "blockers": [
       "Kronecker-Weber not in Mathlib",
       "Hilbert irreducibility not in Mathlib"
     ],
-    "nextAction": "File reorganization to eliminate gal_card_dvd_60 axiom (move Parts XII-XIV before Part IV-B)",
+    "nextAction": "Remaining 2 axioms: vandermondeProduct_sq_eq (needs disc↔vandermonde), three_dvd_gal_card (needs Dedekind theorem)",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed gal_permutes_roots proof (elaboration context sensitivity) by redefining galToPerm5 through Polynomial.Gal.restrict. Proof now uses galActionHom_restrict lemma instead of rfl/change. This unblocks axiom elimination: gal_card_dvd_60 axiom can now be replaced by gal_card_dvd_60_proved once Parts XII-XIV are moved before Part IV-B.",
+    "progressSummary": "PROGRESS: Eliminated gal_card_dvd_60 axiom (3→2 axioms). Fixed gal_permutes_roots via restrict-based galToPerm5 (galActionHom_restrict). Reorganized file: moved Parts XII-XIV before Part IV-B, inlined a5_card, moved q_splits_fact. Docker build: 0 errors, 0 sorries, 2 axioms.",
     "builtItems": [
       "InverseGalois.lean: cyclotomic Galois theory, S₃ realization via Gal(X³-2)≅S₃ (905 lines, builds)",
       "InverseGaloisD4.lean: D₄ realization via |Gal(X⁴-2)| = 8 (666 lines, builds)",
