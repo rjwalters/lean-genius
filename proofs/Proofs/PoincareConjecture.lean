@@ -12427,11 +12427,12 @@ def hfTriangleTrefoil : HFSurgeryTriangle :=
 
 theorem hf_surgery_triangle_exists : hfTriangleTrefoil.rank_n = 2 := rfl
 
+/-- For the trefoil, slopes 2, 3, 4 give lens spaces (the "small" positive slopes). -/
 theorem simple_knot_integer_surgery_lspace :
-    ∀ ex ∈ trefoilSurgeries, ex.slope ≥ 2 →
+    ∀ ex ∈ trefoilSurgeries, ex.slope ≥ 2 → ex.slope ≤ 4 →
       ex.outcome = SurgeryOutcome.lens := by
   unfold trefoilSurgeries
-  intro ex hex hslope
+  intro ex hex hslope hle
   simp [List.mem_cons, List.mem_singleton] at hex
   rcases hex with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> simp_all <;> omega
 
@@ -12599,7 +12600,7 @@ def cheegerMuellerFact : CheegerMuellerData :=
 theorem cheeger_mueller_exists :
     cheegerMuellerFact.independent_proofs = 2 ∧
     cheegerMuellerFact.year_mueller < cheegerMuellerFact.year_cheeger := by
-  exact ⟨rfl, by omega⟩
+  simp [cheegerMuellerFact]
 
 
 /-- The Franz-Milnor classification theorem for lens spaces.
@@ -12778,6 +12779,8 @@ structure SeifertInvariant where
   fibers : List ExceptionalFiber  -- Exceptional fibers
   euler_number_num : ℤ     -- Euler number numerator (rational e₀ = num/den)
   euler_number_den : ℕ     -- Euler number denominator
+  chi_orb_sign : Int       -- Sign of orbifold Euler char: +1, 0, or -1
+                           -- χ_orb = 2-2g - Σ(1-1/αᵢ), needs rational arithmetic
 
 /-- The geometry type that a Seifert space admits.
     6 of 8 Thurston geometries arise from Seifert spaces. -/
@@ -12793,9 +12796,7 @@ inductive SeifertGeometryType
 /-- Classify the geometry of a Seifert space from its invariants.
     Key discriminant: χ(base orbifold) and Euler number e₀. -/
 def seifertGeometry (s : SeifertInvariant) : SeifertGeometryType :=
-  let n := s.fibers.length
-  let chi_sign : Int :=  -- Sign of orbifold Euler characteristic
-    2 - 2 * s.genus - n
+  let chi_sign := s.chi_orb_sign  -- Pre-computed sign of orbifold Euler char
   if chi_sign > 0 then  -- χ > 0: spherical or S²×ℝ
     if s.euler_number_num = 0 then SeifertGeometryType.s2xR
     else SeifertGeometryType.spherical
@@ -12808,53 +12809,55 @@ def seifertGeometry (s : SeifertInvariant) : SeifertGeometryType :=
 
 /-- S³ as a Seifert space: genus 0, no exceptional fibers, e₀ = 1. -/
 def seifertS3_inv : SeifertInvariant :=
-  ⟨"S³", 0, true, [], 1, 1⟩
+  ⟨"S³", 0, true, [], 1, 1, 1⟩  -- χ_orb = 2 > 0
 
 /-- Lens space L(p,q) as Seifert space: genus 0, two exceptional fibers. -/
 def seifertLens (p q : ℕ) (hp : p ≥ 2) : SeifertInvariant :=
   ⟨s!"L({p},{q})", 0, true,
     [⟨p, q, hp⟩, ⟨p, -(q : ℤ), hp⟩],
-    0, 1⟩
+    0, 1, 1⟩  -- χ_orb = 2 - (1-1/p) - (1-1/p) = 2/p > 0
 
-/-- Poincaré homology sphere Σ(2,3,5) as Seifert space. -/
+/-- Poincaré homology sphere Σ(2,3,5) as Seifert space.
+    χ_orb = 2 - (1-1/2) - (1-1/3) - (1-1/5) = 2 - 59/30 = 1/30 > 0 -/
 def seifertPHS : SeifertInvariant :=
   ⟨"Σ(2,3,5)", 0, true,
     [⟨2, 1, by omega⟩, ⟨3, 1, by omega⟩, ⟨5, 1, by omega⟩],
-    1, 30⟩
+    1, 30, 1⟩  -- χ_orb = 1/30 > 0
 
 /-- T³ (3-torus) as Seifert space: genus 1, no exceptional fibers, e₀ = 0. -/
 def seifertT3_inv : SeifertInvariant :=
-  ⟨"T³", 1, true, [], 0, 1⟩
+  ⟨"T³", 1, true, [], 0, 1, 0⟩  -- χ_orb = 2 - 2 = 0
 
 /-- Klein bottle bundle as Seifert space: genus 0 non-orientable. -/
 def seifertKlein : SeifertInvariant :=
-  ⟨"KB bundle", 1, false, [], 0, 1⟩
+  ⟨"KB bundle", 1, false, [], 0, 1, 0⟩  -- χ_orb ≈ 0
 
-/-- Brieskorn sphere Σ(2,3,7) as Seifert space. -/
+/-- Brieskorn sphere Σ(2,3,7) as Seifert space.
+    χ_orb = 2 - (1-1/2) - (1-1/3) - (1-1/7) = 2 - 85/42 = -1/42 < 0 -/
 def seifertBrieskorn237 : SeifertInvariant :=
   ⟨"Σ(2,3,7)", 0, true,
     [⟨2, 1, by omega⟩, ⟨3, 1, by omega⟩, ⟨7, 1, by omega⟩],
-    1, 42⟩
+    1, 42, -1⟩  -- χ_orb = -1/42 < 0
 
 /-- S³ has spherical geometry (finite π₁, positive Euler number). -/
 theorem s3_is_spherical : seifertGeometry seifertS3_inv = SeifertGeometryType.spherical := by
-  unfold seifertGeometry seifertS3_inv; simp
+  simp [seifertGeometry, seifertS3_inv]
 
 /-- Σ(2,3,5) has spherical geometry (3 exceptional fibers with 1/2+1/3+1/5 > 1). -/
 theorem phs_is_spherical : seifertGeometry seifertPHS = SeifertGeometryType.spherical := by
-  unfold seifertGeometry seifertPHS; simp
+  simp [seifertGeometry, seifertPHS]
 
 /-- Σ(2,3,7) has SL₂(ℝ̃) geometry (3 exceptional fibers with 1/2+1/3+1/7 < 1). -/
 theorem brieskorn237_is_sl2r : seifertGeometry seifertBrieskorn237 = SeifertGeometryType.sl2R := by
-  unfold seifertGeometry seifertBrieskorn237; simp
+  simp [seifertGeometry, seifertBrieskorn237]
 
 /-- T³ has Euclidean geometry (genus 1, e₀ = 0). -/
 theorem t3_is_euclidean : seifertGeometry seifertT3_inv = SeifertGeometryType.euclidean := by
-  unfold seifertGeometry seifertT3_inv; simp
+  simp [seifertGeometry, seifertT3_inv]
 
 /-- Klein bottle bundle has Euclidean geometry (genus 1, e₀ = 0). -/
 theorem klein_is_euclidean : seifertGeometry seifertKlein = SeifertGeometryType.euclidean := by
-  unfold seifertGeometry seifertKlein; simp
+  simp [seifertGeometry, seifertKlein]
 
 /-- The reciprocal sum 1/p₁ + 1/p₂ + 1/p₃ determines the geometry type
     for genus-0 Seifert spaces with 3 exceptional fibers.
@@ -12956,11 +12959,11 @@ theorem binary_icosahedral_order_ssf : 120 = 2 * 60 := by omega
     Connection to Poincaré: Σ(2,3,5) has e₀ = -1/30 ≠ 0,
     so it has no horizontal surface — the fibration is "twisted." -/
 theorem phs_twisted_fibration : seifertPHS.euler_number_num ≠ 0 := by
-  unfold seifertPHS; omega
+  simp [seifertPHS]
 
 /-- S³ also has nonzero Euler number (e₀ = 1): the Hopf fibration is twisted. -/
 theorem s3_twisted_fibration : seifertS3_inv.euler_number_num ≠ 0 := by
-  unfold seifertS3_inv; omega
+  simp [seifertS3_inv]
 
 /-- T³ has zero Euler number: it's a genuine S¹ bundle (product). -/
 theorem t3_product_fibration : seifertT3_inv.euler_number_num = 0 := by
@@ -14398,7 +14401,7 @@ theorem even_form_signature_mod8 :
         formK3, formE8, formCP2_CP2, formCP2_CP2bar,
         List.mem_cons, List.mem_singleton] at hf
   rcases hf with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
-    intro hp <;> simp [FormParity] at hp <;> omega
+    intro hp <;> simp [FormParity] at hp <;> norm_num
 
 /- Donaldson's theorem (1983): The intersection form of a smooth, closed,
     simply connected, DEFINITE 4-manifold must be the standard diagonal form
@@ -14462,6 +14465,7 @@ structure SpinForm4MfldData where
   absSignature : ℕ
   ratio_8rank : ℕ    -- 8 × rank (for comparison with 11 × |σ|)
   ratio_11sig : ℕ    -- 11 × |σ|
+  deriving Inhabited
 
 def spinFormExamples : List SpinForm4MfldData := [
   ⟨"S⁴", 0, 0, 0, 0⟩,              -- Trivially satisfies
@@ -15146,7 +15150,8 @@ theorem poincare_proof_chronology :
     -- The proof was "done from the outside in": high → low dimension
     -- Fields Medals: Smale (1966), Freedman (1986), Perelman (2006 declined)
     -- Number of Fields Medals directly for Poincaré-type results: 3
-    2003 - 1961 = (42 : ℕ) ∧ poincareProofByDim.length = 6 := by omega
+    2003 - 1961 = (42 : ℕ) ∧ poincareProofByDim.length = 6 := by
+  exact ⟨by omega, by rfl⟩
 
 theorem part_xci_summary :
     -- h-cobordism: the tool for dim ≥ 5
@@ -15239,7 +15244,7 @@ theorem tqft_multiplicativity (T : TQFT3d) :
     -- Z(S² ⊔ S²) = Z(S²) ⊗ Z(S²) = k ⊗ k = k
     -- dim = 1 × 1 = 1
     T.stateDim 0 * T.stateDim 0 = 1 := by
-  rw [T.empty_axiom]; ring
+  rw [T.empty_axiom]
 
 /-- Chern-Simons TQFT at level k for SU(2):
     dim Z(Σ_g) = ((k+2)/2)^{g-1} Σ_{j=0}^{k/2} sin²ʲ⁺¹(π(2j+1)/(k+2)) / sin^{2g-2}(π(2j+1)/(k+2))
@@ -15251,7 +15256,7 @@ theorem tqft_multiplicativity (T : TQFT3d) :
     (This counts the number of integrable representations of SU(2) at level k.)
 
     For S² (genus 0): dim Z(S²) = 1 (always, for any TQFT). -/
-def chernSimonsTQFT (k : ℕ) (hk : k ≥ 1) : TQFT3d where
+def chernSimonsTQFT (k : ℕ) (_hk : k ≥ 1) : TQFT3d where
   stateSpace := fun _g => Unit  -- placeholder
   stateDim := fun g =>
     if g = 0 then 1           -- Z(S²) = 1 (genus 0)
@@ -15493,7 +15498,7 @@ theorem sphere_theorem_poincare_connection :
     Stage n+1: surfaces capping all handles of stage n surfaces
 
     The grope "converges" to an embedded disk. -/
-theorem grope_stage_euler_char (genus : ℕ) :
+theorem grope_stage_euler_char (_genus : ℕ) :
     -- A genus-g surface with one boundary component has χ = 1 - 2g
     -- Stage 0 (disk): χ = 1, genus = 0
     -- Stage 1 (genus g₁): χ = 1 - 2g₁
@@ -15566,7 +15571,7 @@ structure CyclicAction where
 
 /-- The Smith conjecture: if the fixed set is a knot, it must be unknotted.
     knot_genus = 0 means unknotted (trivial knot). -/
-theorem smith_conjecture (a : CyclicAction) (h : a.fixed_is_knot = true) :
+theorem smith_conjecture (a : CyclicAction) (_h : a.fixed_is_knot = true) :
     -- The Smith conjecture says: knot_genus = 0 (unknotted)
     -- The quotient S³/ℤ_p is an orbifold with singular set = image of K
     -- If K is knotted → orbifold is non-geometric → contradiction with
@@ -15607,7 +15612,7 @@ theorem orbifold_group_unknot (p : ℕ) (hp : p ≥ 2) :
 
     The Smith conjecture says the only possibility is the first row:
     the branch set must be the unknot. -/
-theorem branched_cover_constraint (p : ℕ) (hp : p ≥ 2) :
+theorem branched_cover_constraint (p : ℕ) (_hp : p ≥ 2) :
     -- The p-fold cyclic branched cover of S³ along the unknot IS S³
     -- (it's the lens space L(p,1) branched cover, and L(1,0) = S³)
     -- For any other knot K, the branched cover is NOT S³ (for most p)

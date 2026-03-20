@@ -1201,8 +1201,83 @@ lemma coeff_odd_of_sq_sub_pow (c : ℤ) (m : ℕ) :
 lemma sq_sub_irreducible_of_not_square (d : ℕ) (hd : d ≥ 1)
     (hns : ∀ s : ℕ, d ≠ s * s) :
     Irreducible (X ^ 2 - C (↑d : ℤ) : Polynomial ℤ) := by
-  -- Proof needs Mathlib API updates (natDegree_sub, isUnit_of_mul_eq_one, Int.natAbs_sq)
-  sorry
+  set p : Polynomial ℤ := X ^ 2 - C (↑d : ℤ) with hp_def
+  -- p has no integer root
+  have hp_no_root : ∀ r : ℤ, p.eval r ≠ 0 := by
+    intro r hr
+    simp only [hp_def, eval_sub, eval_pow, eval_X, eval_C] at hr
+    have hrd : r * r = ↑d := by nlinarith
+    have : d = r.natAbs * r.natAbs := by
+      have h1 := Int.natAbs_sq r  -- (↑(natAbs r) : ℤ) ^ 2 = r ^ 2
+      have h2 : r ^ 2 = ↑d := by ring_nf; linarith
+      have h3 : (r.natAbs : ℤ) ^ 2 = ↑d := h1.trans h2
+      have h4 : r.natAbs ^ 2 = d := by exact_mod_cast h3
+      nlinarith [sq_nonneg r.natAbs]
+    exact hns r.natAbs this
+  -- p is monic
+  have hp_monic : p.Monic := by
+    show (X ^ 2 - C (↑d : ℤ) : Polynomial ℤ).Monic
+    apply Polynomial.Monic.sub_of_left (monic_X_pow 2)
+    calc (C (↑d : ℤ) : Polynomial ℤ).degree ≤ 0 := degree_C_le
+      _ < (X ^ 2 : Polynomial ℤ).degree := by simp [degree_X_pow]
+  -- p has natDegree 2
+  have hp_deg : p.natDegree = 2 := by
+    have hd_deg : (C (↑d : ℤ) : Polynomial ℤ).natDegree < (X ^ 2 : Polynomial ℤ).natDegree := by
+      simp [natDegree_C, natDegree_X_pow]
+    rw [hp_def, Polynomial.natDegree_sub_eq_left_of_natDegree_lt hd_deg, natDegree_X_pow]
+  -- Irreducibility
+  rw [irreducible_iff]
+  refine ⟨?_, ?_⟩
+  · -- Not a unit (natDegree 2 ≠ 0)
+    intro hu; linarith [Polynomial.natDegree_eq_zero_of_isUnit hu]
+  · -- Factor analysis
+    intro a b hab
+    have ha0 : a ≠ 0 := left_ne_zero_of_mul (hab ▸ hp_monic.ne_zero)
+    have hb0 : b ≠ 0 := right_ne_zero_of_mul (hab ▸ hp_monic.ne_zero)
+    have hdeg : a.natDegree + b.natDegree = 2 := by
+      rw [← Polynomial.natDegree_mul ha0 hb0, ← hab]; exact hp_deg
+    have hab_monic : (a * b).Monic := hab ▸ hp_monic
+    have hlc : a.leadingCoeff * b.leadingCoeff = 1 := by
+      rw [← Polynomial.leadingCoeff_mul]; exact hab_monic.leadingCoeff
+    -- If either has degree 0, it's a unit (constant with unit value)
+    by_cases ha1 : a.natDegree = 0
+    · left
+      have ha_eq := Polynomial.eq_C_of_natDegree_eq_zero ha1
+      have ha_lc : a.leadingCoeff = a.coeff 0 := by
+        simp [Polynomial.leadingCoeff, ha1]
+      rw [ha_eq]; apply Polynomial.isUnit_C.mpr
+      rw [← ha_lc]; exact isUnit_of_dvd_one ⟨_, hlc.symm⟩
+    · by_cases hb1 : b.natDegree = 0
+      · right
+        have hb_eq := Polynomial.eq_C_of_natDegree_eq_zero hb1
+        have hb_lc : b.leadingCoeff = b.coeff 0 := by
+          simp [Polynomial.leadingCoeff, hb1]
+        rw [hb_eq]; apply Polynomial.isUnit_C.mpr
+        rw [← hb_lc]
+        exact isUnit_of_dvd_one ⟨_, (show 1 = b.leadingCoeff * a.leadingCoeff by linarith)⟩
+      · -- Both have degree ≥ 1, hence both have degree 1
+        exfalso
+        have ha_deg1 : a.natDegree = 1 := by omega
+        -- leadingCoeff a is a unit in ℤ, hence ±1
+        have ha_lc_unit : IsUnit a.leadingCoeff :=
+          isUnit_of_dvd_one ⟨_, hlc.symm⟩
+        -- r = -(a.coeff 0) * a.leadingCoeff is a root of a:
+        -- eval r a = a.coeff 0 + a.leadingCoeff * r
+        --          = a.coeff 0 * (1 - a.leadingCoeff^2) = 0
+        set r : ℤ := -(a.coeff 0) * a.leadingCoeff with hr_def
+        -- Show a has root r
+        have ha_lc_eq : a.coeff 1 = a.leadingCoeff := by
+          simp [Polynomial.leadingCoeff, ha_deg1]
+        have ha_root : a.eval r = 0 := by
+          rw [Polynomial.eval_eq_sum_range, ha_deg1]
+          simp only [Finset.sum_range_succ, Finset.sum_range_one,
+            pow_zero, mul_one, pow_one]
+          rw [ha_lc_eq, hr_def]
+          obtain h | h := Int.isUnit_iff.mp ha_lc_unit <;> rw [h] <;> ring
+        -- p = a * b, so p(r) = 0
+        have hp_root : p.eval r = 0 := by
+          rw [hab, eval_mul, ha_root, zero_mul]
+        exact hp_no_root r hp_root
 
 /-- In a UFD, if an irreducible p satisfies p(X) = p(-X) and
     f·f(-X) = p^m with f monic, then f = p^{m/2}.
@@ -1215,11 +1290,77 @@ lemma monic_factor_of_symmetric_irreducible_pow
     (hf_monic : f.Monic)
     (hprod : f * f.comp (-X) = p ^ m) :
     f = p ^ (m / 2) := by
-  -- In ℤ[X] (UFD), p irreducible and p^m = f·f(-X).
-  -- Every irreducible factor of f is associate to p (since p is the only irred factor of p^m).
-  -- Since f is monic and p is monic: f = p^a for some a.
-  -- f(-X) = p(-X)^a = p^a (since p is symmetric). So p^{2a} = p^m, giving a = m/2.
-  sorry
+  -- Reduce to a helper with m = k + k
+  obtain ⟨k, rfl⟩ := hm
+  change f = p ^ ((k + k) / 2)
+  rw [show (k + k) / 2 = k from by omega]
+  -- Prove by induction on k, generalizing f
+  suffices ∀ (f : Polynomial ℤ), f.Monic → f * f.comp (-X) = p ^ (k + k) →
+      f = p ^ k by
+    exact this f hf_monic hprod
+  clear hf_monic hprod f
+  induction k with
+  | zero =>
+    intro f hf_monic hprod
+    -- f * f(-X) = 1, f monic → f = 1
+    simp only [Nat.zero_add, pow_zero] at hprod ⊢
+    have hf_ne : f ≠ 0 := hf_monic.ne_zero
+    have hfc_ne : f.comp (-X) ≠ 0 := by
+      intro h; rw [h, mul_zero] at hprod; exact zero_ne_one hprod
+    have hdeg : f.natDegree = 0 := by
+      have := Polynomial.natDegree_mul hf_ne hfc_ne
+      rw [hprod, Polynomial.natDegree_one] at this; omega
+    rw [Polynomial.eq_C_of_natDegree_eq_zero hdeg]
+    have : f.coeff 0 = 1 := by
+      have h := hf_monic.leadingCoeff
+      rw [Polynomial.leadingCoeff, hdeg] at h; exact h
+    rw [this]; simp
+  | succ k ih =>
+    intro f hf_monic hprod
+    -- m = 2*(k+1), need f = p^{k+1}
+    have hp_prime : Prime p := hp_irred.prime
+    -- p | f * f(-X) = p^{2(k+1)}
+    have hp_dvd_prod : p ∣ f * f.comp (-X) :=
+      hprod ▸ dvd_pow_self p (by omega)
+    -- p | f (using primality + symmetry of p)
+    have hp_dvd_f : p ∣ f := by
+      rcases hp_prime.dvd_or_dvd hp_dvd_prod with h | h
+      · exact h
+      · -- p | f(-X) → p | f (since p is symmetric and comp(-X) is involution)
+        obtain ⟨g, hg⟩ := h
+        -- comp(-X) is involution: (-X).comp(-X) = X
+        have hneg_inv : (-X : Polynomial ℤ).comp (-X) = X := by
+          rw [Polynomial.neg_comp, Polynomial.X_comp, neg_neg]
+        have hcomp_inv : (f.comp (-X)).comp (-X) = f := by
+          rw [Polynomial.comp_assoc, hneg_inv, Polynomial.comp_X]
+        -- p | f.comp(-X) means (rewriting via involution):
+        -- f = (f.comp(-X)).comp(-X) = (p*g).comp(-X) = p.comp(-X) * g.comp(-X) = p * g.comp(-X)
+        rw [← hcomp_inv, hg, Polynomial.mul_comp, hp_sym]
+        exact dvd_mul_right p _
+    -- Write f = p * f₁
+    obtain ⟨f₁, hf_eq⟩ := hp_dvd_f
+    -- f₁ is monic
+    have hf1_monic : f₁.Monic := by
+      rw [Polynomial.Monic] at hf_monic ⊢
+      rw [hf_eq, Polynomial.leadingCoeff_mul, hp_monic.leadingCoeff, one_mul] at hf_monic
+      exact hf_monic
+    -- f(-X) = p * f₁(-X)
+    have hfc_eq : f.comp (-X) = p * f₁.comp (-X) := by
+      rw [hf_eq, Polynomial.mul_comp, hp_sym]
+    -- Cancellation: f₁ * f₁(-X) = p^{2k}
+    have hprod₁ : f₁ * f₁.comp (-X) = p ^ (k + k) := by
+      have h1 : p * f₁ * (p * f₁.comp (-X)) = p ^ ((k + 1) + (k + 1)) := by
+        rw [← hf_eq, ← hfc_eq]; exact hprod
+      have h2 : p ^ 2 * (f₁ * f₁.comp (-X)) = p ^ 2 * p ^ (k + k) := by
+        calc p ^ 2 * (f₁ * f₁.comp (-X))
+            = (p * f₁) * (p * f₁.comp (-X)) := by ring
+          _ = p ^ ((k + 1) + (k + 1)) := h1
+          _ = p ^ (2 + (k + k)) := by congr 1; omega
+          _ = p ^ 2 * p ^ (k + k) := pow_add p 2 (k + k)
+      exact mul_left_cancel₀ (pow_ne_zero 2 hp_monic.ne_zero) h2
+    -- Apply IH: f₁ = p^k
+    have hf1_eq := ih f₁ hf1_monic hprod₁
+    rw [hf_eq, hf1_eq]; ring
 
 /-- **k-1 is a perfect square** for any k-regular friendship graph with k ≥ 2.
 
@@ -1255,23 +1396,64 @@ theorem k_sub_one_is_perfect_square (hF : IsFriendshipGraph G)
     obtain ⟨t, ht⟩ := hkk1_even
     refine ⟨t - 1, ?_⟩; omega
   -- Get the charpoly factorization and product identity
-  -- (These steps use the sorry-containing lemmas above)
   haveI : Nonempty V := ⟨u⟩
-  have heval := adjMatrix_charpoly_eval_k G hF k (by omega) hreg
   have hdvd := X_sub_k_dvd_adjMatrix_charpoly G hF k (by omega) hreg
   obtain ⟨f, hf⟩ := hdvd
-  -- The product identity: f(X)·f(-X) = (X²-(k-1))^{n-1}
+  -- f is monic (since charpoly is monic and (X-k) is monic)
+  have hf_monic : f.Monic := by
+    have hcm := (G.adjMatrix ℤ).charpoly_monic
+    rw [hf] at hcm  -- hcm : ((X - C k) * f).Monic
+    have h := hcm.leadingCoeff
+    rw [Polynomial.leadingCoeff_mul,
+      (Polynomial.monic_X_sub_C (↑k : ℤ)).leadingCoeff, one_mul] at h
+    exact h  -- f.leadingCoeff = 1
+  -- f has degree n-1
+  have hf_deg : f.natDegree = n - 1 := by
+    have hcharpoly_deg := Matrix.charpoly_natDegree_eq_dim (G.adjMatrix ℤ)
+    rw [hf, ← hn_def] at hcharpoly_deg
+    have hfne : f ≠ 0 := hf_monic.ne_zero
+    have hxk_ne : (X - C (↑k : ℤ) : Polynomial ℤ) ≠ 0 :=
+      (Polynomial.monic_X_sub_C _).ne_zero
+    rw [Polynomial.natDegree_mul hxk_ne hfne] at hcharpoly_deg
+    have hxk_deg : (X - C (↑k : ℤ) : Polynomial ℤ).natDegree = 1 :=
+      Polynomial.natDegree_X_sub_C _
+    omega
+  -- The product identity (depends on charpoly_quotient_product)
   have hprod := charpoly_quotient_product G hF k hk hreg f hf
-  -- The sub-leading coefficient: coeff_{n-2}(f) = k
-  -- (need f monic and degree = n-1, which follow from hf and charpoly properties)
+  -- n-1 is even: n-1 = k(k-1), product of consecutive = even
+  have hn1_even : Even (n - 1) := by
+    rw [hn]
+    have : Even (k * (k - 1)) := by
+      rcases Nat.even_or_odd k with ⟨m, hm⟩ | ⟨m, hm⟩
+      · exact ⟨m * (k - 1), by rw [hm]; ring⟩
+      · have hk1 : k - 1 = m + m := by omega
+        rw [hk1]; exact ⟨k * m, by ring⟩
+    obtain ⟨t, ht⟩ := this
+    exact ⟨t, by omega⟩
   -- X²-(k-1) is irreducible (since k-1 not a perfect square)
   have hirred := sq_sub_irreducible_of_not_square (k - 1) (by omega) (by
     intro s hs; exact hns s (by omega))
-  -- By the UFD structure lemma: f = (X²-(k-1))^{(n-1)/2}
-  -- Then coeff_{n-2}(f) = 0 (since n-2 is odd and (X²-c)^m has only even-degree terms)
-  -- But coeff_{n-2}(f) = k ≥ 2. Contradiction!
-  -- (Full proof requires the sorry-containing infrastructure above)
-  sorry
+  -- X²-(k-1) is monic
+  have hp_monic : (X ^ 2 - C (↑(k - 1) : ℤ) : Polynomial ℤ).Monic := by
+    apply Polynomial.Monic.sub_of_left (monic_X_pow 2)
+    calc (C (↑(k - 1) : ℤ) : Polynomial ℤ).degree ≤ 0 := degree_C_le
+      _ < (X ^ 2 : Polynomial ℤ).degree := by simp [degree_X_pow]
+  -- X²-(k-1) is symmetric: p(-X) = (-X)² - (k-1) = X² - (k-1) = p
+  have hp_sym : (X ^ 2 - C (↑(k - 1) : ℤ) : Polynomial ℤ).comp (-X) =
+      X ^ 2 - C (↑(k - 1) : ℤ) := by
+    simp [Polynomial.sub_comp, Polynomial.pow_comp, Polynomial.X_comp,
+      Polynomial.C_comp, neg_sq]
+  -- By UFD structure: f = (X²-(k-1))^{(n-1)/2}
+  have hf_eq := monic_factor_of_symmetric_irreducible_pow
+    (X ^ 2 - C (↑(k - 1) : ℤ)) f (n - 1) hn1_even hirred hp_monic hp_sym hf_monic hprod
+  -- coeff_{n-2}(f) = 0 (since f = (X²-c)^m has only even-degree terms, and n-2 is odd)
+  have hcoeff_zero : f.coeff (n - 2) = 0 := by
+    rw [hf_eq]
+    exact coeff_odd_of_sq_sub_pow (↑(k - 1) : ℤ) ((n - 1) / 2) (n - 2) hn2_odd
+  -- But coeff_{n-2}(f) = k (from quotient_subleading_coeff)
+  have hcoeff_k := quotient_subleading_coeff G hF k hk hreg f hf hf_monic hf_deg
+  -- k = 0, contradicting k ≥ 2
+  linarith
 
 /-- **s divides k** for s = √(k-1) in a k-regular friendship graph.
 

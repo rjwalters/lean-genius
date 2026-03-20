@@ -97,7 +97,8 @@
       "Proved charpoly_eval: Polynomial.eval c (charpoly M) = det(cI - M) via RingHom.map_det",
       "Proved charpoly_root_k: k is a root of charpoly(adjMatrix) via charpoly_eval + det_kI=0",
       "Proved x_sub_k_dvd_charpoly: (X-k) | charpoly(adjMatrix) via factor theorem",
-      "Framework: k_sub_one_is_square (sorry) → spectral_k_eq_two → charpoly_eigenvalue_data_proof"
+      "Framework: k_sub_one_is_square (sorry) → spectral_k_eq_two → charpoly_eigenvalue_data_proof",
+      "sq_sub_irreducible_of_not_square has 8 build errors from Mathlib API changes: Int.natAbs_sq renamed, isUnit.map syntax changed, Int.isUnit_iff API changed, ring_nf behavior changed. Needs systematic fix of lines 1201-1262."
     ],
     "mathlibGaps": [
       "Full spectral theorem for real symmetric matrices in a form that gives integer eigenvalue multiplicities",
@@ -127,7 +128,7 @@
     "mathlib": []
   },
   "started": "2026-03-15T12:11:41.208Z",
-  "lastUpdate": "2026-03-20T00:00:00.000Z",
+  "lastUpdate": "2026-03-20T18:15:00.000Z",
   "significance": 7,
   "tractability": 6
 }
