@@ -968,4 +968,80 @@ The single remaining axiom `charpoly_eigenvalue_data` can be proved using:
 5. `adjMatrix_trace_zero` = 0 → trace constraint on s-eigenvalue multiplicities
 -/
 
+-- ============================================================================
+-- Part XVIII: Adjacency Matrix Symmetry and Spectral Preparation
+-- ============================================================================
+
+/-
+## Part XVIII: Matrix Symmetry and Commutation Properties
+
+The adjacency matrix A of a simple graph is symmetric: A = Aᵀ. Over ℝ, this
+means A is Hermitian, so its eigenvalues are all real. This is the entry point
+to the spectral theorem used in the axiom elimination path.
+
+Also: J commutes with A for regular graphs (JA = AJ = kJ).
+-/
+
+/-- The adjacency matrix is symmetric: Aᵢⱼ = Aⱼᵢ.
+    Follows from G.adj_comm: G.Adj u v ↔ G.Adj v u. -/
+theorem adjMatrix_symmetric :
+    (G.adjMatrix ℤ).transpose = G.adjMatrix ℤ := by
+  ext i j
+  simp [Matrix.transpose_apply, SimpleGraph.adjMatrix_apply, G.adj_comm]
+
+/-- **JA = kJ** for k-regular graphs (dual of AJ = kJ).
+    Since A is symmetric and AJ = kJ: JA = (AJ)ᵀ = (kJ)ᵀ = kJᵀ = kJ. -/
+theorem onesMatrix_mul_adjMatrix (k : ℕ) (hreg : ∀ v : V, G.degree v = k) :
+    onesMatrix V * G.adjMatrix ℤ = ↑k • onesMatrix V := by
+  -- Column sums equal k too (by symmetry of A and row sums = k)
+  ext i j
+  simp only [Matrix.mul_apply, onesMatrix, Matrix.of_apply, one_mul,
+    Matrix.smul_apply, smul_eq_mul, mul_one, SimpleGraph.adjMatrix_apply]
+  trans ↑((Finset.univ.filter fun w => G.Adj w j).card)
+  · rw [← Finset.sum_boole]
+  · have : (Finset.univ.filter fun w => G.Adj w j) =
+        (Finset.univ.filter fun w => G.Adj j w) := by
+      ext w; simp [G.adj_comm]
+    rw [this]
+    have : (Finset.univ.filter fun w => G.Adj j w) = G.neighborFinset j := by
+      ext w; simp [SimpleGraph.mem_neighborFinset]
+    rw [this, ← SimpleGraph.degree, hreg j]; ring
+
+/-- J commutes with A for k-regular graphs: AJ = JA = kJ. -/
+theorem onesMatrix_adjMatrix_comm (k : ℕ) (hreg : ∀ v : V, G.degree v = k) :
+    G.adjMatrix ℤ * onesMatrix V = onesMatrix V * G.adjMatrix ℤ := by
+  rw [adjMatrix_mul_ones G k hreg, onesMatrix_mul_adjMatrix G k hreg]
+
+/-- A² commutes with J (since A² = (k-1)I + J and both I,J commute with J). -/
+theorem adjMatrix_sq_comm_onesMatrix (hF : IsFriendshipGraph G) (k : ℕ) (hk : k ≥ 1)
+    (hreg : ∀ v : V, G.degree v = k) :
+    (G.adjMatrix ℤ * G.adjMatrix ℤ) * onesMatrix V =
+    onesMatrix V * (G.adjMatrix ℤ * G.adjMatrix ℤ) := by
+  rw [adjMatrix_sq_eq G hF k hk hreg, add_mul, mul_add,
+    smul_mul_assoc, mul_smul_comm, Matrix.one_mul, Matrix.mul_one]
+
+/-- The number of vertices n = k(k-1)+1 satisfies n ≥ 3 for k ≥ 2.
+    This ensures the graph has at least 3 vertices. -/
+theorem friendship_card_ge_three (hF : IsFriendshipGraph G) (u : V)
+    (k : ℕ) (hk : k ≥ 2) (hreg : ∀ v : V, G.degree v = k) :
+    Fintype.card V ≥ 3 := by
+  have hcard := regular_friendship_card G hF u k hreg (by omega)
+  have h1 : k - 1 ≥ 1 := by omega
+  have h2 : k * (k - 1) ≥ 2 * 1 := Nat.mul_le_mul hk h1
+  omega
+
+/-- Part XVIII summary:
+    1. adjMatrix_symmetric: A = Aᵀ (PROVED, foundation for spectral theorem)
+    2. onesMatrix_mul_adjMatrix: JA = kJ (PROVED, dual of AJ = kJ)
+    3. onesMatrix_adjMatrix_comm: AJ = JA (PROVED, J commutes with A)
+    4. adjMatrix_sq_comm_onesMatrix: A²J = JA² (PROVED, commutation)
+    5. friendship_card_ge_three: n ≥ 3 (PROVED from n = k(k-1)+1)
+
+    These prepare the ground for spectral analysis:
+    - A symmetric → eigenvalues real (via IsHermitian)
+    - J commutes with A → J preserves eigenspaces of A
+    - A²J = JA² → eigenspaces of A² are stable under J
+    - Combined with A² = (k-1)I + J → eigenspace decomposition -/
+theorem part_xviii_summary : (5 : ℕ) = 5 := rfl
+
 end FriendshipTheoremOQ01
