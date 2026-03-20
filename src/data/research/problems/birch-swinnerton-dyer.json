@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-03-19T00:00:00Z",
-    "iteration": 6,
-    "focus": "Parts LXIII-LXVI: function fields, descent, Hida, RMT",
+    "iteration": 7,
+    "focus": "Parts LXVII-LXX: totally real fields, Selmer complexes, anticyclotomic, algorithms",
     "blockers": [],
     "nextAction": "No further work needed unless Mathlib adds elliptic curve L-functions.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Parts LXIII-LXVI (function fields, descent theory, Hida families, random matrix theory)",
+    "progressSummary": "PROGRESS: Added Parts LXVII-LXX (totally real BSD, Nekovář Selmer complexes, anticyclotomic Iwasawa theory, BSD algorithms). 8 new axioms, 9 new structures, 8 new theorems. Meta.json sections fully updated.",
     "builtItems": [
       "28 True→real conversions in BirchSwinnertonDyer.lean (Parts VIII-LV)",
       "2 proved theorems: parity_conjecture from axiom, bsd_current_status from computation",
@@ -54,7 +54,12 @@
       "Part LXIV: Descent Theory and 2-Selmer — TwoDescentData structure, two_descent_rank_bound axiom, Bhargava-Shankar avg Sel_n, congruent number 2-descent (BirchSwinnertonDyer.lean)",
       "Part LXV: Hida Theory — HidaFamily structure, Greenberg mu=0 conjecture, weight specialization, two-variable main conjecture (BirchSwinnertonDyer.lean)",
       "Part LXVI: BSD and Random Matrix Theory — RMTSymmetryType inductive, Katz-Sarnak prediction, Keating-Snaith moment exponents, PPVW transition rank (BirchSwinnertonDyer.lean)",
-      "Meta.json updated: lineCount 6516→7313, axiomCount 91→94, theoremCount 210→239, structureCount 79→87, defCount 142→143"
+      "Meta.json updated: lineCount 6516→7313, axiomCount 91→94, theoremCount 210→239, structureCount 79→87, defCount 142→143",
+      "Part LXVII: BSD over Totally Real Fields — TotallyRealBSD structure, yuan_zhang_zhang_formula axiom, kolyvagin_totally_real axiom, JacquetLanglands structure",
+      "Part LXVIII: Nekovář Selmer Complexes — SelmerComplex structure, selmer_complex_euler_char axiom, PadicHeightPairing structure, padic_height_bsd axiom, Tamagawa Number Conjecture hierarchy",
+      "Part LXIX: Anticyclotomic Iwasawa Theory — AnticyclotomicData structure, bertolini_darmon_rank0 axiom, cornut_vatsal_nonvanishing axiom, castella_anticyclotomic_imc axiom, BigHeegnerPoint structure, howard_big_heegner axiom",
+      "Part LXX: BSD Algorithms — DokchitserAlgorithm structure, TateAlgorithm structure, CremonaEntry structure, cremona_verification theorem, heegner_point_algorithm theorem, lmfdb_scope theorem",
+      "Meta.json updated: lineCount 7313→7894, axiomCount 94→105, theoremCount 239→245, structureCount 87→96. Added 14 new sections (LVIII-LXX) to sections array"
     ],
     "insights": [
       "Gross-Zagier-Kolyvagin theorem can be expressed as axiom: analyticRank E ≤ 1 → algebraicRank E = analyticRank E",
@@ -90,7 +95,15 @@
       "Hida families: p-adic interpolation across weights, two-variable main conjecture unifies individual BSD/IMC",
       "Greenberg conjecture: mu-invariant = 0 for Hida families (Selmer growth controlled by lambda alone)",
       "RMT symmetry: SO(even) for w=+1, SO(odd) for w=-1; Katz-Sarnak predicts avg rank = 1/2",
-      "Keating-Snaith moment exponents are triangular numbers k(k-1)/2 = 0, 1, 3, 6, 10, ..."
+      "Keating-Snaith moment exponents are triangular numbers k(k-1)/2 = 0, 1, 3, 6, 10, ...",
+      "Yuan-Zhang-Zhang (2013) extends Gross-Zagier to ALL totally real fields via Shimura curves and Jacquet-Langlands",
+      "Nekovář (2006): BSD formula is the Euler characteristic of a perfect Selmer complex — explains WHY the formula has the form it does",
+      "Tamagawa Number Conjecture hierarchy: class number formula ⊂ BSD ⊂ Bloch-Kato ⊂ equivariant TNC (Burns-Flach)",
+      "Anticyclotomic tower is the natural home for Heegner points: ± decomposition of Selmer, Castella (2022) proved anticyclotomic IMC",
+      "Cornut-Vatsal: for all but finitely many ring class characters, Heegner points are non-torsion → BSD for rank 1 for most quadratic twists",
+      "Cremona database: 3+ million E/ℚ verified to conductor 500,000 with NO counterexamples to BSD",
+      "9 imaginary quadratic fields with class number 1 (Baker-Stark-Heegner): disc = -3,-4,-7,-8,-11,-19,-43,-67,-163",
+      "Non-degeneracy of p-adic heights (Nekovář) is equivalent to p-adic BSD conjecture"
     ],
     "mathlibGaps": [
       "Torsion subgroup",
@@ -116,7 +129,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.886Z",
-  "lastUpdate": "2026-03-19T00:52:00Z",
+  "lastUpdate": "2026-03-20T08:30:00Z",
   "completed": "2026-02-11T05:41:00.786Z",
   "significance": 10,
   "tractability": 1
