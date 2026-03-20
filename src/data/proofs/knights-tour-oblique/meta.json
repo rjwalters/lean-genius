@@ -102,5 +102,15 @@
       "Can the uniqueness proof be made more 'mathematical' (less computational)?",
       "What is the connection to Knuth's cryptic index entry 'Pun resisted, 62, 470' in TAOCP Vol. 4A?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "euler-polyhedral-formula",
+      "relationship": "related",
+      "description": "Both are combinatorial/graph-theoretic results with connections to Euler's work."
+    }
+  ],
+  "relatedProofs": [
+    "euler-polyhedral-formula"
+  ]
 }

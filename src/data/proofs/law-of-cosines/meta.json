@@ -110,5 +110,21 @@
       "What are the hyperbolic versions of this theorem?",
       "How is this used in modern GPS and positioning systems?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "generalizes",
+      "description": "The law of cosines generalizes the Pythagorean theorem: when θ = π/2, the cos term vanishes, recovering a² + b² = c²."
+    },
+    {
+      "targetId": "triangle-inequality",
+      "relationship": "related",
+      "description": "Both are fundamental triangle relationships. The law of cosines provides the exact relationship that the triangle inequality bounds."
+    }
+  ],
+  "relatedProofs": [
+    "pythagorean-theorem",
+    "triangle-inequality"
+  ]
 }

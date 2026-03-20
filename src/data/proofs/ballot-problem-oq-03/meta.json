@@ -193,5 +193,15 @@
       "Extend to r×r LGV lemma for r > 2 paths using the general Lindström-Gessel-Viennot determinant",
       "Formalize the bijection between non-intersecting Dyck paths and Standard Young Tableaux"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "ballot-problem",
+      "relationship": "extends",
+      "description": "Extends the classical ballot problem with additional combinatorial identities and generalizations."
+    }
+  ],
+  "relatedProofs": [
+    "ballot-problem"
+  ]
 }
