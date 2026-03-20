@@ -92,11 +92,55 @@ theorem pow2_strictMono : StrictMono (fun k => 2^k) := by
   intro a b hab
   exact Nat.pow_lt_pow_right (by omega) hab
 
-/-- Factorial grows faster than any polynomial (axiom). -/
-axiom factorial_strong_growth : HasStrongGrowth (fun k => (k + 1).factorial)
+/-- For all n, n + 1 ≤ 2^n. Proved by induction. -/
+private theorem pow2_ge_succ (n : ℕ) : n + 1 ≤ 2 ^ n := by
+  induction n with
+  | zero => norm_num
+  | succ k ih =>
+    calc k + 1 + 1 ≤ 2 * (k + 1) := by omega
+      _ ≤ 2 * 2 ^ k := by gcongr
+      _ = 2 ^ (k + 1) := by ring
 
-/-- 2^k grows faster than any polynomial (axiom). -/
-axiom pow2_strong_growth : HasStrongGrowth (fun k => 2^k)
+/-- For all k, 2^k ≤ (k+1)!. Proved by induction. -/
+private theorem factorial_ge_pow2 (k : ℕ) : 2 ^ k ≤ (k + 1).factorial := by
+  induction k with
+  | zero => norm_num
+  | succ n ih =>
+    calc 2 ^ (n + 1) = 2 * 2 ^ n := by ring
+      _ ≤ 2 * (n + 1).factorial := by gcongr
+      _ ≤ (n + 2) * (n + 1).factorial := by gcongr; omega
+      _ = (n + 1 + 1).factorial := (Nat.factorial_succ (n + 1)).symm
+
+/-- 2^k grows faster than any polynomial. Proved using explicit witness
+    k = C * (t+1)^(t+1) and a chain of inequalities. -/
+theorem pow2_strong_growth : HasStrongGrowth (fun k => 2 ^ k) := by
+  intro t ht C
+  by_cases hC : C = 0
+  · subst hC; exact ⟨1, by omega, by simp⟩
+  · have hC_pos : 0 < C := Nat.pos_of_ne_zero hC
+    set n := C * (t + 1) ^ t
+    have hn_pos : 0 < n := by positivity
+    refine ⟨n * (t + 1), Nat.mul_pos hn_pos (by omega), ?_⟩
+    -- Goal: 2 ^ (n * (t + 1)) > C * (n * (t + 1)) ^ t
+    show 2 ^ (n * (t + 1)) > C * (n * (t + 1)) ^ t
+    rw [pow_mul]
+    have h1 : n + 1 ≤ 2 ^ n := pow2_ge_succ n
+    have h2 : 0 < n ^ t := by positivity
+    -- Chain: C*(t+1)^t * n^t < (n+1)*n^t ≤ (n+1)*(n+1)^t = (n+1)^(t+1) ≤ (2^n)^(t+1)
+    calc C * (n * (t + 1)) ^ t
+        = C * (t + 1) ^ t * n ^ t := by rw [mul_pow]; ring
+      _ < (n + 1) * n ^ t := by
+          exact mul_lt_mul_of_pos_right (by omega : C * (t + 1) ^ t < n + 1) h2
+      _ ≤ (n + 1) * (n + 1) ^ t := by gcongr; omega
+      _ = (n + 1) ^ (t + 1) := by ring
+      _ ≤ (2 ^ n) ^ (t + 1) := by gcongr
+
+/-- Factorial grows faster than any polynomial. Derived from pow2_strong_growth
+    and the fact that (k+1)! ≥ 2^k. -/
+theorem factorial_strong_growth : HasStrongGrowth (fun k => (k + 1).factorial) := by
+  intro t ht C
+  obtain ⟨k, hk_pos, hk⟩ := pow2_strong_growth t ht C
+  exact ⟨k, hk_pos, lt_of_lt_of_le hk (factorial_ge_pow2 k)⟩
 
 /-- Corollary: The sum Σ 1/2^{k!} is transcendental. -/
 theorem factorial_sum_transcendental :
