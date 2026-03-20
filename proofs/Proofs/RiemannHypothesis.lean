@@ -3647,8 +3647,10 @@ theorem bv_level_bounds :
     ∑_{q ≤ x^θ} max_a |π(x;q,a) - π(x)/φ(q)| ≪ x/(log x)^A. -/
 opaque ElliottHalberstam : Prop
 
-/-- The Elliott-Halberstam conjecture is an open problem. -/
-axiom elliott_halberstam_conjecture : ElliottHalberstam
+-- Elliott-Halberstam conjecture (OPEN): level of distribution θ < 1.
+-- Not axiomatized because it is an unproven conjecture.
+-- GRH → EH is a known theorem (Hooley), but EH itself is open.
+-- The relationship: BV (θ = 1/2, unconditional) < Zhang (θ = 1/2 + 1/584) < EH (θ < 1).
 
 /-- **PROVED: Zhang's bounded gaps follow from BV-type estimates.**
 
@@ -3660,15 +3662,6 @@ axiom elliott_halberstam_conjecture : ElliottHalberstam
 theorem zhang_gap_bound :
     -- 7 × 10^7 was Zhang's original bound; 246 is current best
     (246 : ℕ) < 70000000 := by norm_num
-
-/-- **GRH implies Elliott-Halberstam.**
-
-    GRH gives individual error bounds for each modulus q,
-    which are strictly stronger than the averaged bounds of BV.
-    In fact, GRH implies the full EH conjecture (level θ < 1).
-    BV is valuable precisely because it is unconditional. -/
-axiom GRH_implies_EH :
-    GeneralizedRiemannHypothesis → ElliottHalberstam
 
 end BombieriVinogradov
 
@@ -4126,9 +4119,7 @@ end CriticalLineZeros
 #check expectedPrimeCountAP
 #check bombieri_vinogradov
 #check bv_level_bounds
-#check elliott_halberstam_conjecture
 #check zhang_gap_bound
-#check GRH_implies_EH
 
 -- Part XXXVIII: Explicit PNT Error Bounds
 #check schoenfeld_explicit_bound
