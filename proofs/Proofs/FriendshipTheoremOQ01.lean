@@ -1100,13 +1100,38 @@ lemma quotient_subleading_coeff (hF : IsFriendshipGraph G) (k : ℕ) (hk : k ≥
 
 /-- A power of (X²-c) has zero coefficient at every odd degree.
     Since (X²-c)^m = Σ C(m,j)(-c)^j X^{2(m-j)}, all terms have even degree. -/
-lemma coeff_odd_of_sq_sub_pow (c : ℤ) (m j : ℕ) (hj : Odd j) :
-    ((X ^ 2 - C c : Polynomial ℤ) ^ m).coeff j = 0 := by
-  -- (X²-c)^m only produces monomials X^{2i} for i = 0,...,m.
-  -- If j is odd, no such monomial contributes.
-  -- Proof by induction on m, using that X²-c has zero coefficient at odd indices,
-  -- and convolution of even-supported sequences is even-supported.
-  sorry
+private lemma coeff_sq_sub_C_odd (c : ℤ) (j : ℕ) (hj : Odd j) :
+    (X ^ 2 - C c : Polynomial ℤ).coeff j = 0 := by
+  obtain ⟨r, hr⟩ := hj
+  simp only [Polynomial.coeff_sub, Polynomial.coeff_X_pow, Polynomial.coeff_C]
+  have hj_ne_2 : j ≠ 2 := by omega
+  have hj_ne_0 : j ≠ 0 := by omega
+  simp [hj_ne_2, hj_ne_0]
+
+lemma coeff_odd_of_sq_sub_pow (c : ℤ) (m : ℕ) :
+    ∀ j : ℕ, Odd j → ((X ^ 2 - C c : Polynomial ℤ) ^ m).coeff j = 0 := by
+  induction m with
+  | zero =>
+    intro j hj
+    simp only [pow_zero, Polynomial.coeff_one]
+    obtain ⟨r, hr⟩ := hj
+    have : j ≠ 0 := by omega
+    simp [this]
+  | succ m ih =>
+    intro j hj
+    rw [pow_succ, Polynomial.coeff_mul]
+    apply Finset.sum_eq_zero
+    intro ⟨a, b⟩ hab
+    simp only [Finset.mem_antidiagonal] at hab
+    by_cases ha : Even a
+    · -- a even → b = j - a is odd (since a+b = j is odd and a is even)
+      have hb : Odd b := by
+        obtain ⟨r, hr⟩ := hj; obtain ⟨s, hs⟩ := ha
+        exact ⟨r - s, by omega⟩
+      rw [coeff_sq_sub_C_odd c b hb, mul_zero]
+    · -- a odd → (X²-c)^m has zero coeff at a
+      have ha_odd : Odd a := by rwa [Nat.not_even_iff_odd] at ha
+      rw [ih a ha_odd, zero_mul]
 
 /-- X²-d is irreducible over ℤ when d ≥ 1 is not a perfect square. -/
 lemma sq_sub_irreducible_of_not_square (d : ℕ) (hd : d ≥ 1)
