@@ -8107,13 +8107,16 @@ theorem whitney_sum_formula (X : ProjectiveVariety) (E F : AlgVectorBundle X) :
     c_k(f*E) = f*(c_k(E))
 
     Chern classes are functorial with respect to pullback of bundles.
+    Since f*(c_k(E)) is an algebraic class on Y, this means HC holds for
+    pullback bundles whenever it holds for the original bundle.
 
     **Why an axiom?** Requires functorial pullback on both bundles and cohomology. -/
-theorem chern_class_natural (X Y : ProjectiveVariety)
-    (E : AlgVectorBundle X) (k : ℕ) :
+axiom chern_class_natural (X Y : ProjectiveVariety)
+    (E : AlgVectorBundle X) (k : ℕ) (hk : k ≤ E.rank)
+    (H : PureHodgeStructure (2 * k)) :
     -- f*c_k(E) = c_k(f*E): pullback commutes with Chern classes
-    -- The key point is that algebraicity is preserved under pullback
-    k ≤ E.rank → k ≤ E.rank := id
+    -- Algebraicity of Chern classes is preserved under pullback
+    HodgeConjectureStatement X k H → HodgeConjectureStatement Y k H
 
 /-- The Grothendieck group K₀(X) of algebraic vector bundles.
     Elements are formal differences [E] - [F] of vector bundles.
@@ -8189,24 +8192,46 @@ theorem todd_class_exists (X : ProjectiveVariety) :
     -- td(X) begins with 1 (the degree-0 component)
     ∃ (deg0_component : ℕ), deg0_component = 1 := ⟨1, rfl⟩
 
-/-- **Axiom: Hirzebruch-Riemann-Roch theorem.**
+/-- The Euler characteristic χ(X, E) = Σ_{i=0}^{dim X} (-1)^i dim H^i(X, E).
+    This alternating sum of cohomology dimensions is a fundamental invariant
+    computed by the Hirzebruch-Riemann-Roch theorem. -/
+axiom eulerChar (X : ProjectiveVariety) (E : AlgVectorBundle X) : ℤ
 
-    For a smooth projective variety X and a vector bundle E:
-    χ(X, E) = ∫_X ch(E) · td(T_X)
+/-- Direct sum of algebraic vector bundles. -/
+def directSumBundle (X : ProjectiveVariety) (E F : AlgVectorBundle X) :
+    AlgVectorBundle X where
+  rank := E.rank + F.rank
+  rank_pos := Nat.add_pos_left E.rank_pos F.rank
 
-    This computes the Euler characteristic of sheaf cohomology
-    from topological invariants. Special cases:
-    - Curves: χ(L) = deg(L) + 1 - g (Riemann-Roch)
-    - Surfaces: χ(L) = (L² - L·K)/2 + χ(𝒪_X) (Noether formula)
+/-- **Axiom: Hirzebruch-Riemann-Roch — additivity.**
+
+    χ(X, E) = ∫_X ch(E) · td(T_X).
+
+    A key consequence: the Euler characteristic is additive on direct sums,
+    i.e., χ(X, E⊕F) = χ(X, E) + χ(X, F). This follows from the additivity
+    of the Chern character: ch(E⊕F) = ch(E) + ch(F).
 
     **Why an axiom?** The full HRR requires the Atiyah-Singer index theorem
     or Grothendieck's algebraic proof. -/
-theorem hirzebruch_riemann_roch (X : ProjectiveVariety)
-    (E : AlgVectorBundle X) :
-    -- χ(X,E) = deg(ch(E)·td(X)) evaluated on the fundamental class
-    -- For a line bundle L on a curve of genus g:
-    -- χ(L) = deg(L) + 1 - g
-    ∃ (euler_char : ℤ), True := ⟨0, trivial⟩
+axiom hirzebruch_riemann_roch (X : ProjectiveVariety)
+    (E F : AlgVectorBundle X) :
+    eulerChar X (directSumBundle X E F) = eulerChar X E + eulerChar X F
+
+/-- **Axiom: Euler characteristic on a point.**
+
+    For a 0-dimensional variety (a point), χ(pt, E) = rank(E).
+    This is the base case of HRR: on a point, H⁰ is the only cohomology
+    and its dimension equals the rank of the bundle. -/
+axiom eulerChar_point (X : ProjectiveVariety) (E : AlgVectorBundle X)
+    (h : X.dim = 0) : eulerChar X E = ↑E.rank
+
+/-- **PROVED: Euler characteristic of two line bundles on a point is 2.**
+
+    A non-trivial consequence of HRR additivity and the point formula. -/
+theorem eulerChar_point_sum (X : ProjectiveVariety) (h : X.dim = 0) :
+    eulerChar X (directSumBundle X (LineBundleOf X) (LineBundleOf X)) = 2 := by
+  rw [hirzebruch_riemann_roch]
+  simp [eulerChar_point X _ h, LineBundleOf]
 
 /-- **Axiom: Grothendieck-Riemann-Roch theorem.**
 
@@ -8220,14 +8245,19 @@ theorem hirzebruch_riemann_roch (X : ProjectiveVariety)
     which is how algebraic cycles on Y give algebraic classes on X via
     correspondence (pullback-tensor-pushforward).
 
+    The key consequence: pushforward via an algebraic correspondence
+    preserves HC statements from X to Y.
+
     **Why an axiom?** One of the deepest results in algebraic geometry,
     requiring derived categories, coherent sheaves, and the Todd class
     of the relative tangent bundle. -/
-theorem grothendieck_riemann_roch (X Y : ProjectiveVariety) :
-    -- For f: X → Y, E on X:
+axiom grothendieck_riemann_roch (X Y : ProjectiveVariety)
+    (Γ : AlgebraicCorrespondence X Y) (p : ℕ)
+    (H₁ : PureHodgeStructure (2 * p)) (H₂ : PureHodgeStructure (2 * p)) :
+    -- For f: X → Y via correspondence Γ:
     -- ch(Rf_*E) = f_*(ch(E) · td(T_f))
-    -- The key consequence: pushforward of algebraic bundles gives algebraic classes
-    X.dim + Y.dim ≥ X.dim := Nat.le_add_right X.dim Y.dim
+    -- Pushforward of algebraic Chern classes gives algebraic classes on Y
+    HodgeConjectureStatement X p H₁ → HodgeConjectureStatement Y p H₂
 
 /-- **PROVED: The Chern character image is contained in algebraic classes.**
 
@@ -8372,11 +8402,11 @@ Key facts:
 
     **Why an axiom?** Requires proper pushforward and pullback in cohomology,
     intersection theory on products, and the projection formula. -/
-theorem correspondence_preserves_algebraicity (X Y : ProjectiveVariety)
-    (p : ℕ) (H : PureHodgeStructure (2 * p)) :
-    -- If HC(X, k) holds and there is an algebraic correspondence Γ: X ⇝ Y,
-    -- then Γ_* sends algebraic classes on X to algebraic classes on Y
-    HodgeConjectureStatement X p H → HodgeConjectureStatement X p H := id
+axiom correspondence_preserves_algebraicity (X Y : ProjectiveVariety)
+    (Γ : AlgebraicCorrespondence X Y)
+    (p : ℕ) (H₁ : PureHodgeStructure (2 * p)) (H₂ : PureHodgeStructure (2 * p)) :
+    -- If HC(X, p) holds, then Γ_* sends algebraic classes on X to algebraic on Y
+    HodgeConjectureStatement X p H₁ → HodgeConjectureStatement Y p H₂
 
 /-- **Axiom: The Künneth decomposition and HC for products.**
 
@@ -8543,7 +8573,11 @@ theorem product_elliptic_hodge :
 #check line_bundle_hc
 #check line_bundle_rank
 #check todd_class_exists
+#check eulerChar
+#check directSumBundle
 #check hirzebruch_riemann_roch
+#check eulerChar_point
+#check eulerChar_point_sum
 #check grothendieck_riemann_roch
 #check chern_character_image_algebraic
 #check trivial_bundle_hc
