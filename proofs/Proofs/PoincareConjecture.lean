@@ -16580,7 +16580,7 @@ theorem sphere3_nontrivial_covering_exists :
     providing a strong obstruction to contractibility (once Lefschetz is available). -/
 theorem antipodal_fixed_point_free :
     ∀ x : ↥Sphere3, (antipodalHomeomorph 3) x ≠ x :=
-  fun x => Ne.symm (antipodalMap_no_fixed_points 3 x)
+  fun x h => antipodalMap_no_fixed_points 3 x h.symm
 
 /-- S³ has diameter 2: the north and south poles are maximally separated. -/
 theorem sphere3_diameter_two :
@@ -16639,7 +16639,7 @@ theorem hopf_antipodal_invariant :
   intro ⟨x, hx⟩
   simp only [hopfMap, antipodalHomeomorph, antipodalMap]
   ext i
-  fin_cases i <;> simp [neg_mul, mul_neg]
+  fin_cases i <;> simp
 
 /-- The Hopf map respects the antipodal equivalence relation:
     if x ~ y (i.e., y = x or y = -x), then π(x) = π(y).
