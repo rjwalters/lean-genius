@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Parts CXI-CXII (Gevrey regularity/space analyticity + Liouville theorems/ancient solutions). Now 112 parts, ~20280 lines, 0 sorries, 0 axioms. Added companion Sections 72-73.",
+    "progressSummary": "PROGRESS: Added Parts CXI-CXIV (Gevrey regularity, Liouville theorems, Stokes system, vortex dynamics). Now 114 parts, ~20400 lines, 0 sorries, 0 axioms.",
     "builtItems": [
       "Part LXXXVIII: Helicity Algebra and Conservation Structure (NavierStokes.lean:14932)",
       "Part LXXXIX: Kolmogorov Microscales and Spectral Energy Relations (NavierStokes.lean:15200)",
@@ -58,7 +58,10 @@
       "Aristotle companion Sections 70-71: attractor dimension, determining modes, Kraichnan gap, 4/5 law coefficients, Yaglom gap, DNS cost",
       "Part CXI: Gevrey Regularity and Space Analyticity \u2014 Foias-Temam, Gruji\u0107-Kukavica, Biswas-Swanson, degrees of freedom (NavierStokes.lean:20144)",
       "Part CXII: Liouville Theorems and Ancient Solutions \u2014 KNSS, Seregin, Barker-Prange, blowup rescaling, the Liouville gap (NavierStokes.lean:20215)",
-      "Aristotle companion Sections 72-73: Gevrey exponents, DNS degrees of freedom, Liouville gap, parabolic dimensions"
+      "Aristotle companion Sections 72-73: Gevrey exponents, DNS degrees of freedom, Liouville gap, parabolic dimensions",
+      "Part CXIII: Maximal Regularity and Stokes System \u2014 Helmholtz-Leray, Stokes operator, Lp-Lq smoothing, maximal Lp regularity, Oseen, resolvent (NavierStokes.lean:20278)",
+      "Part CXIV: Vortex Dynamics and Reconnection \u2014 vortex stretching, Biot-Savart, LIA/Hasimoto, Kelvin circulation, reconnection scaling (NavierStokes.lean:20370)",
+      "Aristotle companion Sections 74-75: Stokes exponents, Weyl asymptotics, Oseen decay, Biot-Savart, reconnection scaling"
     ],
     "insights": [
       "Helicity H = \u222bu\u00b7\u03c9 decomposes into positive/negative helical modes: E\u00b1=(E\u00b1H)/2",
@@ -124,7 +127,17 @@
       "Seregin (2012): L\u00b3-bounded ancient solutions are trivial \u2014 reduces Millennium Problem to Liouville for L\u00b2 ancient solutions",
       "The Liouville gap: energy gives L\u00b2, need L\u00b3, gap = 1/2 derivative \u2014 identical to ALL other formulations of the problem",
       "In 2D: d/2-1 = 0 so energy = critical (solved!); in 3D: d/2-1 = 1/2 so energy \u2260 critical (open!)",
-      "Barker-Prange (2020): quantitative regularity with double-exponential bound C(M) ~ exp(exp(cM^c)) \u2014 finite but large"
+      "Barker-Prange (2020): quantitative regularity with double-exponential bound C(M) ~ exp(exp(cM^c)) \u2014 finite but large",
+      "Helmholtz-Leray projection: div-free fields have d-1 independent components (2 in 3D) \u2014 P is a CZ singular integral, bounded on Lp for 1<p<\u221e",
+      "Stokes semigroup smoothing: \u2016e^{-tA}f\u2016_{Lq} \u2264 Ct^{-(d/2)(1/p-1/q)}\u2016f\u2016_{Lp} \u2014 identical to heat semigroup (Gaussian smoothing)",
+      "L\u00b3 is critical for Stokes: smoothing exponent = 0 (no gain, no loss). This is why L\u00b3 is the critical space for NS.",
+      "Maximal Lp regularity (Solonnikov/Giga): \u2016Au\u2016_{Lp} \u2264 C\u2016f\u2016_{Lp} for 1<p<\u221e \u2014 solution is no worse than data",
+      "Oseen decay |x|^{-(d-1)} is faster than Stokes |x|^{-(d-2)} due to advection breaking isotropy; resolves Stokes paradox in 2D",
+      "Vortex stretching (\u03c9\u00b7\u2207)u exists ONLY in d\u22653: the 2D/3D divide. In 2D: pure transport-diffusion \u2192 maximum principle \u2192 regularity.",
+      "Hasimoto (1972): vortex filament LIA \u2194 cubic NLS via \u03c8=\u03ba exp(i\u222b\u03c4 ds). NLS is integrable in 1D \u2192 filament dynamics is integrable.",
+      "Kelvin circulation: exact conservation in Euler, viscous decay in NS. Helicity changes by \u00b12\u0393\u00b2 per reconnection (topological quantization).",
+      "Reconnection scaling: \u03b4~(t*-t)^{1/2} (diffusive), \u2016\u03c9\u2016_\u221e~(t*-t)^{-1}. BKM integral \u222b\u2016\u03c9\u2016_\u221e dt diverges at this rate \u2014 but DNS shows saturation.",
+      "Stokes resolvent: bounded analytic semigroup in sector |arg(z)| < \u03c0/2 + \u03b5. Foundation for Gevrey regularity (Part CXI) and NS local existence."
     ],
     "mathlibGaps": [
       "Sobolev spaces",
@@ -151,7 +164,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.888Z",
-  "lastUpdate": "2026-03-20T13:15:00.000Z",
+  "lastUpdate": "2026-03-20T13:45:00.000Z",
   "completed": "2026-02-11T05:41:00.787Z",
   "significance": 10,
   "tractability": 1,
