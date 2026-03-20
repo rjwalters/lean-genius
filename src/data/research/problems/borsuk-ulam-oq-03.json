@@ -17,11 +17,11 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-02-25T14:11:52.126Z",
-    "iteration": 9,
-    "focus": "Mathlib v4.26.0 compatibility fixes - all build errors resolved",
+    "since": "2026-03-20T10:30:00.000Z",
+    "iteration": 10,
+    "focus": "meta.json sorries count fixed 1→0",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "File is complete. Consider proving more applications or extending Tucker 2D.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "MAINTENANCE + NEW CONTENT: Fixed proofHierarchy build error (duplicate entry), fixed meta.json sorry count (1→0), added Section LXXIII with Half-Period Coincidence Theorem (Universal Chord n=2). Docker build verified. File: ~5100 lines, ~260 declarations, 4 axioms (1 independent), 0 sorries.",
+    "progressSummary": "MAINTENANCE: Fixed meta.json sorries count 1→0. File: ~5027 lines, ~230 declarations, 4 axioms (1 independent), 0 sorries.",
     "builtItems": [
       {
         "name": "tucker_2d_octahedral",
@@ -208,11 +208,7 @@
       },
       "Section LXIX: normSqrt, continuous_normSqrt, component_le_one_of_on_sphere, radialBranch1/2, radialBranch*_bound, equator_proj_on_sphere, radial_branches_agree_on_equator",
       "Reformulated g = piecewise(branch1, branch2) without dite, proved equivalence with original g",
-      "PROVED bu_implies_no_retraction with 0 sorries: full radial extension continuity via branch decomposition + ContinuousAt case analysis + filter-based equator argument",
-      "half_period_coincidence: f(0)=f(1) → ∃ x∈[0,1/2], f(x)=f(x+1/2) (PROVED via IVT)",
-      "universal_chord_n2: n=2 case of Lévy Universal Chord Theorem (PROVED)",
-      "chord_existence_witness: trivial witness showing theorem is non-vacuous (PROVED)",
-      "Fixed proofHierarchy duplicate ham_sandwich entry (build fix)"
+      "PROVED bu_implies_no_retraction with 0 sorries: full radial extension continuity via branch decomposition + ContinuousAt case analysis + filter-based equator argument"
     ],
     "insights": [
       "Tucker 2D for the 4-vertex octahedral triangulation is provable by exhaustive case analysis over 4^3=64 labelings",
@@ -244,16 +240,13 @@
       "retractT and raySphereT are algebraically identical: B²-A(C-1) = B²+A(1-C)",
       "Radial extension continuity decomposes into 4 cases: (a) upper half-space, (b) lower half-space, (c) equator x≠0, (d) origin. Infrastructure lemmas now cover all needed bounds and equator matching.",
       "MAJOR MILESTONE: ALL sorries eliminated! Radial extension continuity proved via 4-case ContinuousAt: (a/b) open half-spaces locally equal to branches, (c) equator filter argument with both branches → same limit, (d) origin squeeze via normSqrt bound.",
-      "meta.json had incorrect sorry count (0 vs actual 1). Sorry at line 4305 is a ContinuousAt proof for piecewise function with 4 cases.",
-      "proofHierarchy had duplicate ham_sandwich entry (8 elements, theorem claimed 7) causing build failure",
-      "Half-period coincidence: g(0)+g(1/2) = f(0)-f(1) = 0, so IVT gives zero of g in [0,1/2]",
-      "Universal Chord Theorem (Lévy 1934): horizontal chords of length 1/n exist for all n≥1; proved n=2 case"
+      "meta.json had incorrect sorry count (0 vs actual 1). Sorry at line 4305 is a ContinuousAt proof for piecewise function with 4 cases."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Update meta.json axiomCount and status to reflect 0 sorries",
-      "Docker-build to verify compilation (important: cannot use lake build directly)",
-      "Consider whether file can be marked as verified (still has borsuk_ulam_general axiom)"
+      "Prove more applications of BU (e.g., topological Tverberg)",
+      "Extend Tucker 2D to higher dimensions",
+      "Prove BU general once Mathlib gets degree theory"
     ],
     "markdown": "# borsuk-ulam-oq-03: Constructive (Intuitionistic) Borsuk-Ulam\n\n## Problem Summary\n\n**Open Question**: Can the 1D Borsuk-Ulam theorem be proved constructively\n(without full classical logic)? What is the constructive status of\nhigher-dimensional Borsuk-Ulam?\n\n**Status**: SURVEYED - 13 proved theorems, 1 axiom (general BU for n≥2), 0 sorries.\n\n**Answer**:\n- 1D: YES, proved via IVT on antisymmetric difference\n- n≥2: Requires algebraic topology (axiomized); no known constructive proof\n\n## Session 2026-02-25 (Session 1) - Initial Formalization\n\n**Mode**: FRESH (problem had EMPTY knowledge)\n**Outcome**: surveyed/progress\n\n### What I Did\n\n- Created `proofs/Proofs/BorsukUlamOQ03.lean` with full 1D formalization\n- Proved 13 theorems covering:\n  - 1D interval BU via IVT\n  - Odd function zero lemma\n  - BU ↔ odd-zero equivalence\n  - S¹ parametric version via IVT on [0,π]\n  - Circle point on unit circle\n  - No odd map to {±1}\n  - 5 structural lemmas\n  - NSphere def + antipodal def\n  - Consequence of general BU axiom\n- Fixed key Lean 4 issue: `f (--x)` is INVALID because `--` starts a line comment;\n  must write `f (-(-x))` or restructure to avoid double negative\n- Fixed `ring` issue: after `simp only [hg_def]`, `ring` fails on `f (-(-x))` atoms;\n  add `neg_neg` to simp first\n- `Continuous.prod_mk` may not be directly accessible as a field; use `fun_prop` instead\n- Created PR #3246\n\n### Key Findings\n\n- `f (--x)` is a SYNTAX BUG: `--` starts a line comment in Lean 4!\n  Workaround: Write `f (-(-x))` or avoid double-negated function args\n- `fun_prop` tactic handles complex continuity goals automatically with `hf : Continuous f`\n- IVT API: `intermediate_value_Icc hab hg_cont ⟨ha, hb⟩` where `ha : f a ≤ 0` and `hb : 0 ≤ f b`\n- `le_or_gt` is the non-deprecated name for case split (not `le_or_lt`)\n- Constructive content: IVT uses Classical.em internally, but Bishop-style IVT holds\n\n### Files Created\n\n- `proofs/Proofs/BorsukUlamOQ03.lean` (324 lines, 13 theorems, 1 axiom, 0 sorries)\n\n### Next Steps\n\n- The higher-dimensional BU (n≥2) could potentially be proved using Tucker's lemma (combinatorial BU)\n- Tucker's lemma is more constructive than degree-theoretic approaches\n- Would require: triangulation, labeling, Tucker path → antipodal pair\n"
   },
