@@ -222,7 +222,7 @@ structure MordellWeilGroup (E : EllipticCurveQ) where
 
 attribute [instance] MordellWeilGroup.addCommGroup
 
-/-- **The Mordell-Weil Theorem** (1922, completed 1928)
+/- **The Mordell-Weil Theorem** (1922, completed 1928)
 
     For any elliptic curve E/ℚ, the group E(ℚ) of rational points
     is finitely generated.
@@ -257,7 +257,7 @@ axiom torsionSubgroup_axiom (E : EllipticCurveQ) : Type*
     - ℤ/2ℤ × ℤ/2nℤ for n = 1, 2, 3, 4 -/
 def torsionSubgroup (E : EllipticCurveQ) : Type* := torsionSubgroup_axiom E
 
-/-- **Mazur's Torsion Theorem** (1977)
+/- **Mazur's Torsion Theorem** (1977)
 
     The torsion subgroup of E(ℚ) is one of exactly 15 isomorphism classes. -/
 
@@ -363,9 +363,9 @@ structure ModularForm (k N : ℕ) where
   periodic : ∀ τ : ℂ, toFun (τ + 1) = toFun τ
   /-- Bounded growth at cusps: |f(τ)| stays bounded as Im(τ) → ∞.
       Equivalent to the q-expansion Σ aₙ qⁿ having no negative powers of q. -/
-  bounded_at_cusp : ∃ C : ℝ, ∀ τ : ℂ, τ.im ≥ 1 → Complex.abs (toFun τ) ≤ C
+  bounded_at_cusp : ∃ C : ℝ, ∀ τ : ℂ, τ.im ≥ 1 → ‖toFun τ‖ ≤ C
 
-/-- **The Modularity Theorem** (Wiles 1995, Breuil-Conrad-Diamond-Taylor 2001)
+/- **The Modularity Theorem** (Wiles 1995, Breuil-Conrad-Diamond-Taylor 2001)
 
     Every elliptic curve E/ℚ is modular: there exists a weight 2 cusp form f
     for Γ₀(N) such that L(E, s) = L(f, s).
@@ -653,7 +653,7 @@ axiom NeronTateHeight_axiom (E : EllipticCurveQ) : ℝ → ℝ → ℝ
     The regulator is its Gram determinant. -/
 def NeronTateHeight (E : EllipticCurveQ) : ℝ → ℝ → ℝ := NeronTateHeight_axiom E
 
-/-- **The Gross-Zagier Formula** (1986)
+/- **The Gross-Zagier Formula** (1986)
 
     L'(E, 1) = c · ĥ(P_K)
 
@@ -672,7 +672,7 @@ axiom gross_zagier_formula (E : EllipticCurveQ) (_P : HeegnerPoint E) :
 PART IX: COMPUTATIONAL EVIDENCE
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- **Computational Verification**
+/- **Computational Verification**
 
     BSD has been numerically verified for millions of elliptic curves:
     - All curves of conductor N ≤ 500,000 have been checked
@@ -845,7 +845,7 @@ PART IX.c: CONGRUENT NUMBER PROBLEM CLASSICAL CASES
 Certain cases of the congruent number problem have been known for centuries.
 -/
 
-/-- 5 is a congruent number: it's the area of the right triangle (3/2, 20/3, 41/6).
+/- 5 is a congruent number: it's the area of the right triangle (3/2, 20/3, 41/6).
 
     By BSD, this means rank(E₅) > 0 and L(E₅, 1) = 0.
     The rational point (x, y) = (5, 5) lies on y² = x³ - 25x:
@@ -854,12 +854,12 @@ Certain cases of the congruent number problem have been known for centuries.
     Actually, the point (-4, 6) is easier to verify:
     36 = -64 - (-100) = 36 ✓ -/
 
-/-- 6 is a congruent number: it's the area of the famous (3, 4, 5) right triangle.
+/- 6 is a congruent number: it's the area of the famous (3, 4, 5) right triangle.
 
     The point (x, y) = (12, 36) lies on y² = x³ - 36x:
     1296 = 1728 - 432 = 1296 ✓ -/
 
-/-- 7 is a congruent number (proved by Euler).
+/- 7 is a congruent number (proved by Euler).
 
     The smallest triangle has sides 35/12, 24/5, 337/60. -/
 
@@ -874,7 +874,7 @@ axiom one_not_congruent : algebraicRank (congruentNumberCurve 1 (by norm_num)) =
     Together with 1, these are the first non-congruent numbers. -/
 axiom two_not_congruent : algebraicRank (congruentNumberCurve 2 (by norm_num)) = 0
 
-/-- 3 is NOT a congruent number (proved by Fermat). -/
+/- 3 is NOT a congruent number (proved by Fermat). -/
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART IX.d: VERIFIED RATIONAL POINTS ON CONGRUENT NUMBER CURVES (PROVEN)
@@ -1406,7 +1406,7 @@ theorem hasse_bound_consequence (E : EllipticCurveQ) (p : ℕ) [Fact (Nat.Prime 
 PART X: WHY BSD IS HARD
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- **Why BSD Remains Open**
+/- **Why BSD Remains Open**
 
     1. **Higher rank obstruction**: Kolyvagin's methods only work for rank ≤ 1.
        For rank ≥ 2, we don't know how to construct enough independent points.
@@ -1423,7 +1423,7 @@ PART X: WHY BSD IS HARD
 /-- BSD is open for rank ≥ 2: no Euler system construction is known. -/
 theorem BSD_is_hard : bsdStatus 2 = .open_ := rfl
 
-/-- **Average Rank Results** (Bhargava-Shankar 2010-2015)
+/- **Average Rank Results** (Bhargava-Shankar 2010-2015)
 
     The average rank of elliptic curves over ℚ is less than 1.
     Specifically, at least 50% of curves have rank 0 or 1.
@@ -1491,7 +1491,7 @@ def BSD_AbelianVariety : Prop := BSD_AbelianVariety_axiom
 PART XII: SUMMARY AND SIGNIFICANCE
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- Summary of what we know about the Birch and Swinnerton-Dyer Conjecture:
+/- Summary of what we know about the Birch and Swinnerton-Dyer Conjecture:
 
 1. **Statement**: rank(E(ℚ)) = ord_{s=1} L(E, s)
    Plus a formula for the leading coefficient involving Ш, Ω, R, cₚ
@@ -1548,14 +1548,14 @@ structure SelmerGroup (E : EllipticCurveQ) (n : ℕ) where
 
 attribute [instance] SelmerGroup.fintype SelmerGroup.addCommGroup
 
-/-- Axiom: The n-Selmer group exists and is finite for any n ≥ 2. -/
+/- Axiom: The n-Selmer group exists and is finite for any n ≥ 2. -/
 
-/-- The order of the n-Selmer group is a power of n.
+/- The order of the n-Selmer group is a power of n.
 
     |Sel_n(E/ℚ)| = n^s for some s ≥ rank(E(ℚ)) + dim Ш[n].
     This gives the inequality: rank(E(ℚ)) ≤ s - dim Ш[n] ≤ s. -/
 
-/-- The fundamental exact sequence for n-Selmer groups:
+/- The fundamental exact sequence for n-Selmer groups:
 
     0 → E(ℚ)/nE(ℚ) → Sel_n(E/ℚ) → Ш(E/ℚ)[n] → 0
 
@@ -1571,7 +1571,7 @@ theorem rank_bound_from_selmer (E : EllipticCurveQ) :
     ∃ s : ℕ, algebraicRank E ≤ s :=
   ⟨algebraicRank E, le_refl _⟩
 
-/-- **2-Descent for y² = x³ - n²x** (Congruent Number Curves)
+/- **2-Descent for y² = x³ - n²x** (Congruent Number Curves)
 
     For E_n: y² = x³ - n²x, the 2-Selmer group can be computed explicitly
     via the factorization x³ - n²x = x(x-n)(x+n).
@@ -1648,7 +1648,7 @@ def regulatorValue (E : EllipticCurveQ) : ℝ := regulatorValue_axiom E
 axiom regulator_pos (E : EllipticCurveQ) (hr : algebraicRank E > 0) :
     regulatorValue E > 0
 
-/-- The regulator equals 1 for rank 0 curves (convention). -/
+/- The regulator equals 1 for rank 0 curves (convention). -/
 
 /-- For a rank 1 curve, the regulator is just the canonical height of a generator:
     R = ĥ(P) where P generates E(ℚ)/torsion. -/
@@ -1657,12 +1657,12 @@ theorem regulator_rank_one_is_height (_E : EllipticCurveQ)
     True := -- Placeholder: R = ĥ(generator)
   trivial
 
-/-- **Explicit regulator computation for y² = x³ - 25x (n=5 curve)**
+/- **Explicit regulator computation for y² = x³ - 25x (n=5 curve)**
 
     The generator is P = (-4, 6) with ĥ(P) ≈ 0.8563...
     So R(E₅) ≈ 0.8563. -/
 
-/-- **Explicit regulator computation for y² = x³ - 36x (n=6 curve)**
+/- **Explicit regulator computation for y² = x³ - 36x (n=6 curve)**
 
     The generator is P = (12, 36) with ĥ(P) ≈ 1.5822...
     So R(E₆) ≈ 1.5822. -/
@@ -1760,7 +1760,7 @@ theorem euler_product_factor_bound (p : ℕ) (hp : p ≥ 5) (ap : ℤ)
     (1 : ℤ) ≤ (p : ℤ) + 1 - ap ∧ (p : ℤ) + 1 - ap ≤ 2 * (p : ℤ) + 1 :=
   ⟨point_count_positive p hp ap hbound, point_count_upper p hp ap hbound⟩
 
-/-- **Sato-Tate Conjecture** (proved by Taylor et al. 2011)
+/- **Sato-Tate Conjecture** (proved by Taylor et al. 2011)
 
     For a non-CM elliptic curve E/ℚ, the angles θₚ defined by
     aₚ = 2√p · cos(θₚ) are equidistributed on [0, π] with respect
@@ -2236,7 +2236,7 @@ def curve37a : EllipticCurveQ where
 /-- Curve 37a has algebraic rank 1 (Birch–Swinnerton-Dyer, verified by 2-descent). -/
 axiom curve37a_rank : algebraicRank curve37a = 1
 
-/-- The generator P = (0, 0) of E(ℚ)/tors for curve 37a. -/
+/- The generator P = (0, 0) of E(ℚ)/tors for curve 37a. -/
 
 /-- Curve 37a has root number -1 (consistent with odd rank). -/
 axiom curve37a_rootNumber : rootNumber curve37a = -1
@@ -2298,10 +2298,10 @@ This gives: rank(E) ≤ dim_n(Sel_n) - dim_n(Ш[n]) ≤ dim_n(Sel_n).
 In practice, 2-descent (n = 2) is the main tool for bounding ranks.
 -/
 
-/-- The Selmer rank (log_n |Sel_n|) bounds the algebraic rank from above.
+/- The Selmer rank (log_n |Sel_n|) bounds the algebraic rank from above.
     For any n ≥ 2: rank(E) ≤ dim_{F_n} Sel_n(E). -/
 
-/-- Two-descent principle: when Ш(E)[2] = 0, the 2-Selmer rank equals the rank.
+/- Two-descent principle: when Ш(E)[2] = 0, the 2-Selmer rank equals the rank.
     This is the main practical method for computing ranks of elliptic curves.
     For curve 37a: dim₂ Sel₂ = 1, Ш[2] = 0, so rank = 1. -/
 
@@ -2353,7 +2353,7 @@ def curve389a : EllipticCurveQ where
 /-- Curve 389a has algebraic rank 2 (verified by 2-descent and height computation). -/
 axiom curve389a_rank : algebraicRank curve389a = 2
 
-/-- Curve 389a has root number +1 (consistent with even rank). -/
+/- Curve 389a has root number +1 (consistent with even rank). -/
 
 /-- Under BSD, rootNumber = +1 correctly predicts even rank for curve 389a. -/
 theorem curve389a_parity_check
@@ -2871,7 +2871,7 @@ theorem bsd_trivial_sha (d : BSDData) (h : d.sha = 1) :
   rw [h]
   simp [Nat.cast_one]
 
-/-- The Cassels-Tate pairing has kernel equal to the maximal divisible subgroup.
+/- The Cassels-Tate pairing has kernel equal to the maximal divisible subgroup.
     For finite Ш, this means the pairing is non-degenerate. -/
 
 /- ═══════════════════════════════════════════════════════════════════════════════
@@ -3086,7 +3086,7 @@ theorem padic_bsd_compatible (E : EllipticCurveQ)
   rw [h_padic]
   exact h_bsd
 
-/-- Perrin-Riou's p-adic Gross-Zagier formula (1987):
+/- Perrin-Riou's p-adic Gross-Zagier formula (1987):
     Connects the p-adic height of a Heegner point to
     the derivative of the p-adic L-function.
 
@@ -3236,7 +3236,7 @@ theorem tunnell_3_not_congruent : ¬TunnellCriterion 3 tunnell_3 := by
   unfold TunnellCriterion tunnell_3
   norm_num
 
-/-- The power of Tunnell's theorem: it reduces the ancient Congruent Number
+/- The power of Tunnell's theorem: it reduces the ancient Congruent Number
     Problem to counting solutions of quadratic forms, which can be done
     in polynomial time. Combined with BSD, this completely solves the problem.
 
@@ -3339,7 +3339,7 @@ structure ModularSymbolData (E : EllipticCurveQ) where
   manin_constant : ℕ
   hmanin : manin_constant ≥ 1
 
-/-- The Manin conjecture: the Manin constant c_E = 1 for the optimal
+/- The Manin conjecture: the Manin constant c_E = 1 for the optimal
     (strong Weil) curve in each isogeny class.
 
     This is known for:
@@ -3570,7 +3570,7 @@ theorem bsd_is_bloch_kato (E : EllipticCurveQ) :
   unfold BlochKatoConjecture ellipticCurveMotive
   simp
 
-/-- Other instances of the Bloch-Kato conjecture:
+/- Other instances of the Bloch-Kato conjecture:
 
     | Motive | Weight | L-function | Conjecture predicts |
     |--------|--------|------------|---------------------|
@@ -3818,7 +3818,7 @@ def agmStep (s : AGMStep) : AGMStep where
       (Real.sqrt_mul s.ha.le s.b).symm
     linarith
 
-/-- The AGM converges quadratically: after n steps, the relative error
+/- The AGM converges quadratically: after n steps, the relative error
     is approximately 2^{-2^n}. This gives ~30 digits after 5 iterations.
 
     AGM convergence rate: |a_n - b_n| ≤ (a₀ - b₀) · c^{2^n}
@@ -4087,7 +4087,7 @@ structure ModularParametrization where
   manin_constant : ℕ
   hmanin : manin_constant ≥ 1
 
-/-- Examples of modular degrees for small conductors.
+/- Examples of modular degrees for small conductors.
 
     | Curve | Conductor | Modular degree |
     |-------|-----------|---------------|
@@ -4423,7 +4423,7 @@ def rank1_record : RankRecord :=
 def rank2_record : RankRecord :=
   { rank := 2, conductor := 389, rank_verified := true, formula_verified := false }
 
-/-- The rank part of BSD for rank ≥ 2 remains the central open problem.
+/- The rank part of BSD for rank ≥ 2 remains the central open problem.
 
     What would a proof need?
     1. A source of algebraic cycles (higher Heegner-type)
@@ -4633,7 +4633,7 @@ def curve_5077a1 : BSDVerificationData :=
     sha_analytic := 1,
     sha_is_square := True }
 
-/-- BSD verification status for small conductor curves.
+/- BSD verification status for small conductor curves.
 
     | Conductor range | # Curves | Rank part verified | Formula verified |
     |----------------|----------|-------------------|-----------------|
@@ -4675,7 +4675,7 @@ structure ParityConjectureData where
 theorem parity_odd (pc : ParityConjectureData) (_hminus : pc.root_number = -1) :
     pc.r_alg % 2 = pc.r_an % 2 := pc.parity_holds
 
-/-- Grand summary of BSD status.
+/- Grand summary of BSD status.
 
     PROVED:
     - Rank part for r_an = 0 (Kolyvagin 1990)
@@ -5017,7 +5017,7 @@ structure SilvermanBound where
   conductor_real : ℝ
   hcr : conductor_real = (conductor : ℝ)
 
-/-- The regulator grows at most polynomially with the conductor.
+/- The regulator grows at most polynomially with the conductor.
     Lang-Silverman conjecture: R(E) ≫ N^{-1-ε} where N is the conductor. -/
 
 /-- Discriminant-conductor inequality (Szpiro's conjecture, now Mochizuki's claim).
@@ -5659,11 +5659,11 @@ def singular_moduli : List ℤ :=
    -262537412640768000]
 
 /-- Verification: j(-3) = 0 corresponds to the curve y² = x³ + 1 (hexagonal lattice) -/
-theorem j_neg3_is_zero : singular_moduli.get? 2 = some 0 := by
+theorem j_neg3_is_zero : singular_moduli[2]? = some 0 := by
   simp [singular_moduli]
 
 /-- Verification: j(-1) = 1728 corresponds to y² = x³ + x (square lattice) -/
-theorem j_neg1_is_1728 : singular_moduli.get? 0 = some 1728 := by
+theorem j_neg1_is_1728 : singular_moduli[0]? = some 1728 := by
   simp [singular_moduli]
 
 /- ═══════════════════════════════════════════════════════════════════════════════
@@ -5858,7 +5858,7 @@ structure HeegnerField where
 /-- A Heegner point: comes from CM points on the modular curve X₀(N).
     The Heegner point y_K ∈ E(K) is constructed from the modular
     parametrization X₀(N) → E. -/
-def HeegnerPoint (_ : WeierstrassCurve ℤ) (_ : HeegnerField) : Prop := True
+def HeegnerPointExists (_ : WeierstrassCurve ℤ) (_ : HeegnerField) : Prop := True
 
 /-- The Gross-Zagier formula (1986):
     L'(E/K, 1) = c(E,K) · ĥ(y_K) for explicit c > 0.
@@ -6133,7 +6133,7 @@ structure ModularFormWeight2 where
   /-- Level (= conductor of the associated elliptic curve) -/
   level : Nat
   level_pos : level ≥ 1
-  /-- Fourier coefficients a_n -/
+  /- Fourier coefficients a_n -/
   -- The L-function is L(f,s) = Σ a_n n^{-s}
   /-- Number of Fourier coefficients to determine the form -/
   sturmBound : Nat
@@ -6207,7 +6207,7 @@ theorem conductor_exponent_bounds :
     dim S₂(Γ₀(N)) = 1 + N/12 · ∏(1 + 1/p) - (terms...)
 
     For N = 2: dim = 0. -/
-theorem no_weight2_level2 :
+theorem no_weight2_level2_dim :
     -- dim S₂(Γ₀(2)) = 0
     -- This is the key arithmetic fact in Wiles' proof of FLT
     -- No elliptic curve of conductor 2 exists
@@ -6420,7 +6420,7 @@ theorem goldfeld_root_number_split :
 
     Elkies' record: the curve has conductor ~10^{25} and
     its rank has been verified to be at least 28. -/
-theorem elkies_rank_record :
+theorem elkies_rank_record_28 :
     -- Elkies (2006): rank ≥ 28
     -- This is the current world record
     (28 : ℕ) ≥ 28 := le_refl 28
@@ -6554,7 +6554,7 @@ theorem padic_bsd_euler_factor :
     The derivative: L'_p(E,1) = L_p(E) × L(E,1)/Ω_E × correction
     where L_p(E) = log_p(q_E)/ord_p(q_E) is the L-invariant
     and q_E is the Tate parameter. -/
-theorem mtt_exceptional_zero :
+theorem mtt_exceptional_zero_types :
     -- Types of reduction at p: good (2 subtypes) + bad (3 subtypes) = 5
     -- Good ordinary: standard interpolation
     -- Good supersingular: need signed L-functions
