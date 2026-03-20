@@ -1696,61 +1696,6 @@ New abelian group realizations via cyclotomic fields:
   Already realized as (ℤ/21ℤ)ˣ! Skip.
 -/
 
--- ---- (ℤ/33ℤ)ˣ ≅ C₂ × C₁₀ (order 20) ----
-
-/-- φ(33) = 20. -/
-theorem totient_33 : Nat.totient 33 = 20 := by decide
-
-/-- (ℤ/33ℤ)ˣ has exponent 10: every element to the 10th power is 1.
-    Since (ℤ/33ℤ)ˣ ≅ C₂ × C₁₀, exponent = lcm(2,10) = 10. -/
-theorem zmod33_units_exp_10 : ∀ x : (ZMod 33)ˣ, x ^ 10 = 1 := by decide
-
-/-- (ℤ/33ℤ)ˣ is NOT cyclic. A cyclic group of order 20 has an element of order 20,
-    but (ℤ/33ℤ)ˣ has exponent 10. -/
-theorem zmod33_units_not_cyclic : ¬ IsCyclic (ZMod 33)ˣ := by
-  intro ⟨⟨g, hg⟩⟩
-  have hcard : Fintype.card (ZMod 33)ˣ = 20 := by
-    rw [ZMod.card_units_eq_totient]; decide
-  have hord : orderOf g = 20 := by
-    rw [← hcard, ← Nat.card_eq_fintype_card]
-    exact orderOf_eq_card_of_forall_mem_zpowers hg
-  have h10 : g ^ 10 = 1 := zmod33_units_exp_10 g
-  have h20_dvd_10 : 20 ∣ 10 := by
-    rw [← hord]
-    exact orderOf_dvd_of_pow_eq_one h10
-  omega
-
-/-- (ℤ/33ℤ)ˣ has an element of order 10. -/
-theorem zmod33_units_has_order_10 : ∃ x : (ZMod 33)ˣ, orderOf x = 10 := by
-  native_decide
-
-/-- (ℤ/33ℤ)ˣ ≅ C₂ × C₁₀: order 20, exponent 10, not cyclic, has element of order 10.
-    This realizes C₂ × C₁₀ as a Galois group over ℚ. -/
-theorem c2_times_c10_realized :
-    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
-      (_ : IsGalois ℚ K),
-      Fintype.card (K ≃ₐ[ℚ] K) = 20 ∧ ¬ IsCyclic (K ≃ₐ[ℚ] K) ∧
-      ∀ g : K ≃ₐ[ℚ] K, g ^ 10 = 1 := by
-  haveI : NeZero (33 : ℕ) := ⟨by omega⟩
-  obtain ⟨K, _, _, _, hgal, ⟨iso⟩⟩ := units_zmod_realizable 33
-  refine ⟨K, inferInstance, inferInstance, inferInstance, hgal, ?_, ?_, ?_⟩
-  · have : Fintype.card (K ≃ₐ[ℚ] K) = Fintype.card (ZMod 33)ˣ :=
-      Fintype.card_eq.mpr ⟨iso.toEquiv.symm⟩
-    rw [this, ZMod.card_units_eq_totient]; decide
-  · intro ⟨⟨g, hg⟩⟩
-    apply zmod33_units_not_cyclic
-    exact ⟨⟨iso.symm g, fun x => by
-      obtain ⟨n, hn⟩ := hg (iso x)
-      exact ⟨n, by
-        show iso.symm g ^ n = x
-        have : g ^ n = iso x := hn
-        rw [← map_zpow iso.symm, this, MulEquiv.symm_apply_apply]⟩⟩⟩
-  · intro g
-    have h := zmod33_units_exp_10 (iso.symm g)
-    have : iso (iso.symm g ^ 10) = iso 1 := by rw [h]
-    simp [map_pow, map_one, MulEquiv.apply_symm_apply] at this
-    exact this
-
 -- ---- (ℤ/35ℤ)ˣ ≅ C₄ × C₆ (order 24) ----
 
 /-- φ(35) = 24. -/
@@ -1871,9 +1816,7 @@ theorem c2_times_c10_realized :
         have : g ^ n = iso x := hn
         rw [← map_zpow iso.symm, this, MulEquiv.symm_apply_apply]⟩⟩⟩
   · obtain ⟨x, hx⟩ := zmod33_units_has_order_10
-    exact ⟨iso x, fun h => hx (by
-      have : iso (x ^ 5) = iso 1 := by rw [map_pow]; exact_mod_cast h
-      simpa using this)⟩
+    exact ⟨iso x, fun h => hx (iso.injective (by rw [map_pow, map_one]; exact h))⟩
 
 -- ---- (ℤ/84ℤ)ˣ ≅ C₂ × C₂ × C₆ ----
 
@@ -1882,7 +1825,7 @@ theorem totient_84 : Nat.totient 84 = 24 := by decide
 
 /-- (ℤ/84ℤ)ˣ has exponent 6: every element to the 6th power is 1.
     Since (ℤ/84ℤ)ˣ ≅ C₂ × C₂ × C₆, exponent = lcm(2, 2, 6) = 6. -/
-theorem zmod84_units_exp_6 : ∀ x : (ZMod 84)ˣ, x ^ 6 = 1 := by decide
+theorem zmod84_units_exp_6 : ∀ x : (ZMod 84)ˣ, x ^ 6 = 1 := by native_decide
 
 /-- (ℤ/84ℤ)ˣ is NOT cyclic. A cyclic group of order 24 has an element of order 24,
     but (ℤ/84ℤ)ˣ has exponent 6. -/
@@ -1904,7 +1847,7 @@ theorem zmod84_units_not_cyclic : ¬ IsCyclic (ZMod 84)ˣ := by
 theorem zmod84_units_exp_exactly_6 : ∀ x : (ZMod 84)ˣ, x ^ 6 = 1 := zmod84_units_exp_6
 
 /-- (ℤ/84ℤ)ˣ has an element of order 6 (distinguishes from C₂ × C₂ × C₂ × C₃). -/
-theorem zmod84_units_has_order_6 : ∃ x : (ZMod 84)ˣ, x ^ 3 ≠ 1 := by decide
+theorem zmod84_units_has_order_6 : ∃ x : (ZMod 84)ˣ, x ^ 3 ≠ 1 := by native_decide
 
 /-- (ℤ/84ℤ)ˣ ≅ C₂ × C₂ × C₆: order 24, exponent 6, not cyclic, has element of order 6.
     This realizes C₂ × C₂ × C₆ as a Galois group over ℚ. -/
@@ -1933,8 +1876,6 @@ theorem c2_c2_c6_realized :
     simp [map_pow, map_one, MulEquiv.apply_symm_apply] at this
     exact this
   · obtain ⟨x, hx⟩ := zmod84_units_has_order_6
-    exact ⟨iso x, fun h => hx (by
-      have : iso (x ^ 3) = iso 1 := by rw [map_pow]; exact_mod_cast h
-      simpa using this)⟩
+    exact ⟨iso x, fun h => hx (iso.injective (by rw [map_pow, map_one]; exact h))⟩
 
 end InverseGaloisProblem
