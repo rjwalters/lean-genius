@@ -1041,24 +1041,54 @@ These are standard Mathlib results requiring careful API integration.
 
 open Polynomial
 
+/-- Over an integral domain, if M·v = 0 and v ≠ 0, then det(M) = 0.
+    Uses the adjugate identity: adj(M)·M = det(M)·I. -/
+private lemma det_eq_zero_of_kernel {M : Matrix V V ℤ} {v : V → ℤ}
+    (hv : v ≠ 0) (hMv : M.mulVec v = 0) : M.det = 0 := by
+  have hdetv : M.det • v = 0 := by
+    calc M.det • v
+      = (M.det • (1 : Matrix V V ℤ)).mulVec v := by
+          simp [Matrix.smul_mulVec_assoc, Matrix.one_mulVec]
+      _ = (M.adjugate * M).mulVec v := by rw [Matrix.adjugate_mul]
+      _ = M.adjugate.mulVec (M.mulVec v) := by rw [Matrix.mulVec_mulVec]
+      _ = M.adjugate.mulVec 0 := by rw [hMv]
+      _ = 0 := by simp [Matrix.mulVec_zero]
+  obtain ⟨i, hi⟩ : ∃ i, v i ≠ 0 := by
+    by_contra h; push_neg at h; exact hv (funext h)
+  have := congr_fun hdetv i
+  simp only [Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at this
+  exact (mul_eq_zero.mp this).resolve_right hi
+
+/-- Scalar matrix times constant vector gives the scalar value. -/
+private lemma scalar_mulVec_const (a : ℤ) (i : V) :
+    (Matrix.scalar V a).mulVec (fun _ => (1 : ℤ)) i = a := by
+  have h1 : (Matrix.scalar V a).mulVec (fun _ => (1 : ℤ)) i =
+      ∑ j : V, Matrix.scalar V a i j * 1 := rfl
+  rw [h1]
+  simp only [Matrix.scalar_apply, Matrix.diagonal_apply, mul_one]
+  rw [Finset.sum_eq_single i
+    (fun j _ hji => by simp [Ne.symm hji])
+    (fun h => absurd (Finset.mem_univ i) h)]
+  simp
+
 /-- The characteristic polynomial of the adjacency matrix evaluated at k is zero.
     Proof: A·𝟙 = k·𝟙 means (kI - A) is singular, so det(kI - A) = 0.
     Since charpoly(A)(k) = det(kI - A), we get charpoly(A)(k) = 0. -/
 lemma adjMatrix_charpoly_eval_k (hF : IsFriendshipGraph G) (k : ℕ) (hk : k ≥ 1)
-    (hreg : ∀ v : V, G.degree v = k) :
+    (hreg : ∀ v : V, G.degree v = k) [Nonempty V] :
     (G.adjMatrix ℤ).charpoly.eval (↑k : ℤ) = 0 := by
-  -- Proof outline:
-  -- 1. charpoly(A).eval k = det(kI - A)  [Polynomial.eval_det / Matrix.charpoly definition]
-  -- 2. (kI - A) · 𝟙 = k·𝟙 - A·𝟙 = k·𝟙 - k·𝟙 = 0  [adjMatrix_mulVec_ones]
-  -- 3. 𝟙 ≠ 0 (V is nonempty) and (kI-A)·𝟙 = 0, so kI-A not injective
-  -- 4. Not injective → not invertible → det = 0
-  -- Needs: Polynomial.eval_det, Matrix.mulVec_injective_iff_isUnit_det
-  sorry
+  -- charpoly(A).eval k = det(scalar V k - A) = 0
+  rw [Matrix.eval_charpoly]
+  apply det_eq_zero_of_kernel (v := fun _ => (1 : ℤ))
+  · intro h; exact absurd (congr_fun h (Classical.arbitrary V)) (by norm_num)
+  · ext i
+    simp only [Matrix.sub_mulVec, Pi.sub_apply, Pi.zero_apply, sub_eq_zero]
+    rw [adjMatrix_mulVec_ones G k hreg i, scalar_mulVec_const]
 
 /-- (X - k) divides the characteristic polynomial of the adjacency matrix.
     Follows from adjMatrix_charpoly_eval_k via the factor theorem. -/
 lemma X_sub_k_dvd_adjMatrix_charpoly (hF : IsFriendshipGraph G) (k : ℕ) (hk : k ≥ 1)
-    (hreg : ∀ v : V, G.degree v = k) :
+    (hreg : ∀ v : V, G.degree v = k) [Nonempty V] :
     (X - C (↑k : ℤ)) ∣ (G.adjMatrix ℤ).charpoly := by
   rw [dvd_iff_isRoot, IsRoot]
   exact adjMatrix_charpoly_eval_k G hF k hk hreg
@@ -1092,15 +1122,41 @@ lemma charpoly_quotient_product (hF : IsFriendshipGraph G) (k : ℕ) (hk : k ≥
 
     Here f has degree n-1, so coeff_{n-2} is its sub-leading coefficient. -/
 lemma quotient_subleading_coeff (hF : IsFriendshipGraph G) (k : ℕ) (hk : k ≥ 2)
-    (hreg : ∀ v : V, G.degree v = k) (f : Polynomial ℤ)
+    (hreg : ∀ v : V, G.degree v = k) [Nonempty V] (f : Polynomial ℤ)
     (hf : (G.adjMatrix ℤ).charpoly = (X - C (↑k : ℤ)) * f)
     (hf_monic : f.Monic)
     (hf_deg : f.natDegree = Fintype.card V - 1) :
     f.coeff (Fintype.card V - 2) = ↑k := by
-  -- From g = (X-k)·f, the coefficient of X^{n-1} in g equals
-  -- coeff_{n-2}(f) - k·coeff_{n-1}(f) = coeff_{n-2}(f) - k.
-  -- The X^{n-1} coeff of charpoly = -tr(A) = 0 (adjMatrix_trace_zero).
-  sorry
+  set n := Fintype.card V with hn_def
+  -- Step 1: tr(A) = 0 gives charpoly.coeff(n-1) = 0
+  have htrace : Matrix.trace (G.adjMatrix ℤ) = 0 := adjMatrix_trace_zero G
+  have hcoeff_charpoly : (G.adjMatrix ℤ).charpoly.coeff (n - 1) = 0 := by
+    have h := Matrix.trace_eq_neg_charpoly_coeff (G.adjMatrix ℤ)
+    rw [htrace] at h; linarith
+  -- Step 2: f monic of degree n-1: coeff_{n-1}(f) = 1
+  have hf_leading : f.coeff (n - 1) = 1 := by
+    rw [show n - 1 = f.natDegree from by rw [hf_deg]]
+    exact hf_monic.leadingCoeff
+  -- Step 3: extract coeff at n-1 from (X-C k)*f using nextCoeff relation
+  -- coeff_{n-1}((X-C k)*f) = 1*f.coeff(n-2) + (-k)*f.coeff(n-1)
+  --                         = f.coeff(n-2) - k
+  -- n ≥ 3 for the coefficient arithmetic
+  have hn_ge : n ≥ 3 := by
+    have h := regular_friendship_card G hF (Classical.arbitrary V) k hreg (by omega)
+    rw [← hn_def] at h
+    have : k * (k - 1) ≥ 2 := Nat.mul_le_mul hk (by omega : k - 1 ≥ 1)
+    omega
+  have hcoeff_prod : ((X - C (↑k : ℤ)) * f).coeff (n - 1) =
+      f.coeff (n - 2) - ↑k * f.coeff (n - 1) := by
+    -- (X - C k) * f = X * f - C k * f
+    rw [sub_mul, coeff_sub, coeff_C_mul]
+    -- (X * f).coeff (n-1) = f.coeff (n-2) by coeff_X_mul
+    congr 1
+    rw [show n - 1 = (n - 2) + 1 from by omega]
+    exact coeff_X_mul f (n - 2)
+  rw [← hf, hcoeff_charpoly] at hcoeff_prod
+  rw [hf_leading, mul_one] at hcoeff_prod
+  linarith
 
 /-- A power of (X²-c) has zero coefficient at every odd degree.
     Since (X²-c)^m = Σ C(m,j)(-c)^j X^{2(m-j)}, all terms have even degree. -/
@@ -1197,6 +1253,7 @@ theorem k_sub_one_is_perfect_square (hF : IsFriendshipGraph G)
     refine ⟨t - 1, ?_⟩; omega
   -- Get the charpoly factorization and product identity
   -- (These steps use the sorry-containing lemmas above)
+  haveI : Nonempty V := ⟨u⟩
   have heval := adjMatrix_charpoly_eval_k G hF k (by omega) hreg
   have hdvd := X_sub_k_dvd_adjMatrix_charpoly G hF k (by omega) hreg
   obtain ⟨f, hf⟩ := hdvd

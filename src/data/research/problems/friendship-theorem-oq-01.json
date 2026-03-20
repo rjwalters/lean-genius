@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-19T22:00:00.000Z",
-    "iteration": 4,
-    "focus": "Axiom elimination: 8 sorries remain in charpoly parity proof path",
+    "iteration": 5,
+    "focus": "Proved 3 sorry lemmas: charpoly_eval_k, X_sub_k_dvd_charpoly, quotient_subleading_coeff",
     "blockers": [],
-    "nextAction": "Fill the 8 sorry-containing lemmas (3 categories: polynomial algebra, matrix determinant, charpoly evaluation)",
+    "nextAction": "Prove charpoly_quotient_product (det product identity) and sq_sub_irreducible_of_not_square",
     "attemptCounts": {
       "total": 3,
       "currentApproach": 2,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Part XVIII - axiom elimination proof structure. New axiom-free proof path: k_eq_two_no_axiom proves k=2 via charpoly parity argument (f(X)·f(-X) = (X²-(k-1))^{n-1}, irrationality/UFD contradiction). File: 1241 lines, 1 axiom (old path), 8 sorries (new path). Key insight: if k-1 not square, charpoly quotient has only even-degree terms, contradicting sub-leading coeff = k.",
+    "progressSummary": "PROGRESS: Proved 3 sorry lemmas toward axiom elimination. adjMatrix_charpoly_eval_k (eval k charpoly = 0) via Matrix.eval_charpoly + adjugate kernel argument. quotient_subleading_coeff (sub-leading coeff of f = k) via polynomial arithmetic. 5 sorries remain: charpoly_quotient_product, sq_sub_irreducible_of_not_square, monic_factor_of_symmetric_irreducible_pow, k_sub_one_is_perfect_square, sqrt_k_sub_one_dvd_k.",
     "builtItems": [
       "Lean formalization complete",
       "Part VIII: Adjacency Matrix Infrastructure — adjMatrix_trace_zero PROVED (tr(A)=0 for simple graph), imports for SimpleGraph.AdjMatrix and Matrix.Trace verified",
@@ -58,7 +58,12 @@
       "Part XVIII: regular_friendship_is_triangle_no_axiom - n=3 without axiom (proved)",
       "Part XVIII: regular_friendship_has_universal_no_axiom - universal vertex without axiom (proved)",
       "Part XVIII: charpoly_quotient_product identity: f·f(-X) = (X²-(k-1))^{n-1} (sorry: needs det(cI-J) formula)",
-      "Part XVIII: adjMatrix_charpoly_eval_k - charpoly(A)(k) = 0 (sorry: needs det singularity)"
+      "Part XVIII: adjMatrix_charpoly_eval_k - charpoly(A)(k) = 0 (sorry: needs det singularity)",
+      "adjMatrix_charpoly_eval_k: PROVED via Matrix.eval_charpoly + det_eq_zero_of_kernel (was sorry)",
+      "X_sub_k_dvd_adjMatrix_charpoly: PROVED via factor theorem (dvd_iff_isRoot)",
+      "quotient_subleading_coeff: PROVED via sub_mul + coeff_sub + coeff_C_mul + coeff_X_mul",
+      "det_eq_zero_of_kernel: new private lemma (adjugate identity)",
+      "scalar_mulVec_const: new private lemma (scalar matrix mulVec)"
     ],
     "insights": [
       "Proof verified: 0 sorries via grep",
@@ -88,7 +93,10 @@
       "Key algebraic identity: det(XI-A)·det(XI+A) = det(X²I-A²), applied to A²=(k-1)I+J gives f·f(-X) = (X²-(k-1))^{n-1}",
       "Parity contradiction: (X²-c)^m has only even-degree terms; if k-1 not square, X^{n-2} coeff is 0, but should be k",
       "This avoids the spectral theorem entirely - pure polynomial/UFD argument over ℤ[X]",
-      "det(cI-J) = c^{n-1}(c-n) for all-ones matrix J (rank-1 determinant formula) is the key matrix identity needed"
+      "det(cI-J) = c^{n-1}(c-n) for all-ones matrix J (rank-1 determinant formula) is the key matrix identity needed",
+      "Matrix.eval_charpoly: eval t M.charpoly = (scalar n t - M).det — key for connecting charpoly evaluation to determinant",
+      "Polynomial.coeff_X_mul: (X*p).coeff (n+1) = p.coeff n — combined with coeff_sub and coeff_C_mul for product coefficient extraction",
+      "Matrix.scalar V a unfolds to Nat.cast in matrix context (algebraMap), need Matrix.scalar_apply + Matrix.diagonal_apply + Finset.sum_eq_single for scalar mulVec proofs"
     ],
     "mathlibGaps": [
       "Full spectral theorem for real symmetric matrices in a form that gives integer eigenvalue multiplicities",
@@ -118,7 +126,7 @@
     "mathlib": []
   },
   "started": "2026-03-15T12:11:41.208Z",
-  "lastUpdate": "2026-03-19T23:00:00.000Z",
+  "lastUpdate": "2026-03-20T12:00:00Z",
   "significance": 7,
   "tractability": 6
 }
