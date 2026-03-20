@@ -1,0 +1,40 @@
+{
+  "slug": "bounded-prime-gaps",
+  "title": "Bounded Prime Gaps (Zhang/Maynard-Tao)",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "S",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\exists H, \\forall N, \\exists p > N, p \\text{ prime} \\wedge (p' - p \\leq H)",
+    "plain": "There exist infinitely many pairs of consecutive primes differing by at most H, for some finite H. Best known: H ≤ 246 (Polymath), H ≤ 12 assuming Elliott-Halberstam."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-20T10:30:00Z",
+    "iteration": 1,
+    "focus": "Survey: 5 files, 3287 total lines, 0 sorries, 6 axioms. Gallery entry exists."
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Comprehensive formalization across 5 files. 3287 lines, 0 sorries, 6 axioms. Gallery entry exists.",
+    "builtItems": [
+      "BoundedPrimeGaps.lean: 1884 lines, 3 axioms — admissible k-tuples, bounded gaps theorem, consequences",
+      "BoundedPrimeGapsOQ01.lean: 438 lines, 0 axioms — verified extensions",
+      "BoundedPrimeGapsOQ03.lean: 279 lines, 1 axiom — additional results",
+      "BoundedPrimeGapsSieve.lean: 405 lines, 2 axioms — sieve theory infrastructure",
+      "BoundedPrimeGapsTPC.lean: 281 lines, 0 axioms — twin prime conjecture connections"
+    ],
+    "insights": [
+      "Zhang's bound H ≤ 70,000,000 (2013) → Maynard H ≤ 600 → Polymath H ≤ 246",
+      "Assuming Elliott-Halberstam conjecture: H ≤ 12 (tantalizingly close to twin primes H = 2)",
+      "Admissible k-tuples are the combinatorial core: p divides at most p-1 residues mod p",
+      "6 axioms encode deep sieve theory results (Bombieri-Vinogradov, Selberg sieve)"
+    ],
+    "nextSteps": []
+  },
+  "tags": ["number-theory", "primes", "prime-gaps", "sieve-theory"],
+  "started": "2026-03-20T10:28:00Z",
+  "lastUpdate": "2026-03-20T10:30:00Z",
+  "significance": 9,
+  "tractability": 5
+}
