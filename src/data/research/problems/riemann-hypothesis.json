@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Part LI (zero-free regions: dVP, Vinogradov-Korobov, Siegel zeros, class number connection)",
+    "progressSummary": "PROGRESS: Added Parts LII-LIII (Selberg trace/Langlands/Katz-Sarnak/BSD + computational verification/Riemann-Siegel/Turing method). File now at 6385 lines.",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",
@@ -100,7 +100,9 @@
         "name": "zero_free_regions_siegel",
         "description": "Part LI: VK zero-free region, PNT error exponents, Siegel zero obstruction, class number 1 (2 theorems)",
         "proven": true
-      }
+      },
+      "Part LII: Selberg trace, Langlands GL(n), Katz-Sarnak symmetries, BSD-RH connection",
+      "Part LIII: Computational RH verification (10^13 zeros), Riemann-Siegel formula, Turing method"
     ],
     "insights": [
       "RH_implies_prime_gap_bound",
