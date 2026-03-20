@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Parts CXLVI-CXLVIII (Nekrasov, Magnetic Bions, Balaban RG) — +687 lines, ~80 theorems, 0 sorries. File: 22,930 lines total",
+    "progressSummary": "PROGRESS: Added Parts CLV-CLVII (DSE Gap Equation, FRG Wetterich, Stochastic Langevin) — +805 lines, ~80 theorems, 0 sorries. File: 29,791 lines total",
     "builtItems": [
       "Part C: OS Axioms - transfer matrix, Schwinger functions, spectral gap, Euclidean propagator (~30 theorems)",
       "Part CI: Resurgence - beta function, running coupling, renormalons, instanton factors, bions (~25 theorems)",
@@ -99,7 +99,10 @@
       "Part CXLII: Background Field Method and Gauge-Invariant Effective Action (~200 lines, ~8 theorems)",
       "Part CLII: Quantum Simulation of LGT — qubit encoding, Trotterization, VQE, resource estimates, Schwinger validation, MPS/tensor networks (~370 lines, 35 theorems)",
       "Part CLIII: Color Superconductivity — BCS gap, CFL/2SC phases, color Meissner, phase diagram, hadronic-CFL continuity (~300 lines, 30 theorems)",
-      "Part CLIV: Non-Equilibrium YM — CGC, glasma, Weibel instabilities, non-thermal fixed points, thermalization, jet quenching, KSS bound (~320 lines, 30 theorems)"
+      "Part CLIV: Non-Equilibrium YM — CGC, glasma, Weibel instabilities, non-thermal fixed points, thermalization, jet quenching, KSS bound (~320 lines, 30 theorems)",
+      "Part CLV: DSE Gap Equation — gluon self-energy, dressed propagator, Schwinger mechanism, scaling/decoupling solutions, OZ superconvergence, pinch technique (~255 lines, ~25 theorems)",
+      "Part CLVI: FRG Wetterich — Litim regulator, running coupling, gluon mass flow, anomalous dimensions, deconfinement ratio, glueball mass (~230 lines, ~25 theorems)",
+      "Part CLVII: Stochastic Langevin — Parisi-Wu framework, Fokker-Planck, critical slowing, HMC, complex Langevin, autocorrelation time (~230 lines, ~25 theorems)"
     ],
     "insights": [
       "OS axioms (5) provide Euclidean formulation; reconstruction gives Wightman QFT",
@@ -223,7 +226,16 @@
       "CFL phase: all 8 gluons massive via color Meissner, BCS gap perturbatively controlled",
       "Mass gap persists across ALL QCD phases but changes mechanism",
       "Non-thermal fixed point: f ~ τ^{-4/7} · h(k·τ^{-1/7}) is universal",
-      "Jet quenching q̂ ~ m_D²/λ directly probes the mass gap in QGP"
+      "Jet quenching q̂ ~ m_D²/λ directly probes the mass gap in QGP",
+      "DSE gap equation: gluon acquires dynamical mass m ~ 500 MeV via vacuum polarization pole (Schwinger mechanism)",
+      "DSE two solutions: scaling (D(0)=0, ghost-enhanced) vs decoupling (D(0)>0, massive gluon); lattice favors decoupling",
+      "Oehme-Zimmermann superconvergence: gluon spectral function integrates to zero, MUST go negative → confinement",
+      "FRG Wetterich equation: exact flow equation, one-loop structure but all-orders content; generates mass gap as k→0",
+      "FRG anomalous dimensions: η_A/η_c = 52/9 ratio; gluon more modified than ghost in IR",
+      "FRG deconfinement: T_c/√σ ≈ 0.63, matching lattice; glueball m/√σ ≈ 3.7 within 4% of lattice",
+      "Stochastic quantization: Fokker-Planck H_FP = Q†Q ≥ 0 (SUSY QM form); mass gap = spectral gap of H_FP",
+      "No gauge fixing needed in stochastic quantization (Zwanziger covariant kernel); Gribov copies handled automatically",
+      "Critical slowing: τ_auto ~ (1/Δa)^z; HMC (z≈1) beats local updates (z≈2) near continuum"
     ],
     "mathlibGaps": [
       "Principal bundles",
