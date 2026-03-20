@@ -32,6 +32,8 @@ Use your judgment. If it would interest someone who follows #LeanProver or #Form
 ### Never Post
 
 - Claims of "0 axioms" or "axiom-free" when assumptions were moved into structure fields — this is restructuring, not elimination
+- **Anything that implies we are proving or have proved Millennium Prize / Clay problems** — our formalizations are axiomatized scaffolding, NOT proofs. Saying "4,542 theorems across all 7 Millennium problems" sounds like we're making progress on solving them. We're not. Be explicit: "formalizations with axioms", "axiomatized", "conditional on assumptions"
+- **Raw theorem counts without context** — theorem counts include trivial lemmas, helper bounds, and axiomatized results. Don't cite them as if they represent mathematical breakthroughs
 - Enrichment batches (gallery metadata improvements)
 - Build fixes, CI changes, data syncs
 - Agent infrastructure changes
@@ -114,6 +116,17 @@ Made some progress on formalizing math today!
 Bad (infrastructure, not math):
 ```
 Updated gallery metadata for 15 entries with better cross-references.
+```
+
+Bad (implies we're proving Millennium problems):
+```
+All 7 Clay Millennium Prize problems now have Lean 4 formalizations — 4,542 theorems, ~90K lines of formal mathematics.
+```
+This sounds like we're making progress on *solving* these problems. We're not — these are axiomatized formalizations. Better version:
+```
+Building axiomatized Lean 4 formalizations for all 7 Millennium Prize problems — definitions, known partial results, and supporting theory. A long way from proofs, but the formal scaffolding helps clarify what's known vs assumed.
+
+#LeanProver #FormalMath
 ```
 
 ## State Management
