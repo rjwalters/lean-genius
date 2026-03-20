@@ -1347,6 +1347,12 @@ theorem gal_acts_on_vandermondeProduct (σ : q.Gal) :
   -- while gal_permutes_roots provides Matrix.map form.
   sorry
 
+  -- σ(det V) = det(V(rootEnum ∘ π)) = sign(π) · det(V)
+  -- Proof: RingHom.map_det + gal_permutes_roots + vandermonde_perm_det
+  -- Blocked by coercion alignment: RingHom.map_det produces mapMatrix form,
+  -- while gal_permutes_roots provides Matrix.map form.
+  sorry
+
 -- Step 6: galSign(σ) = 1 for all σ
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
