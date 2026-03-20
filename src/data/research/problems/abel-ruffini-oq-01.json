@@ -18,13 +18,13 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-02-21T19:21:07.129Z",
-    "iteration": 12,
-    "focus": "Stats audit and documentation update",
+    "iteration": 13,
+    "focus": "Verified build, at frontier of formalizability",
     "blockers": [
       "Kronecker-Weber not in Mathlib",
       "Hilbert irreducibility not in Mathlib"
     ],
-    "nextAction": "Refactoring to eliminate gal_card_dvd_60 axiom blocked by elaboration context sensitivity; needs Lean expertise to fix change+rfl pattern",
+    "nextAction": "gal_card_dvd_60 axiom: rewrite gal_permutes_roots without change+rfl to fix elaboration context",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Part XIX session - audited and corrected stats (5276 lines, 280 thms, 5 axiom declarations [4 independent], 2 sorries). Documented that gal_card_dvd_60 axiom is DERIVABLE from vandermondeProduct_sq_eq but elimination refactoring is blocked by Lean elaboration context sensitivity.",
+    "progressSummary": "VERIFIED: Docker build clean (2 expected sorries: open conjecture + Hilbert irreducibility). 5 axiom declarations across 4 files (InverseGalois + A5 + D4 + F20). gal_card_dvd_60 axiom elimination remains blocked by Lean elaboration context sensitivity.",
     "builtItems": [
       "InverseGalois.lean: cyclotomic Galois theory, S₃ realization via Gal(X³-2)≅S₃ (905 lines, builds)",
       "InverseGaloisD4.lean: D₄ realization via |Gal(X⁴-2)| = 8 (666 lines, builds)",
