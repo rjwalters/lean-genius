@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Verified build (5025 lines, 0 sorries, 4 axiom declarations, 1 independent axiom). Meta.json correct. All next steps done.",
+    "progressSummary": "PROGRESS: Deleted redundant lusternik_schnirelmann axiom (proved as ls_covering_general_open from BU). Now 5 axioms in OQ03 (was 6). 3 independent axioms remain.",
     "builtItems": [
       {
         "name": "tucker_2d_octahedral",
@@ -247,7 +247,8 @@
       "meta.json had incorrect sorry count (0 vs actual 1). Sorry at line 4305 is a ContinuousAt proof for piecewise function with 4 cases.",
       "proofHierarchy had duplicate ham_sandwich entry (8 elements, theorem claimed 7) causing build failure",
       "Half-period coincidence: g(0)+g(1/2) = f(0)-f(1) = 0, so IVT gives zero of g in [0,1/2]",
-      "Universal Chord Theorem (Lévy 1934): horizontal chords of length 1/n exist for all n≥1; proved n=2 case"
+      "Universal Chord Theorem (Lévy 1934): horizontal chords of length 1/n exist for all n≥1; proved n=2 case",
+      "lusternik_schnirelmann axiom is redundant — proved as ls_covering_general_open from borsuk_ulam_general via infDist technique"
     ],
     "mathlibGaps": [],
     "nextSteps": [],

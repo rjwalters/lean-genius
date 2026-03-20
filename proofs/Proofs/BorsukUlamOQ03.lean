@@ -870,18 +870,10 @@ then at least one contains an antipodal pair. This generalizes the
 1D version in Section XV.
 -/
 
-/-- **Lusternik-Schnirelmann Covering (from BU)**:
-
-    If (n+1) open sets cover S^n, at least one contains an antipodal pair.
-    This is equivalent to BU.
-
-    Axiomized since the standard proof uses a BU-type partition-of-unity
-    argument that requires smooth approximation or Urysohn's lemma. -/
-axiom lusternik_schnirelmann (n : ℕ) (hn : 1 ≤ n)
-    (U : Fin (n+1) → Set (Fin (n+1) → ℝ))
-    (hopen : ∀ i, IsOpen (U i))
-    (hcover : ∀ x : NSphere n, ∃ i, x.1 ∈ U i) :
-    ∃ i, ∃ x : NSphere n, x.1 ∈ U i ∧ (fun j => -x.1 j) ∈ U i
+-- Lusternik-Schnirelmann was originally axiomized here (Section XXIII).
+-- It is now PROVED as `ls_covering_general_open` in Section LX from
+-- `borsuk_ulam_general`, using the infDist technique. See line ~3184.
+-- The axiom has been deleted; use `ls_covering_general_open` instead.
 
 /-- **BU → LS**: The BU axiom implies the LS covering property.
 
