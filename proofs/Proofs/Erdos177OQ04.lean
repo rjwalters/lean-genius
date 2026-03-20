@@ -64,14 +64,34 @@ theorem alternating_valid : IsValid alternating := by
     obtain ⟨k, rfl⟩ := h
     simp [pow_succ, pow_mul]
 
-/-- For d = 1 (consecutive integers), alternating partial sums have |sum| ≤ 1.
+/- For d = 1 (consecutive integers), alternating partial sums have |sum| ≤ 1.
     This is because consecutive (-1)^n terms cancel in pairs. -/
-axiom alternating_d1_bound (a k : ℕ) :
-    (apPartialSum alternating a 1 k).natAbs ≤ 1
-    -- Proof requires showing that the geometric series
-    -- Σ_{i=0}^{k-1} (-1)^{a+i} = (-1)^a · (1-(-1)^k)/2
-    -- has absolute value 0 or 1 depending on parity of k.
-    -- Axiomatized: the parity case analysis is routine but long.
+/-- **PROVED**: For d = 1, alternating partial sums have |sum| ≤ 1.
+    Was axiom. Proof by 2-step induction: consecutive (-1)^n terms cancel.
+    k=0: sum=0. k=1: sum=(-1)^a, |·|=1. k+2: pairs cancel, reduces to k case. -/
+theorem alternating_d1_bound : ∀ (a k : ℕ),
+    (apPartialSum alternating a 1 k).natAbs ≤ 1 := by
+  intro a k
+  -- Helper: consecutive (-1) powers cancel
+  have cancel : ∀ n : ℕ, (-1 : ℤ) ^ n + (-1) ^ (n + 1) = 0 := by
+    intro n; ring
+  -- Two-step induction via Nat.strongRecOn
+  induction k using Nat.strongRecOn with
+  | ind k ih =>
+  match k with
+  | 0 => simp [apPartialSum]
+  | 1 =>
+    simp only [apPartialSum, Finset.sum_range_one, mul_one, alternating]
+    cases Nat.even_or_odd a with
+    | inl h => obtain ⟨m, rfl⟩ := h; simp [pow_mul]
+    | inr h => obtain ⟨m, rfl⟩ := h; simp [pow_succ, pow_mul]
+  | k + 2 =>
+    have key : apPartialSum alternating a 1 (k + 2) = apPartialSum alternating a 1 k := by
+      simp only [apPartialSum, alternating, mul_one]
+      rw [Finset.sum_range_succ, Finset.sum_range_succ]
+      have : a + (k + 1) = a + k + 1 := by omega
+      rw [this]; linarith [cancel (a + k)]
+    rw [key]; exact ih k (by omega)
 
 /-- For d = 2 (every other integer), alternating gives discrepancy 0 or k.
     If a is even: all terms are +1, sum = k.
@@ -138,7 +158,7 @@ theorem disc_trivial_upper (f : Coloring) (hf : IsValid f) (a d k : ℕ) :
           have : (f (a + n * d)).natAbs = 1 := by rcases hv with h | h <;> simp [h]
           omega
 
-/-- Small cases: specific four-square decompositions showing small discrepancies exist. -/
+/- Small cases: specific four-square decompositions showing small discrepancies exist. -/
 
 /-- For k = 1, any valid coloring has discrepancy exactly 1. -/
 theorem disc_length_1 (f : Coloring) (hf : IsValid f) (a d : ℕ) :
