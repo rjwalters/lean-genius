@@ -7,7 +7,8 @@
   "path": "full",
   "problemStatement": {
     "formal": "\\exists H, \\forall N, \\exists p > N, p \\text{ prime} \\wedge (p' - p \\leq H)",
-    "plain": "There exist infinitely many pairs of consecutive primes differing by at most H, for some finite H. Best known: H ≤ 246 (Polymath), H ≤ 12 assuming Elliott-Halberstam."
+    "plain": "There exist infinitely many pairs of consecutive primes differing by at most H, for some finite H. Best known: H ≤ 246 (Polymath), H ≤ 12 assuming Elliott-Halberstam.",
+    "whyMatters": []
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -47,5 +48,66 @@
   "started": "2026-03-20T10:28:00Z",
   "lastUpdate": "2026-03-20T14:50:00Z",
   "significance": 9,
-  "tractability": 5
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/BoundedPrimeGaps.lean",
+      "filename": "BoundedPrimeGaps.lean",
+      "lineCount": 2018,
+      "theoremCount": 125,
+      "axiomCount": 3,
+      "defCount": 16,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGaps.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ01.lean",
+      "filename": "BoundedPrimeGapsOQ01.lean",
+      "lineCount": 439,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03.lean",
+      "filename": "BoundedPrimeGapsOQ03.lean",
+      "lineCount": 280,
+      "theoremCount": 21,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsSieve.lean",
+      "filename": "BoundedPrimeGapsSieve.lean",
+      "lineCount": 368,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsSieve.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsTPC.lean",
+      "filename": "BoundedPrimeGapsTPC.lean",
+      "lineCount": 282,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsTPC.lean"
+    }
+  ],
+  "relatedProofs": [
+    "bounded-prime-gaps",
+    "bounded-prime-gaps-oq-03"
+  ]
 }
