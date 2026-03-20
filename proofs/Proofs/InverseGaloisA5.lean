@@ -183,6 +183,13 @@ theorem q_natDegree : q.natDegree = 5 := by
   unfold q
   compute_degree!
 
+/-- q is monic (leading coefficient = 1). -/
+theorem q_monic : q.Monic := by
+  rw [Polynomial.Monic, Polynomial.leadingCoeff, q_natDegree]
+  unfold q
+  simp only [coeff_sub, coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X]
+  norm_num
+
 /-- q is separable (irreducible in characteristic 0). -/
 theorem q_separable : q.Separable := q_irreducible.separable
 
@@ -1470,13 +1477,17 @@ private theorem prod_Iio_eq_vandermonde {n : ℕ} {R : Type*} [CommRing R]
     (v : Fin n → R) :
     (∏ i : Fin n, ∏ j ∈ Finset.Iio i, (v i - v j)) =
     ∏ i : Fin n, ∏ j ∈ Finset.Ioi i, (v j - v i) := by
-  -- Proof needs update for ∈ notation (previously used Finset.prod_nbij with in syntax)
-  sorry
+  -- Swap summation order: ∏_i ∏_{j<i} f(i,j) = ∏_j ∏_{i>j} f(i,j)
+  -- After bound variable renaming, this is ∏_i ∏_{j>i} f(j,i) = RHS
+  exact Finset.prod_comm' (fun a b => by
+    simp only [Finset.mem_univ, true_and, Finset.mem_Iio, Finset.mem_Ioi, and_true])
 
 theorem ordered_root_diff_prod_eq_vandermonde_sq :
     (∏ i : Fin 5, ∏ j ∈ Finset.univ.erase i, (rootEnum i - rootEnum j)) =
     vandermondeProduct ^ 2 := by
-  -- Proof needs update for ∈ notation (previously used Finset.prod with in syntax)
+  -- Split ∏_{j≠i} into ∏_{j<i}·∏_{j>i}, use prod_Iio_eq_vandermonde for first factor.
+  -- Second factor: negate each term, (-1)^{C(5,2)} = (-1)^10 = 1.
+  -- TODO: Fill in details
   sorry
 
 -- Step B: Connect derivative evaluation to root differences
@@ -1499,14 +1510,70 @@ theorem eval_derivative_at_root_of_factor {K : Type*} [Field K]
 /-- q mapped to its splitting field splits as ∏ (X - rootEnum i). -/
 theorem q_SF_eq_prod_linear :
     q_SF = ∏ i : Fin 5, (X - C (rootEnum i)) := by
-  -- Uses: C_leadingCoeff_mul_prod_multiset_X_sub_C (for q_SF with roots.card = 5)
-  -- Then: convert Multiset.prod to Finset.prod via rootSet ≃ Fin 5
-  -- Key ingredients:
-  --   q_monic.map: q_SF is monic (lc = 1)
-  --   SplittingField.splits: q_SF splits
-  --   q_rootSet_card: rootSet has card 5
-  --   rootEnum defined via Fintype.equivOfCardEq on rootSet ≃ Fin 5
-  sorry
+  -- Strategy: both sides are monic of degree 5, and P ∣ q_SF, so P = q_SF.
+  set P := ∏ i : Fin 5, (X - C (rootEnum i)) with hP_def
+  -- q_SF is monic
+  have hq_monic : q_SF.Monic := q_monic.map (algebraMap ℚ q.SplittingField)
+  have hq_ne : q_SF ≠ 0 := hq_monic.ne_zero
+  -- P is monic
+  have hP_monic : P.Monic :=
+    Polynomial.monic_prod_of_monic _ _ (fun i _ => Polynomial.monic_X_sub_C _)
+  -- P has degree 5
+  have hP_deg : P.natDegree = 5 := by
+    rw [hP_def, Polynomial.natDegree_prod_of_monic _ _
+      (fun i _ => Polynomial.monic_X_sub_C _)]
+    simp [Polynomial.natDegree_X_sub_C, Finset.sum_const, Finset.card_fin]
+  -- Each rootEnum i is a root of q_SF
+  have hroot : ∀ i : Fin 5, Polynomial.IsRoot q_SF (rootEnum i) := by
+    intro i
+    have := rootEnum_is_root i
+    rwa [Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map] at this
+  -- Each linear factor divides q_SF
+  have hdvd_each : ∀ i : Fin 5, (X - C (rootEnum i)) ∣ q_SF :=
+    fun i => Polynomial.dvd_iff_isRoot.mpr (hroot i)
+  -- Pairwise coprime via Bezout identity:
+  -- u*(X - C α) + v*(X - C β) = 1 where u = C((β-α)⁻¹), v = -C((β-α)⁻¹)
+  have hcoprime : ∀ i j : Fin 5, i ≠ j →
+      IsCoprime (X - C (rootEnum i) : Polynomial q.SplittingField)
+               (X - C (rootEnum j)) := by
+    intro i j hij
+    have hne : rootEnum i ≠ rootEnum j := fun h => hij (rootEnum_injective h)
+    have hne' : rootEnum j - rootEnum i ≠ 0 := sub_ne_zero.mpr (Ne.symm hne)
+    exact ⟨C ((rootEnum j - rootEnum i)⁻¹), -C ((rootEnum j - rootEnum i)⁻¹), by
+      calc C ((rootEnum j - rootEnum i)⁻¹) * (X - C (rootEnum i)) +
+           -C ((rootEnum j - rootEnum i)⁻¹) * (X - C (rootEnum j))
+        _ = C ((rootEnum j - rootEnum i)⁻¹) *
+            ((X - C (rootEnum i)) - (X - C (rootEnum j))) := by ring
+        _ = C ((rootEnum j - rootEnum i)⁻¹) * C (rootEnum j - rootEnum i) := by
+            congr 1
+            have : (X : Polynomial q.SplittingField) - C (rootEnum i) -
+                   (X - C (rootEnum j)) = C (rootEnum j) - C (rootEnum i) := by ring
+            rw [this, ← map_sub]
+        _ = C ((rootEnum j - rootEnum i)⁻¹ * (rootEnum j - rootEnum i)) := by
+            rw [← map_mul]
+        _ = C 1 := by rw [inv_mul_cancel₀ hne']
+        _ = 1 := map_one _⟩
+  -- Product of pairwise coprime factors divides q_SF
+  have hdvd : P ∣ q_SF := by
+    rw [hP_def]
+    exact Finset.prod_dvd_of_coprime
+      (fun i _ j _ hij => hcoprime i j hij) (fun i _ => hdvd_each i)
+  -- Both monic of same degree with P ∣ q_SF → P = q_SF
+  obtain ⟨r, hr⟩ := hdvd
+  have r_ne : r ≠ 0 := right_ne_zero_of_mul (hr ▸ hq_ne)
+  have hr_deg : r.natDegree = 0 := by
+    have h1 := Polynomial.natDegree_mul hP_monic.ne_zero r_ne
+    rw [← hr, Polynomial.natDegree_map, q_natDegree, hP_deg] at h1; omega
+  have hr_one : r = 1 := by
+    have h := Polynomial.eq_C_of_natDegree_eq_zero hr_deg
+    -- r.leadingCoeff = 1 from monicity of product
+    have hrc : r.leadingCoeff = 1 := by
+      have hm := hq_monic; rw [hr, Polynomial.Monic] at hm
+      rw [Polynomial.leadingCoeff_mul, hP_monic.leadingCoeff, one_mul] at hm
+      exact hm
+    rw [h, Polynomial.leadingCoeff_C] at hrc
+    rw [h, hrc, map_one]
+  rw [hr, hr_one, mul_one]
 
 -- Step D: Derivative at rootEnum i gives the product of root differences
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
