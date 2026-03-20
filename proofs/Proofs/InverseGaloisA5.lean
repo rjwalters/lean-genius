@@ -1303,11 +1303,17 @@ theorem gal_permutes_roots (σ : q.Gal) (i : Fin 5) :
   simp only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, Equiv.permCongr_apply,
     Equiv.symm_apply_apply]
   -- Goal: σ ↑r = ↑(galActionHom σ r) where r : rootSet q SF
-  -- Mathematically: the Galois action on rootSet lifts to the field,
-  -- i.e., (σ • r).val = σ r.val. This is the definition of the SMul
-  -- instance on rootSet, but the coercion path through galActionHom →
-  -- MulAction.toPerm → SMul doesn't reduce to rfl after Mathlib v4.26.0.
-  -- Previously closed by `rfl`.
+  -- Mathematically: (σ • r).val = σ r.val. The galActionHom resolves to
+  -- galAction (not galActionAux) when E = SF, wrapping through rootsEquivRoots.
+  -- The proof requires showing algebraMap SF SF = id for the Gal-derived
+  -- Algebra SF SF instance (IsSplittingField.lift), which differs from Algebra.id.
+  -- Approach: galActionHom_restrict + restrict q SF σ = σ (AlgEquiv.ext via
+  -- restrictNormal_commutes + Algebra.algebraMap_self), but this hits a typeclass
+  -- diamond between Algebra.id SF and Gal.instAlgebra... (from IsSplittingField.lift).
+  -- The MonoidHom.mk' coercion also doesn't reduce by rfl; use erw [MonoidHom.mk'_apply]
+  -- to bridge it. The diamond can be resolved via Algebra.algebra_ext + showing
+  -- algebraMap SF SF r = r for the lift instance (needs IsSplittingField.lift specifics).
+  -- Previously closed by `rfl` when galActionAux was resolved instead of galAction.
   sorry
 
 /-- Vandermonde matrix with permuted input = row-permuted Vandermonde. -/
@@ -1356,12 +1362,8 @@ theorem gal_acts_on_vandermondeProduct (σ : q.Gal) :
     exact gal_map_vandermonde_entry σ i j
   · -- Step 3: det(V(rootEnum ∘ π)) = sign(π) · det(V)
     exact vandermonde_perm_det rootEnum (galToPerm5 σ)
-
-  -- σ(det V) = det(V(rootEnum ∘ π)) = sign(π) · det(V)
-  -- Proof: RingHom.map_det + gal_permutes_roots + vandermonde_perm_det
-  -- Blocked by coercion alignment: RingHom.map_det produces mapMatrix form,
-  -- while gal_permutes_roots provides Matrix.map form.
-  sorry
+  -- Note: Both trans branches close their goals. The sorry that was here
+  -- was dead code (confirmed: "No goals to be solved" on Docker build).
 
 -- Step 6: galSign(σ) = 1 for all σ
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
