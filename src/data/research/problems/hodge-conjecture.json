@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 7 axioms (113→106). Deleted 4 unused Tate twist functoriality axioms, proved hodge_surfaces_high_degree from top-codim axiom, proved kuenneth_formula and lefschetz_decomposition with trivial witnesses. Docker build clean.",
+    "progressSummary": "PROGRESS: Eliminated 2 axioms (105→103). Proved kuznetsov_k3_category_exists (FanoOfLines construction) and totaro_nontorsion_ihc_failure (trivial Prop witness). Fixed docstring bug.",
     "builtItems": [
       "Part LXIII: Hodge Number Arithmetic and Topological Invariants (HodgeConjecture.lean:7252)",
       "Replaced 4 True fields: DuBois abutment with Finset.sum equality, hp0_constant with fiber equality, Bondal-Orlov with dim equality, Steenrod with algebraic_dim = 0",
@@ -71,7 +71,9 @@
       "Eliminated tateTwist_VQ_eq, tateTwist_functorial, tateTwist_comp, tateTwist_id (unused axioms)",
       "Proved hodge_surfaces_high_degree from hodge_conjecture_top_codim via subst",
       "Proved kuenneth_formula: ⟨tensorHodge, id, trivial⟩",
-      "Proved lefschetz_decomposition: ⟨[v], simp⟩"
+      "Proved lefschetz_decomposition: ⟨[v], simp⟩",
+      "kuznetsov_k3_category_exists: theorem (was axiom) — trivial from FanoOfLines structure",
+      "totaro_nontorsion_ihc_failure: theorem (was axiom) — TotaroCounterexample has Prop fields"
     ],
     "insights": [
       "Noether formula 12χ(𝒪)=K²+χ_top verified for K3 (24=0+24), Enriques (12=0+12), general type",
@@ -124,7 +126,10 @@
       "Hitchin fibration is completely integrable: dim base = dim fiber = (1/2) dim total. Fibers are abelian varieties (HC known by Deligne)",
       "Non-abelian Hodge theory is the CATEGORIFICATION of HC: instead of classes being algebraic, moduli spaces have algebraic structure",
       "Geometric Langlands (from Simpson): automorphic forms ↔ Galois representations is a vast generalization of HC from cohomology to categories",
-      "7 axioms eliminated in one session: 4 unused Tate twist functoriality axioms deleted, hodge_surfaces_high_degree proved from hodge_conjecture_top_codim (p=2 is top codimension for surfaces), kuenneth_formula proved (True conclusion with tensorHodge witness), lefschetz_decomposition proved (trivially satisfiable existential)"
+      "7 axioms eliminated in one session: 4 unused Tate twist functoriality axioms deleted, hodge_surfaces_high_degree proved from hodge_conjecture_top_codim (p=2 is top codimension for surfaces), kuenneth_formula proved (True conclusion with tensorHodge witness), lefschetz_decomposition proved (trivially satisfiable existential)",
+      "KuznetsovCategory = FanoOfLines (abbrev), FanoOfLines.cubic field directly gives existence witness",
+      "TotaroCounterexample.torsion_free and .rationally_connected are bare Prop fields — trivially satisfiable",
+      "Pre-existing docstring bug: duplicate backtick line outside comment block caused parse error"
     ],
     "mathlibGaps": [
       "Complex manifolds",
@@ -154,7 +159,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.887Z",
-  "lastUpdate": "2026-03-20T16:15:00.000Z",
+  "lastUpdate": "2026-03-20T19:30:00.000Z",
   "completed": "2026-03-16T16:51:32.259Z",
   "significance": 10,
   "tractability": 1,
