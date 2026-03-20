@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Parts CXXXIII-CXXXIV (Gribov copies, KO criterion, chiral PT, mass gap vs pion, +6 theorems)",
+    "progressSummary": "PROGRESS: Added Parts CXLIX-CLI (Ising gauge theory, twisted compactification, matrix models) + fixed 7 pre-existing build errors",
     "builtItems": [
       "Part C: OS Axioms - transfer matrix, Schwinger functions, spectral gap, Euclidean propagator (~30 theorems)",
       "Part CI: Resurgence - beta function, running coupling, renormalons, instanton factors, bions (~25 theorems)",
@@ -59,7 +59,10 @@
       "Part CXXXI: Lattice Improvement — Symanzik program, Lüscher-Weisz coefficients, Sommer parameter, gradient flow (4 theorems)",
       "Part CXXXII: Conformal Window — AF bound, Banks-Zaks fixed point, Miransky scaling, walking technicolor (4 theorems)",
       "Part CXXXIII: Gribov Copies — FP operator, GZ action, gluon propagator suppression, KO confinement criterion (3 theorems)",
-      "Part CXXXIV: Chiral PT — Goldstone counting, GMOR relation, mass gap vs pion mass distinction (3 theorems)"
+      "Part CXXXIV: Chiral PT — Goldstone counting, GMOR relation, mass gap vs pion mass distinction (3 theorems)",
+      "Part CXLIX: Ising Gauge Theory — Z₂ confinement, Wegner duality, string tension, area law, self-dual coupling (~200 lines, 20 theorems)",
+      "Part CL: Twisted Compactification — Ünsal framework, monopole-instantons, bion mechanism, adiabatic continuity, lattice benchmarks (~220 lines, 18 theorems)",
+      "Part CLI: Gross-Witten-Wadia — matrix model phase transition, eigenvalue distribution, Eguchi-Kawai reduction, Douglas-Kazakov critical area (~210 lines, 20 theorems)"
     ],
     "insights": [
       "OS axioms (5) provide Euclidean formulation; reconstruction gives Wightman QFT",
@@ -115,7 +118,17 @@
       "Cluster expansion converges only for β < 2, but physical SU(3) is at β ≈ 6 — this gap is why rigorous construction is hard",
       "Nielsen-Ninomiya: 2^d fermion doublers on lattice; Ginsparg-Wilson relation resolves this with exact lattice chirality",
       "Mass gap vanishes at conformal window boundary via Miransky (essential singularity) scaling — not power law",
-      "Gradient flow (Lüscher 2010) automatically renormalizes operators, removing UV divergences at positive flow time"
+      "Gradient flow (Lüscher 2010) automatically renormalizes operators, removing UV divergences at positive flow time",
+      "Z₂ gauge theory in 3D is ALWAYS confining (dual to 1D Ising, no phase transition)",
+      "Z₂ in 4D has confinement-deconfinement transition (dual to 2D Ising Onsager point β_c ≈ 0.4407)",
+      "Wegner duality: Z₂ gauge in d dimensions ↔ Ising model in d-2 dimensions",
+      "Twisted compactification on R³×S¹ with center-stabilizing BCs: no phase transition for any L",
+      "Monopole-instanton action = S_I/N (fractional instantons lighter than BPST)",
+      "Bion mechanism: monopole-antimonopole bound states generate dual photon mass → mass gap",
+      "Adiabatic continuity: if proved, reduces Millennium Problem to small-L calculation",
+      "GWW model: 3rd-order phase transition at β_c = 1/2 (F is C² but not C³)",
+      "Eigenvalue gap picture: confinement ↔ eigenvalues spread, deconfinement ↔ eigenvalues cluster",
+      "Douglas-Kazakov critical area A_c = π² gives 3rd-order transition in 2D YM on sphere"
     ],
     "mathlibGaps": [
       "Principal bundles",
@@ -141,7 +154,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.887Z",
-  "lastUpdate": "2026-03-19T21:00:00.000Z",
+  "lastUpdate": "2026-03-19T23:55:00.000Z",
   "completed": "2026-03-13T17:50:22.123Z",
   "significance": 10,
   "tractability": 1
