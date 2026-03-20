@@ -3,6 +3,7 @@ import Mathlib.Combinatorics.SimpleGraph.Finite
 import Mathlib.Combinatorics.SimpleGraph.DegreeSum
 import Mathlib.Combinatorics.SimpleGraph.AdjMatrix
 import Mathlib.LinearAlgebra.Matrix.Trace
+import Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly
 import Mathlib.Data.Set.Card
 import Mathlib.Data.Fintype.Card
 import Mathlib.Tactic
@@ -29,11 +30,11 @@ proof:
    (Key step forcing k = 2 in the spectral argument)
 6. **Spectral framework**: axiomatized eigenvalue step + consequences
 
-The single axiom (`spectral_regular_friendship`) encapsulates the
-eigenvalue analysis: A² = (k-1)I + J forces eigenvalues ±√(k-1),
-and the trace condition forces k = 2.
+The single axiom (`charpoly_eigenvalue_data`) encapsulates the
+eigenvalue structure: ∃ s m₊ m₋ with k-1 = s², m₊ + m₋ + 1 = n,
+k + (m₊ - m₋)·s = 0. The conclusion k = 2 is proved from this.
 
-Status: 1 axiom (spectral eigenvalue step), 0 sorries
+Status: 1 axiom (eigenvalue structure), 0 sorries
 
 New in this revision:
 - `ucn_ne_left`, `ucn_ne_right`: UCN distinctness from endpoints
@@ -321,66 +322,54 @@ theorem dvd_sq_add_one_imp_one (s : ℕ) (hs : s ≥ 1) (h : s ∣ s * s + 1) :
 -- Part VI: Spectral Framework
 -- ============================================================================
 
-/-- **Eigenvalue data axiom** (refined from monolithic spectral axiom):
+/-- **Refined spectral axiom**: eigenvalue structure of the adjacency matrix.
 
-    The adjacency matrix of a k-regular friendship graph (k ≥ 2) has
-    eigenvalues {k, s, -s} where k-1 = s², with multiplicities satisfying:
-    - mp + mm + 1 = n  (eigenvalue k has multiplicity 1)
-    - k + (mp - mm)·s = 0  (trace = 0, since A has zero diagonal)
+    For a k-regular friendship graph, A satisfies A² = (k-1)I + J (proved in
+    `adjMatrix_sq_eq`), so the annihilating polynomial is (X-k)(X²-(k-1)).
 
-    **Why this is true** (not yet formalized in Lean):
+    The spectral theorem for real symmetric matrices gives:
+    - Eigenvalue k with multiplicity 1 (eigenvector 𝟙)
+    - Eigenvalues ±s where s² = k-1, with multiplicities m₊, m₋
+    - Total: 1 + m₊ + m₋ = n
+    - Trace: k + (m₊ - m₋)·s = 0
 
-    1. (A-kI)(A²-(k-1)I) = 0 → minpoly | (X-k)(X²-(k-1))  [adjMatrix_functional_eq]
-    2. A = adjMatrix ℝ is symmetric → eigenvalues real [Matrix.IsHermitian]
-    3. Eigenvalues ⊂ roots of (X-k)(X²-(k-1)) [spectral thm + minpoly]
-    4. k-1 must be a perfect square: otherwise charpoly ∈ ℤ[X] factors as
-       (X-k)^a·(X²-(k-1))^b, coeff of X^{n-1} = -ak, trace = ak = 0,
-       so a = 0, n = 2b is even. But n = k²-k+1 is odd. Contradiction!
-    5. Eigenvalue k has multiplicity 1: from tr(A²) = nk, we get
-       a·k² + (n-a)·(k-1) = nk ⟹ a·(k²-k+1) = n ⟹ a = 1.
+    This axiom captures the eigenvalue structure. The conclusion k = 2
+    is proved as `spectral_regular_friendship` below.
 
-    **Mathlib path to eliminate**: Apply Matrix.IsHermitian.eigenvalues to
-    G.adjMatrix ℝ, connect to minpoly via the annihilating polynomial,
-    then factor charpoly over ℚ using irreducibility of X²-(k-1). -/
+    **Elimination path** (what Mathlib needs to prove this):
+    1. minpoly(A) | (X-k)(X²-(k-1)) via `minpoly.dvd`
+    2. Over ℚ: if k-1 not a perfect square, X²-(k-1) is irreducible
+    3. charpoly = (X-k)^a · (X²-(k-1))^b, trace = -ak = 0, so a = 0
+    4. But k is an eigenvalue (A𝟙 = k𝟙), contradiction → k-1 is a perfect square
+    5. charpoly = (X-k)^a · (X-s)^{m₊} · (X+s)^{m₋}
+    6. tr(A²) = nk gives a = 1, then trace gives s|k, dvd_sq_add_one_imp_one → s=1 -/
 axiom charpoly_eigenvalue_data (hF : IsFriendshipGraph G)
     (k : ℕ) (hk : k ≥ 2) (hreg : ∀ v : V, G.degree v = k) :
     ∃ (s mp mm : ℕ), k - 1 = s * s ∧ mp + mm + 1 = Fintype.card V ∧
       (↑k : ℤ) + (↑mp - ↑mm) * ↑s = 0
 
-/-- The spectral conclusion: k = 2 in any k-regular friendship graph.
+/-- k = 2 for k-regular friendship graphs, derived from eigenvalue data.
 
-    Proof from eigenvalue data via divisibility:
-    1. k-1 = s² with s ≥ 1 (from axiom, since k ≥ 2)
-    2. Trace constraint: (mm - mp)·s = k (rearranged)
-    3. Since k ≥ 2 and s ≥ 1: mm > mp, so d = mm - mp ≥ 1
-    4. d·s = k in ℕ, hence s ∣ k
-    5. k = s²+1, so s ∣ s²+1. Since s ∣ s²: s ∣ 1, s = 1, k = 2.  ∎ -/
+    From the axiom: k-1 = s², and the trace constraint gives s | k.
+    Since k = s²+1: s | s²+1, and by `dvd_sq_add_one_imp_one`, s = 1, k = 2. -/
 theorem spectral_regular_friendship (hF : IsFriendshipGraph G)
     (k : ℕ) (hk : k ≥ 2) (hreg : ∀ v : V, G.degree v = k) :
     k = 2 := by
   obtain ⟨s, mp, mm, hsq, _, htrace⟩ := charpoly_eigenvalue_data G hF k hk hreg
-  -- s ≥ 1 from k ≥ 2 and k - 1 = s²
-  have hs_pos : s ≥ 1 := by nlinarith
-  -- Rearrange trace: (mm - mp) · s = k in ℤ
-  have h_mk : (↑mm - ↑mp : ℤ) * ↑s = ↑k := by linarith
-  -- mm > mp (since k ≥ 2, s ≥ 1, and their product = k)
-  have hm_lt : (mp : ℤ) < mm := by
+  -- s ≥ 1 since k - 1 = s² and k ≥ 2
+  have hs_pos : s ≥ 1 := by
     by_contra h; push_neg at h
-    have h1 : (↑mm - ↑mp : ℤ) ≤ 0 := by linarith
-    have h2 : (↑mm - ↑mp : ℤ) * (↑s : ℤ) ≤ 0 :=
-      mul_nonpos_of_nonpos_of_nonneg h1 (by positivity)
-    linarith [show (k : ℤ) ≥ 2 from by exact_mod_cast hk]
-  -- Therefore s ∣ k in ℕ
-  have h_sdvdk : s ∣ k := by
-    have hm_le : mp ≤ mm := by omega
-    have h_int : (↑(mm - mp) : ℤ) * ↑s = ↑k := by
-      rw [Nat.cast_sub hm_le]; exact h_mk
-    have h_nat : (mm - mp) * s = k := by exact_mod_cast h_int
-    exact ⟨mm - mp, by linarith [mul_comm s (mm - mp)]⟩
-  -- k = s²+1 and s | k → s | s²+1 → s = 1 → k = 2
+    have : s = 0 := by omega
+    subst this; simp at hsq; omega
+  -- From trace: k = (mm - mp) · s in ℤ, so s | k
+  have hk_eq_ℤ : (↑k : ℤ) = (↑mm - ↑mp) * ↑s := by linarith
+  have h_sdvd_k : (↑s : ℤ) ∣ (↑k : ℤ) := by rw [hk_eq_ℤ]; exact dvd_mul_left _ _
+  have h_sdvd_k_nat : s ∣ k := by exact_mod_cast h_sdvd_k
+  -- k = s² + 1 and s | s² + 1
   have hk_eq : k = s * s + 1 := by omega
-  have hsdvd : s ∣ s * s + 1 := hk_eq ▸ h_sdvdk
-  have hs1 := dvd_sq_add_one_imp_one s hs_pos hsdvd
+  rw [hk_eq] at h_sdvd_k_nat
+  -- s | s² + 1 forces s = 1
+  have hs1 := dvd_sq_add_one_imp_one s hs_pos h_sdvd_k_nat
   subst hs1; omega
 
 /-- A k-regular friendship graph has exactly 3 vertices (must be K₃). -/
@@ -439,24 +428,35 @@ theorem regular_friendship_has_universal (hF : IsFriendshipGraph G)
 | `counting_identity` | theorem | n-1 = Σ (deg(v)-1) over N(u) |
 | `regular_friendship_card` | theorem | n = k(k-1)+1 for k-regular |
 | `dvd_sq_add_one_imp_one` | theorem | s | s²+1 ⟹ s = 1 |
-| `spectral_regular_friendship` | **axiom** | Eigenvalue analysis ⟹ k = 2 |
+| `charpoly_eigenvalue_data` | **axiom** | Eigenvalue structure: ∃ s m₊ m₋ |
+| `spectral_regular_friendship` | theorem | Eigenvalue data ⟹ k = 2 |
 | `regular_friendship_is_triangle` | theorem | k-regular friendship ⟹ n = 3 |
 | `regular_friendship_has_universal` | theorem | k-regular friendship ⟹ universal vertex |
+| `adjMatrix_trace_zero` | theorem | tr(A) = 0 |
+| `adjMatrix_sq_eq` | theorem | A² = (k-1)I + J |
+| `adjMatrix_functional_eq` | theorem | (A-kI)(A²-(k-1)I) = 0 |
+| `onesMatrix_sq` | theorem | J² = nJ |
+| `trace_onesMatrix` | theorem | tr(J) = n |
+| `trace_adjMatrix_sq` | theorem | tr(A²) = nk |
 
-## Remaining Work to Eliminate the Axiom
+## Remaining: Eliminate charpoly_eigenvalue_data
 
-The axiom `spectral_regular_friendship` can be eliminated by formalizing:
+The single remaining axiom encodes the eigenvalue structure of a
+real symmetric matrix. The elimination path uses Mathlib primitives:
 
-1. **Adjacency matrix definition** for SimpleGraph (not yet in Mathlib v4.26)
-2. **A² = (k-1)I + J** from `common_neighbor_finset_card` + diagonal identity
-3. **Eigenvalue decomposition** of a real symmetric matrix
-4. **Trace computation**: tr(A) = 0 (no self-loops)
-5. **Eigenvalue constraint**: λ² = k-1 for eigenvectors ⊥ 𝟙
-6. **Rationality**: √(k-1) must be rational for integer multiplicities
-7. **Application of `dvd_sq_add_one_imp_one`** to conclude k = 2
+1. **minpoly.dvd**: (A-kI)(A²-(k-1)I) = 0 ⟹ minpoly | (X-k)(X²-(k-1))
+2. **Irreducibility**: When k-1 is not a perfect square, X²-(k-1) is
+   irreducible over ℚ (Eisenstein or direct argument)
+3. **Charpoly factorization**: Over ℚ, charpoly = (X-k)^a · (X²-(k-1))^b
+4. **Trace coefficient**: tr(A) = -[X^{n-1}]charpoly = -ak = 0 ⟹ a = 0
+5. **Eigenvalue existence**: A𝟙 = k𝟙 means k is an eigenvalue, so a ≥ 1
+6. **Contradiction**: a = 0 vs a ≥ 1 ⟹ k-1 must be a perfect square
+7. **Perfect square case**: tr(A²) = nk gives a = 1, then s|k by trace
+8. **Conclusion**: s | s²+1 ⟹ s = 1 ⟹ k = 2
 
-Steps 1-6 require Mathlib's linear algebra (eigenvalues of real symmetric
-matrices, trace, orthogonal decomposition). Step 7 is proved here.
+Steps 1, 4, 5 need: `Polynomial.aeval`, `minpoly.dvd`, `Matrix.charpoly`,
+`Matrix.trace_eq_neg_charpoly_coeff` (all available in Mathlib).
+Steps 2-3, 6 need: `Polynomial.Irreducible` for X²-c and Gauss's lemma.
 
 ## Connection to FriendshipTheorem.lean
 
@@ -481,7 +481,7 @@ theorem adjMatrix_diag_zero (v : V) :
 
     tr(A) = Σᵢ Aᵢᵢ = Σᵢ 0 = 0
 
-    In the spectral proof: tr(A) = Σ eigenvalues = k + (mp - mm)√(k-1) = 0. -/
+    In the spectral proof: tr(A) = Σ eigenvalues = k + (m₊ - m₋)√(k-1) = 0. -/
 theorem adjMatrix_trace_zero :
     Matrix.trace (G.adjMatrix ℤ) = 0 := by
   simp [Matrix.trace, Matrix.diag, SimpleGraph.adjMatrix_apply, SimpleGraph.loopless]
@@ -533,13 +533,13 @@ The spectral axiom `spectral_regular_friendship` can be eliminated via:
    - Therefore: eigenvalues on 1⊥ are ±√(k-1)
 
 3. **Trace constraint** [adjMatrix_trace_zero proved above]:
-   - tr(A) = 0 = k + mp·√(k-1) + mm·(-√(k-1))
-   - = k + (mp - mm)·√(k-1)
-   - If √(k-1) ∉ ℚ: mp = mm and k = 0 (contradiction with k ≥ 2)
+   - tr(A) = 0 = k + m₊·√(k-1) + m₋·(-√(k-1))
+   - = k + (m₊ - m₋)·√(k-1)
+   - If √(k-1) ∉ ℚ: m₊ = m₋ and k = 0 (contradiction with k ≥ 2)
    - So k - 1 is a perfect square: k - 1 = s²
 
 4. **Integrality** [uses dvd_sq_add_one_imp_one, already proved]:
-   - (mp - mm) = -(s² + 1)/s must be an integer
+   - (m₊ - m₋) = -(s² + 1)/s must be an integer
    - So s | (s² + 1), which forces s = 1 by our number theory lemma
    - Therefore k = s² + 1 = 2
 
@@ -661,11 +661,12 @@ theorem k_equals_two_from_perfect_square (k s : ℕ) (hk : k ≥ 2)
   have hk_eq : k = s * s + 1 := by omega
   -- From h_dvd and hk_eq: s | s*s + 1
   rw [hk_eq] at h_dvd
-  -- s ≥ 1 (from k ≥ 2 and k-1 = s*s)
-  have hs_pos : s ≥ 1 := by nlinarith [h_sq]
-  -- Apply dvd_sq_add_one_imp_one: s | s*s+1 → s = 1
-  have hs1 : s = 1 := dvd_sq_add_one_imp_one s hs_pos h_dvd
-  subst hs1; omega
+  -- s | s*s + 1, so use dvd_sq_add_one_imp_one to get s = 1
+  have hs_pos : s ≥ 1 := by
+    by_contra h; push_neg at h; interval_cases s; simp_all
+  have hs1 := dvd_sq_add_one_imp_one s hs_pos h_dvd
+  -- s = 1 and k = s*s + 1 = 2
+  subst hs1; linarith
 
 -- ============================================================================
 -- Part XII: Trace Constraint and Integrality
@@ -698,9 +699,11 @@ theorem trace_forces_perfect_square (k n : ℕ) (hk : k ≥ 2) (hn : n = k * (k 
     -- requires k-1 to be a perfect square
     -- (otherwise √(k-1) irrational → m₊ = m₋ → k = 0, contradiction)
     : k * (k - 1) ≥ 1 := by
-  have h1 : k - 1 ≥ 1 := by omega
-  have h2 : k * (k - 1) ≥ 2 * 1 := Nat.mul_le_mul hk h1
-  omega
+  have h1 : k ≥ 2 := hk
+  have h2 : k - 1 ≥ 1 := by omega
+  calc k * (k - 1) ≥ 2 * 1 := Nat.mul_le_mul h1 h2
+    _ = 2 := by ring
+    _ ≥ 1 := by norm_num
 
 /-- The complete spectral argument in number-theoretic form.
     Given: n = k(k-1) + 1, k ≥ 2
@@ -714,7 +717,7 @@ theorem spectral_argument_nt (k n : ℕ) (hk : k ≥ 2) (hn : n = k * (k - 1) + 
   exact ⟨hk2, by subst hk2; omega⟩
 
 -- ============================================================================
--- Part XI: Adjacency Matrix Squared Identity (A² = (k-1)I + J)
+-- Part X: Full Matrix Equation A² = (k-1)I + J
 -- ============================================================================
 
 /-- The all-ones matrix J: every entry is 1. -/
@@ -750,13 +753,12 @@ theorem adjMatrix_mulVec_ones (k : ℕ) (hreg : ∀ v : V, G.degree v = k) (i : 
 theorem adjMatrix_mul_ones (k : ℕ) (hreg : ∀ v : V, G.degree v = k) :
     G.adjMatrix ℤ * onesMatrix V = ↑k • onesMatrix V := by
   ext i j
-  simp only [Matrix.mul_apply, Matrix.smul_apply, onesMatrix, Matrix.of_apply, smul_eq_mul,
-    mul_one, SimpleGraph.adjMatrix_apply]
-  trans ↑((Finset.univ.filter fun w => G.Adj i w).card)
-  · rw [← Finset.sum_boole]
-  · have : (Finset.univ.filter fun w => G.Adj i w) = G.neighborFinset i := by
-      ext w; simp [SimpleGraph.mem_neighborFinset]
-    rw [this, ← SimpleGraph.degree, hreg i]; ring
+  simp only [Matrix.mul_apply, Matrix.smul_apply, onesMatrix, Matrix.of_apply,
+    mul_one, SimpleGraph.adjMatrix_apply, Finset.sum_boole]
+  have hfilt : (Finset.univ.filter fun w => G.Adj i w) = G.neighborFinset i := by
+    ext w; simp [SimpleGraph.mem_neighborFinset]
+  rw [hfilt, ← SimpleGraph.degree, hreg i]
+  simp [smul_eq_mul]
 
 -- ============================================================================
 -- Part XII: Functional Equation (A-kI)(A²-(k-1)I) = 0
@@ -774,274 +776,155 @@ theorem adjMatrix_functional_eq (hF : IsFriendshipGraph G) (k : ℕ) (hk : k ≥
   rw [hJ, sub_mul, adjMatrix_mul_ones G k hreg, smul_mul_assoc, Matrix.one_mul, sub_self]
 
 -- ============================================================================
--- Part XIII: J² = nJ (All-Ones Matrix Properties)
+-- Part XIII: J² = nJ and Trace Identities
 -- ============================================================================
 
-/-- J² = n·J: the all-ones matrix squared is n times itself. -/
+/-- n • a = ↑n * a: nsmul equals cast-mul for ℤ. -/
+private theorem nsmul_eq_natCast_mul (n : ℕ) (a : ℤ) : n • a = ↑n * a := by
+  induction n with
+  | zero => simp
+  | succ n ih => rw [succ_nsmul, ih, Nat.cast_succ]; ring
+
+/-- **J² = nJ**: the all-ones matrix squared equals n times itself.
+    (J²)ᵢⱼ = Σ_w 1·1 = |V| = n, and (nJ)ᵢⱼ = n·1 = n. -/
 theorem onesMatrix_sq :
-    onesMatrix V * onesMatrix V =
-      (Fintype.card V : ℤ) • onesMatrix V := by
+    onesMatrix V * onesMatrix V = (Fintype.card V : ℤ) • onesMatrix V := by
   ext i j
-  simp only [Matrix.mul_apply, onesMatrix, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul,
-    mul_one, Finset.sum_const, Finset.card_univ, Nat.smul_one_eq_cast]
+  simp only [Matrix.mul_apply, onesMatrix, Matrix.of_apply, mul_one,
+    Matrix.smul_apply, smul_eq_mul, Finset.sum_const, Finset.card_univ]
+  rw [nsmul_eq_natCast_mul, mul_one]
 
--- ============================================================================
--- Part XIV: Degree Parity (k must be even)
--- ============================================================================
-
-/-- In a k-regular friendship graph with k ≥ 2, k is even.
-    By handshaking, kn = 2|E| is even. But n = k(k-1)+1 is odd
-    (product of consecutive ints + 1). So k must be even. -/
-theorem friendship_k_even (hF : IsFriendshipGraph G) (u : V)
-    (k : ℕ) (hk : k ≥ 2) (hreg : ∀ v : V, G.degree v = k) :
-    Even k := by
-  -- n = k*(k-1) + 1
-  have hn := regular_friendship_card G hF u k hreg (by omega)
-  -- Sum of degrees = 2 * |E| (handshaking)
-  have hhand := G.sum_degrees_eq_twice_card_edges
-  -- Sum of degrees = k * n (regularity)
-  have hsum : ∑ v : V, G.degree v = k * Fintype.card V := by
-    conv_lhs => arg 2; ext v; rw [hreg v]
-    rw [Finset.sum_const, Finset.card_univ, smul_eq_mul, mul_comm]
-  rw [hsum, hn] at hhand
-  -- k * (k*(k-1)+1) = 2 * |E|, so k*(k*(k-1)+1) is even
-  have heven : Even (k * (k * (k - 1) + 1)) := ⟨G.edgeFinset.card, by omega⟩
-  -- k*(k-1)+1 is odd: k*(k-1) is always even (one of consecutive is even)
-  have hodd : ¬ Even (k * (k - 1) + 1) := by
-    intro ⟨r, hr⟩
-    have hprod : Even (k * (k - 1)) := by
-      rcases Nat.even_or_odd k with h | h
-      · exact h.mul_right (k - 1)
-      · obtain ⟨m, hm⟩ := h
-        exact (show Even (k - 1) from ⟨m, by omega⟩).mul_left k
-    obtain ⟨q, hq⟩ := hprod; omega
-  -- From Even(k * odd), must have Even k
-  rwa [Nat.even_mul, or_iff_left hodd] at heven
-
--- ============================================================================
--- Part XV: Perfect Square Forces k = 2
--- ============================================================================
-
-/-- If k ≥ 2 and k-1 = s² for s ≥ 1 and s divides s²+1, then s = 1 and k = 2.
-    The hypothesis s | s²+1 comes from the eigenvalue multiplicity constraint. -/
-theorem friendship_even_square_forces_two (k s : ℕ) (hk : k ≥ 2)
-    (hs : s ≥ 1) (hks : k - 1 = s * s) (hsdvd : s ∣ s * s + 1) :
-    k = 2 := by
-  have hs1 := dvd_sq_add_one_imp_one s hs hsdvd
-  subst hs1; omega
-
--- ============================================================================
--- Part XVI: Spectral Axiom Elimination
--- ============================================================================
-
-/-
-The remaining step to fully eliminate the axiom is proving k-1 is a perfect
-square. The proof:
-1. A² = (k-1)I + J, so on ker(J), A² = (k-1)I
-2. The charpoly of A|_{ker(J)} ∈ ℤ[X], and minpoly | X²-(k-1)
-3. If k-1 not square, X²-(k-1) is irreducible over ℚ, so
-   charpoly = (X²-(k-1))^m → tr = 0 = -k, contradiction
-4. So k-1 is a perfect square
-
-This requires the structure theorem for ℚ[X]-modules (that irreducible
-factors of charpoly divide minpoly). Once Mathlib provides this
-integration, the sorry can be filled.
--/
-
-/-- **Spectral step** (replaces the axiom): k = 2 for k-regular friendship. -/
-theorem spectral_regular_friendship_proved (hF : IsFriendshipGraph G)
-    (u : V) (k : ℕ) (hk : k ≥ 2) (hreg : ∀ v : V, G.degree v = k) :
-    k = 2 := by
-  have _hkeven := friendship_k_even G hF u k hk hreg
-  -- The spectral argument gives: k-1 = s² and s | s²+1
-  suffices ∃ s : ℕ, s ≥ 1 ∧ k - 1 = s * s ∧ s ∣ s * s + 1 by
-    obtain ⟨s, hs, hks, hsdvd⟩ := this
-    exact friendship_even_square_forces_two k s hk hs hks hsdvd
-  -- From the eigenvalue data axiom: k-1 = s² and trace constraint
-  obtain ⟨s, mp, mm, hsq, _, htrace⟩ := charpoly_eigenvalue_data G hF k hk hreg
-  have hs_pos : s ≥ 1 := by nlinarith
-  -- Rearrange trace: (mm - mp) · s = k, so s | k = s²+1
-  have h_mk : (↑mm - ↑mp : ℤ) * ↑s = ↑k := by linarith
-  have hm_lt : (mp : ℤ) < mm := by
-    by_contra h; push_neg at h
-    have h1 : (↑mm - ↑mp : ℤ) ≤ 0 := by linarith
-    have h2 : (↑mm - ↑mp : ℤ) * (↑s : ℤ) ≤ 0 :=
-      mul_nonpos_of_nonpos_of_nonneg h1 (by positivity)
-    linarith [show (k : ℤ) ≥ 2 from by exact_mod_cast hk]
-  have hm_le : mp ≤ mm := by omega
-  have h_sdvdk : s ∣ k := by
-    have h_int : (↑(mm - mp) : ℤ) * ↑s = ↑k := by
-      rw [Nat.cast_sub hm_le]; exact h_mk
-    have h_nat : (mm - mp) * s = k := by exact_mod_cast h_int
-    exact ⟨mm - mp, by linarith [mul_comm s (mm - mp)]⟩
-  -- k = s²+1 and s | k, so s | s²+1
-  have hk_eq : k = s * s + 1 := by omega
-  have hsdvd : s ∣ s * s + 1 := by rw [← hk_eq]; exact h_sdvdk
-  exact ⟨s, hs_pos, hsq, hsdvd⟩
-
-/-- A k-regular friendship graph has exactly 3 vertices. -/
-theorem regular_friendship_is_triangle' (hF : IsFriendshipGraph G)
-    (u : V) (k : ℕ) (hk : k ≥ 2) (hreg : ∀ v : V, G.degree v = k) :
-    Fintype.card V = 3 := by
-  have hk2 := spectral_regular_friendship_proved G hF u k hk hreg
-  have hcard := regular_friendship_card G hF u k hreg (by omega)
-  subst hk2; omega
-
-/-- A k-regular friendship graph has a universal vertex. -/
-theorem regular_friendship_has_universal' (hF : IsFriendshipGraph G)
-    (u : V) (k : ℕ) (hk : k ≥ 2) (hreg : ∀ v : V, G.degree v = k) :
-    ∃ c : V, ∀ v : V, v ≠ c → G.Adj c v := by
-  have hk2 := spectral_regular_friendship_proved G hF u k hk hreg
-  exact regular_friendship_has_universal G hF u k hk hreg
-
--- ============================================================================
--- Part XVII: Trace of A² (Machine-Verified)
--- ============================================================================
-
-/-- Trace of the all-ones matrix equals the number of vertices:
-    tr(J) = n since every diagonal entry is 1. -/
+/-- **tr(J) = n**: the trace of the all-ones matrix equals the number of vertices. -/
 theorem trace_onesMatrix :
-    Matrix.trace (onesMatrix V) = ↑(Fintype.card V) := by
-  simp only [onesMatrix, Matrix.trace, Matrix.diag, Matrix.of_apply]
-  rw [Finset.sum_const, Finset.card_univ, Nat.smul_one_eq_cast]
+    Matrix.trace (onesMatrix V) = (Fintype.card V : ℤ) := by
+  simp only [Matrix.trace, Matrix.diag, onesMatrix, Matrix.of_apply,
+    Finset.sum_const, Finset.card_univ]
+  rw [nsmul_eq_natCast_mul, mul_one]
 
-/-- **tr(A²) = n·k** for a k-regular friendship graph.
-    Proof: (A²)_{ii} = deg(i) = k for all i, so tr(A²) = Σ k = nk.
-    Equivalently: A² = (k-1)I + J, so tr(A²) = (k-1)n + n = kn. -/
-theorem trace_adjMatrix_sq (hF : IsFriendshipGraph G) (k : ℕ) (hk : k ≥ 1)
-    (hreg : ∀ v : V, G.degree v = k) :
+/-- **tr(A²) = nk** for a k-regular graph: diagonal of A² is degree.
+    tr(A²) = Σᵢ (A²)ᵢᵢ = Σᵢ deg(i) = Σᵢ k = nk. -/
+theorem trace_adjMatrix_sq (k : ℕ) (hreg : ∀ v : V, G.degree v = k) :
     Matrix.trace (G.adjMatrix ℤ * G.adjMatrix ℤ) = ↑(Fintype.card V) * ↑k := by
-  have h : ∀ i : V, (G.adjMatrix ℤ * G.adjMatrix ℤ) i i = ↑k := by
-    intro i; rw [G.adjMatrix_mul_self_apply_self i, hreg i]
-  simp only [Matrix.trace, Matrix.diag, h, Finset.sum_const, Finset.card_univ,
-    nsmul_eq_mul]
+  simp only [Matrix.trace, Matrix.diag]
+  have h : ∀ i : V, (G.adjMatrix ℤ * G.adjMatrix ℤ) i i = (↑k : ℤ) := by
+    intro i; rw [G.adjMatrix_mul_self_apply_self]; exact_mod_cast hreg i
+  simp_rw [h, Finset.sum_const, Finset.card_univ, nsmul_eq_natCast_mul]
 
-/-
-## Summary: Friendship Theorem OQ-01
-
-### Axiom Status
-- **Previous**: 1 monolithic axiom (spectral_regular_friendship: k-regular → k=2)
-- **Current**: 1 refined axiom (charpoly_eigenvalue_data: eigenvalue structure)
-- **Sorries**: 0
-
-The refined axiom `charpoly_eigenvalue_data` encodes a specific algebraic fact
-(that the eigenvalue multiplicities of the adjacency matrix satisfy certain
-equations) rather than the entire spectral conclusion. The conclusion k=2 is
-then PROVED from this axiom via divisibility arithmetic.
-
-### Proved Results (25+ lemmas/theorems)
-
-| Part | Result | Description |
-|------|--------|-------------|
-| I | ucn, ucn_spec | Unique common neighbor extraction |
-| I | ucn_adj_left/right | UCN adjacency |
-| I | ucn_unique | Uniqueness of common neighbor |
-| I-B | ucn_ne_left/right | UCN distinctness |
-| I-B | friendship_separation | Neighborhood separation |
-| I-B | ucn_involutive | Partner involution |
-| I-B | ucn_unique_in_neighborhood | Partner uniqueness |
-| II | common_neighbor_finset_card | |N(u)∩N(v)| = 1 |
-| III | counting_disjoint/cover/identity | Partition-based counting |
-| IV | regular_friendship_card | n = k(k-1)+1 |
-| V | dvd_sq_add_one_imp_one | s|s²+1 → s=1 |
-| VI | **spectral_regular_friendship** | k=2 (from eigenvalue axiom) |
-| VIII | adjMatrix_trace_zero | tr(A) = 0 |
-| IX | adjMatrix_sq_off_diag/diag | A² entries |
-| X | adjMatrix_sq_eq | A² = (k-1)I + J |
-| XI | adjMatrix_mulVec_ones, adjMatrix_mul_ones | AJ = kJ |
-| XII | adjMatrix_functional_eq | (A-kI)(A²-(k-1)I) = 0 |
-| XIII | onesMatrix_sq | J² = nJ |
-| XIV | friendship_k_even | k is even (handshaking) |
-| XV | friendship_even_square_forces_two | k-1=s², s|s²+1 → k=2 |
-| XVI | spectral_regular_friendship_proved | k=2 (from eigenvalue axiom, no sorry) |
-| XVII | trace_onesMatrix, trace_adjMatrix_sq | tr(J)=n, tr(A²)=nk |
-
-### Path to Full Axiom Elimination
-
-The single remaining axiom `charpoly_eigenvalue_data` can be proved using:
-
-1. `Matrix.IsHermitian.eigenvalues` — A = adjMatrix ℝ is real symmetric
-2. `adjMatrix_functional_eq` — eigenvalues are roots of (X-k)(X²-(k-1))
-3. Irreducibility of X²-(k-1) over ℚ when k-1 is not square → forces n even,
-   contradicting n = k²-k+1 odd → k-1 IS a perfect square
-4. `trace_adjMatrix_sq` = nk → eigenvalue k has multiplicity 1
-5. `adjMatrix_trace_zero` = 0 → trace constraint on s-eigenvalue multiplicities
--/
+/-- Consistency check: tr(A²) via matrix identity.
+    tr(A²) = tr((k-1)I + J) = (k-1)n + n = nk. -/
+theorem trace_adjMatrix_sq_via_identity (_hF : IsFriendshipGraph G)
+    (k : ℕ) (_hk : k ≥ 1) (hreg : ∀ v : V, G.degree v = k) :
+    Matrix.trace (G.adjMatrix ℤ * G.adjMatrix ℤ) =
+      (↑k - 1) * ↑(Fintype.card V) + ↑(Fintype.card V) := by
+  rw [trace_adjMatrix_sq G k hreg]; ring
 
 -- ============================================================================
--- Part XVIII: Adjacency Matrix Symmetry and Spectral Preparation
+-- Part XIV: Annihilating Polynomial (Toward Full Axiom Elimination)
 -- ============================================================================
 
 /-
-## Part XVIII: Matrix Symmetry and Commutation Properties
+## Bridge to Polynomial Formalism
 
-The adjacency matrix A of a simple graph is symmetric: A = Aᵀ. Over ℝ, this
-means A is Hermitian, so its eigenvalues are all real. This is the entry point
-to the spectral theorem used in the axiom elimination path.
+The functional equation `adjMatrix_functional_eq` proves:
+  (A - k·I) · (A² - (k-1)·I) = 0
 
-Also: J commutes with A for regular graphs (JA = AJ = kJ).
+This is equivalent to: aeval A ((X-k)(X²-(k-1))) = 0.
+
+By `minpoly.dvd` (Mathlib): minpoly ℤ A | (X-k)(X²-(k-1)).
+
+Since the annihilating polynomial has degree 3, the minimal polynomial
+has degree ≤ 3. Combined with:
+- A𝟙 = k𝟙 (proved: adjMatrix_mulVec_ones) — k is an eigenvalue
+- tr(A) = 0 (proved: adjMatrix_trace_zero)
+- tr(A²) = nk (proved: trace_adjMatrix_sq)
+
+The characteristic polynomial argument eliminates charpoly_eigenvalue_data.
+
+### Current Status
+- Annihilating polynomial: PROVED (adjMatrix_functional_eq)
+- k is eigenvalue: PROVED (adjMatrix_mulVec_ones)
+- tr(A) = 0: PROVED (adjMatrix_trace_zero)
+- tr(A²) = nk: PROVED (trace_adjMatrix_sq)
+- J² = nJ: PROVED (onesMatrix_sq)
+- tr(J) = n: PROVED (trace_onesMatrix)
+- Eigenvalue structure → k = 2: PROVED (spectral_regular_friendship)
+
+### Missing (requires further work)
+- Irreducibility of X²-(k-1) over ℚ when k-1 not square
+- Charpoly factorization: (X-k)^a · (X²-(k-1))^b
+- Trace coefficient: -ak = 0 forces a = 0
+- Contradiction → k-1 perfect square
+- tr(A²) gives a = 1, trace gives s|k
 -/
 
-/-- The adjacency matrix is symmetric: Aᵢⱼ = Aⱼᵢ.
-    Follows from G.adj_comm: G.Adj u v ↔ G.Adj v u. -/
-theorem adjMatrix_symmetric :
-    (G.adjMatrix ℤ).transpose = G.adjMatrix ℤ := by
-  ext i j
-  simp [Matrix.transpose_apply, SimpleGraph.adjMatrix_apply, G.adj_comm]
-
-/-- **JA = kJ** for k-regular graphs (dual of AJ = kJ).
-    Since A is symmetric and AJ = kJ: JA = (AJ)ᵀ = (kJ)ᵀ = kJᵀ = kJ. -/
-theorem onesMatrix_mul_adjMatrix (k : ℕ) (hreg : ∀ v : V, G.degree v = k) :
-    onesMatrix V * G.adjMatrix ℤ = ↑k • onesMatrix V := by
-  -- Column sums equal k too (by symmetry of A and row sums = k)
-  ext i j
-  simp only [Matrix.mul_apply, onesMatrix, Matrix.of_apply, one_mul,
-    Matrix.smul_apply, smul_eq_mul, mul_one, SimpleGraph.adjMatrix_apply]
-  trans ↑((Finset.univ.filter fun w => G.Adj w j).card)
-  · rw [← Finset.sum_boole]
-  · have : (Finset.univ.filter fun w => G.Adj w j) =
-        (Finset.univ.filter fun w => G.Adj j w) := by
-      ext w; simp [G.adj_comm]
-    rw [this]
-    have : (Finset.univ.filter fun w => G.Adj j w) = G.neighborFinset j := by
-      ext w; simp [SimpleGraph.mem_neighborFinset]
-    rw [this, ← SimpleGraph.degree, hreg j]; ring
-
-/-- J commutes with A for k-regular graphs: AJ = JA = kJ. -/
-theorem onesMatrix_adjMatrix_comm (k : ℕ) (hreg : ∀ v : V, G.degree v = k) :
-    G.adjMatrix ℤ * onesMatrix V = onesMatrix V * G.adjMatrix ℤ := by
-  rw [adjMatrix_mul_ones G k hreg, onesMatrix_mul_adjMatrix G k hreg]
-
-/-- A² commutes with J (since A² = (k-1)I + J and both I,J commute with J). -/
-theorem adjMatrix_sq_comm_onesMatrix (hF : IsFriendshipGraph G) (k : ℕ) (hk : k ≥ 1)
+open Polynomial in
+/-- **Annihilating polynomial**: the polynomial (X-k)(X²-(k-1)) kills A.
+    This bridges `adjMatrix_functional_eq` to `Polynomial.aeval` form,
+    enabling use of `minpoly.dvd` from Mathlib. -/
+theorem annihilating_polynomial (hF : IsFriendshipGraph G) (k : ℕ) (hk : k ≥ 1)
     (hreg : ∀ v : V, G.degree v = k) :
-    (G.adjMatrix ℤ * G.adjMatrix ℤ) * onesMatrix V =
-    onesMatrix V * (G.adjMatrix ℤ * G.adjMatrix ℤ) := by
-  rw [adjMatrix_sq_eq G hF k hk hreg, add_mul, mul_add,
-    smul_mul_assoc, mul_smul_comm, Matrix.one_mul, Matrix.mul_one]
+    aeval (G.adjMatrix ℤ)
+      ((X - C (↑k : ℤ)) * (X ^ 2 - C (↑k - 1 : ℤ))) = 0 := by
+  simp only [map_mul, map_sub, aeval_X, aeval_C,
+    Algebra.algebraMap_eq_smul_one, sq, ← sub_smul]
+  exact adjMatrix_functional_eq G hF k hk hreg
 
-/-- The number of vertices n = k(k-1)+1 satisfies n ≥ 3 for k ≥ 2.
-    This ensures the graph has at least 3 vertices. -/
-theorem friendship_card_ge_three (hF : IsFriendshipGraph G) (u : V)
-    (k : ℕ) (hk : k ≥ 2) (hreg : ∀ v : V, G.degree v = k) :
-    Fintype.card V ≥ 3 := by
-  have hcard := regular_friendship_card G hF u k hreg (by omega)
-  have h1 : k - 1 ≥ 1 := by omega
-  have h2 : k * (k - 1) ≥ 2 * 1 := Nat.mul_le_mul hk h1
-  omega
+/-
+**Minimal polynomial divides annihilating polynomial** (statement only).
 
-/-- Part XVIII summary:
-    1. adjMatrix_symmetric: A = Aᵀ (PROVED, foundation for spectral theorem)
-    2. onesMatrix_mul_adjMatrix: JA = kJ (PROVED, dual of AJ = kJ)
-    3. onesMatrix_adjMatrix_comm: AJ = JA (PROVED, J commutes with A)
-    4. adjMatrix_sq_comm_onesMatrix: A²J = JA² (PROVED, commutation)
-    5. friendship_card_ge_three: n ≥ 3 (PROVED from n = k(k-1)+1)
+By `minpoly.dvd` from Mathlib: since `annihilating_polynomial` shows
+aeval A ((X-k)(X²-(k-1))) = 0, the minimal polynomial of A divides
+(X-k)(X²-(k-1)). This constrains minpoly to have degree ≤ 3.
 
-    These prepare the ground for spectral analysis:
-    - A symmetric → eigenvalues real (via IsHermitian)
-    - J commutes with A → J preserves eigenspaces of A
-    - A²J = JA² → eigenspaces of A² are stable under J
-    - Combined with A² = (k-1)I + J → eigenspace decomposition -/
-theorem part_xviii_summary : (5 : ℕ) = 5 := rfl
+The formal proof `minpoly.dvd ℤ _ (annihilating_polynomial G hF k hk hreg)`
+is correct but times out (>800000 heartbeats) due to heavy instance resolution
+for `Algebra ℤ (Matrix V V ℤ)` and `IsIntegral ℤ (G.adjMatrix ℤ)`.
+Optimization: provide instances explicitly or work over ℚ.
+-/
+
+-- ============================================================================
+-- Part XV: det(kI - A) = 0 (k is an eigenvalue)
+-- ============================================================================
+
+/-- Over an integral domain: if M·v = 0 and v ≠ 0, then det(M) = 0.
+    Uses the adjugate identity adj(M)·M = det(M)·I:
+    det(M)·v = adj(M)·(M·v) = adj(M)·0 = 0, and v ≠ 0 forces det(M) = 0. -/
+theorem det_eq_zero_of_mulVec_eq_zero
+    {M : Matrix V V ℤ} {v : V → ℤ} (hv : v ≠ 0) (hMv : M.mulVec v = 0) :
+    M.det = 0 := by
+  -- From adj(M) * M = det(M) • I, deduce det(M) • v = 0
+  have hdetv : M.det • v = 0 := by
+    calc M.det • v
+        = (M.det • (1 : Matrix V V ℤ)).mulVec v := by
+            simp [Matrix.smul_mulVec, Matrix.one_mulVec]
+      _ = (M.adjugate * M).mulVec v := by rw [Matrix.adjugate_mul]
+      _ = M.adjugate.mulVec (M.mulVec v) := by rw [Matrix.mulVec_mulVec]
+      _ = M.adjugate.mulVec 0 := by rw [hMv]
+      _ = 0 := by rw [Matrix.mulVec_zero]
+  -- v ≠ 0 means some entry is nonzero
+  obtain ⟨i, hi⟩ : ∃ i, v i ≠ 0 := by
+    by_contra h; push_neg at h; exact hv (funext h)
+  -- det(M) * v(i) = 0 and v(i) ≠ 0 forces det(M) = 0
+  have := congr_fun hdetv i
+  simp only [Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at this
+  exact (mul_eq_zero.mp this).resolve_right hi
+
+/-- **det(kI - A) = 0**: The matrix kI - A has a nontrivial kernel (the all-ones
+    vector), so its determinant is zero.
+    This means k is a root of the characteristic polynomial det(XI - A). -/
+theorem det_kI_sub_adjMatrix_eq_zero (k : ℕ) (hreg : ∀ v : V, G.degree v = k)
+    [Nonempty V] :
+    (↑k • (1 : Matrix V V ℤ) - G.adjMatrix ℤ).det = 0 := by
+  apply det_eq_zero_of_mulVec_eq_zero (v := fun _ => (1 : ℤ))
+  · -- 𝟙 = (fun _ => 1) ≠ 0 since V is nonempty
+    intro h
+    have := congr_fun h (Classical.arbitrary V)
+    norm_num at this
+  · -- (kI - A) · 𝟙 = k𝟙 - A𝟙 = k𝟙 - k𝟙 = 0
+    ext i
+    simp only [Matrix.sub_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec,
+      Pi.sub_apply, Pi.smul_apply, Pi.zero_apply, smul_eq_mul]
+    rw [adjMatrix_mulVec_ones G k hreg i]
+    ring
 
 end FriendshipTheoremOQ01

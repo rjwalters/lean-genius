@@ -26,16 +26,16 @@
       "Proofs/AbelRuffini.lean"
     ],
     "badge": "axiom",
-    "sorries": 2,
-    "axiomCount": 5,
-    "assumptions": "5 axiom declarations across 2 files (4 independent): (1) abelian_realizable — all finite abelian groups are realizable (needs Kronecker-Weber, not in Mathlib), (2) shafarevich_theorem — all finite solvable groups are realizable (deep class field theory, not in Mathlib), (3) gal_card_dvd_60 — DERIVABLE from (5), kept for file ordering (needs refactoring to eliminate), (4) three_dvd_gal_card — mod-7 factorization gives 3-cycle in Gal(q) via Dedekind's theorem (not in Mathlib), (5) vandermondeProduct_sq_eq — disc(q) = Vandermonde product squared (standard identity, not yet in Mathlib). Note: axiom (3) is proved as gal_card_dvd_60_proved via the Vandermonde permutation chain from axiom (5). 280 theorems/lemmas, 9 definitions, 2 sorries (the open conjecture + Hilbert irreducibility).",
+    "sorries": 3,
+    "axiomCount": 4,
+    "assumptions": "4 axiom declarations across 2 files (3 independent): (1) abelian_realizable — all finite abelian groups are realizable (needs Kronecker-Weber, not in Mathlib), (2) shafarevich_theorem — all finite solvable groups are realizable (deep class field theory, not in Mathlib), (3) three_dvd_gal_card — mod-7 factorization gives 3-cycle in Gal(q) via Dedekind's theorem (not in Mathlib), (4) vandermondeProduct_sq_eq — disc(q) = Vandermonde product squared (standard identity, not yet in Mathlib). gal_card_dvd_60 ELIMINATED — now proved as gal_card_dvd_60_proved via Vandermonde chain from axiom (4). 280 theorems/lemmas, 9 definitions, 3 sorries (the open conjecture + Hilbert irreducibility + rootSet coercion diamond).",
     "leanFile": {
       "lineCount": 5276,
       "theoremCount": 280,
       "lemmaCount": 1,
       "defCount": 9,
-      "axiomCount": 5,
-      "sorryCount": 2,
+      "axiomCount": 4,
+      "sorryCount": 3,
       "imports": [
         "Mathlib.NumberTheory.Cyclotomic.Basic",
         "Mathlib.NumberTheory.Cyclotomic.Gal",
@@ -51,7 +51,7 @@
         "Mathlib.RingTheory.Polynomial.GaussLemma",
         "Mathlib.NumberTheory.LSeries.PrimesInAP"
       ],
-      "note": "Total across 6 files: InverseGalois.lean (1940 lines, 113 thms, 2 axioms, 2 sorries), InverseGaloisA5.lean (1408 lines, 47 thms, 3 axioms [1 derivable], 0 sorries), InverseGaloisD4.lean (680 lines, 27 thms, 0 axioms, 0 sorries), InverseGaloisF20.lean (529 lines, 27 thms, 0 axioms, 0 sorries), AbelRuffiniGaloisExtensions.lean (534 lines, 57 thms, 0 sorries), AbelRuffini.lean (185 lines, 9 thms, 0 sorries)"
+      "note": "Total across 6 files: InverseGalois.lean (1940 lines, 113 thms, 2 axioms, 2 sorries), InverseGaloisA5.lean (1397 lines, 47 thms, 2 axioms, 1 sorry [coercion diamond]), InverseGaloisD4.lean (680 lines, 27 thms, 0 axioms, 0 sorries), InverseGaloisF20.lean (529 lines, 27 thms, 0 axioms, 0 sorries), AbelRuffiniGaloisExtensions.lean (534 lines, 57 thms, 0 sorries), AbelRuffini.lean (185 lines, 9 thms, 0 sorries)"
     },
     "mathlibDependencies": [
       {
