@@ -171,31 +171,6 @@ lemma universal_degree (c : V) (hc : IsUniversalVertex G c) :
     exact ⟨fun hadj hvc => G.loopless c (hvc ▸ hadj), fun hne => hc v hne⟩
   rw [hneigh, Finset.card_erase_of_mem (Finset.mem_univ c), Finset.card_univ]
 
-/-- In a friendship graph, the number of vertices is odd.
-
-    Proof: By the handshaking lemma, 2|E| = Σ deg(v). With universal vertex c,
-    deg(c) = n-1 and deg(u) = 2 for u ≠ c, giving 2|E| = 3(n-1).
-    Since gcd(2,3) = 1, we get 2 | (n-1), so n is odd. -/
-lemma friendship_card_odd (hF : IsFriendshipGraph G) (h : Fintype.card V ≥ 3) :
-    Odd (Fintype.card V) := by
-  obtain ⟨c, hc⟩ := friendship_theorem G hF h
-  have hdeg_c := universal_degree G c hc
-  have hdeg_u : ∀ v : V, v ≠ c → G.degree v = 2 :=
-    fun v hv => friendship_noncentral_degree G hF c hc v hv
-  have hsum : ∑ v : V, G.degree v = 3 * (Fintype.card V - 1) := by
-    rw [← Finset.add_sum_erase _ _ (Finset.mem_univ c), hdeg_c]
-    have : ∀ v ∈ Finset.univ.erase c, G.degree v = 2 :=
-      fun v hv => hdeg_u v (Finset.ne_of_mem_erase hv)
-    rw [Finset.sum_congr rfl this, Finset.sum_const, Finset.card_erase_of_mem (Finset.mem_univ c),
-        Finset.card_univ, smul_eq_mul]
-    omega
-  have hhand := G.sum_degrees_eq_twice_card_edges
-  rw [hsum] at hhand
-  have hdvd : 2 ∣ (Fintype.card V - 1) :=
-    Nat.Coprime.dvd_of_dvd_mul_left (by norm_num) ⟨G.edgeFinset.card, by omega⟩
-  obtain ⟨k, hk⟩ := hdvd
-  exact ⟨k, by omega⟩
-
 /-- **Axiom: A friendship graph is either has a universal vertex or is regular.**
 
     Either some vertex has maximum degree n-1 (making it adjacent to all others),
@@ -255,6 +230,32 @@ theorem friendship_theorem (hF : IsFriendshipGraph G) (h : Fintype.card V ≥ 3)
   · exact ⟨c, hc⟩
   -- If regular, the spectral argument gives us a universal vertex
   exact friendship_regular_implies_universal G hF hReg h
+
+/-- In a friendship graph, the number of vertices is odd.
+
+    Proof: By the handshaking lemma, 2|E| = Σ deg(v). With universal vertex c,
+    deg(c) = n-1 and deg(u) = 2 for u ≠ c, giving 2|E| = 3(n-1).
+    Since gcd(2,3) = 1, we get 2 | (n-1), so n is odd. -/
+lemma friendship_card_odd (hF : IsFriendshipGraph G) (h : Fintype.card V ≥ 3) :
+    Odd (Fintype.card V) := by
+  obtain ⟨c, hc⟩ := friendship_theorem G hF h
+  have hdeg_c := universal_degree G c hc
+  have hdeg_u : ∀ v : V, v ≠ c → G.degree v = 2 :=
+    fun v hv => friendship_noncentral_degree G hF c hc v hv
+  have hsum : ∑ v : V, G.degree v = 3 * (Fintype.card V - 1) := by
+    rw [← Finset.add_sum_erase _ _ (Finset.mem_univ c), hdeg_c]
+    have : ∀ v ∈ Finset.univ.erase c, G.degree v = 2 :=
+      fun v hv => hdeg_u v (Finset.ne_of_mem_erase hv)
+    rw [Finset.sum_congr rfl this, Finset.sum_const, Finset.card_erase_of_mem (Finset.mem_univ c),
+        Finset.card_univ, smul_eq_mul]
+    omega
+  have hhand := G.sum_degrees_eq_twice_card_edges
+  rw [hsum] at hhand
+  have hdvd : 2 ∣ (Fintype.card V - 1) := by
+    have h2dvd3n : 2 ∣ 3 * (Fintype.card V - 1) := ⟨G.edgeFinset.card, by omega⟩
+    exact (Nat.Coprime.dvd_of_dvd_mul_left (by decide) h2dvd3n)
+  obtain ⟨k, hk⟩ := hdvd
+  exact ⟨k, by omega⟩
 
 /-- The friendship theorem implies every friendship graph is a windmill. -/
 theorem friendship_graph_is_windmill (hF : IsFriendshipGraph G) (h : Fintype.card V ≥ 3) :
