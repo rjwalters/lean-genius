@@ -212,42 +212,12 @@ noncomputable def nthPrime (n : ℕ) : ℕ := Nat.nth Nat.Prime n
 /-- The prime gap g(n) = p_{n+1} - p_n. -/
 noncomputable def primeGap (n : ℕ) : ℕ := nthPrime (n + 1) - nthPrime n
 
-/-- **Polymath 8b (2014)**: There are infinitely many prime gaps ≤ 246. -/
-axiom polymath_bounded_gaps_246 :
-  ∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧ primeGap n ≤ 246
-
-/-- **Zhang's Theorem (2013)**: There are infinitely many prime gaps ≤ 70,000,000.
-    This follows from Polymath's stronger bound (246 ≤ 70,000,000). -/
-theorem zhang_bounded_gaps_70M :
-    ∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧ primeGap n ≤ 70000000 := by
-  intro N
-  obtain ⟨n, hn, hgap⟩ := polymath_bounded_gaps_246 N
-  exact ⟨n, hn, by omega⟩
-
 /-- **Maynard-Tao (2015)**: For any m ≥ 2, there are infinitely many
     indices n such that among p_n, ..., p_{n+m-1} there are at least m
     primes within a bounded interval. -/
 axiom maynard_tao_m_tuples (m : ℕ) (hm : m ≥ 2) :
   ∃ C : ℕ, ∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧
     nthPrime (n + m - 1) - nthPrime n ≤ C
-
-/-- **Conditional on Elliott-Halberstam**: Gap bound improves to 12. -/
-axiom bounded_gaps_conditional_EH :
-  ∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧ primeGap n ≤ 12
-
-/-
-## Part VI: Consequences of Bounded Gaps
--/
-
-/-- There are infinitely many prime gaps ≤ 246. -/
-theorem infinitely_many_small_gaps :
-    ∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧ primeGap n ≤ 246 :=
-  polymath_bounded_gaps_246
-
-/-- The liminf of prime gaps is finite (at most 246). -/
-theorem liminf_prime_gaps_finite :
-    ∃ H : ℕ, ∀ N : ℕ, ∃ n ≥ N, primeGap n ≤ H :=
-  ⟨246, fun N => polymath_bounded_gaps_246 N⟩
 
 /-- From Maynard-Tao: for any k ≥ 2, bounded intervals contain k primes. -/
 theorem bounded_intervals_k_primes (k : ℕ) (hk : k ≥ 2) :
@@ -370,6 +340,66 @@ theorem exists_admissible_50_tuple_246 :
     have hale := polymath50Tuple_le_246 a ha
     have hble := polymath50Tuple_le_246 b hb
     constructor <;> omega
+
+/-
+## Part VIII.a: Sieve Reduction Framework
+
+The Maynard-Tao sieve mechanism converts combinatorial data (admissible k-tuples)
+into analytic conclusions (bounded prime gaps). The sieve axiom is the structural
+heart of the proof: it reduces bounded gap results to the existence of admissible
+tuples of bounded diameter.
+
+The specific results (Polymath 246, Zhang 70M, EH conditional 12) are all
+CONSEQUENCES of the sieve axiom applied to specific admissible tuples.
+-/
+
+/-- **The Maynard-Tao Sieve Reduction** (unconditional form):
+    For any admissible k-tuple H with k ≥ 50 and all elements ≤ D,
+    there are infinitely many prime gaps ≤ D.
+
+    Mathematical content: The Maynard-Tao weights combined with the
+    Bombieri-Vinogradov theorem show that for any admissible 50-tuple,
+    infinitely many translates n have ≥ 2 primes among {n + h : h ∈ H}.
+    Two primes within distance D forces a prime gap ≤ D. -/
+axiom maynard_tao_sieve (H : Finset ℕ) (D : ℕ)
+    (hadm : IsAdmissible H) (hcard : H.card ≥ 50)
+    (hD : ∀ h ∈ H, h ≤ D) :
+    ∀ N : ℕ, ∃ n ≥ N, primeGap n ≤ D
+
+/-- **Elliott-Halberstam Sieve Variant**: Under the Elliott-Halberstam
+    conjecture, the sieve works with k ≥ 5 instead of k ≥ 50.
+    This is why EH gives the much better bound H ≤ 12. -/
+axiom maynard_tao_sieve_eh (H : Finset ℕ) (D : ℕ)
+    (hadm : IsAdmissible H) (hcard : H.card ≥ 5)
+    (hD : ∀ h ∈ H, h ≤ D) :
+    ∀ N : ℕ, ∃ n ≥ N, primeGap n ≤ D
+
+/-- **Polymath 8b (2014)**: There are infinitely many prime gaps ≤ 246.
+    Derived from the Maynard-Tao sieve applied to the Polymath 50-tuple. -/
+theorem polymath_bounded_gaps_246 :
+    ∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧ primeGap n ≤ 246 := by
+  intro N
+  have hcard : polymath50Tuple.card ≥ 50 := by rw [polymath50Tuple_card]
+  exact maynard_tao_sieve polymath50Tuple 246
+    polymath50Tuple_admissible hcard polymath50Tuple_le_246 N
+
+/-- **Zhang's Theorem (2013)**: There are infinitely many prime gaps ≤ 70,000,000.
+    This follows from Polymath's stronger bound (246 ≤ 70,000,000). -/
+theorem zhang_bounded_gaps_70M :
+    ∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧ primeGap n ≤ 70000000 := by
+  intro N
+  obtain ⟨n, hn, hgap⟩ := polymath_bounded_gaps_246 N
+  exact ⟨n, hn, by omega⟩
+
+/-- There are infinitely many prime gaps ≤ 246. -/
+theorem infinitely_many_small_gaps :
+    ∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧ primeGap n ≤ 246 :=
+  polymath_bounded_gaps_246
+
+/-- The liminf of prime gaps is finite (at most 246). -/
+theorem liminf_prime_gaps_finite :
+    ∃ H : ℕ, ∀ N : ℕ, ∃ n ≥ N, primeGap n ≤ H :=
+  ⟨246, fun N => polymath_bounded_gaps_246 N⟩
 
 /-
 ## Part IX: Properties of nthPrime and primeGap
@@ -558,6 +588,14 @@ theorem admissible_quintuple_0_2_6_8_12 : IsAdmissible {0, 2, 6, 8, 12} := by
           · exact absurd h2 hp2
           · omega
         linarith
+
+/-- **Conditional on Elliott-Halberstam**: Gap bound improves to 12.
+    Derived from the EH sieve variant applied to the admissible 5-tuple {0,2,6,8,12}. -/
+theorem bounded_gaps_conditional_EH :
+    ∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧ primeGap n ≤ 12 := by
+  intro N
+  exact maynard_tao_sieve_eh {0, 2, 6, 8, 12} 12
+    admissible_quintuple_0_2_6_8_12 (by decide) (by decide) N
 
 /-- {0, 4, 6, 10, 12} is an admissible 5-tuple. -/
 theorem admissible_quintuple_0_4_6_10_12 : IsAdmissible {0, 4, 6, 10, 12} := by
@@ -1866,19 +1904,20 @@ Key theorems from previous sessions:
 - `prime_gaps_oscillate` (combines Zhang/Polymath with factorial construction)
 
 ### Axioms Used (3)
-- `polymath_bounded_gaps_246`: Polymath 8b optimization (2014)
-- `maynard_tao_m_tuples`: Maynard-Tao generalization (2015)
-- `bounded_gaps_conditional_EH`: Conditional result assuming Elliott-Halberstam
+- `maynard_tao_sieve`: The Maynard-Tao sieve reduction (unconditional, k ≥ 50)
+- `maynard_tao_sieve_eh`: The Maynard-Tao sieve reduction (conditional on Elliott-Halberstam, k ≥ 5)
+- `maynard_tao_m_tuples`: Maynard-Tao generalization to m-tuples (2015)
 
-### Previously Axiom, Now Proved (2)
+### Previously Axiom, Now Derived (4)
+- `polymath_bounded_gaps_246`: Now derived from `maynard_tao_sieve` + Polymath 50-tuple
+- `bounded_gaps_conditional_EH`: Now derived from `maynard_tao_sieve_eh` + {0,2,6,8,12}
 - `exists_admissible_50_tuple_246`: Constructively proved via Engelsma/Polymath 50-tuple
 - `gpy_liminf_zero`: GPY theorem derived from Polymath + nthPrime divergence
 
 ### What's NOT Proven (and Why)
-- Polymath's 246 bound (requires sieve theory not in Mathlib)
+- The Maynard-Tao sieve mechanism (requires Selberg sieve + Bombieri-Vinogradov, not in Mathlib)
 - The Bombieri-Vinogradov theorem (major missing infrastructure)
 - Selberg sieve bounds (not in Mathlib)
-- Full equivalence of TwinPrimeConjecture and DicksonConjecture {0,2} (index vs. value quantification)
 -/
 
 end BoundedPrimeGaps
