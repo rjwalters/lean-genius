@@ -229,7 +229,7 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Eliminate gal_card_dvd_60 axiom: fix elaboration by rewriting gal_permutes_roots without change+rfl (use TestGalApi.lean approach with gal_smul_val)",
+      "Eliminate gal_card_dvd_60 axiom: Parts XII-XIV have forward dependency on a5_card (defined in Part V). Two options: (a) extract gal_card_dvd_60_of_all_even chain (no a5_card dep) to before Part IV, or (b) split into InverseGaloisA5Vandermonde.lean",
       "three_dvd_gal_card axiom requires Dedekind theorem — not in Mathlib",
       "vandermondeProduct_sq_eq requires connecting Polynomial.disc with Matrix.det_vandermonde",
       "Q8 realization requires quaternion extension (non-cyclotomic)",
