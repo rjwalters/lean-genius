@@ -1368,11 +1368,44 @@ theorem k_sub_one_is_perfect_square (hF : IsFriendshipGraph G)
   -- X²-(k-1) is irreducible (since k-1 not a perfect square)
   have hirred := sq_sub_irreducible_of_not_square (k - 1) (by omega) (by
     intro s hs; exact hns s (by omega))
-  -- By the UFD structure lemma: f = (X²-(k-1))^{(n-1)/2}
-  -- Then coeff_{n-2}(f) = 0 (since n-2 is odd and (X²-c)^m has only even-degree terms)
-  -- But coeff_{n-2}(f) = k ≥ 2. Contradiction!
-  -- (Full proof requires the sorry-containing infrastructure above)
-  sorry
+  -- f is monic (from charpoly monic and (X-k) monic)
+  have hcharpoly_monic := Matrix.charpoly_monic (G.adjMatrix ℤ)
+  have hxk_monic : (X - C (↑k : ℤ)).Monic := monic_X_sub_C _
+  have hf_monic : f.Monic := hxk_monic.of_mul_monic_left (hf ▸ hcharpoly_monic)
+  -- f has degree n-1
+  have hf_deg : f.natDegree = n - 1 := by
+    have hdeg_charpoly := Matrix.charpoly_natDegree_eq_dim (G.adjMatrix ℤ)
+    rw [← hn_def] at hdeg_charpoly
+    have hxk_deg : (X - C (↑k : ℤ)).natDegree = 1 := natDegree_X_sub_C _
+    have hf_ne : f ≠ 0 := hf_monic.ne_zero
+    have hxk_ne : (X - C (↑k : ℤ)) ≠ 0 := hxk_monic.ne_zero
+    have := natDegree_mul hxk_ne hf_ne
+    rw [← hf, hdeg_charpoly, hxk_deg] at this; omega
+  -- n-1 is even (n = k(k-1)+1, so n-1 = k(k-1), product of consecutive = even)
+  have hn1_even : Even (n - 1) := by
+    rw [hn, show k * (k - 1) + 1 - 1 = k * (k - 1) from by omega]
+    rcases Nat.even_or_odd k with ⟨m, hm⟩ | ⟨m, hm⟩
+    · exact ⟨m * (k - 1), by rw [hm]; ring⟩
+    · have : k - 1 = m + m := by omega
+      rw [this]; exact ⟨k * m, by ring⟩
+  -- X²-(k-1) is monic
+  have hp_monic : (X ^ 2 - C (↑(k - 1) : ℤ) : Polynomial ℤ).Monic :=
+    monic_X_pow_sub_C _ (by norm_num)
+  -- X²-(k-1) is symmetric: (X²-c).comp(-X) = (-X)²-c = X²-c
+  have hp_sym : (X ^ 2 - C (↑(k - 1) : ℤ) : Polynomial ℤ).comp (-X) =
+      X ^ 2 - C (↑(k - 1) : ℤ) := by
+    simp [sub_comp, pow_comp, C_comp, neg_comp, X_comp, neg_sq]
+  -- By UFD structure lemma: f = (X²-(k-1))^{(n-1)/2}
+  have hf_eq := monic_factor_of_symmetric_irreducible_pow
+    (X ^ 2 - C (↑(k - 1) : ℤ)) f (n - 1) hn1_even hirred hp_monic hp_sym hf_monic hprod
+  -- The coefficient at n-2 of f must be 0 (odd degree in a power of X²-c)
+  have hcoeff_zero : f.coeff (n - 2) = 0 := by
+    rw [hf_eq]
+    exact coeff_odd_of_sq_sub_pow (↑(k - 1) : ℤ) ((n - 1) / 2) (n - 2) hn2_odd
+  -- But quotient_subleading_coeff says coeff_{n-2}(f) = k
+  have hcoeff_k := quotient_subleading_coeff G hF k hk hreg f hf hf_monic hf_deg
+  -- Contradiction: 0 = k ≥ 2
+  linarith
 
 /-- **s divides k** for s = √(k-1) in a k-regular friendship graph.
 
