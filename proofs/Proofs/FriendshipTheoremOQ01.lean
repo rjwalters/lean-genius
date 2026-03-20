@@ -1203,7 +1203,9 @@ lemma sq_sub_irreducible_of_not_square (d : ℕ) (hd : d ≥ 1)
     Irreducible (X ^ 2 - C (↑d : ℤ) : Polynomial ℤ) := by
   -- No integer is a square root of d
   have no_int_sqrt : ∀ r : ℤ, r * r ≠ ↑d := by
-    intro r hr; exact hns r.natAbs (by zify; rw [Int.natAbs_sq]; linarith)
+    intro r hr; exact hns r.natAbs (by
+      have h1 : (r.natAbs : ℤ) * r.natAbs = r * r := Int.natAbs_mul_self
+      exact_mod_cast (h1.trans hr).symm)
   -- Direct proof over ℤ: monic degree 2 with no integer root is irreducible
   have hp_monic : (X ^ 2 - C (↑d : ℤ) : Polynomial ℤ).Monic :=
     monic_X_pow_sub_C (↑d : ℤ) (by norm_num)
@@ -1212,7 +1214,7 @@ lemma sq_sub_irreducible_of_not_square (d : ℕ) (hd : d ≥ 1)
     intro h; have := natDegree_eq_zero_of_isUnit h
     have : (X ^ 2 - C (↑d : ℤ) : ℤ[X]).natDegree = 2 := by
       rw [natDegree_sub_eq_left_of_natDegree_lt] <;>
-        simp [natDegree_pow, natDegree_X, natDegree_C]; omega
+        simp [natDegree_pow, natDegree_X, natDegree_C]
     omega
   · -- For any factorization p = a * b, one factor is a unit
     intro a b hab
@@ -1222,7 +1224,7 @@ lemma sq_sub_irreducible_of_not_square (d : ℕ) (hd : d ≥ 1)
     have hdeg : a.natDegree + b.natDegree = 2 := by
       rw [← natDegree_mul ha_ne hb_ne, ← hab,
           natDegree_sub_eq_left_of_natDegree_lt] <;>
-        simp [natDegree_pow, natDegree_X, natDegree_C]; omega
+        simp [natDegree_pow, natDegree_X, natDegree_C]
     -- Leading coefficients multiply to 1 (monic product)
     have hlc : a.leadingCoeff * b.leadingCoeff = 1 := by
       rw [← leadingCoeff_mul, ← hab]; exact hp_monic.leadingCoeff
@@ -1230,11 +1232,11 @@ lemma sq_sub_irreducible_of_not_square (d : ℕ) (hd : d ≥ 1)
     by_cases ha0 : a.natDegree = 0
     · left; rw [eq_C_of_natDegree_eq_zero ha0]
       rw [eq_C_of_natDegree_eq_zero ha0, leadingCoeff_C] at hlc
-      exact (isUnit_of_mul_eq_one _ _ hlc).map C
+      exact (isUnit_of_mul_eq_one _ hlc).map C
     · by_cases hb0 : b.natDegree = 0
       · right; rw [eq_C_of_natDegree_eq_zero hb0]
         rw [eq_C_of_natDegree_eq_zero hb0, leadingCoeff_C] at hlc
-        exact (isUnit_of_mul_eq_one _ _ (mul_comm a.leadingCoeff _ ▸ hlc)).map C
+        exact (isUnit_of_mul_eq_one _ (mul_comm a.leadingCoeff _ ▸ hlc)).map C
       · -- Both have degree 1: derive contradiction
         -- a*b = X²-d with both degree 1 means the product has an integer root
         -- But X²-d has no integer root (d not a perfect square)
@@ -1245,7 +1247,7 @@ lemma sq_sub_irreducible_of_not_square (d : ℕ) (hd : d ≥ 1)
         set r := -(a.coeff 0) * a.leadingCoeff
         -- a.leadingCoeff² = 1 (it's a unit in ℤ)
         have hlc_sq : a.leadingCoeff * a.leadingCoeff = 1 := by
-          rcases Int.isUnit_iff.mp (isUnit_of_mul_eq_one _ _ hlc) with rfl | rfl <;> ring
+          rcases Int.isUnit_iff.mp (isUnit_of_mul_eq_one _ hlc) with h | h <;> simp [h]
         -- Compute a.eval r = a.leadingCoeff * r + a.coeff 0
         --                   = -(a.coeff 0) * a.leadingCoeff² + a.coeff 0
         --                   = -(a.coeff 0) + a.coeff 0 = 0
@@ -1255,7 +1257,12 @@ lemma sq_sub_irreducible_of_not_square (d : ℕ) (hd : d ≥ 1)
           rw [Polynomial.eval_eq_sum_range, show a.natDegree + 1 = 2 from by omega]
           simp only [Finset.sum_range_succ, Finset.sum_range_one, pow_zero, mul_one,
                      pow_one, Polynomial.leadingCoeff, ha1]
-          ring_nf; rw [mul_comm (a.coeff 0), ← mul_assoc, hlc_sq, one_mul, add_neg_cancel]
+          -- After simp: goal is a.coeff 0 + a.coeff 1 * r = 0
+          -- r = -(a.coeff 0) * a.leadingCoeff, a.coeff 1 = a.leadingCoeff
+          have h_lc : a.coeff 1 = a.leadingCoeff := by rw [Polynomial.leadingCoeff, ha1]
+          rw [h_lc, show r = -(a.coeff 0) * a.leadingCoeff from rfl]
+          -- Goal: a.coeff 0 + a.leadingCoeff * (-(a.coeff 0) * a.leadingCoeff) = 0
+          linear_combination -a.coeff 0 * hlc_sq
         -- But a*b = X²-d, so r²-d = 0, meaning r² = d
         rw [← hab] at ha_root
         simp only [eval_sub, eval_pow, eval_X, eval_C] at ha_root
@@ -1272,11 +1279,48 @@ lemma monic_factor_of_symmetric_irreducible_pow
     (hf_monic : f.Monic)
     (hprod : f * f.comp (-X) = p ^ m) :
     f = p ^ (m / 2) := by
-  -- In ℤ[X] (UFD), p irreducible and p^m = f·f(-X).
-  -- Every irreducible factor of f is associate to p (since p is the only irred factor of p^m).
-  -- Since f is monic and p is monic: f = p^a for some a.
-  -- f(-X) = p(-X)^a = p^a (since p is symmetric). So p^{2a} = p^m, giving a = m/2.
-  sorry
+  -- Induction on m/2. Write m = r + r from Even m.
+  obtain ⟨r, rfl⟩ := hm
+  rw [show (r + r) / 2 = r from by omega]
+  -- Induction on r, generalizing f (and its hypotheses)
+  induction r generalizing f with
+  | zero =>
+    -- f * f(-X) = p^0 = 1, so f is a unit. Monic unit = 1 = p^0.
+    simp only [Nat.zero_add, pow_zero] at hprod ⊢
+    exact hf_monic.eq_one_of_isUnit (isUnit_of_mul_eq_one _ hprod)
+  | succ r ih =>
+    -- p is prime in ℤ[X] (UFD)
+    have hp_prime : Prime p := hp_irred.prime
+    -- p | f * f(-X) since p | p^(r+1+r+1)
+    have h_dvd : p ∣ f * f.comp (-X) :=
+      hprod ▸ dvd_pow_self p (by omega : r + 1 + (r + 1) ≠ 0)
+    -- p | f (using symmetry: if p | f(-X), apply comp(-X) to get p | f)
+    have hpf : p ∣ f := by
+      rcases hp_prime.dvd_or_dvd h_dvd with h | h
+      · exact h
+      · -- p | f.comp(-X). Applying comp(-X) gives p | f.
+        obtain ⟨g, hg⟩ := h
+        exact ⟨g.comp (-X), by
+          have key : (f.comp (-X)).comp (-X) = f := by
+            rw [comp_assoc, show (-X : Polynomial ℤ).comp (-X) = X from by
+              rw [neg_comp, X_comp, neg_neg], comp_X]
+          rw [← key, hg, mul_comp, hp_sym]⟩
+    -- Write f = p * f₁
+    obtain ⟨f₁, rfl⟩ := hpf
+    -- f₁ is monic (p monic, p * f₁ monic → f₁ monic)
+    have hf1_monic : f₁.Monic := hp_monic.of_mul_monic_left hf_monic
+    -- Compute: (p * f₁).comp(-X) = p * f₁.comp(-X) using hp_sym
+    have hfn : (p * f₁).comp (-X) = p * f₁.comp (-X) := by
+      rw [mul_comp, hp_sym]
+    -- Derive: f₁ * f₁(-X) = p^(r+r) by cancelling p^2 from both sides
+    have hprod1 : f₁ * f₁.comp (-X) = p ^ (r + r) := by
+      have h_lhs : p * f₁ * (p * f₁.comp (-X)) = p ^ 2 * (f₁ * f₁.comp (-X)) := by ring
+      have h_rhs : p ^ (r + 1 + (r + 1)) = p ^ 2 * p ^ (r + r) := by
+        rw [show r + 1 + (r + 1) = 2 + (r + r) from by omega, pow_add]
+      rw [hfn, h_lhs] at hprod; rw [h_rhs] at hprod
+      exact mul_left_cancel₀ (pow_ne_zero 2 hp_irred.ne_zero) hprod
+    -- Apply inductive hypothesis: f₁ = p^r, so p * f₁ = p * p^r = p^(r+1)
+    rw [ih f₁ hf1_monic hprod1, mul_comm, ← pow_succ]
 
 /-- **k-1 is a perfect square** for any k-regular friendship graph with k ≥ 2.
 
