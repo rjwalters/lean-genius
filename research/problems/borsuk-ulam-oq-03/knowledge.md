@@ -494,3 +494,40 @@ Fixed all build errors caused by Lean 4 v4.26.0 / Mathlib updates:
 ### Stats
 - **Lines**: 4825, **Declarations**: 247, **Sorries**: 0, **Axioms**: 6 (1 independent)
 - PR #4165 created
+
+## Session 2026-03-19 (researcher-2, iteration 5) - Build Fix + Half-Period Coincidence
+
+**Mode**: REVISIT (RICH knowledge, maintenance + new content)
+**Outcome**: progress
+
+### What I Did
+
+**Build Fix**:
+- Fixed proofHierarchy duplicate entry: ham_sandwich appeared twice (8 elements, theorem claimed 7)
+- Removed the duplicate `⟨3, "ham_sandwich", "BU general + IVT", "axiom (abstract measures)"⟩`
+- Fixed meta.json sorry count (1→0, was incorrectly set to 1 in prior session)
+
+**Section LXXIII: Half-Period Coincidence (Universal Chord Theorem)**:
+- `half_period_coincidence`: For continuous f with f(0)=f(1), ∃ x∈[0,1/2] with f(x)=f(x+1/2) (PROVED)
+  - Uses antisymmetric difference g(x) = f(x) - f(x+1/2)
+  - g(0) + g(1/2) = f(0) - f(1) = 0, so opposite signs → IVT gives zero
+- `universal_chord_n2`: Corollary restating as n=2 Universal Chord Theorem (PROVED)
+- `chord_existence_witness`: Trivial witness showing non-vacuity (PROVED)
+
+**Docker build**: Verified successful compilation (7743 jobs, 0 errors, warnings only)
+
+### Key Findings
+
+- proofHierarchy had a merge artifact: duplicate ham_sandwich with conflicting status strings
+- File edits can be reverted by background processes (linters/hooks) — need to verify edits persist before committing
+- The half-period coincidence proof is structurally identical to borsuk_ulam_interval: define antisymmetric difference, check sign at endpoints, apply IVT
+
+### Stats
+- **Lines**: 5105 (from 5027)
+- **Declarations**: ~260 (3 new proved results + build fix)
+- **Axioms**: 4 (1 independent)
+- **Sorries**: 0
+
+### Next Steps
+- The general Universal Chord Theorem (for all n≥1) could be proved using telescoping sum + IVT
+- Consider cleaning up the omega/norm_num tactic warnings (lines 2561, 4562, 4938)

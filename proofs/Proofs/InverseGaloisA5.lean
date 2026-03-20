@@ -1289,26 +1289,19 @@ theorem gal_fixes_vandermondeProduct (σ : q.Gal) :
     So rootEnum(galToPerm5 σ i) = (galActionHom σ (e.symm i)).val = σ(rootEnum i). -/
 theorem gal_permutes_roots (σ : q.Gal) (i : Fin 5) :
     σ (rootEnum i) = rootEnum (galToPerm5 σ i) := by
-  -- Mathematically: galActionHom σ sends root r to ⟨σ r, _⟩, so
-  -- rootEnum(galToPerm5 σ i) = (galActionHom σ (e.symm i)).val = σ(rootEnum i).
-  -- The coercion path MulAction.toPermHom → smul → Subtype.val needs
-  -- the right Mathlib lemma connecting σ • r with σ r.val for rootSet.
-  -- The proof unfolds the definitions:
-  -- rootEnum i = (e.symm i).val where e : rootSet ≃ Fin 5
-  -- galToPerm5 σ = permCongr e (galActionHom σ)
-  -- rootEnum(galToPerm5 σ i) = (e.symm (e (galActionHom σ (e.symm i)))).val
-  --                           = (galActionHom σ (e.symm i)).val
-  --                           = (σ • (e.symm i)).val = σ (rootEnum i)
+  -- rootEnum i = (e.symm i).val, galToPerm5 σ = permCongr e ∘ galActionHom σ
+  -- After unfolding: σ r.val = (galActionHom σ r).val = (σ • r).val = σ r.val
   unfold rootEnum galToPerm5
   simp only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, Equiv.permCongr_apply,
     Equiv.symm_apply_apply]
-  -- Goal: σ ↑r = ↑(galActionHom σ r) where r : rootSet q SF
-  -- Mathematically: the Galois action on rootSet lifts to the field,
-  -- i.e., (σ • r).val = σ r.val. This is the definition of the SMul
-  -- instance on rootSet, but the coercion path through galActionHom →
-  -- MulAction.toPerm → SMul doesn't reduce to rfl after Mathlib v4.26.0.
-  -- Previously closed by `rfl`.
-  sorry
+  -- Goal: σ ↑(e.symm i) = ↑(galActionHom σ (e.symm i))
+  -- galActionHom = MulAction.toPermHom, so galActionHom σ r = σ • r
+  -- (σ • r).val = σ r.val by MulAction on rootSet
+  change σ ↑((Fintype.equivOfCardEq _).symm i) =
+    ↑((MulAction.toPermHom q.Gal (q.rootSet q.SplittingField) σ)
+      ((Fintype.equivOfCardEq _).symm i))
+  rw [MulAction.toPermHom_apply]
+  rfl
 
 /-- Vandermonde matrix with permuted input = row-permuted Vandermonde. -/
 theorem vandermonde_comp_eq_submatrix
