@@ -1020,8 +1020,12 @@ open Polynomial
 lemma adjMatrix_charpoly_eval_k (hF : IsFriendshipGraph G) (k : ℕ) (hk : k ≥ 1)
     (hreg : ∀ v : V, G.degree v = k) :
     (G.adjMatrix ℤ).charpoly.eval (↑k : ℤ) = 0 := by
-  -- charpoly(A)(k) = det(kI - A). The matrix kI - A has 𝟙 in its kernel
-  -- (since A𝟙 = k𝟙), so it's singular, hence det = 0.
+  -- Proof outline:
+  -- 1. charpoly(A).eval k = det(kI - A)  [Polynomial.eval_det / Matrix.charpoly definition]
+  -- 2. (kI - A) · 𝟙 = k·𝟙 - A·𝟙 = k·𝟙 - k·𝟙 = 0  [adjMatrix_mulVec_ones]
+  -- 3. 𝟙 ≠ 0 (V is nonempty) and (kI-A)·𝟙 = 0, so kI-A not injective
+  -- 4. Not injective → not invertible → det = 0
+  -- Needs: Polynomial.eval_det, Matrix.mulVec_injective_iff_isUnit_det
   sorry
 
 /-- (X - k) divides the characteristic polynomial of the adjacency matrix.
