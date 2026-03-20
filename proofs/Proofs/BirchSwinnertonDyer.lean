@@ -3172,7 +3172,7 @@ axiom tunnell_reverse_conditional (n : ℕ) (hn : n > 0) (td : TunnellData n) :
     Since f(5) = 2·g(5), Tunnell's criterion predicts 5 is congruent.
     Indeed, 5 is the area of the 20/3, 3/2, 41/6 right triangle. -/
 def tunnell_5 : TunnellData 5 where
-  squarefree := by decide
+  squarefree := by native_decide
   f_count := 4
   g_count := 2
 
@@ -3187,7 +3187,7 @@ theorem tunnell_5_criterion : TunnellCriterion 5 tunnell_5 := by
     Actual: f(6) = 2, g(6) = 1
     So f(6) = 2·g(6), predicting 6 is congruent. ✓ -/
 def tunnell_6 : TunnellData 6 where
-  squarefree := by decide
+  squarefree := by native_decide
   f_count := 2
   g_count := 1
 
@@ -3201,7 +3201,7 @@ theorem tunnell_6_criterion : TunnellCriterion 6 tunnell_6 := by
     f(1) = 2 ≠ 2·2 = 2·g(1) = 4
     So 1 is NOT congruent. ✓ (consistent with one_not_congruent) -/
 def tunnell_1 : TunnellData 1 where
-  squarefree := by decide
+  squarefree := by native_decide
   f_count := 2
   g_count := 2
 
@@ -3215,7 +3215,7 @@ theorem tunnell_1_not_congruent : ¬TunnellCriterion 1 tunnell_1 := by
     f(2) = 2 ≠ 4 = 2·g(2)
     So 2 is NOT congruent. ✓ (consistent with two_not_congruent) -/
 def tunnell_2 : TunnellData 2 where
-  squarefree := by decide
+  squarefree := by native_decide
   f_count := 2
   g_count := 2
 
@@ -3232,7 +3232,7 @@ theorem tunnell_2_not_congruent : ¬TunnellCriterion 2 tunnell_2 := by
     f(3) = 4 ≠ 8 = 2·4 = 2·g(3)
     So 3 is NOT congruent. ✓ -/
 def tunnell_3 : TunnellData 3 where
-  squarefree := by decide
+  squarefree := by native_decide
   f_count := 4
   g_count := 4
 
@@ -3602,7 +3602,7 @@ theorem bloch_kato_landscape : bsdStatus 0 = .proved ∧ bsdStatus 1 = .proved :
 def TamagawaNumberConjecture (M : Motive) : Prop :=
   True  -- The exact leading coefficient formula (extremely technical)
 
-/-- The Fontaine-Perrin-Riou reformulation of Bloch-Kato
+/- The Fontaine-Perrin-Riou reformulation of Bloch-Kato
     uses the determinant of a perfect complex:
 
     det_{ℤₚ} RΓ_f(ℚ, T) ≅ ℤₚ · L*(M, c) / Ω
@@ -4101,13 +4101,21 @@ structure ModularParametrization where
     | 389a1 | 389 | 40 | -/
 /-- The modular degree of 11a1 is 1 (smallest conductor optimal curve). -/
 def modular_degree_11a : ModularParametrization where
-  N := 11; hN := by norm_num; degree := 1; hdeg := by norm_num
-  manin_constant := 1; hmanin := by norm_num
+  N := 11
+  hN := by norm_num
+  degree := 1
+  hdeg := by norm_num
+  manin_constant := 1
+  hmanin := by norm_num
 
 /-- The modular degree of 37a1 is 2. -/
 def modular_degree_37a : ModularParametrization where
-  N := 37; hN := by norm_num; degree := 2; hdeg := by norm_num
-  manin_constant := 1; hmanin := by norm_num
+  N := 37
+  hN := by norm_num
+  degree := 2
+  hdeg := by norm_num
+  manin_constant := 1
+  hmanin := by norm_num
 
 /-- Ribet's theorem (1990): Shimura-Taniyama for semistable ⟹ FLT.
 
@@ -5063,7 +5071,7 @@ structure FaltingsHeight where
   height : ℝ
   hdef : height = disc_term + period_term
 
-/-- The Faltings height relates to the conductor via Szpiro.
+/- The Faltings height relates to the conductor via Szpiro.
     Under Szpiro's conjecture: h_F(E) ≤ (1/2 + ε) log N.
     Unconditionally (semistable): h_F(E) ≤ log N + O(1). -/
 
@@ -5175,7 +5183,7 @@ theorem non_congruent_1_mod_8 :
     ∀ n : ℕ, n ≥ 1 → n % 8 = 1 → True := by
   intros; trivial
 
-/-- The average analytic rank of the family E_n: y² = x³ - n²x is 1/2
+/- The average analytic rank of the family E_n: y² = x³ - n²x is 1/2
     under Goldfeld's conjecture. Combined with root number equidistribution,
     this predicts ~50% of n are congruent numbers. -/
 
@@ -5609,6 +5617,15 @@ axiom heegner_baker_stark :
       classNumber K = 1 →
       K.d ∈ ({1, 2, 3, 7, 11, 19, 43, 67, 163} : Set ℕ)
 
+/-- Minimal elliptic curve data for classification purposes. -/
+structure EllipticCurveData where
+  /-- Conductor -/
+  conductor : ℕ
+  /-- Analytic rank -/
+  analyticRank : ℕ
+  /-- j-invariant (rational) -/
+  jInvariant : ℚ
+
 /-- A CM elliptic curve: End(E) ⊗ ℚ ≅ K for some imaginary quadratic K -/
 structure CMEllipticCurve extends EllipticCurveData where
   /-- The CM field -/
@@ -5646,13 +5663,6 @@ axiom cm_period_formula (E : CMEllipticCurve) :
 axiom chowla_selberg (E : CMEllipticCurve) :
     ∃ (Ω : ℝ), Ω > 0
 
-/-- The j-invariant of E with CM by O_K has degree h(K) over ℚ.
-    When h(K) = 1, the j-invariant is one of the 9 singular moduli
-    (rational integers from Heegner-Baker-Stark). -/
-axiom cm_j_rational_when_class_one (E : CMEllipticCurve)
-    (h1 : classNumber E.cmField = 1) :
-    ∃ j : ℤ, j ∈ singular_moduli
-
 /-- The 13 singular moduli (j-invariants of CM curves with h(K) = 1):
     j(-1) = 1728, j(-2) = 8000, j(-3) = 0, j(-7) = -3375,
     j(-11) = -32768, j(-19) = -884736, j(-43) = -884736000,
@@ -5661,6 +5671,13 @@ axiom cm_j_rational_when_class_one (E : CMEllipticCurve)
 def singular_moduli : List ℤ :=
   [1728, 8000, 0, -3375, -32768, -884736, -884736000, -147197952000,
    -262537412640768000]
+
+/-- The j-invariant of E with CM by O_K has degree h(K) over ℚ.
+    When h(K) = 1, the j-invariant is one of the 9 singular moduli
+    (rational integers from Heegner-Baker-Stark). -/
+axiom cm_j_rational_when_class_one (E : CMEllipticCurve)
+    (h1 : classNumber E.cmField = 1) :
+    ∃ j : ℤ, j ∈ singular_moduli
 
 /-- Verification: j(-3) = 0 corresponds to the curve y² = x³ + 1 (hexagonal lattice) -/
 theorem j_neg3_is_zero : singular_moduli[2]? = some 0 := by
