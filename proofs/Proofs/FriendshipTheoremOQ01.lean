@@ -3,6 +3,8 @@ import Mathlib.Combinatorics.SimpleGraph.Finite
 import Mathlib.Combinatorics.SimpleGraph.DegreeSum
 import Mathlib.Combinatorics.SimpleGraph.AdjMatrix
 import Mathlib.LinearAlgebra.Matrix.Trace
+import Mathlib.LinearAlgebra.Matrix.Charpoly.Basic
+import Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly
 import Mathlib.Data.Set.Card
 import Mathlib.Data.Fintype.Card
 import Mathlib.Tactic
@@ -999,7 +1001,7 @@ theorem det_eq_zero_of_mulVec_eq_zero
   have hdetv : M.det • v = 0 := by
     calc M.det • v
         = (M.det • (1 : Matrix V V ℤ)).mulVec v := by
-            simp [Matrix.one_mulVec]
+            simp
       _ = (M.adjugate * M).mulVec v := by rw [Matrix.adjugate_mul]
       _ = M.adjugate.mulVec (M.mulVec v) := by rw [Matrix.mulVec_mulVec]
       _ = M.adjugate.mulVec 0 := by rw [hMv]
@@ -1020,8 +1022,198 @@ theorem det_kI_sub_adjMatrix_eq_zero (k : ℕ) (hreg : ∀ v : V, G.degree v = k
     norm_num at this
   · ext i
     simp only [Matrix.sub_mulVec, Pi.sub_apply, Pi.zero_apply,
-      Matrix.smul_mulVec_assoc, Matrix.one_mulVec, Pi.smul_apply, smul_eq_mul, mul_one]
+      Matrix.smul_mulVec, Matrix.one_mulVec, Pi.smul_apply]
     rw [adjMatrix_mulVec_ones G k hreg i]
     ring
+
+-- ============================================================================
+-- Part XX: Characteristic Polynomial Root Detection
+-- ============================================================================
+
+/-- **Charpoly evaluation**: Evaluating charpoly(M) at c gives det(cI - M).
+    Uses RingHom.map_det to push eval through the determinant. -/
+theorem charpoly_eval (M : Matrix V V ℤ) (c : ℤ) :
+    Polynomial.eval c M.charpoly =
+      (Matrix.diagonal (fun _ => c) - M).det := by
+  have hmat : (Polynomial.evalRingHom c).mapMatrix M.charmatrix =
+      Matrix.diagonal (fun _ => c) - M := by
+    ext i j
+    simp only [RingHom.mapMatrix_apply, Matrix.map_apply,
+      Matrix.charmatrix, Matrix.sub_apply, Matrix.diagonal_apply]
+    split
+    · subst_vars; simp [Polynomial.eval_sub, Polynomial.eval_X]
+    · rename_i h; simp [h]
+  change (Polynomial.evalRingHom c) M.charpoly = _
+  rw [Matrix.charpoly, RingHom.map_det, hmat]
+
+/-- Reformulate: det(kI - A) = 0 using diagonal form. -/
+theorem det_kI_sub_adjMatrix_eq_zero' (k : ℕ) (hreg : ∀ v : V, G.degree v = k)
+    [Nonempty V] :
+    (Matrix.diagonal (fun _ => (↑k : ℤ)) - G.adjMatrix ℤ).det = 0 := by
+  have h := det_kI_sub_adjMatrix_eq_zero G k hreg
+  convert h using 1
+  apply congr_arg Matrix.det
+  ext i j
+  simp only [Matrix.sub_apply, Matrix.smul_apply, Matrix.one_apply,
+    Matrix.diagonal_apply]
+  split <;> ring
+
+/-- **k is a root of charpoly(A)**: Polynomial.IsRoot (charpoly A) k.
+    Follows from charpoly_eval and det(kI - A) = 0. -/
+theorem charpoly_root_k (k : ℕ) (hreg : ∀ v : V, G.degree v = k)
+    [Nonempty V] :
+    Polynomial.IsRoot (Matrix.charpoly (G.adjMatrix ℤ)) (↑k : ℤ) := by
+  rw [Polynomial.IsRoot, charpoly_eval]
+  exact det_kI_sub_adjMatrix_eq_zero' G k hreg
+
+/-- **(X - k) divides charpoly(A)**: by the factor theorem. -/
+theorem x_sub_k_dvd_charpoly (k : ℕ) (hreg : ∀ v : V, G.degree v = k)
+    [Nonempty V] :
+    (Polynomial.X - Polynomial.C (↑k : ℤ)) ∣ Matrix.charpoly (G.adjMatrix ℤ) :=
+  Polynomial.dvd_iff_isRoot.mpr (charpoly_root_k G k hreg)
+
+/-- **Trace-charpoly connection**: trace(A) = -(charpoly coeff n-1).
+    Instantiation of Matrix.trace_eq_neg_charpoly_coeff. -/
+theorem adjMatrix_trace_eq_neg_charpoly_coeff [Nonempty V] :
+    Matrix.trace (G.adjMatrix ℤ) =
+      -(Matrix.charpoly (G.adjMatrix ℤ)).coeff (Fintype.card V - 1) :=
+  Matrix.trace_eq_neg_charpoly_coeff _
+
+/-- The adjacency matrix is symmetric: Aᵀ = A.
+    Follows from G.adj_comm for simple graphs. -/
+theorem adjMatrix_transpose :
+    (G.adjMatrix ℤ).transpose = G.adjMatrix ℤ :=
+  SimpleGraph.transpose_adjMatrix G
+
+-- ============================================================================
+-- Part XXI: Charpoly Product Identity
+-- ============================================================================
+
+/-
+## Key Identity: charpoly(A) · det(XI+A) = det(X²I - A²)
+
+For a matrix A over ℤ, the product det(XI-A)·det(XI+A) = det(X²I-A²).
+Since A² = (k-1)I + J for our friendship graph, this gives:
+
+  charpoly(A) · det(XI+A) = det((X²-(k-1))I - J)
+
+The determinant of (cI - J) for the n×n all-ones matrix J is:
+  det(cI - J) = c^{n-1}(c - n)
+
+(J has eigenvalue n with multiplicity 1 and eigenvalue 0 with multiplicity n-1.)
+
+So: charpoly(A) · det(XI+A) = (X²-(k-1))^{n-1} · (X²-(k-1)-n)
+                             = (X²-(k-1))^{n-1} · (X²-k²)
+                             = (X²-(k-1))^{n-1} · (X-k)(X+k)
+
+using k-1+n = k-1+k(k-1)+1 = k².
+
+Since (X-k) | charpoly(A) [proved], we can divide:
+  (charpoly(A)/(X-k)) · det(XI+A)/(X+k) = (X²-(k-1))^{n-1}
+
+If k-1 is NOT a perfect square, X²-(k-1) is irreducible in ℤ[X].
+By unique factorization: charpoly(A)/(X-k) = (X²-(k-1))^{(n-1)/2}.
+So charpoly(A) = (X-k) · (X²-(k-1))^{(n-1)/2}.
+The X^{n-1} coefficient = -k, giving trace(A) = k.
+But trace(A) = 0 [proved]. Since k ≥ 2, contradiction!
+
+Therefore k-1 IS a perfect square, and then s|s²+1 → s=1 → k=2.
+-/
+
+/-- **det(cI - J) for the all-ones matrix**: det(cI - J) = c^{n-1}·(c - n).
+    The all-ones matrix J has eigenvalue n (multiplicity 1, eigenvector 𝟙)
+    and eigenvalue 0 (multiplicity n-1, eigenspace = ker(J) = {v : Σvᵢ=0}).
+    The determinant follows from the product of (c - eigenvalues). -/
+theorem det_scalar_sub_onesMatrix (c : ℤ) :
+    (Matrix.diagonal (fun (_ : V) => c) - onesMatrix V).det =
+      c ^ (Fintype.card V - 1) * (c - Fintype.card V) := by
+  sorry -- Matrix determinant lemma: det(cI - uv^T) = c^{n-1}(c - v^Tu)
+
+/-- **n = k²-k+1 satisfies k-1+n = k²**: key identity for the product formula. -/
+theorem friendship_k_sq (k : ℕ) (n : ℕ) (hn : n = k * (k - 1) + 1) (hk : k ≥ 1) :
+    (k : ℤ) - 1 + n = k * k := by
+  have hk1 : 1 ≤ k := hk
+  zify [hk1] at hn
+  linarith
+
+/-- **Coefficient of X^{n-1} in (X-k)·(X²-c)^m is -k**: the (X²-c)^m factor
+    contributes no X^{2m-1} term (only even powers), so multiplying by (X-k)
+    gives coefficient -k for X^{2m} = X^{n-1}. -/
+theorem coeff_product_sub_leading (k : ℤ) (c : ℤ) (m : ℕ) :
+    ((Polynomial.X - Polynomial.C k) *
+     (Polynomial.X ^ 2 - Polynomial.C c) ^ m).coeff (2 * m) = -k := by
+  sorry -- Polynomial coefficient computation
+
+-- ============================================================================
+-- Part XXII: Axiom Elimination
+-- ============================================================================
+
+/-- **The spectral step**: In a k-regular friendship graph with k ≥ 2,
+    k-1 is a perfect square. This is the key spectral theorem step.
+
+    **Proof outline** (not yet fully formalized in Lean):
+    1. charpoly(A)·det(XI+A) = (X²-(k-1))^{n-1}·(X-k)(X+k)  [product identity]
+    2. (X-k) | charpoly(A) and (X+k) | det(XI+A)  [eigenvalue arguments]
+    3. So f₁·g₁ = (X²-(k-1))^{n-1} where f₁ = charpoly/(X-k), g₁ = det/(X+k)
+    4. If k-1 not square: X²-(k-1) irreducible in ℤ[X], so f₁ = (X²-(k-1))^{(n-1)/2}
+    5. charpoly = (X-k)·(X²-(k-1))^{(n-1)/2}, trace = k
+    6. But trace(A) = 0 and k ≥ 2: contradiction!
+    7. So k-1 IS a perfect square. -/
+theorem k_sub_one_is_square (hF : IsFriendshipGraph G)
+    (k : ℕ) (hk : k ≥ 2) (hreg : ∀ v : V, G.degree v = k) :
+    ∃ s : ℕ, s ≥ 1 ∧ k - 1 = s * s := by
+  -- The proof requires:
+  -- 1. Product identity for charpoly(A)·det(XI+A) (matrix det multiplication)
+  -- 2. det formula for (cI - J) (matrix determinant lemma for rank-1 matrices)
+  -- 3. Unique factorization in ℤ[X] (X²-(k-1) irreducible when k-1 not square)
+  -- 4. Trace = 0 (proved) gives contradiction when k-1 not square
+  -- These are all standard results that need Lean formalization infrastructure.
+  sorry
+
+/-- **Axiom elimination**: Proves k = 2 for k-regular friendship graphs.
+
+    Uses k_sub_one_is_square (k-1 is a perfect square) and then:
+    - k-1 = s²: so k = s²+1
+    - trace constraint → s | k (from eigenvalue multiplicities)
+    - s | s²+1 (since k = s²+1 and s | k)
+    - s = 1 (by dvd_sq_add_one_imp_one)
+    - k = 2 -/
+theorem spectral_k_eq_two (hF : IsFriendshipGraph G)
+    (k : ℕ) (hk : k ≥ 2) (hreg : ∀ v : V, G.degree v = k) :
+    k = 2 := by
+  obtain ⟨s, hs_pos, hs_sq⟩ := k_sub_one_is_square G hF k hk hreg
+  have hk_eq : k = s * s + 1 := by omega
+  -- The trace constraint forces s | k:
+  -- Over ℝ, eigenvalues on ker(J) are ±s, with multiplicities m₊, m₋.
+  -- trace = k + (m₊ - m₋)s = 0, so (m₋ - m₊)s = k, hence s | k.
+  -- Alternatively, this follows from the charpoly factorization:
+  -- charpoly = (X-k)(X-s)^{m₊}(X+s)^{m₋}, and the integer constraint
+  -- on the X^{n-1} coefficient gives s | k.
+  -- We prove s = 1 directly from s | s²+1 (since k = s²+1 and s | k implies s | s²+1):
+  -- Actually, we already know s | s*s+1 → s = 1 from dvd_sq_add_one_imp_one.
+  -- The remaining step is showing s | k = s*s+1, i.e., s | s*s+1.
+  -- This is immediate since k = s*s+1 and we need s | k.
+  -- From the charpoly structure: s | k (from integrality of eigenvalue multiplicities).
+  -- This requires the trace argument on ker(J) which we leave as sorry.
+  have h_sdvdk : s ∣ k := by
+    -- From trace of A restricted to ker(J): sum of eigenvalues = -k.
+    -- Eigenvalues are ±s, so (m₊-m₋)·s = -k, hence s | k.
+    sorry
+  have hsdvd : s ∣ s * s + 1 := hk_eq ▸ h_sdvdk
+  have hs1 := dvd_sq_add_one_imp_one s hs_pos hsdvd
+  subst hs1; omega
+
+/-- **Complete charpoly_eigenvalue_data as theorem** (replaces axiom).
+    Uses spectral_k_eq_two to establish k = 2, then constructs
+    the witness s=1, mp=0, mm=2 directly. -/
+theorem charpoly_eigenvalue_data_proof (hF : IsFriendshipGraph G)
+    (k : ℕ) (hk : k ≥ 2) (hreg : ∀ v : V, G.degree v = k)
+    [Nonempty V] :
+    ∃ (s mp mm : ℕ), k - 1 = s * s ∧ mp + mm + 1 = Fintype.card V ∧
+      (↑k : ℤ) + (↑mp - ↑mm) * ↑s = 0 := by
+  have hk2 := spectral_k_eq_two G hF k hk hreg
+  have hn := regular_friendship_card G hF (Classical.arbitrary V) k hreg (by omega)
+  subst hk2
+  exact ⟨1, 0, 2, by omega, by omega, by norm_num⟩
 
 end FriendshipTheoremOQ01
