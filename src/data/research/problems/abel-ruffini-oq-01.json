@@ -243,7 +243,8 @@
       "The (Z/nZ)* cyclotomic approach is exhausted for abelian groups up to order 24; remaining groups (C3^2, C4^2, C2^4, Q8) require Galois correspondence or non-cyclotomic constructions",
       "cyclotomic_prime_pow_eq_geom_sum takes explicit (hp : Nat.Prime p) not Fact instance",
       "AdjoinRoot.powerBasis takes (h : f ne 0) not (h : f.Monic) in current Mathlib",
-      "InverseGaloisD4.lean now fully sorry-free and axiom-free (was 3 sorries)"
+      "InverseGaloisD4.lean now fully sorry-free and axiom-free (was 3 sorries)",
+      "gal_permutes_roots goal after simp: sigma r.val = rootsEquivRoots(sigma smul rootsEquivRoots.symm(r)).val. The Galois smul on rootSet goes through Gal.rootsEquivRoots round-trip, not direct application. Need commutation lemma between rootsEquivRoots and the smul action."
     ],
     "mathlibGaps": [],
     "nextSteps": [
