@@ -870,16 +870,11 @@ theorem annihilating_polynomial (hF : IsFriendshipGraph G) (k : ℕ) (hk : k ≥
   exact adjMatrix_functional_eq G hF k hk hreg
 
 /-
-**Minimal polynomial divides annihilating polynomial** (statement only).
+## Next step: Connect annihilating polynomial to charpoly.
 
-By `minpoly.dvd` from Mathlib: since `annihilating_polynomial` shows
-aeval A ((X-k)(X²-(k-1))) = 0, the minimal polynomial of A divides
-(X-k)(X²-(k-1)). This constrains minpoly to have degree ≤ 3.
-
-The formal proof `minpoly.dvd ℤ _ (annihilating_polynomial G hF k hk hreg)`
-is correct but times out (>800000 heartbeats) due to heavy instance resolution
-for `Algebra ℤ (Matrix V V ℤ)` and `IsIntegral ℤ (G.adjMatrix ℤ)`.
-Optimization: provide instances explicitly or work over ℚ.
+The `minpoly.dvd` approach requires `Field` (ℤ is not a field).
+Work over ℚ instead, or use charpoly evaluation directly.
+See Part XVI at end of file for proved infrastructure.
 -/
 
 -- ============================================================================
@@ -926,5 +921,78 @@ theorem det_kI_sub_adjMatrix_eq_zero (k : ℕ) (hreg : ∀ v : V, G.degree v = k
       Pi.sub_apply, Pi.smul_apply, Pi.zero_apply, smul_eq_mul]
     rw [adjMatrix_mulVec_ones G k hreg i]
     ring
+
+-- ============================================================================
+-- Part XVI: Characteristic Polynomial Infrastructure
+-- ============================================================================
+
+/-- **Trace equals negative of X^{n-1} coefficient of charpoly.**
+    From Mathlib: tr(A) = -(charpoly A).coeff (card V - 1).
+    Since tr(A) = 0, the X^{n-1} coefficient is 0. -/
+theorem charpoly_subleading_coeff_zero [Nonempty V] :
+    (Matrix.charpoly (G.adjMatrix ℤ)).coeff (Fintype.card V - 1) = 0 := by
+  have h := Matrix.trace_eq_neg_charpoly_coeff (G.adjMatrix ℤ)
+  rw [adjMatrix_trace_zero] at h
+  linarith
+
+/-- **charpoly evaluation identity**: eval k (charpoly A) = det(kI - A).
+    Uses RingHom.map_det: det commutes with the evaluation ring homomorphism. -/
+theorem charpoly_eval_eq_det (x : ℤ) :
+    Polynomial.eval x (Matrix.charpoly (G.adjMatrix ℤ)) =
+      (x • (1 : Matrix V V ℤ) - G.adjMatrix ℤ).det := by
+  unfold Matrix.charpoly
+  change (Polynomial.evalRingHom x) (Matrix.charmatrix (G.adjMatrix ℤ)).det =
+    (x • (1 : Matrix V V ℤ) - G.adjMatrix ℤ).det
+  rw [RingHom.map_det]
+  congr 1
+  ext i j
+  simp only [Matrix.charmatrix, RingHom.mapMatrix_apply, Matrix.map_apply,
+    Matrix.sub_apply, Matrix.smul_apply, Matrix.one_apply,
+    SimpleGraph.adjMatrix_apply]
+  split_ifs <;> simp_all [Matrix.diagonal, Polynomial.eval_sub, Polynomial.eval_one,
+    Polynomial.eval_zero]
+
+/-- **k is a root of charpoly(A).** Direct consequence of det(kI-A)=0. -/
+theorem charpoly_root_k (k : ℕ) (hreg : ∀ v : V, G.degree v = k) [Nonempty V] :
+    Polynomial.IsRoot (Matrix.charpoly (G.adjMatrix ℤ)) (↑k : ℤ) := by
+  rw [Polynomial.IsRoot, charpoly_eval_eq_det]
+  exact det_kI_sub_adjMatrix_eq_zero G k hreg
+
+/-- **Degree of charpoly = card V.** -/
+theorem charpoly_degree [Nonempty V] :
+    (Matrix.charpoly (G.adjMatrix ℤ)).natDegree = Fintype.card V :=
+  Matrix.charpoly_natDegree_eq_dim (G.adjMatrix ℤ)
+
+/-- **(X - k) divides charpoly(A).** Since k is a root of charpoly, (X - k) divides it. -/
+theorem x_sub_k_dvd_charpoly (k : ℕ) (hreg : ∀ v : V, G.degree v = k) [Nonempty V] :
+    (Polynomial.X - Polynomial.C (↑k : ℤ)) ∣ Matrix.charpoly (G.adjMatrix ℤ) :=
+  Polynomial.dvd_iff_isRoot.mpr (charpoly_root_k G k hreg)
+
+/-
+## Status: Axiom Elimination Progress
+
+### Proved in this file:
+1. A satisfies (X-k)(X²-(k-1)) = 0 (annihilating_polynomial)
+2. k is a root of charpoly(A) (charpoly_root_k)
+3. (X-k) | charpoly(A) (x_sub_k_dvd_charpoly)
+4. The X^{n-1} coefficient of charpoly(A) is 0 (charpoly_subleading_coeff_zero)
+5. tr(A) = 0, tr(A²) = nk
+6. s | s²+1 → s = 1 (dvd_sq_add_one_imp_one)
+
+### Remaining gap:
+Need: "All roots of charpoly are among {k, √(k-1), -√(k-1)}"
+
+**Approach A (via ℚ)**: Transfer annihilating polynomial to ℚ, apply minpoly.dvd
+(ℚ is a field so minpoly.dvd works), then charpoly roots ⊂ minpoly roots ⊂ {k,±√(k-1)}.
+
+**Approach B (direct)**: Show charpoly/(X-k) has all roots satisfying λ²=k-1.
+Factor charpoly = (X-k)·q(X) where q satisfies aeval constraints.
+
+**Approach C (Newton)**: Use Newton's identities + charpoly ∈ ℤ[X] integrality
+to extract all coefficients from power sums, then factorize.
+
+Once roots are constrained: charpoly ∈ ℤ[X] with irrational roots forces
+k-1 = s² (conjugate root theorem), then trace gives s|k, then s|s²+1 → s=1 → k=2.
+-/
 
 end FriendshipTheoremOQ01
