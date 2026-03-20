@@ -12802,7 +12802,7 @@ def seifertGeometry (s : SeifertInvariant) : SeifertGeometryType :=
     else SeifertGeometryType.sl2R
 
 /-- S³ as a Seifert space: genus 0, no exceptional fibers, e₀ = 1. -/
-def seifertS3 : SeifertInvariant :=
+def seifertS3_inv : SeifertInvariant :=
   ⟨"S³", 0, true, [], 1, 1⟩
 
 /-- Lens space L(p,q) as Seifert space: genus 0, two exceptional fibers. -/
@@ -12818,7 +12818,7 @@ def seifertPHS : SeifertInvariant :=
     1, 30⟩
 
 /-- T³ (3-torus) as Seifert space: genus 1, no exceptional fibers, e₀ = 0. -/
-def seifertT3 : SeifertInvariant :=
+def seifertT3_inv : SeifertInvariant :=
   ⟨"T³", 1, true, [], 0, 1⟩
 
 /-- Klein bottle bundle as Seifert space: genus 0 non-orientable. -/
@@ -12832,8 +12832,8 @@ def seifertBrieskorn237 : SeifertInvariant :=
     1, 42⟩
 
 /-- S³ has spherical geometry (finite π₁, positive Euler number). -/
-theorem s3_is_spherical : seifertGeometry seifertS3 = SeifertGeometryType.spherical := by
-  unfold seifertGeometry seifertS3; simp
+theorem s3_is_spherical : seifertGeometry seifertS3_inv = SeifertGeometryType.spherical := by
+  unfold seifertGeometry seifertS3_inv; simp
 
 /-- Σ(2,3,5) has spherical geometry (3 exceptional fibers with 1/2+1/3+1/5 > 1). -/
 theorem phs_is_spherical : seifertGeometry seifertPHS = SeifertGeometryType.spherical := by
@@ -12844,8 +12844,8 @@ theorem brieskorn237_is_sl2r : seifertGeometry seifertBrieskorn237 = SeifertGeom
   unfold seifertGeometry seifertBrieskorn237; simp
 
 /-- T³ has Euclidean geometry (genus 1, e₀ = 0). -/
-theorem t3_is_euclidean : seifertGeometry seifertT3 = SeifertGeometryType.euclidean := by
-  unfold seifertGeometry seifertT3; simp
+theorem t3_is_euclidean : seifertGeometry seifertT3_inv = SeifertGeometryType.euclidean := by
+  unfold seifertGeometry seifertT3_inv; simp
 
 /-- Klein bottle bundle has Euclidean geometry (genus 1, e₀ = 0). -/
 theorem klein_is_euclidean : seifertGeometry seifertKlein = SeifertGeometryType.euclidean := by
@@ -12943,7 +12943,7 @@ theorem ssf_unique_icosahedral :
   unfold sphericalSpaceForms; native_decide
 
 /-- π₁ order 120 = 2 × 3 × 4 × 5 (binary icosahedral = 2·A₅). -/
-theorem binary_icosahedral_order : 120 = 2 * 60 := by omega
+theorem binary_icosahedral_order_ssf : 120 = 2 * 60 := by omega
 
 /-- For Seifert spaces: the Euler number e₀ determines whether the
     space admits a horizontal surface (e₀ = 0) or not.
@@ -12954,12 +12954,12 @@ theorem phs_twisted_fibration : seifertPHS.euler_number_num ≠ 0 := by
   unfold seifertPHS; omega
 
 /-- S³ also has nonzero Euler number (e₀ = 1): the Hopf fibration is twisted. -/
-theorem s3_twisted_fibration : seifertS3.euler_number_num ≠ 0 := by
-  unfold seifertS3; omega
+theorem s3_twisted_fibration : seifertS3_inv.euler_number_num ≠ 0 := by
+  unfold seifertS3_inv; omega
 
 /-- T³ has zero Euler number: it's a genuine S¹ bundle (product). -/
-theorem t3_product_fibration : seifertT3.euler_number_num = 0 := by
-  unfold seifertT3; rfl
+theorem t3_product_fibration : seifertT3_inv.euler_number_num = 0 := by
+  unfold seifertT3_inv; rfl
 
 /-
     Summary: Part LXXXVII — Seifert Fibered Spaces
@@ -15680,7 +15680,7 @@ section HCobordism
     The trick uses a Whitney disk (another D²), which generically misses
     everything in dimension ≥ 5 since 2+2+2-n = 6-n < 0 for n > 6.
     Dimension 5 is the critical case where everything barely fits. -/
-theorem whitney_trick_dimension' (n : ℕ) (hn : n ≥ 5) :
+theorem whitney_trick_dimension' (n : ℕ) (_hn : n ≥ 5) :
     -- Disks: dim 2, so D² ∩ D² generically has dim 4-n
     -- For n ≥ 5: 4-n ≤ -1 < 0 (empty intersection)
     -- Whitney disk: dim 2, so Whitney ∩ anything has dim 4-n
@@ -15882,7 +15882,7 @@ section SphereTheorems
 
 /-- Curvature pinching ratio for sphere theorems.
     δ-pinched means δ ≤ K/K_max ≤ 1 for all sectional curvatures K. -/
-noncomputable def pinchingRatio (K_min K_max : ℝ) (hmax : K_max > 0) : ℝ :=
+noncomputable def pinchingRatio (K_min K_max : ℝ) (_hmax : K_max > 0) : ℝ :=
   K_min / K_max
 
 /-- The classical sphere theorem requires strictly 1/4-pinched. -/
@@ -16369,7 +16369,7 @@ theorem isoperimetric_coefficient :
 
     If R_min(0) > 0: blowup at t = 3/(2·R_min(0))
     If R_min(0) < 0: R_min increases toward 0 (then may go positive) -/
-noncomputable def scalarCurvatureBlowup (R0 : ℝ) (hR : R0 > 0) : ℝ :=
+noncomputable def scalarCurvatureBlowup (R0 : ℝ) (_hR : R0 > 0) : ℝ :=
   3 / (2 * R0)
 
 /-- The blowup time is finite and positive. -/
@@ -16396,7 +16396,7 @@ theorem blowup_faster_with_more_curvature (R1 R2 : ℝ) (h1 : R1 > 0) (h2 : R2 >
     For simply connected manifolds, Perelman shows:
     - Surgery parameters can be chosen so each removes ≥ δ volume
     - Total number of surgeries ≤ C · V(0) for universal constant C -/
-noncomputable def maxSurgeries (V0 delta : ℝ) (hV : V0 > 0) (hd : delta > 0) : ℝ :=
+noncomputable def maxSurgeries (V0 delta : ℝ) (_hV : V0 > 0) (_hd : delta > 0) : ℝ :=
   V0 / delta
 
 /-- Maximum number of surgeries is finite. -/
@@ -16427,7 +16427,7 @@ theorem cm_constant_pos : coldingMinicozziConstant > 0 := by
     For the standard S³(1): T_extinct = 1/4.
     Volume at time t: V(t) = 2π²(r² - 4t)^{3/2}
     V → 0 as t → r²/4. -/
-noncomputable def s3ExtinctionTime (r : ℝ) (hr : r > 0) : ℝ := r ^ 2 / 4
+noncomputable def s3ExtinctionTime (r : ℝ) (_hr : r > 0) : ℝ := r ^ 2 / 4
 
 /-- Extinction time is positive. -/
 theorem s3_extinction_pos (r : ℝ) (hr : r > 0) :
@@ -16672,7 +16672,7 @@ theorem hopf_antipodal_invariant :
   simp only [hopfMapE]
   congr 1
   funext i
-  fin_cases i <;> simp <;> ring
+  fin_cases i <;> simp
 
 /-- The Hopf map respects the antipodal equivalence relation:
     if x ~ y (i.e., y = x or y = -x), then π(x) = π(y).
