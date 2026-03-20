@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Parts CXV-CXVII (compressible NS, primitive eqs, Boussinesq). Now 117 parts, ~21510 lines, 0 sorries, 0 axioms.",
+    "progressSummary": "PROGRESS: Added Parts CXVIII-CXIX (SQG, MHD). Now 119 parts, ~21830 lines, 0 sorries, 0 axioms.",
     "builtItems": [
       "Part LXXXVIII: Helicity Algebra and Conservation Structure (NavierStokes.lean:14932)",
       "Part LXXXIX: Kolmogorov Microscales and Spectral Energy Relations (NavierStokes.lean:15200)",
@@ -65,7 +65,10 @@
       "Part CXV: Compressible Navier-Stokes — Lions-Feireisl theory, effective viscous flux, vacuum blowup, Mach limit (NavierStokes.lean:20761)",
       "Part CXVI: Primitive Equations — Cao-Titi 2007 global regularity, hydrostatic approximation, vertical velocity gain (NavierStokes.lean:20980)",
       "Part CXVII: Boussinesq Equations — partial dissipation, Chae/Hou-Li, critical line α+β=1, Rayleigh-Bénard (NavierStokes.lean:21215)",
-      "Aristotle companion Sections 76-78: compressible NS, primitive eqs, Boussinesq"
+      "Aristotle companion Sections 76-78: compressible NS, primitive eqs, Boussinesq",
+      "Part CXVIII: SQG — critical α=1/2, Caffarelli-Vasseur De Giorgi proof, scalar analogue of 3D NS",
+      "Part CXIX: MHD — Elsasser variables, Alfvén waves, Iroshnikov-Kraichnan spectrum, strong field regularity",
+      "Aristotle companion Sections 79-80: SQG critical exponent, MHD conservation laws"
     ],
     "insights": [
       "Helicity H = ∫u·ω decomposes into positive/negative helical modes: E±=(E±H)/2",
@@ -152,7 +155,12 @@
       "Boussinesq partial dissipation: either ν>0 OR κ>0 suffices for 2D global regularity (Chae 2006, Hou-Li 2005)",
       "Fractional Boussinesq critical line: α + β = 1 is the shared dissipation budget for 2D regularity",
       "Rayleigh-Bénard: Ra_c ≈ 1708, Nusselt scaling debate 1/3 vs 1/2 (Malkus vs Kraichnan)",
-      "3D Boussinesq ⊃ 3D NS (set θ=0), so partial dissipation miracle is purely 2D — fails in 3D"
+      "3D Boussinesq ⊃ 3D NS (set θ=0), so partial dissipation miracle is purely 2D — fails in 3D",
+      "SQG critical α=1/2 shares NS scaling but is SCALAR — De Giorgi iteration works for scalars but fails for systems",
+      "Caffarelli-Vasseur De Giorgi technique: L² → L^∞ via level set decay; fundamentally different from Fourier methods",
+      "MHD Elsasser z± = u ± B: cross-advection (z+ advected by z−) eliminates self-interaction — structural constraint absent in NS",
+      "MHD has 3 conservation laws (energy, cross-helicity, magnetic helicity) vs NS 1 — stronger constraints on dynamics",
+      "Iroshnikov-Kraichnan spectrum E(k) ~ k^{-3/2} < Kolmogorov k^{-5/3}: Alfvén effect reduces energy transfer rate"
     ],
     "mathlibGaps": [
       "Sobolev spaces",
@@ -179,7 +187,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.888Z",
-  "lastUpdate": "2026-03-20T18:50:00.000Z",
+  "lastUpdate": "2026-03-20T20:00:00.000Z",
   "completed": "2026-02-11T05:41:00.787Z",
   "significance": 10,
   "tractability": 1,
