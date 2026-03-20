@@ -259,7 +259,7 @@ export function ResearchProblemPage() {
                   <div className="text-muted-foreground">
                     <MarkdownMath>{problem.problemStatement.plain}</MarkdownMath>
                   </div>
-                  {problem.problemStatement.whyMatters.length > 0 && (
+                  {problem.problemStatement.whyMatters?.length > 0 && (
                     <div className="mt-4">
                       <p className="text-sm font-medium mb-2">Why This Matters:</p>
                       <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">

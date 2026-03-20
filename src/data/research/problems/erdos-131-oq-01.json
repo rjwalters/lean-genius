@@ -7,7 +7,8 @@
   "path": "full",
   "problemStatement": {
     "formal": "\\exists H, F(N) \\leq N^{1/4+o(1)} \\text{ and } F(N) \\geq \\exp(c\\sqrt{\\log N})",
-    "plain": "Determine the growth rate of F(N), the maximal size of a non-dividing subset of {1,...,N}. Known: N^{1/5} ≤ F(N) ≤ N^{1/4+o(1)}."
+    "plain": "Determine the growth rate of F(N), the maximal size of a non-dividing subset of {1,...,N}. Known: N^{1/5} ≤ F(N) ≤ N^{1/4+o(1)}.",
+    "whyMatters": []
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -62,7 +63,20 @@
   "tractability": 4,
   "leanFiles": [
     {
-      "lineCount": 310
+      "path": "Proofs/Erdos131Problem.lean",
+      "filename": "Erdos131Problem.lean",
+      "lineCount": 413,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 6,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos131Problem.lean"
     }
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-13",
+    "erdos-131"
   ]
 }
