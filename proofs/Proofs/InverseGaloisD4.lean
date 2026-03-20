@@ -278,14 +278,19 @@ c² = -1 (i.e., c = ±ω where ω²+1=0). So all roots are in ℚ(α,ω) and
 theorem x_sq_add_1_irreducible :
     Irreducible ((X : ℚ[X]) ^ 2 + 1) := by
   -- X²+1 = Φ₄ (4th cyclotomic polynomial), which is irreducible over ℚ
-  -- Proof needs Mathlib API update (cyclotomic_prime_pow_eq_geom_sum signature)
-  sorry
+  -- Φ₄(X) = ∑_{i=0}^{1} X^{2i} = 1 + X² (by cyclotomic_prime_pow_eq_geom_sum with p=2, k=2)
+  have h : (X : ℚ[X]) ^ 2 + 1 = Polynomial.cyclotomic 4 ℚ := by
+    have h1 := Polynomial.cyclotomic_prime_pow_eq_geom_sum (R := ℚ) (p := 2) (hp := by decide) (n := 1)
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, zero_add, pow_one] at h1
+    norm_num at h1
+    rw [h1]; ring
+  rw [h]
+  exact Polynomial.cyclotomic.irreducible_rat (by norm_num)
 
 /-- X²+1 has degree 2. -/
 theorem x_sq_add_1_natDegree :
     ((X : ℚ[X]) ^ 2 + 1).natDegree = 2 := by
-  -- X²+1 = Φ₄, natDeg(Φ₄) = φ(4) = 2
-  sorry
+  compute_degree!
 
 /-- The real fourth root of 2, defined as √(√2). -/
 noncomputable def fourthRootOfTwo : ℝ := Real.sqrt (Real.sqrt 2)
@@ -328,8 +333,9 @@ theorem x_sq_add_1_no_root_in_adjoin_root_x4_sub_2
 /-- AdjoinRoot(X⁴-2) has ℚ-dimension 4. -/
 theorem adjoin_root_x4_sub_2_finrank :
     Module.finrank ℚ (AdjoinRoot ((X : ℚ[X]) ^ 4 - C 2)) = 4 := by
-  -- Proof needs Mathlib API update (PowerBasis.finrank signature change)
-  sorry
+  have hne : ((X : ℚ[X]) ^ 4 - C 2) ≠ 0 := x_fourth_sub_2_irreducible.ne_zero
+  rw [(AdjoinRoot.powerBasis hne).finrank, AdjoinRoot.powerBasis_dim]
+  exact x_fourth_sub_2_natDegree
 
 -- ---- Section C: |Gal(X⁴-2)| ≠ 4 ----
 
