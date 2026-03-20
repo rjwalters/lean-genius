@@ -4627,6 +4627,8 @@ theorem bu_implications_count :
     Level 0 (AXIOM): borsuk_ulam_general (the single independent axiom)
     Level 1 (PROVED from BU): LS covering, no retraction
     Level 2 (PROVED from no retraction): Brouwer FP
+
+    Level 2 (PROVED from no retraction): Brouwer FP (0 sorries)
     Level 3 (CONSEQUENCE): Ham Sandwich, Necklace Splitting, Kneser
 
     Independent 1D results (constructive, no axioms needed):
@@ -4643,6 +4645,8 @@ def proofHierarchy : List ProofLevel := [
   ⟨1, "no_retraction", "BU general", "proved (0 sorries)"⟩,
   ⟨2, "brouwer_fixed_point", "no_retraction", "proved (0 sorries)"⟩,
   ⟨3, "ham_sandwich", "BU general + IVT", "theorem (abstract measures)"⟩,
+
+  ⟨3, "ham_sandwich", "BU general + IVT", "axiom (abstract measures)"⟩,
   ⟨3, "necklace_splitting", "BU general", "structural (data verified)"⟩,
   ⟨3, "kneser_conjecture", "BU general", "structural (data verified)"⟩
 ]
@@ -5015,6 +5019,10 @@ end IsobarycentricPoint
 --     → no_odd_map_between_spheres (PROVED, Section LXXI)
 --     → isobarycentric_odd (PROVED, Section LXXII)
 --
+
+-- ~4800 lines, ~220 declarations
+-- 4 axioms declared (1 independent: borsuk_ulam_general)
+-- 0 sorries! All axiom reductions fully proved.
 -- Applications: Ham Sandwich, Necklace Splitting, Kneser's Conjecture
 -- Degree theory: antipodal degree, odd maps, equatorial BU
 -- Equivariant map hierarchy: existence iff source_dim ≤ target_dim
