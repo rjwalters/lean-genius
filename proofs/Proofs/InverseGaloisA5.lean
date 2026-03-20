@@ -1006,7 +1006,9 @@ discriminant-to-Vandermonde identity disc(f) = Δ², which is not yet in Mathlib
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 /-- The composite injection Gal(q) →* Perm(Fin 5), used throughout.
-    Composes galActionHom (Gal → Perm(rootSet)) with rootSet ≃ Fin 5. -/
+    Composes galActionHom (Gal → Perm(rootSet)) with rootSet ≃ Fin 5.
+    Routes through `restrict` so that `gal_permutes_roots` is provable
+    via `galActionHom_restrict`. -/
 noncomputable def galToPerm5 : q.Gal →* Equiv.Perm (Fin 5) :=
   let rootEquiv : q.rootSet q.SplittingField ≃ Fin 5 :=
     Fintype.equivOfCardEq (by rw [q_rootSet_card, Fintype.card_fin])
@@ -1014,13 +1016,46 @@ noncomputable def galToPerm5 : q.Gal →* Equiv.Perm (Fin 5) :=
     { toEquiv := Equiv.permCongr rootEquiv
       map_mul' := fun σ τ => by
         ext x; simp [Equiv.permCongr_apply, Equiv.Perm.mul_apply] }
-  permEquiv.toMonoidHom.comp (Polynomial.Gal.galActionHom q q.SplittingField)
+  permEquiv.toMonoidHom.comp
+    ((Polynomial.Gal.galActionHom q q.SplittingField).comp
+      (Polynomial.Gal.restrict q q.SplittingField))
 
 /-- galToPerm5 is injective (Gal embeds faithfully into Perm(Fin 5)). -/
 theorem galToPerm5_injective : Function.Injective galToPerm5 := by
-  unfold galToPerm5
-  exact (Equiv.permCongr (Fintype.equivOfCardEq (by rw [q_rootSet_card, Fintype.card_fin]))).injective.comp
-    (Polynomial.Gal.galActionHom_injective q q.SplittingField)
+  -- Gal --restrict--> Gal --galActionHom--> Perm(rootSet) --permCongr--> Perm(Fin 5)
+  -- restrict is injective (ext + galActionHom_restrict shows agreement on roots)
+  -- galActionHom is injective (Mathlib)
+  -- permCongr is injective (equiv)
+  intro σ τ h
+  ext x
+  -- galActionHom_restrict: ↑(galActionHom(restrict σ) r) = σ ↑r
+  -- From h: galToPerm5 σ = galToPerm5 τ
+  -- So for all roots r, restrict σ agrees with restrict τ on r
+  -- By galActionHom_restrict: σ ↑r = τ ↑r for all roots r
+  -- By ext (Gal determined by action on roots): σ = τ
+  have h_galact : (Polynomial.Gal.galActionHom q q.SplittingField).comp
+      (Polynomial.Gal.restrict q q.SplittingField) σ =
+    (Polynomial.Gal.galActionHom q q.SplittingField).comp
+      (Polynomial.Gal.restrict q q.SplittingField) τ := by
+    have : Function.Injective (Equiv.permCongr (Fintype.equivOfCardEq
+        (by rw [q_rootSet_card, Fintype.card_fin]) :
+        q.rootSet q.SplittingField ≃ Fin 5)) :=
+      (Equiv.permCongr _).injective
+    exact this (by
+      show galToPerm5 σ = galToPerm5 τ
+      exact h)
+  -- h_galact: galActionHom(restrict σ) = galActionHom(restrict τ) as Perm(rootSet)
+  -- So ∀ r, ↑(galActionHom(restrict σ) r) = ↑(galActionHom(restrict τ) r)
+  -- By galActionHom_restrict: σ ↑r = τ ↑r for all roots r
+  have : ∀ r : q.rootSet q.SplittingField,
+      (σ : q.SplittingField → q.SplittingField) ↑r = τ ↑r := by
+    intro r
+    have h1 := Polynomial.Gal.galActionHom_restrict (p := q) (E := q.SplittingField) σ r
+    have h2 := Polynomial.Gal.galActionHom_restrict (p := q) (E := q.SplittingField) τ r
+    rw [← h1, ← h2]
+    exact congrArg Subtype.val (congrFun (congrArg DFunLike.coe h_galact) r)
+  -- Roots generate the splitting field; the ext lemma gives us x ∈ rootSet
+  exact this ⟨x, ‹_›⟩
 
 /-- The sign of a Galois element: +1 if it acts as an even permutation on the
     five roots of q, -1 if odd. -/
@@ -1284,24 +1319,28 @@ theorem gal_fixes_vandermondeProduct (σ : q.Gal) :
 
 /-- σ maps rootEnum i to rootEnum(galToPerm5 σ i): Galois permutes roots.
 
-    This follows from the definitions: galActionHom σ sends root r to ⟨σ r, proof⟩,
-    and galToPerm5 σ i = e(galActionHom σ (e.symm i)) where e : rootSet ≃ Fin 5.
-    So rootEnum(galToPerm5 σ i) = (galActionHom σ (e.symm i)).val = σ(rootEnum i). -/
+    Proved via `galActionHom_restrict`: the Galois action on root coercions
+    equals direct application of the automorphism. -/
 theorem gal_permutes_roots (σ : q.Gal) (i : Fin 5) :
     σ (rootEnum i) = rootEnum (galToPerm5 σ i) := by
-  -- rootEnum i = (e.symm i).val, galToPerm5 σ = permCongr e ∘ galActionHom σ
-  -- After unfolding: σ r.val = (galActionHom σ r).val = (σ • r).val = σ r.val
-  unfold rootEnum galToPerm5
-  simp only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, Equiv.permCongr_apply,
-    Equiv.symm_apply_apply]
-  -- Goal: σ ↑(e.symm i) = ↑(galActionHom σ (e.symm i))
-  -- galActionHom = MulAction.toPermHom, so galActionHom σ r = σ • r
-  -- (σ • r).val = σ r.val by MulAction on rootSet
-  change σ ↑((Fintype.equivOfCardEq _).symm i) =
-    ↑((MulAction.toPermHom q.Gal (q.rootSet q.SplittingField) σ)
-      ((Fintype.equivOfCardEq _).symm i))
-  rw [MulAction.toPermHom_apply]
-  rfl
+  -- galActionHom_restrict: ↑(galActionHom(restrict σ)(e.symm i)) = σ ↑(e.symm i) = σ(rootEnum i)
+  have h := Polynomial.Gal.galActionHom_restrict
+    (p := q) (E := q.SplittingField) σ
+    ((Fintype.equivOfCardEq (by rw [q_rootSet_card, Fintype.card_fin]) :
+      q.rootSet q.SplittingField ≃ Fin 5).symm i)
+  -- Connect σ(rootEnum i) to the galActionHom term, then unfold galToPerm5 for the RHS
+  suffices lhs_eq : σ (rootEnum i) =
+      ↑((Polynomial.Gal.galActionHom q q.SplittingField
+        (Polynomial.Gal.restrict q q.SplittingField σ))
+        ((Fintype.equivOfCardEq (by rw [q_rootSet_card, Fintype.card_fin]) :
+          q.rootSet q.SplittingField ≃ Fin 5).symm i)) from
+    lhs_eq.trans (by
+      dsimp only [rootEnum, galToPerm5]
+      simp only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulEquiv.coe_mk,
+        Equiv.toFun_as_coe, Equiv.permCongr_apply, Equiv.symm_apply_apply,
+        MulAction.toPermHom_apply, MulAction.toPerm_apply]
+      rfl)
+  exact h.symm
 
 /-- Vandermonde matrix with permuted input = row-permuted Vandermonde. -/
 theorem vandermonde_comp_eq_submatrix
