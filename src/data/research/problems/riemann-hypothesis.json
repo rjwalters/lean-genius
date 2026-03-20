@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Part LVIII (RH and Cryptographic Number Theory). Miller test, smooth numbers, factoring complexity, AKS comparison, Artin primitive roots, least non-residue. 6962→7178 lines, 78 axioms, 0 sorries.",
+    "progressSummary": "PROGRESS: Deleted 5 unused axioms (78→73): selberg_degree_zero, rh_nth_prime_estimate, riemann_siegel_z_function, linnik_constant_pos, sixth_moment_upper_bound.",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",
@@ -113,7 +113,8 @@
       "Factoring algorithm complexity comparison (6 algorithms)",
       "Artin primitive root conjecture follows from GRH (Hooley 1967)",
       "Least quadratic non-residue: O((log p)²) under GRH vs O(p^{0.15}) unconditional",
-      "RSA-RH independence: RH helps cryptography more than it hurts"
+      "RSA-RH independence: RH helps cryptography more than it hurts",
+      "Deleted 5 unused axioms: selberg_degree_zero, rh_nth_prime_estimate, riemann_siegel_z_function, linnik_constant_pos, sixth_moment_upper_bound"
     ],
     "insights": [
       "RH_implies_prime_gap_bound",
@@ -141,7 +142,8 @@
       "Goldbach ternary effective under RH: all odd n > 10^20; Helfgott proved unconditionally for all n ≥ 7",
       "RH helps cryptography: faster primality + better prime distribution, without breaking factoring",
       "Miller 1976 GRH test is FASTER than AKS 2002 unconditional test: O((log n)^4) vs O((log n)^{6+ε})",
-      "Artin constant C ≈ 0.3739: density of primes for which a is a primitive root"
+      "Artin constant C ≈ 0.3739: density of primes for which a is a primitive root",
+      "5 axioms were completely unused (referenced only in their own declaration) and could be safely deleted"
     ],
     "mathlibGaps": [
       "Dirichlet series",
@@ -170,7 +172,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.885Z",
-  "lastUpdate": "2026-03-17T22:03:36.890Z",
+  "lastUpdate": "2026-03-20T19:45:00.000Z",
   "completed": "2026-03-15T17:29:13.116Z",
   "significance": 10,
   "tractability": 1
