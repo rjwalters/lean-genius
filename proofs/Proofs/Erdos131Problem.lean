@@ -158,10 +158,44 @@ theorem straus_lower_bound :
                             Real.sqrt (Real.log N)) := by
   sorry -- Straus
 
+/-- exp(3/4) > 2, via Taylor sum of order 3:
+    1 + 3/4 + 9/32 = 65/32 > 2 -/
+private theorem exp_three_fourths_gt_two : (2 : ℝ) < Real.exp (3/4) := by
+  calc (2 : ℝ) < 65/32 := by norm_num
+    _ ≤ ∑ i ∈ Finset.range 3, ((3 : ℝ)/4) ^ i / ↑(i.factorial) := by
+        simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nat.factorial]
+        norm_num
+    _ ≤ Real.exp (3/4) := Real.sum_le_exp_of_nonneg (by norm_num) 3
+
+/-- log 2 < 3/4 -/
+private theorem log_two_lt : Real.log 2 < 3/4 :=
+  (Real.log_lt_iff_lt_exp (by norm_num : (0 : ℝ) < 2)).mpr exp_three_fourths_gt_two
+
+/-- exp(2/3) < 2, via exp_bound upper bound -/
+private theorem exp_two_thirds_lt_two : Real.exp (2/3) < (2 : ℝ) := by
+  have hbound := Real.exp_bound (by norm_num : |(2 : ℝ)/3| ≤ 1) (n := 5) (by norm_num)
+  rw [abs_le] at hbound
+  simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nat.factorial, Nat.succ_eq_add_one] at hbound
+  norm_num at hbound ⊢
+  linarith [hbound.2]
+
+/-- log 2 > 2/3 -/
+private theorem log_two_gt : (2 : ℝ)/3 < Real.log 2 :=
+  (Real.lt_log_iff_exp_lt (by norm_num : (0 : ℝ) < 2)).mpr exp_two_thirds_lt_two
+
 /-- The constant √(2/log 2) ≈ 1.699 -/
 theorem straus_constant_value :
     Real.sqrt (2 / Real.log 2) > 1.6 ∧ Real.sqrt (2 / Real.log 2) < 1.8 := by
-  sorry
+  have hlog_pos : (0 : ℝ) < Real.log 2 := Real.log_pos (by norm_num : (1 : ℝ) < 2)
+  constructor
+  · rw [gt_iff_lt, Real.lt_sqrt (by norm_num : (0 : ℝ) ≤ 1.6)]
+    norm_num
+    rw [lt_div_iff₀ hlog_pos]
+    nlinarith [log_two_lt]
+  · rw [Real.sqrt_lt' (by norm_num : (0 : ℝ) < 1.8)]
+    norm_num
+    rw [div_lt_iff₀ hlog_pos]
+    nlinarith [log_two_gt]
 
 /- ## The Open Question -/
 
