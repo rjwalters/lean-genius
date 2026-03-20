@@ -4,6 +4,72 @@
 
 The Inverse Galois Problem (IGP) asks: for every finite group G, does there exist a Galois extension K/ℚ with Gal(K/ℚ) ≅ G?
 
+## Session 2026-03-20 (researcher-2) - Axiom Elimination via Resultant API
+
+**Mode**: REVISIT (RICH knowledge, score 127)
+**Outcome**: progress — complete proof architecture for eliminating vandermondeProduct_sq_eq axiom
+
+### Key Discovery: Mathlib's Resultant API
+
+Mathlib (v4.26.0) has exactly the API needed to eliminate the `vandermondeProduct_sq_eq` axiom:
+
+1. **`Polynomial.resultant_eq_prod_eval`**: Res(f,g) = lc(f)^n · ∏ eval αᵢ g (for splitting f)
+2. **`Polynomial.resultant_deriv`**: Res(f,f') = (-1)^{n(n-1)/2} · lc(f) · disc(f)
+3. **`Polynomial.resultant_map_map`**: Res(map φ f, map φ g) m n = φ(Res(f,g) m n)
+4. **`Polynomial.resultant_prod_left`**: Res(∏ fᵢ, g) = ∏ Res(fᵢ, g)
+5. **`Polynomial.resultant_X_sub_C_left`**: Res(X-r, g) = eval r g
+
+**Important**: `Polynomial.resultant` takes 4 args (f, g, m, n) with defaults m=natDegree f, n=natDegree g.
+
+### Proof Chain
+
+vandermondeProduct² = ∏_{i≠j}(αᵢ-αⱼ) = ∏ᵢ q'(αᵢ) = Res(q,q') = disc(q) = 1024000000
+
+Steps:
+- A: ∏_{i≠j}(αᵢ-αⱼ) = VP² [pairing, (-1)^10 = 1]
+- B: f=(X-α)·r ⟹ f'(α) = r(α) [derivative product rule]
+- C: q_SF = ∏(X - rootEnum i) [splitting]
+- D: q'(αᵢ) = ∏_{j≠i}(αᵢ-αⱼ) [from B+C]
+- E: ∏ q'(αᵢ) = ∏_{i≠j}(αᵢ-αⱼ) [product over i of step D]
+- F: ∏ q'(αᵢ) = Res(q_SF, q'_SF) [resultant_eq_prod_eval]
+- G: Res(q,q') = disc(q) [resultant_deriv, n=5, (-1)^10=1]
+- H: disc(q) = 1024000000 [computation]
+- I: Res(q_SF, q'_SF) = algebraMap(Res(q,q')) [resultant_map_map]
+
+### What Was Built (Part XV, ~130 lines)
+
+| Theorem | Status | Description |
+|---------|--------|-------------|
+| `ordered_root_diff_prod_eq_vandermonde_sq` | sorry | ∏_{i≠j}diff = VP² |
+| `eval_derivative_at_root_of_factor` | proved | f=(X-α)r → f'(α)=r(α) |
+| `q_SF_eq_prod_linear` | sorry | q splits as ∏(X-αᵢ) |
+| `eval_derivative_q_at_root` | sorry | q'(αᵢ) = ∏_{j≠i}(αᵢ-αⱼ) |
+| `prod_eval_derivative_eq_ordered_diff` | proved | ∏q'(αᵢ) = ∏∏(diff) |
+| `prod_eval_derivative_eq_resultant` | sorry | ∏q'(αᵢ) = Res |
+| `resultant_eq_disc_q` | sorry | Res = disc(q) |
+| `disc_q_val` | sorry | disc(q) = 1024000000 |
+| `resultant_transfer` | sorry | Res transfer via algebraMap |
+| `vandermondeProduct_sq_eq_proved` | sorry (uses above) | Final assembly via calc |
+
+Docker build: 0 errors, 7 sorries in Part XV, 2 axioms (unchanged)
+
+### Remaining Sorries — Specific Mathlib API Paths
+
+1. **ordered_root_diff_prod_eq_vandermonde_sq**: Algebraic pairing of Fin 5 products
+2. **q_SF_eq_prod_linear**: From `Polynomial.roots_eq_multiset_of_monic_of_splits` + rootEnum
+3. **eval_derivative_q_at_root**: Factor q_SF = (X-αᵢ)·r, apply eval_derivative_at_root_of_factor
+4. **prod_eval_derivative_eq_resultant**: Apply `resultant_eq_prod_eval` with proper bounds
+5. **resultant_eq_disc_q**: Apply `resultant_deriv` with q.degree > 0
+6. **disc_q_val**: Compute disc(q) via Sylvester matrix determinant (9×9 over ℤ)
+7. **resultant_transfer**: Apply `resultant_map_map` with algebraMap ℚ SF
+
+### Files Modified
+- `proofs/Proofs/InverseGaloisA5.lean`: Added Part XV (~130 lines)
+- `src/data/research/problems/abel-ruffini-oq-01.json`: Updated knowledge
+- `research/problems/abel-ruffini-oq-01/knowledge.md`: This file
+
+---
+
 ## Session 2026-03-19 (researcher-6) - Stats Audit and Axiom Elimination Attempt
 
 **Mode**: REVISIT (RICH knowledge score 122)
