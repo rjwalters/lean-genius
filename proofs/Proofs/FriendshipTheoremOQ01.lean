@@ -651,7 +651,7 @@ theorem eigenvalue_on_one_perp (k : ℕ) (hk : k ≥ 2) :
     (This is already proved as dvd_sq_add_one_imp_one above.) -/
 theorem spectral_conclusion (s : ℕ) (hs : s ≥ 1) (hdvd : s ∣ s * s + 1) :
     s = 1 :=
-  dvd_sq_add_one_imp_one s hs (by rwa [sq])
+  dvd_sq_add_one_imp_one s hs hdvd
 
 /-- Reformulation: if k-1 is a perfect square s² and the trace constraint
     forces s | k = s²+1, then k = 2. -/
@@ -661,13 +661,11 @@ theorem k_equals_two_from_perfect_square (k s : ℕ) (hk : k ≥ 2)
   have hk_eq : k = s * s + 1 := by omega
   -- From h_dvd and hk_eq: s | s*s + 1
   rw [hk_eq] at h_dvd
-  -- s | s*s + 1 and s | s*s, so s | 1, so s = 1
-  have h1 : s ∣ s * s := dvd_mul_left s s
-  have h3 : s * s + 1 - s * s = 1 := by omega
-  have h4 : s ∣ s * s + 1 - s * s := Nat.dvd_sub' h_dvd h1
-  rw [h3] at h4
-  have hs1 : s = 1 := Nat.eq_one_of_self_mul_self_dvd s (by rwa [Nat.dvd_one] at h4)
-  omega
+  -- s ≥ 1 (from k ≥ 2 and k-1 = s*s)
+  have hs_pos : s ≥ 1 := by nlinarith [h_sq]
+  -- Apply dvd_sq_add_one_imp_one: s | s*s+1 → s = 1
+  have hs1 : s = 1 := dvd_sq_add_one_imp_one s hs_pos h_dvd
+  subst hs1; omega
 
 -- ============================================================================
 -- Part XII: Trace Constraint and Integrality
@@ -700,7 +698,9 @@ theorem trace_forces_perfect_square (k n : ℕ) (hk : k ≥ 2) (hn : n = k * (k 
     -- requires k-1 to be a perfect square
     -- (otherwise √(k-1) irrational → m₊ = m₋ → k = 0, contradiction)
     : k * (k - 1) ≥ 1 := by
-  nlinarith
+  have h1 : k - 1 ≥ 1 := by omega
+  have h2 : k * (k - 1) ≥ 2 * 1 := Nat.mul_le_mul hk h1
+  omega
 
 /-- The complete spectral argument in number-theoretic form.
     Given: n = k(k-1) + 1, k ≥ 2

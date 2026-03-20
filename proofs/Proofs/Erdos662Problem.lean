@@ -15,7 +15,9 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
 
-open Finset
+open Finset Classical
+
+attribute [local instance] Classical.propDecidable
 
 -- ## Definitions
 
@@ -60,7 +62,13 @@ axiom triangularLatticeCount : ℝ → ℕ
     a squared + ab + b squared in the triangular lattice. -/
 theorem triLattice_sqDist (a b : ℤ) :
     sqDist (triLatticePoint a b) (triLatticePoint 0 0) =
-      ↑a ^ 2 + ↑a * ↑b + ↑b ^ 2 := by sorry
+      ↑a ^ 2 + ↑a * ↑b + ↑b ^ 2 := by
+  simp only [sqDist, triLatticePoint, Int.cast_zero, zero_div, add_zero, mul_zero,
+    zero_mul, sub_zero]
+  have h3 : Real.sqrt 3 ^ 2 = 3 := Real.sq_sqrt (by norm_num : (3 : ℝ) ≥ 0)
+  have key : (↑b * Real.sqrt 3 / 2) ^ 2 = ↑b ^ 2 * 3 / 4 := by
+    rw [div_pow, mul_pow, h3]; ring
+  rw [key]; ring
 
 /-- The 6 nearest neighbors in the triangular lattice at distance 1. -/
 theorem triLattice_nearest_neighbors :
