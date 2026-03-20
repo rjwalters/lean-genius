@@ -2934,10 +2934,6 @@ opaque GrandRH : Prop
 axiom selberg_degree_conjecture :
     ∀ F : SelbergClassFunction, ∃ d : ℕ, F.degree = (d : ℝ)
 
-/-- Degree 0 elements of S are exactly the constant 1 -/
-axiom selberg_degree_zero :
-    ∀ F : SelbergClassFunction, F.degree = 0 → ∀ n : ℕ, n ≥ 2 → F.coeff n = 0
-
 /-- Kaczorowski-Perelli structure theorem (2011):
     Functions of degree 1 in the extended Selberg class
     are products of shifted Dirichlet L-functions. -/
@@ -3013,16 +3009,6 @@ theorem rh_tightens_prime_bounds :
     (∃ C > 0, ∀ x : ℝ, x ≥ 2657 →
       |(primeCounting ⌊x⌋₊ : ℝ) - logIntegral x| ≤ C * Real.sqrt x * Real.log x) :=
   rh_explicit_prime_counting
-
-/-- Under RH, the n-th prime satisfies pₙ = Li⁻¹(n) + O(√pₙ log pₙ).
-    Equivalently, Li(pₙ) = n + O(√pₙ log pₙ) = n + O(√n log²n).
-
-    **BUG FIX (2026-03-19)**: Previously compared pₙ to n·log(n), but
-    pₙ - n·log(n) ~ n·log(log(n)) which grows faster than √n·log²(n).
-    The correct result uses Li⁻¹(n), stated here via Li(pₙ) ≈ n. -/
-axiom rh_nth_prime_estimate :
-    _root_.RiemannHypothesis → ∃ C > 0, ∀ n : ℕ, n ≥ 2 →
-      |logIntegral (Nat.nth Nat.Prime n : ℝ) - n| ≤ C * Real.sqrt n * (Real.log n) ^ 2
 
 /-- Littlewood's oscillation theorem (1914): π(x) - Li(x) changes sign infinitely often.
     This holds unconditionally and shows Li(x) is not always an overcount.
@@ -3290,11 +3276,6 @@ axiom berry_keating_conjecture : BerryKeatingConjecture → HilbertPolyaConjectu
     The key property: Z(t) ∈ ℝ for real t. -/
 opaque riemannSiegelZ : ℝ → ℝ
 
-/-- The Riemann-Siegel Z function satisfies |Z(t)| = ‖ζ(1/2 + it)‖.
-    Sign changes of Z detect zeros of ζ on the critical line. -/
-axiom riemann_siegel_z_function :
-    ∀ t : ℝ, |riemannSiegelZ t| = ‖riemannZeta (1/2 + ↑t * Complex.I)‖
-
 /-- The Riemann-von Mangoldt formula: the number of zeros with 0 < Im(ρ) ≤ T is
     N(T) = (T/(2π)) log(T/(2πe)) + O(log T).
     This gives the average spacing: 2π/(log T).
@@ -3495,9 +3476,6 @@ section DirichletConsequences
     Best unconditional bound: L ≤ 5 (Xylouris, 2011).
     Under GRH: L = 2 + ε suffices. -/
 opaque linnik_constant : ℝ
-
-/-- Linnik's constant is positive. -/
-axiom linnik_constant_pos : linnik_constant > 0
 
 /-- Unconditional bound: L ≤ 5 (Xylouris 2011). -/
 axiom linnik_constant_upper : linnik_constant ≤ 5
@@ -6515,21 +6493,6 @@ theorem cfkrs_consistent_with_known :
     -- k=1: exponent is 1² = 1, matching Hardy-Littlewood
     -- k=2: exponent is 2² = 4, matching Ingham
     (1 : ℕ) ^ 2 = 1 ∧ (2 : ℕ) ^ 2 = 4 := by omega
-
-/-- **Conrey-Ghosh sixth moment conjecture (1998)**
-
-    The sixth moment (k=3) remains unproved. The CFKRS prediction is:
-    ∫₀ᵀ |ζ(1/2 + it)|⁶ dt ~ c₃ T log⁹ T
-
-    where c₃ = 42/(9! × 2⁹ × π⁴) × (arithmetic factor).
-
-    Even an asymptotic of the form T^{1+ε} (without the correct
-    leading constant) is unknown. The best upper bound is:
-    ∫₀ᵀ |ζ(1/2 + it)|⁶ dt ≪ T^{1+ε} (Ivić, conditional on RH). -/
-axiom sixth_moment_upper_bound :
-    _root_.RiemannHypothesis →
-    ∀ ε > 0, ∃ C > 0, ∀ T ≥ 1,
-      zetaMomentIntegral 3 T ≤ C * T ^ (1 + ε)
 
 /-- **PROVED: The random matrix model dimension matches the GUE.**
 
