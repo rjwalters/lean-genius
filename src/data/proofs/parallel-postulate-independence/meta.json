@@ -106,5 +106,15 @@
       "Can the full Poincaré disk model be formalized in Lean with verified neutral geometry axioms?",
       "What other geometric axioms are independent of the standard systems?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "angle-trisection",
+      "relationship": "related",
+      "description": "Both concern independence/impossibility results in classical geometry. Angle trisection is impossible with compass and straightedge; the parallel postulate is independent of the other axioms."
+    }
+  ],
+  "relatedProofs": [
+    "angle-trisection"
+  ]
 }

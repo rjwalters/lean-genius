@@ -112,5 +112,15 @@
       "ODE uniqueness path: show f and (1+x)^α both satisfy (1+x)y'=αy with y(0)=1",
       "Use HasFPowerSeriesOnBall machinery to extract Taylor coefficients of (1+x)^α"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "extends",
+      "description": "Extends the basic binomial theorem to multinomial coefficients and generalized versions."
+    }
+  ],
+  "relatedProofs": [
+    "binomial-theorem"
+  ]
 }
