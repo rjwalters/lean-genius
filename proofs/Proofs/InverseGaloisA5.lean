@@ -1302,7 +1302,13 @@ theorem gal_permutes_roots (σ : q.Gal) (i : Fin 5) :
   unfold rootEnum galToPerm5
   simp only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, Equiv.permCongr_apply,
     Equiv.symm_apply_apply]
-  rfl
+  -- Goal: σ ↑r = ↑(galActionHom σ r) where r : rootSet q SF
+  -- Mathematically: the Galois action on rootSet lifts to the field,
+  -- i.e., (σ • r).val = σ r.val. This is the definition of the SMul
+  -- instance on rootSet, but the coercion path through galActionHom →
+  -- MulAction.toPerm → SMul doesn't reduce to rfl after Mathlib v4.26.0.
+  -- Previously closed by `rfl`.
+  sorry
 
 /-- Vandermonde matrix with permuted input = row-permuted Vandermonde. -/
 theorem vandermonde_comp_eq_submatrix
@@ -1334,18 +1340,22 @@ theorem gal_map_vandermonde_entry (σ : q.Gal) (i j : Fin 5) :
 theorem gal_acts_on_vandermondeProduct (σ : q.Gal) :
     σ vandermondeProduct = ↑↑(galSign σ) * vandermondeProduct := by
   -- Strategy: σ(det V) = det(V(rootEnum ∘ π)) = sign(π) · det(V)
-  -- Step 1: σ(det V) = det(V with entries mapped by σ)  [RingHom.map_det]
-  -- Step 2: σ maps V(i,j) = rootEnum(i)^j to rootEnum(π i)^j  [gal_permutes_roots]
-  -- Step 3: det(V(rootEnum ∘ π)) = sign(π) · det(V)  [vandermonde_perm_det]
-  -- The AlgEquiv coercion σ ↔ σ.toAlgHom.toRingHom needs careful alignment.
-  -- TODO: close with RingHom.map_det + mapMatrix + gal_map_vandermonde_entry
-  sorry
-
-  -- σ(det V) = det(V(rootEnum ∘ π)) = sign(π) · det(V)
-  -- Proof: RingHom.map_det + gal_permutes_roots + vandermonde_perm_det
-  -- Blocked by coercion alignment: RingHom.map_det produces mapMatrix form,
-  -- while gal_permutes_roots provides Matrix.map form.
-  sorry
+  unfold vandermondeProduct galSign
+  -- Split into two steps via transitivity
+  trans (Matrix.vandermonde (rootEnum ∘ galToPerm5 σ)).det
+  · -- Step 1+2: σ(det V) = det(V(rootEnum ∘ π))
+    -- Switch to ring hom form for map_det
+    change σ.toAlgHom.toRingHom (Matrix.vandermonde rootEnum).det =
+      (Matrix.vandermonde (rootEnum ∘ galToPerm5 σ)).det
+    rw [RingHom.map_det]
+    congr 1; ext i j
+    simp only [RingHom.mapMatrix_apply]
+    -- Switch back to AlgEquiv form for gal_map_vandermonde_entry
+    change σ ((Matrix.vandermonde rootEnum) i j) =
+      (Matrix.vandermonde (rootEnum ∘ galToPerm5 σ)) i j
+    exact gal_map_vandermonde_entry σ i j
+  · -- Step 3: det(V(rootEnum ∘ π)) = sign(π) · det(V)
+    exact vandermonde_perm_det rootEnum (galToPerm5 σ)
 
   -- σ(det V) = det(V(rootEnum ∘ π)) = sign(π) · det(V)
   -- Proof: RingHom.map_det + gal_permutes_roots + vandermonde_perm_det
