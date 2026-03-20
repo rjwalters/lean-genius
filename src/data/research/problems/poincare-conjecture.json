@@ -217,7 +217,13 @@
       "Part LXXXIII: Chern-Simons Theory — CS level, Jones polynomial, volume conjecture, RT/Kirby invariants (3 theorems)",
       "Part LXXXIV: Smooth 4-Manifolds — generalized Poincaré status, Freedman classification, exotic spheres Θ_7=Z_28 (3 theorems)",
       "Part XCI: h-Cobordism Theorem and Whitney Trick — HandleDecomposition structure, whitneyTrickMinDim, handle cancellation, Whitney dimension bound, proof chronology",
-      "Part XCII: TQFT Axioms — TQFT3d structure, Chern-Simons def, Verlinde formula proved, cobordism hypothesis, TQFT characterization of S^3"
+      "Part XCII: TQFT Axioms — TQFT3d structure, Chern-Simons def, Verlinde formula proved, cobordism hypothesis, TQFT characterization of S^3",
+      "Part XCI: Papakyriakopoulos Tower — Loop Theorem, Sphere Theorem, Dehn Lemma (~190 lines, ~8 theorems)",
+      "Part XCII: Smith Conjecture — Fixed Points of Cyclic Actions on S³ (~130 lines, ~8 theorems)",
+      "Part XCIII: h-Cobordism Theorem and Dimensions 3 vs ≥5 (~170 lines, ~10 theorems)",
+      "Part XCIV: Comparison Geometry for Ricci Flow (~170 lines, ~6 theorems)",
+      "Part XCV: Perelman Surgery Algorithm (~170 lines, ~6 theorems)",
+      "Part XCVI: Finite Extinction — Why Simply Connected Implies S³ (~180 lines, ~6 theorems)"
     ],
     "insights": [
       "Massive axiom reduction: 39 axioms converted to theorems/defs (115→76)",
@@ -336,7 +342,23 @@
       "TQFT axioms (Atiyah 1988): functor from cobordism category to Vect. Z(empty) = k, Z(disjoint union) = tensor product",
       "Verlinde formula for genus-1 state space: dim Z(T^2) = k/2 + 1 at CS level k (counts integrable representations)",
       "Cobordism hypothesis (Lurie 2009): fully extended TQFTs classified by modular tensor categories",
-      "S^3 characterized by TQFT invariants but this does NOT give independent proof of Poincare"
+      "S^3 characterized by TQFT invariants but this does NOT give independent proof of Poincare",
+      "Papakyriakopoulos tower construction: lifts to covering spaces to resolve self-intersections, terminates finitely",
+      "Loop theorem generalizes Dehn lemma: if π₁(∂M)→π₁(M) non-injective, find embedded compressing disk",
+      "Sphere theorem: π₂(M)≠0 gives embedded S², used for prime decomposition",
+      "Equivariant versions (Meeks-Yau 1981): can find G-invariant embedded surfaces, needed for Smith conjecture",
+      "Smith conjecture: cyclic action on S³ with 1-dim fixed set must have unknotted fixed set",
+      "h-cobordism fails in dim 3: Whitney trick needs dim ≥ 5, Freedman works topologically in dim 4",
+      "Dimension 3 is isolated: not enough room for h-cobordism, not low enough for classification",
+      "Exotic spheres: |Θ₃|=1 (Perelman), |Θ₇|=28 (Milnor), |Θ₄|=? (open!)",
+      "Bishop-Gromov + Perelman κ-noncollapsing: two-sided volume control κr³ ≤ V ≤ (4/3)πr³",
+      "Shi estimates: Ricci flow smooths curvature, all derivatives bounded for t>0",
+      "Hamilton compactness theorem needs κ-noncollapsing (Perelman key contribution)",
+      "Canonical neighborhoods: 4 types (neck, cap, closed positive curv, horn)",
+      "Surgery removes S² necks, caps with hemispheres, decreases topological complexity",
+      "Colding-Minicozzi width: dW/dt ≤ -4π → extinction in T ≤ W₀/(4π)",
+      "Simply connected → finite extinction → M = S³ (complete proof chain: 8 steps)",
+      "99 years from Poincaré question (1904) to Perelman proof (2003)"
     ],
     "mathlibGaps": [
       "3-manifolds",
