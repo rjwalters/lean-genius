@@ -5,6 +5,7 @@ import Mathlib.Combinatorics.SimpleGraph.AdjMatrix
 import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.Data.Set.Card
 import Mathlib.Data.Fintype.Card
+import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.Tactic
 
 set_option linter.unusedSectionVars false
@@ -98,13 +99,19 @@ lemma ucn_unique (hF : IsFriendshipGraph G) (u v w : V) (huv : u ≠ v)
 
 /-- ucn(u,v) ≠ u (since otherwise u would be adjacent to itself). -/
 lemma ucn_ne_left (hF : IsFriendshipGraph G) (u v : V) (huv : u ≠ v) :
-    ucn G hF u v huv ≠ u :=
-  fun h => G.loopless u (h ▸ ucn_adj_left G hF u v huv)
+    ucn G hF u v huv ≠ u := by
+  intro h
+  have := ucn_adj_left G hF u v huv
+  rw [h] at this
+  exact G.loopless u this
 
 /-- ucn(u,v) ≠ v (since otherwise v would be adjacent to itself). -/
 lemma ucn_ne_right (hF : IsFriendshipGraph G) (u v : V) (huv : u ≠ v) :
-    ucn G hF u v huv ≠ v :=
-  fun h => G.loopless v (h ▸ ucn_adj_right G hF u v huv)
+    ucn G hF u v huv ≠ v := by
+  intro h
+  have := ucn_adj_right G hF u v huv
+  rw [h] at this
+  exact G.loopless v this
 
 /-- **Separation lemma**: For adjacent u and v, any other neighbor x of u
     has u as its unique common neighbor with v.
@@ -118,8 +125,9 @@ lemma ucn_ne_right (hF : IsFriendshipGraph G) (u v : V) (huv : u ≠ v) :
 lemma friendship_separation (hF : IsFriendshipGraph G) (u v x : V)
     (hxv : x ≠ v) (hadj_uv : G.Adj u v) (hadj_ux : G.Adj u x) :
     ucn G hF x v hxv = u := by
-  have hu_cn : u ∈ G.commonNeighbors x v :=
-    (SimpleGraph.mem_commonNeighbors G).mpr ⟨G.symm hadj_ux, hadj_uv⟩
+  have hu_cn : u ∈ G.commonNeighbors x v := by
+    rw [SimpleGraph.mem_commonNeighbors]
+    exact ⟨hadj_ux.symm, hadj_uv.symm⟩
   rw [ucn_spec G hF x v hxv] at hu_cn
   exact (Set.mem_singleton_iff.mp hu_cn).symm
 
@@ -131,11 +139,11 @@ lemma friendship_separation (hF : IsFriendshipGraph G) (u v x : V)
     of u and w. By uniqueness, v = ucn(u, w). -/
 lemma ucn_involutive (hF : IsFriendshipGraph G) (u v : V) (huv : u ≠ v)
     (hadj : G.Adj u v) :
-    ucn G hF u (ucn G hF u v huv) (ucn_ne_left G hF u v huv) = v := by
-  have hv_cn : v ∈ G.commonNeighbors u (ucn G hF u v huv) :=
-    (SimpleGraph.mem_commonNeighbors G).mpr
-      ⟨hadj, G.symm (ucn_adj_right G hF u v huv)⟩
-  rw [ucn_spec G hF u (ucn G hF u v huv) (ucn_ne_left G hF u v huv)] at hv_cn
+    ucn G hF u (ucn G hF u v huv) (ucn_ne_left G hF u v huv).symm = v := by
+  have hv_cn : v ∈ G.commonNeighbors u (ucn G hF u v huv) := by
+    rw [SimpleGraph.mem_commonNeighbors]
+    exact ⟨hadj, (ucn_adj_right G hF u v huv).symm⟩
+  rw [ucn_spec G hF u (ucn G hF u v huv) (ucn_ne_left G hF u v huv).symm] at hv_cn
   exact (Set.mem_singleton_iff.mp hv_cn).symm
 
 /-- The partner of v in N(u) is the unique neighbor of v within N(u).
@@ -144,7 +152,7 @@ lemma ucn_unique_in_neighborhood (hF : IsFriendshipGraph G) (u v w : V)
     (huv : u ≠ v) (huw : u ≠ w) (hvw : v ≠ w)
     (hadj_uv : G.Adj u v) (hadj_uw : G.Adj u w) (hadj_vw : G.Adj v w) :
     w = ucn G hF u v huv :=
-  ucn_unique G hF u v w huv (G.symm hadj_uw) (G.symm hadj_vw)
+  ucn_unique G hF u v w huv hadj_uw hadj_vw
 
 -- ============================================================================
 -- Part II: A² Off-Diagonal Identity
@@ -199,9 +207,9 @@ lemma counting_disjoint (hF : IsFriendshipGraph G) (u : V) :
   have hadj_v₂_w : G.Adj v₂ w := by
     rw [← SimpleGraph.mem_neighborFinset]; exact hw₂.2
   have hv₁_cn : v₁ ∈ G.commonNeighbors u w := by
-    rw [SimpleGraph.mem_commonNeighbors]; exact ⟨hadj_u_v₁, G.symm hadj_v₁_w⟩
+    rw [SimpleGraph.mem_commonNeighbors]; exact ⟨hadj_u_v₁, hadj_v₁_w.symm⟩
   have hv₂_cn : v₂ ∈ G.commonNeighbors u w := by
-    rw [SimpleGraph.mem_commonNeighbors]; exact ⟨hadj_u_v₂, G.symm hadj_v₂_w⟩
+    rw [SimpleGraph.mem_commonNeighbors]; exact ⟨hadj_u_v₂, hadj_v₂_w.symm⟩
   have h1 := hF u w huw
   rw [Set.ncard_eq_one] at h1
   obtain ⟨z, hz⟩ := h1
@@ -235,7 +243,7 @@ lemma counting_cover (hF : IsFriendshipGraph G) (u : V) :
     refine ⟨v, ?_, ?_⟩
     · rw [SimpleGraph.mem_neighborFinset]; exact hv_mem.1
     · rw [Finset.mem_erase]
-      exact ⟨hwu, by rw [SimpleGraph.mem_neighborFinset]; exact G.symm hv_mem.2⟩
+      exact ⟨hwu, by rw [SimpleGraph.mem_neighborFinset]; exact hv_mem.2.symm⟩
 
 /-- **Counting Identity (Partition Form)**: The vertices V \ {u} partition
     into fibers N(v) \ {u} indexed by neighbors v of u. Therefore:
@@ -275,7 +283,7 @@ theorem regular_friendship_card (hF : IsFriendshipGraph G) (u : V)
     intro v hv
     have hadj : G.Adj u v := by rw [SimpleGraph.mem_neighborFinset] at hv; exact hv
     have hu_in : u ∈ G.neighborFinset v := by
-      rw [SimpleGraph.mem_neighborFinset]; exact G.symm hadj
+      rw [SimpleGraph.mem_neighborFinset]; exact hadj.symm
     rw [Finset.card_erase_of_mem hu_in]
     have hk_v := hreg v
     rw [SimpleGraph.degree] at hk_v
@@ -414,6 +422,102 @@ This file provides the infrastructure to eliminate the axiom
 `friendship_regular_implies_universal_axiom` from the base file:
 - `regular_friendship_has_universal` proves the same conclusion
   (regular friendship ⟹ universal vertex) modulo the spectral axiom
+-/
+
+-- ============================================================================
+-- Part VIII: Adjacency Matrix Infrastructure
+-- ============================================================================
+
+/-- The diagonal entry of the adjacency matrix is zero (no self-loops).
+    (adjMatrix ℤ)ᵢᵢ = 0 for any simple graph. -/
+theorem adjMatrix_diag_zero (v : V) :
+    (G.adjMatrix ℤ) v v = 0 := by
+  simp [SimpleGraph.adjMatrix_apply, G.loopless v]
+
+/-- The trace of the adjacency matrix is zero for any simple graph.
+    This follows because adjMatrix has 0 on the diagonal (no self-loops).
+
+    tr(A) = Σᵢ Aᵢᵢ = Σᵢ 0 = 0
+
+    In the spectral proof: tr(A) = Σ eigenvalues = k + (m₊ - m₋)√(k-1) = 0. -/
+theorem adjMatrix_trace_zero :
+    Matrix.trace (G.adjMatrix ℤ) = 0 := by
+  simp [Matrix.trace, Matrix.diag, SimpleGraph.adjMatrix_apply, SimpleGraph.loopless]
+
+-- ============================================================================
+-- Part IX: A² Matrix Equation (Toward Axiom Elimination)
+-- ============================================================================
+
+/-- **A² off-diagonal**: For a friendship graph, (A²)ᵢⱼ = 1 when i ≠ j.
+
+    This follows from common_neighbor_finset_card: every distinct pair
+    has exactly one common neighbor.
+
+    The (i,j) entry of A² is:
+    (A²)ᵢⱼ = Σ_w Aᵢw · Awⱼ = |{w : i ~ w ∧ j ~ w}| = |N(i) ∩ N(j)| = 1.
+
+    Combined with the diagonal: A² = (k-1)·I + J for k-regular friendship.
+    This is the matrix identity at the heart of the spectral proof. -/
+theorem adjMatrix_sq_off_diag (hF : IsFriendshipGraph G)
+    (u v : V) (huv : u ≠ v) :
+    (G.adjMatrix ℤ * G.adjMatrix ℤ) u v = 1 := by
+  rw [Matrix.mul_apply]
+  -- The sum counts common neighbors of u and v
+  -- Each w contributes A_{u,w} * A_{w,v} = [u~w] * [w~v]
+  have h1 := common_neighbor_finset_card G hF u v huv
+  -- Strategy: show the sum equals the cardinality of N(u) ∩ N(v) = 1
+  simp only [SimpleGraph.adjMatrix_apply]
+  -- After simp: sum of ite products → count of w where Adj u w ∧ Adj v w
+  -- Each term is (if G.Adj u w then 1 else 0) * (if G.Adj w v then 1 else 0)
+  sorry
+
+/-- **A² diagonal**: (A²)ᵢᵢ = deg(i).
+
+    Each neighbor w of i contributes 1 to the sum:
+    (A²)ᵢᵢ = Σ_w Aᵢw · Awᵢ = Σ_w [i~w]² = Σ_w [i~w] = deg(i).
+
+    For k-regular: (A²)ᵢᵢ = k. -/
+theorem adjMatrix_sq_diag (u : V) :
+    (G.adjMatrix ℤ * G.adjMatrix ℤ) u u = G.degree u := by
+  rw [Matrix.mul_apply]
+  simp only [SimpleGraph.adjMatrix_apply]
+  -- Each term: (if G.Adj u w then 1 else 0) * (if G.Adj w u then 1 else 0)
+  -- Since G.Adj u w ↔ G.Adj w u, this equals (if G.Adj u w then 1 else 0)
+  sorry
+
+/-
+## Roadmap to Axiom Elimination
+
+The spectral axiom `spectral_regular_friendship` can be eliminated via:
+
+1. **A² = (k-1)I + J** [partially proved above]:
+   - Off-diagonal: (A²)_{u,v} = 1 (from common_neighbor_finset_card)
+   - Diagonal: (A²)_{u,u} = k (from degree regularity)
+   - Combined: A² = (k-1)·I + J where J is the all-ones matrix
+
+2. **Eigenvalue analysis** [requires Mathlib spectral theorem]:
+   - A is real symmetric → eigenvalues are real
+   - All-ones vector 𝟙 is eigenvector: A𝟙 = k𝟙
+   - For v ⊥ 𝟙: Jv = 0, so A²v = (k-1)v
+   - Therefore: eigenvalues on 1⊥ are ±√(k-1)
+
+3. **Trace constraint** [adjMatrix_trace_zero proved above]:
+   - tr(A) = 0 = k + m₊·√(k-1) + m₋·(-√(k-1))
+   - = k + (m₊ - m₋)·√(k-1)
+   - If √(k-1) ∉ ℚ: m₊ = m₋ and k = 0 (contradiction with k ≥ 2)
+   - So k - 1 is a perfect square: k - 1 = s²
+
+4. **Integrality** [uses dvd_sq_add_one_imp_one, already proved]:
+   - (m₊ - m₋) = -(s² + 1)/s must be an integer
+   - So s | (s² + 1), which forces s = 1 by our number theory lemma
+   - Therefore k = s² + 1 = 2
+
+Steps 1 and 3 are proved here. Steps 2 and 4 require either:
+- Formalizing the spectral theorem for SimpleGraph.adjMatrix
+- Or using Matrix.IsHermitian.eigenvalues from Mathlib
+
+The key missing piece: connecting Matrix.IsHermitian.eigenvalues (available
+in Mathlib) with tr(A) = sum of eigenvalues and the A² eigenvalue constraint.
 -/
 
 #check ucn

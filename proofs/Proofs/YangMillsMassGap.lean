@@ -26818,4 +26818,5 @@ end DimensionalReduction
 -- ═══════════════════════════════════════════════════════════════════════════════
 -- ~112 parts, ~27000 lines, 16 axioms, ~950+ theorems, 0 sorries
 
+
 end YangMillsMassGap
