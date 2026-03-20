@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Deleted 5 unused axioms (78→73): selberg_degree_zero, rh_nth_prime_estimate, riemann_siegel_z_function, linnik_constant_pos, sixth_moment_upper_bound.",
+    "progressSummary": "PROGRESS: Deleted 2 unused axioms (73→71): elliott_halberstam_conjecture (open conjecture), GRH_implies_EH (unused).",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",
@@ -143,7 +143,8 @@
       "RH helps cryptography: faster primality + better prime distribution, without breaking factoring",
       "Miller 1976 GRH test is FASTER than AKS 2002 unconditional test: O((log n)^4) vs O((log n)^{6+ε})",
       "Artin constant C ≈ 0.3739: density of primes for which a is a primitive root",
-      "5 axioms were completely unused (referenced only in their own declaration) and could be safely deleted"
+      "5 axioms were completely unused (referenced only in their own declaration) and could be safely deleted",
+      "EH conjecture should not be axiomatized unconditionally — it is an open problem. Removed to maintain axiom hygiene."
     ],
     "mathlibGaps": [
       "Dirichlet series",
