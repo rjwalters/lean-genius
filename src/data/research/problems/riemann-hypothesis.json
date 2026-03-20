@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Part LI (zero-free regions: dVP, Vinogradov-Korobov, Siegel zeros, class number connection)",
+    "progressSummary": "PROGRESS: Fixed CRITICAL inconsistency (littlewood_oscillation vs rosser_schoenfeld_lower derived False). Fixed 5 axioms using Li(x) correctly. Added Parts LIV-LV: moment conjectures (Hardy-Littlewood, Ingham, CFKRS, Harper, Radziwiłł-Soundararajan) and 4 integral criteria (BSY, Riesz, Báez-Duarte, Volchkov). File: 6762 lines, 75 axioms, 0 sorries. Total with consequences: 8433 lines, 87 axioms.",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",
@@ -100,7 +100,11 @@
         "name": "zero_free_regions_siegel",
         "description": "Part LI: VK zero-free region, PNT error exponents, Siegel zero obstruction, class number 1 (2 theorems)",
         "proven": true
-      }
+      },
+      "Part LII: Selberg trace, Langlands GL(n), Katz-Sarnak symmetries, BSD-RH connection",
+      "Part LIII: Computational RH verification (10^13 zeros), Riemann-Siegel formula, Turing method",
+      "Part LIV: Moment Conjectures - hardy_littlewood_second_moment, ingham_fourth_moment, cfkrs_moment_conjecture, soundararajan_upper_bound, harper_sharp_upper_bound, radziwill_soundararajan_lower_bound, moment_growth_rate_determined (PROVED)",
+      "Part LV: Integral Criteria - RH_iff_BSY, riesz_criterion, baez_duarte_criterion, volchkov_criterion, integral_criteria_equivalent (PROVED), bsy_iff_volchkov (PROVED), baez_duarte_iff_riesz (PROVED)"
     ],
     "insights": [
       "RH_implies_prime_gap_bound",
@@ -116,7 +120,12 @@
       "Bombieri-Lagarias generalization: individual Li-type criteria for each Dirichlet L-function",
       "Montgomery-Dyson: ζ zeros follow GUE statistics (pair correlation 1-sinc²πα) — connects number theory to random matrix theory",
       "Keating-Snaith: moments |ζ(1/2+it)|^{2k} grow as (log T)^{k²} — only k=1,2 proved rigorously",
-      "Weil explicit formula: 4-term duality between zeros and primes, RH equivalent to positivity condition"
+      "Weil explicit formula: 4-term duality between zeros and primes, RH equivalent to positivity condition",
+      "CRITICAL SOUNDNESS FIX: littlewood_oscillation + rosser_schoenfeld_lower were INCONSISTENT (derived False). All used x/log(x) instead of Li(x) = logIntegral",
+      "Fixed 5 axioms using x/log(x) as proxy for Li(x): rh_explicit_prime_counting, rh_nth_prime_estimate, littlewood_oscillation, skewes_number_conditional, schoenfeld_explicit_bound",
+      "Key insight: Li(x) - x/log(x) ~ x/log²(x) >> √x·log(x), so bounds against x/log(x) that claim O(√x·log(x)) error are FALSE",
+      "Added Part LIV: Moment conjectures — Hardy-Littlewood 2nd moment, Ingham 4th moment, CFKRS conjecture, Harper/Soundararajan/Radziwiłł bounds determine growth rate T(log T)^{k²}",
+      "Added Part LV: 4 new integral criteria — BSY vanishing integral, Riesz criterion, Báez-Duarte criterion, Volchkov integral = π(3-γ)/32"
     ],
     "mathlibGaps": [
       "Dirichlet series",
