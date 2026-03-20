@@ -5750,12 +5750,15 @@ theorem bsd_jacobian_rank_zero (genus : ℕ) (hg : genus > 0) :
 axiom gross_zagier_zhang_gl2 (_A : AbelianVariety) :
     True  -- Needs analytic rank for abelian varieties
 
-/-- Bhargava-Shankar (2015): The average rank of elliptic curves over ℚ
+/- Bhargava-Shankar (2015): The average rank of elliptic curves over ℚ
     (ordered by height) is at most 7/6. Key consequence: a positive
     proportion have rank 0 and a positive proportion have rank 1. -/
-axiom bhargava_shankar_average_rank :
+/-- **PROVED**: Bhargava-Shankar average rank consequence.
+    Was axiom; identical to `average_rank_bounded` declared earlier. -/
+theorem bhargava_shankar_average_rank :
     (∃ E : EllipticCurveQ, algebraicRank E = 0) ∧
-    (∃ E : EllipticCurveQ, algebraicRank E = 1)
+    (∃ E : EllipticCurveQ, algebraicRank E = 1) :=
+  average_rank_bounded
 
 /-- Bhargava-Skinner-Zhang (2014): at least 66.48% of elliptic curves
     (ordered by height) have rank 0 and satisfy the full BSD conjecture.
@@ -5769,11 +5772,19 @@ axiom positive_proportion_rank_zero_bsd :
 axiom positive_proportion_rank_one_bsd :
     ∃ E : EllipticCurveQ, algebraicRank E = 1 ∧ analyticRank E = 1
 
-/-- Combined: BSD holds for at least 87.16% of all elliptic curves.
+/- Combined: BSD holds for at least 87.16% of all elliptic curves.
     66.48% rank 0 + 20.68% rank 1 = 87.16% satisfy weak BSD. -/
-axiom bsd_positive_density :
+/-- **PROVED**: BSD holds for a positive density of curves.
+    Was axiom; derived from `positive_proportion_rank_zero_bsd` (rank 0 witness with
+    L(E,1) ≠ 0), `BSD_rank_zero_axiom` (L(E,1) ≠ 0 → analyticRank = 0), and
+    `positive_proportion_rank_one_bsd` (rank 1 witness). -/
+theorem bsd_positive_density :
     (∃ E : EllipticCurveQ, algebraicRank E = 0 ∧ analyticRank E = 0) ∧
-    (∃ E : EllipticCurveQ, algebraicRank E = 1 ∧ analyticRank E = 1)
+    (∃ E : EllipticCurveQ, algebraicRank E = 1 ∧ analyticRank E = 1) := by
+  constructor
+  · obtain ⟨E, hrank, hL⟩ := positive_proportion_rank_zero_bsd
+    exact ⟨E, hrank, (BSD_rank_zero_axiom E hL).2⟩
+  · exact positive_proportion_rank_one_bsd
 
 -- ═════════════════════════════════════════════════════════════════════════
 -- VERIFICATION CHECKS (Parts L-LI)
