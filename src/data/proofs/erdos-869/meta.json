@@ -7,7 +7,7 @@
     "author": "Erdős and Nathanson (1988 question)",
     "sourceUrl": "https://erdosproblems.com/869",
     "date": "",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos869Problem.lean",
     "tags": [
       "erdos",
@@ -57,7 +57,8 @@
       "hartter_nathanson axiom: bases without minimal sub-bases exist",
       "union_of_bases theorem: union of disjoint bases is a basis",
       "basis_monotone theorem: superset of basis is a basis"
-    ]
+    ],
+    "axiomCount": 7
   },
   "overview": {
     "historicalContext": "**Erdős Problem #869: Minimal Additive Bases**\n\nThis problem in additive combinatorics asks about the structure of additive bases formed from disjoint unions.\n\n**Background:**\n- **Additive basis of order 2**: A set B where B + B (all pairwise sums) contains all sufficiently large integers\n- **Minimal basis**: A basis where removing any element leaves infinitely many integers unrepresentable\n\n**Key Prior Results:**\n- **Härtter (1956)**: Proved there exist additive bases containing no minimal sub-basis\n- **Nathanson (1974)**: Extended this result with further constructions\n- **Erdős-Nathanson (1988)**: Posed this question about disjoint bases\n\n**The Key Insight:**\nWhile arbitrary bases may lack minimal sub-bases, the question is whether the special structure of arising from two disjoint bases forces the existence of a minimal sub-basis.",

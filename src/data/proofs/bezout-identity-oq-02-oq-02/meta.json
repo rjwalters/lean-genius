@@ -8,16 +8,43 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/B%C3%A9zout%27s_identity",
     "date": "~300 BCE (abstract algebra formalization 2026)",
     "status": "verified",
-    "tags": ["number-theory", "abstract-algebra", "ring-theory", "bezout", "euclid", "generalization"],
+    "tags": [
+      "number-theory",
+      "abstract-algebra",
+      "ring-theory",
+      "bezout",
+      "euclid",
+      "generalization"
+    ],
     "proofRepoPath": "Proofs/BezoutIdentityOQ02OQ02.lean",
     "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
-      {"theorem": "IsBezout.span_pair_isPrincipal", "description": "In an IsBezout ring, Ideal.span {x, y} is principal for any x, y", "module": "Mathlib.RingTheory.Bezout"},
-      {"theorem": "IsRelPrime.isCoprime", "description": "In a ring with principal pair spans, IsRelPrime implies IsCoprime", "module": "Mathlib.RingTheory.Coprime.Basic"},
-      {"theorem": "irreducible_iff_prime", "description": "In CancelCommMonoidWithZero + DecompositionMonoid, irreducible ↔ prime", "module": "Mathlib.Algebra.Prime.Basic"},
-      {"theorem": "GaussianInt.instEuclideanDomain", "description": "Gaussian integers form a Euclidean domain (hence IsBezout)", "module": "Mathlib.NumberTheory.Gaussian"},
-      {"theorem": "Polynomial.instEuclideanDomain", "description": "Polynomial ring over a field is a Euclidean domain", "module": "Mathlib.RingTheory.Polynomial.Basic"}
+      {
+        "theorem": "IsBezout.span_pair_isPrincipal",
+        "description": "In an IsBezout ring, Ideal.span {x, y} is principal for any x, y",
+        "module": "Mathlib.RingTheory.Bezout"
+      },
+      {
+        "theorem": "IsRelPrime.isCoprime",
+        "description": "In a ring with principal pair spans, IsRelPrime implies IsCoprime",
+        "module": "Mathlib.RingTheory.Coprime.Basic"
+      },
+      {
+        "theorem": "irreducible_iff_prime",
+        "description": "In CancelCommMonoidWithZero + DecompositionMonoid, irreducible ↔ prime",
+        "module": "Mathlib.Algebra.Prime.Basic"
+      },
+      {
+        "theorem": "GaussianInt.instEuclideanDomain",
+        "description": "Gaussian integers form a Euclidean domain (hence IsBezout)",
+        "module": "Mathlib.NumberTheory.Gaussian"
+      },
+      {
+        "theorem": "Polynomial.instEuclideanDomain",
+        "description": "Polynomial ring over a field is a Euclidean domain",
+        "module": "Mathlib.RingTheory.Polynomial.Basic"
+      }
     ],
     "originalContributions": [
       "euclids_lemma_ring: Euclid's lemma in ANY CommRing via IsCoprime, with one-line proof by linear_combination",
@@ -27,7 +54,8 @@
       "euclids_lemma_irreducible: Irreducible p, p|a*b → p|a or p|b in any DecompositionMonoid",
       "Uniform instances for ℤ, ℚ[X], ℤ[i] all reduce to the same one-line proof"
     ],
-    "dateAdded": "2026-02-24"
+    "dateAdded": "2026-02-24",
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "**Euclid's Lemma** originated in Euclid's *Elements* (~300 BCE) for the integers. The **abstract algebraic generalization** — that the same result holds in any ring where the Bézout identity can be established — was developed in the 19th and 20th centuries alongside abstract algebra.\n\n**Bézout domains** were formalized as rings where every finitely generated ideal is principal (equivalently, gcd exists and is a linear combination). **Richard Dedekind** and **Emmy Noether** laid the groundwork for understanding divisibility in abstract rings. The modern formulation in terms of `IsCoprime` — the existence of Bézout coefficients equaling 1 — appears in Bourbaki and is now standard in computer algebra systems.\n\nIn **Lean 4 with Mathlib**, the typeclass hierarchy reflects this algebra:\n- `EuclideanDomain` (ℤ, ℚ[X], ℤ[i]) → `PrincipalIdealRing` → `IsBezout` → `Ring`\n\nThe key insight in this formalization: `IsCoprime a b` in Lean is *defined* as `∃ u v, u*a + v*b = 1`, which is **exactly** the Bézout algebraic condition. This makes Euclid's lemma work in **any** commutative ring — no additional structure needed.",

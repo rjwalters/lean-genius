@@ -71,7 +71,8 @@
       "LogConvexityProperty equivalence with vertex definition",
       "counterexample_set_infinite theorem (fully proved from axioms)",
       "log_convexity_iff_vertex identity (proved by rfl)"
-    ]
+    ],
+    "axiomCount": 6
   },
   "leanFile": {
     "imports": [
@@ -80,7 +81,10 @@
       "Mathlib.Data.Real.Basic",
       "Mathlib.Analysis.Convex.Basic"
     ],
-    "opens": ["Nat", "Real"],
+    "opens": [
+      "Nat",
+      "Real"
+    ],
     "namespace": "Erdos453",
     "lineCount": 304,
     "axiomCount": 6,

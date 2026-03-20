@@ -7,7 +7,7 @@
     "author": "Erdős, Nathanson (1979), Härtter (1956)",
     "sourceUrl": "https://erdosproblems.com/870",
     "date": "1979",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos870Problem.lean",
     "tags": [
       "erdos",
@@ -55,7 +55,8 @@
       "erdos_nathanson_k2 axiom",
       "waring_theorem axiom",
       "IsSidonSet definition"
-    ]
+    ],
+    "axiomCount": 7
   },
   "overview": {
     "historicalContext": "This problem asks about additive bases - sets A ⊆ ℕ where every large integer is a sum of at most k elements from A. A minimal basis has no proper subset that is also a basis. Erdős and Nathanson (1979) proved that for k = 2, if representations grow logarithmically, the basis contains a minimal basis. Härtter (1956) and Nathanson (1974) showed that without growth conditions, bases may contain no minimal bases.",

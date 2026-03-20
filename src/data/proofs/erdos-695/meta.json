@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/695",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos695Problem.lean",
     "tags": [
       "erdos",
@@ -57,7 +57,8 @@
       "IsCunninghamChainFirst definition: 2p+1 chains",
       "fkl_analysis axiom: Ford-Konyagin-Luca results",
       "exponential_lower_bound axiom: p_k ≥ c^k"
-    ]
+    ],
+    "axiomCount": 6
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1979 [Er79e]. Prime chains arise from the multiplicative structure of cyclic groups: if p_{i+1} ≡ 1 (mod p_i), then Z/p_{i+1}Z contains a cyclic subgroup of order p_i.\n\nFord, Konyagin, and Luca [FKL10] conducted an extensive study of prime chain growth, establishing various bounds. The problem connects to Linnik's theorem on the least prime in arithmetic progressions.\n\nRelated: OEIS A061092, Cunningham chains.",

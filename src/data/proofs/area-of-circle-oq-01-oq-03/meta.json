@@ -55,7 +55,8 @@
       "Area bound: 2A ≤ c·∫√(x²+y²) via 2D Cauchy-Schwarz + abs_le + integral monotonicity",
       "equality_implies_circle: PROVED (was axiom) — if 4πA=C², set r=C/(2π), then C=2πr and A=πr² by field_simp+linarith"
     ],
-    "dateAdded": "02/24/26"
+    "dateAdded": "02/24/26",
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "The isoperimetric problem — find the shape of maximum area for a given perimeter — is one of the oldest optimization problems in mathematics, traced to ancient Dido of Carthage (~900 BCE). The problem asks: among all closed curves of length $L$, which encloses the most area? The answer is a circle, and the isoperimetric inequality $C^2 \\geq 4\\pi A$ quantifies how much any curve falls short. Archimedes knew the result informally (~250 BCE), but a rigorous proof waited until the 19th century. Steiner (1838) gave an elegant proof using symmetrization, but didn't prove existence of the maximizer. Weierstrass (1870s) gave the first complete proof using calculus of variations. The most elegant proof is due to Hurwitz (1901), who used Fourier series and the Wirtinger inequality.",

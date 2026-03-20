@@ -7,7 +7,7 @@
     "author": "Lorentz (1954), Ruzsa (1972, 2001)",
     "sourceUrl": "https://erdosproblems.com/221",
     "date": "1972",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos221Problem.lean",
     "tags": [
       "erdos",
@@ -65,7 +65,8 @@
       "GeneralizedComplement definition, generalization_to_any_base axiom",
       "sumset_covering, additive_basis_order_two axioms",
       "erdos_221_summary, erdos_221_main, erdos_221 theorems"
-    ]
+    ],
+    "axiomCount": 11
   },
   "overview": {
     "historicalContext": "**Erdős Problem #221** asks whether the exponentially sparse set $\\{2^k : k \\geq 0\\}$ admits a thin additive complement. The problem sits at the intersection of additive combinatorics and multiplicative number theory.\n\n**G.G. Lorentz** (1954) gave the first positive answer in his paper 'On a problem of additive number theory' (*Acta Math. Acad. Sci. Hungar.*), constructing a complement $A$ with $|A \\cap \\{1,\\ldots,N\\}| \\ll N \\log\\log N / \\log N$. This was close to optimal but not quite sharp.\n\n**Imre Ruzsa** (1972) achieved the optimal bound in 'On a problem of P. Erdős,' constructing $A$ with $|A \\cap \\{1,\\ldots,N\\}| \\ll N / \\log N$. His ingenious idea was to build $A$ from multiples of powers of 5, exploiting the number-theoretic fact that 2 is a **primitive root modulo $5^n$** for all $n \\geq 1$. This means the powers of 2 cycle through all residues coprime to $5^n$, ensuring every large integer has a representation $2^k + a$.\n\nThe constant $C = 1/(5 \\log 2) \\approx 0.288$ in Ruzsa's construction was later verified by **van Doorn** on erdosproblems.com. In 2001, Ruzsa refined the result in 'Additive completion of lacunary sequences' (*Combinatorica*), constructing an **exact complement** with asymptotically optimal density $|A \\cap \\{1,\\ldots,N\\}| \\sim N / \\log_2 N$.\n\nThe problem connects to the broader study of **additive bases** and **lacunary sequences** in additive number theory. While geometric sequences like $\\{2^k\\}$ are too sparse to be additive bases themselves, they can be complemented with surprisingly thin sets. The density $N/\\log N$ is tight: a lower bound shows no sparser complement exists, matching Ruzsa's upper bound up to constants.",
@@ -169,27 +170,50 @@
     {
       "targetProofId": "primitive-roots",
       "relationship": "Ruzsa's construction hinges on 2 being a primitive root modulo $5^n$ for all $n \\geq 1$. The primitive roots proof formalizes the existence and counting of primitive roots modulo primes, providing the multiplicative number theory foundation for the coverage argument.",
-      "sharedConcepts": ["primitive roots", "multiplicative order", "cyclic groups", "Euler's totient function"]
+      "sharedConcepts": [
+        "primitive roots",
+        "multiplicative order",
+        "cyclic groups",
+        "Euler's totient function"
+      ]
     },
     {
       "targetProofId": "erdos-222",
       "relationship": "Both problems study the additive structure of sparse number-theoretic sequences. Erdős #222 concerns gaps between sums of two squares, while #221 concerns additive complements to powers of 2. Both use density arguments and analytic number theory techniques.",
-      "sharedConcepts": ["sparse sequences", "density bounds", "additive number theory", "counting functions"]
+      "sharedConcepts": [
+        "sparse sequences",
+        "density bounds",
+        "additive number theory",
+        "counting functions"
+      ]
     },
     {
       "targetProofId": "szemeredi-theorem",
       "relationship": "Szemerédi's theorem guarantees arithmetic progressions in dense sets, a foundational result in additive combinatorics. Problem #221 works in the complementary direction: constructing sparse sets with prescribed additive properties rather than finding structure in dense sets.",
-      "sharedConcepts": ["additive combinatorics", "density conditions", "structured subsets"]
+      "sharedConcepts": [
+        "additive combinatorics",
+        "density conditions",
+        "structured subsets"
+      ]
     },
     {
       "targetProofId": "erdos-10",
       "relationship": "Erdős #10 asks about representations as $p + 2^k$ (prime plus power of 2), closely paralleling #221's $a + 2^k$ representations. Both study the additive reach of powers of 2 when supplemented by another set.",
-      "sharedConcepts": ["powers of 2", "additive representations", "lacunary sequences", "density bounds"]
+      "sharedConcepts": [
+        "powers of 2",
+        "additive representations",
+        "lacunary sequences",
+        "density bounds"
+      ]
     },
     {
       "targetProofId": "partition-theorem",
       "relationship": "Euler's partition theorem studies additive decompositions of integers, the classical foundation for questions about representability. Problem #221 is a modern variant: can every large integer be partitioned into a power of 2 and an element of a sparse set?",
-      "sharedConcepts": ["additive decomposition", "integer representations", "combinatorial number theory"]
+      "sharedConcepts": [
+        "additive decomposition",
+        "integer representations",
+        "combinatorial number theory"
+      ]
     }
   ],
   "conclusion": {

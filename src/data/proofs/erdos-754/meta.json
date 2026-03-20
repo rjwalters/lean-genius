@@ -7,7 +7,7 @@
     "author": "Swanepoel (2013)",
     "sourceUrl": "https://erdosproblems.com/754",
     "date": "2013",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos754Problem.lean",
     "tags": [
       "erdos",
@@ -54,9 +54,10 @@
     "relatedProblems": [
       {
         "id": "erdos-668",
-        "relationship": "Related Erd\u0151s problem on unit distance geometry in the plane"
+        "relationship": "Related Erdős problem on unit distance geometry in the plane"
       }
-    ]
+    ],
+    "axiomCount": 5
   },
   "overview": {
     "historicalContext": "**Erdős Problem #754: Favorite Distances in ℝ⁴**\n\nThis problem asks about 'favorite distances' - the maximum number of points equidistant from a given point in a configuration.\n\n**Key History:**\n- Erdős (1994): Posed the problem about ℝ⁴\n- Avis-Erdős-Pach (1988): Proved n/2 + 2 ≤ f(n) ≤ (1+o(1))n/2\n- Swanepoel (2013): Completed the solution with f(n) = n/2 + O(1)",

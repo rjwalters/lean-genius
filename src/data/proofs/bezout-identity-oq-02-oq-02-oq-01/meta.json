@@ -95,7 +95,8 @@
       }
     ],
     "historicalContext": "The Euclidean algorithm (Elements, ~300 BCE) is the oldest nontrivial algorithm still in use. Bachet (1624) extended it to compute Bézout coefficients, and Bézout (1779) formalized the identity au + bv = gcd(a,b). While Euclid's lemma has been known since antiquity, its constructive content — actually computing the quotient from Bézout coefficients — highlights the algorithmic power implicit in the classical proof.",
-    "dateAdded": "2026-03-06"
+    "dateAdded": "2026-03-06",
+    "axiomCount": 0
   },
   "overview": {
     "summary": "Combines the extended Euclidean algorithm with Bézout's identity to construct an explicit divisibility algorithm: given coprime a, b and a proof that a divides b*c, compute the quotient q = c/a. The core formula q = u*c + v*k (where u*a + v*b = 1 and b*c = a*k) works in any commutative ring, and is instantiated over ℕ/ℤ via the extended GCD.",

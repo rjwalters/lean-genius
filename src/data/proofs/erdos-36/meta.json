@@ -36,9 +36,21 @@
       "https://en.wikipedia.org/wiki/Minimum_overlap_problem"
     ],
     "mathlibDependencies": [
-      { "theorem": "Finset.filter", "description": "Filtering pairs for overlap counting", "module": "Mathlib.Data.Finset.Basic" },
-      { "theorem": "Finset.card", "description": "Cardinality of filtered sets", "module": "Mathlib.Data.Finset.Card" },
-      { "theorem": "Real.sqrt", "description": "Square root for Scherk's 1−1/√2 bound", "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real" }
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering pairs for overlap counting",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of filtered sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root for Scherk's 1−1/√2 bound",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
     ],
     "originalContributions": [
       "Defined overlap(A,B,k) as representation function of A−B",
@@ -47,7 +59,8 @@
       "Axiomatized four progressively tighter bounds: Erdős (1/4), Scherk (1−1/√2), White (0.379005), Haugland-TTT (0.380876)",
       "Recorded exact small values M(1)=1 through M(5)=3",
       "Noted Erdős's disproved c=1/2 conjecture and Fourier-analytic techniques"
-    ]
+    ],
+    "axiomCount": 6
   },
   "leanFile": {
     "path": "Proofs/Erdos36Problem.lean",

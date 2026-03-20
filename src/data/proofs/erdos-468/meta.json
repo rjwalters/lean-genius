@@ -22,7 +22,8 @@
     "erdosUrl": "https://erdosproblems.com/468",
     "erdosProblemStatus": "open",
     "dateAdded": "2025-01-01",
-    "mathlib_version": "4.x"
+    "mathlib_version": "4.x",
+    "axiomCount": 8
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed this problem in their influential 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory.' For each positive integer n, the set D_n consists of the cumulative sums of the divisors of n greater than 1, sorted in increasing order. For example, 6 has divisors 2, 3, 6, so D_6 = {2, 2+3, 2+3+6} = {2, 5, 11}.\n\nThe problem has two parts. First, how many elements of D_n are genuinely new — not appearing in any D_m for m < n? This asks about the rate at which the union ⋃_n D_n grows. Second, for a given target N, what is the smallest n such that N ∈ D_n? If this first-appearance function f(N) satisfies f(N) = o(N), then most partial sums arise from relatively small integers.\n\nThe problem connects several themes in number theory: the additive structure of divisor sets, the distribution of the sum-of-divisors function σ(n), and the combinatorics of ordered partitions. The OEIS sequences A167485, A387502, and A387503 track related quantities. Despite its elementary formulation, the problem remains completely open.",
@@ -36,10 +37,26 @@
       "**Almost-all weakening**: $f(N) = o(N)$ for density-1 set of $N$ allows a measure-zero set of exceptions. This may be tractable via averaging: $\\sum_{N \\leq M} f(N)/N = o(M)$ would suffice."
     ],
     "mathlibDependencies": [
-      { "theorem": "Nat.divisors", "description": "Set of all divisors of n", "module": "Mathlib.Data.Nat.Divisors" },
-      { "theorem": "Finset.card", "description": "Cardinality of finite sets", "module": "Mathlib.Data.Finset.Card" },
-      { "theorem": "Finset.sort", "description": "Sorting finite sets into ordered lists", "module": "Mathlib.Data.Finset.Sort" },
-      { "theorem": "Nat.minFac", "description": "Smallest prime factor of n", "module": "Mathlib.Data.Nat.Basic" }
+      {
+        "theorem": "Nat.divisors",
+        "description": "Set of all divisors of n",
+        "module": "Mathlib.Data.Nat.Divisors"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.sort",
+        "description": "Sorting finite sets into ordered lists",
+        "module": "Mathlib.Data.Finset.Sort"
+      },
+      {
+        "theorem": "Nat.minFac",
+        "description": "Smallest prime factor of n",
+        "module": "Mathlib.Data.Nat.Basic"
+      }
     ],
     "originalContributions": [
       "properDivisorsSorted: sorted divisors > 1 via Finset.sort",
@@ -54,8 +71,14 @@
       "smallest_partial_sum, largest_partial_sum: boundary axioms"
     ],
     "relatedProofs": [
-      { "id": "erdos-955", "relationship": "Sum of proper divisors σ(n)−n — studies the same divisor function but takes total sums rather than partial sums" },
-      { "id": "erdos-466", "relationship": "Divisor-related combinatorial number theory from the same section of the Erdős–Graham monograph" }
+      {
+        "id": "erdos-955",
+        "relationship": "Sum of proper divisors σ(n)−n — studies the same divisor function but takes total sums rather than partial sums"
+      },
+      {
+        "id": "erdos-466",
+        "relationship": "Divisor-related combinatorial number theory from the same section of the Erdős–Graham monograph"
+      }
     ]
   },
   "sections": [

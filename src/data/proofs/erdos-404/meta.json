@@ -7,7 +7,7 @@
     "author": "Erdős-Graham (1980), Lin (1976)",
     "sourceUrl": "https://erdosproblems.com/404",
     "date": "1980",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos404Problem.lean",
     "tags": [
       "erdos",
@@ -25,9 +25,21 @@
     "dateAdded": "2026-01-22",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      { "theorem": "Nat.factorial", "description": "Factorial function", "module": "Mathlib.Data.Nat.Factorial.Basic" },
-      { "theorem": "padicValNat", "description": "p-adic valuation", "module": "Mathlib.NumberTheory.Padics.PadicVal.Basic" },
-      { "theorem": "Filter.Tendsto", "description": "Limit of sequences", "module": "Mathlib.Order.Filter.AtTopBot" }
+      {
+        "theorem": "Nat.factorial",
+        "description": "Factorial function",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "padicValNat",
+        "description": "p-adic valuation",
+        "module": "Mathlib.NumberTheory.Padics.PadicVal.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit of sequences",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      }
     ],
     "originalContributions": [
       "StrictIncSeq: strictly increasing sequence starting at a",
@@ -45,7 +57,8 @@
       "factorial_sum_factored axiom: factorization of factorial sums",
       "Two proved examples by native_decide",
       "erdos_404_summary: proved conjunction of Lin's bounds"
-    ]
+    ],
+    "axiomCount": 4
   },
   "overview": {
     "historicalContext": "Erdős Problem #404, from Erdős-Graham [ErGr80], concerns prime power divisibility of factorial sums. Lin (1976) proved the main quantitative result: f(2, 2) ≤ 254. The problem connects p-adic analysis with factorial combinatorics and relates to Problem #403.",

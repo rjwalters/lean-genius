@@ -6,7 +6,7 @@
   "meta": {
     "author": "Straus (via Erdős–Graham)",
     "erdosNumber": 432,
-    "status": "complete",
+    "status": "axiomatized",
     "mathlib_version": "4.15.0",
     "tags": [
       "erdos",
@@ -37,9 +37,21 @@
     "date": "1980",
     "dateAdded": "2026-01-23",
     "mathlibDependencies": [
-      { "theorem": "Nat.Coprime", "description": "Coprimality predicate for pairwise coprime constraint", "module": "Mathlib.Data.Nat.GCD.Basic" },
-      { "theorem": "Finset.filter", "description": "Filtering for counting function", "module": "Mathlib.Data.Finset.Basic" },
-      { "theorem": "Finset.card", "description": "Cardinality for density measurements", "module": "Mathlib.Data.Finset.Card" }
+      {
+        "theorem": "Nat.Coprime",
+        "description": "Coprimality predicate for pairwise coprime constraint",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering for counting function",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality for density measurements",
+        "module": "Mathlib.Data.Finset.Card"
+      }
     ],
     "originalContributions": [
       "Defined sumset A B and sumsetUpTo for counting coprime sumset elements",
@@ -49,10 +61,20 @@
       "Noted Ostmann connection and Tao's assessment of difficulty"
     ],
     "crossReferences": [
-      { "id": "erdos-431", "relationship": "Ostmann's companion problem on additive complements — the opposite end of sumset density constraints." },
-      { "id": "erdos-36", "relationship": "Minimum overlap problem for set partitions; related extremal question about additive structure of set systems." },
-      { "id": "erdos-30", "relationship": "Sidon sets study unique pairwise sums; coprime sumsets impose a complementary multiplicative uniqueness condition." }
-    ]
+      {
+        "id": "erdos-431",
+        "relationship": "Ostmann's companion problem on additive complements — the opposite end of sumset density constraints."
+      },
+      {
+        "id": "erdos-36",
+        "relationship": "Minimum overlap problem for set partitions; related extremal question about additive structure of set systems."
+      },
+      {
+        "id": "erdos-30",
+        "relationship": "Sidon sets study unique pairwise sums; coprime sumsets impose a complementary multiplicative uniqueness condition."
+      }
+    ],
+    "axiomCount": 3
   },
   "sections": [
     {

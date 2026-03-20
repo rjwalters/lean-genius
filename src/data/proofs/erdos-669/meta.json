@@ -7,7 +7,7 @@
     "author": "Burr-Grünbaum-Sloane (1974, k=3 case)",
     "sourceUrl": "https://erdosproblems.com/669",
     "date": "1974",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos669Problem.lean",
     "tags": [
       "erdos",
@@ -24,9 +24,21 @@
     "dateAdded": "2026-01-24",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      {"theorem": "Finset", "description": "Finite sets", "module": "Mathlib.Data.Finset.Basic"},
-      {"theorem": "Nat.choose", "description": "Binomial coefficients", "module": "Mathlib.Data.Nat.Choose.Basic"},
-      {"theorem": "Filter.Tendsto", "description": "Limit definition", "module": "Mathlib.Order.Filter.Basic"}
+      {
+        "theorem": "Finset",
+        "description": "Finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit definition",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
     ],
     "originalContributions": [
       "Point, Line, OnLine: geometric primitives for the plane",
@@ -42,8 +54,13 @@
       "erdos_669_summary theorem: summary of k=3 results (proved)"
     ],
     "references": [
-      {"key": "BGS74", "citation": "Burr, S.A., Grünbaum, B., Sloane, N.J.A., The orchard problem, Geom. Dedicata 2 (1974), 397-424", "type": "paper"}
-    ]
+      {
+        "key": "BGS74",
+        "citation": "Burr, S.A., Grünbaum, B., Sloane, N.J.A., The orchard problem, Geom. Dedicata 2 (1974), 397-424",
+        "type": "paper"
+      }
+    ],
+    "axiomCount": 5
   },
   "overview": {
     "historicalContext": "**Erdős Problem #669** concerns the maximum number of lines determined by point configurations in the plane, measured by how many points lie on each line. Two functions are studied: f_k(n) counts lines through exactly k points, while F_k(n) counts lines through at least k points. The problem asks for the asymptotic behavior of both as n grows.\n\nThe most celebrated special case is the **Orchard Problem** (k=3), which goes back to Sylvester in the 19th century: how many 3-point lines can n points determine? Burr, Grünbaum, and Sloane resolved this in their 1974 paper, proving that both f_3(n) and F_3(n) equal n²/6 up to an O(n) error term. Their proof uses elegant constructions from finite projective planes.\n\nFor general k, a trivial upper bound comes from double counting: each line with ≥ k points accounts for at least C(k,2) point-pairs, and there are only C(n,2) pairs total. This gives F_k(n) ≤ C(n,2)/C(k,2), or asymptotically F_k(n)/n² ≤ 1/(k(k-1)). Whether this bound is tight for all k remains an open problem. The conjecture is that lim f_k(n)/n² = lim F_k(n)/n² = 1/(k(k-1)) for all k ≥ 2.",
@@ -59,13 +76,55 @@
     ]
   },
   "sections": [
-    {"id": "geometry", "title": "Point and Line Definitions", "summary": "Point, Line, OnLine, pointsOnLine", "startLine": 33, "endLine": 51},
-    {"id": "functions", "title": "f_k and F_k Functions", "summary": "ExactlyKPoints, AtLeastKPoints, f_k, F_k", "startLine": 53, "endLine": 71},
-    {"id": "orchard", "title": "The Orchard Problem (k=3)", "summary": "orchardProblem, burr_grunbaum_sloane, k3_limit", "startLine": 73, "endLine": 94},
-    {"id": "upper-bound", "title": "Trivial Upper Bound", "summary": "trivial_upper_bound, limit_upper", "startLine": 96, "endLine": 107},
-    {"id": "conjecture", "title": "The General Conjecture", "summary": "limit_conjecture, k3_matches, k3_conjecture_true", "startLine": 109, "endLine": 121},
-    {"id": "configs", "title": "Optimal Configurations", "summary": "optimal_configs_exist", "startLine": 123, "endLine": 130},
-    {"id": "summary", "title": "Summary", "summary": "erdos_669_summary theorem", "startLine": 132, "endLine": 146}
+    {
+      "id": "geometry",
+      "title": "Point and Line Definitions",
+      "summary": "Point, Line, OnLine, pointsOnLine",
+      "startLine": 33,
+      "endLine": 51
+    },
+    {
+      "id": "functions",
+      "title": "f_k and F_k Functions",
+      "summary": "ExactlyKPoints, AtLeastKPoints, f_k, F_k",
+      "startLine": 53,
+      "endLine": 71
+    },
+    {
+      "id": "orchard",
+      "title": "The Orchard Problem (k=3)",
+      "summary": "orchardProblem, burr_grunbaum_sloane, k3_limit",
+      "startLine": 73,
+      "endLine": 94
+    },
+    {
+      "id": "upper-bound",
+      "title": "Trivial Upper Bound",
+      "summary": "trivial_upper_bound, limit_upper",
+      "startLine": 96,
+      "endLine": 107
+    },
+    {
+      "id": "conjecture",
+      "title": "The General Conjecture",
+      "summary": "limit_conjecture, k3_matches, k3_conjecture_true",
+      "startLine": 109,
+      "endLine": 121
+    },
+    {
+      "id": "configs",
+      "title": "Optimal Configurations",
+      "summary": "optimal_configs_exist",
+      "startLine": 123,
+      "endLine": 130
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_669_summary theorem",
+      "startLine": 132,
+      "endLine": 146
+    }
   ],
   "conclusion": {
     "summary": "Erdős Problem #669 asks for the asymptotic behavior of f_k(n) (exactly k-point lines) and F_k(n) (at least k-point lines). The k=3 case is the famous Orchard Problem, solved by Burr-Grünbaum-Sloane (1974): both functions equal n²/6 - O(n). The general conjecture is that both limits equal 1/(k(k-1)).",

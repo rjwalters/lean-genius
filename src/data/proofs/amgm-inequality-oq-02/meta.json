@@ -58,7 +58,8 @@
       "maclaurin_m1_ge_mn: M₁ ≥ Mₙ (AM ≥ GM in Maclaurin language) as corollary of maclaurin_chain",
       "Aristotle companion AmgmInequalityOQ02Aristotle.lean: proof strategy via induction for h_binom (elemSymmA_succ_castSucc sorry)"
     ],
-    "dateAdded": "02/24/26"
+    "dateAdded": "02/24/26",
+    "axiomCount": 2
   },
   "overview": {
     "historicalContext": "In 1729, Colin Maclaurin discovered a remarkable chain of inequalities that strictly refines the AM-GM inequality. Writing the $k$-th elementary symmetric polynomial as $e_k(x_1,\\ldots,x_n) = \\sum_{|S|=k} \\prod_{i\\in S} x_i$ and defining the **Maclaurin mean** $M_k = (e_k/\\binom{n}{k})^{1/k}$, Maclaurin proved:\n\n$$M_1 \\geq M_2 \\geq \\cdots \\geq M_n \\geq 0$$\n\nfor non-negative reals $x_1, \\ldots, x_n$. The endpoints give $M_1 = \\text{AM}$ and $M_n = \\text{GM}$, recovering AM-GM as the coarsest inequality in the chain.\n\nThe key engine behind Maclaurin's inequalities is **Newton's inequalities** (1687), which state that the sequence $e_k/\\binom{n}{k}$ is log-concave: $(e_k/\\binom{n}{k})^2 \\geq (e_{k-1}/\\binom{n}{k-1}) \\cdot (e_{k+1}/\\binom{n}{k+1})$. From log-concavity, one derives $M_k \\geq M_{k+1}$ step by step.\n\nMaclaurin's inequalities are fundamental in symmetric function theory and appear throughout analytic number theory, combinatorics, and mathematical programming.",

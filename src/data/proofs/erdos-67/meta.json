@@ -7,9 +7,15 @@
     "author": "Terence Tao (2015)",
     "sourceUrl": "https://erdosproblems.com/67",
     "date": "2015",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos67Problem.lean",
-    "tags": ["erdos", "number-theory", "discrepancy", "arithmetic-progressions", "tao"],
+    "tags": [
+      "erdos",
+      "number-theory",
+      "discrepancy",
+      "arithmetic-progressions",
+      "tao"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 67,
@@ -46,7 +52,8 @@
       "Complex variant for unit circle values",
       "Erdős's stronger logarithmic conjecture (open)",
       "Multiplicative function case"
-    ]
+    ],
+    "axiomCount": 3
   },
   "overview": {
     "historicalContext": "The Erdős Discrepancy Problem, posed in the 1930s, asks whether every ±1 sequence must have unbounded partial sums along some arithmetic progression. For over 80 years, this remained one of the most famous open problems in combinatorics.\n\nIn 2010, the Polymath5 project—a massive collaborative effort—attempted to solve it but fell short. In September 2015, Terence Tao announced a complete solution, earning the $500 prize. His proof uses deep connections to multiplicative number theory, particularly a variant of the Elliott conjecture.\n\nTao's breakthrough came from realizing that the problem reduces to studying completely multiplicative functions, where techniques from analytic number theory become available.",

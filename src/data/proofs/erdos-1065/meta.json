@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "erdosNumber": 1065,
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1065Problem.lean",
     "badge": "axiom",
     "tags": [
@@ -47,9 +47,21 @@
       }
     ],
     "mathlibDependencies": [
-      { "theorem": "Nat.Prime", "description": "Primality predicate for primes and factors", "module": "Mathlib.Data.Nat.Prime.Basic" },
-      { "theorem": "Set.Infinite", "description": "Infinite set predicate for the main conjectures", "module": "Mathlib.Data.Set.Finite.Basic" },
-      { "theorem": "Set.Infinite.mono", "description": "Monotonicity of infinite sets for conjecture implications", "module": "Mathlib.Data.Set.Finite.Basic" }
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate for primes and factors",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Infinite set predicate for the main conjectures",
+        "module": "Mathlib.Data.Set.Finite.Basic"
+      },
+      {
+        "theorem": "Set.Infinite.mono",
+        "description": "Monotonicity of infinite sets for conjecture implications",
+        "module": "Mathlib.Data.Set.Finite.Basic"
+      }
     ],
     "originalContributions": [
       "IsTwoTimePrimePlusOne and IsTwoThreeTimePrimePlusOne predicates capturing the two-form hierarchy",
@@ -60,7 +72,8 @@
       "Decidable check function for computational exploration"
     ],
     "erdosProblemStatus": "open",
-    "dateAdded": "2025-01-15"
+    "dateAdded": "2025-01-15",
+    "axiomCount": 2
   },
   "sections": [
     {

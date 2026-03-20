@@ -8,14 +8,31 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality#Integral_form",
     "date": "1859",
     "status": "verified",
-    "tags": ["analysis", "measure-theory", "classic", "intermediate"],
+    "tags": [
+      "analysis",
+      "measure-theory",
+      "classic",
+      "intermediate"
+    ],
     "proofRepoPath": "Proofs/CauchySchwarzIntegral.lean",
     "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
-      { "theorem": "abs_real_inner_le_norm", "description": "Cauchy-Schwarz for real inner products", "module": "Mathlib.Analysis.InnerProductSpace.Basic" },
-      { "theorem": "L2.inner_def", "description": "L2 inner product equals integral of pointwise inner product", "module": "Mathlib.MeasureTheory.Function.L2Space" },
-      { "theorem": "norm_inner_eq_norm_iff", "description": "Equality in Cauchy-Schwarz iff linearly dependent", "module": "Mathlib.Analysis.InnerProductSpace.Basic" }
+      {
+        "theorem": "abs_real_inner_le_norm",
+        "description": "Cauchy-Schwarz for real inner products",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "L2.inner_def",
+        "description": "L2 inner product equals integral of pointwise inner product",
+        "module": "Mathlib.MeasureTheory.Function.L2Space"
+      },
+      {
+        "theorem": "norm_inner_eq_norm_iff",
+        "description": "Equality in Cauchy-Schwarz iff linearly dependent",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      }
     ],
     "originalContributions": [
       "L2 Cauchy-Schwarz via abstract inner product space instance",
@@ -25,11 +42,30 @@
       "Equality characterization: linear dependence in L2"
     ],
     "references": [
-      {"authors": "V. Y. Bunyakovsky", "title": "Sur quelques inegalites concernant les integrales ordinaires et les integrales aux differences finies", "year": "1859", "venue": "Memoires de l'Academie Imperiale des Sciences de St.-Petersbourg", "note": "First proof of the integral form"},
-      {"authors": "H. A. Schwarz", "title": "Uber ein die Flachen kleinsten Flacheninhalts betreffendes Problem der Variationsrechnung", "year": "1885", "venue": "Acta Societatis Scientiarum Fennicae", "note": "Independent proof of the integral version"},
-      {"authors": "J. M. Steele", "title": "The Cauchy-Schwarz Master Class", "year": "2004", "venue": "Cambridge University Press", "note": "Comprehensive treatment including the integral form"}
+      {
+        "authors": "V. Y. Bunyakovsky",
+        "title": "Sur quelques inegalites concernant les integrales ordinaires et les integrales aux differences finies",
+        "year": "1859",
+        "venue": "Memoires de l'Academie Imperiale des Sciences de St.-Petersbourg",
+        "note": "First proof of the integral form"
+      },
+      {
+        "authors": "H. A. Schwarz",
+        "title": "Uber ein die Flachen kleinsten Flacheninhalts betreffendes Problem der Variationsrechnung",
+        "year": "1885",
+        "venue": "Acta Societatis Scientiarum Fennicae",
+        "note": "Independent proof of the integral version"
+      },
+      {
+        "authors": "J. M. Steele",
+        "title": "The Cauchy-Schwarz Master Class",
+        "year": "2004",
+        "venue": "Cambridge University Press",
+        "note": "Comprehensive treatment including the integral form"
+      }
     ],
-    "dateAdded": "02/11/26"
+    "dateAdded": "02/11/26",
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "**Bunyakovsky's Extension to Integrals**\n\nViktor Bunyakovsky proved the integral form of the Cauchy-Schwarz inequality in 1859, extending Cauchy's 1821 discrete version to continuous functions. Hermann Schwarz independently proved it in 1885. The inequality states that for square-integrable functions $f, g$:\n\n$$\\left(\\int f \\cdot g \\, d\\mu\\right)^2 \\leq \\left(\\int f^2 \\, d\\mu\\right) \\cdot \\left(\\int g^2 \\, d\\mu\\right)$$\n\nThis is fundamental to functional analysis: it shows that the $L^2$ inner product is well-defined and that $L^2$ is a Hilbert space.\n\n**Modern Formalization Strategy**\n\nIn Mathlib, $L^2(\\mu)$ is already equipped with an `InnerProductSpace` instance, where $\\langle f, g \\rangle = \\int f \\cdot g \\, d\\mu$. The abstract Cauchy-Schwarz inequality $|\\langle f, g \\rangle| \\leq \\|f\\| \\cdot \\|g\\|$ therefore immediately gives the integral form. The key insight is that the bridge theorem connecting the abstract inner product to the concrete integral is the critical step.",

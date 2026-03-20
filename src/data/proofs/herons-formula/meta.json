@@ -8,16 +8,29 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Heron%27s_formula",
     "date": "~60 AD",
     "status": "verified",
-    "tags": ["geometry", "trigonometry", "classic", "intermediate"],
+    "tags": [
+      "geometry",
+      "trigonometry",
+      "classic",
+      "intermediate"
+    ],
     "proofRepoPath": "Proofs/HeronsFormula.lean",
     "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
-      {"theorem": "Theorems100.heron", "description": "Heron's formula from Mathlib Archive", "module": "Archive.Wiedijk100Theorems.HeronsFormula"}
+      {
+        "theorem": "Theorems100.heron",
+        "description": "Heron's formula from Mathlib Archive",
+        "module": "Archive.Wiedijk100Theorems.HeronsFormula"
+      }
     ],
-    "originalContributions": ["Multiple formulations", "Connection to law of cosines"],
+    "originalContributions": [
+      "Multiple formulations",
+      "Connection to law of cosines"
+    ],
     "dateAdded": "12/26/25",
-    "wiedijkNumber": 57
+    "wiedijkNumber": 57,
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "**Hero of Alexandria** (c. 10-70 AD) described this formula in his treatise *Metrica*, discovered in 1896 in Constantinople. However, **Archimedes** (c. 287-212 BC) likely knew an equivalent form, as suggested by fragments in the Arabic mathematical tradition. The formula was independently rediscovered by Chinese mathematicians — **Qin Jiushao** stated it in his 1247 *Mathematical Treatise in Nine Sections* using a different algebraic form.\n\nThe formula connects three fundamental areas of mathematics: (1) **Euclidean geometry** — it is equivalent to the law of cosines combined with the sine area formula $\\frac{1}{2}ab\\sin C$; (2) **algebra** — the product $s(s-a)(s-b)(s-c)$ is a symmetric polynomial in the side lengths; and (3) **analysis** — the non-negativity of this product is equivalent to the triangle inequality.\n\n**Brahman Sphuta Siddhanta** (628 AD) by **Brahmagupta** generalized Heron's formula to cyclic quadrilaterals: $\\text{Area} = \\sqrt{(s-a)(s-b)(s-c)(s-d)}$ where $s = (a+b+c+d)/2$. The Cayley-Menger determinant provides a further generalization to simplices in arbitrary dimensions.\n\nThis is #57 on **Freek Wiedijk**'s list of 100 theorems formalized in proof assistants.",
@@ -121,5 +134,7 @@
       "Can the isoperimetric inequality for triangles — that the equilateral triangle maximizes area for fixed perimeter — be derived from Heron's formula using AM-GM?"
     ]
   },
-  "relatedProofs": ["cayley-hamilton"]
+  "relatedProofs": [
+    "cayley-hamilton"
+  ]
 }

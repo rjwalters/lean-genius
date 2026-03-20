@@ -7,7 +7,7 @@
     "author": "Lindström (1998), Kolountzakis (1999)",
     "sourceUrl": "https://erdosproblems.com/154",
     "date": "1999",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos154Problem.lean",
     "tags": [
       "erdos",
@@ -24,9 +24,21 @@
     "mathlib_version": "4.15.0",
     "dateAdded": "2026-01-24",
     "mathlibDependencies": [
-      {"theorem": "Finset.product", "description": "Cartesian product of finite sets, used to define sumset A+A", "module": "Mathlib.Data.Finset.Basic"},
-      {"theorem": "Finset.filter", "description": "Filtering finite sets by predicate, used for residue class counting", "module": "Mathlib.Data.Finset.Basic"},
-      {"theorem": "Finset.range", "description": "Finite range {0,...,N}, used to bound Sidon sets", "module": "Mathlib.Data.Finset.Basic"}
+      {
+        "theorem": "Finset.product",
+        "description": "Cartesian product of finite sets, used to define sumset A+A",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering finite sets by predicate, used for residue class counting",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.range",
+        "description": "Finite range {0,...,N}, used to bound Sidon sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
     ],
     "originalContributions": [
       "IsSidon: Sidon set (B₂ set) predicate — all pairwise sums distinct",
@@ -38,11 +50,28 @@
       "erdos_154: main theorem closing the problem"
     ],
     "references": [
-      {"key": "Li98", "citation": "Lindström, B., Well distribution of Sidon sets in residue classes, J. Number Theory 69 (1998), 197-200.", "type": "paper"},
-      {"key": "Ko99", "citation": "Kolountzakis, M., The distribution of additive complements of squares, J. Number Theory 76 (1999), 209-214.", "type": "paper"},
-      {"key": "Si38", "citation": "Singer, J., A theorem in finite projective geometry and some applications to number theory, Trans. AMS 43 (1938), 377-385.", "type": "paper"},
-      {"key": "OR04", "citation": "O'Bryant, K., A complete annotated bibliography of work related to Sidon sets, Electron. J. Combin. DS11 (2004).", "type": "survey"}
-    ]
+      {
+        "key": "Li98",
+        "citation": "Lindström, B., Well distribution of Sidon sets in residue classes, J. Number Theory 69 (1998), 197-200.",
+        "type": "paper"
+      },
+      {
+        "key": "Ko99",
+        "citation": "Kolountzakis, M., The distribution of additive complements of squares, J. Number Theory 76 (1999), 209-214.",
+        "type": "paper"
+      },
+      {
+        "key": "Si38",
+        "citation": "Singer, J., A theorem in finite projective geometry and some applications to number theory, Trans. AMS 43 (1938), 377-385.",
+        "type": "paper"
+      },
+      {
+        "key": "OR04",
+        "citation": "O'Bryant, K., A complete annotated bibliography of work related to Sidon sets, Electron. J. Combin. DS11 (2004).",
+        "type": "survey"
+      }
+    ],
+    "axiomCount": 3
   },
   "overview": {
     "historicalContext": "Sidon sets (also called $B_2$ sequences) were introduced by Simon Sidon in a 1932 letter to Erdős: a set $A$ of natural numbers such that all pairwise sums $a + b$ (with $a \\leq b$) are distinct. Erdős and Turán (1941) proved the fundamental upper bound $|A \\cap \\{1,\\ldots,N\\}| \\leq \\sqrt{N} + O(N^{1/4})$, and Singer (1938) had already shown this is tight via perfect difference sets from finite projective planes.\n\nProblem #154 asks about the distribution of the sumset $A + A$ over residue classes: for a Sidon set $A \\subset \\{1,\\ldots,N\\}$ of near-maximal size $|A| \\sim \\sqrt{N}$, must $A + A$ be well-distributed over all small moduli? In particular, must about half the elements of $A + A$ be even and half odd?\n\nBernt Lindström resolved the key ingredient in 1998, proving that near-maximal Sidon sets are themselves well-distributed over small moduli. His proof uses exponential sum techniques: for a Sidon set $A$, the fourth moment $\\sum |\\hat{1}_A(\\xi)|^4 \\leq (2|A| - 1)N$, which constrains the character sums $\\hat{1}_A(r/m)$ to be small for non-trivial characters. This forces uniform distribution of $A$ mod $m$.\n\nMihail Kolountzakis (1999) strengthened the quantitative bounds, extending the range of moduli for which distribution holds to $m \\leq N^{1/4-\\varepsilon}$. The result for $A + A$ then follows from the unique representation property of Sidon sets: since each element of $A + A$ has exactly one representation $a + b$ (up to order), the distribution of $A$ transfers to $A + A$ via a convolution argument.\n\nThe problem connects to broader themes in additive combinatorics, including the Freiman-Ruzsa theorem (small sumsets imply structure) and the study of pseudorandom properties of combinatorially defined sets.",
@@ -58,13 +87,55 @@
     ]
   },
   "sections": [
-    {"id": "imports", "title": "Imports and Setup", "summary": "Imports `Data.Nat.Basic` and `Data.Finset.Basic` for finite set operations on $\\mathbb{N}$. Opens the `Erdos154` namespace.", "startLine": 23, "endLine": 30},
-    {"id": "sidon-def", "title": "Sidon Set Definition", "summary": "Defines `IsSidon A`: $\\forall a,b,c,d \\in A$, $a+b = c+d \\implies \\{a,b\\} = \\{c,d\\}$. This is the $B_2$ condition ensuring all pairwise sums are distinct.", "startLine": 32, "endLine": 37},
-    {"id": "sumset-def", "title": "Sumset and Well-Distribution", "summary": "Defines `sumset A` as $A + A = \\{a+b : a,b \\in A\\}$ via `Finset.product` and `image`. Defines `IsWellDistributed S m ε`: each residue class mod $m$ has $|S|/m \\pm \\varepsilon|S|$ elements.", "startLine": 39, "endLine": 48},
-    {"id": "lindstrom", "title": "Lindström's Theorem (1998)", "summary": "Axiomatizes `lindstrom_sidon_distribution`: for Sidon $A \\subset \\{1,\\ldots,N\\}$, $\\forall m \\geq 2$, $\\forall \\varepsilon > 0$, $A$ is $\\varepsilon$-well-distributed mod $m$ for large $N$. Uses fourth moment bounds on character sums.", "startLine": 50, "endLine": 61},
-    {"id": "sumset-distr", "title": "Sumset Distribution", "summary": "Axiomatizes `sumset_distribution`: for Sidon $A$, $A+A$ is well-distributed mod $m$. The unique representation property transfers distribution from $A$ to $A+A$ via convolution.", "startLine": 63, "endLine": 75},
-    {"id": "even-odd", "title": "Even-Odd Balance", "summary": "Axiomatizes `even_odd_balance`: the $m = 2$ case. About half of $A+A$ is even ($\\binom{k}{2} + \\binom{|A|-k}{2}$ sums) and half odd ($k(|A|-k)$ sums), where $k \\approx |A|/2$ from Lindström.", "startLine": 77, "endLine": 88},
-    {"id": "main-result", "title": "Main Result: erdos_154", "summary": "Theorem `erdos_154`: closes the problem via `sumset_distribution A N hA hN`. For any Sidon $A \\subset \\{1,\\ldots,N\\}$ and $m \\geq 2$, $A+A$ is asymptotically well-distributed mod $m$.", "startLine": 90, "endLine": 106}
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "summary": "Imports `Data.Nat.Basic` and `Data.Finset.Basic` for finite set operations on $\\mathbb{N}$. Opens the `Erdos154` namespace.",
+      "startLine": 23,
+      "endLine": 30
+    },
+    {
+      "id": "sidon-def",
+      "title": "Sidon Set Definition",
+      "summary": "Defines `IsSidon A`: $\\forall a,b,c,d \\in A$, $a+b = c+d \\implies \\{a,b\\} = \\{c,d\\}$. This is the $B_2$ condition ensuring all pairwise sums are distinct.",
+      "startLine": 32,
+      "endLine": 37
+    },
+    {
+      "id": "sumset-def",
+      "title": "Sumset and Well-Distribution",
+      "summary": "Defines `sumset A` as $A + A = \\{a+b : a,b \\in A\\}$ via `Finset.product` and `image`. Defines `IsWellDistributed S m ε`: each residue class mod $m$ has $|S|/m \\pm \\varepsilon|S|$ elements.",
+      "startLine": 39,
+      "endLine": 48
+    },
+    {
+      "id": "lindstrom",
+      "title": "Lindström's Theorem (1998)",
+      "summary": "Axiomatizes `lindstrom_sidon_distribution`: for Sidon $A \\subset \\{1,\\ldots,N\\}$, $\\forall m \\geq 2$, $\\forall \\varepsilon > 0$, $A$ is $\\varepsilon$-well-distributed mod $m$ for large $N$. Uses fourth moment bounds on character sums.",
+      "startLine": 50,
+      "endLine": 61
+    },
+    {
+      "id": "sumset-distr",
+      "title": "Sumset Distribution",
+      "summary": "Axiomatizes `sumset_distribution`: for Sidon $A$, $A+A$ is well-distributed mod $m$. The unique representation property transfers distribution from $A$ to $A+A$ via convolution.",
+      "startLine": 63,
+      "endLine": 75
+    },
+    {
+      "id": "even-odd",
+      "title": "Even-Odd Balance",
+      "summary": "Axiomatizes `even_odd_balance`: the $m = 2$ case. About half of $A+A$ is even ($\\binom{k}{2} + \\binom{|A|-k}{2}$ sums) and half odd ($k(|A|-k)$ sums), where $k \\approx |A|/2$ from Lindström.",
+      "startLine": 77,
+      "endLine": 88
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result: erdos_154",
+      "summary": "Theorem `erdos_154`: closes the problem via `sumset_distribution A N hA hN`. For any Sidon $A \\subset \\{1,\\ldots,N\\}$ and $m \\geq 2$, $A+A$ is asymptotically well-distributed mod $m$.",
+      "startLine": 90,
+      "endLine": 106
+    }
   ],
   "conclusion": {
     "summary": "Erdős Problem #154 was SOLVED by Lindström (1998) and Kolountzakis (1999). For Sidon sets $A \\subset \\{1,\\ldots,N\\}$ with $|A| \\sim \\sqrt{N}$, the sumset $A+A$ is well-distributed over all small moduli — in particular, about half of $A+A$ is even and half is odd. The formalization captures all key results with 0 sorries, axiomatizing the exponential sum arguments.",

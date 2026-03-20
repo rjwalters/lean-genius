@@ -7,7 +7,7 @@
     "author": "EFRS (1993), Sidorenko (1993), Jayawardene (1999), Cambie et al. (2024)",
     "sourceUrl": "https://erdosproblems.com/570",
     "date": "1993",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos570Problem.lean",
     "tags": [
       "erdos",
@@ -24,8 +24,16 @@
     "dateAdded": "2026-01-24",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      {"theorem": "SimpleGraph", "description": "Simple graph type", "module": "Mathlib.Combinatorics.SimpleGraph.Basic"},
-      {"theorem": "Finset", "description": "Finite sets", "module": "Mathlib.Data.Finset.Basic"}
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
     ],
     "originalContributions": [
       "CycleGraph: constructive definition with proved symmetry and irreflexivity",
@@ -42,11 +50,28 @@
       "erdos_570_summary theorem: proved"
     ],
     "references": [
-      {"key": "EFRS93", "citation": "Erdős, P., Faudree, R.J., Rousseau, C.C., Schelp, R.H., Ramsey size linear graphs (1993)", "type": "paper"},
-      {"key": "Si93", "citation": "Sidorenko, A., The Ramsey number of an n-edge graph versus triangle (1993)", "type": "paper"},
-      {"key": "Ja99", "citation": "Jayawardene, C.J., Size Ramsey numbers for C5 vs arbitrary graphs (1999)", "type": "paper"},
-      {"key": "CFMPP24", "citation": "Cambie, S., Freschi, A., Morawski, L., Petrova, E., Pokrovskiy, A., Cycle-complete graph Ramsey numbers (2024)", "type": "paper"}
-    ]
+      {
+        "key": "EFRS93",
+        "citation": "Erdős, P., Faudree, R.J., Rousseau, C.C., Schelp, R.H., Ramsey size linear graphs (1993)",
+        "type": "paper"
+      },
+      {
+        "key": "Si93",
+        "citation": "Sidorenko, A., The Ramsey number of an n-edge graph versus triangle (1993)",
+        "type": "paper"
+      },
+      {
+        "key": "Ja99",
+        "citation": "Jayawardene, C.J., Size Ramsey numbers for C5 vs arbitrary graphs (1999)",
+        "type": "paper"
+      },
+      {
+        "key": "CFMPP24",
+        "citation": "Cambie, S., Freschi, A., Morawski, L., Petrova, E., Pokrovskiy, A., Cycle-complete graph Ramsey numbers (2024)",
+        "type": "paper"
+      }
+    ],
+    "axiomCount": 5
   },
   "overview": {
     "historicalContext": "**Erdős Problem #570** asks for an upper bound on the Ramsey number R(C_k, H), where C_k is a k-cycle and H is an arbitrary graph without isolated vertices. The conjectured bound R(C_k, H) ≤ 2m + ⌈(k-1)/2⌉, where m = |E(H)|, was first proposed in the context of 'Ramsey size linear graphs' by Erdős, Faudree, Rousseau, and Schelp.\n\nThe resolution spanned over three decades. EFRS themselves proved the even k case in 1993. That same year, Sidorenko handled k = 3 (triangles). Jayawardene extended the result to k = 5 in 1999. The remaining cases - all odd k ≥ 7 - were finally resolved by Cambie, Freschi, Morawski, Petrova, and Pokrovskiy in 2024.\n\nThe problem is notable for requiring fundamentally different techniques for even and odd cycles, and for the 25-year gap between the k = 5 result and the final resolution.",
@@ -61,13 +86,55 @@
     ]
   },
   "sections": [
-    {"id": "graphs", "title": "Graph Definitions", "summary": "CycleGraph (constructive), edgeCount, NoIsolatedVertices", "startLine": 35, "endLine": 72},
-    {"id": "ramsey", "title": "Ramsey Numbers", "summary": "RamseyNumber, CycleRamseyNumber", "startLine": 74, "endLine": 88},
-    {"id": "conjecture", "title": "The Conjecture", "summary": "UpperBound, Erdos570Conjecture", "startLine": 90, "endLine": 104},
-    {"id": "cases", "title": "Proven Cases", "summary": "EFRS (even), Sidorenko (k=3), Jayawardene (k=5), CFMPP (odd k≥7)", "startLine": 106, "endLine": 141},
-    {"id": "resolution", "title": "Complete Resolution", "summary": "erdos_570_resolved axiom", "startLine": 143, "endLine": 156},
-    {"id": "ceiling", "title": "The Ceiling Formula", "summary": "ceiling_formula theorem (proved)", "startLine": 158, "endLine": 164},
-    {"id": "summary", "title": "Summary", "summary": "erdos_570_summary theorem (proved)", "startLine": 166, "endLine": 178}
+    {
+      "id": "graphs",
+      "title": "Graph Definitions",
+      "summary": "CycleGraph (constructive), edgeCount, NoIsolatedVertices",
+      "startLine": 35,
+      "endLine": 72
+    },
+    {
+      "id": "ramsey",
+      "title": "Ramsey Numbers",
+      "summary": "RamseyNumber, CycleRamseyNumber",
+      "startLine": 74,
+      "endLine": 88
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "summary": "UpperBound, Erdos570Conjecture",
+      "startLine": 90,
+      "endLine": 104
+    },
+    {
+      "id": "cases",
+      "title": "Proven Cases",
+      "summary": "EFRS (even), Sidorenko (k=3), Jayawardene (k=5), CFMPP (odd k≥7)",
+      "startLine": 106,
+      "endLine": 141
+    },
+    {
+      "id": "resolution",
+      "title": "Complete Resolution",
+      "summary": "erdos_570_resolved axiom",
+      "startLine": 143,
+      "endLine": 156
+    },
+    {
+      "id": "ceiling",
+      "title": "The Ceiling Formula",
+      "summary": "ceiling_formula theorem (proved)",
+      "startLine": 158,
+      "endLine": 164
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_570_summary theorem (proved)",
+      "startLine": 166,
+      "endLine": 178
+    }
   ],
   "conclusion": {
     "summary": "Erdős Problem #570 is SOLVED. For any k ≥ 3 and graph H with m edges (no isolated vertices), R(C_k, H) ≤ 2m + ⌈(k-1)/2⌉. The proof was completed over 30+ years through contributions from EFRS, Sidorenko, Jayawardene, and Cambie et al.",

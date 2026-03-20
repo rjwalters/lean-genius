@@ -7,7 +7,7 @@
     "author": "Erdős, Newman (1977)",
     "sourceUrl": "https://erdosproblems.com/333",
     "date": "1977",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos333Problem.lean",
     "tags": [
       "erdos",
@@ -52,7 +52,8 @@
       "hasPolynomialGaps definition",
       "isSidonSet definition",
       "erdos_newman_theorem2 axiom"
-    ]
+    ],
+    "axiomCount": 11
   },
   "overview": {
     "historicalContext": "Erdős and Newman (1977) proved that squares can be represented as B+B with exceptionally sparse B. Their Theorem 2 actually implies that NOT all zero-density sets admit such sparse representations, though this connection to Problem #333 was apparently overlooked by Erdős and Graham when stating the problem.",

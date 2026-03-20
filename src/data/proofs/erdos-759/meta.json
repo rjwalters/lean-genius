@@ -7,7 +7,7 @@
     "author": "Erdős, Gimbel (problem), Gimbel (1986), Gimbel-Thomassen (1997)",
     "sourceUrl": "https://erdosproblems.com/759",
     "date": "1997",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos759Problem.lean",
     "tags": [
       "erdos",
@@ -57,7 +57,8 @@
       "gimbel_thomassen_theorem axiom: z ≍ √n / log n",
       "heawood_number, ringel_youngs axioms",
       "erdos_759 theorem: main result"
-    ]
+    ],
+    "axiomCount": 17
   },
   "overview": {
     "historicalContext": "**Erdős Problem #759**\n\nThis problem concerns cochromatic number on orientable surfaces.\n\n**Key History:**\n- Erdős & Gimbel: Posed the problem\n- Gimbel (1986): Proved √n/log n ≪ z(S_n) ≪ √n\n- Gimbel-Thomassen (1997): Proved z(S_n) ≍ √n/log n\n\n**The Setting:**\nCochromatic number ζ(G) generalizes chromatic number - each color class must be a clique OR independent set.",

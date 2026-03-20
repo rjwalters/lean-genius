@@ -7,7 +7,7 @@
     "author": "Erdős-Gimbel (problem), Bhavik Mehta (z(12)=4), Gimbel (asymptotics)",
     "sourceUrl": "https://erdosproblems.com/758",
     "date": "1986",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos758Problem.lean",
     "tags": [
       "erdos",
@@ -62,7 +62,8 @@
       "ramsey_connection axiom: relationship to Ramsey numbers",
       "mehta_unique_graph axiom: unique K₄-free graph with χ ≥ 5",
       "mehta_verification axiom: that graph has ζ = 4"
-    ]
+    ],
+    "axiomCount": 31
   },
   "overview": {
     "historicalContext": "**Erdős Problem #758: Cochromatic Number**\n\nThis problem was posed by Erdős and Gimbel and concerns the cochromatic number of graphs.\n\n**Key History:**\n- **Erdős-Gimbel:** Established 4 ≤ z(12) ≤ 5 and 5 ≤ z(15) ≤ 6\n- **Gimbel [Gi86]:** Proved z(n) ~ n/log n asymptotically\n- **Bhavik Mehta:** Computationally verified z(12) = 4 by finding the unique extremal graph\n\n**Mathematical Context:**\nThe cochromatic number generalizes both chromatic number (independent sets only) and clique cover number (cliques only). It connects to Ramsey theory since R(3) = 6 and R(4) = 18 control the growth of z(n).",

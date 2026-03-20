@@ -7,7 +7,7 @@
     "author": "Schmidt (1969), Roth (1954 for square)",
     "sourceUrl": "https://erdosproblems.com/988",
     "date": "1969",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos988Problem.lean",
     "tags": [
       "erdos",
@@ -56,7 +56,8 @@
       "schmidt_1969 axiom: spherical cap discrepancy for any dimension",
       "erdos_988_solved theorem: main result",
       "Bounds: n^{1/3} ≤ minD(n) ≤ n^{1/2} for S²"
-    ]
+    ],
+    "axiomCount": 5
   },
   "overview": {
     "historicalContext": "**Erdős Problem #988: Discrepancy on the Sphere**\n\nThis is a fundamental problem in discrepancy theory, asking whether finite point sets on the sphere can approximate uniform distribution arbitrarily well.\n\n**Key History:**\n- Erdős (1964): Posed the problem\n- Roth (1954): Proved the analogous result for the unit square with axis-aligned rectangles\n- Schmidt (1969): Proved for the sphere in any dimension\n\n**Mathematical Setting:**\nGiven n points on S², we measure 'discrepancy' by how much the point count in any spherical cap deviates from the expected fraction. Schmidt proved this deviation must grow as n → ∞.",

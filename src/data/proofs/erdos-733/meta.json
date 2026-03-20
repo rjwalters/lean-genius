@@ -7,7 +7,7 @@
     "author": "Szemeredi-Trotter (1983 solution), Erdos (problem and lower bound)",
     "sourceUrl": "https://erdosproblems.com/733",
     "date": "1983",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos733Problem.lean",
     "tags": [
       "erdos",
@@ -59,7 +59,8 @@
       "upper_bound axiom: exp(C*sqrt(n)) upper bound",
       "erdos_733 theorem: complete tight bounds",
       "limitConstant definition: Erdos's follow-up question"
-    ]
+    ],
+    "axiomCount": 5
   },
   "overview": {
     "historicalContext": "**Erdos Problem #733**\n\nThis problem concerns the combinatorics of point-line incidences.\n\n**Key History:**\n- Erdos posed the problem about counting line-compatible sequences\n- He noted the lower bound exp(c*sqrt(n)) was 'easy' via grid constructions\n- Szemeredi-Trotter (1983) proved the matching upper bound\n\n**Related Problems:**\n- Problem #607: Similar problem without multiplicities\n- Problem #732: Related incidence problem\n\n**The Szemeredi-Trotter Theorem:**\nThe key tool is their incidence theorem: n points and m lines have O(n^{2/3}m^{2/3} + n + m) incidences.",

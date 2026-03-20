@@ -7,7 +7,7 @@
     "author": "Erdős, Pomerance (1980), van Doorn (2026, second part)",
     "sourceUrl": "https://erdosproblems.com/711",
     "date": "1980/2026",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos711Problem.lean",
     "tags": [
       "erdos",
@@ -61,7 +61,8 @@
       "Three fully proved examples for n=2 with m=1,2,3 using explicit vector witnesses",
       "Analysis of residue class effects on multiple distribution via multiplesInInterval",
       "Connection to Problem #710 bounds and asymptotic dominance analysis"
-    ]
+    ],
+    "axiomCount": 9
   },
   "overview": {
     "historicalContext": "Erdős and Pomerance (1980) introduced the two-parameter function f(n,m) generalizing f(n) = f(n,n) from Problem #710. While Problem #710 fixes the starting point at m = n, Problem #711 asks how the starting point affects the required interval length. They proved the uniform bound max_m f(n,m) ≪ n^{3/2} using a greedy construction, and Erdős offered 1000 rupees (~$78 in 1992) for proving either of two conjectures. In 2026, van Doorn resolved the second conjecture by proving f(n,m) - f(n,n) ≫ n·(log n / log log n) for suitably chosen m, published in Integers #A7. This quantitative bound shows the difference can actually dominate f(n,n) itself for large n, since log n / log log n ≫ √(log n). The first conjecture — improving n^{3/2} to n^{1+o(1)} — remains open and is one of the outstanding problems in multiplicative number theory.",

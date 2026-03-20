@@ -24,9 +24,21 @@
     "dateAdded": "2026-01-24",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      {"theorem": "SimpleGraph", "description": "Simple graph type and adjacency", "module": "Mathlib.Combinatorics.SimpleGraph.Basic"},
-      {"theorem": "Fintype", "description": "Finite types and cardinality", "module": "Mathlib.Data.Fintype.Card"},
-      {"theorem": "Set.ncard", "description": "Set cardinality for finite sets", "module": "Mathlib.Order.SetPartition"}
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type and adjacency",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Fintype",
+        "description": "Finite types and cardinality",
+        "module": "Mathlib.Data.Fintype.Card"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Set cardinality for finite sets",
+        "module": "Mathlib.Order.SetPartition"
+      }
     ],
     "originalContributions": [
       "IsC4Copy: 4-cycle copy predicate",
@@ -39,22 +51,68 @@
       "conjecture_implies_two_copies: Aristotle-proved implication"
     ],
     "references": [
-      {"key": "Re58", "citation": "Reiman, I., Über ein Problem von K. Zarankiewicz, Acta Math. Acad. Sci. Hungar. 9 (1958), 269-273.", "type": "paper"},
-      {"key": "KST54", "citation": "Kővári, T., Sós, V. T., and Turán, P., On a problem of K. Zarankiewicz, Colloq. Math. 3 (1954), 50-57.", "type": "paper"},
-      {"key": "ES83", "citation": "Erdős, Paul and Simonovits, Miklós, Supersaturated graphs and hypergraphs, Combinatorica 3 (1983), 181-192.", "type": "paper"},
-      {"key": "HMY21", "citation": "He, Jialin, Ma, Jie, and Yang, Tianchi, Supersaturation for C_4, preprint (2021).", "type": "paper"},
-      {"key": "Br66", "citation": "Brown, W. G., On graphs that do not contain a Thomsen graph, Canad. Math. Bull. 9 (1966), 281-285.", "type": "paper"},
-      {"key": "EP", "citation": "Erdős Problems, Problem #60, https://erdosproblems.com/60.", "type": "website"}
+      {
+        "key": "Re58",
+        "citation": "Reiman, I., Über ein Problem von K. Zarankiewicz, Acta Math. Acad. Sci. Hungar. 9 (1958), 269-273.",
+        "type": "paper"
+      },
+      {
+        "key": "KST54",
+        "citation": "Kővári, T., Sós, V. T., and Turán, P., On a problem of K. Zarankiewicz, Colloq. Math. 3 (1954), 50-57.",
+        "type": "paper"
+      },
+      {
+        "key": "ES83",
+        "citation": "Erdős, Paul and Simonovits, Miklós, Supersaturated graphs and hypergraphs, Combinatorica 3 (1983), 181-192.",
+        "type": "paper"
+      },
+      {
+        "key": "HMY21",
+        "citation": "He, Jialin, Ma, Jie, and Yang, Tianchi, Supersaturation for C_4, preprint (2021).",
+        "type": "paper"
+      },
+      {
+        "key": "Br66",
+        "citation": "Brown, W. G., On graphs that do not contain a Thomsen graph, Canad. Math. Bull. 9 (1966), 281-285.",
+        "type": "paper"
+      },
+      {
+        "key": "EP",
+        "citation": "Erdős Problems, Problem #60, https://erdosproblems.com/60.",
+        "type": "website"
+      }
     ],
     "relatedProofs": [
-      {"id": "erdos-765", "relationship": "determines ex(n; C_4) ~ (1/2)n^{3/2}, the threshold for this problem"},
-      {"id": "erdos-59", "relationship": "related extremal counting problem (G-free graph enumeration)"},
-      {"id": "erdos-65", "relationship": "cycle lengths in dense graphs (complementary cycle problem)"},
-      {"id": "erdos-57", "relationship": "odd cycles in graphs with high chromatic number"},
-      {"id": "erdos-577", "relationship": "vertex-disjoint 4-cycles (related cycle partition problem)"},
-      {"id": "erdos-766", "relationship": "extremal numbers and graph density (general framework)"},
-      {"id": "erdos-61", "relationship": "Erdős-Hajnal conjecture (extremal graph theory)"}
-    ]
+      {
+        "id": "erdos-765",
+        "relationship": "determines ex(n; C_4) ~ (1/2)n^{3/2}, the threshold for this problem"
+      },
+      {
+        "id": "erdos-59",
+        "relationship": "related extremal counting problem (G-free graph enumeration)"
+      },
+      {
+        "id": "erdos-65",
+        "relationship": "cycle lengths in dense graphs (complementary cycle problem)"
+      },
+      {
+        "id": "erdos-57",
+        "relationship": "odd cycles in graphs with high chromatic number"
+      },
+      {
+        "id": "erdos-577",
+        "relationship": "vertex-disjoint 4-cycles (related cycle partition problem)"
+      },
+      {
+        "id": "erdos-766",
+        "relationship": "extremal numbers and graph density (general framework)"
+      },
+      {
+        "id": "erdos-61",
+        "relationship": "Erdős-Hajnal conjecture (extremal graph theory)"
+      }
+    ],
+    "axiomCount": 8
   },
   "sections": [
     {

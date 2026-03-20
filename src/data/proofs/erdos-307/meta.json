@@ -46,7 +46,8 @@
       "Lower bound |P ∪ Q| ≥ 60 for prime solutions",
       "Connection to Egyptian fractions",
       "Computational intractability analysis"
-    ]
+    ],
+    "axiomCount": 5
   },
   "overview": {
     "historicalContext": "Erdős Problem #307 was posed by E.J. Barbeau in 1976 in 'Computer challenge corner: Problem 477: A brute force program' (Journal of Recreational Mathematics). Barbeau framed it as a computational challenge, not suspecting the problem would resist solution for nearly 50 years.\n\nThe problem sits at the intersection of three classical threads: (1) Euler's 1737 proof that $\\sum 1/p$ diverges (establishing that prime reciprocals are arithmetically rich), (2) Egyptian fraction theory dating to the Rhind papyrus (~1650 BCE, asking when rationals can be expressed as sums of unit fractions), and (3) Mertens' 1874 theorem that $\\sum_{p \\leq x} 1/p = \\ln\\ln x + M + O(1/\\ln x)$ where $M \\approx 0.2615$ is the Meissel-Mertens constant.\n\nThe coprime relaxation was solved by Cambie, who found the elegant examples $(1 + 1/5)(1/2 + 1/3) = (6/5)(5/6) = 1$ and $(1 + 1/41)(1/2 + 1/3 + 1/7) = (42/41)(41/42) = 1$. Both exploit the pattern $1 + 1/n = (n+1)/n$ where $n+1$ is a product of small distinct primes. The prime version remains open: an AM-GM argument shows any solution requires $|P \\cup Q| \\geq 60$ primes, making the search space $\\sim 2^{60} \\approx 10^{18}$, computationally infeasible. The problem connects to the 300-310 Egyptian fraction cluster in Erdős's problem list.",
@@ -157,32 +158,56 @@
     {
       "targetProofId": "erdos-300",
       "relationship": "Maximum subsets avoiding unit fraction sum 1 — the avoidance analogue of the Egyptian fraction connection in #307",
-      "sharedConcepts": ["unit fraction sums", "Egyptian fractions", "subset selection"]
+      "sharedConcepts": [
+        "unit fraction sums",
+        "Egyptian fractions",
+        "subset selection"
+      ]
     },
     {
       "targetProofId": "erdos-304",
       "relationship": "Egyptian fractions complexity — directly related to the unit fraction decomposition theory underlying #307",
-      "sharedConcepts": ["Egyptian fraction representations", "unit fractions", "complexity bounds"]
+      "sharedConcepts": [
+        "Egyptian fraction representations",
+        "unit fractions",
+        "complexity bounds"
+      ]
     },
     {
       "targetProofId": "erdos-306",
       "relationship": "Egyptian fractions with semiprime denominators — intermediate constraint between coprime and prime conditions in #307",
-      "sharedConcepts": ["semiprime denominators", "unit fraction sums", "restricted denominator sets"]
+      "sharedConcepts": [
+        "semiprime denominators",
+        "unit fraction sums",
+        "restricted denominator sets"
+      ]
     },
     {
       "targetProofId": "prime-reciprocal-divergence",
       "relationship": "Euler's proof that ∑1/p diverges — the key analytic fact behind the |P ∪ Q| ≥ 60 bound in #307",
-      "sharedConcepts": ["prime reciprocal sums", "Euler product", "divergence of ∑1/p"]
+      "sharedConcepts": [
+        "prime reciprocal sums",
+        "Euler product",
+        "divergence of ∑1/p"
+      ]
     },
     {
       "targetProofId": "fundamental-arithmetic",
       "relationship": "Prime factorization underpins both the p-adic valuation argument for P ∩ Q = ∅ and the LCD formulation",
-      "sharedConcepts": ["prime factorization", "unique factorization", "divisibility"]
+      "sharedConcepts": [
+        "prime factorization",
+        "unique factorization",
+        "divisibility"
+      ]
     },
     {
       "targetProofId": "bezout-identity",
       "relationship": "Bézout's identity underlies coprimality verification in Cambie's examples and the modular arithmetic of reciprocal sums",
-      "sharedConcepts": ["coprimality", "gcd", "Bézout coefficients"]
+      "sharedConcepts": [
+        "coprimality",
+        "gcd",
+        "Bézout coefficients"
+      ]
     }
   ],
   "references": [

@@ -7,7 +7,7 @@
     "author": "Open Problem",
     "sourceUrl": "https://erdosproblems.com/44",
     "date": "",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos44Problem.lean",
     "tags": [
       "erdos",
@@ -44,7 +44,8 @@
       "Upper bound: Sidon sets have at most 2sqrt(N) elements",
       "Infrastructure for proving powers of 2 form Sidon sets",
       "Proof that isSidon_singleton holds"
-    ]
+    ],
+    "axiomCount": 2
   },
   "overview": {
     "historicalContext": "A **Sidon set** (or B_2 sequence) is a set of integers where all pairwise sums are distinct. These sets, named after Simon Sidon who studied them in the 1930s, appear throughout additive combinatorics.\n\nErdős Problem #44 asks whether any Sidon set can be extended to achieve near-optimal density. The famous Erdős-Turán conjecture (Problem #28) posits that Sidon sets in [1,N] have at most (1+o(1))sqrt(N) elements, and this problem asks about the reverse: can we always extend a Sidon set to approach this bound?\n\nThis file proves auxiliary undergraduate-level results from the formal-conjectures repository while the main conjecture remains open.",

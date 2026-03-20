@@ -8,7 +8,7 @@
     "author": "Euclid (Lean 4 formalization)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Platonic_solid",
     "date": "c. 300 BCE",
-    "status": "complete",
+    "status": "verified",
     "proofRepoPath": "Proofs/PlatonicSolids.lean",
     "tags": [
       "geometry",
@@ -33,7 +33,8 @@
       "Verification of Euler's formula for all five solids",
       "Proof of duality relationships between Platonic solids"
     ],
-    "dateAdded": "12/27/25"
+    "dateAdded": "12/27/25",
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "The Platonic solids were known to the ancient Greeks and studied extensively by Plato (hence the name). Euclid proved in Elements Book XIII that these are the only five regular convex polyhedra.\n\nThe classification relies on Euler's polyhedral formula V - E + F = 2 combined with the regularity constraints that all faces are congruent regular polygons and the same number of faces meet at each vertex.",

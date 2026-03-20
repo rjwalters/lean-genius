@@ -7,7 +7,7 @@
     "author": "Erdős, Szekeres (problem, 1978), Bergman (solution, 2011)",
     "sourceUrl": "https://erdosproblems.com/698",
     "date": "2011",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos698Problem.lean",
     "tags": [
       "erdos",
@@ -64,7 +64,8 @@
       "erdos698_answer theorem: YES answer",
       "kummer_theorem, lucas_theorem axioms: number-theoretic connections",
       "erdos_698 theorem: main result"
-    ]
+    ],
+    "axiomCount": 8
   },
   "overview": {
     "historicalContext": "**Erdős Problem #698**\n\nThis problem concerns GCDs of binomial coefficients in Pascal's triangle.\n\n**Key History:**\n- Erdős & Szekeres (1978): Posed the problem and observed gcd ≥ 2^i\n- They noted this bound is sharp for i=1, j=p, n=2p\n- Bergman (2011): Proved the minimum GCD grows like Ω(√n)\n\n**The Setting:**\nFor valid index pairs 2 ≤ i < j ≤ n/2, we study gcd(C(n,i), C(n,j)).",

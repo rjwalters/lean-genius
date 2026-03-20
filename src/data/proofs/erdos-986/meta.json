@@ -7,7 +7,7 @@
     "author": "Spencer (1977, k=3), Mattheus-Verstraete (2023, k=4)",
     "sourceUrl": "https://erdosproblems.com/986",
     "date": "1977-2023",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos986Problem.lean",
     "tags": [
       "erdos",
@@ -51,7 +51,8 @@
       "aks_1980_upper axiom: best known upper bound",
       "exponent_gap: analysis of the polynomial gap for k≥5",
       "erdos_986_summary: combined results"
-    ]
+    ],
+    "axiomCount": 8
   },
   "overview": {
     "historicalContext": "**Erdős Problem #986: Ramsey Number Lower Bounds**\n\nThis problem concerns asymptotic lower bounds for off-diagonal Ramsey numbers R(k,n) where k is fixed and n grows.\n\n**Key History:**\n- Erdős conjectured that R(k,n) ≫ n^(k-1)/(log n)^c for fixed k ≥ 3\n- Spencer (1977): Proved the conjecture for k = 3\n- Ajtai-Komlós-Szemerédi (1980): Upper bound R(k,n) ≪ n^(k-1)/(log n)^(k-2)\n- Bohman-Keevash (2010): Best general lower bound n^((k+1)/2)/...\n- Mattheus-Verstraete (2023): Major breakthrough proving k = 4 case\n\n**Mathematical Setting:**\nR(k,n) is the smallest N such that any 2-coloring of K_N edges contains a monochromatic K_k or K_n. The problem asks how fast R(k,n) grows for fixed k.",

@@ -7,7 +7,7 @@
     "author": "Kovač & Tao (2024)",
     "sourceUrl": "https://erdosproblems.com/264",
     "date": "2024",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos264Problem.lean",
     "tags": [
       "erdos",
@@ -50,7 +50,8 @@
       "Statement of Kovač-Tao negative criterion",
       "Statement of Kovač-Tao positive criterion",
       "Growth rate analysis for 2ⁿ, 2^(2ⁿ), and n!"
-    ]
+    ],
+    "axiomCount": 4
   },
   "overview": {
     "historicalContext": "This problem explores the concept of 'irrationality sequences' — sequences so robust that perturbing them by any bounded amount still yields irrational sums. Erdős and Graham introduced this concept in 1980.\n\nErdős asked specifically about 2ⁿ and n!, and initially speculated that polynomial-growth sequences might work. He later retracted this, noting irrationality sequences must grow at least exponentially.\n\nIn 2024, Vjekoslav Kovač and Terence Tao made breakthrough progress, proving 2ⁿ is NOT an irrationality sequence and establishing precise criteria for when sequences can or cannot be irrationality sequences. Their paper unified many related Erdős problems about irrationality.",

@@ -7,7 +7,7 @@
     "author": "Haight (1979 solution)",
     "sourceUrl": "https://erdosproblems.com/277",
     "date": "1979",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos277Problem.lean",
     "tags": [
       "erdos",
@@ -58,7 +58,8 @@
       "covering_reciprocal_bound axiom: ∑ 1/m_i ≥ 1",
       "coveringLCM: lcm of covering moduli",
       "IsHighlyComposite, IsSuperabundant: related concepts"
-    ]
+    ],
+    "axiomCount": 6
   },
   "overview": {
     "historicalContext": "Covering systems of congruences were introduced by Erdős in 1950 in his proof that there exist odd integers not representable as a prime plus a power of 2. The concept became central to his research program in combinatorial number theory. In the 1970s, Erdős formulated Problem #277 as part of a cluster of questions (#273-#279) exploring the interplay between covering systems and number-theoretic properties.\n\nThe problem connects two classical threads: the sum of divisors function $\\sigma(n) = \\sum_{d \\mid n} d$, studied since Euler, and the combinatorics of congruence coverings. Gronwall (1913) proved $\\limsup \\sigma(n)/(n \\ln\\ln n) = e^\\gamma$, showing highly abundant numbers exist at every threshold. The question is whether such numbers can simultaneously resist being covered.\n\nJ.A. Haight resolved the problem in 1979 ('Covering systems of congruences, a negative result', Mathematika 26, 53-61). His constructive proof builds $n$ as a product of carefully chosen large primes, ensuring high abundancy while structurally preventing any covering system from using only divisors of $n$ as moduli. The key insight exploits the reciprocal sum constraint: a covering system with distinct moduli $m_1, \\ldots, m_k$ requires $\\sum 1/m_i \\geq 1$, but Haight's numbers have divisors too sparse to satisfy this.\n\nThe result connects to Ramanujan's highly composite numbers (1915), Alaoglu and Erdős's superabundant numbers (1944), and later work by Hough (2015) resolving Erdős's minimum modulus conjecture for covering systems with distinct moduli.",
@@ -162,32 +163,56 @@
     {
       "targetProofId": "erdos-273",
       "relationship": "Covering system cluster: #273 studies covering systems with prime-minus-one moduli, part of the same #273-#279 investigation",
-      "sharedConcepts": ["covering systems", "moduli constraints", "congruence coverings"]
+      "sharedConcepts": [
+        "covering systems",
+        "moduli constraints",
+        "congruence coverings"
+      ]
     },
     {
       "targetProofId": "erdos-274",
       "relationship": "Herzog-Schönheim conjecture on exact coverings by cosets — the exact (partition) analogue of covering systems",
-      "sharedConcepts": ["coset coverings", "exact covering systems", "moduli divisibility"]
+      "sharedConcepts": [
+        "coset coverings",
+        "exact covering systems",
+        "moduli divisibility"
+      ]
     },
     {
       "targetProofId": "erdos-275",
       "relationship": "Covering congruences problem, directly adjacent in Erdős's covering system cluster",
-      "sharedConcepts": ["covering congruences", "moduli sets", "integer coverage"]
+      "sharedConcepts": [
+        "covering congruences",
+        "moduli sets",
+        "integer coverage"
+      ]
     },
     {
       "targetProofId": "erdos-278",
       "relationship": "Maximum covering density of congruence systems — quantitative complement to #277's qualitative uncoverability result",
-      "sharedConcepts": ["covering density", "reciprocal sum bounds", "moduli structure"]
+      "sharedConcepts": [
+        "covering density",
+        "reciprocal sum bounds",
+        "moduli structure"
+      ]
     },
     {
       "targetProofId": "euler-totient",
       "relationship": "Euler's totient connects to multiplicative functions and divisor structure central to abundancy analysis",
-      "sharedConcepts": ["multiplicative arithmetic functions", "divisor structure", "Euler products"]
+      "sharedConcepts": [
+        "multiplicative arithmetic functions",
+        "divisor structure",
+        "Euler products"
+      ]
     },
     {
       "targetProofId": "fundamental-arithmetic",
       "relationship": "Prime factorization underlies both the multiplicativity of σ and the structure of covering system moduli",
-      "sharedConcepts": ["prime factorization", "divisors", "fundamental theorem"]
+      "sharedConcepts": [
+        "prime factorization",
+        "divisors",
+        "fundamental theorem"
+      ]
     }
   ],
   "references": [

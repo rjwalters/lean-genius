@@ -7,7 +7,7 @@
     "author": "Chvátal",
     "sourceUrl": "https://erdosproblems.com/701",
     "date": "1974",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos701Problem.lean",
     "tags": [
       "erdos",
@@ -19,7 +19,8 @@
     "sorries": 0,
     "erdosNumber": 701,
     "erdosUrl": "https://erdosproblems.com/701",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "axiomCount": 8
   },
   "overview": {
     "historicalContext": "Chvátal's conjecture (1974) generalizes the Erdős-Ko-Rado theorem to hereditary families. The conjecture asserts that the maximum intersecting subfamily is always a 'star' - all sets containing a fixed element. Despite nearly 50 years of research, the general case remains open. Partial results exist for injection-based orderings (Chvátal 1974), Sterboul conditions (1974), covering number 2 (Frankl-Kupavskii 2023), and weighted versions (Borg 2011).",

@@ -7,7 +7,7 @@
     "author": "Erdős (problem), Füredi-Palásti (1984), Escudero (2016)",
     "sourceUrl": "https://erdosproblems.com/209",
     "date": "2016",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos209Problem.lean",
     "tags": [
       "erdos",
@@ -48,7 +48,8 @@
       "furedi_palasti_1984 axiom: counterexamples for d not ≡ 0 (mod 9)",
       "escudero_2016 axiom: counterexamples for all d ≥ 4",
       "erdos_209 theorem: main disproof"
-    ]
+    ],
+    "axiomCount": 6
   },
   "overview": {
     "historicalContext": "**Erdős Problem #209** is a question in incidence geometry about the structure of line arrangements. The classical Sylvester-Gallai theorem (1893) guarantees that any finite set of points not all collinear determines at least one \"ordinary line\" (containing exactly 2 points). Erdős asked: can we extend this to triangles?\n\n**Historical Development:**\n- **1893 (Sylvester-Gallai):** Ordinary points/lines must exist.\n- **1984 (Füredi-Palásti):** Disproved the conjecture for most d.\n- **2016 (Escudero):** Completed the disproof for ALL d ≥ 4.\n\n**Key Insight:** While ordinary points always exist, they can be positioned to avoid forming triangles with only ordinary vertices.",

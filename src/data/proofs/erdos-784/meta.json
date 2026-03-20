@@ -7,7 +7,7 @@
     "author": "Ruzsa (1982), Saias (1998), Weingartner (2025)",
     "sourceUrl": "https://erdosproblems.com/784",
     "date": "1982-2025",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos784Problem.lean",
     "tags": [
       "erdos",
@@ -42,7 +42,8 @@
       "negative_answer_large_C theorem: NO for C > 1",
       "erdos_784_complete_answer theorem: YES iff C ≤ 1",
       "one_in_A_trivial theorem: excluding 1 from A"
-    ]
+    ],
+    "axiomCount": 11
   },
   "overview": {
     "historicalContext": "This problem studies the interplay between reciprocal sums and sieving. Schinzel-Szekeres (1959) showed the polynomial bound is best possible. Ruzsa (1982) established the C = 1 lower bound and showed the answer is NO for C > 1. Saias (1998) proved the matching upper bound for C = 1. Weingartner (2025) gave precise asymptotics for all C, completing the picture.",

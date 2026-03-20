@@ -8,7 +8,7 @@
     "sourceUrl": "https://erdosproblems.com/1122",
     "date": "1946",
     "dateAdded": "2026-01-26",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1122Problem.lean",
     "tags": [
       "erdos",
@@ -63,7 +63,8 @@
       "empty_implies_littleO proved via Finset.filter_eq_empty_iff",
       "conditionHierarchy definition, omega definition and axioms",
       "erdos_1122_summary combining three positive results via refine"
-    ]
+    ],
+    "axiomCount": 7
   },
   "overview": {
     "historicalContext": "This problem originates from Erdős's 1946 work on additive functions. An additive function f satisfies f(ab) = f(a) + f(b) when gcd(a,b) = 1. The canonical example is f(n) = c·log(n). Erdős proved that if f is strictly increasing (no defects), or if increments f(n+1) - f(n) → 0, then f must be logarithmic. The conjecture asks whether merely having sparse defects (o(X) of them up to X) suffices. Mangerel made significant progress in 2022, proving the result when defects are O(X/(log X)^{2+c}) with bounded prime values.",
@@ -85,7 +86,11 @@
       "Mathlib.Analysis.SpecialFunctions.Log.Basic",
       "Mathlib.Order.Filter.Basic"
     ],
-    "opens": ["Nat", "Real", "Filter"],
+    "opens": [
+      "Nat",
+      "Real",
+      "Filter"
+    ],
     "namespace": "Erdos1122",
     "lineCount": 217,
     "axiomCount": 7,

@@ -7,7 +7,16 @@
     "author": "Dieudonné, Lang (formalized in Lean 4 with Mathlib)",
     "date": "1960",
     "status": "verified",
-    "tags": ["analysis", "calculus", "normed-space", "generalization", "mean-value-theorem", "Banach-space", "Lipschitz", "ODE"],
+    "tags": [
+      "analysis",
+      "calculus",
+      "normed-space",
+      "generalization",
+      "mean-value-theorem",
+      "Banach-space",
+      "Lipschitz",
+      "ODE"
+    ],
     "proofRepoPath": "Proofs/MeanValueTheoremOQ03.lean",
     "badge": "mathlib",
     "sorries": 0,
@@ -15,12 +24,36 @@
     "theorems": 17,
     "lines": 462,
     "mathlibDependencies": [
-      {"theorem": "norm_image_sub_le_of_norm_deriv_le_segment'", "description": "Vector-valued mean value inequality: ‖f(x)-f(a)‖ ≤ C·(x-a) when ‖f'‖ ≤ C on [a,b].", "module": "Mathlib.Analysis.Calculus.MeanValue"},
-      {"theorem": "exists_deriv_eq_slope", "description": "Scalar MVT (Lagrange): ∃ c ∈ (a,b), f'(c) = (f(b)-f(a))/(b-a).", "module": "Mathlib.Analysis.Calculus.MeanValue"},
-      {"theorem": "HasDerivWithinAt", "description": "Derivative of f at x within a set s.", "module": "Mathlib.Analysis.Calculus.Deriv.Basic"},
-      {"theorem": "Convex.norm_image_sub_le_of_norm_fderivWithin_le", "description": "Banach space MVT: ‖f(b)-f(a)‖ ≤ C·‖b-a‖ on convex sets.", "module": "Mathlib.Analysis.Calculus.MeanValue"},
-      {"theorem": "Convex.lipschitzOnWith_of_nnnorm_fderivWithin_le", "description": "Derivative bound implies Lipschitz on convex sets.", "module": "Mathlib.Analysis.Calculus.MeanValue"},
-      {"theorem": "Convex.norm_image_sub_le_of_norm_fderiv_le", "description": "Banach MVT with pointwise DifferentiableAt.", "module": "Mathlib.Analysis.Calculus.MeanValue"}
+      {
+        "theorem": "norm_image_sub_le_of_norm_deriv_le_segment'",
+        "description": "Vector-valued mean value inequality: ‖f(x)-f(a)‖ ≤ C·(x-a) when ‖f'‖ ≤ C on [a,b].",
+        "module": "Mathlib.Analysis.Calculus.MeanValue"
+      },
+      {
+        "theorem": "exists_deriv_eq_slope",
+        "description": "Scalar MVT (Lagrange): ∃ c ∈ (a,b), f'(c) = (f(b)-f(a))/(b-a).",
+        "module": "Mathlib.Analysis.Calculus.MeanValue"
+      },
+      {
+        "theorem": "HasDerivWithinAt",
+        "description": "Derivative of f at x within a set s.",
+        "module": "Mathlib.Analysis.Calculus.Deriv.Basic"
+      },
+      {
+        "theorem": "Convex.norm_image_sub_le_of_norm_fderivWithin_le",
+        "description": "Banach space MVT: ‖f(b)-f(a)‖ ≤ C·‖b-a‖ on convex sets.",
+        "module": "Mathlib.Analysis.Calculus.MeanValue"
+      },
+      {
+        "theorem": "Convex.lipschitzOnWith_of_nnnorm_fderivWithin_le",
+        "description": "Derivative bound implies Lipschitz on convex sets.",
+        "module": "Mathlib.Analysis.Calculus.MeanValue"
+      },
+      {
+        "theorem": "Convex.norm_image_sub_le_of_norm_fderiv_le",
+        "description": "Banach MVT with pointwise DifferentiableAt.",
+        "module": "Mathlib.Analysis.Calculus.MeanValue"
+      }
     ],
     "originalContributions": [
       "Mean value inequality wrapper using norm_image_sub_le_of_norm_deriv_le_segment'",
@@ -66,7 +99,8 @@
     ],
     "historicalContext": "The classical Mean Value Theorem — that f'(c) = (f(b)-f(a))/(b-a) for some c ∈ (a,b) — was formulated by Lagrange (1801) building on earlier work by Rolle (1691). When analysis moved to vector-valued and Banach-space-valued functions in the 20th century, mathematicians discovered this equality form has no analogue: the intermediate value theorem, which underpins the scalar MVT, fails in higher dimensions. Dieudonné (1960) emphasized that the correct generalization is the mean value inequality ‖f(b)-f(a)‖ ≤ sup‖f'‖·(b-a). This inequality, though weaker than equality, suffices for all major applications: Lipschitz estimates, ODE uniqueness (Picard-Lindelöf), contraction mappings, and the implicit/inverse function theorems in Banach spaces.",
     "dateAdded": "03/06/26",
-    "parentProof": "mean-value-theorem"
+    "parentProof": "mean-value-theorem",
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "The Mean Value Theorem has a rich 300-year history. **Rolle** (1691) proved the special case $f(a) = f(b) \\Rightarrow f'(c) = 0$. **Lagrange** (1801) generalized to $f'(c) = \\frac{f(b)-f(a)}{b-a}$. **Cauchy** (1823) gave the ratio form for parametric curves. When **Banach** (1932) and **Dieudonné** (1960) developed analysis in normed spaces, they discovered the equality form fails: circular motion $f(t) = (\\cos t, \\sin t)$ has $f(2\\pi) = f(0)$ but $\\|f'(t)\\| = 1 \\neq 0$. The resolution is the **mean value inequality** $\\|f(b) - f(a)\\| \\leq C \\cdot (b-a)$, which Dieudonné called 'the correct form of the mean value theorem.' This inequality is strictly weaker than equality for $\\mathbb{R} \\to \\mathbb{R}$ but is the *only* form available for $\\mathbb{R} \\to E$ and $E \\to F$, and it suffices for all applications in nonlinear analysis.",
@@ -168,7 +202,10 @@
       "Can the contraction mapping theorem (Banach fixed-point theorem) be proved using the Lipschitz results here?"
     ],
     "crossReferences": [
-      { "proofId": "mean-value-theorem", "relationship": "Parent proof — scalar Mean Value Theorem that this generalizes to vector-valued functions." }
+      {
+        "proofId": "mean-value-theorem",
+        "relationship": "Parent proof — scalar Mean Value Theorem that this generalizes to vector-valued functions."
+      }
     ]
   }
 }

@@ -8,15 +8,37 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Euler%27s_theorem",
     "date": "1763",
     "status": "verified",
-    "tags": ["number-theory", "modular-arithmetic", "primes", "classic", "intermediate"],
+    "tags": [
+      "number-theory",
+      "modular-arithmetic",
+      "primes",
+      "classic",
+      "intermediate"
+    ],
     "proofRepoPath": "Proofs/EulerTotient.lean",
     "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
-      { "theorem": "ZMod.pow_totient", "description": "Main Euler's theorem for units in ZMod", "module": "Mathlib.Data.ZMod.Basic" },
-      { "theorem": "Nat.totient_prime", "description": "φ(p) = p - 1 for prime p", "module": "Mathlib.Data.Nat.Totient" },
-      { "theorem": "Nat.totient_prime_pow", "description": "φ(p^k) = p^(k-1)(p-1)", "module": "Mathlib.Data.Nat.Totient" },
-      { "theorem": "ZMod.pow_card", "description": "a^p = a in ZMod p for prime p", "module": "Mathlib.Data.ZMod.Basic" }
+      {
+        "theorem": "ZMod.pow_totient",
+        "description": "Main Euler's theorem for units in ZMod",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Nat.totient_prime",
+        "description": "φ(p) = p - 1 for prime p",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.totient_prime_pow",
+        "description": "φ(p^k) = p^(k-1)(p-1)",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "ZMod.pow_card",
+        "description": "a^p = a in ZMod p for prime p",
+        "module": "Mathlib.Data.ZMod.Basic"
+      }
     ],
     "originalContributions": [
       "Euler's theorem via ZMod.pow_totient",
@@ -28,14 +50,42 @@
       "Totient of prime power formula"
     ],
     "references": [
-      {"authors": "L. Euler", "title": "Theoremata circa residua ex divisione potestatum relicta", "year": "1763", "venue": "Novi Commentarii Academiae Scientiarum Petropolitanae", "note": "Original proof of a^φ(n) ≡ 1 (mod n) for coprime a, n"},
-      {"authors": "P. de Fermat", "title": "Letter to Frénicle de Bessy", "year": "1640", "note": "Statement (without proof) of a^(p-1) ≡ 1 (mod p) for prime p"},
-      {"authors": "R. Rivest, A. Shamir, L. Adleman", "title": "A method for obtaining digital signatures and public-key cryptosystems", "year": "1978", "venue": "Communications of the ACM", "note": "RSA cryptosystem relying on Euler's theorem for correctness"},
-      {"authors": "G. H. Hardy, E. M. Wright", "title": "An Introduction to the Theory of Numbers", "year": "1938", "venue": "Oxford University Press", "note": "Standard reference for the totient function and its properties"}
+      {
+        "authors": "L. Euler",
+        "title": "Theoremata circa residua ex divisione potestatum relicta",
+        "year": "1763",
+        "venue": "Novi Commentarii Academiae Scientiarum Petropolitanae",
+        "note": "Original proof of a^φ(n) ≡ 1 (mod n) for coprime a, n"
+      },
+      {
+        "authors": "P. de Fermat",
+        "title": "Letter to Frénicle de Bessy",
+        "year": "1640",
+        "note": "Statement (without proof) of a^(p-1) ≡ 1 (mod p) for prime p"
+      },
+      {
+        "authors": "R. Rivest, A. Shamir, L. Adleman",
+        "title": "A method for obtaining digital signatures and public-key cryptosystems",
+        "year": "1978",
+        "venue": "Communications of the ACM",
+        "note": "RSA cryptosystem relying on Euler's theorem for correctness"
+      },
+      {
+        "authors": "G. H. Hardy, E. M. Wright",
+        "title": "An Introduction to the Theory of Numbers",
+        "year": "1938",
+        "venue": "Oxford University Press",
+        "note": "Standard reference for the totient function and its properties"
+      }
     ],
     "dateAdded": "12/26/25",
     "wiedijkNumber": 10,
-    "relatedProofs": ["fundamental-arithmetic", "derangements", "cramers-rule"]
+    "relatedProofs": [
+      "fundamental-arithmetic",
+      "derangements",
+      "cramers-rule"
+    ],
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "**From Fermat to Euler to RSA**\n\n**Pierre de Fermat** stated his 'little theorem' $a^{p-1} \\equiv 1 \\pmod{p}$ for prime $p$ in a 1640 letter to Frénicle de Bessy, without proof. **Leonhard Euler** first proved it in 1736 and then generalized it in 1763 to arbitrary moduli: $a^{\\varphi(n)} \\equiv 1 \\pmod{n}$ for $\\gcd(a,n) = 1$, introducing the totient function $\\varphi(n)$.\n\n**The Group-Theoretic Proof**\n\nThe modern proof uses **Lagrange's theorem**: the multiplicative group $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ has order $\\varphi(n)$, so any element raised to the group order equals the identity. This elegant one-line proof, used in the formalization, replaced Euler's original inductive argument.\n\n**RSA Cryptography**\n\nEuler's theorem is the mathematical foundation of **RSA encryption** (Rivest-Shamir-Adleman, 1977). For primes $p, q$ with $n = pq$: $\\varphi(n) = (p-1)(q-1)$. Choosing $ed \\equiv 1 \\pmod{\\varphi(n)}$, the encryption $m \\mapsto m^e \\pmod{n}$ is inverted by $c \\mapsto c^d \\pmod{n}$ because $m^{ed} = m^{1+k\\varphi(n)} = m \\cdot (m^{\\varphi(n)})^k \\equiv m \\pmod{n}$.\n\nThis is #10 on **Freek Wiedijk**'s list of 100 theorems formalized in proof assistants.",

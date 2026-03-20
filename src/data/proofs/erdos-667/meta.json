@@ -19,7 +19,8 @@
     "sorries": 0,
     "erdosNumber": 667,
     "erdosUrl": "https://erdosproblems.com/667",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "axiomCount": 15
   },
   "overview": {
     "historicalContext": "**Erdős, Faudree, Rousseau, and Schelp** (EFRS) studied $H(n;p,q)$, the largest clique guaranteed in $n$-vertex graphs where every $p$-vertex subset spans $\\geq q$ edges. They defined $c(p,q) = \\liminf_{n\\to\\infty} \\log H(n;p,q)/\\log n$ and asked whether it is strictly increasing in $q$. The problem interpolates between classical Ramsey theory ($q=1$, reduces to independence-number bounds) and complete graphs ($q = \\binom{p-1}{2}+1$, forces $G = K_n$). The EFRS bound $c(p, \\lfloor(p-1)/2\\rfloor) \\leq 1/2$ shows a dramatic jump at the top of the range. Classical Ramsey bounds give $1/(p-1) \\leq c(p,1) \\leq 2/(p+1)$; the intermediate values remain largely open.",

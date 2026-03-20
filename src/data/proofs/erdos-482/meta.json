@@ -7,7 +7,7 @@
     "author": "Graham & Pollak (1970); Stoll (2005-2006)",
     "sourceUrl": "https://erdosproblems.com/482",
     "date": "1970",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos482Problem.lean",
     "tags": [
       "erdos",
@@ -21,7 +21,8 @@
     "sorries": 0,
     "erdosNumber": 482,
     "erdosUrl": "https://erdosproblems.com/482",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "axiomCount": 7
   },
   "overview": {
     "historicalContext": "Erdős Problem #482 concerns a remarkable connection between integer sequences and binary expansions. Graham and Pollak discovered that for the sequence a₁ = 1, a_{n+1} = ⌊√2(aₙ + 1/2)⌋, the differences a_{2n+1} - 2a_{2n-1} yield the binary digits of √2. Erdős asked for similar results for √m and other algebraic numbers. Stoll (2005, 2006) provided wide-ranging generalizations of this phenomenon, connecting integer floor sequences to digit expansions of algebraic irrationals, settling the problem in a broader context than originally posed.",

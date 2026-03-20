@@ -7,7 +7,7 @@
     "author": "Berend (1997 proof), Erdős & Graham (1980 problem)",
     "sourceUrl": "https://erdosproblems.com/646",
     "date": "1997",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos646Problem.lean",
     "tags": [
       "erdos",
@@ -60,13 +60,14 @@
     "relatedProblems": [
       {
         "id": "erdos-668",
-        "relationship": "Related Erd\u0151s problem on factorial divisibility properties"
+        "relationship": "Related Erdős problem on factorial divisibility properties"
       },
       {
         "id": "euler-totient",
         "relationship": "Euler's totient function relates to coprime residues, relevant to density arguments for p-adic valuations"
       }
-    ]
+    ],
+    "axiomCount": 15
   },
   "overview": {
     "historicalContext": "**Erdős Problem #646**\n\nThis problem asks about the parity of prime exponents in factorial factorizations.\n\n**Key History:**\n- Erdős & Graham (1980, p. 77): Original problem statement\n- Berend (1997): Proved the affirmative answer\n- Additional result: sequence has bounded gaps\n\n**Mathematical Setting:**\nThe p-adic valuation vₚ(n!) counts how many times prime p divides n!.\nLegendre's formula: vₚ(n!) = ⌊n/p⌋ + ⌊n/p²⌋ + ...\n\nThe question is: when is vₚ(n!) even for all primes in a given set?",

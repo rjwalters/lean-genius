@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/948",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos948Problem.lean",
     "tags": [
       "erdos",
@@ -55,7 +55,8 @@
       "hindman_theorem axiom: IP sets in colorings",
       "IsIPSet, IsFSSet, IsIPStar definitions: IP set theory",
       "erdos_948_mono_false theorem: monochromatic is false"
-    ]
+    ],
+    "axiomCount": 4
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1977 [Er77c], connecting to Hindman's theorem (1974) on IP sets. Hindman's theorem says any finite coloring of ℕ has an infinite sequence whose finite subsums are monochromatic.\n\nGalvin provided a counterexample showing the monochromatic version with growth bounds is false. The problem relates to Erdős Problem #532 on variants of Hindman's theorem.\n\nIP sets (named by Furstenberg for 'idempotent') are central to additive combinatorics.",

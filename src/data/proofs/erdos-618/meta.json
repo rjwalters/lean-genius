@@ -7,7 +7,7 @@
     "author": "Noga Alon (solver)",
     "sourceUrl": "https://erdosproblems.com/618",
     "date": "1998 (posed), ~2000s (solved)",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos618Problem.lean",
     "tags": [
       "erdos",
@@ -24,9 +24,21 @@
     "dateAdded": "2026-01-22",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      { "theorem": "SimpleGraph.CliqueFree", "description": "Clique-free property for graphs", "module": "Mathlib.Combinatorics.SimpleGraph.Clique" },
-      { "theorem": "SimpleGraph.dist", "description": "Graph distance function", "module": "Mathlib.Combinatorics.SimpleGraph.Connectivity.Metric" },
-      { "theorem": "Filter.atTop", "description": "Asymptotic filter for eventually statements", "module": "Mathlib.Order.Filter.Basic" }
+      {
+        "theorem": "SimpleGraph.CliqueFree",
+        "description": "Clique-free property for graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "SimpleGraph.dist",
+        "description": "Graph distance function",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Connectivity.Metric"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Asymptotic filter for eventually statements",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
     ],
     "originalContributions": [
       "IsTriangleFree: triangle-free via CliqueFree 3",
@@ -41,7 +53,8 @@
       "threshold_is_sharp: √n threshold is optimal",
       "mantel_theorem: triangle-free edge bound",
       "erdos_618: summary combining main conjecture + threshold"
-    ]
+    ],
+    "axiomCount": 7
   },
   "overview": {
     "historicalContext": "Erdős Problem #618 was posed by Erdős, Gyárfás, and Ruszinkó in their 1998 Combinatorica paper 'How to decrease the diameter of triangle-free graphs.' For a triangle-free graph G on n vertices, h₂(G) denotes the minimum number of edges that must be added so that the resulting graph has diameter at most 2 while remaining triangle-free. The authors proved that for bounded degree graphs (Δ = O(1)) with no isolated vertices, h₂(G) = O(n log n).\n\nSimonovits showed the complementary direction: there exist triangle-free graphs with maximum degree ≫ √n for which h₂(G) = Θ(n²). This established that √n is a critical threshold for the maximum degree. The central conjecture asked whether Δ = o(√n) always implies h₂(G) = o(n²). Noga Alon resolved this conjecture affirmatively, observing that the problem is essentially identical to Erdős Problem #134.\n\nThe √n threshold arises naturally from the interplay between Mantel's theorem (triangle-free graphs have at most n²/4 edges) and the structural requirements for diameter 2. A graph with degree ≈ √n has roughly n^{3/2} edges, which is the scale at which triangle-free diameter-2 graphs transition between sparse and dense behavior. Alon's proof uses probabilistic and extremal graph theory methods.",

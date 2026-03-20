@@ -7,7 +7,7 @@
     "author": "Hindman (original); Moreira 2017 (partial); OPEN for full conjecture",
     "sourceUrl": "https://erdosproblems.com/172",
     "date": "",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos172Problem.lean",
     "tags": [
       "erdos",
@@ -44,7 +44,8 @@
       "Clean formalization of the sum-product monochromatic property",
       "Axiomatization of Moreira (2017), Alweiss (2023), and Hindman (1980)",
       "Explicit connection between finite and infinite versions"
-    ]
+    ],
+    "axiomCount": 3
   },
   "overview": {
     "historicalContext": "This problem was first asked by Neil Hindman and concerns the interplay between additive and multiplicative structure in Ramsey theory. The question asks whether the additive and multiplicative structures of ℕ can be simultaneously exploited to find arbitrarily large monochromatic configurations.\n\nHindman himself proved in 1980 that the infinite version is false - with 7 colors, no infinite set can have all sums and products monochromatic. This left open the finite version.\n\nJoel Moreira made breakthrough progress in 2017, proving that for any finite coloring, there exist x, y such that {x, x+y, xy} are all the same color. This was the first non-trivial case (|A| = 2). Ryan Alweiss (2023) proved the full conjecture over ℚ\\{0}, suggesting the answer over ℕ might also be positive.",

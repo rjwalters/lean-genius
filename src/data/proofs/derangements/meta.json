@@ -8,26 +8,77 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Derangement",
     "date": "1708",
     "status": "verified",
-    "tags": ["combinatorics", "probability", "classic", "intermediate"],
+    "tags": [
+      "combinatorics",
+      "probability",
+      "classic",
+      "intermediate"
+    ],
     "proofRepoPath": "Proofs/Derangements.lean",
     "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
-      {"theorem": "numDerangements_sum", "description": "Closed-form sum formula", "module": "Mathlib.Combinatorics.Derangements.Finite"},
-      {"theorem": "numDerangements_add_two", "description": "Recurrence D(n+2) = (n+1)(D(n) + D(n+1))", "module": "Mathlib.Combinatorics.Derangements.Finite"},
-      {"theorem": "card_derangements_eq_numDerangements", "description": "Cardinality equals numDerangements", "module": "Mathlib.Combinatorics.Derangements.Finite"},
-      {"theorem": "mem_derangements_iff_fixedPoints_eq_empty", "description": "Derangement iff no fixed points", "module": "Mathlib.Combinatorics.Derangements.Basic"}
+      {
+        "theorem": "numDerangements_sum",
+        "description": "Closed-form sum formula",
+        "module": "Mathlib.Combinatorics.Derangements.Finite"
+      },
+      {
+        "theorem": "numDerangements_add_two",
+        "description": "Recurrence D(n+2) = (n+1)(D(n) + D(n+1))",
+        "module": "Mathlib.Combinatorics.Derangements.Finite"
+      },
+      {
+        "theorem": "card_derangements_eq_numDerangements",
+        "description": "Cardinality equals numDerangements",
+        "module": "Mathlib.Combinatorics.Derangements.Finite"
+      },
+      {
+        "theorem": "mem_derangements_iff_fixedPoints_eq_empty",
+        "description": "Derangement iff no fixed points",
+        "module": "Mathlib.Combinatorics.Derangements.Basic"
+      }
     ],
-    "originalContributions": ["Recurrence relation", "Limit approaches 1/e", "Algebraic properties (not a subgroup)", "Concrete examples D(2) through D(6)"],
+    "originalContributions": [
+      "Recurrence relation",
+      "Limit approaches 1/e",
+      "Algebraic properties (not a subgroup)",
+      "Concrete examples D(2) through D(6)"
+    ],
     "references": [
-      {"authors": "P. R. de Montmort", "title": "Essay d'Analyse sur les Jeux de Hazard", "year": "1708", "venue": "Paris", "note": "First systematic study of derangements, arising from the 'jeu de treize' card game"},
-      {"authors": "L. Euler", "title": "Calcul de la probabilité dans le jeu de rencontre", "year": "1751", "venue": "Mémoires de l'Académie Royale des Sciences de Berlin", "note": "Derived the inclusion-exclusion formula D(n) = n! Σ(-1)^k/k!"},
-      {"authors": "W. A. Whitworth", "title": "Choice and Chance", "year": "1878", "venue": "Cambridge", "note": "Introduced the subfactorial notation !n for D(n)"},
-      {"authors": "R. P. Stanley", "title": "Enumerative Combinatorics, Vol. 1", "year": "1997", "venue": "Cambridge University Press", "note": "Standard reference for derangement theory and the exponential formula"}
+      {
+        "authors": "P. R. de Montmort",
+        "title": "Essay d'Analyse sur les Jeux de Hazard",
+        "year": "1708",
+        "venue": "Paris",
+        "note": "First systematic study of derangements, arising from the 'jeu de treize' card game"
+      },
+      {
+        "authors": "L. Euler",
+        "title": "Calcul de la probabilité dans le jeu de rencontre",
+        "year": "1751",
+        "venue": "Mémoires de l'Académie Royale des Sciences de Berlin",
+        "note": "Derived the inclusion-exclusion formula D(n) = n! Σ(-1)^k/k!"
+      },
+      {
+        "authors": "W. A. Whitworth",
+        "title": "Choice and Chance",
+        "year": "1878",
+        "venue": "Cambridge",
+        "note": "Introduced the subfactorial notation !n for D(n)"
+      },
+      {
+        "authors": "R. P. Stanley",
+        "title": "Enumerative Combinatorics, Vol. 1",
+        "year": "1997",
+        "venue": "Cambridge University Press",
+        "note": "Standard reference for derangement theory and the exponential formula"
+      }
     ],
     "dateAdded": "12/26/25",
     "wiedijkNumber": 88,
-    "mathlib_version": "4.15.0"
+    "mathlib_version": "4.15.0",
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "The derangement problem — also known as the 'problème des rencontres' (problem of coincidences) or the 'hat-check problem' — was first studied by Pierre Rémond de Montmort in his 1708 book 'Essay d'Analyse sur les Jeux de Hazard'. Montmort computed $D_n$ for small $n$ and conjectured the general formula. Nikolaus Bernoulli corresponded with Montmort about the problem, and Euler later derived the formula $D_n = n! \\sum (-1)^k/k!$ using inclusion-exclusion in 1751. The subfactorial notation $!n$ was introduced by William Allen Whitworth in 1878. The convergence $D_n/n! \\to 1/e$ is a celebrated result in combinatorial probability — it means that for large $n$, a random permutation has roughly a 36.79% chance of being a derangement, regardless of $n$. This is an early example of a 'universal' probability that doesn't depend on the problem size.",

@@ -7,7 +7,7 @@
     "author": "Erdős, Sárközy, Sós (1994) - Sidon case; OPEN for B₂[2]",
     "sourceUrl": "https://erdosproblems.com/158",
     "date": "",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos158Problem.lean",
     "tags": [
       "erdos",
@@ -44,7 +44,8 @@
       "Clear formalization distinguishing B₂[1] (solved) from B₂[2] (open)",
       "Connection between B₂[g] hierarchy and Sidon sets",
       "Educational explanation of the √N counting barrier"
-    ]
+    ],
+    "axiomCount": 5
   },
   "overview": {
     "historicalContext": "This problem concerns B₂[g] sets, a generalization of Sidon sets (B₂ sequences). A Sidon set has all pairwise sums distinct - equivalently, each sum n has at most 1 representation a + b = n with a ≤ b. B₂[g] sets allow up to g representations per sum.\n\nErdős proved a fundamental result for Sidon sets: any infinite Sidon set A must have liminf A(N)/√N = 0. This means the counting function cannot stay uniformly above c√N. While finite Sidon subsets of {1,...,N} can have ~√N elements, infinite ones must thin out.\n\nErdős, Sárközy, and Sós (1994) strengthened this to show liminf A(N)/√N · (log N)^{1/2} < ∞. Problem #158 asks if the same conclusion (liminf = 0) holds when we relax to B₂[2] sets.",

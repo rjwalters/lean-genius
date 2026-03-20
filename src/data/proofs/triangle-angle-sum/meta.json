@@ -8,14 +8,31 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Sum_of_angles_of_a_triangle",
     "date": "~300 BCE",
     "status": "verified",
-    "tags": ["geometry", "euclidean", "classic", "beginner"],
+    "tags": [
+      "geometry",
+      "euclidean",
+      "classic",
+      "beginner"
+    ],
     "proofRepoPath": "Proofs/TriangleAngleSum.lean",
     "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
-      {"theorem": "EuclideanGeometry.angle_add_angle_add_angle_eq_pi", "description": "Triangle angle sum theorem", "module": "Mathlib.Geometry.Euclidean.Triangle"},
-      {"theorem": "EuclideanGeometry.angle_nonneg", "description": "Interior angles are non-negative", "module": "Mathlib.Geometry.Euclidean.Triangle"},
-      {"theorem": "EuclideanGeometry.angle_le_pi", "description": "Each angle is at most π", "module": "Mathlib.Geometry.Euclidean.Triangle"}
+      {
+        "theorem": "EuclideanGeometry.angle_add_angle_add_angle_eq_pi",
+        "description": "Triangle angle sum theorem",
+        "module": "Mathlib.Geometry.Euclidean.Triangle"
+      },
+      {
+        "theorem": "EuclideanGeometry.angle_nonneg",
+        "description": "Interior angles are non-negative",
+        "module": "Mathlib.Geometry.Euclidean.Triangle"
+      },
+      {
+        "theorem": "EuclideanGeometry.angle_le_pi",
+        "description": "Each angle is at most π",
+        "module": "Mathlib.Geometry.Euclidean.Triangle"
+      }
     ],
     "originalContributions": [
       "Formulation for distinct non-degenerate triangles",
@@ -25,7 +42,8 @@
       "Conversion to degree measure"
     ],
     "dateAdded": "12/26/25",
-    "wiedijkNumber": 27
+    "wiedijkNumber": 27,
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "The triangle angle sum theorem is one of the oldest results in all of mathematics. Euclid proved it as Proposition 32 of Book I of the *Elements* (c. 300 BCE) by constructing a line through one vertex parallel to the opposite side and using the alternate interior angle theorem. The proof depends critically on Euclid's fifth postulate (the parallel postulate), making this theorem a touchstone for the foundations of geometry.\n\nThe theorem's central role became apparent in the 19th century when mathematicians discovered non-Euclidean geometries. In 1823, János Bolyai and (independently) Nikolai Lobachevsky showed that if the parallel postulate is dropped, consistent geometries exist where the angle sum of a triangle is *less* than $\\pi$ (hyperbolic geometry). Bernhard Riemann's 1854 lecture described geometries where the sum *exceeds* $\\pi$ (elliptic/spherical geometry). The **angular defect** $\\pi - (\\alpha + \\beta + \\gamma)$ turned out to equal the integral of Gaussian curvature over the triangle's interior (the Gauss-Bonnet theorem), connecting this elementary result to deep differential geometry.\n\nThis is entry #27 on Freek Wiedijk's list of 100 greatest theorems. The formalization in Lean works in an abstract inner product space via Mathlib's `EuclideanGeometry.angle` function, which measures the angle at the middle point of three points in an affine space. The proof is a direct application of Mathlib's `angle_add_angle_add_angle_eq_pi`, with several original corollaries including the exterior angle theorem and the right triangle special case.",
@@ -40,15 +58,69 @@
     ]
   },
   "sections": [
-    {"id": "imports-header", "title": "Imports and Documentation", "startLine": 1, "endLine": 45, "summary": "Imports Mathlib.Geometry.Euclidean.Triangle and Mathlib.Tactic. Extensive docstring covers the angle sum formula, Euclid's Elements Book I Prop 32, connection to non-Euclidean geometry, and Wiedijk #27 designation."},
-    {"id": "setup", "title": "Namespace and Type Variables", "startLine": 47, "endLine": 52, "summary": "Opens the EuclideanGeometry scope for the ∠ notation. Declares universe-polymorphic type variables V (normed vector space) and P (metric affine space) with inner product structure."},
-    {"id": "main-theorem", "title": "Main Triangle Angle Sum Theorem", "startLine": 54, "endLine": 66, "summary": "The central result (Wiedijk #27): for p₂ ≠ p₁ and p₃ ≠ p₁, the three interior angles sum to π. Direct application of Mathlib's angle_add_angle_add_angle_eq_pi."},
-    {"id": "distinct", "title": "Non-Degenerate Triangle Version", "startLine": 68, "endLine": 77, "summary": "Reformulation requiring all three vertices to be pairwise distinct (p₁ ≠ p₂, p₂ ≠ p₃, p₃ ≠ p₁), closer to the classical statement for proper triangles."},
-    {"id": "bounds", "title": "Angle Bounds", "startLine": 79, "endLine": 89, "summary": "Each interior angle satisfies 0 ≤ ∠ ≤ π, using Mathlib's angle_le_pi and angle_nonneg."},
-    {"id": "corollaries", "title": "Corollaries", "startLine": 91, "endLine": 115, "summary": "Three consequences: the third angle is determined by the other two, any single angle is strictly less than π in a non-degenerate triangle, and the sum of any two angles is less than π."},
-    {"id": "right-triangle", "title": "Right Triangle Special Case", "startLine": 117, "endLine": 126, "summary": "In a right triangle (one angle = π/2), the two acute angles sum to π/2. Proved by substituting the right angle into the sum identity."},
-    {"id": "exterior-angle", "title": "Exterior Angle Theorem", "startLine": 128, "endLine": 137, "summary": "The exterior angle at a vertex (π minus the interior angle) equals the sum of the two remote interior angles."},
-    {"id": "degrees-summary", "title": "Degree Conversion and Verification", "startLine": 139, "endLine": 157, "summary": "Converts the radian result to degrees: the sum equals 180°. Uses field_simp for the π cancellation. Concludes with #check verification of all main theorems."}
+    {
+      "id": "imports-header",
+      "title": "Imports and Documentation",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Imports Mathlib.Geometry.Euclidean.Triangle and Mathlib.Tactic. Extensive docstring covers the angle sum formula, Euclid's Elements Book I Prop 32, connection to non-Euclidean geometry, and Wiedijk #27 designation."
+    },
+    {
+      "id": "setup",
+      "title": "Namespace and Type Variables",
+      "startLine": 47,
+      "endLine": 52,
+      "summary": "Opens the EuclideanGeometry scope for the ∠ notation. Declares universe-polymorphic type variables V (normed vector space) and P (metric affine space) with inner product structure."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Triangle Angle Sum Theorem",
+      "startLine": 54,
+      "endLine": 66,
+      "summary": "The central result (Wiedijk #27): for p₂ ≠ p₁ and p₃ ≠ p₁, the three interior angles sum to π. Direct application of Mathlib's angle_add_angle_add_angle_eq_pi."
+    },
+    {
+      "id": "distinct",
+      "title": "Non-Degenerate Triangle Version",
+      "startLine": 68,
+      "endLine": 77,
+      "summary": "Reformulation requiring all three vertices to be pairwise distinct (p₁ ≠ p₂, p₂ ≠ p₃, p₃ ≠ p₁), closer to the classical statement for proper triangles."
+    },
+    {
+      "id": "bounds",
+      "title": "Angle Bounds",
+      "startLine": 79,
+      "endLine": 89,
+      "summary": "Each interior angle satisfies 0 ≤ ∠ ≤ π, using Mathlib's angle_le_pi and angle_nonneg."
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries",
+      "startLine": 91,
+      "endLine": 115,
+      "summary": "Three consequences: the third angle is determined by the other two, any single angle is strictly less than π in a non-degenerate triangle, and the sum of any two angles is less than π."
+    },
+    {
+      "id": "right-triangle",
+      "title": "Right Triangle Special Case",
+      "startLine": 117,
+      "endLine": 126,
+      "summary": "In a right triangle (one angle = π/2), the two acute angles sum to π/2. Proved by substituting the right angle into the sum identity."
+    },
+    {
+      "id": "exterior-angle",
+      "title": "Exterior Angle Theorem",
+      "startLine": 128,
+      "endLine": 137,
+      "summary": "The exterior angle at a vertex (π minus the interior angle) equals the sum of the two remote interior angles."
+    },
+    {
+      "id": "degrees-summary",
+      "title": "Degree Conversion and Verification",
+      "startLine": 139,
+      "endLine": 157,
+      "summary": "Converts the radian result to degrees: the sum equals 180°. Uses field_simp for the π cancellation. Concludes with #check verification of all main theorems."
+    }
   ],
   "conclusion": {
     "summary": "This formalization verifies the triangle angle sum theorem (Wiedijk #27) and derives a rich family of corollaries: angle bounds, third angle determination, the right triangle property, the exterior angle theorem, and degree conversion. Working in an abstract inner product affine space, the result holds for all Euclidean spaces of dimension ≥ 2.",

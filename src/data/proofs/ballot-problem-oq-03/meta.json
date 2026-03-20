@@ -7,7 +7,7 @@
     "author": "Lindström (1973), Gessel-Viennot (1985)",
     "sourceUrl": "",
     "date": "1985",
-    "status": "complete",
+    "status": "verified",
     "proofRepoPath": "Proofs/BallotProblemOQ03.lean",
     "tags": [
       "combinatorics",
@@ -64,7 +64,8 @@
       "northSteps_splitAfterEast_snd: suffix North steps = total - colEntry"
     ],
     "dateAdded": "2026-02-26",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "The classical ballot problem (Bertrand 1887) counts vote sequences where candidate A always leads. The 1D reflection principle (a bijection between 'bad paths' and shifted paths) provides an elegant proof. The 2D generalization by Lindström (1973) and Gessel-Viennot (1985) extends this to non-intersecting lattice path pairs, yielding the LGV determinant formula that counts NI paths as a 2×2 determinant.",

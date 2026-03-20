@@ -7,7 +7,7 @@
     "author": "Erdős (origin), Füredi (1991), Furstenberg-Katznelson (1991), Balogh-Solymosi (2018)",
     "sourceUrl": "https://erdosproblems.com/589",
     "date": "~1980s",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos589Problem.lean",
     "tags": [
       "erdos",
@@ -22,7 +22,8 @@
     "sorries": 3,
     "erdosNumber": 589,
     "erdosUrl": "https://erdosproblems.com/589",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "axiomCount": 6
   },
   "overview": {
     "historicalContext": "This problem asks about extracting subsets in general position (no 3 collinear) from sets in almost general position (no 4 collinear). Erdős originally believed linear growth was achievable, but this was disproved.\n\n**Timeline:**\n- **1991 (Füredi)**: Proved g(n) ≥ c·√n·log n and g(n) = o(n)\n- **1991 (Furstenberg-Katznelson)**: Density Hales-Jewett theorem implies o(n) upper bound\n- **2018 (Balogh-Solymosi)**: Proved g(n) ≤ n^(5/6+o(1)) using container method\n\nThe exact order of growth remains open, with a gap between exponents 1/2 and 5/6.",

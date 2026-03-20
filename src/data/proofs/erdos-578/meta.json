@@ -7,9 +7,15 @@
     "author": "Riordan (2000)",
     "sourceUrl": "https://erdosproblems.com/578",
     "date": "2000",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos578Problem.lean",
-    "tags": ["erdos", "random-graphs", "hypercubes", "probabilistic-combinatorics", "graph-theory"],
+    "tags": [
+      "erdos",
+      "random-graphs",
+      "hypercubes",
+      "probabilistic-combinatorics",
+      "graph-theory"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 578,
@@ -17,9 +23,21 @@
     "erdosProblemStatus": "solved",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      { "theorem": "Finset.card", "description": "Cardinality of finite sets", "module": "Mathlib.Data.Finset.Card" },
-      { "theorem": "Real", "description": "Real number operations", "module": "Mathlib.Data.Real.Basic" },
-      { "theorem": "ProbabilityMassFunction", "description": "Probability distributions", "module": "Mathlib.Probability.ProbabilityMassFunction.Basic" }
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Real",
+        "description": "Real number operations",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "ProbabilityMassFunction",
+        "description": "Probability distributions",
+        "module": "Mathlib.Probability.ProbabilityMassFunction.Basic"
+      }
     ],
     "originalContributions": [
       "Hypercube: structure with vertices = 2^d, edges = d·2^{d-1}",
@@ -36,7 +54,8 @@
       "hypercubeAutomorphisms: d! · 2^d symmetries",
       "erdos_578_summary: proved conjunction of main results"
     ],
-    "dateAdded": "2026-01-19"
+    "dateAdded": "2026-01-19",
+    "axiomCount": 4
   },
   "overview": {
     "historicalContext": "Erdős and Bollobás conjectured that random graphs G(2^d, 1/2) almost surely contain the d-dimensional hypercube Q_d. This was part of a broader program studying what subgraphs appear in random graphs. Riordan (2000) solved this affirmatively, showing even p > 1/4 suffices, and proved the number of copies is normally distributed.",

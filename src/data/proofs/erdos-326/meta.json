@@ -7,7 +7,7 @@
     "author": "Open Problem",
     "sourceUrl": "https://erdosproblems.com/326",
     "date": "",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos326Problem.lean",
     "tags": [
       "erdos",
@@ -45,7 +45,8 @@
       "Formalization of the growth rate concept for basis elements",
       "Statement of both the open problem and Cassels' 1957 result",
       "Educational documentation connecting the concepts"
-    ]
+    ],
+    "axiomCount": 3
   },
   "overview": {
     "historicalContext": "Erdős Problem #326 concerns the asymptotic behavior of additive bases, a fundamental concept in additive number theory. An additive basis of order k is a set A of natural numbers such that every sufficiently large integer can be written as a sum of at most k elements from A. The classic example is Lagrange's four-square theorem: every natural number is a sum of four perfect squares.\n\nThe key quantity here is the growth rate: if we enumerate a basis as {b₁ < b₂ < ...}, how fast does bₖ grow compared to k²? For an order 2 basis, the elements can grow at most quadratically (otherwise there wouldn't be enough sums to cover all integers). Erdős asked whether, given any basis A, we can always find a sub-basis B whose growth ratio bₖ/k² fails to converge.\n\nErdős originally asked whether every basis A has non-convergent growth ratio (with A = B). This was disproved by Cassels in 1957, who constructed a basis where aₖ/k² does converge. The modified question about sub-bases remains open.",

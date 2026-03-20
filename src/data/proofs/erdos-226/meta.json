@@ -6,7 +6,7 @@
   "meta": {
     "author": "Barth-Schneider (1970 solution), Erdős (problem), Hayman (collection)",
     "sourceUrl": "https://erdosproblems.com/226",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos226Problem.lean",
     "tags": [
       "erdos",
@@ -21,7 +21,8 @@
     "sorries": 0,
     "erdosNumber": 226,
     "erdosUrl": "https://erdosproblems.com/226",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "axiomCount": 4
   },
   "overview": {
     "historicalContext": "Erdős Problem #226 concerns the interplay between complex analysis and number theory. Erdős asked whether an entire non-linear function can preserve rationality. Hayman included it as Problem 2.31 in his 1974 collection. Barth and Schneider solved it affirmatively in 1970, proving a stronger result for any pair of countable dense sets. In 1971, they extended it to countable dense subsets of ℂ.",

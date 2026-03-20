@@ -7,7 +7,7 @@
     "author": "Kamio (2025), Li-Tang (2025)",
     "sourceUrl": "https://erdosproblems.com/315",
     "date": "2025",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos315Problem.lean",
     "tags": [
       "erdos",
@@ -56,7 +56,8 @@
       "erdosGrahamConjecture: Sylvester is maximal",
       "kamio_li_tang_2025: axiom asserting proof",
       "sylvester_double_exponential: proved from limit"
-    ]
+    ],
+    "axiomCount": 6
   },
   "overview": {
     "historicalContext": "**Erdős Problem #315: Sylvester's Sequence**\n\nSylvester's sequence (OEIS A000058) is: 2, 3, 7, 43, 1807, 3263443, ...\n\nIt arises from the greedy algorithm for Egyptian fractions and satisfies the remarkable property that Σ 1/u_n = 1.\n\n**Key History:**\n- Sylvester (1880): Introduced the sequence\n- Erdős-Graham (1980): Posed the growth rate conjecture\n- Quanyu Tang: Identified error in original formulation\n- Kamio (2025), Li-Tang (2025): Independently proved the conjecture",

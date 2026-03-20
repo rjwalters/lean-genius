@@ -33,12 +33,28 @@
     "date": "1980",
     "dateAdded": "2026-01-23",
     "relatedProblems": [
-      { "id": "erdos-412", "relation": "Same orbit merging question for h(n) = n + σ(n) (sum of divisors); strictly increasing with even larger steps, equally unproven" },
-      { "id": "erdos-413", "relation": "Studies barriers for n + ω(n); the map can decrease for some arithmetic functions, creating fundamentally different dynamics" },
-      { "id": "erdos-411", "relation": "Studies g(n) = n + φ(n) iteration and periodic doubling; parallel strictly-increasing iteration with Euler totient" },
-      { "id": "erdos-647", "relation": "Asks when max(m + τ(m)) ≤ n + 2; directly involves the h(n) = n + τ(n) quantity central to Problem #414" },
-      { "id": "erdos-1135", "relation": "The Collatz conjecture: canonical example of orbit coalescence for an iterated function, but with non-monotone dynamics" }
-    ]
+      {
+        "id": "erdos-412",
+        "relation": "Same orbit merging question for h(n) = n + σ(n) (sum of divisors); strictly increasing with even larger steps, equally unproven"
+      },
+      {
+        "id": "erdos-413",
+        "relation": "Studies barriers for n + ω(n); the map can decrease for some arithmetic functions, creating fundamentally different dynamics"
+      },
+      {
+        "id": "erdos-411",
+        "relation": "Studies g(n) = n + φ(n) iteration and periodic doubling; parallel strictly-increasing iteration with Euler totient"
+      },
+      {
+        "id": "erdos-647",
+        "relation": "Asks when max(m + τ(m)) ≤ n + 2; directly involves the h(n) = n + τ(n) quantity central to Problem #414"
+      },
+      {
+        "id": "erdos-1135",
+        "relation": "The Collatz conjecture: canonical example of orbit coalescence for an iterated function, but with non-monotone dynamics"
+      }
+    ],
+    "axiomCount": 14
   },
   "sections": [
     {

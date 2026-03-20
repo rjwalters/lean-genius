@@ -8,18 +8,43 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Triangular_number",
     "date": "Classical",
     "status": "verified",
-    "tags": ["analysis", "series", "combinatorics", "classic", "intermediate", "wiedijk"],
+    "tags": [
+      "analysis",
+      "series",
+      "combinatorics",
+      "classic",
+      "intermediate",
+      "wiedijk"
+    ],
     "proofRepoPath": "Proofs/TriangularNumberReciprocals.lean",
     "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
-      {"theorem": "tsum", "description": "Topological sum of infinite series", "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"},
-      {"theorem": "Real.summable_nat_rpow_inv", "description": "p-series convergence for comparison test", "module": "Mathlib.Analysis.PSeries"},
-      {"theorem": "Finset.sum_range_sub", "description": "Telescoping sum identity for finite ranges", "module": "Mathlib.Algebra.BigOperators.Ring.Finset"}
+      {
+        "theorem": "tsum",
+        "description": "Topological sum of infinite series",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      },
+      {
+        "theorem": "Real.summable_nat_rpow_inv",
+        "description": "p-series convergence for comparison test",
+        "module": "Mathlib.Analysis.PSeries"
+      },
+      {
+        "theorem": "Finset.sum_range_sub",
+        "description": "Telescoping sum identity for finite ranges",
+        "module": "Mathlib.Algebra.BigOperators.Ring.Finset"
+      }
     ],
-    "originalContributions": ["Telescoping series proof", "Connection to triangular numbers", "Comparison test convergence", "Unscaled corollary (sum = 1)"],
+    "originalContributions": [
+      "Telescoping series proof",
+      "Connection to triangular numbers",
+      "Comparison test convergence",
+      "Unscaled corollary (sum = 1)"
+    ],
     "dateAdded": "12/26/25",
-    "wiedijkNumber": 42
+    "wiedijkNumber": 42,
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "Triangular numbers T_n = n(n+1)/2 are among the oldest objects in number theory, studied by the Pythagoreans (~500 BCE) who arranged pebbles in triangular patterns. The figurate number tradition continued through Nicomachus of Gerasa (c. 100 AD) and Theon of Smyrna (c. 130 AD). The telescoping technique underlying this proof traces to Leibniz (1673), who computed ∑1/(n(n+1)) = 1 as one of the earliest evaluated infinite series — predating the Euler–Mengoli resolution of the Basel problem by decades. The result that ∑1/T_n = 2 follows immediately by the factor-of-2 relationship 1/T_n = 2/(n(n+1)). This is Wiedijk's 100 Theorems #42.",
@@ -34,15 +59,69 @@
     ]
   },
   "sections": [
-    {"id": "header", "title": "Introduction and Historical Context", "startLine": 1, "endLine": 51, "summary": "Module documentation: states the identity ∑2/(n(n+1)) = 2, describes the telescoping approach, historical context of triangular numbers from the Pythagoreans, and Mathlib dependencies."},
-    {"id": "triangular-def", "title": "Triangular Number Definition", "startLine": 53, "endLine": 62, "summary": "Defines T_n = n(n+1)/2 as a natural number function. Values: 1, 3, 6, 10, 15, ... formed by summing consecutive naturals."},
-    {"id": "partial-fractions", "title": "Partial Fraction Decomposition", "startLine": 64, "endLine": 91, "summary": "Two forms of the key identity: 2/(n(n+1)) = 2/n - 2/(n+1) and 1/(n(n+1)) = 1/n - 1/(n+1). Proved by field_simp and ring after establishing non-zero denominators via positivity."},
-    {"id": "telescoping", "title": "Finite Telescoping Sum", "startLine": 92, "endLine": 131, "summary": "Proves ∑_{k=1}^{n} 2/(k(k+1)) = 2 - 2/(n+1) by induction on n. The base case is norm_num; the inductive step uses field_simp and ring after careful Finset.Icc manipulation."},
-    {"id": "convergence", "title": "Series Convergence", "startLine": 132, "endLine": 168, "summary": "Establishes Summable for both 1/(n(n+1)) and 2/(n(n+1)). Uses comparison test: 1/(n(n+1)) ≤ 1/n², and the p-series ∑1/n² converges via Real.summable_nat_rpow_inv."},
-    {"id": "main-theorem", "title": "Main Theorem: HasSum and tsum", "startLine": 170, "endLine": 247, "summary": "The core result: HasSum for ∑2/(n(n+1)) = 2. Converts to sequential convergence via hasSum_iff_tendsto_nat_of_nonneg, then uses the Metric.tendsto_atTop ε-N definition with N = ⌈2/ε⌉ + 1. Also provides tsum version."},
-    {"id": "corollary", "title": "Corollary: Unscaled Sum Equals 1", "startLine": 249, "endLine": 265, "summary": "Derives ∑1/(n(n+1)) = 1 by dividing the main result by 2. Uses HasSum.div_const and algebraic simplification."},
-    {"id": "triangular-connection", "title": "Connection to Triangular Numbers", "startLine": 267, "endLine": 291, "summary": "Proves 1/T_n = 2/(n(n+1)) by showing n(n+1) is always even (case split on parity of n), then field_simp and linarith."},
-    {"id": "examples", "title": "Pedagogical Examples", "startLine": 293, "endLine": 305, "summary": "Computes T_1 = 1, T_2 = 3, T_3 = 6, T_4 = 10, T_5 = 15 via native_decide. Exports main theorems with #check."}
+    {
+      "id": "header",
+      "title": "Introduction and Historical Context",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "Module documentation: states the identity ∑2/(n(n+1)) = 2, describes the telescoping approach, historical context of triangular numbers from the Pythagoreans, and Mathlib dependencies."
+    },
+    {
+      "id": "triangular-def",
+      "title": "Triangular Number Definition",
+      "startLine": 53,
+      "endLine": 62,
+      "summary": "Defines T_n = n(n+1)/2 as a natural number function. Values: 1, 3, 6, 10, 15, ... formed by summing consecutive naturals."
+    },
+    {
+      "id": "partial-fractions",
+      "title": "Partial Fraction Decomposition",
+      "startLine": 64,
+      "endLine": 91,
+      "summary": "Two forms of the key identity: 2/(n(n+1)) = 2/n - 2/(n+1) and 1/(n(n+1)) = 1/n - 1/(n+1). Proved by field_simp and ring after establishing non-zero denominators via positivity."
+    },
+    {
+      "id": "telescoping",
+      "title": "Finite Telescoping Sum",
+      "startLine": 92,
+      "endLine": 131,
+      "summary": "Proves ∑_{k=1}^{n} 2/(k(k+1)) = 2 - 2/(n+1) by induction on n. The base case is norm_num; the inductive step uses field_simp and ring after careful Finset.Icc manipulation."
+    },
+    {
+      "id": "convergence",
+      "title": "Series Convergence",
+      "startLine": 132,
+      "endLine": 168,
+      "summary": "Establishes Summable for both 1/(n(n+1)) and 2/(n(n+1)). Uses comparison test: 1/(n(n+1)) ≤ 1/n², and the p-series ∑1/n² converges via Real.summable_nat_rpow_inv."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: HasSum and tsum",
+      "startLine": 170,
+      "endLine": 247,
+      "summary": "The core result: HasSum for ∑2/(n(n+1)) = 2. Converts to sequential convergence via hasSum_iff_tendsto_nat_of_nonneg, then uses the Metric.tendsto_atTop ε-N definition with N = ⌈2/ε⌉ + 1. Also provides tsum version."
+    },
+    {
+      "id": "corollary",
+      "title": "Corollary: Unscaled Sum Equals 1",
+      "startLine": 249,
+      "endLine": 265,
+      "summary": "Derives ∑1/(n(n+1)) = 1 by dividing the main result by 2. Uses HasSum.div_const and algebraic simplification."
+    },
+    {
+      "id": "triangular-connection",
+      "title": "Connection to Triangular Numbers",
+      "startLine": 267,
+      "endLine": 291,
+      "summary": "Proves 1/T_n = 2/(n(n+1)) by showing n(n+1) is always even (case split on parity of n), then field_simp and linarith."
+    },
+    {
+      "id": "examples",
+      "title": "Pedagogical Examples",
+      "startLine": 293,
+      "endLine": 305,
+      "summary": "Computes T_1 = 1, T_2 = 3, T_3 = 6, T_4 = 10, T_5 = 15 via native_decide. Exports main theorems with #check."
+    }
   ],
   "crossReferences": [
     {
@@ -70,5 +149,8 @@
       "Prove the alternating version: ∑(-1)^{n+1}·2/(n(n+1)) = 4·ln(2) - 2"
     ]
   },
-  "relatedProofs": ["basel-problem", "arithmetic-series"]
+  "relatedProofs": [
+    "basel-problem",
+    "arithmetic-series"
+  ]
 }

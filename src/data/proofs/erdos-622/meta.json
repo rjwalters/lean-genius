@@ -7,7 +7,7 @@
     "author": "Erdős-Faudree (conjecture), Draganić-Keevash-Müyesser (proof 2025)",
     "sourceUrl": "https://erdosproblems.com/622",
     "date": "2025",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos622Problem.lean",
     "tags": [
       "erdos",
@@ -58,7 +58,8 @@
       "IsPaleyGraph definition",
       "IsHamiltonianCycle definition",
       "erdos_faudree_edge_count density theorem"
-    ]
+    ],
+    "axiomCount": 14
   },
   "crossReferences": [
     {

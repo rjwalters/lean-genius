@@ -7,9 +7,16 @@
     "author": "Erdős-Gallai (conjecture), Bucić-Montgomery (2022), Conlon-Fox-Sudakov (2014)",
     "sourceUrl": "https://erdosproblems.com/184",
     "date": "2022",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos184Problem.lean",
-    "tags": ["erdos", "graph-theory", "cycles", "decomposition", "iterated-logarithm", "open"],
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "cycles",
+      "decomposition",
+      "iterated-logarithm",
+      "open"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 184,
@@ -25,10 +32,26 @@
       "https://erdosproblems.com/184"
     ],
     "mathlibDependencies": [
-      { "theorem": "SimpleGraph", "description": "Simple graphs in Mathlib", "module": "Mathlib.Combinatorics.SimpleGraph.Basic" },
-      { "theorem": "SimpleGraph.Subgraph", "description": "Subgraph theory", "module": "Mathlib.Combinatorics.SimpleGraph.Subgraph" },
-      { "theorem": "Sym2", "description": "Unordered pairs for edges", "module": "Mathlib.Data.Sym.Sym2" },
-      { "theorem": "Real.log", "description": "Logarithm for bounds", "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic" }
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graphs in Mathlib",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Subgraph",
+        "description": "Subgraph theory",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Subgraph"
+      },
+      {
+        "theorem": "Sym2",
+        "description": "Unordered pairs for edges",
+        "module": "Mathlib.Data.Sym.Sym2"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm for bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
     ],
     "originalContributions": [
       "Lean formalization of cycle and edge decomposition",
@@ -48,7 +71,8 @@
         "id": "erdos-1017",
         "relationship": "Related Erdős problem on complete graph decomposition"
       }
-    ]
+    ],
+    "axiomCount": 7
   },
   "sections": [
     {

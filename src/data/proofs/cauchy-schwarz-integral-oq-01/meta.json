@@ -8,7 +8,15 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/H%C3%B6lder%27s_inequality",
     "date": "1889",
     "status": "verified",
-    "tags": ["analysis", "measure-theory", "lp-spaces", "inequalities", "holder", "cauchy-schwarz", "research"],
+    "tags": [
+      "analysis",
+      "measure-theory",
+      "lp-spaces",
+      "inequalities",
+      "holder",
+      "cauchy-schwarz",
+      "research"
+    ],
     "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ01.lean",
     "badge": "original",
     "sorries": 0,
@@ -67,7 +75,8 @@
         "note": "First integral form of Cauchy-Schwarz (the p=q=2 case)"
       }
     ],
-    "dateAdded": "02/23/26"
+    "dateAdded": "02/23/26",
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "**Hölder's 1889 Generalization**\n\nOtto Hölder proved his integral inequality in 1889, generalizing the Cauchy-Schwarz inequality by allowing different exponents $p$ and $q$ satisfying $1/p + 1/q = 1$:\n\n$$\\int |fg| \\, d\\mu \\leq \\left(\\int |f|^p \\, d\\mu\\right)^{1/p} \\cdot \\left(\\int |g|^q \\, d\\mu\\right)^{1/q}$$\n\nThe case $p = q = 2$ recovers the Cauchy-Schwarz inequality (Bunyakovsky, 1859; Schwarz, 1885). This answers the open question: **Cauchy-Schwarz is the symmetric special case of Hölder**, arising when both functions are measured with the same $L^2$ norm.\n\n**Hierarchy of Inequalities**\n\nThe proof builds on Young's inequality $ab \\leq a^p/p + b^q/q$ (pointwise), integrates to get Hölder (global), and the triangle inequality for $L^p$ norms (Minkowski's inequality) follows in turn.",

@@ -47,7 +47,8 @@
       "Key algebraic trick: GM(z⁻¹) = GM(z)⁻¹ proved using Real.mul_rpow + Finset.prod_mul_distrib",
       "Avoids div_le_iff/le_div_iff (unavailable in Lean4) via explicit multiplicative calc proofs"
     ],
-    "dateAdded": "02/23/26"
+    "dateAdded": "02/23/26",
+    "axiomCount": 1
   },
   "overview": {
     "historicalContext": "The AM-GM inequality (∏ zᵢ^wᵢ ≤ ∑ wᵢzᵢ) is one of the most classical results in mathematics, known since antiquity. Hardy, Littlewood, and Pólya (1934) unified AM, GM, HM, and all intermediate means into the power mean family M_r(z,w) = (∑ wᵢzᵢ^r)^(1/r).\n\nThe Power Mean Inequality states that M_r ≤ M_s for r ≤ s — this single monotonicity theorem captures HM ≤ GM ≤ AM as special cases (r=-1,0,1). The case r → 0 requires L'Hôpital analysis to show lim_{r→0} M_r = GM (the geometric mean).\n\nAs of Mathlib 4.26.0, the general monotonicity M_r ≤ M_s is not fully formalized — Mathlib has a TODO comment noting 'generalized mean inequality with any p ≤ q, including negative numbers'. This open question formalizes what is currently provable.",

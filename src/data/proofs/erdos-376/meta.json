@@ -7,7 +7,7 @@
     "author": "Erdős-Graham-Ruzsa-Straus (1975), Kummer (1852)",
     "sourceUrl": "https://erdosproblems.com/376",
     "date": "1975",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos376Problem.lean",
     "tags": [
       "erdos",
@@ -53,7 +53,8 @@
       "Base-good sets: Base3Good, Base5Good, Base7Good",
       "Computationally verified: one_is_good, two_not_good, four_not_good",
       "Characterization via digit intersection"
-    ]
+    ],
+    "axiomCount": 21
   },
   "overview": {
     "historicalContext": "**Kummer's Theorem (1852)** connects binomial coefficient divisibility to digit carries: the exact power of prime p dividing C(m,k) equals the number of carries when adding k + (m-k) in base p.\n\n**EGRS Theorem (1975)**: Erdős, Graham, Ruzsa, and Straus proved that for any two odd primes p and q, infinitely many n have C(2n,n) coprime to pq.\n\n**The Open Case**: The question for THREE primes (105 = 3 × 5 × 7) remains **OPEN**.\n\n**Connection to Digits**: C(2n,n) coprime to p iff n has only 'small' digits (0, 1, ..., (p-1)/2) in base p. For 105, this means simultaneously:\n- Only digits {0,1} in base 3\n- Only digits {0,1,2} in base 5\n- Only digits {0,1,2,3} in base 7",

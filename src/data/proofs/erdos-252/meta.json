@@ -7,7 +7,7 @@
     "author": "Erdős-Straus, Schlage-Puchta, Pratt (1952-2022)",
     "sourceUrl": "https://erdosproblems.com/252",
     "date": "1952",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos252Problem.lean",
     "tags": [
       "erdos",
@@ -45,7 +45,8 @@
       "Clear axiomatization of main irrationality results",
       "Formalization of conditional results (Schinzel, prime k-tuples)",
       "Verified computational examples for small cases"
-    ]
+    ],
+    "axiomCount": 10
   },
   "leanFile": {
     "path": "Proofs/Erdos252Problem.lean",

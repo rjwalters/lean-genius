@@ -7,9 +7,15 @@
     "author": "Erdős-Herzog-Piranian (1958), Pommerenke (1959)",
     "sourceUrl": "https://erdosproblems.com/1046",
     "date": "1959",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1046Problem.lean",
-    "tags": ["erdos", "complex-analysis", "polynomials", "lemniscates", "geometry"],
+    "tags": [
+      "erdos",
+      "complex-analysis",
+      "polynomials",
+      "lemniscates",
+      "geometry"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1046,
@@ -17,10 +23,26 @@
     "erdosProblemStatus": "solved",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      { "theorem": "Polynomial", "description": "Polynomial ring over ℂ", "module": "Mathlib.Algebra.Polynomial.Basic" },
-      { "theorem": "Complex.abs", "description": "Complex absolute value", "module": "Mathlib.Data.Complex.Basic" },
-      { "theorem": "IsConnected", "description": "Topological connectedness", "module": "Mathlib.Topology.Basic" },
-      { "theorem": "derivative", "description": "Polynomial derivative", "module": "Mathlib.Analysis.Complex.Polynomial.Basic" }
+      {
+        "theorem": "Polynomial",
+        "description": "Polynomial ring over ℂ",
+        "module": "Mathlib.Algebra.Polynomial.Basic"
+      },
+      {
+        "theorem": "Complex.abs",
+        "description": "Complex absolute value",
+        "module": "Mathlib.Data.Complex.Basic"
+      },
+      {
+        "theorem": "IsConnected",
+        "description": "Topological connectedness",
+        "module": "Mathlib.Topology.Basic"
+      },
+      {
+        "theorem": "derivative",
+        "description": "Polynomial derivative",
+        "module": "Mathlib.Analysis.Complex.Polynomial.Basic"
+      }
     ],
     "originalContributions": [
       "Lean formalization of sublevel sets of polynomials",
@@ -31,7 +53,8 @@
       "Width conjecture counterexample",
       "Diameter bound formalization"
     ],
-    "dateAdded": "2026-01-19"
+    "dateAdded": "2026-01-19",
+    "axiomCount": 7
   },
   "overview": {
     "historicalContext": "Erdős, Herzog, and Piranian (1958) posed this question about lemniscates - the sublevel sets of polynomial magnitude. They conjectured both diameter ≤ 2 and width ≤ 2. Pommerenke (1959) proved the disc containment (answering YES) but showed the width conjecture is FALSE.",

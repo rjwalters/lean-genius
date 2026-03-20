@@ -7,7 +7,7 @@
     "author": "Cameron-Erdős (problem), Łuczak-Schoen (solved), BLST (sharp bounds)",
     "sourceUrl": "https://erdosproblems.com/877",
     "date": "2001",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos877Problem.lean",
     "tags": [
       "erdos",
@@ -37,7 +37,8 @@
       "upper_half_sum_free: parametric example proved by omega",
       "zero_avoiding_is_intersecting: connection to EKR",
       "erdos_877_solved: combined resolution theorem"
-    ]
+    ],
+    "axiomCount": 5
   },
   "crossReferences": [
     {

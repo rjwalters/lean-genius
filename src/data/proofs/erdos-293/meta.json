@@ -7,9 +7,15 @@
     "author": "Bleicher-Erdős (1975), van Doorn-Tang (2025)",
     "sourceUrl": "https://erdosproblems.com/293",
     "date": "2025",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos293Problem.lean",
-    "tags": ["erdos", "number-theory", "egyptian-fractions", "unit-fractions", "extremal"],
+    "tags": [
+      "erdos",
+      "number-theory",
+      "egyptian-fractions",
+      "unit-fractions",
+      "extremal"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 293,
@@ -17,9 +23,21 @@
     "erdosProblemStatus": "open",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      { "theorem": "Finset.sum", "description": "Summation over finite sets", "module": "Mathlib.Algebra.BigOperators.Group.Finset" },
-      { "theorem": "Rat", "description": "Rational numbers for unit fractions", "module": "Mathlib.Data.Rat.Basic" },
-      { "theorem": "Real.exp", "description": "Exponential function for bounds", "module": "Mathlib.Data.Real.Basic" }
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Rat",
+        "description": "Rational numbers for unit fractions",
+        "module": "Mathlib.Data.Rat.Basic"
+      },
+      {
+        "theorem": "Real.exp",
+        "description": "Exponential function for bounds",
+        "module": "Mathlib.Data.Real.Basic"
+      }
     ],
     "originalContributions": [
       "isEgyptianDecomp definition: k-term unit fraction sums equaling 1",
@@ -35,7 +53,8 @@
       "ErdosConjecture293Weak and Strong: doubly exponential conjectures",
       "erdos_293_summary theorem combining bounds"
     ],
-    "dateAdded": "2026-01-19"
+    "dateAdded": "2026-01-19",
+    "axiomCount": 12
   },
   "overview": {
     "historicalContext": "Egyptian fractions — sums of distinct unit fractions — have been studied since the Rhind Mathematical Papyrus (c. 1650 BCE). Erdős and Bleicher initiated the modern study of which denominators can appear in k-term decompositions of 1 in their 1975 paper, proving that v(k) grows at least as fast as k!.\n\nThe function v(k) captures a subtle combinatorial question: given k terms, what is the smallest denominator that is 'too large' to ever participate in a unit fraction decomposition of 1? The answer depends on the intricate interplay between denominator sizes and the constraint that their unit fractions sum to exactly 1.\n\nRecent progress by van Doorn and Tang (2025) dramatically improved the lower bound to e^{ck²}, far exceeding the factorial bound. However, the upper bound v(k) ≤ k · c₀^{2^k} (where c₀ ≈ 1.26408 is the Vardi constant) remains exponentially larger. The gap between e^{k²} and e^{2^k} is one of the largest in combinatorics, and Erdős conjectured the true growth rate is doubly exponential.",

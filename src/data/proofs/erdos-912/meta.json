@@ -7,9 +7,15 @@
     "author": "Paul Erdős, John Selfridge",
     "sourceUrl": "https://erdosproblems.com/912",
     "date": "2026-03-12",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos912Problem.lean",
-    "tags": ["erdos", "number-theory", "factorials", "prime-factorization", "exponents"],
+    "tags": [
+      "erdos",
+      "number-theory",
+      "factorials",
+      "prime-factorization",
+      "exponents"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 912,
@@ -17,10 +23,26 @@
     "erdosProblemStatus": "open",
     "mathlib_version": "v4.x",
     "mathlibDependencies": [
-      { "theorem": "padicValNat", "description": "p-adic valuation of naturals", "module": "Mathlib.NumberTheory.Padics.PadicVal" },
-      { "theorem": "Nat.factorial", "description": "Factorial function", "module": "Mathlib.Data.Nat.Factorial.Basic" },
-      { "theorem": "Real.log", "description": "Natural logarithm", "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic" },
-      { "theorem": "Real.sqrt", "description": "Square root", "module": "Mathlib.Data.Real.Basic" }
+      {
+        "theorem": "padicValNat",
+        "description": "p-adic valuation of naturals",
+        "module": "Mathlib.NumberTheory.Padics.PadicVal"
+      },
+      {
+        "theorem": "Nat.factorial",
+        "description": "Factorial function",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root",
+        "module": "Mathlib.Data.Real.Basic"
+      }
     ],
     "originalContributions": [
       "Lean formalization of h(n) counting distinct exponents",
@@ -52,7 +74,8 @@
         "note": "Random model for primes underlying Tao's heuristic"
       }
     ],
-    "dateAdded": "2026-01-19"
+    "dateAdded": "2026-01-19",
+    "axiomCount": 9
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and Selfridge in their 1982 paper in Congressus Numerantium. They proved the asymptotic order h(n) ≍ √(n/log n) using estimates from the prime number theorem and Legendre's formula (1808) for the p-adic valuation of factorials. The function h(n) is recorded as OEIS sequence A071626. The exact limiting constant remains open; Terence Tao developed a heuristic argument using Cramér's random model for primes (1936), which suggests c = √(2π) ≈ 2.506. This value arises from a central limit theorem argument applied to the distribution of exponents.",

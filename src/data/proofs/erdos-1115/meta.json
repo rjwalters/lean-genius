@@ -7,7 +7,7 @@
     "author": "Gol'dberg-Eremenko (1979)",
     "sourceUrl": "https://erdosproblems.com/1115",
     "date": "1979",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1115Problem.lean",
     "tags": [
       "erdos",
@@ -48,13 +48,30 @@
       "erdos_1115 theorem: direct disproof via counterexample invocation"
     ],
     "references": [
-      {"key": "GE79", "citation": "Gol'dberg, A. A. and Eremenko, A. E., Asymptotic curves of entire functions of finite order, Mat. Sb. 109 (1979), 555–581.", "type": "paper"},
-      {"key": "Ha60", "citation": "Hayman, W. K., Slowly growing integral and subharmonic functions, Comment. Math. Helv. 34 (1960), 75–84.", "type": "paper"},
-      {"key": "Ha74", "citation": "Hayman, W. K., Research Problems in Function Theory, Athlone Press, London, 1974.", "type": "book"},
-      {"key": "DCA29", "citation": "Denjoy, A., Sur une classe de fonctions analytiques (I, II), Bull. Soc. Math. France 56–57 (1929), 51–80, 104–127.", "type": "paper"}
+      {
+        "key": "GE79",
+        "citation": "Gol'dberg, A. A. and Eremenko, A. E., Asymptotic curves of entire functions of finite order, Mat. Sb. 109 (1979), 555–581.",
+        "type": "paper"
+      },
+      {
+        "key": "Ha60",
+        "citation": "Hayman, W. K., Slowly growing integral and subharmonic functions, Comment. Math. Helv. 34 (1960), 75–84.",
+        "type": "paper"
+      },
+      {
+        "key": "Ha74",
+        "citation": "Hayman, W. K., Research Problems in Function Theory, Athlone Press, London, 1974.",
+        "type": "book"
+      },
+      {
+        "key": "DCA29",
+        "citation": "Denjoy, A., Sur une classe de fonctions analytiques (I, II), Bull. Soc. Math. France 56–57 (1929), 51–80, 104–127.",
+        "type": "paper"
+      }
     ],
     "relatedProblems": [],
-    "dateAdded": "2026-01-24"
+    "dateAdded": "2026-01-24",
+    "axiomCount": 3
   },
   "overview": {
     "historicalContext": "**Asymptotic Curves for Entire Functions**\n\nThis problem concerns the geometry of **asymptotic curves** — paths in $\\mathbb{C}$ along which an entire function tends to infinity. The Denjoy-Carleman-Ahlfors theorem (1929) guarantees that an entire function of finite order $\\rho$ has at most $2\\rho$ finite asymptotic values, but the *shape* of the paths to $\\infty$ is a subtler question.\n\n**Historical timeline:**\n- **Hayman (1960):** Proved that if $\\log M(r) \\ll (\\log r)^2$, then $f \\to \\infty$ along a straight **ray**, so $\\ell(r) = r$ is achievable. This covers very slowly growing functions.\n- **Hayman (1974):** Listed the general question as Problem 2.41 in his book *Research Problems in Function Theory*, attributing it to Erdős.\n- **Gol'dberg and Eremenko (1979):** **Disproved** the general conjecture. For any function $\\varphi(r) \\to \\infty$ (no matter how slowly), they constructed entire functions with $\\log M(r) \\ll \\varphi(r)(\\log r)^2$ such that no escape path satisfies $\\ell(r) = O(r)$.\n\n**The sharp threshold:** $(\\log r)^2$ is the exact boundary. Below it, rays to infinity exist. Arbitrarily little above it, the level curves of $|f|$ can wind so many times that every path to infinity must spiral, accumulating superlinear arc length.\n\nThis is one of the clearest examples in analysis of a **sharp phase transition**: a single logarithmic parameter completely determines qualitative path behavior.",

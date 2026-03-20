@@ -7,7 +7,7 @@
     "author": "Alon",
     "sourceUrl": "https://erdosproblems.com/801",
     "date": "1996",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos801Problem.lean",
     "leanFile": "Proofs/Erdos801Problem.lean",
     "tags": [
@@ -25,16 +25,43 @@
     "dateAdded": "2025-01-01",
     "mathlib_version": "4.x",
     "mathlibDependencies": [
-      { "theorem": "SimpleGraph", "description": "Simple graph structure with `Adj` and `IsIndependent`", "module": "Mathlib.Combinatorics.SimpleGraph.Basic" },
-      { "theorem": "Finset.card / Finset.filter", "description": "Cardinality and filtering for edge counting", "module": "Mathlib.Data.Finset.Basic" },
-      { "theorem": "Real.log", "description": "Natural logarithm for the $\\sqrt{n}\\log n$ bound", "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic" },
-      { "theorem": "Filter.atTop", "description": "Eventually quantifier for asymptotic tightness statements", "module": "Mathlib.Order.Filter.Basic" },
-      { "theorem": "sSup", "description": "Supremum for defining independence number", "module": "Mathlib.Data.Nat.Basic" }
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure with `Adj` and `IsIndependent`",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset.card / Finset.filter",
+        "description": "Cardinality and filtering for edge counting",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm for the $\\sqrt{n}\\log n$ bound",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Eventually quantifier for asymptotic tightness statements",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "sSup",
+        "description": "Supremum for defining independence number",
+        "module": "Mathlib.Data.Nat.Basic"
+      }
     ],
     "relatedProofs": [
-      { "id": "erdos-181", "relationship": "Ramsey number of the hypercube — graph-theoretic Ramsey theory using `SimpleGraph`" },
-      { "id": "ramseys-theorem", "relationship": "Classical Ramsey theorem — the independence/clique duality underlying Alon's proof" }
-    ]
+      {
+        "id": "erdos-181",
+        "relationship": "Ramsey number of the hypercube — graph-theoretic Ramsey theory using `SimpleGraph`"
+      },
+      {
+        "id": "ramseys-theorem",
+        "relationship": "Classical Ramsey theorem — the independence/clique duality underlying Alon's proof"
+      }
+    ],
+    "axiomCount": 3
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1979, asking whether graphs with bounded independence number must contain locally dense subsets. The problem captures a fundamental local-global phenomenon in extremal graph theory. Noga Alon resolved it affirmatively in 1996 using sophisticated probabilistic techniques.",

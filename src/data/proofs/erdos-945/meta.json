@@ -7,9 +7,15 @@
     "author": "Open Problem (Bounds by Erdős-Mirsky 1952, Beker)",
     "sourceUrl": "https://erdosproblems.com/945",
     "date": "",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos945Problem.lean",
-    "tags": ["erdos", "number-theory", "divisors", "consecutive-integers", "open-problem"],
+    "tags": [
+      "erdos",
+      "number-theory",
+      "divisors",
+      "consecutive-integers",
+      "open-problem"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 945,
@@ -39,7 +45,8 @@
       "Formal definition of F(x) as supremum over valid sequences",
       "Statements of Erdős-Mirsky bounds and Beker's improvement",
       "Conditional result under Cramér's conjecture"
-    ]
+    ],
+    "axiomCount": 6
   },
   "overview": {
     "historicalContext": "This problem, posed by Erdős and Mirsky in their 1952 paper on the distribution of the divisor function, asks a natural question: how long can consecutive integers maintain distinct divisor counts?\n\nThe divisor function τ(n) counts divisors of n. While τ varies considerably—primes have τ = 2, highly composite numbers have large τ—the question is whether collisions (τ(a) = τ(b) for distinct a, b) must occur within short intervals.\n\nErdős and Mirsky established both lower and upper bounds in 1952, but the gap between them has resisted closure for over 70 years. Beker later improved the upper bound, and connections to Cramér's conjecture on prime gaps have been observed.",

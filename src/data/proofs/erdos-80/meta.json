@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdos-Rothschild (problem), Fox-Loh (2012), Edwards-Khadziivanov-Nikiforov (1979)",
     "sourceUrl": "https://erdosproblems.com/80",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos80Problem.lean",
     "tags": [
       "erdos",
@@ -68,7 +68,8 @@
       "below_threshold_subpolynomial axiom: subpolynomial below 1/4",
       "erdos_log_conjecture definition: open weaker conjecture",
       "erdos_80_summary theorem: comprehensive summary with proof"
-    ]
+    ],
+    "axiomCount": 8
   },
   "overview": {
     "historicalContext": "**Erdos Problem #80**\n\nThis problem concerns 'books' in graphs - edges that are shared by many triangles.\n\n**Key History:**\n- Erdos & Rothschild: Posed the original problem about book size in dense triangle-saturated graphs\n- Alon-Trotter: Proved f_c(n) << n^{1/2} for c < 1/4\n- Edwards, Khadziivanov-Nikiforov (1979): Proved f_c(n) >= n/6 for c > 1/4\n- Fox-Loh (2012): Disproved Erdos's polynomial growth conjecture\n\n**The Phase Transition:**\nA remarkable threshold occurs at c = 1/4:\n- Above 1/4: Linear books guaranteed\n- Below 1/4: Only subpolynomial growth known",

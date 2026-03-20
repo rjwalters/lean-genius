@@ -7,7 +7,7 @@
     "author": "Paul Erdős, György Szekeres, Esther Szekeres",
     "sourceUrl": "https://erdosproblems.com/902",
     "date": "1963",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos902Problem.lean",
     "tags": [
       "erdos",
@@ -19,7 +19,8 @@
     "sorries": 0,
     "erdosNumber": 902,
     "erdosUrl": "https://erdosproblems.com/902",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "axiomCount": 23
   },
   "overview": {
     "historicalContext": "Erdős asked this question about tournament domination in 1963. The function f(n) gives the minimum tournament size where every n-set of vertices is dominated by some external vertex. Szekeres & Szekeres (1965) established the lower bound n·2^n. Only f(1)=3, f(2)=7, f(3)=19 are known exactly.",

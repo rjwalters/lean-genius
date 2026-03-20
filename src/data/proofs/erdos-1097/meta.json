@@ -23,17 +23,18 @@
     "relatedProblems": [
       {
         "id": "szemeredi-theorem",
-        "relationship": "Szemer\u00e9di's theorem guarantees arithmetic progressions in dense sets; Erd\u0151s #1097 asks about the common differences that must appear"
+        "relationship": "Szemerédi's theorem guarantees arithmetic progressions in dense sets; Erdős #1097 asks about the common differences that must appear"
       },
       {
         "id": "erdos-3",
-        "relationship": "Erd\u0151s #3 (APs in primes, $5000 prize) concerns APs in a specific dense set; #1097 asks about APs in general n-element sets"
+        "relationship": "Erdős #3 (APs in primes, $5000 prize) concerns APs in a specific dense set; #1097 asks about APs in general n-element sets"
       },
       {
         "id": "arithmetic-series",
         "relationship": "Basic arithmetic series formulas underlie the counting of arithmetic progressions in intervals"
       }
-    ]
+    ],
+    "axiomCount": 6
   },
   "overview": {
     "historicalContext": "Erdős posed this problem at the 1989 Great Western Number Theory problem session in Asilomar, California. He asked: given an n-element set of integers, how many distinct common differences can three-term arithmetic progressions have? The Erdős-Spencer probabilistic argument (using random subsets of {1,...,N}) showed that Ω(n^{3/2}) is achievable, and Erdős conjectured this is the correct order. Jean Bourgain later connected the problem to his work on the Kakeya conjecture in geometric measure theory, reformulating it as a question about restricted sums and differences. In 1999, Nets Katz and Terence Tao established the best known upper bound of O(n^{11/6}) using incidence geometry techniques. Matan Lemm improved the lower bound in 2015 past n^{1.778}, and in 2025 Google DeepMind's AlphaEvolve achieved a marginal further improvement via automated search. The problem remains open, with its resolution expected to have implications for the Kakeya conjecture.",

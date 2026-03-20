@@ -63,7 +63,8 @@
       "smooth_crossings_mono: longer curves have more expected crossings",
       "crossings_tendsto_zero: E[crossings] → 0 as line spacing d → ∞"
     ],
-    "dateAdded": "02/25/26"
+    "dateAdded": "02/25/26",
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "In 1860, Joseph-Émile Barbier proved that Buffon's needle formula generalizes to arbitrary rectifiable curves: any curve of length L dropped on a parallel line grid (spacing d) has expected crossings 2L/(πd), regardless of shape. This is Buffon's Noodle Theorem.\n\nThe formal Lean proof of this theorem for smooth curves requires bridging C¹ analysis (derivative continuity) with integration theory (interval integrability) and the geometric formula (angular average identity). This file provides the complete formal proof for C¹ curves — the most natural smoothness class for curves in geometric probability.",

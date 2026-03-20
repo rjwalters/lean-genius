@@ -7,7 +7,7 @@
     "author": "Graham-Selfridge (k=3), Hunter (general k via Hales-Jewett)",
     "sourceUrl": "https://erdosproblems.com/1090",
     "date": "1975",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1090Problem.lean",
     "tags": [
       "erdos",
@@ -63,7 +63,8 @@
       "SylvesterGallai and HellyProperty related definitions",
       "Erdos1090Generalized for r colors, Erdos1090HigherDim for d dimensions",
       "erdos_1090_summary and erdos_1090 combining all results"
-    ]
+    ],
+    "axiomCount": 10
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1090: Monochromatic Collinear Points**\n\nThis problem is a Ramsey-type question in Euclidean geometry: given a 2-coloring of a finite point set, must there exist monochromatic collinear points?\n\n**Key History:**\n- Erdős (1975): Posed the problem in [Er75f] \"On some problems of elementary and combinatorial geometry\"\n- Graham-Selfridge: Proved the k=3 case with an explicit construction\n- Hunter: Observed that generic projections of [k]ⁿ work via Hales-Jewett\n\n**Mathematical Setting:**\nThe Hales-Jewett theorem (1963) guarantees monochromatic combinatorial lines in [k]ⁿ for sufficiently large n. A generic (algebraically independent) projection to ℝ² preserves the collinear structure, solving the problem for all k. The solution exemplifies the transfer principle: combinatorial Ramsey results in high-dimensional grids project to geometric Ramsey results in the plane.",
@@ -84,7 +85,10 @@
       "Mathlib.Data.Finset.Basic",
       "Mathlib.Data.Set.Finite.Basic"
     ],
-    "opens": ["Set", "Finset"],
+    "opens": [
+      "Set",
+      "Finset"
+    ],
     "namespace": "Erdos1090",
     "lineCount": 358,
     "axiomCount": 10,

@@ -7,7 +7,7 @@
     "author": "Erdős, Sauer (1981)",
     "sourceUrl": "https://erdosproblems.com/719",
     "date": "1981",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos719Problem.lean",
     "tags": [
       "erdos",
@@ -24,11 +24,31 @@
     "mathlib_version": "4.15.0",
     "dateAdded": "2026-01-19",
     "mathlibDependencies": [
-      { "theorem": "Nat", "description": "Natural number type and basic operations", "module": "Mathlib.Data.Nat.Basic" },
-      { "theorem": "Finset", "description": "Finite sets for hyperedge representation", "module": "Mathlib.Data.Finset.Basic" },
-      { "theorem": "Finset.powerset", "description": "Powerset for complete clique construction", "module": "Mathlib.Data.Finset.Powerset" },
-      { "theorem": "Finset.card", "description": "Cardinality for uniformity and counting", "module": "Mathlib.Data.Finset.Card" },
-      { "theorem": "Nat.choose", "description": "Binomial coefficients for clique edge counts", "module": "Mathlib.Data.Nat.Choose.Basic" }
+      {
+        "theorem": "Nat",
+        "description": "Natural number type and basic operations",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for hyperedge representation",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.powerset",
+        "description": "Powerset for complete clique construction",
+        "module": "Mathlib.Data.Finset.Powerset"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality for uniformity and counting",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients for clique edge counts",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
     ],
     "references": [
       {
@@ -65,10 +85,20 @@
       "empty_case proved: empty hypergraph satisfies conjecture"
     ],
     "relatedProblems": [
-      { "id": "erdos-720", "relationship": "Turán densities for higher uniformity — the Turán number in the conjecture is itself open for r ≥ 3" },
-      { "id": "erdos-76", "relationship": "Monochromatic triangle packings — related edge-disjoint decomposition in colored complete graphs" },
-      { "id": "erdos-746", "relationship": "Hamiltonicity and random graphs — structural decomposition questions in extremal graph theory" }
-    ]
+      {
+        "id": "erdos-720",
+        "relationship": "Turán densities for higher uniformity — the Turán number in the conjecture is itself open for r ≥ 3"
+      },
+      {
+        "id": "erdos-76",
+        "relationship": "Monochromatic triangle packings — related edge-disjoint decomposition in colored complete graphs"
+      },
+      {
+        "id": "erdos-746",
+        "relationship": "Hamiltonicity and random graphs — structural decomposition questions in extremal graph theory"
+      }
+    ],
+    "axiomCount": 2
   },
   "overview": {
     "historicalContext": "Turán's theorem (1941) determines the maximum number of edges in a triangle-free graph on $n$ vertices: $\\text{ex}_2(n; K_3) = \\lfloor n^2/4 \\rfloor$, achieved by the complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$. This foundational result of extremal graph theory was extended by the Erdős-Stone-Simonovits theorem (1966) to determine $\\text{ex}_2(n; H)$ for all non-bipartite graphs $H$.\n\nFor $r$-uniform hypergraphs with $r \\ge 3$, the Turán problem becomes dramatically harder. Even $\\text{ex}_3(n; K_4^3)$ — the 3-uniform analogue of the triangle Turán number — is a central open problem. Turán conjectured the extremal hypergraph is a specific 3-partite construction with $(5/9 + o(1))\\binom{n}{3}$ edges, but this remains unproven.\n\nErdős and Sauer (1981) posed Problem #719: can every $r$-uniform hypergraph on $n$ vertices be decomposed into at most $\\text{ex}_r(n; K_{r+1}^r)$ edge-disjoint pieces, where each piece is either a single $r$-edge ($K_r^r$) or a complete $(r+1)$-clique ($K_{r+1}^r$)? The conjecture connects two deep areas: Turán-type extremal theory (bounding edge counts) and decomposition theory (partitioning edge sets into canonical structures).\n\nFor $r = 2$, the conjecture asks whether every graph on $n$ vertices can be written as at most $\\lfloor n^2/4 \\rfloor$ edges and triangles — already non-trivial. For $r \\ge 3$, the conjecture is doubly open: the decomposition bound depends on a Turán number that is itself unknown. The problem remains OPEN.",

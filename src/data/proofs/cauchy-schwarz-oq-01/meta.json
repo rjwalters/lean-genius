@@ -8,7 +8,15 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality",
     "date": "1885",
     "status": "verified",
-    "tags": ["analysis", "linear-algebra", "inner-product-spaces", "complex-analysis", "functional-analysis", "classic", "research"],
+    "tags": [
+      "analysis",
+      "linear-algebra",
+      "inner-product-spaces",
+      "complex-analysis",
+      "functional-analysis",
+      "classic",
+      "research"
+    ],
     "proofRepoPath": "Proofs/CauchySchwarzOQ01.lean",
     "badge": "original",
     "sorries": 0,
@@ -66,7 +74,8 @@
         "note": "Independent discovery of the integral form"
       }
     ],
-    "dateAdded": "02/24/26"
+    "dateAdded": "02/24/26",
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "**From Real to Complex: Extending Cauchy-Schwarz**\n\nThe classical Cauchy-Schwarz inequality for real inner product spaces states:\n$$|\\langle u, v \\rangle| \\leq \\|u\\| \\cdot \\|v\\|$$\n\nFor complex inner product spaces, the inner product $\\langle u, v \\rangle_\\mathbb{C}$ is **sesquilinear**: conjugate-linear in the first argument, linear in the second. The generalization requires the complex modulus:\n$$\\|\\langle u, v \\rangle_\\mathbb{C}\\| \\leq \\|u\\| \\cdot \\|v\\|$$\n\n**The Open Question**: Can the existing real Cauchy-Schwarz formalization be extended to complex inner product spaces using Mathlib's `inner_mul_le_norm_mul_norm`?\n\n**The Answer**: YES — and even more is true. Mathlib's `norm_inner_le_norm` works uniformly for any field `𝕜` satisfying `[RCLike 𝕜]`, which includes both `ℝ` and `ℂ`. The complex case requires no additional work beyond what Mathlib already provides.",

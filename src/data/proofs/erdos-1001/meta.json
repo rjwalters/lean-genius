@@ -7,7 +7,7 @@
     "author": "Erdős-Szüsz-Turán, Kesten-Sós, Boca, Xiong-Zaharescu",
     "sourceUrl": "https://erdosproblems.com/1001",
     "date": "1958-2008",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1001Problem.lean",
     "tags": [
       "erdos",
@@ -56,7 +56,8 @@
       "Axiomatization of Kesten-Sós limit existence theorem",
       "Formalization of EST regime condition",
       "Connection to Farey fraction asymptotics"
-    ]
+    ],
+    "axiomCount": 9
   },
   "overview": {
     "historicalContext": "Erdős, Szüsz, and Turán posed this problem in 1958, proving the explicit formula f(A,c) = 12A log(c)/π² in a specific regime. Kesten and Sós (1966) proved the limit always exists. Boca (2008) and Xiong-Zaharescu (2006) provided alternative explicit proofs using Farey fractions and continued fractions respectively.",

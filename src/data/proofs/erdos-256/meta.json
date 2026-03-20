@@ -7,7 +7,7 @@
     "author": "Belov-Konyagin (1996)",
     "sourceUrl": "https://erdosproblems.com/256",
     "date": "1996",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos256Problem.lean",
     "tags": [
       "erdos",
@@ -64,7 +64,8 @@
       "product_at_root_of_unity theorem",
       "primitive_root_lower_bound axiom",
       "bounds_summary axiom"
-    ]
+    ],
+    "axiomCount": 10
   },
   "overview": {
     "historicalContext": "This problem asks about the growth rate of the minimum achievable maximum of products ∏(1-z^{aᵢ}) on the unit circle. Erdős and Szekeres (1959) initiated the study, proving f(n) > √(2n). The upper bounds were progressively improved by Erdős, Atkinson (1961), and Odlyzko (1982), culminating in the definitive answer by Belov-Konyagin (1996).",

@@ -7,7 +7,7 @@
     "author": "Erdős, Roth (1964 lower bound), Beck (2017 upper bound), Cantor-Erdős-Schreiber-Straus (1966)",
     "sourceUrl": "https://erdosproblems.com/177",
     "date": "1966",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos177Problem.lean",
     "tags": [
       "erdos",
@@ -63,12 +63,31 @@
       "erdos_177 theorem: main result proved via roth_lower_bound"
     ],
     "references": [
-      {"key": "Ro64", "citation": "Roth, K. F., Remark concerning integer sequences, Acta Arith. 9 (1964), 257–260.", "type": "paper"},
-      {"key": "CESS66", "citation": "Cantor, D. G., Erdős, P., Schreiber, S., Straus, E. G., Coloring of integers with bounded discrepancy (1966, unpublished).", "type": "paper"},
-      {"key": "Be17", "citation": "Beck, J., Roth's estimate of the discrepancy of integer sequences is nearly sharp, Combinatorica 1 (2017), 319–325.", "type": "paper"},
-      {"key": "Ta15", "citation": "Tao, T., The Erdős discrepancy problem, Discrete Analysis 1 (2015), 29 pp.", "type": "paper"}
+      {
+        "key": "Ro64",
+        "citation": "Roth, K. F., Remark concerning integer sequences, Acta Arith. 9 (1964), 257–260.",
+        "type": "paper"
+      },
+      {
+        "key": "CESS66",
+        "citation": "Cantor, D. G., Erdős, P., Schreiber, S., Straus, E. G., Coloring of integers with bounded discrepancy (1966, unpublished).",
+        "type": "paper"
+      },
+      {
+        "key": "Be17",
+        "citation": "Beck, J., Roth's estimate of the discrepancy of integer sequences is nearly sharp, Combinatorica 1 (2017), 319–325.",
+        "type": "paper"
+      },
+      {
+        "key": "Ta15",
+        "citation": "Tao, T., The Erdős discrepancy problem, Discrete Analysis 1 (2015), 29 pp.",
+        "type": "paper"
+      }
     ],
-    "relatedProblems": ["erdos-105"]
+    "relatedProblems": [
+      "erdos-105"
+    ],
+    "axiomCount": 3
   },
   "overview": {
     "historicalContext": "The discrepancy of arithmetic progressions is one of the central problems in combinatorial number theory, originating from Erdős's deep interest in the interplay between coloring and arithmetic structure. The problem asks: how well can we color the natural numbers with $\\pm 1$ so that the partial sums along every arithmetic progression of common difference $d$ remain bounded?\n\nThe first quantitative result was obtained by Cantor, Erdős, Schreiber, and Straus (1966), who showed that $h(d) \\leq d!$ — there exist colorings achieving at most factorial discrepancy. While far from optimal, this was the first proof that $h(d)$ is finite for all $d$, a non-trivial fact given that Van der Waerden's theorem (1927) forces $h(d) \\to \\infty$.\n\nKlaus Roth proved the landmark lower bound $h(d) \\geq c\\sqrt{d}$ in 1964, using Fourier analysis on $\\mathbb{Z}/N\\mathbb{Z}$. Roth's technique — bounding the $L^2$ norm of the Fourier transform of the coloring restricted to residue classes — was one of the earliest applications of harmonic analysis to discrepancy theory and established the $\\sqrt{d}$ barrier.\n\nFor over 50 years, the gap between $\\sqrt{d}$ and $d!$ remained open. In 2017, József Beck achieved a dramatic breakthrough: $h(d) \\leq d^{8+\\varepsilon}$ for every $\\varepsilon > 0$, the first polynomial upper bound. Beck's probabilistic construction with careful derandomization reduced the exponent from factorial to polynomial.\n\nThe problem is intimately connected to Terence Tao's resolution of the Erdős Discrepancy Problem (2015), which proved that for any coloring $f : \\mathbb{N} \\to \\{-1,+1\\}$, the discrepancy along the sequence $f(d), f(2d), f(3d), \\ldots$ is unbounded. The current state of knowledge is $c\\sqrt{d} \\leq h(d) \\leq Cd^{8+\\varepsilon}$, and the true exponent $\\alpha$ in $h(d) \\approx d^\\alpha$ remains unknown.",

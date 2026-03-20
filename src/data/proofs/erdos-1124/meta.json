@@ -7,9 +7,17 @@
     "author": "Tarski (1925), Laczkovich (1990)",
     "sourceUrl": "https://erdosproblems.com/1124",
     "date": "1925",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1124Problem.lean",
-    "tags": ["erdos", "geometry", "equidecomposition", "tarski", "circle-squaring", "measure-theory", "solved"],
+    "tags": [
+      "erdos",
+      "geometry",
+      "equidecomposition",
+      "tarski",
+      "circle-squaring",
+      "measure-theory",
+      "solved"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1124,
@@ -18,10 +26,26 @@
     "dateAdded": "2026-01-24",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      {"theorem": "EuclideanSpace", "description": "Euclidean space type for R²", "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"},
-      {"theorem": "MeasurableSet", "description": "Lebesgue measurable sets in R²", "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"},
-      {"theorem": "Set.Finite", "description": "Finiteness of sets for decompositions", "module": "Mathlib.Data.Set.Finite.Basic"},
-      {"theorem": "Real.pi", "description": "The constant π for area computation", "module": "Mathlib.Data.Real.Basic"}
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Euclidean space type for R²",
+        "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
+      },
+      {
+        "theorem": "MeasurableSet",
+        "description": "Lebesgue measurable sets in R²",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      },
+      {
+        "theorem": "Set.Finite",
+        "description": "Finiteness of sets for decompositions",
+        "module": "Mathlib.Data.Set.Finite.Basic"
+      },
+      {
+        "theorem": "Real.pi",
+        "description": "The constant π for area computation",
+        "module": "Mathlib.Data.Real.Basic"
+      }
     ],
     "originalContributions": [
       "Point/disk/square: R² geometry definitions using EuclideanSpace",
@@ -36,11 +60,28 @@
       "erdos_1124: combined main result closing the problem"
     ],
     "references": [
-      {"key": "La90", "citation": "Laczkovich, M., Equidecomposability and discrepancy; a solution of Tarski's circle-squaring problem, J. Reine Angew. Math. 404 (1990), 77-117.", "type": "paper"},
-      {"key": "DHK63", "citation": "Dubins, L., Hirsch, M.W., Karush, J., Scissor congruence, Israel J. Math. 1 (1963), 239-247.", "type": "paper"},
-      {"key": "Ta25", "citation": "Tarski, A., Problème 38, Fund. Math. 7 (1925), 381.", "type": "paper"},
-      {"key": "Wa04", "citation": "Wagon, S., The Banach-Tarski Paradox, Cambridge University Press, 2004 (reprint).", "type": "book"}
-    ]
+      {
+        "key": "La90",
+        "citation": "Laczkovich, M., Equidecomposability and discrepancy; a solution of Tarski's circle-squaring problem, J. Reine Angew. Math. 404 (1990), 77-117.",
+        "type": "paper"
+      },
+      {
+        "key": "DHK63",
+        "citation": "Dubins, L., Hirsch, M.W., Karush, J., Scissor congruence, Israel J. Math. 1 (1963), 239-247.",
+        "type": "paper"
+      },
+      {
+        "key": "Ta25",
+        "citation": "Tarski, A., Problème 38, Fund. Math. 7 (1925), 381.",
+        "type": "paper"
+      },
+      {
+        "key": "Wa04",
+        "citation": "Wagon, S., The Banach-Tarski Paradox, Cambridge University Press, 2004 (reprint).",
+        "type": "book"
+      }
+    ],
+    "axiomCount": 5
   },
   "overview": {
     "historicalContext": "Alfred Tarski posed the circle-squaring problem in 1925 as Problem 38 in Fundamenta Mathematicae: can a circle be decomposed into finitely many pieces and reassembled into a square of equal area? The problem was inspired by the classical Wallace-Bolyai-Gerwien theorem (1807–1833), which establishes that any two polygons of equal area are scissors-congruent — but that result requires polygonal pieces and does not extend to curved regions.\n\nThe problem attracted enormous interest because of its connections to the Banach-Tarski paradox (1924), which showed that a solid sphere can be decomposed into finitely many pieces and reassembled into two spheres of the same size — but using volume-changing, non-measurable pieces. Tarski's question asked whether similar pathological decompositions could achieve the more modest goal of area-preserving rearrangement in the plane.\n\nPaul Erdős called it 'a very beautiful problem' and reportedly said he would offer $1000 for its solution. In 1963, Dubins, Hirsch, and Karush proved a crucial negative result: no decomposition into Lebesgue measurable pieces can work, since translations preserve measure and the disk and square have different measures ($\\pi \\neq 1$ for unit versions). This showed that any solution must involve non-measurable, Axiom-of-Choice-dependent sets.\n\nThe breakthrough came in 1990 when Miklós Laczkovich (b. 1948, Budapest) resolved the problem affirmatively. His proof, published in Crelle's Journal, used deep ideas from discrepancy theory — specifically, he analyzed the discrepancy of the disk boundary with respect to half-planes and showed it was small enough ($O(r^{2/3})$) to permit equidecomposition. Remarkably, Laczkovich proved that translations alone suffice — no rotations or reflections needed — using approximately $10^{50}$ pieces. The proof is non-constructive, relying essentially on the Axiom of Choice.\n\nIn 2017, Grabowski, Máthé, and Pikhurko achieved a further breakthrough: they showed the decomposition can be done with pieces that are Lebesgue measurable and have the property of Baire, answering a question left open by Laczkovich (though their pieces use a different, weaker notion of congruence involving Borel isomorphisms).",
@@ -56,15 +97,69 @@
     ]
   },
   "sections": [
-    {"id": "imports", "title": "Imports and Setup", "summary": "Imports `EuclideanDist` for the inner product space $\\mathbb{R}^2$, `Lebesgue.Basic` for measurability, `Set.Finite.Basic` for finite decompositions, and `Data.Real.Basic` for $\\pi$ and real arithmetic. Opens the `Set` and `MeasureTheory` namespaces.", "startLine": 32, "endLine": 39},
-    {"id": "basic-defs", "title": "Basic Definitions: Points, Disks, Squares", "summary": "Defines `Point := EuclideanSpace ℝ (Fin 2)`, the closed disk $D(r) = \\{p : \\|p\\| \\leq r\\}$, and the square $S(s) = [0,s]^2$. Includes `unitDisk` (area $\\pi$) and `unitSquare` (area 1) as special cases.", "startLine": 41, "endLine": 62},
-    {"id": "translation-congruence", "title": "Translation and Isometry Congruence", "summary": "Defines `translateBy v` ($p \\mapsto p + v$), `TranslationCongruent` ($B = A + v$), and `IsometryCongruent` ($B = f(A)$ for distance-preserving $f$). Translations form a subgroup of the Euclidean group $E(2) = O(2) \\ltimes \\mathbb{R}^2$.", "startLine": 64, "endLine": 78},
-    {"id": "decomposition", "title": "Decomposition and Equidecomposability", "summary": "Defines `IsDecomposition S pieces` (pairwise disjoint, $\\bigcup = S$), `TranslationEquidecomposable` ($A \\sim_T B$ via $n$ translation-matched pieces), and `IsometryEquidecomposable` ($A \\sim_E B$ via $n$ isometry-matched pieces).", "startLine": 80, "endLine": 97},
-    {"id": "equal-area", "title": "Equal Area Condition", "summary": "Defines `SameArea r s` ($\\pi r^2 = s^2$) and `equalAreaRadius = 1/\\sqrt{\\pi}$. The theorem `equal_areas` proves $\\pi \\cdot (1/\\sqrt{\\pi})^2 = 1^2$ via `field_simp; ring` — the only fully proved result in the file.", "startLine": 99, "endLine": 118},
-    {"id": "tarski-problem", "title": "Tarski's Original Question (1925)", "summary": "Formalizes `TarskiProblem` as: $\\forall\\, r, s > 0$, $\\pi r^2 = s^2 \\implies D(r) \\sim_E S(s)$. This was open for 65 years and considered one of the most beautiful problems in combinatorial geometry.", "startLine": 120, "endLine": 131},
-    {"id": "laczkovich-theorem", "title": "Laczkovich's Solution (1990)", "summary": "Axiomatizes `laczkovich_theorem` ($D(r) \\sim_T S(s)$ for equal-area pairs), `laczkovich_piece_count` ($< 10^{51}$ pieces), `translation_implies_isometry` (since translations are isometries), and derives `tarski_solved : TarskiProblem`.", "startLine": 133, "endLine": 165},
-    {"id": "non-measurability", "title": "Non-Measurability Results", "summary": "Axiomatizes `pieces_not_measurable` (any disk decomposition has a non-measurable piece) and `dubins_hirsch_karush` (1963): no decomposition into measurable, translation-congruent pieces exists, since $\\lambda^2(D) = \\pi \\neq 1 = \\lambda^2(S)$.", "startLine": 167, "endLine": 184},
-    {"id": "main-result", "title": "Main Result: erdos_1124", "summary": "The summary theorem: `TarskiProblem ∧ (∀ r s, ... → TranslationEquidecomposable ...)`. Proved via `exact ⟨tarski_solved, laczkovich_theorem⟩`, packaging Tarski's answer with Laczkovich's stronger translation-only result.", "startLine": 186, "endLine": 211}
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "summary": "Imports `EuclideanDist` for the inner product space $\\mathbb{R}^2$, `Lebesgue.Basic` for measurability, `Set.Finite.Basic` for finite decompositions, and `Data.Real.Basic` for $\\pi$ and real arithmetic. Opens the `Set` and `MeasureTheory` namespaces.",
+      "startLine": 32,
+      "endLine": 39
+    },
+    {
+      "id": "basic-defs",
+      "title": "Basic Definitions: Points, Disks, Squares",
+      "summary": "Defines `Point := EuclideanSpace ℝ (Fin 2)`, the closed disk $D(r) = \\{p : \\|p\\| \\leq r\\}$, and the square $S(s) = [0,s]^2$. Includes `unitDisk` (area $\\pi$) and `unitSquare` (area 1) as special cases.",
+      "startLine": 41,
+      "endLine": 62
+    },
+    {
+      "id": "translation-congruence",
+      "title": "Translation and Isometry Congruence",
+      "summary": "Defines `translateBy v` ($p \\mapsto p + v$), `TranslationCongruent` ($B = A + v$), and `IsometryCongruent` ($B = f(A)$ for distance-preserving $f$). Translations form a subgroup of the Euclidean group $E(2) = O(2) \\ltimes \\mathbb{R}^2$.",
+      "startLine": 64,
+      "endLine": 78
+    },
+    {
+      "id": "decomposition",
+      "title": "Decomposition and Equidecomposability",
+      "summary": "Defines `IsDecomposition S pieces` (pairwise disjoint, $\\bigcup = S$), `TranslationEquidecomposable` ($A \\sim_T B$ via $n$ translation-matched pieces), and `IsometryEquidecomposable` ($A \\sim_E B$ via $n$ isometry-matched pieces).",
+      "startLine": 80,
+      "endLine": 97
+    },
+    {
+      "id": "equal-area",
+      "title": "Equal Area Condition",
+      "summary": "Defines `SameArea r s` ($\\pi r^2 = s^2$) and `equalAreaRadius = 1/\\sqrt{\\pi}$. The theorem `equal_areas` proves $\\pi \\cdot (1/\\sqrt{\\pi})^2 = 1^2$ via `field_simp; ring` — the only fully proved result in the file.",
+      "startLine": 99,
+      "endLine": 118
+    },
+    {
+      "id": "tarski-problem",
+      "title": "Tarski's Original Question (1925)",
+      "summary": "Formalizes `TarskiProblem` as: $\\forall\\, r, s > 0$, $\\pi r^2 = s^2 \\implies D(r) \\sim_E S(s)$. This was open for 65 years and considered one of the most beautiful problems in combinatorial geometry.",
+      "startLine": 120,
+      "endLine": 131
+    },
+    {
+      "id": "laczkovich-theorem",
+      "title": "Laczkovich's Solution (1990)",
+      "summary": "Axiomatizes `laczkovich_theorem` ($D(r) \\sim_T S(s)$ for equal-area pairs), `laczkovich_piece_count` ($< 10^{51}$ pieces), `translation_implies_isometry` (since translations are isometries), and derives `tarski_solved : TarskiProblem`.",
+      "startLine": 133,
+      "endLine": 165
+    },
+    {
+      "id": "non-measurability",
+      "title": "Non-Measurability Results",
+      "summary": "Axiomatizes `pieces_not_measurable` (any disk decomposition has a non-measurable piece) and `dubins_hirsch_karush` (1963): no decomposition into measurable, translation-congruent pieces exists, since $\\lambda^2(D) = \\pi \\neq 1 = \\lambda^2(S)$.",
+      "startLine": 167,
+      "endLine": 184
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result: erdos_1124",
+      "summary": "The summary theorem: `TarskiProblem ∧ (∀ r s, ... → TranslationEquidecomposable ...)`. Proved via `exact ⟨tarski_solved, laczkovich_theorem⟩`, packaging Tarski's answer with Laczkovich's stronger translation-only result.",
+      "startLine": 186,
+      "endLine": 211
+    }
   ],
   "conclusion": {
     "summary": "This formalization captures Tarski's circle-squaring problem (1925) and its resolution by Laczkovich (1990). All key concepts — equidecomposability, translation vs. isometry congruence, the equal-area condition, Laczkovich's theorem, piece count bounds, and the Dubins-Hirsch-Karush non-measurability obstruction — are formalized with 0 sorries. The axiomatized results faithfully represent the deep non-constructive mathematics underlying the solution.",

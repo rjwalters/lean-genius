@@ -7,9 +7,15 @@
     "author": "Open Problem (Upper bounds by Erdős 1955, Pomerance 1981/2015)",
     "sourceUrl": "https://erdosproblems.com/830",
     "date": "",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos830Problem.lean",
-    "tags": ["erdos", "number-theory", "divisors", "amicable-numbers", "open-problem"],
+    "tags": [
+      "erdos",
+      "number-theory",
+      "divisors",
+      "amicable-numbers",
+      "open-problem"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 830,
@@ -38,7 +44,8 @@
       "Machine-verified examples: (220,284), (1184,1210), (2620,2924)",
       "Formal statements of Erdős and Pomerance upper bounds",
       "Counting function A(x) formalization"
-    ]
+    ],
+    "axiomCount": 5
   },
   "overview": {
     "historicalContext": "Amicable numbers have fascinated mathematicians since antiquity. The pair (220, 284) was known to the Pythagoreans and appears in Arabic and medieval European mathematical texts. The definition is elegant: two numbers are amicable if each equals the sum of the proper divisors (all divisors except the number itself) of the other.\n\nFor 220: proper divisors are 1, 2, 4, 5, 10, 11, 20, 22, 44, 55, 110, which sum to 284.\nFor 284: proper divisors are 1, 2, 4, 71, 142, which sum to 220.\n\nWhile thousands of amicable pairs are now known (discovered computationally), whether infinitely many exist remains one of the oldest unsolved problems in number theory. Erdős established the first non-trivial upper bound A(x) = o(x) in 1955, and Carl Pomerance made major improvements in 1981 and 2015.",

@@ -6,7 +6,7 @@
   "meta": {
     "author": "Klaus Friedrich Roth, Paul Erdős, András Sárközy, Vera T. Sós",
     "erdosNumber": 484,
-    "status": "complete",
+    "status": "axiomatized",
     "tags": [
       "erdos",
       "additive-combinatorics",
@@ -36,11 +36,24 @@
     "date": "1989",
     "dateAdded": "2026-01-19",
     "relatedProblems": [
-      { "id": "erdos-432", "relation": "Pairwise coprime sumsets; both study structure forced on sumsets by arithmetic constraints (coprimality vs coloring)" },
-      { "id": "erdos-45", "relation": "Monochromatic Egyptian fractions under colorings; same Ramsey-on-arithmetic framework but with reciprocal sum = 1 instead of a+b representability" },
-      { "id": "erdos-36", "relation": "Minimum overlap problem; both ask about unavoidable additive structure in partitions of {1,...,N}" },
-      { "id": "erdos-444", "relation": "Generalized divisor functions; extremal growth faster than polynomial, similar 'density vs extremal' theme" }
-    ]
+      {
+        "id": "erdos-432",
+        "relation": "Pairwise coprime sumsets; both study structure forced on sumsets by arithmetic constraints (coprimality vs coloring)"
+      },
+      {
+        "id": "erdos-45",
+        "relation": "Monochromatic Egyptian fractions under colorings; same Ramsey-on-arithmetic framework but with reciprocal sum = 1 instead of a+b representability"
+      },
+      {
+        "id": "erdos-36",
+        "relation": "Minimum overlap problem; both ask about unavoidable additive structure in partitions of {1,...,N}"
+      },
+      {
+        "id": "erdos-444",
+        "relation": "Generalized divisor functions; extremal growth faster than polynomial, similar 'density vs extremal' theme"
+      }
+    ],
+    "axiomCount": 14
   },
   "sections": [
     {

@@ -7,7 +7,7 @@
     "author": "Open Problem (Erdős proved existence)",
     "sourceUrl": "https://erdosproblems.com/1101",
     "date": "",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1101Problem.lean",
     "tags": [
       "erdos",
@@ -52,7 +52,8 @@
       "Axiomatization of both conjectures (no polynomial, yes subexponential)",
       "Statement of Erdős's existence theorem and sieve lower bound",
       "Connection to Problem #208 (prime squares conjecture)"
-    ]
+    ],
+    "axiomCount": 5
   },
   "overview": {
     "historicalContext": "This problem connects sieve theory with questions about the growth rates of multiplicative sequences. Given a sequence u = {u₁ < u₂ < ...} of pairwise coprime integers with Σ1/uᵢ < ∞, consider the integers A = {a₁ < a₂ < ...} not divisible by any uᵢ.\n\nThe 'density' of A is given by ∏(1 - 1/uᵢ), and sieve theory shows that gaps between consecutive elements of A are at least (1+o(1))·tₓ·∏(1-1/uᵢ)⁻¹. Erdős called u 'good' if the gaps are also bounded ABOVE by (1+ε)·tₓ·∏(1-1/uᵢ)⁻¹.\n\nErdős proved that SOME good sequence exists (using all primes), but the question of which growth rates are achievable remains open. He conjectured that polynomial growth is impossible but sub-exponential growth is achievable.",

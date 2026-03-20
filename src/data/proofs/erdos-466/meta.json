@@ -34,11 +34,24 @@
     "date": "1970s-1976",
     "dateAdded": "2026-01-23",
     "relatedProblems": [
-      { "id": "erdos-465", "relation": "Direct complement: provides upper bounds N(X,δ) ≪ X^{1/2} (Konyagin 2001), matching the lower bounds of #466" },
-      { "id": "erdos-953", "relation": "Measure-theoretic variant: asks for max measure (not count) of sets avoiding integer distances in a disk" },
-      { "id": "erdos-464", "relation": "Density of fractional parts {θn_k} for lacunary sequences; shares Diophantine approximation techniques on fractional distance" },
-      { "id": "erdos-100", "relation": "Point sets with restricted distances in ℝ²; complementary integer distance constraint problem" }
-    ]
+      {
+        "id": "erdos-465",
+        "relation": "Direct complement: provides upper bounds N(X,δ) ≪ X^{1/2} (Konyagin 2001), matching the lower bounds of #466"
+      },
+      {
+        "id": "erdos-953",
+        "relation": "Measure-theoretic variant: asks for max measure (not count) of sets avoiding integer distances in a disk"
+      },
+      {
+        "id": "erdos-464",
+        "relation": "Density of fractional parts {θn_k} for lacunary sequences; shares Diophantine approximation techniques on fractional distance"
+      },
+      {
+        "id": "erdos-100",
+        "relation": "Point sets with restricted distances in ℝ²; complementary integer distance constraint problem"
+      }
+    ],
+    "axiomCount": 6
   },
   "sections": [
     {

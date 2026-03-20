@@ -7,7 +7,7 @@
     "author": "Erdős-Laskar (1985), Fan (1988)",
     "sourceUrl": "https://erdosproblems.com/1033",
     "date": "1985",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1033Problem.lean",
     "tags": [
       "graph-theory",
@@ -50,7 +50,8 @@
       "Statement of Erdős-Laskar and Fan bounds as axioms",
       "Formalization of the main conjecture and its asymptotic equivalent"
     ],
-    "relatedProblems": []
+    "relatedProblems": [],
+    "axiomCount": 6
   },
   "overview": {
     "historicalContext": "**Turán Theory Background**\n\nTurán's theorem states that every graph on n vertices with more than n²/4 edges contains a triangle. This problem asks: given that triangles exist, how large must the degree sum of some triangle be?\n\n**Historical Development**:\n- 1985: Erdős and Laskar proved (1+c)n ≤ h(n) ≤ 2(√3−1)n\n- 1988: Fan improved lower bound to (21/16)n = 1.3125n\n\n**Current Status**: Open - gap between 1.3125n and 1.464n remains.",

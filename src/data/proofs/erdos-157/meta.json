@@ -7,7 +7,7 @@
     "author": "Pilatte (2023), Erdős-Turán (1941)",
     "sourceUrl": "https://erdosproblems.com/157",
     "date": "2023",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos157Problem.lean",
     "tags": [
       "erdos",
@@ -57,7 +57,8 @@
       "Sidon density upper bound (Erdős-Turán)",
       "Basis density lower bound",
       "Verified theorem: powers_of_two_sidon"
-    ]
+    ],
+    "axiomCount": 2
   },
   "overview": {
     "historicalContext": "**Sidon sets** (B₂ sequences) have all pairwise sums distinct. **Erdős-Turán (1941)** proved they grow at most like √N, making them fundamentally sparse.\n\n**Asymptotic bases** of order k represent all large integers with at most k terms. They require density at least N^{1/k}.\n\n**The Question**: Can these competing constraints coexist? Order 2 is impossible (density mismatch). **Pilatte (2023)** proved order 3 works, settling Erdős's conjecture affirmatively.\n\n**Verified Content**: This formalization includes two complete proofs:\n1. `sidon_iff_sidon_alt`: Equivalence of Sidon definitions\n2. `powers_of_two_sidon`: {2^k} is a Sidon set",

@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/68",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos68Problem.lean",
     "tags": [
       "erdos",
@@ -58,7 +58,8 @@
       "first_term through fourth_term: explicit calculations",
       "eRelatedSum definition: connection to e",
       "transcendence_implies_68 theorem: hierarchy"
-    ]
+    ],
+    "axiomCount": 4
   },
   "overview": {
     "historicalContext": "Erdős Problem #68 asks whether Σ_{n≥2} 1/(n!-1) is irrational. The problem appears in Erdős's papers from 1968, 1988, 1990, and 1997.\n\nDesmond Weisenberg observed that the sum can be rewritten as a double sum: Σ 1/(n!-1) = Σ_n Σ_k 1/(n!)^k, using the geometric series 1/(x-1) = Σ x^{-k}.\n\nErdős actually conjectured something stronger: that Σ 1/(n!+t) is transcendental for every integer t. The t=-1 case is this problem.\n\nThe decimal expansion is OEIS sequence A331373: 1.2517525711...",

@@ -8,19 +8,45 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Pythagorean_triple",
     "date": "~1800 BCE",
     "status": "verified",
-    "tags": ["number-theory", "geometry", "classic", "intermediate"],
+    "tags": [
+      "number-theory",
+      "geometry",
+      "classic",
+      "intermediate"
+    ],
     "proofRepoPath": "Proofs/PythagoreanTriples.lean",
     "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
-      {"theorem": "PythagoreanTriple.isPrimitiveClassified_of_coprime", "description": "Classification of primitive triples", "module": "Mathlib.NumberTheory.PythagoreanTriples"},
-      {"theorem": "PythagoreanTriple.classified", "description": "General classification theorem", "module": "Mathlib.NumberTheory.PythagoreanTriples"},
-      {"theorem": "PythagoreanTriple.even_odd_of_coprime", "description": "Parity constraint on coprime triples", "module": "Mathlib.NumberTheory.PythagoreanTriples"},
-      {"theorem": "PythagoreanTriple.mul", "description": "Scaling preserves the Pythagorean property", "module": "Mathlib.NumberTheory.PythagoreanTriples"}
+      {
+        "theorem": "PythagoreanTriple.isPrimitiveClassified_of_coprime",
+        "description": "Classification of primitive triples",
+        "module": "Mathlib.NumberTheory.PythagoreanTriples"
+      },
+      {
+        "theorem": "PythagoreanTriple.classified",
+        "description": "General classification theorem",
+        "module": "Mathlib.NumberTheory.PythagoreanTriples"
+      },
+      {
+        "theorem": "PythagoreanTriple.even_odd_of_coprime",
+        "description": "Parity constraint on coprime triples",
+        "module": "Mathlib.NumberTheory.PythagoreanTriples"
+      },
+      {
+        "theorem": "PythagoreanTriple.mul",
+        "description": "Scaling preserves the Pythagorean property",
+        "module": "Mathlib.NumberTheory.PythagoreanTriples"
+      }
     ],
-    "originalContributions": ["Complete parametric classification", "Verification of classic triples (3,4,5), (5,12,13), (8,15,17), (7,24,25), (20,21,29)", "Scaling examples (6,8,10) and (9,12,15)"],
+    "originalContributions": [
+      "Complete parametric classification",
+      "Verification of classic triples (3,4,5), (5,12,13), (8,15,17), (7,24,25), (20,21,29)",
+      "Scaling examples (6,8,10) and (9,12,15)"
+    ],
     "dateAdded": "12/26/25",
-    "wiedijkNumber": 23
+    "wiedijkNumber": 23,
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "The Pythagorean triple formula is one of the oldest results in mathematics, with roots stretching back nearly four millennia. The Plimpton 322 clay tablet (c. 1800 BCE), discovered in Iraq in 1922, contains a table of 15 Pythagorean triples including large examples like $(4601, 4800, 6649)$, demonstrating that Babylonian mathematicians understood the parametric generation of these triples long before Pythagoras.\n\nThe systematic study of the formula is traditionally attributed to Euclid, whose *Elements* (Book X, Lemma 1, c. 300 BCE) contains the first known proof that the parametric form $a = m^2 - n^2$, $b = 2mn$, $c = m^2 + n^2$ generates all primitive triples. Diophantus of Alexandria (c. 250 CE) further developed the theory in his *Arithmetica*, connecting it to rational points on the unit circle — the same geometric insight that underlies the modern proof.\n\nThe result appears as #23 on Freek Wiedijk's list of 100 greatest theorems, reflecting its foundational importance. The classification theorem connects number theory (coprimality, parity), algebra (polynomial identities), and geometry (the unit circle parametrization) in a single elegant statement. It also serves as the historical precursor to Fermat's Last Theorem: while $a^2 + b^2 = c^2$ has infinitely many integer solutions, Fermat conjectured (and Wiles proved in 1995) that $a^n + b^n = c^n$ has none for $n \\geq 3$.",
@@ -35,15 +61,69 @@
     ]
   },
   "sections": [
-    {"id": "imports-header", "title": "Imports and Documentation", "startLine": 1, "endLine": 48, "summary": "Imports Mathlib.NumberTheory.PythagoreanTriples and Mathlib.Tactic, with extensive documentation covering the parametric formula, proof strategy, and historical context (Plimpton 322, Wiedijk #23)."},
-    {"id": "predicate", "title": "The Pythagorean Triple Predicate", "startLine": 50, "endLine": 65, "summary": "Introduces Mathlib's PythagoreanTriple predicate and verifies it unfolds to x * x + y * y = z * z via Iff.rfl."},
-    {"id": "parametric-formula", "title": "Parametric Formula Classification", "startLine": 67, "endLine": 83, "summary": "Documents IsPrimitiveClassified and IsClassified structures from Mathlib that formalize what it means for a triple to match the parametric form."},
-    {"id": "main-theorems", "title": "Main Classification Theorems", "startLine": 85, "endLine": 113, "summary": "The central results: primitive_triples_are_classified (every coprime triple has parametric form) and all_triples_are_classified (every triple is a scaled parametric triple)."},
-    {"id": "verification", "title": "Algebraic Verification", "startLine": 115, "endLine": 133, "summary": "Proves the converse direction: the parametric formula always produces valid triples, verified via the ring tactic for both orderings of legs."},
-    {"id": "examples", "title": "Classical Examples", "startLine": 135, "endLine": 192, "summary": "Verifies five classical Pythagorean triples: (3,4,5), (5,12,13), (8,15,17), (7,24,25), (20,21,29) with their corresponding (m,n) parameters."},
-    {"id": "properties", "title": "Properties of Pythagorean Triples", "startLine": 194, "endLine": 209, "summary": "Proves structural properties: symmetry of legs, the trivial (0,0,0) triple, and the parity constraint that primitive triples have one even and one odd leg."},
-    {"id": "geometric", "title": "Unit Circle Parametrization", "startLine": 211, "endLine": 239, "summary": "Extended documentation explaining the geometric derivation of the formula via stereographic projection from (-1,0) on the unit circle, with full algebraic verification."},
-    {"id": "scaling", "title": "Non-primitive Triples and Summary", "startLine": 241, "endLine": 268, "summary": "Demonstrates that scaling preserves the Pythagorean property with examples (6,8,10) = 2×(3,4,5) and (9,12,15) = 3×(3,4,5), completing the classification."}
+    {
+      "id": "imports-header",
+      "title": "Imports and Documentation",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "Imports Mathlib.NumberTheory.PythagoreanTriples and Mathlib.Tactic, with extensive documentation covering the parametric formula, proof strategy, and historical context (Plimpton 322, Wiedijk #23)."
+    },
+    {
+      "id": "predicate",
+      "title": "The Pythagorean Triple Predicate",
+      "startLine": 50,
+      "endLine": 65,
+      "summary": "Introduces Mathlib's PythagoreanTriple predicate and verifies it unfolds to x * x + y * y = z * z via Iff.rfl."
+    },
+    {
+      "id": "parametric-formula",
+      "title": "Parametric Formula Classification",
+      "startLine": 67,
+      "endLine": 83,
+      "summary": "Documents IsPrimitiveClassified and IsClassified structures from Mathlib that formalize what it means for a triple to match the parametric form."
+    },
+    {
+      "id": "main-theorems",
+      "title": "Main Classification Theorems",
+      "startLine": 85,
+      "endLine": 113,
+      "summary": "The central results: primitive_triples_are_classified (every coprime triple has parametric form) and all_triples_are_classified (every triple is a scaled parametric triple)."
+    },
+    {
+      "id": "verification",
+      "title": "Algebraic Verification",
+      "startLine": 115,
+      "endLine": 133,
+      "summary": "Proves the converse direction: the parametric formula always produces valid triples, verified via the ring tactic for both orderings of legs."
+    },
+    {
+      "id": "examples",
+      "title": "Classical Examples",
+      "startLine": 135,
+      "endLine": 192,
+      "summary": "Verifies five classical Pythagorean triples: (3,4,5), (5,12,13), (8,15,17), (7,24,25), (20,21,29) with their corresponding (m,n) parameters."
+    },
+    {
+      "id": "properties",
+      "title": "Properties of Pythagorean Triples",
+      "startLine": 194,
+      "endLine": 209,
+      "summary": "Proves structural properties: symmetry of legs, the trivial (0,0,0) triple, and the parity constraint that primitive triples have one even and one odd leg."
+    },
+    {
+      "id": "geometric",
+      "title": "Unit Circle Parametrization",
+      "startLine": 211,
+      "endLine": 239,
+      "summary": "Extended documentation explaining the geometric derivation of the formula via stereographic projection from (-1,0) on the unit circle, with full algebraic verification."
+    },
+    {
+      "id": "scaling",
+      "title": "Non-primitive Triples and Summary",
+      "startLine": 241,
+      "endLine": 268,
+      "summary": "Demonstrates that scaling preserves the Pythagorean property with examples (6,8,10) = 2×(3,4,5) and (9,12,15) = 3×(3,4,5), completing the classification."
+    }
   ],
   "conclusion": {
     "summary": "This formalization provides the complete classification of Pythagorean triples (Wiedijk #23): every primitive triple arises from the parametric formula with coprime parameters of opposite parity, and every triple is a scalar multiple of a primitive one. The proof leverages Mathlib's PythagoreanTriple module for the deep classification theorems while providing original algebraic verifications and five concrete examples.",

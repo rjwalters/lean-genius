@@ -7,7 +7,7 @@
     "author": "Erdős, Kleitman, Sárközy, Szemerédi",
     "sourceUrl": "https://erdosproblems.com/447",
     "date": "1971",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos447Problem.lean",
     "tags": [
       "erdos",
@@ -62,7 +62,8 @@
       "Connection to Problem 487 via LCM representations and prime factorization encoding",
       "IsKUnionFree and IsStrongUnionFree generalizations (Problem 1023)",
       "erdos_447_summary combining upper and lower bounds"
-    ]
+    ],
+    "axiomCount": 7
   },
   "leanFile": {
     "path": "Proofs/Erdos447Problem.lean",

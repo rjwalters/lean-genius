@@ -9,7 +9,13 @@
     "date": "1987",
     "status": "verified",
     "proofRepoPath": "Proofs/Erdos1127Problem.lean",
-    "tags": ["erdos", "set-theory", "continuum-hypothesis", "geometry", "distances"],
+    "tags": [
+      "erdos",
+      "set-theory",
+      "continuum-hypothesis",
+      "geometry",
+      "distances"
+    ],
     "badge": "mathlib",
     "sorries": 0,
     "erdosNumber": 1127,
@@ -17,10 +23,26 @@
     "erdosProblemStatus": "solved",
     "mathlib_version": "v4.x",
     "mathlibDependencies": [
-      { "theorem": "EuclideanSpace", "description": "n-dimensional Euclidean space", "module": "Mathlib.Analysis.InnerProductSpace.PiL2" },
-      { "theorem": "Set.Countable", "description": "Countable sets", "module": "Mathlib.Data.Set.Countable" },
-      { "theorem": "Cardinal.aleph", "description": "Aleph cardinals for CH formulation", "module": "Mathlib.SetTheory.Cardinal.Basic" },
-      { "theorem": "dist", "description": "Metric space distance function", "module": "Mathlib.Topology.MetricSpace.Basic" }
+      {
+        "theorem": "EuclideanSpace",
+        "description": "n-dimensional Euclidean space",
+        "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
+      },
+      {
+        "theorem": "Set.Countable",
+        "description": "Countable sets",
+        "module": "Mathlib.Data.Set.Countable"
+      },
+      {
+        "theorem": "Cardinal.aleph",
+        "description": "Aleph cardinals for CH formulation",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "dist",
+        "description": "Metric space distance function",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      }
     ],
     "originalContributions": [
       "Lean formalization of distinct distances property",
@@ -30,7 +52,8 @@
       "Axiomatization of Erdős-Kakutani, Davies, and Kunen theorems",
       "Statement of Erdős-Hajnal necessity result"
     ],
-    "dateAdded": "2026-01-19"
+    "dateAdded": "2026-01-19",
+    "axiomCount": 10
   },
   "overview": {
     "historicalContext": "This problem connects geometry to set theory in a surprising way. Erdős and Kakutani (1943) showed that for n=1, the decomposition exists if and only if the Continuum Hypothesis holds. Davies (1972) proved the n=2 case under CH, and Kunen (1987) proved it for all dimensions. Erdős and Hajnal showed that CH is necessary - without it, even finite partitions fail.",

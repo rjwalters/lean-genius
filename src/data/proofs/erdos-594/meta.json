@@ -7,7 +7,7 @@
     "author": "Erdős-Hajnal-Shelah (1974 proof), Erdős-Hajnal (problem)",
     "sourceUrl": "https://erdosproblems.com/594",
     "date": "1974",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos594Problem.lean",
     "tags": [
       "erdos",
@@ -53,7 +53,8 @@
       "erdos_hajnal_shelah: main theorem for χ ≥ ℵ₁",
       "aleph1_is_optimal: threshold optimality",
       "thomassen_1983: strengthening with cycles through edges"
-    ]
+    ],
+    "axiomCount": 9
   },
   "overview": {
     "historicalContext": "**Erdős Problem #594**\n\nThis problem connects graph theory with set theory through the study of infinite chromatic numbers.\n\n**History:**\n- Erdős and Hajnal posed the problem and proved it for graphs with χ ≥ ℵ₂\n- Erdős, Hajnal, and Shelah (1974) proved the full result for χ ≥ ℵ₁\n- Thomassen (1983) strengthened the result to show cycles pass through any given edge\n\n**Key Context:**\n- Relates to Problem #593 (hypergraph characterization, $500 prize, OPEN)\n- Relates to Problem #737 (cycles through edges, SOLVED by Thomassen)\n- Part of Erdős and Hajnal's systematic study of infinite chromatic numbers",

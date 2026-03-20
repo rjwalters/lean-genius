@@ -85,7 +85,8 @@
       }
     ],
     "historicalContext": "The relationship between the volume and surface area of n-dimensional balls is a fundamental result in geometric analysis. In 2D, the area of a circle equals the integral of its circumference: A(r) = ∫₀ʳ 2πρ dρ = πr². This generalizes to all dimensions via V_n(r) = ω_n r^n and the polynomial structure of the volume function. The n-ball volume formula ω_n = π^(n/2)/Γ(n/2+1) was first computed by Schläfli (1852) and exhibits the surprising behavior of vanishing as n → ∞.",
-    "dateAdded": "03/11/26"
+    "dateAdded": "03/11/26",
+    "axiomCount": 0
   },
   "overview": {
     "summary": "Generalizes the 2D result A(r) = ∫₀ʳ C(ρ) dρ to n dimensions, proving V_n(r) = ∫₀ʳ S_n(ρ) dρ where S_n(ρ) = n·ω_n·ρ^(n-1) is the sphere surface area. The proof exploits the polynomial structure V_n(r) = ω_n·r^n: differentiation gives the surface area (power rule), and the Fundamental Theorem of Calculus recovers the volume as an integral. Rich consequences include shell volumes, scaling laws, and the surface-to-volume ratio n/r.",

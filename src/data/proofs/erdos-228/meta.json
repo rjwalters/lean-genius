@@ -7,7 +7,7 @@
     "author": "Balister-Bollobás-Morris-Sahasrabudhe-Tiba (2019)",
     "sourceUrl": "https://erdosproblems.com/228",
     "date": "",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos228Problem.lean",
     "tags": [
       "erdos",
@@ -52,7 +52,8 @@
       "Explicit formulation with universal constants",
       "Related Hayman question on maximum magnitude",
       "Proved √n > 0 for n ≥ 1 as basic heuristic"
-    ]
+    ],
+    "axiomCount": 4
   },
   "overview": {
     "historicalContext": "This problem originates from J.E. Littlewood's 1966 work on polynomials with ±1 coefficients (Littlewood polynomials). He conjectured that 'flat' examples exist—polynomials where |P(z)| stays close to √n uniformly on the unit circle.\n\nThe conjecture remained open for over 50 years. In 2019, Balister, Bollobás, Morris, Sahasrabudhe, and Tiba proved that flat Littlewood polynomials exist, resolving the conjecture. Their paper 'Flat Littlewood Polynomials Exist' appeared in the Annals of Mathematics (2020).\n\nThe result is remarkable: despite the severe constraint of ±1 coefficients, the magnitude can be controlled to stay within constant factors of √n everywhere on the unit circle. This matches the 'random' behavior predicted by the central limit theorem.",

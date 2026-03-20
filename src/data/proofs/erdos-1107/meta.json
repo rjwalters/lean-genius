@@ -7,7 +7,7 @@
     "author": "Heath-Brown (1988) for r=2; general case open",
     "sourceUrl": "https://erdosproblems.com/1107",
     "date": "1986",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1107Problem.lean",
     "tags": [
       "erdos",
@@ -39,7 +39,8 @@
       "Statement of the general conjecture using Filter.atTop",
       "Heath-Brown's theorem for r=2 as separate axiom",
       "Verified concrete examples: 13 = 4 + 9 and 17 = 8 + 9"
-    ]
+    ],
+    "axiomCount": 2
   },
   "overview": {
     "historicalContext": "A natural number n is called r-powerful (or r-full) if for every prime p dividing n, the r-th power p^r also divides n. For r=2, these are the squareful numbers: 1, 4, 8, 9, 16, 25, 27, 32, 36, ... The concept generalizes perfect powers to numbers where each prime factor appears with sufficient multiplicity.\n\nErdős Problem #1107 was posed by Erdős and Ivić in the 1986 Oberwolfach problem book. It asks whether every sufficiently large integer can be written as a sum of at most r+1 many r-powerful numbers.\n\nThe case r=2 was resolved by D.R. Heath-Brown in 1988 using the theory of ternary quadratic forms. He proved that every sufficiently large integer is the sum of at most three squareful numbers. The general case for r > 2 remains open.",

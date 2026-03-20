@@ -7,7 +7,7 @@
     "author": "Erdős-Lewin (1996), Yu-Chen (2022), Yang-Zhao (2025)",
     "sourceUrl": "https://erdosproblems.com/1110",
     "date": "1996",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1110Problem.lean",
     "tags": [
       "erdos",
@@ -57,7 +57,8 @@
       "Minimum summand bounds (Yu-Chen, Yang-Zhao)",
       "example_1_representable theorem with constructive proof",
       "Connections to Problems #123, #845, #246"
-    ]
+    ],
+    "axiomCount": 8
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1110: Representability**\n\nThis problem concerns representing integers as sums of 'smooth' numbers (products of small primes) with a non-divisibility constraint.\n\n**Historical Development:**\n- **1992:** Erdős posed his 'silly conjecture' about {2,3}\n- **1996:** Erdős-Lewin proved the characterization theorem\n- **2022:** Yu-Chen established density results and coprime infinitude\n- **2025:** Yang-Zhao improved minimum summand bounds\n\n**The 'Silly Conjecture':**\nErdős called his {2,3} conjecture 'silly' after Jansen and others found a simple inductive proof. Yet the general problem remains deep and partially open.",

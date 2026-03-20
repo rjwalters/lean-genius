@@ -7,7 +7,7 @@
     "author": "Graham-Rothschild (proposed), Hindman (solved)",
     "sourceUrl": "https://erdosproblems.com/532",
     "date": "1974",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos532Problem.lean",
     "tags": [
       "erdos",
@@ -57,7 +57,8 @@
       "Ultrafilter implies Hindman axiom (modern proof path)",
       "Hales-Jewett implies Hindman axiom (alternative proof path)",
       "Finite Hindman theorem axiom and Hindman numbers definition"
-    ]
+    ],
+    "axiomCount": 5
   },
   "overview": {
     "historicalContext": "**Erdős Problem #532: Hindman's Theorem (IP Sets)**\n\nThis fundamental problem in Ramsey theory was posed by Graham and Rothschild in the early 1970s. It asks whether, for any finite coloring of the natural numbers, some color class must contain an 'IP set' - a set containing all finite sums from some infinite sequence.\n\n**Historical Development:**\n- **1971:** Graham and Rothschild posed the question in their work on Ramsey theory\n- **1974:** Neil Hindman proved the affirmative answer for any number of colors\n- **1975+:** Ultrafilter proofs discovered, connecting to topological dynamics\n- **Modern:** Hindman's theorem is now central to combinatorics and ergodic theory",

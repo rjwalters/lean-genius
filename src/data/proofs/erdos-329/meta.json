@@ -7,7 +7,7 @@
     "author": "Erdős (1/2), Krückeberg (1/√2, 1961), Erdős-Turán (upper bound, 1941)",
     "sourceUrl": "https://erdosproblems.com/329",
     "date": "1941-1961",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos329Problem.lean",
     "tags": [
       "erdos",
@@ -53,7 +53,8 @@
       "Conditional equivalence with perfect difference set embedding",
       "Proved theorems: empty_is_sidon, singleton_is_sidon",
       "Educational commentary on Sidon set theory"
-    ]
+    ],
+    "axiomCount": 6
   },
   "overview": {
     "historicalContext": "Sidon sets (also called B₂ sequences) were introduced by Simon Sidon in 1932, who asked about sets of integers where all pairwise sums are distinct. These sets have been central to additive combinatorics ever since.\n\nThe counting argument of Erdős and Turán (1941) established the fundamental upper bound: any Sidon set A ⊆ {1,...,N} has |A| ≤ √N + O(N^{1/4}). This gives the upper bound 1 for the normalized density limsup |A ∩ {1,...,N}| / √N.\n\nFor lower bounds, Erdős showed density 1/2 is achievable. Krückeberg (1961) improved this to 1/√2 ≈ 0.707 using an algebraic construction. The exact supremum between 1/√2 and 1 remains unknown.\n\nInterestingly, the supremum equals 1 if and only if every finite Sidon set can be embedded in a perfect difference set - connecting this problem to projective geometry.",

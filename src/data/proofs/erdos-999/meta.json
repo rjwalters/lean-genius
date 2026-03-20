@@ -7,7 +7,7 @@
     "author": "Duffin-Schaeffer (1941), Erdős (partial), Koukoulopoulos-Maynard (2020)",
     "sourceUrl": "https://erdosproblems.com/999",
     "date": "2020",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos999Problem.lean",
     "tags": [
       "erdos",
@@ -25,8 +25,16 @@
     "dateAdded": "2026-01-22",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      { "theorem": "Nat.totient", "description": "Euler's totient function", "module": "Mathlib.NumberTheory.ArithmeticFunction" },
-      { "theorem": "MeasureTheory.volume", "description": "Lebesgue measure for almost-all formulation", "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic" }
+      {
+        "theorem": "Nat.totient",
+        "description": "Euler's totient function",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction"
+      },
+      {
+        "theorem": "MeasureTheory.volume",
+        "description": "Lebesgue measure for almost-all formulation",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      }
     ],
     "originalContributions": [
       "eulerPhi: wrapper for Nat.totient",
@@ -48,7 +56,8 @@
       "khintchine_theorem axiom: monotone case (1924)",
       "LimsupSet: the set of infinitely approximable reals",
       "erdos_999_summary: proved conjunction of main results"
-    ]
+    ],
+    "axiomCount": 8
   },
   "overview": {
     "historicalContext": "The Duffin-Schaeffer conjecture (1941) was one of the most famous open problems in metric number theory for nearly 80 years. It generalizes Khintchine's theorem (1924) to non-monotone approximation functions. Erdős proved the special case where f(q)·q is bounded. The easy direction (approximability implies divergence) follows from Borel-Cantelli. The hard direction was finally proved by Dimitris Koukoulopoulos and James Maynard in 2020, published in the Annals of Mathematics.",

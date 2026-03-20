@@ -48,7 +48,8 @@
       "Connection to Riemann Hypothesis via von Koch's conditional error bound",
       "Chebyshev's pre-PNT bounds as elementary comparison"
     ],
-    "dateAdded": "12/29/25"
+    "dateAdded": "12/29/25",
+    "axiomCount": 13
   },
   "overview": {
     "historicalContext": "The Prime Number Theorem was conjectured by Legendre (1798) and Gauss (1849, in the form π(x) ~ Li(x)), then proved independently by Hadamard and de la Vallée Poussin in 1896 using the non-vanishing of ζ(1+it). Erdős and Selberg gave an elementary proof in 1949. Avigad et al. provided the first formal proof in Isabelle (2004), and Kontorovich, Tao, et al. completed a full Lean 4 formalization (2024) in the PrimeNumberTheoremAnd project.",

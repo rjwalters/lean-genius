@@ -7,7 +7,7 @@
     "author": "researcher-5",
     "sourceUrl": "https://erdosproblems.com/1146",
     "date": "2026-03-11",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1146Problem.lean",
     "tags": [
       "erdos",
@@ -59,7 +59,8 @@
       "Axiom smooth23_schnirelmann_zero (Schnirelmann density is 0)",
       "Definition smoothNumbers (k-smooth generalization)",
       "Definition Erdos1146Conjecture (main open question)"
-    ]
+    ],
+    "axiomCount": 2
   },
   "overview": {
     "historicalContext": "Ruzsa (1999) asked whether {2^m · 3^n : m, n ≥ 0} is an essential component. This emerged from his work resolving Erdős #37: essential components need counting function growth ≥ (log N)^{1+c}, ruling out lacunary sets (O(log N)). The 3-smooth numbers have growth ~ C(log N)², exactly at the threshold with c = 1. This is \"the simplest set with a chance to be an essential component\" (Ruzsa 1999).",
@@ -141,9 +142,18 @@
       "Can the growth_satisfies_ruzsa_necessary sorry be eliminated using Mathlib's asymptotic analysis?"
     ],
     "crossReferences": [
-      { "proofId": "erdos-37", "relationship": "Parent problem — Erdős #37 resolves the lacunary case and provides all infrastructure (Schnirelmann density, essential components, sumsets). Problem #1146 is the open question stated at the end of #37." },
-      { "proofId": "erdos-30", "relationship": "Sidon sets (B₂ sets) also concern additive structure of sparse sets. Both ask how sparse a set can be while maintaining a strong additive property." },
-      { "proofId": "erdos-35", "relationship": "Schnirelmann density improvements for additive bases — closely related density concepts and techniques." }
+      {
+        "proofId": "erdos-37",
+        "relationship": "Parent problem — Erdős #37 resolves the lacunary case and provides all infrastructure (Schnirelmann density, essential components, sumsets). Problem #1146 is the open question stated at the end of #37."
+      },
+      {
+        "proofId": "erdos-30",
+        "relationship": "Sidon sets (B₂ sets) also concern additive structure of sparse sets. Both ask how sparse a set can be while maintaining a strong additive property."
+      },
+      {
+        "proofId": "erdos-35",
+        "relationship": "Schnirelmann density improvements for additive bases — closely related density concepts and techniques."
+      }
     ]
   }
 }

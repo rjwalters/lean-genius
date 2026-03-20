@@ -71,11 +71,33 @@
       "erdos_419_summary combining characterization, existence, and uniqueness"
     ],
     "references": [
-      { "authors": "P. Erdős, R. L. Graham, A. Ivić, C. Pomerance", "title": "On the number of divisors of n!", "year": "1996", "venue": "Analytic Number Theory: Proceedings of a Conference in Honor of Heini Halberstam", "note": "Complete solution proving the limit points are {1} ∪ {1 + 1/k}" },
-      { "authors": "P. Erdős, R. L. Graham", "title": "Old and New Problems and Results in Combinatorial Number Theory", "year": "1980", "venue": "Monographies de L'Enseignement Mathématique", "note": "Original problem statement" },
-      { "authors": "A.-M. Legendre", "title": "Essai sur la théorie des nombres", "year": "1808", "note": "Legendre's formula for p-adic valuation of factorials: vₚ(n!) = Σ⌊n/pⁱ⌋" },
-      { "authors": "M. Sawhney", "title": "Independent rediscovery of the characterization", "note": "Elegant presentation of the small/large prime decomposition argument" }
-    ]
+      {
+        "authors": "P. Erdős, R. L. Graham, A. Ivić, C. Pomerance",
+        "title": "On the number of divisors of n!",
+        "year": "1996",
+        "venue": "Analytic Number Theory: Proceedings of a Conference in Honor of Heini Halberstam",
+        "note": "Complete solution proving the limit points are {1} ∪ {1 + 1/k}"
+      },
+      {
+        "authors": "P. Erdős, R. L. Graham",
+        "title": "Old and New Problems and Results in Combinatorial Number Theory",
+        "year": "1980",
+        "venue": "Monographies de L'Enseignement Mathématique",
+        "note": "Original problem statement"
+      },
+      {
+        "authors": "A.-M. Legendre",
+        "title": "Essai sur la théorie des nombres",
+        "year": "1808",
+        "note": "Legendre's formula for p-adic valuation of factorials: vₚ(n!) = Σ⌊n/pⁱ⌋"
+      },
+      {
+        "authors": "M. Sawhney",
+        "title": "Independent rediscovery of the characterization",
+        "note": "Elegant presentation of the small/large prime decomposition argument"
+      }
+    ],
+    "axiomCount": 21
   },
   "overview": {
     "historicalContext": "Erdős Problem #419 asks about the limit points of the ratio τ((n+1)!)/τ(n!), where τ(n) counts the positive divisors of n. The factorial n! has a very regular prime factorization given by Legendre's formula (Adrien-Marie Legendre, 1808), so the ratio is controlled by the prime factorization of n+1.\n\nErdős and Graham posed this problem in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (L'Enseignement Mathématique, Geneva). They conjectured that the values 1 + 1/k for k ≥ 1 should be limit points.\n\nIn 1996, Erdős, Graham, Aleksandar Ivić, and Carl Pomerance proved the complete characterization in their paper 'On the number of divisors of n!' (Analytic Number Theory: Proceedings of a Conference in Honor of Heini Halberstam). Ivić, a Serbian mathematician known for his work on the Riemann zeta function and exponential sums, brought analytic techniques. Pomerance, one of the foremost algorithmic number theorists, contributed expertise in smooth number distribution. Together they showed the limit points are exactly {1} ∪ {1 + 1/k : k ≥ 1}.\n\nThe key insight is a small/large prime dichotomy: decompose the primes dividing n+1 into 'small' (p ≤ n^(2/3)) and 'large' (p > n^(2/3)). Small primes contribute negligibly to the ratio (their factorial valuations are enormous by Legendre's formula). At most one large prime can exist, and it determines the dominant term. When n+1 = pk for large prime p, the ratio approaches 1 + 1/k. When n+1 has only small prime factors (a 'smooth' or 'friable' number), the ratio approaches 1. The existence of infinitely many n for each case relies on Dirichlet's theorem on primes in arithmetic progressions (1837).\n\nMehtaab Sawhney later independently rediscovered the argument, presenting an elegant version of the proof that clarifies the small/large prime decomposition.\n\nThe result is notable for its topological elegance: the limit set {1} ∪ {1 + 1/k : k ≥ 1} is a countable closed subset of $\\mathbb{R}$ with a unique accumulation point at 1. It is homeomorphic to the ordinal $\\omega + 1$ with the order topology, providing a natural example of a compact countable metric space arising from number theory.",
@@ -99,14 +121,22 @@
       "Mathlib.NumberTheory.Padics.PadicVal",
       "Mathlib.Analysis.SpecificLimits.Basic"
     ],
-    "opens": ["Nat", "ArithmeticFunction"],
+    "opens": [
+      "Nat",
+      "ArithmeticFunction"
+    ],
     "namespace": "Erdos419",
     "lineCount": 252,
     "mainTheorems": [
-      "sawhney_characterization", "limit_set_properties", "erdos_419_summary"
+      "sawhney_characterization",
+      "limit_set_properties",
+      "erdos_419_summary"
     ],
     "mainDefinitions": [
-      "tau", "factorialDivisorRatio", "padicValFactorial", "limitPointSet"
+      "tau",
+      "factorialDivisorRatio",
+      "padicValFactorial",
+      "limitPointSet"
     ],
     "axiomCount": 21,
     "theoremCount": 3,

@@ -7,9 +7,15 @@
     "author": "Erdős; partial results by Erdős-Sárközy, Horváth (2007)",
     "sourceUrl": "https://erdosproblems.com/66",
     "date": "",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos66Problem.lean",
-    "tags": ["erdos", "number-theory", "additive-combinatorics", "representation-function", "conjecture"],
+    "tags": [
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "representation-function",
+      "conjecture"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 66,
@@ -46,7 +52,8 @@
       "Axiom for Erdős-Sárközy theorem on error bounds",
       "Axiom for Horváth's 2007 improvement",
       "Proof that the stronger conjecture implies the original"
-    ]
+    ],
+    "axiomCount": 2
   },
   "overview": {
     "historicalContext": "The representation function r_A(n) counts how many ways we can write n as a sum of two elements from a set A. This is a fundamental object in additive combinatorics, connected to problems like Goldbach's conjecture (where A is the primes).\n\nFor many natural sets, r_A(n) grows roughly like log(n). Erdős asked whether this growth can be EXACTLY logarithmic—whether r_A(n)/log(n) can converge to a nonzero limit.\n\nRandom constructions suggest the answer might be yes: if you choose A with probability c/√n for each n, then E[r_A(n)] ~ c²log(n). However, these constructions always have an exceptional set of density zero where the limit fails.\n\nThe challenge is eliminating this exceptional set. Erdős believed it cannot be done, conjecturing the answer is NO. The problem carries a $500 prize.",

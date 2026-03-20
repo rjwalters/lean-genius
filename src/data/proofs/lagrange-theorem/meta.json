@@ -8,16 +8,29 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Lagrange%27s_theorem_(group_theory)",
     "date": "1771",
     "status": "verified",
-    "tags": ["group-theory", "algebra", "classic", "intermediate"],
+    "tags": [
+      "group-theory",
+      "algebra",
+      "classic",
+      "intermediate"
+    ],
     "proofRepoPath": "Proofs/LagrangeTheorem.lean",
     "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
-      {"theorem": "Subgroup.card_subgroup_dvd_card", "description": "Subgroup order divides group order", "module": "Mathlib.GroupTheory.Coset"}
+      {
+        "theorem": "Subgroup.card_subgroup_dvd_card",
+        "description": "Subgroup order divides group order",
+        "module": "Mathlib.GroupTheory.Coset"
+      }
     ],
-    "originalContributions": ["Corollaries about element order", "Connection to Euler's theorem"],
+    "originalContributions": [
+      "Corollaries about element order",
+      "Connection to Euler's theorem"
+    ],
     "dateAdded": "12/26/25",
-    "wiedijkNumber": 71
+    "wiedijkNumber": 71,
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "Joseph-Louis Lagrange proved this theorem in 1771 in his *Reflexions sur la resolution algebrique des equations*, while studying permutation groups in connection with the solvability of polynomial equations by radicals. Lagrange observed that the number of 'values' (arrangements) of a rational function of the roots always divides $n!$, which is essentially the statement that subgroup orders divide the group order for symmetric groups. The theorem was not stated in the language of abstract groups (which didn't exist until the 1830s with Galois and later Cayley); Lagrange worked entirely with permutations. The abstract formulation emerged through the work of Galois (1832), Cayley (1854), and Jordan (1870). The coset-based proof — partitioning $G$ into translates $gH$ — is due to Dedekind. The theorem's converse is famously false: $A_4$ (order 12) has no subgroup of order 6, despite $6 | 12$. The Sylow theorems (1872) provide the best partial converse: subgroups of prime-power order $p^k | |G|$ always exist.",
@@ -32,14 +45,62 @@
     ]
   },
   "sections": [
-    {"id": "header", "title": "Module Header and Imports", "startLine": 1, "endLine": 55, "summary": "Documentation header explaining Lagrange's Theorem as Wiedijk #71, with historical notes on Lagrange (1771) and permutation groups, proof strategy via coset partition, and Mathlib dependencies."},
-    {"id": "main-theorem", "title": "Main Theorem", "startLine": 57, "endLine": 80, "summary": "Two formulations of Lagrange's theorem: card_subgroup_dvd_card and lagrange, both proving |H| divides |G| via Subgroup.card_subgroup_dvd_card."},
-    {"id": "index-formula", "title": "Product Formula and Cosets", "startLine": 81, "endLine": 106, "summary": "The quantitative version |G| = |H| × [G:H] via card_mul_index, plus intuitive explanation of how cosets partition G into equal-sized pieces."},
-    {"id": "corollaries", "title": "Element Order Corollaries", "startLine": 108, "endLine": 129, "summary": "Three corollaries: ord(g) divides |G| (orderOf_dvd_card), alternative statement, and g^|G| = 1 (pow_card_eq_one)."},
-    {"id": "fermat", "title": "Fermat's Little Theorem", "startLine": 130, "endLine": 153, "summary": "Derives a^(p-1) ≡ 1 (mod p) from Lagrange applied to (Z/pZ)×, connecting group theory to number theory via ZMod.card_units_eq_totient."},
-    {"id": "index-properties", "title": "Index Properties", "startLine": 154, "endLine": 181, "summary": "Properties of the subgroup index: equals card of quotient, divides group order, boundary cases (trivial subgroup has index |G|, whole group has index 1)."},
-    {"id": "prime-order", "title": "Prime Order Groups", "startLine": 182, "endLine": 198, "summary": "Groups of prime order have no non-trivial proper subgroups (prime_order_simple) and are cyclic (prime_order_cyclic via isCyclic_of_prime_card)."},
-    {"id": "significance", "title": "Significance and Verification", "startLine": 200, "endLine": 222, "summary": "Discussion of why Lagrange matters (structure constraints, counting, number theory, extensions), the false converse (A₄ counterexample), and type-checking of all exported theorems."}
+    {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Documentation header explaining Lagrange's Theorem as Wiedijk #71, with historical notes on Lagrange (1771) and permutation groups, proof strategy via coset partition, and Mathlib dependencies."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "startLine": 57,
+      "endLine": 80,
+      "summary": "Two formulations of Lagrange's theorem: card_subgroup_dvd_card and lagrange, both proving |H| divides |G| via Subgroup.card_subgroup_dvd_card."
+    },
+    {
+      "id": "index-formula",
+      "title": "Product Formula and Cosets",
+      "startLine": 81,
+      "endLine": 106,
+      "summary": "The quantitative version |G| = |H| × [G:H] via card_mul_index, plus intuitive explanation of how cosets partition G into equal-sized pieces."
+    },
+    {
+      "id": "corollaries",
+      "title": "Element Order Corollaries",
+      "startLine": 108,
+      "endLine": 129,
+      "summary": "Three corollaries: ord(g) divides |G| (orderOf_dvd_card), alternative statement, and g^|G| = 1 (pow_card_eq_one)."
+    },
+    {
+      "id": "fermat",
+      "title": "Fermat's Little Theorem",
+      "startLine": 130,
+      "endLine": 153,
+      "summary": "Derives a^(p-1) ≡ 1 (mod p) from Lagrange applied to (Z/pZ)×, connecting group theory to number theory via ZMod.card_units_eq_totient."
+    },
+    {
+      "id": "index-properties",
+      "title": "Index Properties",
+      "startLine": 154,
+      "endLine": 181,
+      "summary": "Properties of the subgroup index: equals card of quotient, divides group order, boundary cases (trivial subgroup has index |G|, whole group has index 1)."
+    },
+    {
+      "id": "prime-order",
+      "title": "Prime Order Groups",
+      "startLine": 182,
+      "endLine": 198,
+      "summary": "Groups of prime order have no non-trivial proper subgroups (prime_order_simple) and are cyclic (prime_order_cyclic via isCyclic_of_prime_card)."
+    },
+    {
+      "id": "significance",
+      "title": "Significance and Verification",
+      "startLine": 200,
+      "endLine": 222,
+      "summary": "Discussion of why Lagrange matters (structure constraints, counting, number theory, extensions), the false converse (A₄ counterexample), and type-checking of all exported theorems."
+    }
   ],
   "conclusion": {
     "summary": "This formalization verifies Lagrange's Theorem (Wiedijk #71) with the core divisibility result, the product formula, and six corollaries: element order divides group order, power-by-group-order, Fermat's little theorem, index properties, prime-order simplicity, and prime-order cyclicity.",

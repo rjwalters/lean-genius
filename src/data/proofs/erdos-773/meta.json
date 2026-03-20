@@ -7,7 +7,7 @@
     "author": "Alon-Erdős (1985), Lefmann-Thiele (1995)",
     "sourceUrl": "https://erdosproblems.com/773",
     "date": "1985",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos773Problem.lean",
     "tags": [
       "erdos",
@@ -30,7 +30,8 @@
       "f: max Sidon subset size",
       "lower_bound, upper_bound axioms",
       "landau_theorem: sums of two squares density"
-    ]
+    ],
+    "axiomCount": 6
   },
   "overview": {
     "historicalContext": "**Erdős Problem #773 (Sidon Subsets of Squares)**\n\nA Sidon set (B₂ sequence) has all pairwise sums distinct. The question asks: how large can a Sidon set be when restricted to perfect squares?\n\n**Key Results:**\n- **Alon-Erdős (1985):** Lower bound N^{2/3-o(1)} via random construction; upper bound N/(log N)^{1/4}\n- **Lefmann-Thiele (1995):** Improved lower bound to N^{2/3}\n- **Landau (1908):** Sums of two squares have density ~(log N)^{-1/2}, constraining Sidon sets of squares\n\n**Status:** OPEN - gap between N^{2/3} and N/(log N)^{1/4} remains",
