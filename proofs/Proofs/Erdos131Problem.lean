@@ -261,6 +261,33 @@ theorem pham_zakharov_chain :
   obtain ⟨ε, hε, hbound⟩ := hg N hN
   exact ⟨ε, hε, le_trans (Nat.cast_le.mpr (F_le_g N)) hbound⟩
 
+/- ## Constructive Non-Dividing Sets -/
+
+/-- Observation: Finding non-dividing sets with ≥ 3 elements is nontrivial.
+    {3,5,7} fails (3 ∣ 5+7=12), {3,7,11} fails (3 ∣ 7+11=18).
+    The difficulty illustrates why F(N) grows slowly. -/
+theorem nondividing_hard_to_find :
+    ¬IsNonDividing {3, 5, 7} := by
+  intro h
+  apply h 3 (by simp) {5, 7}
+  · intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    simp only [Finset.mem_erase, Finset.mem_insert, Finset.mem_singleton]
+    rcases hx with rfl | rfl <;> constructor <;> omega
+  · simp
+  · simp [Finset.sum_insert, Finset.sum_singleton]
+
+/- ## Bound Exponent Comparison -/
+
+/-- The upper bound exponent 1/4 is strictly less than the original conjectured 1/2. -/
+theorem quarter_lt_half : (1 : ℚ) / 4 < 1 / 2 := by norm_num
+
+/-- The lower bound exponent 1/5 (Csaba) is less than 1/4 (Pham-Zakharov upper). -/
+theorem fifth_lt_quarter : (1 : ℚ) / 5 < 1 / 4 := by norm_num
+
+/-- The gap between known bounds: 1/4 - 1/5 = 1/20. -/
+theorem polynomial_exponent_gap : (1 : ℚ) / 4 - 1 / 5 = 1 / 20 := by norm_num
+
 /- ## Summary
 
 **Problem Status: OPEN (original question resolved)**
@@ -269,11 +296,18 @@ The original question "Is F(N) > N^{1/2-o(1)}?" was answered NO by Pham-Zakharov
 who showed F(N) ≤ N^{1/4+o(1)}.
 
 **Current State:**
-- Upper bound: F(N) ≤ N^{1/4+o(1)}
-- Lower bound: F(N) > exp(c√(log N))
+- Upper bound: F(N) ≤ N^{1/4+o(1)} (Pham-Zakharov 2024)
+- Lower bound: F(N) > exp(c√(log N)) (Straus), F(N) ≫ N^{1/5} (Csaba)
 
 The gap between polynomial (N^{1/4}) and subexponential (exp(√(log N))) growth
-remains to be closed.
+remains to be closed. The polynomial exponent gap (1/4 vs 1/5) is 1/20.
+
+**Proved theorems (sorry-free):**
+- IsNonDividing, IsNonDividingAlt, IsNonAveraging definitions
+- nondividing_implies_nonaveraging
+- F monotonic, F ≤ g
+- Concrete examples: {2,3}, {4,9,25} non-dividing; {2,3,5} not non-dividing
+- Exponent comparisons: 1/4 < 1/2, 1/5 < 1/4, gap = 1/20
 -/
 
 end Erdos131

@@ -32,6 +32,7 @@ Use your judgment. If it would interest someone who follows #LeanProver or #Form
 ### Never Post
 
 - Claims of "0 axioms" or "axiom-free" when assumptions were moved into structure fields — this is restructuring, not elimination
+- **"0 sorries" without mentioning axiom count** — "0 sorries" means no unfinished proofs, but axioms are the real measure of how much is assumed. A file with 0 sorries and 40 axioms is not "fully verified" — it's fully *axiomatized*. Always pair sorry counts with axiom counts so readers can judge completeness honestly. Only use "fully verified" when BOTH are zero.
 - **Anything that implies we are proving or have proved Millennium Prize / Clay problems** — our formalizations are axiomatized scaffolding, NOT proofs. Saying "4,542 theorems across all 7 Millennium problems" sounds like we're making progress on solving them. We're not. Be explicit: "formalizations with axioms", "axiomatized", "conditional on assumptions"
 - **Raw theorem counts without context** — theorem counts include trivial lemmas, helper bounds, and axiomatized results. Don't cite them as if they represent mathematical breakthroughs
 - Enrichment batches (gallery metadata improvements)
@@ -59,7 +60,8 @@ If something doesn't fit the tiers above but you believe it would genuinely inte
 
 ### Structure
 - Lead with the result: "Proved the Intermediate Value Theorem in Lean 4..."
-- Include key details: axiom/sorry count, technique used, problem origin
+- **Always include axiom count** — this is the primary measure of how much is assumed. Sorry count alone is misleading: 0 sorries with 40 axioms is very different from 0 sorries with 0 axioms. Format: "N axioms, M sorries" or "0 axioms, 0 sorries (fully verified)"
+- Include other key details: technique used, problem origin
 - End with a link to the gallery page or PR when available
 - Use #LeanProver and #FormalMath hashtags
 
@@ -80,7 +82,7 @@ Live proof: https://lean-genius.com/proofs/intermediate-value-theorem
 
 Good:
 ```
-Aristotle (our automated proof search) just closed all 10 sorries in the motivic flag maps formalization. 1,416 lines of machine-generated proof, verified by Lean 4.
+Aristotle (our automated proof search) just closed all 10 sorries in the motivic flag maps formalization — 0 axioms, 0 sorries, fully verified. 1,416 lines of machine-generated proof.
 
 #LeanProver #FormalMath
 ```
@@ -124,7 +126,22 @@ All 7 Clay Millennium Prize problems now have Lean 4 formalizations — 4,542 th
 ```
 This sounds like we're making progress on *solving* these problems. We're not — these are axiomatized formalizations. Better version:
 ```
-Building axiomatized Lean 4 formalizations for all 7 Millennium Prize problems — definitions, known partial results, and supporting theory. A long way from proofs, but the formal scaffolding helps clarify what's known vs assumed.
+Axiomatized Lean 4 formalizations for all 7 Millennium Prize problems — definitions, known partial results, and supporting theory.
+
+Yang-Mills: 16 axioms, Navier-Stokes: 5, Poincaré: 40, Hodge: 113, Riemann: 78, BSD: 105, P vs NP: 161
+
+Lower axiom counts = more verified theory. All far from proofs.
+
+#LeanProver #FormalMath
+```
+
+Bad (0 sorries without axiom context):
+```
+Aristotle just closed all sorries in the Poincaré formalization. 0 sorries — fully checked by Lean 4.
+```
+"0 sorries" hides 40 axioms. Readers think this is verified when it's axiomatized. Better:
+```
+Aristotle closed all sorries in our Poincaré Conjecture formalization — 0 sorries, 40 axioms remaining. The axioms encode Perelman's Ricci flow machinery, which we treat as given.
 
 #LeanProver #FormalMath
 ```

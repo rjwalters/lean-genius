@@ -156,15 +156,30 @@ Follow the research skill methodology:
 
 ### Pre-Work Assessment (MANDATORY)
 
-1. **The Value Question**: "If I complete this work, will I be meaningfully closer to a complete proof?"
-2. **The Proof Strategy Question**: "How will I cover infinitely many cases?"
-3. **The Build vs Block Question**: "If infrastructure is missing, can we build it ourselves?"
+1. **The Axiom Question** (CHECK FIRST): "How many axioms does this file have? Can any be proved from Mathlib?" — Run `grep -c "^axiom " proofs/Proofs/<file>.lean`. If axiom count is high (>5), prioritize proving existing axioms over adding new content. Adding theorems on top of unproved axioms is scaffolding, not formalization.
+2. **The Value Question**: "If I complete this work, will I be meaningfully closer to a complete proof?"
+3. **The Proof Strategy Question**: "How will I cover infinitely many cases?"
+4. **The Build vs Block Question**: "If infrastructure is missing, can we build it ourselves?"
+
+### Axiom Elimination Priority
+
+**Reducing axiom counts is more valuable than adding new theorems.** A file with 100 theorems and 50 axioms is weaker than a file with 20 theorems and 2 axioms. Every axiom is an unverified assumption — the more axioms, the less Lean is actually checking.
+
+When you claim a problem with a high axiom count:
+1. List all `axiom` declarations: `grep -n "^axiom " proofs/Proofs/<file>.lean`
+2. Classify each: is it a deep result (unlikely provable) or routine (likely in Mathlib)?
+3. **Prove the routine ones** — search Mathlib, use `exact?`, `apply?`, `simp`
+4. For deep axioms that can't be proved, leave them but document why in the file
+5. Convert provable axioms to `theorem ... := by <proof>` — this is real progress
+
+**Target**: On any RICH problem, aim to eliminate at least 1 axiom per session. Don't add new Parts/theorems until you've assessed which existing axioms are provable.
 
 ### Work Categories
 
 | Decision | Criteria | Action |
 |----------|----------|--------|
-| **DEEP DIVE** | Tractable path exists | Implement proof |
+| **AXIOM HUNT** | File has >5 axioms, some look routine | Prove existing axioms from Mathlib |
+| **DEEP DIVE** | Tractable path exists, axioms are reasonable | Implement proof |
 | **BUILD** | Missing infra < 500 lines | Build infrastructure |
 | **SURVEY** | Can state but not prove yet | Document findings |
 | **BLOCKED** | Needs > 1000 lines foundational work | Document blocker |
@@ -305,11 +320,12 @@ Return to Step 1 to claim the next problem.
 
 ### What Counts as Progress
 
-1. **Structural theorem** - One reduction > 1000 cases
-2. **Decidable instance** - Subsumes all future verification
-3. **Lemma on critical path** - Actual progress toward goal
-4. **Infrastructure** - Enables future proofs
-5. **Documented insights** - Understanding that helps next session
+1. **Axiom elimination** - Proving an existing axiom from Mathlib (highest value)
+2. **Structural theorem** - One reduction > 1000 cases
+3. **Decidable instance** - Subsumes all future verification
+4. **Lemma on critical path** - Actual progress toward goal
+5. **Infrastructure** - Enables future proofs
+6. **Documented insights** - Understanding that helps next session
 
 ### What Does NOT Count
 
@@ -317,6 +333,7 @@ Return to Step 1 to claim the next problem.
 - Busywork (50 more test cases)
 - Repeating failed approaches
 - Premature blocking without assessing buildability
+- **Adding new theorems/parts to files with high axiom counts** — prove existing axioms first. Adding Part CXLV when there are 50 unproved axioms is fake formalization.
 
 ## Session Report Format
 
