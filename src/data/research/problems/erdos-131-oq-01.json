@@ -12,38 +12,51 @@
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-03-20",
-    "iteration": 1,
-    "focus": "Formalization with definitions, implications, examples, bound comparisons"
+    "iteration": 2,
+    "focus": "Prove straus_constant_value numerical bound",
+    "nextAction": "6 sorries remain (all deep published results, not provable from Mathlib)",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Erdős 131 formalized with core definitions (IsNonDividing, IsNonAveraging, F(N)), proved implications (nondividing→nonaveraging, F≤g), concrete examples, and exponent comparisons. 6 sorries for known results not in Mathlib.",
+    "progressSummary": "PROGRESS: Proved straus_constant_value (√(2/log 2) ∈ (1.6, 1.8)) from Taylor series bounds on exp. Used sum_le_exp_of_nonneg for lower bound and exp_bound for upper bound on exp. Sorries reduced from 7 to 6.",
     "builtItems": [
-      "IsNonDividing, IsNonDividingAlt, IsNonAveraging definitions",
-      "nondividingAlt_implies_nondividing proved",
-      "nondividing_not_iff_alt: {2,4} distinguishes the two definitions",
-      "nondividing_implies_nonaveraging proved",
-      "F(N) defined, F_monotonic proved",
-      "F_le_g proved (non-dividing ≤ non-averaging function)",
-      "Concrete examples: {2,3} non-dividing, {2,3,5} NOT non-dividing, {3,5,7} NOT non-dividing",
-      "Exponent comparisons: 1/4 < 1/2, 1/5 < 1/4, gap = 1/20"
+      "exp_three_fourths_gt_two: exp(3/4) > 2 via Taylor sum",
+      "log_two_lt: log 2 < 3/4",
+      "exp_two_thirds_lt_two: exp(2/3) < 2 via exp_bound",
+      "log_two_gt: log 2 > 2/3",
+      "straus_constant_value: √(2/log 2) ∈ (1.6, 1.8) (proved)"
     ],
     "insights": [
       "Non-dividing sets are strictly contained in non-averaging sets (F ≤ g)",
       "Pham-Zakharov 2024: upper bound N^{1/4+o(1)} via non-averaging connection",
       "Finding non-dividing sets of size ≥ 3 is nontrivial: {3,5,7} fails because 3|12",
       "The polynomial exponent gap between upper (1/4) and lower (1/5) bounds is 1/20",
-      "Original conjecture F(N) < (log N)^O(1) was disproved by Straus's subexponential lower bound"
+      "Original conjecture F(N) < (log N)^O(1) was disproved by Straus's subexponential lower bound",
+      "Proof strategy: bound log 2 via exp bounds, then convert to sqrt bounds via lt_sqrt/sqrt_lt API",
+      "Real.sum_le_exp_of_nonneg gives exp lower bounds from Taylor partial sums",
+      "Real.exp_bound gives |exp(x) - partial_sum| ≤ error for |x| ≤ 1"
     ],
     "nextSteps": [
-      "Prove ELRSS upper bound (requires combinatorial argument)",
-      "Construct explicit large non-dividing sets for lower bounds",
-      "Connect to Erdős Problem #186 (non-averaging sets) more deeply"
+      "6 remaining sorries are deep published results (ELRSS, Pham-Zakharov, Csaba, Straus bounds) - not provable from current Mathlib"
     ]
   },
-  "tags": ["erdos", "number-theory", "combinatorics", "non-dividing-sets"],
+  "tags": [
+    "erdos",
+    "number-theory",
+    "combinatorics",
+    "non-dividing-sets"
+  ],
   "started": "2026-03-20T14:00:00Z",
-  "lastUpdate": "2026-03-20T14:30:00Z",
+  "lastUpdate": "2026-03-20T15:30:00.000Z",
   "significance": 6,
   "tractability": 4,
-  "leanFiles": [{"lineCount": 310}]
+  "leanFiles": [
+    {
+      "lineCount": 310
+    }
+  ]
 }

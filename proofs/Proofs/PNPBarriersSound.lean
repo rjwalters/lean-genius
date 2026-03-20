@@ -36,7 +36,7 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (73 axioms)
+## Axiom Summary (155 axioms, reduced from 161)
 Core model (8):
 - 3 structural: Φ_countably_many, Φ_negate, Φ_pair_project_first
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
@@ -79,9 +79,12 @@ Barrington (3): barrington_theorem, width4_subset_width5, width4_subset_ACC0
 Zero-knowledge (8): BPP_subset_SZK, SZK_subset_AM_inter_coAM, SZK_closed_complement,
     SZK_subset_CZK, CZK_subset_IP, GI_in_SZK, owf_implies_NP_subset_CZK,
     owf_implies_IP_subset_CZK
-Reingold (8): L_subset_SL, L_subset_RL, SL_subset_NL, RL_subset_NL,
-    USTCON_in_NL, reingold_USTCON_in_L, reingold_SL_eq_L, reingold_RL_eq_L
-UGC (3): ugc_maxcut_optimal, ugc_vertex_cover_optimal, raghavendra_CSP_dichotomy
+Reingold (3): reingold_USTCON_in_L, reingold_SL_eq_L, reingold_RL_eq_L
+    Now theorems: L_subset_SL (from SL=L), L_subset_RL (from RL=L),
+    SL_subset_NL (from SL=L+L⊆NL), RL_subset_NL (from RL=L+L⊆NL),
+    USTCON_in_NL (from USTCON∈L+L⊆NL)
+UGC (2): ugc_maxcut_optimal, ugc_vertex_cover_optimal
+    Now theorems: raghavendra_CSP_dichotomy (∃ Prop, Prop is trivially True)
 Eliminated axioms (9→theorems/opaques):
 - P_subset_PP → theorem (via P ⊆ BPP ⊆ BQP ⊆ PP)
 - P_subset_P_poly → theorem (program e is a constant-size "circuit")
@@ -6506,21 +6509,6 @@ opaque SL : Set (ℕ → Bool)
     logspace Turing machines with one-sided error. -/
 opaque RL : Set (ℕ → Bool)
 
-/-- L ⊆ SL: deterministic logspace is trivially symmetric. -/
-axiom L_subset_SL : L ⊆ SL
-
-/-- L ⊆ RL: deterministic logspace is trivially randomized. -/
-axiom L_subset_RL : L ⊆ RL
-
-/-- SL ⊆ NL: symmetric nondeterminism is a special case of nondeterminism. -/
-axiom SL_subset_NL : SL ⊆ NL
-
-/-- RL ⊆ NL: randomized logspace is contained in nondeterministic logspace. -/
-axiom RL_subset_NL : RL ⊆ NL
-
-/-- USTCON ∈ NL: nondeterministically guess a path from s to t. -/
-axiom USTCON_in_NL : USTCON ∈ NL
-
 /-- **Reingold's Theorem** (2005): USTCON ∈ L.
     Undirected s-t connectivity can be decided in deterministic logspace.
     Proof uses the zig-zag product to construct explicit expander graphs
@@ -6539,6 +6527,26 @@ axiom reingold_SL_eq_L : SL = L
     Nisan's pseudorandom generator for logspace, combined with Reingold's
     explicit expanders, gives RL ⊆ L. -/
 axiom reingold_RL_eq_L : RL = L
+
+/-- **PROVED: L ⊆ SL** from Reingold's SL = L. Was axiom. -/
+theorem L_subset_SL : L ⊆ SL :=
+  reingold_SL_eq_L ▸ Set.Subset.refl L
+
+/-- **PROVED: L ⊆ RL** from Reingold's RL = L. Was axiom. -/
+theorem L_subset_RL : L ⊆ RL :=
+  reingold_RL_eq_L ▸ Set.Subset.refl L
+
+/-- **PROVED: SL ⊆ NL** from SL = L and L ⊆ NL. Was axiom. -/
+theorem SL_subset_NL : SL ⊆ NL :=
+  reingold_SL_eq_L ▸ L_subset_NL
+
+/-- **PROVED: RL ⊆ NL** from RL = L and L ⊆ NL. Was axiom. -/
+theorem RL_subset_NL : RL ⊆ NL :=
+  reingold_RL_eq_L ▸ L_subset_NL
+
+/-- **PROVED: USTCON ∈ NL** from USTCON ∈ L and L ⊆ NL. Was axiom. -/
+theorem USTCON_in_NL : USTCON ∈ NL :=
+  L_subset_NL reingold_USTCON_in_L
 
 /-- USTCON ∈ P: follows from USTCON ∈ L ⊆ NL ⊆ P. -/
 theorem USTCON_in_P : USTCON ∈ P := by
@@ -6616,15 +6624,15 @@ axiom ugc_maxcut_optimal :
 axiom ugc_vertex_cover_optimal :
   UGC → P ≠ NP → ∀ r ∈ VC_approxRatio, r ≥ 2
 
-/-- **Raghavendra's Theorem (2008)**: Assuming the UGC, for every
-    constraint satisfaction problem (CSP), the basic SDP relaxation
-    achieves the optimal approximation ratio. This gives a single
-    algorithm that is universally optimal for all CSPs (under UGC).
-
-    We state this abstractly: UGC implies a sharp computational
-    threshold for CSP approximability. -/
-axiom raghavendra_CSP_dichotomy :
-  UGC → ∃ (sharp_threshold : Prop), sharp_threshold
+/-- **PROVED: Raghavendra's Theorem (2008)** (abstract formulation).
+    Assuming the UGC, for every CSP, the basic SDP relaxation achieves
+    the optimal approximation ratio. Was axiom; the abstract formulation
+    `UGC → ∃ (sharp_threshold : Prop), sharp_threshold` is trivially
+    provable since `⟨True, trivial⟩` witnesses the existential.
+    The real content is in `ugc_maxcut_optimal` and `ugc_vertex_cover_optimal`. -/
+theorem raghavendra_CSP_dichotomy :
+  UGC → ∃ (sharp_threshold : Prop), sharp_threshold :=
+  fun _ => ⟨True, trivial⟩
 
 /-- The UGC strengthens the PCP theorem: PCP gives NP-hardness of
     approximation, UGC gives *optimal* NP-hardness of approximation.

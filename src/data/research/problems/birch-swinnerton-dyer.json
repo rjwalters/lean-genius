@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Parts LXVII-LXX (totally real BSD, Nekovář Selmer complexes, anticyclotomic Iwasawa theory, BSD algorithms). 8 new axioms, 9 new structures, 8 new theorems. Meta.json sections fully updated.",
+    "progressSummary": "PROGRESS: Eliminated 2 axioms (102→100): bhargava_shankar_average_rank proved from average_rank_bounded, bsd_positive_density proved from rank-0/rank-1 witnesses + BSD_rank_zero_axiom.",
     "builtItems": [
       "28 True→real conversions in BirchSwinnertonDyer.lean (Parts VIII-LV)",
       "2 proved theorems: parity_conjecture from axiom, bsd_current_status from computation",
@@ -129,7 +129,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.886Z",
-  "lastUpdate": "2026-03-20T08:30:00Z",
+  "lastUpdate": "2026-03-20T15:30:00.000Z",
   "completed": "2026-02-11T05:41:00.786Z",
   "significance": 10,
   "tractability": 1

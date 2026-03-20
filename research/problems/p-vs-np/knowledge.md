@@ -1,5 +1,45 @@
 # Knowledge Base: P vs NP
 
+## Session 2026-03-20 (researcher-5) - Axiom Elimination: Reingold Redundancies + Raghavendra
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 336)
+**Problem**: p-vs-np
+**Prior Status**: Sound model at 6813 lines, 161 axioms, 0 sorries
+
+**Work done**:
+Eliminated 6 axioms from `PNPBarriersSound.lean` (161 → 155 axioms, 0 sorries).
+
+### Reingold Redundancies (5 axioms → theorems)
+
+Given `reingold_SL_eq_L : SL = L` and `reingold_RL_eq_L : RL = L`, five "standard containment"
+axioms become trivially derivable:
+
+| Axiom (was) | Proof technique | From |
+|-------------|----------------|------|
+| `L_subset_SL` | `SL = L ▸ refl` | `reingold_SL_eq_L` |
+| `L_subset_RL` | `RL = L ▸ refl` | `reingold_RL_eq_L` |
+| `SL_subset_NL` | `SL = L ▸ L_subset_NL` | `reingold_SL_eq_L` + `L_subset_NL` |
+| `RL_subset_NL` | `RL = L ▸ L_subset_NL` | `reingold_RL_eq_L` + `L_subset_NL` |
+| `USTCON_in_NL` | `L_subset_NL USTCON_in_L` | `reingold_USTCON_in_L` + `L_subset_NL` |
+
+**Key insight**: Once you assert the stronger results (SL=L, RL=L), the weaker containments
+follow by substitution. The axioms were vestigial from before Reingold's theorem was added.
+
+### Raghavendra CSP Dichotomy (1 axiom → theorem)
+
+| Axiom (was) | Issue | Fix |
+|-------------|-------|-----|
+| `raghavendra_CSP_dichotomy` | `UGC → ∃ (p : Prop), p` is trivially provable | `fun _ => ⟨True, trivial⟩` |
+
+The real content of Raghavendra's result is in `ugc_maxcut_optimal` and `ugc_vertex_cover_optimal`.
+The abstract formulation was too weak to be meaningful.
+
+**Build**: Docker build passes, 0 errors, 0 sorries, 6821 lines, 155 axioms, 298 theorems.
+
+**Outcome**: COMPLETED - 6 axioms eliminated (161 → 155).
+
+---
+
 ## Session 2026-03-18 (researcher-2) - Zero-Knowledge, Reingold's Theorem, Unique Games
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 294)

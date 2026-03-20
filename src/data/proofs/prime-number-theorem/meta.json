@@ -122,5 +122,27 @@
       "What is the true size of the error term |π(x) − Li(x)|? (Cramér's conjecture: O(√x · ln²x))",
       "Can PNT be proved elementarily with error bounds matching the analytic proof?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "strengthens",
+      "description": "The PNT provides the quantitative density π(x) ~ x/ln(x) that strengthens Euclid's qualitative result that primes are infinite."
+    },
+    {
+      "targetId": "riemann-hypothesis",
+      "relationship": "related",
+      "description": "The Riemann Hypothesis implies the strongest known error term in the PNT: π(x) = Li(x) + O(√x log x)."
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "Both concern the distribution of primes. The Basel problem ζ(2) = π²/6 is an early evaluation of the Riemann zeta function whose zeros control prime distribution."
+    }
+  ],
+  "relatedProofs": [
+    "infinitude-primes",
+    "riemann-hypothesis",
+    "basel-problem"
+  ]
 }

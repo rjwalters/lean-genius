@@ -21,7 +21,7 @@
     "erdosNumber": 247,
     "erdosUrl": "https://erdosproblems.com/247",
     "erdosProblemStatus": "partially-solved",
-    "axiomCount": 3
+    "axiomCount": 1
   },
   "overview": {
     "historicalContext": "Erdős posed this problem about transcendental numbers in the context of lacunary series - infinite sums where the terms become increasingly sparse. The study of transcendental numbers began with Liouville (1844) who constructed the first explicit examples. Hermite (1873) proved e is transcendental, and Lindemann (1882) proved π is transcendental. Erdős's problem asks about a family of numbers defined by their binary expansions: when n_k grows quickly, the number Σ 1/2^{n_k} has 1s at increasingly sparse positions in its binary expansion. In 1975, Erdős proved transcendence under the strong condition that n_k grows faster than any polynomial. The general conjecture (just faster-than-linear growth) remains open and was described by Erdős in 1988 as 'hopeless at present'.",
@@ -68,12 +68,12 @@
       "id": "examples",
       "title": "Examples and Corollaries",
       "startLine": 83,
-      "endLine": 109,
-      "summary": "Factorial and exponential sequences yield transcendental sums"
+      "endLine": 152,
+      "summary": "Growth rate proofs and corollaries: factorial and exponential sequences yield transcendental sums"
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #247 on the transcendence of lacunary sums. Erdős's 1975 theorem (axiomatized here) establishes transcendence under superpolynomial growth. The general conjecture for just-faster-than-linear growth remains one of the tantalizing open problems in transcendental number theory.",
+    "summary": "This formalization captures Erdős Problem #247 on the transcendence of lacunary sums. Erdős's 1975 theorem (axiomatized) establishes transcendence under superpolynomial growth. The growth rate lemmas (factorial and exponential dominate any polynomial) are fully proved. The general conjecture for just-faster-than-linear growth remains one of the tantalizing open problems in transcendental number theory.",
     "implications": "If the full conjecture were proved, it would establish a clean characterization: any infinite binary number with 1s growing faster than linearly sparse must be transcendental. This would connect the arithmetic complexity (algebraic vs transcendental) to the combinatorial sparseness of the binary representation.",
     "openQuestions": [
       "Is Σ 1/2^{k²} transcendental? (The simplest open case)",

@@ -118,5 +118,15 @@
       "The not-a-perfect-power lemmas use case analysis bounded by the target value. Could a more uniform approach (e.g., via prime factorization) scale to larger values?",
       "What about transcendence? Numbers like pi and e are not just irrational but transcendental - they satisfy no polynomial equation over Q."
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "irrationality-sqrt2",
+      "relationship": "generalizes",
+      "description": "Generalizes the irrationality of √2 to nth roots: ⁿ√k is irrational unless k is a perfect nth power."
+    }
+  ],
+  "relatedProofs": [
+    "irrationality-sqrt2"
+  ]
 }

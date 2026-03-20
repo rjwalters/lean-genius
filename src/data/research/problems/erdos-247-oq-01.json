@@ -1,0 +1,76 @@
+{
+  "slug": "erdos-247-oq-01",
+  "title": "Transcendence of Lacunary Sum 1/2^(k^2)",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Is sum(k=1..inf) 1/2^(k^2) transcendental? More generally, for n_k with lim sup n_k/k = inf, is sum 1/2^(n_k) transcendental?",
+    "plain": "Erdos 247: Is the sum 1/2 + 1/16 + 1/512 + 1/65536 + ... transcendental?",
+    "whyMatters": [
+      "Connects to Liouville-type approximation theory",
+      "Gap between weak and strong growth conditions for lacunary sums"
+    ]
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-20T15:00:00.000Z",
+    "iteration": 2,
+    "focus": "Axiom elimination: prove growth lemmas",
+    "blockers": [
+      "Transcendence of lacunary sums under weak growth is genuinely open"
+    ],
+    "nextAction": "Only erdos_transcendence_strong axiom remains (deep result, not provable)",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Eliminated 2 of 3 axioms. Proved pow2_strong_growth (2^k dominates any polynomial) using explicit witness k=C*(t+1)^(t+1) and chain of inequalities. Proved factorial_strong_growth derived from pow2_strong_growth + (k+1)! >= 2^k. Only erdos_transcendence_strong remains (deep 1975 result, not provable from Mathlib).",
+    "builtItems": [
+      "pow2_ge_succ: n+1 ≤ 2^n (helper lemma)",
+      "factorial_ge_pow2: 2^k ≤ (k+1)! (helper lemma)",
+      "pow2_strong_growth: theorem (was axiom)",
+      "factorial_strong_growth: theorem (was axiom)"
+    ],
+    "insights": [
+      "Parent file has clean infrastructure: lacunarySum, HasWeakGrowth, HasStrongGrowth, squareSeq",
+      "erdos_transcendence_strong (axiom): deep transcendence result from Erdos 1975 - not provable from Mathlib",
+      "factorial_strong_growth (axiom): PROVABLE - factorial dominates any polynomial",
+      "pow2_strong_growth (axiom): PROVABLE - 2^k dominates any polynomial",
+      "The open question is specifically about n_k = k^2 (quadratic growth) - between linear and superpolynomial",
+      "Proof strategy for pow2_strong_growth: witness k = C*(t+1)^(t+1), chain 2^k ≥ (n+1)^(t+1) > C*(t+1)^t * n^t = C*k^t where n = C*(t+1)^t",
+      "factorial_strong_growth follows elegantly from pow2_strong_growth + factorial_ge_pow2",
+      "gcongr tactic handles monotonicity arguments cleanly in Lean 4"
+    ],
+    "mathlibGaps": [
+      "Transcendence theory for lacunary series"
+    ],
+    "nextSteps": [
+      "erdos_transcendence_strong is the only remaining axiom - needs Liouville approximation theory not in Mathlib"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "transcendence",
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-247"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://erdosproblems.com/247"
+    ],
+    "mathlib": []
+  },
+  "started": "2026-03-20T14:00:00.000Z",
+  "lastUpdate": "2026-03-20T15:00:00.000Z",
+  "significance": 8,
+  "tractability": 3
+}
