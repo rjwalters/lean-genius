@@ -16,20 +16,20 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-03-19T22:00:00.000Z",
-    "iteration": 3,
-    "focus": "Axiom elimination: charpoly_eigenvalue_data remains",
+    "phase": "OBSERVE",
+    "since": "2026-03-20T10:00:00.000Z",
+    "iteration": 4,
+    "focus": "Axiom refined: charpoly_eigenvalue_data. Proved k=2 from eigenvalue structure. Added J²=nJ, tr(J)=n, tr(A²)=nk.",
     "blockers": [],
-    "nextAction": "Prove k-1 is a perfect square via charpoly/module theory",
+    "nextAction": "Eliminate charpoly_eigenvalue_data via Mathlib charpoly/minpoly API",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 2,
-      "approachesTried": 2
+      "total": 4,
+      "currentApproach": 3,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated sorry (was in spectral_regular_friendship_proved). Refined monolithic axiom into charpoly_eigenvalue_data (eigenvalue multiplicities). Proved k=2 from axiom via divisibility arithmetic. Added tr(A²)=nk and tr(J)=n. File: 821 lines, 0 sorries, 1 axiom.",
+    "progressSummary": "PROGRESS: Refined axiom from monolithic spectral_regular_friendship to structured charpoly_eigenvalue_data. Proved k=2 from eigenvalue data via s|k, s|s²+1, dvd_sq_add_one_imp_one. Added onesMatrix_sq (J²=nJ), trace_onesMatrix (tr(J)=n), trace_adjMatrix_sq (tr(A²)=nk). File: 863 lines, 0 sorries, 1 axiom.",
     "builtItems": [
       "Lean formalization complete",
       "Part VIII: Adjacency Matrix Infrastructure — adjMatrix_trace_zero PROVED (tr(A)=0 for simple graph), imports for SimpleGraph.AdjMatrix and Matrix.Trace verified",
@@ -42,15 +42,13 @@
       "adjMatrix_mulVec_ones: A·𝟙 = k (eigenvector equation, 0 sorries)",
       "adjMatrix_mul_ones: AJ = kJ (0 sorries)",
       "adjMatrix_functional_eq: (A-kI)(A²-(k-1)I) = 0 (0 sorries)",
-      "onesMatrix_sq: J² = nJ (fully proved)",
-      "friendship_k_even: k is even in k-regular friendship graph (fully proved)",
-      "friendship_even_square_forces_two: k-1=s² + s|s²+1 → k=2 (fully proved)",
-      "spectral_regular_friendship_proved: k=2 (1 sorry: k-1 is perfect square)",
-      "charpoly_eigenvalue_data axiom: refined eigenvalue structure (replaces monolithic spectral axiom)",
-      "spectral_regular_friendship PROVED from charpoly_eigenvalue_data via s|k, s|s²+1, s=1",
-      "spectral_regular_friendship_proved: sorry ELIMINATED using eigenvalue axiom",
-      "trace_onesMatrix: tr(J) = n (proved)",
-      "trace_adjMatrix_sq: tr(A²) = nk (proved, from adjMatrix_mul_self_apply_self)"
+      "onesMatrix_sq: J²=nJ (fully proved)",
+      "trace_onesMatrix: tr(J)=n (fully proved)",
+      "trace_adjMatrix_sq: tr(A²)=nk (fully proved)",
+      "trace_adjMatrix_sq_via_identity: tr(A²) = (k-1)n+n (proved)",
+      "nsmul_eq_natCast_mul: n•a = ↑n*a helper lemma (proved)",
+      "charpoly_eigenvalue_data: refined axiom (replaces spectral_regular_friendship)",
+      "spectral_regular_friendship: NOW A THEOREM from charpoly_eigenvalue_data"
     ],
     "insights": [
       "Proof verified: 0 sorries via grep",
@@ -70,13 +68,9 @@
       "AJ = kJ proved: row sums of adjacency matrix = k for k-regular",
       "(A-kI)(A²-(k-1)I) = 0 functional equation: A satisfies degree-3 annihilating polynomial",
       "Characteristic polynomial approach identified: avoids full spectral theorem, uses charpoly factorization + Gauss lemma instead",
-      "k must be even: n=k(k-1)+1 is always odd, handshaking gives 2|kn, so 2|k",
-      "Removed old broken Parts XI-XII (Nat.dvd_sub, Nat.eq_one_of_self_mul_self_dvd dont exist)",
-      "Fixed adjMatrix_mul_ones: k*1 vs k type mismatch after simp",
-      "The spectral step reduces to: k-1 is a perfect square. This requires the structure theorem for Q[X]-modules (irred factors of charpoly divide minpoly)",
-      "Eigenvalue axiom decomposition: single axiom ∃(s,mp,mm) with k-1=s², mp+mm+1=n, k+(mp-mm)s=0 suffices for full proof",
-      "Key algebra: from trace constraint (mm-mp)s=k and k=s²+1, s|k implies s|s²+1, so s=1 by dvd_sq_add_one_imp_one",
-      "Elimination path: Matrix.IsHermitian → eigenvalue structure → charpoly factors over ℚ → integrality forces k-1 perfect square"
+      "Axiom refinement: spectral_regular_friendship (k=2 directly) replaced by charpoly_eigenvalue_data (eigenvalue structure) which is closer to what Mathlib can prove",
+      "nsmul and Nat.cast are distinct in Lean 4: n•(1:ℤ) needs explicit lemma to equal ↑n",
+      "Elimination path fully mapped: minpoly.dvd → irreducibility of X²-(k-1) → charpoly factorization → trace coefficient → eigenvalue existence contradiction"
     ],
     "mathlibGaps": [
       "Full spectral theorem for real symmetric matrices in a form that gives integer eigenvalue multiplicities",
@@ -84,10 +78,11 @@
       "Connection between Matrix.trace and sum of eigenvalues for SimpleGraph.adjMatrix"
     ],
     "nextSteps": [
-      "Prove charpoly_eigenvalue_data from Mathlib's Matrix.IsHermitian.eigenvalues",
-      "Connect adjMatrix_functional_eq to minpoly divisibility over ℚ",
-      "Show X²-(k-1) irreducible over ℚ when k-1 not perfect square",
-      "Factor charpoly of adjacency matrix into linear factors over ℝ"
+      "Prove eigenspace for k is 1-dimensional (Jv=nv forces v∝𝟏)",
+      "Import Matrix.charpoly and prove minpoly divides (X-k)(X²-(k-1))",
+      "Show charpoly ∈ ℤ[X] and X²-(k-1) irreducible when k-1 not square",
+      "Connect trace_eq_neg_charpoly_coeff with eigenvalue structure",
+      "Complete spectral axiom elimination via characteristic polynomial"
     ],
     "markdown": "# Knowledge Base: friendship-theorem-oq-01\n\nSpectral proof of Friendship Theorem via Mathlib linear algebra.\n\n---\n\n## Problem Understanding\n\nThe Friendship Theorem (Erdos-Renyi-Sos, 1966): In any finite simple graph where\nevery pair of distinct vertices has exactly one common neighbor, there exists a\nvertex adjacent to all other vertices (a \"universal friend\" or \"politician\").\n\nThe spectral proof has two main components:\n1. **Regularity**: No universal vertex implies the graph is regular. Requires\n   spectral/algebraic methods — no clean combinatorial proof known.\n2. **Spectral contradiction**: A k-regular friendship graph satisfies A^2 = (k-1)I + J.\n   Eigenvalue analysis shows k must equal 2, leaving only the triangle.\n\n---\n\n## Current File State\n\n**FriendshipTheoremOQ01.lean**: 0 sorries, 1 axiom\n\n### Proved Results (18 lemmas/theorems)\n\n| Part | Result | Description |\n|------|--------|-------------|\n| I | `ucn`, `ucn_spec` | UCN extraction and singleton characterization |\n| I | `ucn_adj_left`, `ucn_adj_right` | UCN is adjacent to both vertices |\n| I | `ucn_unique` | Any common neighbor equals UCN |\n| I-B | `ucn_ne_left`, `ucn_ne_right` | UCN ≠ u and UCN ≠ v |\n| I-B | `friendship_separation` | For adj u,v: ucn(x,v) = u for all x ∈ N(u)\\{v} |\n| I-B | `ucn_involutive` | ucn(u, ucn(u,v)) = v (partner involution) |\n| I-B | `ucn_unique_in_neighborhood` | Partner is unique neighbor within N(u) |\n| II | `common_neighbor_finset_card` | |N(u) ∩ N(v)| = 1 (A² off-diagonal) |\n| III | `counting_disjoint` | Partition fibers are pairwise disjoint |\n| III | `counting_cover` | Partition fibers cover V \\ {u} |\n| III | `counting_identity` | n-1 = Σ_{v∈N(u)} (deg(v)-1) |\n| IV | `regular_friendship_card` | n = k(k-1)+1 for k-regular |\n| V | `dvd_sq_add_one_imp_one` | s | s²+1 → s = 1 |\n| VI | `regular_friendship_is_triangle` | k-regular friendship → n = 3 |\n| VI | `regular_friendship_has_universal` | k-regular friendship → universal vertex |\n\n### Single Axiom\n\n`spectral_regular_friendship`: In a k-regular friendship graph with k ≥ 2, k = 2.\n\n---\n\n## Insights\n\n### Separation Lemma (Session 2)\nFor adjacent u, v: ucn(x, v) = u for ALL x ∈ N(u) \\ {v}.\nNeighborhoods of adjacent vertices are completely separated.\n\n### Partner Involution (Session 2)\nv ↦ ucn(u, v) is a fixed-point-free involution on N(u).\nConsequence: deg(u) is always even in a friendship graph.\n\n### Adjacent Same Degree is FALSE (Session 2)\nWindmill W₂: center deg=4, petals deg=2. Both adjacent.\n\"No universal → regular\" requires algebraic methods.\n\n### Matrix Identity A^2 = (k-1)I + J\n- (A^2)_{ij} = common neighbor count = 1 (off-diag) or k (diag)\n- Eigenvalues: k and ±sqrt(k-1)\n- trace(A) = 0 forces k-1 to be a perfect square, then s|s²+1→s=1→k=2\n\n---\n\n## Dead Ends\n\n- **Bijection N(u) → N(v)**: Map x ↦ ucn(x,v) sends ALL of N(u)\\{v} to u.\n  Not injective for deg(u) > 2. Cannot prove adjacent same degree this way.\n- **Counting identity alone**: Consistent with any degree sequence.\n\n---\n\n## Remaining Work\n\nEliminate the spectral axiom via:\n1. Adjacency matrix for SimpleGraph (in Mathlib)\n2. A² = (k-1)I + J as matrix equation\n3. Eigenvalue decomposition (in Mathlib for real symmetric)\n4. Trace = sum of eigenvalues → integrality constraint\n5. Application of dvd_sq_add_one_imp_one (proved)\n"
   },
@@ -104,7 +99,7 @@
     "mathlib": []
   },
   "started": "2026-03-15T12:11:41.208Z",
-  "lastUpdate": "2026-03-19T23:00:00.000Z",
+  "lastUpdate": "2026-03-18T05:02:47.339Z",
   "significance": 7,
   "tractability": 6
 }
