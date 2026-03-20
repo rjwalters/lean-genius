@@ -22,13 +22,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved straus_constant_value (√(2/log 2) ∈ (1.6, 1.8)) from Taylor series bounds on exp. Used sum_le_exp_of_nonneg for lower bound and exp_bound for upper bound on exp. Sorries reduced from 7 to 6.",
+    "progressSummary": "PROGRESS: Added sorry-free structural lemma (one_not_in_large_nondividing) and 3-element constructive example ({2,4,5} is non-dividing, proving F(5)≥3). 6 sorries remain (all deep published results).",
     "builtItems": [
       "exp_three_fourths_gt_two: exp(3/4) > 2 via Taylor sum",
       "log_two_lt: log 2 < 3/4",
       "exp_two_thirds_lt_two: exp(2/3) < 2 via exp_bound",
       "log_two_gt: log 2 > 2/3",
-      "straus_constant_value: √(2/log 2) ∈ (1.6, 1.8) (proved)"
+      "straus_constant_value: √(2/log 2) ∈ (1.6, 1.8) (proved)",
+      "one_not_in_large_nondividing: 1 ∈ A ∧ |A| ≥ 3 → ¬IsNonDividing A (sorry-free)",
+      "two_four_five_nondividing: {2,4,5} is non-dividing (sorry-free, F(5)≥3)",
+      "finset_eq_of_subset_of_card_two: helper for subset-card proofs"
     ],
     "insights": [
       "Non-dividing sets are strictly contained in non-averaging sets (F ≤ g)",
@@ -38,7 +41,10 @@
       "Original conjecture F(N) < (log N)^O(1) was disproved by Straus's subexponential lower bound",
       "Proof strategy: bound log 2 via exp bounds, then convert to sqrt bounds via lt_sqrt/sqrt_lt API",
       "Real.sum_le_exp_of_nonneg gives exp lower bounds from Taylor partial sums",
-      "Real.exp_bound gives |exp(x) - partial_sum| ≤ error for |x| ≤ 1"
+      "Real.exp_bound gives |exp(x) - partial_sum| ≤ error for |x| ≤ 1",
+      "1 cannot be in any non-dividing set of size ≥ 3 (1 divides everything, one-line proof)",
+      "{2,4,5} is a clean 3-element non-dividing set: 2∤9, 4∤7, 5∤6",
+      "Finset.eq_of_subset_of_card_le is the key Mathlib lemma for showing S = erase set from cardinality"
     ],
     "nextSteps": [
       "6 remaining sorries are deep published results (ELRSS, Pham-Zakharov, Csaba, Straus bounds) - not provable from current Mathlib"
@@ -51,7 +57,7 @@
     "non-dividing-sets"
   ],
   "started": "2026-03-20T14:00:00Z",
-  "lastUpdate": "2026-03-20T15:30:00.000Z",
+  "lastUpdate": "2026-03-20T19:00:00.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
