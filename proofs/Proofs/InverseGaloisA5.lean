@@ -1516,6 +1516,13 @@ theorem eval_derivative_at_root_of_factor {K : Type*} [Field K]
 /-- q mapped to its splitting field splits as ∏ (X - rootEnum i). -/
 theorem q_SF_eq_prod_linear :
     q_SF = ∏ i : Fin 5, (X - C (rootEnum i)) := by
+  -- Uses: C_leadingCoeff_mul_prod_multiset_X_sub_C (for q_SF with roots.card = 5)
+  -- Then: convert Multiset.prod to Finset.prod via rootSet ≃ Fin 5
+  -- Key ingredients:
+  --   q_monic.map: q_SF is monic (lc = 1)
+  --   SplittingField.splits: q_SF splits
+  --   q_rootSet_card: rootSet has card 5
+  --   rootEnum defined via Fintype.equivOfCardEq on rootSet ≃ Fin 5
   sorry
 
 -- Step D: Derivative at rootEnum i gives the product of root differences
