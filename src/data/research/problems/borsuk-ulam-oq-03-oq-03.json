@@ -1,8 +1,8 @@
 {
   "slug": "borsuk-ulam-oq-03-oq-03",
   "title": "Constructive 2D Borsuk-Ulam via Tucker Lemma",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-03-06T08:22:48-08:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "iteration": 2,
+    "focus": "Metadata fix: status verified→axiomatized (1 axiom)",
     "blockers": [],
     "nextAction": "Read problem.md thoroughly and acquire full context.",
     "attemptCounts": {
@@ -57,7 +57,7 @@
     "mathlib": []
   },
   "started": "2026-03-07T18:02:01.175Z",
-  "lastUpdate": "2026-03-13T07:52:17.061Z",
+  "lastUpdate": "2026-03-20T09:15:00Z",
   "significance": 7,
   "tractability": 6
 }
