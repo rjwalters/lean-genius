@@ -6,9 +6,16 @@
   "meta": {
     "author": "Erdős-Graham [ErGr80]",
     "sourceUrl": "https://erdosproblems.com/312",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos312Problem.lean",
-    "tags": ["erdos", "number-theory", "unit-fractions", "subset-sum", "exponential-bounds", "open-problem"],
+    "tags": [
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "subset-sum",
+      "exponential-bounds",
+      "open-problem"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 312,
@@ -17,9 +24,21 @@
     "dateAdded": "2026-01-22",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      { "theorem": "Finset.sum", "description": "Summation over finite sets", "module": "Mathlib.Data.Finset.Basic" },
-      { "theorem": "Real.exp", "description": "Real exponential function", "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv" },
-      { "theorem": "Real", "description": "Real number type and operations", "module": "Mathlib.Data.Real.Basic" }
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.exp",
+        "description": "Real exponential function",
+        "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
+      },
+      {
+        "theorem": "Real",
+        "description": "Real number type and operations",
+        "module": "Mathlib.Data.Real.Basic"
+      }
     ],
     "originalContributions": [
       "reciprocalSum definition: Σ 1/a(i) over a finite multiset",
@@ -33,7 +52,8 @@
       "harmonicNumber definition: H_n = Σ 1/k for k=1..n",
       "harmonic_unbounded axiom: H_n → ∞",
       "erdos_312_status summary theorem"
-    ]
+    ],
+    "axiomCount": 1
   },
   "overview": {
     "historicalContext": "**Erdős Problem #312: Subset Sums of Unit Fractions**\n\nThis problem, posed by Erdős and Graham [ErGr80], explores the precision with which subset sums of unit fractions can approximate 1.\n\nThe key question is about *exponential* precision: given a multiset of positive integers whose reciprocals sum to more than K, can we always find a subset whose reciprocal sum is within exp(-cK) of 1? The closer to 1, the better the approximation.\n\n**Known Results:** Erdős and Graham proved the weaker *polynomial* bound: for some constant c > 0, one can always find a subset summing to within c/K² of 1. The gap between the polynomial bound c/K² and the conjectured exponential bound exp(-cK) is enormous for large K, making this a significant open problem in combinatorial number theory.\n\nThe problem connects to the classical theory of Egyptian fractions (representing rationals as sums of distinct unit fractions) and to computational subset sum problems.",

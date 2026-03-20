@@ -7,7 +7,7 @@
     "author": "Erdős-Mauldin, Kovač (2023), Koizumi (2025)",
     "sourceUrl": "https://erdosproblems.com/353",
     "date": "",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos353Problem.lean",
     "tags": [
       "erdos",
@@ -50,7 +50,8 @@
       "Koizumi's three main theorems as axioms",
       "Kovač's parallelogram counterexample axiom",
       "Kovač-Predojević cyclic quadrilateral theorem"
-    ]
+    ],
+    "axiomCount": 8
   },
   "overview": {
     "historicalContext": "**Erdős Problem #353**\n\nThis problem explores what geometric configurations must appear in sets of infinite measure in the plane.\n\n**Key History:**\n- Erdős-Mauldin (unpublished): Claimed true for trapezoids\n- Kovač (2023): Proved trapezoids work; showed parallelograms can fail\n- Kovač-Predojević (2024): Proved cyclic quadrilaterals; congruent sides counterexample\n- Koizumi (2025): Complete resolution for isosceles trapezoids, triangles, and right triangles\n\n**Mathematical Setting:**\nThe problem connects geometric measure theory with combinatorial geometry. Infinite measure ensures sufficient point density to guarantee configurations.",

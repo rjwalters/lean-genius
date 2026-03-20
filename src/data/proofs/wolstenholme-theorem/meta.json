@@ -30,7 +30,8 @@
       "Failure cases showing p >= 5 is necessary",
       "Wolstenholme prime definition and examples"
     ],
-    "dateAdded": "12/31/25"
+    "dateAdded": "12/31/25",
+    "axiomCount": 3
   },
   "overview": {
     "historicalContext": "Joseph Wolstenholme proved this theorem in 1862, strengthening an earlier result by Charles Babbage (1819) who showed the congruence holds modulo p^2 for primes p >= 3.\n\nThe theorem reveals deep connections between binomial coefficients and harmonic numbers. It's equivalent to saying the numerator of H_{p-1} = 1 + 1/2 + ... + 1/(p-1) is divisible by p^2.\n\nWolstenholme primes (where the congruence holds mod p^4) are extremely rare: only 16843 and 2124679 are known.",

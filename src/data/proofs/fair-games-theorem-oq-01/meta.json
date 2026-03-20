@@ -7,7 +7,7 @@
     "author": "Doob (1953), Feller (1968)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Gambler%27s_ruin",
     "date": "1953",
-    "status": "complete",
+    "status": "verified",
     "proofRepoPath": "Proofs/FairGamesTheoremOQ01.lean",
     "tags": [
       "probability",
@@ -40,7 +40,8 @@
       "Complete AM-GM bound on expected ruin time: E[T] ≤ N²/4",
       "Harmonic property of expected ruin time (discrete Laplacian)"
     ],
-    "dateAdded": "03/11/26"
+    "dateAdded": "03/11/26",
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "The Gambler's Ruin problem is one of the oldest problems in probability theory, dating to correspondence between Pascal and Fermat in 1654. The modern treatment uses martingale theory developed by Doob (1953). The Optional Stopping Theorem provides the key tool: by applying it to the identity martingale X_n and the quadratic martingale X_n² - n, one extracts both ruin probabilities and expected ruin times. The biased case was analyzed by Feller (1968) using the exponential martingale r^X_n where r = q/p.",

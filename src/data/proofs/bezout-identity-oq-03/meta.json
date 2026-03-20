@@ -8,16 +8,43 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Chinese_remainder_theorem",
     "date": "~3rd century CE (formalized 2026)",
     "status": "verified",
-    "tags": ["number-theory", "algorithms", "classic", "beginner", "crt", "bezout"],
+    "tags": [
+      "number-theory",
+      "algorithms",
+      "classic",
+      "beginner",
+      "crt",
+      "bezout"
+    ],
     "proofRepoPath": "Proofs/BezoutIdentityOQ03.lean",
     "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
-      {"theorem": "Int.gcd_eq_gcd_ab", "description": "Bézout's identity for integers: gcd(a,b) = a * gcdA + b * gcdB", "module": "Mathlib.Data.Int.GCD"},
-      {"theorem": "Int.gcdA", "description": "First Bézout coefficient for integers", "module": "Mathlib.Data.Int.GCD"},
-      {"theorem": "Int.gcdB", "description": "Second Bézout coefficient for integers", "module": "Mathlib.Data.Int.GCD"},
-      {"theorem": "Int.modEq_iff_dvd", "description": "Integer modular congruence iff divisibility: a ≡ b [ZMOD n] ↔ n ∣ b - a", "module": "Mathlib.Data.Int.ModEq"},
-      {"theorem": "IsCoprime.mul_dvd", "description": "Coprime divisors multiply: if gcd(m,n) = 1 and m | k and n | k then m*n | k", "module": "Mathlib.RingTheory.Coprime.Basic"}
+      {
+        "theorem": "Int.gcd_eq_gcd_ab",
+        "description": "Bézout's identity for integers: gcd(a,b) = a * gcdA + b * gcdB",
+        "module": "Mathlib.Data.Int.GCD"
+      },
+      {
+        "theorem": "Int.gcdA",
+        "description": "First Bézout coefficient for integers",
+        "module": "Mathlib.Data.Int.GCD"
+      },
+      {
+        "theorem": "Int.gcdB",
+        "description": "Second Bézout coefficient for integers",
+        "module": "Mathlib.Data.Int.GCD"
+      },
+      {
+        "theorem": "Int.modEq_iff_dvd",
+        "description": "Integer modular congruence iff divisibility: a ≡ b [ZMOD n] ↔ n ∣ b - a",
+        "module": "Mathlib.Data.Int.ModEq"
+      },
+      {
+        "theorem": "IsCoprime.mul_dvd",
+        "description": "Coprime divisors multiply: if gcd(m,n) = 1 and m | k and n | k then m*n | k",
+        "module": "Mathlib.RingTheory.Coprime.Basic"
+      }
     ],
     "originalContributions": [
       "bezout_int: restated directly as a self-contained theorem showing ∃ x y, gcd(a,b) = a*x + b*y",
@@ -31,7 +58,8 @@
       "crtInt_mod_left/right: correctness theorems for the crtInt function",
       "Four worked examples with explicit Bézout coefficients and verification"
     ],
-    "dateAdded": "2026-02-21"
+    "dateAdded": "2026-02-21",
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "The **Chinese Remainder Theorem** (CRT) is one of the oldest results in number theory, originating in the **Sunzi Suanjing** (孫子算經, 'The Mathematical Classic of Sun Zi'), a Chinese mathematical treatise from the 3rd–5th century CE. The classic problem: *'Find a number that leaves remainder 2 when divided by 3, remainder 3 when divided by 5, and remainder 2 when divided by 7.'* The answer is 23 (unique mod 105 = 3 × 5 × 7).\n\nThe deep connection to **Bézout's identity** was understood much later. When gcd(m, n) = 1, Bézout's identity gives integers u, v with mu + nv = 1. This is precisely what's needed to 'switch on' one residue while 'switching off' the other: the term a·nv has nv ≡ 1 (mod m) so it contributes a (mod m) while vanishing (mod n), and symmetrically for b·mu.\n\nIn Lean 4, this connection is crystallized beautifully: **IsCoprime** is literally the type `∃ u v, u * m + v * n = 1`, which is Bézout's identity with gcd = 1. The CRT proof becomes a direct application of this algebraic witness.",

@@ -7,7 +7,7 @@
     "author": "Erdős-Rényi (1966), Pósa (1976), Korshunov (1977), Komlós-Szemerédi (1983)",
     "sourceUrl": "https://erdosproblems.com/746",
     "date": "1966",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos746Problem.lean",
     "tags": [
       "erdos",
@@ -26,10 +26,26 @@
     "dateAdded": "2026-01-23",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      { "theorem": "SimpleGraph", "description": "Simple graph on `Fin n` for the $G(n, m)$ model", "module": "Mathlib.Combinatorics.SimpleGraph.Basic" },
-      { "theorem": "Real.log", "description": "Logarithm for the threshold $(1/2)n \\log n$", "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic" },
-      { "theorem": "Real.exp", "description": "Exponential for the limiting probability $e^{-e^{-2c}}$", "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real" },
-      { "theorem": "Filter.Tendsto", "description": "Asymptotic limit for Korshunov and Komlós-Szemerédi results", "module": "Mathlib.Order.Filter.Basic" }
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph on `Fin n` for the $G(n, m)$ model",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm for the threshold $(1/2)n \\log n$",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.exp",
+        "description": "Exponential for the limiting probability $e^{-e^{-2c}}$",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Asymptotic limit for Korshunov and Komlós-Szemerédi results",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
     ],
     "references": [
       {
@@ -88,7 +104,8 @@
         "relationship": "thematic",
         "description": "Chromatic number problems — connected via random graph thresholds for coloring"
       }
-    ]
+    ],
+    "axiomCount": 9
   },
   "overview": {
     "historicalContext": "**The Erdős-Rényi Random Graph Revolution**\n\nErdős and Rényi's 1959–1966 papers on random graphs $G(n, m)$ revolutionized combinatorics by introducing probabilistic methods to study graph properties. They discovered that many graph properties exhibit **sharp thresholds**: the property jumps from almost surely absent to almost surely present as $m$ crosses a critical value.\n\n**The Matching-Hamiltonicity Connection**\n\nIn 1966, Erdős and Rényi proved that $G(n, m)$ with $m \\ge (1/2 + \\varepsilon) n \\log n$ almost surely has a perfect matching. Since a Hamiltonian cycle decomposes into two perfect matchings, they conjectured the same threshold for Hamiltonicity — one of the most natural questions in random graph theory.\n\n**The Path to Resolution**\n\nPósa (1976) proved Hamiltonicity for $Cn \\log n$ edges using his **rotation-extension technique**, a landmark method that became central to probabilistic combinatorics. Korshunov (1977) established the sharp threshold as $(1/2) n \\log n + (1/2) n \\log \\log n + o(n)$, confirming Erdős-Rényi's conjecture. Finally, Komlós and Szemerédi (1983) determined the precise limiting distribution: with $m = (1/2) n \\log n + (1/2) n \\log \\log n + cn$ edges, $\\Pr[\\text{Hamiltonian}] \\to e^{-e^{-2c}}$ — a **Gumbel (double exponential)** distribution.\n\n**The Threshold Coincidence**\n\nRemarkably, the Hamiltonicity threshold coincides with the connectivity threshold. Both are controlled by the same bottleneck: vertices of degree 0 or 1. The factor 2 in the Gumbel exponent $e^{-2c}$ reflects the two failure modes (degree 0 and degree 1) at the critical edge count.",

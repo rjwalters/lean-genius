@@ -7,7 +7,7 @@
     "author": "Ulam (conjectured); Tao, Shaffaf (conditional proof, 2014-2018)",
     "sourceUrl": "https://erdosproblems.com/212",
     "date": "",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos212Problem.lean",
     "tags": [
       "erdos",
@@ -45,7 +45,8 @@
       "Axiomatization of the Tao-Shaffaf conditional result (Bombieri-Lang)",
       "Axiomatization of the unconditional algebraic curve containment theorem",
       "Axiomatization of Solymosi-de Zeeuw finiteness result"
-    ]
+    ],
+    "axiomCount": 4
   },
   "overview": {
     "historicalContext": "The Erdős-Ulam problem is one of the most famous unsolved problems in combinatorial geometry. It was originally posed by Stanisław Ulam, and Erdős took interest in it, believing that no such dense rational distance set could exist.\n\nThe problem asks: Is there a dense subset S ⊆ ℝ² such that for every pair of distinct points p, q ∈ S, the Euclidean distance d(p,q) is a rational number?\n\nTerence Tao (2014) and Jafar Shaffaf (2018) independently proved that the answer is NO, assuming the Bombieri-Lang conjecture from arithmetic geometry. This deep conjecture concerns rational points on varieties of general type.\n\nUnconditionally, Shaffaf and Tao proved that any rational distance set must be contained in a finite union of real algebraic curves. Solymosi and de Zeeuw (2010) showed that rational distance sets in algebraic curves must be finite, unless the curve contains a line or circle.",

@@ -5,7 +5,9 @@
   "description": "For what values of 0 ≤ m < n is there a complete sequence that remains complete after removing any m elements but becomes incomplete after removing some n elements?",
   "meta": {
     "author": "Erdős",
-    "coauthors": ["Graham"],
+    "coauthors": [
+      "Graham"
+    ],
     "sourceUrl": "https://erdosproblems.com/348",
     "status": "axiom",
     "proofRepoPath": "Proofs/Erdos348Problem.lean",
@@ -35,11 +37,31 @@
       }
     ],
     "mathlibDependencies": [
-      {"theorem": "Finset.sum", "description": "Sum over a finite set", "module": "Mathlib.Algebra.BigOperators.Group.Finset"},
-      {"theorem": "Finset.card", "description": "Cardinality of a finite set", "module": "Mathlib.Data.Finset.Card"},
-      {"theorem": "Set.range", "description": "Range of a function as a set", "module": "Mathlib.Data.Set.Function"},
-      {"theorem": "Nat.card", "description": "Cardinality of a type as a natural number", "module": "Mathlib.SetTheory.Cardinal.Finite"},
-      {"theorem": "Monotone", "description": "Monotone function predicate", "module": "Mathlib.Order.Monotone.Basic"}
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over a finite set",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of a finite set",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Set.range",
+        "description": "Range of a function as a set",
+        "module": "Mathlib.Data.Set.Function"
+      },
+      {
+        "theorem": "Nat.card",
+        "description": "Cardinality of a type as a natural number",
+        "module": "Mathlib.SetTheory.Cardinal.Finite"
+      },
+      {
+        "theorem": "Monotone",
+        "description": "Monotone function predicate",
+        "module": "Mathlib.Order.Monotone.Basic"
+      }
     ],
     "originalContributions": [
       "Formal definitions of complete and strongly complete sequences via finite sums",
@@ -51,7 +73,8 @@
       "Representation count function and equivalence with completeness",
       "Gap property: complete sequences have eventually bounded gaps",
       "Main conjecture as disjunction: all (m,m+1) valid or cutoff exists"
-    ]
+    ],
+    "axiomCount": 5
   },
   "overview": {
     "historicalContext": "A sequence $A = \\{a_1 < a_2 < \\cdots\\}$ of positive integers is **complete** if every sufficiently large integer can be written as a sum of distinct elements from $A$. The classical examples are the powers of 2 (binary representation gives completeness, and every positive integer has a unique such representation) and the Fibonacci numbers (completeness follows from Zeckendorf's 1972 theorem that every positive integer has a unique representation as a sum of non-consecutive Fibonacci numbers). Completeness is a fundamental concept in additive number theory, connecting to the theory of additive bases and the partition function.\n\nErdős and Graham posed Problem #348 in their influential 1980 monograph [ErGr80], asking about the **robustness** of completeness under element removal. A complete sequence is $m$-robust if it remains complete after removing any $m$ elements, and the problem asks: for which pairs $(m, n)$ with $m < n$ does there exist a complete sequence that is $m$-robust but not $n$-robust? The pair $(0, 1)$ is witnessed by the powers of 2 — removing any single power of 2 destroys completeness since $2^k$ has a unique binary representation. The pair $(1, 2)$ is witnessed by the Fibonacci sequence — removing any single Fibonacci number leaves enough flexibility for alternative Zeckendorf representations, but removing both $F_0 = 1$ and $F_1 = 2$ makes the number 3 unrepresentable.\n\nWouter van Doorn [VD24] made significant progress by proving that for **strongly** complete sequences (those representing all natural numbers, not just sufficiently large ones), no sequence is 2-robust. This rules out all pairs $(m, n)$ with $m \\geq 2$ under strong completeness. However, the weaker notion of completeness (allowing finitely many exceptions) may behave differently. The key open case is $(2, 3)$: does there exist a (weakly) complete sequence that survives any 2 deletions but not some 3 deletions? Whether all pairs $(m, m+1)$ are valid or there is a finite cutoff is the heart of the problem.",
@@ -66,15 +89,69 @@
     ]
   },
   "sections": [
-    {"id": "header-docstring", "title": "Module Docstring", "startLine": 1, "endLine": 22, "summary": "Problem statement, definition of completeness and robustness, known cases (0,1) via powers of 2 and (1,2) via Fibonacci, the open (2,3) case, and reference to erdosproblems.com/348."},
-    {"id": "complete-sequences", "title": "Complete Sequences", "startLine": 23, "endLine": 48, "summary": "Core definitions: finiteSums (all sums of distinct elements from a set), IsComplete (all large integers representable), IsStronglyComplete (all integers representable), and sequenceToSet (converting ℕ → ℕ to Set ℕ)."},
-    {"id": "removing-elements", "title": "Removing Elements and Robustness", "startLine": 49, "endLine": 83, "summary": "Defines removeIndices (exclude indices from sequence), removeValues (set difference), IsRobust (complete after removing any m indices), NotRobust (some n-deletion breaks completeness), and validPairs set."},
-    {"id": "known-examples", "title": "Known Examples: Powers of 2 and Fibonacci", "startLine": 84, "endLine": 165, "summary": "Defines powersOf2 and fib sequences. Proves pair_0_1_valid (powers of 2 are 0-robust, not 1-robust) with partial proofs and pair_1_2_valid (Fibonacci is 1-robust, not 2-robust) with sorries for Zeckendorf arguments."},
-    {"id": "main-conjecture", "title": "Main Conjecture", "startLine": 166, "endLine": 183, "summary": "Two axioms: erdos_348_characterization (validPairs is either all (m,m+1) or has a cutoff) and erdos_348_case_2_3 (the (2,3) case is either valid or not — a tautology highlighting the open question)."},
-    {"id": "van-doorn", "title": "Van Doorn's Theorem", "startLine": 184, "endLine": 199, "summary": "Defines IsStronglyRobust and states vanDoorn_theorem: no monotone, strongly complete sequence is 2-robust. This eliminates all (m,n) pairs with m ≥ 2 under strong completeness."},
-    {"id": "representation-theory", "title": "Representation Count", "startLine": 200, "endLine": 213, "summary": "Defines representationCount via Nat.card of representation sets. States complete_iff_repr: completeness ⟺ positive representation count for all large n (sorry)."},
-    {"id": "gap-property", "title": "Gap Property", "startLine": 214, "endLine": 228, "summary": "Defines gap(a, n) = a(n+1) - a(n). States complete_bounded_gaps: complete monotone sequences have eventually bounded gaps."},
-    {"id": "main-problem", "title": "Main Open Problem", "startLine": 229, "endLine": 256, "summary": "The final axiom erdos_348_main_problem: either all (m, m+1) are valid, or ∃ cutoff k with (m, m+1) ∉ validPairs for m ≥ k. Includes comprehensive docstring summarizing known results and the open question."}
+    {
+      "id": "header-docstring",
+      "title": "Module Docstring",
+      "startLine": 1,
+      "endLine": 22,
+      "summary": "Problem statement, definition of completeness and robustness, known cases (0,1) via powers of 2 and (1,2) via Fibonacci, the open (2,3) case, and reference to erdosproblems.com/348."
+    },
+    {
+      "id": "complete-sequences",
+      "title": "Complete Sequences",
+      "startLine": 23,
+      "endLine": 48,
+      "summary": "Core definitions: finiteSums (all sums of distinct elements from a set), IsComplete (all large integers representable), IsStronglyComplete (all integers representable), and sequenceToSet (converting ℕ → ℕ to Set ℕ)."
+    },
+    {
+      "id": "removing-elements",
+      "title": "Removing Elements and Robustness",
+      "startLine": 49,
+      "endLine": 83,
+      "summary": "Defines removeIndices (exclude indices from sequence), removeValues (set difference), IsRobust (complete after removing any m indices), NotRobust (some n-deletion breaks completeness), and validPairs set."
+    },
+    {
+      "id": "known-examples",
+      "title": "Known Examples: Powers of 2 and Fibonacci",
+      "startLine": 84,
+      "endLine": 165,
+      "summary": "Defines powersOf2 and fib sequences. Proves pair_0_1_valid (powers of 2 are 0-robust, not 1-robust) with partial proofs and pair_1_2_valid (Fibonacci is 1-robust, not 2-robust) with sorries for Zeckendorf arguments."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 166,
+      "endLine": 183,
+      "summary": "Two axioms: erdos_348_characterization (validPairs is either all (m,m+1) or has a cutoff) and erdos_348_case_2_3 (the (2,3) case is either valid or not — a tautology highlighting the open question)."
+    },
+    {
+      "id": "van-doorn",
+      "title": "Van Doorn's Theorem",
+      "startLine": 184,
+      "endLine": 199,
+      "summary": "Defines IsStronglyRobust and states vanDoorn_theorem: no monotone, strongly complete sequence is 2-robust. This eliminates all (m,n) pairs with m ≥ 2 under strong completeness."
+    },
+    {
+      "id": "representation-theory",
+      "title": "Representation Count",
+      "startLine": 200,
+      "endLine": 213,
+      "summary": "Defines representationCount via Nat.card of representation sets. States complete_iff_repr: completeness ⟺ positive representation count for all large n (sorry)."
+    },
+    {
+      "id": "gap-property",
+      "title": "Gap Property",
+      "startLine": 214,
+      "endLine": 228,
+      "summary": "Defines gap(a, n) = a(n+1) - a(n). States complete_bounded_gaps: complete monotone sequences have eventually bounded gaps."
+    },
+    {
+      "id": "main-problem",
+      "title": "Main Open Problem",
+      "startLine": 229,
+      "endLine": 256,
+      "summary": "The final axiom erdos_348_main_problem: either all (m, m+1) are valid, or ∃ cutoff k with (m, m+1) ∉ validPairs for m ≥ k. Includes comprehensive docstring summarizing known results and the open question."
+    }
   ],
   "conclusion": {
     "summary": "This 256-line formalization of Erdős Problem #348 defines completeness, robustness, and the valid pairs set, then constructs witnesses for (0,1) via powers of 2 and (1,2) via Fibonacci numbers. Van Doorn's theorem constrains the strongly complete case. The representation count and gap property provide structural context. The main conjecture is formalized as a disjunction about whether all (m, m+1) pairs are valid. Seven sorries remain, mostly in the Zeckendorf-based arguments.",

@@ -7,9 +7,16 @@
     "author": "Erdős-Gyárfás (original), Bennett-Cushman-Dudek-Pralat (2022), Joos-Mubayi (2022)",
     "sourceUrl": "https://erdosproblems.com/136",
     "date": "2022",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos136Problem.lean",
-    "tags": ["erdos", "ramsey-theory", "graph-coloring", "complete-graphs", "asymptotic", "solved"],
+    "tags": [
+      "erdos",
+      "ramsey-theory",
+      "graph-coloring",
+      "complete-graphs",
+      "asymptotic",
+      "solved"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 136,
@@ -17,10 +24,26 @@
     "erdosProblemStatus": "solved",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      { "theorem": "Finset", "description": "Finite sets for collecting colors", "module": "Mathlib.Data.Finset.Basic" },
-      { "theorem": "Filter.Tendsto", "description": "Limit definition for asymptotics", "module": "Mathlib.Order.Filter.Basic" },
-      { "theorem": "nhds", "description": "Neighborhood filter for convergence", "module": "Mathlib.Topology.Basic" },
-      { "theorem": "Nat.choose", "description": "Binomial coefficients", "module": "Mathlib.Data.Nat.Choose.Basic" }
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for collecting colors",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit definition for asymptotics",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "nhds",
+        "description": "Neighborhood filter for convergence",
+        "module": "Mathlib.Topology.Basic"
+      },
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
     ],
     "originalContributions": [
       "EdgeColoring, isValidColoring, colorsInK4 definitions",
@@ -32,7 +55,8 @@
       "why_five_sixths and k4_edges proved theorems",
       "erdos_136 summary combining asymptotic and bounds"
     ],
-    "dateAdded": "2026-01-19"
+    "dateAdded": "2026-01-19",
+    "axiomCount": 8
   },
   "overview": {
     "historicalContext": "Erdős and Gyárfás introduced the function f(n,p,q), defined as the minimum number of colors needed to edge-color the complete graph Kₙ so that every Kₚ subgraph contains at least q distinct colors. For the specific case f(n,4,5), they proved the bounds (5/6)(n-1) < f(n) < n and computed f(9) = 8.\n\nThe problem remained open for 25 years until Bennett, Cushman, Dudek, and Pralat (2022) proved that f(n) ~ (5/6)n, confirming Erdős's intuition that the lower bound is asymptotically tight. Joos and Mubayi independently found a shorter proof using connections to hypergraph matching theory.\n\nThe constant 5/6 arises naturally from the structure of K₄: it has C(4,2) = 6 edges, and requiring at least 5 colors means at most one repeated color is allowed. The fraction 5/6 = 1 - 1/6 reflects this single 'defect' tolerance per K₄ subgraph.",

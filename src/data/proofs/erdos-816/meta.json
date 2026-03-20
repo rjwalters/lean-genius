@@ -7,7 +7,7 @@
     "author": "Chen and Ma (2025)",
     "sourceUrl": "https://erdosproblems.com/816",
     "date": "2025",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos816Problem.lean",
     "tags": [
       "erdos",
@@ -67,7 +67,8 @@
       "erdos_816_for_large_n: corollary for n ≥ 600",
       "erdos_816_full: complete answer",
       "pigeonhole_degrees: degree pigeonhole axiom"
-    ]
+    ],
+    "axiomCount": 5
   },
   "overview": {
     "historicalContext": "**Erdős Problem #816: Equal-Degree Paths**\n\nThis problem was posed by Erdős and Hajnal and concerns the interplay between degree sequences and path connectivity in graphs.\n\n**The Question:**\nGiven enough edges, must a graph contain two vertices of the same degree that are connected by a path of length 3?\n\n**Key Insight:**\nThe complete bipartite graph K_{n,n+1} has exactly n² + n edges and fails this property: vertices of equal degree are in the same part, but paths of length 3 between same-part vertices don't exist (paths alternate between parts).\n\n**Resolution:**\nChen and Ma (2025, arXiv:2503.19569) proved that one additional edge (n² + n + 1 total) forces the property. They proved the stronger result that for n ≥ 600, even n² + n edges suffice except for K_{n,n+1}.",

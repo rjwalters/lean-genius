@@ -7,9 +7,15 @@
     "author": "Paul Erdős",
     "sourceUrl": "https://erdosproblems.com/344",
     "date": "2026-03-12",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos344Problem.lean",
-    "tags": ["erdos", "number-theory", "complete-sequences", "arithmetic-progressions", "subset-sums"],
+    "tags": [
+      "erdos",
+      "number-theory",
+      "complete-sequences",
+      "arithmetic-progressions",
+      "subset-sums"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 344,
@@ -19,11 +25,31 @@
     "solvedYear": 2006,
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      { "theorem": "Finset.range", "description": "Finite sets of naturals up to N", "module": "Mathlib.Data.Finset.Basic" },
-      { "theorem": "Finset.sum", "description": "Summation over finite sets", "module": "Mathlib.Algebra.BigOperators.Group.Finset" },
-      { "theorem": "Real.sqrt", "description": "Square root on reals", "module": "Mathlib.Data.Real.Basic" },
-      { "theorem": "Set", "description": "Basic set operations", "module": "Mathlib.Data.Set.Basic" },
-      { "theorem": "Asymptotics", "description": "Asymptotic notation for growth rates", "module": "Mathlib.Analysis.Asymptotics.Asymptotics" }
+      {
+        "theorem": "Finset.range",
+        "description": "Finite sets of naturals up to N",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root on reals",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Set",
+        "description": "Basic set operations",
+        "module": "Mathlib.Data.Set.Basic"
+      },
+      {
+        "theorem": "Asymptotics",
+        "description": "Asymptotic notation for growth rates",
+        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+      }
     ],
     "originalContributions": [
       "Lean formalization of subcomplete sequence definitions",
@@ -62,7 +88,8 @@
         "note": "Problem 344 statement (p.54)"
       }
     ],
-    "dateAdded": "2026-01-19"
+    "dateAdded": "2026-01-19",
+    "axiomCount": 4
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in the 1960s, asking whether moderate density ($\\sqrt{N}$) suffices for subcompleteness. The problem has roots in the classical study of complete sequences by Sprague (1937) and Folkman (1966). Folkman first proved that density $N^{1/2+\\varepsilon}$ suffices, using a greedy selection argument. The problem remained open for 40 years until Szemerédi and Vu (2006) proved the sharp result using Fourier-analytic methods and the Freiman-Ruzsa inverse theorem from additive combinatorics. Erdős himself showed in 1962 that the threshold cannot go below $\\sqrt{2N}$ by constructing an explicit counterexample, leaving the gap between $\\sqrt{N}$ and $\\sqrt{2N}$ as an open problem.",

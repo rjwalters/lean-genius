@@ -7,7 +7,7 @@
     "author": "J. W. S. Cassels (1960)",
     "sourceUrl": "https://erdosproblems.com/253",
     "date": "1960",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos253Problem.lean",
     "tags": [
       "erdos",
@@ -50,7 +50,8 @@
       "Definition of subset sums as sums over finite subsets",
       "Definition of infinite arithmetic progressions",
       "Verified examples: ℕ and even numbers as infinite APs"
-    ]
+    ],
+    "axiomCount": 1
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in the early 1960s as part of his extensive work on additive combinatorics. The question connects two classical topics: representation of integers as sums and the structure of arithmetic progressions.\n\nThe conjecture was natural: if a sequence is 'well-distributed' enough that its subset sums hit every arithmetic progression infinitely often, and the sequence grows slowly (ratio → 1), then perhaps all large integers should be representable.\n\nJ. W. S. Cassels disproved this in 1960 with an ingenious counterexample, showing that good coverage of arithmetic progressions does not imply universal representation. His construction demonstrated that even sequences satisfying strong distributional properties can have infinitely many 'gaps' in their subset sums.",

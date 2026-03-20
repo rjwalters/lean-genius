@@ -7,7 +7,7 @@
     "author": "Erdős-Gyárfás-Ruszinkó (1998)",
     "sourceUrl": "https://erdosproblems.com/619",
     "date": "1998",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos619Problem.lean",
     "tags": [
       "erdos",
@@ -55,9 +55,18 @@
       "erdos_619_partial_results theorem: combines h₃ and h₅ bounds"
     ],
     "references": [
-      {"key": "EGR98", "citation": "Erdős, P., Gyárfás, A., Ruszinkó, M. (1998)", "type": "paper"},
-      {"key": "AGR00", "citation": "Alon, N., Gyárfás, A., Ruszinkó, M. (2000)", "type": "paper"}
-    ]
+      {
+        "key": "EGR98",
+        "citation": "Erdős, P., Gyárfás, A., Ruszinkó, M. (1998)",
+        "type": "paper"
+      },
+      {
+        "key": "AGR00",
+        "citation": "Alon, N., Gyárfás, A., Ruszinkó, M. (2000)",
+        "type": "paper"
+      }
+    ],
+    "axiomCount": 7
   },
   "overview": {
     "historicalContext": "This problem studies how to decrease graph diameter by adding edges while preserving triangle-freeness. Erdős, Gyárfás, and Ruszinkó (1998) introduced h_r(G) as the minimum number of edges needed to reduce the diameter of a connected triangle-free graph G to r, while maintaining the triangle-free property. They proved that h₃(G) ≤ n for all such graphs, and that this is essentially tight: there exist graphs requiring nearly n edges. They also showed the much smaller bound h₅(G) ≤ (n-1)/2.\n\nThe key open question is about the intermediate case h₄. The problem asks whether there exists a constant c > 0 such that h₄(G) < (1-c)n for all connected triangle-free G on n vertices — that is, whether one can always save a constant fraction of edges compared to h₃.\n\nWithout the triangle-free constraint, Alon, Gyárfás, and Ruszinkó (2000) proved that n/2 edges always suffice for diameter 4. The triangle-free requirement fundamentally changes the problem: it prevents using the most natural shortcut edges (which often create triangles), making diameter reduction much harder.",
@@ -72,14 +81,62 @@
     ]
   },
   "sections": [
-    {"id": "definitions", "title": "Basic Definitions", "summary": "TriangleFree, diameter, HasDiameter, HasDiameterAtMost", "startLine": 35, "endLine": 62},
-    {"id": "edge-addition", "title": "Edge Addition and h_r(G)", "summary": "addEdges with proofs, h and h_exact definitions", "startLine": 64, "endLine": 97},
-    {"id": "known-results", "title": "Known Results (1998)", "summary": "h₃ ≤ n, h₃ ≥ n-c, h₅ ≤ (n-1)/2", "startLine": 99, "endLine": 126},
-    {"id": "open-question", "title": "The Main Question (OPEN)", "summary": "erdos_619_question, erdos_619_upper_bound_form", "startLine": 128, "endLine": 149},
-    {"id": "without-constraint", "title": "Without Triangle-Free Constraint", "summary": "Alon-Gyárfás-Ruszinkó 2000: n/2 suffices", "startLine": 151, "endLine": 161},
-    {"id": "examples", "title": "Examples and Special Cases", "summary": "pathGraph, path_is_triangle_free, path_diameter", "startLine": 163, "endLine": 179},
-    {"id": "monotonicity", "title": "Monotonicity Properties", "summary": "h_monotone axiom: h_r ≥ h_{r+1}", "startLine": 181, "endLine": 189},
-    {"id": "summary", "title": "Summary", "summary": "erdos_619 definition, erdos_619_partial_results theorem", "startLine": 191, "endLine": 227}
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "TriangleFree, diameter, HasDiameter, HasDiameterAtMost",
+      "startLine": 35,
+      "endLine": 62
+    },
+    {
+      "id": "edge-addition",
+      "title": "Edge Addition and h_r(G)",
+      "summary": "addEdges with proofs, h and h_exact definitions",
+      "startLine": 64,
+      "endLine": 97
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results (1998)",
+      "summary": "h₃ ≤ n, h₃ ≥ n-c, h₅ ≤ (n-1)/2",
+      "startLine": 99,
+      "endLine": 126
+    },
+    {
+      "id": "open-question",
+      "title": "The Main Question (OPEN)",
+      "summary": "erdos_619_question, erdos_619_upper_bound_form",
+      "startLine": 128,
+      "endLine": 149
+    },
+    {
+      "id": "without-constraint",
+      "title": "Without Triangle-Free Constraint",
+      "summary": "Alon-Gyárfás-Ruszinkó 2000: n/2 suffices",
+      "startLine": 151,
+      "endLine": 161
+    },
+    {
+      "id": "examples",
+      "title": "Examples and Special Cases",
+      "summary": "pathGraph, path_is_triangle_free, path_diameter",
+      "startLine": 163,
+      "endLine": 179
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity Properties",
+      "summary": "h_monotone axiom: h_r ≥ h_{r+1}",
+      "startLine": 181,
+      "endLine": 189
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_619 definition, erdos_619_partial_results theorem",
+      "startLine": 191,
+      "endLine": 227
+    }
   ],
   "conclusion": {
     "summary": "Erdős Problem #619 asks whether h₄(G) < (1-c)n for some c > 0 and all connected triangle-free graphs G. While h₃ ≤ n and h₅ ≤ (n-1)/2 are known (EGR 1998), the h₄ case remains OPEN. The triangle-free constraint is crucial — without it, n/2 edges always suffice for diameter 4.",

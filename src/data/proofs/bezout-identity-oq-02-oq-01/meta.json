@@ -7,19 +7,55 @@
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Fundamental_theorem_of_arithmetic",
     "date": "~300 BCE (Euclid Elements IX.14, formalized 2026)",
-    "status": "complete",
-    "tags": ["number-theory", "algorithms", "classic", "bezout", "euclid", "fta", "prime-factorization"],
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "algorithms",
+      "classic",
+      "bezout",
+      "euclid",
+      "fta",
+      "prime-factorization"
+    ],
     "proofRepoPath": "Proofs/BezoutIdentityOQ02OQ01.lean",
     "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
-      {"theorem": "Nat.Prime.coprime_iff_not_dvd", "description": "Prime p is coprime to n iff p does not divide n", "module": "Mathlib.Data.Nat.Prime.Basic"},
-      {"theorem": "Nat.Coprime.dvd_of_dvd_mul_left", "description": "If gcd(k,m)=1 and k|m*n then k|n", "module": "Mathlib.Data.Nat.GCD.Basic"},
-      {"theorem": "Nat.Prime.dvd_mul", "description": "Prime p divides product ab iff p|a or p|b", "module": "Mathlib.Data.Nat.Prime.Basic"},
-      {"theorem": "Nat.prod_primeFactorsList", "description": "Product of prime factors list equals n", "module": "Mathlib.Data.Nat.Factors"},
-      {"theorem": "Nat.prime_of_mem_primeFactorsList", "description": "Every element of primeFactorsList is prime", "module": "Mathlib.Data.Nat.Factors"},
-      {"theorem": "List.perm_cons_erase", "description": "List l is a permutation of x :: (l.erase x) when x ∈ l", "module": "Mathlib.Data.List.Perm"},
-      {"theorem": "Nat.exists_infinite_primes", "description": "There exist infinitely many primes", "module": "Mathlib.Data.Nat.Prime.Infinite"}
+      {
+        "theorem": "Nat.Prime.coprime_iff_not_dvd",
+        "description": "Prime p is coprime to n iff p does not divide n",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.Coprime.dvd_of_dvd_mul_left",
+        "description": "If gcd(k,m)=1 and k|m*n then k|n",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Nat.Prime.dvd_mul",
+        "description": "Prime p divides product ab iff p|a or p|b",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.prod_primeFactorsList",
+        "description": "Product of prime factors list equals n",
+        "module": "Mathlib.Data.Nat.Factors"
+      },
+      {
+        "theorem": "Nat.prime_of_mem_primeFactorsList",
+        "description": "Every element of primeFactorsList is prime",
+        "module": "Mathlib.Data.Nat.Factors"
+      },
+      {
+        "theorem": "List.perm_cons_erase",
+        "description": "List l is a permutation of x :: (l.erase x) when x ∈ l",
+        "module": "Mathlib.Data.List.Perm"
+      },
+      {
+        "theorem": "Nat.exists_infinite_primes",
+        "description": "There exist infinitely many primes",
+        "module": "Mathlib.Data.Nat.Prime.Infinite"
+      }
     ],
     "originalContributions": [
       "euclids_lemma_prime: If prime p|ab and p∤a then p|b (via Coprime.dvd_of_dvd_mul_left — one line proof)",
@@ -30,7 +66,8 @@
       "prime_factor_count_unique: Prime factorizations have unique multiplicities",
       "no_finite_list_contains_all_primes: Infinitely many primes as a consequence"
     ],
-    "dateAdded": "2026-02-24"
+    "dateAdded": "2026-02-24",
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "**Euclid's Elements, Book IX, Proposition 14** states: 'If a number be the least that is measured by prime numbers, it will not be measured by any other prime number except those originally measuring it.' This is the uniqueness of prime factorization, proved by Euclid himself using what we now call Euclid's Lemma (Elements VII.30).\n\n**Carl Friedrich Gauss** gave the first modern complete proof of the Fundamental Theorem of Arithmetic in his *Disquisitiones Arithmeticae* (1801, Article 16), establishing both existence and uniqueness with full rigor for all positive integers.\n\nThe modern algebraic perspective reveals that FTA holds in any **Unique Factorization Domain (UFD)**. The key ingredient is always some form of Euclid's Lemma: if an irreducible element divides a product, it divides one factor. In ℤ, this follows from Bézout's identity; in polynomial rings, from the Euclidean algorithm for polynomials.\n\nThis formalization makes the proof chain completely explicit in Lean 4: **Bézout's Identity** (encoded as `IsCoprime` / `Nat.Coprime`) → **Euclid's Lemma** (`euclids_lemma_prime`) → **FTA Uniqueness** (`fta_uniqueness`) → **Full FTA** (`fta_from_euclid`).",

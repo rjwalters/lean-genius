@@ -8,16 +8,41 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Multinomial_theorem",
     "date": "2026",
     "status": "open-question",
-    "tags": ["algebra", "combinatorics", "generalization", "open-question"],
+    "tags": [
+      "algebra",
+      "combinatorics",
+      "generalization",
+      "open-question"
+    ],
     "proofRepoPath": "Proofs/BinomialTheoremOQ02.lean",
     "badge": "open",
     "sorries": 0,
     "mathlibDependencies": [
-      {"theorem": "Finset.sum_pow_eq_sum_piAntidiag", "description": "The multinomial theorem: (∑ f(i))^n = ∑_{k:Σk=n} multinomial(s,k) · ∏ f(i)^k(i)", "module": "Mathlib.Data.Nat.Choose.Multinomial"},
-      {"theorem": "Nat.multinomial_insert", "description": "Multinomial recurrence: multinomial(insert a s, k) = C(k(a)+Σ_{s}k, k(a)) · multinomial(s,k)", "module": "Mathlib.Data.Nat.Choose.Multinomial"},
-      {"theorem": "Nat.binomial_eq_choose", "description": "For 2-element sets, multinomial reduces to the binomial coefficient C(k_a + k_b, k_a)", "module": "Mathlib.Data.Nat.Choose.Multinomial"},
-      {"theorem": "Nat.multinomial_spec", "description": "Factorial formula: (∏ f(i)!) · multinomial(s, f) = (∑ f(i))!", "module": "Mathlib.Data.Nat.Choose.Multinomial"},
-      {"theorem": "add_pow", "description": "The classical binomial theorem for commutative semirings", "module": "Mathlib.Data.Nat.Choose.Sum"}
+      {
+        "theorem": "Finset.sum_pow_eq_sum_piAntidiag",
+        "description": "The multinomial theorem: (∑ f(i))^n = ∑_{k:Σk=n} multinomial(s,k) · ∏ f(i)^k(i)",
+        "module": "Mathlib.Data.Nat.Choose.Multinomial"
+      },
+      {
+        "theorem": "Nat.multinomial_insert",
+        "description": "Multinomial recurrence: multinomial(insert a s, k) = C(k(a)+Σ_{s}k, k(a)) · multinomial(s,k)",
+        "module": "Mathlib.Data.Nat.Choose.Multinomial"
+      },
+      {
+        "theorem": "Nat.binomial_eq_choose",
+        "description": "For 2-element sets, multinomial reduces to the binomial coefficient C(k_a + k_b, k_a)",
+        "module": "Mathlib.Data.Nat.Choose.Multinomial"
+      },
+      {
+        "theorem": "Nat.multinomial_spec",
+        "description": "Factorial formula: (∏ f(i)!) · multinomial(s, f) = (∑ f(i))!",
+        "module": "Mathlib.Data.Nat.Choose.Multinomial"
+      },
+      {
+        "theorem": "add_pow",
+        "description": "The classical binomial theorem for commutative semirings",
+        "module": "Mathlib.Data.Nat.Choose.Sum"
+      }
     ],
     "originalContributions": [
       "multinomial_theorem: Direct wrapper around Mathlib's Finset.sum_pow_eq_sum_piAntidiag",
@@ -29,7 +54,8 @@
       "multinomial_triple: Three-way multinomial formula via recurrence",
       "Numerical examples via native_decide: C(3;1,1,1)=6, C(4;2,1,1)=12, C(6;2,2,2)=90"
     ],
-    "dateAdded": "2026-02-23"
+    "dateAdded": "2026-02-23",
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "The **multinomial theorem** is a natural generalization of the binomial theorem, extending from two variables to any finite number. While the binomial theorem $(x+y)^n = \\sum_{k=0}^n \\binom{n}{k} x^k y^{n-k}$ has been known since antiquity, the multinomial generalization appears prominently in the works of **Leibniz** and **Johann Bernoulli** in the 17th century.\n\nThe key insight is that expanding $(x_1 + x_2 + \\cdots + x_m)^n$ by distributing generates all monomials $x_1^{k_1} x_2^{k_2} \\cdots x_m^{k_m}$ with $k_1 + k_2 + \\cdots + k_m = n$. Each such monomial appears exactly $\\frac{n!}{k_1! k_2! \\cdots k_m!}$ times, which is the **multinomial coefficient**.\n\nThe formal connection to the binomial theorem is clean: the multinomial theorem for a 2-element set $\\{a, b\\}$ reduces exactly to the binomial theorem, with multinomial coefficients becoming binomial coefficients $\\binom{n}{k}$. Moreover, the proof proceeds by **induction on the number of variables**, using the binomial theorem at each step to split off one variable — making the binomial theorem literally the engine driving the multinomial proof.",
@@ -125,9 +151,21 @@
       "Is there a direct Lean proof of the multinomial theorem by induction on |s| that avoids delegating to Finset.sum_pow_eq_sum_piAntidiag?"
     ],
     "crossReferences": [
-      {"id": "binomial-theorem", "relation": "specializes", "note": "The classical binomial theorem (x+y)^n = Σ C(n,k) x^k y^(n-k) is the 2-variable special case of the multinomial theorem proved here"},
-      {"id": "combinations-formula", "relation": "uses", "note": "The binomial coefficient C(n,k) = n!/(k!(n-k)!) is a special case of the multinomial coefficient n!/(k_1!···k_m!)"},
-      {"id": "pascals-hexagon", "relation": "related", "note": "Pascal's hexagon theorem connects to Pascal's triangle, whose rows are the binomial coefficients summed by the multinomial theorem"}
+      {
+        "id": "binomial-theorem",
+        "relation": "specializes",
+        "note": "The classical binomial theorem (x+y)^n = Σ C(n,k) x^k y^(n-k) is the 2-variable special case of the multinomial theorem proved here"
+      },
+      {
+        "id": "combinations-formula",
+        "relation": "uses",
+        "note": "The binomial coefficient C(n,k) = n!/(k!(n-k)!) is a special case of the multinomial coefficient n!/(k_1!···k_m!)"
+      },
+      {
+        "id": "pascals-hexagon",
+        "relation": "related",
+        "note": "Pascal's hexagon theorem connects to Pascal's triangle, whose rows are the binomial coefficients summed by the multinomial theorem"
+      }
     ]
   }
 }

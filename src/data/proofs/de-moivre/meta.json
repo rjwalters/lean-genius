@@ -8,24 +8,69 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/De_Moivre%27s_formula",
     "date": "1707",
     "status": "verified",
-    "tags": ["complex-analysis", "trigonometry", "classic", "intermediate", "wiedijk"],
+    "tags": [
+      "complex-analysis",
+      "trigonometry",
+      "classic",
+      "intermediate",
+      "wiedijk"
+    ],
     "proofRepoPath": "Proofs/DeMoivre.lean",
     "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
-      {"theorem": "Complex.exp_mul_I", "description": "exp(θ·I) = cos θ + sin θ·I (Euler's formula)", "module": "Mathlib.Data.Complex.Exponential"},
-      {"theorem": "Complex.exp_nat_mul", "description": "exp(n·x) = (exp x)^n", "module": "Mathlib.Data.Complex.Exponential"},
-      {"theorem": "Complex.exp_int_mul", "description": "exp(n·x) = (exp x)^n for integers", "module": "Mathlib.Data.Complex.Exponential"},
-      {"theorem": "Complex.exp_two_pi_mul_I", "description": "exp(2πi) = 1", "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"}
+      {
+        "theorem": "Complex.exp_mul_I",
+        "description": "exp(θ·I) = cos θ + sin θ·I (Euler's formula)",
+        "module": "Mathlib.Data.Complex.Exponential"
+      },
+      {
+        "theorem": "Complex.exp_nat_mul",
+        "description": "exp(n·x) = (exp x)^n",
+        "module": "Mathlib.Data.Complex.Exponential"
+      },
+      {
+        "theorem": "Complex.exp_int_mul",
+        "description": "exp(n·x) = (exp x)^n for integers",
+        "module": "Mathlib.Data.Complex.Exponential"
+      },
+      {
+        "theorem": "Complex.exp_two_pi_mul_I",
+        "description": "exp(2πi) = 1",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
+      }
     ],
-    "originalContributions": ["Extension to integer exponents", "Double and triple angle formula derivations", "Roots of unity connection via exp(2πik/n)"],
+    "originalContributions": [
+      "Extension to integer exponents",
+      "Double and triple angle formula derivations",
+      "Roots of unity connection via exp(2πik/n)"
+    ],
     "references": [
-      {"authors": "A. de Moivre", "title": "Aequationum quarundam Potestatis tertiae, quintae, septimae...", "year": "1707", "venue": "Philosophical Transactions", "note": "Earliest implicit form of de Moivre's formula"},
-      {"authors": "L. Euler", "title": "Introductio in analysin infinitorum", "year": "1748", "venue": "Lausanne", "note": "Modern formulation connecting e^{iθ} = cos θ + i sin θ to de Moivre's theorem"},
-      {"authors": "T. Needham", "title": "Visual Complex Analysis", "year": "1997", "venue": "Oxford University Press", "note": "Geometric interpretation of de Moivre as iterated rotation"}
+      {
+        "authors": "A. de Moivre",
+        "title": "Aequationum quarundam Potestatis tertiae, quintae, septimae...",
+        "year": "1707",
+        "venue": "Philosophical Transactions",
+        "note": "Earliest implicit form of de Moivre's formula"
+      },
+      {
+        "authors": "L. Euler",
+        "title": "Introductio in analysin infinitorum",
+        "year": "1748",
+        "venue": "Lausanne",
+        "note": "Modern formulation connecting e^{iθ} = cos θ + i sin θ to de Moivre's theorem"
+      },
+      {
+        "authors": "T. Needham",
+        "title": "Visual Complex Analysis",
+        "year": "1997",
+        "venue": "Oxford University Press",
+        "note": "Geometric interpretation of de Moivre as iterated rotation"
+      }
     ],
     "dateAdded": "12/26/25",
-    "wiedijkNumber": 17
+    "wiedijkNumber": 17,
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "Abraham de Moivre (1667-1754), a French Huguenot mathematician exiled to England, discovered this formula around 1707 while working on trigonometric series. De Moivre communicated results to the Royal Society but never published a clean statement — the formula was implicit in his work on recurrence relations and probability. Euler (1748) gave the modern formulation in the *Introductio in analysin infinitorum*, connecting it to e^{iθ} = cos θ + i sin θ. Roger Cotes (1714) independently found related results. The theorem became foundational for complex analysis: it unifies trigonometric addition formulas, provides nth roots of unity, and underlies the Fourier transform. This is Wiedijk's 100 Theorems #17.",
@@ -40,14 +85,62 @@
     ]
   },
   "sections": [
-    {"id": "header", "title": "Introduction and Historical Context", "startLine": 1, "endLine": 43, "summary": "Module documentation: states De Moivre's formula, proof approach via Euler's formula and exp power rule, status, Mathlib dependencies, and historical note on de Moivre (1667-1754)."},
-    {"id": "main-theorem", "title": "Main Theorem: Trigonometric Form", "startLine": 45, "endLine": 77, "summary": "Proves (cos θ + i sin θ)^n = cos(nθ) + i sin(nθ) by rewriting with Complex.exp_mul_I, applying Complex.exp_nat_mul, then converting back via simp."},
-    {"id": "exp-form", "title": "Exponential Form", "startLine": 78, "endLine": 96, "summary": "Two equivalent exponential formulations: (exp(θI))^n = exp(nθI) and (exp(Iθ))^n = exp(I·nθ). Both proved by exp_nat_mul plus ring."},
-    {"id": "integer-ext", "title": "Integer Exponent Extension", "startLine": 97, "endLine": 127, "summary": "Extension to integer exponents via Complex.exp_int_mul. Both exponential and trigonometric forms for ℤ-valued n, covering negative powers (reciprocals of complex numbers on the unit circle)."},
-    {"id": "double-angle", "title": "Double Angle Formulas (n = 2)", "startLine": 128, "endLine": 147, "summary": "Derives double angle formula cos(2θ) + i sin(2θ) = (cos θ + i sin θ)² as the special case n = 2 of the main theorem."},
-    {"id": "triple-angle", "title": "Triple Angle Formulas (n = 3)", "startLine": 148, "endLine": 163, "summary": "Derives triple angle formula cos(3θ) + i sin(3θ) = (cos θ + i sin θ)³ as the special case n = 3."},
-    {"id": "roots-of-unity", "title": "Roots of Unity Connection", "startLine": 164, "endLine": 190, "summary": "Proves exp(2πik/n)^n = 1 via exp_nat_mul, field_simp to cancel n, then exp(k · 2πi) = (exp(2πi))^k = 1^k = 1. Uses Complex.exp_two_pi_mul_I."},
-    {"id": "special-cases", "title": "Special Cases and Applications", "startLine": 191, "endLine": 240, "summary": "n = 0 (trivial: x^0 = 1) and n = 1 (identity) special cases. Concluding discussion of applications in signal processing, electrical engineering, physics, and number theory. Final #check exports."}
+    {
+      "id": "header",
+      "title": "Introduction and Historical Context",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Module documentation: states De Moivre's formula, proof approach via Euler's formula and exp power rule, status, Mathlib dependencies, and historical note on de Moivre (1667-1754)."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: Trigonometric Form",
+      "startLine": 45,
+      "endLine": 77,
+      "summary": "Proves (cos θ + i sin θ)^n = cos(nθ) + i sin(nθ) by rewriting with Complex.exp_mul_I, applying Complex.exp_nat_mul, then converting back via simp."
+    },
+    {
+      "id": "exp-form",
+      "title": "Exponential Form",
+      "startLine": 78,
+      "endLine": 96,
+      "summary": "Two equivalent exponential formulations: (exp(θI))^n = exp(nθI) and (exp(Iθ))^n = exp(I·nθ). Both proved by exp_nat_mul plus ring."
+    },
+    {
+      "id": "integer-ext",
+      "title": "Integer Exponent Extension",
+      "startLine": 97,
+      "endLine": 127,
+      "summary": "Extension to integer exponents via Complex.exp_int_mul. Both exponential and trigonometric forms for ℤ-valued n, covering negative powers (reciprocals of complex numbers on the unit circle)."
+    },
+    {
+      "id": "double-angle",
+      "title": "Double Angle Formulas (n = 2)",
+      "startLine": 128,
+      "endLine": 147,
+      "summary": "Derives double angle formula cos(2θ) + i sin(2θ) = (cos θ + i sin θ)² as the special case n = 2 of the main theorem."
+    },
+    {
+      "id": "triple-angle",
+      "title": "Triple Angle Formulas (n = 3)",
+      "startLine": 148,
+      "endLine": 163,
+      "summary": "Derives triple angle formula cos(3θ) + i sin(3θ) = (cos θ + i sin θ)³ as the special case n = 3."
+    },
+    {
+      "id": "roots-of-unity",
+      "title": "Roots of Unity Connection",
+      "startLine": 164,
+      "endLine": 190,
+      "summary": "Proves exp(2πik/n)^n = 1 via exp_nat_mul, field_simp to cancel n, then exp(k · 2πi) = (exp(2πi))^k = 1^k = 1. Uses Complex.exp_two_pi_mul_I."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases and Applications",
+      "startLine": 191,
+      "endLine": 240,
+      "summary": "n = 0 (trivial: x^0 = 1) and n = 1 (identity) special cases. Concluding discussion of applications in signal processing, electrical engineering, physics, and number theory. Final #check exports."
+    }
   ],
   "crossReferences": [
     {

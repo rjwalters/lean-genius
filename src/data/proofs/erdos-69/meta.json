@@ -7,7 +7,7 @@
     "author": "Tao-Teräväinen (2025)",
     "sourceUrl": "https://erdosproblems.com/69",
     "date": "2025",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos69Problem.lean",
     "tags": [
       "erdos",
@@ -43,7 +43,8 @@
       "Formalization of Tao's identity: ∑ω(n)/2^n = ∑1/(2^p-1)",
       "Geometric series calculation for prime multiples",
       "Structure connecting Problem 69 to Problem 257"
-    ]
+    ],
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "Erdős Problem #69 asks about the irrationality of a sum involving the prime omega function ω(n), which counts distinct prime divisors. Erdős (1948) had proved that ∑d(n)/2^n is irrational, where d(n) is the divisor function.\n\nThe breakthrough came from Tao's observation that ∑ω(n)/2^n equals ∑1/(2^p-1) over primes p. This identity transforms the problem into a special case of Problem 257. Pratt (2024) proved irrationality conditional on a prime k-tuples conjecture. Finally, Tao and Teräväinen (2025) proved it unconditionally using advanced analytic number theory.",

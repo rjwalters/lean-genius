@@ -7,7 +7,7 @@
     "author": "Erdős-Hajnal (problem), Alon-Sudakov (2007 resolution)",
     "sourceUrl": "https://erdosproblems.com/804",
     "date": "2007",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos804Problem.lean",
     "tags": [
       "erdos",
@@ -53,7 +53,8 @@
       "alon_sudakov_tight_bound_2 axiom: tight bounds for (log n)³ case",
       "erdos_804 theorem: main disproof combining both conjectures",
       "erdos_804_resolution theorem: full resolution with Alon-Sudakov bounds"
-    ]
+    ],
+    "axiomCount": 5
   },
   "overview": {
     "historicalContext": "**Erdős Problem #804** was posed by Erdős and Hajnal as part of their study of local-to-global structure in graphs. The question asks: if every small induced subgraph has a good independent set, how good must the global independent set be?\n\n**Historical Development:**\n- **1991 (Erdős [Er91]):** Posed the problem with conjectured bounds.\n- **2007 (Alon-Sudakov [AlSu07]):** Completely resolved both questions in the NEGATIVE. The conjectured bounds were far too optimistic.\n\n**Key Insight:** Local independent set structure does NOT propagate as strongly to global structure as Erdős and Hajnal expected. The true bounds involve an extra log log n factor in the denominator.",

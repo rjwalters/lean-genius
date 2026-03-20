@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/410",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos410Problem.lean",
     "tags": [
       "erdos",
@@ -56,7 +56,8 @@
       "CatalanDicksonConjecture definition",
       "sigma_multiplicative theorem",
       "sigma_prime_pow theorem"
-    ]
+    ],
+    "axiomCount": 3
   },
   "overview": {
     "historicalContext": "This problem appears in [ErGr80] (Erdős-Graham 1980) and is discussed in Guy's 'Unsolved Problems in Number Theory' as Problem B9. It was also studied in 'On the normal behavior of the iterates of some arithmetical functions' by Erdős, Granville, Pomerance, and Spiro (1990).\n\nThe sum of divisors function σ(n) is fundamental in number theory. The question asks whether the iterated application σₖ(n) grows faster than any exponential c^k.\n\nRelated to perfect numbers (σ(n) = 2n), aliquot sequences (s(n) = σ(n) - n), and the Catalan-Dickson conjecture on aliquot sequence termination.\n\nOEIS sequence A007497 records related data.",

@@ -7,7 +7,7 @@
     "author": "Graham (1963), Alekseyev (2019)",
     "sourceUrl": "https://erdosproblems.com/351",
     "date": "1963",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos351Problem.lean",
     "tags": [
       "erdos",
@@ -46,7 +46,8 @@
       "Axiomatized Graham's theorem for p(x) = x",
       "Axiomatized Graham-Alekseyev theorem for p(x) = x²",
       "Verified bounds on n + 1/n"
-    ]
+    ],
+    "axiomCount": 3
   },
   "overview": {
     "historicalContext": "Erdős Problem #351 concerns the additive structure of sequences of the form {p(n) + 1/n : n ∈ ℕ} where p(x) is a polynomial. The notion of 'strong completeness' is a robust form of additive completeness that survives removal of any finite set of elements.\n\nGraham (1963) proved the foundational case p(x) = x, showing that {n + 1/n : n ∈ ℕ} is strongly complete. This was a significant result in additive number theory.\n\nThe case p(x) = x² was resolved much later by combining Graham's work with Alekseyev's 2019 results on partitions into squares. The general question—whether ALL polynomials with positive leading coefficient yield strongly complete sets—remains open.",

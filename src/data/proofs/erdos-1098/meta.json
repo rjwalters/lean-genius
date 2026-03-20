@@ -9,7 +9,13 @@
     "date": "1976",
     "status": "verified",
     "proofRepoPath": "Proofs/Erdos1098Problem.lean",
-    "tags": ["erdos", "group-theory", "graph-theory", "non-commuting-graph", "center"],
+    "tags": [
+      "erdos",
+      "group-theory",
+      "graph-theory",
+      "non-commuting-graph",
+      "center"
+    ],
     "badge": "mathlib",
     "sorries": 5,
     "erdosNumber": 1098,
@@ -17,11 +23,31 @@
     "erdosProblemStatus": "solved",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      { "theorem": "Subgroup", "description": "Subgroup structure and basic API", "module": "Mathlib.GroupTheory.Subgroup.Basic" },
-      { "theorem": "Subgroup.center", "description": "Center Z(G) as a subgroup", "module": "Mathlib.GroupTheory.Subgroup.Basic" },
-      { "theorem": "Subgroup.index", "description": "Index [G : H] of a subgroup", "module": "Mathlib.GroupTheory.Index" },
-      { "theorem": "Subgroup.mem_center_iff", "description": "Characterization of center membership", "module": "Mathlib.GroupTheory.Subgroup.Basic" },
-      { "theorem": "conjugacyClass", "description": "Conjugacy classes for BFC groups", "module": "Mathlib.GroupTheory.Subgroup.Basic" }
+      {
+        "theorem": "Subgroup",
+        "description": "Subgroup structure and basic API",
+        "module": "Mathlib.GroupTheory.Subgroup.Basic"
+      },
+      {
+        "theorem": "Subgroup.center",
+        "description": "Center Z(G) as a subgroup",
+        "module": "Mathlib.GroupTheory.Subgroup.Basic"
+      },
+      {
+        "theorem": "Subgroup.index",
+        "description": "Index [G : H] of a subgroup",
+        "module": "Mathlib.GroupTheory.Index"
+      },
+      {
+        "theorem": "Subgroup.mem_center_iff",
+        "description": "Characterization of center membership",
+        "module": "Mathlib.GroupTheory.Subgroup.Basic"
+      },
+      {
+        "theorem": "conjugacyClass",
+        "description": "Conjugacy classes for BFC groups",
+        "module": "Mathlib.GroupTheory.Subgroup.Basic"
+      }
     ],
     "originalContributions": [
       "nonCommuting and commuting relations with symmetry proof",
@@ -37,7 +63,8 @@
       "Examples: symmetric group and dihedral group clique bounds",
       "erdos_1098_summary combining equivalence and implication"
     ],
-    "dateAdded": "2026-01-19"
+    "dateAdded": "2026-01-19",
+    "axiomCount": 8
   },
   "overview": {
     "historicalContext": "This problem was asked by Erdős at the 15th Summer Research Institute of the Australian Mathematical Society in 1975. Neumann solved it in 1976, proving the elegant equivalence: the non-commuting graph Γ(G) has no infinite clique if and only if the center Z(G) has finite index in G. The bound on clique sizes is exactly the index [G : Z(G)]. This connects group-theoretic structure (center, index, cosets) with graph-theoretic properties (clique number).",
@@ -57,7 +84,9 @@
       "Mathlib.GroupTheory.Subgroup.Basic",
       "Mathlib.GroupTheory.Index"
     ],
-    "opens": ["Subgroup"],
+    "opens": [
+      "Subgroup"
+    ],
     "namespace": "Erdos1098",
     "lineCount": 319,
     "axiomCount": 8,

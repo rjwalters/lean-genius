@@ -7,7 +7,7 @@
     "author": "Folkman (1970 for k=2), Nešetřil-Rödl (1976 general case)",
     "sourceUrl": "https://erdosproblems.com/924",
     "date": "1976",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos924Problem.lean",
     "tags": [
       "erdos",
@@ -60,36 +60,36 @@
         "authors": "J. Folkman",
         "title": "Graphs with monochromatic complete subgraphs in every edge coloring",
         "year": "1970",
-        "venue": "SIAM J. Appl. Math.",
-        "note": "Proved the k = 2 case; published posthumously after Folkman's death in 1969"
+        "venue": "SIAM J. Appl. Math., 18, 19–24",
+        "note": "Proved k=2 case; published posthumously (Folkman died 1969). Introduced shift graph construction and Folkman graphs."
       },
       {
         "authors": "J. Nešetřil, V. Rödl",
         "title": "The Ramsey property for graphs with forbidden complete subgraphs",
         "year": "1976",
-        "venue": "J. Combinatorial Theory Ser. B",
-        "note": "Proved the general case for all k ≥ 2 using the Hales-Jewett theorem and partite constructions"
+        "venue": "J. Combinatorial Theory Ser. B, 20(3), 243–249",
+        "note": "Proved the general case for all k ≥ 2 using Hales-Jewett theorem and partite constructions."
+      },
+      {
+        "authors": "A. W. Hales, R. I. Jewett",
+        "title": "Regularity and positional games",
+        "year": "1963",
+        "venue": "Trans. Amer. Math. Soc., 106, 222–229",
+        "note": "The Hales-Jewett theorem, a key ingredient in the Nešetřil-Rödl proof."
       },
       {
         "authors": "R. L. Graham",
         "title": "On edgewise 2-colored graphs with monochromatic triangles and containing no complete hexagon",
         "year": "1968",
-        "venue": "J. Combinatorial Theory",
-        "note": "Early upper bound on the Folkman number f(3; 2)"
+        "venue": "J. Combinatorial Theory, 4, 300",
+        "note": "Early upper bound for f(3;2)."
       },
       {
-        "authors": "C. Lange, S. Radziszowski, X. Xu",
-        "title": "Use of ECJ and other tools in the computation of Folkman numbers",
+        "authors": "A. Lange, S. P. Radziszowski, X. Xu",
+        "title": "Use of MAX-CUT for Ramsey arrowing of triangles",
         "year": "2014",
-        "venue": "Preprint",
-        "note": "Determined the exact Folkman number f(3; 2) = 786"
-      },
-      {
-        "authors": "A. Dudek, V. Rödl",
-        "title": "On the Folkman number f(2, 3, 4)",
-        "year": "2008",
-        "venue": "Experimental Mathematics",
-        "note": "Improved upper bounds on small Folkman numbers via computational methods"
+        "venue": "J. Combinatorial Mathematics and Combinatorial Computing, 88, 61–71",
+        "note": "Contributed to establishing f(3;2) = 786."
       }
     ],
     "crossReferences": [
@@ -129,43 +129,7 @@
         "description": "The classical Ramsey theorem provides the foundation; Folkman graphs achieve Ramsey-type forcing without large cliques"
       }
     ],
-    "references": [
-      {
-        "authors": "J. Folkman",
-        "title": "Graphs with monochromatic complete subgraphs in every edge coloring",
-        "year": "1970",
-        "venue": "SIAM J. Appl. Math., 18, 19–24",
-        "note": "Proved k=2 case; published posthumously (Folkman died 1969). Introduced shift graph construction and Folkman graphs."
-      },
-      {
-        "authors": "J. Nešetřil, V. Rödl",
-        "title": "The Ramsey property for graphs with forbidden complete subgraphs",
-        "year": "1976",
-        "venue": "J. Combinatorial Theory Ser. B, 20(3), 243–249",
-        "note": "Proved the general case for all k ≥ 2 using Hales-Jewett theorem and partite constructions."
-      },
-      {
-        "authors": "A. W. Hales, R. I. Jewett",
-        "title": "Regularity and positional games",
-        "year": "1963",
-        "venue": "Trans. Amer. Math. Soc., 106, 222–229",
-        "note": "The Hales-Jewett theorem, a key ingredient in the Nešetřil-Rödl proof."
-      },
-      {
-        "authors": "R. L. Graham",
-        "title": "On edgewise 2-colored graphs with monochromatic triangles and containing no complete hexagon",
-        "year": "1968",
-        "venue": "J. Combinatorial Theory, 4, 300",
-        "note": "Early upper bound for f(3;2)."
-      },
-      {
-        "authors": "A. Lange, S. P. Radziszowski, X. Xu",
-        "title": "Use of MAX-CUT for Ramsey arrowing of triangles",
-        "year": "2014",
-        "venue": "J. Combinatorial Mathematics and Combinatorial Computing, 88, 61–71",
-        "note": "Contributed to establishing f(3;2) = 786."
-      }
-    ]
+    "axiomCount": 5
   },
   "overview": {
     "historicalContext": "A question posed by Erdős and Hajnal in Ramsey theory, asking whether graphs can exhibit Ramsey-type behavior while avoiding large cliques.\n\nThe classical Ramsey theorem (1930) guarantees that sufficiently large complete graphs K_n force monochromatic K_l in any k-coloring. But K_n contains all cliques up to K_n. The Erdős-Hajnal question asks: can we achieve the same Ramsey forcing while forbidding K_{l+1}?\n\nFolkman (1970) proved the k = 2 case using shift graph constructions, introducing what are now called 'Folkman graphs'. His paper was published posthumously — Folkman died in 1969. Nešetřil and Rödl (1976) proved the general case for all k ≥ 2 using the Hales-Jewett theorem and partite constructions.\n\nThe Folkman number f(l; k) — the minimum vertices needed — has been an active area of research. The most-studied case f(3; 2) = 786 was determined through decades of work by Graham, Spencer, Frankl-Rödl, Dudek-Rödl, Lange-Radziszowski-Xu, and others.",

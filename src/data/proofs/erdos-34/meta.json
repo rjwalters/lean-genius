@@ -7,7 +7,7 @@
     "author": "Erdos (1977); Disproved by Hegyvari (1986), Konieczny (2015)",
     "sourceUrl": "https://erdosproblems.com/34",
     "date": "1977",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos34Problem.lean",
     "tags": [
       "erdos",
@@ -46,7 +46,8 @@
       "Konieczny's n^2/4 bound",
       "Bounds on max/min f(n), g(n)",
       "Identity permutation satisfies o(n^2)"
-    ]
+    ],
+    "axiomCount": 8
   },
   "overview": {
     "historicalContext": "Erdos observed that the identity permutation iota has S(iota) = o(n^2), where S counts distinct consecutive sums. He conjectured this holds for ALL permutations. This turned out to be spectacularly wrong!\n\nHegyvari (1986) gave the first counterexample with S(pi) >= (1/18)n^2. Konieczny (2015) showed the conjecture is 'extremely false' - there exist permutations with S(pi) >= n^2/4, which is asymptotically optimal.\n\nInterestingly, random permutations have S(pi) ~ (1 + e^-2)/4 * n^2 ~ 0.284n^2.",

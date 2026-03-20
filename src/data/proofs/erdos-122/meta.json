@@ -23,14 +23,19 @@
     "erdosNumber": 122,
     "erdosUrl": "https://erdosproblems.com/122",
     "erdosProblemStatus": "open",
-    "relatedProblems": ["erdos-28", "erdos-234", "erdos-289"],
+    "relatedProblems": [
+      "erdos-28",
+      "erdos-234",
+      "erdos-289"
+    ],
     "references": [
       "Erdős–Pomerance–Sárközy (1997): On the distribution of the values of f(n) + g(n)",
       "Hardy–Ramanujan (1917): The normal number of prime factors of a number n",
       "Erdős–Kac (1940): The Gaussian law of errors in the theory of additive number-theoretic functions",
       "Pomerance (1984): On the distribution of round numbers",
       "https://erdosproblems.com/122"
-    ]
+    ],
+    "axiomCount": 2
   },
   "overview": {
     "historicalContext": "Erdős, Pomerance, and Sárközy introduced the Short Interval Concentration Property (SICP) in their 1997 paper [ErPoSa97], asking which arithmetic functions $f$ cause $n + f(n)$ to cluster in short intervals $(x, x + F(x)]$ far more than expected. The question is deeply connected to the Hardy–Ramanujan theorem (1917), which showed that $\\omega(n) \\sim \\log\\log n$ for 'almost all' $n$, and the Erdős–Kac theorem (1940), which proved $\\omega(n)$ follows a Gaussian distribution. The key dichotomy is between **erratic** functions like $d(n)$ and $\\omega(n)$ — which take exceptionally large values on highly composite and smooth numbers, creating clusters — and **smooth** functions like $\\varphi(n) \\sim (6/\\pi^2)n$ and $\\sigma(n) \\sim (\\pi^2/6)n$, whose average-order behavior prevents concentration. Erdős conjectured that smoothness of the average order is the obstruction to SICP. The general characterization of which multiplicative functions have SICP remains a major open problem in analytic number theory.",

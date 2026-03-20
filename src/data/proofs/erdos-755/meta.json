@@ -7,7 +7,7 @@
     "author": "Clemen-Dumitrescu-Liu (2025 solution), Lenz/Erdős-Purdy (1975 construction)",
     "sourceUrl": "https://erdosproblems.com/755",
     "date": "2025",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos755Problem.lean",
     "tags": [
       "erdos",
@@ -53,7 +53,8 @@
       "cdl_2025_main axiom: T₆(n) = (1/27 + o(1))n³",
       "cdl_general_dimension axiom: formula for even d ≥ 6",
       "erdos_755_summary: combined main results"
-    ]
+    ],
+    "axiomCount": 7
   },
   "overview": {
     "historicalContext": "**Erdős Problem #755: Equilateral Triangles in ℝ⁶**\n\nThis problem concerns the maximum number of equilateral triangles that can be formed by n points in 6-dimensional Euclidean space.\n\n**Key History:**\n- Lenz (credited by Erdős): Original lower bound construction\n- Erdős-Purdy (1975): Published the orthogonal circles construction\n- Erdős (1994): Conjectured the upper bound T₆ᵘ(n) ≤ (1/27 + o(1))n³\n- Clemen-Dumitrescu-Liu (2025): Proved the conjecture in a stronger form\n\n**Mathematical Setting:**\nIn higher dimensions, point configurations can form many more equilateral triangles than in the plane. The dimension d = 6 is special: it's the first even dimension where cubic growth T_d(n) = Θ(n³) occurs.",

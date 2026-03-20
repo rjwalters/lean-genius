@@ -7,16 +7,37 @@
     "author": "Archimedes (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Area_of_a_circle",
     "date": "~250 BCE",
-    "status": "complete",
-    "tags": ["geometry", "measure-theory", "classic", "beginner"],
+    "status": "verified",
+    "tags": [
+      "geometry",
+      "measure-theory",
+      "classic",
+      "beginner"
+    ],
     "proofRepoPath": "Proofs/AreaOfCircle.lean",
     "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
-      {"theorem": "Complex.volume_ball", "description": "Lebesgue measure of open ball in ℂ equals πr²", "module": "Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls"},
-      {"theorem": "Complex.volume_closedBall", "description": "Lebesgue measure of closed ball in ℂ equals πr²", "module": "Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls"},
-      {"theorem": "MeasureTheory.volume", "description": "Lebesgue measure on measurable spaces", "module": "Mathlib.MeasureTheory.Measure.MeasureSpace"},
-      {"theorem": "NNReal.pi", "description": "π as a non-negative real number", "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"}
+      {
+        "theorem": "Complex.volume_ball",
+        "description": "Lebesgue measure of open ball in ℂ equals πr²",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls"
+      },
+      {
+        "theorem": "Complex.volume_closedBall",
+        "description": "Lebesgue measure of closed ball in ℂ equals πr²",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls"
+      },
+      {
+        "theorem": "MeasureTheory.volume",
+        "description": "Lebesgue measure on measurable spaces",
+        "module": "Mathlib.MeasureTheory.Measure.MeasureSpace"
+      },
+      {
+        "theorem": "NNReal.pi",
+        "description": "π as a non-negative real number",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      }
     ],
     "originalContributions": [
       "Complete formalization of A = πr² using Lebesgue measure in ℂ ≅ ℝ²",
@@ -25,7 +46,8 @@
       "Pedagogical documentation connecting to Archimedes' method of exhaustion"
     ],
     "dateAdded": "12/26/25",
-    "wiedijkNumber": 9
+    "wiedijkNumber": 9,
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "The formula $A = \\pi r^2$ was known empirically to ancient Babylonians and Egyptians (the Rhind Papyrus, c. 1650 BCE, approximates $\\pi \\approx 256/81$). Archimedes of Syracuse (c. 287–212 BCE) gave the first rigorous proof using the **method of exhaustion**: he inscribed and circumscribed regular polygons with increasing numbers of sides, proving that the area of a circle equals that of a right triangle with legs equal to the circumference and radius. This argument anticipated integral calculus by nearly two millennia. In modern mathematics, the area is formalized as the Lebesgue measure of the 2-dimensional disk. The formula is #9 on Freek Wiedijk's list of 100 famous theorems formalized in proof assistants. The Lean 4 proof leverages Mathlib's `Complex.volume_ball`, which computes the volume of balls in $\\mathbb{C} \\cong \\mathbb{R}^2$ using the general $n$-dimensional volume formula involving the gamma function.",

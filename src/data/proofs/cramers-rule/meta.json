@@ -8,15 +8,36 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Cramer%27s_rule",
     "date": "1750",
     "status": "verified",
-    "tags": ["linear-algebra", "matrices", "classic", "intermediate"],
+    "tags": [
+      "linear-algebra",
+      "matrices",
+      "classic",
+      "intermediate"
+    ],
     "proofRepoPath": "Proofs/CramersRule.lean",
     "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
-      { "theorem": "Matrix.mulVec_cramer", "description": "A * cramer(A,b) = det(A) • b", "module": "Mathlib.LinearAlgebra.Matrix.Adjugate" },
-      { "theorem": "Matrix.cramer_apply", "description": "cramer(A,b)_i = det(A with col i replaced by b)", "module": "Mathlib.LinearAlgebra.Matrix.Adjugate" },
-      { "theorem": "Matrix.cramer_eq_adjugate_mulVec", "description": "Cramer vector equals adjugate times b", "module": "Mathlib.LinearAlgebra.Matrix.Adjugate" },
-      { "theorem": "Matrix.mul_adjugate", "description": "A * adj(A) = det(A) * I", "module": "Mathlib.LinearAlgebra.Matrix.Adjugate" }
+      {
+        "theorem": "Matrix.mulVec_cramer",
+        "description": "A * cramer(A,b) = det(A) • b",
+        "module": "Mathlib.LinearAlgebra.Matrix.Adjugate"
+      },
+      {
+        "theorem": "Matrix.cramer_apply",
+        "description": "cramer(A,b)_i = det(A with col i replaced by b)",
+        "module": "Mathlib.LinearAlgebra.Matrix.Adjugate"
+      },
+      {
+        "theorem": "Matrix.cramer_eq_adjugate_mulVec",
+        "description": "Cramer vector equals adjugate times b",
+        "module": "Mathlib.LinearAlgebra.Matrix.Adjugate"
+      },
+      {
+        "theorem": "Matrix.mul_adjugate",
+        "description": "A * adj(A) = det(A) * I",
+        "module": "Mathlib.LinearAlgebra.Matrix.Adjugate"
+      }
     ],
     "originalContributions": [
       "General form A * cramer(A,b) = det(A) • b (no invertibility)",
@@ -27,14 +48,39 @@
       "2x2 system example over a field"
     ],
     "references": [
-      {"authors": "G. Cramer", "title": "Introduction à l'Analyse des Lignes Courbes Algébriques", "year": "1750", "venue": "Geneva", "note": "First published statement of Cramer's rule for systems of polynomial equations"},
-      {"authors": "C. Maclaurin", "title": "A Treatise of Algebra", "year": "1748", "venue": "London (posthumous)", "note": "Contains the rule independently, predating Cramer's publication but published posthumously"},
-      {"authors": "A. Cayley", "title": "A Memoir on the Theory of Matrices", "year": "1858", "venue": "Philosophical Transactions of the Royal Society", "note": "Systematic matrix algebra framework including the adjugate identity"},
-      {"authors": "E. H. Bareiss", "title": "Sylvester's identity and multistep integer-preserving Gaussian elimination", "year": "1968", "venue": "Mathematics of Computation", "note": "Fraction-free algorithm for determinants, an alternative to Cramer's rule for integer matrices"}
+      {
+        "authors": "G. Cramer",
+        "title": "Introduction à l'Analyse des Lignes Courbes Algébriques",
+        "year": "1750",
+        "venue": "Geneva",
+        "note": "First published statement of Cramer's rule for systems of polynomial equations"
+      },
+      {
+        "authors": "C. Maclaurin",
+        "title": "A Treatise of Algebra",
+        "year": "1748",
+        "venue": "London (posthumous)",
+        "note": "Contains the rule independently, predating Cramer's publication but published posthumously"
+      },
+      {
+        "authors": "A. Cayley",
+        "title": "A Memoir on the Theory of Matrices",
+        "year": "1858",
+        "venue": "Philosophical Transactions of the Royal Society",
+        "note": "Systematic matrix algebra framework including the adjugate identity"
+      },
+      {
+        "authors": "E. H. Bareiss",
+        "title": "Sylvester's identity and multistep integer-preserving Gaussian elimination",
+        "year": "1968",
+        "venue": "Mathematics of Computation",
+        "note": "Fraction-free algorithm for determinants, an alternative to Cramer's rule for integer matrices"
+      }
     ],
     "dateAdded": "12/26/25",
     "wiedijkNumber": 97,
-    "mathlib_version": "4.15.0"
+    "mathlib_version": "4.15.0",
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "**Multiple Independent Discoveries**\n\n**Gabriel Cramer** (1704-1752) published the rule in his 1750 *Introduction à l'Analyse des Lignes Courbes Algébriques*, deriving it for systems of polynomial equations arising from curve intersections. However, **Colin Maclaurin** had the result by 1729 (published posthumously in 1748 in *Treatise of Algebra*), and the method appears in Chinese mathematics as early as the 12th century. **Leibniz** (1693) also developed determinant-like methods for solving linear systems in a letter to l'Hôpital, predating both Cramer and Maclaurin, though without systematic matrix notation.\n\n**The Adjugate Connection**\n\nThe mathematical backbone is the adjugate (classical adjoint) matrix identity $A \\cdot \\text{adj}(A) = \\det(A) \\cdot I$, which holds over any commutative ring — a remarkable algebraic fact requiring no invertibility hypothesis. **Cayley** (1858) and **Hamilton** developed the matrix algebra framework that made this identity precise. The adjugate's entries are signed minors (cofactors), connecting Cramer's rule to the Laplace expansion of determinants along arbitrary rows or columns. This identity also underpins the Cayley-Hamilton theorem: substituting $A$ for $\\lambda$ in $\\det(A - \\lambda I)$ yields the zero matrix.\n\n**Computational Perspective**\n\nDespite its theoretical elegance, Cramer's rule has $O(n! \\cdot n)$ naive complexity via the Leibniz formula for determinants. **Gaussian elimination** achieves $O(n^3)$, and **Bareiss's algorithm** (1968) computes integer determinants without fractions in $O(n^3)$ as well. Cramer's rule remains valuable for: (1) theoretical proofs about solution existence and continuity of solutions as functions of parameters, (2) small systems ($n \\leq 3$) in engineering, (3) symbolic computation where entries are polynomials or formal power series, and (4) proving structural results like the Cayley-Hamilton theorem.\n\nThis is #97 on **Freek Wiedijk**'s list of 100 theorems formalized in proof assistants.",

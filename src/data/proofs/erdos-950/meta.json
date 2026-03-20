@@ -20,7 +20,8 @@
     "sorries": 0,
     "erdosNumber": 950,
     "erdosUrl": "https://erdosproblems.com/950",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "axiomCount": 12
   },
   "overview": {
     "historicalContext": "This problem concerns the function f(n) = ∑_{p<n} 1/(n−p), which measures how 'close' n is to primes by weighting nearby primes more heavily. De Bruijn, Erdős, and Turán showed that ∑_{n<x} f(n) ~ x and ∑_{n<x} f(n)² ~ x, meaning f(n) averages to 1 and concentrates near 1. The three questions probe the extremal behavior.",

@@ -8,18 +8,51 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Binomial_theorem",
     "date": "~1000 (al-Karaji), 1665 (Newton)",
     "status": "verified",
-    "tags": ["algebra", "combinatorics", "classic", "beginner"],
+    "tags": [
+      "algebra",
+      "combinatorics",
+      "classic",
+      "beginner"
+    ],
     "proofRepoPath": "Proofs/BinomialTheorem.lean",
     "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
-      {"theorem": "add_pow", "description": "The binomial theorem expansion for commutative semirings", "module": "Mathlib.Data.Nat.Choose.Sum"},
-      {"theorem": "Nat.sum_range_choose", "description": "Sum of binomial coefficients equals 2^n", "module": "Mathlib.Data.Nat.Choose.Sum"},
-      {"theorem": "Int.alternating_sum_range_choose", "description": "Alternating sum of binomial coefficients", "module": "Mathlib.Data.Nat.Choose.Sum"},
-      {"theorem": "Nat.choose_succ_succ", "description": "Pascal's identity: C(n+1,k+1) = C(n,k) + C(n,k+1)", "module": "Mathlib.Data.Nat.Choose.Basic"},
-      {"theorem": "Nat.choose_symm", "description": "Symmetry: C(n,k) = C(n,n-k)", "module": "Mathlib.Data.Nat.Choose.Basic"},
-      {"theorem": "Nat.choose_zero_right", "description": "C(n,0) = 1", "module": "Mathlib.Data.Nat.Choose.Basic"},
-      {"theorem": "Nat.choose_self", "description": "C(n,n) = 1", "module": "Mathlib.Data.Nat.Choose.Basic"}
+      {
+        "theorem": "add_pow",
+        "description": "The binomial theorem expansion for commutative semirings",
+        "module": "Mathlib.Data.Nat.Choose.Sum"
+      },
+      {
+        "theorem": "Nat.sum_range_choose",
+        "description": "Sum of binomial coefficients equals 2^n",
+        "module": "Mathlib.Data.Nat.Choose.Sum"
+      },
+      {
+        "theorem": "Int.alternating_sum_range_choose",
+        "description": "Alternating sum of binomial coefficients",
+        "module": "Mathlib.Data.Nat.Choose.Sum"
+      },
+      {
+        "theorem": "Nat.choose_succ_succ",
+        "description": "Pascal's identity: C(n+1,k+1) = C(n,k) + C(n,k+1)",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.choose_symm",
+        "description": "Symmetry: C(n,k) = C(n,n-k)",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.choose_zero_right",
+        "description": "C(n,0) = 1",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.choose_self",
+        "description": "C(n,n) = 1",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
     ],
     "originalContributions": [
       "Main binomial theorem with explicit summation form via add_pow and ring normalization",
@@ -31,7 +64,8 @@
       "Documentation connecting binomial theorem to Pascal's triangle, combinatorics, and Newton's generalization"
     ],
     "dateAdded": "12/26/25",
-    "wiedijkNumber": 44
+    "wiedijkNumber": 44,
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "The binomial theorem has one of the longest histories in mathematics, with contributions from multiple civilizations. Special cases like $(a + b)^2 = a^2 + 2ab + b^2$ appear in Euclid's *Elements* (c. 300 BCE). The Persian mathematician **al-Karajī** (c. 953--1029) described the general pattern of binomial coefficients and their triangular arrangement, which the Chinese mathematician **Yang Hui** independently published in 1261. In Europe, **Blaise Pascal** systematized the theory of the coefficient triangle in his 1654 *Traité du triangle arithmétique*, establishing the recurrence $\\binom{n+1}{k+1} = \\binom{n}{k} + \\binom{n}{k+1}$ and connecting it to probability theory.\n\nThe most profound generalization came from **Isaac Newton** in 1665, who extended the theorem to non-integer exponents: $(1 + x)^\\alpha = \\sum_{k=0}^{\\infty} \\binom{\\alpha}{k} x^k$ where $\\binom{\\alpha}{k} = \\alpha(\\alpha-1)\\cdots(\\alpha-k+1)/k!$. Newton's generalized binomial series was a key tool in his development of calculus and the discovery of the power series for functions like $(1 + x)^{1/2}$ and $(1 + x)^{-1}$. The theorem is entry #44 on Wiedijk's list of 100 famous theorems.\n\nThe Lean 4 formalization works in the generality of **commutative semirings** — not just integers or reals — using Mathlib's `add_pow` theorem. This level of generality means the same proof applies to integers, rationals, reals, complex numbers, polynomials, and any other commutative semiring. The file proves the main theorem plus several corollaries: the sum of coefficients equals $2^n$, the alternating sum vanishes for $n \\geq 1$, Pascal's identity, symmetry, boundary values, and explicit expansions for $n = 2$ and $n = 3$.",

@@ -46,7 +46,8 @@
       "Dual osculator sum theorem: d | (c_pos + c_neg) when coprime to 10",
       "Concrete instantiations for d=7, 11, 13, 17, 19 from unified framework"
     ],
-    "dateAdded": "03/18/26"
+    "dateAdded": "03/18/26",
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "The parent proof (divisibility-truncation-general) established separate positive and negative osculator theorems. The positive case handles d | (10c - 1), giving d | n <-> d | (n/10 + c*(n%10)). The negative case handles d | (10c + 1), giving d | n <-> d | (n/10 - c*(n%10)). This open question asked whether both can be unified into a single theorem. The answer is yes: the negative case is simply the positive case with c replaced by -c_neg, since d | (10*c_neg + 1) implies d | (10*(-c_neg) - 1).",

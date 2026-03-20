@@ -52,9 +52,10 @@
     "relatedProblems": [
       {
         "id": "erdos-646",
-        "relationship": "Related Erd\u0151s problem on factorial divisibility and prime power structure"
+        "relationship": "Related Erdős problem on factorial divisibility and prime power structure"
       }
-    ]
+    ],
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1979, asking a counterintuitive question: can a shorter interval of consecutive integers have a larger LCM than a longer interval starting further along?\n\nThe referee of the 1979 paper (later identified as John Selfridge) immediately found examples: M(96,7) > M(104,8). The full answer—infinitely many such comparisons—was proved by Stijn Cambie in 2024, with a Lean-verified proof showing that for all sufficiently large k, such pairs exist.",

@@ -7,9 +7,15 @@
     "author": "Erdős-Simonovits (problem)",
     "sourceUrl": "https://erdosproblems.com/573",
     "date": "",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos573Problem.lean",
-    "tags": ["erdos", "extremal-graph-theory", "turan", "forbidden-cycles", "open"],
+    "tags": [
+      "erdos",
+      "extremal-graph-theory",
+      "turan",
+      "forbidden-cycles",
+      "open"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 573,
@@ -17,9 +23,21 @@
     "erdosProblemStatus": "open",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      { "theorem": "SimpleGraph", "description": "Simple graph structure", "module": "Mathlib.Combinatorics.SimpleGraph.Basic" },
-      { "theorem": "Real", "description": "Real number type for asymptotics", "module": "Mathlib.Data.Real.Basic" },
-      { "theorem": "Nat.Basic", "description": "Natural number basics", "module": "Mathlib.Data.Nat.Basic" }
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Real",
+        "description": "Real number type for asymptotics",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Nat.Basic",
+        "description": "Natural number basics",
+        "module": "Mathlib.Data.Nat.Basic"
+      }
     ],
     "originalContributions": [
       "Formalization of triangle-free and C₄-free predicates",
@@ -30,7 +48,8 @@
       "Upper and lower bound structure",
       "Projective plane construction reference"
     ],
-    "dateAdded": "2026-01-19"
+    "dateAdded": "2026-01-19",
+    "axiomCount": 11
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and Simonovits and concerns the Turán-type extremal function for graphs forbidding both triangles (C₃) and 4-cycles (C₄). The celebrated Kővári-Sós-Turán theorem from 1954 established that ex(n; C₄) ~ (1/2)n^(3/2). Erdős and Simonovits proved that ex(n; {C₄, C₅}) = (n/2)^(3/2) + O(n). This problem asks whether forbidding triangles instead of 5-cycles gives the same (n/2)^(3/2) asymptotic.\n\nThe question is subtle: while ex(n; {C₃, C₄}) ≤ ex(n; C₄) trivially, the conjectured asymptotic (n/2)^(3/2) is smaller than (1/2)n^(3/2) by a factor of √2. This would mean the triangle-free constraint actually reduces the leading constant.",

@@ -8,25 +8,73 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Fundamental_theorem_of_arithmetic",
     "date": "~300 BCE (Euclid), 1801 (Gauss)",
     "status": "verified",
-    "tags": ["number-theory", "primes", "classic", "beginner"],
+    "tags": [
+      "number-theory",
+      "primes",
+      "classic",
+      "beginner"
+    ],
     "proofRepoPath": "Proofs/FundamentalArithmetic.lean",
     "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
-      {"theorem": "Nat.prod_primeFactorsList", "description": "Product of factors equals the number", "module": "Mathlib.Data.Nat.Factors"},
-      {"theorem": "Nat.primeFactorsList_unique", "description": "Uniqueness of prime factorization up to permutation", "module": "Mathlib.Data.Nat.Factors"},
-      {"theorem": "Nat.Prime.dvd_mul", "description": "Euclid's lemma: p | ab implies p | a or p | b", "module": "Mathlib.Data.Nat.Prime.Basic"},
-      {"theorem": "UniqueFactorizationMonoid", "description": "ℕ is a unique factorization monoid", "module": "Mathlib.RingTheory.UniqueFactorizationDomain.Basic"}
+      {
+        "theorem": "Nat.prod_primeFactorsList",
+        "description": "Product of factors equals the number",
+        "module": "Mathlib.Data.Nat.Factors"
+      },
+      {
+        "theorem": "Nat.primeFactorsList_unique",
+        "description": "Uniqueness of prime factorization up to permutation",
+        "module": "Mathlib.Data.Nat.Factors"
+      },
+      {
+        "theorem": "Nat.Prime.dvd_mul",
+        "description": "Euclid's lemma: p | ab implies p | a or p | b",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "UniqueFactorizationMonoid",
+        "description": "ℕ is a unique factorization monoid",
+        "module": "Mathlib.RingTheory.UniqueFactorizationDomain.Basic"
+      }
     ],
     "references": [
-      {"authors": "Euclid", "title": "Elements, Books VII and IX", "year": "c. 300 BCE", "note": "VII.31: existence of prime factors; VII.32, IX.14: foundations of uniqueness"},
-      {"authors": "C. F. Gauss", "title": "Disquisitiones Arithmeticae", "year": "1801", "venue": "Leipzig", "note": "First explicit statement and proof of the Fundamental Theorem of Arithmetic (§16)"},
-      {"authors": "G. H. Hardy, E. M. Wright", "title": "An Introduction to the Theory of Numbers", "year": "1938", "venue": "Oxford University Press", "note": "Standard modern treatment of unique factorization and its consequences"},
-      {"authors": "E. Zermelo", "title": "Elementare Betrachtungen zur Theorie der Primzahlen", "year": "1934", "venue": "Nachrichten der Gesellschaft der Wissenschaften zu Göttingen", "note": "Simplified proof of unique factorization using well-ordering"}
+      {
+        "authors": "Euclid",
+        "title": "Elements, Books VII and IX",
+        "year": "c. 300 BCE",
+        "note": "VII.31: existence of prime factors; VII.32, IX.14: foundations of uniqueness"
+      },
+      {
+        "authors": "C. F. Gauss",
+        "title": "Disquisitiones Arithmeticae",
+        "year": "1801",
+        "venue": "Leipzig",
+        "note": "First explicit statement and proof of the Fundamental Theorem of Arithmetic (§16)"
+      },
+      {
+        "authors": "G. H. Hardy, E. M. Wright",
+        "title": "An Introduction to the Theory of Numbers",
+        "year": "1938",
+        "venue": "Oxford University Press",
+        "note": "Standard modern treatment of unique factorization and its consequences"
+      },
+      {
+        "authors": "E. Zermelo",
+        "title": "Elementare Betrachtungen zur Theorie der Primzahlen",
+        "year": "1934",
+        "venue": "Nachrichten der Gesellschaft der Wissenschaften zu Göttingen",
+        "note": "Simplified proof of unique factorization using well-ordering"
+      }
     ],
-    "originalContributions": ["Existence and uniqueness proofs", "Pedagogical examples"],
+    "originalContributions": [
+      "Existence and uniqueness proofs",
+      "Pedagogical examples"
+    ],
     "dateAdded": "12/26/25",
-    "wiedijkNumber": 80
+    "wiedijkNumber": 80,
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "The Fundamental Theorem of Arithmetic has roots in Euclid's *Elements* (c. 300 BCE): Book VII, Proposition 31 proves every composite number has a prime factor (existence), while Propositions 32 and Book IX, Proposition 14 establish key steps toward uniqueness. However, Euclid never stated the theorem explicitly. Carl Friedrich Gauss gave the first rigorous proof in §16 of his *Disquisitiones Arithmeticae* (1801), recognizing that uniqueness requires Euclid's Lemma ($p \\mid ab \\Rightarrow p \\mid a \\lor p \\mid b$) as a non-trivial ingredient. Ernst Zermelo (1934) gave an elegant proof using the well-ordering principle. The theorem fails in certain algebraic number rings — for example, in $\\mathbb{Z}[\\sqrt{-5}]$, $6 = 2 \\cdot 3 = (1+\\sqrt{-5})(1-\\sqrt{-5})$ has two distinct factorizations into irreducibles. Kummer's introduction of 'ideal numbers' (1847) to restore unique factorization led to Dedekind's theory of ideals and ultimately to the algebraic concept of a **Unique Factorization Domain** (UFD). This is #80 on Freek Wiedijk's list of 100 theorems formalized in proof assistants.",

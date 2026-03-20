@@ -37,7 +37,8 @@
       "Cardinality bounds and properties"
     ],
     "dateAdded": "12/26/25",
-    "wiedijkNumber": 52
+    "wiedijkNumber": 52,
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "The fact that a set with n elements has 2^n subsets is one of the most fundamental results in combinatorics. It appears in:\n\n- **Set Theory**: The power set P(S) has cardinality 2^|S|\n- **Probability Theory**: Sample spaces often have 2^n outcomes\n- **Computer Science**: n bits can represent 2^n states\n- **Algebra**: Boolean algebras have 2^n elements\n\nThe connection to binary representations makes this result essential for discrete mathematics and computer science.",

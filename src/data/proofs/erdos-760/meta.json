@@ -7,7 +7,7 @@
     "author": "Erdős & Gimbel (problem), Alon-Krivelevich-Sudakov (solution)",
     "sourceUrl": "https://erdosproblems.com/760",
     "date": "1997",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos760Problem.lean",
     "tags": [
       "erdos",
@@ -59,9 +59,10 @@
     "relatedProblems": [
       {
         "id": "erdos-789",
-        "relationship": "Related Erd\u0151s problem in combinatorics/graph theory"
+        "relationship": "Related Erdős problem in combinatorics/graph theory"
       }
-    ]
+    ],
+    "axiomCount": 9
   },
   "overview": {
     "historicalContext": "The cochromatic number ζ(G) is the minimum number of colors needed to color vertices so each color class is either a clique or an independent set (a 'homogeneous' set). Erdős and Gimbel posed this problem in 1993, asking whether graphs with high chromatic number must contain subgraphs with high cochromatic number. They proved a weaker bound √(m / log m). The full bound m / log m was proved by Alon, Krivelevich, and Sudakov in 1997 using Ramsey-theoretic techniques.",

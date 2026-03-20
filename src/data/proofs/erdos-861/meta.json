@@ -7,7 +7,7 @@
     "author": "Paul Erdős, Peter Cameron",
     "sourceUrl": "https://erdosproblems.com/861",
     "date": "",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos861Problem.lean",
     "tags": [
       "erdos",
@@ -50,7 +50,8 @@
       "Saxton-Thomason and KLRS bounds as axioms",
       "Proof that combined bounds hold"
     ],
-    "dateAdded": "2026-01-19"
+    "dateAdded": "2026-01-19",
+    "axiomCount": 7
   },
   "overview": {
     "historicalContext": "This problem, posed by Cameron and Erdős, asks about counting Sidon sets (sets where all pairwise sums are distinct). It connects to additive combinatorics and the hypergraph container method. The problem appears as C9 in Guy's 'Unsolved Problems in Number Theory'.",

@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/1105",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1105Problem.lean",
     "tags": [
       "erdos",
@@ -58,7 +58,8 @@
       "simonovits_sos_path axiom: holds for n >= ck^2",
       "yuan_path_announced axiom",
       "turan definition: extremal graph theory connection"
-    ]
+    ],
+    "axiomCount": 8
   },
   "overview": {
     "historicalContext": "Erdős, Simonovits, and Sós introduced anti-Ramsey theory in their 1975 paper, asking for the maximum number of colors in an edge-coloring of K_n that avoids a rainbow (all-distinct-colors) copy of a given graph G.\n\nThe problem connects Ramsey theory (which minimizes colors to force monochromatic subgraphs) with extremal graph theory. While classical Ramsey theory asks 'how many colors before monochromatic H?', anti-Ramsey asks 'how many colors while avoiding rainbow H?'\n\nThe case AR(n, C_3) = n - 1 was proven in the original paper. The general cycle formula remains open, while the path formula has seen recent progress with Yuan's 2021 announcement.",

@@ -7,7 +7,7 @@
     "author": "Erdős–Graham (1980, open)",
     "sourceUrl": "https://erdosproblems.com/311",
     "date": "1980",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos311Problem.lean",
     "tags": [
       "erdos",
@@ -59,7 +59,8 @@
       "delta_lower_bound axiom (lcm/PNT lower bound)",
       "tang_upper_bound axiom (subexponential upper bound)",
       "erdos_311_conjecture axiom (ε-N₀ form)"
-    ]
+    ],
+    "axiomCount": 5
   },
   "sections": [
     {

@@ -7,7 +7,7 @@
     "author": "Moser (original), Furstenberg-Katznelson (1991 solution), Ellenberg-Gijswijt (2016 bound)",
     "sourceUrl": "https://erdosproblems.com/185",
     "date": "1991",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos185Problem.lean",
     "tags": [
       "erdos",
@@ -59,7 +59,8 @@
       "meshulam_upper_bound axiom: f₃(n) ≤ 3^n/n",
       "ellenberg_gijswijt_2016 axiom: f₃(n) ≤ c^n with c < 3",
       "Small value axioms: f₃(1)=2, f₃(2)=4, f₃(3)=9, f₃(4)=20"
-    ]
+    ],
+    "axiomCount": 5
   },
   "overview": {
     "historicalContext": "This problem asks about cap sets - subsets of {0,1,2}^n with no three collinear points (where x + z = 2y). Moser posed the question and showed f₃(n) ≫ 3^n/√n. The density Hales-Jewett theorem, proved by Furstenberg-Katznelson (1991), implies f₃(n) = o(3^n). More recently, Ellenberg-Gijswijt (2016) proved f₃(n) ≤ c^n for c < 3, a major breakthrough.",

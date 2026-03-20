@@ -7,7 +7,7 @@
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/1059",
     "date": "1980",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1059Problem.lean",
     "tags": [
       "erdos",
@@ -25,10 +25,26 @@
     "dateAdded": "2026-01-19",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      { "theorem": "Nat.Prime", "description": "Primality predicate for compositeness checks", "module": "Mathlib.Data.Nat.Prime.Basic" },
-      { "theorem": "Nat.factorial", "description": "Factorial function for subtraction candidates", "module": "Mathlib.Data.Nat.Factorial.Basic" },
-      { "theorem": "Set.Infinite", "description": "Infinite set predicate for the main conjecture", "module": "Mathlib.Data.Set.Basic" },
-      { "theorem": "Finset", "description": "Finite set operations for example verification", "module": "Mathlib.Data.Finset.Basic" }
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate for compositeness checks",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.factorial",
+        "description": "Factorial function for subtraction candidates",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Infinite set predicate for the main conjecture",
+        "module": "Mathlib.Data.Set.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite set operations for example verification",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
     ],
     "originalContributions": [
       "AllFactorialSubtractionsComposite: the main property formalized as ∀ k, k! < n → ¬(n - k!).Prime ∧ n - k! ≥ 2",
@@ -39,11 +55,24 @@
       "two_witnesses: summary theorem packaging both verified examples"
     ],
     "crossReferences": [
-      { "proofId": "infinitude-primes", "relationship": "Both prove or conjecture infinitude of a special set of primes; the main conjecture asserts Set.Infinite for factorial-avoiding primes" },
-      { "proofId": "wilsons-theorem", "relationship": "Wilson's theorem connects primes to factorials: $(p-1)! \\equiv -1 \\pmod{p}$. Here we subtract factorials from primes instead" },
-      { "proofId": "bertrands-postulate", "relationship": "Both concern prime distribution and gaps; Bertrand guarantees primes in intervals while this problem asks about factorial-prime interactions" },
-      { "proofId": "erdos-1057", "relationship": "Sister Erdős problem about prime-related counting; both use Set.Infinite for open conjectures about infinite sets of special integers" }
-    ]
+      {
+        "proofId": "infinitude-primes",
+        "relationship": "Both prove or conjecture infinitude of a special set of primes; the main conjecture asserts Set.Infinite for factorial-avoiding primes"
+      },
+      {
+        "proofId": "wilsons-theorem",
+        "relationship": "Wilson's theorem connects primes to factorials: $(p-1)! \\equiv -1 \\pmod{p}$. Here we subtract factorials from primes instead"
+      },
+      {
+        "proofId": "bertrands-postulate",
+        "relationship": "Both concern prime distribution and gaps; Bertrand guarantees primes in intervals while this problem asks about factorial-prime interactions"
+      },
+      {
+        "proofId": "erdos-1057",
+        "relationship": "Sister Erdős problem about prime-related counting; both use Set.Infinite for open conjectures about infinite sets of special integers"
+      }
+    ],
+    "axiomCount": 3
   },
   "overview": {
     "historicalContext": "This problem appears as Problem A2 in Guy's *Unsolved Problems in Number Theory* [Gu04], attributed to Erdős. It asks about the interaction between primes and factorials through subtraction. The factorials $1, 2, 6, 24, 120, 720, \\ldots$ grow super-exponentially, so only $O(\\log n / \\log \\log n)$ factorials lie below $n$. This means the factorial-subtraction condition is mild: it requires checking only a few values.\n\nThe known examples are $p = 101$ (factorials to check: $1, 2, 6, 24$) and $p = 211$ (factorials: $1, 2, 6, 24, 120$). The prime $89$ fails because $89 - 6 = 83$ is prime. These are listed in OEIS A064152.\n\nErdős suggested a potentially easier variant: find infinitely many $n$ in $(l!, (l+1)!]$ whose prime factors all exceed $l$ and whose factorial subtractions are all composite. This removes the requirement that $n$ itself be prime, possibly making the problem more tractable via sieve methods.",

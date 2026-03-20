@@ -25,10 +25,26 @@
     "erdosProblemStatus": "open",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      { "theorem": "Nat.minFac", "description": "Least prime factor function", "module": "Mathlib.Data.Nat.Prime.Basic" },
-      { "theorem": "Nat.minFac_prime", "description": "minFac returns a prime for n ≠ 1", "module": "Mathlib.Data.Nat.Prime.Basic" },
-      { "theorem": "Nat.minFac_sq_le_self", "description": "p(m)² ≤ m for composite m", "module": "Mathlib.Data.Nat.Prime.Basic" },
-      { "theorem": "Nat.Prime.two_le", "description": "Every prime is ≥ 2", "module": "Mathlib.Data.Nat.Prime.Basic" }
+      {
+        "theorem": "Nat.minFac",
+        "description": "Least prime factor function",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.minFac_prime",
+        "description": "minFac returns a prime for n ≠ 1",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.minFac_sq_le_self",
+        "description": "p(m)² ≤ m for composite m",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.Prime.two_le",
+        "description": "Every prime is ≥ 2",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
     ],
     "originalContributions": [
       "leastPrimeGap: m − p(m) gap function",
@@ -41,7 +57,8 @@
       "conjecture_needs_large_minFac: structural requirement p(m) > f(n) (proved)",
       "leastPrimeGap_pos: positive gap for composites (proved)"
     ],
-    "dateAdded": "2026-01-19"
+    "dateAdded": "2026-01-19",
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed this problem in their influential 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (Problem #463). The question asks whether composites whose least prime factor is large appear reliably near any sufficiently large integer. Erdős revisited the problem in his 1992 paper [Er92e], adding the refined asymptotic question about $F(n) = \\min_{m > n, m \\text{ composite}} (m - p(m))$ and whether $n - F(n) \\sim c\\sqrt{n}$. The problem connects to classical sieve theory—specifically the distribution of $y$-rough numbers (integers whose least prime factor exceeds $y$) in short intervals—and to Erdős Problem #385 on composites and their prime factor structure. The $\\sqrt{n}$ asymptotic echoes the square-root barrier in prime gap estimates and the Legendre conjecture. Despite extensive work on smooth and rough number distributions by Hildebrand, Tenenbaum, and others, Problem #463 remains open.",

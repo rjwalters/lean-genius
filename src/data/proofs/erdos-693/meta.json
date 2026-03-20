@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/693",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos693Problem.lean",
     "tags": [
       "erdos",
@@ -20,7 +20,8 @@
     "sorries": 0,
     "erdosNumber": 693,
     "erdosUrl": "https://erdosproblems.com/693",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "axiomCount": 4
   },
   "overview": {
     "historicalContext": "Erdős Problem #693, from [Er79e], asks about the distribution of integers with medium-sized divisors. Related to Problem #446 and classical questions about divisor distribution, the Hooley divisor function, and sieve methods.",

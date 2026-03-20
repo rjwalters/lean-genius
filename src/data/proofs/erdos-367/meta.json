@@ -19,7 +19,8 @@
     "sorries": 0,
     "erdosNumber": 367,
     "erdosUrl": "https://erdosproblems.com/367",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "axiomCount": 11
   },
   "overview": {
     "historicalContext": "This problem concerns the 2-full (squareful) part B₂(n) of integers, which captures prime powers p² and higher. B₂(n) = n/squarefreePart(n). The problem asks about products of B₂ over k consecutive integers.\n\nFor k ≤ 2, the product is ≤ n² trivially since B₂(n) ≤ n. For k ≥ 3, van Doorn showed the strong n² bound fails: there exist infinitely many n with ∏B₂(m) ≫ n²·log n. The weak bound n^{2+o(1)} remains open for all k.",

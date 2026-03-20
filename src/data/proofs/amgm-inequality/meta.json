@@ -47,7 +47,8 @@
       "Three-variable AM-GM via weighted means"
     ],
     "dateAdded": "12/26/25",
-    "wiedijkNumber": 38
+    "wiedijkNumber": 38,
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "The AM-GM inequality has ancient origins. Euclid implicitly used it in Book VI of the *Elements* (~300 BCE): if you inscribe a right triangle in a semicircle and drop an altitude from the right angle to the hypotenuse, the altitude's length is the geometric mean of the two segments of the hypotenuse. Since the altitude can be no longer than the radius (the arithmetic mean of the two segments), this gives AM ≥ GM geometrically.\n\nThe first general n-variable proof was given by Augustin-Louis Cauchy in his 1821 *Cours d'analyse*. Cauchy's elegant method uses **forward-backward induction**: he first proves the inequality for powers of 2 (by repeatedly applying the two-variable case), then shows that if AM-GM holds for n numbers, it holds for n-1 numbers as well (by setting one variable equal to the mean). This backward step is the clever insight that makes the induction work without needing $n$ to increase by 1 each time.\n\nIndependently, Colin Maclaurin (1729) discovered a hierarchy of symmetric inequalities that imply AM-GM as a special case. His *Maclaurin inequalities* relate the elementary symmetric polynomial means and strictly strengthen AM-GM for distinct values.\n\nToday AM-GM is one of the most ubiquitous tools in mathematical analysis, combinatorics, and optimization. It appears in proofs of the Cauchy-Schwarz inequality, bounds on entropy in information theory, and the isoperimetric inequality. It is #38 on Wiedijk's landmark list of 100 theorems deemed important to formalize in proof assistants.",

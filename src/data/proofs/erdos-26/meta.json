@@ -7,9 +7,16 @@
     "author": "Ruzsa (counterexample), Van Doorn (thick variant)",
     "sourceUrl": "https://erdosproblems.com/26",
     "date": "2026-01-14",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos26Problem.lean",
-    "tags": ["erdos", "number-theory", "density", "thick-sequences", "behrend-sets", "disproved"],
+    "tags": [
+      "erdos",
+      "number-theory",
+      "density",
+      "thick-sequences",
+      "behrend-sets",
+      "disproved"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 26,
@@ -37,7 +44,8 @@
       "Complete formalization of the disproof with axiomatized counterexamples",
       "Custom natural density infrastructure",
       "Educational documentation of thick/Behrend sequence concepts"
-    ]
+    ],
+    "axiomCount": 8
   },
   "overview": {
     "historicalContext": "Erdős Problem #26 was posed by Erdős and Tenenbaum and concerns the relationship between \"thick\" sequences (those with divergent reciprocal sums) and \"Behrend\" sequences (those whose multiples cover almost all integers).\n\nThe Davenport-Erdős theorem (1951) established that every Behrend sequence must be thick, but the converse was unknown: if A is thick, must some shift A+k be Behrend?\n\nRuzsa provided the first counterexample using a clever construction involving prime residues. His sequence was not thick, so Van Doorn later modified the construction to produce a thick counterexample, definitively disproving the conjecture.",

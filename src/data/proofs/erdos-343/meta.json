@@ -7,9 +7,15 @@
     "author": "Szemerédi-Vu (2006), Folkman (1966)",
     "sourceUrl": "https://erdosproblems.com/343",
     "date": "2006",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos343Problem.lean",
-    "tags": ["erdos", "additive-combinatorics", "sumsets", "arithmetic-progressions", "density"],
+    "tags": [
+      "erdos",
+      "additive-combinatorics",
+      "sumsets",
+      "arithmetic-progressions",
+      "density"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 343,
@@ -43,7 +49,8 @@
       "szemeredi_vu_2006 axiom: linear density suffices",
       "erdos_343_solved theorem: main result",
       "linear_threshold_is_sharp theorem: optimality from Folkman"
-    ]
+    ],
+    "axiomCount": 3
   },
   "overview": {
     "historicalContext": "Erdős Problem #343 is a problem of Folkman about subcompleteness of dense multisets. A set A ⊆ ℕ is called subcomplete if its sumset P(A) = {finite subset sums} contains an infinite arithmetic progression.\n\nFolkman (1966) proved that superlinear density (|A ∩ {1,...,N}| ≫ N^{1+ε}) implies subcompleteness. He also showed the opposite direction: for any ε > 0, there exist multisets with density ~N^{1-ε} that are NOT subcomplete. This left open the critical case of linear density.\n\nSzemerédi and Vu (2006) resolved the problem in their influential paper 'Long arithmetic progressions in sumsets: thresholds and bounds', proving that linear density suffices. This completed the characterization: linear density is the sharp threshold.",

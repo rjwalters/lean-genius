@@ -24,12 +24,36 @@
     "erdosUrl": "https://erdosproblems.com/1057",
     "erdosProblemStatus": "open",
     "mathlibDependencies": [
-      { "theorem": "Squarefree", "description": "Squarefreeness predicate for Korselt's criterion", "module": "Mathlib.Algebra.Squarefree.Basic" },
-      { "theorem": "Nat.primeFactors", "description": "Prime factorization for structural theorems", "module": "Mathlib.Data.Nat.Factorization.Basic" },
-      { "theorem": "Finset.filter", "description": "Filtering for counting function C(x)", "module": "Mathlib.Data.Finset.Basic" },
-      { "theorem": "Nat.Coprime", "description": "Coprimality for semiprime impossibility", "module": "Mathlib.Data.Nat.GCD.Basic" },
-      { "theorem": "Real.exp", "description": "Exponential function for Erdős upper bound", "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv" },
-      { "theorem": "Filter.Tendsto", "description": "Limit formulation of Pomerance conjecture", "module": "Mathlib.Order.Filter.Basic" }
+      {
+        "theorem": "Squarefree",
+        "description": "Squarefreeness predicate for Korselt's criterion",
+        "module": "Mathlib.Algebra.Squarefree.Basic"
+      },
+      {
+        "theorem": "Nat.primeFactors",
+        "description": "Prime factorization for structural theorems",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering for counting function C(x)",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.Coprime",
+        "description": "Coprimality for semiprime impossibility",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Real.exp",
+        "description": "Exponential function for Erdős upper bound",
+        "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit formulation of Pomerance conjecture",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
     ],
     "originalContributions": [
       "satisfiesKorselt, IsCarmichael: definitions via Korselt's criterion",
@@ -43,35 +67,76 @@
       "erdos1057Conjecture, pomeranceConjecture: formal conjectures"
     ],
     "dateAdded": "2026-01-19",
-
     "leanFile": {
       "path": "Proofs/Erdos1057Problem.lean",
       "lineCount": 1055,
       "namespace": "root (opens Nat BigOperators Finset Classical)",
-      "imports": ["Mathlib"],
+      "imports": [
+        "Mathlib"
+      ],
       "mainTheorems": [
-        "carmichael_561", "carmichael_1105", "carmichael_1729", "carmichael_2465",
-        "carmichael_2821", "carmichael_6601", "carmichael_8911", "carmichael_10585", "carmichael_15841",
-        "carmichael_odd", "carmichael_not_semiprime", "carmichael_at_least_3_primes",
-        "carmichael_not_prime_power", "C_mono", "C_unbounded", "C_561_pos", "C_2821_ge_5", "C_8911_ge_7",
-        "no_carmichael_below_561", "carmichael_ge_561", "carmichael_smallest_prime_cube_le",
-        "carmichael_prod_pred_dvd_pow", "carmichael_lcm_dvd"
+        "carmichael_561",
+        "carmichael_1105",
+        "carmichael_1729",
+        "carmichael_2465",
+        "carmichael_2821",
+        "carmichael_6601",
+        "carmichael_8911",
+        "carmichael_10585",
+        "carmichael_15841",
+        "carmichael_odd",
+        "carmichael_not_semiprime",
+        "carmichael_at_least_3_primes",
+        "carmichael_not_prime_power",
+        "C_mono",
+        "C_unbounded",
+        "C_561_pos",
+        "C_2821_ge_5",
+        "C_8911_ge_7",
+        "no_carmichael_below_561",
+        "carmichael_ge_561",
+        "carmichael_smallest_prime_cube_le",
+        "carmichael_prod_pred_dvd_pow",
+        "carmichael_lcm_dvd"
       ],
       "mainDefinitions": [
-        "satisfiesKorselt", "IsCarmichael", "satisfiesFermat",
-        "C", "isCarmichaelCheck", "smallCarmichaels", "smallCarmichaelsExtended",
-        "erdos1057Conjecture", "erdos1057ConjectureAlt", "pomeranceConjecture",
-        "pomeranceOrder", "upperExponent", "lowerExponent", "erdos1057OpenProblem"
+        "satisfiesKorselt",
+        "IsCarmichael",
+        "satisfiesFermat",
+        "C",
+        "isCarmichaelCheck",
+        "smallCarmichaels",
+        "smallCarmichaelsExtended",
+        "erdos1057Conjecture",
+        "erdos1057ConjectureAlt",
+        "pomeranceConjecture",
+        "pomeranceOrder",
+        "upperExponent",
+        "lowerExponent",
+        "erdos1057OpenProblem"
       ],
       "axiomCount": 5,
       "theoremCount": 38,
       "sorryCount": 0
     },
     "crossReferences": [
-      { "targetId": "subset-count", "relationship": "uses similar technique", "description": "Foundational counting technique; both use Finset.filter for cardinality arguments" },
-      { "targetId": "fermats-little-theorem", "relationship": "foundational result", "description": "Fermat's little theorem is the basis: Carmichael numbers are composites that satisfy a^n ≡ a (mod n) for all a, the same congruence primes satisfy by Fermat's theorem" },
-      { "targetId": "erdos-1166", "relationship": "related Erdős problem", "description": "Erdős #1166 on pseudoprime counting also studies composites that mimic primes under modular exponentiation tests" }
-    ]
+      {
+        "targetId": "subset-count",
+        "relationship": "uses similar technique",
+        "description": "Foundational counting technique; both use Finset.filter for cardinality arguments"
+      },
+      {
+        "targetId": "fermats-little-theorem",
+        "relationship": "foundational result",
+        "description": "Fermat's little theorem is the basis: Carmichael numbers are composites that satisfy a^n ≡ a (mod n) for all a, the same congruence primes satisfy by Fermat's theorem"
+      },
+      {
+        "targetId": "erdos-1166",
+        "relationship": "related Erdős problem",
+        "description": "Erdős #1166 on pseudoprime counting also studies composites that mimic primes under modular exponentiation tests"
+      }
+    ],
+    "axiomCount": 6
   },
   "overview": {
     "historicalContext": "Carmichael numbers are composite integers that perfectly mimic primes under Fermat's test: $a^n \\equiv a \\pmod{n}$ for all $a$. Korselt characterized them in 1899 (squarefree with $(p-1) \\mid (n-1)$ for all prime divisors $p$), but the first example $561 = 3 \\times 11 \\times 17$ was only found by R.D. Carmichael in 1910. Erdős (1956) gave the first non-trivial upper bound on their counting function using sieve methods, showing $C(x) < x \\cdot \\exp(-c \\cdot \\frac{\\log x \\cdot \\log\\log\\log x}{\\log\\log x})$. For decades, it was unknown whether infinitely many exist. The breakthrough came in 1994 when Alford, Granville, and Pomerance proved $C(x) \\to \\infty$, establishing $C(x) > x^{2/7}$. Harman (2008) improved the lower bound exponent to $0.33336704$, and Lichtman (2022) pushed it to $0.3389$. Pomerance's (1989) heuristic predicts $C(x) \\sim x \\cdot \\exp(-\\frac{\\log x \\cdot \\log\\log\\log x}{\\log\\log x})$, matching Erdős's upper bound. The conjecture $C(x) = x^{1-o(1)}$ remains wide open, with a vast gap between the known lower bound exponent $\\approx 0.34$ and the conjectured behavior.",

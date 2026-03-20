@@ -8,16 +8,43 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Euclid%27s_lemma",
     "date": "~300 BCE (formalized 2026)",
     "status": "verified",
-    "tags": ["number-theory", "algorithms", "classic", "beginner", "bezout", "euclid"],
+    "tags": [
+      "number-theory",
+      "algorithms",
+      "classic",
+      "beginner",
+      "bezout",
+      "euclid"
+    ],
     "proofRepoPath": "Proofs/BezoutIdentityOQ02.lean",
     "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
-      {"theorem": "Nat.gcd_eq_gcd_ab", "description": "Bézout's identity for naturals: gcd(a,b) = a * gcdA + b * gcdB", "module": "Mathlib.Data.Nat.GCD.Basic"},
-      {"theorem": "Nat.gcdA / Nat.gcdB", "description": "Explicit Bézout coefficients for natural numbers", "module": "Mathlib.Data.Nat.GCD.Basic"},
-      {"theorem": "Int.natCast_dvd_natCast", "description": "Divisibility preserved under ℕ → ℤ cast: m ∣ n ↔ (↑m : ℤ) ∣ ↑n", "module": "Mathlib.Data.Int.GCD"},
-      {"theorem": "Nat.Prime.coprime_iff_not_dvd", "description": "Prime p is coprime to n iff p does not divide n", "module": "Mathlib.Data.Nat.Prime.Basic"},
-      {"theorem": "Nat.eq_one_of_dvd_one", "description": "If n ∣ 1 in ℕ, then n = 1", "module": "Mathlib.Data.Nat.GCD.Basic"}
+      {
+        "theorem": "Nat.gcd_eq_gcd_ab",
+        "description": "Bézout's identity for naturals: gcd(a,b) = a * gcdA + b * gcdB",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Nat.gcdA / Nat.gcdB",
+        "description": "Explicit Bézout coefficients for natural numbers",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Int.natCast_dvd_natCast",
+        "description": "Divisibility preserved under ℕ → ℤ cast: m ∣ n ↔ (↑m : ℤ) ∣ ↑n",
+        "module": "Mathlib.Data.Int.GCD"
+      },
+      {
+        "theorem": "Nat.Prime.coprime_iff_not_dvd",
+        "description": "Prime p is coprime to n iff p does not divide n",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.eq_one_of_dvd_one",
+        "description": "If n ∣ 1 in ℕ, then n = 1",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      }
     ],
     "originalContributions": [
       "coprime_iff_linear_combination: Nat.Coprime a b ↔ ∃ x y : ℤ, a*x + b*y = 1 (re-proved for self-containment)",
@@ -26,7 +53,8 @@
       "euclids_lemma_prime: classic prime version (p prime, p|a*b → p|a or p|b) via Nat.Prime.coprime_iff_not_dvd",
       "Four worked examples with concrete Bézout witnesses and verification"
     ],
-    "dateAdded": "2026-02-21"
+    "dateAdded": "2026-02-21",
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "**Euclid's Lemma** is one of the oldest and most fundamental results in number theory, appearing in Euclid's *Elements* (~300 BCE) as Proposition VII.30: *'If a prime p divides the product a·b, then p divides a or p divides b.'* Euclid's original proof used the division algorithm and properties of proportions, without the modern algebraic language of Bézout coefficients.\n\nThe Bézout identity itself is named after **Étienne Bézout (1730–1783)**, though the key result — that gcd(a,b) can be expressed as an integer linear combination — was known to **Claude Gaspard Bachet de Méziriac (1624)** and even to **Aryabhata (~499 CE)** in the context of the Kuttaka algorithm for solving linear Diophantine equations.\n\nThe modern algebraic proof of Euclid's lemma via Bézout's identity: if gcd(p,a) = 1, get integers x, y with p·x + a·y = 1. Multiply by c: p·x·c + a·c·y = c. Since p | p·x·c and p | a·b (hypothesis gives a·b = p·k, so a·c·y = ...), deduce p | c. This argument abstracts to any **Bézout domain** or **principal ideal domain (PID)**.\n\nIn Lean 4, this argument is crystallized by the `coprime_iff_linear_combination` theorem: `Nat.Coprime a b ↔ ∃ x y : ℤ, a*x + b*y = 1`. This converts the arithmetic fact 'gcd = 1' into the algebraic witness needed for the proof. The `linear_combination` tactic then closes the goal in a single line by ring arithmetic.",

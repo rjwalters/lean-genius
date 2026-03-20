@@ -7,7 +7,7 @@
     "author": "Erdős (problem), Frankl-Rödl (solved, 1987)",
     "sourceUrl": "https://erdosproblems.com/703",
     "date": "1987",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos703Problem.lean",
     "tags": [
       "erdos",
@@ -43,7 +43,8 @@
       "avoidsLIntersections: generalization to L-avoiding families",
       "zero_avoiding_is_intersecting: proved connection to classical intersecting families",
       "erdos_703_solved: combined resolution theorem"
-    ]
+    ],
+    "axiomCount": 8
   },
   "crossReferences": [
     {

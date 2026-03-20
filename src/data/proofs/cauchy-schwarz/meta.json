@@ -8,14 +8,31 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality",
     "date": "1821",
     "status": "verified",
-    "tags": ["analysis", "linear-algebra", "classic", "intermediate"],
+    "tags": [
+      "analysis",
+      "linear-algebra",
+      "classic",
+      "intermediate"
+    ],
     "proofRepoPath": "Proofs/CauchySchwarz.lean",
     "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
-      { "theorem": "abs_real_inner_le_norm", "description": "Cauchy-Schwarz for real inner products", "module": "Mathlib.Analysis.InnerProductSpace.Basic" },
-      { "theorem": "EuclideanSpace.inner_eq_star_dotProduct", "description": "Inner product equals dot product in Euclidean space", "module": "Mathlib.Analysis.InnerProductSpace.PiL2" },
-      { "theorem": "sq_nonneg", "description": "Non-negativity of squares", "module": "Mathlib.Algebra.Order.Ring.Lemmas" }
+      {
+        "theorem": "abs_real_inner_le_norm",
+        "description": "Cauchy-Schwarz for real inner products",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "EuclideanSpace.inner_eq_star_dotProduct",
+        "description": "Inner product equals dot product in Euclidean space",
+        "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
+      },
+      {
+        "theorem": "sq_nonneg",
+        "description": "Non-negativity of squares",
+        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+      }
     ],
     "originalContributions": [
       "Inner product form via abs_real_inner_le_norm",
@@ -28,10 +45,34 @@
       "Correlation coefficient bound as application"
     ],
     "references": [
-      {"authors": "A.-L. Cauchy", "title": "Cours d'Analyse de l'École Royale Polytechnique", "year": "1821", "venue": "Paris", "note": "First proof of the discrete (finite sum) version of the inequality"},
-      {"authors": "V. Y. Bunyakovsky", "title": "Sur quelques inégalités concernant les intégrales ordinaires et les intégrales aux différences finies", "year": "1859", "venue": "Mémoires de l'Académie Impériale des Sciences de St.-Pétersbourg", "note": "Extension to integrals"},
-      {"authors": "H. A. Schwarz", "title": "Über ein die Flächen kleinsten Flächeninhalts betreffendes Problem der Variationsrechnung", "year": "1885", "venue": "Acta Societatis Scientiarum Fennicae", "note": "Independent proof of the integral version"},
-      {"authors": "J. M. Steele", "title": "The Cauchy-Schwarz Master Class", "year": "2004", "venue": "Cambridge University Press", "note": "Comprehensive treatment of Cauchy-Schwarz and related inequalities"}
+      {
+        "authors": "A.-L. Cauchy",
+        "title": "Cours d'Analyse de l'École Royale Polytechnique",
+        "year": "1821",
+        "venue": "Paris",
+        "note": "First proof of the discrete (finite sum) version of the inequality"
+      },
+      {
+        "authors": "V. Y. Bunyakovsky",
+        "title": "Sur quelques inégalités concernant les intégrales ordinaires et les intégrales aux différences finies",
+        "year": "1859",
+        "venue": "Mémoires de l'Académie Impériale des Sciences de St.-Pétersbourg",
+        "note": "Extension to integrals"
+      },
+      {
+        "authors": "H. A. Schwarz",
+        "title": "Über ein die Flächen kleinsten Flächeninhalts betreffendes Problem der Variationsrechnung",
+        "year": "1885",
+        "venue": "Acta Societatis Scientiarum Fennicae",
+        "note": "Independent proof of the integral version"
+      },
+      {
+        "authors": "J. M. Steele",
+        "title": "The Cauchy-Schwarz Master Class",
+        "year": "2004",
+        "venue": "Cambridge University Press",
+        "note": "Comprehensive treatment of Cauchy-Schwarz and related inequalities"
+      }
     ],
     "mathlib_version": "4.15.0",
     "relatedProblems": [
@@ -49,7 +90,8 @@
       }
     ],
     "dateAdded": "12/26/25",
-    "wiedijkNumber": 78
+    "wiedijkNumber": 78,
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "**Origins and Multiple Discoverers**\n\nThe Cauchy-Schwarz inequality has been independently discovered at least three times. **Augustin-Louis Cauchy** first proved the discrete (finite sum) version in his 1821 *Cours d'Analyse*, establishing $(\\sum a_i b_i)^2 \\leq (\\sum a_i^2)(\\sum b_i^2)$ for real sequences. **Viktor Bunyakovsky** extended this to integrals in 1859, proving $\\left(\\int fg\\right)^2 \\leq \\int f^2 \\int g^2$. **Hermann Amandus Schwarz** independently proved the integral version in 1888 for the specific context of Fourier analysis.\n\n**Modern Significance**\n\nThe inequality is arguably the single most important inequality in mathematics. It underpins the triangle inequality in normed spaces, the definition of angle between vectors, the Pearson correlation coefficient in statistics, the Heisenberg uncertainty principle in quantum mechanics, and concentration inequalities in probability theory. It appears as #78 on **Freek Wiedijk**'s list of 100 theorems formalized in proof assistants.\n\n**The Quadratic Argument**\n\nThe standard modern proof considers $0 \\leq \\|u - tv\\|^2 = \\|u\\|^2 - 2t\\langle u,v\\rangle + t^2\\|v\\|^2$ as a quadratic in $t$, whose non-negative discriminant yields $\\langle u,v\\rangle^2 \\leq \\|u\\|^2\\|v\\|^2$. The elementary two-variable proof uses the **Lagrange identity**: $(a_1^2+a_2^2)(b_1^2+b_2^2) - (a_1b_1+a_2b_2)^2 = (a_1b_2-a_2b_1)^2 \\geq 0$.",

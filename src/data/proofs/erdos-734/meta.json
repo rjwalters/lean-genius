@@ -7,9 +7,16 @@
     "author": "de Bruijn-Erdős (1948 lower bound), Erdős (1981 problem)",
     "sourceUrl": "https://erdosproblems.com/734",
     "date": "1981",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos734Problem.lean",
-    "tags": ["erdos", "combinatorics", "design-theory", "block-designs", "pbd", "open"],
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "design-theory",
+      "block-designs",
+      "pbd",
+      "open"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 734,
@@ -18,10 +25,26 @@
     "dateAdded": "2026-01-19",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      { "theorem": "Finset.filter", "description": "Filtering finite sets", "module": "Mathlib.Data.Finset.Basic" },
-      { "theorem": "Finset.card", "description": "Cardinality of finite sets", "module": "Mathlib.Data.Finset.Card" },
-      { "theorem": "Fintype", "description": "Finite types", "module": "Mathlib.Data.Fintype.Basic" },
-      { "theorem": "Real.rpow", "description": "Real exponentiation for n^{1/2}", "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real" }
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Fintype",
+        "description": "Finite types",
+        "module": "Mathlib.Data.Fintype.Basic"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real exponentiation for n^{1/2}",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
     ],
     "originalContributions": [
       "PBD structure: pairwise balanced block design with pair coverage and non-emptiness",
@@ -34,7 +57,8 @@
       "deBruijn_erdos: m ≥ n axiom for non-trivial PBDs",
       "pair_count: pair counting identity (axiomatized)",
       "erdos_734_summary: combining de Bruijn-Erdős and projective plane existence"
-    ]
+    ],
+    "axiomCount": 6
   },
   "overview": {
     "historicalContext": "Erdős posed Problem #734 in his 1981 paper 'On the combinatorial problems which I would most like to see solved.' He asked whether, for all large n, there exists a non-trivial pairwise balanced block design (PBD) on n points where every block size t appears in at most O(n^{1/2}) blocks. Erdős wrote that this would 'probably not be very difficult to prove' but admitted he had been unsuccessful.\n\nThe foundational result for this problem is the de Bruijn-Erdős theorem (1948), which states that any non-trivial PBD on n points has at least n blocks. By a pigeonhole argument, since block sizes range from 2 to n, at least one size must appear with frequency proportional to √n. The question is whether ALL sizes can be kept at this threshold simultaneously.\n\nClassical constructions like projective and affine planes fail the frequency condition because they have uniform block size — all blocks are the same size, concentrating frequency in a single value. No construction achieving the O(√n) bound for all sizes is known, and the problem remains open. It connects to broader questions in combinatorial design theory about how block sizes can be distributed in balanced structures.",

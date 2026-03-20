@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Desargues%27s_theorem#Self-duality",
     "date": "2026-03-12",
-    "status": "complete",
+    "status": "verified",
     "proofRepoPath": "Proofs/DesarguesTheoremOQ04.lean",
     "tags": [
       "desargues",
@@ -64,7 +64,8 @@
       }
     ],
     "historicalContext": "Girard Desargues stated his theorem in the 1639 'Brouillon project,' but his cryptic notation delayed its recognition until rediscovery by Poncelet (1822). Projective duality — systematically developed by Poncelet and Gergonne in the 1820s — states that every theorem in projective geometry has a dual, obtained by interchanging 'point' and 'line'. Desargues's theorem is the premier example of a self-dual theorem: its dual is its own converse. Hilbert's 'Grundlagen der Geometrie' (1899) showed that Desargues's theorem characterizes Desarguesian planes (those embeddable in projective 3-space), establishing a deep connection between incidence geometry and coordinatization by division rings. Moulton's non-Desarguesian plane (1902) demonstrated that Desargues's theorem is genuinely independent of the other projective axioms in dimension 2.",
-    "dateAdded": "03/12/26"
+    "dateAdded": "03/12/26",
+    "axiomCount": 0
   },
   "sections": [
     {

@@ -7,9 +7,16 @@
     "author": "Schmidt (1968, 1972), Tijdeman-Wagner (1980)",
     "sourceUrl": "https://erdosproblems.com/255",
     "date": "1968",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos255Problem.lean",
-    "tags": ["erdos", "discrepancy-theory", "sequences", "distribution-mod-1", "number-theory", "solved"],
+    "tags": [
+      "erdos",
+      "discrepancy-theory",
+      "sequences",
+      "distribution-mod-1",
+      "number-theory",
+      "solved"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 255,
@@ -18,9 +25,21 @@
     "dateAdded": "2026-01-19",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      { "theorem": "Set.Icc", "description": "Closed intervals", "module": "Mathlib.Data.Set.Basic" },
-      { "theorem": "Set.Countable", "description": "Countable sets", "module": "Mathlib.Data.Set.Countable" },
-      { "theorem": "MeasureTheory.volume", "description": "Lebesgue measure", "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic" }
+      {
+        "theorem": "Set.Icc",
+        "description": "Closed intervals",
+        "module": "Mathlib.Data.Set.Basic"
+      },
+      {
+        "theorem": "Set.Countable",
+        "description": "Countable sets",
+        "module": "Mathlib.Data.Set.Countable"
+      },
+      {
+        "theorem": "MeasureTheory.volume",
+        "description": "Lebesgue measure",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      }
     ],
     "originalContributions": [
       "IsSequenceInUnitInterval, countInInterval, discrepancy definitions",
@@ -33,7 +52,8 @@
       "isUniformlyDistributed and weyl_theorem",
       "starDiscrepancy and star_discrepancy_unbounded",
       "erdos_255_summary: three-part conjunction"
-    ]
+    ],
+    "axiomCount": 6
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in the early 1960s, asking whether every sequence in [0,1] must have unbounded discrepancy for some interval. This connects to the classical theory of uniform distribution initiated by Weyl (1916) and the study of irregularities of distribution.\n\nSchmidt proved the affirmative answer in 1968, showing that no sequence can have bounded discrepancy for all intervals simultaneously. He strengthened this in 1972, proving that for any sequence, all but countably many intervals [0,x] have unbounded discrepancy.\n\nTijdeman and Wagner (1980) proved the quantitatively optimal result: for almost all x ∈ [0,1], the discrepancy |D_N([0,x))| grows at least as fast as c·log N for some constant c > 0. Van der Corput's classical low-discrepancy sequence achieves O(log N), showing that logarithmic growth is the best possible rate. Together, these results give a complete picture: discrepancy grows exactly like Θ(log N) for typical intervals.",

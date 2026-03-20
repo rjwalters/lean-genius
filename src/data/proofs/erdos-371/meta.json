@@ -20,7 +20,8 @@
     "sorries": 16,
     "erdosNumber": 371,
     "erdosUrl": "https://erdosproblems.com/371",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "axiomCount": 12
   },
   "overview": {
     "historicalContext": "This problem was conjectured by Erdős and Pomerance in 1978. They proved that both the set {n : P(n) < P(n+1)} and its complement have positive upper density, but couldn't establish the exact density. The problem attracted significant attention from analytic number theorists.\n\nTeräväinen (2018) proved that the logarithmic density is exactly 1/2. Tao and Teräväinen (2019) showed the asymptotic density is 1/2 at 'almost all scales'. Finally, Wang (2021) proved the full result (natural density = 1/2) conditionally on the Elliott-Halberstam conjecture for friable integers.\n\nThe best unconditional lower bound is due to Lü and Wang (2025), who proved that both sets have density at least 0.2017. The sequence of n with P(n) < P(n+1) is A070089 in OEIS.",
@@ -151,10 +152,22 @@
       "Extend to $k$-tuples: what is the density of $\\{n : P(n) < P(n+1) < \\cdots < P(n+k)\\}$ for $k \\ge 2$?"
     ],
     "crossReferences": [
-      { "proofId": "erdos-372", "relationship": "Companion problem: #372 asks for infinitely many $n$ with $P(n) > P(n+1) > P(n+2)$ (descending chains). Proved by Balog (2001). Both problems study consecutive behavior of $P(n)$." },
-      { "proofId": "erdos-928", "relationship": "Related problem on consecutive smooth numbers with density involving the same Dickman function framework and conditional results under Elliott-Halberstam." },
-      { "proofId": "erdos-369", "relationship": "Asks for consecutive smooth numbers in $\\{1,\\ldots,n\\}$: finding $k$ consecutive integers all with small largest prime factor. Uses similar sieve and smooth number machinery." },
-      { "proofId": "prime-number-theorem", "relationship": "The Prime Number Theorem provides the foundational asymptotic $\\pi(x) \\sim x/\\ln x$ underlying all density arguments about prime-related sets in this formalization." }
+      {
+        "proofId": "erdos-372",
+        "relationship": "Companion problem: #372 asks for infinitely many $n$ with $P(n) > P(n+1) > P(n+2)$ (descending chains). Proved by Balog (2001). Both problems study consecutive behavior of $P(n)$."
+      },
+      {
+        "proofId": "erdos-928",
+        "relationship": "Related problem on consecutive smooth numbers with density involving the same Dickman function framework and conditional results under Elliott-Halberstam."
+      },
+      {
+        "proofId": "erdos-369",
+        "relationship": "Asks for consecutive smooth numbers in $\\{1,\\ldots,n\\}$: finding $k$ consecutive integers all with small largest prime factor. Uses similar sieve and smooth number machinery."
+      },
+      {
+        "proofId": "prime-number-theorem",
+        "relationship": "The Prime Number Theorem provides the foundational asymptotic $\\pi(x) \\sim x/\\ln x$ underlying all density arguments about prime-related sets in this formalization."
+      }
     ]
   }
 }

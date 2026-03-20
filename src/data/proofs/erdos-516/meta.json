@@ -7,7 +7,7 @@
     "author": "Fuchs (1963), Kovári (1965)",
     "sourceUrl": "https://erdosproblems.com/516",
     "date": "1963",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos516Problem.lean",
     "tags": [
       "erdos",
@@ -56,7 +56,8 @@
       "Statement of Erdős-Macintyre theorem (1954)",
       "Statement of Kovári's extension (1965) for infinite order",
       "Formalization of the remaining open conjecture (Fejér gaps)"
-    ]
+    ],
+    "axiomCount": 5
   },
   "overview": {
     "historicalContext": "This problem was originally posed by Pólya in 1929. It asks about the relationship between the maximum and minimum modulus of entire functions with gap power series.\n\nA gap series f(z) = Σ aₖzⁿᵏ has many zero coefficients. The sequence (nₖ) records positions of nonzero terms. The Fabry gap condition nₖ/k → ∞ means gaps grow superlinearly.\n\nWiman (1914) proved a strong result under (nₖ₊₁ - nₖ)² > nₖ. Erdős and Macintyre (1954) weakened this to Σ 1/(nₖ₊₁ - nₖ) < ∞. Finally, Fuchs (1963) gave the complete solution for Fabry gaps.\n\nKovári (1965) extended the result to entire functions of infinite order under nₖ > k(log k)^{2+c}. The question of whether Fejér gaps (Σ 1/nₖ < ∞) suffice for arbitrary entire functions remains open.",

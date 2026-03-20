@@ -7,7 +7,7 @@
     "author": "Erdős-Straus (conjecture); Lorentz (1954, proof)",
     "sourceUrl": "https://erdosproblems.com/31",
     "date": "1954",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos31Problem.lean",
     "tags": [
       "erdos",
@@ -53,7 +53,8 @@
       "Proof that coverage requires at least one infinite set (from finite sets)",
       "Proof that optimal B-density is 0 (using non-negativity of density)",
       "Connection to asymptotic additive bases of order 2"
-    ]
+    ],
+    "axiomCount": 1
   },
   "overview": {
     "historicalContext": "Erdős and Straus conjectured that any infinite set A can be 'completed' to cover almost all of ℕ using only a very sparse set B (density 0).\n\nLorentz proved this in 1954, showing that the additive structure of infinite sets is quite flexible. The proof constructs B by filling in 'gaps' in the sumset, and the sparseness of the construction depends on the distribution of A.\n\nThis result is fundamental to additive combinatorics: it shows that even very sparse sets can have rich additive structure when combined appropriately.",

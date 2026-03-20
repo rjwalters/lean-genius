@@ -7,7 +7,7 @@
     "author": "Kövári-Sós-Turán (1954), Brown (1966), Erdős-Rényi-Sós (1966)",
     "sourceUrl": "https://erdosproblems.com/714",
     "date": "1966",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos714Problem.lean",
     "tags": [
       "erdos",
@@ -46,7 +46,8 @@
       "brown_theorem, erdos_renyi_sos_theorem: lower bound for r=3",
       "erdos_714_r2, erdos_714_r3 theorems: partial solutions",
       "projective_plane_construction: construction for r=2"
-    ]
+    ],
+    "axiomCount": 10
   },
   "overview": {
     "historicalContext": "**The Zarankiewicz Problem**\n\nThis is one of the most famous open problems in extremal graph theory. It asks for the maximum number of edges in a graph on n vertices containing no complete bipartite subgraph K_{r,r}.\n\n**Historical Timeline:**\n- 1954: Kövári, Sós, and Turán proved the upper bound ex(n; K_{r,r}) << n^{2-1/r}\n- 1966: Brown proved the lower bound for r=3, matching the upper bound\n- 1966: Erdős, Rényi, and Sós independently proved the same result\n- r >= 4: Remains OPEN - no construction achieving the conjectured bound is known\n\n**Connection to K_{2,2} = C_4:**\nThe r=2 case is equivalent to the C_4-free graph problem (Problem #768), since K_{2,2} is exactly the 4-cycle. This case was fully resolved using projective plane constructions.",

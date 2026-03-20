@@ -7,7 +7,7 @@
     "author": "Csaba Sándor (1997)",
     "sourceUrl": "https://erdosproblems.com/316",
     "date": "1997",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos316Problem.lean",
     "tags": [
       "erdos",
@@ -52,7 +52,7 @@
       },
       {
         "id": "erdos-315",
-        "relationship": "Adjacent problem in the Erd\u0151s unit fractions series"
+        "relationship": "Adjacent problem in the Erdős unit fractions series"
       }
     ],
     "references": [
@@ -69,7 +69,8 @@
         "year": 1980,
         "relevance": "Original source of the conjecture (monograph on combinatorial number theory problems)"
       }
-    ]
+    ],
+    "axiomCount": 1
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and Graham in their 1980 monograph on problems in combinatorial number theory. The question asks whether a simple partitioning property holds for sets of natural numbers based on their reciprocal sums.\n\nThe conjecture remained open for 17 years until Csaba Sándor disproved it in 1997 in his paper \"On a problem of Erdős\" published in the Journal of Number Theory. Sándor not only found a counterexample but proved a more general negative result.\n\nThe minimal counterexample set {2, 3, 4, 5, 6, 7, 10, 11, 13, 14, 15} was discovered by Tom Stobart through computational search. This 11-element set has reciprocal sum approximately 1.9586, yet any partition into two parts must have at least one part with reciprocal sum ≥ 1.",

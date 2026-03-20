@@ -7,7 +7,7 @@
     "author": "Erdős (1975)",
     "sourceUrl": "https://erdosproblems.com/141",
     "date": "1975",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos141Problem.lean",
     "tags": [
       "erdos",
@@ -45,7 +45,8 @@
       "Verified example: (3, 5, 7) forms an AP with common difference 2",
       "Distinction between Green-Tao (any primes in AP) vs. Erdős #141 (consecutive primes)",
       "Formalization of related open questions (infinitely many APs, k=11 case)"
-    ]
+    ],
+    "axiomCount": 3
   },
   "overview": {
     "historicalContext": "Erdős Problem #141 was posed in 1975 and asks whether, for every k >= 3, there exist k consecutive primes that form an arithmetic progression. Erdős famously called this conjecture 'completely hopeless at present.'\n\nThe distinction from the celebrated Green-Tao theorem (2008) is crucial: Green-Tao proves that the primes contain arbitrarily long arithmetic progressions, but these primes need not be consecutive. For example, (7, 13, 19) form an AP with common difference 6, but they are not consecutive primes since 11 lies between 7 and 13.\n\nComputational verification has confirmed the existence of such progressions for k <= 10, but the case k = 11 remains open, as does the general question for all k.",

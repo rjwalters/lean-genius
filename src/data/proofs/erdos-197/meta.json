@@ -6,9 +6,15 @@
   "meta": {
     "author": "Erdős-Graham (three-set case solved)",
     "sourceUrl": "https://erdosproblems.com/197",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos197Problem.lean",
-    "tags": ["erdos", "arithmetic-progressions", "combinatorics", "partition-theory", "open-problem"],
+    "tags": [
+      "erdos",
+      "arithmetic-progressions",
+      "combinatorics",
+      "partition-theory",
+      "open-problem"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 197,
@@ -47,7 +53,8 @@
       "identity_has_3AP theorem: 0,1,2,... has 3-APs",
       "erdos_197_status theorem: summary of known results",
       "erdos_197_open_question theorem: the main conjecture"
-    ]
+    ],
+    "axiomCount": 5
   },
   "overview": {
     "historicalContext": "**Erdős Problem #197**\n\nThis problem originates from Erdős and Graham's foundational work on arithmetic progressions in the late 1970s and early 1980s, documented in [ErGr79] and [ErGr80].\n\n**Key History:**\n- Erdős and Graham posed the original question about partitioning ℕ\n- The three-set version was proved solvable by Erdős-Graham\n- The two-set version remains open and cannot be resolved by finite computation\n\n**Mathematical Setting:**\nA monotone 3-term arithmetic progression (3-AP) in a sequence f is a triple (i, j, k) with i < j < k where f(i), f(j), f(k) form an arithmetic progression. The question asks whether ℕ can be split into two parts, each rearrangeable to avoid such patterns.",

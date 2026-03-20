@@ -7,7 +7,7 @@
     "author": "Nelson (1950), Isbell (1950), de Grey (2018)",
     "sourceUrl": "https://erdosproblems.com/171",
     "date": "2018",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos171Problem.lean",
     "tags": [
       "erdos",
@@ -54,7 +54,8 @@
       "Axiom isbell_upper_bound (χ ≤ 7 via hexagonal tiling)",
       "Aristotle-verified: clique_number_3 (equilateral triangle)",
       "Aristotle-verified: no_4_clique (no tetrahedron in ℝ²)"
-    ]
+    ],
+    "axiomCount": 3
   },
   "overview": {
     "historicalContext": "The **Hadwiger-Nelson problem** asks for the chromatic number χ(ℝ²) of the unit distance graph: the minimum number of colors needed to color the plane so no two points at distance 1 share a color.\n\n**Historical Timeline**:\n- **1950**: Edward Nelson proved χ ≥ 4 using a 7-vertex graph (later called the Moser spindle)\n- **1950**: John Isbell proved χ ≤ 7 using a hexagonal tiling\n- **1950-2018**: No progress on the bounds for 68 years!\n- **2018**: Aubrey de Grey proved χ ≥ 5, finding a unit distance graph with ~1581 vertices that requires 5 colors\n\n**The de Grey Breakthrough**: After nearly 70 years with no improvement, de Grey used computer-aided construction to find a graph embedding where 4 colors are insufficient. This was later optimized to 553 vertices by Exoo and Ismailescu.\n\n**Current State**: 5 ≤ χ(ℝ²) ≤ 7. The exact value remains unknown.",

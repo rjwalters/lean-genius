@@ -7,7 +7,7 @@
     "author": "Bloom (2021)",
     "sourceUrl": "https://erdosproblems.com/299",
     "date": "2021",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos299Problem.lean",
     "tags": [
       "erdos",
@@ -52,7 +52,8 @@
       "Connection between bounded gaps and positive density",
       "Verified Egyptian fraction examples: {2,3,6} and {2,4,6,12}",
       "Proof that powers of 2 have unbounded gaps"
-    ]
+    ],
+    "axiomCount": 1
   },
   "overview": {
     "historicalContext": "Erdős Problem #299 asks whether there exists an infinite sequence a₁ < a₂ < ... with bounded gaps (a_{i+1} - a_i = O(1)) such that no finite subset has reciprocals summing to exactly 1.\n\nThis question connects to the ancient study of Egyptian fractions (representing 1 as sums of distinct unit fractions) and modern density arguments. The key insight is that sequences with bounded gaps have positive density.\n\nThe problem was resolved by Thomas Bloom in 2021, who proved the stronger result (Problem #298) that any set of positive upper density contains a finite subset whose reciprocals sum to 1. Since bounded-gap sequences necessarily have positive density, no such sequence can avoid containing a unit fraction sum.\n\nBloom's work built on deep techniques from additive combinatorics and resolved a long-standing conjecture of Erdős and Graham.",

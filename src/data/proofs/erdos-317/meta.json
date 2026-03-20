@@ -7,9 +7,15 @@
     "author": "Erdős-Graham [ErGr80]",
     "sourceUrl": "https://erdosproblems.com/317",
     "date": "1980",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos317Problem.lean",
-    "tags": ["erdos", "number-theory", "unit-fractions", "diophantine-approximation", "open-problem"],
+    "tags": [
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "diophantine-approximation",
+      "open-problem"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 317,
@@ -18,9 +24,21 @@
     "dateAdded": "2026-01-22",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      { "theorem": "Finset.sum", "description": "Summation over finite sets", "module": "Mathlib.Algebra.BigOperators.Group.Finset" },
-      { "theorem": "Finset.lcm", "description": "LCM over finite sets", "module": "Mathlib.Algebra.GCDMonoid.Finset" },
-      { "theorem": "Filter.Eventually", "description": "Eventually predicate for filters", "module": "Mathlib.Order.Filter.AtTopBot" }
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Finset.lcm",
+        "description": "LCM over finite sets",
+        "module": "Mathlib.Algebra.GCDMonoid.Finset"
+      },
+      {
+        "theorem": "Filter.Eventually",
+        "description": "Eventually predicate for filters",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      }
     ],
     "originalContributions": [
       "IsSignFunction: δ with values in {-1, 0, 1}",
@@ -33,7 +51,8 @@
       "counterexample_small_n axiom: equality at n=4",
       "kovac_van_doorn_bound axiom: nonzero signed sums exist",
       "erdos_317_summary: proved — combining weak inequality and counterexample"
-    ]
+    ],
+    "axiomCount": 1
   },
   "overview": {
     "historicalContext": "**Erdős Problem #317: Signed Unit Fraction Approximations**\n\nFrom Erdős-Graham (1980), p.42. This problem asks how small a nonzero signed combination of the first n unit fractions can be.\n\n**Two Questions:**\n1. Can we achieve exponentially small sums < c/2^n for some universal constant c?\n2. For large n, is 1/lcm(1,...,n) a strict lower bound for nonzero sums?\n\n**Known Results:** Kovac and van Doorn achieved 2^{-n·(log log log n)^{1+o(1)}/log n}, far from c/2^n. Van Doorn's heuristic suggests this may be optimal, which would make Question 1 false. Question 2 fails for small n: 1/2 - 1/3 - 1/4 = -1/12 achieves exactly 1/lcm(1,2,3,4).",

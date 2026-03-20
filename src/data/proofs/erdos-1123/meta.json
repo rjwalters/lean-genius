@@ -7,9 +7,15 @@
     "author": "Erdős-Ulam (question), Just-Krawczyk (1984)",
     "sourceUrl": "https://erdosproblems.com/1123",
     "date": "1984",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1123Problem.lean",
-    "tags": ["erdos", "set-theory", "boolean-algebras", "density", "continuum-hypothesis"],
+    "tags": [
+      "erdos",
+      "set-theory",
+      "boolean-algebras",
+      "density",
+      "continuum-hypothesis"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1123,
@@ -19,9 +25,21 @@
     "dateAdded": "2026-01-22",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      { "theorem": "Set.symmDiff", "description": "Symmetric difference of sets", "module": "Mathlib.Data.Set.Basic" },
-      { "theorem": "BooleanAlgebra", "description": "Boolean algebra structure", "module": "Mathlib.Order.BooleanAlgebra" },
-      { "theorem": "Quotient", "description": "Quotient type construction", "module": "Mathlib.Data.Set.Basic" }
+      {
+        "theorem": "Set.symmDiff",
+        "description": "Symmetric difference of sets",
+        "module": "Mathlib.Data.Set.Basic"
+      },
+      {
+        "theorem": "BooleanAlgebra",
+        "description": "Boolean algebra structure",
+        "module": "Mathlib.Order.BooleanAlgebra"
+      },
+      {
+        "theorem": "Quotient",
+        "description": "Quotient type construction",
+        "module": "Mathlib.Data.Set.Basic"
+      }
     ],
     "originalContributions": [
       "hasDensityZero: natural density zero via counting in Finset.range",
@@ -35,7 +53,8 @@
       "density_ideals_are_sigma_ideals axiom: subset closure",
       "finite_quotient_different axiom: finite sets have density zero",
       "erdos_1123_summary: proved conjunction of density implications"
-    ]
+    ],
+    "axiomCount": 6
   },
   "overview": {
     "historicalContext": "This problem arose from Erdős's visit to Ulam in Madison (1943-44). They believed they proved non-isomorphism, but the proof was 'lost.' Just and Krawczyk (1984) proved that under CH, the algebras ARE isomorphic — the opposite of what Erdős expected. The answer is set-theoretically dependent.",

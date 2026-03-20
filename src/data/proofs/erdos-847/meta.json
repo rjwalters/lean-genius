@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdos, Nesetril, Rodl",
     "sourceUrl": "https://erdosproblems.com/847",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos847Problem.lean",
     "tags": [
       "erdos",
@@ -52,7 +52,8 @@
       "roth_theorem axiom: k=3 case",
       "kelley_meka_bound axiom: best known bounds",
       "erdos_847_disproved theorem: main result"
-    ]
+    ],
+    "axiomCount": 6
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdos, Nesetril, and Rodl [Er92b]. It asks about the structure of infinite sets with a specific property related to AP-free subsets.\n\nThe problem connects deeply to Szemeredi's theorem (1975), which shows that any dense subset of the integers contains arbitrarily long arithmetic progressions. Consequently, AP-free sets have density 0.\n\nThe question explores whether having uniformly large AP-free subsets forces a simple structure (finite union of AP-free sets).",

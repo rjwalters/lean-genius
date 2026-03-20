@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Beltrami%E2%80%93Klein_model",
     "date": "2026",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/ParallelPostulateIndependenceOQ02.lean",
     "tags": [
       "non-euclidean-geometry",
@@ -70,7 +70,8 @@
         "note": "Axiomatic foundations of geometry"
       }
     ],
-    "historicalContext": "For over 2000 years mathematicians attempted to prove Euclid's Fifth Postulate from the other axioms. Bolyai (1832) and Lobachevsky (1829) independently developed hyperbolic geometry. Beltrami (1868) proved its consistency by constructing models within Euclidean geometry. The Beltrami-Klein model uses the open unit disk with chords as lines, making the hyperbolic parallel property visually intuitive: through any interior point not on a chord, multiple non-intersecting chords exist."
+    "historicalContext": "For over 2000 years mathematicians attempted to prove Euclid's Fifth Postulate from the other axioms. Bolyai (1832) and Lobachevsky (1829) independently developed hyperbolic geometry. Beltrami (1868) proved its consistency by constructing models within Euclidean geometry. The Beltrami-Klein model uses the open unit disk with chords as lines, making the hyperbolic parallel property visually intuitive: through any interior point not on a chord, multiple non-intersecting chords exist.",
+    "axiomCount": 1
   },
   "sections": [
     {

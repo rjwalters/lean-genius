@@ -9,7 +9,12 @@
     "date": "2000",
     "status": "verified",
     "proofRepoPath": "Proofs/Erdos519Problem.lean",
-    "tags": ["erdos", "complex-analysis", "power-sums", "turan"],
+    "tags": [
+      "erdos",
+      "complex-analysis",
+      "power-sums",
+      "turan"
+    ],
     "badge": "mathlib",
     "sorries": 1,
     "erdosNumber": 519,
@@ -17,10 +22,26 @@
     "erdosProblemStatus": "solved",
     "mathlib_version": "v4.x",
     "mathlibDependencies": [
-      { "theorem": "Complex", "description": "Complex numbers", "module": "Mathlib.Data.Complex.Basic" },
-      { "theorem": "Complex.abs", "description": "Complex absolute value", "module": "Mathlib.Data.Complex.Basic" },
-      { "theorem": "Complex.exp", "description": "Complex exponential for roots of unity", "module": "Mathlib.Analysis.SpecialFunctions.Pow.Complex" },
-      { "theorem": "Finset.sum", "description": "Finite sums", "module": "Mathlib.Data.Finset.Basic" }
+      {
+        "theorem": "Complex",
+        "description": "Complex numbers",
+        "module": "Mathlib.Data.Complex.Basic"
+      },
+      {
+        "theorem": "Complex.abs",
+        "description": "Complex absolute value",
+        "module": "Mathlib.Data.Complex.Basic"
+      },
+      {
+        "theorem": "Complex.exp",
+        "description": "Complex exponential for roots of unity",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Complex"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Finite sums",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
     ],
     "originalContributions": [
       "Lean formalization of power sums",
@@ -30,7 +51,8 @@
       "Biró's improvements: c = 1/2, then c > 1/2",
       "Roots of unity special case"
     ],
-    "dateAdded": "2026-01-19"
+    "dateAdded": "2026-01-19",
+    "axiomCount": 7
   },
   "overview": {
     "historicalContext": "This problem was posed by Turán, who proved the max is at least c/n. Atkinson (1961) first showed an absolute constant c = 1/6 works. Biró improved this to c = 1/2 (1994) and then c > 1/2 (2000). Computational evidence suggests the optimal c ≈ 0.7.",

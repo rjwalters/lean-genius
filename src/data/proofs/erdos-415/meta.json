@@ -69,13 +69,38 @@
       "Extension to other arithmetic functions ($\\sigma$, $\\tau$, $\\omega$) with analogous $F$ functions"
     ],
     "references": [
-      { "authors": "P. Erdős", "title": "On a problem of Chowla and some related problems", "year": "1936", "venue": "Proc. Nat. Inst. Sci. India", "note": "Original proof that F(n) ≍ log log log n" },
-      { "authors": "P. Erdős, R. L. Graham", "title": "Old and New Problems and Results in Combinatorial Number Theory", "year": "1980", "venue": "Monographies de L'Enseignement Mathématique", "note": "Collection of open problems including #415" },
-      { "authors": "R. R. Hall, G. Tenenbaum", "title": "Divisors", "year": "1988", "venue": "Cambridge University Press", "note": "Comprehensive treatment of arithmetic function distribution and consecutive values" },
-      { "authors": "K. Ford", "title": "The distribution of totients", "year": "1998", "venue": "Ramanujan J.", "note": "Tight bounds on V(x), the counting function for totient values" }
+      {
+        "authors": "P. Erdős",
+        "title": "On a problem of Chowla and some related problems",
+        "year": "1936",
+        "venue": "Proc. Nat. Inst. Sci. India",
+        "note": "Original proof that F(n) ≍ log log log n"
+      },
+      {
+        "authors": "P. Erdős, R. L. Graham",
+        "title": "Old and New Problems and Results in Combinatorial Number Theory",
+        "year": "1980",
+        "venue": "Monographies de L'Enseignement Mathématique",
+        "note": "Collection of open problems including #415"
+      },
+      {
+        "authors": "R. R. Hall, G. Tenenbaum",
+        "title": "Divisors",
+        "year": "1988",
+        "venue": "Cambridge University Press",
+        "note": "Comprehensive treatment of arithmetic function distribution and consecutive values"
+      },
+      {
+        "authors": "K. Ford",
+        "title": "The distribution of totients",
+        "year": "1998",
+        "venue": "Ramanujan J.",
+        "note": "Tight bounds on V(x), the counting function for totient values"
+      }
     ],
     "dateAdded": "01/23/26",
-    "dateUpdated": "2026-02-12"
+    "dateUpdated": "2026-02-12",
+    "axiomCount": 1
   },
   "overview": {
     "historicalContext": "This problem concerns the remarkable regularity of ordering patterns in sequences of Euler's totient function. Given k consecutive values φ(m+1), ..., φ(m+k), their relative ordering is one of k! possible permutations. Erdős asked: how large can k be such that ALL k! patterns appear somewhere in φ(1), ..., φ(n)?\n\nIn 1936, Erdős proved F(n) ≍ log log log n — an astonishingly slow growth rate, answering a question of Chowla. Sarvadaman Chowla had asked about consecutive values of arithmetic functions in the early 1930s at the Punjab University in Lahore. Erdős, then 23, solved the problem using sieve methods and published it in the Proceedings of the National Institute of Sciences of India.\n\nThe same triple-log behavior holds for other arithmetic functions like σ(n), τ(n), and ω(n), suggesting a universal phenomenon rooted in the combinatorial structure of arithmetic functions rather than any specific number-theoretic property.\n\nThe problem connects two seemingly unrelated areas: the combinatorics of permutation patterns (studied intensively since the Stanley-Wilf conjecture, proved by Marcus and Tardos in 2004) and the distribution of values of multiplicative functions (a central topic in analytic number theory since Erdős and Kac's foundational 1940 paper). Despite nearly 90 years of work, three fundamental questions remain open.",
@@ -89,12 +114,30 @@
       "**$\\varphi$ Collisions:** Many integers share the same $\\varphi$ value (e.g., $\\varphi(1) = \\varphi(2) = 1$, $\\varphi(3) = \\varphi(4) = \\varphi(6) = 2$). Carmichael conjectured no totient value is taken exactly once. Ford (1998) showed $|\\{\\varphi(1),\\ldots,\\varphi(n)\\}| = O(n/\\log n)$."
     ],
     "crossReferences": [
-      { "proofId": "euler-totient", "relationship": "Foundation: proves $a^{\\varphi(n)} \\equiv 1 \\pmod{n}$, establishing $\\varphi$ as the key arithmetic function" },
-      { "proofId": "erdos-411", "relationship": "Studies $g(n) = n + \\varphi(n)$ iteration — same totient function, different dynamical question" },
-      { "proofId": "erdos-412", "relationship": "Studies $\\sigma$ iteration convergence — $\\sigma$ ordering patterns also satisfy the triple-log law" },
-      { "proofId": "erdos-413", "relationship": "Studies $\\omega$ barriers — the same additive function $\\omega$ whose ordering patterns follow triple-log" },
-      { "proofId": "erdos-414", "relationship": "Studies $\\tau$ orbit coalescence — the same divisor function $\\tau$ whose ordering patterns follow triple-log" },
-      { "proofId": "erdos-416", "relationship": "Studies $V(x)$, the counting function for totient values — directly related to $\\varphi$ collision structure" }
+      {
+        "proofId": "euler-totient",
+        "relationship": "Foundation: proves $a^{\\varphi(n)} \\equiv 1 \\pmod{n}$, establishing $\\varphi$ as the key arithmetic function"
+      },
+      {
+        "proofId": "erdos-411",
+        "relationship": "Studies $g(n) = n + \\varphi(n)$ iteration — same totient function, different dynamical question"
+      },
+      {
+        "proofId": "erdos-412",
+        "relationship": "Studies $\\sigma$ iteration convergence — $\\sigma$ ordering patterns also satisfy the triple-log law"
+      },
+      {
+        "proofId": "erdos-413",
+        "relationship": "Studies $\\omega$ barriers — the same additive function $\\omega$ whose ordering patterns follow triple-log"
+      },
+      {
+        "proofId": "erdos-414",
+        "relationship": "Studies $\\tau$ orbit coalescence — the same divisor function $\\tau$ whose ordering patterns follow triple-log"
+      },
+      {
+        "proofId": "erdos-416",
+        "relationship": "Studies $V(x)$, the counting function for totient values — directly related to $\\varphi$ collision structure"
+      }
     ]
   },
   "sections": [

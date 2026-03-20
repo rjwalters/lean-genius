@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős and Sárközy",
     "erdosNumber": 444,
-    "status": "complete",
+    "status": "axiomatized",
     "tags": [
       "erdos",
       "number-theory",
@@ -38,10 +38,26 @@
     "dateAdded": "2026-01-18",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      { "theorem": "Finset.filter", "description": "Filtering divisors in A for d_A(n)", "module": "Mathlib.Data.Finset.Basic" },
-      { "theorem": "Finset.card", "description": "Counting A-divisors", "module": "Mathlib.Data.Finset.Card" },
-      { "theorem": "Finset.sum", "description": "Harmonic sum H_A(x)", "module": "Mathlib.Algebra.BigOperators.Group.Finset" },
-      { "theorem": "Filter.atTop", "description": "Asymptotic lim sup formulation", "module": "Mathlib.Order.Filter.AtTopBot" }
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering divisors in A for d_A(n)",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Counting A-divisors",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Harmonic sum H_A(x)",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Asymptotic lim sup formulation",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      }
     ],
     "originalContributions": [
       "Defined d_A(n) as generalized divisor function via Finset.filter on divisors in A",
@@ -52,10 +68,20 @@
       "Proved erdos_444_summary and limsup_infinite from axiomatized result"
     ],
     "crossReferences": [
-      { "id": "erdos-414", "relationship": "Studies h(n) = n + τ(n); the divisor function τ is the case A = ℕ of the generalized divisor function d_A." },
-      { "id": "erdos-381", "relationship": "Counting highly composite numbers; directly related to the extremal numbers achieving large d_A values." },
-      { "id": "erdos-1057", "relationship": "Carmichael number counting uses divisor structure; the divisor function behavior connects to generalized divisor extrema." }
-    ]
+      {
+        "id": "erdos-414",
+        "relationship": "Studies h(n) = n + τ(n); the divisor function τ is the case A = ℕ of the generalized divisor function d_A."
+      },
+      {
+        "id": "erdos-381",
+        "relationship": "Counting highly composite numbers; directly related to the extremal numbers achieving large d_A values."
+      },
+      {
+        "id": "erdos-1057",
+        "relationship": "Carmichael number counting uses divisor structure; the divisor function behavior connects to generalized divisor extrema."
+      }
+    ],
+    "axiomCount": 6
   },
   "sections": [
     {

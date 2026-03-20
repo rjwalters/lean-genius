@@ -7,7 +7,7 @@
     "author": "Straus (1966), ENS (1991), Deshouillers-Freiman (1999)",
     "sourceUrl": "https://erdosproblems.com/874",
     "date": "1999",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos874Problem.lean",
     "tags": [
       "erdos",
@@ -57,7 +57,8 @@
       "Deshouillers-Freiman main theorem axiom (1999)",
       "k_limit_is_two: the limit equals 2",
       "erdos_874 and erdos_874_answer main theorems"
-    ]
+    ],
+    "axiomCount": 12
   },
   "overview": {
     "historicalContext": "This problem asks about 'admissible' sets A ⊆ {1,...,N} where sums of r distinct elements form disjoint sets for each r. Straus (1966) introduced the term and established that 2 ≤ liminf k(N)/√N ≤ limsup k(N)/√N ≤ 4/√3. Erdős-Nicolas-Sárközy (1991) improved the upper bound to √(143/27). Finally, Deshouillers-Freiman (1999) proved the conjecture: k(N) ~ 2√N.",

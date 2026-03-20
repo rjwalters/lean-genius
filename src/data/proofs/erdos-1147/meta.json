@@ -7,7 +7,7 @@
     "author": "Erdős, Konieczny [Ko16b]",
     "sourceUrl": "https://erdosproblems.com/1147",
     "date": "2026",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1147Problem.lean",
     "tags": [
       "erdos",
@@ -62,7 +62,8 @@
       "Axiom konieczny_generalized (any ε(n) → 0 fails)",
       "Proved erdos_1147_false (conjecture refuted via √2 counterexample)",
       "Proved sqrt2_irrational from Mathlib"
-    ]
+    ],
+    "axiomCount": 4
   },
   "overview": {
     "historicalContext": "Erdős Problem #1147 comes from the intersection of Diophantine approximation and additive combinatorics. The problem asks whether the set of integers where αn² is 'close' to an integer (within 1/log(n)) has enough additive structure to form a basis of order 2.\n\nThe distance to nearest integer ‖x‖ = min(fract(x), 1 - fract(x)) measures how close x is to an integer. By Dirichlet's approximation theorem, for any irrational α, there are infinitely many n with ‖αn²‖ small, so the set A is always infinite.\n\nKonieczny [Ko16b] disproved the conjecture by showing that despite being infinite, the set A is too sparse and irregularly distributed to form a basis for almost every α.",

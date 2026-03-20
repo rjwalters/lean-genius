@@ -7,7 +7,7 @@
     "author": "Wintner (problem), Pólya (1918), Tijdeman (1973)",
     "sourceUrl": "https://erdosproblems.com/240",
     "date": "1973",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos240Problem.lean",
     "tags": [
       "erdos",
@@ -61,7 +61,8 @@
       "erdos240_answer theorem: YES answer",
       "stormer_theorem axiom: finitely many consecutive P-smooth pairs",
       "erdos_240 theorem: main result"
-    ]
+    ],
+    "axiomCount": 11
   },
   "overview": {
     "historicalContext": "**Erdős Problem #240**\n\nThis problem concerns gaps between smooth numbers.\n\n**Key History:**\n- Wintner: Originally asked to Erdős\n- Pólya (1918): Prime factors of quadratics grow unboundedly\n- Tijdeman (1973): Resolved the question completely\n\n**The Setting:**\nP-smooth numbers are integers divisible only by primes in P.\nFor finite P, gaps → ∞ is easy (via Pólya). The question is about infinite P.\n\n**Related:** Problem 368 on erdosproblems.com",

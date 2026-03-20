@@ -7,7 +7,7 @@
     "author": "Paul Erdős, Faudree, Sós, Bukh, Sudakov, Jenssen, Keevash, Long, Yepremyan",
     "sourceUrl": "https://erdosproblems.com/637",
     "date": "2007-2020",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos637Problem.lean",
     "tags": [
       "erdos",
@@ -19,7 +19,8 @@
     "sorries": 10,
     "erdosNumber": 637,
     "erdosUrl": "https://erdosproblems.com/637",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "Erdős, Faudree, and Sós conjectured that graphs with small Ramsey numbers (no large cliques or independent sets) must have induced subgraphs with many distinct degrees. This connects degree diversity to Ramsey-theoretic properties.",

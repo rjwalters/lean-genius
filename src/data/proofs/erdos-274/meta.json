@@ -7,7 +7,7 @@
     "author": "Sun Zhi-Wei (2004, abelian case)",
     "sourceUrl": "https://erdosproblems.com/274",
     "date": "2004",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos274Problem.lean",
     "tags": [
       "erdos",
@@ -44,7 +44,8 @@
       "Definition of distinct indices property",
       "Axiomatization of Sun's theorem for abelian groups",
       "Axiomatization of Margolis-Schnabel computational verification"
-    ]
+    ],
+    "axiomCount": 3
   },
   "overview": {
     "historicalContext": "The Herzog-Schönheim conjecture, posed in the 1970s, asks whether a group G can be partitioned by cosets of subgroups with pairwise distinct indices. Erdős included this as Problem #274, specifically asking about the abelian case.\n\nSun Zhi-Wei proved in 2004 that for finite abelian groups (and more generally, when all subgroups are subnormal), the answer is NO - at least two cosets must have the same index. This settled Erdős's original question.\n\nMargolis and Schnabel (2019) verified computationally that the conjecture holds for all groups of order less than 1440. The general case remains open.",

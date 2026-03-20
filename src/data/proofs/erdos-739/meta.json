@@ -7,9 +7,16 @@
     "author": "Galvin (1973), Komjáth (1988), Shelah (1990)",
     "sourceUrl": "https://erdosproblems.com/739",
     "date": "1990",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos739Problem.lean",
-    "tags": ["erdos", "graph-theory", "chromatic-number", "set-theory", "cardinals", "independence"],
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "set-theory",
+      "cardinals",
+      "independence"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 739,
@@ -17,10 +24,26 @@
     "erdosProblemStatus": "independent",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      { "theorem": "Cardinal", "description": "Cardinal arithmetic", "module": "Mathlib.SetTheory.Cardinal.Basic" },
-      { "theorem": "aleph", "description": "Aleph cardinals", "module": "Mathlib.SetTheory.Cardinal.Basic" },
-      { "theorem": "SimpleGraph", "description": "Simple graphs", "module": "Mathlib.Combinatorics.SimpleGraph.Basic" },
-      { "theorem": "Ordinal", "description": "Ordinal numbers", "module": "Mathlib.SetTheory.Ordinal.Basic" }
+      {
+        "theorem": "Cardinal",
+        "description": "Cardinal arithmetic",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "aleph",
+        "description": "Aleph cardinals",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Ordinal",
+        "description": "Ordinal numbers",
+        "module": "Mathlib.SetTheory.Ordinal.Basic"
+      }
     ],
     "originalContributions": [
       "chromaticNumber: cardinal-valued chromatic number for infinite graphs",
@@ -35,7 +58,8 @@
       "GCH definition, MainOpenProblem: GCH → Galvin property?",
       "erdos_739_summary: proved, combining Galvin and Komjáth"
     ],
-    "dateAdded": "2026-01-19"
+    "dateAdded": "2026-01-19",
+    "axiomCount": 4
   },
   "overview": {
     "historicalContext": "**Erdős Problem #739: Chromatic Numbers of Subgraphs**\n\nOriginating with Galvin (1973), this asks whether graphs with infinite chromatic number 𝔪 must have subgraphs of all smaller infinite chromatic numbers 𝔫 < 𝔪.\n\n**Galvin (1973):** Proved YES for 𝔪 = ℵ₀ — the only case provable in ZFC. Also observed that the induced subgraph version implies 2^κ < 2^ν for κ < ν.\n\n**Komjáth (1988):** Constructed models where the property fails: graphs with χ = ℵ₂ having no subgraph with χ = ℵ₁, in models where 2^ℵ₀ = 2^ℵ₁ = 2^ℵ₂ = ℵ₃.\n\n**Shelah (1990):** Under V=L, the property holds for 𝔪 = ℵ₂, 𝔫 = ℵ₁. This establishes set-theoretic independence.\n\n**Open:** Does GCH suffice?",

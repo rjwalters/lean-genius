@@ -60,7 +60,8 @@
       "powerMean_neg1_le_geomMean_le_arithMean: HM ≤ GM ≤ AM proven for r = -1, 0, 1",
       "sum_weighted_rpow_pos: ∑ wᵢzᵢ^r > 0 when ∑ wᵢ = 1 and all zᵢ > 0"
     ],
-    "dateAdded": "02/24/26"
+    "dateAdded": "02/24/26",
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "The power mean M_r(z,w) = (∑ wᵢzᵢ^r)^(1/r) is undefined at r = 0, but the limit exists and equals the geometric mean GM = ∏ zᵢ^wᵢ. This was established by Hardy, Littlewood, and Pólya (1934) and makes the power mean a continuous interpolation between min (r → -∞), HM (r=-1), GM (r=0), AM (r=1), and max (r → +∞).\n\nThe proof uses the definition of derivative: f(r) = log(∑ wᵢzᵢ^r) satisfies f(0) = log(∑ wᵢ) = log(1) = 0 (when ∑ wᵢ = 1), and f'(0) = ∑ wᵢ log zᵢ. Therefore f(r)/r → f'(0) = ∑ wᵢ log zᵢ by the definition of derivative, and exp(f(r)/r) = M_r → exp(∑ wᵢ log zᵢ) = GM by continuity of exp. The Lean 4 formalization uses `hasDerivAt_iff_tendsto_slope` as the key bridge.",

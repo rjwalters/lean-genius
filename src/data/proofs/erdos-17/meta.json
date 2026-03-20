@@ -7,7 +7,7 @@
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/17",
     "date": "",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos17Problem.lean",
     "tags": [
       "erdos",
@@ -43,7 +43,8 @@
       "Connection to prime gaps formalized",
       "OEIS A038133 cluster prime sequence listed"
     ],
-    "dateAdded": "01/14/25"
+    "dateAdded": "01/14/25",
+    "axiomCount": 12
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and has remained open for decades. The concept of cluster primes captures when the primes up to p are 'dense enough' that their pairwise differences cover all small even numbers.\n\nThe prize of $97 cleverly matches the first non-cluster prime. Blecksmith, Erdős, and Selfridge (1999) established strong upper bounds showing cluster primes are very sparse, and Elsholtz (2003) further improved these bounds. Terence Tao has identified this problem as 'difficult'.",

@@ -7,7 +7,7 @@
     "author": "Steiner (2024)",
     "sourceUrl": "https://erdosproblems.com/762",
     "date": "2024",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos762Problem.lean",
     "tags": [
       "erdos",
@@ -45,7 +45,8 @@
       "egs_conjecture_false: formal proof the conjecture is false",
       "egs_general_theorem: general bounded gap result",
       "proper_implies_cochromatic: proper colorings are cochromatic"
-    ]
+    ],
+    "axiomCount": 8
   },
   "overview": {
     "historicalContext": "The cochromatic number ζ(G) is the minimum colors needed where each color class induces either a complete graph or independent set. Erdős, Gimbel, and Straight (1990) conjectured that χ(G) ≤ ζ(G) + 2 for K₅-free graphs with ζ(G) ≥ 4. This was disproved by Steiner in 2024.",

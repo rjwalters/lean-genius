@@ -7,7 +7,7 @@
     "author": "Solymosi (2009)",
     "sourceUrl": "https://erdosproblems.com/818",
     "date": "2009",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos818Problem.lean",
     "tags": [
       "erdos",
@@ -52,7 +52,8 @@
       "Proof sketch via energy bounds",
       "Connection to Problem 52 (original sum-product conjecture)"
     ],
-    "dateAdded": "2026-01-19"
+    "dateAdded": "2026-01-19",
+    "axiomCount": 10
   },
   "overview": {
     "historicalContext": "This problem is part of the sum-product phenomenon, a central topic in additive combinatorics. Erdős-Szemerédi conjectured that finite sets cannot have both small sumsets AND small product sets. This problem explores a conditional version: if the sumset IS small, how large must the product set be? Solymosi's 2009 paper 'Bounding multiplicative energy by the sumset' resolved this completely.",

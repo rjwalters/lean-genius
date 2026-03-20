@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdos",
     "sourceUrl": "https://erdosproblems.com/249",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos249Problem.lean",
     "tags": [
       "erdos",
@@ -50,7 +50,8 @@
       "totientPowerSum_le_two axiom: sum ≤ 2",
       "erdos_249 definition: the irrationality conjecture",
       "partial_sum_2 theorem: first terms sum to 3/4"
-    ]
+    ],
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "Erdos posed this problem in his work with Graham [ErGr80, p.61] and revisited it in [Er88c, p.102]. It belongs to a family of problems asking whether specific arithmetic sums are irrational.\n\nEuler's totient function φ(n) counts integers 1 to n coprime to n. The series ∑ φ(n)/2^n converges rapidly since φ(n) ≤ n and n/2^n → 0.\n\nThe decimal expansion is OEIS A256936, approximately 1.3240...",

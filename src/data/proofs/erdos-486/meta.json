@@ -7,9 +7,15 @@
     "author": "Open Problem",
     "sourceUrl": "https://erdosproblems.com/486",
     "date": "",
-    "status": "complete",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos486Problem.lean",
-    "tags": ["erdos", "number-theory", "density", "modular-arithmetic", "open-problem"],
+    "tags": [
+      "erdos",
+      "number-theory",
+      "density",
+      "modular-arithmetic",
+      "open-problem"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 486,
@@ -38,7 +44,8 @@
       "Modular avoidance set formalization using ZMod",
       "Connection to Davenport-Erdős theorem as a special case",
       "Reference to Besicovitch counterexample for natural density"
-    ]
+    ],
+    "axiomCount": 3
   },
   "overview": {
     "historicalContext": "This problem was posed by Paul Erdős as a generalization of earlier work on sets of integers defined by divisibility conditions. The foundational result is the Davenport-Erdős theorem (1936), which proved that sets of integers avoiding divisibility by elements of any set A always have a logarithmic density.\n\nBesicovitch (1934) demonstrated that natural density is too strong a requirement—there exist sets with logarithmic density but no natural density. This justified the focus on logarithmic density for such problems.\n\nProblem #486 asks whether the Davenport-Erdős result extends to the far more general setting where we forbid arbitrary residue classes modulo each n, not just the class 0 (divisibility). This remains one of the outstanding open problems in the theory of integer sequences and density.",

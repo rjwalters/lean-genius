@@ -15,12 +15,36 @@
       "open"
     ],
     "references": [
-      {"key": "Sp57", "citation": "Specker, Ernst, Teilmengen von Mengen mit Relationen, Comment. Math. Helv. 31 (1957), 302-314.", "type": "paper"},
-      {"key": "Ch72", "citation": "Chang, C. C., A partition theorem for the complete graph on ω^ω, J. Combin. Theory Ser. A 12 (1972), 396-452.", "type": "paper"},
-      {"key": "GL74", "citation": "Galvin, Fred and Larson, Jean A., Pinning countable ordinals, Fund. Math. 82 (1974), 357-361.", "type": "paper"},
-      {"key": "Sc10", "citation": "Schipperus, Rene, Countable partition ordinals, Ann. Pure Appl. Logic 161 (2010), 1195-1215.", "type": "paper"},
-      {"key": "ER56", "citation": "Erdős, Paul and Rado, Richard, A partition calculus in set theory, Bull. Amer. Math. Soc. 62 (1956), 427-489.", "type": "paper"},
-      {"key": "EP", "citation": "Erdős Problems, Problem #592, https://erdosproblems.com/592.", "type": "website"}
+      {
+        "key": "Sp57",
+        "citation": "Specker, Ernst, Teilmengen von Mengen mit Relationen, Comment. Math. Helv. 31 (1957), 302-314.",
+        "type": "paper"
+      },
+      {
+        "key": "Ch72",
+        "citation": "Chang, C. C., A partition theorem for the complete graph on ω^ω, J. Combin. Theory Ser. A 12 (1972), 396-452.",
+        "type": "paper"
+      },
+      {
+        "key": "GL74",
+        "citation": "Galvin, Fred and Larson, Jean A., Pinning countable ordinals, Fund. Math. 82 (1974), 357-361.",
+        "type": "paper"
+      },
+      {
+        "key": "Sc10",
+        "citation": "Schipperus, Rene, Countable partition ordinals, Ann. Pure Appl. Logic 161 (2010), 1195-1215.",
+        "type": "paper"
+      },
+      {
+        "key": "ER56",
+        "citation": "Erdős, Paul and Rado, Richard, A partition calculus in set theory, Bull. Amer. Math. Soc. 62 (1956), 427-489.",
+        "type": "paper"
+      },
+      {
+        "key": "EP",
+        "citation": "Erdős Problems, Problem #592, https://erdosproblems.com/592.",
+        "type": "website"
+      }
     ],
     "leanFile": "Proofs/Erdos592Problem.lean",
     "sorries": 0,
@@ -31,8 +55,16 @@
     "dateAdded": "2026-01-24",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      {"theorem": "Ordinal", "description": "Ordinal arithmetic and exponentiation", "module": "Mathlib.SetTheory.Ordinal.Arithmetic"},
-      {"theorem": "Cardinal", "description": "Cardinal numbers and aleph hierarchy", "module": "Mathlib.SetTheory.Cardinal.Basic"}
+      {
+        "theorem": "Ordinal",
+        "description": "Ordinal arithmetic and exponentiation",
+        "module": "Mathlib.SetTheory.Ordinal.Arithmetic"
+      },
+      {
+        "theorem": "Cardinal",
+        "description": "Cardinal numbers and aleph hierarchy",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      }
     ],
     "originalContributions": [
       "IsCountableOrdinal: countable ordinal predicate",
@@ -44,13 +76,32 @@
       "partition_ordinal_classification: complete classification summary"
     ],
     "relatedProofs": [
-      {"id": "erdos-590", "relationship": "sibling problem in ordinal Ramsey theory"},
-      {"id": "erdos-591", "relationship": "companion partition ordinal problem"},
-      {"id": "erdos-597", "relationship": "related ordinal partition relation question"},
-      {"id": "erdos-598", "relationship": "ordinal Ramsey theory extension"},
-      {"id": "erdos-474", "relationship": "connected partition calculus problem"},
-      {"id": "ramseys-theorem", "relationship": "foundational result (ω → (ω,n)² for all n)"}
-    ]
+      {
+        "id": "erdos-590",
+        "relationship": "sibling problem in ordinal Ramsey theory"
+      },
+      {
+        "id": "erdos-591",
+        "relationship": "companion partition ordinal problem"
+      },
+      {
+        "id": "erdos-597",
+        "relationship": "related ordinal partition relation question"
+      },
+      {
+        "id": "erdos-598",
+        "relationship": "ordinal Ramsey theory extension"
+      },
+      {
+        "id": "erdos-474",
+        "relationship": "connected partition calculus problem"
+      },
+      {
+        "id": "ramseys-theorem",
+        "relationship": "foundational result (ω → (ω,n)² for all n)"
+      }
+    ],
+    "axiomCount": 0
   },
   "sections": [
     {
