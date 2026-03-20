@@ -11,30 +11,38 @@
   },
   "currentState": {
     "phase": "COMPLETED",
-    "since": "2026-03-20T10:30:00Z",
-    "iteration": 1,
-    "focus": "Survey: 5 files, 3287 total lines, 0 sorries, 6 axioms. Gallery entry exists."
+    "since": "2026-03-20T14:50:00Z",
+    "iteration": 2,
+    "focus": "Axiom elimination: 5 files, 0 sorries, 4 axioms (down from 6). 2 axioms converted to derived theorems."
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Comprehensive formalization across 5 files. 3287 lines, 0 sorries, 6 axioms. Gallery entry exists.",
+    "progressSummary": "COMPLETED: 5 files, 0 sorries, 4 axioms (reduced from 6). polymath_bounded_gaps_246 and bounded_gaps_conditional_EH now derived from sieve axioms.",
     "builtItems": [
-      "BoundedPrimeGaps.lean: 1884 lines, 3 axioms — admissible k-tuples, bounded gaps theorem, consequences",
+      "BoundedPrimeGaps.lean: ~1900 lines, 3 axioms (maynard_tao_m_tuples, maynard_tao_sieve, maynard_tao_sieve_eh)",
       "BoundedPrimeGapsOQ01.lean: 438 lines, 0 axioms — verified extensions",
-      "BoundedPrimeGapsOQ03.lean: 279 lines, 1 axiom — additional results",
-      "BoundedPrimeGapsSieve.lean: 405 lines, 2 axioms — sieve theory infrastructure",
+      "BoundedPrimeGapsOQ03.lean: 279 lines, 1 axiom (engelsma_lower_bound) — Engelsma optimality",
+      "BoundedPrimeGapsSieve.lean: ~380 lines, 0 axioms (down from 2) — sieve reduction theorems",
       "BoundedPrimeGapsTPC.lean: 281 lines, 0 axioms — twin prime conjecture connections"
     ],
     "insights": [
       "Zhang's bound H ≤ 70,000,000 (2013) → Maynard H ≤ 600 → Polymath H ≤ 246",
       "Assuming Elliott-Halberstam conjecture: H ≤ 12 (tantalizingly close to twin primes H = 2)",
       "Admissible k-tuples are the combinatorial core: p divides at most p-1 residues mod p",
-      "6 axioms encode deep sieve theory results (Bombieri-Vinogradov, Selberg sieve)"
+      "6 axioms encode deep sieve theory results (Bombieri-Vinogradov, Selberg sieve)",
+      "polymath_bounded_gaps_246 is a consequence of maynard_tao_sieve + polymath50Tuple (proved)",
+      "bounded_gaps_conditional_EH is a consequence of maynard_tao_sieve_eh + {0,2,6,8,12} quintuple (proved)",
+      "The 4 remaining axioms (3 sieve + 1 Engelsma) are genuinely deep results requiring infrastructure not in Mathlib"
     ],
     "nextSteps": []
   },
-  "tags": ["number-theory", "primes", "prime-gaps", "sieve-theory"],
+  "tags": [
+    "number-theory",
+    "primes",
+    "prime-gaps",
+    "sieve-theory"
+  ],
   "started": "2026-03-20T10:28:00Z",
-  "lastUpdate": "2026-03-20T10:30:00Z",
+  "lastUpdate": "2026-03-20T14:50:00Z",
   "significance": 9,
   "tractability": 5
 }

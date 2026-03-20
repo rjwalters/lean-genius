@@ -126,3 +126,24 @@ Note: `zhang_bounded_gaps_70M` was converted from axiom to theorem (derived from
 
 **Mathematical insight**: The bounded gaps theorem (Zhang/Polymath) and the factorial construction are complementary: prime gaps oscillate between bounded small values and arbitrarily large values. The liminf ≤ 246 and limsup = ∞ together characterize prime gap behavior.
 **Outcome**: 94+ proved theorems, 3 axioms, 0 sorries. Build verified via Docker (no warnings).
+
+### Research Session (2026-03-20)
+**Mode**: AXIOM HUNT (researcher-2)
+**Decision**: AXIOM HUNT - Eliminate redundant axioms via sieve reduction
+**Changes**:
+1. **Moved sieve axioms to BoundedPrimeGaps.lean**: `maynard_tao_sieve` and `maynard_tao_sieve_eh` now declared in the main file instead of BoundedPrimeGapsSieve.lean.
+2. **Converted `polymath_bounded_gaps_246` from axiom to theorem**: Derived from `maynard_tao_sieve` applied to the private `polymath50Tuple` (admissible 50-tuple of diameter 246). The sieve axiom says any admissible 50-tuple of diameter D gives infinitely many gaps ≤ D.
+3. **Converted `bounded_gaps_conditional_EH` from axiom to theorem**: Derived from `maynard_tao_sieve_eh` applied to the admissible quintuple {0,2,6,8,12} of diameter 12.
+4. **BoundedPrimeGapsSieve.lean reduced to 0 axioms**: Sieve axioms removed (imported from main file). All theorems now derived from imports.
+
+**Mathematical insight**: The axiom reduction reveals the logical structure: the specific bounded gap results (246, 70M, 12) are all INSTANCES of the general sieve reduction principle. The sieve axiom is more informative — it explains WHY the bound is 246 (the optimal 50-tuple diameter) and HOW to improve it (better distribution → smaller k → better tuples).
+
+**Axiom summary across all 5 files**:
+- `maynard_tao_m_tuples` (deep: m-tuple density, requires full Maynard weights)
+- `maynard_tao_sieve` (deep: unconditional sieve reduction, requires Bombieri-Vinogradov)
+- `maynard_tao_sieve_eh` (deep: EH-conditional sieve, requires Elliott-Halberstam conjecture)
+- `engelsma_lower_bound` (computational: exhaustive search over admissible 50-tuples)
+
+All 4 remaining axioms are genuinely deep results requiring substantial infrastructure not in Mathlib.
+
+**Outcome**: 6→4 axioms eliminated, 0 sorries, all 5 files compile. Build verified via Docker.

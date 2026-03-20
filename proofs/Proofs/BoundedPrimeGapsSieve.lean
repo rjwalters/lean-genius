@@ -15,19 +15,13 @@ consequences:
 4. `dense_cluster_min_gap` — From m-tuples axiom: ∃ i with gap_i ≤ C/(m-1)
 5. `many_gaps_bounded_in_cluster` — At least one gap is small in every dense cluster
 
-## Part II: Sieve Reduction Framework (1 axiom, 0 sorries)
+## Part II: Sieve Reduction Framework (0 axioms, 0 sorries)
 
-The Maynard-Tao sieve mechanism is a REDUCTION:
-  admissible k-tuple + sufficient distribution → bounded prime gaps
+The Maynard-Tao sieve axioms (`maynard_tao_sieve` and `maynard_tao_sieve_eh`)
+are declared in BoundedPrimeGaps.lean. Here we derive specific results:
 
-We axiomatize this reduction and derive the existing results structurally:
-
-6. `maynard_tao_sieve` (axiom) — The unified sieve reduction
-7. `polymath_from_sieve` — Derives the 246 bound from sieve + Engelsma 50-tuple
-8. `eh_bound_from_sieve` — Derives the 12 bound (EH) from sieve + 5-tuple
-
-The sieve axiom replaces 2 of the 3 existing axioms (`polymath_bounded_gaps_246`
-and `bounded_gaps_conditional_EH`) with a single structural principle.
+6. `polymath_from_sieve` — Derives the 246 bound from sieve + Engelsma 50-tuple
+7. `eh_bound_from_sieve` — Derives the 12 bound (EH) from sieve + 5-tuple
 
 ## Part III: Consequences
 
@@ -35,7 +29,7 @@ and `bounded_gaps_conditional_EH`) with a single structural principle.
 10. `sieve_for_any_admissible_50` — Any admissible 50-tuple gives bounded gaps
 11. `improving_bounds_from_larger_tuples` — How k-tuple optimization helps
 
-Axioms: 1 (maynard_tao_sieve — the unified sieve reduction)
+Axioms: 0 (sieve axioms now declared in BoundedPrimeGaps.lean)
 Sorries: 0
 
 Tags: number-theory, prime-gaps, sieve-theory, dense-clusters
@@ -191,33 +185,8 @@ the minimum k required:
 We axiomatize the sieve mechanism as a single structural principle.
 -/
 
-/-- **The Maynard-Tao Sieve Reduction** (unconditional form):
-
-    For any admissible k-tuple H with k ≥ 50 and all elements ≤ D,
-    there are infinitely many prime gaps ≤ D.
-
-    Mathematical content: The Maynard-Tao weights combined with the
-    Bombieri-Vinogradov theorem show that for any admissible 50-tuple,
-    infinitely many translates n have ≥ 2 primes among {n + h : h ∈ H}.
-    Two primes within distance D forces a prime gap ≤ D.
-
-    This is the STRUCTURAL HEART of the bounded prime gaps theorem:
-    it converts combinatorial data (admissible tuples) into analytic
-    conclusions (bounded gaps) via the sieve.
-
-    Replaces: `polymath_bounded_gaps_246` (which is the k=50, D=246 instance). -/
-axiom maynard_tao_sieve (H : Finset ℕ) (D : ℕ)
-    (hadm : IsAdmissible H) (hcard : H.card ≥ 50)
-    (hD : ∀ h ∈ H, h ≤ D) :
-    ∀ N : ℕ, ∃ n ≥ N, primeGap n ≤ D
-
-/-- **Elliott-Halberstam Sieve Variant**: Under the Elliott-Halberstam
-    conjecture, the sieve works with k ≥ 5 instead of k ≥ 50.
-    This is why EH gives the much better bound H ≤ 12. -/
-axiom maynard_tao_sieve_eh (H : Finset ℕ) (D : ℕ)
-    (hadm : IsAdmissible H) (hcard : H.card ≥ 5)
-    (hD : ∀ h ∈ H, h ≤ D) :
-    ∀ N : ℕ, ∃ n ≥ N, primeGap n ≤ D
+-- The sieve axioms `maynard_tao_sieve` and `maynard_tao_sieve_eh` are now
+-- declared in BoundedPrimeGaps.lean and imported via `open BoundedPrimeGaps`.
 
 /-
 ## Part II.a: Deriving Existing Results from the Sieve Axiom
@@ -377,21 +346,14 @@ theorem dense_clusters_with_small_gaps :
 
 ### Axiom Analysis
 
-This file introduces 2 axioms:
-- `maynard_tao_sieve` — The unconditional sieve reduction (replaces `polymath_bounded_gaps_246`)
-- `maynard_tao_sieve_eh` — The EH-conditional sieve reduction (replaces `bounded_gaps_conditional_EH`)
+This file introduces 0 axioms. The sieve axioms (`maynard_tao_sieve` and
+`maynard_tao_sieve_eh`) are now declared in BoundedPrimeGaps.lean and imported.
+All theorems in this file are derived from imported axioms.
 
-The sieve axioms are MORE INFORMATIVE than the results they replace:
-- `polymath_bounded_gaps_246` says "gaps ≤ 246 infinitely often"
-- `maynard_tao_sieve` says "gaps ≤ D for ANY admissible 50-tuple of diameter D"
-
-The sieve axiom reveals WHY the bound is 246 (the optimal 50-tuple has
-diameter 246) and HOW to improve it (better distribution → smaller k → better tuples).
-
-### Axiom Count
-- `maynard_tao_sieve` (new, subsumes `polymath_bounded_gaps_246`)
-- `maynard_tao_sieve_eh` (new, subsumes `bounded_gaps_conditional_EH`)
-- `maynard_tao_m_tuples` (existing, provides dense cluster bounds)
+### Axiom Dependencies (from BoundedPrimeGaps.lean)
+- `maynard_tao_sieve` (unconditional sieve reduction, k ≥ 50)
+- `maynard_tao_sieve_eh` (EH-conditional sieve reduction, k ≥ 5)
+- `maynard_tao_m_tuples` (m-tuple dense cluster bounds)
 
 ### Mathematical Contribution
 
