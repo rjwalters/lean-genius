@@ -22,7 +22,14 @@
     "erdosUrl": "https://erdosproblems.com/140",
     "erdosProblemStatus": "solved",
     "erdosPrizeValue": "$500",
-    "axiomCount": 9
+    "axiomCount": 9,
+    "prerequisites": [
+      "arithmetic-progressions",
+      "density-arguments",
+      "additive-combinatorics",
+      "fourier-analysis-on-finite-groups",
+      "extremal-set-theory"
+    ]
   },
   "overview": {
     "historicalContext": "Roth (1953) proved r₃(N) = o(N), showing 3-AP-free sets have density 0. Decades of improvements followed: Bourgain (2008), Sanders (2011), Bloom-Sisask (2020). Kelley-Meka (2023) finally proved Erdős's conjecture that r₃(N) = O(N/(log N)^C) for all C > 0, resolving the $500 prize.",
