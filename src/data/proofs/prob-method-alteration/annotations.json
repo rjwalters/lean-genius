@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-alteration-docstring",
+    "proofId": "prob-method-alteration",
+    "range": { "startLine": 1, "endLine": 11 },
+    "type": "context",
+    "title": "The Alteration/Deletion Method",
+    "content": "The alteration method (also called deletion method) is a two-phase technique in the probabilistic method. Phase 1: construct a random object. Phase 2: deterministically remove or fix the few violations. Erdős and collaborators developed this in the 1960s to prove existence of combinatorial structures that the basic first moment method cannot handle directly. The key advantage is that we need not find a random construction that satisfies all constraints simultaneously — only one that approximately satisfies them.",
+    "mathContext": "If $\\mathbb{E}[X_{\\text{good}}] - \\mathbb{E}[X_{\\text{bad}}] > 0$, then $\\exists$ an outcome where removing bad parts leaves a good structure.",
+    "significance": "key",
+    "relatedConcepts": ["probabilistic method", "first moment method", "Erdős existence proofs"],
+    "prerequisites": ["probability theory", "expectation", "finite combinatorics"]
+  },
+  {
+    "id": "ann-alteration-principle",
+    "proofId": "prob-method-alteration",
+    "range": { "startLine": 18, "endLine": 21 },
+    "type": "theorem",
+    "title": "Alteration Principle (First Moment on Finsets)",
+    "content": "The core alteration principle states: over a nonempty finite sample space $s$, if the total 'good' count exceeds the total 'bad' count (as integers), then some element has good minus bad positive. This is essentially the pigeonhole principle applied to the net value function $\\text{good}(a) - \\text{bad}(a)$. The use of $\\mathbb{Z}$ (not $\\mathbb{N}$) is crucial since natural number subtraction is truncated at zero, which would lose information about negative net values.",
+    "mathContext": "$\\sum_{a \\in s} \\text{good}(a) - \\sum_{a \\in s} \\text{bad}(a) > 0 \\implies \\exists a \\in s,\\; \\text{good}(a) - \\text{bad}(a) > 0$",
+    "significance": "key",
+    "relatedConcepts": ["pigeonhole principle", "first moment method", "Finset.exists_lt_sum_div"],
+    "prerequisites": ["Finset API", "integer arithmetic in Lean"]
+  },
+  {
+    "id": "ann-independent-set",
+    "proofId": "prob-method-alteration",
+    "range": { "startLine": 25, "endLine": 26 },
+    "type": "theorem",
+    "title": "Independent Set Bound via Alteration",
+    "content": "For a $d$-regular graph on $n$ vertices, the alteration method yields an independent set of size at least $n/(2d)$. The proof idea: include each vertex with probability $p = 1/d$, giving $np = n/d$ expected vertices and $nd/2 \\cdot p^2 = n/(2d)$ expected edges in the random subset. Deleting one vertex per edge removes at most $n/(2d)$ vertices, leaving an independent set of expected size $n/d - n/(2d) = n/(2d)$. The current formalization is sorry'd and uses a simplified existential statement rather than constructing the independent set explicitly.",
+    "mathContext": "For a $d$-regular graph $G$ on $n$ vertices: $\\alpha(G) \\geq \\frac{n}{2d}$. More generally, $\\alpha(G) \\geq \\frac{n^2}{2m+n}$ for $m$ edges.",
+    "significance": "key",
+    "relatedConcepts": ["independence number", "regular graphs", "Turán-type bounds", "greedy algorithms"],
+    "prerequisites": ["SimpleGraph API", "graph regularity", "probability on finite sets"]
+  },
+  {
+    "id": "ann-property-b",
+    "proofId": "prob-method-alteration",
+    "range": { "startLine": 29, "endLine": 30 },
+    "type": "theorem",
+    "title": "Property B Placeholder",
+    "content": "Property B (introduced by E.W. Miller, 1937, named by Erdős and Hajnal) asks whether a hypergraph's vertices can be 2-colored so that no edge is monochromatic. The alteration argument shows: randomly 2-color vertices, then for each monochromatic edge recolor one vertex. If $m < 2^{k-1}$ for $k$-uniform hypergraphs, fewer than one edge is monochromatic in expectation, so alteration succeeds. This statement currently proves `True` as a placeholder because a proper hypergraph type is needed for the full formalization.",
+    "mathContext": "A $k$-uniform hypergraph with $m < 2^{k-1}$ edges has Property B. Random 2-coloring: $\\Pr[\\text{edge monochromatic}] = 2 \\cdot 2^{-k} = 2^{1-k}$, so $\\mathbb{E}[\\text{mono edges}] = m \\cdot 2^{1-k} < 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["hypergraph coloring", "Property B", "Erdős-Hajnal", "set system colorability"],
+    "prerequisites": ["hypergraph definitions", "uniform hypergraphs", "probabilistic counting"]
+  }
+]
