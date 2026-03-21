@@ -47,8 +47,10 @@
     "type": "definition",
     "title": "Ratio Set",
     "content": "**ratioSet:**\n\nThe set of all values tau(n+1)/tau(n) for n >= 1.\n\n```lean\nnoncomputable def ratioSet : Set R :=\n  {r : R | exists n >= 1, divisorRatio n = r}\n```\n\n**Main question:** Is this set dense in (0, infinity)?",
+    "mathContext": "$\\{\\tau(n+1)/\\tau(n) : n \\geq 1\\} \\subseteq (0, \\infty)$; is this dense?",
     "significance": "key",
-    "relatedConcepts": ["Image sets", "Value sets"]
+    "relatedConcepts": ["image sets", "value sets", "density"],
+    "prerequisites": ["divisorRatio", "Set"]
   },
   {
     "id": "ann-e964-dense",
@@ -57,8 +59,10 @@
     "type": "definition",
     "title": "Dense in Positives",
     "content": "**isDenseInPositives(S):**\n\nS is everywhere dense in (0, infinity) if for any r > 0 and eps > 0, there exists s in S with |s - r| < eps.\n\n```lean\ndef isDenseInPositives (S : Set R) : Prop :=\n  forall r > 0, forall eps > 0, exists s in S, |s - r| < eps\n```\n\n**Equivalent:** closure(S) contains (0, infinity).",
+    "mathContext": "$\\forall r > 0,\\ \\forall \\varepsilon > 0,\\ \\exists s \\in S,\\ |s - r| < \\varepsilon$",
     "significance": "key",
-    "relatedConcepts": ["Density", "Topology"]
+    "relatedConcepts": ["density", "topology", "closure"],
+    "prerequisites": ["Set", "abs", "Real"]
   },
   {
     "id": "ann-e964-conjecture",
