@@ -30,7 +30,10 @@
     "type": "definition",
     "title": "Even Valuation",
     "content": "**hasEvenValuation p n:**\n\nn! is divisible by an even power of p.\n\n**Definition:**\n```lean\ndef hasEvenValuation (p n : ℕ) : Prop :=\n  Even (padicValNat p (n.factorial))\n```\n\nEquivalently: 2 | vₚ(n!)",
-    "significance": "key"
+    "mathContext": "$\\text{hasEvenValuation}(p, n) \\iff 2 \\mid v_p(n!)$",
+    "significance": "key",
+    "relatedConcepts": ["Even predicate", "p-adic valuation of factorial", "parity of exponents"],
+    "prerequisites": ["Even", "padicValNat", "Nat.factorial"]
   },
   {
     "id": "ann-e646-all-even",
@@ -39,7 +42,10 @@
     "type": "definition",
     "title": "Multi-prime Even Valuation",
     "content": "**hasAllEvenValuations S n:**\n\nn! is divisible by an even power of each prime in S.\n\n**Definition:**\n```lean\ndef hasAllEvenValuations (S : Finset ℕ) (n : ℕ) : Prop :=\n  ∀ p ∈ S, p.Prime → hasEvenValuation p n\n```\n\nThis is the property we seek for infinitely many n.",
-    "significance": "key"
+    "mathContext": "$\\forall p \\in S,\\ 2 \\mid v_p(n!)$",
+    "significance": "key",
+    "relatedConcepts": ["simultaneous divisibility", "Chinese Remainder Theorem", "Finset quantification"],
+    "prerequisites": ["Finset", "hasEvenValuation", "Nat.Prime"]
   },
   {
     "id": "ann-e646-digit-sum",
@@ -124,7 +130,10 @@
     "type": "axiom",
     "title": "General Digit Sum Formula",
     "content": "**digit_sum_formula:**\n\nvₚ(n!) = (n - sₚ(n)) / (p - 1)\n\nwhere sₚ(n) is the sum of digits of n in base p.\n\n**Special case:** For p = 2, this gives v₂(n!) = n - s₂(n).\n\nThis formula makes the parity of vₚ(n!) depend only on the base-p representation.",
-    "significance": "key"
+    "mathContext": "$v_p(n!) = \\frac{n - s_p(n)}{p - 1}$ where $s_p(n) = \\sum_{i} d_i$ for $n = \\sum_i d_i p^i$",
+    "significance": "key",
+    "relatedConcepts": ["Legendre formula", "digit sum", "base-p representation", "Kummer theorem"],
+    "prerequisites": ["Nat.digits", "padicValNat", "Nat.factorial"]
   },
   {
     "id": "ann-e646-explicit",

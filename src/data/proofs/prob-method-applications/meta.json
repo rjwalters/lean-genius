@@ -48,7 +48,25 @@
       "Independent set bounds connecting all four probabilistic methods"
     ],
     "dateAdded": "03/21/26",
-    "axiomCount": 0
+    "axiomCount": 0,
+    "relatedProblems": [
+      {
+        "id": "prob-method-expectation",
+        "relationship": "Uses the first moment method library for Ramsey bounds and Property B"
+      },
+      {
+        "id": "prob-method-alteration",
+        "relationship": "Uses the alteration method library for off-diagonal Ramsey and independent sets"
+      },
+      {
+        "id": "prob-method-second-moment",
+        "relationship": "Uses the second moment method library for threshold phenomena"
+      },
+      {
+        "id": "prob-method-lovasz-local",
+        "relationship": "Uses the Lovász Local Lemma library for chromatic number bounds"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "The probabilistic method, developed by Paul Erdos from 1947 onward, transformed combinatorics by providing non-constructive existence proofs for objects that seemed impossibly difficult to construct explicitly. This applications module brings together the four core techniques -- first moment, alteration, second moment, and the Lovasz Local Lemma -- and demonstrates them on classical problems.\n\nThe applications span the major areas of probabilistic combinatorics: Ramsey theory (lower bounds on R(k,k) and off-diagonal Ramsey numbers), graph coloring (upper bounds on chromatic number from maximum degree), hypergraph coloring (Property B and its extensions), and extremal graph theory (independent set bounds in various graph families).\n\nThese results collectively demonstrate why the probabilistic method became one of the most important tools in 20th-century mathematics. Many of the bounds proved here remained the best known for decades, and some still are. The unity of the approach is striking: the same handful of probabilistic principles yield the strongest known results across diverse combinatorial domains.",
