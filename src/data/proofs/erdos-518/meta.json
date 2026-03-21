@@ -53,7 +53,13 @@
       "erdos_gyarfas_bound axiom: 2√n same-color paths suffice (1995)",
       "pokrovskiy_versteegen_williams axiom: √n same-color paths suffice (2024)"
     ],
-    "axiomCount": 4
+    "axiomCount": 4,
+    "prerequisites": [
+      "Ramsey theory fundamentals",
+      "Graph theory: complete graphs and edge colorings",
+      "Path covers and vertex partitions",
+      "Combinatorial lower bound constructions"
+    ]
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and Gyárfás in 1995. They proved that 2√n monochromatic paths of the same color suffice and conjectured that √n is achievable. Earlier, Gerencsér and Gyárfás (1967) proved that just 2 paths suffice if colors can differ. The conjecture was finally resolved by Pokrovskiy, Versteegen, and Williams in 2024.",
