@@ -8,7 +8,8 @@
     "content": "Erdos Problem #68: Is the sum sum_{n>=2} 1/(n!-1) irrational? Status: OPEN.",
     "mathContext": "Weisenberg showed the sum equals sum_n sum_k 1/(n!)^k. Erdos conjectured more broadly that sum 1/(n!+t) is transcendental for all integers t.",
     "significance": "critical",
-    "relatedConcepts": ["factorial", "irrationality", "transcendence", "infinite-series"]
+    "relatedConcepts": ["factorial", "irrationality", "transcendence", "infinite-series"],
+    "tags": ["number-theory", "irrationality", "open-problem", "erdos"]
   },
   {
     "id": "ann-68-factorialsum",
@@ -19,7 +20,8 @@
     "content": "factorialSum := sum' n, 1/((n+2).factorial - 1). The main object of study.",
     "mathContext": "Index shifted so n=0 corresponds to 2!-1 = 1. Converges since factorials grow super-exponentially.",
     "significance": "critical",
-    "relatedConcepts": ["tsum", "factorial", "convergence"]
+    "relatedConcepts": ["tsum", "factorial", "convergence"],
+    "tags": ["infinite-series", "factorial", "definition", "analysis"]
   },
   {
     "id": "ann-68-summand",
@@ -30,7 +32,8 @@
     "content": "summand(n) := 1/((n+2)!-1). summand_pos: each term is positive.",
     "mathContext": "For n >= 0, (n+2)! >= 2, so denominator (n+2)!-1 >= 1, making each term well-defined and positive.",
     "significance": "key",
-    "relatedConcepts": ["positivity", "well-defined"]
+    "relatedConcepts": ["positivity", "well-defined"],
+    "tags": ["definition", "positivity", "factorial", "well-definedness"]
   },
   {
     "id": "ann-68-convergence",
@@ -41,7 +44,8 @@
     "content": "summand_tendsto_zero: terms tend to 0. factorialSum_summable: the sum converges. factorialSum_pos: sum is positive.",
     "mathContext": "Factorial growth dominates: n! > 2^n, so 1/(n!-1) < 2/2^n. Sum bounded by geometric series.",
     "significance": "key",
-    "relatedConcepts": ["summable", "tendsto", "comparison-test"]
+    "relatedConcepts": ["summable", "tendsto", "comparison-test"],
+    "tags": ["convergence", "comparison-test", "analysis", "infinite-series"]
   },
   {
     "id": "ann-68-weisenberg",
@@ -52,7 +56,8 @@
     "content": "weisenberg_identity: factorialSum = sum_n sum_k (1/(n+2)!)^(k+1).",
     "mathContext": "Uses geometric series: 1/(x-1) = x/(x-1) * 1/x = (1 + 1/(x-1)) * 1/x leads to sum_{k>=1} x^{-k}.",
     "significance": "critical",
-    "relatedConcepts": ["geometric-series", "double-sum", "reformulation"]
+    "relatedConcepts": ["geometric-series", "double-sum", "reformulation"],
+    "tags": ["geometric-series", "identity", "reformulation", "double-sum"]
   },
   {
     "id": "ann-68-conjecture",
@@ -63,7 +68,8 @@
     "content": "ErdosConjecture68 := Irrational factorialSum. The central open question.",
     "mathContext": "Asks whether the sum is irrational. Erdos actually conjectured transcendence (stronger).",
     "significance": "critical",
-    "relatedConcepts": ["conjecture", "irrational", "open-problem"]
+    "relatedConcepts": ["conjecture", "irrational", "open-problem"],
+    "tags": ["conjecture", "irrationality", "open-problem", "erdos"]
   },
   {
     "id": "ann-68-generalized",
@@ -74,7 +80,8 @@
     "content": "generalizedFactorialSum(t) := sum 1/(n!+t). erdosTranscendenceConjecture: transcendental for all integer t.",
     "mathContext": "Problem 68 is the t = -1 case. Erdos conjectured all such sums are transcendental.",
     "significance": "key",
-    "relatedConcepts": ["generalization", "transcendental", "parametric"]
+    "relatedConcepts": ["generalization", "transcendental", "parametric"],
+    "tags": ["generalization", "transcendence", "parametric-family", "number-theory"]
   },
   {
     "id": "ann-68-special-case",
@@ -85,7 +92,8 @@
     "content": "problem_68_is_special_case: generalizedFactorialSum(-1) = factorialSum.",
     "mathContext": "Verifies that Problem 68 is indeed the t = -1 case of Erdos's broader conjecture.",
     "significance": "supporting",
-    "relatedConcepts": ["special-case", "reduction"]
+    "relatedConcepts": ["special-case", "reduction"],
+    "tags": ["special-case", "reduction", "verification"]
   },
   {
     "id": "ann-68-explicit",
@@ -96,7 +104,8 @@
     "content": "first_term = 1 (2!-1=1), second_term = 1/5 (3!-1=5), third_term = 1/23 (4!-1=23), fourth_term = 1/119 (5!-1=119).",
     "mathContext": "Partial sum 1 + 0.2 + 0.043... + 0.0084... = 1.251... Verified by native_decide where possible.",
     "significance": "supporting",
-    "relatedConcepts": ["computation", "verification", "partial-sum"]
+    "relatedConcepts": ["computation", "verification", "partial-sum"],
+    "tags": ["computation", "partial-sum", "verification", "factorial"]
   },
   {
     "id": "ann-68-difficulty",
@@ -107,7 +116,8 @@
     "content": "eRelatedSum: sum 1/n! = e - 2. The -1 perturbation breaks factorial structure. perturbation_difference: the gap is about 0.04-0.05.",
     "mathContext": "e = sum 1/n! is transcendental (Hermite 1873). The -1 perturbation removes this nice structure.",
     "significance": "key",
-    "relatedConcepts": ["difficulty", "perturbation", "euler-number"]
+    "relatedConcepts": ["difficulty", "perturbation", "euler-number"],
+    "tags": ["perturbation", "euler-number", "transcendence", "difficulty"]
   },
   {
     "id": "ann-68-oeis",
@@ -118,7 +128,8 @@
     "content": "oeis_a331373: factorialSum is approximately 1.2517525711... (OEIS A331373).",
     "mathContext": "The decimal expansion is catalogued in OEIS, but numerical evidence doesn't prove irrationality.",
     "significance": "supporting",
-    "relatedConcepts": ["oeis", "numerical", "approximation"]
+    "relatedConcepts": ["oeis", "numerical", "approximation"],
+    "tags": ["oeis", "numerical-approximation", "constant", "reference"]
   },
   {
     "id": "ann-68-transcendence",
@@ -129,7 +140,8 @@
     "content": "transcendence_implies_irrationality: Transcendental => Irrational. transcendence_implies_68: if transcendental, then Problem 68 solved.",
     "mathContext": "Transcendental numbers form a proper subset of irrationals. Erdos's broader conjecture would imply Problem 68.",
     "significance": "key",
-    "relatedConcepts": ["transcendental", "irrational", "hierarchy"]
+    "relatedConcepts": ["transcendental", "irrational", "hierarchy"],
+    "tags": ["transcendence", "irrationality", "number-hierarchy", "implication"]
   },
   {
     "id": "ann-68-status",
@@ -140,6 +152,7 @@
     "content": "The problem is OPEN. erdos_68_statement: ErdosConjecture68 <=> Irrational factorialSum.",
     "mathContext": "Cannot be resolved by finite computation. Requires new techniques for perturbed factorial sums.",
     "significance": "critical",
-    "relatedConcepts": ["open-problem", "status", "formal-statement"]
+    "relatedConcepts": ["open-problem", "status", "formal-statement"],
+    "tags": ["open-problem", "formal-statement", "status", "erdos"]
   }
 ]
