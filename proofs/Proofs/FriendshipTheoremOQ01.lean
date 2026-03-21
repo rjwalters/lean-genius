@@ -1470,35 +1470,44 @@ theorem k_sub_one_is_perfect_square (hF : IsFriendshipGraph G)
   -- k = 0, contradicting k ≥ 2
   linarith
 
-/-- **UFD factorization**: a monic polynomial in ℤ[X] dividing a product
-    of coprime prime powers factors into powers of those primes.
-
-    In ℤ[X]: (X-a) and (X+a) are non-associate primes for a ≥ 1.
-    If f is monic and f ∣ (X-a)^m·(X+a)^m, then f = (X-a)^b·(X+a)^c
-    with b+c = natDegree(f).
-
-    **Proof sketch**: Every irreducible factor p of f divides
-    (X-a)^m·(X+a)^m. Since p is prime (UFD), p ∣ (X-a)^m or p ∣ (X+a)^m.
-    By Prime.dvd_of_dvd_pow: p ∣ (X-a) or p ∣ (X+a). Since both are
-    prime (hence irreducible), p is an associate. For monic f, the unit
-    factor is 1. -/
-private lemma monic_dvd_coprime_prime_pow_factored (a : ℤ) (ha : a ≥ 1)
-    (f : Polynomial ℤ) (hf : f.Monic) (m : ℕ)
-    (hdvd : f ∣ (X - C a) ^ m * (X + C a) ^ m) :
-    ∃ (b c : ℕ), b + c = f.natDegree ∧ b ≤ m ∧ c ≤ m ∧
-      f = (X - C a) ^ b * (X + C a) ^ c := by
-  sorry
-
-/-- **Sub-leading coefficient of (X-a)^b·(X+a)^c** equals (c-b)·a.
-
-    From Vieta's formulas: the sum of roots (with multiplicity) is
-    b·a + c·(-a) = (b-c)·a. The sub-leading coefficient (coeff at
-    degree b+c-1) is the negative of this sum: (c-b)·a. -/
-private lemma subleading_coeff_factored (a : ℤ) (b c : ℕ)
-    (hbc : b + c ≥ 1) :
-    ((X - C a) ^ b * (X + C a) ^ c : Polynomial ℤ).coeff (b + c - 1) =
-    (↑c - ↑b : ℤ) * a := by
-  sorry
+/-- Over a field, a monic polynomial dividing X^m must equal X^{natDegree f}. -/
+private lemma monic_dvd_X_pow_eq {K : Type*} [Field K] {f : Polynomial K} {m : ℕ}
+    (hf : f.Monic) (hdvd : f ∣ X ^ m) : f = X ^ f.natDegree := by
+  induction m generalizing f with
+  | zero =>
+    rw [pow_zero] at hdvd
+    have hdeg : f.natDegree = 0 := Polynomial.natDegree_eq_zero_of_isUnit (isUnit_of_dvd_one hdvd)
+    rw [hdeg, pow_zero, Polynomial.eq_C_of_natDegree_eq_zero hdeg]
+    have : f.leadingCoeff = 1 := hf.leadingCoeff
+    rw [Polynomial.leadingCoeff, hdeg] at this; rw [this, map_one]
+  | succ m ih =>
+    have hX_ne : (X : Polynomial K) ≠ 0 := Polynomial.X_ne_zero
+    obtain ⟨g, hfg⟩ := hdvd
+    have hX_dvd_fg : (X : Polynomial K) ∣ f * g :=
+      ⟨X ^ m, by rw [← hfg, pow_succ]; ring⟩
+    rcases (Polynomial.prime_X (R := K)).dvd_or_dvd hX_dvd_fg with hXf | hXg
+    · obtain ⟨f₁, hf₁_eq⟩ := hXf
+      have hf₁_monic : f₁.Monic := by
+        rwa [Polynomial.Monic, hf₁_eq, Polynomial.leadingCoeff_mul,
+          Polynomial.leadingCoeff_X, one_mul] at hf
+      have hf₁_ne : f₁ ≠ 0 := hf₁_monic.ne_zero
+      have hf₁_dvd : f₁ ∣ X ^ m := by
+        have : f ∣ X ^ (m + 1) := ⟨g, hfg⟩
+        rw [hf₁_eq] at this
+        rwa [show X ^ (m + 1) = X * X ^ m from by rw [pow_succ]; ring,
+          mul_dvd_mul_iff_left hX_ne] at this
+      have hf₁_eq_pow := ih hf₁_monic hf₁_dvd
+      have hdeg : f.natDegree = f₁.natDegree + 1 := by
+        rw [hf₁_eq, Polynomial.natDegree_mul hX_ne hf₁_ne, Polynomial.natDegree_X]; omega
+      conv_rhs => rw [hdeg]
+      rw [hf₁_eq]; conv_lhs => rw [hf₁_eq_pow]
+      rw [pow_succ]; ring
+    · obtain ⟨g₁, hg₁_eq⟩ := hXg
+      exact ih hf ⟨g₁, by
+        have : f * (X * g₁) = X ^ (m + 1) := by rw [← hg₁_eq]; exact hfg.symm
+        have h1 : X * (f * g₁) = X * X ^ m := by
+          rw [show X * (f * g₁) = f * (X * g₁) from by ring, this, pow_succ]; ring
+        exact (mul_left_cancel₀ hX_ne h1).symm⟩
 
 /-- **s divides k** for s = √(k-1) in a k-regular friendship graph.
 
@@ -1513,55 +1522,68 @@ theorem sqrt_k_sub_one_dvd_k (hF : IsFriendshipGraph G)
     (u : V) (k : ℕ) (hk : k ≥ 2) (hreg : ∀ v : V, G.degree v = k)
     (s : ℕ) (hs : k - 1 = s * s) :
     s ∣ k := by
-  -- Trivial case: s ≤ 1
+  -- s >= 1 since k-1 = s^2 and k >= 2
+  have hs_pos : s ≥ 1 := by
+    by_contra h; push_neg at h
+    have hs0 : s = 0 := by omega
+    subst hs0; simp at hs; omega
   by_cases hs1 : s = 1
-  · subst hs1; omega  -- s = 1 → k = 2, and 1 | 2
-  -- s ≥ 2: use the product identity + UFD factorization
-  have hs_ge2 : s ≥ 2 := by
-    rcases s with _ | _ | s <;> simp_all; omega
+  · subst hs1; exact one_dvd k
+  exfalso
   haveI : Nonempty V := ⟨u⟩
-  -- Step 1: Get charpoly = (X-k)·f
-  obtain ⟨f, hf⟩ := X_sub_k_dvd_adjMatrix_charpoly G hF k (by omega) hreg
+  have hdvd := X_sub_k_dvd_adjMatrix_charpoly G hF k (by omega) hreg
+  obtain ⟨f, hf⟩ := hdvd
   have hf_monic : f.Monic := by
-    have := (G.adjMatrix ℤ).charpoly_monic; rw [hf] at this
-    exact Polynomial.Monic.of_mul_monic_left (monic_X_sub_C _) this
-  have hn_card := regular_friendship_card G hF u k hreg (by omega)
-  have hn_ge : Fintype.card V ≥ 3 := by
-    rw [hn_card]; nlinarith [show k - 1 ≥ 1 by omega]
-  have hf_deg : f.natDegree = Fintype.card V - 1 := by
-    have := Matrix.charpoly_natDegree_eq_dim (G.adjMatrix ℤ)
-    rw [hf, Polynomial.natDegree_mul (monic_X_sub_C _).ne_zero hf_monic.ne_zero,
-      Polynomial.natDegree_X_sub_C] at this; omega
-  -- Step 2: Product identity → f divides (X-s)^{n-1}·(X+s)^{n-1}
+    have hcm := (G.adjMatrix ℤ).charpoly_monic; rw [hf] at hcm
+    exact (Polynomial.Monic.of_mul_monic_left (Polynomial.monic_X_sub_C _) (by rwa [mul_comm] at hcm))
+  set n := Fintype.card V with hn_def
+  have hf_deg : f.natDegree = n - 1 := by
+    have hcd := Matrix.charpoly_natDegree_eq_dim (G.adjMatrix ℤ)
+    rw [hf, ← hn_def] at hcd
+    rw [Polynomial.natDegree_mul (Polynomial.monic_X_sub_C _).ne_zero hf_monic.ne_zero,
+      Polynomial.natDegree_X_sub_C] at hcd; omega
+  have hn_ge : n ≥ 3 := by
+    have h := regular_friendship_card G hF u k hreg (by omega)
+    rw [← hn_def] at h; nlinarith [Nat.mul_le_mul hk (show k - 1 ≥ 1 by omega)]
   have hprod := charpoly_quotient_product G hF k hk hreg f hf
-  -- Rewrite (X²-(k-1))^{n-1} = ((X-s)(X+s))^{n-1}
-  have hks : (X ^ 2 - C (↑(k - 1) : ℤ) : Polynomial ℤ) =
-      (X - C (↑s : ℤ)) * (X + C (↑s : ℤ)) := by
-    have h1 : (k - 1 : ℕ) = s * s := hs
-    have h2 : (↑(s * s) : ℤ) = (↑s : ℤ) * ↑s := by push_cast; ring
-    rw [h1, h2]; simp only [map_mul]; ring
-  rw [hks, mul_pow] at hprod
-  have hf_dvd : f ∣ (X - C (↑s : ℤ)) ^ (Fintype.card V - 1) *
-      (X + C (↑s : ℤ)) ^ (Fintype.card V - 1) :=
-    ⟨f.comp (-X), hprod.symm⟩
-  -- Step 3: UFD factorization → f = (X-s)^b·(X+s)^c
-  obtain ⟨b, c, hbc, _, _, hf_eq⟩ :=
-    monic_dvd_coprime_prime_pow_factored (↑s : ℤ) (by omega : (↑s : ℤ) ≥ 1)
-      f hf_monic (Fintype.card V - 1) hf_dvd
-  rw [hf_deg] at hbc
-  -- Step 4: Sub-leading coefficient links (c-b)·s to k
-  have hcoeff := quotient_subleading_coeff G hF k hk hreg f hf hf_monic hf_deg
-  have hvieta := subleading_coeff_factored (↑s : ℤ) b c (by omega : b + c ≥ 1)
-  -- The coeff at degree b+c-1 of the factored form equals (c-b)·s
-  -- And the coeff at degree n-2 of f equals k
-  -- Since f = (X-s)^b*(X+s)^c and b+c = n-1: n-2 = b+c-1
-  rw [hf_eq, show Fintype.card V - 2 = b + c - 1 from by omega] at hcoeff
-  -- Now hcoeff : ((X-s)^b*(X+s)^c).coeff(b+c-1) = k
-  -- And hvieta : ((X-s)^b*(X+s)^c).coeff(b+c-1) = (c-b)*s
-  rw [hvieta] at hcoeff
-  -- hcoeff : (↑c - ↑b) * ↑s = ↑k
-  have hdvd_int : (↑s : ℤ) ∣ (↑k : ℤ) := ⟨↑c - ↑b, by linarith⟩
-  exact_mod_cast hdvd_int
+  have hprod' : f * f.comp (-X) = (X ^ 2 - C (↑(s * s) : ℤ)) ^ (n - 1) := by
+    rw [hs] at hprod; exact hprod
+  obtain ⟨p, hp_prime, hp_dvd_s⟩ := Nat.exists_prime_and_dvd (by omega : s ≠ 1)
+  haveI : Fact (Nat.Prime p) := ⟨hp_prime⟩
+  let φ : ℤ →+* ZMod p := Int.castRingHom (ZMod p)
+  have hprod_mod : f.map φ * (f.map φ).comp (-X) = X ^ (2 * (n - 1)) := by
+    have h1 := congr_arg (Polynomial.map φ) hprod'
+    rw [Polynomial.map_mul, Polynomial.map_comp, Polynomial.map_neg, Polynomial.map_X,
+      Polynomial.map_pow, Polynomial.map_sub, Polynomial.map_pow, Polynomial.map_X,
+      Polynomial.map_C] at h1
+    have hs_mod : (φ (↑(s * s) : ℤ) : ZMod p) = 0 := by
+      change ((s * s : ℤ) : ZMod p) = 0
+      push_cast
+      have : (s : ZMod p) = 0 := by rwa [ZMod.natCast_zmod_eq_zero_iff_dvd]
+      rw [this, mul_zero]
+    rw [hs_mod, map_zero, sub_zero, ← pow_mul] at h1; exact h1
+  have hf_mod_monic : (f.map φ).Monic := Polynomial.Monic.map φ hf_monic
+  have hf_mod_dvd : f.map φ ∣ X ^ (2 * (n - 1)) :=
+    ⟨(f.map φ).comp (-X), hprod_mod.symm⟩
+  have hf_mod_eq : f.map φ = X ^ (n - 1) := by
+    have h := monic_dvd_X_pow_eq hf_mod_monic hf_mod_dvd
+    rw [hf_monic.natDegree_map, hf_deg] at h; exact h
+  have hcoeff_zero : (f.map φ).coeff (n - 2) = 0 := by
+    rw [hf_mod_eq, Polynomial.coeff_X_pow]
+    simp only [show n - 2 ≠ n - 1 from by omega, ite_false]
+  have hcoeff_k := quotient_subleading_coeff G hF k hk hreg f hf hf_monic hf_deg
+  rw [Polynomial.coeff_map, hcoeff_k] at hcoeff_zero
+  have hp_dvd_k : p ∣ k := by
+    have h : ((k : ℤ) : ZMod p) = 0 := hcoeff_zero
+    rw [show ((k : ℤ) : ZMod p) = ((k : ℕ) : ZMod p) from by push_cast; ring] at h
+    rwa [ZMod.natCast_zmod_eq_zero_iff_dvd] at h
+  have hp_dvd_ss : p ∣ s * s := Dvd.dvd.mul_right hp_dvd_s s
+  have hp_dvd_one : p ∣ 1 := by
+    have h1 : (k : ℤ) - ↑(s * s) = 1 := by push_cast; omega
+    have h2 : (p : ℤ) ∣ ↑k - ↑(s * s) :=
+      dvd_sub (by exact_mod_cast hp_dvd_k) (by exact_mod_cast hp_dvd_ss)
+    rw [h1] at h2; exact_mod_cast h2
+  exact Nat.Prime.one_lt hp_prime |>.not_ge (Nat.le_of_dvd one_pos hp_dvd_one)
 
 /-- **Main theorem: k = 2 without any axiom.**
 
