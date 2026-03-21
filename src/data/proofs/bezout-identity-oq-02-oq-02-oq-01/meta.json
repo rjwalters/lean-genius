@@ -184,6 +184,23 @@
       "mathContext": "Mathlib's `IsCoprime a b` $\\equiv \\exists u v, ua + vb = 1$. Our construction is compatible but additionally exposes $q = uc + vk$."
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "related",
+      "description": "CRT uses Bézout coefficients to construct simultaneous solutions to congruence systems; this proof provides the constructive Bézout extraction that CRT relies on"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient function counts the number of units mod n; the Bézout coefficients provide constructive modular inverses for these units"
+    },
+    {
+      "targetId": "divisibility-truncation-general",
+      "relationship": "related",
+      "description": "Divisibility rules use coprimality conditions (gcd(d,10)=1) that are equivalent to having Bézout coefficients, connecting osculator arithmetic to this constructive framework"
+    }
+  ],
   "conclusion": {
     "summary": "The answer is YES: Bézout coefficients from extGcd combine with the quotient formula to give a constructive divisibility algorithm. The explicit quotient $q = uc + vk$ is correct in any CommRing, computed over $\\mathbb{N}$ via the extended Euclidean algorithm, and unique in integral domains. Zero sorries.",
     "implications": "- Completes the bezout-identity open question chain with a fully constructive algorithm\n- The ring-axiomatic quotient formula works in polynomial rings, Gaussian integers, and any Bézout domain\n- Demonstrates that classical existence proofs in number theory often contain implicit algorithms that can be extracted\n- The extended GCD provides modular inverses: when $\\gcd(a,b) = 1$, the Bézout coefficient $u$ is the inverse of $a \\bmod b$",
