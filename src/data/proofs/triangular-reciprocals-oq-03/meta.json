@@ -27,16 +27,19 @@
     "dateAdded": "03/19/26"
   },
   "overview": {
-    "historicalContext": "This identity extends the classical result ∑2/(n(n+1)) = 2 (proved by Leibniz in 1673 via telescoping) to its alternating variant. The alternating harmonic series ln(2) = 1 - 1/2 + 1/3 - ⋯ was first computed by Mercator (1668) using the power series for log(1+x). The alternating triangular reciprocal series combines both ideas: partial fractions reduce it to two instances of the Mercator series.",
+    "historicalContext": "This identity extends the classical result $\\sum 2/(n(n+1)) = 2$ (proved by Leibniz in 1673 via telescoping) to its alternating variant. The alternating harmonic series $\\ln 2 = 1 - 1/2 + 1/3 - 1/4 + \\cdots$ was first computed by Nicolaus Mercator in his 1668 work *Logarithmotechnia*, where he expanded $\\ln(1+x) = x - x^2/2 + x^3/3 - \\cdots$ and evaluated at $x=1$. This was one of the earliest known conditionally convergent series — its terms can be rearranged to converge to any real value (Riemann's rearrangement theorem, 1854). The boundary convergence at $x=1$ requires Abel's theorem on power series, proved by Abel in 1826. The alternating triangular reciprocal series combines both ideas: partial fractions reduce it to two instances of the Mercator series, yielding the transcendental value $4\\ln 2 - 2$.",
     "problemStatement": "**Alternating Triangular Reciprocals**:\n\n$$\\sum_{n=1}^{\\infty} (-1)^{n+1} \\cdot \\frac{2}{n(n+1)} = 4\\ln 2 - 2 \\approx 0.7726$$",
     "proofStrategy": "Use partial fractions: (-1)^{n+1}·2/(n(n+1)) = 2·(-1)^{n+1}/n - 2·(-1)^{n+1}/(n+1). This splits the series into the alternating harmonic series (= ln 2) and its shifted variant (= 1 - ln 2). Combining: 2·ln(2) - 2·(1 - ln(2)) = 4·ln(2) - 2.",
     "keyInsights": [
-      "Partial fractions split each alternating term into a difference of two simpler alternating terms",
-      "The shifted alternating harmonic series ∑(-1)^{n+1}/(n+1) = 1 - ln(2) follows from the standard series by removing the first term and negating",
-      "The result 4·ln(2) - 2 ≈ 0.7726 shows the alternating sum converges to a transcendental number, unlike the non-alternating case which equals exactly 2"
+      "Partial fractions split each alternating term into a difference of two simpler alternating terms, reducing a product-denominator series to known single-denominator series",
+      "The shifted alternating harmonic series ∑(-1)^{n+1}/(n+1) = 1 - ln(2) follows from the standard series by removing the first term and negating — a general technique for deriving shifted-index series identities",
+      "The result 4·ln(2) - 2 ≈ 0.7726 shows the alternating sum converges to a transcendental number, unlike the non-alternating case which equals exactly 2, illustrating how sign alternation introduces logarithmic values",
+      "The two axioms (alternating harmonic series = ln 2) encode Abel's theorem for boundary convergence of power series — a key gap in Mathlib that blocks many series identities",
+      "The proof's use of HasSum.mul_left and HasSum.sub demonstrates Mathlib's algebraic API for infinite sums: series can be scaled and subtracted like finite sums when convergence is established"
     ]
   },
   "sections": [
+    {"id": "header-imports", "title": "Header and Imports", "startLine": 1, "endLine": 25, "summary": "Module docstring describing the proof strategy (partial fractions decomposition into Mercator series), the two axioms required (Abel's theorem gap), and the connection to the non-alternating triangular reciprocals proof. Opens Finset, BigOperators, Filter, Topology, and Real."},
     {"id": "axioms", "title": "Alternating Harmonic Series (Axiomatized)", "startLine": 27, "endLine": 44, "summary": "Two axioms encoding the Mercator series at x=1: the alternating harmonic series = ln(2) and its shifted variant = 1 - ln(2). These require Abel's theorem for boundary convergence."},
     {"id": "main-theorem", "title": "Main Theorem", "startLine": 46, "endLine": 80, "summary": "The core result: HasSum for ∑(-1)^{n+1}·2/(n(n+1)) = 4·ln(2) - 2. Proof via funext partial fractions, then combining two HasSum results with mul_left and sub."},
     {"id": "corollary", "title": "Unscaled Corollary", "startLine": 82, "endLine": 130, "summary": "Derives ∑(-1)^{n+1}/(n(n+1)) = 2·ln(2) - 1 by dividing the main result by 2 using const_smul with 2⁻¹."},

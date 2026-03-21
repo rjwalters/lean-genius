@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-header-context",
+    "proofId": "triangular-reciprocals-oq-03",
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "context",
+    "title": "Module Overview and Proof Strategy",
+    "content": "This module proves the alternating sum of reciprocals of triangular numbers equals $4\\ln 2 - 2$. The proof strategy decomposes the alternating product series via partial fractions into two instances of the alternating harmonic series (Mercator series). The namespace opens Finset, BigOperators, Filter, Topology, and Real for working with infinite sums and logarithms in Mathlib.",
+    "mathContext": "The target identity is $\\sum_{n=1}^{\\infty} (-1)^{n+1} \\cdot \\frac{2}{n(n+1)} = 4\\ln 2 - 2 \\approx 0.7726$. The triangular numbers $T_n = \\frac{n(n+1)}{2}$ satisfy $\\frac{2}{n(n+1)} = \\frac{1}{T_n}$.",
+    "significance": "context",
+    "relatedConcepts": ["triangular numbers", "alternating series", "partial fractions", "Mercator series"],
+    "prerequisites": ["infinite series", "convergence", "real logarithm"]
+  },
+  {
+    "id": "ann-alt-harmonic-axiom",
+    "proofId": "triangular-reciprocals-oq-03",
+    "range": { "startLine": 34, "endLine": 36 },
+    "type": "concept",
+    "title": "Alternating Harmonic Series Axiom",
+    "content": "This axiom encodes the classical result that the alternating harmonic series converges to $\\ln 2$. First computed by Nicolaus Mercator in 1668 from the power series $\\ln(1+x) = x - x^2/2 + x^3/3 - \\cdots$ evaluated at $x = 1$. The boundary convergence at $x = 1$ requires Abel's theorem (uniform convergence on $[0,1]$), which is not yet available in Mathlib, necessitating axiomatization.",
+    "mathContext": "$\\texttt{HasSum}\\left(n \\mapsto \\frac{(-1)^{n+1}}{n},\\; \\ln 2\\right)$, encoding $\\sum_{n=1}^{\\infty} \\frac{(-1)^{n+1}}{n} = \\ln 2$. This is the Mercator series $\\ln(1+x) = \\sum_{n=1}^{\\infty} \\frac{(-1)^{n+1} x^n}{n}$ at $x = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Mercator series", "Abel's theorem", "power series boundary convergence", "conditional convergence"],
+    "prerequisites": ["HasSum API in Mathlib", "Real.log", "power series"]
+  },
+  {
+    "id": "ann-shifted-harmonic-axiom",
+    "proofId": "triangular-reciprocals-oq-03",
+    "range": { "startLine": 42, "endLine": 44 },
+    "type": "concept",
+    "title": "Shifted Alternating Harmonic Series Axiom",
+    "content": "The shifted variant of the alternating harmonic series sums to $1 - \\ln 2$. This is obtained by removing the first term ($= 1$) from the standard alternating harmonic series and negating: $\\sum_{n=1}^{\\infty} \\frac{(-1)^{n+1}}{n+1} = \\sum_{n=2}^{\\infty} \\frac{(-1)^{n}}{n} = 1 - \\ln 2$. Like the unshifted version, this requires Abel's theorem for formal verification.",
+    "mathContext": "$\\texttt{HasSum}\\left(n \\mapsto \\frac{(-1)^{n+1}}{n+1},\\; 1 - \\ln 2\\right)$. The shift by 1 in the denominator corresponds to dropping the first term of the standard series: $\\ln 2 - 1 = -(1 - \\ln 2)$.",
+    "significance": "key",
+    "relatedConcepts": ["index shifting", "series manipulation", "conditional convergence"],
+    "prerequisites": ["alternating harmonic series", "series reindexing"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "triangular-reciprocals-oq-03",
+    "range": { "startLine": 55, "endLine": 79 },
+    "type": "technique",
+    "title": "Main Theorem: Partial Fraction Decomposition",
+    "content": "The core proof proceeds in two steps. Step 1 (lines 60-72): establish the pointwise equality via partial fractions using `ext n` and `field_simp; ring`. This rewrites each term $(-1)^{n+1} \\cdot \\frac{2}{n(n+1)}$ as $\\frac{2(-1)^{n+1}}{n} - \\frac{2(-1)^{n+1}}{n+1}$. Step 2 (lines 73-79): combine the two axiomatized HasSum results using `HasSum.mul_left` (to scale by 2) and `HasSum.sub` (to subtract), then simplify the sum $2\\ln 2 - 2(1-\\ln 2) = 4\\ln 2 - 2$ via `ring`.",
+    "mathContext": "Partial fractions: $\\frac{2}{n(n+1)} = \\frac{2}{n} - \\frac{2}{n+1}$. Thus $\\sum (-1)^{n+1} \\frac{2}{n(n+1)} = 2\\sum \\frac{(-1)^{n+1}}{n} - 2\\sum \\frac{(-1)^{n+1}}{n+1} = 2\\ln 2 - 2(1-\\ln 2) = 4\\ln 2 - 2$.",
+    "significance": "key",
+    "relatedConcepts": ["partial fractions", "HasSum.mul_left", "HasSum.sub", "field_simp", "ring tactic"],
+    "prerequisites": ["Mathlib infinite sum API", "field_simp for rational expressions", "ring for algebraic simplification"]
+  },
+  {
+    "id": "ann-corollary",
+    "proofId": "triangular-reciprocals-oq-03",
+    "range": { "startLine": 94, "endLine": 123 },
+    "type": "technique",
+    "title": "Unscaled Corollary via Constant Scalar Multiplication",
+    "content": "Derives the unscaled version $\\sum (-1)^{n+1}/(n(n+1)) = 2\\ln 2 - 1$ by dividing the main result by 2. The proof uses `HasSum.const_smul` with scalar $2^{-1}$ to extract the factor of 2 from inside the sum. The key technical step is showing the functional equality between dividing each term by 2 and multiplying the HasSum by $2^{-1}$.",
+    "mathContext": "From $\\texttt{HasSum}(f, 4\\ln 2 - 2)$ where $f(n) = (-1)^{n+1} \\cdot \\frac{2}{n(n+1)}$, we derive $\\texttt{HasSum}(g, 2\\ln 2 - 1)$ where $g(n) = \\frac{(-1)^{n+1}}{n(n+1)}$, using $g = \\frac{1}{2}f$ and $(4\\ln 2 - 2)/2 = 2\\ln 2 - 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["HasSum.const_smul", "scalar multiplication of series", "convert tactic"],
+    "prerequisites": ["scalar multiplication in topological vector spaces", "HasSum linearity"]
+  },
+  {
+    "id": "ann-summability",
+    "proofId": "triangular-reciprocals-oq-03",
+    "range": { "startLine": 137, "endLine": 140 },
+    "type": "insight",
+    "title": "Summability from HasSum",
+    "content": "The alternating triangular reciprocal series is summable, derived trivially from the main HasSum result via `.summable`. In Mathlib, `HasSum f a` implies `Summable f` since convergence to a specific value witnesses summability. This is a one-liner but important for downstream use: summability is often a prerequisite for other series manipulations.",
+    "mathContext": "$\\texttt{HasSum}(f, a) \\implies \\texttt{Summable}(f)$. This extracts the summability witness from the convergence proof.",
+    "significance": "supporting",
+    "relatedConcepts": ["Summable", "HasSum.summable", "absolute vs conditional convergence"],
+    "prerequisites": ["Mathlib summability API"]
+  },
+  {
+    "id": "ann-partial-sums",
+    "proofId": "triangular-reciprocals-oq-03",
+    "range": { "startLine": 146, "endLine": 156 },
+    "type": "insight",
+    "title": "Finite Partial Sum Verification",
+    "content": "Four partial sums are verified by `norm_num`: $S_1 = 1$, $S_2 = 2/3$, $S_3 = 5/6$, $S_4 = 11/15$. These oscillate around the limit $4\\ln 2 - 2 \\approx 0.7726$, illustrating the characteristic behavior of alternating series: odd partial sums overshoot, even partial sums undershoot. This oscillation is a consequence of the alternating series estimation theorem (Leibniz criterion).",
+    "mathContext": "$S_1 = 1 > 0.7726 > S_2 = 0.\\overline{6} < 0.7726 < S_3 = 0.8\\overline{3} > 0.7726 > S_4 = 0.7\\overline{3}$. The errors $|S_n - L|$ decrease monotonically, bounded by the $(n+1)$-th term.",
+    "significance": "context",
+    "relatedConcepts": ["alternating series estimation", "Leibniz criterion", "norm_num tactic", "oscillation of partial sums"],
+    "prerequisites": ["alternating series remainder bound", "norm_num for arithmetic"]
+  }
+]
