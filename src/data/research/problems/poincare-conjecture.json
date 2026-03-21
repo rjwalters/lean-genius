@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-01T21:55:27.887Z",
-    "iteration": 16,
-    "focus": "Parts XCI-XCII: h-cobordism, Whitney trick, TQFT",
+    "iteration": 17,
+    "focus": "Parts XCI-XCII + S1_cross_S2_closed axiom elimination",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 2 axioms (39→37): donaldson_diagonalization proved by finite case analysis, novikov_compact_leaf proved trivially (ReebComponent structure witness).",
+    "progressSummary": "PROGRESS: Eliminated 1 axiom (37→36): S1_cross_S2_closed proved via product charts. S¹ locally ℝ¹ and S² locally ℝ² give product charts to ℝ¹×ℝ², composed with orthonormal-basis homeomorphism to ℝ³.",
     "builtItems": [
       "Proved perelman_entropy_monotone via concrete PerelmanWEntropy",
       "Proved perelman_surgery via reflexive witness",
@@ -252,7 +252,8 @@
       "Fixed cp2_curvature_range proof (added norm_num)",
       "Fixed sphere3_has_diameter_two (replaced missing sphere3_north/south refs)",
       "Fixed 3 duplicate declarations: binary_icosahedral_order_ssf, seifertS3_inv, seifertT3_inv",
-      "Fixed 6 unused variable warnings and 1 redundant ring tactic"
+      "Fixed 6 unused variable warnings and 1 redundant ring tactic",
+      "S1_cross_S2_closed: axiom→theorem via product charts (stereographic on S¹×S² + orthonormal basis ℝ¹×ℝ²≃ₜℝ³)"
     ],
     "insights": [
       "Massive axiom reduction: 39 axioms converted to theorems/defs (115→76)",
@@ -410,7 +411,8 @@
       "Smooth Poincaré open only in dim 4: all other dims solved (dim≤3 by Moise+Perelman, dim≥5 by Smale)",
       "Build fix: 3 duplicate declarations (binary_icosahedral_order, seifertS3, seifertT3) caused compile errors. Two Seifert data types (SeifertData vs SeifertInvariant) used same names.",
       "donaldson_diagonalization is decidable: all 8 intersection form examples satisfy the constraint by case analysis (definite+smoothable → odd parity)",
-      "novikov_compact_leaf is trivially provable: ReebComponent has only Prop fields, so Nonempty ReebComponent is trivially inhabited"
+      "novikov_compact_leaf is trivially provable: ReebComponent has only Prop fields, so Nonempty ReebComponent is trivially inhabited",
+      "Product locally Euclidean: S¹×S² charts use prodSubtypeHomeomorph + euclideanProdHomeomorph (stdOrthonormalBasis pattern from orthCompHomeomorphN)"
     ],
     "mathlibGaps": [
       "3-manifolds",
@@ -439,7 +441,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.887Z",
-  "lastUpdate": "2026-03-20T15:00:00.000Z",
+  "lastUpdate": "2026-03-21T20:00:00.000Z",
   "significance": 10,
   "tractability": 1
 }
