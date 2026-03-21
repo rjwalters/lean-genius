@@ -18,6 +18,7 @@
     "proofRepoPath": "Proofs/BirthdayProblem.lean",
     "badge": "mathlib",
     "sorries": 0,
+    "prerequisites": ["basic probability", "combinatorics", "counting principles"],
     "mathlibDependencies": [
       {
         "theorem": "Fintype.card_embedding_eq",
