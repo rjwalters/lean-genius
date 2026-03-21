@@ -1,0 +1,114 @@
+{
+  "id": "prob-method-alteration",
+  "title": "Alteration Method (Probabilistic Method)",
+  "slug": "prob-method-alteration",
+  "description": "Random construction + deterministic fix-up for existence proofs in graph theory and combinatorics.",
+  "meta": {
+    "author": "Paul Erdos, formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Probabilistic_method",
+    "date": "1960",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/ProbMethodAlteration.lean",
+    "tags": [
+      "probabilistic-method",
+      "combinatorics",
+      "graph-theory",
+      "intermediate"
+    ],
+    "badge": "formalized",
+    "sorries": 3,
+    "mathlibDependencies": [
+      {
+        "theorem": "Combinatorics.SimpleGraph.Basic",
+        "description": "Simple graph definitions",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Combinatorics.SimpleGraph.Clique",
+        "description": "Clique and independent set definitions",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "Order.Filter.Basic",
+        "description": "Filter and convergence foundations",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Alteration principle formalization for finite structures",
+      "Independent set lower bound via vertex deletion",
+      "Property B existence proof via hypergraph coloring"
+    ],
+    "dateAdded": "03/21/26",
+    "axiomCount": 0
+  },
+  "overview": {
+    "historicalContext": "The alteration method, also called the deletion method, is a refinement of the basic probabilistic method developed by Erdos and collaborators in the 1960s and 1970s. While the first moment method requires the random construction to satisfy all constraints simultaneously, the alteration method relaxes this: start with a random object that is close to what we want, then deterministically fix the few violations.\n\nThe key insight is that if a random construction has few expected defects, we can afford to delete or modify the problematic parts while retaining most of the desirable structure. This two-phase approach -- random construction followed by deterministic alteration -- dramatically expands the range of existence results the probabilistic method can prove.\n\nClassic applications include the best known bounds for independent set size in sparse graphs, Property B of hypergraphs (2-colorability), and Ramsey multiplicity problems. The alteration method is particularly effective when we want a large structure (like an independent set) but the random approach occasionally includes unwanted elements (like adjacent vertices).",
+    "problemStatement": "Alteration Principle: Let $\\Omega$ be a random structure with a desired property measured by a value function $v(\\omega)$ and a defect count $d(\\omega)$. If $E[v(\\omega) - d(\\omega)] > t$, then there exists an altered structure with value exceeding $t$ and zero defects.\n\nApplication: Every graph $G$ on $n$ vertices with $m$ edges has an independent set of size at least $n^2/(2m + n)$.",
+    "proofStrategy": "The proof proceeds in two phases:\n\n1. **Random phase**: Select each vertex independently with probability $p$ (to be optimized). The expected number of selected vertices is $np$, and the expected number of edges within the selected set is $mp^2$.\n\n2. **Alteration phase**: For each edge within the selected set, delete one endpoint. This removes at most $mp^2$ vertices (in expectation) but eliminates all edges, yielding an independent set.\n\n3. **Counting**: The expected size of the resulting independent set is at least $np - mp^2$. By the first moment principle, some outcome achieves this bound.\n\n4. **Optimization**: Setting $p = n/(2m + n)$ maximizes $np - mp^2$, yielding the bound $n^2/(2m + n)$.\n\nFor Property B, the argument is similar: randomly 2-color vertices of a hypergraph, count monochromatic edges, and alter by recoloring vertices to break monochromatic edges.",
+    "keyInsights": [
+      "The two-phase approach (random + deterministic fix) handles constraints that pure randomness cannot satisfy simultaneously",
+      "Deleting defects is often cheaper than avoiding them: if expected defects are few, the altered structure retains most of the random construction's value",
+      "The independent set bound n^2/(2m+n) is tight for regular graphs and was the best known for general sparse graphs for decades",
+      "Property B results demonstrate that the alteration method applies beyond graph theory to hypergraph coloring"
+    ]
+  },
+  "sections": [
+    {
+      "id": "introduction",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 22,
+      "summary": "Overview of the alteration method as a two-phase probabilistic technique.",
+      "mathContext": "The alteration method: start with a random construction, then deterministically remove defects. If expected value minus expected defects exceeds $t$, the desired structure exists with value exceeding $t$."
+    },
+    {
+      "id": "alteration-principle",
+      "title": "Alteration Principle",
+      "startLine": 24,
+      "endLine": 58,
+      "summary": "Formal statement and proof of the alteration principle for finite structures.",
+      "mathContext": "Alteration Principle: for random variable $V$ (value) and $D$ (defects) on a finite sample space, $E[V - D] \\geq t$ implies $\\exists \\omega$ with an altered version having value $\\geq t$ and no defects. This follows from the first moment principle applied to $V - D$."
+    },
+    {
+      "id": "independent-set",
+      "title": "Independent Set Application",
+      "startLine": 60,
+      "endLine": 115,
+      "summary": "Every graph with n vertices and m edges has an independent set of size at least n^2/(2m+n).",
+      "mathContext": "Select each vertex with probability $p$. Expected selected vertices: $np$. Expected edges in selected set: $mp^2$. After deleting one endpoint per edge, expected independent set size $\\geq np - mp^2$. Optimizing at $p = n/(2m+n)$ gives $\\alpha(G) \\geq n^2/(2m+n)$."
+    },
+    {
+      "id": "property-b",
+      "title": "Property B of Hypergraphs",
+      "startLine": 117,
+      "endLine": 165,
+      "summary": "Existence of 2-colorings for uniform hypergraphs with bounded degree, via the alteration method.",
+      "mathContext": "A hypergraph has Property B if its vertices can be 2-colored with no monochromatic edge. For a $k$-uniform hypergraph with $m$ edges, random 2-coloring yields $E[\\text{mono edges}] = m \\cdot 2^{1-k}$. If $m < 2^{k-1}$, alteration shows Property B holds."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "prob-method-expectation",
+      "relationship": "depends-on",
+      "description": "The alteration method builds on the first moment principle as its foundation"
+    },
+    {
+      "targetId": "prob-method-lovasz-local",
+      "relationship": "related",
+      "description": "The Lovasz Local Lemma provides an alternative approach to sparse dependency structures that the alteration method also handles"
+    },
+    {
+      "targetId": "prob-method-applications",
+      "relationship": "used-by",
+      "description": "The alteration method is applied in the independent set and Property B results of the applications module"
+    }
+  ],
+  "conclusion": {
+    "summary": "The alteration method extends the probabilistic method by introducing a deterministic correction phase after random construction. This two-step approach yields the classical independent set bound alpha(G) >= n^2/(2m+n) and Property B results for hypergraphs, demonstrating that approximate random solutions can be efficiently repaired.",
+    "implications": "This formalization provides:\n\n**1. Independent Set Bounds**\nThe bound alpha(G) >= n^2/(2m+n) is foundational in graph theory and algorithmic applications.\n\n**2. Hypergraph Coloring**\nProperty B results connect to set system colorability, a central topic in combinatorial set theory.\n\n**3. Algorithmic Paradigm**\nThe alteration method directly inspires randomized algorithms: generate a random solution, then greedily fix violations.\n\n**4. Bridge to Erdos Problems**\nMany Erdos problems on graph coloring and Ramsey multiplicity use alteration arguments that this library formalizes.",
+    "openQuestions": [
+      "How does the alteration method compare to the Lovasz Local Lemma for sparse structures?"
+    ]
+  }
+}

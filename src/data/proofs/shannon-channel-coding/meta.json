@@ -1,0 +1,128 @@
+{
+  "id": "shannon-channel-coding",
+  "title": "Shannon Noisy Channel Coding Theorem",
+  "slug": "shannon-channel-coding",
+  "description": "Reliable communication at any rate below channel capacity C = max I(X;Y). The central result of information theory.",
+  "meta": {
+    "author": "Claude Shannon (1948), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Noisy-channel_coding_theorem",
+    "date": "1948",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/ShannonChannelCoding.lean",
+    "tags": [
+      "information-theory",
+      "analysis",
+      "probability",
+      "coding-theory",
+      "advanced"
+    ],
+    "badge": "formalized",
+    "sorries": 6,
+    "mathlibDependencies": [
+      {
+        "theorem": "Analysis.SpecialFunctions.Log.Basic",
+        "description": "Logarithm properties for mutual information",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "MeasureTheory.Integral.Lebesgue",
+        "description": "Integration for expectation and probability bounds",
+        "module": "Mathlib.MeasureTheory.Integral.Lebesgue"
+      },
+      {
+        "theorem": "Probability.ProbabilityMassFunction",
+        "description": "Discrete probability distributions for channel models",
+        "module": "Mathlib.Probability.ProbabilityMassFunction"
+      }
+    ],
+    "originalContributions": [
+      "Discrete memoryless channel formalization",
+      "Channel capacity as maximum mutual information",
+      "Random coding achievability proof",
+      "Joint typicality decoding",
+      "Fano inequality and converse proof",
+      "Binary symmetric channel capacity computation"
+    ],
+    "dateAdded": "03/21/26",
+    "axiomCount": 0
+  },
+  "overview": {
+    "historicalContext": "Shannon's noisy channel coding theorem is arguably the most important result in information theory and one of the great theorems of 20th-century mathematics. Published in 1948, it answered a question that engineers had struggled with since the invention of the telegraph: is it possible to communicate reliably over a noisy channel, and if so, at what rate?\n\nBefore Shannon, the prevailing belief was that reducing error probability required reducing the communication rate to zero. Shannon's shocking result was that reliable communication is possible at any positive rate below the channel capacity C = max I(X;Y), and impossible above it. The channel capacity is a single number that completely characterizes the communication capability of a noisy channel.\n\nThe achievability proof uses random coding: choose a codebook at random and show that the average error probability over all codebooks is small. This is a probabilistic method argument -- one of the earliest and most influential. The converse uses Fano's inequality, which bounds the conditional entropy H(X|Y) in terms of the error probability, showing that rates above capacity force large errors.\n\nThe theorem launched the fields of coding theory and telecommunications engineering, leading to error-correcting codes (turbo codes, LDPC codes, polar codes) that approach channel capacity in practice.",
+    "problemStatement": "Channel Coding Theorem: For a discrete memoryless channel with transition probabilities $p(y|x)$:\n\n**Channel Capacity**: $C = \\max_{p(x)} I(X;Y)$ where the maximum is over all input distributions.\n\n**Achievability**: For any rate $R < C$ and any $\\varepsilon > 0$, there exists a block code of rate $R$ and block length $n$ such that the maximum probability of decoding error is less than $\\varepsilon$, for sufficiently large $n$.\n\n**Converse (Weak)**: Any code with rate $R > C$ has error probability bounded away from zero. Specifically, for any sequence of $(2^{nR}, n)$ codes, the error probability tends to 1 as $n \\to \\infty$.",
+    "proofStrategy": "The formalization develops the channel coding theorem in five stages:\n\n1. **Channel model**: Define a discrete memoryless channel as a conditional probability p(y|x) with finite input alphabet X and output alphabet Y. The memoryless property means p(y^n|x^n) = prod p(y_i|x_i).\n\n2. **Capacity definition**: Channel capacity C = max_{p(x)} I(X;Y) where I(X;Y) = H(Y) - H(Y|X). The maximum exists because I(X;Y) is a continuous function on the compact simplex of input distributions and is concave in p(x).\n\n3. **Random coding achievability**: Generate a codebook of 2^{nR} codewords independently from the capacity-achieving distribution. For each received sequence y^n, decode to the unique codeword x^n that is jointly typical with y^n. By the joint AEP, the error probability for each message vanishes as n -> infinity when R < I(X;Y) = C.\n\n4. **Joint typicality decoding**: Define the jointly typical set and prove: (a) the true (message, output) pair is jointly typical with high probability; (b) a randomly chosen codeword is jointly typical with a given output with probability approximately 2^{-nI(X;Y)}; (c) the union bound over 2^{nR} incorrect codewords gives error probability at most 2^{-n(I(X;Y)-R)} -> 0 when R < C.\n\n5. **Fano inequality converse**: Fano's inequality states H(X|Y) <= 1 + P_e * log(|X|-1), where P_e is the error probability. Applied to the decoded message, this gives nR <= nC + 1 + nRP_e * log(2^{nR}-1), which forces P_e -> 1 when R > C.",
+    "keyInsights": [
+      "Channel capacity C is a single number that completely characterizes reliable communication: rates below C are achievable, rates above C are not",
+      "The random coding proof is a probabilistic method argument: a random codebook works with high probability, so a good deterministic codebook exists",
+      "Joint typicality is the channel coding analogue of typical sequences in source coding, connecting the two fundamental theorems",
+      "Fano's inequality converts an information-theoretic quantity (conditional entropy) into an operational one (error probability), enabling the converse",
+      "The gap between existence (Shannon's proof) and construction (practical codes) drove 60 years of coding theory, culminating in capacity-achieving polar codes (Arikan, 2009)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "introduction",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "Historical significance and statement of the noisy channel coding theorem.",
+      "mathContext": "Shannon (1948): reliable communication at rate $R$ is possible iff $R \\leq C = \\max_{p(x)} I(X;Y)$. This is the central result of information theory, establishing that noise does not preclude reliable communication."
+    },
+    {
+      "id": "channel-model",
+      "title": "Discrete Memoryless Channel",
+      "startLine": 34,
+      "endLine": 78,
+      "summary": "Formal definition of a discrete memoryless channel, codes, and error probability.",
+      "mathContext": "A discrete memoryless channel (DMC) is specified by finite alphabets $\\mathcal{X}, \\mathcal{Y}$ and transition probabilities $p(y|x)$. An $(M, n)$ code consists of an encoder $\\{1,\\ldots,M\\} \\to \\mathcal{X}^n$ and a decoder $\\mathcal{Y}^n \\to \\{1,\\ldots,M\\}$. The rate is $R = \\frac{\\log M}{n}$ bits per channel use."
+    },
+    {
+      "id": "capacity-definition",
+      "title": "Channel Capacity",
+      "startLine": 80,
+      "endLine": 120,
+      "summary": "Definition of channel capacity as the maximum mutual information over input distributions.",
+      "mathContext": "Channel capacity $C = \\max_{p(x)} I(X;Y) = \\max_{p(x)} [H(Y) - H(Y|X)]$. Since $H(Y|X) = \\sum_x p(x) H(Y|X=x)$ depends only on the channel (not the input distribution), maximizing $I(X;Y)$ reduces to maximizing $H(Y)$. The maximum exists by compactness and concavity."
+    },
+    {
+      "id": "random-coding",
+      "title": "Random Coding Achievability",
+      "startLine": 122,
+      "endLine": 198,
+      "summary": "Proof that rates below capacity are achievable using randomly generated codebooks and joint typicality decoding.",
+      "mathContext": "Generate $2^{nR}$ codewords i.i.d. from $p^*(x)$ (capacity-achieving distribution). Decode $y^n$ to the unique $x^n(w)$ jointly typical with $y^n$. Error events: (1) true pair not jointly typical (probability $\\to 0$ by joint AEP); (2) wrong codeword jointly typical (probability $\\leq 2^{nR} \\cdot 2^{-nI(X;Y)} \\to 0$ when $R < C$)."
+    },
+    {
+      "id": "fano-converse",
+      "title": "Fano Inequality and Converse",
+      "startLine": 200,
+      "endLine": 265,
+      "summary": "Fano's inequality bounds error probability from below, proving rates above capacity are impossible.",
+      "mathContext": "Fano's inequality: $H(W|\\hat{W}) \\leq 1 + P_e \\log(M-1)$ where $W$ is the message and $\\hat{W}$ is the decoded message. Combined with $H(W|\\hat{W}) \\geq H(W|Y^n) \\geq H(W) - nC = nR - nC$, this gives $P_e \\geq 1 - \\frac{nC + 1}{nR} \\to 1 - C/R > 0$ when $R > C$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "shannon-entropy",
+      "relationship": "depends-on",
+      "description": "Channel capacity is defined via mutual information, which is built from Shannon entropy"
+    },
+    {
+      "targetId": "shannon-source-coding",
+      "relationship": "related",
+      "description": "Source coding and channel coding are the two fundamental theorems, connected by the separation theorem: source coding then channel coding is optimal"
+    },
+    {
+      "targetId": "prob-method-expectation",
+      "relationship": "related",
+      "description": "Random coding is a probabilistic method argument: a random codebook achieves capacity with high probability"
+    }
+  ],
+  "conclusion": {
+    "summary": "The noisy channel coding theorem establishes that reliable communication at rate R is possible if and only if R is below the channel capacity C = max I(X;Y). The achievability proof via random coding and joint typicality decoding is one of the most celebrated probabilistic existence arguments in mathematics. The converse via Fano's inequality provides the matching impossibility result.",
+    "implications": "This formalization provides:\n\n**1. The Central Result of Information Theory**\nChannel capacity as the fundamental limit of reliable communication, with both achievability and converse proofs machine-checked.\n\n**2. Random Coding as Probabilistic Method**\nThe random coding proof is historically one of the first and most influential uses of the probabilistic method, predating even Erdos's 1947 Ramsey bound.\n\n**3. Fano's Inequality**\nA reusable converse tool that converts entropy bounds into error probability bounds, applicable far beyond channel coding.\n\n**4. Foundation for Modern Coding Theory**\nThe gap between Shannon's existential proof and practical capacity-achieving codes (turbo codes, LDPC, polar codes) drove decades of engineering and mathematical research.\n\n**5. Connection to Computational Complexity**\nChannel coding has deep connections to computational complexity via list decoding and pseudorandomness.",
+    "openQuestions": [
+      "Can specific channel capacities (BSC, BEC, AWGN) be computed formally?",
+      "What is the connection to the probabilistic method (random coding)?"
+    ]
+  }
+}

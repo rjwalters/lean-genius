@@ -1,0 +1,117 @@
+{
+  "id": "prob-method-second-moment",
+  "title": "Second Moment Method (Probabilistic Method)",
+  "slug": "prob-method-second-moment",
+  "description": "Chebyshev and Paley-Zygmund inequalities for concentration and existence proofs in combinatorics.",
+  "meta": {
+    "author": "Chebyshev, Paley-Zygmund, formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Second_moment_method",
+    "date": "1867",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/ProbMethodSecondMoment.lean",
+    "tags": [
+      "probabilistic-method",
+      "combinatorics",
+      "analysis",
+      "probability",
+      "intermediate"
+    ],
+    "badge": "formalized",
+    "sorries": 3,
+    "mathlibDependencies": [
+      {
+        "theorem": "MeasureTheory.Integral.Lebesgue",
+        "description": "Lebesgue integration for variance computation",
+        "module": "Mathlib.MeasureTheory.Integral.Lebesgue"
+      },
+      {
+        "theorem": "Probability.Variance",
+        "description": "Variance and covariance definitions",
+        "module": "Mathlib.Probability.Variance"
+      },
+      {
+        "theorem": "Combinatorics.SimpleGraph.Basic",
+        "description": "Graph definitions for threshold applications",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Discrete Chebyshev inequality formalization",
+      "Paley-Zygmund inequality for lower tail bounds",
+      "Variance computation framework for indicator sums",
+      "Random graph threshold function application"
+    ],
+    "dateAdded": "03/21/26",
+    "axiomCount": 0
+  },
+  "overview": {
+    "historicalContext": "The second moment method extends the first moment method by incorporating variance to prove that random variables are concentrated near their expectation. While the first moment method can only guarantee that a maximum or minimum exists, the second moment method shows that typical outcomes are close to the mean -- and in particular, that a positive-mean random variable is positive with substantial probability.\n\nChebyshev's inequality (1867) is the foundation: Pr[|X - E[X]| >= t] <= Var[X]/t^2. For existence proofs, the Paley-Zygmund inequality is often more useful: if X >= 0, then Pr[X > 0] >= (E[X])^2/E[X^2]. This lower bound on positive probability is exactly what combinatorial existence proofs require.\n\nThe second moment method became indispensable in the study of random graphs after Erdos and Renyi's foundational 1959 paper. It is the standard tool for proving threshold phenomena: a graph property either holds with probability tending to 0 or to 1 as the number of vertices grows, with a sharp transition at a critical edge probability.",
+    "problemStatement": "Chebyshev's Inequality: For any random variable $X$ with finite variance, $\\Pr[|X - E[X]| \\geq t] \\leq \\operatorname{Var}[X] / t^2$.\n\nPaley-Zygmund Inequality: For a non-negative random variable $X$, $\\Pr[X > 0] \\geq (E[X])^2 / E[X^2]$.\n\nApplication: If the expected number of copies of a subgraph $H$ in a random graph $G(n,p)$ tends to infinity and the variance is controlled, then $G(n,p)$ contains $H$ with high probability.",
+    "proofStrategy": "The formalization builds the second moment toolkit:\n\n1. **Variance definition**: $\\operatorname{Var}[X] = E[X^2] - (E[X])^2$ for finite probability spaces, with the Finset-based computation framework.\n\n2. **Chebyshev's inequality**: From Markov's inequality applied to $(X - E[X])^2$. This gives an upper bound on the probability of large deviations.\n\n3. **Paley-Zygmund inequality**: By Cauchy-Schwarz, $E[X]^2 = E[X \\cdot \\mathbf{1}_{X>0}]^2 \\leq E[X^2] \\cdot \\Pr[X > 0]$. Rearranging gives the lower bound on $\\Pr[X > 0]$.\n\n4. **Application to indicator sums**: For $X = \\sum_i X_i$ with indicators $X_i$, compute $\\operatorname{Var}[X] = \\sum_i \\operatorname{Var}[X_i] + \\sum_{i \\neq j} \\operatorname{Cov}[X_i, X_j]$. When the covariance sum is small relative to $(E[X])^2$, the second moment method yields strong concentration.",
+    "keyInsights": [
+      "The second moment method converts variance bounds into existence guarantees: low variance relative to the mean squared ensures positive probability",
+      "Paley-Zygmund is the probabilistic method's concentration tool: it gives a quantitative lower bound on Pr[X > 0], not just existence",
+      "For indicator sums, the variance splits into individual variances plus pairwise covariances, making it computable for structured random variables",
+      "Threshold phenomena in random graphs emerge naturally from second moment calculations on subgraph counts",
+      "The gap between first and second moment methods is precisely the role of dependencies: the first moment ignores them, the second moment accounts for them"
+    ]
+  },
+  "sections": [
+    {
+      "id": "introduction",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 20,
+      "summary": "Overview of the second moment method and its role in probabilistic combinatorics.",
+      "mathContext": "The second moment method uses variance to prove concentration: if $\\operatorname{Var}[X]$ is small relative to $(E[X])^2$, then $X$ is close to its mean with high probability, and in particular $\\Pr[X > 0]$ is large."
+    },
+    {
+      "id": "chebyshev",
+      "title": "Chebyshev's Inequality",
+      "startLine": 22,
+      "endLine": 68,
+      "summary": "Formalization of variance, Markov's inequality, and Chebyshev's inequality for finite probability spaces.",
+      "mathContext": "Markov: $\\Pr[Y \\geq t] \\leq E[Y]/t$ for $Y \\geq 0$. Chebyshev: $\\Pr[|X - \\mu| \\geq t] \\leq \\sigma^2/t^2$ where $\\mu = E[X]$ and $\\sigma^2 = \\operatorname{Var}[X]$. Follows from Markov applied to $Y = (X - \\mu)^2$."
+    },
+    {
+      "id": "paley-zygmund",
+      "title": "Paley-Zygmund Inequality",
+      "startLine": 70,
+      "endLine": 110,
+      "summary": "Lower bound on Pr[X > 0] in terms of the first two moments.",
+      "mathContext": "Paley-Zygmund: for $X \\geq 0$, $\\Pr[X > 0] \\geq (E[X])^2 / E[X^2]$. Equivalently, $\\Pr[X > 0] \\geq (E[X])^2 / ((E[X])^2 + \\operatorname{Var}[X])$. Proof via Cauchy-Schwarz: $E[X] = E[X \\cdot \\mathbf{1}_{X>0}] \\leq \\sqrt{E[X^2]} \\cdot \\sqrt{\\Pr[X > 0]}$."
+    },
+    {
+      "id": "threshold-applications",
+      "title": "Threshold Applications",
+      "startLine": 112,
+      "endLine": 165,
+      "summary": "Application to subgraph containment thresholds in random graphs.",
+      "mathContext": "In $G(n,p)$, let $X$ count copies of a fixed graph $H$ with $v$ vertices and $e$ edges. Then $E[X] = \\Theta(n^v p^e)$. The second moment method shows that if $E[X] \\to \\infty$ and $\\operatorname{Var}[X] = o((E[X])^2)$, then $\\Pr[X > 0] \\to 1$, establishing the threshold at $p = n^{-v/e}$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "prob-method-expectation",
+      "relationship": "depends-on",
+      "description": "The second moment method builds on the first moment framework and extends it with variance analysis"
+    },
+    {
+      "targetId": "prob-method-lovasz-local",
+      "relationship": "related",
+      "description": "Both the second moment method and the LLL handle dependencies, but via different mechanisms: variance bounds vs dependency graphs"
+    },
+    {
+      "targetId": "prob-method-applications",
+      "relationship": "used-by",
+      "description": "Threshold results from the second moment method are applied in the random graph and Ramsey applications"
+    }
+  ],
+  "conclusion": {
+    "summary": "The second moment method formalizes Chebyshev's inequality and the Paley-Zygmund inequality as tools for proving that random variables are concentrated near their mean. When applied to indicator sums counting combinatorial structures, it yields quantitative lower bounds on the probability of positive outcomes, enabling threshold phenomena proofs in random graph theory.",
+    "implications": "This formalization provides:\n\n**1. Concentration Toolkit**\nChebyshev and Paley-Zygmund inequalities are the standard tools for proving that random variables do not deviate far from their expectations.\n\n**2. Threshold Phenomena**\nThe second moment method is the primary tool for establishing sharp thresholds in random graph theory, a central topic in probabilistic combinatorics.\n\n**3. Variance Computation Framework**\nThe indicator sum variance decomposition into individual variances and pairwise covariances is a reusable component for any counting argument.\n\n**4. Complement to LLL**\nWhere the Lovasz Local Lemma handles rare events with sparse dependencies, the second moment method handles common events with controlled variance.",
+    "openQuestions": [
+      "What random graph threshold results can be proved via the second moment method?"
+    ]
+  }
+}

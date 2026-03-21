@@ -1,0 +1,135 @@
+{
+  "id": "shannon-entropy",
+  "title": "Shannon Entropy",
+  "slug": "shannon-entropy",
+  "description": "H(X) = -sum p(x) log p(x). Foundation of information theory: non-negativity, chain rule, data processing inequality.",
+  "meta": {
+    "author": "Claude Shannon (1948), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Entropy_(information_theory)",
+    "date": "1948",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/ShannonEntropy.lean",
+    "tags": [
+      "information-theory",
+      "analysis",
+      "probability",
+      "advanced"
+    ],
+    "badge": "formalized",
+    "sorries": 5,
+    "mathlibDependencies": [
+      {
+        "theorem": "Analysis.SpecialFunctions.Log.Basic",
+        "description": "Natural logarithm and its properties",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "MeasureTheory.Measure.MeasureSpace",
+        "description": "Measure space foundations for probability",
+        "module": "Mathlib.MeasureTheory.Measure.MeasureSpace"
+      },
+      {
+        "theorem": "Probability.ProbabilityMassFunction",
+        "description": "Discrete probability distributions",
+        "module": "Mathlib.Probability.ProbabilityMassFunction"
+      }
+    ],
+    "originalContributions": [
+      "Discrete Shannon entropy definition with log base 2",
+      "Non-negativity and maximum entropy characterization",
+      "Conditional entropy and chain rule formalization",
+      "Mutual information and its properties",
+      "Gibbs inequality (relative entropy non-negativity)",
+      "Data processing inequality"
+    ],
+    "dateAdded": "03/21/26",
+    "axiomCount": 0
+  },
+  "overview": {
+    "historicalContext": "Claude Shannon's 1948 paper 'A Mathematical Theory of Communication' founded information theory and introduced entropy as the fundamental measure of information content. Shannon showed that the quantity H(X) = -sum p(x) log p(x) is the unique function (up to a constant) satisfying natural axioms for an information measure: continuity, monotonicity in the number of equally likely outcomes, and a composition law for sequential experiments.\n\nShannon entropy quantifies the irreducible uncertainty in a random variable, measured in bits (when using log base 2). A fair coin has entropy 1 bit; a deterministic variable has entropy 0. The entropy of English text is approximately 1.0-1.5 bits per character, far below the 4.7 bits per character of uniform random text, reflecting the redundancy of natural language.\n\nBeyond its foundational role in information theory, Shannon entropy has deep connections to thermodynamic entropy (via Boltzmann's formula), combinatorics (via the method of types), statistics (via maximum entropy distributions), and even pure mathematics (via the entropy method in additive combinatorics, used by Tao and others to prove sumset bounds).",
+    "problemStatement": "Shannon Entropy: For a discrete random variable $X$ with probability mass function $p$, define $H(X) = -\\sum_{x} p(x) \\log_2 p(x)$, with the convention $0 \\log 0 = 0$.\n\nKey properties:\n- Non-negativity: $H(X) \\geq 0$, with equality iff $X$ is deterministic.\n- Maximum: $H(X) \\leq \\log_2 |\\mathcal{X}|$, with equality iff $X$ is uniform.\n- Chain rule: $H(X, Y) = H(X) + H(Y|X)$.\n- Gibbs inequality: $D(p \\| q) = \\sum p(x) \\log(p(x)/q(x)) \\geq 0$.",
+    "proofStrategy": "The formalization builds entropy theory from the ground up:\n\n1. **Entropy definition**: Define H(X) = -sum p(x) log p(x) for discrete distributions over a Fintype, handling the convention 0 log 0 = 0 via a custom function that extends x * log x continuously to 0.\n\n2. **Non-negativity**: Since each term -p(x) log p(x) >= 0 for p(x) in [0,1], the sum is non-negative. Equality holds iff every term is 0, which requires p(x) in {0, 1}.\n\n3. **Gibbs inequality**: The key inequality D(p || q) >= 0 follows from Jensen's inequality applied to the convex function -log. This is the master inequality from which most entropy inequalities follow.\n\n4. **Conditional entropy and chain rule**: Define H(Y|X) = sum_x p(x) H(Y|X=x) and prove H(X,Y) = H(X) + H(Y|X) by expanding the joint entropy.\n\n5. **Mutual information**: Define I(X;Y) = H(X) + H(Y) - H(X,Y) = H(X) - H(X|Y) >= 0. Non-negativity follows from Gibbs inequality.\n\n6. **Data processing inequality**: If X -> Y -> Z is a Markov chain, then I(X;Z) <= I(X;Y). Information cannot be created by processing.",
+    "keyInsights": [
+      "The convention 0 log 0 = 0 is essential and arises from continuity: lim_{p->0} p log p = 0",
+      "Gibbs inequality (D(p||q) >= 0) is the master inequality from which non-negativity, subadditivity, and the data processing inequality all follow",
+      "The chain rule H(X,Y) = H(X) + H(Y|X) reflects the sequential nature of information: first learn X, then learn Y given X",
+      "Mutual information I(X;Y) = D(p(x,y) || p(x)p(y)) measures departure from independence via KL divergence",
+      "Shannon entropy is the unique function satisfying the grouping axiom, continuity, and monotonicity in the uniform case"
+    ]
+  },
+  "sections": [
+    {
+      "id": "introduction",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "Historical context and motivation for Shannon entropy as the fundamental information measure.",
+      "mathContext": "Shannon (1948): $H(X) = -\\sum_x p(x) \\log_2 p(x)$ is the unique (up to scale) measure of information satisfying continuity, monotonicity for uniform distributions, and the grouping axiom. Measured in bits when using $\\log_2$."
+    },
+    {
+      "id": "entropy-definition",
+      "title": "Entropy Definition",
+      "startLine": 32,
+      "endLine": 72,
+      "summary": "Formal definition of Shannon entropy for discrete distributions over a Fintype, with the 0 log 0 = 0 convention.",
+      "mathContext": "For a probability mass function $p: \\mathcal{X} \\to [0,1]$ with $\\sum_x p(x) = 1$, define $\\eta(t) = -t \\log_2 t$ for $t > 0$ and $\\eta(0) = 0$. Then $H(X) = \\sum_x \\eta(p(x))$. The function $\\eta$ is concave on $[0,1]$."
+    },
+    {
+      "id": "conditional-entropy",
+      "title": "Conditional Entropy",
+      "startLine": 74,
+      "endLine": 118,
+      "summary": "Conditional entropy H(Y|X) and its properties, including non-negativity and conditioning reduces entropy.",
+      "mathContext": "Conditional entropy $H(Y|X) = \\sum_x p(x) H(Y|X=x) = -\\sum_{x,y} p(x,y) \\log_2 p(y|x)$. Key property: $H(Y|X) \\leq H(Y)$ with equality iff $X$ and $Y$ are independent. Conditioning reduces entropy (on average)."
+    },
+    {
+      "id": "mutual-information",
+      "title": "Mutual Information",
+      "startLine": 120,
+      "endLine": 165,
+      "summary": "Mutual information I(X;Y) as the reduction in uncertainty, with non-negativity and symmetry.",
+      "mathContext": "Mutual information $I(X;Y) = H(X) - H(X|Y) = H(X) + H(Y) - H(X,Y) = D(p_{XY} \\| p_X p_Y) \\geq 0$. Symmetric: $I(X;Y) = I(Y;X)$. Equals zero iff $X \\perp Y$."
+    },
+    {
+      "id": "chain-rule",
+      "title": "Chain Rule",
+      "startLine": 167,
+      "endLine": 210,
+      "summary": "The chain rule for entropy and mutual information, relating joint and conditional quantities.",
+      "mathContext": "Chain rule for entropy: $H(X_1, \\ldots, X_n) = \\sum_{i=1}^n H(X_i | X_1, \\ldots, X_{i-1})$. Chain rule for mutual information: $I(X_1, \\ldots, X_n ; Y) = \\sum_{i=1}^n I(X_i; Y | X_1, \\ldots, X_{i-1})$."
+    },
+    {
+      "id": "gibbs-inequality",
+      "title": "Gibbs Inequality and KL Divergence",
+      "startLine": 212,
+      "endLine": 265,
+      "summary": "Non-negativity of KL divergence (Gibbs inequality), the master inequality of information theory.",
+      "mathContext": "Gibbs inequality: $D(p \\| q) = \\sum_x p(x) \\log \\frac{p(x)}{q(x)} \\geq 0$, with equality iff $p = q$. Proof via Jensen's inequality applied to the convex function $-\\log$. This implies: $H(X) \\leq \\log |\\mathcal{X}|$, $H(Y|X) \\leq H(Y)$, and $I(X;Y) \\geq 0$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "shannon-source-coding",
+      "relationship": "used-by",
+      "description": "Shannon entropy H(X) is the fundamental limit in the source coding theorem"
+    },
+    {
+      "targetId": "shannon-channel-coding",
+      "relationship": "used-by",
+      "description": "Mutual information I(X;Y), defined from entropy, determines channel capacity"
+    },
+    {
+      "targetId": "prob-method-expectation",
+      "relationship": "related",
+      "description": "The entropy method in combinatorics uses Shannon entropy with probabilistic method techniques"
+    }
+  ],
+  "conclusion": {
+    "summary": "Shannon entropy H(X) = -sum p(x) log p(x) is formalized as the fundamental measure of information content, along with conditional entropy, mutual information, and KL divergence. The Gibbs inequality serves as the master inequality from which all other entropy inequalities follow, and the chain rule provides the compositional structure that makes entropy theory practical.",
+    "implications": "This formalization provides:\n\n**1. Foundation for Information Theory**\nShannon entropy is the base layer for source coding and channel coding theorems, both formalized in companion modules.\n\n**2. Gibbs Inequality as Master Tool**\nThe non-negativity of KL divergence implies maximum entropy, subadditivity, and data processing -- providing a single inequality from which the entire theory follows.\n\n**3. Connections to Combinatorics**\nThe entropy method, used by Tao and others for sumset bounds and Ruzsa-type inequalities, builds directly on the formalized chain rule and subadditivity.\n\n**4. Statistical Learning**\nKL divergence and mutual information are fundamental to PAC learning bounds and model selection, connecting to the learning theory formalization.\n\n**5. Formal Mathematics Infrastructure**\nA complete discrete entropy library in Lean 4 is a significant contribution to the formal mathematics ecosystem.",
+    "openQuestions": [
+      "Can differential entropy for continuous distributions be formalized?",
+      "What is the relationship between Shannon entropy and Kolmogorov complexity in Lean?"
+    ]
+  }
+}
