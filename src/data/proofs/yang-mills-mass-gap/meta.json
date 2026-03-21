@@ -113,126 +113,161 @@
       "title": "Part I: Gauge Group and Lie Algebra Infrastructure",
       "summary": "Defines CompactSimpleGaugeGroup typeclass, LieAlgebra 𝔤, spacetime R⁴, Minkowski metric with signature (1,3), and proves diagonal/symmetric/Lorentzian properties.",
       "startLine": 55,
-      "endLine": 148
+      "endLine": 148,
+      "mathContext": "$G$ compact simple Lie group, $\\mathfrak{g}$ its Lie algebra; Minkowski metric $\\eta = \\text{diag}(-1,1,1,1)$ with signature $(1,3)$."
     },
     {
       "id": "field-strength",
       "title": "Part II: Gauge Fields and Field Strength",
       "summary": "Defines gauge field A_μ(x) ∈ 𝔤, field strength tensor F_μν, proves antisymmetry and that F has 6 independent components in 4D.",
       "startLine": 149,
-      "endLine": 196
+      "endLine": 196,
+      "mathContext": "$A_\\mu(x) \\in \\mathfrak{g}$, $F_{\\mu\\nu} = \\partial_\\mu A_\\nu - \\partial_\\nu A_\\mu + [A_\\mu, A_\\nu]$; $F$ has $\\binom{4}{2} = 6$ independent components."
     },
     {
       "id": "yang-mills-action",
       "title": "Part III: Yang-Mills Action and Classical Equations",
       "summary": "Defines Killing form, Yang-Mills action S[A] = -1/(4g²) ∫ Tr(F²), covariant derivative, Yang-Mills equations D_μ F^μν = 0, and Bianchi identity.",
       "startLine": 197,
-      "endLine": 251
+      "endLine": 251,
+      "mathContext": "$S[A] = -\\frac{1}{4g^2} \\int \\text{Tr}(F_{\\mu\\nu}F^{\\mu\\nu})\\, d^4x$; Yang-Mills equation: $D_\\mu F^{\\mu\\nu} = 0$; Bianchi: $D_{[\\mu}F_{\\nu\\rho]} = 0$."
     },
     {
       "id": "gauge-invariance",
       "title": "Part IV: Gauge Transformations and Invariance",
       "summary": "Proves gauge transformations form a group, S[A^g] = S[A], with identity element, associativity, and double inversion.",
       "startLine": 252,
-      "endLine": 308
+      "endLine": 308,
+      "mathContext": "$A^g_\\mu = g A_\\mu g^{-1} + g \\partial_\\mu g^{-1}$; $S[A^g] = S[A]$; $\\mathcal{G} = \\text{Map}(\\mathbb{R}^4, G)$ forms an infinite-dimensional group."
     },
     {
       "id": "maxwell-u1",
       "title": "Part V: Maxwell's Equations as U(1) Yang-Mills",
       "summary": "Shows electromagnetism is the abelian (U(1)) case: E and B fields, 6 independent components, abelian Yang-Mills reduces to Maxwell.",
       "startLine": 309,
-      "endLine": 375
+      "endLine": 375,
+      "mathContext": "For $G = U(1)$: $F_{\\mu\\nu} = \\partial_\\mu A_\\nu - \\partial_\\nu A_\\mu$ (commutator vanishes), recovering Maxwell's equations $\\partial_\\mu F^{\\mu\\nu} = 0$."
     },
     {
       "id": "wightman-axioms",
       "title": "Part VI: Quantum Yang-Mills and Wightman Axioms",
       "summary": "Defines WightmanQFT structure with Hilbert space, vacuum, Hamiltonian, Poincaré covariance, spectral condition, and locality. Specializes to QuantumYangMills.",
       "startLine": 376,
-      "endLine": 406
+      "endLine": 406,
+      "mathContext": "$(\\mathcal{H}, \\Omega, H, \\phi)$ with $H\\Omega = 0$, $\\text{spec}(H) \\subseteq [0,\\infty)$, $[\\phi(x),\\phi(y)] = 0$ for spacelike $(x-y)$."
     },
     {
       "id": "mass-gap",
       "title": "Parts VII-VIII: The Mass Gap and Millennium Problem",
       "summary": "Defines mass gap Δ > 0 (all excited states have energy ≥ Δ), states the full Millennium Prize conjecture: existence + mass gap for any compact simple G.",
       "startLine": 407,
-      "endLine": 450
+      "endLine": 450,
+      "mathContext": "$\\text{spec}(H) = \\{0\\} \\cup [\\Delta, \\infty)$ with $\\Delta > 0$; equivalently, $\\langle\\psi|H|\\psi\\rangle \\geq \\Delta$ for all $\\psi \\perp \\Omega$."
     },
     {
       "id": "known-results",
       "title": "Part IX: Known Partial Results",
       "summary": "Axiomatizes established physics results: asymptotic freedom (Gross-Wilczek-Politzer), lattice Yang-Mills (Wilson), Wilson's confinement criterion.",
       "startLine": 451,
-      "endLine": 478
+      "endLine": 478,
+      "mathContext": "Asymptotic freedom: $\\beta(g) < 0$ for $\\mathrm{SU}(N)$ with $N_f < 11N/2$ flavors; confinement via Wilson area law $\\langle W(C)\\rangle \\sim e^{-\\sigma \\cdot \\text{Area}(C)}$."
     },
     {
       "id": "instantons",
       "title": "Part X: Instanton Solutions",
       "summary": "Defines instantons as (anti-)self-dual solutions with topological charge k ∈ ℤ. Proves Bogomolny bound S[A] ≥ 8π²|k|/g².",
       "startLine": 479,
-      "endLine": 499
+      "endLine": 499,
+      "mathContext": "$F = \\pm *F$ (self-dual/anti-self-dual); $k = \\frac{1}{8\\pi^2}\\int\\text{Tr}(F \\wedge F) \\in \\mathbb{Z}$; Bogomolny: $S[A] \\geq 8\\pi^2|k|/g^2$."
     },
     {
       "id": "wilson-loops",
       "title": "Part XII: Wilson Loops",
       "summary": "Comprehensive Wilson loop formalization: loop space, trace, rectangular loops, trivial loop = 1, composition multiplicativity, area law vs perimeter law mutual exclusivity.",
       "startLine": 527,
-      "endLine": 612
+      "endLine": 612,
+      "mathContext": "$W(C) = \\text{Tr}\\,\\mathcal{P}\\exp\\oint_C A_\\mu\\,dx^\\mu$; area law: $\\langle W(C)\\rangle \\sim e^{-\\sigma\\cdot\\text{Area}}$ (confinement); perimeter law (deconfinement)."
     },
     {
       "id": "lattice-gauge",
       "title": "Part XIII: Lattice Gauge Theory",
       "summary": "Wilson's lattice formulation: plaquettes, Wilson action S_W = β Σ (1 - Re Tr U_p), continuum limit, lattice mass gap from transfer matrix eigenvalues.",
       "startLine": 613,
-      "endLine": 869
+      "endLine": 869,
+      "mathContext": "$S_W = \\beta \\sum_P (1 - \\frac{1}{N}\\text{Re\\,Tr}\\,U_P)$, $\\beta = 2N/g^2$; lattice mass gap $\\Delta = -\\ln(\\lambda_1/\\lambda_0)/a$."
     },
     {
       "id": "2d-ym",
       "title": "Part XIV: 2D Yang-Mills (Exactly Solvable)",
       "summary": "Migdal's area law formula in 2D, heat kernel expansion, explicit partition function computation. The only dimension where Yang-Mills is exactly solvable.",
       "startLine": 870,
-      "endLine": 972
+      "endLine": 972,
+      "mathContext": "$Z_{\\text{2D}} = \\sum_R (\\dim R)^2 e^{-C_2(R)A/(2\\beta)}$; mass gap $\\Delta_{\\text{2D}} = C_2(\\text{adj}) \\cdot a^2/(2\\beta)$."
     },
     {
       "id": "su2-casimir",
       "title": "Parts XVIII-XIX: SU(2) Representation Theory and Center Symmetry",
       "summary": "SU(2) Casimir C₂(j) = j(j+1), string tension from Migdal, Casimir monotonicity, mass gap bounds. Z_N center symmetry classification of confinement phases.",
       "startLine": 1089,
-      "endLine": 1457
+      "endLine": 1457,
+      "mathContext": "SU(2): $C_2(j) = j(j+1)$; center $Z_2 = \\{\\pm I\\}$; confined $\\iff \\langle P \\rangle = 0 \\iff Z_N$ unbroken."
     },
     {
       "id": "su3-theory",
       "title": "Parts XXIV-XXVII: SU(N) Generalization",
       "summary": "General SU(N) Casimir formulas, SU(3) Migdal instances, N-ality and string tension classification, SU(3) heat kernel and confinement.",
       "startLine": 1662,
-      "endLine": 2059
+      "endLine": 2059,
+      "mathContext": "SU(N): $C_2(\\text{fund}) = (N^2-1)/(2N)$; N-ality $k$: string tension $\\sigma_k \\propto k(N-k)$; center $Z_N \\subset \\mathrm{SU}(N)$."
     },
     {
       "id": "large-n",
       "title": "Parts XXIX-XXXI: Large-N and Planar Limit",
       "summary": "'t Hooft coupling λ = g²N, 1/N expansion, planar limit, glueball spectrum with mass gap from spectral theory.",
       "startLine": 2060,
-      "endLine": 2314
+      "endLine": 2314,
+      "mathContext": "'t Hooft coupling $\\lambda = g^2 N$; $1/N$ expansion: planar diagrams dominate; glueball masses from transfer matrix spectral gaps."
     },
     {
       "id": "osterwalder-schrader",
       "title": "Part XXXIII: Osterwalder-Schrader Framework",
       "summary": "Euclidean QFT axioms, reflection positivity, OS reconstruction theorem connecting Euclidean correlation functions to Wightman QFT.",
       "startLine": 2315,
-      "endLine": 2458
+      "endLine": 2458,
+      "mathContext": "Reflection positivity: $\\langle \\theta f, f \\rangle \\geq 0$; OS reconstruction: Euclidean correlators $\\to$ Wightman QFT via $t \\to it$ (Wick rotation)."
     },
     {
       "id": "modern-approaches",
       "title": "Parts L-LV: Modern Approaches",
       "summary": "Supersymmetric Yang-Mills (Seiberg-Witten), AdS/CFT correspondence, constructive QFT for rigorous 2D YM, functional renormalization group, Hamiltonian lattice (Kogut-Susskind), Donaldson theory and TQFT.",
       "startLine": 5076,
-      "endLine": 6248
+      "endLine": 6248,
+      "mathContext": "Seiberg-Witten: $\\mathcal{N}=2$ SYM exact prepotential; AdS/CFT: SYM $\\leftrightarrow$ strings on $\\text{AdS}_5 \\times S^5$; FRG: Wetterink equation $\\partial_k \\Gamma_k$."
     },
     {
       "id": "grand-summary",
       "title": "Part LVII: Grand Summary",
       "summary": "Comprehensive status of the mass gap problem: what is proved, what is axiomatized, and what remains open. Maps out the full landscape of approaches.",
       "startLine": 6512,
-      "endLine": 6623
+      "endLine": 6623,
+      "mathContext": "Status: 2600+ theorems/defs, 1 axiom (gaugeTransform), 0 sorries. Open: 4D mass gap $\\Delta > 0$ for compact simple $G$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "navier-stokes-existence",
+      "relationship": "related",
+      "description": "Fellow Millennium Prize Problem involving existence and regularity of solutions to nonlinear PDEs; both require controlling non-perturbative behavior"
+    },
+    {
+      "targetId": "riemann-hypothesis",
+      "relationship": "related",
+      "description": "Fellow Millennium Prize Problem; the Riemann zeta function appears in number-theoretic aspects of gauge theory and random matrix connections"
+    },
+    {
+      "targetId": "hodge-conjecture",
+      "relationship": "related",
+      "description": "Fellow Millennium Prize Problem; Hodge theory connects to de Rham cohomology of gauge bundles and Donaldson invariants"
     }
   ],
   "conclusion": {
