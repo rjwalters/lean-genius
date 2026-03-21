@@ -21,7 +21,15 @@
     "erdosNumber": 71,
     "erdosUrl": "https://erdosproblems.com/71",
     "erdosProblemStatus": "solved",
-    "axiomCount": 6
+    "axiomCount": 6,
+    "prerequisites": [
+      "Graph theory fundamentals (vertices, edges, adjacency)",
+      "Average and minimum degree in graphs",
+      "Cycle detection and cycle lengths",
+      "Arithmetic progressions and modular arithmetic",
+      "Bipartite graphs and parity of cycles",
+      "Extremal graph theory (Bondy-Simonovits theorem)"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős and Burr conjectured that high average degree forces cycles from any arithmetic progression containing even numbers. Bollobás proved this in 1977. The even condition is necessary because bipartite graphs (with only even cycles) can have arbitrarily high average degree.",
