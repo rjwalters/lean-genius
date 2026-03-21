@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Deleted 2 unused axioms (3→1): killingForm (never used), euclidean_mass_gap_implies_wightman (only #check). Fixed 3 duplicate definition build errors from merge. Deleted duplicate Part CXXVIII Gross-Neveu section (190 lines).",
+    "progressSummary": "PROGRESS: Fixed ~30 Mathlib v4.26 API renames (lt_div_iff→lt_div_iff₀, div_lt_div_iff→div_lt_div_iff₀, pow_lt_pow_left→pow_lt_pow_left₀, exp_lt_one_iff_neg→exp_lt_one_iff, etc). Resolved 18 duplicate declaration errors from prior merges (VectorLikeTheory, thetaVacuumEnergy, monopole_mass, instantonModuliDim, tHooftCoupling, etc). Build now progresses ~2000 lines further before hitting remaining errors.",
     "builtItems": [
       "Part C: OS Axioms - transfer matrix, Schwinger functions, spectral gap, Euclidean propagator (~30 theorems)",
       "Part CI: Resurgence - beta function, running coupling, renormalons, instanton factors, bions (~25 theorems)",

@@ -1170,3 +1170,56 @@ full R⁴ mass gap.
 1. Fix 101 build errors (needs Mathlib API migration guide)
 2. Consider splitting the 30K line file for maintainability
 3. All 16 axioms encode deep QFT infrastructure not in Mathlib
+
+## Session 2026-03-21 (researcher-4) - Mathlib API Migration + Duplicate Cleanup
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 239)
+**Outcome**: progress — fixed ~30 Mathlib API renames, resolved 18 duplicate declarations
+
+### Mathlib v4.26 API Renames Fixed
+1. `lt_div_iff` → `lt_div_iff₀` (5 occurrences)
+2. `div_lt_iff` → `div_lt_iff₀` (2 occurrences)
+3. `div_lt_div_iff` → `div_lt_div_iff₀` (9 occurrences)
+4. `le_div_iff` → `le_div_iff₀` (1 occurrence)
+5. `div_le_div_iff` → `div_le_div_iff₀` (3 occurrences)
+6. `div_lt_div_right` → `div_lt_div_right₀` (2 occurrences)
+7. `Real.exp_lt_one_iff_neg` → `Real.exp_lt_one_iff` (all occurrences)
+8. `Real.exp_le_one_iff_nonpos` → `Real.exp_le_one_iff` (1 occurrence)
+9. `pow_lt_pow_left` → `pow_lt_pow_left₀` with `(by positivity)` (6 occurrences)
+10. `div_lt_div_of_pos_left` argument fix (1 occurrence)
+
+### Duplicate Declarations Resolved (18 total)
+From prior merge conflicts bringing overlapping sections:
+- `VectorLikeTheory` → `VWVectorLikeTheory` (VafaWitten section)
+- `thetaVacuumEnergy` → `vwThetaVacuumEnergy` (VafaWitten section)
+- `theta_zero_minimum` → `vw_theta_zero_minimum'`
+- `mass_gap_is_scalar` → `vw_mass_gap_is_scalar`
+- `monopole_mass` → `sw_monopole_mass` (SeibergWitten section)
+- `su2_vacua`/`su3_vacua` → `sw_su2_vacua`/`sw_su3_vacua`
+- `instantonModuliDim` → `asInstantonModuliDim` (AtiyahSinger section)
+- `su2_one_instanton_moduli` → `as_su2_one_instanton_moduli`
+- `su3_one_instanton_moduli` → `as_su3_one_instanton_moduli`
+- `strong_coupling_area_law` → `ks_strong_coupling_area_law` (KogutSusskind section)
+- `tHooftCoupling` → `qcd2_tHooftCoupling` (tHooftModel section)
+- `thooft_coupling_pos` → `qcd2_thooft_coupling_pos`
+- `vacuum_energy_nonneg` → `wavefunctional_vacuum_energy_nonneg`
+- `confinement_criteria_summary` → `confinement_criteria_summary_rfl`
+- `MillenniumSolution` → `MillenniumPrizeSolution`
+- `casimir_ratio_pos` → `adjoint_casimir_ratio_pos`
+- `breaking_distance_pos`/`potential_below_breaking` → `adjoint_*`
+- `physical_mass_gap_positive` → `lattice_physical_mass_gap_positive`
+
+### Remaining Build Errors (~70-80 estimated)
+The maxErrors cap (100) prevents exact counting. Remaining error categories:
+- **omega failures** (~15): Can't prove ℝ facts with omega (needs norm_num or cast)
+- **Hyperbolic function lemmas** (~5): `Real.tanh_pos_of_pos`, `Real.tanh_lt_one`, `Real.one_lt_cosh` — not in current Mathlib, need local proofs
+- **div_lt_div_of_pos_left/right** (~5): API signature changed, needs argument reordering
+- **linarith/nlinarith failures** (~10): Proof structure issues
+- **rewrite failures** (~10): Pattern doesn't match after unfold
+- **Broken proof logic** (~5): e.g., `factorial_dominates` claims n!≥n² for n≥3 but 3!=6<9=3²
+
+### Stats
+- 1 axiom remaining (gaugeTransform — definitional)
+- 0 sorries
+- Build errors: ~103 (maxErrors cap) → fewer unique errors as fixed ones reveal hidden ones
+
