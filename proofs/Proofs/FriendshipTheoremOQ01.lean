@@ -1154,36 +1154,78 @@ private lemma det_ones_eq_zero_gen {R : Type*} [CommRing R] (hn : Fintype.card V
 
 /-- **det(cI - J) = c^{n-1}(c-n)** for the all-ones matrix J.
 
-    Proof approach: The Weinstein–Aronszajn identity gives det(I - tJ) = 1 - nt
-    for any t (proved as det_one_sub_smul_onesMatrix). For c ≠ 0, this yields
-    det(cI - J) = c^n(1 - n/c) = c^{n-1}(c-n). For c = 0, J is singular.
-
-    The current proof leaves two algebraic sub-goals as sorry:
-    1. The c = 0 case (det of negated singular matrix = 0)
-    2. The ring algebra c^n(1 - n·c⁻¹) = c^{n-1}(c - n) over ℚ -/
-lemma det_scalar_sub_onesMatrix (c : ℤ) :
+    Proof: For c ≠ 0, cast to ℚ where c is invertible. Factor:
+    det(cI - J) = c^n · det(I - c⁻¹J) = c^n(1 - n/c) = c^{n-1}(c-n)
+    using det_one_sub_smul_ones_gen (Weinstein-Aronszajn).
+    For c = 0: det(-J) = (-1)^n · det(J) = 0 when n ≥ 2
+    (J singular by det_onesMatrix_eq_zero), handled directly for n = 1. -/
+lemma det_scalar_sub_onesMatrix [Nonempty V] (c : ℤ) :
     (c • (1 : Matrix V V ℤ) - onesMatrix V).det =
     c ^ (Fintype.card V - 1) * (c - ↑(Fintype.card V)) := by
-  sorry
+  set n := Fintype.card V with hn
+  have hn_pos : n ≥ 1 := Fintype.card_pos
+  by_cases hc : c = 0
+  · -- Case c = 0: det(-J) = 0^{n-1} * (0 - n)
+    subst hc; simp only [zero_smul, zero_sub, zero_pow, Int.cast_zero]
+    by_cases hn1 : n = 1
+    · -- n = 1: V is a singleton, det(-J) = -1
+      have : Subsingleton V := by rw [← Fintype.card_le_one_iff_subsingleton]; omega
+      haveI : Unique V := uniqueOfSubsingleton (Classical.arbitrary V)
+      simp [hn1, Matrix.det_unique, onesMatrix, Matrix.of_apply]
+    · -- n ≥ 2: det(-J) = 0 since J is singular
+      have hn2 : n ≥ 2 := by omega
+      have hJ0 : (onesMatrix V).det = 0 := det_onesMatrix_eq_zero hn2
+      have hsmul : -onesMatrix V = (-1 : ℤ) • onesMatrix V := by
+        ext i j; simp [onesMatrix, Matrix.of_apply]
+      rw [hsmul, Matrix.det_smul, hJ0, mul_zero]
+      simp [zero_pow (show n - 1 ≠ 0 by omega)]
+  · -- Case c ≠ 0: lift to ℚ where c⁻¹ exists
+    have hcq : (↑c : ℚ) ≠ 0 := Int.cast_ne_zero.mpr hc
+    -- Suffices to prove in ℚ
+    suffices hq : ((c • (1 : Matrix V V ℤ) - onesMatrix V).det : ℚ) =
+        ↑(c ^ (n - 1) * (c - ↑n)) by exact_mod_cast hq
+    -- Map the ℤ determinant through ℤ → ℚ
+    set M := c • (1 : Matrix V V ℤ) - onesMatrix V with hM_def
+    show (Int.castRingHom ℚ) M.det = _
+    rw [RingHom.map_det]
+    -- Simplify the mapped matrix
+    have hmap : (RingHom.mapMatrix (Int.castRingHom ℚ)) M =
+        (↑c : ℚ) • (1 : Matrix V V ℚ) -
+          Matrix.of (fun (_ : V) (_ : V) => (1 : ℚ)) := by
+      ext i j
+      simp only [hM_def, RingHom.mapMatrix_apply, Matrix.map_apply,
+        Matrix.sub_apply, Matrix.smul_apply, Matrix.one_apply, onesMatrix,
+        Matrix.of_apply, smul_eq_mul, map_sub, map_mul, Int.coe_castRingHom]
+      split <;> simp
+    rw [hmap]
+    -- Factor: cI - J = c(I - c⁻¹J)
+    have hfactor : (↑c : ℚ) • (1 : Matrix V V ℚ) -
+        Matrix.of (fun (_ : V) (_ : V) => (1 : ℚ)) =
+        (↑c : ℚ) • ((1 : Matrix V V ℚ) -
+          (↑c : ℚ)⁻¹ • Matrix.of (fun (_ : V) (_ : V) => (1 : ℚ))) := by
+      ext i j
+      simp only [Matrix.sub_apply, Matrix.smul_apply, Matrix.one_apply,
+        Matrix.of_apply, smul_eq_mul]
+      by_cases hij : i = j <;> simp [hij, mul_sub, mul_inv_cancel₀ hcq]
+    rw [hfactor, Matrix.det_smul, det_one_sub_smul_ones_gen]
+    -- Algebra: c^n * (1 - n * c⁻¹) = c^{n-1} * (c - n)
+    -- Split c^n = c^{n-1} * c
+    have h1 : Fintype.card V = n - 1 + 1 := by omega
+    rw [h1, pow_succ, show (n - 1 + 1 : ℕ) = n from by omega]
+    push_cast; field_simp
 
 /-- The key product identity for the quotient polynomial.
 
     Let g = charpoly(A), f = g/(X-k). Then:
       f(X) · f(-X) = (X² - (k-1))^{n-1}
 
-    Proof outline (8 steps):
-    1. (XI-A)(XI+A) = X²I - A²  [difference of squares]
-    2. det(XI-A)·det(XI+A) = det(X²I - A²)  [Matrix.det_mul]
-    3. A² = (k-1)I + J  [adjMatrix_sq_eq]
-    4. det((X²-(k-1))I - J) = (X²-(k-1))^{n-1}·(X²-k²)  [det_scalar_sub_onesMatrix]
-    5. det(XI+A) = (-1)^n · g(-X) = -g(-X)  [n odd]
-    6. g(X)·(-g(-X)) = (X²-k²)·(X²-(k-1))^{n-1}
-    7. Factor (X-k) from g: g = (X-k)·f, g(-X) = -(X+k)·f(-X)
-    8. Cancel (X²-k²) from both sides: f(X)·f(-X) = (X²-(k-1))^{n-1}
+    Proof: (XI-A)(XI+A) = X²I - A² = (X²-(k-1))I - J.
+    det gives g·(-g(-X)) = (X²-(k-1))^{n-1}·(X²-k²).
+    Factor g = (X-k)·f and cancel (X²-k²).
 
-    The only sorry is det_scalar_sub_onesMatrix (step 4). -/
-lemma charpoly_quotient_product (hF : IsFriendshipGraph G) (k : ℕ) (hk : k ≥ 2)
-    (hreg : ∀ v : V, G.degree v = k) (f : Polynomial ℤ)
+    Dependencies: det_scalar_sub_onesMatrix (PROVED above). -/
+lemma charpoly_quotient_product [Nonempty V] (hF : IsFriendshipGraph G) (k : ℕ)
+    (hk : k ≥ 2) (hreg : ∀ v : V, G.degree v = k) (f : Polynomial ℤ)
     (hf : (G.adjMatrix ℤ).charpoly = (X - C (↑k : ℤ)) * f) :
     f * f.comp (-X) = (X ^ 2 - C (↑(k - 1) : ℤ)) ^ (Fintype.card V - 1) := by
   sorry
