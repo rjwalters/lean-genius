@@ -36,6 +36,18 @@
     "prerequisites": ["integer arithmetic", "ordered ring axioms", "Lean tactic mode"]
   },
   {
+    "id": "ann-case-split",
+    "proofId": "sqrt2-examples",
+    "range": {"startLine": 34, "endLine": 38},
+    "type": "technique",
+    "title": "Case Split and Negation Handling",
+    "content": "The `by_cases h : 0 ≤ n` tactic splits the proof into two branches based on the sign of $n$. In the negative branch, `push_neg at h` transforms the hypothesis from $\\lnot (0 \\leq n)$ to $n < 0$, which is more directly usable. Then `le_of_lt` weakens $n < 0$ to $n \\leq 0$, and `neg_nonneg.mpr` converts $n \\leq 0$ into $0 \\leq -n$. This chain of lemma applications is a common pattern when working with ordered types: transform a negated condition into a positively-stated bound that can feed into monotonicity lemmas.",
+    "mathContext": "The law of excluded middle gives $0 \\leq n \\lor \\lnot(0 \\leq n)$. In a linear order, $\\lnot(0 \\leq n) \\iff n < 0 \\implies n \\leq 0 \\iff 0 \\leq -n$.",
+    "significance": "key",
+    "relatedConcepts": ["law of excluded middle", "decidable propositions", "push_neg tactic", "linear order"],
+    "prerequisites": ["classical logic", "ordered ring structure", "negation in Lean"]
+  },
+  {
     "id": "ann-calc-block",
     "proofId": "sqrt2-examples",
     "range": {"startLine": 39, "endLine": 40},
@@ -58,6 +70,18 @@
     "significance": "key",
     "relatedConcepts": ["natural deduction", "Curry-Howard correspondence", "function composition", "backward reasoning"],
     "prerequisites": ["propositional logic", "Lean tactic mode", "intro/apply/exact tactics"]
+  },
+  {
+    "id": "ann-intro-pattern",
+    "proofId": "sqrt2-examples",
+    "range": {"startLine": 43, "endLine": 43},
+    "type": "technique",
+    "title": "Hypothesis Introduction with intro",
+    "content": "The `intro hpq hqr hp` tactic simultaneously introduces three hypotheses into the local context: the two function hypotheses and the antecedent of the composed implication. This is equivalent to writing `fun hpq hqr hp =>` in term mode. The naming convention (`hpq` for the $P \\to Q$ hypothesis) improves readability by encoding the type in the name, a common Lean convention for short proofs.",
+    "mathContext": "In the Curry–Howard interpretation, `intro` corresponds to $\\lambda$-abstraction: introducing $h : P \\to Q$ creates a local function from proofs of $P$ to proofs of $Q$.",
+    "significance": "supporting",
+    "relatedConcepts": ["lambda abstraction", "Curry-Howard correspondence", "hypothesis management"],
+    "prerequisites": ["Lean intro tactic", "function types as implications"]
   },
   {
     "id": "ann-namespace",
