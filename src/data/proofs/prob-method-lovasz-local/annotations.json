@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-header-context",
+    "proofId": "prob-method-lovasz-local",
+    "range": { "startLine": 1, "endLine": 16 },
+    "type": "context",
+    "title": "Lovász Local Lemma: Crown Jewel of the Probabilistic Method",
+    "content": "This module formalizes the Lovász Local Lemma (LLL), the most powerful tool in the probabilistic method. Introduced by Erdős and Lovász in 1975, the LLL shows that when bad events are individually rare and their dependencies are sparse (captured by a dependency graph), all bad events can be simultaneously avoided. The module includes both the symmetric and general (asymmetric) forms, a k-SAT application, and the Moser-Tardos constructive framework.",
+    "mathContext": "The LLL: if $\\Pr[A_i] \\leq p$ and each $A_i$ depends on at most $d$ others, then $ep(d+1) \\leq 1 \\implies \\Pr[\\bigcap \\overline{A_i}] > 0$.",
+    "significance": "context",
+    "relatedConcepts": ["probabilistic method", "dependency graphs", "union bound", "k-SAT", "constructive proofs"],
+    "prerequisites": ["finite probability", "Finset products", "graph theory basics"]
+  },
+  {
+    "id": "ann-symmetric-lll",
+    "proofId": "prob-method-lovasz-local",
+    "range": { "startLine": 24, "endLine": 28 },
+    "type": "technique",
+    "title": "Symmetric Lovász Local Lemma",
+    "content": "The symmetric form: if each bad event has probability at most $p$ and depends on at most $d$ others, and $p(d+1) \\leq 1/e$, then all events can be avoided. This formalization uses $1/3$ as a simplified approximation of $1/e \\approx 0.368$. The condition arises from $(1 - 1/(d+1))^d \\leq 1/e$, which bounds the probability that all neighbors avoid their events. Currently a placeholder proving True, as the full formalization requires an event/probability framework.",
+    "mathContext": "Symmetric LLL: $\\Pr[A_i] \\leq p,\\; \\text{each } A_i \\text{ depends on} \\leq d \\text{ others},\\; ep(d+1) \\leq 1 \\implies \\Pr[\\bigcap \\overline{A_i}] > 0$. The factor $e$ arises from $(1-1/(d+1))^d \\to 1/e$.",
+    "significance": "key",
+    "relatedConcepts": ["dependency graph", "union bound improvement", "sparse dependencies", "Euler's number"],
+    "prerequisites": ["conditional probability", "mutual independence", "Finset products"]
+  },
+  {
+    "id": "ann-general-lll",
+    "proofId": "prob-method-lovasz-local",
+    "range": { "startLine": 33, "endLine": 37 },
+    "type": "technique",
+    "title": "General (Asymmetric) Lovász Local Lemma",
+    "content": "The full asymmetric LLL: given witness values $x_i \\in [0,1)$ satisfying $\\Pr[A_i] \\leq x_i \\prod_{j \\in \\Gamma(i)} (1-x_j)$, we get $\\Pr[\\bigcap \\overline{A_i}] \\geq \\prod_i (1-x_i) > 0$. This is strictly stronger than the symmetric form. The formalized version proves the product $\\prod(1-x_i) > 0$ from the witness conditions. The proof uses induction on the event structure.",
+    "mathContext": "General LLL: $\\Pr[A_i] \\leq x_i \\prod_{j \\in \\Gamma(i)}(1-x_j)$ for $x_i \\in [0,1)$ implies $\\Pr[\\bigcap \\overline{A_i}] \\geq \\prod_i(1-x_i) > 0$. Setting $x_i = 1/(d+1)$ recovers the symmetric form.",
+    "significance": "key",
+    "relatedConcepts": ["witness assignment", "Shearer's LLL", "entropy compression", "cluster expansion"],
+    "prerequisites": ["Finset.prod positivity", "conditional probability bounds", "induction on dependency graph"]
+  },
+  {
+    "id": "ann-ksat",
+    "proofId": "prob-method-lovasz-local",
+    "range": { "startLine": 41, "endLine": 44 },
+    "type": "insight",
+    "title": "k-SAT Satisfiability via LLL",
+    "content": "Application to random k-SAT: each clause of $k$ literals is violated with probability $2^{-k}$ under random assignment. Each clause shares at most $k$ variables with at most $2^{k-2}/k$ other clauses. The LLL condition $e \\cdot 2^{-k} \\cdot (d+1) \\leq 1$ is satisfied when the clause-to-variable ratio is below the LLL threshold, guaranteeing satisfiability.",
+    "mathContext": "For $k$-SAT: $\\Pr[\\text{clause violated}] = 2^{-k}$, each clause depends on $\\leq k \\cdot 2^{k-2}/k = 2^{k-2}$ others. LLL gives satisfiability when $e \\cdot 2^{-k} \\cdot (2^{k-2}+1) \\leq 1$, i.e., clause density $\\lesssim 2^k/(ek)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["SAT problem", "random k-SAT", "satisfiability threshold", "phase transition"],
+    "prerequisites": ["k-CNF formulas", "variable-clause dependency", "symmetric LLL condition"]
+  },
+  {
+    "id": "ann-moser-tardos",
+    "proofId": "prob-method-lovasz-local",
+    "range": { "startLine": 48, "endLine": 52 },
+    "type": "insight",
+    "title": "Moser-Tardos Constructive LLL",
+    "content": "The Moser-Tardos algorithm (2010) makes the LLL constructive: start with a random assignment, then repeatedly resample any violated event. The expected number of resamplings is bounded by $\\sum x_i/(1-x_i)$, which is $O(n)$ for typical applications. This resolved a 35-year-old open problem about whether the LLL's existence proof could be made algorithmic. The formalization proves the non-negativity of the expected resampling bound.",
+    "mathContext": "Moser-Tardos: the resampling algorithm terminates in expected $\\sum_{i=1}^n \\frac{x_i}{1-x_i}$ steps. Under the symmetric LLL condition with $x = 1/(d+1)$, this is $\\frac{n}{d}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["resampling algorithm", "algorithmic LLL", "entropy compression", "randomized algorithms"],
+    "prerequisites": ["general LLL condition", "expected stopping time", "Finset.sum non-negativity"]
+  }
+]

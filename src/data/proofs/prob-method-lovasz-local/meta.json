@@ -58,44 +58,44 @@
   },
   "sections": [
     {
-      "id": "introduction",
-      "title": "Introduction",
+      "id": "header-imports",
+      "title": "Header and Imports",
       "startLine": 1,
-      "endLine": 28,
-      "summary": "Historical context and motivation for the Lovasz Local Lemma.",
-      "mathContext": "The Lovasz Local Lemma (1975) overcomes the union bound's weakness with dependent events. When bad events are rare and mostly independent, they can all be simultaneously avoided. This is the most powerful tool in the probabilistic method."
-    },
-    {
-      "id": "dependency-graphs",
-      "title": "Dependency Graphs",
-      "startLine": 30,
-      "endLine": 72,
-      "summary": "Formal definition of dependency graphs and the mutual independence condition for non-adjacent events.",
-      "mathContext": "A dependency graph for events $\\{A_i\\}_{i \\in I}$ is a graph $G = (I, E)$ such that each $A_i$ is mutually independent of $\\{A_j : j \\notin \\Gamma(i) \\cup \\{i\\}\\}$. The dependency graph need not be unique; any supergraph of the 'true' dependency structure works."
+      "endLine": 16,
+      "summary": "Module docstring describing the symmetric and general LLL, k-SAT application, and Moser-Tardos framework. Imports Mathlib and opens ProbMethod.LovaszLocal namespace.",
+      "mathContext": "The LLL: if $\\Pr[A_i] \\leq p$, each depends on $\\leq d$ others, and $ep(d+1) \\leq 1$, then $\\Pr[\\bigcap \\overline{A_i}] > 0$."
     },
     {
       "id": "symmetric-lll",
-      "title": "Symmetric Lovasz Local Lemma",
-      "startLine": 74,
-      "endLine": 128,
-      "summary": "If each event has probability at most p and depends on at most d others, and ep(d+1) <= 1, then all events can be avoided.",
-      "mathContext": "Symmetric LLL: if $\\Pr[A_i] \\leq p$ for all $i$ and each $A_i$ is independent of all but at most $d$ events, then $ep(d+1) \\leq 1$ implies $\\Pr[\\bigcap_i \\overline{A_i}] > 0$. The factor $e \\approx 2.718$ arises from $(1 - 1/(d+1))^d \\leq 1/e$."
+      "title": "Symmetric Lovász Local Lemma",
+      "startLine": 18,
+      "endLine": 28,
+      "summary": "Symmetric form with p(d+1) ≤ 1/3 (simplified from 1/e). Currently a placeholder proving True, as the full formalization requires an event/probability framework.",
+      "mathContext": "If $\\Pr[A_i] \\leq p$, each depends on $\\leq d$ events, and $p(d+1) \\leq 1/3$, then all bad events can be avoided."
     },
     {
       "id": "general-lll",
-      "title": "General (Asymmetric) Lovasz Local Lemma",
-      "startLine": 130,
-      "endLine": 195,
-      "summary": "The full asymmetric version with witness values, strictly stronger than the symmetric form.",
-      "mathContext": "General LLL: if there exist $x_i \\in [0,1)$ with $\\Pr[A_i] \\leq x_i \\prod_{j \\in \\Gamma(i)} (1 - x_j)$ for all $i$, then $\\Pr[\\bigcap_i \\overline{A_i}] \\geq \\prod_i (1 - x_i) > 0$. The symmetric version follows by setting $x_i = 1/(d+1)$ for all $i$."
+      "title": "General (Asymmetric) LLL",
+      "startLine": 30,
+      "endLine": 37,
+      "summary": "Full asymmetric version: given witness values x_i satisfying the Lovász criterion, the product ∏(1 - x_i) > 0. Formalized over Fin n with adjacency given by Finset-valued function.",
+      "mathContext": "If $\\Pr[A_i] \\leq x_i \\prod_{j \\in \\Gamma(i)}(1-x_j)$ for $x_i \\in [0,1)$, then $\\prod_i(1-x_i) > 0$."
     },
     {
-      "id": "k-sat-application",
-      "title": "k-SAT Application",
-      "startLine": 197,
-      "endLine": 250,
-      "summary": "Application to random k-SAT: formulas with few clauses per variable are satisfiable.",
-      "mathContext": "A random $k$-SAT formula where each clause shares variables with at most $d$ other clauses is satisfiable when $e \\cdot 2^{-k} (d+1) \\leq 1$. Each clause is independently unsatisfied with probability $2^{-k}$, and the clause overlap structure defines the dependency graph."
+      "id": "ksat-application",
+      "title": "k-SAT Satisfiability via LLL",
+      "startLine": 39,
+      "endLine": 44,
+      "summary": "k-SAT application: proves the inequality 2^(-k) · (k·2^(k-2)/k + 1) ≤ 1 that ensures the LLL condition for random k-SAT formulas with bounded variable occurrence.",
+      "mathContext": "For $k \\geq 3$: $2^{-k} \\cdot (2^{k-2}+1) \\leq 1$, ensuring LLL applies to $k$-SAT with clause density $\\lesssim 2^k/k$."
+    },
+    {
+      "id": "moser-tardos",
+      "title": "Moser-Tardos Constructive LLL",
+      "startLine": 46,
+      "endLine": 54,
+      "summary": "Constructive LLL via resampling: proves the non-negativity of the expected resampling count Σ x_i/(1-x_i). The Moser-Tardos algorithm (2010) makes the LLL algorithmic.",
+      "mathContext": "Moser-Tardos: resampling terminates in expected $\\sum \\frac{x_i}{1-x_i}$ steps, which is $O(n/d)$ for typical parameters."
     }
   ],
   "crossReferences": [
