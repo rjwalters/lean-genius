@@ -1,8 +1,8 @@
 {
   "slug": "friendship-theorem-oq-01",
   "title": "Spectral proof of Friendship Theorem via Mathlib linear algebra",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-20T00:00:00.000Z",
-    "iteration": 9,
-    "focus": "charpoly_quotient_product PROVED. 0 sorries, 1 axiom.",
+    "iteration": 10,
+    "focus": "AXIOM ELIMINATED: charpoly_eigenvalue_data removed, 0 axioms, 0 sorries",
     "blockers": [],
-    "nextAction": "Prove charpoly_quotient_product via det(cI-J) formula, then complete sqrt_k_sub_one_dvd_k mod-p argument",
+    "nextAction": "Update meta.json to reflect axiom-free status; potentially merge OQ01 into main FriendshipTheorem.lean",
     "attemptCounts": {
       "total": 4,
       "currentApproach": 2,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BREAKTHROUGH: charpoly_quotient_product PROVED via Polynomial.funext + integer det evaluation. File now has 0 sorries, 1 axiom (charpoly_eigenvalue_data). The axiom may be eliminable by proving it from the now-proved infrastructure.",
+    "progressSummary": "COMPLETED: charpoly_eigenvalue_data axiom ELIMINATED. File now has 0 axioms, 0 sorries. Restructured proof flow: moved regular_friendship_is_triangle and regular_friendship_has_universal after the charpoly machinery (Part XVIII-B) to use k_eq_two_no_axiom directly. Docker build verified.",
     "builtItems": [
       "Lean formalization complete",
       "Part VIII: Adjacency Matrix Infrastructure — adjMatrix_trace_zero PROVED (tr(A)=0 for simple graph), imports for SimpleGraph.AdjMatrix and Matrix.Trace verified",
@@ -164,7 +164,7 @@
     "mathlib": []
   },
   "started": "2026-03-15T12:11:41.208Z",
-  "lastUpdate": "2026-03-21T13:00:00.000Z",
+  "lastUpdate": "2026-03-21T12:30:00.000Z",
   "significance": 7,
   "tractability": 6
 }

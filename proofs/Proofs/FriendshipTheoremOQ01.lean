@@ -322,88 +322,15 @@ theorem dvd_sq_add_one_imp_one (s : ℕ) (hs : s ≥ 1) (h : s ∣ s * s + 1) :
 -- Part VI: Spectral Framework
 -- ============================================================================
 
-/-- **Refined spectral axiom**: eigenvalue structure of the adjacency matrix.
-
-    For a k-regular friendship graph, A satisfies A² = (k-1)I + J (proved in
-    `adjMatrix_sq_eq`), so the annihilating polynomial is (X-k)(X²-(k-1)).
-
-    The spectral theorem for real symmetric matrices gives:
-    - Eigenvalue k with multiplicity 1 (eigenvector 𝟙)
-    - Eigenvalues ±s where s² = k-1, with multiplicities m₊, m₋
-    - Total: 1 + m₊ + m₋ = n
-    - Trace: k + (m₊ - m₋)·s = 0
-
-    This axiom captures the eigenvalue structure. The conclusion k = 2
-    is proved as `spectral_regular_friendship` below.
-
-    **Elimination path** (what Mathlib needs to prove this):
-    1. minpoly(A) | (X-k)(X²-(k-1)) via `minpoly.dvd`
-    2. Over ℚ: if k-1 not a perfect square, X²-(k-1) is irreducible
-    3. charpoly = (X-k)^a · (X²-(k-1))^b, trace = -ak = 0, so a = 0
-    4. But k is an eigenvalue (A𝟙 = k𝟙), contradiction → k-1 is a perfect square
-    5. charpoly = (X-k)^a · (X-s)^{m₊} · (X+s)^{m₋}
-    6. tr(A²) = nk gives a = 1, then trace gives s|k, dvd_sq_add_one_imp_one → s=1 -/
-axiom charpoly_eigenvalue_data (hF : IsFriendshipGraph G)
-    (k : ℕ) (hk : k ≥ 2) (hreg : ∀ v : V, G.degree v = k) :
-    ∃ (s mp mm : ℕ), k - 1 = s * s ∧ mp + mm + 1 = Fintype.card V ∧
-      (↑k : ℤ) + (↑mp - ↑mm) * ↑s = 0
-
-/-- k = 2 for k-regular friendship graphs, derived from eigenvalue data.
-
-    From the axiom: k-1 = s², and the trace constraint gives s | k.
-    Since k = s²+1: s | s²+1, and by `dvd_sq_add_one_imp_one`, s = 1, k = 2. -/
-theorem spectral_regular_friendship (hF : IsFriendshipGraph G)
-    (k : ℕ) (hk : k ≥ 2) (hreg : ∀ v : V, G.degree v = k) :
-    k = 2 := by
-  obtain ⟨s, mp, mm, hsq, _, htrace⟩ := charpoly_eigenvalue_data G hF k hk hreg
-  -- s ≥ 1 since k - 1 = s² and k ≥ 2
-  have hs_pos : s ≥ 1 := by
-    by_contra h; push_neg at h
-    have : s = 0 := by omega
-    subst this; simp at hsq; omega
-  -- From trace: k = (mm - mp) · s in ℤ, so s | k
-  have hk_eq_ℤ : (↑k : ℤ) = (↑mm - ↑mp) * ↑s := by linarith
-  have h_sdvd_k : (↑s : ℤ) ∣ (↑k : ℤ) := by rw [hk_eq_ℤ]; exact dvd_mul_left _ _
-  have h_sdvd_k_nat : s ∣ k := by exact_mod_cast h_sdvd_k
-  -- k = s² + 1 and s | s² + 1
-  have hk_eq : k = s * s + 1 := by omega
-  rw [hk_eq] at h_sdvd_k_nat
-  -- s | s² + 1 forces s = 1
-  have hs1 := dvd_sq_add_one_imp_one s hs_pos h_sdvd_k_nat
-  subst hs1; omega
-
-/-- A k-regular friendship graph has exactly 3 vertices (must be K₃). -/
-theorem regular_friendship_is_triangle (hF : IsFriendshipGraph G)
-    (u : V) (k : ℕ) (hk : k ≥ 2) (hreg : ∀ v : V, G.degree v = k) :
-    Fintype.card V = 3 := by
-  have hk2 := spectral_regular_friendship G hF k hk hreg
-  have hcard := regular_friendship_card G hF u k hreg (by omega)
-  subst hk2; omega
-
-/-- A k-regular friendship graph has a universal vertex.
-    Since k = 2 and n = 3, every vertex has degree n - 1,
-    making it adjacent to all others. -/
-theorem regular_friendship_has_universal (hF : IsFriendshipGraph G)
-    (u : V) (k : ℕ) (hk : k ≥ 2) (hreg : ∀ v : V, G.degree v = k) :
-    ∃ c : V, ∀ v : V, v ≠ c → G.Adj c v := by
-  have hk2 := spectral_regular_friendship G hF k hk hreg
-  have hn := regular_friendship_is_triangle G hF u k hk hreg
-  refine ⟨u, fun v hvu => ?_⟩
-  have hdc : (G.neighborFinset u).card = Fintype.card V - 1 := by
-    rw [← SimpleGraph.degree, hreg u, hk2, hn]
-  have hsub : G.neighborFinset u ⊆ Finset.univ.erase u := by
-    intro x hx
-    simp only [Finset.mem_erase, Finset.mem_univ, and_true]
-    intro heq
-    rw [SimpleGraph.mem_neighborFinset, heq] at hx
-    exact absurd hx (G.loopless u)
-  have heq : G.neighborFinset u = Finset.univ.erase u :=
-    Finset.eq_of_subset_of_card_le hsub (by
-      rw [Finset.card_erase_of_mem (Finset.mem_univ u), Finset.card_univ]; omega)
-  have hv_mem : v ∈ G.neighborFinset u := by
-    rw [heq, Finset.mem_erase]; exact ⟨hvu, Finset.mem_univ v⟩
-  rw [SimpleGraph.mem_neighborFinset] at hv_mem
-  exact hv_mem
+-- The spectral axiom `charpoly_eigenvalue_data` has been ELIMINATED.
+-- The eigenvalue structure is now derived from the characteristic polynomial
+-- analysis in Parts XI-XVIII below. The key theorems are:
+-- - `k_sub_one_is_perfect_square`: k-1 = s² (via charpoly product identity)
+-- - `sqrt_k_sub_one_dvd_k`: s | k (via mod-p argument)
+-- - `k_eq_two_no_axiom`: k = 2 (combines both with dvd_sq_add_one_imp_one)
+--
+-- The main results (regular_friendship_is_triangle, regular_friendship_has_universal)
+-- are defined after the characteristic polynomial machinery in Part XVIII-B below.
 
 -- ============================================================================
 -- Part VII: Summary
@@ -560,8 +487,8 @@ in Mathlib) with tr(A) = sum of eigenvalues and the A² eigenvalue constraint.
 #check counting_identity
 #check regular_friendship_card
 #check dvd_sq_add_one_imp_one
-#check regular_friendship_is_triangle
-#check regular_friendship_has_universal
+-- regular_friendship_is_triangle and regular_friendship_has_universal
+-- are defined in Part XVIII-B (after the charpoly machinery)
 
 -- Part XI: Adjacency Matrix Squared Identity (A² = (k-1)I + J)
 -- ============================================================================
@@ -1904,20 +1831,42 @@ theorem k_eq_two_no_axiom (hF : IsFriendshipGraph G)
   have h1 := dvd_sq_add_one_imp_one s hs_pos h_dvd
   subst h1; omega
 
-/-- The friendship theorem for regular graphs (no axiom version). -/
-theorem regular_friendship_is_triangle_no_axiom (hF : IsFriendshipGraph G)
+-- ============================================================================
+-- Part XVIII-B: Main Theorems (axiom-free)
+-- ============================================================================
+
+/-- A k-regular friendship graph has exactly 3 vertices (must be K₃). -/
+theorem regular_friendship_is_triangle (hF : IsFriendshipGraph G)
     (u : V) (k : ℕ) (hk : k ≥ 2) (hreg : ∀ v : V, G.degree v = k) :
     Fintype.card V = 3 := by
   have hk2 := k_eq_two_no_axiom G hF u k hk hreg
   have hcard := regular_friendship_card G hF u k hreg (by omega)
   subst hk2; omega
 
-/-- The friendship theorem: regular friendship graph has universal vertex (no axiom). -/
-theorem regular_friendship_has_universal_no_axiom (hF : IsFriendshipGraph G)
+/-- A k-regular friendship graph has a universal vertex.
+    Since k = 2 and n = 3, every vertex has degree n - 1,
+    making it adjacent to all others. Fully axiom-free. -/
+theorem regular_friendship_has_universal (hF : IsFriendshipGraph G)
     (u : V) (k : ℕ) (hk : k ≥ 2) (hreg : ∀ v : V, G.degree v = k) :
     ∃ c : V, ∀ v : V, v ≠ c → G.Adj c v := by
   have hk2 := k_eq_two_no_axiom G hF u k hk hreg
-  exact regular_friendship_has_universal G hF u k hk hreg
+  have hn := regular_friendship_is_triangle G hF u k hk hreg
+  refine ⟨u, fun v hvu => ?_⟩
+  have hdc : (G.neighborFinset u).card = Fintype.card V - 1 := by
+    rw [← SimpleGraph.degree, hreg u, hk2, hn]
+  have hsub : G.neighborFinset u ⊆ Finset.univ.erase u := by
+    intro x hx
+    simp only [Finset.mem_erase, Finset.mem_univ, and_true]
+    intro heq
+    rw [SimpleGraph.mem_neighborFinset, heq] at hx
+    exact absurd hx (G.loopless u)
+  have heq : G.neighborFinset u = Finset.univ.erase u :=
+    Finset.eq_of_subset_of_card_le hsub (by
+      rw [Finset.card_erase_of_mem (Finset.mem_univ u), Finset.card_univ]; omega)
+  have hv_mem : v ∈ G.neighborFinset u := by
+    rw [heq, Finset.mem_erase]; exact ⟨hvu, Finset.mem_univ v⟩
+  rw [SimpleGraph.mem_neighborFinset] at hv_mem
+  exact hv_mem
 
 /-
 ## Part XVIII Summary: Axiom Elimination Progress
