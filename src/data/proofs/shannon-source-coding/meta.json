@@ -58,44 +58,44 @@
   },
   "sections": [
     {
-      "id": "introduction",
-      "title": "Introduction",
+      "id": "header-imports",
+      "title": "Header and Imports",
       "startLine": 1,
-      "endLine": 28,
-      "summary": "Historical context and the central question of lossless compression limits.",
-      "mathContext": "Shannon source coding theorem (1948): the entropy $H(X)$ is the minimum average number of bits per symbol for lossless compression of an i.i.d. source. This is the first fundamental theorem of information theory."
+      "endLine": 11,
+      "summary": "Module docstring describing the source coding theorem: entropy as the compression limit, achievability via typical set coding, converse via AEP.",
+      "mathContext": "Shannon (1948): $H(X)$ is the minimum achievable compression rate for an i.i.d. source."
     },
     {
       "id": "aep",
       "title": "Asymptotic Equipartition Property",
-      "startLine": 30,
-      "endLine": 82,
-      "summary": "The AEP: log-probability per symbol converges to entropy, concentrating probability on a small typical set.",
-      "mathContext": "AEP: for i.i.d. $X_1, \\ldots, X_n \\sim p$, $-\\frac{1}{n} \\log p(X^n) \\xrightarrow{P} H(X)$ by the weak law of large numbers applied to $-\\log p(X_i)$, which has mean $H(X)$."
+      "startLine": 13,
+      "endLine": 18,
+      "summary": "AEP: normalized log-probability converges to entropy in probability. Placeholder proving True.",
+      "mathContext": "$-\\frac{1}{n}\\log p(X_1^n) \\xrightarrow{P} H(X)$ by the weak law of large numbers."
     },
     {
-      "id": "typical-sets",
-      "title": "Typical Sets",
-      "startLine": 84,
-      "endLine": 132,
-      "summary": "Definition and properties of the typical set: high probability, bounded cardinality.",
-      "mathContext": "The $\\varepsilon$-typical set $T_\\varepsilon^{(n)} = \\{x^n : 2^{-n(H+\\varepsilon)} \\leq p(x^n) \\leq 2^{-n(H-\\varepsilon)}\\}$ satisfies: $\\Pr[T_\\varepsilon^{(n)}] \\geq 1 - \\varepsilon$ for large $n$, $|T_\\varepsilon^{(n)}| \\leq 2^{n(H+\\varepsilon)}$, and $|T_\\varepsilon^{(n)}| \\geq (1-\\varepsilon) 2^{n(H-\\varepsilon)}$."
+      "id": "typical-set",
+      "title": "Typical Set Size Bound",
+      "startLine": 20,
+      "endLine": 26,
+      "summary": "Typical set has at most $2^{n(H+\\varepsilon)}$ elements and probability approaching 1. Placeholder.",
+      "mathContext": "$|A_\\varepsilon^{(n)}| \\leq 2^{n(H+\\varepsilon)}$ and $\\Pr[A_\\varepsilon^{(n)}] \\to 1$."
     },
     {
       "id": "achievability",
-      "title": "Achievability: Compression to H(X) Bits",
-      "startLine": 134,
-      "endLine": 185,
-      "summary": "Construction of a near-optimal code by encoding only typical sequences.",
-      "mathContext": "Achievability: index the $|T_\\varepsilon^{(n)}| \\leq 2^{n(H+\\varepsilon)}$ typical sequences with $n(H+\\varepsilon)+1$ bits. Flag atypical sequences (probability $\\leq \\varepsilon$) with a special prefix. Overall rate: $H + \\varepsilon + O(1/n) \\to H$."
+      "title": "Source Coding Achievability",
+      "startLine": 28,
+      "endLine": 34,
+      "summary": "Rates above entropy are achievable: encode typical sequences with $n(H+\\varepsilon)$ bits. Placeholder.",
+      "mathContext": "For $R > H(X)$: $P_e^{(n)} \\to 0$ as $n \\to \\infty$ by typical set coding."
     },
     {
       "id": "converse",
-      "title": "Converse: H(X) Bits Are Necessary",
-      "startLine": 187,
-      "endLine": 235,
-      "summary": "No code with rate below H(X) can achieve vanishing error probability.",
-      "mathContext": "Converse: a code mapping $\\{1, \\ldots, 2^{nR}\\}$ to $\\mathcal{X}^n$ can recover at most $2^{nR}$ source sequences. If $R < H - \\varepsilon$, these sequences have total probability at most $2^{nR} \\cdot 2^{-n(H-\\varepsilon)} = 2^{-n\\varepsilon} \\to 0$, so error probability $\\to 1$."
+      "title": "Source Coding Converse",
+      "startLine": 36,
+      "endLine": 44,
+      "summary": "Rates below entropy are impossible: error probability bounded away from 0. Placeholder.",
+      "mathContext": "For $R < H(X)$: $P_e \\geq 1 - 2^{n(R-H+\\varepsilon)} \\to 1$."
     }
   ],
   "crossReferences": [
@@ -114,7 +114,9 @@
     "summary": "The Shannon source coding theorem establishes that entropy H(X) is the fundamental limit of lossless data compression. The proof via the Asymptotic Equipartition Property shows that long i.i.d. sequences concentrate their probability mass on a typical set of approximately 2^(nH) sequences, which can be encoded with H bits per symbol. The converse shows that any code using fewer than H bits per symbol must incur vanishing reliability.",
     "implications": "This formalization provides:\n\n**1. Operational Meaning of Entropy**\nH(X) is not just an abstract measure -- it is the minimum compression rate, giving entropy a concrete operational interpretation.\n\n**2. AEP as a Fundamental Tool**\nThe Asymptotic Equipartition Property is used throughout information theory, not just in source coding. It underlies channel coding proofs, rate-distortion theory, and network information theory.\n\n**3. Typical Set Methodology**\nThe typical set construction formalized here is the template for virtually all information-theoretic achievability proofs.\n\n**4. Foundation for Lossy Compression**\nThe lossless source coding theorem is the starting point for rate-distortion theory, which characterizes lossy compression limits.",
     "openQuestions": [
-      "Can rate-distortion theory be formalized as an extension?"
+      "Can rate-distortion theory (lossy compression with distortion constraint) be formalized as an extension of the lossless theorem?",
+      "Can Huffman coding be proved optimal among prefix-free codes in Lean, providing a constructive complement to the existential source coding theorem?",
+      "Can the AEP be formalized using Mathlib's probability measure framework, connecting to the weak law of large numbers?"
     ]
   }
 }
