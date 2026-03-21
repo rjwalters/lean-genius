@@ -51,7 +51,13 @@
       "erdos_249 definition: the irrationality conjecture",
       "partial_sum_2 theorem: first terms sum to 3/4"
     ],
-    "axiomCount": 0
+    "axiomCount": 0,
+    "prerequisites": [
+      "Euler's totient function and its basic properties (φ(n) ≤ n)",
+      "Infinite series and convergence (comparison test)",
+      "Irrationality: definition and equivalent characterizations",
+      "Real analysis: summability and tsum in Mathlib"
+    ]
   },
   "overview": {
     "historicalContext": "Erdos posed this problem in his work with Graham [ErGr80, p.61] and revisited it in [Er88c, p.102]. It belongs to a family of problems asking whether specific arithmetic sums are irrational.\n\nEuler's totient function φ(n) counts integers 1 to n coprime to n. The series ∑ φ(n)/2^n converges rapidly since φ(n) ≤ n and n/2^n → 0.\n\nThe decimal expansion is OEIS A256936, approximately 1.3240...",
