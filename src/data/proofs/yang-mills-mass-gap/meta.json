@@ -104,7 +104,10 @@
       "Center symmetry Z_N classifies confinement: unbroken ↔ confined, broken ↔ deconfined",
       "Creutz ratios χ(I,J) = -ln(W(I,J)·W(I-1,J-1)/(W(I,J-1)·W(I-1,J))) extract string tension from lattice data",
       "Gribov copies obstruct global gauge fixing (Singer's theorem), requiring non-perturbative methods",
-      "Only 1 axiom remains (gaugeTransform, definitional) after aggressive elimination: 15 former axioms were either proved, shown trivially satisfiable, or deleted as unused — demonstrating that much of the QFT infrastructure can be formalized in pure Lean"
+      "Only 1 axiom remains (gaugeTransform, definitional) after aggressive elimination: 15 former axioms were either proved, shown trivially satisfiable, or deleted as unused — demonstrating that much of the QFT infrastructure can be formalized in pure Lean",
+      "The Schwinger model (QED₂) provides an exactly solvable mass gap m = e/√π, arising purely from the axial anomaly — a 1+1D testing ground where all non-perturbative phenomena (confinement, mass gap, chiral symmetry breaking) are explicit",
+      "The Fradkin-Shenker theorem reveals that mass gap and confinement are logically independent properties — the Millennium Problem requires proving both simultaneously for pure Yang-Mills, which is stronger than either alone",
+      "Four equivalent characterizations of the mass gap — Hamiltonian spectral gap, Euclidean exponential decay, Källén-Lehmann spectral representation, and lattice correlation length — are all formalized and connected, spanning Parts VII, XXXV, and LVI"
     ]
   },
   "sections": [
@@ -193,6 +196,20 @@
       "endLine": 972
     },
     {
+      "id": "transfer-matrix",
+      "title": "Part XV: Transfer Matrix Formalism",
+      "summary": "Formalizes the transfer matrix T = e^{-aH} connecting lattice and Hamiltonian pictures. The lattice mass gap Δ_lat = -ln(λ₁/λ₀)/a from the ratio of the two largest eigenvalues. Proves partition function is dominated by the ground state at large temporal extent.",
+      "startLine": 912,
+      "endLine": 976
+    },
+    {
+      "id": "polyakov-loop",
+      "title": "Part XVI: Polyakov Loop and Finite Temperature",
+      "summary": "The Polyakov loop P(x) = Tr(∏U₀) wraps the thermal circle and serves as an order parameter: ⟨P⟩ = 0 in the confined phase, ⟨P⟩ ≠ 0 in the deconfined phase. Proves confinement and deconfinement are mutually exclusive.",
+      "startLine": 978,
+      "endLine": 1026
+    },
+    {
       "id": "su2-casimir",
       "title": "Parts XVIII-XIX: SU(2) Representation Theory and Center Symmetry",
       "summary": "SU(2) Casimir C₂(j) = j(j+1), string tension from Migdal, Casimir monotonicity, mass gap bounds. Z_N center symmetry classification of confinement phases.",
@@ -221,6 +238,48 @@
       "endLine": 2458
     },
     {
+      "id": "asymptotic-freedom",
+      "title": "Part XXXIV: Asymptotic Freedom and Beta Function",
+      "summary": "Formalizes the one-loop beta function β₀ = 11N/3 for pure SU(N) Yang-Mills (Gross-Wilczek-Politzer, 1973 Nobel 2004). Proves β₀ > 0 for all N ≥ 1, computes β₀ for SU(2) and SU(3), and formalizes the running coupling 1/g²(μ) = 1/g²(μ₀) + (β₀/8π²)·ln(μ/μ₀). The key theorem: at higher scales μ > μ₀ the coupling decreases (asymptotic freedom).",
+      "startLine": 2409,
+      "endLine": 2571
+    },
+    {
+      "id": "spectral-gap-kl",
+      "title": "Part XXXV: Spectral Gap and Correlation Length",
+      "summary": "Four equivalent characterizations of the mass gap: Hamiltonian (E₁ - E₀ > 0), Euclidean (exponential decay of correlations), spectral (Källén-Lehmann gap), and lattice (finite correlation length ξ = 1/Δ). Formalizes the Källén-Lehmann spectral representation with non-negative spectral density ρ(m²) and proves the gap property ρ(m²) = 0 for m < Δ.",
+      "startLine": 2573,
+      "endLine": 2700
+    },
+    {
+      "id": "faddeev-popov-section",
+      "title": "Part XXXVII: Faddeev-Popov Gauge Fixing and Ghost Fields",
+      "summary": "The Faddeev-Popov procedure for path integral quantization: introduces ghost fields c, c̄ to correctly account for the gauge orbit volume. Defines the FP determinant, ghost action, and BRST symmetry. Connects to Part XLIII (Gribov copies) which shows this procedure has fundamental limitations.",
+      "startLine": 2702,
+      "endLine": 2894
+    },
+    {
+      "id": "theta-vacuum",
+      "title": "Part XXXIX: Theta Vacuum and Topological Sectors",
+      "summary": "The topological structure of Yang-Mills: gauge fields classified by integer winding number n ∈ ℤ. Formalizes the Bogomolny bound S ≥ 8π²|n|/g² and proves it vanishes iff n = 0. Shows instantons are exponentially suppressed in weak coupling: e^{-S} ∝ e^{-8π²/g²}. Connects to the strong CP problem and QCD vacuum structure.",
+      "startLine": 3068,
+      "endLine": 3238
+    },
+    {
+      "id": "chiral-anomaly",
+      "title": "Part XLIV: Chiral Anomaly and Symmetry Breaking",
+      "summary": "The Adler-Bell-Jackiw anomaly (1969): quantum breaking of classical chiral symmetry. Formalizes the anomaly coefficient, the Adler-Bardeen theorem (exact at one loop), and the Atiyah-Singer index theorem connecting anomalies to instanton topology. Includes the Banks-Casher relation linking chiral condensate to Dirac spectral density.",
+      "startLine": 3968,
+      "endLine": 4100
+    },
+    {
+      "id": "dual-superconductor",
+      "title": "Part XLV: Dual Superconductor and Confinement Mechanisms",
+      "summary": "'t Hooft-Mandelstam dual superconductor mechanism: in ordinary superconductors electric charges condense and magnetic flux is confined, while in QCD magnetic monopoles condense and color-electric flux is confined. Formalizes the Meissner effect, dual superconductor model, and 't Hooft's abelian projection SU(N) → U(1)^{N-1}.",
+      "startLine": 4102,
+      "endLine": 6181
+    },
+    {
       "id": "modern-approaches",
       "title": "Parts L-LV: Modern Approaches",
       "summary": "Supersymmetric Yang-Mills (Seiberg-Witten), AdS/CFT correspondence, constructive QFT for rigorous 2D YM, functional renormalization group, Hamiltonian lattice (Kogut-Susskind), Donaldson theory and TQFT.",
@@ -233,6 +292,41 @@
       "summary": "Comprehensive status of the mass gap problem: what is proved, what is axiomatized, and what remains open. Maps out the full landscape of approaches.",
       "startLine": 6512,
       "endLine": 6623
+    },
+    {
+      "id": "schwinger-model",
+      "title": "Part LVIII: Schwinger Model — Exact Mass Gap in QED₂",
+      "summary": "The simplest gauge theory with a mass gap: QED in 1+1 dimensions. The mass gap m = e/√π is exactly computable from the axial anomaly. Formalizes the Schwinger mass, string tension σ = e²/(2π), and the relationship σ = m²/2. Serves as a testing ground for 4D Yang-Mills techniques.",
+      "startLine": 6557,
+      "endLine": 6720
+    },
+    {
+      "id": "gradient-flow-glueball",
+      "title": "Parts LIX-LXVII: Gradient Flow, Glueball Spectrum, and Cluster Decomposition",
+      "summary": "Lüscher's gradient flow smooths gauge fields for scale setting. Glueball spectrum: the lightest glueball IS the mass gap (Δ/√σ ≈ 3.98 from lattice). 't Hooft anomaly matching constrains IR from UV. Conformal window and Banks-Zaks fixed point. Witten index and SUSY vacuum structure. Cluster decomposition theorem: mass gap implies exponential decay of connected correlations.",
+      "startLine": 6721,
+      "endLine": 7982
+    },
+    {
+      "id": "deep-formal-structure",
+      "title": "Parts LXVIII-LXXXIII: Deep Formal Structure",
+      "summary": "Refined Osterwalder-Schrader axioms defining 'existence'. Large-N expansion in depth. Casimir scaling hypothesis and string breaking. Vafa-Witten theorem (parity is unbroken). Lüscher term for effective string theory. Lattice strong coupling expansion (rigorous area law). Creutz ratio formalism. Topological susceptibility and the η' mass. Center vortex model. Kugo-Ojima confinement criterion via BRST cohomology. Chromoelectric flux tubes and the QCD string.",
+      "startLine": 7983,
+      "endLine": 11475
+    },
+    {
+      "id": "fradkin-shenker",
+      "title": "Part LXXXIV: Confinement-Higgs Complementarity",
+      "summary": "The Fradkin-Shenker theorem (1979): in gauge-Higgs models with fundamental Higgs, confinement and Higgs phases are analytically connected with no phase transition. Distinguishes the mass gap (spectral property) from confinement (dynamical property) — these are logically independent, and the Millennium Problem asks for both.",
+      "startLine": 11476,
+      "endLine": 11662
+    },
+    {
+      "id": "advanced-topics",
+      "title": "Parts LXXXV-CLXII: Advanced Topics and Millennium Prize Landscape",
+      "summary": "Proof landscape analysis, Balaban's renormalization group for UV stability, Haag-Kastler algebraic QFT, Nekrasov partition function, magnetic bions on R³×S¹, quantum simulation of lattice gauge theories, color superconductivity, Dyson-Schwinger equations, functional RG (Wetterich equation), stochastic quantization, dimensional regularization, lattice strong coupling area law, instanton calculus, and confinement order parameters. Culminates in the precise Clay Millennium Prize requirements.",
+      "startLine": 11663,
+      "endLine": 30575
     }
   ],
   "conclusion": {

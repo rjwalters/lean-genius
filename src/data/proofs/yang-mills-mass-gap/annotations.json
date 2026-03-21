@@ -194,6 +194,84 @@
       "relatedConcepts": ["constructive QFT", "Glimm-Jaffe", "lattice continuum limit", "functional measure"],
       "prerequisites": ["MeasureTheory", "latticeYangMillsAction"],
       "tags": ["constructive-qft", "rigorous", "continuum-limit"]
+    },
+    {
+      "id": "asymptotic-freedom-beta",
+      "proofId": "yang-mills-mass-gap",
+      "type": "insight",
+      "range": { "startLine": 2409, "endLine": 2571 },
+      "title": "Asymptotic Freedom: The Coupling Runs to Zero",
+      "content": "Formalizes the discovery by Gross, Wilczek, and Politzer (1973, Nobel Prize 2004) that non-abelian gauge theories are asymptotically free: the coupling constant decreases at high energies. The one-loop beta function coefficient $\\beta_0 = 11N/3$ is positive for all $N \\ge 1$, so the coupling $g(\\mu)$ decreases as $\\mu$ increases. This is the opposite of QED, where the coupling grows (Landau pole). The running coupling $1/g^2(\\mu) = 1/g^2(\\mu_0) + (\\beta_0/8\\pi^2) \\ln(\\mu/\\mu_0)$ is formally proved to increase with scale. This is the mathematical foundation for the claim that Yang-Mills theory is well-defined at all energies (UV complete).",
+      "mathContext": "$\\beta(g) = -\\frac{\\beta_0}{16\\pi^2} g^3 + O(g^5)$, $\\beta_0 = \\frac{11N}{3} > 0$; $g(\\mu) \\to 0$ as $\\mu \\to \\infty$ (asymptotic freedom), $g(\\mu) \\to \\infty$ as $\\mu \\to \\Lambda_{\\text{QCD}}$ (confinement)",
+      "significance": "key",
+      "relatedConcepts": ["beta function", "running coupling", "dimensional transmutation", "Λ_QCD", "UV completeness"],
+      "prerequisites": ["RunningCoupling", "betaZero", "Real.log"],
+      "tags": ["asymptotic-freedom", "beta-function", "renormalization-group"]
+    },
+    {
+      "id": "spectral-gap-kallen-lehmann",
+      "proofId": "yang-mills-mass-gap",
+      "type": "technique",
+      "range": { "startLine": 2573, "endLine": 2700 },
+      "title": "Spectral Gap and Källén-Lehmann Representation",
+      "content": "The mass gap has four equivalent characterizations, all formalized here: (1) Hamiltonian gap $E_1 - E_0 > 0$, (2) exponential decay of Euclidean correlations $S_2(x) \\sim e^{-\\Delta|x|}$, (3) gap in the Källén-Lehmann spectral density $\\rho(m^2) = 0$ for $m^2 < \\Delta^2$, (4) finite correlation length $\\xi = 1/\\Delta$. The Källén-Lehmann representation $S_2(p^2) = \\int \\rho(m^2)/(p^2 + m^2)\\,dm^2$ with non-negative spectral density (unitarity) is formalized as a Lean structure. Key proved results include: correlation length is positive, larger gap implies shorter correlation length, and spectral density vanishes below the gap.",
+      "mathContext": "$S_2(p^2) = \\int_0^\\infty \\frac{\\rho(m^2)}{p^2 + m^2}\\,dm^2$, $\\rho(m^2) \\ge 0$, $\\rho(m^2) = 0$ for $m^2 < \\Delta^2$; $\\xi = 1/\\Delta$",
+      "significance": "key",
+      "relatedConcepts": ["Källén-Lehmann representation", "spectral density", "correlation length", "unitarity", "dispersion relation"],
+      "prerequisites": ["Real.sqrt", "KallenLehmann structure"],
+      "tags": ["spectral-theory", "correlation-length", "mass-gap"]
+    },
+    {
+      "id": "theta-vacuum-topology",
+      "proofId": "yang-mills-mass-gap",
+      "type": "insight",
+      "range": { "startLine": 3068, "endLine": 3238 },
+      "title": "Theta Vacuum: Topology Meets Quantum Mechanics",
+      "content": "Yang-Mills theory has a topologically non-trivial vacuum structure: gauge field configurations fall into sectors labeled by integer winding number $n \\in \\mathbb{Z}$. The physical vacuum is the theta vacuum $|\\theta\\rangle = \\sum_n e^{in\\theta}|n\\rangle$, and the topological term $S_\\theta = (\\theta/32\\pi^2)\\int \\text{Tr}(F \\wedge F)$ does not affect classical equations but matters quantum mechanically. Formalizes the Bogomolny bound $S \\ge 8\\pi^2|n|/g^2$ and proves it vanishes iff $n = 0$. Instantons ($n = \\pm 1$) are exponentially suppressed at weak coupling: $e^{-S} \\propto e^{-8\\pi^2/g^2}$. The strong CP problem — why $\\theta \\approx 0$ experimentally — remains one of the deepest puzzles in particle physics.",
+      "mathContext": "$|\\theta\\rangle = \\sum_{n \\in \\mathbb{Z}} e^{in\\theta}|n\\rangle$, $S \\ge \\frac{8\\pi^2|n|}{g^2}$, equality for (anti-)instantons",
+      "significance": "supporting",
+      "relatedConcepts": ["winding number", "instanton", "topological charge", "strong CP problem", "vacuum structure"],
+      "prerequisites": ["WindingNumber", "Real.pi", "instantonActionBound"],
+      "tags": ["theta-vacuum", "topology", "instantons", "cp-violation"]
+    },
+    {
+      "id": "dual-superconductor-model",
+      "proofId": "yang-mills-mass-gap",
+      "type": "context",
+      "range": { "startLine": 4102, "endLine": 4200 },
+      "title": "Dual Superconductor: Why Quarks Are Confined",
+      "content": "The 't Hooft-Mandelstam dual superconductor mechanism (1976-1981) provides the most intuitive physical picture of quark confinement. In an ordinary superconductor, Cooper pairs condense and magnetic flux is squeezed into thin Abrikosov vortices (Meissner effect). In the QCD vacuum, magnetic monopoles condense and color-electric flux is squeezed into thin tubes between quarks — the QCD string. The string tension $\\sigma_{\\text{QCD}} \\approx (440\\,\\text{MeV})^2$ gives a linear confining potential $V(r) = \\sigma r$. Formalizes the Meissner effect, dual superconductor model, and 't Hooft's abelian projection $\\mathrm{SU}(N) \\to \\mathrm{U}(1)^{N-1}$ which identifies monopoles as topological defects.",
+      "mathContext": "Superconductor: electric condensate $\\to$ magnetic confinement; Dual (QCD): magnetic condensate $\\to$ electric confinement; $V(r) = \\sigma r$, $\\sigma \\approx (440\\,\\text{MeV})^2$",
+      "significance": "supporting",
+      "relatedConcepts": ["Meissner effect", "Abrikosov vortex", "magnetic monopole", "abelian projection", "string tension"],
+      "prerequisites": ["MeissnerEffect", "DualSuperconductorModel", "AbelianProjection"],
+      "tags": ["dual-superconductor", "confinement", "monopole-condensation"]
+    },
+    {
+      "id": "schwinger-model-mass-gap",
+      "proofId": "yang-mills-mass-gap",
+      "type": "technique",
+      "range": { "startLine": 6557, "endLine": 6720 },
+      "title": "Schwinger Model: The Exactly Solvable Mass Gap",
+      "content": "The Schwinger model (QED in 1+1 dimensions, Schwinger 1962) is the simplest gauge theory exhibiting confinement, a dynamically generated mass gap, and chiral symmetry breaking — all with an exact solution. The mass gap $m = e/\\sqrt{\\pi}$ arises entirely from the axial anomaly (no classical mass exists). The string tension $\\sigma = e^2/(2\\pi)$ with $\\sigma = m^2/2$ gives a linear confining potential. In 1+1D, the Coulomb potential is already linear ($V(r) = e^2 r/2$), so confinement is automatic. The model serves as a testing ground for non-perturbative methods before applying them to 4D Yang-Mills.",
+      "mathContext": "$m = \\frac{e}{\\sqrt{\\pi}}$, $m^2 = \\frac{e^2}{\\pi}$, $\\sigma = \\frac{e^2}{2\\pi} = \\frac{m^2}{2}$",
+      "significance": "supporting",
+      "relatedConcepts": ["Schwinger model", "QED₂", "axial anomaly", "exact solution", "dynamical mass generation"],
+      "prerequisites": ["SchwingerParams", "Real.sqrt", "Real.pi"],
+      "tags": ["schwinger-model", "exact-mass-gap", "1+1d"]
+    },
+    {
+      "id": "fradkin-shenker-complementarity",
+      "proofId": "yang-mills-mass-gap",
+      "type": "insight",
+      "range": { "startLine": 11476, "endLine": 11662 },
+      "title": "Fradkin-Shenker: Mass Gap ≠ Confinement",
+      "content": "The Fradkin-Shenker theorem (1979) reveals that confinement and the Higgs mechanism are analytically connected in gauge-Higgs models — there is no phase boundary between them. This has a profound implication for the Millennium Prize Problem: the mass gap (a spectral property — lowest excitation energy > 0) and confinement (a dynamical property — quarks cannot be isolated) are logically independent. The Standard Model Higgs phase has a mass gap WITHOUT confinement. Critical points can have confinement WITHOUT a mass gap. Pure Yang-Mills must have BOTH, and the Millennium Problem asks to prove both properties simultaneously.",
+      "mathContext": "Mass gap: $\\text{spec}(H) = \\{0\\} \\cup [\\Delta, \\infty)$, $\\Delta > 0$ (spectral); Confinement: $\\langle W(C) \\rangle \\sim e^{-\\sigma \\cdot \\text{Area}(C)}$ (dynamical); logically independent properties",
+      "significance": "supporting",
+      "relatedConcepts": ["Fradkin-Shenker theorem", "Higgs mechanism", "phase diagram", "lattice gauge-Higgs model", "analytic continuation"],
+      "prerequisites": ["GaugeHiggsCouplings", "PhaseRegion"],
+      "tags": ["fradkin-shenker", "complementarity", "phase-diagram"]
     }
   ]
 }
