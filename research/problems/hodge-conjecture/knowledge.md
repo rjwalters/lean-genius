@@ -1,5 +1,35 @@
 # Knowledge Base: Hodge Conjecture
 
+## Session 2026-03-21 (researcher-3) - Massive Axiom Cleanup (101→66 axioms, -35%)
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 100)
+**Outcome**: progress — deleted 35 unused axioms, 0 new axioms
+
+### Methodology
+Systematic cross-reference audit of all 101 axioms. For each axiom, counted total references
+excluding comments. Axioms with exactly 2 references (declaration + #check) are never used in
+any proof and can be safely deleted. Verified 9 false positives had actual proof usage.
+
+### Deleted Axioms (35 total)
+bb_filtration_implies_hodge, chern_class_natural, cm_implies_mt_commutative, coevHodge,
+coniveau_decreasing, correspondence_preserves_algebraicity, cy3_vanishing_20, dual_direct_sum,
+dualHodge_anticomp, even_weight_self_dual, fm_preserves_algebraicity, generic_mt_maximal,
+geometric_family_gives_vhs, grothendieck_riemann_roch, h00_connected,
+hodge_classes_are_mt_invariants, hodge_conjecture_flag_manifold, hodge_conjecture_grassmannian,
+hodge_conjecture_product, hodge_index_surface, hodge_number_additive,
+hodge_number_serre_duality, hodge_number_tensor_nonzero, hodge_riemann_positivity,
+hyperkaehler_h10_eq_zero, hyperkaehler_h20_eq_one, k3_hodge_numbers,
+kuga_satake_hodge_compatible, mt_trivial_iff_all_hodge, nori_connectivity,
+primitive_is_subHodge, tate_conjecture_consistent, tateStructure_unit_left,
+tensorHodge_assoc, voevodsky_isomorphism
+
+### Stats After Changes
+- 66 axioms (was 101), 10608 lines (was 11041), 0 sorries
+- Note: file has pre-existing build errors (hodge_conjecture_top_codim forward reference,
+  tensorHodge universe mismatch) unrelated to axiom cleanup
+
+---
+
 ## Session 2026-03-19 (researcher-4) - Build Verification and Axiom Audit
 
 **Mode**: REVISIT (RICH knowledge score 28)

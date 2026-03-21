@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 2 axioms (105→103). Proved kuznetsov_k3_category_exists (FanoOfLines construction) and totaro_nontorsion_ihc_failure (trivial Prop witness). Fixed docstring bug.",
+    "progressSummary": "PROGRESS: Deleted 35 unused axioms (101→66, -35%). All deleted axioms were only referenced in declarations and #check lines, never used in proofs.",
     "builtItems": [
       "Part LXIII: Hodge Number Arithmetic and Topological Invariants (HodgeConjecture.lean:7252)",
       "Replaced 4 True fields: DuBois abutment with Finset.sum equality, hp0_constant with fiber equality, Bondal-Orlov with dim equality, Steenrod with algebraic_dim = 0",
