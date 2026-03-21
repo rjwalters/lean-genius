@@ -46,7 +46,12 @@
       "newton_generalized_binomial axiom: main HasSum theorem (requires analytic function theory)"
     ],
     "dateAdded": "02/25/26",
-    "axiomCount": 0
+    "axiomCount": 0,
+    "prerequisites": [
+      "Binomial coefficients and factorial",
+      "Power series convergence (|x| < 1)",
+      "Real analysis (HasSum, HasFPowerSeriesOnBall)"
+    ]
   },
   "overview": {
     "historicalContext": "Newton discovered the generalized binomial theorem around 1665 (published 1676 in letters to Leibniz). For natural exponents n, the binomial theorem gives a finite sum (1+x)^n = Σ C(n,k) x^k. Newton's insight was that the same formula works for ANY real α (including fractions and negatives) as an infinite series, converging for |x| < 1.",
