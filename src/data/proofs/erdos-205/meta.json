@@ -51,7 +51,15 @@
       "12 concrete Ω computations via native_decide",
       "Main disproof theorem erdos_205_disproved from axiomatized counterexample"
     ],
-    "axiomCount": 6
+    "axiomCount": 6,
+    "prerequisites": [
+      "Prime factorization and the fundamental theorem of arithmetic",
+      "The big-omega function Ω(n) (prime factor count with multiplicity)",
+      "Basic real analysis: logarithms, monotonicity, asymptotic growth",
+      "Covering systems and modular arithmetic",
+      "Romanoff's theorem on 2^k + prime representations",
+      "Hardy-Ramanujan and Erdős-Kac theorems on average/typical Ω(n)"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős asked whether all large n can be represented as 2^k + m with few prime factors. This extends classical questions about 2^k + prime representations. Romanoff (1934) proved a positive density of integers have 2^k + prime form. Erdős (1950) showed a positive density of odd integers do NOT, using covering systems. Problem 205 asked whether relaxing from primes to numbers with Ω(m) < log log m suffices. The answer, found in 2026 via AI-assisted proof, is no.",

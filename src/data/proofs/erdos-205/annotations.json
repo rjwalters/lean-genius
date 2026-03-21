@@ -15,7 +15,8 @@
       "prime-factors",
       "big-omega",
       "disproved"
-    ]
+    ],
+    "tags": ["number-theory", "prime-factorization", "counterexample", "erdos-conjecture"]
   },
   {
     "id": "ann-e205-bigomega",
@@ -33,7 +34,8 @@
       "prime-factorization",
       "multiplicative-function",
       "mathlib"
-    ]
+    ],
+    "tags": ["arithmetic-function", "prime-factors", "mathlib-api", "lean4"]
   },
   {
     "id": "ann-e205-omega-theorems",
@@ -51,7 +53,8 @@
       "simp",
       "primeFactorsList",
       "additive-function"
-    ]
+    ],
+    "tags": ["completely-additive", "verified-proof", "lean4-tactic", "number-theory"]
   },
   {
     "id": "ann-e205-conjecture",
@@ -69,7 +72,8 @@
       "representation",
       "power-of-two",
       "log-log"
-    ]
+    ],
+    "tags": ["erdos-conjecture", "additive-representation", "prime-factors", "number-theory"]
   },
   {
     "id": "ann-e205-minomega",
@@ -87,7 +91,8 @@
       "minimum",
       "threshold",
       "Finset.inf"
-    ]
+    ],
+    "tags": ["optimization", "threshold-function", "asymptotic-analysis", "finset"]
   },
   {
     "id": "ann-e205-counterexample",
@@ -105,7 +110,8 @@
       "counterexample",
       "infinitely-many",
       "lower-bound"
-    ]
+    ],
+    "tags": ["counterexample", "disproof", "sieve-theory", "number-theory"]
   },
   {
     "id": "ann-e205-auxiliaries",
@@ -123,7 +129,8 @@
       "monotonicity",
       "dominance",
       "asymptotic"
-    ]
+    ],
+    "tags": ["auxiliary-lemma", "monotonicity", "asymptotic-analysis", "real-analysis"]
   },
   {
     "id": "ann-e205-disproof",
@@ -141,7 +148,8 @@
       "proof-by-contradiction",
       "linarith",
       "verified-disproof"
-    ]
+    ],
+    "tags": ["verified-proof", "proof-by-contradiction", "disproof", "lean4-tactic"]
   },
   {
     "id": "ann-e205-romanoff",
@@ -159,7 +167,8 @@
       "positive-density",
       "prime-representation",
       "romanoff"
-    ]
+    ],
+    "tags": ["additive-number-theory", "density", "prime-representation", "classical-result"]
   },
   {
     "id": "ann-e205-covering",
@@ -177,7 +186,8 @@
       "covering-system",
       "odd-integers",
       "obstruction"
-    ]
+    ],
+    "tags": ["covering-system", "modular-arithmetic", "obstruction", "erdos-technique"]
   },
   {
     "id": "ann-e205-average",
@@ -195,7 +205,8 @@
       "erdos-kac",
       "normal-distribution",
       "concentration"
-    ]
+    ],
+    "tags": ["probabilistic-number-theory", "erdos-kac", "average-order", "concentration-inequality"]
   },
   {
     "id": "ann-e205-summary",
@@ -213,6 +224,7 @@
       "problem-status",
       "disproved",
       "ai-assisted"
-    ]
+    ],
+    "tags": ["summary", "disproved", "covering-system", "ai-assisted-proof"]
   }
 ]
