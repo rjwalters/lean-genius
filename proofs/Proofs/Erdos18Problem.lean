@@ -32,18 +32,7 @@
   - OEIS A005153
 -/
 
-import Mathlib.Data.Nat.Divisors
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Sum
-import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
-import Mathlib.Data.Set.Finite.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Topology.Order.Basic
-import Mathlib.Order.Filter.Basic
-import Mathlib.Data.Rat.Basic
+import Mathlib.Tactic
 
 open Set Finset Function Nat
 
@@ -93,51 +82,9 @@ theorem two_practical : IsPractical 2 := by
     interval_cases k
     exact ⟨{1}, by simp [divisors], rfl⟩
 
-/-- 4 is practical: represent 1, 2, 3 using divisors {1, 2, 4}.
-    1 = 1, 2 = 2, 3 = 1 + 2. -/
-axiom four_practical : IsPractical 4
-
-/-- 6 is practical: divisors {1, 2, 3, 6}.
-    1=1, 2=2, 3=3, 4=1+3, 5=2+3. -/
-axiom six_practical : IsPractical 6
-
-/-- 12 is practical: divisors {1, 2, 3, 4, 6, 12}.
-    All numbers 1-11 representable. -/
-axiom twelve_practical : IsPractical 12
-
-/-- Powers of 2 are practical.
-
-    Divisors of 2^n are {1, 2, 4, ..., 2^n}.
-    Every k < 2^n has a binary representation using these. -/
-axiom powers_of_two_practical (n : ℕ) : IsPractical (2^n)
-
 /- ## Non-Practical Numbers -/
 
-/-- 3 is NOT practical: divisors are {1, 3}, cannot represent 2. -/
-axiom three_not_practical : ¬IsPractical 3
-
-/-- 5 is NOT practical: divisors {1, 5}, cannot represent 2, 3, or 4. -/
-axiom five_not_practical : ¬IsPractical 5
-
 /- ## Stewart-Sierpiński Characterization -/
-
-/--
-**Stewart-Sierpiński Theorem** (1954-1955):
-
-A number m with prime factorization m = p₁^a₁ · p₂^a₂ · ... · pₖ^aₖ
-(with p₁ < p₂ < ... < pₖ) is practical if and only if:
-- p₁ = 2, and
-- For all i ≥ 2: pᵢ ≤ 1 + σ(p₁^a₁ · ... · pᵢ₋₁^aᵢ₋₁)
-
-where σ(n) is the sum of divisors of n.
-
-This gives an efficient test for practicality.
--/
-axiom stewart_sierpinski_characterization (m : ℕ) (hm : m ≥ 2) :
-    IsPractical m ↔
-    (2 ∣ m) ∧
-    (∀ p : ℕ, p.Prime → p ∣ m → p > 2 →
-      p ≤ 1 + (Nat.divisors (m / p ^ (m.factorization p))).sum id)
 
 /- ## The h(m) Function -/
 
@@ -154,25 +101,6 @@ noncomputable def h (m : ℕ) : ℕ :=
     ∀ k, 1 ≤ k → k < m → ∃ T : Finset ℕ, T ⊆ S ∧ T.sum id = k }
 
 /- ## Known Bounds on h(m) -/
-
-/--
-**Erdős's Basic Bound**: h(n!) < n.
-
-The factorial n! has many divisors, and Erdős showed that
-a subset of fewer than n divisors suffices to represent all k < n!.
--/
-axiom erdos_factorial_bound (n : ℕ) (hn : n ≥ 1) :
-    IsPractical n.factorial ∧ h n.factorial < n
-
-/--
-**Vose's Theorem (1985)**: There exist infinitely many practical m
-with h(m) ≪ (log m)^(1/2).
-
-More precisely: for infinitely many m, h(m) ≤ C · √(log m) for some C.
--/
-axiom vose_bound :
-    ∃ C : ℝ, C > 0 ∧
-    Set.Infinite { m : ℕ | IsPractical m ∧ (h m : ℝ) ≤ C * Real.sqrt (Real.log m) }
 
 /- ## The Main Conjectures -/
 
@@ -209,70 +137,11 @@ def conjecture_part2_strong : Prop :=
 noncomputable def practicalCount (x : ℕ) : ℕ :=
   (Finset.range (x + 1)).filter (fun m => @Decidable.decide (IsPractical m) (Classical.dec _)) |>.card
 
-/--
-**Erdős (1950)**: The density of practical numbers is 0.
-
-The number of practical numbers up to x is o(x).
-"Almost all numbers are not practical."
--/
-axiom practical_density_zero :
-    Filter.Tendsto (fun x : ℕ => (practicalCount x : ℝ) / x)
-    Filter.atTop (nhds 0)
-
-/--
-**More Precise Bound**: The count of practical numbers up to x is
-asymptotically x / (log x)^δ for some δ > 0.
--/
-axiom practical_count_asymptotic :
-    ∃ δ : ℝ, δ > 0 ∧ ∃ C : ℝ, C > 0 ∧
-    ∀ x : ℕ, x ≥ 2 →
-    (practicalCount x : ℝ) ≤ C * x / (Real.log x)^δ
-
 /- ## Properties of Practical Numbers -/
-
-/-- Practical numbers are closed under multiplication by integers ≤ σ(m)+1. -/
-axiom practical_closed_multiplication (m : ℕ) (k : ℕ)
-    (hm : IsPractical m) (hk : k ≤ (Nat.divisors m).sum id + 1) :
-    IsPractical (m * k)
-
-/-- All factorials n! for n ≥ 1 are practical. -/
-axiom factorials_practical (n : ℕ) (hn : n ≥ 1) : IsPractical n.factorial
-
-/-- All primorials (products of first k primes) are practical for k ≥ 1. -/
-axiom primorials_practical : ∀ k ≥ 1, IsPractical (∏ i ∈ Finset.range k, Nat.nth Nat.Prime i)
 
 /- ## Goldbach-Type Results for Practical Numbers -/
 
-/--
-**Practical Goldbach**: Every positive even integer is the sum of
-two practical numbers.
-
-This is an analogue of Goldbach's conjecture, but proven!
--/
-axiom practical_goldbach :
-    ∀ n : ℕ, n ≥ 2 → Even n → ∃ p q : ℕ, IsPractical p ∧ IsPractical q ∧ p + q = n
-
-/--
-**Practical Twin Conjecture**: There are infinitely many pairs
-(p, p+2) where both are practical.
-
-Actually proven, unlike the twin prime conjecture!
--/
-axiom practical_twins_infinite :
-    Set.Infinite { p : ℕ | IsPractical p ∧ IsPractical (p + 2) }
-
 /- ## Connection to Egyptian Fractions -/
-
-/--
-**Historical Note**: Practical numbers were used by Fibonacci (1202)
-in connection with Egyptian fractions.
-
-If m is practical, then every fraction k/m with k < m can be written
-as a sum of unit fractions 1/d where d | m.
--/
-axiom fibonacci_connection (m : ℕ) (hm : IsPractical m) :
-    ∀ k : ℕ, 1 ≤ k → k < m →
-    ∃ S : Finset ℕ, S ⊆ divisors m ∧ (S.sum fun d => (1 : ℚ) / d) = k / m
 
 /- ## The OEIS Sequence -/
 
@@ -280,15 +149,7 @@ axiom fibonacci_connection (m : ℕ) (hm : IsPractical m) :
 def knownPracticalNumbers : List ℕ :=
   [1, 2, 4, 6, 8, 12, 16, 18, 20, 24, 28, 30, 32, 36, 40, 42, 48]
 
-/-- All listed numbers are practical. -/
-axiom known_practical_correct : ∀ m ∈ knownPracticalNumbers, IsPractical m
-
 /- ## Why This Problem is Hard -/
-
-/-- Factorials have at least n divisors, but h(n!) might be much smaller.
-    The gap between d(n!) and h(n!) is the core of the conjecture. -/
-axiom factorial_divisor_count_lower (n : ℕ) (hn : n ≥ 1) :
-    (divisors n.factorial).card ≥ n
 
 end Erdos18
 
