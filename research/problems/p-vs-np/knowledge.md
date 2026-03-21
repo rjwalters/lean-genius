@@ -979,3 +979,39 @@ The 3 eliminated axioms were identified in the file header as candidates but had
 not been converted. The `mcsp_np_hardness_barrier` case is interesting: it was
 stated as `OWF_exist → ...` but `razborov_rudich` in this model is unconditional
 (doesn't require OWFs), making the OWF hypothesis vestigial.
+
+---
+
+## Session 2026-03-21 (researcher-5) - Axiom Cleanup: PNPBarriersSound.lean (149→124, -17%)
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 345)
+**Outcome**: progress — deleted 25 unused axioms from PNPBarriersSound.lean
+
+### Methodology
+For each axiom, used word-boundary grep (`\b...\b`) to count true references,
+excluding the header comment section (first 130 lines) and `#check` diagnostic lines.
+Axioms that appeared only in their declaration, header comments, or `#check` lines
+were confirmed unused in any proof and safely deleted.
+
+Also verified cross-file references: only `Sigma_monotone` and `yao_xor_lemma` appeared
+in PNPBarriers.lean, but since the files don't import each other, these are independent
+declarations.
+
+### Deleted Axioms (25 total)
+
+**Round 1 (9 axioms, 1 reference only — declaration):**
+circuit_count_bound, CLIQUE_in_NP, ETH_clique_lower_bound, FP_subset_TFNP,
+improved_sunflower_bound, monotone_subset_general, poly_calc_degree_php,
+RE_undecidable, SharpP_subset_GapP
+
+**Round 2 (16 axioms, refs only in comments/#check):**
+Sigma_monotone, NP_subset_PP, mignon_ressayre, OV_SETH_hard, resolution_lower_bounds,
+comm_trivial_upper, D_ge_R, log_rank_lower, Kt_in_NP, E_subset_EXP, yao_xor_lemma,
+sharp_SAT_complete, GapP_closed_subtraction, shannon_counting, width4_subset_width5,
+SZK_closed_complement
+
+### Stats
+- PNPBarriersSound.lean: 149→124 axioms, 6791→6620 lines, 0 sorries
+- Docker build passes
+- All 124 remaining axioms have genuine proof usage
+

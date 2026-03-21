@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Deleted 14 unused axioms from PvsNP.lean (21→7). All 7 remaining axioms are actively used in proved theorems.",
+    "progressSummary": "PROGRESS: Deleted 25 unused axioms from PNPBarriersSound.lean (149→124). All 124 remaining axioms are used in proofs.",
     "builtItems": [
       {
         "name": "P",
@@ -616,7 +616,12 @@
       "PROVED SL_subset_NL from reingold_SL_eq_L + L_subset_NL (was axiom)",
       "PROVED RL_subset_NL from reingold_RL_eq_L + L_subset_NL (was axiom)",
       "PROVED USTCON_in_NL from reingold_USTCON_in_L + L_subset_NL (was axiom)",
-      "PROVED raghavendra_CSP_dichotomy trivially (∃ Prop, Prop ← ⟨True, trivial⟩) (was axiom)"
+      "PROVED raghavendra_CSP_dichotomy trivially (∃ Prop, Prop ← ⟨True, trivial⟩) (was axiom)",
+      {
+        "name": "axiom_cleanup_round2",
+        "description": "Deleted 25 unused axioms from PNPBarriersSound.lean (149→124), including Sigma_monotone, NP_subset_PP, mignon_ressayre, comm_trivial_upper, D_ge_R, log_rank_lower, E_subset_EXP, yao_xor_lemma, and 17 others",
+        "proven": true
+      }
     ],
     "insights": [
       "Same abstract model triviality as PNPBarriers - Program.decide allows arbitrary functions",
@@ -747,7 +752,8 @@
       "Gallery meta.json was severely stale (pointed to PvsNP.lean with 21 axioms instead of PNPBarriersSound.lean with 161)",
       "5 Reingold containment axioms (L⊆SL, L⊆RL, SL⊆NL, RL⊆NL, USTCON∈NL) are redundant given SL=L and RL=L — proved as theorems",
       "raghavendra_CSP_dichotomy (UGC → ∃ (p : Prop), p) is trivially provable — real content is in ugc_maxcut_optimal and ugc_vertex_cover_optimal",
-      "14 out of 21 axioms in PvsNP.lean (67%) had exactly 1 reference (their own declaration) — never used in any proof"
+      "14 out of 21 axioms in PvsNP.lean (67%) had exactly 1 reference (their own declaration) — never used in any proof",
+      "PNPBarriersSound.lean had 25 axioms with no proof usage (only referenced in comments, #check lines, or declarations). Deletion methodology: word-boundary grep to count true references, excluding header comments and #check diagnostics."
     ],
     "mathlibGaps": [
       "Turing machines",
