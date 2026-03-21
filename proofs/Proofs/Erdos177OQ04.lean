@@ -105,11 +105,11 @@ theorem alternating_d2_all_same (a k : ℕ) :
     simp only [apPartialSum, Finset.sum_range_succ] at *
     rw [ih]
     unfold alternating
+    have h : (-1 : ℤ) ^ (a + n * 2) = (-1 : ℤ) ^ a := by
+      rw [pow_add, mul_comm n 2, pow_mul, neg_one_sq, one_pow, mul_one]
     push_cast
-    ring_nf
-    congr 1
-    ring_nf
-    rfl
+    rw [h]
+    ring
 
 -- ============================================================================
 -- Part III: Constant and Random Colorings
@@ -138,7 +138,6 @@ def modColoring (m : ℕ) : Coloring := fun n =>
 theorem mod2_is_alternating_like (n : ℕ) :
     modColoring 2 n = if n % 2 = 0 then 1 else -1 := by
   simp [modColoring]
-  omega
 
 -- ============================================================================
 -- Part V: Discrepancy Bounds
@@ -231,8 +230,34 @@ theorem h1_is_1 :
       ∀ a k : ℕ, k ≥ 1 → (apPartialSum f a 1 k).natAbs ≤ 1 := by
   exact ⟨alternating, alternating_valid, fun a k _ => alternating_d1_bound a k⟩
 
-/-- Simple verification: alternating sum for 3 consecutive terms starting at 0. -/
-example : apPartialSum alternating 0 1 3 = -1 := by
+/-- **Exact computation: optimalDisc 1 = 1**
+
+The alternating coloring achieves discrepancy 1 for d=1 (upper bound),
+and no valid coloring can achieve discrepancy 0 since |f(a)| = 1 (lower bound).
+This is an axiom-free exact result via sInf characterization. -/
+theorem optimalDisc_one : optimalDisc 1 = 1 := by
+  unfold optimalDisc
+  apply le_antisymm
+  · -- sInf S ≤ 1: alternating witnesses 1 ∈ S
+    apply csInf_le ⟨0, fun x _ => Nat.zero_le x⟩
+    exact ⟨alternating, alternating_valid, fun a k _ => alternating_d1_bound a k⟩
+  · -- 1 ≤ sInf S: every k ∈ S satisfies k ≥ 1
+    apply le_csInf
+    · exact ⟨1, alternating, alternating_valid, fun a k _ => alternating_d1_bound a k⟩
+    · intro k ⟨f, hf, hbound⟩
+      have h1 := disc_length_1 f hf 0 1
+      have h2 := hbound 0 1 (by omega)
+      omega
+
+/-- The alternating coloring is optimal for d=1. -/
+theorem alternating_isOptimal_d1 : IsOptimal alternating 1 := by
+  refine ⟨alternating_valid, fun a n hn => ?_⟩
+  rw [optimalDisc_one]
+  exact alternating_d1_bound a n
+
+/-- Simple verification: alternating sum for 3 consecutive terms starting at 0.
+    1 + (-1) + 1 = 1. -/
+example : apPartialSum alternating 0 1 3 = 1 := by
   simp [apPartialSum, alternating, Finset.sum_range_succ]
 
 /-- Simple verification: alternating sum for 4 consecutive terms starting at 0. -/
@@ -250,6 +275,8 @@ example : apPartialSum alternating 0 1 4 = 0 := by
 #check beck_improved_upper
 #check rudin_shapiro_bound
 #check IsOptimal
+#check optimalDisc_one
+#check alternating_isOptimal_d1
 #check discrepancy_gap
 
 end Erdos177OQ04

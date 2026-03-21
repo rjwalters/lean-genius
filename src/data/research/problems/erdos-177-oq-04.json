@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 10 proved infrastructure theorems (apSum properties, alternating coloring validity, triangle inequality). Fixed pre-existing import errors. Docker build clean.",
+    "progressSummary": "COMPLETED: Proved optimalDisc 1 = 1 (exact axiom-free computation via csInf). Added alternating_isOptimal_d1. Fixed 3 pre-existing Mathlib-compat build errors.",
     "builtItems": [
       "alternating coloring with validity proof",
       "disc_trivial_upper: |sum| ≤ k proved by induction",
@@ -41,7 +41,9 @@
       "valid_abs_eq_one, valid_sq_eq_one: valid coloring properties",
       "apSum_abs_le: triangle inequality |apSum| ≤ k",
       "alternating: definition and validity proof",
-      "alternating_apSum_d1_even: even-length APs sum to 0"
+      "alternating_apSum_d1_even: even-length APs sum to 0",
+      "optimalDisc_one: exact computation optimalDisc 1 = 1 via csInf_le/le_csInf",
+      "alternating_isOptimal_d1: alternating coloring is optimal for d=1"
     ],
     "insights": [
       "Alternating coloring optimal for d=1 but terrible for d=2",
@@ -50,7 +52,9 @@
       "alternating_d1_bound proved via pair cancellation: consecutive (-1)^n terms sum to zero, so by strong induction reducing k by 2, we only need k=0 (sum=0) and k=1 (sum=(-1)^a, natAbs=1)",
       "Example had wrong value: apPartialSum alternating 0 1 3 = 1, not -1 (1+(-1)+1=1)",
       "sSup/sInf on ℕ is problematic for unbounded sets — discrepancy definition returns 0 for the all-1s coloring",
-      "Fixed pre-existing build errors: Real.sqrt and Nat.factorial need heavier imports"
+      "Fixed pre-existing build errors: Real.sqrt and Nat.factorial need heavier imports",
+      "optimalDisc 1 = 1 is provable axiom-free: upper bound from alternating_d1_bound, lower bound from disc_length_1 (any valid f has |f(a)|=1)",
+      "(-1)^(a+n*2) = (-1)^a via pow_add/pow_mul/neg_one_sq/one_pow — needed for alternating_d2_all_same Mathlib compat fix"
     ],
     "mathlibGaps": [],
     "nextSteps": []
