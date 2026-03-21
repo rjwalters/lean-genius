@@ -117,20 +117,6 @@ def IsTournament (D : Digraph V) : Prop :=
 ## Part 2: Longyear–Parsons Theorem
 -/
 
-/-- **Longyear–Parsons Theorem (1972)**: In a tournament satisfying the
-    directed friendship property, the tournament is regular: every vertex
-    has the same out-degree.
-
-    The proof uses double-counting: for vertex v with out-degree d(v),
-    the number of ordered pairs (u,w) with u ≠ v where w is the unique
-    common out-neighbor of u and v equals (n-1) (one for each u ≠ v).
-    But this also equals Σ over out-neighbors w of v of (in-degree of w
-    among out-nbrs of v). The friendship constraint forces regularity. -/
-axiom longyear_parsons_tournament (D : Digraph V) [DecidableRel D.adj]
-    (hT : IsTournament D)
-    (hF : IsDirectedFriendshipGraph D) :
-    ∃ k : ℕ, ∀ v : V, (Fintype.card { w : V // D.adj v w }) = k
-
 /-- In a directed friendship tournament, the vertex count satisfies
     n ≡ 3 (mod 4).
 
@@ -172,14 +158,6 @@ def IsDirectedWindmill (D : Digraph V) : Prop :=
   ∃ c : V, (∀ v : V, v ≠ c → D.adj c v ∧ D.adj v c) ∧
     ∀ u v : V, u ≠ c → v ≠ c → u ≠ v →
       (D.adj u v ∧ D.adj v u) ∨ (¬D.adj u v ∧ ¬D.adj v u)
-
-/-- **Non-tournament directed friendship theorem**: A directed graph
-    (not necessarily a tournament) satisfying the directed friendship
-    property with bidirectional edges is a directed windmill. -/
-axiom directed_windmill_theorem (D : Digraph V)
-    (hF : IsDirectedFriendshipGraph D)
-    (hBi : ∀ u v : V, D.adj u v → D.adj v u) :
-    IsDirectedWindmill D
 
 /-
 ## Part 4: Hypergraph Friendship Property and Steiner Triple Systems
@@ -266,16 +244,6 @@ theorem steiner_triple_system_mod6_necessary (n : ℕ) (hn : n ≥ 3)
   have h_six : 6 ∣ n * (n - 1) := steiner_six_divides n h_count
   exact steiner_mod6_necessary n hn h_odd h_six
 
-/-- **Kirkman's Existence Theorem** (1847, completed by many):
-    A Steiner triple system STS(n) exists if and only if n ≡ 1 or 3 (mod 6).
-
-    The necessity is proved above. The sufficiency requires explicit
-    constructions (Bose 1939, Skolem 1958, Wilson 1975). -/
-axiom kirkman_existence (n : ℕ) (hn : n ≡ 1 [MOD 6] ∨ n ≡ 3 [MOD 6]) :
-    ∃ (edges : Finset (Finset (Fin n))),
-      (∀ e ∈ edges, e.card = 3) ∧
-      (∀ u v : Fin n, u ≠ v → ∃! e, e ∈ edges ∧ u ∈ e ∧ v ∈ e)
-
 /-- The number of triples in an STS(n) is n(n-1)/6. For n ≡ 1 or 3 (mod 6),
     we verify that 6 | n(n-1), ensuring the triple count is integral. -/
 theorem steiner_triple_count (n : ℕ) (hn : n ≥ 3)
@@ -339,23 +307,6 @@ theorem friendship_common_neighbor_exists
 ## Part 6: Spectral Characterization
 -/
 
-/-- **Spectral characterization of regular friendship graphs.**
-
-    If G is a k-regular friendship graph on n vertices, then:
-    - A² = J + (k-1)I where A is the adjacency matrix
-    - The eigenvalues are: k (multiplicity 1) and ±√(k-1)
-    - n = k² - k + 1
-
-    For k = 2, n = 3 (triangle). For k > 2, contradictions arise.
-
-    Axiomatized because Mathlib's spectral theory for finite graphs
-    is not yet developed enough for direct formalization. -/
-axiom spectral_friendship_characterization
-    (n k : ℕ) (hk : k ≥ 2) (hn : n = k * k - k + 1)
-    (h_regular : ∃ (G : SimpleGraph (Fin n)),
-      (∀ u v : Fin n, u ≠ v → (G.commonNeighbors u v).ncard = 1)) :
-    k = 2 ∧ n = 3
-
 /-
 ## Part 7: Generalizations and Variants
 -/
@@ -402,12 +353,10 @@ def IsMulticolorFriendship (G : SimpleGraph V) (r : ℕ)
 #check IsUniversalSource
 #check IsUniversalSink
 #check IsTournament
-#check longyear_parsons_tournament
 #check directed_friendship_mod4
 #check directed_friendship_min_size
 #check directedC3_mod4
 #check IsDirectedWindmill
-#check directed_windmill_theorem
 #check UniformHypergraph
 #check IsFriendship3Hypergraph
 #check IsSteinerTripleSystem
@@ -415,11 +364,9 @@ def IsMulticolorFriendship (G : SimpleGraph V) (r : ℕ)
 #check steiner_two_divides_pred
 #check steiner_mod6_necessary
 #check steiner_triple_system_mod6_necessary
-#check kirkman_existence
 #check steiner_triple_count
 #check steiner_vertex_degree
 #check friendship_common_neighbor_exists
-#check spectral_friendship_characterization
 #check IsLambdaFriendship
 #check lambda_zero_empty_common_neighbors
 #check StronglyRegularParams
