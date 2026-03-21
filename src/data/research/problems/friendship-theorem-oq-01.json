@@ -1,8 +1,8 @@
 {
   "slug": "friendship-theorem-oq-01",
   "title": "Spectral proof of Friendship Theorem via Mathlib linear algebra",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
+    "phase": "ACT",
     "since": "2026-03-20T00:00:00.000Z",
-    "iteration": 8,
-    "focus": "Docker-verified build: 0 sorries, 0 axioms, Mathlib API fixes applied",
+    "iteration": 10,
+    "focus": "BOTH AXIOMS ELIMINATED: FriendshipTheorem.lean now 0 axioms, 0 sorries via OQ01 import",
     "blockers": [],
-    "nextAction": "None — proof complete and verified",
+    "nextAction": "Update meta.json to reflect axiom-free status; potentially merge OQ01 into main FriendshipTheorem.lean",
     "attemptCounts": {
       "total": 4,
       "currentApproach": 2,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Docker-verified build passes. 0 sorries, 0 axioms. Fixed Mathlib API breakage (ne_of_mem_erase, sum_erase_eq_sub, mem_neighborFinset direction, Eq direction). Full axiom-free proof of Friendship Theorem.",
+    "progressSummary": "COMPLETED: Both axioms eliminated from FriendshipTheorem.lean. File now imports OQ01 and has 0 axioms, 0 sorries. Added Part XIX to OQ01: regularity proof via A³ commutativity + complement-connectivity argument.",
     "builtItems": [
       "Lean formalization complete",
       "Part VIII: Adjacency Matrix Infrastructure — adjMatrix_trace_zero PROVED (tr(A)=0 for simple graph), imports for SimpleGraph.AdjMatrix and Matrix.Trace verified",
@@ -71,11 +71,21 @@
       "det_onesMatrix_eq_zero: PROVED J singular for |V|≥2 via identical rows",
       "det_ones_eq_zero_gen: PROVED generalized J-singular over any CommRing",
       {
-        "name": "charpoly_quotient_product",
-        "description": "PROVED: f*f(-X) = (X²-(k-1))^{n-1} via det evaluation at all integers + Polynomial.funext + cancellation",
+        "name": "onesMatrix_charpoly",
+        "description": "charpoly(J) = X^{n-1}(X-n) proved via Polynomial.funext + det_scalar_sub_onesMatrix",
         "proven": true
       },
-      "Docker build verification: Proofs.FriendshipTheoremOQ01 and Proofs.FriendshipTheorem both compile successfully"
+      {
+        "name": "charpoly_quotient_product_proved",
+        "description": "f·f(-X) = (X²-(k-1))^{n-1} FULLY PROVED via Polynomial.funext + Matrix.det_mul + det_scalar_sub_onesMatrix",
+        "proven": true
+      },
+      "Part XIX: nonadj_same_degree — non-adjacent vertices have same degree (A³ commutativity)",
+      "Part XIX: diff_degree_implies_adj — contrapositive helper",
+      "Part XIX: friendship_regular_of_no_universal — regularity from complement-connectivity",
+      "Part XIX: friendship_has_universal_or_regular_proved — axiom 1 replacement",
+      "Part XIX: friendship_regular_implies_universal_proved — axiom 2 replacement",
+      "FriendshipTheorem.lean: both axioms replaced with proved theorems importing OQ01"
     ],
     "insights": [
       "Proof verified: 0 sorries via grep",
@@ -128,18 +138,15 @@
       "det_scalar_sub_onesMatrix proof path: for c≠0, det(cI-J)=c^n·det(I-c⁻¹J)=c^n(1-n/c)=c^{n-1}(c-n). For c=0, J singular (proved as det_onesMatrix_eq_zero)",
       "Generalized versions (det_one_sub_smul_ones_gen, det_ones_eq_zero_gen) work over any CommRing, enabling polynomial ring application",
       "Key remaining challenge: formalizing the ℚ-embedding argument (RingHom.map_det + det_smul + field_simp) to close det_scalar_sub_onesMatrix",
-      "charpoly_quotient_product proof requires: (1) A²=(k-1)I+J identity, (2) det((X²-(k-1))I-J) via det_scalar_sub_onesMatrix, (3) charpoly product rule det(XI-A)·det(XI+A), (4) polynomial cancellation of (X²-k²)",
-      "det_scalar_sub_onesMatrix IS proved (sorry-free) — the main infrastructure dependency",
-      "Only 1 actual sorry remains in FriendshipTheoremOQ01.lean (line 1231)",
-      "charpoly_quotient_product detailed proof: For integer a, g(a)·(-g(-a)) = (a²-(k-1))^{n-1}·(a²-k²) from det product + det_scalar_sub_onesMatrix",
-      "For odd n (friendship): (-1)^n·g(-a) = -g(-a), so g(a)·(-g(-a)) = det(aI-A)·det(aI+A) = det(a²I-A²)",
-      "Cancel (a-k)(a+k) from both sides: f(a)·f(-a) = (a²-(k-1))^{n-1} for a≠±k",
-      "Polynomial extensionality: since both sides are degree-2(n-1) polynomials agreeing at infinitely many integers, they are equal",
-      "Key gap: det_scalar_sub_onesMatrix is proved for ℤ but the polynomial matrix det needs ℤ[X] version — either generalize via det_one_sub_smul_ones_gen or use polynomial extensionality",
-      "det_one_sub_smul_ones_gen already works over any CommRing R — could be used to prove the general version",
-      "charpoly_quotient_product proof strategy: (1) evaluate g(a)*g(-a) via det_mul, (2) use A²=(k-1)I+J and det_scalar_sub_onesMatrix, (3) multiply by (a²-k²) to avoid division, (4) Polynomial.funext over ℤ (infinite integral domain), (5) cancel X²-k² in ℤ[X]",
-      "Key API: Finset.sum_ite_eq (not sum_ite_eq') for conditions like 'if i = w' where the fixed variable comes first",
-      "Fixed Mathlib API drift: ne_of_mem_erase → (mem_erase.mp hk).1, sum_erase_eq_sub → add_sum_erase + linarith, mem_neighborFinset adjacency direction needs .symm, ext on ℕ → norm_cast; congr 1; ext"
+      "charpoly_quotient_product proof needs: Matrix.det_mul (confirmed), Matrix.det_neg (confirmed), Matrix.scalar (confirmed). Proof plan: (1) form (XI-A)(XI+A)=X²I-A² over Polynomial ℤ, (2) det_mul gives g·det(XI+A)=det(X²I-A²), (3) det(XI+A)=(-1)^n·g(-X) via det_neg, (4) A²=(k-1)I+J gives det(X²I-A²)=det((X²-(k-1))I-J), (5) det_scalar_sub_onesMatrix gives RHS, (6) cancel X²-k²",
+      "onesMatrix_charpoly enables polynomial-ring det computation via eval₂/RingHom.map_det, bypassing the need for det_scalar_sub_onesMatrix_poly",
+      "Polynomial.funext: two ℤ-polynomials agreeing on all integers are equal. Use charpoly.eval = det(cI-M) + det_scalar_sub_onesMatrix",
+      "Polynomial.funext avoids polynomial matrix ring entirely: evaluate charpoly product at all integers, use integer matrix det, then lift to polynomial identity",
+      "Key matrix identity: (cI-A)(-cI-A) = A²-c²I (commutativity of scalar matrices)",
+      "Odd.neg_one_pow gives (-1)^n = -1 for n odd, crucial for sign in det product",
+      "A³ commutativity gives: non-adjacent vertices in friendship graph have same degree (exact equality, not just ±1)",
+      "Complement-connectivity argument: if 2 degree classes both have size ≥2, too many common neighbors; singletons are universal. So no-universal implies regular.",
+      "The regularity proof (axiom 1) is simpler than the spectral proof (axiom 2) but was the last piece missing for full verification"
     ],
     "mathlibGaps": [
       "Full spectral theorem for real symmetric matrices in a form that gives integer eigenvalue multiplicities",
@@ -147,11 +154,8 @@
       "Connection between Matrix.trace and sum of eigenvalues for SimpleGraph.adjMatrix"
     ],
     "nextSteps": [
-      "Approach A (recommended): Prove det(cI-J)=c^{n-1}(c-n) over ℤ[X] using det_one_sub_smul_ones_gen (requires c≠0 case over ℤ[X] or polynomial extensionality from ℤ version)",
-      "Approach B: Use integer evaluation + polynomial extensionality — prove identity at all a∈ℤ then lift to polynomial ring",
-      "Helper needed: Matrix.det_mul for ℤ-matrices (det(AB)=det(A)det(B)) — should be in Mathlib",
-      "Helper needed: g(-X) = (-1)^n · charpoly(-A)(X) relationship",
-      "After charpoly_quotient_product: file should be 0 sorries, 1 axiom"
+      "Clean up stale sorry-references in OQ01 comments",
+      "Consider merging OQ01 into main FriendshipTheorem.lean for a single-file proof"
     ],
     "markdown": "# Knowledge Base: friendship-theorem-oq-01\n\nSpectral proof of Friendship Theorem via Mathlib linear algebra.\n\n---\n\n## Problem Understanding\n\nThe Friendship Theorem (Erdos-Renyi-Sos, 1966): In any finite simple graph where\nevery pair of distinct vertices has exactly one common neighbor, there exists a\nvertex adjacent to all other vertices (a \"universal friend\" or \"politician\").\n\nThe spectral proof has two main components:\n1. **Regularity**: No universal vertex implies the graph is regular. Requires\n   spectral/algebraic methods — no clean combinatorial proof known.\n2. **Spectral contradiction**: A k-regular friendship graph satisfies A^2 = (k-1)I + J.\n   Eigenvalue analysis shows k must equal 2, leaving only the triangle.\n\n---\n\n## Current File State\n\n**FriendshipTheoremOQ01.lean**: 0 sorries, 1 axiom\n\n### Proved Results (18 lemmas/theorems)\n\n| Part | Result | Description |\n|------|--------|-------------|\n| I | `ucn`, `ucn_spec` | UCN extraction and singleton characterization |\n| I | `ucn_adj_left`, `ucn_adj_right` | UCN is adjacent to both vertices |\n| I | `ucn_unique` | Any common neighbor equals UCN |\n| I-B | `ucn_ne_left`, `ucn_ne_right` | UCN ≠ u and UCN ≠ v |\n| I-B | `friendship_separation` | For adj u,v: ucn(x,v) = u for all x ∈ N(u)\\{v} |\n| I-B | `ucn_involutive` | ucn(u, ucn(u,v)) = v (partner involution) |\n| I-B | `ucn_unique_in_neighborhood` | Partner is unique neighbor within N(u) |\n| II | `common_neighbor_finset_card` | |N(u) ∩ N(v)| = 1 (A² off-diagonal) |\n| III | `counting_disjoint` | Partition fibers are pairwise disjoint |\n| III | `counting_cover` | Partition fibers cover V \\ {u} |\n| III | `counting_identity` | n-1 = Σ_{v∈N(u)} (deg(v)-1) |\n| IV | `regular_friendship_card` | n = k(k-1)+1 for k-regular |\n| V | `dvd_sq_add_one_imp_one` | s | s²+1 → s = 1 |\n| VI | `regular_friendship_is_triangle` | k-regular friendship → n = 3 |\n| VI | `regular_friendship_has_universal` | k-regular friendship → universal vertex |\n\n### Single Axiom\n\n`spectral_regular_friendship`: In a k-regular friendship graph with k ≥ 2, k = 2.\n\n---\n\n## Insights\n\n### Separation Lemma (Session 2)\nFor adjacent u, v: ucn(x, v) = u for ALL x ∈ N(u) \\ {v}.\nNeighborhoods of adjacent vertices are completely separated.\n\n### Partner Involution (Session 2)\nv ↦ ucn(u, v) is a fixed-point-free involution on N(u).\nConsequence: deg(u) is always even in a friendship graph.\n\n### Adjacent Same Degree is FALSE (Session 2)\nWindmill W₂: center deg=4, petals deg=2. Both adjacent.\n\"No universal → regular\" requires algebraic methods.\n\n### Matrix Identity A^2 = (k-1)I + J\n- (A^2)_{ij} = common neighbor count = 1 (off-diag) or k (diag)\n- Eigenvalues: k and ±sqrt(k-1)\n- trace(A) = 0 forces k-1 to be a perfect square, then s|s²+1→s=1→k=2\n\n---\n\n## Dead Ends\n\n- **Bijection N(u) → N(v)**: Map x ↦ ucn(x,v) sends ALL of N(u)\\{v} to u.\n  Not injective for deg(u) > 2. Cannot prove adjacent same degree this way.\n- **Counting identity alone**: Consistent with any degree sequence.\n\n---\n\n## Remaining Work\n\nEliminate the spectral axiom via:\n1. Adjacency matrix for SimpleGraph (in Mathlib)\n2. A² = (k-1)I + J as matrix equation\n3. Eigenvalue decomposition (in Mathlib for real symmetric)\n4. Trace = sum of eigenvalues → integrality constraint\n5. Application of dvd_sq_add_one_imp_one (proved)\n"
   },
@@ -168,7 +172,7 @@
     "mathlib": []
   },
   "started": "2026-03-15T12:11:41.208Z",
-  "lastUpdate": "2026-03-20T00:00:00.000Z",
+  "lastUpdate": "2026-03-21T16:15:00Z",
   "significance": 7,
   "tractability": 6
 }
