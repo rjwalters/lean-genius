@@ -55,7 +55,14 @@
       "Chvátal's degree-dependent bound R(T) ≤ (Δ-1)(n-1)+1 with analysis showing it beats 2n-2 only for Δ ≤ 2",
       "Main theorem erdos_547: R(T) ≤ 2n-2 for all trees, with tightness and ordering n ≤ R(T) ≤ 2n-2"
     ],
-    "axiomCount": 25
+    "axiomCount": 25,
+    "prerequisites": [
+      "Ramsey theory fundamentals (existence of Ramsey numbers for finite graphs)",
+      "Graph theory basics (simple graphs, complete graphs, trees, vertex degree)",
+      "Pigeonhole principle",
+      "Szemerédi regularity lemma and blow-up lemma (for the full proof)",
+      "Tree structural properties (paths, stars, caterpillars, maximum degree)"
+    ]
   },
   "overview": {
     "historicalContext": "**The Tree Ramsey Number Problem**\n\nBurr conjectured in 1974 that R(T) ≤ 2n - 2 for all trees T on n vertices. Chvátal (1977) proved the degree-dependent bound R(T) ≤ (Δ-1)(n-1) + 1, which is tight for paths but weak for high-degree trees. The full conjecture was proved for all sufficiently large n by Zhao, Hladký, Komlós, Piguet, Simonovits, Stein, and Szemerédi (2012+), using the regularity method and blow-up lemma. The bound is best possible since stars achieve R(S_n) = 2n - 2.",
