@@ -62,12 +62,14 @@
     "type": "proof",
     "title": "Algebraic Approach",
     "content": "**Vieta's Formulas Approach**:\n\nParameterize points on a chord through P in direction $\\vec{d}$:\n$$Q(t) = P + t\\vec{d}$$\n\nA point is on the circle of radius r centered at origin iff:\n$$|P + t\\vec{d}|^2 = r^2$$\n\nExpanding (with $|\\vec{d}| = 1$):\n$$t^2 + 2t\\langle P, \\vec{d}\\rangle + |P|^2 - r^2 = 0$$\n\nBy **Vieta's formulas**, the product of roots is:\n$$t_1 \\cdot t_2 = |P|^2 - r^2$$\n\nSince distances are $|t_1|$ and $|t_2|$, we get $|t_1| \\cdot |t_2| = r^2 - |P|^2$ for interior points.",
+    "mathContext": "$t^2 + 2t\\langle P, \\vec{d}\\rangle + (|P|^2 - r^2) = 0$; by Vieta: $t_1 \\cdot t_2 = |P|^2 - r^2$",
     "significance": "key",
     "relatedConcepts": [
       "Vieta's formulas",
       "quadratic equations",
       "parametric lines"
-    ]
+    ],
+    "prerequisites": ["inner product", "quadratic formula", "polynomial roots"]
   },
   {
     "id": "ann-center",
