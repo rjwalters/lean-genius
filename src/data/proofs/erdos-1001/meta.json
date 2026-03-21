@@ -57,7 +57,15 @@
       "Formalization of EST regime condition",
       "Connection to Farey fraction asymptotics"
     ],
-    "axiomCount": 9
+    "axiomCount": 9,
+    "prerequisites": [
+      "Diophantine approximation (Dirichlet's theorem, approximation quality)",
+      "Lebesgue measure on the real line",
+      "Farey fractions and their asymptotic counting",
+      "Filter convergence and limits in topology",
+      "Euler's totient function and coprime density (6/pi^2)",
+      "Basic ergodic theory (for Kesten-Sos proof method)"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős, Szüsz, and Turán posed this problem in 1958, proving the explicit formula f(A,c) = 12A log(c)/π² in a specific regime. Kesten and Sós (1966) proved the limit always exists. Boca (2008) and Xiong-Zaharescu (2006) provided alternative explicit proofs using Farey fractions and continued fractions respectively.",
