@@ -1152,6 +1152,36 @@ private lemma det_ones_eq_zero_gen {R : Type*} [CommRing R] (hn : Fintype.card V
     omega
   exact Matrix.det_zero_of_row_eq hab (by ext j; simp [Matrix.of_apply])
 
+/-- **Characteristic polynomial of the all-ones matrix**: charpoly(J) = X^{n-1}(X-n).
+    Proof: By `Polynomial.funext`, it suffices to show equality at all c ∈ ℤ.
+    eval c (charpoly J) = det(cI-J) = c^{n-1}(c-n) = eval c (X^{n-1}(X-n)).
+    The first equality uses Matrix.aeval_self_charpoly indirectly via evaluation.
+    The second uses det_scalar_sub_onesMatrix (proved below). -/
+lemma onesMatrix_charpoly [Nonempty V] :
+    (onesMatrix V).charpoly =
+    Polynomial.X ^ (Fintype.card V - 1) *
+    (Polynomial.X - Polynomial.C (↑(Fintype.card V) : ℤ)) := by
+  -- By universality: two integer polynomials agreeing on all of ℤ are equal
+  apply Polynomial.funext
+  intro c
+  -- LHS: charpoly(J).eval c = det(cI - J)
+  have hlhs : Polynomial.eval c (onesMatrix V).charpoly =
+      (c • (1 : Matrix V V ℤ) - onesMatrix V).det := by
+    rw [Matrix.charpoly, Polynomial.eval_det]
+    congr 1; ext i j
+    simp [Matrix.charmatrix, Matrix.sub_apply, Matrix.diagonal_apply,
+      Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C,
+      Matrix.map_apply, onesMatrix, Matrix.of_apply]
+    split <;> simp [smul_eq_mul]
+  -- RHS: eval c (X^{n-1}(X-n)) = c^{n-1}(c-n)
+  have hrhs : Polynomial.eval c (Polynomial.X ^ (Fintype.card V - 1) *
+      (Polynomial.X - Polynomial.C (↑(Fintype.card V) : ℤ))) =
+      c ^ (Fintype.card V - 1) * (c - ↑(Fintype.card V)) := by
+    simp [Polynomial.eval_mul, Polynomial.eval_pow, Polynomial.eval_sub,
+      Polynomial.eval_X, Polynomial.eval_C]
+  rw [hlhs, hrhs]
+  exact det_scalar_sub_onesMatrix c
+
 /-- **det(cI - J) = c^{n-1}(c-n)** for the all-ones matrix J.
 
     Proof: For c ≠ 0, cast to ℚ where c is invertible. Factor:
@@ -1242,11 +1272,19 @@ private lemma det_scalar_sub_onesMatrix_poly [Nonempty V] (c : Polynomial ℤ) :
     Let g = charpoly(A), f = g/(X-k). Then:
       f(X) · f(-X) = (X² - (k-1))^{n-1}
 
-    Proof: (XI-A)(XI+A) = X²I - A² = (X²-(k-1))I - J.
-    det gives g·(-g(-X)) = (X²-(k-1))^{n-1}·(X²-k²).
-    Factor g = (X-k)·f and cancel (X²-k²).
+    **Proof strategy** (using onesMatrix_charpoly):
+    1. (XI-A')(XI+A') = X²I-A'² where A' = A.map C [ring identity in Polynomial ℤ matrices]
+    2. det(LHS) = charpoly(A)·charpoly(-A) [Matrix.det_mul]
+    3. charpoly(-A) = (-1)^n · charpoly(A).comp(-X) [standard identity]
+       For n odd: = -(-(X+k))·f(-X) = (X+k)·f.comp(-X)
+    4. A² = (k-1)I+J → X²I-A'² = (X²-(k-1))I - J.map C
+    5. det(RHS) = eval₂ C (X²-(k-1)) (onesMatrix_charpoly)
+       = (X²-(k-1))^{n-1}·(X²-(k-1)-n)
+       = (X²-(k-1))^{n-1}·(X²-k²) [since k-1+n=k²]
+    6. Combined: (X-k)·f·(X+k)·f(-X) = (X²-(k-1))^{n-1}·(X-k)(X+k)
+    7. Cancel (X-k)(X+k) in integral domain Polynomial ℤ
 
-    Dependencies: det_scalar_sub_onesMatrix (PROVED above). -/
+    Dependencies: onesMatrix_charpoly, adjMatrix_sq_eq, RingHom.map_det. -/
 lemma charpoly_quotient_product [Nonempty V] (hF : IsFriendshipGraph G) (k : ℕ)
     (hk : k ≥ 2) (hreg : ∀ v : V, G.degree v = k) (f : Polynomial ℤ)
     (hf : (G.adjMatrix ℤ).charpoly = (X - C (↑k : ℤ)) * f) :

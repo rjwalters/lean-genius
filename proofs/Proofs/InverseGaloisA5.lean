@@ -1038,6 +1038,529 @@ theorem vandermondeProduct_ne_zero : vandermondeProduct ≠ 0 := by
   have hne : j ≠ i := by simp [Finset.mem_Iio] at hj; omega
   exact hne (rootEnum_injective (sub_eq_zero.mp hij))
 
+
+-- ============================================================================
+-- Part XV: Eliminating vandermondeProduct_sq_eq Axiom
+-- ============================================================================
+
+/-
+## Proof Strategy: VP² = disc(q) = 1024000000
+
+**Mathlib API** (Mathlib v4.26.0): `Polynomial.resultant`, `Polynomial.discr`,
+`Polynomial.sylvester`, and `Polynomial.sylvesterDeriv` all exist. Key lemmas:
+- `resultant_map_map`: Res(map φ f, map φ g) m n = φ(Res(f,g) m n) ✓ PROVED
+- `resultant_eq_prod_eval`: Res(f,g) = lc(f)^n · ∏ eval αᵢ g (for splitting f)
+- `resultant_comm`: Res(f,g,m,n) = (-1)^(mn) · Res(g,f,n,m)
+- `resultant_X_sub_C_left`: Res(X-r, g, 1, n) = eval r g
+- `resultant_mul_left`: Res(f₁f₂, g, m₁+m₂, n) = Res(f₁,g,m₁,n) · Res(f₂,g,m₂,n)
+- `derivative_map`: (map φ f)' = map φ f'
+
+Chain: VP² = ∏_{i≠j}(αᵢ-αⱼ) = ∏ q'(αᵢ) = Res(q,q') = disc(q) = 1024000000
+-/
+
+section VandermondeElimination
+
+-- Abbreviation for the splitting field
+private abbrev SF := q.SplittingField
+
+-- The mapped polynomial in the splitting field
+private noncomputable abbrev q_SF : Polynomial SF := Polynomial.map (algebraMap ℚ SF) q
+
+-- Step A: The ordered product ∏_{i≠j} (αᵢ - αⱼ) equals vandermondeProduct²
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+-- The product over all ordered pairs (i,j) with i≠j of (rootEnum i - rootEnum j)
+-- equals the Vandermonde product squared. For n=5, (-1)^{C(5,2)} = 1.
+/-- General lemma: for a function v : Fin n → R in a commutative ring,
+    the product ∏_i ∏_{j<i} (v i - v j) equals the Vandermonde product ∏_{i<j} (v j - v i).
+    This is because swapping indices (i,j) ↔ (j,i) just relabels the same set of pairs. -/
+private theorem prod_Iio_eq_vandermonde {n : ℕ} {R : Type*} [CommRing R]
+    (v : Fin n → R) :
+    (∏ i : Fin n, ∏ j ∈ Finset.Iio i, (v i - v j)) =
+    ∏ i : Fin n, ∏ j ∈ Finset.Ioi i, (v j - v i) := by
+  -- Both sides equal ∏_{a>b} (v a - v b), just with indices swapped.
+  -- Approach: flatten via Finset.prod_sigma, apply swap bijection (i,j) ↦ (j,i).
+  exact Finset.prod_comm' (fun i j => by
+    simp only [Finset.mem_univ, Finset.mem_Iio, Finset.mem_Ioi, true_and, and_true])
+
+theorem ordered_root_diff_prod_eq_vandermonde_sq :
+    (∏ i : Fin 5, ∏ j ∈ Finset.univ.erase i, (rootEnum i - rootEnum j)) =
+    vandermondeProduct ^ 2 := by
+  -- Split univ.erase i = Iio i ∪ Ioi i
+  have hsplit : ∀ i : Fin 5,
+      ∏ j ∈ Finset.univ.erase i, (rootEnum i - rootEnum j) =
+      (∏ j ∈ Finset.Iio i, (rootEnum i - rootEnum j)) *
+      (∏ j ∈ Finset.Ioi i, (rootEnum i - rootEnum j)) := by
+    intro i
+    rw [← Finset.prod_union (Finset.disjoint_left.mpr (fun x hx1 hx2 => by
+      rw [Finset.mem_Iio] at hx1; rw [Finset.mem_Ioi] at hx2; omega))]
+    congr 1; ext j
+    constructor
+    · intro hj
+      rw [Finset.mem_erase] at hj
+      rw [Finset.mem_union, Finset.mem_Iio, Finset.mem_Ioi]
+      exact (hj.1).lt_or_gt
+    · intro hj
+      rw [Finset.mem_union, Finset.mem_Iio, Finset.mem_Ioi] at hj
+      rw [Finset.mem_erase]
+      refine ⟨?_, Finset.mem_univ _⟩
+      rcases hj with h | h
+      · exact Fin.ne_of_lt h
+      · exact Fin.ne_of_gt h
+  simp_rw [hsplit, Finset.prod_mul_distrib]
+  unfold vandermondeProduct; rw [Matrix.det_vandermonde, sq]
+  congr 1
+  · exact prod_Iio_eq_vandermonde rootEnum
+  · -- ∏_i ∏_{j>i} (αᵢ-αⱼ) = ∏_i ∏_{j>i} (αⱼ-αᵢ) via sign (-1)^10 = 1
+    have key : ∀ i : Fin 5, ∏ j ∈ Finset.Ioi i, (rootEnum i - rootEnum j) =
+        (-1) ^ (Finset.Ioi i).card *
+        ∏ j ∈ Finset.Ioi i, (rootEnum j - rootEnum i) := by
+      intro i
+      have : ∀ j ∈ Finset.Ioi i, rootEnum i - rootEnum j =
+        (-1 : q.SplittingField) * (rootEnum j - rootEnum i) := fun _ _ => by ring
+      rw [Finset.prod_congr rfl this, Finset.prod_mul_distrib, Finset.prod_const]
+    simp_rw [key, Finset.prod_mul_distrib]
+    suffices h : ∏ i : Fin 5, (-1 : q.SplittingField) ^ (Finset.Ioi i).card = 1 by
+      rw [h, one_mul]
+    rw [Finset.prod_pow_eq_pow_sum]
+    have : ∑ i : Fin 5, (Finset.Ioi i).card = 10 := by decide
+    rw [this]; norm_num
+
+-- Step B: Connect derivative evaluation to root differences
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- For a monic polynomial that factors as (X - α) * r in the splitting field,
+    the derivative evaluated at α equals r(α). -/
+theorem eval_derivative_at_root_of_factor {K : Type*} [Field K]
+    (f r : Polynomial K) (α : K) (hf : f = (X - C α) * r) :
+    Polynomial.eval α (Polynomial.derivative f) = Polynomial.eval α r := by
+  rw [hf, Polynomial.derivative_mul]
+  simp only [Polynomial.eval_add, Polynomial.eval_mul, Polynomial.derivative_sub,
+    Polynomial.derivative_X, Polynomial.derivative_C, sub_zero,
+    Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C,
+    Polynomial.eval_one, sub_self, zero_mul, add_zero, one_mul]
+
+-- Step C: q splits as product of linear factors
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- q mapped to its splitting field splits as ∏ (X - rootEnum i). -/
+theorem q_SF_eq_prod_linear :
+    q_SF = ∏ i : Fin 5, (X - C (rootEnum i)) := by
+  -- Strategy: both sides are monic of degree 5, and P ∣ q_SF, so P = q_SF.
+  set P := ∏ i : Fin 5, (X - C (rootEnum i)) with hP_def
+  -- q_SF is monic
+  have hq_monic : q_SF.Monic := q_monic.map (algebraMap ℚ q.SplittingField)
+  have hq_ne : q_SF ≠ 0 := hq_monic.ne_zero
+  -- P is monic
+  have hP_monic : P.Monic :=
+    Polynomial.monic_prod_of_monic _ _ (fun i _ => Polynomial.monic_X_sub_C _)
+  -- P has degree 5
+  have hP_deg : P.natDegree = 5 := by
+    rw [hP_def, Polynomial.natDegree_prod_of_monic _ _
+      (fun i _ => Polynomial.monic_X_sub_C _)]
+    simp [Polynomial.natDegree_X_sub_C, Finset.sum_const, Finset.card_fin]
+  -- Each rootEnum i is a root of q_SF
+  have hroot : ∀ i : Fin 5, Polynomial.IsRoot q_SF (rootEnum i) := by
+    intro i
+    have := rootEnum_is_root i
+    rwa [Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map] at this
+  -- Each linear factor divides q_SF
+  have hdvd_each : ∀ i : Fin 5, (X - C (rootEnum i)) ∣ q_SF :=
+    fun i => Polynomial.dvd_iff_isRoot.mpr (hroot i)
+  -- Pairwise coprime via Bezout identity:
+  -- u*(X - C α) + v*(X - C β) = 1 where u = C((β-α)⁻¹), v = -C((β-α)⁻¹)
+  have hcoprime : ∀ i j : Fin 5, i ≠ j →
+      IsCoprime (X - C (rootEnum i) : Polynomial q.SplittingField)
+               (X - C (rootEnum j)) := by
+    intro i j hij
+    have hne : rootEnum i ≠ rootEnum j := fun h => hij (rootEnum_injective h)
+    have hne' : rootEnum j - rootEnum i ≠ 0 := sub_ne_zero.mpr (Ne.symm hne)
+    exact ⟨C ((rootEnum j - rootEnum i)⁻¹), -C ((rootEnum j - rootEnum i)⁻¹), by
+      calc C ((rootEnum j - rootEnum i)⁻¹) * (X - C (rootEnum i)) +
+           -C ((rootEnum j - rootEnum i)⁻¹) * (X - C (rootEnum j))
+        _ = C ((rootEnum j - rootEnum i)⁻¹) *
+            ((X - C (rootEnum i)) - (X - C (rootEnum j))) := by ring
+        _ = C ((rootEnum j - rootEnum i)⁻¹) * C (rootEnum j - rootEnum i) := by
+            congr 1
+            have : (X : Polynomial q.SplittingField) - C (rootEnum i) -
+                   (X - C (rootEnum j)) = C (rootEnum j) - C (rootEnum i) := by ring
+            rw [this, ← map_sub]
+        _ = C ((rootEnum j - rootEnum i)⁻¹ * (rootEnum j - rootEnum i)) := by
+            rw [← map_mul]
+        _ = C 1 := by rw [inv_mul_cancel₀ hne']
+        _ = 1 := map_one _⟩
+  -- Product of pairwise coprime factors divides q_SF
+  have hdvd : P ∣ q_SF := by
+    rw [hP_def]
+    exact Finset.prod_dvd_of_coprime
+      (fun i _ j _ hij => hcoprime i j hij) (fun i _ => hdvd_each i)
+  -- Both monic of same degree with P ∣ q_SF → P = q_SF
+  obtain ⟨r, hr⟩ := hdvd
+  have r_ne : r ≠ 0 := right_ne_zero_of_mul (hr ▸ hq_ne)
+  have hr_deg : r.natDegree = 0 := by
+    have h1 := Polynomial.natDegree_mul hP_monic.ne_zero r_ne
+    rw [← hr, Polynomial.natDegree_map, q_natDegree, hP_deg] at h1; omega
+  have hr_one : r = 1 := by
+    have h := Polynomial.eq_C_of_natDegree_eq_zero hr_deg
+    -- r.leadingCoeff = 1 from monicity of product
+    have hrc : r.leadingCoeff = 1 := by
+      have hm := hq_monic; rw [hr, Polynomial.Monic] at hm
+      rw [Polynomial.leadingCoeff_mul, hP_monic.leadingCoeff, one_mul] at hm
+      exact hm
+    rw [h, Polynomial.leadingCoeff_C] at hrc
+    rw [h, hrc, map_one]
+  rw [hr, hr_one, mul_one]
+
+-- Step D: Derivative at rootEnum i gives the product of root differences
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- The derivative of q_SF evaluated at rootEnum i equals
+    ∏_{j≠i} (rootEnum i - rootEnum j). -/
+theorem eval_derivative_q_at_root (i : Fin 5) :
+    Polynomial.eval (rootEnum i) (Polynomial.derivative q_SF) =
+    ∏ j ∈ Finset.univ.erase i, (rootEnum i - rootEnum j) := by
+  -- Factor: q_SF = (X - C αᵢ) * ∏_{j≠i} (X - C αⱼ)
+  have hfact : q_SF = (X - C (rootEnum i)) *
+      ∏ j ∈ Finset.univ.erase i, (X - C (rootEnum j)) := by
+    rw [q_SF_eq_prod_linear]
+    exact (Finset.mul_prod_erase Finset.univ
+      (fun j => X - C (rootEnum j)) (Finset.mem_univ i)).symm
+  -- Derivative at root: f = (X - α) * r → f'(α) = r(α)
+  rw [eval_derivative_at_root_of_factor q_SF _ (rootEnum i) hfact]
+  -- Distribute eval over product
+  rw [Polynomial.eval_prod]
+  congr 1; ext j
+  simp [Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]
+
+-- Step E: Product of derivative evaluations = ordered root difference product
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- ∏_i q'(αᵢ) = ∏_i ∏_{j≠i} (αᵢ - αⱼ). -/
+theorem prod_eval_derivative_eq_ordered_diff :
+    (∏ i : Fin 5, Polynomial.eval (rootEnum i)
+      (Polynomial.derivative q_SF)) =
+    ∏ i : Fin 5, ∏ j ∈ Finset.univ.erase i, (rootEnum i - rootEnum j) := by
+  congr 1; ext i; exact eval_derivative_q_at_root i
+
+-- Step F: VP² via Complex Embedding and Sophie Germain Identity
+-- =============================================================
+--
+-- Strategy: Instead of resultant/discriminant (not in Mathlib), we:
+-- 1. Factor q'(x) = 5((x-1)^4 + 4) = 5(x^2+1)(x^2-4x+5) [Sophie Germain]
+-- 2. Embed SF → ℂ via SplittingField.lift
+-- 3. Use product-roots identity: ∏ᵢ(αᵢ-c) = (-1)^n · q(c) in ℂ
+-- 4. Compute q(±I) and q(2±I) to get the product values
+-- 5. Transfer back via injectivity
+
+/-- The product of derivative evaluations equals Res(q_SF, q'_SF).
+    Proof approach: use `resultant_eq_prod_eval` from Mathlib
+    (Res(f,g) = lc(f)^n · ∏ eval(αᵢ)(g) for splitting f),
+    then convert between the Multiset.map product on q_SF.roots
+    and the Fin 5 product via rootEnum. For monic q_SF, lc^n = 1. -/
+theorem prod_eval_derivative_eq_resultant :
+    (∏ i : Fin 5, Polynomial.eval (rootEnum i)
+      (Polynomial.derivative q_SF)) =
+    Polynomial.resultant q_SF (Polynomial.derivative q_SF) := by
+  -- Strategy: q_SF = ∏ (X - C αᵢ), then use resultant_prod_left + resultant_X_sub_C_left
+  set g := Polynomial.derivative q_SF with hg_def
+  set n := g.natDegree with hn_def
+  -- Step 1: Rewrite q_SF as product of linear factors
+  conv_rhs => rw [q_SF_eq_prod_linear]
+  -- Step 2: Use resultant_prod_left to distribute over product
+  have hlc : ∏ i : Fin 5,
+      (Polynomial.X - Polynomial.C (rootEnum i) : Polynomial SF).leadingCoeff ≠ 0 := by
+    simp [Polynomial.leadingCoeff_X_sub_C]
+  have hndeg : g.natDegree ≤ n := le_refl _
+  rw [Polynomial.resultant_prod_left Finset.univ _ g n hlc hndeg]
+  -- Step 3: Each factor's resultant equals evaluation
+  congr 1; ext i
+  have hXC_deg : (Polynomial.X - Polynomial.C (rootEnum i) :
+      Polynomial SF).natDegree = 1 := Polynomial.natDegree_X_sub_C _
+  rw [hXC_deg]
+  exact (Polynomial.resultant_X_sub_C_left g n (rootEnum i) hndeg).symm
+
+-- Step F1: Derivative rewrite
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- q'(x) = 5x⁴ - 20x³ + 30x² - 20x + 25. -/
+private theorem q_derivative_eq :
+    Polynomial.derivative q = C 5 * X ^ 4 - C 20 * X ^ 3 + C 30 * X ^ 2 - C 20 * X + C 25 := by
+  unfold q
+  simp only [Polynomial.derivative_sub, Polynomial.derivative_add,
+    Polynomial.derivative_C_mul, Polynomial.derivative_pow,
+    Polynomial.derivative_X, Polynomial.derivative_C, Polynomial.derivative_one]
+  ring
+
+theorem resultant_eq_disc_q :
+    Polynomial.resultant q (Polynomial.derivative q) = Polynomial.discr q := by
+  -- resultant_deriv: f.resultant f' n (n-1) = (-1)^{n(n-1)/2} * lc(f) * discr(f)
+  -- For monic q of degree 5: = (-1)^10 * 1 * discr q = discr q
+  have hnd : (Polynomial.derivative q).natDegree = q.natDegree - 1 := by
+    rw [q_natDegree, q_derivative_natDegree]
+  -- Rewrite the default second arg to match resultant_deriv
+  conv_lhs => rw [show q.resultant (Polynomial.derivative q) =
+    q.resultant (Polynomial.derivative q) q.natDegree
+      (Polynomial.derivative q).natDegree from rfl]
+  rw [hnd]
+  -- Now: q.resultant q' q.natDegree (q.natDegree - 1) = discr q
+  have hdeg : (0 : WithBot ℕ) < q.degree := by
+    rw [Polynomial.degree_eq_natDegree q_monic.ne_zero, q_natDegree]
+    exact Nat.cast_pos.mpr (by norm_num)
+  rw [Polynomial.resultant_deriv hdeg]
+  -- Goal: (-1)^(5*4/2) * lc(q) * discr q = discr q
+  simp only [q_monic.leadingCoeff, q_natDegree, one_mul]
+  norm_num
+
+/-- q'(x) evaluated in SF equals 5((x-1)^4 + 4). -/
+private theorem eval_derivative_factored (x : SF) :
+    Polynomial.eval x (Polynomial.map (algebraMap ℚ SF) (Polynomial.derivative q)) =
+    algebraMap ℚ SF 5 * ((x - 1) ^ 4 + 4) := by
+  rw [q_derivative_eq, Polynomial.map_sub, Polynomial.map_add, Polynomial.map_sub,
+    Polynomial.map_add, Polynomial.map_sub]
+  simp only [Polynomial.map_mul, Polynomial.map_C, Polynomial.map_pow, Polynomial.map_X,
+    Polynomial.eval_sub, Polynomial.eval_add, Polynomial.eval_mul,
+    Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X]
+  ring
+
+-- Step F2: Sophie Germain identity
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- disc(q) = 1024000000 over ℚ.
+    The discriminant of X⁵ - 5X⁴ + 10X³ - 10X² + 25X - 5
+    equals 2¹⁶ · 5⁶ = 1024000000. -/
+theorem disc_q_val : Polynomial.discr q = (1024000000 : ℚ) := by
+  -- disc(q) = det(sylvesterDeriv q) for degree 5 (since (-1)^10 = 1)
+  -- The sylvesterDeriv is a 9×9 matrix over ℚ with entries from coefficients of q, q'.
+  -- native_decide fails because q uses noncomputable Polynomial.semiring.
+  -- Approaches: (a) explicit 9×9 ℤ matrix + native_decide on det,
+  --   then connect via sylvester entry lemmas;
+  -- (b) trinomial disc formula: disc(X⁵+aX+b) = -(4⁴a⁵+5⁵b⁴), then translation invariance
+  sorry
+
+/-- Sophie Germain: y⁴ + 4 = (y²+2y+2)(y²-2y+2). -/
+private theorem sophie_germain {R : Type*} [CommRing R] (y : R) :
+    y ^ 4 + 4 = (y ^ 2 + 2 * y + 2) * (y ^ 2 - 2 * y + 2) := by ring
+
+/-- The factorization applied to shifted roots:
+    (x-1)⁴ + 4 = (x²+1)(x²-4x+5) for x = rootEnum i. -/
+private theorem root_quartic_factored (x : SF) :
+    (x - 1) ^ 4 + 4 = (x ^ 2 + 1) * (x ^ 2 - 4 * x + 5) := by
+  have h := sophie_germain (x - 1)
+  convert h using 1 <;> ring
+
+/-- Res(q_SF, q'_SF) = algebraMap ℚ SF (Res(q, q')).
+    From `resultant_map_map`. -/
+theorem resultant_transfer :
+    Polynomial.resultant q_SF (Polynomial.derivative q_SF) =
+    algebraMap ℚ SF (Polynomial.resultant q (Polynomial.derivative q)) := by
+  -- q_SF = map φ q, derivative commutes with map, then resultant_map_map
+  show (Polynomial.map (algebraMap ℚ SF) q).resultant
+    (Polynomial.map (algebraMap ℚ SF) q).derivative = _
+  rw [Polynomial.derivative_map]
+  rw [Polynomial.resultant_map_map]
+  congr 1
+  have hinj : Function.Injective (algebraMap ℚ q.SplittingField) :=
+    (algebraMap ℚ q.SplittingField).injective
+  simp only [Polynomial.natDegree_map_eq_of_injective hinj]
+
+-- Step F3: VP² = 5⁵ · ∏(αᵢ²+1) · ∏(αᵢ²-4αᵢ+5)
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- VP² expressed as a product of two factors via derivative and Sophie Germain.
+    VP² = 5⁵ · ∏ᵢ(αᵢ²+1) · ∏ᵢ(αᵢ²-4αᵢ+5). -/
+theorem vandermondeProduct_sq_factored :
+    vandermondeProduct ^ 2 =
+    (algebraMap ℚ SF 5) ^ 5 *
+    (∏ i : Fin 5, ((rootEnum i) ^ 2 + 1)) *
+    (∏ i : Fin 5, ((rootEnum i) ^ 2 - 4 * (rootEnum i) + 5)) := by
+  -- VP² = ∏_i ∏_{j≠i} (αᵢ - αⱼ) = ∏_i q'_SF(αᵢ)
+  rw [ordered_root_diff_prod_eq_vandermonde_sq.symm,
+      prod_eval_derivative_eq_ordered_diff.symm]
+  -- ∏_i q'_SF(αᵢ) = ∏_i 5((αᵢ-1)^4+4) = 5^5 · ∏_i ((αᵢ-1)^4+4)
+  simp_rw [show Polynomial.derivative q_SF =
+    Polynomial.map (algebraMap ℚ SF) (Polynomial.derivative q) from
+    (Polynomial.derivative_map (algebraMap ℚ SF) q).symm]
+  simp_rw [eval_derivative_factored]
+  simp_rw [root_quartic_factored]
+  -- Distribute: ∏ 5·a·b = 5^5 · ∏a · ∏b
+  simp only [Finset.prod_mul_distrib, Finset.prod_const, Finset.card_fin]
+  ring
+
+-- Step F4: Complex embedding infrastructure
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- Embedding of the splitting field into ℂ. -/
+private noncomputable def toComplex : SF →ₐ[ℚ] ℂ :=
+  Polynomial.SplittingField.lift q (algebraMap ℚ ℂ)
+    (IsAlgClosed.splits_codomain q)
+
+private theorem toComplex_injective : Function.Injective toComplex :=
+  toComplex.injective
+
+/-- The factorization of q in ℂ using embedded roots. -/
+private theorem q_complex_eq_prod :
+    Polynomial.map (algebraMap ℚ ℂ) q =
+    ∏ i : Fin 5, (X - C (toComplex (rootEnum i))) := by
+  have h := q_SF_eq_prod_linear
+  -- Apply Polynomial.map toComplex.toRingHom to both sides
+  have h2 : Polynomial.map toComplex.toRingHom q_SF =
+    ∏ i : Fin 5, (X - C (toComplex (rootEnum i))) := by
+    rw [h, Polynomial.map_prod]
+    congr 1; ext i
+    simp [Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]
+  rwa [show Polynomial.map toComplex.toRingHom q_SF =
+    Polynomial.map (algebraMap ℚ ℂ) q from by
+      unfold q_SF
+      rw [Polynomial.map_map]
+      congr 1; ext x
+      exact (toComplex.commutes x).symm] at h2
+
+-- Step F5: Product-roots evaluation identity in ℂ
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- For monic polynomial that splits as ∏(X - rᵢ), evaluating at c gives ∏(c - rᵢ). -/
+private theorem eval_eq_prod_roots_sub (c : ℂ) :
+    Polynomial.eval c (Polynomial.map (algebraMap ℚ ℂ) q) =
+    ∏ i : Fin 5, (c - toComplex (rootEnum i)) := by
+  rw [q_complex_eq_prod]
+  simp [Polynomial.eval_prod, Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]
+
+/-- ∏ᵢ(φ(αᵢ) - c) = -q(c) for c ∈ ℂ (since q has degree 5, (-1)⁵ = -1). -/
+private theorem prod_roots_sub_eq_neg_eval (c : ℂ) :
+    ∏ i : Fin 5, (toComplex (rootEnum i) - c) =
+    -(Polynomial.eval c (Polynomial.map (algebraMap ℚ ℂ) q)) := by
+  rw [eval_eq_prod_roots_sub]
+  simp only [Finset.prod_neg_distrib']
+  simp only [neg_sub]
+  rw [Finset.card_fin]
+  norm_num
+
+-- Step F6: Complex arithmetic — evaluating q at Gaussian integers
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- Helper: q evaluated over ℂ at any point gives the polynomial expression. -/
+private theorem eval_q_complex (c : ℂ) :
+    Polynomial.eval c (Polynomial.map (algebraMap ℚ ℂ) q) =
+    c ^ 5 - 5 * c ^ 4 + 10 * c ^ 3 - 10 * c ^ 2 + 25 * c - 5 := by
+  unfold q
+  simp only [Polynomial.map_sub, Polynomial.map_add, Polynomial.map_mul,
+    Polynomial.map_pow, Polynomial.map_C, Polynomial.map_X,
+    Polynomial.eval_sub, Polynomial.eval_add, Polynomial.eval_mul,
+    Polynomial.eval_pow, Polynomial.eval_C, Polynomial.eval_X]
+  push_cast
+  ring
+
+/-- q(I) · q(-I) = 256 in ℂ.
+    q(I) = I-5-10I+10+25I-5 = 16I, q(-I) = -16I, product = 256. -/
+private theorem q_eval_I_product :
+    Polynomial.eval Complex.I (Polynomial.map (algebraMap ℚ ℂ) q) *
+    Polynomial.eval (-Complex.I) (Polynomial.map (algebraMap ℚ ℂ) q) = 256 := by
+  rw [eval_q_complex, eval_q_complex]
+  have hI2 : Complex.I ^ 2 = -1 := Complex.I_sq
+  -- Expand and simplify using I² = -1
+  ring_nf
+  rw [Complex.I_sq]
+  ring_nf
+  rw [Complex.I_sq]
+  ring_nf
+  rw [Complex.I_sq]
+  ring_nf
+  simp [Complex.ext_iff, Complex.I_re, Complex.I_im, Complex.ofReal_re, Complex.ofReal_im]
+  constructor <;> ring
+
+/-- q(2+I) · q(2-I) = 1280 in ℂ.
+    q(2+I) = 32+16I, q(2-I) = 32-16I, product = 1280. -/
+private theorem q_eval_2I_product :
+    Polynomial.eval (2 + Complex.I) (Polynomial.map (algebraMap ℚ ℂ) q) *
+    Polynomial.eval (2 - Complex.I) (Polynomial.map (algebraMap ℚ ℂ) q) = 1280 := by
+  rw [eval_q_complex, eval_q_complex]
+  ring_nf
+  rw [Complex.I_sq]
+  ring_nf
+  rw [Complex.I_sq]
+  ring_nf
+  rw [Complex.I_sq]
+  ring_nf
+  simp [Complex.ext_iff, Complex.I_re, Complex.I_im, Complex.ofReal_re, Complex.ofReal_im]
+  constructor <;> ring
+
+-- Step F7: Connect products to evaluations
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- ∏ᵢ(αᵢ²+1) maps to q(I)·q(-I) = 256 in ℂ.
+    f₁(x) = x²+1 = (x-I)(x+I), so ∏f₁(αᵢ) = [∏(αᵢ-I)][∏(αᵢ+I)] = q(I)·q(-I). -/
+private theorem prod_sq_add_one_eq :
+    toComplex (∏ i : Fin 5, ((rootEnum i) ^ 2 + 1)) = 256 := by
+  -- Map product through toComplex
+  rw [map_prod]
+  -- Factor each term: (φ(αᵢ))²+1 = (φ(αᵢ)-I)(φ(αᵢ)+I)
+  have factor : ∀ i : Fin 5,
+      toComplex ((rootEnum i) ^ 2 + 1) =
+      (toComplex (rootEnum i) - Complex.I) * (toComplex (rootEnum i) + Complex.I) := by
+    intro i
+    simp only [map_add, map_pow, map_one]
+    ring_nf
+    rw [Complex.I_sq]; ring
+  simp_rw [factor, Finset.prod_mul_distrib]
+  -- ∏(φ(αᵢ)-I) = -q(I) and ∏(φ(αᵢ)+I) = -q(-I)
+  rw [show (∏ i : Fin 5, (toComplex (rootEnum i) + Complex.I)) =
+    ∏ i : Fin 5, (toComplex (rootEnum i) - (-Complex.I)) from by
+    congr 1; ext i; ring]
+  rw [prod_roots_sub_eq_neg_eval Complex.I,
+      prod_roots_sub_eq_neg_eval (-Complex.I)]
+  rw [neg_mul_neg]
+  exact q_eval_I_product
+
+/-- ∏ᵢ(αᵢ²-4αᵢ+5) maps to q(2+I)·q(2-I) = 1280 in ℂ.
+    f₂(x) = x²-4x+5 = (x-(2+I))(x-(2-I)). -/
+private theorem prod_quad_eq :
+    toComplex (∏ i : Fin 5, ((rootEnum i) ^ 2 - 4 * (rootEnum i) + 5)) = 1280 := by
+  rw [map_prod]
+  have factor : ∀ i : Fin 5,
+      toComplex ((rootEnum i) ^ 2 - 4 * (rootEnum i) + 5) =
+      (toComplex (rootEnum i) - (2 + Complex.I)) *
+      (toComplex (rootEnum i) - (2 - Complex.I)) := by
+    intro i
+    simp only [map_sub, map_add, map_mul, map_pow, map_ofNat, map_one]
+    ring_nf
+    rw [Complex.I_sq]; ring
+  simp_rw [factor, Finset.prod_mul_distrib]
+  rw [prod_roots_sub_eq_neg_eval (2 + Complex.I),
+      prod_roots_sub_eq_neg_eval (2 - Complex.I)]
+  rw [neg_mul_neg]
+  exact q_eval_2I_product
+
+-- Step F8: Assemble the proof via injectivity
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- **Main theorem**: vandermondeProduct² = algebraMap ℤ SF 1024000000.
+    Proof via:
+    1. VP² = 5⁵ · ∏(αᵢ²+1) · ∏(αᵢ²-4αᵢ+5) [derivative + Sophie Germain]
+    2. Embed to ℂ: ∏(αᵢ²+1) = 256, ∏(αᵢ²-4αᵢ+5) = 1280 [product-roots identity]
+    3. VP² = 5⁵ · 256 · 1280 = 1024000000 [arithmetic]
+    4. Transfer back via injectivity of SF → ℂ -/
+theorem vandermondeProduct_sq_eq_proved :
+    vandermondeProduct ^ 2 = algebraMap ℤ SF 1024000000 := by
+  -- Apply injectivity of the ℂ embedding
+  apply toComplex_injective
+  -- Map both sides through toComplex
+  rw [vandermondeProduct_sq_factored]
+  simp only [map_mul, map_pow]
+  -- Map 5 through
+  have h5 : toComplex (algebraMap ℚ SF 5) = (5 : ℂ) := by
+    exact toComplex.commutes (5 : ℚ)
+  rw [h5, prod_sq_add_one_eq, prod_quad_eq]
+  -- Map the RHS: algebraMap ℤ SF 1024000000
+  have hrhs : toComplex (algebraMap ℤ SF 1024000000) = (1024000000 : ℂ) := by
+    simp [show (algebraMap ℤ SF 1024000000 : SF) =
+      algebraMap ℚ SF 1024000000 from by push_cast; ring]
+    exact toComplex.commutes (1024000000 : ℚ)
+  rw [hrhs]
+  -- 5⁵ · 256 · 1280 = 1024000000
+  push_cast; norm_num
+
+end VandermondeElimination
+
 -- Section E: Axiom Replacement Summary
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1096,17 +1619,13 @@ The axiom at line ~293 remains for file ordering, but is now DERIVABLE:
 -- Step 1: Transparent axiom (disc(q) = Δ²)
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-/-- **Transparent Axiom**: Δ² = disc(q) = 1024000000 = 32000² in the splitting field.
+/-- **PROVED**: Δ² = disc(q) = 1024000000 = 32000² in the splitting field.
 
-    This encodes the standard identity: for a monic polynomial f with distinct roots
-    r₁,...,rₙ, disc(f) = ∏_{i≠j}(rᵢ-rⱼ) = (∏_{i<j}(rⱼ-rᵢ))² = Δ².
-
-    Combined with the arithmetic: disc(q) = 1024000000 (trinomial_disc_computation).
-
-    This is a textbook identity connecting Polynomial.disc (resultant-based)
-    with Matrix.det_vandermonde (product-of-differences). Not yet in Mathlib. -/
-axiom vandermondeProduct_sq_eq :
-    vandermondeProduct ^ 2 = algebraMap ℤ q.SplittingField 1024000000
+    Proved via ℂ embedding + Sophie Germain identity (see Part XV above).
+    Previously an axiom, now derived from `vandermondeProduct_sq_eq_proved`. -/
+theorem vandermondeProduct_sq_eq :
+    vandermondeProduct ^ 2 = algebraMap ℤ q.SplittingField 1024000000 :=
+  vandermondeProduct_sq_eq_proved
 
 -- Step 2: Δ² = (algebraMap ℤ F 32000)²
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1450,328 +1969,5 @@ vandermondeProduct_sq_eq, which asserts disc(f) = Δ² for monic polynomials.
 a standard identity but not yet available in Mathlib.
 -/
 
--- ============================================================================
--- Part XV: Eliminating vandermondeProduct_sq_eq Axiom
--- ============================================================================
-
-/-
-## Proof Strategy: VP² = disc(q) = 1024000000
-
-**Mathlib API** (Mathlib v4.26.0): `Polynomial.resultant`, `Polynomial.discr`,
-`Polynomial.sylvester`, and `Polynomial.sylvesterDeriv` all exist. Key lemmas:
-- `resultant_map_map`: Res(map φ f, map φ g) m n = φ(Res(f,g) m n) ✓ PROVED
-- `resultant_eq_prod_eval`: Res(f,g) = lc(f)^n · ∏ eval αᵢ g (for splitting f)
-- `resultant_comm`: Res(f,g,m,n) = (-1)^(mn) · Res(g,f,n,m)
-- `resultant_X_sub_C_left`: Res(X-r, g, 1, n) = eval r g
-- `resultant_mul_left`: Res(f₁f₂, g, m₁+m₂, n) = Res(f₁,g,m₁,n) · Res(f₂,g,m₂,n)
-- `derivative_map`: (map φ f)' = map φ f'
-
-Chain: VP² = ∏_{i≠j}(αᵢ-αⱼ) = ∏ q'(αᵢ) = Res(q,q') = disc(q) = 1024000000
--/
-
-section VandermondeElimination
-
--- Abbreviation for the splitting field
-private abbrev SF := q.SplittingField
-
--- The mapped polynomial in the splitting field
-private noncomputable abbrev q_SF : Polynomial SF := Polynomial.map (algebraMap ℚ SF) q
-
--- Step A: The ordered product ∏_{i≠j} (αᵢ - αⱼ) equals vandermondeProduct²
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
--- The product over all ordered pairs (i,j) with i≠j of (rootEnum i - rootEnum j)
--- equals the Vandermonde product squared. For n=5, (-1)^{C(5,2)} = 1.
-/-- General lemma: for a function v : Fin n → R in a commutative ring,
-    the product ∏_i ∏_{j<i} (v i - v j) equals the Vandermonde product ∏_{i<j} (v j - v i).
-    This is because swapping indices (i,j) ↔ (j,i) just relabels the same set of pairs. -/
-private theorem prod_Iio_eq_vandermonde {n : ℕ} {R : Type*} [CommRing R]
-    (v : Fin n → R) :
-    (∏ i : Fin n, ∏ j ∈ Finset.Iio i, (v i - v j)) =
-    ∏ i : Fin n, ∏ j ∈ Finset.Ioi i, (v j - v i) := by
-  -- Both sides equal ∏_{a>b} (v a - v b), just with indices swapped.
-  -- Approach: flatten via Finset.prod_sigma, apply swap bijection (i,j) ↦ (j,i).
-  exact Finset.prod_comm' (fun i j => by
-    simp only [Finset.mem_univ, Finset.mem_Iio, Finset.mem_Ioi, true_and, and_true])
-
-theorem ordered_root_diff_prod_eq_vandermonde_sq :
-    (∏ i : Fin 5, ∏ j ∈ Finset.univ.erase i, (rootEnum i - rootEnum j)) =
-    vandermondeProduct ^ 2 := by
-  -- Split univ.erase i = Iio i ∪ Ioi i
-  have hsplit : ∀ i : Fin 5,
-      ∏ j ∈ Finset.univ.erase i, (rootEnum i - rootEnum j) =
-      (∏ j ∈ Finset.Iio i, (rootEnum i - rootEnum j)) *
-      (∏ j ∈ Finset.Ioi i, (rootEnum i - rootEnum j)) := by
-    intro i
-    rw [← Finset.prod_union (Finset.disjoint_left.mpr (fun x hx1 hx2 => by
-      rw [Finset.mem_Iio] at hx1; rw [Finset.mem_Ioi] at hx2; omega))]
-    congr 1; ext j
-    constructor
-    · intro hj
-      rw [Finset.mem_erase] at hj
-      rw [Finset.mem_union, Finset.mem_Iio, Finset.mem_Ioi]
-      exact (hj.1).lt_or_gt
-    · intro hj
-      rw [Finset.mem_union, Finset.mem_Iio, Finset.mem_Ioi] at hj
-      rw [Finset.mem_erase]
-      refine ⟨?_, Finset.mem_univ _⟩
-      rcases hj with h | h
-      · exact Fin.ne_of_lt h
-      · exact Fin.ne_of_gt h
-  simp_rw [hsplit, Finset.prod_mul_distrib]
-  unfold vandermondeProduct; rw [Matrix.det_vandermonde, sq]
-  congr 1
-  · exact prod_Iio_eq_vandermonde rootEnum
-  · -- ∏_i ∏_{j>i} (αᵢ-αⱼ) = ∏_i ∏_{j>i} (αⱼ-αᵢ) via sign (-1)^10 = 1
-    have key : ∀ i : Fin 5, ∏ j ∈ Finset.Ioi i, (rootEnum i - rootEnum j) =
-        (-1) ^ (Finset.Ioi i).card *
-        ∏ j ∈ Finset.Ioi i, (rootEnum j - rootEnum i) := by
-      intro i
-      have : ∀ j ∈ Finset.Ioi i, rootEnum i - rootEnum j =
-        (-1 : q.SplittingField) * (rootEnum j - rootEnum i) := fun _ _ => by ring
-      rw [Finset.prod_congr rfl this, Finset.prod_mul_distrib, Finset.prod_const]
-    simp_rw [key, Finset.prod_mul_distrib]
-    suffices h : ∏ i : Fin 5, (-1 : q.SplittingField) ^ (Finset.Ioi i).card = 1 by
-      rw [h, one_mul]
-    rw [Finset.prod_pow_eq_pow_sum]
-    have : ∑ i : Fin 5, (Finset.Ioi i).card = 10 := by decide
-    rw [this]; norm_num
-
--- Step B: Connect derivative evaluation to root differences
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-/-- For a monic polynomial that factors as (X - α) * r in the splitting field,
-    the derivative evaluated at α equals r(α). -/
-theorem eval_derivative_at_root_of_factor {K : Type*} [Field K]
-    (f r : Polynomial K) (α : K) (hf : f = (X - C α) * r) :
-    Polynomial.eval α (Polynomial.derivative f) = Polynomial.eval α r := by
-  rw [hf, Polynomial.derivative_mul]
-  simp only [Polynomial.eval_add, Polynomial.eval_mul, Polynomial.derivative_sub,
-    Polynomial.derivative_X, Polynomial.derivative_C, sub_zero,
-    Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C,
-    Polynomial.eval_one, sub_self, zero_mul, add_zero, one_mul]
-
--- Step C: q splits as product of linear factors
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-/-- q mapped to its splitting field splits as ∏ (X - rootEnum i). -/
-theorem q_SF_eq_prod_linear :
-    q_SF = ∏ i : Fin 5, (X - C (rootEnum i)) := by
-  -- Strategy: both sides are monic of degree 5, and P ∣ q_SF, so P = q_SF.
-  set P := ∏ i : Fin 5, (X - C (rootEnum i)) with hP_def
-  -- q_SF is monic
-  have hq_monic : q_SF.Monic := q_monic.map (algebraMap ℚ q.SplittingField)
-  have hq_ne : q_SF ≠ 0 := hq_monic.ne_zero
-  -- P is monic
-  have hP_monic : P.Monic :=
-    Polynomial.monic_prod_of_monic _ _ (fun i _ => Polynomial.monic_X_sub_C _)
-  -- P has degree 5
-  have hP_deg : P.natDegree = 5 := by
-    rw [hP_def, Polynomial.natDegree_prod_of_monic _ _
-      (fun i _ => Polynomial.monic_X_sub_C _)]
-    simp [Polynomial.natDegree_X_sub_C, Finset.sum_const, Finset.card_fin]
-  -- Each rootEnum i is a root of q_SF
-  have hroot : ∀ i : Fin 5, Polynomial.IsRoot q_SF (rootEnum i) := by
-    intro i
-    have := rootEnum_is_root i
-    rwa [Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map] at this
-  -- Each linear factor divides q_SF
-  have hdvd_each : ∀ i : Fin 5, (X - C (rootEnum i)) ∣ q_SF :=
-    fun i => Polynomial.dvd_iff_isRoot.mpr (hroot i)
-  -- Pairwise coprime via Bezout identity:
-  -- u*(X - C α) + v*(X - C β) = 1 where u = C((β-α)⁻¹), v = -C((β-α)⁻¹)
-  have hcoprime : ∀ i j : Fin 5, i ≠ j →
-      IsCoprime (X - C (rootEnum i) : Polynomial q.SplittingField)
-               (X - C (rootEnum j)) := by
-    intro i j hij
-    have hne : rootEnum i ≠ rootEnum j := fun h => hij (rootEnum_injective h)
-    have hne' : rootEnum j - rootEnum i ≠ 0 := sub_ne_zero.mpr (Ne.symm hne)
-    exact ⟨C ((rootEnum j - rootEnum i)⁻¹), -C ((rootEnum j - rootEnum i)⁻¹), by
-      calc C ((rootEnum j - rootEnum i)⁻¹) * (X - C (rootEnum i)) +
-           -C ((rootEnum j - rootEnum i)⁻¹) * (X - C (rootEnum j))
-        _ = C ((rootEnum j - rootEnum i)⁻¹) *
-            ((X - C (rootEnum i)) - (X - C (rootEnum j))) := by ring
-        _ = C ((rootEnum j - rootEnum i)⁻¹) * C (rootEnum j - rootEnum i) := by
-            congr 1
-            have : (X : Polynomial q.SplittingField) - C (rootEnum i) -
-                   (X - C (rootEnum j)) = C (rootEnum j) - C (rootEnum i) := by ring
-            rw [this, ← map_sub]
-        _ = C ((rootEnum j - rootEnum i)⁻¹ * (rootEnum j - rootEnum i)) := by
-            rw [← map_mul]
-        _ = C 1 := by rw [inv_mul_cancel₀ hne']
-        _ = 1 := map_one _⟩
-  -- Product of pairwise coprime factors divides q_SF
-  have hdvd : P ∣ q_SF := by
-    rw [hP_def]
-    exact Finset.prod_dvd_of_coprime
-      (fun i _ j _ hij => hcoprime i j hij) (fun i _ => hdvd_each i)
-  -- Both monic of same degree with P ∣ q_SF → P = q_SF
-  obtain ⟨r, hr⟩ := hdvd
-  have r_ne : r ≠ 0 := right_ne_zero_of_mul (hr ▸ hq_ne)
-  have hr_deg : r.natDegree = 0 := by
-    have h1 := Polynomial.natDegree_mul hP_monic.ne_zero r_ne
-    rw [← hr, Polynomial.natDegree_map, q_natDegree, hP_deg] at h1; omega
-  have hr_one : r = 1 := by
-    have h := Polynomial.eq_C_of_natDegree_eq_zero hr_deg
-    -- r.leadingCoeff = 1 from monicity of product
-    have hrc : r.leadingCoeff = 1 := by
-      have hm := hq_monic; rw [hr, Polynomial.Monic] at hm
-      rw [Polynomial.leadingCoeff_mul, hP_monic.leadingCoeff, one_mul] at hm
-      exact hm
-    rw [h, Polynomial.leadingCoeff_C] at hrc
-    rw [h, hrc, map_one]
-  rw [hr, hr_one, mul_one]
-
--- Step D: Derivative at rootEnum i gives the product of root differences
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-/-- The derivative of q_SF evaluated at rootEnum i equals
-    ∏_{j≠i} (rootEnum i - rootEnum j). -/
-theorem eval_derivative_q_at_root (i : Fin 5) :
-    Polynomial.eval (rootEnum i) (Polynomial.derivative q_SF) =
-    ∏ j ∈ Finset.univ.erase i, (rootEnum i - rootEnum j) := by
-  -- Factor: q_SF = (X - C αᵢ) * ∏_{j≠i} (X - C αⱼ)
-  have hfact : q_SF = (X - C (rootEnum i)) *
-      ∏ j ∈ Finset.univ.erase i, (X - C (rootEnum j)) := by
-    rw [q_SF_eq_prod_linear]
-    exact (Finset.mul_prod_erase Finset.univ
-      (fun j => X - C (rootEnum j)) (Finset.mem_univ i)).symm
-  -- Derivative at root: f = (X - α) * r → f'(α) = r(α)
-  rw [eval_derivative_at_root_of_factor q_SF _ (rootEnum i) hfact]
-  -- Distribute eval over product
-  rw [Polynomial.eval_prod]
-  congr 1; ext j
-  simp [Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]
-
--- Step E: Product of derivative evaluations = ordered root difference product
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-/-- ∏_i q'(αᵢ) = ∏_i ∏_{j≠i} (αᵢ - αⱼ). -/
-theorem prod_eval_derivative_eq_ordered_diff :
-    (∏ i : Fin 5, Polynomial.eval (rootEnum i)
-      (Polynomial.derivative q_SF)) =
-    ∏ i : Fin 5, ∏ j ∈ Finset.univ.erase i, (rootEnum i - rootEnum j) := by
-  congr 1; ext i; exact eval_derivative_q_at_root i
-
--- Step F: Connect to resultant via Mathlib
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-/-- The product of derivative evaluations equals Res(q_SF, q'_SF).
-    Proof approach: use `resultant_eq_prod_eval` from Mathlib
-    (Res(f,g) = lc(f)^n · ∏ eval(αᵢ)(g) for splitting f),
-    then convert between the Multiset.map product on q_SF.roots
-    and the Fin 5 product via rootEnum. For monic q_SF, lc^n = 1. -/
-theorem prod_eval_derivative_eq_resultant :
-    (∏ i : Fin 5, Polynomial.eval (rootEnum i)
-      (Polynomial.derivative q_SF)) =
-    Polynomial.resultant q_SF (Polynomial.derivative q_SF) := by
-  -- Strategy: q_SF = ∏ (X - C αᵢ), then use resultant_prod_left + resultant_X_sub_C_left
-  set g := Polynomial.derivative q_SF with hg_def
-  set n := g.natDegree with hn_def
-  -- Step 1: Rewrite q_SF as product of linear factors
-  conv_rhs => rw [q_SF_eq_prod_linear]
-  -- Step 2: Use resultant_prod_left to distribute over product
-  have hlc : ∏ i : Fin 5,
-      (Polynomial.X - Polynomial.C (rootEnum i) : Polynomial SF).leadingCoeff ≠ 0 := by
-    simp [Polynomial.leadingCoeff_X_sub_C]
-  have hndeg : g.natDegree ≤ n := le_refl _
-  rw [Polynomial.resultant_prod_left Finset.univ _ g n hlc hndeg]
-  -- Step 3: Each factor's resultant equals evaluation
-  congr 1; ext i
-  have hXC_deg : (Polynomial.X - Polynomial.C (rootEnum i) :
-      Polynomial SF).natDegree = 1 := Polynomial.natDegree_X_sub_C _
-  rw [hXC_deg]
-  exact (Polynomial.resultant_X_sub_C_left g n (rootEnum i) hndeg).symm
-
--- Step G: Resultant to discriminant
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-/-- Res(q, q') = disc(q) over ℚ (for monic q with degree 5).
-    From `resultant_deriv`: Res = (-1)^10 · 1 · disc = disc. -/
-private theorem q_derivative_natDegree : (Polynomial.derivative q).natDegree = 4 := by
-  unfold q; simp only [Polynomial.derivative_sub, Polynomial.derivative_add,
-    Polynomial.derivative_C_mul, Polynomial.derivative_pow,
-    Polynomial.derivative_X, Polynomial.derivative_C]
-  compute_degree!
-
-theorem resultant_eq_disc_q :
-    Polynomial.resultant q (Polynomial.derivative q) = Polynomial.discr q := by
-  -- resultant_deriv: f.resultant f' n (n-1) = (-1)^{n(n-1)/2} * lc(f) * discr(f)
-  -- For monic q of degree 5: = (-1)^10 * 1 * discr q = discr q
-  have hnd : (Polynomial.derivative q).natDegree = q.natDegree - 1 := by
-    rw [q_natDegree, q_derivative_natDegree]
-  -- Rewrite the default second arg to match resultant_deriv
-  conv_lhs => rw [show q.resultant (Polynomial.derivative q) =
-    q.resultant (Polynomial.derivative q) q.natDegree
-      (Polynomial.derivative q).natDegree from rfl]
-  rw [hnd]
-  -- Now: q.resultant q' q.natDegree (q.natDegree - 1) = discr q
-  have hdeg : (0 : WithBot ℕ) < q.degree := by
-    rw [Polynomial.degree_eq_natDegree q_monic.ne_zero, q_natDegree]
-    exact Nat.cast_pos.mpr (by norm_num)
-  rw [Polynomial.resultant_deriv hdeg]
-  -- Goal: (-1)^(5*4/2) * lc(q) * discr q = discr q
-  simp only [q_monic.leadingCoeff, q_natDegree, one_mul]
-  norm_num
-
--- Step H: Discriminant computation
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-/-- disc(q) = 1024000000 over ℚ.
-    The discriminant of X⁵ - 5X⁴ + 10X³ - 10X² + 25X - 5
-    equals 2¹⁶ · 5⁶ = 1024000000. -/
-theorem disc_q_val : Polynomial.discr q = (1024000000 : ℚ) := by
-  -- disc(q) = det(sylvesterDeriv q) for degree 5 (since (-1)^10 = 1)
-  -- The sylvesterDeriv is a 9×9 matrix over ℚ with entries from coefficients of q, q'.
-  -- native_decide fails because q uses noncomputable Polynomial.semiring.
-  -- Approaches: (a) explicit 9×9 ℤ matrix + native_decide on det,
-  --   then connect via sylvester entry lemmas;
-  -- (b) trinomial disc formula: disc(X⁵+aX+b) = -(4⁴a⁵+5⁵b⁴), then translation invariance
-  sorry
-
--- Step I: Transfer resultant through algebraMap
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-/-- Res(q_SF, q'_SF) = algebraMap ℚ SF (Res(q, q')).
-    From `resultant_map_map`. -/
-theorem resultant_transfer :
-    Polynomial.resultant q_SF (Polynomial.derivative q_SF) =
-    algebraMap ℚ SF (Polynomial.resultant q (Polynomial.derivative q)) := by
-  -- q_SF = map φ q, derivative commutes with map, then resultant_map_map
-  show (Polynomial.map (algebraMap ℚ SF) q).resultant
-    (Polynomial.map (algebraMap ℚ SF) q).derivative = _
-  rw [Polynomial.derivative_map]
-  rw [Polynomial.resultant_map_map]
-  congr 1
-  have hinj : Function.Injective (algebraMap ℚ q.SplittingField) :=
-    (algebraMap ℚ q.SplittingField).injective
-  simp only [Polynomial.natDegree_map_eq_of_injective hinj]
-
--- Step J: Assemble the proof
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-/-- **Main theorem**: vandermondeProduct² = algebraMap ℤ SF 1024000000.
-    Eliminates the `vandermondeProduct_sq_eq` axiom via Mathlib's resultant API.
-
-    Proof chain:
-    VP² = ∏_{i≠j}(αᵢ-αⱼ) = ∏ q'(αᵢ) = Res(q,q') = disc(q) = 1024000000 -/
-theorem vandermondeProduct_sq_eq_proved :
-    vandermondeProduct ^ 2 = algebraMap ℤ SF 1024000000 := by
-  -- Chain: VP² = ∏_{i≠j} diff = ∏ q'(αᵢ) = Res(q_SF, q'_SF)
-  --        = algebraMap ℚ SF (Res(q,q')) = algebraMap ℚ SF (disc q) = algebraMap ℚ SF 1024000000
-  calc vandermondeProduct ^ 2
-      = ∏ i : Fin 5, ∏ j ∈ Finset.univ.erase i, (rootEnum i - rootEnum j) :=
-        (ordered_root_diff_prod_eq_vandermonde_sq).symm
-    _ = ∏ i : Fin 5, Polynomial.eval (rootEnum i) (Polynomial.derivative q_SF) :=
-        (prod_eval_derivative_eq_ordered_diff).symm
-    _ = Polynomial.resultant q_SF (Polynomial.derivative q_SF) :=
-        prod_eval_derivative_eq_resultant
-    _ = algebraMap ℚ SF (Polynomial.resultant q (Polynomial.derivative q)) :=
-        resultant_transfer
-    _ = algebraMap ℚ SF (Polynomial.discr q) := by rw [resultant_eq_disc_q]
-    _ = algebraMap ℚ SF 1024000000 := by rw [disc_q_val]
-    _ = algebraMap ℤ SF 1024000000 := by simp [map_intCast, Int.cast_natCast]
-
-end VandermondeElimination
 
 end InverseGaloisA5
