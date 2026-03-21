@@ -96,15 +96,8 @@ For P = {2, 3}: a = [1, 2, 3, 4, 6, 8, 9, 12, 16, 18, ...]
 noncomputable def smoothSeq (P : Set ℕ) : ℕ → ℕ :=
   Nat.nth (IsPSmooth P)
 
-/-- The sequence is strictly increasing. -/
-axiom smoothSeq_strictMono (P : Set ℕ) (hP : P.Nonempty) :
-    StrictMono (smoothSeq P)
-
 /-- smoothSeq P 0 = 1 for any nonempty P. -/
 axiom smoothSeq_zero (P : Set ℕ) (hP : P.Nonempty) : smoothSeq P 0 = 1
-
-/-- Each element is P-smooth. -/
-axiom smoothSeq_isPSmooth (P : Set ℕ) (n : ℕ) : IsPSmooth P (smoothSeq P n)
 
 /- ## Part III: Partial LCM -/
 
@@ -126,18 +119,12 @@ theorem partialLcm_zero (P : Set ℕ) : partialLcm P 0 = 1 := by
 theorem partialLcm_one (P : Set ℕ) (hP : P.Nonempty) : partialLcm P 1 = 1 := by
   simp [partialLcm, smoothSeq_zero P hP]
 
-/-- The sequence L_n is non-decreasing. -/
-axiom partialLcm_mono (P : Set ℕ) : Monotone (partialLcm P)
-
 /-- L_{n+1} = lcm(L_n, a_n). -/
 theorem partialLcm_succ (P : Set ℕ) (n : ℕ) :
     partialLcm P (n + 1) = Nat.lcm (partialLcm P n) (smoothSeq P n) := by
   simp only [partialLcm, Finset.range_succ]
   rw [Finset.lcm_insert (Finset.not_mem_range_self n)]
   ring
-
-/-- L_n is P-smooth (LCM of P-smooth numbers is P-smooth). -/
-axiom partialLcm_isPSmooth (P : Set ℕ) (n : ℕ) : IsPSmooth P (partialLcm P n)
 
 /- ## Part IV: The Series -/
 
@@ -150,14 +137,6 @@ This series always converges since L_n grows at least exponentially.
 -/
 noncomputable def lcmSeries (P : Set ℕ) : ℝ :=
   ∑' n, (1 : ℝ) / (partialLcm P n)
-
-/-- The series converges. -/
-axiom lcmSeries_summable (P : Set ℕ) (hP : ∃ p ∈ P, p.Prime) :
-    Summable (fun n => (1 : ℝ) / (partialLcm P n))
-
-/-- The series is positive. -/
-axiom lcmSeries_pos (P : Set ℕ) (hP : ∃ p ∈ P, p.Prime) :
-    lcmSeries P > 0
 
 /- ## Part V: The Main Conjecture (OPEN) -/
 
@@ -212,22 +191,6 @@ theorem twoThreeSmooth_prime : ∀ p ∈ ({2, 3} : Finset ℕ), p.Prime := by
   · exact Nat.prime_two
   · exact Nat.prime_three
 
-/-- For P = {2,3}, the sequence starts 1, 2, 3, 4, 6, 8, 9, ... -/
-axiom example_23_seq_0 : smoothSeq twoThreeSmooth 0 = 1
-axiom example_23_seq_1 : smoothSeq twoThreeSmooth 1 = 2
-axiom example_23_seq_2 : smoothSeq twoThreeSmooth 2 = 3
-axiom example_23_seq_3 : smoothSeq twoThreeSmooth 3 = 4
-axiom example_23_seq_4 : smoothSeq twoThreeSmooth 4 = 6
-axiom example_23_seq_5 : smoothSeq twoThreeSmooth 5 = 8
-axiom example_23_seq_6 : smoothSeq twoThreeSmooth 6 = 9
-
-/-- Partial LCMs for {2,3}: L_1=1, L_2=2, L_3=6, L_4=12, L_5=12, ... -/
-axiom example_23_lcm_1 : partialLcm twoThreeSmooth 1 = 1
-axiom example_23_lcm_2 : partialLcm twoThreeSmooth 2 = 2
-axiom example_23_lcm_3 : partialLcm twoThreeSmooth 3 = 6
-axiom example_23_lcm_4 : partialLcm twoThreeSmooth 4 = 12
-axiom example_23_lcm_5 : partialLcm twoThreeSmooth 5 = 12
-
 /- ## Part VIII: Structural Properties -/
 
 /--
@@ -242,15 +205,6 @@ power of p enters the sequence.
 noncomputable def lcmPadicVal (p n : ℕ) (P : Set ℕ) : ℕ :=
   Nat.padicValNat p (partialLcm P n)
 
-/-- For p ∈ P, the p-adic valuation of L_n is non-decreasing. -/
-axiom lcmPadicVal_mono (P : Set ℕ) (p : ℕ) (hp : p.Prime) (hpP : p ∈ P) :
-    Monotone (fun n => lcmPadicVal p n P)
-
-/-- v_p(L_n) increases when p^k enters the sequence. -/
-axiom lcmPadicVal_jump (P : Set ℕ) (p k n : ℕ) (hp : p.Prime) (hpP : p ∈ P)
-    (hk : p ^ k = smoothSeq P n) (hn : n > 0) :
-    lcmPadicVal p (n + 1) P > lcmPadicVal p n P
-
 /- ## Part IX: Why It's Hard -/
 
 /--
@@ -264,11 +218,6 @@ exact pattern of when L_n increases vs. stays constant.
 The problem reduces to showing that the "effective" contributions from each
 prime don't conspire to produce a rational sum.
 -/
-
-/-- Eventually, L_n stabilizes modulo some fixed M. -/
-axiom partialLcm_eventually_periodic (P : Finset ℕ) (hP : P.card ≥ 2)
-    (hPrime : ∀ p ∈ P, p.Prime) :
-    ∃ M n₀ : ℕ, M > 0 ∧ ∀ n ≥ n₀, M ∣ partialLcm (P : Set ℕ) n
 
 /- ## Part X: Known Partial Result -/
 

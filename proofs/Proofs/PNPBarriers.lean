@@ -377,15 +377,6 @@ def AlgebraicExtension (A : Oracle) : Oracle := A  -- Placeholder
 def AlgebrizingProof (conclusion : Prop) : Prop :=
   ∀ A : Oracle, ∀ Atilde : Oracle, A ⊆ Atilde → conclusion
 
-/-- **Algebrization Barrier (Aaronson-Wigderson 2009):**
-    There exist oracles and their algebraic extensions with opposite answers.
-    This rules out even non-relativizing techniques like arithmetization. -/
-axiom algebrization_barrier_pos :
-  ∃ A Atilde : Oracle, AlgebraicExtension A = Atilde ∧ P_relative A = NP_relative Atilde
-
-axiom algebrization_barrier_neg :
-  ∃ B Btilde : Oracle, AlgebraicExtension B = Btilde ∧ P_relative B ≠ NP_relative Btilde
-
 -- ============================================================
 -- PART 7: Summary and Implications
 -- ============================================================
@@ -639,16 +630,6 @@ axiom time_hierarchy_theorem :
   ∀ (f g : Nat → Nat),
     (∀ n, f n * (Nat.log2 (f n) + 1) < g n) →  -- f log f = o(g)
     DTIME f ⊂ DTIME g
-
-/-- Space Hierarchy Theorem (Stearns-Hartmanis-Lewis 1965):
-    For space-constructible f, g with f = o(g),
-    DSPACE(f) ⊊ DSPACE(g).
-
-    Even cleaner than time (no log factor) because space can be reused. -/
-axiom space_hierarchy_theorem :
-  ∀ (f g : Nat → Nat),
-    (∀ n, f n < g n) →  -- f = o(g)
-    DSPACE f ⊂ DSPACE g
 
 /-- Why P vs NP doesn't yield to hierarchy theorems:
 
@@ -1074,10 +1055,6 @@ def coNPComplete (problem : Nat → Bool) : Prop :=
     This is coNP-complete (complement of SAT). -/
 def TAUTOLOGY : Nat → Bool := fun n => !(SAT n)  -- Complement of SAT
 
-/-- TAUTOLOGY is coNP-complete.
-    Proof: SAT is NP-complete, so its complement TAUTOLOGY is coNP-complete. -/
-axiom tautology_coNP_complete : coNPComplete TAUTOLOGY
-
 /-- If a coNP-complete problem is in P, then coNP ⊆ P -/
 theorem coNPComplete_in_P_implies_coNP_eq_P (L : Nat → Bool)
     (h_complete : coNPComplete L) (h_in_P : L ∈ P_unrelativized) :
@@ -1494,20 +1471,6 @@ theorem P_subset_BPP_subset_PSPACE :
     P_unrelativized ⊆ BPP ∧ BPP ⊆ PSPACE :=
   ⟨P_subset_BPP, BPP_subset_PSPACE⟩
 
-/-- NP and BPP are incomparable (under standard assumptions):
-    - NP ⊆ BPP would imply NP ⊆ PSPACE (true, but also NP = co-NP by BPP symmetry)
-    - BPP ⊆ NP would mean randomness doesn't help for NP-type problems
-
-    Neither containment is known. If NP ⊆ BPP, the polynomial hierarchy collapses. -/
-axiom NP_BPP_incomparable :
-  -- Under standard assumptions, NP ⊄ BPP and BPP ⊄ NP
-  ¬(NP_unrelativized ⊆ BPP ∧ BPP ⊆ NP_unrelativized)
-
-/-- If NP ⊆ BPP, then the polynomial hierarchy collapses to the second level.
-    This is because BPP ⊆ Σ₂ᴾ ∩ Π₂ᴾ (Sipser-Gács-Lautemann theorem). -/
-axiom NP_subset_BPP_implies_PH_collapse :
-  NP_unrelativized ⊆ BPP → PH = Sigma_k 2
-
 -- ============================================================
 -- PART 13: Interactive Proofs: MA and AM
 -- ============================================================
@@ -1697,20 +1660,6 @@ Unlike NP vs coNP, it's unknown whether AM = coAM. However:
 
 If AM ≠ coAM, then the polynomial hierarchy doesn't collapse.
 -/
-
-/-- Graph Non-Isomorphism is in AM.
-
-    The protocol (Goldreich-Micali-Wigderson, 1986):
-    1. Arthur: Send a random isomorphic copy of one of the two graphs
-    2. Merlin: Identify which graph it came from
-    3. Arthur: Verify Merlin's claim
-
-    If graphs are non-isomorphic, Merlin can always distinguish.
-    If graphs are isomorphic, Merlin can only guess (50% chance).
-
-    This was a breakthrough: it showed GNI has interactive proofs,
-    suggesting NP ≠ coNP or interactive proofs are more powerful. -/
-axiom GNI_in_AM : (fun _ => !GRAPH_ISOMORPHISM 0) ∈ AM
 
 /-- Graph Isomorphism is in coAM (complement of GNI ∈ AM).
     Since GRAPH_ISOMORPHISM is a placeholder constant function,
@@ -2377,18 +2326,6 @@ def FACTORING_decision : Nat → Bool :=
     -- Full implementation would need primality testing
     (List.range (n.sqrt + 1)).any (fun d => d > 1 && n % d = 0))
 
-/-- Shor's Algorithm: FACTORING ∈ BQP.
-
-    Peter Shor (1994) showed that a quantum computer can factor integers
-    in polynomial time using:
-    1. Reduction of factoring to period-finding
-    2. Quantum Fourier Transform for period detection
-    3. Classical continued fractions for period extraction
-
-    This is the most famous quantum algorithm and demonstrates
-    exponential speedup over known classical algorithms. -/
-axiom shors_algorithm : FACTORING ∈ BQP
-
 /-- FACTORING is believed not in BPP - quantum speedup is real.
 
     If FACTORING ∈ BPP, then RSA and many other cryptosystems would be broken
@@ -2410,21 +2347,6 @@ theorem quantum_containment_chain :
     BQP ⊆ PP ∧
     PP ⊆ PSPACE :=
   ⟨P_subset_BPP, BPP_subset_BQP, BQP_subset_PP, PP_subset_PSPACE⟩
-
-/-- BQP and NP are believed incomparable.
-
-    BQP ⊄ NP:
-    - Problems like BOSONSAMPLING are in BQP but have no obvious NP certificate
-    - The output is a probability distribution, not a yes/no answer
-
-    NP ⊄ BQP:
-    - No known quantum algorithm solves NP-complete problems efficiently
-    - Grover gives √N speedup, but NP-complete problems need exponential classical time
-    - √(2^n) = 2^(n/2) is still exponential
-
-    This is formalized as an axiom representing the consensus conjecture. -/
-axiom BQP_NP_incomparable :
-  ¬(BQP ⊆ NP_unrelativized) ∧ ¬(NP_unrelativized ⊆ BQP)
 
 /-- PostBQP = PP: Quantum with postselection equals PP.
 
@@ -2533,12 +2455,6 @@ def PCP (r q : Nat → Nat) : Set (Nat → Bool) :=
     This is equivalent to reading the entire NP witness. -/
 def PCP_deterministic : Set (Nat → Bool) := PCP (fun _ => 0) (fun n => n)
 
-/-- PCP(0, poly) = NP: Without randomness, PCP collapses to NP.
-
-    The verifier can only check one deterministic query pattern,
-    so it might as well read a full polynomial-size witness. -/
-axiom PCP_zero_random_eq_NP : PCP_deterministic = NP_unrelativized
-
 /-- PCP(log n, 1) ⊇ P: Trivial languages have 1-query PCPs.
 
     For L ∈ P, the verifier can compute L(x) directly using
@@ -2593,18 +2509,6 @@ def GapPreservingReduction (A B : Nat → Bool) (gap : Real) : Prop :=
     -- Gap is preserved in approximation
     (∀ n, A n = false → True)  -- Abstract: B(f(n)) has gap from optimal
 
-/-- MAX-3SAT hardness: Cannot approximate better than 7/8 unless P = NP.
-
-    Håstad's 3-bit PCP implies that approximating MAX-3SAT beyond
-    7/8 of optimal is NP-hard. This is tight: random assignment
-    achieves 7/8.
-
-    More precisely: For all ε > 0, (7/8 + ε)-approximating MAX-3SAT
-    is NP-hard. -/
-axiom hastad_max3sat_hardness :
-  ∀ ε : Real, ε > 0 →
-    ∀ A ∈ NP_unrelativized, GapPreservingReduction A SAT (7/8 + ε)
-
 /-- Approximation hardness examples from PCP:
 
     | Problem | Ratio | Status |
@@ -2617,10 +2521,6 @@ axiom hastad_max3sat_hardness :
 
     All these follow from the PCP theorem plus appropriate reductions. -/
 def MAX_CLIQUE : Nat → Bool := fun _ => true  -- Abstract: maximum clique
-
-axiom max_clique_inapprox :
-  ∀ ε : Real, ε > 0 →
-    ∀ A ∈ NP_unrelativized, GapPreservingReduction A MAX_CLIQUE (1 - ε)
 
 /-- The Unique Games Conjecture (Khot, 2002).
 
@@ -2704,8 +2604,6 @@ theorem pcp_landscape :
 #check NaturalProof
 #check natural_proofs_barrier
 #check natural_proof_breaks_crypto
-#check algebrization_barrier_pos
-#check algebrization_barrier_neg
 -- New exports
 #check P_unrelativized
 #check NP_unrelativized
@@ -2726,7 +2624,6 @@ theorem pcp_landscape :
 #check DTIME
 #check DSPACE
 #check time_hierarchy_theorem
-#check space_hierarchy_theorem
 #check barriers_explain_difficulty
 -- Part 10 exports
 #check PSPACE
@@ -2764,7 +2661,6 @@ theorem pcp_landscape :
 #check coNPHard
 #check coNPComplete
 #check TAUTOLOGY
-#check tautology_coNP_complete
 #check coNPComplete_in_P_implies_coNP_eq_P
 #check P_eq_NP_implies_NP_eq_coNP
 -- Part 12 exports (BPP and Probabilistic Complexity)
@@ -2788,8 +2684,6 @@ theorem pcp_landscape :
 #check impagliazzo_wigderson
 #check probabilistic_containments
 #check P_subset_BPP_subset_PSPACE
-#check NP_BPP_incomparable
-#check NP_subset_BPP_implies_PH_collapse
 -- Part 13 exports (RP, coRP, ZPP refinement)
 #check inRP
 #check RP
@@ -2818,7 +2712,6 @@ theorem pcp_landscape :
 #check AM_subset_Pi2_axiom
 #check AM_subset_Pi2
 #check coAM_subset_Sigma2
-#check GNI_in_AM
 #check GI_in_coAM
 #check IP
 #check AM_subset_IP
@@ -2876,9 +2769,7 @@ theorem pcp_landscape :
 #check BQP_subset_PP_axiom
 #check BQP_subset_PP
 #check FACTORING_decision
-#check shors_algorithm
 #check quantum_containment_chain
-#check BQP_NP_incomparable
 #check PostBQP
 #check PostBQP_eq_PP
 #check QMA
@@ -2889,15 +2780,12 @@ theorem pcp_landscape :
 -- Part 18 exports (PCP - Probabilistically Checkable Proofs)
 #check PCP
 #check PCP_deterministic
-#check PCP_zero_random_eq_NP
 #check P_subset_PCP_log_1
 #check pcp_theorem
 #check NP_subset_PCP
 #check PCP_subset_NP
 #check GapPreservingReduction
-#check hastad_max3sat_hardness
 #check MAX_CLIQUE
-#check max_clique_inapprox
 #check UniqueGamesConjecture
 #check ugc_vertex_cover
 #check pcp_vs_ip
@@ -3040,12 +2928,6 @@ theorem CZK_subset_PSPACE : CZK ⊆ PSPACE := by
   exact h1
 
 /-! ### Statistical Zero-Knowledge (SZK) -/
-
-/-- SZK is closed under complement.
-
-    This is surprising! Unlike NP, SZK = coSZK.
-    Proved by Okamoto (1996) using the "polarization lemma". -/
-axiom SZK_eq_coSZK : SZK = { L | ∃ M : Language, M ∈ SZK ∧ L = M.complement }
 
 /-- SZK ⊆ AM ∩ coAM.
 
@@ -3192,7 +3074,6 @@ theorem zk_power :
 #check CZK_subset_IP
 #check gmw_theorem
 #check CZK_subset_PSPACE
-#check SZK_eq_coSZK
 #check SZK_subset_AM_inter_coAM
 #check BPP_subset_SZK
 #check graph_isomorphism_in_SZK
@@ -3563,8 +3444,6 @@ axiom karp_lipton : NP_unrelativized ⊆ Ppoly → PH = Sigma_k 2
     This shows P/poly is VERY different from P. -/
 def UNARY_HALT : Language := fun _ => true  -- Abstract: unary halting
 
-axiom undecidable_in_Ppoly : UNARY_HALT ∈ Ppoly
-
 /-- NC^k: Problems solvable in O(log^k n) depth with polynomial size.
 
     NC = ⋃_{k≥0} NC^k = polylog depth, poly size
@@ -3735,7 +3614,6 @@ theorem ppoly_barrier_connection :
 #check adleman_theorem
 #check karp_lipton
 #check UNARY_HALT
-#check undecidable_in_Ppoly
 #check NCk
 #check NC
 #check ACk
@@ -3842,9 +3720,6 @@ def GapP : Set GapPFunction := { f | True }
 def PP_via_GapP (L : Language) : Prop :=
   ∃ g : GapPFunction, ∀ n, L n = true ↔ g.gap n > 0
 
-/-- PP is exactly the positive-gap languages. -/
-axiom PP_eq_positive_GapP : ∀ L : Language, L ∈ PP ↔ PP_via_GapP L
-
 /-- #SAT: Count the number of satisfying assignments.
 
     Given a Boolean formula φ, compute |{a : a ⊨ φ}|.
@@ -3864,30 +3739,6 @@ def PERMANENT : SharpPFunction :=
 /-- #P-completeness -/
 def SharpP_complete (f : SharpPFunction) : Prop :=
   f ∈ SharpP ∧ ∀ g ∈ SharpP, True  -- Abstract: parsimonious reduction exists
-
-/-- #SAT is #P-complete: Parsimonious Cook-Levin.
-
-    The reduction from any NP witness counting to SAT counting
-    preserves the count exactly (parsimonious reduction). -/
-axiom SharpSAT_complete : SharpP_complete SharpSAT
-
-/-- Valiant's Theorem (1979): PERMANENT is #P-complete.
-
-    This is remarkable because:
-    1. The determinant can be computed in polynomial time
-    2. The permanent differs only by sign, yet is #P-complete
-    3. Even 0-1 matrices (counting perfect matchings) are #P-complete
-
-    The proof uses sophisticated gadgets to encode any #P computation
-    as counting paths in a graph (which equals permanent of 0-1 matrix). -/
-axiom valiant_theorem : SharpP_complete PERMANENT
-
-/-- Corollary: Computing the permanent is at least as hard as NP.
-
-    If we could compute PERMANENT in polynomial time, we could solve
-    SAT by a parsimonious reduction: #SAT > 0 ⟺ SAT. -/
-axiom permanent_NP_hard : (∀ n, PERMANENT.count n = 0) → False
-  -- Abstract: follows from Valiant + Cook-Levin
 
 /-- The relationship between counting and decision classes:
 
@@ -3916,15 +3767,6 @@ def P_SharpP_1 : Set Language :=
   { L | ∃ (f : SharpPFunction) (g : Nat → Nat → Bool),
     ∀ n, L n = g n (f.count n) }
 
-/-- PP = P^#P[1]: PP is exactly polynomial time with one counting query.
-
-    Proof sketch:
-    - PP → P^#P[1]: Query #AcceptingPaths, compare to total/2
-    - P^#P[1] → PP: Simulate the counting query probabilistically
-
-    This is why PP is "the decision version of #P". -/
-axiom PP_eq_P_SharpP_1 : PP = P_SharpP_1
-
 /-- Toda's Theorem (1991): PH ⊆ P^#P.
 
     The ENTIRE polynomial hierarchy is contained in P with #P oracle!
@@ -3943,16 +3785,6 @@ axiom PP_eq_P_SharpP_1 : PP = P_SharpP_1
     probabilistically, reducing SAT to unique-SAT with high probability. -/
 axiom toda_theorem : PH ⊆ P_SharpP
 
-/-- Corollary of Toda: If #P has small circuits, PH collapses.
-
-    If PERMANENT ∈ P/poly, then PH collapses!
-    This connects circuit lower bounds to counting complexity. -/
-axiom SharpP_circuit_collapse :
-    (PERMANENT.count ∈ FP) → PH = Sigma_k 2
-    -- If permanent is easy, all of #P is easy (by completeness)
-    -- This means NP ⊆ P/poly (since we can solve #SAT, hence SAT, in P/poly)
-    -- By Karp-Lipton, PH collapses
-
 /-- ⊕P (Parity-P): Languages decidable by parity of accepting paths.
 
     L ∈ ⊕P iff there exists poly-time NP machine M such that
@@ -3964,13 +3796,6 @@ axiom SharpP_circuit_collapse :
     - coNP ⊆ ⊕P (similar reduction) -/
 def ParityP : Set Language :=
   { L | ∃ f : SharpPFunction, ∀ n, L n = (f.count n % 2 = 1) }
-
-/-- ⊕P is closed under complement.
-
-    Unlike NP, parity is symmetric: odd ⟺ ¬even. -/
-axiom ParityP_closed_complement (L : Language) : L ∈ ParityP →
-    (Language.complement L) ∈ ParityP
-  -- Proof sketch: L n ⟺ count % 2 = 1. For complement, add 1 to count to flip parity.
 
 /-- ⊕SAT is ⊕P-complete.
 
@@ -4003,13 +3828,6 @@ theorem valiant_vazirani : ∀ L ∈ NP_unrelativized, True := fun _ _ => trivia
 def CeqP : Set Language :=
   { L | ∃ (f g : SharpPFunction), ∀ n, L n = (f.count n = g.count n) }
 
-/-- PP ⊆ C=P: Majority is a special case of equality.
-
-    x ∈ PP ⟺ #Accept(x) > #Total/2
-          ⟺ 2·#Accept(x) > #Total
-          ⟺ 2·#Accept(x) ≠ #Total (for appropriate padding) -/
-axiom PP_subset_CeqP : PP ⊆ CeqP
-
 /-- ModₖP: Languages decidable by count mod k.
 
     L ∈ ModₖP iff there exists #P function f such that
@@ -4020,9 +3838,6 @@ axiom PP_subset_CeqP : PP ⊆ CeqP
     - For prime p: ModₚP has interesting closure properties -/
 def ModkP (k : Nat) : Set Language :=
   { L | ∃ f : SharpPFunction, ∀ n, L n = (f.count n % k ≠ 0) }
-
-axiom Mod2P_eq_ParityP : ModkP 2 = ParityP
-  -- ModₖP for k=2 is exactly ⊕P: count % 2 ≠ 0 ⟺ count % 2 = 1
 
 /-- Counting complexity landscape:
 
@@ -4083,28 +3898,19 @@ theorem counting_barrier_connection :
 #check GapPFunction
 #check GapP
 #check PP_via_GapP
-#check PP_eq_positive_GapP
 #check SharpSAT
 #check PERMANENT
 #check SharpP_complete
-#check SharpSAT_complete
-#check valiant_theorem
-#check permanent_NP_hard
 #check FP
 #check P_SharpP
 #check P_SharpP_1
-#check PP_eq_P_SharpP_1
 #check toda_theorem
-#check SharpP_circuit_collapse
 #check ParityP
-#check ParityP_closed_complement
 #check ParitySAT
 #check ParitySAT_complete
 #check valiant_vazirani
 #check CeqP
-#check PP_subset_CeqP
 #check ModkP
-#check Mod2P_eq_ParityP
 #check counting_landscape
 #check CH
 #check CH_strict_hierarchy
@@ -4567,18 +4373,6 @@ def DISJ (n : Nat) : TwoPartyFunction := {
   compute := fun x y => (x &&& y) == 0  -- Bitwise AND for intersection
 }
 
-/-- DISJ lower bound: R(DISJ_n) = Ω(n).
-
-    Kalyanasundaram-Schnitger (1992) proved this using Kolmogorov complexity.
-    Razborov (1992) gave an alternate proof using information theory.
-
-    This is much harder than EQ because:
-    - DISJ is NOT-AND, which has no "structure" to exploit
-    - Even randomization doesn't help
-    - The proof requires sophisticated information-theoretic arguments. -/
-axiom disj_randomized_lower : ∀ n, ∀ P : RandCommProtocol,
-  P.computes (DISJ n) → P.bits ≥ n / 10  -- Ω(n)
-
 /-- Inner Product: f(x,y) = ⟨x,y⟩ mod 2.
     Another hard function with Ω(n) randomized complexity. -/
 def IP_func (n : Nat) : TwoPartyFunction := {
@@ -4587,16 +4381,6 @@ def IP_func (n : Nat) : TwoPartyFunction := {
     -- Inner product parity (abstract - popcount not in Mathlib)
     true
 }
-
-/-- IP lower bound: R(IP) = Ω(n).
-    [Chor-Goldreich 1988]
-
-    Proof uses discrepancy method: for any rectangle R ⊆ {0,1}^n × {0,1}^n,
-    |Pr[IP(x,y)=1 | (x,y)∈R] - 1/2| ≤ 2^{-Ω(n)}
-
-    This means any protocol needs Ω(n) bits to distinguish 0 from 1. -/
-axiom ip_randomized_lower : ∀ n, ∀ P : RandCommProtocol,
-  P.computes (IP_func n) → P.bits ≥ n / 10  -- Ω(n)
 
 /-- Communication complexity lower bound techniques.
 
@@ -4764,9 +4548,7 @@ theorem communication_complexity_landscape :
 #check eq_randomized_constant
 #check eq_deterministic_vs_randomized_gap
 #check DISJ
-#check disj_randomized_lower
 #check IP_func
-#check ip_randomized_lower
 #check CCLowerBoundTechnique
 #check N_comm
 #check n_le_d_comm
@@ -4829,10 +4611,6 @@ structure CombDesign where
   set_size : Nat           -- ℓ
   max_intersection : Nat   -- ≤ log m
 
-/-- Explicit constructions of designs exist with optimal parameters. -/
-axiom design_exists : ∀ m ℓ : Nat, ℓ > 0 →
-  ∃ D : CombDesign, D.num_sets = m ∧ D.set_size = ℓ ∧ D.max_intersection ≤ Nat.log2 m + 1
-
 /-! ### The Nisan-Wigderson Generator -/
 
 /-- The Nisan-Wigderson Generator (1994).
@@ -4850,19 +4628,6 @@ structure NWGenerator where
   hard_function : Bool  -- Represents existence of hard function
   design : CombDesign
   -- The generator itself would map seeds to outputs
-
-/-- **Nisan-Wigderson Theorem**: Hard functions yield PRGs.
-
-    If f: {0,1}^ℓ → {0,1} requires circuits of size 2^{Ω(ℓ)},
-    then the NW generator fools circuits of size 2^{Ω(ℓ)}/poly.
-
-    The "hardness amplification" converts a mildly hard function
-    into a PRG that fools large circuits. -/
-axiom nw_theorem : ∀ (D : CombDesign),
-  -- If hard function exists (against circuits of certain size)
-  True →
-  -- Then NW generator fools circuits
-  ∃ G : PRG, foolsCircuits G (fun n => 2^(n/2)) 0.01
 
 /-! ### Hardness vs Randomness -/
 
@@ -4990,16 +4755,6 @@ def CryptoPRG : Prop := ∃ G : PRG, ∀ size : Nat → Nat,
     PRG → OWF: The PRG itself is one-way -/
 axiom HILL_theorem : OWF ↔ CryptoPRG
 
-/-- **Goldreich-Goldwasser-Micali** (1986):
-
-    PRG → PRF: Pseudorandom generators imply pseudorandom functions.
-
-    The GGM construction uses a tree:
-    - Root labeled by PRG seed
-    - Each node splits via PRG: G(s) = s₀ || s₁
-    - PRF(k, x) = leaf reached by path x -/
-axiom GGM_PRG_to_PRF : CryptoPRG → PRF
-
 /-! ### Summary -/
 
 /-- The derandomization landscape:
@@ -5028,9 +4783,7 @@ theorem derandomization_landscape :
 #check PRG
 #check foolsCircuits
 #check CombDesign
-#check design_exists
 #check NWGenerator
-#check nw_theorem
 #check HardnessAssumption
 #check E
 #check SUBEXP_time
@@ -5046,7 +4799,6 @@ theorem derandomization_landscape :
 #check KI_theorem
 #check CryptoPRG
 #check HILL_theorem
-#check GGM_PRG_to_PRF
 #check derandomization_landscape
 
 -- ============================================================
@@ -5335,12 +5087,6 @@ def PERMANENT_DECISION : Language := fun _ => true  -- Abstract: decides if perm
 
 theorem permanent_rsr : RandomSelfReducible PERMANENT_DECISION := trivial
 
-/-- Random-self-reducible problems are as hard on average as worst-case. -/
-axiom rsr_worst_equals_average :
-    ∀ L, RandomSelfReducible L →
-    (∀ D : DistProblem, D.problem = L → PSamplable D.distribution → inDistP D) →
-    inP L
-
 /-! ### Summary Theorem -/
 
 /-- The average-case complexity landscape:
@@ -5392,7 +5138,6 @@ theorem average_case_landscape :
 #check OWF_implies_average_case_hard
 #check RandomSelfReducible
 #check permanent_rsr
-#check rsr_worst_equals_average
 #check average_case_landscape
 
 /-!
@@ -5772,11 +5517,6 @@ theorem kolmogorov_invariance :
 
 /-! ### Basic Properties -/
 
-/-- Upper bound: K(x) ≤ |x| + O(1).
-    Every string can be described by itself plus a constant header. -/
-axiom K_upper_bound :
-    ∃ c : Nat, ∀ x : Nat, K x ≤ x + c  -- Using x as proxy for |x|
-
 /-- Lower bound: K(x) ≥ 0 (trivial). -/
 theorem K_nonneg : ∀ x : Nat, K x ≥ 0 := fun _ => Nat.zero_le _
 
@@ -5954,7 +5694,6 @@ theorem kolmogorov_complexity_landscape :
 #check K_cond
 #check H
 #check kolmogorov_invariance
-#check K_upper_bound
 #check K_nonneg
 #check K_chain_rule
 #check K_symmetry
@@ -6487,14 +6226,6 @@ theorem P_eq_NP_iff_no_intermediate :
     | inl hp => exact hNotP hp
     | inr hnpc => exact hNotNPC hnpc
 
-/-- If P ≠ NP, there are infinitely many distinct complexity levels in NP.
-    The Ladner construction can be iterated to create a hierarchy. -/
-axiom NP_has_hierarchy :
-    P_unrelativized ≠ NP_unrelativized →
-    ∀ k : Nat, ∃ L₁ L₂ : Language,
-      L₁ ∈ NP_unrelativized ∧ L₂ ∈ NP_unrelativized ∧
-      PolyTimeReduces L₁ L₂ ∧ ¬ PolyTimeReduces L₂ L₁
-
 /-- Graph Isomorphism is a candidate NP-intermediate problem.
     GI is in NP but not known to be in P or NP-complete. -/
 theorem GI_candidate_intermediate :
@@ -6683,15 +6414,6 @@ def paddedLanguage (L : Language) : Language :=
   fun m => (List.range (m + 1)).any (fun x =>
     (List.range (m + 1)).any (fun n => m = pad x n && L x))
 
-/-- **Padding Lemma**: If L is NP-complete, then paddedLanguage L is also NP-complete.
-
-    Padding is a standard trick in complexity theory:
-    - Makes strings artificially longer
-    - Doesn't change computational difficulty (up to polynomial factors)
-    - Used to transfer results between complexity classes -/
-axiom padding_preserves_NPcomplete :
-    ∀ L : Language, NPComplete L → NPComplete (paddedLanguage L)
-
 /-! ### Upward Translation (Padding Arguments)
 
 Padding arguments are one of the most powerful tools in structural complexity.
@@ -6765,7 +6487,6 @@ theorem structural_complexity_landscape :
 #check NPIntermediate
 #check ladner_theorem
 #check P_eq_NP_iff_no_intermediate
-#check NP_has_hierarchy
 #check GI_candidate_intermediate
 #check FACTORING_candidate_intermediate
 #check NPCompleteUnderManyOne
@@ -6778,7 +6499,6 @@ theorem structural_complexity_landscape :
 #check BH_implies_no_OWF
 #check poly_isomorphism_equiv
 #check paddedLanguage
-#check padding_preserves_NPcomplete
 #check structural_complexity_landscape
 
 -- ============================================================
@@ -6926,14 +6646,6 @@ def permFamily : ArithCircuitFamily := fun n =>
     detₙ is exactly n (n! terms, each of degree n, with cancellation). -/
 axiom det_in_VP : inVP detFamily
 
-/-- The permanent is in VNP: By definition, permₙ = Σ_{σ∈Sₙ} ∏ᵢ aᵢ,σ(ᵢ).
-    The product ∏ᵢ aᵢ,σ(ᵢ) for a fixed σ is computable in poly time,
-    and we sum over 2^{O(n log n)} permutations.
-
-    More precisely, Valiant showed perm can be written as an exponential
-    sum of a VP polynomial. -/
-axiom perm_in_VNP : inVNP permFamily
-
 /-! ### VNP-Completeness of the Permanent -/
 
 /-- A polynomial reduction between families (p-projection).
@@ -7041,30 +6753,6 @@ theorem VP_ne_VNP_implies_perm_ne_det :
 
 /-! ### Known Lower Bounds -/
 
-/-- The best known lower bound for the permanent: any arithmetic circuit
-    computing permₙ requires Ω(n²) size.
-
-    **Proof** (Baur-Strassen 1983): Uses the degree argument. The permanent
-    has degree n in each variable, and each gate can increase the degree
-    by at most a multiplicative factor. This gives a Ω(n²) lower bound
-    via the substitution method.
-
-    Note: The conjectured lower bound is 2^{Ω(n)}, so this is far from
-    what's needed for VP ≠ VNP. -/
-axiom perm_lower_bound :
-    ∀ c : ArithCircuit, c.degree ≥ c.numVars → c.size ≥ c.numVars
-
-/-- Raz's theorem (2009): Multilinear formulas for the permanent
-    require size 2^{Ω(n)}.
-
-    This is the strongest known lower bound for any explicit polynomial,
-    but it only applies to the restricted model of multilinear formulas
-    (not general circuits). -/
-axiom raz_multilinear_formula_lower_bound :
-    ∀ n : ℕ, ∃ (minSize : ℕ), minSize ≥ 2 ^ (n / 2) ∧
-    -- Any multilinear formula for permₙ has size ≥ minSize
-    True
-
 /-! ### Geometric Complexity Theory (GCT) -/
 
 /-- Geometric Complexity Theory (GCT) is Mulmuley and Sohoni's program
@@ -7093,52 +6781,7 @@ structure GCTApproach where
   /-- Obstructions would separate permanent from determinant -/
   obstructionsSeparate : obstructionsExist → orbitContainment
 
-/-- GCT Conjecture: There exist representation-theoretic obstructions
-    that prove the permanent cannot be expressed as a determinant of
-    polynomial size.
-
-    **Status**: Open. Bürgisser, Ikenmeyer, and Panova (2019) showed that
-    certain types of obstructions (occurrence obstructions) do NOT suffice,
-    requiring more subtle "multiplicity obstructions." -/
-axiom gct_obstruction_conjecture :
-    ∃ (approach : GCTApproach), approach.obstructionsExist
-
-/-- Limitation of GCT: Bürgisser-Ikenmeyer-Panova (2019) showed that
-    occurrence obstructions (the simplest type) cannot suffice to
-    separate permanent from determinant. More complex multiplicity
-    obstructions are needed. -/
-axiom bip_limitation :
-    -- Occurrence obstructions are insufficient
-    True
-
 /-! ### Connection to Boolean Complexity -/
-
-/-- VP ≠ VNP over finite fields implies Boolean circuit lower bounds.
-
-    **Proof sketch** (Bürgisser 2000):
-    If VP ≠ VNP over 𝔽_p, then the permanent requires superpolynomial
-    arithmetic circuits over 𝔽_p. Since Boolean circuits can simulate
-    arithmetic circuits over finite fields (with polynomial overhead),
-    this implies the permanent counting function requires superpolynomial
-    Boolean circuits, hence #P ⊄ FP/poly.
-
-    Combined with Toda's theorem (PH ⊆ P^{#P}), this would give
-    nontrivial consequences for the polynomial hierarchy. -/
-axiom algebraic_to_boolean :
-    ValiantsConjecture →
-    -- #P functions cannot be computed by polynomial-size circuits
-    True
-
-/-- Valiant's conjecture implies a weakened form of P ≠ NP.
-
-    **Proof sketch**:
-    VP ≠ VNP → permanent needs superpolynomial arithmetic circuits
-    → over finite fields, this implies #P ⊄ FP/poly (Bürgisser)
-    → by Toda's theorem, PH ⊆ P^{#P}, so if #P were easy,
-       PH would collapse
-    → P ≠ NP follows from PH not collapsing (widely believed) -/
-axiom valiant_implies_counting_hard :
-    ValiantsConjecture → ¬ (∀ f : SharpPFunction, inVP detFamily)
 
 /-! ### Bürgisser's τ-Conjecture -/
 
@@ -7196,7 +6839,6 @@ theorem algebraic_complexity_landscape :
 #check detFamily
 #check permFamily
 #check det_in_VP
-#check perm_in_VNP
 #check pProjection
 #check VNPHard
 #check VNPComplete
@@ -7207,13 +6849,7 @@ theorem algebraic_complexity_landscape :
 #check valiants_conjecture_implies_perm_hard
 #check PermanentVsDeterminant
 #check VP_ne_VNP_implies_perm_ne_det
-#check perm_lower_bound
-#check raz_multilinear_formula_lower_bound
 #check GCTApproach
-#check gct_obstruction_conjecture
-#check bip_limitation
-#check algebraic_to_boolean
-#check valiant_implies_counting_hard
 #check TauConjecture
 #check tau_implies_VP_ne_VNP
 #check algebraic_complexity_landscape
@@ -7438,36 +7074,7 @@ theorem FPT_iff_kernelizable :
   fun p => ⟨fun _ => ⟨⟨id, trivial, trivial⟩, trivial⟩,
             fun _ => ⟨id, 0, fun _ _ => trivial⟩⟩
 
-/-- k-VERTEX COVER has a kernel of size O(k²): Buss kernelization.
-
-    **Proof**: After removing high-degree vertices, at most k² edges remain.
-    This is one of the smallest known kernels for a natural NP-hard problem. -/
-axiom vertex_cover_poly_kernel : hasPolyKernel kVertexCover
-
-/-- k-PATH (finding a path of length k) has no polynomial kernel unless
-    the polynomial hierarchy collapses (Bodlaender et al. 2009).
-
-    This is a conditional lower bound on kernel size, showing that some
-    FPT problems provably cannot have small kernels (under standard
-    complexity assumptions). -/
-axiom path_no_poly_kernel :
-    -- Under a complexity assumption (NP ⊄ coNP/poly):
-    -- k-PATH has no polynomial kernel
-    True
-
 /-! ### ETH and Parameterized Complexity -/
-
-/-- The Exponential Time Hypothesis (ETH) implies tight lower bounds
-    for W[1]-hard problems.
-
-    If ETH holds, then k-CLIQUE requires time n^{Ω(k)}, i.e., the
-    trivial brute-force algorithm is essentially optimal.
-
-    **Proof sketch** (Chen, Huang, Kanj, Xia 2006):
-    Via the "sparsification lemma" + k-CLIQUE reduction chain. -/
-axiom eth_clique_lower_bound :
-    -- ETH → k-CLIQUE requires time n^{Ω(k)}
-    True
 
 /-- If FPT = W[1], then ETH fails.
 
@@ -7532,9 +7139,6 @@ theorem parameterized_landscape :
 #check Kernelization
 #check hasPolyKernel
 #check FPT_iff_kernelizable
-#check vertex_cover_poly_kernel
-#check path_no_poly_kernel
-#check eth_clique_lower_bound
 #check FPT_eq_W1_breaks_ETH
 #check FPT_ne_W1_implies_P_ne_NP
 #check parameterized_landscape
@@ -7765,24 +7369,6 @@ axiom abiteboul_vianu_PSPACE :
       encodesProperty σ prop L →
       (L ∈ PSPACE ↔ PFP_definable σ prop)
 
-/-- FO + TC captures NL on ordered structures (Immerman 1987).
-
-    Nondeterministic logspace corresponds exactly to first-order logic
-    augmented with a transitive closure operator on ordered structures. -/
-axiom FO_TC_eq_NL :
-    ∀ (σ : Vocabulary) (prop : StructureProperty σ) (L : Nat → Bool),
-      encodesProperty σ prop L →
-      TC_definable σ prop  -- captures exactly NL on ordered structures
-
-/-- FO + DTC captures L on ordered structures.
-
-    Deterministic logspace corresponds to first-order logic with
-    deterministic transitive closure on ordered structures. -/
-axiom FO_DTC_eq_L :
-    ∀ (σ : Vocabulary) (prop : StructureProperty σ) (L : Nat → Bool),
-      encodesProperty σ prop L →
-      DTC_definable σ prop  -- captures exactly L on ordered structures
-
 /-! ### The Immerman-Szelepcsényi Theorem -/
 
 /-- **Immerman-Szelepcsényi Theorem** (1987): NL = coNL.
@@ -7810,63 +7396,9 @@ axiom immerman_szelepcsenyi :
 
 /-! ### coNP and Universal Second-Order Logic -/
 
-/-- coNP = USO (Universal Second-Order Logic) on finite structures.
-
-    This follows directly from Fagin's theorem by complementation:
-    L ∈ coNP iff complement(L) ∈ NP iff complement(L) is ESO-definable
-    iff L is definable by ∀R₁...Rₖ.φ (negate the ESO sentence).
-
-    **Example**: Expressing "graph is NOT 3-colorable" requires
-    universally quantifying over all possible colorings. -/
-axiom coNP_eq_USO :
-    ∀ (σ : Vocabulary) (prop : StructureProperty σ) (L : Nat → Bool),
-      encodesProperty σ prop L →
-      (L ∈ coNP ↔ USO_definable σ prop)
-
 /-! ### SO and the Polynomial Hierarchy -/
 
-/-- The k-th level Σₖ of the polynomial hierarchy corresponds to
-    SO formulas with k alternating blocks of second-order quantifiers,
-    starting with ∃.
-
-    Σ₁ = NP = ∃R.φ (Fagin's theorem)
-    Σ₂ = ∃R₁.∀R₂.φ
-    Σ₃ = ∃R₁.∀R₂.∃R₃.φ
-    etc.
-
-    Full SO (unrestricted second-order) captures PH on ordered structures.
-
-    **Proof**: By induction on the number of quantifier alternations,
-    each alternation adds one level of the polynomial hierarchy. -/
-axiom SO_eq_PH :
-    -- Full second-order logic captures exactly PH on ordered structures
-    True
-
 /-! ### The Cai-Fürer-Immerman Theorem -/
-
-/-- **Cai-Fürer-Immerman Theorem** (1992): No fixed number of variables
-    suffices to capture P without order.
-
-    For every k, there exist graphs that are indistinguishable by
-    k-variable logic with counting (C^k) but are distinguishable in P.
-
-    **Construction**: The CFI graphs are constructed from a base graph G
-    by replacing each edge with a "gadget." Two CFI graphs over G differ
-    by the parity of a set S of edges, and k-variable logic cannot detect
-    this parity for large enough G.
-
-    **Significance**: This refutes the conjecture that FO + counting
-    captures P. It shows that finding a logic for P (if one exists)
-    requires going beyond variable-counting resources.
-
-    In terms of P vs NP barriers: any logic capturing P must use
-    fundamentally different resources than bounded-variable counting. -/
-axiom cai_furer_immerman :
-    -- For every k, C^k (k-variable logic with counting) does not capture P
-    -- There exist P-computable properties not definable in C^k
-    ∀ (k : ℕ), ∃ σ : Vocabulary, ∃ prop : StructureProperty σ,
-      ∃ (L : Nat → Bool), encodesProperty σ prop L ∧ inP L ∧
-        ¬ FO_definable σ prop  -- stronger: not even in C^k
 
 /-! ### Descriptive Complexity and P vs NP -/
 
@@ -7928,53 +7460,7 @@ def gurevich_conjecture : Prop :=
 def CPT_definable (σ : Vocabulary) (prop : StructureProperty σ) : Prop :=
   True  -- abstract
 
-/-- CPT does not capture P: Dawar's theorem (2015).
-
-    There exist P-computable properties of unordered structures
-    that are not CPT-definable. Specifically, the CFI query
-    witnesses the separation.
-
-    **Consequence**: The quest for a logic for P remains open.
-    Neither bounded-variable logics, nor LFP, nor CPT suffice
-    on unordered structures. -/
-axiom CPT_does_not_capture_P :
-    ∃ σ : Vocabulary, ∃ prop : StructureProperty σ,
-      ∃ (L : Nat → Bool), encodesProperty σ prop L ∧ inP L ∧
-        ¬ CPT_definable σ prop
-
 /-! ### 0-1 Laws -/
-
-/-- **Fagin's 0-1 Law**: Every FO sentence is either almost surely true
-    or almost surely false on random finite structures.
-
-    For any FO sentence φ, the probability that a random structure
-    of size n satisfies φ converges to 0 or 1 as n → ∞.
-
-    **Proof**: Uses Gaifman's locality theorem and extension axioms.
-    Random structures satisfy all extension axioms with probability → 1,
-    and these axioms determine all FO sentences.
-
-    **Consequence**: Random graphs cannot witness separations detectable
-    by first-order logic. This is relevant to barrier arguments because
-    it shows the "generic" behavior of structures is determined by FO. -/
-axiom fagin_zero_one_law :
-    -- For every FO sentence, its asymptotic probability is 0 or 1
-    True
-
-/-- The 0-1 law FAILS for ESO (existential second-order logic).
-
-    **Example**: "The graph has a Hamiltonian cycle" has probability
-    converging to 1 on random graphs, but other ESO sentences can
-    have intermediate limiting probabilities.
-
-    More precisely: ESO sentences can have any rational limiting
-    probability (or no limit at all).
-
-    **Significance**: This is another manifestation of how ESO (= NP)
-    is fundamentally more expressive than FO. -/
-axiom zero_one_law_fails_for_ESO :
-    -- There exist ESO sentences without 0-1 law behavior
-    True
 
 /-! ### Summary -/
 
@@ -8026,18 +7512,10 @@ theorem descriptive_complexity_landscape :
 #check fagin_theorem
 #check immerman_vardi
 #check abiteboul_vianu_PSPACE
-#check FO_TC_eq_NL
-#check FO_DTC_eq_L
 #check immerman_szelepcsenyi
-#check coNP_eq_USO
-#check SO_eq_PH
-#check cai_furer_immerman
 #check P_eq_NP_descriptive
 #check gurevich_conjecture
 #check CPT_definable
-#check CPT_does_not_capture_P
-#check fagin_zero_one_law
-#check zero_one_law_fails_for_ESO
 #check descriptive_complexity_landscape
 
 /-
@@ -8338,7 +7816,6 @@ theorem lattice_complexity_landscape :
 #check lattice_algorithm_lower_bounds
 #check lattice_complexity_landscape
 
-
 -- Part 35: Geometric Complexity Theory (GCT) - Deep Dive
 
 /-!
@@ -8513,12 +7990,6 @@ theorem gct_occurrence_implies_multiplicity (l m n : ℕ)
   simp only [GCT_OccurrenceObstruction, GCT_MultiplicityObstruction] at *
   omega
 
-/-- Obstructions prove non-containment: if ANY obstruction exists
-    (occurrence or multiplicity), then the padded permanent is not
-    in the orbit closure of the determinant. -/
-axiom gct_obstruction_implies_separation (l m n : ℕ) :
-    GCT_MultiplicityObstruction l m n → ¬ GCT_central_question m n
-
 /-! ### Bürgisser-Ikenmeyer-Panova Theorem (2019) -/
 
 /-- **Bürgisser-Ikenmeyer-Panova Theorem** (JAMS 2019):
@@ -8547,18 +8018,6 @@ theorem gct_occurrence_route_blocked :
   exact h_no_occ h_occ
 
 /-! ### Multiplicity Obstructions Remain Viable -/
-
-/-- **Dörfler-Ikenmeyer-Panova** (2019): Multiplicity obstructions
-    are STRICTLY STRONGER than occurrence obstructions.
-
-    There exist finite settings where the multiplicity of V_λ in
-    the permanent's coordinate ring exceeds that in the determinant's,
-    even though V_λ occurs in both (so occurrence obstructions fail). -/
-axiom gct_multiplicity_strictly_stronger :
-    ∃ (l m n : ℕ),
-      (gct_coordRingPerm m n).multiplicity l > 0 ∧
-      (gct_coordRingDet n).multiplicity l > 0 ∧
-      GCT_MultiplicityObstruction l m n
 
 /-! ### The Flip Theorem -/
 
@@ -8629,16 +8088,6 @@ theorem gct_lr_in_P : (1 : ℕ) + 1 = 2 := rfl
     Hessian has rank ≤ 2n. -/
 axiom gct_mignon_ressayre :
     ∀ m n : ℕ, gct_paddedPerm m n → 2 * n ≥ m * m
-
-/-- **Cai-Chen-Li** (2010): Extended Mignon-Ressayre to all fields. -/
-axiom gct_cai_chen_li :
-    ∀ m n : ℕ, gct_paddedPerm m n → 2 * n ≥ m * m
-
-/-- **Grenet** (2011): Upper bound - perm_m can be expressed as
-    det_{2m-1}. The gap between Ω(m²) and O(m) shows our understanding
-    of determinantal complexity is very incomplete. -/
-axiom gct_grenet_upper_bound :
-    ∀ m : ℕ, gct_paddedPerm m (2 * m)
 
 /-! ### GCT and the Three Barriers -/
 
@@ -8783,10 +8232,8 @@ theorem gct_connects_all_barriers : (1 : ℕ) + 1 = 2 := rfl
 #check GCT_OccurrenceObstruction
 #check GCT_MultiplicityObstruction
 #check gct_occurrence_implies_multiplicity
-#check gct_obstruction_implies_separation
 #check bip_2019_no_occurrence_obstructions
 #check gct_occurrence_route_blocked
-#check gct_multiplicity_strictly_stronger
 #check GCT_FlipDecomposition
 #check gct_flip_theorem_exists
 #check gct_conservation_of_difficulty
@@ -8796,8 +8243,6 @@ theorem gct_connects_all_barriers : (1 : ℕ) + 1 = 2 := rfl
 #check gct_plethysm_sharp_p_hard
 #check gct_lr_in_P
 #check gct_mignon_ressayre
-#check gct_cai_chen_li
-#check gct_grenet_upper_bound
 #check gct_designed_to_overcome_barriers
 #check GCT_Step
 #check gct_step_overview
@@ -8915,9 +8360,6 @@ def TC0 : Set Language :=
 /-- AC⁰ ⊊ TC⁰: MAJORITY separates them. -/
 axiom AC0_strict_subset_TC0 : AC0 ⊂ TC0
 
-/-- TC⁰ ⊆ NC¹: Threshold gates can be simulated by log-depth circuits. -/
-axiom TC0_subset_NC1 : TC0 ⊆ NCk 1
-
 /-- Whether TC⁰ = NC¹ is a major open problem.
     Separating them would be a breakthrough in circuit complexity. -/
 theorem TC0_vs_NC1_open : (1 : ℕ) + 1 = 2 := rfl
@@ -8982,10 +8424,6 @@ axiom ACC0_subset_TC0 : ACC0_all ⊆ TC0
 axiom williams_nexp_not_in_acc0 :
   ∀ m ≥ 2, ¬(NEXP ⊆ ACC0 m)
 
-/-- Stronger version: NEXP is not contained in the union of all ACC⁰. -/
-axiom williams_nexp_not_in_acc0_all :
-  ¬(NEXP ⊆ ACC0_all)
-
 /-! ### The Algorithmic Method for Lower Bounds -/
 
 /-- Williams' algorithmic method: the key insight connecting
@@ -9006,14 +8444,6 @@ structure AlgorithmicMethod where
   circuitClass : Set Language
   satAlgorithmTime : Nat → Nat  -- Time for satisfiability
   circuitSize : Nat → Nat       -- Assumed circuit size
-
-/-- The algorithmic method: faster SAT algorithms yield lower bounds. -/
-axiom algorithmic_method_connection :
-  ∀ (am : AlgorithmicMethod),
-    -- If there's a nontrivial SAT algorithm for the circuit class
-    (∀ n, am.satAlgorithmTime n < 2 ^ n) →
-    -- Then NEXP is not contained in that circuit class
-    True
 
 /-- Williams showed ACC⁰-SAT has a nontrivial algorithm:
 
@@ -9043,34 +8473,6 @@ theorem williams_proof_structure :
 
 /-! ### The Satisfiability-Lower-Bound Connection -/
 
-/-- **General principle (Williams 2010)**:
-
-    "Satisfiability algorithms are the new lower bounds."
-
-    For any "reasonable" circuit class C:
-    - A nontrivial SAT algorithm for C implies NEXP ⊄ C
-    - A nontrivial derandomization for C implies NEXP ⊄ C
-
-    This unifies many disparate results in complexity theory. -/
-axiom sat_lower_bound_connection :
-  ∀ (C : Set Language),
-    -- If C has a nontrivial SAT algorithm
-    True →
-    -- Then NEXP ⊄ C (abstracted)
-    True
-
-/-- **Consequence for P vs NP approach**:
-
-    If someone could design a SAT algorithm for general polynomial-size
-    circuits running in time 2^n / n^{ω(1)}, this would imply
-    NEXP ⊄ P/poly and hence NP ⊄ P/poly (by padding).
-
-    This would resolve P vs NP! But designing such an algorithm
-    for general circuits seems as hard as the original problem. -/
-axiom general_circuit_sat_would_resolve :
-  -- A nontrivial general circuit SAT algorithm would imply P ≠ NP
-  True
-
 /-! ### Branching Programs -/
 
 /-- A branching program (binary decision diagram) is a DAG with:
@@ -9084,24 +8486,6 @@ structure BranchingProgram where
 /-- An OBDD (Ordered Binary Decision Diagram) is a branching program
     where variables appear in the same order on every path. -/
 structure OBDD extends BranchingProgram
-
-/-- **Nechiporuk's Lower Bound (1966)**:
-
-    The function f(x₁,...,xₙ) that outputs the binary representation of
-    the number of distinct substrings of the input requires branching
-    programs of size Ω(n²/log²n).
-
-    This is the best known lower bound for general branching programs
-    for an explicit function.
-
-    The proof uses a counting argument: if the branching program is small,
-    then for each block of variables, the "subfunctions" obtained by
-    restricting those variables must have few distinct behaviors. But
-    the target function has many distinct subfunctions. -/
-axiom nechiporuk_lower_bound :
-  ∀ (BP : BranchingProgram),
-    -- Any BP computing Nechiporuk's function needs many nodes
-    True
 
 /-- **Read-once branching programs**: Each variable queried at most once
     on any path. Exponential lower bounds are known.
@@ -9121,18 +8505,6 @@ theorem read_once_exponential_lower_bound : (1 : ℕ) + 1 = 2 := rfl
     Key obstacle: TC⁰ circuits can simulate "counting" operations,
     which breaks the approximation methods used for AC⁰. -/
 theorem tc0_lower_bound_barrier : (1 : ℕ) + 1 = 2 := rfl
-
-/-- **The 5n - o(n) barrier**: The best known general circuit lower bound.
-
-    Lachish-Raz (2001): There exists an explicit Boolean function
-    on n variables requiring circuits of size at least 5n - o(n).
-
-    This is barely above the trivial 3n lower bound (every function
-    on n variables needs at least 3n - o(n) gates). Proving even 6n
-    would require fundamentally new techniques. -/
-axiom best_general_circuit_lower_bound :
-  -- Best known: 5n - o(n) gates for explicit function
-  True
 
 /-- **The "Natural Proofs" Status of Each Result**:
 
@@ -9172,17 +8544,6 @@ theorem nexp_to_np_gap : (1 : ℕ) + 1 = 2 := rfl
     Progress: NEXP → NQP (huge gap closed), but NQP → NP remains open. -/
 theorem murray_williams_nqp :
   ¬(⋃ (k : Nat), NEXP ⊆ ACC0_all) → True := fun _ => trivial
-
-/-- **Chen-Tell (2019)**: Proved that either
-
-    1. NP ⊄ ACC⁰, OR
-    2. NEXP ≠ EXP (a long-standing open problem)
-
-    This conditional result shows that proving NEXP = EXP would
-    immediately give NP ⊄ ACC⁰. -/
-axiom chen_tell_disjunction :
-  -- Either NP ⊄ ACC⁰ or NEXP ≠ EXP
-  True
 
 /-! ### Connection to Existing Barriers -/
 
@@ -9257,7 +8618,6 @@ theorem circuit_bounds_connect_all :
 #check monotone_bounds_insufficient_for_PNP
 #check TC0
 #check AC0_strict_subset_TC0
-#check TC0_subset_NC1
 #check TC0_vs_NC1_open
 #check multiplication_in_TC0
 #check division_in_TC0
@@ -9266,23 +8626,16 @@ theorem circuit_bounds_connect_all :
 #check AC0_subset_ACC0
 #check ACC0_subset_TC0
 #check williams_nexp_not_in_acc0
-#check williams_nexp_not_in_acc0_all
 #check AlgorithmicMethod
-#check algorithmic_method_connection
 #check williams_acc0_sat_algorithm
 #check williams_proof_structure
-#check sat_lower_bound_connection
-#check general_circuit_sat_would_resolve
 #check BranchingProgram
 #check OBDD
-#check nechiporuk_lower_bound
 #check read_once_exponential_lower_bound
 #check tc0_lower_bound_barrier
-#check best_general_circuit_lower_bound
 #check lower_bound_techniques_summary
 #check nexp_to_np_gap
 #check murray_williams_nqp
-#check chen_tell_disjunction
 #check williams_overcomes_barriers
 #check circuit_lower_bounds_landscape
 #check circuit_bounds_connect_all
@@ -9455,19 +8808,6 @@ theorem learning_breaks_crypto :
   intro hlearn howf
   exact absurd hlearn (kearns_valiant_hardness howf)
 
-/-- Parity with noise is hard under the LWE assumption.
-
-    **Applebaum-Barak-Xiao (2008)**: Learning parity with noise (LPN)
-    is at least as hard as the Learning With Errors (LWE) problem.
-
-    LPN: Given (a_i, ⟨a_i, s⟩ ⊕ e_i) where e_i is noise, find s.
-    This is the boolean version of LWE.
-
-    Consequence: If LWE is hard (believed), then even the simple
-    class of parities cannot be learned from noisy examples. -/
-axiom lpn_hard_under_lwe :
-  ¬ EfficientlyPACLearnable ParityClass
-
 /-! ### Statistical Query (SQ) Model -/
 
 /-- Statistical Query oracle: instead of seeing individual examples,
@@ -9616,14 +8956,6 @@ theorem schapire_boosting :
     ∃ (_weakLearner : Nat → Nat), True :=
   fun _ => ⟨fun _ => ⟨fun _ => 0, trivial⟩, fun _ => ⟨fun _ _ => 0, trivial⟩⟩
 
-/-- **Daniely-Linial-Shalev-Shwartz (2014)**: Agnostic learning of
-    halfspaces is as hard as refuting random constraint satisfaction.
-
-    This connects the hardness of modern ML (learning neural networks)
-    to fundamental complexity-theoretic problems. -/
-axiom agnostic_halfspace_hardness :
-  ¬ AgnosticLearnable HalfspaceClass
-
 /-! ### Cryptographic Hardness of Learning -/
 
 /-- Learning with errors (LWE) as a learning problem.
@@ -9643,34 +8975,7 @@ axiom agnostic_halfspace_hardness :
 theorem lwe_learning_hard :
   (1 : ℕ) + 1 = 2 := rfl  -- Abstract: LWE → hard learning problem
 
-/-- **Klivans-Sherstov (2006)**: Learning intersections of halfspaces
-    is hard under the assumption that the shortest vector problem
-    (SVP) in lattices is hard.
-
-    Specifically: if GapSVP is hard to approximate within
-    polynomial factors, then intersections of O(n) halfspaces
-    cannot be PAC learned in polynomial time.
-
-    This provides unconditional-like evidence against learnability
-    of natural geometric concept classes. -/
-axiom klivans_sherstov_intersection :
-  ¬ PACLearnable (fun _n => {_f : Nat → Bool | True})
-
 /-! ### SQ Dimension and Complexity -/
-
-/-- **Feldman (2012)**: SQ dimension characterizes SQ learnability.
-
-    The SQ dimension of a concept class C with respect to
-    distribution D characterizes the query complexity of
-    SQ learning:
-    - Upper bound: O(SQ-DIM(C,D)) queries with tolerance 1/SQ-DIM(C,D)
-    - Lower bound: Ω(SQ-DIM(C,D)) queries needed
-
-    For parities: SQ-DIM = 2^n (exponential)
-    For juntas: SQ-DIM = n^k (polynomial in n for k-juntas)
-    For halfspaces: SQ-DIM = n (polynomial) -/
-axiom feldman_sq_characterization :
-  ∀ C : ConceptClass, SQLearnable C ↔ SQDimension C > 0
 
 /-- Connection between SQ dimension and natural proofs barrier.
 
@@ -9775,18 +9080,6 @@ axiom cikk_learning_to_lower_bounds :
   ∀ C : ConceptClass,
     EfficientlyPACLearnable C → ¬ (NEXP ⊆ Ppoly)
 
-/-- **Chen-Oliveira-Servedio (2024)**: Beyond SQ for learning AC0.
-
-    Recent work shows AC0 circuits can be learned in quasipolynomial
-    time using non-SQ techniques (specifically, random restrictions
-    and Fourier analysis).
-
-    This partially overcomes the SQ barrier for a specific circuit class!
-    It suggests that non-natural algorithms might eventually help with
-    circuit lower bounds too. -/
-axiom chen_oliveira_servedio_ac0 :
-  EfficientlyPACLearnable (CircuitClass (fun n => n))  -- Simplified: AC0 learnable
-
 /-- The future of learning and barriers:
 
     Key open problems:
@@ -9841,7 +9134,6 @@ theorem learning_connects_all :
 #check juntas_learnable
 #check kearns_valiant_hardness
 #check learning_breaks_crypto
-#check lpn_hard_under_lwe
 #check SQOracle
 #check SQLearnable
 #check SQDimension
@@ -9851,14 +9143,10 @@ theorem learning_connects_all :
 #check forster_sign_rank_learning
 #check AgnosticLearnable
 #check schapire_boosting
-#check agnostic_halfspace_hardness
-#check klivans_sherstov_intersection
-#check feldman_sq_characterization
 #check learning_as_fourth_barrier
 #check learning_and_five_worlds
 #check learning_theory_landscape
 #check cikk_learning_to_lower_bounds
-#check chen_oliveira_servedio_ac0
 #check learning_barriers_future
 #check learning_connects_all
 
@@ -10117,22 +9405,6 @@ axiom direct_product_theorem :
 theorem raz_parallel_repetition :
   (1 : ℕ) + 1 = 2 := rfl -- Abstract: value of k repetitions ≤ v^{Ω(k)}
 
-/-- **Impagliazzo-Wigderson Uniform Direct Product** (2010):
-
-    For uniform algorithms (not just circuits), if f cannot be
-    computed in time T on > (1-δ) fraction of inputs, then f^k
-    (computing f on k independent inputs) cannot be computed in
-    time T' on > (1-δ)^{k/2} fraction.
-
-    The uniform version is important because:
-    1. It applies to Turing machines, not just circuits
-    2. The loss in parameters is tighter
-    3. It's needed for uniform derandomization results -/
-axiom impagliazzo_wigderson_uniform_dp :
-  ∀ f : Nat → Bool, ∀ k : Nat,
-    WorstCaseHard f k →
-    MildlyHard (DirectProduct f k) (k / 2) k
-
 /-! ### Worst-Case to Average-Case Reductions -/
 
 /-- The hardness amplification chain:
@@ -10388,7 +9660,6 @@ theorem hardness_amplification_connects :
 #check DirectProduct
 #check direct_product_theorem
 #check raz_parallel_repetition
-#check impagliazzo_wigderson_uniform_dp
 #check hardness_amplification_chain
 #check iw_via_hardness_amplification
 #check ErrorCorrectingCode
@@ -10899,20 +10170,6 @@ axiom immerman_szelepcsényi :
 theorem NL_eq_coNL_from_general : (1 : ℕ) + 1 = 2 := rfl
   -- Follows from immerman_szelepcsényi applied to s = log
 
-/-- Generalization: NSPACE(s) is closed under complement, intersection,
-    and union (for s ≥ log n). Full Boolean closure. -/
-axiom NSPACE_closed_under_complement :
-  ∀ (s : Nat → Nat),
-    (∀ n, s n ≥ n.log2 + 1) →
-    ∀ L ∈ NSPACE s, Language.complement L ∈ NSPACE s
-
-/-- NSPACE is also closed under intersection. -/
-axiom NSPACE_closed_under_intersection :
-  ∀ (s : Nat → Nat),
-    (∀ n, s n ≥ n.log2 + 1) →
-    ∀ L₁ ∈ NSPACE s, ∀ L₂ ∈ NSPACE s,
-      (fun n => L₁ n && L₂ n) ∈ NSPACE s
-
 -- ### NL-Complete Problems
 
 /-- STCONN (s-t Connectivity / PATH / REACHABILITY):
@@ -10964,24 +10221,6 @@ theorem reingold_theorem : USTCONN ∈ L_space :=
 theorem SL_eq_L : (1 : ℕ) + 1 = 2 := rfl  -- Follows from reingold_theorem
 
 -- ### Space-Time Relationships
-
-/-- DSPACE(s) ⊆ DTIME(2^O(s)):
-    Any space-bounded computation can be simulated in exponential time
-    by exhaustively enumerating all configurations.
-
-    There are at most |Γ|^s(n) · |Q| · s(n) configurations,
-    which is 2^O(s(n)). If no configuration repeats, the TM halts. -/
-axiom space_to_time :
-  ∀ (s : Nat → Nat),
-    (∀ n, s n ≥ 1) →
-    DSPACE s ⊆ DTIME (fun n => 2 ^ (s n * (s n)))
-    -- Loose bound: 2^(s²) captures the exponential relationship
-
-/-- DTIME(t) ⊆ DSPACE(t): Time-bounded implies space-bounded.
-    A TM using t(n) time can visit at most t(n) tape cells. -/
-axiom time_to_space :
-  ∀ (t : Nat → Nat),
-    DTIME t ⊆ DSPACE t
 
 /-- Combining: L ⊆ P ⊆ PSPACE ⊆ EXP ⊆ EXPSPACE ⊆ ...
     The interleaving of space and time classes gives:
@@ -11051,14 +10290,6 @@ theorem nondeterminism_space_vs_time :
   ⟨trivial, NP_subset_PSPACE⟩
 
 -- ### Additional Space Complexity Results
-
-/-- **Hopcroft-Paul-Valiant (1977)**: DTIME(t) ⊆ DSPACE(t / log t).
-    Time can be converted to space with a logarithmic savings.
-    This strengthens the trivial DTIME(t) ⊆ DSPACE(t). -/
-axiom hopcroft_paul_valiant :
-  ∀ (t : Nat → Nat),
-    (∀ n, t n ≥ n) →  -- t(n) ≥ n (reasonable time bound)
-    DTIME t ⊆ DSPACE (fun n => t n / (n.log2 + 1))
 
 /-- **Nisan's Theorem (1992)**: BPL = L (with high probability).
     Randomized log-space with two-way access to random bits
@@ -11188,20 +10419,15 @@ theorem space_complexity_landscape :
 #check savitch_theorem
 #check NPSPACE_eq_PSPACE
 #check immerman_szelepcsényi
-#check NSPACE_closed_under_complement
-#check NSPACE_closed_under_intersection
 #check STCONN
 #check STCONN_in_NL
 #check STCONN_NL_complete
 #check USTCONN
 #check reingold_theorem
 #check SL_eq_L
-#check space_to_time
-#check time_to_space
 #check space_time_interleaving
 #check space_time_closure_contrast
 #check nondeterminism_space_vs_time
-#check hopcroft_paul_valiant
 #check nisan_prg_for_space
 #check saks_zhou_theorem
 #check LogSpaceReduces
@@ -11604,7 +10830,6 @@ theorem eth_implies_clique_hard (k : ℕ) (hk : k ≥ 3) :
 
 end FineGrainedComplexity
 
-
 /-
 ═══════════════════════════════════════════════════════════════════════════════
 Part 45: DERANDOMIZATION — BPP, PSEUDORANDOMNESS, AND P = BPP?
@@ -11774,7 +10999,6 @@ theorem derandomization_barrier_irony :
     (1 : ℕ) + 1 = 2 := rfl
 
 end Derandomization
-
 
 -- ============================================================
 -- PART 46: Diagonalization - Foundation of Separation Results
@@ -12660,11 +11884,6 @@ def MA_EXP : Set (Nat → Bool) :=
     -- x ∈ L ↔ ∃ proof. Pr[V(x, proof, random) = 1] ≥ 2/3
     ∀ n, L n = true ↔ ∃ w ≤ 2^(p.eval n), V n w 0 = true }
 
-/-- NEXP ⊆ MA_EXP (trivially: NEXP uses no randomness).
-    A nondeterministic verifier is a special case of a Merlin-Arthur protocol
-    where Arthur's random bits are ignored. -/
-axiom NEXP_subset_MA_EXP : NEXP ⊆ MA_EXP
-
 /-- The circuit lower bound hierarchy:
     P ⊆ NP ⊆ ... ⊆ MA_EXP ⊆ Σ₂EXP
     and Σ₂EXP ⊄ P/poly (Kannan), MA_EXP ⊄ P/poly (Buhrman-Fortnow-Thierauf)
@@ -12689,7 +11908,6 @@ theorem strongest_unconditional_circuit_lb :
 #check kannan_quadratic
 #check kannan_quantifier_gap
 #check MA_EXP
-#check NEXP_subset_MA_EXP
 #check buhrman_fortnow_thierauf
 #check strongest_unconditional_circuit_lb
 
@@ -12738,11 +11956,6 @@ axiom rand_cc_le_det (n : ℕ) (f : Fin (2^n) → Fin (2^n) → Bool) :
     to communication complexity. -/
 opaque comm_matrix_rank (n : ℕ) (f : Fin (2^n) → Fin (2^n) → Bool) : ℕ
 
-/-- Log-rank lower bound: D(f) ≥ log₂(rank(M_f)).
-    The rank of the communication matrix is a lower bound on CC. -/
-axiom log_rank_lb (n : ℕ) (f : Fin (2^n) → Fin (2^n) → Bool) :
-    Nat.log 2 (comm_matrix_rank n f) ≤ det_cc n f
-
 /-
 ### 49.1: The Karchmer-Wigderson Theorem
 
@@ -12780,10 +11993,6 @@ theorem cc_lb_implies_depth_lb (n : ℕ) (f : Fin (2^n) → Bool) (k : ℕ)
 opaque monotone_kw_cc (n : ℕ) (f : Fin (2^n) → Bool) : ℕ
 opaque monotone_circuit_depth (n : ℕ) (f : Fin (2^n) → Bool) : ℕ
 
-/-- Monotone Karchmer-Wigderson theorem. -/
-axiom monotone_kw_equals_depth (n : ℕ) (f : Fin (2^n) → Bool) :
-    monotone_kw_cc n f = monotone_circuit_depth n f
-
 /-
 ### 49.2: The Discrepancy Method
 -/
@@ -12804,13 +12013,6 @@ opaque formula_size (n : ℕ) (f : Fin (2^n) → Bool) : ℕ
 /-- Circuit depth ≤ log₂(formula_size) (balanced tree has depth log(leaves)). -/
 axiom depth_le_log_formula (n : ℕ) (f : Fin (2^n) → Bool) :
     circuit_depth n f ≤ Nat.log 2 (formula_size n f) + 1
-
-/-- Khrapchenko's method gives formula size lower bounds.
-    For parity on n bits: formula_size ≥ n².
-    This is one of the best known formula size lower bounds. -/
-axiom khrapchenko_parity (n : ℕ) (hn : 1 ≤ n)
-    (parity : Fin (2^n) → Bool) :
-    n ^ 2 ≤ formula_size n parity
 
 /-- The chain: CC → depth → formula size → circuit size.
     Lower bounds propagate up: CC ≥ k ⟹ depth ≥ k ⟹ formula ≥ 2^k ⟹ circuit ≥ 2^k.
@@ -12837,13 +12039,6 @@ theorem det_rand_separation (n : ℕ) (hn : 1 ≤ n) :
     rand_cc n (fun x y => x == y) ≤ Nat.log 2 n + 3 ∧
     det_cc n (fun x y => x == y) = n + 1 :=
   ⟨eq_rand_cc n hn, eq_det_cc n hn⟩
-
-/-- The DISJOINTNESS function: DISJ(x,y) = 1 iff no position has both x_i=1 and y_i=1.
-    R(DISJ) = Θ(n) — one of the hardest functions for randomized CC.
-    This is the Razborov (1992) / Kalyanasundaram-Schnitger (1992) result. -/
-axiom disj_rand_cc_lb (n : ℕ) (hn : 1 ≤ n)
-    (disj : Fin (2^n) → Fin (2^n) → Bool) :
-    n ≤ rand_cc n disj
 
 /-- DISJOINTNESS is complete for nondeterministic CC.
     Many CC lower bounds reduce from DISJ. -/
@@ -12886,16 +12081,12 @@ theorem cc_landscape : (1 : ℕ) + 1 = 2 := rfl
 #check rand_cc
 #check rand_cc_le_det
 #check comm_matrix_rank
-#check log_rank_lb
 #check circuit_depth
 #check kw_game_cc
 #check kw_equals_depth
 #check cc_lb_implies_depth_lb
-#check monotone_kw_equals_depth
 #check formula_size
-#check khrapchenko_parity
 #check det_rand_separation
-#check disj_rand_cc_lb
 #check disj_hardness
 
 end CommunicationComplexity
@@ -13155,19 +12346,6 @@ axiom mcsp_magnification :
     -- ...then NP has no polynomial-size circuits
     True  -- NP ⊄ P/poly
 
-/-- **Hardness magnification for MKtP** (Oliveira-Santhanam 2018):
-
-    If MKtP requires circuits of size n^{1+ε} for any ε > 0,
-    then EXP ⊄ P/poly (and hence NP ⊄ P/poly by Karp-Lipton).
-
-    MKtP magnification is even stronger because MKtP is a "harder"
-    meta-complexity problem (it encodes computation time as well). -/
-axiom mktp_magnification :
-    -- If MKtP requires slightly super-linear circuits...
-    (∃ ε : ℝ, ε > 0 ∧ True) →  -- MKtP ∉ SIZE(n^{1+ε})
-    -- ...then EXP has no polynomial-size circuits
-    True  -- EXP ⊄ P/poly
-
 /-- The magnification phenomenon extends to other computational models:
 
     | Problem | Lower Bound Needed | Conclusion |
@@ -13205,26 +12383,6 @@ So magnification doesn't provide an "easier" path — it shows that even
 the seemingly modest goal of n^{1+ε} lower bounds for MCSP is
 fundamentally as hard as proving NP ⊄ P/poly directly.
 -/
-
-/-- The **magnification barrier** (McKay-Murray-Williams 2019):
-
-    "Magnification-compatible" proof techniques that could establish
-    n^{1+ε} lower bounds for MCSP must overcome the natural proofs barrier.
-
-    A proof is "magnification-compatible" if it:
-    1. Works for random truth tables (largeness)
-    2. Can be checked in polynomial time (constructivity)
-
-    These are exactly the properties that define "natural proofs"!
-
-    Consequence: Hardness magnification is a self-defeating prophecy —
-    it tells us that easy lower bounds exist, but the proof of those
-    lower bounds must be as sophisticated as the magnified conclusion. -/
-axiom magnification_barrier :
-    -- Any natural proof of n^{1+ε} lower bounds for MCSP
-    -- would contradict OWF existence (via natural proofs barrier)
-    -- Therefore natural proofs cannot establish magnification hypotheses
-    True
 
 /-- The magnification barrier creates a "barrier trinity":
 
@@ -13413,9 +12571,7 @@ end HardnessMagnification
 #check MKtP
 #check MKtP_in_NP
 #check mcsp_magnification
-#check mktp_magnification
 #check magnification_landscape
-#check magnification_barrier
 #check barrier_trinity
 #check mcsp_intermediate_candidate
 #check liu_pass_theorem
@@ -15063,7 +14219,6 @@ end MatrixRigidity
 -- PART 51: Counting Complexity — #P, Toda's Theorem, and Permanent
 -- ============================================================================
 
-
 /-
 ## Counting Complexity and #P
 
@@ -15328,7 +14483,6 @@ theorem toda_strengthens_barriers :
 #check vp_ne_vnp_conjecture              -- VP ≠ VNP (algebraic)
 #check toda_strengthens_barriers         -- PROVED: Toda strengthens barriers
 
-
 -- ============================================================================
 -- PART 52: Proof Complexity — Resolution, Cutting Planes, and P vs NP
 -- ============================================================================
@@ -15418,27 +14572,6 @@ def ExtendedFregeSystem : ProofSystem_PC where
   verify := fun _ => True
   sound := True
   complete := True
-
-/-- **Cook-Reckhow Theorem (1979)**: P = NP if and only if there exists
-    a propositional proof system that is **polynomially bounded**
-    (every tautology of length n has a proof of length poly(n)).
-
-    This reduces P vs NP to proof complexity!
-
-    **Proof sketch:**
-    (⟹) If P = NP, then the system "guess a proof and verify" works,
-    since verification is in NP = P, so tautology checking is in P.
-    (⟸) If a polynomially bounded system exists, then for any
-    coNP language L, membership is witnessed by a short proof,
-    so coNP ⊆ NP, hence NP = coNP, and by Toda-type arguments
-    PH collapses, implying P = NP (by assumption that PH is strict).
-
-    **Why an axiom?** The full proof requires careful treatment of
-    Cook-Reckhow's definition of propositional proof systems and
-    the connection between NP/coNP and propositional tautologies. -/
-axiom cook_reckhow_theorem :
-    -- P = NP ↔ ∃ polynomially bounded proof system
-    True
 
 /-- **Haken's Theorem (1985)**: Resolution proofs of the pigeonhole
     principle PHP^{n+1}_n require exponential length.
@@ -15603,7 +14736,6 @@ theorem cook_program_status :
 #check CuttingPlanesSystem              -- PROVED: CP system
 #check FregeSystem                       -- PROVED: Frege system
 #check ExtendedFregeSystem              -- PROVED: Extended Frege system
-#check cook_reckhow_theorem             -- P=NP ↔ ∃ bounded proof system
 #check haken_resolution_lower_bound     -- PHP requires exp resolution
 #check ben_sasson_wigderson             -- Width-size relationship
 #check resolution_weaker_than_cutting_planes -- PROVED: Res < CP
@@ -15616,7 +14748,6 @@ theorem cook_program_status :
 #check frege_not_automatizable          -- Frege not automatizable
 #check proof_circuit_connection          -- PROVED: proofs ↔ circuits
 #check cook_program_status              -- PROVED: Cook's program status
-
 
 -- ============================================================================
 -- PART 53: Meta-Complexity — MCSP, Kolmogorov, and the Barrier Landscape
@@ -15915,19 +15046,6 @@ theorem w_hierarchy_collapse_consequence :
     W1 = W2 → True := by
   intro _; trivial
 
-/-- Exponential Time Hypothesis (ETH): 3-SAT requires 2^{Ω(n)} time.
-    ETH implies W[1] ≠ FPT (and much more). -/
-axiom eth_implies_fpt_ne_w1 :
-    -- ETH → FPT ≠ W[1]
-    -- This is because ETH implies k-CLIQUE requires n^{Ω(k)} time
-    True
-
-/-- Strong ETH (SETH): k-SAT requires (2-ε)^n time for each ε > 0 as k → ∞.
-    SETH implies many tight lower bounds in algorithm design. -/
-axiom seth_consequences :
-    -- SETH → no O(n^{2-ε}) algorithm for edit distance, LCS, etc.
-    True
-
 /-- **PROVED: Parameterized complexity provides finer barriers.**
 
     The W-hierarchy gives a richer structural theory than just P vs NP:
@@ -15939,14 +15057,6 @@ theorem parameterized_refines_barriers :
     -- The parameterized lens gives more information than classical complexity
     (1 : ℕ) + 1 = 2 := rfl
 
-/-- Kernelization: an FPT problem has a polynomial kernel iff it has an
-    efficient preprocessing step. Not all FPT problems have polynomial kernels
-    (under standard assumptions). -/
-axiom kernelization_lower_bounds :
-    -- Under NP ⊄ coNP/poly, k-PATH has no polynomial kernel
-    -- This shows fine structure within FPT itself
-    True
-
 -- Part 54 exports
 #check FPT_class
 #check W1
@@ -15955,9 +15065,7 @@ axiom kernelization_lower_bounds :
 #check w_hierarchy_chain
 #check k_clique_w1_complete
 #check fpt_ne_w1_implies_p_ne_np
-#check eth_implies_fpt_ne_w1
 #check parameterized_refines_barriers
-
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART 56: QUANTUM COMPLEXITY AND P vs NP
@@ -15978,7 +15086,6 @@ Key results:
 
 The relationship between quantum and classical complexity is itself
 a major open problem, intertwined with but distinct from P vs NP. -/
-
 
 namespace QuantumComplexity
 
@@ -16377,7 +15484,6 @@ end QuantumComplexity
 #check QuantumComplexity.QuantumBarrier
 #check QuantumComplexity.quantum_classical_independence
 #check QuantumComplexity.quantum_pvsnp_summary
-
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART 57: INFORMATION COMPLEXITY AND COMMUNICATION LOWER BOUNDS

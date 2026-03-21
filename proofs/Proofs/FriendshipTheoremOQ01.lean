@@ -1981,4 +1981,300 @@ theorem friendship_card_ge_three (hF : IsFriendshipGraph G) (u : V)
     - Combined with A² = (k-1)I + J → eigenspace decomposition -/
 theorem part_xviii_summary : (5 : ℕ) = 5 := rfl
 
+-- ============================================================================
+-- Part XIX: Regularity Proof — No Universal Vertex Implies Regular
+-- ============================================================================
+-- This eliminates Axiom 1 (friendship_has_universal_or_regular) from the
+-- main FriendshipTheorem.lean file. The key insight: non-adjacent vertices
+-- in a friendship graph have the same degree (from A³ commutativity), and
+-- a friendship graph with no universal vertex must be regular.
+
+/-- Row sum of the adjacency matrix equals the degree (over ℤ). -/
+lemma adjMatrix_row_sum (i : V) :
+    ∑ j : V, (G.adjMatrix ℤ) i j = ↑(G.degree i) := by
+  simp only [SimpleGraph.adjMatrix_apply]
+  rw [Finset.sum_boole]
+  simp only [SimpleGraph.degree]
+  congr 1
+  ext v
+  simp [SimpleGraph.mem_neighborFinset]
+
+/-- Column sum of the adjacency matrix equals the degree (by symmetry). -/
+lemma adjMatrix_col_sum (j : V) :
+    ∑ i : V, (G.adjMatrix ℤ) i j = ↑(G.degree j) := by
+  simp_rw [show ∀ i, (G.adjMatrix ℤ) i j = (G.adjMatrix ℤ) j i from
+    fun i => by simp [SimpleGraph.adjMatrix_apply, G.adj_comm]]
+  exact adjMatrix_row_sum G j
+
+/-- Entry of A*(A*A) for distinct i,j in a friendship graph.
+    (A*(A²))ᵢⱼ = deg(i) + Aᵢⱼ * (deg(j) - 1) -/
+lemma a_mul_asq_entry (hF : IsFriendshipGraph G) (i j : V) (hij : i ≠ j) :
+    (G.adjMatrix ℤ * (G.adjMatrix ℤ * G.adjMatrix ℤ)) i j =
+    ↑(G.degree i) + (G.adjMatrix ℤ) i j * (↑(G.degree j) - 1) := by
+  simp only [Matrix.mul_apply]
+  -- Split sum at k = j
+  rw [← Finset.add_sum_erase _ _ (Finset.mem_univ j)]
+  -- k = j term: A_{ik} * (A²)_{jj} = A_{ij} * deg(j)
+  have hdiag : ∑ k : V, (G.adjMatrix ℤ) j k * (G.adjMatrix ℤ) k j =
+      ↑(G.degree j) := by
+    have := adjMatrix_sq_diag G j
+    simp only [Matrix.mul_apply] at this
+    exact_mod_cast this
+  rw [hdiag]
+  -- k ≠ j terms: A_{ik} * (A²)_{kj} = A_{ik} * 1 for k ≠ j
+  have hoff : ∀ k ∈ Finset.univ.erase j, ∑ l : V, (G.adjMatrix ℤ) k l *
+      (G.adjMatrix ℤ) l j = 1 := by
+    intro k hk
+    have hkj : k ≠ j := Finset.ne_of_mem_erase hk
+    have := adjMatrix_sq_off_diag G hF k j hkj
+    simp only [Matrix.mul_apply] at this
+    exact this
+  simp_rw [Finset.sum_congr rfl (fun k hk => show (G.adjMatrix ℤ) i k *
+    (∑ l, (G.adjMatrix ℤ) k l * (G.adjMatrix ℤ) l j) =
+    (G.adjMatrix ℤ) i k * 1 from by rw [hoff k hk])]
+  simp only [mul_one]
+  -- Now: A_{ij} * deg(j) + Σ_{k≠j} A_{ik} = A_{ij} * deg(j) + (deg(i) - A_{ij})
+  have hsum : ∑ k ∈ Finset.univ.erase j, (G.adjMatrix ℤ) i k =
+      ↑(G.degree i) - (G.adjMatrix ℤ) i j := by
+    rw [Finset.sum_erase_eq_sub (Finset.mem_univ j)]
+    exact sub_eq_of_eq_add (by rw [adjMatrix_row_sum])
+  rw [hsum]
+  ring
+
+/-- Entry of (A*A)*A for distinct i,j in a friendship graph.
+    ((A²)*A)ᵢⱼ = deg(j) + Aᵢⱼ * (deg(i) - 1) -/
+lemma asq_mul_a_entry (hF : IsFriendshipGraph G) (i j : V) (hij : i ≠ j) :
+    ((G.adjMatrix ℤ * G.adjMatrix ℤ) * G.adjMatrix ℤ) i j =
+    ↑(G.degree j) + (G.adjMatrix ℤ) i j * (↑(G.degree i) - 1) := by
+  simp only [Matrix.mul_apply]
+  -- Split sum at k = i
+  rw [← Finset.add_sum_erase _ _ (Finset.mem_univ i)]
+  -- k = i term: (A²)_{ii} * A_{ij} = deg(i) * A_{ij}
+  have hdiag : ∑ l : V, (G.adjMatrix ℤ) i l * (G.adjMatrix ℤ) l i =
+      ↑(G.degree i) := by
+    have := adjMatrix_sq_diag G i
+    simp only [Matrix.mul_apply] at this
+    exact_mod_cast this
+  rw [hdiag]
+  -- k ≠ i terms: (A²)_{ik} * A_{kj} = 1 * A_{kj} for k ≠ i
+  have hoff : ∀ k ∈ Finset.univ.erase i, ∑ l : V, (G.adjMatrix ℤ) i l *
+      (G.adjMatrix ℤ) l k = 1 := by
+    intro k hk
+    have hik : i ≠ k := Finset.ne_of_mem_erase hk
+    have := adjMatrix_sq_off_diag G hF i k hik
+    simp only [Matrix.mul_apply] at this
+    exact this
+  simp_rw [Finset.sum_congr rfl (fun k hk => show (∑ l, (G.adjMatrix ℤ) i l *
+    (G.adjMatrix ℤ) l k) * (G.adjMatrix ℤ) k j =
+    1 * (G.adjMatrix ℤ) k j from by rw [hoff k hk])]
+  simp only [one_mul]
+  -- Now: deg(i) * A_{ij} + Σ_{k≠i} A_{kj} = deg(i) * A_{ij} + (deg(j) - A_{ij})
+  have hadj_sym : (G.adjMatrix ℤ) i j = (G.adjMatrix ℤ) j i := by
+    simp [SimpleGraph.adjMatrix_apply, G.adj_comm]
+  have hsum : ∑ k ∈ Finset.univ.erase i, (G.adjMatrix ℤ) k j =
+      ↑(G.degree j) - (G.adjMatrix ℤ) i j := by
+    rw [Finset.sum_erase_eq_sub (Finset.mem_univ i)]
+    have : ∑ k, (G.adjMatrix ℤ) k j = ↑(G.degree j) := adjMatrix_col_sum G j
+    linarith
+  rw [hsum]
+  ring
+
+/-- **Non-adjacent vertices in a friendship graph have the same degree.**
+    Proof: A³ = A·A² = A²·A by associativity. Comparing entries for
+    non-adjacent i,j (where A_{ij} = 0) gives deg(i) = deg(j). -/
+theorem nonadj_same_degree (hF : IsFriendshipGraph G) (u v : V)
+    (huv : u ≠ v) (hnadj : ¬G.Adj u v) : G.degree u = G.degree v := by
+  -- Compute both orderings of A³ entry
+  have h1 := a_mul_asq_entry G hF u v huv
+  have h2 := asq_mul_a_entry G hF u v huv
+  -- A * (A * A) = (A * A) * A by associativity
+  have hassoc : G.adjMatrix ℤ * (G.adjMatrix ℤ * G.adjMatrix ℤ) =
+      (G.adjMatrix ℤ * G.adjMatrix ℤ) * G.adjMatrix ℤ := (mul_assoc _ _ _).symm
+  -- Entry-wise equality
+  have heq : (G.adjMatrix ℤ * (G.adjMatrix ℤ * G.adjMatrix ℤ)) u v =
+      ((G.adjMatrix ℤ * G.adjMatrix ℤ) * G.adjMatrix ℤ) u v :=
+    congr_fun (congr_fun hassoc u) v
+  rw [h1, h2] at heq
+  -- A_{uv} = 0 since u and v are not adjacent
+  have hzero : (G.adjMatrix ℤ) u v = 0 := by
+    simp [SimpleGraph.adjMatrix_apply, hnadj]
+  -- Simplify: deg(u) + 0 = deg(v) + 0
+  simp only [hzero, zero_mul, add_zero] at heq
+  exact_mod_cast heq
+
+/-- Vertices of different degrees in a friendship graph must be adjacent. -/
+theorem diff_degree_implies_adj (hF : IsFriendshipGraph G) (u v : V)
+    (huv : u ≠ v) (hdeg : G.degree u ≠ G.degree v) : G.Adj u v := by
+  by_contra hnadj
+  exact hdeg (nonadj_same_degree G hF u v huv hnadj)
+
+/-- **Friendship graphs without a universal vertex are regular.**
+    Uses the complement-component argument: if two degree classes have
+    size ≥ 2, their complete bipartite structure creates too many common
+    neighbors. Singleton classes would be universal vertices. -/
+theorem friendship_regular_of_no_universal (hF : IsFriendshipGraph G)
+    (hn : Fintype.card V ≥ 3)
+    (hnu : ∀ c : V, ∃ v : V, v ≠ c ∧ ¬G.Adj c v) :
+    ∃ k : ℕ, ∀ v : V, G.degree v = k := by
+  -- Fix a vertex u₀ and show all vertices have deg = deg(u₀)
+  have hne : Nonempty V := by
+    rw [← Fintype.card_pos_iff]; omega
+  let u₀ := Classical.arbitrary V
+  refine ⟨G.degree u₀, fun v => ?_⟩
+  by_contra hdeg
+  -- v has different degree from u₀, so they're adjacent
+  have huv : u₀ ≠ v := by intro h; subst h; exact hdeg rfl
+  have hdeg' : G.degree u₀ ≠ G.degree v := fun h => hdeg h
+  have hadj_uv : G.Adj u₀ v := diff_degree_implies_adj G hF u₀ v huv hdeg'
+  -- u₀ is not universal, so it has a non-neighbor w₁
+  obtain ⟨w₁, hw1ne, hw1nadj⟩ := hnu u₀
+  -- deg(w₁) = deg(u₀) since they're non-adjacent
+  have hdeg_w1 : G.degree w₁ = G.degree u₀ :=
+    nonadj_same_degree G hF w₁ u₀ hw1ne (fun h => hw1nadj (G.symm h))
+  -- v is not universal, so it has a non-neighbor w₂
+  obtain ⟨w₂, hw2ne, hw2nadj⟩ := hnu v
+  -- deg(w₂) = deg(v) since they're non-adjacent
+  have hdeg_w2 : G.degree w₂ = G.degree v :=
+    nonadj_same_degree G hF w₂ v hw2ne (fun h => hw2nadj (G.symm h))
+  -- Key question: is there a vertex non-adjacent to BOTH u₀ and v?
+  -- If w₁ is non-adj to v: deg(w₁) = deg(v) = deg(u₀), contradiction
+  by_cases hw1v : G.Adj w₁ v
+  · -- w₁ is adj to v but non-adj to u₀
+    by_cases hw2u : G.Adj w₂ u₀
+    · -- w₂ is adj to u₀ but non-adj to v
+      -- Consider: all non-neighbors of u₀ are adj to v, all non-neighbors of v are adj to u₀
+      -- Degree classes: S₁ = {x : deg x = deg u₀}, S₂ = {x : deg x = deg v}
+      -- All of S₁ is adj to all of S₂ (different degrees)
+      -- If |S₂| ≥ 2, pick two elements; all of S₁ are common neighbors → contradiction
+      -- We know deg(u₀) ≠ deg(v). Let d₁ = deg(u₀), d₂ = deg(v).
+      let S₁ := Finset.univ.filter (fun x => G.degree x = G.degree u₀)
+      let S₂ := Finset.univ.filter (fun x => G.degree x = G.degree v)
+      -- u₀ ∈ S₁, v ∈ S₂
+      have hu0_S1 : u₀ ∈ S₁ := Finset.mem_filter.mpr ⟨Finset.mem_univ _, rfl⟩
+      have hv_S2 : v ∈ S₂ := Finset.mem_filter.mpr ⟨Finset.mem_univ _, rfl⟩
+      -- All of S₁ adj to all of S₂ (different degrees → adjacent)
+      have hbip : ∀ a ∈ S₁, ∀ b ∈ S₂, G.Adj a b := by
+        intro a ha b hb
+        have hda := (Finset.mem_filter.mp ha).2
+        have hdb := (Finset.mem_filter.mp hb).2
+        have hab : a ≠ b := by
+          intro heq; subst heq; rw [hda] at hdb; exact hdeg' hdb.symm
+        exact diff_degree_implies_adj G hF a b hab (by rw [hda, hdb]; exact hdeg')
+      -- Check |S₂| ≥ 2: v ∈ S₂ and w₂ ∈ S₂ (since deg(w₂) = deg(v))
+      have hw2_S2 : w₂ ∈ S₂ := Finset.mem_filter.mpr ⟨Finset.mem_univ _, hdeg_w2⟩
+      -- Is v ≠ w₂? w₂ is non-adj to v (by hw2nadj), but v is... self-adj is impossible
+      -- Actually w₂ ≠ v because w₂ is a non-neighbor of v
+      have hvw2 : v ≠ w₂ := Ne.symm hw2ne
+      -- So |S₂| ≥ 2
+      -- All of S₁ are common neighbors of v and w₂
+      have hcn : ∀ a ∈ S₁, a ∈ G.commonNeighbors v w₂ := by
+        intro a ha
+        rw [SimpleGraph.mem_commonNeighbors]
+        exact ⟨G.symm (hbip a ha v hv_S2), G.symm (hbip a ha w₂ hw2_S2)⟩
+      -- |commonNeighbors(v, w₂)| ≥ |S₁| ≥ 1 (since u₀ ∈ S₁)
+      -- Also w₁ ∈ S₁ since deg(w₁) = deg(u₀)
+      have hw1_S1 : w₁ ∈ S₁ := Finset.mem_filter.mpr ⟨Finset.mem_univ _, hdeg_w1⟩
+      -- u₀ ≠ w₁ (w₁ is non-adj to u₀, so w₁ ≠ u₀)
+      have hu0w1 : u₀ ≠ w₁ := Ne.symm hw1ne
+      -- So S₁ has at least 2 elements: u₀ and w₁
+      -- Both u₀ and w₁ are common neighbors of v and w₂
+      have hcn1 := hcn u₀ hu0_S1
+      have hcn2 := hcn w₁ hw1_S1
+      -- v ≠ w₂ (proved above as hw2ne.symm)
+      have hvw2' : v ≠ w₂ := hw2ne.symm
+      -- By friendship: |commonNeighbors(v, w₂)| = 1
+      have hfriend := hF v w₂ hvw2'
+      rw [Set.ncard_eq_one] at hfriend
+      obtain ⟨c, hc⟩ := hfriend
+      -- u₀ and w₁ are both in {c}
+      have h_u0 : u₀ = c := Set.mem_singleton_iff.mp (hc ▸ hcn1)
+      have h_w1 : w₁ = c := Set.mem_singleton_iff.mp (hc ▸ hcn2)
+      -- So u₀ = w₁, contradicting u₀ ≠ w₁
+      exact absurd (h_u0.trans h_w1.symm) hu0w1
+    · -- w₂ is non-adj to u₀: deg(w₂) = deg(u₀), but deg(w₂) = deg(v), contradiction
+      have hw2u0 : w₂ ≠ u₀ := by
+        intro heq; subst heq; exact hw2nadj (G.symm hadj_uv)
+      have := nonadj_same_degree G hF w₂ u₀ hw2u0 hw2u
+      -- this : deg(w₂) = deg(u₀), hdeg_w2 : deg(w₂) = deg(v)
+      -- So deg(v) = deg(u₀)
+      exact hdeg (hdeg_w2.symm.trans this)
+  · -- w₁ is non-adj to v: deg(w₁) = deg(v), but deg(w₁) = deg(u₀), contradiction
+    have hw1v_ne : w₁ ≠ v := by
+      intro heq; subst heq; rw [hdeg_w1] at hdeg; exact hdeg rfl
+    have := nonadj_same_degree G hF w₁ v hw1v_ne hw1v
+    -- this : deg(w₁) = deg(v), hdeg_w1 : deg(w₁) = deg(u₀)
+    -- So deg(v) = deg(u₀)
+    exact hdeg (this.symm.trans hdeg_w1)
+
+/-- **Friendship Theorem — universal vertex or regular (proved, no axiom).**
+    In a friendship graph with ≥ 3 vertices, either there exists a universal
+    vertex, or the graph is regular. -/
+theorem friendship_has_universal_or_regular_proved (hF : IsFriendshipGraph G)
+    (hn : Fintype.card V ≥ 3) :
+    (∃ c : V, ∀ v : V, v ≠ c → G.Adj c v) ∨
+    (∃ k : ℕ, ∀ v : V, G.degree v = k) := by
+  by_cases h : ∃ c : V, ∀ v : V, v ≠ c → G.Adj c v
+  · left; exact h
+  · right
+    push_neg at h
+    exact friendship_regular_of_no_universal G hF hn h
+
+/-- **Friendship Theorem — regular implies universal (proved, no axiom).**
+    Wrapper matching the signature of the axiom in FriendshipTheorem.lean. -/
+theorem friendship_regular_implies_universal_proved (hF : IsFriendshipGraph G)
+    (hReg : ∃ k : ℕ, ∀ v : V, G.degree v = k)
+    (hn : Fintype.card V ≥ 3) :
+    ∃ c : V, ∀ v : V, v ≠ c → G.Adj c v := by
+  obtain ⟨k, hreg⟩ := hReg
+  -- k ≥ 2 from n ≥ 3 and counting identity
+  have hne : Nonempty V := by rw [← Fintype.card_pos_iff]; omega
+  let u := Classical.arbitrary V
+  have hk2 : k ≥ 2 := by
+    -- k = 0: no edges, so no common neighbors, contradicts friendship for n ≥ 3
+    -- k = 1: matching, each vertex has 1 neighbor, non-adj pairs share 0 common neighbors
+    by_contra h; push_neg at h
+    interval_cases k
+    · -- k = 0: every vertex isolated, no common neighbors
+      have hab : ∃ a : V, ∃ b : V, a ≠ b := by
+        have := Fintype.exists_ne_of_one_lt_card (by omega : 1 < Fintype.card V)
+        obtain ⟨a, b, hab⟩ := ⟨(this (Classical.arbitrary V)).choose,
+          Classical.arbitrary V, (this (Classical.arbitrary V)).choose_spec⟩
+        exact ⟨a, b, hab⟩
+      obtain ⟨a, b, hab⟩ := hab
+      have hcn : (G.commonNeighbors a b).ncard = 1 := hF a b hab
+      have hempty : (G.commonNeighbors a b).ncard = 0 := by
+        rw [Set.ncard_eq_zero]
+        intro w hw
+        rw [SimpleGraph.mem_commonNeighbors] at hw
+        have : G.degree w = 0 := hreg w
+        rw [SimpleGraph.degree] at this
+        have := Finset.card_pos.mpr ⟨a, (G.mem_neighborFinset w a).mpr hw.1⟩
+        omega
+      omega
+    · -- k = 1: each vertex has 1 neighbor, common neighbor adj to both gives deg ≥ 2
+      have hab : ∃ a : V, ∃ b : V, a ≠ b := by
+        have := Fintype.exists_ne_of_one_lt_card (by omega : 1 < Fintype.card V)
+        obtain ⟨a, b, hab⟩ := ⟨(this (Classical.arbitrary V)).choose,
+          Classical.arbitrary V, (this (Classical.arbitrary V)).choose_spec⟩
+        exact ⟨a, b, hab⟩
+      obtain ⟨a, b, hab⟩ := hab
+      have hcn : (G.commonNeighbors a b).ncard = 1 := hF a b hab
+      rw [Set.ncard_eq_one] at hcn
+      obtain ⟨w, hw⟩ := hcn
+      have hw_mem : w ∈ G.commonNeighbors a b := hw ▸ Set.mem_singleton w
+      rw [SimpleGraph.mem_commonNeighbors] at hw_mem
+      have hwa : a ∈ G.neighborFinset w := (G.mem_neighborFinset w a).mpr hw_mem.1
+      have hwb : b ∈ G.neighborFinset w := (G.mem_neighborFinset w b).mpr hw_mem.2
+      have : G.degree w ≥ 2 := by
+        rw [SimpleGraph.degree]
+        have hsub : {a, b} ⊆ G.neighborFinset w := by
+          intro x hx
+          simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+          rcases hx with rfl | rfl <;> assumption
+        calc (G.neighborFinset w).card ≥ ({a, b} : Finset V).card :=
+              Finset.card_le_card hsub
+          _ = 2 := Finset.card_pair hab
+      rw [hreg w] at this; omega
+  exact regular_friendship_has_universal G hF u k hk2 hreg
+
 end FriendshipTheoremOQ01

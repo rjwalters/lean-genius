@@ -11,6 +11,7 @@ import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Data.Set.Card
 import Mathlib.Tactic.FinCases
 import Mathlib.Tactic.NormNum
+import Proofs.FriendshipTheoremOQ01
 
 /-
 # The Friendship Theorem
@@ -48,7 +49,7 @@ friendship graphs.
 - [x] Definition of friendship property
 - [x] Definition of windmill graphs
 - [x] Statement of main theorem
-- [x] Complete proof (key lemmas axiomatized with full justification)
+- [x] Complete proof (0 axioms, 0 sorries — fully verified via OQ01)
 
 ## Mathlib Dependencies
 - `SimpleGraph` : Undirected graphs without self-loops
@@ -171,42 +172,32 @@ lemma universal_degree (c : V) (hc : IsUniversalVertex G c) :
     exact ⟨fun hadj hvc => G.loopless c (hvc ▸ hadj), fun hne => hc v hne⟩
   rw [hneigh, Finset.card_erase_of_mem (Finset.mem_univ c), Finset.card_univ]
 
-/-- **Axiom: A friendship graph is either has a universal vertex or is regular.**
-
-    Either some vertex has maximum degree n-1 (making it adjacent to all others),
-    or by the friendship property's symmetry constraints, all vertices must have
-    the same degree. -/
-axiom friendship_has_universal_or_regular_axiom (hF : IsFriendshipGraph G)
-    (h : Fintype.card V ≥ 3) :
-    (∃ c : V, IsUniversalVertex G c) ∨ (∃ k : ℕ, ∀ v : V, G.degree v = k)
-
-/-- In a non-trivial friendship graph, there exists a vertex of maximum degree
-that is adjacent to all others, or the graph is regular. -/
+/-- **A friendship graph either has a universal vertex or is regular.**
+    Proved via the A³ commutativity argument (non-adjacent → same degree)
+    combined with complement-connectivity analysis.
+    See FriendshipTheoremOQ01.lean Part XIX for the full proof. -/
 lemma friendship_has_universal_or_regular (hF : IsFriendshipGraph G)
     (h : Fintype.card V ≥ 3) :
     (∃ c : V, IsUniversalVertex G c) ∨
-    (∃ k : ℕ, ∀ v : V, G.degree v = k) :=
-  friendship_has_universal_or_regular_axiom G hF h
+    (∃ k : ℕ, ∀ v : V, G.degree v = k) := by
+  -- Bridge to OQ01's IsFriendshipGraph (identical definition)
+  have hF' : FriendshipTheoremOQ01.IsFriendshipGraph G := fun u v huv => hF u v huv
+  rcases FriendshipTheoremOQ01.friendship_has_universal_or_regular_proved G hF' h with
+    ⟨c, hc⟩ | hk
+  · left; exact ⟨c, hc⟩
+  · right; exact hk
 
-/-- **Axiom: A regular friendship graph has a universal vertex.**
-
-    The spectral approach: if G is k-regular with n vertices and satisfies
-    friendship, then A² = J - I + (k-1)A where A is adjacency matrix.
-    Analyzing eigenvalues: the characteristic polynomial constraints force
-    k = n - 1, meaning every vertex is universal. -/
-axiom friendship_regular_implies_universal_axiom (hF : IsFriendshipGraph G)
-    (hReg : ∃ k : ℕ, ∀ v : V, G.degree v = k)
-    (h : Fintype.card V ≥ 3) :
-    ∃ c : V, IsUniversalVertex G c
-
-/-- If a friendship graph is regular (all vertices same degree), and has
-no universal vertex, then it must have a very specific structure that
-leads to a contradiction for n > 3. -/
+/-- **A regular friendship graph has a universal vertex.**
+    Proved via characteristic polynomial analysis showing k = 2.
+    See FriendshipTheoremOQ01.lean Parts X–XVIII for the full proof. -/
 lemma friendship_regular_implies_universal (hF : IsFriendshipGraph G)
     (hReg : ∃ k : ℕ, ∀ v : V, G.degree v = k)
     (h : Fintype.card V ≥ 3) :
-    ∃ c : V, IsUniversalVertex G c :=
-  friendship_regular_implies_universal_axiom G hF hReg h
+    ∃ c : V, IsUniversalVertex G c := by
+  have hF' : FriendshipTheoremOQ01.IsFriendshipGraph G := fun u v huv => hF u v huv
+  obtain ⟨c, hc⟩ :=
+    FriendshipTheoremOQ01.friendship_regular_implies_universal_proved G hF' hReg h
+  exact ⟨c, hc⟩
 
 /-
 ## Part 4: The Main Theorem
