@@ -340,18 +340,21 @@ theorem factorial_sum_liouville :
         ≤ 2 / (2 : ℝ) ^ (m + 2).factorial := factorialTail_le m
       _ < 1 / ((2 : ℝ) ^ (m + 1).factorial) ^ m := by
           -- 2/2^{(m+2)!} < 1/(2^{(m+1)!})^m
-          -- ⟺ 2^{m*(m+1)!+1} < 2^{(m+2)!}
-          -- ⟺ m*(m+1)!+1 < (m+2)!
-          -- This is factorial_mul_add_one_lt
+          -- Cross-multiply: 2 * (2^{(m+1)!})^m < 2^{(m+2)!}
+          -- i.e., 2^{m*(m+1)!+1} < 2^{(m+2)!}
+          -- This follows from m*(m+1)!+1 < (m+2)! [factorial_mul_add_one_lt]
           sorry
 
 /-- **Axiom-free transcendence**: Σ 1/2^{(k+1)!} is transcendental.
-    Uses Liouville's theorem directly — no Erdős 1975 axiom needed. -/
+    Uses Liouville's theorem directly — no Erdős 1975 axiom needed.
+    Liouville.transcendental gives Transcendental ℤ x. The conversion to
+    Transcendental ℚ x follows from: IsAlgebraic ℚ x → IsAlgebraic ℤ x
+    (clearing denominators), so by contraposition. -/
 theorem factorial_sum_transcendental_liouville :
     Transcendental ℚ (lacunarySum (fun k => (k + 1).factorial)) := by
   have h := factorial_sum_liouville.transcendental
-  -- Liouville.transcendental gives Transcendental ℤ x
-  -- Convert to Transcendental ℚ x
+  -- h : Transcendental ℤ x → Transcendental ℚ x
+  -- by contraposition of IsAlgebraic ℚ x → IsAlgebraic ℤ x (clearing denominators)
   sorry
 
 end Erdos247
