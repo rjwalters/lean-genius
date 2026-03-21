@@ -36,7 +36,7 @@
       "startLine": 83,
       "endLine": 103
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "Asymptotic Infrastructure: Axiomatized f(n) and BFL Bounds",
     "content": "Axiomatizes the triangle removal function f(n) = triangleRemovalEdges n with basic properties (non-negative, bounded by n(n-1)/2) and the BFL (Bohman-Frieze-Lubetzky 2015) bounds: for any ε > 0, eventually n^{3/2-ε} ≤ f(n) ≤ n^{3/2+ε}.\n\nThe Erdős conjecture erdos_1155_conjecture asks for the stronger statement: ∃ c₁, c₂ > 0 such that c₁·n^{3/2} ≤ f(n) ≤ c₂·n^{3/2} eventually. The gap between BFL and the conjecture is precisely the difference between sub-polynomial bounds (n^{±ε}) and constant bounds.",
     "mathContext": "The triangle removal process on $K_n$: repeatedly select a triangle uniformly at random and remove its edges, continuing until the graph is triangle-free. $f(n)$ counts the remaining edges. BFL proved $f(n) = n^{3/2+o(1)}$ a.s., meaning for any $\\varepsilon > 0$: $n^{3/2-\\varepsilon} \\leq f(n) \\leq n^{3/2+\\varepsilon}$ eventually.",
@@ -154,7 +154,7 @@
     "proofId": "erdos-1155-oq-01",
     "range": {
       "startLine": 412,
-      "endLine": 491
+      "endLine": 490
     },
     "type": "theorem",
     "title": "Hierarchy of Bounds and Ratio Tightness",

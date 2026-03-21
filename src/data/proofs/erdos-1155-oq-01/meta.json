@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://erdosproblems.com/1155",
     "date": "2026",
-    "status": "in-progress",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1155OQ01.lean",
     "tags": [
       "erdos",
@@ -193,6 +193,23 @@
       "**Mantel connection**: the naive bound $f(n) \\leq n^2/4$ from extremal graph theory is vastly improved by BFL's $n^{7/4}$, and the conjecture's $n^{3/2}$ is tighter still"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1155",
+      "relationship": "extends",
+      "description": "Parent formalization of the triangle removal process; this proof extends it with exact asymptotics analysis and BFL-conjecture gap characterization"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey theory provides the broader context for graph processes that eliminate substructures; the triangle removal process is a constructive analog of Ramsey-type existence results"
+    },
+    {
+      "targetId": "prob-method-expectation",
+      "relationship": "related",
+      "description": "The probabilistic method underlies BFL's analysis of the random triangle removal process via differential equation methods for random graph processes"
+    }
+  ],
   "conclusion": {
     "summary": "Complete formalization of the structural relationship between BFL's n^{3/2+o(1)} result and Erdős's Θ(n^{3/2}) conjecture. All theorems fully proved (0 sorries). Includes BFL sandwich, exact exponent characterization, conjecture decomposition, Mantel connection, hierarchy of bounds, and ratio tightness characterization.",
     "implications": "Any proof of the full conjecture must establish that $f(n)/n^{3/2}$ has a compact limit set in $(0, \\infty)$ — a qualitative strengthening of BFL's sub-polynomial bounds. The $O$ and $\\Omega$ bounds can be pursued independently; proving either one constitutes progress toward the full conjecture. The hierarchy Conjecture $\\Longrightarrow$ BFL $\\Longrightarrow$ Grable provides a roadmap for incremental progress: each strengthening requires tighter control of the multiplicative constants. Connecting to differential equation methods (as in BFL's proof) may be the most promising route to extracting explicit constants.",
