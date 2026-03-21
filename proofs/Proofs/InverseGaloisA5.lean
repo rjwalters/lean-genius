@@ -1465,7 +1465,10 @@ private theorem prod_Iio_eq_vandermonde {n : ℕ} {R : Type*} [CommRing R]
     (v : Fin n → R) :
     (∏ i : Fin n, ∏ j ∈ Finset.Iio i, (v i - v j)) =
     ∏ i : Fin n, ∏ j ∈ Finset.Ioi i, (v j - v i) := by
-  -- Proof needs update for ∈ notation (previously used Finset.prod_nbij with in syntax)
+  -- Both sides equal ∏_{a>b} (v a - v b), just with indices swapped.
+  -- Approach: flatten via Finset.prod_sigma, apply swap bijection (i,j) ↦ (j,i).
+  -- Blocked by sigma type handling: Finset.prod_sigma uses Sigma σ arguments
+  -- while the product body uses v applied to components. Needs explicit lambda.
   sorry
 
 theorem ordered_root_diff_prod_eq_vandermonde_sq :
