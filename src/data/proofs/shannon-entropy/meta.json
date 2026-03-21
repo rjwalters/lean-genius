@@ -60,51 +60,43 @@
   "sections": [
     {
       "id": "introduction",
-      "title": "Introduction",
+      "title": "Module Docstring and Imports",
       "startLine": 1,
-      "endLine": 30,
-      "summary": "Historical context and motivation for Shannon entropy as the fundamental information measure.",
-      "mathContext": "Shannon (1948): $H(X) = -\\sum_x p(x) \\log_2 p(x)$ is the unique (up to scale) measure of information satisfying continuity, monotonicity for uniform distributions, and the grouping axiom. Measured in bits when using $\\log_2$."
+      "endLine": 18,
+      "summary": "Overview of Shannon entropy as the foundation of information theory. Lists key results: entropy definition, non-negativity, maximum entropy, Gibbs inequality, log-sum inequality.",
+      "mathContext": "$H(X) = -\\sum_x p(x) \\log p(x)$"
     },
     {
       "id": "entropy-definition",
-      "title": "Entropy Definition",
-      "startLine": 32,
-      "endLine": 72,
-      "summary": "Formal definition of Shannon entropy for discrete distributions over a Fintype, with the 0 log 0 = 0 convention.",
-      "mathContext": "For a probability mass function $p: \\mathcal{X} \\to [0,1]$ with $\\sum_x p(x) = 1$, define $\\eta(t) = -t \\log_2 t$ for $t > 0$ and $\\eta(0) = 0$. Then $H(X) = \\sum_x \\eta(p(x))$. The function $\\eta$ is concave on $[0,1]$."
+      "title": "Entropy Definition and Non-Negativity",
+      "startLine": 20,
+      "endLine": 29,
+      "summary": "Defines Shannon entropy with the 0·log(0) = 0 convention. States non-negativity H(p) >= 0 for probability distributions (sorry'd). Uses natural log (Real.log), not log₂.",
+      "mathContext": "$H(X) = -\\sum_x p(x) \\ln p(x) \\geq 0$ for $p(x) \\geq 0$, $\\sum p(x) = 1$"
     },
     {
-      "id": "conditional-entropy",
-      "title": "Conditional Entropy",
-      "startLine": 74,
-      "endLine": 118,
-      "summary": "Conditional entropy H(Y|X) and its properties, including non-negativity and conditioning reduces entropy.",
-      "mathContext": "Conditional entropy $H(Y|X) = \\sum_x p(x) H(Y|X=x) = -\\sum_{x,y} p(x,y) \\log_2 p(y|x)$. Key property: $H(Y|X) \\leq H(Y)$ with equality iff $X$ and $Y$ are independent. Conditioning reduces entropy (on average)."
+      "id": "max-entropy",
+      "title": "Maximum Entropy (Uniform Distribution)",
+      "startLine": 31,
+      "endLine": 34,
+      "summary": "Entropy is maximized by the uniform distribution: H(p) <= log|X|. Sorry'd — the proof uses Gibbs inequality with q = uniform.",
+      "mathContext": "$H(X) \\leq \\ln |\\mathcal{X}|$ with equality iff $p$ is uniform"
     },
     {
-      "id": "mutual-information",
-      "title": "Mutual Information",
-      "startLine": 120,
-      "endLine": 165,
-      "summary": "Mutual information I(X;Y) as the reduction in uncertainty, with non-negativity and symmetry.",
-      "mathContext": "Mutual information $I(X;Y) = H(X) - H(X|Y) = H(X) + H(Y) - H(X,Y) = D(p_{XY} \\| p_X p_Y) \\geq 0$. Symmetric: $I(X;Y) = I(Y;X)$. Equals zero iff $X \\perp Y$."
+      "id": "gibbs",
+      "title": "Gibbs Inequality",
+      "startLine": 36,
+      "endLine": 40,
+      "summary": "H(p) <= -sum p(x) log q(x) for any distribution q, equivalently D(p||q) >= 0. Sorry'd — proof via Jensen's inequality on -log (convex).",
+      "mathContext": "$D(p \\| q) = \\sum_x p(x) \\ln \\frac{p(x)}{q(x)} \\geq 0$ (Gibbs inequality)"
     },
     {
-      "id": "chain-rule",
-      "title": "Chain Rule",
-      "startLine": 167,
-      "endLine": 210,
-      "summary": "The chain rule for entropy and mutual information, relating joint and conditional quantities.",
-      "mathContext": "Chain rule for entropy: $H(X_1, \\ldots, X_n) = \\sum_{i=1}^n H(X_i | X_1, \\ldots, X_{i-1})$. Chain rule for mutual information: $I(X_1, \\ldots, X_n ; Y) = \\sum_{i=1}^n I(X_i; Y | X_1, \\ldots, X_{i-1})$."
-    },
-    {
-      "id": "gibbs-inequality",
-      "title": "Gibbs Inequality and KL Divergence",
-      "startLine": 212,
-      "endLine": 265,
-      "summary": "Non-negativity of KL divergence (Gibbs inequality), the master inequality of information theory.",
-      "mathContext": "Gibbs inequality: $D(p \\| q) = \\sum_x p(x) \\log \\frac{p(x)}{q(x)} \\geq 0$, with equality iff $p = q$. Proof via Jensen's inequality applied to the convex function $-\\log$. This implies: $H(X) \\leq \\log |\\mathcal{X}|$, $H(Y|X) \\leq H(Y)$, and $I(X;Y) \\geq 0$."
+      "id": "log-sum",
+      "title": "Log-Sum Inequality",
+      "startLine": 42,
+      "endLine": 48,
+      "summary": "The log-sum inequality: sum a_i log(a_i/b_i) >= (sum a_i) log((sum a_i)/(sum b_i)). A generalization of the Gibbs inequality. Sorry'd — proof via convexity of x·log(x).",
+      "mathContext": "$\\sum_i a_i \\ln \\frac{a_i}{b_i} \\geq \\left(\\sum_i a_i\\right) \\ln \\frac{\\sum_i a_i}{\\sum_i b_i}$"
     }
   ],
   "crossReferences": [
