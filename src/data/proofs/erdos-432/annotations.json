@@ -3,108 +3,202 @@
     "id": "erdos-432-sumset",
     "proofId": "erdos-432",
     "type": "definition",
-    "range": { "startLine": 34, "endLine": 38 },
+    "range": {
+      "startLine": 34,
+      "endLine": 38
+    },
     "title": "Sumset A + B",
     "content": "**sumset A B** = {a + b : a ∈ A, b ∈ B}. The Minkowski sum of two subsets of ℕ. The pairwise coprime constraint is imposed on this set, creating a tension between additive richness and multiplicative independence.",
     "significance": "key",
     "mathContext": "The **sumset** (or Minkowski sum) is the central object of additive combinatorics. By the Cauchy-Davenport theorem, for finite subsets A, B of ℤ/pℤ, |A + B| ≥ min(p, |A| + |B| - 1) — sumsets tend to be large. Freiman's theorem gives a structural characterization when |A + A| is small. The Plünnecke-Ruzsa inequality bounds |kA - lA| in terms of |A + A|/|A|. Problem #432 asks the opposite question: how large can a sumset be under a severe multiplicative restriction (pairwise coprimality)? This inverts the usual additive combinatorics paradigm, where one bounds sumsets from below.",
-    "relatedConcepts": ["Minkowski sum", "Cauchy-Davenport theorem", "Freiman's theorem", "Plünnecke-Ruzsa inequality"],
-    "prerequisites": ["Set ℕ", "set membership"]
+    "relatedConcepts": [
+      "Minkowski sum",
+      "Cauchy-Davenport theorem",
+      "Freiman's theorem",
+      "Plünnecke-Ruzsa inequality"
+    ],
+    "prerequisites": [
+      "Set ℕ",
+      "set membership"
+    ]
   },
   {
     "id": "erdos-432-sumset-upto",
     "proofId": "erdos-432",
     "type": "definition",
-    "range": { "startLine": 43, "endLine": 44 },
+    "range": {
+      "startLine": 43,
+      "endLine": 44
+    },
     "title": "Restricted Sumset",
     "content": "**sumsetUpTo A B n** = {m ∈ A + B : m ≤ n}. The initial segment of the sumset up to n, used for counting density via |A + B ∩ [1,n]|.",
     "significance": "supporting",
     "mathContext": "Density is measured by the **counting function** |S ∩ [1,n]| as n → ∞. For a pairwise coprime set S, the trivial bound is |S ∩ [1,n]| ≤ π(n) + 1, since each element > 1 must have a distinct smallest prime factor. The question is whether the sumset structure A + B forces a density even lower than this 'greedy coprime set' bound, or whether one can construct A, B achieving density close to π(n).",
-    "relatedConcepts": ["counting function", "natural density", "Schnirelmann density"],
-    "prerequisites": ["sumset"]
+    "relatedConcepts": [
+      "counting function",
+      "natural density",
+      "Schnirelmann density"
+    ],
+    "prerequisites": [
+      "sumset"
+    ]
   },
   {
     "id": "erdos-432-coprime",
     "proofId": "erdos-432",
     "type": "definition",
-    "range": { "startLine": 48, "endLine": 59 },
+    "range": {
+      "startLine": 48,
+      "endLine": 59
+    },
     "title": "Pairwise Coprimality",
     "content": "**IsPairwiseCoprime S**: gcd(x, y) = 1 for all distinct x, y ∈ S. **SumsetPairwiseCoprime A B**: the sumset A + B is pairwise coprime. This means every pair of sums a₁ + b₁ and a₂ + b₂ shares no common prime factor.",
     "significance": "key",
     "mathContext": "A **pairwise coprime** set is one where no prime divides two distinct elements. The maximal size of a pairwise coprime subset of {1,...,n} is exactly π(n) + 1 (the primes plus 1): take {1, 2, 3, 5, 7, 11, ...}. Any larger set must contain two elements sharing a prime factor. The constraint is **multiplicative** in nature, while the sumset is **additive** — the problem lives at the intersection of these two worlds. By the fundamental theorem of arithmetic, pairwise coprimality means the elements of A + B partition the primes: each prime 'belongs to' at most one element.",
-    "relatedConcepts": ["Nat.Coprime", "greatest common divisor", "prime factorization", "coprime set extremal size"],
-    "prerequisites": ["Nat.Coprime", "Nat.GCD.Basic"]
+    "relatedConcepts": [
+      "Nat.Coprime",
+      "greatest common divisor",
+      "prime factorization",
+      "coprime set extremal size"
+    ],
+    "prerequisites": [
+      "Nat.Coprime",
+      "Nat.GCD.Basic"
+    ]
   },
   {
     "id": "erdos-432-counting",
     "proofId": "erdos-432",
     "type": "definition",
-    "range": { "startLine": 63, "endLine": 73 },
+    "range": {
+      "startLine": 63,
+      "endLine": 73
+    },
     "title": "Counting Function and Infinite Sets",
     "content": "**countingFn S n** = |{m ∈ S : 1 ≤ m ≤ n}|. **IsInfiniteSet S**: countingFn S N is unbounded. Both A and B are required to be infinite, ensuring A + B is a genuinely rich sumset.",
     "significance": "key",
     "mathContext": "The requirement that both A and B be infinite is essential. If A = {1} and B = primes, then A + B = {p + 1 : p prime}, which is not pairwise coprime in general. The challenge is that infinite A, B can generate a sumset growing rapidly, while pairwise coprimality restricts growth to at most π(n) + 1 ∼ n/log n. The question is whether the sumset structure forces the counting function to grow even slower than π(n).",
-    "relatedConcepts": ["asymptotic density", "sumset growth rate", "prime counting function π(n)"],
-    "prerequisites": ["Finset.filter", "Finset.card"]
+    "relatedConcepts": [
+      "asymptotic density",
+      "sumset growth rate",
+      "prime counting function π(n)"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "Finset.card"
+    ]
   },
   {
     "id": "erdos-432-problem",
     "proofId": "erdos-432",
     "type": "conjecture",
-    "range": { "startLine": 86, "endLine": 98 },
+    "range": {
+      "startLine": 86,
+      "endLine": 98
+    },
     "title": "Erdős Problem #432 (OPEN)",
     "content": "**ErdosProblem432**: Does there exist a bound f(n) ≤ n, growing to infinity, such that for all infinite A, B with pairwise coprime sumset, countingFn(A + B, n) ≤ f(n)? The problem asks for the best possible f.",
     "significance": "key",
     "mathContext": "The formalization asks for the existence of a non-trivial upper bound f on the counting function. The trivial bound is f(n) = n. The coprime-set bound gives f(n) ≤ π(n) + 1 ∼ n/log n. The real question is whether the **sumset structure** forces something much smaller. Possible scenarios: (1) f(n) ∼ π(n) — the sumset doesn't help, one can build A, B with coprime sumset as dense as the primes; (2) f(n) = O(n^α) for some α < 1 — polynomial thinning; (3) f(n) = O((log n)^k) — near-logarithmic density. Tao's comment that the problem 'looks difficult' suggests that even determining the correct order of magnitude is far from current techniques. The difficulty lies in the interplay between additive structure (sumset) and multiplicative structure (coprimality).",
-    "relatedConcepts": ["density of coprime sets", "sumset density bounds", "additive-multiplicative interplay"],
-    "prerequisites": ["countingFn", "IsInfiniteSet", "SumsetPairwiseCoprime"]
+    "relatedConcepts": [
+      "density of coprime sets",
+      "sumset density bounds",
+      "additive-multiplicative interplay"
+    ],
+    "prerequisites": [
+      "countingFn",
+      "IsInfiniteSet",
+      "SumsetPairwiseCoprime"
+    ]
   },
   {
     "id": "erdos-432-prime-unique",
     "proofId": "erdos-432",
     "type": "theorem",
-    "range": { "startLine": 106, "endLine": 111 },
+    "range": {
+      "startLine": 106,
+      "endLine": 111
+    },
     "title": "Prime Divides at Most One Element",
     "content": "If A + B is pairwise coprime, then each prime p divides at most one element of A + B. The elements of A + B partition the primes: their factorizations are disjoint.",
     "significance": "key",
     "mathContext": "This is the key structural lemma. If p | x and p | y with x ≠ y, then gcd(x, y) ≥ p > 1, contradicting pairwise coprimality. Consequently, the **prime factorizations are disjoint** across elements of A + B. The primes are partitioned among the sumset elements, and by PNT there are only π(n) ∼ n/log n primes up to n. This immediately gives |A + B ∩ [1,n]| ≤ π(n) + 1. The question is whether the sumset structure A + B further constrains which primes can be 'assigned' to sumset elements — for instance, the additive constraint a₁ + b₁ ≡ 0 (mod p) and a₂ + b₂ ≡ 0 (mod q) simultaneously restricts the residues of A, B modulo pq.",
-    "relatedConcepts": ["prime uniqueness", "disjoint factorizations", "prime partition", "Chinese Remainder Theorem"],
-    "prerequisites": ["Nat.Prime", "Nat.Coprime", "divisibility"]
+    "relatedConcepts": [
+      "prime uniqueness",
+      "disjoint factorizations",
+      "prime partition",
+      "Chinese Remainder Theorem"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "Nat.Coprime",
+      "divisibility"
+    ]
   },
   {
     "id": "erdos-432-bound",
     "proofId": "erdos-432",
     "type": "theorem",
-    "range": { "startLine": 118, "endLine": 121 },
+    "range": {
+      "startLine": 118,
+      "endLine": 121
+    },
     "title": "Coprime Set Density Bound",
     "content": "A pairwise coprime subset of {1,...,n} has at most π(n) + 1 elements. Each element > 1 has a distinct smallest prime factor, and there are π(n) primes ≤ n.",
     "significance": "key",
     "mathContext": "The proof: for each m > 1, let p(m) be its smallest prime factor. If m₁ ≠ m₂ both have smallest prime factor p, then p | gcd(m₁, m₂), contradicting coprimality. So m ↦ p(m) is injective from {elements > 1} to {primes ≤ n}, giving at most π(n) elements > 1, plus 1 itself. This bound is **tight**: {1} ∪ {p : p prime, p ≤ n} achieves it. For Problem #432, this gives countingFn(A + B, n) ≤ π(n) + 1. The deep question is whether the sumset structure of A + B prevents achieving this bound — does requiring A + B = {a + b : a ∈ A, b ∈ B} force a sparser coprime set than a 'free' construction?",
-    "relatedConcepts": ["smallest prime factor", "injective map argument", "prime counting function π(n)", "extremal coprime sets"],
-    "prerequisites": ["coprime_set_bound", "prime counting"]
+    "relatedConcepts": [
+      "smallest prime factor",
+      "injective map argument",
+      "prime counting function π(n)",
+      "extremal coprime sets"
+    ],
+    "prerequisites": [
+      "coprime_set_bound",
+      "prime counting"
+    ]
   },
   {
     "id": "erdos-432-ostmann",
     "proofId": "erdos-432",
     "type": "insight",
-    "range": { "startLine": 128, "endLine": 130 },
+    "range": {
+      "startLine": 128,
+      "endLine": 130
+    },
     "title": "Connection to Ostmann's Problem (#431)",
     "content": "Ostmann's problem (#431) asks about additive complements: when A + B covers all (or almost all) of ℕ. Problem #432 imposes the opposite — the sumset must be thin (pairwise coprime). Together they bracket sumset behavior under structural constraints.",
     "significance": "key",
     "mathContext": "**Ostmann's conjecture** states that if A + B contains all sufficiently large integers, then A and B cannot both be 'thin'. Problem #432 goes the other direction: if A + B is required to be 'multiplicatively thin' (pairwise coprime), how 'additively thick' can it still be? Straus was motivated by the observation that Ostmann's problem becomes qualitatively different when coprimality is imposed. The problems share a common theme: understanding which subsets of ℕ can be sumsets, and how structural properties (density for #431, coprimality for #432) constrain the component sets A, B. Both appear in Erdős-Graham (1980), pp. 84–85.",
-    "relatedConcepts": ["Ostmann's conjecture", "additive complements", "sumset representation", "Erdős Problem #431"],
-    "prerequisites": ["sumset", "SumsetPairwiseCoprime"]
+    "relatedConcepts": [
+      "Ostmann's conjecture",
+      "additive complements",
+      "sumset representation",
+      "Erdős Problem #431"
+    ],
+    "prerequisites": [
+      "sumset",
+      "SumsetPairwiseCoprime"
+    ]
   },
   {
     "id": "erdos-432-tao",
     "proofId": "erdos-432",
     "type": "insight",
-    "range": { "startLine": 134, "endLine": 141 },
+    "range": {
+      "startLine": 134,
+      "endLine": 141
+    },
     "title": "Tao's Assessment and the Additive-Multiplicative Barrier",
     "content": "Terence Tao assessed Problem #432 as 'looking difficult' on the Erdős Problems project. No partial results or viable proof strategies are known.",
     "significance": "supporting",
     "mathContext": "Tao's assessment reflects the fundamental difficulty of combining **additive structure theory** (sumsets, Freiman, Plünnecke-Ruzsa) with **multiplicative number theory** (coprimality, sieves, prime distribution). Current additive combinatorics tools work modulo primes or in groups, while coprimality is about the full multiplicative structure of ℕ. The **Green-Tao theorem** shows primes contain long arithmetic progressions (additive structure in a multiplicative set), but #432 asks the converse: can additive structure (sumset) coexist with prime-like thinness (coprimality)? Bridging these two paradigms remains one of the major challenges in combinatorial number theory.",
-    "relatedConcepts": ["Green-Tao theorem", "additive combinatorics", "analytic number theory", "sum-product phenomenon"],
+    "relatedConcepts": [
+      "Green-Tao theorem",
+      "additive combinatorics",
+      "analytic number theory",
+      "sum-product phenomenon"
+    ],
     "prerequisites": []
   }
 ]
