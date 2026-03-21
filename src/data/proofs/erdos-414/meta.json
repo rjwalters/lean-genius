@@ -5,7 +5,8 @@
   "description": "Define h(n) = n + τ(n) and iterate. Do all orbits eventually merge? For any m, n ≥ 1, do there exist i, j with h^i(m) = h^j(n)? Erdős and Graham believed yes. Status: OPEN.",
   "meta": {
     "erdosNumber": 414,
-    "status": "formalized",
+    "status": "axiomatized",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -105,6 +106,14 @@
       "**Even the weak form is open**: proving that orbits merely get arbitrarily close (without exact collision) is already unproven"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-444",
+      "relationship": "related",
+      "description": "Both study the divisor function τ(n) in an iterative/dynamic context; #444 counts fixed points of τ while #414 studies orbits of n + τ(n)."
+    }
+  ],
+  "relatedProofs": ["erdos-444"],
   "conclusion": {
     "summary": "Erdős Problem #414 remains OPEN. The conjecture that all orbits of h(n) = n + τ(n) eventually merge is supported by overwhelming computational evidence and plausible heuristics, but no proof exists. The difficulty is fundamentally about controlling the cumulative irregularity of the divisor function along different trajectories to guarantee an exact collision.",
     "implications": "A resolution would advance the theory of arithmetic dynamics — understanding when simple number-theoretic iterations have universal limiting behavior. The problem connects divisor function regularity (Dirichlet divisor problem), additive combinatorics (collision conditions), and discrete dynamical systems (orbit coalescence). Techniques developed for this problem could apply to the broader family of 'n + f(n)' iterations for multiplicative f.",
