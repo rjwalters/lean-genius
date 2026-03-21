@@ -20,7 +20,14 @@
     "erdosNumber": 905,
     "erdosUrl": "https://erdosproblems.com/905",
     "erdosProblemStatus": "solved",
-    "axiomCount": 7
+    "axiomCount": 7,
+    "prerequisites": [
+      "Graph theory fundamentals",
+      "Turán's theorem",
+      "Extremal graph theory",
+      "Triangle counting in graphs",
+      "Complete bipartite graphs"
+    ]
   },
   "overview": {
     "historicalContext": "Bollobás and Erdős conjectured this result about edge-triangle multiplicity. It was independently proved by Edwards (unpublished) and Hadziivanov-Nikiforov in 1979. The problem connects to Turán's classical theorem on triangle-free graphs.",
