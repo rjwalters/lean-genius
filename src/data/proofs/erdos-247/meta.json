@@ -68,8 +68,29 @@
       "id": "examples",
       "title": "Examples and Corollaries",
       "startLine": 83,
-      "endLine": 152,
+      "endLine": 159,
       "summary": "Growth rate proofs and corollaries: factorial and exponential sequences yield transcendental sums"
+    },
+    {
+      "id": "gap",
+      "title": "The Gap Between Conditions",
+      "startLine": 161,
+      "endLine": 207,
+      "summary": "The sequence k² has weak growth but NOT strong growth — the simplest open case of Erdős's conjecture"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 209,
+      "endLine": 223,
+      "summary": "Summary theorem combining the key results"
+    },
+    {
+      "id": "liouville-path",
+      "title": "Axiom-Free Factorial Transcendence via Liouville Numbers",
+      "startLine": 225,
+      "endLine": 506,
+      "summary": "Two independent axiom-free proofs that Σ 1/2^{k!} is transcendental: (A) via connection to liouvilleNumber 2, and (B) direct Liouville number proof with full rational approximation bounds"
     }
   ],
   "conclusion": {
