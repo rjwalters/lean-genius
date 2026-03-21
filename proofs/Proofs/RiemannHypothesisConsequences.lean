@@ -697,19 +697,6 @@ section ZeroDensity
     `zeroDensity_at_one` becomes definitional rather than mathematical. -/
 opaque zeroDensity : ℝ → ℝ → ℕ
 
-/-- **Ingham's Zero-Density Estimate (1940)**:
-    N(σ, T) ≪ T^{3(1-σ)/(2-σ)} · log^5(T) for 1/2 ≤ σ ≤ 1.
-
-    This was the first strong zero-density estimate. The exponent
-    3(1-σ)/(2-σ) ranges from 1 at σ = 1/2 to 0 at σ = 1.
-
-    Historical importance: This was the first result showing that
-    "most" zeros are near the critical line (the number off the line
-    grows sublinearly in T for σ > 1/2). -/
-axiom ingham_zero_density :
-  ∃ C : ℝ, C > 0 ∧ ∀ σ T : ℝ, 1/2 ≤ σ → σ ≤ 1 → T ≥ 2 →
-    (zeroDensity σ T : ℝ) ≤ C * T ^ (3 * (1 - σ) / (2 - σ)) * (Real.log T) ^ 5
-
 -- **Huxley's Zero-Density Estimate (1972)**:
 -- N(σ, T) ≪ T^{12(1-σ)/5} · log^C(T) for σ ≥ 1/2.
 -- This improves on Ingham for σ close to 1/2. The exponent
@@ -736,10 +723,6 @@ def DensityHypothesis : Prop :=
     This formalizes the fact that the Density Hypothesis is weaker than RH. -/
 axiom RH_implies_DensityHypothesis :
     RiemannHypothesis → DensityHypothesis
-
-/-- **At σ = 1: No zeros**. The zero-density function is 0 at σ = 1
-    by the PNT-strength non-vanishing result (ζ(s) ≠ 0 for Re(s) ≥ 1). -/
-axiom zeroDensity_at_one : ∀ T : ℝ, zeroDensity 1 T = 0
 
 /-- The zero-density exponent for Ingham's bound at σ = 3/4.
     3(1 - 3/4)/(2 - 3/4) = 3/5 = 0.6. -/

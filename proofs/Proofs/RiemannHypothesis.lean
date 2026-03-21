@@ -411,35 +411,6 @@ asymptotic analysis not yet available in Mathlib. -/
 axiom hardy_infinitely_many_on_critical_line :
     Set.Infinite {s : ℂ | riemannZeta s = 0 ∧ s.re = 1/2}
 
-/-- **Axiom: Selberg's Positive Proportion (1942)**
-
-A positive proportion of zeros are on the critical line.
-Specifically, at least 40% of zeros (counted with multiplicity) lie on Re(s) = 1/2.
-
-Let N₀(T) = number of zeros with Re(s) = 1/2 and 0 < Im(s) ≤ T
-Let N(T) = total number of zeros in critical strip with 0 < Im(s) ≤ T
-
-Then N₀(T) ≥ c · N(T) for some constant c > 0.
-
-**Historical improvements**:
-- Selberg (1942): c > 0 (some positive proportion)
-- Levinson (1974): c > 1/3 (more than one third)
-- Conrey (1989): c > 0.4 (more than 40%)
-- Current best: c > 0.4088 (Bui, Conrey, Young, 2011)
-
-**References**:
-- Selberg, A. (1942). "On the zeros of Riemann's zeta-function"
-- Conrey, J.B. (1989). "More than two fifths of the zeros of the Riemann zeta function
-  are on the critical line"
-
-**Status**: Deep analytic result requiring moment methods and the Riemann-Siegel
-formula. Far beyond current Mathlib capabilities. -/
-axiom selberg_positive_proportion :
-    ∃ c > 0, ∀ T > 1,
-      let N₀ := Set.ncard {s : ℂ | riemannZeta s = 0 ∧ s.re = 1/2 ∧ 0 < s.im ∧ s.im ≤ T}
-      let N := Set.ncard {s : ℂ | riemannZeta s = 0 ∧ s ∈ criticalStrip ∧ 0 < s.im ∧ s.im ≤ T}
-      (N₀ : ℝ) ≥ c * N
-
 /-- **Axiom: Classical Zero-Free Region (de la Vallee Poussin, 1899)**
 
 The Riemann zeta function has no zeros in the region:
@@ -1813,19 +1784,6 @@ equation, this yields the optimal bound ζ(1/2 + it) = O(|t|^ε) for all ε > 0.
 - Titchmarsh, "The Theory of the Riemann Zeta-function", Theorem 14.5 -/
 axiom RH_implies_Lindelof : RiemannHypothesis → LindelofHypothesis
 
-/-- **Phragmén-Lindelöf convexity bound** (unconditional, 1908):
-ζ(1/2 + it) = O(|t|^{1/4+ε}) for every ε > 0.
-
-This is the baseline bound from the convexity principle applied to the
-critical strip. The Lindelöf Hypothesis asserts the exponent can be
-reduced to ε for any ε > 0. Any bound beating 1/4 is called "subconvexity".
-
-**References**:
-- Phragmén, L. & Lindelöf, E. (1908). Classic convexity principle -/
-axiom phragmen_lindelof_convexity :
-    ∀ ε : ℝ, ε > 0 → ∃ C : ℝ, C > 0 ∧ ∀ t : ℝ, |t| ≥ 1 →
-      ‖riemannZeta (1/2 + ↑t * Complex.I)‖ ≤ C * |t| ^ (1/4 + ε)
-
 /-- **Lindelöf implies the convexity bound** (PROVED, trivially).
 
 The Lindelöf bound O(|t|^ε) for all ε > 0 trivially implies the convexity
@@ -2138,17 +2096,6 @@ def CramerConjecture : Prop :=
     (∀ k, p < k → k < q → ¬Nat.Prime k) →
       (q : ℝ) - p ≤ C * (Real.log p)^2
 
-/-- **RH implies prime gaps are O(√p · log p)** (von Koch, 1901).
-
-This is one of the most important consequences of RH for prime distribution.
-It follows from the RH-conditional error term in the prime counting function:
-  |π(x) - Li(x)| = O(√x log x)
-which yields: for consecutive primes p < q, q - p ≤ C · √p · log p. -/
-axiom RH_implies_prime_gap :
-  RiemannHypothesis → ∃ C : ℝ, C > 0 ∧ ∀ p q : ℕ, Nat.Prime p → Nat.Prime q → p < q →
-    (∀ k, p < k → k < q → ¬Nat.Prime k) →
-      (q : ℝ) - p ≤ C * Real.sqrt p * Real.log p
-
 /-- Consecutive prime examples: (2,3), (3,5), (5,7) with gaps 1, 2, 2 (PROVED). -/
 theorem prime_gap_two_three : (3 : ℕ) - 2 = 1 := by norm_num
 theorem prime_gap_three_five : (5 : ℕ) - 3 = 2 := by norm_num
@@ -2176,31 +2123,6 @@ estimates.
 - Backlund, R. (1918). "Über die Nullstellen der Riemannschen Zetafunktion"
 - Titchmarsh, E.C. "The Theory of the Riemann Zeta-function", Ch. 9
 -/
-
-/-- The argument function S(T) = (1/π) arg ζ(1/2 + iT).
-This measures the deviation of N(T) from the smooth approximation.
-Must be opaque — the concrete arg function requires ζ(s) on the critical line.
-
-(Also defined in the Consequences file; redeclared here for independence.) -/
-opaque argumentFunction' : ℝ → ℝ
-
-/-- **Backlund's Theorem (1918)**: S(T) = O(log T) unconditionally.
-
-More precisely: there exists C > 0 such that |S(T)| ≤ C · log T for all T ≥ 2.
-This bounds how much the actual zero count can deviate from the smooth
-approximation given by the Riemann-von Mangoldt formula. -/
-axiom backlund_bound :
-  ∃ C : ℝ, C > 0 ∧ ∀ T : ℝ, T ≥ 2 →
-    |argumentFunction' T| ≤ C * Real.log T
-
-/-- **RH implies a stronger bound on S(T)**: S(T) = O(log T / log log T).
-
-Under RH, the zeros are more regularly distributed, so S(T) has smaller
-fluctuations. The improvement from O(log T) to O(log T / log log T) is
-significant for applications to prime distribution. -/
-axiom RH_implies_S_bound :
-  RiemannHypothesis → ∃ C : ℝ, C > 0 ∧ ∀ T : ℝ, T ≥ 3 →
-    |argumentFunction' T| ≤ C * Real.log T / Real.log (Real.log T)
 
 /-- The RH bound on S(T) is strictly better than Backlund's bound (PROVED).
 
@@ -2238,31 +2160,6 @@ the Turán inequalities alone give.
 - Csordas, G., Norfolk, T.S., Varga, R.S. (1986). "The Riemann hypothesis
   and the Turán inequalities", Trans. AMS 296, pp. 521-541
 -/
-
-/-- The sequence of ξ-function derivatives at the origin: ξ^{(n)}(0).
-
-These are the Taylor coefficients of the completed Riemann ξ-function.
-The Turán inequalities assert log-concavity-like bounds on this sequence.
-
-**SOUNDNESS NOTE**: Must be opaque, not a concrete function. If defined as
-`fun _ => 0`, the Turán inequalities would be trivially true (0² ≥ 0) without
-encoding any mathematical content. -/
-opaque xiDerivative : ℕ → ℝ
-
-/-- The Turán inequalities for ξ-function derivatives.
-
-The completed Riemann ξ-function satisfies Newton's inequalities:
-  (ξ^{(n)}(0))² ≥ (n/(n+1)) · ξ^{(n-1)}(0) · ξ^{(n+1)}(0) for n ≥ 1.
-
-This is a PROVED result (Csordas-Norfolk-Varga, 1986), not a conjecture.
-It is a necessary condition for all zeros of ξ to be real (i.e., for RH).
-
-**SOUNDNESS FIX (2026-03-18)**: Previously used `∃ (ξ_deriv : ℕ → ℝ), ...`
-which was vacuously true (take the zero function). Now uses the opaque
-`xiDerivative` to give the axiom genuine mathematical content. -/
-axiom turanInequalities :
-  ∀ n : ℕ, n ≥ 1 →
-    (xiDerivative n)^2 ≥ (n : ℝ) / (n + 1) * xiDerivative (n - 1) * xiDerivative (n + 1)
 
 /-- The Turán coefficient n/(n+1) is strictly less than 1 (PROVED).
 
@@ -2673,7 +2570,6 @@ end ApproachesAndBarriers
 
 -- Partial results (axioms from literature)
 #check hardy_infinitely_many_on_critical_line
-#check selberg_positive_proportion
 #check classical_zero_free_region
 
 -- GRH
@@ -2699,7 +2595,6 @@ end ApproachesAndBarriers
 -- Lindelöf Hypothesis
 #check LindelofHypothesis
 #check RH_implies_Lindelof
-#check phragmen_lindelof_convexity
 #check Lindelof_implies_convexity
 #check RH_implies_convexity
 
@@ -2726,18 +2621,14 @@ end ApproachesAndBarriers
 
 -- Prime gaps
 #check CramerConjecture
-#check RH_implies_prime_gap
 #check prime_gap_two_three
 #check prime_gap_three_five
 #check prime_gap_seven_eleven
 
 -- Backlund and S(T) bounds
-#check backlund_bound
-#check RH_implies_S_bound
 #check ratio_lt_self_of_denominator_gt_one
 
 -- Turán inequalities
-#check turanInequalities
 #check turan_coefficient_lt_one
 #check turan_coefficient_pos
 
@@ -2780,23 +2671,6 @@ The classical de la Vallée-Poussin region (1899) gives Re(s) > 1 - c/log|t|.
 Vinogradov-Korobov (1958) improved this to Re(s) > 1 - c/(log|t|)^{2/3}(loglog|t|)^{1/3}.
 Zero-density estimates bound how many zeros can exist near the line Re(s) = 1.
 -/
-
-/-- The Chebyshev psi function ψ(n) = Σ_{k≤n} Λ(k).
-    Opaque here since the full definition is in the Consequences file. -/
-opaque chebyshevPsi' : ℕ → ℝ
-
-/-- The Mertens function M(n) = Σ_{k≤n} μ(k), as a real-valued function.
-    Opaque here since the full definition is in the Consequences file. -/
-opaque mertensM : ℕ → ℝ
-
-/-- The Vinogradov-Korobov zero-free region (1958).
-    Improved over the classical region by de la Vallée-Poussin.
-    ζ(s) ≠ 0 whenever σ > 1 - c/(log t)^{2/3}(log log t)^{1/3}. -/
-axiom vinogradov_korobov_zero_free :
-    ∃ c > 0, ∃ t₀ > 0, ∀ s : ℂ,
-      |s.im| ≥ t₀ →
-      s.re ≥ 1 - c / ((Real.log |s.im|) ^ (2/3 : ℝ) * (Real.log (Real.log |s.im|)) ^ (1/3 : ℝ)) →
-      riemannZeta s ≠ 0
 
 /-- Zero-density estimate: N(σ,T) counts zeros with Re(ρ) ≥ σ and 0 < Im(ρ) ≤ T -/
 def zeroDensityCount (σ T : ℝ) : ℕ :=
@@ -2865,16 +2739,6 @@ theorem jutila_mean_value :
   intro ε hε
   exact ⟨1, zero_lt_one, fun T _ σ _ _ => by simp [zeroDensityCount]; positivity⟩
 
-/-- Zero-density estimates imply prime number theorem error terms.
-    If N(σ,T) ≪ T^{A(1-σ)}, then ψ(x) = x + O(x^{1-1/A} log²x).
-
-    The proof requires Perron's formula and contour integration (not in Mathlib). -/
-axiom density_implies_pnt_error :
-    (∃ A > 0, ∃ C > 0, ∀ T ≥ 2, ∀ σ : ℝ, 1/2 ≤ σ → σ < 1 →
-      (zeroDensityCount σ T : ℝ) ≤ C * T ^ (A * (1 - σ))) →
-    ∃ A > 0, ∀ x : ℝ, x ≥ 2 →
-      |chebyshevPsi' ⌊x⌋₊ - x| ≤ x ^ (1 - 1/A) * (Real.log x) ^ 2
-
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XXXI: THE SELBERG CLASS
 ═══════════════════════════════════════════════════════════════════════════════
@@ -2905,15 +2769,6 @@ structure SelbergClassFunction where
   ramanujan_bound : ∀ ε > 0, ∃ C > 0, ∀ n : ℕ, n ≥ 1 → ‖coeff n‖ ≤ C * (n : ℝ) ^ ε
   /-- Normalization: a₁ = 1 -/
   normalized : coeff 1 = 1
-
-/-- The Selberg class orthonormality conjecture:
-    Primitive functions in S are "orthonormal" with respect to a natural inner product. -/
-axiom selberg_orthonormality :
-    ∀ F G : SelbergClassFunction,
-      ∃ δ : ℕ, (δ = 0 ∨ δ = 1) ∧
-      ∀ ε > 0, ∃ C > 0, ∀ x : ℝ, x ≥ 2 →
-        ‖∑ p ∈ Finset.range ⌊x⌋₊, (F.coeff p * starRingEnd ℂ (G.coeff p) / (p : ℂ)) -
-          (δ : ℂ) * Real.log (Real.log x)‖ ≤ C
 
 /-- Grand Riemann Hypothesis: every function in the Selberg class has
     its non-trivial zeros on the critical line Re(s) = 1/2.
@@ -2972,12 +2827,6 @@ Under RH, many arithmetic functions have much tighter bounds than known
 unconditionally. These explicit estimates connect RH to number theory.
 -/
 
-/-- Under RH, the Mertens function |M(x)| ≤ C√x log²x for explicit C.
-    The best known C ≈ 1.0 (Ramaré, 2013). -/
-axiom rh_explicit_mertens :
-    _root_.RiemannHypothesis → ∃ C > 0, ∀ n : ℕ, n ≥ 1 →
-      |mertensM n| ≤ C * Real.sqrt n * (Real.log n) ^ 2
-
 /-- Under RH, |π(x) - Li(x)| ≤ C√x log x for the prime counting function.
     Schoenfeld (1976) showed C = 1/(8π) works for x ≥ 2657.
 
@@ -2997,11 +2846,6 @@ axiom rosser_schoenfeld_lower :
     ∀ x : ℝ, x ≥ 17 →
       (primeCounting ⌊x⌋₊ : ℝ) ≥ x / Real.log x
 
-/-- Dusart's improvement (2010): π(x) ≥ x/(log x - 1) for x ≥ 5393 -/
-axiom dusart_prime_lower :
-    ∀ x : ℝ, x ≥ 5393 →
-      (primeCounting ⌊x⌋₊ : ℝ) ≥ x / (Real.log x - 1)
-
 /-- RH implies much tighter prime counting bounds than unconditional results.
     The error |π(x) - Li(x)| drops from x·exp(-c√(log x)) to O(√x log x). -/
 theorem rh_tightens_prime_bounds :
@@ -3010,68 +2854,19 @@ theorem rh_tightens_prime_bounds :
       |(primeCounting ⌊x⌋₊ : ℝ) - logIntegral x| ≤ C * Real.sqrt x * Real.log x) :=
   rh_explicit_prime_counting
 
-/-- Littlewood's oscillation theorem (1914): π(x) - Li(x) changes sign infinitely often.
-    This holds unconditionally and shows Li(x) is not always an overcount.
-
-    **BUG FIX (2026-03-19, CRITICAL)**: Previously used `x / Real.log x` instead of
-    `logIntegral x`. Since π(x) ≥ x/log(x) for all x ≥ 17 (rosser_schoenfeld_lower),
-    the claim that π(y) < y/log(y) for arbitrarily large y was FALSE and made the
-    axiom system INCONSISTENT. The correct theorem is about oscillation around Li(x),
-    not around x/log(x). -/
-axiom littlewood_oscillation :
-    ∀ x₀ : ℝ, ∃ x > x₀,
-      (primeCounting ⌊x⌋₊ : ℝ) > logIntegral x
-    ∧ ∃ y > x₀,
-      (primeCounting ⌊y⌋₊ : ℝ) < logIntegral y
-
-/-- Skewes' number: there exists x < 10^{10^{10^{34}}} where π(x) > Li(x).
-    Under RH, the first crossover occurs before e^{727.95...}.
-
-    **BUG FIX (2026-03-19)**: Previously used `x / Real.log x` instead of `logIntegral x`.
-    Since π(x) > x/log(x) for all x ≥ 17 (rosser_schoenfeld_lower), the old statement
-    was trivially true and said nothing about Skewes' phenomenon. The actual result is
-    that π(x) eventually exceeds Li(x), which is a much deeper fact. -/
-axiom skewes_number_conditional :
-    _root_.RiemannHypothesis → ∃ x : ℝ, x ≤ Real.exp 728 ∧
-      (primeCounting ⌊x⌋₊ : ℝ) > logIntegral x
-
-/-- The explicit formula relates prime counting to zeros:
-    ψ(x) = x - Σ_ρ x^ρ/ρ - log(2π) - (1/2)log(1 - x⁻²)
-    Under RH, all ρ have Re(ρ) = 1/2, giving the optimal error term O(√x log²x).
-
-    The proof requires the Weil explicit formula and Perron's formula (not in Mathlib).
-
-    **BUG FIX (2026-03-18)**: Removed trailing `* x` from the bound. The previous
-    version stated `x^{1/2} * log²(x) * x = x^{3/2} * log²(x)`, which is weaker
-    than even the unconditional PNT error. The correct bound under RH is O(√x log²x). -/
-axiom rh_explicit_formula_optimal :
-    _root_.RiemannHypothesis → ∀ x : ℝ, x ≥ 2 →
-      |chebyshevPsi' ⌊x⌋₊ - x| ≤ x ^ (1/2 : ℝ) * (Real.log x) ^ 2
-
-/-- Connection: explicit estimates → zero-free regions → PNT error terms.
-    This closes the conceptual loop between Parts XXX and XXXII.
-    The proof requires contour integration and Perron's formula (not in Mathlib). -/
-axiom estimates_close_loop :
-    (∃ c > 0, ∃ t₀ > 0, ∀ s : ℂ,
-      |s.im| ≥ t₀ → s.re ≥ 1 - c / Real.log |s.im| → riemannZeta s ≠ 0) →
-    ∃ A > 0, ∀ x : ℝ, x ≥ 2 → |chebyshevPsi' ⌊x⌋₊ - x| ≤ x * Real.exp (-(Real.log x) ^ (1/2 : ℝ))
-
 -- ═════════════════════════════════════════════════════════════════════════
 -- VERIFICATION CHECKS
 -- ═════════════════════════════════════════════════════════════════════════
 
 -- Part XXX: Zero-Free Regions
-#check vinogradov_korobov_zero_free
 #check ingham_density_estimate
 #check huxley_density_estimate
 #check RH_implies_density_hypothesis
 #check VK_improves_classical
 #check linnik_log_free_density
-#check density_implies_pnt_error
 
 -- Part XXXI: Selberg Class
 #check SelbergClassFunction
-#check selberg_orthonormality
 #check GrandRH
 #check selberg_degree_conjecture
 #check GrandRH_implies_our_RH
@@ -3079,15 +2874,9 @@ axiom estimates_close_loop :
 #check bombieri_selberg_convolution
 
 -- Part XXXII: Arithmetic Consequences
-#check rh_explicit_mertens
 #check rh_explicit_prime_counting
 #check rosser_schoenfeld_upper
-#check dusart_prime_lower
 #check rh_tightens_prime_bounds
-#check littlewood_oscillation
-#check skewes_number_conditional
-#check rh_explicit_formula_optimal
-#check estimates_close_loop
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XXXIII: RANDOM MATRIX THEORY AND THE KEATING-SNAITH CONJECTURE
@@ -3111,40 +2900,6 @@ structure GUE (N : ℕ) where
 def gue_pair_correlation (x : ℝ) : ℝ :=
   if x = 0 then 1
   else 1 - (Real.sin (Real.pi * x) / (Real.pi * x)) ^ 2
-
-/-- **Montgomery's pair correlation conjecture (1973, strengthened)**:
-    The pair correlation of non-trivial zeta zeros, when rescaled to have
-    mean spacing 1, converges to the GUE pair correlation function.
-    Montgomery proved this for restricted test functions under RH.
-
-    Formally: lim_{T→∞} Σ_{0<γ,γ'≤T} f((γ-γ')·logT/(2π)) / (T logT/(2π))
-    = ∫ f(x)·(1 - (sin πx/(πx))²) dx for suitable test functions f.
-
-    This deep result connects number theory to random matrix theory. -/
-opaque MontgomeryPairCorrelation : Prop
-
-/-- Montgomery's pair correlation conjecture is stated as a Prop. -/
-axiom montgomery_pair_correlation_full : MontgomeryPairCorrelation
-
-/-- Odlyzko's computation (1987): numerical verification that zeta zeros
-    at height T ≈ 10²⁰ follow GUE statistics to remarkable accuracy.
-    The nearest-neighbor spacing distribution matches GUE predictions
-    to many decimal places — the most striking numerical evidence for RH. -/
-opaque OdlyzkoGUEVerification : Prop
-
-/-- Odlyzko's numerical evidence is stated formally. -/
-axiom odlyzko_numerical_verification : OdlyzkoGUEVerification
-
-/-- **Keating-Snaith conjecture (2000)**: the 2k-th moment of ζ(1/2 + it) is:
-    (1/T) ∫₀ᵀ |ζ(1/2 + it)|²ᵏ dt ∼ a(k) · g(k) · (log T)^{k²}
-    where g(k) is the RMT prediction (from GUE moments) and a(k) is an
-    arithmetic factor involving an Euler product.
-
-    The exponent k² in the growth rate is the key prediction. -/
-opaque KeatingSnaith : Prop
-
-/-- The Keating-Snaith moment conjecture. -/
-axiom keating_snaith_conjecture : KeatingSnaith
 
 /-- Known moment results — the exponent k² is verified for k = 1, 2:
     k=1: Hardy-Littlewood (1918): ∫|ζ|² ∼ logT (exponent 1² = 1)
@@ -3259,55 +3014,6 @@ opaque HilbertPolyaConjecture : Prop :=
 axiom hilbert_polya_implies_rh :
     HilbertPolyaConjecture → RiemannHypothesis
 
-/-- Berry-Keating conjecture (1999): the Hilbert-Pólya operator should be
-    H = xp + px where x is position and p = -i d/dx is momentum.
-    This is the "quantum Hamiltonian of the inverted harmonic oscillator,"
-    whose classical orbits have the right spacing distribution. -/
-opaque BerryKeatingConjecture : Prop
-
-/-- The Berry-Keating conjecture is a specific proposal for the Hilbert-Pólya operator. -/
-axiom berry_keating_conjecture : BerryKeatingConjecture → HilbertPolyaConjecture
-
-/-- The Riemann-Siegel Z function: Z(t) is real-valued for real t, and
-    |Z(t)| = |ζ(1/2 + it)|. Sign changes of Z(t) correspond to zeros
-    of ζ on the critical line.
-
-    Z(t) = e^{iθ(t)} ζ(1/2 + it) where θ is the Riemann-Siegel theta function.
-    The key property: Z(t) ∈ ℝ for real t. -/
-opaque riemannSiegelZ : ℝ → ℝ
-
-/-- The Riemann-von Mangoldt formula: the number of zeros with 0 < Im(ρ) ≤ T is
-    N(T) = (T/(2π)) log(T/(2πe)) + O(log T).
-    This gives the average spacing: 2π/(log T).
-
-    The leading term T/(2π) · log(T/(2πe)) counts zeros in the critical strip.
-    The error O(log T) comes from the argument of ζ on the critical line.
-
-    This is a deep result requiring contour integration and the argument principle.
-
-    We use the zero counting function N(T) from the critical strip.
-    The leading term is asymptotic to T/(2π) · log(T/(2πe)). -/
-opaque zeroCountN : ℝ → ℝ
-
-axiom riemann_von_mangoldt_formula_main :
-    ∃ C > 0, ∀ T : ℝ, T ≥ 2 →
-      |zeroCountN T -
-        T / (2 * Real.pi) * Real.log (T / (2 * Real.pi * Real.exp 1))| ≤
-        C * Real.log T
-
-/-- The explicit Selberg trace formula relates zeros of ζ to lengths of
-    primitive periodic orbits on a surface. For the modular surface PSL₂(ℤ)\H,
-    this connects the spectrum of the Laplacian to the zeros of ζ(s).
-
-    Σ_ρ h(ρ) = (area/4π) ∫ h(r) r tanh(πr) dr
-    + Σ_γ Σ_{n≥1} (log N(γ))/(N(γ)^{n/2}-N(γ)^{-n/2}) g(n logN(γ))
-
-    where γ ranges over primitive geodesics and h, g are Fourier transform pairs. -/
-opaque SelbergTraceFormula : Prop
-
-/-- The Selberg trace formula connects the Laplacian spectrum to periodic orbits. -/
-axiom selberg_trace_formula : SelbergTraceFormula
-
 /-- Connes' approach (1999): RH is equivalent to a positivity condition
     in noncommutative geometry. The "adele class space" ℚ*\𝔸_ℚ*/ℤ̂*
     provides the geometric framework.
@@ -3324,18 +3030,12 @@ axiom connes_noncommutative_geometry : ConnesPositivity ↔ RiemannHypothesis
 
 -- Part XXXIII: Random Matrix Theory
 #check gue_pair_correlation
-#check montgomery_pair_correlation_full
-#check odlyzko_numerical_verification
-#check keating_snaith_conjecture
 #check katz_sarnak_symmetry_types
 #check gue_pair_correlation_at_zero
 
 -- Part XXXIV: Physics and Hilbert-Pólya
 #check HilbertPolyaConjecture
 #check hilbert_polya_implies_rh
-#check berry_keating_conjecture
-#check riemann_von_mangoldt_formula_main
-#check selberg_trace_formula
 #check connes_noncommutative_geometry
 
 /- ═══════════════════════════════════════════════════════════════════════════════
@@ -3636,17 +3336,6 @@ theorem bv_level_bounds :
     (0 : ℚ) < 1/584 ∧ (1 : ℚ)/2 + 1/584 < 1 := by
   constructor <;> norm_num
 
-/-- **Elliott-Halberstam conjecture**: the level of distribution can be
-    raised to θ = 1 - ε for any ε > 0.
-
-    This is strictly stronger than Bombieri-Vinogradov (θ = 1/2).
-    Goldston-Pintz-Yıldırım (2005) showed EH implies bounded prime gaps.
-    Zhang (2014) proved θ = 1/2 + 1/584 suffices for bounded gaps.
-
-    The conjecture states: for every θ < 1 and A > 0,
-    ∑_{q ≤ x^θ} max_a |π(x;q,a) - π(x)/φ(q)| ≪ x/(log x)^A. -/
-opaque ElliottHalberstam : Prop
-
 -- Elliott-Halberstam conjecture (OPEN): level of distribution θ < 1.
 -- Not axiomatized because it is an unproven conjecture.
 -- GRH → EH is a known theorem (Hooley), but EH itself is open.
@@ -3676,22 +3365,6 @@ These explicit bounds are used in computational number theory.
 
 section ExplicitBounds
 
-/-- **Schoenfeld's explicit bound (1976).**
-
-    Under RH: |π(x) - li(x)| < (1/(8π)) √x · log x for all x ≥ 2657.
-
-    The constant 1/(8π) ≈ 0.0398 is remarkably small. Without RH,
-    the best unconditional bound is |π(x) - li(x)| < x exp(-c√(log x))
-    for some c > 0 (de la Vallée-Poussin).
-
-    We state this using primeCounting (= π(x)) and the explicit constant
-    1/(8π). The proof requires the explicit formula and careful estimation. -/
-axiom schoenfeld_explicit_bound :
-    _root_.RiemannHypothesis →
-    ∀ x : ℝ, x ≥ 2657 →
-      |(primeCounting ⌊x⌋₊ : ℝ) - logIntegral x| ≤
-        1 / (8 * Real.pi) * Real.sqrt x * Real.log x
-
 /-- **PROVED: Schoenfeld's bound is much tighter than unconditional bounds.**
 
     Under RH: error ~ √x · log x = x^{1/2 + o(1)}
@@ -3703,20 +3376,6 @@ axiom schoenfeld_explicit_bound :
 theorem rh_vs_unconditional_exponent :
     -- 1/2 < 1: RH exponent strictly smaller than unconditional
     (1 : ℚ) / 2 < 1 := by norm_num
-
-/-- **Platt-Trudgian (2021): Verified RH to height 3 × 10^{12}.**
-
-    All non-trivial zeros of ζ(s) with |Im(s)| ≤ 3 × 10^{12}
-    lie on the critical line Re(s) = 1/2. Combined with Schoenfeld,
-    this gives unconditional explicit bounds for π(x) when x is "small."
-
-    This is a computational result, not a proof of RH. We state it as:
-    all zeros in the verified range have Re(s) = 1/2. -/
-axiom platt_trudgian_verification :
-    ∀ s : ℂ, riemannZeta s = 0 →
-      (¬∃ n : ℕ, s = -2 * (↑n + 1)) → s ≠ 1 →
-      |s.im| ≤ 3 * 10 ^ 12 →
-      s.re = 1 / 2
 
 /-- **PROVED: Verification height grows over time.**
 
@@ -3903,21 +3562,6 @@ structure SiegelZero where
   /-- The character is quadratic (real) -/
   is_quadratic : Prop
 
-/-- **Siegel's theorem (1935): Siegel zeros are rare and repulsive.**
-
-    For any ε > 0, there exists c(ε) > 0 (ineffective) such that
-    L(σ, χ) ≠ 0 for σ > 1 - c(ε) q^{-ε}.
-
-    The ineffectivity of c(ε) is a fundamental obstacle: we know
-    Siegel zeros are "very rare" but cannot prove they don't exist.
-
-    The constant c(ε) depends ineffectively on ε — it exists by a
-    proof by contradiction that does not yield a computable value. -/
-axiom siegel_theorem :
-    ∀ ε : ℝ, ε > 0 →
-    ∃ c : ℝ, c > 0 ∧
-    ∀ sz : SiegelZero, sz.beta < 1 - c * (sz.conductor : ℝ) ^ (-ε)
-
 /-- **PROVED: Siegel's theorem gives better bounds for larger ε.**
 
     As ε grows, c(ε) typically decreases (the bound gets worse).
@@ -3992,29 +3636,6 @@ theorem goldfeld_effective_class_number :
 theorem class_number_solutions :
     -- Number of imaginary quadratic fields with class number 1, 2, 3
     (9 : ℕ) + 18 + 16 = 43 := by norm_num
-
-/-- **PROVED: Siegel zeros and the connection to RH.**
-
-    GRH for Dirichlet L-functions implies NO Siegel zeros exist,
-    since a Siegel zero β₁ would satisfy β₁ > 1/2, contradicting GRH.
-
-    Conversely, if no Siegel zeros exist, many consequences of GRH
-    hold (at least in averaged form via Bombieri-Vinogradov). -/
-axiom no_siegel_zero_under_GRH :
-    GeneralizedRiemannHypothesis →
-    ∀ sz : SiegelZero, sz.beta ≤ 1/2
-
-/-- **At most one Siegel zero per modulus (Landau).**
-
-    For a given modulus q, at most ONE real character χ (mod q) can
-    have a real zero close to 1. This is because the Deuring-Heilbronn
-    repulsion prevents two real zeros from coexisting.
-
-    Formally: if β₁ and β₂ are Siegel zeros for the same conductor,
-    then they must be equal (the repulsion is too strong for two). -/
-axiom at_most_one_siegel_zero :
-    ∀ sz₁ sz₂ : SiegelZero, sz₁.conductor = sz₂.conductor →
-    sz₁.beta = sz₂.beta
 
 end DeuringHeilbronn
 
@@ -4122,9 +3743,7 @@ end CriticalLineZeros
 #check zhang_gap_bound
 
 -- Part XXXVIII: Explicit PNT Error Bounds
-#check schoenfeld_explicit_bound
 #check rh_vs_unconditional_exponent
-#check platt_trudgian_verification
 #check verification_heights_increasing
 #check rosser_schoenfeld_chebyshev
 #check bertrand_postulate_constant
@@ -4141,14 +3760,11 @@ end CriticalLineZeros
 
 -- Part XL: Deuring-Heilbronn
 #check SiegelZero
-#check siegel_theorem
 #check siegel_tradeoff
 #check deuring_heilbronn_repulsion
 #check repulsion_increases
 #check goldfeld_effective_class_number
 #check class_number_solutions
-#check no_siegel_zero_under_GRH
-#check at_most_one_siegel_zero
 
 -- Part XLI: Critical Line Zeros
 #check criticalLineProportion
@@ -6391,46 +6007,6 @@ theorem part_liii_summary : (3 : ℕ) = 3 := rfl
 /-- Opaque: the k-th moment of |ζ(1/2+it)|² over [0,T] -/
 opaque zetaMomentIntegral (k : ℕ) (T : ℝ) : ℝ
 
-/-- **Hardy-Littlewood second moment theorem (1918, PROVED)**
-
-    ∫₀ᵀ |ζ(1/2 + it)|² dt ~ T log T
-
-    This is the only moment with a completely understood asymptotic.
-    The proof uses the approximate functional equation and mean value
-    theorems for Dirichlet polynomials.
-
-    The main term T log T comes from the diagonal terms in the
-    Dirichlet series expansion. Off-diagonal terms contribute O(T).
-
-    Key fact: the mean square of |ζ(1/2+it)| grows like log T,
-    consistent with random matrix theory prediction for GUE. -/
-axiom hardy_littlewood_second_moment :
-    ∀ ε > 0, ∃ T₀ > 0, ∀ T ≥ T₀,
-      |zetaMomentIntegral 1 T - T * Real.log T| ≤ ε * T * Real.log T
-
-/-- **Ingham's fourth moment theorem (1926, PROVED)**
-
-    ∫₀ᵀ |ζ(1/2 + it)|⁴ dt ~ (1/(2π²)) T log⁴ T
-
-    The coefficient 1/(2π²) was determined by Ingham.
-    The proof is much harder than the second moment and uses
-    a careful analysis of the divisor function correlations.
-
-    The fourth moment is the highest moment with a known asymptotic.
-    Getting the right leading constant required understanding the
-    additive structure of the divisor function d₂(n).
-
-    Random matrix prediction: the leading coefficient for the 2k-th
-    moment is g(k) · a(k) where g(k) = k²! / ∏ᵢ₌₀²ᵏ⁻¹ i!
-    and a(k) is an arithmetic factor from the Euler product.
-    For k = 2: g(2) = 4!/(0!·1!·2!·3!) = 24/12 = 2 and
-    a(2) = 1/(2π²) · 12 = 6/π², giving overall coefficient
-    2 · 1/(2π²) · ... = 1/(2π²). ✓ -/
-axiom ingham_fourth_moment :
-    ∀ ε > 0, ∃ T₀ > 0, ∀ T ≥ T₀,
-      |zetaMomentIntegral 2 T - (1 / (2 * Real.pi ^ 2)) * T * (Real.log T) ^ 4|
-        ≤ ε * T * (Real.log T) ^ 4
-
 /-- **PROVED: The moment growth rates increase with k.**
 
     The 2k-th moment grows as T · (log T)^{k²}.
@@ -6450,31 +6026,6 @@ theorem moment_exponent_growth : ∀ k : ℕ, k ≥ 1 → k ^ 2 < (k + 1) ^ 2 :=
     The exponents 1, 4, 9, 16, 25 for k = 1, 2, 3, 4, 5 are perfect squares. -/
 theorem moment_exponents_are_squares :
     (1 ^ 2 = 1) ∧ (2 ^ 2 = 4) ∧ (3 ^ 2 = 9) ∧ (4 ^ 2 = 16) ∧ (5 ^ 2 = 25) := by omega
-
-/-- The CFKRS conjecture predicts the exact leading coefficient for each moment.
-
-    Conrey-Farmer-Keating-Rubinstein-Snaith (2005) conjectured:
-
-    ∫₀ᵀ |ζ(1/2 + it)|^{2k} dt ~ g(k) · a(k) · T · (log T)^{k²}
-
-    where g(k) is a combinatorial factor from random matrix theory:
-      g(k) = ∏_{j=0}^{k-1} j! / (j+k)!
-
-    and a(k) is an arithmetic factor from the Euler product:
-      a(k) = ∏_p ∏_{j=0}^{k-1} (1-1/p)^{(2k-1-2j)} × (polynomial in 1/p)
-
-    For k=1: g(1) = 0!/1! = 1, a(1) = 1, giving T log T ✓
-    For k=2: g(2) = (0!·1!)/(2!·3!) = 1/12, and with a(2) the
-    leading term is (1/(2π²)) T log⁴ T ✓ (matching Ingham)
-
-    The conjecture remains open for k ≥ 3. -/
-opaque cfkrs_coefficient : ℕ → ℝ
-
-/-- CFKRS moment conjecture: the leading coefficient for the 2k-th moment -/
-axiom cfkrs_moment_conjecture :
-    ∀ k : ℕ, k ≥ 1 → ∀ ε > 0, ∃ T₀ > 0, ∀ T ≥ T₀,
-      |zetaMomentIntegral k T - cfkrs_coefficient k * T * (Real.log T) ^ (k ^ 2)|
-        ≤ ε * T * (Real.log T) ^ (k ^ 2)
 
 /-- **PROVED: CFKRS is consistent with Hardy-Littlewood (k=1) and Ingham (k=2).**
 
@@ -6504,19 +6055,6 @@ theorem rmt_dictionary_consistent :
     ∀ k : ℕ, k ≥ 1 → k * k = k ^ 2 := by
   intro k _
   ring
-
-/-- **Soundararajan's upper bound (2009)**
-
-    Soundararajan proved (unconditionally for k = 1, and under RH for general k):
-    ∫₀ᵀ |ζ(1/2 + it)|^{2k} dt ≪ T (log T)^{k² + ε}
-
-    This matches the CFKRS prediction up to the ε in the exponent.
-    The key innovation was the "resonance method" which avoids
-    the use of explicit approximate functional equations. -/
-axiom soundararajan_upper_bound :
-    _root_.RiemannHypothesis →
-    ∀ k : ℕ, k ≥ 1 → ∀ ε > 0, ∃ C > 0, ∀ T ≥ 1,
-      zetaMomentIntegral k T ≤ C * T * (Real.log T) ^ (k ^ 2 + 1)
 
 /-- **Harper's sharp upper bound (2013)**
 
@@ -6696,10 +6234,6 @@ theorem rh_formulation_count :
     10 + 4 = 14 ∧ Nat.choose 14 2 = 91 := by native_decide
 
 -- Part LIV: Moment Conjectures and Mean Values
-#check hardy_littlewood_second_moment
-#check ingham_fourth_moment
-#check cfkrs_moment_conjecture
-#check soundararajan_upper_bound
 #check harper_sharp_upper_bound
 #check radziwill_soundararajan_lower_bound
 #check moment_growth_rate_determined
@@ -6776,12 +6310,6 @@ theorem li_first_positive : liCoefficient 1 = Real.log (4 * Real.pi) + eulerMasc
     Under RH: λ_n ~ (n/2)(log n + log 2π - 1 - γ) + O(√n · log n). -/
 theorem li_growth_bound (n : ℕ) (hn : n ≥ 2) : (n : ℝ) ≥ 2 := by
   exact_mod_cast hn
-
-/-- **Axiom: Computational verification of Li coefficients.**
-    Maslanka (2006) and others verified λ_n > 0 for n up to ~10^10.
-    This provides overwhelming numerical evidence for RH. -/
-axiom li_coefficients_verified_positive :
-    ∀ n : ℕ, 1 ≤ n → n ≤ 10000 → liCoefficient n ≥ 0
 
 /-- **PROVED: Li's criterion gives a sharp test for RH.**
     If even one λ_n < 0, then RH is false.
@@ -6904,7 +6432,6 @@ theorem rh_parts_lvi_lvii_summary : (9 : ℕ) = 9 := rfl
 -- Part LVI: Li's Criterion
 #check @li_criterion
 #check @li_first_positive
-#check @li_coefficients_verified_positive
 #check @li_criterion_sharp
 
 -- Part LVII: Prime Constellations
