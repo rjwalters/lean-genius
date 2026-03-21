@@ -231,12 +231,83 @@ theorem log_sum_inequality {n : ℕ} {a b : Fin n → ℝ}
 -- Mutual Information and Conditioning (sorry — candidates for Aristotle)
 -- ============================================================
 
--- Mutual information is non-negative
+-- Marginal is positive when joint is positive at some point
+private lemma marginal_pos_of_joint_pos {α β : Type*} [Fintype α] [Fintype β]
+    {pXY : α × β → ℝ} (hp : ∀ xy, 0 ≤ pXY xy)
+    {x : α} {y : β} (hxy : 0 < pXY (x, y)) :
+    0 < ∑ y' : β, pXY (x, y') := by
+  calc 0 < pXY (x, y) := hxy
+    _ ≤ ∑ y' : β, pXY (x, y') :=
+      Finset.single_le_sum (f := fun y' => pXY (x, y'))
+        (fun y' _ => hp (x, y')) (Finset.mem_univ y)
+
+-- Convert flat product sum to nested sum
+private lemma sum_prod_eq_nested {α β : Type*} [Fintype α] [Fintype β]
+    {f : α × β → ℝ} :
+    ∑ xy : α × β, f xy = ∑ x : α, ∑ y : β, f (x, y) := by
+  rw [← Finset.univ_product_univ, Finset.sum_product]
+
+-- Product of marginals sums to 1 when joint sums to 1
+private lemma product_marginals_sum_one {α β : Type*} [Fintype α] [Fintype β]
+    {pXY : α × β → ℝ}
+    (hsum : ∑ xy : α × β, pXY xy = 1) :
+    ∑ x : α, ∑ y : β,
+      (∑ y' : β, pXY (x, y')) * (∑ x' : α, pXY (x', y)) =  1 := by
+  have hsum' : ∑ x : α, ∑ y : β, pXY (x, y) = 1 := by
+    rw [← sum_prod_eq_nested]; exact hsum
+  have hmarg_x : ∑ x : α, (∑ y' : β, pXY (x, y')) = 1 := hsum'
+  have hmarg_y : ∑ y : β, (∑ x' : α, pXY (x', y)) = 1 := by
+    rw [Finset.sum_comm]; exact hsum'
+  rw [Finset.sum_comm]
+  simp_rw [← Finset.sum_mul, ← Finset.mul_sum]
+  rw [hmarg_y, mul_one, hmarg_x]
+
+-- Mutual information is non-negative: I(X;Y) = D(pXY || pX⊗pY) ≥ 0
+-- Proof: same pointwise bound technique as KL divergence non-negativity.
 theorem mutual_info_nonneg {α β : Type*} [Fintype α] [Fintype β]
     [DecidableEq α] [DecidableEq β]
     {pXY : α × β → ℝ} (hp : ∀ xy, 0 ≤ pXY xy)
     (hsum : ∑ xy : α × β, pXY xy = 1) :
-    0 ≤ mutualInformation pXY := by sorry
+    0 ≤ mutualInformation pXY := by
+  unfold mutualInformation
+  -- Each term: if p(x,y)=0 then 0, else p(x,y)·log(p(x,y)/(pX(x)·pY(y)))
+  -- Bound: each term ≥ p(x,y) - pX(x)·pY(y)
+  -- Sum: Σ (p(x,y) - pX(x)·pY(y)) = 1 - 1 = 0
+  set q : α → β → ℝ := fun x y =>
+    (∑ y' : β, pXY (x, y')) * (∑ x' : α, pXY (x', y)) with hq_def
+  suffices h : ∑ x : α, ∑ y : β, (pXY (x, y) - q x y) ≤
+      ∑ x : α, ∑ y : β,
+        if pXY (x, y) = 0 then 0
+        else pXY (x, y) * Real.log (pXY (x, y) / q x y) by
+    have hzero : ∑ x : α, ∑ y : β, (pXY (x, y) - q x y) = 0 := by
+      have h1 : ∑ x : α, ∑ y : β, pXY (x, y) = 1 := by
+        rw [← sum_prod_eq_nested]; exact hsum
+      have h2 : ∑ x : α, ∑ y : β, q x y = 1 :=
+        product_marginals_sum_one hsum
+      simp_rw [Finset.sum_sub_distrib]
+      rw [h1, h2, sub_self]
+    linarith
+  apply Finset.sum_le_sum
+  intro x _
+  apply Finset.sum_le_sum
+  intro y _
+  by_cases hpxy : pXY (x, y) = 0
+  · simp [hpxy]
+    exact mul_nonneg
+      (Finset.sum_nonneg (fun y' _ => hp (x, y')))
+      (Finset.sum_nonneg (fun x' _ => hp (x', y)))
+  · simp [hpxy]
+    have hpxy_pos : 0 < pXY (x, y) :=
+      lt_of_le_of_ne (hp (x, y)) (Ne.symm hpxy)
+    have hq_pos : 0 < q x y := by
+      simp only [hq_def]
+      exact mul_pos
+        (marginal_pos_of_joint_pos hp hpxy_pos)
+        (calc 0 < pXY (x, y) := hpxy_pos
+          _ ≤ ∑ x' : α, pXY (x', y) :=
+            Finset.single_le_sum (f := fun x' => pXY (x', y))
+              (fun x' _ => hp (x', y)) (Finset.mem_univ x))
+    linarith [kl_term_bound hpxy_pos hq_pos]
 
 -- Conditioning reduces entropy: H(X|Y) ≤ H(X)
 theorem conditioning_reduces_entropy {α β : Type*} [Fintype α] [Fintype β]

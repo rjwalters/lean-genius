@@ -21,7 +21,7 @@
     "focus": "Proved entropy_nonneg and entropy_point_mass. Added KL divergence, conditional entropy, mutual information definitions. 6 sorries remain for deeper inequalities."
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved kl_divergence_nonneg, gibbs_inequality, entropy_le_log_card (3 sorries eliminated). 3 sorries remain: log_sum_inequality, mutual_info_nonneg, conditioning_reduces_entropy.",
+    "progressSummary": "PROGRESS: Proved 4 of 6 sorry theorems. Proved kl_divergence_nonneg, gibbs_inequality, entropy_le_log_card, mutual_info_nonneg. 2 sorries remain: log_sum_inequality (Jensen), conditioning_reduces_entropy (needs I=H-H|Y identity).",
     "builtItems": [
       {
         "name": "shannonEntropy",
@@ -72,6 +72,26 @@
         "name": "entropy_le_log_card",
         "description": "H(X) <= log|X| (max entropy for uniform)",
         "proven": true
+      },
+      {
+        "name": "sum_prod_eq_nested",
+        "description": "Convert Σ_{α×β} to Σ_α Σ_β (product sum decomposition)",
+        "proven": true
+      },
+      {
+        "name": "marginal_pos_of_joint_pos",
+        "description": "p(x,y)>0 implies p_X(x)>0",
+        "proven": true
+      },
+      {
+        "name": "product_marginals_sum_one",
+        "description": "Σ_{x,y} p_X(x)·p_Y(y) = 1 when Σ p = 1",
+        "proven": true
+      },
+      {
+        "name": "mutual_info_nonneg",
+        "description": "I(X;Y) ≥ 0 via pointwise KL bound",
+        "proven": true
       }
     ],
     "insights": [
@@ -83,13 +103,14 @@
       "kl_term_bound: multiply log(q/p) <= q/p - 1 by p to get p*log(p/q) >= p-q",
       "KL nonneg: sum term-by-term bound p-q, then Σ(p-q) = 1-1 = 0",
       "Gibbs from KL: decompose each KL term as (if p=0 then 0 else p*log p) - p*log q, use Finset.sum_sub_distrib",
-      "Max entropy: apply Gibbs with uniform q=1/|X|, factor constant log out of sum"
+      "Max entropy: apply Gibbs with uniform q=1/|X|, factor constant log out of sum",
+      "sum_prod_eq_nested via Finset.univ_product_univ + Finset.sum_product converts between flat and nested sums",
+      "mutual_info_nonneg: same kl_term_bound technique, but p_Y(y) > 0 when p(x,y) > 0 since marginal sums include the joint",
+      "product_marginals_sum_one: uses Finset.sum_comm to swap sum order + factorization Σ(f·g) = (Σf)·(Σg) when one factor is constant per outer variable"
     ],
     "nextSteps": [
-      "Prove mutual_info_nonneg (relate to KL divergence of joint vs product of marginals)",
-      "Prove conditioning_reduces_entropy (H(X|Y) <= H(X), follows from mutual_info_nonneg)",
-      "Prove log_sum_inequality (Jensen for x*log(x), harder — good Aristotle candidate)",
-      "Create Aristotle companion file for remaining sorries"
+      "Prove conditioning_reduces_entropy: needs algebraic identity I(X;Y) = H(X) - H(X|Y) — extensive log algebra with nested if-then-else",
+      "Prove log_sum_inequality: Jensen for x·log(x) — good Aristotle candidate"
     ]
   },
   "tags": [
@@ -105,8 +126,8 @@
   "tractability": 8,
   "leanFiles": [
     {
-      "sorryCount": 3,
-      "theoremCount": 11
+      "sorryCount": 2,
+      "theoremCount": 15
     }
   ]
 }

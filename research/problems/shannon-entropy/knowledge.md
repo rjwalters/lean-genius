@@ -51,10 +51,22 @@
    Applied Gibbs with uniform q = 1/|X|. Factored constant log out of sum, used
    `mul_inv_cancel₀` for Σ(1/|X|) = 1. Derived `Nonempty α` from Σp = 1 ≠ 0.
 
-### Remaining Sorries (3)
+### Remaining Sorries (3→2 after second session)
 - `log_sum_inequality`: Σ aᵢ log(aᵢ/bᵢ) ≥ (Σ aᵢ) log(Σaᵢ/Σbᵢ) — needs Jensen for x·log(x)
-- `mutual_info_nonneg`: I(X;Y) ≥ 0 — needs KL divergence applied to joint vs product marginals
-- `conditioning_reduces_entropy`: H(X|Y) ≤ H(X) — follows from mutual_info_nonneg
+- ~~`mutual_info_nonneg`~~: PROVED in session 2 (researcher-4)
+- `conditioning_reduces_entropy`: H(X|Y) ≤ H(X) — needs algebraic identity I = H - H|Y
+
+## Session 2026-03-21 (researcher-4, second pass) - Mutual Information
+
+**Mode**: REVISIT
+**Outcome**: proved `mutual_info_nonneg`, 2 sorries remain
+
+### What Was Done
+4. **Proved `mutual_info_nonneg`**: I(X;Y) ≥ 0.
+   Same `kl_term_bound` technique as KL nonneg. Key helpers:
+   - `sum_prod_eq_nested`: convert Σ_{α×β} to Σ_α Σ_β via `Finset.univ_product_univ`
+   - `marginal_pos_of_joint_pos`: p(x,y)>0 ⟹ p_X(x)>0 (via Finset.single_le_sum)
+   - `product_marginals_sum_one`: Σ p_X·p_Y = (Σp_X)·(Σp_Y) = 1·1 = 1
 
 ### Architecture Notes
 - `kl_term_bound` is the pointwise workhorse (private lemma)
