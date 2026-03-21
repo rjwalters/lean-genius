@@ -46,7 +46,14 @@
       "family_le_members axiom: ex(n;F) ≤ min ex(n;G)",
       "erdos_180_summary: proved conjunction of Erdős-Stone and counterexample"
     ],
-    "axiomCount": 3
+    "axiomCount": 3,
+    "prerequisites": [
+      "Extremal graph theory fundamentals (Turán's theorem)",
+      "Erdős-Stone theorem and chromatic number",
+      "Big-O asymptotic notation",
+      "Bipartite graphs and Zarankiewicz problem",
+      "Finset and sSup in Lean 4 / Mathlib"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős Problem #180, posed by Erdős and Simonovits [ErSi82], asks whether the Turán number of a finite graph family is always dominated by a single member. For non-bipartite families, the Erdős-Stone theorem resolves this: the member with smallest chromatic number determines the asymptotics. A folklore counterexample (star + matching) exists for infinite families, showing finiteness is essential.",
