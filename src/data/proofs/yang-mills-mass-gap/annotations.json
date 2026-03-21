@@ -558,6 +558,84 @@
       "relatedConcepts": ["Dyson-Schwinger equations", "gluon propagator", "Schwinger mechanism", "spectral function positivity violation", "Kugo-Ojima criterion"],
       "prerequisites": ["scalingExponent", "DSEGapEquation"],
       "tags": ["dyson-schwinger", "gluon-mass", "confinement", "non-perturbative"]
+    },
+    {
+      "id": "thooft-loop-duality",
+      "proofId": "yang-mills-mass-gap",
+      "type": "insight",
+      "range": { "startLine": 7536, "endLine": 7636 },
+      "title": "'t Hooft Loop: Magnetic Dual of the Wilson Loop",
+      "content": "The 't Hooft loop $B(C)$ (1978) is the magnetic analogue of the Wilson loop $W(C)$: it creates a thin tube of center flux along $C$. Together, $W(C)$ and $B(C)$ provide a complete phase classification. In the confined phase, $W(C)$ obeys area law and $B(C)$ obeys perimeter law — quarks are confined but monopoles are free. In the Higgs phase, the roles are reversed. In the Coulomb phase, both obey perimeter law. The key theorem: $W$ and $B$ cannot both obey area law simultaneously ('t Hooft's complementarity), because their commutation relation $W(C_1) B(C_2) = \\omega^{\\text{link}(C_1,C_2)} B(C_2) W(C_1)$ (where $\\omega = e^{2\\pi i/N}$ and link is the linking number) forces a 't Hooft anomaly between the two order parameters.",
+      "mathContext": "$W(C_1) B(C_2) = \\omega^{\\text{link}(C_1,C_2)} B(C_2) W(C_1)$; confined: $W$ area, $B$ perimeter; Higgs: $W$ perimeter, $B$ area",
+      "significance": "key",
+      "relatedConcepts": ["'t Hooft loop", "Wilson loop", "electric-magnetic duality", "center flux", "phase classification"],
+      "prerequisites": ["WilsonLoop", "CenterSymmetry", "Complex"],
+      "tags": ["thooft-loop", "duality", "confinement", "phase-classification"]
+    },
+    {
+      "id": "cluster-decomposition-mass-gap",
+      "proofId": "yang-mills-mass-gap",
+      "type": "insight",
+      "range": { "startLine": 7763, "endLine": 7982 },
+      "title": "Cluster Decomposition: Mass Gap ↔ Exponential Decay",
+      "content": "The cluster decomposition principle is the bridge between the spectral definition of the mass gap and its physical consequences. In a massive theory, connected correlators decay exponentially: $\\langle O(x) O(y) \\rangle_c \\le C \\cdot e^{-\\Delta |x-y|}$, where $\\Delta > 0$ is the mass gap. This is an equivalence: mass gap $> 0 \\iff$ exponential cluster decomposition. Massless theories (conformal window, Coulomb phase) have power-law decay $\\sim |x-y|^{-2\\Delta_{\\text{dim}}}$ instead. The key chain of implications formalized: (1) reflection positivity (OS axioms) $\\to$ physical Hilbert space $\\mathcal{H}$, (2) transfer matrix $T = e^{-aH}$ $\\to$ Hamiltonian $H$ with spectrum, (3) spectral gap $\\Delta = E_1 - E_0 > 0$ $\\to$ exponential decay of correlators at rate $\\Delta$. The correlation length $\\xi = 1/\\Delta$ diverges at a second-order phase transition where the mass gap vanishes.",
+      "mathContext": "$\\langle O(x) O(y) \\rangle_c \\le C e^{-\\Delta|x-y|}$; $\\Delta > 0 \\iff$ exponential decay; $\\xi = 1/\\Delta$",
+      "significance": "key",
+      "relatedConcepts": ["cluster decomposition", "correlation length", "exponential decay", "spectral gap", "second-order phase transition"],
+      "prerequisites": ["MassGap", "TransferMatrix", "PerronFrobeniusData"],
+      "tags": ["cluster-decomposition", "correlation-decay", "mass-gap-equivalence"]
+    },
+    {
+      "id": "center-vortex-confinement",
+      "proofId": "yang-mills-mass-gap",
+      "type": "insight",
+      "range": { "startLine": 9592, "endLine": 9738 },
+      "title": "Center Vortex Model: Topological Mechanism for Confinement",
+      "content": "Center vortices are codimension-2 topological defects in the gauge field carrying $\\mathbb{Z}_N$ center flux. When a center vortex pierces the minimal surface bounded by a Wilson loop, the loop acquires a factor $\\omega = e^{2\\pi i/N}$ (a center element). If vortices pierce randomly with probability $p$ per unit area, the Wilson loop expectation value becomes $\\langle W(C) \\rangle = (1 - 2p)^A \\to e^{-\\sigma A}$ with string tension $\\sigma = -\\ln(1-2p)/a^2$. This produces the area law — confinement from vortex condensation. Lattice evidence is compelling: (1) removing center vortices eliminates both confinement AND chiral symmetry breaking simultaneously, (2) the center-projected theory (keeping only vortices) reproduces the full string tension to within $\\sim 5\\%$, (3) the vortex density scales correctly toward the continuum limit. The model also explains the Casimir scaling $\\to$ $N$-ality dependence crossover at large distances.",
+      "mathContext": "Vortex piercing: $W \\to \\omega \\cdot W$, $\\omega = e^{2\\pi i/N}$; random vortices: $\\langle W \\rangle = (1-2p)^A = e^{-\\sigma A}$, $\\sigma = -\\ln(1-2p)/a^2$",
+      "significance": "key",
+      "relatedConcepts": ["center vortex", "topological defect", "vortex condensation", "N-ality", "lattice evidence for confinement"],
+      "prerequisites": ["CenterSymmetry", "WilsonLoop", "Real.exp"],
+      "tags": ["center-vortex", "confinement-mechanism", "topology", "lattice-evidence"]
+    },
+    {
+      "id": "chromoelectric-flux-tube",
+      "proofId": "yang-mills-mass-gap",
+      "type": "insight",
+      "range": { "startLine": 9876, "endLine": 10111 },
+      "title": "Chromoelectric Flux Tubes: The Physical Picture of Confinement",
+      "content": "In a confining gauge theory, chromoelectric field lines between a quark-antiquark pair do not spread out (as in QED's $1/r^2$ Coulomb field) but instead collimate into a narrow tube of approximately constant cross-section $A \\sim 1/\\sigma$. The flux tube has: radius $r_0 \\approx 0.3$ fm (from lattice), energy per unit length $= \\sigma \\approx (440\\,\\text{MeV})^2 \\approx 0.18\\,\\text{GeV}^2$, and produces a linear potential $V(r) = \\sigma r$ (plus the Lüscher $-\\pi/(12r)$ correction). The flux tube behaves as a vibrating string at long distances — its transverse fluctuations grow logarithmically $w^2(r) \\sim \\ln(r/r_0)$ (Lüscher-Symanzik-Weisz theorem), matching the Nambu-Goto string prediction. The dual Meissner effect provides the mechanism: the confining vacuum acts as a dual superconductor that squeezes chromoelectric flux into Abrikosov-like vortices.",
+      "mathContext": "$V(r) = \\sigma r - \\frac{\\pi}{12r} + O(1/r^2)$; $\\sigma \\approx (440\\,\\text{MeV})^2$; $w^2(r) \\sim \\frac{1}{2\\pi\\sigma}\\ln(r/r_0)$",
+      "significance": "key",
+      "relatedConcepts": ["flux tube", "QCD string", "linear potential", "Lüscher term", "Nambu-Goto string", "dual Meissner effect"],
+      "prerequisites": ["stringTension", "LuscherTerm", "DualSuperconductorModel"],
+      "tags": ["flux-tube", "confinement", "qcd-string", "linear-potential"]
+    },
+    {
+      "id": "chiral-symmetry-banks-casher",
+      "proofId": "yang-mills-mass-gap",
+      "type": "technique",
+      "range": { "startLine": 10113, "endLine": 10165 },
+      "title": "Chiral Symmetry Breaking: Banks-Casher and GMOR Relations",
+      "content": "The Banks-Casher relation (1980) $\\langle\\bar{\\psi}\\psi\\rangle = -\\pi\\rho(0)$ connects the chiral condensate to the spectral density $\\rho(\\lambda)$ of the Dirac operator $D\\!\\!\\!/$ at the origin. A non-zero condensate $\\langle\\bar{\\psi}\\psi\\rangle \\ne 0$ signals spontaneous chiral symmetry breaking $\\mathrm{SU}(N_f)_L \\times \\mathrm{SU}(N_f)_R \\to \\mathrm{SU}(N_f)_V$, producing $N_f^2 - 1$ pseudo-Goldstone bosons (pions). The Gell-Mann-Oakes-Renner relation $m_\\pi^2 f_\\pi^2 = m_q |\\langle\\bar{\\psi}\\psi\\rangle|$ links the pion mass, decay constant, quark mass, and condensate. Crucially, chiral symmetry breaking and confinement are closely correlated (lattice shows they occur at the same temperature) but logically distinct — the center vortex model shows both originate from the same topological mechanism.",
+      "mathContext": "$\\langle\\bar{\\psi}\\psi\\rangle = -\\pi\\rho(0)$; GMOR: $m_\\pi^2 f_\\pi^2 = m_q |\\langle\\bar{\\psi}\\psi\\rangle|$; $\\chi\\text{SB}$: $\\mathrm{SU}(N_f)_L \\times \\mathrm{SU}(N_f)_R \\to \\mathrm{SU}(N_f)_V$",
+      "significance": "supporting",
+      "relatedConcepts": ["Banks-Casher relation", "chiral condensate", "GMOR relation", "Goldstone boson", "Dirac operator spectrum"],
+      "prerequisites": ["ChiralCondensate", "DiracOperator", "Real.pi"],
+      "tags": ["chiral-symmetry-breaking", "banks-casher", "gmor", "pion"]
+    },
+    {
+      "id": "casimir-scaling-string-breaking",
+      "proofId": "yang-mills-mass-gap",
+      "type": "technique",
+      "range": { "startLine": 8410, "endLine": 8598 },
+      "title": "Casimir Scaling and String Breaking",
+      "content": "The Casimir scaling hypothesis predicts that at intermediate distances, the ratio of string tensions for different representations equals their Casimir ratio: $\\sigma_R/\\sigma_{\\text{fund}} = C_2(R)/C_2(\\text{fund})$. For $\\mathrm{SU}(3)$: adjoint/fundamental $= 9/4$, sextet/fundamental $= 5/2$. This is confirmed by lattice simulations to high precision at distances $r \\lesssim 1$ fm. At larger distances, the behavior depends on $N$-ality (representation modulo center): zero $N$-ality representations (like the adjoint) have strings that break via gluon pair production at distance $r_b \\sim 2M_{\\text{gluelump}}/\\sigma_{\\text{adj}}$, while non-zero $N$-ality strings (fundamental) are unbreakable — true confinement. The formalization proves: Casimir ratio $> 1$ for the adjoint, $\\sigma_{\\text{adj}} > \\sigma_{\\text{fund}}$ (adjoint strings are tighter), and the mass gap from glueball $\\Delta \\sim 4\\sqrt{\\sigma_{\\text{fund}}}$ from lattice QCD.",
+      "mathContext": "$\\sigma_R/\\sigma_{\\text{fund}} = C_2(R)/C_2(\\text{fund})$; SU(3): adj/fund $= 9/4$; string breaking at $r_b \\sim 2M_{\\text{gluelump}}/\\sigma_{\\text{adj}}$",
+      "significance": "supporting",
+      "relatedConcepts": ["Casimir scaling", "string breaking", "N-ality", "gluelump", "representation dependence"],
+      "prerequisites": ["suNCasimirFundamental", "suNCasimirAdjoint", "stringTension"],
+      "tags": ["casimir-scaling", "string-breaking", "n-ality", "lattice-verification"]
     }
   ]
 }

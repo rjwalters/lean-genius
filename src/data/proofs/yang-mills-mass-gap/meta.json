@@ -463,6 +463,132 @@
       "summary": "Tadeusz Balaban's block-spin RG program — the closest existing rigorous approach to 4D Yang-Mills. Formalizes the effective lattice spacing a_k = 2^k·a₀, running coupling at each RG step, and proves the coupling remains controlled at weak coupling. The gap to the Millennium Prize: extending from finitely many to infinitely many RG steps in d=4.",
       "startLine": 25187,
       "endLine": 25435
+    },
+    {
+      "id": "dimensional-reduction",
+      "title": "Part LXIV: Dimensional Reduction at High Temperature",
+      "summary": "At temperatures T >> Λ_QCD, 4D Yang-Mills reduces to 3D effective QCD (EQCD) via Kaluza-Klein decomposition. The hierarchy of scales T >> gT (electric screening) >> g²T (magnetic screening) is formalized. The magnetic sector of 3D YM is non-perturbative and confining even at arbitrarily high temperature, which is the ultimate infrared obstruction.",
+      "startLine": 7417,
+      "endLine": 7534
+    },
+    {
+      "id": "thooft-loop",
+      "title": "Part LXV: 't Hooft Loop — Electric-Magnetic Duality",
+      "summary": "The 't Hooft loop B(C) (1978) is the magnetic dual of the Wilson loop W(C). Together they classify gauge theory phases: confined (W: area law, B: perimeter law), Higgs (W: perimeter law, B: area law), Coulomb (both perimeter law). The 't Hooft-Wilson complementarity is formalized as a theorem.",
+      "startLine": 7536,
+      "endLine": 7636
+    },
+    {
+      "id": "witten-index-vacuum",
+      "title": "Part LXVI: Witten Index and Vacuum Structure",
+      "summary": "The Witten index I_W = Tr[(-1)^F e^{-βH}] = n_B - n_F is a topological invariant unchanged by continuous deformations. For N=1 SU(N) SYM, I_W = N proves SUSY is unbroken and the vacuum is N-fold degenerate. Temperature independence is proved, providing a non-perturbative tool for vacuum analysis.",
+      "startLine": 7638,
+      "endLine": 7761
+    },
+    {
+      "id": "cluster-decomposition",
+      "title": "Part LXVII: Cluster Decomposition and Exponential Decay",
+      "summary": "The cluster decomposition principle bridges Euclidean field theory and the mass gap. Connected correlators decay as ⟨O(x)O(y)⟩_c ≤ C·exp(-Δ·|x-y|) where Δ is the mass gap. Mass gap > 0 is equivalent to exponential cluster decomposition; massless theories have power-law decay. Formalizes the key chain: reflection positivity → transfer matrix → exponential decay ↔ mass gap.",
+      "startLine": 7763,
+      "endLine": 7982
+    },
+    {
+      "id": "casimir-scaling",
+      "title": "Part LXXI: Casimir Scaling Hypothesis and String Breaking",
+      "summary": "The Casimir scaling hypothesis states σ_R/σ_fund = C₂(R)/C₂(fund) at intermediate distances. For SU(3): adjoint/fundamental ratio = 9/4, verified on the lattice. At large distances, adjoint strings break via gluon pair production when V(r) > 2M_gluelump, while fundamental strings are unbreakable (true confinement). The string breaking distance r_b ~ 2M_gluelump/σ_adj is formalized.",
+      "startLine": 8410,
+      "endLine": 8598
+    },
+    {
+      "id": "luscher-term-string",
+      "title": "Part LXXIII: Lüscher Term and Effective String Theory",
+      "summary": "The Lüscher term is a universal 1/r correction to the confining potential: V(r) = σr − π(d−2)/(24r). For d=4: V(r) = σr − π/(12r). Derived from bosonic string zero-point energy. The Nambu-Goto string has no 1/r² correction (proved), with critical dimension d=26 where c₃ changes sign. Logarithmic flux tube broadening w²(r) ~ ln(r/r₀) is also formalized (LSW theorem).",
+      "startLine": 8786,
+      "endLine": 9037
+    },
+    {
+      "id": "center-vortex-model",
+      "title": "Part LXXV: Center Vortex Model of Confinement",
+      "summary": "Center vortices are codimension-2 topological defects carrying Z_N center flux. When a vortex pierces the minimal surface of a Wilson loop, the loop picks up a center element ω. Random vortex piercing with probability p per unit area produces area law: ⟨W(C)⟩ = (1-2p)^A → exp(-σA) with σ = -ln(1-2p). Lattice evidence: removing vortices eliminates confinement and chiral symmetry breaking simultaneously.",
+      "startLine": 9592,
+      "endLine": 9738
+    },
+    {
+      "id": "kugo-ojima",
+      "title": "Part LXXVI: Kugo-Ojima Confinement Criterion",
+      "summary": "The Kugo-Ojima criterion (1979) provides a sufficient condition for color confinement using BRST cohomology: physical states satisfy Q_B|phys⟩ = 0. The criterion u(0) = -1 (where u is the ghost self-energy at zero momentum) signals confinement. Connected to the scaling solution of the gluon propagator D(0)=0 and enhanced ghost propagator.",
+      "startLine": 9740,
+      "endLine": 9874
+    },
+    {
+      "id": "chromoelectric-flux-tubes",
+      "title": "Part LXXVII: Chromoelectric Flux Tubes and the QCD String",
+      "summary": "In confining gauge theories, chromoelectric field lines between quarks collimate into narrow flux tubes rather than spreading. The tube has constant cross-section A ~ 1/σ, energy density concentrated in a cylinder of radius r₀ ~ 0.3 fm, and string tension σ = energy/length ~ (440 MeV)². The dual Meissner effect (monopole condensation) provides the mechanism for flux tube formation.",
+      "startLine": 9876,
+      "endLine": 10111
+    },
+    {
+      "id": "chiral-symmetry-breaking",
+      "title": "Part LXXVIII: Chiral Symmetry Breaking — Banks-Casher Relation",
+      "summary": "The Banks-Casher relation (1980) connects the spectral density ρ(0) of the Dirac operator at the origin to the chiral condensate: ⟨ψ̄ψ⟩ = -πρ(0). The GMOR relation m²_π · f²_π = m_q · |⟨ψ̄ψ⟩| links pion mass, decay constant, quark mass, and the condensate. Chiral symmetry breaking and confinement are closely connected but logically distinct phenomena.",
+      "startLine": 10113,
+      "endLine": 10165
+    },
+    {
+      "id": "polyakov-3d-confinement",
+      "title": "Part CXI: Polyakov's 3D Confinement — Exact Mass Gap via Monopole-Instantons",
+      "summary": "Polyakov (1977) proved that compact QED₃ (3D gauge theory with compact U(1)) confines via monopole-instanton proliferation. The mass gap Δ ~ g²exp(-S_monopole) is generated non-perturbatively. This is one of the few rigorously understood confinement mechanisms and serves as a prototype for 4D confinement. Debye screening of the dual photon produces a massive photon.",
+      "startLine": 17444,
+      "endLine": 17649
+    },
+    {
+      "id": "zamolodchikov-c-theorem",
+      "title": "Part CXII: Zamolodchikov c-Theorem — Irreversibility of RG Flow",
+      "summary": "Zamolodchikov's c-theorem (1986) proves that in 2D QFT, there exists a function c(g) that decreases monotonically along RG flow and equals the central charge at fixed points: c_UV > c_IR. Cardy conjectured the 4D analogue (a-theorem), proved by Komargodski-Schwimmer (2011). For Yang-Mills: c_UV (free gluons) > c_IR (confined vacuum) implies the confining phase has fewer degrees of freedom.",
+      "startLine": 17649,
+      "endLine": 17842
+    },
+    {
+      "id": "quantum-simulation",
+      "title": "Part CLII: Quantum Simulation of Lattice Gauge Theories",
+      "summary": "Quantum computers can simulate lattice gauge theories without the sign problem that plagues classical Monte Carlo at finite density. Formalizes qubit-based lattice gauge theory, Trotterized time evolution, and the quantum advantage for real-time dynamics. Current experiments with trapped ions and superconducting qubits demonstrate Schwinger model simulations — a path toward quantum verification of the mass gap.",
+      "startLine": 27753,
+      "endLine": 28124
+    },
+    {
+      "id": "color-superconductivity",
+      "title": "Part CLIII: Color Superconductivity and the QCD Phase Diagram",
+      "summary": "At high baryon density and low temperature, quarks form Cooper pairs (color superconductivity). The color-flavor-locked (CFL) phase breaks SU(3)_color × SU(3)_flavor → SU(3)_diagonal, with a gap Δ_CFL ~ 100 MeV. The BCS mechanism is formalized. CFL phase confines at the same time — Fradkin-Shenker continuity connects it to the hadronic phase with no phase boundary.",
+      "startLine": 28127,
+      "endLine": 28427
+    },
+    {
+      "id": "millennium-prize-precise",
+      "title": "Part CLIX: Constructive Quantum Yang-Mills — Millennium Prize Requirements",
+      "summary": "Precise statement of what the Clay Millennium Prize requires: (1) Existence of a measure μ on the space of connections satisfying OS axioms with gauge invariance, (2) Mass gap: the reconstructed Hamiltonian has spectrum {0} ∪ [Δ,∞) with Δ > 0. The distinction between lattice mass gap (proved) and continuum mass gap (open) is formalized. The infinite-volume and continuum limits must both exist and be non-trivial.",
+      "startLine": 29732,
+      "endLine": 29876
+    },
+    {
+      "id": "lattice-strong-coupling-rigorous",
+      "title": "Part CLX: Lattice Strong Coupling Expansion — Rigorous Area Law",
+      "summary": "At strong coupling (small β), the lattice Yang-Mills theory has a rigorously proved area law with string tension σ = -ln(β/(2N²))/a². The cluster expansion converges for β < β_c, giving exponential decay of correlations. This is the strongest rigorous result toward the mass gap — but extending it to weak coupling (where the continuum limit lives) remains the central challenge.",
+      "startLine": 29891,
+      "endLine": 30087
+    },
+    {
+      "id": "instanton-calculus",
+      "title": "Part CLXI: Instanton Calculus and Semiclassical Approximation",
+      "summary": "Systematic instanton calculus: the semiclassical expansion around the k-instanton solution gives corrections O(e^{-8π²k/g²}). The instanton moduli space has dimension 4Nk (for SU(N), charge k). The 't Hooft vertex generates fermion mass terms. Instanton contributions to the vacuum energy: E_vac ~ -Λ⁴·exp(-8π²/g²)·cos(θ). The dilute gas approximation breaks down at strong coupling.",
+      "startLine": 30087,
+      "endLine": 30391
+    },
+    {
+      "id": "confinement-order-parameters",
+      "title": "Part CLXII: Confinement Order Parameters — A Unified View",
+      "summary": "Comprehensive comparison of all confinement criteria formalized in this entry: Wilson area law, 't Hooft loop perimeter law, Polyakov loop ⟨P⟩ = 0, center symmetry unbroken, Kugo-Ojima u(0) = -1, gluon propagator D(0) > 0 (decoupling), positive string tension σ > 0, vortex condensation, and monopole condensation. Their logical relationships and which are necessary vs sufficient conditions for confinement.",
+      "startLine": 30391,
+      "endLine": 30551
     }
   ],
   "conclusion": {
@@ -474,7 +600,9 @@
       "Can Mathlib's Lie algebra infrastructure be extended to support principal bundle connections?",
       "Is there a path to formalizing the Osterwalder-Schrader reconstruction in full generality?",
       "Can Balaban's block-spin RG program (Parts CXLV-CXLVI) be extended from finitely many to infinitely many steps in d=4, closing the gap to a rigorous proof?",
-      "Does the resurgent trans-series structure (Part CI) provide a non-perturbative completion of QCD that could constrain the mass gap from above?"
+      "Does the resurgent trans-series structure (Part CI) provide a non-perturbative completion of QCD that could constrain the mass gap from above?",
+      "Can center vortex condensation (Part LXXV) be made rigorous — proving that random vortex models produce the area law in the continuum limit?",
+      "Will quantum simulation (Part CLII) provide the first experimental verification of the mass gap in a controlled lattice gauge theory?"
     ]
   }
 }
