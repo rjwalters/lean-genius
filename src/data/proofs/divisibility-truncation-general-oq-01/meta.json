@@ -73,35 +73,40 @@
       "title": "The Unified Osculator Theorem",
       "startLine": 22,
       "endLine": 63,
-      "summary": "Single theorem: d | n <-> d | (n/10 + c*(n%10)) for any c with d | (10c - 1)."
+      "summary": "Single theorem: d | n <-> d | (n/10 + c*(n%10)) for any c with d | (10c - 1).",
+      "mathContext": "The unified theorem states $d | n \\iff d | (\\lfloor n/10 \\rfloor + c \\cdot (n \\bmod 10))$ whenever $d | (10c - 1)$ and $\\gcd(d, 10) = 1$. Proof uses the identity $10(\\lfloor n/10 \\rfloor + c(n \\bmod 10)) = n + (10c - 1)(n \\bmod 10)$ and `IsCoprime.dvd_of_dvd_mul_left`."
     },
     {
       "id": "negative-case",
       "title": "Negative Osculator as Special Case",
       "startLine": 65,
       "endLine": 85,
-      "summary": "Derives the negative osculator rule from the unified theorem by substituting -c."
+      "summary": "Derives the negative osculator rule from the unified theorem by substituting -c.",
+      "mathContext": "If $d | (10c + 1)$, then $d | (10(-c) - 1)$, so the unified theorem with osculator $-c$ gives: $d | n \\iff d | (\\lfloor n/10 \\rfloor - c \\cdot (n \\bmod 10))$. The sign flip $10(-c) - 1 = -(10c + 1)$ is the key step."
     },
     {
       "id": "concrete-cases",
       "title": "Recovering Both Specific Cases",
-      "startLine": 87,
+      "startLine": 91,
       "endLine": 114,
-      "summary": "Instantiations for d=7, 11, 13, 17, 19 showing both positive and negative osculator rules."
+      "summary": "Instantiations for d=7, 11, 13, 17, 19 showing both positive and negative osculator rules recovered from the unified theorem.",
+      "mathContext": "For each divisor $d \\in \\{7, 11, 13, 17, 19\\}$, the appropriate osculator $c$ is provided and the coprimality/divisibility witnesses are constructed by `decide` and `norm_num`. E.g., $7 | (10 \\cdot 2 + 1)$ gives the negative osculator $c = 2$ for divisibility by 7."
     },
     {
       "id": "dual-relationship",
       "title": "Dual Osculator Relationship",
-      "startLine": 116,
+      "startLine": 120,
       "endLine": 144,
-      "summary": "Theorem: d | (c_pos + c_neg), with verification examples for d=7, 13, 17."
+      "summary": "Theorem: d | (c_pos + c_neg), with verification examples for d=7, 13, 17.",
+      "mathContext": "Since $10c_+ \\equiv 1 \\pmod{d}$ and $10c_- \\equiv -1 \\pmod{d}$, we get $10(c_+ + c_-) \\equiv 0 \\pmod{d}$. Coprimality with 10 then gives $d | (c_+ + c_-)$. For minimal osculators, $c_+ + c_- = d$."
     },
     {
       "id": "sanity-checks",
       "title": "Sanity Checks",
       "startLine": 146,
       "endLine": 159,
-      "summary": "Numeric examples confirming the rules work."
+      "summary": "Numeric examples confirming the rules work: $7 | 49$, $13 | 169$, $19 | 57$, and $\\neg(7 | 50)$, all verified by `native_decide`.",
+      "mathContext": "Sanity checks using `native_decide` for concrete divisibility facts, plus `#check` commands displaying the types of the main theorems."
     }
   ],
   "crossReferences": [
@@ -109,6 +114,21 @@
       "targetId": "divisibility-truncation-general",
       "relationship": "extends",
       "description": "Unifies the separate positive and negative osculator theorems from the parent proof into a single theorem with signed osculator"
+    },
+    {
+      "targetId": "divisibility-by-3",
+      "relationship": "related",
+      "description": "The digit-sum divisibility rule for 3 is a different divisibility test technique; the osculator approach applies to divisors coprime to 10"
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "related",
+      "description": "Both use modular arithmetic and coprimality conditions; CRT gives existence of simultaneous congruence solutions, while osculators give divisibility tests"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient function governs the structure of units mod d, which determines the existence and period of osculators"
     }
   ],
   "conclusion": {

@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-div-mod-cast",
+    "proofId": "divisibility-truncation-general-oq-01",
+    "range": { "startLine": 27, "endLine": 28 },
+    "type": "lemma",
+    "title": "Division-Modulo Casting Lemma",
+    "content": "A helper lemma establishing the fundamental identity $n = 10 \\cdot \\lfloor n/10 \\rfloor + (n \\bmod 10)$ lifted to integer arithmetic. This is the casting of `Nat.div_add_mod` to `ℤ` via `push_cast` and `omega`. The identity is the algebraic backbone of all osculator proofs: it decomposes any natural number into its last digit and remaining prefix, enabling the osculator substitution.",
+    "mathContext": "$(n : \\mathbb{Z}) = 10 \\cdot \\lfloor n/10 \\rfloor + (n \\bmod 10)$. This is the Euclidean division identity for base 10, cast from $\\mathbb{N}$ to $\\mathbb{Z}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Euclidean division", "base-10 representation", "type casting in Lean"],
+    "prerequisites": ["Nat.div_add_mod", "push_cast", "omega"]
+  },
+  {
     "id": "ann-unified-osculator",
     "proofId": "divisibility-truncation-general-oq-01",
     "range": { "startLine": 30, "endLine": 63 },
