@@ -1,0 +1,48 @@
+{
+  "slug": "shannon-entropy",
+  "title": "Shannon Entropy and Basic Properties",
+  "phase": "ACT",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "H(X) = -Σ p(x) log p(x); prove non-negativity, max entropy, Gibbs inequality",
+    "plain": "Formalize Shannon entropy and prove its fundamental properties: non-negativity, maximum entropy for uniform distribution, Gibbs inequality (KL divergence non-negativity), and the log-sum inequality.",
+    "whyMatters": ["Foundation of information theory", "Enables Shannon coding theorems", "Bridge between CS and mathematics"]
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-21T21:00:00Z",
+    "iteration": 1,
+    "focus": "Proved entropy_nonneg and entropy_point_mass. Added KL divergence, conditional entropy, mutual information definitions. 6 sorries remain for deeper inequalities."
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Proved entropy non-negativity and point mass entropy=0. Added klDivergence, conditionalEntropy, mutualInformation definitions. 6 sorry theorems remain (Gibbs, log-sum, max entropy, KL nonneg, MI nonneg, conditioning).",
+    "builtItems": [
+      {"name": "shannonEntropy", "description": "Shannon entropy H(X) = -Σ p(x) log p(x)", "proven": true},
+      {"name": "klDivergence", "description": "KL divergence D(p||q) = Σ p(x) log(p(x)/q(x))", "proven": true},
+      {"name": "conditionalEntropy", "description": "H(X|Y) via joint distribution", "proven": true},
+      {"name": "mutualInformation", "description": "I(X;Y) = Σ p(x,y) log(p(x,y)/(p(x)p(y)))", "proven": true},
+      {"name": "entropy_nonneg", "description": "H(X) ≥ 0", "proven": true},
+      {"name": "entropy_point_mass", "description": "H(δ_a) = 0", "proven": true}
+    ],
+    "insights": [
+      "entropy_nonneg proof: each term -p(x)log(p(x)) ≥ 0 because 0 < p(x) ≤ 1 implies log(p(x)) ≤ 0",
+      "entropy_point_mass: when p concentrated at a, p(a)=1 so log(1)=0, all other terms vanish",
+      "Key remaining: Gibbs inequality needs Jensen's inequality on -log (convex function), or direct log-sum inequality",
+      "Mathlib has Real.log_nonpos, Finset.sum_nonpos — sufficient for basic proofs"
+    ],
+    "nextSteps": [
+      "Prove log_sum_inequality (foundation for Gibbs and max entropy)",
+      "Prove gibbs_inequality from log_sum or Jensen",
+      "Prove entropy_le_log_card from Gibbs with q = uniform",
+      "Prove kl_divergence_nonneg (equivalent to Gibbs)",
+      "Submit remaining sorries to Aristotle"
+    ]
+  },
+  "tags": ["information-theory", "analysis", "probability", "cs-math-bridge", "marquee-phase-2"],
+  "started": "2026-03-21T21:00:00Z",
+  "lastUpdate": "2026-03-21T21:30:00Z",
+  "significance": 9,
+  "tractability": 8
+}
