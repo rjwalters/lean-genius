@@ -143,11 +143,6 @@ def ConvergesInDistribution (μs : ℕ → ProbMeasure) (μ : ProbMeasure) : Pro
 -- § 6. Normalization and the CLT
 -- ============================================================================
 
-/-- Normalization (scaling + centering) of a probability measure.
-    Given μ with mean m and variance σ², the normalized version has mean 0
-    and variance 1. -/
-axiom normalize : ProbMeasure → ProbMeasure
-
 /-- The mean of a probability measure. -/
 axiom mean : ProbMeasure → ℝ
 

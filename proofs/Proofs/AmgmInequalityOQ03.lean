@@ -342,25 +342,6 @@ theorem power_mean_monotone_neg
   rw [one_mul] at step
   rwa [mul_assoc, mul_inv_cancel₀ h_r_ne, mul_one] at step
 
-/-- **Power Mean Monotonicity** (general statement, partially proved).
-
-For r ≤ s with r, s ≠ 0, M_r(z, w) ≤ M_s(z, w).
-
-**Status**:
-- `power_mean_monotone_pos` proves this for 0 < r ≤ s.
-- `power_mean_monotone_neg` proves this for r ≤ s < 0 (NEW — via dual argument).
-- The mixed-sign case (r < 0 < s) requires connecting to the geometric mean limit,
-  which remains open in Mathlib4.
-- Mathlib4 has a TODO for this: "generalized mean inequality with any p ≤ q,
-  including negative numbers" (Mathlib.Analysis.MeanInequalities). -/
-axiom power_mean_monotone
-    (hw : ∀ i ∈ s, 0 ≤ w i)
-    (hw' : ∑ i ∈ s, w i = 1)
-    (hz : ∀ i ∈ s, 0 < z i)
-    {r s_exp : ℝ} (hrs : r ≤ s_exp)
-    (hr : r ≠ 0) (hs : s_exp ≠ 0) :
-    weightedPowerMean s w z r hr ≤ weightedPowerMean s w z s_exp hs
-
 /-- **Harmonic Mean ≤ Geometric Mean** (proved via `harmonic_mean_le_geom_mean_direct`).
 
 The `hHM` hypothesis documents the connection between M_{-1} and the harmonic mean

@@ -212,12 +212,6 @@ def almost_all_little_o : Prop :=
       ((Finset.filter (fun n => decide ((computeF n : ℝ) ≥ ε * n))
         (Finset.range M)).card : ℝ) < δ * M
 
-/-- **Tao's partial result** (from base file):
-    f(n) = o(n) is FALSE unconditionally.
-    But the "almost all" version remains open. -/
-axiom tao_counterexample : ¬(∀ ε : ℝ, ε > 0 →
-    ∃ N : ℕ, ∀ n ≥ N, (computeF n : ℝ) < ε * n)
-
 -- ============================================================
 -- Part VII: Representability via Composites
 -- ============================================================

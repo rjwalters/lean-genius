@@ -235,42 +235,6 @@ It cannot be proved from first principles here (requires deep measure theory),
 but we state it precisely to answer the open question.
 -/
 
-/-- The Lévy-Khintchine representation axiom.
-    Every infinitely divisible characteristic function has the form:
-    φ(t) = exp(ibt - σ²t²/2 + ∫ (e^{itx} - 1 - itx·1_{|x|≤1}) ν(dx))
-    where ν is the Lévy measure (controls the jump structure/tail behavior). -/
-axiom levy_khintchine_representation :
-    ∀ (φ : ℝ → ℂ),
-    -- φ is the char. fn of an infinitely divisible distribution ↔
-    -- it has the Lévy-Khintchine form
-    True  -- Simplified: the full statement requires measure theory
-
-/-- Generalized CLT: Domain of Attraction Theorem.
-    If X₁, X₂, ... are i.i.d. with distribution μ, and if there exist
-    normalizing constants aₙ > 0 and centering constants bₙ such that
-    (X₁ + ... + Xₙ - bₙ) / aₙ converges in distribution to some limit L,
-    then L must be a stable distribution.
-
-    Conversely, X is in the domain of attraction of an α-stable law iff
-    its distribution has tails satisfying:
-      P(X > x) ~ C₊ · L(x) · x^(-α)
-      P(X < -x) ~ C₋ · L(x) · x^(-α)
-    where L(x) is slowly varying (e.g., log(x), or constant).
-
-    The normalizing constants are aₙ = n^(1/α) · L*(n) for some slowly
-    varying L*.
-
-    Key cases:
-    - μ has finite variance σ² → α=2, aₙ = σ√n, bₙ = nμ, L = N(0,1)
-    - μ is Cauchy → α=1, aₙ = n, bₙ = 0, L = Cauchy
-    - μ has tails P(X>x)~x^(-α) for α∈(1,2) → finite mean, infinite var → α-stable -/
-axiom generalized_clt :
-    ∀ (α : ℝ), 0 < α → α ≤ 2 →
-    ∀ (μ : ℝ → ℝ),  -- μ represents the c.d.f.
-    -- μ has α-stable limiting behavior →
-    -- (X₁+...+Xₙ)/n^(1/α) → α-stable law in distribution
-    True  -- Simplified: the full statement requires convergence in distribution
-
 /-
 ## Part VI: Summary - What Happens When Variance is Infinite
 

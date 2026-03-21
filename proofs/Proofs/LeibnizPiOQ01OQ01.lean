@@ -126,13 +126,6 @@ theorem rate_sharp (n : ℕ) :
   congr 1
   simp [abs_pow, abs_neg, abs_one]
 
--- Machin's formula: π/4 = 4·arctan(1/5) - arctan(1/239)
--- Demonstrates exponential convergence via small-argument arctangent series.
--- The arctan Taylor series at 1/m converges as O(1/m^(2N)), exponentially in N.
--- Compared to Leibniz O(1/N), this is vastly faster for m ≥ 2.
-axiom arctan_add_small {a b : ℝ} (h : a * b < 1) :
-    arctan a + arctan b = arctan ((a + b) / (1 - a * b))
-
 theorem machin_formula :
     4 * arctan (1 / 5 : ℝ) - arctan (1 / 239 : ℝ) = π / 4 := by
   sorry

@@ -111,14 +111,6 @@ axiom woodall_theorem (n k : ℕ) (hn : n ≥ 2 * k + 3) : hasLongCycle n k
 axiom woodall_lower_bound (k : ℕ) (hk : k ≥ 2) :
   ¬ hasLongCycle (2 * k + 2) k
 
-/-- Woodall's pancyclicity: under Woodall conditions, all cycle lengths 3..n-k exist. -/
-axiom woodall_pancyclic_at_f (k : ℕ) (hk : k ≥ 2) :
-  ∀ (V : Type*) [Fintype V] [DecidableEq V],
-    Fintype.card V = f k →
-    ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
-      edgeCount G ≥ edgeThreshold (f k) k →
-      ∀ l, 3 ≤ l → l ≤ f k - k → hasCycleOfLength G l
-
 /-
 ## Proved Theorems: f(k) Correctness
 -/

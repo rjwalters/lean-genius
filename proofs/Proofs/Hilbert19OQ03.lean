@@ -312,16 +312,6 @@ axiom evans_krylov_1d
     ∃ (alpha : ℝ), 0 < alpha ∧ alpha ≤ 1
     -- u ∈ C^{2,α}: u'' is α-Holder continuous
 
-/-- **Evans-Krylov (n-dimensional, general statement)**:
-    For uniformly elliptic, convex F : S^n → ℝ, viscosity solutions
-    of F(D²u) = 0 are C^{2,α}.
-
-    This requires Hessian matrices and is stated abstractly. -/
-axiom evans_krylov_nd (n : ℕ) (hn : 1 ≤ n) :
-    ∃ (alpha : ℝ), 0 < alpha ∧ alpha ≤ 1
-    -- For any uniformly elliptic convex F on S^n,
-    -- viscosity solutions of F(D²u) = 0 are C^{2,α}
-
 /-- **Schauder Bootstrap**: Once C^{2,α} is established,
     if F is smooth then u is smooth (C^∞).
 
@@ -340,17 +330,6 @@ The Alexandrov-Bakelman-Pucci (ABP) maximum principle is the foundation
 for all regularity theory in the fully nonlinear setting.
 -/
 
-/-- **ABP Maximum Principle** (1D version):
-    If u'' ≥ -f in the viscosity sense on [a,b], then
-    max u ≤ max(u(a), u(b)) + C·‖f‖.
-
-    The constant C depends on the domain size and ellipticity constants. -/
-axiom abp_maximum_principle_1d
-    (u f : ℝ → ℝ) (a b : ℝ) (_hab : a < b)
-    (_hu : ∀ x ∈ Set.Ioo a b, ∀ φ : ℝ → ℝ, ContDiff ℝ 2 φ →
-      TouchesFromAbove u φ x → deriv (deriv φ) x ≥ -f x) :
-    ∃ (C : ℝ), C > 0
-
 /-- **ABP implies comparison**: The ABP maximum principle implies
     the comparison principle (uniqueness of viscosity solutions). -/
 theorem abp_implies_comparison :
@@ -364,18 +343,6 @@ The Krylov-Safonov Harnack inequality (1980) extends De Giorgi-Nash-Moser
 to nondivergence-form equations. Fully nonlinear equations cannot be written
 in divergence form, so this is essential.
 -/
-
-/-- **Krylov-Safonov Harnack Inequality** (1D version):
-    If u ≥ 0 satisfies M⁻(u'') ≤ 0 ≤ M⁺(u'') in the viscosity sense,
-    then sup u ≤ C · inf u on a smaller interval.
-
-    This is the nondivergence-form analog of Moser's Harnack inequality. -/
-axiom krylov_safonov_harnack_1d
-    (lambda capLambda : ℝ)
-    (_h_pos : 0 < lambda) (_h_le : lambda ≤ capLambda)
-    (u : ℝ → ℝ) (a b : ℝ) :
-    ∃ (C : ℝ), C > 0
-    -- sup_{[a',b']} u ≤ C · inf_{[a',b']} u for [a',b'] ⊂ [a,b]
 
 /-- Krylov-Safonov implies Holder regularity.
     This is the nondivergence analog of De Giorgi's oscillation decay. -/
@@ -417,24 +384,6 @@ theorem isaacs_regularity_open :
 
 Without convexity, regularity theory is limited.
 -/
-
-/-- **Nadirashvili-Vladut (2008)**: There exist uniformly elliptic
-    (but non-convex, non-concave) F in dimension ≥ 5 such that
-    viscosity solutions of F(D²u) = 0 are NOT C^{1,1}.
-
-    This shows convexity is essential for Evans-Krylov. -/
-axiom nadirashvili_vladut_counterexample :
-    ∃ (n : ℕ), n ≥ 5
-    -- In dimension n, there exists non-convex uniformly elliptic F
-    -- with a viscosity solution that is C^{1,α} but not C^{1,1}
-
-/-- **De Giorgi counterexample for systems** (1968):
-    Elliptic *systems* (vector-valued equations) can have
-    discontinuous solutions, even with smooth coefficients.
-
-    This shows scalar equations are special. -/
-axiom deGiorgi_system_counterexample :
-    True -- ∃ uniformly elliptic system with unbounded solution
 
 /-
 ## Section X: Regularity Hierarchy

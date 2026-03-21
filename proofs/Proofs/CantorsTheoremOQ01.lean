@@ -221,11 +221,6 @@ theorem not_gch_at_continuum_implies_gt_aleph_two
   (e.g., ℵ_ω has cofinality ω ≤ 𝔠, so |𝒫(ℝ)| ≠ ℵ_ω).
 -/
 
-/-- **König's theorem for 𝒫(ℝ)**: cf(|𝒫(ℝ)|) > 𝔠.
-    Axiomatized: formal proof uses König's lemma for product of cardinals. -/
-axiom konig_constraint_powerSet_real :
-    (𝔠 : Cardinal.{0}) < (#(Set ℝ) : Cardinal.{0}).ord.cof
-
 -- ============================================================
 -- PART 8: Summary
 -- ============================================================
