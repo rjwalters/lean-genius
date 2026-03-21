@@ -29,21 +29,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved alternating_d1_bound axiom (4→3 axioms). Fixed 4 pre-existing build errors. Docker build clean.",
+    "progressSummary": "PROGRESS: Added 10 proved infrastructure theorems (apSum properties, alternating coloring validity, triangle inequality). Fixed pre-existing import errors. Docker build clean.",
     "builtItems": [
       "alternating coloring with validity proof",
       "disc_trivial_upper: |sum| ≤ k proved by induction",
       "disc_length_1: discrepancy 1 for length-1 APs (proved)",
       "optimalDisc definition and IsOptimal predicate",
       "h1_is_1: alternating achieves h(1)=1",
-      "Roth/Beck/Rudin-Shapiro axioms for deep bounds"
+      "Roth/Beck/Rudin-Shapiro axioms for deep bounds",
+      "apSum_zero, apSum_one, apSum_succ: basic recursion for AP sums",
+      "valid_abs_eq_one, valid_sq_eq_one: valid coloring properties",
+      "apSum_abs_le: triangle inequality |apSum| ≤ k",
+      "alternating: definition and validity proof",
+      "alternating_apSum_d1_even: even-length APs sum to 0"
     ],
     "insights": [
       "Alternating coloring optimal for d=1 but terrible for d=2",
       "Gap between d^{1/2} and d^{1+ε} is fundamental",
       "Rudin-Shapiro achieves O(sqrt(N) log N) for all d simultaneously",
       "alternating_d1_bound proved via pair cancellation: consecutive (-1)^n terms sum to zero, so by strong induction reducing k by 2, we only need k=0 (sum=0) and k=1 (sum=(-1)^a, natAbs=1)",
-      "Example had wrong value: apPartialSum alternating 0 1 3 = 1, not -1 (1+(-1)+1=1)"
+      "Example had wrong value: apPartialSum alternating 0 1 3 = 1, not -1 (1+(-1)+1=1)",
+      "sSup/sInf on ℕ is problematic for unbounded sets — discrepancy definition returns 0 for the all-1s coloring",
+      "Fixed pre-existing build errors: Real.sqrt and Nat.factorial need heavier imports"
     ],
     "mathlibGaps": [],
     "nextSteps": []
