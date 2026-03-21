@@ -8,7 +8,11 @@
   "problemStatement": {
     "formal": "H(X) = -Σ p(x) log p(x); prove non-negativity, max entropy, Gibbs inequality",
     "plain": "Formalize Shannon entropy and prove its fundamental properties: non-negativity, maximum entropy for uniform distribution, Gibbs inequality (KL divergence non-negativity), and the log-sum inequality.",
-    "whyMatters": ["Foundation of information theory", "Enables Shannon coding theorems", "Bridge between CS and mathematics"]
+    "whyMatters": [
+      "Foundation of information theory",
+      "Enables Shannon coding theorems",
+      "Bridge between CS and mathematics"
+    ]
   },
   "currentState": {
     "phase": "ACT",
@@ -17,32 +21,92 @@
     "focus": "Proved entropy_nonneg and entropy_point_mass. Added KL divergence, conditional entropy, mutual information definitions. 6 sorries remain for deeper inequalities."
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved entropy non-negativity and point mass entropy=0. Added klDivergence, conditionalEntropy, mutualInformation definitions. 6 sorry theorems remain (Gibbs, log-sum, max entropy, KL nonneg, MI nonneg, conditioning).",
+    "progressSummary": "PROGRESS: Proved kl_divergence_nonneg, gibbs_inequality, entropy_le_log_card (3 sorries eliminated). 3 sorries remain: log_sum_inequality, mutual_info_nonneg, conditioning_reduces_entropy.",
     "builtItems": [
-      {"name": "shannonEntropy", "description": "Shannon entropy H(X) = -Σ p(x) log p(x)", "proven": true},
-      {"name": "klDivergence", "description": "KL divergence D(p||q) = Σ p(x) log(p(x)/q(x))", "proven": true},
-      {"name": "conditionalEntropy", "description": "H(X|Y) via joint distribution", "proven": true},
-      {"name": "mutualInformation", "description": "I(X;Y) = Σ p(x,y) log(p(x,y)/(p(x)p(y)))", "proven": true},
-      {"name": "entropy_nonneg", "description": "H(X) ≥ 0", "proven": true},
-      {"name": "entropy_point_mass", "description": "H(δ_a) = 0", "proven": true}
+      {
+        "name": "shannonEntropy",
+        "description": "Shannon entropy H(X) = -Σ p(x) log p(x)",
+        "proven": true
+      },
+      {
+        "name": "klDivergence",
+        "description": "KL divergence D(p||q) = Σ p(x) log(p(x)/q(x))",
+        "proven": true
+      },
+      {
+        "name": "conditionalEntropy",
+        "description": "H(X|Y) via joint distribution",
+        "proven": true
+      },
+      {
+        "name": "mutualInformation",
+        "description": "I(X;Y) = Σ p(x,y) log(p(x,y)/(p(x)p(y)))",
+        "proven": true
+      },
+      {
+        "name": "entropy_nonneg",
+        "description": "H(X) ≥ 0",
+        "proven": true
+      },
+      {
+        "name": "entropy_point_mass",
+        "description": "H(δ_a) = 0",
+        "proven": true
+      },
+      {
+        "name": "kl_term_bound",
+        "description": "Pointwise bound: p*log(p/q) >= p-q using log(x) <= x-1",
+        "proven": true
+      },
+      {
+        "name": "kl_divergence_nonneg",
+        "description": "KL divergence D(p||q) >= 0",
+        "proven": true
+      },
+      {
+        "name": "gibbs_inequality",
+        "description": "H(p) <= -Σ p(x) log q(x)",
+        "proven": true
+      },
+      {
+        "name": "entropy_le_log_card",
+        "description": "H(X) <= log|X| (max entropy for uniform)",
+        "proven": true
+      }
     ],
     "insights": [
       "entropy_nonneg proof: each term -p(x)log(p(x)) ≥ 0 because 0 < p(x) ≤ 1 implies log(p(x)) ≤ 0",
       "entropy_point_mass: when p concentrated at a, p(a)=1 so log(1)=0, all other terms vanish",
       "Key remaining: Gibbs inequality needs Jensen's inequality on -log (convex function), or direct log-sum inequality",
-      "Mathlib has Real.log_nonpos, Finset.sum_nonpos — sufficient for basic proofs"
+      "Mathlib has Real.log_nonpos, Finset.sum_nonpos — sufficient for basic proofs",
+      "Key inequality: Real.log_le_sub_one_of_pos gives log(x) <= x-1, foundation for KL divergence nonneg proof",
+      "kl_term_bound: multiply log(q/p) <= q/p - 1 by p to get p*log(p/q) >= p-q",
+      "KL nonneg: sum term-by-term bound p-q, then Σ(p-q) = 1-1 = 0",
+      "Gibbs from KL: decompose each KL term as (if p=0 then 0 else p*log p) - p*log q, use Finset.sum_sub_distrib",
+      "Max entropy: apply Gibbs with uniform q=1/|X|, factor constant log out of sum"
     ],
     "nextSteps": [
-      "Prove log_sum_inequality (foundation for Gibbs and max entropy)",
-      "Prove gibbs_inequality from log_sum or Jensen",
-      "Prove entropy_le_log_card from Gibbs with q = uniform",
-      "Prove kl_divergence_nonneg (equivalent to Gibbs)",
-      "Submit remaining sorries to Aristotle"
+      "Prove mutual_info_nonneg (relate to KL divergence of joint vs product of marginals)",
+      "Prove conditioning_reduces_entropy (H(X|Y) <= H(X), follows from mutual_info_nonneg)",
+      "Prove log_sum_inequality (Jensen for x*log(x), harder — good Aristotle candidate)",
+      "Create Aristotle companion file for remaining sorries"
     ]
   },
-  "tags": ["information-theory", "analysis", "probability", "cs-math-bridge", "marquee-phase-2"],
+  "tags": [
+    "information-theory",
+    "analysis",
+    "probability",
+    "cs-math-bridge",
+    "marquee-phase-2"
+  ],
   "started": "2026-03-21T21:00:00Z",
   "lastUpdate": "2026-03-21T21:30:00Z",
   "significance": 9,
-  "tractability": 8
+  "tractability": 8,
+  "leanFiles": [
+    {
+      "sorryCount": 3,
+      "theoremCount": 11
+    }
+  ]
 }
