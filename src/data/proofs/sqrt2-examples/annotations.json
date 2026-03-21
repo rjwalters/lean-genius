@@ -9,7 +9,8 @@
     "mathContext": "The Mathlib tactic library extends Lean's built-in tactic framework with automation for arithmetic, algebraic simplification, and case analysis.",
     "significance": "context",
     "relatedConcepts": ["Mathlib", "tactic framework", "proof automation"],
-    "prerequisites": ["Lean 4 syntax"]
+    "prerequisites": ["Lean 4 syntax"],
+    "tags": ["import", "mathlib", "tactic-library"]
   },
   {
     "id": "ann-doc-header",
@@ -21,7 +22,8 @@
     "mathContext": "Documentation headers in Lean use `/-! -/` for module-level documentation that appears in generated docs, as opposed to `/- -/` for regular comments.",
     "significance": "context",
     "relatedConcepts": ["Lean documentation", "module structure", "literate programming"],
-    "prerequisites": ["Lean 4 comment syntax"]
+    "prerequisites": ["Lean 4 comment syntax"],
+    "tags": ["documentation", "module-header", "lean-convention"]
   },
   {
     "id": "ann-square-nonneg",
@@ -33,7 +35,8 @@
     "mathContext": "$\\forall n \\in \\mathbb{Z},\\; n^2 \\geq 0$. The proof uses $n^2 = (-n)^2$ and the fact that the product of non-negative elements is non-negative in any ordered ring.",
     "significance": "key",
     "relatedConcepts": ["ordered rings", "case analysis", "calc blocks", "ring tactic", "mul_nonneg"],
-    "prerequisites": ["integer arithmetic", "ordered ring axioms", "Lean tactic mode"]
+    "prerequisites": ["integer arithmetic", "ordered ring axioms", "Lean tactic mode"],
+    "tags": ["square-nonneg", "case-analysis", "ordered-ring", "calc"]
   },
   {
     "id": "ann-case-split",
@@ -45,7 +48,8 @@
     "mathContext": "The law of excluded middle gives $0 \\leq n \\lor \\lnot(0 \\leq n)$. In a linear order, $\\lnot(0 \\leq n) \\iff n < 0 \\implies n \\leq 0 \\iff 0 \\leq -n$.",
     "significance": "key",
     "relatedConcepts": ["law of excluded middle", "decidable propositions", "push_neg tactic", "linear order"],
-    "prerequisites": ["classical logic", "ordered ring structure", "negation in Lean"]
+    "prerequisites": ["classical logic", "ordered ring structure", "negation in Lean"],
+    "tags": ["case-split", "push-neg", "negation", "linear-order"]
   },
   {
     "id": "ann-calc-block",
@@ -57,7 +61,8 @@
     "mathContext": "$n \\cdot n = (-n)(-n) \\geq 0$ since $-n \\geq 0$ when $n < 0$.",
     "significance": "supporting",
     "relatedConcepts": ["calc blocks", "ring tactic", "transitivity of relations"],
-    "prerequisites": ["Lean calc syntax", "ring homomorphism properties"]
+    "prerequisites": ["Lean calc syntax", "ring homomorphism properties"],
+    "tags": ["calc-block", "ring-tactic", "chain-reasoning"]
   },
   {
     "id": "ann-imp-trans",
@@ -69,7 +74,8 @@
     "mathContext": "$(P \\to Q) \\to (Q \\to R) \\to (P \\to R)$ is the transitivity of implication, also known as hypothetical syllogism. In the Curry–Howard correspondence, this is function composition: $(B \\to C) \\circ (A \\to B) : A \\to C$.",
     "significance": "key",
     "relatedConcepts": ["natural deduction", "Curry-Howard correspondence", "function composition", "backward reasoning"],
-    "prerequisites": ["propositional logic", "Lean tactic mode", "intro/apply/exact tactics"]
+    "prerequisites": ["propositional logic", "Lean tactic mode", "intro/apply/exact tactics"],
+    "tags": ["implication", "transitivity", "backward-reasoning", "natural-deduction"]
   },
   {
     "id": "ann-intro-pattern",
@@ -81,7 +87,8 @@
     "mathContext": "In the Curry–Howard interpretation, `intro` corresponds to $\\lambda$-abstraction: introducing $h : P \\to Q$ creates a local function from proofs of $P$ to proofs of $Q$.",
     "significance": "supporting",
     "relatedConcepts": ["lambda abstraction", "Curry-Howard correspondence", "hypothesis management"],
-    "prerequisites": ["Lean intro tactic", "function types as implications"]
+    "prerequisites": ["Lean intro tactic", "function types as implications"],
+    "tags": ["intro-tactic", "lambda-abstraction", "hypothesis-naming"]
   },
   {
     "id": "ann-namespace",
@@ -93,6 +100,7 @@
     "mathContext": "Namespaces provide module-level scoping. The Mathlib equivalent of this theorem is `sq_nonneg : ∀ (a : α), 0 ≤ a ^ 2` in `Mathlib.Algebra.Order.Ring.Lemmas`.",
     "significance": "context",
     "relatedConcepts": ["Lean namespaces", "name resolution", "Mathlib organization"],
-    "prerequisites": ["Lean 4 module system"]
+    "prerequisites": ["Lean 4 module system"],
+    "tags": ["namespace", "scoping", "name-collision"]
   }
 ]
