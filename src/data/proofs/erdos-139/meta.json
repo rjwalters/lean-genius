@@ -22,7 +22,14 @@
     "erdosUrl": "https://erdosproblems.com/139",
     "erdosProblemStatus": "solved",
     "erdosPrizeValue": "$1000",
-    "axiomCount": 4
+    "axiomCount": 4,
+    "prerequisites": [
+      "Basic combinatorics and finite set theory",
+      "Arithmetic progressions and additive number theory",
+      "Density and asymptotic analysis (o-notation, limits)",
+      "Szemerédi regularity lemma (for understanding the proof chain)",
+      "Roth's theorem and the corners theorem (k=3 case)"
+    ]
   },
   "overview": {
     "historicalContext": "Conjectured by Erdős and Turán in 1936, Szemerédi's theorem is one of the most celebrated results in combinatorics. Endre Szemerédi proved it in 1975 using a groundbreaking combinatorial approach. Furstenberg gave an ergodic theory proof in 1977. The $1000 prize from Erdős was awarded to Szemerédi. Modern quantitative bounds have been improved by Gowers (2001), Green-Tao (2017), and Kelley-Meka (2023).",
