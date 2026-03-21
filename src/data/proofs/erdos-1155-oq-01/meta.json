@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://erdosproblems.com/1155",
     "date": "2026",
-    "status": "in-progress",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1155OQ01.lean",
     "tags": [
       "erdos",
@@ -96,8 +96,14 @@
         "note": "Triangle-free graphs on n vertices have at most ⌊n²/4⌋ edges; provides the naive upper bound on f(n)"
       }
     ],
-    "axioms": 5,
-    "axiomCount": 6
+    "axiomCount": 5,
+    "assumptions": "5 axiom declarations: triangleRemovalEdges (the function itself — not directly computable from the graph), triangleRemovalEdges_le_complete (bounded by n choose 2), bfl_upper_bound and bfl_lower_bound (the Bohman-Frieze-Lubetzky 2015 result), triangleRemoval_mantel_bound (Mantel's theorem applied to the terminal graph). All encode established combinatorial results.",
+    "relatedProblems": [
+      {
+        "id": "erdos-1155",
+        "relationship": "Parent formalization of Erdős Problem #1155 (triangle removal process)"
+      }
+    ]
   },
   "sections": [
     {
@@ -199,7 +205,9 @@
     "openQuestions": [
       "Does f(n)/n^{3/2} converge? If so, to what constant?",
       "Can the lower Θ-bound be established independently of the upper?",
-      "Can differential equation methods (as in BFL) give explicit constants?"
+      "Can differential equation methods (as in BFL) give explicit constants?",
+      "Is there a phase transition in the removal process that changes the scaling behavior, analogous to the Erdős-Rényi threshold?",
+      "Can the formalized ratio tightness characterization guide computational experiments to numerically estimate f(n)/n^{3/2}?"
     ]
   }
 }
