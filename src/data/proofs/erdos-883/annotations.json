@@ -8,7 +8,8 @@
     "content": "Erdős Problem #883: Cycles in the Coprime Graph. Two questions about G(A) for large A subset of {1,...,n}: (1) all odd cycles of length at most n/3+1? (Open) (2) complete (1,l,l) tripartite subgraphs? (Solved by Sárkőzy 1999). Threshold floor(n/2)+floor(n/3)-floor(n/6) is tight.",
     "mathContext": "From Erdős-Sárkőzy [ErSa97] and Sárkőzy [Sa99]. Connects number theory and extremal graph theory through coprimality.",
     "significance": "essential",
-    "relatedConcepts": ["coprime graph", "cycle detection", "extremal combinatorics"]
+    "relatedConcepts": ["coprime graph", "cycle detection", "extremal combinatorics"],
+    "tags": ["coprime-graph", "extremal-graph-theory", "number-theory", "partially-solved"]
   },
   {
     "id": "erdos-883-coprime-graph",
@@ -19,7 +20,8 @@
     "content": "coprimeGraph(A): SimpleGraph on A where Adj a b iff a,b in A, a != b, and Nat.Coprime a b. threshold(n) = n/2 + n/3 - n/6. threshold_eq_divisible_2_or_3 (axiom): threshold equals count of integers at most n divisible by 2 or 3.",
     "mathContext": "Uses Mathlib's SimpleGraph. The threshold arises from inclusion-exclusion on multiples of 2 and 3.",
     "significance": "essential",
-    "relatedConcepts": ["SimpleGraph", "Nat.Coprime", "inclusion-exclusion"]
+    "relatedConcepts": ["SimpleGraph", "Nat.Coprime", "inclusion-exclusion"],
+    "tags": ["simple-graph", "coprimality", "inclusion-exclusion", "threshold"]
   },
   {
     "id": "erdos-883-extremal",
@@ -30,7 +32,8 @@
     "content": "extremalSet(n): integers at most n divisible by 2 or 3. extremal_set_triangle_free (axiom): no triangles in G(extremalSet), since any two elements share a common factor (2 or 3). Shows the threshold is tight.",
     "mathContext": "By pigeonhole among {2,3}, at least one pair in any triple shares a prime factor, preventing coprimality.",
     "significance": "essential",
-    "relatedConcepts": ["extremal construction", "triangle-free graphs", "pigeonhole"]
+    "relatedConcepts": ["extremal construction", "triangle-free graphs", "pigeonhole"],
+    "tags": ["extremal-construction", "triangle-free", "pigeonhole", "divisibility"]
   },
   {
     "id": "erdos-883-erdos-sarkozy",
@@ -41,7 +44,8 @@
     "content": "erdos_sarkozy_odd_cycles (axiom): if |A| > threshold(n), then G(A) contains all odd cycles of length at most cn for some absolute constant c > 0. Partial answer to Question 1.",
     "mathContext": "From Erdős-Sárkőzy [ErSa97]. The proof uses counting arguments and properties of coprime pairs.",
     "significance": "essential",
-    "relatedConcepts": ["odd cycles", "counting arguments", "coprime pairs"]
+    "relatedConcepts": ["odd cycles", "counting arguments", "coprime pairs"],
+    "tags": ["odd-cycles", "erdos-sarkozy", "counting-arguments", "coprime-pairs"]
   },
   {
     "id": "erdos-883-question1",
@@ -52,7 +56,8 @@
     "content": "erdos_883_question_1: if |A| > threshold(n), does G(A) contain all odd cycles of length at most n/3 + 1? Asks for the specific constant 1/3, stronger than Erdős-Sárkőzy. Status: OPEN.",
     "mathContext": "The optimal constant replacing c in Erdős-Sárkőzy is not known. The 1/3 bound would be sharp.",
     "significance": "essential",
-    "relatedConcepts": ["open problem", "optimal constant", "odd cycles"]
+    "relatedConcepts": ["open problem", "optimal constant", "odd cycles"],
+    "tags": ["open-problem", "odd-cycles", "optimal-constant", "conjecture"]
   },
   {
     "id": "erdos-883-sarkozy",
@@ -63,7 +68,8 @@
     "content": "hasTripartite G A ell: a (1,l,l) tripartite subgraph with central vertex v and disjoint sets S,T of size l, all adjacent to v. sarkozy_tripartite (axiom): for large n, above threshold guarantees l > 0 with l proportional to log n / log log n. Solves Question 2.",
     "mathContext": "From Sárkőzy [Sa99]. The l bound comes from estimates on coprime pairs in dense sets.",
     "significance": "essential",
-    "relatedConcepts": ["tripartite graphs", "Sárkőzy", "solved"]
+    "relatedConcepts": ["tripartite graphs", "Sárkőzy", "solved"],
+    "tags": ["tripartite-subgraph", "sarkozy", "solved", "dense-sets"]
   },
   {
     "id": "erdos-883-main",
@@ -74,7 +80,8 @@
     "content": "erdos_883_question_2_solved (proved): Q2 answered via sarkozy_tripartite. erdos_883_partial (proved): Q1 partial progress via erdos_sarkozy_odd_cycles. erdos_883 (proved): main theorem combining Q2 solution.",
     "mathContext": "Three proved theorems using the axiomatized results. Q2 fully solved, Q1 partially solved.",
     "significance": "essential",
-    "relatedConcepts": ["partially solved", "proved theorems"]
+    "relatedConcepts": ["partially solved", "proved theorems"],
+    "tags": ["main-result", "partially-solved", "proved-theorems"]
   },
   {
     "id": "erdos-883-properties",
@@ -85,7 +92,8 @@
     "content": "coprime_graph_chromatic (axiom): placeholder for high chromatic number. isCoprimeCycle: a cycle where consecutive pairs are coprime. triangles_above_threshold (axiom): for n >= 10, above threshold guarantees a triangle.",
     "mathContext": "Supporting properties of the coprime graph. Triangles are the simplest odd cycle case.",
     "significance": "supporting",
-    "relatedConcepts": ["chromatic number", "coprime cycles", "triangles"]
+    "relatedConcepts": ["chromatic number", "coprime cycles", "triangles"],
+    "tags": ["chromatic-number", "coprime-cycles", "triangles", "graph-properties"]
   },
   {
     "id": "erdos-883-inclusion-exclusion",
@@ -96,6 +104,7 @@
     "content": "threshold_by_inclusion_exclusion (proved): threshold n = n/2 + n/3 - n/6 by rfl. threshold_asymptotic (axiom): for n >= 6, threshold(n) at most 2n/3 + 1.",
     "mathContext": "The rfl proof confirms the definition. Asymptotically the threshold is approximately 2/3 of n.",
     "significance": "supporting",
-    "relatedConcepts": ["inclusion-exclusion", "asymptotic bounds"]
+    "relatedConcepts": ["inclusion-exclusion", "asymptotic bounds"],
+    "tags": ["inclusion-exclusion", "asymptotic-bounds", "threshold-formula"]
   }
 ]
