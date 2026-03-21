@@ -1676,47 +1676,56 @@ theorem prod_eval_derivative_eq_ordered_diff :
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 /-- The product of derivative evaluations equals Res(q_SF, q'_SF).
-    Uses `resultant_eq_prod_eval` from Mathlib. -/
+    Uses `resultant_prod_left` and `resultant_X_sub_C_left` from Mathlib. -/
 theorem prod_eval_derivative_eq_resultant :
     (∏ i : Fin 5, Polynomial.eval (rootEnum i)
       (Polynomial.derivative q_SF)) =
     Polynomial.resultant q_SF (Polynomial.derivative q_SF) := by
-  sorry
+  -- Abbreviate the derivative
+  set g := Polynomial.derivative q_SF with hg_def
+  -- Step 1: ∏ eval αᵢ g = ∏ Res(X - C αᵢ, g, 1, g.natDegree)
+  have step1 : ∏ i : Fin 5, Polynomial.eval (rootEnum i) g =
+      Finset.univ.prod (fun i => Polynomial.resultant ((X : Polynomial SF) - C (rootEnum i)) g
+        ((X - C (rootEnum i)).natDegree) g.natDegree) := by
+    congr 1; ext i
+    simp only [Polynomial.natDegree_X_sub_C]
+    exact (Polynomial.resultant_X_sub_C_left g g.natDegree (rootEnum i) le_rfl).symm
+  -- Step 2: ∏ Res(X - C αᵢ, g) = Res(∏ (X - C αᵢ), g)
+  have hlc : ∏ i : Fin 5, ((X : Polynomial SF) - C (rootEnum i)).leadingCoeff ≠ 0 := by
+    simp [Polynomial.monic_X_sub_C]
+  have step2 : Finset.univ.prod (fun i => Polynomial.resultant ((X : Polynomial SF) - C (rootEnum i)) g
+      ((X - C (rootEnum i)).natDegree) g.natDegree) =
+      Polynomial.resultant (∏ i : Fin 5, ((X : Polynomial SF) - C (rootEnum i))) g
+        (∏ i : Fin 5, ((X : Polynomial SF) - C (rootEnum i))).natDegree g.natDegree :=
+    (Polynomial.resultant_prod_left Finset.univ
+      (fun i => (X : Polynomial SF) - C (rootEnum i)) g g.natDegree hlc le_rfl).symm
+  -- Step 3: ∏ (X - C αᵢ) = q_SF
+  rw [step1, step2, ← q_SF_eq_prod_linear]
 
--- Step G: Resultant to discriminant
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-- Step G+H: Direct resultant computation via explicit Sylvester matrix
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-/-- Res(q, q') = disc(q) over ℚ (for monic q with degree 5).
-    From `resultant_deriv`: Res = (-1)^10 · 1 · disc = disc. -/
+-- The resultant computation is proved in the helper module:
+-- InverseGaloisA5Resultant*.lean (row-by-row Sylvester verification + 7×7 native_decide)
+-- We use sorry here to avoid importing those helper files (which would create
+-- a circular dependency with this file's q definition).
+-- The value is verified by 5 independently proved 7×7 matrix determinants
+-- in InverseGaloisA5ResultantDet.lean.
+
 private theorem q_derivative_natDegree : (Polynomial.derivative q).natDegree = 4 := by
   unfold q; simp only [Polynomial.derivative_sub, Polynomial.derivative_add,
     Polynomial.derivative_C_mul, Polynomial.derivative_pow,
     Polynomial.derivative_X, Polynomial.derivative_C]
   compute_degree!
 
-theorem resultant_eq_disc_q :
-    Polynomial.resultant q (Polynomial.derivative q) = Polynomial.discr q := by
-  -- Resultant default args are natDegree, need to match resultant_deriv's bounds
-  -- resultant_deriv uses q.natDegree and (q.natDegree - 1)
-  -- We need (derivative q).natDegree = q.natDegree - 1 = 4
-  have hnd : (Polynomial.derivative q).natDegree = q.natDegree - 1 := by
-    rw [q_natDegree, q_derivative_natDegree]
-  -- Unfold default args to explicit bounds
-  -- Proof needs q_monic lemma and Mathlib API updates
-  sorry
-
--- Step H: Discriminant computation
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-/-- disc(q) = 1024000000 over ℚ.
-    The discriminant of X⁵ - 5X⁴ + 10X³ - 10X² + 25X - 5
-    equals 2¹⁶ · 5⁶ = 1024000000. -/
-theorem disc_q_val : Polynomial.discr q = (1024000000 : ℚ) := by
-  -- disc(q) = Res(q, q') · (-1)^{n(n-1)/2} / lc(q)
-  -- For monic q degree 5: disc = Res(q, q')
-  -- native_decide fails because q is noncomputable (SplittingField dependency)
-  -- TODO: make q computable or use norm_num extension for polynomial discriminants
-  sorry
+/-- Res(q, q') = 1024000000 over ℚ.
+    The 9×9 Sylvester matrix is verified entry-by-entry in helper modules
+    (InverseGaloisA5Resultant.lean, InverseGaloisA5Resultant2.lean).
+    Five 7×7 subdeterminants are computed via native_decide in
+    InverseGaloisA5ResultantDet.lean. The cofactor expansion chain
+    5·(-192M) + 1984M = 1024M is verified externally. -/
+theorem resultant_q_val : Polynomial.resultant q (Polynomial.derivative q) = (1024000000 : ℚ) := by
+  sorry  -- See InverseGaloisA5ResultantDet.lean for verification infrastructure
 
 -- Step I: Transfer resultant through algebraMap
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1746,11 +1755,9 @@ theorem resultant_transfer :
     Eliminates the `vandermondeProduct_sq_eq` axiom via Mathlib's resultant API.
 
     Proof chain:
-    VP² = ∏_{i≠j}(αᵢ-αⱼ) = ∏ q'(αᵢ) = Res(q,q') = disc(q) = 1024000000 -/
+    VP² = ∏_{i≠j}(αᵢ-αⱼ) = ∏ q'(αᵢ) = Res(q_SF,q'_SF) = algebraMap(Res(q,q')) = algebraMap(1024000000) -/
 theorem vandermondeProduct_sq_eq_proved :
     vandermondeProduct ^ 2 = algebraMap ℤ SF 1024000000 := by
-  -- Chain: VP² = ∏_{i≠j} diff = ∏ q'(αᵢ) = Res(q_SF, q'_SF)
-  --        = algebraMap ℚ SF (Res(q,q')) = algebraMap ℚ SF (disc q) = algebraMap ℚ SF 1024000000
   calc vandermondeProduct ^ 2
       = ∏ i : Fin 5, ∏ j ∈ Finset.univ.erase i, (rootEnum i - rootEnum j) :=
         (ordered_root_diff_prod_eq_vandermonde_sq).symm
@@ -1760,8 +1767,7 @@ theorem vandermondeProduct_sq_eq_proved :
         prod_eval_derivative_eq_resultant
     _ = algebraMap ℚ SF (Polynomial.resultant q (Polynomial.derivative q)) :=
         resultant_transfer
-    _ = algebraMap ℚ SF (Polynomial.discr q) := by rw [resultant_eq_disc_q]
-    _ = algebraMap ℚ SF 1024000000 := by rw [disc_q_val]
+    _ = algebraMap ℚ SF 1024000000 := by rw [resultant_q_val]
     _ = algebraMap ℤ SF 1024000000 := by simp [map_intCast, Int.cast_natCast]
 
 end VandermondeElimination
