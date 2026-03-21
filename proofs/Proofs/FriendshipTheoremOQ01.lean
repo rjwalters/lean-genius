@@ -1219,19 +1219,13 @@ lemma det_scalar_sub_onesMatrix [Nonempty V] (c : ℤ) :
     Let g = charpoly(A), f = g/(X-k). Then:
       f(X) · f(-X) = (X² - (k-1))^{n-1}
 
-    Proof outline (8 steps):
-    1. (XI-A)(XI+A) = X²I - A²  [difference of squares]
-    2. det(XI-A)·det(XI+A) = det(X²I - A²)  [Matrix.det_mul]
-    3. A² = (k-1)I + J  [adjMatrix_sq_eq]
-    4. det((X²-(k-1))I - J) = (X²-(k-1))^{n-1}·(X²-k²)  [det_scalar_sub_onesMatrix]
-    5. det(XI+A) = (-1)^n · g(-X) = -g(-X)  [n odd]
-    6. g(X)·(-g(-X)) = (X²-k²)·(X²-(k-1))^{n-1}
-    7. Factor (X-k) from g: g = (X-k)·f, g(-X) = -(X+k)·f(-X)
-    8. Cancel (X²-k²) from both sides: f(X)·f(-X) = (X²-(k-1))^{n-1}
+    Proof: (XI-A)(XI+A) = X²I - A² = (X²-(k-1))I - J.
+    det gives g·(-g(-X)) = (X²-(k-1))^{n-1}·(X²-k²).
+    Factor g = (X-k)·f and cancel (X²-k²).
 
-    The only sorry is det_scalar_sub_onesMatrix (step 4). -/
-lemma charpoly_quotient_product (hF : IsFriendshipGraph G) (k : ℕ) (hk : k ≥ 2)
-    (hreg : ∀ v : V, G.degree v = k) (f : Polynomial ℤ)
+    Dependencies: det_scalar_sub_onesMatrix (PROVED above). -/
+lemma charpoly_quotient_product [Nonempty V] (hF : IsFriendshipGraph G) (k : ℕ)
+    (hk : k ≥ 2) (hreg : ∀ v : V, G.degree v = k) (f : Polynomial ℤ)
     (hf : (G.adjMatrix ℤ).charpoly = (X - C (↑k : ℤ)) * f) :
     f * f.comp (-X) = (X ^ 2 - C (↑(k - 1) : ℤ)) ^ (Fintype.card V - 1) := by
   sorry
