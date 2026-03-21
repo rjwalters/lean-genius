@@ -29,8 +29,11 @@ import Mathlib.Topology.Algebra.InfiniteSum.Basic
 import Mathlib.Topology.Algebra.InfiniteSum.Order
 import Mathlib.Topology.Algebra.InfiniteSum.Ring
 import Mathlib.NumberTheory.Transcendental.Liouville.Basic
+import Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleNumber
 import Mathlib.Tactic
 import Proofs.LiouvilleTheorem
+
+set_option maxHeartbeats 800000
 
 namespace Erdos247
 
@@ -227,12 +230,80 @@ Mathlib's Liouville theory), and subtracting a rational preserves transcendence,
 the factorial lacunary sum is transcendental WITHOUT the erdos_transcendence_strong axiom.
 -/
 
+/- ### Infrastructure: Summability and Splitting -/
+
+/-- The factorial lacunary series is summable. -/
+private theorem factorial_lacunary_summable :
+    Summable (fun k => (1 : ℝ) / 2 ^ (k + 1).factorial) := by
+  apply Summable.of_nonneg_of_le
+  · intro k; positivity
+  · intro k
+    show (1 : ℝ) / 2 ^ (k + 1).factorial ≤ (1 / 2) ^ k
+    rw [one_div, one_div, inv_pow]
+    apply inv_anti₀ (by positivity : (0 : ℝ) < 2 ^ k)
+    exact_mod_cast Nat.pow_le_pow_right (by omega : 1 ≤ 2)
+      (le_trans (Nat.le_succ k) (Nat.self_le_factorial (k + 1)))
+  · exact summable_geometric_of_lt_one (by positivity) (by norm_num)
+
+/-- The base-2 Liouville series is summable. -/
+private theorem liouville_summable :
+    Summable (fun n : ℕ => (1 : ℝ) / 2 ^ n.factorial) := by
+  apply Summable.of_nonneg_of_le
+  · intro n; positivity
+  · intro n
+    show (1 : ℝ) / 2 ^ n.factorial ≤ (1 / 2) ^ n
+    rw [one_div, one_div, inv_pow]
+    apply inv_anti₀ (by positivity : (0 : ℝ) < 2 ^ n)
+    exact_mod_cast Nat.pow_le_pow_right (by omega : 1 ≤ 2) (Nat.self_le_factorial n)
+  · exact summable_geometric_of_lt_one (by positivity) (by norm_num)
+
+/-- The tail of the factorial lacunary sum starting at position N+1. -/
+noncomputable def factorialTail (N : ℕ) : ℝ :=
+  ∑' k, (1 : ℝ) / 2 ^ (N + 1 + k + 1).factorial
+
+/-- The shifted factorial series (tail starting at index N+1) is summable. -/
+private theorem factorial_tail_summable (N : ℕ) :
+    Summable (fun k => (1 : ℝ) / 2 ^ (N + 1 + k + 1).factorial) := by
+  apply Summable.of_nonneg_of_le
+  · intro k; positivity
+  · intro k
+    show (1 : ℝ) / 2 ^ (N + 1 + k + 1).factorial ≤ (1 / 2) ^ k
+    rw [one_div, one_div, inv_pow]
+    apply inv_anti₀ (by positivity : (0 : ℝ) < 2 ^ k)
+    have hk_le : k ≤ (N + 1 + k + 1).factorial := by
+      calc k ≤ N + 1 + k + 1 := by omega
+        _ ≤ (N + 1 + k + 1).factorial := Nat.self_le_factorial _
+    exact_mod_cast Nat.pow_le_pow_right (by omega : 1 ≤ 2) hk_le
+  · exact summable_geometric_of_lt_one (by positivity) (by norm_num)
+
+/-- The factorial lacunary sum splits into partial sum + tail. -/
+theorem lacunarySum_factorial_split (N : ℕ) :
+    lacunarySum (fun k => (k + 1).factorial) =
+    (∑ k ∈ Finset.range (N + 1), (1 : ℝ) / 2 ^ (k + 1).factorial) +
+    factorialTail N := by
+  unfold lacunarySum factorialTail
+  sorry
+
+/-- The partial sum can be expressed as an integer divided by 2^{(N+1)!}. -/
+theorem factorialPartialSum_eq_div (N : ℕ) :
+    ∃ (a : ℤ),
+    (∑ k ∈ Finset.range (N + 1), (1 : ℝ) / 2 ^ (k + 1).factorial) =
+    (a : ℝ) / (2 : ℝ) ^ (N + 1).factorial := by
+  -- Each term 1/2^{(k+1)!} = 2^{(N+1)! - (k+1)!} / 2^{(N+1)!}
+  -- since (k+1)! ≤ (N+1)! for k ≤ N.
+  -- Sum of these numerators is an integer.
+  sorry
+
+/- ### Path A: Via Liouville Number Connection -/
+
 /-- Transcendence over ℤ implies transcendence over ℚ.
-    Follows from Gauss's lemma: if p(x) = 0 for some nonzero p ∈ ℚ[X],
-    clearing denominators gives a nonzero q ∈ ℤ[X] with q(x) = 0. -/
+    Contrapositive: IsAlgebraic ℚ x → IsAlgebraic ℤ x (clearing denominators).
+    Given p ∈ ℚ[X] with p(x) = 0, multiply by the product of all coefficient
+    denominators to get q ∈ ℤ[X] with q(x) = 0. -/
 theorem transcendental_int_to_rat {x : ℝ} (h : Transcendental ℤ x) :
     Transcendental ℚ x := by
-  -- Contrapositive: IsAlgebraic ℚ x → IsAlgebraic ℤ x (clear denominators)
+  intro ⟨p, hp_ne, hp_eval⟩
+  apply h
   sorry
 
 /-- Subtracting a rational from a transcendental number gives a transcendental number. -/
@@ -240,7 +311,6 @@ theorem Transcendental.sub_rat {x : ℝ} (hx : Transcendental ℚ x) (r : ℚ) :
     Transcendental ℚ (x - (r : ℝ)) := by
   intro halg
   apply hx
-  -- x = (x - r) + r; algebraic + algebraic = algebraic
   have hr : IsAlgebraic ℚ ((r : ℝ)) := isAlgebraic_algebraMap r
   have hsum := halg.add hr
   rwa [sub_add_cancel] at hsum
@@ -251,9 +321,19 @@ theorem Transcendental.sub_rat {x : ℝ} (hx : Transcendental ℚ x) (r : ℚ) :
 theorem factorial_sum_eq_liouville_sub :
     lacunarySum (fun k => (k + 1).factorial) =
     liouvilleNumber 2 - 1 / 2 := by
-  -- liouvilleNumber 2 = ∑' n, 1/2^{n!} = 1/2^{0!} + ∑' k, 1/2^{(k+1)!}
-  -- = 1/2 + lacunarySum (fun k => (k+1)!)
-  sorry
+  -- liouvilleNumber 2 = ∑' n, 1/(2:ℝ)^(n!) = f 0 + ∑' n, f (n+1)
+  -- where f n = 1/(2:ℝ)^(n!)
+  -- f 0 = 1/(2:ℝ)^(0!) = 1/2^1 = 1/2
+  -- ∑' n, f (n+1) = ∑' k, 1/(2:ℝ)^((k+1)!) = lacunarySum ...
+  -- liouvilleNumber 2 = ∑' n, 1/(2:ℝ)^(n!)
+  -- Split at n=0: = 1/2^(0!) + ∑' k, 1/2^((k+1)!)
+  -- 0! = 1, so = 1/2 + lacunarySum (fun k => (k+1)!)
+  -- Therefore lacunarySum = liouvilleNumber 2 - 1/2
+  unfold lacunarySum liouvilleNumber
+  have hsumm := liouville_summable
+  have hsplit := hsumm.tsum_eq_zero_add
+  -- hsplit : ∑' n, f n = f 0 + ∑' n, f (n + 1)
+  linarith [hsplit]
 
 /-- **Axiom-Free Factorial Transcendence**
 
@@ -266,19 +346,31 @@ theorem factorial_sum_transcendental_axiom_free :
   rw [factorial_sum_eq_liouville_sub]
   have h1 : Transcendental ℚ (liouvilleNumber 2) :=
     transcendental_int_to_rat LiouvilleTheorem.liouville_base_2_transcendental
-  -- Subtracting a rational from a transcendental gives a transcendental
   convert Transcendental.sub_rat h1 (1/2) using 1
   push_cast; ring
 
-/-- The tail is strictly positive (the first term alone is positive). -/
-theorem factorialTail_pos (N : ℕ) : 0 < factorialTail N := by
-  sorry
+/- ### Path B: Direct Liouville Proof -/
 
-/-- Tail bound: the tail starting at N+1 is at most 2/2^{(N+2)!}.
-    Uses strictMono_add_le to bound each term and comparison with
-    the geometric series Σ 1/2^j. -/
+/-- m*(m+1)! + 1 < (m+2)! for all m. Key inequality for the Liouville bound. -/
+theorem factorial_mul_add_one_lt (m : ℕ) :
+    m * (m + 1).factorial + 1 < (m + 2).factorial := by
+  rw [Nat.factorial_succ (m + 1)]
+  -- (m+2)! = (m+2)*(m+1)!
+  -- Need: m*(m+1)! + 1 < (m+2)*(m+1)!
+  -- i.e., 1 < 2*(m+1)!
+  have h := Nat.factorial_pos (m + 1)
+  nlinarith
+
+/-- The tail is strictly positive (each term is positive, and tsum of positive
+    terms over a nonempty index is positive). -/
+theorem factorialTail_pos (N : ℕ) : 0 < factorialTail N := by
+  unfold factorialTail
+  exact (factorial_tail_summable N).tsum_pos (fun k => by positivity) 0 (by positivity)
+
+/-- Tail bound: the tail starting at N+1 is at most 2/2^{(N+2)!}. -/
 theorem factorialTail_le (N : ℕ) :
     factorialTail N ≤ 2 / (2 : ℝ) ^ (N + 2).factorial := by
+  unfold factorialTail
   sorry
 
 /-- The factorial lacunary sum is a Liouville number.
@@ -294,9 +386,7 @@ theorem factorialTail_le (N : ℕ) :
 theorem factorial_sum_liouville :
     Liouville (lacunarySum (fun k => (k + 1).factorial)) := by
   intro m
-  -- Get the partial sum representation
   obtain ⟨a, ha⟩ := factorialPartialSum_eq_div m
-  -- Our witnesses: a and b = 2^{(m+1)!}
   refine ⟨a, (2 : ℤ) ^ (m + 1).factorial, ?_, ?_, ?_⟩
   · -- 1 < b = 2^{(m+1)!}
     exact_mod_cast Nat.one_lt_pow (Nat.factorial_pos (m + 1)).ne'
@@ -314,26 +404,19 @@ theorem factorial_sum_liouville :
         factorialTail m - a / (2 : ℝ) ^ (m + 1).factorial =
         factorialTail m by ring]
     rw [abs_of_pos (factorialTail_pos m)]
-    -- Need: tail < 1 / (2^{(m+1)!})^m
     calc factorialTail m
         ≤ 2 / (2 : ℝ) ^ (m + 2).factorial := factorialTail_le m
       _ < 1 / ((2 : ℝ) ^ (m + 1).factorial) ^ m := by
           -- 2/2^{(m+2)!} < 1/(2^{(m+1)!})^m
           -- Cross-multiply: 2 * (2^{(m+1)!})^m < 2^{(m+2)!}
           -- i.e., 2^{m*(m+1)!+1} < 2^{(m+2)!}
-          -- This follows from m*(m+1)!+1 < (m+2)! [factorial_mul_add_one_lt]
+          -- This follows from m*(m+1)!+1 < (m+2)!
           sorry
 
-/-- **Axiom-free transcendence**: Σ 1/2^{(k+1)!} is transcendental.
-    Uses Liouville's theorem directly — no Erdős 1975 axiom needed.
-    Liouville.transcendental gives Transcendental ℤ x. The conversion to
-    Transcendental ℚ x follows from: IsAlgebraic ℚ x → IsAlgebraic ℤ x
-    (clearing denominators), so by contraposition. -/
+/-- **Axiom-free transcendence via direct Liouville proof.**
+    Uses Liouville's theorem directly — no Erdős 1975 axiom needed. -/
 theorem factorial_sum_transcendental_liouville :
     Transcendental ℚ (lacunarySum (fun k => (k + 1).factorial)) := by
-  have h := factorial_sum_liouville.transcendental
-  -- h : Transcendental ℤ x → Transcendental ℚ x
-  -- by contraposition of IsAlgebraic ℚ x → IsAlgebraic ℤ x (clearing denominators)
-  sorry
+  exact transcendental_int_to_rat factorial_sum_liouville.transcendental
 
 end Erdos247
