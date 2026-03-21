@@ -1251,91 +1251,94 @@ lemma charpoly_quotient_product [Nonempty V] (hF : IsFriendshipGraph G) (k : ℕ
     (hk : k ≥ 2) (hreg : ∀ v : V, G.degree v = k) (f : Polynomial ℤ)
     (hf : (G.adjMatrix ℤ).charpoly = (X - C (↑k : ℤ)) * f) :
     f * f.comp (-X) = (X ^ 2 - C (↑(k - 1) : ℤ)) ^ (Fintype.card V - 1) := by
-  obtain ⟨u⟩ := ‹Nonempty V›
   set n := Fintype.card V with hn_def
-  set p := X ^ 2 - C (↑(k - 1) : ℤ) with hp_def
-  have hn_eq : n = k * (k - 1) + 1 := regular_friendship_card G hF u k hreg (by omega)
-  have hkk : (k - 1 : ℤ) + ↑n = ↑k * ↑k := by
-    have : (↑n : ℤ) = ↑k * (↑k - 1) + 1 := by
-      rw [hn_eq]; push_cast [Nat.cast_sub (by omega : k ≥ 1),
-        Nat.cast_sub (by omega : k * (k - 1) ≥ 0)]; ring
-    linarith
+  set A := G.adjMatrix ℤ with hA_def
+  obtain ⟨u⟩ := ‹Nonempty V›
+  have hn_ge : n ≥ 3 := by
+    have := regular_friendship_card G hF u k hreg (by omega)
+    rw [← hn_def] at this; nlinarith [Nat.mul_le_mul_left k (show k - 1 ≥ 1 from by omega)]
+  have hn_val := regular_friendship_card G hF u k hreg (by omega)
+  -- n is odd
+  have heven_kk : Even (k * (k - 1)) := by
+    rcases Nat.even_or_odd k with ⟨m, hm⟩ | ⟨m, hm⟩
+    · exact ⟨m * (k - 1), by rw [hm]; ring⟩
+    · exact ⟨k * m, by rw [show k - 1 = 2 * m from by omega]; ring⟩
   have hn_odd : Odd n := by
-    have : Even (k * (k - 1)) := by
-      rcases Nat.even_or_odd k with ⟨m, hm⟩ | ⟨m, hm⟩
-      · exact ⟨m * (k - 1), by rw [hm]; ring⟩
-      · exact ⟨k * m, by rw [show k - 1 = m + m from by omega]; ring⟩
-    obtain ⟨t, ht⟩ := this; exact ⟨t, by omega⟩
-  -- Show (X-k)(X+k) * (f·f(-X) - p^{n-1}) = 0 via Polynomial.funext,
-  -- then cancel in ℤ[X] (integral domain).
-  set d := f * f.comp (-X) - p ^ (n - 1) with hd_def
-  suffices hd0 : d = 0 by
-    have : f * f.comp (-X) = p ^ (n - 1) + d := by rw [hd_def]; ring
-    rw [this, hd0, add_zero]
-  have hfact : (X - C (↑k : ℤ)) * (X + C (↑k : ℤ)) = X ^ 2 - C (↑k * ↑k : ℤ) := by
-    rw [show C (↑k * ↑k : ℤ) = C (↑k : ℤ) * C (↑k : ℤ) from by rw [map_mul]]; ring
-  have hne : (X - C (↑k : ℤ)) * (X + C (↑k : ℤ)) ≠ 0 := by
-    rw [hfact]; intro h; have := congr_arg (fun q => q.coeff 2) h
-    simp [Polynomial.coeff_sub, Polynomial.coeff_X_pow, Polynomial.coeff_C] at this
-  have hprod0 : (X - C (↑k : ℤ)) * (X + C (↑k : ℤ)) * d = 0 := by
-    apply Polynomial.funext; intro a
-    simp only [eval_mul, eval_sub, eval_add, eval_X, eval_C, eval_zero, hd_def,
-      eval_comp, eval_neg, eval_pow, hp_def]
-    -- g(a) = (a-k)*f(a) and g(-a) = -(a+k)*f(-a) from hf
-    have hga : (G.adjMatrix ℤ).charpoly.eval a = (a - ↑k) * f.eval a := by
-      rw [hf, eval_mul, eval_sub, eval_X, eval_C]
-    have hgna : (G.adjMatrix ℤ).charpoly.eval (-a) = -(a + ↑k) * f.eval (-a) := by
-      rw [hf, eval_mul, eval_sub, eval_X, eval_C]; ring
-    -- g(a) = det(aI-A), g(-a) = det(-aI-A) = (-1)^n det(aI+A)
-    have hdet_a := Matrix.eval_charpoly (G.adjMatrix ℤ) a
-    have hdet_na := Matrix.eval_charpoly (G.adjMatrix ℤ) (-a)
-    have hfactor_neg : Matrix.scalar V (-a) - G.adjMatrix ℤ =
-        (-1 : ℤ) • (Matrix.scalar V a + G.adjMatrix ℤ) := by
-      ext i j; simp [Matrix.scalar_apply, Matrix.smul_apply, Matrix.add_apply,
-        Matrix.sub_apply, smul_eq_mul]; ring
-    -- det(aI-A)*det(aI+A) = det(a²I-A²) = (a²-(k-1))^{n-1}*(a²-(k-1)-n)
-    have hdet_prod : (Matrix.scalar V a - G.adjMatrix ℤ).det *
-        (Matrix.scalar V a + G.adjMatrix ℤ).det =
-        (a * a - (↑k - 1)) ^ (n - 1) * (a * a - (↑k - 1) - ↑n) := by
-      rw [← Matrix.det_mul]; congr 1
-      -- (aI-A)(aI+A) = a²I - A²
-      have hcomm : (Matrix.scalar V a - G.adjMatrix ℤ) *
-          (Matrix.scalar V a + G.adjMatrix ℤ) =
-          Matrix.scalar V (a * a) - G.adjMatrix ℤ * G.adjMatrix ℤ := by
-        ext i j
-        sorry -- entry-wise: (aI-A)(aI+A)_{ij} = a²δ_{ij} - (A²)_{ij}
-      rw [hcomm]
-      have hAsq := adjMatrix_sq_eq G hF k (by omega : k ≥ 1) hreg
-      have : Matrix.scalar V (a * a) - G.adjMatrix ℤ * G.adjMatrix ℤ =
-          (a * a - (↑k - 1)) • (1 : Matrix V V ℤ) - onesMatrix V := by
-        ext i j; have hij := congr_fun (congr_fun hAsq i) j
-        simp only [Matrix.sub_apply, Matrix.scalar_apply, Matrix.mul_apply,
-          Matrix.smul_apply, Matrix.one_apply, Matrix.add_apply, onesMatrix,
-          Matrix.of_apply, smul_eq_mul] at hij ⊢
-        sorry -- entry-wise arithmetic: a²δ-A² = (a²-(k-1))δ - 1
-      rw [this]; exact det_scalar_sub_onesMatrix _
-    -- Combine: (a-k)*f(a)*(-(a+k)*f(-a)) = (-1)^n * (a²-(k-1))^{n-1}*(a²-(k-1)-n)
-    have hlhs : (a - ↑k) * f.eval a * (-(a + ↑k) * f.eval (-a)) =
-        (-1 : ℤ) ^ n * ((a * a - (↑k - 1)) ^ (n - 1) * (a * a - (↑k - 1) - ↑n)) := by
-      rw [← hga, ← hgna, hdet_a, hdet_na, hfactor_neg, Matrix.det_smul,
-        mul_left_comm, hdet_prod]
-    rw [show a * a - (↑k - 1 : ℤ) - ↑n = a * a - ↑k * ↑k from by linarith [hkk]] at hlhs
-    obtain ⟨m, hm⟩ := hn_odd
-    rw [show n = 2 * m + 1 from by omega, pow_succ, pow_mul, neg_one_sq, one_pow,
-      one_mul] at hlhs
-    -- hlhs: (a-k)*f(a)*(-(a+k)*f(-a)) = -((a²-(k-1))^{n-1}*(a²-k²))
-    -- Rewrite to: -(a-k)(a+k)*f(a)*f(-a) = -((a²-(k-1))^{n-1}*(a-k)(a+k))
-    have h1 : (a - ↑k) * f.eval a * (-(a + ↑k) * f.eval (-a)) =
-        -(a - ↑k) * (a + ↑k) * (f.eval a * f.eval (-a)) := by ring
-    rw [h1] at hlhs
-    have h2 : a * a - ↑k * ↑k = (a - ↑k) * (a + ↑k) := by ring
-    rw [h2] at hlhs
-    -- hlhs: -(a-k)(a+k)*f(a)*f(-a) = -1*((a²-(k-1))^{2*m}*(a-k)(a+k))
-    -- Goal: (a-k)*(a+k)*(f(a)*f(-a) - (a²-(k-1))^{n-1}) = 0
-    have hn1 : n - 1 = 2 * m := by omega
-    rw [hn1]
-    sorry -- nlinarith: factor -(a-k)(a+k) from both sides of hlhs
-  exact (mul_eq_zero.mp hprod0).resolve_left hne
+    obtain ⟨t, ht⟩ := heven_kk
+    show Odd (Fintype.card V); rw [hn_val, ht]; exact ⟨t, by ring⟩
+  -- A² = (k-1)I + J
+  have hAsq : A * A = (↑k - 1 : ℤ) • (1 : Matrix V V ℤ) + onesMatrix V := by
+    simp only [hA_def]; exact adjMatrix_sq_eq G hF k (by omega) hreg
+  -- Step 1: For all x : ℤ, (x²-k²)*(f(x)*f(-x) - (x²-(k-1))^{n-1}) = 0
+  -- This is the key evaluation identity, proved via two computations of g(x)*g(-x)
+  have heval : ∀ x : ℤ, (x ^ 2 - (↑k : ℤ) ^ 2) *
+      (f.eval x * f.eval (-x) - (x ^ 2 - ↑(k - 1 : ℕ)) ^ (n - 1)) = 0 := by
+    intro x
+    -- g(x) via factoring: g = (X-k)*f
+    have hgx : Polynomial.eval x (A.charpoly) = (x - ↑k) * f.eval x := by
+      rw [hf]; simp [Polynomial.eval_mul, Polynomial.eval_sub]
+    have hgmx : Polynomial.eval (-x) (A.charpoly) = (-x - ↑k) * f.eval (-x) := by
+      rw [hf]; simp [Polynomial.eval_mul, Polynomial.eval_sub]
+    -- g(x) = det(xI-A) via charpoly definition
+    have hg_det := charpoly_eval_eq_det G x
+    have hgm_det := charpoly_eval_eq_det G (-x)
+    -- Way 1: g(x)*g(-x) = -(x²-k²)*f(x)*f(-x) (from factoring g = (X-k)*f)
+    have hway1 : Polynomial.eval x A.charpoly * Polynomial.eval (-x) A.charpoly =
+        -(x ^ 2 - (↑k : ℤ) ^ 2) * (f.eval x * f.eval (-x)) := by
+      rw [hgx, hgmx]; ring
+    -- Way 2: g(x)*g(-x) = -(x²-(k-1))^{n-1} * (x²-k²) (from determinant computation)
+    -- Key intermediate: det(xI-A) * det(-xI-A) = (-1)^n * det((xI-A)(xI+A))
+    have hneg_eq : (-x) • (1 : Matrix V V ℤ) - A = -(x • 1 + A) := by
+      ext i j; simp [Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply,
+        Matrix.neg_apply, Matrix.one_apply, smul_eq_mul]; ring
+    -- (xI-A)(xI+A) = x²I - A²
+    have hdiff_sq : (x • (1 : Matrix V V ℤ) - A) * (x • 1 + A) = x ^ 2 • 1 - A * A := by
+      rw [sub_mul, mul_add, mul_add, smul_mul_assoc, Matrix.one_mul,
+        smul_mul_assoc, Matrix.one_mul, mul_smul_comm, Matrix.mul_one, smul_smul, sq]
+      abel
+    -- x²I - A² = (x²-(k-1))I - J
+    have hmatrix_eq : x ^ 2 • (1 : Matrix V V ℤ) - A * A =
+        (x ^ 2 - (↑k - 1 : ℤ)) • (1 : Matrix V V ℤ) - onesMatrix V := by
+      rw [hAsq]; ext i j; simp [Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply,
+        Matrix.one_apply, onesMatrix, Matrix.of_apply, smul_eq_mul]; ring
+    -- det((x²-(k-1))I - J) = (x²-(k-1))^{n-1} * ((x²-(k-1)) - n)
+    have hdet_formula := det_scalar_sub_onesMatrix (x ^ 2 - (↑k - 1 : ℤ))
+    -- x²-(k-1)-n = x²-k²  (since n = k(k-1)+1)
+    have hk_sq : x ^ 2 - (↑k - 1 : ℤ) - ↑(Fintype.card V) = x ^ 2 - (↑k : ℤ) ^ 2 := by
+      have h1 := hn_val; zify [show 1 ≤ k from by omega] at h1; nlinarith [sq (↑k : ℤ)]
+    -- Combine way 2
+    have hway2 : Polynomial.eval x A.charpoly * Polynomial.eval (-x) A.charpoly =
+        -((x ^ 2 - ↑(k - 1 : ℕ)) ^ (n - 1) * (x ^ 2 - (↑k : ℤ) ^ 2)) := by
+      rw [hg_det, hgm_det, hneg_eq, Matrix.det_neg]
+      -- Goal: det(xI-A) * ((-1)^n * det(xI+A)) = -(...)
+      rw [show (-1 : ℤ) ^ Fintype.card V = -1 from by rw [← hn_def]; exact hn_odd.neg_one_pow]
+      rw [show (x • (1 : Matrix V V ℤ) - A).det * ((-1) * (x • 1 + A).det) =
+        -((x • 1 - A).det * (x • 1 + A).det) from by ring,
+        ← Matrix.det_mul, hdiff_sq, hmatrix_eq, hdet_formula, hk_sq]
+      push_cast [Nat.cast_sub (show 1 ≤ k from by omega)]; ring
+    -- Equate: (x²-k²)*(f(x)f(-x) - (x²-(k-1))^{n-1}) = 0
+    nlinarith [hway1, hway2]
+  -- Step 2: Polynomial identity
+  -- Show (X²-k²) * (f·f(-X) - rhs) = 0, then factor in ℤ[X] (domain)
+  set Q := f * f.comp (-X) - (X ^ 2 - C (↑(k - 1) : ℤ)) ^ (n - 1) with hQ_def
+  -- P := (X²-k²) * Q evaluates to 0 at all integers
+  have hprod_eval : ∀ x : ℤ, Polynomial.eval x ((X ^ 2 - C ((↑k : ℤ) ^ 2)) * Q) = 0 := by
+    intro x; simp only [Polynomial.eval_mul, Polynomial.eval_sub, Polynomial.eval_pow,
+      Polynomial.eval_X, Polynomial.eval_C, Polynomial.eval_comp, Polynomial.eval_neg, hQ_def]
+    exact heval x
+  -- Polynomial vanishing everywhere over ℤ (infinite domain) is zero
+  have hprod_zero : (X ^ 2 - C ((↑k : ℤ) ^ 2)) * Q = 0 := by
+    have h0 : ∀ x : ℤ, ((X ^ 2 - C ((↑k : ℤ) ^ 2)) * Q).eval x = (0 : Polynomial ℤ).eval x := by
+      intro x; rw [Polynomial.eval_zero]; exact hprod_eval x
+    exact Polynomial.funext h0
+  -- X²-k² ≠ 0 in ℤ[X]
+  have hne : (X ^ 2 - C ((↑k : ℤ) ^ 2) : Polynomial ℤ) ≠ 0 := by
+    intro h
+    have : (X ^ 2 - C ((↑k : ℤ) ^ 2) : Polynomial ℤ).coeff 2 = (0 : Polynomial ℤ).coeff 2 :=
+      congr_arg (·.coeff 2) h
+    simp only [Polynomial.coeff_sub, Polynomial.coeff_X_pow, Polynomial.coeff_C,
+      Polynomial.coeff_zero, if_true, ite_false] at this; omega
+  exact sub_eq_zero.mp ((mul_eq_zero.mp hprod_zero).resolve_left hne)
 
 /-- The sub-leading coefficient of f equals k.
 
