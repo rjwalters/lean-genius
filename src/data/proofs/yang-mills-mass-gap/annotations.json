@@ -194,6 +194,97 @@
       "relatedConcepts": ["constructive QFT", "Glimm-Jaffe", "lattice continuum limit", "functional measure"],
       "prerequisites": ["MeasureTheory", "latticeYangMillsAction"],
       "tags": ["constructive-qft", "rigorous", "continuum-limit"]
+    },
+    {
+      "id": "asymptotic-freedom",
+      "proofId": "yang-mills-mass-gap",
+      "type": "insight",
+      "range": { "startLine": 3706, "endLine": 3723 },
+      "title": "Asymptotic Freedom and the Running Coupling",
+      "content": "Formalizes the one-loop beta function coefficient $\\beta_0 = (11N - 2N_f)/3$, which is positive for pure Yang-Mills (making the theory asymptotically free). The running coupling $\\alpha_s(Q^2) = 1/(\\beta_0 \\ln(Q^2/\\Lambda^2))$ vanishes logarithmically at high energies, allowing perturbative calculations in deep inelastic scattering. Conversely, the coupling grows at low energies, signaling the onset of confinement. This was discovered by Gross, Wilczek, and Politzer (1973, Nobel Prize 2004) and remains the cornerstone of perturbative QCD. The formalization proves $\\beta_0 > 0$ for SU(2) and SU(3), and defines the QCD scale $\\Lambda_{\\text{QCD}}$.",
+      "mathContext": "$\\beta_0 = \\frac{11N - 2N_f}{3}$; $\\alpha_s(Q^2) \\sim \\frac{1}{\\beta_0 \\ln(Q^2/\\Lambda^2)} \\to 0$ as $Q^2 \\to \\infty$",
+      "significance": "key",
+      "relatedConcepts": ["beta function", "running coupling", "dimensional transmutation", "Λ_QCD", "renormalization group"],
+      "prerequisites": ["CompactSimpleGaugeGroup", "Real.log"],
+      "tags": ["asymptotic-freedom", "beta-function", "nobel-prize"]
+    },
+    {
+      "id": "chiral-anomaly",
+      "proofId": "yang-mills-mass-gap",
+      "type": "insight",
+      "range": { "startLine": 3984, "endLine": 4099 },
+      "title": "Chiral Anomaly and the Atiyah-Singer Index Theorem",
+      "content": "Formalizes the Adler-Bell-Jackiw chiral anomaly: $\\partial_\\mu j^5_\\mu = \\frac{g^2 N_f}{16\\pi^2} F \\tilde{F}$, a quantum violation of classical chiral symmetry. Remarkably, the Adler-Bardeen theorem proves this is exact to all orders — higher-loop corrections vanish identically, making the anomaly coefficient scheme-independent. The Atiyah-Singer index theorem provides a deep topological interpretation: the integrated anomaly equals $Q = n^+ - n^-$, the difference of chiral zero modes of the Dirac operator, which equals the instanton number. This triple connection — anomaly $\\leftrightarrow$ topology $\\leftrightarrow$ instantons — is one of the most beautiful bridges between quantum physics and pure mathematics.",
+      "mathContext": "$\\partial_\\mu j^5_\\mu = \\frac{g^2 N_f}{16\\pi^2} \\text{Tr}(F \\tilde{F})$; index theorem: $\\int \\frac{g^2}{32\\pi^2} F\\tilde{F} = n^+ - n^- = Q \\in \\mathbb{Z}$",
+      "significance": "key",
+      "relatedConcepts": ["chiral symmetry", "axial anomaly", "Atiyah-Singer index theorem", "instanton number", "topology of gauge fields"],
+      "prerequisites": ["AnomalyCoefficient", "IndexTheorem", "fieldStrength"],
+      "tags": ["anomaly", "index-theorem", "topology"]
+    },
+    {
+      "id": "dual-superconductor-model",
+      "proofId": "yang-mills-mass-gap",
+      "type": "insight",
+      "range": { "startLine": 4120, "endLine": 4263 },
+      "title": "Dual Superconductor: Monopole Condensation Confines Quarks",
+      "content": "'t Hooft and Mandelstam's dual superconductor model explains confinement by analogy with the Meissner effect. In ordinary superconductors, electric charge condensation (Cooper pairs) expels magnetic flux into Abrikosov vortices. In QCD, the roles are interchanged: magnetic monopole condensation confines color-electric flux into thin tubes between quarks, producing a linear potential $V(r) = \\sigma r$. The formalization defines the Meissner effect structure, the dual superconductor model with monopole density and string tension $\\sigma_{\\text{QCD}} \\approx (440\\,\\text{MeV})^2$, and 't Hooft's abelian projection $\\mathrm{SU}(N) \\to \\mathrm{U}(1)^{N-1}$ that makes monopoles visible.",
+      "mathContext": "Dual map: electric condensate $\\to$ magnetic confinement becomes magnetic condensate $\\to$ electric confinement; $V(r) = \\sigma r$ from flux tube",
+      "significance": "supporting",
+      "relatedConcepts": ["Meissner effect", "Abrikosov vortex", "magnetic monopole", "abelian projection", "confinement mechanism"],
+      "prerequisites": ["MeissnerEffect", "DualSuperconductorModel", "AbelianProjection"],
+      "tags": ["dual-superconductor", "monopole", "confinement"]
+    },
+    {
+      "id": "schwinger-model",
+      "proofId": "yang-mills-mass-gap",
+      "type": "technique",
+      "range": { "startLine": 6583, "endLine": 6719 },
+      "title": "The Schwinger Model: An Exactly Solvable Mass Gap",
+      "content": "The Schwinger model (QED in 1+1 dimensions, Schwinger 1962) is one of the few quantum field theories with an exactly known mass gap. The formalization proves $m = e/\\sqrt{\\pi} > 0$, where $e$ is the coupling constant, with the remarkable feature that this mass arises entirely from the chiral anomaly — there is no classical mass term. The string tension $\\sigma = e^2/(2\\pi)$ is also proved positive. The model exhibits confinement: the linear potential $V(r) = \\sigma \\cdot r$ binds charges. As a 2D QFT with a rigorous mass gap, it serves as the primary testing ground for methods aimed at the 4D Millennium Prize Problem.",
+      "mathContext": "$m = e/\\sqrt{\\pi}$, $m^2 = e^2/\\pi$, $\\sigma = e^2/(2\\pi)$; all proved positive in Lean",
+      "significance": "key",
+      "relatedConcepts": ["Schwinger model", "QED in 2D", "exact mass gap", "chiral anomaly", "confinement in 2D"],
+      "prerequisites": ["SchwingerParams", "Real.sqrt", "Real.pi"],
+      "tags": ["schwinger-model", "exact-solution", "mass-gap"]
+    },
+    {
+      "id": "gradient-flow",
+      "proofId": "yang-mills-mass-gap",
+      "type": "technique",
+      "range": { "startLine": 6748, "endLine": 6888 },
+      "title": "Yang-Mills Gradient Flow: A Non-Perturbative UV Regulator",
+      "content": "Lüscher's gradient flow (2010) evolves gauge fields along a diffusion equation in a fictitious flow time $t$, smoothing them over a radius $r = \\sqrt{8t}$. The formalization proves: (1) the smoothing radius is non-negative and positive at $t > 0$, (2) the Yang-Mills action monotonically decreases along the flow ($dS/dt \\le 0$), so the flow always moves toward classical solutions — instantons or vacuum. The key physical insight is that operators evaluated at $t > 0$ are automatically UV finite (no renormalization needed), making the gradient flow a powerful non-perturbative tool for scale setting, topology measurement, and defining a running coupling on the lattice.",
+      "mathContext": "$\\partial_t B_\\mu = D_\\nu G_{\\nu\\mu}$ (flow equation); $r = \\sqrt{8t}$ (smoothing radius); $dS/dt = -2\\int |D_\\nu G_{\\nu\\mu}|^2 \\le 0$",
+      "significance": "supporting",
+      "relatedConcepts": ["gradient flow", "Lüscher flow", "UV finiteness", "scale setting", "diffusion equation"],
+      "prerequisites": ["GradientFlowParams", "Real.sqrt"],
+      "tags": ["gradient-flow", "non-perturbative", "uv-finite"]
+    },
+    {
+      "id": "resurgence-trans-series",
+      "proofId": "yang-mills-mass-gap",
+      "type": "context",
+      "range": { "startLine": 15304, "endLine": 15597 },
+      "title": "Resurgence: Non-Perturbative Completion of QCD",
+      "content": "Perturbation theory in QCD is an asymptotic series with zero radius of convergence — coefficients grow as $a_n \\sim n!$. Far from a defect, this factorial divergence encodes non-perturbative physics via resurgence. Trans-series extend the perturbative expansion with instanton sectors: $E(g^2) = \\sum a_n g^{2n} + e^{-A/g^2} \\sum b_n g^{2n} + \\cdots$. The formalization covers: the beta function coefficient $\\beta_0 = 11N/3$ for pure YM (proved positive for $N \\ge 1$, with $\\beta_0 = 11$ for SU(3)), the one-loop running coupling $\\alpha_s(Q^2) = 1/(\\beta_0 \\ln(Q^2/\\Lambda^2))$, IR renormalons (Borel singularities at $t = 2k/\\beta_0$ producing power corrections $\\sim \\Lambda^{2p}/Q^{2p}$), and the resurgent structure connecting perturbative and instanton sectors via Stokes automorphisms.",
+      "mathContext": "$a_n \\sim n! A^{-n}$; trans-series: $\\sum a_n g^{2n} + e^{-A/g^2} \\sum b_n g^{2n} + e^{-2A/g^2} \\sum c_n g^{2n} + \\cdots$",
+      "significance": "supporting",
+      "relatedConcepts": ["asymptotic series", "Borel summation", "renormalon", "instanton", "trans-series", "Stokes phenomenon"],
+      "prerequisites": ["Real.exp", "Real.log", "betaZeroPure"],
+      "tags": ["resurgence", "trans-series", "non-perturbative"]
+    },
+    {
+      "id": "balaban-rg",
+      "proofId": "yang-mills-mass-gap",
+      "type": "context",
+      "range": { "startLine": 25187, "endLine": 25435 },
+      "title": "Balaban's Renormalization Group: Closest Rigorous Approach",
+      "content": "Tadeusz Balaban's block-spin renormalization group program (1980s-90s) represents the closest existing rigorous mathematical approach to constructing 4D Yang-Mills theory. The formalization defines: effective lattice spacing $a_k = 2^k \\cdot a_0$ (proved to grow and remain positive), the running coupling at each RG step $g^2(k) = g_0^2 + \\beta_0 g_0^4 k \\ln 2 + O(g_0^6)$, and a key theorem that the coupling remains controlled ($g^2(k) < 2g_0^2$) for $k \\le 1/(\\beta_0 g_0^2)$ RG steps. Balaban proved ultraviolet stability for finitely many block-spin steps in $d \\le 4$. The gap to the Millennium Prize: extending from finitely many to infinitely many RG steps and controlling the infinite-volume and continuum limits simultaneously.",
+      "mathContext": "$a_k = 2^k a_0$; $g^2(k) = g_0^2 + \\beta_0 g_0^4 k \\ln 2$; controlled for $k \\le 1/(\\beta_0 g_0^2)$",
+      "significance": "supporting",
+      "relatedConcepts": ["block-spin RG", "ultraviolet stability", "lattice gauge theory", "asymptotic freedom", "continuum limit"],
+      "prerequisites": ["BlockSpinRGParams", "Real.log", "pow_pos"],
+      "tags": ["balaban", "renormalization-group", "rigorous"]
     }
   ]
 }
