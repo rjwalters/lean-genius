@@ -149,6 +149,18 @@
     }
   ],
   "relatedProofs": ["infinitude-primes", "wilsons-theorem", "bertrands-postulate", "erdos-1057"],
+  "crossReferences": [
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "depends-on",
+      "description": "The problem concerns density of primes with a special property; Euclid's infinitude of primes is the foundational result"
+    },
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem ((p-1)! ≡ -1 mod p) connects factorials to primes; the factorial-avoiding property in this problem is a related divisibility condition"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #1059 remains open. The formalization verifies two concrete witnesses ($p = 101, 211$) and one counterexample ($p = 89$) using Lean's `decide` tactic, demonstrates the sparsity of factorials below $n$, and axiomatizes both the main conjecture and Erdős's potentially more tractable smooth-number variant.",
     "implications": "A resolution would illuminate the relationship between prime distribution and factorial arithmetic. The probabilistic heuristic strongly suggests the answer is yes, but converting such arguments into proofs remains a central challenge in analytic number theory. Erdős's smooth-number alternative connects to sieve theory and the distribution of numbers with restricted prime factors.",
