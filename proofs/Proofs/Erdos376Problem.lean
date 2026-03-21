@@ -55,46 +55,6 @@ This ensures no carries when computing n + n in base p. -/
 def HasSmallDigits (n : ℕ) (p : ℕ) : Prop :=
   ∀ d ∈ n.digits p, d ≤ (p - 1) / 2
 
-/-- **Kummer's Theorem** (stated as axiom): The exact power of prime p dividing
-C(m,k) equals the number of carries when adding k + (m-k) in base p.
-
-The number of carries when adding a + b in base p equals the number of
-positions where a_i + b_i + carry_{i-1} ≥ p.
-
-We state a simplified version: the exact power is determined by the digit sums. -/
-axiom kummer_theorem (m k p : ℕ) (hp : p.Prime) :
-    ∃ carries : ℕ, p.factorization (m.choose k) = carries
-
-/-- Corollary: C(2n,n) coprime to p iff n has p-small digits. -/
-axiom centralBinom_coprime_iff_small_digits (n p : ℕ) (hp : p.Prime) (hp2 : 2 < p) :
-    n.centralBinom.Coprime p ↔ HasSmallDigits n p
-
-/-
-## Specific Conditions for 105 = 3 × 5 × 7
-
-For C(2n,n) coprime to 105, n must satisfy digit constraints in three bases.
--/
-
-/-- 105 = 3 × 5 × 7, the product of first three odd primes. -/
-theorem factorization_105 : 105 = 3 * 5 * 7 := by norm_num
-
-/-- C(2n,n) coprime to 105 requires coprimality to each prime factor. -/
-axiom coprime_105_iff (n : ℕ) :
-    n.centralBinom.Coprime 105 ↔
-    n.centralBinom.Coprime 3 ∧ n.centralBinom.Coprime 5 ∧ n.centralBinom.Coprime 7
-
-/-- For coprimality to 3: n must have only digits 0, 1 in base 3. -/
-axiom coprime_3_digits (n : ℕ) :
-    n.centralBinom.Coprime 3 ↔ ∀ d ∈ n.digits 3, d ≤ 1
-
-/-- For coprimality to 5: n must have only digits 0, 1, 2 in base 5. -/
-axiom coprime_5_digits (n : ℕ) :
-    n.centralBinom.Coprime 5 ↔ ∀ d ∈ n.digits 5, d ≤ 2
-
-/-- For coprimality to 7: n must have only digits 0, 1, 2, 3 in base 7. -/
-axiom coprime_7_digits (n : ℕ) :
-    n.centralBinom.Coprime 7 ↔ ∀ d ∈ n.digits 7, d ≤ 3
-
 /-
 ## The EGRS Theorem (1975)
 
@@ -127,24 +87,6 @@ theorem infinitely_coprime_35 : {n : ℕ | n.centralBinom.Coprime 35}.Infinite :
   exact egrs_theorem 5 7 Nat.prime_five Nat.prime_seven (by decide) (by decide)
 
 /-
-## Main Conjecture (OPEN)
-
-The question for three primes remains open!
--/
-
-/-- **Erdős Problem #376 (OPEN)**: Are there infinitely many n such that
-C(2n,n) is coprime to 105 = 3 × 5 × 7?
-
-This extends EGRS from two primes to three primes. -/
-axiom erdos_376_conjecture :
-    {n : ℕ | n.centralBinom.Coprime 105}.Infinite ∨
-    ¬{n : ℕ | n.centralBinom.Coprime 105}.Infinite
-
-/-- The positive answer would mean infinitely many 105-good integers exist. -/
-axiom erdos_376_positive_answer :
-    {n : ℕ | n.centralBinom.Coprime 105}.Infinite
-
-/-
 ## Known 105-Good Integers
 
 We verify specific small values of n that are 105-good.
@@ -165,29 +107,8 @@ theorem four_not_good : ¬Is105Good 4 := by
   unfold Is105Good
   native_decide
 
-/-- List of small 105-good values (verified computationally).
-These are n where C(2n,n) has no factors of 3, 5, or 7. -/
-axiom small_good_values : ({1} : Set ℕ) ⊆ GoodSet105
-
 /-
-## Density Considerations
-
-The set of 105-good integers is expected to be sparse but infinite.
--/
-
-/-- The density of n coprime to a single prime p is positive.
-In base p, roughly (1/2)^{log_p n} proportion satisfy small digits. -/
-axiom density_single_prime (p : ℕ) (hp : p.Prime) (hp2 : 2 < p) :
-    {n : ℕ | n.centralBinom.Coprime p}.Infinite
-
-/-- For product of k odd primes, density decreases exponentially with k. -/
-axiom density_decreases_with_primes :
-    ∀ k : ℕ, ∃ c : ℝ, c > 0 ∧
-    ∀ P : Finset ℕ, (∀ p ∈ P, Nat.Prime p ∧ 2 < p) → P.card = k →
-    ∃ d : ℝ, d ≥ c^k ∧ d > 0
-
-/-
-## Connection to Digit Sequences
+## Digit Sequence Definitions
 
 The problem is equivalent to finding n with simultaneously restricted digits
 in bases 3, 5, and 7.
@@ -201,51 +122,5 @@ def Base5Good : Set ℕ := {n | ∀ d ∈ n.digits 5, d ≤ 2}
 
 /-- The set of n with digits only in {0,1,2,3} in base 7. -/
 def Base7Good : Set ℕ := {n | ∀ d ∈ n.digits 7, d ≤ 3}
-
-/-- 105-good integers are exactly the intersection of the three base-good sets. -/
-axiom good_105_characterization :
-    GoodSet105 = Base3Good ∩ Base5Good ∩ Base7Good
-
-/-- Each individual base-good set is infinite. -/
-axiom base3Good_infinite : Base3Good.Infinite
-axiom base5Good_infinite : Base5Good.Infinite
-axiom base7Good_infinite : Base7Good.Infinite
-
-/-- The question is whether the intersection is also infinite. -/
-axiom intersection_question :
-    (Base3Good ∩ Base5Good ∩ Base7Good).Infinite ↔
-    {n : ℕ | n.centralBinom.Coprime 105}.Infinite
-
-/-
-## Historical Context
-
-The study of prime factors of central binomial coefficients has a rich history.
-Kummer's 1852 theorem provides the key tool, and EGRS 1975 established the
-two-prime case. The three-prime case remains open.
--/
-
-/-- For any prime p, there are infinitely many n with p | C(2n,n). -/
-axiom infinitely_many_divisible (p : ℕ) (hp : p.Prime) :
-    {n : ℕ | p ∣ n.centralBinom}.Infinite
-
-/-- C(2n,n) is always even for n ≥ 1. -/
-axiom centralBinom_even (n : ℕ) (hn : 1 ≤ n) : 2 ∣ n.centralBinom
-
-/-
-## Generalizations
-
-Erdős asked about other products of primes beyond 105.
--/
-
-/-- Generalization: For any finite set of odd primes P, is
-{n | C(2n,n) coprime to ∏ p ∈ P} infinite? -/
-axiom general_conjecture (P : Finset ℕ) (hP : ∀ p ∈ P, p.Prime ∧ 2 < p) :
-    {n : ℕ | n.centralBinom.Coprime (∏ p ∈ P, p)}.Infinite ∨
-    ¬{n : ℕ | n.centralBinom.Coprime (∏ p ∈ P, p)}.Infinite
-
-/-- For |P| = 2, the answer is YES (EGRS). -/
-axiom two_primes_solved (P : Finset ℕ) (hP : ∀ p ∈ P, p.Prime ∧ 2 < p)
-    (hcard : P.card = 2) :
-    {n : ℕ | n.centralBinom.Coprime (∏ p ∈ P, p)}.Infinite
 
 end Erdos376
