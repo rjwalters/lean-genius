@@ -12,7 +12,8 @@
     "mathContext": "Uses Mathlib's filter-based asymptotics: $\\forall^\\infty n$ means `Filter.Eventually` in `atTop`, and convergence uses `Filter.Tendsto` into `nhds`.",
     "significance": "context",
     "relatedConcepts": ["Mathlib", "Filter.Eventually", "atTop", "SimpleGraph"],
-    "prerequisites": ["Lean 4", "Mathlib"]
+    "prerequisites": ["Lean 4", "Mathlib"],
+    "tags": ["imports", "setup", "mathlib"]
   },
   {
     "id": "ann-e1155-triangle-defs",
@@ -27,7 +28,8 @@
     "mathContext": "A triangle in a simple graph $G$ is three distinct mutually adjacent vertices $a, b, c$: $a \\neq b, b \\neq c, a \\neq c$ and $G$ has edges $ab, bc, ac$. Mathlib's `CliqueFree 3` is the abstract version: no 3-element subset of vertices forms a clique.",
     "significance": "supporting",
     "relatedConcepts": ["triangle", "clique", "CliqueFree", "complete graph", "Fin"],
-    "prerequisites": ["SimpleGraph.CliqueFree", "Finset.card_eq_three", "SimpleGraph.top_adj"]
+    "prerequisites": ["SimpleGraph.CliqueFree", "Finset.card_eq_three", "SimpleGraph.top_adj"],
+    "tags": ["triangle", "graph-theory", "definitions"]
   },
   {
     "id": "ann-e1155-axioms",
@@ -42,7 +44,8 @@
     "mathContext": "The triangle removal process on $K_n$: repeatedly select a triangle uniformly at random and remove its edges, continuing until the graph is triangle-free. $f(n)$ counts the remaining edges. BFL proved $f(n) = n^{3/2+o(1)}$ a.s., meaning for any $\\varepsilon > 0$: $n^{3/2-\\varepsilon} \\leq f(n) \\leq n^{3/2+\\varepsilon}$ eventually.",
     "significance": "key",
     "relatedConcepts": ["triangle removal process", "random graphs", "asymptotics", "Filter.Eventually"],
-    "prerequisites": ["Filter.Eventually", "atTop", "Real.rpow"]
+    "prerequisites": ["Filter.Eventually", "atTop", "Real.rpow"],
+    "tags": ["axioms", "asymptotics", "bfl-bounds"]
   },
   {
     "id": "ann-e1155-bfl-sandwich",
@@ -57,7 +60,8 @@
     "mathContext": "The gap between BFL and the full conjecture: BFL gives $n^{-\\varepsilon} \\leq f(n)/n^{3/2} \\leq n^{\\varepsilon}$ (sub-polynomial bounds that grow/shrink with $n$), while the conjecture needs $c_1 \\leq f(n)/n^{3/2} \\leq c_2$ (fixed constants). The conjecture is strictly stronger because constants don't depend on $n$.",
     "significance": "key",
     "relatedConcepts": ["BFL theorem", "Θ-notation", "sub-polynomial bounds", "Filter.Eventually.and"],
-    "prerequisites": ["Filter.Eventually.and", "Real.rpow_add", "Real.rpow_le_rpow"]
+    "prerequisites": ["Filter.Eventually.and", "Real.rpow_add", "Real.rpow_le_rpow"],
+    "tags": ["bfl-sandwich", "implication", "sub-polynomial"]
   },
   {
     "id": "ann-e1155-conjecture-decomposition",
@@ -72,7 +76,8 @@
     "mathContext": "The decomposition $f(n) = \\Theta(n^{3/2})$ iff $f(n) = O(n^{3/2})$ and $f(n) = \\Omega(n^{3/2})$ is standard in asymptotic analysis. The non-trivial direction is showing c ≤ C: if both bounds hold, pick $n$ large enough for both, then $c \\cdot n^{3/2} \\leq f(n) \\leq C \\cdot n^{3/2}$ forces $c \\leq C$.",
     "significance": "key",
     "relatedConcepts": ["Θ-notation", "big-O", "big-Omega", "asymptotic decomposition"],
-    "prerequisites": ["Filter.Eventually", "mul_lt_mul_of_pos_right"]
+    "prerequisites": ["Filter.Eventually", "mul_lt_mul_of_pos_right"],
+    "tags": ["decomposition", "theta-notation", "big-o", "big-omega"]
   },
   {
     "id": "ann-e1155-exponent",
@@ -87,7 +92,8 @@
     "mathContext": "The exponent $3/2$ is the critical threshold: $f(n) = O(n^\\alpha)$ for all $\\alpha > 3/2$, but $f(n) \\neq O(n^\\beta)$ for any $\\beta < 3/2$. The ratio characterization shows BFL gives $R(n) = f(n)/n^{3/2} \\in [n^{-\\varepsilon}, n^{\\varepsilon}]$ while the conjecture needs $R(n) \\in [c_1, c_2]$.",
     "significance": "key",
     "relatedConcepts": ["critical exponent", "o(1) notation", "rpow monotonicity", "ratio characterization"],
-    "prerequisites": ["bfl_upper_bound", "bfl_lower_bound", "Real.rpow_lt_rpow_of_exponent_lt"]
+    "prerequisites": ["bfl_upper_bound", "bfl_lower_bound", "Real.rpow_lt_rpow_of_exponent_lt"],
+    "tags": ["critical-exponent", "ratio", "three-halves"]
   },
   {
     "id": "ann-e1155-small-values",
@@ -102,7 +108,8 @@
     "mathContext": "$f(0) = 0, \\; f(1) = 0, \\; f(2) \\leq 1$ from $f(n) \\leq \\binom{n}{2} = n(n-1)/2$.",
     "significance": "technical",
     "relatedConcepts": ["complete graph", "edge count", "base cases"],
-    "prerequisites": ["triangleRemovalEdges_le_complete"]
+    "prerequisites": ["triangleRemovalEdges_le_complete"],
+    "tags": ["small-values", "base-cases", "bounds"]
   },
   {
     "id": "ann-e1155-sufficient-conditions",
@@ -117,7 +124,8 @@
     "mathContext": "If $\\lim_{n \\to \\infty} f(n)/n^{3/2} = L > 0$, then for large $n$: $L/2 \\leq f(n)/n^{3/2} \\leq 3L/2$, giving constants $c_1 = L/2, c_2 = 3L/2$. The limsup/liminf condition $0 < \\liminf \\leq \\limsup < \\infty$ is equivalent to the conjecture.",
     "significance": "key",
     "relatedConcepts": ["convergence", "limsup", "liminf", "nhds", "Icc_mem_nhds"],
-    "prerequisites": ["Filter.Tendsto", "Icc_mem_nhds", "le_div_iff₀", "div_le_iff₀"]
+    "prerequisites": ["Filter.Tendsto", "Icc_mem_nhds", "le_div_iff₀", "div_le_iff₀"],
+    "tags": ["sufficient-conditions", "convergence", "limit"]
   },
   {
     "id": "ann-e1155-lower-exponent",
@@ -132,7 +140,8 @@
     "mathContext": "For any $\\alpha < 3/2$, taking $\\varepsilon = 3/2 - \\alpha > 0$ in the BFL lower bound gives $n^{3/2 - (3/2-\\alpha)} = n^\\alpha \\leq f(n)$ eventually. This shows $f(n) = \\omega(n^\\alpha)$ for all $\\alpha < 3/2$.",
     "significance": "supporting",
     "relatedConcepts": ["lower bound", "ω-notation", "superlinear growth"],
-    "prerequisites": ["bfl_lower_bound"]
+    "prerequisites": ["bfl_lower_bound"],
+    "tags": ["lower-bound", "superlinear", "exponent"]
   },
   {
     "id": "ann-e1155-mantel",
@@ -147,7 +156,8 @@
     "mathContext": "Mantel's theorem (1907): a triangle-free graph on $n$ vertices has at most $\\lfloor n^2/4 \\rfloor$ edges. BFL gives $f(n) \\leq n^{7/4}$, which is $O(n^{1.75})$ vs Mantel's $O(n^2)$.",
     "significance": "supporting",
     "relatedConcepts": ["Mantel's theorem", "Turán's theorem", "triangle-free graphs", "extremal graph theory"],
-    "prerequisites": ["triangleRemoval_mantel_bound", "bfl_upper_bound"]
+    "prerequisites": ["triangleRemoval_mantel_bound", "bfl_upper_bound"],
+    "tags": ["mantel", "turan", "extremal", "triangle-free"]
   },
   {
     "id": "ann-e1155-hierarchy-tightness",
@@ -162,6 +172,7 @@
     "mathContext": "The strict hierarchy Conjecture $\\Longrightarrow$ BFL $\\Longrightarrow$ Grable reflects increasingly weaker information. The ratio characterization shows the conjecture is equivalent to $\\{f(n)/n^{3/2}\\}$ being eventually bounded — a compactness condition on the ratio sequence.",
     "significance": "key",
     "relatedConcepts": ["hierarchy of bounds", "strict weakening", "compactness", "normalized ratio"],
-    "prerequisites": ["erdos_1155_conjecture", "Real.rpow_pos_of_pos", "le_div_iff₀"]
+    "prerequisites": ["erdos_1155_conjecture", "Real.rpow_pos_of_pos", "le_div_iff₀"],
+    "tags": ["hierarchy", "tightness", "compactness", "ratio"]
   }
 ]
