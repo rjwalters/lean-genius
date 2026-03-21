@@ -20,7 +20,14 @@
     "erdosNumber": 238,
     "erdosUrl": "https://erdosproblems.com/238",
     "erdosProblemStatus": "open",
-    "axiomCount": 4
+    "axiomCount": 4,
+    "prerequisites": [
+      "Prime Number Theorem",
+      "Prime gap distribution",
+      "Filter.Eventually and atTop in Lean 4",
+      "Nat.nth for prime enumeration",
+      "Asymptotic analysis (big-O, little-o)"
+    ]
   },
   "overview": {
     "historicalContext": "This problem from Erdős [Er55c, p.7; Er49c] concerns long runs of consecutive primes with uniformly large gaps. The Prime Number Theorem ensures average gaps grow as log(x), so most gaps exceed any fixed constant for large x. The challenge is finding LONG runs where ALL gaps are large.\n\nErdős proved the conjecture holds when c₁ is sufficiently small (depending on c₂). The general case — arbitrary c₁, c₂ > 0 — remains open. Cramér's conjecture on maximal gaps provides supporting context.",
