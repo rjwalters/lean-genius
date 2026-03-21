@@ -8,7 +8,8 @@
     "content": "Erdos Problem #483 asks whether the **Schur numbers** f(k) are bounded by a simple exponential c^k for some constant c. The Schur number f(k) is the smallest N such that every **k-coloring** of {1, ..., N} contains a **monochromatic solution** to a + b = c. Known bounds place f(k) between exponential growth (from below) and factorial growth (from above), and the question is whether the factorial upper bound can be replaced by a mere exponential.",
     "mathContext": "Schur's theorem (1916) guarantees that f(k) is finite for all k, making it a cornerstone of Ramsey theory on the integers. The equation a + b = c is the simplest instance of a Rado-type equation, and Schur numbers are the quantitative measure of how large a set must be before monochromatic solutions become inevitable. The gap between the exponential lower bound (roughly 3.2^k from known values) and the factorial upper bound (roughly e * k!) is one of the oldest open problems in Ramsey theory.",
     "relatedConcepts": ["Schur's theorem", "Ramsey theory", "sum-free sets", "partition regularity", "Rado's theorem"],
-    "significance": "essential"
+    "significance": "essential",
+    "tags": ["schur-numbers", "ramsey-theory", "partition-regularity", "growth-rate"]
   },
   {
     "id": "erdos-483-schur-prop",
@@ -19,7 +20,8 @@
     "content": "**SchurProp N k** asserts that every k-coloring of {1, ..., N} contains a **monochromatic Schur triple** (x, y, z) with x + y = z. The existence of such N for every k >= 1 is proved by invoking Schur's theorem from the imported **SchursTheorem** module, establishing finiteness non-constructively.",
     "mathContext": "The Schur property is a Ramsey-type partition property. A k-coloring assigns each element of {1, ..., N} one of k colors. A monochromatic Schur triple has all three elements the same color with x + y = z. The existence proof uses the fact that Schur's theorem follows from Ramsey's theorem applied to complete graphs, where edges encode sums.",
     "relatedConcepts": ["Ramsey property", "partition regularity", "coloring", "monochromatic solutions"],
-    "significance": "essential"
+    "significance": "essential",
+    "tags": ["coloring", "monochromatic-triple", "ramsey-property", "definition"]
   },
   {
     "id": "erdos-483-schur-number",
@@ -30,7 +32,8 @@
     "content": "**schurNumber k** is defined as the minimum N satisfying SchurProp via **Nat.find**, making it a proper computable-in-principle definition rather than an axiom. For k < 1 it returns 0 by convention. The accompanying theorems **schurNumber_spec** and **schurNumber_min** prove that this definition satisfies its intended specification and minimality.",
     "mathContext": "Using Nat.find (which requires Classical.choice) gives the Schur number as the least element of a nonempty set of natural numbers. This is cleaner than axiomatizing the function directly, since all properties follow from the well-ordering of the natural numbers. The tradeoff is that Nat.find is noncomputable -- the definition exists but cannot be evaluated by the kernel.",
     "relatedConcepts": ["Nat.find", "well-ordering principle", "noncomputable definitions", "Classical logic"],
-    "significance": "essential"
+    "significance": "essential",
+    "tags": ["nat-find", "well-ordering", "noncomputable", "definition"]
   },
   {
     "id": "erdos-483-monotonicity",
@@ -40,7 +43,8 @@
     "title": "Monotonicity of the Schur Property",
     "content": "**schurProp_mono** proves that if SchurProp N k holds and M >= N, then SchurProp M k also holds. The proof restricts any coloring of {1, ..., M} to the subset {1, ..., N} and transfers the monochromatic triple back. This is the key structural lemma enabling the Nat.find approach.",
     "relatedConcepts": ["monotonicity", "restriction of colorings", "Ramsey monotonicity"],
-    "significance": "supporting"
+    "significance": "supporting",
+    "tags": ["monotonicity", "coloring-restriction", "structural-lemma"]
   },
   {
     "id": "erdos-483-s1",
@@ -51,7 +55,8 @@
     "content": "**schurNumber_1** proves S(1) = 2 entirely within Lean. The upper bound shows any 1-coloring of {1, 2} contains 1 + 1 = 2 (reusing **schur_1** from SchursTheorem). The lower bound **not_schurProp_1_1** shows {1} alone cannot contain a Schur triple since the only element is 0 in Fin 1, and omega dispatches the resulting contradiction.",
     "mathContext": "With a single color, every element has the same color, so we need x + y = z with x, y, z all in our set. The set {1, 2} works because 1 + 1 = 2, but {1} fails because no valid triple exists with only one element.",
     "relatedConcepts": ["base case", "exhaustive verification", "omega tactic"],
-    "significance": "supporting"
+    "significance": "supporting",
+    "tags": ["exact-value", "base-case", "exhaustive-verification", "omega-tactic"]
   },
   {
     "id": "erdos-483-s2",
@@ -62,7 +67,8 @@
     "content": "**schurNumber_2** proves S(2) = 5 by combining the exhaustive upper bound **schur_2_upper** (every 2-coloring of {1,...,5} has a monochromatic triple) with the lower bound **schur_2_lower** (the partition {1,4}, {2,3} avoids monochromatic triples in {1,...,4}). This is the first **non-trivial** exact Schur number, requiring genuine Ramsey-theoretic case analysis.",
     "mathContext": "The 2-coloring witness for the lower bound uses sum-free sets: {1, 4} is sum-free (no x + y = z within it) and {2, 3} is sum-free (2 + 3 = 5 which is not in the set). But in {1, ..., 5}, every 2-coloring must place three elements in one class, and a pigeonhole/case argument shows a monochromatic triple is forced.",
     "relatedConcepts": ["sum-free sets", "Ramsey case analysis", "pigeonhole principle", "exact computation"],
-    "significance": "essential"
+    "significance": "essential",
+    "tags": ["exact-value", "sum-free-sets", "pigeonhole", "case-analysis"]
   },
   {
     "id": "erdos-483-structural",
@@ -73,7 +79,8 @@
     "content": "Two structural properties are fully proved: (1) **schurNumber_pos** shows S(k) >= 1 for k >= 1, since Fin.elim0 handles the vacuous case of an empty set; (2) **schurNumber_nondecreasing** shows S(k1) <= S(k2) when k1 <= k2 via a **color embedding** argument -- any k1-coloring lifts to a k2-coloring by mapping Fin k1 into Fin k2, preserving monochromatic triples.",
     "mathContext": "Monotonicity of Schur numbers means that using more colors can only help avoid monochromatic triples, never hurt. The proof constructs the embedding explicitly: given a k1-coloring c, define a k2-coloring c' by viewing each color i < k1 as the same color i < k2. Any monochromatic triple for c' restricts to one for c because the Fin.val values match.",
     "relatedConcepts": ["color embedding", "monotonicity in colors", "Fin type", "structural Ramsey theory"],
-    "significance": "supporting"
+    "significance": "supporting",
+    "tags": ["color-embedding", "monotonicity", "fin-type", "structural-property"]
   },
   {
     "id": "erdos-483-known-values",
@@ -84,7 +91,8 @@
     "content": "The values **S(3) = 14**, **S(4) = 45**, and **S(5) = 161** are axiomatized because exhaustive computation in Lean would be prohibitively expensive. S(5) = 161 was determined by **Heule (2017)** using SAT solvers, requiring billions of clauses. No further exact values are known -- S(6) remains an open problem.",
     "mathContext": "The known values exhibit rapid growth: 2, 5, 14, 45, 161. The ratios S(k+1)/S(k) are roughly 2.5, 2.8, 3.2, 3.6, suggesting growth faster than 3^k but the pattern is unclear. The difficulty of computing S(5) -- which required a 2-petabyte proof certificate -- highlights why the asymptotic growth rate remains open.",
     "relatedConcepts": ["SAT solving", "computational Ramsey theory", "Heule's proof", "combinatorial explosion"],
-    "significance": "supporting"
+    "significance": "supporting",
+    "tags": ["exact-values", "sat-solving", "axiomatized", "computational-complexity"]
   },
   {
     "id": "erdos-483-bounds",
@@ -95,7 +103,8 @@
     "content": "The axiomatized bounds frame the problem: (1) **schur_lower_bound** states f(k) >= C^k for some C > 1, proved using explicit sum-free set constructions; (2) **schur_upper_bound** states f(k) <= C * k! for some C > 0, due to **Whitehead (1973)** via an inductive coloring argument. The gap between exponential and factorial is the heart of the open question.",
     "mathContext": "The lower bound C^k comes from constructing explicit sum-free colorings using modular arithmetic (e.g., the Schur-Fredricksen construction gives C = (89)^(1/5) ~ 2.47). The upper bound C * k! comes from the relation f(k) <= k * f(k-1) + 2, which telescopes to a factorial. Narrowing this gap -- specifically, determining whether f(k) < c^k for some c -- is the content of Erdos Problem #483.",
     "relatedConcepts": ["exponential vs factorial growth", "sum-free constructions", "inductive bounds", "Whitehead's theorem"],
-    "significance": "essential"
+    "significance": "essential",
+    "tags": ["asymptotic-bounds", "exponential-growth", "factorial-growth", "sum-free-construction"]
   },
   {
     "id": "erdos-483-conjecture",
@@ -106,6 +115,7 @@
     "content": "The central conjecture **erdos_483_conjecture** asks: does there exist a constant c > 0 such that f(k) < c^k for all k >= 1? If true, this would dramatically improve the factorial upper bound and show that Schur numbers grow at most **simply exponentially**. If false, it would mean Schur numbers grow superexponentially, placing them in a fundamentally different complexity class than Ramsey numbers R(k, k).",
     "mathContext": "A positive answer would align Schur numbers with the Hales-Jewett numbers and other Ramsey quantities that grow at most exponentially. A negative answer would be surprising, as most natural Ramsey-type quantities in one dimension have at most exponential growth. The question connects to the broader theme of whether partition regularity of linear equations always yields at most exponential quantitative bounds.",
     "relatedConcepts": ["exponential growth conjecture", "Ramsey number comparison", "Hales-Jewett theorem", "partition regularity bounds"],
-    "significance": "essential"
+    "significance": "essential",
+    "tags": ["open-problem", "exponential-bound-conjecture", "ramsey-comparison", "erdos-problem"]
   }
 ]
