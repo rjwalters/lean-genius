@@ -53,7 +53,14 @@
       "isSidonSet definition",
       "erdos_newman_theorem2 axiom"
     ],
-    "axiomCount": 11
+    "axiomCount": 11,
+    "prerequisites": [
+      "Natural density and asymptotic density of subsets of the natural numbers",
+      "Sumsets (Minkowski sums) in additive combinatorics",
+      "Little-o notation and asymptotic growth rates",
+      "Basic properties of Sidon sets (B2 sequences)",
+      "Covering and representation problems in additive number theory"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős and Newman (1977) proved that squares can be represented as B+B with exceptionally sparse B. Their Theorem 2 actually implies that NOT all zero-density sets admit such sparse representations, though this connection to Problem #333 was apparently overlooked by Erdős and Graham when stating the problem.",
