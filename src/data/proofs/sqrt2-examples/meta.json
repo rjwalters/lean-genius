@@ -12,7 +12,10 @@
       "pedagogical",
       "basics",
       "tactics",
-      "tutorial"
+      "tutorial",
+      "case-analysis",
+      "propositional-logic",
+      "ordered-rings"
     ],
     "badge": "pedagogical",
     "sorries": 0,
@@ -42,6 +45,22 @@
       {
         "id": "nth-root-irrational",
         "relationship": "Generalization: proves irrationality of nth roots, extending the techniques demonstrated here to more advanced number theory"
+      },
+      {
+        "id": "russell-1-plus-1",
+        "relationship": "Fellow pedagogical proof: Russell's 1+1=2 demonstrates foundational arithmetic formalization, complementing these basic tactic demonstrations"
+      },
+      {
+        "id": "mathematical-induction",
+        "relationship": "Related foundational technique: induction is the natural companion to the case analysis demonstrated here, both being fundamental proof strategies"
+      },
+      {
+        "id": "amgm-inequality",
+        "relationship": "The AM-GM inequality relies on the non-negativity of squares ($( a - b )^2 \\geq 0$), making square_nonneg a key building block"
+      },
+      {
+        "id": "fermat-two-squares",
+        "relationship": "Fermat's two-square theorem extends the study of integer squares to representability questions, building on the ordered ring properties demonstrated here"
       }
     ]
   },
