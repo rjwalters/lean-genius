@@ -1093,20 +1093,35 @@ lemma X_sub_k_dvd_adjMatrix_charpoly (hF : IsFriendshipGraph G) (k : ℕ) (hk : 
   rw [dvd_iff_isRoot, IsRoot]
   exact adjMatrix_charpoly_eval_k G hF k hk hreg
 
+/-- **det(cI - J) = c^{n-1}(c-n)** for the all-ones matrix J.
+
+    The all-ones matrix J has charpoly X^{n-1}(X-n):
+    - J² = nJ (onesMatrix_sq), so minpoly | X(X-n)
+    - minpoly | charpoly, and charpoly has degree n
+    - trace(J) = n gives coeff of X^{n-1} = -n
+    - Combined: charpoly = X^{n-1}(X-n)
+    - Evaluating at c: det(cI-J) = c^{n-1}(c-n) -/
+lemma det_scalar_sub_onesMatrix (c : ℤ) :
+    (c • (1 : Matrix V V ℤ) - onesMatrix V).det =
+    c ^ (Fintype.card V - 1) * (c - ↑(Fintype.card V)) := by
+  sorry
+
 /-- The key product identity for the quotient polynomial.
 
     Let g = charpoly(A), f = g/(X-k). Then:
       f(X) · f(-X) = (X² - (k-1))^{n-1}
 
-    Proof sketch:
-    1. (XI-A)(XI+A) = X²I - A² (matrix product over ℤ[X])
+    Proof outline (8 steps):
+    1. (XI-A)(XI+A) = X²I - A²  [difference of squares]
     2. det(XI-A)·det(XI+A) = det(X²I - A²)  [Matrix.det_mul]
     3. A² = (k-1)I + J  [adjMatrix_sq_eq]
-    4. det((X²-(k-1))I - J) = (X²-(k-1))^{n-1}·(X²-k²)  [det of rank-1 perturbation]
+    4. det((X²-(k-1))I - J) = (X²-(k-1))^{n-1}·(X²-k²)  [det_scalar_sub_onesMatrix]
     5. det(XI+A) = (-1)^n · g(-X) = -g(-X)  [n odd]
     6. g(X)·(-g(-X)) = (X²-k²)·(X²-(k-1))^{n-1}
     7. Factor (X-k) from g: g = (X-k)·f, g(-X) = -(X+k)·f(-X)
-    8. Cancel -(X²-k²) from both sides: f(X)·f(-X) = (X²-(k-1))^{n-1}  -/
+    8. Cancel (X²-k²) from both sides: f(X)·f(-X) = (X²-(k-1))^{n-1}
+
+    The only sorry is det_scalar_sub_onesMatrix (step 4). -/
 lemma charpoly_quotient_product (hF : IsFriendshipGraph G) (k : ℕ) (hk : k ≥ 2)
     (hreg : ∀ v : V, G.degree v = k) (f : Polynomial ℤ)
     (hf : (G.adjMatrix ℤ).charpoly = (X - C (↑k : ℤ)) * f) :
