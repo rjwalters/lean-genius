@@ -195,24 +195,6 @@ theorem zp_rotation_isometry (p : ℕ) (hp : 0 < p) :
   simp only [Real.norm_eq_abs, sq_abs, h0, h1, hx_def.symm, hy_def.symm]
   exact congr_arg Real.sqrt key
 
-/-- For Z/p equivariant Borsuk-Ulam: a map f equivariant under a free Z/p rotation
-    action on S^(2n-1) must vanish. Here we pass the actions explicitly as functions
-    to avoid typeclass synthesis issues with abstract SMul instances. -/
-axiom yang_borsuk_theorem (p : ℕ) (hp : Nat.Prime p) (n : ℕ)
-    -- Actions as explicit functions (Z/p acts on both domain and codomain)
-    (act_dom : ZMod p → EuclideanSpace ℝ (Fin (2 * n)) → EuclideanSpace ℝ (Fin (2 * n)))
-    (act_cod : ZMod p → EuclideanSpace ℝ (Fin (2 * n)) → EuclideanSpace ℝ (Fin (2 * n)))
-    (f : EuclideanSpace ℝ (Fin (2 * n)) → EuclideanSpace ℝ (Fin (2 * n)))
-    (hcont : Continuous f)
-    -- Equivariance: f(σ·x) = σ·f(x) for all σ : Z/p
-    (hequiv : ∀ k : ZMod p, ∀ x, f (act_dom k x) = act_cod k (f x))
-    -- Freeness: no non-trivial element fixes a sphere point
-    (hfree : ∀ k : ZMod p, k ≠ 0 →
-      ∀ x ∈ Metric.sphere (0 : EuclideanSpace ℝ (Fin (2 * n))) 1, act_dom k x ≠ x)
-    -- Dimension condition: cod sphere dimension < dom sphere dimension
-    (hdim : n ≥ 1) :
-    ∃ x ∈ Metric.sphere (0 : EuclideanSpace ℝ (Fin (2 * n))) 1, f x = 0
-
 /-- For p prime, Z/p acting on S^(2n-1) via coordinate rotation is FREE -/
 -- The freeness: ω^k · z = z with z ≠ 0 implies ω^k = 1, but ω is a primitive p-th root
 theorem zp_rotation_free_statement (p : ℕ) (hp : Nat.Prime p) :
@@ -309,37 +291,9 @@ Yang-Borsuk (G = Z/p prime, X = S^{2n-1}, Y = S^{2(n-1)-1}).
 def IsFreeAction (G : Type*) [Group G] (X : Type*) [MulAction G X] : Prop :=
   ∀ g : G, g ≠ 1 → ∀ x : X, g • x ≠ x
 
-/-- Dold's theorem (1983): If G acts freely on an (n-1)-connected space X and
-    Y has topological dimension < n, then there is NO G-equivariant continuous map X → Y.
-    This generalizes Borsuk-Ulam (G=Z/2, X=S^n, Y=S^{n-1}).
-    We state it as an axiom since the proof requires cohomological index theory. -/
-axiom dold_theorem (G : Type*) [Group G] [Fintype G]
-    (X Y : Type*) [TopologicalSpace X] [TopologicalSpace Y]
-    [MulAction G X] [MulAction G Y]
-    (hfree_X : IsFreeAction G X)
-    (hconnected_X : Fact (True))  -- represents: X is (n-1)-connected
-    (hdim_Y : Fact (True)) :  -- represents: dim Y < n
-    ¬ ∃ f : X → Y, IsEquivariant (G := G) f ∧ Continuous f
-
 -- ============================================================
 -- PART 5: What Remains Open
 -- ============================================================
-
-/-- Case composite group order: Equivariant Borsuk-Ulam for general finite groups
-    acting freely on spheres. Passes the G-action explicitly to avoid synthesis issues.
-    Proved via Dold's theorem applied to Sylow subgroups (in general). -/
-axiom equivariant_borsuk_ulam_free_G (G : Type*) [Fintype G] [DecidableEq G]
-    (mul_G : G → G → G) (inv_G : G → G) (one_G : G)
-    (n : ℕ)
-    (act : G → EuclideanSpace ℝ (Fin n) → EuclideanSpace ℝ (Fin n))
-    (act_cod : G → EuclideanSpace ℝ (Fin n) → EuclideanSpace ℝ (Fin n))
-    (f : EuclideanSpace ℝ (Fin n) → EuclideanSpace ℝ (Fin n))
-    (hcont : Continuous f)
-    (hequiv : ∀ g : G, ∀ x, f (act g x) = act_cod g (f x))
-    (hfree : ∀ g : G, g ≠ one_G →
-      ∀ x ∈ Metric.sphere (0 : EuclideanSpace ℝ (Fin n)) 1, act g x ≠ x)
-    (hdim : ∃ k < n, True) :  -- codomain dimension < domain sphere dimension
-    ∃ x ∈ Metric.sphere (0 : EuclideanSpace ℝ (Fin n)) 1, f x = 0
 
 /-- Open question: optimal dimension bound for non-free Z/p actions.
     When Z/p doesn't act freely (fixed point set is non-empty), the Borsuk-Ulam

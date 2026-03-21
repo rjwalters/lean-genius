@@ -188,12 +188,6 @@ def PPADInstance.IsSink (P : PPADInstance) (v : P.State) : Prop :=
 def PPADInstance.IsSolution (P : PPADInstance) (v : P.State) : Prop :=
   v ≠ P.source ∧ (P.IsSink v ∨ (P.succ v = none ∧ P.pred v = none))
 
-/-- The parity argument guarantees a solution exists.
-    (By the handshaking lemma: the graph has an even number of
-    odd-degree vertices, and we know at least one.) -/
-axiom ppad_solution_exists (P : PPADInstance) :
-    ∃ v, P.IsSolution v
-
 -- ============================================================
 -- PART 7: The Reduction (Tucker → Approximate Borsuk-Ulam)
 -- ============================================================
