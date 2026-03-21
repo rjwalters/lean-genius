@@ -794,3 +794,35 @@ Matrix.det_vandermonde (product-of-differences-based).
 
 InverseGaloisA5.lean: 1198 lines (was 963), 0 sorries, 2 axioms, Docker verified.
 PR: #4127
+
+### Session 2026-03-21 (researcher-1)
+
+**Mode**: DEEP DIVE — Prove resultant_q_val (9×9 Sylvester determinant = 1024000000)
+**Decision**: Implement double cofactor expansion (9→8→7) with native_decide for 7×7 terms
+
+**Key Findings**:
+
+1. **native_decide limits**: Works for ≤7×7 matrix det over ℚ/ℤ. Stack overflow for 8×8+ regardless of coefficient ring (ℤ, ℚ, ZMod). The issue is recursion depth of the Leibniz formula (n! permutations).
+
+2. **Per-term cofactor expansion works**: Each cofactor term `(-1)^(i+j) * M[i,j] * det(submatrix)` involves a submatrix of size n-1. For the 8→7 step, all 16 terms (8 for M84, 8 for M88) verified by native_decide.
+
+3. **8×8 determinants proved**: 
+   - `M84.det = -192000000` via `det_succ_row + sum_congr + native_decide`
+   - `M88.det = 1984000000` via same approach
+
+4. **9→8 cofactor expansion blocked**: After `det_succ_row M 8` and `fin_cases j`, the `rw` tactic cannot find `M (8 : Fin 9) (4 : Fin 9)` or `M.submatrix (Fin.succAbove 8) (Fin.succAbove 4)` patterns. Root cause: Fin representation mismatch after `fin_cases`.
+
+5. **Submatrix equality verification works**: `native_decide` can verify `M.submatrix (succAbove 8) (succAbove 4) = M84` (8×8 matrix equality, not det).
+
+**Verified Computations** (all via native_decide, Docker ARM64):
+- A1.det = 420,000,000 (7×7, rows 0-6 of M84, delete col 3)
+- A2.det = 1,012,000,000 (7×7, rows 0-6 of M84, delete col 6)  
+- A3.det = 256,000,000 (7×7, rows 0-6 of M84, delete col 7)
+- B1.det = -1,012,000,000 (7×7, rows 0-6 of M88, delete col 3)
+- B3.det = 1,924,000,000 (7×7, rows 0-6 of M88, delete col 7)
+- M84.det = 5·A1 - A2 - 5·A3 = -192,000,000 ✓
+- M88.det = 5·B1 + 20·A3 + B3 = 1,984,000,000 ✓
+- M.det = 5·M84 + M88 = 1,024,000,000 ✓
+
+**Outcome**: PROGRESS — 8×8 determinants fully proved, 9×9 blocked on tactic pattern matching
+**Files Modified**: None (test file removed)
