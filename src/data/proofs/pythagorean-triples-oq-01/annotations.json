@@ -119,6 +119,42 @@
       "significance": "supporting",
       "relatedConcepts": ["GCD properties", "column decomposition", "parity sieve", "inclusion-exclusion"],
       "prerequisites": ["Nat.Coprime", "Finset.sum", "Finset.card_bij"]
+    },
+    {
+      "id": "mathlib-parametrization",
+      "proofId": "pythagorean-triples-oq-01",
+      "type": "technique",
+      "range": { "startLine": 606, "endLine": 660 },
+      "title": "Connection to Mathlib's PythagoreanTriple.IsPrimitiveClassified",
+      "content": "Links the counting function to Mathlib's canonical parametrization via PythagoreanTriple.IsPrimitiveClassified. This confirms the counting function counts the mathematically correct objects: every primitive Pythagorean triple $(a,b,c)$ with $a^2+b^2=c^2$, $\\gcd(a,b,c)=1$ corresponds to a unique parameter pair $(m,n)$ counted by primitiveTripleCount. The bridge validates the formalization against Mathlib's established number theory.",
+      "mathContext": "Mathlib's parametrization: primitive $(a,b,c)$ with $a^2+b^2=c^2$ $\\leftrightarrow$ $(m,n)$ with $m>n>0$, $\\gcd(m,n)=1$, $m \\not\\equiv n \\pmod{2}$, via $a=m^2-n^2$, $b=2mn$, $c=m^2+n^2$.",
+      "significance": "supporting",
+      "relatedConcepts": ["Euclid's parametrization", "bijective correspondence", "Mathlib integration"],
+      "prerequisites": ["PythagoreanTriple", "PythagoreanTriple.IsPrimitiveClassified"]
+    },
+    {
+      "id": "additional-axioms",
+      "proofId": "pythagorean-triples-oq-01",
+      "type": "context",
+      "range": { "startLine": 2029, "endLine": 2120 },
+      "title": "Additional Axioms: r₂ and Landau Counting",
+      "content": "Four additional axioms encode deeper analytic number theory: (1) r₂ positivity criterion — the number of representations of $n$ as a sum of two squares is positive iff all prime factors $\\equiv 3 \\pmod{4}$ appear to even powers, (2) r₂ average order — $\\sum_{n \\le N} r_2(n) \\sim \\pi N$, (3) Landau two-squares counting — $\\#\\{n \\le N : r_2(n) > 0\\} \\sim C \\cdot N/\\sqrt{\\ln N}$ (the Landau-Ramanujan theorem), and (4) primitive-by-leg density. These support alternative approaches and extensions of the main result.",
+      "mathContext": "$r_2(n) = \\#\\{(a,b) \\in \\mathbb{Z}^2 : a^2 + b^2 = n\\}$; Landau-Ramanujan: $\\#\\{n \\le N : r_2(n) > 0\\} \\sim \\frac{C \\cdot N}{\\sqrt{\\ln N}}$ where $C = \\frac{1}{\\sqrt{2}} \\prod_{p \\equiv 3 \\pmod{4}} (1 - p^{-2})^{-1/2}$",
+      "significance": "supporting",
+      "relatedConcepts": ["sum-of-two-squares theorem", "Landau-Ramanujan constant", "r₂ arithmetic function"],
+      "prerequisites": ["analytic number theory", "sieve methods", "Dirichlet series"]
+    },
+    {
+      "id": "monotonicity-growth",
+      "proofId": "pythagorean-triples-oq-01",
+      "type": "proof-step",
+      "range": { "startLine": 222, "endLine": 375 },
+      "title": "Monotonicity and Growth of Counting Functions",
+      "content": "Establishes that all counting functions are monotone non-decreasing: if $M \\le N$, then $\\text{count}(M) \\le \\text{count}(N)$. Also proves that the intermediate coprime sector count tends to infinity ($\\text{coprimeInSectorCount}(N) \\to \\infty$), which is needed for the telescoping ratio argument — you cannot divide by the coprime count unless it is eventually nonzero.",
+      "mathContext": "$M \\le N \\Rightarrow \\text{primitiveTripleCount}(M) \\le \\text{primitiveTripleCount}(N)$; $\\text{coprimeInSectorCount}(N) \\to \\infty$ as $N \\to \\infty$",
+      "significance": "technical",
+      "relatedConcepts": ["Finset.card_le_card", "Filter.Tendsto.atTop", "monotone function"],
+      "prerequisites": ["Finset.card_le_card", "Finset.filter_subset"]
     }
   ]
 }
