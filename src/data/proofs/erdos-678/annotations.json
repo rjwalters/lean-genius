@@ -35,7 +35,10 @@
     "type": "theorem",
     "title": "Divisibility Under Extension",
     "content": "**Key property:** When we extend an interval by one element, the old LCM divides the new one:\n\nM(n,k) | M(n,k+1)\n\nThis is because lcm(a,b) is divisible by a. However, this does NOT mean M(n,k) ≤ M(n,k+1) in all parameterizations!",
-    "significance": "key"
+    "mathContext": "$M(n,k) \\mid M(n,k+1)$ since $\\text{lcm}(a,b)$ is always divisible by $a$",
+    "significance": "key",
+    "relatedConcepts": ["divisibility lattice", "lcm monotonicity", "Finset extension"],
+    "prerequisites": ["Nat.lcm_dvd_left", "Finset.fold"]
   },
   {
     "id": "ann-e678-comparison-def",
@@ -83,7 +86,10 @@
     "type": "theorem",
     "title": "Infinitude Result",
     "content": "**Erdős Problem #678 Main Question:**\n\nFor every N, there exist n, m, k with k > N satisfying the comparison.\n\nThis means infinitely many valid triples exist — the phenomenon persists at all scales.",
-    "significance": "key"
+    "mathContext": "$\\forall N,\\ \\exists n, m, k$ with $k > N$ and $M(n,k) > M(m,k+1)$ with $m \\geq n+k$",
+    "significance": "key",
+    "relatedConcepts": ["infinitude", "density of counterexamples", "Erdős problems"],
+    "prerequisites": ["erdosLcmComparison", "intervalLcm"]
   },
   {
     "id": "ann-e678-cambie",
@@ -141,6 +147,9 @@
     "type": "theorem",
     "title": "Main Result",
     "content": "**Erdős Problem #678: SOLVED**\n\nWe prove existence constructively using Selfridge's example:\n\n∃ n m k, erdosLcmComparison n m k\n\nis witnessed by (96, 104, 7).\n\nCambie's theorem extends this to infinitely many examples.",
-    "significance": "key"
+    "mathContext": "$(n, m, k) = (96, 104, 7)$: $M(96,7) = 1{,}073{,}741{,}700 > 786{,}145{,}080 = M(104,8)$",
+    "significance": "key",
+    "relatedConcepts": ["constructive witness", "Selfridge examples", "Cambie theorem"],
+    "prerequisites": ["erdosLcmComparison", "native_decide"]
   }
 ]
