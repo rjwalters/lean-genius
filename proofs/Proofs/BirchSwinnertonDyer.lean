@@ -236,7 +236,7 @@ attribute [instance] MordellWeilGroup.addCommGroup
     Its existence follows from the Mordell-Weil theorem, which guarantees that
     E(ℚ) is finitely generated. The actual computation of this rank is one
     of the central algorithmic challenges in arithmetic geometry. -/
-axiom algebraicRank_axiom (E : EllipticCurveQ) : ℕ
+opaque algebraicRank_axiom (E : EllipticCurveQ) : ℕ
 
 /-- The algebraic rank of an elliptic curve E/ℚ.
 
@@ -248,7 +248,7 @@ def algebraicRank (E : EllipticCurveQ) : ℕ := algebraicRank_axiom E
 
     By the Mordell-Weil theorem, E(ℚ) = ℤʳ ⊕ T where T is finite torsion.
     By Mazur's theorem, T is one of exactly 15 isomorphism classes. -/
-axiom torsionSubgroup_axiom (E : EllipticCurveQ) : Type*
+opaque torsionSubgroup_axiom (E : EllipticCurveQ) : Type*
 
 /-- The torsion subgroup E(ℚ)_tors of an elliptic curve.
 
@@ -274,7 +274,7 @@ The L-function L(E, s) encodes arithmetic information about E at each prime.
     For bad reduction: depends on reduction type.
     Computing aₚ requires counting points on E mod p, which is algorithmic
     (polynomial time via Schoof's algorithm or point counting). -/
-axiom localLFactor_axiom (E : EllipticCurveQ) (p : ℕ) [Fact (Nat.Prime p)] (s : ℂ) : ℂ
+opaque localLFactor_axiom (E : EllipticCurveQ) (p : ℕ) [Fact (Nat.Prime p)] (s : ℂ) : ℂ
 
 /-- The local factor Lₚ(E, s) at a prime p.
 
@@ -289,7 +289,7 @@ def localLFactor (E : EllipticCurveQ) (p : ℕ) [Fact (Nat.Prime p)] (s : ℂ) :
 
     The conductor N = ∏ₚ p^{fₚ} is computable from the Weierstrass equation
     using Tate's algorithm to determine reduction type at each prime. -/
-axiom conductor_axiom (E : EllipticCurveQ) : ℕ
+opaque conductor_axiom (E : EllipticCurveQ) : ℕ
 
 /-- The conductor N of an elliptic curve E/ℚ.
 
@@ -304,7 +304,7 @@ def conductor (E : EllipticCurveQ) : ℕ := conductor_axiom E
     L(E, s) is defined as the Euler product ∏ₚ Lₚ(E, s)⁻¹ for Re(s) > 3/2.
     By the Modularity Theorem (Wiles et al.), this extends to an entire function
     after multiplying by appropriate Gamma factors. -/
-axiom LFunction_axiom (E : EllipticCurveQ) (s : ℂ) : ℂ
+opaque LFunction_axiom (E : EllipticCurveQ) (s : ℂ) : ℂ
 
 /-- The L-function L(E, s) of an elliptic curve E/ℚ.
 
@@ -318,7 +318,7 @@ def LFunction (E : EllipticCurveQ) (s : ℂ) : ℂ := LFunction_axiom E s
 
     Λ(E, s) = N^{s/2} (2π)⁻ˢ Γ(s) L(E, s) is well-defined.
     By modularity, it satisfies Λ(E, s) = w · Λ(E, 2-s). -/
-axiom completedLFunction_axiom (E : EllipticCurveQ) (s : ℂ) : ℂ
+opaque completedLFunction_axiom (E : EllipticCurveQ) (s : ℂ) : ℂ
 
 /-- The completed L-function Λ(E, s) with Gamma factors.
 
@@ -332,7 +332,7 @@ def completedLFunction (E : EllipticCurveQ) (s : ℂ) : ℂ := completedLFunctio
 
     w(E) ∈ {-1, +1} is computable from local root numbers at each prime.
     It determines the parity of the analytic rank via the functional equation. -/
-axiom rootNumber_axiom (E : EllipticCurveQ) : ℤ
+opaque rootNumber_axiom (E : EllipticCurveQ) : ℤ
 
 /-- The root number w(E) ∈ {-1, +1} appearing in the functional equation.
 
@@ -386,7 +386,7 @@ BSD predicts this equals the algebraic rank.
 
     The order of vanishing of L(E, s) at s = 1 exists and is a non-negative integer.
     This is well-defined by the analytic continuation from modularity. -/
-axiom analyticRank_axiom (E : EllipticCurveQ) : ℕ
+opaque analyticRank_axiom (E : EllipticCurveQ) : ℕ
 
 /-- The analytic rank of E is the order of vanishing of L(E, s) at s = 1.
 
@@ -439,7 +439,7 @@ The strong form of BSD also predicts the leading coefficient of L(E, s) at s = 1
 
     The real period Ω = ∫_{E(ℝ)} |ω| is computable numerically to arbitrary precision
     using the AGM (arithmetic-geometric mean) algorithm. -/
-axiom realPeriod_axiom (E : EllipticCurveQ) : ℝ
+opaque realPeriod_axiom (E : EllipticCurveQ) : ℝ
 
 /-- The real period Ω of an elliptic curve E.
 
@@ -451,7 +451,7 @@ def realPeriod (E : EllipticCurveQ) : ℝ := realPeriod_axiom E
 
     The regulator R = det(⟨Pᵢ, Pⱼ⟩) is computable once generators are known.
     Finding generators is the hard part (requires descent algorithms). -/
-axiom regulator_axiom (E : EllipticCurveQ) : ℝ
+opaque regulator_axiom (E : EllipticCurveQ) : ℝ
 
 /-- The regulator R of E(ℚ).
 
@@ -482,7 +482,7 @@ def ShaFinite (_E : EllipticCurveQ) : Prop :=
 
     If Ш(E/ℚ) is finite (as BSD predicts), its order is a perfect square.
     BSD relates this to the leading coefficient of L(E, s) at s = 1. -/
-axiom shaOrder_axiom (E : EllipticCurveQ) : ℕ
+opaque shaOrder_axiom (E : EllipticCurveQ) : ℕ
 
 /-- The order of the Shafarevich-Tate group (assuming it's finite) -/
 def shaOrder (E : EllipticCurveQ) : ℕ := shaOrder_axiom E
@@ -491,7 +491,7 @@ def shaOrder (E : EllipticCurveQ) : ℕ := shaOrder_axiom E
 
     cₚ is computable from Tate's algorithm, which determines the Kodaira type
     and component group at each prime of bad reduction. -/
-axiom tamagawaNumber_axiom (E : EllipticCurveQ) (p : ℕ) : ℕ
+opaque tamagawaNumber_axiom (E : EllipticCurveQ) (p : ℕ) : ℕ
 
 /-- The Tamagawa number cₚ at a prime p of bad reduction.
 
@@ -502,7 +502,7 @@ def tamagawaNumber (E : EllipticCurveQ) (p : ℕ) : ℕ := tamagawaNumber_axiom 
 /-- **Axiom: Tamagawa product computation**
 
     ∏ cₚ is a finite product over primes of bad reduction (dividing the conductor). -/
-axiom tamagawaProduct_axiom (E : EllipticCurveQ) : ℕ
+opaque tamagawaProduct_axiom (E : EllipticCurveQ) : ℕ
 
 /-- The product of all Tamagawa numbers -/
 def tamagawaProduct (E : EllipticCurveQ) : ℕ := tamagawaProduct_axiom E
@@ -511,7 +511,7 @@ def tamagawaProduct (E : EllipticCurveQ) : ℕ := tamagawaProduct_axiom E
 
     |E(ℚ)_tors| is computable by the Lutz-Nagell theorem and division polynomials.
     By Mazur's theorem, |E(ℚ)_tors| ≤ 16. -/
-axiom torsionOrder_axiom (E : EllipticCurveQ) : ℕ
+opaque torsionOrder_axiom (E : EllipticCurveQ) : ℕ
 
 /-- The order of the torsion subgroup |E(ℚ)_tors| -/
 def torsionOrder (E : EllipticCurveQ) : ℕ := torsionOrder_axiom E
@@ -595,7 +595,7 @@ theorem BSD_rank_one (E : EllipticCurveQ)
 /-- E has complex multiplication: End(E) ⊗ ℚ ≅ K for some imaginary quadratic K.
     CM curves have larger endomorphism rings than the generic Z, enabling
     L-function factorization into Hecke characters. -/
-axiom HasCM : EllipticCurveQ → Prop
+opaque HasCM : EllipticCurveQ → Prop
 
 /-- **Axiom: CM Case (Coates-Wiles 1977)**
 
@@ -639,7 +639,7 @@ structure HeegnerPoint (E : EllipticCurveQ) where
 
     The Néron-Tate height ĥ: E(ℚ) × E(ℚ) → ℝ is a positive definite bilinear form
     on E(ℚ)/torsion. It is computable from local height functions. -/
-axiom NeronTateHeight_axiom (E : EllipticCurveQ) : ℝ → ℝ → ℝ
+opaque NeronTateHeight_axiom (E : EllipticCurveQ) : ℝ → ℝ → ℝ
 
 /-- The Néron-Tate height pairing ⟨P, Q⟩ on E(ℚ).
 
@@ -1369,7 +1369,7 @@ This is fundamental for computing L-functions.
 
     For good reduction at p, this determines the local L-factor.
     The Hasse bound gives |a_p| ≤ 2√p, proved by Hasse (1933). -/
-axiom traceOfFrobenius_axiom (E : EllipticCurveQ) (p : ℕ) [Fact (Nat.Prime p)] : ℤ
+opaque traceOfFrobenius_axiom (E : EllipticCurveQ) (p : ℕ) [Fact (Nat.Prime p)] : ℤ
 
 def traceOfFrobenius (E : EllipticCurveQ) (p : ℕ) [Fact (Nat.Prime p)] : ℤ :=
   traceOfFrobenius_axiom E p
@@ -1458,7 +1458,7 @@ theorem parity_conjecture_proved (E : EllipticCurveQ) : ParityConjecture E :=
 
     BSD generalizes to E/K for any number field K with analogous L-function.
     The conjecture statement involves the regulator, Sha, and local factors over K. -/
-axiom BSD_NumberField_axiom (K : Type*) [Field K] : Prop
+opaque BSD_NumberField_axiom (K : Type*) [Field K] : Prop
 
 /-- **BSD over Number Fields**
 
@@ -1470,7 +1470,7 @@ def BSD_NumberField (K : Type*) [Field K] : Prop := BSD_NumberField_axiom K
 
     BSD extends to abelian varieties A/ℚ of arbitrary dimension g.
     For g > 1, the conjecture is largely open. -/
-axiom BSD_AbelianVariety_axiom : Prop
+opaque BSD_AbelianVariety_axiom : Prop
 
 /-- **BSD for Abelian Varieties**
 
@@ -1624,7 +1624,7 @@ theorem height_eq_self_pairing (h : CanonicalHeight E) (x : ℝ) :
 
     where {P₁, ..., Pᵣ} is a basis of E(ℚ)/torsion.
     R(E) > 0 when rank > 0, and R(E) = 1 by convention when rank = 0. -/
-axiom regulatorValue_axiom (E : EllipticCurveQ) : ℝ
+opaque regulatorValue_axiom (E : EllipticCurveQ) : ℝ
 
 def regulatorValue (E : EllipticCurveQ) : ℝ := regulatorValue_axiom E
 
@@ -5471,7 +5471,7 @@ structure ImaginaryQuadraticField where
 /-- The class number of an imaginary quadratic field.
     Axiomatized because defining |Cl(O_K)| requires class field theory
     infrastructure not available in Mathlib. -/
-axiom classNumber (K : ImaginaryQuadraticField) : ℕ
+opaque classNumber (K : ImaginaryQuadraticField) : ℕ
 
 /-- Minimal elliptic curve data for classification purposes. -/
 structure EllipticCurveData where
