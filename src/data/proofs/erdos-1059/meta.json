@@ -76,7 +76,8 @@
         "description": "Sister Erdős problem about prime-related counting; both use Set.Infinite for open conjectures about infinite sets of special integers"
       }
     ],
-    "axiomCount": 3
+    "axiomCount": 3,
+    "assumptions": "3 axiom declarations: erdos_1059_conjecture (the main open conjecture — Set.Infinite for factorial-avoiding primes), factorial_count_bound (for n ≥ 2, n lies in some factorial interval (l!, (l+1)!]), erdos_alternative_approach (Erdős's smooth-number variant conjecture). The first and third are open problems; the second is a known combinatorial fact."
   },
   "overview": {
     "historicalContext": "This problem appears as Problem A2 in Guy's *Unsolved Problems in Number Theory* [Gu04], attributed to Erdős. It asks about the interaction between primes and factorials through subtraction. The factorials $1, 2, 6, 24, 120, 720, \\ldots$ grow super-exponentially, so only $O(\\log n / \\log \\log n)$ factorials lie below $n$. This means the factorial-subtraction condition is mild: it requires checking only a few values.\n\nThe known examples are $p = 101$ (factorials to check: $1, 2, 6, 24$) and $p = 211$ (factorials: $1, 2, 6, 24, 120$). The prime $89$ fails because $89 - 6 = 83$ is prime. These are listed in OEIS A064152.\n\nErdős suggested a potentially easier variant: find infinitely many $n$ in $(l!, (l+1)!]$ whose prime factors all exceed $l$ and whose factorial subtractions are all composite. This removes the requirement that $n$ itself be prime, possibly making the problem more tractable via sieve methods.",
@@ -148,7 +149,6 @@
       "mathContext": "Summary: $101, 211 \\in $ OEIS A064152, both verified prime and factorial-avoiding."
     }
   ],
-  "relatedProofs": ["infinitude-primes", "wilsons-theorem", "bertrands-postulate", "erdos-1057"],
   "conclusion": {
     "summary": "Erdős Problem #1059 remains open. The formalization verifies two concrete witnesses ($p = 101, 211$) and one counterexample ($p = 89$) using Lean's `decide` tactic, demonstrates the sparsity of factorials below $n$, and axiomatizes both the main conjecture and Erdős's potentially more tractable smooth-number variant.",
     "implications": "A resolution would illuminate the relationship between prime distribution and factorial arithmetic. The probabilistic heuristic strongly suggests the answer is yes, but converting such arguments into proofs remains a central challenge in analytic number theory. Erdős's smooth-number alternative connects to sieve theory and the distribution of numbers with restricted prime factors.",
