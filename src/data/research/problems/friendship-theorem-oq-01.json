@@ -123,7 +123,8 @@
       "Weinstein-Aronszajn identity (det_one_sub_mul_comm) gives det(I-tJ)=1-nt for all-ones matrix J, proved as det_one_sub_smul_onesMatrix",
       "det_scalar_sub_onesMatrix proof path: for c≠0, det(cI-J)=c^n·det(I-c⁻¹J)=c^n(1-n/c)=c^{n-1}(c-n). For c=0, J singular (proved as det_onesMatrix_eq_zero)",
       "Generalized versions (det_one_sub_smul_ones_gen, det_ones_eq_zero_gen) work over any CommRing, enabling polynomial ring application",
-      "Key remaining challenge: formalizing the ℚ-embedding argument (RingHom.map_det + det_smul + field_simp) to close det_scalar_sub_onesMatrix"
+      "Key remaining challenge: formalizing the ℚ-embedding argument (RingHom.map_det + det_smul + field_simp) to close det_scalar_sub_onesMatrix",
+      "charpoly_quotient_product proof needs: Matrix.det_mul (confirmed), Matrix.det_neg (confirmed), Matrix.scalar (confirmed). Proof plan: (1) form (XI-A)(XI+A)=X²I-A² over Polynomial ℤ, (2) det_mul gives g·det(XI+A)=det(X²I-A²), (3) det(XI+A)=(-1)^n·g(-X) via det_neg, (4) A²=(k-1)I+J gives det(X²I-A²)=det((X²-(k-1))I-J), (5) det_scalar_sub_onesMatrix gives RHS, (6) cancel X²-k²"
     ],
     "mathlibGaps": [
       "Full spectral theorem for real symmetric matrices in a form that gives integer eigenvalue multiplicities",
