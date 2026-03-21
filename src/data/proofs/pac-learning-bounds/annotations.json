@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-header-context",
+    "proofId": "pac-learning-bounds",
+    "range": { "startLine": 1, "endLine": 12 },
+    "type": "context",
+    "title": "PAC Learning and VC Dimension Overview",
+    "content": "This module formalizes the core of statistical learning theory: the Sauer-Shelah lemma bounding the growth function, PAC learning sample complexity, and the fundamental theorem of statistical learning. The formalization uses Lean 4 with Mathlib, working over abstract hypothesis classes $\\mathcal{H} \\subseteq \\mathcal{P}(\\alpha)$. The file represents a pioneering formalization of machine learning foundations in a proof assistant.",
+    "mathContext": "The fundamental theorem: $\\mathcal{H}$ is PAC learnable $\\iff$ $\\text{VCdim}(\\mathcal{H}) < \\infty$. Sample complexity: $m(\\varepsilon, \\delta) = O\\left(\\frac{d + \\log(1/\\delta)}{\\varepsilon^2}\\right)$.",
+    "significance": "context",
+    "relatedConcepts": ["PAC learning", "VC dimension", "Sauer-Shelah lemma", "statistical learning theory"],
+    "prerequisites": ["probability theory", "combinatorics", "basic measure theory"]
+  },
+  {
+    "id": "ann-growth-function",
+    "proofId": "pac-learning-bounds",
+    "range": { "startLine": 17, "endLine": 19 },
+    "type": "definition",
+    "title": "Growth Function (Shattering Coefficient)",
+    "content": "The growth function $\\Pi_{\\mathcal{H}}(n)$ counts the maximum number of distinct labelings that $\\mathcal{H}$ can induce on a set of $n$ points. This is the key quantity connecting combinatorial complexity to sample complexity. Note: the definition currently uses sorry — it requires maximizing over all $n$-element subsets of the domain, which needs Finset-based computation.",
+    "mathContext": "$\\Pi_{\\mathcal{H}}(n) = \\max_{|S|=n} |\\{S \\cap h : h \\in \\mathcal{H}\\}|$. Trivially $\\Pi_{\\mathcal{H}}(n) \\leq 2^n$, with equality when $n \\leq \\text{VCdim}(\\mathcal{H})$.",
+    "significance": "key",
+    "relatedConcepts": ["shattering", "VC dimension", "effective hypothesis class", "growth rate"],
+    "prerequisites": ["Set operations", "Finset cardinality", "maximization over finite sets"]
+  },
+  {
+    "id": "ann-sauer-shelah",
+    "proofId": "pac-learning-bounds",
+    "range": { "startLine": 22, "endLine": 23 },
+    "type": "technique",
+    "title": "Sauer-Shelah Lemma",
+    "content": "The Sauer-Shelah lemma (Sauer 1972, Shelah 1972, independently Perles) is the combinatorial engine of learning theory. It states that a hypothesis class with VC dimension $d$ can produce at most $\\sum_{i=0}^d \\binom{n}{i}$ distinct labelings on $n$ points — polynomial rather than exponential growth. The standard proof uses strong induction: fixing one point splits hypotheses into those that are sensitive/insensitive to that point.",
+    "mathContext": "If $\\text{VCdim}(\\mathcal{H}) = d$ and $n \\geq d$: $$\\Pi_{\\mathcal{H}}(n) \\leq \\sum_{i=0}^d \\binom{n}{i} \\leq \\left(\\frac{en}{d}\\right)^d$$",
+    "significance": "key",
+    "relatedConcepts": ["binomial coefficients", "polynomial growth", "epsilon-nets", "set system complexity"],
+    "prerequisites": ["VC dimension", "growthFunction definition", "Finset.range", "Nat.choose"]
+  },
+  {
+    "id": "ann-sauer-bound",
+    "proofId": "pac-learning-bounds",
+    "range": { "startLine": 26, "endLine": 27 },
+    "type": "technique",
+    "title": "Sauer-Shelah Polynomial Bound",
+    "content": "A cleaner corollary of Sauer-Shelah: the sum of binomial coefficients $\\sum_{i=0}^d \\binom{n}{i} \\leq (n+1)^d$. This simpler polynomial bound is often more convenient for asymptotic analysis and yields the key insight: VC dimension $d$ limits the effective hypothesis space to polynomial size in $n$.",
+    "mathContext": "$\\sum_{i=0}^d \\binom{n}{i} \\leq (n+1)^d$ for $n \\geq d \\geq 1$. The sharper bound $(en/d)^d$ follows from Stirling's approximation but $(n+1)^d$ suffices for most applications.",
+    "significance": "supporting",
+    "relatedConcepts": ["binomial sum bounds", "polynomial vs exponential growth", "asymptotic analysis"],
+    "prerequisites": ["Nat.choose properties", "Finset.sum", "polynomial bounds"]
+  },
+  {
+    "id": "ann-sample-complexity",
+    "proofId": "pac-learning-bounds",
+    "range": { "startLine": 32, "endLine": 35 },
+    "type": "technique",
+    "title": "PAC Sample Complexity Bound",
+    "content": "The sample complexity for $(\\varepsilon, \\delta)$-PAC learning with VC dimension $d$: $m = O(d/\\varepsilon + \\log(1/\\delta)/\\varepsilon)$ samples suffice. The $d/\\varepsilon$ term comes from Sauer-Shelah (controlling the effective hypothesis class size), while $\\log(1/\\delta)/\\varepsilon$ is the confidence boost from Hoeffding's inequality. The formalization states the bound existentially with an explicit ceiling expression.",
+    "mathContext": "There exists $m \\leq \\lceil 8d/\\varepsilon + 4\\log(2/\\delta)/\\varepsilon \\rceil$ sufficient for $(\\varepsilon, \\delta)$-PAC learning. The tighter bound uses $\\varepsilon^2$ in the denominator; this formalization uses the $1/\\varepsilon$ form.",
+    "significance": "key",
+    "relatedConcepts": ["Hoeffding's inequality", "uniform convergence", "epsilon-net theorem", "double sampling"],
+    "prerequisites": ["Real.log", "Nat.ceil", "Sauer-Shelah bound", "concentration inequalities"]
+  },
+  {
+    "id": "ann-fundamental-theorem",
+    "proofId": "pac-learning-bounds",
+    "range": { "startLine": 39, "endLine": 41 },
+    "type": "concept",
+    "title": "Fundamental Theorem of Statistical Learning (Placeholder)",
+    "content": "The fundamental theorem states four equivalent conditions: (1) finite VC dimension, (2) uniform convergence property, (3) PAC learnability, (4) ERM consistency. Currently a placeholder proving True, as the full formalization requires defining PAC learnability as a predicate on hypothesis classes (with measure-theoretic probability), which is a substantial formalization effort.",
+    "mathContext": "The equivalence: $\\text{VCdim}(\\mathcal{H}) < \\infty \\iff \\mathcal{H}$ has uniform convergence $\\iff \\mathcal{H}$ is PAC learnable $\\iff$ ERM is consistent for $\\mathcal{H}$.",
+    "significance": "key",
+    "relatedConcepts": ["PAC learnability", "ERM consistency", "uniform convergence", "no-free-lunch theorem"],
+    "prerequisites": ["VC dimension", "Sauer-Shelah", "measure-theoretic probability", "sample complexity bounds"]
+  }
+]
