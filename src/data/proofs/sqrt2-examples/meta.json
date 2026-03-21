@@ -29,7 +29,21 @@
       "Calculation proofs with calc blocks"
     ],
     "dateAdded": "12/27/25",
-    "axiomCount": 0
+    "axiomCount": 0,
+    "relatedProblems": [
+      {
+        "id": "sqrt2-irrational",
+        "relationship": "Companion proof about √2: this file demonstrates basic Lean tactics, while sqrt2-irrational proves the irrationality of √2 using those same techniques at a higher level"
+      },
+      {
+        "id": "sqrt2-from-axioms",
+        "relationship": "An alternative formalization of √2 properties built from first principles rather than Mathlib"
+      },
+      {
+        "id": "nth-root-irrational",
+        "relationship": "Generalization: proves irrationality of nth roots, extending the techniques demonstrated here to more advanced number theory"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "The non-negativity of squares is one of the most elementary properties of ordered rings, known since antiquity and fundamental to Euclid's *Elements* (c. 300 BCE). In modern algebra, the property $n^2 \\geq 0$ characterizes ordered fields and is an axiom in real closed field theory, formalized by Artin and Schreier in the 1920s. Implication transitivity, meanwhile, is a core rule of propositional logic tracing back to the Stoic logicians (3rd century BCE) and later formalized by Frege in his *Begriffsschrift* (1879) as one of the foundational inference rules. Together these results illustrate how even the simplest mathematical facts connect to deep structural properties of number systems and logical frameworks.",
