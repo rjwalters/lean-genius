@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Deleted 2 unused axioms (73→71): elliott_halberstam_conjecture (open conjecture), GRH_implies_EH (unused).",
+    "progressSummary": "PROGRESS: Deleted 8 more unused axioms (50→42): selberg_degree_conjecture (x2), GrandRH_implies_our_RH, bombieri_selberg_convolution, hilbert_polya_implies_rh, linnik_constant_upper, GRH_linnik_improvement, bombieri_vinogradov. Also deleted 3 orphaned opaques + 3 orphaned defs.",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",
@@ -144,7 +144,8 @@
       "Miller 1976 GRH test is FASTER than AKS 2002 unconditional test: O((log n)^4) vs O((log n)^{6+ε})",
       "Artin constant C ≈ 0.3739: density of primes for which a is a primitive root",
       "5 axioms were completely unused (referenced only in their own declaration) and could be safely deleted",
-      "EH conjecture should not be axiomatized unconditionally — it is an open problem. Removed to maintain axiom hygiene."
+      "EH conjecture should not be axiomatized unconditionally — it is an open problem. Removed to maintain axiom hygiene.",
+      "After 83→50 cleanup, another 16% of axioms (8 of 50) were documentation-only dead weight. All 42 remaining axioms are genuinely load-bearing in proofs."
     ],
     "mathlibGaps": [
       "Dirichlet series",

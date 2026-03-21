@@ -1298,10 +1298,6 @@ opaque selbergDegree : SelbergClassFunction → ℝ
 /-- The Riemann zeta function is in the Selberg class with degree 1. -/
 axiom zeta_in_selberg_class : ∃ F : SelbergClassFunction, selbergDegree F = 1
 
-/-- **The Degree Conjecture**: The degree of any element of 𝒮 is a non-negative integer. -/
-axiom selberg_degree_conjecture :
-  ∀ F : SelbergClassFunction, ∃ n : ℕ, selbergDegree F = n
-
 /-- **GRH for the Selberg class**: All non-trivial zeros of all F ∈ 𝒮
 lie on the critical line Re(s) = 1/2. This implies ordinary RH. -/
 opaque GRH_selberg_class :

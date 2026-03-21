@@ -2770,25 +2770,6 @@ structure SelbergClassFunction where
   /-- Normalization: a₁ = 1 -/
   normalized : coeff 1 = 1
 
-/-- Grand Riemann Hypothesis: every function in the Selberg class has
-    its non-trivial zeros on the critical line Re(s) = 1/2.
-
-    **SOUNDNESS FIX (2026-03-19)**: Previously defined via a finite partial sum
-    (Finset.range 1000) as a proxy for "F(s) = 0". This is mathematically
-    inappropriate: partial sums of Dirichlet series are entire functions with
-    zeros everywhere, so the condition "∑_{n<1000} a_n n^{-s} = 0" is much
-    stronger (and likely false) compared to the actual "F(s) = 0".
-
-    Since SelbergClassFunction is opaque (we cannot evaluate F at a point),
-    GrandRH is best stated as an opaque Prop. It is only used as a hypothesis
-    in axioms (GrandRH_implies_our_RH, bombieri_selberg_convolution), so this
-    change preserves all downstream proofs. -/
-opaque GrandRH : Prop
-
-/-- The degree conjecture: the degree of every element of S is a non-negative integer -/
-axiom selberg_degree_conjecture :
-    ∀ F : SelbergClassFunction, ∃ d : ℕ, F.degree = (d : ℝ)
-
 /-- Kaczorowski-Perelli structure theorem (2011):
     Functions of degree 1 in the extended Selberg class
     are products of shifted Dirichlet L-functions. -/
@@ -2806,18 +2787,6 @@ theorem selberg_degree_one_classification :
   intro F hF
   obtain ⟨q, hq1, hq2, _⟩ := kaczorowski_perelli_degree_one F hF
   exact ⟨q, hq1, hq2⟩
-
-/-- Grand RH (Selberg class version) implies our RH.
-    ζ(s) is in the Selberg class, so Grand RH applied to ζ gives RH. -/
-axiom GrandRH_implies_our_RH : GrandRH → _root_.RiemannHypothesis
-
-/-- Bombieri's refinement: conditional on GRH, the Selberg class
-    is closed under Rankin-Selberg convolution -/
-axiom bombieri_selberg_convolution :
-    GrandRH →
-    ∀ F G : SelbergClassFunction,
-      ∃ H : SelbergClassFunction,
-        H.degree = F.degree + G.degree
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XXXII: ARITHMETIC CONSEQUENCES AND EXPLICIT ESTIMATES
@@ -2867,11 +2836,7 @@ theorem rh_tightens_prime_bounds :
 
 -- Part XXXI: Selberg Class
 #check SelbergClassFunction
-#check GrandRH
-#check selberg_degree_conjecture
-#check GrandRH_implies_our_RH
 #check kaczorowski_perelli_degree_one
-#check bombieri_selberg_convolution
 
 -- Part XXXII: Arithmetic Consequences
 #check rh_explicit_prime_counting
@@ -2997,23 +2962,6 @@ This would immediately prove RH, since eigenvalues of self-adjoint
 operators are real, so zeros would be forced onto the critical line.
 -/
 
-/-- The Hilbert-Pólya conjecture: there exists a self-adjoint operator H
-    on some Hilbert space such that the eigenvalues of (1/2 + iH) are
-    exactly the non-trivial zeros of ζ(s). -/
-opaque HilbertPolyaConjecture : Prop :=
-    -- There exists a self-adjoint (Hermitian) operator H such that
-    -- the spectrum of (1/2 + iH) equals the set of non-trivial zeros of ζ
-    True
-
-/-- The Hilbert-Pólya conjecture would imply RH, since eigenvalues
-    of self-adjoint operators are real, forcing all zeros to have Re = 1/2.
-
-    Note: This is stated as an axiom because HilbertPolyaConjecture is opaque
-    (we cannot see that it equals True). The mathematical content is:
-    spectral operator exists ⟹ zeros on critical line. -/
-axiom hilbert_polya_implies_rh :
-    HilbertPolyaConjecture → RiemannHypothesis
-
 /-- Connes' approach (1999): RH is equivalent to a positivity condition
     in noncommutative geometry. The "adele class space" ℚ*\𝔸_ℚ*/ℤ̂*
     provides the geometric framework.
@@ -3033,9 +2981,7 @@ axiom connes_noncommutative_geometry : ConnesPositivity ↔ RiemannHypothesis
 #check katz_sarnak_symmetry_types
 #check gue_pair_correlation_at_zero
 
--- Part XXXIV: Physics and Hilbert-Pólya
-#check HilbertPolyaConjecture
-#check hilbert_polya_implies_rh
+-- Part XXXIV: Physics and Connes
 #check connes_noncommutative_geometry
 
 /- ═══════════════════════════════════════════════════════════════════════════════
@@ -3172,20 +3118,6 @@ progressions, primitive roots, and efficient algorithms.
 
 section DirichletConsequences
 
-/-- Linnik's constant L: the least prime p ≡ a (mod q) satisfies p ≤ q^L.
-    Best unconditional bound: L ≤ 5 (Xylouris, 2011).
-    Under GRH: L = 2 + ε suffices. -/
-opaque linnik_constant : ℝ
-
-/-- Unconditional bound: L ≤ 5 (Xylouris 2011). -/
-axiom linnik_constant_upper : linnik_constant ≤ 5
-
-/-- Under GRH, the least prime p ≡ a (mod q) is O(q² log²q). -/
-axiom GRH_linnik_improvement :
-    GeneralizedRiemannHypothesis →
-    ∀ q : ℕ, q ≥ 2 → ∀ a : ℕ, Nat.Coprime a q →
-      ∃ p : ℕ, Nat.Prime p ∧ p ≡ a [MOD q] ∧ (p : ℝ) ≤ (q : ℝ) ^ 2 * (Real.log q) ^ 2
-
 /-- **Primitive root mod p**: a has multiplicative order p - 1 in (ℤ/pℤ)*.
 
     The definition says: p is prime, p does not divide a, and whenever
@@ -3261,9 +3193,6 @@ end DirichletConsequences
 #check gue_pair_correlation_at_nat
 
 -- Part XXXVI: Dirichlet Consequences
-#check linnik_constant
-#check linnik_constant_upper
-#check GRH_linnik_improvement
 #check GRH_artin_conjecture
 #check GRH_implies_efficient_primality
 
@@ -3281,47 +3210,6 @@ quality bounds that GRH would give, but only when summed over moduli.
 -/
 
 section BombieriVinogradov
-
-/-- **Prime counting function in arithmetic progressions.**
-    π(x; q, a) = #{p ≤ x : p ≡ a (mod q), p prime} -/
-noncomputable def primeCountAP (x : ℝ) (q a : ℕ) : ℕ :=
-  (Finset.filter (fun n => Nat.Prime n ∧ n ≡ a [MOD q]) (Finset.range (⌊x⌋₊ + 1))).card
-
-/-- **PROVED: π(x; 1, 0) = π(x) (all primes are ≡ 0 mod 1).**
-
-    When the modulus is 1, every prime is counted. -/
-theorem primeCountAP_trivial (x : ℝ) :
-    primeCountAP x 1 0 =
-    (Finset.filter (fun n => Nat.Prime n ∧ n ≡ 0 [MOD 1]) (Finset.range (⌊x⌋₊ + 1))).card :=
-  rfl
-
-/-- **Expected distribution of primes in APs.**
-    By Dirichlet's theorem, primes are equidistributed among the φ(q)
-    reduced residue classes mod q. The expected count is π(x)/φ(q). -/
-noncomputable def expectedPrimeCountAP (x : ℝ) (q : ℕ) : ℝ :=
-  (Nat.totient q : ℝ)⁻¹ * x / Real.log x
-
-/-- **Axiom (Bombieri-Vinogradov 1965): RH on average.**
-
-    For any A > 0, there exists B = B(A) such that:
-    ∑_{q ≤ Q} max_{(a,q)=1} |π(x;q,a) - li(x)/φ(q)| ≪ x/(log x)^A
-
-    where Q = √x / (log x)^B. The key feature:
-    - The bound matches what GRH would give for EACH q
-    - But only when AVERAGED over q
-    - The level of distribution Q = √x / (log x)^B is "almost" √x
-
-    This theorem is used in the proof of the Green-Tao theorem and
-    many sieve-theoretic results. The proof requires the large sieve
-    inequality and Perron's formula, neither of which is in Mathlib. -/
-axiom bombieri_vinogradov :
-    ∀ A : ℝ, A > 0 →
-    ∃ B : ℝ, B > 0 ∧ ∃ C > 0,
-    ∀ x : ℝ, x ≥ 2 →
-      -- The total averaged error over moduli q ≤ √x/(log x)^B is bounded
-      (∑ q ∈ (Finset.range (⌊Real.sqrt x / (Real.log x) ^ B⌋₊ + 1)).filter (· ≥ 1),
-        |(primeCountAP x q 1 : ℝ) - expectedPrimeCountAP x q|) ≤
-        C * x / (Real.log x) ^ A
 
 /-- **PROVED: The level of distribution in BV is nearly optimal.**
 
@@ -3735,10 +3623,6 @@ end CriticalLineZeros
 -- ═════════════════════════════════════════════════════════════════════════
 
 -- Part XXXVII: Bombieri-Vinogradov
-#check primeCountAP
-#check primeCountAP_trivial
-#check expectedPrimeCountAP
-#check bombieri_vinogradov
 #check bv_level_bounds
 #check zhang_gap_bound
 
@@ -3778,8 +3662,6 @@ end CriticalLineZeros
 
 -- Soundness fixes
 #check voronin_universality     -- Was axiom, now theorem (True → trivial)
-#check HilbertPolyaConjecture   -- Was def := True, now opaque
-#check hilbert_polya_implies_rh -- Was trivial, now HP → RH (real content)
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XXXIX: COMPLETED ZETA AND STRUCTURAL PROPERTIES (PROVED)
@@ -4361,9 +4243,6 @@ end CounterexampleStructure
 #check gue_pair_correlation_at_nat
 
 -- Part XXXVI: Dirichlet Consequences
-#check linnik_constant
-#check linnik_constant_upper
-#check GRH_linnik_improvement
 #check GRH_artin_conjecture
 #check GRH_implies_efficient_primality
 

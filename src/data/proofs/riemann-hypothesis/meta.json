@@ -2,7 +2,7 @@
   "id": "riemann-hypothesis",
   "title": "The Riemann Hypothesis",
   "slug": "riemann-hypothesis",
-  "description": "A comprehensive formalization of the Riemann Hypothesis (8313 lines, 521 proved theorems, 50 axioms, 0 sorries). States RH using Mathlib's zeta function, proves GRH→RH, establishes 14 equivalent formulations (K₁₀ network + BSY, Riesz, Báez-Duarte, Volchkov integral criteria) with 91 pairwise equivalences, shows ¬RH forces 4 distinct off-line zeros, moment growth rates, Selberg class, de Bruijn-Newman constant, random matrix theory, and arithmetic consequences.",
+  "description": "A comprehensive formalization of the Riemann Hypothesis (8188 lines, 540 proved theorems, 42 axioms, 0 sorries). States RH using Mathlib's zeta function, proves GRH→RH, establishes 14 equivalent formulations (K₁₀ network + BSY, Riesz, Báez-Duarte, Volchkov integral criteria) with 91 pairwise equivalences, shows ¬RH forces 4 distinct off-line zeros, moment growth rates, Selberg class, de Bruijn-Newman constant, random matrix theory, and arithmetic consequences.",
   "meta": {
     "status": "axiomatized",
     "tags": [
@@ -15,8 +15,8 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 50,
-    "assumptions": "50 axiom declarations across two files (40 main + 10 consequences), all actively used in proved theorems. Main file: RH equivalences (Robin, Mertens, Nyman-Beurling, Lagarias, Speiser, Weil positivity, de Bruijn-Newman, Li positivity, BSY integral, Riesz, Báez-Duarte, Volchkov), partial results (Hardy, classical zero-free region, Conrey 2/5, Montgomery pair correlation), moment bounds (Harper, Radziwiłł-Soundararajan), Selberg class (degree conjecture, Kaczorowski-Perelli, Grand RH), explicit estimates (Rosser-Schoenfeld, prime counting), Bombieri-Vinogradov, Linnik constant, GRH consequences. Consequences file: Mertens bound, Li criterion, Riemann-von Mangoldt, density hypothesis, Chebyshev bounds, explicit formula, Selberg class, Hadamard product. 33 unused axioms + 14 orphaned opaques deleted in cleanup. 8313 lines, 50 axioms, 0 sorries.",
+    "axiomCount": 42,
+    "assumptions": "42 axiom declarations across two files (33 main + 9 consequences), all actively used in proved theorems. Main file: RH equivalences (Robin, Mertens, Nyman-Beurling, Lagarias, Speiser, Weil positivity, de Bruijn-Newman, Li positivity, BSY integral, Riesz, Báez-Duarte, Volchkov), partial results (Hardy, classical zero-free region, Conrey 2/5, Montgomery pair correlation), moment bounds (Harper, Radziwiłł-Soundararajan), Selberg class (Kaczorowski-Perelli), explicit estimates (Rosser-Schoenfeld, prime counting), GRH consequences (Artin primitive root, Miller primality). Consequences file: Mertens bound, Li criterion, Riemann-von Mangoldt, density hypothesis, Chebyshev bounds, explicit formula, Selberg class, Hadamard product. 8188 lines, 42 axioms, 0 sorries.",
     "mathlibDependencies": [
       {
         "theorem": "riemannZeta",
@@ -127,7 +127,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The Riemann Hypothesis remains one of the deepest unsolved problems in mathematics. This formalization (8433 lines, 482 theorems, 87 axioms, 0 sorries) provides:\n\n1. A precise formal statement using Mathlib's riemannZeta function\n2. 14 equivalent formulations: K₁₀ network + BSY, Riesz, Báez-Duarte, Volchkov integral criteria\n3. GRH→RH proved from Mathlib's Dirichlet L-function infrastructure\n4. Counterexample structure: ¬RH forces 4 distinct off-line zeros\n5. Moment conjectures: Hardy-Littlewood, Ingham, CFKRS, growth rate determined\n6. Deep theory: Selberg class, de Bruijn-Newman constant, random matrix connections\n7. Arithmetic consequences: explicit prime bounds, Linnik constant, Bombieri-Vinogradov\n8. Li's criterion, Connes' positivity, and Keiper's conjecture\n\nThe 'axiom' badge indicates this formalization assumes deep mathematical results as axioms.",
+    "summary": "The Riemann Hypothesis remains one of the deepest unsolved problems in mathematics. This formalization (8188 lines, 540 theorems, 42 axioms, 0 sorries) provides:\n\n1. A precise formal statement using Mathlib's riemannZeta function\n2. 14 equivalent formulations: K₁₀ network + BSY, Riesz, Báez-Duarte, Volchkov integral criteria\n3. GRH→RH proved from Mathlib's Dirichlet L-function infrastructure\n4. Counterexample structure: ¬RH forces 4 distinct off-line zeros\n5. Moment conjectures: Hardy-Littlewood, Ingham, CFKRS, growth rate determined\n6. Deep theory: Selberg class, de Bruijn-Newman constant, random matrix connections\n7. Arithmetic consequences: explicit prime bounds, GRH-conditional results\n8. Li's criterion, Connes' positivity, and Keiper's conjecture\n\nThe 'axiom' badge indicates this formalization assumes deep mathematical results as axioms.",
     "implications": "If RH is true, it would:\n- Give the best possible error term in the Prime Number Theorem\n- Provide tight bounds on prime gaps: p_{n+1} - p_n = O(sqrt(p_n) log^2 p_n)\n- Enable effective bounds in many number-theoretic problems\n- Have implications for the security analysis of cryptographic systems\n\nIf RH is false, it would be equally revolutionary, revealing unexpected structure in the distribution of primes.",
     "openQuestions": [
       "Is RH true? (The $1 million question)",

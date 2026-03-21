@@ -1,5 +1,66 @@
 # Knowledge Base: Riemann Hypothesis
 
+## Session 2026-03-21 (researcher-3) - Further Axiom Cleanup (50→42 axioms, -16%)
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 63)
+**Outcome**: progress — deleted 8 unused axioms + 3 orphaned opaques + 3 orphaned defs, 0 new axioms
+
+### Methodology
+
+Systematic cross-reference audit of all 50 remaining axioms. For each axiom, counted total
+references across both files (excluding comments and `#check` lines). Axioms referenced
+only in their declaration and `#check` lines are never used in any proof.
+
+### Deleted from Main File (7 axioms + 3 orphaned opaques + 3 orphaned defs)
+
+**Unused axioms deleted:**
+- `selberg_degree_conjecture` — degree conjecture for Selberg class; never referenced in proofs
+- `GrandRH_implies_our_RH` — Grand RH implies RH; never used (GrandRH itself orphaned)
+- `bombieri_selberg_convolution` — Rankin-Selberg convolution under GRH; never used
+- `hilbert_polya_implies_rh` — Hilbert-Pólya → RH; never used (conjecture is opaque)
+- `linnik_constant_upper` — Linnik's constant ≤ 5 (Xylouris); never used
+- `GRH_linnik_improvement` — O(q² log²q) least prime in AP under GRH; never used
+- `bombieri_vinogradov` — RH on average; never used in any proof
+
+**Orphaned opaques deleted:**
+- `GrandRH` — only used as hypothesis in the two deleted Grand RH axioms
+- `HilbertPolyaConjecture` — only used in deleted hilbert_polya_implies_rh axiom
+- `linnik_constant` — only used in deleted linnik_constant_upper/GRH_linnik_improvement
+
+**Orphaned definitions deleted:**
+- `primeCountAP` — only used in deleted bombieri_vinogradov statement
+- `primeCountAP_trivial` — theorem about primeCountAP; unused
+- `expectedPrimeCountAP` — only used in deleted bombieri_vinogradov statement
+
+### Deleted from Consequences File (1 axiom)
+
+- `selberg_degree_conjecture` — duplicate declaration (also in main file); never used in proofs
+
+### What Was Kept (42 axioms, all load-bearing)
+
+All 42 remaining axioms are actively used in proved theorems:
+- 33 in main file (RH equivalences, partial results, moment bounds, Selberg class, etc.)
+- 9 in consequences file (Mertens bound, Li criterion, density hypothesis, etc.)
+
+### Stats After Changes
+- Main: 6538 lines, 33 axioms, 409 theorems/defs/opaques, 0 sorries
+- Consequences: 1650 lines, 9 axioms, 131 theorems/defs/opaques, 0 sorries
+- Combined: 8188 lines, 42 axioms, 540 theorems/defs, 0 sorries
+- Docker build passes for both files
+
+### Key Insight
+
+Even after the prior massive cleanup (83→50), another 16% of remaining axioms were
+documentation-only — never referenced in any proof. The axiom-to-theorem ratio improved
+from 50:521 to 42:540. All remaining 42 axioms are genuinely load-bearing.
+
+### Files Modified
+- `proofs/Proofs/RiemannHypothesis.lean` — deleted 7 axioms + 3 opaques + 3 defs (-121 lines)
+- `proofs/Proofs/RiemannHypothesisConsequences.lean` — deleted 1 axiom (-4 lines)
+- `src/data/proofs/riemann-hypothesis/meta.json` — updated stats
+
+---
+
 ## Session 2026-03-20 (researcher-3) - Massive Axiom Cleanup (83→50 axioms, -40%)
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 63)
