@@ -60,51 +60,35 @@
   "sections": [
     {
       "id": "introduction",
-      "title": "Introduction",
+      "title": "Module Docstring and Imports",
       "startLine": 1,
-      "endLine": 30,
-      "summary": "Historical context and the central question of computational learning theory: how many examples suffice to learn?",
-      "mathContext": "The fundamental theorem of statistical learning (Vapnik-Chervonenkis, Valiant, Blumer et al.): a hypothesis class is PAC learnable iff its VC dimension is finite. Sample complexity: $\\Theta((d + \\log(1/\\delta))/\\varepsilon^2)$."
+      "endLine": 12,
+      "summary": "Overview of PAC learning theory and VC dimension, with historical attribution to Vapnik-Chervonenkis (1971) and Valiant (1984).",
+      "mathContext": "The fundamental theorem of statistical learning: $\\mathcal{H}$ is PAC learnable $\\iff$ $\\operatorname{VCdim}(\\mathcal{H}) < \\infty$."
     },
     {
-      "id": "vc-dimension",
-      "title": "VC Dimension and Shattering",
-      "startLine": 32,
-      "endLine": 82,
-      "summary": "Formal definition of shattering and VC dimension, with examples for intervals, half-spaces, and convex sets.",
-      "mathContext": "A set $S \\subseteq \\mathcal{X}$ is shattered by $\\mathcal{H}$ if $|\\{h \\cap S : h \\in \\mathcal{H}\\}| = 2^{|S|}$. The VC dimension $d = \\max\\{|S| : S \\text{ is shattered by } \\mathcal{H}\\}$. Examples: intervals on $\\mathbb{R}$ have $d = 2$; half-spaces in $\\mathbb{R}^n$ have $d = n+1$; convex $n$-gons have $d = 2n+1$."
+      "id": "growth-function",
+      "title": "Growth Function and Sauer-Shelah",
+      "startLine": 14,
+      "endLine": 27,
+      "summary": "Defines the growth function (shattering coefficient) and states the Sauer-Shelah lemma with its polynomial corollary. All three sorry'd: the growth function definition, the exact Sauer-Shelah bound, and the simplified (n+1)^d upper bound.",
+      "mathContext": "$\\Pi_{\\mathcal{H}}(n) \\leq \\sum_{i=0}^d \\binom{n}{i} \\leq (n+1)^d$ when $\\operatorname{VCdim}(\\mathcal{H}) = d$ and $n \\geq d$."
     },
     {
-      "id": "sauer-shelah",
-      "title": "Sauer-Shelah Lemma",
-      "startLine": 84,
-      "endLine": 140,
-      "summary": "The growth function of a hypothesis class with VC dimension d is bounded by a polynomial of degree d.",
-      "mathContext": "Sauer-Shelah (1972): if $\\operatorname{VCdim}(\\mathcal{H}) = d$, then the growth function $\\Pi_{\\mathcal{H}}(n) = \\max_{|S|=n} |\\{h \\cap S : h \\in \\mathcal{H}\\}| \\leq \\sum_{i=0}^d \\binom{n}{i} \\leq (en/d)^d$. Proof by induction: removing a point splits hypotheses into those that agree and disagree on it, reducing to smaller instances."
-    },
-    {
-      "id": "pac-framework",
-      "title": "PAC Learning Framework",
-      "startLine": 142,
-      "endLine": 200,
-      "summary": "Definition of PAC learnability and the ERM learning rule.",
-      "mathContext": "PAC learning: $\\mathcal{H}$ is learnable if $\\exists$ algorithm $A$ and $m(\\varepsilon, \\delta)$ such that for all distributions $D$, all $c \\in \\mathcal{H}$, given $m \\geq m(\\varepsilon, \\delta)$ i.i.d. samples, $\\Pr[\\text{err}(A(S)) > \\varepsilon] < \\delta$. ERM: output $h \\in \\mathcal{H}$ minimizing empirical error on the sample."
-    },
-    {
-      "id": "sample-complexity",
-      "title": "Sample Complexity and the Fundamental Theorem",
-      "startLine": 202,
-      "endLine": 265,
-      "summary": "Uniform convergence bounds yield the fundamental theorem: finite VC dimension iff PAC learnable.",
-      "mathContext": "Uniform convergence: $\\Pr[\\sup_{h \\in \\mathcal{H}} |\\hat{\\text{err}}(h) - \\text{err}(h)| > \\varepsilon] \\leq 4 \\Pi_{\\mathcal{H}}(2m) \\cdot e^{-m\\varepsilon^2/8}$. Setting the RHS $< \\delta$ and using Sauer-Shelah gives $m = O((d \\log(1/\\varepsilon) + \\log(1/\\delta))/\\varepsilon^2)$. Tighter analysis removes the $\\log(1/\\varepsilon)$ factor."
+      "id": "pac-complexity",
+      "title": "PAC Sample Complexity",
+      "startLine": 29,
+      "endLine": 35,
+      "summary": "States the PAC sample complexity bound: m = O(d/ε + log(1/δ)/ε) samples suffice for (ε,δ)-PAC learning with VC dimension d. Currently sorry'd.",
+      "mathContext": "$m(\\varepsilon, \\delta) \\leq \\lceil 8d/\\varepsilon + 4\\log(2/\\delta)/\\varepsilon \\rceil$"
     },
     {
       "id": "fundamental-theorem",
-      "title": "The Fundamental Theorem",
-      "startLine": 267,
-      "endLine": 310,
-      "summary": "Equivalence of finite VC dimension, PAC learnability, uniform convergence, and finite sample complexity.",
-      "mathContext": "The following are equivalent for $\\mathcal{H}$: (1) $\\operatorname{VCdim}(\\mathcal{H}) < \\infty$; (2) $\\mathcal{H}$ has the uniform convergence property; (3) $\\mathcal{H}$ is PAC learnable; (4) ERM is a consistent learner for $\\mathcal{H}$. The proof cycle is $(1) \\Rightarrow (2) \\Rightarrow (3) \\Rightarrow (4) \\Rightarrow (1)$."
+      "title": "Fundamental Theorem (Placeholder)",
+      "startLine": 37,
+      "endLine": 43,
+      "summary": "Placeholder for the fundamental theorem of statistical learning (proves True). The full statement requires defining PAC learnability, ERM, and uniform convergence as types/propositions.",
+      "mathContext": "The equivalence: finite VC dim $\\iff$ uniform convergence $\\iff$ PAC learnable $\\iff$ ERM consistent."
     }
   ],
   "crossReferences": [
@@ -128,8 +112,10 @@
     "summary": "The fundamental theorem of statistical learning establishes that a hypothesis class is PAC learnable if and only if its VC dimension is finite. The Sauer-Shelah lemma provides the combinatorial engine, bounding the effective complexity of a hypothesis class and enabling uniform convergence from finite samples. The sample complexity O((d + log(1/delta))/epsilon^2) is tight and provides practical guidance for machine learning.",
     "implications": "This formalization provides:\n\n**1. Mathematical Foundation of Machine Learning**\nThe fundamental theorem is the theoretical bedrock of statistical learning, and this formalization makes its assumptions and conclusions machine-checkable.\n\n**2. Combinatorics-Learning Bridge**\nVC dimension is a purely combinatorial quantity that determines learnability, demonstrating a deep connection between discrete mathematics and statistics.\n\n**3. Sauer-Shelah as Reusable Tool**\nThe Sauer-Shelah lemma has applications beyond learning theory: in geometry (epsilon-nets), combinatorics (set systems), and model theory (NIP theories).\n\n**4. ERM as Universal Algorithm**\nThe formalization shows that empirical risk minimization is a universal learning algorithm, requiring no distributional assumptions beyond i.i.d. sampling.\n\n**5. Foundation for Extensions**\nThe PAC framework is the starting point for agnostic learning, online learning, and learning with noise, each requiring extensions of the formalized core.",
     "openQuestions": [
-      "Can the VC dimension of specific hypothesis classes (linear classifiers, neural networks) be computed?",
-      "What is the connection to Rademacher complexity?"
+      "Can the VC dimension of specific hypothesis classes (linear classifiers, neural networks) be computed in Lean?",
+      "What is the connection to Rademacher complexity, and can the Rademacher-based generalization bound be formalized?",
+      "Formalize the full equivalence (not just the placeholder True) — requires defining PAC learnability, ERM, and uniform convergence as proper Lean types",
+      "Can the epsilon-net theorem be formalized in Lean to get the tighter sample complexity bound without the log(1/ε) factor?"
     ]
   }
 }
