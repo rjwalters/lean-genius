@@ -20,7 +20,14 @@
     "erdosNumber": 346,
     "erdosUrl": "https://erdosproblems.com/346",
     "erdosProblemStatus": "open",
-    "axiomCount": 4
+    "axiomCount": 4,
+    "prerequisites": [
+      "additive number theory basics",
+      "Fibonacci numbers and the golden ratio",
+      "complete sequences and subset sums",
+      "lacunary sequences and exponential growth",
+      "Zeckendorf representation"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős and Graham (1980) studied sequences that are strongly complete (removing finitely many terms preserves completeness) but fragile (removing infinitely many destroys it). Graham (1964) showed F_n − (−1)^n is such a sequence. The golden ratio φ = (1+√5)/2 appears as the threshold: if a_{n+1}/a_n > φ, fragility is automatic.",
