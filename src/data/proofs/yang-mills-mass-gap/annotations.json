@@ -1,199 +1,362 @@
-{
-  "annotations": [
-    {
-      "id": "gauge-group-typeclass",
-      "proofId": "yang-mills-mass-gap",
-      "type": "definition",
-      "range": { "startLine": 59, "endLine": 78 },
-      "title": "CompactSimpleGaugeGroup Typeclass",
-      "content": "Introduces a custom typeclass `CompactSimpleGaugeGroup` capturing the essential properties of gauge groups: $G$ is a compact, connected Lie group with simple (non-abelian) Lie algebra. Simplicity means the only normal subgroups are trivial ($\\bot$) or the whole group ($\\top$). This allows all 273+ theorems to be polymorphic over the gauge group, applying equally to $\\mathrm{SU}(2)$, $\\mathrm{SU}(3)$, or any compact simple group.",
-      "mathContext": "$G$ compact connected, $\\forall H \\trianglelefteq G,\\ H = \\{e\\} \\lor H = G$; Lie algebra $\\mathfrak{g}$ is the space of traceless anti-Hermitian matrices for $\\mathrm{SU}(n)$",
-      "significance": "key",
-      "relatedConcepts": ["Lie group", "simple group", "compact group", "gauge symmetry"],
-      "prerequisites": ["Group", "TopologicalSpace", "CompactSpace", "Subgroup.Normal"],
-      "tags": ["gauge-theory", "typeclass", "lie-group"]
+[
+  {
+    "id": "gauge-group-typeclass",
+    "proofId": "yang-mills-mass-gap",
+    "type": "definition",
+    "range": {
+      "startLine": 59,
+      "endLine": 78
     },
-    {
-      "id": "minkowski-metric",
-      "proofId": "yang-mills-mass-gap",
-      "type": "technique",
-      "range": { "startLine": 82, "endLine": 147 },
-      "title": "Minkowski Metric Formalization",
-      "content": "The Minkowski metric $\\eta_{\\mu\\nu}$ with signature $(-,+,+,+)$ is formalized with fully proved properties: diagonality ($\\eta_{\\mu\\nu} = 0$ for $\\mu \\ne \\nu$), symmetry, $\\eta_{00} = -1$, $\\eta_{ii} = 1$ for $i \\ge 1$, trace $\\eta^\\mu_\\mu = 2$, and Lorentzian signature $(1,3)$. The squared norm $s^2 = -t^2 + x^2 + y^2 + z^2$ distinguishes spacelike, timelike, and lightlike separations.",
-      "mathContext": "$\\eta = \\text{diag}(-1, 1, 1, 1)$, $\\text{tr}(\\eta) = 2$, signature $(1,3)$",
-      "significance": "supporting",
-      "relatedConcepts": ["special relativity", "Lorentzian geometry", "metric signature", "Minkowski space"],
-      "prerequisites": ["Matrix", "Fin 4", "Real"],
-      "tags": ["special-relativity", "metric", "spacetime"]
+    "title": "CompactSimpleGaugeGroup Typeclass",
+    "content": "Introduces a custom typeclass `CompactSimpleGaugeGroup` capturing the essential properties of gauge groups: $G$ is a compact, connected Lie group with simple (non-abelian) Lie algebra. Simplicity means the only normal subgroups are trivial ($\\bot$) or the whole group ($\\top$). This allows all 273+ theorems to be polymorphic over the gauge group, applying equally to $\\mathrm{SU}(2)$, $\\mathrm{SU}(3)$, or any compact simple group.",
+    "mathContext": "$G$ compact connected, $\\forall H \\trianglelefteq G,\\ H = \\{e\\} \\lor H = G$; Lie algebra $\\mathfrak{g}$ is the space of traceless anti-Hermitian matrices for $\\mathrm{SU}(n)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lie group",
+      "simple group",
+      "compact group",
+      "gauge symmetry"
+    ],
+    "prerequisites": [
+      "Group",
+      "TopologicalSpace",
+      "CompactSpace",
+      "Subgroup.Normal"
+    ]
+  },
+  {
+    "id": "minkowski-metric",
+    "proofId": "yang-mills-mass-gap",
+    "type": "technique",
+    "range": {
+      "startLine": 82,
+      "endLine": 147
     },
-    {
-      "id": "yang-mills-equations",
-      "proofId": "yang-mills-mass-gap",
-      "type": "context",
-      "range": { "startLine": 197, "endLine": 251 },
-      "title": "The Classical Yang-Mills Equations",
-      "content": "Formalizes the Yang-Mills action $S[A] = -\\frac{1}{4g^2} \\int \\text{Tr}(F_{\\mu\\nu} F^{\\mu\\nu})$ and the classical equations of motion $D_\\mu F^{\\mu\\nu} = 0$ (Yang-Mills equation) and $D_{[\\mu} F_{\\nu\\rho]} = 0$ (Bianchi identity). Unlike Maxwell's equations, these are non-linear because the covariant derivative $D$ involves the gauge field $A$ itself, with the commutator $[A_\\mu, A_\\nu]$ in the field strength. This non-linearity gives rise to gluon self-interactions, asymptotic freedom, and confinement.",
-      "mathContext": "$S[A] = -\\frac{1}{4g^2} \\int \\text{Tr}(F^2)$, $D_\\mu F^{\\mu\\nu} = 0$, $F_{\\mu\\nu} = \\partial_\\mu A_\\nu - \\partial_\\nu A_\\mu + [A_\\mu, A_\\nu]$",
-      "significance": "key",
-      "relatedConcepts": ["gauge field", "field strength tensor", "covariant derivative", "non-linear PDE"],
-      "prerequisites": ["GaugeLieAlgebra", "killingForm", "MeasureTheory.Integral.Bochner"],
-      "tags": ["yang-mills", "classical-field-theory", "equations-of-motion"]
+    "title": "Minkowski Metric Formalization",
+    "content": "The Minkowski metric $\\eta_{\\mu\\nu}$ with signature $(-,+,+,+)$ is formalized with fully proved properties: diagonality ($\\eta_{\\mu\\nu} = 0$ for $\\mu \\ne \\nu$), symmetry, $\\eta_{00} = -1$, $\\eta_{ii} = 1$ for $i \\ge 1$, trace $\\eta^\\mu_\\mu = 2$, and Lorentzian signature $(1,3)$. The squared norm $s^2 = -t^2 + x^2 + y^2 + z^2$ distinguishes spacelike, timelike, and lightlike separations.",
+    "mathContext": "$\\eta = \\text{diag}(-1, 1, 1, 1)$, $\\text{tr}(\\eta) = 2$, signature $(1,3)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "special relativity",
+      "Lorentzian geometry",
+      "metric signature",
+      "Minkowski space"
+    ],
+    "prerequisites": [
+      "Matrix",
+      "Fin 4",
+      "Real"
+    ]
+  },
+  {
+    "id": "yang-mills-equations",
+    "proofId": "yang-mills-mass-gap",
+    "type": "context",
+    "range": {
+      "startLine": 197,
+      "endLine": 251
     },
-    {
-      "id": "gauge-invariance-group",
-      "proofId": "yang-mills-mass-gap",
-      "type": "insight",
-      "range": { "startLine": 252, "endLine": 308 },
-      "title": "Gauge Transformations Form a Group",
-      "content": "Proves that gauge transformations $g(x): \\mathbb{R}^4 \\to G$ form an infinite-dimensional group under pointwise multiplication, with the action invariant: $S[A^g] = S[A]$. Properties proved include identity element, associativity, and double inversion. This gauge symmetry is the defining feature of Yang-Mills theory and the reason gauge fixing (Faddeev-Popov, Part XXXVII) is needed for quantization. The gauge orbit of a connection $A$ is the set $\\{A^g : g \\in \\mathcal{G}\\}$.",
-      "mathContext": "$A^g_\\mu = g A_\\mu g^{-1} + g \\partial_\\mu g^{-1}$, $S[A^g] = S[A]$",
-      "significance": "key",
-      "relatedConcepts": ["gauge symmetry", "group action", "principal bundle", "gauge orbit"],
-      "prerequisites": ["CompactSimpleGaugeGroup", "Group"],
-      "tags": ["gauge-theory", "symmetry", "group-action"]
+    "title": "The Classical Yang-Mills Equations",
+    "content": "Formalizes the Yang-Mills action $S[A] = -\\frac{1}{4g^2} \\int \\text{Tr}(F_{\\mu\\nu} F^{\\mu\\nu})$ and the classical equations of motion $D_\\mu F^{\\mu\\nu} = 0$ (Yang-Mills equation) and $D_{[\\mu} F_{\\nu\\rho]} = 0$ (Bianchi identity). Unlike Maxwell's equations, these are non-linear because the covariant derivative $D$ involves the gauge field $A$ itself, with the commutator $[A_\\mu, A_\\nu]$ in the field strength. This non-linearity gives rise to gluon self-interactions, asymptotic freedom, and confinement.",
+    "mathContext": "$S[A] = -\\frac{1}{4g^2} \\int \\text{Tr}(F^2)$, $D_\\mu F^{\\mu\\nu} = 0$, $F_{\\mu\\nu} = \\partial_\\mu A_\\nu - \\partial_\\nu A_\\mu + [A_\\mu, A_\\nu]$",
+    "significance": "key",
+    "relatedConcepts": [
+      "gauge field",
+      "field strength tensor",
+      "covariant derivative",
+      "non-linear PDE"
+    ],
+    "prerequisites": [
+      "GaugeLieAlgebra",
+      "killingForm",
+      "MeasureTheory.Integral.Bochner"
+    ]
+  },
+  {
+    "id": "gauge-invariance-group",
+    "proofId": "yang-mills-mass-gap",
+    "type": "insight",
+    "range": {
+      "startLine": 252,
+      "endLine": 308
     },
-    {
-      "id": "instantons",
-      "proofId": "yang-mills-mass-gap",
-      "type": "insight",
-      "range": { "startLine": 479, "endLine": 526 },
-      "title": "Instantons and the Bogomolny Bound",
-      "content": "Defines instantons as (anti-)self-dual solutions of the Yang-Mills equations: $F = \\pm *F$, where $*$ is the Hodge dual. These minimize the action in a given topological sector classified by the topological charge $k \\in \\mathbb{Z}$ (second Chern number). The Bogomolny bound $S[A] \\ge 8\\pi^2|k|/g^2$ is saturated precisely by (anti-)instantons. Discovered by Belavin, Polyakov, Schwartz, and Tyupkin (1975), instantons are non-perturbative solutions that mediate tunneling between topologically distinct vacua and play a key role in understanding the QCD vacuum structure.",
-      "mathContext": "$F = \\pm *F$ (self-dual/anti-self-dual), $k = \\frac{1}{8\\pi^2} \\int \\text{Tr}(F \\wedge F) \\in \\mathbb{Z}$, $S[A] \\ge \\frac{8\\pi^2|k|}{g^2}$",
-      "significance": "supporting",
-      "relatedConcepts": ["self-dual connection", "topological charge", "Chern number", "vacuum tunneling", "Donaldson theory"],
-      "prerequisites": ["YangMillsAction", "fieldStrength"],
-      "tags": ["instantons", "topology", "non-perturbative"]
+    "title": "Gauge Transformations Form a Group",
+    "content": "Proves that gauge transformations $g(x): \\mathbb{R}^4 \\to G$ form an infinite-dimensional group under pointwise multiplication, with the action invariant: $S[A^g] = S[A]$. Properties proved include identity element, associativity, and double inversion. This gauge symmetry is the defining feature of Yang-Mills theory and the reason gauge fixing (Faddeev-Popov, Part XXXVII) is needed for quantization. The gauge orbit of a connection $A$ is the set $\\{A^g : g \\in \\mathcal{G}\\}$.",
+    "mathContext": "$A^g_\\mu = g A_\\mu g^{-1} + g \\partial_\\mu g^{-1}$, $S[A^g] = S[A]$",
+    "significance": "key",
+    "relatedConcepts": [
+      "gauge symmetry",
+      "group action",
+      "principal bundle",
+      "gauge orbit"
+    ],
+    "prerequisites": [
+      "CompactSimpleGaugeGroup",
+      "Group"
+    ]
+  },
+  {
+    "id": "instantons",
+    "proofId": "yang-mills-mass-gap",
+    "type": "insight",
+    "range": {
+      "startLine": 479,
+      "endLine": 526
     },
-    {
-      "id": "wightman-structure",
-      "proofId": "yang-mills-mass-gap",
-      "type": "definition",
-      "range": { "startLine": 376, "endLine": 406 },
-      "title": "Wightman QFT Axioms as Lean Structure",
-      "content": "Encodes the Wightman axioms as a Lean structure with fields: Hilbert space $\\mathcal{H}$, vacuum state $\\Omega$, Hamiltonian $H$, field operators, Poincaré covariance, spectral condition ($E \\ge 0$), and locality (spacelike commutativity). `QuantumYangMills` extends this with gauge field operators, capturing the mathematical framework for rigorous QFT as formulated by Wightman and Gårding (1964). The spectral condition ensures physical states have non-negative energy.",
-      "mathContext": "$(\\mathcal{H}, \\Omega, H, \\phi(f))$ with $H\\Omega = 0$, $\\text{spec}(H) \\subseteq [0,\\infty)$, $[\\phi(x), \\phi(y)] = 0$ for $(x-y)^2 < 0$",
-      "significance": "key",
-      "relatedConcepts": ["Wightman axioms", "Hilbert space", "spectral condition", "Poincaré group"],
-      "prerequisites": ["InnerProductSpace", "LinearMap", "Spectrum"],
-      "tags": ["wightman-axioms", "quantum-field-theory", "axiomatics"]
+    "title": "Instantons and the Bogomolny Bound",
+    "content": "Defines instantons as (anti-)self-dual solutions of the Yang-Mills equations: $F = \\pm *F$, where $*$ is the Hodge dual. These minimize the action in a given topological sector classified by the topological charge $k \\in \\mathbb{Z}$ (second Chern number). The Bogomolny bound $S[A] \\ge 8\\pi^2|k|/g^2$ is saturated precisely by (anti-)instantons. Discovered by Belavin, Polyakov, Schwartz, and Tyupkin (1975), instantons are non-perturbative solutions that mediate tunneling between topologically distinct vacua and play a key role in understanding the QCD vacuum structure.",
+    "mathContext": "$F = \\pm *F$ (self-dual/anti-self-dual), $k = \\frac{1}{8\\pi^2} \\int \\text{Tr}(F \\wedge F) \\in \\mathbb{Z}$, $S[A] \\ge \\frac{8\\pi^2|k|}{g^2}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "self-dual connection",
+      "topological charge",
+      "Chern number",
+      "vacuum tunneling",
+      "Donaldson theory"
+    ],
+    "prerequisites": [
+      "YangMillsAction",
+      "fieldStrength"
+    ]
+  },
+  {
+    "id": "wightman-structure",
+    "proofId": "yang-mills-mass-gap",
+    "type": "definition",
+    "range": {
+      "startLine": 376,
+      "endLine": 406
     },
-    {
-      "id": "mass-gap-definition",
-      "proofId": "yang-mills-mass-gap",
-      "type": "insight",
-      "range": { "startLine": 407, "endLine": 450 },
-      "title": "The Mass Gap: Spectrum Has a Gap",
-      "content": "Defines mass gap $\\Delta > 0$: all states orthogonal to the vacuum have energy $\\ge \\Delta$. Equivalently, the Hamiltonian spectrum is $\\{0\\} \\cup [\\Delta, \\infty)$. Proved properties include: any $\\Delta' < \\Delta$ is also a mass gap (monotonicity), and vacuum energy is zero. The mass gap explains why the nuclear force is short-range: gluons, though classically massless, form bound states (glueballs) with mass $\\ge \\Delta$, so the force decays exponentially at distances $\\gtrsim 1/\\Delta$.",
-      "mathContext": "$\\text{spec}(H) = \\{0\\} \\cup [\\Delta, \\infty)$ with $\\Delta > 0$; equivalently $\\langle \\psi | H | \\psi \\rangle \\ge \\Delta$ for $\\psi \\perp \\Omega$",
-      "significance": "key",
-      "relatedConcepts": ["spectral gap", "correlation length", "exponential decay of correlations", "glueball mass"],
-      "prerequisites": ["WightmanQFT", "Spectrum", "InnerProductSpace"],
-      "tags": ["mass-gap", "millennium-prize", "spectral-theory"]
+    "title": "Wightman QFT Axioms as Lean Structure",
+    "content": "Encodes the Wightman axioms as a Lean structure with fields: Hilbert space $\\mathcal{H}$, vacuum state $\\Omega$, Hamiltonian $H$, field operators, Poincaré covariance, spectral condition ($E \\ge 0$), and locality (spacelike commutativity). `QuantumYangMills` extends this with gauge field operators, capturing the mathematical framework for rigorous QFT as formulated by Wightman and Gårding (1964). The spectral condition ensures physical states have non-negative energy.",
+    "mathContext": "$(\\mathcal{H}, \\Omega, H, \\phi(f))$ with $H\\Omega = 0$, $\\text{spec}(H) \\subseteq [0,\\infty)$, $[\\phi(x), \\phi(y)] = 0$ for $(x-y)^2 < 0$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Wightman axioms",
+      "Hilbert space",
+      "spectral condition",
+      "Poincaré group"
+    ],
+    "prerequisites": [
+      "InnerProductSpace",
+      "LinearMap",
+      "Spectrum"
+    ]
+  },
+  {
+    "id": "mass-gap-definition",
+    "proofId": "yang-mills-mass-gap",
+    "type": "insight",
+    "range": {
+      "startLine": 407,
+      "endLine": 450
     },
-    {
-      "id": "wilson-area-perimeter",
-      "proofId": "yang-mills-mass-gap",
-      "type": "insight",
-      "range": { "startLine": 527, "endLine": 612 },
-      "title": "Area Law vs Perimeter Law: Confinement Criterion",
-      "content": "Formalizes Wilson's confinement criterion (1974): $W(C) \\sim \\exp(-\\sigma \\cdot \\text{Area})$ indicates confinement (quarks permanently bound by a linear potential), while $W(C) \\sim \\exp(-\\kappa \\cdot \\text{Perimeter})$ indicates deconfinement (free quarks, Coulomb-like potential). A key proved theorem shows these are mutually exclusive for large loops: area grows as $L^2$ while perimeter grows as $L$, so both cannot hold simultaneously. The string tension $\\sigma$ measures the energy per unit length of the chromoelectric flux tube between quarks.",
-      "mathContext": "Area law: $\\langle W(C) \\rangle \\le e^{-\\sigma \\cdot \\text{Area}(C)}$; Perimeter law: $\\langle W(C) \\rangle \\ge e^{-\\kappa \\cdot \\text{Perimeter}(C)}$",
-      "significance": "key",
-      "relatedConcepts": ["Wilson loop", "quark confinement", "string tension", "lattice gauge theory"],
-      "prerequisites": ["WilsonLoop", "LoopSpace", "Real.exp"],
-      "tags": ["confinement", "wilson-loop", "area-law"]
+    "title": "The Mass Gap: Spectrum Has a Gap",
+    "content": "Defines mass gap $\\Delta > 0$: all states orthogonal to the vacuum have energy $\\ge \\Delta$. Equivalently, the Hamiltonian spectrum is $\\{0\\} \\cup [\\Delta, \\infty)$. Proved properties include: any $\\Delta' < \\Delta$ is also a mass gap (monotonicity), and vacuum energy is zero. The mass gap explains why the nuclear force is short-range: gluons, though classically massless, form bound states (glueballs) with mass $\\ge \\Delta$, so the force decays exponentially at distances $\\gtrsim 1/\\Delta$.",
+    "mathContext": "$\\text{spec}(H) = \\{0\\} \\cup [\\Delta, \\infty)$ with $\\Delta > 0$; equivalently $\\langle \\psi | H | \\psi \\rangle \\ge \\Delta$ for $\\psi \\perp \\Omega$",
+    "significance": "key",
+    "relatedConcepts": [
+      "spectral gap",
+      "correlation length",
+      "exponential decay of correlations",
+      "glueball mass"
+    ],
+    "prerequisites": [
+      "WightmanQFT",
+      "Spectrum",
+      "InnerProductSpace"
+    ]
+  },
+  {
+    "id": "wilson-area-perimeter",
+    "proofId": "yang-mills-mass-gap",
+    "type": "insight",
+    "range": {
+      "startLine": 527,
+      "endLine": 612
     },
-    {
-      "id": "lattice-gauge",
-      "proofId": "yang-mills-mass-gap",
-      "type": "technique",
-      "range": { "startLine": 613, "endLine": 869 },
-      "title": "Lattice Gauge Theory: Wilson's Non-Perturbative Framework",
-      "content": "Formalizes Wilson's lattice gauge theory (1974): space-time is discretized on a hypercubic lattice, gauge fields live on links as group elements $U_{\\mu}(x) \\in G$, and the action $S_W = \\beta \\sum_P (1 - \\frac{1}{N} \\text{Re\\,Tr}\\, U_P)$ sums over plaquettes $P$. The continuum limit recovers Yang-Mills as lattice spacing $a \\to 0$. Also formalizes the lattice mass gap via transfer matrix eigenvalues: $\\Delta_{\\text{lat}} = -\\ln(\\lambda_1/\\lambda_0)/a$ where $\\lambda_0 > \\lambda_1$ are the two largest eigenvalues. The lattice approach is the basis for numerical Monte Carlo simulations that provide strong evidence for confinement and a mass gap.",
-      "mathContext": "$S_W = \\beta \\sum_P (1 - \\frac{1}{N} \\text{Re\\,Tr}\\, U_P)$, $\\beta = 2N/g^2$; $\\Delta_{\\text{lat}} = -\\ln(\\lambda_1/\\lambda_0)/a$",
-      "significance": "key",
-      "relatedConcepts": ["lattice gauge theory", "Wilson action", "plaquette", "transfer matrix", "continuum limit"],
-      "prerequisites": ["CompactSimpleGaugeGroup", "Matrix.trace", "Real.exp"],
-      "tags": ["lattice", "non-perturbative", "wilson-action"]
+    "title": "Area Law vs Perimeter Law: Confinement Criterion",
+    "content": "Formalizes Wilson's confinement criterion (1974): $W(C) \\sim \\exp(-\\sigma \\cdot \\text{Area})$ indicates confinement (quarks permanently bound by a linear potential), while $W(C) \\sim \\exp(-\\kappa \\cdot \\text{Perimeter})$ indicates deconfinement (free quarks, Coulomb-like potential). A key proved theorem shows these are mutually exclusive for large loops: area grows as $L^2$ while perimeter grows as $L$, so both cannot hold simultaneously. The string tension $\\sigma$ measures the energy per unit length of the chromoelectric flux tube between quarks.",
+    "mathContext": "Area law: $\\langle W(C) \\rangle \\le e^{-\\sigma \\cdot \\text{Area}(C)}$; Perimeter law: $\\langle W(C) \\rangle \\ge e^{-\\kappa \\cdot \\text{Perimeter}(C)}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Wilson loop",
+      "quark confinement",
+      "string tension",
+      "lattice gauge theory"
+    ],
+    "prerequisites": [
+      "WilsonLoop",
+      "LoopSpace",
+      "Real.exp"
+    ]
+  },
+  {
+    "id": "lattice-gauge",
+    "proofId": "yang-mills-mass-gap",
+    "type": "technique",
+    "range": {
+      "startLine": 613,
+      "endLine": 869
     },
-    {
-      "id": "migdal-2d",
-      "proofId": "yang-mills-mass-gap",
-      "type": "technique",
-      "range": { "startLine": 870, "endLine": 972 },
-      "title": "2D Yang-Mills: The Exactly Solvable Case",
-      "content": "In 2D, Yang-Mills is exactly solvable via Migdal's formula: Wilson loop expectations reduce to finite-dimensional group integrals weighted by heat kernel. The partition function $Z = \\sum_R (\\dim R)^2 \\exp(-C_2(R) \\cdot A / (2\\beta))$ sums over irreducible representations $R$ of $G$, where $C_2(R)$ is the quadratic Casimir and $A$ is the area. This provides the only dimension where the mass gap can be computed explicitly: $\\Delta_{\\text{2D}} = C_2(\\text{adj}) \\cdot a^2 / (2\\beta)$. The 2D case serves as a testing ground for non-perturbative methods and was rigorously constructed by Driver (1989) and Sengupta (1997).",
-      "mathContext": "$Z_{\\text{2D}} = \\sum_R (\\dim R)^2 e^{-C_2(R) A / 2\\beta}$, where $C_2(R)$ is the quadratic Casimir of representation $R$",
-      "significance": "key",
-      "relatedConcepts": ["Migdal formula", "heat kernel", "representation theory", "partition function", "exactly solvable model"],
-      "prerequisites": ["CompactSimpleGaugeGroup", "Casimir operator", "Real.exp"],
-      "tags": ["2d-yang-mills", "exact-solution", "migdal-formula"]
+    "title": "Lattice Gauge Theory: Wilson's Non-Perturbative Framework",
+    "content": "Formalizes Wilson's lattice gauge theory (1974): space-time is discretized on a hypercubic lattice, gauge fields live on links as group elements $U_{\\mu}(x) \\in G$, and the action $S_W = \\beta \\sum_P (1 - \\frac{1}{N} \\text{Re\\,Tr}\\, U_P)$ sums over plaquettes $P$. The continuum limit recovers Yang-Mills as lattice spacing $a \\to 0$. Also formalizes the lattice mass gap via transfer matrix eigenvalues: $\\Delta_{\\text{lat}} = -\\ln(\\lambda_1/\\lambda_0)/a$ where $\\lambda_0 > \\lambda_1$ are the two largest eigenvalues. The lattice approach is the basis for numerical Monte Carlo simulations that provide strong evidence for confinement and a mass gap.",
+    "mathContext": "$S_W = \\beta \\sum_P (1 - \\frac{1}{N} \\text{Re\\,Tr}\\, U_P)$, $\\beta = 2N/g^2$; $\\Delta_{\\text{lat}} = -\\ln(\\lambda_1/\\lambda_0)/a$",
+    "significance": "key",
+    "relatedConcepts": [
+      "lattice gauge theory",
+      "Wilson action",
+      "plaquette",
+      "transfer matrix",
+      "continuum limit"
+    ],
+    "prerequisites": [
+      "CompactSimpleGaugeGroup",
+      "Matrix.trace",
+      "Real.exp"
+    ]
+  },
+  {
+    "id": "migdal-2d",
+    "proofId": "yang-mills-mass-gap",
+    "type": "technique",
+    "range": {
+      "startLine": 870,
+      "endLine": 972
     },
-    {
-      "id": "center-symmetry",
-      "proofId": "yang-mills-mass-gap",
-      "type": "insight",
-      "range": { "startLine": 1288, "endLine": 1457 },
-      "title": "Center Symmetry Z_N Classifies Confinement",
-      "content": "The center $Z_N$ of $\\mathrm{SU}(N)$ acts on Polyakov loops $P$ by multiplication: $P \\to \\omega P$. In the confined phase ($Z_N$ unbroken), $\\langle P \\rangle = 0$—the free energy of an isolated quark is infinite. In the deconfined phase, $Z_N$ is spontaneously broken: $\\langle P \\rangle \\ne 0$, and quarks are free. For $\\mathrm{SU}(2)$, $Z_2 = \\{1,-1\\}$ with the key theorem: $\\omega^2=1$ and $|\\omega|=1$ implies $\\omega \\in \\{1,-1\\}$. This gives an order parameter for the confinement-deconfinement phase transition, analogous to magnetization in the Ising model.",
-      "mathContext": "$Z_N = \\{e^{2\\pi i k/N} I : k = 0, \\ldots, N-1\\}$; confined $\\iff$ $\\langle P \\rangle = 0$ $\\iff$ $Z_N$ unbroken",
-      "significance": "supporting",
-      "relatedConcepts": ["center of group", "Polyakov loop", "spontaneous symmetry breaking", "phase transition", "order parameter"],
-      "prerequisites": ["CompactSimpleGaugeGroup", "Complex", "Finset"],
-      "tags": ["center-symmetry", "confinement", "phase-transition"]
+    "title": "2D Yang-Mills: The Exactly Solvable Case",
+    "content": "In 2D, Yang-Mills is exactly solvable via Migdal's formula: Wilson loop expectations reduce to finite-dimensional group integrals weighted by heat kernel. The partition function $Z = \\sum_R (\\dim R)^2 \\exp(-C_2(R) \\cdot A / (2\\beta))$ sums over irreducible representations $R$ of $G$, where $C_2(R)$ is the quadratic Casimir and $A$ is the area. This provides the only dimension where the mass gap can be computed explicitly: $\\Delta_{\\text{2D}} = C_2(\\text{adj}) \\cdot a^2 / (2\\beta)$. The 2D case serves as a testing ground for non-perturbative methods and was rigorously constructed by Driver (1989) and Sengupta (1997).",
+    "mathContext": "$Z_{\\text{2D}} = \\sum_R (\\dim R)^2 e^{-C_2(R) A / 2\\beta}$, where $C_2(R)$ is the quadratic Casimir of representation $R$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Migdal formula",
+      "heat kernel",
+      "representation theory",
+      "partition function",
+      "exactly solvable model"
+    ],
+    "prerequisites": [
+      "CompactSimpleGaugeGroup",
+      "Casimir operator",
+      "Real.exp"
+    ]
+  },
+  {
+    "id": "center-symmetry",
+    "proofId": "yang-mills-mass-gap",
+    "type": "insight",
+    "range": {
+      "startLine": 1288,
+      "endLine": 1457
     },
-    {
-      "id": "osterwalder-schrader",
-      "proofId": "yang-mills-mass-gap",
-      "type": "technique",
-      "range": { "startLine": 2315, "endLine": 2458 },
-      "title": "Osterwalder-Schrader Reconstruction",
-      "content": "Formalizes the Osterwalder-Schrader (OS) framework that connects Euclidean QFT (imaginary time) to physical Minkowski QFT. The key axiom is reflection positivity: under time reflection $\\theta$, the inner product $\\langle \\theta f, f \\rangle \\ge 0$ ensures the reconstructed Hilbert space has a positive-definite inner product. The OS reconstruction theorem shows that Euclidean correlation functions satisfying OS axioms uniquely determine a Wightman QFT, providing a pathway from lattice/constructive methods (naturally Euclidean) to the physical theory. This is the mathematical bridge between the lattice mass gap and the Millennium Prize mass gap.",
-      "mathContext": "Reflection positivity: $\\langle \\theta f, f \\rangle_{\\text{Eucl}} \\ge 0$; OS reconstruction: Euclidean correlators $\\to$ Wightman QFT via analytic continuation $t \\to it$",
-      "significance": "key",
-      "relatedConcepts": ["Wick rotation", "reflection positivity", "Euclidean QFT", "analytic continuation"],
-      "prerequisites": ["InnerProductSpace", "MeasureTheory"],
-      "tags": ["osterwalder-schrader", "euclidean-qft", "reconstruction"]
+    "title": "Center Symmetry Z_N Classifies Confinement",
+    "content": "The center $Z_N$ of $\\mathrm{SU}(N)$ acts on Polyakov loops $P$ by multiplication: $P \\to \\omega P$. In the confined phase ($Z_N$ unbroken), $\\langle P \\rangle = 0$—the free energy of an isolated quark is infinite. In the deconfined phase, $Z_N$ is spontaneously broken: $\\langle P \\rangle \\ne 0$, and quarks are free. For $\\mathrm{SU}(2)$, $Z_2 = \\{1,-1\\}$ with the key theorem: $\\omega^2=1$ and $|\\omega|=1$ implies $\\omega \\in \\{1,-1\\}$. This gives an order parameter for the confinement-deconfinement phase transition, analogous to magnetization in the Ising model.",
+    "mathContext": "$Z_N = \\{e^{2\\pi i k/N} I : k = 0, \\ldots, N-1\\}$; confined $\\iff$ $\\langle P \\rangle = 0$ $\\iff$ $Z_N$ unbroken",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "center of group",
+      "Polyakov loop",
+      "spontaneous symmetry breaking",
+      "phase transition",
+      "order parameter"
+    ],
+    "prerequisites": [
+      "CompactSimpleGaugeGroup",
+      "Complex",
+      "Finset"
+    ]
+  },
+  {
+    "id": "osterwalder-schrader",
+    "proofId": "yang-mills-mass-gap",
+    "type": "technique",
+    "range": {
+      "startLine": 2315,
+      "endLine": 2458
     },
-    {
-      "id": "gribov-copies",
-      "proofId": "yang-mills-mass-gap",
-      "type": "insight",
-      "range": { "startLine": 3876, "endLine": 4027 },
-      "title": "Gribov Copies: Global Gauge Fixing Is Impossible",
-      "content": "Formalizes Singer's theorem (axiomatized): for non-abelian gauge theories, no global gauge-fixing condition can uniquely select one representative from each gauge orbit. The Gribov region $\\Omega$ (where the Faddeev-Popov operator is positive-definite) has a boundary $\\partial\\Omega$ where $\\det(\\text{FP}) = 0$, creating copies. This is a fundamental obstruction to the perturbative path integral and motivates non-perturbative approaches like lattice gauge theory. Gribov discovered this in 1978; it shows that quantization of non-abelian gauge theories is fundamentally more complex than the abelian (QED) case.",
-      "mathContext": "$\\Omega = \\{A : -\\partial_\\mu D_\\mu > 0\\}$; $\\partial\\Omega$: $\\det(-\\partial_\\mu D_\\mu) = 0$ (Gribov horizon)",
-      "significance": "supporting",
-      "relatedConcepts": ["gauge fixing", "Faddeev-Popov procedure", "BRST symmetry", "Singer theorem"],
-      "prerequisites": ["GaugeTransformation", "Determinant"],
-      "tags": ["gribov-copies", "gauge-fixing", "non-perturbative"]
+    "title": "Osterwalder-Schrader Reconstruction",
+    "content": "Formalizes the Osterwalder-Schrader (OS) framework that connects Euclidean QFT (imaginary time) to physical Minkowski QFT. The key axiom is reflection positivity: under time reflection $\\theta$, the inner product $\\langle \\theta f, f \\rangle \\ge 0$ ensures the reconstructed Hilbert space has a positive-definite inner product. The OS reconstruction theorem shows that Euclidean correlation functions satisfying OS axioms uniquely determine a Wightman QFT, providing a pathway from lattice/constructive methods (naturally Euclidean) to the physical theory. This is the mathematical bridge between the lattice mass gap and the Millennium Prize mass gap.",
+    "mathContext": "Reflection positivity: $\\langle \\theta f, f \\rangle_{\\text{Eucl}} \\ge 0$; OS reconstruction: Euclidean correlators $\\to$ Wightman QFT via analytic continuation $t \\to it$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Wick rotation",
+      "reflection positivity",
+      "Euclidean QFT",
+      "analytic continuation"
+    ],
+    "prerequisites": [
+      "InnerProductSpace",
+      "MeasureTheory"
+    ]
+  },
+  {
+    "id": "gribov-copies",
+    "proofId": "yang-mills-mass-gap",
+    "type": "insight",
+    "range": {
+      "startLine": 3876,
+      "endLine": 4027
     },
-    {
-      "id": "adscft",
-      "proofId": "yang-mills-mass-gap",
-      "type": "context",
-      "range": { "startLine": 5283, "endLine": 5496 },
-      "title": "AdS/CFT and Holographic Mass Gap",
-      "content": "Formalizes aspects of Maldacena's AdS/CFT correspondence (1997), which maps $\\mathcal{N}=4$ $\\mathrm{SU}(N)$ Yang-Mills to type IIB string theory on $\\text{AdS}_5 \\times S^5$. While $\\mathcal{N}=4$ SYM is conformal (no mass gap), deformations that break conformal symmetry can produce a mass gap. The holographic approach provides non-perturbative insights via the strong/weak coupling duality: when gauge theory is strongly coupled, the gravity dual is weakly coupled and tractable. This represents one of the most promising routes to understanding the 4D mass gap, though it has not yet produced a rigorous proof.",
-      "mathContext": "$\\mathcal{N}=4$ SYM on $\\partial(\\text{AdS}_5)$ $\\longleftrightarrow$ strings on $\\text{AdS}_5 \\times S^5$; mass gap requires conformal symmetry breaking",
-      "significance": "context",
-      "relatedConcepts": ["Maldacena conjecture", "holography", "conformal field theory", "string theory", "strong-weak duality"],
-      "prerequisites": ["CompactSimpleGaugeGroup", "WightmanQFT"],
-      "tags": ["adscft", "holography", "string-theory"]
+    "title": "Gribov Copies: Global Gauge Fixing Is Impossible",
+    "content": "Formalizes Singer's theorem (axiomatized): for non-abelian gauge theories, no global gauge-fixing condition can uniquely select one representative from each gauge orbit. The Gribov region $\\Omega$ (where the Faddeev-Popov operator is positive-definite) has a boundary $\\partial\\Omega$ where $\\det(\\text{FP}) = 0$, creating copies. This is a fundamental obstruction to the perturbative path integral and motivates non-perturbative approaches like lattice gauge theory. Gribov discovered this in 1978; it shows that quantization of non-abelian gauge theories is fundamentally more complex than the abelian (QED) case.",
+    "mathContext": "$\\Omega = \\{A : -\\partial_\\mu D_\\mu > 0\\}$; $\\partial\\Omega$: $\\det(-\\partial_\\mu D_\\mu) = 0$ (Gribov horizon)",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "gauge fixing",
+      "Faddeev-Popov procedure",
+      "BRST symmetry",
+      "Singer theorem"
+    ],
+    "prerequisites": [
+      "GaugeTransformation",
+      "Determinant"
+    ]
+  },
+  {
+    "id": "adscft",
+    "proofId": "yang-mills-mass-gap",
+    "type": "context",
+    "range": {
+      "startLine": 5283,
+      "endLine": 5496
     },
-    {
-      "id": "constructive-qft",
-      "proofId": "yang-mills-mass-gap",
-      "type": "technique",
-      "range": { "startLine": 5497, "endLine": 5775 },
-      "title": "Constructive QFT: Rigorous 2D Yang-Mills",
-      "content": "Constructive QFT provides mathematically rigorous definitions of quantum field theories, as pioneered by Glimm, Jaffe, and others in the 1960s-70s. In 2D, Yang-Mills has been rigorously constructed (Driver 1989, Sengupta 1997), unlike 4D where it remains the Millennium Prize target. The formalization covers the lattice-to-continuum limit, gauge-invariant observables, and the connection to Migdal's exact solution. The approach uses probability measures on the space of connections, showing the lattice measures converge weakly as the lattice spacing $a \\to 0$.",
-      "mathContext": "Rigorous construction: lattice $\\to$ continuum limit exists for 2D YM; 4D remains the Millennium Prize target",
-      "significance": "supporting",
-      "relatedConcepts": ["constructive QFT", "Glimm-Jaffe", "lattice continuum limit", "functional measure"],
-      "prerequisites": ["MeasureTheory", "latticeYangMillsAction"],
-      "tags": ["constructive-qft", "rigorous", "continuum-limit"]
-    }
-  ]
-}
+    "title": "AdS/CFT and Holographic Mass Gap",
+    "content": "Formalizes aspects of Maldacena's AdS/CFT correspondence (1997), which maps $\\mathcal{N}=4$ $\\mathrm{SU}(N)$ Yang-Mills to type IIB string theory on $\\text{AdS}_5 \\times S^5$. While $\\mathcal{N}=4$ SYM is conformal (no mass gap), deformations that break conformal symmetry can produce a mass gap. The holographic approach provides non-perturbative insights via the strong/weak coupling duality: when gauge theory is strongly coupled, the gravity dual is weakly coupled and tractable. This represents one of the most promising routes to understanding the 4D mass gap, though it has not yet produced a rigorous proof.",
+    "mathContext": "$\\mathcal{N}=4$ SYM on $\\partial(\\text{AdS}_5)$ $\\longleftrightarrow$ strings on $\\text{AdS}_5 \\times S^5$; mass gap requires conformal symmetry breaking",
+    "significance": "context",
+    "relatedConcepts": [
+      "Maldacena conjecture",
+      "holography",
+      "conformal field theory",
+      "string theory",
+      "strong-weak duality"
+    ],
+    "prerequisites": [
+      "CompactSimpleGaugeGroup",
+      "WightmanQFT"
+    ]
+  },
+  {
+    "id": "constructive-qft",
+    "proofId": "yang-mills-mass-gap",
+    "type": "technique",
+    "range": {
+      "startLine": 5497,
+      "endLine": 5775
+    },
+    "title": "Constructive QFT: Rigorous 2D Yang-Mills",
+    "content": "Constructive QFT provides mathematically rigorous definitions of quantum field theories, as pioneered by Glimm, Jaffe, and others in the 1960s-70s. In 2D, Yang-Mills has been rigorously constructed (Driver 1989, Sengupta 1997), unlike 4D where it remains the Millennium Prize target. The formalization covers the lattice-to-continuum limit, gauge-invariant observables, and the connection to Migdal's exact solution. The approach uses probability measures on the space of connections, showing the lattice measures converge weakly as the lattice spacing $a \\to 0$.",
+    "mathContext": "Rigorous construction: lattice $\\to$ continuum limit exists for 2D YM; 4D remains the Millennium Prize target",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "constructive QFT",
+      "Glimm-Jaffe",
+      "lattice continuum limit",
+      "functional measure"
+    ],
+    "prerequisites": [
+      "MeasureTheory",
+      "latticeYangMillsAction"
+    ]
+  }
+]

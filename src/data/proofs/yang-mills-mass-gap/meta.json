@@ -93,6 +93,28 @@
       }
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "yang-mills",
+      "relationship": "extends",
+      "description": "This mass gap formalization extends the base Yang-Mills classical gauge theory formalization with quantum axiomatics, lattice methods, and 162 parts of infrastructure"
+    },
+    {
+      "targetId": "navier-stokes-existence",
+      "relationship": "related",
+      "description": "Fellow Millennium Prize Problem involving existence and regularity of solutions to nonlinear PDEs; both problems require controlling infinite-dimensional function spaces"
+    },
+    {
+      "targetId": "riemann-hypothesis",
+      "relationship": "related",
+      "description": "Fellow Millennium Prize Problem; zeta function methods appear in spectral theory of gauge field operators and number-theoretic aspects of gauge theory"
+    },
+    {
+      "targetId": "poincare-conjecture",
+      "relationship": "related",
+      "description": "Solved Millennium Prize Problem; Perelman's Ricci flow techniques are analogous to Yang-Mills gradient flow used in this formalization"
+    }
+  ],
   "overview": {
     "historicalContext": "**Yang-Mills Existence and Mass Gap**\n\nC. N. Yang and Robert Mills introduced non-abelian gauge theories in 1954, generalizing Maxwell's electromagnetism from the abelian group $\\mathrm{U}(1)$ to non-abelian groups like $\\mathrm{SU}(2)$ and $\\mathrm{SU}(3)$. Initially dismissed because the gauge bosons appeared massless (contradicting nuclear physics), the theory was vindicated by the discovery of asymptotic freedom by Gross, Wilczek, and Politzer (1973, Nobel Prize 2004), which showed the coupling decreases at short distances.\n\nWilson (1974) developed lattice gauge theory, providing the first non-perturbative framework and introducing confinement via the area law criterion. 't Hooft's large-$N$ expansion (1974) revealed a connection to string theory. The rigorous mathematical status remained open: while Glimm and Jaffe constructed QFT in 2 and 3 spacetime dimensions, 4D Yang-Mills eluded all approaches.\n\nIn 2000, the Clay Mathematics Institute named the problem as one of seven Millennium Prize Problems (\\$1M prize): prove that for any compact simple gauge group $G$, a non-trivial quantum Yang-Mills theory exists on $\\mathbb{R}^4$ satisfying the Wightman axioms, with a positive mass gap $\\Delta > 0$. The mass gap implies quarks are confined and the lightest glueball has positive mass, explaining why the strong nuclear force is short-range despite being mediated by massless gluons.\n\nThis formalization builds comprehensive infrastructure across 57 parts, covering classical gauge theory, quantum axiomatics, lattice methods, exact solutions, and modern approaches including AdS/CFT, stochastic quantization, and constructive QFT.",
     "problemStatement": "**Conjecture (Clay Millennium Problem)**: For any compact simple gauge group G, there exists a non-trivial quantum Yang-Mills theory on R⁴ satisfying the Wightman axioms, with a positive mass gap Δ > 0: the Hamiltonian H has spectrum {0} ∪ [Δ, ∞) with Δ > 0.",
