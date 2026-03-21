@@ -16,7 +16,7 @@
       "advanced"
     ],
     "badge": "formalized",
-    "sorries": 3,
+    "sorries": 2,
     "mathlibDependencies": [
       {
         "theorem": "Analysis.SpecialFunctions.Log.Basic",
@@ -79,7 +79,7 @@
       "title": "Maximum Entropy (Uniform Distribution)",
       "startLine": 31,
       "endLine": 34,
-      "summary": "Entropy is maximized by the uniform distribution: H(p) <= log|X|. Sorry'd — the proof uses Gibbs inequality with q = uniform.",
+      "summary": "Entropy is maximized by the uniform distribution: H(p) <= log|X|. Proved via Gibbs inequality with q = uniform.",
       "mathContext": "$H(X) \\leq \\ln |\\mathcal{X}|$ with equality iff $p$ is uniform"
     },
     {
@@ -87,7 +87,7 @@
       "title": "Gibbs Inequality",
       "startLine": 36,
       "endLine": 40,
-      "summary": "H(p) <= -sum p(x) log q(x) for any distribution q, equivalently D(p||q) >= 0. Sorry'd — proof via Jensen's inequality on -log (convex).",
+      "summary": "H(p) <= -sum p(x) log q(x) for any distribution q, equivalently D(p||q) >= 0. Proved from KL divergence non-negativity using the inequality log(x) <= x - 1.",
       "mathContext": "$D(p \\| q) = \\sum_x p(x) \\ln \\frac{p(x)}{q(x)} \\geq 0$ (Gibbs inequality)"
     },
     {

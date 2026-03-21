@@ -107,20 +107,119 @@ noncomputable def mutualInformation {α β : Type*} [Fintype α] [Fintype β]
       ((∑ y' : β, pXY (x, y')) * (∑ x' : α, pXY (x', y))))
 
 -- ============================================================
--- Entropy Bounds (axiomatized for Aristotle)
+-- Key Inequality: log(x) ≤ x - 1
 -- ============================================================
 
--- Entropy is maximized by uniform distribution
-theorem entropy_le_log_card {α : Type*} [Fintype α] [DecidableEq α]
-    {p : α → ℝ} (hp : ∀ x, 0 ≤ p x) (hsum : ∑ x, p x = 1) :
-    shannonEntropy p ≤ Real.log (Fintype.card α) := by sorry
+-- For positive reals, p * log(p/q) ≥ p - q
+-- This is the pointwise bound underlying KL divergence non-negativity.
+-- Proof: log(q/p) ≤ q/p - 1, multiply by p, negate.
+private lemma kl_term_bound {p q : ℝ} (hp : 0 < p) (hq : 0 < q) :
+    p * Real.log (p / q) ≥ p - q := by
+  have h1 : Real.log (q / p) ≤ q / p - 1 :=
+    Real.log_le_sub_one_of_pos (div_pos hq hp)
+  have h2 : p * Real.log (q / p) ≤ q - p :=
+    calc p * Real.log (q / p)
+        ≤ p * (q / p - 1) := by
+          apply mul_le_mul_of_nonneg_left h1 (le_of_lt hp)
+      _ = q - p := by field_simp
+  have h3 : Real.log (p / q) = -Real.log (q / p) := by
+    rw [Real.log_div (ne_of_gt hp) (ne_of_gt hq),
+        Real.log_div (ne_of_gt hq) (ne_of_gt hp)]
+    ring
+  have h4 : p * Real.log (p / q) = -(p * Real.log (q / p)) := by
+    rw [h3]; ring
+  linarith
 
--- Gibbs inequality: H(p) ≤ -Σ p(x) log q(x) (= H(p) + D(p||q))
--- Equivalently: KL divergence D(p||q) ≥ 0
+-- ============================================================
+-- KL Divergence Non-negativity
+-- ============================================================
+
+-- KL divergence is non-negative: D(p||q) ≥ 0
+-- Proof: each term p(x)*log(p(x)/q(x)) ≥ p(x)-q(x), sum to get Σp - Σq = 0.
+theorem kl_divergence_nonneg {α : Type*} [Fintype α] [DecidableEq α]
+    {p q : α → ℝ} (hp : ∀ x, 0 ≤ p x) (hq : ∀ x, 0 < q x)
+    (hpsum : ∑ x, p x = 1) (hqsum : ∑ x, q x = 1) :
+    0 ≤ klDivergence p q := by
+  unfold klDivergence
+  -- Each KL term ≥ p(x) - q(x), so the sum ≥ Σ(p-q) = 0
+  suffices h : (∑ x : α, (p x - q x)) ≤
+      ∑ x : α, if p x = 0 then 0 else p x * Real.log (p x / q x) by
+    have hzero : ∑ x : α, (p x - q x) = 0 := by
+      rw [Finset.sum_sub_distrib, hpsum, hqsum, sub_self]
+    linarith
+  apply Finset.sum_le_sum
+  intro x _
+  by_cases hpx : p x = 0
+  · simp [hpx]
+    exact le_of_lt (hq x)
+  · simp [hpx]
+    linarith [kl_term_bound (lt_of_le_of_ne (hp x) (Ne.symm hpx)) (hq x)]
+
+-- ============================================================
+-- Gibbs Inequality
+-- ============================================================
+
+-- Gibbs inequality: H(p) ≤ -Σ p(x) log q(x), equivalent to D(p||q) ≥ 0.
+-- Proof: decompose each KL term as (if p=0 then 0 else p*log p) - p*log q,
+-- then sum to get D(p||q) = Σ(if ..) - Σ p*log q ≥ 0.
 theorem gibbs_inequality {α : Type*} [Fintype α] [DecidableEq α]
     {p q : α → ℝ} (hp : ∀ x, 0 ≤ p x) (hq : ∀ x, 0 < q x)
     (hpsum : ∑ x, p x = 1) (hqsum : ∑ x, q x = 1) :
-    shannonEntropy p ≤ -∑ x, p x * Real.log (q x) := by sorry
+    shannonEntropy p ≤ -∑ x, p x * Real.log (q x) := by
+  have hkl := kl_divergence_nonneg hp hq hpsum hqsum
+  unfold klDivergence at hkl
+  unfold shannonEntropy
+  rw [neg_le_neg_iff]
+  -- Goal: ∑ p·log q ≤ ∑ (if p=0 then 0 else p·log p)
+  -- Decompose each KL term: (if p=0 then 0 else p·log(p/q)) = (if .. else p·log p) - p·log q
+  have h_split : ∀ x : α,
+      (if p x = 0 then 0 else p x * Real.log (p x / q x)) =
+      (if p x = 0 then 0 else p x * Real.log (p x)) - p x * Real.log (q x) := by
+    intro x
+    by_cases hpx : p x = 0
+    · simp [hpx]
+    · simp [hpx]
+      have hpx_pos : 0 < p x := lt_of_le_of_ne (hp x) (Ne.symm hpx)
+      rw [Real.log_div (ne_of_gt hpx_pos) (ne_of_gt (hq x))]
+      ring
+  simp_rw [h_split, Finset.sum_sub_distrib] at hkl
+  linarith
+
+-- ============================================================
+-- Maximum Entropy
+-- ============================================================
+
+-- Entropy is maximized by uniform distribution: H(X) ≤ log |X|
+-- Proof: Apply Gibbs with q = uniform(1/|X|).
+theorem entropy_le_log_card {α : Type*} [Fintype α] [DecidableEq α]
+    {p : α → ℝ} (hp : ∀ x, 0 ≤ p x) (hsum : ∑ x, p x = 1) :
+    shannonEntropy p ≤ Real.log (Fintype.card α) := by
+  -- Derive that α is nonempty (since Σ p = 1 ≠ 0)
+  have hcard_pos : (0 : ℝ) < Fintype.card α := by
+    have hne : Fintype.card α ≠ 0 := by
+      intro hzero
+      haveI : IsEmpty α := Fintype.card_eq_zero_iff.mp hzero
+      simp [Finset.univ_eq_empty] at hsum
+    exact_mod_cast Nat.pos_of_ne_zero hne
+  -- Define uniform distribution q(x) = 1/|X|
+  set q : α → ℝ := fun _ => (Fintype.card α : ℝ)⁻¹ with hq_def
+  have hq_pos : ∀ x : α, 0 < q x := fun _ => inv_pos.mpr hcard_pos
+  have hq_sum : ∑ x : α, q x = 1 := by
+    simp only [hq_def, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
+    exact mul_inv_cancel₀ (ne_of_gt hcard_pos)
+  -- Apply Gibbs inequality, then simplify -Σ p·log(1/|X|) = log |X|
+  have hgibbs := gibbs_inequality hp hq_pos hsum hq_sum
+  suffices hsuff : -∑ x, p x * Real.log (q x) = Real.log (Fintype.card α) by
+    linarith
+  simp only [hq_def]
+  have h1 : ∑ x : α, p x * Real.log ((Fintype.card α : ℝ)⁻¹) =
+      Real.log ((Fintype.card α : ℝ)⁻¹) * ∑ x : α, p x := by
+    rw [Finset.mul_sum]; congr 1; ext x; ring
+  rw [h1, hsum, mul_one, Real.log_inv, neg_neg]
+
+-- ============================================================
+-- Log-Sum Inequality (sorry — candidate for Aristotle)
+-- ============================================================
 
 -- Log-sum inequality: Σ aᵢ log(aᵢ/bᵢ) ≥ (Σ aᵢ) log(Σ aᵢ / Σ bᵢ)
 theorem log_sum_inequality {n : ℕ} {a b : Fin n → ℝ}
@@ -128,18 +227,87 @@ theorem log_sum_inequality {n : ℕ} {a b : Fin n → ℝ}
     ∑ i, a i * Real.log (a i / b i) ≥
     (∑ i, a i) * Real.log ((∑ i, a i) / ∑ i, b i) := by sorry
 
--- KL divergence is non-negative (Gibbs inequality restated)
-theorem kl_divergence_nonneg {α : Type*} [Fintype α] [DecidableEq α]
-    {p q : α → ℝ} (hp : ∀ x, 0 ≤ p x) (hq : ∀ x, 0 < q x)
-    (hpsum : ∑ x, p x = 1) (hqsum : ∑ x, q x = 1) :
-    0 ≤ klDivergence p q := by sorry
+-- ============================================================
+-- Mutual Information and Conditioning (sorry — candidates for Aristotle)
+-- ============================================================
 
--- Mutual information is non-negative
+-- Marginal is positive when joint is positive at some point
+private lemma marginal_pos_of_joint_pos {α β : Type*} [Fintype α] [Fintype β]
+    {pXY : α × β → ℝ} (hp : ∀ xy, 0 ≤ pXY xy)
+    {x : α} {y : β} (hxy : 0 < pXY (x, y)) :
+    0 < ∑ y' : β, pXY (x, y') := by
+  calc 0 < pXY (x, y) := hxy
+    _ ≤ ∑ y' : β, pXY (x, y') :=
+      Finset.single_le_sum (f := fun y' => pXY (x, y'))
+        (fun y' _ => hp (x, y')) (Finset.mem_univ y)
+
+-- Convert flat product sum to nested sum
+private lemma sum_prod_eq_nested {α β : Type*} [Fintype α] [Fintype β]
+    {f : α × β → ℝ} :
+    ∑ xy : α × β, f xy = ∑ x : α, ∑ y : β, f (x, y) := by
+  rw [← Finset.univ_product_univ, Finset.sum_product]
+
+-- Product of marginals sums to 1 when joint sums to 1
+private lemma product_marginals_sum_one {α β : Type*} [Fintype α] [Fintype β]
+    {pXY : α × β → ℝ}
+    (hsum : ∑ xy : α × β, pXY xy = 1) :
+    ∑ x : α, ∑ y : β,
+      (∑ y' : β, pXY (x, y')) * (∑ x' : α, pXY (x', y)) =  1 := by
+  have hsum' : ∑ x : α, ∑ y : β, pXY (x, y) = 1 := by
+    rw [← sum_prod_eq_nested]; exact hsum
+  have hmarg_x : ∑ x : α, (∑ y' : β, pXY (x, y')) = 1 := hsum'
+  have hmarg_y : ∑ y : β, (∑ x' : α, pXY (x', y)) = 1 := by
+    rw [Finset.sum_comm]; exact hsum'
+  rw [Finset.sum_comm]
+  simp_rw [← Finset.sum_mul, ← Finset.mul_sum]
+  rw [hmarg_y, mul_one, hmarg_x]
+
+-- Mutual information is non-negative: I(X;Y) = D(pXY || pX⊗pY) ≥ 0
+-- Proof: same pointwise bound technique as KL divergence non-negativity.
 theorem mutual_info_nonneg {α β : Type*} [Fintype α] [Fintype β]
     [DecidableEq α] [DecidableEq β]
     {pXY : α × β → ℝ} (hp : ∀ xy, 0 ≤ pXY xy)
     (hsum : ∑ xy : α × β, pXY xy = 1) :
-    0 ≤ mutualInformation pXY := by sorry
+    0 ≤ mutualInformation pXY := by
+  unfold mutualInformation
+  -- Each term: if p(x,y)=0 then 0, else p(x,y)·log(p(x,y)/(pX(x)·pY(y)))
+  -- Bound: each term ≥ p(x,y) - pX(x)·pY(y)
+  -- Sum: Σ (p(x,y) - pX(x)·pY(y)) = 1 - 1 = 0
+  set q : α → β → ℝ := fun x y =>
+    (∑ y' : β, pXY (x, y')) * (∑ x' : α, pXY (x', y)) with hq_def
+  suffices h : ∑ x : α, ∑ y : β, (pXY (x, y) - q x y) ≤
+      ∑ x : α, ∑ y : β,
+        if pXY (x, y) = 0 then 0
+        else pXY (x, y) * Real.log (pXY (x, y) / q x y) by
+    have hzero : ∑ x : α, ∑ y : β, (pXY (x, y) - q x y) = 0 := by
+      have h1 : ∑ x : α, ∑ y : β, pXY (x, y) = 1 := by
+        rw [← sum_prod_eq_nested]; exact hsum
+      have h2 : ∑ x : α, ∑ y : β, q x y = 1 :=
+        product_marginals_sum_one hsum
+      simp_rw [Finset.sum_sub_distrib]
+      rw [h1, h2, sub_self]
+    linarith
+  apply Finset.sum_le_sum
+  intro x _
+  apply Finset.sum_le_sum
+  intro y _
+  by_cases hpxy : pXY (x, y) = 0
+  · simp [hpxy]
+    exact mul_nonneg
+      (Finset.sum_nonneg (fun y' _ => hp (x, y')))
+      (Finset.sum_nonneg (fun x' _ => hp (x', y)))
+  · simp [hpxy]
+    have hpxy_pos : 0 < pXY (x, y) :=
+      lt_of_le_of_ne (hp (x, y)) (Ne.symm hpxy)
+    have hq_pos : 0 < q x y := by
+      simp only [hq_def]
+      exact mul_pos
+        (marginal_pos_of_joint_pos hp hpxy_pos)
+        (calc 0 < pXY (x, y) := hpxy_pos
+          _ ≤ ∑ x' : α, pXY (x', y) :=
+            Finset.single_le_sum (f := fun x' => pXY (x', y))
+              (fun x' _ => hp (x', y)) (Finset.mem_univ x))
+    linarith [kl_term_bound hpxy_pos hq_pos]
 
 -- Conditioning reduces entropy: H(X|Y) ≤ H(X)
 theorem conditioning_reduces_entropy {α β : Type*} [Fintype α] [Fintype β]
