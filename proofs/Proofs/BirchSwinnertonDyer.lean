@@ -374,12 +374,6 @@ structure ModularForm (k N : ℕ) where
     It was proved for semistable curves by Wiles (1995), completing FLT,
     and extended to all E/ℚ by 2001. -/
 
-/-- Consequence of modularity: L(E, s) satisfies a functional equation.
-    Λ(E, s) = w(E) · Λ(E, 2-s) where Λ(E,s) = N^{s/2}(2π)^{-s}Γ(s)L(E,s)
-    and w(E) = ±1 is the root number. -/
-axiom LFunction_functional_equation (E : EllipticCurveQ) (s : ℂ) :
-    completedLFunction E s = (rootNumber E : ℂ) * completedLFunction E (2 - s)
-
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART V: THE ANALYTIC RANK
 ═══════════════════════════════════════════════════════════════════════════════
@@ -1578,11 +1572,6 @@ theorem rank_bound_from_selmer (E : EllipticCurveQ) :
     For n squarefree:
     - If n ≡ 1, 2 (mod 4): dim Sel_2 depends on 2-part of class group
     - If n ≡ 3 (mod 4): similar analysis with different local conditions -/
-/-- 2-descent gives an upper bound on the rank of congruent number curves.
-    The Selmer rank provides a computable bound: rank(E_n) ≤ selmer_rank - 2. -/
-axiom two_descent_congruent_number (n : ℕ) (hn : n > 0) :
-    ∃ s : ℕ, algebraicRank (congruentNumberCurve n hn) ≤ s
-
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XIV: HEIGHT FUNCTIONS AND THE REGULATOR
 ═══════════════════════════════════════════════════════════════════════════════
@@ -1764,15 +1753,6 @@ theorem euler_product_factor_bound (p : ℕ) (hp : p ≥ 5) (ap : ℤ)
     This was proved using potential automorphy and is one of the great
     achievements of modern number theory. -/
 
-/-- The Sato-Tate distribution has mean zero (Taylor et al. 2011):
-    for non-CM E/ℚ, the trace of Frobenius takes both positive and negative
-    values among primes. This is a consequence of equidistribution of the
-    normalized traces a_p/(2√p) in [-1,1] w.r.t. the semicircle measure.
-    Mean zero means the density of primes with a_p > 0 equals 1/2. -/
-axiom sato_tate_mean_zero (E : EllipticCurveQ) :
-    (∃ p : ℕ, ∃ _ : Fact (Nat.Prime p), traceOfFrobenius E p > 0) ∧
-    (∃ p : ℕ, ∃ _ : Fact (Nat.Prime p), traceOfFrobenius E p < 0)
-
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XVI: MAZUR'S TORSION THEOREM - THE 15 GROUPS
 ═══════════════════════════════════════════════════════════════════════════════
@@ -1869,10 +1849,6 @@ The root number is computed as a product of local root numbers:
 where w_∞ = -1 (archimedean) and w_p depends on reduction type.
 -/
 
-/-- Root number value set: w(E) ∈ {-1, +1}. -/
-axiom rootNumber_values (E : EllipticCurveQ) :
-  rootNumber E = 1 ∨ rootNumber E = -1
-
 /-- If w(E) = -1, BSD predicts L(E, 1) = 0 (forced by functional equation).
     This means the analytic rank is odd, so in particular rank ≥ 1. -/
 theorem rootNumber_neg_implies_vanishing (E : EllipticCurveQ)
@@ -1938,7 +1914,6 @@ def archimedeanRootNumber : ℤ := -1
 theorem root_number_product_formula :
     archimedeanRootNumber * archimedeanRootNumber = 1 := by
   unfold archimedeanRootNumber; ring
-
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XIX: TAMAGAWA NUMBERS AND KODAIRA TYPES
@@ -2021,7 +1996,6 @@ theorem curve_minus_x_tamagawa_at_2 :
 theorem congruent_5_bad_primes :
     ∀ p : ℕ, p ∈ ({2, 5} : Finset ℕ) → True := by
   intro p _; trivial
-
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XX: BSD CONSTANT FOR SPECIFIC CURVES
@@ -2119,7 +2093,6 @@ theorem curveMinusX_BSD_prediction :
     curveMinusX_BSD.constant > 0 :=
   curveMinusX_BSD.constant_pos
 
-
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XXI: CONSEQUENCES OF ROOT NUMBER THEORY
 ═══════════════════════════════════════════════════════════════════════════════
@@ -2194,7 +2167,6 @@ theorem rootNumber_neg_forces_infinite_order_point (E : EllipticCurveQ)
     (hbsd : BSD_Weak E) :
     algebraicRank E ≥ 1 :=
   rootNumber_neg_implies_vanishing E hw hbsd
-
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XXII: BSD VERIFICATION — RANK-1 CURVE 37a
@@ -2289,7 +2261,6 @@ def curve37a_kodaira_37 : KodairaType := KodairaType.I 1
 theorem curve37a_tamagawa_37 :
     kodairaTamagawa curve37a_kodaira_37 = 1 := by
   simp [curve37a_kodaira_37, kodairaTamagawa]
-
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XXIII: RANK BOUNDS FROM SELMER GROUPS
@@ -2442,7 +2413,6 @@ theorem curve389a_tamagawa_389 :
     kodairaTamagawa curve389a_kodaira_389 = 1 := by
   simp [curve389a_kodaira_389, kodairaTamagawa]
 
-
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XXVI: GOLDFELD'S CONJECTURE AND RANK DISTRIBUTION
 ═══════════════════════════════════════════════════════════════════════════════
@@ -2572,7 +2542,6 @@ theorem root_number_parity_split :
     -- Sum = 100%
     (1 : ℝ) / 2 + 1 / 2 = 1 := by norm_num
 
-
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XXVII: KOLYVAGIN'S EULER SYSTEM AND GROSS-ZAGIER
 ═══════════════════════════════════════════════════════════════════════════════
@@ -2701,7 +2670,6 @@ theorem bsd_density_one :
 /-- Curve 389a has analytic rank 2 — it's in the OPEN frontier. -/
 theorem curve389a_in_open_frontier : bsdStatus 2 = .open_ := rfl
 
-
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XXIV: SUMMARY (UPDATED)
 ═══════════════════════════════════════════════════════════════════════════════
@@ -2753,7 +2721,6 @@ This file formalizes the Birch and Swinnerton-Dyer Conjecture with:
 #check MazurTorsionType
 #check mazur_max_torsion_order
 #check eleven_not_valid_cyclic
-#check rootNumber_values
 #check rootNumber_neg_implies_vanishing
 #check rootNumber_pos_implies_even_rank
 #check parity_conjecture_from_BSD
@@ -2929,17 +2896,6 @@ structure IwasawaData (E : EllipticCurveQ) where
 def mu_zero_conjecture (E : EllipticCurveQ) (p : ℕ) : Prop :=
   ∀ (iw : IwasawaData E), iw.p = p → iw.mu = 0
 
-/-- When μ = 0, the Iwasawa main conjecture relates the λ-invariant
-    to the algebraic rank and Ш.
-
-    The λ-invariant equals:
-    λ = rank(E(ℚ)) + (number of primes where E has split multiplicative reduction) + ...
-
-    In particular, λ ≥ rank(E(ℚ)). -/
-axiom lambda_ge_rank (E : EllipticCurveQ) (iw : IwasawaData E)
-    (hmu : iw.mu = 0) :
-    iw.lambda ≥ algebraicRank E
-
 /-- Good ordinary reduction: E has good reduction at p (p ∤ N) and
     the trace of Frobenius a_p is not divisible by p. This is the condition
     required for the Mazur-Swinnerton-Dyer p-adic L-function and Iwasawa theory. -/
@@ -2987,14 +2943,6 @@ theorem imc_implies_bsd_rank0 (E : EllipticCurveQ)
     (_hL : LFunction E 1 ≠ 0) :
     algebraicRank E = 0 := by
   exact (BSD_rank_zero E _hL).1
-
-/-- The Iwasawa theory approach gives additional information beyond
-    classical BSD: it controls the p-part of |Ш| precisely.
-
-    For good ordinary p: ord_p(|Ш|) = 2 · (something from Iwasawa theory) -/
-axiom imc_sha_p_part (E : EllipticCurveQ)
-    (imc : IwasawaMainConjecture E) :
-    ∃ e : ℕ, imc.p ^ (2 * e) ∣ shaOrder E  -- p-part of |Ш| has even valuation (is a perfect square)
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XXX: p-ADIC BSD CONJECTURE
@@ -3145,31 +3093,6 @@ structure TunnellData (n : ℕ) where
 def TunnellCriterion (n : ℕ) (td : TunnellData n) : Prop :=
   td.f_count = 2 * td.g_count
 
-/-- Tunnell's theorem (unconditional direction):
-    If n is a congruent number (squarefree), then f(n) = 2g(n).
-
-    This follows from the connection between congruent numbers and
-    modular forms of weight 3/2. The key insight is that the number
-    of representations by these quadratic forms equals certain
-    Fourier coefficients of theta series, which are related to
-    L(E_n, 1) via the Shimura correspondence. -/
-axiom tunnell_forward (n : ℕ) (hn : n > 0) (td : TunnellData n) :
-    algebraicRank (congruentNumberCurve n hn) ≥ 1 → TunnellCriterion n td
-
-/-- Tunnell's theorem (BSD-conditional direction):
-    Assuming BSD, if f(n) = 2g(n), then n is a congruent number.
-
-    The connection goes through:
-    1. f(n) = 2g(n) ⟺ L(E_n, 1) = 0  (Tunnell's computation via theta series)
-    2. L(E_n, 1) = 0 ⟹ rank(E_n) ≥ 1  (BSD!)
-    3. rank ≥ 1 ⟹ n is congruent  (Koblitz correspondence)
-
-    This is why BSD has such profound implications for classical number theory. -/
-axiom tunnell_reverse_conditional (n : ℕ) (hn : n > 0) (td : TunnellData n) :
-    TunnellCriterion n td →
-    BSDConjecture_Weak →
-    algebraicRank (congruentNumberCurve n hn) ≥ 1
-
 /-- Tunnell's computation for n = 5 (odd case):
     f(5) = #{2x² + y² + 8z² = 5} and g(5) = #{2x² + y² + 32z² = 5}
 
@@ -3254,12 +3177,6 @@ theorem tunnell_3_not_congruent : ¬TunnellCriterion 3 tunnell_3 := by
     Without BSD, the forward direction still gives a necessary condition:
     if n is congruent, then f(n) = 2g(n). So if f(n) ≠ 2g(n),
     n is definitely NOT congruent. -/
-/-- Under BSD, the congruent number problem is decidable:
-    for any squarefree n, compute f(n) and g(n), then
-    n is congruent ⟺ f(n) = 2·g(n). This is computable in polynomial time. -/
-axiom tunnell_decidability (n : ℕ) (hn : n > 0) (td : TunnellData n) :
-    TunnellCriterion n td ↔ algebraicRank (congruentNumberCurve n hn) ≥ 1
-
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XXXII: RANKS OF ELLIPTIC CURVES — RECORDS AND STRUCTURE
 ═══════════════════════════════════════════════════════════════════════════════
@@ -3390,18 +3307,6 @@ theorem curve37a_L_vanishes_via_modsym :
   unfold curve37a_modular
   norm_num
 
-/-- Cremona's database has verified BSD for all curves of conductor ≤ 500000.
-    This involves:
-    1. Computing rank via 2-descent (or higher descent)
-    2. Computing L(E, 1)/Ω via modular symbols
-    3. Computing |Ш| (the Tate-Shafarevich group order)
-    4. Checking the full BSD formula
-
-    This is the most extensive computational verification of BSD. -/
-axiom cremona_database_verified :
-    ∀ (E : EllipticCurveQ), conductor E ≤ 500000 →
-    (algebraicRank E = analyticRank E) -- weak BSD verified computationally
-
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XXXIV: SUMMARY (UPDATED)
 ═══════════════════════════════════════════════════════════════════════════════
@@ -3451,11 +3356,8 @@ This file formalizes the Birch and Swinnerton-Dyer Conjecture with:
 -- Part XXIX: Iwasawa Theory
 #check IwasawaData
 #check mu_zero_conjecture
-#check lambda_ge_rank
 #check IwasawaMainConjecture
 #check imc_implies_bsd_rank0
-#check imc_sha_p_part
-
 -- Part XXX: p-adic BSD
 #check PadicLFunction
 #check ExceptionalZero
@@ -3466,8 +3368,6 @@ This file formalizes the Birch and Swinnerton-Dyer Conjecture with:
 -- Part XXXI: Tunnell's Theorem
 #check TunnellData
 #check TunnellCriterion
-#check tunnell_forward
-#check tunnell_reverse_conditional
 #check tunnell_5_criterion
 #check tunnell_6_criterion
 #check tunnell_1_not_congruent
@@ -3486,8 +3386,6 @@ This file formalizes the Birch and Swinnerton-Dyer Conjecture with:
 #check cremona11a1_L_nonzero_via_modsym
 #check curve37a_modular
 #check curve37a_L_vanishes_via_modsym
-#check cremona_database_verified
-
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XXXV: THE BLOCH-KATO CONJECTURE — GENERALIZING BSD
 ═══════════════════════════════════════════════════════════════════════════════
@@ -3707,21 +3605,6 @@ structure KatoEulerSystem (E : EllipticCurveQ) where
   /-- Kato's bound: ord_p(|Sel|) ≤ ord_p(L(E,1)/Ω) -/
   selmer_bound : ℕ
 
-/-- The Euler system machine (Rubin 2000):
-    A general framework for extracting consequences from Euler systems.
-
-    Input: An Euler system {c_K} for the Galois representation V
-    Output: Upper bounds on Bloch-Kato Selmer groups H^1_f(ℚ, V/T)
-
-    Theorem (Rubin): If c_ℚ ≠ 0, then:
-    1. H^1_f(ℚ, V) has rank ≤ 1
-    2. |H^1_f(ℚ, V/T)| is bounded by the index [H¹(ℚ, T) : ℤₚ · c_ℚ]
-
-    This is the abstraction of Kolyvagin's method. -/
-axiom euler_system_machine_bound (E : EllipticCurveQ)
-    (es : EulerSystem E) (h_nz : es.bottom_class_nonzero = true) :
-    algebraicRank E ≤ 1  -- Rubin: nonzero bottom class ⟹ Selmer rank ≤ 1
-
 /-- The hierarchy of Euler system results for BSD:
 
     | Level | Result | Input |
@@ -3835,11 +3718,6 @@ def agmStep (s : AGMStep) : AGMStep where
 
     AGM convergence rate: |a_n - b_n| ≤ (a₀ - b₀) · c^{2^n}
     where 0 < c < 1. -/
-/-- AGM convergence: each step decreases the gap a - b.
-    The new gap (a+b)/2 - √(ab) = (√a - √b)²/2 < (√a - √b)(√a + √b) = a - b. -/
-axiom agm_quadratic_convergence (s : AGMStep) (hne : s.a > s.b) :
-    (agmStep s).a - (agmStep s).b < s.a - s.b
-
 /-- The L-value L(E, 1) can be computed via:
     1. Modular symbols (exact rational computation)
     2. Dokchitser's algorithm (numerical, arbitrary precision)
@@ -3971,7 +3849,6 @@ This file formalizes the Birch and Swinnerton-Dyer Conjecture with:
 #check EulerSystem
 #check KolyvaginEulerSystem
 #check KatoEulerSystem
-#check euler_system_machine_bound
 #check euler_system_rank_barrier
 
 -- Part XXXVII: Explicit Computations
@@ -5616,15 +5493,6 @@ structure ImaginaryQuadraticField where
     infrastructure not available in Mathlib. -/
 axiom classNumber (K : ImaginaryQuadraticField) : ℕ
 
-/-- The 13 discriminants with class number 1:
-    d ∈ {1, 2, 3, 7, 11, 19, 43, 67, 163}.
-    Solution to Gauss's class number one problem
-    (Heegner 1952, Baker 1966, Stark 1967). -/
-axiom heegner_baker_stark :
-    ∀ (K : ImaginaryQuadraticField),
-      classNumber K = 1 →
-      K.d ∈ ({1, 2, 3, 7, 11, 19, 43, 67, 163} : Set ℕ)
-
 /-- Minimal elliptic curve data for classification purposes. -/
 structure EllipticCurveData where
   /-- Conductor -/
@@ -5641,36 +5509,6 @@ structure CMEllipticCurve extends EllipticCurveData where
   /-- The CM type determines the Hodge structure -/
   cmType : Prop
 
-/-- For CM curves, the L-function factors: L(E/ℚ, s) = L(ψ, s) · L(ψ̄, s)
-    where ψ is a Hecke character of the CM field K.
-    This factorization is the key to proving BSD for CM curves. -/
-axiom cm_l_function_factorization (E : EllipticCurveQ) (_cm : CMEllipticCurve) (s : ℂ) :
-    ∃ (L₁ L₂ : ℂ), LFunction E s = L₁ * L₂
-
-/-- Deuring's theorem: CM curves have supersingular reduction (a_p = 0)
-    at inert primes. Approximately half of primes are inert in any
-    imaginary quadratic field, so CM curves have a_p = 0 at density 1/2. -/
-axiom deuring_cm_frobenius (E : EllipticCurveQ) (_cm : CMEllipticCurve) :
-    ∃ (p : ℕ) (hp : Nat.Prime p), @traceOfFrobenius E p ⟨hp⟩ = 0
-
-/-- Rubin's theorem (1991): BSD holds for CM elliptic curves with analytic rank ≤ 1.
-    This uses Kolyvagin's Euler system method applied to CM curves.
-    If ord_{s=1} L(E,s) ≤ 1, then rank E(ℚ) = ord_{s=1} L(E,s) and |Ш| is finite. -/
-axiom rubin_cm_bsd (E : EllipticCurveQ) (_cm : CMEllipticCurve)
-    (h : analyticRank E ≤ 1) :
-    algebraicRank E = analyticRank E
-
-/-- For CM curves, the period Ω is positive and determined by the CM field.
-    Specifically, Ω = (2π/√|D_K|) · Ω_f where Ω_f is the Hecke L-value at s=1. -/
-axiom cm_period_formula (E : CMEllipticCurve) :
-    ∃ (Ω : ℝ), Ω > 0
-
-/-- Chowla-Selberg formula: the periods of CM elliptic curves are products
-    of values of the Gamma function at rational arguments.
-    This gives explicit algebraic expressions for CM periods. -/
-axiom chowla_selberg (E : CMEllipticCurve) :
-    ∃ (Ω : ℝ), Ω > 0
-
 /-- The 13 singular moduli (j-invariants of CM curves with h(K) = 1):
     j(-1) = 1728, j(-2) = 8000, j(-3) = 0, j(-7) = -3375,
     j(-11) = -32768, j(-19) = -884736, j(-43) = -884736000,
@@ -5679,13 +5517,6 @@ axiom chowla_selberg (E : CMEllipticCurve) :
 def singular_moduli : List ℤ :=
   [1728, 8000, 0, -3375, -32768, -884736, -884736000, -147197952000,
    -262537412640768000]
-
-/-- The j-invariant of E with CM by O_K has degree h(K) over ℚ.
-    When h(K) = 1, the j-invariant is one of the 9 singular moduli
-    (rational integers from Heegner-Baker-Stark). -/
-axiom cm_j_rational_when_class_one (E : CMEllipticCurve)
-    (h1 : classNumber E.cmField = 1) :
-    ∃ j : ℤ, j ∈ singular_moduli
 
 /-- Verification: j(-3) = 0 corresponds to the curve y² = x³ + 1 (hexagonal lattice) -/
 theorem j_neg3_is_zero : singular_moduli[2]? = some 0 := by
@@ -5723,23 +5554,6 @@ def BSD_abelian (A : AbelianVariety) : Prop :=
   -- ord_{s=dim(A)} L(A, s) = rank A(ℚ)
   True -- Full conjecture requires analytic rank infrastructure for abelian varieties
 
-/-- Faltings' theorem (Shafarevich conjecture, 1983):
-    There are only finitely many isomorphism classes of abelian varieties
-    over ℚ of given dimension with good reduction outside a finite set of primes. -/
-axiom faltings_isogeny_theorem (g : ℕ) (hg : g > 0) :
-    ∃ (N : ℕ), N > 0  -- finitely many isomorphism classes of dimension g
-
-/-- Faltings' height: a canonical height on the moduli space of abelian varieties.
-    Central to Faltings' proof of Mordell and to effective BSD. -/
-axiom faltings_height (A : AbelianVariety) : ℝ
-
-/-- The Sato-Tate conjecture for abelian varieties (BGGHT 2011):
-    The Frobenius eigenvalues are equidistributed according to the
-    Sato-Tate group ST(A). For non-CM elliptic curves, ST(A) = SU(2).
-    Full formalization requires spectral measure theory on compact Lie groups. -/
-axiom sato_tate_abelian (_A : AbelianVariety) :
-    True  -- Needs spectral measure on compact Lie groups
-
 /-- For A = Jac(C) the Jacobian of a curve C, BSD for A is related to
     the arithmetic of C. The Jacobian has dim = genus(C). -/
 def jacobianVariety (genus : ℕ) (hg : genus > 0) : AbelianVariety :=
@@ -5751,12 +5565,6 @@ theorem bsd_jacobian_rank_zero (genus : ℕ) (hg : genus > 0) :
     BSD_abelian (jacobianVariety genus hg) := by
   -- BSD_abelian unfolds to True
   trivial
-
-/-- Gross-Zagier-Zhang theorem (2012): for modular abelian varieties of GL₂-type
-    and analytic rank 1, BSD holds (rank = 1 and Ш is finite).
-    Full formalization requires analytic rank infrastructure for abelian varieties. -/
-axiom gross_zagier_zhang_gl2 (_A : AbelianVariety) :
-    True  -- Needs analytic rank for abelian varieties
 
 /- Bhargava-Shankar (2015): The average rank of elliptic curves over ℚ
     (ordered by height) is at most 7/6. Key consequence: a positive
@@ -5803,20 +5611,12 @@ theorem bsd_positive_density :
 -- Part L: CM Elliptic Curves
 #check ImaginaryQuadraticField
 #check CMEllipticCurve
-#check cm_l_function_factorization
-#check deuring_cm_frobenius
-#check rubin_cm_bsd
-#check chowla_selberg
-#check cm_j_rational_when_class_one
 #check j_neg3_is_zero
 #check j_neg1_is_1728
 
 -- Part LI: BSD for Abelian Varieties
 #check AbelianVariety
 #check BSD_abelian
-#check faltings_isogeny_theorem
-#check sato_tate_abelian
-#check gross_zagier_zhang_gl2
 #check bhargava_shankar_average_rank
 #check positive_proportion_rank_zero_bsd
 #check bsd_positive_density
@@ -5851,40 +5651,12 @@ def lambda_invariant (_ : LambdaModule Λ) : Nat := 0  -- abstract
     interpolating L(E,χ,1) for Dirichlet characters χ of p-power conductor -/
 def p_adic_L_function (_ : WeierstrassCurve ℤ) (_ : Nat) : Prop := True
 
-/-- Mazur's conjecture (now theorem for ordinary primes):
-    The μ-invariant of the Selmer group vanishes for ordinary primes.
-    Proved by Kato (2004) for modular elliptic curves. -/
-axiom mazur_mu_conjecture (E : EllipticCurveQ)
-    (iw : IwasawaData E) :
-    iw.mu = 0
-
 /-- The Iwasawa Main Conjecture for elliptic curves:
     char(Sel(E/ℚ_cyc)^∨) = (Lₚ(E)) in Λ.
     Proved by Skinner-Urban (2014) for ordinary primes with conditions.
     This is captured by the IwasawaMainConjecture structure. -/
 axiom iwasawa_main_conjecture (E : EllipticCurveQ) :
     ∃ (imc : IwasawaMainConjecture E), imc.p ≥ 3
-
-/-- Kato's Euler system implies one divisibility of the Main Conjecture:
-    (Lₚ(E)) | char(X). This gives an upper bound on the Selmer group
-    in terms of the p-adic L-function. -/
-axiom kato_euler_system_divisibility (E : EllipticCurveQ)
-    (iw : IwasawaData E) (hmu : iw.mu = 0) :
-    iw.lambda ≥ algebraicRank E
-
-/-- Skinner-Urban proves the reverse divisibility:
-    char(X) | (Lₚ(E)) under standard conditions.
-    Combined with Kato, this gives equality of ideals. -/
-axiom skinner_urban_reverse (E : EllipticCurveQ)
-    (iw : IwasawaData E) (hmu : iw.mu = 0) :
-    iw.lambda ≥ algebraicRank E
-
-/-- The Main Conjecture implies:
-    If L(E,1) ≠ 0, then Sel(E/ℚ) is finite and rank = 0.
-    This provides a p-adic proof of BSD for rank 0. -/
-axiom main_conjecture_implies_bsd_rank_zero (E : EllipticCurveQ)
-    (hL : LFunction E 1 ≠ 0) :
-    algebraicRank E = 0
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART LIII: KOLYVAGIN'S EULER SYSTEM AND BSD FOR RANK ≤ 1
@@ -5910,48 +5682,12 @@ axiom gross_zagier_formula_detail (E : EllipticCurveQ)
     (y : HeegnerPointData E) (h : y.isNonTorsion) :
     analyticRank E = 1
 
-/-- Kolyvagin's Euler system (1990):
-    Using Heegner points and their derivatives, Kolyvagin proved:
-    If y_K is non-torsion (equivalently, ĥ(y_K) ≠ 0), then:
-    1. rank E(ℚ) = 1
-    2. Sha(E/ℚ) is finite (shaOrder > 0) -/
-axiom kolyvagin_euler_system (E : EllipticCurveQ)
-    (y : HeegnerPointData E) (h : y.isNonTorsion) :
-    algebraicRank E = 1 ∧ 0 < shaOrder E
-
-/-- Gross-Zagier + Kolyvagin: the most celebrated result toward BSD.
-    If ord_{s=1} L(E,s) ≤ 1, then rank E(ℚ) = ord_{s=1} L(E,s) and Sha is finite.
-    This proves BSD (weak form) for analytic rank 0 and 1. -/
-axiom gross_zagier_kolyvagin_bsd (E : EllipticCurveQ)
-    (h : analyticRank E ≤ 1) :
-    algebraicRank E = analyticRank E ∧ 0 < shaOrder E
-
 /-- The parity conjecture: (-1)^{rank E(ℚ)} = w(E) where w(E) is the root number.
     Proved by Dokchitser-Dokchitser (2010) for all E/ℚ.
     Equivalently: algebraic rank parity = analytic rank parity.
     (Follows from parity_conjecture_proved_axiom in Part XI.) -/
 theorem parity_conjecture (E : EllipticCurveQ) : ParityConjecture E :=
   parity_conjecture_proved_axiom E
-
-/-- Heegner points at higher level: Zhang's generalization (2001) to
-    Shimura curves over totally real fields.
-    For the base case (E/ℚ), the Heegner hypothesis can always be satisfied
-    for some imaginary quadratic K. -/
-axiom zhang_gross_zagier_shimura (E : EllipticCurveQ) :
-    ∃ (y : HeegnerPointData E), y.height ≥ 0
-
-/-- BSD for rank 0: if L(E,1) ≠ 0, then E(ℚ) is finite.
-    This follows from Kolyvagin's work. This is a THEOREM, not a conjecture. -/
-axiom bsd_rank_zero_solved (E : EllipticCurveQ)
-    (hL : LFunction E 1 ≠ 0) :
-    algebraicRank E = 0 ∧ 0 < shaOrder E
-
-/-- BSD for rank 1: if L(E,1) = 0 and analytic rank is 1, then algebraic rank = 1.
-    Requires Heegner points + Gross-Zagier + Kolyvagin.
-    This is a THEOREM for all elliptic curves over ℚ. -/
-axiom bsd_rank_one_solved (E : EllipticCurveQ)
-    (hrank : analyticRank E = 1) :
-    algebraicRank E = 1 ∧ 0 < shaOrder E
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART LIV: P-ADIC BSD AND SPECIAL VALUE FORMULAS
@@ -5975,33 +5711,9 @@ theorem mtt_exceptional_zero (E : EllipticCurveQ)
     ez.L_invariant ≠ 0 :=
   (greenberg_stevens E ez).2
 
-/-- Perrin-Riou's p-adic BSD formula: assuming classical BSD (weak form),
-    the p-adic and complex L-functions have the same order of vanishing,
-    giving compatibility between classical and p-adic BSD. -/
-axiom perrin_riou_p_adic_bsd (E : EllipticCurveQ)
-    (Lp : PadicLFunction E) (Rp : PadicRegulator E)
-    (h_bsd : BSD_Weak E) :
-    PadicBSD E Lp Rp
-
 /-- The p-adic height pairing: a Qₚ-valued pairing on E(ℚ).
     Defined by Mazur-Tate and Schneider using Coleman integration. -/
 def p_adic_height_pairing (_ : WeierstrassCurve ℤ) (_ : Nat) : Prop := True
-
-/-- Bertolini-Darmon (2005): p-adic Gross-Zagier formula.
-    Connects the p-adic height of Heegner points to the derivative
-    of the p-adic L-function. If the Heegner point is non-torsion,
-    this gives analytic rank 1 (consistent with the archimedean GZ formula). -/
-axiom bertolini_darmon_p_adic_gz (E : EllipticCurveQ)
-    (y : HeegnerPointData E) (h : y.isNonTorsion) :
-    analyticRank E = 1
-
-/-- Darmon's Stark-Heegner points: conjectural p-adic construction
-    of rational points when the Heegner hypothesis fails.
-    Conjecturally, for any E/ℚ with analytic rank 1, there exist
-    rational points generating E(ℚ)/torsion. -/
-axiom darmon_stark_heegner (E : EllipticCurveQ)
-    (hrank : analyticRank E = 1) :
-    algebraicRank E ≥ 1
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART LV: RECENT PROGRESS AND HIGHER RANK BSD
@@ -6014,34 +5726,6 @@ def selmer_obstruction_rank_ge_2 : Prop :=
     -- Kolyvagin's method fundamentally uses the 1-dimensionality of
     -- the Heegner point construction
     True
-
-/-- Skinner's converse theorem (2014):
-    If rank E(ℚ) ≤ 1 and the p-part of Sha is finite,
-    then ord_{s=1} L(E,s) = rank E(ℚ).
-    This provides a converse to Gross-Zagier-Kolyvagin. -/
-axiom skinner_converse (E : EllipticCurveQ)
-    (hrank : algebraicRank E ≤ 1) (hsha : 0 < shaOrder E) :
-    analyticRank E = algebraicRank E
-
-/-- The anticyclotomic Iwasawa Main Conjecture (Bertolini-Darmon 2005):
-    Controls the growth of Selmer groups in the anticyclotomic tower.
-    For E/ℚ with analytic rank ≤ 1, gives BSD via Iwasawa theory. -/
-axiom anticyclotomic_main_conjecture (E : EllipticCurveQ)
-    (iw : IwasawaData E) (hmu : iw.mu = 0) :
-    iw.lambda ≥ algebraicRank E
-
-/-- Wan's breakthrough (2014): proves cases of the anticyclotomic
-    Main Conjecture for supersingular primes using Sprung's
-    signed Selmer groups. Extends BSD results beyond ordinary primes. -/
-axiom wan_supersingular_imc (E : EllipticCurveQ)
-    (hrank : analyticRank E ≤ 1) :
-    algebraicRank E = analyticRank E
-
-/-- Castella-Wan (2018): further progress on BSD for supersingular primes.
-    Proves finiteness of Sha for certain rank 1 curves at supersingular primes. -/
-axiom castella_wan_supersingular_bsd (E : EllipticCurveQ)
-    (hrank : analyticRank E = 1) :
-    0 < shaOrder E
 
 /-- Current status summary:
     rank 0: PROVED (Kolyvagin + Gross-Zagier, no Heegner point needed)
@@ -6067,31 +5751,15 @@ theorem bsd_current_status :
 -- Part LII: Iwasawa Theory
 #check IwasawaAlgebra
 #check LambdaModule
-#check mazur_mu_conjecture
 #check iwasawa_main_conjecture
-#check kato_euler_system_divisibility
-#check skinner_urban_reverse
-#check main_conjecture_implies_bsd_rank_zero
-
 -- Part LIII: Kolyvagin's Euler System
 #check HeegnerField
 #check gross_zagier_formula
-#check kolyvagin_euler_system
-#check gross_zagier_kolyvagin_bsd
 #check parity_conjecture
-#check bsd_rank_zero_solved
-#check bsd_rank_one_solved
-
 -- Part LIV: p-adic BSD
 #check mtt_exceptional_zero
 #check greenberg_stevens
-#check perrin_riou_p_adic_bsd
-#check bertolini_darmon_p_adic_gz
-#check darmon_stark_heegner
-
 -- Part LV: Recent Progress
-#check skinner_converse
-#check anticyclotomic_main_conjecture
 #check bsd_current_status
 
 -- ═══════════════════════════════════════════════════════════════
@@ -6897,12 +6565,6 @@ structure FunctionFieldBSD where
   /-- Algebraic rank (Mordell-Weil rank over the function field) -/
   algebraicRank : ℕ
 
-/-- Tate's theorem (1966): BSD holds for constant elliptic curves over function fields.
-    A constant elliptic curve is E₀ ×_{𝔽_q} 𝔽_q(C) where E₀/𝔽_q. -/
-axiom tate_function_field_bsd (fb : FunctionFieldBSD) :
-    -- For constant curves, the analytic rank equals the algebraic rank
-    fb.analyticRank = fb.algebraicRank
-
 /-- Ulmer's result (2002): elliptic curves over 𝔽_p(t) can have arbitrarily large rank.
     The curve E_d : y² = x³ + t^d · x over 𝔽_p(t), with d = p^n - 1, achieves rank
     growing linearly with d. This is UNKNOWN over ℚ. -/
@@ -6944,7 +6606,6 @@ theorem part_lxiii_summary :
     -- PPVW heuristic: ranks might be bounded over ℚ!
     (28 : ℕ) ≥ 28 := le_refl 28
 
-#check tate_function_field_bsd
 #check artin_tate_analogy
 
 -- ═══════════════════════════════════════════════════════════════════
@@ -7002,18 +6663,6 @@ structure TwoDescentData (E : EllipticCurveQ) where
   /-- Upper bound on rank from 2-descent:
       rank ≤ dim_{𝔽₂}(Sel₂) - dim_{𝔽₂}(E[2](ℚ)) -/
   rank_upper_bound : ℕ
-
-/-- The 2-descent exact sequence gives:
-    0 → E(ℚ)/2E(ℚ) → Sel₂(E/ℚ) → Sha(E/ℚ)[2] → 0
-
-    Since E(ℚ)/2E(ℚ) ≅ (ℤ/2)^{r + t₂} where r = rank, t₂ = dim E[2](ℚ):
-    rank ≤ v₂(|Sel₂|) - t₂
-    with equality iff Sha[2] = 0. -/
-axiom two_descent_rank_bound (E : EllipticCurveQ) (d : TwoDescentData E) :
-    -- The rank is bounded by 2-Selmer data
-    -- Equality holds when Sha(E)[2] = 0
-    -- In practice: Sha[2] = 0 for ~90% of curves (Delaunay heuristic)
-    algebraicRank E ≤ d.rank_upper_bound
 
 /-- Bhargava-Shankar's parametrization of 2-Selmer elements.
 
@@ -7079,7 +6728,6 @@ theorem part_lxiv_summary :
     -- σ(n) = sum of divisors = 3, 4, 7, 6 for n = 2, 3, 4, 5
     (3 : ℕ) + 4 + 7 + 6 = 20 := by omega
 
-#check two_descent_rank_bound
 #check bhargava_shankar_2selmer
 #check congruent_number_2descent
 
@@ -7144,18 +6792,6 @@ structure HidaFamily where
   /-- The λ-invariant (measures growth of Selmer in the family) -/
   lambdaInvariant : ℕ
 
-/-- Greenberg's conjecture: the μ-invariant of the p-adic L-function
-    attached to a Hida family is 0. This is known for many cases
-    and is a consequence of Ferrero-Washington for Dirichlet L-functions. -/
-axiom greenberg_mu_zero_conjecture (hf : HidaFamily)
-    (h_ord : hf.muInvariant = 0) :
-    -- If μ = 0, the Iwasawa module is finitely generated over ℤ_p
-    -- (not just over the Iwasawa algebra Λ)
-    -- Consequence: Selmer group growth is controlled by λ alone
-    -- Sel(E/ℚ_n) has p-rank ≈ λ · n as n → ∞ (instead of p^{μ·pⁿ} · λ·n)
-    -- Known cases: CM curves (Rubin), many non-CM curves (Emerton-Pollack-Weston)
-    hf.lambdaInvariant ≥ 0
-
 /-- Weight specialization: at integer weight k ≥ 2, the Hida family
     specializes to a classical modular form. At weight 2, this is the
     newform attached to an elliptic curve (by modularity). -/
@@ -7194,7 +6830,6 @@ theorem part_lxv_summary :
     -- At weight 2: just s = 1 (the BSD point)
     (2 : ℕ) - 1 = 1 ∧ (2 : ℕ) = 2 := by omega
 
-#check greenberg_mu_zero_conjecture
 #check hida_weight_specialization
 
 -- ═══════════════════════════════════════════════════════════════════
@@ -7422,23 +7057,6 @@ structure TotallyRealBSD where
   /-- Parity constraint: (-1)^{analytic rank} = root number -/
   parity : ((-1 : Int) ^ analyticRank) = rootNumber
 
-/-- Yuan-Zhang-Zhang generalized Gross-Zagier formula (2013).
-    Over a totally real field F, for a CM extension K/F:
-    L'(E/F ⊗ χ_K, 1) = c × ĥ(P_K)²
-    where P_K is a Heegner point on the Shimura curve. -/
-axiom yuan_zhang_zhang_formula (trb : TotallyRealBSD)
-    (h_rank1 : trb.analyticRank = 1) :
-    -- The height of the Heegner point is nonzero iff L'(E/F,1) ≠ 0
-    -- This proves BSD for analytic rank 1 over totally real fields
-    -- (under modularity + Heegner hypothesis)
-    trb.algebraicRank ≤ 1
-
-/-- Kolyvagin over totally real fields: combined with Yuan-Zhang-Zhang,
-    gives BSD for analytic rank ≤ 1 over F. -/
-axiom kolyvagin_totally_real (trb : TotallyRealBSD)
-    (h_rank0 : trb.analyticRank = 0) :
-    trb.algebraicRank = 0
-
 /-- Modularity over totally real fields is harder than over ℚ.
     Over ℚ: Wiles-BCDT (2001) proves all E/ℚ are modular.
     Over F totally real: Freiman-Le Hung-Li-Thorne prove many cases.
@@ -7483,8 +7101,6 @@ theorem part_lxvii_summary :
 
 -- VERIFICATION: Part LXVII
 #check TotallyRealBSD
-#check yuan_zhang_zhang_formula
-#check kolyvagin_totally_real
 #check JacquetLanglands
 
 -- ═══════════════════════════════════════════════════════════════════
@@ -7545,17 +7161,6 @@ structure SelmerComplex where
   tamagawaProduct : ℕ
   tamagawaProduct_pos : tamagawaProduct ≥ 1
 
-/-- The Euler characteristic of the Selmer complex equals the BSD constant.
-    Nekovář (2006): χ(R̃Γ_f(K, T)) = L*(E,1) / Ω (up to p-adic unit).
-    This explains the FORM of the BSD formula: it's an Euler characteristic! -/
-axiom selmer_complex_euler_char (sc : SelmerComplex) :
-    -- The BSD formula L*(E,1)/Ω = |Sha| × Reg × ∏c_v / |tors|²
-    -- is the Euler characteristic of the Selmer complex
-    -- This is NOT a coincidence: it's the structure of derived categories
-    -- Analogous to: Euler characteristic of a sheaf = alternating sum of cohomology
-    -- For BSD: H⁰ contributes E(K)_tors, H¹ contributes E(K)/tors ⊕ Sha, H² contributes E(K)_tors
-    sc.shaOrder * sc.tamagawaProduct ≥ sc.torsionOrder
-
 /-- The p-adic height pairing: Nekovář's construction generalizes
     Mazur-Tate and Schneider's earlier constructions.
     Non-degeneracy is equivalent to the p-adic BSD conjecture. -/
@@ -7569,15 +7174,6 @@ structure PadicHeightPairing where
   nonDegenerate : Bool
   /-- Splitting: ordinary vs supersingular behavior at p -/
   ordinary : Bool
-
-/-- Non-degeneracy of p-adic heights implies the p-adic BSD conjecture.
-    This is the key link between Nekovář's framework and BSD. -/
-axiom padic_height_bsd (php : PadicHeightPairing) (h : php.nonDegenerate = true) :
-    -- Non-degenerate p-adic height ↔ ord_p L_p(E,s) at s=1 equals rank
-    -- Proved for ordinary p with rank 0: Kato (2004)
-    -- Proved for ordinary p with rank 1: Skinner-Urban + Kolyvagin
-    -- Open for rank ≥ 2 and supersingular p
-    php.rank ≥ 0
 
 /-- The Tamagawa Number Conjecture (Bloch-Kato-Fontaine-Perrin-Riou):
     the ultimate generalization of BSD to arbitrary motives.
@@ -7613,9 +7209,7 @@ theorem part_lxviii_summary :
 
 -- VERIFICATION: Part LXVIII
 #check SelmerComplex
-#check selmer_complex_euler_char
 #check PadicHeightPairing
-#check padic_height_bsd
 #check tamagawa_number_conjecture
 
 -- ═══════════════════════════════════════════════════════════════════
@@ -7680,50 +7274,6 @@ structure AnticyclotomicData where
   /-- Number of Heegner points at level n in the tower -/
   heegnerRank : ℕ
 
-/-- Bertolini-Darmon (2005): the anticyclotomic p-adic L-function.
-    This is a p-adic measure on Gal(K_∞^{ac}/K) that interpolates
-    central L-values L(E/K, χ, 1) as χ varies over anticyclotomic characters.
-
-    The key property: at the trivial character,
-    L_p^{ac}(E/K, 1) ~ L(E/K, 1) (up to explicit Euler factors at p). -/
-axiom bertolini_darmon_rank0 (acd : AnticyclotomicData)
-    (h_split : acd.p_splits = true)
-    (h_rank : acd.heegnerRank = 0) :
-    -- If the Heegner point is torsion (rank 0 contribution),
-    -- then L(E/K, 1) ≠ 0, and by GZK this implies rank E(K) = 0
-    acd.lambdaAC ≥ 0
-
-/-- Cornut-Vatsal non-vanishing theorem (2002-2007):
-    for all but finitely many ring class characters χ,
-    the Heegner point y_χ is non-torsion.
-
-    Combined with Gross-Zagier: L'(E/K, χ, 1) ≠ 0 for most χ.
-    Combined with Kolyvagin: rank E(K_χ) = 1 for most χ.
-
-    This proves BSD for rank 1 for a positive proportion of quadratic twists! -/
-axiom cornut_vatsal_nonvanishing (acd : AnticyclotomicData)
-    (h_split : acd.p_splits = true) :
-    -- For all but finitely many χ: Heegner point ≠ 0
-    -- → L'(E/K, χ, 1) ≠ 0 (by Gross-Zagier)
-    -- → rank = 1 and Sha is finite (by Kolyvagin)
-    -- The number of exceptional characters: finite (bounded explicitly)
-    acd.heegnerRank ≤ acd.heegnerRank + 1
-
-/-- Castella's anticyclotomic Iwasawa main conjecture (2022):
-    char_Λ(Sel(E/K_∞^{ac})^∨) = (L_p^{ac}(E/K))
-
-    This is one of the strongest recent results toward BSD.
-    It connects the p-adic L-function to the Selmer group in the
-    anticyclotomic tower, providing a p-adic version of BSD over K. -/
-axiom castella_anticyclotomic_imc (acd : AnticyclotomicData)
-    (h_split : acd.p_splits = true)
-    (h_mu : acd.muAC = 0) :
-    -- The characteristic ideal of the dual Selmer group
-    -- equals the ideal generated by the anticyclotomic p-adic L-function
-    -- Under μ = 0: the Selmer growth is controlled by λ alone
-    -- λ^{ac} relates to the rank of E over K
-    acd.lambdaAC ≥ 0
-
 /-- Howard's big Heegner points (2004): a Kolyvagin system in the
     anticyclotomic setting that bounds the Selmer group over K_∞^{ac}. -/
 structure BigHeegnerPoint where
@@ -7734,16 +7284,6 @@ structure BigHeegnerPoint where
   conductor_pos : conductor ≥ 1
   /-- Whether the big Heegner point is non-torsion -/
   nonTorsion : Bool
-
-/-- Howard's result: big Heegner points control the Selmer group.
-    If the big Heegner point is non-torsion, then the anticyclotomic
-    Selmer has rank exactly 1 (the Heegner point generates it). -/
-axiom howard_big_heegner (bhp : BigHeegnerPoint)
-    (h : bhp.nonTorsion = true) :
-    -- The anticyclotomic Selmer has Λ-rank 1
-    -- The Heegner point generates the free part
-    -- Sha is bounded by explicit constants involving the conductor
-    bhp.level ≥ 0
 
 theorem part_lxix_summary :
     -- Anticyclotomic Iwasawa theory: the most productive post-GZK approach to BSD
@@ -7757,9 +7297,6 @@ theorem part_lxix_summary :
 
 -- VERIFICATION: Part LXIX
 #check AnticyclotomicData
-#check bertolini_darmon_rank0
-#check cornut_vatsal_nonvanishing
-#check castella_anticyclotomic_imc
 #check BigHeegnerPoint
 
 -- ═══════════════════════════════════════════════════════════════════
