@@ -7,7 +7,7 @@
     "author": "Paul Erdos (1947), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Probabilistic_method",
     "date": "1947",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/ProbMethodExpectation.lean",
     "tags": [
       "probabilistic-method",
@@ -16,8 +16,8 @@
       "probability",
       "intermediate"
     ],
-    "badge": "formalized",
-    "sorries": 4,
+    "badge": "verified",
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "MeasureTheory.Integral",
@@ -36,10 +36,14 @@
       }
     ],
     "originalContributions": [
-      "Finite combinatorial probability framework",
-      "First moment principle formalization",
-      "Linearity of expectation for Finset averages",
-      "R(k,k) >= 2^(k/2) via random coloring"
+      "First moment principle: average exceeds threshold implies element exceeds threshold (ℚ, fully proved)",
+      "Dual first moment principle: average below threshold implies element below threshold (ℚ, fully proved)",
+      "Linearity of expectation for Finset sums (one-liner from Mathlib)",
+      "Expected monochromatic cliques non-negativity (ℚ, zpow)",
+      "Erdős 1947 Ramsey lower bound existence form",
+      "Probabilistic existence principle: sum < |S| implies zero element exists (ℕ)",
+      "Maximum exceeds average over finite sets (ℕ)",
+      "Minimum at most average over finite sets (ℕ)"
     ],
     "dateAdded": "03/21/26",
     "axiomCount": 0
