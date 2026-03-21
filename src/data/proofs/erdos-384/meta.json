@@ -22,7 +22,14 @@
     "erdosProblemStatus": "solved",
     "dateAdded": "2025-01-15",
     "mathlib_version": "4.15.0",
-    "axiomCount": 13
+    "axiomCount": 13,
+    "prerequisites": [
+      "Binomial coefficients and Pascal's triangle",
+      "Prime factorization and divisibility",
+      "Kummer's theorem (p-adic valuation of binomial coefficients)",
+      "Bertrand's postulate",
+      "Basic Lean 4 tactics (native_decide, norm_num, interval_cases)"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős Problem #384 concerns prime divisors of binomial coefficients. Conjectured by Erdős and Selfridge in the 1960s, proved by Ecklund in 1969. The unique exception C(7,3) = 35 = 5 × 7 is the only case where all prime factors are ≥ n/2. Stronger conjectures about n/k bounds remain partially open.",
