@@ -137,6 +137,18 @@
       "**Artin connection:** Both problems concern the multiplicative structure of $p - 1$; Artin's primitive root conjecture requires large prime factors of $p - 1$, while Erdős asks about the opposite extreme"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "depends-on",
+      "description": "The problem asks about density within primes; Euclid's infinitude result is the foundational context"
+    },
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "related",
+      "description": "Both problems concern the multiplicative structure of p-1: Fermat's two-squares theorem characterizes primes p ≡ 1 mod 4, while Erdős 1065 concerns primes where p-1 has few distinct prime factors"
+    }
+  ],
   "conclusion": {
     "summary": "This formalization captures both variants of Erdős Problem #1065, establishes their logical hierarchy, and provides extensive computational evidence. The $k = 1$ case connects to the safe primes conjecture, a cornerstone of modern cryptography. All structural theorems (Form A ⊆ Form B, smooth factorization, implication chain) are fully proved in Lean 4.",
     "implications": "A resolution would illuminate the factorization structure of $p - 1$ for primes $p$, connecting to Artin's primitive root conjecture, the distribution of smooth numbers, and the security assumptions underlying Diffie–Hellman cryptography. Understanding when $p - 1$ can be nearly a prime power is fundamental to both analytic and computational number theory.",
