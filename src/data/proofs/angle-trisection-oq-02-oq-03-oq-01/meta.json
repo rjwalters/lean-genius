@@ -2,7 +2,7 @@
   "id": "angle-trisection-oq-02-oq-03-oq-01",
   "title": "Gauss-Wantzel Theorem via Cyclotomic Fields",
   "slug": "angle-trisection-oq-02-oq-03-oq-01",
-  "description": "Bridges the Gauss-Wantzel constructibility theorem to Mathlib's cyclotomic field infrastructure. Proves ζₙ = exp(2πi/n) properties, Chebyshev polynomial connections, complex conjugation as order-2 automorphism via galCyclotomicEquivUnitsZMod, and derives cos(2π/n) algebraicity from cyclotomic theory. 371 lines, 17 theorems, 3 axioms, 0 sorries.",
+  "description": "Bridges the Gauss-Wantzel constructibility theorem to Mathlib's cyclotomic field infrastructure. Proves complex conjugation as order-2 automorphism, [ℚ(α):ℚ] = φ(n)/2 via fixed field theory, minimal polynomial degree of cos(2π/n), and Galois property of the extension. 740 lines, axiom-free, 0 sorries.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Constructible_number#Gauss%E2%80%93Wantzel_theorem",
@@ -80,46 +80,84 @@
   },
   "sections": [
     {
-      "id": "roots-of-unity",
-      "title": "Primitive Roots of Unity and Euler's Formula",
-      "summary": "Defines ζₙ = exp(2πi/n), proves it equals cos + i·sin, extracts real/imaginary parts, proves conj(ζₙ) = ζₙ⁻¹, and establishes the key bridge ζₙ + ζₙ⁻¹ = 2cos(2π/n).",
-      "startLine": 30,
-      "endLine": 78
+      "id": "cyclotomic-setup",
+      "title": "§1: Cyclotomic Field Setup",
+      "summary": "Establishes CyclotomicField n ℚ as a Galois extension of dimension φ(n). Defines the abstract primitive root of unity ζ via IsCyclotomicExtension.zeta.",
+      "startLine": 27,
+      "endLine": 57
     },
     {
-      "id": "unit-circle",
-      "title": "Powers and Unit Circle",
-      "summary": "Proves |ζₙ| = 1, ζₙ ≠ 0, and ζₙⁿ = 1 (the defining property). Shows ζₙ belongs to rootsOfUnity.",
-      "startLine": 79,
-      "endLine": 111
+      "id": "order-2-automorphism",
+      "title": "§2: Order-2 Automorphism via fromZetaAut",
+      "summary": "Defines conjAut (ζ ↦ ζ⁻¹) and proves it has exact order 2 for n ≥ 3. Uses galCyclotomicEquivUnitsZMod to identify conjugation with -1 ∈ (ℤ/nℤ)*.",
+      "startLine": 58,
+      "endLine": 129
     },
     {
-      "id": "chebyshev",
-      "title": "Chebyshev Polynomials",
-      "summary": "Proves existence and degree of Chebyshev polynomials satisfying Tₙ(cos θ) = cos(nθ), connecting polynomial algebra to trigonometry.",
-      "startLine": 154,
-      "endLine": 186
+      "id": "fixed-field-degree",
+      "title": "§3: Fixed Field and Degree Computation",
+      "summary": "Defines the maximal real subfield as K^⟨σ⟩, computes |⟨σ⟩| = 2, and derives [K^⟨σ⟩:ℚ] = φ(n)/2 via the tower law.",
+      "startLine": 130,
+      "endLine": 168
     },
     {
-      "id": "cyclotomic-degree",
-      "title": "Cyclotomic Extension Degree",
-      "summary": "Wraps Mathlib results: deg(Φₙ) = φ(n) and Φₙ is irreducible over ℚ.",
-      "startLine": 187,
+      "id": "alpha-embedding",
+      "title": "§4: Alpha and Embedding into ℂ",
+      "summary": "Defines α = ζ + ζ⁻¹, constructs an embedding into ℂ, and proves α maps to w + w⁻¹ = 2cos(2π/n).",
+      "startLine": 169,
       "endLine": 204
     },
     {
-      "id": "galois-conjugation",
-      "title": "Complex Conjugation as Order-2 Automorphism",
-      "summary": "The main proved result: via galCyclotomicEquivUnitsZMod, -1 ∈ (ℤ/nℤ)* gives σ ≠ id with σ² = id. Uses n ≥ 3 to show -1 ≠ 1 (since n ∤ 2).",
-      "startLine": 206,
-      "endLine": 261
+      "id": "alpha-in-fixed-field",
+      "title": "§5: ℚ(α) = Fixed Field",
+      "summary": "Proves α is fixed by σ (hence ℚ(α) ⊆ K^⟨σ⟩) and the degree computation showing equality.",
+      "startLine": 205,
+      "endLine": 238
     },
     {
-      "id": "axiom-bridge",
-      "title": "Bridge to Gauss-Wantzel Axioms",
-      "summary": "Three axioms connecting cyclotomic theory to constructibility: maximal real subfield degree, minimal polynomial degree, and Galois extension property. Derives cos(2π/n) algebraicity.",
-      "startLine": 262,
-      "endLine": 371
+      "id": "degree-computation",
+      "title": "§5b-6: Degree Upper/Lower Bounds and Minpoly",
+      "summary": "Proves [ℚ(α):ℚ] = φ(n)/2 by upper bound (ζ is quadratic over ℚ(α)) and lower bound (ℚ(α) ⊆ K^⟨σ⟩). Then derives minpoly_alpha_natDegree.",
+      "startLine": 239,
+      "endLine": 392
+    },
+    {
+      "id": "cos-connection",
+      "title": "§7: Connection to cos(2π/n)",
+      "summary": "Transfers abstract degree results to cos(2π/n): defines alphaCos = α/2, proves it maps to cos(2π/n), and establishes the minimal polynomial degree for the cosine.",
+      "startLine": 393,
+      "endLine": 440
+    },
+    {
+      "id": "cos-minpoly-galois",
+      "title": "§8-9: cos_minimal_poly_degree and cos_extension_is_galois",
+      "summary": "Proves the minimal polynomial of cos(2π/n) has degree φ(n)/2 and that the extension ℚ(cos(2π/n))/ℚ is Galois — formerly the key axioms.",
+      "startLine": 441,
+      "endLine": 540
+    },
+    {
+      "id": "chebyshev-galois-roots",
+      "title": "§11-14: Chebyshev, Galois Automorphisms, and Root Completeness",
+      "summary": "Algebraic Chebyshev identity, Galois automorphisms for coprime k, embedding transfer, and proving cos(2kπ/n) are roots of the minimal polynomial. Establishes the splitting field property.",
+      "startLine": 543,
+      "endLine": 740
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "angle-trisection-oq-02-oq-03",
+      "relationship": "extends",
+      "description": "Eliminates the axioms from the parent OQ02-OQ03 formalization by proving the cyclotomic-to-constructibility bridge"
+    },
+    {
+      "targetId": "angle-trisection-oq-02",
+      "relationship": "extends",
+      "description": "Part of the chain proving impossibility of angle trisection, providing the algebraic infrastructure for the degree criterion"
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "extends",
+      "description": "Root formalization of angle trisection impossibility — this file contributes the cyclotomic field theory"
     }
   ],
   "conclusion": {
