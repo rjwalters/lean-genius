@@ -10,7 +10,7 @@
     "title": "Volume and Surface Area Definitions",
     "content": "Three core definitions anchor the file: unitBallVolume n = π^(n/2)/Γ(n/2+1) gives the volume of the unit n-ball; nBallVol n r = ω_n · r^n gives the n-ball of radius r; nSphereArea n r = n · ω_n · r^(n-1) gives the (n-1)-sphere surface area. The polynomial structure V_n(r) = ω_n · r^n is crucial — it makes differentiation and integration routine via the power rule.",
     "mathContext": "The unit ball volume $\\omega_n = \\frac{\\pi^{n/2}}{\\Gamma(n/2+1)}$ uses the Gamma function to interpolate factorials to half-integers. Key values: $\\omega_0 = 1$, $\\omega_1 = 2$, $\\omega_2 = \\pi$, $\\omega_3 = 4\\pi/3$. The formula arises from integrating $V_n(r) = \\int_{B_n(r)} 1 \\, dV$ in polar coordinates.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "unit ball volume",
       "n-ball",
@@ -20,7 +20,8 @@
     "prerequisites": [
       "Real.Gamma",
       "rpow"
-    ]
+    ],
+    "tags": ["unit-ball-volume", "gamma-function", "n-ball", "definition"]
   },
   {
     "id": "ann-ndvol-gamma-computations",
@@ -45,7 +46,8 @@
       "Gamma_one_half_eq",
       "Gamma_add_one",
       "Gamma_pos_of_pos"
-    ]
+    ],
+    "tags": ["gamma-computation", "half-integer", "sqrt-pi", "positivity"]
   },
   {
     "id": "ann-ndvol-derivative-relation",
@@ -68,7 +70,8 @@
     "prerequisites": [
       "hasDerivAt_pow",
       "HasDerivAt.const_mul"
-    ]
+    ],
+    "tags": ["derivative", "power-rule", "onion-peeling", "volume-surface"]
   },
   {
     "id": "ann-ndvol-main-theorem",
@@ -81,7 +84,7 @@
     "title": "Main Theorem: V_n(r) = ∫₀ʳ S_n(ρ) dρ via FTC",
     "content": "The main result: V_n(r) = ∫₀ʳ S_n(ρ) dρ, proved via FTC Part 2 (integral_eq_sub_of_hasDerivAt). The proof uses three ingredients: (1) the derivative relation d/dr[V_n] = S_n at each point in [0,r]; (2) the interval integrability of S_n (from continuity); (3) the boundary condition V_n(0) = 0 (since r^n = 0 for n ≥ 1).\n\nThe companion result deriv_volume_integral recovers S_n from the integral via FTC Part 1 (integral_hasDerivAt_right), completing the circle: differentiation and integration are inverse operations on these smooth functions.",
     "mathContext": "FTC Part 2: if $F' = f$ on $[a,b]$ and $f$ is integrable, then $\\int_a^b f = F(b) - F(a)$. Here $F = V_n$, $f = S_n$, $a = 0$, $b = r$. Since $V_n(0) = \\omega_n \\cdot 0^n = 0$ for $n \\geq 1$: $\\int_0^r S_n(\\rho) \\, d\\rho = V_n(r) - 0 = V_n(r)$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "fundamental theorem of calculus",
       "FTC Part 1",
@@ -92,7 +95,8 @@
       "intervalIntegral.integral_eq_sub_of_hasDerivAt",
       "intervalIntegral.integral_hasDerivAt_right",
       "IntervalIntegrable"
-    ]
+    ],
+    "tags": ["main-theorem", "ftc", "integral-formula", "fully-proved"]
   },
   {
     "id": "ann-ndvol-special-cases",
@@ -115,7 +119,8 @@
     "prerequisites": [
       "unitBallVolume_two",
       "unitBallVolume_three"
-    ]
+    ],
+    "tags": ["special-cases", "classical-formulas", "wiedijk-100", "circle-sphere"]
   },
   {
     "id": "ann-ndvol-shell-volumes",
@@ -138,7 +143,8 @@
     "prerequisites": [
       "intervalIntegral.integral_eq_sub_of_hasDerivAt",
       "hasDerivAt_nBallVol"
-    ]
+    ],
+    "tags": ["shell-volume", "annulus", "ftc-general", "spherical-shell"]
   },
   {
     "id": "ann-ndvol-scaling-ratio",
@@ -162,7 +168,8 @@
       "pow_sub₀",
       "field_simp",
       "Gamma_pos_of_pos"
-    ]
+    ],
+    "tags": ["scaling-law", "surface-volume-ratio", "concentration-of-measure", "high-dimensional"]
   },
   {
     "id": "ann-ndvol-summary-chain",
@@ -184,6 +191,7 @@
     "prerequisites": [
       "multivariable calculus",
       "surface area formulas"
-    ]
+    ],
+    "tags": ["open-question-chain", "generalization", "wiedijk-100", "narrative"]
   }
 ]
