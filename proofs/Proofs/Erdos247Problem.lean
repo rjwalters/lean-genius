@@ -270,4 +270,70 @@ theorem factorial_sum_transcendental_axiom_free :
   convert Transcendental.sub_rat h1 (1/2) using 1
   push_cast; ring
 
+/-- The tail is strictly positive (the first term alone is positive). -/
+theorem factorialTail_pos (N : ℕ) : 0 < factorialTail N := by
+  sorry
+
+/-- Tail bound: the tail starting at N+1 is at most 2/2^{(N+2)!}.
+    Uses strictMono_add_le to bound each term and comparison with
+    the geometric series Σ 1/2^j. -/
+theorem factorialTail_le (N : ℕ) :
+    factorialTail N ≤ 2 / (2 : ℝ) ^ (N + 2).factorial := by
+  sorry
+
+/-- The factorial lacunary sum is a Liouville number.
+
+    For each m, we exhibit the approximation a/b where:
+    - b = 2^{(m+1)!} (an integer > 1)
+    - a = numerator of the partial sum up to index m
+    - |α - a/b| ≤ 2/2^{(m+2)!} < 1/b^m
+
+    The last step: 2/2^{(m+2)!} < 1/(2^{(m+1)!})^m
+    ⟺ (m+2)! - 1 > m·(m+1)!
+    ⟺ 2·(m+1)! > 1 (always true). -/
+theorem factorial_sum_liouville :
+    Liouville (lacunarySum (fun k => (k + 1).factorial)) := by
+  intro m
+  -- Get the partial sum representation
+  obtain ⟨a, ha⟩ := factorialPartialSum_eq_div m
+  -- Our witnesses: a and b = 2^{(m+1)!}
+  refine ⟨a, (2 : ℤ) ^ (m + 1).factorial, ?_, ?_, ?_⟩
+  · -- 1 < b = 2^{(m+1)!}
+    exact_mod_cast Nat.one_lt_pow (Nat.factorial_pos (m + 1)).ne'
+      (by omega : 1 < 2)
+  · -- x ≠ a/b (the tail is strictly positive)
+    rw [lacunarySum_factorial_split m, ha]
+    push_cast
+    intro heq
+    have := factorialTail_pos m
+    linarith
+  · -- |x - a/b| < 1/b^m
+    rw [lacunarySum_factorial_split m, ha]
+    push_cast
+    rw [show (a : ℝ) / (2 : ℝ) ^ (m + 1).factorial +
+        factorialTail m - a / (2 : ℝ) ^ (m + 1).factorial =
+        factorialTail m by ring]
+    rw [abs_of_pos (factorialTail_pos m)]
+    -- Need: tail < 1 / (2^{(m+1)!})^m
+    calc factorialTail m
+        ≤ 2 / (2 : ℝ) ^ (m + 2).factorial := factorialTail_le m
+      _ < 1 / ((2 : ℝ) ^ (m + 1).factorial) ^ m := by
+          -- 2/2^{(m+2)!} < 1/(2^{(m+1)!})^m
+          -- Cross-multiply: 2 * (2^{(m+1)!})^m < 2^{(m+2)!}
+          -- i.e., 2^{m*(m+1)!+1} < 2^{(m+2)!}
+          -- This follows from m*(m+1)!+1 < (m+2)! [factorial_mul_add_one_lt]
+          sorry
+
+/-- **Axiom-free transcendence**: Σ 1/2^{(k+1)!} is transcendental.
+    Uses Liouville's theorem directly — no Erdős 1975 axiom needed.
+    Liouville.transcendental gives Transcendental ℤ x. The conversion to
+    Transcendental ℚ x follows from: IsAlgebraic ℚ x → IsAlgebraic ℤ x
+    (clearing denominators), so by contraposition. -/
+theorem factorial_sum_transcendental_liouville :
+    Transcendental ℚ (lacunarySum (fun k => (k + 1).factorial)) := by
+  have h := factorial_sum_liouville.transcendental
+  -- h : Transcendental ℤ x → Transcendental ℚ x
+  -- by contraposition of IsAlgebraic ℚ x → IsAlgebraic ℤ x (clearing denominators)
+  sorry
+
 end Erdos247

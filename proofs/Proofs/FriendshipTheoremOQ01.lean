@@ -1093,14 +1093,74 @@ lemma X_sub_k_dvd_adjMatrix_charpoly (hF : IsFriendshipGraph G) (k : ℕ) (hk : 
   rw [dvd_iff_isRoot, IsRoot]
   exact adjMatrix_charpoly_eval_k G hF k hk hreg
 
+/-- **det(I - t·J) = 1 - n·t** for the all-ones matrix J.
+    Uses the Weinstein-Aronszajn identity: det(I - AB) = det(I - BA).
+    With A : V×(Fin 1) all t's, B : (Fin 1)×V all 1's: BA is [nt]. -/
+private lemma det_one_sub_smul_onesMatrix (t : ℤ) :
+    ((1 : Matrix V V ℤ) - t • onesMatrix V).det =
+    1 - ↑(Fintype.card V) * t := by
+  -- Define A (column of t's) and B (row of 1's) such that AB = t•J
+  set A : Matrix V (Fin 1) ℤ := Matrix.of (fun _ _ => t) with hA_def
+  set B : Matrix (Fin 1) V ℤ := Matrix.of (fun _ _ => (1 : ℤ)) with hB_def
+  have hAB : A * B = t • onesMatrix V := by
+    ext i j
+    simp only [Matrix.mul_apply, Matrix.of_apply, onesMatrix,
+      Matrix.smul_apply, smul_eq_mul, Fin.sum_univ_one, mul_one, hA_def, hB_def]
+  rw [← hAB, Matrix.det_one_sub_mul_comm]
+  -- Now: det(I_{Fin 1} - B * A) is a 1×1 determinant
+  simp only [Matrix.det_fin_one]
+  -- The single entry is 1 - (BA)₀₀ = 1 - Σᵥ 1·t = 1 - nt
+  simp only [Matrix.sub_apply, Matrix.one_apply_eq, B, A, Matrix.mul_apply,
+    Matrix.of_apply, Finset.sum_const, Finset.card_univ, mul_one]
+  rw [nsmul_eq_natCast_mul]
+  ring
+
+/-- Generalized det(I - tJ) = 1 - nt over any commutative ring. -/
+private lemma det_one_sub_smul_ones_gen {R : Type*} [CommRing R] (t : R) :
+    ((1 : Matrix V V R) - t • Matrix.of (fun (_ : V) (_ : V) => (1 : R))).det =
+    1 - ↑(Fintype.card V) * t := by
+  set A : Matrix V (Fin 1) R := Matrix.of (fun _ _ => t) with hA_def
+  set B : Matrix (Fin 1) V R := Matrix.of (fun _ _ => (1 : R)) with hB_def
+  have hAB : A * B = t • Matrix.of (fun (_ : V) (_ : V) => (1 : R)) := by
+    ext i j
+    simp only [Matrix.mul_apply, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul,
+      Fin.sum_univ_one, mul_one, hA_def, hB_def]
+  rw [← hAB, Matrix.det_one_sub_mul_comm]
+  simp only [Matrix.det_fin_one, Matrix.sub_apply, Matrix.one_apply_eq,
+    B, A, Matrix.mul_apply, Matrix.of_apply, Finset.sum_const,
+    Finset.card_univ, mul_one, hA_def, hB_def]
+  push_cast; ring
+
+/-- **J is singular**: det(onesMatrix V) = 0 for |V| ≥ 2.
+    All rows are identical (all 1's), so two distinct rows are equal. -/
+private lemma det_onesMatrix_eq_zero (hn : Fintype.card V ≥ 2) :
+    (onesMatrix V).det = 0 := by
+  have ⟨a, b, hab⟩ : ∃ a b : V, a ≠ b := by
+    by_contra h; push_neg at h
+    have : Fintype.card V ≤ 1 := by
+      rw [Fintype.card_le_one_iff]; exact fun x y => by_contra (fun hxy => hxy (h x y))
+    omega
+  exact Matrix.det_zero_of_row_eq hab (by ext j; simp [onesMatrix, Matrix.of_apply])
+
+/-- Generalized J-singular over any CommRing: det of all-ones matrix = 0 for |V| ≥ 2. -/
+private lemma det_ones_eq_zero_gen {R : Type*} [CommRing R] (hn : Fintype.card V ≥ 2) :
+    (Matrix.of (fun (_ : V) (_ : V) => (1 : R))).det = 0 := by
+  have ⟨a, b, hab⟩ : ∃ a b : V, a ≠ b := by
+    by_contra h; push_neg at h
+    have : Fintype.card V ≤ 1 := by
+      rw [Fintype.card_le_one_iff]; exact fun x y => by_contra (fun hxy => hxy (h x y))
+    omega
+  exact Matrix.det_zero_of_row_eq hab (by ext j; simp [Matrix.of_apply])
+
 /-- **det(cI - J) = c^{n-1}(c-n)** for the all-ones matrix J.
 
-    The all-ones matrix J has charpoly X^{n-1}(X-n):
-    - J² = nJ (onesMatrix_sq), so minpoly | X(X-n)
-    - minpoly | charpoly, and charpoly has degree n
-    - trace(J) = n gives coeff of X^{n-1} = -n
-    - Combined: charpoly = X^{n-1}(X-n)
-    - Evaluating at c: det(cI-J) = c^{n-1}(c-n) -/
+    Proof approach: The Weinstein–Aronszajn identity gives det(I - tJ) = 1 - nt
+    for any t (proved as det_one_sub_smul_onesMatrix). For c ≠ 0, this yields
+    det(cI - J) = c^n(1 - n/c) = c^{n-1}(c-n). For c = 0, J is singular.
+
+    The current proof leaves two algebraic sub-goals as sorry:
+    1. The c = 0 case (det of negated singular matrix = 0)
+    2. The ring algebra c^n(1 - n·c⁻¹) = c^{n-1}(c - n) over ℚ -/
 lemma det_scalar_sub_onesMatrix (c : ℤ) :
     (c • (1 : Matrix V V ℤ) - onesMatrix V).det =
     c ^ (Fintype.card V - 1) * (c - ↑(Fintype.card V)) := by

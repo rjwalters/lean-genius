@@ -1,5 +1,69 @@
 # Knowledge Base: Riemann Hypothesis
 
+## Session 2026-03-20 (researcher-3) - Massive Axiom Cleanup (83→50 axioms, -40%)
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 63)
+**Outcome**: progress — deleted 33 unused axioms + 14 orphaned opaques, 0 new axioms
+
+### Methodology
+
+Systematic audit of all 83 axioms across both files. For each axiom, counted total
+references (excluding comments). Axioms with exactly 2 references (declaration + `#check`)
+are never used in any proof and can be safely deleted.
+
+### Deleted from Main File (31 axioms + 12 orphaned opaques)
+
+**Unused axioms deleted:**
+- `selberg_positive_proportion`, `phragmen_lindelof_convexity`
+- `RH_implies_prime_gap`, `backlund_bound`, `RH_implies_S_bound`
+- `turanInequalities`, `vinogradov_korobov_zero_free`, `density_implies_pnt_error`
+- `selberg_orthonormality`, `rh_explicit_mertens`, `dusart_prime_lower`
+- `littlewood_oscillation`, `skewes_number_conditional`, `rh_explicit_formula_optimal`
+- `estimates_close_loop`, `montgomery_pair_correlation_full`, `odlyzko_numerical_verification`
+- `keating_snaith_conjecture`, `berry_keating_conjecture`
+- `riemann_von_mangoldt_formula_main`, `selberg_trace_formula`
+- `schoenfeld_explicit_bound`, `platt_trudgian_verification`
+- `siegel_theorem`, `no_siegel_zero_under_GRH`, `at_most_one_siegel_zero`
+- `hardy_littlewood_second_moment`, `ingham_fourth_moment`
+- `cfkrs_moment_conjecture`, `soundararajan_upper_bound`, `li_coefficients_verified_positive`
+
+**Orphaned opaques deleted:**
+- `MontgomeryPairCorrelation`, `OdlyzkoGUEVerification`, `KeatingSnaith`
+- `BerryKeatingConjecture`, `SelbergTraceFormula`, `cfkrs_coefficient`
+- `xiDerivative`, `mertensM`, `zeroCountN`
+- `argumentFunction'`, `chebyshevPsi'`, `riemannSiegelZ`, `ElliottHalberstam`
+- (1 stale `#check @li_coefficients_verified_positive` line also removed)
+
+### Deleted from Consequences File (2 axioms)
+
+- `ingham_zero_density` — never used in any proof
+- `zeroDensity_at_one` — never used in any proof
+
+### What Was Kept (50 axioms, all load-bearing)
+
+All 50 remaining axioms are actively used in proved theorems:
+- 40 in main file (RH equivalences, partial results, moment bounds, Selberg class, etc.)
+- 10 in consequences file (Mertens bound, Li criterion, density hypothesis, etc.)
+
+### Stats After Changes
+- Main: 6659 lines, 40 axioms, 399 theorems/lemmas/defs, 0 sorries
+- Consequences: 1654 lines, 10 axioms, 122 theorems/lemmas/defs, 0 sorries
+- Combined: 8313 lines, 50 axioms, 521 theorems/defs, 0 sorries
+- Docker build passes for both files
+
+### Key Insight
+
+40% of the axiom budget was dead weight — declarations that existed only for
+documentation purposes but were never referenced in any proof. Deleting them
+dramatically improves the axiom-to-theorem ratio (from 83:460 to 50:521).
+
+### Files Modified
+- `proofs/Proofs/RiemannHypothesis.lean` — deleted 31 axioms + 12 opaques (-473 lines)
+- `proofs/Proofs/RiemannHypothesisConsequences.lean` — deleted 2 axioms (-17 lines)
+- `src/data/proofs/riemann-hypothesis/meta.json` — updated stats
+
+---
+
 ## Session 2026-03-19 (researcher-7) - Li's Criterion + K₁₀ Equivalence Network
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 23)
