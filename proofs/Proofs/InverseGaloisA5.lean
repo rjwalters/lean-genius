@@ -1696,14 +1696,23 @@ private theorem q_derivative_natDegree : (Polynomial.derivative q).natDegree = 4
 
 theorem resultant_eq_disc_q :
     Polynomial.resultant q (Polynomial.derivative q) = Polynomial.discr q := by
-  -- Resultant default args are natDegree, need to match resultant_deriv's bounds
-  -- resultant_deriv uses q.natDegree and (q.natDegree - 1)
-  -- We need (derivative q).natDegree = q.natDegree - 1 = 4
+  -- Default args: resultant q q' q.natDegree (derivative q).natDegree
+  -- resultant_deriv needs: resultant q q' q.natDegree (q.natDegree - 1)
+  -- Step 1: Show (derivative q).natDegree = q.natDegree - 1
   have hnd : (Polynomial.derivative q).natDegree = q.natDegree - 1 := by
     rw [q_natDegree, q_derivative_natDegree]
-  -- Unfold default args to explicit bounds
-  -- Proof needs q_monic lemma and Mathlib API updates
-  sorry
+  -- Step 2: Rewrite default arg to match resultant_deriv
+  show q.resultant (Polynomial.derivative q) q.natDegree (Polynomial.derivative q).natDegree = q.discr
+  rw [hnd]
+  -- Step 3: Apply resultant_deriv
+  have hdeg : (0 : WithBot ℕ) < q.degree := by
+    rw [Polynomial.degree_eq_natDegree (Polynomial.Monic.ne_zero q_monic), q_natDegree]
+    exact WithBot.coe_lt_coe.mpr (by omega)
+  have h := Polynomial.resultant_deriv hdeg
+  -- h : resultant q q' q.natDeg (q.natDeg - 1) = (-1)^(5*4/2) * lc(q) * discr(q)
+  -- For monic q: lc = 1. (-1)^10 = 1. So RHS = discr q.
+  rw [h, q_monic.leadingCoeff, q_natDegree]
+  norm_num
 
 -- Step H: Discriminant computation
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

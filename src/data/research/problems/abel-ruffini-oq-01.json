@@ -19,7 +19,7 @@
     "phase": "ACT",
     "since": "2026-02-21T19:21:07.129Z",
     "iteration": 16,
-    "focus": "disc_q_val: verified 9x9 det = 1024000000 via 7x7 cofactor native_decide",
+    "focus": "resultant_eq_disc_q proved. 2 sorries remain: prod_eval_derivative_eq_resultant, disc_q_val",
     "blockers": [
       "Kronecker-Weber not in Mathlib",
       "Hilbert irreducibility not in Mathlib"
@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved resultant_transfer (4 to 3 sorries). Remaining: prod_eval_derivative_eq_resultant, resultant_eq_disc_q, disc_q_val.",
+    "progressSummary": "PROGRESS: Proved resultant_eq_disc_q (3 to 2 sorries). Remaining: prod_eval_derivative_eq_resultant, disc_q_val.",
     "builtItems": [
       "InverseGalois.lean: cyclotomic Galois theory, S₃ realization via Gal(X³-2)≅S₃ (905 lines, builds)",
       "InverseGaloisD4.lean: D₄ realization via |Gal(X⁴-2)| = 8 (666 lines, builds)",
@@ -194,6 +194,11 @@
         "name": "q_SF_eq_prod_linear",
         "description": "q_SF = ∏ (X - C rootEnum i) via coprime divisibility + degree",
         "proven": true
+      },
+      {
+        "name": "resultant_eq_disc_q_proved",
+        "description": "Proved Res(q,q prime) = disc(q) via resultant_deriv + monic simplification",
+        "proven": true
       }
     ],
     "insights": [
@@ -274,7 +279,10 @@
       "native_decide stack-overflows on Matrix.det for Fin 8+ over Z, but Fin 7 works (3-5s)",
       "Polynomial.semiring has no executable code — native_decide cannot compute any Polynomial operation",
       "Double cofactor expansion along col 0: 9x9 -> 2x8x8 -> 6x7x7 (5 unique). All verified.",
-      "LEAN_STACK_SIZE env var does not fix native_decide stack overflow"
+      "LEAN_STACK_SIZE env var does not fix native_decide stack overflow",
+      "resultant_deriv IS in Mathlib v4.26.0: gives Res(f,f_deriv,n,n-1) = (-1)^(n(n-1)/2) * lc * disc(f)",
+      "For monic degree-5: (-1)^10 * 1 * disc = disc, so resultant = discr",
+      "show tactic reveals optParam default args, enabling rw on implicit args"
     ],
     "mathlibGaps": [],
     "nextSteps": [
