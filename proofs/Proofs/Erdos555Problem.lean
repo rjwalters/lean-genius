@@ -39,10 +39,10 @@ def EdgeColoring (m k : ℕ) :=
 /-- A monochromatic subgraph of color c in a k-coloring:
     the graph consisting of all edges of color c -/
 def monochromaticGraph (χ : EdgeColoring m k) (c : Fin k) : SimpleGraph (Fin m) where
-  Adj u v := u ≠ v ∧ χ u v = c
+  Adj u v := u ≠ v ∧ χ (min u v) (max u v) = c
   symm := by
     intro u v ⟨hne, hc⟩
-    exact ⟨hne.symm, by rwa [show χ v u = χ u v from sorry]⟩
+    exact ⟨hne.symm, by rwa [min_comm, max_comm]⟩
   loopless := by intro v ⟨h, _⟩; exact h rfl
 
 /- ## Ramsey Number for Even Cycles -/
