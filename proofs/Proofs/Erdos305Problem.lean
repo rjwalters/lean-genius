@@ -31,11 +31,7 @@ References:
 - Erdős, Graham (1980): Problem E30 in "Old and New Problems in Combinatorics"
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Rat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Tactic
 
 open Finset
 
@@ -93,18 +89,9 @@ The minimum possible maximum denominator over all Egyptian fraction
 representations of a/b.
 -/
 noncomputable def D_ab (a b : ℕ) : ℕ :=
-  if h : a < b ∧ b > 0 then
-    Nat.find (egyptian_representation_exists a b (by omega) h.1)
-    -- Actually should be: min over all representations of max denominator
+  if _ : a < b ∧ b > 0 then
+    sInf { maxDenominator S | S ∈ {S : Finset ℕ | isEgyptianRepresentation S a b} }
   else 0
-
-/--
-**D(a,b) Definition (Proper):**
-D(a,b) = min{max S : S is an Egyptian representation of a/b}
--/
-axiom D_ab_value (a b : ℕ) (hab : 0 < a) (hlt : a < b) :
-  ∃ S : Finset ℕ, isEgyptianRepresentation S a b ∧
-    ∀ T : Finset ℕ, isEgyptianRepresentation T a b → maxDenominator S ≤ maxDenominator T
 
 /--
 **D(b) Function:**
@@ -117,54 +104,7 @@ noncomputable def D_b (b : ℕ) : ℕ :=
   else 0
 
 /-
-## Part III: Known Bounds
--/
-
-/--
-**Trivial Lower Bound:**
-D(b) ≥ b for all b ≥ 2, since (b-1)/b requires denominator at least b.
--/
-axiom D_b_lower_trivial (b : ℕ) (hb : b ≥ 2) :
-  D_b b ≥ b
-
-/--
-**Lower Bound for Primes:**
-D(p) ≫ p log p for prime p.
-The representation of (p-1)/p is particularly difficult.
--/
-axiom D_prime_lower (p : ℕ) (hp : Nat.Prime p) :
-  ∃ c : ℝ, c > 0 ∧ (D_b p : ℝ) ≥ c * p * Real.log p
-
-/--
-**Bleicher-Erdős Upper Bound (1976):**
-D(b) ≪ b(log b)².
-This was the first strong upper bound.
--/
-axiom bleicher_erdos_bound :
-  ∃ C : ℝ, C > 0 ∧ ∀ b : ℕ, b ≥ 2 →
-    (D_b b : ℝ) ≤ C * b * (Real.log b)^2
-
-/--
-**Yokota's Improvement (1988):**
-D(b) ≪ b(log b)(log log b)⁴(log log log b)².
-This solved Erdős Problem #305.
--/
-axiom yokota_bound :
-  ∃ C : ℝ, C > 0 ∧ ∀ b : ℕ, b ≥ 16 →
-    (D_b b : ℝ) ≤ C * b * Real.log b *
-      (Real.log (Real.log b))^4 * (Real.log (Real.log (Real.log b)))^2
-
-/--
-**Liu-Sawhney Improvement (2024):**
-D(b) ≪ b(log b)(log log b)³(log log log b)^{O(1)}.
--/
-axiom liu_sawhney_bound :
-  ∃ C k : ℝ, C > 0 ∧ k > 0 ∧ ∀ b : ℕ, b ≥ 16 →
-    (D_b b : ℝ) ≤ C * b * Real.log b *
-      (Real.log (Real.log b))^3 * (Real.log (Real.log (Real.log b)))^k
-
-/-
-## Part IV: The Erdős Conjecture
+## Part III: The Erdős Conjecture
 -/
 
 /--
@@ -189,7 +129,7 @@ theorem erdos_305_solved : erdos305Conjecture := by
   sorry
 
 /-
-## Part V: The Greedy Algorithm
+## Part IV: The Greedy Algorithm
 -/
 
 /--
@@ -207,148 +147,8 @@ def greedyStep (a b : ℕ) : ℕ × ℕ × ℕ :=
     let newB := b * n
     (n, newA, newB)
 
-/--
-**Greedy Algorithm Terminates:**
-The greedy algorithm always terminates, giving an Egyptian fraction.
--/
-axiom greedy_terminates (a b : ℕ) (hab : 0 < a) (hlt : a < b) :
-  ∃ S : Finset ℕ, isEgyptianRepresentation S a b
-
-/--
-**Greedy Can Give Large Denominators:**
-The greedy algorithm can produce exponentially large denominators.
-Example: For 2/9, greedy gives 1/5 + 1/45 (max = 45), but
-optimal is 1/6 + 1/18 (max = 18).
--/
-axiom greedy_not_optimal :
-  ∃ a b : ℕ, ∃ S T : Finset ℕ,
-    isEgyptianRepresentation S a b ∧
-    isEgyptianRepresentation T a b ∧
-    -- S is from greedy, T is optimal
-    maxDenominator S > maxDenominator T
-
 /-
-## Part VI: Specific Cases
--/
-
-/--
-**Representation of 1:**
-1 = 1/2 + 1/3 + 1/6 (three terms)
-1 = 1/2 + 1/4 + 1/6 + 1/12 (four terms)
-Many representations exist.
--/
-axiom one_representations :
-  ∃ S : Finset ℕ, S = {2, 3, 6} ∧ unitFractionSum S = 1
-
-/--
-**4/n Conjecture (Erdős-Straus):**
-For n ≥ 2, 4/n = 1/a + 1/b + 1/c for positive integers a, b, c.
-Related but different problem from #305.
--/
-axiom erdos_straus_related (n : ℕ) (hn : n ≥ 2) :
-  ∃ a b c : ℕ, a ≥ 1 ∧ b ≥ 1 ∧ c ≥ 1 ∧
-    (4 : ℚ) / n = 1 / a + 1 / b + 1 / c
-
-/--
-**Egyptian Fractions of 1:**
-The number of ways to write 1 as an Egyptian fraction with largest
-denominator n grows superpolynomially.
--/
-axiom count_egyptian_one (n : ℕ) (hn : n ≥ 2) :
-  ∃ S : Finset ℕ, unitFractionSum S = 1 ∧ ∀ k ∈ S, k ≤ n
-
-/-
-## Part VII: Algorithmic Aspects
--/
-
-/--
-**Computing D(a,b):**
-Finding the optimal D(a,b) is computationally hard.
-No polynomial-time algorithm is known.
--/
-axiom D_ab_computational (a b : ℕ) (hab : 0 < a) (hlt : a < b) :
-  ∃ S : Finset ℕ, isEgyptianRepresentation S a b
-
-/--
-**Odd Greedy Algorithm:**
-A variant that uses only odd denominators.
-Every rational has an odd Egyptian fraction representation.
--/
-axiom odd_egyptian_exists (a b : ℕ) (hab : 0 < a) (hlt : a < b) (hb : Odd b) :
-  ∃ S : Finset ℕ, isEgyptianRepresentation S a b ∧ ∀ n ∈ S, Odd n
-
-/--
-**Binary Expansion Connection:**
-Representing 1 with denominators that are powers of 2 minus 1
-relates to binary expansions.
--/
-axiom binary_connection :
-  ∀ n : ℕ, n ≥ 1 → ∃ S : Finset ℕ, unitFractionSum S = (1 : ℚ) / n ∧
-    ∀ k ∈ S, ∃ m, k = 2^m - 1
-
-/-
-## Part VIII: History and Applications
--/
-
-/--
-**Ancient Egypt:**
-The Rhind Mathematical Papyrus (c. 1650 BCE) contains tables of
-Egyptian fraction representations, showing this is ancient mathematics.
--/
-axiom ancient_history :
-  ∃ S : Finset ℕ, S = {2, 4} ∧ unitFractionSum S = (3 : ℚ) / 4
-
-/--
-**Number Theory Applications:**
-Egyptian fractions arise in:
-- Diophantine equations
-- Partitions of unity
-- Additive combinatorics
--/
-axiom applications (a b : ℕ) (hab : 0 < a) (hlt : a < b) :
-  ∃ S : Finset ℕ, isEgyptianRepresentation S a b ∧ S.card ≤ b
-
-/--
-**Relationship to Harmonic Numbers:**
-The harmonic sum H_n = ∑_{k=1}^n 1/k is closely related.
-D(b) bounds involve logarithms because harmonic sums grow as log n.
--/
-axiom harmonic_connection (n : ℕ) (hn : n ≥ 1) :
-  (∑ k ∈ Finset.range n, (1 : ℝ) / (k + 1)) ≤ Real.log (n + 1) + 1
-
-/-
-## Part IX: Related Problems
--/
-
-/--
-**Length of Representation:**
-How many terms are needed? The greedy algorithm can use O(log log b) terms.
--/
-axiom length_bounds (a b : ℕ) (hab : 0 < a) (hlt : a < b) :
-  ∃ S : Finset ℕ, isEgyptianRepresentation S a b ∧
-    (S.card : ℝ) ≤ Real.log (Real.log b) + 10
-
-/--
-**Dense Egyptian Fractions:**
-Liu-Sawhney also proved: A ⊆ [1,N] with ∑ 1/n ≥ (log N)^{4/5+o(1)}
-contains a subset summing to 1.
--/
-axiom dense_egyptian_fractions (A : Finset ℕ) (N : ℕ) (hN : N ≥ 2)
-    (hA : ∀ a ∈ A, 1 ≤ a ∧ a ≤ N)
-    (hsum : (∑ a ∈ A, (1 : ℝ) / a) ≥ (Real.log N)^(4/5 : ℝ)) :
-  ∃ S ⊆ A, unitFractionSum S = 1
-
-/--
-**Conlon-Fox et al. (2024):**
-Independent proof of similar results using different methods.
--/
-axiom conlon_fox_result (b : ℕ) (hb : b ≥ 2) :
-  ∃ C : ℝ, C > 0 ∧ ∀ a : ℕ, 0 < a → a < b →
-    ∃ S : Finset ℕ, isEgyptianRepresentation S a b ∧
-      (S.sup id : ℝ) ≤ C * b * Real.log b * (Real.log (Real.log b))^3
-
-/-
-## Part X: Summary
+## Part V: Summary
 -/
 
 /--
