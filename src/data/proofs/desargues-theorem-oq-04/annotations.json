@@ -19,6 +19,11 @@
     "prerequisites": [
       "CommRing",
       "Fin 3 → K"
+    ],
+    "tags": [
+      "cross-product",
+      "linear-algebra",
+      "definition"
     ]
   },
   {
@@ -41,6 +46,11 @@
     "prerequisites": [
       "threeVecMat",
       "Matrix.det"
+    ],
+    "tags": [
+      "collinearity",
+      "projective-geometry",
+      "theorem"
     ]
   },
   {
@@ -64,6 +74,11 @@
       "cross3",
       "collinear",
       "concurrent"
+    ],
+    "tags": [
+      "desargues-theorem",
+      "projective-geometry",
+      "definition"
     ]
   },
   {
@@ -86,6 +101,11 @@
     "prerequisites": [
       "DesarguesConfig",
       "cross3"
+    ],
+    "tags": [
+      "projective-duality",
+      "dual-triangle",
+      "definition"
     ]
   },
   {
@@ -109,6 +129,11 @@
       "DesarguesConfig.dual",
       "perspFromPoint",
       "perspFromLine"
+    ],
+    "tags": [
+      "projective-duality",
+      "self-dual",
+      "theorem"
     ]
   },
   {
@@ -131,6 +156,11 @@
     "prerequisites": [
       "cross3",
       "threeVecMat_det_explicit"
+    ],
+    "tags": [
+      "cross-product",
+      "linear-algebra",
+      "theorem"
     ]
   },
   {
@@ -153,6 +183,11 @@
     "prerequisites": [
       "lagrange_cross",
       "threeVecMat_det_explicit"
+    ],
+    "tags": [
+      "desargues-theorem",
+      "projective-geometry",
+      "theorem"
     ]
   },
   {
@@ -176,6 +211,11 @@
       "desargues_identity",
       "perspFromPoint",
       "perspFromLine"
+    ],
+    "tags": [
+      "desargues-theorem",
+      "projective-geometry",
+      "theorem"
     ]
   },
   {
@@ -198,6 +238,11 @@
     "prerequisites": [
       "cross3_anticomm",
       "perspectivity_det_swap"
+    ],
+    "tags": [
+      "anticommutativity",
+      "projective-duality",
+      "theorem"
     ]
   },
   {
@@ -220,6 +265,11 @@
     "prerequisites": [
       "collinearity_det_swap",
       "perspFromLine"
+    ],
+    "tags": [
+      "perspective",
+      "projective-geometry",
+      "theorem"
     ]
   },
   {
@@ -242,6 +292,11 @@
     "prerequisites": [
       "desargues_identity",
       "IsDomain"
+    ],
+    "tags": [
+      "integral-domain",
+      "zero-product-property",
+      "theorem"
     ]
   },
   {
@@ -265,6 +320,11 @@
       "desargues_forward",
       "desargues_converse",
       "IsDomain"
+    ],
+    "tags": [
+      "biconditional",
+      "desargues-theorem",
+      "theorem"
     ]
   }
 ]
