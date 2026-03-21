@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved 3 new theorems in InverseGaloisA5.lean (9→7 sorries): q_monic (monicity of q), prod_Iio_eq_vandermonde (Finset product reindexing via prod_comm), q_SF_eq_prod_linear (splitting field factorization via coprime divisibility). Docker build verified.",
+    "progressSummary": "PROGRESS: Proved resultant_transfer (4 to 3 sorries). Remaining: prod_eval_derivative_eq_resultant, resultant_eq_disc_q, disc_q_val.",
     "builtItems": [
       "InverseGalois.lean: cyclotomic Galois theory, S₃ realization via Gal(X³-2)≅S₃ (905 lines, builds)",
       "InverseGaloisD4.lean: D₄ realization via |Gal(X⁴-2)| = 8 (666 lines, builds)",
@@ -268,7 +268,9 @@
       "resultant_transfer proof strategy: rw [← derivative_map]; apply resultant_map_map with natDegree_map_of_injective for bound matching",
       "Polynomial.derivative_map IS in Mathlib: derivative(map φ f) = map φ (derivative f)",
       "For resultant_transfer with default args, need: (map φ f).natDegree = f.natDegree (true for injective φ)",
-      "disc and discr are the same in Mathlib (two names for same function)"
+      "disc and discr are the same in Mathlib (two names for same function)",
+      "resultant_transfer: derivative_map + resultant_map_map + natDegree_map_eq_of_injective",
+      "Polynomial.discr NOT definitionally equal to resultant - has sign/scaling factor"
     ],
     "mathlibGaps": [],
     "nextSteps": [
