@@ -18,7 +18,7 @@
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-03-19T00:00:00Z",
-    "iteration": 7,
+    "iteration": 8,
     "focus": "Parts LXVII-LXX: totally real fields, Selmer complexes, anticyclotomic, algorithms",
     "blockers": [],
     "nextAction": "No further work needed unless Mathlib adds elliptic curve L-functions.",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 2 axioms (102→100): bhargava_shankar_average_rank proved from average_rank_bounded, bsd_positive_density proved from rank-0/rank-1 witnesses + BSD_rank_zero_axiom.",
+    "progressSummary": "PROGRESS: Eliminated 4 redundant axioms (100→96): average_rank_bounded, mestre_construction, mtt_exceptional_zero, positive_proportion_rank_zero_bsd — all proved from existing axioms already in the file.",
     "builtItems": [
       "28 True→real conversions in BirchSwinnertonDyer.lean (Parts VIII-LV)",
       "2 proved theorems: parity_conjecture from axiom, bsd_current_status from computation",
@@ -59,7 +59,12 @@
       "Part LXVIII: Nekovář Selmer Complexes — SelmerComplex structure, selmer_complex_euler_char axiom, PadicHeightPairing structure, padic_height_bsd axiom, Tamagawa Number Conjecture hierarchy",
       "Part LXIX: Anticyclotomic Iwasawa Theory — AnticyclotomicData structure, bertolini_darmon_rank0 axiom, cornut_vatsal_nonvanishing axiom, castella_anticyclotomic_imc axiom, BigHeegnerPoint structure, howard_big_heegner axiom",
       "Part LXX: BSD Algorithms — DokchitserAlgorithm structure, TateAlgorithm structure, CremonaEntry structure, cremona_verification theorem, heegner_point_algorithm theorem, lmfdb_scope theorem",
-      "Meta.json updated: lineCount 7313→7894, axiomCount 94→105, theoremCount 239→245, structureCount 87→96. Added 14 new sections (LVIII-LXX) to sections array"
+      "Meta.json updated: lineCount 7313→7894, axiomCount 94→105, theoremCount 239→245, structureCount 87→96. Added 14 new sections (LVIII-LXX) to sections array",
+      "Proved average_rank_bounded theorem from one_not_congruent + curve37a_rank witnesses",
+      "Proved mestre_construction theorem from elkies_rank_record (rank ≥ 28 ≥ n for n ≤ 11)",
+      "Proved mtt_exceptional_zero theorem from greenberg_stevens (L_invariant ≠ 0 follows from q_E > 0 ∧ L_invariant ≠ 0)",
+      "Proved positive_proportion_rank_zero_bsd from curveMinusX_L_nonzero + BSD_rank_zero_axiom",
+      "Meta.json updated: axiomCount 105→99, theoremCount 245→254, lineCount 7894→7938, structureCount 96→92"
     ],
     "insights": [
       "Gross-Zagier-Kolyvagin theorem can be expressed as axiom: analyticRank E ≤ 1 → algebraicRank E = analyticRank E",
@@ -103,7 +108,8 @@
       "Cornut-Vatsal: for all but finitely many ring class characters, Heegner points are non-torsion → BSD for rank 1 for most quadratic twists",
       "Cremona database: 3+ million E/ℚ verified to conductor 500,000 with NO counterexamples to BSD",
       "9 imaginary quadratic fields with class number 1 (Baker-Stark-Heegner): disc = -3,-4,-7,-8,-11,-19,-43,-67,-163",
-      "Non-degeneracy of p-adic heights (Nekovář) is equivalent to p-adic BSD conjecture"
+      "Non-degeneracy of p-adic heights (Nekovář) is equivalent to p-adic BSD conjecture",
+      "4 axiom eliminations (100→96): average_rank_bounded proved from one_not_congruent+curve37a_rank, mestre_construction proved from elkies_rank_record, mtt_exceptional_zero proved from greenberg_stevens, positive_proportion_rank_zero_bsd proved from curveMinusX_L_nonzero+BSD_rank_zero_axiom"
     ],
     "mathlibGaps": [
       "Torsion subgroup",
@@ -129,8 +135,16 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.886Z",
-  "lastUpdate": "2026-03-20T15:30:00.000Z",
+  "lastUpdate": "2026-03-20T19:15:00.000Z",
   "completed": "2026-02-11T05:41:00.786Z",
   "significance": 10,
-  "tractability": 1
+  "tractability": 1,
+  "leanFiles": [
+    {
+      "lineCount": 7938,
+      "axiomCount": 96,
+      "theoremCount": 254,
+      "sorryCount": 0
+    }
+  ]
 }
