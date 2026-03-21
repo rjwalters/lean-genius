@@ -17,8 +17,10 @@
     "type": "definition",
     "title": "Sum Representations and Sum-Length-Free",
     "content": "**SumRep B**: A multiset of terms from B, with length (number of terms) and value (sum). **SumLengthFree B**: For any two sum representations with equal values, their lengths must be equal. This is weaker than Sidon (which requires the actual terms to match).",
+    "mathContext": "SumLengthFree $B$: $\\sum_{i=1}^k b_i = \\sum_{j=1}^\\ell c_j$ with $b_i, c_j \\in B$ $\\implies$ $k = \\ell$",
     "significance": "key",
-    "relatedConcepts": ["Multiset", "Sum representations", "Sidon property"]
+    "relatedConcepts": ["Multiset", "Sum representations", "Sidon property"],
+    "prerequisites": ["Multiset", "Finset", "Int"]
   },
   {
     "id": "ann-789-h",
@@ -58,8 +60,10 @@
     "type": "theorem",
     "title": "Combined Bounds",
     "content": "**combined_bounds**: (n log n)^{1/3} ≪ h(n) ≪ √n. Proved by combining erdos_choi_1974_lower and straus_1966_upper. At n = 10^6: lower ≈ 239, upper = 1000 — a substantial gap.",
+    "mathContext": "$(n \\log n)^{1/3} \\ll h(n) \\ll \\sqrt{n}$; the gap between exponents $1/3$ and $1/2$ is the core open question",
     "significance": "key",
-    "relatedConcepts": ["Gap between bounds", "Open problem"]
+    "relatedConcepts": ["gap between bounds", "open problem", "exponent improvement"],
+    "prerequisites": ["erdos_choi_1974_lower", "straus_1966_upper"]
   },
   {
     "id": "ann-789-sidon",
