@@ -64,16 +64,14 @@ theorem coeff_sum_eq_zero_of_sum_eq_zero
     {s : Finset (Fin n)} {c : Fin n → K}
     (h : ∑ k ∈ s, C (c k) * X ^ (k : ℕ) = (0 : K[X]))
     (i : Fin n) (hi : i ∈ s) : c i = 0 := by
-  -- Extract the coefficient of X^i from both sides
-  -- Extract the coefficient of X^(i:ℕ) from both sides
-  have h_coeff := congr_arg (Polynomial.coeff · (i : ℕ)) h
-  simp only [Polynomial.coeff_zero, map_sum, Polynomial.finset_sum_coeff,
-    Polynomial.coeff_C_mul_X_pow] at h_coeff
-  -- In the sum, only k with (k:ℕ) = (i:ℕ) contributes, i.e., k = i
-  convert h_coeff using 1
-  rw [Finset.sum_eq_single i (fun k hk hki => if_neg (Fin.val_ne_of_ne hki))
-    (fun hi' => absurd hi hi')]
-  simp
+  have h_coeff : (∑ k ∈ s, C (c k) * X ^ (k : ℕ)).coeff (i : ℕ) = 0 := by
+    rw [h]; simp
+  simp only [Polynomial.finset_sum_coeff, Polynomial.coeff_C_mul_X_pow] at h_coeff
+  -- h_coeff : ∑ x ∈ s, if ↑i = ↑x then c x else 0 = 0
+  -- Flip equality direction so sum_eq_single_of_mem can match
+  simp only [eq_comm (a := (i : ℕ))] at h_coeff
+  rwa [Finset.sum_eq_single_of_mem i hi (fun k _ hki => if_neg (Fin.val_ne_of_ne hki)),
+    if_pos rfl] at h_coeff
 
 -- ============================================================
 -- Lemma 4: Degree bound for polynomial sum
@@ -82,7 +80,15 @@ theorem coeff_sum_eq_zero_of_sum_eq_zero
 /-- A polynomial ∑ cₖ Xᵏ for k : Fin n has degree < n. -/
 theorem natDegree_sum_lt {s : Finset (Fin n)} {c : Fin n → K}
     (hn : 0 < n) :
-    (∑ k ∈ s, C (c k) * X ^ (k : ℕ)).natDegree < n := by sorry
+    (∑ k ∈ s, C (c k) * X ^ (k : ℕ)).natDegree < n := by
+  calc (∑ k ∈ s, C (c k) * X ^ (k : ℕ)).natDegree
+      ≤ s.sup (fun k => (C (c k) * X ^ (k : ℕ)).natDegree) :=
+        Polynomial.natDegree_sum_le s _
+    _ ≤ n - 1 := by
+        apply Finset.sup_le; intro k _
+        exact (Polynomial.natDegree_C_mul_X_pow_le (c k) k).trans
+          (Nat.lt_iff_le_pred hn |>.mp k.isLt)
+    _ < n := Nat.sub_lt hn Nat.one_pos
 
 -- ============================================================
 -- Lemma 5: Linear independence from annihilation

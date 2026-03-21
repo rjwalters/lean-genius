@@ -52,28 +52,34 @@ theorem side_c_pos (T : Triangle) : T.side_c > 0 := by sorry
 
 /-- side_a² equals the sum of squared coordinate differences. -/
 theorem side_a_sq (T : Triangle) :
-    T.side_a ^ 2 = (T.C.1 - T.B.1) ^ 2 + (T.C.2 - T.B.2) ^ 2 := by sorry
+    T.side_a ^ 2 = (T.C.1 - T.B.1) ^ 2 + (T.C.2 - T.B.2) ^ 2 := by
+  simp only [Triangle.side_a]; exact sq_sqrt (add_nonneg (sq_nonneg _) (sq_nonneg _))
 
 /-- side_b² equals the sum of squared coordinate differences. -/
 theorem side_b_sq (T : Triangle) :
-    T.side_b ^ 2 = (T.A.1 - T.C.1) ^ 2 + (T.A.2 - T.C.2) ^ 2 := by sorry
+    T.side_b ^ 2 = (T.A.1 - T.C.1) ^ 2 + (T.A.2 - T.C.2) ^ 2 := by
+  simp only [Triangle.side_b]; exact sq_sqrt (add_nonneg (sq_nonneg _) (sq_nonneg _))
 
 /-- side_c² equals the sum of squared coordinate differences. -/
 theorem side_c_sq (T : Triangle) :
-    T.side_c ^ 2 = (T.B.1 - T.A.1) ^ 2 + (T.B.2 - T.A.2) ^ 2 := by sorry
+    T.side_c ^ 2 = (T.B.1 - T.A.1) ^ 2 + (T.B.2 - T.A.2) ^ 2 := by
+  simp only [Triangle.side_c]; exact sq_sqrt (add_nonneg (sq_nonneg _) (sq_nonneg _))
 
 -- ============================================================
 -- DIST2 PROPERTIES
 -- ============================================================
 
 /-- dist2 is symmetric. -/
-theorem dist2_comm (P Q : Point) : dist2 P Q = dist2 Q P := by sorry
+theorem dist2_comm (P Q : Point) : dist2 P Q = dist2 Q P := by
+  simp only [dist2]; congr 1; ring
 
 /-- dist2(P, P) = 0 -/
-theorem dist2_self (P : Point) : dist2 P P = 0 := by sorry
+theorem dist2_self (P : Point) : dist2 P P = 0 := by
+  simp [dist2]
 
 /-- dist2 is nonneg. -/
-theorem dist2_nonneg_gen (P Q : Point) : 0 ≤ dist2 P Q := by sorry
+theorem dist2_nonneg_gen (P Q : Point) : 0 ≤ dist2 P Q :=
+  sqrt_nonneg _
 
 -- ============================================================
 -- CIRCUMRADIUS POSITIVITY
@@ -83,7 +89,8 @@ theorem dist2_nonneg_gen (P Q : Point) : 0 ≤ dist2 P Q := by sorry
 theorem circumradius_pos (T : Triangle) : T.circumradius > 0 := by sorry
 
 /-- The nine-point radius R/2 > 0 for nondegenerate triangles. -/
-theorem ninePointRadius_pos (T : Triangle) : T.ninePointRadius > 0 := by sorry
+theorem ninePointRadius_pos (T : Triangle) : T.ninePointRadius > 0 := by
+  simp only [Triangle.ninePointRadius]; exact div_pos (circumradius_pos T) (by norm_num)
 
 -- ============================================================
 -- ORTHOCENTER RELATION
@@ -92,7 +99,8 @@ theorem ninePointRadius_pos (T : Triangle) : T.ninePointRadius > 0 := by sorry
 /-- H = A + B + C - 2O (orthocenter via circumcenter). -/
 theorem orthocenter_formula (T : Triangle) :
     T.orthocenter = (T.A.1 + T.B.1 + T.C.1 - 2 * T.circumcenter.1,
-                     T.A.2 + T.B.2 + T.C.2 - 2 * T.circumcenter.2) := by sorry
+                     T.A.2 + T.B.2 + T.C.2 - 2 * T.circumcenter.2) := by
+  simp [Triangle.orthocenter]
 
 -- ============================================================
 -- NINE-POINT CENTER PROPERTIES
@@ -100,14 +108,18 @@ theorem orthocenter_formula (T : Triangle) :
 
 /-- N = (O + H) / 2 -/
 theorem ninePointCenter_midpoint (T : Triangle) :
-    T.ninePointCenter = pointMidpoint T.circumcenter T.orthocenter := by sorry
+    T.ninePointCenter = pointMidpoint T.circumcenter T.orthocenter := by
+  simp [Triangle.ninePointCenter, pointMidpoint, Triangle.orthocenter]
+  constructor <;> ring
 
 /-- N_x = (A_x + B_x + C_x) / 2 - O_x / 2.
     Actually N = (O + H)/2 = (O + A+B+C-2O)/2 = (A+B+C-O)/2
     so N_x = (A_x + B_x + C_x - O_x) / 2 -/
 theorem ninePointCenter_coords (T : Triangle) :
     T.ninePointCenter.1 = (T.A.1 + T.B.1 + T.C.1 - T.circumcenter.1) / 2 ∧
-    T.ninePointCenter.2 = (T.A.2 + T.B.2 + T.C.2 - T.circumcenter.2) / 2 := by sorry
+    T.ninePointCenter.2 = (T.A.2 + T.B.2 + T.C.2 - T.circumcenter.2) / 2 := by
+  simp [Triangle.ninePointCenter, pointMidpoint, Triangle.orthocenter]
+  constructor <;> ring
 
 end FeuerbachsTheoremOQ01Aristotle
 
