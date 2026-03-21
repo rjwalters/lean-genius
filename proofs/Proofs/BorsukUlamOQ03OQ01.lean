@@ -689,25 +689,6 @@ axiom tucker_2d
     (h_antipodal_invol : ∀ v, antipodal (antipodal v) = v) :
     ∃ v w : V, adj v w ∧ label v + label w = 0
 
-/-- **Tucker's Lemma (n-D)**: Generalization to n-dimensional
-    triangulations with labels from {±1, ..., ±n}.
-
-    This is equivalent to the n-dimensional Borsuk-Ulam theorem.
-
-    **Infrastructure needed**: n-dimensional simplicial complex,
-    antipodal triangulation of B^n, abstract labeling conditions.
-    Mathlib's `Geometry.SimplicialComplex` provides partial infrastructure
-    but does not directly support antipodal triangulations. -/
-axiom tucker_nd (n : ℕ) (hn : 1 ≤ n)
-    (V : Type*) [Fintype V] [DecidableEq V]
-    (adj : V → V → Prop) [DecidableRel adj]
-    (antipodal : V → V)
-    (label : V → ℤ)
-    (h_labels : ∀ v, label v ∈ Finset.Icc (-(n : ℤ)) n ∧ label v ≠ 0)
-    (h_antipodal_label : ∀ v, label (antipodal v) = -(label v))
-    (h_antipodal_invol : ∀ v, antipodal (antipodal v) = v) :
-    ∃ v w : V, adj v w ∧ label v + label w = 0
-
 /-
 ## Section XIX: Tucker–BU Equivalence
 

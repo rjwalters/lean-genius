@@ -5106,18 +5106,6 @@ theorem tverberg_6_fails :
     tverbergStatusByR 6 = .disproved := by
   native_decide
 
-/-- The topological Tverberg theorem (prime case):
-    For r prime and d ≥ 1, any continuous map f : Δ^{(r-1)(d+1)} → ℝ^d
-    has r pairwise disjoint faces whose images intersect.
-
-    The proof uses equivariant topology: ℤ/r acts freely on the
-    deleted product (Δ^N)^{*r}_Δ, and the target has an equivariant
-    obstruction via the Borsuk-Ulam theorem for ℤ/p-actions. -/
-axiom tverberg_prime (d r : ℕ) (hr : Nat.Prime r) (hd : d ≥ 1) :
-    -- Any continuous map from Δ^{(r-1)(d+1)} to ℝ^d
-    -- has r pairwise disjoint faces with a common image point
-    ∃ (N : ℕ), N = (r - 1) * (d + 1)
-
 /-- Connection to Borsuk-Ulam: Tverberg with r = 2 IS Borsuk-Ulam.
     The simplex Δ^{d+1} with the ℤ/2 = {id, antipodal} action on its
     vertex set is equivariantly equivalent to S^d.

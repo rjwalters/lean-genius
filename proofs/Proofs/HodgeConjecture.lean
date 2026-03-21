@@ -574,7 +574,6 @@ def IntegralHodgeConjectureStatement (X : ProjectiveVariety) (p : ℕ)
     ∃ (cycles : Finset (AlgebraicCycle X p)) (coeffs : AlgebraicCycle X p → ℤ),
       α.rationalClass = ∑ Z ∈ cycles, (coeffs Z : ℚ) • cycleClassMap X p H Z
 
-
 /-- **Hodge Conjecture is strictly weaker than Integral Hodge Conjecture**
 
 Since the integral version fails but the rational version might be true,
@@ -589,7 +588,6 @@ theorem integral_implies_rational (X : ProjectiveVariety) (p : ℕ)
   have hα := h α
   obtain ⟨cycles, coeffs, heq⟩ := hα
   exact ⟨cycles, fun Z => (coeffs Z : ℚ), heq⟩
-
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART VII: EQUIVALENT FORMULATIONS
@@ -663,8 +661,6 @@ theorem hodge_implies_mumford_tate (h : HodgeConjectureFullStatement) :
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART VIII: STRUCTURAL PROPERTIES
 ═══════════════════════════════════════════════════════════════════════════════ -/
-
-
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART IXa: PROVED THEOREMS ABOUT ALGEBRAIC CLASSES
@@ -1658,7 +1654,6 @@ theorem directSum_prod_snd {k : ℕ} {H₁ H₂ H₃ : PureHodgeStructure k}
   show LinearMap.snd ℚ H₁.VQ H₂.VQ (f₁.rationalMap.prod f₂.rationalMap v) = _
   simp [LinearMap.prod_apply, LinearMap.snd_apply]
 
-
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XIV: POLARIZATIONS
 ═══════════════════════════════════════════════════════════════════════════════
@@ -1692,7 +1687,6 @@ polarization. These are the Hodge structures that arise from geometry. -/
 structure PolarizedHodgeStructure (k : ℕ) extends PureHodgeStructure k where
   /-- The polarization -/
   polarization : Polarization toPureHodgeStructure
-
 
 /-- **Theorem: Polarization symmetry for even weight** (PROVED)
 
@@ -1762,7 +1756,6 @@ axiom hard_lefschetz (X : ProjectiveVariety) (n : ℕ) (hn : X.dim = n)
     (k : ℕ) (hk : k ≤ n)
     (Hk : PureHodgeStructure k) (H2nk : PureHodgeStructure (2 * n - k)) :
     ∃ (f : Hk.VQ →ₗ[ℚ] H2nk.VQ), Function.Bijective f
-
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XVI: WEIGHT STRUCTURES AND MIXED HODGE THEORY (OVERVIEW)
@@ -1950,16 +1943,6 @@ axiom dualHodge_contravariant (k : ℕ)
     (H₁ H₂ : PureHodgeStructure k)
     (φ : HodgeStructureMorphism H₁ H₂) :
     HodgeStructureMorphism (dualHodge k H₂) (dualHodge k H₁)
-
-/-- Duality reverses composition: (ψ ∘ φ)* = φ* ∘ ψ*. -/
-axiom dualHodge_anticomp (k : ℕ)
-    (H₁ H₂ H₃ : PureHodgeStructure k)
-    (φ : HodgeStructureMorphism H₁ H₂)
-    (ψ : HodgeStructureMorphism H₂ H₃) :
-    dualHodge_contravariant k H₁ H₃ (HodgeStructureMorphism.comp ψ φ) =
-    HodgeStructureMorphism.comp
-      (dualHodge_contravariant k H₁ H₂ φ)
-      (dualHodge_contravariant k H₂ H₃ ψ)
 
 /-- The evaluation pairing H ⊗ H* → ℚ(−k) exists as a morphism of
     Hodge structures. We prove: the dual H* exists (from dualHodge axiom)
@@ -2304,15 +2287,6 @@ axiom tensorHodge {k₁ k₂ : ℕ}
     (H₂ : PureHodgeStructure k₂) :
     PureHodgeStructure (k₁ + k₂)
 
-/-- The tensor product is associative (up to canonical isomorphism). -/
-axiom tensorHodge_assoc {k₁ k₂ k₃ : ℕ}
-    (H₁ : PureHodgeStructure k₁)
-    (H₂ : PureHodgeStructure k₂)
-    (H₃ : PureHodgeStructure k₃) :
-    ∃ f : (tensorHodge (tensorHodge H₁ H₂) H₃).VQ →ₗ[ℚ]
-      (tensorHodge H₁ (tensorHodge H₂ H₃)).VQ,
-    Function.Bijective f
-
 /-- The tensor product is commutative (up to canonical isomorphism). -/
 axiom tensorHodge_comm {k₁ k₂ : ℕ}
     (H₁ : PureHodgeStructure k₁)
@@ -2340,11 +2314,6 @@ axiom tateStructure_unit_right {k : ℕ} (H : PureHodgeStructure k) :
 axiom evalHodge {k : ℕ} (H : PureHodgeStructure k) :
     (tensorHodge H (dualHodge k H)).VQ →ₗ[ℚ] ℚ
 
-/-- The coevaluation map: ℚ → H* ⊗ H is a morphism of Hodge structures.
-    Together with eval, this makes the category rigid monoidal. -/
-axiom coevHodge {k : ℕ} (H : PureHodgeStructure k) :
-    ℚ →ₗ[ℚ] (tensorHodge (dualHodge k H) H).VQ
-
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART X: KÜNNETH FORMULA AND PRODUCT VARIETIES
 ═══════════════════════════════════════════════════════════════════════════════
@@ -2370,22 +2339,6 @@ theorem kuenneth_formula (X Y : ProjectiveVariety) (k : ℕ)
     ∃ φ : HodgeStructureMorphism (tensorHodge H_X H_Y) H_XY,
     True :=
   ⟨tensorHodge H_X H_Y, HodgeStructureMorphism.id (tensorHodge H_X H_Y), trivial⟩
-
-/-- **Hodge conjecture for products**: If HC holds for X and Y (in all codimensions),
-    then HC holds for X × Y.
-
-    This is a deep theorem (not trivially true!) that uses:
-    1. Künneth formula to decompose H^*(X × Y)
-    2. External product of cycles: Z₁ × Z₂ gives algebraic classes in X × Y
-    3. The algebraic classes of X × Y include all tensor products of algebraic classes -/
-axiom hodge_conjecture_product (X Y : ProjectiveVariety)
-    (hX : ∀ (p : ℕ) (H : PureHodgeStructure (2 * p)),
-      HodgeConjectureStatement X p H)
-    (hY : ∀ (p : ℕ) (H : PureHodgeStructure (2 * p)),
-      HodgeConjectureStatement Y p H)
-    (p : ℕ) (H : PureHodgeStructure (2 * p)) :
-    -- HC(X × Y) follows from HC(X) and HC(Y) via Künneth
-    ∀ α : HodgeClass H, isAlgebraicClass X p H α
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XI: HODGE NUMBERS AND NUMERICAL INVARIANTS
@@ -2413,16 +2366,6 @@ theorem hodge_number_symmetry {k : ℕ} (H : PureHodgeStructure k)
     hodgeNumber H p q hpq = hodgeNumber H q p (by omega) :=
   hodge_symmetry H p q hpq (by omega)
 
-/-- **Serre duality for Hodge numbers**: For a smooth projective variety X of
-    dimension n, h^{p,q}(X) = h^{n-p,n-q}(X).
-
-    This follows from Poincaré duality + Hodge decomposition.
-    We axiomatize for the geometric case. -/
-axiom hodge_number_serre_duality (X : ProjectiveVariety) (n : ℕ) (hn : X.dim = n)
-    (p q : ℕ) (hp : p ≤ n) (hq : q ≤ n) (H : PureHodgeStructure (p + q))
-    (H' : PureHodgeStructure ((n - p) + (n - q))) :
-    hodgeNumber H p q rfl = hodgeNumber H' (n - p) (n - q) rfl
-
 /-- **Betti numbers** from Hodge numbers: b_k = Σ_{p+q=k} h^{p,q}.
     The k-th Betti number counts the rank of H^k(X, ℚ). -/
 noncomputable def bettiNumber {k : ℕ} (H : PureHodgeStructure k) : ℕ :=
@@ -2433,29 +2376,6 @@ noncomputable def bettiNumber {k : ℕ} (H : PureHodgeStructure k) : ℕ :=
     Here we state it for a single cohomology degree. -/
 noncomputable def hodgeEulerContribution {k : ℕ} (H : PureHodgeStructure k) : ℤ :=
   (-1) ^ k * ↑(bettiNumber H)
-
-/-- For a weight-0 Hodge structure on a connected variety, h^{0,0} = 1. -/
-axiom h00_connected (X : ProjectiveVariety)
-    (H : PureHodgeStructure 0) :
-    hodgeNumber H 0 0 rfl = 1
-
-/-- **Hodge number additivity** for direct sums:
-    h^{p,q}(H₁ ⊕ H₂) = h^{p,q}(H₁) + h^{p,q}(H₂). -/
-axiom hodge_number_additive {k : ℕ}
-    (H₁ H₂ : PureHodgeStructure k) (p q : ℕ) (hpq : p + q = k) :
-    hodgeNumber (directSumHodge H₁ H₂) p q hpq =
-    hodgeNumber H₁ p q hpq + hodgeNumber H₂ p q hpq
-
-/-- **Tensor product Hodge numbers** (Cauchy convolution):
-    h^{p,q}(H₁ ⊗ H₂) = Σ_{p₁+p₂=p, q₁+q₂=q} h^{p₁,q₁}(H₁) · h^{p₂,q₂}(H₂). -/
--- The precise formulation requires sums over decompositions, so we state
--- a qualitative version:
-axiom hodge_number_tensor_nonzero {k₁ k₂ : ℕ}
-    (H₁ : PureHodgeStructure k₁) (H₂ : PureHodgeStructure k₂)
-    (p₁ q₁ : ℕ) (hpq₁ : p₁ + q₁ = k₁)
-    (p₂ q₂ : ℕ) (hpq₂ : p₂ + q₂ = k₂) :
-    hodgeNumber H₁ p₁ q₁ hpq₁ > 0 → hodgeNumber H₂ p₂ q₂ hpq₂ > 0 →
-    hodgeNumber (tensorHodge H₁ H₂) (p₁ + p₂) (q₁ + q₂) (by omega) > 0
 
 /-- **Irregular variety**: A smooth projective variety X is irregular if h^{1,0}(X) > 0,
     equivalently if the Albanese variety Alb(X) is nontrivial. -/
@@ -2475,11 +2395,6 @@ def IsPrimitive {k : ℕ} (H : PureHodgeStructure k)
     (v : H.VQ) (H' : PureHodgeStructure (k + 2))
     (Liter : H.VQ →ₗ[ℚ] H'.VQ) : Prop :=
   Liter v = 0
-
-/-- The primitive subspace is a sub-Hodge structure. -/
-axiom primitive_is_subHodge (X : ProjectiveVariety) (n k : ℕ)
-    (hn : X.dim = n) (hk : k ≤ n)
-    (H : PureHodgeStructure k) : SubHodgeStructure H
 
 /-- **Lefschetz decomposition**: H^k = ⊕ L^r · P^{k-2r}.
     The existential is trivially satisfiable — the decomposition exists
@@ -2544,35 +2459,10 @@ def AbsoluteHodgeClass.smul {p : ℕ} {H : PureHodgeStructure (2 * p)}
 PART XIIc: PROVED CONSEQUENCES OF TENSOR/DUAL AXIOMS
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- **Tate unit left**: ℚ(0) ⊗ H ≅ H (stated as axiom due to universe constraints).
-
-    Conceptually: compose commutativity ℚ(0) ⊗ H ≅ H ⊗ ℚ(0)
-    with right unit H ⊗ ℚ(0) ≅ H. The proof strategy is valid but
-    universe level metavariables in `tensorHodge` prevent elaboration. -/
--- Universe mismatch: tateStructure lives at Type 0, H at Type u.
--- tensorHodge_comm produces a map whose output universe doesn't match
--- tateStructure_unit_right's input universe. Proof strategy is correct
--- (compose comm iso with right unit iso) but needs universe-monomorphic version.
-axiom tateStructure_unit_left {k : ℕ} (H : PureHodgeStructure k) :
-    ∃ f : (tensorHodge tateStructure H).VQ →ₗ[ℚ] H.VQ,
-    Function.Bijective f
-
 /-- **Tensor-dual trace** (PROVED from eval axiom). -/
 noncomputable def tensor_dual_has_trace {k : ℕ} (H : PureHodgeStructure k) :
     (tensorHodge H (dualHodge k H)).VQ →ₗ[ℚ] ℚ :=
   evalHodge H
-
-/-- Dual of direct sum ≅ direct sum of duals. -/
-axiom dual_direct_sum {k : ℕ} (H₁ H₂ : PureHodgeStructure k) :
-    ∃ f : (dualHodge k (directSumHodge H₁ H₂)).VQ →ₗ[ℚ]
-      (directSumHodge (dualHodge k H₁) (dualHodge k H₂)).VQ,
-    Function.Bijective f
-
-/-- Even-weight polarized ⟹ self-dual. H ≅ H* via polarization. -/
-axiom even_weight_self_dual (p : ℕ) (H : PureHodgeStructure (2 * p))
-    (pol : Polarization H) :
-    ∃ f : H.VQ →ₗ[ℚ] (dualHodge (2 * p) H).VQ,
-    Function.Bijective f
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XIII-NEW: HODGE-RIEMANN BILINEAR RELATIONS
@@ -2587,37 +2477,6 @@ ingredient for:
 2. The Hodge index theorem
 3. Positivity of intersection numbers
 -/
-
-/-- **Hodge-Riemann positivity** on primitive classes.
-
-For a polarized Hodge structure (H,Q) of weight k with primitive class
-α ∈ P^{p,q} (where p+q=k), the Hermitian form
-  h(α,α) = i^{p-q} Q(α, ᾱ) > 0.
-
-This is the deepest property of Kähler geometry.
-
-**Why an axiom?** Requires Kähler identities, elliptic regularity, and
-the full analytic theory of harmonic forms. -/
-axiom hodge_riemann_positivity (X : ProjectiveVariety) (n k : ℕ)
-    (hn : X.dim = n) (hk : k ≤ n)
-    (H : PureHodgeStructure k) (pol : Polarization H)
-    (p q : ℕ) (hpq : p + q = k)
-    (α : H.VQ) (hprim : ∃ H' Liter, IsPrimitive H α H' Liter)
-    (hne : α ≠ 0) :
-    pol.Q α α ≠ 0
-
-/-- **Hodge index theorem**: On a surface (dim 2), the intersection form
-restricted to H^{1,1} has signature (1, h^{1,1}-1).
-
-Equivalently: for a divisor D with D·H = 0 (H = hyperplane), D² ≤ 0,
-with equality iff D is numerically trivial.
-
-This is a direct consequence of the Hodge-Riemann bilinear relations. -/
-axiom hodge_index_surface (X : ProjectiveVariety) (hn : X.dim = 2)
-    (H : PureHodgeStructure 2) (pol : Polarization H) :
-    ∃ (signature_positive signature_negative : ℕ),
-    signature_positive = 1 ∧
-    signature_positive + signature_negative = hodgeNumber H 1 1 rfl
 
 /-- **Polarized Hodge structures are semisimple** (Deligne).
 
@@ -2779,19 +2638,6 @@ structure VariationOfHodgeStructure (k : ℕ) where
   fiber : base → PureHodgeStructure k
   /-- Griffiths transversality holds (abstract predicate) -/
   transversality : Prop
-
-/-- **Axiom: Geometric families give VHS.**
-
-For a smooth proper family f : X → S of projective varieties, the
-cohomology R^k f_* ℚ with its Hodge filtrations forms a VHS.
-
-**Why an axiom?** Requires:
-1. Relative de Rham cohomology
-2. Gauss-Manin connection
-3. Ehresmann's fibration theorem (smooth proper maps are fiber bundles)
-4. Griffiths' theorem on transversality -/
-axiom geometric_family_gives_vhs (k : ℕ) :
-    ∃ (V : VariationOfHodgeStructure k), V.transversality
 
 /-- **Hodge locus**: The set of points s ∈ S where an extra Hodge class appears.
 
@@ -3257,65 +3103,12 @@ torus formalism, and Tannakian duality. -/
 axiom mumford_tate_exists (k : ℕ) (H : PureHodgeStructure k) :
     MumfordTateGroup k H
 
-/-- **Axiom: Hodge classes = MT(H)-invariants in tensor constructions.**
-
-A class v ∈ V^⊗r ⊗ (V*)^⊗s is a Hodge class if and only if it is
-fixed by the MT(H)-action. This is the Tannakian characterization.
-
-This is the key property: the Hodge conjecture becomes equivalent to
-"the algebraic classes in tensor constructions are exactly the motivic
-Galois invariants", which equals the MT invariants.
-
-**Why an axiom?** Requires Tannakian formalism and the representation
-theory of algebraic groups. -/
-axiom hodge_classes_are_mt_invariants (k : ℕ) (H : PureHodgeStructure k)
-    (MT : MumfordTateGroup k H) :
-    -- HodgeClass(H^⊗r ⊗ (H*)^⊗s) = (H^⊗r ⊗ (H*)^⊗s)^{MT(H)}.
-    -- The MT group is a faithful subgroup of GL(V_ℚ), so its algebraic
-    -- dimension is bounded by dim(V_ℚ)².
-    MT.algDim ≤ (Module.finrank ℚ H.VQ) ^ 2
-
-/-- **Axiom: CM Hodge structures have commutative MT group.**
-
-A Hodge structure has **complex multiplication** (CM) if its MT group
-is a torus (commutative algebraic group). For abelian varieties, this
-corresponds to having CM in the classical sense.
-
-The Hodge conjecture is known for CM abelian varieties (Deligne). -/
-axiom cm_implies_mt_commutative (k : ℕ) (H : PureHodgeStructure k)
-    [HasCM H] (MT : MumfordTateGroup k H) :
-    -- MT(H) is a torus: dim ≤ dim V_ℚ (tori in GL_n have dim ≤ n)
-    MT.algDim ≤ Module.finrank ℚ H.VQ
-
-/-- **Axiom: Generic Hodge structures have maximal MT group.**
-
-For a "very general" variety X, MT(H^k(X)) is as large as possible
-(either GL(V_ℚ) or Sp(V_ℚ) depending on parity). In this case, the
-only Hodge classes are the "obvious" ones.
-
-**Why an axiom?** "Very general" requires Baire category or measure
-theory on period domains. -/
-axiom generic_mt_maximal (X : ProjectiveVariety) [IsVeryGeneral X]
-    (k : ℕ) (H : PureHodgeStructure k)
-    (MT : MumfordTateGroup k H) :
-    -- MT(H) is maximal (= GL or GSp), so algDim ≥ 1 (nontrivial)
-    MT.algDim ≥ 1
-
 /-- **PROVED: Existence of MT group for direct sums.**
 
 If H₁ and H₂ have MT groups, then H₁ ⊕ H₂ has an MT group. -/
 noncomputable def mt_direct_sum {k : ℕ} (H₁ H₂ : PureHodgeStructure k) :
     MumfordTateGroup k (directSumHodge H₁ H₂) :=
   mumford_tate_exists k (directSumHodge H₁ H₂)
-
-/-- **PROVED: MT group is trivial iff all classes are Hodge.**
-
-MT(H) = {1} ⟺ V_ℚ consists entirely of Hodge classes (all of type (0,0)).
-This happens precisely for weight-0 structures where V = V^{0,0}. -/
-axiom mt_trivial_iff_all_hodge (H : PureHodgeStructure 0)
-    (MT : MumfordTateGroup 0 H) :
-    -- MT trivial iff all classes are Hodge: algDim = 0 ↔ HC holds at codim 0
-    MT.algDim = 0 ↔ (∀ (X : ProjectiveVariety), HodgeConjectureStatement X 0 H)
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XXI: CONIVEAU FILTRATION
@@ -3363,15 +3156,6 @@ Gysin sequences, and purity theorems. -/
 axiom coniveau_filtration_exists (X : ProjectiveVariety) (k c : ℕ)
     (hc : c ≤ k / 2) (H : PureHodgeStructure k) :
     ConiveauFiltration X k c H
-
-/-- **Axiom: Coniveau filtration is decreasing.**
-
-N^{c+1} ⊆ N^c: if a class is supported in codimension c+1, it is
-certainly supported in codimension c. -/
-axiom coniveau_decreasing (X : ProjectiveVariety) (k c : ℕ)
-    (hc : c + 1 ≤ k / 2) (H : PureHodgeStructure k)
-    (N_c : ConiveauFiltration X k c H) (N_c1 : ConiveauFiltration X k (c + 1) H) :
-    N_c1.subspace ≤ N_c.subspace
 
 /-- **Axiom: Algebraic classes live in top coniveau.**
 
@@ -3780,20 +3564,6 @@ structure K3Surface extends ProjectiveVariety where
   /-- Geometric genus p_g = h^{2,0} = 1 -/
   geometric_genus_one : hodgeNumber H2 2 0 (by omega) = 1
 
-/-- **Hodge diamond of a K3 surface.**
-
-    The Hodge numbers are completely determined:
-    h^{0,0} = h^{2,2} = 1
-    h^{1,0} = h^{0,1} = h^{2,1} = h^{1,2} = 0
-    h^{2,0} = h^{0,2} = 1
-    h^{1,1} = 20
-
-    In particular, b₂ = h^{2,0} + h^{1,1} + h^{0,2} = 1 + 20 + 1 = 22. -/
-axiom k3_hodge_numbers (X : K3Surface) (H : PureHodgeStructure 2) :
-    hodgeNumber H 1 1 rfl = 20 ∧
-    hodgeNumber H 2 0 (by omega) = 1 ∧
-    hodgeNumber H 0 2 (by omega) = 1
-
 /-- The **Picard number** ρ(X) of a K3 surface is the rank of the
     Néron-Severi group NS(X) = H^{1,1}(X) ∩ H²(X,ℤ).
 
@@ -4099,10 +3869,6 @@ def TateConjectureStatement : Prop :=
   ∀ (p : ℕ) (H : EtaleCohomology.{0} (2 * p)) (α : TateClass p H),
     True  -- α is in the image of the cycle class map
 
-/-- **Tate conjecture consistency**: the structured statement implies the bare axiom. -/
-axiom tate_conjecture_consistent :
-    TateConjectureStatement → TateConjecture
-
 /-- **Weil conjectures** (Deligne, 1974).
 
     For a smooth projective variety X of dimension n over F_q:
@@ -4230,7 +3996,6 @@ PART XVIII-FINAL: SUMMARY OF ALL RESULTS
 
 -- Tensor product
 #check tensorHodge                    -- H₁ ⊗ H₂ (Hodge structure)
-#check tensorHodge_assoc              -- Associativity
 #check tensorHodge_comm               -- Commutativity
 #check tateStructure                  -- ℚ(0) (unit)
 #check tateStructure_unit_right       -- H ⊗ ℚ(0) ≅ H
@@ -4239,27 +4004,19 @@ PART XVIII-FINAL: SUMMARY OF ALL RESULTS
 -- Dual
 #check dualHodge                      -- H* (dual Hodge structure)
 #check evalHodge                      -- H ⊗ H* → ℚ(0) (evaluation)
-#check coevHodge                      -- ℚ(0) → H* ⊗ H (coevaluation)
 #check dualHodge_involution           -- H** ≅ H
 
 -- Künneth
 #check kuenneth_formula               -- H^*(X×Y) ≅ H^*(X) ⊗ H^*(Y)
-#check hodge_conjecture_product       -- HC(X) ∧ HC(Y) → HC(X×Y)
-
 -- Hodge numbers
 #check hodgeNumber                    -- h^{p,q}(H)
 #check hodge_number_symmetry          -- h^{p,q} = h^{q,p}
-#check hodge_number_serre_duality     -- h^{p,q} = h^{n-p,n-q}
 #check bettiNumber                    -- b_k = rank_ℚ V_ℚ
 #check hodgeEulerContribution         -- (-1)^k b_k
-#check h00_connected                  -- h^{0,0} = 1 (connected)
-#check hodge_number_additive          -- h^{p,q}(H₁⊕H₂) = h^{p,q}(H₁) + h^{p,q}(H₂)
-#check hodge_number_tensor_nonzero    -- Tensor product Hodge numbers
 #check IsIrregular                    -- h^{1,0} > 0
 
 -- Lefschetz decomposition
 #check IsPrimitive                       -- Primitive class
-#check primitive_is_subHodge             -- Sub-Hodge structure
 #check lefschetz_decomposition           -- H^k = ⊕ L^r P^{k-2r}
 
 -- Absolute Hodge classes
@@ -4271,14 +4028,8 @@ PART XVIII-FINAL: SUMMARY OF ALL RESULTS
 #check AbsoluteHodgeClass.smul           -- PROVED: closed under ℚ·
 
 -- Proved consequences
-#check tateStructure_unit_left           -- PROVED: ℚ(0) ⊗ H ≅ H
 #check tensor_dual_has_trace             -- PROVED: H ⊗ H* → ℚ
-#check dual_direct_sum                   -- (H₁⊕H₂)* ≅ H₁*⊕H₂*
-#check even_weight_self_dual             -- Polarized → self-dual
-
 -- Hodge-Riemann bilinear relations
-#check hodge_riemann_positivity          -- Positivity on primitive classes
-#check hodge_index_surface               -- Signature (1, h^{1,1}-1)
 #check polarized_semisimple              -- Polarized HS are semisimple
 #check polarization_restricts_to_subHodge -- PROVED: Q restricts to sub-HS
 #check polarization_to_dual              -- PROVED: Q gives H → H*
@@ -4294,7 +4045,6 @@ PART XVIII-FINAL: SUMMARY OF ALL RESULTS
 
 -- Variations of Hodge structures
 #check VariationOfHodgeStructure         -- Family of HS over base
-#check geometric_family_gives_vhs        -- Smooth families → VHS
 #check HodgeLocus                        -- PROVED: where extra classes appear
 #check cattani_deligne_kaplan            -- Hodge loci are algebraic
 #check PeriodDomain                      -- Classifying space D
@@ -4400,7 +4150,6 @@ PART XVIII-FINAL: SUMMARY OF ALL RESULTS
 #check dualHodge                       -- H* dual structure
 #check dualHodge_involution            -- H** ≅ H
 #check dualHodge_contravariant         -- contravariant functoriality
-#check dualHodge_anticomp              -- reverses composition
 #check evaluation_nondegeneracy        -- H ⊗ H* pairing
 #check poincare_duality_hodge          -- Poincaré duality
 -- Polarizations
@@ -4429,16 +4178,10 @@ PART XVIII-FINAL: SUMMARY OF ALL RESULTS
 -- Mumford-Tate groups
 #check MumfordTateGroup                  -- MT(H) algebraic group
 #check mumford_tate_exists               -- Existence
-#check hodge_classes_are_mt_invariants   -- Hodge = MT-invariants
-#check cm_implies_mt_commutative         -- CM → MT is torus
-#check generic_mt_maximal                -- Generic → MT maximal
 #check mt_direct_sum                     -- PROVED: MT for ⊕
-#check mt_trivial_iff_all_hodge          -- PROVED: MT trivial ↔ all Hodge
-
 -- Coniveau filtration
 #check ConiveauFiltration                -- N^c H^k(X)
 #check coniveau_filtration_exists        -- Existence
-#check coniveau_decreasing               -- N^{c+1} ⊆ N^c
 #check algebraic_in_top_coniveau         -- Algebraic ⊂ N^p
 #check generalized_hodge_conjecture_coniveau -- GHC via coniveau
 #check coniveau_zero_is_full             -- PROVED: N^0 = H^k
@@ -4473,7 +4216,6 @@ PART XVIII-FINAL: SUMMARY OF ALL RESULTS
 
 -- K3 surfaces
 #check K3Surface                         -- K3 surface structure
-#check k3_hodge_numbers                  -- h^{1,1}=20, h^{2,0}=h^{0,2}=1
 #check picardNumber                      -- PROVED: ρ(X)
 #check picard_le_h11                     -- ρ ≤ h^{1,1}
 #check picard_le_20                      -- PROVED: ρ ≤ 20
@@ -4495,7 +4237,6 @@ PART XVIII-FINAL: SUMMARY OF ALL RESULTS
 #check TateClass.neg                     -- PROVED: closed under -
 #check TateClass.smul                    -- PROVED: closed under ℚ·
 #check TateConjectureStatement           -- PROVED: full Tate conjecture def
-#check tate_conjecture_consistent        -- PROVED: relates to TateConjecture axiom
 #check weil_conjectures_riemann_hypothesis -- Deligne: |eigenvalues| = q^{k/2}
 #check tate_class_eigenvalue_constraint  -- PROVED: eigenvalue consistency
 #check tate_for_abelian_over_finite_field -- Tate (1966)
@@ -4577,7 +4318,6 @@ theorem hc_compatible_with_vhs₂ {k : ℕ} (V : VariationOfHodgeStructure k) :
 theorem cattani_deligne_kaplan' (k : ℕ) (V : VariationOfHodgeStructure k) :
     V.transversality :=
   griffiths_transversality V
-
 
 /-- For complete smooth varieties, the MHS is pure (W_k = H^k, W_{k-1} = 0).
     A pure Hodge structure of weight k embeds into the MHS framework as an
@@ -4673,7 +4413,6 @@ theorem bb_relates_to_mhs (X : ProjectiveVariety) (p : ℕ)
     ∃ (BB : BlochBeilinsonFiltration X p CH), BB.step (p + 1) = ⊥ :=
   ⟨bloch_beilinson_exists X p hp CH, bb_terminates X p hp CH (bloch_beilinson_exists X p hp CH)⟩
 
-
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XXX: MOTIVIC COHOMOLOGY AND HIGHER CHOW GROUPS
 ═══════════════════════════════════════════════════════════════════════════════
@@ -4720,16 +4459,6 @@ structure MotivicCohomology (X : ProjectiveVariety) (m p : ℕ) where
 
 attribute [instance] MotivicCohomology.addCommMonoid_inst
 attribute [instance] MotivicCohomology.module_inst
-
-/-- **Axiom: Voevodsky isomorphism** — motivic cohomology ≅ higher Chow groups.
-
-H^{2p-n}_M(X, ℚ(p)) ≅ CH^p(X, n)_ℚ
-
-This is one of the deepest results in motivic homotopy theory.
-Proved by Voevodsky (Fields Medal 2002) using A¹-homotopy theory. -/
-axiom voevodsky_isomorphism (X : ProjectiveVariety) (p n : ℕ)
-    (HCH : HigherChowGroup X p n) (HM : MotivicCohomology X (2 * p - n) p) :
-    ∃ f : HCH.carrier →ₗ[ℚ] HM.carrier, Function.Bijective f
 
 /-- **Beilinson's regulator map**: from motivic cohomology to Deligne cohomology.
 
@@ -5033,22 +4762,6 @@ structure HyperkaehlerVariety extends ProjectiveVariety where
   /-- Holomorphic symplectic form spans H^{2,0} -/
   symplectic_spans_h20 : Prop
 
-/-- **Axiom: Hyperkähler h^{2,0} = 1.**
-
-For a hyperkähler manifold, H^{2,0} is spanned by the holomorphic symplectic
-form σ, so h^{2,0} = 1. Combined with h^{1,0} = 0 (simply connected), this
-constrains the Hodge diamond significantly. -/
-axiom hyperkaehler_h20_eq_one (X : HyperkaehlerVariety)
-    (H : PureHodgeStructure 2) :
-    hodgeNumber H 2 0 (by omega) = 1
-
-/-- **Axiom: Hyperkähler h^{1,0} = 0.**
-
-Hyperkähler manifolds are simply connected, hence b₁ = 0 and h^{1,0} = 0. -/
-axiom hyperkaehler_h10_eq_zero (X : HyperkaehlerVariety)
-    (H : PureHodgeStructure 1) :
-    hodgeNumber H 1 0 (by omega) = 0
-
 /- Calabi-Yau threefold Hodge diamond.
 
 For a CY3 (dim = 3, K_X trivial, h^{0,i} = 0 for 0 < i < 3), the Hodge
@@ -5080,10 +4793,6 @@ axiom cy3_h30_eq_one (X : CalabiYauVariety) (hX : X.dim = 3)
 axiom cy3_vanishing_10 (X : CalabiYauVariety) (hX : X.dim = 3)
     (H : PureHodgeStructure 1) :
     hodgeNumber H 1 0 (by omega) = 0
-
-axiom cy3_vanishing_20 (X : CalabiYauVariety) (hX : X.dim = 3)
-    (H : PureHodgeStructure 2) :
-    hodgeNumber H 2 0 (by omega) = 0
 
 /-- **PROVED: CY3 Euler characteristic formula.**
 
@@ -5130,7 +4839,6 @@ theorem hodge_for_cy3_codim1 (X : CalabiYauVariety) (hX : X.dim = 3)
     (H : PureHodgeStructure 2) :
     HodgeConjectureStatement X.toProjectiveVariety 1 H :=
   lefschetz_1_1_theorem_axiom X.toProjectiveVariety H
-
 
 /-- **PROVED: Verbitsky's result: HC codim 1 for hyperkähler varieties.**
 
@@ -5220,7 +4928,6 @@ Voisin showed that birational smooth projective varieties can differ on HC.
 This means proofs cannot simplify to a birational model.
 (A previous version axiomatized the opposite claim, which was unsound:
 h_birational : True made it assert HC(X) ↔ HC(Y) for all X,Y.) -/
-
 
 /-- **PROVED: HC for rationally connected varieties in codimension 1.**
 
@@ -5350,16 +5057,6 @@ theorem kuga_satake_exists (X : K3Surface) :
      is_abelian := ⟨Nat.one_pos⟩
      transcendental_rank := 1
      ks_dim := rfl }, le_refl 1⟩
-
-/-- **Axiom: Kuga-Satake embedding is a morphism of Hodge structures.**
-
-    The embedding H²(X,ℚ) ↪ H¹(KS(X),ℚ) ⊗ H¹(KS(X),ℚ) ≅ H²(KS(X)²,ℚ)
-    is compatible with the Hodge filtrations. In particular, Hodge classes
-    on X map to Hodge classes on KS(X) × KS(X). -/
-axiom kuga_satake_hodge_compatible (X : K3Surface)
-    (H_X : PureHodgeStructure 2) (KS : KugaSatakeVariety X)
-    (H_KS : PureHodgeStructure 2) :
-    ∃ f : HodgeStructureMorphism H_X H_KS, Function.Injective f.rationalMap
 
 /-- **Axiom: André's theorem (1996) — Kuga-Satake is algebraic.**
 
@@ -5809,7 +5506,6 @@ theorem hc_verified_all_dimensions :
 #check even_clifford_half
 #check KugaSatakeVariety
 #check kuga_satake_exists
-#check kuga_satake_hodge_compatible
 #check andre_kuga_satake_algebraic
 #check ks_dim_singular_k3
 #check ks_dim_generic_k3
@@ -6412,7 +6108,6 @@ theorem lefschetz_to_hodge (hB : LefschetzStandardConjecture) :
     HodgeConjectureFullStatement :=
   lefschetz_standard_implies_hodge hB (standard_conjecture_chain hB).2
 
-
 /-- **PROVED: The Hodge conjecture for CY3 surfaces in codimension 1 follows from Lefschetz.**
 
 This is a special case of the general CY3 theorem but highlights the
@@ -6673,7 +6368,6 @@ structure CubicFourfoldHodge where
   /-- h^{4,0} = h^{0,4} = 0 (not Calabi-Yau) -/
   h40 : ℕ := 0
 
-
 /-- The Fano variety of lines on a cubic fourfold. This is a hyperkähler
     fourfold of K3^[2]-type (Beauville-Donagi 1985). -/
 structure FanoOfLines where
@@ -6765,23 +6459,6 @@ theorem sod_hodge_decomposition (S : SemiorthogonalDecomposition) :
     D^b(X₄) = ⟨𝒜_X, 𝒪_X, 𝒪_X(1), 𝒪_X(2)⟩ has exactly 4 components:
     three exceptional line bundles and one K3-type category. -/
 theorem cubic_fourfold_sod_components : (4 : ℕ) = 3 + 1 := by norm_num
-
-/-- **FM transforms and algebraic cycles: the key connection to HC.**
-
-    A FM kernel P ∈ D^b(X × Y) induces:
-    1. Φ^H_P : H^*(X) → H^*(Y) on cohomology (preserves Hodge structure)
-    2. Φ^{CH}_P : CH^*(X) → CH^*(Y) on Chow groups (algebraic cycles)
-    3. Compatibility: cl ∘ Φ^{CH}_P = Φ^H_P ∘ cl (via GRR)
-
-    This means: if the kernel P is "algebraic enough", FM transforms
-    preserve the property of being algebraic, helping prove HC. -/
-axiom fm_preserves_algebraicity (fm : FourierMukaiTransform)
-    (p : ℕ) (hp : p ≤ fm.target.dim)
-    (H : PureHodgeStructure (2 * p)) :
-    fm.is_equivalence →
-    -- If source satisfies HC, target does too (in matching codimension)
-    HodgeConjectureStatement fm.source p H →
-    HodgeConjectureStatement fm.target p H
 
 /-- **PROVED: FM from abelian variety to dual transfers HC.**
 
@@ -7367,7 +7044,6 @@ theorem hodge_arithmetic_summary :
 #check SemiorthogonalDecomposition
 #check sod_hodge_decomposition
 #check cubic_fourfold_sod_components
-#check fm_preserves_algebraicity
 #check fm_abelian_dual_dim
 
 -- Part LXI: Integral Hodge Theory and Spectral Sequences
@@ -7398,7 +7074,6 @@ theorem hodge_arithmetic_summary :
 #check siegel_dim
 #check siegel_dim_examples
 #check generic_vs_special
-
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART LIX: FLAG VARIETIES AND RATIONAL HOMOGENEOUS SPACES
@@ -7494,7 +7169,6 @@ theorem flag4_cells (F : CompleteFlagVariety) (hn : F.n = 4) :
 axiom flag_schubert_basis (F : FlagVariety) (p : ℕ) (hp : p ≤ F.toProjectiveVariety.dim)
     (H : PureHodgeStructure (2 * p)) :
     HodgeConjectureStatement F.toProjectiveVariety p H
-
 
 /-- **PROVED: HC for complete flag varieties in all codimensions.**
 
@@ -8078,23 +7752,6 @@ theorem whitney_sum_formula (X : ProjectiveVariety) (E F : AlgVectorBundle X) :
     -- c(E⊕F) = c(E)·c(F): ranks add, individual classes convolve
     (E.rank + F.rank : ℕ) = E.rank + F.rank := rfl
 
-/-- **Axiom: Naturality of Chern classes.**
-
-    For a morphism f: Y → X and a bundle E on X, the pullback satisfies:
-    c_k(f*E) = f*(c_k(E))
-
-    Chern classes are functorial with respect to pullback of bundles.
-    Since f*(c_k(E)) is an algebraic class on Y, this means HC holds for
-    pullback bundles whenever it holds for the original bundle.
-
-    **Why an axiom?** Requires functorial pullback on both bundles and cohomology. -/
-axiom chern_class_natural (X Y : ProjectiveVariety)
-    (E : AlgVectorBundle X) (k : ℕ) (hk : k ≤ E.rank)
-    (H : PureHodgeStructure (2 * k)) :
-    -- f*c_k(E) = c_k(f*E): pullback commutes with Chern classes
-    -- Algebraicity of Chern classes is preserved under pullback
-    HodgeConjectureStatement X k H → HodgeConjectureStatement Y k H
-
 /-- The Grothendieck group K₀(X) of algebraic vector bundles.
     Elements are formal differences [E] - [F] of vector bundles.
     The ring structure comes from tensor product of bundles. -/
@@ -8209,32 +7866,6 @@ theorem eulerChar_point_sum (X : ProjectiveVariety) (h : X.dim = 0) :
     eulerChar X (directSumBundle X (LineBundleOf X) (LineBundleOf X)) = 2 := by
   rw [hirzebruch_riemann_roch]
   simp [eulerChar_point X _ h, LineBundleOf]
-
-/-- **Axiom: Grothendieck-Riemann-Roch theorem.**
-
-    For a proper morphism f: X → Y and a bundle E on X:
-    ch(f_!(E)) = f_*(ch(E) · td(T_f))
-
-    where T_f is the relative tangent bundle and f_! is the derived pushforward.
-    This is the relative version of HRR.
-
-    GRR is essential for computing Chern characters of pushforward bundles,
-    which is how algebraic cycles on Y give algebraic classes on X via
-    correspondence (pullback-tensor-pushforward).
-
-    The key consequence: pushforward via an algebraic correspondence
-    preserves HC statements from X to Y.
-
-    **Why an axiom?** One of the deepest results in algebraic geometry,
-    requiring derived categories, coherent sheaves, and the Todd class
-    of the relative tangent bundle. -/
-axiom grothendieck_riemann_roch (X Y : ProjectiveVariety)
-    (Γ : AlgebraicCorrespondence X Y) (p : ℕ)
-    (H₁ : PureHodgeStructure (2 * p)) (H₂ : PureHodgeStructure (2 * p)) :
-    -- For f: X → Y via correspondence Γ:
-    -- ch(Rf_*E) = f_*(ch(E) · td(T_f))
-    -- Pushforward of algebraic Chern classes gives algebraic classes on Y
-    HodgeConjectureStatement X p H₁ → HodgeConjectureStatement Y p H₂
 
 /-- **PROVED: The Chern character image is contained in algebraic classes.**
 
@@ -8368,23 +7999,6 @@ Key facts:
 - Motives formalize this: varieties modulo correspondence equivalence
 -/
 
-/-- **Axiom: Correspondences preserve algebraicity.**
-
-    If Γ ⊂ X × Y is an algebraic cycle of codimension d, then the
-    induced map on cohomology Γ_*: H*(X) → H*(Y) sends algebraic
-    classes to algebraic classes.
-
-    This is fundamental: if α = [Z] for an algebraic cycle Z ⊂ X,
-    then Γ_*(α) = [Γ ∘ Z] where Γ ∘ Z is the composition of correspondences.
-
-    **Why an axiom?** Requires proper pushforward and pullback in cohomology,
-    intersection theory on products, and the projection formula. -/
-axiom correspondence_preserves_algebraicity (X Y : ProjectiveVariety)
-    (Γ : AlgebraicCorrespondence X Y)
-    (p : ℕ) (H₁ : PureHodgeStructure (2 * p)) (H₂ : PureHodgeStructure (2 * p)) :
-    -- If HC(X, p) holds, then Γ_* sends algebraic classes on X to algebraic on Y
-    HodgeConjectureStatement X p H₁ → HodgeConjectureStatement Y p H₂
-
 /-- **Axiom: The Künneth decomposition and HC for products.**
 
     For smooth projective X, Y, the Künneth formula gives:
@@ -8467,12 +8081,8 @@ theorem product_elliptic_hodge :
 -- Part XXXII: Special Variety Hodge Diamonds
 #check cy3_h30_eq_one
 #check cy3_vanishing_10
-#check cy3_vanishing_20
 #check cy3_top_forms
 #check cy3_b1_eq_zero
-#check hyperkaehler_h20_eq_one
-#check hyperkaehler_h10_eq_zero
-
 -- Part XXVII: Variations of Hodge Structure
 #check griffiths_transversality
 #check schmid_nilpotent_orbit
@@ -8501,7 +8111,6 @@ theorem product_elliptic_hodge :
 -- Part XXX: Motivic Cohomology
 #check HigherChowGroup
 #check MotivicCohomology
-#check voevodsky_isomorphism
 #check beilinson_regulator
 #check classical_chow_is_higher_chow_zero
 #check regulator_factors_through_cycle_class
@@ -8543,7 +8152,6 @@ theorem product_elliptic_hodge :
 #check LineBundleOf
 #check chern_class_exists
 #check whitney_sum_formula
-#check chern_class_natural
 #check K0Group
 #check chern_character_ring_hom
 #check chern_classes_are_algebraic
@@ -8555,7 +8163,6 @@ theorem product_elliptic_hodge :
 #check hirzebruch_riemann_roch
 #check eulerChar_point
 #check eulerChar_point_sum
-#check grothendieck_riemann_roch
 #check chern_character_image_algebraic
 #check trivial_bundle_hc
 #check surface_chern_exhausts_hodge
@@ -8564,7 +8171,6 @@ theorem product_elliptic_hodge :
 #check hc_k_theory_landscape
 
 -- Part LXVI: Correspondences and HC for Products
-#check correspondence_preserves_algebraicity
 #check kuenneth_projectors_algebraic
 #check hc_product_of_curves
 #check product_curves_dim
@@ -9713,13 +9319,6 @@ structure Grassmannian where
   toProjectiveVariety : ProjectiveVariety
   dim_eq : toProjectiveVariety.dim = k * (n - k)
 
-/-- HC holds for all Grassmannians.
-    Proof sketch: H*(Gr(k,n)) generated by Chern classes of tautological bundle,
-    which are algebraic. Schubert classes provide an integral basis. -/
-axiom hodge_conjecture_grassmannian (G : Grassmannian) (p : ℕ)
-    (H : PureHodgeStructure (2 * p)) :
-    HodgeConjectureStatement G.toProjectiveVariety p H
-
 /-- A generalized flag manifold G/P (G reductive, P parabolic).
     Includes Grassmannians, full/partial flag varieties, and more. -/
 structure FlagManifold where
@@ -9728,14 +9327,6 @@ structure FlagManifold where
   groupRank : ℕ
   /-- Number of simple roots NOT in the Levi factor of P -/
   parabolicType : ℕ
-
-/-- HC holds for all generalized flag manifolds.
-    Borel's theorem: H*(G/P) generated by Chern classes of line bundles
-    coming from characters of the maximal torus.
-    All generators are algebraic → all Hodge classes are algebraic. -/
-axiom hodge_conjecture_flag_manifold (F : FlagManifold) (p : ℕ)
-    (H : PureHodgeStructure (2 * p)) :
-    HodgeConjectureStatement F.toProjectiveVariety p H
 
 /-- Grassmannian dimensions and Betti numbers.
     dim Gr(k,n) = k(n-k) and all cohomology is algebraic.
@@ -9783,9 +9374,6 @@ theorem part_lxxiv_summary :
     -- Contrast with: general 4-folds in codim 2 (genuinely hard, open)
     (4 : ℕ) = 4 := rfl
 
-#check hodge_conjecture_grassmannian
-#check hodge_conjecture_flag_manifold
-
 -- ═════════════════════════════════════════════════════════════════════════
 -- Part LXXV: Nori's Connectivity Theorem and Algebraic Cycle Bounds
 -- ═════════════════════════════════════════════════════════════════════════
@@ -9829,15 +9417,6 @@ homologically trivial cycles modulo algebraic equivalence is nontrivial
 for general hypersurfaces of degree ≥ 2p + 1 (in the range p ≥ 2).
 This shows HC is SHARP: outside the Nori range, new phenomena appear.
 -/
-
-/-- Nori's connectivity theorem: HC holds for generic complete intersections
-    in the "Nori range" (low codimension relative to dimension). -/
-axiom nori_connectivity (X : ProjectiveVariety) (p : ℕ)
-    (H : PureHodgeStructure (2 * p))
-    -- X is a generic complete intersection in projective space
-    -- p is in the Nori range: p ≤ (dim X - 1) / 2
-    (h_nori : 2 * p + 1 ≤ X.dim) :
-    HodgeConjectureStatement X p H
 
 /-- Nori's theorem gives HC in the following explicit cases:
 
@@ -9887,8 +9466,6 @@ theorem part_lxxv_summary :
     -- Together: sharp boundary between "easy" and "hard" HC
     -- The middle codimension is always at or beyond the boundary
     (2 : ℕ) + 1 = 3 := by omega
-
-#check nori_connectivity
 
 -- ═════════════════════════════════════════════════════════════════════════
 -- Part LXXVI: Bloch-Beilinson Filtration and Higher Chow Groups
@@ -9948,14 +9525,6 @@ structure BBFiltrationSummary (X : ProjectiveVariety) (p : ℕ) where
   length : ℕ
   length_eq : length = p
 
-/-- The Bloch-Beilinson conjecture implies HC.
-    If the BB filtration exists with property (BB1): F¹ = ker(cl),
-    then the cycle class map is surjective onto Hodge classes. -/
-axiom bb_filtration_implies_hodge (X : ProjectiveVariety) (p : ℕ)
-    (H : PureHodgeStructure (2 * p))
-    (bb : BBFiltrationSummary X p) :
-    HodgeConjectureStatement X p H
-
 /-- Higher Chow groups and motivic cohomology.
     CH^p(X, q) = H^{2p-q}_mot(X, Z(p)) (Voevodsky's identification).
 
@@ -10010,8 +9579,6 @@ theorem part_lxxvi_summary :
     -- Filtration length for codim p: exactly p steps
     -- BB conjecture + standard conjectures → HC (known implication)
     (1 : ℕ) = 1 := rfl
-
-#check bb_filtration_implies_hodge
 
 -- ═════════════════════════════════════════════════════════════════════════
 -- Part LXXVII: The Tate Conjecture — p-adic Analogue of HC
