@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #16**: Odd Integers Not of the Form 2^k + p\n\n**Question**: Is the set of odd integers NOT representable as 2^k + p the union of an arithmetic progression and a density-0 set?\n\n**Status**: SOLVED (DISPROVED - Chen 2023)\n\n**Answer**: NO. The exceptional set has more complex structure.\n\nErdős called this conjecture 'rather silly' - and he was right to be skeptical!",
     "mathContext": "OEIS A006285 lists the exceptional odd integers: 1, 127, 149, 251, 331, 337, 373, 509, 599, 701, ...",
     "significance": "key",
+    "tags": [
+      "number-theory",
+      "erdos-problems",
+      "romanoff-type",
+      "disproved-conjecture"
+    ],
     "relatedConcepts": [
       "romanoff-type",
       "covering-congruences",
@@ -34,6 +40,12 @@
     "content": "**Romanoff (1934)**: A positive proportion of odd integers CAN be written as 2^k + p.\n\nThe 'exceptional' odd integers are those that CANNOT.\n\n**Examples** (OEIS A006285):\n1, 127, 149, 251, 331, 337, 373, 509, 599, 701, ...\n\nNote: 1 is trivially exceptional (no prime + power of 2 equals 1).",
     "mathContext": "Romanoff-type problems study representations n = 2^k + p. The exceptional set has density ~0.09 among all integers.",
     "significance": "key",
+    "tags": [
+      "romanoff-theorem",
+      "asymptotic-density",
+      "exceptional-sets",
+      "additive-number-theory"
+    ],
     "relatedConcepts": [
       "romanoff-1934",
       "exceptional-set",
@@ -57,6 +69,12 @@
     "content": "**IsRomanoff n**: ∃ k ≥ 1, ∃ prime p, n = 2^k + p\n\n**ExceptionalSet** = { n : Odd n ∧ ¬IsRomanoff n }\n\nThe odd integers that cannot be written as a power of 2 plus a prime.",
     "mathContext": "The condition k ≥ 1 ensures 2^k ≥ 2. For n to be Romanoff, we need n - 2^k prime for some valid k.",
     "significance": "key",
+    "tags": [
+      "definition",
+      "romanoff-numbers",
+      "exceptional-sets",
+      "additive-representation"
+    ],
     "relatedConcepts": [
       "romanoff",
       "exceptional",
@@ -80,6 +98,12 @@
     "content": "**axiom exceptional_iff**:\n\nn ∈ ExceptionalSet ⟺ ∀ k ≥ 1, 2^k < n → n - 2^k is NOT prime\n\n**Interpretation**: An odd n is exceptional iff EVERY valid subtraction leaves a composite.",
     "mathContext": "This gives a computational test: check n - 2, n - 4, n - 8, ... until 2^k ≥ n. If all are composite, n is exceptional.",
     "significance": "key",
+    "tags": [
+      "characterization",
+      "primality-testing",
+      "composite-numbers",
+      "axiom"
+    ],
     "relatedConcepts": [
       "characterization",
       "composite",
@@ -102,6 +126,12 @@
     "content": "**density A N** = |A ∩ [0,N]| / (N+1)\n\n**lowerDensity A** = liminf of density as N → ∞\n\n**axiom romanoff_theorem**: lowerDensity {Odd ∩ Romanoff} > 0\n\nRomanoff proved a POSITIVE proportion of odd integers are representable.",
     "mathContext": "The lower density uses infimum over all sufficiently large N. This is stronger than just 'infinitely many'.",
     "significance": "key",
+    "tags": [
+      "asymptotic-density",
+      "romanoff-theorem",
+      "liminf",
+      "analytic-number-theory"
+    ],
     "relatedConcepts": [
       "asymptotic-density",
       "lower-density",
@@ -125,6 +155,12 @@
     "content": "**IsCoveringSystem residues**: The residue classes cover all integers.\n∀ n : ℤ, ∃ (r, m) ∈ residues, n ≡ r (mod m)\n\n**Erdős (1950)**: Using covering congruences, proved the exceptional set CONTAINS an infinite arithmetic progression.\n\n**axiom exceptional_contains_progression**: ∃ a, d > 0 such that a + md ∈ ExceptionalSet for all m.",
     "mathContext": "Covering congruences ensure that for any n in the constructed progression, n - 2^k is divisible by some small prime for every k.",
     "significance": "key",
+    "tags": [
+      "covering-congruences",
+      "arithmetic-progressions",
+      "modular-arithmetic",
+      "chinese-remainder-theorem"
+    ],
     "relatedConcepts": [
       "covering-system",
       "erdos-1950",
@@ -148,6 +184,12 @@
     "content": "**ErdosConjecture16**: ExceptionalSet = (arithmetic progression) ∪ (density-0 set)\n\n∃ a, d > 0 such that lowerDensity(ExceptionalSet \\ {a + md}) = 0\n\n**axiom chen_disproof : ¬ErdosConjecture16**\n\nChen (2023) proved this is FALSE - the exceptional set is more complex!",
     "mathContext": "Erdős hoped the exceptional set had simple structure. Chen showed it contains multiple 'essentially different' parts with positive density.",
     "significance": "key",
+    "tags": [
+      "conjecture-disproof",
+      "chen-2023",
+      "set-decomposition",
+      "erdos-problems"
+    ],
     "relatedConcepts": [
       "chen-2023",
       "disproved",
@@ -171,6 +213,12 @@
     "content": "**axiom exceptional_complex_structure**:\n\nFor any progression (a, d), either:\n- ExceptionalSet \\ {a + md} has POSITIVE density, OR\n- The progression isn't fully contained in ExceptionalSet\n\nNo single progression captures the whole exceptional set!",
     "mathContext": "This is a consequence of Chen's disproof. The exceptional set has rich, possibly fractal-like structure.",
     "significance": "key",
+    "tags": [
+      "set-structure",
+      "chen-2023",
+      "density-arguments",
+      "arithmetic-progressions"
+    ],
     "relatedConcepts": [
       "structure",
       "multiple-progressions",
@@ -193,6 +241,12 @@
     "content": "**OEIS A006285**: 1, 127, 149, 251, 331, 337, 373, 509, 599, 701, ...\n\n**axiom exceptional_127**: 127 ∈ ExceptionalSet\n\n**Verification for 127**:\n- 127 - 2 = 125 = 5³ ✗\n- 127 - 4 = 123 = 3×41 ✗\n- 127 - 8 = 119 = 7×17 ✗\n- 127 - 16 = 111 = 3×37 ✗\n- 127 - 32 = 95 = 5×19 ✗\n- 127 - 64 = 63 = 7×9 ✗\n(2^7 = 128 > 127, done)",
     "mathContext": "127 is the smallest non-trivial exceptional number. The verification shows all valid subtractions yield composites.",
     "significance": "supporting",
+    "tags": [
+      "computational-verification",
+      "OEIS-sequences",
+      "exceptional-numbers",
+      "primality-testing"
+    ],
     "relatedConcepts": [
       "127",
       "verification",
@@ -215,6 +269,12 @@
     "content": "**erdosCovering** = [(0,2), (0,3), (1,4), (1,6), (3,8), (7,12), (23,24)]\n\nThis covering system ensures that for certain n:\n- n ≡ 0 (mod 2) → n - 2^k divisible by 2 for odd k\n- n ≡ 0 (mod 3) → n - 2^k divisible by 3 for k ≡ 0,2 (mod 3)\n- etc.\n\n**axiom covering_implies_composite**: For exceptional n, each n - 2^k is divisible by some small prime < 100.",
     "mathContext": "Covering congruences are the key tool. The moduli {2, 3, 4, 6, 8, 12, 24} form a covering with period 24.",
     "significance": "key",
+    "tags": [
+      "covering-systems",
+      "modular-arithmetic",
+      "constructive-proof",
+      "divisibility"
+    ],
     "relatedConcepts": [
       "covering-system",
       "moduli",
@@ -238,6 +298,12 @@
     "content": "**axiom exceptional_positive_density**:\nlowerDensity(ExceptionalSet) > 0\n\nThe exceptional set has POSITIVE density (from Erdős's progression).\n\n**axiom exceptional_density_upper_bound**:\nlowerDensity(ExceptionalSet) < 1/10\n\nBut it's still small: ~9% of all integers, ~18% of odd integers.",
     "mathContext": "The density is positive but small. Most odd integers CAN be written as 2^k + p (Romanoff's theorem).",
     "significance": "key",
+    "tags": [
+      "density-bounds",
+      "asymptotic-density",
+      "analytic-number-theory",
+      "axiom"
+    ],
     "relatedConcepts": [
       "density",
       "bounds",
@@ -261,6 +327,12 @@
     "content": "**Erdos9Question**: Do infinitely many n have UNIQUE representation 2^k + p?\n\n**Erdos10Question**: Can every large EVEN number be written as 2^k + p?\n\n**Erdos11Question**: Is the representation count r(n) bounded?\nr(n) = #{(k,p) : n = 2^k + p with p prime}\n\nThese form a family of Romanoff-type problems.",
     "mathContext": "Problems #9, #10, #11 study different aspects of the representation n = 2^k + p. Each has distinct status.",
     "significance": "supporting",
+    "tags": [
+      "related-problems",
+      "romanoff-type",
+      "erdos-problems",
+      "representation-theory"
+    ],
     "relatedConcepts": [
       "erdos-9",
       "erdos-10",
@@ -283,6 +355,12 @@
     "content": "**axiom multiple_progressions**:\n\n∃ infinitely many distinct progressions (aᵢ, dᵢ) such that:\n- All dᵢ are distinct\n- Each ExceptionalSet ∩ {aᵢ + m·dᵢ} has positive density\n\nThe exceptional set intersects infinitely many 'independent' progressions substantially.",
     "mathContext": "This explains WHY Chen's disproof works: no single progression captures the full structure.",
     "significance": "key",
+    "tags": [
+      "arithmetic-progressions",
+      "positive-density",
+      "chen-2023",
+      "set-structure"
+    ],
     "relatedConcepts": [
       "multiple",
       "independent",
@@ -306,6 +384,12 @@
     "content": "**Erdős Problem #16: SOLVED (DISPROVED)**\n\n**Timeline**:\n- 1934: Romanoff proves positive density are representable\n- 1950: Erdős uses covering congruences to find AP in exceptional set\n- 2023: Chen proves the conjecture is FALSE\n\n**Key Results**:\n- ExceptionalSet has density ~0.09\n- Contains arithmetic progressions\n- NOT just one AP + noise (Chen)\n- Has multiple 'independent' parts\n\n**References**: Romanoff (1934), Erdős (1950), Chen (2023), OEIS A006285",
     "mathContext": "Erdős was right to call his conjecture 'rather silly' - the exceptional set turned out to have rich, complex structure.",
     "significance": "key",
+    "tags": [
+      "summary",
+      "problem-history",
+      "disproved-conjecture",
+      "number-theory"
+    ],
     "relatedConcepts": [
       "problem-status",
       "disproved",

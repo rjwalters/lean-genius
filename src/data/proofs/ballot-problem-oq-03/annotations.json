@@ -9,7 +9,8 @@
     "mathContext": "A lattice path from $(0, y_0)$ to $(m, y_0+n)$ is a sequence of $m$ East and $n$ North steps. The type $\\texttt{pathType}\\, m\\, n$ has $\\binom{m+n}{m}$ elements.",
     "significance": "supporting",
     "relatedConcepts": ["lattice path", "binomial coefficient", "Fintype", "List.Vector"],
-    "prerequisites": ["Boolean lists", "subtypes in Lean 4", "Fintype instances"]
+    "prerequisites": ["Boolean lists", "subtypes in Lean 4", "Fintype instances"],
+    "tags": ["lattice-path", "definition", "fintype", "boolean-encoding"]
   },
   {
     "id": "ann-ballot-oq03-north-before-east",
@@ -21,7 +22,8 @@
     "mathContext": "For a path $l$ with $m$ East steps, $\\texttt{northBeforeEast}(l, k)$ gives the $y$-offset at the $k$-th East step. The derived $\\texttt{colEntry}(l, k) \\leq \\texttt{colEntry}(l, k+1)$ encodes that paths move monotonically upward within each column.",
     "significance": "key",
     "relatedConcepts": ["column entry", "monotone function", "lattice path geometry", "y-coordinate tracking"],
-    "prerequisites": ["recursive function definition", "structural induction on lists"]
+    "prerequisites": ["recursive function definition", "structural induction on lists"],
+    "tags": ["column-entry", "monotonicity", "y-coordinate", "key-function"]
   },
   {
     "id": "ann-ballot-oq03-non-intersecting",
@@ -33,7 +35,8 @@
     "mathContext": "Paths $P_1$ from $(0, y_1)$ and $P_2$ from $(0, y_2)$ are non-intersecting if for all columns $x < m$, the intervals $[y_1 + \\text{entry}_1(x),\\, y_1 + \\text{entry}_1(x+1)]$ and $[y_2 + \\text{entry}_2(x),\\, y_2 + \\text{entry}_2(x+1)]$ are disjoint, and similarly for the final column.",
     "significance": "key",
     "relatedConcepts": ["disjoint intervals", "column y-range", "LGV lemma", "Lindstrom involution"],
-    "prerequisites": ["colEntry", "lattice path geometry", "set disjointness"]
+    "prerequisites": ["colEntry", "lattice path geometry", "set disjointness"],
+    "tags": ["non-intersecting", "disjoint-ranges", "lgv-foundation"]
   },
   {
     "id": "ann-ballot-oq03-crossing-lemma",
@@ -45,7 +48,8 @@
     "mathContext": "If $y_1 < y_2$ and $y_2 + n_2 < y_1 + n_1$, then $\\neg\\text{NonIntersecting}(l_1, l_2, m, y_1, y_2)$. This is the 2D reflection principle: crossing path pairs always intersect, which is the foundation for the LGV determinant formula.",
     "significance": "key",
     "relatedConcepts": ["reflection principle", "LGV lemma", "Lindstrom involution", "path intersection"],
-    "prerequisites": ["NonIntersecting definition", "colEntry monotonicity", "column induction"]
+    "prerequisites": ["NonIntersecting definition", "colEntry monotonicity", "column induction"],
+    "tags": ["crossing-lemma", "reflection-principle", "fully-proved", "path-intersection"]
   },
   {
     "id": "ann-ballot-oq03-path-count",
@@ -57,7 +61,8 @@
     "mathContext": "$|\\texttt{pathType}\\, m\\, n| = \\binom{m+n}{m}$. The inductive step uses Pascal's identity: $\\binom{m+n+2}{m+1} = \\binom{m+n+1}{m} + \\binom{m+n+1}{m+1}$, corresponding to the first step being East or North.",
     "significance": "key",
     "relatedConcepts": ["binomial coefficient", "Pascal's identity", "combinatorial bijection", "Fintype.card_congr"],
-    "prerequisites": ["pathType definition", "Fintype instance", "Nat.choose_succ_succ'"]
+    "prerequisites": ["pathType definition", "Fintype instance", "Nat.choose_succ_succ'"],
+    "tags": ["path-count", "binomial-coefficient", "pascal-identity", "fully-proved"]
   },
   {
     "id": "ann-ballot-oq03-lgv-statement",
@@ -69,7 +74,8 @@
     "mathContext": "The 2x2 LGV determinant is $\\det \\begin{pmatrix} \\binom{m+b_1-a_1}{m} & \\binom{m+b_2-a_1}{m} \\\\ \\binom{m+b_1-a_2}{m} & \\binom{m+b_2-a_2}{m} \\end{pmatrix}$. Under proper ordering $a_1 \\leq a_2 \\leq b_1 \\leq b_2$, this equals the non-intersecting path pair count.",
     "significance": "key",
     "relatedConcepts": ["LGV lemma", "determinant formula", "complement counting", "Lindstrom involution"],
-    "prerequisites": ["path_count_eq_choose", "crossing_lemma", "NonIntersecting", "Fintype.card"]
+    "prerequisites": ["path_count_eq_choose", "crossing_lemma", "NonIntersecting", "Fintype.card"],
+    "tags": ["lgv-lemma", "determinant", "complement-counting", "2x2"]
   },
   {
     "id": "ann-ballot-oq03-catalan-ballot",
@@ -81,7 +87,8 @@
     "mathContext": "The $n$-th Catalan number $C_n = \\binom{2n}{n} - \\binom{2n}{n+1} = \\frac{1}{n+1}\\binom{2n}{n}$. The ballot formula: for $q < p$, the number of ballot sequences where $A$ always leads is $\\frac{p-q}{p+q}\\binom{p+q}{p}$.",
     "significance": "key",
     "relatedConcepts": ["Catalan number", "ballot problem", "absorption identity", "reflection principle"],
-    "prerequisites": ["binomial coefficients", "Nat.add_one_mul_choose_eq", "Nat.choose_symm_of_eq_add"]
+    "prerequisites": ["binomial coefficients", "Nat.add_one_mul_choose_eq", "Nat.choose_symm_of_eq_add"],
+    "tags": ["catalan-number", "ballot-theorem", "absorption-identity", "fully-proved"]
   },
   {
     "id": "ann-ballot-oq03-path-flip",
@@ -93,7 +100,8 @@
     "mathContext": "The map $l \\mapsto \\overline{l}$ (swap East $\\leftrightarrow$ North) gives $\\texttt{pathType}(m,n) \\simeq \\texttt{pathType}(n,m)$, proving $\\binom{m+n}{m} = \\binom{m+n}{n}$ combinatorially.",
     "significance": "supporting",
     "relatedConcepts": ["bijective proof", "binomial symmetry", "involution", "path transposition"],
-    "prerequisites": ["pathType", "Bool negation", "Equiv construction"]
+    "prerequisites": ["pathType", "Bool negation", "Equiv construction"],
+    "tags": ["path-flip", "bijective-proof", "binomial-symmetry", "involution"]
   },
   {
     "id": "ann-ballot-oq03-catalan-ballot-unification",
@@ -105,7 +113,8 @@
     "mathContext": "$C_n = \\text{ballotSeqCount}(n+1, n)$. This means the $n$-th Catalan number counts exactly the ballot sequences where candidate $A$ (with $n+1$ votes) always leads candidate $B$ (with $n$ votes). The identity $C_n \\cdot (n+1) = \\binom{2n}{n}$ follows from both formulations.",
     "significance": "supporting",
     "relatedConcepts": ["Catalan number", "ballot problem", "Dyck path", "cycle lemma"],
-    "prerequisites": ["Cn definition", "ballotSeqCount definition", "catalan_formula", "ballot_formula"]
+    "prerequisites": ["Cn definition", "ballotSeqCount definition", "catalan_formula", "ballot_formula"],
+    "tags": ["catalan-ballot", "unification", "algebraic-identity"]
   },
   {
     "id": "ann-ballot-oq03-involution-infrastructure",
@@ -117,6 +126,7 @@
     "mathContext": "The Lindstrom involution maps intersecting identity pairs $(P_1: A_1 \\to B_1,\\, P_2: A_2 \\to B_2)$ to crossing pairs $(P_1': A_1 \\to B_2,\\, P_2': A_2 \\to B_1)$ by swapping suffixes at the first shared lattice point. This bijection proves $|\\text{intersecting identity}| = |\\text{all crossing}|$, completing the LGV determinant formula.",
     "significance": "key",
     "relatedConcepts": ["Lindstrom involution", "lattice point", "suffix swap", "bijective proof", "LGV lemma"],
-    "prerequisites": ["visitedPoints", "posAfter", "splitAfterEast", "crossing_lemma", "NonIntersecting"]
+    "prerequisites": ["visitedPoints", "posAfter", "splitAfterEast", "crossing_lemma", "NonIntersecting"],
+    "tags": ["lindstrom-involution", "suffix-swap", "lattice-point", "infrastructure"]
   }
 ]
