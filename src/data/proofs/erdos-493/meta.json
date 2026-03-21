@@ -20,7 +20,13 @@
     "erdosNumber": 493,
     "erdosUrl": "https://erdosproblems.com/493",
     "erdosProblemStatus": "solved",
-    "axiomCount": 0
+    "axiomCount": 0,
+    "prerequisites": [
+      "Basic integer arithmetic",
+      "Product and sum of finite sequences",
+      "Existential quantification in Lean 4",
+      "ring and linarith tactics"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős Problem #493 from [Er61] (attributed to Schinzel) asks whether every sufficiently large integer can be written as the product minus the sum of k integers, each at least 2. Eli Seamans showed k=2 suffices via the identity n = 2(n+2) - (2 + (n+2)).",

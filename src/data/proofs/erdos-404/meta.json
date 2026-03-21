@@ -58,7 +58,14 @@
       "Two proved examples by native_decide",
       "erdos_404_summary: proved conjunction of Lin's bounds"
     ],
-    "axiomCount": 4
+    "axiomCount": 4,
+    "prerequisites": [
+      "p-adic valuation (padicValNat) and basic properties",
+      "Factorials and divisibility in number theory",
+      "Supremum in extended naturals (sSup, WithTop)",
+      "Legendre's formula for v_p(n!)",
+      "Filter.Tendsto and convergence in Lean/Mathlib"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős Problem #404, from Erdős-Graham [ErGr80], concerns prime power divisibility of factorial sums. Lin (1976) proved the main quantitative result: f(2, 2) ≤ 254. The problem connects p-adic analysis with factorial combinatorics and relates to Problem #403.",

@@ -8,7 +8,8 @@
     "content": "**Erdős Problem #180: Turán Numbers for Graph Families**\n\nFor a finite family F of graphs, does some G ∈ F have ex(n;G) = O(ex(n;F))?\n\n**Known:** YES for non-bipartite families (Erdős-Stone). A folklore counterexample exists for infinite families.\n\n**Status:** OPEN for general finite families containing bipartite graphs.",
     "mathContext": "The Turán number ex(n;F) counts the maximum edges in an n-vertex graph avoiding all members of F as subgraphs. The domination question asks whether this family extremal function is always controlled by a single member.",
     "significance": "critical",
-    "relatedConcepts": ["Turán number", "Extremal graph theory", "Forbidden subgraphs", "Erdős-Simonovits"]
+    "relatedConcepts": ["Turán number", "Extremal graph theory", "Forbidden subgraphs", "Erdős-Simonovits"],
+    "tags": ["turan-number", "extremal-graph-theory", "forbidden-subgraphs", "open-problem"]
   },
   {
     "id": "ann-e180-definitions",
@@ -19,7 +20,8 @@
     "content": "**turanNumber H n:** The supremum of edge counts in n-vertex H-free graphs, defined via sSup.\n\n**ExSingle, ExFamily:** Type aliases for ℕ → ℕ, representing extremal functions for single graphs and families respectively.\n\n**HasDomination familyEx memberExs:** Some member g ∈ memberExs has g(n) ≤ C · familyEx(n) for all n. This formalizes the Big-O relation ex(n;G) = O(ex(n;F)).",
     "mathContext": "The abstract representation via ℕ → ℕ functions avoids encoding specific graph structures and focuses on the extremal function itself. The constant C > 0 in HasDomination gives the Big-O relationship.",
     "significance": "critical",
-    "relatedConcepts": ["sSup", "Big-O notation", "Extremal function"]
+    "relatedConcepts": ["sSup", "Big-O notation", "Extremal function"],
+    "tags": ["turan-number", "big-o-notation", "extremal-function"]
   },
   {
     "id": "ann-e180-conjecture",
@@ -30,7 +32,8 @@
     "content": "**ErdosConjecture180:** Every finite nonempty family has the domination property. The hypotheses require memberExs to be nonempty and familyEx to be bounded by the minimum of the members.\n\nThis is the precise formalization of Erdős Problem #180. No axiom is provided for this — it remains OPEN.",
     "mathContext": "The hypothesis ∀ n, familyEx n ≤ inf' memberExs id n ensures the family Turán number is consistent with the individual members (it cannot exceed the minimum).",
     "significance": "critical",
-    "relatedConcepts": ["Open problem", "Domination property", "Finite families"]
+    "relatedConcepts": ["Open problem", "Domination property", "Finite families"],
+    "tags": ["open-problem", "domination-property", "finite-families", "conjecture"]
   },
   {
     "id": "ann-e180-erdos-stone",
@@ -41,7 +44,8 @@
     "content": "**erdos_stone_domination:** For non-bipartite families, the Erdős-Stone theorem gives ex(n;H) = ((r-2)/(r-1) + o(1)) · C(n,2) where r is the chromatic number. The member with smallest chromatic number dominates the family.\n\nAxiomatized because the full Erdős-Stone theorem and its implications involve asymptotic analysis beyond current Mathlib.",
     "mathContext": "The Erdős-Stone theorem is one of the fundamental results in extremal graph theory. It completely determines ex(n;H) for non-bipartite H up to o(n²) error, making the domination question trivial in this case.",
     "significance": "critical",
-    "relatedConcepts": ["Erdős-Stone theorem", "Chromatic number", "Asymptotic equivalence"]
+    "relatedConcepts": ["Erdős-Stone theorem", "Chromatic number", "Asymptotic equivalence"],
+    "tags": ["erdos-stone-theorem", "chromatic-number", "asymptotic-analysis"]
   },
   {
     "id": "ann-e180-bipartite",
@@ -52,7 +56,8 @@
     "content": "**BipartiteCase:** The existence of a finite family without domination — this would refute the conjecture.\n\n**folklore_counterexample_infinite:** For infinite families, domination can fail. Example: F = {star, matching} gives ex(n;F) ≤ 1 (any graph with 2+ edges contains one), but each member individually allows Θ(n) edges. This shows finiteness is essential.",
     "mathContext": "For bipartite H, ex(n;H) = o(n²) but the exact growth rates are often unknown (Zarankiewicz problem). This makes the domination question much harder: comparing o(n²) growth rates requires precise asymptotics.",
     "significance": "critical",
-    "relatedConcepts": ["Zarankiewicz problem", "Bipartite Turán theory", "Infinite families"]
+    "relatedConcepts": ["Zarankiewicz problem", "Bipartite Turán theory", "Infinite families"],
+    "tags": ["bipartite-graphs", "zarankiewicz-problem", "counterexample", "infinite-families"]
   },
   {
     "id": "ann-e180-properties",
@@ -62,7 +67,8 @@
     "title": "Family Monotonicity",
     "content": "**family_le_members:** ex(n;F) ≤ min_{G ∈ F} ex(n;G). Forbidding more subgraphs can only reduce the maximum edge count. This is the defining property of family Turán numbers.",
     "significance": "key",
-    "relatedConcepts": ["Monotonicity", "Minimum over family"]
+    "relatedConcepts": ["Monotonicity", "Minimum over family"],
+    "tags": ["monotonicity", "extremal-function", "forbidden-subgraphs"]
   },
   {
     "id": "ann-e180-summary",
@@ -73,6 +79,7 @@
     "content": "**erdos_180_summary:** Proved conjunction of:\n1. Non-bipartite domination (from erdos_stone_domination)\n2. Infinite family counterexample (from folklore_counterexample_infinite)\n\nThe OPEN question is whether domination holds for ALL finite families, especially those containing bipartite graphs.",
     "mathContext": "The summary captures the complete state of knowledge: domination is resolved for non-bipartite families, finiteness is known to be essential, and the bipartite case remains open.",
     "significance": "critical",
-    "relatedConcepts": ["State of knowledge", "Open problem", "Proved conjunction"]
+    "relatedConcepts": ["State of knowledge", "Open problem", "Proved conjunction"],
+    "tags": ["summary-theorem", "erdos-stone-theorem", "extremal-graph-theory"]
   }
 ]

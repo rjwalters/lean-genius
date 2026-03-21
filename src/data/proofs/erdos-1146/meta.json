@@ -60,7 +60,13 @@
       "Definition smoothNumbers (k-smooth generalization)",
       "Definition Erdos1146Conjecture (main open question)"
     ],
-    "axiomCount": 2
+    "axiomCount": 2,
+    "prerequisites": [
+      "erdos-37",
+      "schnirelmann-density",
+      "additive-number-theory",
+      "mann-theorem"
+    ]
   },
   "overview": {
     "historicalContext": "Ruzsa (1999) asked whether {2^m · 3^n : m, n ≥ 0} is an essential component. This emerged from his work resolving Erdős #37: essential components need counting function growth ≥ (log N)^{1+c}, ruling out lacunary sets (O(log N)). The 3-smooth numbers have growth ~ C(log N)², exactly at the threshold with c = 1. This is \"the simplest set with a chance to be an essential component\" (Ruzsa 1999).",

@@ -65,7 +65,14 @@
       "primitive_root_lower_bound axiom",
       "bounds_summary axiom"
     ],
-    "axiomCount": 10
+    "axiomCount": 10,
+    "prerequisites": [
+      "Complex analysis (unit circle, modulus)",
+      "Harmonic analysis (trigonometric polynomials)",
+      "Real analysis (supremum, infimum, logarithmic growth)",
+      "Number theory (roots of unity, modular arithmetic)",
+      "Asymptotic analysis (big-O, polynomial vs polylogarithmic growth)"
+    ]
   },
   "overview": {
     "historicalContext": "This problem asks about the growth rate of the minimum achievable maximum of products ∏(1-z^{aᵢ}) on the unit circle. Erdős and Szekeres (1959) initiated the study, proving f(n) > √(2n). The upper bounds were progressively improved by Erdős, Atkinson (1961), and Odlyzko (1982), culminating in the definitive answer by Belov-Konyagin (1996).",

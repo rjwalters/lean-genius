@@ -10,7 +10,8 @@
     "title": "Primes Up To n",
     "content": "`primesUpTo n` constructs the finite set of all primes up to n using `Finset.filter` on the range.",
     "significance": "supporting",
-    "relatedConcepts": ["Finset.filter", "prime enumeration"]
+    "relatedConcepts": ["Finset.filter", "prime enumeration"],
+    "tags": ["prime-enumeration", "finset", "number-theory"]
   },
   {
     "id": "ann-e17-prime-diff",
@@ -24,7 +25,8 @@
     "content": "`primeDifferences p` computes all differences q_1 - q_2 for primes q_1, q_2 <= p. This uses the Cartesian product of `primesUpTo p` with itself.",
     "mathContext": "The cluster property requires ALL even numbers up to p-3 to appear in this set.",
     "significance": "key",
-    "relatedConcepts": ["Finset.image", "Cartesian product"]
+    "relatedConcepts": ["Finset.image", "Cartesian product"],
+    "tags": ["prime-differences", "finset-operations", "cartesian-product", "cluster-primes"]
   },
   {
     "id": "ann-e17-cluster-def",
@@ -38,7 +40,8 @@
     "content": "**IsClusterPrime p**: A prime p is a cluster prime if every even n with 2 <= n <= p-3 is a difference of two primes <= p.",
     "mathContext": "This definition captures when primes are 'dense enough' that their pairwise differences cover all small even numbers.",
     "significance": "critical",
-    "relatedConcepts": ["prime distribution", "OEIS A038134"]
+    "relatedConcepts": ["prime distribution", "OEIS A038134"],
+    "tags": ["cluster-primes", "prime-distribution", "additive-number-theory", "OEIS"]
   },
   {
     "id": "ann-e17-two-cluster",
@@ -51,7 +54,8 @@
     "title": "2 is Cluster Prime",
     "content": "`two_is_cluster`: 2 is trivially a cluster prime because the range [2, p-3] = [2, -1] is empty (using natural number subtraction).",
     "significance": "supporting",
-    "relatedConcepts": ["vacuous truth", "omega tactic"]
+    "relatedConcepts": ["vacuous truth", "omega tactic"],
+    "tags": ["vacuous-truth", "small-primes", "cluster-primes"]
   },
   {
     "id": "ann-e17-three-cluster",
@@ -64,7 +68,8 @@
     "title": "3 is Cluster Prime",
     "content": "`three_is_cluster`: 3 is a cluster prime because the range [2, 0] is empty. No even numbers need to be covered.",
     "significance": "supporting",
-    "relatedConcepts": ["small primes"]
+    "relatedConcepts": ["small primes"],
+    "tags": ["vacuous-truth", "small-primes", "cluster-primes"]
   },
   {
     "id": "ann-e17-seven-cluster",
@@ -78,7 +83,8 @@
     "content": "`seven_is_cluster`: 7 is a cluster prime. Must cover {2, 4}: we have 2 = 5-3 and 4 = 7-3.",
     "mathContext": "This is the first non-trivial example showing the cluster property in action.",
     "significance": "key",
-    "relatedConcepts": ["concrete verification"]
+    "relatedConcepts": ["concrete verification"],
+    "tags": ["concrete-verification", "cluster-primes", "small-primes", "decidability"]
   },
   {
     "id": "ann-e17-97-not-cluster",
@@ -92,7 +98,8 @@
     "content": "**`ninety_seven_not_cluster`**: 97 is the FIRST non-cluster prime. Some even number <= 94 cannot be written as a difference of primes <= 97.",
     "mathContext": "The prize of $97 cleverly references this fact. All odd primes from 3 to 89 are cluster primes.",
     "significance": "critical",
-    "relatedConcepts": ["OEIS A038133", "first counterexample"]
+    "relatedConcepts": ["OEIS A038133", "first counterexample"],
+    "tags": ["counterexample", "cluster-primes", "computational-verification", "OEIS"]
   },
   {
     "id": "ann-e17-all-below-97",
@@ -105,7 +112,8 @@
     "title": "All Primes Below 97 are Cluster",
     "content": "`primes_below_97_are_cluster`: Every prime p < 97 is a cluster prime. The first 23 odd primes all satisfy the cluster property.",
     "significance": "key",
-    "relatedConcepts": ["exhaustive verification"]
+    "relatedConcepts": ["exhaustive verification"],
+    "tags": ["exhaustive-verification", "cluster-primes", "small-primes", "decidability"]
   },
   {
     "id": "ann-e17-minimal",
@@ -118,7 +126,8 @@
     "title": "97 is Minimal Non-Cluster",
     "content": "`minimal_non_cluster_is_97`: Combines the facts that 97 is prime, 97 is not cluster, and all primes below 97 are cluster.",
     "significance": "key",
-    "relatedConcepts": ["minimality", "threshold"]
+    "relatedConcepts": ["minimality", "threshold"],
+    "tags": ["minimality", "cluster-primes", "threshold-result"]
   },
   {
     "id": "ann-e17-conjecture",
@@ -132,7 +141,8 @@
     "content": "**InfinitelyManyClusterPrimes**: The main open question - is the set of cluster primes infinite?",
     "mathContext": "This is Erdos Problem #17. Despite strong upper bounds showing rarity, infinitude is unknown.",
     "significance": "critical",
-    "relatedConcepts": ["Set.Infinite", "open problem"]
+    "relatedConcepts": ["Set.Infinite", "open problem"],
+    "tags": ["open-problem", "cluster-primes", "infinitude", "erdos-conjecture"]
   },
   {
     "id": "ann-e17-bes-bound",
@@ -146,7 +156,8 @@
     "content": "**BES (1999)**: The count of cluster primes up to x is O(x/(log x)^A) for ANY A > 0. This is a very strong bound - faster decay than any polynomial in log x.",
     "mathContext": "This shows cluster primes are extremely sparse, but doesn't prove finiteness.",
     "significance": "critical",
-    "relatedConcepts": ["asymptotic bounds", "prime counting"]
+    "relatedConcepts": ["asymptotic bounds", "prime counting"],
+    "tags": ["asymptotic-bounds", "analytic-number-theory", "prime-counting", "upper-bound"]
   },
   {
     "id": "ann-e17-elsholtz",
@@ -160,7 +171,8 @@
     "content": "**Elsholtz (2003)**: count <= C * x * exp(-c(log log x)^2) for c < 1/8. This double-logarithmic decay is even stronger than BES.",
     "mathContext": "This bound shows cluster primes are among the rarest special primes, but still possibly infinite.",
     "significance": "critical",
-    "relatedConcepts": ["double logarithm", "exponential decay"]
+    "relatedConcepts": ["double logarithm", "exponential decay"],
+    "tags": ["asymptotic-bounds", "analytic-number-theory", "exponential-decay", "upper-bound"]
   },
   {
     "id": "ann-e17-density-zero",
@@ -173,7 +185,8 @@
     "title": "Density Zero",
     "content": "`cluster_prime_density_zero`: The density of cluster primes among ALL primes is 0. As x -> infinity, the proportion vanishes.",
     "significance": "key",
-    "relatedConcepts": ["density", "Filter.Tendsto"]
+    "relatedConcepts": ["density", "Filter.Tendsto"],
+    "tags": ["natural-density", "analytic-number-theory", "asymptotic-analysis"]
   },
   {
     "id": "ann-e17-rarer-than-ap",
@@ -187,7 +200,8 @@
     "content": "`cluster_rarer_than_AP`: Cluster primes are rarer than primes in any arithmetic progression a (mod d) with gcd(a,d)=1.",
     "mathContext": "By Dirichlet's theorem, primes in AP have positive density ~1/phi(d). Cluster primes have density 0.",
     "significance": "key",
-    "relatedConcepts": ["Dirichlet's theorem", "arithmetic progressions"]
+    "relatedConcepts": ["Dirichlet's theorem", "arithmetic progressions"],
+    "tags": ["dirichlet-theorem", "arithmetic-progressions", "density-comparison", "analytic-number-theory"]
   },
   {
     "id": "ann-e17-gap-connection",
@@ -201,7 +215,8 @@
     "content": "Small gaps help: If all prime gaps up to p are bounded by log p, then p is likely a cluster prime.",
     "mathContext": "Cluster primes are connected to how uniformly primes are distributed. Large gaps create 'holes' in the difference set.",
     "significance": "key",
-    "relatedConcepts": ["prime gaps", "uniform distribution"]
+    "relatedConcepts": ["prime gaps", "uniform distribution"],
+    "tags": ["prime-gaps", "uniform-distribution", "sieve-theory", "gap-bounds"]
   },
   {
     "id": "ann-e17-oeis",
@@ -214,6 +229,7 @@
     "title": "Known Cluster Primes",
     "content": "`knownClusterPrimes`: The list [2, 3, 5, 7, 11, 13, ..., 89] contains all cluster primes up to 89 (OEIS A038134).",
     "significance": "supporting",
-    "relatedConcepts": ["OEIS A038134", "computational data"]
+    "relatedConcepts": ["OEIS A038134", "computational data"],
+    "tags": ["OEIS", "computational-data", "cluster-primes"]
   }
 ]

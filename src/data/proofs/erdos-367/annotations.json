@@ -8,7 +8,8 @@
     "content": "Erdős Problem #367: For fixed k, is ∏_{n ≤ m < n+k} B₂(m) ≪ n^{2+o(1)}? Here B₂(n) is the 2-full part. Strong bound ≪ n² holds for k ≤ 2 but fails for k ≥ 3 (van Doorn). OPEN.",
     "mathContext": "B₂(n) = n/squarefreePart(n) = ∏_{v_p(n) ≥ 2} p^{v_p(n)}. Product: ∏_{n ≤ m < n+k} B₂(m). Question: ≪ n^{2+o(1)} for all k?",
     "significance": "essential",
-    "relatedConcepts": ["powerful numbers", "squarefree numbers", "consecutive integers"]
+    "relatedConcepts": ["powerful numbers", "squarefree numbers", "consecutive integers"],
+    "tags": ["erdos-problems", "number-theory", "powerful-numbers", "open-problem"]
   },
   {
     "id": "erdos-367-twofull",
@@ -19,7 +20,8 @@
     "content": "Two equivalent definitions: twoFullPart(n) = n/squarefreePart(n) as integer division, and twoFullPartAlt(n) = ∏_{v_p(n) ≥ 2} p^{v_p(n)} via prime factorization. The squarefree part is ∏_{v_p(n)=1} p.",
     "mathContext": "squarefreePart(n) = ∏_{p ∈ primeFactors(n), factorization(p)=1} p. twoFullPart(n) = n / squarefreePart(n). twoFullPartAlt(n) = ∏_{factorization(p) ≥ 2} p^{factorization(p)}.",
     "significance": "essential",
-    "relatedConcepts": ["prime factorization", "squarefree part", "p-adic valuation"]
+    "relatedConcepts": ["prime factorization", "squarefree part", "p-adic valuation"],
+    "tags": ["definition", "prime-factorization", "squarefree", "p-adic-valuation"]
   },
   {
     "id": "erdos-367-product",
@@ -30,7 +32,8 @@
     "content": "productTwoFullParts(n, k) = ∏_{m ∈ Ico(n, n+k)} twoFullPart(m). This is the central quantity whose growth rate the problem asks about.",
     "mathContext": "productTwoFullParts n k = ∏ m ∈ Finset.Ico n (n+k), twoFullPart m.",
     "significance": "essential",
-    "relatedConcepts": ["Finset.Ico", "Finset.prod", "growth rate"]
+    "relatedConcepts": ["Finset.Ico", "Finset.prod", "growth rate"],
+    "tags": ["definition", "finset-product", "consecutive-integers", "growth-rate"]
   },
   {
     "id": "erdos-367-bounds",
@@ -41,7 +44,8 @@
     "content": "weakBound(k): ∀ ε > 0, ∃ C > 0, ∀ n ≥ 1, product ≤ C·n^{2+ε}. strongBound(k): ∃ C > 0, ∀ n ≥ 1, product ≤ C·n². The conjecture is that weakBound holds for all k ≥ 1.",
     "mathContext": "weakBound k ≡ ∀ ε > 0, ∃ C > 0, ∀ n ≥ 1, productTwoFullParts(n,k) ≤ C·n^{2+ε}. strongBound k ≡ ∃ C > 0, ∀ n ≥ 1, productTwoFullParts(n,k) ≤ C·n². erdos_367_conjecture ≡ ∀ k ≥ 1, weakBound k.",
     "significance": "essential",
-    "relatedConcepts": ["asymptotic bounds", "o(1) notation", "conjecture formalization"]
+    "relatedConcepts": ["asymptotic bounds", "o(1) notation", "conjecture formalization"],
+    "tags": ["definition", "asymptotic-bounds", "conjecture", "formalization"]
   },
   {
     "id": "erdos-367-trivial",
@@ -52,7 +56,8 @@
     "content": "For k = 1: B₂(n) ≤ n ≤ n². For k = 2: B₂(n)·B₂(n+1) ≤ n·(n+1) < 2n². So strongBound holds for k = 1 and k = 2.",
     "mathContext": "strong_bound_k1: strongBound 1. strong_bound_k2: strongBound 2. Both via B₂(n) ≤ n.",
     "significance": "essential",
-    "relatedConcepts": ["trivial bounds", "B₂(n) ≤ n"]
+    "relatedConcepts": ["trivial bounds", "B₂(n) ≤ n"],
+    "tags": ["trivial-bounds", "base-case", "number-theory", "inequality"]
   },
   {
     "id": "erdos-367-vandoorn",
@@ -63,7 +68,8 @@
     "content": "van Doorn showed ¬strongBound(3): there exist infinitely many n with ∏_{n ≤ m < n+3} B₂(m) ≥ c·n²·log n. The logarithmic factor prevents any constant bound C·n².",
     "mathContext": "strong_bound_fails_k3: ¬ strongBound 3. van_doorn_lower_bound: ∃ c > 0, ∀ N, ∃ n ≥ N, productTwoFullParts(n,3) ≥ c·n²·log(n).",
     "significance": "essential",
-    "relatedConcepts": ["van Doorn", "logarithmic lower bound", "counterexample"]
+    "relatedConcepts": ["van Doorn", "logarithmic lower bound", "counterexample"],
+    "tags": ["counterexample", "lower-bound", "logarithmic-growth", "van-doorn"]
   },
   {
     "id": "erdos-367-properties",
@@ -74,7 +80,8 @@
     "content": "Key properties: B₂(n) = 1 iff squarefree; B₂(p) = 1 for primes; B₂(p²) = p²; multiplicative on coprime arguments; B₂(n) ≤ n always; B₂(n) | n.",
     "mathContext": "twoFullPart_eq_one_iff: B₂(n) = 1 ↔ Squarefree n. twoFullPart_prime: B₂(p) = 1. twoFullPart_prime_sq: B₂(p²) = p². twoFullPart_mul_coprime: B₂(mn) = B₂(m)·B₂(n) for coprime m,n.",
     "significance": "essential",
-    "relatedConcepts": ["squarefree numbers", "multiplicative functions", "divisibility"]
+    "relatedConcepts": ["squarefree numbers", "multiplicative functions", "divisibility"],
+    "tags": ["multiplicative-functions", "squarefree", "divisibility", "prime-factorization"]
   },
   {
     "id": "erdos-367-rfull",
@@ -85,7 +92,8 @@
     "content": "rFullPart(r, n) = ∏_{v_p(n) ≥ r} p^{v_p(n)} generalizes to arbitrary r. Proved: twoFullPartAlt = rFullPart 2 (by rfl). Generalized conjecture: products of r-full parts ≪ n^{r+o(1)}.",
     "mathContext": "twoFullPart_eq_rFullPart: twoFullPartAlt n = rFullPart 2 n. Proof: rfl. generalizedConjecture(r,k): ∀ ε > 0, ∃ C > 0, ∀ n ≥ 1, ∏ rFullPart(r,m) ≤ C·n^{r+ε}.",
     "significance": "supporting",
-    "relatedConcepts": ["r-full numbers", "generalization", "proved by rfl"]
+    "relatedConcepts": ["r-full numbers", "generalization", "proved by rfl"],
+    "tags": ["generalization", "r-full-numbers", "definitional-equality", "number-theory"]
   },
   {
     "id": "erdos-367-heuristics",
@@ -96,7 +104,8 @@
     "content": "On average, B₂(n) is bounded (most numbers are nearly squarefree). But consecutive integers can share high prime powers, creating large products over short intervals. This explains why the problem is subtle.",
     "mathContext": "average_twoFullPart_bounded: ∃ C > 0, ∀ N ≥ 1, (∑_{1 ≤ n ≤ N} B₂(n))/N ≤ C. Average is O(1) but worst case over k consecutive is much larger.",
     "significance": "supporting",
-    "relatedConcepts": ["average behavior", "squarefree density", "worst case"]
+    "relatedConcepts": ["average behavior", "squarefree density", "worst case"],
+    "tags": ["heuristic-analysis", "average-behavior", "squarefree-density", "worst-case"]
   },
   {
     "id": "erdos-367-summary",
@@ -107,7 +116,8 @@
     "content": "erdos_367_summary combines: strongBound(1) ∧ strongBound(2) (k ≤ 2 works), ¬strongBound(3) (k ≥ 3 fails), and True (conjecture stated). Status: OPEN.",
     "mathContext": "erdos_367_summary: (strongBound 1 ∧ strongBound 2) ∧ ¬strongBound 3 ∧ True. Proof: ⟨⟨strong_bound_k1, strong_bound_k2⟩, strong_bound_fails_k3, trivial⟩.",
     "significance": "essential",
-    "relatedConcepts": ["known results", "open problem", "summary theorem"]
+    "relatedConcepts": ["known results", "open problem", "summary theorem"],
+    "tags": ["summary", "open-problem", "known-results", "erdos-problems"]
   },
   {
     "id": "erdos-367-consistency",
@@ -118,6 +128,7 @@
     "content": "twoFullPartAlt n = rFullPart 2 n is proved by definitional equality (rfl). This confirms the two definitions of the 2-full part are consistent.",
     "mathContext": "twoFullPart_eq_rFullPart: twoFullPartAlt n = rFullPart 2 n. Proof: rfl (definitional equality).",
     "significance": "supporting",
-    "relatedConcepts": ["definitional equality", "rfl", "consistency"]
+    "relatedConcepts": ["definitional equality", "rfl", "consistency"],
+    "tags": ["proved-theorem", "definitional-equality", "consistency", "rfl"]
   }
 ]

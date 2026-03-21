@@ -54,7 +54,13 @@
       "finite_quotient_different axiom: finite sets have density zero",
       "erdos_1123_summary: proved conjunction of density implications"
     ],
-    "axiomCount": 6
+    "axiomCount": 6,
+    "prerequisites": [
+      "Basic set theory (power sets, ideals, quotients)",
+      "Natural and logarithmic density of subsets of natural numbers",
+      "Boolean algebra fundamentals",
+      "Continuum Hypothesis and ZFC independence results"
+    ]
   },
   "overview": {
     "historicalContext": "This problem arose from Erdős's visit to Ulam in Madison (1943-44). They believed they proved non-isomorphism, but the proof was 'lost.' Just and Krawczyk (1984) proved that under CH, the algebras ARE isomorphic — the opposite of what Erdős expected. The answer is set-theoretically dependent.",

@@ -96,7 +96,14 @@
         "note": "Euler product formula ζ(2) = π²/6 and the coprime probability 6/π² = ∏_p(1-1/p²)"
       }
     ],
-    "axiomCount": 2
+    "axiomCount": 2,
+    "prerequisites": [
+      "Natural number coprimality (Nat.Coprime, gcd)",
+      "Floor function and real exponentiation (Nat.floor, rpow)",
+      "Natural density via Filter.Tendsto",
+      "Bounds on pi (Real.pi_pos, Real.pi_gt_three)",
+      "Divisibility and powers (dvd_pow_self)"
+    ]
   },
   "overview": {
     "summary": "Formalizes Erdős Problem #1149, solved by Bergelson and Richter (2017): for non-integer α > 0, the natural density of integers n with gcd(n, ⌊n^α⌋) = 1 is exactly 6/π². The main theorem is axiomatized (deep ergodic theory), with supporting results proved: density bounds 0 < 6/π² < 1, integer exponent exclusion, and the connection to classical coprime probability. 168 lines, 0 sorries, 2 axioms.",
