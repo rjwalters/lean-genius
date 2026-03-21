@@ -53,7 +53,14 @@
       "Connection to Problem 52 (original sum-product conjecture)"
     ],
     "dateAdded": "2026-01-19",
-    "axiomCount": 10
+    "axiomCount": 10,
+    "prerequisites": [
+      "Finite set operations (union, image, cartesian product)",
+      "Additive combinatorics fundamentals (sumsets, doubling constants)",
+      "Cauchy-Schwarz inequality (for energy lower bounds)",
+      "Logarithmic functions and asymptotic notation",
+      "Basic number theory (arithmetic and geometric progressions)"
+    ]
   },
   "overview": {
     "historicalContext": "This problem is part of the sum-product phenomenon, a central topic in additive combinatorics. Erdős-Szemerédi conjectured that finite sets cannot have both small sumsets AND small product sets. This problem explores a conditional version: if the sumset IS small, how large must the product set be? Solymosi's 2009 paper 'Bounding multiplicative energy by the sumset' resolved this completely.",
