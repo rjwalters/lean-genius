@@ -90,6 +90,10 @@
       {
         "id": "birch-swinnerton-dyer",
         "relationship": "Fellow Millennium Prize Problem"
+      },
+      {
+        "id": "poincare-conjecture",
+        "relationship": "Fellow Millennium Prize Problem (solved by Perelman 2003); Ricci flow used in the proof is a geometric analogue of the Yang-Mills gradient flow"
       }
     ]
   },
@@ -333,6 +337,90 @@
       "summary": "Formalizes the strong coupling (large β⁻¹) expansion of lattice Yang-Mills, where the Wilson action expansion parameter u = β/(2N²) is small. In this regime, the area law is exact to leading order: W(I,J) ~ u^{I·J}, giving string tension σ = -ln(u)/a². Proves σ > 0 and that it grows with coupling. Also formalizes the coupling transition β_c between strong and weak coupling regimes, with SU(3) critical coupling greater than SU(2).",
       "startLine": 3754,
       "endLine": 3769
+    },
+    {
+      "id": "running-coupling",
+      "title": "Parts XXVIII-XXXII: Running Coupling and Λ_QCD",
+      "summary": "Formalizes the one-loop running coupling, Λ_QCD scale, and the trace anomaly. Proves asymptotic freedom as a single inequality: g(μ) < g(μ₀) for μ > μ₀. Proves Λ_QCD > 0 and Λ_QCD < μ₀. The trace anomaly shows conformal symmetry is broken by quantum effects — a prerequisite for a mass gap.",
+      "startLine": 2463,
+      "endLine": 2560
+    },
+    {
+      "id": "anomaly-matching",
+      "title": "Part LXII: 't Hooft Anomaly Matching",
+      "summary": "Formalizes the GKSW mixed anomaly (2017) between 1-form center symmetry and chiral symmetry. Proves the anomaly coefficient is 1 (mod N) and nontrivial for N ≥ 2. Implies the vacuum cannot be trivially gapped: SU(N) has N degenerate vacua from Z_{2N} → Z_2 breaking.",
+      "startLine": 7262,
+      "endLine": 7339
+    },
+    {
+      "id": "conformal-window",
+      "title": "Part LXIII: Conformal Window and Banks-Zaks",
+      "summary": "Maps the phase diagram of SU(N_c) with N_f flavors: confining phase (mass gap) for small N_f, conformal window (no mass gap, Banks-Zaks fixed point) for intermediate N_f, loss of asymptotic freedom for large N_f. Pure Yang-Mills is deep in the confining phase.",
+      "startLine": 7341,
+      "endLine": 7450
+    },
+    {
+      "id": "witten-veneziano",
+      "title": "Parts LXVI-LXVII: Witten-Veneziano and Topological Susceptibility",
+      "summary": "Connects the Yang-Mills vacuum topology to the physical mass spectrum via m²_{η'} = 2N_f·χ_t/f²_π. Proves the η' mass is positive from topological susceptibility, large-N scaling χ_t ~ 1/N², and instanton contribution to χ_t. The vacuum energy E(θ) is proved to be minimized at θ = 0.",
+      "startLine": 9493,
+      "endLine": 9578
+    },
+    {
+      "id": "flux-tube-luscher",
+      "title": "Parts LXXV-LXXVI: Lüscher Term and Flux Tube Broadening",
+      "summary": "Formalizes the quark-antiquark potential V(r) = σr + μ - π(d-2)/(24r) + ..., where the 1/r correction (Lüscher term) is universal. The LSW flux tube width grows logarithmically w²(r) ~ ln(r/r₀). The Nambu-Goto string has no 1/r² correction (proved), with c₃ changing sign at the critical dimension d = 26.",
+      "startLine": 10965,
+      "endLine": 11070
+    },
+    {
+      "id": "seiberg-witten-bps",
+      "title": "Part LXXXVII: Seiberg-Witten BPS Spectrum",
+      "summary": "Formalizes the exact BPS mass formula M = |n_e·a + n_m·a_D| for N=2 SU(2) SYM. Proves W-boson, monopole, and dyon masses. At the singular point u = Λ², monopoles become massless (proved), triggering condensation and confinement. Dirac quantization conditions verified for all particle pairs.",
+      "startLine": 13007,
+      "endLine": 13100
+    },
+    {
+      "id": "elitzur-fradkin-shenker",
+      "title": "Parts CXII-CXIII: Elitzur's Theorem and Fradkin-Shenker",
+      "summary": "Formalizes Elitzur's theorem (1975): local gauge symmetry cannot spontaneously break. Wilson loops are the correct gauge-invariant order parameters. Fradkin-Shenker continuity: no phase boundary between confined and Higgs phases with fundamental matter. String breaking at r_b ~ 2M_q/σ. Pure gauge has true confinement with σ > 0 for all r.",
+      "startLine": 17900,
+      "endLine": 18074
+    },
+    {
+      "id": "wegner-duality",
+      "title": "Part CXV: Wegner Duality and Z₂ Gauge Theory",
+      "summary": "Maps Z₂ gauge theory to the Ising model on the dual lattice. In d=3, the 1D Ising has no transition → Z₂ gauge ALWAYS confines (rigorous result). In d=4, the 2D Ising Onsager transition gives deconfinement. Key contrast: SU(N) has no zero-temperature transition — confinement persists at all couplings.",
+      "startLine": 19990,
+      "endLine": 20080
+    },
+    {
+      "id": "vafa-witten",
+      "title": "Part CXXVIII: Vafa-Witten Theorem",
+      "summary": "Proves parity and charge conjugation cannot spontaneously break in vector-like gauge theories. The positive fermion determinant ensures the measure is parity-invariant. Constrains the QCD vacuum to be parity-even. Theta vacuum energy minimized at θ = 0.",
+      "startLine": 22007,
+      "endLine": 22080
+    },
+    {
+      "id": "susy-qm-morse",
+      "title": "Parts CXLVII-CXLVIII: SUSY QM and Morse Theory",
+      "summary": "Establishes a seven-way parallel between SUSY quantum mechanics and Yang-Mills. Partner potentials V± = W'² ± W'' have identical spectra except ground state. Witten's Morse theory deformation creates a spectral gap analogous to the mass gap. Semiclassical formula Δ ~ (g²/L)·exp(-8π²/(Ng²)) is the closest analytical mass gap expression.",
+      "startLine": 27000,
+      "endLine": 27070
+    },
+    {
+      "id": "dse-gap-equation",
+      "title": "Part CLV: Dyson-Schwinger Equations and the Gluon Gap Equation",
+      "summary": "DSE gives two self-consistent solutions: decoupling (D(0)>0, massive gluon ~500 MeV) and scaling (D(0)=0, ghost-enhanced). The OZ superconvergence relation forces the gluon spectral function negative somewhere — positivity violation signals confinement. Lattice favors decoupling.",
+      "startLine": 28970,
+      "endLine": 29032
+    },
+    {
+      "id": "frg-wetterich",
+      "title": "Part CLVI: Functional Renormalization Group (Wetterich Equation)",
+      "summary": "The Wetterich equation ∂_t Γ_k = ½ Tr[(Γ_k^(2) + R_k)⁻¹ · ∂_t R_k] interpolates from classical to quantum effective action. For Yang-Mills: gluon mass gap emerges naturally as k → 0, running coupling freezes in the IR. Quantitatively matches DSE and lattice predictions.",
+      "startLine": 29034,
+      "endLine": 29080
     },
     {
       "id": "theta-vacuum",
