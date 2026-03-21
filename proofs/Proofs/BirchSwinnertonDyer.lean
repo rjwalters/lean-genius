@@ -1428,13 +1428,11 @@ PART X: WHY BSD IS HARD
     Specifically, at least 50% of curves have rank 0 or 1.
 
     Combined with BSD-proved cases, this implies BSD is "usually true"! -/
-/-- Bhargava-Shankar: there exist elliptic curves of every rank 0, 1.
+/- Bhargava-Shankar: there exist elliptic curves of every rank 0, 1.
     The average rank is at most 7/6 ≈ 1.17, and at least 66.48% of curves
     (ordered by height) have rank 0 or 1.
-    Combined with Gross-Zagier-Kolyvagin, BSD holds for a majority of curves. -/
-axiom average_rank_bounded :
-    (∃ E : EllipticCurveQ, algebraicRank E = 0) ∧
-    (∃ E : EllipticCurveQ, algebraicRank E = 1)
+    Combined with Gross-Zagier-Kolyvagin, BSD holds for a majority of curves.
+    See `average_rank_bounded` theorem below (after curve37a_rank). -/
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XI: RELATED CONJECTURES
@@ -2232,6 +2230,15 @@ def curve37a : EllipticCurveQ where
 
 /-- Curve 37a has algebraic rank 1 (Birch–Swinnerton-Dyer, verified by 2-descent). -/
 axiom curve37a_rank : algebraicRank curve37a = 1
+
+/-- **PROVED**: Bhargava-Shankar: there exist elliptic curves of rank 0 and rank 1.
+    Was axiom; now proved from `one_not_congruent` (rank 0 witness: y² = x³ - x)
+    and `curve37a_rank` (rank 1 witness: y² + y = x³ - x). -/
+theorem average_rank_bounded :
+    (∃ E : EllipticCurveQ, algebraicRank E = 0) ∧
+    (∃ E : EllipticCurveQ, algebraicRank E = 1) :=
+  ⟨⟨congruentNumberCurve 1 (by norm_num), one_not_congruent⟩,
+   ⟨curve37a, curve37a_rank⟩⟩
 
 /- The generator P = (0, 0) of E(ℚ)/tors for curve 37a. -/
 
@@ -3284,13 +3291,14 @@ axiom elkies_rank_record : ∃ (E : EllipticCurveQ), algebraicRank E ≥ 28
 def ranks_unbounded_conjecture : Prop :=
   ∀ r : ℕ, ∃ (E : EllipticCurveQ), algebraicRank E ≥ r
 
-/-- Mestre's construction: for any n, there exist infinitely many
-    elliptic curves over ℚ with rank ≥ n, for small n.
-
-    Specifically, Mestre proved this for n ≤ 11 using
-    explicit polynomial constructions over function fields. -/
-axiom mestre_construction (n : ℕ) (hn : n ≤ 11) :
-    ∃ (E : EllipticCurveQ), algebraicRank E ≥ n
+/-- **PROVED**: Mestre's construction: for any n ≤ 11, there exist elliptic
+    curves over ℚ with rank ≥ n. Was axiom; now proved from `elkies_rank_record`
+    (rank ≥ 28 ≥ 11 ≥ n). The original proof by Mestre used explicit polynomial
+    constructions over function fields. -/
+theorem mestre_construction (n : ℕ) (hn : n ≤ 11) :
+    ∃ (E : EllipticCurveQ), algebraicRank E ≥ n := by
+  obtain ⟨E, hE⟩ := elkies_rank_record
+  exact ⟨E, by omega⟩
 
 /-- The rank distribution of elliptic curves ordered by height H.
     Let N_r(H) = #{E : height(E) ≤ H, rank(E) = r}.
@@ -5760,11 +5768,13 @@ theorem bhargava_shankar_average_rank :
     (∃ E : EllipticCurveQ, algebraicRank E = 1) :=
   average_rank_bounded
 
-/-- Bhargava-Skinner-Zhang (2014): at least 66.48% of elliptic curves
-    (ordered by height) have rank 0 and satisfy the full BSD conjecture.
-    As a concrete consequence: there exist rank-0 curves where L(E,1) ≠ 0. -/
-axiom positive_proportion_rank_zero_bsd :
-    ∃ E : EllipticCurveQ, algebraicRank E = 0 ∧ LFunction E 1 ≠ 0
+/-- **PROVED**: Bhargava-Skinner-Zhang (2014): there exist rank-0 curves where L(E,1) ≠ 0.
+    Was axiom; now proved from `curveMinusX_L_nonzero` (L(E,1) ≠ 0 for y² = x³ - x)
+    and `BSD_rank_zero_axiom` (L(E,1) ≠ 0 → algebraicRank = 0). -/
+theorem positive_proportion_rank_zero_bsd :
+    ∃ E : EllipticCurveQ, algebraicRank E = 0 ∧ LFunction E 1 ≠ 0 :=
+  ⟨curveMinusX, (BSD_rank_zero_axiom curveMinusX curveMinusX_L_nonzero).1,
+   curveMinusX_L_nonzero⟩
 
 /-- A positive proportion of elliptic curves have rank 1 and satisfy BSD.
     Bhargava-Skinner-Zhang (2014): at least 20.68% of elliptic curves
@@ -5947,14 +5957,6 @@ axiom bsd_rank_one_solved (E : EllipticCurveQ)
 -- PART LIV: P-ADIC BSD AND SPECIAL VALUE FORMULAS
 -- ═══════════════════════════════════════════════════════════════
 
-/-- The Mazur-Tate-Teitelbaum (MTT) conjecture (now theorem):
-    For E with split multiplicative reduction at p, the p-adic L-function
-    has an exceptional zero: Lₚ(E,1) = 0 always. The ℒ-invariant
-    measures the "extra" vanishing. -/
-axiom mtt_exceptional_zero (E : EllipticCurveQ)
-    (ez : ExceptionalZero E) :
-    ez.L_invariant ≠ 0
-
 /-- Greenberg-Stevens theorem (1993): proves the MTT conjecture.
     The ℒ-invariant equals log_p(q_E)/ord_p(q_E).
     This determines the leading term of the p-adic L-function
@@ -5962,6 +5964,16 @@ axiom mtt_exceptional_zero (E : EllipticCurveQ)
 axiom greenberg_stevens (E : EllipticCurveQ)
     (ez : ExceptionalZero E) :
     ez.q_E > 0 ∧ ez.L_invariant ≠ 0
+
+/-- **PROVED**: The Mazur-Tate-Teitelbaum (MTT) conjecture (now theorem):
+    For E with split multiplicative reduction at p, the p-adic L-function
+    has an exceptional zero: Lₚ(E,1) = 0 always. The ℒ-invariant
+    measures the "extra" vanishing.
+    Was axiom; now proved from `greenberg_stevens`. -/
+theorem mtt_exceptional_zero (E : EllipticCurveQ)
+    (ez : ExceptionalZero E) :
+    ez.L_invariant ≠ 0 :=
+  (greenberg_stevens E ez).2
 
 /-- Perrin-Riou's p-adic BSD formula: assuming classical BSD (weak form),
     the p-adic and complex L-functions have the same order of vanishing,
