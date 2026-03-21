@@ -4,6 +4,67 @@
 
 The Inverse Galois Problem (IGP) asks: for every finite group G, does there exist a Galois extension K/ℚ with Gal(K/ℚ) ≅ G?
 
+## Session 2026-03-21 (researcher-2) - PROVED vandermondeProduct_sq_eq via ℂ Embedding
+
+**Mode**: REVISIT (RICH knowledge, score 142)
+**Outcome**: breakthrough — proved the vandermondeProduct_sq_eq axiom (0 sorries in A5 file)
+
+### The Problem
+
+The previous session (2026-03-20) built a proof architecture using Polynomial.resultant, but
+discovered that `Polynomial.resultant` and `Polynomial.discr` do NOT exist in Mathlib v4.26.0.
+This left 4 sorries referencing nonexistent APIs.
+
+### The Solution: ℂ Embedding + Sophie Germain Identity
+
+Key insight: bypass the resultant API entirely by working over ℂ where all polynomials split.
+
+**Proof chain:**
+1. VP² = ∏_i q'(αᵢ) [Steps A-E, already proved]
+2. q'(x) = 5((x-1)⁴+4) = 5(x²+1)(x²-4x+5) [polynomial identity + Sophie Germain]
+3. VP² = 5⁵ · ∏_i(αᵢ²+1) · ∏_i(αᵢ²-4αᵢ+5)
+4. Embed SF → ℂ via SplittingField.lift
+5. ∏_i(αᵢ²+1) = q(I)·q(-I) = 16I·(-16I) = 256 [product-roots identity]
+6. ∏_i(αᵢ²-4αᵢ+5) = q(2+I)·q(2-I) = (32+16I)·(32-16I) = 1280
+7. VP² = 3125·256·1280 = 1024000000 [arithmetic + φ-injectivity]
+
+### Key Theorems Proved
+
+| Theorem | Lines | Description |
+|---------|-------|-------------|
+| `sophie_germain` | 1 | y⁴+4 = (y²+2y+2)(y²-2y+2) |
+| `vandermondeProduct_sq_factored` | ~15 | VP² = 5⁵·∏(αᵢ²+1)·∏(αᵢ²-4αᵢ+5) |
+| `q_complex_eq_prod` | ~10 | q factors as ∏(X-φ(αᵢ)) in ℂ |
+| `prod_roots_sub_eq_neg_eval` | ~5 | ∏(αᵢ-c) = -q(c) in ℂ |
+| `q_eval_I_product` | ~10 | q(I)·q(-I) = 256 |
+| `q_eval_2I_product` | ~10 | q(2+I)·q(2-I) = 1280 |
+| `prod_sq_add_one_eq` | ~15 | ∏(αᵢ²+1) maps to 256 in ℂ |
+| `prod_quad_eq` | ~15 | ∏(αᵢ²-4αᵢ+5) maps to 1280 in ℂ |
+| `vandermondeProduct_sq_eq_proved` | ~15 | VP² = algebraMap ℤ SF 1024000000 |
+
+### Current Status
+
+- **0 sorries** in InverseGaloisA5.lean (was 4)
+- **2 axioms** retained (1 proved but kept for file ordering, 1 still open)
+- `vandermondeProduct_sq_eq` is PROVED as `vandermondeProduct_sq_eq_proved`
+- `three_dvd_gal_card` remains (needs Dedekind's theorem)
+- Docker verified: builds cleanly
+
+### Why the Axiom Is Still in the File
+
+The axiom at line 1108 is used by code between lines 1108-1898 (the Vandermonde permutation
+chain). The proof `vandermondeProduct_sq_eq_proved` is at line 1898, AFTER the code that
+uses the axiom. Moving it before line 1108 requires reordering rootEnum, VandermondeElimination
+etc., which fails due to the `change+rfl` elaboration context sensitivity in `gal_permutes_roots`.
+
+### Files Modified
+- `proofs/Proofs/InverseGaloisA5.lean` (+161 lines net, Steps F-J rewritten)
+- `src/data/proofs/inverse-galois/meta.json` (updated stats)
+- `src/data/research/problems/abel-ruffini-oq-01.json` (knowledge update)
+- `research/problems/abel-ruffini-oq-01/knowledge.md` (this file)
+
+---
+
 ## Session 2026-03-20 (researcher-2) - Axiom Elimination via Resultant API
 
 **Mode**: REVISIT (RICH knowledge, score 127)
