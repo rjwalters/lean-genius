@@ -20,7 +20,14 @@
     "erdosNumber": 637,
     "erdosUrl": "https://erdosproblems.com/637",
     "erdosProblemStatus": "solved",
-    "axiomCount": 0
+    "axiomCount": 0,
+    "prerequisites": [
+      "Graph theory basics (vertices, edges, adjacency, neighborhoods)",
+      "Degree sequences and regular graphs",
+      "Ramsey theory (Ramsey numbers, clique and independence numbers)",
+      "Induced subgraphs and vertex subsets",
+      "Probabilistic method and random graph models (Erdős-Rényi G(n, 1/2))"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős, Faudree, and Sós conjectured that graphs with small Ramsey numbers (no large cliques or independent sets) must have induced subgraphs with many distinct degrees. This connects degree diversity to Ramsey-theoretic properties.",
