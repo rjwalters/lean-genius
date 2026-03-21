@@ -21,7 +21,15 @@
     "erdosNumber": 218,
     "erdosUrl": "https://erdosproblems.com/218",
     "erdosProblemStatus": "open",
-    "axiomCount": 22
+    "axiomCount": 22,
+    "prerequisites": [
+      "Prime numbers and basic properties of Nat.Prime",
+      "Prime Number Theorem (average gap growth)",
+      "Natural density and asymptotic density of integer sets",
+      "Arithmetic progressions in the primes",
+      "Green-Tao theorem (arbitrarily long APs in primes)",
+      "Cramér probabilistic model for primes"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős Problem #218 studies the local behavior of prime gaps, appearing across papers from 1955-1985. While the Prime Number Theorem describes average gap growth, this problem asks about the statistical distribution of local gap comparisons. Terence Tao assessed this as 'looks difficult'.",
