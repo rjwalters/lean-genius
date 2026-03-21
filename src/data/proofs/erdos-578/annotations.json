@@ -8,7 +8,8 @@
     "content": "**Erdős Problem #578: Hypercubes in Random Graphs**\n\n**Setup:** Q_d is the d-dimensional hypercube with 2^d vertices and d·2^{d-1} edges.\n\n**Question:** If G is a random graph G(2^d, 1/2), does G almost surely contain Q_d?\n\n**Answer:** YES (Riordan 2000), and even p > 1/4 suffices!\n\nThis was a conjecture of Erdős and Bollobás, part of a broader program studying what subgraphs appear in random graphs.",
     "mathContext": "The d-dimensional hypercube Q_d has vertices corresponding to binary strings of length d, with edges between strings differing in exactly one bit. The question asks when random graphs are dense enough to contain this highly structured subgraph.",
     "significance": "critical",
-    "relatedConcepts": ["Random graphs", "Hypercubes", "Probabilistic combinatorics", "Subgraph containment"]
+    "relatedConcepts": ["Random graphs", "Hypercubes", "Probabilistic combinatorics", "Subgraph containment"],
+    "tags": ["random-graphs", "hypercubes", "probabilistic-combinatorics", "subgraph-containment"]
   },
   {
     "id": "ann-e578-definitions",
@@ -19,7 +20,8 @@
     "content": "**Hypercube d:** Structure with vertices = 2^d, edges = d·2^{d-1}. Verified: Q_3 has 8 vertices and 12 edges.\n\n**RandomGraph:** The Erdős-Rényi G(n,p) model with n vertices and edge probability p ∈ [0,1].\n\n**standardRandomGraph d:** G(2^d, 1/2) — the setting of the original conjecture.\n\n**riordanRandomGraph d p:** G(2^d, p) for p > 1/4 — the strengthened setting of Riordan's theorem.\n\nThe RandomGraph structure carries proof obligations that 0 ≤ p ≤ 1.",
     "mathContext": "The Erdős-Rényi model G(n,p) includes each of the C(n,2) possible edges independently with probability p. This is the standard model in probabilistic combinatorics.",
     "significance": "critical",
-    "relatedConcepts": ["Erdős-Rényi model", "Binary hypercube", "Edge probability"]
+    "relatedConcepts": ["Erdős-Rényi model", "Binary hypercube", "Edge probability"],
+    "tags": ["erdos-renyi-model", "hypercube-structure", "graph-definitions"]
   },
   {
     "id": "ann-e578-almost-sure",
@@ -30,7 +32,8 @@
     "content": "**AlmostSurely P:** For every ε > 0, eventually P(d) holds for all d ≥ D. This captures 'probability → 1 as d → ∞'.\n\n**ContainsHypercube G d:** The random graph G contains a copy of Q_d as a subgraph. Formalized abstractly.\n\n**erdos_bollobas_conjecture:** G(2^d, 1/2) almost surely contains Q_d — the original problem statement.",
     "mathContext": "The AlmostSurely definition is a deterministic approximation of the probabilistic notion. In the actual mathematical setting, one would use measure-theoretic probability, but this captures the key asymptotic behavior.",
     "significance": "critical",
-    "relatedConcepts": ["Asymptotic probability", "Subgraph isomorphism", "High probability events"]
+    "relatedConcepts": ["Asymptotic probability", "Subgraph isomorphism", "High probability events"],
+    "tags": ["asymptotic-probability", "almost-sure-events", "subgraph-isomorphism"]
   },
   {
     "id": "ann-e578-riordan",
@@ -41,7 +44,8 @@
     "content": "**riordan_theorem:** For any p > 1/4 with p ≤ 1, G(2^d, p) almost surely contains Q_d. This is STRONGER than the original conjecture (p = 1/2).\n\n**erdos_bollobas_proved:** The original conjecture holds (axiomatized since the deduction from riordan_theorem involves technical details about the abstract containment formalization).\n\nRiordan's proof appeared in Combinatorics, Probability and Computing (2000).",
     "mathContext": "The threshold p = 1/4 is surprising — one might expect a much higher threshold for containing such a structured subgraph. Riordan's proof uses second-moment methods and careful counting of hypercube embeddings.",
     "significance": "critical",
-    "relatedConcepts": ["Second moment method", "Threshold phenomena", "Spanning subgraphs"]
+    "relatedConcepts": ["Second moment method", "Threshold phenomena", "Spanning subgraphs"],
+    "tags": ["second-moment-method", "threshold-phenomena", "riordan-theorem", "spanning-subgraphs"]
   },
   {
     "id": "ann-e578-threshold",
@@ -52,7 +56,8 @@
     "content": "**threshold_at_quarter:** The threshold p₀ = 1/4 is essentially optimal — for p > 1/4 hypercubes appear almost surely, for p < 1/4 they do not.\n\n**copies_normally_distributed:** The NUMBER of Q_d copies is asymptotically normally distributed with positive mean μ(d) and standard deviation σ(d). This gives much more information than mere existence.",
     "mathContext": "The normal distribution result means the number of copies concentrates around its mean. This is proved via a central limit theorem argument, showing the copies are approximately independent.",
     "significance": "key",
-    "relatedConcepts": ["Threshold phenomena", "Central limit theorem", "Counting copies"]
+    "relatedConcepts": ["Threshold phenomena", "Central limit theorem", "Counting copies"],
+    "tags": ["threshold-phenomena", "central-limit-theorem", "normal-distribution", "subgraph-counting"]
   },
   {
     "id": "ann-e578-properties",
@@ -63,7 +68,8 @@
     "content": "**hypercubeVertexDegree d = d:** Every vertex in Q_d has exactly d neighbors (one for each coordinate that can be flipped).\n\n**hypercubeAutomorphisms d = d! · 2^d:** The automorphism group combines coordinate permutations (d!) with bit flips (2^d). Verified: |Aut(Q_3)| = 48.",
     "mathContext": "The regularity and high symmetry of Q_d are key structural properties. The automorphism count d! · 2^d enters into the expected number of copies calculation.",
     "significance": "key",
-    "relatedConcepts": ["Regular graphs", "Graph automorphisms", "Symmetry groups"]
+    "relatedConcepts": ["Regular graphs", "Graph automorphisms", "Symmetry groups"],
+    "tags": ["regular-graphs", "graph-automorphisms", "symmetry-groups"]
   },
   {
     "id": "ann-e578-summary",
@@ -74,6 +80,7 @@
     "content": "**erdos_578_summary:** Proved conjunction of:\n1. erdos_bollobas_conjecture (original problem: YES)\n2. threshold_at_quarter (p₀ = 1/4 is optimal)\n\nThe proof packages erdos_bollobas_proved and threshold_at_quarter into a single statement, confirming the problem is fully SOLVED.",
     "mathContext": "The summary captures both the answer to the original problem (YES, G(2^d, 1/2) contains Q_d a.s.) and the strengthened quantitative result (threshold at 1/4).",
     "significance": "critical",
-    "relatedConcepts": ["Problem resolution", "Quantitative strengthening"]
+    "relatedConcepts": ["Problem resolution", "Quantitative strengthening"],
+    "tags": ["problem-resolution", "quantitative-strengthening", "summary-theorem"]
   }
 ]
