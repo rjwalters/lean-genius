@@ -7,7 +7,7 @@
     "author": "Romanoff (1934), Erdős (1950), Chen (2023)",
     "sourceUrl": "https://erdosproblems.com/16",
     "date": "1950",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos16Problem.lean",
     "tags": [
       "erdos",
@@ -21,7 +21,21 @@
     "erdosNumber": 16,
     "erdosUrl": "https://erdosproblems.com/16",
     "erdosProblemStatus": "solved",
-    "axiomCount": 14
+    "axiomCount": 14,
+    "relatedProblems": [
+      {
+        "id": "bertrands-postulate",
+        "relationship": "Both concern the distribution of primes: Bertrand's postulate guarantees primes in intervals, while Problem #16 asks about representing odd numbers as 2^k + p"
+      },
+      {
+        "id": "prime-number-theorem",
+        "relationship": "The prime density results underlying Romanoff's theorem (positive proportion of odd integers are 2^k + p) depend on prime counting estimates"
+      },
+      {
+        "id": "erdos-1001",
+        "relationship": "Both are solved Erdős problems in analytic number theory with density/measure-theoretic conclusions"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "Romanoff (1934) proved a positive proportion of odd integers can be written as 2^k + p. Erdős (1950) used covering congruences to show the 'exceptional set' (odd integers NOT of this form) contains an infinite arithmetic progression. He conjectured the exceptional set is essentially just this progression plus negligible noise. Chen (2023) disproved this conjecture.",
