@@ -54,7 +54,14 @@
       "gcdMatrix, quotientMatrix: matrix formulations",
       "ErdosSzemeredi_Bounds, ImprovedBounds: combined statements"
     ],
-    "axiomCount": 12
+    "axiomCount": 12,
+    "prerequisites": [
+      "Greatest common divisor (GCD) and basic divisibility",
+      "Finite set cardinality and Finset operations",
+      "Asymptotic notation (big-O, big-Omega, Theta)",
+      "Additive combinatorics fundamentals",
+      "Arithmetic and geometric progressions"
+    ]
   },
   "overview": {
     "historicalContext": "**Erdős Problem #539 (GCD-Reduced Quotients)**\n\n**Origin:**\nErdős posed this problem in [Er73] (1973), asking about the minimum size of the set { a/gcd(a,b) : a,b ∈ A } over all n-element sets A ⊆ ℕ.\n\n**Key Results:**\n- Erdős-Szemerédi established: n^{1/2} ≪ h(n) ≪ n^{1-c}\n- Freiman-Lev improved the upper bound to n^{2/3}\n- Granville-Roesler provided a geometric reformulation\n\n**Current Status:**\nThe exact behavior of h(n) remains unknown. The true exponent lies between 1/2 and 2/3.",
