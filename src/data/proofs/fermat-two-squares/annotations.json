@@ -48,6 +48,7 @@
     "content": "In 1990, Don Zagier published a proof that fits in a single sentence (though understanding it takes considerably longer):\n\n\"The involution on the finite set S = {(x,y,z) ∈ N³ : x² + 4yz = p} defined by (x,y,z) → (x+2z, z, y-x-z) if x < y-z, (2y-x, y, x-y+z) if y-z < x < 2y, (x-2y, x-y+z, y) if x > 2y, has exactly one fixed point, so |S| is odd and the involution (x,y,z) → (x,z,y) also has a fixed point.\"\n\nThe genius is in choosing the right set S and the right involutions.",
     "mathContext": "Zagier's proof exploits: (1) |S| is odd since p is odd, (2) an involution on a set of odd cardinality must have a fixed point.",
     "significance": "critical",
+    "prerequisites": ["Nat.Prime", "involution fixed point theorem", "finite set cardinality"],
     "relatedConcepts": [
       "involutions",
       "combinatorial proof",
