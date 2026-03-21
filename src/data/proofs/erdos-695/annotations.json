@@ -8,7 +8,8 @@
     "content": "Erdős Problem #695: Let p₁ < p₂ < ⋯ be primes with p_{i+1} ≡ 1 (mod p_i). Two questions: (1) Is lim p_k^{1/k} = ∞? (2) Can p_k ≤ exp(k(log k)^{1+o(1)})? Status: OPEN.",
     "mathContext": "Posed in [Er79e]. Prime chains connect to cyclic group structure and Linnik's theorem.",
     "significance": "critical",
-    "relatedConcepts": ["prime-chains", "growth-rates", "linnik"]
+    "relatedConcepts": ["prime-chains", "growth-rates", "linnik"],
+    "tags": ["number-theory", "prime-chains", "open-problem", "growth-rates"]
   },
   {
     "id": "ann-695-primechain",
@@ -19,7 +20,8 @@
     "content": "IsPrimeChain(p) := StrictMono p ∧ (∀i, (p i).Prime) ∧ (∀i, p(i+1) % p i = 1). The sequence is strictly increasing primes with each congruent to 1 mod the previous.",
     "mathContext": "Prime chains arise from multiplicative group structure: Z/p_{i+1}Z has subgroup of order p_i.",
     "significance": "critical",
-    "relatedConcepts": ["strict-mono", "primality", "congruence"]
+    "relatedConcepts": ["strict-mono", "primality", "congruence"],
+    "tags": ["prime-chains", "definition", "modular-arithmetic", "monotone-sequences"]
   },
   {
     "id": "ann-695-divisibility",
@@ -30,7 +32,8 @@
     "content": "ChainDivisibility(p) := ∀i, p_i | (p_{i+1} - 1). Equivalent to p_{i+1} ≡ 1 (mod p_i).",
     "mathContext": "The divisibility p_i | (p_{i+1} - 1) is a restatement of the congruence condition.",
     "significance": "supporting",
-    "relatedConcepts": ["divisibility", "mod-one"]
+    "relatedConcepts": ["divisibility", "mod-one"],
+    "tags": ["divisibility", "modular-arithmetic", "definition"]
   },
   {
     "id": "ann-695-kthroot",
@@ -41,7 +44,8 @@
     "content": "kthRoot(p, k) = p_k^{1/k}. This measures the 'average exponential rate' of growth up to step k.",
     "mathContext": "If p_k grows like c^k, then kthRoot → c. If p_k grows faster than any c^k, then kthRoot → ∞.",
     "significance": "key",
-    "relatedConcepts": ["root", "growth-rate"]
+    "relatedConcepts": ["root", "growth-rate"],
+    "tags": ["growth-rates", "real-analysis", "definition"]
   },
   {
     "id": "ann-695-question1",
@@ -52,7 +56,8 @@
     "content": "Question1 := ∀p prime chain, Tendsto(kthRoot p) atTop atTop. Does p_k^{1/k} → ∞ for every prime chain?",
     "mathContext": "This asks: does every prime chain grow faster than any exponential c^k?",
     "significance": "critical",
-    "relatedConcepts": ["tendsto", "super-exponential"]
+    "relatedConcepts": ["tendsto", "super-exponential"],
+    "tags": ["open-problem", "limits", "filter-theory", "growth-rates"]
   },
   {
     "id": "ann-695-question2",
@@ -63,7 +68,8 @@
     "content": "Question2 := ∃p prime chain with p_k ≤ exp(k(log k)^{1+o(1)}). Can we find a slow-growing prime chain?",
     "mathContext": "The bound exp(k(log k)^{1+o(1)}) is much slower than exp(exp(Ck)) from the greedy algorithm.",
     "significance": "critical",
-    "relatedConcepts": ["upper-bound", "little-o"]
+    "relatedConcepts": ["upper-bound", "little-o"],
+    "tags": ["open-problem", "asymptotics", "upper-bounds", "growth-rates"]
   },
   {
     "id": "ann-695-linnik",
@@ -74,7 +80,8 @@
     "content": "∃L > 0, ∀q prime, ∃p prime with p ≡ 1 (mod q) and p ≤ q^L. Least prime in AP is at most polynomial.",
     "mathContext": "Linnik (1944) proved L exists; best known is L ≈ 5 (Xylouris 2011).",
     "significance": "key",
-    "relatedConcepts": ["primes-in-ap", "linnik-constant"]
+    "relatedConcepts": ["primes-in-ap", "linnik-constant"],
+    "tags": ["analytic-number-theory", "primes-in-progressions", "linnik-theorem", "axiom"]
   },
   {
     "id": "ann-695-greedy",
@@ -85,7 +92,8 @@
     "content": "Greedy (taking smallest prime ≡ 1) gives p_k ≤ exp(exp(O(k))). This is doubly exponential growth.",
     "mathContext": "Via Linnik: p_{k+1} ≤ p_k^L, so log p_k ≤ L^k · log p_0, giving doubly exponential.",
     "significance": "key",
-    "relatedConcepts": ["greedy-algorithm", "double-exponential"]
+    "relatedConcepts": ["greedy-algorithm", "double-exponential"],
+    "tags": ["greedy-algorithm", "upper-bounds", "doubly-exponential"]
   },
   {
     "id": "ann-695-conjecture",
@@ -96,7 +104,8 @@
     "content": "Conjectured: ∃C, ∀p prime, ∃p' prime with p' ≡ 1 (mod p) and p' ≤ p(log p)^C. If true, Question2 is YES.",
     "mathContext": "This conjectured bound would give p_k ≤ exp(k(log k)^{O(1)}), answering Question2 positively.",
     "significance": "key",
-    "relatedConcepts": ["conjecture", "polynomial-bound"]
+    "relatedConcepts": ["conjecture", "polynomial-bound"],
+    "tags": ["conjecture", "primes-in-progressions", "polynomial-bounds", "number-theory"]
   },
   {
     "id": "ann-695-cunningham",
@@ -107,7 +116,8 @@
     "content": "IsCunninghamChainFirst(p) := all primes and p_{i+1} = 2p_i + 1. These are special prime chains.",
     "mathContext": "Cunningham chains: p, 2p+1, 4p+3, 8p+7,... are prime chains since 2p+1 ≡ 1 (mod p) for odd p.",
     "significance": "supporting",
-    "relatedConcepts": ["cunningham", "sophie-germain"]
+    "relatedConcepts": ["cunningham", "sophie-germain"],
+    "tags": ["cunningham-chains", "sophie-germain-primes", "definition"]
   },
   {
     "id": "ann-695-fkl",
@@ -118,7 +128,8 @@
     "content": "FKL (2010) showed various bounds on prime chain lengths and established growth lower bounds.",
     "mathContext": "The paper [FKL10] is the most comprehensive study of prime chain growth.",
     "significance": "key",
-    "relatedConcepts": ["fkl", "chain-length"]
+    "relatedConcepts": ["fkl", "chain-length"],
+    "tags": ["research-literature", "prime-chains", "lower-bounds", "analytic-number-theory"]
   },
   {
     "id": "ann-695-lower",
@@ -129,7 +140,8 @@
     "content": "∃c > 1, ∀p prime chain, ∀k, p_k ≥ c^k. Every prime chain grows at least exponentially.",
     "mathContext": "Since p_{i+1} > p_i and p_{i+1} ≡ 1 (mod p_i), we have p_{i+1} ≥ p_i + p_i = 2p_i for large p_i.",
     "significance": "key",
-    "relatedConcepts": ["lower-bound", "exponential"]
+    "relatedConcepts": ["lower-bound", "exponential"],
+    "tags": ["lower-bounds", "exponential-growth", "prime-chains"]
   },
   {
     "id": "ann-695-status",
@@ -140,7 +152,8 @@
     "content": "Both Question1 and Question2 are OPEN. The gap between lower bound c^k and upper bound exp(exp(Ck)) is enormous.",
     "mathContext": "Neither question has been resolved. The true growth rate of prime chains remains unknown.",
     "significance": "critical",
-    "relatedConcepts": ["open-problem", "growth-gap"]
+    "relatedConcepts": ["open-problem", "growth-gap"],
+    "tags": ["open-problem", "growth-rates", "number-theory"]
   },
   {
     "id": "ann-695-main",
@@ -151,7 +164,8 @@
     "content": "erdos_695_main: For all prime chains p, Tendsto(p_k^{1/k}) atTop atTop ↔ Question1. Formal statement of Part 1.",
     "mathContext": "Uses Mathlib's Filter.Tendsto for the limit formulation.",
     "significance": "critical",
-    "relatedConcepts": ["tendsto", "formal-statement"]
+    "relatedConcepts": ["tendsto", "formal-statement"],
+    "tags": ["formal-statement", "filter-theory", "limits", "prime-chains"]
   },
   {
     "id": "ann-695-variant",
@@ -162,6 +176,7 @@
     "content": "erdos_695_variant: Question2 ↔ ∃p chain with p_k ≤ exp(k(log k)^{1+o(1)}). Formal statement of Part 2.",
     "mathContext": "Uses Mathlib's Asymptotics for the o(1) notation.",
     "significance": "critical",
-    "relatedConcepts": ["little-o", "upper-bound"]
+    "relatedConcepts": ["little-o", "upper-bound"],
+    "tags": ["formal-statement", "asymptotics", "upper-bounds", "prime-chains"]
   }
 ]
