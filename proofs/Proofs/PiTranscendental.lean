@@ -131,16 +131,11 @@ axiom lindemann_theorem (α : ℂ) (hα_ne : α ≠ 0) (hα_alg : IsAlgebraic �
     would be if π were algebraic), we'd contradict Lindemann's theorem. -/
 axiom pi_transcendental : Transcendental ℤ Real.pi
 
-/-- **Axiom: π is transcendental over ℚ**
-
-    Transcendental over ℤ implies transcendental over ℚ.
-    Any rational polynomial p with p(π) = 0 can be cleared to an integer
-    polynomial q with q(π) = 0 by multiplying by the LCM of denominators. -/
-axiom pi_transcendental_over_rationals_axiom : Transcendental ℚ Real.pi
-
-/-- π is transcendental over ℚ (equivalent formulation) -/
+/-- π is transcendental over ℚ.
+    Derived from pi_transcendental (over ℤ) via IsFractionRing.isAlgebraic_iff:
+    IsAlgebraic ℚ x ↔ IsAlgebraic ℤ x for the fraction ring ℤ ⊂ ℚ. -/
 theorem pi_transcendental_over_rationals : Transcendental ℚ Real.pi :=
-  pi_transcendental_over_rationals_axiom
+  fun halg => pi_transcendental ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mp halg)
 
 -- ============================================================
 -- PART 5: Why π Cannot Be Algebraic
