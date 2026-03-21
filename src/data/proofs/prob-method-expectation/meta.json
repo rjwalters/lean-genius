@@ -59,43 +59,43 @@
   "sections": [
     {
       "id": "introduction",
-      "title": "Introduction",
+      "title": "Module Docstring and Imports",
       "startLine": 1,
-      "endLine": 25,
-      "summary": "Overview of the probabilistic method and the first moment principle.",
-      "mathContext": "The probabilistic method: to prove existence, show a random object has the desired property with positive probability. The first moment method is the simplest form: $E[X] > t$ implies $\\exists \\omega, X(\\omega) > t$."
-    },
-    {
-      "id": "finite-probability",
-      "title": "Finite Probability Framework",
-      "startLine": 27,
-      "endLine": 65,
-      "summary": "Definitions for finite probability spaces, expectation as Finset averages, and basic properties.",
-      "mathContext": "For a finite set $\\Omega$ and $f: \\Omega \\to \\mathbb{R}$, define $E[f] = \\frac{1}{|\\Omega|} \\sum_{\\omega \\in \\Omega} f(\\omega)$. This Finset-based definition avoids measure theory while supporting the key probabilistic arguments."
+      "endLine": 14,
+      "summary": "Overview of the first moment method: if E[X] > t on a finite probability space, some outcome exceeds t. Lists key results: first moment principle, linearity of expectation, and Erdos's 1947 Ramsey bound.",
+      "mathContext": "$E[X] > t \\implies \\exists \\omega,\\; X(\\omega) > t$"
     },
     {
       "id": "first-moment",
       "title": "First Moment Principle",
-      "startLine": 67,
-      "endLine": 105,
-      "summary": "If the average exceeds a threshold, some element exceeds it. Dual: if the average is below a threshold, some element is below it.",
-      "mathContext": "First moment principle: if $E[f] > t$ over a nonempty finite set $\\Omega$, then $\\exists \\omega \\in \\Omega$ with $f(\\omega) > t$. Equivalently, $\\max_{\\omega} f(\\omega) \\geq E[f]$. The dual gives $\\min_{\\omega} f(\\omega) \\leq E[f]$."
+      "startLine": 16,
+      "endLine": 20,
+      "summary": "If the sum f(a) over a Finset s divided by |s| exceeds t, then some element a in s has f(a) > t. Uses ℚ (rationals) for exact arithmetic. Currently sorry'd — provable by contradiction using Finset.sum_le_sum.",
+      "mathContext": "$\\frac{\\sum_{a \\in s} f(a)}{|s|} > t \\implies \\exists a \\in s,\\; f(a) > t$"
     },
     {
       "id": "linearity",
       "title": "Linearity of Expectation",
-      "startLine": 107,
-      "endLine": 148,
-      "summary": "Linearity of expectation for finite sums, requiring no independence assumptions.",
-      "mathContext": "For any functions $f_1, \\ldots, f_m: \\Omega \\to \\mathbb{R}$, $E[\\sum_i f_i] = \\sum_i E[f_i]$. This holds regardless of dependencies between the $f_i$, which is what makes the probabilistic method so powerful."
+      "startLine": 22,
+      "endLine": 25,
+      "summary": "Linearity of expectation for Finset sums: the sum of (f + g) equals the sum of f plus the sum of g. Currently sorry'd — follows directly from Finset.sum_add_distrib in Mathlib.",
+      "mathContext": "$\\sum_{a \\in s} (f + g)(a) = \\sum_{a \\in s} f(a) + \\sum_{a \\in s} g(a)$"
     },
     {
-      "id": "ramsey-application",
-      "title": "Ramsey Application: R(k,k) >= 2^(k/2)",
-      "startLine": 150,
-      "endLine": 210,
-      "summary": "Erdos's 1947 proof that Ramsey numbers grow exponentially, via random 2-coloring of complete graphs.",
-      "mathContext": "Color edges of $K_n$ uniformly at random with 2 colors. For each $k$-subset $S$, let $X_S = 1$ if $S$ is monochromatic. Then $E[\\sum_S X_S] = \\binom{n}{k} \\cdot 2^{1-\\binom{k}{2}}$. When $n < 2^{k/2}$, this is less than 1, so by the first moment principle (dual form), some coloring has no monochromatic $K_k$."
+      "id": "mono-cliques",
+      "title": "Expected Monochromatic Cliques",
+      "startLine": 27,
+      "endLine": 31,
+      "summary": "The expected number of monochromatic k-cliques in a random 2-coloring of K_n is C(n,k) · 2^(1-C(k,2)). Currently only states non-negativity of this expression (sorry'd). The full application would show this is < 1 when n < 2^(k/2).",
+      "mathContext": "$E[\\text{mono } K_k] = \\binom{n}{k} \\cdot 2^{1 - \\binom{k}{2}}$"
+    },
+    {
+      "id": "ramsey-bound",
+      "title": "Erdos Ramsey Lower Bound",
+      "startLine": 33,
+      "endLine": 38,
+      "summary": "Simplified version of Erdos's 1947 result: R(k,k) >= 2^(k/2). Currently sorry'd as an existential statement — the full proof would combine the expected monochromatic clique count with the first moment principle.",
+      "mathContext": "$R(k,k) \\geq 2^{k/2}$"
     }
   ],
   "crossReferences": [
@@ -124,8 +124,10 @@
     "summary": "The first moment method formalizes the simplest yet most fundamental technique of the probabilistic method: if the expected value of a quantity exceeds a threshold, some outcome must exceed it. Combined with linearity of expectation, this yields Erdos's celebrated 1947 lower bound R(k,k) >= 2^(k/2) on Ramsey numbers.",
     "implications": "This formalization provides:\n\n**1. Foundation for the Probabilistic Method Library**\nThe finite probability framework and first moment principle serve as the base layer for the alteration method, second moment method, and Lovasz Local Lemma formalizations.\n\n**2. Ramsey Theory Bounds**\nThe exponential lower bound on diagonal Ramsey numbers is one of the most important results in combinatorics, and this formalization makes it machine-checkable.\n\n**3. Template for Counting Arguments**\nThe linearity-of-expectation technique demonstrated here applies to hundreds of combinatorial existence proofs.\n\n**4. Bridge to Erdos Problems**\nMany Erdos problems in the gallery involve probabilistic method arguments, and this library provides the formal tools to attack them.",
     "openQuestions": [
-      "Can the framework extend to infinite probability spaces?",
-      "What is the tightest Ramsey bound achievable via the first moment method alone?"
+      "Can this Finset-based framework extend to infinite probability spaces via Mathlib's MeasureTheory?",
+      "What is the tightest Ramsey bound achievable via the first moment method alone?",
+      "Prove linearity_of_expectation using Finset.sum_add_distrib — likely a one-liner",
+      "Can the expected_mono_cliques result be strengthened to show the count is < 1 for n < 2^(k/2)?"
     ]
   }
 }

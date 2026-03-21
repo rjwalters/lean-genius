@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-prob-method-docstring",
+    "proofId": "prob-method-expectation",
+    "range": { "startLine": 1, "endLine": 11 },
+    "type": "context",
+    "title": "The Probabilistic Method: Historical Origins",
+    "content": "Paul Erdős introduced the probabilistic method in his 1947 paper 'Some remarks on the theory of graphs', where he proved that $R(k,k) \\geq 2^{k/2}$ by showing that a random 2-coloring of $K_n$ has no monochromatic $K_k$ with positive probability. This was revolutionary: it proved the existence of a combinatorial object without constructing one. The technique became one of the most powerful tools in combinatorics, with Erdős applying it to hundreds of problems in graph theory, number theory, and geometry over the next 50 years.",
+    "mathContext": "Probabilistic method: to show $\\exists x \\in \\Omega$ with property $P$, show $\\Pr[P(X)] > 0$ for random $X$",
+    "significance": "key",
+    "relatedConcepts": ["probabilistic method", "Ramsey theory", "existence proofs", "non-constructive mathematics"],
+    "prerequisites": ["probability theory", "combinatorics"]
+  },
+  {
+    "id": "ann-first-moment",
+    "proofId": "prob-method-expectation",
+    "range": { "startLine": 18, "endLine": 20 },
+    "type": "theorem",
+    "title": "First Moment Principle (Discrete Pigeonhole)",
+    "content": "The first moment principle is a discrete pigeonhole argument: if the average of $f$ over a nonempty Finset exceeds $t$, then some element must exceed $t$ (if all were $\\leq t$, the average would be $\\leq t$). The formalization uses $\\mathbb{Q}$ (rationals) rather than $\\mathbb{R}$ for exact arithmetic, avoiding the overhead of real analysis. This is mathematically equivalent for the finite combinatorial applications. The proof approach would be by contradiction: assume $f(a) \\leq t$ for all $a \\in s$, then bound the sum.",
+    "mathContext": "$\\frac{\\sum_{a \\in s} f(a)}{|s|} > t \\implies \\exists a \\in s,\\; f(a) > t$",
+    "significance": "key",
+    "relatedConcepts": ["pigeonhole principle", "Markov's inequality", "first moment method", "average argument"],
+    "prerequisites": ["Finset.sum", "rational arithmetic", "Finset.Nonempty"]
+  },
+  {
+    "id": "ann-linearity",
+    "proofId": "prob-method-expectation",
+    "range": { "startLine": 23, "endLine": 25 },
+    "type": "theorem",
+    "title": "Linearity of Expectation",
+    "content": "Linearity of expectation — $E[f + g] = E[f] + E[g]$ — is arguably the single most useful fact in the probabilistic method. Crucially, it holds without any independence assumptions. This is what allows counting arguments to work: to bound $E[\\sum_i X_i]$, just sum $E[X_i]$ for each indicator, regardless of correlations. In Mathlib, this is essentially `Finset.sum_add_distrib`, making the sorry likely a one-liner.",
+    "mathContext": "$\\sum_{a \\in s} (f+g)(a) = \\sum_{a \\in s} f(a) + \\sum_{a \\in s} g(a)$",
+    "significance": "key",
+    "relatedConcepts": ["linearity of expectation", "indicator random variables", "Finset.sum_add_distrib"],
+    "prerequisites": ["Finset.sum", "Pi.add_apply"]
+  },
+  {
+    "id": "ann-mono-cliques",
+    "proofId": "prob-method-expectation",
+    "range": { "startLine": 30, "endLine": 31 },
+    "type": "theorem",
+    "title": "Expected Monochromatic Cliques Count",
+    "content": "In a random 2-coloring of $K_n$, each $k$-subset has probability $2 \\cdot 2^{-\\binom{k}{2}} = 2^{1-\\binom{k}{2}}$ of being monochromatic (all edges the same color). By linearity, the expected total is $\\binom{n}{k} \\cdot 2^{1-\\binom{k}{2}}$. The current formalization only states non-negativity of this expression, not the full bound. The key application would show this is $< 1$ when $n < 2^{k/2}$, implying a good coloring exists. Note: the exponent uses $\\mathbb{Z}$ since $1 - \\binom{k}{2}$ can be negative.",
+    "mathContext": "$E[\\text{mono } K_k] = \\binom{n}{k} \\cdot 2^{1 - \\binom{k}{2}}$; this is $< 1$ when $n < 2^{k/2}$",
+    "significance": "supporting",
+    "relatedConcepts": ["indicator random variables", "union bound", "Ramsey numbers", "random coloring"],
+    "prerequisites": ["Nat.choose", "integer exponentiation"]
+  },
+  {
+    "id": "ann-ramsey-bound",
+    "proofId": "prob-method-expectation",
+    "range": { "startLine": 35, "endLine": 36 },
+    "type": "theorem",
+    "title": "Erdős Ramsey Lower Bound (1947)",
+    "content": "Erdős's 1947 result: $R(k,k) \\geq 2^{k/2}$. This means that for $n < 2^{k/2}$, the edges of $K_n$ can be 2-colored with no monochromatic $K_k$. The current formalization is simplified to an existential statement about the existence of a large enough $n$. A full formalization would combine the expected monochromatic clique count with the first moment principle's dual (if $E[X] < 1$ for a non-negative integer $X$, then $\\Pr[X = 0] > 0$). The bound $2^{k/2}$ was the best known for over 75 years until Campos et al. (2023) improved the upper bound.",
+    "mathContext": "$R(k,k) \\geq 2^{k/2}$; equivalently, $\\binom{n}{k} \\cdot 2^{1-\\binom{k}{2}} < 1$ when $n < 2^{k/2}$",
+    "significance": "key",
+    "relatedConcepts": ["Ramsey numbers", "exponential lower bound", "random graph theory", "Campos et al. 2023"],
+    "prerequisites": ["first moment principle", "expected monochromatic cliques", "Nat.choose bounds"]
+  }
+]
