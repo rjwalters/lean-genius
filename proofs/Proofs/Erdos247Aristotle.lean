@@ -32,7 +32,15 @@ namespace Erdos247Aristotle
     since (k+1)! ≥ k+1 > k implies 1/2^{(k+1)!} ≤ 1/2^k. -/
 theorem factorial_lacunary_summable :
     Summable (fun k => (1 : ℝ) / 2 ^ (k + 1).factorial) := by
-  sorry
+  apply Summable.of_nonneg_of_le
+  · intro k; positivity
+  · intro k
+    show (1 : ℝ) / 2 ^ (k + 1).factorial ≤ (1 / 2) ^ k
+    rw [one_div, one_div, inv_pow]
+    apply inv_anti₀ (by positivity : (0 : ℝ) < 2 ^ k)
+    exact_mod_cast Nat.pow_le_pow_right (by omega : 1 ≤ 2)
+      (le_trans (Nat.le_succ k) (Nat.self_le_factorial (k + 1)))
+  · exact summable_geometric_of_lt_one (by positivity) (by norm_num)
 
 /-- The shifted factorial series (tail starting at index N+1) is summable. -/
 theorem factorial_tail_summable (N : ℕ) :
@@ -86,7 +94,16 @@ theorem factorial_tail_le (N : ℕ) :
     This is what makes the Liouville approximation work. -/
 theorem pow_two_factorial_bound (m : ℕ) :
     2 * (2 : ℝ) ^ (m * (m + 1).factorial) < (2 : ℝ) ^ (m + 2).factorial := by
-  sorry
+  -- 2 * 2^n = 2^{n+1}
+  have h1 : (2 : ℝ) * (2 : ℝ) ^ (m * (m + 1).factorial) =
+      (2 : ℝ) ^ (m * (m + 1).factorial + 1) := by
+    rw [pow_succ]; ring
+  rw [h1]
+  -- 2^{m*(m+1)!+1} < 2^{(m+2)!} from m*(m+1)!+1 < (m+2)!
+  have h2 : m * (m + 1).factorial + 1 < (m + 2).factorial := by
+    have hfact : (m + 2).factorial = (m + 2) * (m + 1).factorial := Nat.factorial_succ (m + 1)
+    rw [hfact]; have := Nat.factorial_pos (m + 1); nlinarith
+  exact_mod_cast Nat.pow_lt_pow_right (by omega : 1 < 2) h2
 
 /- ## Transcendence Conversion -/
 

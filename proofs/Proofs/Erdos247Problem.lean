@@ -26,6 +26,7 @@
 
 import Mathlib.RingTheory.Algebraic.Basic
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
+import Mathlib.Topology.Algebra.InfiniteSum.Order
 import Mathlib.Topology.Algebra.InfiniteSum.Ring
 import Mathlib.NumberTheory.Transcendental.Liouville.Basic
 import Mathlib.Tactic
