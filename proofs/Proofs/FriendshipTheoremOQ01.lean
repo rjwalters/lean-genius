@@ -1201,7 +1201,10 @@ lemma coeff_odd_of_sq_sub_pow (c : ℤ) (m : ℕ) :
 lemma sq_sub_irreducible_of_not_square (d : ℕ) (hd : d ≥ 1)
     (hns : ∀ s : ℕ, d ≠ s * s) :
     Irreducible (X ^ 2 - C (↑d : ℤ) : Polynomial ℤ) := by
-  -- Proof needs Mathlib API updates (natDegree_sub, isUnit_of_mul_eq_one, Int.natAbs_sq)
+  -- Approach: X²-d is monic → primitive, then Gauss lemma
+  -- (IsPrimitive.Int.irreducible_iff_irreducible_map_cast).
+  -- Over ℚ: degree 2, no rational root (r²=d ∈ℕ, r∈ℚ → r∈ℤ → d perfect square → ⊥).
+  -- Polynomial.irreducible_of_degree_eq_two closes over a field.
   sorry
 
 /-- In a UFD, if an irreducible p satisfies p(X) = p(-X) and
