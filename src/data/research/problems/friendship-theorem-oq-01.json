@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved 4 new lemmas (Weinstein-Aronszajn for all-ones matrix, J-singular). det_scalar_sub_onesMatrix has clear proof path (ℚ-embedding) with 2 algebraic sub-goals remaining. 3 sorries remain.",
+    "progressSummary": "PROGRESS: Proved sq_sub_irreducible_of_not_square. File now has 1 sorry (charpoly_quotient_product) + 1 axiom. monic_factor_of_symmetric_irreducible_pow was already proved by a previous session. All other infrastructure is in place.",
     "builtItems": [
       "Lean formalization complete",
       "Part VIII: Adjacency Matrix Infrastructure — adjMatrix_trace_zero PROVED (tr(A)=0 for simple graph), imports for SimpleGraph.AdjMatrix and Matrix.Trace verified",
