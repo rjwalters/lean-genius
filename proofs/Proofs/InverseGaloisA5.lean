@@ -1665,9 +1665,23 @@ theorem prod_eval_derivative_eq_resultant :
     (∏ i : Fin 5, Polynomial.eval (rootEnum i)
       (Polynomial.derivative q_SF)) =
     Polynomial.resultant q_SF (Polynomial.derivative q_SF) := by
-  -- TODO: Apply resultant_eq_prod_eval with SplittingField.splits,
-  -- then convert Multiset.map product ↔ Fin 5 product via rootEnum bijection
-  sorry
+  -- Strategy: q_SF = ∏ (X - C αᵢ), then use resultant_prod_left + resultant_X_sub_C_left
+  set g := Polynomial.derivative q_SF with hg_def
+  set n := g.natDegree with hn_def
+  -- Step 1: Rewrite q_SF as product of linear factors
+  conv_rhs => rw [q_SF_eq_prod_linear]
+  -- Step 2: Use resultant_prod_left to distribute over product
+  have hlc : ∏ i : Fin 5,
+      (Polynomial.X - Polynomial.C (rootEnum i) : Polynomial SF).leadingCoeff ≠ 0 := by
+    simp [Polynomial.leadingCoeff_X_sub_C]
+  have hndeg : g.natDegree ≤ n := le_refl _
+  rw [Polynomial.resultant_prod_left Finset.univ _ g n hlc hndeg]
+  -- Step 3: Each factor's resultant equals evaluation
+  congr 1; ext i
+  have hXC_deg : (Polynomial.X - Polynomial.C (rootEnum i) :
+      Polynomial SF).natDegree = 1 := Polynomial.natDegree_X_sub_C _
+  rw [hXC_deg]
+  exact (Polynomial.resultant_X_sub_C_left g n (rootEnum i) hndeg).symm
 
 -- Step G: Resultant to discriminant
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

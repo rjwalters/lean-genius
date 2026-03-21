@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: All 5 sorries proved! Path A (Liouville connection) and Path B (direct Liouville proof) both fully proved. File now has 0 sorries, 1 axiom (erdos_transcendence_strong for the deep 1975 result). Key proofs: transcendental_int_to_rat via IsFractionRing.isAlgebraic_iff, lacunarySum_factorial_split via tsum_eq_zero_add induction, factorialPartialSum_eq_div via fraction arithmetic induction, factorialTail_le via hasSum_le comparison with geometric series, factorial_sum_liouville completed with pow_two_factorial_bound.",
+    "progressSummary": "COMPLETED: Both main file and companion file are sorry-free. Main file: 0 sorries, 1 axiom (erdos_transcendence_strong). Companion file: 0 sorries. Meta.json updated with Parts VI-VIII sections.",
     "builtItems": [
       "pow2_ge_succ: n+1 ≤ 2^n (helper lemma)",
       "factorial_ge_pow2: 2^k ≤ (k+1)! (helper lemma)",
@@ -50,7 +50,8 @@
       "factorialTail_le: tail ≤ 2/2^{(N+2)!} via hasSum_le + geometric series (sorry-free)",
       "factorial_sum_liouville: factorial sum is Liouville number via complete Liouville bound (sorry-free)",
       "factorial_sum_transcendental_axiom_free: axiom-free transcendence via Liouville connection (sorry-free)",
-      "factorial_sum_transcendental_liouville: axiom-free transcendence via direct Liouville proof (sorry-free)"
+      "factorial_sum_transcendental_liouville: axiom-free transcendence via direct Liouville proof (sorry-free)",
+      "Erdos247Aristotle.lean: all 7 sorries proved (sorry-free companion file)"
     ],
     "insights": [
       "Parent file has clean infrastructure: lacunarySum, HasWeakGrowth, HasStrongGrowth, squareSeq",
@@ -73,7 +74,8 @@
       "tsum_eq_zero_add needs careful Nat arithmetic normalization via tsum_congr + omega",
       "hasSum_le replaces tsum_le_tsum (which no longer exists in this Mathlib version)",
       "div_lt_div_iff₀ replaces div_lt_div_iff for cross-multiplication of real fractions",
-      "Nat.factorial_le takes direct ≤ proof, not .mpr"
+      "Nat.factorial_le takes direct ≤ proof, not .mpr",
+      "All companion file proofs were already solved in main file - companion was redundant but now clean"
     ],
     "mathlibGaps": [
       "Transcendence theory for lacunary series"
