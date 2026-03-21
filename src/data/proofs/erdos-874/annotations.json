@@ -47,8 +47,10 @@
     "type": "definition",
     "title": "Bounded Admissible",
     "content": "**BoundedAdmissible(A, N)** requires A is admissible and A ⊆ {1,...,N}. This is the constraint for the extremal problem: maximize |A| among such sets.",
+    "mathContext": "$A \\subseteq \\{1, \\ldots, N\\}$ admissible; $k(N) = \\max |A|$",
     "significance": "key",
-    "relatedConcepts": ["Extremal problems"]
+    "relatedConcepts": ["extremal problems", "subset sums", "bounded sets"],
+    "prerequisites": ["IsAdmissible", "Finset.Icc"]
   },
   {
     "id": "ann-e874-k-def",
