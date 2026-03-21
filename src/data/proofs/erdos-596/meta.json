@@ -39,7 +39,14 @@
       "dichotomy_pairs_exist theorem: existence of dichotomy pairs",
       "erdos_596_summary theorem: summary conjunction"
     ],
-    "axiomCount": 4
+    "axiomCount": 4,
+    "prerequisites": [
+      "Ramsey theory fundamentals",
+      "Graph coloring (finite and countable)",
+      "Forbidden subgraph classes",
+      "SimpleGraph in Mathlib",
+      "Nešetřil-Rödl theorem (structural Ramsey theory)"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős Problem #596 from [Er87] asks for a characterization of graph pairs (G₁, G₂) satisfying a finite/countable Ramsey-type dichotomy. Erdős and Hajnal originally conjectured no such pairs exist, but Nešetřil-Rödl and Erdős-Hajnal showed that (C₄, C₆) is a valid pair. The related Problem #595 asks specifically about (K₄, K₃).",
