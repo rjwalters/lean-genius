@@ -3,6 +3,7 @@ import Mathlib.FieldTheory.IntermediateField.Basic
 import Mathlib.RingTheory.Polynomial.IrreducibleRing
 import Mathlib.Algebra.Polynomial.Degree.Definitions
 import Mathlib.Tactic
+import Proofs.PiTranscendental
 
 /-
 # Impossibility of Trisecting an Angle
@@ -207,11 +208,10 @@ axiom wantzel_theorem (α : ℝ) (d : ℕ) :
   rational root. This is a standard result in algebra. -/
 axiom trisectionPolynomial_irreducible : Irreducible trisectionPolynomial
 
-/- **Axiom 3**: Lindemann's Theorem (1882) — π is transcendental.
-
-  A transcendental number satisfies no polynomial equation over ℚ.
-  This deep result from analytic number theory is far beyond current Mathlib. -/
-axiom lindemann_pi_transcendental : Transcendental ℚ (π : ℝ)
+/-- Lindemann's Theorem (1882) — π is transcendental over ℚ.
+    Derived from pi_transcendental (ℤ) via IsFractionRing.isAlgebraic_iff. -/
+theorem lindemann_pi_transcendental : Transcendental ℚ (π : ℝ) :=
+  pi_transcendental_over_rationals
 
 /- ## Part V: Number-Theoretic Lemmas -/
 
