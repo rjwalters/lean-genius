@@ -27,13 +27,15 @@
     "dateAdded": "03/19/26"
   },
   "overview": {
-    "historicalContext": "This identity extends the classical result ∑2/(n(n+1)) = 2 (proved by Leibniz in 1673 via telescoping) to its alternating variant. The alternating harmonic series ln(2) = 1 - 1/2 + 1/3 - ⋯ was first computed by Mercator (1668) using the power series for log(1+x). The alternating triangular reciprocal series combines both ideas: partial fractions reduce it to two instances of the Mercator series.",
+    "historicalContext": "This identity extends the classical result ∑2/(n(n+1)) = 2 (proved by Leibniz in 1673 via telescoping) to its alternating variant. The alternating harmonic series ln(2) = 1 - 1/2 + 1/3 - ⋯ was first computed by Nicolaus Mercator in his 1668 work *Logarithmotechnia*, where he integrated the geometric series 1/(1+x) = 1 - x + x² - ⋯ term by term to obtain the power series for log(1+x). The boundary evaluation at x = 1 was later justified by Abel's 1826 theorem on continuity of power series sums. The triangular numbers T_n = n(n+1)/2 were studied by the Pythagoreans (c. 500 BCE) and appear as the figurate numbers of the first kind. The alternating triangular reciprocal series combines partial fractions (a technique systematized by Johann Bernoulli around 1702) with the Mercator series, yielding the transcendental value 4·ln(2) - 2.",
     "problemStatement": "**Alternating Triangular Reciprocals**:\n\n$$\\sum_{n=1}^{\\infty} (-1)^{n+1} \\cdot \\frac{2}{n(n+1)} = 4\\ln 2 - 2 \\approx 0.7726$$",
     "proofStrategy": "Use partial fractions: (-1)^{n+1}·2/(n(n+1)) = 2·(-1)^{n+1}/n - 2·(-1)^{n+1}/(n+1). This splits the series into the alternating harmonic series (= ln 2) and its shifted variant (= 1 - ln 2). Combining: 2·ln(2) - 2·(1 - ln(2)) = 4·ln(2) - 2.",
     "keyInsights": [
-      "Partial fractions split each alternating term into a difference of two simpler alternating terms",
-      "The shifted alternating harmonic series ∑(-1)^{n+1}/(n+1) = 1 - ln(2) follows from the standard series by removing the first term and negating",
-      "The result 4·ln(2) - 2 ≈ 0.7726 shows the alternating sum converges to a transcendental number, unlike the non-alternating case which equals exactly 2"
+      "Partial fractions split each alternating term into a difference of two simpler alternating terms, reducing the problem to known series",
+      "The shifted alternating harmonic series ∑(-1)^{n+1}/(n+1) = 1 - ln(2) follows from the standard series by removing the first term and negating — a clean index-shift argument",
+      "The result 4·ln(2) - 2 ≈ 0.7726 shows the alternating sum converges to a transcendental number, unlike the non-alternating case which equals exactly 2 (rational)",
+      "The proof architecture cleanly separates the analytic content (Abel's theorem, axiomatized) from the algebraic content (partial fractions, fully verified), making the axiom boundary precise",
+      "The Lean formalization handles the n=0 edge case explicitly via if-then-else, since ℕ-indexed series must account for 0 even though the mathematical series starts at n=1"
     ]
   },
   "sections": [
@@ -53,6 +55,21 @@
       "targetId": "geometric-series",
       "relationship": "related",
       "description": "Both are classical infinite series with exact closed-form sums. The alternating geometric series ∑(-1)^n·r^n = 1/(1+r) and alternating triangular reciprocals both involve sign-alternating terms."
+    },
+    {
+      "targetId": "leibniz-pi",
+      "relationship": "related",
+      "description": "Both are alternating series with transcendental closed forms. The Leibniz series ∑(-1)^n/(2n+1) = π/4 uses odd reciprocals while this series uses triangular reciprocals. Both involve boundary evaluations of power series."
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "related",
+      "description": "The harmonic series ∑1/n diverges, but alternating it (∑(-1)^{n+1}/n = ln 2) converges — this alternating harmonic series is the key building block axiomatized in the present proof."
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "Both evaluate reciprocal series over structured sequences: Basel computes ∑1/n² = π²/6 while this computes ∑(-1)^{n+1}·2/(n(n+1)) = 4·ln(2) - 2. Both yield transcendental closed forms from rational term sequences."
     }
   ],
   "conclusion": {
@@ -64,5 +81,5 @@
       "Formalize the connection to the digamma function: ∑(-1)^{n+1}/(n(n+1)) = 2·ψ(1) + 2·γ where γ is the Euler-Mascheroni constant"
     ]
   },
-  "relatedProofs": ["triangular-reciprocals", "geometric-series"]
+  "relatedProofs": ["triangular-reciprocals", "geometric-series", "leibniz-pi", "harmonic-divergence", "basel-problem"]
 }
