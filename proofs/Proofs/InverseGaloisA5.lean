@@ -1038,419 +1038,6 @@ theorem vandermondeProduct_ne_zero : vandermondeProduct ≠ 0 := by
   have hne : j ≠ i := by simp [Finset.mem_Iio] at hj; omega
   exact hne (rootEnum_injective (sub_eq_zero.mp hij))
 
--- Section E: Axiom Replacement Summary
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-/-
-### Current State
-
-**gal_card_dvd_60** (axiom): Fintype.card q.Gal ∣ 60
-
-**Decomposition** (this Part):
-  gal_card_dvd_60 = gal_card_dvd_60_of_all_even (PROVED) + all_gal_signs_positive (GAP)
-
-**all_gal_signs_positive** (replacing axiom):
-  ∀ σ : q.Gal, galSign σ = 1
-
-This gap requires:
-  1. disc(q) = vandermondeProduct² (discriminant = Vandermonde² identity, not in Mathlib)
-  2. vandermondeProduct² = (algebraMap ℚ _ 32000)² (from 1 + trinomial_disc_computation)
-  3. vandermondeProduct = ±algebraMap ℚ _ 32000 (from 2 + domain property)
-  4. σ(vandermondeProduct) = vandermondeProduct (from 3, since σ fixes ℚ)
-  5. σ(vandermondeProduct) = galSign σ • vandermondeProduct (Vandermonde permutation)
-  6. galSign σ = 1 (from 4, 5, vandermondeProduct_ne_zero)
-
-Step 1 is the ONLY remaining mathematical gap — everything else is provable
-from existing Mathlib infrastructure.
-
-### Comparison
-
-| Before (1 opaque axiom) | After (1 transparent gap) |
-|--------------------------|---------------------------|
-| gal_card_dvd_60: |Gal| ∣ 60 | disc(q) = Δ² (discriminant identity) |
-| Requires: disc↔alternating theory | Requires: Res(f,f') = ∏(rᵢ-rⱼ)² |
-| Hard to verify independently | Standard textbook identity |
--/
-
--- ============================================================================
--- Part XIV: Vandermonde Permutation Argument (Steps 2–6)
--- ============================================================================
-
-/-
-## Proving all_gal_signs_positive from vandermondeProduct_sq_eq
-
-This Part formalizes Steps 2–6 of the Vandermonde argument outlined in Part XIII.
-Combined with gal_card_dvd_60_of_all_even (Part XIII), this proves gal_card_dvd_60
-from a single transparent axiom about disc(q) = Δ².
-
-### Axiom Replacement
-
-**Before**: axiom gal_card_dvd_60 : |Gal| ∣ 60 (opaque — why does it divide 60?)
-**After**: axiom vandermondeProduct_sq_eq : Δ² = algebraMap ℤ F 1024000000
-          (transparent — disc(q) = Δ² is a standard identity for monic polynomials)
-
-The axiom at line ~293 remains for file ordering, but is now DERIVABLE:
-  vandermondeProduct_sq_eq → all_gal_signs_positive → gal_card_dvd_60_proved
--/
-
--- Step 1: Transparent axiom (disc(q) = Δ²)
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-/-- **Axiom (PROVED below)**: Δ² = disc(q) = 1024000000 = 32000² in the splitting field.
-
-    **This axiom is now proved**: see `vandermondeProduct_sq_eq_proved` in Part XV
-    (VandermondeElimination section). The proof uses:
-    1. Derivative factorization: q'(x) = 5((x-1)⁴+4) = 5(x²+1)(x²-4x+5)
-    2. Product-roots identity in ℂ: ∏ᵢf(αᵢ) via q evaluated at roots of f
-    3. Complex arithmetic: q(±I)·product = 256, q(2±I)·product = 1280
-
-    The axiom is retained here for file ordering reasons: `vandermondeProduct_sq_eq_proved`
-    depends on `rootEnum` and the VandermondeElimination infrastructure defined later.
-    A future refactor can eliminate this axiom by reordering the file. -/
-axiom vandermondeProduct_sq_eq :
-    vandermondeProduct ^ 2 = algebraMap ℤ q.SplittingField 1024000000
-
--- Step 2: Δ² = (algebraMap ℤ F 32000)²
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-/-- disc(q) = 32000² as an algebraMap equality. -/
-theorem algebraMap_disc_eq :
-    algebraMap ℤ q.SplittingField 1024000000 =
-    (algebraMap ℤ q.SplittingField 32000) ^ 2 := by
-  rw [← map_pow]; norm_num
-
-/-- Δ² = (algebraMap ℤ F 32000)² in the splitting field. -/
-theorem vandermondeProduct_sq_eq_32000_sq :
-    vandermondeProduct ^ 2 = (algebraMap ℤ q.SplittingField 32000) ^ 2 := by
-  rw [vandermondeProduct_sq_eq, algebraMap_disc_eq]
-
--- Step 3: Δ = ±32000, hence Δ ∈ ℚ
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-/-- In the splitting field (a domain), Δ² = a² implies Δ = a or Δ = -a. -/
-theorem vandermondeProduct_eq_pm_32000 :
-    vandermondeProduct = algebraMap ℤ q.SplittingField 32000 ∨
-    vandermondeProduct = -(algebraMap ℤ q.SplittingField 32000) := by
-  have h := vandermondeProduct_sq_eq_32000_sq
-  have hsub : vandermondeProduct ^ 2 - (algebraMap ℤ q.SplittingField 32000) ^ 2 = 0 :=
-    sub_eq_zero.mpr h
-  rw [sq_sub_sq] at hsub
-  rcases mul_eq_zero.mp hsub with h1 | h2
-  · -- vandermondeProduct + algebraMap 32000 = 0 → vandermondeProduct = -algebraMap 32000
-    right; exact eq_neg_of_add_eq_zero_left h1
-  · -- vandermondeProduct - algebraMap 32000 = 0 → vandermondeProduct = algebraMap 32000
-    left; exact sub_eq_zero.mp h2
-
-/-- Δ is in the range of algebraMap ℚ → SplittingField. -/
-theorem vandermondeProduct_in_rat_range :
-    vandermondeProduct ∈ Set.range (algebraMap ℚ q.SplittingField) := by
-  rcases vandermondeProduct_eq_pm_32000 with h | h
-  · exact ⟨32000, by rw [h]; simp [map_intCast]⟩
-  · exact ⟨-32000, by rw [h]; simp [map_intCast, map_neg]⟩
-
--- Step 4: σ fixes Δ (since Δ ∈ ℚ and σ is an AlgEquiv over ℚ)
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-/-- Every Galois automorphism fixes Δ. -/
-theorem gal_fixes_vandermondeProduct (σ : q.Gal) :
-    σ vandermondeProduct = vandermondeProduct := by
-  obtain ⟨d, hd⟩ := vandermondeProduct_in_rat_range
-  rw [← hd]
-  exact σ.commutes d
-
--- Step 5: σ(Δ) = galSign(σ) · Δ (Vandermonde permutation)
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-/-
-## BLOCKER: Algebra SF SF typeclass diamond
-
-`gal_permutes_roots` requires `(σ • r).val = σ r.val` for the `galAction` MulAction.
-But `galAction` goes through `rootsEquivRoots`, which uses `mapRoots`, which applies
-`IsScalarTower.toAlgHom ℚ SF SF` (= algebraMap SF SF from the Gal algebra instance).
-
-There are TWO `Algebra SF SF` instances:
-1. `Algebra.id SF` — gives `algebraMap SF SF = RingHom.id SF`
-2. `Gal.instAlgebra...` — derived from `IsSplittingField.lift`, gives `algebraMap SF SF = ψ`
-   where ψ is some (non-constructive) Galois automorphism selected by Classical.choice.
-
-For `Algebra.id`, `mapRoots = id` and `(σ • r).val = σ r.val`.
-For the Gal instance, `mapRoots` applies ψ, and `(σ • r).val = ψ(σ(ψ⁻¹ r.val))`.
-
-The proof of `mapRoots_val` fails because `algebraMap_self_apply` uses `Algebra.id`
-while the goal uses the Gal instance. The two instances are propositionally but not
-definitionally equal, and proving their equality requires resolving the diamond at the
-level of `IsSplittingField.lift` (which uses Classical.choice).
-
-**Mathlib note**: The Mathlib comment on `Polynomial.Gal.restrict` says:
-"IsSplittingField.lift.toRingHom.toAlgebra =?= Algebra.id, which takes an extremely
-long time to resolve, causing timeouts."
-
-Possible fix: Prove `algebraMap SF SF = RingHom.id SF` for the Gal instance by showing
-that `IsSplittingField.lift` to the same field is the identity (requires algebraic
-closure / finite extension theory).
--/
-
-theorem gal_permutes_roots (σ : q.Gal) (i : Fin 5) :
-    σ (rootEnum i) = rootEnum (galToPerm5 σ i) := by
-  -- galToPerm5 now uses galActionAux (direct Gal action on rootSet), so
-  -- (σ • r).val = σ r.val by definition of Set.MapsTo.restrict.
-  unfold rootEnum galToPerm5 galPermHomAux
-  simp only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulEquiv.coe_mk,
-    Equiv.toFun_as_coe, Equiv.permCongr_apply, Equiv.symm_apply_apply,
-    MulAction.toPermHom_apply]
-  rfl
-
-/-- Vandermonde matrix with permuted input = row-permuted Vandermonde. -/
-theorem vandermonde_comp_eq_submatrix
-    (v : Fin 5 → q.SplittingField) (π : Equiv.Perm (Fin 5)) :
-    Matrix.vandermonde (v ∘ π) = (Matrix.vandermonde v).submatrix π id := by
-  ext i j; simp [Matrix.vandermonde, Matrix.submatrix, Function.comp]
-
-/-- Vandermonde permutation: det(V(v ∘ π)) = sign(π) · det(V(v)). -/
-theorem vandermonde_perm_det
-    (v : Fin 5 → q.SplittingField) (π : Equiv.Perm (Fin 5)) :
-    (Matrix.vandermonde (v ∘ π)).det =
-    ↑↑(Equiv.Perm.sign π) * (Matrix.vandermonde v).det := by
-  rw [vandermonde_comp_eq_submatrix]
-  exact Matrix.det_permute π (Matrix.vandermonde v)
-
-/-- σ maps the Vandermonde matrix entry-wise according to root permutation. -/
-theorem gal_map_vandermonde_entry (σ : q.Gal) (i j : Fin 5) :
-    σ ((Matrix.vandermonde rootEnum) i j) =
-    (Matrix.vandermonde (rootEnum ∘ galToPerm5 σ)) i j := by
-  simp only [Matrix.vandermonde, Matrix.of_apply, Function.comp]
-  rw [map_pow]
-  congr 1
-  exact gal_permutes_roots σ i
-
-/-- σ(Δ) = galSign(σ) · Δ — the Vandermonde permutation property for Galois.
-
-    This is the key identity: the Galois action on the Vandermonde determinant
-    equals the sign of the induced permutation times the determinant. -/
-theorem gal_acts_on_vandermondeProduct (σ : q.Gal) :
-    σ vandermondeProduct = ↑↑(galSign σ) * vandermondeProduct := by
-  -- Strategy: σ(det V) = det(V(rootEnum ∘ π)) = sign(π) · det(V)
-  unfold vandermondeProduct galSign
-  -- Split into two steps via transitivity
-  trans (Matrix.vandermonde (rootEnum ∘ galToPerm5 σ)).det
-  · -- Step 1+2: σ(det V) = det(V(rootEnum ∘ π))
-    -- Switch to ring hom form for map_det
-    change σ.toAlgHom.toRingHom (Matrix.vandermonde rootEnum).det =
-      (Matrix.vandermonde (rootEnum ∘ galToPerm5 σ)).det
-    rw [RingHom.map_det]
-    congr 1; ext i j
-    simp only [RingHom.mapMatrix_apply]
-    -- Switch back to AlgEquiv form for gal_map_vandermonde_entry
-    change σ ((Matrix.vandermonde rootEnum) i j) =
-      (Matrix.vandermonde (rootEnum ∘ galToPerm5 σ)) i j
-    exact gal_map_vandermonde_entry σ i j
-  · -- Step 3: det(V(rootEnum ∘ π)) = sign(π) · det(V)
-    exact vandermonde_perm_det rootEnum (galToPerm5 σ)
-
--- Step 6: galSign(σ) = 1 for all σ
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-/-- **All Galois signs are positive**: every σ ∈ Gal(q) acts as an even
-    permutation on the five roots of q.
-
-    Proof: σ(Δ) = Δ (Step 4) and σ(Δ) = sign(σ)·Δ (Step 5).
-    So sign(σ)·Δ = Δ, and since Δ ≠ 0, sign(σ) = 1. -/
-theorem all_gal_signs_positive : ∀ σ : q.Gal, galSign σ = 1 := by
-  intro σ
-  have h_fix := gal_fixes_vandermondeProduct σ
-  have h_sign := gal_acts_on_vandermondeProduct σ
-  have h_ne := vandermondeProduct_ne_zero
-  -- sign(σ) · Δ = Δ with Δ ≠ 0
-  have heq : ↑↑(galSign σ) * vandermondeProduct = vandermondeProduct := by
-    rw [← h_sign]; exact h_fix
-  -- Therefore (sign(σ) - 1) · Δ = 0
-  have hsub : (↑↑(galSign σ) - 1) * vandermondeProduct = 0 := by
-    rw [sub_mul, heq, one_mul, sub_self]
-  -- Since Δ ≠ 0 (domain): sign(σ) - 1 = 0, i.e., ↑↑(galSign σ) = 1
-  have hval : (↑↑(galSign σ) : q.SplittingField) = 1 := by
-    rcases mul_eq_zero.mp hsub with h | h
-    · -- ↑↑(galSign σ) - 1 = 0 → ↑↑(galSign σ) = 1
-      exact sub_eq_zero.mp h
-    · exact absurd h h_ne
-  -- Convert from coercion equality to ℤˣ equality
-  -- galSign σ : ℤˣ, and ↑↑(galSign σ) = 1 in F (char 0) means (galSign σ).val = 1
-  have hval_int : (galSign σ).val = (1 : ℤ) := by
-    have : (↑((galSign σ).val) : q.SplittingField) = ↑(1 : ℤ) := hval
-    exact_mod_cast this
-  exact Units.ext hval_int
-
--- Proved: gal_card_dvd_60 from transparent axiom
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-/-- gal_card_dvd_60 proved from vandermondeProduct_sq_eq.
-    This shows the axiom at line ~293 is now DERIVABLE. -/
-theorem gal_card_dvd_60_proved : Fintype.card q.Gal ∣ 60 :=
-  gal_card_dvd_60_of_all_even all_gal_signs_positive
-
--- ============================================================================
--- Part XV: Galois Group Cardinality and A₅ Isomorphism
--- (Moved after Vandermonde argument to use gal_card_dvd_60_proved)
--- ============================================================================
-
-/-- The Galois group of q has exactly 60 elements (= |A₅|).
-
-    **PROVED** from axiom B + gal_card_dvd_60_proved + structural lemmas.
-    Uses only 2 axioms: vandermondeProduct_sq_eq and three_dvd_gal_card.
-
-    Proof: |Gal| | 60 (gal_card_dvd_60_proved) and 15 | |Gal| (from B + proved 5 | |Gal|)
-    gives |Gal| ∈ {15, 30, 60}. No S₅ subgroup of order 15 or 30 exists.
-    Therefore |Gal| = 60. ✓ -/
-theorem q_gal_card : Fintype.card q.Gal = 60 := by
-  have h15 : 15 ∣ Fintype.card q.Gal :=
-    Nat.Coprime.mul_dvd_of_dvd_of_dvd (by norm_num : Nat.Coprime 3 5)
-      three_dvd_gal_card five_dvd_gal_card
-  have h_dvd := gal_card_dvd_60_proved
-  have hne15 := gal_card_ne_15
-  have hne30 := gal_card_ne_30
-  obtain ⟨k, hk⟩ := h15
-  have hk_pos : 0 < k := by
-    have hpos : 0 < Fintype.card q.Gal := Fintype.card_pos
-    rw [hk] at hpos; omega
-  have hk_dvd : k ∣ 4 := by
-    rw [hk] at h_dvd
-    exact Nat.dvd_of_mul_dvd_mul_left (by norm_num : 0 < 15) h_dvd
-  have hk_le : k ≤ 4 := Nat.le_of_dvd (by norm_num) hk_dvd
-  have hk_ne1 : k ≠ 1 := fun h => by rw [h, Nat.mul_one] at hk; exact hne15 hk
-  have hk_ne2 : k ≠ 2 := fun h => by subst h; norm_num at hk; exact hne30 hk
-  interval_cases k <;> simp_all
-
-/-- **A₅ Realizability Theorem**
-
-    There exists a Galois extension K/ℚ with exactly 60 automorphisms
-    (= |A₅|). Specifically, K = SplittingField(X⁵ - 5X⁴ + 10X³ - 10X² + 25X - 5).
-
-    This is the first non-solvable group realized in our formalization,
-    extending the Inverse Galois Problem beyond Shafarevich's theorem. -/
-theorem a5_realizable :
-    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
-      (_ : IsGalois ℚ K),
-      Fintype.card (K ≃ₐ[ℚ] K) = 60 :=
-  ⟨q.SplittingField,
-    inferInstance, inferInstance, inferInstance, IsGalois.mk,
-    q_gal_card⟩
-
-/-- The splitting field of q has ℚ-dimension 60. -/
-theorem splitting_field_q_finrank :
-    Module.finrank ℚ q.SplittingField = 60 := by
-  have hcard_eq_nat : Nat.card q.Gal = Module.finrank ℚ q.SplittingField :=
-    Polynomial.Gal.card_of_separable q_separable
-  rw [Nat.card_eq_fintype_card] at hcard_eq_nat
-  rw [← hcard_eq_nat]
-  exact q_gal_card
-
--- ============================================================================
--- Part XVI: Galois Group Isomorphism with A₅
--- ============================================================================
-
-/-
-Since |Gal(q/ℚ)| = 60 = |Perm(rootSet)|/2 and Gal embeds into S₅ = Perm(rootSet)
-via galActionHom, the image has index 2 in S₅. The unique subgroup of index 2
-in S₅ is A₅ (the kernel of the sign homomorphism). Therefore Gal ≅ A₅.
--/
-
-/-- |Gal| = 60 and 120 = 5!, so Gal has index 2 in S₅. -/
-theorem gal_has_index_two : 2 * Fintype.card q.Gal = 120 := by
-  rw [q_gal_card]
-
-/-- The Galois group of q is isomorphic to A₅ (= alternatingGroup (Fin 5)).
-
-    **Proof strategy**: Compose galActionHom with permCongr to get an injection
-    φ : Gal →* Perm(Fin 5). Since |Gal| = 60 and |Perm(Fin 5)| = 120,
-    the image φ.range has index 2. By Mathlib's
-    `Equiv.Perm.eq_alternatingGroup_of_index_eq_two`, φ.range = alternatingGroup(Fin 5).
-    Therefore Gal ≅ φ.range ≅ A₅. -/
-theorem q_gal_iso_a5 :
-    Nonempty (q.Gal ≃* alternatingGroup (Fin 5)) := by
-  -- Step 1: Build composite injection Gal →* Perm(Fin 5)
-  -- Equivalence rootSet ≃ Fin 5 (since |rootSet| = 5)
-  let rootEquiv : q.rootSet q.SplittingField ≃ Fin 5 :=
-    Fintype.equivOfCardEq (by rw [q_rootSet_card, Fintype.card_fin])
-  -- MulEquiv Perm(rootSet) ≃* Perm(Fin 5) via conjugation
-  let permEquiv : Equiv.Perm (q.rootSet q.SplittingField) ≃* Equiv.Perm (Fin 5) :=
-    { toEquiv := Equiv.permCongr rootEquiv
-      map_mul' := fun σ τ => by
-        ext x; simp [Equiv.permCongr_apply, Equiv.Perm.mul_apply] }
-  -- Composite: Gal →* Perm(Fin 5)
-  let φ := permEquiv.toMonoidHom.comp (Polynomial.Gal.galActionHom q q.SplittingField)
-  -- Step 2: φ is injective
-  have hinj : Function.Injective φ :=
-    permEquiv.injective.comp (Polynomial.Gal.galActionHom_injective q q.SplittingField)
-  -- Step 3: φ.range has index 2 in Perm(Fin 5)
-  have hindex : φ.range.index = 2 := by
-    have hlagrange := Subgroup.card_mul_index φ.range
-    -- |φ.range| = |Gal| = 60 via the bijection Gal ≃ φ.range
-    have hrange : Nat.card φ.range = 60 := by
-      have hbij : Function.Bijective φ.rangeRestrict :=
-        ⟨fun a b h => hinj (congrArg Subtype.val h), φ.rangeRestrict_surjective⟩
-      rw [show Nat.card φ.range = Nat.card q.Gal from
-        (Nat.card_congr (Equiv.ofBijective _ hbij).symm)]
-      rw [Nat.card_eq_fintype_card, q_gal_card]
-    -- |Perm(Fin 5)| = 120
-    have hperm : Nat.card (Equiv.Perm (Fin 5)) = 120 := by
-      rw [Nat.card_eq_fintype_card, Fintype.card_perm, Fintype.card_fin]
-      norm_num
-    rw [hrange, hperm] at hlagrange; omega
-  -- Step 4: The unique index-2 subgroup of S₅ is A₅ (Mathlib)
-  have heq : φ.range = alternatingGroup (Fin 5) :=
-    Equiv.Perm.eq_alternatingGroup_of_index_eq_two hindex
-  -- Step 5: Construct MulEquiv: Gal ≃* φ.range ≃* A₅
-  exact ⟨(MulEquiv.ofBijective φ.rangeRestrict
-    ⟨fun a b h => hinj (congrArg Subtype.val h),
-     φ.rangeRestrict_surjective⟩).trans (MulEquiv.subgroupCongr heq)⟩
-
-/-- **A₅ Realizability (Isomorphism Version)**
-
-    A₅ is realizable as a Galois group over ℚ, with explicit isomorphism. -/
-theorem a5_realizable_iso :
-    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
-      (_ : IsGalois ℚ K),
-      Nonempty (alternatingGroup (Fin 5) ≃* (K ≃ₐ[ℚ] K)) :=
-  ⟨q.SplittingField,
-    inferInstance, inferInstance, inferInstance, IsGalois.mk,
-    q_gal_iso_a5.map MulEquiv.symm⟩
-
--- ============================================================================
--- Part XVII: Non-Solvability — Beyond Shafarevich
--- ============================================================================
-
-/-- The Galois group we constructed is not solvable.
-    This shows the realization goes beyond Shafarevich's theorem.
-
-    Proof: Gal ≅ A₅ (via q_gal_iso_a5), and A₅ is not solvable.
-    Transfer non-solvability through the MulEquiv. -/
-theorem gal_not_solvable : ¬IsSolvable q.Gal := by
-  intro h
-  obtain ⟨e⟩ := q_gal_iso_a5
-  haveI := h
-  exact a5_not_solvable (solvable_of_surjective
-    (f := e.toMonoidHom) (fun b => ⟨e.symm b, e.apply_symm_apply b⟩))
-
-
-/-
-### Summary — Axiom Elimination Complete
-
-**Result**: The axiom gal_card_dvd_60 has been ELIMINATED.
-It is now proved as gal_card_dvd_60_proved from the single transparent axiom
-vandermondeProduct_sq_eq, which asserts disc(f) = Δ² for monic polynomials.
-
-**Axiom budget** for InverseGaloisA5.lean:
-  Before elimination: gal_card_dvd_60 + three_dvd_gal_card = 2 axioms (opaque)
-  After elimination:  vandermondeProduct_sq_eq + three_dvd_gal_card = 2 axioms
-                      (vandermondeProduct_sq_eq is transparent — disc = Δ² is standard)
-
-**Total axiom declarations in this file**: 2
-  - vandermondeProduct_sq_eq: Δ² = disc(q) in splitting field (transparent)
-  - three_dvd_gal_card: 3 | |Gal(q)| (Dedekind's theorem)
-
-**Remaining gap**: vandermondeProduct_sq_eq requires connecting Polynomial.disc
-(resultant Res(f,f')) with Matrix.det_vandermonde (∏_{i<j}(rⱼ-rᵢ)). This is
-a standard identity but not yet available in Mathlib.
--/
 
 -- ============================================================================
 -- Part XV: Eliminating vandermondeProduct_sq_eq Axiom
@@ -1984,5 +1571,414 @@ theorem vandermondeProduct_sq_eq_proved :
   push_cast; norm_num
 
 end VandermondeElimination
+
+-- Section E: Axiom Replacement Summary
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-
+### Current State
+
+**gal_card_dvd_60** (axiom): Fintype.card q.Gal ∣ 60
+
+**Decomposition** (this Part):
+  gal_card_dvd_60 = gal_card_dvd_60_of_all_even (PROVED) + all_gal_signs_positive (GAP)
+
+**all_gal_signs_positive** (replacing axiom):
+  ∀ σ : q.Gal, galSign σ = 1
+
+This gap requires:
+  1. disc(q) = vandermondeProduct² (discriminant = Vandermonde² identity, not in Mathlib)
+  2. vandermondeProduct² = (algebraMap ℚ _ 32000)² (from 1 + trinomial_disc_computation)
+  3. vandermondeProduct = ±algebraMap ℚ _ 32000 (from 2 + domain property)
+  4. σ(vandermondeProduct) = vandermondeProduct (from 3, since σ fixes ℚ)
+  5. σ(vandermondeProduct) = galSign σ • vandermondeProduct (Vandermonde permutation)
+  6. galSign σ = 1 (from 4, 5, vandermondeProduct_ne_zero)
+
+Step 1 is the ONLY remaining mathematical gap — everything else is provable
+from existing Mathlib infrastructure.
+
+### Comparison
+
+| Before (1 opaque axiom) | After (1 transparent gap) |
+|--------------------------|---------------------------|
+| gal_card_dvd_60: |Gal| ∣ 60 | disc(q) = Δ² (discriminant identity) |
+| Requires: disc↔alternating theory | Requires: Res(f,f') = ∏(rᵢ-rⱼ)² |
+| Hard to verify independently | Standard textbook identity |
+-/
+
+-- ============================================================================
+-- Part XIV: Vandermonde Permutation Argument (Steps 2–6)
+-- ============================================================================
+
+/-
+## Proving all_gal_signs_positive from vandermondeProduct_sq_eq
+
+This Part formalizes Steps 2–6 of the Vandermonde argument outlined in Part XIII.
+Combined with gal_card_dvd_60_of_all_even (Part XIII), this proves gal_card_dvd_60
+from a single transparent axiom about disc(q) = Δ².
+
+### Axiom Replacement
+
+**Before**: axiom gal_card_dvd_60 : |Gal| ∣ 60 (opaque — why does it divide 60?)
+**After**: axiom vandermondeProduct_sq_eq : Δ² = algebraMap ℤ F 1024000000
+          (transparent — disc(q) = Δ² is a standard identity for monic polynomials)
+
+The axiom at line ~293 remains for file ordering, but is now DERIVABLE:
+  vandermondeProduct_sq_eq → all_gal_signs_positive → gal_card_dvd_60_proved
+-/
+
+-- Step 1: Transparent axiom (disc(q) = Δ²)
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- **PROVED**: Δ² = disc(q) = 1024000000 = 32000² in the splitting field.
+
+    Proved via ℂ embedding + Sophie Germain identity (see Part XV above).
+    Previously an axiom, now derived from `vandermondeProduct_sq_eq_proved`. -/
+theorem vandermondeProduct_sq_eq :
+    vandermondeProduct ^ 2 = algebraMap ℤ q.SplittingField 1024000000 :=
+  vandermondeProduct_sq_eq_proved
+
+-- Step 2: Δ² = (algebraMap ℤ F 32000)²
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- disc(q) = 32000² as an algebraMap equality. -/
+theorem algebraMap_disc_eq :
+    algebraMap ℤ q.SplittingField 1024000000 =
+    (algebraMap ℤ q.SplittingField 32000) ^ 2 := by
+  rw [← map_pow]; norm_num
+
+/-- Δ² = (algebraMap ℤ F 32000)² in the splitting field. -/
+theorem vandermondeProduct_sq_eq_32000_sq :
+    vandermondeProduct ^ 2 = (algebraMap ℤ q.SplittingField 32000) ^ 2 := by
+  rw [vandermondeProduct_sq_eq, algebraMap_disc_eq]
+
+-- Step 3: Δ = ±32000, hence Δ ∈ ℚ
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- In the splitting field (a domain), Δ² = a² implies Δ = a or Δ = -a. -/
+theorem vandermondeProduct_eq_pm_32000 :
+    vandermondeProduct = algebraMap ℤ q.SplittingField 32000 ∨
+    vandermondeProduct = -(algebraMap ℤ q.SplittingField 32000) := by
+  have h := vandermondeProduct_sq_eq_32000_sq
+  have hsub : vandermondeProduct ^ 2 - (algebraMap ℤ q.SplittingField 32000) ^ 2 = 0 :=
+    sub_eq_zero.mpr h
+  rw [sq_sub_sq] at hsub
+  rcases mul_eq_zero.mp hsub with h1 | h2
+  · -- vandermondeProduct + algebraMap 32000 = 0 → vandermondeProduct = -algebraMap 32000
+    right; exact eq_neg_of_add_eq_zero_left h1
+  · -- vandermondeProduct - algebraMap 32000 = 0 → vandermondeProduct = algebraMap 32000
+    left; exact sub_eq_zero.mp h2
+
+/-- Δ is in the range of algebraMap ℚ → SplittingField. -/
+theorem vandermondeProduct_in_rat_range :
+    vandermondeProduct ∈ Set.range (algebraMap ℚ q.SplittingField) := by
+  rcases vandermondeProduct_eq_pm_32000 with h | h
+  · exact ⟨32000, by rw [h]; simp [map_intCast]⟩
+  · exact ⟨-32000, by rw [h]; simp [map_intCast, map_neg]⟩
+
+-- Step 4: σ fixes Δ (since Δ ∈ ℚ and σ is an AlgEquiv over ℚ)
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- Every Galois automorphism fixes Δ. -/
+theorem gal_fixes_vandermondeProduct (σ : q.Gal) :
+    σ vandermondeProduct = vandermondeProduct := by
+  obtain ⟨d, hd⟩ := vandermondeProduct_in_rat_range
+  rw [← hd]
+  exact σ.commutes d
+
+-- Step 5: σ(Δ) = galSign(σ) · Δ (Vandermonde permutation)
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-
+## BLOCKER: Algebra SF SF typeclass diamond
+
+`gal_permutes_roots` requires `(σ • r).val = σ r.val` for the `galAction` MulAction.
+But `galAction` goes through `rootsEquivRoots`, which uses `mapRoots`, which applies
+`IsScalarTower.toAlgHom ℚ SF SF` (= algebraMap SF SF from the Gal algebra instance).
+
+There are TWO `Algebra SF SF` instances:
+1. `Algebra.id SF` — gives `algebraMap SF SF = RingHom.id SF`
+2. `Gal.instAlgebra...` — derived from `IsSplittingField.lift`, gives `algebraMap SF SF = ψ`
+   where ψ is some (non-constructive) Galois automorphism selected by Classical.choice.
+
+For `Algebra.id`, `mapRoots = id` and `(σ • r).val = σ r.val`.
+For the Gal instance, `mapRoots` applies ψ, and `(σ • r).val = ψ(σ(ψ⁻¹ r.val))`.
+
+The proof of `mapRoots_val` fails because `algebraMap_self_apply` uses `Algebra.id`
+while the goal uses the Gal instance. The two instances are propositionally but not
+definitionally equal, and proving their equality requires resolving the diamond at the
+level of `IsSplittingField.lift` (which uses Classical.choice).
+
+**Mathlib note**: The Mathlib comment on `Polynomial.Gal.restrict` says:
+"IsSplittingField.lift.toRingHom.toAlgebra =?= Algebra.id, which takes an extremely
+long time to resolve, causing timeouts."
+
+Possible fix: Prove `algebraMap SF SF = RingHom.id SF` for the Gal instance by showing
+that `IsSplittingField.lift` to the same field is the identity (requires algebraic
+closure / finite extension theory).
+-/
+
+theorem gal_permutes_roots (σ : q.Gal) (i : Fin 5) :
+    σ (rootEnum i) = rootEnum (galToPerm5 σ i) := by
+  -- galToPerm5 now uses galActionAux (direct Gal action on rootSet), so
+  -- (σ • r).val = σ r.val by definition of Set.MapsTo.restrict.
+  unfold rootEnum galToPerm5 galPermHomAux
+  simp only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulEquiv.coe_mk,
+    Equiv.toFun_as_coe, Equiv.permCongr_apply, Equiv.symm_apply_apply,
+    MulAction.toPermHom_apply]
+  rfl
+
+/-- Vandermonde matrix with permuted input = row-permuted Vandermonde. -/
+theorem vandermonde_comp_eq_submatrix
+    (v : Fin 5 → q.SplittingField) (π : Equiv.Perm (Fin 5)) :
+    Matrix.vandermonde (v ∘ π) = (Matrix.vandermonde v).submatrix π id := by
+  ext i j; simp [Matrix.vandermonde, Matrix.submatrix, Function.comp]
+
+/-- Vandermonde permutation: det(V(v ∘ π)) = sign(π) · det(V(v)). -/
+theorem vandermonde_perm_det
+    (v : Fin 5 → q.SplittingField) (π : Equiv.Perm (Fin 5)) :
+    (Matrix.vandermonde (v ∘ π)).det =
+    ↑↑(Equiv.Perm.sign π) * (Matrix.vandermonde v).det := by
+  rw [vandermonde_comp_eq_submatrix]
+  exact Matrix.det_permute π (Matrix.vandermonde v)
+
+/-- σ maps the Vandermonde matrix entry-wise according to root permutation. -/
+theorem gal_map_vandermonde_entry (σ : q.Gal) (i j : Fin 5) :
+    σ ((Matrix.vandermonde rootEnum) i j) =
+    (Matrix.vandermonde (rootEnum ∘ galToPerm5 σ)) i j := by
+  simp only [Matrix.vandermonde, Matrix.of_apply, Function.comp]
+  rw [map_pow]
+  congr 1
+  exact gal_permutes_roots σ i
+
+/-- σ(Δ) = galSign(σ) · Δ — the Vandermonde permutation property for Galois.
+
+    This is the key identity: the Galois action on the Vandermonde determinant
+    equals the sign of the induced permutation times the determinant. -/
+theorem gal_acts_on_vandermondeProduct (σ : q.Gal) :
+    σ vandermondeProduct = ↑↑(galSign σ) * vandermondeProduct := by
+  -- Strategy: σ(det V) = det(V(rootEnum ∘ π)) = sign(π) · det(V)
+  unfold vandermondeProduct galSign
+  -- Split into two steps via transitivity
+  trans (Matrix.vandermonde (rootEnum ∘ galToPerm5 σ)).det
+  · -- Step 1+2: σ(det V) = det(V(rootEnum ∘ π))
+    -- Switch to ring hom form for map_det
+    change σ.toAlgHom.toRingHom (Matrix.vandermonde rootEnum).det =
+      (Matrix.vandermonde (rootEnum ∘ galToPerm5 σ)).det
+    rw [RingHom.map_det]
+    congr 1; ext i j
+    simp only [RingHom.mapMatrix_apply]
+    -- Switch back to AlgEquiv form for gal_map_vandermonde_entry
+    change σ ((Matrix.vandermonde rootEnum) i j) =
+      (Matrix.vandermonde (rootEnum ∘ galToPerm5 σ)) i j
+    exact gal_map_vandermonde_entry σ i j
+  · -- Step 3: det(V(rootEnum ∘ π)) = sign(π) · det(V)
+    exact vandermonde_perm_det rootEnum (galToPerm5 σ)
+
+-- Step 6: galSign(σ) = 1 for all σ
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- **All Galois signs are positive**: every σ ∈ Gal(q) acts as an even
+    permutation on the five roots of q.
+
+    Proof: σ(Δ) = Δ (Step 4) and σ(Δ) = sign(σ)·Δ (Step 5).
+    So sign(σ)·Δ = Δ, and since Δ ≠ 0, sign(σ) = 1. -/
+theorem all_gal_signs_positive : ∀ σ : q.Gal, galSign σ = 1 := by
+  intro σ
+  have h_fix := gal_fixes_vandermondeProduct σ
+  have h_sign := gal_acts_on_vandermondeProduct σ
+  have h_ne := vandermondeProduct_ne_zero
+  -- sign(σ) · Δ = Δ with Δ ≠ 0
+  have heq : ↑↑(galSign σ) * vandermondeProduct = vandermondeProduct := by
+    rw [← h_sign]; exact h_fix
+  -- Therefore (sign(σ) - 1) · Δ = 0
+  have hsub : (↑↑(galSign σ) - 1) * vandermondeProduct = 0 := by
+    rw [sub_mul, heq, one_mul, sub_self]
+  -- Since Δ ≠ 0 (domain): sign(σ) - 1 = 0, i.e., ↑↑(galSign σ) = 1
+  have hval : (↑↑(galSign σ) : q.SplittingField) = 1 := by
+    rcases mul_eq_zero.mp hsub with h | h
+    · -- ↑↑(galSign σ) - 1 = 0 → ↑↑(galSign σ) = 1
+      exact sub_eq_zero.mp h
+    · exact absurd h h_ne
+  -- Convert from coercion equality to ℤˣ equality
+  -- galSign σ : ℤˣ, and ↑↑(galSign σ) = 1 in F (char 0) means (galSign σ).val = 1
+  have hval_int : (galSign σ).val = (1 : ℤ) := by
+    have : (↑((galSign σ).val) : q.SplittingField) = ↑(1 : ℤ) := hval
+    exact_mod_cast this
+  exact Units.ext hval_int
+
+-- Proved: gal_card_dvd_60 from transparent axiom
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- gal_card_dvd_60 proved from vandermondeProduct_sq_eq.
+    This shows the axiom at line ~293 is now DERIVABLE. -/
+theorem gal_card_dvd_60_proved : Fintype.card q.Gal ∣ 60 :=
+  gal_card_dvd_60_of_all_even all_gal_signs_positive
+
+-- ============================================================================
+-- Part XV: Galois Group Cardinality and A₅ Isomorphism
+-- (Moved after Vandermonde argument to use gal_card_dvd_60_proved)
+-- ============================================================================
+
+/-- The Galois group of q has exactly 60 elements (= |A₅|).
+
+    **PROVED** from axiom B + gal_card_dvd_60_proved + structural lemmas.
+    Uses only 2 axioms: vandermondeProduct_sq_eq and three_dvd_gal_card.
+
+    Proof: |Gal| | 60 (gal_card_dvd_60_proved) and 15 | |Gal| (from B + proved 5 | |Gal|)
+    gives |Gal| ∈ {15, 30, 60}. No S₅ subgroup of order 15 or 30 exists.
+    Therefore |Gal| = 60. ✓ -/
+theorem q_gal_card : Fintype.card q.Gal = 60 := by
+  have h15 : 15 ∣ Fintype.card q.Gal :=
+    Nat.Coprime.mul_dvd_of_dvd_of_dvd (by norm_num : Nat.Coprime 3 5)
+      three_dvd_gal_card five_dvd_gal_card
+  have h_dvd := gal_card_dvd_60_proved
+  have hne15 := gal_card_ne_15
+  have hne30 := gal_card_ne_30
+  obtain ⟨k, hk⟩ := h15
+  have hk_pos : 0 < k := by
+    have hpos : 0 < Fintype.card q.Gal := Fintype.card_pos
+    rw [hk] at hpos; omega
+  have hk_dvd : k ∣ 4 := by
+    rw [hk] at h_dvd
+    exact Nat.dvd_of_mul_dvd_mul_left (by norm_num : 0 < 15) h_dvd
+  have hk_le : k ≤ 4 := Nat.le_of_dvd (by norm_num) hk_dvd
+  have hk_ne1 : k ≠ 1 := fun h => by rw [h, Nat.mul_one] at hk; exact hne15 hk
+  have hk_ne2 : k ≠ 2 := fun h => by subst h; norm_num at hk; exact hne30 hk
+  interval_cases k <;> simp_all
+
+/-- **A₅ Realizability Theorem**
+
+    There exists a Galois extension K/ℚ with exactly 60 automorphisms
+    (= |A₅|). Specifically, K = SplittingField(X⁵ - 5X⁴ + 10X³ - 10X² + 25X - 5).
+
+    This is the first non-solvable group realized in our formalization,
+    extending the Inverse Galois Problem beyond Shafarevich's theorem. -/
+theorem a5_realizable :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K),
+      Fintype.card (K ≃ₐ[ℚ] K) = 60 :=
+  ⟨q.SplittingField,
+    inferInstance, inferInstance, inferInstance, IsGalois.mk,
+    q_gal_card⟩
+
+/-- The splitting field of q has ℚ-dimension 60. -/
+theorem splitting_field_q_finrank :
+    Module.finrank ℚ q.SplittingField = 60 := by
+  have hcard_eq_nat : Nat.card q.Gal = Module.finrank ℚ q.SplittingField :=
+    Polynomial.Gal.card_of_separable q_separable
+  rw [Nat.card_eq_fintype_card] at hcard_eq_nat
+  rw [← hcard_eq_nat]
+  exact q_gal_card
+
+-- ============================================================================
+-- Part XVI: Galois Group Isomorphism with A₅
+-- ============================================================================
+
+/-
+Since |Gal(q/ℚ)| = 60 = |Perm(rootSet)|/2 and Gal embeds into S₅ = Perm(rootSet)
+via galActionHom, the image has index 2 in S₅. The unique subgroup of index 2
+in S₅ is A₅ (the kernel of the sign homomorphism). Therefore Gal ≅ A₅.
+-/
+
+/-- |Gal| = 60 and 120 = 5!, so Gal has index 2 in S₅. -/
+theorem gal_has_index_two : 2 * Fintype.card q.Gal = 120 := by
+  rw [q_gal_card]
+
+/-- The Galois group of q is isomorphic to A₅ (= alternatingGroup (Fin 5)).
+
+    **Proof strategy**: Compose galActionHom with permCongr to get an injection
+    φ : Gal →* Perm(Fin 5). Since |Gal| = 60 and |Perm(Fin 5)| = 120,
+    the image φ.range has index 2. By Mathlib's
+    `Equiv.Perm.eq_alternatingGroup_of_index_eq_two`, φ.range = alternatingGroup(Fin 5).
+    Therefore Gal ≅ φ.range ≅ A₅. -/
+theorem q_gal_iso_a5 :
+    Nonempty (q.Gal ≃* alternatingGroup (Fin 5)) := by
+  -- Step 1: Build composite injection Gal →* Perm(Fin 5)
+  -- Equivalence rootSet ≃ Fin 5 (since |rootSet| = 5)
+  let rootEquiv : q.rootSet q.SplittingField ≃ Fin 5 :=
+    Fintype.equivOfCardEq (by rw [q_rootSet_card, Fintype.card_fin])
+  -- MulEquiv Perm(rootSet) ≃* Perm(Fin 5) via conjugation
+  let permEquiv : Equiv.Perm (q.rootSet q.SplittingField) ≃* Equiv.Perm (Fin 5) :=
+    { toEquiv := Equiv.permCongr rootEquiv
+      map_mul' := fun σ τ => by
+        ext x; simp [Equiv.permCongr_apply, Equiv.Perm.mul_apply] }
+  -- Composite: Gal →* Perm(Fin 5)
+  let φ := permEquiv.toMonoidHom.comp (Polynomial.Gal.galActionHom q q.SplittingField)
+  -- Step 2: φ is injective
+  have hinj : Function.Injective φ :=
+    permEquiv.injective.comp (Polynomial.Gal.galActionHom_injective q q.SplittingField)
+  -- Step 3: φ.range has index 2 in Perm(Fin 5)
+  have hindex : φ.range.index = 2 := by
+    have hlagrange := Subgroup.card_mul_index φ.range
+    -- |φ.range| = |Gal| = 60 via the bijection Gal ≃ φ.range
+    have hrange : Nat.card φ.range = 60 := by
+      have hbij : Function.Bijective φ.rangeRestrict :=
+        ⟨fun a b h => hinj (congrArg Subtype.val h), φ.rangeRestrict_surjective⟩
+      rw [show Nat.card φ.range = Nat.card q.Gal from
+        (Nat.card_congr (Equiv.ofBijective _ hbij).symm)]
+      rw [Nat.card_eq_fintype_card, q_gal_card]
+    -- |Perm(Fin 5)| = 120
+    have hperm : Nat.card (Equiv.Perm (Fin 5)) = 120 := by
+      rw [Nat.card_eq_fintype_card, Fintype.card_perm, Fintype.card_fin]
+      norm_num
+    rw [hrange, hperm] at hlagrange; omega
+  -- Step 4: The unique index-2 subgroup of S₅ is A₅ (Mathlib)
+  have heq : φ.range = alternatingGroup (Fin 5) :=
+    Equiv.Perm.eq_alternatingGroup_of_index_eq_two hindex
+  -- Step 5: Construct MulEquiv: Gal ≃* φ.range ≃* A₅
+  exact ⟨(MulEquiv.ofBijective φ.rangeRestrict
+    ⟨fun a b h => hinj (congrArg Subtype.val h),
+     φ.rangeRestrict_surjective⟩).trans (MulEquiv.subgroupCongr heq)⟩
+
+/-- **A₅ Realizability (Isomorphism Version)**
+
+    A₅ is realizable as a Galois group over ℚ, with explicit isomorphism. -/
+theorem a5_realizable_iso :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K),
+      Nonempty (alternatingGroup (Fin 5) ≃* (K ≃ₐ[ℚ] K)) :=
+  ⟨q.SplittingField,
+    inferInstance, inferInstance, inferInstance, IsGalois.mk,
+    q_gal_iso_a5.map MulEquiv.symm⟩
+
+-- ============================================================================
+-- Part XVII: Non-Solvability — Beyond Shafarevich
+-- ============================================================================
+
+/-- The Galois group we constructed is not solvable.
+    This shows the realization goes beyond Shafarevich's theorem.
+
+    Proof: Gal ≅ A₅ (via q_gal_iso_a5), and A₅ is not solvable.
+    Transfer non-solvability through the MulEquiv. -/
+theorem gal_not_solvable : ¬IsSolvable q.Gal := by
+  intro h
+  obtain ⟨e⟩ := q_gal_iso_a5
+  haveI := h
+  exact a5_not_solvable (solvable_of_surjective
+    (f := e.toMonoidHom) (fun b => ⟨e.symm b, e.apply_symm_apply b⟩))
+
+
+/-
+### Summary — Axiom Elimination Complete
+
+**Result**: The axiom gal_card_dvd_60 has been ELIMINATED.
+It is now proved as gal_card_dvd_60_proved from the single transparent axiom
+vandermondeProduct_sq_eq, which asserts disc(f) = Δ² for monic polynomials.
+
+**Axiom budget** for InverseGaloisA5.lean:
+  Before elimination: gal_card_dvd_60 + three_dvd_gal_card = 2 axioms (opaque)
+  After elimination:  vandermondeProduct_sq_eq + three_dvd_gal_card = 2 axioms
+                      (vandermondeProduct_sq_eq is transparent — disc = Δ² is standard)
+
+**Total axiom declarations in this file**: 2
+  - vandermondeProduct_sq_eq: Δ² = disc(q) in splitting field (transparent)
+  - three_dvd_gal_card: 3 | |Gal(q)| (Dedekind's theorem)
+
+**Remaining gap**: vandermondeProduct_sq_eq requires connecting Polynomial.disc
+(resultant Res(f,f')) with Matrix.det_vandermonde (∏_{i<j}(rⱼ-rᵢ)). This is
+a standard identity but not yet available in Mathlib.
+-/
+
 
 end InverseGaloisA5
