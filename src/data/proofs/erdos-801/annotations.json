@@ -9,7 +9,8 @@
     "mathContext": "The formalization uses Mathlib's `SimpleGraph (Fin n)` to represent finite graphs on $n$ vertices. The $\\log n$ factor in the edge bound requires `Real.log`, and tightness results use `Filter.atTop` for eventually-for-large-$n$ quantification.",
     "significance": "supporting",
     "relatedConcepts": ["SimpleGraph", "Finset", "Real.log", "Filter.atTop"],
-    "prerequisites": ["Lean 4 imports", "Mathlib graph theory", "real analysis"]
+    "prerequisites": ["Lean 4 imports", "Mathlib graph theory", "real analysis"],
+    "tags": ["lean4-imports", "mathlib-setup", "graph-framework", "namespace-management"]
   },
   {
     "id": "ann-e801-definitions",
@@ -21,7 +22,8 @@
     "mathContext": "$\\alpha(G) = \\max\\{|S| : S \\subseteq V,\\; S \\text{ independent}\\}$. The induced edge count $e_G(S) = |\\{\\{u,v\\} \\in E(G) : u, v \\in S\\}|$ is computed via ordered pairs with $u < v$ to avoid double-counting. All definitions are `noncomputable` due to `sSup` and `Finset.filter` over decidable propositions.",
     "significance": "critical",
     "relatedConcepts": ["sSup", "SimpleGraph.IsIndependent", "Finset.filter", "Finset.product (×ˢ)"],
-    "prerequisites": ["SimpleGraph (Fin n)", "Finset cardinality", "sSup on ℕ"]
+    "prerequisites": ["SimpleGraph (Fin n)", "Finset cardinality", "sSup on ℕ"],
+    "tags": ["independence-number", "induced-edges", "graph-definitions", "finite-combinatorics"]
   },
   {
     "id": "ann-e801-statement",
@@ -33,7 +35,8 @@
     "mathContext": "The problem asserts: $\\alpha(G) \\leq \\sqrt{n} \\implies \\exists S \\subseteq V,\\; |S| \\leq \\sqrt{n},\\; e(S) \\geq c\\sqrt{n}\\log n$. This is a local-global phenomenon: a global constraint (small $\\alpha$) forces a locally dense subgraph. The $\\sqrt{n}\\log n$ edge count in a set of $\\sqrt{n}$ vertices corresponds to average degree $\\Theta(\\log n)$ within $S$.",
     "significance": "critical",
     "relatedConcepts": ["Nat.sqrt", "Real.sqrt", "Real.log", "local density", "independence number"],
-    "prerequisites": ["independenceNumber", "inducedEdges", "HasBoundedIndependence"]
+    "prerequisites": ["independenceNumber", "inducedEdges", "HasBoundedIndependence"],
+    "tags": ["problem-statement", "local-density", "extremal-combinatorics", "erdos-problem"]
   },
   {
     "id": "ann-e801-alon",
@@ -45,7 +48,8 @@
     "mathContext": "Alon (1996) proved this in 'Independence numbers of locally sparse graphs and a Ramsey type problem.' The key probabilistic argument: if $\\alpha(G) \\leq \\sqrt{n}$, then by Ramsey theory $e(G) = \\Omega(n \\log n)$. Random $\\sqrt{n}$-subsets inherit a proportional fraction of edges, yielding the $\\sqrt{n}\\log n$ bound after concentration.",
     "significance": "critical",
     "relatedConcepts": ["probabilistic method", "Ramsey theory", "concentration inequalities", "random subsets"],
-    "prerequisites": ["Erdos801Statement", "expected value of induced edges", "Ramsey bounds"]
+    "prerequisites": ["Erdos801Statement", "expected value of induced edges", "Ramsey bounds"],
+    "tags": ["probabilistic-method", "ramsey-theory", "alon-1996", "random-subsets"]
   },
   {
     "id": "ann-e801-log-necessary",
@@ -57,7 +61,8 @@
     "mathContext": "The lower bound construction uses graphs where edges are distributed uniformly enough that no $\\sqrt{n}$-vertex subset is significantly denser than average. Paley graphs $P(p)$ (adjacency iff difference is a quadratic residue) achieve $\\alpha(P) = O(\\sqrt{p}\\log p)$ and near-uniform edge distribution.",
     "significance": "key",
     "relatedConcepts": ["tightness", "Paley graphs", "random Cayley graphs", "uniform edge distribution"],
-    "prerequisites": ["Erdos801Statement", "HasBoundedIndependence", "inducedEdges"]
+    "prerequisites": ["Erdos801Statement", "HasBoundedIndependence", "inducedEdges"],
+    "tags": ["tightness", "paley-graphs", "lower-bound-construction", "extremal-sharpness"]
   },
   {
     "id": "ann-e801-vertex-optimal",
@@ -69,7 +74,8 @@
     "mathContext": "If $|S| = \\varepsilon\\sqrt{n}$, the expected induced edges in a random $G$ with $e(G) = \\Theta(n\\log n)$ are $\\Theta(\\varepsilon^2 \\sqrt{n}\\log n)$, which is $o(\\sqrt{n}\\log n)$ for $\\varepsilon \\ll 1$. The axiom shows this is not just an artifact of random graphs but holds for all graphs with the independence constraint.",
     "significance": "key",
     "relatedConcepts": ["Filter.atTop", "vertex budget", "sublinear subset size", "edge threshold"],
-    "prerequisites": ["HasBoundedIndependence", "inducedEdges", "Filter.Eventually"]
+    "prerequisites": ["HasBoundedIndependence", "inducedEdges", "Filter.Eventually"],
+    "tags": ["optimality", "vertex-budget", "asymptotic-analysis", "filter-eventually"]
   },
   {
     "id": "ann-e801-summary",
@@ -81,6 +87,7 @@
     "mathContext": "The summary captures a sharp result: $\\max_{|S| \\leq \\sqrt{n}} e(S) = \\Theta(\\sqrt{n}\\log n)$ when $\\alpha(G) \\leq \\sqrt{n}$. The lower bound is Alon's theorem; the upper bound is the tightness construction. This is optimal up to the constant $c$.",
     "significance": "critical",
     "relatedConcepts": ["sharp bounds", "conjunction of existence and tightness", "term-mode proof"],
-    "prerequisites": ["alon_1996", "log_factor_necessary"]
+    "prerequisites": ["alon_1996", "log_factor_necessary"],
+    "tags": ["summary-theorem", "sharp-bounds", "existence-and-tightness", "term-mode-proof"]
   }
 ]
