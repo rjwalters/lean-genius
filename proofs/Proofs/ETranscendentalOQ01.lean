@@ -10,6 +10,8 @@ import Mathlib.Algebra.Polynomial.Monic
 import Mathlib.Algebra.Polynomial.Degree.Definitions
 import Mathlib.Analysis.Real.Pi.Irrational
 import Mathlib.Tactic
+import Proofs.eTranscendental
+import Proofs.PiTranscendental
 
 /-!
 # Is e + π Transcendental? (Open Question)
@@ -66,14 +68,18 @@ to the depth of transcendental number theory.
 open Real
 
 -- ============================================================
--- PART 1: Foundational Axioms (Imported Facts)
+-- PART 1: Foundational Facts (Derived from eTranscendental/PiTranscendental)
 -- ============================================================
 
-/-- e is transcendental over ℚ (Hermite, 1873) -/
-axiom e_transcendental_q : Transcendental ℚ (Real.exp 1)
+/-- e is transcendental over ℚ (Hermite, 1873).
+    Derived from e_transcendental (ℤ) via IsFractionRing.isAlgebraic_iff. -/
+theorem e_transcendental_q : Transcendental ℚ (Real.exp 1) :=
+  e_transcendental_over_rationals
 
-/-- π is transcendental over ℚ (Lindemann, 1882) -/
-axiom pi_transcendental_q : Transcendental ℚ Real.pi
+/-- π is transcendental over ℚ (Lindemann, 1882).
+    Derived from pi_transcendental (ℤ) via IsFractionRing.isAlgebraic_iff. -/
+theorem pi_transcendental_q : Transcendental ℚ Real.pi :=
+  pi_transcendental_over_rationals
 
 -- ============================================================
 -- PART 2: Symmetric Polynomial Identity (Fully Proved)

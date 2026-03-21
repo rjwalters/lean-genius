@@ -42,7 +42,8 @@
     ],
     "dateAdded": "12/27/25",
     "wiedijkNumber": 83,
-    "axiomCount": 2
+    "axiomCount": 2,
+    "assumptions": "FriendshipTheorem.lean has 2 axioms (regularity and spectral). The spectral proof variant FriendshipTheoremOQ01.lean (1968 lines) has 0 axioms and 0 sorries — a fully verified spectral proof of the friendship theorem via characteristic polynomial analysis. The charpoly_eigenvalue_data axiom was ELIMINATED by wiring k_eq_two_no_axiom (proved via charpoly_quotient_product) into the main theorems."
   },
   "overview": {
     "historicalContext": "In 1966, Paul Erdős, Alfréd Rényi, and Vera T. Sós proved the Friendship Theorem in their paper 'On a problem of K. Zarankiewicz' (Acta Math. Hungar.). The theorem has a beautiful sociological interpretation: if in any group of people, every pair has exactly one mutual friend, then there must be a 'politician' who is friends with everyone.\n\nThe original 1966 proof uses spectral graph theory — analyzing eigenvalues of the adjacency matrix $A$ satisfying $A^2 = J - I + (k-1)A$ (for $k$-regular friendship graphs) to derive contradictions for non-windmill structures. This spectral approach, requiring linear algebra over the reals, was noted as surprisingly deep for such a clean combinatorial statement.\n\nSubsequent proofs avoided spectral methods: Herbert Wilf (1971) gave a purely combinatorial argument, and Craig Huneke (2002, American Mathematical Monthly) presented a slick algebraic proof accessible to undergraduates. The theorem is Wiedijk's #83 in the '100 theorems' list and appears in Proofs from THE BOOK.",

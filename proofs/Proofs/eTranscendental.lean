@@ -144,16 +144,11 @@ theorem e_lt_three : Real.exp 1 < 3 := by
     When formalized, this axiom would be replaced by a direct proof. -/
 axiom e_transcendental : Transcendental ℤ (Real.exp 1)
 
-/-- **Axiom: e is transcendental over ℚ**
-
-    Transcendental over ℤ implies transcendental over ℚ.
-    Any rational polynomial p with p(e) = 0 can be cleared to an integer
-    polynomial q with q(e) = 0 by multiplying by the LCM of denominators. -/
-axiom e_transcendental_over_rationals_axiom : Transcendental ℚ (Real.exp 1)
-
-/-- e is transcendental over ℚ (equivalent formulation) -/
+/-- e is transcendental over ℚ.
+    Derived from e_transcendental (over ℤ) via IsFractionRing.isAlgebraic_iff:
+    IsAlgebraic ℚ x ↔ IsAlgebraic ℤ x for the fraction ring ℤ ⊂ ℚ. -/
 theorem e_transcendental_over_rationals : Transcendental ℚ (Real.exp 1) :=
-  e_transcendental_over_rationals_axiom
+  fun halg => e_transcendental ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mp halg)
 
 -- ============================================================
 -- PART 5: Corollaries
