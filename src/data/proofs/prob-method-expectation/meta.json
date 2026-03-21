@@ -1,0 +1,131 @@
+{
+  "id": "prob-method-expectation",
+  "title": "First Moment Method (Probabilistic Method)",
+  "slug": "prob-method-expectation",
+  "description": "If E[X] > t, then some outcome exceeds t. Foundation of the probabilistic method, with Erdos's 1947 proof that R(k,k) >= 2^(k/2).",
+  "meta": {
+    "author": "Paul Erdos (1947), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Probabilistic_method",
+    "date": "1947",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/ProbMethodExpectation.lean",
+    "tags": [
+      "probabilistic-method",
+      "combinatorics",
+      "analysis",
+      "probability",
+      "intermediate"
+    ],
+    "badge": "formalized",
+    "sorries": 4,
+    "mathlibDependencies": [
+      {
+        "theorem": "MeasureTheory.Integral",
+        "description": "Lebesgue integration and expectation",
+        "module": "Mathlib.MeasureTheory.Integral.Lebesgue"
+      },
+      {
+        "theorem": "Probability.ProbabilityMassFunction",
+        "description": "Discrete probability mass functions",
+        "module": "Mathlib.Probability.ProbabilityMassFunction"
+      },
+      {
+        "theorem": "Combinatorics.SimpleGraph",
+        "description": "Simple graph definitions and coloring",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Finite combinatorial probability framework",
+      "First moment principle formalization",
+      "Linearity of expectation for Finset averages",
+      "R(k,k) >= 2^(k/2) via random coloring"
+    ],
+    "dateAdded": "03/21/26",
+    "axiomCount": 0
+  },
+  "overview": {
+    "historicalContext": "The probabilistic method is one of the most powerful techniques in combinatorics, pioneered by Paul Erdos beginning in 1947. The core idea is strikingly simple: to prove that an object with a desired property exists, show that a randomly chosen object has the property with positive probability. No explicit construction is needed.\n\nErdos's first major application was his 1947 proof that the Ramsey number R(k,k) grows at least exponentially: R(k,k) >= 2^(k/2). He colored the edges of the complete graph K_n randomly, showing that with positive probability no monochromatic K_k appears, thus proving the existence of such a coloring. This was revolutionary because it proved existence without construction.\n\nThe first moment method (or expectation argument) is the simplest incarnation of the probabilistic method. If a random variable X has E[X] > t, then X > t for at least one outcome in the sample space. Despite its simplicity, this principle yields deep results in graph theory, number theory, and combinatorial geometry.",
+    "problemStatement": "First Moment Principle: Let X be a random variable on a finite probability space. If $E[X] > t$, then $\\Pr[X > t] > 0$. In particular, there exists an outcome $\\omega$ with $X(\\omega) > t$.\n\nApplication (Erdos 1947): The Ramsey number satisfies $R(k,k) \\geq 2^{k/2}$. That is, there exists a 2-coloring of the edges of $K_n$ with no monochromatic $K_k$ whenever $n < 2^{k/2}$.",
+    "proofStrategy": "The formalization proceeds in layers:\n\n1. Define a finite probability framework using Finset-based averages, sidestepping the full measure-theoretic machinery for clean combinatorial reasoning.\n\n2. Prove the first moment principle: if the average value of a function over a finite set exceeds t, some element exceeds t. This is the discrete analogue of E[X] > t implies max X > t.\n\n3. Establish linearity of expectation for Finset sums, the workhorse property that makes the probabilistic method practical.\n\n4. Apply to Ramsey theory: count monochromatic K_k subgraphs in a random 2-coloring of K_n. By linearity, the expected number of monochromatic copies is C(n,k) * 2^(1-C(k,2)). When n < 2^(k/2), this expectation is less than 1, so some coloring has zero monochromatic K_k copies.",
+    "keyInsights": [
+      "The first moment principle converts a probabilistic statement (positive probability) into an existential one (some outcome works)",
+      "Linearity of expectation holds without any independence assumptions, making it universally applicable",
+      "The Ramsey application counts expected monochromatic cliques rather than constructing a good coloring directly",
+      "Finite combinatorial probability avoids measure-theoretic overhead while capturing the essential argument",
+      "The bound R(k,k) >= 2^(k/2) remained the best known lower bound for decades"
+    ]
+  },
+  "sections": [
+    {
+      "id": "introduction",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "Overview of the probabilistic method and the first moment principle.",
+      "mathContext": "The probabilistic method: to prove existence, show a random object has the desired property with positive probability. The first moment method is the simplest form: $E[X] > t$ implies $\\exists \\omega, X(\\omega) > t$."
+    },
+    {
+      "id": "finite-probability",
+      "title": "Finite Probability Framework",
+      "startLine": 27,
+      "endLine": 65,
+      "summary": "Definitions for finite probability spaces, expectation as Finset averages, and basic properties.",
+      "mathContext": "For a finite set $\\Omega$ and $f: \\Omega \\to \\mathbb{R}$, define $E[f] = \\frac{1}{|\\Omega|} \\sum_{\\omega \\in \\Omega} f(\\omega)$. This Finset-based definition avoids measure theory while supporting the key probabilistic arguments."
+    },
+    {
+      "id": "first-moment",
+      "title": "First Moment Principle",
+      "startLine": 67,
+      "endLine": 105,
+      "summary": "If the average exceeds a threshold, some element exceeds it. Dual: if the average is below a threshold, some element is below it.",
+      "mathContext": "First moment principle: if $E[f] > t$ over a nonempty finite set $\\Omega$, then $\\exists \\omega \\in \\Omega$ with $f(\\omega) > t$. Equivalently, $\\max_{\\omega} f(\\omega) \\geq E[f]$. The dual gives $\\min_{\\omega} f(\\omega) \\leq E[f]$."
+    },
+    {
+      "id": "linearity",
+      "title": "Linearity of Expectation",
+      "startLine": 107,
+      "endLine": 148,
+      "summary": "Linearity of expectation for finite sums, requiring no independence assumptions.",
+      "mathContext": "For any functions $f_1, \\ldots, f_m: \\Omega \\to \\mathbb{R}$, $E[\\sum_i f_i] = \\sum_i E[f_i]$. This holds regardless of dependencies between the $f_i$, which is what makes the probabilistic method so powerful."
+    },
+    {
+      "id": "ramsey-application",
+      "title": "Ramsey Application: R(k,k) >= 2^(k/2)",
+      "startLine": 150,
+      "endLine": 210,
+      "summary": "Erdos's 1947 proof that Ramsey numbers grow exponentially, via random 2-coloring of complete graphs.",
+      "mathContext": "Color edges of $K_n$ uniformly at random with 2 colors. For each $k$-subset $S$, let $X_S = 1$ if $S$ is monochromatic. Then $E[\\sum_S X_S] = \\binom{n}{k} \\cdot 2^{1-\\binom{k}{2}}$. When $n < 2^{k/2}$, this is less than 1, so by the first moment principle (dual form), some coloring has no monochromatic $K_k$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "prob-method-alteration",
+      "relationship": "extends",
+      "description": "The alteration method extends the first moment method by allowing a deterministic fix-up step after random construction"
+    },
+    {
+      "targetId": "prob-method-second-moment",
+      "relationship": "extends",
+      "description": "The second moment method provides concentration bounds beyond what the first moment method can achieve"
+    },
+    {
+      "targetId": "prob-method-lovasz-local",
+      "relationship": "extends",
+      "description": "The Lovasz Local Lemma handles dependencies that the simple first moment method cannot"
+    },
+    {
+      "targetId": "prob-method-applications",
+      "relationship": "used-by",
+      "description": "The first moment principle is used throughout the applications module for Ramsey bounds and chromatic number estimates"
+    }
+  ],
+  "conclusion": {
+    "summary": "The first moment method formalizes the simplest yet most fundamental technique of the probabilistic method: if the expected value of a quantity exceeds a threshold, some outcome must exceed it. Combined with linearity of expectation, this yields Erdos's celebrated 1947 lower bound R(k,k) >= 2^(k/2) on Ramsey numbers.",
+    "implications": "This formalization provides:\n\n**1. Foundation for the Probabilistic Method Library**\nThe finite probability framework and first moment principle serve as the base layer for the alteration method, second moment method, and Lovasz Local Lemma formalizations.\n\n**2. Ramsey Theory Bounds**\nThe exponential lower bound on diagonal Ramsey numbers is one of the most important results in combinatorics, and this formalization makes it machine-checkable.\n\n**3. Template for Counting Arguments**\nThe linearity-of-expectation technique demonstrated here applies to hundreds of combinatorial existence proofs.\n\n**4. Bridge to Erdos Problems**\nMany Erdos problems in the gallery involve probabilistic method arguments, and this library provides the formal tools to attack them.",
+    "openQuestions": [
+      "Can the framework extend to infinite probability spaces?",
+      "What is the tightest Ramsey bound achievable via the first moment method alone?"
+    ]
+  }
+}
