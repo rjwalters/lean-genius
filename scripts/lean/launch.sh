@@ -1121,12 +1121,30 @@ get_agent_type() {
 
 # Helper: Respawn a single agent by session name
 # Kills the old tmux session and spawns a fresh agent in its slot
+# Runs in a subshell to prevent errors from killing the daemon (set -e)
 respawn_agent() {
     local session="$1"
     local agent_type
     agent_type=$(get_agent_type "$session")
 
     daemon_log "INFO" "Respawning $agent_type agent (session: $session)"
+
+    # Run the actual respawn in a subshell so git/tmux errors don't
+    # propagate to the daemon loop via set -e
+    ( _do_respawn_agent "$session" "$agent_type" )
+    local rc=$?
+    if [[ $rc -ne 0 ]]; then
+        daemon_log "WARN" "Respawn of $session failed (exit code $rc), will retry next cycle"
+        return 1
+    fi
+    set_last_respawn "$session" "$(date +%s)"
+    return 0
+}
+
+# Internal: actual respawn logic (runs in subshell for error isolation)
+_do_respawn_agent() {
+    local session="$1"
+    local agent_type="$2"
 
     # Kill old session and its processes
     kill_session_processes "$session"
@@ -1263,8 +1281,6 @@ respawn_agent() {
             daemon_log "WARN" "Unknown agent type for session: $session"
             ;;
     esac
-
-    set_last_respawn "$session" "$(date +%s)"
 }
 
 # Helper: Kill a stuck agent and respawn it
@@ -1272,7 +1288,7 @@ kill_and_respawn() {
     local session="$1"
     daemon_log "WARN" "Force-killing stuck session: $session"
     kill_session_processes "$session"
-    respawn_agent "$session"
+    respawn_agent "$session" || daemon_log "WARN" "Failed to respawn $session after kill (will retry next cycle)"
 }
 
 # Helper: Check if respawn cooldown has elapsed for a session
@@ -1575,8 +1591,9 @@ cmd_daemon() {
                     completed_count=$((completed_count + 1))
                     if is_cooldown_elapsed "$session"; then
                         daemon_log "INFO" "Agent $session COMPLETED, respawning..."
-                        respawn_agent "$session"
-                        cycle_respawns=$((cycle_respawns + 1))
+                        if respawn_agent "$session"; then
+                            cycle_respawns=$((cycle_respawns + 1))
+                        fi
                     else
                         local last
                         last=$(get_last_respawn "$session")
@@ -1590,8 +1607,9 @@ cmd_daemon() {
                     stuck_count=$((stuck_count + 1))
                     if is_cooldown_elapsed "$session"; then
                         daemon_log "WARN" "Agent $session STUCK, killing and respawning..."
-                        kill_and_respawn "$session"
-                        cycle_respawns=$((cycle_respawns + 1))
+                        if kill_and_respawn "$session"; then
+                            cycle_respawns=$((cycle_respawns + 1))
+                        fi
                     else
                         local last
                         last=$(get_last_respawn "$session")
@@ -1654,9 +1672,10 @@ cmd_daemon() {
                 [[ $missing_enricher -le 0 ]] && break
                 if ! tmux has-session -t "enricher-$i" 2>/dev/null; then
                     if is_cooldown_elapsed "enricher-$i"; then
-                        respawn_agent "enricher-$i"
-                        total_respawns=$((total_respawns + 1))
-                        missing_enricher=$((missing_enricher - 1))
+                        if respawn_agent "enricher-$i"; then
+                            total_respawns=$((total_respawns + 1))
+                            missing_enricher=$((missing_enricher - 1))
+                        fi
                     fi
                 fi
             done
@@ -1669,9 +1688,10 @@ cmd_daemon() {
                 [[ $missing_res -le 0 ]] && break
                 if ! tmux has-session -t "researcher-$i" 2>/dev/null; then
                     if is_cooldown_elapsed "researcher-$i"; then
-                        respawn_agent "researcher-$i"
-                        total_respawns=$((total_respawns + 1))
-                        missing_res=$((missing_res - 1))
+                        if respawn_agent "researcher-$i"; then
+                            total_respawns=$((total_respawns + 1))
+                            missing_res=$((missing_res - 1))
+                        fi
                     fi
                 fi
             done
@@ -1679,25 +1699,29 @@ cmd_daemon() {
 
         if [[ $aristotle_active -lt $aristotle ]] && is_cooldown_elapsed "aristotle-agent"; then
             daemon_log "INFO" "Pool gap: aristotle has 0/$aristotle, spawning"
-            respawn_agent "aristotle-agent"
-            total_respawns=$((total_respawns + 1))
+            if respawn_agent "aristotle-agent"; then
+                total_respawns=$((total_respawns + 1))
+            fi
         fi
 
         if [[ $seeker_active -lt $seeker ]] && is_cooldown_elapsed "seeker-agent"; then
             daemon_log "INFO" "Pool gap: seeker has 0/$seeker, spawning"
-            respawn_agent "seeker-agent"
-            total_respawns=$((total_respawns + 1))
+            if respawn_agent "seeker-agent"; then
+                total_respawns=$((total_respawns + 1))
+            fi
         fi
 
         if [[ $deployer_active -lt $deployer ]] && is_cooldown_elapsed "deployer"; then
             daemon_log "INFO" "Pool gap: deployer has 0/$deployer, spawning"
-            respawn_agent "deployer"
-            total_respawns=$((total_respawns + 1))
+            if respawn_agent "deployer"; then
+                total_respawns=$((total_respawns + 1))
+            fi
         fi
         if [[ $herald_active -lt $herald ]] && is_cooldown_elapsed "herald-agent"; then
             daemon_log "INFO" "Pool gap: herald has 0/$herald, spawning"
-            respawn_agent "herald-agent"
-            total_respawns=$((total_respawns + 1))
+            if respawn_agent "herald-agent"; then
+                total_respawns=$((total_respawns + 1))
+            fi
         fi
 
         # 3. Work queue assessment (with timeout protection)
@@ -1713,8 +1737,9 @@ cmd_daemon() {
         if [[ $aristotle_active -eq 0 ]] && [[ "$aristotle_jobs" -gt 0 || "$aristotle_candidates" -gt 0 ]]; then
             if is_cooldown_elapsed "aristotle-agent"; then
                 daemon_log "INFO" "Auto-spawning Aristotle: $aristotle_jobs pending jobs, $aristotle_candidates candidates"
-                respawn_agent "aristotle-agent"
-                total_respawns=$((total_respawns + 1))
+                if respawn_agent "aristotle-agent"; then
+                    total_respawns=$((total_respawns + 1))
+                fi
             fi
         fi
 
