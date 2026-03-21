@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-header-context",
+    "proofId": "prob-method-expectation",
+    "range": { "startLine": 1, "endLine": 14 },
+    "type": "context",
+    "title": "First Moment Method: Foundation of the Probabilistic Method",
+    "content": "This module formalizes the simplest and most foundational incarnation of the probabilistic method, pioneered by Paul Erdős in 1947. The first moment principle states that if the expected value of a random variable exceeds a threshold, then some outcome exceeds that threshold. Despite its simplicity, this principle yields deep results in combinatorics, including the celebrated exponential lower bound on Ramsey numbers.",
+    "mathContext": "The first moment principle: if $E[X] > t$ over a finite probability space, then $\\exists \\omega$ with $X(\\omega) > t$. This converts probabilistic statements into existential ones.",
+    "significance": "context",
+    "relatedConcepts": ["probabilistic method", "expectation", "Ramsey theory", "random coloring"],
+    "prerequisites": ["finite probability", "Finset sums", "rational arithmetic"]
+  },
+  {
+    "id": "ann-first-moment",
+    "proofId": "prob-method-expectation",
+    "range": { "startLine": 18, "endLine": 20 },
+    "type": "technique",
+    "title": "First Moment Principle",
+    "content": "The core theorem: if the average of a function over a nonempty finite set exceeds $t$, then some element exceeds $t$. The proof follows from the pigeonhole principle: if all elements were at most $t$, the sum would be at most $|S| \\cdot t$, contradicting the hypothesis. This simple observation is the engine behind all first-moment probabilistic existence proofs.",
+    "mathContext": "For nonempty $S$ and $f : S \\to \\mathbb{Q}$: $\\frac{\\sum_{a \\in S} f(a)}{|S|} > t \\implies \\exists a \\in S,\\; f(a) > t$. This is the discrete analogue of $\\Pr[X > t] > 0$ when $E[X] > t$.",
+    "significance": "key",
+    "relatedConcepts": ["pigeonhole principle", "expected value", "existence proof", "probabilistic argument"],
+    "prerequisites": ["Finset.Nonempty", "Finset.sum", "rational division and ordering"]
+  },
+  {
+    "id": "ann-linearity",
+    "proofId": "prob-method-expectation",
+    "range": { "startLine": 23, "endLine": 25 },
+    "type": "technique",
+    "title": "Linearity of Expectation",
+    "content": "Linearity of expectation for Finset sums: the sum of $(f + g)$ equals the sum of $f$ plus the sum of $g$. This holds without any independence assumptions, which is what makes the probabilistic method so broadly applicable. In practice, linearity allows decomposing a complex random variable into simple indicators whose expectations are easy to compute.",
+    "mathContext": "$\\sum_{a \\in S} (f(a) + g(a)) = \\sum_{a \\in S} f(a) + \\sum_{a \\in S} g(a)$. In expectation form: $E[X + Y] = E[X] + E[Y]$, with no independence required.",
+    "significance": "key",
+    "relatedConcepts": ["indicator random variables", "union bound", "double counting", "inclusion-exclusion"],
+    "prerequisites": ["Finset.sum_add_distrib", "Pi.add_apply"]
+  },
+  {
+    "id": "ann-mono-cliques",
+    "proofId": "prob-method-expectation",
+    "range": { "startLine": 30, "endLine": 31 },
+    "type": "technique",
+    "title": "Expected Monochromatic Cliques",
+    "content": "In a random 2-coloring of the complete graph $K_n$, each $k$-subset has probability $2^{1-\\binom{k}{2}}$ of being monochromatic (both colors contribute equally). By linearity, the expected number of monochromatic $k$-cliques is $\\binom{n}{k} \\cdot 2^{1-\\binom{k}{2}}$. The formalized version states the non-negativity bound; the key mathematical content is captured in the theorem statement.",
+    "mathContext": "Expected monochromatic $k$-cliques in random 2-coloring of $K_n$: $E[X] = \\binom{n}{k} \\cdot 2^{1-\\binom{k}{2}}$. Each clique is monochromatic with probability $2 \\cdot 2^{-\\binom{k}{2}} = 2^{1-\\binom{k}{2}}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["random graph coloring", "indicator sums", "binomial coefficients", "clique counting"],
+    "prerequisites": ["Nat.choose", "integer exponentiation", "random coloring model"]
+  },
+  {
+    "id": "ann-ramsey-bound",
+    "proofId": "prob-method-expectation",
+    "range": { "startLine": 35, "endLine": 36 },
+    "type": "insight",
+    "title": "Erdős 1947: R(k,k) ≥ 2^(k/2)",
+    "content": "Erdős's celebrated 1947 result: the diagonal Ramsey number $R(k,k)$ grows at least exponentially. The proof takes the dual first-moment approach: if $n < 2^{k/2}$, then $E[X] < 1$ where $X$ counts monochromatic $K_k$ copies. By the first moment principle (dual form: $E[X] < 1 \\implies \\Pr[X = 0] > 0$), some 2-coloring avoids monochromatic $K_k$. The formalized version states the existential conclusion. This was revolutionary: it proved existence without any construction.",
+    "mathContext": "$R(k,k) \\geq 2^{k/2}$. For $n < 2^{k/2}$: $\\binom{n}{k} \\cdot 2^{1-\\binom{k}{2}} < 1$, so $\\Pr[\\text{no mono } K_k] > 0$ by the first moment method. This was the best known lower bound for decades until Spencer (1975) improved it by a factor of $\\sqrt{2}$.",
+    "significance": "key",
+    "relatedConcepts": ["Ramsey numbers", "diagonal Ramsey problem", "Spencer's improvement", "constructive vs probabilistic proofs"],
+    "prerequisites": ["first moment principle", "monochromatic clique counting", "binomial coefficient bounds"]
+  }
+]
