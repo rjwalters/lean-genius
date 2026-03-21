@@ -3941,21 +3941,6 @@ structure FunctionalEquation where
   /-- Analytic rank (order of vanishing at s = 1) -/
   analytic_rank : ℕ
 
-/-- The root number determines the parity of the analytic rank:
-    ε = (-1)^{r_an}
-
-    If ε = -1: r_an is odd, so r_an ≥ 1, so L(E,1) = 0.
-    If ε = +1: r_an is even, so L(E,1) might be nonzero.
-
-    This follows from the functional equation Λ(f,s) = ε · Λ(f, 2-s):
-    evaluating at s = 1 gives L(E,1) = ε · L(E,1), so when ε = -1
-    we get L(E,1) = -L(E,1), hence L(E,1) = 0 and analytic_rank ≥ 1.
-    This argument requires the completed L-function having no poles
-    at s = 1, which is part of modularity. -/
-axiom root_number_parity (fe : FunctionalEquation)
-    (hminus : fe.root_number = -1) :
-    fe.analytic_rank ≥ 1
-
 /-- Modular parametrization: φ : X₀(N) → E.
 
     The modularity theorem gives a surjective morphism
@@ -4020,11 +4005,6 @@ structure RibetLevelLowering where
   hlower : lowered_level < original_level
   /-- No weight-2 newform of level 2 → contradiction -/
   no_level_2_form : Prop
-
-/-- There is no weight-2 newform of level 2.
-    (X₀(2) has genus 0, so S₂(Γ₀(2)) = 0.)
-    This is the final step in Ribet's proof of FLT assuming Shimura-Taniyama. -/
-axiom no_weight2_level2 : ∀ (f : ModularForm 2 2), f.toFun = 0
 
 end Modularity
 
@@ -5651,13 +5631,6 @@ def lambda_invariant (_ : LambdaModule Λ) : Nat := 0  -- abstract
     interpolating L(E,χ,1) for Dirichlet characters χ of p-power conductor -/
 def p_adic_L_function (_ : WeierstrassCurve ℤ) (_ : Nat) : Prop := True
 
-/-- The Iwasawa Main Conjecture for elliptic curves:
-    char(Sel(E/ℚ_cyc)^∨) = (Lₚ(E)) in Λ.
-    Proved by Skinner-Urban (2014) for ordinary primes with conditions.
-    This is captured by the IwasawaMainConjecture structure. -/
-axiom iwasawa_main_conjecture (E : EllipticCurveQ) :
-    ∃ (imc : IwasawaMainConjecture E), imc.p ≥ 3
-
 -- ═══════════════════════════════════════════════════════════════
 -- PART LIII: KOLYVAGIN'S EULER SYSTEM AND BSD FOR RANK ≤ 1
 -- ═══════════════════════════════════════════════════════════════
@@ -5751,7 +5724,6 @@ theorem bsd_current_status :
 -- Part LII: Iwasawa Theory
 #check IwasawaAlgebra
 #check LambdaModule
-#check iwasawa_main_conjecture
 -- Part LIII: Kolyvagin's Euler System
 #check HeegnerField
 #check gross_zagier_formula
@@ -6212,7 +6184,6 @@ end ArithmeticStatistics
 #check manin_constant_divides
 #check functional_equation_center
 #check conductor_exponent_bounds
-#check no_weight2_level2
 #check hasse_bound_squared
 #check part_lvi_summary
 #check bhargava_shankar_sel2
