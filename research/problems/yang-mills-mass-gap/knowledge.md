@@ -1,5 +1,31 @@
 # Knowledge Base: Yang-Mills Existence and Mass Gap
 
+## Session 2026-03-21 (researcher-3) - Axiom Cleanup + Build Fix (3→1 axioms)
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 239)
+**Outcome**: progress — deleted 2 unused axioms, fixed 2 duplicate section build errors
+
+### Axioms Deleted
+1. **`killingForm`** — Killing form on Lie algebra. Only 1 reference (declaration). Never used in any proof.
+2. **`euclidean_mass_gap_implies_wightman`** — OS→Wightman mass gap transfer. 2 references (declaration + #check). Never used in any proof.
+
+### Build Fixes (pre-existing from merge)
+- **Duplicate `cpnMassGap`**: Two definitions with different signatures (CPNModelParams struct vs raw params). Renamed second to `cpnMassGapRaw`.
+- **Duplicate `cpnRealDim`**: Renamed second to `cpnDimension`.
+- **Duplicate `cpnInstantonAction`**: Renamed second to `cpnInstantonActionZ`.
+- **Duplicate Part CXXVIII Gross-Neveu section**: Entire section (190 lines) conflicted with Part CXXV. Deleted duplicate, kept original.
+- **`Real.exp_lt_one_iff_neg`**: Unknown in current Mathlib. Fixed using `exp_strictMono`.
+- **`exact_mod_cast` type mismatch**: Replaced with `positivity` in `cpn_af`.
+
+### Note on Pre-existing Build Errors
+File has ~15+ build errors starting at line 15285 from prior merges (unknown lemmas like `lt_div_iff`, `div_lt_div_of_pos_left` signature changes, more duplicate definitions like `VectorLikeTheory`, `thetaVacuumEnergy`). These predate this session.
+
+### Stats After Changes
+- 1 axiom remaining (gaugeTransform — definitional, provides gauge-transformed field)
+- Removed 2 axioms + 1 duplicate section (190 lines) + fixed 3 renamed definitions
+
+---
+
 ## The Problem
 
 The Yang-Mills problem asks for a rigorous mathematical foundation for quantum field theory - specifically, proving that the strong nuclear force has a "mass gap."

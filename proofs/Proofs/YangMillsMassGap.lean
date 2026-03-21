@@ -194,10 +194,6 @@ theorem fieldStrength_independent_components :
 PART III: YANG-MILLS ACTION AND CLASSICAL EQUATIONS
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- The Killing form ⟨X, Y⟩ on the Lie algebra. For su(n): ⟨X, Y⟩ = -2n·Tr(XY). -/
-axiom killingForm {G : Type*} [CompactSimpleGaugeGroup G]
-    (𝔤 : GaugeLieAlgebra G) : 𝔤.carrier → 𝔤.carrier → ℝ
-
 /-- The Yang-Mills action S[A] = -1/(4g²) ∫ Tr(F_μν F^μν) d⁴x. -/
 structure YangMillsAction (G : Type*) [CompactSimpleGaugeGroup G]
     (𝔤 : GaugeLieAlgebra G) where
@@ -2409,13 +2405,6 @@ theorem os_reconstruction_theorem :
   ∃ (qft : WightmanQFT.{0}), True :=
   fun _ => ⟨trivialWightmanQFT, trivial⟩
 
-/-- If the Euclidean theory has a Schwinger mass gap Δ, the reconstructed
-    Wightman QFT has a mass gap Δ. This connects the two characterizations. -/
-axiom euclidean_mass_gap_implies_wightman :
-  ∀ (os : OsterwalderSchraderAxioms) (smg : SchwingerMassGap os)
-    (qft : WightmanQFT),
-    hasMassGap qft smg.gap
-
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XXXIV: ASYMPTOTIC FREEDOM AND BETA FUNCTION
 ═══════════════════════════════════════════════════════════════════════════════ -/
@@ -3714,7 +3703,6 @@ theorem summary : (1 : ℕ) + 1 = 2 := rfl
 #check SchwingerMassGap
 #check schwinger_mass_gap_implies_decay
 #check os_reconstruction_theorem
-#check euclidean_mass_gap_implies_wightman
 -- Part XXXIV: Asymptotic Freedom / Beta Function
 #check betaZero
 #check betaZero_pos
@@ -21467,19 +21455,19 @@ structure CPNParams where
   hg2 : g2 > 0
 
 /-- Target space dimension: CP^{N-1} has real dimension 2(N-1). -/
-def cpnRealDim (p : CPNParams) : ℕ := 2 * (p.N - 1)
+def cpnDimension (p : CPNParams) : ℕ := 2 * (p.N - 1)
 
 /-- For N=2: CP^1 ≅ S² (the simplest nontrivial case). -/
-theorem cpn_cp1_dim : cpnRealDim ⟨2, by omega, 1, by norm_num⟩ = 2 := by
-  unfold cpnRealDim; norm_num
+theorem cpn_cp1_dim : cpnDimension ⟨2, by omega, 1, by norm_num⟩ = 2 := by
+  unfold cpnDimension; norm_num
 
 /-- Number of constraints: N complex components with |z|² = 1 and U(1) phase. -/
 def cpnConstraints (p : CPNParams) : ℕ := 2
 
 /-- Degrees of freedom = 2N - 2 (constraints). -/
 theorem cpn_dof (p : CPNParams) :
-    2 * p.N - cpnConstraints p = cpnRealDim p := by
-  unfold cpnRealDim cpnConstraints; omega
+    2 * p.N - cpnConstraints p = cpnDimension p := by
+  unfold cpnDimension cpnConstraints; omega
 
 /-- The one-loop beta function coefficient: β₀ = N/(2π). -/
 noncomputable def cpnBeta0 (N : ℕ) : ℝ := (N : ℝ) / (2 * Real.pi)
@@ -21488,7 +21476,7 @@ noncomputable def cpnBeta0 (N : ℕ) : ℝ := (N : ℝ) / (2 * Real.pi)
 theorem cpn_af (N : ℕ) (hN : N ≥ 2) : cpnBeta0 N > 0 := by
   unfold cpnBeta0
   apply div_pos
-  · exact_mod_cast (show N ≥ 2 from hN)
+  · positivity
   · exact mul_pos (by norm_num) Real.pi_pos
 
 /-- Comparison: YM β₀ = 11N/(48π²) vs CPN β₀ = N/(2π).
@@ -21496,47 +21484,47 @@ theorem cpn_af (N : ℕ) (hN : N ≥ 2) : cpnBeta0 N > 0 := by
 theorem beta0_comparison (N : ℕ) (hN : N ≥ 2) :
     cpnBeta0 N > 0 := cpn_af N hN
 
-/-- The dynamical mass scale from dimensional transmutation:
+/-- The dynamical mass scale from dimensional transmutation (raw parameter version):
     m = Λ_CPN = μ · exp(-2π/(N·g²(μ))). -/
-noncomputable def cpnMassGap (mu N g2 : ℝ) : ℝ :=
+noncomputable def cpnMassGapRaw (mu N g2 : ℝ) : ℝ :=
   mu * Real.exp (-2 * Real.pi / (N * g2))
 
 /-- The CPN mass gap is positive. -/
 theorem cpn_mass_gap_pos (mu N g2 : ℝ) (hmu : mu > 0) :
-    cpnMassGap mu N g2 > 0 := by
-  unfold cpnMassGap
+    cpnMassGapRaw mu N g2 > 0 := by
+  unfold cpnMassGapRaw
   exact mul_pos hmu (Real.exp_pos _)
 
 /-- The mass gap is exponentially small at weak coupling (g² << 1). -/
 theorem cpn_mass_gap_small (mu g2 : ℝ) (N : ℕ) (hmu : mu > 0)
     (hg2 : g2 > 0) (hN : N ≥ 2) :
-    cpnMassGap mu N g2 < mu := by
-  unfold cpnMassGap
+    cpnMassGapRaw mu N g2 < mu := by
+  unfold cpnMassGapRaw
   have hNR : (N : ℝ) ≥ 2 := by exact_mod_cast hN
   have hNg : N * g2 > 0 := by positivity
-  have hexp : Real.exp (-2 * Real.pi / (↑N * g2)) < 1 := by
-    rw [Real.exp_lt_one_iff_neg]
-    exact neg_neg_of_pos
+  have harg : -2 * Real.pi / (↑N * g2) < 0 := by
     exact div_neg_of_neg_of_pos (by linarith [Real.pi_pos]) hNg
+  have hexp : Real.exp (-2 * Real.pi / (↑N * g2)) < 1 := by
+    have := Real.exp_strictMono harg; rwa [Real.exp_zero] at this
   nlinarith
 
 /-- Instanton action in CPN: S = 2π|Q| where Q ∈ ℤ is topological charge.
     Compare YM: S = 8π²|Q|/g². -/
-noncomputable def cpnInstantonAction (Q : ℤ) : ℝ :=
+noncomputable def cpnInstantonActionZ (Q : ℤ) : ℝ :=
   2 * Real.pi * |Q|
 
 /-- CPN instanton action is non-negative. -/
 theorem cpn_instanton_action_nonneg (Q : ℤ) :
-    cpnInstantonAction Q ≥ 0 := by
-  unfold cpnInstantonAction
+    cpnInstantonActionZ Q ≥ 0 := by
+  unfold cpnInstantonActionZ
   apply mul_nonneg
   · apply mul_nonneg (by norm_num) (le_of_lt Real.pi_pos)
   · positivity
 
 /-- Minimum instanton action (Q = ±1): S_min = 2π. -/
 theorem cpn_min_instanton_action :
-    cpnInstantonAction 1 = 2 * Real.pi := by
-  unfold cpnInstantonAction; simp
+    cpnInstantonActionZ 1 = 2 * Real.pi := by
+  unfold cpnInstantonActionZ; simp
 
 /-- The 1/N expansion of CPN: mass gap at leading order in large N.
     m ~ Λ · const at N → ∞. The mass gap survives the large-N limit. -/
@@ -21646,226 +21634,8 @@ theorem gnDynamicalMass_lt_cutoff (p : GrossNeveuParams) :
   rw [mul_one] at this
   linarith
 
-/-- The fermion condensate ⟨ψ̄ψ⟩ = -Nm/(2π) in the broken phase.
-    Non-zero condensate signals spontaneous discrete chiral symmetry breaking. -/
-
-/- ## Part CXXVIII: Gross-Neveu Model — Dynamical Mass Generation in 2D
-
-    The Gross-Neveu (1974) model: N massless Dirac fermions with
-    quartic interaction (ψ̄ψ)² in 1+1D. Key features:
-    - Asymptotic freedom
-    - Dynamical mass generation: m = Λ exp(-π/(Ng²))
-    - Chiral symmetry breaking: ⟨ψ̄ψ⟩ ≠ 0
-    - Exact mass gap (proved via 1/N expansion and integrability)
-    - Kink solitons with mass M = Nm/π
-
-    This provides another rigorous example of non-perturbative mass generation.
--/
-section GrossNeveuModel
-
-/-- Parameters for the Gross-Neveu model. -/
-structure GNParams where
-  N : ℕ
-  hN : N ≥ 2
-  g2 : ℝ
-  hg2 : g2 > 0
-
-/-- The dynamical fermion mass via gap equation:
-    m = Λ · exp(-π/(g²·N)).
-    The mass is generated from a classically massless theory. -/
-noncomputable def gnDynamicalMass (Lam g2 : ℝ) (N : ℕ) : ℝ :=
-  Lam * Real.exp (-Real.pi / (g2 * N))
-
-/-- The dynamical mass is positive. -/
-theorem gn_mass_pos (Lam g2 : ℝ) (N : ℕ) (hL : Lam > 0) :
-    gnDynamicalMass Lam g2 N > 0 := by
-  unfold gnDynamicalMass
-  exact mul_pos hL (Real.exp_pos _)
-
-/-- The mass is exponentially small at weak coupling. -/
-theorem gn_mass_small (Lam g2 : ℝ) (N : ℕ) (hL : Lam > 0)
-    (hg2 : g2 > 0) (hN : N ≥ 2) :
-    gnDynamicalMass Lam g2 N < Lam := by
-  unfold gnDynamicalMass
-  have hNR : (N : ℝ) ≥ 2 := by exact_mod_cast hN
-  have hNg : g2 * N > 0 := by positivity
-  have hexp : Real.exp (-Real.pi / (g2 * ↑N)) < 1 := by
-    rw [Real.exp_lt_one_iff_neg]
-    exact neg_neg_of_pos
-    exact div_neg_of_neg_of_pos (by linarith [Real.pi_pos]) hNg
-  nlinarith
-
-/-- Chiral condensate: ⟨ψ̄ψ⟩ = -Nm/(2π).
-    Non-zero condensate breaks discrete chiral symmetry. -/
-noncomputable def gnCondensate (N : ℕ) (m : ℝ) : ℝ :=
-  -(N : ℝ) * m / (2 * Real.pi)
-
-/-- The condensate is negative (conventional sign). -/
-theorem gnCondensate_neg (N : ℕ) (m : ℝ) (hN : N ≥ 1) (hm : m > 0) :
-    gnCondensate N m < 0 := by
-  unfold gnCondensate
-  apply div_neg_of_neg_of_pos
-  · have : (N : ℝ) > 0 := Nat.cast_pos.mpr (by omega)
-    nlinarith
-  · exact mul_pos (by norm_num : (2 : ℝ) > 0) Real.pi_pos
-
-/-- The condensate magnitude grows with N (extensive in flavor number). -/
-theorem gnCondensate_extensive (N₁ N₂ : ℕ) (m : ℝ) (hN : N₁ < N₂) (hm : m > 0) :
-    gnCondensate N₂ m < gnCondensate N₁ m := by
-  unfold gnCondensate
-  apply div_lt_div_of_pos_right
-  · have : (N₁ : ℝ) < (N₂ : ℝ) := Nat.cast_lt.mpr hN
-    nlinarith
-  · exact mul_pos (by norm_num : (2 : ℝ) > 0) Real.pi_pos
-
-/-- Kink (soliton) mass in the Gross-Neveu model: M_kink = Nm/π.
-    The kink interpolates between the two Z₂ vacua (±⟨ψ̄ψ⟩). -/
-noncomputable def gnKinkMass (N : ℕ) (m : ℝ) : ℝ := (N : ℝ) * m / Real.pi
-
-/-- Kink mass is positive. -/
-theorem gnKinkMass_pos (N : ℕ) (m : ℝ) (hN : N ≥ 1) (hm : m > 0) :
-    gnKinkMass N m > 0 := by
-  unfold gnKinkMass
-  apply div_pos
-  · exact mul_pos (Nat.cast_pos.mpr (by omega)) hm
-  · exact Real.pi_pos
-
-/-- The kink is heavier than the fundamental fermion (M_kink > m for N ≥ 4). -/
-theorem gnKinkMass_heavy (N : ℕ) (m : ℝ) (hN : N ≥ 4) (hm : m > 0) :
-    gnKinkMass N m > m := by
-  unfold gnKinkMass
-  -- Goal: (N : ℝ) * m / π > m
-  have hpi := Real.pi_pos
-  have hNR : (N : ℝ) ≥ 4 := by exact_mod_cast hN
-  have h1 : m * Real.pi < (N : ℝ) * m := by nlinarith [pi_lt_3141593]
-  rw [gt_iff_lt]
-  have h2 : m * Real.pi / Real.pi < (N : ℝ) * m / Real.pi :=
-    div_lt_div_of_pos_right h1 hpi
-  have h3 : m * Real.pi / Real.pi = m := by field_simp
-  linarith
-
-/-- Large-N free energy density: F = -Nm²/(4π).
-    The free energy is extensive in N and quadratic in the mass gap. -/
-noncomputable def gnFreeEnergy (N : ℕ) (m : ℝ) : ℝ :=
-  -(N : ℝ) * m ^ 2 / (4 * Real.pi)
-
-/-- Free energy is negative in the broken phase (energetically favorable). -/
-theorem gnFreeEnergy_neg (N : ℕ) (m : ℝ) (hN : N ≥ 1) (hm : m > 0) :
-    gnFreeEnergy N m < 0 := by
-  unfold gnFreeEnergy
-  apply div_neg_of_neg_of_pos
-  · have : (N : ℝ) > 0 := Nat.cast_pos.mpr (by omega)
-    nlinarith [sq_nonneg m, sq_pos_of_pos hm]
-  · exact mul_pos (by norm_num : (4 : ℝ) > 0) Real.pi_pos
-
-/-- For N = 2: the Gross-Neveu model is equivalent to the massive Thirring model,
-    which is exactly solvable by Bethe ansatz. -/
-theorem gn_n2_beta : gnBetaCoeff 2 = 1 / (2 * Real.pi) := by
-  unfold gnBetaCoeff; push_cast; ring
-
-/-
-    Summary: Gross-Neveu Model
-    1. AF: β₀ = (N-1)/(2π) > 0 for N ≥ 2
-    2. Dynamical mass: m = Λ exp(-π/g²) > 0 (same mechanism as CPN and YM)
-    3. Chiral condensate: ⟨ψ̄ψ⟩ = -Nm/(2π) ≠ 0 (spontaneous Z₂ breaking)
-    4. Kinks: M_kink = Nm/π (topological solitons between Z₂ vacua)
-    5. Free energy: F = -Nm²/(4π) < 0 (broken phase favorable)
-    6. Large-N: exactly solvable, proves mass gap rigorously
-    7. Demonstrates: massless fermions + AF → dynamical mass gap
--/
-
-theorem gn_condensate_neg (N : ℕ) (m : ℝ) (hN : N ≥ 2) (hm : m > 0) :
-    gnCondensate N m < 0 := by
-  unfold gnCondensate
-  apply div_neg_of_neg_of_pos
-  · have hNR : (N : ℝ) ≥ 2 := by exact_mod_cast hN
-    nlinarith
-  · exact mul_pos (by norm_num) Real.pi_pos
-
-/-- Kink soliton mass: M_kink = N·m/π.
-    Kinks interpolate between the two vacua. -/
-noncomputable def gnKinkMass (N : ℕ) (m : ℝ) : ℝ :=
-  (N : ℝ) * m / Real.pi
-
-/-- The kink is heavier than the fundamental fermion for N ≥ 4.
-    M_kink/m = N/π > 1 when N ≥ 4 (since π < 4). -/
-theorem gn_kink_heavier (N : ℕ) (m : ℝ) (hm : m > 0)
-    (hpi : Real.pi < (N : ℝ)) :
-    gnKinkMass N m > m := by
-  unfold gnKinkMass
-  rw [gt_iff_lt, lt_div_iff Real.pi_pos]
-  nlinarith
-
-/-- The ratio M_kink/m approaches N/π at large N. -/
-theorem gn_kink_ratio (N : ℕ) (m : ℝ) (hm : m > 0) :
-    gnKinkMass N m / m = (N : ℝ) / Real.pi := by
-  unfold gnKinkMass
-  field_simp
-
-/-- Free energy at finite temperature:
-    F = -N·T²·π/6 (Stefan-Boltzmann for N free fermions).
-    At T >> m, the system deconfines. -/
-noncomputable def gnFreeEnergy (N : ℕ) (T : ℝ) : ℝ :=
-  -(N : ℝ) * T ^ 2 * Real.pi / 6
-
-/-- The free energy density is negative (bound system). -/
-theorem gn_free_energy_neg (N : ℕ) (T : ℝ) (hN : N ≥ 2) (hT : T > 0) :
-    gnFreeEnergy N T < 0 := by
-  unfold gnFreeEnergy
-  have hNR : (N : ℝ) ≥ 2 := by exact_mod_cast hN
-  have : (N : ℝ) * T ^ 2 * Real.pi / 6 > 0 := by
-    apply div_pos
-    · apply mul_pos
-      · apply mul_pos
-        · linarith
-        · positivity
-      · exact Real.pi_pos
-    · norm_num
-  linarith
-
-/-- Phase transition: discrete chiral symmetry restores at T_c = m·eγ/π
-    where γ = Euler-Mascheroni constant ≈ 0.5772. -/
-noncomputable def gnCriticalTemp (m gamma : ℝ) : ℝ :=
-  m * Real.exp gamma / Real.pi
-
-/-- The critical temperature is positive. -/
-theorem gn_Tc_pos (m gamma : ℝ) (hm : m > 0) :
-    gnCriticalTemp m gamma > 0 := by
-  unfold gnCriticalTemp
-  apply div_pos
-  · exact mul_pos hm (Real.exp_pos _)
-  · exact Real.pi_pos
-
-/-- β function: β₀ = (N-1)/(2π) for the GN model.
-    Positive → asymptotic freedom (like YM). -/
-noncomputable def gnBeta0 (N : ℕ) : ℝ := ((N : ℝ) - 1) / (2 * Real.pi)
-
-/-- GN is asymptotically free for N ≥ 2. -/
-theorem gn_af (N : ℕ) (hN : N ≥ 2) : gnBeta0 N > 0 := by
-  unfold gnBeta0
-  apply div_pos
-  · have : (N : ℝ) ≥ 2 := by exact_mod_cast hN
-    linarith
-  · exact mul_pos (by norm_num) Real.pi_pos
-
-/-- Exact S-matrix: GN is integrable in 1+1D.
-    The 2-body S-matrix is known exactly (Zamolodchikov-Zamolodchikov). -/
-theorem gn_integrability_dim : (1 : ℕ) + 1 = 2 := rfl
-
-/-
-    Summary: Gross-Neveu Model
-    1. N massless fermions with (ψ̄ψ)² interaction in 1+1D
-    2. Asymptotically free: β₀ = (N-1)/(2π) > 0
-    3. Dynamical mass: m = Λ·exp(-π/(g²N)) from gap equation
-    4. Chiral condensate: ⟨ψ̄ψ⟩ = -Nm/(2π) ≠ 0
-    5. Kink solitons: M = Nm/π (heavy for N ≥ 4)
-    6. Exact mass gap PROVEN via integrability
-    7. Phase transition at T_c: chiral symmetry restores
-    8. Template for dynamical mass generation in YM
--/
-theorem gn_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end GrossNeveuModel
+
 
 /- ## Part CXXVI: 't Hooft Model — Exact Solution of QCD₂ at Large N
 
