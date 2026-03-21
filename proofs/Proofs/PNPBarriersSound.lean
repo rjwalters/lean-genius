@@ -3360,7 +3360,7 @@ axiom Resolution : PropProofSystem
 
 /-- The propositional encoding of the pigeonhole principle PHP_{n+1→n}:
     "n+1 pigeons cannot fit into n holes." -/
-axiom PHP : ℕ → ℕ
+opaque PHP : ℕ → ℕ
 
 /-- Proof complexity summary: the Cook-Reckhow connection shows that
     NP vs coNP (and hence P vs NP) is equivalent to a question about

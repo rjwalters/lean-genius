@@ -16,8 +16,8 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 155,
-    "assumptions": "155 axiom declarations encoding standard complexity theory results across 52 parts: basic containments (P⊆NP⊆PSPACE⊆EXP), Cook-Levin theorem, Ladner's theorem, polynomial hierarchy, three major barriers (relativization, natural proofs, algebrization), space complexity (Savitch, Immerman-Szelepcsenyi), probabilistic classes (BPP⊆PSPACE, Sipser-Lautemann), interactive proofs (IP=PSPACE, AM, MIP*=RE), PCP theorem, fine-grained complexity (ETH, SETH), meta-complexity (MCSP, Kolmogorov), circuit complexity (AC0, TC0, NC), derandomization (P=BPP conjecture, Nisan-Wigderson), TFNP subclasses (PPAD, PLS, PPP, CLS), descriptive complexity (Fagin, Immerman-Vardi), counting complexity (#P, Toda's theorem), quantum complexity (QMA, QIP=PSPACE), zero-knowledge proofs, Reingold's USTCON∈L, Unique Games Conjecture, Barrington's theorem, and more. The P vs NP question itself remains open.",
+    "axiomCount": 123,
+    "assumptions": "123 axiom declarations encoding standard complexity theory results across 52 parts: basic containments (P⊆NP⊆PSPACE⊆EXP), Cook-Levin theorem, Ladner's theorem, polynomial hierarchy, three major barriers (relativization, natural proofs, algebrization), space complexity (Savitch, Immerman-Szelepcsenyi), probabilistic classes (BPP⊆PSPACE, Sipser-Lautemann), interactive proofs (IP=PSPACE, AM, MIP*=RE), PCP theorem, fine-grained complexity (ETH, SETH), meta-complexity (MCSP, Kolmogorov), circuit complexity (AC0, TC0, NC), derandomization (P=BPP conjecture, Nisan-Wigderson), TFNP subclasses (PPAD, PLS, PPP, CLS), descriptive complexity (Fagin, Immerman-Vardi), counting complexity (#P, Toda's theorem), quantum complexity (QMA, QIP=PSPACE), zero-knowledge proofs, Reingold's USTCON∈L, Unique Games Conjecture, Barrington's theorem, and more. The P vs NP question itself remains open.",
     "mathlibDependencies": [
       {
         "theorem": "Mathlib.Logic.Basic",
@@ -42,7 +42,7 @@
   },
   "leanFile": {
     "path": "Proofs/PNPBarriersSound.lean",
-    "lineCount": 6821,
+    "lineCount": 6620,
     "imports": [
       "Mathlib.Logic.Basic",
       "Mathlib.Tactic",

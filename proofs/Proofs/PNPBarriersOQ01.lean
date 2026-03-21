@@ -33,6 +33,7 @@ No axiom contradicts another — they represent well-established mathematical fa
 - [x] Barrier consequences proved
 - [x] Polynomial hierarchy and Karp-Lipton theorem
 - [x] 3 redundant axioms eliminated (27→24)
+- [x] 14 type/constant axioms converted to opaque (42→28 axioms)
 - [ ] Uses Mathlib for main results
 - [x] Pedagogical example
 -/
@@ -171,7 +172,7 @@ theorem relativization_barrier :
 abbrev BoolFn (n : Nat) := (Fin n → Bool) → Bool
 
 /-- A circuit complexity measure assigns a size to each Boolean function. -/
-axiom circuitSize : {n : Nat} → BoolFn n → Nat
+opaque circuitSize : {n : Nat} → BoolFn n → Nat
 
 /-- A "combinatorial property" of Boolean functions.
     This is a predicate Cₙ on n-variable Boolean functions, one for each n. -/
@@ -212,7 +213,7 @@ structure NaturalProof where
 
 /-- One-way functions exist: there is a polynomial-time computable function
     that is hard to invert. This is a standard cryptographic assumption. -/
-axiom OWF_exists : Prop
+opaque OWF_exists : Prop
 
 /-- The Natural Proofs Barrier (Razborov-Rudich 1997):
     If one-way functions exist, then no natural proof can establish
@@ -242,13 +243,13 @@ theorem natural_proof_barrier_consequence (h_owf : OWF_exists)
     over a field, consistent with the Boolean values on {0,1}^n.
     This captures the idea of "low-degree extensions" used in interactive
     proofs and PCP constructions. -/
-axiom AlgOracle : Type
+opaque AlgOracle : Type
 
 /-- P with algebraic oracle access. -/
-axiom P_alg : AlgOracle → Set DecisionProblem
+opaque P_alg : AlgOracle → Set DecisionProblem
 
 /-- NP with algebraic oracle access. -/
-axiom NP_alg : AlgOracle → Set DecisionProblem
+opaque NP_alg : AlgOracle → Set DecisionProblem
 
 /-- An "algebrizing technique" is one that proves a statement about
     P^{ã}, NP^{ã} uniformly for all algebraic extensions ã of all oracles. -/
@@ -409,19 +410,19 @@ theorem barriers_constrain_proof_methods :
 -- ============================================================
 
 /-- PSPACE: problems solvable in polynomial space. -/
-axiom PSPACE : Set DecisionProblem
+opaque PSPACE : Set DecisionProblem
 
 /-- BPP: problems solvable in polynomial time with bounded error probability. -/
-axiom BPP : Set DecisionProblem
+opaque BPP : Set DecisionProblem
 
 /-- L (LOGSPACE): problems solvable in logarithmic space. -/
-axiom L : Set DecisionProblem
+opaque L : Set DecisionProblem
 
 /-- NL: nondeterministic logarithmic space. -/
-axiom NL : Set DecisionProblem
+opaque NL : Set DecisionProblem
 
 /-- IP: problems with interactive proof systems. -/
-axiom IP : Set DecisionProblem
+opaque IP : Set DecisionProblem
 
 -- Standard containment chain
 axiom L_subset_NL : L ⊆ NL
@@ -487,7 +488,7 @@ axiom space_hierarchy_consequence : L ≠ PSPACE
 -- ============================================================
 
 /-- Polynomial-time many-one reducibility (Karp reductions). -/
-axiom poly_reduces : DecisionProblem → DecisionProblem → Prop
+opaque poly_reduces : DecisionProblem → DecisionProblem → Prop
 
 /-- Reductions preserve P membership. -/
 axiom poly_reduces_in_P (A B : DecisionProblem) :
@@ -502,7 +503,7 @@ def NPComplete (L' : DecisionProblem) : Prop :=
   L' ∈ NP ∧ NPHard L'
 
 /-- SAT: the satisfiability problem (abstract). -/
-axiom SAT : DecisionProblem
+opaque SAT : DecisionProblem
 
 /-- Cook-Levin theorem: SAT is NP-complete. -/
 axiom cook_levin : NPComplete SAT
@@ -581,10 +582,10 @@ theorem complexity_landscape :
 -- ============================================================
 
 /-- The polynomial hierarchy: Σₖᵖ for each level k. -/
-axiom Sigma_P : Nat → Set DecisionProblem
+opaque Sigma_P : Nat → Set DecisionProblem
 
 /-- PH: the union of all levels of the polynomial hierarchy. -/
-axiom PH : Set DecisionProblem
+opaque PH : Set DecisionProblem
 
 -- Level 0 is P, level 1 is NP
 axiom Sigma_P_zero : Sigma_P 0 = P
