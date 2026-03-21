@@ -57,7 +57,16 @@
       "alon_observation axiom: original problem has no solution",
       "erdos_188_statement theorem: formal statement"
     ],
-    "axiomCount": 5
+    "axiomCount": 5,
+    "prerequisites": [
+      "Metric spaces and distance functions in ℝ²",
+      "Graph coloring and chromatic number basics",
+      "Arithmetic progressions and van der Waerden's theorem",
+      "Unit distance graphs in Euclidean geometry",
+      "Complex plane as a model of ℝ²",
+      "Independent sets in graphs",
+      "Ramsey theory fundamentals"
+    ]
   },
   "overview": {
     "historicalContext": "This Euclidean Ramsey theory problem was studied by Erdos, Graham, Montgomery, Rothschild, Spencer, and Straus [EGMRSS75]. The original formulation asked about arbitrary APs in blue, but Noga Alon showed this has no solution via van der Waerden's theorem.\n\nThe correct formulation restricts to APs with unit distance steps. The lower bound k >= 5 was established by EGMRSS, improved to k >= 6 by Tsaturian in 2017. Erdos and Graham claimed k <= 10,000,000 without detailed proof.",
