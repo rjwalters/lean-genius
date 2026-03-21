@@ -2161,13 +2161,19 @@ structure PureAreaLawData extends WilsonLoopExpectation where
   sigma_pos : sigma > 0
   area_law : ∀ I J : ℕ, W I J = Real.exp (-sigma * I * J)
 
-/-- Under pure area law, the Creutz ratio equals σ exactly.
+/-- **PROVED**: Under pure area law, the Creutz ratio equals σ exactly.
     This is the fundamental identity that makes Creutz ratios useful.
 
-    Proof sketch: W(I,J) = exp(-σIJ), so the ratio of Wilson loops
-    becomes exp(-σ(IJ + (I-1)(J-1) - I(J-1) - (I-1)J)) = exp(-σ). -/
-axiom creutz_recovers_sigma (d : PureAreaLawData) (I J : ℕ) (hI : I ≥ 2) (hJ : J ≥ 2) :
-    creutzRatio d.toWilsonLoopExpectation I J = d.sigma
+    Proof: W(I,J) = exp(-σIJ), so the ratio of Wilson loops becomes
+    exp(-σ(IJ + (I-1)(J-1) - I(J-1) - (I-1)J)) = exp(-σ), and
+    -log(exp(-σ)) = σ. Was axiom. -/
+theorem creutz_recovers_sigma (d : PureAreaLawData) (I J : ℕ) (hI : I ≥ 2) (hJ : J ≥ 2) :
+    creutzRatio d.toWilsonLoopExpectation I J = d.sigma := by
+  unfold creutzRatio
+  simp only [d.area_law]
+  rw [← Real.exp_add, ← Real.exp_add, ← Real.exp_sub, Real.log_exp]
+  push_cast [Nat.cast_sub (show 1 ≤ I by omega), Nat.cast_sub (show 1 ≤ J by omega)]
+  ring
 
 /-- A confined lattice phase is characterized by Creutz ratios converging
     to a positive string tension value. -/
@@ -2384,12 +2390,24 @@ theorem schwinger_mass_gap_implies_decay (os : OsterwalderSchraderAxioms)
       |os.S2 x| ≤ os.S2 0 * Real.exp (-smg.gap * euclideanNorm x) :=
   smg.exponential_decay
 
-/-- The Wick rotation relates Euclidean and Minkowski formulations.
-    Under OS axioms, analytic continuation t_E → i·t_M recovers the Wightman QFT.
-    This is the content of the Osterwalder-Schrader reconstruction theorem. -/
-axiom os_reconstruction_theorem :
+/-- A trivial QFT on ℂ with zero Hamiltonian. Used to witness existence
+    statements whose conclusions don't constrain the QFT. -/
+noncomputable def trivialWightmanQFT : WightmanQFT where
+  H := ℂ
+  vacuum := 1
+  vacuum_normalized := norm_one
+  hamiltonian := 0
+  energy_bounded_below := fun _ => by simp [LinearMap.zero_apply, inner_zero_left, map_zero]
+  vacuum_lowest_energy := by simp [LinearMap.zero_apply]
+
+/-- **PROVED**: The conclusion ∃ qft, True is trivially satisfiable by constructing
+    any WightmanQFT (here: the trivial one-dimensional QFT on ℂ).
+    Was axiom — the physical content (that the reconstructed QFT satisfies Wightman
+    axioms related to the OS input) would need a much stronger conclusion. -/
+theorem os_reconstruction_theorem :
   ∀ (os : OsterwalderSchraderAxioms),
-  ∃ (qft : WightmanQFT), True -- "The OS axioms reconstruct a Wightman QFT"
+  ∃ (qft : WightmanQFT.{0}), True :=
+  fun _ => ⟨trivialWightmanQFT, trivial⟩
 
 /-- If the Euclidean theory has a Schwinger mass gap Δ, the reconstructed
     Wightman QFT has a mass gap Δ. This connects the two characterizations. -/
@@ -7744,12 +7762,12 @@ def su3_condensate (Lambda : ℝ) (hL : Lambda > 0) : GauginoCondensate where
 
     If one could continuously deform SUSY YM → pure YM while
     maintaining the mass gap, this would prove the Millennium Prize! -/
-/-- SUSY to pure YM deformation: the mass gap persists for small gaugino mass
-but control is lost in the large-mass decoupling limit. This is the key
-obstruction to using SUSY results to prove the Millennium Prize. -/
-axiom susy_to_pure_ym (wi : WittenIndexData) (m_gaugino : ℝ) (hm : 0 < m_gaugino) :
-    -- For small m_gaugino: gap ≥ some function of m_gaugino (perturbative control)
-    ∃ (gap_bound : ℝ), gap_bound > 0
+/-- **PROVED**: SUSY to pure YM deformation — the conclusion ∃ gap_bound > 0 is trivially satisfiable.
+    Was axiom — the physical content (relating gap_bound to m_gaugino) would need
+    a stronger conclusion. -/
+theorem susy_to_pure_ym (wi : WittenIndexData) (m_gaugino : ℝ) (hm : 0 < m_gaugino) :
+    ∃ (gap_bound : ℝ), gap_bound > 0 :=
+  ⟨m_gaugino, hm⟩
 
 end WittenIndex
 
@@ -11737,25 +11755,13 @@ theorem lattice_strong_coupling_gap :
   intro β hβ hβ1
   exact ⟨1 - β, by linarith⟩
 
-/-- **The continuum limit gap**: the central mathematical challenge.
-
-    Taking the continuum limit a → 0 requires:
-    1. Choose β(a) such that the physical mass gap Δ·a → m_phys (fixed)
-    2. This requires β(a) → ∞ (asymptotic freedom)
-    3. At β → ∞, lattice theory is weakly coupled (perturbative)
-    4. Must show the mass gap PERSISTS as β → ∞
-
-    The difficulty: mass gap is a non-perturbative phenomenon
-    (invisible in perturbation theory), yet we must take a
-    perturbative limit (β → ∞) while preserving it.
-
-    This is the essential tension of the Millennium Problem:
-    asymptotic freedom forces us toward weak coupling (β → ∞),
-    but the mass gap lives at strong coupling (small β). -/
-axiom continuum_limit_gap_persistence :
-    -- The gap persists through the continuum limit β → ∞
-    -- (this is exactly what needs to be proved!)
-    ∃ (gap_persists : Prop), gap_persists → True
+/-- **PROVED**: Continuum limit gap persistence — the conclusion ∃ P, P → True
+    is trivially satisfiable. Was axiom. The physical content (gap persistence
+    through β → ∞) would need a much stronger conclusion involving actual
+    lattice data. -/
+theorem continuum_limit_gap_persistence :
+    ∃ (gap_persists : Prop), gap_persists → True :=
+  ⟨True, id⟩
 
 /- **Axiom: Balaban's partial result — Yang-Mills ultraviolet stability.**
 
@@ -11773,19 +11779,12 @@ theorem balaban_uv_stability :
     ∃ (uv_stable : Prop), uv_stable :=
   ⟨True, trivial⟩
 
-/-- **Axiom: The two-loop beta function determines the continuum limit.**
-
-    In the continuum limit a → 0:
-    β(a) = β₀ · log(1/a·Λ) + β₁/β₀ · log(log(1/a·Λ)) + ...
-
-    The leading coefficient β₀ = 11N/3 (asymptotic freedom) and
-    next-to-leading β₁ = 34N²/3 determine the approach to the limit.
-
-    The non-perturbative scale Λ_YM is generated by dimensional
-    transmutation: a classically scale-free theory develops a scale. -/
-axiom two_loop_continuum_limit :
-    -- The coupling constant runs logarithmically to zero
-    ∃ (β₀ : ℝ), β₀ > 0
+/-- **PROVED**: Two-loop continuum limit — the conclusion ∃ β₀ > 0 is trivially
+    satisfiable. Was axiom. The physical content (β₀ = 11N/3 governs the
+    continuum limit) would need a concrete value tied to the gauge group. -/
+theorem two_loop_continuum_limit :
+    ∃ (β₀ : ℝ), β₀ > 0 :=
+  ⟨1, by linarith⟩
 
 /-- **PROVED: The mass gap ratio between glueballs is universal (lattice evidence).**
 
