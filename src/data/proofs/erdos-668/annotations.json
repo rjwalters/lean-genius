@@ -27,7 +27,10 @@
     "type": "definition",
     "title": "The Euclidean Plane",
     "content": "**Plane:**\n\nWe work in the Euclidean plane R^2 with standard distance.\n\n```lean\nabbrev Plane := EuclideanSpace R (Fin 2)\n```\n\nThis uses Mathlib's EuclideanSpace structure which provides the metric.",
-    "significance": "supporting"
+    "mathContext": "$\\mathbb{R}^2$ with Euclidean distance $d(p, q) = \\|p - q\\|_2$",
+    "significance": "supporting",
+    "relatedConcepts": ["Euclidean space", "metric space", "inner product space"],
+    "prerequisites": ["EuclideanSpace", "Fin 2", "dist"]
   },
   {
     "id": "ann-e668-unit-pair",
@@ -77,7 +80,10 @@
     "type": "definition",
     "title": "Extremal Configurations",
     "content": "**isExtremal S:**\n\nA point set is extremal if it achieves the maximum u(|S|) unit distances.\n\n```lean\ndef isExtremal (S : Finset Plane) : Prop :=\n  unitDistanceCount S = u S.card\n```\n\n**extremalConfigs n:** The set of all n-point extremals.",
-    "significance": "key"
+    "mathContext": "$S$ extremal $\\iff$ $\\text{unitDistanceCount}(S) = u(|S|)$",
+    "significance": "key",
+    "relatedConcepts": ["extremal graph theory", "Turán-type problems", "maximum configurations"],
+    "prerequisites": ["unitDistanceCount", "u", "Finset.card"]
   },
   {
     "id": "ann-e668-congruent",
@@ -102,8 +108,10 @@
     "type": "definition",
     "title": "The Counting Function f(n)",
     "content": "**f(n):**\n\nThe number of incongruent n-point extremal configurations.\n\nFormally, f(n) is the number of equivalence classes in extremalConfigs(n) under congruence.\n\n**The main questions:**\n1. Does f(n) -> infinity?\n2. Is f(n) > 1 for n > 3?",
-    "mathContext": "This function measures the 'diversity' of extremal configurations.",
-    "significance": "key"
+    "mathContext": "$f(n) = |\\{S \\in \\text{extremalConfigs}(n)\\} / {\\sim}|$ where $\\sim$ is congruence",
+    "significance": "key",
+    "relatedConcepts": ["equivalence classes", "quotient set", "congruence", "isometry group"],
+    "prerequisites": ["extremalConfigs", "areCongruent", "Setoid"]
   },
   {
     "id": "ann-e668-f-four",

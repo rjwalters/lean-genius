@@ -46,5 +46,29 @@
     "significance": "supporting",
     "relatedConcepts": ["tournament", "dominating set", "directed graph", "first moment method"],
     "prerequisites": ["Nat.log", "tournament definition"]
+  },
+  {
+    "id": "ann-unbalancing-lights",
+    "proofId": "prob-method-applications",
+    "range": { "startLine": 36, "endLine": 37 },
+    "type": "theorem",
+    "title": "Unbalancing Lights (Balancing Vectors)",
+    "content": "For any $n \\times n$ matrix with entries $\\pm 1$, there exists a row or column whose sum has absolute value $\\geq \\sqrt{n}/2$. The proof uses the second moment method: consider the random variable $X = \\sum_j \\varepsilon_j c_j$ where $\\varepsilon_j$ are random signs and $c_j$ are column sums. Then $\\mathbb{E}[X^2] = \\sum_j c_j^2$. If all column sums are small, then so are all row sums (by a counting argument), contradicting $\\sum_j c_j^2 \\geq n$. This result has applications in discrepancy theory and computational complexity (the balancing vectors problem).",
+    "mathContext": "$\\forall A \\in \\{\\pm 1\\}^{n \\times n}$, $\\exists$ row or column with sum $\\geq \\sqrt{n}/2$",
+    "significance": "supporting",
+    "relatedConcepts": ["discrepancy theory", "second moment method", "balancing vectors", "Beck-Fiala theorem"],
+    "prerequisites": ["Nat.sqrt", "matrix entry signs"]
+  },
+  {
+    "id": "ann-property-b",
+    "proofId": "prob-method-applications",
+    "range": { "startLine": 40, "endLine": 41 },
+    "type": "theorem",
+    "title": "Property B: 2-Colorability of Hypergraphs",
+    "content": "Erdős's Property B result (1963): a $k$-uniform hypergraph with fewer than $2^{k-1}$ edges is 2-colorable (has Property B). The proof: randomly 2-color the vertices. Each edge is monochromatic with probability $2 \\cdot (1/2)^k = 2^{1-k}$. By the union bound, the probability that *some* edge is monochromatic is less than $m \\cdot 2^{1-k} < 1$ when $m < 2^{k-1}$. So a proper 2-coloring exists. Currently the formalization only states $2^{k-1} > 0$ as a placeholder.",
+    "mathContext": "$k$-uniform, $m < 2^{k-1}$ edges $\\implies$ 2-colorable; bound via $\\Pr[\\text{mono edge}] = 2^{1-k}$",
+    "significance": "supporting",
+    "relatedConcepts": ["Property B", "hypergraph coloring", "union bound", "discrepancy", "Erdős-Hajnal"],
+    "prerequisites": ["k-uniform hypergraph", "2-coloring", "first moment principle"]
   }
 ]

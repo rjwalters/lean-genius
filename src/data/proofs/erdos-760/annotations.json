@@ -17,8 +17,10 @@
     "type": "definition",
     "title": "Homogeneous Set",
     "content": "**IsHomogeneous(G, S):**\n\nA set is homogeneous if it's either a clique OR an independent set.\n\nThis is the key concept for cochromatic colorings - color classes must be homogeneous.",
+    "mathContext": "$S$ homogeneous $\\iff$ $S$ is a clique OR $S$ is an independent set in $G$",
     "significance": "key",
-    "relatedConcepts": ["IsClique", "IsIndependentSet", "cochromatic coloring"]
+    "relatedConcepts": ["IsClique", "IsIndependentSet", "cochromatic coloring", "Ramsey theorem"],
+    "prerequisites": ["SimpleGraph", "Finset", "IsClique", "IsIndependentSet"]
   },
   {
     "id": "ann-e760-cochromatic",
@@ -27,8 +29,10 @@
     "type": "definition",
     "title": "Cochromatic Number",
     "content": "**cochromaticNumber(G):**\n\nζ(G) = minimum colors where each color class is homogeneous (clique or independent set). Axiomatized because the existence proof for the minimum requires careful combinatorial arguments.\n\n**Key property:** ζ(G) ≤ χ(G) always, since independent sets are homogeneous.",
+    "mathContext": "$\\zeta(G) = \\min\\{k : V(G) = \\bigsqcup_{i=1}^k S_i,\\ \\text{each } S_i \\text{ homogeneous}\\}$; $\\zeta(G) \\leq \\chi(G)$",
     "significance": "key",
-    "relatedConcepts": ["IsCochromaticColoring", "IsHomogeneous", "chromaticNumber"]
+    "relatedConcepts": ["IsCochromaticColoring", "IsHomogeneous", "chromaticNumber"],
+    "prerequisites": ["SimpleGraph", "IsHomogeneous", "cochromatic_le_chromatic"]
   },
   {
     "id": "ann-e760-complete",

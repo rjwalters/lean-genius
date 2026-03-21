@@ -17,8 +17,10 @@
     "type": "definition",
     "title": "Point Configuration",
     "content": "**PointConfig d n:**\n\nA configuration of n points in d-dimensional Euclidean space: Fin n → EuclideanSpace ℝ (Fin d).\n\nThis represents any arrangement of n labeled points in ℝᵈ.",
+    "mathContext": "$A : \\text{Fin}\\, n \\to \\mathbb{R}^d$; a labeled point configuration",
     "significance": "key",
-    "relatedConcepts": ["EuclideanSpace", "Finite configurations"]
+    "relatedConcepts": ["EuclideanSpace", "Finite configurations", "labeled points"],
+    "prerequisites": ["EuclideanSpace", "Fin"]
   },
   {
     "id": "ann-e754-equidistant",
@@ -27,8 +29,10 @@
     "type": "definition",
     "title": "Equidistant Set",
     "content": "**equidistantSet A x r:**\n\nThe set of points y ≠ x with |A(x) - A(y)| = r.\n\nThis captures 'all points at distance r from x' in the configuration.",
+    "mathContext": "$\\{y \\in [n] : y \\neq x \\text{ and } \\|A(x) - A(y)\\| = r\\}$",
     "significance": "key",
-    "relatedConcepts": ["Spheres", "Distance relations"]
+    "relatedConcepts": ["spheres", "distance relations", "level sets of distance"],
+    "prerequisites": ["PointConfig", "dist", "Finset.filter"]
   },
   {
     "id": "ann-e754-favorite-count",
@@ -47,8 +51,10 @@
     "type": "definition",
     "title": "The Function f(n)",
     "content": "**f d n:**\n\nThe maximum over all n-point configurations A in ℝᵈ of (minimum over x of favoriteCount A x).\n\nIn words: f(n) is the largest k such that some configuration has EVERY point with at least k equidistant neighbors.",
+    "mathContext": "$f_d(n) = \\max_A \\min_x \\max_r |\\{y : \\|A(x) - A(y)\\| = r\\}|$",
     "significance": "key",
-    "relatedConcepts": ["Extremal functions", "Minimax"]
+    "relatedConcepts": ["extremal functions", "minimax", "Turán-type problems"],
+    "prerequisites": ["favoriteCount", "PointConfig", "Nat.sSup"]
   },
   {
     "id": "ann-e754-aep-lower",
