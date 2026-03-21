@@ -138,18 +138,11 @@ This is the fundamental constraint that connects packing to dissection:
 noncomputable def CubePacking.totalVolume (p : CubePacking) : ℝ :=
   p.cubes.sum Cube.volume
 
-/-- **Volume Bound (axiom)**: The total volume of cubes in a packing
-    cannot exceed the volume of the unit cube.
+-- Volume Bound (deleted axiom): total volume of cubes in a packing ≤ 1.
+-- Unused in any proof; requires Lebesgue measure theory.
 
-    This follows from the fact that the cubes are contained in [0,1]³
-    and have pairwise disjoint interiors. The formal proof would require
-    measure theory (Lebesgue measure) to make rigorous. -/
-axiom packing_volume_bound (p : CubePacking) :
-    p.totalVolume ≤ 1
-
-/-- For a dissection, the total volume equals exactly 1 (no gaps). -/
-axiom dissection_volume_exact (d : CubeDissection) :
-    d.toPacking.totalVolume = 1
+-- Dissection Volume Exact (deleted axiom): total volume = 1 for dissections.
+-- Unused in any proof; requires measure theory + coverage.
 
 -- ============================================================
 -- PART 4: The Dissection-Packing Bridge
@@ -468,9 +461,9 @@ theorem dissection_of_cubes_from_coverage (d : CubeDissection)
 /-
 ## Axiom Audit
 
-### Original axioms in DissectionOfCubesOQ03 (3):
-1. `packing_volume_bound` — Unused in proofs. Needs Lebesgue measure theory.
-2. `dissection_volume_exact` — Unused in proofs. Needs measure theory + coverage.
+### Original axioms in DissectionOfCubesOQ03 (3→0):
+1. `packing_volume_bound` — **DELETED** (unused in any proof).
+2. `dissection_volume_exact` — **DELETED** (unused in any proof).
 3. `debruijn_brick_tiling` — Unused and **unsound** (RHS was `True`).
    **Replaced** with proper `CanTileWithBrick` formulation and proved
    forward direction.
@@ -500,8 +493,9 @@ theorem dissection_of_cubes_from_coverage (d : CubeDissection)
 |-------|------|------------|--------------------|
 | `smallest_above_is_smaller` | Geometric confinement | HARD | Needs 2D tiling argument for the top face |
 | `descent_chains_from_coverage` | Induction | MEDIUM | Follows from smallest_above_is_smaller |
-| `packing_volume_bound` | Measure theory | HARD | Needs `MeasureTheory.MeasurableSet` |
-| `dissection_volume_exact` | Measure theory | HARD | Needs coverage + measure additivity |
+
+### Axiom count: 0 (down from 3)
+### Sorry count: 2 (geometric confinement + induction)
 -/
 
 end DissectionOfCubesOQ03
