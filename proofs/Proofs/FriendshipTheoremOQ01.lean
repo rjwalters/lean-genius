@@ -1152,6 +1152,58 @@ private lemma det_ones_eq_zero_gen {R : Type*} [CommRing R] (hn : Fintype.card V
     omega
   exact Matrix.det_zero_of_row_eq hab (by ext j; simp [Matrix.of_apply])
 
+/-- **det(cI - J) = c^{n-1}(c-n)** for the all-ones matrix J.
+
+    Proof: For c ≠ 0, cast to ℚ where c is invertible. Factor:
+    det(cI - J) = c^n · det(I - c⁻¹J) = c^n(1 - n/c) = c^{n-1}(c-n)
+    using det_one_sub_smul_ones_gen (Weinstein-Aronszajn).
+    For c = 0: det(-J) = (-1)^n · det(J) = 0 when n ≥ 2
+    (J singular by det_onesMatrix_eq_zero), handled directly for n = 1. -/
+lemma det_scalar_sub_onesMatrix' [Nonempty V] (c : ℤ) :
+    (c • (1 : Matrix V V ℤ) - onesMatrix V).det =
+    c ^ (Fintype.card V - 1) * (c - ↑(Fintype.card V)) := by
+  set n := Fintype.card V with hn
+  have hn_pos : n ≥ 1 := Fintype.card_pos
+  by_cases hc : c = 0
+  · subst hc; simp only [zero_smul, zero_sub, zero_pow, Int.cast_zero]
+    by_cases hn1 : n = 1
+    · have : Subsingleton V := by rw [← Fintype.card_le_one_iff_subsingleton]; omega
+      haveI : Unique V := uniqueOfSubsingleton (Classical.arbitrary V)
+      simp [hn1, Matrix.det_unique, onesMatrix, Matrix.of_apply]
+    · have hn2 : n ≥ 2 := by omega
+      have hJ0 : (onesMatrix V).det = 0 := det_onesMatrix_eq_zero hn2
+      have hsmul : -onesMatrix V = (-1 : ℤ) • onesMatrix V := by
+        ext i j; simp [onesMatrix, Matrix.of_apply]
+      rw [hsmul, Matrix.det_smul, hJ0, mul_zero]
+      simp [zero_pow (show n - 1 ≠ 0 by omega)]
+  · have hcq : (↑c : ℚ) ≠ 0 := Int.cast_ne_zero.mpr hc
+    suffices hq : ((c • (1 : Matrix V V ℤ) - onesMatrix V).det : ℚ) =
+        ↑(c ^ (n - 1) * (c - ↑n)) by exact_mod_cast hq
+    set M := c • (1 : Matrix V V ℤ) - onesMatrix V with hM_def
+    show (Int.castRingHom ℚ) M.det = _
+    rw [RingHom.map_det]
+    have hmap : (RingHom.mapMatrix (Int.castRingHom ℚ)) M =
+        (↑c : ℚ) • (1 : Matrix V V ℚ) -
+          Matrix.of (fun (_ : V) (_ : V) => (1 : ℚ)) := by
+      ext i j
+      simp only [hM_def, RingHom.mapMatrix_apply, Matrix.map_apply,
+        Matrix.sub_apply, Matrix.smul_apply, Matrix.one_apply, onesMatrix,
+        Matrix.of_apply, smul_eq_mul, map_sub, map_mul, Int.coe_castRingHom]
+      split <;> simp
+    rw [hmap]
+    have hfactor : (↑c : ℚ) • (1 : Matrix V V ℚ) -
+        Matrix.of (fun (_ : V) (_ : V) => (1 : ℚ)) =
+        (↑c : ℚ) • ((1 : Matrix V V ℚ) -
+          (↑c : ℚ)⁻¹ • Matrix.of (fun (_ : V) (_ : V) => (1 : ℚ))) := by
+      ext i j
+      simp only [Matrix.sub_apply, Matrix.smul_apply, Matrix.one_apply,
+        Matrix.of_apply, smul_eq_mul]
+      by_cases hij : i = j <;> simp [hij, mul_sub, mul_inv_cancel₀ hcq]
+    rw [hfactor, Matrix.det_smul, det_one_sub_smul_ones_gen]
+    have h1 : Fintype.card V = n - 1 + 1 := by omega
+    rw [h1, pow_succ, show (n - 1 + 1 : ℕ) = n from by omega]
+    push_cast; field_simp
+
 /-- **Characteristic polynomial of the all-ones matrix**: charpoly(J) = X^{n-1}(X-n).
     Proof: By `Polynomial.funext`, it suffices to show equality at all c ∈ ℤ.
     eval c (charpoly J) = det(cI-J) = c^{n-1}(c-n) = eval c (X^{n-1}(X-n)).
@@ -1167,12 +1219,13 @@ lemma onesMatrix_charpoly [Nonempty V] :
   -- LHS: charpoly(J).eval c = det(cI - J)
   have hlhs : Polynomial.eval c (onesMatrix V).charpoly =
       (c • (1 : Matrix V V ℤ) - onesMatrix V).det := by
-    rw [Matrix.charpoly, Polynomial.eval_det]
-    congr 1; ext i j
-    simp [Matrix.charmatrix, Matrix.sub_apply, Matrix.diagonal_apply,
+    show (Polynomial.evalRingHom c) ((Matrix.charmatrix (onesMatrix V)).det) = _
+    rw [RingHom.map_det]; congr 1; ext i j
+    simp only [RingHom.mapMatrix_apply, Matrix.map_apply,
+      Matrix.charmatrix_apply, Matrix.sub_apply, Matrix.diagonal_apply,
       Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C,
-      Matrix.map_apply, onesMatrix, Matrix.of_apply]
-    split <;> simp [smul_eq_mul]
+      onesMatrix, Matrix.of_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]
+    split <;> simp
   -- RHS: eval c (X^{n-1}(X-n)) = c^{n-1}(c-n)
   have hrhs : Polynomial.eval c (Polynomial.X ^ (Fintype.card V - 1) *
       (Polynomial.X - Polynomial.C (↑(Fintype.card V) : ℤ))) =
@@ -1180,7 +1233,7 @@ lemma onesMatrix_charpoly [Nonempty V] :
     simp [Polynomial.eval_mul, Polynomial.eval_pow, Polynomial.eval_sub,
       Polynomial.eval_X, Polynomial.eval_C]
   rw [hlhs, hrhs]
-  exact det_scalar_sub_onesMatrix c
+  exact det_scalar_sub_onesMatrix' c
 
 /-- **det(cI - J) = c^{n-1}(c-n)** for the all-ones matrix J.
 
@@ -1340,7 +1393,7 @@ lemma charpoly_quotient_product [Nonempty V] (hF : IsFriendshipGraph G) (k : ℕ
       rw [hAsq]; ext i j; simp [Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply,
         Matrix.one_apply, onesMatrix, Matrix.of_apply, smul_eq_mul]; ring
     -- det((x²-(k-1))I - J) = (x²-(k-1))^{n-1} * ((x²-(k-1)) - n)
-    have hdet_formula := det_scalar_sub_onesMatrix (x ^ 2 - (↑k - 1 : ℤ))
+    have hdet_formula := @det_scalar_sub_onesMatrix V _ _ ‹Nonempty V› (x ^ 2 - (↑k - 1 : ℤ))
     -- x²-(k-1)-n = x²-k²  (since n = k(k-1)+1)
     have hk_sq : x ^ 2 - (↑k - 1 : ℤ) - ↑(Fintype.card V) = x ^ 2 - (↑k : ℤ) ^ 2 := by
       have h1 := hn_val; zify [show 1 ≤ k from by omega] at h1; nlinarith [sq (↑k : ℤ)]
