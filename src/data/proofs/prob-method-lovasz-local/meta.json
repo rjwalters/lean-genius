@@ -59,43 +59,43 @@
   "sections": [
     {
       "id": "introduction",
-      "title": "Introduction",
+      "title": "Module Docstring and Imports",
       "startLine": 1,
-      "endLine": 28,
-      "summary": "Historical context and motivation for the Lovasz Local Lemma.",
-      "mathContext": "The Lovasz Local Lemma (1975) overcomes the union bound's weakness with dependent events. When bad events are rare and mostly independent, they can all be simultaneously avoided. This is the most powerful tool in the probabilistic method."
-    },
-    {
-      "id": "dependency-graphs",
-      "title": "Dependency Graphs",
-      "startLine": 30,
-      "endLine": 72,
-      "summary": "Formal definition of dependency graphs and the mutual independence condition for non-adjacent events.",
-      "mathContext": "A dependency graph for events $\\{A_i\\}_{i \\in I}$ is a graph $G = (I, E)$ such that each $A_i$ is mutually independent of $\\{A_j : j \\notin \\Gamma(i) \\cup \\{i\\}\\}$. The dependency graph need not be unique; any supergraph of the 'true' dependency structure works."
+      "endLine": 16,
+      "summary": "Overview of the Lovász Local Lemma as the crown jewel of the probabilistic method. Attribution to Erdős and Lovász (1975).",
+      "mathContext": "If bad events are unlikely and mostly independent, they can all be simultaneously avoided."
     },
     {
       "id": "symmetric-lll",
-      "title": "Symmetric Lovasz Local Lemma",
-      "startLine": 74,
-      "endLine": 128,
-      "summary": "If each event has probability at most p and depends on at most d others, and ep(d+1) <= 1, then all events can be avoided.",
-      "mathContext": "Symmetric LLL: if $\\Pr[A_i] \\leq p$ for all $i$ and each $A_i$ is independent of all but at most $d$ events, then $ep(d+1) \\leq 1$ implies $\\Pr[\\bigcap_i \\overline{A_i}] > 0$. The factor $e \\approx 2.718$ arises from $(1 - 1/(d+1))^d \\leq 1/e$."
+      "title": "Symmetric Lovász Local Lemma",
+      "startLine": 21,
+      "endLine": 28,
+      "summary": "Placeholder for the symmetric LLL: if each bad event has probability <= p, depends on at most d others, and p(d+1) <= 1/3 (simplified from ep(d+1) <= 1), then all bad events can be avoided. Proves True (placeholder). Currently sorry'd because it requires event/probability formalization.",
+      "mathContext": "$p(d+1) \\leq 1/3$ (simplified criterion); the exact bound is $ep(d+1) \\leq 1$ where $e \\approx 2.718$."
     },
     {
       "id": "general-lll",
-      "title": "General (Asymmetric) Lovasz Local Lemma",
-      "startLine": 130,
-      "endLine": 195,
-      "summary": "The full asymmetric version with witness values, strictly stronger than the symmetric form.",
-      "mathContext": "General LLL: if there exist $x_i \\in [0,1)$ with $\\Pr[A_i] \\leq x_i \\prod_{j \\in \\Gamma(i)} (1 - x_j)$ for all $i$, then $\\Pr[\\bigcap_i \\overline{A_i}] \\geq \\prod_i (1 - x_i) > 0$. The symmetric version follows by setting $x_i = 1/(d+1)$ for all $i$."
+      "title": "General (Asymmetric) Lovász Local Lemma",
+      "startLine": 30,
+      "endLine": 37,
+      "summary": "The general LLL with witness values x_i indexed by Fin n. If prob(i) <= x_i * prod_{j in adj(i)} (1 - x_j), then the product prod_i (1 - x_i) > 0, implying positive probability of avoiding all events. Uses ℚ for exact arithmetic and Finset adjacency lists. Currently sorry'd.",
+      "mathContext": "$\\Pr[A_i] \\leq x_i \\prod_{j \\in \\Gamma(i)}(1-x_j) \\implies \\prod_i(1-x_i) > 0$"
     },
     {
-      "id": "k-sat-application",
+      "id": "ksat",
       "title": "k-SAT Application",
-      "startLine": 197,
-      "endLine": 250,
-      "summary": "Application to random k-SAT: formulas with few clauses per variable are satisfiable.",
-      "mathContext": "A random $k$-SAT formula where each clause shares variables with at most $d$ other clauses is satisfiable when $e \\cdot 2^{-k} (d+1) \\leq 1$. Each clause is independently unsatisfied with probability $2^{-k}$, and the clause overlap structure defines the dependency graph."
+      "startLine": 39,
+      "endLine": 44,
+      "summary": "Application to k-SAT: a k-CNF formula where each variable appears in at most 2^(k-2)/k clauses is satisfiable. The statement verifies the LLL criterion numerically. Currently sorry'd.",
+      "mathContext": "$2^{-k} \\cdot (k \\cdot 2^{k-2}/k + 1) \\leq 1$"
+    },
+    {
+      "id": "moser-tardos",
+      "title": "Moser-Tardos Constructive LLL",
+      "startLine": 46,
+      "endLine": 54,
+      "summary": "Constructive version (Moser-Tardos, 2010): the resampling algorithm terminates with expected number of steps bounded by sum of x_i/(1-x_i). Currently sorry'd with a simplified bound statement.",
+      "mathContext": "Expected resampling steps $\\leq \\sum_i \\frac{x_i}{1-x_i}$"
     }
   ],
   "crossReferences": [
@@ -124,9 +124,10 @@
     "summary": "The Lovasz Local Lemma formalizes the most powerful tool in the probabilistic method: when bad events are individually unlikely and their dependencies are sparse (captured by a dependency graph), all bad events can be simultaneously avoided. The symmetric form ep(d+1) <= 1 and the general asymmetric form with witness values are both formalized, along with a k-SAT satisfiability application.",
     "implications": "This formalization provides:\n\n**1. Crown Jewel of the Probabilistic Method**\nThe LLL is the most sophisticated tool in the probabilistic method toolkit, and this formalization makes its subtle conditions machine-checkable.\n\n**2. k-SAT Threshold Bounds**\nThe satisfiability threshold for random k-SAT is a central problem in computational complexity, and the LLL provides the best unconditional lower bounds.\n\n**3. Sparse Dependency Framework**\nThe dependency graph abstraction is reusable across many applications in combinatorics, coding theory, and algorithm design.\n\n**4. Path to Constructive LLL**\nThe formalization establishes the non-constructive LLL as a foundation for future formalization of the Moser-Tardos constructive proof.\n\n**5. Applications Across Combinatorics**\nHypergraph coloring, Latin transversals, Ramsey theory, and many Erdos problems rely on the LLL.",
     "openQuestions": [
-      "Can the Moser-Tardos constructive proof be formalized?",
-      "What is the tightest form of the LLL achievable in Lean?",
-      "How does the lopsided LLL extend the basic version?"
+      "Formalize the full Moser-Tardos resampling algorithm with termination proof — currently only the expected step bound is stated",
+      "Replace the simplified p(d+1) <= 1/3 criterion with the exact ep(d+1) <= 1, which requires formalizing e = lim (1+1/n)^n",
+      "How does the lopsided LLL (where independence is replaced by negative correlation) extend the basic version?",
+      "Can the LLL be applied to Erdős problems in the gallery that involve sparse dependency structures?"
     ]
   }
 }
