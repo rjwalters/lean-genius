@@ -17,7 +17,10 @@
     "type": "definition",
     "title": "Lattice Grid",
     "content": "**latticeGrid:**\n\nThe set {1,...,n}^2 of integer points in the n x n square.\n\n**Definition:**\n```lean\ndef latticeGrid (n : N) : Set (Z x Z) :=\n  {p | 1 <= p.1 and p.1 <= n and 1 <= p.2 and p.2 <= n}\n```\n\n**Size:** |latticeGrid n| = n^2",
-    "significance": "key"
+    "mathContext": "$\\{1, \\ldots, n\\}^2 \\subset \\mathbb{Z}^2$; $|\\text{latticeGrid}(n)| = n^2$",
+    "significance": "key",
+    "relatedConcepts": ["integer lattice", "grid", "discrete geometry"],
+    "prerequisites": ["Int", "Set", "Prod"]
   },
   {
     "id": "ann-e798-line",
@@ -83,7 +86,10 @@
     "type": "theorem",
     "title": "Tight Bounds",
     "content": "**tight_bounds:**\n\nCombines the lower and upper bounds:\n\nn^{2/3} << t(n) << n^{2/3} log n\n\nThe gap is the log n factor, which may or may not be necessary.",
-    "significance": "key"
+    "mathContext": "$c \\cdot n^{2/3} \\leq t(n) \\leq C \\cdot n^{2/3} \\log n$; the $\\log n$ gap is open",
+    "significance": "key",
+    "relatedConcepts": ["matching bounds", "logarithmic gap", "open problem"],
+    "prerequisites": ["erdos_purdy_lower_bound", "alon_upper_bound"]
   },
   {
     "id": "ann-e798-o-n",
