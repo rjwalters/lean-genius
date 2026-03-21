@@ -7,7 +7,7 @@
     "author": "Claude Shannon (1948), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Shannon%27s_source_coding_theorem",
     "date": "1948",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/ShannonSourceCoding.lean",
     "tags": [
       "information-theory",
@@ -16,8 +16,8 @@
       "coding-theory",
       "advanced"
     ],
-    "badge": "formalized",
-    "sorries": 4,
+    "badge": "verified",
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Analysis.SpecialFunctions.Log.Basic",
