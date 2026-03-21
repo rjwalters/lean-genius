@@ -245,22 +245,6 @@ negative, not split evenly.
 noncomputable def positiveTime (bm : BrownianMotion Ω μ) (T : ℝ) : Ω → ℝ :=
   fun ω => (MeasureTheory.Measure.restrict volume (Set.Icc 0 T)) {s | bm.W s ω > 0} |>.toReal
 
-/-- **Lévy's Arcsine Law** (1939)
-
-For a standard Brownian motion W on [0, T], let L_T = measure{s ∈ [0,T] : W_s > 0}.
-Then the fraction L_T / T has the arcsine distribution:
-  P(L_T / T ≤ r) = (2/π) · arcsin(√r)  for r ∈ [0, 1]
-
-This is the continuous-time ballot theorem: the fraction of time BM spends positive
-follows the arcsine distribution, NOT the uniform distribution.
-
-This was proved by Lévy (1939) using an elegant combinatorial-analytic argument.
-It is proved in continuous time using Brownian local times and occupation measure theory.
--/
-axiom levy_arcsine_law (bm : BrownianMotion Ω μ) (T : ℝ) (hT : 0 < T)
-    (r : ℝ) (hr0 : 0 ≤ r) (hr1 : r ≤ 1) :
-    (μ {ω | positiveTime bm T ω / T ≤ r}).toReal = (2 / π) * arcsin (√r)
-
 /-! ## Part VI: Connection to the Discrete Ballot Problem
 
 The Donsker Invariance Principle (1951) shows that the scaled random walk

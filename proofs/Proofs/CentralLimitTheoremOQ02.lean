@@ -468,29 +468,6 @@ noncomputable def longRunVariance
   -- = E[X₁²] + 2 · ∑_{k=1}^∞ E[X₁ · X_{k+1}]
   ∫ ω, (X 0 ω) ^ 2 ∂μ + 2 * ∑' k, ∫ ω, X 0 ω * X (k + 1) ω ∂μ
 
-/-- **CLT for α-mixing sequences** (Ibragimov 1962).
-
-    For a stationary α-mixing sequence with mean 0, finite variance,
-    and sufficiently fast mixing decay (∑ α(n)^{δ/(2+δ)} < ∞),
-    the normalized partial sums converge in distribution to N(0, sigma_sq_inf).
-
-    Reference: Ibragimov "Some limit theorems for stationary processes"
-    Theory of Probability and its Applications, 1962. -/
-axiom mixing_clt
-    {μ : Measure Ω} [IsProbabilityMeasure μ]
-    (S : AlphaMixingSequence Ω μ)
-    (hMean : ∀ k, ∫ ω, S.X k ω ∂μ = 0)
-    (hVar : ∀ k, Integrable (fun ω => (S.X k ω) ^ 2) μ)
-    (sigma_sq_inf : ℝ) (hσ : 0 < sigma_sq_inf)
-    (hLRV : sigma_sq_inf = longRunVariance S.X S.integrable hMean)
-    -- Sufficient mixing rate
-    (δ : ℝ) (hδ : 0 < δ)
-    (hMixRate : Summable (fun n => (S.α n) ^ (δ / (2 + δ)))) :
-    ∀ t : ℝ, Tendsto
-      (fun n => ∫ ω, Complex.exp (Complex.I * t *
-        (∑ k ∈ Finset.range n, S.X k ω) / Real.sqrt n) ∂μ)
-      atTop (nhds (Complex.exp (-(sigma_sq_inf * t ^ 2 / 2))))
-
 /-
 ## Part VIII: Independent Variables are Trivially Mixing
 

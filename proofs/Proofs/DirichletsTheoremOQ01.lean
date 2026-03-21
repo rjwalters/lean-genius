@@ -601,46 +601,6 @@ theorem tatuzawa_finite_exceptions (ε : ℝ) (hε : 0 < ε) :
 def primeCountAP (x q a : ℕ) : ℕ :=
   (Finset.range (x + 1)).filter (fun n => Nat.Prime n ∧ n % q = a % q) |>.card
 
-/-- **Siegel-Walfisz Theorem**: For any A > 0, there exists C(A) such that
-    for all q ≤ (log x)^A with gcd(a, q) = 1:
-
-        |π(x; q, a) - Li(x)/φ(q)| ≤ C(A) · x · exp(-c·√(log x))
-
-    This is the effective version of Dirichlet's theorem on primes in
-    arithmetic progressions. It gives the correct asymptotic Li(x)/φ(q)
-    with an explicit error term, but ONLY for small moduli q ≤ (log x)^A.
-
-    The limitation to small q comes directly from Siegel's theorem:
-    the ineffective constant C(ε) translates to the (log x)^A range.
-    Improving this range is equivalent to resolving the Siegel zero problem.
-
-    Not in Mathlib. -/
-axiom siegel_walfisz_theorem :
-    ∀ A : ℝ, 0 < A →
-    ∃ (C c : ℝ), 0 < C ∧ 0 < c ∧
-    ∀ (x q a : ℕ), 2 ≤ x → 1 ≤ q → q ≤ x →
-    Nat.Coprime a q →
-    (q : ℝ) ≤ Real.log x ^ A →
-    -- The prime counting function deviates from Li(x)/φ(q) by at most the error term
-    |(primeCountAP x q a : ℝ) - x / (Nat.totient q * Real.log x)| ≤
-      C * x * Real.exp (-c * Real.sqrt (Real.log x))
-
-/-- **Bombieri-Vinogradov Theorem**: An averaged version of GRH-strength results
-    for primes in arithmetic progressions. States that the Siegel-Walfisz
-    error bound holds ON AVERAGE over all q ≤ √x/log(x)^B.
-
-    This is one of the deepest results in analytic number theory and
-    allows treating the exceptional conductor problem "on average".
-
-    Not in Mathlib. -/
-axiom bombieri_vinogradov_theorem :
-    ∀ A : ℝ, 0 < A →
-    ∃ B : ℝ, 0 < B ∧
-    ∀ (x : ℕ), 2 ≤ x →
-    -- Sum over q ≤ √x/(log x)^B of max_a |π(x;q,a) - Li(x)/φ(q)|
-    -- is bounded by x/(log x)^A
-    ∃ (error_bound : ℝ), error_bound ≤ x / Real.log x ^ A
-
 /-- **The Siegel zero limitation on Siegel-Walfisz**: If Siegel zeros don't exist,
     the Siegel-Walfisz theorem could be extended to q ≤ x^{1/2-ε}.
     The current limitation to q ≤ (log x)^A is SOLELY due to the possible

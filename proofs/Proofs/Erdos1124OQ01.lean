@@ -200,32 +200,6 @@ axiom laczkovich_upper_bound :
     ∀ r s : ℝ, r > 0 → s > 0 → SameArea r s →
     TranslationEquidecomposableN (disk r) (square s) (10^50)
 
-/-- **Grabowski-Máthé-Pikhurko (2016)**: Measurable equidecomposition exists.
-
-    The pieces can be chosen to be Lebesgue measurable and have the
-    Baire property. This was a major breakthrough showing that the
-    non-measurability in Laczkovich's proof was avoidable. -/
-axiom grabowski_mathe_pikhurko :
-    ∀ r s : ℝ, r > 0 → s > 0 → SameArea r s →
-    ∃ (n : ℕ) (pA pB : Fin n → Set Point),
-      IsNDecomposition (disk r) n pA ∧
-      IsNDecomposition (square s) n pB ∧
-      (∀ i, TranslationCongruent (pA i) (pB i)) ∧
-      (∀ i, MeasurableSet (pA i))
-
-/-- **Marks-Unger (2017)**: Borel equidecomposition with fewer pieces.
-
-    The pieces can be chosen to be Borel sets. The proof gives an
-    explicit (though large) bound on the number of pieces. -/
-axiom marks_unger_borel :
-    ∀ r s : ℝ, r > 0 → s > 0 → SameArea r s →
-    ∃ (n : ℕ) (pA pB : Fin n → Set Point),
-      n < 10^5 ∧
-      IsNDecomposition (disk r) n pA ∧
-      IsNDecomposition (square s) n pB ∧
-      (∀ i, TranslationCongruent (pA i) (pB i)) ∧
-      (∀ i, MeasurableSet (pA i))
-
 -- ============================================================================
 -- Part VI: Lower Bounds
 -- ============================================================================
@@ -287,17 +261,6 @@ theorem exists_decomposition_above_min (r s : ℝ) (hr : r > 0) (hs : s > 0)
   induction k with
   | zero => simpa using base
   | succ k ih => exact equidecomposable_mono ih
-
-/-- Equidecomposability is preserved under scaling: if disk(r) and
-    square(s) are N-piece equidecomposable, then disk(cr) and
-    square(cs) are also N-piece equidecomposable for c > 0.
-
-    This means the minimum piece count depends only on the shape,
-    not the scale. -/
-axiom piece_count_scale_invariant :
-    ∀ r s c : ℝ, r > 0 → s > 0 → c > 0 →
-    ∀ n : ℕ, TranslationEquidecomposableN (disk r) (square s) n →
-    TranslationEquidecomposableN (disk (c * r)) (square (c * s)) n
 
 -- ============================================================================
 -- Part IX: Zero-Piece Impossibility (PROVED)

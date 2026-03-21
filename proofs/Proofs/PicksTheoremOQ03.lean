@@ -101,10 +101,6 @@ The function n ↦ L_P(n) is a polynomial of degree d = dim(P).
 The leading coefficient is vol(P) and the constant term is 1.
 -/
 
-/-- The Ehrhart polynomial L_P(X) ∈ ℚ[X] such that L_P(n) = |nP ∩ ℤᵈ|.
-    This is Ehrhart's main theorem: the counting function is polynomial. -/
-axiom ehrhart_poly (P : EhrhartData) : ℚ[X]
-
 -- ============================================================
 -- PART 4: 2D Case - Recovering Pick's Theorem
 -- ============================================================
@@ -330,9 +326,6 @@ For d = 2:
 Combined with L_P(X) = A·X² + (b/2)·X + 1:
   L_P(-1) = A - b/2 + 1 = i     (rearranges to Pick's: A = i + b/2 - 1)
 -/
-
-/-- Interior lattice point counting function for dilates -/
-axiom ehrhart_interior_fn (P : EhrhartData) : ℕ → ℕ
 
 /-- **Ehrhart-Macdonald Reciprocity**:
     Evaluating the Ehrhart polynomial at -n gives (-1)^d times

@@ -81,7 +81,6 @@ theorem complete_has_triangles' {n : ℕ} (hn : 3 ≤ n) :
 
 -- Import the axiomatized function from the parent file
 axiom triangleRemovalEdges : ℕ → ℝ
-axiom triangleRemovalEdges_nonneg (n : ℕ) : 0 ≤ triangleRemovalEdges n
 axiom triangleRemovalEdges_le_complete (n : ℕ) :
     triangleRemovalEdges n ≤ (n * (n - 1) : ℝ) / 2
 

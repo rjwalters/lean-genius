@@ -289,30 +289,6 @@ axiom gnedenko_kolmogorov_converse
 -- Part VI: Properties of Slowly Varying Functions
 -- ============================================================================
 
-/-- Potter's bound (weak form): If L is slowly varying, then for any δ > 0,
-    the ratio L(y)/L(x) is eventually bounded by a polynomial correction.
-    Specifically, for large enough x and y, |L(y)/L(x)| ≤ C · max(y/x, x/y)^δ.
-
-    This is a fundamental tool for working with slowly varying functions.
-    The proof uses the uniform convergence theorem for slowly varying functions.
-
-    Axiomatized: requires the Karamata representation theorem. -/
-axiom potter_bound (L : ℝ → ℝ) (hL : SlowlyVarying L) (δ : ℝ) (hδ : 0 < δ) :
-    ∃ C : ℝ, 0 < C ∧ ∀ᶠ x in atTop, ∀ᶠ y in atTop,
-      |L y / L x| ≤ C * max (y / x) (x / y) ^ δ
-
-/-- Karamata's theorem (integral form): If L is slowly varying and σ > -1,
-    then ∫₁ˣ t^σ · L(t) dt ~ x^{σ+1} · L(x) / (σ + 1) as x → ∞.
-
-    This is the key result for translating tail conditions into moment conditions
-    in the domain of attraction theory.
-
-    Axiomatized: requires careful ε-δ arguments with slowly varying functions. -/
-axiom karamata_integral (L : ℝ → ℝ) (hL : SlowlyVarying L)
-    (σ : ℝ) (hσ : -1 < σ) :
-    Tendsto (fun x => (∫ t in Set.Icc 1 x, t ^ σ * L t) /
-      (x ^ (σ + 1) * L x / (σ + 1))) atTop (𝓝 1)
-
 -- ============================================================================
 -- Part VII: Stable Distribution Properties
 -- ============================================================================
@@ -733,27 +709,6 @@ slowly varying functions. It says the convergence L(cx)/L(x) → 1 is
 uniform on compact subsets of (0,∞). This implies Potter's bound and
 is the key to most analytical results about regular variation.
 -/
-
-/-- **Uniform Convergence Theorem** (Karamata, 1930):
-    The convergence L(cx)/L(x) → 1 is uniform in c on every compact
-    interval [a, b] ⊂ (0, ∞).
-
-    This is a deep result whose proof uses the Baire category theorem
-    (or measurability arguments). It implies Potter's bound and is
-    fundamental to all analytical applications of regular variation.
-
-    Axiomatized: requires Baire category theorem or measurability. -/
-axiom slowlyVarying_uniform_convergence (L : ℝ → ℝ) (hL : SlowlyVarying L)
-    (a b : ℝ) (ha : 0 < a) (hab : a ≤ b) (ε : ℝ) (hε : 0 < ε) :
-    ∀ᶠ x in atTop, ∀ c : ℝ, a ≤ c → c ≤ b → |L (c * x) / L x - 1| < ε
-
-/-- Consequence of uniform convergence: for any ε > 0, slowly varying
-    functions grow/decay slower than any power. That is, x^{-ε} ≤ L(x)/L(x₀) ≤ x^ε
-    eventually. This makes precise the idea that SV functions are "almost constant". -/
-axiom slowlyVarying_power_bound (L : ℝ → ℝ) (hL : SlowlyVarying L)
-    (ε : ℝ) (hε : 0 < ε) :
-    ∃ C : ℝ, 0 < C ∧ ∀ᶠ x in atTop,
-      C⁻¹ * x ^ (-ε) ≤ |L x| ∧ |L x| ≤ C * x ^ ε
 
 -- ============================================================================
 -- Part XVII: Concrete Tail Distribution Examples

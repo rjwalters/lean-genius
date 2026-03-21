@@ -398,19 +398,6 @@ theorem duplication_at_nat (n : ℕ) (hn : 1 ≤ n) :
 -- require ~500 lines of integral analysis. We state it as an axiom
 -- since the Laplace method is not yet formalized in Mathlib.
 
-/-- **Continuous Stirling for Gamma** (axiom):
-    For x → +∞, Γ(x+1) is asymptotically equivalent to √(2πx)·(x/e)^x.
-
-    This is the real-variable generalization of the factorial Stirling formula.
-    The proof requires the Laplace method for asymptotic evaluation of integrals,
-    which is ~500 lines of foundational analysis not currently in Mathlib.
-
-    The integer case is fully proved above (gamma_isEquivalent_stirling).
-    This axiom states the continuous extension. -/
-axiom gamma_continuous_stirling :
-    Tendsto (fun x : ℝ => Real.Gamma (x + 1) / (Real.sqrt (2 * π * x) * (x / Real.exp 1) ^ x))
-      atTop (nhds 1)
-
 -- ============================================================
 -- PART 10: Stirling Series (First Correction Term)
 -- ============================================================

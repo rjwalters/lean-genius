@@ -673,15 +673,6 @@ Given a 2D lattice polygon P:
 7. Therefore: i + b = A + b/2 + 1, giving A = i + b/2 - 1
 -/
 
-/-- The half-boundary coefficient: for a 2D polygon, the second
-    Ehrhart coefficient equals half the boundary point count.
-    This follows from the general formula: the second-highest
-    coefficient equals half the surface lattice point count. -/
-axiom ehrhart_second_coeff_2D (A : ℚ) (i b : ℕ)
-    (hA : 0 < A) (hb : 3 ≤ b)
-    (h_total : (i : ℚ) + b = A + (b : ℚ) / 2 + 1) :
-    ehrhartPoly2D A b 1 = (i : ℚ) + b
-
 /-- **Pick's Theorem** (from Ehrhart theory):
     Area = interior + boundary/2 - 1 -/
 theorem picks_theorem_from_ehrhart (A : ℚ) (i b : ℕ)
