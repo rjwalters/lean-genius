@@ -16,8 +16,8 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 37,
-    "assumptions": "40 axiom declarations encoding: Perelman Ricci flow surgery (finite extinction, κ-solutions), Novikov compact leaf theorem (foliations), generalized Poincaré in dimensions 2/4/≥5, simply connected S³ (needs Seifert-van Kampen), S³ non-contractible (needs homology), topological constructions (connected sum type, Dehn surgery type), classification results (JSJ decomposition/uniqueness, h/s-cobordism), 3-manifold topology (Heegaard splitting, Waldhausen genus-0, Property P, prime decomposition, irreducibility), counterexample structures (Poincaré homology sphere, Whitehead manifold), covering space theory (sc_covering_injective), Virtual Haken (Agol), Gordon-Luecke (knot complements).",
+    "axiomCount": 36,
+    "assumptions": "36 axiom declarations encoding: Perelman Ricci flow surgery (finite extinction, κ-solutions), Novikov compact leaf theorem (foliations), generalized Poincaré in dimensions 2/4/≥5, simply connected S³ (needs Seifert-van Kampen), S³ non-contractible (needs homology), topological constructions (connected sum type, Dehn surgery type), classification results (JSJ decomposition/uniqueness, h/s-cobordism), 3-manifold topology (Heegaard splitting, Waldhausen genus-0, Property P, prime decomposition, irreducibility), counterexample structures (Poincaré homology sphere, Whitehead manifold), covering space theory (sc_covering_injective). S¹×S² closed manifold now PROVED via product charts.",
     "mathlibDependencies": [
       {
         "theorem": "SimplyConnectedSpace",
@@ -75,11 +75,11 @@
       "590 theorems proved, 137 structures defined, 218 definitions, 82 parts across 11574 lines"
     ],
     "leanFile": {
-      "lineCount": 17822,
+      "lineCount": 17302,
       "theoremCount": 922,
       "lemmaCount": 0,
       "defCount": 382,
-      "axiomCount": 37,
+      "axiomCount": 36,
       "sorryCount": 0,
       "structureCount": 229,
       "instanceCount": 21,
@@ -243,7 +243,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The Poincaré Conjecture is SOLVED (Perelman, 2002–2003): every simply connected, closed 3-manifold is homeomorphic to S³. The formalization provides 10926 lines covering 80 parts, with 564 theorems and 38 axioms. Coverage includes Ricci flow, surgery theory, κ-solutions, normal surfaces, taut foliations, Casson invariant, Heegaard Floer homology, the L-space conjecture, contact structures, and computational complexity.",
+    "summary": "The Poincaré Conjecture is SOLVED (Perelman, 2002–2003): every simply connected, closed 3-manifold is homeomorphic to S³. The formalization provides 17302 lines covering 100 parts, with 922 theorems and 36 axioms. Coverage includes Ricci flow, surgery theory, κ-solutions, normal surfaces, taut foliations, Casson invariant, Heegaard Floer homology, the L-space conjecture, contact structures, and computational complexity.",
     "implications": "Perelman's proof also established Thurston's Geometrization Conjecture, revolutionizing 3-manifold topology. The Ricci flow technique has since been applied to the differentiable sphere theorem (Brendle–Schoen 2009), classification of manifolds with positive isotropic curvature, and the study of Kähler–Ricci flow in complex geometry.",
     "openQuestions": [
       "The smooth 4-dimensional Poincaré conjecture: is every smooth homotopy 4-sphere diffeomorphic to $S^4$?",

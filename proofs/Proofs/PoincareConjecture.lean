@@ -3124,11 +3124,79 @@ def S1_cross_S2 : Type := ↥Sphere1 × ↥Sphere2
 /-- The product topology on S¹ × S². -/
 instance instS1S2Top : TopologicalSpace S1_cross_S2 := instTopologicalSpaceProd
 
+/-- Product of subsets as a homeomorphism: ↥(s ×ˢ t) ≃ₜ ↥s × ↥t. -/
+private noncomputable def subtypeProdHomeomorph {α β : Type*}
+    [TopologicalSpace α] [TopologicalSpace β]
+    (s : Set α) (t : Set β) : ↥(s ×ˢ t) ≃ₜ ↥s × ↥t where
+  toFun := fun p => (⟨p.1.1, (Set.mem_prod.mp p.2).1⟩, ⟨p.1.2, (Set.mem_prod.mp p.2).2⟩)
+  invFun := fun p => ⟨(p.1.1, p.2.1), Set.mem_prod.mpr ⟨p.1.2, p.2.2⟩⟩
+  left_inv := fun _ => by simp
+  right_inv := fun _ => by simp
+  continuous_toFun :=
+    Continuous.prodMk
+      ((continuous_fst.comp continuous_subtype_val).subtype_mk _)
+      ((continuous_snd.comp continuous_subtype_val).subtype_mk _)
+  continuous_invFun :=
+    (Continuous.prodMk
+      (continuous_subtype_val.comp continuous_fst)
+      (continuous_subtype_val.comp continuous_snd)).subtype_mk _
+
+/-- Product of EuclideanSpace factors: ℝ¹ × ℝ² ≃ₜ ℝ³.
+    Both sides are finite-dimensional real normed spaces of dimension 3,
+    so any linear equivalence is automatically a homeomorphism (continuous
+    in both directions by LinearMap.continuous_of_finiteDimensional). -/
+private noncomputable def euclideanSpaceProdHomeomorph :
+    (EuclideanSpace ℝ (Fin 1)) × (EuclideanSpace ℝ (Fin 2)) ≃ₜ
+    EuclideanSpace ℝ (Fin 3) := by
+  have hdim : Module.finrank ℝ
+      ((EuclideanSpace ℝ (Fin 1)) × (EuclideanSpace ℝ (Fin 2))) =
+      Module.finrank ℝ (EuclideanSpace ℝ (Fin 3)) := by
+    rw [Module.finrank_prod, finrank_euclideanSpace_fin, finrank_euclideanSpace_fin,
+      finrank_euclideanSpace_fin]
+  let e := LinearEquiv.ofFinrankEq
+    ((EuclideanSpace ℝ (Fin 1)) × (EuclideanSpace ℝ (Fin 2)))
+    (EuclideanSpace ℝ (Fin 3)) hdim
+  exact {
+    toEquiv := e.toEquiv
+    continuous_toFun := e.toLinearMap.continuous_of_finiteDimensional
+    continuous_invFun := e.symm.toLinearMap.continuous_of_finiteDimensional
+  }
+
 /-- S¹ × S² is a closed 3-manifold.
     Compact: product of compact spaces. Connected: product of connected spaces.
-    Nonempty: product of nonempty spaces. Locally Euclidean: product of
-    1-manifold and 2-manifold is a 3-manifold (needs product charts). -/
-axiom S1_cross_S2_closed : @Closed3Manifold S1_cross_S2 instS1S2Top
+    Nonempty: product of nonempty spaces. Locally Euclidean: product charts
+    from stereographic projections on S¹ and S² combine to give ℝ¹ × ℝ² ≃ ℝ³. -/
+theorem S1_cross_S2_closed : @Closed3Manifold S1_cross_S2 instS1S2Top where
+  compact := by
+    change CompactSpace (↥Sphere1 × ↥Sphere2)
+    haveI : CompactSpace ↥Sphere1 :=
+      isCompact_iff_compactSpace.mp (isCompact_sphere (0 : EuclideanSpace ℝ (Fin 2)) 1)
+    haveI : CompactSpace ↥Sphere2 :=
+      isCompact_iff_compactSpace.mp (isCompact_sphere (0 : EuclideanSpace ℝ (Fin 3)) 1)
+    infer_instance
+  connected := by
+    change ConnectedSpace (↥Sphere1 × ↥Sphere2)
+    have hr2 : 1 < Module.rank ℝ (EuclideanSpace ℝ (Fin 2)) :=
+      Module.one_lt_rank_of_one_lt_finrank (by rw [finrank_euclideanSpace_fin]; omega)
+    have hr3 : 1 < Module.rank ℝ (EuclideanSpace ℝ (Fin 3)) :=
+      Module.one_lt_rank_of_one_lt_finrank (by rw [finrank_euclideanSpace_fin]; omega)
+    haveI : ConnectedSpace ↥Sphere1 := by
+      rw [← isConnected_iff_connectedSpace]
+      exact isConnected_sphere hr2 _ (by norm_num : (0 : ℝ) ≤ 1)
+    haveI : ConnectedSpace ↥Sphere2 := by
+      rw [← isConnected_iff_connectedSpace]
+      exact isConnected_sphere hr3 _ (by norm_num : (0 : ℝ) ≤ 1)
+    infer_instance
+  nonempty := by
+    haveI : Nonempty ↥Sphere1 := (sphere_n_nonempty 1).to_subtype
+    haveI : Nonempty ↥Sphere2 := (sphere_n_nonempty 2).to_subtype
+    exact instNonemptyProd
+  locallyEuclidean := fun p => by
+    obtain ⟨U₁, hU₁_open, hx_mem, ⟨φ₁⟩⟩ := sphere_n_locally_euclidean 1 p.1
+    obtain ⟨U₂, hU₂_open, hy_mem, ⟨φ₂⟩⟩ := sphere_n_locally_euclidean 2 p.2
+    exact ⟨U₁ ×ˢ U₂, hU₁_open.prod hU₂_open, ⟨hx_mem, hy_mem⟩,
+      ⟨(subtypeProdHomeomorph U₁ U₂).trans
+        ((φ₁.prodCongr φ₂).trans euclideanSpaceProdHomeomorph)⟩⟩
 
 /- S1_cross_S2_prime (removed - unused downstream):
    S¹ × S² is prime but not irreducible. The unique non-irreducible prime 3-manifold. -/
