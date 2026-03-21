@@ -54,7 +54,15 @@
       "Diameter bound formalization"
     ],
     "dateAdded": "2026-01-19",
-    "axiomCount": 7
+    "axiomCount": 7,
+    "prerequisites": [
+      "Complex polynomial evaluation and roots",
+      "Topological connectedness in ℂ",
+      "Polynomial derivative and critical points",
+      "Complex absolute value (modulus)",
+      "Basic potential theory",
+      "Vieta's formulas for monic polynomials"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős, Herzog, and Piranian (1958) posed this question about lemniscates - the sublevel sets of polynomial magnitude. They conjectured both diameter ≤ 2 and width ≤ 2. Pommerenke (1959) proved the disc containment (answering YES) but showed the width conjecture is FALSE.",
