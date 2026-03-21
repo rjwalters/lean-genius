@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-header-context",
+    "proofId": "shannon-channel-coding",
+    "range": { "startLine": 1, "endLine": 13 },
+    "type": "context",
+    "title": "Shannon's Noisy Channel Coding Theorem",
+    "content": "This module formalizes the central result of information theory: Claude Shannon's 1948 noisy channel coding theorem. The theorem establishes that reliable communication over a noisy channel is possible at any rate below the channel capacity $C$, and impossible at rates above $C$. This single result launched the field of information theory and decades of coding theory research. The formalization includes the channel capacity definition, Fano's inequality, achievability, converse, and binary symmetric channel capacity.",
+    "mathContext": "Shannon's channel coding theorem (1948): reliable communication at rate $R$ is possible iff $R \\leq C = \\max_{p(x)} I(X;Y)$, where $I(X;Y) = H(Y) - H(Y|X)$ is the mutual information.",
+    "significance": "context",
+    "relatedConcepts": ["mutual information", "channel capacity", "Fano's inequality", "random coding", "typical sequences"],
+    "prerequisites": ["Shannon entropy", "conditional entropy", "mutual information", "Fintype"]
+  },
+  {
+    "id": "ann-channel-capacity",
+    "proofId": "shannon-channel-coding",
+    "range": { "startLine": 17, "endLine": 19 },
+    "type": "definition",
+    "title": "Channel Capacity Definition",
+    "content": "Channel capacity is defined as the maximum mutual information over all input distributions: $C = \\max_{p(x)} I(X;Y)$. For a discrete memoryless channel with transition matrix $W(y|x)$, the maximum exists because the mutual information is continuous and concave in $p(x)$, and the simplex of distributions is compact. The definition uses sorry because implementing the optimization over distributions requires measure-theoretic probability or convex optimization machinery.",
+    "mathContext": "$C = \\max_{p(x)} I(X;Y) = \\max_{p(x)} [H(Y) - H(Y|X)]$. For the binary symmetric channel: $C_{\\text{BSC}(p)} = 1 - h(p)$ where $h(p) = -p\\log p - (1-p)\\log(1-p)$.",
+    "significance": "key",
+    "relatedConcepts": ["mutual information maximization", "Blahut-Arimoto algorithm", "concavity", "input distribution"],
+    "prerequisites": ["mutual information", "optimization over simplex", "Fintype alphabets"]
+  },
+  {
+    "id": "ann-fano",
+    "proofId": "shannon-channel-coding",
+    "range": { "startLine": 23, "endLine": 27 },
+    "type": "technique",
+    "title": "Fano's Inequality",
+    "content": "Fano's inequality bounds the conditional entropy $H(X|Y)$ in terms of the error probability: $H(X|Y) \\leq h(P_e) + P_e \\log(|\\mathcal{X}|-1)$. This converts an information-theoretic quantity into an operational one, and is the key tool for proving the converse of the channel coding theorem. If communication is reliable ($P_e \\to 0$), then $H(X|Y) \\to 0$, meaning $Y$ determines $X$ almost perfectly.",
+    "mathContext": "Fano's inequality: $H(X|Y) \\leq h(P_e) + P_e \\log(|\\mathcal{X}|-1)$ where $P_e = \\Pr[X \\neq \\hat{X}]$ and $h(\\cdot)$ is the binary entropy function.",
+    "significance": "key",
+    "relatedConcepts": ["data processing inequality", "binary entropy", "conditional entropy", "error probability"],
+    "prerequisites": ["conditional entropy", "binary entropy function", "joint distributions"]
+  },
+  {
+    "id": "ann-achievability",
+    "proofId": "shannon-channel-coding",
+    "range": { "startLine": 31, "endLine": 36 },
+    "type": "technique",
+    "title": "Channel Coding Achievability (Random Coding)",
+    "content": "The achievability proof shows that rates below capacity are achievable. Shannon's original proof uses random coding: generate $2^{nR}$ codewords i.i.d. from the capacity-achieving input distribution, decode via joint typicality. Error probability vanishes because: (1) the true pair is jointly typical (by AEP), and (2) no wrong codeword is jointly typical (probability $\\leq 2^{nR} \\cdot 2^{-nI(X;Y)} \\to 0$ when $R < C$). Currently a placeholder proving True.",
+    "mathContext": "Achievability: for $R < C$, $\\exists$ codes with $P_e^{(n)} \\to 0$ as $n \\to \\infty$. Random coding bound: $P_e \\leq 2 \\cdot 2^{-n(I(X;Y)-R)} + \\varepsilon_n$ where $\\varepsilon_n \\to 0$.",
+    "significance": "key",
+    "relatedConcepts": ["random coding", "joint typicality", "AEP", "union bound over codewords"],
+    "prerequisites": ["typical sets", "joint AEP", "i.i.d. codebook generation"]
+  },
+  {
+    "id": "ann-converse",
+    "proofId": "shannon-channel-coding",
+    "range": { "startLine": 40, "endLine": 45 },
+    "type": "technique",
+    "title": "Channel Coding Converse",
+    "content": "The converse proves impossibility above capacity: if $R > C$, error probability is bounded away from 0. The proof chains: (1) $nR = H(W) \\leq I(W;Y^n) + 1 + P_e nR$ (Fano), (2) $I(W;Y^n) \\leq nC$ (by memorylessness and the capacity definition), giving $P_e \\geq 1 - (C+1/n)/R \\to 1 - C/R > 0$.",
+    "mathContext": "Converse: for $R > C$, $P_e \\geq 1 - \\frac{C}{R} - \\frac{1}{nR} \\to 1 - C/R > 0$. The data processing inequality and Fano's inequality are the key tools.",
+    "significance": "key",
+    "relatedConcepts": ["Fano's inequality", "data processing inequality", "strong converse", "capacity as fundamental limit"],
+    "prerequisites": ["Fano's inequality", "mutual information chain rule", "memoryless channel properties"]
+  },
+  {
+    "id": "ann-bsc",
+    "proofId": "shannon-channel-coding",
+    "range": { "startLine": 49, "endLine": 51 },
+    "type": "insight",
+    "title": "Binary Symmetric Channel Capacity",
+    "content": "The binary symmetric channel BSC(p) flips each bit independently with probability $p$. Its capacity is $C = 1 - h(p)$ bits per use, where $h(p) = -p\\log p - (1-p)\\log(1-p)$ is the binary entropy function. This is the simplest non-trivial channel model and serves as the canonical example for channel coding theory. At $p = 0$ (noiseless), $C = 1$; at $p = 1/2$ (completely random), $C = 0$.",
+    "mathContext": "$C_{\\text{BSC}(p)} = 1 - h(p) = 1 + p\\log_2 p + (1-p)\\log_2(1-p)$. The capacity is 0 at $p = 1/2$ and 1 at $p \\in \\{0, 1\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["binary entropy function", "bit flip channel", "Hamming distance", "capacity-achieving codes"],
+    "prerequisites": ["binary entropy", "channel capacity formula", "input distribution optimization"]
+  }
+]

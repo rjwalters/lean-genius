@@ -60,44 +60,52 @@
   },
   "sections": [
     {
-      "id": "introduction",
-      "title": "Introduction",
+      "id": "header-imports",
+      "title": "Header and Imports",
       "startLine": 1,
-      "endLine": 32,
-      "summary": "Historical significance and statement of the noisy channel coding theorem.",
-      "mathContext": "Shannon (1948): reliable communication at rate $R$ is possible iff $R \\leq C = \\max_{p(x)} I(X;Y)$. This is the central result of information theory, establishing that noise does not preclude reliable communication."
+      "endLine": 13,
+      "summary": "Module docstring describing the noisy channel coding theorem: achievability via random coding, converse via Fano's inequality. Imports Mathlib and opens InformationTheory.ChannelCoding namespace.",
+      "mathContext": "Shannon (1948): reliable communication at rate $R$ iff $R \\leq C = \\max_{p(x)} I(X;Y)$."
     },
     {
-      "id": "channel-model",
-      "title": "Discrete Memoryless Channel",
-      "startLine": 34,
-      "endLine": 78,
-      "summary": "Formal definition of a discrete memoryless channel, codes, and error probability.",
-      "mathContext": "A discrete memoryless channel (DMC) is specified by finite alphabets $\\mathcal{X}, \\mathcal{Y}$ and transition probabilities $p(y|x)$. An $(M, n)$ code consists of an encoder $\\{1,\\ldots,M\\} \\to \\mathcal{X}^n$ and a decoder $\\mathcal{Y}^n \\to \\{1,\\ldots,M\\}$. The rate is $R = \\frac{\\log M}{n}$ bits per channel use."
+      "id": "channel-capacity",
+      "title": "Channel Capacity Definition",
+      "startLine": 15,
+      "endLine": 19,
+      "summary": "Defines channel capacity as max mutual information over input distributions for a discrete memoryless channel. Uses sorry for the optimization.",
+      "mathContext": "$C = \\max_{p(x)} I(X;Y)$. The maximum exists by compactness of the distribution simplex and concavity of mutual information."
     },
     {
-      "id": "capacity-definition",
-      "title": "Channel Capacity",
-      "startLine": 80,
-      "endLine": 120,
-      "summary": "Definition of channel capacity as the maximum mutual information over input distributions.",
-      "mathContext": "Channel capacity $C = \\max_{p(x)} I(X;Y) = \\max_{p(x)} [H(Y) - H(Y|X)]$. Since $H(Y|X) = \\sum_x p(x) H(Y|X=x)$ depends only on the channel (not the input distribution), maximizing $I(X;Y)$ reduces to maximizing $H(Y)$. The maximum exists by compactness and concavity."
+      "id": "fano-inequality",
+      "title": "Fano's Inequality",
+      "startLine": 21,
+      "endLine": 27,
+      "summary": "Bounds conditional entropy by error probability. Currently a placeholder proving True.",
+      "mathContext": "$H(X|Y) \\leq h(P_e) + P_e \\log(|\\mathcal{X}|-1)$ where $h$ is binary entropy and $P_e$ is error probability."
     },
     {
-      "id": "random-coding",
-      "title": "Random Coding Achievability",
-      "startLine": 122,
-      "endLine": 198,
-      "summary": "Proof that rates below capacity are achievable using randomly generated codebooks and joint typicality decoding.",
-      "mathContext": "Generate $2^{nR}$ codewords i.i.d. from $p^*(x)$ (capacity-achieving distribution). Decode $y^n$ to the unique $x^n(w)$ jointly typical with $y^n$. Error events: (1) true pair not jointly typical (probability $\\to 0$ by joint AEP); (2) wrong codeword jointly typical (probability $\\leq 2^{nR} \\cdot 2^{-nI(X;Y)} \\to 0$ when $R < C$)."
+      "id": "achievability",
+      "title": "Channel Coding Achievability",
+      "startLine": 29,
+      "endLine": 36,
+      "summary": "For rates below capacity, there exist codes with vanishing error probability. Proved by random coding argument. Placeholder.",
+      "mathContext": "For $R < C$: $P_e^{(n)} \\to 0$ as $n \\to \\infty$. Random coding: $P_e \\leq 2 \\cdot 2^{-n(I(X;Y)-R)}$."
     },
     {
-      "id": "fano-converse",
-      "title": "Fano Inequality and Converse",
-      "startLine": 200,
-      "endLine": 265,
-      "summary": "Fano's inequality bounds error probability from below, proving rates above capacity are impossible.",
-      "mathContext": "Fano's inequality: $H(W|\\hat{W}) \\leq 1 + P_e \\log(M-1)$ where $W$ is the message and $\\hat{W}$ is the decoded message. Combined with $H(W|\\hat{W}) \\geq H(W|Y^n) \\geq H(W) - nC = nR - nC$, this gives $P_e \\geq 1 - \\frac{nC + 1}{nR} \\to 1 - C/R > 0$ when $R > C$."
+      "id": "converse",
+      "title": "Channel Coding Converse",
+      "startLine": 38,
+      "endLine": 45,
+      "summary": "Rates above capacity are impossible: error probability bounded away from 0. Uses Fano's inequality. Placeholder.",
+      "mathContext": "For $R > C$: $P_e \\geq 1 - C/R - 1/(nR) > 0$ for large $n$."
+    },
+    {
+      "id": "bsc-capacity",
+      "title": "Binary Symmetric Channel Capacity",
+      "startLine": 47,
+      "endLine": 53,
+      "summary": "Capacity of BSC(p) is 1 - h(p), where h is binary entropy. The simplest non-trivial channel model. Placeholder.",
+      "mathContext": "$C_{\\text{BSC}(p)} = 1 - h(p) = 1 + p\\log_2 p + (1-p)\\log_2(1-p)$."
     }
   ],
   "crossReferences": [
@@ -121,8 +129,9 @@
     "summary": "The noisy channel coding theorem establishes that reliable communication at rate R is possible if and only if R is below the channel capacity C = max I(X;Y). The achievability proof via random coding and joint typicality decoding is one of the most celebrated probabilistic existence arguments in mathematics. The converse via Fano's inequality provides the matching impossibility result.",
     "implications": "This formalization provides:\n\n**1. The Central Result of Information Theory**\nChannel capacity as the fundamental limit of reliable communication, with both achievability and converse proofs machine-checked.\n\n**2. Random Coding as Probabilistic Method**\nThe random coding proof is historically one of the first and most influential uses of the probabilistic method, predating even Erdos's 1947 Ramsey bound.\n\n**3. Fano's Inequality**\nA reusable converse tool that converts entropy bounds into error probability bounds, applicable far beyond channel coding.\n\n**4. Foundation for Modern Coding Theory**\nThe gap between Shannon's existential proof and practical capacity-achieving codes (turbo codes, LDPC, polar codes) drove decades of engineering and mathematical research.\n\n**5. Connection to Computational Complexity**\nChannel coding has deep connections to computational complexity via list decoding and pseudorandomness.",
     "openQuestions": [
-      "Can specific channel capacities (BSC, BEC, AWGN) be computed formally?",
-      "What is the connection to the probabilistic method (random coding)?"
+      "Can specific channel capacities (BSC, BEC, AWGN) be computed formally in Lean, including the optimization over input distributions?",
+      "Can polar codes (Arikan 2009), the first provably capacity-achieving codes with O(n log n) encoding/decoding, be formalized?",
+      "Can the strong converse be formalized, showing that $P_e \\to 1$ (not just bounded away from 0) when $R > C$?"
     ]
   }
 }
