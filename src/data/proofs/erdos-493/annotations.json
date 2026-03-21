@@ -8,7 +8,8 @@
     "content": "Erdős Problem #493: Does there exist k such that every sufficiently large n = prod(ai) - sum(ai) for ai >= 2? Yes, k = 2: n = 2(n+2) - (2+(n+2)). SOLVED.",
     "mathContext": "The product-minus-sum representation is a natural question about integer expressibility. The k=2 solution is remarkably simple.",
     "significance": "critical",
-    "relatedConcepts": ["integer representation", "product-sum", "constructive proof"]
+    "relatedConcepts": ["integer representation", "product-sum", "constructive proof"],
+    "tags": ["number-theory", "integer-representation", "product-sum", "erdos-problem"]
   },
   {
     "id": "erdos-493-definitions",
@@ -19,7 +20,8 @@
     "content": "**HasProdMinusSum2(n)**: exists a,b >= 2 with n = a*b - (a+b).\n\n**HasProdMinusSumK(n, k)**: exists a1,...,ak >= 2 with n = prod - sum.",
     "mathContext": "The k=2 case is the key: n = a*b - a - b = (a-1)(b-1) - 1.",
     "significance": "key",
-    "relatedConcepts": ["existential quantifier", "integer constraints"]
+    "relatedConcepts": ["existential quantifier", "integer constraints"],
+    "tags": ["definition", "existential-quantifier", "integer-constraints", "product-sum"]
   },
   {
     "id": "erdos-493-solution",
@@ -30,7 +32,8 @@
     "content": "**prod_minus_sum_identity** (proved): 2(n+2) - (2+(n+2)) = n by ring.\n\n**erdos_493_nonneg** (proved): for all n >= 0, HasProdMinusSum2(n) with a=2, b=n+2.",
     "mathContext": "The identity is verified purely algebraically. The constraint b = n+2 >= 2 holds when n >= 0.",
     "significance": "critical",
-    "relatedConcepts": ["ring tactic", "algebraic identity", "constructive witness"]
+    "relatedConcepts": ["ring tactic", "algebraic identity", "constructive witness"],
+    "tags": ["algebraic-identity", "ring-tactic", "constructive-proof", "linarith"]
   },
   {
     "id": "erdos-493-main",
@@ -41,7 +44,8 @@
     "content": "**erdos_493** (proved): exists k=2 and N0=0 such that every n >= 0 has a k-representation. Uses Fin 2 → ℤ to represent the k-tuple with witness ![2, n+2].",
     "mathContext": "The full theorem uses Fin 2 -> Z to represent the k-tuple. The witness is [2, n+2].",
     "significance": "critical",
-    "relatedConcepts": ["Fin", "constructive existence", "main result"]
+    "relatedConcepts": ["Fin", "constructive existence", "main result"],
+    "tags": ["main-theorem", "Fin-type", "constructive-existence", "product-sum"]
   },
   {
     "id": "erdos-493-examples",
@@ -52,7 +56,8 @@
     "content": "0 = 2*2 - (2+2), 1 = 2*3 - (2+3), 10 = 2*12 - (2+12). All verified by ring/norm_num.",
     "mathContext": "Concrete instances of the general construction with a = 2, b = n + 2.",
     "significance": "supporting",
-    "relatedConcepts": ["examples", "norm_num", "verification"]
+    "relatedConcepts": ["examples", "norm_num", "verification"],
+    "tags": ["examples", "norm-num", "concrete-verification"]
   },
   {
     "id": "erdos-493-summary",
@@ -63,6 +68,7 @@
     "content": "All key theorems fully proved in Lean: prod_minus_sum_identity (ring), erdos_493_nonneg (linarith+ring), erdos_493 (constructive). 0 sorries, 0 axioms used.",
     "mathContext": "This is one of the rare Erdős problems with a complete constructive proof in Lean.",
     "significance": "critical",
-    "relatedConcepts": ["solved problem", "complete proof", "summary"]
+    "relatedConcepts": ["solved problem", "complete proof", "summary"],
+    "tags": ["summary", "solved-problem", "complete-proof", "zero-sorries"]
   }
 ]
