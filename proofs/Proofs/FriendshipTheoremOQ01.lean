@@ -1214,6 +1214,29 @@ lemma det_scalar_sub_onesMatrix [Nonempty V] (c : ℤ) :
     rw [h1, pow_succ, show (n - 1 + 1 : ℕ) = n from by omega]
     push_cast; field_simp
 
+/-- det(cI - J) = c^{n-1}(c-n) over ℤ[X], proved via Polynomial.funext. -/
+private lemma det_scalar_sub_onesMatrix_poly [Nonempty V] (c : Polynomial ℤ) :
+    (c • (1 : Matrix V V (Polynomial ℤ)) -
+      Matrix.of (fun (_ : V) (_ : V) => (1 : Polynomial ℤ))).det =
+    c ^ (Fintype.card V - 1) * (c - C (↑(Fintype.card V) : ℤ)) := by
+  apply Polynomial.funext; intro a
+  simp only [eval_mul, eval_pow, eval_sub, eval_C]
+  -- LHS: eval (det of poly matrix) = det (evaluated matrix)
+  show (Polynomial.evalRingHom a)
+    ((c • (1 : Matrix V V (Polynomial ℤ)) -
+      Matrix.of (fun _ _ => (1 : Polynomial ℤ))).det) = _
+  rw [RingHom.map_det]
+  have hmap : (RingHom.mapMatrix (Polynomial.evalRingHom a))
+      (c • (1 : Matrix V V (Polynomial ℤ)) -
+        Matrix.of (fun _ _ => (1 : Polynomial ℤ))) =
+      Polynomial.eval a c • (1 : Matrix V V ℤ) - onesMatrix V := by
+    ext i j
+    simp only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.sub_apply,
+      Matrix.smul_apply, Matrix.one_apply, onesMatrix, Matrix.of_apply,
+      smul_eq_mul, map_sub, map_mul]
+    split <;> simp [Polynomial.eval_one, Polynomial.eval_zero]
+  rw [hmap]; exact det_scalar_sub_onesMatrix _
+
 /-- The key product identity for the quotient polynomial.
 
     Let g = charpoly(A), f = g/(X-k). Then:
