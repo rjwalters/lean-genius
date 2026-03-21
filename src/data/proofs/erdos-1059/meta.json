@@ -56,20 +56,24 @@
     ],
     "crossReferences": [
       {
-        "proofId": "infinitude-primes",
-        "relationship": "Both prove or conjecture infinitude of a special set of primes; the main conjecture asserts Set.Infinite for factorial-avoiding primes"
+        "targetId": "infinitude-primes",
+        "relationship": "related",
+        "description": "Both prove or conjecture infinitude of a special set of primes; the main conjecture asserts Set.Infinite for factorial-avoiding primes"
       },
       {
-        "proofId": "wilsons-theorem",
-        "relationship": "Wilson's theorem connects primes to factorials: $(p-1)! \\equiv -1 \\pmod{p}$. Here we subtract factorials from primes instead"
+        "targetId": "wilsons-theorem",
+        "relationship": "related",
+        "description": "Wilson's theorem connects primes to factorials: $(p-1)! \\equiv -1 \\pmod{p}$. Here we subtract factorials from primes instead"
       },
       {
-        "proofId": "bertrands-postulate",
-        "relationship": "Both concern prime distribution and gaps; Bertrand guarantees primes in intervals while this problem asks about factorial-prime interactions"
+        "targetId": "bertrands-postulate",
+        "relationship": "related",
+        "description": "Both concern prime distribution and gaps; Bertrand guarantees primes in intervals while this problem asks about factorial-prime interactions"
       },
       {
-        "proofId": "erdos-1057",
-        "relationship": "Sister Erdős problem about prime-related counting; both use Set.Infinite for open conjectures about infinite sets of special integers"
+        "targetId": "erdos-1057",
+        "relationship": "related",
+        "description": "Sister Erdős problem about prime-related counting; both use Set.Infinite for open conjectures about infinite sets of special integers"
       }
     ],
     "axiomCount": 3
@@ -144,6 +148,7 @@
       "mathContext": "Summary: $101, 211 \\in $ OEIS A064152, both verified prime and factorial-avoiding."
     }
   ],
+  "relatedProofs": ["infinitude-primes", "wilsons-theorem", "bertrands-postulate", "erdos-1057"],
   "conclusion": {
     "summary": "Erdős Problem #1059 remains open. The formalization verifies two concrete witnesses ($p = 101, 211$) and one counterexample ($p = 89$) using Lean's `decide` tactic, demonstrates the sparsity of factorials below $n$, and axiomatizes both the main conjecture and Erdős's potentially more tractable smooth-number variant.",
     "implications": "A resolution would illuminate the relationship between prime distribution and factorial arithmetic. The probabilistic heuristic strongly suggests the answer is yes, but converting such arguments into proofs remains a central challenge in analytic number theory. Erdős's smooth-number alternative connects to sieve theory and the distribution of numbers with restricted prime factors.",
