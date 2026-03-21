@@ -15,7 +15,8 @@
       "Mathlib",
       "sum of squares",
       "prime characterization"
-    ]
+    ],
+    "prerequisites": ["Nat.Prime", "Nat.Prime.sq_add_sq"]
   },
   {
     "id": "ann-historical",
@@ -34,7 +35,8 @@
       "Fermat",
       "Euler",
       "Lagrange"
-    ]
+    ],
+    "prerequisites": ["number theory", "sum of squares"]
   },
   {
     "id": "ann-zagier",
@@ -47,7 +49,7 @@
     "title": "Zagier's One-Sentence Proof",
     "content": "In 1990, Don Zagier published a proof that fits in a single sentence (though understanding it takes considerably longer):\n\n\"The involution on the finite set S = {(x,y,z) ∈ N³ : x² + 4yz = p} defined by (x,y,z) → (x+2z, z, y-x-z) if x < y-z, (2y-x, y, x-y+z) if y-z < x < 2y, (x-2y, x-y+z, y) if x > 2y, has exactly one fixed point, so |S| is odd and the involution (x,y,z) → (x,z,y) also has a fixed point.\"\n\nThe genius is in choosing the right set S and the right involutions.",
     "mathContext": "Zagier's proof exploits: (1) |S| is odd since p is odd, (2) an involution on a set of odd cardinality must have a fixed point.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": ["Nat.Prime", "involution fixed point theorem", "finite set cardinality"],
     "relatedConcepts": [
       "involutions",
@@ -66,11 +68,12 @@
     "title": "The Complete Characterization",
     "content": "**A prime p is a sum of two squares iff p % 4 ≠ 3**\n\nThe proof has two directions:\n\n1. **If p = a² + b², then p % 4 ≠ 3**: Squares mod 4 are 0 or 1, so their sum is 0, 1, or 2 - never 3.\n\n2. **If p % 4 ≠ 3, then p = a² + b²**: This is the hard direction, proved by Zagier's involution argument in Mathlib.",
     "mathContext": "$(2k)^2 = 4k^2 \\equiv 0 \\pmod 4$\n$(2k+1)^2 = 4k^2 + 4k + 1 \\equiv 1 \\pmod 4$\n\nSo $a^2 + b^2 \\mod 4 \\in \\{0+0, 0+1, 1+0, 1+1\\} = \\{0, 1, 2\\}$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "modular arithmetic",
       "characterization theorem"
-    ]
+    ],
+    "prerequisites": ["Nat.Prime", "Nat.Prime.sq_add_sq", "ZMod"]
   },
   {
     "id": "ann-one-mod-four",
@@ -87,7 +90,8 @@
     "relatedConcepts": [
       "Fermat's original statement",
       "prime classification"
-    ]
+    ],
+    "prerequisites": ["Nat.Prime", "Nat.Prime.sq_add_sq"]
   },
   {
     "id": "ann-two-special",
@@ -104,7 +108,8 @@
     "relatedConcepts": [
       "special cases",
       "edge cases"
-    ]
+    ],
+    "prerequisites": ["Nat.Prime"]
   },
   {
     "id": "ann-three-mod-four",
@@ -121,7 +126,8 @@
     "relatedConcepts": [
       "impossibility proof",
       "modular arithmetic"
-    ]
+    ],
+    "prerequisites": ["Nat.Prime", "Nat.mod"]
   },
   {
     "id": "ann-examples",
@@ -138,7 +144,8 @@
     "relatedConcepts": [
       "examples",
       "verification"
-    ]
+    ],
+    "prerequisites": ["Nat arithmetic"]
   },
   {
     "id": "ann-classification",
@@ -155,7 +162,8 @@
     "relatedConcepts": [
       "prime classification",
       "complete characterization"
-    ]
+    ],
+    "prerequisites": ["Nat.Prime", "Nat.Prime.eq_two_or_odd"]
   },
   {
     "id": "ann-gaussian",
@@ -173,6 +181,26 @@
       "Gaussian integers",
       "algebraic number theory",
       "quadratic reciprocity"
-    ]
+    ],
+    "prerequisites": ["Gaussian integers Z[i]", "norm form", "prime splitting"]
+  },
+  {
+    "id": "ann-corollary-classification",
+    "proofId": "fermat-two-squares",
+    "range": {
+      "startLine": 156,
+      "endLine": 195
+    },
+    "type": "theorem",
+    "title": "Complete Classification and Corollary",
+    "content": "The full classification theorem and its corollary tie together all the results. The `prime_classification` theorem proves that every prime falls into exactly one of three categories using case analysis on primality (p = 2 or p is odd) and modular arithmetic (p % 4 ∈ {1, 3} for odd p). The corollary `sum_of_squares_classification` restates the main theorem in the more natural form: $p = a^2 + b^2$ iff $p = 2$ or $p \\equiv 1 \\pmod{4}$. This combines the forward direction (modular obstruction for 3 mod 4) with the reverse direction (Zagier's constructive proof for 1 mod 4 and the trivial $2 = 1^2 + 1^2$).",
+    "mathContext": "$\\forall p$ prime: $(\\exists a,b.\\ a^2 + b^2 = p) \\iff (p = 2 \\lor p \\equiv 1 \\pmod{4})$",
+    "significance": "key",
+    "relatedConcepts": [
+      "trichotomy",
+      "complete characterization",
+      "equivalence reformulation"
+    ],
+    "prerequisites": ["sum_two_squares_iff_not_three_mod_four", "prime_classification", "Nat.Prime"]
   }
 ]
