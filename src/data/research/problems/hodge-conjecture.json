@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Deleted 35 unused axioms (101→66, -35%). All deleted axioms were only referenced in declarations and #check lines, never used in proofs.",
+    "progressSummary": "PROGRESS: Deleted 5 unused axioms from HodgeConjecture.lean (66→61): hard_lefschetz, dualHodge_contravariant, tensorHodge_comm, tateStructure_unit_right, torelli_k3",
     "builtItems": [
       "Part LXIII: Hodge Number Arithmetic and Topological Invariants (HodgeConjecture.lean:7252)",
       "Replaced 4 True fields: DuBois abutment with Finset.sum equality, hp0_constant with fiber equality, Bondal-Orlov with dim equality, Steenrod with algebraic_dim = 0",
@@ -133,7 +133,8 @@
       "Pre-existing docstring bug: duplicate backtick line outside comment block caused parse error",
       "saito_decomposition_theorem: ∃ H, H.variety = Y trivially satisfied by constructing HodgeModule with variety=Y, weight=0, support_dim=0",
       "clemens_schmid_exact: trivially satisfiable at universe 0 but universe-polymorphic MixedHodgeStructure prevents proof — kept as axiom",
-      "deligne_mixed_hodge_structure: same universe issue — trivial at u=0 but needed polymorphically"
+      "deligne_mixed_hodge_structure: same universe issue — trivial at u=0 but needed polymorphically",
+      "5 axioms in HodgeConjecture.lean had no proof usage (only decl + #check). Note: file has pre-existing build errors (hodge_conjecture_top_codim, kuenneth_formula type mismatch) unrelated to axiom cleanup."
     ],
     "mathlibGaps": [
       "Complex manifolds",

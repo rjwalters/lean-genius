@@ -1741,22 +1741,6 @@ structure LefschetzOperator (X : ProjectiveVariety) (k : ℕ)
   /-- The Lefschetz operator L : H^k → H^{k+2} -/
   L : Hk.VQ →ₗ[ℚ] Hk2.VQ
 
-/-- **Axiom: Hard Lefschetz Theorem**
-
-For a smooth projective variety X of dimension n and k ≤ n, the iterated
-Lefschetz operator L^{n-k} : H^k(X) → H^{2n-k}(X) is an isomorphism
-of ℚ-vector spaces.
-
-This is one of the deepest results in Hodge theory, proved using the
-Kähler identities and the representation theory of sl₂(ℂ).
-
-**Why an axiom?** Requires Kähler geometry, sl₂ representation theory,
-and the full Hodge decomposition theorem. -/
-axiom hard_lefschetz (X : ProjectiveVariety) (n : ℕ) (hn : X.dim = n)
-    (k : ℕ) (hk : k ≤ n)
-    (Hk : PureHodgeStructure k) (H2nk : PureHodgeStructure (2 * n - k)) :
-    ∃ (f : Hk.VQ →ₗ[ℚ] H2nk.VQ), Function.Bijective f
-
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XVI: WEIGHT STRUCTURES AND MIXED HODGE THEORY (OVERVIEW)
 ═══════════════════════════════════════════════════════════════════════════════
@@ -1936,13 +1920,6 @@ axiom dualHodge_involution (k : ℕ) (H : PureHodgeStructure k) :
       ∃ ψ : HodgeStructureMorphism H (dualHodge k (dualHodge k H)),
         HodgeStructureMorphism.comp φ ψ = HodgeStructureMorphism.id H ∧
         HodgeStructureMorphism.comp ψ φ = HodgeStructureMorphism.id (dualHodge k (dualHodge k H))
-
-/-- Duality is contravariantly functorial: a morphism φ : H₁ → H₂
-    induces a dual morphism φ* : H₂* → H₁*. -/
-axiom dualHodge_contravariant (k : ℕ)
-    (H₁ H₂ : PureHodgeStructure k)
-    (φ : HodgeStructureMorphism H₁ H₂) :
-    HodgeStructureMorphism (dualHodge k H₂) (dualHodge k H₁)
 
 /-- The evaluation pairing H ⊗ H* → ℚ(−k) exists as a morphism of
     Hodge structures. We prove: the dual H* exists (from dualHodge axiom)
@@ -2287,25 +2264,12 @@ axiom tensorHodge {k₁ k₂ : ℕ}
     (H₂ : PureHodgeStructure k₂) :
     PureHodgeStructure (k₁ + k₂)
 
-/-- The tensor product is commutative (up to canonical isomorphism). -/
-axiom tensorHodge_comm {k₁ k₂ : ℕ}
-    (H₁ : PureHodgeStructure k₁)
-    (H₂ : PureHodgeStructure k₂) :
-    ∃ f : (tensorHodge H₁ H₂).VQ →ₗ[ℚ]
-      (tensorHodge H₂ H₁).VQ,
-    Function.Bijective f
-
 /-- The **Tate Hodge structure** ℚ(0): the unit for tensor product.
 
     This is a weight-0 Hodge structure with VQ = ℚ and all mass
     in H^{0,0}. It serves as the unit for the tensor product:
     H ⊗ ℚ(0) ≅ H. -/
 axiom tateStructure : PureHodgeStructure 0
-
-/-- ℚ(0) is a unit for tensor product (up to isomorphism). -/
-axiom tateStructure_unit_right {k : ℕ} (H : PureHodgeStructure k) :
-    ∃ f : (tensorHodge H tateStructure).VQ →ₗ[ℚ] H.VQ,
-    Function.Bijective f
 
 -- tateTwistObj removed: was unused and the Tate twist is already captured by tateTwist above
 
@@ -3627,18 +3591,6 @@ theorem k3_b2_eq_22 (X : K3Surface) (H : PureHodgeStructure 2)
     hodgeNumber H 0 2 (by omega) = 22 := by
   rw [hk3.1, hk3.2.1, hk3.2.2]
 
-/-- **The Torelli theorem for K3 surfaces.**
-
-    A K3 surface is determined up to isomorphism by its Hodge structure
-    on H²(X, ℤ). More precisely, two K3 surfaces X and Y are isomorphic
-    if and only if there exists a Hodge isometry H²(X,ℤ) ≅ H²(Y,ℤ).
-
-    This is a fundamental result in the theory of K3 surfaces, proved
-    by Piatetski-Shapiro and Shafarevich (1971), Burns-Rapoport (1975). -/
-axiom torelli_k3 (X Y : K3Surface) (H_X H_Y : PureHodgeStructure 2)
-    (f : HodgeStructureMorphism H_X H_Y) (hf : Function.Bijective f.rationalMap) :
-    X.toProjectiveVariety.dim = Y.toProjectiveVariety.dim
-
 /-- **PROVED: K3 surfaces have trivial fundamental group.**
 
     K3 surfaces are simply connected: π₁(X) = 1. This is because every
@@ -3996,9 +3948,7 @@ PART XVIII-FINAL: SUMMARY OF ALL RESULTS
 
 -- Tensor product
 #check tensorHodge                    -- H₁ ⊗ H₂ (Hodge structure)
-#check tensorHodge_comm               -- Commutativity
 #check tateStructure                  -- ℚ(0) (unit)
-#check tateStructure_unit_right       -- H ⊗ ℚ(0) ≅ H
 #check tateTwist                      -- ℚ(n) (Tate twist)
 
 -- Dual
@@ -4149,7 +4099,6 @@ PART XVIII-FINAL: SUMMARY OF ALL RESULTS
 -- Dual Hodge structures
 #check dualHodge                       -- H* dual structure
 #check dualHodge_involution            -- H** ≅ H
-#check dualHodge_contravariant         -- contravariant functoriality
 #check evaluation_nondegeneracy        -- H ⊗ H* pairing
 #check poincare_duality_hodge          -- Poincaré duality
 -- Polarizations
@@ -4159,7 +4108,6 @@ PART XVIII-FINAL: SUMMARY OF ALL RESULTS
 #check polarization_antisymmetric_odd
 -- Lefschetz
 #check LefschetzOperator
-#check hard_lefschetz
 -- Mixed Hodge structures
 #check MixedHodgeStructure
 #check PureHodgeStructure.toMixed
@@ -4222,7 +4170,6 @@ PART XVIII-FINAL: SUMMARY OF ALL RESULTS
 #check hodge_conjecture_k3              -- PROVED: HC for K3 (from Lefschetz 1,1)
 #check k3_lattice_rank                   -- PROVED: 3 + 19 = 22
 #check k3_b2_eq_22                       -- PROVED: b₂(K3) = 22
-#check torelli_k3                        -- Torelli theorem for K3
 #check k3_simply_connected               -- PROVED: π₁(K3) = 1
 #check k3_period_map_injective           -- PROVED: period map injective
 #check k3_moduli_dimension               -- PROVED: moduli dim = 20
