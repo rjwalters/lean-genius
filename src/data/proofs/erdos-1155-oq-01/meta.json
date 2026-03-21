@@ -96,8 +96,22 @@
         "note": "Triangle-free graphs on n vertices have at most ⌊n²/4⌋ edges; provides the naive upper bound on f(n)"
       }
     ],
-    "axioms": 5,
-    "axiomCount": 6
+    "axiomCount": 5,
+    "assumptions": "5 axiom declarations: triangleRemovalEdges (the triangle removal function itself), triangleRemovalEdges_le_complete (f(n) ≤ n(n-1)/2), bfl_upper_bound (BFL 2015 upper bound), bfl_lower_bound (BFL 2015 lower bound), triangleRemoval_mantel_bound (Mantel's theorem applied to terminal graph). All encode established results or definitions from combinatorics.",
+    "relatedProblems": [
+      {
+        "id": "erdos-1155",
+        "relationship": "Parent formalization of Erdős Problem #1155; this file extends the parent with OQ-01 gap analysis"
+      },
+      {
+        "id": "ramseys-theorem",
+        "relationship": "Both concern structural properties of graphs under random or extremal processes; Ramsey theory provides related combinatorial bounds"
+      },
+      {
+        "id": "triangle-inequality",
+        "relationship": "Shares triangle-related graph-theoretic concepts, though in a metric rather than extremal context"
+      }
+    ]
   },
   "sections": [
     {
@@ -197,9 +211,11 @@
     "summary": "Complete formalization of the structural relationship between BFL's n^{3/2+o(1)} result and Erdős's Θ(n^{3/2}) conjecture. All theorems fully proved (0 sorries). Includes BFL sandwich, exact exponent characterization, conjecture decomposition, Mantel connection, hierarchy of bounds, and ratio tightness characterization.",
     "implications": "Any proof of the full conjecture must establish that $f(n)/n^{3/2}$ has a compact limit set in $(0, \\infty)$ — a qualitative strengthening of BFL's sub-polynomial bounds. The $O$ and $\\Omega$ bounds can be pursued independently; proving either one constitutes progress toward the full conjecture. The hierarchy Conjecture $\\Longrightarrow$ BFL $\\Longrightarrow$ Grable provides a roadmap for incremental progress: each strengthening requires tighter control of the multiplicative constants. Connecting to differential equation methods (as in BFL's proof) may be the most promising route to extracting explicit constants.",
     "openQuestions": [
-      "Does f(n)/n^{3/2} converge? If so, to what constant?",
-      "Can the lower Θ-bound be established independently of the upper?",
-      "Can differential equation methods (as in BFL) give explicit constants?"
+      "Does f(n)/n^{3/2} converge to a limit L? If so, what is L? Simulations suggest L ≈ 1.2 but this is not rigorously established.",
+      "Can the lower Θ-bound Ω(n^{3/2}) be established independently of the upper? The BFL proof establishes both bounds simultaneously via a single differential equation analysis.",
+      "Can the differential equation method of BFL (tracking edge/triangle densities) be refined to extract explicit multiplicative constants rather than sub-polynomial corrections?",
+      "Does the triangle removal process on random graphs G(n,p) exhibit a phase transition in the ratio f(n,p)/n^{3/2} as p varies? The complete graph (p = 1) is the classical setting.",
+      "Can the ratio tightness characterization (compactness of f(n)/n^{3/2} in (0,∞)) be connected to concentration inequalities for the underlying random process?"
     ]
   }
 }
