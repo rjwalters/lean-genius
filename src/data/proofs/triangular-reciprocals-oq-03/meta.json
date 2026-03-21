@@ -27,13 +27,15 @@
     "dateAdded": "03/19/26"
   },
   "overview": {
-    "historicalContext": "This identity extends the classical result ∑2/(n(n+1)) = 2 (proved by Leibniz in 1673 via telescoping) to its alternating variant. The alternating harmonic series ln(2) = 1 - 1/2 + 1/3 - ⋯ was first computed by Mercator (1668) using the power series for log(1+x). The alternating triangular reciprocal series combines both ideas: partial fractions reduce it to two instances of the Mercator series.",
+    "historicalContext": "This identity extends the classical result $\\sum 2/(n(n+1)) = 2$ (proved by Leibniz in 1673 via telescoping) to its alternating variant. The alternating harmonic series $\\ln 2 = 1 - 1/2 + 1/3 - \\cdots$ was first computed by Nicolaus Mercator in his 1668 work *Logarithmotechnia*, where he integrated the geometric series $1/(1+x) = 1 - x + x^2 - \\cdots$ term by term to obtain $\\log(1+x) = x - x^2/2 + x^3/3 - \\cdots$. Setting $x = 1$ gives the alternating harmonic series, though the boundary convergence (justified by Abel's theorem, proved by Abel in 1826) was not rigorous until the 19th century. The triangular numbers $T_n = n(n+1)/2$ appeared in Pythagorean mathematics and were studied by Gauss, who proved every positive integer is a sum of three triangular numbers (Eureka theorem, 1796). The alternating triangular reciprocal series combines partial fractions with the Mercator series to yield the transcendental value $4\\ln 2 - 2$.",
     "problemStatement": "**Alternating Triangular Reciprocals**:\n\n$$\\sum_{n=1}^{\\infty} (-1)^{n+1} \\cdot \\frac{2}{n(n+1)} = 4\\ln 2 - 2 \\approx 0.7726$$",
-    "proofStrategy": "Use partial fractions: (-1)^{n+1}·2/(n(n+1)) = 2·(-1)^{n+1}/n - 2·(-1)^{n+1}/(n+1). This splits the series into the alternating harmonic series (= ln 2) and its shifted variant (= 1 - ln 2). Combining: 2·ln(2) - 2·(1 - ln(2)) = 4·ln(2) - 2.",
+    "proofStrategy": "The proof proceeds in three clean steps:\n\n1. **Partial fractions** (funext + field_simp + ring): Establish the pointwise identity $(-1)^{n+1} \\cdot \\frac{2}{n(n+1)} = 2 \\cdot \\frac{(-1)^{n+1}}{n} - 2 \\cdot \\frac{(-1)^{n+1}}{n+1}$ for each $n \\geq 1$, with both sides equal to 0 at $n = 0$.\n\n2. **Series algebra** (HasSum.mul_left + HasSum.sub): Scale the two axiomatized series by 2 and subtract: $2 \\cdot \\ln 2 - 2 \\cdot (1 - \\ln 2) = 4\\ln 2 - 2$.\n\n3. **Corollary** (HasSum.const_smul with $2^{-1}$): Divide by 2 to get the unscaled form $\\sum (-1)^{n+1}/(n(n+1)) = 2\\ln 2 - 1$.",
     "keyInsights": [
-      "Partial fractions split each alternating term into a difference of two simpler alternating terms",
-      "The shifted alternating harmonic series ∑(-1)^{n+1}/(n+1) = 1 - ln(2) follows from the standard series by removing the first term and negating",
-      "The result 4·ln(2) - 2 ≈ 0.7726 shows the alternating sum converges to a transcendental number, unlike the non-alternating case which equals exactly 2"
+      "Partial fractions decompose each alternating term: $(-1)^{n+1} \\cdot \\frac{2}{n(n+1)} = \\frac{2(-1)^{n+1}}{n} - \\frac{2(-1)^{n+1}}{n+1}$, reducing the problem to two known alternating series",
+      "The shifted alternating harmonic series $\\sum (-1)^{n+1}/(n+1) = 1 - \\ln 2$ is obtained from the standard series by index shift: remove the first term (= 1) and negate, giving $1 - \\ln 2$",
+      "The result $4\\ln 2 - 2 \\approx 0.7726$ is transcendental (since $\\ln 2$ is transcendental by Lindemann-Weierstrass), while the non-alternating counterpart $\\sum 2/(n(n+1)) = 2$ is rational — alternation transforms rationality into transcendence",
+      "The two axioms (alternating harmonic series = $\\ln 2$ and its shift = $1 - \\ln 2$) both encode Abel's theorem for boundary convergence of power series at $x = 1$, which is not yet in Mathlib",
+      "The proof architecture — `HasSum.mul_left` followed by `HasSum.sub` — demonstrates Mathlib's composable series algebra: operations on convergent series lift to operations on their limits"
     ]
   },
   "sections": [

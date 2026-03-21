@@ -1,1 +1,100 @@
-[]
+{
+  "annotations": [
+    {
+      "id": "ann-alt-harmonic-axiom",
+      "type": "context",
+      "targetLines": [31, 36],
+      "title": "Alternating Harmonic Series (Mercator 1668)",
+      "content": "The alternating harmonic series 1 - 1/2 + 1/3 - 1/4 + ⋯ = ln(2) is axiomatized because its proof requires Abel's theorem for boundary convergence of power series. The series is the Mercator series log(1+x) = x - x²/2 + x³/3 - ⋯ evaluated at x = 1, which is the boundary of the radius of convergence. Abel's theorem (1826) guarantees that if ∑aₙ converges, then lim_{x→1⁻} ∑aₙxⁿ = ∑aₙ.",
+      "mathContext": "$\\sum_{n=1}^{\\infty} \\frac{(-1)^{n+1}}{n} = \\ln 2$. This is $\\log(1+x)\\big|_{x=1}$ where $\\log(1+x) = \\sum_{n=1}^{\\infty} \\frac{(-1)^{n+1} x^n}{n}$ for $|x| \\leq 1$.",
+      "significance": "key",
+      "relatedConcepts": ["Abel's theorem", "Mercator series", "radius of convergence", "conditional convergence"],
+      "prerequisites": ["power series", "Abel's theorem", "logarithm"],
+      "tags": ["analysis", "series", "axiom"]
+    },
+    {
+      "id": "ann-shifted-harmonic-axiom",
+      "type": "context",
+      "targetLines": [38, 44],
+      "title": "Shifted Alternating Harmonic Series",
+      "content": "The shifted series ∑(-1)^{n+1}/(n+1) = 1 - ln(2) is obtained from the alternating harmonic series by an index shift. Starting from ln(2) = 1 - 1/2 + 1/3 - ⋯, remove the first term (1) and negate: -(1/2 - 1/3 + 1/4 - ⋯) = -(ln(2) - 1) = 1 - ln(2). This is also axiomatized for the same reason: Abel's theorem at the boundary.",
+      "mathContext": "$\\sum_{n=1}^{\\infty} \\frac{(-1)^{n+1}}{n+1} = 1 - \\ln 2 \\approx 0.3069$. Equivalently, $\\frac{1}{2} - \\frac{1}{3} + \\frac{1}{4} - \\cdots = 1 - \\ln 2$.",
+      "significance": "key",
+      "relatedConcepts": ["index shift", "alternating series", "series rearrangement"],
+      "prerequisites": ["alternating harmonic series", "series manipulation"],
+      "tags": ["analysis", "series", "axiom"]
+    },
+    {
+      "id": "ann-partial-fractions",
+      "type": "technique",
+      "targetLines": [59, 72],
+      "title": "Partial Fraction Decomposition",
+      "content": "The core algebraic step: for n ≥ 1, (-1)^{n+1} · 2/(n(n+1)) = 2·(-1)^{n+1}/n - 2·(-1)^{n+1}/(n+1). The proof uses funext (to reduce to pointwise equality), a case split on n = 0, then field_simp to clear denominators and ring to verify the resulting polynomial identity. The non-zero denominator conditions (n ≠ 0 and n+1 ≠ 0) are discharged by Nat.cast_ne_zero and positivity.",
+      "mathContext": "$\\frac{2}{n(n+1)} = \\frac{2}{n} - \\frac{2}{n+1}$ (telescoping decomposition). Multiplying by $(-1)^{n+1}$: $(-1)^{n+1} \\cdot \\frac{2}{n(n+1)} = \\frac{2(-1)^{n+1}}{n} - \\frac{2(-1)^{n+1}}{n+1}$.",
+      "significance": "key",
+      "relatedConcepts": ["partial fractions", "telescoping", "funext", "field_simp"],
+      "prerequisites": ["partial fraction decomposition", "rational function algebra"],
+      "tags": ["algebra", "technique", "series"]
+    },
+    {
+      "id": "ann-series-algebra",
+      "type": "technique",
+      "targetLines": [73, 79],
+      "title": "Series Algebra: mul_left and sub",
+      "content": "After the partial fraction rewrite, the proof combines the two axiomatized HasSum results using Mathlib's series algebra. HasSum.mul_left scales a convergent series: if ∑aₙ = S, then ∑(c·aₙ) = c·S. HasSum.sub takes the difference: if ∑aₙ = S and ∑bₙ = T, then ∑(aₙ - bₙ) = S - T. The final arithmetic 2·ln(2) - 2·(1 - ln(2)) = 4·ln(2) - 2 is verified by ring.",
+      "mathContext": "$2 \\cdot \\ln 2 - 2 \\cdot (1 - \\ln 2) = 2\\ln 2 - 2 + 2\\ln 2 = 4\\ln 2 - 2$.",
+      "significance": "key",
+      "relatedConcepts": ["HasSum", "series operations", "topological algebra"],
+      "prerequisites": ["HasSum.mul_left", "HasSum.sub", "topological ring"],
+      "tags": ["analysis", "mathlib", "series"]
+    },
+    {
+      "id": "ann-main-theorem",
+      "type": "insight",
+      "targetLines": [50, 79],
+      "title": "Main Theorem: 4ln(2) - 2",
+      "content": "The main result establishes HasSum for the alternating triangular reciprocal series with exact value 4·ln(2) - 2 ≈ 0.7726. The HasSum formulation (rather than tsum) is stronger: it asserts both convergence and the value of the limit. The n = 0 case is handled by mapping to 0 (since the formula 2/(n(n+1)) is undefined at n = 0), which is standard for series starting at n = 1 in Mathlib's ℕ-indexed framework.",
+      "mathContext": "$\\text{HasSum}\\left(n \\mapsto (-1)^{n+1} \\cdot \\frac{2}{n(n+1)},\\; 4\\ln 2 - 2\\right)$ asserts $\\sum_{n=1}^{\\infty} (-1)^{n+1} \\cdot \\frac{2}{n(n+1)} = 4\\ln 2 - 2$.",
+      "significance": "key",
+      "relatedConcepts": ["HasSum vs tsum", "alternating series", "transcendental values"],
+      "prerequisites": ["HasSum definition", "partial fractions"],
+      "tags": ["analysis", "series", "main-result"]
+    },
+    {
+      "id": "ann-unscaled-corollary",
+      "type": "proof-step",
+      "targetLines": [92, 123],
+      "title": "Unscaled Corollary via const_smul",
+      "content": "Derives the unscaled version ∑(-1)^{n+1}/(n(n+1)) = 2·ln(2) - 1 by dividing the main result by 2. The key technique is HasSum.const_smul with scalar 2⁻¹: if ∑(2·aₙ) = S, then ∑aₙ = S/2. The proof first rewrites the unscaled series as 2⁻¹ times the scaled series, then applies const_smul, and finishes with convert + ring.",
+      "mathContext": "$\\sum_{n=1}^{\\infty} \\frac{(-1)^{n+1}}{n(n+1)} = \\frac{4\\ln 2 - 2}{2} = 2\\ln 2 - 1 \\approx 0.3863$.",
+      "significance": "supporting",
+      "relatedConcepts": ["HasSum.const_smul", "scalar division of series"],
+      "prerequisites": ["main theorem", "HasSum.const_smul"],
+      "tags": ["analysis", "series", "corollary"]
+    },
+    {
+      "id": "ann-summability",
+      "type": "proof-step",
+      "targetLines": [136, 140],
+      "title": "Summability from HasSum",
+      "content": "The series is summable, derived trivially from HasSum.summable applied to the main theorem. In Mathlib, HasSum f s implies Summable f — if a series converges to a specific value, it is summable. This is a one-line derivation.",
+      "mathContext": "$\\text{Summable}(n \\mapsto (-1)^{n+1} \\cdot 2/(n(n+1)))$ follows from the existence of the limit $4\\ln 2 - 2$.",
+      "significance": "technical",
+      "relatedConcepts": ["Summable", "HasSum.summable"],
+      "prerequisites": ["HasSum implies Summable"],
+      "tags": ["analysis", "series"]
+    },
+    {
+      "id": "ann-partial-sums",
+      "type": "context",
+      "targetLines": [146, 160],
+      "title": "Oscillating Partial Sums",
+      "content": "Four partial sums are computed by norm_num: S₁ = 1, S₂ = 2/3, S₃ = 5/6, S₄ = 11/15. These oscillate around the limit 4·ln(2) - 2 ≈ 0.7726, with odd partial sums above and even partial sums below — characteristic behavior of alternating series (Leibniz criterion). The oscillation demonstrates that the series converges slowly: after 4 terms, the error is still about |11/15 - 0.7726| ≈ 0.006.",
+      "mathContext": "$S_1 = 1,\\; S_2 = \\frac{2}{3},\\; S_3 = \\frac{5}{6},\\; S_4 = \\frac{11}{15}$. The limit $4\\ln 2 - 2 \\approx 0.7726$ lies between each consecutive pair.",
+      "significance": "context",
+      "relatedConcepts": ["Leibniz criterion", "alternating series estimation", "partial sums"],
+      "prerequisites": ["alternating series test"],
+      "tags": ["analysis", "computation", "series"]
+    }
+  ]
+}
