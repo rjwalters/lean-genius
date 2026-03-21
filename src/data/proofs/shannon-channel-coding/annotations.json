@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-shannon-docstring",
+    "proofId": "shannon-channel-coding",
+    "range": { "startLine": 1, "endLine": 10 },
+    "type": "context",
+    "title": "Shannon's 1948 Revolution",
+    "content": "Claude Shannon's 1948 paper 'A Mathematical Theory of Communication' is one of the most influential scientific papers ever written. It established information theory as a mathematical discipline and answered the fundamental question of telecommunications: can we communicate reliably over a noisy channel? Shannon's surprising answer was yes — at any rate below channel capacity. This overturned the engineering intuition that noise forces arbitrarily slow communication. The paper introduced entropy, mutual information, and channel capacity as rigorous mathematical quantities.",
+    "mathContext": "Shannon (1948): reliable communication is possible at rate $R$ iff $R < C = \\max_{p(x)} I(X;Y)$",
+    "significance": "key",
+    "relatedConcepts": ["information theory", "channel capacity", "Shannon entropy", "coding theory"],
+    "prerequisites": ["probability theory", "entropy", "mutual information"]
+  },
+  {
+    "id": "ann-channel-capacity",
+    "proofId": "shannon-channel-coding",
+    "range": { "startLine": 17, "endLine": 19 },
+    "type": "definition",
+    "title": "Channel Capacity Definition",
+    "content": "Channel capacity is defined as $C = \\max_{p(x)} I(X;Y)$, the maximum mutual information over all input distributions. The function is `noncomputable` because the optimization over the probability simplex requires the axiom of choice (existence of a maximum of a continuous function on a compact set). The channel is represented as a transition matrix $W : \\alpha \\to \\beta \\to \\mathbb{R}$ where $W(x)(y) = p(y|x)$. The sorry'd definition needs the full mutual information formula $I(X;Y) = \\sum_{x,y} p(x) W(x)(y) \\log \\frac{W(x)(y)}{\\sum_{x'} p(x') W(x')(y)}$.",
+    "mathContext": "$C = \\max_{p(x)} I(X;Y) = \\max_{p(x)} \\left[ H(Y) - H(Y|X) \\right]$",
+    "significance": "key",
+    "relatedConcepts": ["mutual information", "optimization on simplex", "concavity", "noncomputable"],
+    "prerequisites": ["mutual information", "probability simplex", "Fintype"]
+  },
+  {
+    "id": "ann-fano",
+    "proofId": "shannon-channel-coding",
+    "range": { "startLine": 23, "endLine": 27 },
+    "type": "theorem",
+    "title": "Fano's Inequality (Placeholder)",
+    "content": "Fano's inequality (Robert Fano, 1961) is the key tool for the converse of the channel coding theorem. It states that $H(X|Y) \\leq h(P_e) + P_e \\log(|\\mathcal{X}|-1)$, where $P_e = \\Pr[X \\neq \\hat{X}]$ is the error probability and $h$ is the binary entropy function. Intuitively: if decoding error is small, then $Y$ must carry most of the information about $X$, so conditional entropy $H(X|Y)$ is small. The formalization currently proves `True` because stating the full inequality requires defining conditional entropy and the binary entropy function.",
+    "mathContext": "$H(X|Y) \\leq h(P_e) + P_e \\log(|\\mathcal{X}|-1)$ where $h(p) = -p\\log p - (1-p)\\log(1-p)$",
+    "significance": "key",
+    "relatedConcepts": ["Fano's inequality", "conditional entropy", "binary entropy", "data processing inequality"],
+    "prerequisites": ["conditional entropy", "binary entropy function", "joint distributions"]
+  },
+  {
+    "id": "ann-achievability",
+    "proofId": "shannon-channel-coding",
+    "range": { "startLine": 31, "endLine": 36 },
+    "type": "theorem",
+    "title": "Channel Coding Achievability (Random Coding)",
+    "content": "The achievability half of the channel coding theorem: for any rate $R < C$, codes exist with vanishing error probability. Shannon's original proof uses random coding — generate $2^{nR}$ codewords i.i.d. from the capacity-achieving input distribution and decode using joint typicality. The error probability vanishes exponentially fast: $P_e \\leq 2^{-n(C-R-\\delta)}$ for any $\\delta > 0$. This is a probabilistic method argument avant la lettre: a random codebook works, so a good deterministic codebook exists. Currently proves `True`.",
+    "mathContext": "$R < C \\implies \\exists$ code sequence with $P_e^{(n)} \\leq 2^{-n(C-R-\\delta)} \\to 0$",
+    "significance": "key",
+    "relatedConcepts": ["random coding", "joint typicality", "error exponent", "probabilistic method"],
+    "prerequisites": ["channel capacity", "i.i.d. sequences", "typical sets"]
+  },
+  {
+    "id": "ann-converse",
+    "proofId": "shannon-channel-coding",
+    "range": { "startLine": 40, "endLine": 45 },
+    "type": "theorem",
+    "title": "Channel Coding Converse (via Fano)",
+    "content": "The converse half: for rates above capacity, error probability cannot vanish. The proof chains: data processing inequality shows $I(W; \\hat{W}) \\leq nC$ (where $W$ is the message, $\\hat{W}$ the decoded message), while Fano's inequality gives $H(W|\\hat{W}) \\leq 1 + P_e nR$. Since $H(W) = nR$, combining gives $nR \\leq nC + 1 + P_e nR$, so $P_e \\geq 1 - C/R - 1/(nR) \\to 1 - C/R > 0$ when $R > C$. Currently proves `True`.",
+    "mathContext": "$R > C \\implies \\liminf_{n \\to \\infty} P_e^{(n)} \\geq 1 - C/R > 0$",
+    "significance": "key",
+    "relatedConcepts": ["weak converse", "strong converse", "data processing inequality", "Fano's inequality"],
+    "prerequisites": ["Fano's inequality", "data processing inequality", "channel capacity"]
+  },
+  {
+    "id": "ann-bsc",
+    "proofId": "shannon-channel-coding",
+    "range": { "startLine": 49, "endLine": 51 },
+    "type": "theorem",
+    "title": "Binary Symmetric Channel Capacity",
+    "content": "The binary symmetric channel BSC(p) flips each bit independently with probability $p$. Its capacity is $C = 1 - h(p)$ bits per channel use, where $h(p) = -p \\log_2 p - (1-p) \\log_2(1-p)$ is the binary entropy function. At $p = 0$ (noiseless), $C = 1$; at $p = 1/2$ (pure noise), $C = 0$. The BSC is the simplest non-trivial channel model and is the standard example in every information theory textbook. Currently proves `True`.",
+    "mathContext": "$C_{\\text{BSC}}(p) = 1 - h(p) = 1 + p\\log_2 p + (1-p)\\log_2(1-p)$",
+    "significance": "supporting",
+    "relatedConcepts": ["binary symmetric channel", "binary entropy function", "channel capacity computation"],
+    "prerequisites": ["binary entropy", "Real.log", "channel capacity definition"]
+  }
+]
