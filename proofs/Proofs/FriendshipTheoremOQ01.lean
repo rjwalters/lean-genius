@@ -1251,7 +1251,91 @@ lemma charpoly_quotient_product [Nonempty V] (hF : IsFriendshipGraph G) (k : ℕ
     (hk : k ≥ 2) (hreg : ∀ v : V, G.degree v = k) (f : Polynomial ℤ)
     (hf : (G.adjMatrix ℤ).charpoly = (X - C (↑k : ℤ)) * f) :
     f * f.comp (-X) = (X ^ 2 - C (↑(k - 1) : ℤ)) ^ (Fintype.card V - 1) := by
-  sorry
+  obtain ⟨u⟩ := ‹Nonempty V›
+  set n := Fintype.card V with hn_def
+  set p := X ^ 2 - C (↑(k - 1) : ℤ) with hp_def
+  have hn_eq : n = k * (k - 1) + 1 := regular_friendship_card G hF u k hreg (by omega)
+  have hkk : (k - 1 : ℤ) + ↑n = ↑k * ↑k := by
+    have : (↑n : ℤ) = ↑k * (↑k - 1) + 1 := by
+      rw [hn_eq]; push_cast [Nat.cast_sub (by omega : k ≥ 1),
+        Nat.cast_sub (by omega : k * (k - 1) ≥ 0)]; ring
+    linarith
+  have hn_odd : Odd n := by
+    have : Even (k * (k - 1)) := by
+      rcases Nat.even_or_odd k with ⟨m, hm⟩ | ⟨m, hm⟩
+      · exact ⟨m * (k - 1), by rw [hm]; ring⟩
+      · exact ⟨k * m, by rw [show k - 1 = m + m from by omega]; ring⟩
+    obtain ⟨t, ht⟩ := this; exact ⟨t, by omega⟩
+  -- Show (X-k)(X+k) * (f·f(-X) - p^{n-1}) = 0 via Polynomial.funext,
+  -- then cancel in ℤ[X] (integral domain).
+  set d := f * f.comp (-X) - p ^ (n - 1) with hd_def
+  suffices hd0 : d = 0 by
+    have : f * f.comp (-X) = p ^ (n - 1) + d := by rw [hd_def]; ring
+    rw [this, hd0, add_zero]
+  have hfact : (X - C (↑k : ℤ)) * (X + C (↑k : ℤ)) = X ^ 2 - C (↑k * ↑k : ℤ) := by
+    rw [show C (↑k * ↑k : ℤ) = C (↑k : ℤ) * C (↑k : ℤ) from by rw [map_mul]]; ring
+  have hne : (X - C (↑k : ℤ)) * (X + C (↑k : ℤ)) ≠ 0 := by
+    rw [hfact]; intro h; have := congr_arg (fun q => q.coeff 2) h
+    simp [Polynomial.coeff_sub, Polynomial.coeff_X_pow, Polynomial.coeff_C] at this
+  have hprod0 : (X - C (↑k : ℤ)) * (X + C (↑k : ℤ)) * d = 0 := by
+    apply Polynomial.funext; intro a
+    simp only [eval_mul, eval_sub, eval_add, eval_X, eval_C, eval_zero, hd_def,
+      eval_comp, eval_neg, eval_pow, hp_def]
+    -- g(a) = (a-k)*f(a) and g(-a) = -(a+k)*f(-a) from hf
+    have hga : (G.adjMatrix ℤ).charpoly.eval a = (a - ↑k) * f.eval a := by
+      rw [hf, eval_mul, eval_sub, eval_X, eval_C]
+    have hgna : (G.adjMatrix ℤ).charpoly.eval (-a) = -(a + ↑k) * f.eval (-a) := by
+      rw [hf, eval_mul, eval_sub, eval_X, eval_C]; ring
+    -- g(a) = det(aI-A), g(-a) = det(-aI-A) = (-1)^n det(aI+A)
+    have hdet_a := Matrix.eval_charpoly (G.adjMatrix ℤ) a
+    have hdet_na := Matrix.eval_charpoly (G.adjMatrix ℤ) (-a)
+    have hfactor_neg : Matrix.scalar V (-a) - G.adjMatrix ℤ =
+        (-1 : ℤ) • (Matrix.scalar V a + G.adjMatrix ℤ) := by
+      ext i j; simp [Matrix.scalar_apply, Matrix.smul_apply, Matrix.add_apply,
+        Matrix.sub_apply, smul_eq_mul]; ring
+    -- det(aI-A)*det(aI+A) = det(a²I-A²) = (a²-(k-1))^{n-1}*(a²-(k-1)-n)
+    have hdet_prod : (Matrix.scalar V a - G.adjMatrix ℤ).det *
+        (Matrix.scalar V a + G.adjMatrix ℤ).det =
+        (a * a - (↑k - 1)) ^ (n - 1) * (a * a - (↑k - 1) - ↑n) := by
+      rw [← Matrix.det_mul]; congr 1
+      -- (aI-A)(aI+A) = a²I - A²
+      have hcomm : (Matrix.scalar V a - G.adjMatrix ℤ) *
+          (Matrix.scalar V a + G.adjMatrix ℤ) =
+          Matrix.scalar V (a * a) - G.adjMatrix ℤ * G.adjMatrix ℤ := by
+        ext i j
+        sorry -- entry-wise: (aI-A)(aI+A)_{ij} = a²δ_{ij} - (A²)_{ij}
+      rw [hcomm]
+      have hAsq := adjMatrix_sq_eq G hF k (by omega : k ≥ 1) hreg
+      have : Matrix.scalar V (a * a) - G.adjMatrix ℤ * G.adjMatrix ℤ =
+          (a * a - (↑k - 1)) • (1 : Matrix V V ℤ) - onesMatrix V := by
+        ext i j; have hij := congr_fun (congr_fun hAsq i) j
+        simp only [Matrix.sub_apply, Matrix.scalar_apply, Matrix.mul_apply,
+          Matrix.smul_apply, Matrix.one_apply, Matrix.add_apply, onesMatrix,
+          Matrix.of_apply, smul_eq_mul] at hij ⊢
+        sorry -- entry-wise arithmetic: a²δ-A² = (a²-(k-1))δ - 1
+      rw [this]; exact det_scalar_sub_onesMatrix _
+    -- Combine: (a-k)*f(a)*(-(a+k)*f(-a)) = (-1)^n * (a²-(k-1))^{n-1}*(a²-(k-1)-n)
+    have hlhs : (a - ↑k) * f.eval a * (-(a + ↑k) * f.eval (-a)) =
+        (-1 : ℤ) ^ n * ((a * a - (↑k - 1)) ^ (n - 1) * (a * a - (↑k - 1) - ↑n)) := by
+      rw [← hga, ← hgna, hdet_a, hdet_na, hfactor_neg, Matrix.det_smul,
+        mul_left_comm, hdet_prod]
+    rw [show a * a - (↑k - 1 : ℤ) - ↑n = a * a - ↑k * ↑k from by linarith [hkk]] at hlhs
+    obtain ⟨m, hm⟩ := hn_odd
+    rw [show n = 2 * m + 1 from by omega, pow_succ, pow_mul, neg_one_sq, one_pow,
+      one_mul] at hlhs
+    -- hlhs: (a-k)*f(a)*(-(a+k)*f(-a)) = -((a²-(k-1))^{n-1}*(a²-k²))
+    -- Rewrite to: -(a-k)(a+k)*f(a)*f(-a) = -((a²-(k-1))^{n-1}*(a-k)(a+k))
+    have h1 : (a - ↑k) * f.eval a * (-(a + ↑k) * f.eval (-a)) =
+        -(a - ↑k) * (a + ↑k) * (f.eval a * f.eval (-a)) := by ring
+    rw [h1] at hlhs
+    have h2 : a * a - ↑k * ↑k = (a - ↑k) * (a + ↑k) := by ring
+    rw [h2] at hlhs
+    -- hlhs: -(a-k)(a+k)*f(a)*f(-a) = -1*((a²-(k-1))^{2*m}*(a-k)(a+k))
+    -- Goal: (a-k)*(a+k)*(f(a)*f(-a) - (a²-(k-1))^{n-1}) = 0
+    have hn1 : n - 1 = 2 * m := by omega
+    rw [hn1]
+    sorry -- nlinarith: factor -(a-k)(a+k) from both sides of hlhs
+  exact (mul_eq_zero.mp hprod0).resolve_left hne
 
 /-- The sub-leading coefficient of f equals k.
 
