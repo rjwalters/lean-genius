@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-entropy-def",
+    "proofId": "shannon-entropy",
+    "range": { "startLine": 22, "endLine": 24 },
+    "type": "definition",
+    "title": "Shannon Entropy Definition",
+    "content": "Defines Shannon entropy $H(X) = -\\sum_x p(x) \\ln p(x)$ for a discrete probability distribution on a `Fintype`. The definition uses `Real.log` (natural logarithm), not $\\log_2$, so entropy is measured in nats rather than bits. The convention $0 \\cdot \\ln 0 = 0$ is handled by the `if p x = 0 then 0` guard, which is mathematically correct since $\\lim_{t \\to 0^+} t \\ln t = 0$. The definition is `noncomputable` because `Real.log` is noncomputable.",
+    "mathContext": "$H(X) = -\\sum_{x \\in \\mathcal{X}} p(x) \\ln p(x)$ with $0 \\ln 0 := 0$",
+    "significance": "key",
+    "relatedConcepts": ["Shannon entropy", "information content", "0 log 0 convention", "bits vs nats"],
+    "prerequisites": ["Fintype", "Real.log", "Finset.sum"]
+  },
+  {
+    "id": "ann-entropy-nonneg",
+    "proofId": "shannon-entropy",
+    "range": { "startLine": 27, "endLine": 29 },
+    "type": "theorem",
+    "title": "Entropy Non-Negativity",
+    "content": "Shannon entropy is non-negative: $H(X) \\geq 0$. This follows from the fact that $0 \\leq p(x) \\leq 1$ implies $\\ln p(x) \\leq 0$, so $-p(x) \\ln p(x) \\geq 0$ for each term. The proof requires showing that $p(x) \\leq 1$ (from $p(x) \\geq 0$ and $\\sum p = 1$) and then using `Real.log_nonpos` for $0 < p(x) \\leq 1$. Currently sorry'd.",
+    "mathContext": "$H(X) \\geq 0$ with equality iff $X$ is deterministic ($p(x_0) = 1$ for some $x_0$)",
+    "significance": "key",
+    "relatedConcepts": ["non-negativity", "deterministic distributions", "log properties"],
+    "prerequisites": ["Real.log_nonpos", "Finset.sum_nonneg"]
+  },
+  {
+    "id": "ann-max-entropy",
+    "proofId": "shannon-entropy",
+    "range": { "startLine": 32, "endLine": 34 },
+    "type": "theorem",
+    "title": "Maximum Entropy Principle",
+    "content": "The uniform distribution maximizes entropy: $H(X) \\leq \\ln |\\mathcal{X}|$ for any distribution on $\\mathcal{X}$. This is the information-theoretic formulation of 'maximum uncertainty = maximum entropy'. The proof follows from the Gibbs inequality with $q = $ uniform: $D(p \\| \\text{unif}) \\geq 0$ gives $H(p) \\leq -\\sum p(x) \\ln(1/|\\mathcal{X}|) = \\ln |\\mathcal{X}|$. Currently sorry'd.",
+    "mathContext": "$H(X) \\leq \\ln |\\mathcal{X}|$ with equality iff $p(x) = 1/|\\mathcal{X}|$ for all $x$",
+    "significance": "key",
+    "relatedConcepts": ["maximum entropy principle", "uniform distribution", "Jaynes principle"],
+    "prerequisites": ["Gibbs inequality", "Fintype.card", "Real.log"]
+  },
+  {
+    "id": "ann-gibbs",
+    "proofId": "shannon-entropy",
+    "range": { "startLine": 37, "endLine": 40 },
+    "type": "theorem",
+    "title": "Gibbs Inequality (KL Divergence Non-Negativity)",
+    "content": "The Gibbs inequality states $H(p) \\leq -\\sum p(x) \\ln q(x)$, equivalently $D(p \\| q) = \\sum p(x) \\ln(p(x)/q(x)) \\geq 0$. This is the master inequality of information theory — essentially all entropy inequalities follow from it. The proof uses Jensen's inequality: $-\\ln$ is convex, so $\\sum p(x) (-\\ln q(x)) \\geq -\\ln(\\sum p(x) q(x))$, but actually the standard proof uses $\\ln t \\leq t - 1$ (equivalent to Jensen for $-\\ln$). The requirement $q(x) > 0$ for all $x$ avoids division by zero. Currently sorry'd.",
+    "mathContext": "$D(p \\| q) = \\sum_x p(x) \\ln \\frac{p(x)}{q(x)} \\geq 0$ (Gibbs inequality / information inequality)",
+    "significance": "key",
+    "relatedConcepts": ["Gibbs inequality", "KL divergence", "Jensen's inequality", "relative entropy"],
+    "prerequisites": ["Real.log_le_sub_one_of_le", "Finset.sum", "probability distributions"]
+  },
+  {
+    "id": "ann-log-sum",
+    "proofId": "shannon-entropy",
+    "range": { "startLine": 43, "endLine": 46 },
+    "type": "theorem",
+    "title": "Log-Sum Inequality",
+    "content": "The log-sum inequality: $\\sum a_i \\ln(a_i/b_i) \\geq (\\sum a_i) \\ln((\\sum a_i)/(\\sum b_i))$ for non-negative $a_i$ and positive $b_i$. This is a generalization of the Gibbs inequality and is proved using the convexity of $f(t) = t \\ln t$ (or equivalently, Jensen's inequality). It implies Gibbs when $a_i = p(x_i)$ and $b_i = q(x_i)$. The log-sum inequality is the key tool for proving the data processing inequality and strong subadditivity. Currently sorry'd.",
+    "mathContext": "$\\sum_i a_i \\ln \\frac{a_i}{b_i} \\geq \\left(\\sum_i a_i\\right) \\ln \\frac{\\sum_i a_i}{\\sum_i b_i}$",
+    "significance": "key",
+    "relatedConcepts": ["log-sum inequality", "convexity of t log t", "data processing inequality", "strong subadditivity"],
+    "prerequisites": ["convexity", "Jensen's inequality", "Finset.sum"]
+  }
+]
