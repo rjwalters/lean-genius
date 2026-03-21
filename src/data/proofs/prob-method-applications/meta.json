@@ -65,43 +65,51 @@
   "sections": [
     {
       "id": "introduction",
-      "title": "Introduction",
+      "title": "Module Docstring and Imports",
       "startLine": 1,
-      "endLine": 30,
-      "summary": "Overview of the classical applications and which probabilistic technique each uses.",
-      "mathContext": "This module demonstrates the four core probabilistic techniques on classical combinatorial problems: Ramsey bounds, chromatic number, Property B, and independent sets."
+      "endLine": 14,
+      "summary": "Overview of the applications module: demonstrates the probabilistic method library on Ramsey bounds, chromatic number, independent sets, tournament domination, and crossing number.",
+      "mathContext": "Classical applications of the first moment, alteration, second moment, and LLL."
     },
     {
-      "id": "ramsey-bounds",
-      "title": "Ramsey Number Bounds",
-      "startLine": 32,
-      "endLine": 95,
-      "summary": "Lower bounds on Ramsey numbers via the first moment and alteration methods.",
-      "mathContext": "First moment: $R(k,k) \\geq 2^{k/2}$ via random coloring. Alteration: $R(3,t) \\geq \\Omega(t^2/\\log t)$ by taking a random independent set in the neighborhood of a vertex and deleting triangles. These bounds are obtained by optimizing the selection probability in the random construction."
+      "id": "ramsey",
+      "title": "Ramsey Lower Bound",
+      "startLine": 16,
+      "endLine": 18,
+      "summary": "R(k,k) >= 2^((k-1)/2) for k >= 3. Simplified existential form. Sorry'd — the full proof requires the first moment method on random 2-colorings of K_n.",
+      "mathContext": "$R(k,k) \\geq 2^{(k-1)/2}$"
     },
     {
-      "id": "chromatic-number",
-      "title": "Chromatic Number Bounds",
-      "startLine": 97,
-      "endLine": 155,
-      "summary": "Probabilistic bounds on chromatic number, especially for triangle-free graphs.",
-      "mathContext": "For triangle-free graphs with maximum degree $\\Delta$, $\\chi(G) \\leq O(\\Delta / \\log \\Delta)$. Proof: randomly color with $C$ colors; each edge is monochromatic with probability $1/C$; triangle-freeness limits dependencies; the LLL gives the result when $C = \\Omega(\\Delta / \\log \\Delta)$."
+      "id": "chromatic-girth",
+      "title": "High Girth + High Chromatic Number",
+      "startLine": 20,
+      "endLine": 24,
+      "summary": "Erdős (1959): graphs exist with arbitrarily high girth and chromatic number. Proves True (placeholder) — requires graph type for full formalization.",
+      "mathContext": "$\\forall g, c \\geq 3$, $\\exists G$ with $\\text{girth}(G) \\geq g$ and $\\chi(G) \\geq c$"
     },
     {
-      "id": "property-b",
-      "title": "Property B of Hypergraphs",
-      "startLine": 157,
-      "endLine": 210,
-      "summary": "Existence of proper 2-colorings for uniform hypergraphs with bounded number of edges.",
-      "mathContext": "A $k$-uniform hypergraph has Property B (is 2-colorable) if $m < 2^{k-1}$. Random 2-coloring: each edge monochromatic with probability $2^{1-k}$, expected monochromatic edges $< 1$. Erdos (1963) showed this is essentially tight: there exist $k$-uniform hypergraphs with $O(k^2 \\cdot 2^k)$ edges lacking Property B."
+      "id": "tournament",
+      "title": "Tournament Domination",
+      "startLine": 26,
+      "endLine": 28,
+      "summary": "Every tournament on n vertices has a dominating set of size <= log₂(n) + 1. Sorry'd — proof via random sampling with union bound.",
+      "mathContext": "Domination number $\\gamma(T) \\leq \\lceil \\log_2 n \\rceil + 1$"
     },
     {
-      "id": "independent-sets",
-      "title": "Independent Set Bounds",
-      "startLine": 212,
-      "endLine": 275,
-      "summary": "Lower bounds on the independence number using expectation, alteration, and the Turan bound.",
-      "mathContext": "For a graph with degree sequence $(d_1, \\ldots, d_n)$, $\\alpha(G) \\geq \\sum_{v} \\frac{1}{d(v)+1}$. By convexity, this implies $\\alpha(G) \\geq n/(\\bar{d}+1)$ where $\\bar{d}$ is the average degree. The alteration method gives the stronger bound $\\alpha(G) \\geq n^2/(2m+n)$ for graphs with $m$ edges."
+      "id": "crossing",
+      "title": "Crossing Number Inequality",
+      "startLine": 30,
+      "endLine": 33,
+      "summary": "Ajtai-Chvátal-Newborn-Szemerédi (1982): cr(G) >= e³/(64n²) when e >= 4n. Currently only states positivity of this expression. Sorry'd.",
+      "mathContext": "$\\text{cr}(G) \\geq \\frac{e^3}{64n^2}$ for $e \\geq 4n$"
+    },
+    {
+      "id": "unbalancing",
+      "title": "Unbalancing Lights and Property B",
+      "startLine": 35,
+      "endLine": 43,
+      "summary": "Two results: (1) for any ±1 matrix, some row/column sums are >= sqrt(n)/2; (2) every 2-colorable k-uniform hypergraph has >= 2^(k-1) edges. Both sorry'd with simplified statements.",
+      "mathContext": "Unbalancing: $\\exists$ row/column sum $\\geq \\sqrt{n}/2$. Property B lower: $m \\geq 2^{k-1}$."
     }
   ],
   "crossReferences": [
@@ -130,7 +138,9 @@
     "summary": "This applications module demonstrates the four core probabilistic method techniques on classical problems in combinatorics. The Ramsey bounds, chromatic number estimates, Property B results, and independent set lower bounds showcase how a unified probabilistic toolkit yields the strongest known results across diverse domains.",
     "implications": "This formalization provides:\n\n**1. Ramsey Theory**\nMachine-checked proofs of the fundamental lower bounds on Ramsey numbers that launched probabilistic combinatorics.\n\n**2. Graph Coloring**\nFormal verification of the triangle-free chromatic number bound, connecting the LLL to structural graph theory.\n\n**3. Hypergraph Theory**\nProperty B results formalized for the first time in a proof assistant, connecting to discrepancy and coloring theory.\n\n**4. Erdos Problem Library**\nMany Erdos problems in the gallery involve probabilistic method arguments, and this applications module provides direct formalization targets.\n\n**5. Unified Demonstration**\nShowing all four techniques applied side-by-side highlights their complementary strengths and guides selection of the right tool for new problems.",
     "openQuestions": [
-      "What Erdos problems in the gallery can be directly attacked with this library?"
+      "What Erdős problems in the gallery can be directly attacked with this library?",
+      "Can the crossing number inequality be strengthened to the Szemerédi-Trotter form cr(G) >= e³/(29n²)?",
+      "Formalize the full high-girth-high-chromatic result (Erdős 1959) using Mathlib's SimpleGraph API"
     ]
   }
 }
