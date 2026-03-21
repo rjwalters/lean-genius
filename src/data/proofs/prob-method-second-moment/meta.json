@@ -7,7 +7,7 @@
     "author": "Chebyshev, Paley-Zygmund, formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Second_moment_method",
     "date": "1867",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/ProbMethodSecondMoment.lean",
     "tags": [
       "probabilistic-method",
@@ -16,8 +16,8 @@
       "probability",
       "intermediate"
     ],
-    "badge": "formalized",
-    "sorries": 3,
+    "badge": "verified",
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "MeasureTheory.Integral.Lebesgue",
@@ -68,24 +68,24 @@
     {
       "id": "chebyshev",
       "title": "Chebyshev's Inequality",
-      "startLine": 16,
-      "endLine": 22,
+      "startLine": 19,
+      "endLine": 55,
       "summary": "Finite Chebyshev inequality: the number of elements in a Finset deviating from the mean by at least $t$ is bounded by $|s| \\cdot \\operatorname{Var}[f] / t^2$. Uses rational arithmetic for exact computation.",
       "mathContext": "Chebyshev: $|\\{a \\in s : |f(a) - \\mu| \\geq t\\}| \\leq |s| \\cdot \\operatorname{Var}[f] / t^2$ where $\\mu = \\frac{1}{|s|}\\sum_{a \\in s} f(a)$ and $\\operatorname{Var}[f] = \\frac{1}{|s|}\\sum_{a \\in s}(f(a) - \\mu)^2$. Follows from Markov applied to $Y = (X - \\mu)^2$."
     },
     {
       "id": "paley-zygmund",
       "title": "Paley-Zygmund Inequality",
-      "startLine": 24,
-      "endLine": 29,
+      "startLine": 57,
+      "endLine": 75,
       "summary": "Qualitative Paley-Zygmund: for a non-negative function on a Finset with positive sum, there exists an element where the function is positive. This is the existential core of the second moment method.",
       "mathContext": "Paley-Zygmund: for $X \\geq 0$ with $E[X] > 0$, $\\Pr[X > 0] > 0$. The quantitative form gives $\\Pr[X > 0] \\geq (E[X])^2 / E[X^2]$. Proof via Cauchy-Schwarz: $E[X]^2 = E[X \\cdot \\mathbf{1}_{X>0}]^2 \\leq E[X^2] \\cdot \\Pr[X > 0]$."
     },
     {
       "id": "existence-theorem",
       "title": "Second Moment Existence Theorem",
-      "startLine": 31,
-      "endLine": 39,
+      "startLine": 115,
+      "endLine": 159,
       "summary": "Quantitative existence: if the second moment is controlled ($E[X^2] \\cdot |s| \\leq 2(E[X])^2$), then at least half the elements have $X > 0$. This is the theorem that drives threshold proofs in random graph theory.",
       "mathContext": "If $E[X^2] \\cdot |s| \\leq 2(E[X])^2$, then $|\\{a \\in s : f(a) > 0\\}| \\geq |s|/2$. In $G(n,p)$ with $X$ counting copies of $H$: $E[X] = \\Theta(n^v p^e)$, and showing $\\operatorname{Var}[X] = o((E[X])^2)$ establishes the threshold at $p = n^{-v/e}$."
     }
