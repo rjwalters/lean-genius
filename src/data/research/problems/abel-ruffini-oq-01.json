@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROVED gal_permutes_roots by fixing galAction/galActionAux instance diamond. Redefined galToPerm5 to use galActionAux directly. Vandermonde chain Steps 5-6 now unblocked. New sorry: galPermHomAux_injective. 9 sorries total.",
+    "progressSummary": "PROVED gal_permutes_roots AND galPermHomAux_injective (2 sorries eliminated, 0 new). Net: 9→8 sorries. All remaining are VP² chain (Steps A-I).",
     "builtItems": [
       "InverseGalois.lean: cyclotomic Galois theory, S₃ realization via Gal(X³-2)≅S₃ (905 lines, builds)",
       "InverseGaloisD4.lean: D₄ realization via |Gal(X⁴-2)| = 8 (666 lines, builds)",
@@ -262,7 +262,8 @@
       "gal_permutes_roots goal after simp: sigma r.val = rootsEquivRoots(sigma smul rootsEquivRoots.symm(r)).val. The Galois smul on rootSet goes through Gal.rootsEquivRoots round-trip, not direct application. Need commutation lemma between rootsEquivRoots and the smul action.",
       "CRITICAL: galAction vs galActionAux instance diamond. When E = SplittingField, galAction wraps through rootsEquivRoots (using IsSplittingField.lift algebra), making coe(σ • r) ≠ σ coe(r) definitionally. Fix: use @MulAction.toPermHom with galActionAux explicitly.",
       "IsSplittingField.lift creates Algebra SF SF that is NOT Algebra.id — the algebraMap SF SF may be a non-trivial Galois automorphism",
-      "galPermHomAux_injective: prove by ext on SplittingField directly, showing a agrees with b on all roots implies a = b"
+      "galPermHomAux_injective: prove by ext on SplittingField directly, showing a agrees with b on all roots implies a = b",
+      "SplittingField ext lemma decomposes elements into root components (x, hx) matching rootSet — key for proving galActionAux faithfulness directly"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -290,7 +291,7 @@
     "mathlib": []
   },
   "started": "2026-02-21T19:21:07.129Z",
-  "lastUpdate": "2026-03-20T23:00:00.000Z",
+  "lastUpdate": "2026-03-21T00:30:00.000Z",
   "significance": 6,
   "tractability": 6
 }
