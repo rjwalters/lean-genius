@@ -52,7 +52,14 @@
       "Roots of unity special case"
     ],
     "dateAdded": "2026-01-19",
-    "axiomCount": 7
+    "axiomCount": 7,
+    "prerequisites": [
+      "Complex number arithmetic and absolute value",
+      "Finite sums over indexed families (Finset.sum)",
+      "Basic properties of roots of unity",
+      "Symmetric polynomials and Newton's identities",
+      "Extremal problems in complex analysis"
+    ]
   },
   "overview": {
     "historicalContext": "This problem was posed by Turán, who proved the max is at least c/n. Atkinson (1961) first showed an absolute constant c = 1/6 works. Biró improved this to c = 1/2 (1994) and then c > 1/2 (2000). Computational evidence suggests the optimal c ≈ 0.7.",
