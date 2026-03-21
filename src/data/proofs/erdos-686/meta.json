@@ -22,7 +22,15 @@
     "erdosNumber": 686,
     "erdosUrl": "https://erdosproblems.com/686",
     "erdosProblemStatus": "open",
-    "axiomCount": 2
+    "axiomCount": 2,
+    "prerequisites": [
+      "Nat.factorial",
+      "Nat.choose",
+      "Finset.prod",
+      "Rational arithmetic (ℚ)",
+      "Set.Infinite",
+      "native_decide"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős Problem #686 from [Er79d] asks whether all integers N ≥ 2 can be expressed as ratios of products of consecutive integers. Products of k consecutive integers equal k! * C(n+k, k), connecting to factorials and binomial coefficients. Related to Problem #677.",

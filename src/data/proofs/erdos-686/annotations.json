@@ -8,7 +8,8 @@
     "content": "Erdős Problem #686: Can every integer N ≥ 2 be written as ∏(m+i)/∏(n+i) for some k ≥ 2 and m ≥ n+k? From [Er79d]. Products of consecutive integers relate to factorials and binomials. This problem cannot be resolved with a finite computation. OPEN.",
     "mathContext": "The ratio equals C(m+k,k)/C(n+k,k). Finding the right (n,m,k) triple for each N requires subtle divisibility arguments.",
     "significance": "critical",
-    "relatedConcepts": ["consecutive products", "factorials", "binomial coefficients"]
+    "relatedConcepts": ["consecutive products", "factorials", "binomial coefficients"],
+    "tags": ["number-theory", "open-problem", "consecutive-integers", "binomial-coefficients"]
   },
   {
     "id": "erdos-686-products",
@@ -19,7 +20,8 @@
     "content": "consecutiveProduct(n,k) = ∏_{i=1}^k (n+i) defines the product of k consecutive integers starting from n+1. Two axioms establish the connections: it equals (n+k)!/n! (factorial form) and k! * C(n+k,k) (binomial form). Three examples verified by native_decide.",
     "mathContext": "The fundamental building block. Products of consecutive integers have rich divisibility properties arising from their factorial/binomial structure.",
     "significance": "critical",
-    "relatedConcepts": ["Finset.prod", "Nat.factorial", "Nat.choose"]
+    "relatedConcepts": ["Finset.prod", "Nat.factorial", "Nat.choose"],
+    "tags": ["definition", "factorials", "binomial-coefficients", "Finset-prod"]
   },
   {
     "id": "erdos-686-ratio",
@@ -30,7 +32,8 @@
     "content": "ratioExpression(n,m,k): P(m,k)/P(n,k) computed as a rational number. IsIntegerRatio captures the divisibility condition P(n,k) | P(m,k) needed for the ratio to be a natural number.",
     "mathContext": "Working over ℚ for exact division. The ratio equals C(m+k,k)/C(n+k,k) since the k! factors cancel.",
     "significance": "critical",
-    "relatedConcepts": ["rational numbers", "division", "binomial ratio"]
+    "relatedConcepts": ["rational numbers", "division", "binomial ratio"],
+    "tags": ["definition", "rational-arithmetic", "divisibility", "binomial-ratio"]
   },
   {
     "id": "erdos-686-conjecture",
@@ -41,7 +44,8 @@
     "content": "IsRepresentable(N,n,m,k): k ≥ 2, m ≥ n+k, ratio = N. Representable(N): ∃ such triple. ErdosConjecture686: ∀ N ≥ 2, Representable(N). The constraint k ≥ 2 excludes trivial single-factor ratios, and m ≥ n+k ensures non-overlapping ranges.",
     "mathContext": "The problem asks about universality of this representation. Not every pair of constraints (n,k) works for every N, so existence across all N is non-trivial.",
     "significance": "critical",
-    "relatedConcepts": ["open problem", "representation", "existential quantification"]
+    "relatedConcepts": ["open problem", "representation", "existential quantification"],
+    "tags": ["conjecture", "open-problem", "existential-quantification", "representation-theory"]
   },
   {
     "id": "erdos-686-structural",
@@ -52,7 +56,8 @@
     "content": "numerator_gt_denominator: when m ≥ n+k, each factor (m+i) > (n+i), so P(m,k) > P(n,k). ratio_gt_one: the ratio exceeds 1 under the problem constraints. These ensure the representation yields integers ≥ 2.",
     "mathContext": "These structural properties justify the problem constraints: they guarantee the ratio is a positive integer greater than 1.",
     "significance": "key",
-    "relatedConcepts": ["monotonicity", "positivity", "ordering"]
+    "relatedConcepts": ["monotonicity", "positivity", "ordering"],
+    "tags": ["axiom", "monotonicity", "inequality", "structural-property"]
   },
   {
     "id": "erdos-686-example",
@@ -63,7 +68,8 @@
     "content": "Verified: ratioExpression 0 2 2 = 6, meaning (3)(4)/(1)(2) = 12/2 = 6. This confirms at least one integer has the desired representation.",
     "mathContext": "Computational verification via native_decide. This is the simplest non-trivial case.",
     "significance": "key",
-    "relatedConcepts": ["native_decide", "computational verification", "examples"]
+    "relatedConcepts": ["native_decide", "computational verification", "examples"],
+    "tags": ["example", "native-decide", "computational-verification"]
   },
   {
     "id": "erdos-686-followup",
@@ -74,7 +80,8 @@
     "content": "RepresentableSet(n,k) = {N | ∃ m ≥ n+k, ratio = N}: the set of integers representable with fixed initial parameters. ratio_mono: the ratio increases with m. representable_set_infinite: this set is infinite for k ≥ 2.",
     "mathContext": "Erdős's secondary question: for fixed n and k, what can be said about the representable set? The monotonicity shows it grows without bound.",
     "significance": "key",
-    "relatedConcepts": ["RepresentableSet", "monotonicity", "Set.Infinite"]
+    "relatedConcepts": ["RepresentableSet", "monotonicity", "Set.Infinite"],
+    "tags": ["definition", "monotonicity", "infinite-sets", "parameter-analysis"]
   },
   {
     "id": "erdos-686-connections",
@@ -85,7 +92,8 @@
     "content": "Problem #677 asks about writing integers as products of consecutive integers (without ratios). We define problem_677_special_case and prove product_implies_ratio: any integer expressible as a product of consecutive integers is automatically representable as a ratio (with denominator range starting at 0). This shows #686 generalizes #677.",
     "mathContext": "The product-to-ratio reduction shows that the ratio representation is strictly more general than the product representation.",
     "significance": "key",
-    "relatedConcepts": ["Problem #677", "generalization", "special case"]
+    "relatedConcepts": ["Problem #677", "generalization", "special case"],
+    "tags": ["cross-reference", "generalization", "erdos-677", "reduction"]
   },
   {
     "id": "erdos-686-summary",
@@ -96,6 +104,7 @@
     "content": "erdos_686_statement (proved by simp): ErdosConjecture686 ↔ ∀ N ≥ 2, ∃ n m k, k ≥ 2 ∧ m ≥ n+k ∧ ratio = N. The theorem unfolds the definition chain to show the conjecture's equivalent explicit form. Problem remains OPEN since [Er79d].",
     "mathContext": "The simp proof unfolds ErdosConjecture686, Representable, and IsRepresentable to show logical equivalence with the explicit statement.",
     "significance": "critical",
-    "relatedConcepts": ["open problem", "definitional unfolding", "summary"]
+    "relatedConcepts": ["open problem", "definitional unfolding", "summary"],
+    "tags": ["summary", "simp-tactic", "definitional-unfolding", "open-problem"]
   }
 ]
