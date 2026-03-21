@@ -282,17 +282,54 @@ theorem lacunarySum_factorial_split (N : ℕ) :
     (∑ k ∈ Finset.range (N + 1), (1 : ℝ) / 2 ^ (k + 1).factorial) +
     factorialTail N := by
   unfold lacunarySum factorialTail
-  sorry
+  -- Prove by induction: split tsum at index N+1
+  induction N with
+  | zero =>
+    rw [Finset.sum_range_succ, Finset.sum_range_zero, zero_add]
+    rw [factorial_lacunary_summable.tsum_eq_zero_add]
+    congr 1
+    apply tsum_congr; intro k; congr 1; congr 1; congr 1; omega
+  | succ n ih =>
+    rw [ih]
+    conv_rhs => rw [Finset.sum_range_succ]
+    rw [add_assoc]
+    congr 1
+    -- tail_n = f(n+1) + tail_{n+1}, use tsum_eq_zero_add
+    have h := (factorial_tail_summable n).tsum_eq_zero_add
+    -- Normalize arithmetic in h to match goal
+    simp only [show n + 1 + 0 + 1 = n + 1 + 1 from by omega] at h
+    rw [h]
+    congr 1
+    apply tsum_congr; intro k
+    simp only [show n + 1 + (k + 1) + 1 = n + 1 + 1 + k + 1 from by omega]
 
 /-- The partial sum can be expressed as an integer divided by 2^{(N+1)!}. -/
 theorem factorialPartialSum_eq_div (N : ℕ) :
     ∃ (a : ℤ),
     (∑ k ∈ Finset.range (N + 1), (1 : ℝ) / 2 ^ (k + 1).factorial) =
     (a : ℝ) / (2 : ℝ) ^ (N + 1).factorial := by
-  -- Each term 1/2^{(k+1)!} = 2^{(N+1)! - (k+1)!} / 2^{(N+1)!}
-  -- since (k+1)! ≤ (N+1)! for k ≤ N.
-  -- Sum of these numerators is an integer.
-  sorry
+  induction N with
+  | zero =>
+    exact ⟨1, by simp [Finset.sum_range_succ, Finset.sum_range_zero]⟩
+  | succ n ih =>
+    obtain ⟨a, ha⟩ := ih
+    -- partial_{n+1} = a/2^{(n+1)!} + 1/2^{(n+2)!}
+    -- = (a * 2^{(n+2)!-(n+1)!} + 1) / 2^{(n+2)!}
+    have hle : (n + 1).factorial ≤ (n + 2).factorial :=
+      Nat.factorial_le (by omega)
+    set d := (n + 2).factorial - (n + 1).factorial with hd_def
+    refine ⟨a * (2 : ℤ) ^ d + 1, ?_⟩
+    rw [Finset.sum_range_succ, ha]
+    have h2pos : (2 : ℝ) ^ (n + 1).factorial ≠ 0 := by positivity
+    have h2pos' : (2 : ℝ) ^ (n + 1 + 1).factorial ≠ 0 := by positivity
+    have hpow : (2 : ℝ) ^ (n + 1 + 1).factorial =
+        (2 : ℝ) ^ (n + 1).factorial * (2 : ℝ) ^ d := by
+      rw [show (n + 1 + 1).factorial = (n + 1).factorial + d from
+        (Nat.add_sub_cancel' hle).symm]
+      exact pow_add 2 (n + 1).factorial d
+    rw [hpow]
+    push_cast
+    field_simp
 
 /- ### Path A: Via Liouville Number Connection -/
 
@@ -301,10 +338,8 @@ theorem factorialPartialSum_eq_div (N : ℕ) :
     Given p ∈ ℚ[X] with p(x) = 0, multiply by the product of all coefficient
     denominators to get q ∈ ℤ[X] with q(x) = 0. -/
 theorem transcendental_int_to_rat {x : ℝ} (h : Transcendental ℤ x) :
-    Transcendental ℚ x := by
-  intro ⟨p, hp_ne, hp_eval⟩
-  apply h
-  sorry
+    Transcendental ℚ x :=
+  fun halg => h ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mpr halg)
 
 /-- Subtracting a rational from a transcendental number gives a transcendental number. -/
 theorem Transcendental.sub_rat {x : ℝ} (hx : Transcendental ℚ x) (r : ℚ) :
@@ -371,7 +406,47 @@ theorem factorialTail_pos (N : ℕ) : 0 < factorialTail N := by
 theorem factorialTail_le (N : ℕ) :
     factorialTail N ≤ 2 / (2 : ℝ) ^ (N + 2).factorial := by
   unfold factorialTail
-  sorry
+  -- Each term 1/2^{(N+2+k)!} ≤ 1/2^{(N+2)!+k} since (N+2+k)! ≥ (N+2)!+k
+  -- Sum of RHS = 1/2^{(N+2)!} * ∑ 1/2^k = 1/2^{(N+2)!} * 2 = 2/2^{(N+2)!}
+  -- Use hasSum_le for the comparison
+  -- Pointwise bound: each term ≤ corresponding geometric term
+  have hfact_bound : ∀ k, (N + 2).factorial + k ≤ (N + 1 + k + 1).factorial := by
+    intro k
+    rw [show N + 1 + k + 1 = N + 2 + k from by omega]
+    calc (N + 2).factorial + k
+        ≤ (N + 2).factorial * (k + 1) := by nlinarith [Nat.factorial_pos (N + 2)]
+      _ ≤ (N + 2 + k).factorial := by
+          induction k with
+          | zero => simp
+          | succ m ihm =>
+            calc (N + 2).factorial * (m + 1 + 1)
+                = (N + 2).factorial * (m + 1) + (N + 2).factorial := by ring
+              _ ≤ (N + 2 + m).factorial + (N + 2 + m).factorial :=
+                  add_le_add ihm (Nat.factorial_le (by omega))
+              _ ≤ (N + 2 + m).factorial * (N + 2 + m + 1) := by
+                  nlinarith [Nat.factorial_pos (N + 2 + m)]
+              _ = (N + 2 + m + 1).factorial := by
+                  rw [Nat.factorial_succ]; ring
+  have hle : ∀ k, (1 : ℝ) / 2 ^ (N + 1 + k + 1).factorial ≤
+      (1 / 2 ^ (N + 2).factorial) * (1 / 2) ^ k := by
+    intro k
+    -- Rewrite RHS to common form: 1/2^{(N+2)!+k}
+    have hrw : (1 : ℝ) / 2 ^ (N + 2).factorial * (1 / 2) ^ k =
+        1 / 2 ^ ((N + 2).factorial + k) := by
+      rw [pow_add, one_div, one_div, inv_pow, ← mul_inv]; ring_nf
+    rw [hrw]
+    exact div_le_div_of_nonneg_left (by norm_num : (0 : ℝ) ≤ 1)
+      (by positivity : (0 : ℝ) < 2 ^ ((N + 2).factorial + k))
+      (by exact_mod_cast Nat.pow_le_pow_right (by omega : 1 ≤ 2) (hfact_bound k))
+  have hgeo_summable : Summable (fun k => (1 / 2 ^ (N + 2).factorial) * ((1 : ℝ) / 2) ^ k) :=
+    Summable.mul_left _ (summable_geometric_of_lt_one (by positivity) (by norm_num))
+  calc ∑' k, (1 : ℝ) / 2 ^ (N + 1 + k + 1).factorial
+      ≤ ∑' k, (1 / 2 ^ (N + 2).factorial) * ((1 : ℝ) / 2) ^ k :=
+        hasSum_le hle (factorial_tail_summable N).hasSum hgeo_summable.hasSum
+    _ = (1 / 2 ^ (N + 2).factorial) * ∑' k, ((1 : ℝ) / 2) ^ k := tsum_mul_left
+    _ = (1 / 2 ^ (N + 2).factorial) * 2 := by
+        rw [tsum_geometric_of_lt_one (by positivity) (by norm_num)]; norm_num
+    _ = 2 / (2 : ℝ) ^ (N + 2).factorial := by ring
 
 /-- The factorial lacunary sum is a Liouville number.
 
@@ -407,11 +482,20 @@ theorem factorial_sum_liouville :
     calc factorialTail m
         ≤ 2 / (2 : ℝ) ^ (m + 2).factorial := factorialTail_le m
       _ < 1 / ((2 : ℝ) ^ (m + 1).factorial) ^ m := by
-          -- 2/2^{(m+2)!} < 1/(2^{(m+1)!})^m
           -- Cross-multiply: 2 * (2^{(m+1)!})^m < 2^{(m+2)!}
+          rw [div_lt_div_iff₀ (by positivity) (by positivity)]
+          rw [one_mul, ← pow_mul]
+          rw [show (m + 1).factorial * m = m * (m + 1).factorial from by ring]
+          -- 2 * 2^{m*(m+1)!} < 2^{(m+2)!}
           -- i.e., 2^{m*(m+1)!+1} < 2^{(m+2)!}
-          -- This follows from m*(m+1)!+1 < (m+2)!
-          sorry
+          have h1 : (2 : ℝ) * (2 : ℝ) ^ (m * (m + 1).factorial) =
+              (2 : ℝ) ^ (m * (m + 1).factorial + 1) := by
+            rw [pow_succ]; ring
+          rw [h1]
+          have h2 : m * (m + 1).factorial + 1 < (m + 2).factorial := by
+            rw [Nat.factorial_succ (m + 1)]
+            have := Nat.factorial_pos (m + 1); nlinarith
+          exact_mod_cast Nat.pow_lt_pow_right (by omega : 1 < 2) h2
 
 /-- **Axiom-free transcendence via direct Liouville proof.**
     Uses Liouville's theorem directly — no Erdős 1975 axiom needed. -/
