@@ -1,0 +1,127 @@
+{
+  "slug": "central-limit-theorem-oq-01-oq-02",
+  "title": "Lévy-Khintchine Representation for Stable Distributions",
+  "phase": "OBSERVE",
+  "status": "surveyed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-21T17:07:38.710Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEYED: No file exists. Lévy-Khintchine needs characteristic function infrastructure, infinitely divisible distribution theory. Heavy lift.",
+    "builtItems": [],
+    "insights": [
+      "No existing file for this open question",
+      "Parent OQ01 file (313 lines) and OQ01-OQ01 (1130 lines) exist with 0 sorries",
+      "Lévy-Khintchine formula: log φ(t) = iμt - σ²t²/2 + ∫(e^{itx}-1-itx/(1+x²))ν(dx)",
+      "Requires: characteristic functions, infinitely divisible distributions, Lévy measure",
+      "Mathlib has MeasureTheory but limited characteristic function infrastructure",
+      "Tractability 4/10 — would need 500+ lines of new definitions"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Define characteristic function φ_X(t) = E[e^{itX}]",
+      "Define infinitely divisible distribution",
+      "Define Lévy measure (σ-finite on ℝ\\{0})",
+      "State Lévy-Khintchine formula"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "probability",
+    "characteristic-functions"
+  ],
+  "relatedProofs": [
+    "central-limit-theorem",
+    "central-limit-theorem-oq-01",
+    "central-limit-theorem-oq-01-oq-01",
+    "central-limit-theorem-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-21T17:07:38.710Z",
+  "lastUpdate": "2026-03-21T17:07:38.710Z",
+  "significance": 7,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/CentralLimitTheorem.lean",
+      "filename": "CentralLimitTheorem.lean",
+      "lineCount": 619,
+      "theoremCount": 15,
+      "axiomCount": 13,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheorem.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01.lean",
+      "filename": "CentralLimitTheoremOQ01.lean",
+      "lineCount": 314,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ01.lean",
+      "filename": "CentralLimitTheoremOQ01OQ01.lean",
+      "lineCount": 1131,
+      "theoremCount": 54,
+      "axiomCount": 3,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ02.lean",
+      "filename": "CentralLimitTheoremOQ02.lean",
+      "lineCount": 730,
+      "theoremCount": 19,
+      "axiomCount": 1,
+      "defCount": 11,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ03.lean",
+      "filename": "CentralLimitTheoremOQ03.lean",
+      "lineCount": 242,
+      "theoremCount": 8,
+      "axiomCount": 14,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ03.lean"
+    }
+  ]
+}

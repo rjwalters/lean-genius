@@ -1,0 +1,125 @@
+{
+  "slug": "brouwer-fixed-point-oq-02-oq-01",
+  "title": "PPAD Formalization: Higher-Dimensional Sperner Extension",
+  "phase": "OBSERVE",
+  "status": "surveyed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-21T17:07:38.705Z",
+    "iteration": 1,
+    "focus": "Higher-dim Sperner needs infrastructure from scratch",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEYED: No Mathlib SimplicialComplex infrastructure. Existing OQ02 files cover 1D case (0 sorries). Higher-dim Sperner needs definitions from scratch.",
+    "builtItems": [],
+    "insights": [
+      "Mathlib has NO SimplicialComplex or Sperner infrastructure",
+      "Existing BrouwerFixedPointOQ02.lean has 1D Sperner (discrete IVT), PPAD structure — 0 sorries",
+      "BrouwerFixedPointOQ02Ext.lean has contraction uniqueness, error bounds, 1D Sperner — 0 sorries",
+      "Higher-dim Sperner requires: triangulation definition, coloring, boundary conditions, parity argument",
+      "2D Sperner is tractable but needs ~200-300 lines of new definitions",
+      "Standard proof uses path-following on dual graph of boundary edges"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Create BrouwerFixedPointOQ02OQ01.lean with 2D Sperner skeleton",
+      "Define triangulation of triangle (grid-based is simplest)",
+      "Define Sperner coloring condition",
+      "Prove parity lemma: odd number of fully-colored triangles"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "topology",
+    "computational-complexity"
+  ],
+  "relatedProofs": [
+    "brouwer-fixed-point",
+    "brouwer-fixed-point-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-21T17:07:38.705Z",
+  "lastUpdate": "2026-03-21T17:07:38.705Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/BrouwerFixedPoint.lean",
+      "filename": "BrouwerFixedPoint.lean",
+      "lineCount": 250,
+      "theoremCount": 5,
+      "axiomCount": 2,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPoint.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ01.lean",
+      "filename": "BrouwerFixedPointOQ01.lean",
+      "lineCount": 403,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ02.lean",
+      "filename": "BrouwerFixedPointOQ02.lean",
+      "lineCount": 392,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ02Ext.lean",
+      "filename": "BrouwerFixedPointOQ02Ext.lean",
+      "lineCount": 204,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02Ext.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ02Stability.lean",
+      "filename": "BrouwerFixedPointOQ02Stability.lean",
+      "lineCount": 198,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02Stability.lean"
+    }
+  ]
+}
