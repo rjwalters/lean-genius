@@ -7,7 +7,7 @@
     "author": "Kelly, Erdős (1975)",
     "sourceUrl": "https://erdosproblems.com/1089",
     "date": "1975",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1089Problem.lean",
     "tags": [
       "erdos",
@@ -54,7 +54,8 @@
       "erdos1089Conjecture formalized via Filter.Tendsto"
     ],
     "dateAdded": "12/29/25",
-    "axiomCount": 13
+    "axiomCount": 13,
+    "assumptions": "13 axiom declarations: g_well_defined (g_d(n) achieves the minimum), 4 specific values (g(1,3)=4, g(2,3)=6, g(3,3)=7, g(d,2)=3), cube infrastructure (cubeVertices, cube_card, cube_distances), erdos_lower_bound and erdos_straus_upper_bound (the main asymptotic bounds), monotonicity axioms (g_mono_n, g_mono_d), and g_f_relationship linking to the classical 2D distinct distances function. The specific values and cube properties are provable in principle; the bounds and main conjecture are open."
   },
   "sections": [
     {
