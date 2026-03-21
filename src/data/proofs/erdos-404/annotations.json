@@ -8,7 +8,8 @@
     "content": "**Erdős Problem #404: Prime Power Divisibility of Factorial Sums**\n\nFor which (a, p) is f(a, p) finite, where f(a, p) = sup{k : p^k | some factorial sum starting at a}?\n\n**Known:** Lin (1976) proved f(2, 2) ≤ 254 — the only concrete upper bound.\n\n**Status:** OPEN. Both the main question and the secondary question about mₖ → ∞ remain unresolved.",
     "mathContext": "From Erdős-Graham [ErGr80]. The problem connects p-adic analysis with factorial combinatorics. Related to Problem #403.",
     "significance": "critical",
-    "relatedConcepts": ["p-adic valuation", "Factorials", "Divisibility", "Supremum"]
+    "relatedConcepts": ["p-adic valuation", "Factorials", "Divisibility", "Supremum"],
+    "tags": ["open-problem", "p-adic-valuation", "factorial-sums", "erdos-graham"]
   },
   {
     "id": "ann-e404-definitions",
@@ -19,7 +20,8 @@
     "content": "**StrictIncSeq a:** A strictly increasing sequence starting at a, with length, seq, starts_at_a, and strictly_increasing fields.\n\n**factorialSum s:** ∑ (s.seq i)! over the sequence.\n\n**dividesByPrimePower a k p:** ∃ s, p^k | factorialSum s.\n\n**divisiblePowers a p:** The set {k | dividesByPrimePower a k p}.\n\n**f a p:** sSup of divisiblePowers, giving the maximum achievable k (in ℕ∞).",
     "mathContext": "Using ℕ∞ for f allows f(a,p) = ⊤ when arbitrarily high powers are achievable. The StrictIncSeq structure ensures the sequence is properly ordered.",
     "significance": "critical",
-    "relatedConcepts": ["StrictMono", "Finset.sum", "sSup", "WithTop"]
+    "relatedConcepts": ["StrictMono", "Finset.sum", "sSup", "WithTop"],
+    "tags": ["definitions", "supremum", "strictly-increasing-sequence", "extended-naturals"]
   },
   {
     "id": "ann-e404-questions",
@@ -30,7 +32,8 @@
     "content": "**secondaryQuestion:** ∃ p prime, ∃ StrictMono seq, Tendsto (v_p(Σ_{i≤k} (seq i)!)) atTop atTop. Asks whether partial factorial sums can have unbounded p-adic valuation.\n\n**erdos404Conjecture:** ∀ a ≥ 1, ∀ p prime, f(a,p) < ⊤. Asks whether f is always finite.",
     "mathContext": "Both questions remain open. The secondary question uses Filter.Tendsto to formalize the 'mₖ → ∞' condition.",
     "significance": "critical",
-    "relatedConcepts": ["Filter.Tendsto", "Filter.atTop", "Open problem"]
+    "relatedConcepts": ["Filter.Tendsto", "Filter.atTop", "Open problem"],
+    "tags": ["open-problem", "conjecture", "filter-tendsto", "p-adic-valuation"]
   },
   {
     "id": "ann-e404-lin",
@@ -41,7 +44,8 @@
     "content": "**lin_bound:** f 2 2 ≤ 254. The only concrete upper bound known for any (a, p) pair.\n\n**lin_bound_meaning:** ∀ s : StrictIncSeq 2, ¬(2^255 | factorialSum s). No sum of factorials starting at 2 is divisible by 2^255.",
     "mathContext": "Lin (1976) proved this computationally. Combined with the example 2³ | 2!+3!, we know 3 ≤ f(2,2) ≤ 254.",
     "significance": "critical",
-    "relatedConcepts": ["Lin", "Upper bound", "f(2,2)"]
+    "relatedConcepts": ["Lin", "Upper bound", "f(2,2)"],
+    "tags": ["upper-bound", "computational-result", "axiomatized", "lin-1976"]
   },
   {
     "id": "ann-e404-padic",
@@ -52,7 +56,8 @@
     "content": "**legendreSum n p:** Computes ∑_{i≥1} ⌊n/p^i⌋ — the exact p-adic valuation of n!.\n\n**legendre_formula:** padicValNat p n! = legendreSum n p (Legendre's formula).\n\n**padic_val_factorial_asymp:** v_p(n!)/n → 1/(p-1) as n → ∞. This governs the growth rate of factorial valuations.",
     "mathContext": "Legendre's formula is fundamental to understanding factorial divisibility. The asymptotic v_p(n!) ≈ n/(p-1) means factorial valuations grow linearly.",
     "significance": "key",
-    "relatedConcepts": ["Legendre's formula", "padicValNat", "Asymptotic growth"]
+    "relatedConcepts": ["Legendre's formula", "padicValNat", "Asymptotic growth"],
+    "tags": ["p-adic-valuation", "legendre-formula", "asymptotics", "factorial-divisibility"]
   },
   {
     "id": "ann-e404-structure",
@@ -63,7 +68,8 @@
     "content": "**factorial_sum_mod:** a₁! + a₂! ≡ a₁! (mod a₂!) for a₁ < a₂. The larger factorial dominates modularly.\n\n**factorial_sum_factored:** a₁! + a₂! = a₁!(1 + a₂!/a₁!) for a₁ ≤ a₂. Extracting the common factor reveals the p-adic structure.\n\n**Examples (proved by native_decide):**\n- 2³ | 2! + 3! = 8, so f(2,2) ≥ 3\n- 3 | 1! + 2! = 3",
     "mathContext": "The factorization is the key structural insight: the p-adic valuation of the sum is v_p(a₁!) + v_p(1 + a₂!/a₁!), and the second term controls the 'extra' divisibility.",
     "significance": "key",
-    "relatedConcepts": ["Modular arithmetic", "Factorial ratio", "native_decide"]
+    "relatedConcepts": ["Modular arithmetic", "Factorial ratio", "native_decide"],
+    "tags": ["modular-arithmetic", "factorization", "native-decide", "concrete-examples"]
   },
   {
     "id": "ann-e404-summary",
@@ -74,6 +80,7 @@
     "content": "**erdos_404_summary:** Proved conjunction of Lin's bounds:\n1. f 2 2 ≤ 254 (from lin_bound)\n2. ∀ s, ¬(2^255 | factorialSum s) (from lin_bound_meaning)\n\nThe problem remains OPEN for general (a, p).",
     "mathContext": "The summary packages both formulations of Lin's result. The gap 3 ≤ f(2,2) ≤ 254 remains wide.",
     "significance": "critical",
-    "relatedConcepts": ["State of knowledge", "Open problem", "Proved conjunction"]
+    "relatedConcepts": ["State of knowledge", "Open problem", "Proved conjunction"],
+    "tags": ["summary", "proved-conjunction", "lin-bound", "open-problem"]
   }
 ]
