@@ -1710,12 +1710,22 @@ theorem resultant_eq_disc_q :
 
 /-- disc(q) = 1024000000 over ℚ.
     The discriminant of X⁵ - 5X⁴ + 10X³ - 10X² + 25X - 5
-    equals 2¹⁶ · 5⁶ = 1024000000. -/
+    equals 2¹⁶ · 5⁶ = 1024000000.
+
+    **Verified approach** (Session 2026-03-21):
+    1. disc(q) = Res(q, q') = det(sylvester q q' 5 4) — 9×9 Sylvester matrix.
+    2. `native_decide` on 9×9 `Matrix.det` stack-overflows in Lean 4 (even with
+       `LEAN_STACK_SIZE=256MB`). So does `decide`. 9! = 362880 permutations exceeds
+       the compiler's recursion limit.
+    3. Double cofactor expansion along column 0 reduces to 5 unique 7×7 determinants,
+       all verified by `native_decide` on `Matrix (Fin 7) (Fin 7) ℤ`:
+       - A₀ = 1924000000, A₃ = 256000000, A₄ = -1012000000
+       - B₁ = 1012000000, B₄ = 420000000
+    4. det(M) = 1·(A₀ + 20·A₃ + 5·A₄) + 5·(-5·A₃ - B₁ + 5·B₄)
+             = 1984000000 + 5·(-192000000) = 1024000000 ✓
+    5. Remaining: connect `Polynomial.sylvester` entries to explicit 7×7 ℤ matrices
+       via `Matrix.det_succ_column_zero` and `Polynomial.coeff` lemmas (~200 lines). -/
 theorem disc_q_val : Polynomial.discr q = (1024000000 : ℚ) := by
-  -- disc(q) = Res(q, q') · (-1)^{n(n-1)/2} / lc(q)
-  -- For monic q degree 5: disc = Res(q, q')
-  -- native_decide fails because q is noncomputable (SplittingField dependency)
-  -- TODO: make q computable or use norm_num extension for polynomial discriminants
   sorry
 
 -- Step I: Transfer resultant through algebraMap
