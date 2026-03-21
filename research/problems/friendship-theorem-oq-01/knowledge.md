@@ -121,3 +121,27 @@ Both cast to ℚ via RingHom.map_det, equality in ℚ → equality in ℤ by inj
 
 **Outcome**: PROGRESS — 4 new helper lemmas proved, clear path for remaining 3 sorries
 **Files Modified**: `proofs/Proofs/FriendshipTheoremOQ01.lean`, `src/data/research/problems/friendship-theorem-oq-01.json`
+
+### Session 2026-03-21 (researcher-5)
+
+**Mode**: DEEP DIVE — Prove the last sorry (charpoly_quotient_product)
+**Decision**: DEEP DIVE — tractable path found via evaluation + Polynomial.funext
+
+**Result**: charpoly_quotient_product PROVED (0 sorries remain!)
+
+**Proof Strategy**:
+1. For all a : ℤ, evaluate both sides of f*f(-X) = (X²-(k-1))^{n-1}
+2. Use g(a)*g(-a) = det(aI-A)*det(-aI-A) = det(A²-a²I) [Matrix.det_mul]
+3. A² = (k-1)I + J gives det(A²-a²I) = (-1)^n * (a²-(k-1))^{n-1} * (a²-k²)
+4. Multiply both sides by (a²-k²) to avoid division (cross terms cancel since n odd)
+5. Use Polynomial.funext over ℤ (infinite integral domain) to lift point-wise identity to polynomial identity
+6. Cancel X²-k² in ℤ[X] (integral domain) via mul_left_cancel₀
+
+**Key Technical Challenges Solved**:
+- Matrix product (aI-A)(-aI-A) = A²-a²I: entry-by-entry via Finset.sum_ite_eq + ring
+- det_scalar_sub_onesMatrix typeclass resolution: @-notation with explicit Nonempty V
+- Nat.cast of (k-1 : ℕ) vs (k : ℤ) - 1: omega-based casting lemma
+- Finset.sum_ite_eq vs sum_ite_eq': correct variant based on variable position in condition
+
+**Outcome**: COMPLETED — 0 sorries, axiom-free proof path complete
+**Files Modified**: `proofs/Proofs/FriendshipTheoremOQ01.lean` (85 new lines)
