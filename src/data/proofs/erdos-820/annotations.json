@@ -17,7 +17,10 @@
     "type": "definition",
     "title": "n-Coprime Property",
     "content": "**areNCoprime:**\n\nTwo integers k, l are n-coprime if gcd(k^n - 1, l^n - 1) = 1.\n\n```lean\ndef areNCoprime (k l n : ℕ) : Prop :=\n  Nat.gcd (k^n - 1) (l^n - 1) = 1\n```\n\nThis captures when powers minus one share no common factor.",
-    "significance": "critical"
+    "mathContext": "$\\gcd(k^n - 1, l^n - 1) = 1$; by Fermat's little theorem, $\\text{ord}_p(k)$ and $\\text{ord}_p(l)$ determine the common factors",
+    "significance": "critical",
+    "relatedConcepts": ["GCD", "multiplicative order", "Fermat's little theorem"],
+    "prerequisites": ["Nat.gcd", "Nat.pow"]
   },
   {
     "id": "ann-e820-predecessor",
@@ -26,7 +29,10 @@
     "type": "definition",
     "title": "Coprime Predecessor",
     "content": "**hasNCoprimePredecessor:**\n\nl has an n-coprime predecessor if some k < l satisfies the coprimality condition.\n\n```lean\ndef hasNCoprimePredecessor (l n : ℕ) : Prop :=\n  ∃ k : ℕ, k < l ∧ areNCoprime k l n\n```",
-    "significance": "key"
+    "mathContext": "$\\exists k < l,\\ \\gcd(k^n - 1, l^n - 1) = 1$",
+    "significance": "key",
+    "relatedConcepts": ["existential witness", "coprimality chain"],
+    "prerequisites": ["areNCoprime"]
   },
   {
     "id": "ann-e820-h-function",
