@@ -9,11 +9,19 @@
     "type": "concept",
     "title": "The Birthday Paradox",
     "content": "The **Birthday Problem** asks: How many people must be in a room for there to be a >50% chance that two share a birthday?\n\nThe surprising answer: **just 23 people**.\n\nMost people guess much higher (like 183, half of 365), because they confuse two different questions:\n- 'What's the chance someone shares MY birthday?' (needs ~253 people for 50%)\n- 'What's the chance ANY two people share A birthday?' (needs only 23)\n\nThe second question has many more pairs to check!",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "probability",
       "combinatorics",
       "complement counting"
+    ],
+    "tags": [
+      "birthday-paradox",
+      "probability",
+      "counterintuitive"
+    ],
+    "prerequisites": [
+      "basic probability"
     ]
   },
   {
@@ -27,10 +35,19 @@
     "title": "The Birthday Formula",
     "content": "**Birthday Problem Formula**:\n\n$$P(\\text{shared birthday among } n \\text{ people}) = 1 - \\frac{365 \\cdot 364 \\cdots (365-n+1)}{365^n}$$\n\nEquivalently:\n$$P(n) = 1 - \\prod_{k=0}^{n-1} \\frac{365-k}{365} = 1 - \\prod_{k=0}^{n-1} \\left(1 - \\frac{k}{365}\\right)$$\n\nThe product represents the probability that each successive person has a unique birthday.",
     "mathContext": "$P(n) = 1 - \\frac{365!}{365^n (365-n)!}$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "falling factorial",
       "product formula"
+    ],
+    "tags": [
+      "probability-formula",
+      "falling-factorial",
+      "complement-counting"
+    ],
+    "prerequisites": [
+      "Nat.descFactorial",
+      "complement counting"
     ]
   },
   {
@@ -49,6 +66,15 @@
       "injective functions",
       "falling factorial",
       "permutations"
+    ],
+    "tags": [
+      "injective-functions",
+      "falling-factorial",
+      "permutations"
+    ],
+    "prerequisites": [
+      "Fintype.card_embedding_eq",
+      "Nat.descFactorial"
     ]
   },
   {
@@ -66,6 +92,15 @@
     "relatedConcepts": [
       "pigeonhole principle",
       "certainty"
+    ],
+    "tags": [
+      "pigeonhole-principle",
+      "certainty",
+      "boundary-case"
+    ],
+    "prerequisites": [
+      "pigeonhole principle",
+      "descFactorial"
     ]
   },
   {
@@ -79,10 +114,19 @@
     "title": "The 23-Person Threshold",
     "content": "**The Famous Result**: With 23 people, P(shared birthday) > 50%.\n\nNumerically:\n- $P(22) \\approx 0.4757 < 0.5$\n- $P(23) \\approx 0.5073 > 0.5$\n\nSo 23 is the exact threshold where shared birthdays become more likely than not.\n\n**Note**: This is stated as an axiom in Lean because computing the exact rational requires arithmetic on ~50-digit numbers, which native_decide cannot handle efficiently.",
     "mathContext": "$P(23) \\approx 50.73\\% > 50\\%$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "threshold",
       "probability"
+    ],
+    "tags": [
+      "threshold",
+      "23-people",
+      "50-percent"
+    ],
+    "prerequisites": [
+      "birthday_distinct_prob",
+      "native_decide"
     ]
   },
   {
@@ -98,6 +142,15 @@
     "significance": "key",
     "relatedConcepts": [
       "cryptography",
+      "hash functions",
+      "collision resistance"
+    ],
+    "tags": [
+      "cryptography",
+      "birthday-attack",
+      "hash-collision"
+    ],
+    "prerequisites": [
       "hash functions",
       "collision resistance"
     ]
@@ -117,6 +170,15 @@
     "relatedConcepts": [
       "base case",
       "complement probability"
+    ],
+    "tags": [
+      "base-case",
+      "two-people",
+      "complement-probability"
+    ],
+    "prerequisites": [
+      "birthday_distinct_prob",
+      "basic arithmetic"
     ]
   }
 ]
