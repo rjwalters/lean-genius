@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: All 7×7 cofactor subterms verified. 8×8 dets proved. Blocked on 9→8 det_succ_row pattern matching (Fin representation issue).",
+    "progressSummary": "PROGRESS: Eliminated all sorries from InverseGaloisA5.lean. q_derivative_eq proved via ext + coefficient case analysis. disc_q_val sorry removed (dead code, disc_q_val_proved exists). File now has 0 sorries, 1 axiom (three_dvd_gal_card). Only remaining work: prove three_dvd_gal_card (needs Dedekind theorem).",
     "builtItems": [
       "InverseGalois.lean: cyclotomic Galois theory, S₃ realization via Gal(X³-2)≅S₃ (905 lines, builds)",
       "InverseGaloisD4.lean: D₄ realization via |Gal(X⁴-2)| = 8 (666 lines, builds)",
@@ -198,7 +198,9 @@
       "prod_eval_derivative_eq_resultant: ∏ eval αᵢ q'_SF = Res(q_SF, q'_SF) via resultant_prod_left",
       "InverseGaloisA5Resultant2.lean: Sylvester matrix rows 5-8 verified (9 fin_cases each)",
       "InverseGaloisA5Resultant.lean: Sylvester matrix rows 0-4 verified",
-      "InverseGaloisA5ResultantDet.lean: 5 independent 7×7 determinants proved via native_decide (420M, 1012M, 256M, -1012M, 1924M)"
+      "InverseGaloisA5ResultantDet.lean: 5 independent 7×7 determinants proved via native_decide (420M, 1012M, 256M, -1012M, 1924M)",
+      "q_derivative_eq: proved derivative of q via coefficient comparison (line 1294)",
+      "disc_q_val: sorry removed, aliased to disc_q_val_proved (line 1600)"
     ],
     "insights": [
       "Cyclotomic irreducibility over ℚ IS in Mathlib: Polynomial.cyclotomic.irreducible_rat",
@@ -285,7 +287,10 @@
       "8×8 det(M84)=-192M and det(M88)=1984M proved via det_succ_row + per-term native_decide + vector sum native_decide",
       "Remaining blocker: connecting 9×9 det to 8×8 submatrices via det_succ_row. After fin_cases j, rw cannot find M.submatrix pattern — Fin representation mismatch",
       "Workaround tried: conv_lhs, simp only, explicit shows — all fail on pattern matching for nonzero cofactor terms",
-      "Key verified fact: det(sylvM) = 5*(-192M) + 1984M = 1024000000 (5 independent 7×7 native_decide + arithmetic)"
+      "Key verified fact: det(sylvM) = 5*(-192M) + 1984M = 1024000000 (5 independent 7×7 native_decide + arithmetic)",
+      "q_derivative_eq PROVED via ext + coefficient case analysis (rcases n with _ | _ | _ | _ | _ | n, simp for each case)",
+      "disc_q_val sorry REMOVED — was dead code, disc_q_val_proved exists via Vandermonde chain",
+      "After this session: InverseGaloisA5.lean has 0 sorries, 1 axiom (three_dvd_gal_card)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
