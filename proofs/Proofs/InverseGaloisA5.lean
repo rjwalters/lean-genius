@@ -1096,15 +1096,17 @@ The axiom at line ~293 remains for file ordering, but is now DERIVABLE:
 -- Step 1: Transparent axiom (disc(q) = Δ²)
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-/-- **Transparent Axiom**: Δ² = disc(q) = 1024000000 = 32000² in the splitting field.
+/-- **Axiom (PROVED below)**: Δ² = disc(q) = 1024000000 = 32000² in the splitting field.
 
-    This encodes the standard identity: for a monic polynomial f with distinct roots
-    r₁,...,rₙ, disc(f) = ∏_{i≠j}(rᵢ-rⱼ) = (∏_{i<j}(rⱼ-rᵢ))² = Δ².
+    **This axiom is now proved**: see `vandermondeProduct_sq_eq_proved` in Part XV
+    (VandermondeElimination section). The proof uses:
+    1. Derivative factorization: q'(x) = 5((x-1)⁴+4) = 5(x²+1)(x²-4x+5)
+    2. Product-roots identity in ℂ: ∏ᵢf(αᵢ) via q evaluated at roots of f
+    3. Complex arithmetic: q(±I)·product = 256, q(2±I)·product = 1280
 
-    Combined with the arithmetic: disc(q) = 1024000000 (trinomial_disc_computation).
-
-    This is a textbook identity connecting Polynomial.disc (resultant-based)
-    with Matrix.det_vandermonde (product-of-differences). Not yet in Mathlib. -/
+    The axiom is retained here for file ordering reasons: `vandermondeProduct_sq_eq_proved`
+    depends on `rootEnum` and the VandermondeElimination infrastructure defined later.
+    A future refactor can eliminate this axiom by reordering the file. -/
 axiom vandermondeProduct_sq_eq :
     vandermondeProduct ^ 2 = algebraMap ℤ q.SplittingField 1024000000
 
@@ -1672,8 +1674,15 @@ theorem prod_eval_derivative_eq_ordered_diff :
     ∏ i : Fin 5, ∏ j ∈ Finset.univ.erase i, (rootEnum i - rootEnum j) := by
   congr 1; ext i; exact eval_derivative_q_at_root i
 
--- Step F: Connect to resultant via Mathlib
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-- Step F: VP² via Complex Embedding and Sophie Germain Identity
+-- =============================================================
+--
+-- Strategy: Instead of resultant/discriminant (not in Mathlib), we:
+-- 1. Factor q'(x) = 5((x-1)^4 + 4) = 5(x^2+1)(x^2-4x+5) [Sophie Germain]
+-- 2. Embed SF → ℂ via SplittingField.lift
+-- 3. Use product-roots identity: ∏ᵢ(αᵢ-c) = (-1)^n · q(c) in ℂ
+-- 4. Compute q(±I) and q(2±I) to get the product values
+-- 5. Transfer back via injectivity
 
 /-- The product of derivative evaluations equals Res(q_SF, q'_SF).
     Uses `resultant_eq_prod_eval` from Mathlib. -/
@@ -1683,16 +1692,17 @@ theorem prod_eval_derivative_eq_resultant :
     Polynomial.resultant q_SF (Polynomial.derivative q_SF) := by
   sorry
 
--- Step G: Resultant to discriminant
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-- Step F1: Derivative rewrite
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-/-- Res(q, q') = disc(q) over ℚ (for monic q with degree 5).
-    From `resultant_deriv`: Res = (-1)^10 · 1 · disc = disc. -/
-private theorem q_derivative_natDegree : (Polynomial.derivative q).natDegree = 4 := by
-  unfold q; simp only [Polynomial.derivative_sub, Polynomial.derivative_add,
+/-- q'(x) = 5x⁴ - 20x³ + 30x² - 20x + 25. -/
+private theorem q_derivative_eq :
+    Polynomial.derivative q = C 5 * X ^ 4 - C 20 * X ^ 3 + C 30 * X ^ 2 - C 20 * X + C 25 := by
+  unfold q
+  simp only [Polynomial.derivative_sub, Polynomial.derivative_add,
     Polynomial.derivative_C_mul, Polynomial.derivative_pow,
-    Polynomial.derivative_X, Polynomial.derivative_C]
-  compute_degree!
+    Polynomial.derivative_X, Polynomial.derivative_C, Polynomial.derivative_one]
+  ring
 
 theorem resultant_eq_disc_q :
     Polynomial.resultant q (Polynomial.derivative q) = Polynomial.discr q := by
@@ -1714,7 +1724,18 @@ theorem resultant_eq_disc_q :
   rw [h, q_monic.leadingCoeff, q_natDegree]
   norm_num
 
--- Step H: Discriminant computation
+/-- q'(x) evaluated in SF equals 5((x-1)^4 + 4). -/
+private theorem eval_derivative_factored (x : SF) :
+    Polynomial.eval x (Polynomial.map (algebraMap ℚ SF) (Polynomial.derivative q)) =
+    algebraMap ℚ SF 5 * ((x - 1) ^ 4 + 4) := by
+  rw [q_derivative_eq, Polynomial.map_sub, Polynomial.map_add, Polynomial.map_sub,
+    Polynomial.map_add, Polynomial.map_sub]
+  simp only [Polynomial.map_mul, Polynomial.map_C, Polynomial.map_pow, Polynomial.map_X,
+    Polynomial.eval_sub, Polynomial.eval_add, Polynomial.eval_mul,
+    Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X]
+  ring
+
+-- Step F2: Sophie Germain identity
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 /-- disc(q) = 1024000000 over ℚ.
@@ -1737,8 +1758,16 @@ theorem resultant_eq_disc_q :
 theorem disc_q_val : Polynomial.discr q = (1024000000 : ℚ) := by
   sorry
 
--- Step I: Transfer resultant through algebraMap
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/-- Sophie Germain: y⁴ + 4 = (y²+2y+2)(y²-2y+2). -/
+private theorem sophie_germain {R : Type*} [CommRing R] (y : R) :
+    y ^ 4 + 4 = (y ^ 2 + 2 * y + 2) * (y ^ 2 - 2 * y + 2) := by ring
+
+/-- The factorization applied to shifted roots:
+    (x-1)⁴ + 4 = (x²+1)(x²-4x+5) for x = rootEnum i. -/
+private theorem root_quartic_factored (x : SF) :
+    (x - 1) ^ 4 + 4 = (x ^ 2 + 1) * (x ^ 2 - 4 * x + 5) := by
+  have h := sophie_germain (x - 1)
+  convert h using 1 <;> ring
 
 /-- Res(q_SF, q'_SF) = algebraMap ℚ SF (Res(q, q')).
     From `resultant_map_map`. -/
@@ -1758,30 +1787,201 @@ theorem resultant_transfer :
   exact Polynomial.resultant_map_map q (Polynomial.derivative q) _ _
     (algebraMap ℚ SF)
 
--- Step J: Assemble the proof
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-- Step F3: VP² = 5⁵ · ∏(αᵢ²+1) · ∏(αᵢ²-4αᵢ+5)
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- VP² expressed as a product of two factors via derivative and Sophie Germain.
+    VP² = 5⁵ · ∏ᵢ(αᵢ²+1) · ∏ᵢ(αᵢ²-4αᵢ+5). -/
+theorem vandermondeProduct_sq_factored :
+    vandermondeProduct ^ 2 =
+    (algebraMap ℚ SF 5) ^ 5 *
+    (∏ i : Fin 5, ((rootEnum i) ^ 2 + 1)) *
+    (∏ i : Fin 5, ((rootEnum i) ^ 2 - 4 * (rootEnum i) + 5)) := by
+  -- VP² = ∏_i ∏_{j≠i} (αᵢ - αⱼ) = ∏_i q'_SF(αᵢ)
+  rw [ordered_root_diff_prod_eq_vandermonde_sq.symm,
+      prod_eval_derivative_eq_ordered_diff.symm]
+  -- ∏_i q'_SF(αᵢ) = ∏_i 5((αᵢ-1)^4+4) = 5^5 · ∏_i ((αᵢ-1)^4+4)
+  simp_rw [show Polynomial.derivative q_SF =
+    Polynomial.map (algebraMap ℚ SF) (Polynomial.derivative q) from
+    (Polynomial.derivative_map (algebraMap ℚ SF) q).symm]
+  simp_rw [eval_derivative_factored]
+  simp_rw [root_quartic_factored]
+  -- Distribute: ∏ 5·a·b = 5^5 · ∏a · ∏b
+  simp only [Finset.prod_mul_distrib, Finset.prod_const, Finset.card_fin]
+  ring
+
+-- Step F4: Complex embedding infrastructure
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- Embedding of the splitting field into ℂ. -/
+private noncomputable def toComplex : SF →ₐ[ℚ] ℂ :=
+  Polynomial.SplittingField.lift q (algebraMap ℚ ℂ)
+    (IsAlgClosed.splits_codomain q)
+
+private theorem toComplex_injective : Function.Injective toComplex :=
+  toComplex.injective
+
+/-- The factorization of q in ℂ using embedded roots. -/
+private theorem q_complex_eq_prod :
+    Polynomial.map (algebraMap ℚ ℂ) q =
+    ∏ i : Fin 5, (X - C (toComplex (rootEnum i))) := by
+  have h := q_SF_eq_prod_linear
+  -- Apply Polynomial.map toComplex.toRingHom to both sides
+  have h2 : Polynomial.map toComplex.toRingHom q_SF =
+    ∏ i : Fin 5, (X - C (toComplex (rootEnum i))) := by
+    rw [h, Polynomial.map_prod]
+    congr 1; ext i
+    simp [Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]
+  rwa [show Polynomial.map toComplex.toRingHom q_SF =
+    Polynomial.map (algebraMap ℚ ℂ) q from by
+      unfold q_SF
+      rw [Polynomial.map_map]
+      congr 1; ext x
+      exact (toComplex.commutes x).symm] at h2
+
+-- Step F5: Product-roots evaluation identity in ℂ
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- For monic polynomial that splits as ∏(X - rᵢ), evaluating at c gives ∏(c - rᵢ). -/
+private theorem eval_eq_prod_roots_sub (c : ℂ) :
+    Polynomial.eval c (Polynomial.map (algebraMap ℚ ℂ) q) =
+    ∏ i : Fin 5, (c - toComplex (rootEnum i)) := by
+  rw [q_complex_eq_prod]
+  simp [Polynomial.eval_prod, Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]
+
+/-- ∏ᵢ(φ(αᵢ) - c) = -q(c) for c ∈ ℂ (since q has degree 5, (-1)⁵ = -1). -/
+private theorem prod_roots_sub_eq_neg_eval (c : ℂ) :
+    ∏ i : Fin 5, (toComplex (rootEnum i) - c) =
+    -(Polynomial.eval c (Polynomial.map (algebraMap ℚ ℂ) q)) := by
+  rw [eval_eq_prod_roots_sub]
+  simp only [Finset.prod_neg_distrib']
+  simp only [neg_sub]
+  rw [Finset.card_fin]
+  norm_num
+
+-- Step F6: Complex arithmetic — evaluating q at Gaussian integers
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- Helper: q evaluated over ℂ at any point gives the polynomial expression. -/
+private theorem eval_q_complex (c : ℂ) :
+    Polynomial.eval c (Polynomial.map (algebraMap ℚ ℂ) q) =
+    c ^ 5 - 5 * c ^ 4 + 10 * c ^ 3 - 10 * c ^ 2 + 25 * c - 5 := by
+  unfold q
+  simp only [Polynomial.map_sub, Polynomial.map_add, Polynomial.map_mul,
+    Polynomial.map_pow, Polynomial.map_C, Polynomial.map_X,
+    Polynomial.eval_sub, Polynomial.eval_add, Polynomial.eval_mul,
+    Polynomial.eval_pow, Polynomial.eval_C, Polynomial.eval_X]
+  push_cast
+  ring
+
+/-- q(I) · q(-I) = 256 in ℂ.
+    q(I) = I-5-10I+10+25I-5 = 16I, q(-I) = -16I, product = 256. -/
+private theorem q_eval_I_product :
+    Polynomial.eval Complex.I (Polynomial.map (algebraMap ℚ ℂ) q) *
+    Polynomial.eval (-Complex.I) (Polynomial.map (algebraMap ℚ ℂ) q) = 256 := by
+  rw [eval_q_complex, eval_q_complex]
+  have hI2 : Complex.I ^ 2 = -1 := Complex.I_sq
+  -- Expand and simplify using I² = -1
+  ring_nf
+  rw [Complex.I_sq]
+  ring_nf
+  rw [Complex.I_sq]
+  ring_nf
+  rw [Complex.I_sq]
+  ring_nf
+  simp [Complex.ext_iff, Complex.I_re, Complex.I_im, Complex.ofReal_re, Complex.ofReal_im]
+  constructor <;> ring
+
+/-- q(2+I) · q(2-I) = 1280 in ℂ.
+    q(2+I) = 32+16I, q(2-I) = 32-16I, product = 1280. -/
+private theorem q_eval_2I_product :
+    Polynomial.eval (2 + Complex.I) (Polynomial.map (algebraMap ℚ ℂ) q) *
+    Polynomial.eval (2 - Complex.I) (Polynomial.map (algebraMap ℚ ℂ) q) = 1280 := by
+  rw [eval_q_complex, eval_q_complex]
+  ring_nf
+  rw [Complex.I_sq]
+  ring_nf
+  rw [Complex.I_sq]
+  ring_nf
+  rw [Complex.I_sq]
+  ring_nf
+  simp [Complex.ext_iff, Complex.I_re, Complex.I_im, Complex.ofReal_re, Complex.ofReal_im]
+  constructor <;> ring
+
+-- Step F7: Connect products to evaluations
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- ∏ᵢ(αᵢ²+1) maps to q(I)·q(-I) = 256 in ℂ.
+    f₁(x) = x²+1 = (x-I)(x+I), so ∏f₁(αᵢ) = [∏(αᵢ-I)][∏(αᵢ+I)] = q(I)·q(-I). -/
+private theorem prod_sq_add_one_eq :
+    toComplex (∏ i : Fin 5, ((rootEnum i) ^ 2 + 1)) = 256 := by
+  -- Map product through toComplex
+  rw [map_prod]
+  -- Factor each term: (φ(αᵢ))²+1 = (φ(αᵢ)-I)(φ(αᵢ)+I)
+  have factor : ∀ i : Fin 5,
+      toComplex ((rootEnum i) ^ 2 + 1) =
+      (toComplex (rootEnum i) - Complex.I) * (toComplex (rootEnum i) + Complex.I) := by
+    intro i
+    simp only [map_add, map_pow, map_one]
+    ring_nf
+    rw [Complex.I_sq]; ring
+  simp_rw [factor, Finset.prod_mul_distrib]
+  -- ∏(φ(αᵢ)-I) = -q(I) and ∏(φ(αᵢ)+I) = -q(-I)
+  rw [show (∏ i : Fin 5, (toComplex (rootEnum i) + Complex.I)) =
+    ∏ i : Fin 5, (toComplex (rootEnum i) - (-Complex.I)) from by
+    congr 1; ext i; ring]
+  rw [prod_roots_sub_eq_neg_eval Complex.I,
+      prod_roots_sub_eq_neg_eval (-Complex.I)]
+  rw [neg_mul_neg]
+  exact q_eval_I_product
+
+/-- ∏ᵢ(αᵢ²-4αᵢ+5) maps to q(2+I)·q(2-I) = 1280 in ℂ.
+    f₂(x) = x²-4x+5 = (x-(2+I))(x-(2-I)). -/
+private theorem prod_quad_eq :
+    toComplex (∏ i : Fin 5, ((rootEnum i) ^ 2 - 4 * (rootEnum i) + 5)) = 1280 := by
+  rw [map_prod]
+  have factor : ∀ i : Fin 5,
+      toComplex ((rootEnum i) ^ 2 - 4 * (rootEnum i) + 5) =
+      (toComplex (rootEnum i) - (2 + Complex.I)) *
+      (toComplex (rootEnum i) - (2 - Complex.I)) := by
+    intro i
+    simp only [map_sub, map_add, map_mul, map_pow, map_ofNat, map_one]
+    ring_nf
+    rw [Complex.I_sq]; ring
+  simp_rw [factor, Finset.prod_mul_distrib]
+  rw [prod_roots_sub_eq_neg_eval (2 + Complex.I),
+      prod_roots_sub_eq_neg_eval (2 - Complex.I)]
+  rw [neg_mul_neg]
+  exact q_eval_2I_product
+
+-- Step F8: Assemble the proof via injectivity
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 /-- **Main theorem**: vandermondeProduct² = algebraMap ℤ SF 1024000000.
-    Eliminates the `vandermondeProduct_sq_eq` axiom via Mathlib's resultant API.
-
-    Proof chain:
-    VP² = ∏_{i≠j}(αᵢ-αⱼ) = ∏ q'(αᵢ) = Res(q,q') = disc(q) = 1024000000 -/
+    Proof via:
+    1. VP² = 5⁵ · ∏(αᵢ²+1) · ∏(αᵢ²-4αᵢ+5) [derivative + Sophie Germain]
+    2. Embed to ℂ: ∏(αᵢ²+1) = 256, ∏(αᵢ²-4αᵢ+5) = 1280 [product-roots identity]
+    3. VP² = 5⁵ · 256 · 1280 = 1024000000 [arithmetic]
+    4. Transfer back via injectivity of SF → ℂ -/
 theorem vandermondeProduct_sq_eq_proved :
     vandermondeProduct ^ 2 = algebraMap ℤ SF 1024000000 := by
-  -- Chain: VP² = ∏_{i≠j} diff = ∏ q'(αᵢ) = Res(q_SF, q'_SF)
-  --        = algebraMap ℚ SF (Res(q,q')) = algebraMap ℚ SF (disc q) = algebraMap ℚ SF 1024000000
-  calc vandermondeProduct ^ 2
-      = ∏ i : Fin 5, ∏ j ∈ Finset.univ.erase i, (rootEnum i - rootEnum j) :=
-        (ordered_root_diff_prod_eq_vandermonde_sq).symm
-    _ = ∏ i : Fin 5, Polynomial.eval (rootEnum i) (Polynomial.derivative q_SF) :=
-        (prod_eval_derivative_eq_ordered_diff).symm
-    _ = Polynomial.resultant q_SF (Polynomial.derivative q_SF) :=
-        prod_eval_derivative_eq_resultant
-    _ = algebraMap ℚ SF (Polynomial.resultant q (Polynomial.derivative q)) :=
-        resultant_transfer
-    _ = algebraMap ℚ SF (Polynomial.discr q) := by rw [resultant_eq_disc_q]
-    _ = algebraMap ℚ SF 1024000000 := by rw [disc_q_val]
-    _ = algebraMap ℤ SF 1024000000 := by simp [map_intCast, Int.cast_natCast]
+  -- Apply injectivity of the ℂ embedding
+  apply toComplex_injective
+  -- Map both sides through toComplex
+  rw [vandermondeProduct_sq_factored]
+  simp only [map_mul, map_pow]
+  -- Map 5 through
+  have h5 : toComplex (algebraMap ℚ SF 5) = (5 : ℂ) := by
+    exact toComplex.commutes (5 : ℚ)
+  rw [h5, prod_sq_add_one_eq, prod_quad_eq]
+  -- Map the RHS: algebraMap ℤ SF 1024000000
+  have hrhs : toComplex (algebraMap ℤ SF 1024000000) = (1024000000 : ℂ) := by
+    simp [show (algebraMap ℤ SF 1024000000 : SF) =
+      algebraMap ℚ SF 1024000000 from by push_cast; ring]
+    exact toComplex.commutes (1024000000 : ℚ)
+  rw [hrhs]
+  -- 5⁵ · 256 · 1280 = 1024000000
+  push_cast; norm_num
 
 end VandermondeElimination
 
