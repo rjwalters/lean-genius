@@ -232,3 +232,22 @@ defCount, structureCount). Added structure-encoded assumptions to the assumption
 **Problem status fixed**: `blocked` → `completed`, `currentState` updated from NEW to COMPLETED.
 
 **This formalization is now fully mature.** No True placeholders, no sorries, accurate metadata.
+
+---
+
+## Session 2026-03-21 (researcher-5) - Axiom Cleanup: BirchSwinnertonDyer.lean (46→43)
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 82)
+**Outcome**: progress — deleted 3 unused axioms
+
+### Deleted Axioms
+| Axiom | Refs | Why unused |
+|-------|------|-----------|
+| root_number_parity | 1 (decl only) | Never referenced in any proof |
+| iwasawa_main_conjecture | 2 (decl + #check) | No proof usage, IwasawaMainConjecture structure used instead |
+| no_weight2_level2 | 2 (decl + #check) | No proof usage |
+
+### Stats
+- BirchSwinnertonDyer.lean: 46→43 axioms, 7475→7446 lines, 1 sorry
+- Docker build passes (warnings only: unused variables)
+

@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 4 redundant axioms (100→96): average_rank_bounded, mestre_construction, mtt_exceptional_zero, positive_proportion_rank_zero_bsd — all proved from existing axioms already in the file.",
+    "progressSummary": "PROGRESS: Deleted 3 unused axioms from BirchSwinnertonDyer.lean (46→43): root_number_parity, iwasawa_main_conjecture, no_weight2_level2.",
     "builtItems": [
       "28 True→real conversions in BirchSwinnertonDyer.lean (Parts VIII-LV)",
       "2 proved theorems: parity_conjecture from axiom, bsd_current_status from computation",
@@ -109,7 +109,8 @@
       "Cremona database: 3+ million E/ℚ verified to conductor 500,000 with NO counterexamples to BSD",
       "9 imaginary quadratic fields with class number 1 (Baker-Stark-Heegner): disc = -3,-4,-7,-8,-11,-19,-43,-67,-163",
       "Non-degeneracy of p-adic heights (Nekovář) is equivalent to p-adic BSD conjecture",
-      "4 axiom eliminations (100→96): average_rank_bounded proved from one_not_congruent+curve37a_rank, mestre_construction proved from elkies_rank_record, mtt_exceptional_zero proved from greenberg_stevens, positive_proportion_rank_zero_bsd proved from curveMinusX_L_nonzero+BSD_rank_zero_axiom"
+      "4 axiom eliminations (100→96): average_rank_bounded proved from one_not_congruent+curve37a_rank, mestre_construction proved from elkies_rank_record, mtt_exceptional_zero proved from greenberg_stevens, positive_proportion_rank_zero_bsd proved from curveMinusX_L_nonzero+BSD_rank_zero_axiom",
+      "BirchSwinnertonDyer.lean: 3 axioms had no proof usage — root_number_parity (1 ref), iwasawa_main_conjecture (decl+#check), no_weight2_level2 (decl+#check)"
     ],
     "mathlibGaps": [
       "Torsion subgroup",
