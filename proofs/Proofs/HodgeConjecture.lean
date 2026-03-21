@@ -10276,33 +10276,9 @@ structure SpecializationMap (D : SemistableDegen) where
   /-- The specialization is a morphism of MHS (respects weight filtrations) -/
   weight_compatible : ∀ k : ℕ, source.W k ≤ source.W (k + 1)
 
-/-- **Axiom: Clemens-Schmid exact sequence.**
-
-    For a semistable degeneration of n-dimensional varieties, there is an
-    exact sequence of MHS:
-
-        H_{2n-k}(X₀) →^{α} H^k(X₀) →^{sp} H^k_lim →^{N} H^k_lim →^{β} H_{2n-k-2}(X₀) → ···
-
-    where:
-    - α is the "vanishing cycle" map (Poincaré duality on X₀)
-    - sp is the specialization map
-    - N is the log-monodromy operator
-    - β combines N with Poincaré duality
-
-    The exactness at each term gives powerful constraints:
-    - im(sp) = ker(N) : the "invariant" part of the limit comes from X₀
-    - im(N) = ker(β) : the "variable" part is captured by monodromy
-    - The sequence is a sequence of MHS (with appropriate Tate twists)
-
-    Clemens (1977): Original construction for threefolds.
-    Schmid (1973): General analytic theory.
-    Morrison (1984): Extended to higher dimensions.
-
-    **Why an axiom?** The exact sequence requires:
-    1. Mixed Hodge theory on singular varieties (Deligne)
-    2. Nearby cycles and vanishing cycles functors (Grothendieck, Deligne)
-    3. Semistable reduction theorem (Mumford, Hironaka)
-    4. Compatibility of specialization with cup product -/
+/-- Clemens-Schmid exact sequence. The conclusion is trivially satisfiable at universe 0
+    but kept as axiom for universe flexibility (SpecializationMap contains universe-polymorphic
+    MixedHodgeStructure). -/
 axiom clemens_schmid_exact (D : SemistableDegen) :
     ∃ (sp : SpecializationMap D), sp.target.nilpotency_bound = D.k + 1
 
@@ -10509,9 +10485,15 @@ structure MixedHodgeModule extends HodgeModule where
     1. Saito's theory of Hodge modules (1988) — 500+ pages
     2. Filtered D-modules and their functoriality
     3. Riemann-Hilbert correspondence (Kashiwara, Mebkhout)
-    4. Theory of perverse sheaves (Beilinson-Bernstein-Deligne-Gabber) -/
-axiom saito_decomposition_theorem (X Y : ProjectiveVariety) :
-    ∃ (H : HodgeModule), H.variety = Y
+    4. Theory of perverse sheaves (Beilinson-Bernstein-Deligne-Gabber)
+
+    **PROVED**: The conclusion ∃ H, H.variety = Y is trivially satisfiable by
+    constructing a HodgeModule with variety = Y. The actual Saito content
+    (decomposition theorem for mixed Hodge modules) would need a much
+    stronger conclusion involving derived categories. -/
+theorem saito_decomposition_theorem (X Y : ProjectiveVariety) :
+    ∃ (H : HodgeModule), H.variety = Y :=
+  ⟨⟨Y, 0, 0, Nat.zero_le _⟩, rfl⟩
 
 /-- **PROVED: Intersection cohomology carries a pure Hodge structure.**
 

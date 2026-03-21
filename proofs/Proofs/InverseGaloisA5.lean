@@ -1455,37 +1455,18 @@ a standard identity but not yet available in Mathlib.
 -- ============================================================================
 
 /-
-## Proof Strategy (BLOCKED)
+## Proof Strategy: VP² = disc(q) = 1024000000
 
-**CRITICAL**: `Polynomial.resultant` and `Polynomial.discr` do NOT exist in
-Mathlib v4.26.0. This entire proof chain was designed based on incorrect assumptions
-about the Mathlib API. The resultant/discriminant infrastructure needs to be either:
-1. Built from scratch (Sylvester matrix → determinant → resultant)
-2. Added to Mathlib upstream first
-3. Replaced by a different proof strategy
+**Mathlib API** (Mathlib v4.26.0): `Polynomial.resultant`, `Polynomial.discr`,
+`Polynomial.sylvester`, and `Polynomial.sylvesterDeriv` all exist. Key lemmas:
+- `resultant_map_map`: Res(map φ f, map φ g) m n = φ(Res(f,g) m n) ✓ PROVED
+- `resultant_eq_prod_eval`: Res(f,g) = lc(f)^n · ∏ eval αᵢ g (for splitting f)
+- `resultant_comm`: Res(f,g,m,n) = (-1)^(mn) · Res(g,f,n,m)
+- `resultant_X_sub_C_left`: Res(X-r, g, 1, n) = eval r g
+- `resultant_mul_left`: Res(f₁f₂, g, m₁+m₂, n) = Res(f₁,g,m₁,n) · Res(f₂,g,m₂,n)
+- `derivative_map`: (map φ f)' = map φ f'
 
-The axiom `vandermondeProduct_sq_eq` states:
-  Δ² = algebraMap ℤ SF 1024000000
-where Δ = ∏_{i<j} (rootEnum j - rootEnum i).
-
-The INTENDED approach was to use a resultant API:
-
-1. **resultant_deriv**: Res(q, q') = (-1)^{n(n-1)/2} · lc(q) · disc(q)
-   For monic q with n=5: Res(q, q') = disc(q)
-
-2. **resultant_map_map**: Res(map φ f, map φ g) = φ(Res(f, g))
-   Transfers the resultant from ℚ to SplittingField
-
-3. **resultant_eq_prod_eval**: Res(f, g) = lc(f)^deg(g) · ∏ eval αᵢ g
-   For monic splitting f: Res(f, g) = ∏ eval αᵢ g
-
-4. **Derivative at root**: q'(αᵢ) = ∏_{j≠i} (αᵢ - αⱼ)
-   From q = (X - αᵢ) · r, so q' = r + (X - αᵢ) · r', eval αᵢ gives r(αᵢ)
-
-5. **Pairing**: ∏_i ∏_{j≠i} (αᵢ - αⱼ) = vandermondeProduct²
-   Since ∏_{i≠j} (αᵢ - αⱼ) = (-1)^{C(5,2)} · vandermondeProduct² = vandermondeProduct²
-
-Chain: vandermondeProduct² = ∏_{i≠j} (αᵢ - αⱼ) = ∏ q'(αᵢ) = Res(q, q') = disc(q) = 1024000000
+Chain: VP² = ∏_{i≠j}(αᵢ-αⱼ) = ∏ q'(αᵢ) = Res(q,q') = disc(q) = 1024000000
 -/
 
 section VandermondeElimination
@@ -1676,11 +1657,16 @@ theorem prod_eval_derivative_eq_ordered_diff :
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 /-- The product of derivative evaluations equals Res(q_SF, q'_SF).
-    Uses `resultant_eq_prod_eval` from Mathlib. -/
+    Proof approach: use `resultant_eq_prod_eval` from Mathlib
+    (Res(f,g) = lc(f)^n · ∏ eval(αᵢ)(g) for splitting f),
+    then convert between the Multiset.map product on q_SF.roots
+    and the Fin 5 product via rootEnum. For monic q_SF, lc^n = 1. -/
 theorem prod_eval_derivative_eq_resultant :
     (∏ i : Fin 5, Polynomial.eval (rootEnum i)
       (Polynomial.derivative q_SF)) =
     Polynomial.resultant q_SF (Polynomial.derivative q_SF) := by
+  -- TODO: Apply resultant_eq_prod_eval with SplittingField.splits,
+  -- then convert Multiset.map product ↔ Fin 5 product via rootEnum bijection
   sorry
 
 -- Step G: Resultant to discriminant
@@ -1696,14 +1682,23 @@ private theorem q_derivative_natDegree : (Polynomial.derivative q).natDegree = 4
 
 theorem resultant_eq_disc_q :
     Polynomial.resultant q (Polynomial.derivative q) = Polynomial.discr q := by
-  -- Resultant default args are natDegree, need to match resultant_deriv's bounds
-  -- resultant_deriv uses q.natDegree and (q.natDegree - 1)
-  -- We need (derivative q).natDegree = q.natDegree - 1 = 4
+  -- resultant_deriv: f.resultant f' n (n-1) = (-1)^{n(n-1)/2} * lc(f) * discr(f)
+  -- For monic q of degree 5: = (-1)^10 * 1 * discr q = discr q
   have hnd : (Polynomial.derivative q).natDegree = q.natDegree - 1 := by
     rw [q_natDegree, q_derivative_natDegree]
-  -- Unfold default args to explicit bounds
-  -- Proof needs q_monic lemma and Mathlib API updates
-  sorry
+  -- Rewrite the default second arg to match resultant_deriv
+  conv_lhs => rw [show q.resultant (Polynomial.derivative q) =
+    q.resultant (Polynomial.derivative q) q.natDegree
+      (Polynomial.derivative q).natDegree from rfl]
+  rw [hnd]
+  -- Now: q.resultant q' q.natDegree (q.natDegree - 1) = discr q
+  have hdeg : (0 : WithBot ℕ) < q.degree := by
+    rw [Polynomial.degree_eq_natDegree q_monic.ne_zero, q_natDegree]
+    exact Nat.cast_pos.mpr (by norm_num)
+  rw [Polynomial.resultant_deriv hdeg]
+  -- Goal: (-1)^(5*4/2) * lc(q) * discr q = discr q
+  simp only [q_monic.leadingCoeff, q_natDegree, one_mul]
+  norm_num
 
 -- Step H: Discriminant computation
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1712,10 +1707,12 @@ theorem resultant_eq_disc_q :
     The discriminant of X⁵ - 5X⁴ + 10X³ - 10X² + 25X - 5
     equals 2¹⁶ · 5⁶ = 1024000000. -/
 theorem disc_q_val : Polynomial.discr q = (1024000000 : ℚ) := by
-  -- disc(q) = Res(q, q') · (-1)^{n(n-1)/2} / lc(q)
-  -- For monic q degree 5: disc = Res(q, q')
-  -- native_decide fails because q is noncomputable (SplittingField dependency)
-  -- TODO: make q computable or use norm_num extension for polynomial discriminants
+  -- disc(q) = det(sylvesterDeriv q) for degree 5 (since (-1)^10 = 1)
+  -- The sylvesterDeriv is a 9×9 matrix over ℚ with entries from coefficients of q, q'.
+  -- native_decide fails because q uses noncomputable Polynomial.semiring.
+  -- Approaches: (a) explicit 9×9 ℤ matrix + native_decide on det,
+  --   then connect via sylvester entry lemmas;
+  -- (b) trinomial disc formula: disc(X⁵+aX+b) = -(4⁴a⁵+5⁵b⁴), then translation invariance
   sorry
 
 -- Step I: Transfer resultant through algebraMap
@@ -1726,11 +1723,15 @@ theorem disc_q_val : Polynomial.discr q = (1024000000 : ℚ) := by
 theorem resultant_transfer :
     Polynomial.resultant q_SF (Polynomial.derivative q_SF) =
     algebraMap ℚ SF (Polynomial.resultant q (Polynomial.derivative q)) := by
-  -- q_SF = map (algebraMap ℚ SF) q
-  -- derivative(q_SF) = map (algebraMap ℚ SF) (derivative q) [derivative commutes with map]
-  -- resultant_map_map: Res(map φ f, map φ g) m n = φ(Res(f,g) m n)
-  -- Proof needs Mathlib API update (resultant_map_map signature change)
-  sorry
+  -- q_SF = map φ q, derivative commutes with map, then resultant_map_map
+  show (Polynomial.map (algebraMap ℚ SF) q).resultant
+    (Polynomial.map (algebraMap ℚ SF) q).derivative = _
+  rw [Polynomial.derivative_map]
+  rw [Polynomial.resultant_map_map]
+  congr 1
+  have hinj : Function.Injective (algebraMap ℚ q.SplittingField) :=
+    (algebraMap ℚ q.SplittingField).injective
+  simp only [Polynomial.natDegree_map_eq_of_injective hinj]
 
 -- Step J: Assemble the proof
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
