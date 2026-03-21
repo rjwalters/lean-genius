@@ -1453,6 +1453,27 @@ private abbrev SF := q.SplittingField
 -- The mapped polynomial in the splitting field
 private noncomputable abbrev q_SF : Polynomial SF := Polynomial.map (algebraMap ℚ SF) q
 
+-- Helper lemmas for VP² chain
+private theorem q_monic : q.Monic := by
+  rw [Polynomial.Monic, Polynomial.leadingCoeff, q_natDegree]
+  unfold q
+  simp only [coeff_sub, coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X]
+  norm_num
+
+private theorem q_SF_monic : q_SF.Monic := q_monic.map _
+private theorem q_SF_ne_zero : q_SF ≠ 0 := q_SF_monic.ne_zero
+private theorem q_SF_roots_nodup : q_SF.roots.Nodup := by
+  sorry -- needs: Polynomial.nodup_roots (Separable.squarefree (q_separable.map _))
+private theorem q_SF_roots_card : q_SF.roots.card = 5 := by
+  sorry -- needs: rootSet conversion + nodup toFinset
+private theorem rootEnum_mem_q_SF_roots (i : Fin 5) : rootEnum i ∈ q_SF.roots := by
+  rw [Polynomial.mem_roots q_SF_ne_zero]
+  have h := rootEnum_is_root i
+  rwa [Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map] at h
+private theorem rootEnum_multiset_eq :
+    (Finset.univ : Finset (Fin 5)).val.map rootEnum = q_SF.roots := by
+  sorry -- needs: Multiset.Nodup.ext + bijection
+
 -- Step A: The ordered product ∏_{i≠j} (αᵢ - αⱼ) equals vandermondeProduct²
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1467,15 +1488,26 @@ private theorem prod_Iio_eq_vandermonde {n : ℕ} {R : Type*} [CommRing R]
     ∏ i : Fin n, ∏ j ∈ Finset.Ioi i, (v j - v i) := by
   -- Both sides equal ∏_{a>b} (v a - v b), just with indices swapped.
   -- Approach: flatten via Finset.prod_sigma, apply swap bijection (i,j) ↦ (j,i).
-  -- Blocked by sigma type handling: Finset.prod_sigma uses Sigma σ arguments
-  -- while the product body uses v applied to components. Needs explicit lambda.
-  sorry
+  exact Finset.prod_comm' (fun i j => by
+    simp only [Finset.mem_univ, Finset.mem_Iio, Finset.mem_Ioi, true_and, and_true])
 
 theorem ordered_root_diff_prod_eq_vandermonde_sq :
     (∏ i : Fin 5, ∏ j ∈ Finset.univ.erase i, (rootEnum i - rootEnum j)) =
     vandermondeProduct ^ 2 := by
-  -- Proof needs update for ∈ notation (previously used Finset.prod with in syntax)
-  sorry
+  unfold vandermondeProduct
+  rw [Matrix.det_vandermonde, sq]
+  have herase : ∀ i : Fin 5, Finset.univ.erase i = Finset.Iio i ∪ Finset.Ioi i := by
+    intro i; ext j
+    simp only [Finset.mem_erase, Finset.mem_univ, Finset.mem_union,
+      Finset.mem_Iio, Finset.mem_Ioi, ne_eq, and_true]
+    exact @ne_iff_lt_or_gt (Fin 5) _ j i
+  have hdisj : ∀ i : Fin 5, Disjoint (Finset.Iio i) (Finset.Ioi i) :=
+    fun i => Finset.disjoint_left.mpr (fun j hj1 hj2 => by
+      simp only [Finset.mem_Iio] at hj1; simp only [Finset.mem_Ioi] at hj2; omega)
+  conv_lhs => arg 2; ext i; rw [herase i, Finset.prod_union (hdisj i)]
+  rw [Finset.prod_mul_distrib, prod_Iio_eq_vandermonde]
+  congr 1
+  sorry -- sign cancellation: (-1)^C(5,2) = 1
 
 -- Step B: Connect derivative evaluation to root differences
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1497,14 +1529,11 @@ theorem eval_derivative_at_root_of_factor {K : Type*} [Field K]
 /-- q mapped to its splitting field splits as ∏ (X - rootEnum i). -/
 theorem q_SF_eq_prod_linear :
     q_SF = ∏ i : Fin 5, (X - C (rootEnum i)) := by
-  -- Uses: C_leadingCoeff_mul_prod_multiset_X_sub_C (for q_SF with roots.card = 5)
-  -- Then: convert Multiset.prod to Finset.prod via rootSet ≃ Fin 5
-  -- Key ingredients:
-  --   q_monic.map: q_SF is monic (lc = 1)
-  --   SplittingField.splits: q_SF splits
-  --   q_rootSet_card: rootSet has card 5
-  --   rootEnum defined via Fintype.equivOfCardEq on rootSet ≃ Fin 5
-  sorry
+  have hcard : q_SF.roots.card = q_SF.natDegree := by
+    rw [Polynomial.Monic.natDegree_map q_monic, q_natDegree]; exact q_SF_roots_card
+  have h := Polynomial.prod_multiset_X_sub_C_of_monic_of_roots_card_eq q_SF_monic hcard
+  rw [← h, ← rootEnum_multiset_eq, Multiset.map_map]
+  rfl
 
 -- Step D: Derivative at rootEnum i gives the product of root differences
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1514,7 +1543,11 @@ theorem q_SF_eq_prod_linear :
 theorem eval_derivative_q_at_root (i : Fin 5) :
     Polynomial.eval (rootEnum i) (Polynomial.derivative q_SF) =
     ∏ j ∈ Finset.univ.erase i, (rootEnum i - rootEnum j) := by
-  sorry
+  have hprod : q_SF = (q_SF.roots.map (fun a => X - C a)).prod :=
+    (Polynomial.prod_multiset_X_sub_C_of_monic_of_roots_card_eq q_SF_monic
+      (by rw [Polynomial.Monic.natDegree_map q_monic, q_natDegree]; exact q_SF_roots_card)).symm
+  rw [hprod, Polynomial.eval_multiset_prod_X_sub_C_derivative (rootEnum_mem_q_SF_roots i)]
+  sorry -- multiset erase/map conversion via rootEnum_multiset_eq
 
 -- Step E: Product of derivative evaluations = ordered root difference product
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
