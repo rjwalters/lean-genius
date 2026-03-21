@@ -207,8 +207,8 @@
       "phase": "COMPLETED",
       "path": "full",
       "started": "2026-01-01T05:32:39.472Z",
-      "status": "graduated",
-      "lastUpdate": "2026-03-21T22:25:46.939Z",
+      "status": "blocked",
+      "lastUpdate": "2026-03-21T23:44:26.670Z",
       "completed": "2026-02-07T00:59:53.359Z"
     },
     {
@@ -216,8 +216,8 @@
       "phase": "COMPLETED",
       "path": "full",
       "started": "2026-01-01T05:32:39.476Z",
-      "status": "graduated",
-      "lastUpdate": "2026-03-21T22:25:46.939Z",
+      "status": "blocked",
+      "lastUpdate": "2026-03-21T23:44:26.669Z",
       "completed": "2026-02-07T00:59:53.358Z"
     },
     {
@@ -252,8 +252,8 @@
       "phase": "COMPLETED",
       "path": "fast",
       "started": "2026-01-01T05:32:39.478Z",
-      "status": "graduated",
-      "lastUpdate": "2026-03-21T22:25:46.969Z",
+      "status": "blocked",
+      "lastUpdate": "2026-03-21T23:44:26.699Z",
       "completed": "2026-02-11T05:41:00.789Z"
     },
     {
@@ -342,8 +342,8 @@
       "phase": "COMPLETED",
       "path": "full",
       "started": "2026-01-01T21:55:27.885Z",
-      "status": "graduated",
-      "lastUpdate": "2026-03-21T22:25:46.936Z",
+      "status": "blocked",
+      "lastUpdate": "2026-03-21T23:44:26.666Z",
       "completed": "2026-03-15T17:29:13.116Z"
     },
     {
@@ -351,8 +351,8 @@
       "phase": "COMPLETED",
       "path": "full",
       "started": "2026-01-01T21:55:27.886Z",
-      "status": "graduated",
-      "lastUpdate": "2026-03-21T22:25:46.934Z",
+      "status": "blocked",
+      "lastUpdate": "2026-03-21T23:44:26.664Z",
       "completed": "2026-02-11T05:41:00.786Z"
     },
     {
@@ -360,8 +360,8 @@
       "phase": "COMPLETED",
       "path": "full",
       "started": "2026-01-01T21:55:27.887Z",
-      "status": "graduated",
-      "lastUpdate": "2026-03-21T22:25:46.935Z",
+      "status": "blocked",
+      "lastUpdate": "2026-03-21T23:44:26.665Z",
       "completed": "2026-03-16T16:51:32.259Z"
     },
     {
@@ -369,8 +369,8 @@
       "phase": "COMPLETED",
       "path": "full",
       "started": "2026-01-01T21:55:27.887Z",
-      "status": "graduated",
-      "lastUpdate": "2026-03-21T22:25:46.936Z",
+      "status": "blocked",
+      "lastUpdate": "2026-03-21T23:44:26.667Z",
       "completed": "2026-03-13T17:50:22.123Z"
     },
     {
@@ -387,8 +387,8 @@
       "phase": "COMPLETED",
       "path": "full",
       "started": "2026-01-01T21:55:27.888Z",
-      "status": "graduated",
-      "lastUpdate": "2026-03-21T22:25:46.936Z",
+      "status": "blocked",
+      "lastUpdate": "2026-03-21T23:44:26.666Z",
       "completed": "2026-02-11T05:41:00.787Z"
     },
     {
@@ -396,8 +396,8 @@
       "phase": "COMPLETED",
       "path": "full",
       "started": "2026-01-01T21:55:27.888Z",
-      "status": "graduated",
-      "lastUpdate": "2026-03-21T22:25:46.936Z",
+      "status": "blocked",
+      "lastUpdate": "2026-03-21T23:44:26.666Z",
       "completed": "2026-03-21T19:47:15.949Z"
     },
     {
@@ -4960,6 +4960,38 @@
       "status": "graduated",
       "lastUpdate": "2026-03-21T21:57:07.470Z",
       "completed": "2026-03-21T21:57:07.470Z"
+    },
+    {
+      "slug": "area-of-circle-oq-01-oq-02-oq-02",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-03-21T23:44:26.669Z",
+      "status": "active",
+      "lastUpdate": "2026-03-21T23:44:26.718Z"
+    },
+    {
+      "slug": "amgm-inequality-oq-02-oq-01",
+      "phase": "OBSERVE",
+      "path": "fast",
+      "started": "2026-03-21T23:44:26.674Z",
+      "status": "active",
+      "lastUpdate": "2026-03-21T23:44:26.718Z"
+    },
+    {
+      "slug": "arithmetic-series-oq-02-oq-02",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-03-21T23:44:26.677Z",
+      "status": "active",
+      "lastUpdate": "2026-03-21T23:44:26.718Z"
+    },
+    {
+      "slug": "ballot-problem-oq-03-oq-02",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-03-21T23:44:26.678Z",
+      "status": "active",
+      "lastUpdate": "2026-03-21T23:44:26.718Z"
     }
   ],
   "config": {
