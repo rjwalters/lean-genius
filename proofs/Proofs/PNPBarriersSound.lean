@@ -36,7 +36,7 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (149 axioms, reduced from 161)
+## Axiom Summary (124 axioms, reduced from 161)
 Core model (8):
 - 3 structural: Φ_countably_many, Φ_negate, Φ_pair_project_first
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
@@ -966,11 +966,6 @@ theorem Pi_one_eq_coNP : Pi_k 1 = coNP := by
   constructor
   · intro hf; rw [Sigma_one_eq_NP] at hf; exact hf
   · intro hf; rw [Sigma_one_eq_NP]; exact hf
-
-/-- Σₖᴾ ⊆ Σₖ₊₁ᴾ: the hierarchy is monotonically increasing.
-    Each level contains the previous one since adding a quantifier
-    alternation can only increase the class of solvable problems. -/
-axiom Sigma_monotone (k : ℕ) : Sigma_k k ⊆ Sigma_k (k + 1)
 
 /-- P ⊆ PH: P is contained in the polynomial hierarchy. -/
 theorem P_subset_PH : P ⊆ PH := by
@@ -2371,11 +2366,6 @@ theorem BQP_subset_PSPACE : BQP ⊆ PSPACE :=
 theorem P_subset_BQP : P ⊆ BQP :=
   Set.Subset.trans P_subset_BPP BPP_subset_BQP
 
-/-- NP ⊆ PP: nondeterministic computation can be simulated
-    probabilistically (guess a path, check, accept with probability
-    > 1/2 iff accepting paths exist). -/
-axiom NP_subset_PP : NP ⊆ PP
-
 /-- PP ⊆ EXP (derived: PP ⊆ PSPACE ⊆ EXP). -/
 theorem PP_subset_EXP : PP ⊆ EXP :=
   Set.Subset.trans PP_subset_PSPACE PSPACE_subset_EXP
@@ -2725,15 +2715,6 @@ theorem VP_ne_VNP : VP ≠ VNP := by
     expressed as an m×m determinant (as a polynomial identity over ℝ). -/
 opaque permanent_det_size : ℕ → ℕ
 
-/-- **Mignon-Ressayre (2004)**: Over ℝ, expressing the n×n permanent
-    as an m×m determinant requires m ≥ n²/2. This is partial progress
-    toward showing the permanent is harder than the determinant.
-
-    The bound m ≥ n²/2 is proved using the rank of partial derivatives:
-    the permanent has full partial derivative rank while the determinant's
-    is limited by the matrix size m. -/
-axiom mignon_ressayre : ∀ n : ℕ, n ≥ 2 → permanent_det_size n ≥ n * n / 2
-
 /-- Algebraic complexity landscape summary. -/
 theorem algebraic_complexity_landscape :
     VP ⊆ VNP ∧ VP ≠ VNP := by
@@ -2849,15 +2830,6 @@ opaque OV : ℕ → Bool
     (brute force n²d is polynomial when d = O(log n)). -/
 axiom OV_in_P : OV ∈ P
 
-/-- **SETH-hardness of OV** (Williams 2005, Abboud-Williams-Yu 2015):
-    Under SETH, Orthogonal Vectors requires n^{2-o(1)} time.
-    No algorithm can beat the quadratic barrier for OV if SETH holds. -/
-axiom OV_SETH_hard :
-  SETH → ¬∃ (e : ℕ) (p : Polynomial),
-    Solves e emptyOracle OV ∧
-    ∀ n s, Φ e emptyOracle n = some (OV n, s) →
-      s ≤ (inputSize n) ^ (2 * p.degree) / (inputSize n)
-
 /-- OV is a quadratic barrier problem: if SETH holds and OV can be solved
     faster than n², then SETH is false. -/
 theorem OV_quadratic_barrier : SETH → OV ∈ P :=
@@ -2890,15 +2862,6 @@ theorem sparsification_lemma :
 theorem ETH_subexp_closure :
   ∀ A B : ℕ → Bool, (A ∈ SUBEXP → B ∈ SUBEXP) → (B ∉ SUBEXP → A ∉ SUBEXP) :=
   fun _ _ h hB hA => hB (h hA)
-
-/-- Under ETH, k-CLIQUE requires n^{Ω(k)} time.
-    This rules out f(k)·n^c algorithms (fixed-parameter tractability
-    in the W[1]-hard sense). -/
-axiom ETH_clique_lower_bound :
-  ETH → ¬∃ (c : ℕ) (e : ℕ),
-    ∀ k : ℕ, ∃ (p : Polynomial),
-      ∀ n s, Φ e emptyOracle (Nat.pair k n) = some (true, s) →
-        s ≤ p.eval k * (inputSize n) ^ c
 
 -- === Connections to Barriers ===
 
@@ -3399,16 +3362,6 @@ axiom Resolution : PropProofSystem
     "n+1 pigeons cannot fit into n holes." -/
 axiom PHP : ℕ → ℕ
 
-/-- **Haken (1985)**: The pigeonhole principle PHP requires exponential-length
-    Resolution proofs. Any Resolution proof of PHP_n has length at least
-    2^{n/20}. This is one of the earliest and most important proof
-    complexity lower bounds.
-
-    Ben-Sasson and Wigderson (1999) later gave a simpler proof via
-    the width-size relationship for Resolution. -/
-axiom resolution_lower_bounds :
-    ∀ n : ℕ, n ≥ 1 → proofLength Resolution (PHP n) ≥ 2 ^ (n / 20)
-
 /-- Proof complexity summary: the Cook-Reckhow connection shows that
     NP vs coNP (and hence P vs NP) is equivalent to a question about
     proof lengths. This gives yet another angle on the problem. -/
@@ -3894,7 +3847,6 @@ theorem grand_landscape :
 #check Sigma_one_eq_NP            -- Σ₁ᴾ = NP
 #check Pi_zero_eq_P               -- Π₀ᴾ = P
 #check Pi_one_eq_coNP             -- Π₁ᴾ = coNP
-#check Sigma_monotone             -- Σₖ ⊆ Σₖ₊₁
 #check P_subset_PH                -- P ⊆ PH
 #check NP_subset_PH               -- NP ⊆ PH
 #check P_eq_NP_implies_PH_collapse  -- P = NP → PH = P
@@ -4022,7 +3974,6 @@ theorem grand_landscape :
 #check PP_subset_PSPACE             -- PP ⊆ PSPACE
 #check BQP_subset_PSPACE            -- BQP ⊆ PSPACE (derived)
 #check P_subset_BQP                 -- P ⊆ BQP (derived)
-#check NP_subset_PP                 -- NP ⊆ PP
 #check quantum_containment_chain    -- P ⊆ BPP ⊆ BQP ⊆ PP ⊆ PSPACE ⊆ EXP
 #check shor_factoring_in_BQP        -- FACTORING ∈ BQP
 #check factoring_in_PSPACE          -- FACTORING ∈ PSPACE (derived)
@@ -4074,7 +4025,6 @@ theorem grand_landscape :
 #check SETH_implies_P_ne_NP            -- SETH → P ≠ NP
 #check fine_grained_hierarchy           -- (SETH → ETH) ∧ (ETH → P ≠ NP)
 #check OV_in_P                         -- OV ∈ P
-#check OV_SETH_hard                    -- SETH → OV requires near-quadratic time
 #check SETH_implies_NP_not_in_Ppoly    -- SETH → NP ⊄ P/poly
 #check SETH_blocks_karp_lipton_premise -- SETH → ¬(NP ⊆ P/poly)
 #check ETH_implies_derandomization     -- ETH → BPP = P
@@ -4170,14 +4120,6 @@ def EQ : CommProblem := fun x y => decide (x = y)
 /-- The DISJOINTNESS function: DISJ(x,y) = 1 iff x AND y = 0. -/
 def DISJ : CommProblem := fun x y => decide (x &&& y = 0)
 
-/-- Trivial upper bound: D(f,n) ≤ n+1 (Alice sends entire input). -/
-axiom comm_trivial_upper (f : CommProblem) (n : ℕ) :
-    D_comm f n ≤ n + 1
-
-/-- D(f) ≥ R(f): deterministic ≥ randomized. -/
-axiom D_ge_R (f : CommProblem) (n : ℕ) :
-    D_comm f n ≥ R_comm f n
-
 /-- EQ requires Ω(n) deterministic bits (counting argument). -/
 axiom EQ_det_lower (n : ℕ) (hn : n ≥ 1) :
     D_comm EQ n ≥ n
@@ -4205,10 +4147,6 @@ theorem DISJ_hardness (n : ℕ) (hn : n ≥ 1) :
     Previously axiom; converted to opaque definition (measurement function). -/
 opaque commMatrixRank (f : CommProblem) (n : ℕ) : ℕ := 0
 
-/-- Log-rank lower bound: D(f) ≥ log₂(rank(M_f)). -/
-axiom log_rank_lower (f : CommProblem) (n : ℕ) :
-    D_comm f n ≥ Nat.log2 (commMatrixRank f n)
-
 -- ============================================================
 -- Verification: Communication Complexity
 -- ============================================================
@@ -4218,7 +4156,6 @@ axiom log_rank_lower (f : CommProblem) (n : ℕ) :
 #check @DISJ                        -- CommProblem
 #check EQ_gap                       -- D(EQ) ≥ n ∧ R(EQ) ≤ 3 (proved)
 #check DISJ_hardness                -- R(DISJ) ≥ n (proved)
-#check log_rank_lower               -- D(f) ≥ log rank(M_f)
 
 -- ============================================================
 -- Part: Parameterized Complexity (Downey-Fellows, 1990s)
@@ -4403,15 +4340,9 @@ axiom MCSP_in_NP : MCSP ∈ NP
     The Kt complexity problem: given (x, s), is Kt(x) ≤ s? -/
 opaque KtComplexity : ℕ → Bool
 
-/-- The Kt problem is in NP (witness: the program and time bound). -/
-axiom Kt_in_NP : KtComplexity ∈ NP
-
 /-- E = DTIME(2^{O(n)}): the exponential-time class with linear exponent.
     Distinguished from EXP = DTIME(2^{n^{O(1)}}). -/
 opaque E_class : Set (ℕ → Bool)
-
-/-- E ⊆ EXP: linear exponential time is contained in polynomial exponential time. -/
-axiom E_subset_EXP : E_class ⊆ EXP
 
 /-- **Kabanets-Cai (2000)**: If MCSP ∈ P, then either:
     (a) E ⊄ SIZE(2^{εn}) for some ε > 0 (circuit lower bounds for E), or
@@ -4520,16 +4451,6 @@ Key results:
     notion underlying hardness amplification. -/
 opaque IsHard (f : ℕ → Bool) (s : ℕ) (eps : ℕ) : Prop
 
-/-- **Yao's XOR Lemma (1982)**: If f is mildly hard (no small circuit
-    computes it on > 99% of inputs), then f⊕...⊕f (XOR of independent
-    copies) is extremely hard (close to 50% error).
-
-    Formally: (s, 1/100)-hard → XOR of t copies is (s', 2^{-t})-hard
-    for slightly smaller s'. We state the qualitative version. -/
-axiom yao_xor_lemma :
-    ∀ f : ℕ → Bool, ∀ s : ℕ,
-    IsHard f s 100 → ∃ s' : ℕ, s' > 0 ∧ IsHard f s' 1
-
 /-- **Goldreich-Levin Theorem (1989)**: Every one-way function has a
     "hardcore bit" — a predicate that is (polynomially) hard to predict
     even given the output of the OWF.
@@ -4619,15 +4540,9 @@ Key results:
     monotone circuits (no NOT gates). -/
 opaque MonotoneP_poly : Set (ℕ → Bool)
 
-/-- Monotone P/poly ⊆ P/poly: every monotone circuit is a circuit. -/
-axiom monotone_subset_general : MonotoneP_poly ⊆ P_poly
-
 /-- The k-clique problem: does a graph on n vertices contain a clique
     of size k? This is a monotone problem (adding edges only helps). -/
 opaque CLIQUE : ℕ → Bool
-
-/-- CLIQUE ∈ NP: guess the k vertices, verify all edges exist. -/
-axiom CLIQUE_in_NP : CLIQUE ∈ NP
 
 /-- **Razborov (1985)**: The k-clique function on n-vertex graphs
     requires monotone circuits of superpolynomial size.
@@ -4669,7 +4584,6 @@ theorem monotone_barrier_landscape :
 
 -- Meta-Complexity
 #check MCSP_in_NP                      -- MCSP ∈ NP
-#check Kt_in_NP                        -- Kt ∈ NP
 #check kabanets_cai                    -- MCSP ∈ P → E ⊄ P/poly
 #check kabanets_cai_contra             -- E ⊆ P/poly → MCSP ∉ P (proved)
 #check liu_pass_owf_kt                 -- OWF ↔ Kt ∉ BPP
@@ -4681,7 +4595,6 @@ theorem monotone_barrier_landscape :
 #check pessiland_Kt_easy               -- Pessiland → Kt ∈ BPP (proved)
 
 -- Hardness Amplification
-#check yao_xor_lemma                   -- Mild hardness → extreme hardness
 #check goldreich_levin                 -- OWF → hardcore bits
 #check HILL_owf_to_prg                 -- OWF → BPP = P
 #check cryptographic_derandomization_chain -- OWF → BPP = P (proved)
@@ -4755,9 +4668,6 @@ def CLS : Set (ℕ → Bool) := PPAD ∩ PLS
 
 /-- FP: function problems solvable in polynomial time. -/
 opaque FP : Set (ℕ → Bool)
-
-/-- FP ⊆ TFNP: poly-time solvable search problems are total. -/
-axiom FP_subset_TFNP : FP ⊆ TFNP
 
 /-- TFNP ⊆ FNP: every total function NP problem is a function NP problem. -/
 axiom TFNP_subset_FNP : TFNP ⊆ FNP
@@ -4907,23 +4817,6 @@ opaque GapP : Set (ℕ → ℕ)
 /-- #SAT: the canonical #P-complete problem.
     Count the number of satisfying assignments of a Boolean formula. -/
 opaque SharpSAT : ℕ → ℕ
-
-/-- #SAT is #P-complete (Valiant 1979). -/
-axiom sharp_SAT_complete : SharpSAT ∈ SharpP
-
-/-- GapP ⊇ #P: every counting function is a gap function. -/
-axiom SharpP_subset_GapP : SharpP ⊆ GapP
-
-/-- GapP is closed under subtraction (unlike #P).
-    Given f, g ∈ GapP, there exists h ∈ GapP representing f − g.
-    When f(n) ≥ g(n), h(n) = f(n) − g(n) (Nat subtraction).
-
-    This closure under subtraction is the key property distinguishing
-    GapP from #P: gap functions can represent "accepting minus rejecting
-    paths", allowing cancellation that counting functions cannot. -/
-axiom GapP_closed_subtraction :
-    ∀ f g : ℕ → ℕ, f ∈ GapP → g ∈ GapP →
-    ∃ h ∈ GapP, ∀ n, f n ≥ g n → h n = f n - g n
 
 /-- **Toda's theorem gives PH ⊆ P^{#P}**: combined with PH ⊆ PSPACE,
     this shows PH reduces to COUNTING, not just to PSPACE. -/
@@ -5119,25 +5012,6 @@ def SunflowerFree (familySize p w : ℕ) : Prop :=
 axiom erdos_rado_sunflower (p w : ℕ) (hp : p ≥ 2) (hw : w ≥ 1) :
     ∀ familySize : ℕ,
       familySize > (p - 1) ^ w * Nat.factorial w →
-      ¬SunflowerFree familySize p w
-
-/-- **Improved Sunflower Lemma** (Alweiss-Lovett-Wu-Zhang 2019, Rao 2019):
-    The bound is improved to (C · log(pw))^w for a universal constant C.
-
-    This nearly resolves the Erdős-Ko conjecture (Sunflower Conjecture)
-    which predicted (p-1)^w as the correct bound (removing the w! factor).
-
-    The proof uses the "spread" technique: if a family has no sunflower,
-    it can be progressively "thinned" while maintaining density, leading
-    to a contradiction when the family becomes too sparse.
-
-    Impact on circuit complexity: Tighter sunflower bounds give better
-    DNF sparsification, which improves pseudorandom generator constructions
-    and formula complexity lower bounds. -/
-axiom improved_sunflower_bound (p w : ℕ) (hp : p ≥ 2) (hw : w ≥ 1) :
-    ∃ C : ℕ, C > 0 ∧
-    ∀ familySize : ℕ,
-      familySize > (C * (Nat.log2 (p * w) + 1)) ^ w →
       ¬SunflowerFree familySize p w
 
 /-- The Erdős-Rado lemma implies the improved bound (the improved bound is
@@ -5369,26 +5243,6 @@ def numBoolFunctions (n : ℕ) : ℕ := 2 ^ (2 ^ n)
     an operation and two inputs from s + n available wires. -/
 opaque numCircuitsOfSize (n s : ℕ) : ℕ
 
-/-- The number of circuits of size s grows polynomially in s
-    (for fixed n), specifically at most (c·s)^{2s} for some constant c.
-    This means 2^{O(s log s)} circuits exist. -/
-axiom circuit_count_bound (n s : ℕ) (hs : s ≥ 1) :
-    numCircuitsOfSize n s ≤ (4 * (s + n)) ^ (2 * s)
-
-/-- **Shannon's Theorem** (1949): For every n, most Boolean functions
-    on n variables require circuits of size at least 2ⁿ/(2n).
-
-    Proof sketch: There are 2^{2^n} functions but only (c·s)^{2s}
-    circuits of size s. When s < 2ⁿ/(2n), the count of circuits
-    is less than the count of functions, so some function has no
-    small circuit.
-
-    This is axiomatized because the precise counting argument
-    uses real-valued logarithms not yet available in our model. -/
-axiom shannon_counting :
-    ∀ n : ℕ, n ≥ 2 →
-    ∃ f : ℕ → Bool, ¬HasCircuitsOfSize f (fun _ => 2^n / (2 * n))
-
 /-- Shannon implies functions outside P/poly exist.
     Axiomatized: the step from "needs 2ⁿ/(2n) gates" to "not in P/poly"
     requires that 2ⁿ/(2n) eventually exceeds any polynomial,
@@ -5552,10 +5406,6 @@ axiom NEXP_subset_RE : NEXP ⊆ RE
 theorem EXP_subset_RE : EXP ⊆ RE :=
   Set.Subset.trans EXP_subset_NEXP NEXP_subset_RE
 
-/-- RE is strictly larger than any decidable class:
-    the halting problem is in RE \ R. -/
-axiom RE_undecidable : ∃ f ∈ RE, f ∉ R_decidable
-
 /-- MIP = NEXP (Babai-Fortnow-Lund 1991, axiomatized).
     Classical multi-prover interactive proofs with shared randomness. -/
 axiom babai_fortnow_lund_MIP_eq_NEXP : MIP = NEXP
@@ -5643,7 +5493,6 @@ theorem entanglement_power_gap :
 -- ============================================================
 
 -- Shannon
-#check shannon_counting                -- Most functions need large circuits
 #check shannon_hard_functions_outside_P_poly  -- Hard functions exist (axiom)
 #check shannon_np_gap                   -- Shannon vs NP gap (proved)
 
@@ -5756,16 +5605,6 @@ axiom nullstellensatz_php_degree :
     PC extends Nullstellensatz with a derivation rule: from p, derive x·p.
     This makes PC strictly stronger than Nullstellensatz for some formulas. -/
 opaque polyCalcDegree (formula : ℕ) : ℕ
-
-/-- **Polynomial Calculus degree lower bounds**: PC requires degree Ω(n)
-    to refute PHP and random k-CNF formulas.
-
-    Razborov (1998) and Impagliazzo-Pudlák-Sgall (1999) showed that
-    Polynomial Calculus inherits the same degree lower bounds as
-    Nullstellensatz for the pigeonhole principle. -/
-axiom poly_calc_degree_php :
-    ∀ n : ℕ, n ≥ 2 →
-    polyCalcDegree n ≥ n / 2
 
 /-- **PC ≥ Nullstellensatz**: Polynomial Calculus can simulate Nullstellensatz
     with the same degree. This is because any static NS certificate
@@ -6266,10 +6105,6 @@ opaque BPWidth (w : ℕ) : Set (ℕ → Bool)
     into a log-depth circuit via divide-and-conquer on the program length. -/
 axiom barrington_theorem : NC_k 1 = BPWidth 5
 
-/-- Width-4 branching programs are weaker than width-5: BPWidth(4) ⊊ BPWidth(5).
-    Width-4 BP compute only ACC⁰ languages (solvable group programs).
-    Width-5 BP compute NC¹ languages (non-solvable group S₅). -/
-axiom width4_subset_width5 : BPWidth 4 ⊆ BPWidth 5
 axiom width4_subset_ACC0 : BPWidth 4 ⊆ ACC0
 
 /-- The algebraic threshold: the jump from width 4 to width 5 corresponds
@@ -6369,10 +6204,6 @@ axiom BPP_subset_SZK : BPP ⊆ SZK
     Statistical zero-knowledge proofs can be placed in AM and also in coAM.
     This is a structural constraint: SZK sits low in the polynomial hierarchy. -/
 axiom SZK_subset_AM_inter_coAM : SZK ⊆ AM ∩ coAM
-
-/-- SZK is closed under complement (Okamoto 2000):
-    If L ∈ SZK then L̄ ∈ SZK. This is a deep structural result. -/
-axiom SZK_closed_complement : ∀ f, f ∈ SZK → (fun n => !f n) ∈ SZK
 
 /-- SZK ⊆ CZK: statistical zero-knowledge is a special case of
     computational zero-knowledge (statistical closeness implies
@@ -6732,7 +6563,6 @@ theorem p_vs_np_master_summary :
 #check descriptive_hierarchy         -- Full hierarchy (proved)
 
 -- Counting Complexity
-#check sharp_SAT_complete             -- #SAT is #P-complete
 #check counting_captures_PH           -- Toda + VP/VNP (proved)
 #check NEXP_not_in_AC0                -- NEXP ⊄ AC⁰ (proved)
 
@@ -6763,7 +6593,6 @@ theorem p_vs_np_master_summary :
 
 -- Zero-Knowledge Proofs
 #check SZK_subset_AM_inter_coAM       -- SZK ⊆ AM ∩ coAM
-#check SZK_closed_complement          -- SZK closed under complement
 #check GI_in_SZK                      -- Graph Isomorphism ∈ SZK
 #check GI_in_AM_inter_coAM            -- GI ∈ AM ∩ coAM (proved)
 #check owf_implies_NP_subset_CZK      -- OWF → NP ⊆ CZK
