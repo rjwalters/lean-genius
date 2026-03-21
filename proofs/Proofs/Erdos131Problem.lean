@@ -165,7 +165,7 @@ theorem original_question_answered_no :
   have hM_gt : (1 : ℝ) < (↑M : ℝ) := by
     exact_mod_cast (show 1 < M by omega)
   -- M^(1/4 + ε'(M)) < M^(1/2) by rpow monotonicity
-  have hrpow := rpow_lt_rpow_of_exponent_lt hM_gt hexp_lt
+  have hrpow := Real.rpow_lt_rpow_of_exponent_lt hM_gt hexp_lt
   -- Contradiction: F(M) ≤ M^(1/4+ε'(M)) < M^(1/2) < F(M)
   linarith
 
@@ -173,7 +173,7 @@ theorem original_question_answered_no :
 
 /-- Csaba's construction: F(N) ≫ N^{1/5} -/
 theorem csaba_lower_bound :
-    ∃ c : ℝ, c > 0 ∧ ∀ N : ℕ, N ≥ 1 → (F N : ℝ) ≥ c * (N : ℝ)^(1/5) := by
+    ∃ c : ℝ, c > 0 ∧ ∀ N : ℕ, N ≥ 1 → (F N : ℝ) ≥ c * (N : ℝ)^((1 : ℝ)/5) := by
   sorry -- Csaba, credited by Erdős
 
 /-- Straus's lower bound: F(N) > exp((√(2/log 2) + o(1))√(log N)) -/
@@ -239,11 +239,73 @@ def erdos_131_open_question : Prop :=
     -- f captures the true asymptotic growth
     True
 
-/-- The original conjecture F(N) < (log N)^O(1) was disproved by Straus -/
+/-- The original conjecture F(N) < (log N)^O(1) was disproved by Csaba's polynomial lower bound.
+    Proof: Csaba gives F(N) ≥ c₀·N^{1/5}. If F(N) ≤ (log N)^C, then using
+    log(x) ≤ x^δ/δ (for δ = 1/(10C)), we get (log N)^C ≤ (10C)^C · N^{1/10},
+    so c₀·N^{1/5} ≤ (10C)^C · N^{1/10}, i.e., c₀·N^{1/10} ≤ (10C)^C.
+    But N^{1/10} → ∞, contradiction. -/
 theorem erdos_original_conjecture_false :
     ¬(∃ c : ℝ, c > 0 ∧ ∀ N : ℕ, N ≥ 2 → (F N : ℝ) ≤ (Real.log N)^c) := by
-  -- Straus's bound shows F grows faster than any power of log N
-  sorry
+  intro ⟨C, hC, hbound⟩
+  obtain ⟨c₀, hc₀, hcsaba⟩ := csaba_lower_bound
+  -- Pick M : ℕ large enough to derive contradiction
+  set L := (10 * C) ^ C / c₀ + 1 with hL_def
+  have hL_pos : (0 : ℝ) < L := by positivity
+  obtain ⟨M₀, hM₀⟩ := exists_nat_gt (L ^ (10 : ℝ))
+  set M := max M₀ 2 with hM_def
+  have hM_ge_2 : M ≥ 2 := le_max_right _ _
+  have hM_gt : L ^ (10 : ℝ) < ↑M :=
+    lt_of_lt_of_le hM₀ (Nat.cast_le.mpr (le_max_left M₀ 2))
+  have hM_nn : (0 : ℝ) ≤ ↑M := Nat.cast_nonneg M
+  have hM_pos : (0 : ℝ) < ↑M := Nat.cast_pos.mpr (by omega)
+  -- Step 1: log M ≤ 10C · M^{1/(10C)} (from log_le_rpow_div with δ = 1/(10C))
+  have hδ : (0 : ℝ) < 1 / (10 * C) := by positivity
+  have hlog_bound : Real.log ↑M ≤ 10 * C * (↑M : ℝ) ^ ((1 : ℝ) / (10 * C)) := by
+    have h := Real.log_le_rpow_div hM_nn hδ
+    have : (↑M : ℝ) ^ ((1 : ℝ) / (10 * C)) / ((1 : ℝ) / (10 * C)) =
+           10 * C * (↑M : ℝ) ^ ((1 : ℝ) / (10 * C)) := by field_simp
+    linarith
+  -- Step 2: (log M)^C ≤ (10C)^C · M^{1/10}
+  have hlog_nn : (0 : ℝ) ≤ Real.log ↑M :=
+    Real.log_nonneg (Nat.one_le_cast.mpr (by omega))
+  have h_rpow_bound : (Real.log ↑M) ^ C ≤ (10 * C) ^ C * (↑M : ℝ) ^ ((1 : ℝ) / 10) := by
+    calc (Real.log ↑M) ^ C
+        ≤ (10 * C * (↑M : ℝ) ^ ((1 : ℝ) / (10 * C))) ^ C :=
+          Real.rpow_le_rpow hlog_nn hlog_bound (le_of_lt hC)
+      _ = (10 * C) ^ C * ((↑M : ℝ) ^ ((1 : ℝ) / (10 * C))) ^ C :=
+          Real.mul_rpow (by positivity : (0 : ℝ) ≤ 10 * C) (Real.rpow_nonneg hM_nn _)
+      _ = (10 * C) ^ C * (↑M : ℝ) ^ ((1 : ℝ) / 10) := by
+          congr 1; rw [← Real.rpow_mul hM_nn]; congr 1; field_simp
+  -- Step 3: c₀ · M^{1/5} ≤ (10C)^C · M^{1/10}
+  have h_csaba := hcsaba M (show M ≥ 1 by omega)
+  have h_bound := hbound M hM_ge_2
+  have h_le : c₀ * (↑M : ℝ) ^ ((1 : ℝ) / 5) ≤ ↑(F M) := h_csaba
+  have h_combined : c₀ * (↑M : ℝ) ^ ((1 : ℝ) / 5) ≤
+                    (10 * C) ^ C * (↑M : ℝ) ^ ((1 : ℝ) / 10) :=
+    le_trans h_le (le_trans h_bound h_rpow_bound)
+  -- Step 4: M^{1/5} = M^{1/10} · M^{1/10}, so c₀ · M^{1/10} ≤ (10C)^C
+  have h_split : (↑M : ℝ) ^ ((1 : ℝ) / 5) =
+                 (↑M : ℝ) ^ ((1 : ℝ) / 10) * (↑M : ℝ) ^ ((1 : ℝ) / 10) := by
+    rw [← Real.rpow_add hM_pos]; norm_num
+  have hM_rpow_pos : (0 : ℝ) < (↑M : ℝ) ^ ((1 : ℝ) / 10) :=
+    Real.rpow_pos_of_pos hM_pos _
+  have h_cancel : c₀ * (↑M : ℝ) ^ ((1 : ℝ) / 10) ≤ (10 * C) ^ C := by
+    rw [h_split] at h_combined; nlinarith
+  -- Step 5: But M^{1/10} > L > (10C)^C/c₀, so c₀ · M^{1/10} > (10C)^C
+  have hL_nn : (0 : ℝ) ≤ L := le_of_lt hL_pos
+  have h_rpow_mono : L < (↑M : ℝ) ^ ((1 : ℝ) / 10) := by
+    have h1 : (L ^ (10 : ℝ)) ^ ((1 : ℝ) / 10) < (↑M : ℝ) ^ ((1 : ℝ) / 10) :=
+      Real.rpow_lt_rpow (Real.rpow_nonneg hL_nn _) hM_gt (by norm_num)
+    rwa [← Real.rpow_mul hL_nn, show (10 : ℝ) * ((1 : ℝ) / 10) = 1 from by norm_num,
+        Real.rpow_one] at h1
+  have h_contra : (10 * C) ^ C < c₀ * (↑M : ℝ) ^ ((1 : ℝ) / 10) := by
+    have hL_gt : (10 * C) ^ C / c₀ < L := by simp only [L]; linarith
+    calc (10 * C) ^ C < c₀ * L := by
+            rw [div_lt_iff₀ hc₀] at hL_gt; linarith
+      _ < c₀ * (↑M : ℝ) ^ ((1 : ℝ) / 10) :=
+          mul_lt_mul_of_pos_left h_rpow_mono hc₀
+  -- Contradiction: h_cancel says ≤, h_contra says >
+  linarith
 
 /- ## Small Examples -/
 
@@ -404,8 +466,11 @@ remains to be closed. The polynomial exponent gap (1/4 vs 1/5) is 1/20.
 **Proved theorems (sorry-free):**
 - IsNonDividing, IsNonDividingAlt, IsNonAveraging definitions
 - nondividing_implies_nonaveraging
+- original_question_answered_no (from pham_zakharov_upper_bound)
+- erdos_original_conjecture_false (from csaba_lower_bound, via log ≤ x^δ/δ)
 - F monotonic, F ≤ g
-- Concrete examples: {2,3}, {4,9,25} non-dividing; {2,3,5} not non-dividing
+- Concrete examples: {2,3}, {2,4,5} non-dividing; {2,3,5} not non-dividing
+- Structural: 1 ∉ large non-dividing sets
 - Exponent comparisons: 1/4 < 1/2, 1/5 < 1/4, gap = 1/20
 -/
 

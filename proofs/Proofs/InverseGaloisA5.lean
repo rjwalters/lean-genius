@@ -1485,10 +1485,45 @@ private theorem prod_Iio_eq_vandermonde {n : ℕ} {R : Type*} [CommRing R]
 theorem ordered_root_diff_prod_eq_vandermonde_sq :
     (∏ i : Fin 5, ∏ j ∈ Finset.univ.erase i, (rootEnum i - rootEnum j)) =
     vandermondeProduct ^ 2 := by
-  -- Split ∏_{j≠i} into ∏_{j<i}·∏_{j>i}, use prod_Iio_eq_vandermonde for first factor.
-  -- Second factor: negate each term, (-1)^{C(5,2)} = (-1)^10 = 1.
-  -- TODO: Fill in details
-  sorry
+  -- Split univ.erase i = Iio i ∪ Ioi i
+  have hsplit : ∀ i : Fin 5,
+      ∏ j ∈ Finset.univ.erase i, (rootEnum i - rootEnum j) =
+      (∏ j ∈ Finset.Iio i, (rootEnum i - rootEnum j)) *
+      (∏ j ∈ Finset.Ioi i, (rootEnum i - rootEnum j)) := by
+    intro i
+    rw [← Finset.prod_union (Finset.disjoint_left.mpr (fun x hx1 hx2 => by
+      rw [Finset.mem_Iio] at hx1; rw [Finset.mem_Ioi] at hx2; omega))]
+    congr 1; ext j
+    constructor
+    · intro hj
+      rw [Finset.mem_erase] at hj
+      rw [Finset.mem_union, Finset.mem_Iio, Finset.mem_Ioi]
+      exact (hj.1).lt_or_gt
+    · intro hj
+      rw [Finset.mem_union, Finset.mem_Iio, Finset.mem_Ioi] at hj
+      rw [Finset.mem_erase]
+      refine ⟨?_, Finset.mem_univ _⟩
+      rcases hj with h | h
+      · exact Fin.ne_of_lt h
+      · exact Fin.ne_of_gt h
+  simp_rw [hsplit, Finset.prod_mul_distrib]
+  unfold vandermondeProduct; rw [Matrix.det_vandermonde, sq]
+  congr 1
+  · exact prod_Iio_eq_vandermonde rootEnum
+  · -- ∏_i ∏_{j>i} (αᵢ-αⱼ) = ∏_i ∏_{j>i} (αⱼ-αᵢ) via sign (-1)^10 = 1
+    have key : ∀ i : Fin 5, ∏ j ∈ Finset.Ioi i, (rootEnum i - rootEnum j) =
+        (-1) ^ (Finset.Ioi i).card *
+        ∏ j ∈ Finset.Ioi i, (rootEnum j - rootEnum i) := by
+      intro i
+      have : ∀ j ∈ Finset.Ioi i, rootEnum i - rootEnum j =
+        (-1 : q.SplittingField) * (rootEnum j - rootEnum i) := fun _ _ => by ring
+      rw [Finset.prod_congr rfl this, Finset.prod_mul_distrib, Finset.prod_const]
+    simp_rw [key, Finset.prod_mul_distrib]
+    suffices h : ∏ i : Fin 5, (-1 : q.SplittingField) ^ (Finset.Ioi i).card = 1 by
+      rw [h, one_mul]
+    rw [Finset.prod_pow_eq_pow_sum]
+    have : ∑ i : Fin 5, (Finset.Ioi i).card = 10 := by decide
+    rw [this]; norm_num
 
 -- Step B: Connect derivative evaluation to root differences
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1583,7 +1618,18 @@ theorem q_SF_eq_prod_linear :
 theorem eval_derivative_q_at_root (i : Fin 5) :
     Polynomial.eval (rootEnum i) (Polynomial.derivative q_SF) =
     ∏ j ∈ Finset.univ.erase i, (rootEnum i - rootEnum j) := by
-  sorry
+  -- Factor: q_SF = (X - C αᵢ) * ∏_{j≠i} (X - C αⱼ)
+  have hfact : q_SF = (X - C (rootEnum i)) *
+      ∏ j ∈ Finset.univ.erase i, (X - C (rootEnum j)) := by
+    rw [q_SF_eq_prod_linear]
+    exact (Finset.mul_prod_erase Finset.univ
+      (fun j => X - C (rootEnum j)) (Finset.mem_univ i)).symm
+  -- Derivative at root: f = (X - α) * r → f'(α) = r(α)
+  rw [eval_derivative_at_root_of_factor q_SF _ (rootEnum i) hfact]
+  -- Distribute eval over product
+  rw [Polynomial.eval_prod]
+  congr 1; ext j
+  simp [Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]
 
 -- Step E: Product of derivative evaluations = ordered root difference product
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
