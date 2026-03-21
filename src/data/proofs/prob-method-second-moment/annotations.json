@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-header-context",
+    "proofId": "prob-method-second-moment",
+    "range": { "startLine": 1, "endLine": 14 },
+    "type": "context",
+    "title": "Module Overview: Second Moment Method",
+    "content": "This module formalizes the second moment method — the probabilistic method's principal tool for converting variance bounds into existence guarantees. While the first moment method only uses $E[X]$ to prove existence, the second moment method uses $E[X^2]$ (or equivalently $\\operatorname{Var}[X]$) to show that $X$ is concentrated near its mean. The module works over finite probability spaces using Finset and rational arithmetic.",
+    "mathContext": "The second moment method: if $\\operatorname{Var}[X]$ is small relative to $(E[X])^2$, then $X > 0$ with substantial probability. Quantitatively, $\\Pr[X > 0] \\geq (E[X])^2 / E[X^2]$.",
+    "significance": "context",
+    "relatedConcepts": ["probabilistic method", "variance", "concentration inequalities", "moment methods"],
+    "prerequisites": ["probability theory", "expectation", "variance", "Finset API"]
+  },
+  {
+    "id": "ann-chebyshev",
+    "proofId": "prob-method-second-moment",
+    "range": { "startLine": 18, "endLine": 22 },
+    "type": "technique",
+    "title": "Chebyshev's Inequality (Finite Version)",
+    "content": "Chebyshev's inequality bounds the probability of deviating from the mean: the fraction of elements in a finite set where $|f(a) - \\mu| \\geq t$ is at most $\\operatorname{Var}[f] / t^2$. This is the discrete, finite-set version of the classical inequality, stated over $\\mathbb{Q}$ to avoid real analysis machinery. The standard proof applies Markov's inequality to the non-negative random variable $(X - \\mu)^2$, which has expectation $\\operatorname{Var}[X]$.",
+    "mathContext": "For a finite set $S$ and $f : S \\to \\mathbb{Q}$, with $\\mu = \\frac{1}{|S|}\\sum_{a \\in S} f(a)$ and $\\sigma^2 = \\frac{1}{|S|}\\sum_{a \\in S}(f(a) - \\mu)^2$: $$|\\{a \\in S : |f(a) - \\mu| \\geq t\\}| \\leq |S| \\cdot \\sigma^2 / t^2$$",
+    "significance": "key",
+    "relatedConcepts": ["Markov's inequality", "variance", "concentration of measure", "Chebyshev 1867"],
+    "prerequisites": ["finite sums over Finset", "rational arithmetic", "absolute value"]
+  },
+  {
+    "id": "ann-paley-zygmund",
+    "proofId": "prob-method-second-moment",
+    "range": { "startLine": 26, "endLine": 29 },
+    "type": "technique",
+    "title": "Paley-Zygmund Inequality",
+    "content": "The Paley-Zygmund inequality provides a lower bound on the probability that a non-negative random variable is positive: $\\Pr[X > 0] \\geq (E[X])^2 / E[X^2]$. This is the key tool for existence proofs via the second moment method. The formalized version states the qualitative conclusion: if $\\sum f > 0$ over a Finset (i.e., the mean is positive), then some element has $f(a) > 0$. The classical proof uses Cauchy-Schwarz: $E[X] = E[X \\cdot \\mathbf{1}_{X>0}] \\leq \\sqrt{E[X^2]} \\cdot \\sqrt{\\Pr[X > 0]}$.",
+    "mathContext": "Paley-Zygmund: For $X \\geq 0$ with $E[X] > 0$: $$\\Pr[X > 0] \\geq \\frac{(E[X])^2}{E[X^2]}$$ The formalization proves the qualitative version: $\\sum_{a \\in S} f(a) > 0 \\implies |\\{a \\in S : f(a) > 0\\}| > 0$.",
+    "significance": "key",
+    "relatedConcepts": ["Cauchy-Schwarz inequality", "lower tail bounds", "existence proofs", "Paley-Zygmund 1932"],
+    "prerequisites": ["non-negative random variables", "Cauchy-Schwarz", "Finset.filter"]
+  },
+  {
+    "id": "ann-second-moment-existence",
+    "proofId": "prob-method-second-moment",
+    "range": { "startLine": 33, "endLine": 37 },
+    "type": "technique",
+    "title": "Second Moment Existence Theorem",
+    "content": "This is the quantitative form of the second moment method: if the second moment $E[X^2]$ is at most twice $(E[X])^2 / |S|$ (equivalently, the variance is controlled), then at least half the elements have $f(a) > 0$. The hypothesis $E[X^2] \\cdot |S| \\leq 2(E[X])^2$ is a strong concentration condition that implies $X$ is not only positive somewhere but positive on a constant fraction of the sample space. This is the form most useful for threshold arguments in random graph theory.",
+    "mathContext": "If $\\sum f(a)^2 \\cdot |S| \\leq 2 \\left(\\sum f(a)\\right)^2$, then $2|\\{a : f(a) > 0\\}| \\geq |S|$. In probabilistic terms: if $E[X^2] \\leq 2(E[X])^2$, then $\\Pr[X > 0] \\geq 1/2$.",
+    "significance": "key",
+    "relatedConcepts": ["random graph thresholds", "concentration inequalities", "subgraph containment", "Erdos-Renyi model"],
+    "prerequisites": ["Paley-Zygmund inequality", "variance control", "indicator sum calculations"]
+  }
+]

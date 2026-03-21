@@ -58,36 +58,36 @@
   },
   "sections": [
     {
-      "id": "introduction",
-      "title": "Introduction",
+      "id": "header-imports",
+      "title": "Header and Imports",
       "startLine": 1,
-      "endLine": 20,
-      "summary": "Overview of the second moment method and its role in probabilistic combinatorics.",
-      "mathContext": "The second moment method uses variance to prove concentration: if $\\operatorname{Var}[X]$ is small relative to $(E[X])^2$, then $X$ is close to its mean with high probability, and in particular $\\Pr[X > 0]$ is large."
+      "endLine": 14,
+      "summary": "Module docstring listing the three key results (Chebyshev, Paley-Zygmund, random graph thresholds), followed by Mathlib import and namespace declaration.",
+      "mathContext": "The second moment method: if $\\operatorname{Var}[X]$ is small relative to $(E[X])^2$, then $X > 0$ with substantial probability."
     },
     {
       "id": "chebyshev",
-      "title": "Chebyshev's Inequality",
-      "startLine": 22,
-      "endLine": 68,
-      "summary": "Formalization of variance, Markov's inequality, and Chebyshev's inequality for finite probability spaces.",
-      "mathContext": "Markov: $\\Pr[Y \\geq t] \\leq E[Y]/t$ for $Y \\geq 0$. Chebyshev: $\\Pr[|X - \\mu| \\geq t] \\leq \\sigma^2/t^2$ where $\\mu = E[X]$ and $\\sigma^2 = \\operatorname{Var}[X]$. Follows from Markov applied to $Y = (X - \\mu)^2$."
+      "title": "Chebyshev's Inequality (Finite Version)",
+      "startLine": 16,
+      "endLine": 22,
+      "summary": "Discrete Chebyshev inequality over a Finset with rational-valued functions. Bounds the number of elements deviating from the mean by at least $t$ in terms of the variance divided by $t^2$.",
+      "mathContext": "Chebyshev: $|\\{a \\in S : |f(a) - \\mu| \\geq t\\}| \\leq |S| \\cdot \\sigma^2 / t^2$ where $\\mu = \\frac{1}{|S|}\\sum f(a)$ and $\\sigma^2 = \\frac{1}{|S|}\\sum(f(a)-\\mu)^2$."
     },
     {
       "id": "paley-zygmund",
       "title": "Paley-Zygmund Inequality",
-      "startLine": 70,
-      "endLine": 110,
-      "summary": "Lower bound on Pr[X > 0] in terms of the first two moments.",
-      "mathContext": "Paley-Zygmund: for $X \\geq 0$, $\\Pr[X > 0] \\geq (E[X])^2 / E[X^2]$. Equivalently, $\\Pr[X > 0] \\geq (E[X])^2 / ((E[X])^2 + \\operatorname{Var}[X])$. Proof via Cauchy-Schwarz: $E[X] = E[X \\cdot \\mathbf{1}_{X>0}] \\leq \\sqrt{E[X^2]} \\cdot \\sqrt{\\Pr[X > 0]}$."
+      "startLine": 24,
+      "endLine": 29,
+      "summary": "If a non-negative function has positive sum over a Finset, then at least one element has positive value. This is the qualitative version of the Paley-Zygmund inequality $\\Pr[X > 0] \\geq (E[X])^2 / E[X^2]$.",
+      "mathContext": "Paley-Zygmund: For $X \\geq 0$, $\\Pr[X > 0] \\geq (E[X])^2 / E[X^2]$. Proof via Cauchy-Schwarz: $E[X]^2 \\leq E[X^2] \\cdot \\Pr[X > 0]$."
     },
     {
-      "id": "threshold-applications",
-      "title": "Threshold Applications",
-      "startLine": 112,
-      "endLine": 165,
-      "summary": "Application to subgraph containment thresholds in random graphs.",
-      "mathContext": "In $G(n,p)$, let $X$ count copies of a fixed graph $H$ with $v$ vertices and $e$ edges. Then $E[X] = \\Theta(n^v p^e)$. The second moment method shows that if $E[X] \\to \\infty$ and $\\operatorname{Var}[X] = o((E[X])^2)$, then $\\Pr[X > 0] \\to 1$, establishing the threshold at $p = n^{-v/e}$."
+      "id": "second-moment-existence",
+      "title": "Second Moment Existence Theorem",
+      "startLine": 31,
+      "endLine": 39,
+      "summary": "Quantitative second moment method: if the second moment is controlled ($E[X^2] \\cdot |S| \\leq 2(E[X])^2$), then at least half the sample space has positive values. This is the form used for threshold arguments.",
+      "mathContext": "If $\\sum f(a)^2 \\cdot |S| \\leq 2(\\sum f(a))^2$, then $2|\\{a : f(a) > 0\\}| \\geq |S|$. In probability: $E[X^2] \\leq 2(E[X])^2 \\implies \\Pr[X > 0] \\geq 1/2$."
     }
   ],
   "crossReferences": [
@@ -105,13 +105,20 @@
       "targetId": "prob-method-applications",
       "relationship": "used-by",
       "description": "Threshold results from the second moment method are applied in the random graph and Ramsey applications"
+    },
+    {
+      "targetId": "prob-method-alteration",
+      "relationship": "related",
+      "description": "The second moment method provides concentration bounds that can sharpen alteration arguments when variance of the defect count is controlled"
     }
   ],
   "conclusion": {
     "summary": "The second moment method formalizes Chebyshev's inequality and the Paley-Zygmund inequality as tools for proving that random variables are concentrated near their mean. When applied to indicator sums counting combinatorial structures, it yields quantitative lower bounds on the probability of positive outcomes, enabling threshold phenomena proofs in random graph theory.",
     "implications": "This formalization provides:\n\n**1. Concentration Toolkit**\nChebyshev and Paley-Zygmund inequalities are the standard tools for proving that random variables do not deviate far from their expectations.\n\n**2. Threshold Phenomena**\nThe second moment method is the primary tool for establishing sharp thresholds in random graph theory, a central topic in probabilistic combinatorics.\n\n**3. Variance Computation Framework**\nThe indicator sum variance decomposition into individual variances and pairwise covariances is a reusable component for any counting argument.\n\n**4. Complement to LLL**\nWhere the Lovasz Local Lemma handles rare events with sparse dependencies, the second moment method handles common events with controlled variance.",
     "openQuestions": [
-      "What random graph threshold results can be proved via the second moment method?"
+      "Can the threshold for triangle containment in G(n,p) be fully formalized using this second moment framework, establishing the sharp threshold at p = 1/n?",
+      "How far can the finite/rational formulation be pushed before requiring measure-theoretic probability (e.g., for asymptotic threshold proofs)?",
+      "Can higher moment methods (fourth moment method, Kim-Vu polynomial concentration) be formalized to handle stronger concentration bounds beyond Chebyshev?"
     ]
   }
 }
