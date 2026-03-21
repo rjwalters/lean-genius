@@ -82,3 +82,42 @@ Polynomial.Irreducible, trace_eq_neg_charpoly_coeff.
 - File: 1 sorry (spectral step), 1 axiom (old, still referenced by old theorems)
 - **Remaining sorry**: ∃ s, s ≥ 1 ∧ k-1 = s*s ∧ s | s*s+1 (k-1 is a perfect square)
 - This requires the structure theorem for modules over ℚ[X] (PID)
+
+### Session 2026-03-20 (researcher-3) - Weinstein-Aronszajn Infrastructure
+
+**Mode**: DEEP DIVE — Build infrastructure for det_scalar_sub_onesMatrix proof
+**Decision**: Prove Weinstein-Aronszajn identity for all-ones matrix + J-singular lemma
+
+**New Lemmas Proved** (4 total):
+
+1. **`det_one_sub_smul_onesMatrix`** — PROVED: det(I - t·J) = 1 - n·t
+   Uses `Matrix.det_one_sub_mul_comm` (Weinstein-Aronszajn identity).
+   Expresses t·J as outer product A·B where A = col(t,...,t), B = row(1,...,1).
+   Then det(I - AB) = det(I₁ - BA) = det([1-nt]) = 1-nt.
+
+2. **`det_one_sub_smul_ones_gen`** — PROVED: Same as above, generalized over any CommRing R.
+   Critical for the polynomial ring application (needed for charpoly_quotient_product).
+
+3. **`det_onesMatrix_eq_zero`** — PROVED: det(J) = 0 for |V| ≥ 2.
+   J has all identical rows → `Matrix.det_zero_of_row_eq`.
+
+4. **`det_ones_eq_zero_gen`** — PROVED: Same as above, generalized over any CommRing R.
+
+**Proof Path for det_scalar_sub_onesMatrix** (documented, not yet formalized):
+
+For c ≠ 0: Cast to ℚ where c is invertible.
+  det(cI-J) = c^n · det(I - c⁻¹J) [Matrix.det_smul]
+            = c^n · (1 - n·c⁻¹) [det_one_sub_smul_ones_gen]
+            = c^{n-1}(c-n) [field_simp/ring]
+
+For c = 0: det(-J) = 0 [det_onesMatrix_eq_zero] and 0^{n-1}(0-n) = 0.
+
+Both cast to ℚ via RingHom.map_det, equality in ℚ → equality in ℤ by injectivity.
+
+**Remaining Lean challenges**:
+- `RingHom.map_det` integration: casting matrix det from ℤ to ℚ
+- `Matrix.det_smul` with ℚ: det(c • M) = c^n · det(M)
+- Field algebra: c^n · (1 - n·c⁻¹) = c^{n-1}(c-n) via field_simp + ring
+
+**Outcome**: PROGRESS — 4 new helper lemmas proved, clear path for remaining 3 sorries
+**Files Modified**: `proofs/Proofs/FriendshipTheoremOQ01.lean`, `src/data/research/problems/friendship-theorem-oq-01.json`
