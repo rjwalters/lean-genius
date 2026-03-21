@@ -363,6 +363,71 @@
       "relatedConcepts": ["glueball", "bound state", "lattice QCD", "mass hierarchy", "large-N limit", "string tension"],
       "prerequisites": ["GlueballState", "GlueballRatio", "scalar_glueball"],
       "tags": ["glueball", "mass-gap", "lattice-qcd", "spectrum"]
+    },
+    {
+      "id": "lattice-monte-carlo",
+      "proofId": "yang-mills-mass-gap",
+      "type": "technique",
+      "range": { "startLine": 4284, "endLine": 4519 },
+      "title": "Lattice Monte Carlo: Computational Evidence for Confinement",
+      "content": "Formalizes the computational framework that provides the strongest numerical evidence for the mass gap. The Wilson plaquette action $S_\\square = \\beta(1 - \\text{Re\\,Tr}\\,U_\\square/N)$ is bounded: $0 \\le S_\\square \\le 2\\beta$ (proved). In 4D, there are 6 plaquettes per site (proved by `norm_num`). The Metropolis algorithm with acceptance probability $P = \\min(1, e^{-\\Delta S})$ satisfies detailed balance; the key theorem proves improvements are always accepted ($\\Delta S \\le 0 \\implies P = 1$). This machinery enables numerical measurement of Wilson loops, string tension, and glueball masses — the quantitative evidence that the community relies on while awaiting a rigorous proof.",
+      "mathContext": "$S_\\square = \\beta(1 - \\text{Re\\,Tr}\\,U_\\square/N)$, $0 \\le S_\\square \\le 2\\beta$; Metropolis: $P_{\\text{accept}} = \\min(1, e^{-\\Delta S})$; 4D: $\\binom{4}{2} = 6$ plaquettes/site",
+      "significance": "supporting",
+      "relatedConcepts": ["Monte Carlo method", "Metropolis algorithm", "detailed balance", "importance sampling", "Wilson action"],
+      "prerequisites": ["WilsonPlaquetteAction", "MetropolisStep", "Real.exp"],
+      "tags": ["lattice", "monte-carlo", "metropolis", "numerical"]
+    },
+    {
+      "id": "complexity-barriers",
+      "proofId": "yang-mills-mass-gap",
+      "type": "context",
+      "range": { "startLine": 4921, "endLine": 5012 },
+      "title": "Complexity Barriers and the Spectral Gap Undecidability",
+      "content": "The spectral gap problem for general translation-invariant Hamiltonians on $\\mathbb{Z}^2$ is undecidable (Cubitt-Perez-Garcia-Wolf 2015) — no algorithm can determine whether $\\Delta > 0$ or $\\Delta = 0$. However, Yang-Mills is NOT a general Hamiltonian: gauge symmetry (Gauss law), asymptotic freedom (specific $\\beta$-function), and confining dynamics impose strong structural constraints, analogous to how specific Diophantine equations may be decidable even though Hilbert's 10th problem is undecidable. The local Hamiltonian ground-state energy problem is QMA-complete (Kitaev 1999), but for Yang-Mills the ground-state energy is 0 by construction — the question is about the gap above it. Pure Yang-Mills also avoids the fermion sign problem ($e^{-S_W} > 0$ for all configurations), enabling reliable Monte Carlo computation.",
+      "mathContext": "General spectral gap undecidable on $\\mathbb{Z}^2$ (Cubitt et al.); Yang-Mills: specific structure may evade undecidability; no sign problem for pure YM",
+      "significance": "context",
+      "relatedConcepts": ["undecidability", "QMA-completeness", "sign problem", "Hilbert's 10th problem", "computational complexity"],
+      "prerequisites": ["SpectralGapUndecidability", "QMAHardness"],
+      "tags": ["complexity", "undecidability", "sign-problem", "qma"]
+    },
+    {
+      "id": "functional-rg-gluon-propagator",
+      "proofId": "yang-mills-mass-gap",
+      "type": "technique",
+      "range": { "startLine": 5776, "endLine": 5835 },
+      "title": "Functional RG: Fixed Points and Gluon Propagator IR Behavior",
+      "content": "Formalizes RG fixed points and the deep infrared behavior of the gluon propagator, central to understanding how the mass gap arises dynamically. The Gaussian fixed point $g^* = 0$ is UV (asymptotic freedom); the absence of a perturbative IR fixed point means the coupling grows without bound at large distances, driving confinement. Two competing IR behaviors are formalized: the decoupling solution $D(p^2) \\to D_0 > 0$ as $p \\to 0$ (massive-type gluon, consistent with lattice data, implies mass gap) and the scaling solution $D(p^2) \\sim (p^2)^{2\\kappa-1}$ with $\\kappa \\approx 0.595$ (Gribov-type suppression, $D(0) = 0$, satisfies Kugo-Ojima confinement criterion). Current consensus favors the decoupling solution, providing dynamical mass generation as the physical origin of the mass gap.",
+      "mathContext": "Gaussian FP: $g^* = 0$ (UV); decoupling: $D(0) > 0$ (mass gap); scaling: $D(p^2) \\sim (p^2)^{2\\kappa-1}$, $\\kappa \\approx 0.595$",
+      "significance": "supporting",
+      "relatedConcepts": ["renormalization group", "Wetterich equation", "gluon propagator", "dynamical mass generation", "Kugo-Ojima criterion"],
+      "prerequisites": ["RGFixedPoint", "GluonPropagatorIR", "DynamicalMassGeneration"],
+      "tags": ["functional-rg", "gluon-propagator", "mass-generation"]
+    },
+    {
+      "id": "transfer-matrix-mass-gap",
+      "proofId": "yang-mills-mass-gap",
+      "type": "insight",
+      "range": { "startLine": 6249, "endLine": 6328 },
+      "title": "Transfer Matrix: The Finite-Volume Mass Gap Is a Theorem",
+      "content": "On any finite lattice, the mass gap is a proved theorem (not a conjecture). The Perron-Frobenius theorem guarantees a unique largest eigenvalue $\\lambda_0 > 0$ of the transfer matrix, with a strict spectral gap: $\\lambda_0 > \\lambda_1 > 0$. The finite-volume mass gap $\\Delta = \\ln(\\lambda_0/\\lambda_1)$ is proved strictly positive. The physical mass gap $m = \\Delta/a$ is also proved positive. Correlation functions decay exponentially: $\\langle O(t)O(0)\\rangle / \\langle O(0)^2\\rangle \\to (\\lambda_1/\\lambda_0)^n = e^{-n\\Delta}$, giving the physical interpretation of the mass gap as the rate of exponential correlation decay. The deep open problem is whether this gap survives the joint continuum ($a \\to 0$) and infinite-volume ($L \\to \\infty$) limit.",
+      "mathContext": "$\\Delta = \\ln(\\lambda_0/\\lambda_1) > 0$ (proved); $m = \\Delta/a > 0$ (proved); $\\langle O(t)O(0)\\rangle \\sim e^{-n\\Delta}$; open: $\\lim_{a\\to 0, L\\to\\infty} \\Delta/a > 0$?",
+      "significance": "key",
+      "relatedConcepts": ["Perron-Frobenius theorem", "transfer matrix", "spectral gap", "exponential decay", "continuum limit"],
+      "prerequisites": ["LatticeTransferMatrix", "PerronFrobeniusData", "Real.log"],
+      "tags": ["transfer-matrix", "perron-frobenius", "finite-volume", "spectral-gap"]
+    },
+    {
+      "id": "large-n-thooft",
+      "proofId": "yang-mills-mass-gap",
+      "type": "insight",
+      "range": { "startLine": 2060, "endLine": 2124 },
+      "title": "Large-N Limit and 't Hooft Coupling",
+      "content": "Formalizes the 't Hooft large-$N$ limit: the theory is organized by the 't Hooft coupling $\\lambda = g^2N$ (held fixed as $N \\to \\infty$). The Casimir per color $C_2(\\text{fund})/N = (N^2-1)/(2N^2)$ approaches $1/2$ from below (proved $< 1/2$ for all finite $N \\ge 2$). The adjoint Casimir per color $C_2(\\text{adj})/N = 1$ exactly (proved). The Casimir ratio $C_2(\\text{adj})/C_2(\\text{fund}) \\ge 2$ for all $N \\ge 2$ (proved), converging to exactly 2 as $N \\to \\infty$. The 't Hooft string tension $\\sigma_{\\text{fund}} = \\lambda(N^2-1)/(2N^3)$ is proved positive; the rescaled string tension $\\sigma N = \\lambda(N^2-1)/(2N^2) < \\lambda/2$ is proved bounded. These results show the mass gap and string tension survive the large-$N$ limit with controlled behavior.",
+      "mathContext": "$\\lambda = g^2N$; $C_2(\\text{fund})/N = (N^2-1)/(2N^2) < 1/2$; $C_2(\\text{adj})/C_2(\\text{fund}) \\ge 2$; $\\sigma N < \\lambda/2$",
+      "significance": "key",
+      "relatedConcepts": ["'t Hooft limit", "planar limit", "1/N expansion", "Casimir operator", "string tension"],
+      "prerequisites": ["suNCasimirFundamental", "suNCasimirAdjoint", "tHooftStringTension"],
+      "tags": ["large-n", "thooft", "casimir", "string-tension"]
     }
   ]
 }
