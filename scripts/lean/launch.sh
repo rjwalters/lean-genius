@@ -89,14 +89,15 @@ Stop Options:
   --force                Kill tmux sessions immediately (skip graceful signal files)
 
 Daemon Options:
+  --monitor-only         Skip agent startup, only monitor/respawn existing sessions
   --interval N           Seconds between health check cycles (default: $DEFAULT_DAEMON_INTERVAL)
-  --enricher N           Initial Enricher count (default: $DEFAULT_ENRICHER, max: $MAX_ENRICHER)
-  --aristotle N          Initial Aristotle agent count (default: $DEFAULT_ARISTOTLE, max: $MAX_ARISTOTLE)
-  --researcher N         Initial Researcher count (default: $DEFAULT_RESEARCHER, max: $MAX_RESEARCHER)
-  --seeker N             Initial Seeker agent count (default: $DEFAULT_SEEKER, max: $MAX_SEEKER)
-  --deployer N           Initial Deployer count (default: $DEFAULT_DEPLOYER, max: $MAX_DEPLOYER)
-  --tester N             Initial Tester count (default: $DEFAULT_TESTER, max: $MAX_TESTER)
-  --herald N             Initial Herald count (default: $DEFAULT_HERALD, max: $MAX_HERALD)
+  --enricher N           Target Enricher count (default: $DEFAULT_ENRICHER, max: $MAX_ENRICHER)
+  --aristotle N          Target Aristotle agent count (default: $DEFAULT_ARISTOTLE, max: $MAX_ARISTOTLE)
+  --researcher N         Target Researcher count (default: $DEFAULT_RESEARCHER, max: $MAX_RESEARCHER)
+  --seeker N             Target Seeker agent count (default: $DEFAULT_SEEKER, max: $MAX_SEEKER)
+  --deployer N           Target Deployer count (default: $DEFAULT_DEPLOYER, max: $MAX_DEPLOYER)
+  --tester N             Target Tester count (default: $DEFAULT_TESTER, max: $MAX_TESTER)
+  --herald N             Target Herald count (default: $DEFAULT_HERALD, max: $MAX_HERALD)
 
 Agent Types:
   enricher    Enriches proof gallery entries with deeper annotations and commentary
@@ -120,9 +121,10 @@ Examples:
   $0 stop --force                       # Force stop all (kill sessions)
   $0 stop enricher --force              # Force stop Enrichers only
   $0 health                             # Check agent health
-  $0 daemon                             # Run daemon with defaults
+  $0 daemon                             # Start agents + run daemon loop
+  $0 daemon --monitor-only              # Monitor existing agents (no startup)
   $0 daemon --interval 30 --researcher 3  # Custom interval and pool
-  $0 daemon &                           # Run daemon in background
+  $0 daemon --monitor-only --researcher 5 &  # Background monitor for 5 researchers
 EOF
 }
 
@@ -1414,10 +1416,15 @@ cmd_daemon() {
     local deployer=$DEFAULT_DEPLOYER
     local tester=$DEFAULT_TESTER
     local herald=$DEFAULT_HERALD
+    local monitor_only=false
 
     # Parse options
     while [[ $# -gt 0 ]]; do
         case "$1" in
+            --monitor-only)
+                monitor_only=true
+                shift
+                ;;
             --interval)
                 interval="$2"
                 shift 2
@@ -1487,11 +1494,32 @@ cmd_daemon() {
     trap 'daemon_log "INFO" "Received SIGTERM"; exit 0' TERM
     trap 'daemon_log "INFO" "Received SIGINT"; exit 0' INT
 
-    daemon_log "INFO" "Starting daemon (PID $$, interval ${interval}s)"
+    daemon_log "INFO" "Starting daemon (PID $$, interval ${interval}s, monitor_only=$monitor_only)"
     daemon_log "INFO" "Pool config: enricher=$enricher, aristotle=$aristotle, researcher=$researcher, seeker=$seeker, deployer=$deployer, tester=$tester, herald=$herald"
 
-    # Start initial agents via cmd_start
-    cmd_start --enricher "$enricher" --aristotle "$aristotle" --researcher "$researcher" --seeker "$seeker" --deployer "$deployer" --tester "$tester" --herald "$herald"
+    if [[ "$monitor_only" == "true" ]]; then
+        daemon_log "INFO" "Monitor-only mode: skipping agent startup, monitoring existing sessions"
+        # Update state file with target config so pool gap detection works
+        if [[ -f "$STATE_FILE" ]]; then
+            local tmp
+            tmp=$(mktemp)
+            jq \
+                --argjson enricher "$enricher" \
+                --argjson aristotle "$aristotle" \
+                --argjson researcher "$researcher" \
+                --argjson seeker "$seeker" \
+                --argjson deployer "$deployer" \
+                '.config.enricher = $enricher |
+                 .config.aristotle = $aristotle |
+                 .config.researcher = $researcher |
+                 .config.seeker = $seeker |
+                 .config.deployer = $deployer' \
+                "$STATE_FILE" > "$tmp" && mv "$tmp" "$STATE_FILE"
+        fi
+    else
+        # Start initial agents via cmd_start
+        cmd_start --enricher "$enricher" --aristotle "$aristotle" --researcher "$researcher" --seeker "$seeker" --deployer "$deployer" --tester "$tester" --herald "$herald"
+    fi
 
     local cycle_count=0
     local total_respawns=0
