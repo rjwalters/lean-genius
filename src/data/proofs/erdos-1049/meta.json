@@ -174,6 +174,18 @@
       "mathContext": "Main result: $\\forall t \\in \\mathbb{Z},\\; t \\ge 2 \\implies S(t) \\notin \\mathbb{Q}$ (Erdős 1948). Full conjecture for $t \\in \\mathbb{Q}_{>1}$ remains open."
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "euler-identity",
+      "relationship": "related",
+      "description": "Euler's identity and partition theory connect to Lambert series; the divisor sum S(t) is a Lambert series with constant coefficients"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "The divisor function τ(n) and Euler's totient φ(n) are both multiplicative arithmetic functions studied via Dirichlet series and Lambert series"
+    }
+  ],
   "conclusion": {
     "summary": "Erdos Problem #1049 asks whether S(t) = sum 1/(t^n - 1) is irrational for rational t > 1. The classical identity S(t) = sum tau(n)/t^n connects this to the divisor function. Erdos (1948) proved irrationality for integer t >= 2 using p-adic analysis of partial sums. Chowla's conjecture extending this to all rational t > 1 remains open. The formalization axiomatizes Erdos's result, states both Chowla's conjecture and stronger transcendentality conjectures, and connects the series to Lambert series theory.",
     "implications": "The problem sits at the intersection of analytic number theory, irrationality theory, and Lambert series. Erdos's 1948 techniques pioneered the use of p-adic methods for irrationality proofs of naturally-arising series. The Erdos-Borwein constant S(2) ~ 1.606695 appears unexpectedly in the analysis of algorithms (average-case mergesort complexity). Resolution of Chowla's conjecture would advance understanding of the arithmetic nature of Lambert series values. The transcendental conjecture connects to the broader program of determining the transcendence of values of classical analytic functions at algebraic points.",

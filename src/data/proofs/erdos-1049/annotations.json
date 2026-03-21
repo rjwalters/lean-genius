@@ -134,7 +134,7 @@
   {
     "id": "ann-1049-12",
     "proofId": "erdos-1049",
-    "range": { "startLine": 127, "endLine": 129 },
+    "range": { "startLine": 132, "endLine": 134 },
     "type": "theorem",
     "title": "S_at_2_irrational: Irrationality of S(2)",
     "content": "Proves S(2) is irrational by applying erdos_integer_irrational with t = 2 and the proof 2 >= 2 by norm_num. This is the simplest nontrivial instance of Erdos's theorem and establishes the irrationality of the Erdos-Borwein constant.",
@@ -158,7 +158,7 @@
   {
     "id": "ann-1049-14",
     "proofId": "erdos-1049",
-    "range": { "startLine": 149, "endLine": 151 },
+    "range": { "startLine": 155, "endLine": 157 },
     "type": "theorem",
     "title": "chowla_for_integers: Partial Verification",
     "content": "Proves Chowla's conjecture for the special case of integer t >= 2, directly applying Erdos's axiomatized result. This shows the conjecture is known for a substantial (but measure-zero) subset of the rationals greater than 1.",
@@ -266,7 +266,7 @@
   {
     "id": "ann-1049-23",
     "proofId": "erdos-1049",
-    "range": { "startLine": 267, "endLine": 269 },
+    "range": { "startLine": 273, "endLine": 275 },
     "type": "theorem",
     "title": "erdos_1049: Final Statement",
     "content": "The final clean statement of Erdos's partial resolution: for all natural numbers t >= 2, S(t) is irrational. Defined as a direct reference to erdos_integer_irrational. This is the strongest known result toward Problem #1049; the Chowla extension to all rationals remains open.",
