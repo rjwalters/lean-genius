@@ -2,145 +2,263 @@
   {
     "id": "h-function",
     "proofId": "erdos-414",
-    "range": { "startLine": 27, "endLine": 29 },
+    "range": {
+      "startLine": 27,
+      "endLine": 29
+    },
     "type": "definition",
     "title": "The Function h(n) = n + τ(n)",
     "content": "**h(n) = n + τ(n)** where τ(n) = |{d : d | n}| counts divisors. Since τ(n) ≥ 1 for all n ≥ 1, we have h(n) > n always — the map is strictly increasing. For n = 12: τ(12) = 6 (divisors: 1,2,3,4,6,12), so h(12) = 18. For primes p, τ(p) = 2, so h(p) = p + 2.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The map n ↦ n + τ(n) is a natural example from **arithmetic dynamics** — the study of number-theoretic functions iterated as dynamical systems. Unlike the Collatz map (which can decrease), h is strictly increasing, eliminating cycles and fixed points. The divisor function τ is multiplicative: τ(mn) = τ(m)τ(n) for gcd(m,n) = 1, and τ(p^a) = a + 1 for prime powers. Its irregularity (τ oscillates between 2 at primes and large values at highly composite numbers) creates the complex orbit structure central to Problem #414.",
-    "relatedConcepts": ["divisor function τ(n)", "arithmetic dynamics", "multiplicative functions", "highly composite numbers"],
-    "prerequisites": ["Nat.divisors", "Finset.card"]
+    "relatedConcepts": [
+      "divisor function τ(n)",
+      "arithmetic dynamics",
+      "multiplicative functions",
+      "highly composite numbers"
+    ],
+    "prerequisites": [
+      "Nat.divisors",
+      "Finset.card"
+    ]
   },
   {
     "id": "orbit-def",
     "proofId": "erdos-414",
-    "range": { "startLine": 31, "endLine": 34 },
+    "range": {
+      "startLine": 31,
+      "endLine": 34
+    },
     "type": "definition",
     "title": "Orbit Sequence",
     "content": "**hOrbit(n, k) = h^k(n)**: the k-th iterate of h starting from n. Defined recursively: hOrbit(n, 0) = n, hOrbit(n, k+1) = h(hOrbit(n, k)). The orbit {n, h(n), h²(n), ...} is a strictly increasing sequence of positive integers.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "In **discrete dynamical systems**, the orbit of a point x under a map f is the sequence {x, f(x), f²(x), ...}. Since h is strictly increasing with no upper bound, every orbit is an infinite, strictly increasing sequence — a one-sided trajectory through ℕ. The conjecture asks whether all such trajectories eventually coincide, forming an **absorbing trajectory**: a single infinite path that every orbit joins. This is analogous to basin-of-attraction questions in continuous dynamics, but in the discrete setting the 'attractor' is a ray rather than a point or cycle.",
-    "relatedConcepts": ["discrete dynamical systems", "forward orbit", "absorbing set", "eventual periodicity"],
-    "prerequisites": ["iteration of functions", "Nat recursion"]
+    "relatedConcepts": [
+      "discrete dynamical systems",
+      "forward orbit",
+      "absorbing set",
+      "eventual periodicity"
+    ],
+    "prerequisites": [
+      "iteration of functions",
+      "Nat recursion"
+    ]
   },
   {
     "id": "h-strictly-inc",
     "proofId": "erdos-414",
-    "range": { "startLine": 38, "endLine": 40 },
+    "range": {
+      "startLine": 38,
+      "endLine": 40
+    },
     "type": "theorem",
     "title": "Strict Monotonicity",
     "content": "**h(n) > n** for all n ≥ 1, since τ(n) ≥ 1 (every positive integer has at least divisor 1). Combined with h(n) ≤ 2n (since τ(n) ≤ n), each step advances by at least 1 and at most n.",
     "significance": "key",
     "mathContext": "Strict monotonicity h(n) > n rules out fixed points and cycles — orbits can only move forward. This is the key structural property making the merging conjecture well-posed: without it, orbits could get trapped in loops and never meet. The upper bound h(n) ≤ 2n follows from the elementary bound τ(n) ≤ n, though much stronger bounds are known: τ(n) = O(n^ε) for any ε > 0 (Wigert's theorem), and the maximal order of τ(n) is 2^{(1+o(1)) log n / log log n}.",
-    "relatedConcepts": ["fixed points", "Wigert's bound on τ", "maximal order of divisor function"],
-    "prerequisites": ["Nat.divisors_nonempty"]
+    "relatedConcepts": [
+      "fixed points",
+      "Wigert's bound on τ",
+      "maximal order of divisor function"
+    ],
+    "prerequisites": [
+      "Nat.divisors_nonempty"
+    ]
   },
   {
     "id": "h-prime",
     "proofId": "erdos-414",
-    "range": { "startLine": 50, "endLine": 52 },
+    "range": {
+      "startLine": 50,
+      "endLine": 52
+    },
     "type": "theorem",
     "title": "h at Primes",
     "content": "For a prime p, τ(p) = 2 (divisors: 1 and p), so **h(p) = p + 2**. Primes advance by the minimum non-trivial amount. Highly composite numbers like 12 (τ = 6), 24 (τ = 8), 60 (τ = 12) advance much further.",
     "significance": "key",
     "mathContext": "The dichotomy between primes (τ = 2, minimal advance) and highly composite numbers (large τ, big jumps) is what makes the orbit dynamics interesting. Two orbits might approach each other when both pass through a region rich in primes (small steps, fine spacing), then one hits a highly composite number and jumps ahead. The **collision mechanism** requires both orbits to land on exactly the same value — not merely get close. Since consecutive orbit values h^k(n) and h^{k+1}(n) differ by τ(h^k(n)), the 'mesh size' of an orbit near N is roughly log N on average (by Dirichlet's theorem), meaning collisions become harder as values grow.",
-    "relatedConcepts": ["prime number theorem", "highly composite numbers (Ramanujan)", "orbit spacing"],
-    "prerequisites": ["Nat.Prime", "prime divisor count"]
+    "relatedConcepts": [
+      "prime number theorem",
+      "highly composite numbers (Ramanujan)",
+      "orbit spacing"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "prime divisor count"
+    ]
   },
   {
     "id": "main-conjecture",
     "proofId": "erdos-414",
-    "range": { "startLine": 65, "endLine": 69 },
+    "range": {
+      "startLine": 65,
+      "endLine": 69
+    },
     "type": "conjecture",
     "title": "Erdős Problem #414: All Orbits Merge (OPEN)",
     "content": "**Conjecture**: For any m, n ≥ 1, there exist i, j ∈ ℕ with h^i(m) = h^j(n). Equivalently, all forward orbits of h eventually coalesce into a single infinite trajectory. Erdős and Graham believed the answer is YES.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "This is an **orbit coalescence** problem: does the directed graph on ℕ defined by n → h(n) have a single connected component when viewed 'forward in time'? The graph is a forest of infinite rays, and the question is whether all rays merge into one. Computationally, orbits starting from different values merge very quickly — orbits from 1 through 10^6 all merge within the first few hundred steps. However, no proof exists because: (1) controlling exact collisions requires understanding the joint distribution of τ along two different orbits, and (2) the divisor function's irregularity makes it hard to prove two specific values coincide. The problem appears in Erdős-Graham [ErGr80], p. 82, alongside the related Problems #412 and #413 about n + φ(n) and n - φ(n).",
-    "relatedConcepts": ["Collatz conjecture (analogous coalescence question)", "directed forests on ℕ", "Erdős-Graham unsolved problems"],
-    "prerequisites": ["hOrbit", "h_strictly_increasing"]
+    "relatedConcepts": [
+      "Collatz conjecture (analogous coalescence question)",
+      "directed forests on ℕ",
+      "Erdős-Graham unsolved problems"
+    ],
+    "prerequisites": [
+      "hOrbit",
+      "h_strictly_increasing"
+    ]
   },
   {
     "id": "single-orbit",
     "proofId": "erdos-414",
-    "range": { "startLine": 73, "endLine": 76 },
+    "range": {
+      "startLine": 73,
+      "endLine": 76
+    },
     "type": "conjecture",
     "title": "Single Eventual Orbit",
     "content": "**Equivalent formulation**: There exists a single sequence S : ℕ → ℕ such that every orbit of h eventually enters S. That is, for each n ≥ 1, there exists k₀ such that {h^k(n) : k ≥ k₀} ⊆ range(S).",
     "significance": "key",
     "mathContext": "This reformulation makes the 'tree-like' structure of orbits explicit. The orbits form a directed tree rooted at infinity: each positive integer has a unique successor h(n), and the conjecture says this tree has a single trunk that all branches eventually join. The sequence S is essentially the 'main trunk' — the orbit of 1 (or any other starting point, since they all supposedly merge). This is OEIS sequence **A064491**: 1, 2, 4, 7, 9, 12, 18, 24, 32, 38, 42, 50, 56, 64, 72, 84, 96, 108, 120, 144, ...",
-    "relatedConcepts": ["OEIS A064491", "directed tree structure", "absorbing trajectory"],
-    "prerequisites": ["erdos_414_conjecture"]
+    "relatedConcepts": [
+      "OEIS A064491",
+      "directed tree structure",
+      "absorbing trajectory"
+    ],
+    "prerequisites": [
+      "erdos_414_conjecture"
+    ]
   },
   {
     "id": "orbit-example",
     "proofId": "erdos-414",
-    "range": { "startLine": 80, "endLine": 83 },
+    "range": {
+      "startLine": 80,
+      "endLine": 83
+    },
     "type": "theorem",
     "title": "Orbit of 1",
     "content": "**Orbit of 1**: 1 → 2 → 4 → 7 → 9 → 12 → 18 → 24 → 32 → 38 → 42 → 50 → ... The orbit accelerates when hitting highly composite numbers (12 → 18 jumps by 6) and decelerates near primes (7 → 9 advances by just 2).",
     "significance": "supporting",
     "mathContext": "Computing hOrbit(1, k) for the first few steps: h(1) = 1 + τ(1) = 2, h(2) = 2 + τ(2) = 4, h(4) = 4 + τ(4) = 4 + 3 = 7, h(7) = 7 + τ(7) = 7 + 2 = 9, h(9) = 9 + τ(9) = 9 + 3 = 12, h(12) = 12 + τ(12) = 12 + 6 = 18. The step sizes {1, 2, 3, 2, 3, 6, 6, 8, 6, 4, 8, 6, 8, 8, 12, ...} reflect the divisor counts along the trajectory. This is OEIS A064491.",
-    "relatedConcepts": ["OEIS A064491", "divisor function values", "orbit computation"],
-    "prerequisites": ["h_one", "h_two"]
+    "relatedConcepts": [
+      "OEIS A064491",
+      "divisor function values",
+      "orbit computation"
+    ],
+    "prerequisites": [
+      "h_one",
+      "h_two"
+    ]
   },
   {
     "id": "merge-example",
     "proofId": "erdos-414",
-    "range": { "startLine": 87, "endLine": 88 },
+    "range": {
+      "startLine": 87,
+      "endLine": 88
+    },
     "type": "theorem",
     "title": "Orbits of 1 and 3 Merge at 7",
     "content": "**h³(1) = h²(3) = 7**: The orbit of 1 reaches 7 in 3 steps (1→2→4→7), while the orbit of 3 reaches 7 in 2 steps (3→5→7). After 7, both follow the same path: 7→9→12→18→24→...",
     "significance": "key",
     "mathContext": "This is the simplest non-trivial merge. The merge happens because h(5) = 5 + τ(5) = 5 + 2 = 7 and h(4) = 4 + τ(4) = 4 + 3 = 7, so different inputs (4 and 5) produce the same output. Such **collisions** h(a) = h(b) occur when a + τ(a) = b + τ(b), i.e., when b - a = τ(a) - τ(b). Since τ varies irregularly, these collisions are common but hard to predict. The merge time T(m, n) = min{i + j : h^i(m) = h^j(n)} is conjectured to grow slowly — experimentally, T(m, n) = O(log max(m,n)) for most pairs.",
-    "relatedConcepts": ["collision conditions for h", "merge time", "orbit tree structure"],
-    "prerequisites": ["orbit_1_start", "h_three"]
+    "relatedConcepts": [
+      "collision conditions for h",
+      "merge time",
+      "orbit tree structure"
+    ],
+    "prerequisites": [
+      "orbit_1_start",
+      "h_three"
+    ]
   },
   {
     "id": "average-divisor",
     "proofId": "erdos-414",
-    "range": { "startLine": 95, "endLine": 96 },
+    "range": {
+      "startLine": 95,
+      "endLine": 96
+    },
     "type": "axiom",
     "title": "Dirichlet's Average Order of τ",
     "content": "**Dirichlet (1849)**: Σ_{n≤N} τ(n) = N log N + (2γ - 1)N + O(√N), where γ ≈ 0.5772 is the Euler-Mascheroni constant. On average, τ(n) ≈ log n.",
     "significance": "key",
     "mathContext": "Dirichlet's **divisor problem** gives the average order of τ(n) as log n, with the error term being the famous **Dirichlet divisor problem**: what is the true order of the remainder Δ(N) = Σ_{n≤N} τ(n) - N log N - (2γ-1)N? It is known that Δ(N) = O(N^{131/416}) (Huxley, 2003) and Δ(N) = Ω(N^{1/4}). For the orbit merging problem, this average tells us that a 'typical' orbit step near N has size ≈ log N, so the orbit of n reaches value V ≈ n + k·log(V) after k steps. But the irregularity of τ around its average is precisely what makes proving exact collisions so difficult.",
-    "relatedConcepts": ["Dirichlet divisor problem", "Euler-Mascheroni constant", "hyperbola method"],
-    "prerequisites": ["divisor sum asymptotics"]
+    "relatedConcepts": [
+      "Dirichlet divisor problem",
+      "Euler-Mascheroni constant",
+      "hyperbola method"
+    ],
+    "prerequisites": [
+      "divisor sum asymptotics"
+    ]
   },
   {
     "id": "growth-analysis",
     "proofId": "erdos-414",
-    "range": { "startLine": 98, "endLine": 100 },
+    "range": {
+      "startLine": 98,
+      "endLine": 100
+    },
     "type": "theorem",
     "title": "Linear Lower Bound on Orbit Growth",
     "content": "**h^k(n) ≥ n + k** for all n ≥ 1. Each step adds at least τ(h^{k-1}(n)) ≥ 1, so after k steps the orbit has advanced by at least k. On average the growth is faster: h^k(n) ≈ n + k · log(n + k).",
     "significance": "supporting",
     "mathContext": "The linear lower bound is trivial (each step adds ≥ 1) but important: it shows orbits reach arbitrarily large values, so the 'probability' of collision at any given value decreases. The **heuristic argument** for merging is: near value V, the orbit of m has gaps of size ≈ log V between consecutive values, and similarly for the orbit of n. The 'probability' of missing all of the orbit-of-n values in an interval of length L is roughly (1 - 1/log V)^{L/log V} ≈ e^{-L/(log V)²}. Summing over V → ∞, the expected number of collisions diverges (since Σ 1/(log V)² diverges when summed over V), suggesting infinitely many collisions occur. Making this heuristic rigorous is the open problem.",
-    "relatedConcepts": ["orbit growth rate", "Borel-Cantelli heuristic", "collision probability"],
-    "prerequisites": ["h_strictly_increasing", "orbit_strictly_increasing"]
+    "relatedConcepts": [
+      "orbit growth rate",
+      "Borel-Cantelli heuristic",
+      "collision probability"
+    ],
+    "prerequisites": [
+      "h_strictly_increasing",
+      "orbit_strictly_increasing"
+    ]
   },
   {
     "id": "orbits-close",
     "proofId": "erdos-414",
-    "range": { "startLine": 105, "endLine": 109 },
+    "range": {
+      "startLine": 105,
+      "endLine": 109
+    },
     "type": "axiom",
     "title": "Orbits Get Arbitrarily Close",
     "content": "For any m, n ≥ 1 and any bound D, there exist i, j such that |h^i(m) - h^j(n)| < D. This weaker statement (proximity without exact collision) is plausible from average growth rates but also unproven.",
     "significance": "key",
     "mathContext": "This is a **weaker form** of the main conjecture: orbits get within distance D of each other for any D. Even this has not been rigorously proved! The difficulty is that while both orbits grow at average rate log V near value V, their actual positions depend on the cumulative effect of τ along each specific trajectory. Proving proximity requires showing that the 'drift' between two orbits — the difference in cumulative divisor counts — cannot grow without bound. This is related to the **equidistribution of orbits** modulo small numbers: if both orbits eventually hit every residue class (mod d) for each d, then they must eventually be within distance d of each other.",
-    "relatedConcepts": ["orbit proximity", "equidistribution mod d", "cumulative drift of τ"],
-    "prerequisites": ["orbit_linear_lower"]
+    "relatedConcepts": [
+      "orbit proximity",
+      "equidistribution mod d",
+      "cumulative drift of τ"
+    ],
+    "prerequisites": [
+      "orbit_linear_lower"
+    ]
   },
   {
     "id": "related-problems",
     "proofId": "erdos-414",
-    "range": { "startLine": 1, "endLine": 20 },
+    "range": {
+      "startLine": 1,
+      "endLine": 20
+    },
     "type": "insight",
     "title": "Related Erdős Problems: #412 and #413",
     "content": "Erdős-Graham posed three related problems: #412 (n + φ(n)), #413 (n - φ(n)), and #414 (n + τ(n)). The map n + φ(n) is also strictly increasing and conjectured to have merging orbits. The map n - φ(n) can decrease, creating a fundamentally different dynamic.",
     "significance": "supporting",
     "mathContext": "The three problems form a family studying iteration of simple arithmetic functions. **Problem #412** (n ↦ n + φ(n)): since φ(n) ≥ 1, this is also strictly increasing and the orbit merging conjecture applies. **Problem #413** (n ↦ n - φ(n)): for even n > 2, n - φ(n) < n, so orbits can decrease, and the dynamics include fixed points (n = 1) and potential cycles. The contrast between #414 (strictly increasing, conjectured single orbit) and #413 (can decrease, complex dynamics) illustrates how the monotonicity of h is crucial for the merging conjecture. Additionally, replacing τ with σ (sum of divisors) gives h(n) = n + σ(n), where σ(n) ≥ n + 1 for n ≥ 2, making steps much larger and merging even more plausible (but equally unproven).",
-    "relatedConcepts": ["Euler totient φ(n)", "sum of divisors σ(n)", "Erdős Problems #412 and #413", "Collatz-type dynamics"],
-    "prerequisites": ["Erdős-Graham [ErGr80]"]
+    "relatedConcepts": [
+      "Euler totient φ(n)",
+      "sum of divisors σ(n)",
+      "Erdős Problems #412 and #413",
+      "Collatz-type dynamics"
+    ],
+    "prerequisites": [
+      "Erdős-Graham [ErGr80]"
+    ]
   }
 ]
