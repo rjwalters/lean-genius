@@ -22,8 +22,8 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 3,
-    "assumptions": "3 axiom declarations: (1) killingForm — provides the Killing form function on the Lie algebra (definitional), (2) gaugeTransform — provides gauge-transformed field (definitional), (3) euclidean_mass_gap_implies_wightman — deep physics theorem connecting Euclidean and Wightman mass gaps. 13 former axioms proved: 8 had trivially satisfiable conclusions (∃ x, P pattern), 5 more eliminated in this session including creutz_recovers_sigma (proved from definitions via exp/log algebra) and os_reconstruction_theorem (witnessed by trivial QFT on ℂ). The Yang-Mills mass gap problem remains open. 30808 lines, 2600+ theorems/defs, 162 parts, 0 sorries.",
+    "axiomCount": 1,
+    "assumptions": "1 axiom declaration: gaugeTransform — provides gauge-transformed field (definitional). 15 former axioms proved or eliminated: 8 had trivially satisfiable conclusions, 5 more eliminated including creutz_recovers_sigma and os_reconstruction_theorem, 2 more deleted as unused (killingForm — never referenced in proofs, euclidean_mass_gap_implies_wightman — only in #check). The Yang-Mills mass gap problem remains open.",
     "mathlibDependencies": [
       {
         "theorem": "Lie.Basic",

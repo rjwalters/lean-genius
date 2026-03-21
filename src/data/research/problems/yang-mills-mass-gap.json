@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 5 more axioms (8→3). Proved: susy_to_pure_ym (trivial ∃ℝ>0), continuum_limit_gap_persistence (trivial ∃Prop), two_loop_continuum_limit (trivial ∃ℝ>0), os_reconstruction_theorem (constructed trivial WightmanQFT on ℂ), creutz_recovers_sigma (real math proof from exp/log definitions). 3 remain: killingForm, gaugeTransform (definitional), euclidean_mass_gap_implies_wightman (deep physics).",
+    "progressSummary": "PROGRESS: Deleted 2 unused axioms (3→1): killingForm (never used), euclidean_mass_gap_implies_wightman (only #check). Fixed 3 duplicate definition build errors from merge. Deleted duplicate Part CXXVIII Gross-Neveu section (190 lines).",
     "builtItems": [
       "Part C: OS Axioms - transfer matrix, Schwinger functions, spectral gap, Euclidean propagator (~30 theorems)",
       "Part CI: Resurgence - beta function, running coupling, renormalons, instanton factors, bions (~25 theorems)",
