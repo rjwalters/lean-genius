@@ -190,6 +190,23 @@
       "endLine": 2485
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "pythagorean-triples",
+      "relationship": "extends",
+      "description": "Extends the basic Pythagorean triples formalization by proving the asymptotic density of primitive triples"
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "depends-on",
+      "description": "Builds on the Pythagorean theorem a² + b² = c² as the defining equation for triples"
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "The coprime density factor 6/π² = 1/ζ(2) connects directly to the Basel problem ∑1/k² = π²/6"
+    }
+  ],
   "conclusion": {
     "summary": "A thorough formalization of the primitive Pythagorean triple density theorem, establishing $\\text{primitiveTripleCount}(N)/N \\to 1/(2\\pi)$ via a clean three-factor decomposition. The proof comprises 97 theorems, 7 axioms (encoding deep analytic number theory), and 0 sorries. The axioms isolate analytic content (Gauss circle problem, Möbius inversion, parity equidistribution, Landau two-squares counting) that would require sieve methods or complex analysis to prove formally.",
     "implications": "**Significance**\n\n1. **First mechanized proof**: This appears to be the first formal verification of the $N/(2\\pi)$ density result for primitive Pythagorean triples in any proof assistant.\n2. **Modular architecture**: The three-factor decomposition into geometry ($\\pi/8$), number theory ($6/\\pi^2$), and combinatorics ($2/3$) makes each component independently verifiable and replaceable.\n3. **Bijective technique**: The parity involution $(m,n) \\mapsto (m, m-n)$ is a general technique applicable to any coprime-parity counting problem, not just Pythagorean triples.\n4. **Computational confidence**: Verification of counting functions for $N = 0, 4, 5, 13, 25, 50, 100$ via native_decide confirms the formalized definitions match the intended mathematical objects.\n5. **Connection to $\\zeta(2)$**: The coprime density factor $6/\\pi^2 = 1/\\zeta(2)$ links this result to the Basel problem, demonstrating how the Riemann zeta function controls the distribution of coprime pairs.",
