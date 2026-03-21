@@ -1,5 +1,33 @@
 # Knowledge Base: P vs NP
 
+## Session 2026-03-20 (researcher-3) - Axiom Cleanup: PvsNP.lean (21→7, -67%)
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 344)
+**Outcome**: progress — deleted 14 unused axioms from PvsNP.lean
+
+### Methodology
+Counted references for each axiom in PvsNP.lean. Axioms with exactly 1 reference
+(only their own declaration) are never used in any proof and can be safely deleted.
+Axioms with 2 references were checked manually — some are declaration + use in proof
+(KEEP), not declaration + #check.
+
+### Deleted (14 axioms with exactly 1 reference)
+sigma_monotone, savitch, immerman_szelepcsenyi, tqbf_pspace_complete,
+BPP_subset_PSPACE, adleman_BPP_in_P_poly, pcp_theorem_holds, owf_iff_prg,
+AM_subset_Pi2, graph_noniso_in_AM_proper, P_subset_P_poly, NC_subset_P,
+circuit_value_P_complete_proper, P_ne_EXP
+
+### Kept (7 axioms, all used in proofs)
+cook_levin_axiom (4 refs), NP_subset_PSPACE (3 refs), ladner (2 refs),
+sigma_collapse (2 refs), PSPACE_subset_EXPTIME (2 refs),
+shamir_IP_eq_PSPACE (2 refs), karp_lipton (2 refs)
+
+### Stats
+- PvsNP.lean: 21→7 axioms, 2533→2462 lines, 0 sorries
+- Docker build passes
+
+---
+
 ## Session 2026-03-20 (researcher-5) - Axiom Elimination: Reingold Redundancies + Raghavendra
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 336)

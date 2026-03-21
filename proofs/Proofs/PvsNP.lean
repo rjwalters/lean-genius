@@ -1181,9 +1181,6 @@ theorem P_subset_PH : P ⊆ PH := by
   intro problem hp
   exact ⟨0, hp⟩
 
-/-- The hierarchy is monotone: Σₖ ⊆ Σₖ₊₁ -/
-axiom sigma_monotone : ∀ k, Sigma k ⊆ Sigma (k + 1)
-
 /-- When P = NP, each level of the hierarchy collapses: Σₖ₊₁ ⊆ P.
     The oracle in Σₖ₊₁ is in Σₖ = P (by IH), so it adds no power.
     The NP verification over a P oracle is still NP = P. -/
@@ -1252,14 +1249,6 @@ theorem some_containment_strict :
     P ⊆ NP ∧ NP ⊆ PSPACE ∧ PSPACE ⊆ EXPTIME := by
   exact ⟨P_subset_NP, NP_subset_PSPACE, PSPACE_subset_EXPTIME⟩
 
-/-- Savitch's theorem: NSPACE(S) ⊆ DSPACE(S²) for S ≥ log n.
-    In particular, NL ⊆ L² (deterministic log²-space). -/
-axiom savitch : NL ⊆ LOGSPACE
-
-/-- Immerman-Szelepcsényi theorem: NL = coNL.
-    Nondeterministic log-space is closed under complement. -/
-axiom immerman_szelepcsenyi : NL = { problem | (fun n => !problem n) ∈ NL }
-
 /-- PSPACE-complete problems exist (e.g., TQBF).
     A problem is PSPACE-complete if it's in PSPACE and every PSPACE
     problem reduces to it in polynomial time. -/
@@ -1268,9 +1257,6 @@ def PSPACEComplete (problem : DecisionProblem) : Prop :=
 
 /-- TQBF (True Quantified Boolean Formulas) — abstract representative -/
 def TQBF : DecisionProblem := fun _ => true
-
-/-- TQBF is PSPACE-complete -/
-axiom tqbf_pspace_complete : PSPACEComplete TQBF
 
 /-- If any PSPACE-complete problem is in P, then P = PSPACE -/
 theorem pspace_complete_in_P_collapses (problem : DecisionProblem)
@@ -1353,16 +1339,6 @@ theorem P_subset_ZPP : P ⊆ ZPP := by
         simp only [Bool.not_eq_false] at hf
         rw [this, hf]⟩
 
-/-- BPP ⊆ PSPACE: randomized computation can be derandomized in polynomial space
-    by iterating over all random strings. -/
-axiom BPP_subset_PSPACE : BPP ⊆ PSPACE
-
-/-- **Adleman's Theorem** (1978): BPP ⊆ P/poly.
-    Every randomized polynomial-time algorithm can be simulated by
-    polynomial-size circuits (with non-uniform advice).
-    This is evidence that BPP might equal P. -/
-axiom adleman_BPP_in_P_poly : BPP ⊆ P_poly
-
 /-- Impagliazzo-Wigderson: If E = DTIME(2^{O(n)}) requires 2^{Ω(n)}-size
     circuits, then P = BPP. Strong evidence for the conjecture P = BPP. -/
 theorem impagliazzo_wigderson_derandomization :
@@ -1419,15 +1395,6 @@ theorem PTAS_subset_APX : PTAS ⊆ APX := by
 theorem P_eq_NP_trivializes_approximation (h : P = NP) :
     (1 : ℕ) + 1 = 2 := rfl  -- Stated abstractly
 
-/-- **PCP Theorem** (Arora-Lund-Motwani-Sudan-Szegedy 1998):
-    NP = PCP[O(log n), O(1)]. Every NP statement has a probabilistically
-    checkable proof verifiable by reading O(1) random bits and O(1) proof bits.
-    Equivalent to: approximating MAX-3SAT within some constant factor is NP-hard.
-    NOTE: Full PCPTheorem structure is defined in Part 35.
-    Axiomatized here as abstract statement. -/
-axiom pcp_theorem_holds : ∃ (q : ℕ), q ≤ 3 ∧ q > 0
-  -- PCP: NP proofs checkable with O(1) query bits (3 suffice for MAX-3SAT)
-
 /-- Unique Games Conjecture (Khot 2002): it is NP-hard to distinguish
     whether a unique 2-prover 1-round game has value ≥ 1-ε or ≤ ε.
     If true, implies optimal inapproximability for many problems. -/
@@ -1467,11 +1434,6 @@ def PseudorandomGenerator (g : Nat → Nat) (stretch : Nat) : Prop :=
   -- g maps n bits to n + stretch bits in polynomial time
   -- No polynomial-time distinguisher can tell g's output from random
   True  -- Abstract
-
-/-- OWF ↔ PRG: one-way functions exist iff pseudorandom generators exist.
-    (Håstad-Impagliazzo-Levin-Luby 1999) -/
-axiom owf_iff_prg : (∃ f, OneWayFunction f) ↔
-  (∃ g, PseudorandomGenerator g 1)
 
 /-- OWF → Secure Encryption: one-way functions imply semantic security.
     (Goldreich-Goldwasser-Micali 1986) -/
@@ -1530,22 +1492,12 @@ def AM : Set DecisionProblem := { problem |
     True  -- Public-coin 2-round protocol
 }
 
-/-- MA ⊆ AM ⊆ Π₂ᵖ: Arthur-Merlin hierarchy placement -/
-axiom AM_subset_Pi2 : AM ⊆ Pi 2
-
 /-- NP ⊆ AM: NP proofs are trivially Arthur-Merlin proofs
     (Merlin sends the witness, Arthur verifies deterministically) -/
 theorem NP_subset_IP : NP ⊆ IP := by
   intro problem hnp
   rw [shamir_IP_eq_PSPACE]
   exact NP_subset_PSPACE hnp
-
-/-- **Graph Non-Isomorphism ∈ AM** (Goldwasser-Sipser 1986):
-    Two non-isomorphic graphs can be distinguished by an Arthur-Merlin protocol.
-    This is one of the celebrated results of interactive proofs:
-    the verifier can check that two graphs are NOT isomorphic
-    without receiving an explicit proof of non-isomorphism. -/
-axiom graph_noniso_in_AM_proper : ∃ problem ∈ AM, problem ∉ NP
 
 -- ============================================================
 -- PART 24: Circuit Complexity and P/poly
@@ -1563,9 +1515,6 @@ def P_poly : Set DecisionProblem := { problem |
   ∀ n, ∃ (circuit : BooleanCircuit),
     circuit.inputs = n ∧ circuit.size ≤ n ^ 2 + n  -- polynomial size
 }
-
-/-- P ⊆ P/poly: uniform algorithms give nonuniform circuits -/
-axiom P_subset_P_poly : P ⊆ P_poly
 
 /-- Karp-Lipton: if NP ⊆ P/poly, then PH collapses to Σ₂ᵖ.
     This means if SAT has polynomial-size circuits, the polynomial
@@ -1586,15 +1535,6 @@ def NC : Set DecisionProblem := { problem |
     circuit.size ≤ n ^ 2 + n                  -- polynomial size
 }
 
-/-- NC ⊆ P: parallel algorithms are polynomial-time -/
-axiom NC_subset_P : NC ⊆ P
-
-/-- **Circuit Value Problem is P-complete** (Ladner 1975):
-    CVP is in P and every P problem reduces to it under log-space reductions.
-    P-complete problems are the "hardest to parallelize":
-    if any P-complete problem is in NC, then P = NC. -/
-axiom circuit_value_P_complete_proper : ∃ problem, inP problem ∧ (P ⊆ NC → problem ∈ NC → P = NC)
-
 -- ============================================================
 -- PART 25: Time and Space Hierarchy Theorems
 -- ============================================================
@@ -1613,17 +1553,6 @@ theorem time_hierarchy :
     -- DTIME(f(n)) ⊊ DTIME(f(n)²·log f(n)) for constructible f
     -- In particular: P ⊊ EXP
     (1 : ℕ) + 1 = 2 := rfl
-
-/-- P ⊊ EXP: there exist problems in EXP \ P.
-
-    Why this doesn't resolve P vs NP:
-    - We know P ⊆ NP ⊆ PSPACE ⊆ EXP
-    - At least ONE of P≠NP, NP≠PSPACE, PSPACE≠EXP must hold
-    - We just can't tell which one(s)
-
-    Stated as axiom since our abstract model doesn't carry the
-    computational semantics for the time hierarchy proof. -/
-axiom P_ne_EXP : P ≠ EXP
 
 /-- Space Hierarchy Theorem.
     DSPACE(f(n)) ⊊ DSPACE(f(n) · log f(n)).
