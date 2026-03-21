@@ -609,7 +609,7 @@ Tate Conjecture. They concern:
 2. Chow groups and motives
 3. Weil cohomology theories
 This is a major undertaking beyond current Mathlib scope. -/
-axiom StandardConjectures : Prop
+opaque StandardConjectures : Prop
 
 /-- **Axiom: Standard Conjectures Imply Hodge**
 
@@ -640,7 +640,7 @@ should equal the ℓ-adic monodromy group (from Galois representations).
 1. Definition of Mumford-Tate groups
 2. Étale cohomology and Galois representations
 3. Comparison theorems between Betti and étale cohomology -/
-axiom MumfordTateConjecture : Prop
+opaque MumfordTateConjecture : Prop
 
 /-- **Axiom: Hodge Implies Mumford-Tate**
 
@@ -967,7 +967,7 @@ is a ℚ_ℓ-linear combination of algebraic cycle classes.
 
 **Why an axiom?** Requires étale cohomology, Galois representations,
 and ℓ-adic analysis, none of which are in Mathlib. -/
-axiom TateConjecture : Prop
+opaque TateConjecture : Prop
 
 /-- **Axiom: Hodge-Tate Equivalence for Abelian Varieties**
 
@@ -1014,7 +1014,7 @@ on subvarieties of codimension ≥ p.
 **Why an axiom?** Requires the full theory of sub-Hodge structures,
 the Hodge filtration on cohomology, and the Gysin pushforward maps
 for algebraic correspondences. -/
-axiom GeneralizedHodgeConjecture : Prop
+opaque GeneralizedHodgeConjecture : Prop
 
 /-- **Axiom: GHC implies HC**
 
@@ -4596,7 +4596,7 @@ Equivalently: the inverse of L^k on the image is algebraic.
 
 This is the strongest of the standard conjectures and implies (C) and (D).
 Known for: abelian varieties (Lieberman 1968), K3 surfaces, Grassmannians. -/
-axiom LefschetzStandardConjecture : Prop
+opaque LefschetzStandardConjecture : Prop
 
 /-- **Conjecture C (Künneth Standard Conjecture)**
 
@@ -4607,7 +4607,7 @@ This is equivalent to saying that the identity correspondence
 decomposes as Σₖ πₖ where each πₖ is algebraic.
 
 Known for: curves, surfaces, abelian varieties. -/
-axiom KuennethStandardConjecture : Prop
+opaque KuennethStandardConjecture : Prop
 
 /-- **Conjecture D (Hodge Standard Conjecture / Positivity)**
 
@@ -4620,7 +4620,7 @@ This is equivalent to the statement that numerical and homological
 equivalence coincide for algebraic cycles.
 
 Known for: characteristic 0 (follows from Hodge theory!). Open in char p. -/
-axiom HodgeStandardConjecture : Prop
+opaque HodgeStandardConjecture : Prop
 
 /-- **Implication: (B) ⟹ (C)**
 
@@ -7776,7 +7776,7 @@ theorem todd_class_exists (X : ProjectiveVariety) :
 /-- The Euler characteristic χ(X, E) = Σ_{i=0}^{dim X} (-1)^i dim H^i(X, E).
     This alternating sum of cohomology dimensions is a fundamental invariant
     computed by the Hirzebruch-Riemann-Roch theorem. -/
-axiom eulerChar (X : ProjectiveVariety) (E : AlgVectorBundle X) : ℤ
+opaque eulerChar (X : ProjectiveVariety) (E : AlgVectorBundle X) : ℤ
 
 /-- Direct sum of algebraic vector bundles. -/
 def directSumBundle (X : ProjectiveVariety) (E F : AlgVectorBundle X) :
