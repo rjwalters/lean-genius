@@ -68,7 +68,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erdős, Szüsz, and Turán posed this problem in 1958, proving the explicit formula f(A,c) = 12A log(c)/π² in a specific regime. Kesten and Sós (1966) proved the limit always exists. Boca (2008) and Xiong-Zaharescu (2006) provided alternative explicit proofs using Farey fractions and continued fractions respectively.",
+    "historicalContext": "This problem originates in a 1958 paper by Erdős, Szüsz, and Turán, who studied the metric theory of Diophantine approximation — specifically, what fraction of real numbers $\\alpha \\in (0,1)$ can be well-approximated by rationals whose denominators lie in a prescribed range $[N, cN]$. They proved the explicit formula $f(A,c) = 12A\\log(c)/\\pi^2$ in a specific parameter regime, revealing a striking connection to the density of coprime pairs via Euler's formula $\\sum_{n=1}^\\infty 1/n^2 = \\pi^2/6$. The key advance came in 1966 when Harry Kesten and Vera T. Sós proved that the limit $\\lim_{N \\to \\infty} S(N,A,c)$ exists for all valid parameters, using ergodic-theoretic methods — a significant generalization since no explicit formula was needed. Later, Florin Boca (2008) gave an independent proof using the geometry of Farey fractions and their spacing statistics, while Xiong and Zaharescu (2006) provided yet another proof via continued fraction expansions. The problem illustrates a central theme in metric number theory: how measure-theoretic properties of approximation sets encode deep arithmetic structure.",
     "problemStatement": "Let S(N,A,c) be the measure of α ∈ (0,1) such that |α - x/y| < A/y² for some N ≤ y ≤ cN with gcd(x,y) = 1. Does lim_{N→∞} S(N,A,c) = f(A,c) exist? What is its explicit form?",
     "proofStrategy": "We formalize the approximation set, measure S(N,A,c), the limiting function f(A,c), and the key results: EST explicit formula, Kesten-Sós existence, and the connection to Farey fractions explaining the π² denominator.",
     "keyInsights": [
@@ -152,5 +152,32 @@
       "What is the rate of convergence of S(N,A,c) to f(A,c)?",
       "How does the result extend to higher dimensions?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "prime-reciprocal-divergence",
+      "relationship": "related",
+      "description": "Both concern the distribution and density of number-theoretic objects; the divergence of prime reciprocals relates to the Euler product that produces the π² constant"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "related",
+      "description": "The density of coprime pairs (6/π²) underlying the EST formula depends on the distribution of primes via Euler's product formula"
+    },
+    {
+      "targetId": "lebesgue-measure",
+      "relationship": "uses",
+      "description": "S(N,A,c) is defined as the Lebesgue measure of the approximation set, using MeasureTheory.volume"
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "The Basel problem's result ζ(2) = π²/6 directly explains the π² in the EST formula f(A,c) = 12A log(c)/π² via coprime pair density 6/π²"
+    },
+    {
+      "targetId": "hurwitz-theorem",
+      "relationship": "related",
+      "description": "Hurwitz's theorem gives the optimal constant 1/√5 for Diophantine approximation quality, providing context for the approximability threshold A/y² used here"
+    }
+  ]
 }

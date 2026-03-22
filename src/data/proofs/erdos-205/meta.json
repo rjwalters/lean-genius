@@ -132,5 +132,22 @@
       "What is the optimal growth rate f(n) such that all large n have representation with Ω(m) < f(n)?",
       "Can the density of exceptional n be quantified?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-16",
+      "relationship": "related",
+      "description": "Both concern representations n = 2^k + m with restrictions on m: #16 asks for m prime (de Polignac), #205 asks for Ω(m) < log log m"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "uses",
+      "description": "The Hardy-Ramanujan theorem and Erdős-Kac theorem used in the analysis build on the prime number theorem"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "uses",
+      "description": "The covering system construction relies on infinitely many primes to build congruence covers"
+    }
+  ]
 }

@@ -85,9 +85,8 @@ def gaussianTriplet (μ σ_sq : ℝ) (hσ : 0 ≤ σ_sq) : LevyTriplet where
 /-- Gaussian exponent at t = 0 gives 0. -/
 theorem gaussianExponent_zero (μ σ_sq : ℝ) :
     gaussianExponent μ σ_sq 0 = 0 := by
-  -- μ*0 = 0 and σ_sq*0²/2 = 0, so ofReal(0)*I - ofReal(0) = 0
   unfold gaussianExponent
-  sorry
+  simp
 
 /-- Gaussian exponent is continuous. -/
 theorem gaussianExponent_continuous (μ σ_sq : ℝ) :
@@ -192,6 +191,11 @@ theorem stable_scaling (α c : ℝ) (n : ℕ) (hn : 0 < n) (hα : 0 < α) (_hc :
   -- Key identity: n · c|t/n^{1/α}|^α = c|t|^α
   -- Uses: |t/n^{1/α}|^α = |t|^α / (n^{1/α})^α = |t|^α / n
   unfold stableExponent
+  -- Goal: (n : ℂ) * -(↑(c * |t / n^(1/α)|^α)) = -(↑(c * |t|^α))
+  push_cast
+  ring_nf
+  -- After ring_nf: need to show the rpow identity
+  -- |t / n^(1/α)|^α = |t|^α * n⁻¹ (so n * that = |t|^α)
   sorry
 
 /-- α-stable distributions are infinitely divisible.

@@ -73,17 +73,40 @@
       }
     ],
     "dateAdded": "03/21/26",
-    "axiomCount": 0
+    "axiomCount": 0,
+    "crossReferences": [
+      {
+        "proofId": "cauchy-schwarz",
+        "relationship": "extends",
+        "description": "The base Cauchy-Schwarz inequality; this file characterizes when equality holds"
+      },
+      {
+        "proofId": "cauchy-schwarz-oq-01",
+        "relationship": "answers",
+        "description": "Parent open question asking whether CS equality extends to complex inner product spaces"
+      },
+      {
+        "proofId": "cauchy-schwarz-oq-03",
+        "relationship": "related",
+        "description": "Hölder's inequality as a generalization of CS; analogous equality conditions exist"
+      },
+      {
+        "proofId": "cauchy-schwarz-integral",
+        "relationship": "related",
+        "description": "Integral form of CS; the equality condition (f = cg a.e.) is the continuous analogue"
+      }
+    ]
   },
   "overview": {
-    "historicalContext": "**When Does Equality Hold in Cauchy-Schwarz?**\n\nThe Cauchy-Schwarz inequality ‖⟪u,v⟫‖ ≤ ‖u‖·‖v‖ is one of the most fundamental results in analysis. The natural follow-up question is: *when does equality hold?*\n\nFor real inner product spaces, the answer is classical: equality holds iff the vectors are proportional (u = cv for some real c). The parent file CauchySchwarzOQ01.lean posed the open question: can this be extended to complex inner product spaces?\n\nThe answer is **YES**, with the natural generalization that c can be any complex scalar. The proof uses orthogonal decomposition: project u onto v, and show that equality forces the residual to vanish.",
+    "historicalContext": "**When Does Equality Hold in Cauchy-Schwarz?**\n\nThe Cauchy-Schwarz inequality has a remarkable history spanning three independent discoveries. Augustin-Louis Cauchy proved the finite sum version in his 1821 *Cours d'Analyse*: $(\\sum a_i b_i)^2 \\leq (\\sum a_i^2)(\\sum b_i^2)$. Viktor Bunyakovsky extended it to integrals in 1859, and Hermann Amandus Schwarz independently proved the integral version in 1885 while studying minimal surfaces.\n\nThe equality condition — that equality holds if and only if the vectors are linearly dependent — was understood from the beginning for finite-dimensional real spaces, where it amounts to the geometric statement that the angle between two vectors is 0 or π. For complex inner product spaces, the characterization requires allowing the proportionality constant to be complex ($u = cv$ with $c \\in \\mathbb{C}$), reflecting the richer scalar structure.\n\nThe proof technique here — orthogonal projection followed by the Pythagorean theorem — is due to Schwarz himself and predates the Gram-Schmidt process (1907). The projection coefficient $c = \\langle v,u\\rangle/\\langle v,v\\rangle$ is the best approximation of $u$ in the span of $v$, connecting CS equality to approximation theory and least squares. In quantum mechanics, this characterization identifies when two state vectors represent the same physical state (up to global phase $e^{i\\theta}$), a foundational concept in the theory of projective Hilbert spaces.",
     "problemStatement": "**Cauchy-Schwarz Equality (Complex)**\n\nFor vectors u, v in a complex inner product space H with v ≠ 0:\n$$\\|\\langle u, v \\rangle_{\\mathbb{C}}\\| = \\|u\\| \\cdot \\|v\\| \\quad\\iff\\quad \\exists\\, c \\in \\mathbb{C} :\\ u = c \\cdot v$$\n\nThe scalar c is explicitly given by the projection coefficient c = ⟪v,u⟫/⟪v,v⟫.",
     "proofStrategy": "**Proof via Orthogonal Decomposition**\n\nThe key idea is to decompose u into a component along v and an orthogonal residual:\n\n1. **Define** c = ⟪v,u⟫/⟪v,v⟫ (projection coefficient)\n2. **Show** ⟪u − c·v, v⟫ = 0 (residual is orthogonal to v)\n3. **Pythagoras** gives ‖u‖² = ‖u−c·v‖² + ‖c·v‖²\n4. **Compute** ‖⟪u,v⟫‖ = ‖c‖·‖v‖² from the decomposition\n5. **Equality** forces ‖u−c·v‖ = 0, hence u = c·v\n\nThe backward direction is a direct computation using inner_smul_left.",
     "keyInsights": [
       "**Orthogonal decomposition works over any RCLike field**: The projection coefficient c = ⟪v,u⟫/⟪v,v⟫ and the orthogonality proof use only sesquilinearity and field_simp, not any ℝ-specific properties.",
       "**Conjugate symmetry is essential**: The proof that star(⟪v,u⟫/⟪v,v⟫) simplifies correctly relies on inner_conj_symm and the fact that ⟪v,v⟫ is self-conjugate (it equals the real number ‖v‖²).",
       "**The equality condition generalizes uniformly**: The same proof works for ℝ, ℂ, and any RCLike field. No case split on the scalar field is needed.",
-      "**Pythagoras + norm manipulation**: The forward direction reduces to showing a sum of non-negative reals equals zero, which forces each summand to zero. This is the key algebraic step."
+      "**Pythagoras + norm manipulation**: The forward direction reduces to showing a sum of non-negative reals equals zero, which forces each summand to zero. This is the key algebraic step.",
+      "**Connection to quantum mechanics**: In projective Hilbert spaces, CS equality precisely identifies when two state vectors are physically equivalent — proportional vectors with $|c| = 1$ represent the same quantum state (global phase invariance)."
     ]
   },
   "sections": [
