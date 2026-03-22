@@ -92,9 +92,16 @@
         "year": "1997",
         "venue": "Addison-Wesley",
         "note": "Section 4.5.2: Modern treatment of the extended Euclidean algorithm with complexity analysis"
+      },
+      {
+        "authors": "Aryabhata",
+        "title": "Aryabhatiya, Ganitapada",
+        "year": "499",
+        "venue": "Classical Indian mathematics",
+        "note": "The kuṭṭaka (pulverizer) algorithm for linear Diophantine equations, independently equivalent to the extended Euclidean algorithm"
       }
     ],
-    "dateAdded": "2026-03-06",
+    "dateAdded": "03/06/26",
     "axiomCount": 0,
     "prerequisites": [
       "The Euclidean algorithm and GCD computation",
@@ -106,7 +113,7 @@
   },
   "overview": {
     "summary": "Combines the extended Euclidean algorithm with Bézout's identity to construct an explicit divisibility algorithm: given coprime a, b and a proof that a divides b*c, compute the quotient q = c/a. The core formula q = u*c + v*k (where u*a + v*b = 1 and b*c = a*k) works in any commutative ring, and is instantiated over ℕ/ℤ via the extended GCD.",
-    "historicalContext": "The **extended Euclidean algorithm** dates to Euclid's *Elements* (~300 BCE) and was refined by Bachet de Méziriac (1624). It computes not only gcd(a,b) but also integers u,v satisfying u*a + v*b = gcd(a,b) — the **Bézout coefficients**.\n\nWhile Euclid's lemma (if a coprime to b divides b*c, then a divides c) is classical, its **constructive content** — actually computing the quotient — is often overlooked. This formalization makes the construction explicit: given Bézout coefficients and a divisibility witness, the quotient is extracted by a simple algebraic formula.\n\nThe key insight is that the proof of Euclid's lemma already contains the algorithm: if u*a + v*b = 1 and b*c = a*k, then c = a*(u*c + v*k). This is not just an existence proof — it's a computable recipe.",
+    "historicalContext": "The **extended Euclidean algorithm** has roots in Euclid's *Elements* (~300 BCE, Book VII, Propositions 1-2), where the alternating subtraction method computes GCDs. The extension to computing Bézout coefficients was first published by **Bachet de Méziriac** in *Problèmes plaisants et délectables* (1624), well before Bézout's own treatise (1779). The Indian mathematician **Aryabhata** (5th century CE) independently described a similar algorithm (*kuṭṭaka*) for solving linear Diophantine equations.\n\nThe algorithm has O(log min(a,b)) bit complexity, making it one of the oldest known efficient algorithms. Knuth (1997) gives a thorough modern treatment, and the algorithm is foundational in computational number theory: it underlies RSA key generation (computing modular inverses), the Chinese Remainder Theorem, and continued fraction expansions.\n\nWhile Euclid's lemma (if gcd(a,b) = 1 and a | bc, then a | c, Elements VII.30) is classical, its **constructive content** — actually computing the quotient c/a — is often overlooked in standard treatments. This formalization makes the construction explicit: given Bézout coefficients u, v and a divisibility witness k, the quotient q = uc + vk is extracted by a simple algebraic formula valid in any commutative ring.",
     "problemStatement": "**Open Question (bezout-identity-oq-02-oq-02-oq-01)**: Can the Bézout coefficients from the extended Euclidean algorithm be combined with Euclid's lemma to give a constructive, computable divisibility algorithm — producing explicit quotient witnesses?\n\n**Answer**: YES — the formula q = u*c + v*k (where u*a + v*b = 1 and b*c = a*k) is verified in any CommRing, then instantiated over ℕ/ℤ via the extended Euclidean algorithm.",
     "proofStrategy": "The proof proceeds in three layers:\n\n**Layer 1 — Extended Euclidean Algorithm**: Define `extGcd` recursively with termination via `Nat.mod_lt`. Prove correctness: (a) it returns gcd(a,b) via `extGcd_gcd`, and (b) the Bézout identity a*x + b*y = gcd(a,b) via `extGcd_bezout` using `linear_combination`.\n\n**Layer 2 — Quotient Formula**: In any CommRing, prove `a*(u*c + v*k) = c` from `u*a + v*b = 1` and `b*c = a*k` via a calc chain: expand by ring, substitute a*k = b*c, factor out c, apply Bézout.\n\n**Layer 3 — Assembly**: Combine extGcd (providing u,v) with the quotient formula (providing correctness) to define `constructive_div` and prove `a * constructive_div(...) = c`.",
     "keyInsights": [
@@ -220,6 +227,11 @@
       "targetId": "infinitude-primes",
       "relationship": "related",
       "description": "Euclid's lemma (proved constructively here) is a key ingredient in many proofs about prime distribution and factorization"
+    },
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "related",
+      "description": "Fermat's two-squares theorem uses coprimality and descent arguments closely related to the Bézout-based divisibility machinery formalized here"
     }
   ]
 }
