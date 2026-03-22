@@ -12,6 +12,18 @@
     "prerequisites": ["Lean 4 basics", "Mathlib imports"]
   },
   {
+    "id": "cs-docstring-setup",
+    "proofId": "cauchy-schwarz",
+    "type": "context",
+    "range": { "startLine": 6, "endLine": 60 },
+    "title": "Module Docstring, Namespace, and Part I Header",
+    "content": "The module docstring (lines 6–47) covers the two forms of Cauchy-Schwarz: the abstract inner product form $|\\langle u,v\\rangle| \\leq \\|u\\|\\|v\\|$ and the finite sum form $(\\sum a_ib_i)^2 \\leq (\\sum a_i^2)(\\sum b_i^2)$. It outlines the formalization strategy (abstract via Mathlib, finite sums via EuclideanSpace embedding, two-variable via Lagrange identity) and lists Mathlib dependencies.\n\nThe historical note credits all three discoverers — Cauchy (1821, discrete), Bunyakovsky (1859, integral), Schwarz (1888, integral) — and identifies the inequality as Wiedijk #78.\n\nThe `CauchySchwarz` namespace opens at line 49, and the Part I section header 'Inner Product Space Form' begins at line 51, framing the first theorem.",
+    "mathContext": "The file proves four forms: (1) $|\\langle u,v\\rangle| \\leq \\|u\\|\\|v\\|$ (abstract), (2) $\\langle u,v\\rangle^2 \\leq \\langle u,u\\rangle\\langle v,v\\rangle$ (squared), (3) $(a_1b_1+a_2b_2)^2 \\leq (a_1^2+a_2^2)(b_1^2+b_2^2)$ (two-variable), (4) $(\\sum a_ib_i)^2 \\leq (\\sum a_i^2)(\\sum b_i^2)$ (finite sum).",
+    "significance": "supporting",
+    "relatedConcepts": ["proof architecture", "Wiedijk 100 theorems", "historical attribution"],
+    "prerequisites": ["inner product spaces", "norms", "finite sums"]
+  },
+  {
     "id": "cs-inner-product",
     "proofId": "cauchy-schwarz",
     "type": "theorem",
@@ -130,5 +142,17 @@
     "significance": "key",
     "relatedConcepts": ["correlation coefficient", "covariance", "div_le_one", "statistics"],
     "prerequisites": ["cauchy_schwarz_inner", "norm_pos_iff"]
+  },
+  {
+    "id": "cs-check-epilogue",
+    "proofId": "cauchy-schwarz",
+    "type": "context",
+    "range": { "startLine": 226, "endLine": 231 },
+    "title": "Type-Check Summary and Namespace Close",
+    "content": "Four `#check` commands verify the signatures of the main theorems: `cauchy_schwarz_inner` (abstract inner product form), `cauchy_schwarz_two` (two-variable Lagrange identity form), `cauchy_schwarz_sum` (finite sum form), and `cauchy_schwarz_eq_iff_parallel` (equality characterization). This serves as a quick-reference API for downstream users.\n\nThe namespace `CauchySchwarz` closes at line 231.",
+    "mathContext": "The four checked theorems span the abstraction hierarchy: abstract (any inner product space) → finite-dimensional ($\\mathbb{R}^n$) → two-variable ($\\mathbb{R}^2$), with the equality characterization cutting across all levels.",
+    "significance": "supporting",
+    "relatedConcepts": ["API design", "#check command", "namespace scoping"],
+    "prerequisites": ["Lean 4 #check"]
   }
 ]
