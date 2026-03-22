@@ -164,9 +164,21 @@
       "targetId": "birthday-problem",
       "relationship": "related",
       "description": "Both are classic probability results with elegant formulas. The ballot problem's (p-q)/(p+q) and the birthday paradox's threshold at √(365) both demonstrate how probability defies naive intuition."
+    },
+    {
+      "targetId": "ballot-problem",
+      "relationship": "extends",
+      "description": "The classical discrete ballot problem (Bertrand 1887) — this file extends it to continuous time via Brownian motion, replacing discrete vote counts with a continuous diffusion process"
+    },
+    {
+      "targetId": "ballot-problem-oq-01",
+      "relationship": "extends",
+      "description": "The generalized k-fold ballot problem — this file provides the continuous analog via the reflection principle for Brownian motion, recovering the same probabilities in the scaling limit"
     }
   ],
   "relatedProofs": [
+    "ballot-problem",
+    "ballot-problem-oq-01",
     "ballot-problem-oq-01-oq-01",
     "birthday-problem"
   ],
