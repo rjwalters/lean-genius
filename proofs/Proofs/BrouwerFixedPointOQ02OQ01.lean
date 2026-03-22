@@ -289,146 +289,40 @@ private lemma no_door_hypotenuse {n : ℕ} (hn : 0 < n) (c : Coloring n)
   · exact hhyp ⟨i, j, by omega⟩ hsum1 hi hj h0
   · exact hhyp ⟨i - 1, j + 1, by omega⟩ hsum2 (by omega) (by omega) h0
 
--- ============================================================
--- SECTION IV-b: Row-Sweep Parity Argument for Sperner's Lemma
--- ============================================================
---
--- Strategy: Define horizontal {0,1}-door transitions hTrans(j) at each row j.
--- - hTrans(0) = bottomTransitions (odd, by bottom_transitions_odd)
--- - hTrans(n) = 0 (no edges at top row)
--- - If no FC triangle exists, hTrans(j) = hTrans(j+1) (mod 2) for all j
--- This gives odd = 0 (mod 2), contradiction, so FC triangle exists.
---
--- The strip parity proof uses door-counting in each horizontal strip:
---   Each non-FC triangle has 0 or 2 {0,1}-doors (even).
---   Each internal edge is shared by 2 triangles (cancels mod 2).
---   Boundary edges: bottom (hTrans j), top (hTrans (j+1)),
---   left (no door by Sperner), hypotenuse (no door by Sperner).
---   So hTrans(j) + hTrans(j+1) is even.
+/-- Helper: count {0,1}-doors among 3 abstract colors.
+    An edge (a,b) is a door if {a,b} = {0,1}.
+    Returns the count of doors among the 3 edges (01), (02), (12). -/
+private def abstractDoorCount (a b c : Fin 3) : ℕ :=
+  (if (a = 0 ∧ b = 1) ∨ (a = 1 ∧ b = 0) then 1 else 0) +
+  (if (a = 0 ∧ c = 1) ∨ (a = 1 ∧ c = 0) then 1 else 0) +
+  (if (b = 0 ∧ c = 1) ∨ (b = 1 ∧ c = 0) then 1 else 0)
 
--- Extended coloring: returns 0 for coordinates outside the grid
-private def gColor {n : ℕ} (c : Coloring n) (i j : ℕ) : Fin 3 :=
-  if h : i + j ≤ n then c ⟨i, j, h⟩ else 0
+/-- Helper: is this triple a permutation of {0,1,2}? -/
+private def isFC (a b c : Fin 3) : Bool :=
+  ({a, b, c} : Finset (Fin 3)) = {0, 1, 2}
 
--- Number of horizontal {0,1}-door transitions at row j
-private def hTrans {n : ℕ} (c : Coloring n) (j : ℕ) : ℕ :=
-  ((Finset.range (n - j)).filter (fun i =>
-    (gColor c i j = 0 ∧ gColor c (i + 1) j = 1) ∨
-    (gColor c i j = 1 ∧ gColor c (i + 1) j = 0))).card
+/-- Key parity lemma: for any 3 colors from Fin 3, the number of {0,1}-doors
+    among the 3 edges has the same parity as whether the triple is a
+    permutation of {0,1,2} (fully colored).
 
--- hTrans at row n is 0 (no edges at the apex)
-private lemma hTrans_top {n : ℕ} (c : Coloring n) : hTrans c n = 0 := by
-  simp [hTrans, Nat.sub_self]
+    PROVED by exhaustive case analysis on 27 cases. -/
+theorem abstractDoorCount_parity (a b c : Fin 3) :
+    abstractDoorCount a b c % 2 = if isFC a b c then 1 else 0 := by
+  fin_cases a <;> fin_cases b <;> fin_cases c <;> decide
 
--- gColor matches botColor for valid bottom-row points
-private lemma gColor_bot {n : ℕ} (c : Coloring n) (i : ℕ) (hi : i ≤ n) :
-    gColor c i 0 = botColor c i := by
-  simp only [gColor, botColor, dif_pos (show i + 0 ≤ n by omega), dif_pos hi]
+-- Proof strategy for sperner_2d:
+-- 1. bottomTransitions c is odd (from bottom_transitions_odd)
+-- 2. Boundary {0,1}-doors appear ONLY on the bottom edge
+--    (left edge: colors ∈ {0,2}, no color 1 → no doors)
+--    (hypotenuse: colors ∈ {1,2}, no color 0 → no doors)
+-- 3. Double-counting: ∑_T doorCount(T) = 2·|interior doors| + |boundary doors|
+-- 4. Each fully-colored triangle has exactly 1 door (fully_colored_one_door)
+-- 5. Each non-fully-colored triangle has 0 or 2 doors (even)
+-- 6. Therefore: #FC ≡ bottomTransitions ≡ 1 (mod 2), so #FC ≥ 1
 
--- hTrans at row 0 equals bottomTransitions under Sperner condition
-private lemma hTrans_zero_eq {n : ℕ} (hn : 0 < n) (c : Coloring n)
-    (hc : IsSperner hn c) :
-    hTrans c 0 = bottomTransitions c := by
-  obtain ⟨hv0, hv1, _, hbot, _, _⟩ := hc
-  simp only [hTrans, bottomTransitions, Nat.sub_zero]
-  congr 1; ext i; simp only [Finset.mem_filter, Finset.mem_range]
-  constructor
-  · rintro ⟨hi, hdoor⟩
-    refine ⟨hi, ?_⟩
-    have h1 := gColor_bot c i (by omega)
-    have h2 := gColor_bot c (i + 1) (by omega)
-    rcases hdoor with ⟨ha, hb⟩ | ⟨ha, hb⟩ <;> simp_all
-  · rintro ⟨hi, hne⟩
-    refine ⟨hi, ?_⟩
-    have h1 := gColor_bot c i (by omega)
-    have h2 := gColor_bot c (i + 1) (by omega)
-    have hci : botColor c i = 0 ∨ botColor c i = 1 := by
-      simp only [botColor, dif_pos (show i ≤ n by omega)]
-      by_cases h0 : i = 0
-      · subst h0; left; exact hv0
-      · by_cases hn' : i = n
-        · subst hn'; right; exact hv1
-        · have h2' := hbot ⟨i, 0, by omega⟩ rfl (by omega) (by omega)
-          have hval := (c ⟨i, 0, by omega⟩).isLt; omega
-    have hci1 : botColor c (i + 1) = 0 ∨ botColor c (i + 1) = 1 := by
-      simp only [botColor, dif_pos (show i + 1 ≤ n by omega)]
-      by_cases hn' : i + 1 = n
-      · subst hn'; right; exact hv1
-      · have h2' := hbot ⟨i + 1, 0, by omega⟩ rfl (by omega) (by omega)
-        have hval := (c ⟨i + 1, 0, by omega⟩).isLt; omega
-    rcases hci with h | h <;> rcases hci1 with h' | h' <;> simp_all
-
--- Strip parity: if no FC triangle exists, adjacent rows have same
--- door-transition parity.
---
--- Proof sketch (not yet fully formalized):
--- In the strip between rows j and j+1, define indicator variables:
---   p_i = 1 iff bottom edge (i,j)-(i+1,j) is a {0,1}-door
---   q_i = 1 iff top edge (i,j+1)-(i+1,j+1) is a {0,1}-door
---   l_i = 1 iff left-vertical edge (i,j)-(i,j+1) is a {0,1}-door
---   d_i = 1 iff diagonal edge (i+1,j)-(i,j+1) is a {0,1}-door
---
--- Lower triangle L(i,j) has door parity p_i + l_i + d_i.
--- Upper triangle U(i,j) has door parity d_i + l_{i+1} + q_i.
--- Non-FC => each is 0 in ZMod 2.
---
--- Sum all door parities:
---   sum_lower + sum_upper
---   = sum(p) + sum(q) + [sum_m(l) + sum_{m-1}(l shifted)] + [sum_m(d) + sum_{m-1}(d)]
---   = sum(p) + sum(q) + l_0 + d_{m-1}   (in ZMod 2, doubled terms cancel)
---   = hTrans(j) + hTrans(j+1) + l_0 + d_{m-1}
---
--- Sperner => l_0 = 0 (left boundary, colors in {0,2})
--- Sperner => d_{m-1} = 0 (hypotenuse, colors in {1,2})
--- No FC => total = 0
--- Therefore hTrans(j) + hTrans(j+1) = 0 in ZMod 2 => same parity.
-
--- Helper: {0,1}-door indicator in ZMod 2
-private def doorZ {n : ℕ} (c : Coloring n) (i₁ j₁ i₂ j₂ : ℕ) : ZMod 2 :=
-  if (gColor c i₁ j₁ = 0 ∧ gColor c i₂ j₂ = 1) ∨
-     (gColor c i₁ j₁ = 1 ∧ gColor c i₂ j₂ = 0) then 1 else 0
-
--- Key fact: three vertex colors that are not all distinct yield even door count.
--- If {a, b, c} ≠ {0,1,2}, the number of {0,1}-pairs among (a,b), (a,c), (b,c) is 0 or 2.
-private lemma door_parity_of_not_fc (a b c₃ : Fin 3)
-    (h : ¬(({a, b, c₃} : Finset (Fin 3)) = {0, 1, 2})) :
-    (if (a = 0 ∧ b = 1) ∨ (a = 1 ∧ b = 0) then (1 : ZMod 2) else 0) +
-    (if (a = 0 ∧ c₃ = 1) ∨ (a = 1 ∧ c₃ = 0) then 1 else 0) +
-    (if (b = 0 ∧ c₃ = 1) ∨ (b = 1 ∧ c₃ = 0) then 1 else 0) = 0 := by
-  fin_cases a <;> fin_cases b <;> fin_cases c₃ <;> simp_all [Finset.pair_comm] <;> decide
-
--- To prove strip_parity, apply door_parity_of_not_fc to each triangle in the strip,
--- then use algebraic sum manipulation in ZMod 2 to cancel internal (doubled) edges,
--- leaving boundary terms that are 0 under Sperner conditions.
-
-private lemma strip_parity {n : ℕ} (hn : 0 < n) (c : Coloring n) (hc : IsSperner hn c)
-    (j : ℕ) (hj : j + 1 ≤ n)
-    (hno_fc : ∀ t : GridTriangle n, ¬ IsFullyColored c t) :
-    hTrans c j % 2 = hTrans c (j + 1) % 2 := by
-  sorry
-
--- MAIN THEOREM: 2D Sperner's lemma via row-sweep parity
 theorem sperner_2d {n : ℕ} (hn : 0 < n) (c : Coloring n) (hc : IsSperner hn c) :
     ∃ t : GridTriangle n, IsFullyColored c t := by
-  by_contra hno_fc
-  push_neg at hno_fc
-  -- Row 0 has odd transitions (1D Sperner on bottom edge)
-  have h_odd := bottom_transitions_odd hn c hc
-  have h_eq := hTrans_zero_eq hn c hc
-  -- Row n has 0 transitions (only one vertex at apex)
-  have h_top : hTrans c n = 0 := hTrans_top c
-  -- Strip parity: all rows have the same parity (no FC triangle anywhere)
-  have h_const : ∀ j, j ≤ n → hTrans c j % 2 = hTrans c 0 % 2 := by
-    intro j hj
-    induction j with
-    | zero => rfl
-    | succ k ih =>
-      rw [strip_parity hn c hc k (by omega) hno_fc]
-      exact ih (by omega)
-  -- Row n parity = row 0 parity, but row n = 0 (even) and row 0 = odd
-  have h_contr := h_const n (le_refl n)
-  rw [h_top, h_eq] at h_contr
-  exact absurd h_odd (by rw [Nat.odd_iff]; omega)
+  sorry
 
 -- ============================================================
 -- SECTION V: Existence of Approximate Fixed Points (Application)

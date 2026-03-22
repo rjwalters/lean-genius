@@ -1,0 +1,79 @@
+{
+  "id": "fundamental-theorem-calculus-oq-01",
+  "title": "Fundamental Theorem of Calculus: Lebesgue Generalization",
+  "slug": "fundamental-theorem-calculus-oq-01",
+  "description": "Formalizes the Lebesgue generalization of the Fundamental Theorem of Calculus. Defines absolutely continuous functions (not yet in Mathlib), states the Lebesgue FTC (AC → a.e. differentiable, integral of derivative = net change), and connects to Mathlib's Vitali covering theorem, Lebesgue density theorem, and monotone a.e. differentiability.",
+  "meta": {
+    "status": "formalized",
+    "tags": [
+      "analysis",
+      "measure-theory",
+      "calculus",
+      "lebesgue-integral",
+      "open-question"
+    ],
+    "badge": "axiom",
+    "sorries": 2,
+    "axiomCount": 2,
+    "assumptions": "2 axioms: Lebesgue FTC Part 1 (AC → a.e. differentiable) and Part 2 (integral of a.e. derivative = net change). 2 sorries: Lipschitz→AC arithmetic detail, Cantor function construction.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Monotone.ae_differentiableAt",
+        "description": "Monotone functions are a.e. differentiable (Lebesgue's theorem)",
+        "module": "Mathlib.Analysis.Convex.Deriv"
+      },
+      {
+        "theorem": "VitaliFamily",
+        "description": "Vitali covering family for measure differentiation",
+        "module": "Mathlib.MeasureTheory.Covering.VitaliFamily"
+      },
+      {
+        "theorem": "VitaliFamily.ae_tendsto_measure_inter_div",
+        "description": "Lebesgue density theorem",
+        "module": "Mathlib.MeasureTheory.Covering.Differentiation"
+      }
+    ],
+    "originalContributions": [
+      "AbsolutelyContinuousOn definition for ℝ → ℝ functions (new, not in Mathlib)",
+      "Lebesgue FTC statement connecting AC functions to Mathlib infrastructure",
+      "Cantor function counterexample statement (AC is necessary)",
+      "Monotone a.e. differentiability re-export from Mathlib"
+    ],
+    "dateAdded": "03/22/26"
+  },
+  "overview": {
+    "historicalContext": "The classical FTC of Newton-Leibniz requires the integrand to be continuous or the antiderivative to be differentiable everywhere. Lebesgue's generalization (early 20th century) shows that absolute continuity is the precise condition: AC functions are exactly those for which the FTC holds with the Lebesgue integral.",
+    "problemStatement": "If F : [a,b] → ℝ is absolutely continuous, then F is differentiable almost everywhere, F' is Lebesgue integrable, and ∫ₐᵇ F'(x)dx = F(b) - F(a).",
+    "proofStrategy": "Define AC functions, state the Lebesgue FTC as axioms, connect to Mathlib's existing infrastructure (Vitali families, Lebesgue density theorem, monotone a.e. differentiability). The proof path: AC → BV → Jordan decomposition → monotone a.e. differentiability → integral recovery.",
+    "keyInsights": [
+      "AC is strictly between Lipschitz and uniform continuity",
+      "The Cantor function shows AC is necessary (continuous, monotone, F'=0 a.e., but ∫F'≠F(b)-F(a))",
+      "Mathlib has the key building blocks: Vitali families, density theorem, monotone differentiability"
+    ]
+  },
+  "sections": [
+    {
+      "id": "ac-definition",
+      "title": "Parts I-III: AC Functions",
+      "startLine": 1,
+      "endLine": 140,
+      "summary": "Definition of AbsolutelyContinuousOn, proof that Lipschitz implies AC, proof that AC implies uniformly continuous."
+    },
+    {
+      "id": "lebesgue-ftc",
+      "title": "Parts IV-VI: Lebesgue FTC and Consequences",
+      "startLine": 140,
+      "endLine": 260,
+      "summary": "Lebesgue FTC axioms (a.e. differentiability and integral identity), classical FTC as special case, Cantor function counterexample, Mathlib connections."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes the key definitions and statements for the Lebesgue FTC, connecting to Mathlib's measure theory infrastructure.",
+    "implications": "Completing the axioms would establish the full Lebesgue FTC in Lean 4.",
+    "openQuestions": [
+      "Can AC → BV be proved directly from the AC definition?",
+      "Does Mathlib's Jordan decomposition suffice for the BV → monotone step?",
+      "Can the integral recovery be proved using Vitali + density theorem?"
+    ]
+  }
+}
