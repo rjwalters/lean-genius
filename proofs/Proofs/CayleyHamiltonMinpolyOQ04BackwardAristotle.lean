@@ -100,6 +100,26 @@ theorem eq_zero_of_aeval_mulVec_eq_zero
     {M : Matrix (Fin n) (Fin n) K} {v : Fin n → K}
     (hli : LinearIndependent K (fun k : Fin n => (M ^ (k : ℕ)).mulVec v))
     {p : K[X]} (hp_deg : p.natDegree < n) (hp_ann : (aeval M p).mulVec v = 0) :
-    p = 0 := by sorry
+    p = 0 := by
+  -- Extract coefficient data from linear independence
+  rw [Fintype.linearIndependent_iff] at hli
+  -- Express aeval M p as sum over Fin n, using natDegree < n
+  have hp_expand : (aeval M p).mulVec v =
+      ∑ i : Fin n, p.coeff (i : ℕ) • (M ^ (i : ℕ)).mulVec v := by
+    simp only [aeval_def,
+      eval₂_eq_sum_range' (algebraMap K _) M (show p.natDegree < n from hp_deg)]
+    simp only [Matrix.sum_mulVec, Pi.smul_apply, Matrix.mulVec_smul]
+    congr 1; ext i
+    simp [Algebra.algebraMap_eq_smul_one, Matrix.smul_mulVec_assoc]
+  -- From hp_ann: the sum of coeff(i) • M^i v = 0
+  have hsum : ∑ i : Fin n, p.coeff (i : ℕ) • (M ^ (i : ℕ)).mulVec v = 0 := by
+    rw [← hp_expand]; exact hp_ann
+  -- Linear independence gives all coefficients zero
+  have hcoeff : ∀ i : Fin n, p.coeff (i : ℕ) = 0 := hli _ hsum
+  -- Polynomial with all coefficients zero (below and at degree) is zero
+  ext m
+  by_cases hm : m < n
+  · exact hcoeff ⟨m, hm⟩
+  · exact Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)
 
 end Nonderogatory.Backward.Aristotle
