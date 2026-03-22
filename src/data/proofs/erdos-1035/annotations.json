@@ -7,7 +7,7 @@
     "title": "Problem Overview: Hypercube Subgraphs in Dense Graphs",
     "content": "Erdős asked whether high minimum degree forces the presence of a **hypercube subgraph**. Specifically: is there a constant c > 0 such that every graph on **2^n vertices** with minimum degree > (1-c) * 2^n contains the n-dimensional hypercube **Q_n**? If not, alternative threshold formulations are proposed.",
     "mathContext": "This is a **Turán-type** problem for hypercubes. Classical extremal graph theory asks how dense a graph must be to guarantee a specific subgraph. For complete bipartite graphs and cycles, sharp thresholds are known. Hypercubes are particularly challenging because Q_n is a **sparse, highly structured** graph — it has 2^n vertices but only n · 2^{n-1} edges, so density alone is insufficient and **minimum degree** becomes the key parameter.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["extremal graph theory", "Turán-type problems", "hypercube graphs", "minimum degree conditions", "subgraph containment"],
     "prerequisites": ["SimpleGraph", "Fin", "graph density"]
   },
@@ -19,7 +19,7 @@
     "title": "Hypercube Graph Q_n",
     "content": "**hypercubeGraph n** defines Q_n as a SimpleGraph on Fin(2^n). Two vertices u and v are adjacent iff u != v and their **XOR** has exactly one bit set (i.e., u XOR v = 2^k for some k < n). Symmetry and irreflexivity are proved inline.",
     "mathContext": "The n-dimensional hypercube has **2^n vertices** (binary strings of length n) and **n · 2^{n-1} edges** (pairs differing in exactly one bit). It is **vertex-transitive**, **n-regular**, and **bipartite** (partition by parity of bit sum). The XOR characterization is elegant: u XOR v is a power of 2 precisely when u and v differ in exactly one coordinate.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["hypercube", "Hamming distance", "XOR", "vertex-transitive graphs", "bipartite graphs"],
     "prerequisites": ["SimpleGraph", "Fin", "Nat.xor", "Nat.xor_comm"]
   },
@@ -31,7 +31,7 @@
     "title": "Minimum Degree Predicate",
     "content": "**HasMinDegree G d** asserts that every vertex v of G has at least d neighbours, computed as the cardinality of {w in Fin N : G.Adj v w}. This is the key parameter controlling subgraph forcing.",
     "mathContext": "Minimum degree conditions are central in extremal graph theory. The **Dirac condition** (min degree >= n/2) forces Hamiltonian cycles. Here the threshold is (1-c) · 2^n, meaning each vertex must be adjacent to all but a **constant fraction** of other vertices — an extremely strong density condition.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["minimum degree", "Dirac's theorem", "degree conditions", "extremal thresholds"],
     "prerequisites": ["SimpleGraph", "Finset.filter", "Finset.card", "DecidableRel"]
   },
@@ -43,7 +43,7 @@
     "title": "Subgraph Containment",
     "content": "**ContainsAsSubgraph G H** holds when there exists an **injective** vertex map f : Fin M → Fin N that preserves adjacency: H.Adj u v implies G.Adj (f u) (f v). This captures subgraph isomorphism (not necessarily induced).",
     "mathContext": "This is the standard notion of **subgraph homomorphism** with injectivity. Note this is weaker than induced subgraph: G may have additional edges between images of H's vertices. For hypercube embedding, this is the natural notion since we only need to find Q_n's edge pattern somewhere in G.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["graph homomorphism", "subgraph isomorphism", "injective embedding"],
     "prerequisites": ["Function.Injective", "SimpleGraph.Adj"]
   },
@@ -55,7 +55,7 @@
     "title": "ErdosProblem1035 (Main Conjecture)",
     "content": "**ErdosProblem1035**: There exists c > 0 such that for every n >= 1, any graph on 2^n vertices with minimum degree at least ⌈(1-c) · 2^n⌉ contains the hypercube **Q_n** as a subgraph. The ceiling function handles the integer rounding of the real-valued threshold.",
     "mathContext": "The conjecture asserts a **universal constant** c works for all dimensions n simultaneously. This is surprisingly strong: as n grows, Q_n becomes increasingly complex (2^n vertices, n · 2^{n-1} edges), yet the required minimum degree fraction stays fixed. Compare with the **Komlós-Sárközy-Szemerédi theorem** which gives analogous results for bounded-degree spanning subgraphs.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["universal constants", "spanning subgraph theorems", "Komlós-Sárközy-Szemerédi theorem"],
     "prerequisites": ["hypercubeGraph", "HasMinDegree", "ContainsAsSubgraph", "Nat.ceil"]
   },
@@ -86,7 +86,7 @@
   {
     "id": "erdos-1035-self",
     "proofId": "erdos-1035",
-    "type": "theorem",
+    "type": "technique",
     "range": { "startLine": 88, "endLine": 89 },
     "title": "hypercube_self_subgraph",
     "content": "**Q_n contains itself** as a subgraph via the identity embedding. This basic sanity check confirms the ContainsAsSubgraph definition admits the trivial case.",
@@ -97,7 +97,7 @@
   {
     "id": "erdos-1035-complete",
     "proofId": "erdos-1035",
-    "type": "theorem",
+    "type": "technique",
     "range": { "startLine": 92, "endLine": 95 },
     "title": "complete_contains_hypercube",
     "content": "Any **complete graph** on 2^n vertices contains Q_n, since every pair is adjacent. This shows the conjecture is vacuously true for the densest possible graph and establishes an upper bound on the difficulty.",
@@ -109,7 +109,7 @@
   {
     "id": "erdos-1035-q1",
     "proofId": "erdos-1035",
-    "type": "theorem",
+    "type": "technique",
     "range": { "startLine": 98, "endLine": 99 },
     "title": "hypercube_one_is_edge",
     "content": "**Q_1** has exactly 2 vertices (Fin 2) and they are adjacent iff they are distinct — making Q_1 isomorphic to **K_2**, the single-edge graph. This base case shows the conjecture holds trivially for n = 1.",

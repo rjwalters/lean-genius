@@ -43,7 +43,7 @@
     "title": "Infinite Vertex-Connectivity",
     "content": "A graph is infinitely connected if any two distinct vertices are joined by infinitely many pairwise internally disjoint paths. This is an extremely strong structural property: by the infinite Menger theorem (Aharoni-Berger, 2009), it is equivalent to saying no finite vertex cut can disconnect the graph.",
     "mathContext": "$$G \\text{ is } \\infty\\text{-connected} \\iff \\forall u \\neq v,\\; \\exists \\text{ infinitely many pairwise internally disjoint } u\\text{-}v \\text{ paths}$$\nBy the infinite Menger theorem: $\\kappa(u,v) = \\aleph_0$ for all $u \\neq v$, equivalently no finite vertex cut separates any two vertices.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["infinite Menger theorem", "Aharoni-Berger theorem", "vertex connectivity", "κ-connected graphs"],
     "prerequisites": ["vertex connectivity", "Menger's theorem", "infinite combinatorics"]
   },
@@ -55,7 +55,7 @@
     "title": "Chromatic Number ≥ ℵ₁",
     "content": "Defines $\\chi(G) \\geq \\aleph_1$ via the negation of countable colorability: no function $c : V \\to C$ with $C$ countable can be a proper coloring. By the De Bruijn-Erdős theorem (1951), this implies finite subgraphs with arbitrarily large chromatic number.",
     "mathContext": "$$\\chi(G) \\geq \\aleph_1 \\iff \\forall C \\text{ countable},\\; \\forall c : V \\to C,\\; \\exists u \\sim v : c(u) = c(v)$$\nBy De Bruijn-Erdős, $\\chi(G) \\geq \\aleph_1$ implies $\\chi(G) \\geq k$ for every finite $k$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["chromatic number", "graph coloring", "De Bruijn-Erdős theorem", "uncountable cardinals"],
     "prerequisites": ["graph coloring", "cardinal arithmetic", "countability"]
   },
@@ -74,19 +74,19 @@
   {
     "id": "erdos-1068-conjecture",
     "proofId": "erdos-1068",
-    "type": "theorem",
+    "type": "technique",
     "range": { "startLine": 101, "endLine": 104 },
     "title": "Erdős Problem 1068: The Main Conjecture",
     "content": "The central open question: does every graph with $\\chi(G) \\geq \\aleph_1$ contain a countable vertex set $S$ such that $G[S]$ is infinitely connected? This is a weakening of Problem 1067 (disproved by Soukup). The restriction to countable subgraphs makes this fundamentally different — Soukup's counterexample controls uncountable sets but says nothing about countable ones.",
     "mathContext": "$$\\forall G \\text{ with } \\chi(G) \\geq \\aleph_1,\\; \\exists S \\subseteq V(G) : |S| \\leq \\aleph_0 \\wedge G[S] \\text{ is } \\infty\\text{-connected}$$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Erdős-Hajnal conjecture", "uncountable chromatic number", "countable substructures"],
     "prerequisites": ["infinite graph theory", "chromatic number", "infinite connectivity"]
   },
   {
     "id": "erdos-1068-soukup",
     "proofId": "erdos-1068",
-    "type": "theorem",
+    "type": "technique",
     "range": { "startLine": 112, "endLine": 116 },
     "title": "Soukup's Counterexample (2015)",
     "content": "Soukup (2015, *Combinatorica*) constructed in ZFC a graph with $\\chi(G) \\geq \\aleph_1$ where every uncountable vertex set induces a graph that is NOT infinitely connected. The construction uses ladder systems on non-special trees: pairs of vertices from any uncountable set can be separated by a finite vertex cut. This makes the countable case (Problem 1068) the remaining open question.",
@@ -98,7 +98,7 @@
   {
     "id": "erdos-1068-problem1067",
     "proofId": "erdos-1068",
-    "type": "theorem",
+    "type": "technique",
     "range": { "startLine": 123, "endLine": 127 },
     "title": "Problem 1067 Disproved",
     "content": "Problem 1067 asked whether every graph with $\\chi(G) \\geq \\aleph_1$ contains an infinitely connected subgraph with $\\chi \\geq \\aleph_1$. Soukup showed the answer is NO. Problem 1068 weakens this by dropping the chromatic number requirement and only asking for countability of the subgraph.",
@@ -110,7 +110,7 @@
   {
     "id": "erdos-1068-separator",
     "proofId": "erdos-1068",
-    "type": "theorem",
+    "type": "technique",
     "range": { "startLine": 134, "endLine": 141 },
     "title": "No Finite Vertex Separator",
     "content": "In an infinitely connected graph, removing any finite set of vertices leaves any two remaining vertices connected. This is a consequence of the infinite Menger theorem (Aharoni-Berger, 2009, *Inventiones mathematicae*), which resolved the Erdős-Menger conjecture: in infinite graphs, the max number of disjoint $A$-$B$ paths equals the min size of an $A$-$B$ separator.",
@@ -146,7 +146,7 @@
   {
     "id": "erdos-1068-proved-theorems",
     "proofId": "erdos-1068",
-    "type": "theorem",
+    "type": "technique",
     "range": { "startLine": 165, "endLine": 179 },
     "title": "Structural Implications of Infinite Connectivity",
     "content": "Two fully proved (non-axiomatized) theorems: (1) `inf_connected_implies_path`: infinite connectivity implies the existence of a path between any two distinct vertices (extracting one path from the infinite family), and (2) `inf_connected_subgraph_has_paths`: if $G[S]$ is infinitely connected, then any two vertices in $S$ are path-connected within $S$. These are verified by Lean's kernel.",

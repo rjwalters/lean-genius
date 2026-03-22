@@ -60,7 +60,7 @@
       "startLine": 43,
       "endLine": 59
     },
-    "type": "axiom",
+    "type": "context",
     "title": "Tur\u00e1n Threshold and Triangle Existence",
     "content": "**Tur\u00e1n's theorem** (1941) is the cornerstone of extremal graph theory: the maximum number of edges in a triangle-free graph on $n$ vertices is $\\lfloor n^2/4 \\rfloor$. The `turanThreshold` definition captures this, and `turan_has_triangle` axiomatizes that exceeding it forces a triangle.",
     "mathContext": "Tur\u00e1n's theorem is stated as an axiom here because the full proof involves the Tur\u00e1n graph $T(n,2)$ (complete bipartite graph $K_{\\lfloor n/2\\rfloor, \\lceil n/2\\rceil}$) and is not yet formalized in this file. Mathlib has partial Tur\u00e1n theory support.",
@@ -166,7 +166,7 @@
       "startLine": 132,
       "endLine": 148
     },
-    "type": "axiom",
+    "type": "context",
     "title": "Erd\u0151s-Laskar Upper Bound (1985)",
     "content": "**Upper bound**: $h(n) \\leq 2(\\sqrt{3}-1)n$, proved by Erd\u0151s and Laskar in 1985. They constructed a family of graphs on $n$ vertices with $> n^2/4$ edges where every triangle has degree sum $\\leq 2(\\sqrt{3}-1)n + o(n)$. The axiom `upper_bound_tight` formalizes that this bound is essentially achieved.",
     "mathContext": "The construction starts with the Tur\u00e1n graph $K_{n/2,n/2}$ and adds edges within one partition. By carefully controlling the edge density within the partition, one can ensure all forced triangles have bounded degree sums. The optimization yields the $2(\\sqrt{3}-1)$ constant.",
@@ -193,7 +193,7 @@
       "startLine": 150,
       "endLine": 166
     },
-    "type": "axiom",
+    "type": "context",
     "title": "Erd\u0151s-Laskar Lower Bound",
     "content": "**Original lower bound**: Erd\u0151s and Laskar (1985) proved $h(n) \\geq (1+c)n$ for some constant $c > 0$, showing the trivial bound of $n$ can be beaten. The theorem `lower_beats_n` derives the weaker consequence $h(n) \\geq n$ from this axiom.",
     "mathContext": "The trivial bound $h(n) \\geq n$ follows because in any triangle, the three vertices are mutually adjacent, so each has degree at least 2, but in a dense graph the average degree exceeds $n/2$.",
@@ -219,7 +219,7 @@
       "startLine": 168,
       "endLine": 190
     },
-    "type": "axiom",
+    "type": "context",
     "title": "Fan's Improved Lower Bound (1988)",
     "content": "**Fan's bound**: $h(n) \\geq (21/16)n = 1.3125n$, improving on Erd\u0151s-Laskar. The theorem `current_bounds` combines Fan's lower bound with the Erd\u0151s-Laskar upper bound to give the current state of knowledge: $(21/16)n \\leq h(n) \\leq 2(\\sqrt{3}-1)n$.",
     "mathContext": "Fan's proof uses a refined degree-counting argument in triangles of dense graphs. The constant $21/16$ comes from a careful case analysis of the degree distribution. The provable `fan_improves` confirms $21/16 > 1$ via `norm_num`.",
@@ -299,7 +299,7 @@
       "startLine": 231,
       "endLine": 251
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Degree Sum Properties",
     "content": "**Basic properties**: Each vertex in a triangle has degree $\\geq 2$ (it's adjacent to the other two), giving a minimum triangle degree sum of 6. In dense graphs (above Tur\u00e1n threshold), the average degree exceeds $n/2$, so we expect much larger degree sums.",
     "mathContext": "These are foundational lemmas. The `triangle_min_degree` follows from the adjacency requirements in the triangle structure. The `dense_average_degree` connects the edge count condition to average vertex degree via the handshaking lemma.",
@@ -325,7 +325,7 @@
       "startLine": 253,
       "endLine": 287
     },
-    "type": "axiom",
+    "type": "context",
     "title": "Maximum and Extremal Graphs",
     "content": "**Extremal graphs** are those achieving $h(n)$: they have $> n^2/4$ edges but all triangles have degree sum $\\leq h(n)$. The `h_as_min` theorem reformulates $h(n)$ as an infimum over dense graphs, dual to the supremum definition.",
     "mathContext": "The existence of extremal graphs (`extremal_exists`) is axiomatized. In finite settings, compactness arguments guarantee extremal graphs exist, but formalizing this requires significant work on graph limits or finite optimization.",
@@ -352,7 +352,7 @@
       "startLine": 289,
       "endLine": 311
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Tur\u00e1n Graph and Threshold Behavior",
     "content": "**The Tur\u00e1n graph** $K_{n/2,n/2}$ is the densest triangle-free graph. Adding even one edge creates a triangle. The theorem `turan_plus_one` shows that in a graph with exactly $n^2/4 + 1$ edges, some triangle has degree sum $\\geq n$, establishing that $h(n)$ grows linearly.",
     "mathContext": "The `bipartite_no_triangle` theorem formalizes that balanced complete bipartite graphs are triangle-free. This is the starting point for understanding what happens just above the Tur\u00e1n threshold \u2014 the regime where Problem #1033 lives.",
@@ -378,7 +378,7 @@
       "startLine": 313,
       "endLine": 325
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Small Cases",
     "content": "**Explicit values**: $h(3) = 6$ because the only graph on 3 vertices with $> 2$ edges is $K_3$, where each vertex has degree 2, giving sum 6. $h(4) = 7$ requires checking all graphs on 4 vertices with $> 4$ edges.",
     "mathContext": "These small cases provide concrete checkpoints. For $n=3$, there is essentially one graph above the threshold ($K_3$), making the computation trivial. For $n=4$, the analysis involves several graph structures and is more intricate.",

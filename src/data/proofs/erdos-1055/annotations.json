@@ -6,7 +6,7 @@
     "type": "definition",
     "title": "Prime Class",
     "content": "The class of a prime p, defined recursively: class 1 means p+1 is 3-smooth; class r means all prime factors of p+1 have class ≤ r-1 with at least one at r-1.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The **Erdős–Selfridge prime classification** assigns to each prime $p$ a class $c(p) \\in \\{1, 2, 3, \\ldots\\}$ by recursion on the prime factorization of $p+1$. Formally: $c(p) = 1$ if $p+1$ is $3$-smooth (only factors $2$ and $3$), and $c(p) = 1 + \\max\\{c(q) : q \\mid p+1, q \\text{ prime}\\}$ otherwise. The $+1$ shift means the classification probes the **multiplicative structure of shifted primes** $p + 1$, a central topic in analytic number theory.",
     "relatedConcepts": ["smooth numbers", "shifted primes", "recursive classification", "factorization depth"],
     "prerequisites": ["prime factorization", "smooth numbers", "recursive definitions"]
@@ -27,7 +27,7 @@
     "id": "known-values",
     "proofId": "erdos-1055",
     "range": { "startLine": 60, "endLine": 71 },
-    "type": "theorem",
+    "type": "technique",
     "title": "Known Least Primes (OEIS A005113)",
     "content": "p_1=2, p_2=13 (14=2·7), p_3=37 (38=2·19), p_4=73 (74=2·37), p_5=1021 (1022=2·7·73). Each follows from the chain of class assignments.",
     "significance": "key",
@@ -42,7 +42,7 @@
     "type": "conjecture",
     "title": "Infinitely Many in Each Class",
     "content": "The main conjecture: for each r ≥ 1, the set of primes in class r is infinite. This is the primary question of Problem #1055.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "**Infinitude Conjecture**: For each $r \\ge 1$, the set $\\{p \\text{ prime} : c(p) = r\\}$ is infinite. For $r = 1$ this is known: by Størmer's theorem and the infinity of $3$-smooth numbers, there are infinitely many primes $p$ with $p + 1 = 2^a \\cdot 3^b$ (though the proof requires careful analysis of Pell equations). For $r \\ge 2$, the conjecture is **OPEN**. It would follow from strong enough results on primes in arithmetic progressions and the distribution of smooth numbers among shifted primes.",
     "relatedConcepts": ["Størmer's theorem", "primes in arithmetic progressions", "Linnik's theorem", "shifted prime factorization"],
     "prerequisites": ["prime class definition", "density of smooth numbers"]
@@ -54,7 +54,7 @@
     "type": "conjecture",
     "title": "Erdős Growth Conjecture",
     "content": "Erdős conjectured p_r^{1/r} → ∞: the least prime in class r grows superexponentially. The known data (2, 3.61, 3.33, 2.92, 4.01) is inconclusive.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "**Erdős's Conjecture**: $p_r^{1/r} \\to \\infty$ as $r \\to \\infty$, i.e., $\\log p_r / r \\to \\infty$. This means the least class-$r$ prime grows **superexponentially** in $r$: faster than $C^r$ for any constant $C$. Erdős's intuition was that the recursive depth requirement makes high-class primes extremely rare, forcing $p_r$ to be astronomically large. The known data $p_r^{1/r} \\in \\{2, 3.61, 3.33, 2.92, 4.01\\}$ for $r = 1, \\ldots, 5$ shows no clear trend, making this conjecture genuinely uncertain.",
     "relatedConcepts": ["superexponential growth", "extremal prime properties", "computational evidence assessment"],
     "prerequisites": ["asymptotic growth rates", "known values of p_r"]
@@ -66,7 +66,7 @@
     "type": "conjecture",
     "title": "Selfridge Bounded Conjecture",
     "content": "Selfridge conjectured p_r^{1/r} is bounded: the least class-r prime grows at most exponentially. This directly contradicts Erdős's conjecture.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "**Selfridge's Conjecture**: There exists a constant $C$ such that $p_r \\le C^r$ for all $r$, i.e., $p_r^{1/r}$ is bounded. This means the least class-$r$ prime grows at most **exponentially** in $r$. Selfridge's intuition was that the factorization chains $p \\to p+1 \\to \\text{factors} \\to \\ldots$ can be threaded efficiently, allowing relatively small primes in each class. The two conjectures ($p_r^{1/r} \\to \\infty$ vs bounded) are **mutually exclusive**—exactly one must be false, but which one remains unknown.",
     "relatedConcepts": ["exponential growth", "factorization chain efficiency", "contradictory conjectures"],
     "prerequisites": ["Erdős's growth conjecture", "exponential vs superexponential growth"]
@@ -75,7 +75,7 @@
     "id": "density-bound",
     "proofId": "erdos-1055",
     "range": { "startLine": 104, "endLine": 108 },
-    "type": "theorem",
+    "type": "technique",
     "title": "Density Bound n^{o(1)}",
     "content": "The number of primes ≤ n in any fixed class r is at most n^{o(1)}. Each class is extremely sparse, consistent with the recursive depth requirement.",
     "significance": "key",

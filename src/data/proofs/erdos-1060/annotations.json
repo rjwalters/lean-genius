@@ -52,7 +52,7 @@
       "startLine": 43,
       "endLine": 47
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "σ(1) = 1",
     "content": "**sigma_one:**\n\nThe only divisor of 1 is 1 itself, so σ(1) = 1.\n\n```lean\ntheorem sigma_one : sigma 1 = 1\n```",
     "significance": "supporting"
@@ -64,7 +64,7 @@
       "startLine": 49,
       "endLine": 54
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "σ(p) = p + 1 for primes",
     "content": "**sigma_prime:**\n\nFor prime p, the only divisors are 1 and p, so σ(p) = 1 + p.\n\n```lean\ntheorem sigma_prime (p : N) (hp : p.Prime) : sigma p = p + 1\n```",
     "significance": "key"
@@ -88,7 +88,7 @@
       "startLine": 78,
       "endLine": 82
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "g(p) = p(p+1) for primes",
     "content": "**g_prime:**\n\nFor prime p, g(p) = p · (p+1).\n\n**Examples:**\n- g(2) = 2·3 = 6\n- g(3) = 3·4 = 12\n- g(5) = 5·6 = 30\n- g(7) = 7·8 = 56",
     "mathContext": "$g(p) = p \\cdot \\sigma(p) = p(p+1)$ for prime $p$. Since $p(p+1)$ is always even and there are infinitely many primes, infinitely many even numbers are in the range of $g$. For twin primes $p, p+2$: $g(p) = p(p+1)$ and $g(p+2) = (p+2)(p+3)$.",
@@ -134,7 +134,7 @@
       "startLine": 100,
       "endLine": 117
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Finiteness of Solutions",
     "content": "**solutionSet_finite:**\n\nThe solution set is finite for any n > 0.\n\n**Proof idea:**\n- σ(k) ≥ 1 for all k > 0 (since 1 | k)\n- Therefore k·σ(k) ≥ k\n- So if g(k) = n, then k ≤ n\n\nThis means we only need to check finitely many k.",
     "mathContext": "This finiteness is crucial for f(n) to be well-defined as a natural number.",
@@ -189,7 +189,7 @@
       "startLine": 212,
       "endLine": 217
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Example: g(2) = 6",
     "content": "**Example:**\n\nn = 6: k = 2 gives 2·σ(2) = 2·3 = 6.\n\n```lean\nexample : g 2 = 6\n```\n\nVerified by native_decide.",
     "significance": "supporting"
@@ -201,7 +201,7 @@
       "startLine": 219,
       "endLine": 224
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Example: g(3) = 12",
     "content": "**Example:**\n\nn = 12: k = 3 gives 3·σ(3) = 3·4 = 12.\n\n```lean\nexample : g 3 = 12\n```",
     "significance": "supporting"
@@ -213,7 +213,7 @@
       "startLine": 226,
       "endLine": 231
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Example: g(6) = 72",
     "content": "**Example:**\n\nn = 72: k = 6 gives 6·σ(6) = 6·12 = 72.\n\nNote: σ(6) = 1+2+3+6 = 12.",
     "significance": "supporting"
@@ -225,7 +225,7 @@
       "startLine": 233,
       "endLine": 239
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Prime Examples",
     "content": "**Prime examples:**\n\nFor prime p, g(p) = p(p+1):\n- g(5) = 30\n- g(7) = 56\n\nThis gives infinitely many values in the range of g.",
     "significance": "key"

@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #1054** asks about the function f(n) = the minimal m such that n equals the sum of the k smallest divisors of m for some k ≥ 1.\n\nThe main question: Does f(n) grow slower than n? Three variants are considered:\n1. Is f(n) = o(n) unconditionally?\n2. Is f(n) = o(n) for almost all n?\n3. Is limsup f(n)/n = ∞?",
     "mathContext": "Terry Tao disproved Part I by showing the density of {n : f(n) ≤ δn} is O(δ²). This means many values n require f(n) ≈ n. Parts II and III remain open.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "divisor function",
       "asymptotic analysis",
@@ -59,11 +59,11 @@
       "startLine": 43,
       "endLine": 51
     },
-    "type": "axiom",
+    "type": "context",
     "title": "Representability Predicate",
     "content": "We axiomatize **IsRepresentable(n)**: the predicate that n can be written as a sum of the k smallest divisors of some m ≥ 1.\n\nThis predicate is true for most positive integers, but fails for exactly n = 2 and n = 5.",
     "mathContext": "A constructive definition would enumerate divisors of all m and compute partial sums. We axiomatize to focus on the mathematical structure rather than implementation details.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "predicate",
       "axiomatization",
@@ -77,11 +77,11 @@
       "startLine": 59,
       "endLine": 76
     },
-    "type": "axiom",
+    "type": "context",
     "title": "The Function f(n)",
     "content": "We axiomatize **f(n)** as the minimal m such that n is representable via m.\n\n**Properties**:\n- When n is representable: f(n) ≥ 1\n- When n is not representable: f(n) = 0 (junk value)\n\nThis mirrors the 'partial function' semantics from the original problem.",
     "mathContext": "Using 0 as a junk value for undefined cases is a common pattern in formalization. It avoids dealing with Option types while still capturing the essential mathematics.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "partial functions",
       "junk values",
@@ -131,7 +131,7 @@
       "startLine": 100,
       "endLine": 118
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "f(2) = 0 and f(5) = 0",
     "content": "These theorems follow immediately from:\n1. The axioms `not_representable_2` and `not_representable_5`\n2. The axiom `f_undefined` that says f(n) = 0 when n is not representable\n\nThe proofs are one-liners applying the f_undefined axiom.",
     "significance": "supporting",
@@ -167,7 +167,7 @@
     "title": "Open Question I: f(n) = o(n)?",
     "content": "**erdos_1054_part_i** asks whether f(n)/n → 0 as n → ∞.\n\nIn formal terms: ∀ε > 0, ∃N, ∀n ≥ N: f(n) < εn\n\nThis would mean that for large n, f(n) is 'negligible' compared to n.\n\n**STATUS: FALSE** — Tao disproved this.",
     "mathContext": "Tao showed the density of {n : f(n) ≤ δn} is O(δ²), meaning the set of 'easy' values (where f(n) is small) is sparse. Many values require f(n) ≈ n.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "little-o notation",
       "asymptotics",
@@ -185,7 +185,7 @@
     "title": "Open Question II: Almost All?",
     "content": "**erdos_1054_part_ii** weakens Part I: Is f(n) = o(n) for **almost all** n?\n\n'Almost all' means the exceptional set has density 0. Formally, for any ε, δ > 0, eventually the fraction of n with f(n) ≥ εn is less than δ.\n\n**STATUS: OPEN**",
     "mathContext": "Even though Part I fails (there are many 'hard' values), perhaps they form a density-0 set. This is a subtler question about the distribution of hard cases.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "natural density",
       "almost all",
@@ -216,11 +216,11 @@
       "startLine": 211,
       "endLine": 223
     },
-    "type": "axiom",
+    "type": "context",
     "title": "Tao's Partial Result",
     "content": "**Terry Tao** disproved Part I by showing: the upper density of {n : f(n) ≤ δn} is O(δ²).\n\nThis means:\n- For small δ, very few n satisfy f(n) ≤ δn\n- Specifically, the fraction is bounded by Cδ² for some constant C\n- So f(n) ≥ δn for 'most' n in a density sense\n\nThis is formalized as `tao_disproves_part_i : ¬erdos_1054_part_i`.",
     "mathContext": "Tao's proof appeared in comments to Erdős Problem #468. The O(δ²) bound is quite strong—it shows the 'hard' values are not just present but prevalent.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "density bounds",
       "Tao",

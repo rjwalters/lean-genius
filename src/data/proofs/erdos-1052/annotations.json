@@ -62,7 +62,7 @@
       "startLine": 47,
       "endLine": 54
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "One is Always a Unitary Divisor",
     "content": "**one_mem_properUnitaryDivisors**: For n > 1, 1 belongs to `properUnitaryDivisors n`. Proof unfolds the filter definition with `simp` and verifies: 1 ∈ Ico 1 n (by `omega`), 1 ∣ n (by `one_dvd`), and `gcd(1, n) = 1` (by `simp [Nat.Coprime]`).",
     "significance": "minor",
@@ -81,7 +81,7 @@
       "startLine": 56,
       "endLine": 58
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Membership Characterization",
     "content": "**mem_properUnitaryDivisors**: Characterizes membership as `d ∈ Finset.Ico 1 n ∧ d ∣ n ∧ d.Coprime (n / d)`, directly unfolding the filter definition with `simp [properUnitaryDivisors]`.",
     "significance": "minor",
@@ -99,7 +99,7 @@
       "startLine": 60,
       "endLine": 67
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Odd Unitary Divisors of Odd Numbers",
     "content": "**odd_of_unitaryDivisor_of_odd**: If n is odd and d divides n, then d is odd. Proof by contradiction: if d were even, `Even.two_dvd` gives `2 ∣ d`, then `dvd_trans` yields `2 ∣ n`, contradicting `Odd.not_two_dvd_nat`.",
     "significance": "major",
@@ -118,7 +118,7 @@
       "startLine": 73,
       "endLine": 98
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Sum Parity via Finset Induction",
     "content": "**sum_odd_parity**: For a finite set of odd numbers, the sum is odd iff the cardinality is odd. Proved by `Finset.induction`: the base case `empty` is trivial (`simp`); the insert step uses `Finset.sum_insert`, `Finset.card_insert_of_not_mem`, and case analysis on whether adding an odd number to an even/odd sum flips parity.",
     "significance": "key",
@@ -137,7 +137,7 @@
       "startLine": 104,
       "endLine": 118
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Prime Characterization of Coprimality",
     "content": "**unitary_iff_no_common_prime**: `d.Coprime (n / d) ↔ ∀ p, p.Prime → p ∣ d → ¬(p ∣ n / d)`. The forward direction uses `Nat.dvd_gcd` and `Nat.Prime.not_dvd_one`; the reverse uses `Nat.exists_prime_and_dvd` (every non-unit has a prime factor) to find a common prime divisor from gcd ≠ 1.",
     "significance": "key",
@@ -156,7 +156,7 @@
       "startLine": 120,
       "endLine": 125
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Unitary Complement Symmetry",
     "content": "**unitary_complement**: If d is a unitary divisor of n with n > 0, then n/d is also unitary. The key step is `Nat.div_div_self hd hn_ne` which rewrites `n/(n/d) = d`, then `Coprime.symm` gives the result from `gcd(d, n/d) = 1 → gcd(n/d, d) = 1`.",
     "significance": "major",
@@ -193,7 +193,7 @@
       "startLine": 131,
       "endLine": 150
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "All Unitary Perfect Numbers are Even",
     "content": "**even_of_isUnitaryPerfect** (axiom): The main theorem, with a detailed proof sketch in comments. The argument uses the product formula σ*(n) = ∏(1 + pᵢ^aᵢ): for odd n, each factor is even, making σ* divisible by 2^ω(n), but σ* = 2n allows at most one factor of 2. Three cases (k ≥ 2, k = 1, k = 0) all yield contradictions.",
     "significance": "key",
@@ -212,7 +212,7 @@
       "startLine": 152,
       "endLine": 166
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Verified Examples: 6, 60, 90",
     "content": "Three unitary perfect numbers verified by `native_decide`: 6 = 2·3 (divisors {1,2,3}), 60 = 2²·3·5 (divisors {1,3,4,5,12,15,20}), and 90 = 2·3²·5 (divisors {1,2,5,9,10,18,45}). The `Decidable` instance on `IsUnitaryPerfect` enables the Lean kernel to evaluate the Finset computation and check the sum equality.",
     "significance": "major",
@@ -230,7 +230,7 @@
       "startLine": 172,
       "endLine": 174
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Prime Power Unitary Divisors",
     "content": "**unitaryDivisors_primePow** (axiom): For prime p and k > 0, the unitary divisors of p^k are exactly {1, p^k}. Any intermediate divisor p^j (0 < j < k) has gcd(p^j, p^{k-j}) = p^{min(j,k-j)} > 1, so it is not unitary.",
     "significance": "major",
@@ -248,7 +248,7 @@
       "startLine": 176,
       "endLine": 178
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Multiplicativity of σ*",
     "content": "**unitaryDivisorSum_mul_coprime** (axiom): σ*(mn) = σ*(m)·σ*(n) for coprime m, n. This multiplicativity follows from the bijection between unitary divisors of mn and pairs (d₁, d₂) where d₁ | m and d₂ | n are unitary, since coprimality of m and n ensures gcd(d₁d₂, mn/(d₁d₂)) = gcd(d₁, m/d₁)·gcd(d₂, n/d₂).",
     "significance": "key",
@@ -266,7 +266,7 @@
       "startLine": 180,
       "endLine": 185
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Divisor Pairing Structure",
     "content": "**properUnitaryDivisors_pairing** (axiom): Proper unitary divisors pair up via d ↦ n/d (with a possible singleton at √n). This involutive pairing is guaranteed by `unitary_complement` and provides structural insight into how σ*(n) decomposes.",
     "significance": "minor",

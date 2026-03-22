@@ -96,7 +96,7 @@
       "startLine": 44,
       "endLine": 46
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Equivalence of Diameter Definitions",
     "content": "Asserts that the infimum and liminf definitions of transfinite diameter agree. This follows from Fekete's lemma (1923): for superadditive sequences $a_n$, $\\lim a_n/n = \\sup a_n/n$. Applied to $\\log d_n$, this gives $\\inf d_n = \\lim d_n$.",
     "mathContext": "$\\rho(F) = \\rho'(F)$, i.e., $\\inf_n d_n(F) = \\liminf_n d_n(F)$",
@@ -289,7 +289,7 @@
       "startLine": 104,
       "endLine": 105
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Problem is Open",
     "content": "Records that the diameter-one conjecture is an open problem — neither proved nor disproved. This is formalized as the negation of the law of excluded middle for the conjecture, which in Lean's constructive setting serves as a marker that the status is genuinely unknown. The problem has been open since 1958.",
     "mathContext": "$\\neg(\\text{diameterOneConjecture} \\vee \\neg\\text{diameterOneConjecture})$",
@@ -352,7 +352,7 @@
       "startLine": 119,
       "endLine": 121
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Line Segments: μ Determined by Diameter",
     "content": "States that for line segments, $\\mu(F)$ is a function of the transfinite diameter alone. For $[0, L]$, $\\rho = L/4$ and the Chebyshev polynomials $T_n$ (rescaled) are the extremal polynomials. Their sublevel sets have area $\\sim \\pi L/(4n)$ when $L < 4$ and $\\to 0$ when $L \\geq 4$ (i.e., $\\rho \\geq 1$).",
     "mathContext": "$\\exists g : \\mathbb{R} \\to \\mathbb{R}_{\\geq 0}^\\infty,\\; \\mu([a,b]) = g(\\rho([a,b]))$",
@@ -374,7 +374,7 @@
       "startLine": 123,
       "endLine": 125
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Discs: μ Determined by Diameter",
     "content": "States that for closed discs, $\\mu(F)$ is a function of the transfinite diameter. For the disc $\\overline{B}(0, r)$, the extremal polynomials are $z^n$ with sublevel set $|z| < 1$ (the open unit disc) of area $\\pi$, independent of $n$. When $r \\geq 1$, one can shift roots to make sublevel sets shrink to measure zero.",
     "mathContext": "$\\exists g : \\mathbb{R} \\to \\mathbb{R}_{\\geq 0}^\\infty,\\; \\mu(\\overline{B}(c,r)) = g(\\rho(\\overline{B}(c,r)))$",
@@ -396,7 +396,7 @@
       "startLine": 127,
       "endLine": 129
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Transfinite Diameter of a Line Segment",
     "content": "The classical result that a line segment of length $L$ has transfinite diameter $L/4$. This follows from the Chebyshev polynomial theory: the $n$-th Chebyshev polynomial on $[-1, 1]$ has leading coefficient $2^{1-n}$, giving $\\tau([-1,1]) = 1/2$ and $\\rho([-1,1]) = 1/2$. Rescaling to length $L$ gives $\\rho = L/4$.",
     "mathContext": "$\\rho([a, b]) = |b - a|/4$",
@@ -418,7 +418,7 @@
       "startLine": 131,
       "endLine": 133
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Transfinite Diameter of a Disc",
     "content": "The transfinite diameter of a closed disc of radius $r$ equals $r$. This is proved using the $n$-th roots of unity: placing $n$ points at $r \\cdot e^{2\\pi i k/n}$ maximizes the product of pairwise distances. The $n$-th diameter is $r \\cdot n^{1/(n-1)} \\to r$.",
     "mathContext": "$\\rho(\\overline{B}(c, r)) = r$",
@@ -440,7 +440,7 @@
       "startLine": 139,
       "endLine": 144
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Small Diameter: Sublevel Set Contains Disc",
     "content": "When $\\rho(F) < 1$, every sublevel set $\\{z : |f(z)| < 1\\}$ for polynomials with roots in $F$ contains a disc of radius bounded below by a positive constant depending on $F$. This is the 'positive' direction: small capacity means the polynomial cannot be small only in a negligible region. The proof uses potential-theoretic estimates relating the Green's function to sublevel set geometry.",
     "mathContext": "$\\rho(F) < 1 \\implies \\exists c > 0,\\; \\forall f \\text{ with roots in } F,\\; \\exists B(z_0, r) \\subseteq S(f),\\; r \\geq c$",
@@ -484,7 +484,7 @@
       "startLine": 155,
       "endLine": 161
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős-Netanyahu Result (1973)",
     "content": "For bounded connected sets $F$ with $0 < \\rho(F) < 1$, Erdős and Netanyahu (1973) proved explicit disc radius bounds as a function of the transfinite diameter. This strengthened the qualitative result by giving quantitative control. The paper appeared in the Israel Journal of Mathematics and represented one of Netanyahu's contributions to geometric function theory.",
     "mathContext": "$F$ bounded, connected, $0 < \\rho(F) < 1 \\implies \\exists r(\\rho) > 0,\\; \\forall f,\\; \\exists B(z_0, r(\\rho)) \\subseteq S(f)$",
@@ -529,7 +529,7 @@
       "startLine": 174,
       "endLine": 177
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Unit Disc Has Transfinite Diameter 1",
     "content": "A proved theorem (not sorry) that the unit disc has transfinite diameter $1$, derived from the general disc_diameter axiom. This is the simplest nontrivial computation of transfinite diameter and establishes the critical case $\\rho = 1$ concretely.",
     "mathContext": "$\\rho(\\overline{B}(0, 1)) = 1$",
@@ -550,7 +550,7 @@
       "startLine": 183,
       "endLine": 186
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Monotonicity of Transfinite Diameter",
     "content": "The transfinite diameter is monotone: $F \\subseteq G$ implies $\\rho(F) \\leq \\rho(G)$. This follows because any $n$-point configuration in $F$ is also a configuration in $G$, so the supremum over $G$ is at least as large. This is a fundamental property connecting set inclusion to capacity.",
     "mathContext": "$F \\subseteq G \\implies \\rho(F) \\leq \\rho(G)$",
@@ -572,7 +572,7 @@
       "startLine": 188,
       "endLine": 191
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Non-negativity of Transfinite Diameter",
     "content": "The transfinite diameter is always non-negative, since it is defined as a supremum of non-negative quantities (products of absolute values raised to positive powers). This is a basic sanity check on the definition.",
     "mathContext": "$\\rho(F) \\geq 0$ for all $F \\subseteq \\mathbb{C}$",
@@ -592,7 +592,7 @@
       "startLine": 193,
       "endLine": 196
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Finite Sets Have Zero Capacity",
     "content": "Any finite set $F$ has transfinite diameter $0$. For $n > |F|$, some points in an $n$-point configuration must coincide, making the product of pairwise distances zero. Hence $d_n(F) \\leq (\\text{diam}(F))^{|F|/n} \\to 0$. This is why the problem restricts to infinite sets.",
     "mathContext": "$|F| < \\infty \\implies \\rho(F) = 0$",
@@ -614,7 +614,7 @@
       "startLine": 198,
       "endLine": 202
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Scaling Property of Transfinite Diameter",
     "content": "The transfinite diameter scales linearly under dilation: $\\rho(cF) = |c| \\cdot \\rho(F)$. This is because multiplying all points by $c$ multiplies each pairwise distance by $|c|$, and the geometric mean scales accordingly. This property is essential for reducing computations to normalized sets.",
     "mathContext": "$\\rho(c \\cdot F) = |c| \\cdot \\rho(F)$ for $c \\neq 0$",
@@ -636,7 +636,7 @@
       "startLine": 208,
       "endLine": 211
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Monotonicity of μ (Reversed)",
     "content": "The measure $\\mu$ is anti-monotone: $F \\subseteq G$ implies $\\mu(G) \\leq \\mu(F)$. Larger sets have more polynomials available (any polynomial with roots in $F$ also has roots in $G$), so the infimum over $G$ is at most the infimum over $F$. Note the reversal compared to $\\rho$.",
     "mathContext": "$F \\subseteq G \\implies \\mu(G) \\leq \\mu(F)$",
@@ -657,7 +657,7 @@
       "startLine": 213,
       "endLine": 216
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "μ(F) is Approached",
     "content": "For infinite $F$, the infimum $\\mu(F)$ can be approximated: for any $\\varepsilon > 0$, there exists a polynomial with roots in $F$ whose sublevel set measure is within $\\varepsilon$ of $\\mu(F)$. This is a standard property of infima over non-empty sets and ensures $\\mu(F)$ is a meaningful quantity.",
     "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists f,\\; |S(f)| < \\mu(F) + \\varepsilon$",
@@ -698,7 +698,7 @@
       "startLine": 225,
       "endLine": 231
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Current State of Knowledge",
     "content": "Summarizes the state of knowledge: (1) for line segments and discs with $\\rho \\geq 1$, $\\mu = 0$; (2) for any closed infinite $F$ with $\\rho < 1$, $\\mu > 0$. The first part follows from EHP 1958 using Chebyshev polynomials and roots of unity. The second part follows from the small_diameter_disc result: if every sublevel set contains a disc of fixed positive radius, the measure cannot vanish.",
     "mathContext": "$(\\forall F \\text{ line seg. or disc},\\; \\rho(F) \\geq 1 \\implies \\mu(F) = 0) \\wedge (\\forall F \\text{ closed infinite},\\; \\rho(F) < 1 \\implies \\mu(F) > 0)$",

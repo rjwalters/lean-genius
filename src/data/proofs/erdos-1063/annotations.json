@@ -7,7 +7,7 @@
     "title": "DividesChoose predicate",
     "content": "Defines when $(n - i)$ divides the binomial coefficient $\\binom{n}{k}$ for a given triple $(n, k, i)$. The predicate requires $i < k$ (so $n - i$ ranges over the $k$ consecutive integers $\\{n, n-1, \\ldots, n-k+1\\}$), $n \\geq 2k$ (the regime studied by Erdős-Selfridge), and the divisibility condition $(n - i) \\mid \\binom{n}{k}$. Since $\\binom{n}{k} = \\frac{n(n-1)\\cdots(n-k+1)}{k!}$, the divisibility $(n-i) \\mid \\binom{n}{k}$ relates to how the prime factorization of $k!$ interacts with the consecutive product.",
     "mathContext": "$\\text{DividesChoose}(n, k, i) :\\equiv i < k \\land n \\geq 2k \\land (n - i) \\mid \\binom{n}{k}$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["binomial coefficient", "divisibility", "consecutive integers", "prime factorization"],
     "prerequisites": ["Nat.choose", "Nat.dvd"]
   },
@@ -19,7 +19,7 @@
     "title": "Divisibility counting function",
     "content": "Counts how many of the $k$ integers $\\{n, n-1, \\ldots, n-k+1\\}$ divide $\\binom{n}{k}$. Formally, $|\\{0 \\leq i < k : (n-i) \\mid \\binom{n}{k}\\}|$. Uses `Finset.filter` over `Finset.range k` to select divisible indices and takes the cardinality. Marked `noncomputable` because the `Decidable` instance for divisibility requires classical logic in Lean 4. The Erdős-Selfridge result bounds this count strictly below $k$.",
     "mathContext": "$\\text{divisibilityCount}(n, k) = |\\{i \\in \\{0, \\ldots, k-1\\} : (n - i) \\mid \\binom{n}{k}\\}|$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["counting function", "Finset.filter", "cardinality"],
     "prerequisites": ["Finset.range", "Finset.filter", "Nat.choose"]
   },
@@ -31,7 +31,7 @@
     "title": "AllButOneDivide predicate",
     "content": "The key property for Erdős Problem #1063: all but one of the integers $\\{n, n-1, \\ldots, n-k+1\\}$ divide $\\binom{n}{k}$. Formally, $n \\geq 2k$ and $\\text{divisibilityCount}(n, k) \\geq k - 1$. Since Erdős-Selfridge shows $\\text{divisibilityCount} < k$, the maximum achievable count is exactly $k - 1$, making this the optimal divisibility condition. The problem asks: for what $n$ does this first become achievable?",
     "mathContext": "$\\text{AllButOneDivide}(n, k) :\\equiv n \\geq 2k \\land |\\{i : (n-i) \\mid \\binom{n}{k}\\}| \\geq k - 1$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["extremal threshold", "optimal divisibility", "pigeonhole principle"],
     "prerequisites": ["divisibilityCount", "erdos_selfridge_nondivisibility"]
   },
@@ -43,7 +43,7 @@
     "title": "Threshold n_k definition",
     "content": "Defines $n_k$ as the least $n \\geq 2k$ satisfying the all-but-one divisibility condition. The definition has two parts: (1) $n_k$ itself satisfies `AllButOneDivide`, and (2) no smaller $m \\geq 2k$ satisfies it (minimality). This is the central object of Erdős Problem #1063 — the question asks for the growth rate of $n_k$ as a function of $k$. The known values $n_2 = 4, n_3 = 6, n_4 = 9, n_5 = 12$ suggest slow but possibly exponential growth.",
     "mathContext": "$n_k = \\min\\{n \\geq 2k : \\text{AllButOneDivide}(n, k)\\}$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["extremal function", "threshold function", "minimality"],
     "prerequisites": ["AllButOneDivide"]
   },
@@ -55,7 +55,7 @@
     "title": "Erdős-Selfridge nondivisibility theorem",
     "content": "The foundational result (Erdős and Selfridge, 1983): for $n \\geq 2k$, at least one of $\\{n, n-1, \\ldots, n-k+1\\}$ fails to divide $\\binom{n}{k}$. Equivalently, $\\text{divisibilityCount}(n, k) < k$. This is axiomatized because the proof involves detailed analysis of prime factorizations: the product $n(n-1)\\cdots(n-k+1)$ contributes at most $k!$ to cancel the denominator of $\\binom{n}{k}$, and for $n \\geq 2k$ some factor must retain a prime power that prevents divisibility.",
     "mathContext": "$\\forall k \\geq 2,\\, \\forall n \\geq 2k : |\\{i < k : (n-i) \\mid \\binom{n}{k}\\}| < k$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Bertrand's postulate", "prime factorization", "Korselt's criterion", "Legendre's formula"],
     "prerequisites": ["divisibilityCount", "Nat.choose"]
   },
@@ -91,7 +91,7 @@
     "title": "Monier's factorial upper bound",
     "content": "Monier (1985) proved $n_k \\leq k!$ for $k \\geq 3$: the number $n = k!$ satisfies `AllButOneDivide`. The key idea is that $\\binom{k!}{k} = \\frac{k!(k!-1)\\cdots(k!-k+1)}{k!}$, and for most $0 \\leq i < k$, the factor $(k! - i)$ divides $\\binom{k!}{k}$ because $k!$ is divisible by every integer up to $k$. This was the first non-trivial upper bound but grows super-exponentially.",
     "mathContext": "$n_k \\leq k!$ for $k \\geq 3$: $\\text{AllButOneDivide}(k!, k)$ holds",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["factorial", "highly composite numbers", "super-exponential growth"],
     "prerequisites": ["IsThreshold", "Nat.factorial", "AllButOneDivide"]
   },
@@ -103,7 +103,7 @@
     "title": "Cambie's improved LCM bound",
     "content": "Cambie improved the upper bound to $n_k \\leq k \\cdot \\text{lcm}(2, 3, \\ldots, k-1)$, which by the prime number theorem satisfies $\\text{lcm}(1, \\ldots, m) = e^{(1+o(1))m}$, yielding $n_k \\leq e^{(1+o(1))k}$. This is a dramatic improvement from $k!$ (super-exponential) to single-exponential. The formalization uses $k \\cdot (k-1)!$ as a crude upper bound since $\\text{lcm}(2, \\ldots, k-1) \\leq (k-1)!$. The key insight is that $\\text{lcm}(2, \\ldots, k-1)$ captures the essential arithmetic — it is the smallest number divisible by all integers $2$ through $k-1$.",
     "mathContext": "$n_k \\leq k \\cdot \\text{lcm}(2, \\ldots, k-1) \\leq e^{(1+o(1))k}$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["least common multiple", "prime number theorem", "Chebyshev function", "single-exponential growth"],
     "prerequisites": ["IsThreshold", "Nat.factorial", "prime number theorem"]
   },
@@ -115,7 +115,7 @@
     "title": "Polynomial growth question",
     "content": "The central open question formalized as a Lean `Prop`: does there exist a constant $C \\geq 1$ such that $n_k \\leq k^C$ for all $k \\geq 2$? If true, the growth is polynomial; if false, it is at least exponential. The gap between the known bounds — polynomial lower bound $n_k \\geq 2k$ (trivially) and exponential upper bound $n_k \\leq e^{(1+o(1))k}$ (Cambie) — is enormous, making this one of the cleanest open problems in combinatorial number theory.",
     "mathContext": "$\\text{ErdosProblem1063} :\\equiv \\exists C \\geq 1,\\, \\forall k \\geq 2 : n_k \\leq k^C$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["polynomial vs exponential growth", "computational complexity", "open Erdős problems"],
     "prerequisites": ["IsThreshold"]
   },
@@ -127,7 +127,7 @@
     "title": "Summary theorem combining key results",
     "content": "Packages the two main established results into a single conjunction: (1) the Erdős-Selfridge nondivisibility — full divisibility never occurs for $n \\geq 2k$, and (2) Monier's factorial bound — a threshold $n_k \\leq k!$ exists for $k \\geq 3$. The proof is `exact ⟨erdos_selfridge_nondivisibility, monier_factorial_bound⟩`, directly combining the two axioms. This serves as the formalization's main entry point, summarizing the state of knowledge: all-but-one divisibility is achievable but full divisibility is not.",
     "mathContext": "$(\\forall k \\geq 2,\\, \\forall n \\geq 2k : \\text{divCount} < k) \\land (\\forall k \\geq 3,\\, \\exists n_k \\leq k!)$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["theorem packaging", "conjunction of axioms", "summary result"],
     "prerequisites": ["erdos_selfridge_nondivisibility", "monier_factorial_bound"]
   }
