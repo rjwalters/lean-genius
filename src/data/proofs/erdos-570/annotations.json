@@ -17,6 +17,7 @@
     "type": "definition",
     "title": "Cycle Graph (Constructive)",
     "content": "**CycleGraph k:** The cycle C_k on k vertices (k ≥ 3).\n\nAdjacency: vertices i and j are adjacent iff j ≡ i+1 (mod k) or i ≡ j+1 (mod k).\n\nThis is one of the few constructive definitions in the file. The symmetry proof uses the disjunction structure of adjacency. The loopless proof shows (i+1) mod k ≠ i when k ≥ 3, using the fact that k ∤ 1.\n\nThis is the graph the 'red' player tries to find in the Ramsey game.",
+    "mathContext": "$C_k$ has vertex set $\\mathbb{Z}/k\\mathbb{Z}$ and edges $\\{i, i+1\\}$ for $i = 0, \\ldots, k-1$. It is the unique 2-regular graph on $k$ vertices.",
     "significance": "critical",
     "relatedConcepts": ["Cycles", "SimpleGraph", "Constructive proofs"]
   },

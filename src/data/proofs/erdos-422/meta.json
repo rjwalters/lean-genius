@@ -89,6 +89,14 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Module docstring describing the Hofstadter-type recursive sequence from Erdős Problem #422, its origin from Hofstadter's communication to Erdős, and the open status of well-definedness, surjectivity, and growth. Imports Mathlib for natural number arithmetic and set theory.",
+      "mathContext": "$f(1) = f(2) = 1$, $f(n) = f(n - f(n-1)) + f(n - f(n-2))$ for $n > 2$. All questions about this sequence remain OPEN."
+    },
+    {
       "id": "definition",
       "title": "Core Definitions",
       "startLine": 28,
