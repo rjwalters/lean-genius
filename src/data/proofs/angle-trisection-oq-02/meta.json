@@ -60,8 +60,36 @@
     ],
     "dateAdded": "2026-02-24",
     "axiomCount": 2,
+    "prerequisites": [
+      "Galois theory (Galois groups, Galois correspondence)",
+      "p-groups and their characterization via order",
+      "Field extensions and degree computations",
+      "Compass-and-straightedge constructibility (from OQ-01)"
+    ],
     "lineCount": 298
   },
+  "crossReferences": [
+    {
+      "targetId": "angle-trisection",
+      "relationship": "extends",
+      "description": "Parent file with the degree criterion (necessary condition) — this file upgrades it to a biconditional via Galois groups"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Both use Galois groups to prove impossibility: Abel-Ruffini via solvable groups, constructibility via 2-groups"
+    },
+    {
+      "targetId": "inverse-galois",
+      "relationship": "related",
+      "description": "The Galois group realizations (S₃ for x³-2, D₄ for x⁴-2) are concrete instances of the inverse Galois problem"
+    },
+    {
+      "targetId": "sylow-theorems",
+      "relationship": "foundational",
+      "description": "Sylow theory provides structure theorems for p-groups; the 2-group characterization of constructibility relies on 2-Sylow subgroups"
+    }
+  ],
   "overview": {
     "historicalContext": "In 1837, Pierre Wantzel proved that compass-and-straightedge constructions can only produce algebraic numbers whose minimal polynomial has degree a power of 2. This was the first rigorous proof of the impossibility of trisecting an arbitrary angle and doubling the cube.\n\nWith the development of Galois theory (Galois 1832, published 1846), the characterization was refined: α is constructible if and only if the Galois group of its minimal polynomial is a 2-group. This characterization is both necessary AND sufficient — a genuine biconditional, upgrading Wantzel's necessary condition to an exact characterization.\n\nThe key insight of the Galois perspective is structural: 2-groups have a composition series with ℤ/2ℤ factors, corresponding exactly to the tower of degree-2 extensions that compass-and-straightedge constructions generate. A number is constructible iff its algebraic data 'factors' into a sequence of square root extensions.",
     "problemStatement": "**Open Question (angle-trisection-oq-02)**: Can we characterize which algebraic numbers are constructible in terms of their Galois groups?\n\n**Answer: YES** — the complete characterization is:\n\nAn algebraic number α ∈ ℝ is constructible from ℚ by compass and straightedge\n**if and only if** the Galois group of its minimal polynomial over ℚ is a 2-group.\n\nEquivalently: α is constructible ↔ Gal(minpoly(ℚ,α)) has order a power of 2.\n\n**Key examples**:\n- √2: Gal(x²-2/ℚ) ≅ ℤ/2ℤ (order 2 = 2¹) → constructible ✓\n- ∛2: Gal(x³-2/ℚ) ≅ S₃ (order 6, not 2-group) → NOT constructible ✗\n- 2^(1/4): Gal(x⁴-2/ℚ) ≅ D₄ (order 8 = 2³) → constructible ✓\n- cos(20°): Gal(8x³-6x-1/ℚ) ≅ ℤ/3ℤ (order 3, not 2-group) → NOT constructible ✗",
@@ -80,42 +108,48 @@
       "title": "2-Groups: Basic Facts",
       "startLine": 46,
       "endLine": 59,
-      "summary": "Three proved theorems about 2-groups: IsPGroup.iff_card (2-group ↔ order is 2^n), IsPGroup.of_card (2-power order → 2-group), and their combination."
+      "summary": "Three proved theorems about 2-groups: IsPGroup.iff_card (2-group ↔ order is 2^n), IsPGroup.of_card (2-power order → 2-group), and their combination.",
+      "mathContext": "A finite group $G$ is a 2-group $\\iff |G| = 2^n$ for some $n \\geq 0$. Equivalently, every element has order a power of 2."
     },
     {
       "id": "constructibility",
       "title": "Definition of Constructibility",
       "startLine": 61,
       "endLine": 71,
-      "summary": "IsConstructibleFromQ: α is constructible iff it lies in some K ⊇ ℚ inside ℝ with FiniteDimensional ℚ K and [K:ℚ] = 2^n for some n."
+      "summary": "IsConstructibleFromQ: α is constructible iff it lies in some K ⊇ ℚ inside ℝ with FiniteDimensional ℚ K and [K:ℚ] = 2^n for some n.",
+      "mathContext": "$\\alpha$ constructible $\\iff \\exists$ tower $\\mathbb{Q} = K_0 \\subset K_1 \\subset \\cdots \\subset K_n$ with $[K_{i+1}:K_i] = 2$ and $\\alpha \\in K_n$."
     },
     {
       "id": "wantzel-galois",
       "title": "Wantzel-Galois Theorem (Axiomatized)",
       "startLine": 73,
       "endLine": 89,
-      "summary": "The main biconditional: IsConstructibleFromQ α ↔ IsPGroup 2 (minpoly ℚ α).Gal. Axiomatized — requires full Galois correspondence."
+      "summary": "The main biconditional: IsConstructibleFromQ α ↔ IsPGroup 2 (minpoly ℚ α).Gal. Axiomatized — requires full Galois correspondence.",
+      "mathContext": "$\\alpha$ constructible $\\iff$ $\\text{Gal}(\\text{minpoly}(\\mathbb{Q}, \\alpha))$ is a 2-group. This is Wantzel's theorem refined by Galois theory."
     },
     {
       "id": "non-constructible",
       "title": "Non-Constructibility: ∛2 and cos(20°)",
       "startLine": 94,
       "endLine": 135,
-      "summary": "Proved: Gal(x³-2/ℚ) (order 6) and Gal(8x³-6x-1/ℚ) (order 3) are NOT 2-groups. Key: 3 divides both orders but gcd(3,2^n)=1, so neither is a power of 2."
+      "summary": "Proved: Gal(x³-2/ℚ) (order 6) and Gal(8x³-6x-1/ℚ) (order 3) are NOT 2-groups. Key: 3 divides both orders but gcd(3,2^n)=1, so neither is a power of 2.",
+      "mathContext": "$|\\text{Gal}(x^3-2/\\mathbb{Q})| = 6 = 2 \\cdot 3$, not $2^n$. $|\\text{Gal}(8x^3-6x-1/\\mathbb{Q})| = 3$, not $2^n$. Key: $\\gcd(3, 2^n) = 1$ so $3 \\nmid 2^n$."
     },
     {
       "id": "constructible-examples",
       "title": "Constructible Examples: √2 and 2^(1/4)",
       "startLine": 137,
       "endLine": 200,
-      "summary": "PROVED: |Gal(x²-2/ℚ)| = 2 via divisibility squeeze (prime degree divides |Gal|, Gal embeds into S₂). Gal(x⁴-2/ℚ) = 8 from InverseGaloisD4. Both are 2-groups."
+      "summary": "PROVED: |Gal(x²-2/ℚ)| = 2 via divisibility squeeze (prime degree divides |Gal|, Gal embeds into S₂). Gal(x⁴-2/ℚ) = 8 from InverseGaloisD4. Both are 2-groups.",
+      "mathContext": "$|\\text{Gal}(x^2-2/\\mathbb{Q})| = 2 = 2^1$ ($\\sqrt{2}$ constructible). $|\\text{Gal}(x^4-2/\\mathbb{Q})| = 8 = 2^3$ ($\\sqrt[4]{2}$ constructible)."
     },
     {
       "id": "oq01-connection",
       "title": "Connection to OQ-01 (Degree Criterion)",
       "startLine": 202,
       "endLine": 236,
-      "summary": "PROVED: galois_2group_implies_degree_pow2 via tower law (natDegree | finrank(SplittingField) = |Gal| = 2^k). Former axiom eliminated."
+      "summary": "PROVED: galois_2group_implies_degree_pow2 via tower law (natDegree | finrank(SplittingField) = |Gal| = 2^k). Former axiom eliminated.",
+      "mathContext": "$\\deg(\\text{minpoly}) \\mid [\\text{SplittingField} : \\mathbb{Q}] = |\\text{Gal}| = 2^k$, so $\\deg(\\text{minpoly}) = 2^j$ for some $j \\leq k$."
     }
   ],
   "conclusion": {
