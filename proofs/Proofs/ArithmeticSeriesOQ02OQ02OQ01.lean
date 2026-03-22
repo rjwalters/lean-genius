@@ -42,7 +42,7 @@ theorem simplicialSum_nil (n : ℕ) : simplicialSum [] n = 1 := rfl
 /-- Single element: reduces to 1D hockey stick. -/
 theorem simplicialSum_singleton (a n : ℕ) :
     simplicialSum [a] n = simplicial (a + 1) n := by
-  simp only [simplicialSum, simplicialSum_nil, mul_one]
+  simp only [simplicialSum, mul_one]
   exact hockey_stick a n
 
 -- ============================================================
@@ -60,12 +60,11 @@ theorem simplicialSum_singleton (a n : ℕ) :
     Vandermonde convolution identity at each step. -/
 theorem simplicialSum_eq (as : List ℕ) (n : ℕ) :
     simplicialSum as n = simplicial (as.sum + as.length) n := by
-  induction as with
+  induction as generalizing n with
   | nil => simp [simplicial]
   | cons a rest ih =>
     simp only [simplicialSum, List.sum_cons, List.length_cons]
-    conv_lhs =>
-      arg 2; ext i; rw [ih]
+    simp_rw [ih]
     rw [show a + rest.sum + (rest.length + 1) = a + (rest.sum + rest.length) + 1 from by omega]
     exact parallel_vandermonde a (rest.sum + rest.length) n
 
@@ -97,15 +96,12 @@ theorem hockey_stick_1d (a n : ℕ) :
 theorem hockey_stick_2d' (a b n : ℕ) :
     simplicialSum [a, b] n = simplicial (a + b + 2) n := by
   rw [simplicialSum_eq]
-  simp [List.sum_cons, List.length]
-  ring_nf
+  simp [List.sum_cons, List.length, simplicial]
 
 /-- k=3: the 3D hockey stick identity. -/
 theorem hockey_stick_3d (a b c n : ℕ) :
     simplicialSum [a, b, c] n = simplicial (a + b + c + 3) n := by
-  rw [simplicialSum_eq]
-  simp [List.sum_cons, List.length]
-  ring_nf
+  rw [simplicialSum_eq]; congr 1; simp [List.sum_cons, List.length]; omega
 
 -- ============================================================
 -- Part VI: Concrete Verification

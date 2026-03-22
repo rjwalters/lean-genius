@@ -1,0 +1,51 @@
+{
+  "slug": "arithmetic-series-oq-02-oq-02-oq-01",
+  "title": "k-Dimensional Hockey Stick Identity by Induction on Dimension",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "simplicialSum as n = simplicial (as.sum + as.length) n",
+    "plain": "The iterated convolution of simplicial numbers over a k-simplex equals a single simplicial number.",
+    "whyMatters": ["Generalizes the 1D and 2D hockey stick identities to arbitrary dimension"]
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: ArithmeticSeriesOQ02OQ02OQ01.lean - k-dim hockey stick, 130 lines, 0 axioms, 0 sorries. Proved by induction on parameter list using parallel Vandermonde.",
+    "builtItems": [
+      "simplicialSum: iterated convolution of simplicial numbers",
+      "simplicialSum_eq: main theorem (k-dim identity)",
+      "hockey_stick_kd: indexed Fin k version",
+      "hockey_stick_1d, hockey_stick_2d', hockey_stick_3d: specializations",
+      "3 native_decide verification examples"
+    ],
+    "insights": [
+      "Induction on the parameter list (not on k or n) gives the cleanest proof",
+      "Each step uses parallel_vandermonde to fold one dimension",
+      "generalizing n in the induction is essential since the inner sum varies n-i",
+      "simp_rw rewrites under Finset.sum binders where conv/rw cannot"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Could extend to weighted/signed versions",
+      "Connection to multinomial coefficients"
+    ]
+  },
+  "tags": [],
+  "relatedProofs": ["arithmetic-series-oq-02-oq-02"],
+  "references": {"papers": [], "urls": [], "mathlib": []},
+  "started": "2026-03-22T11:00:00Z",
+  "lastUpdate": "2026-03-22T11:30:00Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ02OQ01.lean",
+      "filename": "ArithmeticSeriesOQ02OQ02OQ01.lean",
+      "lineCount": 130,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false
+    }
+  ]
+}
