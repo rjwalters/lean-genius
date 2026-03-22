@@ -167,13 +167,31 @@
       "targetId": "isoperimetric-theorem",
       "relationship": "extends",
       "description": "Wiedijk #43: the abstract version is in IsoperimetricTheorem.lean; this file provides the OQ-chain approach"
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-02-oq-02",
+      "relationship": "uses",
+      "description": "The IBP formula for Fourier coefficients ĉₙ(f') = in·ĉₙ(f) proved there is a key ingredient in Hurwitz's Fourier-analytic proof of the isoperimetric inequality"
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "foundational",
+      "description": "The Fourier decomposition and Parseval's identity from Fourier series theory underpin the spectral proof: the isoperimetric inequality reduces to comparing Fourier coefficient norms"
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "uses",
+      "description": "The 2D Cauchy-Schwarz inequality (xv-yu)² ≤ (x²+y²)(u²+v²) proved here as cross_product_sq_le is used in the arithmetic kernel of the isoperimetric proof"
     }
   ],
   "relatedProofs": [
     "area-of-circle",
     "area-of-circle-oq-01",
     "area-of-circle-oq-01-oq-02",
-    "isoperimetric-theorem"
+    "area-of-circle-oq-01-oq-02-oq-02",
+    "isoperimetric-theorem",
+    "fourier-series",
+    "cauchy-schwarz"
   ],
   "leanFile": {
     "imports": [
