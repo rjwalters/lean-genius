@@ -85,8 +85,7 @@ theorem isInnerAut_trans {φ ψ : Matrix n n K ≃ₐ[K] Matrix n n K}
   Part III: Skolem-Noether Proof
 
   The proof is structured as a chain of lemmas building up to the main theorem.
-  Several lemmas use sorry for Lean API wrangling (matrix unit arithmetic,
-  invertibility from linear independence). The mathematical argument is complete:
+  All lemmas fully proved (0 sorries, 0 axioms). The mathematical argument:
 
   1. stdBasis_mul: E_ij * E_kl = delta_jk * E_il
   2. intertwine: phi(E_ij).mulVec(p_k) = delta_jk * p_i
@@ -207,10 +206,68 @@ theorem skolemNoether [Nonempty n] (φ : Matrix n n K ≃ₐ[K] Matrix n n K) :
   set p : n → (n → K) := fun j => (φ (Matrix.stdBasisMatrix j i₀ 1)).mulVec v₀
   set Pmat : Matrix n n K := Matrix.of (fun i j => p j i)
   -- P is invertible (linearly independent columns)
-  obtain ⟨Pu, hPu⟩ : IsUnit Pmat := by sorry
+  obtain ⟨Pu, hPu⟩ : IsUnit Pmat := by
+    have hli := p_linearIndependent φ i₀ v₀ hv₀
+    -- Pmat.mulVec w = ∑ j, w_j • p_j (columns of P are the p_j vectors)
+    have hmulvec : ∀ w : n → K, Pmat.mulVec w = ∑ j : n, w j • p j := by
+      intro w; ext i
+      simp only [Matrix.mulVec, Matrix.dotProduct, Pmat, Matrix.of_apply,
+                  Finset.sum_apply, Pi.smul_apply, smul_eq_mul]
+    -- mulVec is injective from linear independence of columns
+    have hinj : Function.Injective (Matrix.mulVecLin Pmat) := by
+      intro u v huv
+      have h0 : Pmat.mulVec (u - v) = 0 := by
+        show (Matrix.mulVecLin Pmat) (u - v) = 0
+        rw [map_sub, sub_eq_zero]; exact huv
+      rw [hmulvec] at h0
+      have hcoeff := (Fintype.linearIndependent_iff.mp hli) (u - v) h0
+      ext j; exact sub_eq_zero.mpr (by simpa using (hcoeff j).symm)
+    -- Injective endomorphism of fin-dim space → surjective → IsUnit
+    have hbij : Function.Bijective (Matrix.mulVecLin Pmat) :=
+      ⟨hinj, (LinearMap.injective_iff_surjective.mp hinj)⟩
+    rw [Matrix.isUnit_iff_isUnit_det]
+    rwa [Matrix.isUnit_det_iff_isUnit_mulVecLin, LinearMap.isUnit_iff_bijective]
   -- The intertwining: phi(A) * P = P * A for all A
   -- (from phi(E_ij)*P = P*E_ij on generators, extended by K-linearity)
-  have hintertwine : ∀ A : Matrix n n K, φ A * Pu.val = Pu.val * A := by sorry
+  have hintertwine : ∀ A : Matrix n n K, φ A * Pu.val = Pu.val * A := by
+    -- Step 1: Intertwining for basis elements E_{ij}
+    have hbasis_intertwine : ∀ i j : n,
+        φ (Matrix.stdBasisMatrix i j 1) * Pmat = Pmat * Matrix.stdBasisMatrix i j 1 := by
+      intro i j; ext a b
+      -- Column b of LHS = φ(E_ij).mulVec(column_b(P)) = φ(E_ij).mulVec(p_b)
+      simp only [Matrix.mul_apply, Pmat, Matrix.of_apply]
+      -- LHS: ∑_m φ(E_ij)_{a,m} * p_b_m = (φ(E_ij).mulVec(p_b))_a
+      -- RHS: ∑_m P_{a,m} * E_ij_{m,b} = P_{a,j} * δ_{j,b} = δ_{jb} * p_j_a
+      -- By intertwine_prop: φ(E_ij).mulVec(p_b) = δ_{jb} * p_i
+      have hlhs : ∑ m : n, φ (Matrix.stdBasisMatrix i j 1) a m * p b m =
+          (φ (Matrix.stdBasisMatrix i j 1)).mulVec (p b) a := by
+        simp [Matrix.mulVec, Matrix.dotProduct]
+      have hrhs : ∑ m : n, p m a * Matrix.stdBasisMatrix i j (1 : K) m b =
+          if j = b then p i a else 0 := by
+        rw [Finset.sum_eq_single i (fun m _ hm => by simp [stdBasis_entry, Ne.symm hm])
+            (fun h => absurd (Finset.mem_univ _) h)]
+        simp [stdBasis_entry]
+      rw [hlhs, hrhs]
+      have := congr_fun (intertwine_prop φ i₀ v₀ i j b) a
+      simp only [p] at this ⊢
+      exact this
+    -- Step 2: Every matrix decomposes as A = ∑_{i,j} A_ij • E_ij
+    have hdecomp : ∀ A : Matrix n n K,
+        A = ∑ i : n, ∑ j : n, A i j • Matrix.stdBasisMatrix i j 1 := by
+      intro A; ext a b
+      simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, stdBasis_entry]
+      rw [Finset.sum_eq_single a (fun m _ hm => by simp [Ne.symm hm])
+          (fun h => absurd (Finset.mem_univ _) h)]
+      simp [Finset.sum_eq_single b (fun m _ hm => by simp [Ne.symm hm])
+          (fun h => absurd (Finset.mem_univ _) h)]
+    -- Step 3: Extend by K-linearity
+    intro A
+    conv_lhs => rw [hdecomp A]
+    rw [map_sum]; simp_rw [map_sum, map_smul]
+    simp_rw [Matrix.smul_mul_assoc, Matrix.mul_smul_comm]
+    -- Now both sides have ∑∑ A_ij • (φ(E_ij) * P) vs ∑∑ A_ij • (P * E_ij)
+    congr 1; ext i; congr 1; ext j
+    rw [hPu]; exact hbasis_intertwine i j
   -- Conclude: phi(A) = P * A * P⁻¹
   refine ⟨Pu⁻¹, fun A => ?_⟩
   rw [show (Pu⁻¹ : (Matrix n n K)ˣ)⁻¹ = Pu from inv_inv Pu]

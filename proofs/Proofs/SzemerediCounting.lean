@@ -411,6 +411,47 @@ theorem counting_lemma (G : SimpleGraph V) [DecidableRel G.Adj]
     _ = (1 - 2 * eps) * (dAB - eps) * (dAC - eps) * (dBC - eps) *
         ↑A.card * ↑B.card * ↑C.card := by simp only [K]; ring
 
+/-- **Counting Lemma Lower Bound**: When all three pair densities are ≥ 2ε
+    in an ε-regular triple, the triangle count is at least
+    (1-2ε)ε³|A||B||C|. This is the quantitative core used in
+    the triangle removal lemma to derive a contradiction. -/
+theorem counting_lemma_lower_bound (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (heps : 0 < eps) (heps_half : eps ≤ 1 / 2)
+    (A B C : Finset V)
+    (hA : (0 : ℚ) < A.card) (hB : (0 : ℚ) < B.card) (hC : (0 : ℚ) < C.card)
+    (hAB : Szemeredi.Regularity.IsEpsilonRegular G eps A B)
+    (hAC : Szemeredi.Regularity.IsEpsilonRegular G eps A C)
+    (hBC : Szemeredi.Regularity.IsEpsilonRegular G eps B C)
+    (hdAB : Szemeredi.Regularity.edgeDensity G A B ≥ 2 * eps)
+    (hdAC : Szemeredi.Regularity.edgeDensity G A C ≥ 2 * eps)
+    (hdBC : Szemeredi.Regularity.edgeDensity G B C ≥ 2 * eps) :
+    (triangleCount G A B C : ℚ) ≥
+      (1 - 2 * eps) * eps ^ 3 * A.card * B.card * C.card := by
+  set dAB := Szemeredi.Regularity.edgeDensity G A B
+  set dAC := Szemeredi.Regularity.edgeDensity G A C
+  set dBC := Szemeredi.Regularity.edgeDensity G B C
+  have h := counting_lemma G eps heps heps_half A B C hA hB hC hAB hAC hBC hdAB hdAC
+    (by linarith : dBC ≥ eps)
+  -- Factor-wise: (d-ε) ≥ ε for each pair since d ≥ 2ε
+  have h1 : dAB - eps ≥ eps := by linarith
+  have h2 : dAC - eps ≥ eps := by linarith
+  have h3 : dBC - eps ≥ eps := by linarith
+  have h4 : (0 : ℚ) ≤ 1 - 2 * eps := by linarith
+  -- Product bound: (dAB-ε)(dAC-ε)(dBC-ε) ≥ ε³
+  have hab : eps * eps ≤ (dAB - eps) * (dAC - eps) :=
+    mul_le_mul h1 h2 (le_of_lt heps) (by linarith)
+  have habc : eps * eps * eps ≤ (dAB - eps) * (dAC - eps) * (dBC - eps) :=
+    mul_le_mul hab h3 (le_of_lt heps) (by positivity)
+  -- Combine: (1-2ε)(dAB-ε)(dAC-ε)(dBC-ε) ≥ (1-2ε)ε³
+  have hprod : (1 - 2 * eps) * eps ^ 3 ≤
+      (1 - 2 * eps) * (dAB - eps) * (dAC - eps) * (dBC - eps) := by
+    have : eps ^ 3 = eps * eps * eps := by ring
+    rw [this]
+    nlinarith
+  -- Scale by |A|·|B|·|C|
+  have hABC : (0 : ℚ) ≤ ↑A.card * ↑B.card * ↑C.card := by positivity
+  nlinarith
+
 -- ═══════════════════════════════════════════════════════════════════
 -- PART II: TRIANGLE REMOVAL LEMMA
 -- ═══════════════════════════════════════════════════════════════════
@@ -580,7 +621,20 @@ theorem triangle_removal_quantitative (delta : ℚ) (hdelta : 0 < delta) :
     -- With 0 triangles, R = ∅ makes it triangle-free
     have hgn_lt_1 : gamma * (n : ℚ) ^ 3 < 1 := by
       -- gamma·n³ ≤ gamma·(M-1)³ < (1-2ε)·ε³·M³/(16·M³) = (1-2ε)·ε³/16 < 1
-      sorry -- arithmetic: gamma·n³ < 1 for n < M
+      -- gamma·n³ < gamma·M³ = (1-2ε)ε³/16 ≤ (1/4)³/16 = 1/1024 < 1
+      have hn_lt_M : (n : ℚ) < (M : ℚ) := by exact_mod_cast hn_small
+      have hgn_lt_gM : gamma * (n : ℚ) ^ 3 < gamma * (M : ℚ) ^ 3 := by
+        rcases Nat.eq_zero_or_pos n with hn0 | hn_pos
+        · simp [hn0]; positivity
+        · apply mul_lt_mul_of_pos_left _ hgamma_pos
+          exact pow_lt_pow_left hn_lt_M (Nat.cast_nonneg _) (by norm_num)
+      have hgM_eq : gamma * (M : ℚ) ^ 3 = (1 - 2 * eps) * eps ^ 3 / 16 := by
+        rw [hgamma_def]; field_simp; ring
+      have hfrac_lt : (1 - 2 * eps) * eps ^ 3 / 16 < 1 := by
+        have : eps ^ 3 ≤ (1 / 4) ^ 3 :=
+          pow_le_pow_left (le_of_lt heps) heps_quarter 3
+        nlinarith
+      linarith
     have hzero : triangleCount G Finset.univ Finset.univ Finset.univ = 0 := by
       by_contra h
       have hge1 : 1 ≤ triangleCount G Finset.univ Finset.univ Finset.univ :=
@@ -707,8 +761,42 @@ theorem triangle_removal_quantitative (delta : ℚ) (hdelta : 0 < delta) :
         exact_mod_cast triangleCount_le_total G Pa Pb Pc
       -- Part size lower bound (from equitable partition into k ≤ M parts)
       -- Each part has ≥ ⌊n/k⌋ ≥ n/(2M) elements for n ≥ M
-      have hpart_size : ∀ S ∈ P.parts, (S.card : ℚ) ≥ (n : ℚ) / (2 * M) := by
-        sorry -- equitable partition part size bound
+      have hpart_size : ∀ S ∈ P.parts, (S.card : ℚ) ≥ (n : ℚ) / (2 * ↑M) := by
+        intro S hS
+        have hS_pos : 0 < S.card := Finset.card_pos.mpr (by
+          rw [Finset.nonempty_iff_ne_empty]
+          intro h; exact absurd (h ▸ hS) P.not_bot_mem)
+        have hk_pos : 0 < k := by omega
+        have hkQ : (0 : ℚ) < (k : ℚ) := Nat.cast_pos.mpr hk_pos
+        have hkM_q : (k : ℚ) ≤ (M : ℚ) := Nat.cast_le.mpr hkM
+        -- Equitability: every part size ≤ S.card + 1
+        have hbound : ∀ T ∈ P.parts, T.card ≤ S.card + 1 :=
+          fun T hT => hequi (Finset.mem_coe.mpr hT) (Finset.mem_coe.mpr hS)
+        -- n ≤ k * (S.card + 1): sum of parts = n, each ≤ S.card + 1
+        have hn_le : n ≤ k * (S.card + 1) := by
+          -- Partition: sum of part sizes = n (from Finpartition structure)
+          sorry -- needs: P.parts.sum Finset.card = Fintype.card V
+        -- S.card ≥ n/k - 1 (in ℚ)
+        have hS_ge : (S.card : ℚ) ≥ (n : ℚ) / k - 1 := by
+          rw [ge_iff_le, sub_le_iff_le_add, div_le_iff₀ hkQ]
+          have : (n : ℚ) ≤ (k : ℚ) * ((S.card : ℚ) + 1) := by exact_mod_cast hn_le
+          linarith
+        -- n/k ≥ n/M (since k ≤ M)
+        have hk_div : (n : ℚ) / k ≥ (n : ℚ) / M := by
+          exact div_le_div_of_nonneg_left (by linarith : (0 : ℚ) < n) hkQ hkM_q
+        -- Case split on graph size relative to 2M
+        by_cases hn2M : n < 2 * M
+        · -- n < 2M: S.card ≥ 1 > n/(2M) since n/(2M) < 1
+          have : (n : ℚ) / (2 * ↑M) < 1 := by
+            rw [div_lt_one (by positivity : (0:ℚ) < 2 * ↑M)]
+            exact_mod_cast hn2M
+          linarith [show (1 : ℚ) ≤ ↑S.card from Nat.cast_le.mpr hS_pos]
+        · -- n ≥ 2M: n/M ≥ 2 so n/M - 1 ≥ n/(2M)
+          push_neg at hn2M
+          have hnM_ge2 : (n : ℚ) / ↑M ≥ 2 := by
+            rw [le_div_iff₀ hM_pos]; exact_mod_cast hn2M
+          have : (n : ℚ) / ↑M - 1 ≥ (n : ℚ) / (2 * ↑M) := by nlinarith
+          linarith
       have hPa_size := hpart_size Pa hPa
       have hPb_size := hpart_size Pb hPb
       have hPc_size := hpart_size Pc hPc
@@ -732,7 +820,13 @@ theorem triangle_removal_quantitative (delta : ℚ) (hdelta : 0 < delta) :
       have hgamma_bound :
           (1 - 2 * eps) * eps ^ 3 * ((n : ℚ) / (2 * M)) ^ 3 >
           gamma * (n : ℚ) ^ 3 := by
-        sorry -- arithmetic: (1-2ε)ε³/(8M³) > (1-2ε)ε³/(16M³) = gamma
+        -- LHS = (1-2ε)ε³n³/(8M³) = 2·gamma·n³ > gamma·n³
+        have hn_pos : (0 : ℚ) < (n : ℚ) := by
+          exact_mod_cast (show 0 < n by omega)
+        have h_eq : (1 - 2 * eps) * eps ^ 3 * ((n : ℚ) / (2 * ↑M)) ^ 3 =
+            2 * (gamma * (n : ℚ) ^ 3) := by
+          rw [hgamma_def]; field_simp; ring
+        linarith [mul_pos hgamma_pos (pow_pos hn_pos 3)]
       linarith
 
 end Szemeredi.Counting
