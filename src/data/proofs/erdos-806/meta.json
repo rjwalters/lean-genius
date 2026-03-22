@@ -152,5 +152,25 @@
       "Are there constructive/algorithmic versions of the proof?",
       "How does the bound change for A ⊆ ℤ (not just {1,...,n})?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Data.Set.Finite",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card"
+    ],
+    "opens": [
+      "Set",
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos806",
+    "lineCount": 235,
+    "axiomCount": 5,
+    "theoremCount": 3,
+    "definitionCount": 4
   }
 }

@@ -113,5 +113,20 @@
       "What conditions on A guarantee the existence of a non-convergent sub-basis?",
       "How does the answer change for higher order bases (order 3, 4, etc.)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "Set",
+      "Topology"
+    ],
+    "namespace": "Erdos326",
+    "lineCount": 156,
+    "axiomCount": 3,
+    "theoremCount": 1,
+    "definitionCount": 5
   }
 }

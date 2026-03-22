@@ -132,5 +132,19 @@
       "Can the bridge theorem extend to Lp spaces for p ≠ 2?",
       "Can Bessel's inequality be derived from this complex L2 framework?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "InnerProductSpace"
+    ],
+    "namespace": "CauchySchwarzIntegralOQ03",
+    "lineCount": 182,
+    "axiomCount": 0,
+    "theoremCount": 20,
+    "definitionCount": 0
   }
 }

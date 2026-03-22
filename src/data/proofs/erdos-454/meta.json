@@ -236,5 +236,23 @@
       "Does the Cramér conjecture (gaps up to (log p)^2) imply the conjecture?",
       "What is the chromatic number of the Prime Number Graph, and how does it relate to the conjecture?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.PrimeCounting",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Order.LiminfLimsup",
+      "Mathlib.Topology.Instances.ENat",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Filter"
+    ],
+    "namespace": "Erdos454",
+    "lineCount": 275,
+    "axiomCount": 3,
+    "theoremCount": 16,
+    "definitionCount": 14
   }
 }

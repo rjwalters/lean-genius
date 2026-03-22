@@ -143,5 +143,23 @@
       "Can the Hausdorff dimension be computed explicitly for specific coefficient sequences?",
       "What about higher moments — does Σ|aₙ|^p < ∞ for some p > 2 improve the result?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Complex.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.Topology.MetricSpace.HausdorffDimension",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Complex",
+      "MeasureTheory"
+    ],
+    "namespace": "Erdos527",
+    "lineCount": 163,
+    "axiomCount": 10,
+    "theoremCount": 3,
+    "definitionCount": 8
   }
 }

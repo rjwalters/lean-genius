@@ -152,5 +152,21 @@
     "erdos-604",
     "erdos-605",
     "combinations-formula"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.LinearAlgebra.AffineSpace.Independent",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos606",
+    "lineCount": 309,
+    "axiomCount": 8,
+    "theoremCount": 9,
+    "definitionCount": 14
+  }
 }

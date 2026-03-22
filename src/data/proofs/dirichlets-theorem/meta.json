@@ -148,5 +148,28 @@
     "infinitude-primes",
     "fermats-last-theorem",
     "chinese-remainder-non-coprime"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.LSeries.PrimesInAP",
+      "Mathlib.NumberTheory.DirichletCharacter.Basic",
+      "Mathlib.NumberTheory.LSeries.DirichletContinuation",
+      "Mathlib.NumberTheory.LSeries.Nonvanishing",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Set",
+      "Filter",
+      "ZMod",
+      "Topology",
+      "BigOperators"
+    ],
+    "namespace": "DirichletsTheorem",
+    "lineCount": 314,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 7
+  }
 }

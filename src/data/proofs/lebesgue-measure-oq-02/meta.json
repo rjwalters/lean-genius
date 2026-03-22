@@ -185,5 +185,24 @@
         "relationship": "Related — Cauchy-Schwarz for Lp norms (Hölder eLpNorm), proved independently."
       }
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Measure",
+      "Set",
+      "Filter",
+      "ENNReal",
+      "NNReal",
+      "Real"
+    ],
+    "namespace": "LebesgueMeasureOQ02",
+    "lineCount": 225,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0
   }
 }

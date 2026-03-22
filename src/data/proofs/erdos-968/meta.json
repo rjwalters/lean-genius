@@ -150,5 +150,21 @@
       "What is the density of increasing steps (if positive)?",
       "Does the ratio (# increasing steps)/(# decreasing steps) converge?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Filter",
+      "Real",
+      "BigOperators"
+    ],
+    "namespace": "Erdos968",
+    "lineCount": 250,
+    "axiomCount": 10,
+    "theoremCount": 9,
+    "definitionCount": 6
   }
 }

@@ -103,5 +103,19 @@
       "Is there a version with no 3 collinear + no 4 concyclic that yields even stronger bounds?",
       "What is the relationship between Problem 655 and the general Erdős distinct distance conjecture Ω(n/√(log n))?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 134,
+    "axiomCount": 2,
+    "theoremCount": 2,
+    "definitionCount": 5
   }
 }

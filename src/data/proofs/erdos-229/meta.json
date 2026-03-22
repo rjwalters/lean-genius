@@ -122,5 +122,20 @@
       "What happens if we require the same derivative to vanish on multiple sets?",
       "Are there natural analogues for entire functions of several variables?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Complex",
+      "Set",
+      "Filter"
+    ],
+    "namespace": "Erdos229",
+    "lineCount": 160,
+    "axiomCount": 6,
+    "theoremCount": 2,
+    "definitionCount": 4
   }
 }

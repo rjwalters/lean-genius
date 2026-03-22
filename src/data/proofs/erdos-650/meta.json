@@ -150,5 +150,18 @@
       "Does lim f(m)/√m exist, and if so, what is its value?",
       "What are the exact values of f(m) for small m?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card"
+    ],
+    "opens": [],
+    "namespace": "Erdos650",
+    "lineCount": 93,
+    "axiomCount": 2,
+    "theoremCount": 1,
+    "definitionCount": 3
   }
 }

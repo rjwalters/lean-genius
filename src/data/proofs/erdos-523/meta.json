@@ -166,5 +166,25 @@
       "Generalizations to other coefficient distributions?",
       "Connections to the Rudin flatness conjecture?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Complex",
+      "Finset",
+      "BigOperators",
+      "Real"
+    ],
+    "namespace": "Erdos523",
+    "lineCount": 256,
+    "axiomCount": 8,
+    "theoremCount": 5,
+    "definitionCount": 21
   }
 }

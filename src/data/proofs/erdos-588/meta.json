@@ -161,5 +161,18 @@
       "Are there constructive examples achieving the lower bound?",
       "How does the problem change in higher dimensions?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos588",
+    "lineCount": 97,
+    "axiomCount": 4,
+    "theoremCount": 1,
+    "definitionCount": 0
   }
 }

@@ -138,5 +138,22 @@
       "Extension to regular k-simplices in higher dimensions",
       "Connection to Problem #1086 on related geometric configurations"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Fin.Basic",
+      "Mathlib.Analysis.Normed.Field.Basic",
+      "Mathlib.Analysis.InnerProductSpace.Basic"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "Erdos755",
+    "lineCount": 281,
+    "axiomCount": 7,
+    "theoremCount": 3,
+    "definitionCount": 7
   }
 }

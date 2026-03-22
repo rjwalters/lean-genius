@@ -145,5 +145,21 @@
       "What is the growth rate of f(n)?",
       "Are there explicit constructions showing f(n) is large?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "Erdos393",
+    "lineCount": 195,
+    "axiomCount": 10,
+    "theoremCount": 4,
+    "definitionCount": 12
   }
 }

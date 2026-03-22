@@ -178,5 +178,21 @@
       "For which graph families (beyond trees, complete graphs, cycles) is the conjecture known to hold?",
       "Is there a connection between the Erdos-Gallai conjecture and the linear arboricity conjecture?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Basic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos583",
+    "lineCount": 261,
+    "axiomCount": 10,
+    "theoremCount": 4,
+    "definitionCount": 8
   }
 }

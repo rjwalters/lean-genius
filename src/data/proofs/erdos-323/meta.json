@@ -148,5 +148,24 @@
       "relationship": "technique",
       "description": "The prime number theorem underlies the analytic number theory techniques used in Landau's proof of f_{2,2}(x) ~ c·x/√(log x)"
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 85,
+    "axiomCount": 3,
+    "theoremCount": 0,
+    "definitionCount": 6
+  },
+  "relatedProofs": [
+    "",
+    "",
+    ""
   ]
 }

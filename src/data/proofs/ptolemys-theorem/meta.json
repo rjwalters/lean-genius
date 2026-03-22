@@ -167,5 +167,26 @@
     "pythagorean-theorem",
     "herons-formula",
     "triangle-angle-sum"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Geometry.Euclidean.Sphere.Ptolemy",
+      "Mathlib.Geometry.Euclidean.Basic",
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "EuclideanGeometry",
+      "RealInnerProductSpace",
+      "Real",
+      "EuclideanGeometry"
+    ],
+    "namespace": null,
+    "lineCount": 268,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0
+  }
 }

@@ -147,5 +147,24 @@
   },
   "relatedProofs": [
     "erdos-1058"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.NumberTheory.ArithmeticFunction",
+      "Mathlib.Data.Nat.Defs",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos1060",
+    "lineCount": 242,
+    "axiomCount": 2,
+    "theoremCount": 10,
+    "definitionCount": 5
+  }
 }

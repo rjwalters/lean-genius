@@ -162,5 +162,18 @@
   "relatedProofs": [
     "fermat-two-squares",
     "lagrange-four-squares"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.SumFourSquares",
+      "Mathlib.NumberTheory.SumTwoSquares",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "FermatTwoSquaresOQ01",
+    "lineCount": 255,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 3
+  }
 }

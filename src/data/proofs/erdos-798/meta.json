@@ -143,5 +143,23 @@
       "What happens in higher dimensions ({1,...,n}^d)?",
       "Can the covering points be required to lie on specific curves?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Set",
+      "Real",
+      "Finset"
+    ],
+    "namespace": "Erdos798",
+    "lineCount": 312,
+    "axiomCount": 3,
+    "theoremCount": 11,
+    "definitionCount": 7
   }
 }

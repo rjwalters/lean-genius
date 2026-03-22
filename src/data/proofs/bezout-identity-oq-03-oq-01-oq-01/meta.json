@@ -187,5 +187,21 @@
     "euler-totient",
     "primitive-roots",
     "chinese-remainder-non-coprime"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Data.Int.GCD",
+      "Mathlib.RingTheory.Coprime.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "ZMod"
+    ],
+    "namespace": "BezoutCRTKFold",
+    "lineCount": 250,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 8
+  }
 }

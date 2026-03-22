@@ -244,5 +244,19 @@
     "erdos-285",
     "erdos-288",
     "erdos-303"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Algebra.Order.Field.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos302",
+    "lineCount": 262,
+    "axiomCount": 6,
+    "theoremCount": 15,
+    "definitionCount": 10
+  }
 }

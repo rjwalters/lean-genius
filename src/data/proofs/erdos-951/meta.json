@@ -157,5 +157,24 @@
       "Does weakening the separation condition from $\\ge 1$ to $\\ge \\varepsilon$ for fixed $\\varepsilon > 0$ change the answer?",
       "Can the finiteness sorry (`beurlingPi_finite`) be resolved via Aristotle from Mathlib's monotone sequence theory?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.NumberTheory.PrimeCounting",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Data.Finsupp.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "BigOperators",
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos951",
+    "lineCount": 162,
+    "axiomCount": 7,
+    "theoremCount": 5,
+    "definitionCount": 10
   }
 }

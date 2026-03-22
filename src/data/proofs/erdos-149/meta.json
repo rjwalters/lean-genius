@@ -156,5 +156,21 @@
       "Can the conjecture be proved for planar graphs or bounded-treewidth graphs?",
       "Is there a polynomial-time algorithm to achieve a (5/4 + ε)Δ²-strong edge coloring?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos149",
+    "lineCount": 218,
+    "axiomCount": 15,
+    "theoremCount": 2,
+    "definitionCount": 6
   }
 }

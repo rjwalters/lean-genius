@@ -122,5 +122,20 @@
     "erdos-1055",
     "erdos-218",
     "erdos-334"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Filter"
+    ],
+    "namespace": null,
+    "lineCount": 100,
+    "axiomCount": 6,
+    "theoremCount": 0,
+    "definitionCount": 5
+  }
 }

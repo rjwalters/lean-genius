@@ -134,5 +134,24 @@
       "Do explicit (non-probabilistic) ultraflat polynomial families exist?",
       "For Littlewood polynomials (±1 coefficients), can min_{|z|=1} |P(z)| / √n → 1? (The harder variant, Problem #228)"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Data.Complex.Exponential",
+      "Mathlib.Analysis.Complex.Basic",
+      "Mathlib.Analysis.Normed.Field.Basic",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [
+      "Complex",
+      "Finset"
+    ],
+    "namespace": "Erdos230",
+    "lineCount": 249,
+    "axiomCount": 4,
+    "theoremCount": 5,
+    "definitionCount": 6
   }
 }

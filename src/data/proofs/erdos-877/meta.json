@@ -151,5 +151,24 @@
   "relatedProofs": [
     "erdos-748",
     "erdos-863"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Order.Partition.Finpartition",
+      "Mathlib.Analysis.Asymptotics.Asymptotics"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos877",
+    "lineCount": 304,
+    "axiomCount": 5,
+    "theoremCount": 9,
+    "definitionCount": 6
+  }
 }

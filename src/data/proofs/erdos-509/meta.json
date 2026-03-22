@@ -134,5 +134,23 @@
       "What is the structure of extremal polynomials achieving the bound?",
       "Does the conjecture extend to higher-dimensional analogues?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Analysis.Normed.Field.Basic",
+      "Mathlib.Algebra.Polynomial.Basic"
+    ],
+    "opens": [
+      "Polynomial",
+      "Set",
+      "Metric"
+    ],
+    "namespace": "Erdos509",
+    "lineCount": 202,
+    "axiomCount": 9,
+    "theoremCount": 2,
+    "definitionCount": 3
   }
 }

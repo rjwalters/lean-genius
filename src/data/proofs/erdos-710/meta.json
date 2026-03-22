@@ -144,5 +144,23 @@
       "Is there a polynomial-time algorithm to compute f(n) exactly?",
       "What is the connection to Problem #711?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Interval",
+      "Mathlib.Order.Interval.Finset.Nat",
+      "Mathlib.Algebra.Order.Floor"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos710",
+    "lineCount": 338,
+    "axiomCount": 7,
+    "theoremCount": 5,
+    "definitionCount": 7
   }
 }

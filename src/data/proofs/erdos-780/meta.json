@@ -160,5 +160,25 @@
       "Can the topological proof via Borsuk-Ulam be formalized once Mathlib has sufficient algebraic topology?",
       "What is the structure of optimal colorings achieving $\\chi(KG^r(n,k))$?"
     ]
-  }
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SetFamily.Intersecting",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Choose.Basic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos780",
+    "lineCount": 201,
+    "axiomCount": 10,
+    "theoremCount": 2,
+    "definitionCount": 10
+  },
+  "relatedProofs": [
+    "",
+    ""
+  ]
 }

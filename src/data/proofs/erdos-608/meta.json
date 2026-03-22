@@ -232,5 +232,23 @@
       "Is there a unified framework explaining why C₅ behaves differently from C₇, C₉, ...?",
       "What are the analogous constants for edges in even cycles C_{2k}?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos608",
+    "lineCount": 271,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 15
   }
 }

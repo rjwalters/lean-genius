@@ -139,5 +139,20 @@
       "What is the density of totient values among positive integers?",
       "Can we prove Ford's bound constructively in Lean?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.Data.Set.Finite.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Set"
+    ],
+    "namespace": "Erdos694",
+    "lineCount": 206,
+    "axiomCount": 12,
+    "theoremCount": 5,
+    "definitionCount": 7
   }
 }

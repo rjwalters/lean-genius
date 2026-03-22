@@ -155,5 +155,32 @@
       "proofId": "erdos-403",
       "relationship": "Problem 403 concerns related GCD and divisibility questions in finite sets, sharing the Erdős–Graham framework"
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Mathlib"
+    ],
+    "opens": [
+      "Lean",
+      "Meta",
+      "Elab",
+      "Tactic",
+      "in",
+      "Lean.Elab.Tactic",
+      "in",
+      "Nat",
+      "Finset",
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos402",
+    "lineCount": 328,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 5
+  },
+  "relatedProofs": [
+    ""
   ]
 }

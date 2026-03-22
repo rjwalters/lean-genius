@@ -125,5 +125,19 @@
       "What is the relationship between Questions 1 and 2? Does one imply the other?",
       "Can the seven proved structural theorems be leveraged to make progress on the open questions, e.g., via a counting or probabilistic argument?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Order.Filter.Basic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 164,
+    "axiomCount": 6,
+    "theoremCount": 8,
+    "definitionCount": 6
   }
 }

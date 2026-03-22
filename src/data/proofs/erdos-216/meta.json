@@ -172,5 +172,22 @@
       "Can the Erdős-Szekeres conjecture g'(k) = 2^(k−2)+1 for the non-empty variant be resolved using similar SAT-based techniques?",
       "What is the maximum number of empty convex hexagons in a set of n points in general position?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Analysis.Convex.Basic",
+      "Mathlib.Analysis.InnerProductSpace.EuclideanDist",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos216",
+    "lineCount": 272,
+    "axiomCount": 18,
+    "theoremCount": 6,
+    "definitionCount": 8
   }
 }

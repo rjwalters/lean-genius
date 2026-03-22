@@ -132,5 +132,16 @@
       "Can the center of Mₙ(K) being exactly K · I be proved (Schur's lemma for matrices), characterizing when two units give the same automorphism?",
       "Can the more general Skolem-Noether theorem for arbitrary central simple algebras be formalized?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "SkolemNoether",
+    "lineCount": 497,
+    "axiomCount": 1,
+    "theoremCount": 19,
+    "definitionCount": 2
   }
 }

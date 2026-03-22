@@ -104,5 +104,18 @@
       "Can the BES result be extended to hypergraph colorings—partitioning a 2-colored complete $r$-uniform hypergraph into monochromatic complete sub-hypergraphs?",
       "Can any of the 8 axioms (Moon's theorem, Ramsey bounds, BES formula, asymptotics) be proved from Mathlib, reducing the axiom count?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 159,
+    "axiomCount": 10,
+    "theoremCount": 0,
+    "definitionCount": 9
   }
 }

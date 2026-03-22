@@ -139,5 +139,18 @@
       "Are there analogues for other pairs of primes?",
       "What computational bounds have been established?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "Erdos203",
+    "lineCount": 256,
+    "axiomCount": 2,
+    "theoremCount": 25,
+    "definitionCount": 11
   }
 }

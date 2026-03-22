@@ -165,5 +165,25 @@
       "What is the connection between g(N) and the structure of the divisor lattice of N? Is g(N) monotonically related to the number of divisors of N?",
       "Can the LCM-bounded subset problem be generalized to lcm(a₁,...,aₖ) ≤ N for k-wise constraints, and does Erdős' construction generalize?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Nat",
+      "Real",
+      "Finset"
+    ],
+    "namespace": "Erdos441",
+    "lineCount": 281,
+    "axiomCount": 14,
+    "theoremCount": 6,
+    "definitionCount": 13
   }
 }

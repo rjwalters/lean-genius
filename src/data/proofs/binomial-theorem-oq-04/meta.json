@@ -147,5 +147,22 @@
       "The $q$-Vandermonde identity $\\binom{m+n}{r}_q = \\sum_{k} q^{k(n-r+k)} \\binom{m}{k}_q \\binom{n}{r-k}_q$ generalizes to Gaussian binomial coefficients. Can this be formalized using Mathlib's $q$-analogs?",
       "Can the Lindström–Gessel–Viennot lemma (which uses Vandermonde-type identities for lattice path counting) be formalized, extending this work to determinantal identities?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Nat.Choose.Sum",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "BigOperators",
+      "Finset"
+    ],
+    "namespace": "BinomialTheoremOQ04",
+    "lineCount": 196,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0
   }
 }

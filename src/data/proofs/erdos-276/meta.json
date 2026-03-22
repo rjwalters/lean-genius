@@ -161,5 +161,19 @@
       "**Other Recurrences:** Does the same phenomenon (primefree with coprime initial terms) occur for other linear recurrences like $a_{n+2} = a_{n+1} + 2a_n$ or higher-order recurrences?",
       "**Relationship to Erdős #1113:** Can the covering-system-necessity question be resolved simultaneously for primefree Lucas sequences and Sierpinski numbers?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 88,
+    "axiomCount": 4,
+    "theoremCount": 0,
+    "definitionCount": 3
   }
 }

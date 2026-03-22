@@ -159,5 +159,16 @@
       "What is the exact functional relationship $\\mu = g(\\rho)$ for $\\rho < 1$, and does $g$ depend on the geometry of $F$ beyond its capacity?",
       "Does the Erdős-Netanyahu quantitative bound $r(\\rho)$ for bounded connected sets extend to unbounded or disconnected sets?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "Erdos1040",
+    "lineCount": 250,
+    "axiomCount": 8,
+    "theoremCount": 8,
+    "definitionCount": 15
   }
 }

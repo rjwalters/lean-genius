@@ -106,5 +106,21 @@
       "Is there a simpler proof that doesn't require transcendence theory?",
       "What is the irrationality measure of this sum?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "BigOperators",
+      "Nat",
+      "Real",
+      "ArithmeticFunction"
+    ],
+    "namespace": "Erdos259",
+    "lineCount": 249,
+    "axiomCount": 4,
+    "theoremCount": 14,
+    "definitionCount": 3
   }
 }

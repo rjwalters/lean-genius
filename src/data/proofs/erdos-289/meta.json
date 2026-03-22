@@ -103,5 +103,21 @@
     "harmonic-divergence",
     "geometric-series",
     "bertrands-postulate"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Interval",
+      "Mathlib.Data.Rat.Defs",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 132,
+    "axiomCount": 7,
+    "theoremCount": 2,
+    "definitionCount": 5
+  }
 }

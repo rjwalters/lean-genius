@@ -117,5 +117,18 @@
       "What is the growth rate of the number of abelian-square-free words of length n over 4 letters?",
       "Can the abelian square avoidability result be proved constructively without computer verification?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Fin.VecNotation",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos192",
+    "lineCount": 108,
+    "axiomCount": 3,
+    "theoremCount": 1,
+    "definitionCount": 3
   }
 }

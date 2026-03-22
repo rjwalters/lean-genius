@@ -206,5 +206,21 @@
       "What is the exact asymptotic density of practical numbers?",
       "Can the Stewart-Sierpinski criterion be improved for computing h(m)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Set",
+      "Finset",
+      "Function",
+      "Nat"
+    ],
+    "namespace": "Erdos18",
+    "lineCount": 188,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 11
   }
 }

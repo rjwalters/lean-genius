@@ -161,5 +161,24 @@
       "Computational algorithms for minimum modulus?",
       "Extremal Littlewood polynomials - which maximize m(f)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Complex.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Complex.Circle",
+      "Mathlib.Probability.ProbabilityMassFunction.Basic",
+      "Mathlib.Algebra.Polynomial.Basic",
+      "Mathlib.Data.Complex.Exponential",
+      "Mathlib.Analysis.Normed.Field.Basic"
+    ],
+    "opens": [
+      "Complex",
+      "Polynomial"
+    ],
+    "namespace": "Erdos525",
+    "lineCount": 227,
+    "axiomCount": 12,
+    "theoremCount": 3,
+    "definitionCount": 10
   }
 }

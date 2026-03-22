@@ -192,5 +192,22 @@
       "Does Alspach's conjecture hold for all finite abelian groups?",
       "Is there an efficient polynomial-time algorithm to find valid orderings?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.List.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos475",
+    "lineCount": 210,
+    "axiomCount": 6,
+    "theoremCount": 3,
+    "definitionCount": 5
   }
 }

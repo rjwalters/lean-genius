@@ -7,14 +7,19 @@
       "endLine": 4
     },
     "type": "concept",
-    "title": "Historical Introduction",
-    "content": "The Abel-Ruffini theorem, proven by Niels Henrik Abel in 1824 and later illuminated by Galois's theory, answers a 300-year-old question: why is there no 'quintic formula' like the quadratic formula?\n\nGalois discovered that solvability by radicals is equivalent to having a solvable Galois group, revealing a profound connection between field theory and group theory.",
-    "mathContext": "The question: Given $ax^5 + bx^4 + cx^3 + dx^2 + ex + f = 0$, is there a formula for $x$ using only $+, -, \\times, \\div,$ and $\\sqrt[n]{\\phantom{x}}$?",
+    "title": "Mathlib Import Declarations",
+    "content": "Four targeted Mathlib imports form the complete logical chain for the Abel-Ruffini theorem. Each import contributes one essential piece: `FieldTheory.AbelRuffini` provides the bridge from radical solvability to group solvability; `GroupTheory.Solvable` provides the `IsSolvable` predicate and the non-solvability of large symmetric groups; `SpecificGroups.Alternating` provides the simplicity of $A_5$; `FieldTheory.Galois.Basic` provides the Galois group type `Polynomial.Gal`.",
+    "mathContext": "The four imports map to four mathematical facts: (1) $\\alpha$ solvable by radicals $\\Rightarrow$ $\\text{Gal}(\\text{minpoly}(\\alpha))$ solvable, (2) $5 \\leq n \\Rightarrow S_n$ not solvable, (3) $A_5$ is simple, (4) $\\text{Polynomial.Gal}$ \u2014 the type-theoretic representation of a polynomial's Galois group.",
     "significance": "supporting",
     "relatedConcepts": [
+      "Mathlib library",
       "Galois theory",
-      "radical extensions",
-      "polynomial solvability"
+      "solvable groups",
+      "alternating groups"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib module organization"
     ]
   },
   {
@@ -24,33 +29,43 @@
       "startLine": 6,
       "endLine": 32
     },
-    "type": "concept",
-    "title": "Mathlib Imports",
-    "content": "We import the key Mathlib modules:\n- `AbelRuffini`: The main theorem connecting radicals to solvable groups\n- `Solvable`: Definition of solvable groups and key theorems\n- `Alternating`: Properties of alternating groups, including A₅ simplicity\n- `Galois.Basic`: Galois group definitions and correspondence",
-    "mathContext": "The four imports form a complete logical chain: `FieldTheory.AbelRuffini` provides `solvableByRad.isSolvable'` ($\\alpha$ solvable by radicals $\\Rightarrow$ $\\text{Gal}(\\text{minpoly}(\\alpha))$ solvable); `GroupTheory.Solvable` provides `IsSolvable` and `Equiv.Perm.not_solvable` ($5 \\leq |X| \\Rightarrow S_X$ not solvable); `SpecificGroups.Alternating` provides `alternatingGroup.isSimpleGroup_five` ($A_5$ simple); `FieldTheory.Galois.Basic` provides $\\text{Polynomial.Gal}$, the type of the Galois group of a polynomial.",
+    "type": "context",
+    "title": "Module Documentation and Proof Roadmap",
+    "content": "The module docstring lays out the full proof architecture: Mathlib provides the Galois theory infrastructure (`IsSolvableByRad`, `solvableByRad.isSolvable'`, `Equiv.Perm.not_solvable`), while the file contributes pedagogical wrappers making the logical structure explicit. The documentation lists all five Mathlib dependencies and all original contributions, serving as a table of contents for the seven-part proof.",
+    "mathContext": "The five listed Mathlib dependencies form a complete proof: `FieldTheory.AbelRuffini` provides `solvableByRad.isSolvable'` ($\\alpha$ solvable by radicals $\\Rightarrow$ $\\text{Gal}(\\text{minpoly}(\\alpha))$ solvable); `GroupTheory.Solvable` provides `IsSolvable` and `Equiv.Perm.not_solvable` ($5 \\leq |X| \\Rightarrow S_X$ not solvable); `SpecificGroups.Alternating` provides `alternatingGroup.isSimpleGroup_five` ($A_5$ simple); `FieldTheory.Galois.Basic` provides $\\text{Polynomial.Gal}$, the type of the Galois group of a polynomial.",
     "significance": "supporting",
     "relatedConcepts": [
-      "Mathlib",
-      "Galois theory",
-      "group theory"
+      "proof documentation",
+      "Mathlib dependencies",
+      "Galois theory"
+    ],
+    "prerequisites": [
+      "Lean 4 documentation syntax",
+      "Galois theory overview"
     ]
   },
   {
     "id": "ann-solvable-by-rad",
     "proofId": "abel-ruffini",
     "range": {
-      "startLine": 6,
-      "endLine": 32
+      "startLine": 34,
+      "endLine": 49
     },
     "type": "definition",
-    "title": "Solvable by Radicals",
-    "content": "An element α is 'solvable by radicals' if it can be built from the base field using field operations and nth roots. The quadratic formula is an example: $x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}$\n\nMathlib defines this inductively via `IsSolvableByRad`, with constructors for: base field elements, arithmetic operations, and radical extraction.",
-    "mathContext": "`solvableByRad F E` is the intermediate field of all elements solvable by radicals over F.\n\nExample: $\\sqrt{1 + \\sqrt{2}}$ is built by: 2 ∈ ℚ, then √2, then 1+√2, then √(1+√2).",
-    "significance": "critical",
+    "title": "Namespace, Variables, and Solvable by Radicals",
+    "content": "Opens the `AbelRuffini` namespace and declares universe-polymorphic field variables `F` (base field) and `E` (extension field with `Algebra F E`). The Part I docstring explains solvability by radicals: an element $\\alpha \\in E$ is solvable by radicals over $F$ if it can be built from $F$-elements using field operations and $n$th roots.\n\nMathlib's `IsSolvableByRad` is defined inductively with constructors for: base field elements, arithmetic operations ($+, -, \\times, \\div$), and radical extraction ($\\alpha^n \\in F \\Rightarrow \\alpha$ solvable). The quadratic formula $x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}$ is a concrete example.",
+    "mathContext": "`solvableByRad F E` is the intermediate field of all elements solvable by radicals over $F$.\n\nExample: $\\sqrt{1 + \\sqrt{2}}$ is built by: $2 \\in \\mathbb{Q}$, then $\\sqrt{2}$, then $1+\\sqrt{2}$, then $\\sqrt{1+\\sqrt{2}}$. Each step uses either a field operation or an $n$th root.",
+    "significance": "key",
     "relatedConcepts": [
       "radical extension",
       "intermediate field",
-      "inductive definition"
+      "inductive definition",
+      "tower of extensions"
+    ],
+    "prerequisites": [
+      "field extensions",
+      "Lean 4 universe polymorphism",
+      "algebraic structures in Lean"
     ]
   },
   {
@@ -61,33 +76,45 @@
       "endLine": 67
     },
     "type": "theorem",
-    "title": "Abel-Ruffini Theorem (One Direction)",
-    "content": "**Theorem**: If α is expressible using radicals, then the Galois group of its minimal polynomial is solvable.\n\nThis is the key bridge: radical solvability (field theory) → group solvability (group theory).\n\nThe proof proceeds by induction on `IsSolvableByRad`. The key case: if α^n is solvable, then adjoining α creates a cyclic extension, and cyclic groups are abelian (hence solvable).",
-    "mathContext": "$\\alpha$ solvable by radicals $\\Rightarrow$ Gal(minpoly(α)) is solvable\n\nContrapositive: If Galois group is NOT solvable, roots are NOT expressible by radicals.",
+    "title": "The Galois Bridge: Radicals Imply Solvable Group",
+    "content": "**Theorem `galois_bridge`**: If $\\alpha$ is solvable by radicals over $F$, $q$ is an irreducible polynomial over $F$, and $q(\\alpha) = 0$, then the Galois group $\\text{Gal}(q)$ is solvable.\n\nThe proof is a single line: `solvableByRad.isSolvable' hq hroot hrad`. This delegates entirely to Mathlib, where the proof proceeds by induction on `IsSolvableByRad`. The key inductive step: if $\\alpha^n$ is solvable by radicals, then adjoining $\\alpha$ creates a cyclic extension (by Kummer theory), and cyclic groups are abelian, hence solvable.\n\nThe contrapositive \u2014 unsolvable Galois group implies roots not expressible by radicals \u2014 is the direction used for the impossibility result.",
+    "mathContext": "$\\alpha$ solvable by radicals over $F$ $\\Rightarrow$ $\\text{Gal}(\\text{minpoly}_F(\\alpha))$ is solvable.\n\nContrapositive: $\\neg\\,\\text{IsSolvable}(q.\\text{Gal}) \\Rightarrow \\neg\\,\\text{IsSolvableByRad}\\,F\\,\\alpha$.",
     "significance": "critical",
     "relatedConcepts": [
       "Galois group",
       "solvable group",
-      "minimal polynomial"
+      "minimal polynomial",
+      "Kummer theory"
+    ],
+    "prerequisites": [
+      "Galois theory",
+      "irreducible polynomials",
+      "solvable groups",
+      "field extensions"
     ]
   },
   {
-    "id": "ann-a5-simple",
+    "id": "ann-symmetric-not-solvable",
     "proofId": "abel-ruffini",
     "range": {
-      "startLine": 77,
+      "startLine": 69,
       "endLine": 84
     },
     "type": "theorem",
-    "title": "A₅ is Simple",
-    "content": "A group is simple if its only normal subgroups are {1} and the whole group. The alternating group A₅ is simple - it's the smallest non-abelian simple group, with 60 elements.\n\nThe proof analyzes cycle types: identity (1), 3-cycles (20), 5-cycles (24), double transpositions (15). Any normal subgroup containing a non-identity element must contain a 3-cycle, and 3-cycles generate all of A₅.",
-    "mathContext": "A₅ = {even permutations of 5 objects} = ker(sign : S₅ → {±1})\n\n|A₅| = 60 = 5!/2",
+    "title": "Large Symmetric Groups Are Not Solvable",
+    "content": "**Theorem `symmetric_group_not_solvable`**: For $n \\geq 5$, $S_n = \\text{Equiv.Perm}(\\text{Fin}\\,n)$ is not solvable. The proof converts the natural number bound $5 \\leq n$ to a cardinal bound $5 \\leq |\\text{Fin}\\,n|$ via `Cardinal.mk_fintype` and `Fintype.card_fin`, then applies Mathlib's `Equiv.Perm.not_solvable`.\n\nThe underlying mathematical argument: $A_n$ for $n \\geq 5$ is simple and non-abelian, so the derived series stalls at $S_n \\triangleright A_n \\triangleright A_n \\triangleright \\cdots$ (since $[A_n, A_n] = A_n$ \u2014 the group is perfect).",
+    "mathContext": "The derived series of a group $G$ is $G \\triangleright [G,G] \\triangleright [[G,G],[G,G]] \\triangleright \\cdots$. A group is solvable iff this series reaches $\\{e\\}$ in finitely many steps. For $S_5$: $S_5 \\triangleright A_5 \\triangleright A_5 \\triangleright \\cdots$ \u2014 stuck because $A_5$ is perfect.",
     "significance": "critical",
     "relatedConcepts": [
-      "alternating group",
-      "simple group",
-      "normal subgroup",
-      "cycle type"
+      "derived series",
+      "perfect group",
+      "symmetric group",
+      "cardinal arithmetic in Lean"
+    ],
+    "prerequisites": [
+      "group theory",
+      "derived series",
+      "simple groups"
     ]
   },
   {
@@ -95,18 +122,48 @@
     "proofId": "abel-ruffini",
     "range": {
       "startLine": 86,
-      "endLine": 100
+      "endLine": 92
     },
     "type": "technique",
-    "title": "Instantiating Non-Solvability for S₅ and S₆",
-    "content": "`s5_not_solvable` and `s6_not_solvable` specialize the general `symmetric_group_not_solvable` to $n = 5$ and $n = 6$. The proofs are one-liners: for $n = 5$, the bound $5 \\leq 5$ is `le_rfl`; for $n = 6$, it is discharged by `omega`. The simplicity of $A_5$ (`a5_is_simple`) is stated separately as the structural reason the derived series of $S_5$ stalls.\n\nThese instantiations make the abstract result concrete: $S_5$ is the specific group relevant to quintic polynomials, while $S_6$ confirms the pattern extends to all higher degrees.",
-    "mathContext": "$S_5 = \\text{Equiv.Perm}(\\text{Fin}\\ 5)$, $|S_5| = 120$. The derived series: $S_5 \\triangleright A_5 \\triangleright A_5 \\triangleright \\cdots$ (stuck because $[A_5, A_5] = A_5$, i.e., $A_5$ is perfect). Compare $S_4 \\triangleright A_4 \\triangleright V_4 \\triangleright \\mathbb{Z}/2 \\triangleright \\{e\\}$ which terminates.",
+    "title": "Instantiating Non-Solvability for S5 and S6",
+    "content": "`s5_not_solvable` and `s6_not_solvable` specialize `symmetric_group_not_solvable` to $n = 5$ and $n = 6$. For $n = 5$, the bound $5 \\leq 5$ is `le_rfl`; for $n = 6$, it is discharged by `omega`. These concrete instances make the abstract theorem usable: $S_5$ is the specific group relevant to quintic polynomials, while $S_6$ confirms the pattern continues.",
+    "mathContext": "$S_5 = \\text{Equiv.Perm}(\\text{Fin}\\ 5)$, $|S_5| = 120$. $S_6 = \\text{Equiv.Perm}(\\text{Fin}\\ 6)$, $|S_6| = 720$. Both are not solvable, as are all $S_n$ for $n \\geq 5$.",
     "significance": "key",
     "relatedConcepts": [
-      "derived series",
-      "perfect group",
-      "composition series",
-      "simple group"
+      "specialization",
+      "omega tactic",
+      "le_rfl",
+      "derived series"
+    ],
+    "prerequisites": [
+      "symmetric groups",
+      "Lean tactics"
+    ]
+  },
+  {
+    "id": "ann-a5-simple",
+    "proofId": "abel-ruffini",
+    "range": {
+      "startLine": 94,
+      "endLine": 98
+    },
+    "type": "theorem",
+    "title": "A5 is Simple: The Core Obstruction",
+    "content": "**Theorem `a5_is_simple`**: The alternating group $A_5$ is a simple group \u2014 its only normal subgroups are $\\{e\\}$ and $A_5$ itself. This is the fundamental group-theoretic reason why $S_5$ is not solvable: the derived series $S_5 \\triangleright A_5 \\triangleright \\cdots$ cannot descend past $A_5$.\n\n$A_5$ has order 60 and is the smallest non-abelian simple group. The proof analyzes conjugacy classes: sizes 1, 15, 20, 12, 12 (identity, double transpositions, 3-cycles, two classes of 5-cycles). Any normal subgroup must be a union of conjugacy classes including $\\{e\\}$ whose order divides 60 \u2014 no valid sub-sum exists except $\\{1\\}$ and $\\{1,12,12,15,20\\}$.",
+    "mathContext": "$A_5 = \\ker(\\text{sign} : S_5 \\to \\{\\pm 1\\})$, $|A_5| = 60 = 2^2 \\cdot 3 \\cdot 5$.\n\nConjugacy class sizes in $A_5$: $1 + 15 + 20 + 12 + 12 = 60$. The only sub-sums dividing 60 that include 1 are $\\{1\\} = 1$ and $\\{1,12,12,15,20\\} = 60$, proving simplicity.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "alternating group",
+      "simple group",
+      "normal subgroup",
+      "conjugacy classes",
+      "smallest non-abelian simple group"
+    ],
+    "prerequisites": [
+      "group theory",
+      "normal subgroups",
+      "conjugacy classes",
+      "Lagrange's theorem"
     ]
   },
   {
@@ -114,18 +171,48 @@
     "proofId": "abel-ruffini",
     "range": {
       "startLine": 100,
-      "endLine": 112
+      "endLine": 118
     },
     "type": "insight",
     "title": "Solvable Small Symmetric Groups: The Other Side of the Threshold",
-    "content": "$S_0$ and $S_1$ are trivially solvable (both are the trivial group of order 1), and Lean's typeclass inference (`inferInstance`) finds their `IsSolvable` instances automatically. These contrast with $S_5$ and beyond, highlighting the sharp boundary.\n\nHistorically, $S_2$ (quadratic formula, ~2000 BCE), $S_3$ (Cardano's cubic formula, 1545), and $S_4$ (Ferrari's quartic formula, 1545) are all solvable — each corresponding to a classical radical formula. The file notes that Mathlib did not yet provide `IsSolvable` instances for $S_2, S_3, S_4$ at time of writing.",
-    "mathContext": "$S_0 \\cong S_1 \\cong \\{e\\}$ (trivial). $S_2 \\cong \\mathbb{Z}/2$ (abelian). $S_3$: derived series $S_3 \\triangleright A_3 \\cong \\mathbb{Z}/3 \\triangleright \\{e\\}$. $S_4$: derived series $S_4 \\triangleright A_4 \\triangleright V_4 \\triangleright \\mathbb{Z}/2 \\triangleright \\{e\\}$, where $V_4 = \\{e,(12)(34),(13)(24),(14)(23)\\}$ is the Klein four-group.",
+    "content": "Part IV documents the solvability of $S_n$ for small $n$ and provides formal proofs for $S_0$ and $S_1$. Both are trivially solvable (order 1), and Lean's typeclass inference (`inferInstance`) finds their `IsSolvable` instances automatically.\n\nThe docstring records the derived series for $S_2$ through $S_4$, showing why each is solvable:\n- $S_2 \\cong \\mathbb{Z}/2$ (abelian)\n- $S_3$: $\\{e\\} \\triangleleft A_3 \\cong \\mathbb{Z}/3 \\triangleleft S_3$\n- $S_4$: $\\{e\\} \\triangleleft V_4 \\triangleleft A_4 \\triangleleft S_4$ where $V_4 = \\{e,(12)(34),(13)(24),(14)(23)\\}$\n\nEach corresponds to a classical radical formula: quadratic (~2000 BCE), cubic (Cardano, 1545), quartic (Ferrari, 1545).",
+    "mathContext": "$S_0 \\cong S_1 \\cong \\{e\\}$ (trivial). $S_2 \\cong \\mathbb{Z}/2$ (abelian). $S_3$: derived series $S_3 \\triangleright A_3 \\cong \\mathbb{Z}/3 \\triangleright \\{e\\}$. $S_4$: derived series $S_4 \\triangleright A_4 \\triangleright V_4 \\triangleright \\mathbb{Z}/2 \\triangleright \\{e\\}$, where $V_4$ is the Klein four-group.",
     "significance": "supporting",
     "relatedConcepts": [
       "Klein four-group",
       "abelian group",
       "typeclass inference",
-      "quadratic formula"
+      "quadratic formula",
+      "Cardano's formula"
+    ],
+    "prerequisites": [
+      "symmetric group structure",
+      "derived series",
+      "classical radical formulas"
+    ]
+  },
+  {
+    "id": "ann-exists-quintic",
+    "proofId": "abel-ruffini",
+    "range": {
+      "startLine": 120,
+      "endLine": 135
+    },
+    "type": "technique",
+    "title": "Existence of Quintic Polynomials and the Contrapositive Setup",
+    "content": "Part V sets up the Abel-Ruffini conclusion. The docstring explains the logical structure: combining the Galois bridge (Part II) with non-solvability of $S_5$ (Part III) via the contrapositive.\n\n`exists_quintic` provides a trivial witness that degree-5 polynomials exist ($X^5$, proved by `simp` on `natDegree_pow` and `natDegree_X`). This is a minimal existence lemma \u2014 the deeper content comes in the next theorem, which works for any polynomial with a non-solvable Galois group.\n\nTo apply Abel-Ruffini to a *specific* quintic (e.g., $x^5 - x - 1$ over $\\mathbb{Q}$), one would need to compute that its Galois group is $S_5$ \u2014 a non-trivial computation left implicit.",
+    "mathContext": "$\\text{natDegree}(X^5) = 5 \\cdot \\text{natDegree}(X) = 5 \\cdot 1 = 5$. The polynomial $X^5 \\in \\mathbb{Q}[X]$ witnesses degree 5. More interesting examples: $x^5 - x - 1$ has $\\text{Gal} \\cong S_5$ (verified by checking it is irreducible over $\\mathbb{Q}$ and has exactly 3 real roots, giving a transposition and a 3-cycle that generate $S_5$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "polynomial degree",
+      "natDegree in Mathlib",
+      "Galois group computation",
+      "specific unsolvable quintics"
+    ],
+    "prerequisites": [
+      "polynomial rings",
+      "Mathlib polynomial API",
+      "contrapositive reasoning"
     ]
   },
   {
@@ -137,7 +224,7 @@
     },
     "type": "theorem",
     "title": "The Abel-Ruffini Contrapositive: The Main Event",
-    "content": "`not_solvable_by_rad_of_not_solvable_gal` is the logical heart of the formalization. It takes the contrapositive of `galois_bridge`: if the Galois group of an irreducible polynomial $q$ is **not** solvable and $\\alpha$ is a root, then $\\alpha$ is **not** solvable by radicals. The proof is a 2-line `intro`/`exact`.\n\n`exists_quintic` provides a trivial witness ($X^5$) that degree-5 polynomials exist. To complete the Abel-Ruffini theorem for a *specific* quintic, one would need to show some $q \\in \\mathbb{Q}[X]$ of degree 5 has $\\text{Gal}(q) \\cong S_5$ — a computation the formalization leaves implicit.",
+    "content": "`not_solvable_by_rad_of_not_solvable_gal` is the logical heart of the formalization. It takes the contrapositive of `galois_bridge`: if the Galois group of an irreducible polynomial $q$ is **not** solvable and $\\alpha$ is a root, then $\\alpha$ is **not** solvable by radicals. The proof is a 2-line `intro`/`exact`.\n\nTo complete the full Abel-Ruffini theorem for a *specific* quintic, one would need to show some $q \\in \\mathbb{Q}[X]$ of degree 5 has $\\text{Gal}(q) \\cong S_5$ \u2014 a computation the formalization leaves implicit.",
     "mathContext": "$\\neg\\,\\text{IsSolvable}(q.\\text{Gal}) \\Rightarrow \\neg\\,\\text{IsSolvableByRad}\\,F\\,\\alpha$.\n\nProof: Assume $\\text{IsSolvableByRad}\\,F\\,\\alpha$. By `galois_bridge`, $\\text{IsSolvable}(q.\\text{Gal})$. Contradiction with $\\neg\\,\\text{IsSolvable}(q.\\text{Gal})$. $\\square$\n\nFor the general quintic: $q = x^5 - x - 1$ over $\\mathbb{Q}$ has $\\text{Gal}(q) \\cong S_5$, so its roots are not expressible by radicals.",
     "significance": "critical",
     "relatedConcepts": [
@@ -145,6 +232,11 @@
       "proof by contradiction",
       "irreducible polynomial",
       "Galois group computation"
+    ],
+    "prerequisites": [
+      "propositional logic",
+      "Galois theory",
+      "the Galois bridge theorem"
     ]
   },
   {
@@ -152,18 +244,25 @@
     "proofId": "abel-ruffini",
     "range": {
       "startLine": 151,
-      "endLine": 183
+      "endLine": 185
     },
     "type": "context",
     "title": "Why Degree 5 and the Historical Revolution",
-    "content": "The closing commentary (Parts VI–VII) explains *why* degree 5 is the exact threshold and places the result in historical context. The derived series of $S_4$ terminates because $A_4$ has the Klein four-group $V_4$ as a normal subgroup, while $A_5$ has no proper normal subgroups at all (it is simple).\n\nHistorically, Abel-Ruffini was revolutionary as one of the first major **impossibility proofs** — showing that something *cannot* be done. This methodology later influenced Lindemann's proof that $\\pi$ is transcendental (1882), Gödel's incompleteness theorems (1931), and Turing's halting problem (1936). The commentary also makes a subtle but important distinction: quintic equations **do** have solutions (by the Fundamental Theorem of Algebra), they just cannot be expressed using radicals.",
+    "content": "The closing commentary (Parts VI-VII) explains *why* degree 5 is the exact threshold and places the result in historical context. The derived series of $S_4$ terminates because $A_4$ has the Klein four-group $V_4$ as a normal subgroup, while $A_5$ has no proper normal subgroups at all (it is simple).\n\nHistorically, Abel-Ruffini was revolutionary as one of the first major **impossibility proofs** \u2014 showing that something *cannot* be done. This methodology later influenced Lindemann's proof that pi is transcendental (1882), Godel's incompleteness theorems (1931), and Turing's halting problem (1936). The commentary also makes a subtle but important distinction: quintic equations **do** have solutions (by the Fundamental Theorem of Algebra), they just cannot be expressed using radicals.\n\nThe final point emphasizes Galois theory's precision: it doesn't merely say 'quintics are unsolvable' but characterizes *exactly which* polynomials of any degree are solvable \u2014 those with solvable Galois groups.",
     "mathContext": "The conjugacy classes of $A_5$ have sizes $1, 12, 12, 15, 20$ (summing to 60). A normal subgroup must be a union of conjugacy classes including $\\{e\\}$ (size 1), and its order must divide 60. No sub-sum $1 + \\cdots$ of $\\{1, 12, 12, 15, 20\\}$ divides 60 except $\\{1\\}$ and $\\{1,12,12,15,20\\}$. This combinatorial fact proves $A_5$ is simple.",
     "significance": "supporting",
     "relatedConcepts": [
       "impossibility proof",
       "Fundamental Theorem of Algebra",
       "transcendence of pi",
-      "Gödel incompleteness"
+      "Godel incompleteness",
+      "Galois correspondence"
+    ],
+    "prerequisites": [
+      "derived series",
+      "normal subgroups",
+      "conjugacy class analysis",
+      "history of algebra"
     ]
   }
 ]

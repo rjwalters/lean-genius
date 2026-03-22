@@ -127,5 +127,21 @@
       "Can similar tight bounds be proved for R(k,k,m) for k > 3?",
       "See Problem #553 for related questions on Ramsey numbers."
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos925",
+    "lineCount": 200,
+    "axiomCount": 10,
+    "theoremCount": 2,
+    "definitionCount": 4
   }
 }

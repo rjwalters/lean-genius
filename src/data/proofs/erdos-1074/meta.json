@@ -120,5 +120,24 @@
       "Can we explicitly construct infinitely many EHS numbers?",
       "What is the longest gap between consecutive EHS numbers?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Data.Nat.Prime.Defs",
+      "Mathlib.Data.Nat.ModEq",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Set"
+    ],
+    "namespace": "Erdos1074",
+    "lineCount": 157,
+    "axiomCount": 4,
+    "theoremCount": 6,
+    "definitionCount": 2
   }
 }

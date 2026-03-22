@@ -141,5 +141,26 @@
       "Connections to the Hardy-Littlewood circle method",
       "Analogues in finite fields and other groups"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Analysis.Asymptotics.Asymptotics",
+      "Mathlib.Order.Filter.AtTopBot",
+      "Mathlib.Data.Set.Function"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "Filter",
+      "Asymptotics"
+    ],
+    "namespace": "Erdos763",
+    "lineCount": 286,
+    "axiomCount": 5,
+    "theoremCount": 4,
+    "definitionCount": 9
   }
 }

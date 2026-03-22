@@ -139,5 +139,23 @@
       "Can the bound be improved to polynomial in n?",
       "What happens for other notions of convex position?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Convex.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.LinearAlgebra.AffineSpace.Independent"
+    ],
+    "opens": [
+      "Finset",
+      "Set"
+    ],
+    "namespace": "Erdos651",
+    "lineCount": 228,
+    "axiomCount": 8,
+    "theoremCount": 4,
+    "definitionCount": 5
   }
 }

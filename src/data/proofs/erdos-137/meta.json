@@ -108,5 +108,20 @@
       "Characterize all n where n(n+1) is powerful (related to Problem #364).",
       "Find effective bounds: how large must primes be in the factorization of consecutive products?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos137",
+    "lineCount": 226,
+    "axiomCount": 2,
+    "theoremCount": 9,
+    "definitionCount": 3
   }
 }

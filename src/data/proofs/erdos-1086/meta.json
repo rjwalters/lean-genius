@@ -139,5 +139,22 @@
       "Determine exact values of g(n) for small n",
       "Find exact formulas for g_d^r(n) in higher dimensions"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.EuclideanDist",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "Erdos1086",
+    "lineCount": 227,
+    "axiomCount": 18,
+    "theoremCount": 2,
+    "definitionCount": 8
   }
 }

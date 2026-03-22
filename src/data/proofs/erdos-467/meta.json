@@ -126,5 +126,17 @@
       "Can the Lovász Local Lemma or probabilistic methods establish the conjecture?",
       "What is the connection to Hough's theorem on minimum modulus covering systems?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 242,
+    "axiomCount": 3,
+    "theoremCount": 21,
+    "definitionCount": 6
   }
 }

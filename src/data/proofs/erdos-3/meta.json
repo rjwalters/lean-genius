@@ -132,5 +132,21 @@
       "What is the true order of magnitude of $r_3(N)$? Is it $\\Theta(N/\\exp(c\\sqrt{\\log N}))$ (matching Behrend)?",
       "Does the conjecture hold for polynomial progressions $\\{a, a+d^2, a+2^2 d^2, \\ldots\\}$?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Filter",
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos3",
+    "lineCount": 215,
+    "axiomCount": 9,
+    "theoremCount": 3,
+    "definitionCount": 11
   }
 }

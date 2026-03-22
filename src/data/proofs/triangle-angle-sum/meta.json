@@ -131,5 +131,19 @@
       "Can the Gauss-Bonnet theorem be formalized in Lean, connecting the angular defect π - (α + β + γ) to the integral of Gaussian curvature?",
       "How does Mathlib's angle function handle degenerate cases (collinear points), and what is the angle sum for a 'triangle' with collinear vertices?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Geometry.Euclidean.Triangle",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "EuclideanGeometry"
+    ],
+    "namespace": "TriangleAngleSum",
+    "lineCount": 158,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0
   }
 }

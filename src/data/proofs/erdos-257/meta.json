@@ -113,5 +113,23 @@
       "What structural properties of A guarantee irrationality?",
       "Does the result generalize to ∑ 1/(t^n - 1) for other bases t ≥ 2?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.Topology.Algebra.InfiniteSum.Real",
+      "Mathlib.Data.Real.Irrational",
+      "Mathlib.Algebra.Order.Floor.Div"
+    ],
+    "opens": [
+      "Set",
+      "BigOperators",
+      "Nat"
+    ],
+    "namespace": "Erdos257",
+    "lineCount": 124,
+    "axiomCount": 3,
+    "theoremCount": 1,
+    "definitionCount": 2
   }
 }

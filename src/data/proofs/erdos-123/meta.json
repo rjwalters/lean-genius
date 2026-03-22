@@ -129,5 +129,20 @@
       "Is there a uniform approach (not relying on case-specific modular arithmetic) for all pairwise coprime triples?",
       "What is the connection between d-completeness and Brown's criterion for complete sequences?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "Finset",
+      "Pointwise"
+    ],
+    "namespace": "Erdos123",
+    "lineCount": 318,
+    "axiomCount": 3,
+    "theoremCount": 22,
+    "definitionCount": 5
   }
 }

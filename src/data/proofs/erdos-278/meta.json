@@ -113,5 +113,20 @@
       "For moduli $\\{n, n, \\ldots, n\\}$ (repeated), how does $\\delta_{\\max}$ depend on the number of copies and the residue choices?",
       "Does the gap $\\delta_{\\max} - \\delta_{\\min}$ grow with the number of shared prime factors among the moduli?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 149,
+    "axiomCount": 5,
+    "theoremCount": 6,
+    "definitionCount": 6
   }
 }

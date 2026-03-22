@@ -113,5 +113,18 @@
       "Can Moreira's result be extended to |A| = 3?",
       "Is there a quantitative version giving bounds on the smallest such A?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos172",
+    "lineCount": 145,
+    "axiomCount": 3,
+    "theoremCount": 4,
+    "definitionCount": 6
   }
 }

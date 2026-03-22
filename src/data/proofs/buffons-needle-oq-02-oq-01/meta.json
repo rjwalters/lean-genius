@@ -162,5 +162,18 @@
       "Extension to non-polygonal curves via C¹ approximation in ℝⁿ",
       "Connection to kinematic formula and Hadwiger's theorem"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "BuffonsNeedleOQ02OQ01",
+    "lineCount": 310,
+    "axiomCount": 0,
+    "theoremCount": 20,
+    "definitionCount": 2
   }
 }

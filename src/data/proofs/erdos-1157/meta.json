@@ -155,5 +155,18 @@
     "erdos-1075",
     "erdos-1155",
     "erdos-1078"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [],
+    "namespace": "Erdos1157",
+    "lineCount": 238,
+    "axiomCount": 7,
+    "theoremCount": 12,
+    "definitionCount": 4
+  }
 }

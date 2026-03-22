@@ -183,5 +183,23 @@
       "Can the semi-random method proof of the $r = 3$ case be formalized in Lean with Mathlib's current probabilistic capabilities?",
       "Does the AEKS bound extend to $K_r$-free hypergraphs? What is the correct analogue for 3-uniform hypergraphs?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Real"
+    ],
+    "namespace": "Erdos802",
+    "lineCount": 204,
+    "axiomCount": 7,
+    "theoremCount": 2,
+    "definitionCount": 13
   }
 }

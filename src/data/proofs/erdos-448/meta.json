@@ -142,5 +142,23 @@
       "Connections to the anatomy of integers",
       "Computational aspects of τ⁺(n) for large n"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.Data.Nat.Log",
+      "Mathlib.Analysis.Asymptotics.Asymptotics",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos448",
+    "lineCount": 331,
+    "axiomCount": 12,
+    "theoremCount": 9,
+    "definitionCount": 5
   }
 }

@@ -94,5 +94,19 @@
   ],
   "relatedProofs": [
     "ramseys-theorem"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 94,
+    "axiomCount": 12,
+    "theoremCount": 0,
+    "definitionCount": 4
+  }
 }

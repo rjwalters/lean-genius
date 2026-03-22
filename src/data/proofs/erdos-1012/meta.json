@@ -105,5 +105,22 @@
       "Do similar threshold phenomena hold for hypergraph cycles (tight cycles in $r$-uniform hypergraphs)?",
       "What is the computational complexity of determining whether a given graph with $T(n,k)-1$ edges contains an $(n-k)$-cycle?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph",
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Fintype.Basic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos1012",
+    "lineCount": 346,
+    "axiomCount": 5,
+    "theoremCount": 34,
+    "definitionCount": 7
   }
 }

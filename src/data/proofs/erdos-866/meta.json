@@ -176,5 +176,24 @@
       "What is the structural characterization of extremal sets (maximum-size sets avoiding the pairwise sums condition)?",
       "Is there a unified proof technique that handles all values of k, or must each case use fundamentally different methods?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos866",
+    "lineCount": 275,
+    "axiomCount": 7,
+    "theoremCount": 12,
+    "definitionCount": 10
   }
 }

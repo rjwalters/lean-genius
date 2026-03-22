@@ -140,5 +140,22 @@
       "What happens under other large cardinal axioms?",
       "Can we characterize exactly which models satisfy the property?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Ordinal.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic"
+    ],
+    "opens": [
+      "Cardinal"
+    ],
+    "namespace": "Erdos739",
+    "lineCount": 140,
+    "axiomCount": 4,
+    "theoremCount": 2,
+    "definitionCount": 7
   }
 }

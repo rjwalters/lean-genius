@@ -156,5 +156,19 @@
       "How does AR(n, G) behave for general graphs G?",
       "What is the relationship between AR(n, G) and chromatic properties?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos1105",
+    "lineCount": 276,
+    "axiomCount": 8,
+    "theoremCount": 3,
+    "definitionCount": 25
   }
 }

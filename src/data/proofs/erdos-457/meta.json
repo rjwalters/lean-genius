@@ -161,5 +161,27 @@
       "Can the prime product construction be improved to cross the 2 barrier?",
       "How does this connect to the distribution of smooth numbers near n?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Interval",
+      "Mathlib.Algebra.BigOperators.Group.Finset",
+      "Mathlib.Analysis.SpecificLimits.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Filter",
+      "Finset"
+    ],
+    "namespace": "Erdos457",
+    "lineCount": 220,
+    "axiomCount": 13,
+    "theoremCount": 1,
+    "definitionCount": 6
   }
 }

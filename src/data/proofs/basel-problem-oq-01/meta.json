@@ -135,5 +135,24 @@
       "What is the irrationality measure of ζ(3)? Can these techniques be made quantitative for ζ(5)?",
       "Are there infinitely many algebraically independent odd zeta values?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.PSeries",
+      "Mathlib.NumberTheory.ZetaValues",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+      "Mathlib.Topology.Algebra.InfiniteSum.Order",
+      "Mathlib.NumberTheory.Real.Irrational",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real",
+      "BigOperators"
+    ],
+    "namespace": "ZetaFiveIrrationality",
+    "lineCount": 245,
+    "axiomCount": 3,
+    "theoremCount": 15,
+    "definitionCount": 1
   }
 }

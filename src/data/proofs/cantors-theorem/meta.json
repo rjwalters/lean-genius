@@ -105,5 +105,18 @@
       "How does this relate to type-theoretic universes and Girard's paradox?",
       "Can we generalize the diagonal argument to other structures beyond sets?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Logic.Function.Basic",
+      "Mathlib.Data.Set.Function",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "CantorsTheorem",
+    "lineCount": 158,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 1
   }
 }

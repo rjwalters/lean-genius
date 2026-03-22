@@ -171,5 +171,19 @@
   "relatedProofs": [
     "combinations-formula",
     "erdos-1063"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos435",
+    "lineCount": 243,
+    "axiomCount": 8,
+    "theoremCount": 2,
+    "definitionCount": 7
+  }
 }

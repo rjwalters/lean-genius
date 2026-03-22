@@ -120,5 +120,20 @@
   "relatedProofs": [
     "erdos-140",
     "erdos-136"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "SimpleGraph",
+      "Set"
+    ],
+    "namespace": "Erdos167",
+    "lineCount": 291,
+    "axiomCount": 5,
+    "theoremCount": 4,
+    "definitionCount": 7
+  }
 }

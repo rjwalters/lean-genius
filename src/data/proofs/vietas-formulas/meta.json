@@ -95,5 +95,22 @@
       "What are the analogous formulas for multivariate polynomials?",
       "How do Vieta's formulas generalize to non-commutative rings?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.RingTheory.Polynomial.Vieta",
+      "Mathlib.Algebra.Ring.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Polynomial",
+      "Multiset",
+      "Finset"
+    ],
+    "namespace": "VietasFormulas",
+    "lineCount": 180,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0
   }
 }

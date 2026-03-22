@@ -97,5 +97,23 @@
       "Are there continuous families of optimal configurations?",
       "How does this connect to the precise minimum distance count (Problem #89)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Analysis.InnerProductSpace.Basic"
+    ],
+    "opens": [
+      "Real",
+      "Finset"
+    ],
+    "namespace": "Erdos91",
+    "lineCount": 277,
+    "axiomCount": 5,
+    "theoremCount": 2,
+    "definitionCount": 9
   }
 }

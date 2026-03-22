@@ -146,5 +146,25 @@
       "What happens for infinite sets or sets in other groups?",
       "Are there efficient algorithms to reconstruct A from Ak?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Data.Multiset.Basic",
+      "Mathlib.Order.Filter.AtTopBot.Basic",
+      "Mathlib.Algebra.BigOperators.Ring.Finset",
+      "Mathlib.Data.Nat.Prime.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "Filter",
+      "BigOperators"
+    ],
+    "namespace": "Erdos494",
+    "lineCount": 233,
+    "axiomCount": 12,
+    "theoremCount": 1,
+    "definitionCount": 6
   }
 }

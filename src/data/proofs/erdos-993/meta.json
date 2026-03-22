@@ -153,5 +153,24 @@
       "What is the exact location of the mode in terms of tree structure?",
       "Can the real-rootedness proof be made more elementary?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Algebra.Polynomial.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos993",
+    "lineCount": 188,
+    "axiomCount": 10,
+    "theoremCount": 3,
+    "definitionCount": 13
   }
 }

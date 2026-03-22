@@ -142,5 +142,20 @@
       "What techniques might close the gap between the bounds?",
       "Does the 4-colour doubly exponential proof extend to 2 colours?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Finset",
+      "Filter"
+    ],
+    "namespace": "Erdos564",
+    "lineCount": 228,
+    "axiomCount": 9,
+    "theoremCount": 6,
+    "definitionCount": 5
   }
 }

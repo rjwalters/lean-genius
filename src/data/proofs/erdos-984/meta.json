@@ -152,5 +152,29 @@
       "proofId": "erdos-187",
       "relationship": "Arithmetic progressions in 2-colorings—closely related problem about monochromatic APs under 2-colorings"
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Order.Filter.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Real"
+    ],
+    "namespace": "Erdos984",
+    "lineCount": 193,
+    "axiomCount": 6,
+    "theoremCount": 2,
+    "definitionCount": 9
+  },
+  "relatedProofs": [
+    "",
+    "",
+    "",
+    ""
   ]
 }

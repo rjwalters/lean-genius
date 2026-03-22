@@ -141,5 +141,23 @@
       "Resolve hypergraph case for k = 3, 4",
       "Find explicit counterexample or prove existence"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.Asymptotics.Asymptotics",
+      "Mathlib.Data.Rat.Basic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Asymptotics"
+    ],
+    "namespace": "Erdos713",
+    "lineCount": 212,
+    "axiomCount": 6,
+    "theoremCount": 2,
+    "definitionCount": 8
   }
 }

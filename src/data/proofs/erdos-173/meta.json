@@ -158,5 +158,21 @@
       "Which configurations beyond triangles are Ramsey in $\\mathbb{R}^2$? (Rectangles, parallelograms, etc.)",
       "Do the results extend to higher dimensions $\\mathbb{R}^d$?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.EuclideanDist",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Set.Function",
+      "Mathlib.Geometry.Euclidean.Basic"
+    ],
+    "opens": [
+      "EuclideanSpace"
+    ],
+    "namespace": "Erdos173",
+    "lineCount": 235,
+    "axiomCount": 4,
+    "theoremCount": 3,
+    "definitionCount": 11
   }
 }

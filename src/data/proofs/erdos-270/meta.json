@@ -137,5 +137,24 @@
       "Are there other natural restrictions on f that force irrationality?",
       "Can the Crmarić-Kovač construction be made effective/explicit?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Topology.Instances.Real",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+    ],
+    "opens": [
+      "Real",
+      "Nat"
+    ],
+    "namespace": "Erdos270",
+    "lineCount": 275,
+    "axiomCount": 8,
+    "theoremCount": 3,
+    "definitionCount": 9
   }
 }

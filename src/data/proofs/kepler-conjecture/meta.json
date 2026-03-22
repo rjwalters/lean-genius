@@ -135,5 +135,25 @@
       "proofId": "fundamental-theorem-algebra",
       "relationship": "The sphere packing problem connects to algebraic structures (lattices, root systems) whose theory builds on fundamental algebraic closure results"
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Data.Real.Sqrt"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "KeplerConjecture",
+    "lineCount": 431,
+    "axiomCount": 10,
+    "theoremCount": 6,
+    "definitionCount": 12
+  },
+  "relatedProofs": [
+    "",
+    "",
+    ""
   ]
 }

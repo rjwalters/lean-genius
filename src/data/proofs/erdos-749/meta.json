@@ -180,5 +180,18 @@
       "What is the optimal bound C(ε) on r(n) if such sets exist?",
       "Is the Erdős-Turán conjecture (Problem #28) true?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 107,
+    "axiomCount": 9,
+    "theoremCount": 0,
+    "definitionCount": 4
   }
 }

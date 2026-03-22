@@ -151,5 +151,22 @@
       "Can the exponent 1/2 in √m be verified precisely? (Problem #545)",
       "For which graph families is the exponential bound far from tight — can intermediate growth rates occur?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Finite",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Real"
+    ],
+    "namespace": "Erdos546",
+    "lineCount": 239,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 15
   }
 }

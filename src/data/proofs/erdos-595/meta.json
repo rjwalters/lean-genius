@@ -158,5 +158,24 @@
   "relatedProofs": [
     "ramseys-theorem",
     "erdos-1155"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.SetTheory.Cardinal.Basic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset",
+      "Cardinal"
+    ],
+    "namespace": "Erdos595",
+    "lineCount": 230,
+    "axiomCount": 3,
+    "theoremCount": 2,
+    "definitionCount": 10
+  }
 }

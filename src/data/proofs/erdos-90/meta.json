@@ -148,5 +148,21 @@
   ],
   "relatedProofs": [
     "erdos-891"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 99,
+    "axiomCount": 6,
+    "theoremCount": 0,
+    "definitionCount": 3
+  }
 }

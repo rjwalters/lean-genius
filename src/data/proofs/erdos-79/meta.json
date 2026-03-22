@@ -142,5 +142,21 @@
       "Can Wigderson's proof be made constructive or derandomized using the Lovász Local Lemma or algebraic methods?",
       "Does the subgraph ordering restricted to non-Ramsey-size-linear graphs have infinite width (infinitely many incomparable elements) in a stronger sense than just having an infinite antichain?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos79",
+    "lineCount": 244,
+    "axiomCount": 6,
+    "theoremCount": 5,
+    "definitionCount": 12
   }
 }

@@ -139,5 +139,25 @@
       "Can Mathlib's measure convolution be connected to our axiomatized ProbMeasure convolution to reduce the axiom count?",
       "Can the Lévy-Khintchine representation theorem be formalized to classify all infinitely divisible distributions?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Measure.MeasureSpace",
+      "Mathlib.MeasureTheory.Integral.Bochner.Basic",
+      "Mathlib.Probability.Independence.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Filter"
+    ],
+    "namespace": "CentralLimitTheoremOQ03",
+    "lineCount": 242,
+    "axiomCount": 14,
+    "theoremCount": 8,
+    "definitionCount": 4
   }
 }

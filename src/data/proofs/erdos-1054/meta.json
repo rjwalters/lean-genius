@@ -113,5 +113,22 @@
       "Can we compute f(n) efficiently for a given n?",
       "What is the exact density of {n : f(n) ≤ δn} as a function of δ?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.Data.Finset.Sort",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos1054",
+    "lineCount": 613,
+    "axiomCount": 1,
+    "theoremCount": 52,
+    "definitionCount": 8
   }
 }

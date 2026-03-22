@@ -144,5 +144,17 @@
       "Can the converse be formalized: if two matrices have the same minimal polynomial and characteristic polynomial, are they similar (over an algebraically closed field)?",
       "Can the full similarity invariance of the rational canonical form be formalized, showing that two matrices are similar iff they have the same invariant factors?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "MinpolySimilar",
+    "lineCount": 132,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 1
   }
 }

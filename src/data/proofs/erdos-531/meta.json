@@ -144,5 +144,21 @@
       "Extend to r-colorings (r > 2)",
       "Understand the structure of extremal colorings"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Combinatorics.Additive.SalemSpencer",
+      "Mathlib.Order.BoundedOrder.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos531",
+    "lineCount": 188,
+    "axiomCount": 6,
+    "theoremCount": 6,
+    "definitionCount": 6
   }
 }

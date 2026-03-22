@@ -144,5 +144,20 @@
       "How does the result generalize to directed graphs?",
       "What happens at intermediate edge counts between n-1 and 2n-2?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph",
+      "Mathlib.Data.Fintype.Card"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos916",
+    "lineCount": 285,
+    "axiomCount": 3,
+    "theoremCount": 9,
+    "definitionCount": 6
   }
 }

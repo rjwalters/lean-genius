@@ -113,5 +113,22 @@
       "Does an explicit (deterministic) Sidon subset of squares of size $\\gg N^{2/3}$ exist? All current constructions are probabilistic.",
       "What is the role of the Landau–Ramanujan constant $c \\approx 0.7642$ in the precise asymptotics? Can the $(\\log N)^{1/4}$ factor in the upper bound be improved?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos773",
+    "lineCount": 251,
+    "axiomCount": 6,
+    "theoremCount": 3,
+    "definitionCount": 8
   }
 }

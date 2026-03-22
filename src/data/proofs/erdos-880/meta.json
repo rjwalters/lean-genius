@@ -150,5 +150,19 @@
     "erdos-839",
     "erdos-840",
     "erdos-533"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Order.Filter.AtTopBot"
+    ],
+    "opens": [],
+    "namespace": "Erdos880",
+    "lineCount": 298,
+    "axiomCount": 10,
+    "theoremCount": 3,
+    "definitionCount": 7
+  }
 }

@@ -140,5 +140,20 @@
       "Is c_n < n^{o(1)} always?",
       "What are explicit examples of non-representable integers?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Filter",
+      "Set"
+    ],
+    "namespace": "Erdos676",
+    "lineCount": 230,
+    "axiomCount": 5,
+    "theoremCount": 4,
+    "definitionCount": 13
   }
 }

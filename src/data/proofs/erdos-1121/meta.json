@@ -115,5 +115,23 @@
       "Are there efficient algorithms to compute the covering?",
       "How does the result extend to other convex shapes?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos1121",
+    "lineCount": 235,
+    "axiomCount": 4,
+    "theoremCount": 1,
+    "definitionCount": 12
   }
 }

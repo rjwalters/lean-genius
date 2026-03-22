@@ -131,5 +131,25 @@
     "erdos-923",
     "erdos-924",
     "erdos-925"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Combinatorics.SimpleGraph.Coloring",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Data.Fintype.Basic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Real"
+    ],
+    "namespace": "Erdos920",
+    "lineCount": 238,
+    "axiomCount": 12,
+    "theoremCount": 1,
+    "definitionCount": 3
+  }
 }

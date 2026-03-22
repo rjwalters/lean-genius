@@ -125,5 +125,21 @@
       "Are there 'natural' (explicit) counterexamples?",
       "What about higher-dimensional generalizations?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Algebra.Order.Archimedean.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Set.Lattice"
+    ],
+    "opens": [
+      "Set"
+    ],
+    "namespace": "Erdos199",
+    "lineCount": 186,
+    "axiomCount": 3,
+    "theoremCount": 3,
+    "definitionCount": 5
   }
 }

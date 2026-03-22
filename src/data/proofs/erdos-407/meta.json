@@ -117,5 +117,21 @@
       "Can the threshold 131082 be lowered?",
       "What is the density of n with w(n) = 4?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos407",
+    "lineCount": 236,
+    "axiomCount": 7,
+    "theoremCount": 7,
+    "definitionCount": 7
   }
 }

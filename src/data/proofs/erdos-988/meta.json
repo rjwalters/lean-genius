@@ -139,5 +139,24 @@
       "Relationship to spherical t-designs?",
       "Computational aspects: efficiently computing discrepancy?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Order.Filter.AtTopBot",
+      "Mathlib.Topology.MetricSpace.Basic"
+    ],
+    "opens": [
+      "Filter",
+      "Set"
+    ],
+    "namespace": "Erdos988",
+    "lineCount": 229,
+    "axiomCount": 5,
+    "theoremCount": 4,
+    "definitionCount": 11
   }
 }

@@ -150,5 +150,25 @@
       "Distribution of gaps between sums of two squarefull numbers",
       "Analogous questions for other classes of arithmetic numbers"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Prime.Defs",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Nat",
+      "Real",
+      "Finset"
+    ],
+    "namespace": "Erdos1081",
+    "lineCount": 357,
+    "axiomCount": 7,
+    "theoremCount": 9,
+    "definitionCount": 7
   }
 }

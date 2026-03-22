@@ -120,5 +120,18 @@
   ],
   "relatedProofs": [
     "erdos-340"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 117,
+    "axiomCount": 9,
+    "theoremCount": 0,
+    "definitionCount": 5
+  }
 }

@@ -173,5 +173,21 @@
       "Is there a polynomial-time algorithm to explicitly find the k vertex-disjoint 4-cycles?",
       "What is the minimum degree threshold for vertex-disjoint C₅ partitions on 5k vertices?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Data.Fintype.Card"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos577",
+    "lineCount": 214,
+    "axiomCount": 3,
+    "theoremCount": 3,
+    "definitionCount": 7
   }
 }

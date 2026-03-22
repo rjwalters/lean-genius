@@ -168,5 +168,23 @@
       "Is there a forcing model where Q4 (ω₂ → (ω₁ + ω)₂² under CH) fails, or is it provable from CH alone?",
       "What is the exact role of regularity in these partition relations? The Erdős-Rado strengthening gains one ordinal (from ω to ω + 1) for regular uncountable cardinals — can similar gains be achieved at singular cardinals?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Ordinal.Arithmetic",
+      "Mathlib.SetTheory.Ordinal.Exponential",
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Ordinal",
+      "Cardinal"
+    ],
+    "namespace": "Erdos1172",
+    "lineCount": 205,
+    "axiomCount": 10,
+    "theoremCount": 16,
+    "definitionCount": 12
   }
 }

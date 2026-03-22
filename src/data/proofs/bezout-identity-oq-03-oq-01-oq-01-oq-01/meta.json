@@ -146,5 +146,18 @@
     "bezout-identity-oq-03-oq-01",
     "bezout-identity-oq-03-oq-01-oq-01",
     "chinese-remainder-non-coprime-oq-02"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Ideal"
+    ],
+    "namespace": "BezoutIdentityCRTIdeals",
+    "lineCount": 161,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 3
+  }
 }

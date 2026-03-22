@@ -112,5 +112,24 @@
       "How does the preimage ratio behave for highly composite totient values versus prime-adjacent values?",
       "Is there a connection between large preimage ratios and the Bunyakovsky conjecture on primes in polynomials?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Order.Filter.AtTopBot",
+      "Mathlib.Topology.Order.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Filter",
+      "Nat",
+      "Topology"
+    ],
+    "namespace": null,
+    "lineCount": 123,
+    "axiomCount": 10,
+    "theoremCount": 1,
+    "definitionCount": 4
   }
 }

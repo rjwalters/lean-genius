@@ -135,5 +135,18 @@
     "Question1 and Question2 using Filter.atTop and nhds for asymptotics",
     "Partial proof of question1_solved from fox_pohoata_theorem using filter_upwards",
     "Axiomatized Fox-Pohoata, Leng-Sah-Sawhney, Szemerédi, Roth, and Behrend"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos179",
+    "lineCount": 235,
+    "axiomCount": 8,
+    "theoremCount": 8,
+    "definitionCount": 9
+  }
 }

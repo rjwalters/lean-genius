@@ -147,5 +147,20 @@
       "Relationship to least prime primitive root modulo p",
       "Computational verification for larger primes"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.FieldTheory.Finite.Basic",
+      "Mathlib.NumberTheory.LegendreSymbol.ZModChar",
+      "Mathlib.RingTheory.RootsOfUnity.Basic",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.GroupTheory.OrderOfElement"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 230,
+    "axiomCount": 6,
+    "theoremCount": 17,
+    "definitionCount": 3
   }
 }

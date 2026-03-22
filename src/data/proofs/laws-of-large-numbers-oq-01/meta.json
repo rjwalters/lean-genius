@@ -139,5 +139,22 @@
       "For α-stable distributions with α ∈ (1,2), what is the limit distribution of n^{1/α}(S_n/n - E[X])? (Stable CLT)",
       "Can Mathlib formalize the Stable Central Limit Theorem (convergence to stable laws for infinite variance)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Probability.StrongLaw",
+      "Mathlib.Probability.Moments.Variance",
+      "Mathlib.Probability.Independence.Basic",
+      "Mathlib.Probability.Notation",
+      "Mathlib.MeasureTheory.Integral.Bochner.Basic",
+      "Mathlib.MeasureTheory.Function.ConvergenceInMeasure",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "LawsOfLargeNumbersOQ01",
+    "lineCount": 404,
+    "axiomCount": 1,
+    "theoremCount": 13,
+    "definitionCount": 0
   }
 }

@@ -136,5 +136,21 @@
       "Improve the polynomial exponent in general lower bounds",
       "Find new techniques beyond probabilistic and algebraic methods"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "Erdos986",
+    "lineCount": 251,
+    "axiomCount": 8,
+    "theoremCount": 4,
+    "definitionCount": 5
   }
 }

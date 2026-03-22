@@ -125,5 +125,22 @@
       "Extension to Lipschitz curves (weaker than C¹)",
       "Connection to Buffon's coin (2D object) and generalizations"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.BuffonsNeedleOQ01OQ01"
+    ],
+    "opens": [
+      "Real",
+      "intervalIntegral",
+      "MeasureTheory",
+      "BuffonsNeedleOQ01OQ01"
+    ],
+    "namespace": "BuffonsNeedleOQ01",
+    "lineCount": 251,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 0
   }
 }

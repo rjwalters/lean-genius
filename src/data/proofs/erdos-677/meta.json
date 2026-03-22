@@ -85,5 +85,21 @@
       "Are the two known cross-parameter examples the only ones?",
       "Does the stronger prime-factor conjecture hold?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 98,
+    "axiomCount": 5,
+    "theoremCount": 4,
+    "definitionCount": 5
   }
 }

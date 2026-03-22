@@ -140,5 +140,23 @@
       "Can the bounds be improved beyond [1.16, 6.442]?",
       "Does f(N) = √N + O(N^ε) hold for all ε > 0?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos861",
+    "lineCount": 256,
+    "axiomCount": 7,
+    "theoremCount": 5,
+    "definitionCount": 7
   }
 }

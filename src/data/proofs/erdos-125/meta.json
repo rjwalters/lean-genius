@@ -102,5 +102,21 @@
       "Does the generalized conjecture hold for all families of pairwise coprime bases with $\\sum \\log_{n_i}(2) > 1$? Even the three-base case (e.g., bases 3, 4, 5) is open.",
       "Can the Hasler-Melfi exponent $0.9777$ be improved further? Is there a natural barrier below exponent 1, or can sub-linear bounds be pushed arbitrarily close to linear?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Digits",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 107,
+    "axiomCount": 4,
+    "theoremCount": 0,
+    "definitionCount": 7
   }
 }

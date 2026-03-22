@@ -95,5 +95,21 @@
       "What is the density (if it exists) of $\\{n : n^{\\underline{k+1}} \\mid \\binom{2n}{n}\\}$ for fixed $k \\geq 1$?",
       "Can the Catalan divisibility axiom be proved from Mathlib's existing `Nat.centralBinom` API rather than axiomatized?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Choose.Central",
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": null,
+    "lineCount": 84,
+    "axiomCount": 9,
+    "theoremCount": 0,
+    "definitionCount": 0
   }
 }

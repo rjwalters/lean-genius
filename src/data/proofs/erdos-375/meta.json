@@ -149,5 +149,24 @@
       "Is there a counterexample with explicit n and k?",
       "Can the Hall's condition formulation lead to new approaches?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Algebra.Order.Ring.Lemmas",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos375",
+    "lineCount": 337,
+    "axiomCount": 8,
+    "theoremCount": 6,
+    "definitionCount": 9
   }
 }

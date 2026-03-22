@@ -138,5 +138,22 @@
       "What special cases (like squares) might be tractable?",
       "How does this relate to the Erdős-Turán conjecture on bases?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+    ],
+    "opens": [
+      "Set",
+      "Finset"
+    ],
+    "namespace": "Erdos881",
+    "lineCount": 264,
+    "axiomCount": 2,
+    "theoremCount": 8,
+    "definitionCount": 6
   }
 }

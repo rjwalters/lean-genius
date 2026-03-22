@@ -147,5 +147,17 @@
       "What is the density of composites m with p(m) > m^ε in (n, n + √n)?",
       "Can sieve methods (Brun, Selberg, large sieve) resolve the conjecture?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 119,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 1
   }
 }

@@ -124,5 +124,18 @@
       "What is the exact value of R(5)? (43 <= R(5) <= 48)",
       "Can the lower bound sqrt(2) be improved?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter"
+    ],
+    "namespace": "Erdos77",
+    "lineCount": 291,
+    "axiomCount": 16,
+    "theoremCount": 4,
+    "definitionCount": 3
   }
 }

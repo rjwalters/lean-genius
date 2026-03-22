@@ -163,5 +163,26 @@
     "prime-reciprocal-divergence",
     "infinitude-primes",
     "dirichlets-theorem"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.SumTwoSquares",
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Algebra.Order.Floor",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Order.Filter.AtTopBot"
+    ],
+    "opens": [
+      "Nat",
+      "Real",
+      "Filter"
+    ],
+    "namespace": "Erdos222",
+    "lineCount": 164,
+    "axiomCount": 10,
+    "theoremCount": 2,
+    "definitionCount": 5
+  }
 }

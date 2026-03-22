@@ -130,5 +130,16 @@
   "relatedProofs": [
     "shannon-entropy",
     "shannon-channel-coding"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "InformationTheory.SourceCoding",
+    "lineCount": 45,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0
+  }
 }

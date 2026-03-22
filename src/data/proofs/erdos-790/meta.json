@@ -123,5 +123,23 @@
       "What is the correct asymptotic for l(n)?",
       "What happens for sum-free sets in Z/mZ instead of Z?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos790",
+    "lineCount": 143,
+    "axiomCount": 9,
+    "theoremCount": 2,
+    "definitionCount": 5
   }
 }

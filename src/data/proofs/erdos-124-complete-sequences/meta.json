@@ -128,5 +128,21 @@
       "How does the gcd condition affect the representation problem?",
       "What other open problems are susceptible to AI-assisted proof search?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Filter",
+      "Real"
+    ],
+    "namespace": "Erdos124",
+    "lineCount": 508,
+    "axiomCount": 0,
+    "theoremCount": 18,
+    "definitionCount": 6
   }
 }

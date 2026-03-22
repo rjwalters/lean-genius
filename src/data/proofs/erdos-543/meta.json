@@ -145,5 +145,25 @@
       "For which group structures is the log log N term largest?",
       "Is there a separation between cyclic and non-cyclic groups?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.Group.Subgroup.Basic",
+      "Mathlib.Algebra.Group.Fintype",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos543",
+    "lineCount": 193,
+    "axiomCount": 8,
+    "theoremCount": 6,
+    "definitionCount": 5
   }
 }

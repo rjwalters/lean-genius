@@ -170,5 +170,30 @@
       "Can the quintic conjecture be verified computationally for bounded ranges?",
       "Does a non-monomial polynomial (e.g., x⁵ + x) have distinct pair sums?"
     ]
-  }
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Polynomial.Basic",
+      "Mathlib.Data.Polynomial.Eval",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Set.Function",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Polynomial"
+    ],
+    "namespace": null,
+    "lineCount": 114,
+    "axiomCount": 7,
+    "theoremCount": 1,
+    "definitionCount": 7
+  },
+  "relatedProofs": [
+    "",
+    "",
+    "",
+    "",
+    ""
+  ]
 }

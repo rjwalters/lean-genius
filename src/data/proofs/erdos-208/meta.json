@@ -128,5 +128,23 @@
       "Can ABC-independent methods prove the ε-bound?",
       "What about gaps in other sequences (powerful numbers, k-free numbers)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Filter",
+      "Real",
+      "Nat",
+      "Topology",
+      "Asymptotics"
+    ],
+    "namespace": "Erdos208",
+    "lineCount": 203,
+    "axiomCount": 9,
+    "theoremCount": 0,
+    "definitionCount": 5
   }
 }

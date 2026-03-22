@@ -123,5 +123,26 @@
     "cayley-hamilton-minpoly"
   ],
   "parentProof": "cayley-hamilton-reduction",
-  "openQuestion": "What is the relationship between reducing by the minimal polynomial vs the characteristic polynomial?"
+  "openQuestion": "What is the relationship between reducing by the minimal polynomial vs the characteristic polynomial?",
+  "leanFile": {
+    "imports": [
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic",
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff",
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly",
+      "Mathlib.Algebra.Polynomial.Div",
+      "Mathlib.FieldTheory.Minpoly.Basic",
+      "Mathlib.FieldTheory.Minpoly.Field",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Matrix",
+      "Polynomial",
+      "BigOperators"
+    ],
+    "namespace": "CayleyHamiltonReductionOQ02",
+    "lineCount": 161,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0
+  }
 }

@@ -126,5 +126,19 @@
       "What is the minimum n for a convex n-gon with 4-equidistant at every vertex?",
       "Can Danzer's construction be extended to k = 4?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "EuclideanGeometry"
+    ],
+    "namespace": "Erdos97",
+    "lineCount": 223,
+    "axiomCount": 4,
+    "theoremCount": 1,
+    "definitionCount": 9
   }
 }

@@ -127,5 +127,18 @@
       "Can the K₄-free condition be relaxed to K_n-free for larger n?",
       "What about analogous questions for higher ordinal powers like ω₂²?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Ordinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.Data.Set.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos597",
+    "lineCount": 190,
+    "axiomCount": 9,
+    "theoremCount": 1,
+    "definitionCount": 8
   }
 }

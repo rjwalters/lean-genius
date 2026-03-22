@@ -135,5 +135,20 @@
       "Are there algebraic constructions for all balanced cases?",
       "Can probabilistic methods resolve the general conjecture?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Data.Fin.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos617",
+    "lineCount": 211,
+    "axiomCount": 5,
+    "theoremCount": 2,
+    "definitionCount": 10
   }
 }

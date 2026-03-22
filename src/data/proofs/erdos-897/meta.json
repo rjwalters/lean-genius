@@ -128,5 +128,19 @@
       "Do the restricted variants (strongly or completely additive) have different answers?",
       "What is the relationship between the two parts?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "Asymptotics"
+    ],
+    "namespace": "Erdos897",
+    "lineCount": 169,
+    "axiomCount": 8,
+    "theoremCount": 3,
+    "definitionCount": 7
   }
 }

@@ -142,5 +142,23 @@
     "erdos-58",
     "erdos-744",
     "four-color-theorem"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Coloring",
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.Data.Set.Basic"
+    ],
+    "opens": [
+      "Cardinal",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos740",
+    "lineCount": 342,
+    "axiomCount": 2,
+    "theoremCount": 5,
+    "definitionCount": 21
+  }
 }

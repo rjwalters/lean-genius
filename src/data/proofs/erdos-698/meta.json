@@ -192,5 +192,23 @@
   ],
   "relatedProofs": [
     "erdos-384"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Algebra.Order.Floor"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "Erdos698",
+    "lineCount": 284,
+    "axiomCount": 8,
+    "theoremCount": 5,
+    "definitionCount": 6
+  }
 }

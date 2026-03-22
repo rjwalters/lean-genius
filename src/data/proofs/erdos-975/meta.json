@@ -121,5 +121,31 @@
       "Can the constant for n² + 1 be derived from first principles without heavy analytic machinery?",
       "What is the relationship between the constant c(f) and algebraic properties of f?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.ArithmeticFunction.Defs",
+      "Mathlib.NumberTheory.ArithmeticFunction.Misc",
+      "Mathlib.RingTheory.Polynomial.Basic",
+      "Mathlib.Analysis.Asymptotics.Defs",
+      "Mathlib.Order.Filter.AtTopBot.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Topology.Order.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Filter",
+      "Polynomial",
+      "Asymptotics",
+      "Real",
+      "ArithmeticFunction",
+      "Topology"
+    ],
+    "namespace": "Erdos975",
+    "lineCount": 201,
+    "axiomCount": 7,
+    "theoremCount": 5,
+    "definitionCount": 3
   }
 }

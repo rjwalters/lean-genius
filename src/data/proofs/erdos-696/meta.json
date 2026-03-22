@@ -148,5 +148,25 @@
       "Characterize n with h(n) exceptionally large or small",
       "Connection to other divisibility chain problems"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Order.Filter.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "BigOperators",
+      "Filter"
+    ],
+    "namespace": "Erdos696",
+    "lineCount": 341,
+    "axiomCount": 19,
+    "theoremCount": 3,
+    "definitionCount": 9
   }
 }

@@ -132,5 +132,24 @@
   },
   "relatedProofs": [
     "desargues-theorem"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Normed.MulAction",
+      "Mathlib.Analysis.Convex.Basic",
+      "Mathlib.Analysis.Convex.Body",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Geometry.Euclidean.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Topology",
+      "NNReal"
+    ],
+    "namespace": "Hilbert4Geodesics",
+    "lineCount": 458,
+    "axiomCount": 6,
+    "theoremCount": 3,
+    "definitionCount": 13
+  }
 }

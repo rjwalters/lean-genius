@@ -138,5 +138,27 @@
       "What is the chromatic number in higher dimensions?",
       "Is there a 'natural' proof that χ ≥ 5 without massive computer search?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Mathlib"
+    ],
+    "opens": [
+      "Lean",
+      "Meta",
+      "Elab",
+      "Tactic",
+      "in",
+      "Lean.Elab.Tactic",
+      "in",
+      "Set",
+      "Metric"
+    ],
+    "namespace": "Erdos171",
+    "lineCount": 184,
+    "axiomCount": 3,
+    "theoremCount": 5,
+    "definitionCount": 3
   }
 }

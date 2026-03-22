@@ -244,5 +244,18 @@
       "Can the discrete-to-smooth convergence $\\sum_v \\delta(v) \\to \\int_M K\\,dA$ be formalized as mesh $\\to 0$, bridging the two Gauss-Bonnet theorems rigorously?",
       "Can the Morse inequalities be strengthened to give homological information beyond the alternating sum?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "SmoothGaussBonnet",
+    "lineCount": 787,
+    "axiomCount": 0,
+    "theoremCount": 60,
+    "definitionCount": 4
   }
 }

@@ -187,5 +187,18 @@
       "What other structural properties do Ramsey graph induced subgraphs have beyond edge count flexibility?",
       "Is a full Lean formalization of the KSSS anticoncentration argument feasible, or are the probabilistic tools too complex for current Mathlib?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos88",
+    "lineCount": 299,
+    "axiomCount": 9,
+    "theoremCount": 2,
+    "definitionCount": 21
   }
 }

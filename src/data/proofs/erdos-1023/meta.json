@@ -121,5 +121,25 @@
       "Generalizations to multisets or infinite families?",
       "What if we forbid unions of exactly k sets?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Data.Nat.Choose.Central",
+      "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos1023",
+    "lineCount": 367,
+    "axiomCount": 5,
+    "theoremCount": 17,
+    "definitionCount": 14
   }
 }

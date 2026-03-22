@@ -95,5 +95,22 @@
       "What is $\\ell(N)$ for structured sets like arithmetic progressions $\\{1, \\ldots, N\\}$?",
       "How does the maximum Sidon subset problem behave in $\\mathbb{Z}/p\\mathbb{Z}$ versus $\\mathbb{Z}$?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos530",
+    "lineCount": 144,
+    "axiomCount": 5,
+    "theoremCount": 2,
+    "definitionCount": 4
   }
 }

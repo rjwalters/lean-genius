@@ -141,5 +141,27 @@
       "What structural properties characterize extremal disjoint systems (those achieving $f(N)$)?",
       "Can the remaining 7 sorries (including erdos_stein_conjecture and upper_bound_BFV) be proved by Aristotle with stronger Mathlib tactics?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Int.ModEq",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Real",
+      "Classical",
+      "Classical",
+      "Classical",
+      "Classical"
+    ],
+    "namespace": "Erdos202",
+    "lineCount": 809,
+    "axiomCount": 0,
+    "theoremCount": 40,
+    "definitionCount": 19
   }
 }

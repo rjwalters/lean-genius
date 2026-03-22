@@ -143,5 +143,23 @@
       "Is there a closed form for the sum?",
       "What are the best rational approximations to the sum?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.PrimeCounting",
+      "Mathlib.Analysis.Normed.Field.Basic",
+      "Mathlib.Topology.Algebra.InfiniteSum.Real",
+      "Mathlib.NumberTheory.Real.Irrational"
+    ],
+    "opens": [
+      "Nat",
+      "BigOperators",
+      "Topology"
+    ],
+    "namespace": "Erdos251",
+    "lineCount": 211,
+    "axiomCount": 6,
+    "theoremCount": 6,
+    "definitionCount": 8
   }
 }

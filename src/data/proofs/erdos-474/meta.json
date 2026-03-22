@@ -168,5 +168,22 @@
       "Are there related independence results for other partition relations?",
       "Can the $100 prize be claimed with a c = ℵ₂ result?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [
+      "Cardinal",
+      "Set"
+    ],
+    "namespace": "Erdos474",
+    "lineCount": 315,
+    "axiomCount": 9,
+    "theoremCount": 2,
+    "definitionCount": 12
   }
 }

@@ -152,5 +152,24 @@
       "What density constraints exist on such partitions?",
       "How does this relate to Szemerédi's theorem generalizations?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Set.Function",
+      "Mathlib.Data.Set.Finite",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Logic.Function.Basic",
+      "Mathlib.Order.Basic"
+    ],
+    "opens": [
+      "Set",
+      "Function"
+    ],
+    "namespace": "Erdos197",
+    "lineCount": 288,
+    "axiomCount": 5,
+    "theoremCount": 5,
+    "definitionCount": 10
   }
 }

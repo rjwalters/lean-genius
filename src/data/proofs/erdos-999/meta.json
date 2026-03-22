@@ -147,5 +147,22 @@
       "Quantitative forms of the theorem",
       "Connections to other problems in metric number theory"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.ArithmeticFunction",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "Erdos999",
+    "lineCount": 167,
+    "axiomCount": 8,
+    "theoremCount": 2,
+    "definitionCount": 12
   }
 }

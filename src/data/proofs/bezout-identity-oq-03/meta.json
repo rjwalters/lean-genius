@@ -155,5 +155,18 @@
       "Can the Diophantine criterion (bezout_int) be generalized to multi-variable systems using the CRT structure?",
       "Is there an efficient verified computation of crtInt that avoids modular reduction?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Int.GCD",
+      "Mathlib.RingTheory.Coprime.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "BezoutIdentityOQ03",
+    "lineCount": 285,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 1
   }
 }

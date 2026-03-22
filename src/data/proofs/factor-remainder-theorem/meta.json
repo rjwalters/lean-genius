@@ -103,5 +103,20 @@
       "What is the computational complexity of polynomial factorization over various fields?",
       "How do these results extend to non-commutative rings?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.Polynomial.Div",
+      "Mathlib.Algebra.Polynomial.FieldDivision",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Polynomial"
+    ],
+    "namespace": "FactorRemainderTheorem",
+    "lineCount": 259,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 0
   }
 }

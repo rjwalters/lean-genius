@@ -95,5 +95,21 @@
       "What is the exact asymptotic behavior of the extremal function for k pairwise edge-disjoint cycles as a function of k?",
       "Can algebraic or geometric constructions improve the Pyber–Rödl–Szemerédi lower bound?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Finite",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 100,
+    "axiomCount": 4,
+    "theoremCount": 0,
+    "definitionCount": 3
   }
 }

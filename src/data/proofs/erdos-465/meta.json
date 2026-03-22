@@ -162,5 +162,23 @@
       "Can Konyagin's Fourier-analytic method be extended to other distance avoidance constraints (e.g., avoiding algebraic numbers)?",
       "What is the answer for the measure-theoretic variant (Problem #953): maximum measure of a set in B(0,r) avoiding integer distances?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "Erdos465",
+    "lineCount": 294,
+    "axiomCount": 15,
+    "theoremCount": 7,
+    "definitionCount": 11
   }
 }

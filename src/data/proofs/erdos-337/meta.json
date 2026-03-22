@@ -186,5 +186,24 @@
       "Does the analogous question hold for restricted sumsets A +̂ A = {a+b : a,b ∈ A, a ≠ b}?",
       "Can Plünnecke-Ruzsa methods provide any nontrivial lower bounds for sparse bases?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Set"
+    ],
+    "namespace": "Erdos337",
+    "lineCount": 316,
+    "axiomCount": 8,
+    "theoremCount": 4,
+    "definitionCount": 11
   }
 }

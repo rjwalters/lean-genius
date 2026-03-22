@@ -155,5 +155,21 @@
     "erdos-16",
     "szemeredi-theorem",
     "ramseys-theorem"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Finset",
+      "Nat",
+      "Real"
+    ],
+    "namespace": "Erdos140",
+    "lineCount": 268,
+    "axiomCount": 9,
+    "theoremCount": 6,
+    "definitionCount": 11
+  }
 }

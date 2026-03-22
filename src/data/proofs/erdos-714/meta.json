@@ -131,5 +131,21 @@
       "Exact asymptotics for r >= 4",
       "Probabilistic constructions vs algebraic ones"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos714",
+    "lineCount": 286,
+    "axiomCount": 10,
+    "theoremCount": 4,
+    "definitionCount": 6
   }
 }

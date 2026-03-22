@@ -118,5 +118,24 @@
       "What is the true growth rate of the count of twin primes up to N?",
       "Is there a pattern in the gaps between consecutive twin prime pairs?"
     ]
-  }
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.ModEq",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "TwinPrimes",
+    "lineCount": 191,
+    "axiomCount": 1,
+    "theoremCount": 16,
+    "definitionCount": 2
+  },
+  "relatedProofs": [
+    "bounded-prime-gaps",
+    "infinitude-primes",
+    "prime-number-theorem",
+    "dirichlets-theorem"
+  ]
 }

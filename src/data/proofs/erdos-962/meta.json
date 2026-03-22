@@ -138,5 +138,27 @@
       "Can the gap between √(log n log log n) and √n be closed?",
       "What is the true order of magnitude of k(n)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Order.Filter.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Real",
+      "Filter"
+    ],
+    "namespace": "Erdos962",
+    "lineCount": 209,
+    "axiomCount": 8,
+    "theoremCount": 2,
+    "definitionCount": 7
   }
 }

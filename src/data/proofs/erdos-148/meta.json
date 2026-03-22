@@ -141,5 +141,25 @@
       "Is there a pattern to which denominators appear most often?",
       "What is the distribution of max denominators?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Set",
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos148",
+    "lineCount": 262,
+    "axiomCount": 16,
+    "theoremCount": 1,
+    "definitionCount": 5
   }
 }

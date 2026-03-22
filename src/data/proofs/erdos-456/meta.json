@@ -207,5 +207,19 @@
       "What is the typical growth rate of pₙ/mₙ — polynomial, exponential, or something else?",
       "Can the Bombieri-Vinogradov theorem or large sieve make progress on Part 1?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Totient"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "Erdos456",
+    "lineCount": 169,
+    "axiomCount": 12,
+    "theoremCount": 2,
+    "definitionCount": 6
   }
 }

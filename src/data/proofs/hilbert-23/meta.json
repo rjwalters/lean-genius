@@ -119,5 +119,22 @@
       "What new applications arise in machine learning?",
       "Can variational methods solve open problems in geometric analysis?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Calculus.FDeriv.Basic",
+      "Mathlib.Analysis.Calculus.ContDiff.Defs",
+      "Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic",
+      "Mathlib.Analysis.Calculus.Deriv.Basic",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Hilbert23CalculusVariations",
+    "lineCount": 386,
+    "axiomCount": 8,
+    "theoremCount": 4,
+    "definitionCount": 9
   }
 }

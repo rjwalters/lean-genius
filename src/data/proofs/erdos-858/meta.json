@@ -81,5 +81,26 @@
       "Can the gap between this o(1) bound and Behrend's O(1/√(log log N)) be characterized?",
       "What is the structure of extremal sets achieving near-maximum sums?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Nat",
+      "Real",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos858",
+    "lineCount": 352,
+    "axiomCount": 6,
+    "theoremCount": 12,
+    "definitionCount": 8
   }
 }

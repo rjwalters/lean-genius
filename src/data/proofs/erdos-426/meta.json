@@ -111,5 +111,23 @@
       "What structural properties maximize unique subgraph count?",
       "What is the situation for specific graph families (trees, planar graphs)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos426",
+    "lineCount": 271,
+    "axiomCount": 7,
+    "theoremCount": 2,
+    "definitionCount": 8
   }
 }

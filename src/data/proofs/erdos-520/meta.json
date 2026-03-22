@@ -135,5 +135,24 @@
       "What is the exact rate of growth: (log log N)^{1/4} or something else?",
       "How do the correlations from multiplicativity affect the limiting distribution?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "ProbabilityTheory",
+      "Nat",
+      "Real",
+      "Filter",
+      "Set",
+      "Finset"
+    ],
+    "namespace": "Erdos520",
+    "lineCount": 179,
+    "axiomCount": 9,
+    "theoremCount": 0,
+    "definitionCount": 4
   }
 }

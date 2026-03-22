@@ -102,5 +102,22 @@
       "Does the analogous statement hold for $B_h$ sets ($h \\ge 3$), where $h$-wise sums are distinct?",
       "For algebraic Sidon sets (from Singer/Bose–Chowla constructions), can the gap variance be computed explicitly?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Finset.Sort",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 131,
+    "axiomCount": 5,
+    "theoremCount": 0,
+    "definitionCount": 8
   }
 }

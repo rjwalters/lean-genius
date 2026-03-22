@@ -88,5 +88,23 @@
       "What is the simplest explicit construction achieving this property?",
       "Is there a quantitative version bounding the density defect in terms of the number of deleted terms?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Set"
+    ],
+    "namespace": null,
+    "lineCount": 94,
+    "axiomCount": 4,
+    "theoremCount": 0,
+    "definitionCount": 8
   }
 }

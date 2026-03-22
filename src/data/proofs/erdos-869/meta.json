@@ -149,5 +149,22 @@
       "Are there weaker conditions that guarantee minimal sub-basis existence?",
       "What is the structure of the set of essential elements?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Order.Filter.Cofinite"
+    ],
+    "opens": [
+      "Set",
+      "Filter"
+    ],
+    "namespace": "Erdos869",
+    "lineCount": 301,
+    "axiomCount": 7,
+    "theoremCount": 4,
+    "definitionCount": 12
   }
 }

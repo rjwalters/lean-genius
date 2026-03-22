@@ -140,5 +140,20 @@
       "What is the growth rate of h(n) if unbounded?",
       "How do optimal configurations transition as n increases?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Metric",
+      "Set",
+      "Finset"
+    ],
+    "namespace": "Erdos103",
+    "lineCount": 249,
+    "axiomCount": 7,
+    "theoremCount": 5,
+    "definitionCount": 17
   }
 }

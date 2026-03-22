@@ -198,5 +198,21 @@
       "Can the integral equality characterization be extended to the endpoint cases p=1 and p=∞?",
       "Can the same Young deficit technique characterize equality in Minkowski's inequality $\\|f+g\\|_p \\le \\|f\\|_p + \\|g\\|_p$?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "NNReal",
+      "Real",
+      "MeasureTheory"
+    ],
+    "namespace": "CauchySchwarzOQ03OQ01",
+    "lineCount": 836,
+    "axiomCount": 0,
+    "theoremCount": 29,
+    "definitionCount": 1
   }
 }

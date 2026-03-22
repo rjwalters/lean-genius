@@ -136,5 +136,23 @@
       "How does the Taylor remainder interact with Lean's formalization of analytic functions — can we prove that the Taylor series of an analytic function converges to the function?",
       "Can the Cauchy remainder form be used to formalize the proof that the Taylor series of $e^x$ converges everywhere, providing a fully verified computation of $e$?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Calculus.Taylor",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Set",
+      "Filter",
+      "Topology",
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "TaylorTheorem",
+    "lineCount": 203,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 1
   }
 }

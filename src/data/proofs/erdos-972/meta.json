@@ -131,5 +131,18 @@
       "What is the density of primeSet(φ) among all primes?",
       "Does the algebraic vs transcendental nature of α affect the answer?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set"
+    ],
+    "namespace": "Erdos972",
+    "lineCount": 227,
+    "axiomCount": 1,
+    "theoremCount": 7,
+    "definitionCount": 6
   }
 }

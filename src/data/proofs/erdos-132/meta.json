@@ -177,5 +177,22 @@
       "Can the CDL 2025 convex position proof technique be extended to handle a bounded number of interior points?",
       "Is there a polynomial method (à la Guth-Katz) approach to the rare distance problem?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Topology.MetricSpace.Basic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos132",
+    "lineCount": 218,
+    "axiomCount": 7,
+    "theoremCount": 3,
+    "definitionCount": 8
   }
 }

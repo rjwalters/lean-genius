@@ -122,5 +122,19 @@
   "relatedProofs": [
     "erdos-102",
     "erdos-105"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 203,
+    "axiomCount": 12,
+    "theoremCount": 1,
+    "definitionCount": 11
+  }
 }

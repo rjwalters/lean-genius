@@ -124,5 +124,21 @@
       "What is the density of near-misses (n! + 1 close to a perfect square)?",
       "Are there analogous conjectures for n! + k = m² with k ≠ 1?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Set.Finite.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Set"
+    ],
+    "namespace": "Erdos398",
+    "lineCount": 228,
+    "axiomCount": 2,
+    "theoremCount": 19,
+    "definitionCount": 3
   }
 }

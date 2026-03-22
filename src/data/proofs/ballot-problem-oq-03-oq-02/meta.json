@@ -181,5 +181,22 @@
       "relationship": "related",
       "description": "The ballot problem's reflection principle is the 1D precursor to the LGV lemma's crossing argument."
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "LGV",
+    "lineCount": 505,
+    "axiomCount": 1,
+    "theoremCount": 17,
+    "definitionCount": 16
+  },
+  "relatedProofs": [
+    "ballot-problem-oq-03",
+    "ballot-problem"
   ]
 }

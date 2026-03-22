@@ -119,5 +119,25 @@
       "Is the Continuum Hypothesis decided by large cardinal axioms?",
       "Does Woodin's Ultimate-L program eventually settle CH?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.SetTheory.Cardinal.Cofinality",
+      "Mathlib.Order.SuccPred.Basic",
+      "Mathlib.Logic.Basic",
+      "Mathlib.Tactic",
+      "Proofs.CantorDiagonalization",
+      "Proofs.ContinuumHypothesis"
+    ],
+    "opens": [
+      "Cardinal"
+    ],
+    "namespace": "CantorDiagonalizationOQ01",
+    "lineCount": 443,
+    "axiomCount": 2,
+    "theoremCount": 27,
+    "definitionCount": 5
   }
 }

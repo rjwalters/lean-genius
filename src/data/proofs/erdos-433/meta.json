@@ -147,5 +147,24 @@
       "Distribution of Frobenius numbers in random numerical semigroups",
       "Efficient algorithms for computing G(A) with many generators"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos433",
+    "lineCount": 335,
+    "axiomCount": 13,
+    "theoremCount": 6,
+    "definitionCount": 5
   }
 }

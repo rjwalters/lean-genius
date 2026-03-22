@@ -120,5 +120,27 @@
       "For what minimal N does Question 2 hold for all n ≥ N?",
       "Can counterexamples to the strict inequality be characterized?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset",
+      "Mathlib.Order.Filter.AtTopBot",
+      "Mathlib.Algebra.GCDMonoid.Finset",
+      "Mathlib.Tactic.NormNum"
+    ],
+    "opens": [
+      "Finset",
+      "Filter",
+      "BigOperators"
+    ],
+    "namespace": "Erdos317",
+    "lineCount": 166,
+    "axiomCount": 1,
+    "theoremCount": 7,
+    "definitionCount": 8
   }
 }

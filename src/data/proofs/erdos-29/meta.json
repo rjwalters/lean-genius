@@ -125,5 +125,29 @@
       "Can the representation bound $\\exp(C\\sqrt{\\log n})$ be improved? Is there a basis with $r_A(n) = O((\\log n)^k)$ for some fixed $k$? This would be a stronger explicit economical basis and a natural next problem after JPSZ.",
       "The `sidon_not_basis` proof is 76 lines. Can it be compressed using Lean 4 tactics like `decide` (for small cases), `omega`, or `Finset.card_le_card`? The argument is essentially a finite case analysis and might be automatable."
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Mathlib"
+    ],
+    "opens": [
+      "Lean",
+      "Meta",
+      "Elab",
+      "Tactic",
+      "in",
+      "Lean.Elab.Tactic",
+      "in",
+      "Set",
+      "Finset",
+      "Nat",
+      "Filter"
+    ],
+    "namespace": "Erdos29",
+    "lineCount": 454,
+    "axiomCount": 8,
+    "theoremCount": 10,
+    "definitionCount": 12
   }
 }

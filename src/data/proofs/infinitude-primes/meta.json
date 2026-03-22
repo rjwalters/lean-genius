@@ -140,5 +140,18 @@
   "relatedProofs": [
     "fundamental-arithmetic",
     "riemann-hypothesis"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "InfinitudePrimes",
+    "lineCount": 128,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0
+  }
 }

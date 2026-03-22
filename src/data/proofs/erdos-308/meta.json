@@ -169,5 +169,30 @@
       "targetProofId": "erdos-124-complete-sequences",
       "relationship": "Both study completeness of integer sequences: #124 asks when a sequence is complete (every large integer is a subset sum), while #308 asks which integers are subset sums of $\\{1/k\\}$ mapped to $\\mathbb{Z}$"
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos308",
+    "lineCount": 316,
+    "axiomCount": 19,
+    "theoremCount": 3,
+    "definitionCount": 9
+  },
+  "relatedProofs": [
+    "",
+    "",
+    "",
+    "",
+    ""
   ]
 }

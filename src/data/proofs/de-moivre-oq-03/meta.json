@@ -196,5 +196,19 @@
       "id": "de-moivre-oq-02",
       "relationship": "OQ-02: Deeper Chebyshev properties"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Complex",
+      "Real"
+    ],
+    "namespace": "DeMoivreOQ03",
+    "lineCount": 276,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 2
+  }
 }

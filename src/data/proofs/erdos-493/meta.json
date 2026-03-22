@@ -148,5 +148,17 @@
   ],
   "relatedProofs": [
     "erdos-302"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Erdos493",
+    "lineCount": 94,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 2
+  }
 }

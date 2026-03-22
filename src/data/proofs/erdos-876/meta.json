@@ -151,5 +151,22 @@
       "What is the structure of sum-free sets that maximize the counting function $|A \\cap [1,N]|$? Are they related to specific number-theoretic constructions?",
       "Extend the analysis to the multi-dimensional setting: for sum-free subsets of $\\mathbb{N}^d$, how do the gap and density bounds generalize?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos876",
+    "lineCount": 299,
+    "axiomCount": 8,
+    "theoremCount": 3,
+    "definitionCount": 9
   }
 }

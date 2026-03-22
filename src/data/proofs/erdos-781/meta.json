@@ -156,5 +156,21 @@
       "What is the exact threshold $k_0$ where the conjecture first fails? We know $f(2) = 2 < 3 = k_0^2-k_0+1$ for $k_0=2$, so the conjecture fails at $k=2$ already.",
       "Can `descending_wave_is_quasi` be proved in Lean? The error bound `seq ⟨0, ...⟩` is the first element — this Nat arithmetic argument should be accessible via `omega` and `simp`."
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Order.Filter.AtTopBot.Basic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos781",
+    "lineCount": 259,
+    "axiomCount": 12,
+    "theoremCount": 5,
+    "definitionCount": 9
   }
 }

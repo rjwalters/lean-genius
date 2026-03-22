@@ -117,5 +117,19 @@
       "id": "erdos-szekeres",
       "relationship": "The Erdős–Szekeres theorem and this sieve problem both ask for optimal configurations in a combinatorial setting with a resource constraint."
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 191,
+    "axiomCount": 10,
+    "theoremCount": 11,
+    "definitionCount": 3
+  }
 }

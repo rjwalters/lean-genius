@@ -144,5 +144,21 @@
       "Understand the structure of extremal graphs achieving the bound",
       "Can the polylogarithmic independence bound be improved further?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Set",
+      "Function",
+      "BigOperators"
+    ],
+    "namespace": "Erdos22",
+    "lineCount": 328,
+    "axiomCount": 23,
+    "theoremCount": 4,
+    "definitionCount": 4
   }
 }

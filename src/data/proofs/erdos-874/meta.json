@@ -159,5 +159,22 @@
   ],
   "relatedProofs": [
     "erdos-870"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "Erdos874",
+    "lineCount": 254,
+    "axiomCount": 12,
+    "theoremCount": 3,
+    "definitionCount": 10
+  }
 }

@@ -147,5 +147,18 @@
       "id": "desargues-theorem",
       "relationship": "Desargues's theorem is foundational to projective incidence geometry; the collinearity and concurrence duality underlying Problems #101–#102 extends the same perspective-line framework."
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 104,
+    "axiomCount": 6,
+    "theoremCount": 0,
+    "definitionCount": 3
+  }
 }

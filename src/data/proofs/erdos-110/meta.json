@@ -169,5 +169,19 @@
       "What happens at higher cardinals (ℵ₂, ℵ₃, ...)?",
       "Can the counterexample be made explicit/constructive?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Cardinal",
+      "Set"
+    ],
+    "namespace": "Erdos110",
+    "lineCount": 262,
+    "axiomCount": 6,
+    "theoremCount": 6,
+    "definitionCount": 13
   }
 }

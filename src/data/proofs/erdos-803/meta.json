@@ -124,5 +124,24 @@
       "Determine exact constants in the Θ(m√(log m)) bound",
       "Are there other density thresholds with interesting phase transitions for balanced subgraphs?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Real",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos803",
+    "lineCount": 190,
+    "axiomCount": 4,
+    "theoremCount": 3,
+    "definitionCount": 7
   }
 }

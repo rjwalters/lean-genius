@@ -173,5 +173,22 @@
       "What happens for $k \\ge 3$ Sidon sets with pairwise disjoint differences — does the bound become $\\sum_{i=1}^k \\binom{|A_i|}{2} \\le \\binom{f(N)}{2} + O(1)$?",
       "Can the five `sorry` counting lemmas be proved using Mathlib's `Finset.card` API?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 130,
+    "axiomCount": 3,
+    "theoremCount": 5,
+    "definitionCount": 5
   }
 }

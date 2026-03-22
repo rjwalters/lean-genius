@@ -117,5 +117,17 @@
   ],
   "relatedProofs": [
     "angle-trisection"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Logic.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "ParallelPostulate",
+    "lineCount": 315,
+    "axiomCount": 7,
+    "theoremCount": 3,
+    "definitionCount": 3
+  }
 }

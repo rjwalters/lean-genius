@@ -98,5 +98,21 @@
   ],
   "relatedProofs": [
     "erdos-486"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Topology.Basic",
+      "Mathlib.Data.Int.ModCast",
+      "Mathlib.Data.Int.Lemmas",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 119,
+    "axiomCount": 6,
+    "theoremCount": 1,
+    "definitionCount": 5
+  }
 }

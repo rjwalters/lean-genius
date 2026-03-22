@@ -127,5 +127,19 @@
       "What is the structure of the extremal counterexample for $n = 17$? Is it unique up to isomorphism, or are there multiple non-isomorphic triangle-free graphs on 17 vertices with no independent additive triple?",
       "Can the result be extended to other additive patterns beyond Schur triples — e.g., arithmetic progressions $(a, a+d, a+2d)$ instead of $(a, b, a+b)$?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "SimpleGraph"
+    ],
+    "namespace": null,
+    "lineCount": 188,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 11
   }
 }

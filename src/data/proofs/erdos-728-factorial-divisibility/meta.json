@@ -134,5 +134,21 @@
       "Are there effective algorithms to find specific good triples?",
       "How do the techniques extend to related problems like #729?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "Classical",
+      "Nat",
+      "Topology"
+    ],
+    "namespace": null,
+    "lineCount": 1417,
+    "axiomCount": 0,
+    "theoremCount": 56,
+    "definitionCount": 29
   }
 }

@@ -145,5 +145,22 @@
       "Can the result be generalized to graphs with $\\chi(G) = \\aleph_\\alpha$ for higher alephs, or is $\\aleph_1$ special?",
       "What is the relationship to Erdős #919 (chromatic numbers of ordinal products) and #888 — do solutions transfer between these problems?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.SetTheory.Cardinal.Cofinality",
+      "Mathlib.Combinatorics.SimpleGraph.Basic"
+    ],
+    "opens": [
+      "Cardinal",
+      "Set",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos1176",
+    "lineCount": 224,
+    "axiomCount": 1,
+    "theoremCount": 6,
+    "definitionCount": 11
   }
 }

@@ -94,5 +94,18 @@
       "Is there a general formula or algorithm for computing partition thresholds from the CNF of an ordinal?",
       "How does the partition threshold relate to other ordinal invariants (cofinality, CNF-length, multiplicative structure)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Ordinal.Arithmetic",
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 94,
+    "axiomCount": 8,
+    "theoremCount": 1,
+    "definitionCount": 3
   }
 }

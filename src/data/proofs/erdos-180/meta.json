@@ -129,5 +129,19 @@
       "Is there a connection between domination and the algebraic structure of extremal graphs (e.g., incidence geometries)?",
       "Does a weaker statement hold: $\\mathrm{ex}(n; G) = O(\\mathrm{ex}(n; \\mathcal{F})^{1+\\varepsilon})$ for some $G \\in \\mathcal{F}$?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Erdos180",
+    "lineCount": 117,
+    "axiomCount": 3,
+    "theoremCount": 1,
+    "definitionCount": 6
   }
 }

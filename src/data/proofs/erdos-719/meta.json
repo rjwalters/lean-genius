@@ -167,5 +167,20 @@
       "What is the relationship to fractional decompositions and LP relaxations?",
       "Does the conjecture hold for specific families of hypergraphs (e.g., random, dense)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 176,
+    "axiomCount": 2,
+    "theoremCount": 5,
+    "definitionCount": 7
   }
 }

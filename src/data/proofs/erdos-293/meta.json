@@ -129,5 +129,23 @@
       "What are exact values of v(k) for k = 4, 5, ...?",
       "What is the connection to the Erdős-Straus conjecture?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos293",
+    "lineCount": 147,
+    "axiomCount": 12,
+    "theoremCount": 2,
+    "definitionCount": 6
   }
 }

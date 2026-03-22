@@ -136,8 +136,7 @@
     "area-of-circle",
     "area-of-circle-oq-01",
     "picks-theorem"
-  ]
-,
+  ],
   "references": [
     {
       "authors": "Hurwitz, Adolf",
@@ -153,5 +152,22 @@
       "venue": "Bulletin of the AMS, 84(6), pp. 1182-1238",
       "note": "Comprehensive survey of proofs and generalizations of the isoperimetric inequality, covering classical and modern approaches"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real",
+      "MeasureTheory"
+    ],
+    "namespace": "IsoperimetricTheorem",
+    "lineCount": 450,
+    "axiomCount": 2,
+    "theoremCount": 14,
+    "definitionCount": 14
+  }
 }

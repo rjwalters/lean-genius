@@ -129,5 +129,23 @@
       "What is the exact asymptotic of h(k)?",
       "What is h(k) for specific small values beyond k=5?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Real",
+      "Nat"
+    ],
+    "namespace": "Erdos970",
+    "lineCount": 174,
+    "axiomCount": 12,
+    "theoremCount": 4,
+    "definitionCount": 5
   }
 }

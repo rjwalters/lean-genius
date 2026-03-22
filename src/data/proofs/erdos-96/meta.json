@@ -130,5 +130,22 @@
       "Remove the log factor from the upper bound",
       "Prove the sum conjecture ∑g(x) < 4n"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Analysis.Convex.Hull"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos96",
+    "lineCount": 295,
+    "axiomCount": 4,
+    "theoremCount": 2,
+    "definitionCount": 10
   }
 }

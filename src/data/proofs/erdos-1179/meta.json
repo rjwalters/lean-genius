@@ -173,5 +173,25 @@
   },
   "relatedProofs": [
     "erdos-543"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos1179",
+    "lineCount": 179,
+    "axiomCount": 11,
+    "theoremCount": 1,
+    "definitionCount": 3
+  }
 }

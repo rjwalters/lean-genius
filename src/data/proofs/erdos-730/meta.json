@@ -121,5 +121,19 @@
       "For the spacing conjecture: is there a threshold k₀ beyond which the conjecture becomes easier or harder due to the changing overlap of middle-prime intervals?",
       "Can sieve methods or the large sieve inequality bound the number of primes in the symmetric difference of divisor sets for consecutive central binomials?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Choose.Central",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factors",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 119,
+    "axiomCount": 10,
+    "theoremCount": 2,
+    "definitionCount": 4
   }
 }

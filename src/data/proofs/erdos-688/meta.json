@@ -122,5 +122,19 @@
       "Can the Lovász Local Lemma or entropy compression give better probabilistic bounds for the covering?",
       "How does the answer change if multiple residue classes per prime are allowed (Problem #689 variant)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 111,
+    "axiomCount": 8,
+    "theoremCount": 0,
+    "definitionCount": 4
   }
 }

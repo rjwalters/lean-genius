@@ -145,5 +145,19 @@
       "Determine the exact constant c in Alon's structural bound |subsetImage f Y| < (1-c)·2^k",
       "RESOLVED: Both lower bound sorries proved by Aristotle (covering_lower_bound and coveringNumber_ge_log)"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Set"
+    ],
+    "namespace": "Erdos624",
+    "lineCount": 219,
+    "axiomCount": 5,
+    "theoremCount": 4,
+    "definitionCount": 5
   }
 }

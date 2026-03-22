@@ -144,5 +144,22 @@
       "What is the structure of minimal-distance configurations in general position?",
       "Can the gap between n/3 and n/2 be closed in either direction?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
+    ],
+    "opens": [
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos1082",
+    "lineCount": 352,
+    "axiomCount": 4,
+    "theoremCount": 23,
+    "definitionCount": 11
   }
 }

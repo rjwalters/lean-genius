@@ -133,5 +133,21 @@
       "Is c_k bounded as k → ∞?",
       "Can the EFRS93 bound R ≤ c·k·m be improved to R ≤ c_k · m?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Defs",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Order.Bounds.Basic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos569",
+    "lineCount": 200,
+    "axiomCount": 10,
+    "theoremCount": 3,
+    "definitionCount": 3
   }
 }

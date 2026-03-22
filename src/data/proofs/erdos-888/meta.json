@@ -133,5 +133,23 @@
       "How does the maximum change if we weaken 'square' to 'kth power'?",
       "What techniques from Sárközy's proof can be improved?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Squarefree",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Set.Finite.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "Set"
+    ],
+    "namespace": "Erdos888",
+    "lineCount": 256,
+    "axiomCount": 11,
+    "theoremCount": 4,
+    "definitionCount": 8
   }
 }

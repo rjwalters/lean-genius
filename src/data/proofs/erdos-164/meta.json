@@ -118,5 +118,25 @@
       "What is the exact value of Σ_p 1/(p log p) — is it transcendental?",
       "Are there quantitative stability results (if the sum is close to the maximum, must A be close to the primes)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Topology.Instances.Real",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Real",
+      "Set"
+    ],
+    "namespace": "Erdos164",
+    "lineCount": 154,
+    "axiomCount": 4,
+    "theoremCount": 5,
+    "definitionCount": 6
   }
 }

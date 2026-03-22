@@ -177,5 +177,21 @@
     "euler-polyhedral-formula",
     "hilbert-10",
     "area-of-circle"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Pi.Bounds",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.Group.Defs",
+      "Mathlib.LinearAlgebra.TensorProduct.Basic"
+    ],
+    "opens": [],
+    "namespace": "Hilbert3",
+    "lineCount": 515,
+    "axiomCount": 7,
+    "theoremCount": 7,
+    "definitionCount": 10
+  }
 }

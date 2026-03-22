@@ -176,5 +176,20 @@
     "godel-incompleteness",
     "brouwer-fixed-point",
     "schauder-fixed-point"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Logic.Function.Basic",
+      "Mathlib.Data.Set.Function",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Function"
+    ],
+    "namespace": "CantorsTheoremOQ02",
+    "lineCount": 282,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 0
+  }
 }

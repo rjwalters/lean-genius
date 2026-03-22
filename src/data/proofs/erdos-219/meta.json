@@ -116,5 +116,19 @@
       "Can we find explicit bounds on the growth of first terms?",
       "Are there infinitely many twin prime pairs {p, p+2}? (Harder question)"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Nat"
+    ],
+    "namespace": "Erdos219",
+    "lineCount": 144,
+    "axiomCount": 6,
+    "theoremCount": 4,
+    "definitionCount": 4
   }
 }

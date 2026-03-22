@@ -95,5 +95,25 @@
       "Can the conjecture be strengthened to even cycles, or is oddness essential? Even cycles have $\\chi = 2$, so the induced subgraph chromatic number cannot come from the cycle itself—it must come from chords.",
       "What is the relationship to the Gyárfás-Sumner conjecture? Both involve forcing specific substructures in graphs of high chromatic number, and a unified framework could resolve both."
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Classical",
+      "in"
+    ],
+    "namespace": "Erdos640",
+    "lineCount": 280,
+    "axiomCount": 2,
+    "theoremCount": 11,
+    "definitionCount": 8
   }
 }

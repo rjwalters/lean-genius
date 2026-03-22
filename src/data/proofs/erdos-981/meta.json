@@ -145,5 +145,24 @@
       "How do the constants relate between the original and Tang-Zhang formulations?",
       "Can the asymptotic be refined to include lower-order terms?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.NumberTheory.LegendreSymbol.Basic",
+      "Mathlib.Analysis.Asymptotics.Asymptotics",
+      "Mathlib.Order.Filter.AtTopBot"
+    ],
+    "opens": [
+      "Filter",
+      "Asymptotics",
+      "Nat"
+    ],
+    "namespace": "Erdos981",
+    "lineCount": 196,
+    "axiomCount": 10,
+    "theoremCount": 1,
+    "definitionCount": 7
   }
 }

@@ -190,5 +190,23 @@
       "What is the computational complexity of finding optimal A, B for given N?",
       "Does a multi-set generalization hold: if A, B are multisets with distinct products, what bound applies?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.NumberTheory.Primorial"
+    ],
+    "opens": [
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos490",
+    "lineCount": 278,
+    "axiomCount": 6,
+    "theoremCount": 10,
+    "definitionCount": 15
   }
 }

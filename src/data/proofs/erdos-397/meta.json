@@ -105,5 +105,19 @@
       "Can we characterize all solutions, or is the structure fundamentally chaotic?",
       "What is the asymptotic density of solutions among all pairs of disjoint finite sets?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos397",
+    "lineCount": 120,
+    "axiomCount": 3,
+    "theoremCount": 8,
+    "definitionCount": 4
   }
 }

@@ -131,5 +131,24 @@
       "Are there rationals that require exponentially many 2-distinct-prime terms?",
       "What algorithmic approach would find such representations efficiently?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Rat.Cast.Lemmas",
+      "Mathlib.Data.Nat.Squarefree",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.NumberTheory.ArithmeticFunction.Defs",
+      "Mathlib.NumberTheory.ArithmeticFunction.Misc",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Data.Finset.Card"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos306",
+    "lineCount": 256,
+    "axiomCount": 8,
+    "theoremCount": 2,
+    "definitionCount": 10
   }
 }

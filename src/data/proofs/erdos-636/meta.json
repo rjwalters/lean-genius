@@ -190,5 +190,19 @@
       "Can the Kwan-Sudakov bound be extended to graphs with slightly larger homogeneous sets (e.g., ω, α ≤ n^ε for small ε)?",
       "What is the analogous tight bound for counting edge-induced (non-vertex-induced) subgraph signatures?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Function"
+    ],
+    "namespace": "Erdos636",
+    "lineCount": 294,
+    "axiomCount": 9,
+    "theoremCount": 8,
+    "definitionCount": 18
   }
 }

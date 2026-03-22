@@ -233,5 +233,21 @@
     "erdos-9",
     "chinese-remainder-constructive",
     "central-limit-theorem"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Real",
+      "BigOperators",
+      "Set"
+    ],
+    "namespace": "Erdos205",
+    "lineCount": 445,
+    "axiomCount": 6,
+    "theoremCount": 44,
+    "definitionCount": 9
+  }
 }

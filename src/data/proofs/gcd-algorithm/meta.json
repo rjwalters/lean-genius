@@ -141,5 +141,18 @@
       "Can we extend this to more exotic number systems?",
       "What is the connection to continued fractions and best rational approximations?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Algebra.EuclideanDomain.Defs",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "GCDAlgorithm",
+    "lineCount": 248,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 0
   }
 }

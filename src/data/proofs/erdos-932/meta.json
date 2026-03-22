@@ -116,5 +116,24 @@
       "How does the problem relate to the Cramér model of prime gaps?",
       "Can sieve methods produce density-zero infinitude results?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Order.Interval.Finset.Nat",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos932",
+    "lineCount": 315,
+    "axiomCount": 12,
+    "theoremCount": 8,
+    "definitionCount": 11
   }
 }

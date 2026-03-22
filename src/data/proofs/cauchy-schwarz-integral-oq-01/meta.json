@@ -143,5 +143,27 @@
       "Can Riesz-Thorin interpolation be derived from Hölder in Lean 4?",
       "Can the complex-valued Hölder inequality be stated and proved using the nnnorm approach?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Function.L2Space",
+      "Mathlib.MeasureTheory.Integral.Bochner.Basic",
+      "Mathlib.MeasureTheory.Integral.MeanInequalities",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.MeanInequalities",
+      "Mathlib.Analysis.MeanInequalitiesPow",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "ENNReal",
+      "NNReal",
+      "Real"
+    ],
+    "namespace": "HolderGeneralizesCS",
+    "lineCount": 229,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0
   }
 }

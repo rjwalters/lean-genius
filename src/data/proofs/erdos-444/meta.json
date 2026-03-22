@@ -158,5 +158,18 @@
   ],
   "relatedProofs": [
     "erdos-414"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Set.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos444",
+    "lineCount": 161,
+    "axiomCount": 6,
+    "theoremCount": 2,
+    "definitionCount": 6
+  }
 }

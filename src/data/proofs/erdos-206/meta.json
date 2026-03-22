@@ -144,5 +144,24 @@
       "For non-greedy x, how frequently does the greedy step fail?",
       "See also: Erdős Problem #282 (related Egyptian fraction problem)"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Set",
+      "MeasureTheory"
+    ],
+    "namespace": "Erdos206",
+    "lineCount": 237,
+    "axiomCount": 12,
+    "theoremCount": 3,
+    "definitionCount": 7
   }
 }

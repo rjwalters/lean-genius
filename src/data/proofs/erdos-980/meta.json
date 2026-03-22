@@ -93,5 +93,23 @@
   ],
   "relatedProofs": [
     "prime-number-theorem"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.NumberTheory.LegendreSymbol.Basic",
+      "Mathlib.Analysis.Asymptotics.Asymptotics",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Real"
+    ],
+    "namespace": "Erdos980",
+    "lineCount": 310,
+    "axiomCount": 15,
+    "theoremCount": 3,
+    "definitionCount": 6
+  }
 }

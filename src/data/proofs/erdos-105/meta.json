@@ -142,5 +142,22 @@
       "Can Xichuan's three counterexamples be explicitly constructed in Lean without axiomatization? This would require formalizing the specific coordinates and verifying all incidence/non-incidence relations computationally.",
       "Does the analogous problem in $\\mathbb{R}^d$ for $d \\geq 3$ (rich 2-flats avoiding obstacle points) exhibit a similar threshold phenomenon? The Szemerédi-Trotter theorem does not directly generalize, but Guth-Katz type bounds might apply."
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.LinearAlgebra.AffineSpace.AffineSubspace",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Set",
+      "Finset"
+    ],
+    "namespace": "Erdos105",
+    "lineCount": 249,
+    "axiomCount": 8,
+    "theoremCount": 2,
+    "definitionCount": 9
   }
 }

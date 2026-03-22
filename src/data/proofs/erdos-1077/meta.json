@@ -105,5 +105,22 @@
       "How does the answer change for hypergraphs?",
       "Can we find balanced subgraphs with better edge density?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Combinatorics.SimpleGraph.Finite",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Order.Lattice"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos1077",
+    "lineCount": 156,
+    "axiomCount": 2,
+    "theoremCount": 2,
+    "definitionCount": 4
   }
 }

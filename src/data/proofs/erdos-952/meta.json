@@ -146,5 +146,18 @@
       "Is there a theoretical obstruction or just computational evidence?",
       "What about Eisenstein primes in ℤ[ω]?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "GaussianInt"
+    ],
+    "namespace": "Erdos952",
+    "lineCount": 240,
+    "axiomCount": 6,
+    "theoremCount": 1,
+    "definitionCount": 20
   }
 }

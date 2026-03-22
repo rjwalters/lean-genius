@@ -160,5 +160,24 @@
       "proofId": "erdos-46",
       "relationship": "Both problems concern partition regularity — Problem 46 asks about monochromatic Egyptian fractions, Problem 54 about monochromatic complete sequences"
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 95,
+    "axiomCount": 3,
+    "theoremCount": 0,
+    "definitionCount": 5
+  },
+  "relatedProofs": [
+    "",
+    ""
   ]
 }

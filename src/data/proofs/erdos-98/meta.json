@@ -103,5 +103,21 @@
       "What is the sharp exponent? If $h(n) \\sim n \\cdot f(n)$ for some slowly growing $f$, what is $f$? The EFP bound gives $f(n) \\le e^{c\\sqrt{\\log n}}$, but no nontrivial lower bound on $f$ is known.",
       "Does the no-4-concyclic condition matter? What is $h'(n)$ if only no-3-collinear is required (dropping the concyclicity constraint)? Is $h(n) = h'(n)$ or are the conditions genuinely independent?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 96,
+    "axiomCount": 5,
+    "theoremCount": 0,
+    "definitionCount": 6
   }
 }

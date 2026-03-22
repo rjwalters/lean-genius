@@ -166,5 +166,23 @@
       "What is ex(n;C4) for general n, not just projective plane sizes q^2+q+1?",
       "How does the extremal function behave for other even cycles: ex(n;C_{2k}) for k >= 3?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos765",
+    "lineCount": 247,
+    "axiomCount": 9,
+    "theoremCount": 6,
+    "definitionCount": 7
   }
 }

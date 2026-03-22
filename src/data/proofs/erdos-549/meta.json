@@ -206,5 +206,21 @@
       "What is the maximum R(T)/k over all bipartite (k, 2k) trees T?",
       "Does the conjecture hold for all trees with maximum degree 3?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Function",
+      "Set",
+      "SimpleGraph"
+    ],
+    "namespace": null,
+    "lineCount": 249,
+    "axiomCount": 0,
+    "theoremCount": 16,
+    "definitionCount": 14
   }
 }

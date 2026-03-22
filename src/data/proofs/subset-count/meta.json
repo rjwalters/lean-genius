@@ -106,5 +106,18 @@
       "What counting problems reduce to subset counting?",
       "How does the 2^n growth affect algorithm complexity?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Data.Fintype.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "SubsetCount",
+    "lineCount": 179,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0
   }
 }

@@ -141,5 +141,20 @@
     "erdos-738",
     "four-color-theorem",
     "ramseys-theorem"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Coloring",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Fintype.Card"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos835",
+    "lineCount": 197,
+    "axiomCount": 10,
+    "theoremCount": 3,
+    "definitionCount": 10
+  }
 }

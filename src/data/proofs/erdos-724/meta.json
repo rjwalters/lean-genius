@@ -159,5 +159,22 @@
       "What is the exact value of f(10)?",
       "Are there infinitely many n with f(n) = n - 1 that are not prime powers?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Matrix.Basic",
+      "Mathlib.Data.Fintype.Card",
+      "Mathlib.Data.Fin.Basic",
+      "Mathlib.Order.BoundedOrder.Basic"
+    ],
+    "opens": [
+      "Matrix",
+      "Finset"
+    ],
+    "namespace": "Erdos724",
+    "lineCount": 329,
+    "axiomCount": 17,
+    "theoremCount": 3,
+    "definitionCount": 8
   }
 }

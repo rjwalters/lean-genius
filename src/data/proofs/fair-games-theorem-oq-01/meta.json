@@ -137,5 +137,18 @@
   "relatedProofs": [
     "fair-games-theorem",
     "ballot-problem"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "MeasureTheory"
+    ],
+    "namespace": "FairGamesOQ01",
+    "lineCount": 633,
+    "axiomCount": 0,
+    "theoremCount": 50,
+    "definitionCount": 12
+  }
 }

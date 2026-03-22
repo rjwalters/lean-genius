@@ -124,5 +124,24 @@
       "What is the sharp characterization of irrationality sequences in terms of growth rate? Can the gap between the Kovač-Tao condition and the positive condition be closed?",
       "Does the irrationality sequence property have a topological characterization? Is the set of irrationality sequences Borel, analytic, or higher in the descriptive set theory hierarchy?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Irrational",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Topology.Instances.Real",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Filter",
+      "Topology",
+      "Real"
+    ],
+    "namespace": "Erdos263",
+    "lineCount": 222,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 19
   }
 }

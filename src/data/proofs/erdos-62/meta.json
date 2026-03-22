@@ -153,5 +153,18 @@
       "Can the EHS bound N be made effective or asymptotically estimated?",
       "What common subgraph structure is forced for graphs with χ = ℵ₂ or larger?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set"
+    ],
+    "namespace": "Erdos62",
+    "lineCount": 208,
+    "axiomCount": 3,
+    "theoremCount": 3,
+    "definitionCount": 12
   }
 }

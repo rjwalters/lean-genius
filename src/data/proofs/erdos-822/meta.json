@@ -114,5 +114,20 @@
       "Can the density be computed for n + f(n) for other arithmetic functions f?",
       "What is the density of integers with exactly k representations as n + φ(n)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.Data.Set.Function",
+      "Mathlib.Order.Filter.Basic"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "Erdos822",
+    "lineCount": 122,
+    "axiomCount": 3,
+    "theoremCount": 2,
+    "definitionCount": 4
   }
 }

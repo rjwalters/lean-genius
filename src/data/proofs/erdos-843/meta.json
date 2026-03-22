@@ -105,5 +105,22 @@
       "How does the threshold N depend on r in practical terms?",
       "Can explicit constructions of sparse Ramsey complete sequences be given?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Set.Finite",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos843",
+    "lineCount": 272,
+    "axiomCount": 6,
+    "theoremCount": 4,
+    "definitionCount": 10
   }
 }

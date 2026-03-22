@@ -193,5 +193,21 @@
       "What is the correct exponent in the exponential variant: is $(1 + \\varepsilon)\\sqrt{k}$ the critical growth rate, or could $e^{c\\sqrt{k}}$ work for some specific $c > 1$?",
       "How does this problem relate to the Erdős-Straus conjecture (#681) and the related Problem #682, which ask similar questions with different thresholds?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Topology.Algebra.Order.LiminfLimsup",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 195,
+    "axiomCount": 2,
+    "theoremCount": 8,
+    "definitionCount": 7
   }
 }

@@ -89,5 +89,18 @@
       "How does the order of growth of $f$ constrain the growth of $\\nu(r)$? Is there a relationship between $\\nu(r)$ and the central index $N(r)$?",
       "For the Herzog–Piranian construction, what is the density of radii $r$ where $\\nu(r) \\ge N$?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Complex.Basic",
+      "Mathlib.Topology.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 101,
+    "axiomCount": 11,
+    "theoremCount": 0,
+    "definitionCount": 1
   }
 }

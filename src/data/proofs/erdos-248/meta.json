@@ -109,5 +109,19 @@
       "Are there effective bounds on how large n must be to satisfy the condition?",
       "Can similar results be proved for the big omega function Ω(n) (counting prime factors with multiplicity)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 134,
+    "axiomCount": 1,
+    "theoremCount": 11,
+    "definitionCount": 2
   }
 }

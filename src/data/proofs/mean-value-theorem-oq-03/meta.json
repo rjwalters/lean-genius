@@ -208,5 +208,20 @@
         "relationship": "Parent proof — scalar Mean Value Theorem that this generalizes to vector-valued functions."
       }
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "MeanValueTheoremOQ03",
+    "lineCount": 462,
+    "axiomCount": 0,
+    "theoremCount": 17,
+    "definitionCount": 0
   }
 }

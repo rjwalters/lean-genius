@@ -162,5 +162,20 @@
       "Can the Heisenberg uncertainty principle be derived from the complex Cauchy-Schwarz equality in Lean 4?",
       "Can the projection coefficient c = ⟪v,u⟫/⟪v,v⟫ be connected to Mathlib's orthogonalProjection?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.RCLike.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "InnerProductSpace"
+    ],
+    "namespace": "CauchySchwarzOQ01OQ01",
+    "lineCount": 186,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0
   }
 }

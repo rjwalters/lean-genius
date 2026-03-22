@@ -150,5 +150,22 @@
       "Connections to other additive combinatorics problems",
       "Structure of sets achieving the bound"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.FieldTheory.Finite.Basic",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos476",
+    "lineCount": 303,
+    "axiomCount": 7,
+    "theoremCount": 9,
+    "definitionCount": 4
   }
 }

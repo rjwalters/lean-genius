@@ -141,5 +141,23 @@
       "Are there related existence problems with weaker bounds?",
       "What algebraic structures might yield such designs?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos734",
+    "lineCount": 221,
+    "axiomCount": 6,
+    "theoremCount": 1,
+    "definitionCount": 6
   }
 }

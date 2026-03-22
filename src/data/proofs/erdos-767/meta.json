@@ -138,5 +138,17 @@
       "What is the structure of extremal graphs achieving g_k(n) edges?",
       "How does this relate to other Turán-type problems involving cycle substructures?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos767",
+    "lineCount": 208,
+    "axiomCount": 9,
+    "theoremCount": 3,
+    "definitionCount": 7
   }
 }

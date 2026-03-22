@@ -271,5 +271,20 @@
     "erdos-369",
     "bertrands-postulate",
     "prime-number-theorem"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Nat",
+      "Real"
+    ],
+    "namespace": "Erdos4",
+    "lineCount": 244,
+    "axiomCount": 9,
+    "theoremCount": 2,
+    "definitionCount": 16
+  }
 }

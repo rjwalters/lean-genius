@@ -171,5 +171,19 @@
       "Does high χ force regular subgraphs in restricted graph classes (e.g., planar, bounded treewidth, H-free graphs)?",
       "Is there a natural graph parameter stronger than χ that DOES force regular subgraphs?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Function"
+    ],
+    "namespace": "Erdos641",
+    "lineCount": 288,
+    "axiomCount": 8,
+    "theoremCount": 4,
+    "definitionCount": 17
   }
 }

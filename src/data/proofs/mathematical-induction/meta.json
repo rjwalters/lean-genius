@@ -120,5 +120,17 @@
       "Can we characterize which predicates require strong vs weak induction?",
       "How does structural induction on data types relate to mathematical induction?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Nat.Basic"
+    ],
+    "opens": [],
+    "namespace": "MathematicalInduction",
+    "lineCount": 250,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0
   }
 }

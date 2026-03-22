@@ -120,5 +120,21 @@
       "Can probabilistic methods provide bounds even without exact resolution?",
       "Are there explicit constructions of B₂[2] sets with counting functions approaching √N?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "Set",
+      "Topology",
+      "ENNReal"
+    ],
+    "namespace": "Erdos158",
+    "lineCount": 136,
+    "axiomCount": 5,
+    "theoremCount": 2,
+    "definitionCount": 5
   }
 }

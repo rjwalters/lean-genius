@@ -144,5 +144,23 @@
       "How does this generalize to multivariate calculus?",
       "What is the relationship to Taylor series methods for limits?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Calculus.LHopital",
+      "Mathlib.Analysis.Calculus.Deriv.Basic",
+      "Mathlib.Analysis.SpecificLimits.Normed",
+      "Mathlib.Topology.Order.Basic"
+    ],
+    "opens": [
+      "Set",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "LHopital",
+    "lineCount": 156,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0
   }
 }

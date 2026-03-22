@@ -152,5 +152,23 @@
       "What is the precise rate of decay of $\\int_C |f|^{-\\lambda}$ as $\\lambda \\to \\infty$ along the LRW path? Is it related to the order of $f$?",
       "Does the result extend to higher dimensions — for entire functions $f : \\mathbb{C}^n \\to \\mathbb{C}$, does there exist a path (or submanifold) to infinity with analogous integrability?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Complex.Basic",
+      "Mathlib.MeasureTheory.Integral.IntervalIntegral",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Topology.MetricSpace.Basic"
+    ],
+    "opens": [
+      "Complex",
+      "Set",
+      "MeasureTheory"
+    ],
+    "namespace": "Erdos515",
+    "lineCount": 291,
+    "axiomCount": 4,
+    "theoremCount": 3,
+    "definitionCount": 11
   }
 }

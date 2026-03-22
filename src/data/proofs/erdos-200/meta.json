@@ -152,5 +152,19 @@
       "Can the Green-Tao method yield bounds better than triple-exponential for $N(k)$, the least $N$ containing a prime $k$-AP?",
       "Can the primorial constraint `ap_difference_primorial` or the small AP examples be fully verified in Lean rather than axiomatized?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 126,
+    "axiomCount": 11,
+    "theoremCount": 0,
+    "definitionCount": 3
   }
 }

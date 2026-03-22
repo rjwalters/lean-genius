@@ -106,5 +106,19 @@
       "Is the maximum typically attained near x = ±1 (where endpoint concentration suggests), or can interior critical points dominate?",
       "Can modern tools from Gaussian process theory (Talagrand's generic chaining) improve the bounds?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.Order.Filter.Basic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 83,
+    "axiomCount": 4,
+    "theoremCount": 0,
+    "definitionCount": 3
   }
 }

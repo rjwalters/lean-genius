@@ -164,5 +164,26 @@
       "What is the structure of n achieving maximal divisor count near √n?",
       "How does the answer depend on the prime factorization of n?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Divisors",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Algebra.Order.Floor"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos886",
+    "lineCount": 171,
+    "axiomCount": 7,
+    "theoremCount": 2,
+    "definitionCount": 11
   }
 }

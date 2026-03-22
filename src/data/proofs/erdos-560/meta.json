@@ -145,5 +145,23 @@
       "Extend results to K_{s,t} for all s <= t",
       "Understand structure of optimal Ramsey graphs for K_{n,n}"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Combinatorics.SimpleGraph.Finite",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos560",
+    "lineCount": 297,
+    "axiomCount": 16,
+    "theoremCount": 3,
+    "definitionCount": 6
   }
 }

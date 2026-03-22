@@ -123,5 +123,21 @@
       "How does the problem generalize to hypergraphs or infinite graphs?",
       "What computational complexity does it take to count all Eulerian paths in a graph?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Trails",
+      "Mathlib.Algebra.Ring.Parity",
+      "Mathlib.Tactic.DeriveFintype",
+      "Mathlib.Tactic.NormNum"
+    ],
+    "opens": [
+      "Verts"
+    ],
+    "namespace": "Konigsberg",
+    "lineCount": 221,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 4
   }
 }

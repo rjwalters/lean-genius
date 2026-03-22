@@ -177,5 +177,23 @@
       "relationship": "related",
       "description": "Ramsey theory — guaranteed substructures in combinatorial objects"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Probability.ProbabilityMassFunction.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Real",
+      "Finset"
+    ],
+    "namespace": "Erdos578",
+    "lineCount": 159,
+    "axiomCount": 4,
+    "theoremCount": 2,
+    "definitionCount": 9
+  }
 }

@@ -128,5 +128,22 @@
       "What is the Lean formalization of the 2D 'hockey stick' identity ∑_{i+j≤n} C(i+k1,k1)*C(j+k2,k2) = C(n+k1+k2+1, k1+k2+1)?",
       "Can the simplicial numbers be connected to the face numbers of simplicial complexes (f-vectors) in algebraic topology?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Nat.Choose.Sum",
+      "Mathlib.Algebra.BigOperators.Intervals",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "ArithmeticSeriesOQ02",
+    "lineCount": 210,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 1
   }
 }

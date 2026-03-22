@@ -141,5 +141,22 @@
       "Can the connection to Part 2 be strengthened: does Part 2 actually imply Part 1 fails in general (not just for the specific basis)?",
       "Is there a finite coloring version: can A be split into k parts with all sumsets having positive density?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Set",
+      "Filter"
+    ],
+    "namespace": null,
+    "lineCount": 273,
+    "axiomCount": 7,
+    "theoremCount": 22,
+    "definitionCount": 8
   }
 }

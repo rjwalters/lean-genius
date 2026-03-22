@@ -183,5 +183,23 @@
       "What about k-cliques instead of triangles?",
       "Algorithmic: efficiently finding max-degree-sum triangle"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Combinatorics.SimpleGraph.DegreeSum",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos1033",
+    "lineCount": 359,
+    "axiomCount": 6,
+    "theoremCount": 16,
+    "definitionCount": 17
   }
 }

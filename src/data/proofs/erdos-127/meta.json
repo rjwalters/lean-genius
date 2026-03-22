@@ -94,5 +94,22 @@
       "What is the exact growth rate of $\\max_{m \\le M} f(m)$ as $M \\to \\infty$?",
       "For which graph families (beyond complete graphs) is Edwards' bound tight?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Topology.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 103,
+    "axiomCount": 9,
+    "theoremCount": 0,
+    "definitionCount": 3
   }
 }

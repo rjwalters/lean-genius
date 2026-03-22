@@ -143,5 +143,26 @@
       "How can we efficiently find a primitive root mod p? (No polynomial-time algorithm is known for general p)",
       "What is the smallest primitive root mod p? (Conjectured to be O(p^ε) for any ε > 0)"
     ]
-  }
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.RingTheory.IntegralDomain",
+      "Mathlib.GroupTheory.SpecificGroups.Cyclic",
+      "Mathlib.GroupTheory.OrderOfElement",
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "PrimitiveRoots",
+    "lineCount": 208,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 2
+  },
+  "relatedProofs": [
+    "euler-totient",
+    "quadratic-reciprocity",
+    "fermat-two-squares"
+  ]
 }

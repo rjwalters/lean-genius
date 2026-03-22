@@ -121,5 +121,21 @@
       "Can topological or algebraic graph constructions (Kneser-type) achieve sublinear almost-bipartiteness?",
       "Does the answer change if we require χ(G) = ℵ₁ instead of just χ(G) = ∞?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": null,
+    "lineCount": 107,
+    "axiomCount": 7,
+    "theoremCount": 0,
+    "definitionCount": 3
   }
 }

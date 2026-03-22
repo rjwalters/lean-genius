@@ -154,5 +154,22 @@
   ],
   "relatedProofs": [
     "erdos-425"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Real",
+      "Finset"
+    ],
+    "namespace": "Erdos796",
+    "lineCount": 242,
+    "axiomCount": 7,
+    "theoremCount": 2,
+    "definitionCount": 9
+  }
 }

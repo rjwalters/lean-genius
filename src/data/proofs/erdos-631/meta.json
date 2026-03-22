@@ -181,5 +181,21 @@
       "Does the Alon-Tarsi technique extend beyond bipartite planar to prove 4-choosability for larger classes?",
       "What is $\\chi_L$ for graphs embeddable on other surfaces (torus, projective plane)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Function",
+      "SimpleGraph",
+      "Nat"
+    ],
+    "namespace": "Erdos631",
+    "lineCount": 278,
+    "axiomCount": 17,
+    "theoremCount": 7,
+    "definitionCount": 9
   }
 }

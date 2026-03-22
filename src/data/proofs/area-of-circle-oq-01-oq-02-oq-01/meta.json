@@ -189,5 +189,19 @@
       "Can the isoperimetric inequality be formalized using these volume/surface area definitions?",
       "Can the behavior ω_n → 0 as n → ∞ (the 'thin shell' limit) be formalized?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "MeasureTheory"
+    ],
+    "namespace": "NDimVolumeIntegral",
+    "lineCount": 291,
+    "axiomCount": 0,
+    "theoremCount": 26,
+    "definitionCount": 3
   }
 }

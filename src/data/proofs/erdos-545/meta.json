@@ -108,5 +108,23 @@
       "Can the counterexample set $\\{2,3,4,5,7,8,9\\}$ be characterized or extended?",
       "Is $R(H_m)$ the correct extremal value asymptotically, or is the truth closer to Sudakov's $2^{C\\sqrt{m}}$?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos545",
+    "lineCount": 224,
+    "axiomCount": 2,
+    "theoremCount": 9,
+    "definitionCount": 11
   }
 }

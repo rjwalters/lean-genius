@@ -171,5 +171,21 @@
       "Is the balanced complete bipartite graph the unique extremal graph for large n, or are there other minimal diameter-2 graphs achieving ⌊n²/4⌋ edges?",
       "Can Füredi's proof be simplified using modern tools like the dependent random choice method or the container method?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Card"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos742",
+    "lineCount": 227,
+    "axiomCount": 7,
+    "theoremCount": 3,
+    "definitionCount": 14
   }
 }

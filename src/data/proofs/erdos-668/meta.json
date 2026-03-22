@@ -167,5 +167,24 @@
       "Can extremal configurations be characterized combinatorially?",
       "How does f(n) relate to the structure of u(n)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.EuclideanDist",
+      "Mathlib.Geometry.Euclidean.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Set.Finite.Lattice",
+      "Mathlib.Topology.MetricSpace.Isometry"
+    ],
+    "opens": [
+      "Set",
+      "Metric",
+      "Finset"
+    ],
+    "namespace": "Erdos668",
+    "lineCount": 190,
+    "axiomCount": 7,
+    "theoremCount": 9,
+    "definitionCount": 12
   }
 }

@@ -228,5 +228,24 @@
       "What is the analogous answer for Ω (prime factors with multiplicity)?",
       "Can sieve-theoretic methods (as used for #248) be adapted to this backward-shift setting?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.ArithmeticFunction",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Topology.Instances.Real",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "ArithmeticFunction",
+      "Real",
+      "Filter"
+    ],
+    "namespace": "Erdos679",
+    "lineCount": 249,
+    "axiomCount": 1,
+    "theoremCount": 15,
+    "definitionCount": 18
   }
 }

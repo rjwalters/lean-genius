@@ -102,5 +102,19 @@
   "relatedProofs": [
     "prime-number-theorem",
     "infinitude-primes"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 141,
+    "axiomCount": 5,
+    "theoremCount": 9,
+    "definitionCount": 4
+  }
 }

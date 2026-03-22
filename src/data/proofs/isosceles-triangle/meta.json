@@ -171,5 +171,19 @@
     "triangle-angle-sum",
     "triangle-inequality",
     "herons-formula"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Geometry.Euclidean.Triangle",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "EuclideanGeometry"
+    ],
+    "namespace": "IsoscelesTriangle",
+    "lineCount": 130,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0
+  }
 }

@@ -147,5 +147,24 @@
       "Explicit extremal sequences achieving the bounds?",
       "Higher-dimensional generalizations of Turán's method?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.Complex.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Complex",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos973",
+    "lineCount": 202,
+    "axiomCount": 8,
+    "theoremCount": 4,
+    "definitionCount": 13
   }
 }

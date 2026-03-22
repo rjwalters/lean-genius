@@ -114,5 +114,17 @@
       "Classification of semi-regular (Archimedean) solids",
       "Connections to finite reflection groups"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [],
+    "namespace": "PlatonicSolids",
+    "lineCount": 420,
+    "axiomCount": 0,
+    "theoremCount": 24,
+    "definitionCount": 10
   }
 }

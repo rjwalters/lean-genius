@@ -119,5 +119,24 @@
       "What is the smallest non-abelian group (if any) admitting distinct-index coverings?",
       "Can the subnormality condition in Sun's proof be weakened?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.Coset.Basic",
+      "Mathlib.GroupTheory.Index",
+      "Mathlib.Algebra.Group.Subgroup.Basic",
+      "Mathlib.Data.Fintype.Card",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Subgroup",
+      "BigOperators"
+    ],
+    "namespace": "Erdos274",
+    "lineCount": 139,
+    "axiomCount": 3,
+    "theoremCount": 3,
+    "definitionCount": 2
   }
 }

@@ -159,5 +159,24 @@
       "Unconditional proof for r ≥ 4 case (currently conditional on ABC)",
       "Analogous questions for other classes of numbers"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "BigOperators",
+      "Finset"
+    ],
+    "namespace": "Erdos937",
+    "lineCount": 350,
+    "axiomCount": 6,
+    "theoremCount": 10,
+    "definitionCount": 11
   }
 }

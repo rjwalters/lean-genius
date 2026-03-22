@@ -115,5 +115,19 @@
       "Does the analogous ratio converge to 1 for $k \\geq 4$?",
       "Can the Kelley–Meka bounds on $R_3(N)$ be transferred to bounds on $G_3(N)$?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 198,
+    "axiomCount": 7,
+    "theoremCount": 10,
+    "definitionCount": 6
   }
 }

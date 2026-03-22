@@ -140,5 +140,30 @@
       "How do generalized Leibniz-type formulas extend to other constants (e.g., Catalan's constant G = Σ(-1)^n/(2n+1)²)?",
       "Can the Leibniz series be accelerated by Euler or Richardson transforms to achieve practical convergence rates?"
     ]
-  }
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.ArctanDeriv",
+      "Mathlib.Data.Real.Pi.Leibniz",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "Filter",
+      "Real"
+    ],
+    "namespace": "LeibnizPi",
+    "lineCount": 179,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 1
+  },
+  "relatedProofs": [
+    "basel-problem",
+    "pi-transcendental",
+    "harmonic-divergence",
+    "euler-identity"
+  ]
 }

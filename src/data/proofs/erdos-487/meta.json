@@ -134,5 +134,23 @@
       "relationship": "related",
       "description": "Both are Erdős problems about structure forced by density: #483 studies Schur numbers (monochromatic a+b=c in colorings), #487 studies LCM triples in dense sets"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.Asymptotics.Asymptotics"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos487",
+    "lineCount": 369,
+    "axiomCount": 6,
+    "theoremCount": 6,
+    "definitionCount": 6
+  }
 }

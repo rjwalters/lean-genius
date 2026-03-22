@@ -153,5 +153,20 @@
     "binomial-theorem",
     "combinations-formula",
     "subset-count"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Finset.Lattice.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "InclusionExclusion",
+    "lineCount": 219,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0
+  }
 }

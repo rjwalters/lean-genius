@@ -167,5 +167,18 @@
   "relatedProofs": [
     "ballot-problem-oq-01",
     "ballot-problem"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.List.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 131,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0
+  }
 }

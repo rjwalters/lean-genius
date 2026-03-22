@@ -147,5 +147,27 @@
       "How does f(n) behave for prime n?",
       "Can Mahler's theorem be made effective?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Choose.Factorization",
+      "Mathlib.Data.Nat.Choose.Dvd",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset",
+      "Mathlib.Algebra.Order.Ring.Lemmas",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Order.Filter.AtTopBot"
+    ],
+    "opens": [
+      "Nat",
+      "BigOperators",
+      "Finset"
+    ],
+    "namespace": "Erdos684",
+    "lineCount": 246,
+    "axiomCount": 8,
+    "theoremCount": 6,
+    "definitionCount": 10
   }
 }

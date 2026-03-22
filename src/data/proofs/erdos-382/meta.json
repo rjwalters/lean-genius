@@ -160,5 +160,28 @@
       "Can the Ramachandra bound v−u ≤ v^{1/2+o(1)} be improved unconditionally?",
       "Are there explicit constructions yielding large v−u satisfying the condition?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Order.Interval.Finset.Nat",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "BigOperators",
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos382",
+    "lineCount": 267,
+    "axiomCount": 13,
+    "theoremCount": 3,
+    "definitionCount": 9
   }
 }

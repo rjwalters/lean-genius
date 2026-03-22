@@ -154,5 +154,25 @@
       "Effective bounds on the threshold N for the basis property?",
       "Algorithmic aspects: efficiently finding distinct representations?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Set.Finite",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Order.Filter.AtTopBot"
+    ],
+    "opens": [
+      "Finset",
+      "Set",
+      "Filter"
+    ],
+    "namespace": "Erdos339",
+    "lineCount": 232,
+    "axiomCount": 6,
+    "theoremCount": 7,
+    "definitionCount": 12
   }
 }

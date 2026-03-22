@@ -98,5 +98,19 @@
       "What is the minimum number of colors needed for a counterexample?",
       "Can the counterexample be made with simpler (e.g., polygonal) color regions?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Affine",
+      "EuclideanGeometry"
+    ],
+    "namespace": "Erdos189",
+    "lineCount": 162,
+    "axiomCount": 3,
+    "theoremCount": 1,
+    "definitionCount": 7
   }
 }

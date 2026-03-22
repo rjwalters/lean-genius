@@ -169,5 +169,19 @@
     "szemeredi-regularity",
     "szemeredi-counting",
     "prob-method-lovasz-local"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Combinatorics.Additive.AP.Three.Defs",
+      "Mathlib.Combinatorics.Additive.Corner.Roth",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Szemeredi",
+    "lineCount": 336,
+    "axiomCount": 1,
+    "theoremCount": 12,
+    "definitionCount": 5
+  }
 }

@@ -153,5 +153,22 @@
       "Computational complexity of finding such sets",
       "Generalizations to other patterns beyond APs"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.Additive.AP.Three.Defs",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Data.Set.Finite.Basic"
+    ],
+    "opens": [
+      "Set",
+      "Finset"
+    ],
+    "namespace": "Erdos966",
+    "lineCount": 311,
+    "axiomCount": 10,
+    "theoremCount": 7,
+    "definitionCount": 8
   }
 }

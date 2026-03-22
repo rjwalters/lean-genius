@@ -173,5 +173,24 @@
   "relatedProofs": [
     "erdos-465",
     "erdos-466"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Topology.MetricSpace.Basic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Metric",
+      "Set",
+      "Real"
+    ],
+    "namespace": "Erdos953",
+    "lineCount": 307,
+    "axiomCount": 11,
+    "theoremCount": 6,
+    "definitionCount": 6
+  }
 }

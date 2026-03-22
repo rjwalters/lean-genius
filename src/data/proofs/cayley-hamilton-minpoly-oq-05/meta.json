@@ -186,5 +186,18 @@
   },
   "sorryCount": 0,
   "status": "verified",
-  "badge": "verified"
+  "badge": "verified",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial"
+    ],
+    "namespace": "MinpolyReductionAlg",
+    "lineCount": 233,
+    "axiomCount": 0,
+    "theoremCount": 23,
+    "definitionCount": 0
+  }
 }

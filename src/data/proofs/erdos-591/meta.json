@@ -120,5 +120,19 @@
       "What about α → (α, n)² for larger n?",
       "Does the pattern extend to even larger limit ordinals?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Ordinal.Arithmetic",
+      "Mathlib.SetTheory.Ordinal.Exponential"
+    ],
+    "opens": [
+      "Ordinal"
+    ],
+    "namespace": "Erdos591",
+    "lineCount": 185,
+    "axiomCount": 5,
+    "theoremCount": 6,
+    "definitionCount": 0
   }
 }

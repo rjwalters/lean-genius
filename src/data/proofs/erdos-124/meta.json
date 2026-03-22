@@ -105,5 +105,21 @@
       "What is the threshold N₀(d₁,...,dᵣ) beyond which all integers are representable — can it be bounded effectively?",
       "Can the result be extended to digits {0,1,...,m} for m > 1, and what replaces the reciprocal condition?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Digits",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 98,
+    "axiomCount": 4,
+    "theoremCount": 0,
+    "definitionCount": 6
   }
 }

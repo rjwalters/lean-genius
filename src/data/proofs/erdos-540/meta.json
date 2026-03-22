@@ -144,5 +144,24 @@
       "What are the best bounds for non-cyclic abelian groups?",
       "What about weighted or signed variants of the zero-sum problem?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos540",
+    "lineCount": 190,
+    "axiomCount": 6,
+    "theoremCount": 5,
+    "definitionCount": 6
   }
 }

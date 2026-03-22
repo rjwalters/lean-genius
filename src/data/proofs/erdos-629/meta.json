@@ -139,5 +139,50 @@
       "id": "ramseys-theorem",
       "relationship": "Ramsey's theorem and list coloring both involve adversarial coloring arguments where structure must persist regardless of how colors are assigned"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Coloring",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset",
+      "SimpleGraph",
+      "Finset",
+      "SimpleGraph",
+      "Finset",
+      "SimpleGraph",
+      "Finset",
+      "SimpleGraph",
+      "Finset",
+      "SimpleGraph",
+      "Finset",
+      "SimpleGraph",
+      "Finset",
+      "SimpleGraph",
+      "Finset",
+      "SimpleGraph",
+      "Finset",
+      "SimpleGraph",
+      "Finset",
+      "Classical",
+      "SimpleGraph",
+      "Finset",
+      "Classical",
+      "SimpleGraph",
+      "Finset",
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos629",
+    "lineCount": 912,
+    "axiomCount": 0,
+    "theoremCount": 37,
+    "definitionCount": 14
+  }
 }

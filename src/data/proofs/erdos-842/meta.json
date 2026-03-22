@@ -127,5 +127,21 @@
       "Can we characterize all ways to connect n triangles that preserve 3-colorability?",
       "What is the minimum number of edges to add to n triangles to force χ > 3?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Coloring",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Fin.Basic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos842",
+    "lineCount": 234,
+    "axiomCount": 5,
+    "theoremCount": 7,
+    "definitionCount": 7
   }
 }

@@ -150,5 +150,18 @@
     "twin-primes-special",
     "dirichlets-theorem",
     "wilsons-theorem"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.ModEq",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "SophieGermain",
+    "lineCount": 297,
+    "axiomCount": 1,
+    "theoremCount": 31,
+    "definitionCount": 4
+  }
 }

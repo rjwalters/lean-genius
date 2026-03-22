@@ -128,5 +128,17 @@
       "Can the mass point approach be extended to non-Euclidean Ceva (using sin/sinh ratios)?",
       "Weighted mass points for angle bisectors: masses proportional to opposite side lengths"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "MassPointCeva",
+    "lineCount": 243,
+    "axiomCount": 0,
+    "theoremCount": 22,
+    "definitionCount": 3
   }
 }

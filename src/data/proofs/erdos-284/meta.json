@@ -127,5 +127,23 @@
       "What is the exact value of f(k) for small k?",
       "Extension to representations of other rationals p/q"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos284",
+    "lineCount": 195,
+    "axiomCount": 9,
+    "theoremCount": 2,
+    "definitionCount": 4
   }
 }

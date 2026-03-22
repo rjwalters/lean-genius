@@ -127,5 +127,20 @@
       "id": "erdos-948",
       "relationship": "Hindman-type problems on subset sums and colorings explore the Ramsey-theoretic side of subset-sum structures, complementing the extremal perspective of dissociated sets."
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.Additive.Dissociated",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 138,
+    "axiomCount": 7,
+    "theoremCount": 2,
+    "definitionCount": 2
+  }
 }

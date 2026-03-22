@@ -112,5 +112,23 @@
       "Formalization of general Faulhaber formula with Bernoulli numbers",
       "Extensions to non-integer exponents"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.BigOperators.Intervals",
+      "Mathlib.Algebra.BigOperators.Ring.Finset",
+      "Mathlib.NumberTheory.Bernoulli",
+      "Mathlib.NumberTheory.BernoulliPolynomials",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "SumOfKthPowers",
+    "lineCount": 601,
+    "axiomCount": 0,
+    "theoremCount": 55,
+    "definitionCount": 0
   }
 }

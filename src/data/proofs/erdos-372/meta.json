@@ -145,5 +145,22 @@
       "Can effective constants be computed for Balog's bound?",
       "What is the smallest n with P(n) > P(n+1) > P(n+2)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Order.Filter.AtTopBot",
+      "Mathlib.Topology.Instances.Nat",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Filter"
+    ],
+    "namespace": "Erdos372",
+    "lineCount": 220,
+    "axiomCount": 3,
+    "theoremCount": 5,
+    "definitionCount": 7
   }
 }

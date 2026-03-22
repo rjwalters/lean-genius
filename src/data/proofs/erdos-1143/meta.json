@@ -161,5 +161,19 @@
         "relationship": "Jacobsthal's function — the 'dual' question about coprime elements in intervals."
       }
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos1143",
+    "lineCount": 169,
+    "axiomCount": 3,
+    "theoremCount": 8,
+    "definitionCount": 3
   }
 }

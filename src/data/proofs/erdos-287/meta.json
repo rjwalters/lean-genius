@@ -118,5 +118,18 @@
       "What is the distribution of max gaps across all representations with k terms as k → ∞?",
       "Can the LCM/p-adic approach be strengthened to handle gap-2 sequences, or is a fundamentally new technique needed?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Data.List.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos287",
+    "lineCount": 92,
+    "axiomCount": 3,
+    "theoremCount": 1,
+    "definitionCount": 2
   }
 }

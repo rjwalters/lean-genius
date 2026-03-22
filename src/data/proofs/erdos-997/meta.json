@@ -157,5 +157,24 @@
       "Is there a connection to the distribution of prime gaps?",
       "What about other subsequences of primes (e.g., primes in arithmetic progressions)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Set.Intervals.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.NumberTheory.Primorial",
+      "Mathlib.Topology.Algebra.Order.Floor",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Set",
+      "Real"
+    ],
+    "namespace": "Erdos997",
+    "lineCount": 356,
+    "axiomCount": 11,
+    "theoremCount": 5,
+    "definitionCount": 11
   }
 }

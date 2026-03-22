@@ -134,5 +134,23 @@
       "What is the exact exponent in the gap H(n) - G(n)?",
       "Can the conditional proof of Question 1 be made unconditional?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.NumberTheory.ArithmeticFunction"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos879",
+    "lineCount": 193,
+    "axiomCount": 4,
+    "theoremCount": 2,
+    "definitionCount": 11
   }
 }

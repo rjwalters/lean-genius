@@ -176,5 +176,18 @@
     "desargues-theorem",
     "fermat-two-squares",
     "erdos-483"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Configuration"
+    ],
+    "namespace": "Erdos723",
+    "lineCount": 188,
+    "axiomCount": 4,
+    "theoremCount": 13,
+    "definitionCount": 1
+  }
 }

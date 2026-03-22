@@ -103,5 +103,20 @@
       "What is the optimal constant for the density ratio inequality when A is allowed to be infinite but with bounded reciprocal sum $\\sum_{a \\in A} 1/a < \\infty$?",
       "Is there a continuous analogue of this problem for Lebesgue-measurable sets, relating to the density of unions of scaled lattices?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 93,
+    "axiomCount": 5,
+    "theoremCount": 0,
+    "definitionCount": 4
   }
 }

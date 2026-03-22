@@ -124,5 +124,20 @@
       "Can the Erdős-Graham lower bound B(x) > x^{1-o(1)} be sharpened to B(x) ~ G(x)?",
       "What fraction of integers in bad intervals have P(n)² ∤ n (i.e., are 'swept up' by neighbors)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 98,
+    "axiomCount": 7,
+    "theoremCount": 0,
+    "definitionCount": 5
   }
 }

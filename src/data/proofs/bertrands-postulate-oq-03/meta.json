@@ -140,5 +140,28 @@
       "Are prime gaps O((log p)²)? (Cramér's Conjecture — open since 1936)",
       "Can the PNT-based asymptotic π(x+h) - π(x) ~ h/ln(x) be proved for h = x^(1/2+ε) unconditionally?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Bertrand",
+      "Mathlib.NumberTheory.PrimeCounting",
+      "Mathlib.Data.Nat.Prime.Nth",
+      "Mathlib.Data.Nat.Log",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.Asymptotics.Defs",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic",
+      "Proofs.PrimeGapBounds"
+    ],
+    "opens": [
+      "Nat",
+      "Filter",
+      "Real"
+    ],
+    "namespace": "BertrandsPostulateOQ03",
+    "lineCount": 309,
+    "axiomCount": 3,
+    "theoremCount": 12,
+    "definitionCount": 2
   }
 }

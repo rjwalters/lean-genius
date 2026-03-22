@@ -188,5 +188,28 @@
       "Are there better lower bounds showing f(k) cannot be too small?",
       "Can the Jutila–Ramachandra–Shorey bound be improved using modern sieve methods?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.NumberTheory.SmoothNumbers",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.Asymptotics.Asymptotics",
+      "Mathlib.Order.Filter.AtTopBot",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Filter",
+      "Real",
+      "Asymptotics"
+    ],
+    "namespace": "Erdos961",
+    "lineCount": 262,
+    "axiomCount": 4,
+    "theoremCount": 11,
+    "definitionCount": 5
   }
 }

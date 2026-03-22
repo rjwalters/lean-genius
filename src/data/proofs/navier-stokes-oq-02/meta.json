@@ -119,5 +119,47 @@
       "What is the optimal Ladyzhenskaya stability constant C for specific domains (torus, bounded domain, ℝ²)?",
       "Can the 3D analogue NSSolutionPair3D be formalized, making explicit where the uniqueness argument fails?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Calculus.Deriv.Basic",
+      "Mathlib.Analysis.Calculus.FDeriv.Basic",
+      "Mathlib.Analysis.Calculus.ContDiff.Basic",
+      "Mathlib.Analysis.Calculus.Monotone",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Continuity",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
+      "Mathlib.Analysis.Complex.ExponentialBounds",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Analysis.Normed.Module.FiniteDimension",
+      "Mathlib.MeasureTheory.Integral.Bochner.Basic",
+      "Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic",
+      "Mathlib.Topology.Order.Basic",
+      "Mathlib.Analysis.Real.Pi.Bounds",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.LinearAlgebra.Matrix.Symmetric",
+      "Mathlib.LinearAlgebra.Eigenspace.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Real",
+      "Set",
+      "Filter",
+      "Topology",
+      "Topology",
+      "BigOperators",
+      "ENNReal",
+      "TwoDimensionalGlobal"
+    ],
+    "namespace": "NavierStokesRegularity",
+    "lineCount": 22350,
+    "axiomCount": 0,
+    "theoremCount": 1009,
+    "definitionCount": 104
   }
 }

@@ -202,5 +202,25 @@
       "Can we connect to differential geometry and prove these from the metric tensor in each geometry?",
       "Can we formalize the rapidity-velocity relation β = tanh(φ) and derive relativistic velocity addition?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.Calculus.MeanValue",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "PythagoreanNonEuclidean",
+    "lineCount": 1432,
+    "axiomCount": 0,
+    "theoremCount": 105,
+    "definitionCount": 18
   }
 }

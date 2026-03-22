@@ -151,5 +151,23 @@
       "Are there meromorphic (non-entire) examples with different behavior?",
       "What constraints on the deficiency set {a : δ(a) > 0} are compatible with extreme value distribution?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Complex.Basic",
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Topology.Basic",
+      "Mathlib.Order.Filter.Basic"
+    ],
+    "opens": [
+      "Complex",
+      "Set",
+      "Filter"
+    ],
+    "namespace": "Erdos1116",
+    "lineCount": 318,
+    "axiomCount": 6,
+    "theoremCount": 3,
+    "definitionCount": 13
   }
 }

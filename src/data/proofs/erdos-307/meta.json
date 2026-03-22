@@ -235,5 +235,32 @@
       "Can the |P ∪ Q| ≥ 60 bound be improved using more refined estimates of partial prime reciprocal sums?",
       "Are there additional Cambie-type examples beyond the (1+1/n)(∑_{p|n+1} 1/p) = 1 family?"
     ]
-  }
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos307",
+    "lineCount": 376,
+    "axiomCount": 5,
+    "theoremCount": 19,
+    "definitionCount": 15
+  },
+  "relatedProofs": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ]
 }

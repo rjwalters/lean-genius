@@ -183,5 +183,33 @@
     "laws-of-large-numbers",
     "cauchy-schwarz-integral",
     "cantor-diagonalization"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar",
+      "Mathlib.MeasureTheory.Integral.Lebesgue.Basic",
+      "Mathlib.MeasureTheory.Integral.Bochner.Basic",
+      "Mathlib.MeasureTheory.Integral.Bochner.Set",
+      "Mathlib.MeasureTheory.Integral.DominatedConvergence",
+      "Mathlib.MeasureTheory.Integral.Bochner.FundThmCalculus",
+      "Mathlib.MeasureTheory.Measure.Prod",
+      "Mathlib.MeasureTheory.Function.LpSpace.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Integrals.Basic",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Measure",
+      "Filter",
+      "Set",
+      "Topology"
+    ],
+    "namespace": "LebesgueMeasure",
+    "lineCount": 426,
+    "axiomCount": 0,
+    "theoremCount": 22,
+    "definitionCount": 0
+  }
 }

@@ -153,5 +153,16 @@
       "Can the Poincaré disk model (conformal, preserves angles) also be verified constructively for comparison?",
       "What is the minimum number of axioms needed for a complete independence proof in Lean?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "BeltramiKlein",
+    "lineCount": 454,
+    "axiomCount": 1,
+    "theoremCount": 17,
+    "definitionCount": 17
   }
 }

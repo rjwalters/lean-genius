@@ -171,5 +171,22 @@
       "What about cycles in hypergraphs?",
       "What happens for non-diagonal Ramsey numbers R(C_m, C_n; 3)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Fin.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos556",
+    "lineCount": 220,
+    "axiomCount": 15,
+    "theoremCount": 3,
+    "definitionCount": 4
   }
 }

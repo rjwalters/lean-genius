@@ -168,5 +168,22 @@
         "note": "Pascal's hexagon theorem connects to Pascal's triangle, whose rows are the binomial coefficients summed by the multinomial theorem"
       }
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Choose.Multinomial",
+      "Mathlib.Data.Nat.Choose.Sum",
+      "Mathlib.Algebra.BigOperators.Ring.Finset",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "BinomialTheoremOQ02",
+    "lineCount": 281,
+    "axiomCount": 0,
+    "theoremCount": 17,
+    "definitionCount": 0
   }
 }

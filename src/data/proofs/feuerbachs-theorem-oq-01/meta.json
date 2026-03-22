@@ -189,5 +189,20 @@
       "Can the proof via inversion centered at the Feuerbach point be formalized in Lean using Mathlib's inversive geometry?",
       "How does Feuerbach's theorem generalize to hyperbolic and spherical geometry?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.FeuerbachsTheoremDefs"
+    ],
+    "opens": [
+      "Real",
+      "FeuerbachsTheorem",
+      "FeuerbachsTheorem"
+    ],
+    "namespace": "FeuerbachsTheoremOQ01",
+    "lineCount": 1554,
+    "axiomCount": 0,
+    "theoremCount": 103,
+    "definitionCount": 2
   }
 }

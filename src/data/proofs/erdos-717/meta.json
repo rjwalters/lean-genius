@@ -190,5 +190,23 @@
   ],
   "relatedProofs": [
     "erdos-637"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Coloring",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Nat.Log",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos717",
+    "lineCount": 328,
+    "axiomCount": 18,
+    "theoremCount": 3,
+    "definitionCount": 6
+  }
 }

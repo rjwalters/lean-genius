@@ -153,5 +153,29 @@
       "proofId": "erdos-13",
       "relationship": "Sidon sets (Erdős #13) require distinct pairwise sums, a related but different additive constraint. Both problems study extremal sizes of subsets of {1,...,n} with restricted additive structure, but Sidon sets have maximum size ~√n vs ~log n here."
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Log",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Data.Set.Finite.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos882",
+    "lineCount": 217,
+    "axiomCount": 12,
+    "theoremCount": 4,
+    "definitionCount": 9
+  },
+  "relatedProofs": [
+    "",
+    ""
   ]
 }

@@ -162,5 +162,19 @@
       "Are there other optimal constructions besides the upper third?",
       "What is the relationship to Erdős Problem #12 (infinite version)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos13",
+    "lineCount": 252,
+    "axiomCount": 6,
+    "theoremCount": 4,
+    "definitionCount": 7
   }
 }

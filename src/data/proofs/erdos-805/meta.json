@@ -112,5 +112,20 @@
       "What is the precise threshold function?",
       "Can the Alon-Bucić-Sudakov construction be improved?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos805",
+    "lineCount": 106,
+    "axiomCount": 2,
+    "theoremCount": 1,
+    "definitionCount": 5
   }
 }

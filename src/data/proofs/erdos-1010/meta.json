@@ -137,5 +137,19 @@
       "Generalizations to counting K_r for r > 3: the Kruskal-Katona theorem and Razborov's flag algebra methods address these.",
       "Can the stability method yield effective bounds on how structurally close a near-extremal graph must be to the Turán graph?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 107,
+    "axiomCount": 4,
+    "theoremCount": 0,
+    "definitionCount": 2
   }
 }

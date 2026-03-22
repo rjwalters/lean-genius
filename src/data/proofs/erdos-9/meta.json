@@ -165,5 +165,24 @@
         "relationship": "Dirichlet's theorem on primes in arithmetic progressions underpins the covering system analysis: the proof that $S$ meets every progression relies on the density of primes in each residue class"
       }
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Order.Filter.AtTopBot",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Data.Nat.ModEq"
+    ],
+    "opens": [
+      "Set",
+      "Nat",
+      "Filter"
+    ],
+    "namespace": "Erdos9",
+    "lineCount": 267,
+    "axiomCount": 6,
+    "theoremCount": 7,
+    "definitionCount": 10
   }
 }

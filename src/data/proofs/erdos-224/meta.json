@@ -136,5 +136,19 @@
       "How does the obtuse-free threshold change in non-Euclidean geometries (hyperbolic, spherical)?",
       "Can the Danzer-Grünbaum proof be made constructive — given 2^d+1 points, efficiently find the obtuse triple?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.LinearAlgebra.Dimension.Finrank"
+    ],
+    "opens": [],
+    "namespace": "Erdos224",
+    "lineCount": 257,
+    "axiomCount": 7,
+    "theoremCount": 3,
+    "definitionCount": 7
   }
 }

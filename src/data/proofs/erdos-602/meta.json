@@ -155,5 +155,19 @@
       "Does the answer depend on the cardinality of the index set?",
       "What happens with specific intersection sizes (e.g., ≠ 2)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Cardinal"
+    ],
+    "namespace": "Erdos602",
+    "lineCount": 300,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 22
   }
 }

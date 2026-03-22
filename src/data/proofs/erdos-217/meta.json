@@ -164,5 +164,18 @@
       "What is the precise relationship between the multiplicity constraints of Problem #217 and the distinct distance lower bounds of Problem #98?",
       "Can the 'no four concyclic' condition (omitted in this formalization) be added, and does it change the answer for any n?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos217",
+    "lineCount": 101,
+    "axiomCount": 4,
+    "theoremCount": 1,
+    "definitionCount": 3
   }
 }

@@ -112,5 +112,22 @@
       "Can uniformization be made effective (algorithmic) for specific algebraic curves?",
       "How does uniformization connect to quantum gravity in 2+1 dimensions?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Complex.Basic",
+      "Mathlib.Analysis.Complex.Circle",
+      "Mathlib.Topology.Connected.PathConnected",
+      "Mathlib.Topology.Covering",
+      "Mathlib.Topology.Homotopy.Basic",
+      "Mathlib.Analysis.Complex.UpperHalfPlane.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Hilbert22Uniformization",
+    "lineCount": 306,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 6
   }
 }

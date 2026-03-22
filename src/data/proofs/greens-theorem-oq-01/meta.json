@@ -122,5 +122,19 @@
       "Can the proof generalize to smooth curves (not just rectangular boundaries) using Mathlib's path integration machinery?",
       "Can this approach extend to Stokes' theorem in 3D (∬_S (∇×F)·dS = ∮_{∂S} F·dr) using differential forms?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "intervalIntegral"
+    ],
+    "namespace": "GreensTheoremOQ01",
+    "lineCount": 339,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 2
   }
 }

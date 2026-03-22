@@ -129,5 +129,23 @@
       "What is the growth rate of the exact threshold sequence $u_n$ in the Alternative 2 formulation?",
       "How does the minimum-degree threshold compare to the edge-extremal number $\\mathrm{ex}(2^n, Q_n)$ from Erdős Problem #576?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Data.Fin.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 100,
+    "axiomCount": 3,
+    "theoremCount": 0,
+    "definitionCount": 7
   }
 }

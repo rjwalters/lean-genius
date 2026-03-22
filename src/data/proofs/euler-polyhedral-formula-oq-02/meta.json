@@ -102,5 +102,19 @@
       "Formalize the smooth Gauss-Bonnet theorem using Mathlib's differential geometry",
       "Connect to the Chern-Gauss-Bonnet theorem in higher dimensions"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "DiscreteGaussBonnet",
+    "lineCount": 508,
+    "axiomCount": 0,
+    "theoremCount": 52,
+    "definitionCount": 7
   }
 }

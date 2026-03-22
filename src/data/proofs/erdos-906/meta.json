@@ -157,5 +157,24 @@
       "Is the Barth-Schneider paper [BaSc72] related, or was Erdős mistaken?",
       "What is the relationship to the distribution of zeros of random entire functions?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Complex.Basic",
+      "Mathlib.Analysis.Calculus.ContDiff.Defs",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Topology.Basic",
+      "Mathlib.Algebra.Polynomial.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Complex",
+      "Topology"
+    ],
+    "namespace": "Erdos906",
+    "lineCount": 197,
+    "axiomCount": 15,
+    "theoremCount": 1,
+    "definitionCount": 5
   }
 }

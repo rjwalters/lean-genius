@@ -118,5 +118,20 @@
       "What is the limiting distribution of gap sizes for large primorials?",
       "Can the Lacampagne-Selfridge counterexample be extended to characterize which even integers are missing?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 96,
+    "axiomCount": 21,
+    "theoremCount": 0,
+    "definitionCount": 2
   }
 }

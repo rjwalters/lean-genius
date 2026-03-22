@@ -203,5 +203,26 @@
       "targetProofId": "erdos-107",
       "relationship": "Both are Erdos problems where existence questions connect to deep structural phenomena -- the Happy Ending problem asks about convex subsets while Problem #1113 asks about uncovered Sierpinski numbers"
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Parity"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "Erdos1113",
+    "lineCount": 208,
+    "axiomCount": 9,
+    "theoremCount": 5,
+    "definitionCount": 14
+  },
+  "relatedProofs": [
+    "",
+    "",
+    ""
   ]
 }

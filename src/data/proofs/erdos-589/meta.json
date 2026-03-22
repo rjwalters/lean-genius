@@ -126,5 +126,21 @@
       "What about the generalized problem g_{k,l}(n) for other k > l ≥ 3?",
       "Can the lower bound be improved beyond √n·log n?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "Erdos589",
+    "lineCount": 344,
+    "axiomCount": 6,
+    "theoremCount": 7,
+    "definitionCount": 9
   }
 }

@@ -182,5 +182,23 @@
       "Higher-dimensional analogs: GCD-intersecting subsets of lattice points",
       "Connections to coding theory: GCD-intersecting codes over integer alphabets"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos534",
+    "lineCount": 151,
+    "axiomCount": 8,
+    "theoremCount": 1,
+    "definitionCount": 8
   }
 }

@@ -181,5 +181,25 @@
   "relatedProofs": [
     "erdos-302",
     "erdos-806"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.Asymptotics.Asymptotics",
+      "Mathlib.Algebra.BigOperators.Group.Finset",
+      "Mathlib.Data.Set.Card"
+    ],
+    "opens": [
+      "Asymptotics",
+      "Filter",
+      "BigOperators"
+    ],
+    "namespace": "Erdos333",
+    "lineCount": 316,
+    "axiomCount": 11,
+    "theoremCount": 3,
+    "definitionCount": 14
+  }
 }

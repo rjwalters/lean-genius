@@ -169,5 +169,19 @@
       "How does the gap phenomenon generalize to λ > 1 (multiple pair coverage)?",
       "Does a similar gap exist for non-prime-power orders where projective planes may not exist?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Set.Finite.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos903",
+    "lineCount": 229,
+    "axiomCount": 9,
+    "theoremCount": 3,
+    "definitionCount": 6
   }
 }

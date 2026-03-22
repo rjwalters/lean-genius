@@ -122,5 +122,23 @@
       "Can improved sieve methods or the Hildebrand–Tenenbaum framework close the $\\log t$ gap?",
       "Can the maximality theorem `smoothComponent_largest` be proved using the existing infrastructure?"
     ]
-  }
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 173,
+    "axiomCount": 1,
+    "theoremCount": 13,
+    "definitionCount": 3
+  },
+  "relatedProofs": [
+    ""
+  ]
 }

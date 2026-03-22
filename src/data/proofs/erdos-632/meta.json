@@ -187,5 +187,19 @@
       "For which specific $(a,b,m)$ triples does the scaling hold? The failure at $(4,1,2)$ does not rule out other parameter combinations",
       "Is there a tight characterization of the integrality gap between fractional and integer choosability scaling?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Function"
+    ],
+    "namespace": "Erdos632",
+    "lineCount": 347,
+    "axiomCount": 14,
+    "theoremCount": 11,
+    "definitionCount": 14
   }
 }

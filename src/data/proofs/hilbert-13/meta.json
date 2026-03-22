@@ -113,5 +113,24 @@
       "How does this extend to functions on more general spaces?",
       "What is the computational complexity of finding representations?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Topology.Basic",
+      "Mathlib.Topology.ContinuousMap.Basic",
+      "Mathlib.Topology.Order.Basic",
+      "Mathlib.Analysis.Calculus.ContDiff.Basic",
+      "Mathlib.Data.Fin.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "BigOperators"
+    ],
+    "namespace": "Hilbert13Superposition",
+    "lineCount": 400,
+    "axiomCount": 4,
+    "theoremCount": 4,
+    "definitionCount": 8
   }
 }

@@ -189,5 +189,21 @@
         "relationship": "Minimal additive bases with positive density — complementary question about sets that form bases (representation property) vs. essential components (density-boosting property)."
       }
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Finset",
+      "BigOperators",
+      "Filter"
+    ],
+    "namespace": "Erdos37",
+    "lineCount": 368,
+    "axiomCount": 6,
+    "theoremCount": 6,
+    "definitionCount": 10
   }
 }

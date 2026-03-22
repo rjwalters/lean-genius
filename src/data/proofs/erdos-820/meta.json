@@ -151,5 +151,23 @@
       "Analogous questions for other base pairs besides (2,3)",
       "Connection to the Artin primitive root conjecture"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Nat",
+      "Real"
+    ],
+    "namespace": "Erdos820",
+    "lineCount": 278,
+    "axiomCount": 4,
+    "theoremCount": 4,
+    "definitionCount": 12
   }
 }

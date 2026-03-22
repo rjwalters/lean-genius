@@ -168,5 +168,28 @@
       "Prove the 2D version: how fast does the probability of a random n×n permutation matrix being a derangement converge?",
       "Connect to Mathlib's existing `alternating_series_estimation` if it exists, or contribute this as a general lemma"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.Derangements.Finite",
+      "Mathlib.Combinatorics.Derangements.Basic",
+      "Mathlib.Analysis.SpecificLimits.Normed",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Nat",
+      "Real",
+      "BigOperators",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "DerangementsOQ03",
+    "lineCount": 406,
+    "axiomCount": 0,
+    "theoremCount": 22,
+    "definitionCount": 2
   }
 }

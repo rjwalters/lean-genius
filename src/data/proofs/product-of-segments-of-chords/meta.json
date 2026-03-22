@@ -146,5 +146,23 @@
     "ptolemys-theorem",
     "cevas-theorem",
     "area-of-circle"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Geometry.Euclidean.Basic",
+      "Mathlib.Geometry.Euclidean.Sphere.Basic",
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "RealInnerProductSpace"
+    ],
+    "namespace": null,
+    "lineCount": 542,
+    "axiomCount": 1,
+    "theoremCount": 11,
+    "definitionCount": 2
+  }
 }

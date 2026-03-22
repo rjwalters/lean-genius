@@ -174,5 +174,19 @@
       "id": "brouwer-fixed-point-oq-01",
       "relationship": "Related 1D fixed-point theorem proved independently via IVT in this file"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Real"
+    ],
+    "namespace": "BorsukUlamOQ03",
+    "lineCount": 5170,
+    "axiomCount": 2,
+    "theoremCount": 233,
+    "definitionCount": 35
+  }
 }

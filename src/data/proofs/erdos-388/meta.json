@@ -101,5 +101,21 @@
       "For the proportional version, does the number of solutions depend on the arithmetic of $a/b$?",
       "What is the connection between this problem and the distribution of primes in short intervals?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Data.Finset.LocallyFinite"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": null,
+    "lineCount": 111,
+    "axiomCount": 4,
+    "theoremCount": 1,
+    "definitionCount": 2
   }
 }

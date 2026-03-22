@@ -102,5 +102,19 @@
       "What about non-integer-coefficient polynomials that map $\\mathbb{Z} \\to \\mathbb{Z}$ (like binomial coefficients $\\binom{n}{k}$)?",
       "Is there a connection to the spectral approach used in the Coven-Meyerowitz conjecture for finite tilings?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Function"
+    ],
+    "namespace": "Erdos477",
+    "lineCount": 274,
+    "axiomCount": 3,
+    "theoremCount": 22,
+    "definitionCount": 2
   }
 }

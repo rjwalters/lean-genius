@@ -114,5 +114,36 @@
       "Can explicit constructions be given for specific λ values?",
       "What happens for sequences with weaker growth conditions than lacunarity?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Algebra.Order.Field.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Rat.Lemmas",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Set",
+      "Finset",
+      "Set",
+      "Finset",
+      "Set",
+      "Finset",
+      "Set",
+      "Finset",
+      "Set",
+      "Finset",
+      "Set"
+    ],
+    "namespace": "Erdos355",
+    "lineCount": 387,
+    "axiomCount": 3,
+    "theoremCount": 14,
+    "definitionCount": 7
   }
 }

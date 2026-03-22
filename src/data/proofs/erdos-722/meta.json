@@ -179,5 +179,29 @@
       "Can Keevash's methods be made constructive? The randomized algebraic construction is probabilistic—finding explicit constructions remains open for most parameters.",
       "What is the threshold for resolvability? Given $S(r,k,n)$ exists, when can the blocks be partitioned into parallel classes?"
     ]
-  }
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SetFamily.Intersecting",
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Powerset"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos722",
+    "lineCount": 322,
+    "axiomCount": 6,
+    "theoremCount": 5,
+    "definitionCount": 10
+  },
+  "relatedProofs": [
+    "",
+    "",
+    "",
+    "",
+    ""
+  ]
 }

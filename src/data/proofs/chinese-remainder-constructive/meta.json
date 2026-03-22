@@ -213,5 +213,20 @@
       "What are the most efficient RNS bases for computer arithmetic?",
       "Can the four-moduli pattern be generalized to an arbitrary-length list of moduli in Lean 4 (inductive CRT over lists)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.ModEq",
+      "Mathlib.Data.Int.GCD",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "ChineseRemainderConstructive",
+    "lineCount": 417,
+    "axiomCount": 0,
+    "theoremCount": 17,
+    "definitionCount": 2
   }
 }

@@ -149,5 +149,22 @@
       "What is the behavior exactly at the critical window?",
       "Extensions to hypergraphs?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Nat.Log",
+      "Mathlib.Data.Set.Finite.Basic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos615",
+    "lineCount": 316,
+    "axiomCount": 8,
+    "theoremCount": 3,
+    "definitionCount": 11
   }
 }

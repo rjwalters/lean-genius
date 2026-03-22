@@ -112,5 +112,16 @@
       "Is $m_1$ computable to arbitrary precision? Current bounds $0.22936 \\leq m_1 \\leq 0.247$ leave a gap of $0.018$. Can the Fourier-analytic approach of ACMVZ be extended to narrow this further?",
       "Does the analogous problem in $\\mathbb{R}^d$ for $d \\geq 3$ exhibit similar density barriers? The Larman-Rogers argument generalizes, but the Fourier analysis becomes significantly more complex in higher dimensions."
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "Erdos1070",
+    "lineCount": 247,
+    "axiomCount": 16,
+    "theoremCount": 6,
+    "definitionCount": 6
   }
 }

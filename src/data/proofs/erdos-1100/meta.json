@@ -109,5 +109,26 @@
       "What is the exact exponential base $\\alpha$ such that $g(k) \\sim \\alpha^k$? The Erdős–Simonovits bounds place it in $(\\sqrt{2}, 2)$.",
       "Can the lower and upper bounds on $g(k)$ be tightened, e.g., is $g(k) \\gg \\phi^k$ where $\\phi = (1+\\sqrt{5})/2 \\approx 1.618$ is the golden ratio?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Prime.Defs",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Real",
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos1100",
+    "lineCount": 256,
+    "axiomCount": 4,
+    "theoremCount": 2,
+    "definitionCount": 7
   }
 }

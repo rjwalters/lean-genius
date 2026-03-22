@@ -152,5 +152,23 @@
       "Is van Doorn's bound n·(log n / log log n) for the difference optimal, or can it be improved?",
       "Can the first conjecture be approached via sieve methods or the distribution of smooth numbers in short intervals?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Interval",
+      "Mathlib.Order.Interval.Finset.Nat",
+      "Mathlib.Algebra.Order.Floor"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos711",
+    "lineCount": 346,
+    "axiomCount": 9,
+    "theoremCount": 5,
+    "definitionCount": 11
   }
 }

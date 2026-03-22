@@ -133,5 +133,18 @@
       "Is there a quantitative version with explicit constants for all n (not just asymptotic)?",
       "Can the abstract axiomatization be replaced with concrete Mathlib definitions when complex polynomial theory is more developed?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 92,
+    "axiomCount": 15,
+    "theoremCount": 1,
+    "definitionCount": 0
   }
 }

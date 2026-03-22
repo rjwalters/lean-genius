@@ -125,5 +125,21 @@
       "Can the Noll–Simmons factorial collision conjecture be resolved by probabilistic methods (e.g., showing the expected number of collisions $\\to \\infty$)?",
       "Is there a constructive algorithm to produce solutions for given $k$, or must they be found by exhaustive search?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos1056",
+    "lineCount": 205,
+    "axiomCount": 3,
+    "theoremCount": 14,
+    "definitionCount": 4
   }
 }

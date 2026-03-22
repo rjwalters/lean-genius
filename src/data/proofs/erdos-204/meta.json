@@ -169,5 +169,24 @@
   },
   "relatedProofs": [
     "erdos-543"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Nat.Divisors",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Int",
+      "Finset"
+    ],
+    "namespace": "Erdos204",
+    "lineCount": 254,
+    "axiomCount": 12,
+    "theoremCount": 5,
+    "definitionCount": 12
+  }
 }

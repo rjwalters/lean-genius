@@ -132,5 +132,18 @@
       "Does the same hold for h(n) = n + σ(n) (sum of divisors)? (Erdős Problem #412)",
       "Are there infinitely many 'trunk values' — numbers lying on every eventual orbit?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Divisors",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 110,
+    "axiomCount": 14,
+    "theoremCount": 0,
+    "definitionCount": 2
   }
 }

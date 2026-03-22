@@ -109,5 +109,24 @@
       "What is the exact asymptotic constant in ex₃(n; 6, 3)?",
       "Improve the bounds on the function between n²·e^{-c√log n} upper and lower bounds"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos716",
+    "lineCount": 266,
+    "axiomCount": 16,
+    "theoremCount": 3,
+    "definitionCount": 12
   }
 }

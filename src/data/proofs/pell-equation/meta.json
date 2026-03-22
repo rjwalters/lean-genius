@@ -148,5 +148,19 @@
   "relatedProofs": [
     "quadratic-reciprocity",
     "continued-fractions"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Pell",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Pell"
+    ],
+    "namespace": "PellEquation",
+    "lineCount": 299,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 2
+  }
 }

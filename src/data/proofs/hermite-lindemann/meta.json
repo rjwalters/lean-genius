@@ -147,5 +147,33 @@
       "relationship": "related",
       "description": "Both resolve classical impossibility problems via algebraic number theory; squaring the circle fails because $\\pi$ is transcendental (Hermite-Lindemann), angle trisection because some angles need degree-3 extensions"
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.RingTheory.Algebraic.Basic",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
+      "Mathlib.Analysis.SpecialFunctions.Complex.Analytic",
+      "Mathlib.Data.Real.Pi.Bounds",
+      "Mathlib.Data.Complex.Exponential",
+      "Mathlib.LinearAlgebra.LinearIndependent.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Complex",
+      "Polynomial",
+      "ComplexConjugate"
+    ],
+    "namespace": "HermiteLindemann",
+    "lineCount": 375,
+    "axiomCount": 4,
+    "theoremCount": 1,
+    "definitionCount": 1
+  },
+  "relatedProofs": [
+    "",
+    "",
+    "",
+    "",
+    ""
   ]
 }

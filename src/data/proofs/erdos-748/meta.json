@@ -153,5 +153,22 @@
       "Connection to Schur numbers and Ramsey theory?",
       "Higher-order analogues (a = b₁ + ... + b_k)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Analysis.Asymptotics.Asymptotics"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos748",
+    "lineCount": 293,
+    "axiomCount": 6,
+    "theoremCount": 11,
+    "definitionCount": 5
   }
 }

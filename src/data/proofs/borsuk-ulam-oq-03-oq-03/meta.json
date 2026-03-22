@@ -185,5 +185,20 @@
       "id": "borsuk-ulam",
       "relationship": "Root: base Borsuk-Ulam formalization"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Real",
+      "Topology"
+    ],
+    "namespace": "BorsukUlamTucker2D",
+    "lineCount": 2634,
+    "axiomCount": 1,
+    "theoremCount": 123,
+    "definitionCount": 30
+  }
 }

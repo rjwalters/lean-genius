@@ -141,5 +141,22 @@
       "Can simpler constructions than Keränen's 85-letter morphism work?",
       "What about other abelian avoidance properties (abelian cubes, etc.)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.List.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Algebra.BigOperators.Group.List"
+    ],
+    "opens": [
+      "List",
+      "Finset"
+    ],
+    "namespace": "Erdos231",
+    "lineCount": 249,
+    "axiomCount": 9,
+    "theoremCount": 3,
+    "definitionCount": 11
   }
 }

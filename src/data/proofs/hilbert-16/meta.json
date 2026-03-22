@@ -161,5 +161,38 @@
     "poincare-conjecture",
     "hilbert-19",
     "hilbert-21"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.ODE.Gronwall",
+      "Mathlib.Analysis.ODE.PicardLindelof",
+      "Mathlib.Analysis.Calculus.ContDiff.Basic",
+      "Mathlib.Analysis.Calculus.Deriv.Basic",
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Topology.Connected.PathConnected",
+      "Mathlib.Topology.Bornology.Basic",
+      "Mathlib.Algebra.Polynomial.Basic",
+      "Mathlib.Algebra.Polynomial.Eval.Defs",
+      "Mathlib.Algebra.MvPolynomial.Basic",
+      "Mathlib.Algebra.MvPolynomial.Variables",
+      "Mathlib.LinearAlgebra.Matrix.NonsingularInverse",
+      "Mathlib.LinearAlgebra.Eigenspace.Basic",
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Topology",
+      "BigOperators",
+      "Set",
+      "Filter",
+      "Polynomial",
+      "MvPolynomial"
+    ],
+    "namespace": "Hilbert16",
+    "lineCount": 566,
+    "axiomCount": 10,
+    "theoremCount": 10,
+    "definitionCount": 22
+  }
 }

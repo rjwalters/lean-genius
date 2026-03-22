@@ -158,5 +158,29 @@
       "relationship": "foundation",
       "description": "The sum Σ(1/log x) ~ n/log n asymptotic and average gap growth both depend on the prime number theorem and Mertens' theorem."
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Topology.Basic"
+    ],
+    "opens": [
+      "Real",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "Erdos235",
+    "lineCount": 337,
+    "axiomCount": 11,
+    "theoremCount": 8,
+    "definitionCount": 14
+  },
+  "relatedProofs": [
+    ""
   ]
 }

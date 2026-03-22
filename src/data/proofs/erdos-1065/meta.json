@@ -158,5 +158,19 @@
     "sophie-germain",
     "primitive-roots",
     "dirichlets-theorem"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 163,
+    "axiomCount": 2,
+    "theoremCount": 14,
+    "definitionCount": 3
+  }
 }

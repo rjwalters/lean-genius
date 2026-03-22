@@ -95,5 +95,21 @@
       "Does the limit (not just limsup) exist for all zero-density sets?",
       "What is the distribution of growth ratios among zero-density sets?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Pointwise",
+      "Topology",
+      "Filter",
+      "Set"
+    ],
+    "namespace": "Erdos245",
+    "lineCount": 188,
+    "axiomCount": 3,
+    "theoremCount": 4,
+    "definitionCount": 9
   }
 }

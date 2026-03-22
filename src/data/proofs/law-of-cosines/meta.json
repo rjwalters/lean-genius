@@ -127,5 +127,22 @@
   "relatedProofs": [
     "pythagorean-theorem",
     "triangle-inequality"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "RealInnerProductSpace"
+    ],
+    "namespace": null,
+    "lineCount": 281,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 1
+  }
 }

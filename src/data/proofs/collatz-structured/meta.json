@@ -91,5 +91,16 @@
       "What is the average stopping time for numbers up to N?",
       "Is there a closed-form expression for the stopping time of 2^n - 1?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Collatz",
+    "lineCount": 208,
+    "axiomCount": 1,
+    "theoremCount": 16,
+    "definitionCount": 4
   }
 }

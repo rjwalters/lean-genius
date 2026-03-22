@@ -236,5 +236,30 @@
       "Is there a uniform proof of non-existence for all $n \\notin \\{1,2,4,8\\}$ that can be formalized without case analysis?",
       "What is the connection between Hurwitz's theorem and the exceptional Lie groups, and can this be formalized?"
     ]
-  }
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Normed.Field.Basic",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Algebra.Quaternion",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Fin.VecNotation",
+      "Mathlib.Data.Matrix.Mul",
+      "Mathlib.LinearAlgebra.Matrix.Determinant.Basic",
+      "Mathlib.LinearAlgebra.Matrix.NonsingularInverse"
+    ],
+    "opens": [],
+    "namespace": "HurwitzTheorem",
+    "lineCount": 1680,
+    "axiomCount": 2,
+    "theoremCount": 30,
+    "definitionCount": 13
+  },
+  "relatedProofs": [
+    "",
+    "",
+    "",
+    "",
+    ""
+  ]
 }

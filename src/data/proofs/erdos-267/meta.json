@@ -197,5 +197,20 @@
     "erdos-249",
     "erdos-250",
     "erdos-259"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "BigOperators",
+      "Nat",
+      "Real"
+    ],
+    "namespace": "Erdos267",
+    "lineCount": 234,
+    "axiomCount": 3,
+    "theoremCount": 12,
+    "definitionCount": 5
+  }
 }

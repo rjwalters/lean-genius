@@ -164,5 +164,23 @@
       "Connection to Carmichael's totient conjecture",
       "Common values of other arithmetic function pairs"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "BigOperators",
+      "Finset"
+    ],
+    "namespace": "Erdos48",
+    "lineCount": 472,
+    "axiomCount": 10,
+    "theoremCount": 35,
+    "definitionCount": 7
   }
 }

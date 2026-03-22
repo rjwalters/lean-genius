@@ -120,5 +120,18 @@
       "key": "ESVV94",
       "citation": "Erdős, P., Szabados, J., Varma, A. K., Vértesi, P., On an interpolation theoretical extremal problem, Studia Sci. Math. Hungar. (1994), 55-60."
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos1131",
+    "lineCount": 159,
+    "axiomCount": 9,
+    "theoremCount": 1,
+    "definitionCount": 5
+  }
 }

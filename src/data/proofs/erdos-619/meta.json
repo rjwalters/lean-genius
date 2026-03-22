@@ -148,5 +148,20 @@
       "Does the answer depend on graph structure (trees, bipartite, etc.)?",
       "Can probabilistic methods help understand h₄?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph",
+      "Mathlib.Data.Nat.Basic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos619",
+    "lineCount": 228,
+    "axiomCount": 7,
+    "theoremCount": 1,
+    "definitionCount": 11
   }
 }

@@ -123,5 +123,21 @@
       "Can the result be extended to higher dimensions?",
       "What other geometric properties of F affect component counts?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Topology.Basic"
+    ],
+    "opens": [
+      "Complex"
+    ],
+    "namespace": "Erdos1042",
+    "lineCount": 152,
+    "axiomCount": 12,
+    "theoremCount": 1,
+    "definitionCount": 3
   }
 }

@@ -165,5 +165,24 @@
   ],
   "relatedProofs": [
     "erdos-604"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Normed.Group.Basic",
+      "Mathlib.Analysis.InnerProductSpace.EuclideanDist",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos670",
+    "lineCount": 187,
+    "axiomCount": 9,
+    "theoremCount": 1,
+    "definitionCount": 15
+  }
 }

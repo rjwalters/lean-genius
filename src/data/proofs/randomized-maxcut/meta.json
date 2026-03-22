@@ -149,5 +149,21 @@
       "Can we prove the 1/2 ratio is tight by exhibiting a graph family where the algorithm achieves exactly 1/2?",
       "How would we formalize the derandomization via conditional expectations?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Finite",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Sym.Sym2",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Cut",
+    "lineCount": 325,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 6
   }
 }

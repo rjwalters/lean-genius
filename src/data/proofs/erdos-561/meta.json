@@ -178,5 +178,23 @@
       "What is the structure of Ramsey-minimal graphs for star unions?",
       "Can the techniques from BEFRS78 be extended to non-uniform cases?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.List.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos561",
+    "lineCount": 238,
+    "axiomCount": 8,
+    "theoremCount": 3,
+    "definitionCount": 16
   }
 }

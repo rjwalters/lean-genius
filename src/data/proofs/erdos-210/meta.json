@@ -150,5 +150,22 @@
       "Computational complexity of finding ordinary lines?",
       "Connections to other incidence problems?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Analysis.InnerProductSpace.EuclideanDist",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.LinearAlgebra.AffineSpace.AffineSubspace"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos210",
+    "lineCount": 218,
+    "axiomCount": 14,
+    "theoremCount": 4,
+    "definitionCount": 7
   }
 }

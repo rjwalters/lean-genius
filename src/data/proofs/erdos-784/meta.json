@@ -220,5 +220,24 @@
       "relationship": "related",
       "description": "Nearby Erdős problem in the number-theoretic sieving family"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.NumberTheory.SmoothNumbers"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos784",
+    "lineCount": 281,
+    "axiomCount": 11,
+    "theoremCount": 6,
+    "definitionCount": 7
+  }
 }

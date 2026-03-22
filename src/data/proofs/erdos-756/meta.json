@@ -190,5 +190,23 @@
       "What is the multiplicity of the second-largest distance? (Related to #132)",
       "Algorithmic: efficiently compute richness statistics for given point sets"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "Erdos756",
+    "lineCount": 294,
+    "axiomCount": 7,
+    "theoremCount": 8,
+    "definitionCount": 15
   }
 }

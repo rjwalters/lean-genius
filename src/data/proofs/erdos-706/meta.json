@@ -170,5 +170,19 @@
       "What is L(2)? Even the two-distance case is not well understood",
       "Does L(r) grow polynomially, exponentially, or somewhere in between?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 80,
+    "axiomCount": 5,
+    "theoremCount": 0,
+    "definitionCount": 2
   }
 }

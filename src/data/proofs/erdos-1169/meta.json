@@ -157,5 +157,22 @@
       "Can Hajnal's proof be carried out without the full strength of CH — does Martin's Axiom or PFA suffice?",
       "Can the ordinal partition relation be fully formalized in Lean 4 using Mathlib's ordinal and coloring theory, replacing the axiomatization?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Ordinal.Arithmetic",
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Cardinal",
+      "Ordinal"
+    ],
+    "namespace": null,
+    "lineCount": 219,
+    "axiomCount": 12,
+    "theoremCount": 3,
+    "definitionCount": 5
   }
 }

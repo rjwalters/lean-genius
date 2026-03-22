@@ -139,5 +139,22 @@
       "Polynomial bounds: can tower-type growth be avoided?",
       "Colorings: Ramsey-type versions for colored grids"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Prod.Basic",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos658",
+    "lineCount": 331,
+    "axiomCount": 9,
+    "theoremCount": 6,
+    "definitionCount": 8
   }
 }

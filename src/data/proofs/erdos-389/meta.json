@@ -88,5 +88,19 @@
       "Is there a structural explanation for why $n = 4$ requires $k = 207$? Can the minimal $k$ be related to the largest prime power dividing $n$?",
       "Can the binomial coefficient formulation $\\binom{n+k-1}{k} \\mid \\binom{n+2k-1}{k}$ be attacked using tools from $p$-adic analysis or the theory of carries in addition?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Finset.LocallyFinite"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 99,
+    "axiomCount": 7,
+    "theoremCount": 1,
+    "definitionCount": 3
   }
 }

@@ -118,5 +118,23 @@
       "What is the exact boundary between irrationality and non-irrationality sequences?",
       "Are there natural irrationality sequences besides the doubly-exponential examples?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Irrational",
+      "Mathlib.Topology.Algebra.InfiniteSum.Real",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Data.Set.Function"
+    ],
+    "opens": [
+      "Set",
+      "Filter",
+      "BigOperators"
+    ],
+    "namespace": "Erdos264",
+    "lineCount": 153,
+    "axiomCount": 4,
+    "theoremCount": 1,
+    "definitionCount": 1
   }
 }

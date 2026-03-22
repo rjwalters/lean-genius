@@ -116,5 +116,27 @@
       "What is the minimum measure of a set avoiding all similar copies?",
       "Can avoiding sets be chosen with nice structure (e.g., union of intervals)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.MeasureTheory.Measure.MeasureSpaceDef",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Topology.Order.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Data.Set.Function",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Set",
+      "MeasureTheory",
+      "Filter"
+    ],
+    "namespace": "Erdos120",
+    "lineCount": 332,
+    "axiomCount": 7,
+    "theoremCount": 4,
+    "definitionCount": 10
   }
 }

@@ -112,5 +112,20 @@
       "Are lim sup g(k+1)/g(k) = ∞ and lim inf g(k+1)/g(k) = 0?",
       "Can the Kummer carry conditions for different primes be analyzed jointly, not just independently?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": null,
+    "lineCount": 198,
+    "axiomCount": 10,
+    "theoremCount": 2,
+    "definitionCount": 11
   }
 }

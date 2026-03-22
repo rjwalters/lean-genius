@@ -115,5 +115,17 @@
       "What is the asymptotic shape of d_k(p) for large k — can it be described by a known distribution?",
       "Is there a unified analytic explanation for the threshold at k = 3/4?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 135,
+    "axiomCount": 10,
+    "theoremCount": 2,
+    "definitionCount": 3
   }
 }

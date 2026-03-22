@@ -191,5 +191,20 @@
   ],
   "relatedProofs": [
     "erdos-267"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "BigOperators",
+      "Nat"
+    ],
+    "namespace": "Erdos68",
+    "lineCount": 357,
+    "axiomCount": 4,
+    "theoremCount": 17,
+    "definitionCount": 7
+  }
 }

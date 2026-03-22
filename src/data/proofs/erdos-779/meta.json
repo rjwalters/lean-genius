@@ -160,5 +160,19 @@
       "What is the distribution of the smallest valid prime as n → ∞?",
       "Can sieve methods prove the conjecture for sufficiently large n?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "Erdos779",
+    "lineCount": 231,
+    "axiomCount": 4,
+    "theoremCount": 8,
+    "definitionCount": 7
   }
 }

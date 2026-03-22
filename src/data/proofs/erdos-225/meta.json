@@ -128,5 +128,18 @@
       "Does an analogous bound hold for polynomials whose roots lie on a curve other than $S^1$ (e.g., an ellipse)?",
       "What is the precise rate at which the extremal $L^1$ norm approaches 4 as $n \\to \\infty$?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "MeasureTheory"
+    ],
+    "namespace": "Erdos225",
+    "lineCount": 244,
+    "axiomCount": 2,
+    "theoremCount": 4,
+    "definitionCount": 7
   }
 }

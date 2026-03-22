@@ -146,5 +146,19 @@
       "Can the regularity method give exponent below 3/2, or is a fundamentally different approach needed?",
       "Does the bounded-degree Ramsey approach extend to graphs with degree O(log |V|)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Erdos181",
+    "lineCount": 212,
+    "axiomCount": 7,
+    "theoremCount": 6,
+    "definitionCount": 2
   }
 }

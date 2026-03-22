@@ -168,5 +168,22 @@
       "Resolve the algorithmic implications: does the Naslund-Sawin bound ($c \\approx 0.917$) yield new matrix multiplication algorithms via the Alon-Shpilka-Umans framework?",
       "Characterize extremal sunflower-free families: what structural properties do maximum-size families without $k$-sunflowers satisfy?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Combinatorics.SetFamily.Shadow"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos857",
+    "lineCount": 325,
+    "axiomCount": 11,
+    "theoremCount": 5,
+    "definitionCount": 5
   }
 }

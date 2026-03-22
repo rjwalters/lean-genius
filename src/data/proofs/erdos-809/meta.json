@@ -128,5 +128,21 @@
       "Find explicit constructions achieving near-optimal colorings",
       "Understand the dependence on k"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Combinatorics.SimpleGraph.Basic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos809",
+    "lineCount": 187,
+    "axiomCount": 4,
+    "theoremCount": 2,
+    "definitionCount": 7
   }
 }

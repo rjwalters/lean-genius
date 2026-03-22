@@ -202,5 +202,24 @@
       "Complete proofs of the 20 axiomatized results",
       "Extend to k-monotonic decompositions (neither increasing nor decreasing)"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Data.List.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.BigOperators.Finprod"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos1026",
+    "lineCount": 286,
+    "axiomCount": 13,
+    "theoremCount": 1,
+    "definitionCount": 11
   }
 }

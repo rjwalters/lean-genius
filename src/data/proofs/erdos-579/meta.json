@@ -89,5 +89,20 @@
       "Does the Szemerédi regularity lemma yield any results below the Turán threshold?",
       "Is there a connection to the Erdős-Hajnal conjecture for K₂,₂,₂-free graphs?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 95,
+    "axiomCount": 3,
+    "theoremCount": 0,
+    "definitionCount": 5
   }
 }

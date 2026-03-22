@@ -211,5 +211,21 @@
       "How does G(n) behave for specific number families (primes, prime powers, squarefree)?",
       "Can the superadditivity G(mn) ≥ G(m) + G(n) be strengthened to an asymptotic formula?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Real",
+      "Filter"
+    ],
+    "namespace": "Erdos673",
+    "lineCount": 234,
+    "axiomCount": 0,
+    "theoremCount": 21,
+    "definitionCount": 8
   }
 }

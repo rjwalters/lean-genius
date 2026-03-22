@@ -144,5 +144,21 @@
       "What is the minimal set of Lean tactics needed to prove all propositional tautologies?",
       "How do these tactic-based proofs compare in proof-term size to their term-mode equivalents?"
     ]
-  }
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Sqrt2",
+    "lineCount": 49,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 0
+  },
+  "relatedProofs": [
+    "",
+    "",
+    ""
+  ]
 }

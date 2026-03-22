@@ -151,5 +151,22 @@
       "If A \\ F is a basis for all finite F (robustness), must A have finite restricted order?",
       "For order k = 2, is there a basis with restricted order exactly 3, or is the restricted order always 2 or 4?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Set.Finite",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos338",
+    "lineCount": 362,
+    "axiomCount": 11,
+    "theoremCount": 10,
+    "definitionCount": 15
   }
 }

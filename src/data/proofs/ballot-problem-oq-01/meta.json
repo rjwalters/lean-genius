@@ -150,5 +150,20 @@
       "Continuous-time analogue via Brownian motion",
       "Weighted voting with non-uniform step sizes"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Archive.Wiedijk100Theorems.BallotProblem",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "List",
+      "Set"
+    ],
+    "namespace": "GeneralizedBallot",
+    "lineCount": 711,
+    "axiomCount": 0,
+    "theoremCount": 54,
+    "definitionCount": 8
   }
 }

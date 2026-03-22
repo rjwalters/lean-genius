@@ -156,5 +156,25 @@
       "relationship": "sibling",
       "description": "Another Erdős problem formalization; Problem #1 concerns infinite Sidon sets, also connecting combinatorics with number theory"
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 118,
+    "axiomCount": 6,
+    "theoremCount": 8,
+    "definitionCount": 8
+  },
+  "relatedProofs": [
+    "",
+    "",
+    "",
+    ""
   ]
 }

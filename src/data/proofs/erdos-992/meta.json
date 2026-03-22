@@ -147,5 +147,21 @@
       "How do arithmetic properties of x_n affect discrepancy?",
       "Can new exponential sum estimates improve the bounds?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.Topology.Basic"
+    ],
+    "opens": [
+      "MeasureTheory"
+    ],
+    "namespace": "Erdos992",
+    "lineCount": 180,
+    "axiomCount": 8,
+    "theoremCount": 1,
+    "definitionCount": 9
   }
 }

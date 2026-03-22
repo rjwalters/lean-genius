@@ -141,5 +141,22 @@
       "What is the exact set of n where Alice wins the clique game?",
       "Can the density 3/4 bound be improved toward 1?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Basic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos778",
+    "lineCount": 231,
+    "axiomCount": 6,
+    "theoremCount": 2,
+    "definitionCount": 16
   }
 }

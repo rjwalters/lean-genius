@@ -110,5 +110,20 @@
       "For $k$-distance sets ($k \\geq 3$), the gap between lower and upper bounds widens — can it be narrowed?",
       "Does the answer change for two-distance sets on the sphere $S^{n-1}$ versus all of $\\mathbb{R}^n$?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Combinatorics.Choose.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 98,
+    "axiomCount": 7,
+    "theoremCount": 2,
+    "definitionCount": 3
   }
 }

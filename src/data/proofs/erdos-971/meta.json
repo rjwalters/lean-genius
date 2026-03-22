@@ -120,5 +120,21 @@
       "Are there explicit constructions of moduli d where the phenomenon fails?",
       "What is the relationship to the Generalized Riemann Hypothesis?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "Finset",
+      "Real",
+      "Nat"
+    ],
+    "namespace": "Erdos971",
+    "lineCount": 156,
+    "axiomCount": 2,
+    "theoremCount": 2,
+    "definitionCount": 2
   }
 }

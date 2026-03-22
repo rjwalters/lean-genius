@@ -143,5 +143,23 @@
       "relationship": "uses-result",
       "description": "The lower bound δ(N) ≥ 1/lcm(1,...,N) uses lcm(1,...,N) = e^{ψ(N)} where ψ(N) ~ N by PNT"
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 62,
+    "axiomCount": 5,
+    "theoremCount": 0,
+    "definitionCount": 1
+  },
+  "relatedProofs": [
+    "",
+    ""
   ]
 }

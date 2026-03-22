@@ -145,5 +145,24 @@
       "What happens exactly at the critical threshold c = 1/4?",
       "Are there explicit constructions achieving Fox-Loh bounds?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Triangle.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos80",
+    "lineCount": 247,
+    "axiomCount": 8,
+    "theoremCount": 1,
+    "definitionCount": 10
   }
 }

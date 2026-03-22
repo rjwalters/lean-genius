@@ -182,5 +182,22 @@
       "Does the analogous result hold for k-tuples of consecutive primes (gaps between p_n and p_{n+k})?",
       "Can Maynard-Tao methods for small prime gaps provide constructive rough numbers in specific gap families?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.NumberTheory.Primorial",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "Erdos682",
+    "lineCount": 345,
+    "axiomCount": 12,
+    "theoremCount": 8,
+    "definitionCount": 9
   }
 }

@@ -157,5 +157,21 @@
       "id": "angle-trisection",
       "relationship": "The triple-angle formula cos(3θ) = 4cos³θ - 3cosθ is central to the proof that angle trisection is impossible — it shows trisecting θ requires solving a cubic."
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Chebyshev",
+      "Mathlib.RingTheory.Polynomial.Chebyshev"
+    ],
+    "opens": [
+      "Polynomial",
+      "Polynomial.Chebyshev",
+      "Real"
+    ],
+    "namespace": "DeMoivreOQ01",
+    "lineCount": 232,
+    "axiomCount": 0,
+    "theoremCount": 19,
+    "definitionCount": 0
+  }
 }

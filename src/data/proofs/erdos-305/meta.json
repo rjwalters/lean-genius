@@ -116,5 +116,18 @@
       "Is computing D(a,b) NP-hard, or is there a polynomial-time algorithm?",
       "What are the optimal bounds for restricted Egyptian fractions (odd denominators, prime denominators)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos305",
+    "lineCount": 187,
+    "axiomCount": 1,
+    "theoremCount": 3,
+    "definitionCount": 9
   }
 }

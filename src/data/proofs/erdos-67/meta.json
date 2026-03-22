@@ -128,5 +128,19 @@
       "Can Tao's methods be simplified or made more elementary?",
       "Are there effective bounds on d and m for given C?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos67",
+    "lineCount": 196,
+    "axiomCount": 3,
+    "theoremCount": 2,
+    "definitionCount": 7
   }
 }

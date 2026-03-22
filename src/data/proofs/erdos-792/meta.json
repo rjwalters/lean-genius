@@ -145,5 +145,26 @@
       "Is there a matching upper bound of n/3 + O(log log n)?",
       "What is the exact constant c in Bedert's bound?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Finset.Lattice",
+      "Mathlib.Order.Filter.AtTopBot",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Topology.Order.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Set",
+      "Filter"
+    ],
+    "namespace": "Erdos792",
+    "lineCount": 117,
+    "axiomCount": 11,
+    "theoremCount": 2,
+    "definitionCount": 4
   }
 }

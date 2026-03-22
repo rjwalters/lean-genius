@@ -125,5 +125,24 @@
       "Compute $\\Lambda(8,2)$, $\\Lambda(9,2)$ (exact values unknown beyond $k = 7$)",
       "Determine $\\Lambda(5,3)$, $\\Lambda(7,3)$ (finiteness unknown)"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.FieldTheory.Finite.Basic",
+      "Mathlib.NumberTheory.LegendreSymbol.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Classical"
+    ],
+    "namespace": "Erdos436",
+    "lineCount": 635,
+    "axiomCount": 15,
+    "theoremCount": 44,
+    "definitionCount": 8
   }
 }

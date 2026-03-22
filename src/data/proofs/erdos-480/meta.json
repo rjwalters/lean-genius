@@ -142,5 +142,20 @@
       "What is the distribution of good pairs (m, n) for 'typical' sequences?",
       "Can the Chung-Graham constant be computed more efficiently?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Filter",
+      "Real"
+    ],
+    "namespace": "Erdos480",
+    "lineCount": 216,
+    "axiomCount": 4,
+    "theoremCount": 10,
+    "definitionCount": 5
   }
 }

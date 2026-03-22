@@ -173,5 +173,25 @@
       "Can the upper bound 3.3 be improved?",
       "How does the min projection measure depend on the degree?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Complex.Polynomial.Basic",
+      "Mathlib.Analysis.Normed.Field.Basic",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.LinearAlgebra.Projection",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Polynomial",
+      "Complex"
+    ],
+    "namespace": "Erdos1043",
+    "lineCount": 281,
+    "axiomCount": 8,
+    "theoremCount": 12,
+    "definitionCount": 15
   }
 }

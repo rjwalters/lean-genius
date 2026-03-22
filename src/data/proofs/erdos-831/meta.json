@@ -152,5 +152,24 @@
       "How do similar problems behave in higher dimensions?",
       "What is the distribution of circumradii for random point sets?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Set.Finite",
+      "Mathlib.Data.Finset.Card"
+    ],
+    "opens": [
+      "Set",
+      "Finset"
+    ],
+    "namespace": "Erdos831",
+    "lineCount": 306,
+    "axiomCount": 6,
+    "theoremCount": 5,
+    "definitionCount": 10
   }
 }

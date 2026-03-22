@@ -126,5 +126,19 @@
       "What is the complete staircase structure of $f$? (I.e., characterize $\\text{plateauSet}$ fully)",
       "Is there a continuous analogue: what is $\\sup \\int_F s\\, d\\mu$ over packings of infinitely many squares?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Real"
+    ],
+    "namespace": null,
+    "lineCount": 234,
+    "axiomCount": 13,
+    "theoremCount": 5,
+    "definitionCount": 12
   }
 }

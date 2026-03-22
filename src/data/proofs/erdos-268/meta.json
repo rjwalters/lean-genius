@@ -153,5 +153,24 @@
       "How does the Lebesgue measure of X_d ∩ B(0, R) scale with d for fixed R?",
       "Is there an effective version of the Kovač-Tao result that gives explicit bounds on the ball radius as a function of d?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Topology.Instances.Real",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Analysis.Normed.Group.InfiniteSum",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Set",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "Erdos268",
+    "lineCount": 279,
+    "axiomCount": 4,
+    "theoremCount": 15,
+    "definitionCount": 14
   }
 }

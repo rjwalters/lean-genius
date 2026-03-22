@@ -158,5 +158,21 @@
       "Can similar characterizations be found for multiplicative functions?",
       "What happens if we relax 'bounded' to 'slowly growing' differences?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.ArithmeticFunction",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "Erdos491",
+    "lineCount": 250,
+    "axiomCount": 16,
+    "theoremCount": 6,
+    "definitionCount": 9
   }
 }

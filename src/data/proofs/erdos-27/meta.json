@@ -179,5 +179,26 @@
       "**Weighted Coverings:** What if different congruence classes have different 'weights' and we want weighted coverage? Does the bounded-moduli limitation persist?",
       "**Higher-Dimensional Analogues:** Do similar results hold for covering systems in $\\mathbb{Z}^d$ or other groups?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Int.ModEq",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.Asymptotics.Asymptotics",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Topology.Instances.Real",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Real",
+      "Filter"
+    ],
+    "namespace": "Erdos27",
+    "lineCount": 243,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 16
   }
 }

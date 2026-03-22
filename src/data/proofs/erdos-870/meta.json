@@ -172,5 +172,24 @@
   ],
   "relatedProofs": [
     "erdos-847"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "BigOperators",
+      "Real"
+    ],
+    "namespace": "Erdos870",
+    "lineCount": 324,
+    "axiomCount": 7,
+    "theoremCount": 4,
+    "definitionCount": 17
+  }
 }

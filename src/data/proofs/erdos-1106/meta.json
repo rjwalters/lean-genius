@@ -110,5 +110,21 @@
       "Can Ono's density results on $p \\mid p(n)$ be combined with sieve methods to improve the Schinzel-Wirsing bound beyond $\\log n$?",
       "What is the distribution of 'new prime' events — i.e., values of $k$ where $p(k)$ introduces a prime not dividing any earlier $p(j)$?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "Erdos1106",
+    "lineCount": 247,
+    "axiomCount": 4,
+    "theoremCount": 9,
+    "definitionCount": 7
   }
 }

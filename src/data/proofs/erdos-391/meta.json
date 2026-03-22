@@ -148,5 +148,25 @@
       "Higher-order terms in the asymptotic expansion of t(n)/n",
       "Efficient algorithms for computing t(n) for specific large n"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "Real"
+    ],
+    "namespace": "Erdos391",
+    "lineCount": 248,
+    "axiomCount": 11,
+    "theoremCount": 3,
+    "definitionCount": 7
   }
 }

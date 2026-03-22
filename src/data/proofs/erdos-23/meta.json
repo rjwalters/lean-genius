@@ -180,5 +180,25 @@
       "relationship": "foundational",
       "note": "Ramsey theory provides the foundational framework for forbidden subgraph problems; the blow-up of $C_5$ is a Ramsey-type construction"
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Set",
+      "Function",
+      "BigOperators"
+    ],
+    "namespace": "Erdos23",
+    "lineCount": 288,
+    "axiomCount": 14,
+    "theoremCount": 3,
+    "definitionCount": 8
+  },
+  "relatedProofs": [
+    "",
+    ""
   ]
 }

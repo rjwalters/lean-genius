@@ -164,5 +164,24 @@
       "Can Shearer's lower bound be improved using techniques from the recent breakthroughs on diagonal Ramsey numbers (Campos et al. 2023)?",
       "What is $f_{5,4}(n)$, the next case in the Erdős-Rogers hierarchy? Is the qualitative behavior similar to $f_{4,3}(n)$?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos620",
+    "lineCount": 315,
+    "axiomCount": 10,
+    "theoremCount": 8,
+    "definitionCount": 15
   }
 }

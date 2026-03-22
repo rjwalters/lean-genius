@@ -197,5 +197,22 @@
       "What is the precise relationship between the cofinality of the source ordinal and the provability of multicolor partition relations?",
       "Can the axiomatized limit ordinal properties (omega1_isLimit, omega1TimesOmega_isLimit) be proved using Mathlib's current ordinal API?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Ordinal.Arithmetic",
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Cardinal",
+      "Ordinal"
+    ],
+    "namespace": "Erdos1171",
+    "lineCount": 289,
+    "axiomCount": 16,
+    "theoremCount": 11,
+    "definitionCount": 5
   }
 }

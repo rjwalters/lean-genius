@@ -128,5 +128,19 @@
   ],
   "relatedProofs": [
     "binomial-theorem"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "Finset"
+    ],
+    "namespace": "BinomialTheoremOQ01",
+    "lineCount": 265,
+    "axiomCount": 0,
+    "theoremCount": 19,
+    "definitionCount": 1
+  }
 }
