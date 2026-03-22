@@ -125,5 +125,12 @@
       "Can the variance computation for indicator sums be formalized generically to handle subgraph counting in $G(n,p)$ and derive specific threshold functions?",
       "How does the second moment method extend to higher moments (e.g., the fourth moment method), and can Kim-Vu polynomial concentration be formalized in Lean 4?"
     ]
-  }
+  },
+  "relatedProofs": [
+    "prob-method-expectation",
+    "prob-method-lovasz-local",
+    "prob-method-applications",
+    "cauchy-schwarz",
+    "prob-method-alteration"
+  ]
 }

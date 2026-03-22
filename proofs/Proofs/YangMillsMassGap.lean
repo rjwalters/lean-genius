@@ -15395,7 +15395,7 @@ theorem factorial_dominates (n : ℕ) (hn : n ≥ 4) :
       calc (m + 1) * m.factorial
           ≥ (m + 1) * m ^ 2 := Nat.mul_le_mul_left _ ihm
         _ ≥ (m + 1) ^ 2 := by nlinarith
-    · interval_cases m <;> omega
+    · interval_cases m <;> simp [Nat.factorial] <;> omega
 
 /-- The Borel transform removes the factorial divergence:
     B[f](t) = Σ a_n · t^n / n!
@@ -15481,7 +15481,9 @@ theorem instanton_factor_positive (g_sq : ℝ) :
 theorem instanton_factor_lt_one (g_sq : ℝ) (hg : 0 < g_sq) :
     instantonFactor g_sq < 1 := by
   unfold instantonFactor
-  sorry
+  rw [Real.exp_lt_one_iff]
+  have : 0 < 8 * Real.pi ^ 2 / g_sq := div_pos (by positivity) hg
+  linarith
 
 /-- 2-instanton factor is the square of 1-instanton factor. -/
 theorem two_instanton_factor (g_sq : ℝ) :
@@ -15523,7 +15525,7 @@ theorem bion_lt_instanton (S0 : ℝ) (N : ℕ) (hN : N ≥ 2) (hS : 0 < S0) :
   unfold bionAction
   rw [div_lt_iff₀ (Nat.cast_pos.mpr (by omega : 0 < N))]
   have hN_cast : (2 : ℝ) ≤ (N : ℝ) := by exact_mod_cast hN
-  sorry
+  nlinarith
 
 /-- The bion-induced mass gap: m ~ Λ · e^{-S_bion/2}.
     On R³ × S¹ with adjoint fermions, this is calculable semi-classically. -/
@@ -15571,7 +15573,8 @@ def stokesLineCount (irCount uvCount : ℕ) : ℕ := irCount + uvCount
 theorem ir_renormalon_spacing (beta0 : ℝ) (k : ℕ) (hb : 0 < beta0) (hk : k ≥ 1) :
     irRenormalonPos beta0 (k + 1) - irRenormalonPos beta0 k = 2 / beta0 := by
   unfold irRenormalonPos
-  sorry
+  push_cast
+  ring
 
 /-
     Summary: Resurgence and Trans-Series
@@ -15949,7 +15952,7 @@ noncomputable def genusAmplitude (N : ℕ) (g : ℕ) : ℝ :=
 /-- Planar (g=0) amplitude scales as N². -/
 theorem planar_amplitude (N : ℕ) (hN : N ≥ 2) :
     genusAmplitude N 0 = (N : ℝ) ^ 2 := by
-  unfold genusAmplitude; sorry
+  unfold genusAmplitude; simp; norm_cast
 
 /-- Torus (g=1) amplitude is 1 (N-independent). -/
 theorem torus_amplitude (N : ℕ) (hN : N ≥ 2) :
@@ -16100,7 +16103,9 @@ theorem lattice_spacing_decreases (beta1 beta2 b0 : ℝ) (hb0 : 0 < b0)
     (h : beta1 < beta2) :
     asymptoticScaling beta2 b0 < asymptoticScaling beta1 b0 := by
   unfold asymptoticScaling
-  sorry
+  apply Real.exp_lt_exp_of_lt
+  have hb0' : 0 < 2 * b0 := by linarith
+  exact div_lt_div_of_pos_right (by linarith : -beta2 < -beta1) hb0'
 
 /-- The string tension in lattice units: σa² is a dimensionless number.
     In the continuum limit (a → 0), σa² → 0 while σ (physical) stays fixed.
@@ -16173,7 +16178,7 @@ noncomputable def twoLoopExponent (b0 b1 : ℝ) : ℝ := -b1 / (2 * b0 ^ 2)
 theorem two_loop_exponent_sign (b0 b1 : ℝ) (hb0 : 0 < b0) (hb1 : 0 < b1) :
     twoLoopExponent b0 b1 < 0 := by
   unfold twoLoopExponent
-  sorry
+  exact div_neg_of_neg_of_pos (by linarith) (by positivity)
 
 /-- Balaban's block-spin RG: the effective action after k block-spin steps
     on a lattice with spacing a is well-defined and UV-finite.
@@ -16307,7 +16312,13 @@ theorem langevin_prop_below_equilibrium (p_sq m_sq tau : ℝ)
     (hp : 0 < p_sq) (hm : 0 < m_sq) (htau : 0 < tau) :
     langevinPropagator p_sq m_sq tau < equilibriumPropagator p_sq m_sq := by
   unfold langevinPropagator equilibriumPropagator
-  sorry
+  have hpm : 0 < p_sq + m_sq := by linarith
+  have hinv : 0 < 1 / (p_sq + m_sq) := div_pos one_pos hpm
+  calc 1 / (p_sq + m_sq) * (1 - Real.exp (-2 * (p_sq + m_sq) * tau))
+      < 1 / (p_sq + m_sq) * 1 := by
+        apply mul_lt_mul_of_pos_left _ hinv
+        linarith [Real.exp_pos (-2 * (p_sq + m_sq) * tau)]
+    _ = 1 / (p_sq + m_sq) := mul_one _
 
 /-- The Langevin propagator is non-negative for positive parameters. -/
 theorem langevin_prop_nonneg (p_sq m_sq tau : ℝ)
@@ -16337,7 +16348,8 @@ theorem autocorr_pos (p_sq m_sq : ℝ) (hp : 0 ≤ p_sq) (hm : 0 < m_sq) :
 theorem critical_slowing_down (p_sq m_sq : ℝ) (hp : 0 < p_sq) (hm : 0 < m_sq) :
     autocorrTime p_sq m_sq < autocorrTime 0 m_sq := by
   unfold autocorrTime
-  sorry
+  simp only [zero_add]
+  apply div_lt_div_of_pos_left one_pos (by linarith) (by linarith)
 
 /-- The Zwanziger gauge-fixed Langevin equation adds a gauge-fixing drift:
     ∂A_μ/∂τ = -δS_YM/δA_μ - α·∂_μ(∂·A) + η_μ
@@ -16462,7 +16474,8 @@ theorem more_steps_for_accuracy (gap dtau eps1 eps2 : ℝ)
     (he1 : 0 < eps1) (he2 : 0 < eps2) (hlt : eps1 < eps2) :
     thermalizationSteps gap dtau eps2 < thermalizationSteps gap dtau eps1 := by
   unfold thermalizationSteps
-  sorry
+  apply div_lt_div_of_pos_right _ (mul_pos hgap hdtau)
+  linarith [Real.log_lt_log he1 hlt]
 
 /-- Stochastic quantization of Yang-Mills: the gluon field evolves via
     ∂A^a_μ(x,τ)/∂τ = -D_ν F^a_νμ + η^a_μ(x,τ)
@@ -16506,7 +16519,7 @@ def noiseCorrelatorDiagonal (a b : ℕ) (mu nu : ℕ) : Bool :=
 theorem noise_correlator_symmetric (a b mu nu : ℕ) :
     noiseCorrelatorDiagonal a b mu nu = noiseCorrelatorDiagonal b a nu mu := by
   unfold noiseCorrelatorDiagonal
-  sorry
+  simp [Bool.and_comm, @BEq.beq_comm ℕ _ a b, @BEq.beq_comm ℕ _ mu nu]
 
 /-
     Summary: Stochastic Quantization (Parisi-Wu)
@@ -16580,7 +16593,7 @@ theorem hard_wall_gap_monotone (p1 p2 : HardWallParams)
     (h : p1.z_max < p2.z_max) :
     hardWallMassGap p2 < hardWallMassGap p1 := by
   unfold hardWallMassGap
-  sorry
+  apply div_lt_div_of_pos_left (by positivity : (0:ℝ) < 12 / 5) p1.z_max_pos h
 
 /-- The n-th glueball mass in the hard-wall model:
     m_n = j_{0,n}/z_max where j_{0,n} is the n-th zero of J0.
@@ -16592,7 +16605,9 @@ noncomputable def hardWallGlueballMass (z_max : ℝ) (n : ℕ) : ℝ :=
 theorem glueball_mass_tower (z_max : ℝ) (n : ℕ) (hz : 0 < z_max) (hn : n ≥ 1) :
     hardWallGlueballMass z_max n < hardWallGlueballMass z_max (n + 1) := by
   unfold hardWallGlueballMass
-  sorry
+  apply div_lt_div_of_pos_right _ hz
+  apply mul_lt_mul_of_pos_left _ Real.pi_pos
+  push_cast; linarith
 
 /-- Mass ratio in the hard-wall model approaches integer spacing at large n. -/
 noncomputable def hardWallMassRatio (n : ℕ) : ℝ :=
@@ -16698,7 +16713,10 @@ theorem gap_Tc_ratio (p : HardWallParams) :
     hardWallMassGap p / hawkingPageTc p.z_max =
     (12 : ℝ) / 5 * Real.pi := by
   unfold hardWallMassGap hawkingPageTc
-  sorry
+  have hz := p.z_max_pos
+  have hpi := Real.pi_pos
+  field_simp
+  ring
 
 /-- The t Hooft coupling lambda = g2 N.
     At large N and large lambda, the gauge theory is strongly coupled
@@ -16992,9 +17010,12 @@ theorem kkn_su2_range :
     (3 : ℝ) / 10 < kknPrediction_su2 ∧ kknPrediction_su2 < 35 / 100 := by
   unfold kknPrediction_su2
   constructor
-  · rw [div_lt_div_iff₀ (by norm_num) Real.pi_pos]
-    sorry
-  · sorry
+  · rw [div_lt_div_iff₀ (by norm_num : (0:ℝ) < 10) Real.pi_pos]
+    -- 3 * Real.pi < 1 * 10, i.e., 3π < 10 (true since π < 3.142)
+    linarith [Real.pi_lt_3141593]
+  · rw [div_lt_div_iff₀ Real.pi_pos (by norm_num : (0:ℝ) < 100)]
+    -- 1 * 100 < 35 * Real.pi (true since π > 3, 35*3=105 > 100)
+    linarith [Real.pi_gt_three]
 
 /-- Why 2+1D is tractable but 3+1D is not:
     In d dimensions, the coupling has mass dimension [g2] = 4-d.
@@ -17121,7 +17142,7 @@ noncomputable def cfBetaCoeff (N : ℕ) : ℝ :=
 
 /-- For pure SU(3), the CF beta coefficient. -/
 theorem cf_beta_su3_pure : cfBetaCoeff 3 = 35 / 6 := by
-  unfold cfBetaCoeff; sorry
+  unfold cfBetaCoeff; norm_num
 
 /-- CF beta is positive for N >= 2 (asymptotic freedom preserved). -/
 theorem cf_beta_pos (N : ℕ) (hN : N ≥ 2) : 0 < cfBetaCoeff N := by
@@ -17239,8 +17260,7 @@ theorem vk_bound_pos (C : ℝ) (Q : ℤ) (hC : 0 < C) (hQ : Q ≠ 0) :
   unfold vkBound
   apply mul_pos hC
   apply Real.rpow_pos_of_pos
-  simp
-  sorry
+  exact_mod_cast abs_pos.mpr hQ
 
 /-- The mass gap = energy of lightest knot (Q=1). -/
 noncomputable def faddeevMassGap (c : ℝ) : ℝ :=
@@ -17273,7 +17293,8 @@ theorem abelian_dominance_cho (d : ChoDecomp)
     (h_total_pos : 0 < d.total)
     (h_ratio : d.abelianPart ≥ 9 * d.total / 10) :
     d.abelianPart / d.total ≥ 9 / 10 := by
-  sorry
+  rw [ge_iff_le, div_le_div_iff (by norm_num : (0:ℝ) < 10) h_total_pos]
+  linarith
 
 /-
     Summary: Faddeev-Niemi Decomposition and Knot Solitons
@@ -17354,7 +17375,12 @@ theorem strong_gap_grows_with_N (g_sq : ℝ) (N1 N2 : ℕ) (hg : 0 < g_sq)
     (hN1 : N1 ≥ 2) (hN2 : N2 > N1) :
     strongCouplingGap g_sq N1 < strongCouplingGap g_sq N2 := by
   unfold strongCouplingGap
-  sorry
+  have hN1_pos : (0 : ℝ) < (N1 : ℝ) := Nat.cast_pos.mpr (by omega)
+  have hN2_pos : (0 : ℝ) < (N2 : ℝ) := Nat.cast_pos.mpr (by omega)
+  rw [div_lt_div_iff (by linarith) (by linarith)]
+  have hN1r : (N1 : ℝ) ≥ 2 := by exact_mod_cast hN1
+  have hN2r : (N2 : ℝ) > (N1 : ℝ) := by exact_mod_cast hN2
+  nlinarith [sq_nonneg ((N1 : ℝ) - (N2 : ℝ)), sq_nonneg (N1 : ℝ), sq_nonneg (N2 : ℝ)]
 
 /-- Weak coupling gap: Lambda * exp(-8pi2/(b0 * g2)). -/
 noncomputable def weakCouplingGap (Lambda g_sq : ℝ) (N : ℕ) : ℝ :=
@@ -17512,7 +17538,7 @@ noncomputable def monopoleInteraction (r : ℝ) : ℝ :=
 theorem interaction_decreasing (r₁ r₂ : ℝ) (h1 : r₁ > 0) (h2 : r₂ > r₁) :
     monopoleInteraction r₂ < monopoleInteraction r₁ := by
   unfold monopoleInteraction
-  sorry
+  apply div_lt_div_of_pos_left one_pos (by positivity) (by nlinarith [Real.pi_pos])
 
 /-- In the dilute gas, mass gap scales as g²·exp(-2π·v/g²).
     This captures the non-perturbative nature. -/
@@ -17531,8 +17557,11 @@ theorem massGap_exponentially_small (p : GGModelParams) :
   unfold massGapScaling
   have h1 : Real.exp (-2 * Real.pi * p.v / p.g2) < 1 := by
     rw [Real.exp_lt_one_iff]
-    sorry
-  sorry
+    have : 0 < 2 * Real.pi * p.v / p.g2 := div_pos (by positivity) p.g2_pos
+    linarith
+  calc p.g2 * Real.exp (-2 * Real.pi * p.v / p.g2)
+      < p.g2 * 1 := mul_lt_mul_of_pos_left h1 p.g2_pos
+    _ = p.g2 := mul_one _
 
 /-- The dual photon mass: in 3D, the photon has 1 physical DOF
     (d-2 = 1 polarization). The dual is a scalar. -/
@@ -17758,7 +17787,7 @@ theorem spectral_deltac_nonneg (contribs : List ℝ) (h : ∀ c ∈ contribs, c 
     simp [List.sum_cons]
     have ha : a ≥ 0 := h a (List.mem_cons_self a rest)
     have hrest : ∀ c ∈ rest, c ≥ 0 := fun c hc => h c (List.mem_cons_of_mem a hc)
-    sorry
+    linarith [ih hrest]
 
 /-- Strong vs weak form of c-theorem:
     Weak: c_UV ≥ c_IR (what we state)
@@ -17845,7 +17874,8 @@ theorem su3_orbit_10 : gaugeOrbitDim 3 10 = 80 := by
 theorem orbit_grows_with_N (N₁ N₂ V : ℕ) (hN : N₂ > N₁) (hN1 : N₁ ≥ 2) (hV : V > 0) :
     gaugeOrbitDim N₂ V > gaugeOrbitDim N₁ V := by
   unfold gaugeOrbitDim
-  sorry
+  apply Nat.mul_lt_mul_of_pos_right _ hV
+  omega
 
 /-- A gauge-variant observable has ⟨O⟩ = 0 in finite volume.
     We model this as: if an observable transforms non-trivially
@@ -17951,7 +17981,8 @@ theorem effectiveStringTension_pos (β : ℝ) (d : ℕ) (hβ : β > 0) (hd : d �
     (hbound : β < 2 * d) :
     effectiveStringTension β d > 0 := by
   unfold effectiveStringTension
-  sorry
+  have hd_pos : (0 : ℝ) < 2 * ↑d := by exact_mod_cast (by omega : 0 < 2 * d)
+  exact neg_pos.mpr (Real.log_neg (div_pos hβ hd_pos) (by rwa [div_lt_one hd_pos]))
 
 /-- The gauge-invariant Higgs mechanism: gauge fixing creates the
     illusion of SSB, but physically it's just a specific gauge choice.
@@ -17978,7 +18009,7 @@ theorem su3_massive_dof : massiveVectorDOF 3 = 24 := by
 theorem massive_more_dof (N : ℕ) (hN : N ≥ 2) :
     massiveVectorDOF N > 2 * (N ^ 2 - 1) := by
   unfold massiveVectorDOF
-  sorry
+  omega
 
 /-- Creutz equality: in the confined phase with fundamental matter,
     the "string" can break by creating a quark-antiquark pair.
@@ -18172,7 +18203,7 @@ theorem nearZero_grows_with_V (ρ0 V₁ V₂ ε : ℝ)
     (hρ : ρ0 > 0) (hV : V₂ > V₁) (hV1 : V₁ > 0) (hε : ε > 0) :
     nearZeroModes ρ0 V₂ ε > nearZeroModes ρ0 V₁ ε := by
   unfold nearZeroModes
-  sorry
+  nlinarith
 
 /-- Casher's argument: confinement implies χSB.
     Colored quarks cannot propagate freely → must form condensate.
@@ -18273,7 +18304,9 @@ noncomputable def tensionFromSlope (slope : ℝ) : ℝ := 1 / (2 * Real.pi * slo
 theorem tension_slope_inverse (σ : ℝ) (hσ : σ > 0) :
     tensionFromSlope (slopeFromTension σ) = σ := by
   unfold tensionFromSlope slopeFromTension
-  sorry
+  have hpi : (0 : ℝ) < Real.pi := Real.pi_pos
+  field_simp
+  ring
 
 /-- The lightest state on a trajectory with α₀ < 0 has M² = |α₀|/α'. -/
 noncomputable def lightestMSq (p : ReggeParams) : ℝ :=
@@ -18345,9 +18378,11 @@ noncomputable def rhoSlope : ℝ := 0.88
 /-- ρ meson squared mass M²_ρ ≈ 0.6 GeV² (M_ρ ≈ 775 MeV). -/
 theorem rho_mass_sq : (0.775 : ℝ) ^ 2 < 0.61 := by norm_num
 
-/-- String tension from ρ slope: σ = 1/(2π·0.88) ≈ 0.181 GeV². -/
-theorem string_tension_from_rho : (0.181 : ℝ) < 1 / (2 * Real.pi * 0.88) := by
-  sorry
+/-- String tension from ρ slope: σ = 1/(2π·0.88) ≈ 0.181 GeV².
+    Since 1/(2π·0.88) ≈ 0.1809, the approximation 0.18 is a lower bound. -/
+theorem string_tension_from_rho : (0.18 : ℝ) < 1 / (2 * Real.pi * 0.88) := by
+  rw [lt_div_iff₀ (by positivity)]
+  nlinarith [Real.pi_lt_3141593]
 
 /-
     Summary: Regge Trajectories
@@ -18610,7 +18645,7 @@ theorem mass_pos_from_corr (ξ : ℝ) (hξ : ξ > 0) :
 theorem shorter_corr_heavier (ξ₁ ξ₂ : ℝ) (h1 : ξ₁ > 0) (h2 : ξ₂ > 0) (h : ξ₂ < ξ₁) :
     massFromCorrelationLength ξ₂ > massFromCorrelationLength ξ₁ := by
   unfold massFromCorrelationLength
-  sorry
+  exact div_lt_div_of_pos_left one_pos h2 h
 
 /-- Flavor non-singlet states are heavier than flavor singlet.
     This explains why η' >> π₀ (the U(1)_A anomaly makes η' heavy). -/
@@ -18856,8 +18891,11 @@ theorem strongTension_pos (β : ℝ) (N d : ℕ) (hβ : β > 0) (hN : N ≥ 2) (
     (hbound : β < 2 * N * d) :
     strongCouplingTension β N d > 0 := by
   unfold strongCouplingTension
-  sorry
-    · exact_mod_cast (by omega : 2 * N * d > 0)
+  have hNd : (0 : ℝ) < 2 * ↑N * ↑d := by positivity
+  apply neg_pos.mpr
+  apply Real.log_neg (div_pos hβ hNd)
+  rw [div_lt_one hNd]
+  exact_mod_cast hbound
 
 /-- Character expansion coefficients: u(β) = I₁(β)/I₀(β) for SU(2).
     At strong coupling u ≈ β/4. At weak coupling u → 1. -/
@@ -19410,7 +19448,8 @@ theorem dim4_decreases (C₄ G2 Q₁ Q₂ : ℝ) (hC : C₄ > 0) (hG : G2 > 0)
     (hQ1 : Q₁ > 0) (hQ2 : Q₂ > Q₁) :
     dim4Contribution C₄ G2 Q₂ < dim4Contribution C₄ G2 Q₁ := by
   unfold dim4Contribution
-  sorry
+  apply div_lt_div_of_pos_left (mul_pos hC hG) (by positivity) (by positivity)
+  exact pow_lt_pow_left₀ hQ2 (le_of_lt hQ1) (by omega)
 
 /-- The dimension-6 operator: ⟨g f_{abc} G³⟩.
     Its contribution is ~ Λ⁶/Q⁶, much smaller than dimension 4 at high Q. -/
@@ -19871,13 +19910,13 @@ noncomputable def z2PlaquetteExpectation (beta : ℝ) : ℝ := Real.tanh beta
 theorem z2_plaquette_pos (beta : ℝ) (hb : beta > 0) :
     z2PlaquetteExpectation beta > 0 := by
   unfold z2PlaquetteExpectation
-  sorry
+  exact Real.tanh_pos_of_pos hb
 
 /-- Plaquette expectation is bounded: 0 < ⟨σ_p⟩ < 1 for finite β. -/
 theorem z2_plaquette_bounded (beta : ℝ) (hb : beta > 0) :
     z2PlaquetteExpectation beta < 1 := by
   unfold z2PlaquetteExpectation
-  sorry
+  exact Real.tanh_lt_one beta
 
 /-- The Wilson loop in Z₂ gauge theory: W(C) = ⟨∏_{ℓ∈C} σ_ℓ⟩.
     In strong coupling (small β), the Wilson loop obeys an area law:
@@ -19889,14 +19928,14 @@ noncomputable def z2WilsonLoop (beta : ℝ) (area : ℕ) : ℝ :=
 theorem z2_wilson_pos (beta : ℝ) (hb : beta > 0) (area : ℕ) :
     z2WilsonLoop beta area > 0 := by
   unfold z2WilsonLoop
-  sorry
+  exact pow_pos (Real.tanh_pos_of_pos hb) area
 
 /-- Wilson loop exhibits area law: W decreases exponentially with area.
     This is the signature of confinement. -/
 theorem z2_wilson_area_law (beta : ℝ) (hb : beta > 0) (a₁ a₂ : ℕ) (h : a₁ < a₂) :
     z2WilsonLoop beta a₂ < z2WilsonLoop beta a₁ := by
   unfold z2WilsonLoop
-  sorry
+  exact pow_lt_pow_right (Real.tanh_pos_of_pos hb) (Real.tanh_lt_one beta) h
 
 /-- The Z₂ string tension: σ = -ln(tanh β) > 0 for finite β.
     The area law reads W(A) = exp(-σ·A). -/
@@ -19906,7 +19945,7 @@ noncomputable def z2StringTension (beta : ℝ) : ℝ := -Real.log (Real.tanh bet
 theorem z2_string_tension_pos (beta : ℝ) (hb : beta > 0) :
     z2StringTension beta > 0 := by
   unfold z2StringTension
-  sorry
+  exact neg_pos.mpr (Real.log_neg (Real.tanh_pos_of_pos hb) (Real.tanh_lt_one beta))
 
 /-- String tension increases at weak coupling (small β). -/
 theorem z2_string_tension_large_at_zero :
@@ -19934,7 +19973,12 @@ noncomputable def wegnerDualCoupling (beta : ℝ) : ℝ :=
 theorem wegner_dual_pos (beta : ℝ) (hb : beta > 0) :
     wegnerDualCoupling beta > 0 := by
   unfold wegnerDualCoupling
-  sorry
+  apply div_pos _ (by norm_num : (0:ℝ) < 2)
+  have ht_pos := Real.tanh_pos_of_pos hb
+  have ht_lt := Real.tanh_lt_one beta
+  apply Real.log_pos
+  rw [lt_div_iff₀ ht_pos]
+  linarith
 
 /-- Self-duality point: when β = β*, the theory is self-dual.
     In d=4, this gives the critical coupling for the deconfinement transition.
@@ -20033,7 +20077,14 @@ noncomputable def z2FreeEnergyDensity (d : ℕ) (beta : ℝ) : ℝ :=
 theorem z2_free_energy_finite (d : ℕ) (hd : d ≥ 2) (beta : ℝ) (hb : beta > 0) :
     z2FreeEnergyDensity d beta < 0 := by
   unfold z2FreeEnergyDensity
-  sorry
+  apply mul_neg_of_neg_of_pos
+  · apply div_neg_of_neg_of_pos
+    · have : (0 : ℝ) < ↑(d * (d - 1)) := Nat.cast_pos.mpr (by omega)
+      linarith
+    · norm_num
+  · apply Real.log_pos
+    have : 1 ≤ Real.cosh beta := Real.one_le_cosh beta
+    linarith
 
 /-- Why Z₂ gauge theory matters for the Millennium Problem:
 
@@ -20127,7 +20178,11 @@ theorem wBoson_mass_monotone (N : ℕ) (hN : N ≥ 2) (L₁ L₂ : ℝ)
     wBosonMass ⟨N, L₂, 1, hN, hL2, by norm_num⟩ <
     wBosonMass ⟨N, L₁, 1, hN, hL1, by norm_num⟩ := by
   unfold wBosonMass
-  sorry
+  simp only
+  have hN_pos : (0 : ℝ) < (N : ℝ) := Nat.cast_pos.mpr (by omega)
+  apply div_lt_div_of_pos_left (by positivity)
+    (mul_pos hN_pos hL1)
+    (mul_lt_mul_of_pos_left h hN_pos)
 
 /-- The effective coupling at the compactification scale.
     At small L, the coupling runs as:
@@ -20442,7 +20497,7 @@ theorem gww_gap_at_critical :
     (eigenvalues cluster more tightly). At β → ∞, θ_max → 0. -/
 theorem gww_gap_shrinks (b₁ b₂ : ℝ) (hb1 : b₁ > 0) (hb2 : b₂ > 0) (h : b₁ < b₂) :
     1 / (2 * b₂) < 1 / (2 * b₁) := by
-  sorry
+  apply div_lt_div_of_pos_left one_pos (by positivity) (by linarith)
 
 /-- The string tension in the GWW model.
     In the weak phase: σ = -ln(β) + terms (always positive for β < 1).
@@ -20454,7 +20509,7 @@ noncomputable def gwwStringTension (beta : ℝ) : ℝ := -Real.log beta
 theorem gww_string_tension_pos_weak (beta : ℝ) (hb : beta > 0) (hb1 : beta < 1) :
     gwwStringTension beta > 0 := by
   unfold gwwStringTension
-  sorry
+  exact neg_pos.mpr (Real.log_neg hb hb1)
 
 /-- The GWW third-order phase transition.
     The free energy is C² but not C³ at β_c = 1/2.
@@ -21139,7 +21194,7 @@ theorem asymptotic_scaling_finer (beta0 beta1 beta2 : ℝ) (hb0 : beta0 > 0)
     (h21 : beta2 > beta1) :
     -beta2 / (4 * beta0) < -beta1 / (4 * beta0) := by
   have h4b : (0 : ℝ) < 4 * beta0 := by linarith
-  sorry
+  exact div_lt_div_of_pos_right (by linarith) h4b
 
 /-- The mass gap to string tension ratio: m0/sqrt(sigma) = 3.55. -/
 noncomputable def massGapStringTensionRatio' : ℝ := 3.55
@@ -22320,7 +22375,8 @@ def zeroModesMinus (Q : ℤ) : ℕ := (-Q).toNat
 theorem atiyahSinger_gauge (Q : ℤ) (hQ : Q ≥ 0) :
     (zeroModesPlus Q : ℤ) - (zeroModesMinus Q : ℤ) = Q := by
   unfold zeroModesPlus zeroModesMinus
-  sorry
+  simp only [Nat.cast_inj]
+  omega
 
 /-- For a single instanton (Q=1), there is exactly 1 positive zero mode.
     For SU(2): n_+ = 1, n_- = 0. -/
@@ -22802,7 +22858,7 @@ theorem mcEffectiveMass_pos (C_t C_t1 : ℝ) (hC : C_t > 0) (hC1 : C_t1 > 0)
     (hdecay : C_t1 < C_t) :
     mcEffectiveMass C_t C_t1 hC hC1 > 0 := by
   unfold mcEffectiveMass
-  sorry
+  exact neg_pos.mpr (Real.log_neg (div_pos hC1 hC) ((div_lt_one hC).mpr hdecay))
 
 /-- Lattice glueball spectrum data (Morningstar-Peardon 1999, updated by Chen et al 2006).
     Masses in units of the string tension √σ. -/
@@ -23002,7 +23058,7 @@ theorem meson_count_grows (M1 M2 lam : ℝ) (hlam : lam > 0)
     (hM : M2 > M1) (hM1 : M1 > 0) :
     mesonCount M2 lam > mesonCount M1 lam := by
   unfold mesonCount
-  sorry
+  exact div_lt_div_of_pos_right hM (by positivity)
 
 /-- Decay constants: f_n ~ n^{-1/2} at large n.
     Higher states are progressively harder to produce. -/
@@ -23246,7 +23302,9 @@ theorem wigner_density_center (R : ℝ) (hR : R > 0) :
     wignerDensity R 0 = 2 / (Real.pi * R) := by
   unfold wignerDensity
   simp [Real.sqrt_sq (le_of_lt hR)]
-  sorry
+  have hpi := Real.pi_pos
+  field_simp
+  ring
 
 /-- The eigenvalue density vanishes at the edge: ρ(R) = 0. -/
 theorem wigner_density_edge (R : ℝ) :
@@ -23519,7 +23577,7 @@ theorem massive_kernel_at_zero (m : ℝ) (hm : m > 0) :
 theorem pert_kernel_diverges_at_zero (eps : ℝ) (heps : eps > 0) (heps1 : eps < 1) :
     perturbativeKernel eps heps > 1 / 2 := by
   unfold perturbativeKernel
-  sorry
+  apply div_lt_div_of_pos_left one_pos (by norm_num : (0:ℝ) < 2) (by linarith)
 
 /-- The vacuum energy functional E₀ = ½ ∫ |B[A]|² + ½ ∫ (δ/δA)².
     Minimizing over Ψ gives the ground state. -/
@@ -23813,7 +23871,8 @@ theorem strong_gap_large (beta N : ℝ) (hbeta : 0 < beta) (hN : N ≥ 2)
     (hsmall : beta < 2 * N ^ 2) :
     strongCouplingGap beta N > 0 := by
   unfold strongCouplingGap
-  sorry
+  have hN2 : 0 < 2 * N ^ 2 := by nlinarith
+  exact neg_pos.mpr (Real.log_neg (div_pos hbeta hN2) ((div_lt_one hN2).mpr hsmall))
 
 /-- Partition function analyticity: Z(β) is analytic in β for SU(N).
     This means there is no phase transition at any finite β. -/
@@ -24364,7 +24423,11 @@ theorem classical_scale_invariance (S lambda : ℝ) (h : S = S) :
 
 theorem quantum_breaks_scale (beta g : ℝ) (hbeta : beta ≠ 0) :
     beta / (2 * g) ≠ 0 := by
-  sorry
+  intro h
+  have := div_eq_zero_iff.mp h
+  rcases this with h1 | h1
+  · exact hbeta h1
+  · simp at h1
 
 /-- The RG invariant: Λ_QCD doesn't depend on the renormalization scale μ.
     dΛ/dμ = 0 (this follows from the definition). -/
@@ -28618,7 +28681,7 @@ theorem magnetic_mass_pos (g T : ℝ) (hg : 0 < g) (hT : 0 < T) :
 theorem magnetic_lt_electric (g T : ℝ) (hg : 0 < g) (hg1 : g < 1) (hT : 0 < T) :
     magneticMass g T < g * T := by
   unfold magneticMass
-  rw [show g ^ 2 * T = g * (g * T) by ring]
+  rw [show g ^ 2 * T = g * (g * T) by ring, show g * T = 1 * (g * T) by ring]
   exact mul_lt_mul_of_pos_right hg1 (mul_pos hg hT)
 
 /-- The dimensional reduction hierarchy at high T:
@@ -28775,7 +28838,7 @@ theorem selfEnergy_at_zero_pos (params : GluonDSEParams) :
   apply div_pos
   · apply mul_pos
     apply mul_pos params.h_m params.h_g
-    exact Nat.ofNat_pos.mpr (by omega)
+    exact Nat.cast_pos.mpr (by omega)
   · apply mul_pos (by norm_num : (16 : ℝ) > 0)
     exact sq_pos_of_pos Real.pi_pos
 
@@ -28910,19 +28973,19 @@ theorem schwinger_mechanism_requires_nonabelian :
     with the constraint 2κ_ghost + κ_gluon = 0 (from STI).
     This gives κ ≈ 0.5953... (irrational).
     In the decoupling solution: κ_gluon = 1, κ_ghost = 0 (massive/free). -/
-noncomputable def scalingExponent : ℝ := 0.5953
+noncomputable def dseScalingExponent : ℝ := 0.5953
 
 /-- The scaling exponent is between 1/2 and 1. -/
-theorem scaling_exponent_range : (1 : ℝ) / 2 < scalingExponent ∧ scalingExponent < 1 := by
-  unfold scalingExponent
+theorem dse_scaling_exponent_range : (1 : ℝ) / 2 < dseScalingExponent ∧ dseScalingExponent < 1 := by
+  unfold dseScalingExponent
   constructor <;> norm_num
 
 /-- In the scaling solution, ghost dressing diverges: d(p²) ~ (p²)^{-κ}.
     Exponent -κ < 0 means d → ∞ as p² → 0 (ghost enhancement).
     Kugo-Ojima criterion requires this enhancement for color confinement.
     However, lattice data favors the decoupling solution with finite d(0). -/
-theorem scaling_ghost_enhanced : scalingExponent > 0 := by
-  unfold scalingExponent; norm_num
+theorem dse_scaling_ghost_enhanced : dseScalingExponent > 0 := by
+  unfold dseScalingExponent; norm_num
 
 /-- The sum rule for the gluon propagator (Oehme-Zimmermann):
     ∫₀^∞ dp² · ρ(p²) = 0
@@ -29011,7 +29074,7 @@ theorem litimRegulator_nonneg (k_sq p_sq : ℝ) (hk : k_sq ≥ 0) :
   unfold litimRegulator
   split
   · linarith [‹p_sq < k_sq›]
-  · le_refl
+  · exact le_refl _
 
 /-- The regulator vanishes for UV modes (p² > k²). -/
 theorem litimRegulator_uv_vanishes (k_sq p_sq : ℝ) (hp : p_sq ≥ k_sq) :
@@ -29133,7 +29196,7 @@ theorem frg_gluon_anomDim_negative (g_sq : ℝ) (hg : g_sq > 0) :
   unfold frgGluonAnomalousDim
   apply mul_neg_of_neg_of_pos
   · apply div_neg_of_neg_of_pos
-    · simp; norm_num
+    · norm_num
     · apply mul_pos (by norm_num : (48 : ℝ) > 0) (sq_pos_of_pos Real.pi_pos)
   · exact hg
 
@@ -29149,7 +29212,7 @@ theorem frg_ghost_anomDim_negative (g_sq : ℝ) (hg : g_sq > 0) :
   unfold frgGhostAnomalousDim
   apply mul_neg_of_neg_of_pos
   · apply div_neg_of_neg_of_pos
-    · simp; norm_num
+    · norm_num
     · apply mul_pos (by norm_num : (64 : ℝ) > 0) (sq_pos_of_pos Real.pi_pos)
   · exact hg
 
@@ -29431,10 +29494,7 @@ theorem stochAutocorr_grows_near_continuum (m a1 a2 z : ℝ)
   apply Real.rpow_lt_rpow
   · apply le_of_lt
     apply div_pos one_pos (mul_pos hm ha1)
-  · apply div_lt_div_of_pos_left one_pos
-    · exact mul_pos hm ha2
-    · exact mul_pos hm ha1
-    exact mul_lt_mul_of_pos_left ha hm
+  · exact div_lt_div_of_pos_left one_pos (mul_pos hm ha2) (mul_lt_mul_of_pos_left ha hm)
   · exact hz
 
 /-- The mass gap from stochastic quantization:
@@ -29562,7 +29622,7 @@ theorem beta0_su2 : beta0_from_pole 2 = 22 / 3 := by
     - The β function (perturbative)
     - The gluon condensate ⟨F²⟩ (non-perturbative)
     - The vacuum energy density (ε_vac = -⟨θ⁰⁰⟩) -/
-structure TraceAnomaly where
+structure TraceAnomalyVacuum where
   /-- The β function value at coupling g -/
   beta_at_g : ℝ
   /-- The coupling constant g > 0 -/
@@ -29578,14 +29638,14 @@ structure TraceAnomaly where
     For asymptotically free theories (β < 0 at small g), this gives ε_vac > 0:
     the QCD vacuum has POSITIVE energy compared to perturbative vacuum.
     This is the "bag constant" B in the MIT bag model. -/
-noncomputable def vacuumEnergyDensity (ta : TraceAnomaly) : ℝ :=
+noncomputable def vacuumEnergyDensity (ta : TraceAnomalyVacuum) : ℝ :=
   -(ta.beta_at_g / (8 * ta.g)) * ta.gluon_condensate
 
 /-- **PROVED: For asymptotically free theories (β < 0), the vacuum energy is positive.**
     This means the non-perturbative vacuum has higher energy than the perturbative vacuum.
     The energy difference is proportional to ⟨F²⟩ — the mass gap is generated by
     non-trivial vacuum structure. -/
-theorem vacuum_energy_positive (ta : TraceAnomaly) (hbeta : ta.beta_at_g < 0) :
+theorem vacuum_energy_positive (ta : TraceAnomalyVacuum) (hbeta : ta.beta_at_g < 0) :
     vacuumEnergyDensity ta > 0 := by
   unfold vacuumEnergyDensity
   apply mul_pos
@@ -29676,9 +29736,9 @@ This part formalizes the precise mathematical requirements and known partial res
 
 section ClayPrize
 
-/-- The Wightman axioms for a quantum field theory.
+/-- The Wightman axioms for the Clay Prize statement.
     These axioms define what it MEANS for a QFT to "exist". -/
-structure WightmanAxioms where
+structure ClayWightmanAxioms where
   /-- A Hilbert space H of states -/
   hilbert_dim : ℕ  -- abstractly: dimension indicator
   /-- A vacuum state Ω ∈ H, unique and invariant -/
@@ -29707,7 +29767,7 @@ structure MassGapProperty where
     satisfies the Wightman axioms AND has a mass gap. -/
 structure MillenniumPrizeYM where
   /-- The Wightman axioms are satisfied -/
-  wightman : WightmanAxioms
+  wightman : ClayWightmanAxioms
   /-- The vacuum is unique -/
   unique_vacuum : wightman.has_vacuum
   /-- The theory has a mass gap -/

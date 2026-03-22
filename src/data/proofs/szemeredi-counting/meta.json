@@ -17,7 +17,7 @@
       "marquee-phase-3"
     ],
     "badge": "formalized",
-    "sorries": 2,
+    "sorries": 3,
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -46,23 +46,23 @@
     "references": [
       {
         "key": "RS78",
-        "citation": "I. Z. Ruzsa and E. Szemer\u00e9di, Triple systems with no six points carrying three triangles, Combinatorics (Keszthely, 1976), Colloq. Math. Soc. J\u00e1nos Bolyai 18 (1978), 939\u2013945."
+        "citation": "I. Z. Ruzsa and E. Szemerédi, Triple systems with no six points carrying three triangles, Combinatorics (Keszthely, 1976), Colloq. Math. Soc. János Bolyai 18 (1978), 939–945."
       },
       {
         "key": "KS96",
-        "citation": "J. Koml\u00f3s and M. Simonovits, Szemer\u00e9di's regularity lemma and its applications in graph theory, Combinatorics: Paul Erd\u0151s is Eighty, vol. 2, Bolyai Soc. Math. Studies 2, 1996, pp. 295\u2013352."
+        "citation": "J. Komlós and M. Simonovits, Szemerédi's regularity lemma and its applications in graph theory, Combinatorics: Paul Erdős is Eighty, vol. 2, Bolyai Soc. Math. Studies 2, 1996, pp. 295–352."
       },
       {
         "key": "Fox11",
-        "citation": "J. Fox, A new proof of the graph removal lemma, Ann. of Math. (2) 174 (2011), 561\u2013579."
+        "citation": "J. Fox, A new proof of the graph removal lemma, Ann. of Math. (2) 174 (2011), 561–579."
       },
       {
         "key": "Sze78",
-        "citation": "E. Szemer\u00e9di, Regular partitions of graphs, Probl\u00e8mes combinatoires et th\u00e9orie des graphes (Orsay, 1976), Colloq. Internat. CNRS 260, Paris, 1978, pp. 399\u2013401."
+        "citation": "E. Szemerédi, Regular partitions of graphs, Problèmes combinatoires et théorie des graphes (Orsay, 1976), Colloq. Internat. CNRS 260, Paris, 1978, pp. 399–401."
       }
     ],
     "prerequisites": [
-      "Szemer\u00e9di Regularity Lemma",
+      "Szemerédi Regularity Lemma",
       "Epsilon-regular pairs and edge density",
       "SimpleGraph and Finset in Mathlib",
       "Triangle counting and subgraph enumeration",
@@ -141,5 +141,10 @@
       "What is the relationship between removal lemma bounds and the tower-type bounds in the regularity lemma itself?",
       "Can the removal lemma be proved without the regularity lemma (as in Fox's 2011 approach using the strong regularity lemma)?"
     ]
-  }
+  },
+  "relatedProofs": [
+    "szemeredi-regularity",
+    "roth-theorem-k3",
+    "szemeredi-full"
+  ]
 }

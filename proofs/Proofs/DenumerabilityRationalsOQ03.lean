@@ -226,63 +226,70 @@ theorem mediant_strictly_between (s : State) (h : s.det = 1)
   constructor <;> nlinarith
 
 -- ========================================================================
--- Part VII: Injectivity (stated)
+-- Part VII: Injectivity Infrastructure
 -- ========================================================================
 
-/-- The "total" la+ra+lb+rb of a state never decreases during navigation.
-    Specifically, left increases total by la+lb, right by ra+rb. -/
-private theorem eval_total_le (s : State) (p : Path) :
-    s.la + s.ra + s.lb + s.rb ≤
-    (eval s p).la + (eval s p).ra + (eval s p).lb + (eval s p).rb := by
+/-- Key bound: ra is non-decreasing along any path from a state.
+Going left: ra → la + ra (increases). Going right: ra stays. -/
+theorem ra_ge_eval (s : State) (p : Path) :
+    s.ra ≤ (eval s p).ra := by
   induction p generalizing s with
   | nil => simp [eval]
   | cons d rest ih =>
     cases d with
     | L =>
-      calc s.la + s.ra + s.lb + s.rb
-          ≤ s.left.la + s.left.ra + s.left.lb + s.left.rb := by
-            simp [State.left]; omega
-        _ ≤ _ := ih s.left
+      have h1 : s.left.ra = s.la + s.ra := rfl
+      have h2 := ih s.left
+      simp [eval]; omega
     | R =>
-      calc s.la + s.ra + s.lb + s.rb
-          ≤ s.right.la + s.right.ra + s.right.lb + s.right.rb := by
-            simp [State.right]; omega
-        _ ≤ _ := ih s.right
+      have h1 : s.right.ra = s.ra := rfl
+      have h2 := ih s.right
+      simp [eval]; omega
 
-/-- For nonempty paths from a det=1 state, the total strictly increases. -/
-private theorem eval_total_lt (s : State) (d : Dir) (rest : Path) (hd : s.det = 1) :
-    s.la + s.ra + s.lb + s.rb <
-    (eval s (d :: rest)).la + (eval s (d :: rest)).ra +
-    (eval s (d :: rest)).lb + (eval s (d :: rest)).rb := by
-  have hdet_pos : 0 < s.ra * s.lb := by simp [State.det] at hd; nlinarith
-  -- From det = 1: ra * lb = la * rb + 1, so lb ≥ 1 and ra ≥ 1
-  have hlb : 0 < s.lb := by nlinarith
-  have hra : 0 < s.ra := by nlinarith
-  cases d with
-  | L =>
-    simp only [eval]
-    have hstep : s.la + s.ra + s.lb + s.rb + 1 ≤
-        s.left.la + s.left.ra + s.left.lb + s.left.rb := by
-      simp only [State.left]; omega
-    have hle := eval_total_le s.left rest
-    omega
-  | R =>
-    simp only [eval]
-    have hstep : s.la + s.ra + s.lb + s.rb + 1 ≤
-        s.right.la + s.right.ra + s.right.lb + s.right.rb := by
-      simp only [State.right]; omega
-    have hle := eval_total_le s.right rest
-    omega
+/-- Key bound: lb is non-decreasing along any path from a state.
+Going left: lb stays. Going right: lb → lb + rb (increases). -/
+theorem lb_ge_eval (s : State) (p : Path) :
+    s.lb ≤ (eval s p).lb := by
+  induction p generalizing s with
+  | nil => simp [eval]
+  | cons d rest ih =>
+    cases d with
+    | L =>
+      have h1 : s.left.lb = s.lb := rfl
+      have h2 := ih s.left
+      simp [eval]; omega
+    | R =>
+      have h1 : s.right.lb = s.lb + s.rb := rfl
+      have h2 := ih s.right
+      simp [eval]; omega
 
-/-- Different paths from the root yield different (num, den) pairs.
-This follows from the ordering property: left descendants have smaller
-rational values than the current node, right descendants have larger ones. -/
+/-- rb is non-decreasing along any path. -/
+theorem rb_ge_eval (s : State) (p : Path) :
+    s.rb ≤ (eval s p).rb := by
+  induction p generalizing s with
+  | nil => simp [eval]
+  | cons d rest ih =>
+    cases d with
+    | L =>
+      have h1 : s.left.rb = s.lb + s.rb := rfl
+      have h2 := ih s.left
+      simp [eval]; omega
+    | R =>
+      have h1 : s.right.rb = s.rb := rfl
+      have h2 := ih s.right
+      simp [eval]; omega
+
+/-- After going left, rb is at least lb + rb (initial right ancestor's denominator). -/
+theorem rb_ge_after_left (s : State) (p : Path) :
+    (eval s.left p).rb ≥ s.lb + s.rb := by
+  have h1 : s.left.rb = s.lb + s.rb := rfl
+  have h2 := rb_ge_eval s.left p
+  omega
+
+/-- Different paths from the root yield different (num, den) pairs. -/
 theorem eval_injective (p1 p2 : Path) (h : evalPath p1 = evalPath p2) :
     p1 = p2 := by
-  -- Full proof requires showing: if first directions differ, the states
-  -- have rational values on opposite sides of the current node.
-  -- The total-increasing lemma handles the length-mismatch cases.
-  sorry
+  sorry -- Requires BST property: left descendants < current < right descendants
 
 -- ========================================================================
 -- Part VIII: Concrete Examples

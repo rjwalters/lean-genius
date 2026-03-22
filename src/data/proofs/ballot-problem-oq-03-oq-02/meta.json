@@ -1,0 +1,164 @@
+{
+  "id": "ballot-problem-oq-03-oq-02",
+  "title": "General r×r Lindström-Gessel-Viennot Determinant",
+  "slug": "ballot-problem-oq-03-oq-02",
+  "description": "Generalizes the 2×2 LGV lemma to the full r×r case: the number of r-tuples of pairwise non-intersecting lattice paths equals det[e(Aᵢ,Bⱼ)], the determinant of the path count matrix. Formalizes LGVConfig, PathTuple, permutation path tuples, and the Gessel-Viennot sign-reversing involution infrastructure.",
+  "meta": {
+    "author": "Lindström (1973), Gessel-Viennot (1985)",
+    "sourceUrl": "",
+    "date": "1985",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/BallotProblemOQ03OQ02.lean",
+    "tags": [
+      "combinatorics",
+      "lattice-paths",
+      "lgv-lemma",
+      "determinants",
+      "permutations",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 1,
+    "axioms": 1,
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.det_apply",
+        "description": "Determinant as sum over permutations with signs",
+        "module": "Mathlib.LinearAlgebra.Matrix.Determinant"
+      },
+      {
+        "theorem": "Equiv.Perm.sign_swap",
+        "description": "Sign of a transposition is -1",
+        "module": "Mathlib.GroupTheory.Perm.Sign"
+      },
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients for path counting",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
+    ],
+    "originalContributions": [
+      "LGVConfig: structure encoding r sources, r targets on a grid of width m with strict monotonicity",
+      "PathTuple: dependent r-tuple of lattice paths, one per source-target pair",
+      "PermPathTuple: σ-path tuples where path i goes from source i to target σ(i)",
+      "pathMatrix: the r×r path weight matrix M_{i,j} = C(m+(bⱼ-aᵢ), m)",
+      "niTupleCount: count of non-intersecting identity path tuples",
+      "IsNonIntersecting: pairwise non-intersection for path tuples",
+      "swapTailsAt: tail-swap operation (involution kernel for GV proof)",
+      "swapTailsAt length preservation theorems",
+      "gessel_viennot_transposition_sign: sign(swap(i,σi)∘σ) = -sign(σ) (proved)",
+      "isNonIntersecting_of_r_one: every 1-tuple is vacuously non-intersecting (proved)",
+      "pathMatrix_det_nonneg: non-negativity of path matrix determinant (from LGV axiom)",
+      "lgv_lemma_rxr: the main r×r LGV lemma (NOW PROVED as theorem)",
+      "firstNonFixed: smallest non-fixed point of non-identity perm (4 lemmas proved)",
+      "permPathTuple_card: cardinality factorization for σ-path tuples (proved)",
+      "det_pathMatrix_eq_signed_sum: algebraic bridge det = signed perm sum (proved)",
+      "gv_involution_cancellation: GV cancellation (sole remaining axiom)"
+    ],
+    "dateAdded": "2026-03-22",
+    "mathlib_version": "4.26.0",
+    "axiomCount": 1,
+    "prerequisites": [
+      "Matrix determinants and permutation signs (Mathlib)",
+      "Binomial coefficients (Mathlib)",
+      "Lattice path foundations (from BallotProblemOQ03.lean)",
+      "Gessel-Viennot involution theory"
+    ],
+    "assumptions": [
+      "gv_involution_cancellation: the GV sign-reversing involution cancellation (the combinatorial heart, isolated from the algebraic machinery)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Lindström-Gessel-Viennot (LGV) lemma is one of the most versatile tools in enumerative combinatorics. Bernt Lindström proved the result for pairs of paths in 1973; Ira Gessel and Gérard Viennot generalized it to r-tuples in 1985. The lemma states that the number of r-tuples of pairwise non-intersecting lattice paths from sources A₁,...,Aᵣ to targets B₁,...,Bᵣ equals the determinant of the r×r matrix of individual path counts.\n\nThe proof uses a sign-reversing involution on path tuples indexed by permutations: expanding det as Σ_σ sign(σ)∏e(Aᵢ,B_{σ(i)}), the non-identity permutation terms cancel pairwise, leaving only the non-intersecting identity tuples.",
+    "problemStatement": "**The r×r LGV Lemma**: Given strictly increasing source points A₁,...,Aᵣ and target points B₁,...,Bᵣ on a lattice grid of width m, the number of r-tuples of pairwise non-intersecting lattice paths (Pᵢ: Aᵢ→Bᵢ) equals\n\n  det[ e(Aᵢ, Bⱼ) ]_{i,j=1}^r\n\nwhere e(A,B) = C(m + (bⱼ - aᵢ), m) is the number of monotone lattice paths from A to B.",
+    "proofStrategy": "**Gessel-Viennot Involution**:\n1. Expand det M = Σ_σ sign(σ) ∏ᵢ M_{i,σ(i)} where M_{i,j} = e(Aᵢ, Bⱼ)\n2. Each term ∏ M_{i,σ(i)} counts σ-path tuples (Pᵢ: Aᵢ→B_{σ(i)})\n3. For σ ≠ id: find smallest i with σ(i) ≠ i; paths Pᵢ and P_{σ(i)} must cross\n4. Swap tails at first crossing point → maps σ-tuple to (swap(i,σ(i))∘σ)-tuple\n5. sign changes (transposition): terms cancel pairwise\n6. Only σ = id survives; non-NI id-tuples also cancel → niTupleCount = det M",
+    "keyInsights": [
+      "The sign-reversing involution pairs each σ-tuple with a τ-tuple where τ = swap(i,σ(i))∘σ has opposite sign, causing pairwise cancellation",
+      "Strict monotonicity of sources is essential: if i < σ(i), then aᵢ < a_{σ(i)}, forcing the path from lower source to higher target to cross the path from higher source",
+      "The 2×2 case is the base case; the r×r generalization uses the SAME involution mechanism but on r-tuples indexed by Equiv.Perm (Fin r)",
+      "pathMatrix determinant non-negativity follows immediately from the LGV lemma since niTupleCount is a natural number",
+      "The LGV lemma connects combinatorics to linear algebra: non-intersecting lattice paths encode determinantal identities"
+    ]
+  },
+  "sections": [
+    {
+      "id": "lattice-path-foundations",
+      "title": "Lattice Path Foundations",
+      "startLine": 46,
+      "endLine": 78,
+      "summary": "LPath, PathMN subtype with Fintype instance, pathCount function."
+    },
+    {
+      "id": "non-intersection",
+      "title": "Column Entry and Non-Intersection",
+      "startLine": 80,
+      "endLine": 112,
+      "summary": "northBeforeEast, colEntry, colYRange, NonIntersecting predicate."
+    },
+    {
+      "id": "r-tuple-infrastructure",
+      "title": "r-Tuple Infrastructure",
+      "startLine": 114,
+      "endLine": 134,
+      "summary": "LGVConfig structure, PathTuple, IsNonIntersecting."
+    },
+    {
+      "id": "path-weight-matrix",
+      "title": "Path Weight Matrix",
+      "startLine": 136,
+      "endLine": 145,
+      "summary": "pathMatrix: r×r matrix with M_{i,j} = C(m+(bⱼ-aᵢ), m)."
+    },
+    {
+      "id": "permutation-path-tuples",
+      "title": "Permutation Path Tuples",
+      "startLine": 147,
+      "endLine": 170,
+      "summary": "PermPathTuple, signedPermCount, Fintype instances."
+    },
+    {
+      "id": "gv-involution",
+      "title": "Gessel-Viennot Involution Infrastructure",
+      "startLine": 175,
+      "endLine": 226,
+      "summary": "swapTailsAt operation, length preservation, transposition sign theorem."
+    },
+    {
+      "id": "lgv-lemma",
+      "title": "The r×r LGV Lemma",
+      "startLine": 228,
+      "endLine": 244,
+      "summary": "Main theorem (axiomatized): niTupleCount = det(pathMatrix)."
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries",
+      "startLine": 246,
+      "endLine": 284,
+      "summary": "Non-negativity, r=1 special case (vacuously NI), applications overview."
+    }
+  ],
+  "conclusion": {
+    "summary": "Comprehensive formalization of the general r×r LGV lemma infrastructure. Defines the path tuple structures, weight matrix, and non-intersection predicate for arbitrary r. Proves the key sign-change lemma (transposition reverses permutation sign) and establishes non-negativity of the path matrix determinant. The main LGV equality is axiomatized pending the full Gessel-Viennot involution proof.",
+    "implications": "**Applications of the r×r LGV lemma:**\n1. **Schur polynomials**: Via Jacobi-Trudi, s_λ = det[h_{λᵢ-i+j}] counts NI lattice paths (semistandard Young tableaux)\n2. **Plane partitions**: MacMahon's box formula via LGV on 3D lattice\n3. **Aztec diamond**: 2^{n(n+1)/2} tilings via NI path determinant\n4. **Random matrices**: Eigenvalue spacing via NI random walk paths",
+    "openQuestions": [
+      "Prove lgv_lemma_rxr by formalizing the full Gessel-Viennot sign-reversing involution",
+      "Connect to Mathlib's Schur polynomial infrastructure for the Jacobi-Trudi identity",
+      "Extend to weighted lattice paths (generating function version of LGV)"
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "ballot-problem-oq-03",
+      "title": "Lindström-Gessel-Viennot Lemma via 2D Reflection",
+      "relationship": "extension",
+      "description": "Extends the 2×2 LGV lemma to the full r×r case using permutations and Matrix.det."
+    },
+    {
+      "id": "ballot-problem",
+      "title": "The Ballot Problem",
+      "relationship": "related",
+      "description": "The ballot problem's reflection principle is the 1D precursor to the LGV lemma's crossing argument."
+    }
+  ]
+}

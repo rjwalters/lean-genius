@@ -1992,12 +1992,8 @@ theorem part_xviii_summary : (5 : ℕ) = 5 := rfl
 /-- Row sum of the adjacency matrix equals the degree (over ℤ). -/
 lemma adjMatrix_row_sum (i : V) :
     ∑ j : V, (G.adjMatrix ℤ) i j = ↑(G.degree i) := by
-  simp only [SimpleGraph.adjMatrix_apply]
-  rw [Finset.sum_boole]
-  simp only [SimpleGraph.degree]
-  congr 1
-  ext v
-  simp [SimpleGraph.mem_neighborFinset]
+  simp [SimpleGraph.adjMatrix_apply, SimpleGraph.degree, SimpleGraph.neighborFinset,
+    Finset.sum_boole, Finset.filter_congr_decidable]
 
 /-- Column sum of the adjacency matrix equals the degree (by symmetry). -/
 lemma adjMatrix_col_sum (j : V) :
@@ -2025,7 +2021,7 @@ lemma a_mul_asq_entry (hF : IsFriendshipGraph G) (i j : V) (hij : i ≠ j) :
   have hoff : ∀ k ∈ Finset.univ.erase j, ∑ l : V, (G.adjMatrix ℤ) k l *
       (G.adjMatrix ℤ) l j = 1 := by
     intro k hk
-    have hkj : k ≠ j := Finset.ne_of_mem_erase hk
+    have hkj : k ≠ j := (Finset.mem_erase.mp hk).1
     have := adjMatrix_sq_off_diag G hF k j hkj
     simp only [Matrix.mul_apply] at this
     exact this
@@ -2036,8 +2032,9 @@ lemma a_mul_asq_entry (hF : IsFriendshipGraph G) (i j : V) (hij : i ≠ j) :
   -- Now: A_{ij} * deg(j) + Σ_{k≠j} A_{ik} = A_{ij} * deg(j) + (deg(i) - A_{ij})
   have hsum : ∑ k ∈ Finset.univ.erase j, (G.adjMatrix ℤ) i k =
       ↑(G.degree i) - (G.adjMatrix ℤ) i j := by
-    rw [Finset.sum_erase_eq_sub (Finset.mem_univ j)]
-    exact sub_eq_of_eq_add (by rw [adjMatrix_row_sum])
+    have h := adjMatrix_row_sum G i
+    rw [← Finset.add_sum_erase _ _ (Finset.mem_univ j)] at h
+    linarith
   rw [hsum]
   ring
 
@@ -2060,7 +2057,7 @@ lemma asq_mul_a_entry (hF : IsFriendshipGraph G) (i j : V) (hij : i ≠ j) :
   have hoff : ∀ k ∈ Finset.univ.erase i, ∑ l : V, (G.adjMatrix ℤ) i l *
       (G.adjMatrix ℤ) l k = 1 := by
     intro k hk
-    have hik : i ≠ k := Finset.ne_of_mem_erase hk
+    have hik : i ≠ k := (Finset.mem_erase.mp hk).1.symm
     have := adjMatrix_sq_off_diag G hF i k hik
     simp only [Matrix.mul_apply] at this
     exact this
@@ -2124,7 +2121,7 @@ theorem friendship_regular_of_no_universal (hF : IsFriendshipGraph G)
   by_contra hdeg
   -- v has different degree from u₀, so they're adjacent
   have huv : u₀ ≠ v := by intro h; subst h; exact hdeg rfl
-  have hdeg' : G.degree u₀ ≠ G.degree v := fun h => hdeg h
+  have hdeg' : G.degree u₀ ≠ G.degree v := fun h => hdeg h.symm
   have hadj_uv : G.Adj u₀ v := diff_degree_implies_adj G hF u₀ v huv hdeg'
   -- u₀ is not universal, so it has a non-neighbor w₁
   obtain ⟨w₁, hw1ne, hw1nadj⟩ := hnu u₀
@@ -2158,7 +2155,7 @@ theorem friendship_regular_of_no_universal (hF : IsFriendshipGraph G)
         have hda := (Finset.mem_filter.mp ha).2
         have hdb := (Finset.mem_filter.mp hb).2
         have hab : a ≠ b := by
-          intro heq; subst heq; rw [hda] at hdb; exact hdeg' hdb.symm
+          intro heq; subst heq; rw [hda] at hdb; exact hdeg' hdb
         exact diff_degree_implies_adj G hF a b hab (by rw [hda, hdb]; exact hdeg')
       -- Check |S₂| ≥ 2: v ∈ S₂ and w₂ ∈ S₂ (since deg(w₂) = deg(v))
       have hw2_S2 : w₂ ∈ S₂ := Finset.mem_filter.mpr ⟨Finset.mem_univ _, hdeg_w2⟩
@@ -2236,26 +2233,25 @@ theorem friendship_regular_implies_universal_proved (hF : IsFriendshipGraph G)
     interval_cases k
     · -- k = 0: every vertex isolated, no common neighbors
       have hab : ∃ a : V, ∃ b : V, a ≠ b := by
-        have := Fintype.exists_ne_of_one_lt_card (by omega : 1 < Fintype.card V)
-        obtain ⟨a, b, hab⟩ := ⟨(this (Classical.arbitrary V)).choose,
-          Classical.arbitrary V, (this (Classical.arbitrary V)).choose_spec⟩
+        have : Nontrivial V := Fintype.one_lt_card_iff_nontrivial.mp (by omega)
+        obtain ⟨a, b, hab⟩ := exists_pair_ne V
         exact ⟨a, b, hab⟩
       obtain ⟨a, b, hab⟩ := hab
       have hcn : (G.commonNeighbors a b).ncard = 1 := hF a b hab
       have hempty : (G.commonNeighbors a b).ncard = 0 := by
         rw [Set.ncard_eq_zero]
-        intro w hw
+        ext w; simp only [Set.mem_empty_iff_false, iff_false]
+        intro hw
         rw [SimpleGraph.mem_commonNeighbors] at hw
         have : G.degree w = 0 := hreg w
         rw [SimpleGraph.degree] at this
-        have := Finset.card_pos.mpr ⟨a, (G.mem_neighborFinset w a).mpr hw.1⟩
+        have := Finset.card_pos.mpr ⟨a, (G.mem_neighborFinset w a).mpr (G.symm hw.1)⟩
         omega
       omega
     · -- k = 1: each vertex has 1 neighbor, common neighbor adj to both gives deg ≥ 2
       have hab : ∃ a : V, ∃ b : V, a ≠ b := by
-        have := Fintype.exists_ne_of_one_lt_card (by omega : 1 < Fintype.card V)
-        obtain ⟨a, b, hab⟩ := ⟨(this (Classical.arbitrary V)).choose,
-          Classical.arbitrary V, (this (Classical.arbitrary V)).choose_spec⟩
+        have : Nontrivial V := Fintype.one_lt_card_iff_nontrivial.mp (by omega)
+        obtain ⟨a, b, hab⟩ := exists_pair_ne V
         exact ⟨a, b, hab⟩
       obtain ⟨a, b, hab⟩ := hab
       have hcn : (G.commonNeighbors a b).ncard = 1 := hF a b hab
@@ -2263,8 +2259,8 @@ theorem friendship_regular_implies_universal_proved (hF : IsFriendshipGraph G)
       obtain ⟨w, hw⟩ := hcn
       have hw_mem : w ∈ G.commonNeighbors a b := hw ▸ Set.mem_singleton w
       rw [SimpleGraph.mem_commonNeighbors] at hw_mem
-      have hwa : a ∈ G.neighborFinset w := (G.mem_neighborFinset w a).mpr hw_mem.1
-      have hwb : b ∈ G.neighborFinset w := (G.mem_neighborFinset w b).mpr hw_mem.2
+      have hwa : a ∈ G.neighborFinset w := (G.mem_neighborFinset w a).mpr (G.symm hw_mem.1)
+      have hwb : b ∈ G.neighborFinset w := (G.mem_neighborFinset w b).mpr (G.symm hw_mem.2)
       have : G.degree w ≥ 2 := by
         rw [SimpleGraph.degree]
         have hsub : {a, b} ⊆ G.neighborFinset w := by

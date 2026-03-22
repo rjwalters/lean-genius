@@ -200,5 +200,11 @@
       "id": "cauchy-schwarz",
       "relationship": "Both are foundational linear algebra results formalized via Mathlib's abstract algebraic infrastructure. Cauchy-Schwarz works in inner product spaces while Cramer's rule works over commutative rings, showcasing Mathlib's generality."
     }
+  ],
+  "relatedProofs": [
+    "cayley-hamilton",
+    "cayley-hamilton-minpoly",
+    "cauchy-schwarz",
+    "fundamental-arithmetic"
   ]
 }

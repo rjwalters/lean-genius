@@ -199,5 +199,12 @@
       "Can Hölder's inequality be formalized as a generalization, recovering Cauchy-Schwarz for $p=q=2$?",
       "[RESOLVED] The equality condition has been strengthened to give the exact proportionality constant $c = \\langle u,v\\rangle/\\|v\\|^2$ - see `cauchy-schwarz-oq-04` proof."
     ]
-  }
+  },
+  "relatedProofs": [
+    "cauchy-schwarz-integral",
+    "triangle-inequality",
+    "amgm-inequality",
+    "hurwitz-theorem",
+    "yang-mills"
+  ]
 }

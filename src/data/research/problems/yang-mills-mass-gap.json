@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed ~30 Mathlib v4.26 API renames (lt_div_iff→lt_div_iff₀, div_lt_div_iff→div_lt_div_iff₀, pow_lt_pow_left→pow_lt_pow_left₀, exp_lt_one_iff_neg→exp_lt_one_iff, etc). Resolved 18 duplicate declaration errors from prior merges (VectorLikeTheory, thetaVacuumEnergy, monopole_mass, instantonModuliDim, tHooftCoupling, etc). Build now progresses ~2000 lines further before hitting remaining errors.",
+    "progressSummary": "PROGRESS: Fixed 8 build errors: 3 duplicate declarations (scalingExponent→dseScalingExponent, TraceAnomaly→TraceAnomalyVacuum, WightmanAxioms→ClayWightmanAxioms), 3 tactic fixes (le_refl, simp;norm_num, div_lt_div_of_pos_left), 2 API renames (Nat.ofNat_pos.mpr→Nat.cast_pos.mpr, mul_lt_mul_of_pos_right goal rewrite). 103 errors remain from Mathlib v4.26 API drift across lines 15398-30000.",
     "builtItems": [
       "Part C: OS Axioms - transfer matrix, Schwinger functions, spectral gap, Euclidean propagator (~30 theorems)",
       "Part CI: Resurgence - beta function, running coupling, renormalons, instanton factors, bions (~25 theorems)",
@@ -114,7 +114,13 @@
       "Proved two_loop_continuum_limit (line ~11780): ⟨1, by linarith⟩",
       "Defined trivialWightmanQFT (line ~2389): WightmanQFT on ℂ, zero Hamiltonian",
       "Proved os_reconstruction_theorem (line ~2402): uses trivialWightmanQFT witness",
-      "Proved creutz_recovers_sigma (line ~2177): real proof via exp_add/exp_sub/log_exp/push_cast/ring"
+      "Proved creutz_recovers_sigma (line ~2177): real proof via exp_add/exp_sub/log_exp/push_cast/ring",
+      "Fixed duplicate scalingExponent/scaling_exponent_range → dseScalingExponent/dse_scaling_exponent_range",
+      "Fixed duplicate TraceAnomaly → TraceAnomalyVacuum (line ~29562)",
+      "Fixed duplicate WightmanAxioms → ClayWightmanAxioms (line ~29678)",
+      "Fixed Nat.ofNat_pos.mpr → Nat.cast_pos.mpr (Mathlib rename)",
+      "Fixed mul_lt_mul_of_pos_right goal rewrite for magnetic_lt_electric",
+      "Fixed le_refl → exact le_refl _ in litimRegulator_nonneg"
     ],
     "insights": [
       "OS axioms (5) provide Euclidean formulation; reconstruction gives Wightman QFT",
@@ -263,7 +269,8 @@
       "Fredenhagen-Marcu order parameter: rigorous criterion via open Wilson line decay",
       "creutz_recovers_sigma proved from definitions: unfold, rewrite exp/log, push_cast for ℕ→ℝ, ring for algebra",
       "trivialWightmanQFT defined on ℂ with zero Hamiltonian - witnesses existence statements with True conclusions",
-      "Remaining 3 axioms: killingForm (needs Lie algebra def), gaugeTransform (needs gauge action def), euclidean_mass_gap_implies_wightman (deep physics)"
+      "Remaining 3 axioms: killingForm (needs Lie algebra def), gaugeTransform (needs gauge action def), euclidean_mass_gap_implies_wightman (deep physics)",
+      "YangMillsMassGap.lean has 103 build errors from Mathlib API drift, mostly: div_lt_div_iff→div_lt_div_iff₀, Real.pi_lt_3141593 removed, BEq.beq_comm removed, positivity tactic failures on complex expressions"
     ],
     "mathlibGaps": [
       "Principal bundles",

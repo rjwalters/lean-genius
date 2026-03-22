@@ -29,10 +29,48 @@
       "Furstenberg (1977): correspondence principle connecting density to ergodic theory",
       "https://erdosproblems.com/332"
     ],
-    "axiomCount": 5
+    "axiomCount": 5,
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.Basic",
+        "description": "Integer arithmetic for differences a₁ - a₂",
+        "module": "Mathlib.Data.Int.Basic"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Infinite fibre condition in D(A) definition",
+        "module": "Mathlib.Data.Set.Basic"
+      },
+      {
+        "theorem": "Finset.Icc",
+        "description": "Closed integer intervals for counting function",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "diffSet definition: D(A) via infinite fibre condition on pairs",
+      "HasBoundedGaps definition: syndetic sets via interval covering",
+      "countingFn definition: |A ∩ [1,N]| via Finset.Icc",
+      "HasPositiveUpperDensity / HasPositiveLowerDensity: density conditions over ℚ",
+      "positive_density_bounded_gaps axiom: Prikry's theorem",
+      "positive_density_diffset_dense axiom: density inheritance",
+      "diffSet_symm axiom: D(A) = -D(A)",
+      "zero_mem_diffSet axiom: 0 ∈ D(A) for infinite A",
+      "ErdosProblem332 definition: weakest sufficient condition characterization",
+      "diffSet_harmonic_diverges axiom: harmonic thickness conjecture"
+    ],
+    "prerequisites": [
+      "Integer arithmetic (ℤ) and natural-to-integer coercion",
+      "Set theory: infinite sets, set membership, set builder notation",
+      "Asymptotic density: upper density, lower density via counting functions",
+      "Additive combinatorics: difference sets, syndetic sets",
+      "Ergodic theory basics: Furstenberg correspondence principle (for context)"
+    ]
   },
   "overview": {
-    "historicalContext": "Paul Erdős and Ronald Graham posed this problem in their 1980 monograph, building on the classical study of difference sets in additive combinatorics. The key known result is due to Karel Prikry, who proved that positive upper density of $A$ guarantees $D(A)$ has bounded gaps (syndeticity). Related work by Robert Tijdeman and Cameron Stewart extended these density-to-structure results. The problem connects deeply to Hillel Furstenberg's 1977 correspondence principle, which translates questions about combinatorial density into ergodic theory — Prikry's theorem can be seen as a consequence of recurrence in measure-preserving systems. The question of finding the *weakest* sufficient condition connects to the broader program in additive combinatorics of understanding how density forces arithmetic structure, from Szemerédi's theorem (arithmetic progressions) to the Green–Tao theorem (primes contain arbitrarily long APs).",
+    "historicalContext": "Paul Erdős and Ronald Graham posed this problem in their 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory* [ErGr80], building on the classical study of difference sets pioneered by Khintchine (1930s) and Følner (1954). The key known result is due to Karel Prikry, who proved that positive upper density of $A$ guarantees $D(A)$ has bounded gaps (syndeticity); related work by Robert Tijdeman and Cameron Stewart refined the quantitative bounds on the gap parameter $M$ in terms of the density $\\delta$. The problem connects deeply to Hillel Furstenberg's 1977 correspondence principle (*Journal d'Analyse Mathématique*), which translates combinatorial density questions into ergodic theory — Prikry's theorem follows from Poincaré recurrence in the associated measure-preserving system. The open question of finding the *weakest* sufficient condition sits within the broader program of understanding how density forces structure: Szemerédi's theorem (1975) shows positive density forces arithmetic progressions, and the Green–Tao theorem (2008) extends this to the primes. Problem #332 asks the analogous question for difference sets rather than progressions.",
     "problemStatement": "Let $A \\subseteq \\mathbb{N}$ and $D(A) = \\{d \\in \\mathbb{Z} : a_1 - a_2 = d \\text{ for infinitely many } (a_1, a_2) \\in A^2\\}$. What is the weakest condition on $A$ guaranteeing that $D(A)$ has bounded gaps (is syndetic)?",
     "proofStrategy": "We formalize $D(A)$ as the set of differences with infinite fibre, bounded gaps (syndeticity) via interval covering with parameter $M$, positive upper/lower density via counting functions over $\\mathbb{Q}$, and axiomatize Prikry's theorem and related structural results (density inheritance, symmetry, zero membership). The main problem is stated as a characterization question about optimal sufficient conditions.",
     "keyInsights": [
@@ -103,5 +141,33 @@
       "Can Banach density (a strengthening of upper density) give tighter bounds on the syndetic gap parameter $M$?",
       "What is the relationship between the syndeticity of $D(A)$ and the IP-set or thick-set properties of $D(A)$?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-23",
+      "relationship": "related",
+      "description": "Both study how density forces combinatorial structure: #23 concerns covering congruences and minimum modulus, #332 concerns difference sets and syndeticity — both ask 'what density threshold forces a specific pattern?'"
+    },
+    {
+      "targetId": "erdos-331",
+      "relationship": "related",
+      "description": "Consecutive Erdős problem on additive structure of dense sets. Both #331 and #332 study how arithmetic properties of A propagate to derived sets (sumsets vs difference sets)"
+    },
+    {
+      "targetId": "erdos-333",
+      "relationship": "related",
+      "description": "Consecutive Erdős problem. Both #332 and #333 concern structural consequences of density conditions on subsets of ℕ in the additive combinatorics setting"
+    },
+    {
+      "targetId": "erdos-340",
+      "relationship": "related",
+      "description": "Both involve density and extremal problems in additive combinatorics: #340 studies sum-free sets and their maximum density, #332 studies difference sets and syndeticity thresholds"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-23",
+    "erdos-331",
+    "erdos-333",
+    "erdos-340"
+  ]
 }

@@ -134,5 +134,10 @@
       "Can Fano's inequality be stated with the full H(X|Y) <= h(P_e) + P_e*log(|X|-1) rather than as True?",
       "Formalize the binary entropy function h(p) = -p*log(p) - (1-p)*log(1-p) and its properties"
     ]
-  }
+  },
+  "relatedProofs": [
+    "shannon-entropy",
+    "shannon-source-coding",
+    "prob-method-expectation"
+  ]
 }

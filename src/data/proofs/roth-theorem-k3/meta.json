@@ -57,46 +57,12 @@
     ]
   },
   "sections": [
-    {
-      "id": "introduction",
-      "title": "Module Docstring and Imports",
-      "startLine": 1,
-      "endLine": 16,
-      "summary": "Overview of Roth's theorem formalization covering AP-free set definitions, Fourier analysis framework, density increment lemma, and the main r_3(N) = o(N) result.",
-      "mathContext": "Every dense subset of [N] contains a 3-term arithmetic progression."
-    },
-    {
-      "id": "ap-free-sets",
-      "title": "Part I: AP-Free Set Definitions",
-      "startLine": 18,
-      "endLine": 40,
-      "summary": "Definition of AP-free subsets of Fin N and basic properties. A set is AP-free if it contains no a, a+d, a+2d with d > 0.",
-      "mathContext": "$A$ is AP-free if $\\forall a, d > 0: \\{a, a+d, a+2d\\} \\not\\subseteq A$"
-    },
-    {
-      "id": "fourier-coefficient",
-      "title": "Part II: Fourier Analysis on Z/NZ",
-      "startLine": 42,
-      "endLine": 65,
-      "summary": "Fourier coefficient of a set and the key identity connecting large Fourier coefficients to arithmetic structure.",
-      "mathContext": "$\\hat{1_A}(r) = \\sum_{x \\in A} e^{2\\pi i r x / N}$"
-    },
-    {
-      "id": "density-increment",
-      "title": "Part III: Density Increment Lemma",
-      "startLine": 67,
-      "endLine": 90,
-      "summary": "If a dense set has no 3-AP, it has increased density on a long subprogression. The key inductive step of Roth's proof.",
-      "mathContext": "No 3-AP + density $\\delta$ implies density $\\delta + \\Omega(\\delta^2)$ on a subprogression"
-    },
-    {
-      "id": "main-theorem",
-      "title": "Part IV: Roth's Theorem (Main Result)",
-      "startLine": 92,
-      "endLine": 110,
-      "summary": "The main theorem: r_3(N) = o(N). Proved by iterating the density increment until density exceeds 1.",
-      "mathContext": "$r_3(N) = o(N)$: AP-free subsets of $[N]$ have vanishing density"
-    }
+    {"id": "docstring", "title": "Module Docstring and Imports", "startLine": 1, "endLine": 15, "summary": "Documents four-part structure. Credits Roth (1953), Bourgain (1999), Bloom-Sisask (2020). Imports full Mathlib."},
+    {"id": "setup", "title": "Namespace and Setup", "startLine": 17, "endLine": 17, "summary": "Opens the Szemeredi.Roth namespace for the formalization."},
+    {"id": "ap-free", "title": "AP-Free Set Definitions", "startLine": 19, "endLine": 39, "summary": "Defines APFree on Z/NZ. Proves empty set and singletons are AP-free (0 sorries)."},
+    {"id": "fourier", "title": "Fourier Analysis on Z/NZ", "startLine": 41, "endLine": 58, "summary": "Defines fourierCoeff via discrete exponential sums. States fourier_large_coefficient (1 sorry)."},
+    {"id": "increment", "title": "Density Increment Lemma", "startLine": 60, "endLine": 73, "summary": "States density_increment_lemma: AP-free + density δ implies density δ + δ²/100 on subprogression (1 sorry)."},
+    {"id": "main", "title": "Roth's Theorem (Main Result)", "startLine": 75, "endLine": 92, "summary": "States roth_density_bound: r₃(N) = o(N) via iterated density increment (1 sorry)."}
   ],
   "crossReferences": [
     {
@@ -124,5 +90,19 @@
       "How does the density increment strategy generalize to k-APs for k > 3?",
       "Can the Fourier infrastructure be extended to handle polynomial progressions and other additive patterns?"
     ]
+  },
+  "relatedProofs": [
+    "szemeredi-regularity",
+    "szemeredi-full",
+    "prob-method-expectation"
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": [],
+    "namespace": "Szemeredi.Roth",
+    "lineCount": 92,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 2
   }
 }

@@ -133,5 +133,11 @@
       "Prove linearity_of_expectation using Finset.sum_add_distrib — likely a one-liner",
       "Can the expected_mono_cliques result be strengthened to show the count is < 1 for n < 2^(k/2)?"
     ]
-  }
+  },
+  "relatedProofs": [
+    "prob-method-alteration",
+    "prob-method-second-moment",
+    "prob-method-lovasz-local",
+    "prob-method-applications"
+  ]
 }

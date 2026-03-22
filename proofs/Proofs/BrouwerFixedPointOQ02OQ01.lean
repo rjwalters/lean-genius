@@ -102,6 +102,10 @@ private lemma zmod2_add_self (a : ZMod 2) : a + a = 0 := by
     _ = 0 * a := by rw [h2]
     _ = 0 := by ring
 
+-- In ZMod 2: a + b = 0 ↔ a = b (since -1 = 1)
+private lemma zmod2_eq_of_add_eq_zero {a b : ZMod 2} (h : a + b = 0) : a = b := by
+  fin_cases a <;> fin_cases b <;> simp_all
+
 private lemma zmod2_ne_indicator (a b : ZMod 2) :
     (if a ≠ b then (1 : ZMod 2) else 0) = a + b := by
   fin_cases a <;> fin_cases b <;> decide
@@ -232,37 +236,30 @@ theorem fully_colored_one_door {n : ℕ} (c : Coloring n)
     (t : GridTriangle n) (hfc : IsFullyColored c t) :
     ∃! (e : Fin 3 × Fin 3), e.1 < e.2 ∧
       IsDoor c (t.vertices e.1) (t.vertices e.2) := by
-  -- Step 1: The coloring restricted to this triangle is surjective (image = Fin 3)
   have hsurj : Function.Surjective (c ∘ t.vertices) := by
     intro y
     have : y ∈ Finset.image (c ∘ t.vertices) Finset.univ := by
       unfold IsFullyColored at hfc; rw [hfc]; fin_cases y <;> simp
     simpa using this
-  -- Step 2: Surjective endomorphism on finite type is injective
   have hinj : Function.Injective (c ∘ t.vertices) :=
     Finite.injective_iff_surjective.mpr hsurj
-  -- Step 3: Find the vertices with colors 0 and 1
   obtain ⟨i₀, hi₀⟩ := hsurj (0 : Fin 3)
   obtain ⟨i₁, hi₁⟩ := hsurj (1 : Fin 3)
   have hne : i₀ ≠ i₁ := by
     intro h; subst h; exact absurd (hi₀.symm.trans hi₁) (by decide)
-  -- Step 4: Any door must connect the unique 0-vertex and 1-vertex
   have unique : ∀ (a b : Fin 3), IsDoor c (t.vertices a) (t.vertices b) →
       (a = i₀ ∧ b = i₁) ∨ (a = i₁ ∧ b = i₀) := by
     intro a b hdoor
     rcases hdoor with ⟨ha, hb⟩ | ⟨ha, hb⟩
     · left; exact ⟨hinj (ha.trans hi₀.symm), hinj (hb.trans hi₁.symm)⟩
     · right; exact ⟨hinj (ha.trans hi₁.symm), hinj (hb.trans hi₀.symm)⟩
-  -- Step 5: Construct the unique door edge (ordered)
   rcases hne.lt_or_lt with h_lt | h_lt
-  · -- i₀ < i₁: door is (i₀, i₁)
-    refine ⟨(i₀, i₁), ⟨h_lt, Or.inl ⟨hi₀, hi₁⟩⟩, ?_⟩
+  · refine ⟨(i₀, i₁), ⟨h_lt, Or.inl ⟨hi₀, hi₁⟩⟩, ?_⟩
     rintro ⟨a, b⟩ ⟨hab, hdoor⟩
     rcases unique a b hdoor with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
     · rfl
     · exfalso; omega
-  · -- i₁ < i₀: door is (i₁, i₀)
-    refine ⟨(i₁, i₀), ⟨h_lt, Or.inr ⟨hi₁, hi₀⟩⟩, ?_⟩
+  · refine ⟨(i₁, i₀), ⟨h_lt, Or.inr ⟨hi₁, hi₀⟩⟩, ?_⟩
     rintro ⟨a, b⟩ ⟨hab, hdoor⟩
     rcases unique a b hdoor with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
     · exfalso; omega
@@ -289,13 +286,9 @@ private lemma no_door_hypotenuse {n : ℕ} (hn : 0 < n) (c : Coloring n)
   · exact hhyp ⟨i, j, by omega⟩ hsum1 hi hj h0
   · exact hhyp ⟨i - 1, j + 1, by omega⟩ hsum2 (by omega) (by omega) h0
 
-/-- Helper: count {0,1}-doors among 3 abstract colors.
-    An edge (a,b) is a door if {a,b} = {0,1}.
-    Returns the count of doors among the 3 edges (01), (02), (12). -/
-private def abstractDoorCount (a b c : Fin 3) : ℕ :=
-  (if (a = 0 ∧ b = 1) ∨ (a = 1 ∧ b = 0) then 1 else 0) +
-  (if (a = 0 ∧ c = 1) ∨ (a = 1 ∧ c = 0) then 1 else 0) +
-  (if (b = 0 ∧ c = 1) ∨ (b = 1 ∧ c = 0) then 1 else 0)
+-- ============================================================
+-- SECTION IV-b: Row-Sweep Parity Argument for Sperner's Lemma
+-- ============================================================
 
 /-- Helper: is this triple a permutation of {0,1,2}? -/
 private def isFC (a b c : Fin 3) : Bool :=
@@ -320,9 +313,290 @@ theorem abstractDoorCount_parity (a b c : Fin 3) :
 -- 5. Each non-fully-colored triangle has 0 or 2 doors (even)
 -- 6. Therefore: #FC ≡ bottomTransitions ≡ 1 (mod 2), so #FC ≥ 1
 
+-- hTrans at row 0 equals bottomTransitions under Sperner condition
+private lemma hTrans_zero_eq {n : ℕ} (hn : 0 < n) (c : Coloring n)
+    (hc : IsSperner hn c) :
+    hTrans c 0 = bottomTransitions c := by
+  obtain ⟨hv0, hv1, _, hbot, _, _⟩ := hc
+  simp only [hTrans, bottomTransitions, Nat.sub_zero]
+  congr 1; ext i; simp only [Finset.mem_filter, Finset.mem_range]
+  constructor
+  · rintro ⟨hi, hdoor⟩
+    refine ⟨hi, ?_⟩
+    have h1 := gColor_bot c i (by omega)
+    have h2 := gColor_bot c (i + 1) (by omega)
+    rcases hdoor with ⟨ha, hb⟩ | ⟨ha, hb⟩ <;> simp_all
+  · rintro ⟨hi, hne⟩
+    refine ⟨hi, ?_⟩
+    have h1 := gColor_bot c i (by omega)
+    have h2 := gColor_bot c (i + 1) (by omega)
+    have hci : botColor c i = 0 ∨ botColor c i = 1 := by
+      simp only [botColor, dif_pos (show i ≤ n by omega)]
+      by_cases h0 : i = 0
+      · subst h0; left; exact hv0
+      · by_cases hn' : i = n
+        · subst hn'; right; exact hv1
+        · have h2' := hbot ⟨i, 0, by omega⟩ rfl (by omega) (by omega)
+          have hval := (c ⟨i, 0, by omega⟩).isLt; omega
+    have hci1 : botColor c (i + 1) = 0 ∨ botColor c (i + 1) = 1 := by
+      simp only [botColor, dif_pos (show i + 1 ≤ n by omega)]
+      by_cases hn' : i + 1 = n
+      · subst hn'; right; exact hv1
+      · have h2' := hbot ⟨i + 1, 0, by omega⟩ rfl (by omega) (by omega)
+        have hval := (c ⟨i + 1, 0, by omega⟩).isLt; omega
+    rcases hci with h | h <;> rcases hci1 with h' | h' <;> simp_all
+
+-- ============================================================
+-- Strip Parity: Double-Counting Proof Infrastructure
+-- ============================================================
+
+-- {0,1}-door indicator in ZMod 2
+private def doorZ {n : ℕ} (c : Coloring n) (i₁ j₁ i₂ j₂ : ℕ) : ZMod 2 :=
+  if (gColor c i₁ j₁ = 0 ∧ gColor c i₂ j₂ = 1) ∨
+     (gColor c i₁ j₁ = 1 ∧ gColor c i₂ j₂ = 0) then 1 else 0
+
+-- Three vertex colors not all distinct yield even door count (0 or 2)
+private lemma door_parity_of_not_fc (a b c₃ : Fin 3)
+    (h : ¬(({a, b, c₃} : Finset (Fin 3)) = {0, 1, 2})) :
+    (if (a = 0 ∧ b = 1) ∨ (a = 1 ∧ b = 0) then (1 : ZMod 2) else 0) +
+    (if (a = 0 ∧ c₃ = 1) ∨ (a = 1 ∧ c₃ = 0) then 1 else 0) +
+    (if (b = 0 ∧ c₃ = 1) ∨ (b = 1 ∧ c₃ = 0) then 1 else 0) = 0 := by
+  fin_cases a <;> fin_cases b <;> fin_cases c₃ <;> simp_all [Finset.pair_comm] <;> decide
+
+-- gColor equals actual color for valid vertices
+private lemma gColor_eq {n : ℕ} (c : Coloring n) (i j : ℕ) (h : i + j ≤ n) :
+    gColor c i j = c ⟨i, j, h⟩ := by
+  simp [gColor, dif_pos h]
+
+-- Per-triangle door sums = 0 for non-FC triangles
+private lemma lower_door_sum_zero {n : ℕ} (c : Coloring n) (i j : ℕ)
+    (hv : i + 1 + j ≤ n) (hno : ¬ IsFullyColored c ⟨i, j, .lower, hv⟩) :
+    doorZ c i j (i+1) j + doorZ c i j i (j+1) + doorZ c (i+1) j i (j+1) = 0 := by
+  have hi : i + j ≤ n := by omega
+  have hi1 : (i + 1) + j ≤ n := by omega
+  have hj1 : i + (j + 1) ≤ n := by omega
+  set a := c ⟨i, j, hi⟩; set b := c ⟨i + 1, j, hi1⟩; set c₃ := c ⟨i, j + 1, hj1⟩
+  simp only [doorZ, gColor_eq c i j hi, gColor_eq c (i+1) j hi1, gColor_eq c i (j+1) hj1]
+  apply door_parity_of_not_fc
+  intro heq; apply hno
+  show Finset.image (c ∘ (⟨i, j, .lower, hv⟩ : GridTriangle n).vertices) Finset.univ = {0, 1, 2}
+  simp only [GridTriangle.vertices, lowerVertices, Function.comp]
+  convert heq using 1; ext x; simp [Finset.mem_image]
+  constructor
+  · rintro ⟨k, _, hk⟩; fin_cases k <;> simp_all
+  · intro hx; simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl | rfl
+    · exact ⟨0, Finset.mem_univ _, rfl⟩
+    · exact ⟨1, Finset.mem_univ _, rfl⟩
+    · exact ⟨2, Finset.mem_univ _, rfl⟩
+
+private lemma upper_door_sum_zero {n : ℕ} (c : Coloring n) (i j : ℕ)
+    (hv : i + 1 + (j + 1) ≤ n) (hno : ¬ IsFullyColored c ⟨i, j, .upper, hv⟩) :
+    doorZ c (i+1) j i (j+1) + doorZ c (i+1) j (i+1) (j+1) +
+    doorZ c i (j+1) (i+1) (j+1) = 0 := by
+  have hi1j : (i + 1) + j ≤ n := by omega
+  have hij1 : i + (j + 1) ≤ n := by omega
+  have hi1j1 : (i + 1) + (j + 1) ≤ n := by omega
+  set a := c ⟨i + 1, j, hi1j⟩; set b := c ⟨i, j + 1, hij1⟩
+  set c₃ := c ⟨i + 1, j + 1, hi1j1⟩
+  simp only [doorZ, gColor_eq c (i+1) j hi1j, gColor_eq c i (j+1) hij1,
+    gColor_eq c (i+1) (j+1) hi1j1]
+  apply door_parity_of_not_fc
+  intro heq; apply hno
+  show Finset.image (c ∘ (⟨i, j, .upper, hv⟩ : GridTriangle n).vertices) Finset.univ = {0, 1, 2}
+  simp only [GridTriangle.vertices, upperVertices, Function.comp]
+  convert heq using 1; ext x; simp [Finset.mem_image]
+  constructor
+  · rintro ⟨k, _, hk⟩; fin_cases k <;> simp_all
+  · intro hx; simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl | rfl
+    · exact ⟨0, Finset.mem_univ _, rfl⟩
+    · exact ⟨1, Finset.mem_univ _, rfl⟩
+    · exact ⟨2, Finset.mem_univ _, rfl⟩
+
+-- ZMod 2 sum helpers for internal-edge cancellation
+private lemma finset_sum_range_succ' {α : Type*} [AddCommMonoid α] (k : ℕ) (f : ℕ → α) :
+    (Finset.range (k + 1)).sum f = f 0 + (Finset.range k).sum (fun i => f (i + 1)) := by
+  induction k with
+  | zero => simp
+  | succ k' ih => rw [Finset.sum_range_succ, ih, Finset.sum_range_succ]; abel
+
+private lemma zmod2_sum_shift_cancel (m : ℕ) (f : ℕ → ZMod 2) :
+    (Finset.range m).sum f +
+    (Finset.range (m - 1)).sum (fun i => f (i + 1)) = f 0 := by
+  cases m with
+  | zero => simp
+  | succ k =>
+    simp only [Nat.succ_sub_one]
+    rw [finset_sum_range_succ' k f]
+    have hc := zmod2_add_self ((Finset.range k).sum (fun i => f (i + 1)))
+    calc f 0 + (Finset.range k).sum (fun i => f (i + 1)) +
+        (Finset.range k).sum (fun i => f (i + 1))
+        = f 0 + ((Finset.range k).sum (fun i => f (i + 1)) +
+          (Finset.range k).sum (fun i => f (i + 1))) := by abel
+      _ = f 0 + 0 := by rw [hc]
+      _ = f 0 := by ring
+
+private lemma zmod2_sum_tail_cancel (m : ℕ) (hm : 0 < m) (f : ℕ → ZMod 2) :
+    (Finset.range m).sum f + (Finset.range (m - 1)).sum f = f (m - 1) := by
+  conv_lhs => lhs; rw [show m = (m - 1) + 1 by omega]
+  rw [Finset.sum_range_succ]
+  have hc := zmod2_add_self ((Finset.range (m - 1)).sum f)
+  calc (Finset.range (m - 1)).sum f + f (m - 1) + (Finset.range (m - 1)).sum f
+      = ((Finset.range (m - 1)).sum f + (Finset.range (m - 1)).sum f) + f (m - 1) := by abel
+    _ = 0 + f (m - 1) := by rw [hc]
+    _ = f (m - 1) := by ring
+
+-- Boundary conditions: no {0,1}-doors at left boundary or hypotenuse
+private lemma doorZ_left_boundary {n : ℕ} (hn : 0 < n) (c : Coloring n)
+    (hc : IsSperner hn c) (j : ℕ) (hj : j + 1 ≤ n) :
+    doorZ c 0 j 0 (j + 1) = 0 := by
+  obtain ⟨hv0, _, hv2, _, hleft, _⟩ := hc
+  simp only [doorZ, gColor_eq c 0 j (by omega), gColor_eq c 0 (j+1) (by omega)]
+  have hc1 : c ⟨0, j, by omega⟩ ≠ 1 := by
+    by_cases hj0 : j = 0
+    · subst hj0; rw [hv0]; decide
+    · exact hleft ⟨0, j, by omega⟩ rfl (by omega) (by omega)
+  have hc2 : c ⟨0, j + 1, by omega⟩ ≠ 1 := by
+    by_cases hjn : j + 1 = n
+    · rw [show j + 1 = n from hjn]; rw [hv2]; decide
+    · exact hleft ⟨0, j + 1, by omega⟩ rfl (by omega) (by omega)
+  simp only [ite_eq_right_iff]
+  rintro (⟨_, h1b⟩ | ⟨h1a, _⟩) <;> contradiction
+
+private lemma doorZ_hyp_boundary {n : ℕ} (hn : 0 < n) (c : Coloring n)
+    (hc : IsSperner hn c) (j : ℕ) (hj : j + 1 ≤ n) :
+    doorZ c (n - j) j (n - j - 1) (j + 1) = 0 := by
+  obtain ⟨_, hv1, hv2, _, _, hhyp⟩ := hc
+  simp only [doorZ, gColor_eq c (n-j) j (by omega), gColor_eq c (n-j-1) (j+1) (by omega)]
+  have hc1 : c ⟨n - j, j, by omega⟩ ≠ 0 := by
+    by_cases hj0 : j = 0
+    · subst hj0; simp only [Nat.sub_zero]; rw [hv1]; decide
+    · exact hhyp ⟨n - j, j, by omega⟩ (by omega) (by omega) (by omega)
+  have hc2 : c ⟨n - j - 1, j + 1, by omega⟩ ≠ 0 := by
+    by_cases hjn : j + 1 = n
+    · rw [show n - j - 1 = 0 by omega, show j + 1 = n from hjn]; rw [hv2]; decide
+    · exact hhyp ⟨n - j - 1, j + 1, by omega⟩ (by omega) (by omega) (by omega)
+  simp only [ite_eq_right_iff]
+  rintro (⟨h0a, _⟩ | ⟨_, h0b⟩) <;> contradiction
+
+-- Convert hTrans (Nat card) to ZMod 2 sum of doorZ indicators
+private lemma hTrans_cast {n : ℕ} (c : Coloring n) (j : ℕ) :
+    (hTrans c j : ZMod 2) =
+    (Finset.range (n - j)).sum (fun i => doorZ c i j (i + 1) j) := by
+  simp only [hTrans, doorZ]
+  -- Both sides: cast of card of filter = sum of if-then-else indicators
+  induction (n - j) with
+  | zero => simp
+  | succ k ih =>
+    rw [Finset.range_succ, Finset.filter_insert, Finset.sum_insert (Finset.not_mem_range_self)]
+    split_ifs with h
+    · rw [Finset.card_insert_of_not_mem (fun hm => Finset.not_mem_range_self
+        (Finset.mem_filter.mp hm).1)]
+      push_cast; rw [ih]; ring
+    · push_cast; rw [ih]; ring
+
+-- ============================================================
+-- MAIN LEMMA: strip_parity via ZMod 2 double-counting
+-- ============================================================
+-- In the strip between rows j and j+1 (width m = n - j):
+--   Lower triangles L(i): edges p_i, l_i, d_i (i = 0,...,m-1)
+--   Upper triangles U(i): edges d_i, l_{i+1}, q_i (i = 0,...,m-2)
+-- Each non-FC triangle has door sum 0 in ZMod 2.
+-- After summing and cancelling doubled internal edges:
+--   sum_p + sum_q + l_0 + d_{m-1} = 0
+-- Sperner ⟹ l_0 = 0, d_{m-1} = 0 ⟹ sum_p + sum_q = 0.
+
+private lemma strip_parity {n : ℕ} (hn : 0 < n) (c : Coloring n) (hc : IsSperner hn c)
+    (j : ℕ) (hj : j + 1 ≤ n)
+    (hno_fc : ∀ t : GridTriangle n, ¬ IsFullyColored c t) :
+    hTrans c j % 2 = hTrans c (j + 1) % 2 := by
+  -- Suffices: (hTrans j + hTrans (j+1) : ZMod 2) = 0
+  suffices hsuff : (hTrans c j : ZMod 2) + (hTrans c (j + 1) : ZMod 2) = 0 by
+    have h2 : (2 : ℕ) ≠ 0 := by omega
+    rw [hTrans_cast, hTrans_cast] at hsuff
+    -- Convert back: ZMod 2 sum = 0 implies Nat parity equal
+    rw [← hTrans_cast, ← hTrans_cast] at hsuff
+    rw [← Nat.cast_add] at hsuff
+    rw [ZMod.natCast_zmod_eq_zero_iff_dvd] at hsuff
+    omega
+  set m := n - j with hm_def
+  have hm_pos : 0 < m := by omega
+  rw [hTrans_cast, hTrans_cast, show n - (j + 1) = m - 1 by omega]
+  -- Edge indicator shorthand
+  let p : ℕ → ZMod 2 := fun i => doorZ c i j (i + 1) j
+  let q : ℕ → ZMod 2 := fun i => doorZ c i (j+1) (i + 1) (j+1)
+  let l : ℕ → ZMod 2 := fun i => doorZ c i j i (j + 1)
+  let d : ℕ → ZMod 2 := fun i => doorZ c (i+1) j i (j + 1)
+  -- Each lower triangle has door parity 0
+  have hSL : (Finset.range m).sum (fun i => p i + l i + d i) = 0 :=
+    Finset.sum_eq_zero (fun i hi => by
+      simp only [Finset.mem_range] at hi
+      exact lower_door_sum_zero c i j (by omega) (hno_fc ⟨i, j, .lower, by omega⟩))
+  -- Each upper triangle has door parity 0
+  have hSU : (Finset.range (m - 1)).sum (fun i => d i + l (i + 1) + q i) = 0 :=
+    Finset.sum_eq_zero (fun i hi => by
+      simp only [Finset.mem_range] at hi
+      -- Upper triangle U(i) has doorZ c (i+1) j (i+1) (j+1) = l (i+1) by definition
+      exact upper_door_sum_zero c i j (by omega) (hno_fc ⟨i, j, .upper, by omega⟩))
+  -- Split into component sums
+  have hSL' : (Finset.range m).sum p + (Finset.range m).sum l +
+      (Finset.range m).sum d = 0 := by
+    rw [← Finset.sum_add_distrib, ← Finset.sum_add_distrib]; exact hSL
+  have hSU' : (Finset.range (m - 1)).sum d + (Finset.range (m - 1)).sum (fun i => l (i + 1)) +
+      (Finset.range (m - 1)).sum q = 0 := by
+    rw [← Finset.sum_add_distrib, ← Finset.sum_add_distrib]; exact hSU
+  -- Cancellation: doubled internal edges vanish mod 2
+  have hL := zmod2_sum_shift_cancel m l   -- sum_l + sum_l_shifted = l(0)
+  have hD := zmod2_sum_tail_cancel m hm_pos d  -- sum_d + sum_d' = d(m-1)
+  -- Boundary conditions
+  have hl0 : l 0 = 0 := doorZ_left_boundary hn c hc j hj
+  have hdm : d (m - 1) = 0 := by
+    show doorZ c (m - 1 + 1) j (m - 1) (j + 1) = 0
+    rw [show m - 1 + 1 = m from by omega, hm_def]
+    exact doorZ_hyp_boundary hn c hc j hj
+  -- Substitute boundaries into cancellation lemmas
+  rw [hl0] at hL  -- sum_l + sum_l_shifted = 0
+  rw [hdm] at hD  -- sum_d + sum_d' = 0
+  -- From a + b = 0 in ZMod 2, derive b = a
+  have hSl_eq : (Finset.range (m - 1)).sum (fun i => l (i + 1)) = (Finset.range m).sum l :=
+    (zmod2_eq_of_add_eq_zero hL).symm
+  have hSd_eq : (Finset.range (m - 1)).sum d = (Finset.range m).sum d :=
+    (zmod2_eq_of_add_eq_zero hD).symm
+  -- Substitute into hSU': sum_d + sum_l + sum_q = 0
+  rw [hSd_eq, hSl_eq] at hSU'
+  -- Final: sum_p + sum_q = 0 by adding hSL' and hSU' (doubled terms cancel)
+  have h2l := zmod2_add_self ((Finset.range m).sum l)
+  have h2d := zmod2_add_self ((Finset.range m).sum d)
+  calc (Finset.range m).sum p + (Finset.range (m - 1)).sum q
+      = (Finset.range m).sum p + (Finset.range (m - 1)).sum q + 0 + 0 := by ring
+    _ = (Finset.range m).sum p + (Finset.range (m - 1)).sum q +
+        ((Finset.range m).sum l + (Finset.range m).sum l) +
+        ((Finset.range m).sum d + (Finset.range m).sum d) := by rw [h2l, h2d]
+    _ = ((Finset.range m).sum p + (Finset.range m).sum l + (Finset.range m).sum d) +
+        ((Finset.range m).sum d + (Finset.range m).sum l +
+         (Finset.range (m - 1)).sum q) := by ring
+    _ = 0 + 0 := by rw [hSL', hSU']
+    _ = 0 := by ring
+
+-- MAIN THEOREM: 2D Sperner's lemma via row-sweep parity
 theorem sperner_2d {n : ℕ} (hn : 0 < n) (c : Coloring n) (hc : IsSperner hn c) :
     ∃ t : GridTriangle n, IsFullyColored c t := by
-  sorry
+  by_contra hno_fc
+  push_neg at hno_fc
+  have h_odd := bottom_transitions_odd hn c hc
+  have h_eq := hTrans_zero_eq hn c hc
+  have h_top : hTrans c n = 0 := hTrans_top c
+  have h_const : ∀ j, j ≤ n → hTrans c j % 2 = hTrans c 0 % 2 := by
+    intro j hj
+    induction j with
+    | zero => rfl
+    | succ k ih =>
+      have := strip_parity hn c hc k (by omega) hno_fc
+      omega
+  have h_contr := h_const n (le_refl n)
+  rw [h_top, h_eq] at h_contr
+  exact absurd h_odd (by rw [Nat.odd_iff]; omega)
 
 -- ============================================================
 -- SECTION V: Existence of Approximate Fixed Points (Application)

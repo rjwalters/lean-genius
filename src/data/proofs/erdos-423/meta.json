@@ -30,71 +30,96 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #423 from [Er77c, p.71] defines a greedy sequence where each new term must be a sum of at least two consecutive earlier terms. Credited to Hofstadter's inspiration from a similar Ulam-type question. Recent progress by Bolan and Tang (2024-2025) shows the excess a(n)-n is nondecreasing and unbounded, and infinitely many integers are missing from the sequence. OEIS A005243.",
+    "historicalContext": "**Sums of Consecutive Terms Sequence**\n\nThis problem belongs to a family of greedy integer sequences studied by Erdős, where each term is determined by a minimality condition. The construction is reminiscent of the Ulam sequence (Problem #342, 1964), where terms are integers uniquely representable as a sum of two earlier terms. Problem #423 appeared in Erdős's 1977 paper [Er77c, p.71] and was included in the 1980 Erdős-Graham monograph [ErGr80, p.83]. The sequence $a_1 = 1, a_2 = 2$, and $a_k = \\min\\{m > a_{k-1} : m = a_i + a_{i+1} + \\cdots + a_j \\text{ for some } i \\leq j < k\\}$ is catalogued as OEIS A005243.\n\n**Chronological Development:**\n- **1964 (Ulam):** Introduced the Ulam sequence, the prototype for greedy additive sequence constructions\n- **1977 (Erdős):** Problem posed in [Er77c], asking about the asymptotic behavior of $a(n)$\n- **1980 (Erdős-Graham):** Included as Problem #423 in the monograph\n- **2024-2025 (Bolan, Tang):** Major progress — proved that the excess $a(n) - n$ is nondecreasing and unbounded, and that infinitely many integers are missing from the sequence\n\nThe sequence begins $1, 2, 3, 5, 6, 8, 10, 11, 14, 16, 17, 18, 19, 21, 22, \\ldots$ — note the gaps at $4, 7, 9, 12, 13, 15, 20, \\ldots$ The number 4 is the first missing integer because at the time it would be needed, no contiguous block of earlier terms sums to 4. Despite recent progress establishing superlinear growth, the precise asymptotic behavior — whether $a(n)/n$ converges, and to what — remains completely open.",
     "problemStatement": "Let a₁=1, a₂=2. For k≥3, aₖ is the least integer > a_{k-1} which is the sum of at least two consecutive terms a_i + a_{i+1} + ... + a_j for some i ≤ j < k. What is the asymptotic behaviour of this sequence? OPEN.",
     "proofStrategy": "The formalization defines the sequence (noncomputable), the consecutive sum property, initial values, growth properties (excess nondecreasing and unbounded), missing numbers (infinitely many), and asymptotic questions (convergence of a(n)/n, density). The known results theorem erdos_423_known is proved from axioms.",
     "keyInsights": [
-      "Each term is the smallest integer exceeding the previous that equals a sum of consecutive earlier terms",
-      "The sequence grows strictly faster than linearly: a(n) - n is unbounded (Bolan, Tang)",
-      "Infinitely many integers are missing, with 4 being the first",
-      "The asymptotic growth rate and density of the sequence are unknown",
-      "Related to Ulam-type sequence constructions (Problem #342)"
+      "**Greedy minimality:** Each $a_k$ is the *least* integer $> a_{k-1}$ representable as $\\sum_{j=i}^{\\ell} a_j$ for some $i \\leq \\ell < k$. This greedy choice makes the sequence deterministic but hard to analyze",
+      "**Computable definition in Lean:** Unlike many Erdős sequences, this one has a fully computable definition. The formalization uses `isConsecSum` (sliding window sum check) and `buildSeq` (greedy construction), allowing `native_decide` proofs for initial terms",
+      "**Superlinear growth (Bolan-Tang):** The excess $a(n) - n$ is nondecreasing and unbounded, formalized as $\\text{Tendsto}(a(n) - n, \\text{atTop}, \\text{atTop})$. This was the first rigorous result on the growth rate, proved in 2024-2025",
+      "**Hybrid missing-number proofs:** To show $m \\notin \\text{seqRange}$, the proofs check $a_k \\neq m$ for small $k$ via `native_decide`, then use `consSeq\\_strictMono` to conclude $a_k > m$ for all $k$ beyond the threshold — a finite computation plus monotonicity argument",
+      "**First gap at 4:** The number 4 is missing because at the time it's needed (after $a_2 = 3$), the only consecutive sums available are $1+2 = 3$ (already used) and $1+2+3 = 6$ (too large). No contiguous block sums to exactly 4",
+      "**Consecutive vs arbitrary sums:** The restriction to *consecutive* (contiguous) subsequences, rather than arbitrary subsets, is what creates gaps. If arbitrary subsets were allowed, every integer $\\geq 3$ would be representable after the first few terms",
+      "**Connection to Ulam sequences:** Like the Ulam sequence (Problem #342), this is a greedy additive construction with mysterious asymptotics. The Ulam sequence is conjectured to have density ~0.07, but no analogous conjecture exists for #423"
     ]
   },
   "sections": [
     {
-      "id": "definition",
-      "title": "Part I: The Sequence Definition",
+      "id": "computable-definition",
+      "title": "Part I: Computable Sequence Definition",
       "startLine": 33,
-      "endLine": 43,
-      "summary": "Defines consSeq: ℕ → ℕ with initial values 1, 2. Axiom: strict monotonicity."
-    },
-    {
-      "id": "consecutive-sum",
-      "title": "Part II: Consecutive Sum Property",
-      "startLine": 45,
-      "endLine": 64,
-      "summary": "Defines consecutiveSum and IsConsecutiveSum. Axioms: consSeq_is_consecutive_sum and consSeq_minimal."
+      "endLine": 75,
+      "summary": "Computable sequence construction: isConsecSum checks consecutive sum property, buildSeq constructs terms greedily, consSeq extracts the nth term.",
+      "mathContext": "The sequence is computed greedily: `isConsecSum` checks all contiguous sublists for sums matching the candidate, and `buildSeq` finds the smallest valid next term. This gives a computable `consSeq : ℕ → ℕ`."
     },
     {
       "id": "initial-values",
-      "title": "Part III: Known Initial Values",
-      "startLine": 66,
-      "endLine": 78,
-      "summary": "Axiom consSeq_values: first 8 terms (1,2,3,5,6,8,10,11). Axioms: verify_three, verify_five."
+      "title": "Part II: Verified Initial Values",
+      "startLine": 77,
+      "endLine": 103,
+      "summary": "First 8 terms verified by native_decide: 1, 2, 3, 5, 6, 8, 10, 11. Combined in consSeq_values theorem.",
+      "mathContext": "Each term is verified computationally: `consSeq 0 = 1`, `consSeq 1 = 2`, ..., `consSeq 7 = 11`. All proofs use `native_decide`, leveraging the computable definition."
+    },
+    {
+      "id": "consecutive-sum-verification",
+      "title": "Part III: Verified Consecutive Sum Property",
+      "startLine": 105,
+      "endLine": 124,
+      "summary": "Computational verification that early terms are consecutive sums: 3=1+2, 5=2+3, 6=1+2+3, 8=3+5, 10=2+3+5, 11=1+2+3+5.",
+      "mathContext": "Each verification proves $a_k = \\sum_{j=i}^{k-1} a_j$ for specific $i$. For example, $6 = a_0 + a_1 + a_2 = 1+2+3$ shows 6 is representable as a sum of three consecutive terms."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Part IV: Monotonicity",
+      "startLine": 126,
+      "endLine": 137,
+      "summary": "Strict monotonicity verified on first 8 terms (native_decide) and axiomatized globally (consSeq_strictMono).",
+      "mathContext": "StrictMono consSeq follows from the definition: each $a_k$ is the *least* integer *greater than* $a_{k-1}$. The axiom `consSeq_strictMono : StrictMono consSeq` packages this."
+    },
+    {
+      "id": "consecutive-sum-predicate",
+      "title": "Part V: Consecutive Sum Predicate",
+      "startLine": 139,
+      "endLine": 154,
+      "summary": "Formal predicate IsConsecutiveSum and axioms: consSeq_is_consecutive_sum (each term is a consecutive sum), consSeq_minimal (no smaller valid candidate exists).",
+      "mathContext": "$\\text{IsConsecutiveSum}(m, n)$ asserts $m = \\sum_{k=i}^{j} a_k$ for some $i < j < n$. The minimality axiom says no $m'$ with $a_{k-1} < m' < a_k$ is a consecutive sum — the greedy choice is formalized."
     },
     {
       "id": "growth",
-      "title": "Part IV: Growth Properties",
-      "startLine": 80,
-      "endLine": 93,
-      "summary": "Axioms: consSeq_lower_bound (a(n) ≥ n+1), excess_nondecreasing, excess_unbounded (Bolan, Tang)."
+      "title": "Part VI: Growth Properties",
+      "startLine": 156,
+      "endLine": 174,
+      "summary": "Linear lower bound proved (consSeq n ≥ n+1). Axioms from Bolan-Tang: excess nondecreasing and unbounded.",
+      "mathContext": "The lower bound $a(n) \\geq n+1$ is proved by induction using strict monotonicity. The Bolan-Tang results (2024-2025) show $a(n) - n$ is nondecreasing and $a(n) - n \\to \\infty$, implying superlinear growth."
     },
     {
       "id": "missing",
-      "title": "Part V: Missing Numbers",
-      "startLine": 95,
-      "endLine": 108,
-      "summary": "Defines seqRange and missingNumbers. Axioms: infinitely_many_missing, four_is_missing."
+      "title": "Part VII: Missing Numbers",
+      "startLine": 176,
+      "endLine": 226,
+      "summary": "Defines seqRange and missingNumbers. Axiom: infinitely many missing. Proved: 4, 7, 9 are missing (computational + monotonicity arguments).",
+      "mathContext": "The missing number proofs use a hybrid approach: verify $a_k \\neq m$ for small $k$ by computation, then use $a_k > m$ for large $k$ via monotonicity. This gives a complete proof that $m \\notin \\text{seqRange}$ without checking infinitely many terms."
     },
     {
       "id": "main-question",
-      "title": "Part VI: The Main Question",
-      "startLine": 110,
-      "endLine": 126,
-      "summary": "Defines ErdosQuestion423_convergence (a(n)/n → C) and ErdosQuestion423_density (density of sequence range)."
+      "title": "Part VIII: The Main Question",
+      "startLine": 228,
+      "endLine": 241,
+      "summary": "Open question: does a(n)/n converge to some C > 1? Formalized as ErdosQuestion423_convergence using Filter.Tendsto.",
+      "mathContext": "The convergence question asks whether $\\lim_{n \\to \\infty} a(n)/n = C$ exists for some $C > 1$. If so, the sequence has natural density $1/C$, giving the proportion of integers that appear."
     },
     {
       "id": "summary",
-      "title": "Part VII: Summary",
-      "startLine": 128,
-      "endLine": 154,
-      "summary": "Proved: erdos_423_known (combines nondecreasing excess and infinite missing), erdos_423_status (trivial). OPEN."
+      "title": "Part IX: Summary",
+      "startLine": 243,
+      "endLine": 267,
+      "summary": "erdos_423_known proved: combines excess nondecreasing and infinitely many missing. Status: OPEN.",
+      "mathContext": "The summary theorem packages the two main known results: $(\\forall m \\leq n,\\; a(m)-m \\leq a(n)-n) \\wedge \\text{Set.Infinite}(\\text{missingNumbers})$. The proof combines the Bolan-Tang axioms."
     }
   ],
   "conclusion": {
     "summary": "Erdős Problem #423 asks about the asymptotic behaviour of a greedy sequence built from sums of consecutive terms. Recent progress shows the excess a(n)-n grows unboundedly and infinitely many integers are missing, but the precise growth rate remains open.",
-    "implications": "Resolution would clarify the structure of greedy sequences defined by consecutive-sum constraints, connecting to additive combinatorics and the theory of Ulam-type sequences.",
+    "implications": "**Broader Mathematical Connections**\n\n1. **Greedy sequence theory:** This problem is a prototype for understanding greedy additive sequences — constructions where each term is determined by a minimality condition. The class includes Ulam sequences, Sidon sets, and B-sequences, all exhibiting mysterious asymptotic behavior.\n\n2. **Additive combinatorics:** The consecutive-sum constraint restricts representability to contiguous blocks, a condition related to the theory of complete sequences (where every sufficiently large integer is a sum of distinct terms). Understanding which integers are representable illuminates the additive structure of the sequence.\n\n3. **Computability and decidability:** The sequence is computable, but questions about its asymptotics may not be decidable from the definition alone. This echoes the situation with the Collatz conjecture — simple constructive rules can generate behavior resistant to analysis.\n\n4. **Natural density questions:** If $a(n)/n \\to C$, the sequence has natural density $1/C$. Determining this density would connect to the broader theory of sets defined by additive constraints, where density results are often the first foothold.\n\n5. **Formalization methodology:** The Lean formalization demonstrates a valuable pattern for open problems: computable definitions allow `native_decide` verification of initial cases, while axioms capture deeper results (Bolan-Tang) that await formal proof.",
     "openQuestions": [
       "What is the asymptotic growth rate of a(n)?",
       "Does a(n)/n converge? If so, to what constant?",
@@ -117,5 +142,8 @@
       "relationship": "related",
       "description": "Both concern greedy/constructive integer sequences: #342 studies the Ulam sequence, #423 studies a sequence built from sums of consecutive terms"
     }
+  ],
+  "relatedProofs": [
+    "erdos-342"
   ]
 }

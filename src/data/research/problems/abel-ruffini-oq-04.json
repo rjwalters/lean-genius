@@ -2,25 +2,32 @@
   "id": "abel-ruffini-oq-04",
   "name": "Expose A5 Simplicity Proof Chain in Abel-Ruffini",
   "status": "surveyed",
-  "phase": "OBSERVE",
+  "phase": "COMPLETED",
   "knowledge": {
     "insights": [
       "AbelRuffini.lean (185L, 0A, 0S) and AbelRuffiniGaloisExtensions.lean (534L, 0A, 0S) both complete",
-      "No OQ04 file exists — fresh formalization needed",
-      "A₅ simplicity is key ingredient: A₅ is the smallest non-abelian simple group",
-      "Mathlib has Alternating.isSimple (or similar) for A₅ simplicity",
-      "Proof chain: A₅ simple → S₅ not solvable → degree ≥ 5 not solvable by radicals"
+      "No OQ04 file exists \u2014 fresh formalization needed",
+      "A\u2085 simplicity is key ingredient: A\u2085 is the smallest non-abelian simple group",
+      "Mathlib has Alternating.isSimple (or similar) for A\u2085 simplicity",
+      "Proof chain: A\u2085 simple \u2192 S\u2085 not solvable \u2192 degree \u2265 5 not solvable by radicals",
+      "Equiv.Perm.not_solvable takes the type \u03b1 and Cardinal.mk \u03b1 \u2265 5 inequality",
+      "IsSolvable for Perm (Fin 0) and Perm (Fin 1) resolve by inferInstance",
+      "The file is fully verified - every theorem proved with no sorry"
     ],
-    "builtItems": [],
+    "builtItems": [
+      "AbelRuffiniOQ04.lean: A\u2085 proof chain (163 lines, 0 sorries, 0 axioms)",
+      "a5_is_simple: A\u2085 simplicity from Mathlib",
+      "symmetric_not_solvable: general S\u2099 non-solvability for n \u2265 5",
+      "five_is_the_threshold: exact threshold theorem",
+      "5-step proof chain documentation with degree comparison tables",
+      "Gallery integration with full meta.json"
+    ],
     "openQuestions": [
-      "Does Mathlib have A₅ simplicity proved?",
+      "Does Mathlib have A\u2085 simplicity proved?",
       "How does the existing file use solvability?"
     ],
-    "nextSteps": [
-      "Check Mathlib for Alternating group simplicity",
-      "State the proof chain: A₅ simple → not solvable → Abel-Ruffini",
-      "Create OQ04 file exposing this chain using Mathlib group theory"
-    ],
-    "progressSummary": "SURVEY: Parents complete. Need fresh OQ04 exposing A₅ simplicity proof chain."
-  }
+    "nextSteps": [],
+    "progressSummary": "COMPLETED: Fully verified (0 sorries, 0 axioms) exposition of A\u2085 \u2192 Abel-Ruffini proof chain. 163 lines, 8 theorems. Named proof chain with comprehensive documentation."
+  },
+  "lastUpdate": "2026-03-22T06:34:32Z"
 }
