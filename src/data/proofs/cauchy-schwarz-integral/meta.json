@@ -123,5 +123,27 @@
       "Can the Minkowski inequality for integrals be derived as a corollary?",
       "Can the bridge theorem be extended to complex-valued L2 functions?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "extends",
+      "description": "The discrete Cauchy-Schwarz inequality (∑ aᵢbᵢ)² ≤ (∑ aᵢ²)(∑ bᵢ²) is the finite-dimensional ancestor. The integral form generalizes from finite sums to measure-theoretic integrals, with L² replacing ℝⁿ."
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "technique",
+      "description": "The Cauchy-Schwarz integral inequality is the backbone of Fourier analysis: Parseval's identity, Bessel's inequality, and the convergence theory of Fourier series all depend on the L² inner product structure that Cauchy-Schwarz validates."
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "The Basel identity ζ(2) = π²/6 can be derived using Parseval's theorem applied to f(x) = x on [-π,π], which is a direct application of the L² inner product structure that the Cauchy-Schwarz integral inequality governs."
+    }
+  ],
+  "relatedProofs": [
+    "cauchy-schwarz",
+    "fourier-series",
+    "basel-problem"
+  ]
 }
