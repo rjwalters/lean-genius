@@ -23,7 +23,7 @@ where e(A,B) = C(dx + dy, dx) is the number of lattice paths from A to B.
 The identity permutation contributes ∏ e(Aᵢ,Bᵢ). Non-identity permutations
 cancel via a sign-reversing involution (Gessel-Viennot involution).
 
-## Status (1 axiom [GV cancellation], 1 sorry [pathMN cardinality])
+## Status (1 axiom [GV cancellation], 0 sorries)
 - [x] Path tuple and non-intersecting definitions
 - [x] Path weight matrix using Matrix.det
 - [x] Permutation path tuples and signed counts
@@ -32,7 +32,7 @@ cancel via a sign-reversing involution (Gessel-Viennot involution).
 - [x] r×r LGV lemma (proved from GV cancellation axiom)
 - [x] Corollaries: non-negativity, r=0, r=1 special cases
 - [ ] GV involution cancellation (1 axiom: the combinatorial heart)
-- [ ] PathMN cardinality C(m+n,m) (1 sorry: standard combinatorial identity)
+- [x] PathMN cardinality C(m+n,m) (PROVED via double induction + Pascal's rule)
 
 ## References
 - Lindström (1973): "On the Vector Representations of Induced Matroids"
@@ -266,14 +266,119 @@ theorem firstNonFixed_lt_image {r : ℕ} (σ : Equiv.Perm (Fin r)) (hσ : σ ≠
 -- PART 7b: PathMN Cardinality
 -- ============================================================
 
+-- Helper: countP (· = false) for cons cells
+private lemma countP_false_cons_false' (xs : List Bool) :
+    (false :: xs).countP (· = false) = xs.countP (· = false) + 1 := by
+  simp [List.countP_cons]
+private lemma countP_false_cons_true' (xs : List Bool) :
+    (true :: xs).countP (· = false) = xs.countP (· = false) := by
+  simp [List.countP_cons]
+
+-- Helper: countP (· = true) for cons cells
+private lemma countP_true_cons_false (xs : List Bool) :
+    (false :: xs).countP (· = true) = xs.countP (· = true) := by
+  simp [List.countP_cons]
+private lemma countP_true_cons_true (xs : List Bool) :
+    (true :: xs).countP (· = true) = xs.countP (· = true) + 1 := by
+  simp [List.countP_cons]
+
+-- Helper: east + north counts = total length
+private lemma bool_countP_sum (l : LPath) :
+    l.countP (· = false) + l.countP (· = true) = l.length := by
+  induction l with
+  | nil => rfl
+  | cons x xs ih =>
+    cases x with
+    | false =>
+      rw [countP_false_cons_false', countP_true_cons_false, List.length_cons]
+      omega
+    | true =>
+      rw [countP_false_cons_true', countP_true_cons_true, List.length_cons]
+      omega
+
+/-- Cons decomposition: PathMN (m+1) (n+1) ≃ PathMN m (n+1) ⊕ PathMN (m+1) n -/
+private noncomputable def pathMN_split (m n : ℕ) :
+    PathMN (m + 1) (n + 1) ≃ PathMN m (n + 1) ⊕ PathMN (m + 1) n where
+  toFun := fun ⟨l, hlen, heast⟩ => by
+    match l with
+    | [] => exact absurd hlen (by simp; omega)
+    | false :: xs =>
+      have heast' : xs.countP (· = false) = m := by
+        rw [countP_false_cons_false'] at heast; omega
+      exact Sum.inl ⟨xs, by simp at hlen; omega, heast'⟩
+    | true :: xs =>
+      have heast' : xs.countP (· = false) = m + 1 := by
+        rw [countP_false_cons_true'] at heast; exact heast
+      exact Sum.inr ⟨xs, by simp at hlen; omega, heast'⟩
+  invFun := fun s => by
+    match s with
+    | Sum.inl ⟨xs, hlen, heast⟩ =>
+      have heast' : (false :: xs).countP (· = false) = m + 1 := by
+        rw [countP_false_cons_false']; omega
+      exact ⟨false :: xs, by simp; omega, heast'⟩
+    | Sum.inr ⟨xs, hlen, heast⟩ =>
+      have heast' : (true :: xs).countP (· = false) = m + 1 := by
+        rw [countP_false_cons_true']; exact heast
+      exact ⟨true :: xs, by simp; omega, heast'⟩
+  left_inv := fun ⟨l, hlen, _⟩ => by
+    match l with
+    | [] => exact absurd hlen (by simp; omega)
+    | false :: _ => rfl
+    | true :: _ => rfl
+  right_inv := fun s => by
+    match s with
+    | Sum.inl ⟨_, _, _⟩ => simp
+    | Sum.inr ⟨_, _, _⟩ => simp
+
 /-- The number of lattice paths with m East steps and n North steps
-    equals C(m + n, m). A path is determined by choosing which m
-    of the m+n steps are East steps.
-    Proof sketch: PathMN m n ≃ {S ⊆ Fin(m+n) | |S| = m} via the
-    indicator function of East-step positions. -/
+    equals C(m + n, m). Proved by double induction using Pascal's rule
+    and the cons decomposition (first step is East or North). -/
 theorem pathMN_card (m n : ℕ) :
     Fintype.card (PathMN m n) = Nat.choose (m + n) m := by
-  sorry
+  induction m generalizing n with
+  | zero =>
+    simp only [Nat.zero_add, Nat.choose_zero_right]
+    apply Fintype.card_eq_one_iff.mpr
+    refine ⟨⟨List.replicate n true, by simp, by simp⟩, ?_⟩
+    intro ⟨l, hlen, heast⟩
+    apply Subtype.ext; simp only
+    apply List.ext_getElem
+    · simp [hlen]
+    · intro i hi_l _
+      rw [List.getElem_replicate]
+      rcases Bool.eq_false_or_eq_true (l[i]) with h | h
+      · exact h
+      · exfalso
+        have hmem : false ∈ l := h ▸ List.getElem_mem hi_l
+        have : 0 < l.countP (· = false) :=
+          List.countP_pos_iff.mpr ⟨false, hmem, by simp⟩
+        omega
+  | succ m ih =>
+    induction n with
+    | zero =>
+      simp only [Nat.add_zero, Nat.choose_self]
+      apply Fintype.card_eq_one_iff.mpr
+      refine ⟨⟨List.replicate (m + 1) false, by simp,
+               by simp [List.countP_replicate]⟩, ?_⟩
+      intro ⟨l, hlen, heast⟩
+      apply Subtype.ext; simp only
+      apply List.ext_getElem
+      · simp [hlen]
+      · intro i hi_l _
+        rw [List.getElem_replicate]
+        rcases Bool.eq_false_or_eq_true (l[i]) with h | h
+        · exfalso
+          have hmem : true ∈ l := h ▸ List.getElem_mem hi_l
+          have h_pos : 0 < l.countP (· = true) :=
+            List.countP_pos_iff.mpr ⟨true, hmem, by simp⟩
+          have h_sum := bool_countP_sum l
+          omega
+        · exact h
+    | succ n ih_n =>
+      rw [Fintype.card_congr (pathMN_split m n), Fintype.card_sum, ih (n + 1), ih_n,
+          show m + 1 + n = m + (n + 1) from by omega,
+          show m + 1 + (n + 1) = m + (n + 1) + 1 from by omega]
+      exact (Nat.choose_succ_succ' (m + (n + 1)) m).symm
 
 -- ============================================================
 -- PART 7c: Algebraic Bridge
