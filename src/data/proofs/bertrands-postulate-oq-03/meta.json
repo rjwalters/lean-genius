@@ -141,6 +141,35 @@
       "Can the PNT-based asymptotic π(x+h) - π(x) ~ h/ln(x) be proved for h = x^(1/2+ε) unconditionally?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "extends",
+      "description": "Parent entry proving Bertrand's postulate (a prime between n and 2n) — this file extends to the precise density question: how small can θ be such that [x, x+x^θ] always contains a prime?"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "PNT (π(x) ~ x/ln x) provides the asymptotic framework for understanding prime density in short intervals — Bertrand's postulate is the crude θ=1 case"
+    },
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Both address prime distribution: bounded gaps (Zhang-Maynard-Tao) shows infinitely many gaps ≤ 246, while this entry studies the weakest θ guaranteeing primes in every interval [x, x+x^θ]"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "ancestor",
+      "description": "The foundational result that primes are infinite — this entry quantifies their distribution in short intervals"
+    }
+  ],
+  "relatedProofs": [
+    "bertrands-postulate",
+    "prime-number-theorem",
+    "bounded-prime-gaps",
+    "infinitude-primes",
+    "riemann-hypothesis"
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.NumberTheory.Bertrand",

@@ -151,24 +151,31 @@
       "Can the q-multinomial theorem (quantum generalization) be formalized using Mathlib's q-analog infrastructure?",
       "Is there a direct Lean proof of the multinomial theorem by induction on |s| that avoids delegating to Finset.sum_pow_eq_sum_piAntidiag?"
     ],
-    "crossReferences": [
-      {
-        "id": "binomial-theorem",
-        "relation": "specializes",
-        "note": "The classical binomial theorem (x+y)^n = Σ C(n,k) x^k y^(n-k) is the 2-variable special case of the multinomial theorem proved here"
-      },
-      {
-        "id": "combinations-formula",
-        "relation": "uses",
-        "note": "The binomial coefficient C(n,k) = n!/(k!(n-k)!) is a special case of the multinomial coefficient n!/(k_1!···k_m!)"
-      },
-      {
-        "id": "pascals-hexagon",
-        "relation": "related",
-        "note": "Pascal's hexagon theorem connects to Pascal's triangle, whose rows are the binomial coefficients summed by the multinomial theorem"
-      }
-    ]
+    "crossReferences": []
   },
+  "crossReferences": [
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "extends",
+      "description": "The classical binomial theorem (x+y)^n = Σ C(n,k) x^k y^(n-k) is the 2-variable special case of the multinomial theorem proved here"
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "foundational",
+      "description": "The binomial coefficient C(n,k) = n!/(k!(n-k)!) is a special case of the multinomial coefficient n!/(k₁!···kₘ!)"
+    },
+    {
+      "targetId": "arithmetic-series-oq-02",
+      "relationship": "related",
+      "description": "Both involve multi-index combinatorics: multinomial coefficients generalize binomial coefficients, while simplicial numbers generalize triangular numbers — both are diagonal entries of Pascal's simplex"
+    }
+  ],
+  "relatedProofs": [
+    "binomial-theorem",
+    "combinations-formula",
+    "binomial-theorem-oq-01",
+    "arithmetic-series-oq-02"
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Choose.Multinomial",
