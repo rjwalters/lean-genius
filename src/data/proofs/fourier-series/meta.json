@@ -204,46 +204,6 @@
       "authors": "Fourier, Joseph",
       "title": "Théorie analytique de la chaleur",
       "year": "1822",
-      "venue": "Firmin Didot, Paris",
-      "note": "Founding work where Fourier introduced trigonometric series representations of functions to solve the heat equation"
-    },
-    {
-      "authors": "Carleson, Lennart",
-      "title": "On convergence and growth of partial sums of Fourier series",
-      "year": "1966",
-      "venue": "Acta Mathematica 116(1), 135–157",
-      "note": "Proved that Fourier series of L² functions converge pointwise almost everywhere — a landmark in harmonic analysis"
-    },
-    {
-      "authors": "Katznelson, Yitzhak",
-      "title": "An Introduction to Harmonic Analysis",
-      "year": "2004",
-      "venue": "Cambridge University Press, 3rd edition",
-      "note": "Modern treatment of Fourier series convergence, Fejér's theorem, and related topics in harmonic analysis"
-    }
-  ],
-  "relatedProofs": [
-    {
-      "id": "basel-problem",
-      "relationship": "related",
-      "description": "Parseval's theorem applied to f(x)=x on [-π,π] proves the Basel identity ∑1/n² = π²/6"
-    },
-    {
-      "id": "area-of-circle-oq-01-oq-02-oq-02",
-      "relationship": "related",
-      "description": "Fourier coefficient derivative formula ĉₙ(f') = in·ĉₙ(f) — key infrastructure for the isoperimetric inequality"
-    },
-    {
-      "id": "isoperimetric-theorem",
-      "relationship": "related",
-      "description": "Hurwitz's 1902 Fourier-analytic proof of L² ≥ 4πA uses Fourier series and Parseval's identity"
-    }
-  ],
-  "references": [
-    {
-      "authors": "Fourier, Joseph",
-      "title": "Théorie analytique de la chaleur",
-      "year": "1822",
       "venue": "Paris: Firmin Didot",
       "note": "Foundational work introducing the representation of functions as trigonometric series"
     },
@@ -254,5 +214,10 @@
       "venue": "Acta Mathematica 116, pp. 135-157",
       "note": "Proved pointwise convergence of Fourier series for L² functions"
     }
+  ],
+  "relatedProofs": [
+    "basel-problem",
+    "area-of-circle-oq-01-oq-02-oq-02",
+    "isoperimetric-theorem"
   ]
 }

@@ -183,21 +183,9 @@
     }
   ],
   "relatedProofs": [
-    {
-      "id": "erdos-382",
-      "relationship": "directly-related",
-      "description": "A positive answer to #383 (k=1 case) directly resolves Part 2 of #382 about primes where all factors of p²+1 are ≤ p"
-    },
-    {
-      "id": "erdos-334",
-      "relationship": "related",
-      "description": "Both involve smooth numbers: #334 asks about sums of smooth numbers, #383 asks about smooth numbers near prime squares"
-    },
-    {
-      "id": "erdos-368",
-      "relationship": "related",
-      "description": "Both concern the largest prime factor of products of consecutive integers: #368 studies P(n(n+1)), #383 studies P(∏(p²+i))"
-    }
+    "erdos-382",
+    "erdos-334",
+    "erdos-368"
   ],
   "leanFile": {
     "imports": [

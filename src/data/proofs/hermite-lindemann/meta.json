@@ -170,26 +170,10 @@
     "definitionCount": 1
   },
   "relatedProofs": [
-    {
-      "id": "e-transcendental",
-      "relationship": "specializes",
-      "description": "e's transcendence is the α=1 case: e^1 = e is transcendental since 1 is algebraic and nonzero"
-    },
-    {
-      "id": "pi-transcendental",
-      "relationship": "specializes",
-      "description": "π's transcendence follows: if π were algebraic, e^(iπ) = -1 would be transcendental by H-L, contradiction"
-    },
-    {
-      "id": "angle-trisection",
-      "relationship": "related",
-      "description": "H-L proves π transcendental, which proves squaring the circle is impossible"
-    },
-    {
-      "id": "gelfond-schneider",
-      "relationship": "related",
-      "description": "Gelfond-Schneider (1934) extends H-L: a^b is transcendental for algebraic a≠0,1 and irrational algebraic b"
-    }
+    "e-transcendental",
+    "pi-transcendental",
+    "angle-trisection",
+    "gelfond-schneider"
   ],
   "references": [
     {

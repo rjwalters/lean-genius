@@ -119,26 +119,11 @@
     ]
   },
   "relatedProofs": [
-    {
-      "id": "four-color-theorem",
-      "relationship": "The Four Color Theorem shows $\\chi \\leq 4$ for planar graphs; Thomassen (1994) proved the stronger result that planar graphs are 5-choosable, connecting ordinary and list coloring"
-    },
-    {
-      "id": "erdos-87",
-      "relationship": "Erdős Problem #87 relates Ramsey numbers to chromatic numbers; both problems explore how graph-theoretic parameters constrain each other in unexpected ways"
-    },
-    {
-      "id": "erdos-60",
-      "relationship": "Erdős Problem #60 on supersaturation also involves extremal thresholds for graph properties, sharing the flavor of determining the minimal structure forcing a given property"
-    },
-    {
-      "id": "randomized-maxcut",
-      "relationship": "Both formalizations involve the probabilistic method applied to graph coloring/partition problems — MaxCut uses random vertex partition, while this uses random color partition"
-    },
-    {
-      "id": "ramseys-theorem",
-      "relationship": "Ramsey's theorem and list coloring both involve adversarial coloring arguments where structure must persist regardless of how colors are assigned"
-    }
+    "four-color-theorem",
+    "erdos-87",
+    "erdos-60",
+    "randomized-maxcut",
+    "ramseys-theorem"
   ],
   "leanFile": {
     "imports": [

@@ -109,34 +109,13 @@
     }
   ],
   "relatedProofs": [
-    {
-      "id": "erdos-54",
-      "relationship": "Sibling problem — Erdős #54 focuses on the r=2 case of Ramsey completeness, also solved by Conlon-Fox-Pham (2021)"
-    },
-    {
-      "id": "ramseys-theorem",
-      "relationship": "Foundational — Ramsey's theorem provides the partition-theoretic framework underlying the notion of Ramsey r-completeness"
-    },
-    {
-      "id": "erdos-546",
-      "relationship": "Related Ramsey bound — asks whether R(G) ≤ 2^{O(√m)} for graphs with m edges, sharing Ramsey-theoretic growth rate analysis"
-    },
-    {
-      "id": "szemeredi-theorem",
-      "relationship": "Additive combinatorics — Szemerédi's theorem on arithmetic progressions in dense sets shares the density-vs-structure paradigm"
-    },
-    {
-      "id": "erdos-88",
-      "relationship": "Ramsey graph structure — studies induced subgraphs in Ramsey graphs, related through structural Ramsey theory"
-    },
-    {
-      "id": "erdos-87",
-      "relationship": "Ramsey-chromatic connection — relates chromatic number to Ramsey numbers, sharing the coloring framework"
-    },
-    {
-      "id": "erdos-szekeres",
-      "relationship": "Classical Ramsey application — the Erdős-Szekeres theorem on monotonic subsequences uses pigeonhole/Ramsey arguments"
-    }
+    "erdos-54",
+    "ramseys-theorem",
+    "erdos-546",
+    "szemeredi-theorem",
+    "erdos-88",
+    "erdos-87",
+    "erdos-szekeres"
   ],
   "references": [
     "Burr, S.A. and Erdős, P. (1985). 'On a Ramsey-type problem in additive number theory.' J. Combin. Theory Ser. A, 40(1), 39–63.",
