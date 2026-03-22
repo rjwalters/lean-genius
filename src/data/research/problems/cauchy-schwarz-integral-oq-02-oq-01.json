@@ -1,8 +1,8 @@
 {
   "slug": "cauchy-schwarz-integral-oq-02-oq-01",
   "title": "Strict Minkowski Inequality: Equality iff Proportional",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -11,27 +11,27 @@
     "whyMatters": []
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-03-22T03:00:00Z",
-    "iteration": 1,
-    "focus": "Main iff theorem proved modulo 2 algebra helpers"
+    "phase": "COMPLETED",
+    "since": "2026-03-22T07:00:00Z",
+    "iteration": 2,
+    "focus": "Verified: 80 lines, 3 theorems, 0 axioms, 0 sorries, builds clean"
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created CauchySchwarzIntegralOQ02OQ01.lean. Main theorem norm_add_eq_iff_proportional proved modulo 2 helpers. Forward: squaring + linarith gives C-S equality. Backward: C-S equality + nlinarith gives squared equality, then factoring gives equality. 2 sorries in inner product algebra helpers.",
+    "progressSummary": "COMPLETED: 80 lines, 3 theorems, 0 axioms, 0 sorries. Both helper lemmas proved: inner_eq_of_proportional via field_simp+linarith, proportional_of_inner_eq via norm_sub_sq_real+ring. Builds clean. Gallery entry created.",
     "builtItems": [
-      "norm_add_eq_iff_proportional: ‖f+g‖ = ‖f‖+‖g‖ ↔ ‖f‖•g = ‖g‖•f (proved from helpers)",
-      "inner_eq_of_proportional: proportionality → C-S equality (sorry — needs inner_smul_right + star simplification)",
-      "proportional_of_inner_eq: C-S equality → proportionality (sorry — needs norm_sub_sq + star simplification)"
+      "norm_add_eq_iff_proportional: ‖f+g‖ = ‖f‖+‖g‖ ↔ ‖f‖•g = ‖g‖•f (PROVED, main result)",
+      "inner_eq_of_proportional: proportionality → C-S equality (PROVED via by_cases hf, inner_smul_right, field_simp, linarith)",
+      "proportional_of_inner_eq: C-S equality → proportionality (PROVED via norm_sub_sq_real, inner product expansion, ring)",
+      "Gallery entry created: src/data/proofs/cauchy-schwarz-integral-oq-02-oq-01/",
+      "Cleaned unused simp args (star_trivial, Real.norm_eq_abs, abs_of_nonneg)"
     ],
     "insights": [
       "The forward direction reduces to: ‖f+g‖² = (‖f‖+‖g‖)² → ⟪f,g⟫ = ‖f‖‖g‖ via linarith on norm_add_sq_real",
       "The backward direction: C-S equality → squared equality via nlinarith, then (a-b)(a+b)=0 factoring",
-      "The 2 sorry'd helpers need careful handling of starRingEnd/conj on ℝ inner products",
-      "Key issue: inner_smul_right introduces star(c) which needs RCLike.conj_to_real or similar to simplify"
+      "inner_smul_right on ℝ: star_trivial is not needed as simp arg — inner_smul_right already handles ℝ correctly",
+      "proportional_of_inner_eq key trick: expand ‖‖f‖•g - ‖g‖•f‖² using norm_sub_sq_real + inner product bilinearity, then ring closes the algebra"
     ],
     "nextSteps": [
-      "Prove inner_eq_of_proportional: take ⟪f,·⟫ of ‖f‖•g = ‖g‖•f, simplify star/conj, use ⟪f,f⟫=‖f‖²",
-      "Prove proportional_of_inner_eq: compute ‖‖f‖•g - ‖g‖•f‖² via inner product expansion, show = 0",
       "Extend to general Lp via uniform convexity (StrictConvexSpace)"
     ]
   },
@@ -44,12 +44,13 @@
     {
       "path": "Proofs/CauchySchwarzIntegralOQ02OQ01.lean",
       "filename": "CauchySchwarzIntegralOQ02OQ01.lean",
-      "lineCount": 60,
+      "lineCount": 80,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 2,
+      "sorryCount": 0,
       "isAristotle": false
     }
-  ]
+  ],
+  "completed": "2026-03-22T07:00:00Z"
 }
