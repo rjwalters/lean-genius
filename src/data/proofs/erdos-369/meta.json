@@ -42,9 +42,37 @@
         "relation": "Erdős #143 studies dilation-avoiding sets, another problem where prime factorization structure controls set density"
       }
     ],
-    "axiomCount": 1
+    "axiomCount": 1,
+    "author": "Erdős-Graham (1980), Balog-Wooley (1998)",
+    "prerequisites": [
+      "smooth-numbers",
+      "Dickman-function",
+      "sieve-methods",
+      "analytic-number-theory",
+      "prime-factorization",
+      "abc-conjecture"
+    ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-370",
+      "relationship": "related",
+      "description": "Erdős #370 asks about smooth numbers in short intervals — a closely related distributional question about how smooth numbers cluster"
+    },
+    {
+      "targetId": "erdos-143",
+      "relationship": "related",
+      "description": "Erdős #143 studies dilation-avoiding sets, another problem where prime factorization structure controls combinatorial density"
+    }
+  ],
   "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Docstring defining Erdős Problem #369: for $\\varepsilon > 0$ and $k \\geq 2$, does $\\{1,\\ldots,n\\}$ contain $k$ consecutive $n^\\varepsilon$-smooth integers for all large $n$? References Erdős-Graham (1980), Balog-Wooley (1998). Imports Mathlib for primes, divisibility, and finite sets."
+    },
     {
       "id": "smooth-numbers",
       "title": "Part I: Smooth Numbers",
