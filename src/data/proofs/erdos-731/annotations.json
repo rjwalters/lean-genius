@@ -96,6 +96,30 @@
     "prerequisites": ["basic binomial identities"]
   },
   {
+    "id": "erdos-731-primorial",
+    "proofId": "erdos-731",
+    "type": "concept",
+    "range": { "startLine": 70, "endLine": 73 },
+    "title": "Primorial Asymptotic (PNT)",
+    "content": "Axiomatizes the prime number theorem in product form: the primorial $\\prod_{p \\leq x} p = e^{x(1+o(1))}$ as $x \\to \\infty$. This is equivalent to $\\theta(x) := \\sum_{p \\leq x} \\log p \\sim x$ (Chebyshev's theta function). For this problem, it controls the product of small primes dividing $\\binom{2n}{n}$: since all primes up to $\\sim \\exp((\\log n)^{1/2})$ divide $\\binom{2n}{n}$ for most $n$, the primorial of the threshold governs the total divisor contribution.",
+    "mathContext": "$\\prod_{p \\leq x} p = e^{\\theta(x)}$ where $\\theta(x) \\sim x$ by the prime number theorem",
+    "significance": "supporting",
+    "relatedConcepts": ["prime number theorem", "Chebyshev theta function", "primorial", "prime product"],
+    "prerequisites": ["prime number theorem", "Chebyshev functions"]
+  },
+  {
+    "id": "erdos-731-lower-most",
+    "proofId": "erdos-731",
+    "type": "concept",
+    "range": { "startLine": 94, "endLine": 101 },
+    "title": "Lower Bound for Most n",
+    "content": "Axiomatizes `lower_bound_most_n`: for any threshold $P$, there is a positive density $D$ such that for at least a $(1 - 1/D)$ fraction of $n \\leq N$, the least non-divisor exceeds $P$. This captures the fact that small primes almost always divide $\\binom{2n}{n}$: for fixed $p$, the set of $n$ with $p \\nmid \\binom{2n}{n}$ has density $(\\lceil p/2 \\rceil / p)^{1/(\\log p)} \\to 0$, so by union bound, the least non-divisor exceeds any fixed $P$ for almost all $n$. Uses placeholder `True`.",
+    "mathContext": "$\\forall P,\\; \\exists D > 0: \\#\\{n \\leq N : \\text{leastNonDivCentral}(n) > P\\} \\geq (1 - 1/D) \\cdot N$",
+    "significance": "supporting",
+    "relatedConcepts": ["natural density", "union bound", "digit independence"],
+    "prerequisites": ["small_primes_divide", "natural density"]
+  },
+  {
     "id": "erdos-731-egrs",
     "proofId": "erdos-731",
     "type": "concept",
