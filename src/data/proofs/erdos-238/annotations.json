@@ -8,8 +8,9 @@
     "content": "Erdős Problem #238: For $c_1, c_2 > 0$, can we find $> c_1 \\cdot \\log(x)$ consecutive primes $\\le x$ with all gaps $> c_2$? Proved for small $c_1$ (Erdős); general case OPEN.\n\nThe formalization imports from Mathlib: Nat.Prime.Nth for prime enumeration, Filter.Basic for asymptotic statements, and SpecialFunctions.Log for logarithms.",
     "mathContext": "$\\text{mainConjecture}: \\forall c_1 > 0, \\forall c_2 > 0, \\forall^\\mathrm{f} x \\in \\mathrm{atTop}, \\exists k > c_1 \\cdot \\log(x), \\exists m, \\text{allPrimesLeX}(m,k,x) \\wedge \\text{allGapsLarge}(m,k,c_2)$.",
     "significance": "key",
-    "relatedConcepts": ["prime gaps", "consecutive primes", "Prime Number Theorem"],
-    "prerequisites": ["prime number theorem", "prime gap distribution", "Filter.Eventually"]
+    "relatedConcepts": ["prime gaps", "consecutive primes", "Prime Number Theorem", "Cramér model", "second moment method"],
+    "prerequisites": ["prime number theorem", "prime gap distribution", "Filter.Eventually"],
+    "crossReferences": ["prime-number-theorem", "erdos-4", "bounded-prime-gaps"]
   },
   {
     "id": "erdos-238-primes",
@@ -68,8 +69,9 @@
     "content": "For any $c_2 > 0$, there exists sufficiently small $c_1 > 0$ (depending on $c_2$) making the conjecture hold. The quantifier swap ($\\exists c_1$ vs $\\forall c_1$) is the gap between known and open.\n\nThis is the deepest axiom in the formalization: Erdős's proof uses the PNT to show that for small $c_1$, the expected number of qualifying runs in $[1, x]$ tends to infinity, then applies a second-moment argument.",
     "mathContext": "$\\text{erdos\\_partial\\_result}: \\forall c_2 > 0, \\exists c_1 > 0, \\forall^\\mathrm{f} x \\in \\mathrm{atTop}, \\exists k, m, c_1 \\cdot \\log(x) < k \\wedge \\ldots$ Compare with the conjecture: $\\forall c_1 > 0, \\forall c_2 > 0, \\ldots$",
     "significance": "key",
-    "relatedConcepts": ["quantifier order", "partial result", "Erdős", "second moment method"],
-    "prerequisites": ["mainConjecture", "Filter.Eventually", "quantifier logic"]
+    "relatedConcepts": ["quantifier order", "partial result", "Erdős", "second moment method", "probabilistic number theory"],
+    "prerequisites": ["mainConjecture", "Filter.Eventually", "quantifier logic"],
+    "crossReferences": ["bertrands-postulate", "prime-number-theorem"]
   },
   {
     "id": "erdos-238-pnt",
@@ -80,8 +82,9 @@
     "content": "Two axioms providing PNT context:\n\n`average_gap_grows`: For any $c_2 > 0$, eventually there exists a gap $> c_2$ among primes $\\le x$. This is a consequence of the average gap $\\sim \\log x \\to \\infty$.\n\n`prime_number_theorem_asymptotic`: $\\pi(x) \\sim x/\\log x$, formalized as $|\\pi(x)/(x/\\log x) - 1| < \\varepsilon$ eventually. Uses `Finset.filter Nat.Prime` for the counting function.",
     "mathContext": "$\\pi(x) = |\\{p \\le x : p \\text{ prime}\\}| \\sim \\frac{x}{\\log x}$. Average gap: $\\frac{x}{\\pi(x)} \\sim \\log x$, so for fixed $c_2$, most gaps exceed $c_2$ when $x$ is large.",
     "significance": "key",
-    "relatedConcepts": ["Prime Number Theorem", "average gap", "counting function"],
-    "prerequisites": ["prime number theorem", "Filter.Eventually", "Finset.filter"]
+    "relatedConcepts": ["Prime Number Theorem", "average gap", "counting function", "Chebyshev estimates"],
+    "prerequisites": ["prime number theorem", "Filter.Eventually", "Finset.filter"],
+    "crossReferences": ["prime-number-theorem"]
   },
   {
     "id": "erdos-238-runlength",
@@ -104,8 +107,9 @@
     "content": "`large_gaps_eventually_dominate`: For large $x$, gaps exceeding $c_2$ become common. This is a PROVED theorem (from `average_gap_grows`), not an axiom.\n\nThe heuristic argument: if fraction $1 - o(1)$ of gaps exceed $c_2$, then the probability of $k$ consecutive large gaps $\\approx (1 - o(1))^k$. For $k = c_1 \\cdot \\log(x)$, this is roughly $e^{-o(\\log x)} \\to 1$. Making this rigorous requires controlling gap correlations — the key difficulty.",
     "mathContext": "If gaps are independent with $P(g_n > c_2) = 1 - o(1)$, then $P(\\text{run of length } k) \\approx (1-o(1))^k \\approx 1$ for $k = O(\\log x)$. But prime gaps are NOT independent — this is a heuristic only.",
     "significance": "supporting",
-    "relatedConcepts": ["probabilistic heuristic", "independence assumption", "Cramér model"],
-    "prerequisites": ["average_gap_grows", "prime number theorem"]
+    "relatedConcepts": ["probabilistic heuristic", "independence assumption", "Cramér model", "gap correlations"],
+    "prerequisites": ["average_gap_grows", "prime number theorem"],
+    "crossReferences": ["prime-number-theorem"]
   },
   {
     "id": "erdos-238-cramer",
@@ -116,14 +120,15 @@
     "content": "Cramér (1936) conjectured that the maximal prime gap below $x$ is $O((\\log x)^2)$. This is much stronger than needed for Problem 238 but provides context: if gaps are bounded by $(\\log x)^2$, they're typically much smaller, making long runs of large gaps plausible.\n\nFormalized as a Prop definition: $\\exists C > 0$ such that eventually all gaps between primes $\\le x$ satisfy $g_n \\le C (\\log x)^2$. Cramér's conjecture itself remains open.",
     "mathContext": "$\\text{cramersConjecture}: \\exists C > 0, \\forall^\\mathrm{f} x, \\forall n, p_{n+1} \\le x \\Rightarrow g_n \\le C (\\log x)^2$. The best unconditional bound is Baker-Harman-Pintz (2001): $g_n \\ll p_n^{0.525}$.",
     "significance": "supporting",
-    "relatedConcepts": ["Cramér's conjecture", "maximal gap", "Baker-Harman-Pintz"],
-    "prerequisites": ["primeGap", "Real.log", "Filter.Eventually"]
+    "relatedConcepts": ["Cramér's conjecture", "maximal gap", "Baker-Harman-Pintz", "Granville's refinement"],
+    "prerequisites": ["primeGap", "Real.log", "Filter.Eventually"],
+    "crossReferences": ["erdos-4", "bounded-prime-gaps"]
   },
   {
     "id": "erdos-238-structural",
     "proofId": "erdos-238",
     "type": "insight",
-    "range": { "startLine": 198, "endLine": 222 },
+    "range": { "startLine": 198, "endLine": 234 },
     "title": "Structural Theorems (Verified)",
     "content": "Two verified theorems demonstrating the logical structure:\n\n`partial_weaker_than_full`: mainConjecture implies the partial result (trivially: instantiate $c_1 = 1$). This confirms the full conjecture is strictly stronger.\n\n`conjecture_vs_negation`: mainConjecture implies $\\neg$conjectureNegation. Proof by extracting witnesses from the filter and reaching a contradiction with the negation. This 12-line proof uses `Filter.Eventually`, `mem_atTop_sets`, and structural unpacking.",
     "mathContext": "The key step in `conjecture_vs_negation`: from $\\forall^\\mathrm{f} x$, extract $x_0$ via `mem_atTop_sets`, find the negation's $x > x_0$, and derive a contradiction from simultaneously having and not having a qualifying run.",
