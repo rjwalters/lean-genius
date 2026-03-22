@@ -35,7 +35,7 @@ theorem erdosTuran_card (p : ℕ) (hp : 1 ≤ p) :
 
 /-- All elements of the Erdős-Turán construction are ≥ 1. -/
 theorem erdosTuran_pos (p i : ℕ) : 1 ≤ 2 * p * i + i * i % p + 1 := by
-  sorry
+  omega
 
 /-- All elements of the Erdős-Turán construction are ≤ 2p². -/
 theorem erdosTuran_le (p : ℕ) (hp : 1 ≤ p) (i : ℕ) (hi : i < p) :
@@ -73,14 +73,15 @@ theorem dvd_prod_diff {p a b c d : ℕ}
 /-- Key algebraic identity: (a-c)(a-d) = cd - ab when a+b = c+d. -/
 theorem factor_identity (a b c d : ℤ) (h : a + b = c + d) :
     (a - c) * (a - d) = c * d - a * b := by
-  sorry
+  have : b = c + d - a := by linarith
+  rw [this]; ring
 
 /-- Nat.sqrt N * Nat.sqrt N ≤ N (square of integer square root). -/
-theorem sqrt_sq_le (N : ℕ) : Nat.sqrt N * Nat.sqrt N ≤ N := by
-  sorry
+theorem sqrt_sq_le (N : ℕ) : Nat.sqrt N * Nat.sqrt N ≤ N :=
+  Nat.sqrt_le N
 
 /-- Nat.sqrt N ≤ 3 for N < 16. -/
 theorem sqrt_le_three (N : ℕ) (hN : N < 16) : Nat.sqrt N ≤ 3 := by
-  sorry
+  omega
 
 end Erdos44Aristotle
