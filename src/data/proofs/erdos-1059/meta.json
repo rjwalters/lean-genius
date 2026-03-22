@@ -75,6 +75,34 @@
         "targetId": "erdos-1057",
         "relationship": "related",
         "description": "Sister Erdős problem about prime-related counting; both use Set.Infinite for open conjectures about special prime sets"
+      },
+      {
+        "targetId": "erdos-728-factorial-divisibility",
+        "relationship": "related",
+        "description": "Both concern factorial-prime interactions: #728 studies factorial divisibility patterns while #1059 studies factorial subtractions from primes"
+      }
+    ],
+    "references": [
+      {
+        "authors": "Guy, Richard K.",
+        "title": "Unsolved Problems in Number Theory",
+        "year": "2004",
+        "venue": "Springer, 3rd edition",
+        "note": "Problem A2: primes p such that p - k! is composite for all k! < p"
+      },
+      {
+        "authors": "OEIS Foundation",
+        "title": "A064152: Primes p such that p - k! is composite for all k with 1 <= k! < p",
+        "year": "2001",
+        "venue": "The On-Line Encyclopedia of Integer Sequences",
+        "note": "Sequence listing: 101, 211, ..."
+      },
+      {
+        "authors": "Erdős, Paul",
+        "title": "Some problems on number theory",
+        "year": "1980",
+        "venue": "Analytic Number Theory, Lecture Notes in Mathematics 899",
+        "note": "Original problem formulation and the smooth-number alternative variant"
       }
     ],
     "axiomCount": 3,
@@ -160,7 +188,8 @@
     "wilsons-theorem",
     "bertrands-postulate",
     "erdos-1057",
-    "erdos-68"
+    "erdos-68",
+    "erdos-728-factorial-divisibility"
   ],
   "leanFile": {
     "imports": [
