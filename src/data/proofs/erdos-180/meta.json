@@ -56,7 +56,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #180, posed by Erdős and Simonovits [ErSi82], asks whether the Turán number of a finite graph family is always dominated by a single member. For non-bipartite families, the Erdős-Stone theorem resolves this: the member with smallest chromatic number determines the asymptotics. A folklore counterexample (star + matching) exists for infinite families, showing finiteness is essential.",
+    "historicalContext": "Erdős and Simonovits posed this problem in 1982, building on the foundational work in extremal graph theory. Turán's theorem (1941) gives $\\text{ex}(n; K_r) = (1 - 1/(r-1))n^2/2 + O(n)$. The Erdős-Stone theorem (1946) extends this to all non-bipartite $H$: $\\text{ex}(n; H) = (1 - 1/(\\chi(H)-1))n^2/2 + o(n^2)$, completely resolving the domination question when all family members have $\\chi \\geq 3$ — the member with smallest chromatic number controls the asymptotics. The difficulty lies in bipartite families, where $\\text{ex}(n; H) = o(n^2)$ but the exact growth rates depend on delicate structural properties captured by the Zarankiewicz problem $z(n; s, t)$. The Kővári-Sós-Turán theorem gives $\\text{ex}(n; K_{s,t}) = O(n^{2-1/s})$, but matching lower bounds are known only for specific cases, making asymptotic comparisons between different bipartite Turán numbers extremely hard.",
     "problemStatement": "For a finite family F of graphs, let ex(n;F) be the maximum edges in an n-vertex F-free graph. Does there always exist G in F such that ex(n;G) = O(ex(n;F))? OPEN.",
     "proofStrategy": "The formalization defines ExFamily, ExSingle, HasDomination, and the main conjecture ErdosConjecture180. The non-bipartite case is axiomatized via Erdős-Stone. The folklore counterexample for infinite families demonstrates that finiteness is essential. The summary theorem proves the conjunction of these known results.",
     "keyInsights": [
@@ -73,49 +73,49 @@
       "title": "Turán Numbers",
       "startLine": 30,
       "endLine": 43,
-      "summary": "turanNumber via sSup, ExSingle, ExFamily type aliases"
+      "summary": "Defines `turanNumber H n` as $\\text{ex}(n; H) = \\sup\\{|E(G)| : |V(G)| = n,\\, H \\not\\subseteq G\\}$ via `sSup`. Introduces `ExSingle` and `ExFamily` as type aliases ($\\mathbb{N} \\to \\mathbb{N}$) for extremal functions of individual graphs and families."
     },
     {
       "id": "domination",
       "title": "The Domination Property",
       "startLine": 45,
       "endLine": 51,
-      "summary": "HasDomination: some member has ex(n;G) = O(ex(n;F))"
+      "summary": "Defines `HasDomination familyEx memberExs`: $\\exists G \\in F,\\, \\exists C > 0,\\, \\forall n:\\; \\text{ex}(n;G) \\leq C \\cdot \\text{ex}(n;F)$. This formalizes the Big-O domination condition — a single forbidden graph controls the family's extremal function."
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
       "startLine": 53,
       "endLine": 62,
-      "summary": "ErdosConjecture180: every finite family has domination (OPEN)"
+      "summary": "Formalizes `ErdosConjecture180`: every finite nonempty family $F$ with $\\text{ex}(n;F) \\leq \\min_{G \\in F} \\text{ex}(n;G)$ has the domination property. No axiom is provided — this is the OPEN question."
     },
     {
       "id": "erdos-stone",
       "title": "Non-Bipartite Case (Erdős-Stone)",
       "startLine": 64,
       "endLine": 74,
-      "summary": "Domination holds for non-bipartite families"
+      "summary": "Axiomatizes `erdos_stone_domination`: for families where every member has chromatic number $\\geq 3$, the Erdős-Stone theorem gives $\\text{ex}(n;H) = ((r-2)/(r-1) + o(1))\\binom{n}{2}$, so the member with smallest $\\chi$ dominates."
     },
     {
       "id": "bipartite",
       "title": "Bipartite Case Difficulty",
       "startLine": 76,
       "endLine": 92,
-      "summary": "BipartiteCase definition, folklore counterexample for infinite families"
+      "summary": "Defines `BipartiteCase` (a finite family without domination, which would refute the conjecture). Axiomatizes `folklore_counterexample_infinite`: $F = \\{K_{1,n}, M_n\\}$ (star + matching) gives $\\text{ex}(n;F) \\leq 1$ while individual members allow $\\Theta(n)$ edges, showing finiteness is essential."
     },
     {
       "id": "properties",
       "title": "Properties",
       "startLine": 94,
       "endLine": 100,
-      "summary": "family_le_members: ex(n;F) ≤ min ex(n;G)"
+      "summary": "Axiomatizes `family_le_members`: $\\text{ex}(n;F) \\leq \\min_{G \\in F} \\text{ex}(n;G)$. Forbidding more subgraphs can only reduce the maximum edge count — the defining monotonicity of family Turán numbers."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 102,
       "endLine": 116,
-      "summary": "Proved conjunction of Erdős-Stone domination and counterexample"
+      "summary": "Proves `erdos_180_summary`: conjunction of non-bipartite domination (Erdős-Stone) and the infinite-family counterexample. The open question is whether domination holds for ALL finite families, especially those containing bipartite graphs where Zarankiewicz-type bounds are imprecise."
     }
   ],
   "conclusion": {
@@ -127,5 +127,22 @@
       "Can the folklore counterexample be extended to finite families?",
       "How does the answer depend on the structure of the family?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-167",
+      "relationship": "related",
+      "description": "Erdős #167 (Tuza's conjecture) also concerns extremal graph theory — packing/covering duality for triangles, connecting to how forbidden subgraph structure controls edge counts"
+    },
+    {
+      "targetId": "erdos-1079",
+      "relationship": "related",
+      "description": "Erdős #1079 studies Turán density in neighborhoods — a local variant of the Turán number questions central to Problem #180"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey theory and extremal graph theory are dual: Ramsey asks when structure must appear, Turán asks how much structure can be avoided — both concern forbidden subgraph thresholds"
+    }
+  ]
 }
