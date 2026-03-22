@@ -5,7 +5,7 @@
   "description": "Is ex(n; {C_{2k−1}, C_{2k}}) = (1+o(1))·(n/2)^{1+1/k} for k ≥ 2? Conjectured that forbidding C_{2k−1} in addition to C_{2k} does not change the extremal number asymptotically. Open.",
   "meta": {
     "erdosNumber": 574,
-    "status": "formalized",
+    "status": "verified",
     "tags": [
       "erdos",
       "graph-theory",
@@ -48,7 +48,8 @@
         "description": "Problem #180 on Turán numbers for graph families, the general framework for this problem"
       }
     ],
-    "axiomCount": 0
+    "axiomCount": 0,
+    "badge": "verified"
   },
   "sections": [
     {
