@@ -7,8 +7,9 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #1001: Diophantine Approximation Density**\n\nLet S(N, A, c) measure α ∈ (0,1) with |α - x/y| < A/y² for some N ≤ y ≤ cN, gcd(x,y)=1.\n\n**Question**: Does lim_{N→∞} S(N, A, c) exist?\n\n**Answer**: YES (Kesten-Sós 1966), with explicit formula f(A,c) = 12A log(c)/π² in the EST regime.",
     "mathContext": "This is a metric number theory problem: what fraction of real numbers can be well-approximated by rationals with denominators in a specific range? The answer involves Lebesgue measure and connects to the distribution of Farey fractions.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Diophantine approximation", "Lebesgue measure", "Farey fractions"],
+    "prerequisites": ["Dirichlet's approximation theorem", "Lebesgue measure", "coprime integers"],
     "tags": ["diophantine-approximation", "metric-number-theory", "lebesgue-measure", "farey-fractions"]
   },
   {
@@ -19,7 +20,7 @@
     "title": "isApproximable",
     "content": "**isApproximable(A, y, α):**\n\nA real α is (A, y)-approximable if there exists a coprime integer x such that:\n\n|α - x/y| < A/y²\n\nThis is the Diophantine approximation inequality with quality parameter A.",
     "mathContext": "The threshold A/y² comes from Dirichlet's theorem: for any α, there exist infinitely many p/q with |α - p/q| < 1/q². Setting A < 1 makes the condition more restrictive.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Dirichlet approximation theorem", "Coprime pairs"],
     "tags": ["diophantine-approximation", "dirichlet-theorem", "coprime-pairs", "definition"]
   },
@@ -31,7 +32,7 @@
     "title": "Approximation Set",
     "content": "**approximationSet(N, A, c):**\n\nThe set of α ∈ (0,1) that can be approximated by some rational x/y where:\n- N ≤ y ≤ cN (denominator in a specific range)\n- gcd(x, y) = 1 (reduced fraction)\n- |α - x/y| < A/y² (approximation quality)",
     "mathContext": "By restricting to denominators in [N, cN], we study how approximability changes with the \"scale\" of denominators. The parameter c controls the width of this window.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Rational approximation", "Measure theory"],
     "tags": ["rational-approximation", "measure-theory", "denominator-range", "definition"]
   },
@@ -43,7 +44,7 @@
     "title": "S(N, A, c)",
     "content": "**S(N, A, c):**\n\nThe Lebesgue measure of the approximation set.\n\n```lean\nnoncomputable def S (N : ℕ) (A c : ℝ) : ℝ :=\n  (volume (approximationSet N A c)).toReal\n```\n\nThis is the key quantity: what fraction of (0,1) is approximable?",
     "mathContext": "S(N, A, c) is always between 0 and 1 since it's the measure of a subset of (0,1). The main question is whether this converges as N → ∞.",
-    "significance": "critical",
+    "significance": "key",
     "tags": ["lebesgue-measure", "definition", "metric-number-theory", "convergence"]
   },
   {
@@ -64,7 +65,7 @@
     "title": "Limit Function f(A, c)",
     "content": "**f(A, c) = 12A log(c) / π²:**\n\nThe conjectured (and proved) limiting density in the EST regime.\n\n```lean\nnoncomputable def f (A c : ℝ) : ℝ :=\n  12 * A * log c / π^2\n```",
     "mathContext": "The factor 12/π² ≈ 1.216 comes from the density of coprime pairs. The log(c) factor reflects the logarithmic measure of the denominator range [N, cN].",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Euler's totient function", "Coprime density"],
     "tags": ["explicit-formula", "coprime-density", "euler-totient", "definition"]
   },
@@ -75,7 +76,7 @@
     "type": "definition",
     "title": "Limit Exists",
     "content": "**limitExists(A, c):**\n\nThe central question: does lim_{N→∞} S(N, A, c) exist?\n\nThis is formalized using filter convergence:\n\n```lean\ndef limitExists (A c : ℝ) : Prop :=\n  ∃ L : ℝ, Tendsto (fun N => S N A c) atTop (nhds L)\n```",
-    "significance": "critical",
+    "significance": "key",
     "tags": ["filter-convergence", "limit-existence", "definition", "central-question"]
   },
   {
@@ -98,7 +99,7 @@
     "title": "Erdős-Szüsz-Turán Theorem (1958)",
     "content": "**Axiom erdos_szusz_turan:**\n\nIn the EST regime (0 < A < c/(1+c²)):\n\nlim_{N→∞} S(N, A, c) = f(A, c) = 12A log(c) / π²\n\nThis explicit formula was the main achievement of the 1958 paper.",
     "mathContext": "The proof uses careful counting of Farey fractions and their spacing properties. The π² appears because the density of coprime pairs (m,n) with m ≤ n is 6/π².",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Farey fractions", "Coprime counting", "Euler's product"],
     "tags": ["erdos-szusz-turan", "explicit-formula", "farey-fractions", "axiom"]
   },
@@ -121,7 +122,7 @@
     "title": "Kesten-Sós Theorem (1966)",
     "content": "**Axiom kesten_sos:**\n\nFor all valid parameters A > 0, c > 1, the limit exists:\n\n∃ L : ℝ, lim_{N→∞} S(N, A, c) = L\n\nThis was a major generalization: the limit exists even outside the EST regime where no explicit formula is known.",
     "mathContext": "Kesten and Sós used ergodic theory and equidistribution results. Their method doesn't compute the limit explicitly but proves its existence via compactness arguments.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Ergodic theory", "Equidistribution"],
     "tags": ["kesten-sos", "ergodic-theory", "limit-existence", "axiom"]
   },
@@ -188,7 +189,7 @@
     "title": "Summary: Problem #1001 is SOLVED",
     "content": "**Problem #1001 Summary:**\n\n1. **Question:** Does lim S(N, A, c) exist?\n2. **Answer:** YES (Kesten-Sós 1966)\n3. **Explicit Formula:** f(A, c) = 12A log(c)/π² in EST regime\n4. **Key Connection:** π² comes from Farey fraction asymptotics\n5. **Multiple Proofs:** EST (1958), Kesten-Sós (1966), Boca (2008), Xiong-Zaharescu (2006)\n\nThe main theorem erdos_1001 states: for all A > 0 and c > 1, the limit exists.",
     "mathContext": "erdos_1001 : ∀ A c, A > 0 → c > 1 → limitExists A c",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["solved problem", "Kesten-Sós", "Farey fractions"],
     "tags": ["solved-problem", "kesten-sos", "farey-fractions", "summary"]
   }

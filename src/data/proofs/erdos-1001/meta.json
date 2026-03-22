@@ -152,5 +152,22 @@
       "What is the rate of convergence of S(N,A,c) to f(A,c)?",
       "How does the result extend to higher dimensions?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "prime-reciprocal-divergence",
+      "relationship": "related",
+      "description": "Both concern the distribution and density of number-theoretic objects; the divergence of prime reciprocals relates to the Euler product that produces the π² constant"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "related",
+      "description": "The density of coprime pairs (6/π²) underlying the EST formula depends on the distribution of primes via Euler's product formula"
+    },
+    {
+      "targetId": "lebesgue-measure",
+      "relationship": "uses",
+      "description": "S(N,A,c) is defined as the Lebesgue measure of the approximation set, using MeasureTheory.volume"
+    }
+  ]
 }
