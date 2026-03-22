@@ -40,10 +40,11 @@
     "problemStatement": "Theorem (Lagrange, 1770): Every natural number n can be written as the sum of four squares:\n\n$$n = a^2 + b^2 + c^2 + d^2$$\n\nfor some non-negative integers a, b, c, d.\n\nKey contrast: While every number is a sum of four squares, NOT every number is a sum of three squares. Numbers of the form $4^k(8m + 7)$ (such as 7, 15, 23, 28, ...) require all four squares.",
     "proofStrategy": "The proof uses Euler's four-square identity and a descent argument:\n\n1. **Euler's Identity**: Show that $(a^2 + b^2 + c^2 + d^2)(x^2 + y^2 + z^2 + w^2) = A^2 + B^2 + C^2 + D^2$ where A, B, C, D are explicit bilinear combinations. This means we only need to prove the theorem for primes.\n\n2. **Primes**: For each prime p, find some multiple mp (with m < p) that is a sum of four squares. This uses properties of quadratic residues.\n\n3. **Descent**: If m > 1, show we can find a smaller multiple. This is the technical heart of the proof.\n\n4. **Conclusion**: By descent, m = 1, so p itself is a sum of four squares.\n\n5. **Extension**: Use Euler's identity to extend from primes to all naturals via unique factorization.",
     "keyInsights": [
-      "Euler's four-square identity IS quaternion multiplication: $|q_1 \\cdot q_2|^2 = |q_1|^2 \\cdot |q_2|^2$",
-      "Numbers like 7 = 1 + 1 + 1 + 4 require all four squares - three are not enough",
-      "The theorem reduces to primes because sums-of-four-squares are closed under multiplication",
-      "There is no three-square identity because there is no 3-dimensional division algebra"
+      "**Quaternion connection**: Euler's four-square identity IS quaternion multiplication: $|q_1 \\cdot q_2|^2 = |q_1|^2 \\cdot |q_2|^2$. This was discovered 95 years before Hamilton's quaternions (1843).",
+      "**Three-square obstruction**: Numbers of the form $4^k(8m+7)$ (e.g., 7, 15, 23, 28) cannot be sums of three squares (Legendre). This is why four squares is the minimal universal bound.",
+      "**Reduction to primes**: Since sums-of-four-squares are closed under multiplication (Euler's identity), the theorem reduces to proving every prime is a sum of four squares, then extending via unique factorization.",
+      "**Frobenius's theorem**: The success of four squares and failure of three reflects a deep algebraic fact: the only finite-dimensional associative division algebras over $\\mathbb{R}$ are $\\mathbb{R}$ (dim 1), $\\mathbb{C}$ (dim 2), and $\\mathbb{H}$ (dim 4). There is no dim-3 analog.",
+      "**Waring's problem connection**: Lagrange's theorem is the case $g(2) = 4$ of Waring's problem: every natural number is a sum of at most $g(k)$ perfect $k$th powers. Hilbert proved $g(k)$ exists for all $k$ in 1909."
     ]
   },
   "sections": [
@@ -101,10 +102,22 @@
     {
       "targetId": "fermat-two-squares",
       "relationship": "contrasts",
-      "description": "Two squares vs four: Fermat's theorem restricts which numbers are sums of two squares, while Lagrange's theorem says all are sums of four"
+      "description": "Two squares vs four: Fermat's theorem restricts which numbers are sums of two squares (only primes ≡ 1 mod 4), while Lagrange's theorem says all are sums of four"
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Quadratic residues modulo p determine which primes are sums of two squares and play a role in the four-square proof's descent step"
+    },
+    {
+      "targetId": "hurwitz-theorem",
+      "relationship": "related",
+      "description": "Hurwitz's theorem on composition algebras explains why sum-of-squares identities exist only for 1, 2, 4, and 8 squares (connected to R, C, H, O)"
     }
   ],
   "relatedProofs": [
-    "fermat-two-squares"
+    "fermat-two-squares",
+    "quadratic-reciprocity",
+    "hurwitz-theorem"
   ]
 }
