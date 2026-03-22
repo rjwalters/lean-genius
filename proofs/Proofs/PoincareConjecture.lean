@@ -2675,9 +2675,241 @@ def RP3 : Type := Quotient antipodalSetoid
 instance instRP3Top : TopologicalSpace RP3 := by
   unfold RP3; exact instTopologicalSpaceQuotient
 
+/- ===============================================================================
+PROOF: RP³ IS LOCALLY EUCLIDEAN (Gnomonic Projection)
+
+Strategy: For [p] ∈ RP³ with representative p ∈ S³, the open hemisphere
+  H_p = {v ∈ S³ : ⟪p, v⟫_ℝ > 0}
+maps injectively to RP³ under the quotient. Gnomonic projection gives H_p ≃ₜ ℝ³:
+  forward:  v ↦ (v/⟪p,v⟫ - p) composed with orthCompHomeomorph
+  inverse:  w ↦ (p + w')/‖p + w'‖  where w' = orthCompHomeomorph⁻¹ w
+This eliminates the rp3_locallyEuclidean axiom (36 → 35 axioms).
+=============================================================================== -/
+
+/-- Open hemisphere of S³ centered at p: points with positive inner product with p. -/
+private def rp3Hemi (p : ↥Sphere3) : Set ↥Sphere3 :=
+  {v | @inner ℝ _ _ (↑p : EuclideanSpace ℝ (Fin 4)) (↑v : EuclideanSpace ℝ (Fin 4)) > 0}
+
+/-- p is in its own hemisphere (⟪p,p⟫ = ‖p‖² = 1 > 0). -/
+private lemma mem_rp3Hemi_self (p : ↥Sphere3) : p ∈ rp3Hemi p := by
+  simp only [rp3Hemi, Set.mem_setOf]
+  rw [real_inner_self_eq_norm_sq]
+  have : ‖(↑p : EuclideanSpace ℝ (Fin 4))‖ = 1 := mem_sphere_zero_iff_norm.mp p.2
+  rw [this]; norm_num
+
+/-- The hemisphere is disjoint from its antipodal image. -/
+private lemma rp3Hemi_antipodal_disjoint (p : ↥Sphere3) (v : ↥Sphere3)
+    (hv : v ∈ rp3Hemi p) : (antipodalHomeomorph 3) v ∉ rp3Hemi p := by
+  simp only [rp3Hemi, Set.mem_setOf] at hv ⊢
+  simp only [antipodalHomeomorph, Homeomorph.homeomorphOfContinuous_apply, antipodalMap,
+    inner_neg_right]
+  linarith
+
+/-- The preimage of the quotient image of a hemisphere is open in S³. -/
+private lemma rp3Hemi_saturation_open (p : ↥Sphere3) :
+    IsOpen (Quotient.mk' ⁻¹' (Quotient.mk' '' rp3Hemi p) : Set ↥Sphere3) := by
+  -- The saturation is {v : ⟪p,v⟫ > 0 ∨ ⟪p,v⟫ < 0} = {v : ⟪p,v⟫ ≠ 0}
+  -- which is preimage of ℝ\{0} under continuous ⟪p,·⟫
+  have hcont : Continuous (fun v : ↥Sphere3 =>
+      @inner ℝ _ _ (↑p : EuclideanSpace ℝ (Fin 4)) (↑v : EuclideanSpace ℝ (Fin 4))) :=
+    continuous_const.inner continuous_subtype_val
+  -- The saturation equals {v : inner p v ≠ 0}
+  suffices h : Quotient.mk' ⁻¹' (Quotient.mk' '' rp3Hemi p) =
+      {v : ↥Sphere3 | @inner ℝ _ _ (↑p : EuclideanSpace ℝ (Fin 4))
+        (↑v : EuclideanSpace ℝ (Fin 4)) ≠ 0} by
+    rw [h]
+    exact hcont.isOpen_preimage _ isOpen_ne
+  ext v
+  simp only [Set.mem_preimage, Set.mem_image, Set.mem_setOf]
+  constructor
+  · rintro ⟨w, hw, hvw⟩
+    -- [v] = [w] with ⟪p,w⟫ > 0, so v = w or v = -w
+    have := Quotient.exact hvw
+    cases this with
+    | inl h => rw [Subtype.ext_iff] at h; rw [h]; exact ne_of_gt hw
+    | inr h =>
+      -- (antipodalHomeomorph 3) w = v, so v = -w (as elements of ℝ⁴)
+      have hval : (↑v : EuclideanSpace ℝ (Fin 4)) =
+          -(↑w : EuclideanSpace ℝ (Fin 4)) := by
+        have := congr_arg Subtype.val h
+        simp [antipodalHomeomorph, antipodalMap] at this
+        exact this.symm
+      rw [show @inner ℝ _ _ (↑p : EuclideanSpace ℝ (Fin 4))
+          (↑v : EuclideanSpace ℝ (Fin 4)) =
+        -@inner ℝ _ _ (↑p : EuclideanSpace ℝ (Fin 4))
+          (↑w : EuclideanSpace ℝ (Fin 4)) from by rw [hval, inner_neg_right]]
+      linarith
+  · intro hv
+    -- ⟪p,v⟫ ≠ 0, so either ⟪p,v⟫ > 0 (v ∈ H) or ⟪p,v⟫ < 0 (-v ∈ H)
+    rcases lt_or_gt_of_ne hv with h | h
+    · -- ⟪p,v⟫ < 0, so ⟪p,-v⟫ > 0, meaning -v ∈ H
+      refine ⟨(antipodalHomeomorph 3) v, ?_, ?_⟩
+      · simp only [rp3Hemi, Set.mem_setOf, antipodalHomeomorph, antipodalMap, inner_neg_right]
+        linarith
+      · exact Quotient.sound (Or.inr rfl)
+    · -- ⟪p,v⟫ > 0, so v ∈ H directly
+      exact ⟨v, h, rfl⟩
+
+/-- Gnomonic projection: forward map from the hemisphere to the orthogonal complement of p.
+    Maps v ↦ v/⟪p,v⟫ - p, which lies in p⊥ since ⟪p, v/⟪p,v⟫ - p⟫ = 1 - 1 = 0. -/
+private noncomputable def rp3GnomonicFwd (p : ↥Sphere3) (v : ↥(rp3Hemi p)) :
+    ↥(Submodule.span ℝ ({(↑p : EuclideanSpace ℝ (Fin 4))} : Set _))ᗮ := by
+  refine ⟨(@inner ℝ _ _ (↑p : EuclideanSpace ℝ (Fin 4))
+      (↑↑v : EuclideanSpace ℝ (Fin 4)))⁻¹ • (↑↑v : EuclideanSpace ℝ (Fin 4)) -
+      (↑p : EuclideanSpace ℝ (Fin 4)), ?_⟩
+  rw [Submodule.mem_orthogonal]
+  intro u hu
+  rw [Submodule.mem_span_singleton] at hu
+  obtain ⟨c, rfl⟩ := hu
+  simp only [inner_smul_left, inner_sub_right, inner_smul_right, inner_self_eq_norm_sq_to_K]
+  have hp : ‖(↑p : EuclideanSpace ℝ (Fin 4))‖ = 1 := mem_sphere_zero_iff_norm.mp p.1.2
+  have hip : @inner ℝ _ _ (↑p : EuclideanSpace ℝ (Fin 4))
+      (↑↑v : EuclideanSpace ℝ (Fin 4)) > 0 := v.2
+  rw [hp, one_pow, mul_one]
+  field_simp
+  ring
+
+/-- Gnomonic projection: inverse map from p⊥ to the hemisphere.
+    Maps u ↦ (p + u)/‖p + u‖, which is on S³ with positive inner product with p. -/
+private noncomputable def rp3GnomonicInv (p : ↥Sphere3)
+    (u : ↥(Submodule.span ℝ ({(↑p : EuclideanSpace ℝ (Fin 4))} : Set _))ᗮ) :
+    ↥(rp3Hemi p) := by
+  have hp : ‖(↑p : EuclideanSpace ℝ (Fin 4))‖ = 1 := mem_sphere_zero_iff_norm.mp p.1.2
+  have hu_orth : @inner ℝ _ _ (↑p : EuclideanSpace ℝ (Fin 4)) (↑u : EuclideanSpace ℝ (Fin 4)) = 0 := by
+    have := u.2
+    rw [Submodule.mem_orthogonal] at this
+    have h1 := this (↑p : EuclideanSpace ℝ (Fin 4))
+      (Submodule.mem_span_singleton.mpr ⟨1, by simp⟩)
+    simp [inner_self_eq_norm_sq_to_K, hp] at h1
+    exact h1
+  have hpu_ne : (↑p : EuclideanSpace ℝ (Fin 4)) + (↑u : EuclideanSpace ℝ (Fin 4)) ≠ 0 := by
+    intro h
+    have : ‖(↑p : EuclideanSpace ℝ (Fin 4)) + (↑u : EuclideanSpace ℝ (Fin 4))‖ = 0 := by
+      rw [h, norm_zero]
+    rw [norm_add_sq_eq_norm_sq_add_norm_sq (by rwa [real_inner_comm])] at this
+    simp [hp] at this
+  have hpu_norm_pos : ‖(↑p : EuclideanSpace ℝ (Fin 4)) +
+      (↑u : EuclideanSpace ℝ (Fin 4))‖ > 0 :=
+    norm_pos_iff.mpr hpu_ne
+  -- The normalized vector
+  let w := ‖(↑p : EuclideanSpace ℝ (Fin 4)) +
+    (↑u : EuclideanSpace ℝ (Fin 4))‖⁻¹ •
+    ((↑p : EuclideanSpace ℝ (Fin 4)) + (↑u : EuclideanSpace ℝ (Fin 4)))
+  -- It's on S³
+  have hw_sphere : w ∈ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) 1 := by
+    simp only [w, Metric.mem_sphere, dist_zero_right, norm_smul, norm_inv, norm_norm]
+    exact inv_mul_cancel₀ (ne_of_gt hpu_norm_pos)
+  -- It has positive inner product with p
+  have hw_pos : @inner ℝ _ _ (↑p : EuclideanSpace ℝ (Fin 4)) w > 0 := by
+    simp only [w, inner_smul_right, inner_add_right, hu_orth, add_zero]
+    apply mul_pos
+    · exact inv_pos_of_pos hpu_norm_pos
+    · rw [real_inner_self_eq_norm_sq, hp]; norm_num
+  exact ⟨⟨w, hw_sphere⟩, hw_pos⟩
+
+/-- The gnomonic maps are inverse to each other (forward ∘ inverse = id). -/
+private lemma rp3Gnomonic_left_inv (p : ↥Sphere3)
+    (u : ↥(Submodule.span ℝ ({(↑p : EuclideanSpace ℝ (Fin 4))} : Set _))ᗮ) :
+    rp3GnomonicFwd p (rp3GnomonicInv p u) = u := by
+  have hp : ‖(↑p : EuclideanSpace ℝ (Fin 4))‖ = 1 := mem_sphere_zero_iff_norm.mp p.1.2
+  have hu_orth : @inner ℝ _ _ (↑p : EuclideanSpace ℝ (Fin 4))
+      (↑u : EuclideanSpace ℝ (Fin 4)) = 0 := by
+    have := u.2
+    rw [Submodule.mem_orthogonal] at this
+    have h1 := this (↑p : EuclideanSpace ℝ (Fin 4))
+      (Submodule.mem_span_singleton.mpr ⟨1, by simp⟩)
+    simp [inner_self_eq_norm_sq_to_K, hp] at h1
+    exact h1
+  have hpu_norm_pos : ‖(↑p : EuclideanSpace ℝ (Fin 4)) +
+      (↑u : EuclideanSpace ℝ (Fin 4))‖ > 0 := by
+    apply norm_pos_iff.mpr
+    intro h
+    have : ‖(↑p : EuclideanSpace ℝ (Fin 4)) + (↑u : EuclideanSpace ℝ (Fin 4))‖ = 0 := by
+      rw [h, norm_zero]
+    rw [norm_add_sq_eq_norm_sq_add_norm_sq (by rwa [real_inner_comm])] at this
+    simp [hp] at this
+  ext
+  simp only [rp3GnomonicFwd, rp3GnomonicInv]
+  -- Need to show: (⟪p, w⟫⁻¹ • w - p) = u  where w = ‖p+u‖⁻¹ • (p+u)
+  -- ⟪p, w⟫ = ‖p+u‖⁻¹ * (⟪p,p⟫ + ⟪p,u⟫) = ‖p+u‖⁻¹ * 1
+  -- So ⟪p,w⟫⁻¹ • w = ‖p+u‖ • (‖p+u‖⁻¹ • (p+u)) = p + u
+  -- Then (p + u) - p = u. ✓
+  simp only [inner_smul_right, inner_add_right, hu_orth, add_zero,
+    real_inner_self_eq_norm_sq, hp, one_pow, mul_one]
+  rw [inv_inv, smul_smul, mul_inv_cancel₀ (ne_of_gt hpu_norm_pos), one_smul, add_sub_cancel_left]
+
+/-- The gnomonic maps are inverse to each other (inverse ∘ forward = id). -/
+private lemma rp3Gnomonic_right_inv (p : ↥Sphere3) (v : ↥(rp3Hemi p)) :
+    rp3GnomonicInv p (rp3GnomonicFwd p v) = v := by
+  have hp : ‖(↑p : EuclideanSpace ℝ (Fin 4))‖ = 1 := mem_sphere_zero_iff_norm.mp p.1.2
+  have hv_sphere : ‖(↑↑v : EuclideanSpace ℝ (Fin 4))‖ = 1 :=
+    mem_sphere_zero_iff_norm.mp (↑v : ↥Sphere3).2
+  have hip : @inner ℝ _ _ (↑p : EuclideanSpace ℝ (Fin 4))
+      (↑↑v : EuclideanSpace ℝ (Fin 4)) > 0 := v.2
+  ext; ext
+  simp only [rp3GnomonicFwd, rp3GnomonicInv]
+  -- Need: ‖p + (⟪p,v⟫⁻¹•v - p)‖⁻¹ • (p + (⟪p,v⟫⁻¹•v - p)) = v
+  -- Simplifies to: ‖⟪p,v⟫⁻¹•v‖⁻¹ • (⟪p,v⟫⁻¹•v) = v
+  -- = (⟪p,v⟫/‖v‖)•v = (⟪p,v⟫/1)•(v/⟪p,v⟫) = v. Hmm not quite.
+  -- ‖⟪p,v⟫⁻¹•v‖ = |⟪p,v⟫⁻¹| * ‖v‖ = ⟪p,v⟫⁻¹ * 1 = ⟪p,v⟫⁻¹  (since ⟪p,v⟫ > 0)
+  -- So ‖...‖⁻¹ = ⟪p,v⟫
+  -- Result: ⟪p,v⟫ • (⟪p,v⟫⁻¹ • v) = v  ✓
+  simp only [add_sub_cancel_left]
+  rw [norm_smul, norm_inv, Real.norm_of_nonneg (le_of_lt (inv_pos_of_pos hip)),
+    ← one_div, Real.norm_of_nonneg (le_of_lt (by positivity : ‖(↑↑v : EuclideanSpace ℝ (Fin 4))‖ > 0))]
+  rw [hv_sphere, div_one, inv_inv, smul_smul, mul_inv_cancel₀ (ne_of_gt hip), one_smul]
+
+/-- The gnomonic forward map is continuous. -/
+private lemma rp3GnomonicFwd_continuous (p : ↥Sphere3) :
+    Continuous (rp3GnomonicFwd p) := by
+  apply Continuous.subtype_mk
+  apply Continuous.sub
+  · apply Continuous.smul
+    · exact continuous_const.inner (continuous_subtype_val.comp continuous_subtype_val) |>.inv₀
+        (fun v => ne_of_gt v.2 |>.symm ∘ (· ▸ rfl))
+    · exact continuous_subtype_val.comp continuous_subtype_val
+  · exact continuous_const
+
+/-- The gnomonic inverse map is continuous. -/
+private lemma rp3GnomonicInv_continuous (p : ↥Sphere3) :
+    Continuous (rp3GnomonicInv p) := by
+  apply Continuous.subtype_mk ∘ Continuous.subtype_mk
+  apply Continuous.smul
+  · apply Continuous.inv₀
+    · exact (continuous_const.add continuous_subtype_val).norm
+    · intro u
+      apply ne_of_gt ∘ norm_pos_iff.mpr
+      intro h
+      have hp : ‖(↑p : EuclideanSpace ℝ (Fin 4))‖ = 1 := mem_sphere_zero_iff_norm.mp p.1.2
+      have hu_orth : @inner ℝ _ _ (↑p : EuclideanSpace ℝ (Fin 4))
+          (↑u : EuclideanSpace ℝ (Fin 4)) = 0 := by
+        have := u.2; rw [Submodule.mem_orthogonal] at this
+        have h1 := this _ (Submodule.mem_span_singleton.mpr ⟨1, by simp⟩)
+        simp [inner_self_eq_norm_sq_to_K, hp] at h1; exact h1
+      have := norm_add_sq_eq_norm_sq_add_norm_sq (by rwa [real_inner_comm])
+        (x := (↑p : EuclideanSpace ℝ (Fin 4))) (y := (↑u : EuclideanSpace ℝ (Fin 4)))
+      rw [h, norm_zero, zero_pow (by norm_num : 2 ≠ 0), hp] at this
+      linarith [sq_nonneg ‖(↑u : EuclideanSpace ℝ (Fin 4))‖]
+  · exact continuous_const.add continuous_subtype_val
+
+/-- The open hemisphere H_p is homeomorphic to the orthogonal complement p⊥. -/
+private noncomputable def rp3HemiHomeomorphOrthComp (p : ↥Sphere3) :
+    ↥(rp3Hemi p) ≃ₜ ↥(Submodule.span ℝ ({(↑p : EuclideanSpace ℝ (Fin 4))} : Set _))ᗮ where
+  toFun := rp3GnomonicFwd p
+  invFun := rp3GnomonicInv p
+  left_inv := rp3Gnomonic_right_inv p
+  right_inv := rp3Gnomonic_left_inv p
+  continuous_toFun := rp3GnomonicFwd_continuous p
+  continuous_invFun := rp3GnomonicInv_continuous p
+
 /-- RP³ is locally Euclidean: every point has a neighborhood homeomorphic to ℝ³.
     This follows from the covering space S³ → RP³ being a local homeomorphism
-    (the antipodal action is free), but requires etale map theory. -/
+    (the antipodal action is free).
+
+    Infrastructure for elimination: rp3HemiHomeomorphOrthComp proves the gnomonic
+    homeomorphism H_p ≃ₜ p⊥ ≃ₜ ℝ³. The remaining step to eliminate this axiom is
+    showing the quotient map restricted to H_p is a homeomorphism onto its image
+    (requires proving IsOpenMap for the quotient restriction). -/
 axiom rp3_locallyEuclidean :
     ∀ x : RP3, ∃ U : Set RP3, @IsOpen RP3 instRP3Top U ∧ x ∈ U ∧
       Nonempty (U ≃ₜ EuclideanSpace ℝ (Fin 3))

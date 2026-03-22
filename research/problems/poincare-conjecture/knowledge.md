@@ -924,3 +924,51 @@ generic over inner product spaces.
 - `proofs/Proofs/PoincareConjecture.lean`: 15438 → 15862 lines (+424), 0 new sorries, BUILD CLEAN (new content)
 - `src/data/research/problems/poincare-conjecture.json`: Updated knowledge
 - `research/problems/poincare-conjecture/knowledge.md`: This session log
+
+---
+
+## Session 2026-03-21 (researcher-2) - Gnomonic Projection Infrastructure for Axiom Elimination
+
+**Mode**: REVISIT (RICH knowledge, score 388)
+**Problem**: poincare-conjecture
+**Prior Status**: 17302 lines, 36 axioms, 0 sorries
+
+### Pre-Work Assessment
+- **Axiom Question**: 36 axioms. Classified all 36: 8 are type definitions (ConnectedSum, PoincareHomologySphere, WhiteheadManifold, DehnSurgeryResult + instances), ~20 are deep theorems (Perelman, Freedman, Smale, JSJ etc.), 3 are potentially provable topological facts.
+- **Target**: rp3_locallyEuclidean — most tractable for elimination
+- **Strategy**: Gnomonic projection on open hemispheres
+
+### What I Did
+
+**Added gnomonic projection infrastructure** (~232 lines, 10 new lemmas/defs):
+
+1. `rp3Hemi p`: Open hemisphere {v ∈ S³ : ⟪p,v⟫ > 0} centered at p
+2. `mem_rp3Hemi_self`: p ∈ H_p since ⟪p,p⟫ = 1 > 0
+3. `rp3Hemi_antipodal_disjoint`: H_p ∩ (-H_p) = ∅
+4. `rp3Hemi_saturation_open`: preimage of q(H_p) = {v : ⟪p,v⟫ ≠ 0} is open in S³
+5. `rp3GnomonicFwd`: forward map v ↦ v/⟪p,v⟫ - p into p⊥ (with membership proof)
+6. `rp3GnomonicInv`: inverse map u ↦ (p+u)/‖p+u‖ back to H_p (with sphere+hemisphere proofs)
+7. `rp3Gnomonic_left_inv`: gnomonicFwd ∘ gnomonicInv = id (algebraic calculation)
+8. `rp3Gnomonic_right_inv`: gnomonicInv ∘ gnomonicFwd = id (algebraic calculation)
+9. `rp3GnomonicFwd_continuous`, `rp3GnomonicInv_continuous`: both maps are continuous
+10. `rp3HemiHomeomorphOrthComp`: full Homeomorph H_p ≃ₜ p⊥
+
+### Outcome
+- **Lines**: 17302 → 17534 (+232)
+- **Axioms**: 36 (unchanged — axiom retained due to gap in quotient map argument)
+- **Sorries**: 0 (maintained)
+- **Build**: CLEAN (3175 jobs, warnings only)
+- **Mathematical progress**: Proved H_p ≃ₜ p⊥ ≃ₜ ℝ³ via gnomonic projection
+
+### Gap Analysis for Axiom Elimination
+
+To eliminate `rp3_locallyEuclidean`, the remaining step is:
+- Show the quotient map q|_{H_p} : H_p → q(H_p) is a homeomorphism onto its image
+- This requires proving `IsOpenMap` for the quotient restriction
+- The saturation argument (V ∪ (-V) is open for V ⊂ H_p open) is the key idea
+- In Lean, this needs careful handling of the subspace topology interaction with quotient topology
+
+### Next Steps
+1. Complete rp3_locallyEuclidean elimination: prove IsOpenMap for q|_{H_p}
+2. Try sphere_n_simply_connected if Seifert-van Kampen appears in Mathlib
+3. Try sphere3_not_contractible if Brouwer FPT or homology appears in Mathlib
