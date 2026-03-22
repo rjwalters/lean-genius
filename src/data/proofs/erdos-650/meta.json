@@ -105,6 +105,13 @@
   },
   "sections": [
     {
+      "id": "header-setup",
+      "title": "Module Header and Problem Context",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "Documents Erdős Problem #650 (1959): divisibility covering in intervals. Given A ⊆ {1,...,N} with |A| = m, how many integers in any length-2N interval are divisible by distinct elements of A? Known: f(m) ≥ c√m (Erdős-Sarányi). Open: f(m) ≤ C√m? Imports Mathlib."
+    },
+    {
       "id": "basic-defs",
       "title": "Definitions",
       "summary": "Defines `countDivisible` (count multiples of A-elements in [a, a+2N] via `Finset.filter`), `minCoverage` (worst-case over interval positions via `sInf`), and `f` (extremal over all sets A ⊆ {1,...,N} with |A| = m).",
