@@ -64,36 +64,36 @@
   },
   "sections": [
     {
-      "id": "module-header",
+      "id": "preamble",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 14,
-      "summary": "Documentation header describing the alteration/deletion method and its key results, followed by Mathlib import and namespace declaration.",
+      "endLine": 18,
+      "summary": "Documentation header describing the alteration/deletion method and its key results (alteration principle, independent set bound, Property B). Imports Mathlib, opens `ProbMethod.Alteration` namespace and `Finset BigOperators`.",
       "mathContext": "The alteration method is a refinement of the probabilistic method: construct a random object, then deterministically remove violations to obtain a valid structure."
     },
     {
       "id": "alteration-principle",
       "title": "Alteration Principle",
-      "startLine": 16,
-      "endLine": 21,
-      "summary": "Core theorem: if the sum of a 'good' function minus a 'bad' function over a nonempty finite set is positive, then some element has positive net good value.",
-      "mathContext": "For functions $\\text{good}, \\text{bad} : \\alpha \\to \\mathbb{N}$ on a nonempty finite set $S$, if $\\sum_{a \\in S} \\text{good}(a) - \\sum_{a \\in S} \\text{bad}(a) > 0$, then $\\exists a \\in S$ with $\\text{good}(a) - \\text{bad}(a) > 0$. This is the deterministic core of the alteration method, reducing the probabilistic argument to a pigeonhole-type statement."
+      "startLine": 20,
+      "endLine": 38,
+      "summary": "Core theorem `alteration_principle`: if the $\\mathbb{Z}$-valued sum of `good` minus `bad` over a nonempty `Finset` is positive, then some element has positive net good value. Proved by contradiction using `Finset.sum_le_sum` and `linarith`.",
+      "mathContext": "For functions $\\text{good}, \\text{bad} : \\alpha \\to \\mathbb{N}$ on a nonempty finite set $S$, if $\\sum_{a \\in S} (\\text{good}(a) : \\mathbb{Z}) - \\sum_{a \\in S} (\\text{bad}(a) : \\mathbb{Z}) > 0$, then $\\exists a \\in S$ with $\\text{good}(a) > \\text{bad}(a)$."
     },
     {
       "id": "independent-set-bound",
       "title": "Independent Set Bound via Alteration",
-      "startLine": 23,
-      "endLine": 26,
-      "summary": "Application to regular graphs: every $d$-regular graph on $n$ vertices has an independent set of size at least $\\lfloor n/(2d) \\rfloor$.",
-      "mathContext": "For a $d$-regular graph on $n$ vertices, include each vertex independently with probability $p = 1/(d+1)$. The expected number of selected vertices is $np$ and the expected edges in the selected set is $\\frac{nd}{2} p^2$. Deleting one endpoint per edge yields expected independent set size $\\geq np - \\frac{nd}{2}p^2 \\geq n/(2d)$."
+      "startLine": 40,
+      "endLine": 50,
+      "summary": "Application to regular graphs: proves existence of a positive integer $k \\geq \\lfloor n/(2d) \\rfloor$ for a $d$-regular graph on $n$ vertices, as a simplified form of $\\alpha(G) \\geq n/(2d)$.",
+      "mathContext": "For a $d$-regular graph on $n$ vertices: $\\alpha(G) \\geq \\frac{n}{2d}$. Select each vertex with probability $p = 1/d$, delete one endpoint per surviving edge. Expected independent set size $\\geq np - \\frac{nd}{2}p^2 = \\frac{n}{2d}$."
     },
     {
       "id": "property-b",
       "title": "Property B of Hypergraphs",
-      "startLine": 28,
-      "endLine": 32,
-      "summary": "Placeholder for Property B: a $k$-uniform hypergraph with fewer than $2^{k-1}$ edges is 2-colorable.",
-      "mathContext": "Property B states that the vertices of a hypergraph can be 2-colored with no monochromatic edge. For $k$-uniform hypergraphs, a random 2-coloring makes each edge monochromatic with probability $2^{1-k}$. If $m < 2^{k-1}$, the expected number of monochromatic edges $m \\cdot 2^{1-k} < 1$, so alteration yields a valid 2-coloring."
+      "startLine": 52,
+      "endLine": 61,
+      "summary": "Placeholder theorem `property_b_bound`: a $k$-uniform hypergraph with $m < 2^{k-1}$ edges is 2-colorable. Currently proves `True` because Mathlib lacks a standard hypergraph type. Closes the namespace.",
+      "mathContext": "Property B: for $k$-uniform hypergraphs with $m$ edges, random 2-coloring gives $\\mathbb{E}[\\text{mono edges}] = m \\cdot 2^{1-k}$. If $m < 2^{k-1}$, alteration yields a valid 2-coloring."
     }
   ],
   "crossReferences": [
