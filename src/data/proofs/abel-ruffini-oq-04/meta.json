@@ -80,7 +80,9 @@
       "fundamental-theorem-algebra",
       "fundamental-arithmetic",
       "hermite-lindemann",
-      "sqrt2-irrational"
+      "sqrt2-irrational",
+      "e-transcendental",
+      "pi-transcendental"
     ],
     "prerequisites": [
       "Group theory (normal subgroups, derived series, solvability)",
@@ -145,6 +147,16 @@
       "targetId": "sqrt2-irrational",
       "relationship": "foundational",
       "description": "The irrationality of √2 (c. 500 BCE) is the earliest impossibility result in mathematics. Abel-Ruffini extends the paradigm: √2 ∉ ℚ → certain quintic roots ∉ radical extensions → e,π ∉ algebraic numbers forms a hierarchy of inexpressibility"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "Hermite's proof that e is transcendental (1873) extends the impossibility hierarchy: Abel-Ruffini shows certain roots cannot be expressed by radicals, while transcendence of e shows it cannot satisfy any polynomial — a strictly stronger inexpressibility barrier"
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "related",
+      "description": "Lindemann's proof that π is transcendental (1882) is a successor impossibility result: the transcendence of π implies the impossibility of squaring the circle, paralleling Abel-Ruffini's impossibility of the quintic formula — both show certain quantities escape finite algebraic description"
     }
   ],
   "overview": {

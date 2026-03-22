@@ -72,6 +72,18 @@
     "prerequisites": ["exp/log identity", "Finset.prod API"]
   },
   {
+    "id": "ann-pmlo-06b-exp-identity",
+    "proofId": "amgm-inequality-oq-03-oq-02",
+    "range": { "startLine": 191, "endLine": 214 },
+    "type": "technique",
+    "title": "Supporting Identities: M₁ = AM and M_r = exp((log ∑)/r)",
+    "content": "Two supporting identities bridge definitions and the main limit. `powerMean_one_eq_arithMean` shows M₁ = AM by simplifying z^1 = z via `rpow_one`. `powerMean_eq_exp_log` rewrites the power mean as M_r = exp((1/r) · log(∑ wᵢzᵢ^r)) using `rpow_def_of_pos` — this is the form where f(r)/r appears, connecting the power mean to the slope limit. The proof is 3 lines: rewrite via rpow_def_of_pos, then `congr 1; ring` aligns the exponents.",
+    "mathContext": "$M_1 = \\sum w_i z_i^1 = \\sum w_i z_i = \\text{AM}$. For $r \\neq 0$: $(\\sum w_i z_i^r)^{1/r} = \\exp\\left(\\frac{1}{r} \\cdot \\log(\\sum w_i z_i^r)\\right)$ via $x^a = e^{a \\log x}$ for $x > 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["rpow_def_of_pos", "exp/log representation", "arithmetic mean"],
+    "prerequisites": ["rpow_one", "rpow_def_of_pos", "sum_weighted_rpow_pos"]
+  },
+  {
     "id": "ann-pmlo-07-main",
     "proofId": "amgm-inequality-oq-03-oq-02",
     "range": { "startLine": 231, "endLine": 257 },

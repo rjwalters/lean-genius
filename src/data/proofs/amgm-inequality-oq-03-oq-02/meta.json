@@ -67,6 +67,7 @@
       "amgm-inequality-oq-03",
       "amgm-inequality-oq-03-oq-01",
       "amgm-inequality",
+      "amgm-inequality-oq-02",
       "lhopital",
       "shannon-entropy"
     ],
@@ -119,6 +120,11 @@
       "targetId": "shannon-entropy",
       "relationship": "related",
       "description": "The geometric mean GM = exp(∑ wᵢ log zᵢ) involves the same weighted log-sum as Shannon entropy H = -∑ pᵢ log pᵢ — both are exponentials of weighted logarithmic expectations, and Rényi entropy generalizes both via the power mean"
+    },
+    {
+      "targetId": "amgm-inequality-oq-02",
+      "relationship": "related",
+      "description": "Maclaurin's inequalities via elementary symmetric polynomials give an alternative chain between AM and GM — this limit result shows M₀ = GM, the same GM that Maclaurin's chain bounds from a different direction"
     }
   ],
   "overview": {

@@ -90,7 +90,7 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 1,
-      "endLine": 49,
+      "endLine": 50,
       "summary": "Four Mathlib imports: `AbelRuffini` (`solvableByRad.isSolvable'`, `IsSolvableByRad`), `GroupTheory.Solvable` (`IsSolvable`, `Equiv.Perm.not_solvable`), `SpecificGroups.Alternating` (`alternatingGroup.isSimpleGroup_five`), `FieldTheory.Galois.Basic` (`Polynomial.Gal`). Module docstring, namespace declaration, Part I docstring on solvability by radicals, and universe-polymorphic field variables.",
       "mathContext": "The four imports form the entire mathematical foundation: `AbelRuffini` provides the bridge between radical solvability and Galois group solvability; `GroupTheory.Solvable` supplies `IsSolvable` (the predicate for solvable groups) and the fact that $S_5$ fails it; `SpecificGroups.Alternating` furnishes the simplicity of $A_5$; `FieldTheory.Galois.Basic` provides `Polynomial.Gal` (the Galois group of a polynomial as a subgroup of $S_n$). Every theorem in the file is a direct composition of lemmas from these modules."
     },
@@ -98,7 +98,7 @@
       "id": "galois-bridge",
       "title": "The Galois Bridge",
       "startLine": 51,
-      "endLine": 67,
+      "endLine": 68,
       "summary": "Part II docstring and `galois_bridge`: if $\\alpha$ is solvable by radicals over $F$ and $\\alpha$ is a root of irreducible $q$, then `IsSolvable q.Gal`. One-line proof: `solvableByRad.isSolvable' hq hroot hrad`. The key bridge between field theory and group theory.",
       "mathContext": "This theorem captures the hard direction of Galois's fundamental theorem: an element expressible via field operations and $n$th roots forces its minimal polynomial's Galois group to be solvable (admit a composition series with abelian factors). The converse — solvable Galois group implies solvable by radicals — is also true but not needed for the impossibility result. The contrapositive used later is: if $\\text{Gal}(q)$ is not solvable, then no root of $q$ is expressible by radicals."
     },
@@ -106,7 +106,7 @@
       "id": "nonsolvable",
       "title": "S_n Not Solvable; A₅ Simple",
       "startLine": 69,
-      "endLine": 98,
+      "endLine": 99,
       "summary": "Part III: four theorems — `symmetric_group_not_solvable` ($n \\geq 5 \\Rightarrow S_n$ not solvable, via `Equiv.Perm.not_solvable` and `Cardinal.mk (Fin n) \\geq 5`), `s5_not_solvable` (n=5, using `le_rfl`), `s6_not_solvable` (n=6), `a5_is_simple` (`IsSimpleGroup (alternatingGroup (Fin 5))`).",
       "mathContext": "The non-solvability of $S_n$ for $n \\geq 5$ is a pure group-theoretic fact: the derived series of $S_5$ is $S_5 \\supset A_5 \\supset A_5 \\supset \\cdots$ because $A_5$ is perfect ($A_5 = [A_5, A_5]$). This contrasts with $S_4$, where the derived series reaches $\\{e\\}$ via $S_4 \\supset A_4 \\supset V_4 \\supset \\mathbb{Z}/2 \\supset \\{e\\}$. The simplicity of $A_5$ (order 60, the smallest non-abelian simple group) is the critical obstruction: a simple non-abelian group has no proper normal subgroups, so the derived series cannot descend."
     },
@@ -114,7 +114,7 @@
       "id": "small-solvable",
       "title": "Small Symmetric Groups are Solvable",
       "startLine": 100,
-      "endLine": 118,
+      "endLine": 119,
       "summary": "Part IV docstring and theorems: `s0_solvable` and `s1_solvable` via `inferInstance`. Documents the derived series for $S_2$ through $S_4$, showing why each is solvable, and contrasts with $S_n$ ($n \\geq 5$) which is not.",
       "mathContext": "$S_0$ and $S_1$ are trivial groups (order 1), hence abelian and trivially solvable. The sharp boundary at $n = 5$ corresponds exactly to the existence of quadratic, cubic (Cardano, 1545), and quartic (Ferrari, 1545) formulas contrasted with the impossibility for degree 5."
     },
@@ -122,7 +122,7 @@
       "id": "abel-ruffini",
       "title": "Abel-Ruffini Contrapositive",
       "startLine": 120,
-      "endLine": 149,
+      "endLine": 150,
       "summary": "Part V: `exists_quintic` (trivially `X^5`) and `not_solvable_by_rad_of_not_solvable_gal` — the main theorem. If `¬ IsSolvable q.Gal` then `¬ IsSolvableByRad F α`. Proof: `intro hrad; exact hns (galois_bridge α q hq hroot hrad)`. The full Abel-Ruffini argument in 3 lines.",
       "mathContext": "This 3-line proof is the logical heart of Abel-Ruffini: assume for contradiction that $\\alpha$ is solvable by radicals; apply `galois_bridge` to get `IsSolvable q.Gal`; this contradicts the hypothesis `hns : ¬ IsSolvable q.Gal`. The entire centuries-long story — from Cardano's cubic formula to Galois's group theory — reduces to one `intro`/`exact` in Lean."
     },
