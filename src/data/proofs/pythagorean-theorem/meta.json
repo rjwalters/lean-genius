@@ -127,4 +127,31 @@
       "Can all Pythagorean triples be found efficiently for very large numbers?"
     ]
   }
+,
+  "references": [
+    {
+      "authors": "Euclid",
+      "title": "Elements, Book I, Proposition 47",
+      "year": "c. 300 BCE",
+      "venue": "Classical geometry",
+      "note": "The original geometric proof of the Pythagorean theorem via area comparison of squares on the sides of a right triangle"
+    },
+    {
+      "authors": "Loomis, Elisha Scott",
+      "title": "The Pythagorean Proposition",
+      "year": "1940",
+      "venue": "National Council of Teachers of Mathematics",
+      "note": "Collection of 367 distinct proofs of the Pythagorean theorem, demonstrating its central role in mathematics"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle",
+      "relationship": "related",
+      "description": "Both are fundamental results in Euclidean geometry. The Pythagorean theorem relates side lengths; the area formula uses πr² which depends on the same metric structure"
+    }
+  ],
+  "relatedProofs": [
+    "area-of-circle"
+  ]
 }
