@@ -120,12 +120,20 @@
       "mathContext": "$\\text{IsSquarefree}(n) :\\Leftrightarrow \\forall p$ prime, $p^2 \\nmid n$. $\\text{HasNonSqfreeProductProp}(A) :\\Leftrightarrow \\forall a,b \\in A,\\ \\neg\\text{IsSquarefree}(ab+1)$. The extremal function and its bound are axiomatized since formalizing the maximum over all valid subsets would require significant Finset machinery."
     },
     {
-      "id": "known-results",
-      "title": "Known Results: Construction and Bounds",
+      "id": "mod25-construction",
+      "title": "Mod 25 Construction (Lower Bound)",
       "startLine": 39,
+      "endLine": 49,
+      "summary": "mod25_achieves: for a ≡ b ≡ 7 (mod 25), 5² | ab+1 since ab+1 ≡ 50 ≡ 0 (mod 25). lower_bound: maxNonSqfreeSet(N) ≥ ⌊N/25⌋.",
+      "mathContext": "The residue $7 \\bmod 25$ satisfies $7^2 = 49 \\equiv -1 \\pmod{25}$, so for $a \\equiv b \\equiv 7$, $ab + 1 \\equiv 49 + 1 = 50 \\equiv 0 \\pmod{25}$. The set $\\{n \\leq N : n \\equiv 7 \\pmod{25}\\}$ has $\\lfloor N/25 \\rfloor$ elements, giving the lower bound."
+    },
+    {
+      "id": "vanDoorn-bound",
+      "title": "Van Doorn's Upper Bound",
+      "startLine": 51,
       "endLine": 55,
-      "summary": "mod25_achieves: 5² | ab+1 for a ≡ b ≡ 7 (mod 25). lower_bound: maxNonSqfreeSet(N) ≥ N/25. vanDoorn_upper_bound: ≤ 0.108N + O(1).",
-      "mathContext": "Construction: $a \\equiv b \\equiv 7 \\pmod{25} \\Rightarrow ab+1 \\equiv 50 \\equiv 0 \\pmod{25}$, so $25 \\mid ab+1$. Bounds: $\\lfloor N/25 \\rfloor \\leq \\max|A| \\leq 0.108N + O(1)$."
+      "summary": "vanDoorn_upper_bound: maxNonSqfreeSet(N) ≤ 0.108N + O(1), encoded as maxNonSqfreeSet(N) · 1000 ≤ 108 · N + C to avoid rationals.",
+      "mathContext": "The bound $|A|/N \\leq 2\\sum_{p \\equiv 1(4)} 1/p^2 \\approx 0.108$ arises from inclusion-exclusion: each prime $p \\equiv 1 \\pmod{4}$ contributes exactly 2 residue classes mod $p^2$ where $a^2 + 1 \\equiv 0$, while primes $p \\equiv 3 \\pmod{4}$ contribute none."
     },
     {
       "id": "solution",
