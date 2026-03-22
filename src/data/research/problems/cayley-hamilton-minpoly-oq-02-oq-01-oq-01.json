@@ -1,26 +1,48 @@
 {
   "id": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
   "name": "Skolem-Noether Theorem: K-Algebra Automorphisms of Mn(K)",
-  "status": "surveyed",
-  "phase": "OBSERVE",
+  "status": "progress",
+  "phase": "ORIENT",
   "knowledge": {
     "insights": [
       "Parent file CayleyHamiltonMinpolyOQ02OQ01.lean is complete (217 lines, 0 axioms, 0 sorries)",
       "Parent establishes minpoly invariance under K-algebra isomorphisms via Mathlib minpoly.algEquiv_eq",
       "Skolem-Noether: every K-algebra automorphism of Mn(K) is inner (conjugation by invertible matrix)",
-      "Mathlib has AlgEquiv for K-algebra isomorphisms but may not have Skolem-Noether directly",
-      "Key ingredient: central simple algebras theory - may not be in Mathlib v4.26.0"
+      "CONFIRMED: Mathlib does NOT have Skolem-Noether, IsCentralSimple, or Artin-Wedderburn theory",
+      "CONFIRMED: Artin-Wedderburn is NOT needed. Elementary matrix units proof works for Mn(K)",
+      "PROOF STRATEGY: Let f_ij = phi(E_ij). Then f_ij * f_kl = delta_jk * f_il (from phi ring hom)",
+      "Choose v0 with f_{i0,i0} * v0 != 0, set p_j = f_{j,i0} * v0",
+      "Key property: f_ij * p_k = delta_jk * p_i (from matrix unit relations + mulVec_mulVec)",
+      "p_j != 0: if p_j = 0 then f_{i0,j} * p_j = p_{i0} = 0, contradicting choice of v0",
+      "p_j linearly independent: sum c_j p_j = 0 => f_{kk}(sum) = c_k p_k = 0 => c_k = 0",
+      "Matrix P with columns p_j is invertible (lin indep cols over field)",
+      "Entry-wise: (f_ij * P)_{ab} = (P * E_ij)_{ab} by hfp property",
+      "By K-linearity: phi(M) * P = P * M, so phi(M) = P * M * P^{-1}",
+      "LEAN API: Pi.single_apply for Matrix.single entries (Matrix.single_apply does NOT exist)",
+      "LEAN API: Use ext + split_ifs for matrix unit multiplication (single_mul_single_of_ne has tricky sig)",
+      "LEAN API: Matrix.mulVec_mulVec, Matrix.zero_mulVec, Matrix.mulVec_zero all exist",
+      "LEAN API: mulVec_sum/mulVec_smul may need manual dist. Use Matrix.add_mulVec + smul_mulVec_assoc",
+      "LEAN API: For P invertibility: try basisOfLinearIndependentOfCardEqFinrank or det approach"
     ],
-    "builtItems": [],
+    "builtItems": [
+      "Complete elementary proof strategy (no Artin-Wedderburn needed)",
+      "Identified all Lean4/Mathlib API names for formalization",
+      "Proof steps 1-3 (hf_mul, hfp, hp_ne) have verified strategies"
+    ],
     "openQuestions": [
-      "Does Mathlib have Skolem-Noether or Wedderburn theory for CSAs?",
-      "Can Skolem-Noether for Mn(K) be proved from simpler ingredients (matrix algebra structure)?"
+      "RESOLVED: Artin-Wedderburn NOT needed",
+      "What is the Mathlib4 API for linearIndependent_cols => det_ne_zero?",
+      "Does Matrix.mulVec_sum exist in this Mathlib version?"
     ],
     "nextSteps": [
-      "Search Mathlib for Skolem-Noether, central simple algebra, or Wedderburn results",
-      "For Mn(K) specifically: every automorphism is inner could be proved from matrix structure directly",
-      "State the theorem and attempt proof using AlgEquiv infrastructure"
+      "DEEP DIVE: Implement full Lean4 proof using matrix units approach",
+      "hf_mul: ext + Pi.single_apply + Finset.sum_ite_eq + split_ifs",
+      "hfp: Matrix.mulVec_mulVec + hf_mul",
+      "hp_li: May need manual induction for mulVec distribution over Finset.sum",
+      "hP_isUnit: Try basisOfLinearIndependentOfCardEqFinrank + Basis change of basis",
+      "hP_intertwine: Entry-wise via Matrix.mul_apply + Pi.single_apply + mulVec/dotProduct",
+      "hP_comm: Extend from generators using matrix_eq_sum_single + congr lemmas"
     ],
-    "progressSummary": "SURVEY: Skolem-Noether for Mn(K). Parent complete. Needs central simple algebra theory or direct matrix approach."
+    "progressSummary": "ORIENT: Complete proof strategy found. Elementary matrix units approach avoids Artin-Wedderburn. Key Lean4 API challenges mapped. Ready for implementation."
   }
 }
