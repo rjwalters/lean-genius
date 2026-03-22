@@ -7,7 +7,7 @@
     "author": "Karol Borsuk (formalized sketch in Lean 4)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Borsuk%E2%80%93Ulam_theorem",
     "date": "1933",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/BorsukUlam.lean",
     "tags": [
       "topology",
@@ -15,7 +15,7 @@
       "covering-spaces",
       "advanced"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -35,8 +35,11 @@
       "No-odd-map lemma formalization"
     ],
     "dateAdded": "2025-12-22",
+    "lineCount": 266,
     "axiomCount": 1,
-    "lineCount": 265
+    "assumptions": [
+      "no_continuous_odd_nonzero_on_sphere: For n ≥ 1, there is no continuous odd function h: ℝ^(n+1) → ℝ^n that is nonzero on the n-sphere. This requires covering space theory and fundamental groups beyond Mathlib's current algebraic topology coverage."
+    ]
   },
   "overview": {
     "historicalContext": "The Borsuk-Ulam theorem was conjectured by Stanislaw Ulam and proved by Karol Borsuk in 1933. It emerged from the Polish school of topology and quickly became one of the most celebrated results in algebraic topology.\n\nThe theorem has a beautifully intuitive interpretation: at any given moment, there exist two antipodal points on Earth (opposite ends of a diameter) that have exactly the same temperature AND the same atmospheric pressure. This 'weather interpretation' makes abstract topology tangible.\n\nWhat makes Borsuk-Ulam remarkable is its wide range of applications. In 1978, Laszlo Lovasz used it to prove Kneser's conjecture about graph coloring, launching the field of topological combinatorics. It also implies the Ham Sandwich Theorem (any n objects in n-dimensional space can be simultaneously bisected by a single hyperplane) and has applications to fair division problems.",
@@ -52,116 +55,68 @@
   },
   "sections": [
     {
-      "id": "introduction",
-      "title": "Introduction",
+      "id": "preamble",
+      "title": "File Header and Imports",
       "startLine": 1,
-      "endLine": 21,
-      "summary": "Overview of the Borsuk-Ulam Theorem, its statement, and historical significance.",
-      "mathContext": "Borsuk-Ulam (1933): For any continuous $f: S^n \\to \\mathbb{R}^n$, there exists $x \\in S^n$ with $f(x) = f(-x)$. Equivalently, no continuous odd map $S^n \\to S^{n-1}$ exists."
-    },
-    {
-      "id": "foundations",
-      "title": "Foundational Definitions",
-      "startLine": 23,
-      "endLine": 49,
-      "summary": "Setting up points in n-dimensional Euclidean space and the norm function.",
-      "mathContext": "The $n$-sphere $S^n = \\{x \\in \\mathbb{R}^{n+1} : \\|x\\| = 1\\}$ lives in $(n+1)$-dimensional space. The norm $\\|x\\| = \\sqrt{\\sum x_i^2}$ defines distance from the origin."
+      "endLine": 50,
+      "summary": "Module docstring describing the theorem, proof approach, and Mathlib dependencies. Imports topology, metric spaces, inner product spaces, and EuclideanSpace. Opens Set and Metric namespaces.",
+      "mathContext": "Uses `EuclideanSpace \\mathbb{R} (\\text{Fin}\\; n)$ for $\\mathbb{R}^n$ and `Metric.sphere 0\\; 1$ for the unit sphere $S^n = \\{x \\in \\mathbb{R}^{n+1} : \\|x\\| = 1\\}$."
     },
     {
       "id": "sphere-antipodal",
-      "title": "The n-Sphere and Antipodal Points",
-      "startLine": 51,
-      "endLine": 81,
-      "summary": "Defining the n-sphere as unit vectors and the antipodal map x to -x.",
-      "mathContext": "The antipodal map $A: S^n \\to S^n$ sends $x \\mapsto -x$. It is an involution ($A^2 = \\mathrm{id}$) with no fixed points. The quotient $S^n / \\{\\mathrm{id}, A\\} = \\mathbb{R}P^n$ is real projective space."
+      "title": "Part 1: The n-Sphere and Antipodal Map",
+      "startLine": 52,
+      "endLine": 68,
+      "summary": "Defines the n-sphere as Metric.sphere 0 1 in R^(n+1), the antipodal map x ↦ -x, and proves that the antipode of a sphere point remains on the sphere.",
+      "mathContext": "$S^n := \\{x \\in \\mathbb{R}^{n+1} : \\|x\\| = 1\\}$. Antipodal map: $A(x) = -x$. Since $\\|-x\\| = \\|x\\| = 1$, $A$ preserves the sphere. $A$ is an involution ($A^2 = \\mathrm{id}$) with no fixed points."
     },
     {
       "id": "continuous-functions",
-      "title": "Continuous Functions",
-      "startLine": 83,
-      "endLine": 100,
-      "summary": "Formalizing continuous functions from sphere to Euclidean space and the antipodal pair property.",
-      "mathContext": "A function $f: S^n \\to \\mathbb{R}^n$ has an *antipodal pair* if $f(x) = f(-x)$ for some $x$. Borsuk-Ulam asserts every continuous $f$ has this property."
+      "title": "Part 2: Continuous Functions and Antipodal Pairs",
+      "startLine": 69,
+      "endLine": 81,
+      "summary": "Defines the SphereFun structure (a continuous function S^n → R^n) and the HasAntipodalPair predicate: there exists x ∈ S^n with f(x) = f(-x).",
+      "mathContext": "`SphereFun n` bundles $f: \\mathbb{R}^{n+1} \\to \\mathbb{R}^n$ with continuity. `HasAntipodalPair` asserts $\\exists x \\in S^n,\\; f(x) = f(-x)$."
     },
     {
       "id": "gadget-function",
-      "title": "The Gadget Function",
-      "startLine": 102,
-      "endLine": 135,
-      "summary": "The key construction g(x) = f(x) - f(-x) and its properties.",
-      "mathContext": "Define $g(x) = f(x) - f(-x)$. Then $g(-x) = -g(x)$ (odd). If $g(x) \\neq 0$ for all $x$, normalize to $h(x) = g(x)/\\|g(x)\\|$, giving a continuous odd map $h: S^n \\to S^{n-1}$."
-    },
-    {
-      "id": "covering-spaces",
-      "title": "Covering Spaces and Projective Space",
-      "startLine": 137,
-      "endLine": 173,
-      "summary": "Introduction to covering spaces, projective space RP^n, and fundamental groups.",
-      "mathContext": "The covering map $p: S^n \\to \\mathbb{R}P^n$ is 2-sheeted. An odd map $h: S^n \\to S^{n-1}$ descends to $\\bar{h}: \\mathbb{R}P^n \\to \\mathbb{R}P^{n-1}$. On fundamental groups: $\\bar{h}_*: \\mathbb{Z}/2 \\to \\mathbb{Z}/2$ must be injective (by covering theory) yet trivial (since $S^n$ is simply connected for $n \\geq 2$)."
+      "title": "Part 3: The Gadget Function",
+      "startLine": 82,
+      "endLine": 106,
+      "summary": "The key construction: g(x) = f(x) - f(-x). Proves g is odd: g(-x) = -g(x). This transforms the 'find an antipodal pair' problem into 'show no nonzero odd function exists on the sphere'.",
+      "mathContext": "$g(x) = f(x) - f(-x)$. Then $g(-x) = f(-x) - f(x) = -(f(x) - f(-x)) = -g(x)$. If $f$ has no antipodal pair, $g(x) \\neq 0$ for all $x \\in S^n$, enabling normalization $h = g/\\|g\\|: S^n \\to S^{n-1}$."
     },
     {
       "id": "no-odd-map",
-      "title": "No Antipode-Preserving Map Theorem",
-      "startLine": 175,
-      "endLine": 219,
-      "summary": "The key lemma: no continuous antipode-preserving map from S^n to S^(n-1) can exist.",
-      "mathContext": "Key lemma: no continuous odd map $h: S^n \\to S^{n-1}$ exists for $n \\geq 1$. For $n \\geq 2$: $\\bar{h}_*$ is both injective and trivial, contradiction. For $n = 1$: an odd map $g: S^1 \\to \\mathbb{R}$ must have a zero by IVT, so normalization fails."
+      "title": "Part 4: No Odd Map Theorem",
+      "startLine": 107,
+      "endLine": 157,
+      "summary": "Defines the normalization function, proves it preserves oddness, then axiomatizes the key topological result: no continuous odd function S^n → R^n can be nonzero everywhere on S^n (for n ≥ 1). This is the covering space theory result that requires algebraic topology beyond current Mathlib.",
+      "mathContext": "The axiom `no_continuous_odd_nonzero_on_sphere` states: for $n \\geq 1$, $\\nexists h: \\mathbb{R}^{n+1} \\to \\mathbb{R}^n$ continuous, odd ($h(-x) = -h(x)$), and nonzero on $S^n$. Classical proof: an odd map $S^n \\to S^{n-1}$ induces $\\bar{h}: \\mathbb{R}P^n \\to \\mathbb{R}P^{n-1}$; the induced map $\\bar{h}_*: \\pi_1(\\mathbb{R}P^n) \\to \\pi_1(\\mathbb{R}P^{n-1})$ is both injective (covering theory) and trivial (simple connectivity of $S^n$), a contradiction."
     },
     {
       "id": "main-theorem",
-      "title": "The Borsuk-Ulam Theorem",
-      "startLine": 221,
-      "endLine": 265,
-      "summary": "Proof of the main theorem by contradiction using the gadget function construction.",
-      "mathContext": "By contradiction: assume $f(x) \\neq f(-x)$ for all $x$. Then $g(x) = f(x)-f(-x) \\neq 0$ everywhere, and $h = g/\\|g\\|: S^n \\to S^{n-1}$ is a continuous odd map. But no such map exists (no-odd-map lemma). Contradiction."
+      "title": "Part 5: The Borsuk-Ulam Theorem",
+      "startLine": 158,
+      "endLine": 214,
+      "summary": "Proves the gadget function is continuous, that it's nonzero when no antipodal pair exists, then proves Borsuk-Ulam by contradiction: no antipodal pair → gadget is a continuous odd nonzero function on S^n → contradicts the no-odd-map axiom.",
+      "mathContext": "Proof: assume $\\neg \\text{HasAntipodalPair}(f)$. Then $g(x) = f(x) - f(-x) \\neq 0$ on $S^n$. But $g$ is continuous (as $f$ is), odd ($g(-x) = -g(x)$), and nonzero on $S^n$ — contradicting `no_continuous_odd_nonzero_on_sphere`. Therefore $\\exists x \\in S^n,\\; f(x) = f(-x)$."
     },
     {
       "id": "special-cases",
-      "title": "Special Cases",
-      "startLine": 267,
-      "endLine": 285,
-      "summary": "The n=1 case (IVT proof) and n=2 case (weather theorem interpretation).",
-      "mathContext": "For $n = 1$: reduces to IVT on $S^1 \\cong [0, 2\\pi]$. For $n = 2$ (weather theorem): any two continuous measurements on $S^2$ agree at some pair of antipodal points."
+      "title": "Part 6: Special Cases",
+      "startLine": 216,
+      "endLine": 237,
+      "summary": "Instantiates Borsuk-Ulam for dimensions 1 and 2. The n=1 case gives the IVT-style result on S^1, and the n=2 case is the 'weather theorem' about antipodal points on Earth.",
+      "mathContext": "For $n = 1$: every continuous $f: S^1 \\to \\mathbb{R}$ has $f(x) = f(-x)$. For $n = 2$ (weather theorem): every continuous $f: S^2 \\to \\mathbb{R}^2$ (e.g., temperature and pressure) has antipodal points with identical readings."
     },
     {
-      "id": "ham-sandwich",
-      "title": "The Ham Sandwich Theorem",
-      "startLine": 287,
-      "endLine": 311,
-      "summary": "Application: n sets in R^n can be simultaneously bisected by a single hyperplane.",
-      "mathContext": "Ham Sandwich Theorem: any $n$ measurable sets in $\\mathbb{R}^n$ can be simultaneously bisected by a single hyperplane. Proof: parameterize hyperplanes by $S^n$, define $f: S^n \\to \\mathbb{R}^n$ via signed volumes, apply Borsuk-Ulam."
-    },
-    {
-      "id": "necklace-splitting",
-      "title": "Necklace Splitting",
-      "startLine": 313,
-      "endLine": 326,
-      "summary": "Application to fair division: dividing a necklace among thieves.",
-      "mathContext": "Necklace splitting: a necklace with $t$ types of beads (each even count) can be split fairly between 2 thieves using at most $t$ cuts. This follows from a $(t-1)$-dimensional Borsuk-Ulam application."
-    },
-    {
-      "id": "kneser-conjecture",
-      "title": "Kneser's Conjecture",
-      "startLine": 328,
-      "endLine": 350,
-      "summary": "Lovasz's 1978 proof of Kneser's graph coloring conjecture using Borsuk-Ulam.",
-      "mathContext": "Lovász (1978): the chromatic number of the Kneser graph $K(n,k)$ is $n - 2k + 2$. Proof uses Borsuk-Ulam to show the neighborhood complex of $K(n,k)$ is $(n-2k)$-connected, launching topological combinatorics."
-    },
-    {
-      "id": "related-theorems",
-      "title": "Related Fixed Point Theorems",
-      "startLine": 352,
-      "endLine": 386,
-      "summary": "Connections to Brouwer, Sperner's Lemma, Tucker's Lemma, and Lusternik-Schnirelmann.",
-      "mathContext": "Related results: Brouwer Fixed Point Theorem (Borsuk-Ulam implies it), Sperner's Lemma (combinatorial Brouwer), Tucker's Lemma (combinatorial Borsuk-Ulam), Lusternik-Schnirelmann (antipodal covering number)."
-    },
-    {
-      "id": "significance",
-      "title": "Why This Theorem Matters",
-      "startLine": 388,
-      "endLine": 415,
-      "summary": "The broader impact and significance of the Borsuk-Ulam theorem.",
-      "mathContext": "Borsuk-Ulam bridges topology and combinatorics. Its proof techniques (covering spaces, fundamental groups, equivariant maps) are foundational in algebraic topology. Applications span fair division, graph coloring, computational complexity."
+      "id": "applications",
+      "title": "Part 7: Applications",
+      "startLine": 238,
+      "endLine": 266,
+      "summary": "Comments describing three major applications: Ham Sandwich Theorem (n sets in R^n bisected by one hyperplane), Necklace Splitting (fair division with at most k cuts), and Kneser's Conjecture (graph chromatic number via Lovász's 1978 topological proof). Exports main theorems via #check.",
+      "mathContext": "Ham Sandwich: $\\exists$ hyperplane bisecting $n$ sets in $\\mathbb{R}^n$. Kneser: $\\chi(K(n,k)) = n - 2k + 2$. Both follow from Borsuk-Ulam applied to suitably constructed continuous functions on spheres."
     }
   ],
   "references": [
