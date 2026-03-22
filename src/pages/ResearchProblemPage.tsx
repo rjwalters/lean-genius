@@ -396,13 +396,13 @@ export function ResearchProblemPage() {
                 )}
 
                 {/* Tags */}
-                {problem.tags.length > 0 && (
+                {(problem.tags ?? []).length > 0 && (
                   <section>
                     <h2 className="text-sm font-semibold text-muted-foreground mb-3 uppercase tracking-wide">
                       Tags
                     </h2>
                     <div className="flex flex-wrap gap-2">
-                      {problem.tags.map((tag) => (
+                      {(problem.tags ?? []).map((tag) => (
                         <span
                           key={tag}
                           className="px-2 py-1 bg-muted rounded text-sm text-muted-foreground"
