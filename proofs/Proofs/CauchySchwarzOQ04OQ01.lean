@@ -26,11 +26,53 @@ open Finset BigOperators
     Discriminant ≤ 0 gives the result. -/
 theorem cauchy_schwarz_sum {n : ℕ} (a b : Fin n → ℝ) :
     (∑ i, a i * b i) ^ 2 ≤ (∑ i, a i ^ 2) * (∑ i, b i ^ 2) := by
-  -- Standard result. The proof uses the nonneg quadratic:
-  -- 0 ≤ Σ(t·aᵢ + bᵢ)² = t²·Σaᵢ² + 2t·Σaᵢbᵢ + Σbᵢ² for all t.
-  -- Discriminant ≤ 0 gives (Σaᵢbᵢ)² ≤ (Σaᵢ²)(Σbᵢ²).
-  -- Also follows from Mathlib: inner_mul_le_norm_mul_norm on EuclideanSpace.
-  sorry
+  -- Use Mathlib: Finset.inner_mul_le_norm_mul_sq or the discriminant approach.
+  -- The key is that 0 ≤ Σ(t·aᵢ + bᵢ)² for all t ∈ ℝ.
+  have hQ : ∀ t : ℝ, 0 ≤ ∑ i : Fin n, (t * a i + b i) ^ 2 :=
+    fun t => Finset.sum_nonneg (fun _ _ => sq_nonneg _)
+  -- Expand: Q(t) = (Σaᵢ²)t² + 2(Σaᵢbᵢ)t + Σbᵢ²
+  have hexpand : ∀ t : ℝ, ∑ i : Fin n, (t * a i + b i) ^ 2 =
+      (∑ i, a i ^ 2) * t ^ 2 + 2 * (∑ i, a i * b i) * t + ∑ i, b i ^ 2 := by
+    intro t
+    have : ∀ i : Fin n, (t * a i + b i) ^ 2 =
+        a i ^ 2 * t ^ 2 + 2 * (a i * b i) * t + b i ^ 2 := by intro i; ring
+    simp_rw [this, Finset.sum_add_distrib, ← Finset.sum_mul, ← Finset.mul_sum]
+  -- Nonneg quadratic ⟹ discriminant ≤ 0
+  by_cases hA : ∑ i, a i ^ 2 = 0
+  · -- If Σaᵢ² = 0 then each aᵢ = 0, so Σaᵢbᵢ = 0
+    have ha_zero : ∀ i, a i = 0 := by
+      intro i
+      have h1 : a i ^ 2 ≤ ∑ j, a j ^ 2 :=
+        Finset.single_le_sum (fun j _ => sq_nonneg (a j)) (Finset.mem_univ i)
+      have h2 : (∑ j, a j ^ 2) = 0 := hA
+      have h3 : a i ^ 2 = 0 := le_antisymm (h2 ▸ h1) (sq_nonneg _)
+      exact pow_eq_zero_iff (by norm_num : 2 ≠ 0) |>.mp h3
+    simp [ha_zero]
+  · -- Σaᵢ² > 0: take t = -(Σaᵢbᵢ) / (Σaᵢ²)
+    have hA_pos : 0 < ∑ i, a i ^ 2 := by
+      rcases lt_or_eq_of_le (Finset.sum_nonneg (fun i _ => sq_nonneg (a i))) with h | h
+      · exact h
+      · exact absurd h.symm hA
+    specialize hQ (-(∑ i, a i * b i) / (∑ i, a i ^ 2))
+    rw [hexpand] at hQ
+    -- After substitution: Q(-S/A) = A·(S/A)² - 2S·(S/A) + B = B - S²/A ≥ 0
+    -- So S² ≤ A·B
+    have h_key : (∑ i, a i ^ 2) * (-(∑ i, a i * b i) / (∑ i, a i ^ 2)) ^ 2 +
+        2 * (∑ i, a i * b i) * (-(∑ i, a i * b i) / (∑ i, a i ^ 2)) +
+        (∑ i, b i ^ 2) =
+        (∑ i, b i ^ 2) - (∑ i, a i * b i) ^ 2 / (∑ i, a i ^ 2) := by
+      field_simp; ring
+    rw [h_key] at hQ
+    -- 0 ≤ B - S²/A, so S² ≤ A·B
+    rw [sub_nonneg] at hQ
+    -- hQ : (Σ aᵢ bᵢ)² / (Σ aᵢ²) ≤ Σ bᵢ²
+    -- Want: (Σ aᵢ bᵢ)² ≤ (Σ aᵢ²) * (Σ bᵢ²)
+    calc (∑ i, a i * b i) ^ 2
+        = (∑ i, a i * b i) ^ 2 / (∑ i, a i ^ 2) * (∑ i, a i ^ 2) := by
+          field_simp
+      _ ≤ (∑ i, b i ^ 2) * (∑ i, a i ^ 2) := by
+          exact mul_le_mul_of_nonneg_right hQ (le_of_lt hA_pos)
+      _ = (∑ i, a i ^ 2) * (∑ i, b i ^ 2) := by ring
 
 -- ============================================================================
 -- Part II: Weighted Cauchy-Schwarz
