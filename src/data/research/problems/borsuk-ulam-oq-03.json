@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Deleted redundant lusternik_schnirelmann axiom (proved as ls_covering_general_open from BU). Now 5 axioms in OQ03 (was 6). 3 independent axioms remain.",
+    "progressSummary": "PROGRESS: Eliminated 2 redundant axioms (no_retraction, brouwer_fixed_point). File now has 1 axiom (borsuk_ulam_general), 0 sorries, 5169 lines. Docker build passes.",
     "builtItems": [
       {
         "name": "tucker_2d_octahedral",
@@ -212,7 +212,9 @@
       "half_period_coincidence: f(0)=f(1) → ∃ x∈[0,1/2], f(x)=f(x+1/2) (PROVED via IVT)",
       "universal_chord_n2: n=2 case of Lévy Universal Chord Theorem (PROVED)",
       "chord_existence_witness: trivial witness showing theorem is non-vacuous (PROVED)",
-      "Fixed proofHierarchy duplicate ham_sandwich entry (build fix)"
+      "Fixed proofHierarchy duplicate ham_sandwich entry (build fix)",
+      "Eliminated no_retraction axiom → theorem (= bu_implies_no_retraction)",
+      "Eliminated brouwer_fixed_point axiom → theorem (= no_retraction_implies_brouwer_fp)"
     ],
     "insights": [
       "Tucker 2D for the 4-vertex octahedral triangulation is provable by exhaustive case analysis over 4^3=64 labelings",
@@ -248,7 +250,9 @@
       "proofHierarchy had duplicate ham_sandwich entry (8 elements, theorem claimed 7) causing build failure",
       "Half-period coincidence: g(0)+g(1/2) = f(0)-f(1) = 0, so IVT gives zero of g in [0,1/2]",
       "Universal Chord Theorem (Lévy 1934): horizontal chords of length 1/n exist for all n≥1; proved n=2 case",
-      "lusternik_schnirelmann axiom is redundant — proved as ls_covering_general_open from borsuk_ulam_general via infDist technique"
+      "lusternik_schnirelmann axiom is redundant — proved as ls_covering_general_open from borsuk_ulam_general via infDist technique",
+      "Axiom elimination: no_retraction and brouwer_fixed_point converted from axioms to theorems. Required restructuring to avoid forward references: moved no_retraction_implies_brouwer_fp after bu_implies_no_retraction.",
+      "The file now has exactly 1 axiom (borsuk_ulam_general). Everything else is proved."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
