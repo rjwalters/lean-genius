@@ -23,6 +23,60 @@
     "erdosUrl": "https://erdosproblems.com/226",
     "erdosProblemStatus": "solved",
     "axiomCount": 4,
+    "dateAdded": "02/06/26",
+    "mathlibDependencies": [
+      {
+        "theorem": "Rat.denseRange_ratCast",
+        "description": "The rationals are dense in ℝ",
+        "module": "Mathlib.Topology.Algebra.Order.Field"
+      },
+      {
+        "theorem": "Set.countable_range",
+        "description": "Range of a function from a countable type is countable",
+        "module": "Mathlib.Data.Set.Countable"
+      },
+      {
+        "theorem": "Polynomial.eval_add",
+        "description": "Evaluation of polynomial sum",
+        "module": "Mathlib.Algebra.Polynomial.Eval"
+      }
+    ],
+    "originalContributions": [
+      "Complete proof of erdos_question_affirmative from axiomatized Barth-Schneider theorem",
+      "Proof that transcendental implies non-linear via polynomial encoding",
+      "Proved rationals_countable_dense directly from two Mathlib lemmas",
+      "Formalized both the original and general question with precise type-theoretic statements"
+    ],
+    "references": [
+      {
+        "authors": "Barth, K. F.; Schneider, W. J.",
+        "title": "Entire functions mapping countable dense subsets of the reals onto each other monotonically",
+        "year": "1970",
+        "venue": "Journal of the London Mathematical Society (2), pp. 620-626",
+        "note": "The main result: for any countable dense A, B ⊂ ℝ, a transcendental entire f with f(A) = B exists"
+      },
+      {
+        "authors": "Barth, K. F.; Schneider, W. J.",
+        "title": "Entire functions mapping arbitrary countable dense sets and their complements onto each other",
+        "year": "1971",
+        "venue": "Journal of the London Mathematical Society (2), pp. 482-488",
+        "note": "Extended the 1970 result to countable dense subsets of ℂ"
+      },
+      {
+        "authors": "Hayman, W. K.",
+        "title": "Research problems in function theory: new problems",
+        "year": "1974",
+        "venue": "pp. 155-180",
+        "note": "Problem 2.31, attributing the question to Erdős"
+      },
+      {
+        "authors": "Stäckel, Paul",
+        "title": "Ueber arithmetische Eigenschaften analytischer Functionen",
+        "year": "1895",
+        "venue": "Mathematische Annalen 46, pp. 513-520",
+        "note": "Early work on arithmetic properties of analytic functions — proved a transcendental entire function can take rational values at all rationals"
+      }
+    ],
     "prerequisites": [
       "Complex analysis (entire and transcendental functions)",
       "Topology (countable dense subsets of ℝ and ℂ)",
@@ -31,9 +85,9 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #226 concerns the interplay between complex analysis and number theory. Erdős asked whether an entire non-linear function can preserve rationality. Hayman included it as Problem 2.31 in his 1974 collection. Barth and Schneider solved it affirmatively in 1970, proving a stronger result for any pair of countable dense sets. In 1971, they extended it to countable dense subsets of ℂ.",
+    "historicalContext": "The question of arithmetic control over analytic functions dates to Stäckel (1895), who showed a transcendental entire function can take rational values at all rationals — but his construction did not control irrational inputs. Erdős sharpened this to an $\\textit{if and only if}$ question: can $f(x) \\in \\mathbb{Q} \\Leftrightarrow x \\in \\mathbb{Q}$? Hayman included it as Problem 2.31 in his 1974 collection, attributing it to Erdős. Barth and Schneider solved it affirmatively in 1970, proving the much stronger result that for ANY countable dense $A, B \\subset \\mathbb{R}$, a transcendental entire $f$ with $f(A) = B$ exists — and can be made strictly monotone on $\\mathbb{R}$. Their 1971 follow-up extended this to countable dense subsets of $\\mathbb{C}$. The construction uses Weierstrass products and careful interpolation on the countable dense set.",
     "problemStatement": "Is there an entire non-linear function f : ℂ → ℂ such that for all x ∈ ℝ, x ∈ ℚ ↔ f(x) ∈ ℚ? More generally, for any countable dense A, B ⊆ ℝ, does an entire function with f(A) = B exist? SOLVED: YES (Barth-Schneider, 1970).",
-    "proofStrategy": "The formalization defines IsEntire, IsTranscendental, IsCountableDense, and proves ℚ is countable dense. ErdosQuestion and GeneralQuestion are formalized. Barth-Schneider theorem is axiomatized. The main results erdos_question_affirmative and general_question_affirmative are derived from the axiom. Extensions to ℂ and the no-polynomial result are included.",
+    "proofStrategy": "The formalization axiomatizes the Barth-Schneider existence theorem and derives both the original and generalized answers. The key proof step in `erdos_question_affirmative` instantiates the axiom with $A = B = \\mathbb{Q}$ (via `rationals_countable_dense`), then shows transcendental $\\Rightarrow$ non-linear by encoding any linear function $f(z) = az + b$ as a degree-1 polynomial, contradicting transcendence. The `general_question_affirmative` follows directly. The formalization also axiomatizes the $\\mathbb{C}$ extension and the impossibility of polynomial solutions.",
     "keyInsights": [
       "The function must be transcendental — no polynomial can preserve rationality while being non-linear",
       "The function can be made strictly monotone on ℝ",
@@ -116,11 +170,24 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #226 was SOLVED by Barth and Schneider (1970). An entire non-linear function preserving rationality exists. More generally, for any countable dense sets A, B ⊂ ℝ, a transcendental entire function maps A to B. The result extends to ℂ.",
-    "implications": "The solution reveals surprising flexibility: transcendental entire functions can precisely control which points map to which. Connects complex analysis (Weierstrass products) to arithmetic properties of dense sets.",
+    "implications": "The solution reveals surprising flexibility in transcendental entire functions: they can precisely control which points map to which among countable dense sets, while being holomorphic everywhere. This connects complex analysis (Weierstrass products, Runge's theorem) to the arithmetic structure of dense subsets. The monotonicity result is especially striking — the function respects the order structure of $\\mathbb{R}$ while performing this arithmetic rearrangement.",
     "openQuestions": [
-      "Can the growth rate of the constructed function be controlled?",
-      "What is the smallest order of growth needed?",
-      "Can similar results be obtained for algebraic numbers?"
+      "Can the growth rate of the constructed Barth-Schneider function be controlled (e.g., can it have finite order)?",
+      "What is the smallest order of growth needed for rationality-preserving entire functions?",
+      "Can similar results be obtained for the algebraic numbers $\\overline{\\mathbb{Q}}$ instead of $\\mathbb{Q}$?",
+      "Is there a constructive or computable version of the Barth-Schneider result?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Both address arithmetic structure in analytic settings — Dirichlet's theorem controls primes in arithmetic progressions, Barth-Schneider controls rational values of entire functions"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Both involve the boundary between algebraic and transcendental: Abel-Ruffini shows polynomial roots can be non-algebraic in radicals, while Problem 226 shows only transcendental functions can biject rationals"
+    }
+  ]
 }
