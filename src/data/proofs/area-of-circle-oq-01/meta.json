@@ -81,6 +81,11 @@
       "targetId": "pi-transcendental",
       "relationship": "related",
       "description": "Both formalizations use $\\pi$ as defined in Mathlib's trigonometric module. The transcendence of $\\pi$ ensures the circumference $2\\pi r$ is transcendental for any nonzero rational radius."
+    },
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "The central insight — C = dA/dr — is a direct application of the fundamental theorem of calculus: differentiating the area function πr² yields the circumference 2πr, and integrating the circumference recovers the area"
     }
   ],
   "sections": [
@@ -153,7 +158,8 @@
   "relatedProofs": [
     "area-of-circle",
     "isoperimetric-theorem",
-    "pi-transcendental"
+    "pi-transcendental",
+    "fundamental-theorem-calculus"
   ],
   "leanFile": {
     "imports": [
