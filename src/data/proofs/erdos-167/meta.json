@@ -30,7 +30,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Tuza conjectured in 1981 that τ(G) ≤ 2ν(G) where τ is the minimum triangle cover and ν is the maximum triangle packing. The trivial bound is 3ν; Haxell-Kohayakawa (1998) improved this to 2.87ν. The conjecture is proven for K₄-free graphs, planar graphs, and random graphs.",
+    "historicalContext": "Tuza conjectured in 1981 that $\\tau(G) \\leq 2\\nu(G)$, where $\\tau$ is the minimum number of edges whose removal destroys all triangles, and $\\nu$ is the maximum number of edge-disjoint triangles. The trivial greedy argument gives $\\tau \\leq 3\\nu$ (take all edges of a maximum packing). Haxell and Kohayakawa (1998) improved this to $\\tau \\leq (3 - 3/23)\\nu \\approx 2.87\\nu$ using probabilistic and algebraic methods. The fractional version $\\tau^* \\leq 2\\nu^*$ was proved via LP duality, which shows the factor 2 is 'correct' at the continuous level. The conjecture is known for $K_4$-free graphs (Haxell 1999), planar graphs (Tuza 1994), and graphs of bounded treewidth. Complete graphs $K_4$ and $K_5$ achieve equality $\\tau = 2\\nu$, showing the constant 2 cannot be improved.",
     "problemStatement": "Let ν(G) be the maximum number of edge-disjoint triangles in G, and τ(G) the minimum number of edges to remove to make G triangle-free. Tuza's Conjecture: τ(G) ≤ 2·ν(G). K₄ and K₅ show 2 is best possible.",
     "proofStrategy": "The formalization defines triangles, edge-disjoint packings, and triangle covers. Aristotle verified three key theorems: (1) trivial_bound: τ ≤ 3ν via constructing a cover from a maximum packing, (2) k4_tight and k5_tight: K₄ and K₅ achieve τ = 2ν exactly, verified by native_decide.",
     "keyInsights": [
@@ -48,49 +48,49 @@
       "title": "Erdős Problem #167: Tuza's Conjecture on Triangle Covering",
       "startLine": 20,
       "endLine": 53,
-      "summary": "Erdős Problem #167: Tuza's Conjecture on Triangle Covering"
+      "summary": "States Tuza's conjecture: $\\tau(G) \\leq 2\\nu(G)$ where $\\tau$ is the minimum triangle edge cover and $\\nu$ is the maximum triangle packing. Gives historical context from Tuza (1981) through Haxell-Kohayakawa's 2.87 bound (1998)."
     },
     {
       "id": "core-definitions",
-      "title": "/- ## Core Definitions -/",
+      "title": "Core Definitions",
       "startLine": 54,
       "endLine": 85,
-      "summary": "/- ## Core Definitions -/"
+      "summary": "Defines `IsTriangle G a b c` (three mutually adjacent distinct vertices), `EdgeDisjoint` (triangles sharing no edges), `maxEdgeDisjointTriangles G` ($\\nu(G)$ as sSup), `IsTriangleCover G E` (removing $E$ makes $G$ triangle-free), and `triangleCoverNumber G` ($\\tau(G)$ as sInf)."
     },
     {
       "id": "tuza-s-conjecture",
-      "title": "/- ## Tuza's Conjecture -/",
+      "title": "Tuza's Conjecture",
       "startLine": 86,
       "endLine": 94,
-      "summary": "/- ## Tuza's Conjecture -/"
+      "summary": "Formalizes `TuzaConjecture`: for all graphs $G$, $\\tau(G) \\leq 2 \\cdot \\nu(G)$. Notes this is open in general but proven for special graph classes."
     },
     {
       "id": "trivial-bound",
-      "title": "/- ## Trivial Bound -/",
+      "title": "Trivial Bound",
       "startLine": 95,
       "endLine": 175,
-      "summary": "/- ## Trivial Bound -/"
+      "summary": "Proves `trivial_bound`: $\\tau(G) \\leq 3\\nu(G)$ (Aristotle-verified). Strategy: take a maximum packing $T$, collect all edges of triangles in $T$ to form a cover $E$ with $|E| \\leq 3|T|$. Maximality of $T$ ensures no triangle survives. Also proves `exists_max_packing` establishing the packing exists."
     },
     {
       "id": "known-results",
-      "title": "/- ## Known Results -/",
+      "title": "Known Results",
       "startLine": 176,
       "endLine": 253,
-      "summary": "/- ## Known Results -/"
+      "summary": "Proves $K_4$ and $K_5$ achieve $\\tau = 2\\nu$ exactly (Aristotle-verified via `native_decide`): $K_4$ has $\\nu = 1, \\tau = 2$; $K_5$ has $\\nu = 2, \\tau = 4$. Axiomatizes the Haxell-Kohayakawa bound $\\tau \\leq (3 - 3/23)\\nu \\approx 2.87\\nu$ and Tuza's conjecture for $K_4$-free and planar graphs."
     },
     {
       "id": "fractional-version",
-      "title": "/- ## Fractional Version -/",
+      "title": "Fractional Version",
       "startLine": 254,
       "endLine": 265,
-      "summary": "/- ## Fractional Version -/"
+      "summary": "Axiomatizes the fractional Tuza conjecture $\\tau^*(G) \\leq 2\\nu^*(G)$, which IS proven. The fractional relaxation allows weights in $[0,1]$ and follows from LP duality."
     },
     {
       "id": "summary",
-      "title": "/- ## Summary",
+      "title": "Summary",
       "startLine": 266,
       "endLine": 289,
-      "summary": "/- ## Summary"
+      "summary": "Recaps: 3 Aristotle-verified theorems (trivial bound, $K_4$ tightness, $K_5$ tightness), 5 axioms (Haxell-Kohayakawa, $K_4$-free case, planar case, fractional version, Tuza conjecture). The gap between the best known 2.87 and the conjectured 2 remains open."
     }
   ],
   "conclusion": {
@@ -105,9 +105,14 @@
   },
   "crossReferences": [
     {
-      "targetId": "erdos-140",
+      "targetId": "ramseys-theorem",
       "relationship": "related",
-      "description": "Both concern extremal combinatorics: #140 addresses arithmetic progression-free sets, #167 addresses triangle packing/covering in graphs"
+      "description": "Ramsey's theorem guarantees monochromatic cliques; Tuza's conjecture concerns the covering/packing duality for triangles (3-cliques) — both are central to extremal graph theory"
+    },
+    {
+      "targetId": "erdos-1079",
+      "relationship": "related",
+      "description": "Erdős #1079 concerns Turán density in neighborhoods — another extremal problem relating local triangle structure to global graph properties"
     }
   ]
 }

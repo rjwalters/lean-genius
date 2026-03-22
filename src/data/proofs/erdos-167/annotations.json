@@ -121,7 +121,7 @@
     "type": "definition",
     "title": "Tuza's Conjecture (1981)",
     "content": "**TuzaConjecture**: For all graphs G,\n\u03c4(G) \u2264 2 \u00b7 \u03bd(G)\n\n**Interpretation**: If G has at most k edge-disjoint triangles, then 2k edges suffice to destroy all triangles.\n\nThis is open in general but known for special graph classes.",
-    "mathContext": "The factor 2 is sharp: K\u2084 and K\u2085 show equality is achieved. The trivial bound is 3.",
+    "mathContext": "The conjecture can be viewed as an integer programming duality gap question: the LP relaxation gives $\\tau^* \\leq 2\\nu^*$ (proven), and Tuza asks whether the integrality gap is at most 1. The factor 2 is tight: $K_4$ has $\\binom{4}{3} = 4$ triangles but $\\nu = 1$ (all share edges), needing $\\tau = 2$ (remove two edges to break all 4 triangles). The trivial bound $\\tau \\leq 3\\nu$ uses each triangle's 3 edges; improving to 2 requires a more global argument.",
     "significance": "key",
     "tags": [
       "conjecture",
@@ -261,7 +261,7 @@
     "type": "axiom",
     "title": "Haxell-Kohayakawa Bound (1998)",
     "content": "**axiom haxell_kohayakawa**:\n\n\u03c4(G) \u2264 (3 - 3/23) \u00b7 \u03bd(G) \u2248 2.87\u03bd(G)\n\nThis is the best known general bound, improving on the trivial 3\u03bd.\n\nThe coefficient 3 - 3/23 \u2248 2.8696 is far from the conjectured 2.",
-    "mathContext": "The gap between 2.87 and 2 represents the current state of the conjecture. Closing this gap is a major open problem.",
+    "mathContext": "Haxell and Kohayakawa proved $\\tau(G) \\leq (3 - 3/23)\\nu(G)$ by analyzing the local structure around a maximum packing: edges not in the packing but forming triangles can be counted more carefully using the packing's edge-disjointness. The coefficient $66/23 \\approx 2.8696$ has not been improved in over 25 years despite significant effort. Closing the gap to 2 (or finding a counterexample) remains one of the central open problems in extremal graph theory.",
     "significance": "key",
     "tags": [
       "best-known-bound",
@@ -289,7 +289,7 @@
     "type": "axiom",
     "title": "Special Graph Classes",
     "content": "**axiom tuza_for_k4_free**: Tuza holds for K\u2084-free graphs.\nIf G has no K\u2084 subgraph, then \u03c4(G) \u2264 2\u03bd(G).\n\n**axiom tuza_for_planar**: Tuza holds for planar graphs.\n\nThese special cases are proven, showing the conjecture holds for restricted graph families.",
-    "mathContext": "K\u2084-free graphs avoid the tight example K\u2084. Planar graphs have bounded density which helps control triangle structure.",
+    "mathContext": "For $K_4$-free graphs, any two triangles sharing an edge must share exactly that edge (no common third vertex), which forces a cleaner packing-covering structure. Haxell (1999) exploited this to prove $\\tau \\leq 2\\nu$. For planar graphs, Euler's formula $|E| \\leq 3|V| - 6$ bounds the edge density, limiting how many overlapping triangles can exist; Tuza himself proved the planar case in 1994.",
     "significance": "key",
     "tags": [
       "special-cases",
@@ -317,7 +317,7 @@
     "type": "axiom",
     "title": "Fractional Version is True",
     "content": "**axiom fractional_tuza**: The fractional relaxation of Tuza's conjecture IS true.\n\n\u03c4*(G) \u2264 2 \u00b7 \u03bd*(G)\n\nwhere \u03c4* and \u03bd* are the fractional (LP relaxation) versions.\n\nThis shows the integral conjecture would follow from rounding guarantees.",
-    "mathContext": "Fractional versions allow assigning weights in [0,1] instead of {0,1}. LP duality often makes these easier to prove.",
+    "mathContext": "In the fractional relaxation, $\\nu^*$ is the maximum weight of a fractional triangle packing (each edge used at most once) and $\\tau^*$ is the minimum weight of a fractional edge cover (each triangle hit). By LP duality, $\\nu^* = \\tau^*/2$ follows from the constraint matrix being half-integral. The integrality gap between $\\tau^*/\\nu^*$ and $\\tau/\\nu$ is exactly what makes the integral conjecture hard: rounding fractional solutions to integer ones can at most double the cost, which matches Tuza's factor of 2.",
     "significance": "supporting",
     "tags": [
       "fractional-relaxation",
