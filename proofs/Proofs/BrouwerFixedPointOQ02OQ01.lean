@@ -554,13 +554,28 @@ noncomputable def gridToReal (n : ℕ) (v : GridVertex n) : ℝ × ℝ :=
 
 -- Displacement-based Sperner coloring from continuous function f.
 -- Color vertex with index of most negative barycentric displacement.
+-- When all displacements are equal (f(p)=p at boundary), uses face-aware
+-- tie-breaking to ensure Sperner boundary conditions are satisfied.
+--
+-- Key property: on face opposite vertex k, the k-th barycentric displacement
+-- d_k ≥ 0 (since f maps simplex to simplex). When f(p) ≠ p, some d_j < 0 ≤ d_k,
+-- so k is never the minimum. The face-aware branch handles the f(p) = p case.
 noncomputable def displacementColoring (n : ℕ)
     (f : ℝ × ℝ → ℝ × ℝ) : Coloring n := fun v =>
   let p := gridToReal n v
   let d1 := (f p).1 - p.1
   let d2 := (f p).2 - p.2
   let d0 := -(d1 + d2)
-  if d0 ≤ d1 ∧ d0 ≤ d2 then 0
+  -- All displacements equal (boundary fixed point): face-aware tie-breaking
+  if d0 = d1 ∧ d1 = d2 then
+    if v.i = 0 ∧ v.j = 0 then 0              -- corner (0,0): need color 0
+    else if v.j = 0 ∧ v.i + v.j = n then 1    -- corner (n,0): need color 1
+    else if v.i = 0 ∧ v.i + v.j = n then 2    -- corner (0,n): need color 2
+    else if v.i + v.j = n then 1               -- hypotenuse: avoid color 0
+    else if v.i = 0 then 2                     -- left edge: avoid color 1
+    else 0                                     -- bottom/interior: avoid color 2
+  -- Standard: most negative displacement (d_k on face opp k is ≥ 0, so safe)
+  else if d0 ≤ d1 ∧ d0 ≤ d2 then 0
   else if d1 ≤ d2 then 1
   else 2
 
