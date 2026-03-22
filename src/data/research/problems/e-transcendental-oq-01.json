@@ -46,7 +46,10 @@
     "wiedijk-100",
     "classic"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "e-transcendental",
+    "e-transcendental-oq-01"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -56,5 +59,29 @@
   "lastUpdate": "2026-03-06T06:42:42.096Z",
   "completed": "2026-03-06T06:42:42.096Z",
   "significance": 6,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/ETranscendentalOQ01.lean",
+      "filename": "ETranscendentalOQ01.lean",
+      "lineCount": 546,
+      "theoremCount": 18,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ETranscendentalOQ01.lean"
+    },
+    {
+      "path": "Proofs/ETranscendentalOQ01OQ01.lean",
+      "filename": "ETranscendentalOQ01OQ01.lean",
+      "lineCount": 342,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ETranscendentalOQ01OQ01.lean"
+    }
+  ]
 }

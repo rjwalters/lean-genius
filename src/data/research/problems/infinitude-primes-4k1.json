@@ -41,7 +41,9 @@
     "primes",
     "classical"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "infinitude-primes"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -51,5 +53,18 @@
   "lastUpdate": "2026-01-02T00:51:36.380Z",
   "completed": "2026-01-02T00:51:36.380Z",
   "significance": 6,
-  "tractability": 8
+  "tractability": 8,
+  "leanFiles": [
+    {
+      "path": "Proofs/InfinitudePrimes4k1.lean",
+      "filename": "InfinitudePrimes4k1.lean",
+      "lineCount": 178,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k1.lean"
+    }
+  ]
 }

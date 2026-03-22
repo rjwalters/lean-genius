@@ -41,7 +41,12 @@
     "prime-gaps",
     "sieve-methods"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "derangements",
+    "derangements-oq-02",
+    "derangements-oq-02-oq-01",
+    "derangements-oq-03"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -51,5 +56,62 @@
   "lastUpdate": "2026-02-26T18:10:25.580Z",
   "completed": "2026-02-26T18:10:25.580Z",
   "significance": 7,
-  "tractability": 7
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/Derangements.lean",
+      "filename": "Derangements.lean",
+      "lineCount": 228,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Derangements.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergence.lean",
+      "filename": "DerangementsConvergence.lean",
+      "lineCount": 284,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergence.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ02.lean",
+      "filename": "DerangementsOQ02.lean",
+      "lineCount": 358,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ02.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ02OQ01.lean",
+      "filename": "DerangementsOQ02OQ01.lean",
+      "lineCount": 124,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ03.lean",
+      "filename": "DerangementsOQ03.lean",
+      "lineCount": 406,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ03.lean"
+    }
+  ]
 }

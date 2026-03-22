@@ -42,7 +42,10 @@
     "erdos-problem",
     "open-conjecture"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-14"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -52,5 +55,18 @@
   "lastUpdate": "2026-01-13T16:22:40.291Z",
   "completed": "2026-01-13T16:22:40.291Z",
   "significance": 6,
-  "tractability": 4
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos14UniqueSums.lean",
+      "filename": "Erdos14UniqueSums.lean",
+      "lineCount": 322,
+      "theoremCount": 5,
+      "axiomCount": 4,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos14UniqueSums.lean"
+    }
+  ]
 }

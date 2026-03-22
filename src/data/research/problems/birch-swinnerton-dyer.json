@@ -130,7 +130,9 @@
     "elliptic-curves",
     "open-conjecture"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "birch-swinnerton-dyer"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -143,10 +145,26 @@
   "tractability": 1,
   "leanFiles": [
     {
-      "lineCount": 7938,
-      "axiomCount": 96,
+      "path": "Proofs/BirchSwinnertonDyer.lean",
+      "filename": "BirchSwinnertonDyer.lean",
+      "lineCount": 7438,
       "theoremCount": 254,
-      "sorryCount": 0
+      "axiomCount": 21,
+      "defCount": 143,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirchSwinnertonDyer.lean"
+    },
+    {
+      "path": "Proofs/BirchSwinnertonDyerAristotle.lean",
+      "filename": "BirchSwinnertonDyerAristotle.lean",
+      "lineCount": 391,
+      "theoremCount": 66,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirchSwinnertonDyerAristotle.lean"
     }
   ]
 }

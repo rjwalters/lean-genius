@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BLOCKED: Both remaining axioms are hard. sidon_set_lower_bound_exists needs Singer construction (~500 lines). erdos_44 is OPEN.",
+    "progressSummary": "PROGRESS: Proved isSidon_powers_of_two (eliminated 1 axiom). 2 axioms remain: sidon_set_lower_bound_exists (√N/2 Sidon set construction) and erdos_44 (main open conjecture).",
     "builtItems": [
       "pow2_sum_inj: core lemma, 2^a+2^b=2^c+2^d → a=c ∧ b=d, by strong induction on exponent sum",
       "isSidon_powers_of_two: {2^0,...,2^{k-1}} is Sidon, proved from pow2_sum_inj"
@@ -37,11 +37,7 @@
     "insights": [
       "Strong induction on a+c with parity: when both exponents ≥1, divide by 2 and recurse",
       "Parity argument: if min exponent is 0 but other is ≥1, LHS odd vs RHS even",
-      "dvd_pow_self 2 is the clean way to show 2 | 2^k in Lean (not pow_succ rewriting)",
-      "BLOCKED: sidon_set_lower_bound_exists requires Singer difference set construction (finite projective planes)",
-      "BLOCKED: erdos_44 is the OPEN conjecture, cannot be proved",
-      "Powers of 2 only give log2(N) elements, not sqrt(N)/2 for large N",
-      "Greedy construction gives ~N^{1/3}, also insufficient for sqrt(N)/2"
+      "dvd_pow_self 2 is the clean way to show 2 | 2^k in Lean (not pow_succ rewriting)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -54,7 +50,20 @@
   "tags": [
     "erdos"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "erdos-4",
+    "erdos-44",
+    "erdos-440",
+    "erdos-441",
+    "erdos-442",
+    "erdos-443",
+    "erdos-444",
+    "erdos-445",
+    "erdos-446",
+    "erdos-447",
+    "erdos-448",
+    "erdos-449"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -63,5 +72,128 @@
   "started": "2026-01-12T06:58:30.839Z",
   "lastUpdate": "2026-03-18T23:00:00Z",
   "significance": 6,
-  "tractability": 4
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos440Problem.lean",
+      "filename": "Erdos440Problem.lean",
+      "lineCount": 212,
+      "theoremCount": 3,
+      "axiomCount": 5,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos440Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos441Problem.lean",
+      "filename": "Erdos441Problem.lean",
+      "lineCount": 281,
+      "theoremCount": 6,
+      "axiomCount": 14,
+      "defCount": 13,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos441Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos442Problem.lean",
+      "filename": "Erdos442Problem.lean",
+      "lineCount": 266,
+      "theoremCount": 8,
+      "axiomCount": 5,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos442Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos443Problem.lean",
+      "filename": "Erdos443Problem.lean",
+      "lineCount": 250,
+      "theoremCount": 5,
+      "axiomCount": 19,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos443Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos444Problem.lean",
+      "filename": "Erdos444Problem.lean",
+      "lineCount": 161,
+      "theoremCount": 2,
+      "axiomCount": 6,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos444Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos445Problem.lean",
+      "filename": "Erdos445Problem.lean",
+      "lineCount": 142,
+      "theoremCount": 3,
+      "axiomCount": 5,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos445Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos446Problem.lean",
+      "filename": "Erdos446Problem.lean",
+      "lineCount": 164,
+      "theoremCount": 2,
+      "axiomCount": 12,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos446Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos447Problem.lean",
+      "filename": "Erdos447Problem.lean",
+      "lineCount": 166,
+      "theoremCount": 1,
+      "axiomCount": 7,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos447Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos448Problem.lean",
+      "filename": "Erdos448Problem.lean",
+      "lineCount": 331,
+      "theoremCount": 9,
+      "axiomCount": 12,
+      "defCount": 5,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos448Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos449Problem.lean",
+      "filename": "Erdos449Problem.lean",
+      "lineCount": 177,
+      "theoremCount": 1,
+      "axiomCount": 6,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos449Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos44Problem.lean",
+      "filename": "Erdos44Problem.lean",
+      "lineCount": 344,
+      "theoremCount": 7,
+      "axiomCount": 2,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos44Problem.lean"
+    }
+  ]
 }

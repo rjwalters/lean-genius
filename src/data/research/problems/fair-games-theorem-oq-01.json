@@ -41,7 +41,10 @@
     "stochastic-processes",
     "martingale"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "fair-games-theorem",
+    "fair-games-theorem-oq-01"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -51,5 +54,29 @@
   "lastUpdate": "2026-03-12T07:36:01.956Z",
   "completed": "2026-03-12T07:36:01.956Z",
   "significance": 6,
-  "tractability": 7
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/FairGamesTheorem.lean",
+      "filename": "FairGamesTheorem.lean",
+      "lineCount": 477,
+      "theoremCount": 11,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FairGamesTheorem.lean"
+    },
+    {
+      "path": "Proofs/FairGamesTheoremOQ01.lean",
+      "filename": "FairGamesTheoremOQ01.lean",
+      "lineCount": 633,
+      "theoremCount": 48,
+      "axiomCount": 0,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FairGamesTheoremOQ01.lean"
+    }
+  ]
 }

@@ -39,7 +39,11 @@
   "tags": [
     "erdos"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "erdos-3",
+    "erdos-33",
+    "erdos-335"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -48,5 +52,18 @@
   "started": "2026-01-13T00:04:50.018Z",
   "lastUpdate": "2026-03-13T07:52:17.046Z",
   "significance": 6,
-  "tractability": 4
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos335Problem.lean",
+      "filename": "Erdos335Problem.lean",
+      "lineCount": 123,
+      "theoremCount": 1,
+      "axiomCount": 7,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos335Problem.lean"
+    }
+  ]
 }

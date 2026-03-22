@@ -8,11 +8,20 @@
   "problemStatement": {
     "formal": "theorem power_mean_monotone_neg : ∀ r t, r ≤ t → t < 0 → weightedPowerMean s w z r ≤ weightedPowerMean s w z t",
     "plain": "For negative exponents r ≤ s < 0, the weighted power mean M_r ≤ M_s. Proved via duality identity M_r(z) = M_{-r}(z⁻¹)⁻¹ reducing to the positive case.",
-    "whyMatters": ["Fills known Mathlib gap for negative exponent power means", "Completes same-sign monotonicity chain"]
+    "whyMatters": [
+      "Fills known Mathlib gap for negative exponent power means",
+      "Completes same-sign monotonicity chain"
+    ]
   },
   "knownResults": {
-    "proven": ["power_mean_monotone_neg (M_r ≤ M_s for r ≤ s < 0)", "power_mean_neg_inv (duality identity)", "weighted_sum_pos and weightedPowerMean_pos (positivity helpers)"],
-    "open": ["Mixed-sign case r < 0 < s"],
+    "proven": [
+      "power_mean_monotone_neg (M_r ≤ M_s for r ≤ s < 0)",
+      "power_mean_neg_inv (duality identity)",
+      "weighted_sum_pos and weightedPowerMean_pos (positivity helpers)"
+    ],
+    "open": [
+      "Mixed-sign case r < 0 < s"
+    ],
     "goal": "Prove M_r ≤ M_s for r ≤ s < 0 — COMPLETED"
   },
   "currentState": {
@@ -30,10 +39,20 @@
   },
   "knowledge": {
     "progressSummary": "COMPLETED: Theorem power_mean_monotone_neg already proved in AmgmInequalityOQ03.lean:291-343 with 0 axioms, 0 sorries. Created gallery entry amgm-inequality-oq-03-oq-01 and fixed parent gallery metadata (axiomCount 1→0, updated openQuestions).",
-    "builtItems": ["Gallery entry: src/data/proofs/amgm-inequality-oq-03-oq-01/", "Fixed parent meta.json: axiomCount 1→0", "Fixed parent annotations.json: updated axiom annotation to reflect proved status"],
-    "insights": ["The Seeker created this problem from outdated openQuestions in the parent gallery entry — the theorem was already proved", "Parent AmgmInequalityOQ03.lean has 0 axiom declarations and 0 sorries but meta.json claimed 1 axiom", "The duality technique M_r(z) = M_{-r}(z⁻¹)⁻¹ elegantly reduces negative case to positive case"],
+    "builtItems": [
+      "Gallery entry: src/data/proofs/amgm-inequality-oq-03-oq-01/",
+      "Fixed parent meta.json: axiomCount 1→0",
+      "Fixed parent annotations.json: updated axiom annotation to reflect proved status"
+    ],
+    "insights": [
+      "The Seeker created this problem from outdated openQuestions in the parent gallery entry — the theorem was already proved",
+      "Parent AmgmInequalityOQ03.lean has 0 axiom declarations and 0 sorries but meta.json claimed 1 axiom",
+      "The duality technique M_r(z) = M_{-r}(z⁻¹)⁻¹ elegantly reduces negative case to positive case"
+    ],
     "mathlibGaps": [],
-    "nextSteps": ["Prove mixed-sign case M_r ≤ M_s for r < 0 < s (crossing zero)"]
+    "nextSteps": [
+      "Prove mixed-sign case M_r ≤ M_s for r < 0 < s (crossing zero)"
+    ]
   },
   "tags": [
     "seeker-selected",
@@ -43,7 +62,8 @@
   "relatedProofs": [
     "amgm-inequality",
     "amgm-inequality-oq-02",
-    "amgm-inequality-oq-03"
+    "amgm-inequality-oq-03",
+    "amgm-inequality-oq-03-oq-01"
   ],
   "references": {
     "papers": [],

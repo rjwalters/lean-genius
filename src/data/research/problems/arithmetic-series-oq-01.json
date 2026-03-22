@@ -40,7 +40,11 @@
     "analysis",
     "extension"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "arithmetic-series",
+    "arithmetic-series-oq-02",
+    "arithmetic-series-oq-02-oq-02"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -50,5 +54,62 @@
   "lastUpdate": "2026-02-08T06:11:43.708Z",
   "completed": "2026-02-08T06:11:43.708Z",
   "significance": 6,
-  "tractability": 7
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/ArithmeticSeries.lean",
+      "filename": "ArithmeticSeries.lean",
+      "lineCount": 188,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeries.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02.lean",
+      "filename": "ArithmeticSeriesOQ02.lean",
+      "lineCount": 210,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ01.lean",
+      "filename": "ArithmeticSeriesOQ02OQ01.lean",
+      "lineCount": 174,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ02.lean",
+      "filename": "ArithmeticSeriesOQ02OQ02.lean",
+      "lineCount": 155,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ02OQ01.lean",
+      "filename": "ArithmeticSeriesOQ02OQ02OQ01.lean",
+      "lineCount": 166,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ02OQ01.lean"
+    }
+  ]
 }

@@ -43,7 +43,11 @@
     "divisibility",
     "primes"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "erdos-4",
+    "erdos-40",
+    "erdos-401"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -52,5 +56,18 @@
   "started": "2026-01-23T08:04:56.544Z",
   "lastUpdate": "2026-01-23T08:04:56.544Z",
   "significance": 6,
-  "tractability": 7
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos401Problem.lean",
+      "filename": "Erdos401Problem.lean",
+      "lineCount": 320,
+      "theoremCount": 20,
+      "axiomCount": 3,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos401Problem.lean"
+    }
+  ]
 }

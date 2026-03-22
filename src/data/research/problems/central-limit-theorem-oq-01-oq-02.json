@@ -1,6 +1,6 @@
 {
   "slug": "central-limit-theorem-oq-01-oq-02",
-  "title": "L\u00e9vy-Khintchine Representation for Stable Distributions",
+  "title": "Lévy-Khintchine Representation for Stable Distributions",
   "phase": "COMPLETED",
   "status": "completed",
   "tier": "A",
@@ -19,7 +19,7 @@
     "phase": "COMPLETED",
     "since": "2026-03-21T17:07:38.710Z",
     "iteration": 2,
-    "focus": "L\u00e9vy-Khintchine framework complete",
+    "focus": "Lévy-Khintchine framework complete",
     "blockers": [],
     "nextAction": "Extend with more examples and closure properties",
     "attemptCounts": {
@@ -29,29 +29,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Created CentralLimitTheoremOQ01OQ02.lean (245 lines, 0 sorries, 15 axioms). L\u00e9vy-Khintchine framework with infinitely divisible distributions, L\u00e9vy triplets, stable distributions.",
+    "progressSummary": "COMPLETED: Created CentralLimitTheoremOQ01OQ02.lean (245 lines, 0 sorries, 15 axioms). Lévy-Khintchine framework with infinitely divisible distributions, Lévy triplets, stable distributions.",
     "builtItems": [
       "proofs/Proofs/CentralLimitTheoremOQ01OQ02.lean: 245 lines, 0 sorries, 15 axioms",
       "IsInfDivisible: definition of infinitely divisible distributions",
       "LevyTriplet: structure for (drift, gaussianVar, levyIntegral)",
-      "lkExponent: L\u00e9vy-Khintchine characteristic exponent",
-      "dirac_zero_infDivisible: \u03b4\u2080 is infinitely divisible (proved)",
+      "lkExponent: Lévy-Khintchine characteristic exponent",
+      "dirac_zero_infDivisible: δ₀ is infinitely divisible (proved)",
       "gaussian_infDivisible: Gaussian is infinitely divisible (proved)",
       "charFun_has_nth_root: inf. div. implies charFun nth roots (proved)",
-      "gaussian_lk_exponent: Gaussian exponent is -t\u00b2/2 (proved)",
+      "gaussian_lk_exponent: Gaussian exponent is -t²/2 (proved)",
       "gaussian_is_2stable: Gaussian is 2-stable (proved)",
       "Gallery page: src/data/proofs/central-limit-theorem-oq-01-oq-02/"
     ],
     "insights": [
       "No existing file for this open question",
       "Parent OQ01 file (313 lines) and OQ01-OQ01 (1130 lines) exist with 0 sorries",
-      "L\u00e9vy-Khintchine formula: log \u03c6(t) = i\u03bct - \u03c3\u00b2t\u00b2/2 + \u222b(e^{itx}-1-itx/(1+x\u00b2))\u03bd(dx)",
-      "Requires: characteristic functions, infinitely divisible distributions, L\u00e9vy measure",
+      "Lévy-Khintchine formula: log φ(t) = iμt - σ²t²/2 + ∫(e^{itx}-1-itx/(1+x²))ν(dx)",
+      "Requires: characteristic functions, infinitely divisible distributions, Lévy measure",
       "Mathlib has MeasureTheory but limited characteristic function infrastructure",
-      "Tractability 4/10 \u2014 would need 500+ lines of new definitions",
+      "Tractability 4/10 — would need 500+ lines of new definitions",
       "Self-contained infrastructure needed: OQ03 has orphaned docstrings causing parse errors",
-      "L\u00e9vy triplet neatly decomposes inf. div. distributions into drift + Gaussian + jumps",
-      "simp [ofReal_zero, ofReal_one] suffices for L\u00e9vy exponent simplification (no need for ring)",
+      "Lévy triplet neatly decomposes inf. div. distributions into drift + Gaussian + jumps",
+      "simp [ofReal_zero, ofReal_one] suffices for Lévy exponent simplification (no need for ring)",
       "convPow induction pattern from OQ03 reusable: zero case uses identity, succ uses assoc"
     ],
     "mathlibGaps": [],
@@ -59,7 +59,7 @@
       "Fix OQ03 orphaned docstrings to enable import",
       "Prove infDivisible_convolution (closure under convolution)",
       "Add Compound Poisson as infinitely divisible example",
-      "Connect to L\u00e9vy processes (continuous-time with independent stationary increments)"
+      "Connect to Lévy processes (continuous-time with independent stationary increments)"
     ]
   },
   "tags": [
@@ -71,6 +71,7 @@
     "central-limit-theorem",
     "central-limit-theorem-oq-01",
     "central-limit-theorem-oq-01-oq-01",
+    "central-limit-theorem-oq-01-oq-02",
     "central-limit-theorem-oq-03"
   ],
   "references": {
@@ -115,6 +116,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ02.lean",
+      "filename": "CentralLimitTheoremOQ01OQ02.lean",
+      "lineCount": 313,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 13,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ02.lean"
     },
     {
       "path": "Proofs/CentralLimitTheoremOQ02.lean",

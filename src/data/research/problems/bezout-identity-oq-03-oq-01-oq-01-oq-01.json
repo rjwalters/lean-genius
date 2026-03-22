@@ -1,26 +1,26 @@
 {
   "id": "bezout-identity-oq-03-oq-01-oq-01-oq-01",
-  "name": "Ideal-theoretic Chinese Remainder Theorem: R/\u2a05I\u1d62 \u2245 \u220f R/I\u1d62",
+  "name": "Ideal-theoretic Chinese Remainder Theorem: R/⨅Iᵢ ≅ ∏ R/Iᵢ",
   "status": "completed",
   "phase": "COMPLETED",
   "knowledge": {
     "insights": [
       "Mathlib has Ideal.quotientInfRingEquivPiQuotient for k-fold CRT and quotientInfEquivQuotientProd for 2-fold",
-      "Ideal.isCoprime_iff_sup_eq bridges IsCoprime I J \u2194 I \u2294 J = \u22a4",
-      "I \u2229 J = I\u00b7J proof: decompose x = x\u00b7a + x\u00b7b using 1 = a + b from coprimality",
+      "Ideal.isCoprime_iff_sup_eq bridges IsCoprime I J ↔ I ⊔ J = ⊤",
+      "I ∩ J = I·J proof: decompose x = x·a + x·b using 1 = a + b from coprimality",
       "Coprimality inheritance uses IsCoprime.mul_right plus Ideal.mul_le_inf",
       "The 158-line version is much cleaner than the original 354-line attempt thanks to Mathlib API"
     ],
     "builtItems": [
       "BezoutIdentityOQ03OQ01OQ01OQ01.lean: 158L, 12 theorems, 0 axioms, 0 sorries",
-      "crt_general: R/(\u2a05 I\u1d62) \u2245 \u220f R/I\u1d62 for pairwise coprime ideals",
-      "crt_two: R/(I\u2229J) \u2245 R/I \u00d7 R/J via Ideal.quotientInfEquivQuotientProd",
-      "inf_eq_mul_of_coprime: I \u2229 J = I \u00b7 J for coprime ideals",
-      "crt_product: R/(I\u00b7J) \u2245 R/I \u00d7 R/J combining product = intersection with CRT",
-      "isCoprime_of_coprime_inf: coprimality inheritance I\u22a5J \u2227 I\u22a5K \u27f9 I\u22a5(J\u2229K)"
+      "crt_general: R/(⨅ Iᵢ) ≅ ∏ R/Iᵢ for pairwise coprime ideals",
+      "crt_two: R/(I∩J) ≅ R/I × R/J via Ideal.quotientInfEquivQuotientProd",
+      "inf_eq_mul_of_coprime: I ∩ J = I · J for coprime ideals",
+      "crt_product: R/(I·J) ≅ R/I × R/J combining product = intersection with CRT",
+      "isCoprime_of_coprime_inf: coprimality inheritance I⊥J ∧ I⊥K ⟹ I⊥(J∩K)"
     ],
     "openQuestions": [
-      "What is the correct Mathlib name for I \u2293 J = I * J for coprime ideals?",
+      "What is the correct Mathlib name for I ⊓ J = I * J for coprime ideals?",
       "How to properly use sup_inf_left with Ideal.isCoprime_iff_sup_eq?"
     ],
     "nextSteps": [
@@ -32,15 +32,160 @@
   },
   "leanFiles": [
     {
+      "path": "Proofs/BezoutIdentity.lean",
+      "filename": "BezoutIdentity.lean",
+      "lineCount": 238,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BezoutIdentity.lean"
+    },
+    {
+      "path": "Proofs/BezoutIdentityOQ01.lean",
+      "filename": "BezoutIdentityOQ01.lean",
+      "lineCount": 209,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BezoutIdentityOQ01.lean"
+    },
+    {
+      "path": "Proofs/BezoutIdentityOQ02.lean",
+      "filename": "BezoutIdentityOQ02.lean",
+      "lineCount": 193,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BezoutIdentityOQ02.lean"
+    },
+    {
+      "path": "Proofs/BezoutIdentityOQ02OQ01.lean",
+      "filename": "BezoutIdentityOQ02OQ01.lean",
+      "lineCount": 258,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BezoutIdentityOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BezoutIdentityOQ02OQ02.lean",
+      "filename": "BezoutIdentityOQ02OQ02.lean",
+      "lineCount": 286,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BezoutIdentityOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/BezoutIdentityOQ02OQ02OQ01.lean",
+      "filename": "BezoutIdentityOQ02OQ02OQ01.lean",
+      "lineCount": 201,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BezoutIdentityOQ02OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BezoutIdentityOQ02OQ02OQ01OQ01.lean",
+      "filename": "BezoutIdentityOQ02OQ02OQ01OQ01.lean",
+      "lineCount": 183,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BezoutIdentityOQ02OQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BezoutIdentityOQ03.lean",
+      "filename": "BezoutIdentityOQ03.lean",
+      "lineCount": 285,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BezoutIdentityOQ03.lean"
+    },
+    {
+      "path": "Proofs/BezoutIdentityOQ03OQ01.lean",
+      "filename": "BezoutIdentityOQ03OQ01.lean",
+      "lineCount": 316,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BezoutIdentityOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/BezoutIdentityOQ03OQ01OQ01.lean",
+      "filename": "BezoutIdentityOQ03OQ01OQ01.lean",
+      "lineCount": 250,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BezoutIdentityOQ03OQ01OQ01.lean"
+    },
+    {
       "path": "Proofs/BezoutIdentityOQ03OQ01OQ01OQ01.lean",
       "filename": "BezoutIdentityOQ03OQ01OQ01OQ01.lean",
-      "lineCount": 158,
-      "theoremCount": 12,
+      "lineCount": 161,
+      "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BezoutIdentityOQ03OQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BezoutIdentityOQ03OQ01OQ02.lean",
+      "filename": "BezoutIdentityOQ03OQ01OQ02.lean",
+      "lineCount": 228,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BezoutIdentityOQ03OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BezoutIdentityOQ04.lean",
+      "filename": "BezoutIdentityOQ04.lean",
+      "lineCount": 350,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BezoutIdentityOQ04.lean"
     }
+  ],
+  "relatedProofs": [
+    "bezout-identity",
+    "bezout-identity-oq-02",
+    "bezout-identity-oq-02-oq-01",
+    "bezout-identity-oq-02-oq-02",
+    "bezout-identity-oq-02-oq-02-oq-01",
+    "bezout-identity-oq-02-oq-02-oq-01-oq-01",
+    "bezout-identity-oq-03",
+    "bezout-identity-oq-03-oq-01",
+    "bezout-identity-oq-03-oq-01-oq-01",
+    "bezout-identity-oq-03-oq-01-oq-01-oq-01",
+    "bezout-identity-oq-04"
   ]
 }

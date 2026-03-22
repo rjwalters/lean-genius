@@ -11,7 +11,7 @@
       "Tucker's lemma: antipodal labeling of triangulated sphere has complementary edge",
       "Graph-theoretic proof: construct a graph from the labeling, follow path from boundary to find edge",
       "The parity argument is the true combinatorial core - it separates into 1D Tucker (proved) + double-counting (this file) + triangulation (topology)",
-      "Tucker degree of a triangle = # complementary edges. For {\u00b11,\u00b12} labels, only (1,-1) and (2,-2) pairs. A triangle has at most 3 edges, so degree \u2264 3.",
+      "Tucker degree of a triangle = # complementary edges. For {±1,±2} labels, only (1,-1) and (2,-2) pairs. A triangle has at most 3 edges, so degree ≤ 3.",
       "Path-following is constructive: walk through triangles via shared complementary edges until stuck at interior dead-end. Works because max degree = 2.",
       "The file compiles cleanly with 0 axioms, 1 sorry (the parity principle itself)",
       "tucker_parity_principle sorry requires edge-sharing data: TriangulatedComplex needs axiom that each non-boundary edge is shared by exactly 2 triangles. Without this, the double-counting argument cannot be formalized.",
@@ -24,7 +24,7 @@
       "isComplementary predicate with Decidable instance",
       "complementary_pairs: exhaustive classification of complementary label pairs",
       "TriangulatedComplex: finite 2-complex with adjacency",
-      "tucker_parity_principle (sorry): odd boundary \u2192 interior complementary edge",
+      "tucker_parity_principle (sorry): odd boundary → interior complementary edge",
       "tucker_2d_from_parity: combines parity with 1D Tucker",
       "complementaryDegree: Finset-based edge counting (no sorry)",
       "hasComplementaryEdge_iff_complementaryDegree_pos: complete iff proof",
@@ -41,5 +41,92 @@
     ],
     "progressSummary": "COMPLETED: Eliminated sole sorry. File now 0A, 0S. Replaced broken EdgeSharingProperty with clean Tucker graph degree abstraction."
   },
-  "lastUpdate": "2026-03-22T06:20:52Z"
+  "lastUpdate": "2026-03-22T06:20:52Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/BorsukUlam.lean",
+      "filename": "BorsukUlam.lean",
+      "lineCount": 266,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlam.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ01.lean",
+      "filename": "BorsukUlamOQ01.lean",
+      "lineCount": 329,
+      "theoremCount": 5,
+      "axiomCount": 2,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ01.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02.lean",
+      "filename": "BorsukUlamOQ02.lean",
+      "lineCount": 390,
+      "theoremCount": 18,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ03.lean",
+      "filename": "BorsukUlamOQ03.lean",
+      "lineCount": 5170,
+      "theoremCount": 227,
+      "axiomCount": 2,
+      "defCount": 35,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ03.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ03OQ01.lean",
+      "filename": "BorsukUlamOQ03OQ01.lean",
+      "lineCount": 1163,
+      "theoremCount": 41,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ03OQ01OQ01.lean",
+      "filename": "BorsukUlamOQ03OQ01OQ01.lean",
+      "lineCount": 317,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ03OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ03OQ03.lean",
+      "filename": "BorsukUlamOQ03OQ03.lean",
+      "lineCount": 2634,
+      "theoremCount": 123,
+      "axiomCount": 1,
+      "defCount": 30,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ03OQ03.lean"
+    }
+  ],
+  "relatedProofs": [
+    "borsuk-ulam",
+    "borsuk-ulam-oq-02",
+    "borsuk-ulam-oq-03",
+    "borsuk-ulam-oq-03-oq-01",
+    "borsuk-ulam-oq-03-oq-01-oq-01",
+    "borsuk-ulam-oq-03-oq-03"
+  ]
 }

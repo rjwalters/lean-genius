@@ -41,7 +41,11 @@
     "prime-gaps",
     "sieve-methods"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "cantors-theorem",
+    "cantors-theorem-oq-01",
+    "cantors-theorem-oq-02"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -51,5 +55,40 @@
   "lastUpdate": "2026-03-06T06:42:42.095Z",
   "completed": "2026-03-06T06:42:42.095Z",
   "significance": 7,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/CantorsTheorem.lean",
+      "filename": "CantorsTheorem.lean",
+      "lineCount": 158,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorsTheorem.lean"
+    },
+    {
+      "path": "Proofs/CantorsTheoremOQ01.lean",
+      "filename": "CantorsTheoremOQ01.lean",
+      "lineCount": 273,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorsTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/CantorsTheoremOQ02.lean",
+      "filename": "CantorsTheoremOQ02.lean",
+      "lineCount": 282,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorsTheoremOQ02.lean"
+    }
+  ]
 }

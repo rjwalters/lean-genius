@@ -41,7 +41,9 @@
     "polynomials",
     "classical"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "vietas-formulas"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -51,5 +53,18 @@
   "lastUpdate": "2026-01-01T05:32:39.479Z",
   "completed": "2026-01-01T05:32:39.479Z",
   "significance": 5,
-  "tractability": 9
+  "tractability": 9,
+  "leanFiles": [
+    {
+      "path": "Proofs/VietasFormulas.lean",
+      "filename": "VietasFormulas.lean",
+      "lineCount": 180,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VietasFormulas.lean"
+    }
+  ]
 }

@@ -41,7 +41,10 @@
     "regularity-theory",
     "analysis"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "hilbert-19",
+    "hilbert-19-oq-03"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -51,5 +54,29 @@
   "lastUpdate": "2026-03-13T03:56:04.587Z",
   "completed": "2026-03-13T03:56:04.587Z",
   "significance": 8,
-  "tractability": 5
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Hilbert19OQ03.lean",
+      "filename": "Hilbert19OQ03.lean",
+      "lineCount": 463,
+      "theoremCount": 18,
+      "axiomCount": 4,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert19OQ03.lean"
+    },
+    {
+      "path": "Proofs/Hilbert19Regularity.lean",
+      "filename": "Hilbert19Regularity.lean",
+      "lineCount": 338,
+      "theoremCount": 7,
+      "axiomCount": 7,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert19Regularity.lean"
+    }
+  ]
 }

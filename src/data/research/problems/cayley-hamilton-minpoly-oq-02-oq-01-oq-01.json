@@ -2,7 +2,7 @@
   "id": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
   "name": "Skolem-Noether Theorem: K-Algebra Automorphisms of Mn(K)",
   "status": "progress",
-  "phase": "ACT",
+  "phase": "ORIENT",
   "knowledge": {
     "insights": [
       "Parent file CayleyHamiltonMinpolyOQ02OQ01.lean is complete (217 lines, 0 axioms, 0 sorries)",
@@ -22,26 +22,12 @@
       "LEAN API: Use ext + split_ifs for matrix unit multiplication (single_mul_single_of_ne has tricky sig)",
       "LEAN API: Matrix.mulVec_mulVec, Matrix.zero_mulVec, Matrix.mulVec_zero all exist",
       "LEAN API: mulVec_sum/mulVec_smul may need manual dist. Use Matrix.add_mulVec + smul_mulVec_assoc",
-      "LEAN API: For P invertibility: try basisOfLinearIndependentOfCardEqFinrank or det approach",
-      "AXIOM ELIMINATED: Replaced axiom skolemNoether with theorem (elementary matrix units proof)",
-      "Proof architecture: matrix units E_ij satisfy f_ij * f_kl = delta_jk f_il under phi",
-      "Key steps proved: hf_mul (image multiplication), hfp (column intertwining), hp_ne (nonzero vectors), hp_li (linear independence)",
-      "7 sorry lemmas remain: 4 helper (eij_mul_ekl, sum_eii, matrix_decomp, exists_nonzero_mulVec), 1 linear algebra (invertibility), 2 main theorem (intertwining matrix eq, linearity extension)",
-      "DISCOVERY: Matrix.stdBasisMatrix unfolds to Matrix.single/Pi.single in this Mathlib version",
-      "DISCOVERY: simp [Matrix.stdBasisMatrix, Matrix.of_apply] works for entry computation but dsimp/unfold do not",
-      "All sorry lemmas are routine - suitable for Aristotle automated proof search"
+      "LEAN API: For P invertibility: try basisOfLinearIndependentOfCardEqFinrank or det approach"
     ],
     "builtItems": [
       "Complete elementary proof strategy (no Artin-Wedderburn needed)",
       "Identified all Lean4/Mathlib API names for formalization",
-      "Proof steps 1-3 (hf_mul, hfp, hp_ne) have verified strategies",
-      "theorem skolemNoether: elementary proof structure with 7 sorries (was 1 axiom)",
-      "Proved hf_mul: image matrix unit multiplication",
-      "Proved hfp: column intertwining f_ab.mulVec(p_c) = delta_bc p_a",
-      "Proved hp_ne: all column vectors nonzero",
-      "Proved hp_li: column vectors linearly independent",
-      "Proved hf_ne: image of E_i0i0 nonzero",
-      "Proved conclusion: phi(A) = Pu^-1 A Pu from intertwining"
+      "Proof steps 1-3 (hf_mul, hfp, hp_ne) have verified strategies"
     ],
     "openQuestions": [
       "RESOLVED: Artin-Wedderburn NOT needed",
@@ -57,6 +43,93 @@
       "hP_intertwine: Entry-wise via Matrix.mul_apply + Pi.single_apply + mulVec/dotProduct",
       "hP_comm: Extend from generators using matrix_eq_sum_single + congr lemmas"
     ],
-    "progressSummary": "ACT: Axiom eliminated, 4 helper lemmas proved. 3 sorries remain: linearIndependent_matrix_isUnit, hintertwine, hPcomm."
-  }
+    "progressSummary": "ORIENT: Complete proof strategy found. Elementary matrix units approach avoids Artin-Wedderburn. Key Lean4 API challenges mapped. Ready for implementation."
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ01.lean",
+      "filename": "CayleyHamiltonMinpolyOQ01.lean",
+      "lineCount": 308,
+      "theoremCount": 20,
+      "axiomCount": 3,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ01.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ02.lean",
+      "filename": "CayleyHamiltonMinpolyOQ02.lean",
+      "lineCount": 132,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ02.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ02OQ01.lean",
+      "filename": "CayleyHamiltonMinpolyOQ02OQ01.lean",
+      "lineCount": 218,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ04.lean",
+      "filename": "CayleyHamiltonMinpolyOQ04.lean",
+      "lineCount": 317,
+      "theoremCount": 8,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ04.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ04Backward.lean",
+      "filename": "CayleyHamiltonMinpolyOQ04Backward.lean",
+      "lineCount": 481,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ04Backward.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ04BackwardAristotle.lean",
+      "filename": "CayleyHamiltonMinpolyOQ04BackwardAristotle.lean",
+      "lineCount": 106,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ04BackwardAristotle.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ05.lean",
+      "filename": "CayleyHamiltonMinpolyOQ05.lean",
+      "lineCount": 233,
+      "theoremCount": 23,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ05.lean"
+    }
+  ],
+  "relatedProofs": [
+    "cayley-hamilton",
+    "cayley-hamilton-minpoly",
+    "cayley-hamilton-minpoly-oq-02",
+    "cayley-hamilton-minpoly-oq-02-oq-01",
+    "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
+    "cayley-hamilton-minpoly-oq-05"
+  ]
 }

@@ -40,7 +40,10 @@
     "analysis",
     "convergence"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "leibniz-pi",
+    "leibniz-pi-oq-01"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -50,5 +53,29 @@
   "lastUpdate": "2026-03-13T06:21:52.608Z",
   "completed": "2026-03-13T06:21:52.608Z",
   "significance": 6,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/LeibnizPi.lean",
+      "filename": "LeibnizPi.lean",
+      "lineCount": 179,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LeibnizPi.lean"
+    },
+    {
+      "path": "Proofs/LeibnizPiOQ01OQ01.lean",
+      "filename": "LeibnizPiOQ01OQ01.lean",
+      "lineCount": 135,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LeibnizPiOQ01OQ01.lean"
+    }
+  ]
 }

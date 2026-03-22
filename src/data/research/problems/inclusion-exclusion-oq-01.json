@@ -40,7 +40,9 @@
     "combinatorics",
     "extension"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "inclusion-exclusion"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -50,5 +52,51 @@
   "lastUpdate": "2026-02-09T23:59:13.858Z",
   "completed": "2026-02-09T23:59:13.858Z",
   "significance": 7,
-  "tractability": 7
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/InclusionExclusion.lean",
+      "filename": "InclusionExclusion.lean",
+      "lineCount": 219,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InclusionExclusion.lean"
+    },
+    {
+      "path": "Proofs/InclusionExclusionGeneral.lean",
+      "filename": "InclusionExclusionGeneral.lean",
+      "lineCount": 277,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InclusionExclusionGeneral.lean"
+    },
+    {
+      "path": "Proofs/InclusionExclusionOQ01.lean",
+      "filename": "InclusionExclusionOQ01.lean",
+      "lineCount": 383,
+      "theoremCount": 41,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InclusionExclusionOQ01.lean"
+    },
+    {
+      "path": "Proofs/InclusionExclusionOQ03.lean",
+      "filename": "InclusionExclusionOQ03.lean",
+      "lineCount": 288,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InclusionExclusionOQ03.lean"
+    }
+  ]
 }

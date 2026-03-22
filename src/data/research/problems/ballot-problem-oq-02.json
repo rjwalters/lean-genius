@@ -42,7 +42,14 @@
     "reflection-principle",
     "seeker-selected"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "ballot-problem",
+    "ballot-problem-oq-01",
+    "ballot-problem-oq-01-oq-01",
+    "ballot-problem-oq-02",
+    "ballot-problem-oq-03",
+    "ballot-problem-oq-03-oq-02"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -52,5 +59,95 @@
   "lastUpdate": "2026-02-25T19:36:59.224Z",
   "completed": "2026-02-25T19:36:59.224Z",
   "significance": 7,
-  "tractability": 5
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/BallotProblem.lean",
+      "filename": "BallotProblem.lean",
+      "lineCount": 256,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblem.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01.lean",
+      "filename": "BallotProblemOQ01.lean",
+      "lineCount": 711,
+      "theoremCount": 44,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ01.lean",
+      "filename": "BallotProblemOQ01OQ01.lean",
+      "lineCount": 131,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ02.lean",
+      "filename": "BallotProblemOQ01OQ02.lean",
+      "lineCount": 935,
+      "theoremCount": 36,
+      "axiomCount": 1,
+      "defCount": 18,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ02.lean",
+      "filename": "BallotProblemOQ02.lean",
+      "lineCount": 340,
+      "theoremCount": 8,
+      "axiomCount": 2,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ02.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03.lean",
+      "filename": "BallotProblemOQ03.lean",
+      "lineCount": 2879,
+      "theoremCount": 119,
+      "axiomCount": 0,
+      "defCount": 31,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ02.lean",
+      "filename": "BallotProblemOQ03OQ02.lean",
+      "lineCount": 505,
+      "theoremCount": 14,
+      "axiomCount": 1,
+      "defCount": 16,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ03.lean",
+      "filename": "BallotProblemOQ03OQ03.lean",
+      "lineCount": 139,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ03.lean"
+    }
+  ]
 }

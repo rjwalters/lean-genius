@@ -1,0 +1,104 @@
+{
+  "slug": "szemeredi-regularity",
+  "title": "Szemeredi Regularity Lemma",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "S",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "The Szemeredi Regularity Lemma says that every large enough graph can be partitioned into a bounded number of pieces such that the edges between almost every pair of pieces look \"random\" -- the edge density between any two large subsets of those pieces is close to the overall density between the pieces. This is the fundamental structural theorem of graph theory.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-21",
+    "iteration": 3,
+    "focus": "energy_increment_step: the key technical lemma requiring irregular pair identification and partition refinement",
+    "blockers": [
+      "None. Uses probabilistic method concepts but is self-contained."
+    ],
+    "nextAction": "Survey Mathlib for SimpleGraph partition and density infrastructure.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Proved max_iterations (Archimedean property) and density_sq_convex (Cauchy-Schwarz for density splitting). Added helper lemmas card_mul_edgeDensity and edge_count_union. Sorries reduced from 4 to 2. Remaining: energy_increment_step (deep technical lemma) and regularity_lemma (main result).",
+    "builtItems": [
+      "edgeDensity_nonneg: 0 ≤ edgeDensity G A B (new theorem, line 56)",
+      "edgeDensity_le_one: edgeDensity G A B ≤ 1 (new theorem, line 64)",
+      "partitionEnergy_le_one: proved (sorry eliminated, line 118)",
+      "density_sq_convex: Cauchy-Schwarz convexity for density splitting (sorry, key framework lemma)",
+      "max_iterations: iteration bound framework (sorry, arithmetic needs verification)",
+      "max_iterations: proved via exists_nat_gt + div_lt_iff₀ (Archimedean property)",
+      "density_sq_convex: proved via Cauchy-Schwarz reduction to n₁*n₂*(d₁-d₂)²/(n₁+n₂) ≥ 0",
+      "card_mul_edgeDensity: helper showing n*m*d = edge_count (handles dite cases)",
+      "edge_count_union: helper showing edge counts add for disjoint vertex sets"
+    ],
+    "insights": [
+      "Seed file on main (115 lines) has good definitions: edgeDensity, IsEpsRegular, IsRegularPartition, partitionEnergy",
+      "3 sorries: energy_increment (deep), energy_upper_bound (possibly tractable), regularity_lemma (follows from first two)",
+      "Energy upper bound: partitionEnergy ≤ 1 because its a sum of d(A,B)² * |A|*|B|/|V|², and densities are in [0,1]",
+      "The regularity lemma proof strategy: iterate energy increment until regular (bounded by 1/ε⁵ steps since energy increases by ε⁵ each step)",
+      "Proved edgeDensity_nonneg: positivity handles div of Nat.cast nonneg terms",
+      "Proved edgeDensity_le_one: Finset.card_filter_le + Finset.card_product gives density ≤ 1",
+      "Proved partitionEnergy_le_one: each d² ≤ 1 (via mul_le_of_le_one_right), sum of k² terms ≤ k², (1/k²)*k² = 1",
+      "open Classical needed for DecidablePred on IsRegularPartition filter (IsEpsilonRegular has universal quantifiers)",
+      "Finset.card_product uses SProd notation, not .product dot syntax; need exact with defeq not rw",
+      "Key Cauchy-Schwarz fact: splitting A into A1∪A2 gives |A1|*d(A1,B)²+|A2|*d(A2,B)² ≥ |A|*d(A,B)²",
+      "max_iterations: N=⌈1/eps^5⌉+1 iterations suffice since energy∈[0,1] increases by eps^5 each step",
+      "regularity_lemma proof structure: iterate energy_increment_step at most N times, track partition size bound",
+      "Partition size bound: each step at most doubles parts exponentially, giving tower(2, N) bound on M",
+      "density_sq_convex requires careful handling of set abbreviations vs edgeDensity - simp cannot see through set-bound variables without explicit unfold",
+      "edge count additivity for disjoint unions requires proving product distributes over union (A₁∪A₂)×B = A₁×B ∪ A₂×B via explicit ext proof",
+      "field_simp + ring can verify the algebraic identity for Cauchy-Schwarz: difference = n₁*n₂*(d₁-d₂)²/(n₁+n₂)",
+      "Remaining 2 sorries: energy_increment_step (finding irregular pairs, constructing refinement, bounding energy gain by eps^5) and regularity_lemma (iteration argument using energy_increment_step + max_iterations + partitionEnergy_le_one)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "energy_increment_step: find irregular pair in partition, extract witness subsets, split vertices, apply density_sq_convex, bound energy gain by eps^5",
+      "regularity_lemma: construct initial equipartition, iterate energy_increment_step, use max_iterations + partitionEnergy_le_one for termination",
+      "Consider creating SzemerediRegularityAristotle.lean companion file for provable supporting lemmas"
+    ]
+  },
+  "tags": [
+    "szemeredi",
+    "combinatorics",
+    "graph-theory",
+    "regularity",
+    "marquee-phase-3"
+  ],
+  "relatedProofs": [
+    "szemeredi-regularity"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-22T06:10:36.236Z",
+  "lastUpdate": "2026-03-22T06:10:36.236Z",
+  "significance": 9,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/SzemerediRegularity.lean",
+      "filename": "SzemerediRegularity.lean",
+      "lineCount": 292,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularity.lean"
+    }
+  ]
+}

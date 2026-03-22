@@ -1,0 +1,73 @@
+{
+  "slug": "shannon-channel-coding",
+  "title": "Shannon Noisy Channel Coding Theorem",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "S",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Channel capacity: } C = \\max_{p(x)} I(X;Y)",
+    "plain": "The noisy channel coding theorem is the central result of information theory. It says reliable communication is possible at any rate below the channel capacity C, and impossible above it. The achievability proof uses random coding — one of the most elegant applications of the probabilistic method.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-21",
+    "iteration": 0,
+    "focus": "Central theorem of information theory. Random coding + Fano's inequality.",
+    "blockers": [
+      "Depends on shannon-entropy and shannon-source-coding for entropy and typicality machinery."
+    ],
+    "nextAction": "Wait for entropy and AEP foundations.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "information-theory",
+    "analysis",
+    "probability",
+    "cs-math-bridge",
+    "marquee-phase-2"
+  ],
+  "relatedProofs": [
+    "shannon-channel-coding"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-21T20:11:02.346Z",
+  "lastUpdate": "2026-03-21T21:57:07.469Z",
+  "completed": "2026-03-21T21:57:07.469Z",
+  "significance": 9,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/ShannonChannelCoding.lean",
+      "filename": "ShannonChannelCoding.lean",
+      "lineCount": 54,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCoding.lean"
+    }
+  ]
+}

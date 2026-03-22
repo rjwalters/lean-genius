@@ -42,7 +42,11 @@
     "coloring",
     "planar-graphs"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "euler-polyhedral-formula",
+    "euler-polyhedral-formula-oq-01",
+    "euler-polyhedral-formula-oq-01-oq-01"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -52,5 +56,18 @@
   "lastUpdate": "2026-03-06T07:22:46.060Z",
   "completed": "2026-03-06T07:22:46.060Z",
   "significance": 7,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/EulerPolyhedralFormula.lean",
+      "filename": "EulerPolyhedralFormula.lean",
+      "lineCount": 1093,
+      "theoremCount": 65,
+      "axiomCount": 1,
+      "defCount": 27,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerPolyhedralFormula.lean"
+    }
+  ]
 }

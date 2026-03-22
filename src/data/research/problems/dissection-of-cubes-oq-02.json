@@ -43,5 +43,56 @@
     ],
     "progressSummary": "COMPLETED: Proved arccos(1/3)/π is irrational via Chebyshev recurrence. Reduced file from 3 to 2 sorries. The eliminated sorry was the deepest one (Niven theorem application)."
   },
-  "lastUpdate": "2026-03-22T09:30:00Z"
+  "lastUpdate": "2026-03-22T09:30:00Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/DissectionOfCubes.lean",
+      "filename": "DissectionOfCubes.lean",
+      "lineCount": 367,
+      "theoremCount": 7,
+      "axiomCount": 2,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubes.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ01.lean",
+      "filename": "DissectionOfCubesOQ01.lean",
+      "lineCount": 280,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ01.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ02.lean",
+      "filename": "DissectionOfCubesOQ02.lean",
+      "lineCount": 384,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ02.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ03.lean",
+      "filename": "DissectionOfCubesOQ03.lean",
+      "lineCount": 502,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 11,
+      "sorryCount": 8,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ03.lean"
+    }
+  ],
+  "relatedProofs": [
+    "dissection-of-cubes",
+    "dissection-of-cubes-oq-01",
+    "dissection-of-cubes-oq-02"
+  ]
 }

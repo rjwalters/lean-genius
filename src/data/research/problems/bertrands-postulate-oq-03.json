@@ -43,7 +43,10 @@
     "erdos",
     "seeker-selected"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "bertrands-postulate",
+    "bertrands-postulate-oq-03"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -53,5 +56,29 @@
   "lastUpdate": "2026-02-23T05:42:29.517Z",
   "completed": "2026-02-23T05:42:29.516Z",
   "significance": 8,
-  "tractability": 5
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/BertrandsPostulate.lean",
+      "filename": "BertrandsPostulate.lean",
+      "lineCount": 166,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BertrandsPostulate.lean"
+    },
+    {
+      "path": "Proofs/BertrandsPostulateOQ03.lean",
+      "filename": "BertrandsPostulateOQ03.lean",
+      "lineCount": 309,
+      "theoremCount": 12,
+      "axiomCount": 3,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BertrandsPostulateOQ03.lean"
+    }
+  ]
 }

@@ -1,0 +1,72 @@
+{
+  "slug": "prob-method-second-moment",
+  "title": "Second Moment / Variance Method",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{Chebyshev: } \\Pr[|X - \\mu| \\geq t] \\leq \\frac{\\text{Var}(X)}{t^2}",
+    "plain": "The second moment method uses variance to prove that random variables are concentrated around their mean, or that they are positive with high probability. While the first moment method shows \"something good exists,\" the second moment method shows \"something good is typical.\"",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-21",
+    "iteration": 0,
+    "focus": "Formalize second moment method and concentration inequalities.",
+    "blockers": [
+      "Depends on prob-method-expectation for base probability framework."
+    ],
+    "nextAction": "Check Mathlib for existing Chebyshev/Paley-Zygmund infrastructure.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "probabilistic-method",
+    "combinatorics",
+    "analysis",
+    "marquee-phase-1"
+  ],
+  "relatedProofs": [
+    "prob-method-second-moment"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-21T20:11:02.346Z",
+  "lastUpdate": "2026-03-21T21:57:07.469Z",
+  "completed": "2026-03-21T21:57:07.469Z",
+  "significance": 8,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/ProbMethodSecondMoment.lean",
+      "filename": "ProbMethodSecondMoment.lean",
+      "lineCount": 162,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProbMethodSecondMoment.lean"
+    }
+  ]
+}

@@ -44,7 +44,11 @@
     "differential-geometry",
     "wiedijk-100"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "euler-polyhedral-formula",
+    "euler-polyhedral-formula-oq-02",
+    "euler-polyhedral-formula-oq-02-oq-01"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -54,5 +58,18 @@
   "lastUpdate": "2026-03-13T03:56:04.585Z",
   "completed": "2026-03-13T03:56:04.585Z",
   "significance": 8,
-  "tractability": 5
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/EulerPolyhedralFormula.lean",
+      "filename": "EulerPolyhedralFormula.lean",
+      "lineCount": 1093,
+      "theoremCount": 65,
+      "axiomCount": 1,
+      "defCount": 27,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerPolyhedralFormula.lean"
+    }
+  ]
 }

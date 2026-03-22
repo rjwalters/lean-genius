@@ -1,0 +1,72 @@
+{
+  "slug": "prob-method-alteration",
+  "title": "Alteration / Deletion Method",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{Construct a random object, then deterministically remove violations.}",
+    "plain": "The alteration (deletion) method improves on pure expectation arguments: instead of hoping a random object is already good, we start with a random object and then fix it by removing problematic parts. If few parts are problematic in expectation, the remaining object is still large/useful.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-21",
+    "iteration": 0,
+    "focus": "Formalize the alteration/deletion method. Depends on prob-method-expectation.",
+    "blockers": [
+      "Depends on prob-method-expectation for linearity of expectation framework."
+    ],
+    "nextAction": "Wait for expectation method foundation, then formalize alteration principle.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "probabilistic-method",
+    "combinatorics",
+    "graph-theory",
+    "marquee-phase-1"
+  ],
+  "relatedProofs": [
+    "prob-method-alteration"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-21T20:11:02.346Z",
+  "lastUpdate": "2026-03-21T21:57:07.469Z",
+  "completed": "2026-03-21T21:57:07.468Z",
+  "significance": 8,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/ProbMethodAlteration.lean",
+      "filename": "ProbMethodAlteration.lean",
+      "lineCount": 62,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProbMethodAlteration.lean"
+    }
+  ]
+}

@@ -46,7 +46,10 @@
     "wiedijk-100",
     "hilbert"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "continuum-hypothesis",
+    "continuum-hypothesis-oq-01"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -56,5 +59,29 @@
   "lastUpdate": "2026-02-23T05:42:29.518Z",
   "completed": "2026-02-23T05:42:29.518Z",
   "significance": 6,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/ContinuumHypothesis.lean",
+      "filename": "ContinuumHypothesis.lean",
+      "lineCount": 367,
+      "theoremCount": 7,
+      "axiomCount": 6,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ContinuumHypothesis.lean"
+    },
+    {
+      "path": "Proofs/ContinuumHypothesisOQ01.lean",
+      "filename": "ContinuumHypothesisOQ01.lean",
+      "lineCount": 318,
+      "theoremCount": 20,
+      "axiomCount": 10,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ContinuumHypothesisOQ01.lean"
+    }
+  ]
 }

@@ -41,7 +41,9 @@
     "algebra",
     "irrationality"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "nth-root-irrational"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -51,5 +53,29 @@
   "lastUpdate": "2026-03-13T06:21:52.608Z",
   "completed": "2026-03-13T06:21:52.608Z",
   "significance": 6,
-  "tractability": 7
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/NthRootIrrational.lean",
+      "filename": "NthRootIrrational.lean",
+      "lineCount": 313,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/NthRootIrrational.lean"
+    },
+    {
+      "path": "Proofs/NthRootIrrationalOQ01.lean",
+      "filename": "NthRootIrrationalOQ01.lean",
+      "lineCount": 210,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/NthRootIrrationalOQ01.lean"
+    }
+  ]
 }

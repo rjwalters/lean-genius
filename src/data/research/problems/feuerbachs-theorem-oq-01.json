@@ -42,7 +42,10 @@
     "triangle",
     "circle"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "feuerbachs-theorem",
+    "feuerbachs-theorem-oq-01"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -52,5 +55,51 @@
   "lastUpdate": "2026-03-14T16:25:43.539Z",
   "completed": "2026-03-14T16:25:43.539Z",
   "significance": 6,
-  "tractability": 7
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/FeuerbachsTheorem.lean",
+      "filename": "FeuerbachsTheorem.lean",
+      "lineCount": 165,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheorem.lean"
+    },
+    {
+      "path": "Proofs/FeuerbachsTheoremDefs.lean",
+      "filename": "FeuerbachsTheoremDefs.lean",
+      "lineCount": 688,
+      "theoremCount": 33,
+      "axiomCount": 0,
+      "defCount": 34,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremDefs.lean"
+    },
+    {
+      "path": "Proofs/FeuerbachsTheoremOQ01.lean",
+      "filename": "FeuerbachsTheoremOQ01.lean",
+      "lineCount": 1554,
+      "theoremCount": 71,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/FeuerbachsTheoremOQ01Aristotle.lean",
+      "filename": "FeuerbachsTheoremOQ01Aristotle.lean",
+      "lineCount": 127,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 7,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremOQ01Aristotle.lean"
+    }
+  ]
 }

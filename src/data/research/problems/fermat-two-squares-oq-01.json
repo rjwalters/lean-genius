@@ -61,7 +61,10 @@
     "classic",
     "extension"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "fermat-two-squares",
+    "fermat-two-squares-oq-01"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -70,5 +73,29 @@
   "started": "2026-03-15T02:30:10.387Z",
   "lastUpdate": "2026-03-20T09:40:00Z",
   "significance": 7,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/FermatTwoSquares.lean",
+      "filename": "FermatTwoSquares.lean",
+      "lineCount": 202,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FermatTwoSquares.lean"
+    },
+    {
+      "path": "Proofs/FermatTwoSquaresOQ01.lean",
+      "filename": "FermatTwoSquaresOQ01.lean",
+      "lineCount": 255,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FermatTwoSquaresOQ01.lean"
+    }
+  ]
 }

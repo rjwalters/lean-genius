@@ -46,7 +46,11 @@
     "asymptotics",
     "1-sorry"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "erdos-2",
+    "erdos-28",
+    "erdos-285"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -56,5 +60,18 @@
   "lastUpdate": "2026-02-11T05:41:00.788Z",
   "completed": "2026-02-11T05:41:00.788Z",
   "significance": 7,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos285Problem.lean",
+      "filename": "Erdos285Problem.lean",
+      "lineCount": 375,
+      "theoremCount": 21,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos285Problem.lean"
+    }
+  ]
 }

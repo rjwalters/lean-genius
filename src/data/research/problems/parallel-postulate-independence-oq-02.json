@@ -40,7 +40,10 @@
     "non-euclidean-geometry",
     "foundations"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "parallel-postulate-independence",
+    "parallel-postulate-independence-oq-02"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -50,5 +53,29 @@
   "lastUpdate": "2026-03-12T17:29:54.451Z",
   "completed": "2026-03-12T17:29:54.451Z",
   "significance": 7,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/ParallelPostulateIndependence.lean",
+      "filename": "ParallelPostulateIndependence.lean",
+      "lineCount": 315,
+      "theoremCount": 3,
+      "axiomCount": 7,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ParallelPostulateIndependence.lean"
+    },
+    {
+      "path": "Proofs/ParallelPostulateIndependenceOQ02.lean",
+      "filename": "ParallelPostulateIndependenceOQ02.lean",
+      "lineCount": 454,
+      "theoremCount": 17,
+      "axiomCount": 1,
+      "defCount": 17,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ParallelPostulateIndependenceOQ02.lean"
+    }
+  ]
 }
