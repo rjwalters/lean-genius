@@ -68,6 +68,16 @@
         "key": "BB65",
         "citation": "Beckenbach, E.F. and Bellman, R., Inequalities, Springer (1965), Chapter 2.",
         "type": "book"
+      },
+      {
+        "key": "Bu03",
+        "citation": "Bullen, P.S., Handbook of Means and Their Inequalities, Kluwer Academic (2003), Chapter III.",
+        "type": "book"
+      },
+      {
+        "key": "St04",
+        "citation": "Steele, J.M., The Cauchy-Schwarz Master Class, Cambridge University Press (2004), Chapter 4.",
+        "type": "book"
       }
     ]
   },
@@ -86,6 +96,11 @@
       "targetId": "cauchy-schwarz",
       "relationship": "related",
       "description": "Cauchy-Schwarz is the M₂ case of power mean monotonicity: M₁ ≤ M₂ is equivalent to (∑wᵢzᵢ)² ≤ ∑wᵢzᵢ² for equal weights"
+    },
+    {
+      "targetId": "amgm-inequality-oq-03-oq-02",
+      "relationship": "extended-by",
+      "description": "Proves lim_{r→0} M_r = GM — the missing r=0 case that would bridge the positive and negative exponent monotonicity results"
     }
   ],
   "overview": {
@@ -182,25 +197,10 @@
     "definitionCount": 3
   },
   "relatedProofs": [
-    {
-      "id": "amgm-inequality",
-      "relationship": "extends",
-      "description": "Base AM-GM inequality — power means place it in the continuous family M_{-1} ≤ M_0 ≤ M_1, where AM-GM is M_0 ≤ M_1"
-    },
-    {
-      "id": "amgm-inequality-oq-02",
-      "relationship": "related",
-      "description": "Maclaurin's inequalities refine AM-GM via symmetric polynomials; power means refine it via exponent interpolation"
-    },
-    {
-      "id": "cauchy-schwarz",
-      "relationship": "related",
-      "description": "Cauchy-Schwarz is the M_1 ≤ M_2 case: (∑wᵢzᵢ)² ≤ ∑wᵢzᵢ² for equal weights"
-    },
-    {
-      "id": "amgm-inequality-oq-03-oq-01",
-      "relationship": "extends",
-      "description": "Extension exploring the r=0 limit case (GM as limit of power means)"
-    }
+    "amgm-inequality",
+    "amgm-inequality-oq-02",
+    "cauchy-schwarz",
+    "amgm-inequality-oq-03-oq-01",
+    "amgm-inequality-oq-03-oq-02"
   ]
 }
