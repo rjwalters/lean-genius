@@ -137,7 +137,7 @@
   ],
   "conclusion": {
     "summary": "This formalization demonstrates one of mathematics' most beautiful connections: the solution of polynomial equations reduces to group theory. Galois's insight that symmetry groups control solvability unified algebra in a profound way.\n\nThe key results: Mathlib's solvableByRad.isSolvable' proves that solvability by radicals implies a solvable Galois group. The simplicity of A5 (alternatingGroup.isSimple_five) implies S5 is not solvable. Together, these show the general quintic is unsolvable.",
-    "implications": "Galois theory has far-reaching consequences:\n\n1. CONSTRUCTIBILITY: Similar techniques prove that angle trisection and cube doubling are impossible with compass and straightedge.\n\n2. INVERSE GALOIS PROBLEM: Which groups appear as Galois groups over Q? This remains open for many groups.\n\n3. ALGEBRAIC NUMBER THEORY: Galois groups of field extensions are central to understanding number fields and their arithmetic.\n\n4. MODERN ALGEBRA: Galois's ideas pioneered the abstract study of groups, fields, and their relationships - the foundation of modern algebra.\n\n5. SPECIFIC SOLUTIONS: While the general quintic is unsolvable, specific quintics may be solvable. Galois theory tells us exactly which ones.",
+    "implications": "Galois theory has far-reaching consequences:\n\n1. CONSTRUCTIBILITY: Similar techniques prove that angle trisection and cube doubling are impossible with compass and straightedge.\n\n2. INVERSE GALOIS PROBLEM: Which groups appear as Galois groups over Q? This remains open for many groups.\n\n3. ALGEBRAIC NUMBER THEORY: Galois groups of field extensions are central to understanding number fields and their arithmetic.\n\n4. MODERN ALGEBRA: Galois's ideas pioneered the abstract study of groups, fields, and their relationships - the foundation of modern algebra.\n\n5. SPECIFIC SOLUTIONS: While the general quintic is unsolvable, specific quintics may be solvable. Galois theory tells us exactly which ones.\n\n6. IMPOSSIBILITY PARADIGM: Abel-Ruffini inaugurated a tradition of impossibility proofs that extends through Lindemann's transcendence of $e$ and $\\pi$ (1882), Gödel's incompleteness (1931), Turing's halting problem (1936), and Matiyasevich's negative resolution of Hilbert's tenth problem (1970). Each shows that some natural class of problems admits no universal solution within a given formal framework.\n\n7. TRANSCENDENCE HIERARCHY: Abel-Ruffini's impossibility (roots not expressible by radicals) sits between irrationality ($\\sqrt{2} \\notin \\mathbb{Q}$, c. 500 BCE) and transcendence ($e, \\pi \\notin \\overline{\\mathbb{Q}}$, 1882) in a hierarchy of expressibility barriers.",
     "openQuestions": [
       "Can we formalize a *specific* unsolvable quintic in Lean — e.g., $x^5 - x - 1$ over $\\mathbb{Q}$ has Galois group exactly $S_5$? This requires formalizing the Galois group computation, not just citing Mathlib's general result.",
       "Mathlib notes that `IsSolvable` instances for $S_2, S_3, S_4$ were not available at time of writing. Can these be added and `s2_solvable`, `s3_solvable`, `s4_solvable` proved by `inferInstance`, completing the full picture of which $S_n$ are solvable?",
@@ -195,6 +195,26 @@
       "targetId": "general-quartic",
       "relationship": "complementary",
       "description": "Ferrari's quartic formula (1545) is the last degree where radicals succeed — S₄ is solvable (derived series S₄ ▷ A₄ ▷ V₄ ▷ Z/2 ▷ {e}), so the degree-4 boundary is the immediate predecessor to Abel-Ruffini's impossibility at degree 5"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "Lindemann's proof that e is transcendental (1882) follows the impossibility-proof paradigm pioneered by Abel-Ruffini — showing that e cannot satisfy any polynomial with rational coefficients, a strictly stronger impossibility than unsolvability by radicals"
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "related",
+      "description": "Lindemann's proof that π is transcendental (1882), explicitly cited in the formalization's commentary as a successor impossibility result — transcendence of π implies the impossibility of squaring the circle, paralleling Abel-Ruffini's impossibility of the quintic formula"
+    },
+    {
+      "targetId": "hilbert-10",
+      "relationship": "thematic",
+      "description": "Matiyasevich's negative resolution of Hilbert's tenth problem (1970) extends the impossibility tradition: Abel-Ruffini shows no radical formula solves all quintics, while Hilbert-10 shows no algorithm decides all Diophantine equations — both proving fundamental limits on 'solving' polynomial equations"
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "foundational",
+      "description": "The irrationality of √2 (c. 500 BCE) is the earliest impossibility result in mathematics — showing √2 cannot be expressed as a ratio of integers. Abel-Ruffini generalizes this paradigm: certain quantities cannot be expressed within a given algebraic framework (radicals rather than rationals)"
     }
   ],
   "relatedProofs": [
@@ -207,7 +227,11 @@
     "abel-ruffini-oq-04",
     "fundamental-arithmetic",
     "solution-of-cubic",
-    "general-quartic"
+    "general-quartic",
+    "e-transcendental",
+    "pi-transcendental",
+    "hilbert-10",
+    "sqrt2-irrational"
   ],
   "references": [
     {
