@@ -7,13 +7,16 @@
     },
     "type": "concept",
     "title": "Mathlib Imports",
-    "content": "We import `Mathlib.NumberTheory.ZetaValues` which contains the main Basel identity theorem, plus `Mathlib.Analysis.PSeries` for convergence and `Mathlib.Topology.Algebra.InfiniteSum.Basic` for the `HasSum` and `Summable` predicates.",
+    "content": "We import `Mathlib.NumberTheory.ZetaValues` which contains `hasSum_zeta_two` (the main Basel identity theorem) and `hasSum_zeta_four` (for ζ(4)), plus `Mathlib.Analysis.PSeries` for p-series convergence and `Mathlib.Topology.Algebra.InfiniteSum.Basic` for the `HasSum` and `Summable` predicates. The `ZetaValues` module builds on Bernoulli polynomial theory and Fourier analysis — the one-line proof `hasSum_zeta_two` conceals hundreds of supporting lemmas.",
+    "mathContext": "The four imports form the foundation: `ZetaValues` provides $\\zeta(2k) = (-1)^{k+1} 2^{2k-1} \\pi^{2k} B_{2k}/(2k)!$; `PSeries` provides $\\sum n^{-p} < \\infty \\iff p > 1$; `InfiniteSum` provides the `HasSum` predicate and `tsum` notation.",
     "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
       "zeta values",
-      "infinite sums"
-    ]
+      "infinite sums",
+      "Bernoulli polynomials"
+    ],
+    "prerequisites": ["Lean 4 import system", "Mathlib library structure", "HasSum/Summable API"]
   },
   {
     "id": "ann-basel-main",
@@ -32,7 +35,8 @@
       "HasSum",
       "convergence",
       "Basel problem"
-    ]
+    ],
+    "prerequisites": ["hasSum_zeta_two", "HasSum predicate", "real division"]
   },
   {
     "id": "ann-basel-tsum",
@@ -69,7 +73,8 @@
       "p-series",
       "Summable",
       "comparison test"
-    ]
+    ],
+    "prerequisites": ["Real.summable_nat_rpow_inv", "rpow_natCast", "Summable predicate"]
   },
   {
     "id": "ann-euler-history",
@@ -106,6 +111,7 @@
       "Bernoulli numbers",
       "zeta values",
       "special functions"
-    ]
+    ],
+    "prerequisites": ["hasSum_zeta_four", "hasSum_zeta_nat", "Bernoulli number theory"]
   }
 ]
