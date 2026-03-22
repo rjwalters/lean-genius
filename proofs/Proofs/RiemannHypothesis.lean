@@ -6129,11 +6129,14 @@ axiom baez_duarte_criterion :
     This is one of the most explicit integral criteria: RH holds if and
     only if a single specific integral equals a specific constant. -/
 opaque volchkovIntegral : ℝ
-opaque eulerMascheroniGamma : ℝ
 
+/-- Volchkov's integral criterion uses the Euler-Mascheroni constant γ ≈ 0.5772.
+    Previously this used an opaque `eulerMascheroni` duplicating the local
+    `eulerMascheroni` (= `Real.eulerMascheroniConstant`). Unified to use the
+    concrete definition from Mathlib. -/
 axiom volchkov_criterion :
     _root_.RiemannHypothesis ↔
-      volchkovIntegral = Real.pi * (3 - eulerMascheroniGamma) / 32
+      volchkovIntegral = Real.pi * (3 - eulerMascheroni) / 32
 
 /-- **PROVED: The integral criteria form a hierarchy of reformulations.**
 
@@ -6153,7 +6156,7 @@ theorem integral_criteria_equivalent :
     Two integral criteria for RH, shown equivalent via transitivity through RH. -/
 theorem bsy_iff_volchkov :
     balazardSaiasYorIntegral = 0 ↔
-      volchkovIntegral = Real.pi * (3 - eulerMascheroniGamma) / 32 := by
+      volchkovIntegral = Real.pi * (3 - eulerMascheroni) / 32 := by
   constructor
   · intro h
     exact (RH_iff_BSY.mpr h |> volchkov_criterion.mp)
@@ -6232,48 +6235,26 @@ The Keiper-Li connection: Keiper (1992) independently defined the same sequence
 through a different approach (Taylor coefficients of log ξ at s = 1/2).
 -/
 
-/-- The Li coefficient λ_n, defined via the non-trivial zeros of ζ.
-    λ_n = Σ_ρ [1 - (1 - 1/ρ)^n] where ρ ranges over all non-trivial zeros.
+/- **SOUNDNESS FIX (2026-03-22)**: The previous `liCoefficient` was a concrete `def` using
+    the formula `n * log(4π) + n * γ - (n-1) * log(n)`. This is the LEADING TERM of the
+    asymptotic expansion of λ_n, NOT the actual Li coefficient. For large n (≈50+), this
+    approximation goes negative, while the true λ_n remains positive (under RH).
 
-    Under RH, all ρ = 1/2 + iγ, so |1 - 1/ρ| ≤ 1, hence each term is ≥ 0. -/
-noncomputable def liCoefficient (n : ℕ) : ℝ :=
-  (n : ℝ) * Real.log (4 * Real.pi) + (n : ℝ) * eulerMascheroni -
-  ((n : ℝ) - 1) * Real.log (n : ℝ)
+    Combined with the `li_criterion` axiom (RH ↔ ∀n, λ_n ≥ 0), this allowed deriving
+    ¬RH — a critical soundness bug. The concrete definition and axiom are now removed.
 
-/-- **Axiom: Li's criterion — RH is equivalent to non-negativity of all Li coefficients.**
-
-    Li (1997): The Riemann Hypothesis holds if and only if λ_n ≥ 0 for all n ≥ 1.
-
-    Why an axiom? The proof requires:
-    1. Hadamard product formula for ξ(s)
-    2. The explicit formula connecting λ_n to zeros
-    3. Complex analysis: showing non-negativity ↔ all zeros on Re(s) = 1/2
-
-    The key insight: if any zero has Re(ρ) > 1/2, then for large n,
-    the term (1 - 1/ρ)^n dominates and λ_n < 0 eventually. -/
-axiom li_criterion : RiemannHypothesisStatement ↔ ∀ n : ℕ, n ≥ 1 → liCoefficient n ≥ 0
-
-/-- **PROVED: The first Li coefficient λ₁ = 1 - γ + log(4π)/2.**
-    λ₁ is known to equal approximately 0.0230957..., which is positive.
-    This is a weak necessary condition for RH. -/
-theorem li_first_positive : liCoefficient 1 = Real.log (4 * Real.pi) + eulerMascheroni := by
-  unfold liCoefficient
-  push_cast
-  simp [Real.log_one]
-
-/-- **PROVED: For n ≥ 2, the Li coefficients grow approximately as (n/2)·log(n).**
-    This asymptotic behavior was proven by Bombieri and Lagarias (1999).
-    Under RH: λ_n ~ (n/2)(log n + log 2π - 1 - γ) + O(√n · log n). -/
-theorem li_growth_bound (n : ℕ) (hn : n ≥ 2) : (n : ℝ) ≥ 2 := by
-  exact_mod_cast hn
+    The correct Li criterion is already stated at Part LIV (line ~5025) using the
+    opaque `liConstant` and `RH_iff_LiPositivity`. That version is sound. -/
 
 /-- **PROVED: Li's criterion gives a sharp test for RH.**
-    If even one λ_n < 0, then RH is false.
-    Contrapositive: RH false → ∃ n, λ_n < 0. -/
+    If even one Li coefficient λ_n < 0, then RH is false.
+    Contrapositive: RH false → ∃ n, λ_n < 0.
+
+    Uses `liConstant` (opaque) and `RH_iff_LiPositivity` from Part LIV. -/
 theorem li_criterion_sharp :
-    (∃ n : ℕ, n ≥ 1 ∧ liCoefficient n < 0) → ¬RiemannHypothesisStatement := by
+    (∃ n : ℕ, n ≥ 1 ∧ liConstant n < 0) → ¬RiemannHypothesis := by
   intro ⟨n, hn, hlt⟩ h
-  have := (li_criterion.mp h) n hn
+  have := (RH_iff_LiPositivity.mp h) n hn
   linarith
 
 -- ============================================================
@@ -6320,13 +6301,13 @@ structure PrimeGapBound where
     **Why an axiom?** Requires the explicit formula for ψ(x) with
     RH-strength error term. -/
 axiom rh_prime_gap_bound :
-    RiemannHypothesisStatement → ∃ (b : PrimeGapBound), b.exponent = 1/2
+    RiemannHypothesis → ∃ (b : PrimeGapBound), b.exponent = 1/2
 
 /-- **PROVED: The RH prime gap exponent is strictly less than 1.**
     Under RH, prime gaps grow slower than p_n itself.
     This is a consequence of the 1/2 exponent. -/
 theorem rh_gap_sublinear :
-    RiemannHypothesisStatement →
+    RiemannHypothesis →
     ∃ (b : PrimeGapBound), b.exponent < 1 := by
   intro h
   obtain ⟨b, hb⟩ := rh_prime_gap_bound h
@@ -6335,7 +6316,7 @@ theorem rh_gap_sublinear :
 /-- **PROVED: Under RH, there is always a prime in (x, x + C√x·log x) for large x.**
     This is equivalent to the prime gap bound. -/
 theorem rh_short_interval_primes :
-    RiemannHypothesisStatement →
+    RiemannHypothesis →
     ∃ (b : PrimeGapBound), b.exponent ≤ 1/2 := by
   intro h
   obtain ⟨b, hb⟩ := rh_prime_gap_bound h
@@ -6385,9 +6366,7 @@ theorem twin_prime_constant_positive :
 -/
 theorem rh_parts_lvi_lvii_summary : (9 : ℕ) = 9 := rfl
 
--- Part LVI: Li's Criterion
-#check @li_criterion
-#check @li_first_positive
+-- Part LVI: Li's Criterion (soundness fix: removed buggy li_criterion axiom + liCoefficient def)
 #check @li_criterion_sharp
 
 -- Part LVII: Prime Constellations
