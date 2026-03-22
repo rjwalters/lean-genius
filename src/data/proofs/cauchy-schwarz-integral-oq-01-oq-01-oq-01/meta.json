@@ -101,6 +101,7 @@
   ],
   "conclusion": {
     "summary": "A collection of fundamental inequalities proved from first principles. 8 theorems proved, 2 sorries (Young-ε and Schur). All proofs use algebraic identities and nlinarith.",
+    "implications": "Establishes a toolkit of fundamental inequalities in Lean 4, demonstrating that classical competition-mathematics results can be formalized from first principles using nlinarith and algebraic identities.",
     "openQuestions": [
       "Prove Young with epsilon via sqrt substitution",
       "Prove Schur's inequality via SOS decomposition",
