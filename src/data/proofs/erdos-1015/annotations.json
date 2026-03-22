@@ -67,7 +67,7 @@
     "title": "Clique Partition Structure",
     "content": "A `CliquePartition` bundles: (1) a list of cliques each of size $t$, (2) a color assignment for each, (3) proofs that each is monochromatic in its color, and (4) pairwise disjointness. The `leftover` is $n - |\\bigcup S_i|$. This Lean structure captures all constraints formally, making the optimization well-defined.",
     "mathContext": "$P = (S_1,\\ldots,S_m; b_1,\\ldots,b_m)$ with $|S_i| = t$, $S_i$ is $b_i$-monochromatic, pairwise disjoint; leftover $= n - mt$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["structure type", "bundled proof", "optimization problem"],
     "prerequisites": ["Lean 4 structures", "Finset operations"]
   },
@@ -103,7 +103,7 @@
     "title": "Function $f(t)$: The Fundamental Quantity",
     "content": "$f(t) = \\sup_n f_n(t)$: the worst-case leftover over all graph sizes and all colorings. For large $n$, $f_n(t)$ stabilizes at the Burr-Erdős-Spencer value. This is the quantity Erdős asked about—how badly can the packing fail?",
     "mathContext": "$f(t) = \\sup_{n \\ge 1} f_n(t) = \\sup_n \\max_c \\min_P \\text{leftover}(P)$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["supremum over graph sizes", "stabilization", "extremal quantity"],
     "prerequisites": ["f_n", "sSup"]
   },
@@ -139,7 +139,7 @@
     "title": "Burr-Erdős-Spencer Exact Formula",
     "content": "The main result: for $t \\ge 3$ and $n$ large, $f(t) = R(t, t-1) + x$ where $0 \\le x < t$ and $n + 1 \\equiv R(t,t-1) + x \\pmod{t}$. The key insight: leftover vertices form a graph avoiding monochromatic $K_t$, so they number at most $R(t,t-1) - 1$ (they might have a $K_{t-1}$ but not $K_t$). The modular correction $x$ accounts for divisibility of $n$ by $t$.",
     "mathContext": "$\\forall t \\ge 3: R(t,t-1) \\le f(t) < R(t,t-1) + t$; exact: $f(t) = R(t,t-1) + x$, $0 \\le x < t$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["off-diagonal Ramsey number", "exact extremal result", "modular arithmetic"],
     "prerequisites": ["ramseyNumber", "Ramsey theory"]
   },
@@ -151,7 +151,7 @@
     "title": "Root Limit: $f(t)^{1/t} \\to 4$",
     "content": "Since $f(t) \\approx R(t, t-1)$ and Ramsey numbers satisfy $R(t,t)^{1/t} \\to 4$ (the exponential growth rate), we get $f(t)^{1/t} \\to 4$. This answers Erdős's first question definitively: the growth rate is exponential with base 4, not subexponential as he hoped.",
     "mathContext": "$\\lim_{t \\to \\infty} f(t)^{1/t} = 4$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["exponential growth rate", "Ramsey number asymptotics", "Filter.Tendsto"],
     "prerequisites": ["limits", "Ramsey number growth"]
   },
@@ -163,7 +163,7 @@
     "title": "Not Linear Growth",
     "content": "$f(t)$ is NOT $O(t)$: since $f(t) \\ge R(t, t-1) \\ge 2^{t/2}$ (by the Erdős probabilistic lower bound on Ramsey numbers), no linear function $Ct$ can dominate $f(t)$. This answers Erdős's second question—the leftover grows exponentially in the clique size $t$.",
     "mathContext": "$\\neg\\exists C: \\forall t, f(t) \\le Ct$; since $f(t) \\ge 2^{\\Omega(t)}$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["exponential lower bound", "Ramsey lower bounds", "non-linear growth"],
     "prerequisites": ["Erdős probabilistic lower bound for Ramsey numbers"]
   }

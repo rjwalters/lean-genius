@@ -7,7 +7,7 @@
     "title": "Problem Overview: Triangle Supersaturation",
     "content": "**Erdős Problem #1010 (SOLVED)**\n\nWhen a graph exceeds the Turán threshold $\\lfloor n^2/4 \\rfloor$ (the maximum edges in a triangle-free graph), how many triangles must appear?\n\nThe answer is precise: $t$ edges over the threshold force at least $t \\cdot \\lfloor n/2 \\rfloor$ triangles for $t < \\lfloor n/2 \\rfloor$.\n\nProved independently by Lovász-Simonovits (1976) and Nikiforov-Khadzhiivanov (1981).",
     "mathContext": "Supersaturation results quantify the 'explosion' of forbidden substructures beyond extremal thresholds. This is a cornerstone of modern extremal graph theory. The file imports `Mathlib` and works with `SimpleGraph V` for a finite type `V` with `[Fintype V] [DecidableEq V]`. The docstring references Erdős [Er62d], Lovász-Simonovits [LoSi76], and Nikiforov-Khadzhiivanov [NiKh81].",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Turan-theorem", "supersaturation", "extremal-graph-theory", "stability-method"],
     "prerequisites": ["SimpleGraph", "Fintype", "edgeFinset"]
   },
@@ -19,7 +19,7 @@
     "title": "Turán Threshold and Triangle Counting",
     "content": "**turanThreshold(n)** $= \\lfloor n^2/4 \\rfloor$: The maximum number of edges in a triangle-free graph on $n$ vertices, achieved by the complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$.\n\n**triangleCount(G)**: Counts triangles by filtering `Finset.univ` for 3-element subsets $s$ where all pairs in $s$ are adjacent in $G$. Uses `s.card = 3 ∧ ∀ x ∈ s, ∀ y ∈ s, x ≠ y → G.Adj x y`.",
     "mathContext": "The Turán threshold is computed as `n^2 / 4` using Lean's natural number division (which floors automatically). The triangle count definition filters over all subsets of `V`, selecting those of cardinality 3 with the complete adjacency property. This is a purely combinatorial definition — each triangle is counted once as an unordered set.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Turan-number", "triangle-free", "3-clique", "complete-bipartite"],
     "prerequisites": ["Finset.filter", "Finset.univ", "SimpleGraph.Adj", "Finset.card"]
   },
@@ -43,7 +43,7 @@
     "title": "Main Supersaturation Theorem (Lovász-Simonovits 1976)",
     "content": "**erdos_1010_supersaturation** (axiom):\n\nFor $t < \\lfloor n/2 \\rfloor$: if $|E(G)| = \\lfloor n^2/4 \\rfloor + t$, then $\\text{triangleCount}(G) \\ge t \\cdot \\lfloor n/2 \\rfloor$.\n\nThis linear relationship captures how triangles 'explode' beyond the Turán threshold. The constraint $t < \\lfloor n/2 \\rfloor$ is necessary; beyond this range the bound breaks down and a more complex expression is needed.",
     "mathContext": "The Lovász-Simonovits proof uses the **stability method**: any graph with close to $\\lfloor n^2/4 \\rfloor$ edges must be structurally close to the Turán graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$. The $t$ extra edges must go within parts of the near-bipartition, each creating $\\approx \\lfloor n/2 \\rfloor$ new triangles. This technique became foundational in extremal combinatorics.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["stability-method", "Lovasz-Simonovits", "linear-bound", "extremal-combinatorics"],
     "prerequisites": ["turanThreshold", "triangleCount", "edgeFinset", "Fintype.card"]
   },
