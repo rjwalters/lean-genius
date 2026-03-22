@@ -170,16 +170,19 @@
   },
   "crossReferences": [
     {
-      "id": "ballot-problem-oq-03",
-      "title": "Lindström-Gessel-Viennot Lemma via 2D Reflection",
-      "relationship": "extension",
-      "description": "Extends the 2×2 LGV lemma to the full r×r case using permutations and Matrix.det."
+      "targetId": "ballot-problem-oq-03",
+      "relationship": "extends",
+      "description": "Extends the 2×2 LGV lemma to the full r×r case using permutations and Matrix.det"
     },
     {
-      "id": "ballot-problem",
-      "title": "The Ballot Problem",
-      "relationship": "related",
-      "description": "The ballot problem's reflection principle is the 1D precursor to the LGV lemma's crossing argument."
+      "targetId": "ballot-problem",
+      "relationship": "ancestor",
+      "description": "The ballot problem's reflection principle is the 1D precursor to the LGV lemma's crossing argument"
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "foundational",
+      "description": "The path matrix entries C(m+bⱼ-aᵢ, m) are binomial coefficients counting lattice paths between grid points"
     }
   ],
   "leanFile": {
@@ -197,6 +200,7 @@
   },
   "relatedProofs": [
     "ballot-problem-oq-03",
-    "ballot-problem"
+    "ballot-problem",
+    "combinations-formula"
   ]
 }
