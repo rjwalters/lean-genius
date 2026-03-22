@@ -147,5 +147,17 @@
   "relatedProofs": [
     "bezout-identity",
     "quadratic-residues"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.SumTwoSquares",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "FermatTwoSquares",
+    "lineCount": 202,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0
+  }
 }

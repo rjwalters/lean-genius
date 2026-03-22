@@ -199,5 +199,19 @@
     "gcd-algorithm",
     "infinitude-primes",
     "euler-totient"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Nat.Factors",
+      "Mathlib.RingTheory.UniqueFactorizationDomain.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "FundamentalArithmetic",
+    "lineCount": 225,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0
+  }
 }
