@@ -94,5 +94,21 @@
       "Can the weighted generalization (Borg) be fully resolved?",
       "Are there counterexamples for families with high covering number?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Frankl, Péter; Tokushige, Norihide",
+      "title": "Extremal Problems for Finite Sets",
+      "year": "2018",
+      "venue": "AMS Student Mathematical Library",
+      "note": "Comprehensive reference on intersecting family problems"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-603",
+      "relationship": "related",
+      "description": "Both concern set family combinatorics: #603 studies colorings of set families, #701 studies intersecting subfamilies"
+    }
+  ]
 }

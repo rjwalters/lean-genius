@@ -163,5 +163,21 @@
       "Connection to p-adic analysis",
       "Algorithmic computation of the minimum"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Bergman, David et al.",
+      "title": "On the GCD of binomial coefficients",
+      "year": "2023",
+      "venue": "arXiv preprint",
+      "note": "Proved h(n) → ∞ using prime power analysis"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-384",
+      "relationship": "related",
+      "description": "Both concern prime divisibility of binomial coefficients: #384 studies small prime divisors, #698 studies GCD of pairs"
+    }
+  ]
 }
