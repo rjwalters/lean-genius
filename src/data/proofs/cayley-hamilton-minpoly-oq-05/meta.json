@@ -1,0 +1,61 @@
+{
+  "id": "cayley-hamilton-minpoly-oq-05",
+  "title": "Minimal Polynomial Reduction in Algebra Towers",
+  "slug": "cayley-hamilton-minpoly-oq-05",
+  "description": "Formalizes how the minimal polynomial behaves under base change in algebra towers K ⊂ L ⊂ A. The key result: minpoly L x divides (minpoly K x).map(algebraMap K L), so the degree over a larger field can only decrease.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Minimal_polynomial_(field_theory)",
+    "date": "2026",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/CayleyHamiltonMinpolyOQ05.lean",
+    "tags": ["linear-algebra", "abstract-algebra", "minimal-polynomial", "field-extensions", "scalar-tower", "research"],
+    "badge": "verified",
+    "sorries": 1,
+    "mathlibDependencies": [
+      {"theorem": "minpoly.dvd", "description": "Minpoly divides any monic annihilating polynomial", "module": "Mathlib.FieldTheory.Minpoly.Basic"},
+      {"theorem": "minpoly.aeval", "description": "Minpoly annihilates its element", "module": "Mathlib.FieldTheory.Minpoly.Basic"},
+      {"theorem": "Polynomial.aeval_map_algebraMap", "description": "aeval commutes with algebraMap for polynomial evaluation", "module": "Mathlib.RingTheory.Polynomial.Basic"},
+      {"theorem": "IsIntegral.tower_top", "description": "Integrality transfers up algebra towers", "module": "Mathlib.RingTheory.IntegralClosure.IsIntegral.Basic"}
+    ],
+    "originalContributions": [
+      "minpoly_dvd_map: minpoly L x ∣ (minpoly K x).map(algebraMap K L) in algebra towers",
+      "minpoly_natDegree_le: degree of minpoly over L ≤ degree over K",
+      "minpoly_eq_map_of_irreducible: equality when base-changed minpoly stays irreducible (1 sorry)",
+      "complex_I_isIntegral: concrete integrality example for i ∈ ℂ over ℝ"
+    ],
+    "dateAdded": "03/21/26",
+    "relatedProblems": [
+      {"id": "cayley-hamilton-minpoly-oq-02-oq-01", "relationship": "Parent: K-algebra invariance of minpoly under AlgEquiv/AlgHom"},
+      {"id": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01", "relationship": "Sibling: Skolem-Noether theorem for matrix automorphisms"}
+    ],
+    "axiomCount": 0
+  },
+  "overview": {
+    "historicalContext": "**Minimal Polynomial and Field Extensions**\n\nWhen working with a tower of fields K ⊂ L, the minimal polynomial of an algebraic element x can be computed over either field. Over the larger field L, there may be more polynomials available to annihilate x, so the minimal polynomial can potentially have smaller degree. The precise relationship is: minpoly_L(x) divides the image of minpoly_K(x) under the ring map K[X] → L[X].",
+    "problemStatement": "Formalize the base change behavior of minimal polynomials in algebra towers K ⊂ L ⊂ A.",
+    "proofStrategy": "The divisibility theorem follows from the universal property of the minimal polynomial: it divides any monic polynomial that annihilates the element. The base-changed polynomial (minpoly K x).map(algebraMap K L) annihilates x (since aeval commutes with algebraMap) and is monic (mapping preserves leading coefficient), so the minimal polynomial over L must divide it.",
+    "keyInsights": [
+      "The minimal polynomial degree can only decrease when extending the base field",
+      "Equality holds when the base-changed polynomial remains irreducible over L",
+      "The classical example: minpoly_ℝ(i) = X²+1 (degree 2) but minpoly_ℂ(i) = X-i (degree 1)"
+    ]
+  },
+  "sections": [
+    {"id": "integrality", "title": "Integrality Transfer", "startLine": 30, "endLine": 48, "summary": "Integrality of x over K implies integrality over L via IsIntegral.tower_top."},
+    {"id": "divisibility", "title": "Divisibility in Towers", "startLine": 50, "endLine": 95, "summary": "Key theorem: minpoly L x ∣ (minpoly K x).map(algebraMap K L)."},
+    {"id": "degree", "title": "Degree Reduction", "startLine": 97, "endLine": 125, "summary": "Degree over L ≤ degree over K, via divisibility + natDegree monotonicity."},
+    {"id": "equality", "title": "When Equality Holds", "startLine": 127, "endLine": 170, "summary": "Equality when base-changed polynomial stays irreducible (1 sorry)."},
+    {"id": "matrices", "title": "Application to Matrices", "startLine": 172, "endLine": 198, "summary": "Re-exports matrix integrality and minpoly-charpoly divisibility."},
+    {"id": "example", "title": "Concrete Example", "startLine": 200, "endLine": 215, "summary": "The imaginary unit i is integral over ℝ (satisfies X²+1=0)."}
+  ],
+  "conclusion": {
+    "summary": "This file formalizes the base change behavior of minimal polynomials: when extending from K to L, the minpoly over L divides the mapped minpoly from K. The degree consequence (degree can only decrease) and the equality condition (when the mapped polynomial stays irreducible) are also established.",
+    "implications": "These results connect to the existing K-algebra invariance theory, extending it from same-base-ring transformations to base-ring-changing transformations.",
+    "openQuestions": [
+      "Complete the sorry in minpoly_eq_map_of_irreducible (Associated → monic equality)",
+      "Can the minpoly over L be characterized in terms of the irreducible factors of the mapped minpoly over L?",
+      "What is the relationship between [L:K] and the degree drop of the minimal polynomial?"
+    ]
+  }
+}
