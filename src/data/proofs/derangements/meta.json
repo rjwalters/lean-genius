@@ -208,9 +208,26 @@
     }
   ],
   "relatedProofs": [
-    "inclusion-exclusion",
-    "euler-totient",
-    "fundamental-arithmetic"
+    {
+      "id": "inclusion-exclusion",
+      "relationship": "uses",
+      "description": "The derangement count D_n = n!∑(-1)^k/k! is derived via inclusion-exclusion on fixed-point sets"
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "related",
+      "description": "Both use Möbius-style inclusion-exclusion over divisor/subset lattices"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "related",
+      "description": "Prime factorization underlies the Euler product form of the derangement subfactorial"
+    },
+    {
+      "id": "binomial-theorem",
+      "relationship": "uses",
+      "description": "Binomial coefficients C(n,k) appear in the inclusion-exclusion derivation of D_n"
+    }
   ],
   "leanFile": {
     "imports": [
