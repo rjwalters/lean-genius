@@ -52,7 +52,7 @@
     "id": "ann-e733-szemeredi-trotter",
     "proofId": "erdos-733",
     "range": { "startLine": 113, "endLine": 123 },
-    "type": "axiom",
+    "type": "concept",
     "title": "Szemeredi-Trotter Theorem",
     "content": "**szemeredi_trotter:**\n\nFor n points and m lines, the number of incidences is:\nI(P, L) <= C * (n^{2/3} * m^{2/3} + n + m)\n\nThis is a fundamental result in combinatorial geometry, proved in 1983.\n\nIt is the key tool for the upper bound on line-compatible sequences.",
     "mathContext": "One of the most important theorems in discrete geometry.",
@@ -63,7 +63,7 @@
     "id": "ann-e733-rich-lines",
     "proofId": "erdos-733",
     "range": { "startLine": 125, "endLine": 132 },
-    "type": "axiom",
+    "type": "concept",
     "title": "Rich Lines Bound",
     "content": "**rich_lines_bound:**\n\nThe number of k-rich lines (lines with >= k points) is O(n^2/k^3 + n/k).\n\nThis is a corollary of Szemeredi-Trotter and controls the possible sequence patterns.",
     "significance": "key"
@@ -72,7 +72,7 @@
     "id": "ann-e733-lower",
     "proofId": "erdos-733",
     "range": { "startLine": 140, "endLine": 151 },
-    "type": "axiom",
+    "type": "concept",
     "title": "Lower Bound (Erdos)",
     "content": "**lower_bound:**\n\nf(n) >= exp(c * sqrt(n))\n\nErdos considered this 'easy'.\n\n**Construction:** A sqrt(n) x sqrt(n) grid has Theta(n) lines through it. Selecting different subsets of lines gives exponentially many sequences.",
     "significance": "critical"
@@ -81,7 +81,7 @@
     "id": "ann-e733-grid",
     "proofId": "erdos-733",
     "range": { "startLine": 153, "endLine": 161 },
-    "type": "theorem",
+    "type": "insight",
     "title": "Grid Construction",
     "content": "**grid_gives_lower:**\n\nA sqrt(n) x sqrt(n) integer grid has:\n- n points total\n- Theta(sqrt(n)) horizontal lines\n- Theta(sqrt(n)) vertical lines\n- Many diagonal lines\n\nTotal: Theta(n) lines, giving 2^{Theta(sqrt(n))} subsequences.",
     "significance": "key"
@@ -90,7 +90,7 @@
     "id": "ann-e733-upper",
     "proofId": "erdos-733",
     "range": { "startLine": 169, "endLine": 178 },
-    "type": "axiom",
+    "type": "concept",
     "title": "Upper Bound (Szemeredi-Trotter)",
     "content": "**upper_bound:**\n\nf(n) <= exp(C * sqrt(n))\n\nProved by Szemeredi and Trotter (1983) using their incidence theorem.\n\nThe proof controls the number of possible sequence patterns by bounding incidences.",
     "mathContext": "This was the 'difficult' direction that Erdos anticipated.",
@@ -100,7 +100,7 @@
     "id": "ann-e733-tight",
     "proofId": "erdos-733",
     "range": { "startLine": 198, "endLine": 205 },
-    "type": "theorem",
+    "type": "insight",
     "title": "Tight Bounds",
     "content": "**tight_bounds:**\n\nexp(c*sqrt(n)) <= f(n) <= exp(C*sqrt(n))\n\nCombines lower and upper bounds to show f(n) = exp(Theta(sqrt(n))).",
     "significance": "key"
@@ -109,7 +109,7 @@
     "id": "ann-e733-main",
     "proofId": "erdos-733",
     "range": { "startLine": 207, "endLine": 227 },
-    "type": "theorem",
+    "type": "insight",
     "title": "Erdos Problem #733: SOLVED",
     "content": "**erdos_733:**\n\nComplete solution: f(n) = exp(Theta(sqrt(n)))\n\nFor n >= 4, there exist c, C > 0 such that:\nexp(c*sqrt(n)) <= f(n) <= exp(C*sqrt(n))\n\nThe Szemeredi-Trotter theorem is the key tool.",
     "significance": "critical"
@@ -128,7 +128,7 @@
     "id": "ann-e733-summary",
     "proofId": "erdos-733",
     "range": { "startLine": 259, "endLine": 289 },
-    "type": "theorem",
+    "type": "insight",
     "title": "Complete Summary",
     "content": "**erdos_733_summary:**\n\n1. Line-compatible sequences counted by f(n)\n2. Lower: f(n) >= exp(c*sqrt(n)) (grid construction)\n3. Upper: f(n) <= exp(C*sqrt(n)) (Szemeredi-Trotter)\n4. Together: f(n) = exp(Theta(sqrt(n)))\n\n**erdos_733_answer:** Confirms the complete bounds.",
     "significance": "critical"
