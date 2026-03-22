@@ -23,7 +23,7 @@
   - √2:      Gal(x²-2/ℚ) ≅ ℤ/2ℤ (order 2 = 2¹, 2-group)  → constructible ✓
   - ∛2:      Gal(x³-2/ℚ) ≅ S₃   (order 6, not 2-group)    → NOT constructible ✗
   - 2^(1/4): Gal(x⁴-2/ℚ) ≅ D₄   (order 8 = 2³, 2-group)   → constructible ✓
-  - cos(20°): Gal(8x³-6x-1/ℚ) ≅ S₃ (order 6, not 2-group) → NOT constructible ✗
+  - cos(20°): Gal(8x³-6x-1/ℚ) ≅ ℤ/3ℤ (order 3, not 2-group) → NOT constructible ✗
 
   This file proves:
   1. Basic 2-group facts (proved)
@@ -117,16 +117,22 @@ theorem x_cube_sub_2_gal_not_2group : ¬ IsPGroup 2 (X ^ 3 - C 2 : ℚ[X]).Gal :
   rw [Nat.card_eq_fintype_card, x_cube_sub_2_gal_order] at hn
   exact not_pow_two_of_eq_six hn
 
-/-- The Galois group of 8x³ - 6x - 1 (minimal polynomial of cos(20°)) has order 6. -/
+/-- The Galois group of 8x³ - 6x - 1 (minimal polynomial of cos(20°)) has order 3.
+    The discriminant of 8x³-6x-1 is 5184 = 72², a perfect square, so
+    Gal ≅ A₃ ≅ ℤ/3ℤ (order 3), NOT S₃ (order 6). -/
 axiom cos20_gal_order :
-    Fintype.card (8 * X ^ 3 - 6 * X - C 1 : ℚ[X]).Gal = 6
+    Fintype.card (8 * X ^ 3 - 6 * X - C 1 : ℚ[X]).Gal = 3
+
+/-- 3 is not a power of 2. -/
+private lemma not_pow_two_of_eq_three {n : ℕ} (h : 3 = 2 ^ n) : False := by
+  interval_cases n <;> omega
 
 /-- The Galois group of the cos(20°) minimal polynomial is NOT a 2-group. -/
 theorem cos20_gal_not_2group : ¬ IsPGroup 2 (8 * X ^ 3 - 6 * X - C 1 : ℚ[X]).Gal := by
   intro h
   obtain ⟨n, hn⟩ := IsPGroup.iff_card.mp h
   rw [Nat.card_eq_fintype_card, cos20_gal_order] at hn
-  exact not_pow_two_of_eq_six hn
+  exact not_pow_two_of_eq_three hn
 
 /-
 ## Part V: Constructibility Examples
@@ -140,18 +146,42 @@ private theorem x_sq_sub_2_irreducible : Irreducible (X ^ 2 - C (2 : ℚ)) :=
 private theorem x_sq_sub_2_separable : (X ^ 2 - C (2 : ℚ)).Separable :=
   x_sq_sub_2_irreducible.separable
 
+/-- x² - 2 has degree 2. -/
+private theorem x_sq_sub_2_natDegree :
+    (X ^ 2 - C (2 : ℚ) : ℚ[X]).natDegree = 2 :=
+  NthRootIrrationalOQ01.natDegree_X_pow_sub_C_eq (by omega) (by norm_num)
+
+/-- x² - 2 is monic. -/
+private theorem x_sq_sub_2_monic : (X ^ 2 - C (2 : ℚ) : ℚ[X]).Monic :=
+  monic_X_pow_sub_C 2 (by omega)
+
 /-- The Galois group of x² - 2 over ℚ has order 2.
-    Proof: |Gal| = [SplittingField : ℚ]; for irreducible degree-2 polynomial,
-    2 | |Gal| (prime degree) and |Gal| | 2! = 2 (embeds into S₂). -/
+    Proof: Divisibility squeeze — 2 | |Gal| (prime degree) and |Gal| | 2! = 2 (embeds into S₂). -/
 theorem x_sq_sub_2_gal_order :
     Fintype.card (X ^ 2 - C 2 : ℚ[X]).Gal = 2 := by
-  -- Strategy: show |Gal| = finrank, then 2 ≤ finrank ≤ 2
-  have hcard := Polynomial.Gal.card_of_separable x_sq_sub_2_separable
-  rw [Nat.card_eq_fintype_card] at hcard; rw [hcard]
-  -- Needs: finrank of splitting field = 2 for irreducible quadratic
-  -- This follows from: (1) natDegree | finrank and (2) finrank | natDegree!
-  -- For natDegree = 2: 2 | finrank | 2, so finrank = 2
-  sorry
+  set p := (X ^ 2 - C 2 : ℚ[X])
+  -- Lower bound: 2 | |Gal| (irreducible polynomial of prime degree 2)
+  have hlb : 2 ∣ Fintype.card p.Gal := by
+    have h := Polynomial.Gal.prime_degree_dvd_card x_sq_sub_2_irreducible
+      (by rw [x_sq_sub_2_natDegree]; decide)
+    rw [x_sq_sub_2_natDegree, Nat.card_eq_fintype_card] at h
+    exact h
+  -- Upper bound: |Gal| | 2 (Gal embeds into Perm(rootSet), rootSet has 2 elements)
+  have hub : Fintype.card p.Gal ∣ 2 := by
+    classical
+    haveI : Fact (map (algebraMap ℚ p.SplittingField) p).Splits :=
+      ⟨Polynomial.SplittingField.splits p⟩
+    have hinj := Polynomial.Gal.galActionHom_injective p p.SplittingField
+    have hdvd : Nat.card p.Gal ∣ Nat.card (Equiv.Perm (p.rootSet p.SplittingField)) :=
+      Subgroup.card_dvd_of_injective _ hinj
+    rw [Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, Fintype.card_perm] at hdvd
+    have hcard : Fintype.card (p.rootSet p.SplittingField) = 2 :=
+      (Polynomial.card_rootSet_eq_natDegree x_sq_sub_2_separable
+        (Polynomial.SplittingField.splits p)).trans x_sq_sub_2_natDegree
+    rw [hcard] at hdvd
+    simpa using hdvd
+  -- 2 | |Gal| and |Gal| | 2 → |Gal| = 2
+  exact Nat.dvd_antisymm hub hlb
 
 /-- Gal(x²-2/ℚ) is a 2-group (order 2 = 2¹). -/
 theorem x_sq_sub_2_gal_is_2group : IsPGroup 2 (X ^ 2 - C 2 : ℚ[X]).Gal :=
@@ -175,10 +205,27 @@ theorem x_4th_sub_2_gal_is_2group : IsPGroup 2 (X ^ 4 - C 2 : ℚ[X]).Gal :=
 
 /-- The Galois criterion (OQ02) implies the degree criterion (OQ01):
     If Gal is a 2-group then |Gal| = 2^k, and natDegree(p) divides |Gal(p)|,
-    so natDegree divides a power of 2 (hence is itself a power of 2). -/
-axiom galois_2group_implies_degree_pow2 (α : ℝ) (hα : IsIntegral ℚ α)
+    so natDegree divides a power of 2.
+
+    Proof: The minpoly is monic and irreducible, so by the tower law
+    (adjoin a root, then extend to splitting field), natDegree divides
+    [SplittingField : ℚ] = |Gal| = 2^k. -/
+theorem galois_2group_implies_degree_pow2 (α : ℝ) (hα : IsIntegral ℚ α)
     (hGal : IsPGroup 2 (minpoly ℚ α).Gal) :
-    ∃ n : ℕ, (minpoly ℚ α).natDegree ∣ 2 ^ n
+    ∃ n : ℕ, (minpoly ℚ α).natDegree ∣ 2 ^ n := by
+  -- Step 1: IsPGroup gives |Gal| = 2^k
+  obtain ⟨k, hk⟩ := IsPGroup.iff_card.mp hGal
+  -- Step 2: |Gal| = finrank (minpoly is separable over ℚ, char 0)
+  have hsep : (minpoly ℚ α).Separable := (minpoly.irreducible hα).separable
+  have hcard := Polynomial.Gal.card_of_separable hsep
+  rw [hk, Nat.card_eq_fintype_card] at hcard
+  -- hcard : 2 ^ k = Module.finrank ℚ (minpoly ℚ α).SplittingField
+  -- Step 3: natDegree divides finrank (tower law via InverseGaloisD4)
+  have hdvd := InverseGaloisExtensions.irred_monic_degree_dvd_splitting_finrank
+    (minpoly.irreducible hα) (minpoly.monic hα)
+  -- Step 4: Combine: natDegree | finrank = 2^k
+  rw [← hcard] at hdvd
+  exact ⟨k, hdvd⟩
 
 /-- The Galois characterization implies the degree criterion:
     constructible → Gal is 2-group → degree divides 2^n. -/
@@ -217,24 +264,24 @@ An algebraic number α is constructible from ℚ iff Gal(minpoly(ℚ,α)) is a 2
 1. `isPGroup_iff_card_pow_two` - 2-group ↔ |G| = 2^n (from Mathlib IsPGroup.iff_card)
 2. `isPGroup_of_card_pow_two` - 2-power order → 2-group (Mathlib IsPGroup.of_card)
 3. `isPGroup_card_is_pow_two` - 2-group → |G| = 2^n
-4. `not_pow_two_of_eq_six` - 6 is not a power of 2 (via coprimality: 3 | 6, gcd(3,2)=1)
+4. `not_pow_two_of_eq_six` - 6 is not a power of 2
 5. `x_cube_sub_2_gal_not_2group` - Gal(x³-2/ℚ) is NOT a 2-group
 6. `cos20_gal_not_2group` - Gal of cos(20°) minimal polynomial is NOT a 2-group
-7. `x_sq_sub_2_gal_is_2group` - Gal(x²-2/ℚ) IS a 2-group (order 2)
-8. `x_4th_sub_2_gal_is_2group` - Gal(x⁴-2/ℚ) IS a 2-group (order 8)
-9. `constructible_implies_degree_dvd_pow2` - Galois criterion implies degree criterion
-10. `not_constructible_of_not_2group` - NOT 2-group Galois → not constructible
-11. `not_constructible_of_degree` - degree not ∣ any 2^n → not constructible
+7. `x_sq_sub_2_gal_order` - |Gal(x²-2/ℚ)| = 2 (divisibility squeeze: prime deg divides, embeds into S₂)
+8. `x_sq_sub_2_gal_is_2group` - Gal(x²-2/ℚ) IS a 2-group (order 2)
+9. `x_4th_sub_2_gal_is_2group` - Gal(x⁴-2/ℚ) IS a 2-group (order 8)
+10. `galois_2group_implies_degree_pow2` - 2-group Galois → degree divides 2^n (tower law)
+11. `constructible_implies_degree_dvd_pow2` - Galois criterion implies degree criterion
+12. `not_constructible_of_not_2group` - NOT 2-group Galois → not constructible
+13. `not_constructible_of_degree` - degree not ∣ any 2^n → not constructible
 
 ### Proved (imported from other files):
-12. `x_cube_sub_2_gal_order` - |Gal(x³-2/ℚ)| = 6 (from InverseGalois.lean)
-13. `x_4th_sub_2_gal_order` - |Gal(x⁴-2/ℚ)| = 8 (from InverseGaloisD4.lean)
+14. `x_cube_sub_2_gal_order` - |Gal(x³-2/ℚ)| = 6 (from InverseGalois.lean)
+15. `x_4th_sub_2_gal_order` - |Gal(x⁴-2/ℚ)| = 8 (from InverseGaloisD4.lean)
 
-### Axiomatized (deep results, 4 remaining):
+### Axiomatized (2 remaining):
 1. `wantzel_galois_characterization` - main constructibility ↔ 2-group theorem
-2. `cos20_gal_order` - |Gal(8x³-6x-1/ℚ)| = 6
-3. `x_sq_sub_2_gal_order` - |Gal(x²-2/ℚ)| = 2
-4. `galois_2group_implies_degree_pow2` - 2-group Galois implies degree divides 2^n
+2. `cos20_gal_order` - |Gal(8x³-6x-1/ℚ)| = 3 (corrected from 6: disc = 72², Gal ≅ A₃)
 -/
 
 #check isPGroup_iff_card_pow_two
