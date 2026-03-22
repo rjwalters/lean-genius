@@ -15,7 +15,8 @@
       "sumset",
       "graph edge",
       "additive combinatorics"
-    ]
+    ],
+    "prerequisites": ["Finset.image", "Cartesian products", "Graph theory basics"]
   },
   {
     "id": "ann-808-2",
@@ -33,7 +34,8 @@
       "product set",
       "multiplication",
       "sum-product phenomenon"
-    ]
+    ],
+    "prerequisites": ["Finset.image", "Natural number multiplication"]
   },
   {
     "id": "ann-808-3",
@@ -51,7 +53,8 @@
       "sum-product conjecture",
       "expansion",
       "edge density"
-    ]
+    ],
+    "prerequisites": ["graphSumset", "graphProductset", "isGraphOn", "Real.rpow"]
   },
   {
     "id": "ann-808-4",
@@ -69,7 +72,8 @@
       "counterexample",
       "arithmetic structure",
       "exponent gap"
-    ]
+    ],
+    "prerequisites": ["ErdosConjecture808", "isGraphOn", "Real.rpow"]
   },
   {
     "id": "ann-808-5",
@@ -87,7 +91,8 @@
       "exponent",
       "gap",
       "quantitative failure"
-    ]
+    ],
+    "prerequisites": ["Rational arithmetic", "norm_num tactic"]
   },
   {
     "id": "ann-808-6",
@@ -105,7 +110,8 @@
       "positive result",
       "lower bound",
       "edge-output relation"
-    ]
+    ],
+    "prerequisites": ["graphSumset", "graphProductset", "Real.rpow"]
   },
   {
     "id": "ann-808-7",
@@ -123,7 +129,8 @@
       "Problem 52",
       "complete graph",
       "Erdős-Szemerédi"
-    ]
+    ],
+    "prerequisites": ["Sum-product conjecture", "Finset.image"]
   },
   {
     "id": "ann-808-8",
@@ -141,7 +148,8 @@
       "arithmetic progression",
       "structured sets",
       "small doubling"
-    ]
+    ],
+    "prerequisites": ["Arithmetic progressions", "Sumset bounds"]
   },
   {
     "id": "ann-808-9",
@@ -159,7 +167,8 @@
       "small doubling",
       "Freiman's theorem",
       "additive structure"
-    ]
+    ],
+    "prerequisites": ["Additive structure", "Sumset definition"]
   },
   {
     "id": "ann-808-10",
@@ -177,6 +186,7 @@
       "graph structure",
       "sparse vs dense",
       "expansion phenomenon"
-    ]
+    ],
+    "prerequisites": ["ErdosConjecture808", "ars_counterexample", "ars_positive_bound"]
   }
 ]
