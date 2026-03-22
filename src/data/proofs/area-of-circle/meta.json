@@ -144,6 +144,16 @@
       "targetId": "pythagorean-theorem",
       "relationship": "foundational",
       "description": "The circle x²+y²=r² is defined by the Pythagorean relation — the equation underpinning the Lebesgue measure computation of the disk's area"
+    },
+    {
+      "targetId": "hermite-lindemann",
+      "relationship": "related",
+      "description": "The Hermite-Lindemann theorem proves π is transcendental, meaning the area πr² is transcendental for all nonzero algebraic r — connecting the geometric formula to number-theoretic impossibility"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "The transcendence of e connects to the area formula via the Gaussian integral: ∫∫ e^{-(x²+y²)} dA = π, where converting to polar coordinates uses the area element from A = πr²"
     }
   ],
   "relatedProofs": [
@@ -151,7 +161,9 @@
     "buffons-needle",
     "pi-transcendental",
     "fundamental-theorem-calculus",
-    "pythagorean-theorem"
+    "pythagorean-theorem",
+    "hermite-lindemann",
+    "e-transcendental"
   ],
   "leanFile": {
     "imports": [
@@ -182,41 +194,13 @@
       "year": "2010",
       "venue": "Springer, 3rd edition",
       "note": "Historical account of Archimedes's method and its connection to integral calculus"
-    }
-  ],
-  "relatedProofs": [
-    "angle-trisection",
-    "buffons-needle"
-  ],
-  "leanFile": {
-    "imports": [
-      "Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls",
-      "Mathlib.Tactic"
-    ],
-    "opens": [
-      "MeasureTheory",
-      "Metric"
-    ],
-    "namespace": "AreaOfCircle",
-    "lineCount": 155,
-    "axiomCount": 0,
-    "theoremCount": 7,
-    "definitionCount": 0
-  },
-  "references": [
-    {
-      "authors": "Archimedes",
-      "title": "Measurement of a Circle",
-      "year": "~250 BCE",
-      "venue": "Syracuse",
-      "note": "First rigorous calculation of the area of a circle using the method of exhaustion — bounded π between 3 10/71 and 3 1/7"
     },
     {
-      "authors": "Stillwell, John",
-      "title": "Mathematics and Its History",
-      "year": "2010",
-      "venue": "Springer, 3rd edition",
-      "note": "Historical account of Archimedes's method and its connection to integral calculus"
+      "authors": "Heath, Thomas L. (translator)",
+      "title": "The Works of Archimedes",
+      "year": "1897",
+      "venue": "Cambridge University Press",
+      "note": "Definitive English translation of Archimedes' works including 'Measurement of a Circle' — the primary source for his proof that the area of a circle equals that of a right triangle with legs equal to the circumference and radius"
     }
   ]
 }
