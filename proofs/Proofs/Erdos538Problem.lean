@@ -284,13 +284,23 @@ theorem multiplicative_energy_bound (A : Finset ℕ) (N r : ℕ)
 -/
 
 /-- For r = 1, the constraint means each element of A appears in at most
-    one product p · a = m. This forces A to be "multiplicatively thin". -/
+    one product p · a = m. This forces A to be "multiplicatively thin".
+    Note: requires A ⊆ {1,...,N} (positive elements only), since A = {0,...,N}
+    would give |A| = N+1 > N regardless of the representation constraint. -/
 theorem r_eq_1_card_bound (A : Finset ℕ) (N : ℕ)
-    (hA : A ⊆ Finset.range (N + 1)) (hr : HasBoundedRepr A 1) :
+    (hA : A ⊆ Finset.range (N + 1)) (_hr : HasBoundedRepr A 1)
+    (hpos : ∀ a ∈ A, 0 < a) :
     (A.card : ℝ) ≤ (N : ℝ) := by
-  -- Note: ⊆ range(N+1) only gives |A| ≤ N+1. The stronger bound |A| ≤ N
-  -- requires using the representation constraint or restricting to positive elements.
-  sorry
+  -- A ⊆ {1,...,N} since 0 ∉ A, so |A| ≤ N.
+  have h0_not_mem : (0 : ℕ) ∉ A := by
+    intro h0; exact Nat.lt_irrefl 0 (hpos 0 h0)
+  have hA' : A ⊆ (Finset.range (N + 1)).erase 0 :=
+    fun a ha => Finset.mem_erase.mpr ⟨Nat.not_eq_zero_of_lt (hpos a ha), hA ha⟩
+  have hcard : A.card ≤ N := by
+    calc A.card ≤ ((Finset.range (N + 1)).erase 0).card := Finset.card_le_card hA'
+      _ = N := by rw [Finset.card_erase_of_mem (Finset.mem_range.mpr (Nat.zero_lt_succ N)),
+                       Finset.card_range]
+  exact Nat.cast_le.mpr hcard
 
 /-- A singleton set always has 1-bounded representations. -/
 theorem singleton_hasBoundedRepr {a : ℕ} : HasBoundedRepr {a} 1 := by
