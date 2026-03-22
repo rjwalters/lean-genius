@@ -131,30 +131,12 @@
     }
   ],
   "relatedProofs": [
-    {
-      "id": "erdos-622",
-      "relationship": "Same density regime — cycle-spanning subsets in regular graphs on 2n vertices with degree n+1, using Dirac's theorem and absorbing method"
-    },
-    {
-      "id": "erdos-570",
-      "relationship": "Cycle Ramsey numbers — R(C_k, H) bounds for cycles vs arbitrary graphs, sharing the cycle-theoretic framework"
-    },
-    {
-      "id": "erdos-572",
-      "relationship": "Extremal even cycle theory — lower bounds for ex(n; C_{2k}), studying how many edges force even cycles"
-    },
-    {
-      "id": "erdos-599",
-      "relationship": "Vertex-disjoint paths — Erdős-Menger conjecture extends Menger's theorem, sharing the vertex-disjoint covering paradigm"
-    },
-    {
-      "id": "erdos-546",
-      "relationship": "Graph Ramsey bounds — R(G) ≤ 2^{O(√m)} uses similar extremal graph theory tools"
-    },
-    {
-      "id": "erdos-579",
-      "relationship": "Dense graph structure — independent sets in K₂,₂,₂-free dense graphs share the minimum degree threshold analysis"
-    }
+    "erdos-622",
+    "erdos-570",
+    "erdos-572",
+    "erdos-599",
+    "erdos-546",
+    "erdos-579"
   ],
   "references": [
     "Wang, H. (2010). 'Proof of the Erdős-Faudree conjecture on quadrilaterals.' Graphs and Combinatorics, 26(6), 833–877.",

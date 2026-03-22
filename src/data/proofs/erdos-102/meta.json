@@ -131,22 +131,10 @@
     ]
   },
   "relatedProofs": [
-    {
-      "id": "erdos-101",
-      "relationship": "Problem #101 asks whether four-point lines are $o(n^2)$ for no-five-collinear sets. Problem #102's divergence would imply Problem #101's answer is yes, via the bridge axiom `connection_101`."
-    },
-    {
-      "id": "erdos-588",
-      "relationship": "Problem #588 generalizes to $k$-rich lines: is $f_k(n) = o(n^2)$ for $k \\ge 4$? Problem #101 is the $k=4$ case, and Problem #102 studies the dual question of maximum collinear count."
-    },
-    {
-      "id": "erdos-669",
-      "relationship": "The Orchard Problem (#669) studies $f_k(n)$ (lines through exactly $k$ points) and $F_k(n)$ (lines through at least $k$ points). For $k=3$, the answer is $n^2/6 - O(n)$ (Burr–Grünbaum–Sloane 1974). The $k \\ge 4$ case connects to Problems #101, #102, and #588."
-    },
-    {
-      "id": "desargues-theorem",
-      "relationship": "Desargues's theorem is foundational to projective incidence geometry; the collinearity and concurrence duality underlying Problems #101–#102 extends the same perspective-line framework."
-    }
+    "erdos-101",
+    "erdos-588",
+    "erdos-669",
+    "desargues-theorem"
   ],
   "leanFile": {
     "imports": [

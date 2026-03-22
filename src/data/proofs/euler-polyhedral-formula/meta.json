@@ -93,36 +93,24 @@
     ]
   },
   "relatedProofs": [
-    {
-      "id": "platonic-solids",
-      "relationship": "related",
-      "description": "The classification of Platonic solids uses Euler's formula V-E+F=2 as a key constraint"
-    },
-    {
-      "id": "euler-polyhedral-formula-oq-02",
-      "relationship": "extends",
-      "description": "Extension exploring further applications of Euler's formula"
-    },
-    {
-      "id": "picks-theorem",
-      "relationship": "related",
-      "description": "Pick's theorem relates lattice point counts to area; both are fundamental results connecting combinatorics to geometry"
-    }
+    "platonic-solids",
+    "euler-polyhedral-formula-oq-02",
+    "picks-theorem"
   ],
   "references": [
     {
       "authors": "Euler, Leonhard",
       "title": "Elementa doctrinae solidorum",
       "year": "1758",
-      "venue": "Novi Commentarii Academiae Scientiarum Petropolitanae 4, pp. 109-140",
-      "note": "Euler's original statement of V - E + F = 2 for convex polyhedra"
+      "venue": "Novi Commentarii Academiae Scientiarum Petropolitanae 4, 109–140",
+      "note": "Original statement of V - E + F = 2 for convex polyhedra"
     },
     {
       "authors": "Lakatos, Imre",
-      "title": "Proofs and Refutations: The Logic of Mathematical Discovery",
+      "title": "Proofs and Refutations",
       "year": "1976",
       "venue": "Cambridge University Press",
-      "note": "Classic study of the evolution of Euler's formula through successive counterexamples and refinements"
+      "note": "Famous philosophical analysis of the history and proof of Euler's formula, using it to illustrate the nature of mathematical discovery"
     }
   ],
   "leanFile": {
@@ -145,21 +133,5 @@
     "axiomCount": 1,
     "theoremCount": 65,
     "definitionCount": 27
-  },
-  "references": [
-    {
-      "authors": "Euler, Leonhard",
-      "title": "Elementa doctrinae solidorum",
-      "year": "1758",
-      "venue": "Novi Commentarii Academiae Scientiarum Petropolitanae 4, 109–140",
-      "note": "Original statement of V - E + F = 2 for convex polyhedra"
-    },
-    {
-      "authors": "Lakatos, Imre",
-      "title": "Proofs and Refutations",
-      "year": "1976",
-      "venue": "Cambridge University Press",
-      "note": "Famous philosophical analysis of the history and proof of Euler's formula, using it to illustrate the nature of mathematical discovery"
-    }
-  ]
+  }
 }

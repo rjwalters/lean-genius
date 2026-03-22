@@ -160,14 +160,8 @@
     ]
   },
   "relatedProofs": [
-    {
-      "id": "erdos-973",
-      "relationship": "Erdős Problem #973 studies the dual question: how small can $\\max_k |\\sum z_i^k|$ be when $|z_i| \\ge 1$? Both problems arise from Turán's power sum method"
-    },
-    {
-      "id": "de-moivre",
-      "relationship": "De Moivre's formula underpins the roots of unity analysis: $e^{2\\pi i k/n}$ raised to powers exhibits the periodic cancellation central to understanding power sum extremals"
-    }
+    "erdos-973",
+    "de-moivre"
   ],
   "leanFile": {
     "imports": [
