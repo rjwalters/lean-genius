@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Formalized Stern-Brocot tree as state-machine navigation. Proved determinant invariant (ra*lb - la*rb = 1), coprimality of all nodes, positivity, mediant ordering. 349 lines, 29 defs/theorems, 1 sorry (injectivity). Gallery entry created.",
+    "progressSummary": "COMPLETED: DenumerabilityRationalsOQ03.lean fully verified (0 sorries, 0 axioms, 674 lines, 43 theorems). Proved eval_injective: different paths yield different states via mediant ordering bounds with cross-multiplication transitivity. Added la_ge_eval, mediant_lt_ra_rb, mediant_gt_la_lb, eval_injective_gen.",
     "builtItems": [
       "DenumerabilityRationalsOQ03.lean: State-based Stern-Brocot tree (349 lines)",
       "det_path: Determinant invariant preserved through all navigation",
@@ -41,7 +41,13 @@
       "eval_injective_gen: generalized injectivity from any valid state (proof architecture, needs build fixes)",
       "mediant_lt_right, mediant_gt_left: mediant bounded by ancestors for all descendants",
       "rb_le_eval, la_le_eval, rb_increase_left, la_increase_right: monotonicity lemmas",
-      "ra_pos_eval, lb_pos_eval: positivity preservation lemmas"
+      "ra_pos_eval, lb_pos_eval: positivity preservation lemmas",
+      "la_ge_eval: la non-decreasing along any path",
+      "lb_pos_of_det / ra_pos_of_det: component positivity from det=1",
+      "mediant_lt_ra_rb: mediant < right ancestor (cross-product, proved by induction with transitivity chain)",
+      "mediant_gt_la_lb: mediant > left ancestor (cross-product, symmetric proof)",
+      "eval_injective_gen: generalized injectivity from any valid state via mediant ordering",
+      "eval_injective: injectivity from root (0 sorries)"
     ],
     "insights": [
       "State machine approach (la/lb, ra/rb) is more natural for formal verification than recursive tree type",
@@ -53,8 +59,9 @@
       "mediant_lt_right: induction on path, L case needs cross-mult transitivity, R case direct since right ancestor unchanged",
       "L vs R case in injectivity: mediant(eval s.left rest1) < mediant(s) from mediant_lt_right of s.left, and mediant(s) < mediant(eval s.right rest2) from mediant_gt_left of s.right — contradiction since same state",
       "nil vs cons: use rb_increase_left (rb strictly increases after L) and la_increase_right (la strictly increases after R)",
-      "eval_injective proof strategy: (1) rb_ge_ra_of_num_lt_den: if det=1 and num<den then rb≥ra (by nlinarith with cross-product), (2) num_lt_den_preserved: all left descendants have num<den (cross-product gives (2la+ra)(lb+rb)+1=(la+ra)(2lb+rb)), (3) num_gt_den_preserved: all right descendants have num>den, (4) L and R subtrees disjoint by num<den vs num>den",
-      "Key cross-product identities for Stern-Brocot: going left gives (2la+ra)(lb+rb) = (la+ra)(2lb+rb) - 1 (left mediant < parent), going right gives (la+2ra)(lb+rb) = (la+ra)(lb+2rb) + 1 (right mediant > parent). Need nlinarith with these products, not omega alone."
+      "Injectivity proof strategy: nil-vs-cons uses component monotonicity (rb increases after L, la increases after R); L-vs-R uses mediant ordering bounds; same-direction recurses",
+      "Cross-multiplication transitivity: from A*C < B*D and B*E < F*C with C,D,E > 0, derive A*E < F*D by multiplying and canceling",
+      "Key lemma mediant_lt_ra_rb: descendants bounded by right ancestor ra/rb, proved by induction with R case direct and L case via transitivity chain"
     ],
     "mathlibGaps": [
       "No Stern-Brocot tree or Calkin-Wilf tree in Mathlib",
@@ -62,7 +69,8 @@
       "Would benefit from: nat_coprime_of_int_bezout or similar bridge lemma"
     ],
     "nextSteps": [
-      "Fix build: rfl.le base cases → le_refl or simp [eval], nlinarith transitivity needs mul_pos hint, lt_irrefl matching"
+      "Surjectivity: show every positive rational has a path (Euclidean algorithm connection)",
+      "Continued fraction correspondence: run-length encoding equals CF coefficients"
     ],
     "markdown": "# Knowledge Base: denumerability-rationals-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -103,11 +111,11 @@
     {
       "path": "Proofs/DenumerabilityRationalsOQ03.lean",
       "filename": "DenumerabilityRationalsOQ03.lean",
-      "lineCount": 349,
-      "theoremCount": 22,
+      "lineCount": 674,
+      "theoremCount": 43,
       "axiomCount": 0,
       "defCount": 7,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DenumerabilityRationalsOQ03.lean"
     }
