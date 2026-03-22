@@ -74,68 +74,10 @@
       "Finset positivity (single_le_sum, sum_pos)",
       "Jensen's inequality for convex functions"
     ],
-    "crossReferences": [
-      {
-        "targetId": "amgm-inequality-oq-03",
-        "relationship": "extends",
-        "description": "Contains the positive-exponent monotonicity theorem power_mean_monotone_pos used by this proof's duality reduction"
-      },
-      {
-        "targetId": "amgm-inequality-oq-03-oq-02",
-        "relationship": "related",
-        "description": "Together with this negative case, only the mixed-sign crossing (r < 0 < s) remains to complete the full power mean chain"
-      },
-      {
-        "targetId": "amgm-inequality",
-        "relationship": "related",
-        "description": "The AM-GM inequality is the r=1, s=0 case of the general power mean monotonicity chain"
-      },
-      {
-        "targetId": "cauchy-schwarz",
-        "relationship": "related",
-        "description": "Both are fundamental inequalities in analysis; Cauchy-Schwarz can be derived from the r=2 power mean"
-      },
-      {
-        "targetId": "cauchy-schwarz-integral",
-        "relationship": "related",
-        "description": "The Bunyakovsky-Schwarz integral inequality is the continuous/L² analog of the discrete M₁ ≤ M₂ power mean inequality"
-      },
-      {
-        "targetId": "amgm-inequality-oq-02",
-        "relationship": "related",
-        "description": "Maclaurin's inequalities via elementary symmetric polynomials give an alternative chain between AM and GM using e_k means — complementary to the power mean approach used here"
-      },
-      {
-        "targetId": "triangle-inequality",
-        "relationship": "related",
-        "description": "For p ≥ 1, power mean monotonicity M₁ ≤ M_p implies Minkowski's inequality (the L^p triangle inequality), connecting the discrete mean hierarchy to normed space geometry"
-      },
-      {
-        "targetId": "shannon-entropy",
-        "relationship": "related",
-        "description": "Shannon entropy H(X) = -∑ pᵢ log pᵢ is the α→1 limit of Rényi entropy H_α = (1/(1-α))·log ∑ pᵢ^α. Since H_α ∝ log M_{α-1}, the duality M_r(z) = M_{-r}(z⁻¹)⁻¹ translates to a duality on Rényi entropies — the negative power mean monotonicity here implies the corresponding Rényi entropy monotonicity for α > 1"
-      },
-      {
-        "targetId": "mean-value-theorem",
-        "relationship": "related",
-        "description": "The mean value theorem underpins the r→0 limit case: proving lim_{r→0} M_r = GM requires L'Hôpital's rule (which depends on MVT). While this file handles only the r < 0 case, the mixed-sign crossing r < 0 < s ultimately depends on the r=0 bridge that MVT enables"
-      }
-    ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
     "lineCount": 372,
-    "leanFile": "proofs/Proofs/AmgmInequalityOQ03.lean",
-    "relatedProofs": [
-      "amgm-inequality-oq-03",
-      "amgm-inequality",
-      "amgm-inequality-oq-02",
-      "amgm-inequality-oq-03-oq-02",
-      "cauchy-schwarz",
-      "cauchy-schwarz-integral",
-      "triangle-inequality",
-      "shannon-entropy",
-      "mean-value-theorem"
-    ]
+    "leanFile": "proofs/Proofs/AmgmInequalityOQ03.lean"
   },
   "overview": {
     "historicalContext": "The Power Mean Inequality states that $M_r \\leq M_s$ whenever $r \\leq s$. While the positive-exponent case ($0 < r \\leq s$) follows directly from Jensen's inequality applied to the convex function $t \\mapsto t^{s/r}$, the negative-exponent case requires a fundamentally different approach.\n\nThe classical trick, due to Hardy, Littlewood, and Pólya (*Inequalities*, 1934, §2.9), exploits the algebraic duality $M_r(z) = M_{-r}(z^{-1})^{-1}$ between positive and negative power means via value inversion. This duality is an instance of a pervasive pattern in analysis: Hölder duality ($\\|f\\|_p^* = \\|f\\|_{p/(p-1)}$), Legendre-Fenchel duality in convex analysis ($f^{**} = f$ for convex $f$), and Pontryagin duality in harmonic analysis all exploit the same principle — negating or inverting a parameter transforms one inequality into another. The power mean duality is perhaps the simplest non-trivial example.\n\nAs of early 2026, Mathlib4 had an explicit TODO noting the gap for 'generalized mean inequality with any $p \\leq q$, including negative numbers.' This formalization fills that gap for the $r \\leq s < 0$ case, complementing the positive case proved in the parent file. The proof technique — reducing to a known case via an algebraic identity — is a model for how duality arguments can systematically extend results across parameter boundaries.",
@@ -219,5 +161,69 @@
     "axiomCount": 0,
     "theoremCount": 13,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "amgm-inequality-oq-03",
+      "relationship": "extends",
+      "description": "Contains the positive-exponent monotonicity theorem power_mean_monotone_pos used by this proof's duality reduction"
+    },
+    {
+      "targetId": "amgm-inequality-oq-03-oq-02",
+      "relationship": "related",
+      "description": "Together with this negative case, only the mixed-sign crossing (r < 0 < s) remains to complete the full power mean chain"
+    },
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "related",
+      "description": "The AM-GM inequality is the r=1, s=0 case of the general power mean monotonicity chain"
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "related",
+      "description": "Both are fundamental inequalities in analysis; Cauchy-Schwarz can be derived from the r=2 power mean"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "related",
+      "description": "The Bunyakovsky-Schwarz integral inequality is the continuous/L² analog of the discrete M₁ ≤ M₂ power mean inequality"
+    },
+    {
+      "targetId": "amgm-inequality-oq-02",
+      "relationship": "related",
+      "description": "Maclaurin's inequalities via elementary symmetric polynomials give an alternative chain between AM and GM using e_k means — complementary to the power mean approach used here"
+    },
+    {
+      "targetId": "triangle-inequality",
+      "relationship": "related",
+      "description": "For p ≥ 1, power mean monotonicity M₁ ≤ M_p implies Minkowski's inequality (the L^p triangle inequality), connecting the discrete mean hierarchy to normed space geometry"
+    },
+    {
+      "targetId": "shannon-entropy",
+      "relationship": "related",
+      "description": "Shannon entropy H(X) = -∑ pᵢ log pᵢ is the α→1 limit of Rényi entropy H_α = (1/(1-α))·log ∑ pᵢ^α. Since H_α ∝ log M_{α-1}, the duality M_r(z) = M_{-r}(z⁻¹)⁻¹ translates to a duality on Rényi entropies — the negative power mean monotonicity here implies the corresponding Rényi entropy monotonicity for α > 1"
+    },
+    {
+      "targetId": "mean-value-theorem",
+      "relationship": "related",
+      "description": "The mean value theorem underpins the r→0 limit case: proving lim_{r→0} M_r = GM requires L'Hôpital's rule (which depends on MVT). While this file handles only the r < 0 case, the mixed-sign crossing r < 0 < s ultimately depends on the r=0 bridge that MVT enables"
+    },
+    {
+      "targetId": "sum-of-kth-powers",
+      "relationship": "related",
+      "description": "Power sums p_k = ∑ xᵢ^k are the unnormalized building blocks of power means: M_k = (p_k/n)^(1/k) for equal weights. The duality M_r(z) = M_{-r}(z⁻¹)⁻¹ corresponds to the power sum identity p_{-k}(z) = p_k(z⁻¹)"
+    }
+  ],
+  "relatedProofs": [
+    "amgm-inequality-oq-03",
+    "amgm-inequality",
+    "amgm-inequality-oq-02",
+    "amgm-inequality-oq-03-oq-02",
+    "cauchy-schwarz",
+    "cauchy-schwarz-integral",
+    "triangle-inequality",
+    "shannon-entropy",
+    "mean-value-theorem",
+    "sum-of-kth-powers"
+  ]
 }
