@@ -46,15 +46,15 @@
     "lineCount": 246
   },
   "overview": {
-    "historicalContext": "Peter Ludwig Mejdell Sylow (1832-1918) was a Norwegian mathematician who spent most of his career as a high school teacher in Halden, proving these landmark theorems as a side pursuit. He published them in *Mathematische Annalen* (1872, vol. 5) — a single paper that transformed finite group theory.\n\nGeorg Frobenius (1849-1917) gave streamlined alternative proofs in 1887 and strengthened the counting theorem. William Burnside (1852-1927) deployed Sylow's theorems extensively, proving in 1904 that all groups of order p^a·q^b are solvable — a result later reproved by Feit-Thompson (1963) as part of the monumental Odd Order Theorem.\n\nThe theorems became a cornerstone of the Classification of Finite Simple Groups (CFSG), completed ~2004 by Aschbacher, Smith, and others: Sylow counting immediately eliminates most orders from being simple, while conjugacy ensures uniform subgroup structure within each prime family.",
-    "problemStatement": "**The Three Sylow Theorems** for a group G of order n = p^k * m where p is prime and p does not divide m:\n\n1. **Existence**: G has a subgroup of order p^k (Sylow p-subgroup)\n2. **Conjugacy**: All Sylow p-subgroups are conjugate to each other\n3. **Counting**: The number n_p of Sylow p-subgroups satisfies: n_p divides m and n_p ≡ 1 (mod p)\n\nThis is Wiedijk's 100 Theorems #72.",
+    "historicalContext": "Peter Ludwig Mejdell Sylow (1832-1918) was a Norwegian mathematician who spent most of his career as a high school teacher in Halden, proving these landmark theorems as a side pursuit. He published them in *Mathematische Annalen* (1872, vol. 5) \u2014 a single paper that transformed finite group theory.\n\nGeorg Frobenius (1849-1917) gave streamlined alternative proofs in 1887 and strengthened the counting theorem. William Burnside (1852-1927) deployed Sylow's theorems extensively, proving in 1904 that all groups of order p^a\u00b7q^b are solvable \u2014 a result later reproved by Feit-Thompson (1963) as part of the monumental Odd Order Theorem.\n\nThe theorems became a cornerstone of the Classification of Finite Simple Groups (CFSG), completed ~2004 by Aschbacher, Smith, and others: Sylow counting immediately eliminates most orders from being simple, while conjugacy ensures uniform subgroup structure within each prime family.",
+    "problemStatement": "**The Three Sylow Theorems** for a group G of order n = p^k * m where p is prime and p does not divide m:\n\n1. **Existence**: G has a subgroup of order p^k (Sylow p-subgroup)\n2. **Conjugacy**: All Sylow p-subgroups are conjugate to each other\n3. **Counting**: The number n_p of Sylow p-subgroups satisfies: n_p divides m and n_p \u2261 1 (mod p)\n\nThis is Wiedijk's 100 Theorems #72.",
     "proofStrategy": "**Sylow I (Existence)**:\nUse induction on |G| and analyze the class equation.\n\n**Sylow II (Conjugacy)**:\nLet P act on cosets G/Q by multiplication and use orbit-stabilizer.\n\n**Sylow III (Counting)**:\nP acts on the set of Sylow p-subgroups by conjugation; the only fixed point is P itself.",
     "keyInsights": [
-      "Existence (Sylow I) is proved via the class equation |G| = |Z(G)| + Σ|Cl(x)|: either the center Z(G) has an element of order p (Cauchy applied to the abelian center), or some conjugacy class has size not divisible by p, providing a proper subgroup on which to apply induction",
-      "Conjugacy (Sylow II) follows from orbit-stabilizer: let P act on cosets G/Q; if P ≠ Q then |P∩Q| < |P|, so every P-orbit on G/Q has size > 1; but P is a p-group so all orbit sizes are p-powers, meaning |G/Q| ≡ 0 mod p — contradicting |G/Q| = m where p ∤ m, so P = gQg⁻¹",
-      "The counting constraints n_p ≡ 1 (mod p) and n_p | m severely limit possible group structures: for |G| = 15 both constraints force n_3 = n_5 = 1, so every group of order 15 is cyclic — a complete classification from arithmetic alone",
-      "Unique Sylow subgroups are automatically normal: n_p = 1 means the subgroup is its own unique conjugate, i.e., gPg⁻¹ = P for all g ∈ G — this equivalence (n_p = 1 ⟺ P ⊴ G) is the primary way normality is established in classification arguments",
-      "Sylow's theorems are a blueprint for the Classification of Finite Simple Groups: any simple group must have n_p > 1 for every prime p dividing its order (otherwise a normal Sylow subgroup exists), and Sylow counting constraints then force |G| to be extremely large — ruling out all 'small' orders from being simple"
+      "Existence (Sylow I) is proved via the class equation |G| = |Z(G)| + \u03a3|Cl(x)|: either the center Z(G) has an element of order p (Cauchy applied to the abelian center), or some conjugacy class has size not divisible by p, providing a proper subgroup on which to apply induction",
+      "Conjugacy (Sylow II) follows from orbit-stabilizer: let P act on cosets G/Q; if P \u2260 Q then |P\u2229Q| < |P|, so every P-orbit on G/Q has size > 1; but P is a p-group so all orbit sizes are p-powers, meaning |G/Q| \u2261 0 mod p \u2014 contradicting |G/Q| = m where p \u2224 m, so P = gQg\u207b\u00b9",
+      "The counting constraints n_p \u2261 1 (mod p) and n_p | m severely limit possible group structures: for |G| = 15 both constraints force n_3 = n_5 = 1, so every group of order 15 is cyclic \u2014 a complete classification from arithmetic alone",
+      "Unique Sylow subgroups are automatically normal: n_p = 1 means the subgroup is its own unique conjugate, i.e., gPg\u207b\u00b9 = P for all g \u2208 G \u2014 this equivalence (n_p = 1 \u27fa P \u22b4 G) is the primary way normality is established in classification arguments",
+      "Sylow's theorems are a blueprint for the Classification of Finite Simple Groups: any simple group must have n_p > 1 for every prime p dividing its order (otherwise a normal Sylow subgroup exists), and Sylow counting constraints then force |G| to be extremely large \u2014 ruling out all 'small' orders from being simple"
     ]
   },
   "sections": [
@@ -63,21 +63,24 @@
       "title": "First Sylow Theorem (Existence)",
       "startLine": 80,
       "endLine": 103,
-      "summary": "For any prime p, a finite group has at least one Sylow p-subgroup."
+      "summary": "For any prime p, a finite group has at least one Sylow p-subgroup.",
+      "mathContext": "Sylow I: $p^a \\mid |G| \\Rightarrow \\exists H \\leq G$ with $|H| = p^a$. Proved by the class equation or by counting fixed points of $G$ acting on subsets."
     },
     {
       "id": "conjugacy",
       "title": "Second Sylow Theorem (Conjugacy)",
       "startLine": 105,
       "endLine": 128,
-      "summary": "All Sylow p-subgroups are conjugate to each other."
+      "summary": "All Sylow p-subgroups are conjugate to each other.",
+      "mathContext": "Sylow II: All Sylow $p$-subgroups are conjugate: $P, Q$ Sylow $\\Rightarrow \\exists g \\in G,\\; gPg^{-1} = Q$. In particular, $n_p = [G : N_G(P)]$."
     },
     {
       "id": "counting",
       "title": "Third Sylow Theorem (Counting)",
       "startLine": 130,
       "endLine": 148,
-      "summary": "The number of Sylow p-subgroups is congruent to 1 mod p."
+      "summary": "The number of Sylow p-subgroups is congruent to 1 mod p.",
+      "mathContext": "Sylow III: $n_p \\equiv 1 \\pmod{p}$ and $n_p \\mid m$ where $|G| = p^a m$. Combined with Sylow II: $n_p = [G : N_G(P)]$."
     },
     {
       "id": "uniqueness",
@@ -101,5 +104,27 @@
       "Algorithmic computation of Sylow subgroups",
       "Generalizations to profinite and infinite groups"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem (|H| divides |G|) is the foundation \u2014 Sylow theorems provide a partial converse: for prime power divisors, subgroups of that order exist"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Sylow subgroups help determine composition factors of S_n, relevant to the solvability analysis in Abel-Ruffini"
+    },
+    {
+      "targetId": "inverse-galois",
+      "relationship": "related",
+      "description": "Sylow theory constrains which groups can be Galois groups \u2014 the structure of Sylow subgroups determines embedding problems in inverse Galois theory"
+    }
+  ],
+  "relatedProofs": [
+    "lagrange-theorem",
+    "abel-ruffini",
+    "inverse-galois"
+  ]
 }
