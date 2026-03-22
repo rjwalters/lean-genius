@@ -147,4 +147,24 @@
       "What is the cleanest formalization of the fundamental theorem of calculus using constant_of_deriv_zero?"
     ]
   }
+,
+  "references": [
+    {
+      "authors": "Cauchy, Augustin-Louis",
+      "title": "Résumé des leçons données à l'École royale polytechnique sur le calcul infinitésimal",
+      "year": "1823",
+      "venue": "Paris: Debure",
+      "note": "Contains the first rigorous statement and proof of the mean value theorem for derivatives"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "The MVT is a key ingredient in proving the Fundamental Theorem of Calculus, connecting integration and differentiation"
+    }
+  ],
+  "relatedProofs": [
+    "fundamental-theorem-calculus"
+  ]
 }
