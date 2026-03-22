@@ -214,12 +214,44 @@ private lemma pow2_sum_inj : ∀ (n : ℕ) (a b c d : ℕ),
           · exact absurd (Nat.pow_lt_pow_right (by norm_num : 1 < 2) h) (by omega)
           · exact absurd (Nat.pow_lt_pow_right (by norm_num : 1 < 2) h) (by omega)
       · -- a = 0, c ≥ 1: parity contradiction (LHS odd, RHS even)
-        -- Pre-existing proof broken by Mathlib API change (Nat.dvd_sub' renamed)
-        sorry
+        exfalso
+        simp only [pow_zero] at heq
+        -- heq : 1 + 2 ^ b = 2 ^ c + 2 ^ d with c ≥ 1, d ≥ c ≥ 1
+        by_cases hb : b = 0
+        · -- b = 0: LHS = 2 but RHS ≥ 4
+          subst hb; simp only [pow_zero] at heq
+          have : 2 ≤ 2 ^ c := pow_le_pow_right (by norm_num) (by omega)
+          have : 2 ≤ 2 ^ d := pow_le_pow_right (by norm_num) (by omega)
+          omega
+        · -- b ≥ 1: factor out 2 to get odd = even
+          have fb : 2 ^ b = 2 * 2 ^ (b - 1) := by
+            conv_lhs => rw [show b = (b - 1) + 1 from by omega, pow_succ']
+          have fc : 2 ^ c = 2 * 2 ^ (c - 1) := by
+            conv_lhs => rw [show c = (c - 1) + 1 from by omega, pow_succ']
+          have fd : 2 ^ d = 2 * 2 ^ (d - 1) := by
+            conv_lhs => rw [show d = (d - 1) + 1 from by omega, pow_succ']
+          rw [fb, fc, fd] at heq
+          omega
     · by_cases hc : c = 0
       · -- a ≥ 1, c = 0: symmetric parity contradiction
-        -- Pre-existing proof broken by Mathlib API change (Nat.dvd_sub' renamed)
-        sorry
+        exfalso
+        subst hc; simp only [pow_zero] at heq
+        -- heq : 2 ^ a + 2 ^ b = 1 + 2 ^ d with a ≥ 1, b ≥ a ≥ 1
+        by_cases hd : d = 0
+        · -- d = 0: RHS = 2 but LHS ≥ 4
+          subst hd; simp only [pow_zero] at heq
+          have : 2 ≤ 2 ^ a := pow_le_pow_right (by norm_num) (by omega)
+          have : 2 ≤ 2 ^ b := pow_le_pow_right (by norm_num) (by omega)
+          omega
+        · -- d ≥ 1: factor out 2 to get even = odd
+          have fa : 2 ^ a = 2 * 2 ^ (a - 1) := by
+            conv_lhs => rw [show a = (a - 1) + 1 from by omega, pow_succ']
+          have fb : 2 ^ b = 2 * 2 ^ (b - 1) := by
+            conv_lhs => rw [show b = (b - 1) + 1 from by omega, pow_succ']
+          have fd : 2 ^ d = 2 * 2 ^ (d - 1) := by
+            conv_lhs => rw [show d = (d - 1) + 1 from by omega, pow_succ']
+          rw [fa, fb, fd] at heq
+          omega
       · -- a ≥ 1, c ≥ 1: divide by 2 and recurse
         have ha' : 1 ≤ a := by omega
         have hc' : 1 ≤ c := by omega
@@ -296,7 +328,27 @@ theorem erdosTuranSidon_isSidon (p : ℕ) (hp : Nat.Prime p) :
     values lie in disjoint intervals [2pi, 2pi+p) for distinct i. -/
 theorem erdosTuranSidon_card (p : ℕ) (hp : 1 ≤ p) :
     (erdosTuranSidon p).card = p := by
-  sorry
+  unfold erdosTuranSidon
+  rw [Finset.card_image_of_injOn]
+  · exact Finset.card_range p
+  · -- Injectivity: values lie in disjoint intervals [2pi+1, 2pi+p]
+    intro i hi j hj heq
+    simp only [Finset.mem_range] at hi hj
+    -- heq : 2*p*i + i*i%p + 1 = 2*p*j + j*j%p + 1
+    have h1 : i * i % p < p := Nat.mod_lt _ (by omega)
+    have h2 : j * j % p < p := Nat.mod_lt _ (by omega)
+    -- If i ≠ j, values are in disjoint intervals, contradicting heq
+    by_contra hij
+    rcases Nat.lt_or_gt_of_ne hij with h | h
+    · -- i < j: LHS < RHS
+      have hmul : 2 * p * (i + 1) ≤ 2 * p * j :=
+        Nat.mul_le_mul_left _ (by omega : i + 1 ≤ j)
+      -- 2*p*i + i*i%p + 1 ≤ 2*p*i + p < 2*p*(i+1) ≤ 2*p*j ≤ 2*p*j + j*j%p + 1
+      omega
+    · -- j < i: symmetric
+      have hmul : 2 * p * (j + 1) ≤ 2 * p * i :=
+        Nat.mul_le_mul_left _ (by omega : j + 1 ≤ i)
+      omega
 
 /-- There exists a Sidon set of size at least √N / 2 in {1,...,N}.
 
