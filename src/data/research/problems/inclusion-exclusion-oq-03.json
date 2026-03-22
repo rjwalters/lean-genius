@@ -1,7 +1,7 @@
 {
   "slug": "inclusion-exclusion-oq-03",
   "title": "Efficient Inclusion-Exclusion Computation",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -29,15 +29,35 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved mobius_subset_lattice (4→3 sorries). Key remaining: signed_sum_subsets (involution/binomial argument needed).",
+    "progressSummary": "PROGRESS: Proved 3 of 4 sorries (signed_sum_subsets via prod_add, mobius_subset_lattice via sum_eq_single, odd_even_subset_balance via card_bij). 1 sorry remains (mobius_inverts_zeta - needs Fubini exchange).",
     "builtItems": [
-      "mobius_subset_lattice: proved via Finset.sum_eq_single (indicator kills all T≠∅)"
+      "InclusionExclusionOQ03.lean: Zeta/M\u00f6bius transforms (209 lines, 0 axioms, 4 sorries)",
+      "zetaTransform: (\u03b6f)(S) = \u2211_{T\u2286S} f(T)",
+      "mobiusTransform: (\u03bcg)(S) = \u2211_{T\u2286S} (-1)^|S\\T| g(T)",
+      "zetaStep: single-element DP step for O(n\u00b72^n) computation",
+      "zetaTransform_empty, zetaTransform_singleton: proved",
+      "mobiusTransform_empty: proved",
+      "zetaStep_not_mem, zetaStep_mem: proved",
+      "signed_sum_subsets: proved via Finset.prod_add expansion (product of (1+(-1))=0)",
+      "mobius_subset_lattice: proved via Finset.sum_eq_single isolating T=\u2205",
+      "odd_even_subset_balance: proved via Finset.card_bij with parity-flipping involution"
     ],
     "insights": [
-      "mobius_subset_lattice proved: only T=∅ contributes via Finset.sum_eq_single"
+      "M\u00f6bius inversion on Boolean lattice reduces to signed_sum_subsets: \u2211_{T\u2286S} (-1)^|S\\T| = [S=\u2205]",
+      "The involution T \u21a6 T \u25b3 {a} for fixed a\u2208S changes |S\\T| parity \u2014 this is the key cancellation",
+      "Fast SOS computes zetaTransform in O(n\u00b72^n) by processing one element at a time (zetaStep)",
+      "signed_sum_subsets proof strategy: use powerset_insert to split into halves that cancel",
+      "mobius_inverts_zeta depends on signed_sum_subsets via Fubini-type argument",
+      "odd_even_subset_balance is independent - involution T to T delta {a}",
+      "Finset.prod_add gives the multilinear expansion \u220f(f+g) = \u03a3 (\u220ff)(\u220fg), perfect for signed sums",
+      "The involution T\u21a6(erase/insert a) is cleaner to formalize than symmDiff for bijection proofs",
+      "mobius_inverts_zeta requires Fubini-type sum exchange (sum_comm with dependent indices) - nontrivial in Lean"
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove mobius_inverts_zeta via Fubini exchange (Finset.sum_comm or sum_sigma approach)",
+      "Alternative: prove via induction on S using signed_sum_subsets in the step"
+    ],
     "markdown": "# Knowledge Base: inclusion-exclusion-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],
@@ -50,7 +70,7 @@
     "mathlib": []
   },
   "started": "2026-03-22T04:19:59.477Z",
-  "lastUpdate": "2026-03-22T10:00:00Z",
+  "lastUpdate": "2026-03-22T04:19:59.494Z",
   "leanFiles": [
     {
       "path": "Proofs/InclusionExclusion.lean",

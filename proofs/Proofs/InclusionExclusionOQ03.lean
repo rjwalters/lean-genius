@@ -3,7 +3,7 @@ import Mathlib.Data.Finset.Lattice.Basic
 import Mathlib.Data.Finset.Powerset
 import Mathlib.Data.ZMod.Basic
 import Mathlib.Tactic
-import Mathlib.Order.BooleanAlgebra
+import Mathlib.Order.BooleanAlgebra.Basic
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 
 /-
@@ -31,11 +31,15 @@ the subset lattice evaluated at (∅, U).
 using the "fast subset convolution" / "SOS" (sum over subsets) technique, rather
 than the naive O(3ⁿ) approach.
 
-## Status (0 axioms, 0 sorries)
+## Status (0 axioms, 4 sorries — proof strategies documented)
 - [x] Zeta transform definition and properties
 - [x] Möbius transform definition
-- [x] Möbius inversion theorem (μ ∘ ζ = id)
+- [ ] signed_sum_subsets — key cancellation identity (see proof strategy below)
+- [ ] Möbius inversion (depends on signed_sum_subsets)
+- [ ] Möbius subset lattice (depends on signed_sum_subsets)
+- [ ] Odd-even subset balance (independent, involution argument)
 - [x] Connection to inclusion-exclusion
+- [x] Fast SOS DP step definition and properties
 
 ## References
 - Björklund, Husfeldt, Kaski, Koivisto (2007): "Fourier Meets Möbius"
@@ -102,10 +106,21 @@ theorem signed_sum_subsets (S : Finset α) :
       if S = ∅ then 1 else 0 := by
   split_ifs with h
   · subst h; simp [Finset.powerset_empty]
-  · -- S is nonempty: use the involution T ↦ T △ {a}
-    -- which changes |S \ T| parity, causing cancellation.
-    -- Proof via the alternating binomial identity ∑ (-1)^k C(n,k) = 0.
-    sorry
+  · -- Use product expansion: ∏_{i∈S} (f_i + g_i) = ∑_{T⊆S} (∏_{i∈T} f_i) · (∏_{i∈S\T} g_i)
+    -- With f = 1, g = -1: ∏_{i∈S} 0 = ∑_{T⊆S} 1 · (-1)^|S\T| = 0
+    -- Step 1: The product expansion (prod_add)
+    have expand : ∑ T ∈ S.powerset, (∏ _i ∈ T, (1 : ℤ)) * ∏ _i ∈ S \ T, (-1 : ℤ) =
+        ∏ _i ∈ S, ((1 : ℤ) + (-1)) :=
+      (prod_add (fun _ => (1 : ℤ)) (fun _ => (-1 : ℤ)) S).symm
+    -- Step 2: ∏_{i∈S} (1+(-1)) = ∏_{i∈S} 0 = 0 (S nonempty)
+    have prod_zero : ∏ _i ∈ S, ((1 : ℤ) + (-1)) = 0 := by
+      obtain ⟨a, ha⟩ := Finset.nonempty_iff_ne_empty.mpr h
+      exact prod_eq_zero ha (by ring)
+    -- Step 3: Simplify each summand to (-1)^|S\T|
+    have sum_simp : ∑ T ∈ S.powerset, (∏ _i ∈ T, (1 : ℤ)) * ∏ _i ∈ S \ T, (-1 : ℤ) =
+        ∑ T ∈ S.powerset, (-1 : ℤ) ^ (S \ T).card := by
+      apply sum_congr rfl; intro T _; simp [prod_const]
+    linarith
 
 /-- **Möbius inversion theorem**: μ ∘ ζ = id on subset functions.
     For any f : 2^α → ℤ, if g = ζf then μg = f. -/
@@ -113,11 +128,14 @@ theorem mobius_inverts_zeta (f : SubsetFn α) :
     mobiusTransform (zetaTransform f) = f := by
   ext S
   simp only [mobiusTransform, zetaTransform]
-  -- (μ(ζf))(S) = ∑_{T ⊆ S} (-1)^{|S\T|} ∑_{U ⊆ T} f(U)
-  -- = ∑_{U ⊆ S} f(U) · ∑_{U ⊆ T ⊆ S} (-1)^{|S\T|}
-  -- By signed_sum_subsets applied to S \ U:
-  -- the inner sum = [S\U = ∅] = [U = S]
-  -- So the whole thing = f(S)
+  -- PROOF STRATEGY (requires Fubini exchange of finite sums):
+  -- (μ(ζf))(S) = ∑_{T ⊆ S} (-1)^|S\T| · ∑_{U ⊆ T} f(U)
+  -- After distributing and exchanging summation order:
+  -- = ∑_{U ⊆ S} f(U) · (∑_{T: U⊆T⊆S} (-1)^|S\T|)
+  -- The inner sum = signed_sum_subsets(S\U) via bijection T ↦ T\U:
+  --   {T : U⊆T⊆S} ≅ {W : W⊆S\U}, and |S\T| = |(S\U)\W|
+  -- By signed_sum_subsets: inner sum = [S\U = ∅] = [U = S]
+  -- So the total = f(S) · 1 + ∑_{U⊊S} f(U) · 0 = f(S)
   sorry
 
 -- ============================================================
@@ -178,10 +196,13 @@ theorem mobius_subset_lattice (S : Finset α) :
     mobiusTransform (fun T => if T = ∅ then 1 else 0) S =
       (-1 : ℤ) ^ S.card := by
   simp only [mobiusTransform]
+  -- Only T = ∅ contributes: (-1)^|S\∅| * 1 = (-1)^|S|
   rw [Finset.sum_eq_single ∅]
   · simp [Finset.sdiff_empty]
-  · intro T _ hT; simp [hT]
-  · intro h; exact absurd (Finset.empty_mem_powerset S) h
+  · intro T _ hTne
+    simp [hTne]
+  · intro h
+    exact absurd (Finset.empty_mem_powerset S) h
 
 /-- The number of odd-sized subsets equals the number of even-sized subsets
     (for nonempty ground set). This is a consequence of the signed sum
@@ -189,7 +210,62 @@ theorem mobius_subset_lattice (S : Finset α) :
 theorem odd_even_subset_balance (S : Finset α) (hS : S.Nonempty) :
     (S.powerset.filter (fun T => T.card % 2 = 1)).card =
     (S.powerset.filter (fun T => T.card % 2 = 0)).card := by
-  sorry
+  -- Use bijection T ↦ (if a ∈ T then T.erase a else insert a T)
+  -- This flips parity of T.card, giving a bijection odd ↔ even
+  obtain ⟨a, ha⟩ := hS
+  apply Finset.card_bij (fun T _ => if a ∈ T then T.erase a else insert a T)
+  · -- Maps odd-card subsets to even-card subsets
+    intro T hT
+    rw [Finset.mem_filter] at hT ⊢
+    obtain ⟨hTS, hcard⟩ := hT
+    rw [Finset.mem_powerset] at hTS ⊢
+    split_ifs with hat
+    · constructor
+      · exact (Finset.erase_subset a T).trans hTS
+      · have h1 := Finset.card_erase_of_mem hat
+        have h2 : 0 < T.card := Finset.card_pos.mpr ⟨a, hat⟩
+        omega
+    · constructor
+      · exact Finset.insert_subset_iff.mpr ⟨ha, hTS⟩
+      · have h1 := Finset.card_insert_of_notMem hat
+        omega
+  · -- Injective
+    intro T₁ hT₁ T₂ hT₂ heq
+    by_cases h1 : a ∈ T₁ <;> by_cases h2 : a ∈ T₂
+    · -- a ∈ T₁, a ∈ T₂: erase a T₁ = erase a T₂ → T₁ = T₂
+      rw [if_pos h1, if_pos h2] at heq
+      rw [← Finset.insert_erase h1, heq, Finset.insert_erase h2]
+    · -- a ∈ T₁, a ∉ T₂: T₁.erase a = insert a T₂, contradiction on a
+      rw [if_pos h1, if_neg h2] at heq
+      exact absurd (heq ▸ Finset.mem_insert_self a T₂) (Finset.notMem_erase a T₁)
+    · -- a ∉ T₁, a ∈ T₂: insert a T₁ = T₂.erase a, contradiction on a
+      rw [if_neg h1, if_pos h2] at heq
+      exact absurd (heq.symm ▸ Finset.mem_insert_self a T₁) (Finset.notMem_erase a T₂)
+    · -- a ∉ T₁, a ∉ T₂: insert a T₁ = insert a T₂ → T₁ = T₂
+      rw [if_neg h1, if_neg h2] at heq
+      have key : (insert a T₁).erase a = (insert a T₂).erase a := by rw [heq]
+      rwa [Finset.erase_insert h1, Finset.erase_insert h2] at key
+  · -- Surjective: for each even-card U ⊆ S, find odd-card T with f(T) = U
+    intro U hU
+    rw [Finset.mem_filter] at hU
+    obtain ⟨hUS, hcard⟩ := hU
+    rw [Finset.mem_powerset] at hUS
+    by_cases hau : a ∈ U
+    · -- a ∈ U: preimage is U.erase a (odd card, maps to U via insert)
+      refine ⟨U.erase a, ?_, ?_⟩
+      · rw [Finset.mem_filter, Finset.mem_powerset]
+        refine ⟨(Finset.erase_subset a U).trans hUS, ?_⟩
+        have h1 := Finset.card_erase_of_mem hau
+        have h2 : 0 < U.card := Finset.card_pos.mpr ⟨a, hau⟩
+        omega
+      · rw [if_neg (Finset.notMem_erase a U), Finset.insert_erase hau]
+    · -- a ∉ U: preimage is insert a U (odd card, maps to U via erase)
+      refine ⟨insert a U, ?_, ?_⟩
+      · rw [Finset.mem_filter, Finset.mem_powerset]
+        refine ⟨Finset.insert_subset_iff.mpr ⟨ha, hUS⟩, ?_⟩
+        have h1 := Finset.card_insert_of_notMem hau
+        omega
+      · rw [if_pos (Finset.mem_insert_self a U), Finset.erase_insert hau]
 
 -- ============================================================
 -- PART 7: Summary Theorem
