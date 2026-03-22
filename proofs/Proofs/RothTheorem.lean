@@ -103,7 +103,26 @@ noncomputable def fourierCoeff {N : ℕ} (A : Finset (ZMod N)) (r : ZMod N) : �
     |Â(r)| ≤ |A|. -/
 theorem fourierCoeff_norm_le {N : ℕ} (A : Finset (ZMod N)) (r : ZMod N) :
     ‖fourierCoeff A r‖ ≤ A.card := by
-  sorry
+  unfold fourierCoeff
+  set f := fun x : ZMod N =>
+    Complex.exp (2 * ↑Real.pi * Complex.I * (↑(ZMod.val (r * x)) / ↑N))
+  -- Each exponential has norm 1 (purely imaginary argument)
+  have hf : ∀ x ∈ A, ‖f x‖ ≤ 1 := by
+    intro x _
+    simp only [f, Complex.norm_exp]
+    have hre : (2 * ↑Real.pi * Complex.I * (↑(ZMod.val (r * x)) / ↑N)).re = 0 := by
+      have : 2 * ↑Real.pi * Complex.I * (↑(ZMod.val (r * x)) / ↑N) =
+             ↑(2 * Real.pi * ((ZMod.val (r * x) : ℝ) / (N : ℝ))) * Complex.I := by
+        push_cast; ring
+      rw [this, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im,
+          Complex.I_re, Complex.I_im]
+      ring
+    rw [hre, Real.exp_zero]
+  -- Triangle inequality: ‖∑ f‖ ≤ ∑ ‖f‖ ≤ ∑ 1 = |A|
+  calc ‖A.sum f‖
+      ≤ A.sum (fun x => ‖f x‖) := norm_sum_le _ _
+    _ ≤ A.sum (fun _ => (1 : ℝ)) := Finset.sum_le_sum hf
+    _ = ↑A.card := by simp [Finset.sum_const]
 
 /-- Parseval's identity on Z/NZ: Σ_r |Â(r)|² = |A| · N.
     The total energy of the Fourier transform equals |A| times the group order.
@@ -228,6 +247,44 @@ theorem density_iteration (delta : ℝ) (hdelta : 0 < delta) :
 theorem roth_density_bound (delta : ℝ) (hdelta : 0 < delta) (hdelta1 : delta ≤ 1) :
     ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ → ∀ A : Finset (ZMod N),
       (A.card : ℝ) ≥ delta * N → ¬APFree A := by
-  sorry
+  -- N₀ = 1 works: the argument applies for all N ≥ 1
+  refine ⟨1, fun N hN A hdensity hAP => ?_⟩
+  have hNpos : 0 < N := by omega
+  -- Iteration chain: after k density-increment steps, we get a set of
+  -- density ≥ delta + k * delta²/100 in some Z/MZ with M > 0
+  have chain : ∀ k : ℕ, ∃ (M : ℕ) (B : Finset (ZMod M)),
+      0 < M ∧ APFree B ∧ (B.card : ℝ) ≥ (delta + ↑k * delta ^ 2 / 100) * ↑M := by
+    intro k
+    induction k with
+    | zero =>
+      simp only [Nat.cast_zero, zero_mul, zero_div, add_zero]
+      exact ⟨N, A, hNpos, hAP, hdensity⟩
+    | succ k ih =>
+      obtain ⟨M, B, hMpos, hBAP, hBdens⟩ := ih
+      obtain ⟨M', B', hM'pos, hB'AP, hB'dens⟩ :=
+        density_iteration delta hdelta k M hMpos B hBAP hBdens
+      refine ⟨M', B', hM'pos, hB'AP, ?_⟩
+      push_cast at hB'dens ⊢
+      linarith
+  -- Choose K large enough that delta + K * delta²/100 > 1
+  obtain ⟨K, hK⟩ := exists_nat_gt (100 / delta ^ 2)
+  obtain ⟨M, B, hMpos, _, hBdens⟩ := chain K
+  haveI : NeZero M := ⟨by omega⟩
+  -- Clear the denominator: 100/delta² < K implies 100 < K*delta²
+  have hd2 : delta ^ 2 > 0 := by positivity
+  have h_clear : (100 : ℝ) < ↑K * delta ^ 2 := by
+    have h1 : 100 / delta ^ 2 * delta ^ 2 < ↑K * delta ^ 2 :=
+      mul_lt_mul_of_pos_right hK hd2
+    have h2 : 100 / delta ^ 2 * delta ^ 2 = 100 := by field_simp
+    linarith
+  -- The density exceeds 1, so |B| > M
+  have hgt1 : delta + ↑K * delta ^ 2 / 100 > 1 := by linarith
+  have hMcast : (0 : ℝ) < ↑M := Nat.cast_pos.mpr hMpos
+  have hBgt : (B.card : ℝ) > ↑M := by
+    calc (B.card : ℝ) ≥ (delta + ↑K * delta ^ 2 / 100) * ↑M := hBdens
+      _ > 1 * ↑M := mul_lt_mul_of_pos_right hgt1 hMcast
+      _ = ↑M := one_mul _
+  -- But |B| ≤ M for any Finset of ZMod M — contradiction
+  linarith [card_le_nat_real B]
 
 end Szemeredi.Roth
