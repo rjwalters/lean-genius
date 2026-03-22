@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #19**: The Erdős-Faber-Lovász Conjecture\n\nIf G is an edge-disjoint union of n copies of K_n, is χ(G) = n?\n\n**Status**: SOLVED ($500 prize)\n**Solvers**: Kang, Kelly, Kühn, Methuku, Osthus (2021)\n\n**Origin**: Conjectured at a party in Boulder, Colorado, September 1972, by Erdős, Faber, and Lovász.",
     "mathContext": "Edge-disjoint means any two K_n's share at most one vertex (no common edges). The conjecture is that n colors always suffice.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "chromatic-number",
       "complete-graph",
@@ -60,11 +60,11 @@
       "startLine": 68,
       "endLine": 93
     },
-    "type": "axiom",
+    "type": "context",
     "title": "Chromatic Number",
     "content": "**IsProperColoring G k c**: c : V → Fin k assigns colors so adjacent vertices differ.\n\n**IsKColorable G k**: Some proper k-coloring exists.\n\n**axiom chromaticNumber G : ℕ** - the minimum k such that G is k-colorable.\n\n**Properties**:\n- `chromaticNumber_colorable`: χ(G)-coloring exists\n- `chromaticNumber_minimal`: χ(G) ≤ k for any valid k",
     "mathContext": "Computing χ(G) exactly is NP-hard, so we axiomatize it. The EFL conjecture claims χ = n for specific graphs.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "proper-coloring",
       "np-hard",
@@ -82,7 +82,7 @@
     "title": "EFL Family Structure",
     "content": "**structure EFLFamily (n : ℕ)** encodes the conjecture setup:\n- `cliques : Fin n → Finset (Fin (n * n))` - n cliques\n- `clique_size`: each clique has exactly n vertices\n- `edge_disjoint`: any two cliques share at most 1 vertex\n\n**eflUnionGraph n F**: The union graph where x ~ y iff they're in a common clique.",
     "mathContext": "The vertex set Fin (n * n) is large enough to hold n disjoint K_n's. The edge-disjoint condition means |cliques i ∩ cliques j| ≤ 1.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "structure",
       "clique",
@@ -96,7 +96,7 @@
       "startLine": 129,
       "endLine": 137
     },
-    "type": "axiom",
+    "type": "context",
     "title": "Lower Bound: χ(G) ≥ n",
     "content": "**axiom efl_chromatic_lower_bound**: χ(eflUnionGraph n F) ≥ n\n\n**Why?** Each clique K_n is a subgraph requiring n colors.\n\nSince the cliques share at most one vertex, the colorings must use at least n distinct colors.\n\nThe **hard part** is proving χ(G) ≤ n!",
     "mathContext": "The lower bound is straightforward: K_n has chromatic number n. The upper bound requires showing global coordination is possible.",
@@ -114,7 +114,7 @@
       "startLine": 140,
       "endLine": 147
     },
-    "type": "axiom",
+    "type": "context",
     "title": "Hindman: Small Cases",
     "content": "**axiom hindman_small_cases**: For n < 10, χ(G) = n.\n\nHindman verified the conjecture for small values by exhaustive analysis.\n\nThis handles the base cases that the asymptotic proof doesn't cover.",
     "mathContext": "Small cases often require different techniques than large n. Hindman's work ensures no gaps in the full resolution.",
@@ -132,7 +132,7 @@
       "startLine": 149,
       "endLine": 162
     },
-    "type": "axiom",
+    "type": "context",
     "title": "Kahn's Asymptotic Result (1992)",
     "content": "**axiom kahn_asymptotic**: χ(G) ≤ n + o(n)\n\n**axiom kahn_explicit_bound**: χ(G) ≤ n + n^(1-1/51)\n\nKahn proved the conjecture is 'asymptotically true' - the chromatic number exceeds n by only a sublinear amount.\n\n**Prize**: Kahn won Erdős's **$100 consolation prize** for this result!",
     "mathContext": "The bound n + n^(50/51) shows χ(G)/n → 1 as n → ∞. This was major progress but left a gap for the exact bound.",
@@ -150,11 +150,11 @@
       "startLine": 164,
       "endLine": 181
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Result: KKMO (2021)",
     "content": "**axiom kang_kelly_kuhn_methuku_osthus**:\n∃ N, ∀ n ≥ N, ∀ F : EFLFamily n, χ(eflUnionGraph n F) = n\n\n**EFLConjecture**: ∀ n ≥ 1, χ(G) = n\n\n**axiom efl_conjecture_resolved : EFLConjecture** ✓\n\nThe full resolution combines:\n- Hindman (n < 10)\n- Kang et al. (n ≥ N for some large N)\n- Verification of intermediate cases",
     "mathContext": "The 2021 result was a major breakthrough, resolving a 50-year-old conjecture. The proof uses the absorbing method.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "resolution",
       "absorbing-method",
@@ -204,7 +204,7 @@
       "startLine": 233,
       "endLine": 246
     },
-    "type": "axiom",
+    "type": "context",
     "title": "Special Cases",
     "content": "**projective_plane_case (axiom):** When cliques come from a projective plane of order n-1, χ(G) = n exactly.\n\n**steiner_system_case (axiom):** S(2, n, n²) Steiner systems provide explicit EFL families with optimal colorings.\n\nThese special cases are easier to analyze due to their regular algebraic structure.",
     "significance": "supporting"
@@ -216,7 +216,7 @@
       "startLine": 252,
       "endLine": 258
     },
-    "type": "axiom",
+    "type": "context",
     "title": "Erdős-Füredi Generalization",
     "content": "**erdos_furedi_generalization (axiom):** If cliques can share up to k vertices (instead of 1), then χ(G) ≤ n + k - 1.\n\nThe EFL conjecture is the k = 1 case. Kang et al. also proved this more general bound.",
     "significance": "key"
@@ -228,9 +228,9 @@
       "startLine": 299,
       "endLine": 299
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_19_summary (proved from axioms):**\n\nCombines the two main results:\n1. EFLConjecture holds for all n (from efl_conjecture_resolved)\n2. Asymptotic proof threshold exists (from kang_kelly_kuhn_methuku_osthus)\n\nProved by: `⟨efl_conjecture_resolved, kang_kelly_kuhn_methuku_osthus⟩`\n\n**Timeline:** Boulder 1972 → Hindman (n<10) → Kahn 1992 (asymptotic) → KKMO 2021 (full proof).",
-    "significance": "critical"
+    "significance": "key"
   }
 ]
