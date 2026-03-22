@@ -564,25 +564,119 @@ noncomputable def displacementColoring (n : ℕ)
   else if d1 ≤ d2 then 1
   else 2
 
--- The displacement coloring satisfies Sperner boundary conditions.
+-- Helper: grid vertices map into the simplex
+private lemma gridToReal_in_simplex {n : ℕ} (hn : 0 < n) (v : GridVertex n) :
+    (gridToReal n v).1 ≥ 0 ∧ (gridToReal n v).2 ≥ 0 ∧
+    (gridToReal n v).1 + (gridToReal n v).2 ≤ 1 := by
+  have hn_pos : (0 : ℝ) < (n : ℝ) := Nat.cast_pos.mpr hn
+  refine ⟨div_nonneg (Nat.cast_nonneg v.i) hn_pos.le,
+         div_nonneg (Nat.cast_nonneg v.j) hn_pos.le, ?_⟩
+  have : (gridToReal n v).1 + (gridToReal n v).2 = (↑v.i + ↑v.j : ℝ) / ↑n := by
+    simp only [gridToReal]; ring
+  rw [this, div_le_one hn_pos]
+  exact_mod_cast v.valid
+
+-- The displacement coloring satisfies Sperner conditions when f has no grid fixed point.
+-- When f(v) = v at some grid vertex, the coloring may assign incorrect labels at that vertex,
+-- but the caller handles this case separately (since v is already an exact fixed point).
 private lemma displacementColoring_isSperner (n : ℕ) (hn : 0 < n)
     (f : ℝ × ℝ → ℝ × ℝ)
     (hrange : ∀ p, p.1 ≥ 0 → p.2 ≥ 0 → p.1 + p.2 ≤ 1 →
-      (f p).1 ≥ 0 ∧ (f p).2 ≥ 0 ∧ (f p).1 + (f p).2 ≤ 1) :
-    IsSperner hn (displacementColoring n f) := by
-  sorry
-
--- Fully-colored triangle yields approximate fixed point.
-private lemma fully_colored_gives_approx
-    {n : ℕ} (hn : 0 < n) {f : ℝ × ℝ → ℝ × ℝ}
-    (hcont : Continuous f)
-    (hrange : ∀ p, p.1 ≥ 0 → p.2 ≥ 0 → p.1 + p.2 ≤ 1 →
       (f p).1 ≥ 0 ∧ (f p).2 ≥ 0 ∧ (f p).1 + (f p).2 ≤ 1)
-    (t : GridTriangle n) (ht : IsFullyColored (displacementColoring n f) t) :
-    ∃ p : ℝ × ℝ, p.1 ≥ 0 ∧ p.2 ≥ 0 ∧ p.1 + p.2 ≤ 1 ∧
-      dist p (f p) < Real.sqrt 2 / n := by
-  sorry
+    (hno_fix : ∀ v : GridVertex n, f (gridToReal n v) ≠ gridToReal n v) :
+    IsSperner hn (displacementColoring n f) := by
+  have hn' : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩
+  -- (1) c(0,0) = 0: at origin, d1=f₁≥0, d2=f₂≥0, d0=-(f₁+f₂)≤0 is the minimum
+  · simp only [displacementColoring, gridToReal, Nat.cast_zero, zero_div, sub_zero]
+    obtain ⟨hf1, hf2, _⟩ := hrange (0, 0) le_rfl le_rfl (by norm_num)
+    rw [if_pos ⟨by linarith, by linarith⟩]
+  -- (2) c(n,0) = 1: d1=f₁-1≤0, d2=f₂≥0, so d1≤d2. d0≤d1 iff f=(1,0) (fixed point).
+  · simp only [displacementColoring, gridToReal, Nat.cast_zero, zero_div, sub_zero, div_self hn']
+    obtain ⟨hf1, hf2, hf12⟩ := hrange (1, 0) (by norm_num) le_rfl (by norm_num)
+    rw [if_neg, if_pos (show (f (1, 0)).1 - 1 ≤ (f (1, 0)).2 by linarith)]
+    intro ⟨h_le, _⟩
+    have hf1_eq : (f (1, 0)).1 = 1 := by nlinarith
+    have hf2_eq : (f (1, 0)).2 = 0 := by linarith
+    exact absurd (show f (gridToReal n ⟨n, 0, by omega⟩) = gridToReal n ⟨n, 0, by omega⟩ from by
+      simp only [gridToReal, Nat.cast_zero, zero_div, div_self hn']
+      exact Prod.ext hf1_eq hf2_eq) (hno_fix ⟨n, 0, by omega⟩)
+  -- (3) c(0,n) = 2: d1=f₁≥0, d2=f₂-1≤0, d0=1-f₁-f₂≥0. Neither if-branch unless fixed pt.
+  · simp only [displacementColoring, gridToReal, Nat.cast_zero, zero_div, sub_zero, div_self hn']
+    obtain ⟨hf1, hf2, hf12⟩ := hrange (0, 1) le_rfl (by norm_num) (by norm_num)
+    rw [if_neg, if_neg]
+    · -- ¬(d1 ≤ d2): f₁ > f₂-1, unless f=(0,1) (fixed point)
+      intro h_le
+      have hf2_eq : (f (0, 1)).2 = 1 := by nlinarith
+      have hf1_eq : (f (0, 1)).1 = 0 := by linarith
+      exact absurd (show f (gridToReal n ⟨0, n, by omega⟩) = gridToReal n ⟨0, n, by omega⟩ from by
+        simp only [gridToReal, Nat.cast_zero, zero_div, div_self hn']
+        exact Prod.ext hf1_eq hf2_eq) (hno_fix ⟨0, n, by omega⟩)
+    · -- ¬(d0 ≤ d1 ∧ d0 ≤ d2): d0 ≤ d2 requires f₂=1, f₁=0 (fixed point)
+      intro ⟨_, h_le⟩
+      have hf2_eq : (f (0, 1)).2 = 1 := by nlinarith
+      have hf1_eq : (f (0, 1)).1 = 0 := by linarith
+      exact absurd (show f (gridToReal n ⟨0, n, by omega⟩) = gridToReal n ⟨0, n, by omega⟩ from by
+        simp only [gridToReal, Nat.cast_zero, zero_div, div_self hn']
+        exact Prod.ext hf1_eq hf2_eq) (hno_fix ⟨0, n, by omega⟩)
+  -- (4) Bottom edge: j=0, 0<i<n → c ≠ 2
+  -- Color=2 requires d1>d2≥0 (since d2=f₂-0=f₂≥0), giving d1>0.
+  -- But d0>d1 or d0>d2 then gives f₂<0, contradicting hrange.
+  · intro v hj hi0 hin heq
+    simp only [displacementColoring] at heq
+    split_ifs at heq with h1 h2
+    · exact absurd heq (by decide)
+    · exact absurd heq (by decide)
+    · -- h1: ¬(d0 ≤ d1 ∧ d0 ≤ d2), h2: ¬(d1 ≤ d2)
+      -- Since d2=f₂≥0 and d1>d2≥0, both d1,d2>0, so d0=-(d1+d2)<0≤d1,d2.
+      -- Hence d0≤d1 ∧ d0≤d2, contradicting h1.
+      have hv := gridToReal_in_simplex hn v
+      obtain ⟨_, hf2, _⟩ := hrange _ hv.1 hv.2.1 hv.2.2
+      have hpj : (gridToReal n v).2 = 0 := by
+        simp [gridToReal, hj, Nat.cast_zero, zero_div]
+      have hd2 : (f (gridToReal n v)).2 - (gridToReal n v).2 ≥ 0 := by linarith [hpj]
+      push_neg at h2 -- h2: d2 < d1
+      exact h1 ⟨by linarith, by linarith⟩
+  -- (5) Left edge: i=0, 0<j<n → c ≠ 1
+  -- Symmetric to bottom edge: d1=f₁-0=f₁≥0, d1≤d2, d0>d1 or d0>d2 gives f₁<0.
+  · intro v hi hj0 hjn heq
+    simp only [displacementColoring] at heq
+    split_ifs at heq with h1 h2
+    · exact absurd heq (by decide)
+    · -- h1: ¬(d0 ≤ d1 ∧ d0 ≤ d2), h2: d1 ≤ d2 (TRUE from split_ifs)
+      -- Since d1=f₁≥0 and d2≥d1≥0, d0=-(d1+d2)≤0≤d1,d2.
+      -- Hence d0≤d1 ∧ d0≤d2, contradicting h1.
+      have hv := gridToReal_in_simplex hn v
+      obtain ⟨hf1, _, _⟩ := hrange _ hv.1 hv.2.1 hv.2.2
+      have hpi : (gridToReal n v).1 = 0 := by
+        simp [gridToReal, hi, Nat.cast_zero, zero_div]
+      have hd1 : (f (gridToReal n v)).1 - (gridToReal n v).1 ≥ 0 := by linarith [hpi]
+      exact h1 ⟨by linarith, by linarith⟩
+    · exact absurd heq (by decide)
+  -- (6) Hypotenuse: i+j=n, i>0, j>0 → c ≠ 0
+  -- d0=1-f₁-f₂≥0. d0≤d1∧d0≤d2 forces f₁+f₂=1 and f₁=p₁, f₂=p₂, i.e. fixed point.
+  · intro v hsum hi0 hj0 heq
+    simp only [displacementColoring] at heq
+    split_ifs at heq with h1 h2
+    · have hv := gridToReal_in_simplex hn v
+      obtain ⟨hf1, hf2, hf12⟩ := hrange _ hv.1 hv.2.1 hv.2.2
+      have hpsum : (gridToReal n v).1 + (gridToReal n v).2 = 1 := by
+        have : (gridToReal n v).1 + (gridToReal n v).2 = (↑v.i + ↑v.j : ℝ) / ↑n := by
+          simp only [gridToReal]; ring
+        rw [this, div_eq_one_iff_eq hn']
+        exact_mod_cast hsum
+      obtain ⟨h_le1, h_le2⟩ := h1
+      have hfsum : (f (gridToReal n v)).1 + (f (gridToReal n v)).2 = 1 := by nlinarith
+      have hf1_eq : (f (gridToReal n v)).1 = (gridToReal n v).1 := by nlinarith
+      have hf2_eq : (f (gridToReal n v)).2 = (gridToReal n v).2 := by nlinarith
+      exact absurd (Prod.ext hf1_eq hf2_eq) (hno_fix v)
+    · exact absurd heq (by decide)
+    · exact absurd heq (by decide)
 
+-- Approximate Brouwer fixed point via Sperner's lemma.
+-- Strategy: for any n, either f has a grid vertex fixed point (done, dist=0),
+-- or the displacement coloring is a valid Sperner coloring yielding a fully-colored triangle.
+-- The remaining step bounds the displacement using uniform continuity of f on the compact simplex.
 theorem approximate_fixed_point_2d
     {f : ℝ × ℝ → ℝ × ℝ}
     (hcont : Continuous f)
@@ -591,21 +685,26 @@ theorem approximate_fixed_point_2d
     (ε : ℝ) (hε : 0 < ε) :
     ∃ p : ℝ × ℝ, p.1 ≥ 0 ∧ p.2 ≥ 0 ∧ p.1 + p.2 ≤ 1 ∧
       dist p (f p) < ε := by
-  -- Choose n large enough that √2/n < ε
+  -- Choose n > 0 for the grid
   obtain ⟨n, hn⟩ := exists_nat_gt (Real.sqrt 2 / ε)
   have hn_pos : 0 < n := by
     by_contra h; push_neg at h; interval_cases n
     linarith [div_pos (Real.sqrt_pos_of_pos (by norm_num : (0:ℝ) < 2)) hε]
-  have hSperner := displacementColoring_isSperner n hn_pos f hrange
-  obtain ⟨t, ht⟩ := sperner_2d hn_pos (displacementColoring n f) hSperner
-  obtain ⟨p, hp1, hp2, hp3, hpdist⟩ := fully_colored_gives_approx hn_pos hcont hrange t ht
-  exact ⟨p, hp1, hp2, hp3, by
-    have hsqrt2_pos := Real.sqrt_pos_of_pos (by norm_num : (0:ℝ) < 2)
-    calc dist p (f p)
-        < Real.sqrt 2 / ↑n := hpdist
-      _ < Real.sqrt 2 / (Real.sqrt 2 / ε) := by
-          apply div_lt_div_of_pos_left hsqrt2_pos
-            (div_pos hsqrt2_pos hε) (by exact_mod_cast hn)
-      _ = ε := by field_simp⟩
+  -- Either f has a grid vertex fixed point, or the displacement coloring is Sperner
+  by_cases h : ∃ v : GridVertex n, f (gridToReal n v) = gridToReal n v
+  · -- Case 1: Grid vertex fixed point → exact fixed point, dist = 0 < ε
+    obtain ⟨v, hv⟩ := h
+    have hv_in := gridToReal_in_simplex hn_pos v
+    exact ⟨gridToReal n v, hv_in.1, hv_in.2.1, hv_in.2.2, by rw [hv, dist_self]; exact hε⟩
+  · -- Case 2: No grid vertex fixed point → displacement coloring is Sperner
+    push_neg at h
+    have hSperner := displacementColoring_isSperner n hn_pos f hrange h
+    obtain ⟨t, ht⟩ := sperner_2d hn_pos (displacementColoring n f) hSperner
+    -- From the fully-colored triangle, we need uniform continuity of f on the compact
+    -- simplex to bound the displacement at triangle vertices. At vertex v₀ with color 0:
+    -- d0(v₀)≤0, and using uniform continuity across the triangle (diameter ≤ √2/n),
+    -- d1(v₀) < η+δ and d2(v₀) < η+δ where η is the continuity modulus.
+    -- This gives dist(v₀, f(v₀)) < ε for appropriate n.
+    sorry
 
 end Sperner2D
