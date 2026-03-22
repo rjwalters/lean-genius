@@ -17,6 +17,7 @@
     "type": "definition",
     "title": "Triangle-Free, Diameter, and Core Definitions",
     "content": "**TriangleFree(G):** A graph with no K₃ subgraphs — for all vertices a, b, c, it is impossible that a-b, b-c, and c-a are all edges.\n\n**diameter(G):** The supremum of pairwise distances in G.\n\n**HasDiameter / HasDiameterAtMost:** Predicates for exact and bounded diameter.\n\nExamples of triangle-free graphs: paths, even cycles, bipartite graphs, Petersen graph.",
+    "mathContext": "$G$ is triangle-free if $\\forall a, b, c \\in V(G)$: $\\neg(ab \\in E \\wedge bc \\in E \\wedge ca \\in E)$. The diameter $\\text{diam}(G) = \\max_{u,v} d(u,v)$ measures the worst-case distance.",
     "significance": "critical",
     "relatedConcepts": ["Forbidden subgraphs", "Bipartite graphs", "Graph distance"],
     "leanSymbol": "TriangleFree"
