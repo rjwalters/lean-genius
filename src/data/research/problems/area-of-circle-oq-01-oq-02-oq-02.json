@@ -1,0 +1,26 @@
+{
+  "id": "area-of-circle-oq-01-oq-02-oq-02",
+  "name": "Isoperimetric Inequality: C² ≥ 4πA with Equality for Circles",
+  "status": "surveyed",
+  "phase": "OBSERVE",
+  "knowledge": {
+    "insights": [
+      "Extensive formalization already exists: IsoperimetricTheorem.lean (2 axioms) + AreaOfCircleOQ01OQ03.lean (Wirtinger proved, Fourier framework)",
+      "Wirtinger inequality PROVED via Fourier decomposition (not axiomatized)",
+      "Full proof chain: Wirtinger → AM-GM + Cauchy-Schwarz → arithmetic kernel → isoperimetric",
+      "IsoperimetricTheorem.lean has 2 axioms: main inequality + equality characterization for circles",
+      "Mathlib has tsum_sq_fourierCoeff enabling Parseval-based proofs"
+    ],
+    "builtItems": [],
+    "openQuestions": [
+      "Which specific aspect of the isoperimetric inequality is this sub-question targeting?",
+      "Can the 2 remaining axioms in IsoperimetricTheorem.lean be eliminated using AreaOfCircleOQ01OQ03 infrastructure?"
+    ],
+    "nextSteps": [
+      "Check if axioms in IsoperimetricTheorem.lean can be proved from AreaOfCircleOQ01OQ03 Wirtinger results",
+      "Identify what specific sub-question oq-02 of oq-01-oq-02 adds beyond existing formalization",
+      "Consider proving equality characterization (axiom 2) from the Fourier approach"
+    ],
+    "progressSummary": "SURVEY: Extensive prior work found. IsoperimetricTheorem.lean + AreaOfCircleOQ01OQ03.lean cover the isoperimetric inequality with Wirtinger proved. 2 axioms remain."
+  }
+}
