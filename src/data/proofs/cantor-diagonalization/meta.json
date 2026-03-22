@@ -95,6 +95,50 @@
       "What is the cardinality of the set of all countable ordinals?",
       "Which mathematical statements are independent of ZFC due to cardinality considerations?"
     ],
+    "references": [
+      {
+        "authors": "Cantor, Georg",
+        "title": "Ueber eine elementare Frage der Mannigfaltigkeitslehre",
+        "year": "1891",
+        "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung, 1, pp. 75-78",
+        "note": "The original diagonal argument paper, proving that the set of all infinite binary sequences is uncountable"
+      },
+      {
+        "authors": "Cantor, Georg",
+        "title": "Ueber eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen",
+        "year": "1874",
+        "venue": "Journal für die reine und angewandte Mathematik, 77, pp. 258-262",
+        "note": "Cantor's first proof of uncountability of the reals, using a nested interval argument rather than diagonalization"
+      }
+    ],
+    "crossReferences": [
+      {
+        "targetId": "cantors-theorem",
+        "relationship": "generalizes",
+        "description": "Cantor's theorem that |S| < |P(S)| for any set S is the generalization of diagonalization from binary sequences to arbitrary sets. The diagonal argument is the special case S = ℕ."
+      },
+      {
+        "targetId": "continuum-hypothesis",
+        "relationship": "motivates",
+        "description": "Diagonalization proves |ℕ| < |ℝ|, but leaves open whether any cardinality lies between them. The Continuum Hypothesis (independent of ZFC) addresses exactly this gap."
+      },
+      {
+        "targetId": "halting-problem",
+        "relationship": "technique",
+        "description": "Turing's proof of the halting problem (1936) uses the same diagonal construction: assume a program H decides halting, then build a program D that does the opposite of what H predicts for D — a direct analogue of flipping the diagonal bit."
+      },
+      {
+        "targetId": "godel-incompleteness",
+        "relationship": "technique",
+        "description": "Gödel's incompleteness theorems (1931) use diagonalization via self-referential sentences: 'This statement is not provable.' The diagonal construction of unprovable truths parallels Cantor's construction of unlisted sequences."
+      }
+    ],
+    "relatedProofs": [
+      "cantors-theorem",
+      "continuum-hypothesis",
+      "halting-problem",
+      "godel-incompleteness"
+    ],
     "alternativeInterpretation": {
       "title": "The Constructivist View: Why the Reals Don't Exist",
       "summary": "The same formal proof supports a radically different conclusion depending on foundational assumptions. Where classical mathematicians see proof of uncountability, constructivists see proof that 'the set of all real numbers' is an incoherent concept.",
