@@ -46,7 +46,10 @@
       "BrouwerFixedPointOQ02OQ01.lean: 627 lines, 1 sorry (down from build-broken)",
       "sperner_2d: FULLY PROVED (0 sorries) - 2D Sperners lemma via row-sweep parity",
       "strip_parity: PROVED - key lemma for row-sweep double-counting argument",
-      "All 15 definitions and 22/23 theorems compile clean against Mathlib v4.26"
+      "All 15 definitions and 22/23 theorems compile clean against Mathlib v4.26",
+      "displacementColoring_isSperner: PROVED with hno_fix hypothesis (6 cases, ~90 lines)",
+      "gridToReal_in_simplex: PROVED helper lemma for simplex membership",
+      "approximate_fixed_point_2d: restructured to handle boundary fixed points (1 sorry remains for uniform continuity)"
     ],
     "insights": [
       "Row-sweep approach is cleaner than full double-counting: define hTrans(j) = horizontal {0,1}-doors at row j, show parity is constant across rows",
