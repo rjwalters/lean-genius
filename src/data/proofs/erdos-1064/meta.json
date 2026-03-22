@@ -55,7 +55,8 @@
       "**The iteration n ↦ n - φ(n):** This maps n to the count of integers ≤ n sharing a factor with n.",
       "**Typical behavior:** For most n, φ(n) dominates φ(n - φ(n)) because n - φ(n) is typically smaller.",
       "**Exceptional n:** The pattern 15·2^k gives counterexamples because 11 has larger relative totient than 15.",
-      "**Density vs infinitude:** A set can have density 0 yet be infinite—A₋ has density 0 but is infinite."
+      "**Density vs infinitude:** A set can have density 0 yet be infinite—A₋ has density 0 but is infinite.",
+      "**Multiplicativity is key:** The explicit counterexamples exploit φ(15·2^k) = φ(15)·φ(2^k) and φ(11·2^k) = φ(11)·φ(2^k) — the multiplicativity of Euler's totient reduces the comparison to φ(11)/11 vs φ(15)/15"
     ]
   },
   "sections": [
