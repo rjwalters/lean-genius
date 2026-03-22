@@ -101,11 +101,18 @@
       "summary": "Problem statement: can every finite $A \\subseteq \\mathbb{N} \\setminus \\{1\\}$ with $\\sum_{n \\in A} 1/n < 2$ be partitioned into two parts each with sum $< 1$? Answer: NO (Sándor 1997). References to Erdős–Graham 1980 monograph."
     },
     {
-      "id": "main-result",
-      "title": "Main Result",
+      "id": "counterexample-construction",
+      "title": "Counterexample Construction",
       "startLine": 25,
-      "endLine": 79,
-      "summary": "Defines $A = \\{2,3,4,5,6,7,10,11,13,14,15\\}$, proves $\\sum_{n \\in A} 1/n = 4234829/2162160 < 2$, verifies $0,1 \\notin A$, then exhaustively checks all $2^{11} = 2048$ subsets via `decide +kernel` to show no valid bipartition exists."
+      "endLine": 59,
+      "summary": "Introduces the counterexample set A = {2, 3, 4, 5, 6, 7, 10, 11, 13, 14, 15} with reciprocal sum 4234829/2162160 ≈ 1.9586 < 2. Describes the four-step proof strategy: exhibit, verify sum, exhaustively check all 2048 partitions."
+    },
+    {
+      "id": "exhaustive-verification",
+      "title": "Exhaustive Verification via decide+kernel",
+      "startLine": 60,
+      "endLine": 72,
+      "summary": "The erdos_316 theorem: constructs A, verifies sum < 2 via decide+kernel, then proves that for every B ⊆ A with ∑(1/n) < 1, the complement A \\ B has ∑(1/n) ≥ 1. The exhaustive check of 2048 subsets is dispatched by decide+kernel, producing a kernel-level proof certificate."
     },
     {
       "id": "multiset-variant",
