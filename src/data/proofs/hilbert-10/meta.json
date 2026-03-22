@@ -6,7 +6,7 @@
   "meta": {
     "author": "Matiyasevich, Robinson, Davis, Putnam (1970)",
     "date": "1970",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "computability",
       "undecidability",
@@ -14,7 +14,7 @@
       "hilbert-problems",
       "intermediate"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [],
     "originalContributions": [
@@ -25,7 +25,30 @@
     ],
     "dateAdded": "2025-12-28",
     "hilbertNumber": 10,
-    "axiomCount": 0
+    "axiomCount": 4,
+    "lineCount": 230,
+    "assumptions": [
+      "mrdp_theorem: Every recursively enumerable set is Diophantine — the central deep result of the MRDP theorem",
+      "halting_reduction_contradiction: Technical axiom for the halting-to-H10 reduction",
+      "exponential_is_diophantine: Exponential relations can be represented by polynomial equations — key step proved by Matiyasevich using Fibonacci/Pell equations",
+      "linear_diophantine_decidable: Linear Diophantine equations are decidable — used as contrast with the general case"
+    ],
+    "references": [
+      {
+        "authors": "Matiyasevich, Yuri V.",
+        "title": "Enumerable sets are Diophantine",
+        "year": "1970",
+        "venue": "Doklady Akademii Nauk SSSR, 191(2), pp. 279-282",
+        "note": "The breakthrough paper completing the MRDP theorem by proving exponential relations are Diophantine"
+      },
+      {
+        "authors": "Davis, Martin",
+        "title": "Hilbert's tenth problem is unsolvable",
+        "year": "1973",
+        "venue": "The American Mathematical Monthly, 80(3), pp. 233-269",
+        "note": "Accessible exposition of the complete proof, covering the work of all four contributors"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "In 1900, David Hilbert presented 23 problems that would shape 20th-century mathematics. The tenth problem asked: 'Given a Diophantine equation with any number of unknown quantities and with rational integral numerical coefficients: to devise a process according to which it can be determined in a finite number of operations whether the equation is solvable in rational integers.'\n\nThe negative answer came 70 years later through a remarkable collaboration:\n- Martin Davis (1950s): Laid the groundwork by studying Diophantine representations of recursively enumerable sets\n- Hilary Putnam (1960s): Made key technical advances in encoding computations\n- Julia Robinson (1960s): Proved crucial results about exponential growth in Diophantine equations\n- Yuri Matiyasevich (1970): Completed the proof by showing that exponential relations are Diophantine, using Fibonacci numbers and Pell equations\n\nThe combined result is known as the MRDP theorem (Matiyasevich-Robinson-Davis-Putnam).",
@@ -35,7 +58,8 @@
       "Polynomials over integers can encode arbitrary computation",
       "Exponential growth (key to computation) can be captured by polynomial equations",
       "The diagonal argument from computability theory applies to number theory",
-      "Some very natural mathematical questions have no algorithmic solution"
+      "Some very natural mathematical questions have no algorithmic solution",
+      "**Fibonacci-Pell connection**: Matiyasevich's breakthrough used the identity $F_{2n} = F_n L_n$ and properties of Pell equations to show that exponential growth can be captured by polynomial equations — the critical missing piece for 20 years"
     ]
   },
   "sections": [
@@ -44,49 +68,56 @@
       "title": "Diophantine Equations and Sets",
       "startLine": 41,
       "endLine": 60,
-      "summary": "Defines Diophantine polynomials, what it means for an equation to have a solution, and when a set is Diophantine."
+      "summary": "Defines Diophantine polynomials (functions from variable assignments to integers), solution existence, and Diophantine sets (sets whose membership is witnessed by polynomial equation solvability).",
+      "mathContext": "$S$ is Diophantine $\\iff$ $\\exists P$ polynomial s.t. $n \\in S \\iff \\exists \\vec{x},\\; P(n, \\vec{x}) = 0$."
     },
     {
       "id": "re-sets",
       "title": "Recursively Enumerable Sets",
       "startLine": 62,
       "endLine": 74,
-      "summary": "Defines recursively enumerable sets in terms of halting behavior - sets where membership can be confirmed by a terminating computation."
+      "summary": "Defines recursively enumerable (r.e.) sets: sets where membership can be confirmed by a terminating computation. Uses a program-halting model.",
+      "mathContext": "$S$ is r.e. $\\iff$ $\\exists$ program $p$ s.t. $n \\in S \\iff p(n)$ halts. Equivalently, $S = \\text{dom}(\\varphi_e)$ for some partial recursive function $\\varphi_e$."
     },
     {
       "id": "mrdp",
       "title": "The MRDP Theorem",
       "startLine": 76,
       "endLine": 83,
-      "summary": "States the MRDP theorem: every recursively enumerable set is Diophantine. This deep result is axiomatized."
+      "summary": "Axiomatizes the MRDP theorem: every r.e. set is Diophantine. This is the deep number-theoretic result requiring Fibonacci/Pell constructions.",
+      "mathContext": "MRDP: $S$ is r.e. $\\iff$ $S$ is Diophantine. The hard direction ($\\Rightarrow$) required proving that exponential growth $y = 2^x$ can be expressed as a polynomial equation."
     },
     {
       "id": "oracles",
       "title": "Hypothetical H10 Oracle",
       "startLine": 85,
       "endLine": 94,
-      "summary": "Defines what it would mean to have an oracle that correctly decides Diophantine equations."
+      "summary": "Defines `H10Oracle` as a function that correctly decides Diophantine equation solvability. The proof will show no such oracle exists.",
+      "mathContext": "An H10 oracle $O$ satisfies: $O(P) = \\text{true} \\iff \\exists \\vec{x},\\; P(\\vec{x}) = 0$."
     },
     {
       "id": "halting",
       "title": "The Halting Problem",
       "startLine": 96,
       "endLine": 123,
-      "summary": "Self-contained proof of halting undecidability using the diagonal argument, matching the approach in HaltingProblem.lean."
+      "summary": "Self-contained proof of halting undecidability using the diagonal argument (Turing 1936). Constructs a 'diagonalizer' program that contradicts any proposed halting oracle.",
+      "mathContext": "Diagonal argument: if $H$ decides halting, define $D(n) = $ loop if $H(n,n)$ says halt, else halt. Then $D(D)$ leads to contradiction."
     },
     {
       "id": "reduction",
       "title": "Reduction from Halting to H10",
       "startLine": 125,
       "endLine": 168,
-      "summary": "Shows how to construct a halting oracle from an H10 oracle using MRDP, demonstrating that H10 is at least as hard as halting."
+      "summary": "Constructs a halting oracle from a hypothetical H10 oracle using MRDP: encode 'does program p halt on input n?' as a Diophantine equation, then ask the H10 oracle.",
+      "mathContext": "Reduction: Halting $\\leq_m$ H10. Given H10 oracle $O$, define halting oracle $H(p,n) = O(P_{p,n})$ where $P_{p,n}$ encodes 'program $p$ halts on $n$' as a Diophantine equation (possible by MRDP)."
     },
     {
       "id": "main-theorem",
       "title": "Undecidability of H10",
       "startLine": 170,
       "endLine": 194,
-      "summary": "The main theorem: no correct H10 oracle exists, because it would contradict the undecidability of halting."
+      "summary": "The main theorem: no correct H10 oracle exists. Proof: H10 oracle → halting oracle (by reduction) → contradiction (halting is undecidable).",
+      "mathContext": "$\\neg\\exists O : \\text{H10Oracle}$. Proof by contradiction: $O$ exists $\\Rightarrow$ halting decidable $\\Rightarrow$ contradiction with Turing (1936)."
     }
   ],
   "conclusion": {
@@ -98,5 +129,27 @@
       "Can we characterize exactly which number fields have decidable H10?",
       "What is the simplest undecidable Diophantine equation?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "halting-problem",
+      "relationship": "foundational",
+      "description": "H10 undecidability is proved by reduction from the halting problem; the halting problem proof is embedded in this formalization"
+    },
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "thematic",
+      "description": "Both demonstrate fundamental limits of formal systems — Gödel shows incompleteness of arithmetic, MRDP shows undecidability of Diophantine equations"
+    },
+    {
+      "targetId": "pell-equation",
+      "relationship": "technical",
+      "description": "Matiyasevich's proof uses Pell equations to show exponential relations are Diophantine — the key technical step"
+    }
+  ],
+  "relatedProofs": [
+    "halting-problem",
+    "godel-incompleteness",
+    "pell-equation"
+  ]
 }
