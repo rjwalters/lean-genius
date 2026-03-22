@@ -32,6 +32,7 @@ sqlite3 research/db/knowledge.db "SELECT * FROM problem_summary"
 | `knowledge.db` | SQLite database (created by migrate.py) |
 | `migrate.py` | One-time migration from JSON to SQLite |
 | `generate_markdown.py` | Generate human-readable summaries |
+| `sync_from_json.py` | Reverse sync: update DB from research JSON files |
 | `sync_pool.py` | Auto-generate candidate-pool.json from DB |
 
 ## Schema

@@ -5,6 +5,7 @@
 
 .PHONY: help clean clean-all clean-enhancers clean-research clean-loom \
         status status-enhancers status-research status-aristotle \
+        sync-research \
         build test lint \
         enhance research aristotle aristotle-loop \
         deploy deployer deployer-stop deployer-attach deployer-logs deployer-status \
@@ -29,6 +30,9 @@ help:
 	@echo "  make status-enhancers - Show enhancement claims"
 	@echo "  make status-research  - Show research claims"
 	@echo "  make status-aristotle - Show Aristotle job status"
+	@echo ""
+	@echo "Sync:"
+	@echo "  make sync-research    - Sync research tracking (JSON -> DB -> pool)"
 	@echo ""
 	@echo "Build:"
 	@echo "  make build            - Build the project (pnpm build)"
@@ -127,6 +131,14 @@ status-research:
 status-aristotle:
 	@echo ""
 	./scripts/aristotle/aristotle-agent.sh --status
+
+# ============================================================================
+# Sync targets
+# ============================================================================
+
+sync-research:  ## Sync research tracking (JSON -> DB -> pool)
+	python3 research/db/sync_from_json.py
+	python3 research/db/sync_pool.py
 
 # ============================================================================
 # Build targets
