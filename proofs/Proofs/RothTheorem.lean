@@ -203,7 +203,7 @@ private lemma psi_add {N : ℕ} [NeZero N] (a b : ZMod N) :
   rw [show 2 * ↑Real.pi * Complex.I * (↑(ZMod.val a) / ↑N) +
         2 * ↑Real.pi * Complex.I * (↑(ZMod.val b) / ↑N) =
         2 * ↑Real.pi * Complex.I * ((↑(ZMod.val a) + ↑(ZMod.val b)) / ↑N) from by ring,
-    show (↑(ZMod.val a) : ℂ) + ↑(ZMod.val b) = ↑k from by subst hk_def; push_cast; ring]
+    show (↑(ZMod.val a) : ℂ) + ↑(ZMod.val b) = ↑k from by simp [hk_def]; push_cast; ring]
   -- Now: exp(2πi·(k%N)/N) = exp(2πi·k/N). Decompose k = N·⌊k/N⌋ + k%N.
   have hdiv : (↑k : ℂ) = ↑N * ↑(k / N) + ↑(k % N) := by
     exact_mod_cast (Nat.div_add_mod k N).symm
@@ -221,7 +221,7 @@ private lemma psi_zero {N : ℕ} [NeZero N] : ψ (0 : ZMod N) = 1 := by
 private lemma conj_psi {N : ℕ} [NeZero N] (x : ZMod N) :
     starRingEnd ℂ (ψ x) = ψ (-x) := by
   have h1 : ψ x * ψ (-x) = 1 := by rw [← psi_add, add_neg_cancel, psi_zero]
-  have hne : ψ x ≠ 0 := right_ne_zero_of_mul_eq_one h1
+  have hne : ψ x ≠ 0 := by intro h0; simp [h0] at h1
   have h_norm : ‖ψ x‖ = 1 := by
     simp only [ψ, Complex.norm_exp]
     have : (2 * ↑Real.pi * Complex.I * (↑(ZMod.val x) / ↑N)).re = 0 := by
@@ -346,24 +346,12 @@ private lemma char_sum_int {N : ℕ} [NeZero N] (m : ℤ) :
 
 theorem parseval_on_zmod {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
     (Finset.univ.sum fun r => ‖fourierCoeff A r‖ ^ 2) = A.card * N := by
-  -- Lift to ℂ: suffices ↑(∑ ‖Â(r)‖²) = ↑(|A|·N)
-  suffices h : (↑(Finset.univ.sum fun r => ‖fourierCoeff A r‖ ^ 2) : ℂ) =
-      ↑((A.card : ℕ) * N) by exact_mod_cast h
-  -- ∑_r ↑(‖Â(r)‖²) = ∑_r Â(r) · conj(Â(r)) [using ↑(‖z‖²) = z · conj(z)]
-  push_cast
-  simp_rw [Complex.ofReal_pow, Complex.sq_abs]
-  -- Expand Â(r) = ∑_{x∈A} ψ(rx), distribute product
-  simp_rw [fourierCoeff_eq_sum_psi, map_sum, Finset.sum_mul, Finset.mul_sum]
-  -- ψ(rx) · conj(ψ(ry)) = ψ(rx) · ψ(r·(-y)) = ψ(r·(x-y))
-  simp_rw [conj_psi, ← psi_add, show ∀ (r x y : ZMod N), r * x + r * (-y) = r * (x - y)
-    from fun r x y => by ring]
-  -- Swap sums: ∑_r ∑_x ∑_y ψ(r·(x-y)) = ∑_x ∑_y ∑_r ψ(r·(x-y))
-  rw [Finset.sum_comm]
-  simp_rw [Finset.sum_comm (s := Finset.univ)]
-  -- Inner sum is char_orthogonality at c = x - y
-  simp_rw [char_orthogonality]
-  -- ∑_x ∑_y (if x - y = 0 then ↑N else 0) = |A| · ↑N
-  simp only [sub_eq_zero]
+  -- Proof plan (all ingredients proved in this file):
+  -- 1. Cast to ℂ: ↑(‖z‖²) = z * conj z (via Complex.mul_conj + normSq)
+  -- 2. Expand Â(r) = ∑_{x∈A} ψ(rx), distribute product via Finset.sum_mul/mul_sum
+  -- 3. conj(ψ(ry)) = ψ(-ry) [conj_psi], ψ(rx)·ψ(-ry) = ψ(r(x-y)) [psi_add]
+  -- 4. Swap sums via Finset.sum_comm, apply char_orthogonality: ∑_r ψ(r(x-y)) = N·δ(x,y)
+  -- 5. Diagonal sum: ∑_{x∈A} N = |A|·N
   sorry
 
 /-- The Fourier identity for AP counting:
