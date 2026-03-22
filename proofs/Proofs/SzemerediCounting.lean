@@ -106,9 +106,15 @@ theorem bad_vertices_small (G : SimpleGraph V) [DecidableRel G.Adj]
   -- Upper bound: every a ∈ A' has |N_B(a)| < (d-ε)|B|, so d(A',B) < d - ε
   have hdU : Szemeredi.Regularity.edgeDensity G A' B < d - eps := by
     -- Each a ∈ A' = badVertices has |N_B(a)| < (d-ε)|B|.
-    -- Edge density = |edges| / (|A'|*|B|).
-    -- Since every vertex contributes < (d-ε)|B| edges,
-    -- total edges < |A'|*(d-ε)*|B|, so density < d - ε.
+    -- Total edges = Σ|N_B(a)| < |A'|*(d-ε)*|B|, so density < d-ε.
+    unfold Szemeredi.Regularity.edgeDensity
+    have hA'B_pos : (0 : ℚ) < (A'.card : ℚ) * B.card := by positivity
+    rw [dif_neg (ne_of_gt hA'B_pos)]
+    rw [div_lt_iff₀ hA'B_pos]
+    -- Fiber decomposition: |(A' × B).filter G.Adj| = Σ_{a∈A'} |N_B(a)|
+    -- Each a ∈ A' contributes exactly |{b ∈ B : G.Adj a b}| edges.
+    -- Since these sets are disjoint (different first components), the total
+    -- is the sum. Standard Finset fiber lemma.
     sorry
   linarith
 
