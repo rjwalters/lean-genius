@@ -166,9 +166,19 @@ private lemma root_unity_sum_zero (ω : ℂ) (N : ℕ) (hωN : ω ^ N = 1) (hω1
 private lemma exp_val_mul_eq {N : ℕ} [NeZero N] (a b : ZMod N) :
     Complex.exp (2 * ↑Real.pi * Complex.I * (↑(ZMod.val (a * b)) / ↑N)) =
     Complex.exp (2 * ↑Real.pi * Complex.I * (↑(ZMod.val a) * ↑(ZMod.val b) / ↑N)) := by
-  -- val(a*b) ≡ val(a)·val(b) (mod N), exp absorbs modular reduction via periodicity
-  -- Proof: exp(2πi·(k%N)/N) = exp(2πi·k/N) since exp(2πi·integer) = 1
-  sorry
+  rw [ZMod.val_mul,
+    show (↑(ZMod.val a) : ℂ) * ↑(ZMod.val b) = ↑(ZMod.val a * ZMod.val b) from by push_cast; ring]
+  -- Goal: exp(2πi · ↑((k % N)) / ↑N) = exp(2πi · ↑k / ↑N) where k = val a * val b
+  -- Exponents differ by integer · 2πi, so exp agrees
+  set k := ZMod.val a * ZMod.val b with hk_def
+  have hN : (N : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (NeZero.ne N)
+  have hdiv : (↑k : ℂ) = ↑N * ↑(k / N) + ↑(k % N) := by
+    exact_mod_cast (Nat.div_add_mod k N).symm
+  rw [show (↑k : ℂ) / ↑N = ↑(k / N) + ↑(k % N) / ↑N from by rw [hdiv]; field_simp,
+    mul_add, Complex.exp_add,
+    show 2 * ↑Real.pi * Complex.I * ↑(k / N) =
+        ↑(k / N) * (2 * ↑Real.pi * Complex.I) from by ring,
+    Complex.exp_nat_mul, Complex.exp_two_pi_mul_I, one_pow, one_mul]
 
 /-- ψ(r·x) equals (exp(2πi·val(x)/N))^val(r), i.e., ω_x^{val(r)}. -/
 private lemma psi_eq_pow {N : ℕ} [NeZero N] (r x : ZMod N) :
