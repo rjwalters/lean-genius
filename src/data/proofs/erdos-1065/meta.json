@@ -153,6 +153,12 @@
       "**Separating example $p = 61$:** $60 = 2^2 \\cdot 3 \\cdot 5$ has three distinct prime factors, so 61 is Form B but not Form A — showing the two forms are genuinely distinct",
       "**Non-example $p = 37$:** $36 = 2^2 \\cdot 3^2$ is $\\{2,3\\}$-smooth with no additional prime factor, showing that not all primes satisfy even the relaxed Form B condition",
       "**Artin connection:** Both problems concern the multiplicative structure of $p - 1$; Artin's primitive root conjecture requires large prime factors of $p - 1$, while Erdős asks about the opposite extreme"
+    ],
+    "prerequisites": [
+      "Prime numbers and `Nat.Prime` from Mathlib",
+      "Smooth numbers and the factorization of $p - 1$",
+      "Safe primes ($p = 2q + 1$) and Sophie Germain primes",
+      "Hardy-Littlewood conjectures on prime pairs"
     ]
   },
   "conclusion": {

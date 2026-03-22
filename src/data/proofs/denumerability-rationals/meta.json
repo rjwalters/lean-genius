@@ -101,6 +101,10 @@
       "**Constructive Content**: The round-trip proofs (`decode ∘ encode = id`, `encode ∘ decode = id`) certify that the bijection is computable, not merely existential. Both directions are discharged by `simp`, which unfolds the definitions and applies `Equiv.symm_apply_apply` / `Equiv.apply_symm_apply`. This constructive witness is what distinguishes `Denumerable` from weaker notions of countability.",
       "**Cardinal Bridge**: `Cardinal.mk_denumerable` bridges the type-theoretic view (`Denumerable` typeclass) with the set-theoretic view (`Cardinal.aleph0`), connecting two fundamental frameworks — Martin-Lof type theory and Zermelo-Fraenkel set theory — in one proof.",
       "**Stern-Brocot alternative**: The Stern-Brocot tree provides a different bijection $\\mathbb{N} \\simeq \\mathbb{Q}^+$ with better structural properties: each rational appears in lowest terms exactly once, and the tree structure encodes continued fraction expansions. Mathlib's encoding uses the Cantor pairing function instead, which is computationally simpler but loses this number-theoretic structure."
+    ],
+    "prerequisites": [
+      "Set theory: cardinality, countability, bijections",
+      "Mathematical maturity and proof techniques"
     ]
   },
   "leanFile": {

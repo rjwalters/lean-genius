@@ -100,6 +100,10 @@
       "Complete graphs and empty graphs have only O(n) distinct signatures, demonstrating the Ramsey condition is essential — structure kills diversity",
       "The bound n^(5/2) is tight (both upper and lower bounds match), giving the complete answer in Θ-notation and fully resolving the problem",
       "The proof connects to the probabilistic method: random subset sampling with second moment analysis is the key technique for establishing the lower bound"
+    ],
+    "prerequisites": [
+      "Graph theory fundamentals",
+      "Mathematical maturity and proof techniques"
     ]
   },
   "sections": [

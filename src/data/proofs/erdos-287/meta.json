@@ -69,6 +69,10 @@
       "**Prime Pair Reduction:** Erdős showed the conjecture follows from a statement about prime pairs: if for all large N there exists a prime p ∈ [N, 2N] with (p+1)/2 also prime, then gap ≥ 3 holds for all sufficiently large representations. This connects a purely combinatorial problem about fractions to deep analytic number theory",
       "**Dense Representations Are Constrained:** Heuristically, 'dense' denominator sequences (small gaps) are hard to achieve because the LCM of nearby integers grows rapidly, making it harder for the rational sum to hit exactly 1. The conjecture formalizes this intuition: you cannot pack the denominators too tightly",
       "**90 Years Open:** Despite the simplicity of the statement and the elegance of the gap ≥ 2 proof, the step from 2 to 3 has resisted all attempts. The difficulty is qualitative: the Bertrand argument uses a single prime, but ruling out gap-2 sequences may require controlling multiple primes simultaneously"
+    ],
+    "prerequisites": [
+      "Elementary number theory: primes, divisibility, factorization",
+      "Mathematical maturity and proof techniques"
     ]
   },
   "sections": [

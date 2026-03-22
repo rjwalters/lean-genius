@@ -164,6 +164,11 @@
       "Lower bound: g_d(n) ≫ d^{n-1} (Erdős, 'easy') establishes polynomial growth",
       "Upper bound: g_d(n) ≤ c^{d^{1-b_n}} (Erdős-Straus) — stretched-exponential, creating a huge gap",
       "The ratio g_d(n)/d^{n-1} is bounded below (genuinely proved) but convergence is unknown"
+    ],
+    "prerequisites": [
+      "Basic combinatorics and graph theory",
+      "Asymptotic analysis and big-O notation",
+      "Ramsey theory fundamentals"
     ]
   },
   "crossReferences": [
