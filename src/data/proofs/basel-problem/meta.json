@@ -174,10 +174,31 @@
     }
   ],
   "relatedProofs": [
-    "harmonic-divergence",
-    "riemann-hypothesis",
-    "fourier-series",
-    "euler-identity"
+    {
+      "id": "harmonic-divergence",
+      "relationship": "contrasts",
+      "description": "∑1/n diverges (p=1) while ∑1/n² converges to π²/6 (p=2) — the boundary between convergence and divergence"
+    },
+    {
+      "id": "riemann-hypothesis",
+      "relationship": "foundational",
+      "description": "Basel gives ζ(2) = π²/6, the simplest special zeta value; RH concerns the zeros of this same function"
+    },
+    {
+      "id": "fourier-series",
+      "relationship": "technique",
+      "description": "Parseval's theorem applied to f(x) = x on [-π,π] gives ∑1/n² = π²/6 — the modern proof"
+    },
+    {
+      "id": "euler-identity",
+      "relationship": "related",
+      "description": "Both are crown jewels of Euler connecting e, π, and i; Basel via ζ(2), identity via e^(iπ)+1=0"
+    },
+    {
+      "id": "prime-reciprocal-divergence",
+      "relationship": "related",
+      "description": "Both involve summing reciprocals: ∑1/p diverges (primes) while ∑1/n² converges (squares) — illustrating density vs sparsity"
+    }
   ],
   "leanFile": {
     "imports": [

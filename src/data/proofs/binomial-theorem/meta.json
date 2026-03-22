@@ -191,15 +191,31 @@
     }
   ],
   "relatedProofs": [
-    "derangements",
-    "pascals-hexagon",
-    "stirling-formula",
-    "binomial-theorem-oq-01",
-    "binomial-theorem-oq-01-oq-01",
-    "binomial-theorem-oq-02",
-    "binomial-theorem-oq-03",
-    "binomial-theorem-oq-04",
-    "binomial-theorem-oq-04-oq-02"
+    {
+      "id": "derangements",
+      "relationship": "related",
+      "description": "Both are central combinatorial results; derangements use inclusion-exclusion which relies on binomial coefficients"
+    },
+    {
+      "id": "combinations-formula",
+      "relationship": "foundational",
+      "description": "Binomial coefficients C(n,k) are the key building blocks of the binomial theorem"
+    },
+    {
+      "id": "pascals-hexagon",
+      "relationship": "related",
+      "description": "Pascal's triangle encodes binomial coefficients; the hexagon theorem is about its multiplicative structure"
+    },
+    {
+      "id": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's approximation is used to estimate binomial coefficients for large n"
+    },
+    {
+      "id": "binomial-theorem-oq-01",
+      "relationship": "extends",
+      "description": "Extension exploring further properties and applications of the binomial theorem"
+    }
   ],
   "references": [
     {
