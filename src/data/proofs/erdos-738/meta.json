@@ -61,32 +61,44 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "Module docstring with Erdős Problem #738 statement, summary of key results (Gyárfás 1975, Kierstead-Penrice 1994, Scott 1997, Chudnovsky-Scott-Seymour 2020), and imports from Mathlib SimpleGraph library for adjacency, cliques, and colorings.",
+      "mathContext": "Gyárfás conjecture: if $G$ is triangle-free with $\\chi(G) = \\infty$, does $G$ contain every finite tree as an induced subgraph? Partial results known for paths, stars, radius-2 trees, and caterpillars."
+    },
+    {
       "id": "definitions",
       "title": "Core Definitions",
-      "startLine": 24,
+      "startLine": 30,
       "endLine": 53,
-      "summary": "Defines `IsTriangleFree` via `CliqueFree 3`, `ChromAtMost k` via `Nonempty (Coloring (Fin k))`, `HasInfiniteChrom` as $\\forall k, \\neg\\text{ChromAtMost}\\, k$, `FiniteTree n` as a structure wrapping `SimpleGraph (Fin n)`, and `HasInducedCopy` via injective adjacency-preserving maps."
+      "summary": "Defines `IsTriangleFree` via `CliqueFree 3`, `ChromAtMost k` via `Nonempty (Coloring (Fin k))`, `HasInfiniteChrom` as $\\forall k, \\neg\\text{ChromAtMost}\\, k$, `FiniteTree n` as a structure wrapping `SimpleGraph (Fin n)`, and `HasInducedCopy` via injective adjacency-preserving maps.",
+      "mathContext": "Triangle-free: $\\omega(G) \\leq 2$. Infinite chromatic: $\\forall k,\\, \\chi(G) > k$. Induced copy: $\\exists f: [n] \\hookrightarrow V,\\, T.\\text{Adj}\\,i\\,j \\iff G.\\text{Adj}\\,f(i)\\,f(j)$."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
       "startLine": 55,
       "endLine": 63,
-      "summary": "Axiomatizes `gyarfas_conjecture`: for all $G$ that are triangle-free with $\\chi(G) = \\infty$, and for all finite trees $T$ on $n$ vertices, $G$ contains an induced copy of $T$."
+      "summary": "Axiomatizes `gyarfas_conjecture`: for all $G$ that are triangle-free with $\\chi(G) = \\infty$, and for all finite trees $T$ on $n$ vertices, $G$ contains an induced copy of $T$.",
+      "mathContext": "Axiom: $\\forall G$ (triangle-free, $\\chi = \\infty$), $\\forall T$ (finite tree on $n$ vertices), $G \\supseteq_{\\text{ind}} T$."
     },
     {
       "id": "partial",
       "title": "Known Partial Results",
       "startLine": 65,
       "endLine": 99,
-      "summary": "Defines `pathGraph` and `starGraph` with proved `symm` and `loopless` properties. Axiomatizes `infinite_chrom_contains_paths` (all paths present), `infinite_chrom_contains_stars` (all stars present), and `kierstead_penrice_radius2` (radius-$2$ trees)."
+      "summary": "Defines `pathGraph` and `starGraph` with proved `symm` and `loopless` properties. Axiomatizes `infinite_chrom_contains_paths` (all paths present), `infinite_chrom_contains_stars` (all stars present), and `kierstead_penrice_radius2` (radius-$2$ trees).",
+      "mathContext": "$P_n$ and $K_{1,n}$ constructions with proved graph properties. Known: $\\chi = \\infty \\implies \\forall n,\\, G \\supseteq_{\\text{ind}} P_n$ and $G \\supseteq_{\\text{ind}} K_{1,n}$. Kierstead-Penrice: holds for trees of radius $\\leq 2$."
     },
     {
       "id": "structural",
       "title": "Structural Observations",
       "startLine": 101,
       "endLine": 141,
-      "summary": "Axiomatizes local tree-like structure (`triangle_free_large_chrom_local_tree`), the finite version `gyarfas_finite_version` (with explicit threshold $N$), Scott's caterpillar result, and the `finite_implies_infinite_version` theorem reducing the infinite case to finite bounds."
+      "summary": "Axiomatizes local tree-like structure (`triangle_free_large_chrom_local_tree`), the finite version `gyarfas_finite_version` (with explicit threshold $N$), Scott's caterpillar result, and the `finite_implies_infinite_version` theorem reducing the infinite case to finite bounds.",
+      "mathContext": "Local structure: $\\forall k,\\, \\exists v,\\, \\chi(G[N(v)]) > k$. Finite version: $\\forall T,\\, \\exists N(T),\\, \\chi(G) > N \\implies G \\supseteq_{\\text{ind}} T$. Reduction: finite version $\\implies$ infinite version."
     }
   ],
   "conclusion": {
