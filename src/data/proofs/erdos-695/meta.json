@@ -140,5 +140,21 @@
       "What is the longest prime chain with p_k ≤ n?",
       "Are there prime chains with p_k = exp(k^{1+o(1)})?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Pomerance, Carl",
+      "title": "On the largest prime factors of n and n+1",
+      "year": "1978",
+      "venue": "Aequationes Math. 17, pp. 311-321",
+      "note": "Related work on prime chains and largest prime factors"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-368",
+      "relationship": "related",
+      "description": "Both study prime factor structure of integers: #368 concerns largest prime factor of n(n+1), #695 concerns prime chains with divisibility"
+    }
+  ]
 }
