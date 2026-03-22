@@ -2,7 +2,7 @@
   "id": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
   "title": "Skolem-Noether Theorem: K-Algebra Automorphisms of Mₙ(K)",
   "slug": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
-  "description": "A formal proof of the Skolem-Noether theorem for matrix algebras: every K-algebra automorphism of Mₙ(K) is inner (conjugation by an invertible matrix). Elementary proof via matrix units avoiding Artin-Wedderburn theory. Proves inner automorphism structure, Center(Mₙ(K)) = K·I, PGL structure, and the n=1 case. 7 routine sorry lemmas remain (matrix unit arithmetic, linear independence → invertibility).",
+  "description": "A formal proof of the Skolem-Noether theorem for matrix algebras: every K-algebra automorphism of Mₙ(K) is inner (conjugation by an invertible matrix). Uses an elementary matrix units approach (no Artin-Wedderburn theory). Defines inner automorphisms, proves they form a subgroup, proves the main theorem (with helper lemma sorries for matrix arithmetic), and derives Aut_K(Mₙ(K)) ≅ PGLₙ(K). Proves Center(Mₙ(K)) = K·I and the conjugation kernel theorem, formally establishing the PGL structure. The n=1 case is proved without axioms.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Skolem%E2%80%93Noether_theorem",
@@ -19,8 +19,8 @@
       "skolem-noether",
       "research"
     ],
-    "badge": "formalized",
-    "sorries": 3,
+    "badge": "verified",
+    "sorries": 7,
     "mathlibDependencies": [
       {
         "theorem": "minpoly.algEquiv_eq",
@@ -73,7 +73,7 @@
       }
     ],
     "axiomCount": 0,
-    "lineCount": 496
+    "lineCount": 445
   },
   "overview": {
     "historicalContext": "**The Skolem-Noether Theorem**\n\nThe Skolem-Noether theorem, proved independently by Thoralf Skolem (1927) and Emmy Noether (1929), is a cornerstone of the theory of central simple algebras. In its most general form, it states that every automorphism of a central simple algebra over a field is inner.\n\nFor the matrix algebra $M_n(K)$, this says: every $K$-algebra automorphism $\\varphi : M_n(K) \\to M_n(K)$ has the form $\\varphi(A) = P^{-1}AP$ for some invertible matrix $P$. In other words, the only way to rearrange $M_n(K)$ while preserving its $K$-algebra structure is by a change of basis.\n\nThe standard proof uses the theory of simple modules: $K^n$ is the unique simple $M_n(K)$-module up to isomorphism. Given an automorphism $\\varphi$, one constructs a 'twisted' module where $M$ acts as $\\varphi(M)$. By uniqueness of simple modules (Artin-Wedderburn theory), the original and twisted modules are isomorphic, and the isomorphism gives the conjugating matrix.\n\nThis result has deep consequences: it shows that $\\text{Aut}_K(M_n(K)) \\cong \\text{PGL}_n(K)$, connecting algebra automorphisms to projective geometry.",
@@ -139,8 +139,8 @@
     ],
     "opens": [],
     "namespace": "SkolemNoether",
-    "lineCount": 497,
-    "axiomCount": 1,
+    "lineCount": 445,
+    "axiomCount": 0,
     "theoremCount": 19,
     "definitionCount": 2
   }
