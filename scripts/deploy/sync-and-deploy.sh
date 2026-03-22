@@ -373,6 +373,8 @@ if pool_file.exists():
         pool = json.load(f)
     pool_status = {c["id"]: c.get("status", "pending") for c in pool["candidates"]}
 
+# Remove entries missing required 'slug' field
+listings = [item for item in listings if "slug" in item]
 listing_slugs = {item["slug"] for item in listings}
 added = 0
 updated = 0
