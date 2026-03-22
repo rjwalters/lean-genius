@@ -1,0 +1,26 @@
+{
+  "id": "birthday-problem-oq-02",
+  "name": "Tight Collision Asymptotics for Birthday Problem",
+  "status": "surveyed",
+  "phase": "OBSERVE",
+  "knowledge": {
+    "insights": [
+      "BirthdayProblem.lean (402L, 0A, 0S) and BirthdayProblemOQ01.lean (513L, 0A, 0S) both complete",
+      "No OQ02 file exists yet — fresh formalization needed",
+      "Birthday paradox: P(collision among k people, n days) ≈ 1 - e^{-k(k-1)/(2n)}",
+      "Tight asymptotics: k ~ √(2n·ln(1/(1-p))) for collision probability p",
+      "Mathlib has Finset.prod, Real.exp, asymptotic analysis tools"
+    ],
+    "builtItems": [],
+    "openQuestions": [
+      "What exact asymptotic is targeted? Likely: P(collision) → 1 - e^{-k²/(2n)} as n → ∞",
+      "Does the parent file already prove the exact formula or just bounds?"
+    ],
+    "nextSteps": [
+      "Read BirthdayProblem.lean for exact formula content",
+      "Formalize: ∏_{i=0}^{k-1} (1 - i/n) ≈ e^{-k(k-1)/(2n)} via log approximation",
+      "Prove using Mathlib Real.log_le and Taylor bounds"
+    ],
+    "progressSummary": "SURVEY: Parents complete. OQ02 targets tight collision asymptotics. Tractable via log approximation."
+  }
+}
