@@ -64,7 +64,7 @@
     ],
     "dateAdded": "2026-03-22",
     "axiomCount": 0,
-    "lineCount": 158
+    "lineCount": 161
   },
   "overview": {
     "historicalContext": "The Chinese Remainder Theorem was first generalized from integers to arbitrary rings by Emmy Noether's school in the early 20th century. In modern commutative algebra, the CRT is stated for ideals: if I and J are coprime (meaning I + J = R), then R/(I ∩ J) ≅ R/I × R/J. This is Proposition 1.10 in Atiyah-Macdonald. The k-fold version states R/(⨅ Iᵢ) ≅ ∏ R/Iᵢ for pairwise coprime ideals. The key structural insight is that coprime ideals satisfy I ∩ J = I · J, connecting the intersection (lattice operation) with the product (ring operation).",
@@ -74,7 +74,8 @@
       "The ideal-theoretic CRT is an immediate consequence of Mathlib's quotientInfRingEquivPiQuotient",
       "The original contribution is in connecting coprimality conditions, proving I∩J = I·J, and establishing inheritance",
       "The element-level proof of I∩J = I·J uses x = x·1 = x·(a+b) = x·a + x·b decomposition",
-      "Coprimality inheritance uses IsCoprime.mul_right plus J·K ≤ J∩K (Ideal.mul_le_inf)"
+      "Coprimality inheritance uses IsCoprime.mul_right plus J·K ≤ J∩K (Ideal.mul_le_inf)",
+      "The formalization's value lies not in the CRT itself (one Mathlib call) but in making coprimality explicit, connecting ∩ with ·, and proving closure properties needed for applications"
     ]
   },
   "sections": [
@@ -88,8 +89,8 @@
     {
       "id": "two-fold-crt",
       "title": "Two-Fold CRT",
-      "startLine": 42,
-      "endLine": 60,
+      "startLine": 51,
+      "endLine": 69,
       "summary": "The 2-fold ideal CRT: R/(I∩J) ≅ R/I × R/J for coprime ideals, wrapping Mathlib's quotientInfEquivQuotientProd with surjectivity and injectivity."
     },
     {
