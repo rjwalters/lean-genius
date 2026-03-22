@@ -109,5 +109,24 @@
       "How does the theorem relate to strongly regular graphs?",
       "What is the computational complexity of checking the friendship property?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Rényi, Alfréd; Sós, Vera T.",
+      "title": "On a problem of graph theory",
+      "year": "1966",
+      "venue": "Studia Scientiarum Mathematicarum Hungarica, 1, pp. 215-235",
+      "note": "Original proof of the Friendship Theorem using spectral methods — every friendship graph is a windmill"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "friendship-theorem-oq-01",
+      "relationship": "child",
+      "description": "Open question proving regularity and spectral analysis components used by this main theorem"
+    }
+  ],
+  "relatedProofs": [
+    "friendship-theorem-oq-01"
+  ]
 }
