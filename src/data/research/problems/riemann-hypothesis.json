@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 9 proved theorems to Consequences file (PrimeGaps section, unconditional structure). All 42 axioms confirmed non-provable from Mathlib v4.26.0. Docker build passes.",
+    "progressSummary": "PROGRESS: 3 soundness fixes (liCoefficient/li_criterion inconsistency, auto-bound RiemannHypothesisStatement, eulerMascheroniGamma duplicate). Axioms: 33→32 main, 9 consequences. Docker build passes.",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",
@@ -116,7 +116,10 @@
       "RSA-RH independence: RH helps cryptography more than it hurts",
       "Deleted 5 unused axioms: selberg_degree_zero, rh_nth_prime_estimate, riemann_siegel_z_function, linnik_constant_pos, sixth_moment_upper_bound",
       "PrimeGaps section filled: rh_psi_lower_bound, rh_psi_relative_error, rh_psi_eventually_positive, chebyshevTheta_nonneg, rh_dual_bounds",
-      "Unconditional structure: vonMangoldt_prime_pow, vonMangoldt_le_one, chebyshevPsi_nonneg, mertens_bound_gap"
+      "Unconditional structure: vonMangoldt_prime_pow, vonMangoldt_le_one, chebyshevPsi_nonneg, mertens_bound_gap",
+      "Soundness fix: removed liCoefficient def + li_criterion axiom (was inconsistent)",
+      "Soundness fix: rh_prime_gap_bound now uses correct RiemannHypothesis type",
+      "Cleanup: eulerMascheroniGamma → eulerMascheroni (Mathlib)"
     ],
     "insights": [
       "RH_implies_prime_gap_bound",
@@ -150,7 +153,10 @@
       "After 83→50 cleanup, another 16% of axioms (8 of 50) were documentation-only dead weight. All 42 remaining axioms are genuinely load-bearing in proofs.",
       "All 42 remaining axioms are genuinely deep number theory results, not provable from current Mathlib (v4.26.0)",
       "zeta_conj requires identity theorem for antiholomorphic compositions - Mathlib has half-plane version only",
-      "no_real_zeros_in_strip requires eta function or sign analysis on (0,1) - neither available in Mathlib"
+      "no_real_zeros_in_strip requires eta function or sign analysis on (0,1) - neither available in Mathlib",
+      "CRITICAL BUG FIX: liCoefficient was a concrete def using leading-term asymptotic, not true Li coefficients. For n≈50+, this approximation goes negative. Combined with li_criterion axiom, could derive ¬RH. Fixed by removing liCoefficient and li_criterion, using existing opaque liConstant + RH_iff_LiPositivity instead.",
+      "BUG FIX: rh_prime_gap_bound, rh_gap_sublinear, rh_short_interval_primes used undefined RiemannHypothesisStatement (auto-bound as implicit variable, making axioms vacuous). Fixed to use local RiemannHypothesis.",
+      "Cleanup: Removed opaque eulerMascheroniGamma (duplicate of eulerMascheroni = Real.eulerMascheroniConstant). Volchkov criterion now uses the concrete Mathlib constant."
     ],
     "mathlibGaps": [
       "Dirichlet series",
@@ -182,5 +188,12 @@
   "lastUpdate": "2026-03-20T19:45:00.000Z",
   "completed": "2026-03-15T17:29:13.116Z",
   "significance": 10,
-  "tractability": 1
+  "tractability": 1,
+  "leanFiles": [
+    {
+      "axiomCount": 32,
+      "lineCount": 6594,
+      "sorryCount": 0
+    }
+  ]
 }

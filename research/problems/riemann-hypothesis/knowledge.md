@@ -1,5 +1,51 @@
 # Knowledge Base: Riemann Hypothesis
 
+## Session 2026-03-22 (researcher-1) - 3 Soundness Fixes
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 69)
+**Outcome**: progress — fixed 3 soundness bugs, eliminated 1 axiom + 1 opaque
+
+### Bug 1: CRITICAL — liCoefficient/li_criterion inconsistency
+
+The `liCoefficient` function was a concrete `noncomputable def`:
+```
+liCoefficient(n) = n * log(4π) + n * γ - (n-1) * log(n)
+```
+This is the **leading term** of the asymptotic expansion λ_n, NOT the actual Li coefficient (which is a sum over non-trivial zeros). For large n (≈50+), this approximation goes negative, while the true λ_n remains positive under RH.
+
+Combined with the `li_criterion` axiom `RH ↔ ∀n≥1, liCoefficient n ≥ 0`, one could derive `¬RH` by showing `liCoefficient 100 < 0` (provable from log bounds).
+
+**Fix**: Removed `liCoefficient` def and `li_criterion` axiom entirely. The correct Li criterion was already stated at Part LIV using opaque `liConstant` + `RH_iff_LiPositivity`. Updated `li_criterion_sharp` to use the sound version.
+
+**Net**: -1 axiom (`li_criterion`), -1 def (`liCoefficient`), -1 theorem (`li_first_positive`)
+
+### Bug 2: Auto-bound RiemannHypothesisStatement
+
+`rh_prime_gap_bound`, `rh_gap_sublinear`, and `rh_short_interval_primes` used
+`RiemannHypothesisStatement` which is NOT defined in scope. Lean auto-bound it as
+`{RiemannHypothesisStatement : Sort u_1}`, making the axioms universally quantified
+over all types — completely vacuous.
+
+**Fix**: Replaced all 3 occurrences with local `RiemannHypothesis`.
+
+### Bug 3: Duplicate eulerMascheroniGamma opaque
+
+`eulerMascheroniGamma` was an opaque `ℝ` duplicating the existing `eulerMascheroni`
+(= `Real.eulerMascheroniConstant` from Mathlib). Used only in `volchkov_criterion`.
+
+**Fix**: Removed opaque, replaced with `eulerMascheroni`. The Volchkov criterion
+now references the concrete Mathlib constant.
+
+**Net**: -1 opaque
+
+### Stats After Changes
+- Main: 6594 lines, 32 axioms (was 33), 12 opaques (was 13), 0 sorries
+- Consequences: 1735 lines, 9 axioms, 9 opaques, 0 sorries
+- Combined: 8329 lines, 41 axioms (was 42), 0 sorries
+- Docker build passes for both files
+
+---
+
 ## Session 2026-03-22 (researcher-5) - Proved zeta_conj for Re(s) < 0
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 64)
