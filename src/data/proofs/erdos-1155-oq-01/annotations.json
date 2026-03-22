@@ -48,6 +48,21 @@
     "tags": ["axioms", "asymptotics", "bfl-bounds"]
   },
   {
+    "id": "ann-e1155-conjecture-def",
+    "proofId": "erdos-1155-oq-01",
+    "range": {
+      "startLine": 97,
+      "endLine": 107
+    },
+    "type": "definition",
+    "title": "Erdős Conjecture as a Lean Proposition",
+    "content": "The full Erdős conjecture is formalized as a single `Prop`: there exist positive constants $c_1 \\leq c_2$ such that $c_1 n^{3/2} \\leq f(n) \\leq c_2 n^{3/2}$ for all sufficiently large $n$. The requirement $c_1 \\leq c_2$ is built into the definition (not derived later), encoding the non-crossing condition that makes the two-sided bound consistent.\n\nThis definition is the target against which all structural theorems in the file are stated — decomposition, hierarchy, sufficient conditions, and tightness all reference `erdos_1155_conjecture` directly.",
+    "mathContext": "$\\text{erdos\\_1155\\_conjecture} := \\exists c_1, c_2 \\in \\mathbb{R},\\; 0 < c_1 \\leq c_2 \\;\\wedge\\; \\forall^\\infty n,\\; c_1 n^{3/2} \\leq f(n) \\leq c_2 n^{3/2}$",
+    "significance": "key",
+    "relatedConcepts": ["Θ-notation", "existential quantification", "Filter.Eventually"],
+    "prerequisites": ["triangleRemovalEdges", "atTop", "Real.rpow"]
+  },
+  {
     "id": "ann-e1155-bfl-sandwich",
     "proofId": "erdos-1155-oq-01",
     "range": {
