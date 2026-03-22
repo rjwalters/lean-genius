@@ -16,7 +16,8 @@
       "weird-numbers",
       "abundancy",
       "subset-sum"
-    ]
+    ],
+    "prerequisites": ["Divisor function", "Abundant numbers", "Subset-sum problem"]
   },
   {
     "id": "erdos-825-divisor-defs",
@@ -34,7 +35,8 @@
       "sigma-function",
       "abundant-numbers",
       "number-theory"
-    ]
+    ],
+    "prerequisites": ["Finset.filter", "Finset.sum", "Divisibility"]
   },
   {
     "id": "erdos-825-semiperfect",
@@ -52,7 +54,8 @@
       "subset-sum",
       "perfect-numbers",
       "NP-completeness"
-    ]
+    ],
+    "prerequisites": ["properDivisors", "Finset subset", "Finset.sum"]
   },
   {
     "id": "erdos-825-weird",
@@ -69,7 +72,8 @@
     "relatedConcepts": [
       "weird-numbers",
       "rare-sequences"
-    ]
+    ],
+    "prerequisites": ["IsAbundant", "IsSemiperfect"]
   },
   {
     "id": "erdos-825-examples",
@@ -86,7 +90,8 @@
     "relatedConcepts": [
       "smallest-weird",
       "exhaustive-check"
-    ]
+    ],
+    "prerequisites": ["IsWeird", "divisorSum"]
   },
   {
     "id": "erdos-825-lower",
@@ -103,7 +108,8 @@
     "relatedConcepts": [
       "lower-bound",
       "counterexample"
-    ]
+    ],
+    "prerequisites": ["weird_70", "sigma_70", "IsSemiperfect"]
   },
   {
     "id": "erdos-825-odd-weird",
@@ -121,7 +127,8 @@
       "odd-weird",
       "erdos-470",
       "open-problem"
-    ]
+    ],
+    "prerequisites": ["IsWeird", "abundancy", "Even/odd classification"]
   },
   {
     "id": "erdos-825-conjecture",
@@ -139,6 +146,7 @@
       "erdos-prize",
       "open-problem",
       "abundancy-threshold"
-    ]
+    ],
+    "prerequisites": ["ErdosProblem825", "necessary_lower_bound", "odd_weird_abundancy_bound"]
   }
 ]
