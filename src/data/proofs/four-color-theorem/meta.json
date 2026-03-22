@@ -50,70 +50,113 @@
       "title": "Introduction",
       "startLine": 1,
       "endLine": 23,
-      "summary": "Overview of the Four Color Theorem, its history from 1852 to 1976, and why it became a landmark in computer-assisted mathematics."
+      "summary": "Overview of the Four Color Theorem, its history from 1852 to 1976, and why it became a landmark in computer-assisted mathematics.",
+      "mathContext": "$\\chi(G) \\leq 4$ for every planar graph $G$. First posed by Guthrie (1852), proved by Appel-Haken (1976)."
     },
     {
       "id": "graph-theory-setup",
       "title": "Graph Theory Foundations",
       "startLine": 25,
       "endLine": 52,
-      "summary": "Defining planar graphs, graph coloring, and the key concepts needed to state the theorem precisely."
+      "summary": "Defining planar graphs, graph coloring, and the key concepts needed to state the theorem precisely.",
+      "mathContext": "A proper $k$-coloring is $c: V \\to \\{1,\\ldots,k\\}$ with $c(u) \\neq c(v)$ for all $\\{u,v\\} \\in E$. $\\chi(G) = \\min\\{k : G \\text{ is } k\\text{-colorable}\\}$."
     },
     {
       "id": "euler-formula",
       "title": "Euler's Formula",
       "startLine": 54,
       "endLine": 77,
-      "summary": "The fundamental constraint on planar graphs: V - E + F = 2, which forces every planar graph to have vertices of degree at most 5."
+      "summary": "The fundamental constraint on planar graphs: V - E + F = 2, which forces every planar graph to have vertices of degree at most 5.",
+      "mathContext": "$V - E + F = 2$ (Euler). Combined with $\\sum \\deg(v) = 2|E|$ and $|E| \\leq 3|V| - 6$, this gives average degree $< 6$."
     },
     {
       "id": "five-color-theorem",
       "title": "The Five Color Theorem",
       "startLine": 79,
       "endLine": 120,
-      "summary": "A warm-up: proving every planar graph is 5-colorable using Kempe chains. This proof works; the difficulty is reducing 5 to 4."
+      "summary": "A warm-up: proving every planar graph is 5-colorable using Kempe chains. This proof works; the difficulty is reducing 5 to 4.",
+      "mathContext": "$\\chi(G) \\leq 5$ for all planar $G$. Proof: induction on $|V|$, removing a vertex of degree $\\leq 5$ and Kempe-chain recoloring."
     },
     {
       "id": "kempe-chains",
       "title": "Kempe Chains",
       "startLine": 122,
       "endLine": 155,
-      "summary": "The technique of swapping colors along alternating paths. Kempe's insight was correct, but his application to four colors was flawed."
+      "summary": "The technique of swapping colors along alternating paths. Kempe's insight was correct, but his application to four colors was flawed.",
+      "mathContext": "A Kempe $(a,b)$-chain at $v$ is the connected component of $v$ in the subgraph induced by vertices colored $a$ or $b$. Swapping $a \\leftrightarrow b$ on a chain preserves properness."
     },
     {
       "id": "reducibility",
       "title": "Reducibility",
       "startLine": 157,
       "endLine": 195,
-      "summary": "A configuration is reducible if any planar graph containing it can be simplified while preserving 4-colorability. This is where computer verification becomes essential."
+      "summary": "A configuration is reducible if any planar graph containing it can be simplified while preserving 4-colorability. This is where computer verification becomes essential.",
+      "mathContext": "Configuration $C$ is reducible if: for any 4-coloring of $G \\setminus C$, some extension to a 4-coloring of $G$ exists (verified via Kempe chain analysis of boundary colorings)."
     },
     {
       "id": "unavoidability",
       "title": "Unavoidability",
       "startLine": 197,
       "endLine": 230,
-      "summary": "Using discharging to prove every planar graph contains at least one reducible configuration from a finite set."
+      "summary": "Using discharging to prove every planar graph contains at least one reducible configuration from a finite set.",
+      "mathContext": "Discharging: assign charge $6 - \\deg(v)$ to each vertex ($\\sum = 12$ by Euler). Redistribute so every vertex has non-negative charge; the rules force a reducible configuration."
     },
     {
       "id": "computer-verification",
       "title": "Computer Verification",
       "startLine": 232,
       "endLine": 265,
-      "summary": "How Appel-Haken's 1976 proof and Gonthier's 2005 Coq formalization verified 1,936 configurations exhaustively."
+      "summary": "How Appel-Haken's 1976 proof and Gonthier's 2005 Coq formalization verified 1,936 configurations exhaustively.",
+      "mathContext": "1,936 reducible configurations verified (Appel-Haken 1976). Gonthier (2005): full Coq formalization, trust reduced to the Coq kernel (~10K lines)."
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem",
       "startLine": 267,
       "endLine": 295,
-      "summary": "Combining unavoidability and reducibility to conclude: no minimal counterexample exists, so all planar graphs are 4-colorable."
+      "summary": "Combining unavoidability and reducibility to conclude: no minimal counterexample exists, so all planar graphs are 4-colorable.",
+      "mathContext": "By contradiction: minimal counterexample $G$ must contain a reducible configuration (unavoidability), but then $G$ is 4-colorable (reducibility) — contradiction."
     },
     {
       "id": "philosophical-implications",
       "title": "Philosophical Implications",
       "startLine": 297,
       "endLine": 330,
-      "summary": "The debate over computer-assisted proofs: can we trust what we cannot humanly verify? How Gonthier's formalization addressed these concerns."
+      "summary": "The debate over computer-assisted proofs: can we trust what we cannot humanly verify? How Gonthier's formalization addressed these concerns.",
+      "mathContext": "The paradigm: from \"trust the computation\" (Appel-Haken) to \"trust the proof checker\" (Gonthier). Coq's kernel is small enough for human audit."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "ramseys-theorem",
+      "relationship": "Both involve graph coloring and combinatorial arguments on graph structure"
+    },
+    {
+      "id": "erdos-807",
+      "relationship": "Both involve graph decomposition problems — bipartite decomposition vs chromatic decomposition"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Appel, K. and Haken, W.",
+      "title": "Every planar map is four colorable",
+      "year": "1976",
+      "venue": "Illinois J. Math. 21, 429-567",
+      "note": "The original computer-assisted proof checking 1,936 configurations"
+    },
+    {
+      "authors": "Gonthier, G.",
+      "title": "Formal proof—the four-color theorem",
+      "year": "2008",
+      "venue": "Notices of the AMS 55(11), 1382-1393",
+      "note": "Complete Coq formalization providing machine-verified certificate"
+    },
+    {
+      "authors": "Robertson, N., Sanders, D.P., Seymour, P.D., and Thomas, R.",
+      "title": "The four-colour theorem",
+      "year": "1997",
+      "venue": "J. Combin. Theory Ser. B 70, 2-44",
+      "note": "Simplified proof reducing to 633 configurations"
     }
   ],
   "conclusion": {
