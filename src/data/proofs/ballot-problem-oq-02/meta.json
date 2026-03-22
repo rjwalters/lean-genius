@@ -40,7 +40,7 @@
       "Lévy Arcsine Law axiom: fraction of positive time has arcsine distribution",
       "Main continuous ballot theorem combining all components (0 sorries)"
     ],
-    "dateAdded": "02/24/26",
+    "dateAdded": "2026-02-24",
     "axiomCount": 3
   },
   "overview": {
@@ -110,6 +110,22 @@
       "endLine": 385,
       "summary": "discrete_ballot_probability: the value (p-q)/(p+q) is a valid probability in [0,1], connecting discrete and continuous formulations.",
       "mathContext": "$P(\\text{A leads throughout}) = (p-q)/(p+q) \\in [0, 1]$ for $p > q$ (Bertrand 1887)"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Lévy, Paul",
+      "title": "Processus stochastiques et mouvement brownien",
+      "year": "1948",
+      "venue": "Gauthier-Villars, Paris",
+      "note": "Definitive treatment of Brownian motion including reflection principle and arcsine laws"
+    },
+    {
+      "authors": "Feller, William",
+      "title": "An Introduction to Probability Theory and Its Applications, Vol. II",
+      "year": "1971",
+      "venue": "Wiley, 2nd ed.",
+      "note": "Chapter on Brownian motion: ballot problem connections, first passage times, and arcsine distributions"
     }
   ],
   "conclusion": {
