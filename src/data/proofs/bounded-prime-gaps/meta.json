@@ -149,6 +149,40 @@
       "Can the exact 246 bound be verified constructively by finding the optimal 50-admissible-tuple and verifying Maynard's sieve applies?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "foundational",
+      "description": "Bertrand's postulate (always a prime between n and 2n) was the first result on bounded prime gaps in a weak sense. Bounded prime gaps strengthens this dramatically: not just one prime in (n,2n], but infinitely many consecutive prime pairs with gap ≤ 246"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "extends",
+      "description": "Infinitude of primes is the coarsest gap result (primes don't stop). Bounded prime gaps refines this to say consecutive primes cluster: lim inf (p_{n+1} - p_n) ≤ 246"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "PNT gives the average prime gap as log p, but bounded prime gaps shows the minimum gap is finite — primes are much more clustered than PNT's average density suggests"
+    },
+    {
+      "targetId": "prime-reciprocal-divergence",
+      "relationship": "related",
+      "description": "The divergence of ∑1/p (proved by Euler) shows primes have positive density in a logarithmic sense — bounded prime gaps shows they cluster in an even stronger pointwise sense"
+    },
+    {
+      "targetId": "riemann-hypothesis",
+      "relationship": "related",
+      "description": "RH implies much stronger prime gap bounds (Cramér's conjecture: gaps O(log²p)) but remains unproved. Zhang's result is unconditional and does not depend on RH — one of its most remarkable features"
+    }
+  ],
+  "relatedProofs": [
+    "bertrands-postulate",
+    "infinitude-primes",
+    "prime-number-theorem",
+    "prime-reciprocal-divergence",
+    "riemann-hypothesis"
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Prime.Basic",
