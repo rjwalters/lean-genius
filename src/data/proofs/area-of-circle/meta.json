@@ -129,6 +129,28 @@
       "targetId": "buffons-needle",
       "relationship": "related",
       "description": "Both involve pi: Buffon's needle gives a probabilistic characterization P = 2/(pi), area of circle gives the geometric characterization A = pi*r^2"
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "foundational",
+      "description": "The Pythagorean theorem defines the metric x² + y² = r² that determines the disk — the area formula A = πr² is the area enclosed by the locus of points satisfying x² + y² ≤ r²"
+    },
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "related",
+      "description": "The annular ring argument A = ∫₀ʳ 2πρ dρ = πr² uses the FTC, and the relationship A'(r) = C(r) = 2πr connects area and circumference via differentiation"
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "related",
+      "description": "Euler's identity e^(iπ) + 1 = 0 connects π to the complex exponential — the same complex plane ℂ that serves as the ambient space for the circle area formalization"
     }
+  ],
+  "relatedProofs": [
+    "angle-trisection",
+    "buffons-needle",
+    "pythagorean-theorem",
+    "fundamental-theorem-calculus",
+    "euler-identity"
   ]
 }
