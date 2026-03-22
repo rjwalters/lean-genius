@@ -19,7 +19,7 @@
     "phase": "ACT",
     "since": "2026-03-21",
     "iteration": 4,
-    "focus": "psi_add FIXED, char_orthogonality RE-PROVED, char_sum_int PROVED. 4 sorries remain. psi_add now available for parseval_on_zmod proof.",
+    "focus": "Session 4 complete: char_orthogonality, char_sum_int, psi_add, conj_psi all proved. parseval_on_zmod is next (all ingredients ready).",
     "blockers": [
       "None. Independent problem, can start immediately."
     ],
@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Re-proved char_orthogonality (fixed Mathlib API regression from commit 02be6994b). Proved NEW char_sum_int (geometric series identity for integer exponents). Reduced file from 7 sorries to 4.",
+    "progressSummary": "PROGRESS: Session 4 proved 4 lemmas: char_orthogonality (API fix), char_sum_int (NEW), psi_add (bugfix), conj_psi (NEW). All parseval ingredients ready.",
     "builtItems": [
       "Fixed apFree_singleton proof, Complex.abs -> norm, added apFree_subset, removed incorrect apFree_pair",
       "Build now succeeds: 0 axioms, 3 sorries",
@@ -39,7 +39,8 @@
       "Proved roth_density_bound: iterate density_iteration, choose K>100/\u03b4\u00b2, density>1 contradicts card_le_nat",
       "Re-proved char_orthogonality: fixed ZMod.val_eq_zero API, replaced conv ext with simp_rw, used exp_eq_one_iff for omega \u2260 1",
       "Proved char_sum_int: \u2211_{j=0}^{N-1} exp(2\u03c0ij\u00b7m/N) = N\u00b7\u03b4(N|m) via geometric series + root_unity_sum_zero + exp_eq_one_iff",
-      "Fixed psi_add: original proof used ring for false equation (k%N)/N \u2260 val(a)/N + val(b)/N. Fix: combine RHS fractions, decompose k/N, absorb integer part"
+      "Fixed psi_add: original proof used ring for false equation (k%N)/N \u2260 val(a)/N + val(b)/N. Fix: combine RHS fractions, decompose k/N, absorb integer part",
+      "Proved conj_psi: starRingEnd \u2102 (\u03c8 x) = \u03c8 (-x) via psi_add + norm_eq_one + mul_left_cancel"
     ],
     "insights": [
       "RothTheorem.lean had 3 build errors: deprecated Finset.not_mem_empty, broken apFree_singleton, non-existent Complex.abs",
