@@ -280,19 +280,20 @@ theorem counting_lemma (G : SimpleGraph V) [DecidableRel G.Adj]
   -- Good neighborhoods are ε-fractions (since d ≥ 2ε means d-ε ≥ ε)
   have hgood_NB_eps : ∀ a ∈ good,
       ((neighborhoodIn G a B).card : ℚ) ≥ eps * B.card :=
-    fun a ha => le_trans (by nlinarith [Nat.cast_nonneg B.card]) (hgood_NB a ha)
+    fun a ha => le_trans (by
+      have := Nat.cast_nonneg (α := ℚ) B.card
+      nlinarith) (hgood_NB a ha)
   have hgood_NC_eps : ∀ a ∈ good,
       ((neighborhoodIn G a C).card : ℚ) ≥ eps * C.card :=
-    fun a ha => le_trans (by nlinarith [Nat.cast_nonneg C.card]) (hgood_NC a ha)
+    fun a ha => le_trans (by
+      have := Nat.cast_nonneg (α := ℚ) C.card
+      nlinarith) (hgood_NC a ha)
   -- Step 3: Good vertex count > (1-2ε)|A|
   have hgood_card : (good.card : ℚ) > (1 - 2 * eps) * A.card := by
     -- |A \ good| ≤ |badB ∪ badC| ≤ |badB| + |badC| < 2ε|A|
     suffices h : (A.card : ℚ) - good.card < 2 * eps * A.card by linarith
     have h_compl_card : (A \ good).card + good.card = A.card :=
-      Finset.sdiff_union_self_eq_union ▸
-        (Finset.card_union_of_disjoint Finset.sdiff_disjoint).symm ▸
-        congrArg Finset.card (Finset.sdiff_union_self_eq_union.trans
-          (Finset.union_eq_left.mpr hgood_sub))
+      Finset.card_sdiff_add_card_eq_card hgood_sub
     have h_sub : A \ good ⊆ badB ∪ badC := by
       intro a ha
       have haA := (Finset.mem_sdiff.mp ha).1
@@ -300,10 +301,12 @@ theorem counting_lemma (G : SimpleGraph V) [DecidableRel G.Adj]
       by_contra h_not
       rw [Finset.mem_union, not_or] at h_not
       exact ha_ng (Finset.mem_filter.mpr ⟨haA, h_not.1, h_not.2⟩)
-    have h_compl_le : ((A \ good).card : ℚ) ≤ badB.card + badC.card :=
-      Nat.cast_le.mpr (le_trans (Finset.card_le_card h_sub) (Finset.card_union_le badB badC))
+    have h_compl_le : ((A \ good).card : ℚ) ≤ badB.card + badC.card := by
+      push_cast
+      exact_mod_cast le_trans (Finset.card_le_card h_sub) (Finset.card_union_le badB badC)
     have : (A.card : ℚ) - good.card = (A \ good).card := by
-      push_cast; linarith [h_compl_card]
+      have hcc : ((A \ good).card : ℚ) + good.card = A.card := by exact_mod_cast h_compl_card
+      linarith
     linarith
   -- Step 4: Fiber decomposition — triangleCount ≥ Σ_{good} perVertexTriangles
   have h_tri_sum : (triangleCount G A B C : ℚ) ≥
@@ -406,7 +409,7 @@ theorem counting_lemma (G : SimpleGraph V) [DecidableRel G.Adj]
     _ ≥ ((1 - 2 * eps) * ↑A.card) * K := by
         exact mul_le_mul_of_nonneg_right (le_of_lt hgood_card) hK_nn
     _ = (1 - 2 * eps) * (dAB - eps) * (dAC - eps) * (dBC - eps) *
-        ↑A.card * ↑B.card * ↑C.card := by unfold_let K; ring
+        ↑A.card * ↑B.card * ↑C.card := by simp only [K]; ring
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART II: TRIANGLE REMOVAL LEMMA
