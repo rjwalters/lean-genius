@@ -137,5 +137,21 @@
   "relatedProofs": [
     "erdos-465",
     "erdos-1089"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Set",
+      "Real"
+    ],
+    "namespace": null,
+    "lineCount": 96,
+    "axiomCount": 6,
+    "theoremCount": 0,
+    "definitionCount": 2
+  }
 }

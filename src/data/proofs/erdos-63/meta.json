@@ -109,5 +109,20 @@
       "Can the Liu-Montgomery bound χ > k → δ > k/2 be improved to δ > (1-ε)k?",
       "Does the result extend to directed graphs: do digraphs with infinite dichromatic number contain directed cycles of length 2^n?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos63",
+    "lineCount": 256,
+    "axiomCount": 8,
+    "theoremCount": 4,
+    "definitionCount": 13
   }
 }

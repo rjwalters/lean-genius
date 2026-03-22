@@ -122,5 +122,21 @@
       "What is the relationship to Erdős Problem #221 (similar questions)?",
       "Can the result be extended to sumsets of more than 2 sets?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Finset",
+      "Nat",
+      "Filter"
+    ],
+    "namespace": "Erdos31",
+    "lineCount": 727,
+    "axiomCount": 1,
+    "theoremCount": 19,
+    "definitionCount": 12
   }
 }

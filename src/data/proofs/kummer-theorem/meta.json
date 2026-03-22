@@ -154,5 +154,21 @@
   "relatedProofs": [
     "erdos-776",
     "binomial-theorem-oq-01"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Multiplicity",
+      "Mathlib.Data.Nat.Choose.Lucas",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "KummerTheorem",
+    "lineCount": 192,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0
+  }
 }

@@ -132,5 +132,22 @@
       "Can Laczkovich's techniques be extended to other convexity-like conditions?",
       "What is the structure of the set of functions satisfying Kemperman's inequality?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Order.Monotone.Basic",
+      "Mathlib.Topology.Order.Basic",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+    ],
+    "opens": [
+      "Set",
+      "MeasureTheory"
+    ],
+    "namespace": "Erdos1125",
+    "lineCount": 175,
+    "axiomCount": 3,
+    "theoremCount": 8,
+    "definitionCount": 6
   }
 }

@@ -81,5 +81,20 @@
       "What is the optimal function f(α) for additive bases?",
       "Are there natural examples of essential components that fail density-boosting?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Filter",
+      "Pointwise"
+    ],
+    "namespace": "Erdos38",
+    "lineCount": 140,
+    "axiomCount": 5,
+    "theoremCount": 0,
+    "definitionCount": 8
   }
 }

@@ -168,5 +168,26 @@
     "erdos-218",
     "bounded-prime-gaps",
     "erdos-219"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Prime.Nth",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Topology.Order.Basic",
+      "Mathlib.Topology.Algebra.Order.LiminfLimsup",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Filter",
+      "Real"
+    ],
+    "namespace": "Erdos238",
+    "lineCount": 235,
+    "axiomCount": 4,
+    "theoremCount": 4,
+    "definitionCount": 10
+  }
 }

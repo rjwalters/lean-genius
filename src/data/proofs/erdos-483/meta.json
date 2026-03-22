@@ -178,5 +178,28 @@
     "ramseys-theorem",
     "erdos-360",
     "erdos-302"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Proofs.SchursTheorem"
+    ],
+    "opens": [
+      "SchursTheorem",
+      "Classical",
+      "in",
+      "Classical",
+      "in",
+      "Classical",
+      "in"
+    ],
+    "namespace": null,
+    "lineCount": 199,
+    "axiomCount": 6,
+    "theoremCount": 12,
+    "definitionCount": 2
+  }
 }

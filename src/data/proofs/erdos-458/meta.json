@@ -81,5 +81,20 @@
       "Can the conjecture be proved unconditionally for sufficiently large k?",
       "What is the relationship to the Riemann Hypothesis?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos458",
+    "lineCount": 182,
+    "axiomCount": 8,
+    "theoremCount": 12,
+    "definitionCount": 4
   }
 }

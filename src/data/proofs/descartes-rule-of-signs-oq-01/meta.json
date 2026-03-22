@@ -141,5 +141,23 @@
       "Does Sturm's theorem (which gives exact counts) imply Descartes' parity as a corollary, or is a direct argument needed?",
       "Can the proof be made constructive (using decidable instances for Polynomial.roots over ℝ via ℂ)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.Polynomial.RuleOfSigns",
+      "Mathlib.Algebra.Polynomial.Roots",
+      "Mathlib.Algebra.Polynomial.Div",
+      "Mathlib.Algebra.Polynomial.Eval.Defs",
+      "Mathlib.Tactic",
+      "Mathlib.Topology.Order.IntermediateValue"
+    ],
+    "opens": [
+      "Polynomial"
+    ],
+    "namespace": "DescartesRuleOQ01",
+    "lineCount": 1075,
+    "axiomCount": 1,
+    "theoremCount": 48,
+    "definitionCount": 1
   }
 }

@@ -152,5 +152,19 @@
       "Extend truncation coverage beyond 19 (23, 29, 31, 37, 41, 43)",
       "How do these rules extend to divisibility in polynomial rings?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Digits.Defs",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "DivisibilityByThreeOQ01",
+    "lineCount": 551,
+    "axiomCount": 0,
+    "theoremCount": 56,
+    "definitionCount": 1
   }
 }

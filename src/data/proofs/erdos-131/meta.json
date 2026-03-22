@@ -158,5 +158,18 @@
       "Can the Straus lower bound $\\exp(c\\sqrt{\\log N})$ be improved to polynomial? This would require fundamentally new constructions of large non-dividing sets.",
       "Is there a structural characterization of optimal non-dividing sets? The OEIS sequence A068063 contains computed values that might suggest patterns."
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Classical"
+    ],
+    "namespace": "Erdos131",
+    "lineCount": 478,
+    "axiomCount": 0,
+    "theoremCount": 27,
+    "definitionCount": 6
   }
 }

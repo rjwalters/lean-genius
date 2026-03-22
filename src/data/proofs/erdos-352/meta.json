@@ -150,5 +150,23 @@
       "Is there a continuous version: for measure >= c + epsilon, must there be a triangle of area >= 1 + delta?",
       "What happens in higher dimensions (tetrahedra of volume 1 in R^3)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.LinearAlgebra.Determinant",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Set"
+    ],
+    "namespace": "Erdos352",
+    "lineCount": 241,
+    "axiomCount": 10,
+    "theoremCount": 5,
+    "definitionCount": 10
   }
 }

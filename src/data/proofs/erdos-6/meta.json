@@ -112,5 +112,19 @@
       "Can we find explicit examples of long monotone sequences?",
       "What is the smallest n with d_n < d_{n+1} < ... < d_{n+10}?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Set"
+    ],
+    "namespace": "Erdos6",
+    "lineCount": 205,
+    "axiomCount": 5,
+    "theoremCount": 10,
+    "definitionCount": 7
   }
 }

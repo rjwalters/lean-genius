@@ -100,5 +100,21 @@
       "How does this generalize to higher-dimensional simplicial numbers?",
       "What is the relationship to the Riemann zeta function at negative integers?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.BigOperators.Intervals",
+      "Mathlib.Algebra.BigOperators.Ring.Finset",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "ArithmeticSeries",
+    "lineCount": 188,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 1
   }
 }

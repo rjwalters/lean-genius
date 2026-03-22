@@ -141,5 +141,20 @@
       "Can polarity graphs over finite fields (which are C₄-free and near-extremally dense) be augmented with C₄'s while maintaining a rainbow coloring?",
       "Does the answer change if we replace C₄ with other small cycles (C₅, C₆) or with complete bipartite graphs?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Finite",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Erdos810",
+    "lineCount": 122,
+    "axiomCount": 2,
+    "theoremCount": 1,
+    "definitionCount": 5
   }
 }

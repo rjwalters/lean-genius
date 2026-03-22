@@ -111,5 +111,20 @@
       "How does the answer change for other posets (e.g., divisibility lattice)?",
       "What are the implications for counting monotone Boolean functions?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 87,
+    "axiomCount": 10,
+    "theoremCount": 0,
+    "definitionCount": 3
   }
 }

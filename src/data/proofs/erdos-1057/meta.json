@@ -234,5 +234,21 @@
       "Are there Carmichael numbers with exactly $k$ prime factors for every $k \\geq 3$? What is the smallest with $k$ factors?",
       "Can Korselt's theorem (equivalence of Korselt criterion and Fermat property) be fully verified in Lean, removing the axiom?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "BigOperators",
+      "Finset",
+      "Classical"
+    ],
+    "namespace": null,
+    "lineCount": 1114,
+    "axiomCount": 6,
+    "theoremCount": 66,
+    "definitionCount": 14
   }
 }

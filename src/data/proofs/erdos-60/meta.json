@@ -209,5 +209,20 @@
       "Determine the exact constant c in the lower bound countC4(G) ≥ c·n^{1/2}",
       "Does the conjecture generalize to C_6, C_8, and other even cycles?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos60",
+    "lineCount": 386,
+    "axiomCount": 8,
+    "theoremCount": 10,
+    "definitionCount": 12
   }
 }

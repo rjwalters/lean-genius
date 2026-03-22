@@ -145,5 +145,23 @@
       "Computational aspects of finding optimal prime sets",
       "Connections to the Dickman function and smooth number asymptotics"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.NumberTheory.PrimeCounting"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos983",
+    "lineCount": 230,
+    "axiomCount": 8,
+    "theoremCount": 1,
+    "definitionCount": 9
   }
 }

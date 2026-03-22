@@ -131,5 +131,21 @@
       "Is the p-adic Littlewood conjecture (de Mathan–Teulié) true for all primes p and all reals α?",
       "What is the relationship between the Littlewood conjecture and the theory of continued fractions for pairs of reals?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Erdos495",
+    "lineCount": 189,
+    "axiomCount": 7,
+    "theoremCount": 1,
+    "definitionCount": 4
   }
 }

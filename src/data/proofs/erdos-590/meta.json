@@ -139,5 +139,21 @@
       "Does the limit ordinal restoration principle hold: $\\omega^\\alpha \\to (\\omega^\\alpha, 3)^2$ for every limit ordinal $\\alpha$? (Problem #592)",
       "Can Chang's proof be effectivized to give explicit bounds on the Ramsey numbers for finite approximations?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Ordinal.Arithmetic",
+      "Mathlib.SetTheory.Ordinal.Exponential",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Ordinal"
+    ],
+    "namespace": "Erdos590",
+    "lineCount": 239,
+    "axiomCount": 5,
+    "theoremCount": 14,
+    "definitionCount": 2
   }
 }

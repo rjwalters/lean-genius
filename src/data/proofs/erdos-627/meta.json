@@ -165,5 +165,21 @@
       "id": "erdos-613",
       "relationship": "Both involve Ramsey-theoretic phenomena in graph theory—erdos-613 addresses size Ramsey numbers while erdos-627 uses Ramsey bounds to constrain the χ/ω limit"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Function",
+      "SimpleGraph",
+      "Nat"
+    ],
+    "namespace": "Erdos627",
+    "lineCount": 253,
+    "axiomCount": 8,
+    "theoremCount": 13,
+    "definitionCount": 14
+  }
 }

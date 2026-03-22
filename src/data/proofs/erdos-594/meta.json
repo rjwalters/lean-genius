@@ -137,5 +137,24 @@
       "What is the exact relationship between girth and the threshold N₀?",
       "Do similar results hold for even cycles?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Coloring",
+      "Mathlib.Data.Nat.Parity"
+    ],
+    "opens": [
+      "Cardinal",
+      "Set",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos594",
+    "lineCount": 271,
+    "axiomCount": 9,
+    "theoremCount": 4,
+    "definitionCount": 9
   }
 }

@@ -87,5 +87,20 @@
       "Can the lower bound be improved beyond $k^{1+1/(2n)}$ using algebraic constructions for general $n$?",
       "How do the bounds change for odd cycles $C_{2n+1}$?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 95,
+    "axiomCount": 5,
+    "theoremCount": 0,
+    "definitionCount": 4
   }
 }

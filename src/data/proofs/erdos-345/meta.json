@@ -154,5 +154,23 @@
       "proofId": "erdos-344",
       "relationship": "Problem 344 studies subcomplete sequences — Problem 345 extends to completeness thresholds for power sequences, a related structural question"
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 97,
+    "axiomCount": 11,
+    "theoremCount": 0,
+    "definitionCount": 4
+  },
+  "relatedProofs": [
+    "",
+    ""
   ]
 }

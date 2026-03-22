@@ -170,5 +170,23 @@
       "Does the abc conjecture give effective bounds improving on Mahler's n^{1+o(1)}?",
       "Can the 5 sorries (limsup_infinite, power2/3_consecutive, steinerberger_gives_large_smooth) be resolved via Mathlib tactics?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.NumberTheory.Padics.PadicVal"
+    ],
+    "opens": [
+      "Nat",
+      "Real"
+    ],
+    "namespace": "Erdos933",
+    "lineCount": 231,
+    "axiomCount": 6,
+    "theoremCount": 9,
+    "definitionCount": 12
   }
 }

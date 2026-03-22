@@ -153,5 +153,25 @@
       "Do similar bounded-parameter phenomena hold for other graph coloring variants?",
       "Can the Rödl-Tuza result be extended to list-chromatic or fractional chromatic critical graphs?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Nat.Defs",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Order.Filter.AtTopBot",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos744",
+    "lineCount": 343,
+    "axiomCount": 6,
+    "theoremCount": 8,
+    "definitionCount": 10
   }
 }

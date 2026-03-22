@@ -130,5 +130,21 @@
       "What other famous 'proofs' contain similar fallacies that Lean would catch? (e.g., 1 = 2 proofs involving division by zero)",
       "Could we build a Lean library that allows manipulating divergent series with explicit regularization schemes?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+      "Mathlib.Analysis.Normed.Field.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "RamanujanFallacy",
+    "lineCount": 283,
+    "axiomCount": 2,
+    "theoremCount": 13,
+    "definitionCount": 3
   }
 }

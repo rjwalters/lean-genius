@@ -119,5 +119,20 @@
       "Can we improve the general bound beyond exp(c√(log n · log log n))?",
       "Is there a uniform c that works for all H on k vertices?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "SimpleGraph",
+      "Real"
+    ],
+    "namespace": "Erdos61",
+    "lineCount": 149,
+    "axiomCount": 3,
+    "theoremCount": 0,
+    "definitionCount": 4
   }
 }

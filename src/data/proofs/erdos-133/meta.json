@@ -146,5 +146,22 @@
       "What happens for diameter k ≥ 3?",
       "Can the polarity graph approach be improved with more sophisticated finite geometry?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos133",
+    "lineCount": 165,
+    "axiomCount": 13,
+    "theoremCount": 1,
+    "definitionCount": 6
   }
 }

@@ -159,5 +159,24 @@
       "Characterization of which specific rationals can be achieved from alpha-dense sets",
       "Algorithmic aspects: efficient computation of optimal S for given A"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Data.Rat.Order",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos310",
+    "lineCount": 336,
+    "axiomCount": 6,
+    "theoremCount": 12,
+    "definitionCount": 6
   }
 }

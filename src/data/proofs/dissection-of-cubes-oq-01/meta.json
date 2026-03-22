@@ -120,5 +120,21 @@
       "Can the volume constraint (∑ c.side³ = 1) be combined with disjointness to derive a better lower bound?",
       "Does Littlewood's cascade imply a super-constant lower bound (e.g., ≥ log n for n-cube dissections)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Proofs.DissectionOfCubes"
+    ],
+    "opens": [
+      "DissectionOfCubes"
+    ],
+    "namespace": "DissectionOfCubesOQ01",
+    "lineCount": 280,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 4
   }
 }

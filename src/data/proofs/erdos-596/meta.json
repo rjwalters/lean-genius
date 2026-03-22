@@ -157,5 +157,19 @@
       "relationship": "foundational",
       "description": "Classical Ramsey theorem — the finite Ramsey property generalizes Ramsey's theorem to forbidden subgraph classes"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Erdos596",
+    "lineCount": 147,
+    "axiomCount": 4,
+    "theoremCount": 3,
+    "definitionCount": 9
+  }
 }

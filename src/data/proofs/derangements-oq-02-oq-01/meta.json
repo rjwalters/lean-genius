@@ -140,5 +140,21 @@
       "Apply the transport methodology to other Fin n permutation results (e.g., cycle index polynomials)",
       "Connect to Burnside's lemma for group actions on finite sets"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.DerangementsOQ02"
+    ],
+    "opens": [
+      "Finset",
+      "Fintype",
+      "Nat",
+      "Equiv.Perm"
+    ],
+    "namespace": "PartialDerangementsGeneral",
+    "lineCount": 124,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0
   }
 }

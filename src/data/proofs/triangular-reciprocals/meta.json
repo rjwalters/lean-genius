@@ -153,5 +153,26 @@
   "relatedProofs": [
     "basel-problem",
     "arithmetic-series"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecificLimits.Basic",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+      "Mathlib.Algebra.BigOperators.Ring.Finset",
+      "Mathlib.Analysis.PSeries",
+      "Mathlib.Analysis.Normed.Group.InfiniteSum",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "TriangularNumberReciprocals",
+    "lineCount": 306,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 1
+  }
 }

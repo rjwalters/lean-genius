@@ -125,5 +125,24 @@
       "Is F(n) ~ (1/2)n log log n for almost all n?",
       "Do max f and max F coincide for large x?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.ArithmeticFunction",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Real",
+      "Nat",
+      "BigOperators"
+    ],
+    "namespace": "Erdos878",
+    "lineCount": 231,
+    "axiomCount": 7,
+    "theoremCount": 4,
+    "definitionCount": 12
   }
 }

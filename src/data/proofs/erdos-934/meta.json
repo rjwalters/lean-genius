@@ -153,5 +153,21 @@
       "Is there a nice closed form for general h_t(d)?",
       "What are the extremal graphs for h_t(d)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Metric",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos934",
+    "lineCount": 262,
+    "axiomCount": 11,
+    "theoremCount": 10,
+    "definitionCount": 9
   }
 }

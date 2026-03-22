@@ -147,5 +147,26 @@
       "Can the Erdős–Turán lower bound log(n) ≪ f(n) be improved?",
       "Are there structural characterizations of extremal sets achieving f(n)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Analysis.SpecificLimits.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Analysis.Asymptotics.Asymptotics",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Filter",
+      "Asymptotics"
+    ],
+    "namespace": "Erdos126",
+    "lineCount": 171,
+    "axiomCount": 7,
+    "theoremCount": 1,
+    "definitionCount": 2
   }
 }

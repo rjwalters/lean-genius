@@ -116,5 +116,23 @@
       "Is the result independent of ZFC? The use of Zorn's lemma and cardinal arithmetic suggests possible set-theoretic sensitivity.",
       "Does the analogous result hold in other abelian groups, e.g., $\\mathbb{Z}$, $\\mathbb{Z}/n\\mathbb{Z}$, or $\\mathbb{F}_p^n$?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Continuum",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Set"
+    ],
+    "namespace": null,
+    "lineCount": 121,
+    "axiomCount": 2,
+    "theoremCount": 5,
+    "definitionCount": 4
   }
 }

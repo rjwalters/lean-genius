@@ -144,5 +144,23 @@
       "What is the threshold exponent for regular bipartite graphs?",
       "Exact formalization of Janzer's subdivision construction"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos113",
+    "lineCount": 272,
+    "axiomCount": 21,
+    "theoremCount": 3,
+    "definitionCount": 3
   }
 }

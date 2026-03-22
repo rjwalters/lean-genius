@@ -179,5 +179,23 @@
   "relatedProofs": [
     "erdos-696",
     "erdos-698"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [
+      "Real",
+      "Nat"
+    ],
+    "namespace": "Erdos697",
+    "lineCount": 240,
+    "axiomCount": 7,
+    "theoremCount": 6,
+    "definitionCount": 8
+  }
 }

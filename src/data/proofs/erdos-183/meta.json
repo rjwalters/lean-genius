@@ -125,5 +125,20 @@
       "Can the lower bound 380^{k/5} be improved?",
       "Is there a construction giving R(3;k) = o(k!)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "SimpleGraph",
+      "Classical"
+    ],
+    "namespace": "Erdos183",
+    "lineCount": 242,
+    "axiomCount": 13,
+    "theoremCount": 4,
+    "definitionCount": 13
   }
 }

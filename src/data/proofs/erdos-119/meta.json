@@ -102,5 +102,24 @@
       "Can Beck's harmonic analysis methods be extended to address cumulative bounds, or does Part 3 require entirely new techniques?",
       "For which root configurations $(z_i)$ is $M_n$ minimized? The classical Chebyshev problem variant on the circle is not fully resolved."
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Complex.Circle",
+      "Mathlib.Analysis.NormedSpace.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Topology.Algebra.Order.LiminfLimsup",
+      "Mathlib.Topology.Order.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Filter",
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 116,
+    "axiomCount": 6,
+    "theoremCount": 2,
+    "definitionCount": 3
   }
 }

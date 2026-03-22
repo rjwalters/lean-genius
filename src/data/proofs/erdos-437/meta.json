@@ -168,5 +168,24 @@
       "What happens for non-increasing sequences?",
       "Connection to the abc conjecture?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Squarefree",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.List.Basic"
+    ],
+    "opens": [
+      "Real",
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos437",
+    "lineCount": 301,
+    "axiomCount": 8,
+    "theoremCount": 5,
+    "definitionCount": 9
   }
 }

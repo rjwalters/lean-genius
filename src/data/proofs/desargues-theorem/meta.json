@@ -144,5 +144,23 @@
       "What is the relationship between Desargues's theorem and the fundamental theorem of projective geometry in a formal setting?",
       "Can we formalize the self-duality property of the theorem explicitly?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.LinearAlgebra.Dimension.Finrank",
+      "Mathlib.LinearAlgebra.FiniteDimensional.Defs",
+      "Mathlib.LinearAlgebra.Matrix.Determinant.Basic",
+      "Mathlib.LinearAlgebra.CrossProduct",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Matrix"
+    ],
+    "namespace": null,
+    "lineCount": 448,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 14
   }
 }

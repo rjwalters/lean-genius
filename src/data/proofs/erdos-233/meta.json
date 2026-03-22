@@ -125,5 +125,21 @@
       "Does Cramér's conjecture hold: is dₙ = O((log pₙ)²)?",
       "What is the true asymptotic growth rate of Σ dₙ²?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Filter",
+      "Real",
+      "BigOperators"
+    ],
+    "namespace": "Erdos233",
+    "lineCount": 161,
+    "axiomCount": 6,
+    "theoremCount": 1,
+    "definitionCount": 5
   }
 }

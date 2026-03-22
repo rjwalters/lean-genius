@@ -173,5 +173,22 @@
       "Can similar results be proved for other target sums (e.g., ∑ 1/n = 2)?",
       "What about higher-dimensional analogues (sums of 1/n^k)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Data.Rat.Defs",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos298",
+    "lineCount": 265,
+    "axiomCount": 17,
+    "theoremCount": 3,
+    "definitionCount": 7
   }
 }

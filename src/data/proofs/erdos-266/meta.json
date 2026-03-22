@@ -113,5 +113,25 @@
       "What is the growth rate of the counterexample sequence?",
       "Are there 'natural' sequences (like n² or prime-indexed) where some shift is irrational?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Real.Irrational",
+      "Mathlib.Topology.Algebra.InfiniteSum.Real",
+      "Mathlib.Data.Rat.Cast.Lemmas",
+      "Mathlib.Topology.Algebra.InfiniteSum.Order",
+      "Mathlib.Analysis.SpecificLimits.Basic",
+      "Mathlib.Analysis.PSeries"
+    ],
+    "opens": [
+      "Set",
+      "Filter",
+      "BigOperators"
+    ],
+    "namespace": "Erdos266",
+    "lineCount": 151,
+    "axiomCount": 2,
+    "theoremCount": 3,
+    "definitionCount": 1
   }
 }

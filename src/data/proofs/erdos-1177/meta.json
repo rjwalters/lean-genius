@@ -122,5 +122,19 @@
     "erdos-1176",
     "erdos-1171",
     "erdos-1104"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Order.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Erdos1177",
+    "lineCount": 207,
+    "axiomCount": 18,
+    "theoremCount": 4,
+    "definitionCount": 6
+  }
 }

@@ -90,5 +90,20 @@
       "Do similar results hold in higher dimensions?",
       "What other distance patterns characterize specific configurations?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.EuclideanDist",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos958",
+    "lineCount": 201,
+    "axiomCount": 2,
+    "theoremCount": 1,
+    "definitionCount": 10
   }
 }

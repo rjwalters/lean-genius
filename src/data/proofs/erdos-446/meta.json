@@ -122,5 +122,21 @@
       "How does the distribution of divisor counts vary with n?",
       "Can similar results be proved for intervals (n, cn) with c ≠ 2?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Topology.Instances.Real"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "Erdos446",
+    "lineCount": 164,
+    "axiomCount": 12,
+    "theoremCount": 2,
+    "definitionCount": 5
   }
 }

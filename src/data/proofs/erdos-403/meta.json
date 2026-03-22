@@ -144,5 +144,23 @@
       "Do analogous finiteness results hold for other exponential bases b^m = Σaᵢ! beyond b=2 and b=3?",
       "Is there a uniform proof strategy for all prime powers p^m, or does each prime require separate 2-adic-style analysis?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Finset",
+      "Nat",
+      "BigOperators"
+    ],
+    "namespace": "Erdos403",
+    "lineCount": 357,
+    "axiomCount": 9,
+    "theoremCount": 15,
+    "definitionCount": 8
   }
 }

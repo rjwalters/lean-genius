@@ -130,5 +130,18 @@
       "For which x does π(x+y) ≤ π(x) + π(y) hold for all y < x?",
       "Can the Montgomery-Vaughan bound be improved unconditionally?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos855",
+    "lineCount": 187,
+    "axiomCount": 7,
+    "theoremCount": 2,
+    "definitionCount": 6
   }
 }

@@ -157,5 +157,25 @@
       "Precise threshold f* where lim F(f*, n) first becomes ∞",
       "Quantitative versions of almost-all results"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Order.Interval.Set.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "BigOperators",
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos420",
+    "lineCount": 311,
+    "axiomCount": 13,
+    "theoremCount": 5,
+    "definitionCount": 3
   }
 }

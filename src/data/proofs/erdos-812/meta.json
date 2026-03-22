@@ -188,5 +188,18 @@
       "Does the 2023 upper bound improvement $R(n) \\leq (4-\\varepsilon)^n$ have implications for consecutive ratios or differences?",
       "Can the two-step almost-quadratic bound $R(n+2) - R(n) \\gg n^{2-o(1)}$ be improved to a true quadratic bound $R(n+2) - R(n) \\geq Cn^2$? What about the three-step gap?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos812",
+    "lineCount": 174,
+    "axiomCount": 7,
+    "theoremCount": 1,
+    "definitionCount": 2
   }
 }

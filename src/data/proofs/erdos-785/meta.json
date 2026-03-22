@@ -135,5 +135,23 @@
       "Connection to Erdős-Turán conjecture on additive bases",
       "Probabilistic models for complement pairs"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.Asymptotics.Asymptotics"
+    ],
+    "opens": [
+      "Nat",
+      "Set",
+      "Finset"
+    ],
+    "namespace": "Erdos785",
+    "lineCount": 212,
+    "axiomCount": 4,
+    "theoremCount": 3,
+    "definitionCount": 9
   }
 }

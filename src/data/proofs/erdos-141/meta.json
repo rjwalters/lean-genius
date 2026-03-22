@@ -114,5 +114,20 @@
       "What is the relationship between prime gaps and AP existence?",
       "Can probabilistic methods give heuristic answers?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "Erdos141",
+    "lineCount": 172,
+    "axiomCount": 3,
+    "theoremCount": 9,
+    "definitionCount": 9
   }
 }

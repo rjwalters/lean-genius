@@ -140,5 +140,21 @@
       "Can the Connor-Marmorino lower bound be improved?",
       "What is the exact growth rate of c(n)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "Erdos769",
+    "lineCount": 159,
+    "axiomCount": 17,
+    "theoremCount": 3,
+    "definitionCount": 3
   }
 }

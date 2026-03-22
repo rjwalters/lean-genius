@@ -148,5 +148,19 @@
   "relatedProofs": [
     "erdos-909",
     "borsuk-ulam"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Cardinal"
+    ],
+    "namespace": "Erdos910",
+    "lineCount": 156,
+    "axiomCount": 1,
+    "theoremCount": 6,
+    "definitionCount": 7
+  }
 }

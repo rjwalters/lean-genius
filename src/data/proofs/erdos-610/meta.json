@@ -177,5 +177,20 @@
       "What is the exact constant in the O(1) term of the EGT bound τ ≤ n - √(2n) + O(1)?",
       "For which graph classes beyond chordal and perfect can τ be computed efficiently?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Function",
+      "SimpleGraph"
+    ],
+    "namespace": null,
+    "lineCount": 223,
+    "axiomCount": 1,
+    "theoremCount": 13,
+    "definitionCount": 16
   }
 }

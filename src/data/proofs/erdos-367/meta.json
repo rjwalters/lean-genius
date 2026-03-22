@@ -208,5 +208,25 @@
     "erdos-366",
     "erdos-369",
     "erdos-368"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Data.Nat.Squarefree",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos367",
+    "lineCount": 296,
+    "axiomCount": 11,
+    "theoremCount": 2,
+    "definitionCount": 10
+  }
 }

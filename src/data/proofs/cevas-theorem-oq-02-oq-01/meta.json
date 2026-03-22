@@ -140,5 +140,20 @@
   "relatedProofs": [
     "cevas-theorem",
     "cevas-theorem-oq-02"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "CevasOQ02OQ01",
+    "lineCount": 263,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0
+  }
 }

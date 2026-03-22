@@ -121,5 +121,21 @@
       "Generalizations to hypergraphs",
       "Algorithmic aspects: finding close cycles efficiently"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Basic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos751",
+    "lineCount": 244,
+    "axiomCount": 7,
+    "theoremCount": 6,
+    "definitionCount": 3
   }
 }

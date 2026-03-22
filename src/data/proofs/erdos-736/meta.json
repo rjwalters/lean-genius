@@ -148,5 +148,24 @@
       "Can the ℵ₂ bound in the Komjáth-Shelah result be improved?",
       "Can we characterize realizable families F_α for ℵ_α?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Combinatorics.SimpleGraph.Coloring",
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.Data.Fintype.Basic"
+    ],
+    "opens": [
+      "Cardinal",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos736",
+    "lineCount": 243,
+    "axiomCount": 6,
+    "theoremCount": 2,
+    "definitionCount": 9
   }
 }

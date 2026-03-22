@@ -187,5 +187,24 @@
       "What quantitative bounds can be obtained on the o(1) error term in the KLS theorem?",
       "Is there a shorter proof of the KLS upper bound avoiding Szemerédi regularity?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.NumberTheory.Zsqrtd.Basic",
+      "Mathlib.Algebra.Order.Field.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "Erdos438",
+    "lineCount": 149,
+    "axiomCount": 11,
+    "theoremCount": 2,
+    "definitionCount": 7
   }
 }

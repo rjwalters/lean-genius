@@ -148,5 +148,22 @@
       "What happens with other bounds like n^α for α ≠ 1, 2?",
       "Is there a closed form for A(n, n²) for small n?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Filter",
+      "Real",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos392",
+    "lineCount": 221,
+    "axiomCount": 12,
+    "theoremCount": 3,
+    "definitionCount": 1
   }
 }

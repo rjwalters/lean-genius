@@ -130,5 +130,22 @@
     "fair-games-theorem",
     "binomial-theorem",
     "infinitude-primes"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Archive.Wiedijk100Theorems.BallotProblem",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Ballot",
+      "Set",
+      "ProbabilityTheory",
+      "MeasureTheory"
+    ],
+    "namespace": "BallotProblem",
+    "lineCount": 256,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 1
+  }
 }

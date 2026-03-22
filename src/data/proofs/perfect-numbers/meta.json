@@ -124,5 +124,21 @@
       "What is the distribution of Mersenne primes among the primes?",
       "Can perfect numbers be characterized in other algebraic structures?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Archive.Wiedijk100Theorems.PerfectNumbers",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "ArithmeticFunction",
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "PerfectNumbers",
+    "lineCount": 203,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0
   }
 }

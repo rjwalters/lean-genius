@@ -133,5 +133,22 @@
       "What is the relationship between Sidon extendability and the Singer construction?",
       "Can machine learning help identify non-extendable Sidon sets?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos707",
+    "lineCount": 195,
+    "axiomCount": 14,
+    "theoremCount": 2,
+    "definitionCount": 4
   }
 }

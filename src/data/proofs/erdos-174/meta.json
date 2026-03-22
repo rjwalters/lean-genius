@@ -140,5 +140,22 @@
       "What are optimal dimension bounds d(A,k) for specific configurations?",
       "Are there spherical non-Ramsey sets?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.EuclideanDist",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Image",
+      "Mathlib.Data.Fin.Basic",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Algebra.Order.Group.Abs",
+      "Mathlib.LinearAlgebra.AffineSpace.Combination"
+    ],
+    "opens": [],
+    "namespace": "Erdos174",
+    "lineCount": 257,
+    "axiomCount": 10,
+    "theoremCount": 5,
+    "definitionCount": 18
   }
 }

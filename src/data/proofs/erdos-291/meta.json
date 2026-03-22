@@ -140,5 +140,25 @@
       "What is the distribution of prime factors of $\\gcd(a_n, L_n)$? Computed data shows 3 dominates for small $n$, but 5, 7, and larger primes also contribute.",
       "Are there Wolstenholme primes beyond 16843 and 2124679? If a third exists, it would imply $p^3 \\mid \\gcd(a_{p-1}, L_{p-1})$ for that prime, strengthening the divisibility."
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Algebra.BigOperators.Ring.Finset",
+      "Mathlib.Data.Rat.Defs",
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos291",
+    "lineCount": 933,
+    "axiomCount": 2,
+    "theoremCount": 84,
+    "definitionCount": 10
   }
 }

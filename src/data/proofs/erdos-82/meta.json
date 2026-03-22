@@ -155,5 +155,27 @@
       "Can the Alon-Krivelevich-Sudakov upper bound be improved?",
       "What is F(n) for random graphs G(n, 1/2)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Data.Nat.Lattice",
+      "Mathlib.Data.Nat.Log",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Topology.Algebra.Order.LiminfLimsup",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Filter"
+    ],
+    "namespace": "Erdos82",
+    "lineCount": 353,
+    "axiomCount": 10,
+    "theoremCount": 1,
+    "definitionCount": 8
   }
 }

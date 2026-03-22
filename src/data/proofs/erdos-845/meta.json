@@ -135,5 +135,18 @@
       "Can the van Doorn-Everts result be formalized constructively in Lean?",
       "What happens for k-smooth numbers (only prime factors ≤ k) for k > 3?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos845",
+    "lineCount": 190,
+    "axiomCount": 5,
+    "theoremCount": 3,
+    "definitionCount": 5
   }
 }

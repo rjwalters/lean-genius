@@ -154,5 +154,21 @@
       "Computational aspects of verifying chaotic orderings",
       "Generalizations to other dense linear orders"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Order.Basic"
+    ],
+    "opens": [
+      "Set"
+    ],
+    "namespace": "Erdos194",
+    "lineCount": 315,
+    "axiomCount": 7,
+    "theoremCount": 4,
+    "definitionCount": 8
   }
 }

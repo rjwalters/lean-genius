@@ -124,5 +124,23 @@
   },
   "relatedProofs": [
     "ramseys-theorem"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Finset.Prod",
+      "Mathlib.Data.Fin.Basic",
+      "Mathlib.Order.Monotone.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Function"
+    ],
+    "namespace": "ErdosSzekeres",
+    "lineCount": 281,
+    "axiomCount": 2,
+    "theoremCount": 8,
+    "definitionCount": 3
+  }
 }

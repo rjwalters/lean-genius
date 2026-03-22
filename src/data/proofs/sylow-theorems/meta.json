@@ -101,5 +101,23 @@
       "Algorithmic computation of Sylow subgroups",
       "Generalizations to profinite and infinite groups"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.Sylow",
+      "Mathlib.GroupTheory.Coset.Basic",
+      "Mathlib.GroupTheory.Index",
+      "Mathlib.GroupTheory.OrderOfElement",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Subgroup"
+    ],
+    "namespace": "SylowTheorems",
+    "lineCount": 247,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 1
   }
 }

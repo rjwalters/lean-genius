@@ -142,5 +142,21 @@
       "Can the complex Gram-Schmidt process be formalized using this Cauchy-Schwarz bound?",
       "Can the Heisenberg uncertainty principle be derived from this complex Cauchy-Schwarz in Lean 4?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Analysis.RCLike.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "InnerProductSpace"
+    ],
+    "namespace": "CauchySchwarzOQ01",
+    "lineCount": 139,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0
   }
 }

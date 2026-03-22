@@ -135,5 +135,23 @@
   "relatedProofs": [
     "pi-transcendental",
     "leibniz-pi"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.RingTheory.Algebraic.Basic",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
+      "Mathlib.Analysis.SpecialFunctions.Complex.Analytic",
+      "Mathlib.Data.Real.Irrational",
+      "Mathlib.Data.Complex.ExponentialBounds"
+    ],
+    "opens": [
+      "Real",
+      "Polynomial"
+    ],
+    "namespace": null,
+    "lineCount": 268,
+    "axiomCount": 5,
+    "theoremCount": 8,
+    "definitionCount": 0
+  }
 }

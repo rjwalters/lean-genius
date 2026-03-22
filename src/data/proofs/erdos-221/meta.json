@@ -226,5 +226,30 @@
       "Can Ruzsa's construction be derandomized or made computationally efficient for constructing explicit complements up to a given bound $N$?",
       "Is there a unified framework connecting lacunary complement problems (powers of $g$) with classical additive basis theory (Waring, Goldbach)?"
     ]
-  }
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.NumberTheory.ZetaFunction"
+    ],
+    "opens": [
+      "Real",
+      "Set"
+    ],
+    "namespace": "Erdos221",
+    "lineCount": 275,
+    "axiomCount": 11,
+    "theoremCount": 6,
+    "definitionCount": 13
+  },
+  "relatedProofs": [
+    "",
+    "",
+    "",
+    "",
+    ""
+  ]
 }

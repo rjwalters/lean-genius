@@ -188,5 +188,20 @@
       "Extensions to other forbidden intersection sizes |A ∩ B| = r",
       "Stability results: how close to the extremal structure must near-maximal families be?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "Erdos702",
+    "lineCount": 179,
+    "axiomCount": 4,
+    "theoremCount": 1,
+    "definitionCount": 8
   }
 }

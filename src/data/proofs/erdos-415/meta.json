@@ -224,5 +224,20 @@
       "How do patterns with equality (φ(m+1) = φ(m+2)) behave?",
       "Does Carmichael's conjecture (no totient value taken exactly once) affect the pattern structure?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Function",
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 223,
+    "axiomCount": 1,
+    "theoremCount": 14,
+    "definitionCount": 20
   }
 }

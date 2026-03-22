@@ -218,5 +218,28 @@
       "Is the bothOdd fraction $1/3$ provable purely from the involution technique without the asymptotic axiom, perhaps via a counting argument on Euler's totient function?",
       "Can the three-factor approach be extended to count representations by other quadratic forms $am^2 + bn^2 \\le N$?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.PythagoreanTriples",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Topology.Algebra.Order.Field",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Filter",
+      "Real",
+      "Topology"
+    ],
+    "namespace": "PythagoreanTriplesDensity",
+    "lineCount": 2486,
+    "axiomCount": 7,
+    "theoremCount": 117,
+    "definitionCount": 39
   }
 }

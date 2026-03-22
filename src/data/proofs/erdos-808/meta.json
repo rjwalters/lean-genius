@@ -133,5 +133,21 @@
       "Can the exponents 3/2 and 7/4 in the positive result be improved?",
       "What graph structures maximize expansion?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos808",
+    "lineCount": 235,
+    "axiomCount": 6,
+    "theoremCount": 3,
+    "definitionCount": 6
   }
 }

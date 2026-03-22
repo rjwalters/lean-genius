@@ -103,5 +103,21 @@
       "Is there a Wolstenholme prime with p = 1 (mod 4)?",
       "What is the connection to Fermat's Last Theorem for irregular primes?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Nat.Prime.Defs",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "WolstenholmeTheorem",
+    "lineCount": 215,
+    "axiomCount": 3,
+    "theoremCount": 16,
+    "definitionCount": 6
   }
 }

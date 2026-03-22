@@ -130,5 +130,25 @@
       "Can Ford's Annals 2008 techniques give tighter bounds on y(ε, n)?",
       "Is there a connection to the Erdős multiplication table problem?"
     ]
-  }
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos450",
+    "lineCount": 227,
+    "axiomCount": 3,
+    "theoremCount": 16,
+    "definitionCount": 5
+  },
+  "relatedProofs": [
+    ""
+  ]
 }

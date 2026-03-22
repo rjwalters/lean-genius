@@ -171,5 +171,26 @@
       "Is there a closed form for the series for simple P like {2,3}?",
       "Can transcendence methods be applied to this series?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Lattice",
+      "Mathlib.Algebra.Order.LatticeGroup",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Irrational",
+      "Mathlib.Data.Nat.Order.Lemmas",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "BigOperators",
+      "Finset"
+    ],
+    "namespace": "Erdos269",
+    "lineCount": 274,
+    "axiomCount": 4,
+    "theoremCount": 11,
+    "definitionCount": 9
   }
 }

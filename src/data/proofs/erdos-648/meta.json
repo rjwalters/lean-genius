@@ -218,5 +218,23 @@
       "Can the 6 remaining sorry-ed theorems (lower bounds $g(n) \\ge k$ and smooth number properties) be proved from the axiomatized GPF properties, or do they require full Mathlib factorization machinery?",
       "For the multidimensional generalization, how does $g_k(n)$ behave when we require $k$ simultaneous arithmetic constraints (e.g., decreasing GPF and increasing $\\omega(n)$)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos648",
+    "lineCount": 400,
+    "axiomCount": 18,
+    "theoremCount": 19,
+    "definitionCount": 9
   }
 }

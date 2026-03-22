@@ -136,5 +136,18 @@
       "Does an analogous result hold for monochromatic sums a₁ + a₂ + ... + aₘ with m > 2 summands?",
       "What happens in the multidimensional setting: colorings of ℤ^d with vector sums?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos484",
+    "lineCount": 323,
+    "axiomCount": 14,
+    "theoremCount": 4,
+    "definitionCount": 5
   }
 }

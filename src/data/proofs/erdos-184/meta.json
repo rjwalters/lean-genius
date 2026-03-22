@@ -161,5 +161,22 @@
       "Does the conjecture hold for planar graphs or other restricted graph families where stronger structural results are available?",
       "Can the Conlon–Fox–Sudakov regularity approach be extended to handle graphs with sublinear minimum degree?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos184",
+    "lineCount": 252,
+    "axiomCount": 7,
+    "theoremCount": 2,
+    "definitionCount": 7
   }
 }

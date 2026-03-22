@@ -108,5 +108,22 @@
       "What are the analogous statements for r-uniform hypergraphs?",
       "How does the result extend to the case r = 3 (triangle-dense neighborhoods)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos1079",
+    "lineCount": 177,
+    "axiomCount": 4,
+    "theoremCount": 1,
+    "definitionCount": 5
   }
 }

@@ -114,5 +114,20 @@
       "Is there a constructive characterization of all sequences satisfying the hypotheses?",
       "What happens if we require the sum to be a specific rational (like 1) rather than any rational?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "Topology",
+      "BigOperators"
+    ],
+    "namespace": "Erdos243",
+    "lineCount": 129,
+    "axiomCount": 2,
+    "theoremCount": 8,
+    "definitionCount": 4
   }
 }

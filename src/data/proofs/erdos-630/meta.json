@@ -184,5 +184,21 @@
       "relationship": "Ramsey theory provides structural bounds used in the K_{n,n} list chromatic number computation and in understanding extremal coloring problems."
     }
   ],
-  "relatedProofs": []
+  "relatedProofs": [],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Function",
+      "SimpleGraph",
+      "Nat"
+    ],
+    "namespace": "Erdos630",
+    "lineCount": 255,
+    "axiomCount": 11,
+    "theoremCount": 11,
+    "definitionCount": 10
+  }
 }

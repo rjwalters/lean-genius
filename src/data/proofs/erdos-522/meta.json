@@ -145,5 +145,26 @@
       "Problem #521: Similar question for {0,1} coefficients",
       "What is the distribution of roots on the unit circle?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Complex.Basic",
+      "Mathlib.Algebra.Polynomial.Basic",
+      "Mathlib.Algebra.Polynomial.Eval.Defs",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Data.Fin.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+    ],
+    "opens": [
+      "Polynomial",
+      "Complex",
+      "BigOperators",
+      "Filter"
+    ],
+    "namespace": "Erdos522",
+    "lineCount": 282,
+    "axiomCount": 3,
+    "theoremCount": 8,
+    "definitionCount": 7
   }
 }

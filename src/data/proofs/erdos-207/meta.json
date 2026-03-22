@@ -150,5 +150,21 @@
       "How many non-isomorphic high-girth STS$(n)$ exist for large $n$?",
       "Can resolvable high-girth STS be constructed for admissible orders $n \\equiv 3 \\pmod{6}$?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Data.Nat.Basic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos207",
+    "lineCount": 280,
+    "axiomCount": 4,
+    "theoremCount": 5,
+    "definitionCount": 12
   }
 }

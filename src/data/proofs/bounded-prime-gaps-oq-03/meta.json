@@ -136,5 +136,21 @@
       "Under Elliott-Halberstam, the 50-tuple approach gives ≤ 12 — can this be formalized?",
       "Is liminf(p_{n+1} - p_n) = 2? (Twin Prime Conjecture — open since antiquity)"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.BoundedPrimeGaps"
+    ],
+    "opens": [
+      "BoundedPrimeGaps",
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "BoundedPrimeGapsOQ03",
+    "lineCount": 280,
+    "axiomCount": 1,
+    "theoremCount": 21,
+    "definitionCount": 1
   }
 }

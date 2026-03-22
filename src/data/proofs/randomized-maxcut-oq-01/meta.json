@@ -179,5 +179,24 @@
       "Can we formalize the Unique Games Conjecture hardness result showing α_GW is optimal?",
       "What about extending to weighted MaxCut or MAX-2SAT via the same SDP approach?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Finite",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Sym.Sym2",
+      "Mathlib.Tactic",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "GWCut",
+    "lineCount": 404,
+    "axiomCount": 8,
+    "theoremCount": 34,
+    "definitionCount": 7
   }
 }

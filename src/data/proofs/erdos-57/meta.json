@@ -112,5 +112,19 @@
       "What is the relationship to Problem #65 on general cycle lengths in graphs with large chromatic number?",
       "Can the bipartite characterization sorries be proved via Aristotle (Mathlib's SimpleGraph.IsBipartite)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "BigOperators"
+    ],
+    "namespace": "Erdos57",
+    "lineCount": 167,
+    "axiomCount": 1,
+    "theoremCount": 5,
+    "definitionCount": 8
   }
 }

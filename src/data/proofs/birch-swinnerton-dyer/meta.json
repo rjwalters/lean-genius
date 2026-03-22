@@ -587,5 +587,50 @@
       "What is the connection between BSD and the Bloch-Kato conjecture for general motives?",
       "Can p-adic methods (Iwasawa theory) provide progress toward higher rank cases?"
     ]
-  }
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.AlgebraicGeometry.EllipticCurve.Weierstrass",
+      "Mathlib.AlgebraicGeometry.EllipticCurve.Affine.Basic",
+      "Mathlib.AlgebraicGeometry.EllipticCurve.Affine.Point",
+      "Mathlib.NumberTheory.LSeries.Basic",
+      "Mathlib.NumberTheory.ArithmeticFunction.Defs",
+      "Mathlib.NumberTheory.ArithmeticFunction.Misc",
+      "Mathlib.NumberTheory.ArithmeticFunction.Moebius",
+      "Mathlib.NumberTheory.ArithmeticFunction.VonMangoldt",
+      "Mathlib.NumberTheory.ArithmeticFunction.Zeta",
+      "Mathlib.Algebra.Group.Subgroup.Basic",
+      "Mathlib.Analysis.Complex.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Complex",
+      "Mathlib.Analysis.Calculus.Deriv.Basic",
+      "Mathlib.Order.Filter.AtTopBot.Basic",
+      "Mathlib.Analysis.Complex.ExponentialBounds",
+      "Mathlib.Topology.Order.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Complex",
+      "Real",
+      "Set",
+      "Function",
+      "Filter",
+      "Topology",
+      "Topology",
+      "BigOperators",
+      "ComplexConjugate"
+    ],
+    "namespace": "BirchSwinnertonDyer",
+    "lineCount": 7438,
+    "axiomCount": 21,
+    "theoremCount": 254,
+    "definitionCount": 143
+  },
+  "relatedProofs": [
+    "",
+    "",
+    "",
+    "",
+    ""
+  ]
 }

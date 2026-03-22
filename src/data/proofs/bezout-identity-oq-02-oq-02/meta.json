@@ -136,5 +136,16 @@
       "Does the `linear_combination` tactic approach scale to Gauss's lemma (the analog for polynomial rings: if f is primitive and f | g·h over ℤ[x], then f | g or f | h)?",
       "Can `isBezout_coprime_iff` be used to prove the Nullstellensatz (algebraic geometry) via Bézout-style reasoning in polynomial rings over algebraically closed fields?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "BezoutEuclidGeneral",
+    "lineCount": 286,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 0
   }
 }

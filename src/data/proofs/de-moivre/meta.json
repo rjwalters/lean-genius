@@ -173,5 +173,21 @@
     "euler-identity",
     "law-of-cosines",
     "angle-trisection"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Complex.Circle",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
+      "Mathlib.Data.Complex.Exponential"
+    ],
+    "opens": [
+      "Complex",
+      "Real"
+    ],
+    "namespace": null,
+    "lineCount": 240,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0
+  }
 }

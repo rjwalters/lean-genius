@@ -120,5 +120,21 @@
       "Does a similar result hold for higher-dimensional vectors?",
       "See Problem #498 for related questions."
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Complex.Basic",
+      "Mathlib.Analysis.Normed.Field.Basic",
+      "Mathlib.Probability.ProbabilityMassFunction.Basic",
+      "Mathlib.Data.Complex.Basic"
+    ],
+    "opens": [
+      "Complex"
+    ],
+    "namespace": "Erdos395",
+    "lineCount": 196,
+    "axiomCount": 4,
+    "theoremCount": 3,
+    "definitionCount": 10
   }
 }

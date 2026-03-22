@@ -120,5 +120,20 @@
   ],
   "relatedProofs": [
     "erdos-369"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "Set",
+      "Topology"
+    ],
+    "namespace": "Erdos143",
+    "lineCount": 120,
+    "axiomCount": 3,
+    "theoremCount": 1,
+    "definitionCount": 7
+  }
 }

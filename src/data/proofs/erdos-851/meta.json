@@ -124,5 +124,21 @@
       "For fixed ε, what is the minimum r achieving density ≥ 1 - ε?",
       "Is there a positive proportion of integers not in any TwoPowAddSet(r)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Set",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos851",
+    "lineCount": 196,
+    "axiomCount": 11,
+    "theoremCount": 7,
+    "definitionCount": 1
   }
 }

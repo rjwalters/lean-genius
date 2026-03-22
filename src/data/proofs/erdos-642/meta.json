@@ -196,5 +196,20 @@
       "Is f(n) = Θ(n^(3/2))? If so, the Hamburger-Szegedy conjecture would be false",
       "What is the structure of extremal graphs achieving f(n)? Are they always close to girth-5 constructions?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Function",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos642",
+    "lineCount": 272,
+    "axiomCount": 4,
+    "theoremCount": 12,
+    "definitionCount": 14
   }
 }

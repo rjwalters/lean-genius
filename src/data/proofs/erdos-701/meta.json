@@ -114,5 +114,21 @@
   ],
   "relatedProofs": [
     "erdos-603"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Set.Finite"
+    ],
+    "opens": [
+      "Set",
+      "Finset"
+    ],
+    "namespace": "Erdos701",
+    "lineCount": 321,
+    "axiomCount": 8,
+    "theoremCount": 7,
+    "definitionCount": 8
+  }
 }

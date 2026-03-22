@@ -96,5 +96,18 @@
       "Does the √2-coloring (or any specific irrational rotation coloring) achieve the optimal f(d) = Θ(log d) behavior?",
       "What is the connection to the Erdős discrepancy problem (which Tao resolved in 2015 for ±1 sequences on APs)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Fin.Basic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 79,
+    "axiomCount": 7,
+    "theoremCount": 0,
+    "definitionCount": 2
   }
 }

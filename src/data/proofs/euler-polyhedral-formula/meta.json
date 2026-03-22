@@ -91,5 +91,26 @@
       "Full formalization of planar graph embedding in Lean",
       "Formalization of the Gauss-Bonnet theorem relating curvature to Euler characteristic"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Finite",
+      "Mathlib.Combinatorics.SimpleGraph.DegreeSum",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "SimpleGraph",
+      "Finset",
+      "EulerPolyhedral",
+      "EulerPolyhedral"
+    ],
+    "namespace": "EulerPolyhedral",
+    "lineCount": 1093,
+    "axiomCount": 1,
+    "theoremCount": 65,
+    "definitionCount": 27
   }
 }

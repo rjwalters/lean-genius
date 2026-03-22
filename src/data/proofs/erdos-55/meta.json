@@ -155,5 +155,19 @@
       "Does the Ramsey r-completeness notion extend naturally to ℤ (all integers, not just ℕ)?",
       "What is the optimal growth rate for 'strong' Ramsey completeness, where all integers (not just sufficiently large ones) must be representable?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos55",
+    "lineCount": 194,
+    "axiomCount": 5,
+    "theoremCount": 2,
+    "definitionCount": 7
   }
 }

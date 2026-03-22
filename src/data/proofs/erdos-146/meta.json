@@ -132,5 +132,35 @@
       "What special cases beyond bounded-side-degree satisfy the bound?",
       "How do algebraic methods extend beyond complete bipartite graphs?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Real",
+      "problem",
+      "in",
+      "extremal",
+      "graph",
+      "theory.",
+      "Even",
+      "the",
+      "simplest",
+      "case",
+      "r",
+      "=",
+      "2",
+      "remains"
+    ],
+    "namespace": "Erdos146",
+    "lineCount": 241,
+    "axiomCount": 7,
+    "theoremCount": 4,
+    "definitionCount": 6
   }
 }

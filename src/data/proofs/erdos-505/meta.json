@@ -96,5 +96,19 @@
       "What is the true exponential growth rate of α(n): exp(Θ(√n)) or exp(Θ(n))?",
       "Is there a structural characterization of extremal sets achieving α(n) partition pieces?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.InnerProductSpace.Basic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 99,
+    "axiomCount": 9,
+    "theoremCount": 0,
+    "definitionCount": 4
   }
 }

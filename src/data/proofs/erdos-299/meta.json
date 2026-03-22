@@ -134,5 +134,29 @@
       "Can we compute explicit bounds on the size of the subset needed?",
       "What about sums equaling other rationals, not just 1?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Algebra.Order.Field.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Order.Filter.AtTopBot.Basic",
+      "Mathlib.Analysis.Asymptotics.Defs",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Filter",
+      "Asymptotics",
+      "Finset"
+    ],
+    "namespace": "Erdos299",
+    "lineCount": 325,
+    "axiomCount": 1,
+    "theoremCount": 10,
+    "definitionCount": 7
   }
 }

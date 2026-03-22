@@ -111,5 +111,22 @@
       "Does Ω(n) (prime factor count with multiplicity) have SICP, and if so, does the proof differ from the ω(n) case?",
       "How does SICP relate to the Erdős–Kac theorem and the distribution of additive functions modulo 1?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Filter"
+    ],
+    "namespace": "Erdos122",
+    "lineCount": 158,
+    "axiomCount": 2,
+    "theoremCount": 1,
+    "definitionCount": 10
   }
 }

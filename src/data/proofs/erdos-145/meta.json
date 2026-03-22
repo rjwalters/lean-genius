@@ -112,5 +112,20 @@
       "What is the growth rate of the largest gap between consecutive squarefrees up to x?",
       "Can techniques from squarefree gaps help with other multiplicative sequences?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "Set",
+      "Topology"
+    ],
+    "namespace": "Erdos145",
+    "lineCount": 146,
+    "axiomCount": 6,
+    "theoremCount": 6,
+    "definitionCount": 5
   }
 }

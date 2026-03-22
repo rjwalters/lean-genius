@@ -165,5 +165,23 @@
       "Can the Chu-Vandermonde identity C(2n,n) = Σ C(n,k)² be given a direct combinatorial proof (double-counting) alongside this algebraic one?",
       "Can the proof technique be automated: given a polynomial identity, automatically extract the coefficient-level combinatorial identity?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Nat.Choose.Sum",
+      "Mathlib.Algebra.Polynomial.Coeff",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "BigOperators",
+      "Finset"
+    ],
+    "namespace": "BinomialTheoremOQ04OQ02",
+    "lineCount": 112,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0
   }
 }

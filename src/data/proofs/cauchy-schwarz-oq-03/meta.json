@@ -148,5 +148,22 @@
       "Can Minkowski's inequality (∑(f_i+g_i)^p)^(1/p) ≤ (∑f_i^p)^(1/p) + (∑g_i^p)^(1/p) be proved from this Hölder formalization?",
       "Can the interpolation inequality ‖f‖_r ≤ ‖f‖_p^θ · ‖f‖_q^(1-θ) (for 1/r = θ/p + (1-θ)/q) be derived?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "NNReal",
+      "Real",
+      "MeasureTheory",
+      "ENNReal"
+    ],
+    "namespace": null,
+    "lineCount": 243,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0
   }
 }

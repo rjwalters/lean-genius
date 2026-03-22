@@ -207,5 +207,20 @@
     "cayley-hamilton-minpoly",
     "cauchy-schwarz",
     "fundamental-arithmetic"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.LinearAlgebra.Matrix.Adjugate",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Matrix",
+      "BigOperators"
+    ],
+    "namespace": "CramersRule",
+    "lineCount": 162,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0
+  }
 }

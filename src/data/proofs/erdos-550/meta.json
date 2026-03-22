@@ -166,5 +166,23 @@
       "Can the bound be improved for specific tree families?",
       "What is the relationship to Turán extremal graphs?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos550",
+    "lineCount": 301,
+    "axiomCount": 19,
+    "theoremCount": 1,
+    "definitionCount": 15
   }
 }

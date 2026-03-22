@@ -165,5 +165,24 @@
       "What if we require connected monochromatic subgraphs instead of paths?",
       "Are there polynomial-time algorithms to find the optimal path cover?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.List.Basic",
+      "Mathlib.Data.List.Nodup",
+      "Mathlib.Data.List.GetD",
+      "Mathlib.Data.Nat.Sqrt"
+    ],
+    "opens": [
+      "Finset",
+      "List"
+    ],
+    "namespace": "Erdos518",
+    "lineCount": 287,
+    "axiomCount": 4,
+    "theoremCount": 5,
+    "definitionCount": 9
   }
 }

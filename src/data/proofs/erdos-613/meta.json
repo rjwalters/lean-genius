@@ -188,5 +188,21 @@
       "Can Pikhurko's probabilistic lower bound construction be derandomized to give an explicit family of counterexample graphs for each $n$?",
       "Does a similar bipartite + bounded-degree decomposition threshold exist for the size Ramsey number $\\hat{r}(K_{1,n}, C_{2k+1})$ with a fixed odd cycle length?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Function",
+      "SimpleGraph",
+      "Nat"
+    ],
+    "namespace": "Erdos613",
+    "lineCount": 261,
+    "axiomCount": 4,
+    "theoremCount": 11,
+    "definitionCount": 14
   }
 }

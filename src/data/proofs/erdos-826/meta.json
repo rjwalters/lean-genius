@@ -150,5 +150,23 @@
       "Can the problem be resolved for specific values of C?",
       "What is the relationship to the distribution of smooth numbers in short intervals?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.ArithmeticFunction",
+      "Mathlib.Data.Nat.Defs",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Set.Infinite",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "ArithmeticFunction",
+      "Nat"
+    ],
+    "namespace": "Erdos826",
+    "lineCount": 308,
+    "axiomCount": 4,
+    "theoremCount": 2,
+    "definitionCount": 9
   }
 }

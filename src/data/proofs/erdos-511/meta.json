@@ -147,5 +147,27 @@
       "Similar questions for rational functions",
       "Algorithmic computation of component diameters"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Complex.Basic",
+      "Mathlib.Analysis.Normed.Field.Basic",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Topology.Connected.Basic",
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Algebra.Polynomial.Basic",
+      "Mathlib.Algebra.Polynomial.Degree.Definitions"
+    ],
+    "opens": [
+      "Complex",
+      "Polynomial",
+      "Metric",
+      "Set"
+    ],
+    "namespace": "Erdos511",
+    "lineCount": 337,
+    "axiomCount": 9,
+    "theoremCount": 4,
+    "definitionCount": 4
   }
 }

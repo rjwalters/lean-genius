@@ -158,5 +158,27 @@
       "Connect to the inclusion-exclusion proof and show equivalence in Lean 4",
       "Prove the Poisson approximation: as n→∞, the distribution of fixed-point counts converges to Poisson(1)"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.Derangements.Finite",
+      "Mathlib.Combinatorics.Derangements.Basic",
+      "Mathlib.GroupTheory.Perm.Support",
+      "Mathlib.Data.Fintype.Card",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Fintype",
+      "Nat",
+      "Equiv.Perm"
+    ],
+    "namespace": "PartialDerangements",
+    "lineCount": 358,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 1
   }
 }

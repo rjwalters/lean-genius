@@ -167,5 +167,25 @@
       "What is the computational complexity of optimal play?",
       "Is there a connection to the Erdős conjecture on primitive sets?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Order.Antichain",
+      "Mathlib.Data.Set.Card"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Set"
+    ],
+    "namespace": "Erdos872",
+    "lineCount": 293,
+    "axiomCount": 14,
+    "theoremCount": 3,
+    "definitionCount": 8
   }
 }

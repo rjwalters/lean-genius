@@ -154,5 +154,20 @@
       "For Question 3: what is the precise behavior of $P(\\phi_k(n))$ when $k = c \\log\\log n$ for specific constants $c$? Is there a phase transition as $c$ varies?",
       "How does $f(n)$ behave on specific subsequences — for example, $n = p\\#$ (primorials) or $n = n!$ (factorials)? These structured inputs may reveal fine properties invisible in the generic case."
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Log"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "Erdos408",
+    "lineCount": 394,
+    "axiomCount": 14,
+    "theoremCount": 14,
+    "definitionCount": 9
   }
 }

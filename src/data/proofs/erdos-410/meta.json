@@ -154,5 +154,20 @@
       "What is the connection to the Catalan-Dickson conjecture?",
       "How does the multiplicativity of σ affect the iterates?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "ArithmeticFunction",
+      "Filter"
+    ],
+    "namespace": "Erdos410",
+    "lineCount": 321,
+    "axiomCount": 3,
+    "theoremCount": 40,
+    "definitionCount": 7
   }
 }

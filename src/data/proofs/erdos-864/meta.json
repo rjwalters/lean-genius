@@ -135,5 +135,19 @@
     "sidon-sets",
     "erdos-840",
     "erdos-turan-conjecture"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 114,
+    "axiomCount": 8,
+    "theoremCount": 1,
+    "definitionCount": 5
+  }
 }

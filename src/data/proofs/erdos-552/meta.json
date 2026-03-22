@@ -118,5 +118,24 @@
       "Is the answer to Erdős's question equivalent to some specific statement about prime gaps?",
       "Can the BEFRS exponent 11/40 be improved unconditionally, without assuming Cramér's conjecture?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos552",
+    "lineCount": 239,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 16
   }
 }

@@ -170,5 +170,24 @@
     "riemann-hypothesis",
     "prime-reciprocal-divergence",
     "infinitude-primes"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Set"
+    ],
+    "namespace": "Erdos1138",
+    "lineCount": 239,
+    "axiomCount": 3,
+    "theoremCount": 20,
+    "definitionCount": 5
+  }
 }

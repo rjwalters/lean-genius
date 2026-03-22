@@ -148,5 +148,23 @@
       "Extension to h-bases: what are the bounds for general h?",
       "Computational complexity of finding optimal bases"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Order.Bounds.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "Erdos791",
+    "lineCount": 237,
+    "axiomCount": 17,
+    "theoremCount": 3,
+    "definitionCount": 3
   }
 }

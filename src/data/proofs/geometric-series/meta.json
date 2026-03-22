@@ -141,5 +141,21 @@
     "harmonic-divergence",
     "basel-problem",
     "arithmetic-series"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.GeomSum",
+      "Mathlib.Analysis.SpecificLimits.Normed",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "GeometricSeries",
+    "lineCount": 172,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0
+  }
 }

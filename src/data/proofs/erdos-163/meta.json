@@ -180,5 +180,22 @@
     "four-color-theorem",
     "erdos-569",
     "erdos-61"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Finite",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos163",
+    "lineCount": 312,
+    "axiomCount": 20,
+    "theoremCount": 3,
+    "definitionCount": 8
+  }
 }

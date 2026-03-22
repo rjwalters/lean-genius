@@ -138,5 +138,25 @@
       "Find the exact threshold N where these sequences stop being powerful",
       "Extend results to other exponential and factorial-like sequences"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Data.Nat.Factorial.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Filter",
+      "BigOperators",
+      "Finset"
+    ],
+    "namespace": "Erdos936",
+    "lineCount": 344,
+    "axiomCount": 7,
+    "theoremCount": 23,
+    "definitionCount": 3
   }
 }

@@ -114,5 +114,19 @@
       "Does removing the no-4-cocircular constraint significantly affect the chromatic number?",
       "What is the relationship between integer distance graphs and the Hadwiger–Nelson chromatic number of the plane?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 129,
+    "axiomCount": 5,
+    "theoremCount": 0,
+    "definitionCount": 9
   }
 }

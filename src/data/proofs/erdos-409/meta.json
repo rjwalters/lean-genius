@@ -110,5 +110,23 @@
       "Do the basin densities $\\alpha(p) = \\lim_{N} |\\{n \\leq N : \\exists k,\\; T^k(n) = p\\}|/N$ exist, and do they sum to 1?",
       "Does the sigma variant $n \\mapsto \\sigma(n) - 1$ ever reach a prime from a composite starting value?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Order.Filter.AtTopBot",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Filter",
+      "Nat"
+    ],
+    "namespace": null,
+    "lineCount": 128,
+    "axiomCount": 12,
+    "theoremCount": 1,
+    "definitionCount": 3
   }
 }

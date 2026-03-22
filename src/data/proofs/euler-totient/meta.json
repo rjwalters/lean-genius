@@ -188,5 +188,19 @@
     "infinitude-primes",
     "fundamental-arithmetic",
     "gcd-algorithm"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.RingTheory.Int.Basic",
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "EulerTotient",
+    "lineCount": 137,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0
+  }
 }

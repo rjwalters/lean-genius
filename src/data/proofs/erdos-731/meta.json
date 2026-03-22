@@ -136,5 +136,18 @@
     "kummer-theorem",
     "erdos-700",
     "prime-number-theorem"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Choose.Central",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 116,
+    "axiomCount": 12,
+    "theoremCount": 0,
+    "definitionCount": 3
+  }
 }

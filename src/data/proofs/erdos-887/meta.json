@@ -128,5 +128,20 @@
       "What is the density of integers achieving 4 divisors in the interval?",
       "What happens at the critical exponent α = 1/4 with logarithmic corrections (n^{1/4}(log n)^c)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.Order.Field.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos887",
+    "lineCount": 154,
+    "axiomCount": 5,
+    "theoremCount": 3,
+    "definitionCount": 12
   }
 }

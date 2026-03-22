@@ -118,5 +118,21 @@
       "What is the optimal growth rate for admissible sequences?",
       "How does the maximum admissible subset size of {1,...,n} grow with n?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Data.Nat.Bitwise"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 136,
+    "axiomCount": 4,
+    "theoremCount": 4,
+    "definitionCount": 7
   }
 }

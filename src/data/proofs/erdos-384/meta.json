@@ -182,5 +182,22 @@
   "relatedProofs": [
     "erdos-382",
     "erdos-383"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.NumberTheory.Primorial",
+      "Mathlib.Algebra.Order.Field.Basic"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "Erdos384",
+    "lineCount": 290,
+    "axiomCount": 13,
+    "theoremCount": 12,
+    "definitionCount": 8
+  }
 }

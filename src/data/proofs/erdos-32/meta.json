@@ -144,5 +144,25 @@
       "What is the exact optimal constant if O(log N) is achievable?",
       "Can the methods be extended to other sparse sets beyond primes?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.PrimeCounting",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Order.Filter.AtTopBot.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Set",
+      "Filter",
+      "Real"
+    ],
+    "namespace": "Erdos32",
+    "lineCount": 259,
+    "axiomCount": 7,
+    "theoremCount": 3,
+    "definitionCount": 12
   }
 }

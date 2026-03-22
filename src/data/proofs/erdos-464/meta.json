@@ -162,5 +162,17 @@
       "Does the chromatic number reformulation yield further quantitative improvements?",
       "Are there sequences with sub-exponential growth (e.g., polynomial) where non-density still holds for some θ?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Nat.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos464",
+    "lineCount": 84,
+    "axiomCount": 2,
+    "theoremCount": 1,
+    "definitionCount": 3
   }
 }

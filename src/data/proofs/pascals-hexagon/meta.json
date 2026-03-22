@@ -175,5 +175,26 @@
         "classical-geometry"
       ]
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.LinearAlgebra.Matrix.Determinant.Basic",
+      "Mathlib.LinearAlgebra.CrossProduct",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Matrix"
+    ],
+    "namespace": null,
+    "lineCount": 322,
+    "axiomCount": 1,
+    "theoremCount": 1,
+    "definitionCount": 20
+  },
+  "relatedProofs": [
+    "",
+    "",
+    ""
   ]
 }

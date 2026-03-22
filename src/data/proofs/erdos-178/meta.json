@@ -153,5 +153,23 @@
       "What are the connections to other discrepancy problems?",
       "Can the techniques extend to higher-dimensional settings?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Order.Filter.AtTopBot",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Set",
+      "Filter"
+    ],
+    "namespace": "Erdos178",
+    "lineCount": 182,
+    "axiomCount": 6,
+    "theoremCount": 3,
+    "definitionCount": 11
   }
 }

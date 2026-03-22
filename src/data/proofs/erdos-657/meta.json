@@ -212,5 +212,24 @@
       "What happens for isosceles-free sets in $\\mathbb{R}^k$ for intermediate dimensions $3 \\le k \\ll \\log n$?",
       "Is there a purely geometric proof of $f(n) \\to \\infty$ that does not go through the 3-AP connection?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "Real"
+    ],
+    "namespace": "Erdos657",
+    "lineCount": 326,
+    "axiomCount": 16,
+    "theoremCount": 6,
+    "definitionCount": 16
   }
 }

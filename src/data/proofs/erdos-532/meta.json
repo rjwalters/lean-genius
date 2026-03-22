@@ -149,5 +149,24 @@
       "What are the bounds on finite versions (Hindman numbers)?",
       "Extensions to non-abelian groups and other algebraic structures?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Set.Finite",
+      "Mathlib.Data.Set.Function",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos532",
+    "lineCount": 330,
+    "axiomCount": 5,
+    "theoremCount": 6,
+    "definitionCount": 7
   }
 }

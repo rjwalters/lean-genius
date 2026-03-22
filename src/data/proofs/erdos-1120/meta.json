@@ -128,5 +128,18 @@
       "Is there an explicit family of polynomials $f_n$ witnessing $\\ell(f_n) \\to \\infty$?",
       "What is the connection to the capacity and transfinite diameter of the lemniscate $\\{|f(z)| \\le 1\\}$?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Complex"
+    ],
+    "namespace": "Erdos1120",
+    "lineCount": 191,
+    "axiomCount": 5,
+    "theoremCount": 13,
+    "definitionCount": 4
   }
 }

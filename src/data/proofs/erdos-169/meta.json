@@ -133,5 +133,23 @@
       "What is the exact growth rate of f(k)?",
       "Is there a closed-form expression or better asymptotic for f(k)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos169",
+    "lineCount": 303,
+    "axiomCount": 15,
+    "theoremCount": 2,
+    "definitionCount": 7
   }
 }

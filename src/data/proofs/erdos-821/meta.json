@@ -127,5 +127,23 @@
       "What is the exact density of primes with ε-smooth p-1?",
       "Can the connection to smooth primes be made unconditional?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.NumberTheory.EulerPhi.Basic",
+      "Mathlib.Order.Filter.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Real",
+      "Filter"
+    ],
+    "namespace": "Erdos821",
+    "lineCount": 163,
+    "axiomCount": 9,
+    "theoremCount": 2,
+    "definitionCount": 9
   }
 }

@@ -129,5 +129,22 @@
       "Are there further extensions to hypergraphs?",
       "What other classical finite results extend to infinite graphs?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Set.Finite",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Connectivity"
+    ],
+    "opens": [
+      "Set"
+    ],
+    "namespace": "Erdos599",
+    "lineCount": 246,
+    "axiomCount": 4,
+    "theoremCount": 2,
+    "definitionCount": 14
   }
 }

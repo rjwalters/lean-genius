@@ -169,5 +169,26 @@
       "What is the discrepancy for other energy functionals (Riesz s-energy)?",
       "Connection to Problem #988 on related sphere packing questions"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Topology.MetricSpace.Bounded"
+    ],
+    "opens": [
+      "Real",
+      "BigOperators",
+      "Finset"
+    ],
+    "namespace": "Erdos991",
+    "lineCount": 360,
+    "axiomCount": 5,
+    "theoremCount": 5,
+    "definitionCount": 11
   }
 }

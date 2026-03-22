@@ -101,5 +101,21 @@
       "What is the weakest growth condition on an integer sequence that guarantees irrationality of $\\sum 1/(a_n \\cdot a_{n+1})$?",
       "Are the sums transcendental (not just irrational) under the growth condition, extending the problem into transcendence theory?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Irrational",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 99,
+    "axiomCount": 5,
+    "theoremCount": 0,
+    "definitionCount": 4
   }
 }

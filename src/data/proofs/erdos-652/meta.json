@@ -188,5 +188,22 @@
       "What are the exact values of α₂ and α₃? Are they computable from known algebraic constructions?",
       "Does an analogous threshold phenomenon hold in higher dimensions (points in ℝ^d for d ≥ 3)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos652",
+    "lineCount": 227,
+    "axiomCount": 14,
+    "theoremCount": 3,
+    "definitionCount": 6
   }
 }

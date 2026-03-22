@@ -186,5 +186,28 @@
       "Is there a second-order asymptotic: dₜ = c₁/(log t)^c₂ · (1 + f(t)) with f(t) → 0?",
       "What is the relationship between dₜ and the density of practical numbers with σ(n) ≥ t?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Topology.Algebra.InfiniteSum.Real",
+      "Mathlib.Analysis.Asymptotics.Asymptotics",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Filter",
+      "Asymptotics",
+      "Real"
+    ],
+    "namespace": "Erdos859",
+    "lineCount": 308,
+    "axiomCount": 6,
+    "theoremCount": 13,
+    "definitionCount": 9
   }
 }

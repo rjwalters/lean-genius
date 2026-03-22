@@ -138,5 +138,22 @@
       "Connections to the regularity lemma?",
       "Problem 82: general induced regular subgraph bounds"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos1031",
+    "lineCount": 281,
+    "axiomCount": 6,
+    "theoremCount": 6,
+    "definitionCount": 16
   }
 }

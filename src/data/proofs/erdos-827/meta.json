@@ -151,5 +151,18 @@
       "What are the extremal configurations — point sets of size n_k - 1 where no k-subset has all distinct circumradii?",
       "Does the problem generalize to higher dimensions (circumspheres of (d+1)-tuples in ℝ^d)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 112,
+    "axiomCount": 7,
+    "theoremCount": 0,
+    "definitionCount": 8
   }
 }

@@ -185,5 +185,22 @@
         "relationship": "Folkman numbers study Ramsey-type phenomena with forbidden cliques, connecting to the broader theme of forced substructures in graphs"
       }
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph",
+      "Mathlib.Combinatorics.SimpleGraph.Maps",
+      "Mathlib.Data.Fintype.Card"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos580",
+    "lineCount": 268,
+    "axiomCount": 6,
+    "theoremCount": 2,
+    "definitionCount": 10
   }
 }

@@ -217,5 +217,19 @@
   "relatedProofs": [
     "ballot-problem",
     "catalan-numbers"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "List"
+    ],
+    "namespace": "LatticePathLGV",
+    "lineCount": 2879,
+    "axiomCount": 0,
+    "theoremCount": 138,
+    "definitionCount": 31
+  }
 }

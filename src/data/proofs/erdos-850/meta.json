@@ -130,5 +130,18 @@
       "Does the standard ABC conjecture (with 1+ε exponent rather than Baker's 7/6) suffice for the Shorey-Tijdeman reduction?",
       "Can computational search provide evidence for or against the three-shift conjecture up to some large bound N?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 121,
+    "axiomCount": 1,
+    "theoremCount": 6,
+    "definitionCount": 8
   }
 }

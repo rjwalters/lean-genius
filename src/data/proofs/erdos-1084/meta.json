@@ -115,5 +115,19 @@
       "Can the exponential gap between f_d(n) ≥ dn and f_d(n) ≤ 2^{O(d)}·n be closed for large d?",
       "Does the optimal configuration for f₃(n) converge to FCC/HCP packing as n → ∞?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 199,
+    "axiomCount": 13,
+    "theoremCount": 2,
+    "definitionCount": 2
   }
 }

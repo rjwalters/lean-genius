@@ -158,5 +158,24 @@
       "What is the structure of proportionately dissociated non-decomposable sets?",
       "Is there a finite characterization of proportionate dissociation?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Set.Finite",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Complex.Exponential"
+    ],
+    "opens": [
+      "Finset",
+      "Set"
+    ],
+    "namespace": "Erdos774",
+    "lineCount": 261,
+    "axiomCount": 13,
+    "theoremCount": 3,
+    "definitionCount": 15
   }
 }

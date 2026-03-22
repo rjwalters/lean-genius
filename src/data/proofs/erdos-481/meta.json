@@ -116,5 +116,19 @@
       "Connection to self-similar sets and fractals",
       "Higher-dimensional analogues"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.List.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [],
+    "namespace": "Erdos481",
+    "lineCount": 165,
+    "axiomCount": 1,
+    "theoremCount": 2,
+    "definitionCount": 7
   }
 }

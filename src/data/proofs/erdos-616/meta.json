@@ -170,5 +170,25 @@
       "proofId": "erdos-644",
       "relationship": "Related extremal problem on covering numbers in combinatorial settings"
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos616",
+    "lineCount": 287,
+    "axiomCount": 4,
+    "theoremCount": 3,
+    "definitionCount": 11
+  },
+  "relatedProofs": [
+    "",
+    "",
+    "",
+    ""
   ]
 }

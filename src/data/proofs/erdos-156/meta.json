@@ -178,5 +178,16 @@
       "How does the problem generalize to B_h sequences for h > 2 — what is the minimal maximal B_h set size?",
       "Is there a polynomial-time algorithm to find a maximal Sidon set of size O(N^{1/3+ε}) in {1,...,N}?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "Erdos156",
+    "lineCount": 261,
+    "axiomCount": 7,
+    "theoremCount": 4,
+    "definitionCount": 10
   }
 }

@@ -81,5 +81,22 @@
       "Can the 4/π lower bound on liminf be improved?",
       "Is there a connection between the optimal liminf and limsup for a single set A?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Set",
+      "Filter",
+      "Real",
+      "Topology"
+    ],
+    "namespace": "Erdos33",
+    "lineCount": 180,
+    "axiomCount": 7,
+    "theoremCount": 2,
+    "definitionCount": 8
   }
 }

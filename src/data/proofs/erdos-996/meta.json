@@ -189,5 +189,27 @@
       "Does the SLLN hold for floor powers ⌊aᵏ⌋ with non-integer a > 1?",
       "What is the connection between the optimal decay exponent and the lacunary ratio λ? Does larger λ allow weaker decay?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Integral.Bochner.Basic",
+      "Mathlib.MeasureTheory.Measure.Haar.OfBasis",
+      "Mathlib.Analysis.Fourier.AddCircle",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Topology.Algebra.Order.LiminfLimsup",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Filter",
+      "Topology",
+      "Real"
+    ],
+    "namespace": "Erdos996",
+    "lineCount": 344,
+    "axiomCount": 6,
+    "theoremCount": 7,
+    "definitionCount": 14
   }
 }

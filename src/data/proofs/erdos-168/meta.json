@@ -122,5 +122,21 @@
       "Are there similar results for {n, 2n, 4n} or other multiplicative patterns?",
       "What is the optimal constant in F(N) ≥ cN for finite N?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Nat",
+      "Filter",
+      "Finset"
+    ],
+    "namespace": "Erdos168",
+    "lineCount": 187,
+    "axiomCount": 5,
+    "theoremCount": 4,
+    "definitionCount": 7
   }
 }

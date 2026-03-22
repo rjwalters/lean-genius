@@ -175,5 +175,28 @@
       "How do the bounds change for k-power-free sumsets?",
       "What is the behavior of the A+B analogue?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.Data.Nat.Squarefree",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Data.List.Prime"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos1109",
+    "lineCount": 3732,
+    "axiomCount": 7,
+    "theoremCount": 151,
+    "definitionCount": 8
   }
 }

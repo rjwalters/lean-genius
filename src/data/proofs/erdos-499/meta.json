@@ -151,5 +151,25 @@
       "Analogous results for other classes of structured matrices",
       "Quantum analogues for doubly stochastic channels"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.LinearAlgebra.Matrix.DoublyStochastic",
+      "Mathlib.LinearAlgebra.Matrix.Permanent",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.GroupTheory.Perm.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "BigOperators",
+      "Finset",
+      "Matrix"
+    ],
+    "namespace": "Erdos499",
+    "lineCount": 289,
+    "axiomCount": 8,
+    "theoremCount": 5,
+    "definitionCount": 7
   }
 }

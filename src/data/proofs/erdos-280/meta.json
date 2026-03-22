@@ -124,5 +124,24 @@
       "Are there natural conditions on (nₖ, aₖ) that restore the Ω(k) lower bound?",
       "What is the exact answer when moduli are restricted to primes?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Int.ModEq",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Real",
+      "Finset"
+    ],
+    "namespace": "Erdos280",
+    "lineCount": 129,
+    "axiomCount": 5,
+    "theoremCount": 3,
+    "definitionCount": 6
   }
 }

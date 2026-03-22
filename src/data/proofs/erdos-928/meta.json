@@ -176,5 +176,29 @@
       "Extensions to k consecutive smooth numbers",
       "Effective versions with explicit error bounds"
     ]
-  }
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos928",
+    "lineCount": 277,
+    "axiomCount": 14,
+    "theoremCount": 2,
+    "definitionCount": 8
+  },
+  "relatedProofs": [
+    "",
+    "",
+    ""
+  ]
 }

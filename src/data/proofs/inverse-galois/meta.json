@@ -229,5 +229,43 @@
       "What is the structure of Gal(ℚ̄/ℚ)?",
       "Is there a uniform method to realize all finite groups over ℚ?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Cyclotomic.Gal",
+      "Mathlib.NumberTheory.Cyclotomic.Basic",
+      "Mathlib.NumberTheory.Cyclotomic.PrimitiveRoots",
+      "Mathlib.FieldTheory.Galois.Basic",
+      "Mathlib.GroupTheory.SpecificGroups.Cyclic",
+      "Mathlib.GroupTheory.Solvable",
+      "Mathlib.GroupTheory.SpecificGroups.Alternating",
+      "Mathlib.FieldTheory.AbelRuffini",
+      "Mathlib.Algebra.Group.Equiv.Basic",
+      "Mathlib.RingTheory.Polynomial.Eisenstein.Criterion",
+      "Mathlib.RingTheory.Polynomial.GaussLemma",
+      "Mathlib.NumberTheory.LSeries.PrimesInAP",
+      "Proofs.NthRootIrrationalOQ01"
+    ],
+    "opens": [
+      "Polynomial",
+      "problem",
+      "—",
+      "we",
+      "assert",
+      "its",
+      "truth",
+      "without",
+      "proof,",
+      "because",
+      "no",
+      "proof",
+      "is",
+      "known."
+    ],
+    "namespace": "InverseGaloisProblem",
+    "lineCount": 1882,
+    "axiomCount": 2,
+    "theoremCount": 108,
+    "definitionCount": 1
   }
 }

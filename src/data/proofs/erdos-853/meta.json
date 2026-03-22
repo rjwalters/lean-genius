@@ -134,5 +134,24 @@
       "Can the Maynard-Tao machinery be extended to show all even gaps ≤ some explicit bound B(x) appear for primes up to x?",
       "What does computational data suggest about the first even gap not observed below 10^18?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Prime.Nth",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 238,
+    "axiomCount": 9,
+    "theoremCount": 15,
+    "definitionCount": 3
   }
 }

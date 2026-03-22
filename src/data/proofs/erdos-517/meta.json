@@ -171,5 +171,20 @@
       "What is the weakest gap condition that guarantees infinite value coverage?",
       "Can techniques from Nevanlinna theory be extended to handle Fabry gaps?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "Erdos517",
+    "lineCount": 176,
+    "axiomCount": 1,
+    "theoremCount": 3,
+    "definitionCount": 3
   }
 }

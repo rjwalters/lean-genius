@@ -140,5 +140,24 @@
       "Can the reverse Minkowski inequality ‖f+g‖_p ≥ ‖‖f‖_p - ‖g‖_p‖ also be derived from CS?",
       "For complex Lp spaces, does the same derivation work with the complex inner product form of CS?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Function.L2Space",
+      "Mathlib.MeasureTheory.Integral.Bochner.Basic",
+      "Mathlib.MeasureTheory.Integral.MeanInequalities",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.MeanInequalities",
+      "Mathlib.Analysis.MeanInequalitiesPow",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory"
+    ],
+    "namespace": "MinkowskiFromCS",
+    "lineCount": 264,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0
   }
 }

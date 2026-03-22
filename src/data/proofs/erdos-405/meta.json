@@ -189,5 +189,22 @@
       "What is the density of pairs $(p, a)$ for which $(p-1)! + a^{p-1}$ is a perfect power?",
       "Can Baker's method be made constructive enough to verify the Yu-Liu result in Mathlib without axioms?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.NumberTheory.Padics.PadicVal",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "Erdos405",
+    "lineCount": 270,
+    "axiomCount": 12,
+    "theoremCount": 9,
+    "definitionCount": 5
   }
 }

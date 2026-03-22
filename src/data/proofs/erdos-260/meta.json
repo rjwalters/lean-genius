@@ -170,5 +170,23 @@
       "Does the base 2 play a special role, or does the result hold for other bases?",
       "Can methods from the theory of continued fractions or Padé approximants make progress?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecificLimits.Basic",
+      "Mathlib.Data.Real.Irrational",
+      "Mathlib.Topology.Instances.Real",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "Erdos260",
+    "lineCount": 204,
+    "axiomCount": 1,
+    "theoremCount": 8,
+    "definitionCount": 8
   }
 }

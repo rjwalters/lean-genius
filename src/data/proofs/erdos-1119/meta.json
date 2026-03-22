@@ -140,5 +140,23 @@
       "Are there other natural function classes where similar independence phenomena arise?",
       "What is the relationship between the Wetzel property and other cardinal characteristics of the continuum?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Continuum",
+      "Mathlib.Topology.Basic",
+      "Mathlib.Analysis.Complex.Basic"
+    ],
+    "opens": [
+      "Cardinal",
+      "Set"
+    ],
+    "namespace": "Erdos1119",
+    "lineCount": 172,
+    "axiomCount": 10,
+    "theoremCount": 2,
+    "definitionCount": 6
   }
 }

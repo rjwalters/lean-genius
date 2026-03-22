@@ -116,5 +116,18 @@
       "Is there a direct Lean 4 proof of FFLLW from Mathlib primitives?",
       "Can the minimum chromatic number be expressed as a function of both girth and maximum degree?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": null,
+    "lineCount": 450,
+    "axiomCount": 3,
+    "theoremCount": 15,
+    "definitionCount": 8
   }
 }

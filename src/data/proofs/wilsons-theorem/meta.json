@@ -111,5 +111,17 @@
       "How does Wilson's theorem relate to the theory of primitive roots?",
       "Can Wilson's theorem be used to generate prime numbers efficiently?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Wilson",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "WilsonsTheorem",
+    "lineCount": 161,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0
   }
 }

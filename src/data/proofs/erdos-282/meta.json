@@ -157,5 +157,19 @@
       "**Growth Rate of Denominators:** In the odd-denominator greedy algorithm, how fast do the chosen denominators $n_1 < n_2 < \\cdots$ grow? Is there a uniform bound on the number of steps?",
       "**Alternative Algorithms:** If the greedy algorithm fails for some set $A$, can a non-greedy strategy always find representations (when they exist)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 113,
+    "axiomCount": 8,
+    "theoremCount": 0,
+    "definitionCount": 7
   }
 }

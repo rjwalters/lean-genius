@@ -168,5 +168,23 @@
       "How does the decomposition generalize to $\\mathbb{R}^n$ or more general locally compact abelian groups?",
       "What is the relationship between the rigid component and invariant measures in ergodic theory? Can the decomposition be interpreted dynamically?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Function.AEMeasurableOrder",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.Topology.Algebra.ContinuousAffineMap",
+      "Mathlib.Analysis.SpecialFunctions.Integrals",
+      "Mathlib.Algebra.Group.Basic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Set"
+    ],
+    "namespace": "Erdos908",
+    "lineCount": 259,
+    "axiomCount": 11,
+    "theoremCount": 7,
+    "definitionCount": 5
   }
 }

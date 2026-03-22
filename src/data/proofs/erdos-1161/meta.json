@@ -138,5 +138,30 @@
       "Can the sorry placeholders (small cases, sum formula) be filled with decidable computations?",
       "What is the analogous result for other finite groups beyond S_n?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Mathlib"
+    ],
+    "opens": [
+      "Lean",
+      "Meta",
+      "Elab",
+      "Tactic",
+      "in",
+      "Lean.Elab.Tactic",
+      "in",
+      "Fintype",
+      "Equiv",
+      "Equiv.Perm",
+      "Finset",
+      "Nat"
+    ],
+    "namespace": null,
+    "lineCount": 285,
+    "axiomCount": 0,
+    "theoremCount": 17,
+    "definitionCount": 3
   }
 }

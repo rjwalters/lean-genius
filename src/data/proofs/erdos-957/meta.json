@@ -147,5 +147,24 @@
       "What happens in higher dimensions?",
       "Can the O(n) error in Dumitrescu's bound be improved?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.EuclideanDist",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos957",
+    "lineCount": 321,
+    "axiomCount": 6,
+    "theoremCount": 6,
+    "definitionCount": 9
   }
 }

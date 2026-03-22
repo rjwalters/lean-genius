@@ -112,5 +112,26 @@
       "Can f(n) exceed 2γ₀ infinitely often?",
       "What is the best constant c in the upper bound f(n) ≤ c log(log n)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Choose.Central",
+      "Mathlib.NumberTheory.ArithmeticFunction",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Topology.Algebra.InfiniteSum.Real",
+      "Mathlib.Order.Filter.Cofinite"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Filter",
+      "BigOperators",
+      "Topology"
+    ],
+    "namespace": "Erdos377",
+    "lineCount": 151,
+    "axiomCount": 4,
+    "theoremCount": 2,
+    "definitionCount": 4
   }
 }

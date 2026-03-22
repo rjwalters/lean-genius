@@ -130,5 +130,18 @@
       "What about higher-dimensional analogues (4D, 5D products)?",
       "Can the counterexample be made explicit or canonical?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.Data.Set.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos1128",
+    "lineCount": 178,
+    "axiomCount": 8,
+    "theoremCount": 3,
+    "definitionCount": 6
   }
 }

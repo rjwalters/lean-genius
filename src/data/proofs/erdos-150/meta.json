@@ -168,5 +168,25 @@
       "What is c(n) exactly for small n?",
       "Are there other natural graph parameters with similar entropy-related bounds?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph",
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Topology.Instances.Real"
+    ],
+    "opens": [
+      "Set",
+      "Real",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos150",
+    "lineCount": 326,
+    "axiomCount": 7,
+    "theoremCount": 10,
+    "definitionCount": 7
   }
 }

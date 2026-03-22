@@ -192,5 +192,22 @@
     "erdos-1094",
     "pythagorean-triples",
     "sum-of-squares"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Sqrt",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Erdos1148",
+    "lineCount": 356,
+    "axiomCount": 1,
+    "theoremCount": 31,
+    "definitionCount": 6
+  }
 }

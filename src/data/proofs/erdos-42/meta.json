@@ -116,5 +116,19 @@
       "Can probabilistic methods (e.g., random greedy Sidon sets) prove the conjecture for all M?",
       "Is there a density version: for maximal Sidon sets, what fraction of M-element Sidon subsets have disjoint differences?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 101,
+    "axiomCount": 7,
+    "theoremCount": 0,
+    "definitionCount": 5
   }
 }

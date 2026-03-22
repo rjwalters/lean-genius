@@ -145,5 +145,21 @@
       "Does the result hold for αn^k with k > 2?",
       "What minimal growth rate of the threshold ε(n) would make the set a basis?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "Set",
+      "Filter",
+      "MeasureTheory"
+    ],
+    "namespace": "Erdos1147",
+    "lineCount": 235,
+    "axiomCount": 4,
+    "theoremCount": 8,
+    "definitionCount": 6
   }
 }

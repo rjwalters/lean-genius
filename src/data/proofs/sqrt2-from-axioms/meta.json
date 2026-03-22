@@ -95,5 +95,16 @@
       "Generalizing to sqrt(p) for any prime p",
       "Connections to quadratic irrationals and continued fractions"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Sqrt2FromAxioms",
+    "lineCount": 236,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 3
   }
 }

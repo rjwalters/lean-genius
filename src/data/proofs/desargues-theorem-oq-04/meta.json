@@ -214,5 +214,19 @@
       "Can the equivalence between Desargues's theorem and embeddability in projective 3-space be formalized?",
       "Can the duality principle be formalized as a functor between categories of projective configurations?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.LinearAlgebra.Matrix.Determinant.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Matrix"
+    ],
+    "namespace": "DesarguesTheoremOQ04",
+    "lineCount": 416,
+    "axiomCount": 0,
+    "theoremCount": 23,
+    "definitionCount": 9
   }
 }

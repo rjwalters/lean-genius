@@ -103,5 +103,25 @@
       "Can the polynomial growth exponent 1/2+ε be improved?",
       "What measure-theoretic properties characterize the exceptional set?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Topology.Instances.Real"
+    ],
+    "opens": [
+      "Set",
+      "Real",
+      "MeasureTheory"
+    ],
+    "namespace": "Erdos492",
+    "lineCount": 322,
+    "axiomCount": 5,
+    "theoremCount": 9,
+    "definitionCount": 13
   }
 }

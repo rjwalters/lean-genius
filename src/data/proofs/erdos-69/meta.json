@@ -104,5 +104,20 @@
       "Can the irrationality measure be computed?",
       "Are there simpler proofs of the unconditional result?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "ArithmeticFunction.omega",
+      "BigOperators",
+      "Finset"
+    ],
+    "namespace": "Erdos69",
+    "lineCount": 189,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 2
   }
 }

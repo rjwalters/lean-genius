@@ -216,5 +216,23 @@
       "What are higher-order corrections to the $e^{-e^{-2c}}$ limiting distribution?",
       "Prove `hamiltonian_implies_connected` (the remaining sorry — a Hamiltonian cycle is a connected spanning subgraph)"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [
+      "Real",
+      "Finset"
+    ],
+    "namespace": "Erdos746",
+    "lineCount": 263,
+    "axiomCount": 9,
+    "theoremCount": 7,
+    "definitionCount": 17
   }
 }

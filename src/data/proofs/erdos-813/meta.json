@@ -136,5 +136,22 @@
       "Generalization: what about triangles in every k-set for other k?",
       "Connection to chromatic number and other graph invariants?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos813",
+    "lineCount": 126,
+    "axiomCount": 5,
+    "theoremCount": 4,
+    "definitionCount": 7
   }
 }

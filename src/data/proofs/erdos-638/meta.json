@@ -89,5 +89,20 @@
       "Is the answer dependent on set-theoretic axioms (GCH, large cardinals)?",
       "Does the answer change if triangles K₃ are replaced by larger complete graphs K_r?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Fin.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": null,
+    "lineCount": 85,
+    "axiomCount": 3,
+    "theoremCount": 0,
+    "definitionCount": 5
   }
 }

@@ -150,5 +150,24 @@
       "What about B₂[g] sequences (allowing g representations per sum)?",
       "What is the best constant in Erdős-Turán's O(N^{1/4}) error term?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Order.Filter.AtTopBot.Basic",
+      "Mathlib.Order.LiminfLimsup",
+      "Mathlib.Data.Finset.Card"
+    ],
+    "opens": [
+      "Set",
+      "Filter"
+    ],
+    "namespace": "Erdos329",
+    "lineCount": 214,
+    "axiomCount": 6,
+    "theoremCount": 5,
+    "definitionCount": 5
   }
 }

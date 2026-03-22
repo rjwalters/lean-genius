@@ -162,5 +162,20 @@
       "Algorithmic question: fastest way to compute representation?",
       "Connection to Problem 254 and other completeness problems?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset",
+      "Mathlib.Data.Set.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos246",
+    "lineCount": 267,
+    "axiomCount": 19,
+    "theoremCount": 3,
+    "definitionCount": 10
   }
 }

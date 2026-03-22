@@ -134,5 +134,22 @@
       "How do these results extend to other number systems (ℂ, p-adics)?",
       "What happens for cardinals larger than ℵ₁?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Set.Card",
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Continuum"
+    ],
+    "opens": [
+      "Cardinal",
+      "Set"
+    ],
+    "namespace": "Erdos965",
+    "lineCount": 242,
+    "axiomCount": 4,
+    "theoremCount": 5,
+    "definitionCount": 8
   }
 }

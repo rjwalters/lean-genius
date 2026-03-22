@@ -120,5 +120,30 @@
     "fundamental-theorem-calculus",
     "lebesgue-measure",
     "cauchy-schwarz-integral"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic",
+      "Mathlib.MeasureTheory.Integral.Bochner.FundThmCalculus",
+      "Mathlib.MeasureTheory.Covering.VitaliFamily",
+      "Mathlib.MeasureTheory.Covering.Differentiation",
+      "Mathlib.MeasureTheory.Measure.Stieltjes",
+      "Mathlib.Analysis.BoundedVariation",
+      "Mathlib.Analysis.Calculus.Deriv.Basic",
+      "Mathlib.Topology.MetricSpace.Lipschitz",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Set",
+      "Filter",
+      "Topology",
+      "intervalIntegral"
+    ],
+    "namespace": "FTCLebesgue",
+    "lineCount": 271,
+    "axiomCount": 2,
+    "theoremCount": 7,
+    "definitionCount": 1
+  }
 }

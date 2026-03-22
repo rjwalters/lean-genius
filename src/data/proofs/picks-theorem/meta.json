@@ -190,5 +190,24 @@
         "combinatorics"
       ]
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Data.Rat.Cast.Lemmas",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "PicksTheorem",
+    "lineCount": 490,
+    "axiomCount": 2,
+    "theoremCount": 13,
+    "definitionCount": 14
+  },
+  "relatedProofs": [
+    "",
+    "",
+    "",
+    ""
   ]
 }

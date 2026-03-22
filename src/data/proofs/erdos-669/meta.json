@@ -136,5 +136,24 @@
       "What point configurations achieve the maximum for general k?",
       "How does the problem generalize to higher dimensions?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.EuclideanDist",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Choose.Basic"
+    ],
+    "opens": [
+      "Set",
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "Erdos669",
+    "lineCount": 147,
+    "axiomCount": 5,
+    "theoremCount": 3,
+    "definitionCount": 8
   }
 }

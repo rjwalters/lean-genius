@@ -175,5 +175,20 @@
       "Can probabilistic methods improve the Erdős-Sárközy bound?",
       "What is the exact value of g₃(n) for small n?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Filter",
+      "Nat"
+    ],
+    "namespace": "Erdos817",
+    "lineCount": 240,
+    "axiomCount": 2,
+    "theoremCount": 11,
+    "definitionCount": 8
   }
 }

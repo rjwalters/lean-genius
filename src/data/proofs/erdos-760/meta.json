@@ -162,5 +162,22 @@
   ],
   "relatedProofs": [
     "erdos-759"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Data.Nat.Log",
+      "Mathlib.Data.Finset.Card"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos760",
+    "lineCount": 271,
+    "axiomCount": 9,
+    "theoremCount": 2,
+    "definitionCount": 6
+  }
 }

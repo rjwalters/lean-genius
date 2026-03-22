@@ -136,5 +136,16 @@
     "shannon-source-coding",
     "shannon-channel-coding",
     "prob-method-expectation"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "InformationTheory",
+    "lineCount": 335,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 4
+  }
 }

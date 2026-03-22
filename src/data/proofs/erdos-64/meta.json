@@ -231,5 +231,20 @@
       "Are there almost-counterexamples with δ ≥ 3 and very few power-of-two cycles?",
       "Can the result be extended to other sparse sequences (Fibonacci numbers, primes) as unavoidable cycle lengths?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos64",
+    "lineCount": 237,
+    "axiomCount": 6,
+    "theoremCount": 3,
+    "definitionCount": 11
   }
 }

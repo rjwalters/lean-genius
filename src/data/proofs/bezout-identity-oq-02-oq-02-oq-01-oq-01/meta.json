@@ -154,5 +154,18 @@
     "bezout-identity-oq-02-oq-02",
     "bezout-identity-oq-02-oq-01",
     "chinese-remainder-non-coprime"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Int.GCD",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "BezoutConstructive",
+    "lineCount": 183,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 2
+  }
 }

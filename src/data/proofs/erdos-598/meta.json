@@ -95,5 +95,22 @@
       "Does the answer change under CH versus ¬CH, or is it absolute?",
       "What is the relationship to the Erdős–Rado partition relation and Shelah's pcf theory?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Continuum",
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.Order.SuccPred.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Cardinal"
+    ],
+    "namespace": null,
+    "lineCount": 96,
+    "axiomCount": 3,
+    "theoremCount": 0,
+    "definitionCount": 6
   }
 }

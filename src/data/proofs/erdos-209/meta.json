@@ -126,5 +126,24 @@
       "Are there natural restrictions under which Gallai triangles must exist?",
       "What is the connection to other Erdős geometry problems?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Set.Finite",
+      "Mathlib.LinearAlgebra.AffineSpace.AffineSubspace",
+      "Mathlib.Geometry.Euclidean.Basic"
+    ],
+    "opens": [
+      "Set",
+      "Finset"
+    ],
+    "namespace": "Erdos209",
+    "lineCount": 275,
+    "axiomCount": 6,
+    "theoremCount": 2,
+    "definitionCount": 9
   }
 }

@@ -169,5 +169,31 @@
       "Can the remaining foundational axioms (e_transcendental_q, pi_transcendental_q) be proved from Mathlib once Lindemann-Weierstrass is formalized?",
       "What is the transcendence degree of ℚ(e, π) over ℚ? (Expected: 2, but even transcendence degree ≥ 1 for ℚ(e+π) requires knowing e+π is transcendental)"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.RingTheory.Algebraic.Basic",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.NumberTheory.Real.Irrational",
+      "Mathlib.Analysis.SpecialFunctions.Gamma.Basic",
+      "Mathlib.RingTheory.MvPolynomial.Basic",
+      "Mathlib.RingTheory.IntegralClosure.IsIntegralClosure.Basic",
+      "Mathlib.RingTheory.IntegralClosure.Algebra.Basic",
+      "Mathlib.Algebra.Polynomial.Monic",
+      "Mathlib.Algebra.Polynomial.Degree.Definitions",
+      "Mathlib.Analysis.Real.Pi.Irrational",
+      "Mathlib.Tactic",
+      "Proofs.eTranscendental",
+      "Proofs.PiTranscendental"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": null,
+    "lineCount": 546,
+    "axiomCount": 1,
+    "theoremCount": 18,
+    "definitionCount": 2
   }
 }

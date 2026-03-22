@@ -116,5 +116,20 @@
       "How does H(k) compare to other canonical Ramsey numbers?",
       "What is the precise relationship between H(k) and the Hales-Jewett numbers?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos190",
+    "lineCount": 251,
+    "axiomCount": 11,
+    "theoremCount": 2,
+    "definitionCount": 10
   }
 }

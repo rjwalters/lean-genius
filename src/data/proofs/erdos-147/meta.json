@@ -152,5 +152,18 @@
       "id": "erdos-146",
       "relationship": "Both concern Turán numbers of bipartite graphs; Problem #146 asks about specific bipartite families"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Nat.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos147",
+    "lineCount": 102,
+    "axiomCount": 3,
+    "theoremCount": 1,
+    "definitionCount": 1
+  }
 }

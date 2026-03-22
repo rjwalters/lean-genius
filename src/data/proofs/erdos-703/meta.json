@@ -150,5 +150,23 @@
   "relatedProofs": [
     "erdos-702",
     "erdos-1030"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Combinatorics.SetFamily.Intersecting"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos703",
+    "lineCount": 283,
+    "axiomCount": 8,
+    "theoremCount": 5,
+    "definitionCount": 7
+  }
 }

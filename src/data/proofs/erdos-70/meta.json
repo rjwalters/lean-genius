@@ -145,5 +145,20 @@
       "Is the answer independent of ZFC? Could forcing models separate the cases?",
       "Can the stepping-up lemma be iterated to reach ordinals beyond ω + n?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Cardinal",
+      "Ordinal"
+    ],
+    "namespace": "Erdos70",
+    "lineCount": 226,
+    "axiomCount": 5,
+    "theoremCount": 6,
+    "definitionCount": 13
   }
 }

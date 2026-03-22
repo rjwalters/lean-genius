@@ -141,5 +141,21 @@
       "Can the axiomatized infinite Ramsey theorem and Erdős-Rado theorem be proved in Lean 4 using Mathlib's current infrastructure?",
       "Does a counterexample exist for specific choices of λ, r, γ, and targets?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Cardinal",
+      "Set"
+    ],
+    "namespace": "Erdos1167",
+    "lineCount": 291,
+    "axiomCount": 3,
+    "theoremCount": 15,
+    "definitionCount": 5
   }
 }

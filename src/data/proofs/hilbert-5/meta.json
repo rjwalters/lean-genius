@@ -199,5 +199,23 @@
       "Can the formalization be extended with actual Lie algebra infrastructure from Mathlib to state the exponential map properties?",
       "What are the obstructions to extending these results to infinite-dimensional groups (Banach-Lie groups)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Geometry.Manifold.Algebra.LieGroup",
+      "Mathlib.Topology.Algebra.Group.Basic",
+      "Mathlib.Topology.LocallyConstant.Basic",
+      "Mathlib.Topology.Connected.PathConnected",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Topology",
+      "Manifold"
+    ],
+    "namespace": "Hilbert5LieGroups",
+    "lineCount": 488,
+    "axiomCount": 6,
+    "theoremCount": 7,
+    "definitionCount": 6
   }
 }

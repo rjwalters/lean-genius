@@ -138,5 +138,23 @@
       "Does the average order $\\frac{1}{x} \\sum_{n \\leq x} r_2(n)$ have a clean asymptotic? The density result gives $\\sum 1_{r_2(n)>0} \\sim c x^{2/3}$.",
       "What are the analogous bounds for $r_2^{(k)}(n)$ counting representations as sums of two $k$-th powers for $k \\geq 4$?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [
+      "Real",
+      "BigOperators"
+    ],
+    "namespace": "Erdos829",
+    "lineCount": 219,
+    "axiomCount": 8,
+    "theoremCount": 3,
+    "definitionCount": 6
   }
 }

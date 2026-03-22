@@ -168,5 +168,24 @@
     "erdos-286",
     "erdos-289",
     "harmonic-divergence"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Data.PNat.Basic",
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset",
+      "Mathlib.Order.Interval.Finset.Nat",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos288",
+    "lineCount": 162,
+    "axiomCount": 8,
+    "theoremCount": 2,
+    "definitionCount": 9
+  }
 }

@@ -103,5 +103,23 @@
       "What is the exact threshold: how slowly can n_k grow while still guaranteeing transcendence?",
       "Does the base matter? Is the analogous result for Σ 1/3^{n_k} also true?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.RingTheory.Algebraic.Basic",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+      "Mathlib.Topology.Algebra.InfiniteSum.Order",
+      "Mathlib.Topology.Algebra.InfiniteSum.Ring",
+      "Mathlib.NumberTheory.Transcendental.Liouville.Basic",
+      "Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleNumber",
+      "Mathlib.Tactic",
+      "Proofs.LiouvilleTheorem"
+    ],
+    "opens": [],
+    "namespace": "Erdos247",
+    "lineCount": 507,
+    "axiomCount": 1,
+    "theoremCount": 27,
+    "definitionCount": 7
   }
 }

@@ -259,5 +259,25 @@
       "Are there probabilistic versions with better constants for random sparse polynomials?",
       "Can the Hilbert transform approach to the sharp constant be extended to prove the sparse conjecture?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Analysis.Complex.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.Polynomial.Basic",
+      "Mathlib.Topology.MetricSpace.Basic"
+    ],
+    "opens": [
+      "Complex",
+      "Real",
+      "Polynomial"
+    ],
+    "namespace": "Erdos990",
+    "lineCount": 286,
+    "axiomCount": 22,
+    "theoremCount": 3,
+    "definitionCount": 11
   }
 }

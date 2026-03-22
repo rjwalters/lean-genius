@@ -120,5 +120,20 @@
       "Does the 'exceptional' index $i$ (the one where $(n_k - i) \\nmid \\binom{n_k}{k}$) have a pattern? Is it always the largest prime power in $\\{n_k, \\ldots, n_k - k + 1\\}$?",
       "Can Cambie's lcm bound be improved to $n_k \\leq e^{c \\cdot k / \\log k}$ for some constant $c$, or is single-exponential growth sharp?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Erdos1063",
+    "lineCount": 160,
+    "axiomCount": 7,
+    "theoremCount": 1,
+    "definitionCount": 5
   }
 }

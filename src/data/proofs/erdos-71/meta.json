@@ -164,5 +164,19 @@
       "relationship": "related",
       "description": "Both concern arithmetic progressions: #219 in prime numbers, #71 in cycle lengths of graphs"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos71",
+    "lineCount": 275,
+    "axiomCount": 6,
+    "theoremCount": 4,
+    "definitionCount": 8
+  }
 }

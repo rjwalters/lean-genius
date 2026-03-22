@@ -170,5 +170,24 @@
       "Can the Fourier-analytic methods of Szemerédi-Vu be formalized in Lean?",
       "What is the structure of the arithmetic progressions in P(A) — can the common difference d be bounded?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.Asymptotics.Asymptotics"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos344",
+    "lineCount": 214,
+    "axiomCount": 4,
+    "theoremCount": 2,
+    "definitionCount": 9
   }
 }

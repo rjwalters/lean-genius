@@ -141,5 +141,23 @@
       "Are there sequences where the good set has measure zero but is dense?",
       "How does the answer depend on regularity conditions on the sequence?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Calculus.LagrangeInterpolation",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.Topology.MetricSpace.Basic"
+    ],
+    "opens": [
+      "Real",
+      "MeasureTheory",
+      "Finset"
+    ],
+    "namespace": "Erdos1132",
+    "lineCount": 246,
+    "axiomCount": 9,
+    "theoremCount": 2,
+    "definitionCount": 11
   }
 }

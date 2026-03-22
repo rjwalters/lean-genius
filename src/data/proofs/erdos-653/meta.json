@@ -168,5 +168,24 @@
       "Is the n^{2/3} upper gap tight?",
       "How does the problem generalize to higher dimensions?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.EuclideanDist",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Topology.MetricSpace.Basic"
+    ],
+    "opens": [
+      "Set",
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos653",
+    "lineCount": 277,
+    "axiomCount": 10,
+    "theoremCount": 2,
+    "definitionCount": 13
   }
 }

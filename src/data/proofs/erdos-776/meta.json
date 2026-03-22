@@ -145,5 +145,21 @@
     "erdos-447",
     "kummer-theorem",
     "combinations-formula"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Order.Antichain",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 119,
+    "axiomCount": 8,
+    "theoremCount": 1,
+    "definitionCount": 6
+  }
 }

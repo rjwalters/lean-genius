@@ -180,5 +180,23 @@
       "Can Rödl's construction be derandomized?",
       "Are there connections to the Hales-Jewett theorem?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Combinatorics.SimpleGraph.Basic"
+    ],
+    "opens": [
+      "Real",
+      "Finset"
+    ],
+    "namespace": "Erdos191",
+    "lineCount": 372,
+    "axiomCount": 7,
+    "theoremCount": 10,
+    "definitionCount": 13
   }
 }

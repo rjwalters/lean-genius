@@ -152,5 +152,19 @@
       "Can the Owens construction with minimum modulus 42 be improved?",
       "What is the structure of covering systems with minimum modulus close to 42?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Finset"
+    ],
+    "namespace": "Erdos2",
+    "lineCount": 265,
+    "axiomCount": 4,
+    "theoremCount": 8,
+    "definitionCount": 17
   }
 }

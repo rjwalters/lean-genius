@@ -181,5 +181,25 @@
       "Connection to smooth numbers and prime gaps",
       "Generalization to prescribed divisibility patterns beyond parity"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Algebra.Ring.Parity",
+      "Mathlib.NumberTheory.Padics.PadicVal.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Order.Interval.Finset.Nat"
+    ],
+    "opens": [
+      "Nat",
+      "BigOperators",
+      "Finset"
+    ],
+    "namespace": "Erdos646",
+    "lineCount": 387,
+    "axiomCount": 15,
+    "theoremCount": 9,
+    "definitionCount": 6
   }
 }

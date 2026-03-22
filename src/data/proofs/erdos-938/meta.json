@@ -157,5 +157,25 @@
       "What is the distribution of gap differences |g_{k+1} - g_k| for consecutive powerful numbers?",
       "Is there a uniform bound on the common difference of APs in consecutive powerful numbers?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Defs",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Topology.Order.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Data.Finset.Card"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Filter"
+    ],
+    "namespace": "Erdos938",
+    "lineCount": 204,
+    "axiomCount": 7,
+    "theoremCount": 2,
+    "definitionCount": 9
   }
 }

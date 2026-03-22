@@ -154,5 +154,17 @@
       "id": "erdos-1",
       "relationship": "Both concern Sidon sets (B₂ sequences); Problem #1 asks about the maximum size of Sidon sets"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos154",
+    "lineCount": 107,
+    "axiomCount": 3,
+    "theoremCount": 1,
+    "definitionCount": 3
+  }
 }

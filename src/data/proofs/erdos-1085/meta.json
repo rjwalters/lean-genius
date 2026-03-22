@@ -152,5 +152,19 @@
       "Can the crossing number approach be improved for d=2?",
       "Is there a construction achieving f_2(n) = ω(n^(1+c/log log n))?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos1085",
+    "lineCount": 127,
+    "axiomCount": 1,
+    "theoremCount": 0,
+    "definitionCount": 6
   }
 }

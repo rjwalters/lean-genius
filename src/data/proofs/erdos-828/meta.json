@@ -125,5 +125,23 @@
       "Can solutions be characterized for specific values of a beyond 0?",
       "What is the smallest n in totientDivisors(a) as a function of a?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Set"
+    ],
+    "namespace": "Erdos828",
+    "lineCount": 106,
+    "axiomCount": 5,
+    "theoremCount": 3,
+    "definitionCount": 3
   }
 }

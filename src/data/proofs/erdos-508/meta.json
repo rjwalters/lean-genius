@@ -141,5 +141,19 @@
       "What is χ(ℝ³)? Current bounds: 6 ≤ χ(ℝ³) ≤ 15.",
       "Does the chromatic number depend on the axiom of choice? Under measurability constraints, the answer might differ."
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Coloring",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 88,
+    "axiomCount": 9,
+    "theoremCount": 0,
+    "definitionCount": 1
   }
 }

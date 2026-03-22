@@ -148,5 +148,23 @@
       "Are there efficient algorithms to compute f(u) for large u?",
       "How does f(u) behave for highly composite numbers?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Order.Filter.AtTopBot",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "Erdos459",
+    "lineCount": 230,
+    "axiomCount": 12,
+    "theoremCount": 5,
+    "definitionCount": 6
   }
 }

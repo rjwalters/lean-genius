@@ -148,5 +148,20 @@
       "Can the Guth-Katz polynomial method be formalized in Lean/Mathlib (requiring algebraic geometry and real algebraic geometry)?",
       "Does an effective version of the convex_polygon_case axiom follow from the existing Lean convex hull formalization?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.EuclideanDist",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos95",
+    "lineCount": 187,
+    "axiomCount": 2,
+    "theoremCount": 3,
+    "definitionCount": 7
   }
 }

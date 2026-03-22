@@ -105,5 +105,20 @@
       "How does the answer change for A + A instead of A - A? (Problem 245)",
       "Can we characterize sets achieving the minimal growth rate?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "Erdos899",
+    "lineCount": 141,
+    "axiomCount": 1,
+    "theoremCount": 3,
+    "definitionCount": 6
   }
 }

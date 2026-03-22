@@ -242,5 +242,31 @@
       "Can the placeholder True definitions (haightConstruction, primorialApproach) be replaced with explicit Lean constructions of Haight's examples?",
       "What is the relationship between superabundant numbers and the explicit bounds in Haight's theorem?"
     ]
-  }
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos277",
+    "lineCount": 295,
+    "axiomCount": 6,
+    "theoremCount": 11,
+    "definitionCount": 22
+  },
+  "relatedProofs": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ]
 }

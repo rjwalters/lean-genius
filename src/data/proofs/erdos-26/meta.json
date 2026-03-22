@@ -126,5 +126,24 @@
       "What is the minimum growth rate of Σ(1/a) needed to guarantee some Behrend shift exists?",
       "Can the Ruzsa/Van Doorn construction be made effective with explicit bounds?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Filter",
+      "BigOperators",
+      "Nat",
+      "Real",
+      "Classical",
+      "in"
+    ],
+    "namespace": "Erdos26",
+    "lineCount": 210,
+    "axiomCount": 8,
+    "theoremCount": 4,
+    "definitionCount": 9
   }
 }

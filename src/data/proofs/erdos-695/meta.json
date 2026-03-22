@@ -160,5 +160,20 @@
   ],
   "relatedProofs": [
     "erdos-368"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos695",
+    "lineCount": 197,
+    "axiomCount": 6,
+    "theoremCount": 6,
+    "definitionCount": 10
+  }
 }

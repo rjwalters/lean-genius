@@ -178,5 +178,23 @@
     "prime-number-theorem",
     "infinitude-primes",
     "erdos-333"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Nat",
+      "Real"
+    ],
+    "namespace": "Erdos334",
+    "lineCount": 301,
+    "axiomCount": 5,
+    "theoremCount": 9,
+    "definitionCount": 9
+  }
 }

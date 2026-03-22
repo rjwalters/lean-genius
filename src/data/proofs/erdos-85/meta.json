@@ -130,5 +130,21 @@
       "What is the exact relationship between f(n) and R(C₄, K_{1,n})?",
       "Can we characterize extremal C₄-free graphs with high minimum degree?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "Erdos85",
+    "lineCount": 198,
+    "axiomCount": 4,
+    "theoremCount": 0,
+    "definitionCount": 8
   }
 }

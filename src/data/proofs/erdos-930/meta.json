@@ -123,5 +123,19 @@
       "Can the Erdős-Selfridge method extend to multiple intervals?",
       "What is the relationship to Catalan's conjecture (now Mihăilescu's theorem)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "Erdos930",
+    "lineCount": 167,
+    "axiomCount": 5,
+    "theoremCount": 5,
+    "definitionCount": 4
   }
 }

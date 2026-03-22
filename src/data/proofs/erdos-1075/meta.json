@@ -156,5 +156,23 @@
       "Is there a spectral or algebraic approach that avoids the limitations of random sampling?",
       "How does the problem relate to Razborov's flag algebra method and its hypergraph extensions?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos1075",
+    "lineCount": 181,
+    "axiomCount": 5,
+    "theoremCount": 1,
+    "definitionCount": 5
   }
 }

@@ -149,5 +149,24 @@
       "Is there an odd weird with exactly 6 prime divisors (the minimum)?",
       "Does Cramér's conjecture imply infinitely many primitive weirds (via Melfi)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Set"
+    ],
+    "namespace": "Erdos470",
+    "lineCount": 347,
+    "axiomCount": 17,
+    "theoremCount": 3,
+    "definitionCount": 13
   }
 }

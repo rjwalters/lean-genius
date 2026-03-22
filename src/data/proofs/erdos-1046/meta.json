@@ -150,5 +150,23 @@
       "How does the geometry depend on the degree of f?",
       "What happens for non-monic polynomials?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Complex.Polynomial.Basic",
+      "Mathlib.Algebra.Polynomial.Basic",
+      "Mathlib.Analysis.Normed.Field.Basic",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Data.Complex.Basic"
+    ],
+    "opens": [
+      "Complex",
+      "Polynomial"
+    ],
+    "namespace": "Erdos1046",
+    "lineCount": 249,
+    "axiomCount": 7,
+    "theoremCount": 2,
+    "definitionCount": 14
   }
 }

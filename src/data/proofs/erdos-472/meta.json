@@ -118,5 +118,18 @@
       "Can the growth rate of the [3, 5] sequence be shown to match the prime-counting function π(x)?",
       "Does parity analysis alone (all candidates odd) suffice to prove non-termination, or are deeper number-theoretic inputs needed?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.List.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 227,
+    "axiomCount": 1,
+    "theoremCount": 19,
+    "definitionCount": 8
   }
 }

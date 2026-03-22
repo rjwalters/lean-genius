@@ -106,5 +106,19 @@
     "openQuestions": [
       "Is the reciprocal sum minimized by complete bipartite graphs among all graphs with the same edge count?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos65",
+    "lineCount": 288,
+    "axiomCount": 9,
+    "theoremCount": 1,
+    "definitionCount": 9
   }
 }

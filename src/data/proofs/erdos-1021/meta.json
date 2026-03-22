@@ -122,5 +122,22 @@
       "How does the H_k connection help?",
       "Are there algebraic constructions achieving the trivial bound?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Data.Nat.Choose.Basic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos1021",
+    "lineCount": 268,
+    "axiomCount": 7,
+    "theoremCount": 6,
+    "definitionCount": 17
   }
 }

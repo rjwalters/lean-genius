@@ -124,5 +124,22 @@
       "How does the theorem generalize to higher dimensions (multivariate Puiseux series)?",
       "Can the Newton-Puiseux algorithm be made efficient enough for computational algebraic geometry at scale?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.RingTheory.HahnSeries.Basic",
+      "Mathlib.RingTheory.PowerSeries.Basic",
+      "Mathlib.FieldTheory.IsAlgClosed.Basic",
+      "Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Polynomial"
+    ],
+    "namespace": "PuiseuxTheorem",
+    "lineCount": 470,
+    "axiomCount": 3,
+    "theoremCount": 6,
+    "definitionCount": 2
   }
 }

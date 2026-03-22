@@ -133,5 +133,16 @@
       "What is the exact constant in F^(3)(n,α) = Θ(√(log n))?",
       "Is there a combinatorial interpretation of why the jump occurs exactly at α=0?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "Erdos161",
+    "lineCount": 189,
+    "axiomCount": 10,
+    "theoremCount": 2,
+    "definitionCount": 8
   }
 }

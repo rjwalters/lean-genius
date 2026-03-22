@@ -126,5 +126,20 @@
       "Characterization of sequences achieving specific liminf values between 0 and 1",
       "Connections to prime gap distribution and multiplicative structure"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [],
+    "namespace": "Erdos440",
+    "lineCount": 212,
+    "axiomCount": 5,
+    "theoremCount": 3,
+    "definitionCount": 6
   }
 }

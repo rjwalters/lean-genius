@@ -160,5 +160,28 @@
       "target": "erdos-806",
       "context": "Both are Erdős problems about structural graph-theoretic properties"
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Order.Filter.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos801",
+    "lineCount": 124,
+    "axiomCount": 3,
+    "theoremCount": 2,
+    "definitionCount": 5
+  },
+  "relatedProofs": [
+    "",
+    ""
   ]
 }

@@ -182,5 +182,25 @@
       "Can the logarithmic lower bound be improved for specific families of near-linear hypergraphs beyond projective planes?",
       "What is the computational complexity of deciding whether a given near-linear family admits a $k$-good blocker?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "Real"
+    ],
+    "namespace": "Erdos664",
+    "lineCount": 282,
+    "axiomCount": 10,
+    "theoremCount": 4,
+    "definitionCount": 18
   }
 }

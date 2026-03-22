@@ -175,5 +175,26 @@
       "How does the problem change for other base sets (e.g., primes, squares)?",
       "What is the computational complexity of finding an optimal S for given n and m?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.NumberTheory.Primorial"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "Real",
+      "Nat"
+    ],
+    "namespace": "Erdos771",
+    "lineCount": 258,
+    "axiomCount": 6,
+    "theoremCount": 11,
+    "definitionCount": 16
   }
 }

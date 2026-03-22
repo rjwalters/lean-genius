@@ -142,5 +142,24 @@
       "Is (log log N)² the true threshold, as Erdős conjectured?",
       "What structural properties characterize maximal sets avoiding unit fraction subsets?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Analysis.SpecificLimits.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Filter"
+    ],
+    "namespace": "Erdos47",
+    "lineCount": 155,
+    "axiomCount": 4,
+    "theoremCount": 1,
+    "definitionCount": 6
   }
 }

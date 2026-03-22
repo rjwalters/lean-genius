@@ -88,5 +88,19 @@
       "What is the minimal density growth rate needed for covering with parameter k?",
       "Can the placeholder density definitions be formalized using Mathlib's asymptotic analysis?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 87,
+    "axiomCount": 4,
+    "theoremCount": 0,
+    "definitionCount": 6
   }
 }

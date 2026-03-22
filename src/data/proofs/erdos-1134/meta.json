@@ -155,5 +155,24 @@
       "For which families of affine maps $\\{x \\mapsto m_i x + b_i\\}$ does the Crampin-Hilton technique generalize? Specifically, when can multiplicative relationships among the $m_i$ be exploited?",
       "Can the analytic estimates (Crampin-Hilton theorem, zero density) be fully formalized in Lean using Mathlib's analysis library, removing the axioms?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Topology.Basic"
+    ],
+    "opens": [
+      "Set",
+      "Nat",
+      "Real"
+    ],
+    "namespace": "Erdos1134",
+    "lineCount": 261,
+    "axiomCount": 9,
+    "theoremCount": 9,
+    "definitionCount": 15
   }
 }

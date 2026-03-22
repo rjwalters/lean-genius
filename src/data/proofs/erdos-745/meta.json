@@ -131,5 +131,22 @@
       "Algorithmic complexity of finding the second largest component",
       "Analogous results for random regular graphs"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Probability.Notation",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Real"
+    ],
+    "namespace": "Erdos745",
+    "lineCount": 329,
+    "axiomCount": 11,
+    "theoremCount": 4,
+    "definitionCount": 7
   }
 }

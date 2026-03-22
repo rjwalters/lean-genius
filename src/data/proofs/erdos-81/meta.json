@@ -141,5 +141,23 @@
       "Is there a polynomial-time algorithm to find optimal clique partitions of chordal graphs?",
       "How does the clique partition number relate to other chordal graph parameters (treewidth, clique number)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos81",
+    "lineCount": 305,
+    "axiomCount": 8,
+    "theoremCount": 4,
+    "definitionCount": 9
   }
 }

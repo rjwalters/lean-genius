@@ -185,5 +185,21 @@
         "relationship": "Both involve density concepts (Schnirelmann vs natural density) and number-theoretic structure."
       }
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Filter",
+      "BigOperators",
+      "Set"
+    ],
+    "namespace": "Erdos1149",
+    "lineCount": 169,
+    "axiomCount": 2,
+    "theoremCount": 5,
+    "definitionCount": 4
   }
 }

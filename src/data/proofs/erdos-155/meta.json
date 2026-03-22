@@ -121,5 +121,19 @@
       "Are the increase points of F(N) approximately uniformly distributed at scale √N, or do they cluster?",
       "Can probabilistic methods (random Sidon sets) shed light on the gap structure of F?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 110,
+    "axiomCount": 11,
+    "theoremCount": 0,
+    "definitionCount": 1
   }
 }

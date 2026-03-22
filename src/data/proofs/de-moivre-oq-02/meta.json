@@ -158,5 +158,20 @@
       "id": "de-moivre-oq-01",
       "relationship": "OQ-01 established T_n(cos θ) = cos(nθ) and computed explicit polynomials; OQ-02 derives algebraic identities from this connection."
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial",
+      "Polynomial.Chebyshev",
+      "Real"
+    ],
+    "namespace": "DeMoivreOQ02",
+    "lineCount": 158,
+    "axiomCount": 0,
+    "theoremCount": 16,
+    "definitionCount": 0
+  }
 }

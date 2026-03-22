@@ -124,5 +124,19 @@
       "What are tight Szemerédi-Trotter type bounds over finite fields $\\mathbb{F}_p^2$? The Bourgain-Katz-Tao bound has a worse exponent; closing this gap is a major open problem.",
       "Can Beck's dichotomy be generalized to higher-dimensional flats: given $n$ points in $\\mathbb{R}^d$, when are many $k$-flats determined?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Algebra.Order.Ring.Lemmas"
+    ],
+    "opens": [],
+    "namespace": "Erdos211",
+    "lineCount": 244,
+    "axiomCount": 10,
+    "theoremCount": 1,
+    "definitionCount": 7
   }
 }

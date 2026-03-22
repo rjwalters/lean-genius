@@ -104,5 +104,26 @@
       "How does the Behrend property interact with the multiplicative structure and common factors of elements of A?",
       "Can the 9 proved structural lemmas be extended to derive new density results for specific families of sets?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Order.Filter.AtTopBot",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Set",
+      "Filter"
+    ],
+    "namespace": "Erdos691",
+    "lineCount": 197,
+    "axiomCount": 5,
+    "theoremCount": 9,
+    "definitionCount": 11
   }
 }

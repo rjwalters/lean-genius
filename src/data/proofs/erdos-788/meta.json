@@ -132,5 +132,22 @@
       "Determine the exact order of magnitude of f(n)",
       "Find explicit constructions matching the probabilistic bounds"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos788",
+    "lineCount": 165,
+    "axiomCount": 8,
+    "theoremCount": 2,
+    "definitionCount": 8
   }
 }

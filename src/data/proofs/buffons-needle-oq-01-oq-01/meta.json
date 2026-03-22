@@ -140,5 +140,20 @@
       "Higher-dimensional Cauchy-Crofton: expected crossings with hyperplane arrangements",
       "Prove the co-area formula in Mathlib to eliminate the Fubini hypothesis"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "intervalIntegral",
+      "MeasureTheory"
+    ],
+    "namespace": "BuffonsNeedleOQ01OQ01",
+    "lineCount": 391,
+    "axiomCount": 1,
+    "theoremCount": 9,
+    "definitionCount": 2
   }
 }

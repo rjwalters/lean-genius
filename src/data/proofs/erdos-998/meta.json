@@ -146,5 +146,25 @@
       "proofId": "erdos-882",
       "relationship": "Both problems study extremal properties of subsets of natural numbers: #882 asks about subset sums avoiding divisibility, while #998 asks about discrepancy of fractional parts. Both connect to the structure of arithmetic sequences and use counting-based arguments."
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Integrals",
+      "Mathlib.Algebra.Order.Floor"
+    ],
+    "opens": [
+      "Set"
+    ],
+    "namespace": "Erdos998",
+    "lineCount": 206,
+    "axiomCount": 5,
+    "theoremCount": 4,
+    "definitionCount": 6
+  },
+  "relatedProofs": [
+    ""
   ]
 }

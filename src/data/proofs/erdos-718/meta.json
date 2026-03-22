@@ -152,5 +152,19 @@
       "Extensions to directed graphs or hypergraphs",
       "Relationship to Hadwiger's conjecture for specific graph classes"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos718",
+    "lineCount": 200,
+    "axiomCount": 8,
+    "theoremCount": 4,
+    "definitionCount": 5
   }
 }

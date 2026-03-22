@@ -169,5 +169,20 @@
   "relatedProofs": [
     "cauchy-schwarz",
     "cauchy-schwarz-oq-03"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "InnerProductSpace",
+      "Finset",
+      "in"
+    ],
+    "namespace": "CauchySchwarzOQ04",
+    "lineCount": 289,
+    "axiomCount": 0,
+    "theoremCount": 17,
+    "definitionCount": 2
+  }
 }

@@ -198,5 +198,19 @@
       "relationship": "related",
       "description": "Both concern the largest prime factor of products of consecutive integers: #368 studies P(n(n+1)), #383 studies P(∏(p²+i))"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "Erdos383",
+    "lineCount": 245,
+    "axiomCount": 3,
+    "theoremCount": 13,
+    "definitionCount": 12
+  }
 }

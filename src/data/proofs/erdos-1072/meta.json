@@ -98,5 +98,23 @@
       "What is the density of Wilson-maximal primes among all primes—is it zero as Hardy and Subbarao conjectured, or positive as the naive random model suggests?",
       "Can the methods used to study Wilson primes (searches to $5 \\times 10^{17}$) shed light on the distribution of Wilson-maximal primes?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Order.Filter.AtTopBot",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Filter"
+    ],
+    "namespace": null,
+    "lineCount": 114,
+    "axiomCount": 11,
+    "theoremCount": 0,
+    "definitionCount": 2
   }
 }

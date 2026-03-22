@@ -117,5 +117,22 @@
       "Are there generalizations to hypergraph coloring?",
       "What are the extremal graphs achieving χ(G) = k+2?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Combinatorics.SimpleGraph.Coloring",
+      "Mathlib.Data.Fintype.Card",
+      "Mathlib.Data.Nat.Basic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos922",
+    "lineCount": 238,
+    "axiomCount": 7,
+    "theoremCount": 6,
+    "definitionCount": 9
   }
 }

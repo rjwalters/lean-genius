@@ -114,5 +114,19 @@
       "Can this be extended to divisors that share factors with 10 (i.e., d = 2, 5, 4, 8, 25, etc.) by combining with the last-k-digits framework?",
       "What is the relationship between the osculator and the continued fraction expansion of 1/d?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Digits.Defs",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "DivisibilityTruncationGeneral",
+    "lineCount": 256,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 0
   }
 }

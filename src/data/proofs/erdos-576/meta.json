@@ -117,5 +117,25 @@
       "Can dependent random choice methods close the gap for Q_3?",
       "Are there algebraic constructions that match the conjectured lower bound?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Combinatorics.SimpleGraph.Maps",
+      "Mathlib.Data.Fintype.Card",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.Asymptotics.Asymptotics",
+      "Mathlib.Order.Filter.AtTopBot"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos576",
+    "lineCount": 275,
+    "axiomCount": 11,
+    "theoremCount": 8,
+    "definitionCount": 8
   }
 }

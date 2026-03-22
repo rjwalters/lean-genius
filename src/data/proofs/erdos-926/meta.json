@@ -129,5 +129,22 @@
     "erdos-146",
     "erdos-1021",
     "erdos-166"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Finset.Card"
+    ],
+    "opens": [
+      "Finset",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos926",
+    "lineCount": 275,
+    "axiomCount": 14,
+    "theoremCount": 6,
+    "definitionCount": 3
+  }
 }

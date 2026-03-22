@@ -153,5 +153,19 @@
       "id": "cramers-rule-oq-01",
       "relationship": "Sibling extension: OQ-01 connects Cramer's Rule to Cayley-Hamilton theorem; OQ-02 analyzes its computational complexity."
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "CramersComplexity",
+    "lineCount": 208,
+    "axiomCount": 0,
+    "theoremCount": 16,
+    "definitionCount": 3
+  }
 }

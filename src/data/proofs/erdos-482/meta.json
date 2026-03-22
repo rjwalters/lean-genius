@@ -96,5 +96,23 @@
       "What is the computational complexity of extracting the n-th digit via this recurrence?",
       "Are there analogous results for non-integer bases?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Data.Int.Floor",
+      "Mathlib.Data.Nat.Digits",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Real",
+      "Int"
+    ],
+    "namespace": "Erdos482",
+    "lineCount": 154,
+    "axiomCount": 7,
+    "theoremCount": 2,
+    "definitionCount": 2
   }
 }

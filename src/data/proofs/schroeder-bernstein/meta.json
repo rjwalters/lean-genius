@@ -131,8 +131,7 @@
       "What is the computational complexity of constructing the bijection from the injections?",
       "Are there effective (constructive) versions for specific classes of sets?"
     ]
-  }
-,
+  },
   "references": [
     {
       "authors": "Bernstein, Felix",
@@ -141,5 +140,19 @@
       "venue": "Göttingen dissertation",
       "note": "First published proof of the Cantor-Bernstein-Schröder theorem: if |A| ≤ |B| and |B| ≤ |A| then |A| = |B|"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Cardinal.SchroederBernstein",
+      "Mathlib.Logic.Equiv.Defs",
+      "Mathlib.Logic.Function.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "SchroederBernstein",
+    "lineCount": 199,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 3
+  }
 }

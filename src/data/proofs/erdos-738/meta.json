@@ -172,5 +172,22 @@
     "ramseys-theorem",
     "four-color-theorem",
     "erdos-1011"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Combinatorics.SimpleGraph.Coloring",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": null,
+    "lineCount": 141,
+    "axiomCount": 7,
+    "theoremCount": 1,
+    "definitionCount": 6
+  }
 }

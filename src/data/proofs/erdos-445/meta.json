@@ -116,5 +116,24 @@
       "Is c = 1/2 the exact threshold?",
       "Can character sum methods improve on Kloosterman approaches?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Padics.PadicVal",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos445",
+    "lineCount": 142,
+    "axiomCount": 5,
+    "theoremCount": 3,
+    "definitionCount": 6
   }
 }

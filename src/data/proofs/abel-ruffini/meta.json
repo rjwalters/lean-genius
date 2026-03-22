@@ -49,7 +49,21 @@
     ],
     "wiedijkNumber": 16,
     "axiomCount": 0,
-    "lineCount": 185
+    "lineCount": 185,
+    "leanFile": {
+      "lineCount": 185,
+      "structureCount": 0,
+      "axiomCount": 0,
+      "theoremCount": 9,
+      "lemmaCount": 0,
+      "defCount": 0,
+      "imports": [
+        "Mathlib.FieldTheory.AbelRuffini",
+        "Mathlib.GroupTheory.Solvable",
+        "Mathlib.GroupTheory.SpecificGroups.Alternating",
+        "Mathlib.FieldTheory.Galois.Basic"
+      ]
+    }
   },
   "overview": {
     "historicalContext": "The quest to solve polynomial equations drove mathematics for centuries. Quadratic equations were solved in antiquity, cubic equations by Cardano (1545), and quartic equations by Ferrari (1545). For 300 years, mathematicians sought a quintic formula.\n\nPaolo Ruffini gave an incomplete proof in 1799 that no such formula exists. Niels Henrik Abel provided the first rigorous proof in 1824, at age 21, showing that the general quintic equation cannot be solved by radicals.\n\nBut it was Evariste Galois, tragically killed in a duel at age 20 in 1832, who revealed the deeper truth: the solvability of a polynomial is determined by the structure of its symmetry group. His theory explains not just why quintics are unsolvable, but precisely which polynomials can be solved by radicals.\n\nGalois's manuscripts, hastily written the night before his fatal duel, took decades to be understood. Today, Galois theory is fundamental to modern algebra, connecting field extensions to group theory in profound ways.",
@@ -175,8 +189,7 @@
     "sylow-theorems",
     "abel-ruffini-oq-04",
     "fundamental-arithmetic"
-  ]
-,
+  ],
   "references": [
     {
       "authors": "Abel, Niels Henrik",
@@ -192,5 +205,19 @@
       "venue": "Bologna",
       "note": "First (incomplete) attempt to prove the quintic is unsolvable — anticipated Abel by 25 years but contained gaps"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.FieldTheory.AbelRuffini",
+      "Mathlib.GroupTheory.Solvable",
+      "Mathlib.GroupTheory.SpecificGroups.Alternating",
+      "Mathlib.FieldTheory.Galois.Basic"
+    ],
+    "opens": [],
+    "namespace": "AbelRuffini",
+    "lineCount": 186,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0
+  }
 }

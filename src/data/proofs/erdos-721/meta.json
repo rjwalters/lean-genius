@@ -146,5 +146,21 @@
       "What are sharp bounds for general W(r,k) with r > 3?",
       "Can the Kelley-Meka bounds on 3-AP-free sets be further improved?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "Erdos721",
+    "lineCount": 283,
+    "axiomCount": 16,
+    "theoremCount": 4,
+    "definitionCount": 2
   }
 }

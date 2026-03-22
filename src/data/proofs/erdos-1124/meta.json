@@ -178,5 +178,22 @@
       "id": "erdos-1071",
       "relationship": "Both concern geometric decomposition and packing problems in the plane, exploring the limits of finite combinatorial geometry"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.EuclideanDist",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Set",
+      "MeasureTheory"
+    ],
+    "namespace": "Erdos1124",
+    "lineCount": 212,
+    "axiomCount": 5,
+    "theoremCount": 3,
+    "definitionCount": 15
+  }
 }

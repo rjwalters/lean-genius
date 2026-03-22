@@ -150,5 +150,19 @@
   "relatedProofs": [
     "erdos-370",
     "erdos-143"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Erdos369",
+    "lineCount": 132,
+    "axiomCount": 1,
+    "theoremCount": 0,
+    "definitionCount": 5
+  }
 }

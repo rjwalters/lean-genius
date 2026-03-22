@@ -143,5 +143,30 @@
       "Does the analogous question for $K_r$ ($r \\geq 4$) replacing triangles have a similar gap phenomenon?",
       "Is there a polynomial-time algorithm to find the triangle maximizing good neighbors in a dense graph?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt"
+    ],
+    "opens": [
+      "Lean",
+      "Meta",
+      "Elab",
+      "Tactic",
+      "in",
+      "Lean.Elab.Tactic",
+      "in",
+      "Finset"
+    ],
+    "namespace": "Erdos1034",
+    "lineCount": 744,
+    "axiomCount": 3,
+    "theoremCount": 17,
+    "definitionCount": 22
   }
 }

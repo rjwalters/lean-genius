@@ -154,5 +154,29 @@
       "proofId": "hilbert-16",
       "relationship": "Adjacent Hilbert problem — Problem 16 (limit cycles) also concerns real polynomial geometry, specifically the topology of real algebraic curves"
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.FieldTheory.IsAlgClosed.Basic",
+      "Mathlib.RingTheory.Polynomial.Basic",
+      "Mathlib.Algebra.Order.Field.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.FieldTheory.RatFunc.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Polynomial",
+      "RatFunc"
+    ],
+    "namespace": "Hilbert17",
+    "lineCount": 573,
+    "axiomCount": 10,
+    "theoremCount": 11,
+    "definitionCount": 8
+  },
+  "relatedProofs": [
+    "",
+    "",
+    ""
   ]
 }

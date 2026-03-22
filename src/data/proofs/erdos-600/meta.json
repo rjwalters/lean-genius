@@ -144,5 +144,24 @@
       "Does e(n, r+1) / e(n, r) → 1 as n → ∞?",
       "What are the exact asymptotics of e(n, r) for fixed r?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Order.Filter.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Filter"
+    ],
+    "namespace": "Erdos600",
+    "lineCount": 180,
+    "axiomCount": 7,
+    "theoremCount": 2,
+    "definitionCount": 9
   }
 }

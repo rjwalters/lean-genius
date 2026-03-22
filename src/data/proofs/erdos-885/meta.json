@@ -124,5 +124,21 @@
       "What is the growth rate of the smallest integers achieving k-common sets?",
       "Is there a theoretical obstruction for large k, or just computational difficulty?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Set",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos885",
+    "lineCount": 199,
+    "axiomCount": 12,
+    "theoremCount": 6,
+    "definitionCount": 2
   }
 }

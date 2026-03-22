@@ -139,5 +139,28 @@
       "Can Fuchs's result be extended to meromorphic functions?",
       "What is the measure-theoretic structure of the exceptional set where log m(r) < (1-ε) log M(r)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Complex.Basic",
+      "Mathlib.Analysis.Calculus.FDeriv.Basic",
+      "Mathlib.Analysis.Normed.Field.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Filter",
+      "Real",
+      "Set",
+      "Topology"
+    ],
+    "namespace": "Erdos516",
+    "lineCount": 224,
+    "axiomCount": 5,
+    "theoremCount": 2,
+    "definitionCount": 8
   }
 }

@@ -116,5 +116,21 @@
       "What is the minimum N such that the edge is in all cycles of length ≥ N?",
       "Do similar results hold for larger cardinal numbers?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.Data.Nat.Basic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Cardinal"
+    ],
+    "namespace": "Erdos737",
+    "lineCount": 155,
+    "axiomCount": 5,
+    "theoremCount": 4,
+    "definitionCount": 4
   }
 }

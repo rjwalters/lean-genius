@@ -165,5 +165,21 @@
       "Can flag algebra methods resolve the upper bound π(K₄⁻) ≤ 2/7?",
       "How does the Turán density change for K₄ (all 4 edges on 4 vertices) versus K₄⁻ (3 edges)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Nat.Basic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos794",
+    "lineCount": 257,
+    "axiomCount": 3,
+    "theoremCount": 7,
+    "definitionCount": 9
   }
 }

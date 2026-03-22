@@ -161,5 +161,22 @@
     "perfect-numbers",
     "prime-number-theorem",
     "prime-reciprocal-divergence"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos893",
+    "lineCount": 188,
+    "axiomCount": 1,
+    "theoremCount": 24,
+    "definitionCount": 4
+  }
 }

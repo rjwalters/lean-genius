@@ -165,5 +165,18 @@
   ],
   "relatedProofs": [
     "erdos-949"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos948",
+    "lineCount": 229,
+    "axiomCount": 4,
+    "theoremCount": 4,
+    "definitionCount": 19
+  }
 }

@@ -170,5 +170,23 @@
       "Determine the exact asymptotic behavior of F(n)",
       "Extend results to other polynomial sequences p(n)p(n+1)"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Order.Filter.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Real"
+    ],
+    "namespace": "Erdos368",
+    "lineCount": 343,
+    "axiomCount": 11,
+    "theoremCount": 13,
+    "definitionCount": 7
   }
 }

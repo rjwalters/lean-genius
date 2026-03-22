@@ -106,5 +106,20 @@
       "Can the transcendence be proved using simpler methods that avoid the full algebraic independence machinery?",
       "What about $\\sum \\sigma_k(n)/2^n$ for $k \\geq 2$? These relate to higher-weight Eisenstein series $G_{2k}$."
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "BigOperators",
+      "Nat",
+      "Real"
+    ],
+    "namespace": "Erdos250",
+    "lineCount": 174,
+    "axiomCount": 3,
+    "theoremCount": 9,
+    "definitionCount": 2
   }
 }

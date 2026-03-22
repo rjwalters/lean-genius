@@ -172,5 +172,26 @@
       "How does the collision frequency grow? The ratio S(N)/2^N decreases (0.996, 0.986, 0.981, ...) — what is its asymptotic behavior?",
       "Can the BGMS improvement be pushed further, e.g., to a constant 3 log 2 or higher? What is the barrier to improving the lower bound constant?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Nat",
+      "Real",
+      "BigOperators",
+      "Finset"
+    ],
+    "namespace": "Erdos320",
+    "lineCount": 249,
+    "axiomCount": 8,
+    "theoremCount": 9,
+    "definitionCount": 15
   }
 }

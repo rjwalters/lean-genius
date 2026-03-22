@@ -121,5 +121,27 @@
       "Can the polynomial bound c/K² be improved to c/K^α for some α > 2?",
       "Are there connections to the Erdős-Straus conjecture on 4/n = 1/x + 1/y + 1/z?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
+      "Mathlib.Analysis.SpecialFunctions.Log.Deriv",
+      "Mathlib.Topology.Algebra.Order.LiminfLimsup",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Analysis.PSeries"
+    ],
+    "opens": [
+      "Finset",
+      "Real",
+      "Filter"
+    ],
+    "namespace": "Erdos312",
+    "lineCount": 516,
+    "axiomCount": 1,
+    "theoremCount": 44,
+    "definitionCount": 6
   }
 }

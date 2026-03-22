@@ -187,5 +187,27 @@
     "lebesgue-measure",
     "basel-problem",
     "hurwitz-theorem"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.NumberTheory.Diophantine",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Order.Filter.AtTopBot.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Topology.Instances.Real.Basic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Set",
+      "Filter",
+      "Real"
+    ],
+    "namespace": "Erdos1001",
+    "lineCount": 206,
+    "axiomCount": 9,
+    "theoremCount": 4,
+    "definitionCount": 10
+  }
 }

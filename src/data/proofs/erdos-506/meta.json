@@ -103,5 +103,19 @@
       "What is the analogous problem in ℝ³ for spheres determined by n points in general position?",
       "Are the extremal configurations achieving the minimum circle count always algebraically structured?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.LinearAlgebra.AffineSpace.Basic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 116,
+    "axiomCount": 4,
+    "theoremCount": 0,
+    "definitionCount": 8
   }
 }

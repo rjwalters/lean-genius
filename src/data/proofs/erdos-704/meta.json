@@ -143,5 +143,21 @@
       "What is χ(G₂) exactly? (5, 6, or 7)",
       "What is the measurable chromatic number?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Analysis.Normed.Field.Basic",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Order.Filter.AtTopBot",
+      "Mathlib.Combinatorics.SimpleGraph.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos704",
+    "lineCount": 164,
+    "axiomCount": 7,
+    "theoremCount": 2,
+    "definitionCount": 6
   }
 }

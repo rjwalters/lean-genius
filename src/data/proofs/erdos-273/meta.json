@@ -135,5 +135,21 @@
       "Does the reciprocal sum condition alone obstruct existence for $p \\geq 5$?",
       "Can Hough's probabilistic techniques be adapted to the prime-minus-one setting?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 116,
+    "axiomCount": 4,
+    "theoremCount": 0,
+    "definitionCount": 6
   }
 }

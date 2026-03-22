@@ -156,5 +156,20 @@
       "How does k_c(n) depend on c — is there a phase transition in c?",
       "Are there efficient algorithms for finding transversals when cliques are guaranteed large?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Function",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos611",
+    "lineCount": 246,
+    "axiomCount": 5,
+    "theoremCount": 8,
+    "definitionCount": 14
   }
 }

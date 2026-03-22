@@ -91,5 +91,19 @@
       "What is the true growth rate of R(k)?",
       "Is lim R(k)^{1/k} = 4 or strictly less?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Filter"
+    ],
+    "namespace": null,
+    "lineCount": 191,
+    "axiomCount": 12,
+    "theoremCount": 4,
+    "definitionCount": 9
   }
 }

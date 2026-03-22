@@ -117,5 +117,19 @@
       "Is there a 'strong' version: can we guarantee multiple disjoint monochromatic Egyptian subsets?",
       "How does the number of monochromatic Egyptian subsets grow with n for fixed k?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos45",
+    "lineCount": 141,
+    "axiomCount": 3,
+    "theoremCount": 3,
+    "definitionCount": 5
   }
 }

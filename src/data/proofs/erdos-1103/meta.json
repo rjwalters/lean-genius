@@ -171,5 +171,22 @@
     "infinitude-primes",
     "bertrands-postulate",
     "prime-number-theorem"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Squarefree",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Filter"
+    ],
+    "namespace": null,
+    "lineCount": 92,
+    "axiomCount": 6,
+    "theoremCount": 3,
+    "definitionCount": 2
+  }
 }

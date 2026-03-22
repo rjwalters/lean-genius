@@ -145,5 +145,20 @@
       "Optimal constructions for {C₃, C₄}-free graphs",
       "General theory for ex(n; {C_3, C_4, ..., C_{2k}})"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos573",
+    "lineCount": 199,
+    "axiomCount": 11,
+    "theoremCount": 2,
+    "definitionCount": 7
   }
 }

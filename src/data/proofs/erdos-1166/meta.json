@@ -173,5 +173,24 @@
       "Can the measure-theoretic axioms (`AlmostSurely`, `almostSurely_mono`, `almostSurely_and`) be replaced with proper Mathlib probability foundations using `MeasureTheory.ae`?",
       "The related Problem #1165 asks whether $|F(n)| \\leq 2$ eventually a.s. — can this sharper bound be formalized?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "Erdos1166",
+    "lineCount": 260,
+    "axiomCount": 20,
+    "theoremCount": 7,
+    "definitionCount": 1
   }
 }

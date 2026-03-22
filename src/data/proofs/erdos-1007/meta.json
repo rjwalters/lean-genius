@@ -82,5 +82,18 @@
       "Characterize all graphs achieving the minimum for each dimension",
       "Computational complexity of determining graph dimension"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 130,
+    "axiomCount": 4,
+    "theoremCount": 3,
+    "definitionCount": 3
   }
 }

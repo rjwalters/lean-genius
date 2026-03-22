@@ -118,5 +118,18 @@
       "Do analogues of the Oppenheim conjecture hold for higher-degree forms (cubic, quartic)?",
       "What is the Hausdorff dimension of the set of $\\alpha$ for which $\\min_{\\|(x,y,z)\\| \\leq T} |Q| \\cdot T^{\\beta}$ remains bounded?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Data.Real.Irrational",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 133,
+    "axiomCount": 6,
+    "theoremCount": 2,
+    "definitionCount": 3
   }
 }

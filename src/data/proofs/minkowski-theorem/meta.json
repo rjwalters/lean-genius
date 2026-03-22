@@ -143,5 +143,28 @@
     "isoperimetric-theorem",
     "picks-theorem",
     "area-of-circle"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Analysis.Convex.Basic",
+      "Mathlib.Analysis.Normed.Field.Basic",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.LinearAlgebra.Matrix.Determinant.Basic",
+      "Mathlib.NumberTheory.SumTwoSquares",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Set",
+      "MeasureTheory",
+      "Metric"
+    ],
+    "namespace": "MinkowskiFundamentalTheorem",
+    "lineCount": 454,
+    "axiomCount": 1,
+    "theoremCount": 9,
+    "definitionCount": 7
+  }
 }

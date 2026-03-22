@@ -139,5 +139,19 @@
       "What is ex₃(n, K₄³) for n = 7, 8, 9?",
       "Does a stability result hold: are near-extremal hypergraphs close to Turán's construction?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 108,
+    "axiomCount": 13,
+    "theoremCount": 0,
+    "definitionCount": 4
   }
 }

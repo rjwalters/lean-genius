@@ -173,5 +173,33 @@
       "What is the Hausdorff dimension of the set of numbers with irrationality measure exactly μ for a given μ > 2?",
       "Can Liouville's approximation approach be extended to p-adic or function field settings?"
     ]
-  }
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Transcendental.Liouville.Basic",
+      "Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleNumber",
+      "Mathlib.RingTheory.Algebraic.Basic",
+      "Mathlib.Data.Real.Irrational",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real",
+      "Polynomial",
+      "Nat"
+    ],
+    "namespace": "LiouvilleTheorem",
+    "lineCount": 445,
+    "axiomCount": 6,
+    "theoremCount": 12,
+    "definitionCount": 0
+  },
+  "relatedProofs": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ]
 }

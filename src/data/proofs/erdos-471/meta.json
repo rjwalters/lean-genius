@@ -134,5 +134,22 @@
       "What is the smallest Q₀ that generates all primes?",
       "Can similar iterative processes work with sums of k primes for k ≠ 3?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Set.Finite"
+    ],
+    "opens": [
+      "Finset",
+      "Set"
+    ],
+    "namespace": "Erdos471",
+    "lineCount": 301,
+    "axiomCount": 8,
+    "theoremCount": 7,
+    "definitionCount": 8
   }
 }

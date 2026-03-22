@@ -159,5 +159,22 @@
       "What is the smallest collection giving a square product with |Iᵢ| = 4?",
       "Can we characterize which combinations of interval sizes admit infinitely many solutions?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.List.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+    ],
+    "opens": [
+      "BigOperators"
+    ],
+    "namespace": "Erdos363",
+    "lineCount": 277,
+    "axiomCount": 5,
+    "theoremCount": 5,
+    "definitionCount": 10
   }
 }

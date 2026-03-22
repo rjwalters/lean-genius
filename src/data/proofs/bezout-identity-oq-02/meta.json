@@ -129,5 +129,20 @@
       "Can the Bézout coefficients from `BezoutIdentityOQ01.extGcd` be combined with `euclids_lemma_nat` to give a constructive, computable divisibility algorithm — producing explicit quotient witnesses rather than just existence proofs?",
       "Does the `linear_combination` tactic approach scale to Gauss's lemma (the analog for polynomial rings: if f is primitive and f | g·h over ℤ[x], then f | g or f | h)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Int.GCD",
+      "Mathlib.RingTheory.Coprime.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "BezoutIdentityOQ02",
+    "lineCount": 193,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0
   }
 }

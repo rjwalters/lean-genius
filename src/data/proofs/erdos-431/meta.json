@@ -153,5 +153,24 @@
       "What structural properties must A and B have if they exist?",
       "Are there other restricted sumset constructions giving subsets of primes?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.PrimeCounting",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Real",
+      "Nat",
+      "Set"
+    ],
+    "namespace": "Erdos431",
+    "lineCount": 220,
+    "axiomCount": 8,
+    "theoremCount": 5,
+    "definitionCount": 11
   }
 }

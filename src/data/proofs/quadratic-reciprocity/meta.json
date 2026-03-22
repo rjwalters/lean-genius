@@ -111,5 +111,19 @@
       "What is the connection to the Langlands program?",
       "Can reciprocity laws be used for faster primality tests?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "ZMod"
+    ],
+    "namespace": "QuadraticReciprocity",
+    "lineCount": 232,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0
   }
 }

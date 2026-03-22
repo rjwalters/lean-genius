@@ -121,5 +121,19 @@
       "Is the sequence of prime squares good? (Problem #208 strong form)",
       "What is the minimal growth rate for a good sequence?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Filter"
+    ],
+    "namespace": "Erdos1101",
+    "lineCount": 140,
+    "axiomCount": 5,
+    "theoremCount": 0,
+    "definitionCount": 5
   }
 }

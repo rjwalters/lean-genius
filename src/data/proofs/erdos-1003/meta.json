@@ -140,5 +140,25 @@
       "Are there four consecutive integers with equal totient?",
       "Is Carmichael's Totient Conjecture true?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Order.Filter.AtTopBot.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Set",
+      "Filter",
+      "Real"
+    ],
+    "namespace": "Erdos1003",
+    "lineCount": 277,
+    "axiomCount": 5,
+    "theoremCount": 0,
+    "definitionCount": 6
   }
 }

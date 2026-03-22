@@ -219,5 +219,22 @@
   "relatedProofs": [
     "chinese-remainder-theorem",
     "bezout-identity"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Int.GCD",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Nat.ModEq",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Int"
+    ],
+    "namespace": "ChineseRemainderNonCoprime",
+    "lineCount": 306,
+    "axiomCount": 0,
+    "theoremCount": 16,
+    "definitionCount": 0
+  }
 }

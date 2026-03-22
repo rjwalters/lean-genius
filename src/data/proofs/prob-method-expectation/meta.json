@@ -147,5 +147,19 @@
     "prob-method-second-moment",
     "prob-method-lovasz-local",
     "prob-method-applications"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "ProbMethod.Expectation",
+    "lineCount": 137,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0
+  }
 }

@@ -191,5 +191,21 @@
     "erdos-1091",
     "erdos-625",
     "erdos-622"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Function",
+      "Set",
+      "SimpleGraph"
+    ],
+    "namespace": null,
+    "lineCount": 242,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 15
+  }
 }

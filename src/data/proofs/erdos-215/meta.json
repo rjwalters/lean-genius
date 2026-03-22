@@ -138,5 +138,21 @@
       "Does an analogous result hold for other lattices in ℝ² (hexagonal, triangular)?",
       "Can bounds be placed on the 'size' or 'density' of a Steinhaus set in any meaningful sense?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.EuclideanDist",
+      "Mathlib.Topology.MetricSpace.Isometry",
+      "Mathlib.Data.Set.Card"
+    ],
+    "opens": [
+      "Set",
+      "Function"
+    ],
+    "namespace": "Erdos215",
+    "lineCount": 202,
+    "axiomCount": 5,
+    "theoremCount": 5,
+    "definitionCount": 8
   }
 }

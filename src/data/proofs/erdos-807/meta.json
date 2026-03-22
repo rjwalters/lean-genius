@@ -157,5 +157,23 @@
       "What is the typical value of tau(G) - (n - alpha(G)) for random graphs?",
       "How does the bipartition number relate to other graph decomposition problems?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Probability.ProbabilityMassFunction.Basic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos807",
+    "lineCount": 261,
+    "axiomCount": 9,
+    "theoremCount": 3,
+    "definitionCount": 4
   }
 }

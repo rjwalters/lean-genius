@@ -198,5 +198,26 @@
     "erdos-693",
     "erdos-648",
     "erdos-691"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Divisors",
+      "Mathlib.Topology.Instances.Real",
+      "Mathlib.Order.Filter.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Real",
+      "Filter",
+      "Finset"
+    ],
+    "namespace": "Erdos692",
+    "lineCount": 296,
+    "axiomCount": 7,
+    "theoremCount": 2,
+    "definitionCount": 10
+  }
 }

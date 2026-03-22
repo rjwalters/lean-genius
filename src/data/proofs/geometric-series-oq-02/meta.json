@@ -143,5 +143,26 @@
       "What about the Neumann series for unbounded operators (resolvent formalism)?",
       "How does this connect to the holomorphic functional calculus?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.Group.NatPowAssoc",
+      "Mathlib.Algebra.Ring.Regular",
+      "Mathlib.Tactic.Abel",
+      "Mathlib.Analysis.SpecificLimits.Normed",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+      "Mathlib.Topology.Algebra.InfiniteSum.Ring",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "Topology"
+    ],
+    "namespace": "NeumannSeries",
+    "lineCount": 238,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 0
   }
 }

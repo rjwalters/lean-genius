@@ -173,5 +173,23 @@
       "What is the distribution of h(n) for large n? Is it approximately Poisson?",
       "How does the distribution of powerful numbers in [n², (n+1)²) compare to other intervals of similar length?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Prime.Defs",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "Nat",
+      "BigOperators"
+    ],
+    "namespace": "Erdos942",
+    "lineCount": 151,
+    "axiomCount": 6,
+    "theoremCount": 1,
+    "definitionCount": 2
   }
 }

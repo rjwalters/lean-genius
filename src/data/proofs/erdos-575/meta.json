@@ -82,5 +82,20 @@
       "What is the relationship between this conjecture and the rational exponent conjecture for bipartite Turán numbers?",
       "Can the conjecture be established for families of bounded degeneracy or bounded maximum degree?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 104,
+    "axiomCount": 6,
+    "theoremCount": 1,
+    "definitionCount": 3
   }
 }

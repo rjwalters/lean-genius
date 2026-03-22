@@ -153,5 +153,25 @@
   ],
   "relatedProofs": [
     "erdos-912"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Combinatorics.SimpleGraph.Maps",
+      "Mathlib.Combinatorics.SimpleGraph.Finite",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Topology.Order.Basic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos911",
+    "lineCount": 252,
+    "axiomCount": 9,
+    "theoremCount": 9,
+    "definitionCount": 7
+  }
 }

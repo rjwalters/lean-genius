@@ -104,5 +104,22 @@
       "Are there other lattice constructions with similar properties?",
       "What is the exact asymptotic constant in the distance count?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Topology.MetricSpace.Basic"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "Erdos659",
+    "lineCount": 245,
+    "axiomCount": 6,
+    "theoremCount": 2,
+    "definitionCount": 9
   }
 }

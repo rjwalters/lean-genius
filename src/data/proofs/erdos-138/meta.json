@@ -139,5 +139,20 @@
       "Does W(k)/2^k → ∞?",
       "Can the tower bound be reduced to a simpler function?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Filter",
+      "Finset"
+    ],
+    "namespace": "Erdos138",
+    "lineCount": 177,
+    "axiomCount": 8,
+    "theoremCount": 3,
+    "definitionCount": 8
   }
 }

@@ -101,5 +101,23 @@
       "Does the infinite version hold: for infinite Sidon $A \\subset \\mathbb{N}$, does $I(A \\cap [1,N]) \\to \\infty$?",
       "What is the minimum isolated count among all Sidon sets of size $n$? Computational evidence for small $n$ could guide the conjecture."
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.Additive.Sidon",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Pointwise",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Pointwise"
+    ],
+    "namespace": null,
+    "lineCount": 109,
+    "axiomCount": 3,
+    "theoremCount": 0,
+    "definitionCount": 7
   }
 }

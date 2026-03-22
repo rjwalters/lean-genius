@@ -157,5 +157,24 @@
     "erdos-146",
     "erdos-533",
     "erdos-365"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Analysis.Convex.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos94",
+    "lineCount": 433,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 16
+  }
 }

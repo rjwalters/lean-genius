@@ -154,5 +154,22 @@
       "What structural properties characterize graphs achieving the minimum sum chi_L(G) + chi_L(G^c)?",
       "Are there explicit (non-probabilistic) constructions of counterexamples?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Coloring",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos753",
+    "lineCount": 300,
+    "axiomCount": 15,
+    "theoremCount": 3,
+    "definitionCount": 6
   }
 }

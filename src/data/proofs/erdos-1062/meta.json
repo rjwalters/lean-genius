@@ -103,5 +103,22 @@
     "erdos-131",
     "erdos-793",
     "erdos-1076"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Irrational",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 105,
+    "axiomCount": 5,
+    "theoremCount": 1,
+    "definitionCount": 4
+  }
 }

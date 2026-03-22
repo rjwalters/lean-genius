@@ -166,5 +166,20 @@
   "relatedProofs": [
     "taylor-theorem",
     "fourier-series"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Data.Fin.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 96,
+    "axiomCount": 4,
+    "theoremCount": 0,
+    "definitionCount": 5
+  }
 }

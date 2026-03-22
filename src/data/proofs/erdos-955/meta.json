@@ -191,5 +191,25 @@
       "What is the distribution of s(n) in arithmetic progressions? This would likely be key to a general proof",
       "For the iterates s^(k)(n), does density preservation hold for all k ≥ 1?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Order.Filter.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Real",
+      "Filter"
+    ],
+    "namespace": "Erdos955",
+    "lineCount": 220,
+    "axiomCount": 13,
+    "theoremCount": 2,
+    "definitionCount": 14
   }
 }

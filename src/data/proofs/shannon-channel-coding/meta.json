@@ -147,5 +147,16 @@
     "shannon-entropy",
     "shannon-source-coding",
     "prob-method-expectation"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "InformationTheory.ChannelCoding",
+    "lineCount": 54,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 1
+  }
 }

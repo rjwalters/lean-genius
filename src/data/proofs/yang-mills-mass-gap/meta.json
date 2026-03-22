@@ -712,5 +712,50 @@
       "relationship": "related",
       "description": "Both involve foundational questions about mathematical structures; the spectral gap undecidability result (Cubitt et al. 2015) parallels the independence of CH from ZFC, though Yang-Mills' specific structure may make its mass gap decidable"
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.Lie.Basic",
+      "Mathlib.Algebra.Lie.Classical",
+      "Mathlib.Algebra.Lie.Matrix",
+      "Mathlib.LinearAlgebra.Matrix.Trace",
+      "Mathlib.Analysis.Calculus.Deriv.Basic",
+      "Mathlib.Analysis.Calculus.FDeriv.Basic",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.MeasureTheory.Integral.Bochner.Basic",
+      "Mathlib.Topology.Order.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Real",
+      "Set",
+      "Filter",
+      "Topology",
+      "Topology",
+      "BigOperators",
+      "Matrix"
+    ],
+    "namespace": "YangMillsMassGap",
+    "lineCount": 30559,
+    "axiomCount": 1,
+    "theoremCount": 1951,
+    "definitionCount": 646
+  },
+  "relatedProofs": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
   ]
 }

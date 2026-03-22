@@ -129,5 +129,24 @@
       "Is the minimum different for Borel pieces vs. arbitrary (AC-dependent) pieces?",
       "Can the lower bound of 3 be improved, perhaps to 4 or 5, using finer topological or measure-theoretic obstructions?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "MeasureTheory",
+      "problem",
+      "in",
+      "geometric",
+      "measure",
+      "theory."
+    ],
+    "namespace": "Erdos1124OQ01",
+    "lineCount": 455,
+    "axiomCount": 5,
+    "theoremCount": 22,
+    "definitionCount": 8
   }
 }

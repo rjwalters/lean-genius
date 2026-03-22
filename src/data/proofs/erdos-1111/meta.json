@@ -144,5 +144,22 @@
       "What is the asymptotic growth of d(t, t)?",
       "Can algorithmic methods find anticomplete high-χ subsets efficiently?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Choose.Basic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos1111",
+    "lineCount": 246,
+    "axiomCount": 11,
+    "theoremCount": 2,
+    "definitionCount": 7
   }
 }

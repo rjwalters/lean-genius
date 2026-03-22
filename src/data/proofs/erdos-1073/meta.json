@@ -81,5 +81,25 @@
       "Are there infinitely many such composites?",
       "What is the asymptotic density of such composites?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Wilson",
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.ModCast",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Filter"
+    ],
+    "namespace": null,
+    "lineCount": 162,
+    "axiomCount": 0,
+    "theoremCount": 17,
+    "definitionCount": 4
   }
 }

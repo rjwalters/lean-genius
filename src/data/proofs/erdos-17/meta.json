@@ -203,5 +203,19 @@
     "dirichlets-theorem",
     "prime-number-theorem",
     "bertrands-postulate"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos17",
+    "lineCount": 269,
+    "axiomCount": 12,
+    "theoremCount": 3,
+    "definitionCount": 8
+  }
 }

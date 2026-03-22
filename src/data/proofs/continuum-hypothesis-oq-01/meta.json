@@ -136,5 +136,27 @@
       "Is there a mathematically compelling axiom that decides CH and is also large-cardinal compatible?",
       "Does the set-theoretic multiverse (Hamkins) dissolve the question by treating CH as having no unique truth value?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.Order.SuccPred.Basic",
+      "Mathlib.Logic.Basic",
+      "Mathlib.Tactic",
+      "Proofs.ContinuumHypothesis"
+    ],
+    "opens": [
+      "Cardinal",
+      "ContinuumHypothesis",
+      "(CH",
+      "GCH",
+      "gch_implies_ch)"
+    ],
+    "namespace": "ContinuumHypothesisOQ01",
+    "lineCount": 318,
+    "axiomCount": 10,
+    "theoremCount": 20,
+    "definitionCount": 3
   }
 }

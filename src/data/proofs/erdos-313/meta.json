@@ -152,5 +152,21 @@
       "**Prime Set Structure:** What constraints must the prime set $P$ satisfy beyond $\\sum 1/p < 1$? Are there forbidden primes?",
       "**Density of Near-Misses:** How many squarefree $m$ satisfy $|\\sum_{p|m} 1/p - (1 - 1/m)| < \\varepsilon$ for small $\\varepsilon$?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Rat.Defs"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": null,
+    "lineCount": 105,
+    "axiomCount": 11,
+    "theoremCount": 0,
+    "definitionCount": 2
   }
 }

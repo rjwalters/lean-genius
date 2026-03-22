@@ -136,5 +136,23 @@
     ]
   },
   "axiomCount": 5,
-  "lineCount": 143
+  "lineCount": 143,
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Nat.Prime.Defs",
+      "Mathlib.Data.Set.Finite.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos366",
+    "lineCount": 144,
+    "axiomCount": 5,
+    "theoremCount": 4,
+    "definitionCount": 6
+  }
 }

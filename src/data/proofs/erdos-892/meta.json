@@ -142,5 +142,21 @@
     "erdos-1935-primitive",
     "behrend-theorem",
     "prime-harmonic-series"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 122,
+    "axiomCount": 4,
+    "theoremCount": 0,
+    "definitionCount": 6
+  }
 }

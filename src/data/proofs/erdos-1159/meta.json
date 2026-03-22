@@ -125,5 +125,18 @@
     "erdos-664",
     "erdos-1104",
     "fano-plane"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Configuration"
+    ],
+    "namespace": "Erdos1159",
+    "lineCount": 145,
+    "axiomCount": 1,
+    "theoremCount": 7,
+    "definitionCount": 2
+  }
 }

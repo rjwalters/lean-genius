@@ -162,5 +162,22 @@
       "Find better constructions with few distinct distances",
       "Determine the exact constant in the Nivasch et al. bound"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Topology.MetricSpace.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "Set"
+    ],
+    "namespace": "Erdos982",
+    "lineCount": 361,
+    "axiomCount": 9,
+    "theoremCount": 6,
+    "definitionCount": 8
   }
 }

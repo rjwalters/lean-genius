@@ -140,5 +140,21 @@
       "Does the analogous question for $\\chi = \\aleph_2$ or higher alephs have the same answer? Does the independence phenomenon persist?",
       "Can the Soukup/Bowler-Pitz constructions be formalized in Lean without axiomatization, i.e., can the combinatorial construction itself be verified?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Ordinal"
+    ],
+    "opens": [
+      "Cardinal",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos1067",
+    "lineCount": 253,
+    "axiomCount": 6,
+    "theoremCount": 3,
+    "definitionCount": 10
   }
 }

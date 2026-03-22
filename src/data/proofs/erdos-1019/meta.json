@@ -133,5 +133,21 @@
       "Can the planarity definition `isPlanar` be formalized in Mathlib using Kuratowski's theorem ($G$ is planar iff it has no $K_5$ or $K_{3,3}$ minor)?",
       "What is the minimum number of saturated planar subgraphs (on $> 3$ vertices) in a graph with $\\lfloor n^2/4 \\rfloor + k$ edges? This is the supersaturation version of Problem #1019."
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Fintype.Basic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos1019",
+    "lineCount": 317,
+    "axiomCount": 8,
+    "theoremCount": 8,
+    "definitionCount": 18
   }
 }

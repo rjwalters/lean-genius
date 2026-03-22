@@ -135,5 +135,18 @@
       "What is the precise growth rate of f? Is f(n)/n bounded?",
       "Is the well-definedness of f decidable?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 78,
+    "axiomCount": 5,
+    "theoremCount": 0,
+    "definitionCount": 2
   }
 }

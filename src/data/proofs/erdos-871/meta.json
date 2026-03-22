@@ -130,5 +130,21 @@
       "Are there other structural conditions that guarantee partition?",
       "What about partition into more than two bases?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Filter",
+      "BigOperators",
+      "Nat"
+    ],
+    "namespace": "Erdos871",
+    "lineCount": 426,
+    "axiomCount": 3,
+    "theoremCount": 25,
+    "definitionCount": 9
   }
 }

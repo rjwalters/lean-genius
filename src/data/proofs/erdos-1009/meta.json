@@ -140,5 +140,19 @@
       "Is there a common generalization for edge-disjoint copies of arbitrary graphs $H$ beyond the Turán threshold $\\text{ex}(n, H)$?",
       "Can the parity-dependent thresholds ($c < 2$ for odd $n$, $c < 3/2$ for even $n$) be unified into a single formula depending on $n \\bmod 2$?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "SimpleGraph"
+    ],
+    "namespace": null,
+    "lineCount": 195,
+    "axiomCount": 8,
+    "theoremCount": 1,
+    "definitionCount": 9
   }
 }

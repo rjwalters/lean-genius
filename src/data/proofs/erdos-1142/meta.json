@@ -154,5 +154,19 @@
   ],
   "relatedProofs": [
     "erdos-236"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Nat.Prime.Basic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 193,
+    "axiomCount": 0,
+    "theoremCount": 16,
+    "definitionCount": 4
+  }
 }

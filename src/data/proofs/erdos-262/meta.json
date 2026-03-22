@@ -136,5 +136,23 @@
       "Can we characterize transcendence-forcing sequences similarly?",
       "How do problems 263 and 264 relate to this characterization?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Irrational",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Real"
+    ],
+    "namespace": "Erdos262",
+    "lineCount": 200,
+    "axiomCount": 8,
+    "theoremCount": 1,
+    "definitionCount": 8
   }
 }

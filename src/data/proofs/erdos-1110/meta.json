@@ -141,5 +141,22 @@
       "What happens at the critical boundary cases for Yu-Chen conditions?",
       "Are there other base pairs with all integers representable?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Pow",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.NumberTheory.Divisors"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos1110",
+    "lineCount": 295,
+    "axiomCount": 8,
+    "theoremCount": 5,
+    "definitionCount": 7
   }
 }

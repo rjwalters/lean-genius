@@ -122,5 +122,23 @@
       "How does the minimal polynomial give a tighter reduction than the characteristic polynomial?",
       "What is the analog for infinite-dimensional operators (compact operators on Hilbert spaces)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic",
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly",
+      "Mathlib.Algebra.Polynomial.Div",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Matrix",
+      "Polynomial",
+      "BigOperators"
+    ],
+    "namespace": "CayleyHamiltonOQ02",
+    "lineCount": 359,
+    "axiomCount": 0,
+    "theoremCount": 20,
+    "definitionCount": 0
   }
 }

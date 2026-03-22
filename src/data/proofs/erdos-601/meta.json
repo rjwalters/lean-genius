@@ -228,5 +228,24 @@
       "Can the Erdős-Hajnal-Milner bound ω₁^{ω+2} be improved in ZFC?",
       "What happens for singular cardinals and their ordinal powers?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Ordinal.Basic",
+      "Mathlib.SetTheory.Ordinal.Arithmetic",
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Ordinal",
+      "Cardinal",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos601",
+    "lineCount": 248,
+    "axiomCount": 3,
+    "theoremCount": 19,
+    "definitionCount": 13
   }
 }

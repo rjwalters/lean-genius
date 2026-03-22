@@ -219,5 +219,21 @@
       "How do vertex-Folkman numbers (forcing monochromatic K_l in vertex colorings) compare?",
       "Can online Ramsey theory analogues be established for Folkman-type problems?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Fin.Basic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos924",
+    "lineCount": 318,
+    "axiomCount": 5,
+    "theoremCount": 3,
+    "definitionCount": 14
   }
 }

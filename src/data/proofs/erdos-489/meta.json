@@ -125,5 +125,22 @@
       "Extension to general B-free sets?",
       "Effective bounds on convergence rate?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.Asymptotics.Asymptotics",
+      "Mathlib.NumberTheory.Squarefree"
+    ],
+    "opens": [
+      "Asymptotics",
+      "Filter"
+    ],
+    "namespace": "Erdos489",
+    "lineCount": 199,
+    "axiomCount": 4,
+    "theoremCount": 2,
+    "definitionCount": 12
   }
 }

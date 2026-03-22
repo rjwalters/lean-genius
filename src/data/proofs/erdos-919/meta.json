@@ -132,5 +132,24 @@
       "What is the minimal cardinal gap achievable?",
       "How does the answer depend on large cardinal assumptions?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Ordinal.Arithmetic",
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.SetTheory.Cardinal.Cofinality",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Order.InitialSeg"
+    ],
+    "opens": [
+      "Cardinal",
+      "Ordinal",
+      "Set"
+    ],
+    "namespace": "Erdos919",
+    "lineCount": 242,
+    "axiomCount": 5,
+    "theoremCount": 6,
+    "definitionCount": 14
   }
 }

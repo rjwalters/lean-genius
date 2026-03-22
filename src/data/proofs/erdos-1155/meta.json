@@ -105,5 +105,26 @@
       "How does the process behave for K_r-removal (removing all edges of a random K_r instead of K_3)? The exponent should change with r",
       "Can the sorry placeholders (triangleFree_iff_cliqueFree3, complete_has_triangles, trivial_upper_bound) be filled using Mathlib's current API?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Order.Filter.AtTopBot.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Filter",
+      "SimpleGraph"
+    ],
+    "namespace": null,
+    "lineCount": 185,
+    "axiomCount": 7,
+    "theoremCount": 6,
+    "definitionCount": 3
   }
 }

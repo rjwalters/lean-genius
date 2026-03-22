@@ -116,5 +116,23 @@
       "What is the exact growth constant (empirically ≈ 13.5)?",
       "How do generalized Ulam sequences U(a,b) behave?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos342",
+    "lineCount": 182,
+    "axiomCount": 15,
+    "theoremCount": 2,
+    "definitionCount": 8
   }
 }

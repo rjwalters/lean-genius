@@ -125,5 +125,22 @@
       "Is the Hardy-Littlewood prime tuples conjecture true for all finite admissible sets?",
       "Can Weisenberg's constructions be made explicit with optimal quantitative bounds?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.NumberTheory.Padics.PadicVal.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Set"
+    ],
+    "namespace": "Erdos429",
+    "lineCount": 172,
+    "axiomCount": 3,
+    "theoremCount": 3,
+    "definitionCount": 10
   }
 }

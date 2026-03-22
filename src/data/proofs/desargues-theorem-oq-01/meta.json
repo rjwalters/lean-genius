@@ -127,5 +127,19 @@
       "Can the proof be generalized to free modules of rank 3 over non-commutative rings (where the forward direction may still hold)?",
       "How does this relate to Pappus's theorem, which implies Desargues in characteristic ≠ 2?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.LinearAlgebra.Matrix.Determinant.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Matrix"
+    ],
+    "namespace": "DesarguesTheoremOQ01",
+    "lineCount": 286,
+    "axiomCount": 0,
+    "theoremCount": 16,
+    "definitionCount": 7
   }
 }

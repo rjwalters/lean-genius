@@ -119,5 +119,22 @@
       "What if we allow f(x,y) = x or f(x,y) = y with bounded frequency?",
       "Connections to hypergraph coloring?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Sym.Sym2"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos1025",
+    "lineCount": 264,
+    "axiomCount": 9,
+    "theoremCount": 6,
+    "definitionCount": 12
   }
 }

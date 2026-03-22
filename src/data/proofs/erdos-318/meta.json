@@ -146,5 +146,24 @@
       "Can zero-sum subsets be found algorithmically in polynomial time when they exist?",
       "What is the relationship between Property P₁ and the Erdős-Straus conjecture (4/n = 1/a + 1/b + 1/c)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Data.Nat.Prime.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos318",
+    "lineCount": 318,
+    "axiomCount": 6,
+    "theoremCount": 6,
+    "definitionCount": 14
   }
 }

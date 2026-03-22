@@ -164,5 +164,24 @@
       "Can the connection to Siegel zeros yield unconditional results?",
       "What is the distribution of n where F(n) - n is unusually small?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Nat",
+      "Set",
+      "Filter"
+    ],
+    "namespace": "Erdos385",
+    "lineCount": 176,
+    "axiomCount": 6,
+    "theoremCount": 2,
+    "definitionCount": 7
   }
 }

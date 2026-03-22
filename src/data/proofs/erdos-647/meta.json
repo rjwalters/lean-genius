@@ -124,5 +124,19 @@
       "What is the density of solutions among n ≤ 24?",
       "How does this relate to the Schinzel Hypothesis H?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Classical",
+      "Finset"
+    ],
+    "namespace": "Erdos647",
+    "lineCount": 301,
+    "axiomCount": 1,
+    "theoremCount": 25,
+    "definitionCount": 11
   }
 }

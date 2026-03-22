@@ -120,5 +120,19 @@
       "What is f_5(n)? Higher exact values unknown.",
       "Can Simonovits's O(1) error be made explicit?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 220,
+    "axiomCount": 15,
+    "theoremCount": 0,
+    "definitionCount": 11
   }
 }

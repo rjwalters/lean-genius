@@ -106,5 +106,24 @@
       "How do numerical instabilities in the formula affect practical computation?",
       "Connection to the geometry of the quartic curve and its inflection points?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.Polynomial.Basic",
+      "Mathlib.Algebra.Polynomial.Degree.Definitions",
+      "Mathlib.Algebra.Polynomial.FieldDivision",
+      "Mathlib.Analysis.Complex.Polynomial.Basic",
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Polynomial",
+      "Complex"
+    ],
+    "namespace": "GeneralQuartic",
+    "lineCount": 345,
+    "axiomCount": 9,
+    "theoremCount": 6,
+    "definitionCount": 5
   }
 }

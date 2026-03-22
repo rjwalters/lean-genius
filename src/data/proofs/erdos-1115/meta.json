@@ -133,5 +133,19 @@
       "What happens for functions of infinite order? Does the $\\ell(r) = O(r)$ question have a different answer?",
       "Are there quantitative refinements relating the rate $\\varphi(r) \\to \\infty$ above the threshold to the minimum path length growth?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Complex.Circle",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Complex"
+    ],
+    "namespace": "Erdos1115",
+    "lineCount": 103,
+    "axiomCount": 3,
+    "theoremCount": 1,
+    "definitionCount": 2
   }
 }

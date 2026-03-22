@@ -211,5 +211,23 @@
     "inclusion-exclusion",
     "euler-totient",
     "fundamental-arithmetic"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.Derangements.Finite",
+      "Mathlib.Combinatorics.Derangements.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Fintype",
+      "Nat",
+      "Equiv.Perm"
+    ],
+    "namespace": "Derangements",
+    "lineCount": 228,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0
+  }
 }

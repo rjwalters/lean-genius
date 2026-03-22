@@ -105,5 +105,22 @@
       "Does every graph of infinite chromatic number contain a subgraph of infinite chromatic number and girth > k for all k?",
       "Does lim_{k→∞} f(k,r+1)/f(k,r) = ∞ as Erdős asked?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Coloring",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Combinatorics.SimpleGraph.Girth",
+      "Mathlib.Data.Nat.Basic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos108",
+    "lineCount": 142,
+    "axiomCount": 1,
+    "theoremCount": 2,
+    "definitionCount": 0
   }
 }

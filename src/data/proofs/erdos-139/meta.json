@@ -89,5 +89,23 @@
       "Connect to Furstenberg's ergodic theory proof",
       "Formalize the Kelley-Meka quantitative bounds"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Combinatorics.Additive.AP.Three.Defs",
+      "Mathlib.Combinatorics.Additive.Corner.Roth",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Filter",
+      "Set",
+      "Topology"
+    ],
+    "namespace": "Erdos139",
+    "lineCount": 261,
+    "axiomCount": 4,
+    "theoremCount": 8,
+    "definitionCount": 5
   }
 }

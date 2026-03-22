@@ -120,5 +120,17 @@
       "Can we formalize the self-duality property of the theorem explicitly?",
       "Can the proof be generalized to free modules of rank 3 over non-commutative rings?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Rat.Defs",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "DesarguesTheoremOQ02",
+    "lineCount": 333,
+    "axiomCount": 0,
+    "theoremCount": 37,
+    "definitionCount": 21
   }
 }

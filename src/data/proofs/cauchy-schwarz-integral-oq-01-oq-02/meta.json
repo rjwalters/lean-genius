@@ -159,5 +159,21 @@
       "Can the Marcinkiewicz interpolation theorem (weaker: only weak-type bounds) be formalized?",
       "Can the Stein interpolation theorem (analytic family of operators) be stated in Lean 4?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "ENNReal",
+      "NNReal",
+      "Real"
+    ],
+    "namespace": "RieszThorinInterpolation",
+    "lineCount": 601,
+    "axiomCount": 2,
+    "theoremCount": 29,
+    "definitionCount": 7
   }
 }

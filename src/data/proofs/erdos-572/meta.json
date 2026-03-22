@@ -130,5 +130,22 @@
       "Connections to algebraic geometry and finite geometry",
       "Optimal constants in the asymptotic bounds"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Combinatorics.SimpleGraph.Finite",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos572",
+    "lineCount": 306,
+    "axiomCount": 6,
+    "theoremCount": 8,
+    "definitionCount": 7
   }
 }

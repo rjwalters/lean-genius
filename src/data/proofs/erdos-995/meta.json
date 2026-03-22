@@ -275,5 +275,23 @@
       "Can almost sure invariance principles (embedding lacunary sums into Brownian motion) resolve the gap?",
       "What are the implications for the distribution of Riemann zeta values ζ(1/2 + in_k t) along lacunary subsequences?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.MeasureTheory.Function.L2Space",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Nat.Basic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Real"
+    ],
+    "namespace": "Erdos995",
+    "lineCount": 233,
+    "axiomCount": 5,
+    "theoremCount": 5,
+    "definitionCount": 12
   }
 }
