@@ -182,8 +182,25 @@
     "definitionCount": 3
   },
   "relatedProofs": [
-    "amgm-inequality",
-    "amgm-inequality-oq-02",
-    "cauchy-schwarz"
+    {
+      "id": "amgm-inequality",
+      "relationship": "extends",
+      "description": "Base AM-GM inequality — power means place it in the continuous family M_{-1} ≤ M_0 ≤ M_1, where AM-GM is M_0 ≤ M_1"
+    },
+    {
+      "id": "amgm-inequality-oq-02",
+      "relationship": "related",
+      "description": "Maclaurin's inequalities refine AM-GM via symmetric polynomials; power means refine it via exponent interpolation"
+    },
+    {
+      "id": "cauchy-schwarz",
+      "relationship": "related",
+      "description": "Cauchy-Schwarz is the M_1 ≤ M_2 case: (∑wᵢzᵢ)² ≤ ∑wᵢzᵢ² for equal weights"
+    },
+    {
+      "id": "amgm-inequality-oq-03-oq-01",
+      "relationship": "extends",
+      "description": "Extension exploring the r=0 limit case (GM as limit of power means)"
+    }
   ]
 }

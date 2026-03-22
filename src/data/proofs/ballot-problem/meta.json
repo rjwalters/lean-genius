@@ -124,12 +124,50 @@
       "targetId": "infinitude-primes",
       "relationship": "co-listed",
       "description": "Both appear in Wiedijk's 100 Theorems list; infinitude of primes is #11, ballot problem is #30"
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "uses",
+      "description": "The ballot probability is a ratio of binomial coefficients C(p+q,p); the counting argument relies on the combinations formula"
     }
   ],
   "relatedProofs": [
-    "fair-games-theorem",
-    "binomial-theorem",
-    "infinitude-primes"
+    {
+      "id": "fair-games-theorem",
+      "relationship": "related",
+      "description": "Both use conditional probability over finite sample spaces; ballot problem's staysPositive connects to fair game stopping conditions"
+    },
+    {
+      "id": "binomial-theorem",
+      "relationship": "uses",
+      "description": "The ballot formula relies on binomial coefficients C(p+q,p) for counting vote sequences"
+    },
+    {
+      "id": "combinations-formula",
+      "relationship": "uses",
+      "description": "The counting of vote sequences uses combinations C(n,k); the ballot probability is a ratio of binomial coefficients"
+    },
+    {
+      "id": "erdos-szekeres",
+      "relationship": "related",
+      "description": "Both are celebrated results in combinatorics using counting arguments; Erdős-Szekeres uses pigeonhole while ballot uses reflection"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Bertrand, Joseph",
+      "title": "Solution d'un problème",
+      "year": "1887",
+      "venue": "Comptes Rendus de l'Académie des Sciences, Paris 105",
+      "note": "Original statement of the ballot problem"
+    },
+    {
+      "authors": "André, Désiré",
+      "title": "Solution directe du problème résolu par M. Bertrand",
+      "year": "1887",
+      "venue": "Comptes Rendus de l'Académie des Sciences, Paris 105",
+      "note": "First solution using the reflection principle — the celebrated bijective argument"
+    }
   ],
   "leanFile": {
     "imports": [

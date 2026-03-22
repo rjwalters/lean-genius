@@ -55,7 +55,24 @@
       "Trigonometric identities (triple angle formula)",
       "Basic Galois theory (constructibility criterion)"
     ],
-    "lineCount": 389
+    "lineCount": 389,
+    "leanFile": "proofs/Proofs/AngleTrisection.lean"
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.FieldTheory.IntermediateField.Basic",
+      "Mathlib.RingTheory.Polynomial.IrreducibleRing",
+      "Mathlib.Algebra.Polynomial.Degree.Definitions",
+      "Mathlib.Tactic",
+      "Proofs.PiTranscendental"
+    ],
+    "opens": [],
+    "namespace": "AngleTrisection",
+    "lineCount": 389,
+    "axiomCount": 2,
+    "theoremCount": 18,
+    "definitionCount": 4
   },
   "crossReferences": [
     {
@@ -166,11 +183,36 @@
     ]
   },
   "relatedProofs": [
-    "abel-ruffini",
-    "fundamental-theorem-algebra",
-    "inverse-galois",
-    "pythagorean-theorem",
-    "halting-problem"
+    {
+      "id": "abel-ruffini",
+      "relationship": "related",
+      "description": "Both are impossibility results via Galois theory: Abel-Ruffini for quintic formulas, trisection for geometric constructions"
+    },
+    {
+      "id": "abel-ruffini-oq-04",
+      "relationship": "related",
+      "description": "The A₅ simplicity proof chain — same algebraic framework of group theory and field extensions"
+    },
+    {
+      "id": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "FTA guarantees the trisection polynomial has complex roots; the impossibility is about constructibility, not existence"
+    },
+    {
+      "id": "inverse-galois",
+      "relationship": "related",
+      "description": "Constructibility is determined by Galois group structure — constructible numbers have 2-group Galois groups"
+    },
+    {
+      "id": "pythagorean-theorem",
+      "relationship": "foundational",
+      "description": "Pythagoras underpins compass-straightedge constructions — every constructible length uses the Pythagorean theorem"
+    },
+    {
+      "id": "pi-transcendental",
+      "relationship": "uses",
+      "description": "π's transcendence (Lindemann 1882) proves squaring the circle is impossible — imported directly in this file"
+    }
   ],
   "references": [
     {

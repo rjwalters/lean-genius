@@ -43,7 +43,25 @@
     ],
     "dateAdded": "2025-12-27",
     "axiomCount": 0,
-    "lineCount": 246
+    "lineCount": 246,
+    "leanFile": {
+      "imports": [
+        "Mathlib.GroupTheory.Sylow",
+        "Mathlib.GroupTheory.Coset.Basic",
+        "Mathlib.GroupTheory.Index",
+        "Mathlib.GroupTheory.OrderOfElement",
+        "Mathlib.Data.Nat.Factorization.Basic",
+        "Mathlib.Tactic"
+      ],
+      "opens": [
+        "Subgroup"
+      ],
+      "namespace": "SylowTheorems",
+      "lineCount": 247,
+      "axiomCount": 0,
+      "theoremCount": 10,
+      "definitionCount": 1
+    }
   },
   "overview": {
     "historicalContext": "Peter Ludwig Mejdell Sylow (1832-1918) was a Norwegian mathematician who spent most of his career as a high school teacher in Halden, proving these landmark theorems as a side pursuit. He published them in *Mathematische Annalen* (1872, vol. 5) — a single paper that transformed finite group theory.\n\nGeorg Frobenius (1849-1917) gave streamlined alternative proofs in 1887 and strengthened the counting theorem. William Burnside (1852-1927) deployed Sylow's theorems extensively, proving in 1904 that all groups of order p^a·q^b are solvable — a result later reproved by Feit-Thompson (1963) as part of the monumental Odd Order Theorem.\n\nThe theorems became a cornerstone of the Classification of Finite Simple Groups (CFSG), completed ~2004 by Aschbacher, Smith, and others: Sylow counting immediately eliminates most orders from being simple, while conjugacy ensures uniform subgroup structure within each prime family.",
@@ -102,22 +120,37 @@
       "Generalizations to profinite and infinite groups"
     ]
   },
-  "leanFile": {
-    "imports": [
-      "Mathlib.GroupTheory.Sylow",
-      "Mathlib.GroupTheory.Coset.Basic",
-      "Mathlib.GroupTheory.Index",
-      "Mathlib.GroupTheory.OrderOfElement",
-      "Mathlib.Data.Nat.Factorization.Basic",
-      "Mathlib.Tactic"
-    ],
-    "opens": [
-      "Subgroup"
-    ],
-    "namespace": "SylowTheorems",
-    "lineCount": 247,
-    "axiomCount": 0,
-    "theoremCount": 10,
-    "definitionCount": 1
-  }
+  "crossReferences": [
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "extends",
+      "description": "Sylow theorems refine Lagrange's theorem: not only does |H| divide |G|, but for each prime power dividing |G|, a subgroup of that order exists"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Sylow subgroups provide structural information complementing the solvability analysis central to Abel-Ruffini"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization of |G| determines the Sylow subgroup structure via Sylow's theorems"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Sylow, Ludwig",
+      "title": "Theoremes sur les groupes de substitutions",
+      "year": "1872",
+      "venue": "Mathematische Annalen, Vol. 5",
+      "note": "Original paper proving the three Sylow theorems for permutation groups"
+    },
+    {
+      "authors": "Wielandt, Helmut",
+      "title": "Ein Beweis fur die Existenz der Sylowgruppen",
+      "year": "1959",
+      "venue": "Archiv der Mathematik, Vol. 10",
+      "note": "Elegant combinatorial proof of Sylow's first theorem using group actions on subsets"
+    }
+  ]
 }
