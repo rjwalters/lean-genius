@@ -135,5 +135,23 @@
       "What is the structure of optimal configurations for even n? Are they related to algebraic configurations (roots of specific polynomials)?",
       "Can the Pommerenke upper bound 2^{Cn} · n^n be improved? What is the sharp constant C?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Complex.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Complex.Log",
+      "Mathlib.Data.Complex.Exponential",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [
+      "Complex",
+      "Real"
+    ],
+    "namespace": "Erdos1045",
+    "lineCount": 169,
+    "axiomCount": 14,
+    "theoremCount": 1,
+    "definitionCount": 8
   }
 }

@@ -132,5 +132,19 @@
       "Are there analogous results for polynomials with complex roots?",
       "Does a similar monotonicity hold for trigonometric polynomials?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Polynomial.Basic",
+      "Mathlib.Data.Polynomial.Derivative",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.Calculus.MeanValue"
+    ],
+    "opens": [],
+    "namespace": "Erdos1114",
+    "lineCount": 194,
+    "axiomCount": 5,
+    "theoremCount": 1,
+    "definitionCount": 6
   }
 }

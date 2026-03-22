@@ -119,5 +119,22 @@
       "What about independence ratio (independence number / n)?",
       "Connections to coding theory and designs?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos1024",
+    "lineCount": 255,
+    "axiomCount": 11,
+    "theoremCount": 4,
+    "definitionCount": 13
   }
 }

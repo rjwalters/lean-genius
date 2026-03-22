@@ -208,5 +208,20 @@
       "Are S(2), S(3), S(5), ... algebraically independent over Q?",
       "What are the irrationality measures of S(t) for integer t >= 2, and do they exhibit Diophantine patterns?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "BigOperators",
+      "Nat",
+      "Real"
+    ],
+    "namespace": "Erdos1049",
+    "lineCount": 281,
+    "axiomCount": 6,
+    "theoremCount": 22,
+    "definitionCount": 12
   }
 }

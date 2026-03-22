@@ -111,5 +111,21 @@
       "Can the infimum be achieved by a specific polynomial, or only as a limit?",
       "What happens when roots are restricted to other intervals?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "ENNReal",
+      "MeasureTheory",
+      "Polynomial"
+    ],
+    "namespace": "Erdos1038",
+    "lineCount": 118,
+    "axiomCount": 5,
+    "theoremCount": 0,
+    "definitionCount": 3
   }
 }

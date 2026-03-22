@@ -122,5 +122,21 @@
       "How does the result extend to hypergraphs?",
       "What is the computational complexity of finding the small non-planar subgraph?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Fintype.Basic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos1018",
+    "lineCount": 261,
+    "axiomCount": 7,
+    "theoremCount": 4,
+    "definitionCount": 15
   }
 }

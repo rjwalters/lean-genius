@@ -119,5 +119,17 @@
       "What is the exact order of $f_3(n)$? The current best is $n^{3/5}$, conjectured to be $n^{2/3 - o(1)}$.",
       "Can polynomial partitioning or the Guth-Katz algebraic framework be extended to $d \\geq 3$?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos1083",
+    "lineCount": 95,
+    "axiomCount": 4,
+    "theoremCount": 1,
+    "definitionCount": 0
   }
 }

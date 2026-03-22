@@ -131,5 +131,21 @@
       "Can a Gauss sum proof be built using Mathlib's character infrastructure?",
       "How many of the 240+ known QR proofs can be formalized?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity",
+      "Mathlib.NumberTheory.LegendreSymbol.GaussEisensteinLemmas",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "ZMod",
+      "Finset"
+    ],
+    "namespace": "ElementaryQuadraticReciprocity",
+    "lineCount": 358,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0
   }
 }

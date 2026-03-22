@@ -155,5 +155,25 @@
       "What is the optimal constant in the lower bound n^3 log n?",
       "Are there connections to the polynomial partitioning method?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Topology.MetricSpace.Basic"
+    ],
+    "opens": [
+      "Real",
+      "Finset"
+    ],
+    "namespace": "Erdos1087",
+    "lineCount": 331,
+    "axiomCount": 7,
+    "theoremCount": 5,
+    "definitionCount": 12
   }
 }

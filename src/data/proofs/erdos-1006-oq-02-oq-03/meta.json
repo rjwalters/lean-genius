@@ -124,5 +124,18 @@
       "Characterize which graphs satisfy the classical FFLLW condition",
       "Extend to the Grötzsch graph (triangle-free, χ = 4): does it admit a robust orientation?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": null,
+    "lineCount": 248,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 5
   }
 }

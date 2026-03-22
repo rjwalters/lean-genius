@@ -169,5 +169,24 @@
       "targetProofId": "erdos-107",
       "relationship": "Both are Erdos problems with a clear progression of bounds (trivial -> intermediate -> tight), with explicit extremal constructions showing tightness"
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Coloring",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos1091",
+    "lineCount": 210,
+    "axiomCount": 7,
+    "theoremCount": 4,
+    "definitionCount": 8
+  },
+  "relatedProofs": [
+    "",
+    "",
+    ""
   ]
 }

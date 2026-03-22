@@ -170,5 +170,18 @@
       "What is R(k+j, k) - R(k, k) for j > 1?",
       "Better bounds on R(k, k) would sharpen the ratio analysis"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos1030",
+    "lineCount": 294,
+    "axiomCount": 16,
+    "theoremCount": 8,
+    "definitionCount": 16
   }
 }

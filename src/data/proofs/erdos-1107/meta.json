@@ -107,5 +107,21 @@
       "What is the smallest N such that all integers n > N are sums of three squareful numbers?",
       "Is there a unified approach that works for all r ≥ 2?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Defs",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Order.Filter.AtTopBot.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Filter"
+    ],
+    "namespace": "Erdos1107",
+    "lineCount": 173,
+    "axiomCount": 2,
+    "theoremCount": 11,
+    "definitionCount": 2
   }
 }

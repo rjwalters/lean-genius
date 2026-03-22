@@ -81,5 +81,18 @@
       "Characterize which graphs admit robustly acyclic orientations",
       "What is the minimum chromatic number of a graph with girth g that fails robust orientability?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": null,
+    "lineCount": 142,
+    "axiomCount": 3,
+    "theoremCount": 1,
+    "definitionCount": 7
   }
 }

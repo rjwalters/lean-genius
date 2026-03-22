@@ -108,5 +108,21 @@
       "What is the minimal density threshold for various sumset structures?",
       "Can the proof be made more elementary (avoiding ergodic theory)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Finset",
+      "Filter",
+      "BigOperators"
+    ],
+    "namespace": "Erdos109",
+    "lineCount": 438,
+    "axiomCount": 1,
+    "theoremCount": 13,
+    "definitionCount": 9
   }
 }

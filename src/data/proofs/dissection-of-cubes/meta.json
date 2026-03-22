@@ -168,5 +168,19 @@
       "Formalizing the geometric covering axiom (smaller_cube_above) without external axioms",
       "Connections to packing problems and the Dehn invariant"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Order.WellFounded"
+    ],
+    "opens": [],
+    "namespace": "DissectionOfCubes",
+    "lineCount": 367,
+    "axiomCount": 2,
+    "theoremCount": 7,
+    "definitionCount": 8
   }
 }

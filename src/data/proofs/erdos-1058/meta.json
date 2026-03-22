@@ -120,5 +120,18 @@
   },
   "relatedProofs": [
     "wilsons-theorem"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorial.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos1058",
+    "lineCount": 178,
+    "axiomCount": 5,
+    "theoremCount": 2,
+    "definitionCount": 4
+  }
 }

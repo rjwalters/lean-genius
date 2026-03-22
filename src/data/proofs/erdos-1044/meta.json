@@ -84,5 +84,20 @@
       "Can the roots lie in a disk of radius R ≠ 1? Expected: inf Λ = 2R by scaling, but the proof details may be nontrivial.",
       "Connection to capacity: is there a relationship between Λ(f) and the logarithmic capacity of the sublevel set?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Complex.Circle",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Complex"
+    ],
+    "namespace": "Erdos1044",
+    "lineCount": 129,
+    "axiomCount": 5,
+    "theoremCount": 3,
+    "definitionCount": 2
   }
 }

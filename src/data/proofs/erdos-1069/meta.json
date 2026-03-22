@@ -144,5 +144,21 @@
       "What are the tight bounds over finite fields?",
       "How do the bounds generalize to curves other than lines?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos1069",
+    "lineCount": 229,
+    "axiomCount": 11,
+    "theoremCount": 2,
+    "definitionCount": 12
   }
 }

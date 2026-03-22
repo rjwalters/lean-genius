@@ -131,5 +131,26 @@
       "What is the relationship to Budan's theorem and the Budan-Fourier theorem?",
       "Can the proof be made constructive to extract root bounds?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.Polynomial.Basic",
+      "Mathlib.Algebra.Polynomial.Degree.Definitions",
+      "Mathlib.Algebra.Polynomial.Eval.Defs",
+      "Mathlib.Algebra.Polynomial.Coeff",
+      "Mathlib.Algebra.Polynomial.RuleOfSigns",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic",
+      "Mathlib.Analysis.Calculus.LocalExtr.Polynomial",
+      "Mathlib.Analysis.Calculus.LocalExtr.Rolle"
+    ],
+    "opens": [
+      "Polynomial"
+    ],
+    "namespace": "DescartesRuleOfSigns",
+    "lineCount": 577,
+    "axiomCount": 8,
+    "theoremCount": 35,
+    "definitionCount": 11
   }
 }

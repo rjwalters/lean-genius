@@ -172,5 +172,27 @@
       "How do these results extend to larger uncountable chromatic numbers?",
       "Is there a constructive characterization of graphs with small h_G(n)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph",
+      "Mathlib.Data.Set.Card",
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Finite",
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Cardinal",
+      "SimpleGraph",
+      "Set"
+    ],
+    "namespace": "Erdos111",
+    "lineCount": 338,
+    "axiomCount": 10,
+    "theoremCount": 2,
+    "definitionCount": 9
   }
 }

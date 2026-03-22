@@ -157,5 +157,28 @@
       "Can we characterize all sequences with bounded h_α?",
       "What is the exact behavior of liminf (Σ(d_{i+1}/dᵢ) - τ(n) - log(n))?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Divisors",
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Finset.Sort",
+      "Mathlib.Order.Interval.Finset.Nat",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos1099",
+    "lineCount": 321,
+    "axiomCount": 9,
+    "theoremCount": 3,
+    "definitionCount": 7
   }
 }

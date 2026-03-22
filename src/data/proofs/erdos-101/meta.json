@@ -94,5 +94,47 @@
       "What is the role of algebraic structure—do extremal configurations necessarily lie on low-degree algebraic curves?",
       "Does the answer change for higher-dimensional point sets (e.g., points in $\\mathbb{R}^3$ with no five coplanar)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Classical",
+      "in",
+      "Classical",
+      "in",
+      "Classical",
+      "in",
+      "Classical",
+      "in",
+      "Classical",
+      "in",
+      "Classical",
+      "in",
+      "Classical",
+      "in",
+      "Classical",
+      "in",
+      "Classical",
+      "in",
+      "Classical",
+      "in",
+      "Classical",
+      "in",
+      "Classical",
+      "in",
+      "Classical",
+      "in",
+      "Classical",
+      "in"
+    ],
+    "namespace": null,
+    "lineCount": 791,
+    "axiomCount": 5,
+    "theoremCount": 23,
+    "definitionCount": 5
   }
 }

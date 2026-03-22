@@ -186,5 +186,19 @@
   },
   "relatedProofs": [
     "erdos-1083"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 202,
+    "axiomCount": 13,
+    "theoremCount": 3,
+    "definitionCount": 10
+  }
 }

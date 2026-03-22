@@ -131,5 +131,26 @@
       "Can Mertens/Gronwall theorem be added to Mathlib to complete the proof?",
       "Does the primorial sequence σ(p_1·...·p_k)/(p_1·...·p_k) → ∞ suffice for density-0?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.Data.Finset.Sort",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Topology.Order.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Filter"
+    ],
+    "namespace": "Erdos1054AlmostAll",
+    "lineCount": 235,
+    "axiomCount": 2,
+    "theoremCount": 16,
+    "definitionCount": 4
   }
 }

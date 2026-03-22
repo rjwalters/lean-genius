@@ -132,5 +132,22 @@
       "How does the threshold change for spanning subgraphs?",
       "What are effective algorithms to find K_r above the threshold?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Card"
+    ],
+    "opens": [
+      "Nat",
+      "Real"
+    ],
+    "namespace": "Erdos1078",
+    "lineCount": 215,
+    "axiomCount": 6,
+    "theoremCount": 4,
+    "definitionCount": 5
   }
 }

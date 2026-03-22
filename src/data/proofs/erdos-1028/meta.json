@@ -119,5 +119,30 @@
       "Connections to graph Ramsey theory?",
       "What if f is constrained (e.g., induced by a graph)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Int.Basic"
+    ],
+    "opens": [
+      "Lean",
+      "Meta",
+      "Elab",
+      "Tactic",
+      "in",
+      "Lean.Elab.Tactic",
+      "in",
+      "Finset"
+    ],
+    "namespace": "Erdos1028",
+    "lineCount": 318,
+    "axiomCount": 7,
+    "theoremCount": 7,
+    "definitionCount": 10
   }
 }

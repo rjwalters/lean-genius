@@ -112,5 +112,17 @@
       "What is the exact constant in $f_d(3) = d^2/2 + O(d)$? Can the error be reduced to $o(d)$?",
       "Can probabilistic methods improve the Erdős-Straus exponential upper bound?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos1088",
+    "lineCount": 101,
+    "axiomCount": 6,
+    "theoremCount": 1,
+    "definitionCount": 1
   }
 }

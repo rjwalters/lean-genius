@@ -165,5 +165,20 @@
       "Can the character uniqueness argument be generalized to prove cubic or quartic reciprocity?",
       "Can the CRT decomposition of the multiplication permutation on ZMod(pq) be formalized to give a self-contained Zolotarev QR proof?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Equiv",
+      "Finset",
+      "ZMod"
+    ],
+    "namespace": "ZolotarevQR",
+    "lineCount": 629,
+    "axiomCount": 0,
+    "theoremCount": 31,
+    "definitionCount": 5
   }
 }

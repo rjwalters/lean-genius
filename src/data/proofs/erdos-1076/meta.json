@@ -164,5 +164,23 @@
       "What is the relationship between girth and extremal numbers?",
       "Are there efficient algorithms for constructing extremal hypergraphs?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Topology.Basic"
+    ],
+    "opens": [
+      "Real",
+      "Filter"
+    ],
+    "namespace": "Erdos1076",
+    "lineCount": 230,
+    "axiomCount": 13,
+    "theoremCount": 7,
+    "definitionCount": 10
   }
 }

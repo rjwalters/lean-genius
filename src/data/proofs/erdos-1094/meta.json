@@ -155,5 +155,16 @@
     "kummer-theorem",
     "bertrands-postulate",
     "combinations-formula"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "Erdos1094",
+    "lineCount": 220,
+    "axiomCount": 1,
+    "theoremCount": 37,
+    "definitionCount": 7
+  }
 }

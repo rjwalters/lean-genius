@@ -153,5 +153,22 @@
       "Can the equation hold for coprime a, b?",
       "What is the relationship to perfect numbers and amicable numbers?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "ArithmeticFunction",
+      "Finset",
+      "Filter",
+      "Asymptotics"
+    ],
+    "namespace": "Erdos1061",
+    "lineCount": 381,
+    "axiomCount": 0,
+    "theoremCount": 48,
+    "definitionCount": 5
   }
 }

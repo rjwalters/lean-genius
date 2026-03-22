@@ -133,5 +133,25 @@
       "Can the Bugeaud characterization be refined further?",
       "How do gaps behave for algebraic q that are not Pisot?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Set.Finite",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Topology.MetricSpace.Basic"
+    ],
+    "opens": [
+      "Set",
+      "Nat",
+      "Real"
+    ],
+    "namespace": "Erdos1096",
+    "lineCount": 199,
+    "axiomCount": 14,
+    "theoremCount": 5,
+    "definitionCount": 7
   }
 }

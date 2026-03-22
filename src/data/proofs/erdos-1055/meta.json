@@ -94,5 +94,20 @@
       "What is $p_6$? Computing the next term of OEIS A005113 would provide valuable evidence for the growth rate question.",
       "Does the analogous $p - 1$ classification behave differently? The $p - 1$ variant connects to Cunningham chains and may have different growth properties."
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 199,
+    "axiomCount": 4,
+    "theoremCount": 31,
+    "definitionCount": 4
   }
 }

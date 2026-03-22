@@ -149,5 +149,17 @@
   "relatedProofs": [
     "divisibility-by-3-oq-01",
     "divisibility-by-3-oq-02"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Digits.Defs",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "DivisibilityBy3",
+    "lineCount": 236,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0
+  }
 }

@@ -220,5 +220,21 @@
     "erdos-1041",
     "erdos-1038",
     "erdos-1040"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Complex",
+      "Polynomial",
+      "Set",
+      "Metric"
+    ],
+    "namespace": "Erdos1048",
+    "lineCount": 274,
+    "axiomCount": 10,
+    "theoremCount": 12,
+    "definitionCount": 13
+  }
 }

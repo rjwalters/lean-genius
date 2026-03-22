@@ -97,5 +97,19 @@
       "Is there a spectral or algebraic characterization of graphs that are locally $r$-reducible but globally not $(r+1)$-colorable?",
       "What is the relationship between $f_r(n)$ and the Lovász theta function or Ramsey numbers $R(r+1, r+1)$?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 103,
+    "axiomCount": 5,
+    "theoremCount": 0,
+    "definitionCount": 5
   }
 }

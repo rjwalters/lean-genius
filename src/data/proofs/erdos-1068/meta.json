@@ -115,5 +115,22 @@
     "erdos-1016",
     "erdos-1076",
     "erdos-1085"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.Data.Set.Countable"
+    ],
+    "opens": [
+      "Cardinal",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos1068",
+    "lineCount": 206,
+    "axiomCount": 6,
+    "theoremCount": 2,
+    "definitionCount": 6
+  }
 }

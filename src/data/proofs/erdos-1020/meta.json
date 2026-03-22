@@ -157,5 +157,19 @@
     "erdos-1021",
     "erdos-1008",
     "erdos-530"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Nat"
+    ],
+    "namespace": null,
+    "lineCount": 239,
+    "axiomCount": 11,
+    "theoremCount": 4,
+    "definitionCount": 11
+  }
 }

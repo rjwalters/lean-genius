@@ -133,5 +133,21 @@
       "Can probabilistic or Fourier-analytic methods provide deeper insight?",
       "What happens for non-integer gap bounds or weighted sumsets?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Set.Finite"
+    ],
+    "opens": [
+      "Set",
+      "Nat"
+    ],
+    "namespace": "Erdos1112",
+    "lineCount": 218,
+    "axiomCount": 7,
+    "theoremCount": 4,
+    "definitionCount": 8
   }
 }

@@ -162,5 +162,23 @@
       "Complete proofs of axiomatized results (17 axioms)",
       "Can the counterexamples be made more explicit with computed convexity violations?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Complex.Polynomial.Basic",
+      "Mathlib.Analysis.Normed.Field.Basic",
+      "Mathlib.Topology.Connected.Basic",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Algebra.Polynomial.Eval.SMul"
+    ],
+    "opens": [
+      "Polynomial",
+      "Set"
+    ],
+    "namespace": "Erdos1047",
+    "lineCount": 279,
+    "axiomCount": 17,
+    "theoremCount": 4,
+    "definitionCount": 13
   }
 }

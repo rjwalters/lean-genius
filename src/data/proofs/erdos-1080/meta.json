@@ -152,5 +152,25 @@
       "Understand the algebraic structure of extremal graphs",
       "Close the gap between n^(16/15) and n^(10/9)"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Data.Fintype.Card"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Set"
+    ],
+    "namespace": "Erdos1080",
+    "lineCount": 311,
+    "axiomCount": 7,
+    "theoremCount": 5,
+    "definitionCount": 7
   }
 }

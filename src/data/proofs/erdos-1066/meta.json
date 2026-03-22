@@ -128,5 +128,21 @@
       "Can the upper bound 5/16 be improved?",
       "What is the behavior of g_d(n) in higher dimensions?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Analysis.InnerProductSpace.PiL2"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "Erdos1066",
+    "lineCount": 160,
+    "axiomCount": 10,
+    "theoremCount": 5,
+    "definitionCount": 4
   }
 }

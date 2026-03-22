@@ -173,5 +173,26 @@
       "targetProofId": "erdos-467",
       "relationship": "Both are Erdos problems involving extremal combinatorial thresholds and structured subconfigurations"
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos107",
+    "lineCount": 189,
+    "axiomCount": 6,
+    "theoremCount": 5,
+    "definitionCount": 6
+  },
+  "relatedProofs": [
+    "",
+    "",
+    "",
+    "",
+    ""
   ]
 }

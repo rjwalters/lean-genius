@@ -117,5 +117,20 @@
       "What about the $K_r$-free generalization $h_r(k)$? (Related: Erdos Problem #920)",
       "What is the structure of extremal triangle-free $k$-chromatic graphs for large $k$ — are they random-like or algebraically structured?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 122,
+    "axiomCount": 11,
+    "theoremCount": 0,
+    "definitionCount": 4
   }
 }
