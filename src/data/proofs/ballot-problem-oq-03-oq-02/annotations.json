@@ -1,1 +1,134 @@
-[]
+[
+  {
+    "id": "ann-lgv-imports",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": { "startLine": 1, "endLine": 4 },
+    "type": "context",
+    "title": "Mathlib Dependencies for Determinants and Permutations",
+    "content": "Imports Mathlib's determinant computation for finite matrices (`Matrix.Determinant.Basic`), permutation sign theory (`Perm.Sign`), and fintype big operators. These provide `Matrix.det_fin_two`, `Matrix.det_fin_three`, `Perm.sign`, and `Finset.sum`/`Finset.prod` — the core building blocks for expressing the LGV lemma algebraically.",
+    "mathContext": "The determinant $\\det(M)$ for an $n \\times n$ matrix is computed via the Leibniz formula $\\det(M) = \\sum_{\\sigma \\in S_n} \\operatorname{sgn}(\\sigma) \\prod_{i=1}^n M_{i,\\sigma(i)}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Leibniz formula", "permutation sign", "finite products"],
+    "prerequisites": ["linear algebra", "group theory"]
+  },
+  {
+    "id": "ann-lgv-docstring",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": { "startLine": 6, "endLine": 38 },
+    "type": "context",
+    "title": "Module Overview: General r x r LGV Infrastructure",
+    "content": "Documents the mathematical theorem being formalized: the general r x r Lindstrom-Gessel-Viennot lemma. The docstring outlines the proof strategy via sign-reversing involution and notes this generalizes the 2x2 case fully proved in BallotProblemOQ03.lean (2878 lines, 0 sorries). The four-step involution strategy — Leibniz expansion, path interpretation, tail-swapping involution, cancellation — is the canonical proof approach from the original papers.",
+    "mathContext": "$\\#\\{\\text{non-intersecting } r\\text{-tuples } (P_1,\\ldots,P_r) : P_i\\colon A_i \\to B_i\\} = \\det[e(A_i, B_j)]_{i,j}$",
+    "significance": "key",
+    "relatedConcepts": ["non-intersecting lattice paths", "sign-reversing involution", "Gessel-Viennot bijection"],
+    "prerequisites": ["combinatorics", "linear algebra", "lattice path theory"]
+  },
+  {
+    "id": "ann-lgv-path-matrix",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": { "startLine": 44, "endLine": 57 },
+    "type": "definition",
+    "title": "Path Weight Matrix and Lattice Path Specialization",
+    "content": "Defines two key matrices. `pathMatrix r e` wraps an arbitrary weight function `e : Fin r -> Fin r -> Z` as a matrix — this captures the general DAG setting. `latticePathMatrix r m a b` specializes to lattice paths where the weight from source $a_i$ to sink $b_j$ using $m$ East steps is the binomial coefficient $\\binom{m + b_j - a_i}{m}$, which counts monotone lattice paths by a classical ballot-type argument.",
+    "mathContext": "$M_{ij} = e(A_i, B_j)$. For lattice paths: $M_{ij} = \\binom{m + b_j - a_i}{m}$ when $b_j \\geq a_i$, else $0$.",
+    "significance": "key",
+    "relatedConcepts": ["binomial coefficients", "lattice path enumeration", "transfer matrix method"],
+    "prerequisites": ["matrix algebra", "binomial coefficients", "lattice paths"]
+  },
+  {
+    "id": "ann-lgv-perm-counting",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": { "startLine": 59, "endLine": 71 },
+    "type": "definition",
+    "title": "Permutation Path Counting",
+    "content": "Defines `permPathCount` as the product $\\prod_i e(i, \\sigma(i))$, counting r-tuples of paths where path $i$ goes from source $A_i$ to sink $B_{\\sigma(i)}$. The signed version `signedPermPathCount` multiplies by $\\operatorname{sgn}(\\sigma)$, which is the key to connecting path counts with the determinant. Each permutation $\\sigma$ contributes exactly one term to the Leibniz expansion of the determinant.",
+    "mathContext": "$\\text{permPathCount}(\\sigma) = \\prod_{i=1}^{r} e(i, \\sigma(i)), \\quad \\text{signedPermPathCount}(\\sigma) = \\operatorname{sgn}(\\sigma) \\cdot \\prod_{i=1}^{r} e(i, \\sigma(i))$",
+    "significance": "key",
+    "relatedConcepts": ["Leibniz formula", "symmetric group", "permanent vs determinant"],
+    "prerequisites": ["permutation groups", "finite products"]
+  },
+  {
+    "id": "ann-lgv-det-leibniz",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": { "startLine": 73, "endLine": 82 },
+    "type": "technique",
+    "title": "Determinant as Signed Sum Over Permutations (Leibniz Bridge)",
+    "content": "States that the determinant of the path matrix equals the sum of signed permutation path counts — this is the Leibniz formula specialized to the path weight matrix. The proof is partially complete: the `simp` unfolds definitions correctly, but the remaining sorry involves the cast between `Perm.sign` (which lives in the sign group) and the integer ring, plus rewriting the finite product. This is step 1 of the LGV proof strategy.",
+    "mathContext": "$\\det[e(A_i, B_j)] = \\sum_{\\sigma \\in S_r} \\operatorname{sgn}(\\sigma) \\prod_{i=1}^{r} e(i, \\sigma(i))$",
+    "significance": "key",
+    "relatedConcepts": ["Leibniz formula", "matrix determinant", "signed permutations"],
+    "prerequisites": ["determinant theory", "permutation groups"]
+  },
+  {
+    "id": "ann-lgv-nonintersecting",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": { "startLine": 84, "endLine": 94 },
+    "type": "definition",
+    "title": "Non-Intersecting Path Tuples",
+    "content": "Defines `NonIntersecting` as a predicate on r-tuples of paths: paths $P_i$ and $P_j$ (for $i \\neq j$) must have disjoint visited vertex sets. This captures the combinatorial condition that distinguishes the LGV lemma from the matrix permanent. The definition is abstract — parameterized by a `visited` function mapping each path to its vertex set — making it applicable beyond lattice paths to general DAGs.",
+    "mathContext": "$\\text{NonIntersecting}(P_1, \\ldots, P_r) \\iff \\forall i \\neq j,\\; V(P_i) \\cap V(P_j) = \\emptyset$",
+    "significance": "supporting",
+    "relatedConcepts": ["vertex-disjoint paths", "Menger's theorem", "planar graphs"],
+    "prerequisites": ["set theory", "graph theory"]
+  },
+  {
+    "id": "ann-lgv-gv-involution",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": { "startLine": 96, "endLine": 130 },
+    "type": "technique",
+    "title": "Gessel-Viennot Sign-Reversing Involution",
+    "content": "The heart of the LGV proof. The detailed comment (lines 100-123) describes the Gessel-Viennot involution: for each intersecting r-tuple, find the first intersection point, swap the tails of the two intersecting paths, and observe that this flips the permutation sign. The theorem `gv_involution_cancellation` states the consequence: all non-identity permutation contributions sum to zero. This sorry is the deepest remaining challenge, requiring formalization of the tail-swapping bijection and verification that it is a well-defined sign-reversing involution on the set of intersecting tuples.",
+    "mathContext": "For intersecting tuple $(P_1, \\ldots, P_r)$ with $\\sigma \\neq \\text{id}$, the involution $\\iota$ satisfies $\\operatorname{sgn}(\\sigma') = -\\operatorname{sgn}(\\sigma)$ and $w(P') = w(P)$, so $\\sum_{\\sigma \\neq \\text{id}} \\operatorname{sgn}(\\sigma) \\prod_i e(i, \\sigma(i)) = 0$.",
+    "significance": "key",
+    "relatedConcepts": ["sign-reversing involution", "bijective proof", "inclusion-exclusion"],
+    "prerequisites": ["involution theory", "combinatorial bijections", "permutation parity"]
+  },
+  {
+    "id": "ann-lgv-general-statement",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": { "startLine": 132, "endLine": 149 },
+    "type": "insight",
+    "title": "General r x r LGV Lemma Statement",
+    "content": "The main theorem: assuming the involution cancellation hypothesis (that all non-identity permutation contributions cancel), the determinant of the path weight matrix equals the identity permutation's contribution — which counts exactly the non-intersecting r-tuples where each path $P_i$ goes from $A_i$ to $B_i$. The proof is conditioned on `h_involution`, making it modular: one can prove the involution separately and compose. This is the standard approach in formalization of combinatorial bijection arguments.",
+    "mathContext": "$\\det[e(A_i, B_j)] = \\prod_{i=1}^{r} e(A_i, B_i) = \\#\\{\\text{non-intersecting } r\\text{-tuples}\\}$",
+    "significance": "key",
+    "relatedConcepts": ["LGV lemma", "non-intersecting paths", "determinantal point processes"],
+    "prerequisites": ["determinant theory", "combinatorial bijections", "permutation groups"]
+  },
+  {
+    "id": "ann-lgv-2x2",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": { "startLine": 151, "endLine": 164 },
+    "type": "technique",
+    "title": "Verified 2x2 LGV Specialization",
+    "content": "Two verified theorems (0 sorries) that confirm the framework against known results. `lgv_2x2_det` proves the 2x2 determinant formula $e_{00}e_{11} - e_{01}e_{10}$ using Mathlib's `Matrix.det_fin_two`. `lgv_2x2_identity` shows the identity permutation contributes exactly $e_{00} \\cdot e_{11}$. These serve as sanity checks that the `pathMatrix` and `permPathCount` definitions correctly specialize, and connect back to the parent file's full 2x2 LGV proof.",
+    "mathContext": "$\\det \\begin{pmatrix} e_{00} & e_{01} \\\\ e_{10} & e_{11} \\end{pmatrix} = e_{00}e_{11} - e_{01}e_{10}$",
+    "significance": "supporting",
+    "relatedConcepts": ["2x2 determinant", "Sarrus' rule", "ballot problem"],
+    "prerequisites": ["matrix determinants"]
+  },
+  {
+    "id": "ann-lgv-3x3",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": { "startLine": 166, "endLine": 176 },
+    "type": "technique",
+    "title": "Verified 3x3 LGV Determinant",
+    "content": "Proves the 3x3 determinant expansion of the path matrix using Mathlib's `Matrix.det_fin_three`. The six-term expansion corresponds to the six elements of $S_3$, with signs (+,-,-,+,+,-) matching the permutation parities of $\\text{id}, (12), (13), (123), (132), (23)$. This verification is nontrivial: it confirms that three independent pairs of lattice paths are correctly accounted for, which is the first interesting case beyond the ballot problem's 2-path setting.",
+    "mathContext": "$\\det \\begin{pmatrix} e_{00} & e_{01} & e_{02} \\\\ e_{10} & e_{11} & e_{12} \\\\ e_{20} & e_{21} & e_{22} \\end{pmatrix} = e_{00}(e_{11}e_{22} - e_{12}e_{21}) - e_{01}(e_{10}e_{22} - e_{12}e_{20}) + e_{02}(e_{10}e_{21} - e_{11}e_{20})$",
+    "significance": "supporting",
+    "relatedConcepts": ["cofactor expansion", "Sarrus' rule", "symmetric group S3"],
+    "prerequisites": ["3x3 determinants", "permutation enumeration"]
+  },
+  {
+    "id": "ann-lgv-properties",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": { "startLine": 178, "endLine": 192 },
+    "type": "insight",
+    "title": "Determinantal Properties: Antisymmetry and Degeneracy",
+    "content": "States two fundamental properties of the LGV determinant. `lgv_swap_sources` shows that swapping two sources negates the determinant — reflecting that exchanging two starting points reverses the orientation of the path tuple. `lgv_repeated_source` shows that two identical source distributions give determinant zero — if two sources are indistinguishable, non-intersecting tuples cannot exist (they would have to cross). Both are standard consequences of multilinear alternating properties of determinants.",
+    "mathContext": "If rows $i$ and $j$ are swapped: $\\det(M') = -\\det(M)$. If rows $i$ and $j$ are equal: $\\det(M) = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["alternating multilinear form", "antisymmetry", "row operations"],
+    "prerequisites": ["determinant properties", "multilinear algebra"]
+  }
+]
