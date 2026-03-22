@@ -46,7 +46,31 @@
       "Verified examples for natural and exponential sequences"
     ],
     "axiomCount": 2,
-    "lineCount": 155
+    "lineCount": 155,
+    "assumptions": [
+      "erdos_szemeredi_upper: F(A,X,3) ≪ X^{1/3} log X for all strictly increasing A — Erdős-Szemerédi (1992)",
+      "erdos_szemeredi_lower: There exists A with F(A,X,3) ≫ X^{1/3} log X infinitely often — Erdős-Szemerédi (1992)"
+    ],
+    "references": [
+      {
+        "authors": "Erdős, Paul; Szemerédi, Endre",
+        "title": "On a problem of Erdős and Szemerédi",
+        "year": "1992",
+        "venue": "Acta Arithmetica",
+        "note": "Proved tight bounds F(A,X,3) ≍ X^{1/3} log X and posed the conjecture for general k"
+      }
+    ],
+    "crossReferences": [
+      {
+        "targetId": "erdos-486",
+        "relationship": "thematic",
+        "description": "Both problems study density and counting functions for arithmetically-defined subsets of integers"
+      }
+    ],
+    "relatedProofs": [
+      "erdos-486"
+    ],
+    "dateAdded": "2025-12-22"
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and Szemerédi in their work on multiplicative properties of sequences. It asks about the fundamental question: how many consecutive terms of a sequence can have 'small' LCM?\n\nThe LCM of consecutive terms measures their multiplicative dependence. If terms share many prime factors, their LCM is relatively small. The question is whether, for any sequence, we can always find a window size k such that few k-tuples have LCM below any threshold X^ε.\n\nErdős and Szemerédi proved tight bounds for k=3: F(A,X,3) grows like X^(1/3) log X in the worst case. The general conjecture asks whether the exponent can be made arbitrarily small by increasing k.",
@@ -56,7 +80,8 @@
       "**Multiplicative dependence**: The LCM measures how much consecutive terms share prime factors. Small LCM means high dependence.",
       "**Window size tradeoff**: Larger k means the LCM includes more terms, so it grows faster and F(A,X,k) shrinks.",
       "**The k=3 bound**: X^(1/3) log X is the critical exponent for 3 consecutive terms. The conjecture asks if any exponent is achievable for large enough k.",
-      "**Open question**: Despite decades of study, we don't know if subpolynomial growth F(A,X,k) < X^ε is always achievable."
+      "**Open question**: Despite decades of study, we don't know if subpolynomial growth F(A,X,k) < X^ε is always achievable.",
+      "**Connection to smooth numbers**: Tuples with small LCM correspond to tuples whose terms share many prime factors. Counting these relates to the distribution of smooth numbers (numbers with only small prime factors) in arithmetic sequences."
     ]
   },
   "sections": [
@@ -65,42 +90,48 @@
       "title": "Problem Statement",
       "startLine": 1,
       "endLine": 23,
-      "summary": "The Erdős-Szemerédi conjecture on LCM of consecutive sequence terms"
+      "summary": "Module docstring stating the Erdős-Szemerédi conjecture: can the count of $k$-tuples with small LCM always be made subpolynomial by choosing $k$ large enough?",
+      "mathContext": "$F(A,X,k) = |\\{i : [a_i, a_{i+1}, \\ldots, a_{i+k-1}] < X\\}|$. Conjecture: $\\forall \\varepsilon > 0,\\, \\exists k$ s.t. $F(A,X,k) < X^\\varepsilon$. **Status: OPEN.**"
     },
     {
       "id": "definitions",
       "title": "The Counting Function F(A,X,k)",
       "startLine": 31,
       "endLine": 46,
-      "summary": "Definitions of consecutiveLcm and the counting function F"
+      "summary": "Defines `consecutiveLcm(a,i,k)` as `(Finset.range k).lcm (fun m => a(i+m))` and `F(a,X,k)` as the extended cardinality of positions where the LCM falls below $X$.",
+      "mathContext": "$\\text{consecutiveLcm}(a,i,k) = [a_i, a_{i+1}, \\ldots, a_{i+k-1}]$. $F(a,X,k) = |\\{i : \\text{consecutiveLcm}(a,i,k) < X\\}|$ using `Set.encard`."
     },
     {
       "id": "properties",
       "title": "Basic Properties",
       "startLine": 48,
       "endLine": 75,
-      "summary": "Monotonicity of LCM in k and F in k"
+      "summary": "Proves LCM monotonicity: $\\text{lcm}(a_i,\\ldots,a_{i+k_1-1}) \\mid \\text{lcm}(a_i,\\ldots,a_{i+k_2-1})$ for $k_1 \\leq k_2$, and $F$ monotonicity: $F(a,X,k_2) \\leq F(a,X,k_1)$ for $k_1 \\leq k_2$.",
+      "mathContext": "LCM over a subset divides LCM over a superset. Larger windows yield larger LCMs, so fewer positions qualify: $k_1 \\leq k_2 \\implies F(a,X,k_2) \\leq F(a,X,k_1)$."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture (OPEN)",
       "startLine": 77,
       "endLine": 94,
-      "summary": "Statement of the open Erdős-Szemerédi conjecture"
+      "summary": "States the open conjecture: for any strictly increasing $A \\subseteq \\mathbb{N}$ and $\\varepsilon > 0$, there exists $k$ such that $F(A,X,k) < X^\\varepsilon$ for all large $X$.",
+      "mathContext": "$\\forall A$ strictly increasing, $\\forall \\varepsilon > 0,\\, \\exists k,\\, \\forall X \\gg 1: F(A,X,k) < X^\\varepsilon$. This asserts multiplicative dependence is always bounded."
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "startLine": 96,
       "endLine": 116,
-      "summary": "Erdős-Szemerédi bounds for k=3"
+      "summary": "Axiomatizes Erdős-Szemerédi bounds for $k=3$: upper bound $F(A,X,3) \\ll X^{1/3} \\log X$ and matching lower bound showing tightness.",
+      "mathContext": "$F(A,X,3) \\ll X^{1/3} \\log X$ for all $A$, and $\\exists A$ with $F(A,X,3) \\gg X^{1/3} \\log X$ infinitely often. The exponent $1/3$ is optimal for $k = 3$."
     },
     {
       "id": "examples",
       "title": "Examples",
       "startLine": 118,
       "endLine": 146,
-      "summary": "Verified examples for natural numbers and powers of 2"
+      "summary": "Verified LCM computations: $[6,7]=42$ (coprime consecutive naturals) and $[2^3,2^4]=2^4$ (geometric progression where each term divides the next).",
+      "mathContext": "Consecutive naturals: $\\gcd(n,n+1) = 1$, so $[n,n+1] = n(n+1)$. Powers of 2: $2^a \\mid 2^b$ for $a \\leq b$, so $[2^a, 2^b] = 2^b$."
     }
   ],
   "conclusion": {
