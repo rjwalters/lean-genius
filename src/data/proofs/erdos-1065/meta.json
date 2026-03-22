@@ -17,13 +17,41 @@
       "open"
     ],
     "references": [
-      "Guy B46: Unsolved Problems in Number Theory",
-      "OEIS A074781: primes p with (p−1)/2 prime",
-      "OEIS A339465",
-      "Hardy–Littlewood (1923): Conjectures on prime constellations and safe primes density",
-      "Artin (1927): Primitive root conjecture (related via factorization of p−1)",
-      "Pomerance (1980): Popular values of Euler's function (smooth shifted primes)",
-      "https://erdosproblems.com/1065"
+      {
+        "authors": "Guy, Richard K.",
+        "title": "Unsolved Problems in Number Theory",
+        "year": "2004",
+        "venue": "Springer, 3rd edition",
+        "note": "Problem B46: primes of the form 2^k·q + 1"
+      },
+      {
+        "authors": "Hardy, G.H.; Littlewood, J.E.",
+        "title": "Some problems of 'Partitio numerorum'; III: On the expression of a number as a sum of primes",
+        "year": "1923",
+        "venue": "Acta Mathematica 44, 1-70",
+        "note": "Conjecture F predicts the density of safe primes as ~2C₂·x/(log x)²"
+      },
+      {
+        "authors": "Artin, Emil",
+        "title": "Beweis des allgemeinen Reziprozitätsgesetzes",
+        "year": "1927",
+        "venue": "Abhandlungen aus dem Mathematischen Seminar der Universität Hamburg 5, 353-363",
+        "note": "Primitive root conjecture — connected via the factorization structure of p-1"
+      },
+      {
+        "authors": "Pomerance, Carl",
+        "title": "Popular values of Euler's function",
+        "year": "1980",
+        "venue": "Mathematika 27, 84-89",
+        "note": "Smooth-shifted primes and the distribution of Euler's totient values"
+      },
+      {
+        "authors": "OEIS Foundation",
+        "title": "A074781: Primes p such that (p-1)/2 is also prime (safe primes)",
+        "year": "2002",
+        "venue": "The On-Line Encyclopedia of Integer Sequences",
+        "note": "The k=1 special case of Form A: safe primes 5, 7, 11, 23, 47, ..."
+      }
     ],
     "leanFile": "Proofs/Erdos1065Problem.lean",
     "sorries": 0,
@@ -152,12 +180,24 @@
       "targetId": "dirichlets-theorem",
       "relationship": "related",
       "description": "Dirichlet's theorem on primes in arithmetic progressions is the prototype for prime distribution in structured sets; Erdős asks about a more restrictive structured set"
+    },
+    {
+      "targetId": "erdos-1057",
+      "relationship": "related",
+      "description": "Sister Erdős problem about special prime sets; both use Set.Infinite for open conjectures about primes with constrained factorization structure in p-1"
+    },
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem connects primes to factorials via $(p-1)! \\equiv -1 \\pmod{p}$; both problems involve the interplay between primes and multiplicative structures"
     }
   ],
   "relatedProofs": [
     "sophie-germain",
     "primitive-roots",
-    "dirichlets-theorem"
+    "dirichlets-theorem",
+    "erdos-1057",
+    "wilsons-theorem"
   ],
   "leanFile": {
     "imports": [
@@ -168,7 +208,7 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 163,
+    "lineCount": 162,
     "axiomCount": 2,
     "theoremCount": 14,
     "definitionCount": 3
