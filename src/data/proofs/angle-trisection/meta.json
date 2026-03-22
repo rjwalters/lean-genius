@@ -6,7 +6,7 @@
   "meta": {
     "author": "Pierre Wantzel (1837)",
     "date": "1837",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "geometry",
       "galois-theory",
@@ -72,7 +72,24 @@
       "targetId": "inverse-galois",
       "relationship": "related",
       "description": "Constructibility is determined by the Galois group of the minimal polynomial — the constructible numbers have Galois groups that are 2-groups"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem on subgroup orders underpins the degree tower argument: [F_{i+1} : F_i] = 2 at each step, so [Q(α) : Q] = 2^n by the tower law"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "related",
+      "description": "Both are foundational impossibility/existence results that shaped mathematical methodology — Euclid's infinitude of primes and Wantzel's impossibility of trisection each closed a long-standing question"
     }
+  ],
+  "relatedProofs": [
+    "abel-ruffini",
+    "fundamental-theorem-algebra",
+    "inverse-galois",
+    "lagrange-theorem",
+    "infinitude-primes"
   ],
   "overview": {
     "historicalContext": "The problem of trisecting an arbitrary angle using only compass and straightedge is one of the three famous classical Greek problems, along with doubling the cube and squaring the circle. For over 2000 years, mathematicians attempted to solve these problems without success.\n\nThe impossibility was not proven until the 19th century. Pierre Wantzel published his proof in 1837, showing that angle trisection and doubling the cube are impossible. His key insight was to translate the geometric problem into algebra: compass and straightedge constructions correspond to field extensions of degree 2, so constructible numbers have degree 2^n over the rationals.\n\nThe squaring of the circle was proven impossible by Lindemann in 1882, when he showed that π is transcendental (not the root of any polynomial with rational coefficients).",

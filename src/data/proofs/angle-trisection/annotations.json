@@ -14,6 +14,11 @@
       "trigonometric functions",
       "field extensions",
       "polynomials"
+    ],
+    "mathContext": "The imports bring in `Real.cos` (trigonometric functions), `IntermediateField` (field extensions for degree arguments), `Polynomial` (for the trisection cubic $8x^3 - 6x - 1$), and `Tactic` (general-purpose proof automation). The import of `PiTranscendental` provides the axiom that $\\pi$ is transcendental for the circle-squaring corollary.",
+    "prerequisites": [
+      "Lean 4 module system",
+      "Mathlib library structure"
     ]
   },
   {
@@ -32,6 +37,10 @@
       "compass and straightedge",
       "constructibility",
       "field extensions"
+    ],
+    "prerequisites": [
+      "history of Greek mathematics",
+      "geometric constructions"
     ]
   },
   {
@@ -50,6 +59,10 @@
       "minimal polynomial",
       "triple angle formula",
       "cos(20°)"
+    ],
+    "prerequisites": [
+      "polynomial rings",
+      "trigonometric identities"
     ]
   },
   {
@@ -68,6 +81,10 @@
       "trigonometric identities",
       "angle multiplication",
       "cosine"
+    ],
+    "prerequisites": [
+      "trigonometry",
+      "angle addition formulas"
     ]
   },
   {
@@ -106,6 +123,10 @@
       "Rational Root Theorem",
       "polynomial evaluation",
       "irreducibility"
+    ],
+    "prerequisites": [
+      "Rational Root Theorem",
+      "polynomial evaluation"
     ]
   },
   {
@@ -124,6 +145,10 @@
       "field extensions",
       "tower of fields",
       "degree"
+    ],
+    "prerequisites": [
+      "field extensions",
+      "algebraic degree"
     ]
   },
   {
@@ -142,6 +167,10 @@
       "parity",
       "divisibility",
       "prime numbers"
+    ],
+    "prerequisites": [
+      "number theory basics",
+      "mathematical induction"
     ]
   },
   {
@@ -185,6 +214,10 @@
     "relatedConcepts": [
       "Eisenstein criterion",
       "cube root"
+    ],
+    "prerequisites": [
+      "Eisenstein's criterion",
+      "irreducibility over Q"
     ]
   },
   {
@@ -203,6 +236,10 @@
       "transcendental numbers",
       "Lindemann's theorem",
       "π"
+    ],
+    "prerequisites": [
+      "transcendental number theory",
+      "algebraic vs transcendental numbers"
     ]
   }
 ]
