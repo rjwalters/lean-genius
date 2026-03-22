@@ -148,5 +148,27 @@
       "venue": "Braunschweig: Vieweg",
       "note": "Independent axiomatization of the natural numbers with induction as a foundational principle"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "related",
+      "description": "Gödel's incompleteness applies to any system containing enough arithmetic to formalize induction. Induction is the core reasoning principle whose power and limitations incompleteness theorems explore."
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "The standard proof of the binomial theorem by induction on n uses Pascal's identity at the inductive step. Induction is the natural proof method for identities indexed by natural numbers."
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "related",
+      "description": "Euclid's proof of infinite primes uses a form of induction (given any finite list, construct a new prime). Strong induction and well-ordering — equivalent to induction — appear throughout number theory."
+    }
+  ],
+  "relatedProofs": [
+    "godel-incompleteness",
+    "binomial-theorem",
+    "infinitude-primes"
   ]
 }
