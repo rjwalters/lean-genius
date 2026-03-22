@@ -61,6 +61,13 @@
   },
   "sections": [
     {
+      "id": "header-setup",
+      "title": "Module Header and Problem Statement",
+      "startLine": 1,
+      "endLine": 24,
+      "summary": "Documents Erdős Problem #250: is Σ σ(n)/2^n irrational? Solved by Nesterenko (1996) who proved the stronger result that the sum is transcendental, as a corollary of algebraic independence of Ramanujan-Eisenstein series P(q), Q(q), R(q) at algebraic q. Imports Mathlib for arithmetic functions and analysis."
+    },
+    {
       "id": "background",
       "title": "Background and Definitions",
       "startLine": 25,
