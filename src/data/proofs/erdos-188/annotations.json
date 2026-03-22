@@ -9,18 +9,12 @@
     "type": "concept",
     "title": "Problem Overview",
     "content": "Erdos Problem #188: Find the smallest k such that the plane can be 2-colored with no red unit distance and no blue k-term arithmetic progression with unit step. Status: OPEN.",
-    "mathContext": "Posed in [Er75] and [Er79]. Erd\u0151s-Graham showed k <= 10,000,000 exists. Tsaturian (2017) proved k >= 6.",
+    "mathContext": "Posed in [Er75] and [Er79]. Erdős-Graham showed k <= 10,000,000 exists. Tsaturian (2017) proved k >= 6.",
     "significance": "key",
     "relatedConcepts": [
       "plane-coloring",
       "unit-distance",
       "arithmetic-progression"
-    ],
-    "tags": [
-      "euclidean-ramsey-theory",
-      "chromatic-geometry",
-      "open-problem",
-      "erdos"
     ]
   },
   {
@@ -32,18 +26,12 @@
     },
     "type": "definition",
     "title": "Plane Coloring",
-    "content": "PlaneColoring := \u2102 \u2192 Bool. The plane \u2102 \u2245 \u211d\u00b2 is 2-colored with false = red and true = blue.",
+    "content": "PlaneColoring := ℂ → Bool. The plane ℂ ≅ ℝ² is 2-colored with false = red and true = blue.",
     "mathContext": "Using complex numbers as the plane allows elegant distance and direction formulas.",
     "significance": "key",
     "relatedConcepts": [
       "two-coloring",
       "plane-geometry"
-    ],
-    "tags": [
-      "graph-coloring",
-      "complex-plane",
-      "definition",
-      "boolean-valued-function"
     ]
   },
   {
@@ -56,17 +44,11 @@
     "type": "definition",
     "title": "Red Unit Distance Free",
     "content": "RedUnitDistanceFree(c) := no two distinct red points are at distance 1. This avoids the unit distance graph in red.",
-    "mathContext": "The unit distance graph has vertices in \u211d\u00b2 and edges between points at distance 1. We forbid red edges.",
+    "mathContext": "The unit distance graph has vertices in ℝ² and edges between points at distance 1. We forbid red edges.",
     "significance": "key",
     "relatedConcepts": [
       "unit-distance-graph",
       "constraint"
-    ],
-    "tags": [
-      "unit-distance-graph",
-      "independent-set",
-      "constraint",
-      "definition"
     ]
   },
   {
@@ -85,12 +67,6 @@
       "arithmetic-progression",
       "unit-step",
       "direction"
-    ],
-    "tags": [
-      "arithmetic-progression",
-      "unit-vector",
-      "existential-quantifier",
-      "definition"
     ]
   },
   {
@@ -108,12 +84,6 @@
     "relatedConcepts": [
       "valid-configuration",
       "optimization"
-    ],
-    "tags": [
-      "feasibility",
-      "conjunction",
-      "constraint-satisfaction",
-      "definition"
     ]
   },
   {
@@ -130,12 +100,6 @@
     "significance": "key",
     "relatedConcepts": [
       "minimum",
-      "optimization"
-    ],
-    "tags": [
-      "set-theory",
-      "infimum",
-      "upward-closed",
       "optimization"
     ]
   },
@@ -154,12 +118,6 @@
     "relatedConcepts": [
       "lower-bound",
       "tsaturian"
-    ],
-    "tags": [
-      "lower-bound",
-      "geometric-argument",
-      "tsaturian-2017",
-      "axiom"
     ]
   },
   {
@@ -171,19 +129,13 @@
     },
     "type": "context",
     "title": "Upper Bound",
-    "content": "upper_bound_exists: exists k in achievableSet with k <= 10,000,000. Erd\u0151s-Graham constructed such a coloring.",
+    "content": "upper_bound_exists: exists k in achievableSet with k <= 10,000,000. Erdős-Graham constructed such a coloring.",
     "mathContext": "The construction uses a very large grid and careful coloring to satisfy both constraints.",
     "significance": "key",
     "relatedConcepts": [
       "upper-bound",
       "erdos-graham",
       "construction"
-    ],
-    "tags": [
-      "upper-bound",
-      "constructive-proof",
-      "erdos-graham",
-      "axiom"
     ]
   },
   {
@@ -201,12 +153,6 @@
     "relatedConcepts": [
       "conjecture",
       "tight-bound"
-    ],
-    "tags": [
-      "conjecture",
-      "tight-bound",
-      "open-problem",
-      "extremal-value"
     ]
   },
   {
@@ -224,12 +170,6 @@
     "relatedConcepts": [
       "van-der-waerden",
       "ramsey-theory"
-    ],
-    "tags": [
-      "van-der-waerden",
-      "ramsey-theory",
-      "monochromatic-progression",
-      "combinatorics"
     ]
   },
   {
@@ -248,12 +188,6 @@
       "alon",
       "unit-distance",
       "possibility"
-    ],
-    "tags": [
-      "noga-alon",
-      "number-theoretic-coloring",
-      "satisfiability",
-      "axiom"
     ]
   },
   {
@@ -271,12 +205,6 @@
     "relatedConcepts": [
       "generalization",
       "higher-dimension"
-    ],
-    "tags": [
-      "generalization",
-      "higher-dimensional",
-      "multi-color",
-      "parameterized-problem"
     ]
   },
   {
@@ -294,12 +222,6 @@
     "relatedConcepts": [
       "open-problem",
       "bounds-gap"
-    ],
-    "tags": [
-      "open-problem",
-      "bounds-gap",
-      "research-frontier",
-      "erdos"
     ]
   }
 ]
