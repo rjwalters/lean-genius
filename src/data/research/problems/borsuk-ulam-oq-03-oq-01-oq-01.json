@@ -1,0 +1,26 @@
+{
+  "id": "borsuk-ulam-oq-03-oq-01-oq-01",
+  "name": "Tucker 2D Lemma via Graph-Theoretic Path-Following",
+  "status": "surveyed",
+  "phase": "OBSERVE",
+  "knowledge": {
+    "insights": [
+      "OQ03 (5186L, 4A, 0S) is the main Tucker/Borsuk-Ulam formalization",
+      "OQ03OQ01 (1162L, 1A, 0S) exists - Tucker's lemma infrastructure",
+      "No OQ03OQ01OQ01 file yet - need graph-theoretic path-following proof",
+      "Tucker's lemma: antipodal labeling of triangulated sphere has complementary edge",
+      "Graph-theoretic proof: construct a graph from the labeling, follow path from boundary to find edge"
+    ],
+    "builtItems": [],
+    "openQuestions": [
+      "Does OQ03OQ01 already use graph-theoretic approach or different method?",
+      "What specific graph-theoretic aspect is needed beyond existing work?"
+    ],
+    "nextSteps": [
+      "Read OQ03OQ01 to understand existing Tucker infrastructure",
+      "Formalize the graph G where vertices are triangles and edges connect complementary-labeled triangles",
+      "Prove path-following terminates at a complementary edge"
+    ],
+    "progressSummary": "SURVEY: Parent OQ03OQ01 exists with Tucker infrastructure. Need graph-theoretic proof variant."
+  }
+}
