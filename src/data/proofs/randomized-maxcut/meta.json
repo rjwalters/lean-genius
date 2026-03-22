@@ -165,5 +165,21 @@
     "axiomCount": 0,
     "theoremCount": 6,
     "definitionCount": 6
-  }
+  },
+  "references": [
+    {
+      "authors": "Goemans, Michel X.; Williamson, David P.",
+      "title": "Improved approximation algorithms for maximum cut and satisfiability problems using semidefinite programming",
+      "year": "1995",
+      "venue": "Journal of the ACM 42(6), 1115–1145",
+      "note": "The landmark 0.878-approximation algorithm for MAX-CUT using SDP relaxation"
+    },
+    {
+      "authors": "Khot, Subhash; Kindler, Guy; Mossel, Elchanan; O'Donnell, Ryan",
+      "title": "Optimal inapproximability results for MAX-CUT and other 2-variable CSPs",
+      "year": "2007",
+      "venue": "SIAM Journal on Computing 37(1), 319–357",
+      "note": "Proved that the Goemans-Williamson ratio is optimal assuming the Unique Games Conjecture"
+    }
+  ]
 }
