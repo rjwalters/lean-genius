@@ -100,6 +100,23 @@
       "summary": "Concrete instances: ℤ/30ℤ ≅ ℤ/2ℤ × ℤ/3ℤ × ℤ/5ℤ and ℤ/210ℤ ≅ ℤ/2ℤ × ℤ/3ℤ × ℤ/5ℤ × ℤ/7ℤ. Totient example: φ(30) = φ(2)·φ(3)·φ(5)."
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "bezout-identity",
+      "relationship": "extends",
+      "description": "The root formalization: Bézout's identity ($\\gcd(a,b) = ax + by$). The CRT builds on coprimality ($\\gcd = 1$), which is the Bézout case yielding $1 = ax + by$."
+    },
+    {
+      "targetId": "bezout-identity-oq-03",
+      "relationship": "extends",
+      "description": "Direct grandparent: explores the 2-fold CRT and its ring-theoretic formulation. This entry generalizes to arbitrary $k$-fold products."
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "related",
+      "description": "The Fundamental Theorem of Arithmetic (unique prime factorization) provides the canonical pairwise coprime decomposition $n = p_1^{a_1} \\cdots p_k^{a_k}$, making the $k$-fold CRT applicable to any modulus."
+    }
+  ],
   "conclusion": {
     "summary": "This formalization proves the k-fold Chinese Remainder Theorem with 0 axioms and 0 sorries: ZMod (∏ nᵢ) ≅ ∏ᵢ ZMod nᵢ for pairwise coprime nᵢ. The proof constructs the isomorphism by induction using Mathlib's 2-fold chineseRemainder, with explicit specializations for 3 and 4 moduli. The k-fold Euler totient multiplicativity follows as a corollary.",
     "implications": "**For number theory**: The k-fold CRT provides the foundation for prime factorization-based decompositions, Hensel lifting, and number-theoretic algorithms.\n\n**For algebra**: Demonstrates the pattern of building k-ary constructions from binary ones using induction on lists.\n\n**For Mathlib**: Could be contributed as a generalization of the existing ZMod.chineseRemainder.",
