@@ -43,7 +43,14 @@
       "erdos_784_complete_answer theorem: YES iff C ≤ 1",
       "one_in_A_trivial theorem: excluding 1 from A"
     ],
-    "axiomCount": 11
+    "axiomCount": 11,
+    "prerequisites": [
+      "Sieve theory fundamentals (Eratosthenes sieve, inclusion-exclusion)",
+      "Reciprocal sums and the harmonic series",
+      "Asymptotic analysis (Big-O, Big-Theta notation)",
+      "Analytic number theory basics (divisibility, prime distributions)",
+      "Real analysis (exponential and logarithmic functions)"
+    ]
   },
   "overview": {
     "historicalContext": "This problem studies the interplay between reciprocal sums and sieving. Schinzel-Szekeres (1959) showed the polynomial bound is best possible. Ruzsa (1982) established the C = 1 lower bound and showed the answer is NO for C > 1. Saias (1998) proved the matching upper bound for C = 1. Weingartner (2025) gave precise asymptotics for all C, completing the picture.",

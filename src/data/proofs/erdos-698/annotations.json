@@ -16,7 +16,8 @@
       "gcd",
       "pascal-triangle",
       "bergman"
-    ]
+    ],
+    "tags": ["combinatorics", "number-theory", "erdos-problem", "solved-problem"]
   },
   {
     "id": "ann-e698-binom-def",
@@ -34,7 +35,8 @@
       "binomial-coefficients",
       "gcd",
       "nat-choose"
-    ]
+    ],
+    "tags": ["definition", "binomial-coefficient", "gcd", "lean4-formalization"]
   },
   {
     "id": "ann-e698-valid-pair",
@@ -52,7 +54,8 @@
       "valid-pair",
       "symmetry",
       "constraints"
-    ]
+    ],
+    "tags": ["definition", "pascal-triangle-symmetry", "index-constraints", "combinatorics"]
   },
   {
     "id": "ann-e698-erdos-szekeres",
@@ -70,7 +73,8 @@
       "erdos-szekeres-1978",
       "lower-bound",
       "exponential"
-    ]
+    ],
+    "tags": ["axiom", "lower-bound", "exponential-growth", "counting-argument"]
   },
   {
     "id": "ann-e698-gcd-gt-one",
@@ -88,7 +92,8 @@
       "proved-theorem",
       "non-trivial-gcd",
       "corollary"
-    ]
+    ],
+    "tags": ["theorem", "gcd-lower-bound", "pascal-triangle", "verified-proof"]
   },
   {
     "id": "ann-e698-sharpness",
@@ -106,7 +111,8 @@
       "sharpness",
       "extremal",
       "prime"
-    ]
+    ],
+    "tags": ["extremal-example", "tight-bound", "prime-numbers", "axiom"]
   },
   {
     "id": "ann-e698-question",
@@ -124,7 +130,8 @@
       "main-question",
       "unbounded-growth",
       "uniform-bound"
-    ]
+    ],
+    "tags": ["problem-statement", "tends-to-infinity", "uniform-bound", "real-analysis"]
   },
   {
     "id": "ann-e698-bergman-bound",
@@ -142,7 +149,8 @@
       "bergman-2011",
       "sqrt-growth",
       "main-result"
-    ]
+    ],
+    "tags": ["bergman-theorem", "sqrt-growth", "number-theory", "asymptotic-bound"]
   },
   {
     "id": "ann-e698-resolution",
@@ -160,7 +168,8 @@
       "resolution",
       "floor-function",
       "growth-function"
-    ]
+    ],
+    "tags": ["resolution", "floor-function", "noncomputable", "existence-proof"]
   },
   {
     "id": "ann-e698-sorry1",
@@ -178,7 +187,8 @@
       "sorry",
       "real-analysis",
       "floor"
-    ]
+    ],
+    "tags": ["sorry", "real-analysis", "floor-function", "proof-gap"]
   },
   {
     "id": "ann-e698-sorry2",
@@ -196,7 +206,8 @@
       "sorry",
       "floor-bound",
       "coercion"
-    ]
+    ],
+    "tags": ["sorry", "nat-real-coercion", "floor-bound", "proof-gap"]
   },
   {
     "id": "ann-e698-pascal",
@@ -214,7 +225,8 @@
       "pascal-triangle",
       "primes",
       "divisibility"
-    ]
+    ],
+    "tags": ["pascal-triangle", "prime-factorization", "divisibility", "axiom"]
   },
   {
     "id": "ann-e698-multinomial",
@@ -232,7 +244,8 @@
       "multinomial",
       "generalization",
       "bergman"
-    ]
+    ],
+    "tags": ["multinomial-coefficient", "generalization", "bergman", "axiom"]
   },
   {
     "id": "ann-e698-kummer",
@@ -250,7 +263,8 @@
       "kummer",
       "p-adic",
       "carries"
-    ]
+    ],
+    "tags": ["kummer-theorem", "p-adic-valuation", "base-representation", "number-theory"]
   },
   {
     "id": "ann-e698-lucas",
@@ -268,7 +282,8 @@
       "lucas",
       "modular",
       "base-p"
-    ]
+    ],
+    "tags": ["lucas-theorem", "modular-arithmetic", "base-p-digits", "number-theory"]
   },
   {
     "id": "ann-e698-summary",
@@ -286,7 +301,8 @@
       "summary",
       "packaging",
       "documentation"
-    ]
+    ],
+    "tags": ["summary-theorem", "result-packaging", "combinatorics", "gcd"]
   },
   {
     "id": "ann-e698-main",
@@ -304,7 +320,8 @@
       "main-theorem",
       "erdos-698",
       "solved"
-    ]
+    ],
+    "tags": ["main-theorem", "erdos-problem", "solved-problem", "binomial-coefficient"]
   },
   {
     "id": "ann-e698-historical",
@@ -322,7 +339,8 @@
       "history",
       "timeline",
       "erdos-szekeres"
-    ]
+    ],
+    "tags": ["historical-context", "erdos-szekeres", "bergman-2011", "timeline"]
   },
   {
     "id": "ann-e698-imports",
@@ -340,7 +358,8 @@
       "mathlib",
       "imports",
       "lean4"
-    ]
+    ],
+    "tags": ["mathlib-imports", "lean4", "discrete-continuous-bridge", "dependencies"]
   },
   {
     "id": "ann-e698-number-theory",
@@ -358,6 +377,7 @@
       "number-theory",
       "connections",
       "interdisciplinary"
-    ]
+    ],
+    "tags": ["number-theory", "p-adic-valuation", "modular-arithmetic", "prime-distribution"]
   }
 ]

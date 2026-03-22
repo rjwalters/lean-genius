@@ -62,7 +62,14 @@
         "relationship": "Related Erdős problem in combinatorics/graph theory"
       }
     ],
-    "axiomCount": 9
+    "axiomCount": 9,
+    "prerequisites": [
+      "Graph theory fundamentals (vertices, edges, adjacency)",
+      "Chromatic number and proper graph colorings",
+      "Ramsey theory and Ramsey numbers",
+      "Basic combinatorics (Finset, cardinality bounds)",
+      "Logarithmic functions and asymptotic notation"
+    ]
   },
   "overview": {
     "historicalContext": "The cochromatic number ζ(G) is the minimum number of colors needed to color vertices so each color class is either a clique or an independent set (a 'homogeneous' set). Erdős and Gimbel posed this problem in 1993, asking whether graphs with high chromatic number must contain subgraphs with high cochromatic number. They proved a weaker bound √(m / log m). The full bound m / log m was proved by Alon, Krivelevich, and Sudakov in 1997 using Ramsey-theoretic techniques.",

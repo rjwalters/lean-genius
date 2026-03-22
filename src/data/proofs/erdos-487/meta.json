@@ -21,7 +21,16 @@
     "erdosNumber": 487,
     "erdosUrl": "https://erdosproblems.com/487",
     "erdosProblemStatus": "solved",
-    "axiomCount": 6
+    "axiomCount": 6,
+    "prerequisites": [
+      "Natural number density (upper and lower)",
+      "Least common multiple (LCM)",
+      "Prime factorization and fundamental theorem of arithmetic",
+      "Extremal combinatorics (union-free collections)",
+      "Kleitman's theorem on union-free families",
+      "Davenport-Erdős theorem on divisibility chains",
+      "Asymptotic notation (little-o)"
+    ]
   },
   "overview": {
     "historicalContext": "This problem connects divisibility in dense sets to combinatorial set theory. The key insight is a bijection between LCM triples and set unions under prime factorization. Davenport and Erdős (1936) proved that dense sets contain infinite divisibility chains. Kleitman (1971) resolved this problem by proving that union-free collections of subsets of [n] have size at most (1+o(1))·C(n, ⌊n/2⌋), which is o(2^n). This bound implies that LCM-free (hence union-free) sets cannot have positive density.",

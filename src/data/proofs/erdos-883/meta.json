@@ -51,7 +51,14 @@
       "erdos_883_question_2_solved theorem: Q2 answer is YES",
       "erdos_883_partial theorem: partial answer to Q1"
     ],
-    "axiomCount": 8
+    "axiomCount": 8,
+    "prerequisites": [
+      "Graph theory: simple graphs, adjacency, subgraph structure",
+      "Number theory: coprimality (gcd), divisibility, primes",
+      "Combinatorics: inclusion-exclusion principle, pigeonhole principle",
+      "Extremal graph theory: Turán-type thresholds, triangle-free graphs",
+      "Cycle theory: odd cycles, Hamiltonian-type conditions"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős Problem #883 studies cycle structure in the coprime graph on subsets of integers. Erdős-Sárkőzy (1997) proved odd cycles of length cn exist above the threshold. Sárkőzy (1999) solved Question 2 on tripartite subgraphs. The threshold floor(n/2) + floor(n/3) - floor(n/6) arises from inclusion-exclusion on multiples of 2 and 3.",

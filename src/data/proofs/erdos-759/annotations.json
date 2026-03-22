@@ -16,7 +16,8 @@
       "surface-embedding",
       "genus",
       "growth-rate"
-    ]
+    ],
+    "tags": ["cochromatic-number", "topological-graph-theory", "surface-embedding", "asymptotic-growth"]
   },
   {
     "id": "ann-e759-clique-indep",
@@ -34,7 +35,8 @@
       "clique",
       "independent-set",
       "cochromatic-valid"
-    ]
+    ],
+    "tags": ["graph-coloring", "clique", "independent-set", "cochromatic-partition"]
   },
   {
     "id": "ann-e759-cochromatic",
@@ -52,7 +54,8 @@
       "cochromatic-number",
       "chromatic-number",
       "relaxation"
-    ]
+    ],
+    "tags": ["cochromatic-number", "chromatic-number", "graph-coloring", "axiomatized"]
   },
   {
     "id": "ann-e759-surface",
@@ -70,7 +73,8 @@
       "orientable-surface",
       "genus",
       "euler-formula"
-    ]
+    ],
+    "tags": ["orientable-surface", "genus", "euler-formula", "topology"]
   },
   {
     "id": "ann-e759-embedding",
@@ -88,7 +92,8 @@
       "embedding",
       "planar",
       "kuratowski"
-    ]
+    ],
+    "tags": ["graph-embedding", "planar-graph", "topological-graph-theory"]
   },
   {
     "id": "ann-e759-max-cochromatic",
@@ -106,7 +111,8 @@
       "max-cochromatic",
       "extremal",
       "embeddability"
-    ]
+    ],
+    "tags": ["extremal-graph-theory", "cochromatic-number", "surface-embedding", "axiomatized"]
   },
   {
     "id": "ann-e759-question",
@@ -124,7 +130,8 @@
       "growth-rate",
       "theta-notation",
       "asymptotics"
-    ]
+    ],
+    "tags": ["asymptotic-growth", "theta-notation", "cochromatic-number", "open-problem"]
   },
   {
     "id": "ann-e759-gimbel-lower",
@@ -142,7 +149,8 @@
       "gimbel-1986",
       "lower-bound",
       "high-girth"
-    ]
+    ],
+    "tags": ["lower-bound", "high-girth", "probabilistic-method", "extremal-graph-theory"]
   },
   {
     "id": "ann-e759-gimbel-upper",
@@ -160,7 +168,8 @@
       "upper-bound",
       "euler-formula",
       "gap"
-    ]
+    ],
+    "tags": ["upper-bound", "euler-formula", "surface-density", "extremal-graph-theory"]
   },
   {
     "id": "ann-e759-gimbel-thomassen",
@@ -178,7 +187,8 @@
       "gimbel-thomassen-1997",
       "tight-bound",
       "resolution"
-    ]
+    ],
+    "tags": ["tight-bound", "topological-graph-theory", "cochromatic-number", "solved"]
   },
   {
     "id": "ann-e759-heawood",
@@ -196,7 +206,8 @@
       "heawood",
       "ringel-youngs",
       "chromatic-surface"
-    ]
+    ],
+    "tags": ["heawood-number", "ringel-youngs", "chromatic-number", "map-coloring"]
   },
   {
     "id": "ann-e759-girth",
@@ -214,7 +225,8 @@
       "girth",
       "sparse-graphs",
       "extremal"
-    ]
+    ],
+    "tags": ["girth", "sparse-graphs", "graph-coloring", "extremal-graph-theory"]
   },
   {
     "id": "ann-e759-intuition",
@@ -232,7 +244,8 @@
       "intuition",
       "euler-constraint",
       "girth-factor"
-    ]
+    ],
+    "tags": ["asymptotic-growth", "euler-formula", "girth", "surface-embedding"]
   },
   {
     "id": "ann-e759-planar",
@@ -250,7 +263,8 @@
       "planar",
       "4-color-theorem",
       "bounded"
-    ]
+    ],
+    "tags": ["planar-graph", "four-color-theorem", "cochromatic-number"]
   },
   {
     "id": "ann-e759-summary",
@@ -268,7 +282,8 @@
       "summary",
       "tight-bound",
       "resolution"
-    ]
+    ],
+    "tags": ["tight-bound", "cochromatic-number", "surface-embedding", "solved"]
   },
   {
     "id": "ann-e759-main",
@@ -286,7 +301,8 @@
       "main-theorem",
       "erdos-759",
       "solved"
-    ]
+    ],
+    "tags": ["main-theorem", "asymptotic-growth", "cochromatic-number", "solved"]
   },
   {
     "id": "ann-e759-imports",
@@ -304,7 +320,8 @@
       "mathlib",
       "imports",
       "lean4"
-    ]
+    ],
+    "tags": ["lean4", "mathlib", "imports", "formalization"]
   },
   {
     "id": "ann-e759-comparison",
@@ -322,7 +339,8 @@
       "comparison",
       "chromatic",
       "cochromatic"
-    ]
+    ],
+    "tags": ["chromatic-number", "cochromatic-number", "surface-embedding", "comparison"]
   },
   {
     "id": "ann-e759-historical",
@@ -340,6 +358,7 @@
       "history",
       "timeline",
       "progress"
-    ]
+    ],
+    "tags": ["historical-context", "cochromatic-number", "topological-graph-theory"]
   }
 ]

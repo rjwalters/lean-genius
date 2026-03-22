@@ -58,7 +58,14 @@
       "fkl_analysis axiom: Ford-Konyagin-Luca results",
       "exponential_lower_bound axiom: p_k ≥ c^k"
     ],
-    "axiomCount": 6
+    "axiomCount": 6,
+    "prerequisites": [
+      "Elementary number theory (primes, divisibility, modular arithmetic)",
+      "Analytic number theory (Linnik's theorem, primes in arithmetic progressions)",
+      "Real analysis (limits, exponential and logarithmic functions)",
+      "Asymptotic notation (big-O, little-o)",
+      "Lean 4 / Mathlib (Filter.Tendsto, Asymptotics.IsLittleO, Nat.Prime)"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1979 [Er79e]. Prime chains arise from the multiplicative structure of cyclic groups: if p_{i+1} ≡ 1 (mod p_i), then Z/p_{i+1}Z contains a cyclic subgroup of order p_i.\n\nFord, Konyagin, and Luca [FKL10] conducted an extensive study of prime chain growth, establishing various bounds. The problem connects to Linnik's theorem on the least prime in arithmetic progressions.\n\nRelated: OEIS A061092, Cunningham chains.",

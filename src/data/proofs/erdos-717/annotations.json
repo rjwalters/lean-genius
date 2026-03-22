@@ -16,6 +16,12 @@
       "subdivisions",
       "hajos",
       "fox-lee-sudakov"
+    ],
+    "tags": [
+      "graph-theory",
+      "chromatic-number",
+      "extremal-combinatorics",
+      "solved-problem"
     ]
   },
   {
@@ -34,6 +40,11 @@
       "chromatic-number",
       "graph-coloring",
       "np-hard"
+    ],
+    "tags": [
+      "graph-coloring",
+      "axiomatization",
+      "complexity-theory"
     ]
   },
   {
@@ -52,6 +63,11 @@
       "complete-graph",
       "clique",
       "kuratowski"
+    ],
+    "tags": [
+      "graph-theory",
+      "definition",
+      "complete-graph"
     ]
   },
   {
@@ -70,6 +86,12 @@
       "subdivision",
       "topological-minor",
       "branch-vertices"
+    ],
+    "tags": [
+      "topological-graph-theory",
+      "subdivision",
+      "graph-parameter",
+      "definition"
     ]
   },
   {
@@ -88,6 +110,12 @@
       "hajos-conjecture",
       "catlin",
       "chromatic-number"
+    ],
+    "tags": [
+      "conjecture",
+      "graph-coloring",
+      "disproved",
+      "historical"
     ]
   },
   {
@@ -106,6 +134,11 @@
       "dirac-1952",
       "4-chromatic",
       "k4-subdivision"
+    ],
+    "tags": [
+      "classical-result",
+      "topological-graph-theory",
+      "graph-coloring"
     ]
   },
   {
@@ -124,6 +157,11 @@
       "catlin-1974",
       "counterexample",
       "high-girth"
+    ],
+    "tags": [
+      "counterexample",
+      "graph-coloring",
+      "high-girth-graphs"
     ]
   },
   {
@@ -142,6 +180,12 @@
       "erdos-fajtlowicz-1981",
       "random-graphs",
       "strong-disproof"
+    ],
+    "tags": [
+      "lower-bound",
+      "random-graphs",
+      "probabilistic-combinatorics",
+      "extremal-combinatorics"
     ]
   },
   {
@@ -160,6 +204,12 @@
       "main-question",
       "upper-bound",
       "tight-bound"
+    ],
+    "tags": [
+      "erdos-problem",
+      "asymptotic-bound",
+      "chromatic-number",
+      "open-question"
     ]
   },
   {
@@ -178,6 +228,12 @@
       "fox-lee-sudakov-2013",
       "main-result",
       "resolution"
+    ],
+    "tags": [
+      "upper-bound",
+      "extremal-graph-theory",
+      "resolution",
+      "probabilistic-method"
     ]
   },
   {
@@ -196,6 +252,11 @@
       "tight-bound",
       "theta-notation",
       "extremal"
+    ],
+    "tags": [
+      "tight-bound",
+      "asymptotic-analysis",
+      "extremal-combinatorics"
     ]
   },
   {
@@ -214,6 +275,11 @@
       "hadwiger-conjecture",
       "minor",
       "4-color-theorem"
+    ],
+    "tags": [
+      "open-conjecture",
+      "graph-minor-theory",
+      "four-color-theorem"
     ]
   },
   {
@@ -232,6 +298,11 @@
       "subdivision-minor",
       "kuratowski",
       "robertson-seymour"
+    ],
+    "tags": [
+      "graph-minor-theory",
+      "topological-graph-theory",
+      "structural-comparison"
     ]
   },
   {
@@ -250,6 +321,11 @@
       "kostochka",
       "thomason",
       "hadwiger-number"
+    ],
+    "tags": [
+      "partial-result",
+      "graph-minor-theory",
+      "extremal-graph-theory"
     ]
   },
   {
@@ -268,6 +344,11 @@
       "bollobas-catlin-erdos",
       "minor-to-subdivision",
       "quadratic-gap"
+    ],
+    "tags": [
+      "open-conjecture",
+      "graph-minor-theory",
+      "subdivision"
     ]
   },
   {
@@ -286,6 +367,11 @@
       "summary",
       "complete-picture",
       "resolution"
+    ],
+    "tags": [
+      "summary-theorem",
+      "extremal-combinatorics",
+      "graph-coloring"
     ]
   },
   {
@@ -304,6 +390,12 @@
       "main-theorem",
       "erdos-717",
       "solved"
+    ],
+    "tags": [
+      "main-theorem",
+      "solved-problem",
+      "chromatic-number",
+      "erdos-problem"
     ]
   },
   {
@@ -322,6 +414,11 @@
       "history",
       "timeline",
       "evolution"
+    ],
+    "tags": [
+      "historical-context",
+      "graph-theory",
+      "timeline"
     ]
   },
   {
@@ -339,6 +436,11 @@
     "relatedConcepts": [
       "mathlib",
       "simplegraph",
+      "imports"
+    ],
+    "tags": [
+      "lean4",
+      "mathlib",
       "imports"
     ]
   },
@@ -358,6 +460,11 @@
       "random-graph",
       "erdos-renyi",
       "probabilistic"
+    ],
+    "tags": [
+      "random-graphs",
+      "probabilistic-combinatorics",
+      "erdos-renyi-model"
     ]
   }
 ]

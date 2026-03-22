@@ -58,7 +58,14 @@
       "heawood_number, ringel_youngs axioms",
       "erdos_759 theorem: main result"
     ],
-    "axiomCount": 17
+    "axiomCount": 17,
+    "prerequisites": [
+      "Basic graph theory (cliques, independent sets, chromatic number)",
+      "Topological graph theory (surface genus, graph embeddings, Euler formula)",
+      "Cochromatic number and cochromatic coloring",
+      "Asymptotic notation (Theta, Big-O, Big-Omega)",
+      "Heawood number and the map coloring problem on surfaces"
+    ]
   },
   "overview": {
     "historicalContext": "**Erdős Problem #759**\n\nThis problem concerns cochromatic number on orientable surfaces.\n\n**Key History:**\n- Erdős & Gimbel: Posed the problem\n- Gimbel (1986): Proved √n/log n ≪ z(S_n) ≪ √n\n- Gimbel-Thomassen (1997): Proved z(S_n) ≍ √n/log n\n\n**The Setting:**\nCochromatic number ζ(G) generalizes chromatic number - each color class must be a clique OR independent set.",
