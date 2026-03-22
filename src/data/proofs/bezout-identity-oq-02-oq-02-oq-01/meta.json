@@ -235,10 +235,30 @@
     }
   ],
   "relatedProofs": [
-    "bezout-identity",
-    "bezout-identity-oq-02",
-    "chinese-remainder-constructive",
-    "infinitude-primes",
-    "fermat-two-squares"
+    {
+      "id": "bezout-identity",
+      "relationship": "grandparent",
+      "description": "Root formalization of Bézout's identity; this file extends it with a constructive divisibility algorithm"
+    },
+    {
+      "id": "bezout-identity-oq-02",
+      "relationship": "parent",
+      "description": "Parent: Euclid's lemma generalization; this resolves the sub-question about constructive quotient computation"
+    },
+    {
+      "id": "chinese-remainder-constructive",
+      "relationship": "sibling",
+      "description": "Both use the extended Euclidean algorithm constructively: CRT for simultaneous congruences, this for quotient extraction"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "related",
+      "description": "Euclid's lemma (proved constructively here) is a key ingredient in proofs about prime distribution"
+    },
+    {
+      "id": "fermat-two-squares",
+      "relationship": "related",
+      "description": "Fermat's two-squares theorem uses coprimality and descent arguments related to the Bézout machinery here"
+    }
   ]
 }
