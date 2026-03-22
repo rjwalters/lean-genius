@@ -6,7 +6,7 @@
   "meta": {
     "author": "Frank P. Ramsey (formalized by LeanGenius)",
     "date": "1930",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/RamseysTheorem.lean",
     "tags": [
       "combinatorics",
@@ -15,7 +15,7 @@
       "pigeonhole",
       "classic"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -62,7 +62,8 @@
       "The pigeonhole principle: n-1 vertices partitioned into two sets means at least one is large enough",
       "Neighborhood partition: v's neighbors are either red-connected or blue-connected to v",
       "Clique extension: adding v to a clique in its monochromatic neighborhood preserves the clique property",
-      "The recurrence R(r,s) ≤ R(r-1,s) + R(r,s-1) mirrors Pascal's identity for binomial coefficients"
+      "The recurrence R(r,s) ≤ R(r-1,s) + R(r,s-1) mirrors Pascal's identity for binomial coefficients",
+      "The pentagon coloring of K_5 gives a constructive lower bound R(3,3) > 5: both the cycle C_5 (red) and its complement (blue) are triangle-free, so no monochromatic K_3 exists"
     ]
   },
   "sections": [

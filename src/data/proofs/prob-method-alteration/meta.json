@@ -67,7 +67,7 @@
       "id": "preamble",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 18,
+      "endLine": 19,
       "summary": "Documentation header describing the alteration/deletion method and its key results (alteration principle, independent set bound, Property B). Imports Mathlib, opens `ProbMethod.Alteration` namespace and `Finset BigOperators`.",
       "mathContext": "The alteration method is a refinement of the probabilistic method: construct a random object, then deterministically remove violations to obtain a valid structure."
     },
@@ -75,7 +75,7 @@
       "id": "alteration-principle",
       "title": "Alteration Principle",
       "startLine": 20,
-      "endLine": 38,
+      "endLine": 39,
       "summary": "Core theorem `alteration_principle`: if the $\\mathbb{Z}$-valued sum of `good` minus `bad` over a nonempty `Finset` is positive, then some element has positive net good value. Proved by contradiction using `Finset.sum_le_sum` and `linarith`.",
       "mathContext": "For functions $\\text{good}, \\text{bad} : \\alpha \\to \\mathbb{N}$ on a nonempty finite set $S$, if $\\sum_{a \\in S} (\\text{good}(a) : \\mathbb{Z}) - \\sum_{a \\in S} (\\text{bad}(a) : \\mathbb{Z}) > 0$, then $\\exists a \\in S$ with $\\text{good}(a) > \\text{bad}(a)$."
     },
@@ -83,7 +83,7 @@
       "id": "independent-set-bound",
       "title": "Independent Set Bound via Alteration",
       "startLine": 40,
-      "endLine": 50,
+      "endLine": 51,
       "summary": "Application to regular graphs: proves existence of a positive integer $k \\geq \\lfloor n/(2d) \\rfloor$ for a $d$-regular graph on $n$ vertices, as a simplified form of $\\alpha(G) \\geq n/(2d)$.",
       "mathContext": "For a $d$-regular graph on $n$ vertices: $\\alpha(G) \\geq \\frac{n}{2d}$. Select each vertex with probability $p = 1/d$, delete one endpoint per surviving edge. Expected independent set size $\\geq np - \\frac{nd}{2}p^2 = \\frac{n}{2d}$."
     },
