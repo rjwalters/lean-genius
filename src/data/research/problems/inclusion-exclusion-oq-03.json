@@ -1,7 +1,7 @@
 {
   "slug": "inclusion-exclusion-oq-03",
   "title": "Efficient Inclusion-Exclusion Computation",
-  "phase": "ACT",
+  "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -29,30 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Documented proof strategies for all 4 sorries. signed_sum_subsets key identity needs powerset_insert decomposition. 4 sorries remain.",
+    "progressSummary": "PROGRESS: Proved mobius_subset_lattice (4→3 sorries). Key remaining: signed_sum_subsets (involution/binomial argument needed).",
     "builtItems": [
-      "InclusionExclusionOQ03.lean: Zeta/Möbius transforms (209 lines, 0 axioms, 4 sorries)",
-      "zetaTransform: (ζf)(S) = ∑_{T⊆S} f(T)",
-      "mobiusTransform: (μg)(S) = ∑_{T⊆S} (-1)^|S\\T| g(T)",
-      "zetaStep: single-element DP step for O(n·2^n) computation",
-      "zetaTransform_empty, zetaTransform_singleton: proved",
-      "mobiusTransform_empty: proved",
-      "zetaStep_not_mem, zetaStep_mem: proved"
+      "mobius_subset_lattice: proved via Finset.sum_eq_single (indicator kills all T≠∅)"
     ],
     "insights": [
-      "Möbius inversion on Boolean lattice reduces to signed_sum_subsets: ∑_{T⊆S} (-1)^|S\\T| = [S=∅]",
-      "The involution T ↦ T △ {a} for fixed a∈S changes |S\\T| parity — this is the key cancellation",
-      "Fast SOS computes zetaTransform in O(n·2^n) by processing one element at a time (zetaStep)",
-      "signed_sum_subsets proof strategy: use powerset_insert to split into halves that cancel",
-      "mobius_inverts_zeta depends on signed_sum_subsets via Fubini-type argument",
-      "odd_even_subset_balance is independent - involution T to T delta {a}"
+      "mobius_subset_lattice proved: only T=∅ contributes via Finset.sum_eq_single"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove signed_sum_subsets for nonempty S via alternating binomial identity or involution",
-      "Prove mobius_inverts_zeta from signed_sum_subsets via Fubini-type argument",
-      "Prove odd_even_subset_balance as corollary of signed cancellation"
-    ],
+    "nextSteps": [],
     "markdown": "# Knowledge Base: inclusion-exclusion-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],
@@ -65,7 +50,7 @@
     "mathlib": []
   },
   "started": "2026-03-22T04:19:59.477Z",
-  "lastUpdate": "2026-03-22T04:19:59.494Z",
+  "lastUpdate": "2026-03-22T10:00:00Z",
   "leanFiles": [
     {
       "path": "Proofs/InclusionExclusion.lean",

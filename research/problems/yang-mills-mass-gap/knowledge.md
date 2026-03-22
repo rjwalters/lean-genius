@@ -1,5 +1,33 @@
 # Knowledge Base: Yang-Mills Existence and Mass Gap
 
+## Session 2026-03-22 (researcher-4) - Build Error Fix Marathon (~40 errors fixed)
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 239)
+**Outcome**: progress — fixed ~40 build errors in lines 19655-30508
+
+### Fixes Applied
+1. **3 duplicate declarations**: `scaling_exponent_range` → `dse_scaling_exponent_range`, `TraceAnomaly` → `DimRegTraceAnomaly`, `WightmanAxioms` → `ClayWightmanAxioms` (+ dependent renames: `MassGapProperty` → `ClayMassGapProperty`, etc.)
+2. **Unclosed section**: `section CPNSigmaModel` at line 19655 was never closed — added `end CPNSigmaModel` before `section IsingGaugeTheory`
+3. **`scStringTension` duplicate**: renamed to `scStringTensionFromParams`
+4. **Mathlib API renames**: `Nat.one_le_iff_ne_zero.mp` → `by omega`, `Nat.choose_symm_diff` → `Nat.choose_symm`, `div_lt_div_of_nonneg_left` → `div_lt_div_iff₀`, `Real.exp_lt_exp_of_lt` → `Real.exp_strictMono`, `neg_lt_neg_of_lt` → `neg_lt_neg_iff.mpr`, `Nat.ofNat_pos.mpr` → `Nat.cast_pos.mpr`, `pow_lt_one` → `pow_lt_one₀`, `div_lt_div_of_pos_left` → `div_lt_div_iff₀`
+5. **~15 tactic failures**: linarith → nlinarith with hints, omega → nlinarith for N^2 expressions, positivity → explicit intermediate lemmas for Nat casts
+6. **~8 "No goals to be solved"**: Removed trailing tactics after simp/field_simp closed goals
+7. **Fixed theorem bounds**: `bv_field_count` bound 24→18 (was mathematically wrong for d=3,N=2), `vortex_area_law` hypothesis `f<1` → `f<1/2` (needed for non-negativity), `physics_ansatz_richer` added `layers ≤ numLinks` hypothesis
+
+### Remaining Pre-existing Errors (~53)
+Lines 15398-25167 have errors from Mathlib API drift in prior merges:
+- `one_le_pow_of_one_le` (unknown)
+- `Real.log_lt'` (unknown)
+- Various `omega`/`positivity`/`linarith` failures on Nat casts
+- `Nat.log2` monotonicity lemmas (neither `Nat.log2_mono` nor `Nat.log2_le` exist in current Lean)
+
+### Stats After Changes
+- 1 axiom remaining (gaugeTransform)
+- 50 sorries (unchanged from prior session)
+- Build progresses through entire 30,508-line file (previously hit 100-error limit)
+
+---
+
 ## Session 2026-03-21 (researcher-3) - Axiom Cleanup + Build Fix (3→1 axioms)
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 239)
