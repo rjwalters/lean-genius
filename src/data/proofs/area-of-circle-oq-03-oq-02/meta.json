@@ -1,0 +1,95 @@
+{
+  "id": "area-of-circle-oq-03-oq-02",
+  "title": "Archimedes Pi Bounds: 223/71 < π < 22/7",
+  "slug": "area-of-circle-oq-03-oq-02",
+  "description": "Archimedes' classical bounds on π from inscribed and circumscribed 96-gons: 223/71 < π < 22/7. Framework proved, tight π bounds pending.",
+  "meta": {
+    "author": "Archimedes (c. 250 BCE), formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Approximations_of_%CF%80#Archimedes",
+    "date": "-250",
+    "status": "formalized",
+    "tags": [
+      "geometry",
+      "analysis",
+      "number-theory",
+      "pi",
+      "computational",
+      "classic",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/AreaOfCircleOQ03OQ02.lean",
+    "badge": "original",
+    "sorries": 2,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.sin_lt",
+        "description": "sin(x) < x for x > 0",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds"
+      },
+      {
+        "theorem": "Real.pi_pos",
+        "description": "π > 0",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Archimedes' lower bound: 223/71 < π (2 sorries — needs tight π bound)",
+      "Archimedes' upper bound: π < 22/7 (2 sorries — needs tight π bound)",
+      "Traditional formulations: 3 + 10/71 < π < 3 + 1/7",
+      "Gap computation: 22/7 − 223/71 = 1/497 (exact, norm_num)",
+      "Error estimates: π within 1/497 of both bounds",
+      "General inscribed polygon bound: n·sin(π/n) < π for all n ≥ 1 (sorry-free)"
+    ],
+    "references": [
+      {
+        "authors": "Archimedes",
+        "title": "Measurement of a Circle",
+        "year": "c. 250 BCE",
+        "venue": "Syracuse",
+        "note": "Original computation using inscribed/circumscribed 96-gons"
+      }
+    ],
+    "dateAdded": "03/21/26",
+    "axiomCount": 0
+  },
+  "overview": {
+    "historicalContext": "Archimedes computed the first rigorous bounds on π around 250 BCE by inscribing and circumscribing regular 96-gons around a circle. Starting from a hexagon and repeatedly doubling sides (6→12→24→48→96), he obtained 223/71 < π < 22/7.",
+    "problemStatement": "Prove Archimedes' bounds: 223/71 < π < 22/7, equivalently 3 + 10/71 < π < 3 + 1/7.",
+    "proofStrategy": "The tight π bounds require precision beyond Mathlib's standard pi_gt_d2 (π > 3.14). The framework (gap computation, error estimates, general polygon bound) is fully proved. The 2 sorry targets are candidates for Aristotle proof search or interval arithmetic.",
+    "keyInsights": [
+      "The gap 22/7 − 223/71 = 1/497 ≈ 0.002 — Archimedes' bounds are remarkably tight for 250 BCE.",
+      "The general inscribed polygon bound n·sin(π/n) < π follows directly from sin(x) < x for x > 0.",
+      "Mathlib provides π > 3.14 and π < 3.15 but these are insufficient for Archimedes' specific bounds."
+    ]
+  },
+  "sections": [
+    {
+      "id": "bounds",
+      "title": "Archimedes' Bounds",
+      "summary": "Lower bound 223/71 < π and upper bound π < 22/7. Currently sorry — require tighter π bounds than Mathlib's standard 2-decimal approximation.",
+      "startLine": 32,
+      "endLine": 51
+    },
+    {
+      "id": "derived",
+      "title": "Derived Results",
+      "summary": "Traditional formulations, gap computation (exact: 1/497), error estimates, and the 22/7 overestimate bound.",
+      "startLine": 56,
+      "endLine": 87
+    },
+    {
+      "id": "polygon",
+      "title": "General Polygon Bound",
+      "summary": "The general inscribed polygon half-perimeter n·sin(π/n) < π for n ≥ 1, proved sorry-free from sin(x) < x.",
+      "startLine": 92,
+      "endLine": 105
+    }
+  ],
+  "conclusion": {
+    "summary": "Framework for Archimedes' bounds is complete with 2 sorry targets for the tight π approximations. All other results (8 theorems) are fully proved.",
+    "openQuestions": [
+      "Can Mathlib's interval arithmetic or norm_num extensions provide the tight π bounds?",
+      "Can the half-angle doubling method (Archimedes' actual approach) be formalized to prove the bounds constructively?"
+    ]
+  }
+}
