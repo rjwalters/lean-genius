@@ -114,6 +114,11 @@
         "targetId": "shannon-entropy",
         "relationship": "related",
         "description": "Shannon entropy H(X) = -∑ pᵢ log pᵢ is the α→1 limit of Rényi entropy H_α = (1/(1-α))·log ∑ pᵢ^α. Since H_α ∝ log M_{α-1}, the duality M_r(z) = M_{-r}(z⁻¹)⁻¹ translates to a duality on Rényi entropies — the negative power mean monotonicity here implies the corresponding Rényi entropy monotonicity for α > 1"
+      },
+      {
+        "targetId": "mean-value-theorem",
+        "relationship": "related",
+        "description": "The mean value theorem underpins the r→0 limit case: proving lim_{r→0} M_r = GM requires L'Hôpital's rule (which depends on MVT). While this file handles only the r < 0 case, the mixed-sign crossing r < 0 < s ultimately depends on the r=0 bridge that MVT enables"
       }
     ],
     "dateAdded": "2026-03-21",
@@ -127,8 +132,9 @@
       "amgm-inequality-oq-03-oq-02",
       "cauchy-schwarz",
       "cauchy-schwarz-integral",
-    "triangle-inequality",
-    "shannon-entropy"
+      "triangle-inequality",
+      "shannon-entropy",
+      "mean-value-theorem"
     ]
   },
   "overview": {
