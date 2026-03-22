@@ -105,9 +105,10 @@ theorem bad_vertices_small (G : SimpleGraph V) [DecidableRel G.Adj]
     have := (abs_le.mp hreg').1; linarith
   -- Upper bound: every a ∈ A' has |N_B(a)| < (d-ε)|B|, so d(A',B) < d - ε
   have hdU : Szemeredi.Regularity.edgeDensity G A' B < d - eps := by
-    -- Each a ∈ A' has |N_B(a)| < (d-ε)|B| by definition of badVertices
-    -- This gives an upper bound on the edge density d(A', B)
-    -- that contradicts the lower bound from regularity.
+    -- Each a ∈ A' = badVertices has |N_B(a)| < (d-ε)|B|.
+    -- Edge density = |edges| / (|A'|*|B|).
+    -- Since every vertex contributes < (d-ε)|B| edges,
+    -- total edges < |A'|*(d-ε)*|B|, so density < d - ε.
     sorry
   linarith
 
