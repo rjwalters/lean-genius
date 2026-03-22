@@ -270,13 +270,19 @@
       "targetId": "prime-number-theorem",
       "relationship": "uses",
       "description": "The Prime Number Theorem gives the average gap log n and the asymptotic p_n ~ n log n used in average_gap_asymptotic"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The infinitude of primes is a prerequisite for studying prime gaps — the problem only makes sense because there are infinitely many primes to have gaps between"
     }
   ],
   "relatedProofs": [
     "erdos-1",
     "erdos-369",
     "bertrands-postulate",
-    "prime-number-theorem"
+    "prime-number-theorem",
+    "infinitude-primes"
   ],
   "leanFile": {
     "imports": [
