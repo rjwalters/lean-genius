@@ -8,13 +8,17 @@
     },
     "type": "context",
     "title": "Mathlib Dependencies",
-    "content": "This formalization uses Mathlib's extensive zeta function library, developed primarily by David Loeffler and Michael Stoll. The key import `Mathlib.NumberTheory.LSeries.RiemannZeta` provides `riemannZeta` as a meromorphic function on ℂ, along with the functional equation and trivial zeros.",
-    "mathContext": "Mathlib provides `riemannZeta : ℂ → ℂ` as the analytic continuation of $\\sum_{n=1}^\\infty n^{-s}$.",
+    "content": "This formalization uses Mathlib's extensive zeta function library, developed primarily by David Loeffler and Michael Stoll. The key import `Mathlib.NumberTheory.LSeries.RiemannZeta` provides `riemannZeta` as a meromorphic function on \u2102, along with the functional equation and trivial zeros.",
+    "mathContext": "Mathlib provides `riemannZeta : \u2102 \u2192 \u2102` as the analytic continuation of $\\sum_{n=1}^\\infty n^{-s}$.",
     "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
       "zeta function",
       "L-series"
+    ],
+    "prerequisites": [
+      "analytic number theory",
+      "complex analysis"
     ]
   },
   {
@@ -33,6 +37,11 @@
       "Riemann's 1859 paper",
       "Millennium Prize",
       "prime distribution"
+    ],
+    "prerequisites": [
+      "Lean 4",
+      "Mathlib",
+      "complex analysis"
     ]
   },
   {
@@ -44,13 +53,17 @@
     },
     "type": "definition",
     "title": "The Critical Line",
-    "content": "The critical line Re(s) = 1/2 is where the Riemann Hypothesis claims all non-trivial zeros lie. This vertical line in the complex plane has a special status: the functional equation ζ(s) = ... ζ(1-s) shows that zeros come in symmetric pairs about this line.",
+    "content": "The critical line Re(s) = 1/2 is where the Riemann Hypothesis claims all non-trivial zeros lie. This vertical line in the complex plane has a special status: the functional equation \u03b6(s) = ... \u03b6(1-s) shows that zeros come in symmetric pairs about this line.",
     "mathContext": "$\\{s \\in \\mathbb{C} : \\text{Re}(s) = 1/2\\}$",
     "significance": "critical",
     "relatedConcepts": [
       "critical strip",
       "functional equation",
       "zero symmetry"
+    ],
+    "prerequisites": [
+      "analytic number theory",
+      "complex analysis"
     ]
   },
   {
@@ -62,12 +75,16 @@
     },
     "type": "definition",
     "title": "The Critical Strip",
-    "content": "The critical strip 0 < Re(s) < 1 is the region where non-trivial zeros must lie. We know:\n- ζ(s) ≠ 0 for Re(s) > 1 (Euler product)\n- ζ(s) ≠ 0 for Re(s) = 1 (Prime Number Theorem)\n- ζ(s) ≠ 0 for Re(s) ≤ 0 except at negative even integers\n\nSo all mysterious zeros are trapped in this strip.",
+    "content": "The critical strip 0 < Re(s) < 1 is the region where non-trivial zeros must lie. We know:\n- \u03b6(s) \u2260 0 for Re(s) > 1 (Euler product)\n- \u03b6(s) \u2260 0 for Re(s) = 1 (Prime Number Theorem)\n- \u03b6(s) \u2260 0 for Re(s) \u2264 0 except at negative even integers\n\nSo all mysterious zeros are trapped in this strip.",
     "mathContext": "$\\{s \\in \\mathbb{C} : 0 < \\text{Re}(s) < 1\\}$",
     "significance": "key",
     "relatedConcepts": [
       "zero-free region",
       "Euler product"
+    ],
+    "prerequisites": [
+      "complex analysis",
+      "analytic continuation"
     ]
   },
   {
@@ -79,12 +96,16 @@
     },
     "type": "definition",
     "title": "Trivial Zeros",
-    "content": "The 'trivial' zeros of ζ(s) occur at s = -2, -4, -6, ... (negative even integers). They're called trivial because they follow directly from the functional equation and the poles of the Gamma function. These are excluded from the Riemann Hypothesis.",
+    "content": "The 'trivial' zeros of \u03b6(s) occur at s = -2, -4, -6, ... (negative even integers). They're called trivial because they follow directly from the functional equation and the poles of the Gamma function. These are excluded from the Riemann Hypothesis.",
     "mathContext": "$\\zeta(-2n) = 0$ for all $n \\geq 1$",
     "significance": "supporting",
     "relatedConcepts": [
       "functional equation",
       "Gamma function"
+    ],
+    "prerequisites": [
+      "complex analysis",
+      "analytic continuation"
     ]
   },
   {
@@ -96,13 +117,17 @@
     },
     "type": "theorem",
     "title": "The Riemann Hypothesis - Formal Statement",
-    "content": "**THE RIEMANN HYPOTHESIS**: All non-trivial zeros of the Riemann zeta function lie on the critical line Re(s) = 1/2.\n\nThis is formalized as: for all s ∈ ℂ, if ζ(s) = 0 and 0 < Re(s) < 1, then Re(s) = 1/2.\n\nProving this would resolve one of the most important open problems in mathematics and earn a $1 million Millennium Prize.",
+    "content": "**THE RIEMANN HYPOTHESIS**: All non-trivial zeros of the Riemann zeta function lie on the critical line Re(s) = 1/2.\n\nThis is formalized as: for all s \u2208 \u2102, if \u03b6(s) = 0 and 0 < Re(s) < 1, then Re(s) = 1/2.\n\nProving this would resolve one of the most important open problems in mathematics and earn a $1 million Millennium Prize.",
     "mathContext": "$\\forall s \\in \\mathbb{C}: \\zeta(s) = 0 \\land 0 < \\text{Re}(s) < 1 \\Rightarrow \\text{Re}(s) = 1/2$",
     "significance": "critical",
     "relatedConcepts": [
       "Millennium Prize",
       "prime distribution",
       "zero location"
+    ],
+    "prerequisites": [
+      "analytic number theory",
+      "complex analysis"
     ]
   },
   {
@@ -114,13 +139,17 @@
     },
     "type": "theorem",
     "title": "The Functional Equation",
-    "content": "The completed zeta function Λ(s) = π^(-s/2) Γ(s/2) ζ(s) satisfies Λ(s) = Λ(1-s). This remarkable symmetry about s = 1/2 is why the critical line is at Re(s) = 1/2: if ζ(s₀) = 0 with 0 < Re(s₀) < 1, then ζ(1-s₀) = 0 too, and both zeros are equidistant from Re(s) = 1/2.",
+    "content": "The completed zeta function \u039b(s) = \u03c0^(-s/2) \u0393(s/2) \u03b6(s) satisfies \u039b(s) = \u039b(1-s). This remarkable symmetry about s = 1/2 is why the critical line is at Re(s) = 1/2: if \u03b6(s\u2080) = 0 with 0 < Re(s\u2080) < 1, then \u03b6(1-s\u2080) = 0 too, and both zeros are equidistant from Re(s) = 1/2.",
     "mathContext": "$\\Lambda(s) = \\Lambda(1-s)$ where $\\Lambda(s) = \\pi^{-s/2} \\Gamma(s/2) \\zeta(s)$",
     "significance": "critical",
     "relatedConcepts": [
       "Gamma function",
       "reflection formula",
       "symmetry"
+    ],
+    "prerequisites": [
+      "complex analysis",
+      "gamma function"
     ]
   },
   {
@@ -132,13 +161,17 @@
     },
     "type": "insight",
     "title": "Robin's Inequality - An Arithmetic Equivalent",
-    "content": "**Robin (1984)**: The Riemann Hypothesis is equivalent to:\n\nσ(n) < e^γ · n · log(log n) for all n > 5040\n\nwhere σ(n) is the sum of divisors and γ ≈ 0.5772 is the Euler-Mascheroni constant.\n\nThis is remarkable: an analytic statement about complex zeros becomes a purely arithmetic inequality about divisor sums! The number 5040 = 7! is the largest known counterexample.",
+    "content": "**Robin (1984)**: The Riemann Hypothesis is equivalent to:\n\n\u03c3(n) < e^\u03b3 \u00b7 n \u00b7 log(log n) for all n > 5040\n\nwhere \u03c3(n) is the sum of divisors and \u03b3 \u2248 0.5772 is the Euler-Mascheroni constant.\n\nThis is remarkable: an analytic statement about complex zeros becomes a purely arithmetic inequality about divisor sums! The number 5040 = 7! is the largest known counterexample.",
     "mathContext": "$\\sigma(n) < e^\\gamma n \\log\\log n$ for $n > 5040$\n\n$\\sigma(n) = \\sum_{d|n} d$, $\\gamma = \\lim_{n\\to\\infty} (H_n - \\ln n) \\approx 0.5772$",
     "significance": "critical",
     "relatedConcepts": [
       "divisor function",
       "Euler-Mascheroni",
       "colossally abundant numbers"
+    ],
+    "prerequisites": [
+      "analytic number theory",
+      "complex analysis"
     ]
   },
   {
@@ -150,13 +183,17 @@
     },
     "type": "insight",
     "title": "Mertens Function Bound",
-    "content": "The Mertens function M(x) = Σ_{n≤x} μ(n) sums the Möbius function. RH is equivalent to:\n\nM(x) = O(x^(1/2+ε)) for all ε > 0\n\nThe Möbius function μ(n) = (-1)^k if n is a product of k distinct primes, and 0 if n has a squared factor. Its average behavior is intimately tied to the location of zeta zeros.",
+    "content": "The Mertens function M(x) = \u03a3_{n\u2264x} \u03bc(n) sums the M\u00f6bius function. RH is equivalent to:\n\nM(x) = O(x^(1/2+\u03b5)) for all \u03b5 > 0\n\nThe M\u00f6bius function \u03bc(n) = (-1)^k if n is a product of k distinct primes, and 0 if n has a squared factor. Its average behavior is intimately tied to the location of zeta zeros.",
     "mathContext": "$M(x) = \\sum_{n \\leq x} \\mu(n) = O(x^{1/2+\\epsilon})$ $\\Leftrightarrow$ RH",
     "significance": "key",
     "relatedConcepts": [
-      "Möbius function",
+      "M\u00f6bius function",
       "prime factorization",
       "Dirichlet series"
+    ],
+    "prerequisites": [
+      "analytic number theory",
+      "complex analysis"
     ]
   },
   {
@@ -168,13 +205,17 @@
     },
     "type": "insight",
     "title": "Prime Counting Error - Why RH Matters for Primes",
-    "content": "RH is equivalent to the best possible error term in the Prime Number Theorem:\n\n|π(x) - Li(x)| = O(√x log x)\n\nwhere π(x) counts primes up to x and Li(x) is the logarithmic integral. Without RH, we only know the error is o(x/log x). With RH, we get a precise square-root error bound.",
+    "content": "RH is equivalent to the best possible error term in the Prime Number Theorem:\n\n|\u03c0(x) - Li(x)| = O(\u221ax log x)\n\nwhere \u03c0(x) counts primes up to x and Li(x) is the logarithmic integral. Without RH, we only know the error is o(x/log x). With RH, we get a precise square-root error bound.",
     "mathContext": "$|\\pi(x) - \\text{Li}(x)| = O(\\sqrt{x} \\log x)$ $\\Leftrightarrow$ RH\n\n$\\pi(x) = |\\{p \\leq x : p \\text{ prime}\\}|$",
     "significance": "critical",
     "relatedConcepts": [
       "Prime Number Theorem",
       "logarithmic integral",
       "explicit formula"
+    ],
+    "prerequisites": [
+      "prime number theorem",
+      "asymptotic analysis"
     ]
   },
   {
@@ -186,13 +227,17 @@
     },
     "type": "theorem",
     "title": "Hardy's Theorem (1914)",
-    "content": "**Hardy proved**: Infinitely many zeros of ζ(s) lie on the critical line Re(s) = 1/2.\n\nThis was a major breakthrough but does NOT prove RH - it leaves open whether some zeros might lie off the critical line. Hardy's proof used the Hardy Z-function: Z(t) = e^(iθ(t))ζ(1/2 + it) which is real for real t.",
+    "content": "**Hardy proved**: Infinitely many zeros of \u03b6(s) lie on the critical line Re(s) = 1/2.\n\nThis was a major breakthrough but does NOT prove RH - it leaves open whether some zeros might lie off the critical line. Hardy's proof used the Hardy Z-function: Z(t) = e^(i\u03b8(t))\u03b6(1/2 + it) which is real for real t.",
     "mathContext": "$|\\{s : \\zeta(s) = 0, \\text{Re}(s) = 1/2\\}| = \\infty$",
     "significance": "key",
     "relatedConcepts": [
       "Hardy Z-function",
       "critical zeros",
       "sign changes"
+    ],
+    "prerequisites": [
+      "analytic number theory",
+      "complex analysis"
     ]
   },
   {
@@ -211,6 +256,10 @@
       "zero density",
       "Levinson",
       "Conrey"
+    ],
+    "prerequisites": [
+      "analytic number theory",
+      "complex analysis"
     ]
   },
   {
@@ -222,13 +271,17 @@
     },
     "type": "insight",
     "title": "Computational Verification",
-    "content": "The first 10^13 (ten trillion) zeros of ζ(s) have been verified to lie on the critical line. The first zero is at s = 1/2 + 14.134725...i.\n\nWhile this provides strong evidence for RH, it cannot prove it - infinitely many zeros remain unverified. Some conjectures have counterexamples only at astronomically large values.",
+    "content": "The first 10^13 (ten trillion) zeros of \u03b6(s) have been verified to lie on the critical line. The first zero is at s = 1/2 + 14.134725...i.\n\nWhile this provides strong evidence for RH, it cannot prove it - infinitely many zeros remain unverified. Some conjectures have counterexamples only at astronomically large values.",
     "mathContext": "First zero: $s = \\frac{1}{2} + 14.134725141734693790...i$",
     "significance": "supporting",
     "relatedConcepts": [
       "numerical verification",
       "Gram points",
       "Odlyzko"
+    ],
+    "prerequisites": [
+      "analytic number theory",
+      "complex analysis"
     ]
   },
   {
@@ -240,13 +293,17 @@
     },
     "type": "insight",
     "title": "Consequences of RH",
-    "content": "If RH is true, it would imply:\n\n1. **Prime gaps**: p_{n+1} - p_n = O(√p_n log²p_n)\n2. **Goldbach bounds**: Effective constants for Vinogradov's theorem\n3. **Cryptography**: Bounds on smooth numbers relevant to factoring\n4. **L-functions**: Similar results for Dirichlet L-functions\n\nRH is so central that hundreds of theorems are conditional on it.",
+    "content": "If RH is true, it would imply:\n\n1. **Prime gaps**: p_{n+1} - p_n = O(\u221ap_n log\u00b2p_n)\n2. **Goldbach bounds**: Effective constants for Vinogradov's theorem\n3. **Cryptography**: Bounds on smooth numbers relevant to factoring\n4. **L-functions**: Similar results for Dirichlet L-functions\n\nRH is so central that hundreds of theorems are conditional on it.",
     "mathContext": "RH $\\Rightarrow$ $p_{n+1} - p_n = O(\\sqrt{p_n} \\log^2 p_n)$",
     "significance": "key",
     "relatedConcepts": [
       "prime gaps",
       "Goldbach conjecture",
       "cryptography"
+    ],
+    "prerequisites": [
+      "analytic number theory",
+      "complex analysis"
     ]
   },
   {
@@ -265,6 +322,10 @@
       "axioms",
       "assumed results",
       "pedagogical scope"
+    ],
+    "prerequisites": [
+      "analytic number theory",
+      "complex analysis"
     ]
   },
   {
@@ -276,13 +337,17 @@
     },
     "type": "insight",
     "title": "What We Know After 166 Years",
-    "content": "**Proven without RH**:\n- Trivial zeros at -2, -4, -6, ...\n- No zeros for Re(s) ≥ 1\n- Infinitely many zeros on Re(s) = 1/2\n- >40% of zeros on critical line\n- First 10^13 zeros verified\n\n**Equivalent to RH**:\n- Robin's inequality\n- Mertens bound\n- Prime counting error O(√x log x)\n\n**Still unknown**: Whether ALL zeros are on the critical line.",
+    "content": "**Proven without RH**:\n- Trivial zeros at -2, -4, -6, ...\n- No zeros for Re(s) \u2265 1\n- Infinitely many zeros on Re(s) = 1/2\n- >40% of zeros on critical line\n- First 10^13 zeros verified\n\n**Equivalent to RH**:\n- Robin's inequality\n- Mertens bound\n- Prime counting error O(\u221ax log x)\n\n**Still unknown**: Whether ALL zeros are on the critical line.",
     "mathContext": "Open since 1859. $1M prize. Greatest unsolved problem in pure mathematics.",
     "significance": "critical",
     "relatedConcepts": [
       "open problems",
       "Millennium Prize",
       "future directions"
+    ],
+    "prerequisites": [
+      "analytic number theory",
+      "complex analysis"
     ]
   }
 ]

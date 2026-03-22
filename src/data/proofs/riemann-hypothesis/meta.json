@@ -2,7 +2,7 @@
   "id": "riemann-hypothesis",
   "title": "The Riemann Hypothesis",
   "slug": "riemann-hypothesis",
-  "description": "A comprehensive formalization of the Riemann Hypothesis (8329 lines, 540+ proved theorems, 41 axioms, 0 sorries). States RH using Mathlib's zeta function, proves GRH→RH, establishes 14 equivalent formulations (K₁₀ network + BSY, Riesz, Báez-Duarte, Volchkov integral criteria) with 91 pairwise equivalences, shows ¬RH forces 4 distinct off-line zeros, moment growth rates, Selberg class, de Bruijn-Newman constant, random matrix theory, and arithmetic consequences.",
+  "description": "A comprehensive formalization of the Riemann Hypothesis (8329 lines, 540+ proved theorems, 41 axioms, 0 sorries). States RH using Mathlib's zeta function, proves GRH\u2192RH, establishes 14 equivalent formulations (K\u2081\u2080 network + BSY, Riesz, B\u00e1ez-Duarte, Volchkov integral criteria) with 91 pairwise equivalences, shows \u00acRH forces 4 distinct off-line zeros, moment growth rates, Selberg class, de Bruijn-Newman constant, random matrix theory, and arithmetic consequences.",
   "meta": {
     "status": "axiomatized",
     "tags": [
@@ -16,7 +16,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 41,
-    "assumptions": "41 axiom declarations across two files (32 main + 9 consequences). Main: RH equivalences (Robin, Mertens, Nyman-Beurling, Lagarias, Speiser, Weil positivity, de Bruijn-Newman, Li positivity, BSY integral, Riesz, Báez-Duarte, Volchkov), partial results (Hardy, classical zero-free region, Conrey 2/5, Montgomery pair correlation), moment bounds (Harper, Radziwiłł-Soundararajan), Selberg class (Kaczorowski-Perelli), explicit estimates (Rosser-Schoenfeld, prime counting), GRH consequences (Artin primitive root, Miller primality), prime gap bounds. Consequences: Mertens bound, Li criterion, Riemann-von Mangoldt, density hypothesis, Chebyshev bounds, explicit formula, Selberg class, Hadamard product. Soundness audit: removed li_criterion (was inconsistent with wrong liCoefficient def), fixed auto-bound RiemannHypothesisStatement, unified eulerMascheroniGamma. 8329 lines, 41 axioms, 0 sorries.",
+    "assumptions": "41 axiom declarations across two files (32 main + 9 consequences). Main: RH equivalences (Robin, Mertens, Nyman-Beurling, Lagarias, Speiser, Weil positivity, de Bruijn-Newman, Li positivity, BSY integral, Riesz, B\u00e1ez-Duarte, Volchkov), partial results (Hardy, classical zero-free region, Conrey 2/5, Montgomery pair correlation), moment bounds (Harper, Radziwi\u0142\u0142-Soundararajan), Selberg class (Kaczorowski-Perelli), explicit estimates (Rosser-Schoenfeld, prime counting), GRH consequences (Artin primitive root, Miller primality), prime gap bounds. Consequences: Mertens bound, Li criterion, Riemann-von Mangoldt, density hypothesis, Chebyshev bounds, explicit formula, Selberg class, Hadamard product. Soundness audit: removed li_criterion (was inconsistent with wrong liCoefficient def), fixed auto-bound RiemannHypothesisStatement, unified eulerMascheroniGamma. 8329 lines, 41 axioms, 0 sorries.",
     "mathlibDependencies": [
       {
         "theorem": "riemannZeta",
@@ -41,10 +41,10 @@
     ],
     "originalContributions": [
       "Formal statement of RH using Mathlib's zeta function",
-      "14 equivalent formulations stated (K₁₀ network + BSY, Riesz, Báez-Duarte, Volchkov)",
-      "GRH→RH proved from Mathlib's LFunction_modOne_eq",
-      "Complete pairwise equivalence network K₁₀ (45 cross-equivalences proved) + 4 integral criteria",
-      "Counterexample structure: ¬RH implies 4 distinct off-line zeros (proved)",
+      "14 equivalent formulations stated (K\u2081\u2080 network + BSY, Riesz, B\u00e1ez-Duarte, Volchkov)",
+      "GRH\u2192RH proved from Mathlib's LFunction_modOne_eq",
+      "Complete pairwise equivalence network K\u2081\u2080 (45 cross-equivalences proved) + 4 integral criteria",
+      "Counterexample structure: \u00acRH implies 4 distinct off-line zeros (proved)",
       "Failure consequences: violation of any formulation forces off-line zeros (proved)",
       "GRH comprehensive: all 9 formulations + Lindelof from GRH (proved)",
       "Moment conjectures: Hardy-Littlewood, Ingham, CFKRS, growth rate determined (proved)",
@@ -57,7 +57,7 @@
     "millenniumProblem": "riemann"
   },
   "overview": {
-    "historicalContext": "The Riemann Hypothesis was first stated by Bernhard Riemann in 1859 in his paper 'On the Number of Primes Less Than a Given Magnitude.' It concerns the location of the non-trivial zeros of the Riemann zeta function, which Riemann showed are intimately connected to the distribution of prime numbers.\n\nIn 2000, the Clay Mathematics Institute designated RH as one of seven Millennium Prize Problems, offering $1 million for its resolution. As of 2025, it remains one of the most important unsolved problems in mathematics.\n\nKey milestones:\n- 1859: Riemann states the hypothesis\n- 1896: Hadamard and de la Vallée Poussin prove the Prime Number Theorem\n- 1914: Hardy proves infinitely many zeros lie on the critical line\n- 1942: Selberg proves a positive proportion of zeros are on the critical line\n- 2004: First 10^13 zeros verified computationally",
+    "historicalContext": "The Riemann Hypothesis was first stated by Bernhard Riemann in 1859 in his paper 'On the Number of Primes Less Than a Given Magnitude.' It concerns the location of the non-trivial zeros of the Riemann zeta function, which Riemann showed are intimately connected to the distribution of prime numbers.\n\nIn 2000, the Clay Mathematics Institute designated RH as one of seven Millennium Prize Problems, offering $1 million for its resolution. As of 2025, it remains one of the most important unsolved problems in mathematics.\n\nKey milestones:\n- 1859: Riemann states the hypothesis\n- 1896: Hadamard and de la Vall\u00e9e Poussin prove the Prime Number Theorem\n- 1914: Hardy proves infinitely many zeros lie on the critical line\n- 1942: Selberg proves a positive proportion of zeros are on the critical line\n- 2004: First 10^13 zeros verified computationally",
     "problemStatement": "**The Riemann Hypothesis**: All non-trivial zeros of the Riemann zeta function\n\n$$\\zeta(s) = \\sum_{n=1}^{\\infty} \\frac{1}{n^s}$$\n\nhave real part equal to 1/2.\n\nFormally: If $\\zeta(s) = 0$ and $0 < \\text{Re}(s) < 1$, then $\\text{Re}(s) = 1/2$.\n\nThe 'trivial zeros' at $s = -2, -4, -6, \\ldots$ are excluded; these follow from the functional equation.",
     "proofStrategy": "This file does NOT prove the Riemann Hypothesis. Instead, we:\n\n1. **State RH precisely** using Mathlib's `riemannZeta` function\n2. **State key equivalences**:\n   - Robin's inequality: $\\sigma(n) < e^\\gamma n \\log\\log n$ for $n > 5040$\n   - Mertens bound: $M(x) = O(x^{1/2+\\epsilon})$\n   - Prime counting: $|\\pi(x) - \\text{Li}(x)| = O(\\sqrt{x} \\log x)$\n3. **State partial results**:\n   - Hardy: infinitely many zeros on Re(s) = 1/2\n   - Selberg/Conrey: >40% of zeros on critical line\n   - Zero-free region: Re(s) > 1 - c/log|t|\n4. **Document computational verification**: First 10^13 zeros verified",
     "keyInsights": [
@@ -75,60 +75,68 @@
       "title": "Parts I-VIII: Foundations and Statement",
       "startLine": 1,
       "endLine": 700,
-      "summary": "Basic definitions (critical line, strip, zeros), formal RH statement, known facts about zeros (trivial zeros, functional equation, zero symmetry), equivalent formulations (Robin, Mertens, prime counting), partial results (Hardy, Selberg, zero-free region), computational verification, and consequences."
+      "summary": "Basic definitions (critical line, strip, zeros), formal RH statement, known facts about zeros (trivial zeros, functional equation, zero symmetry), equivalent formulations (Robin, Mertens, prime counting), partial results (Hardy, Selberg, zero-free region), computational verification, and consequences.",
+      "mathContext": "The Riemann zeta function $\\zeta(s) = \\sum_{n=1}^{\\infty} n^{-s}$ and the hypothesis that all non-trivial zeros lie on $\\text{Re}(s) = 1/2$."
     },
     {
       "id": "conjugation-equivalences",
       "title": "Parts IX-XV: Conjugation and Equivalences",
       "startLine": 700,
       "endLine": 1700,
-      "summary": "Zeta conjugation symmetry (proved for Re(s)>1), Nyman-Beurling criterion, GRH definition and GRH→RH proof, de Bruijn-Newman constant (Rodgers-Tao, upper bound, RH↔Λ=0), Lagarias inequality, Speiser criterion, explicit zeta values at negative integers."
+      "summary": "Zeta conjugation symmetry (proved for Re(s)>1), Nyman-Beurling criterion, GRH definition and GRH\u2192RH proof, de Bruijn-Newman constant (Rodgers-Tao, upper bound, RH\u2194\u039b=0), Lagarias inequality, Speiser criterion, explicit zeta values at negative integers.",
+      "mathContext": "$\\zeta(s) = \\sum n^{-s}$ for $\\text{Re}(s) > 1$. Meromorphic continuation to $\\mathbb{C} \\setminus \\{1\\}$ with a simple pole at $s=1$."
     },
     {
       "id": "deep-theory",
       "title": "Parts XVI-XXXI: Deep Theory",
       "startLine": 1700,
       "endLine": 3080,
-      "summary": "Functional equation consequences, Weil positivity, completed zeta analysis, Selberg class axioms, universality, computational verification milestones, approaches and barriers (Hilbert-Polya, Connes), zero-free regions (Vinogradov-Korobov), density estimates, Selberg class (Grand RH, Kaczorowski-Perelli)."
+      "summary": "Functional equation consequences, Weil positivity, completed zeta analysis, Selberg class axioms, universality, computational verification milestones, approaches and barriers (Hilbert-Polya, Connes), zero-free regions (Vinogradov-Korobov), density estimates, Selberg class (Grand RH, Kaczorowski-Perelli).",
+      "mathContext": "$\\zeta(s) = \\prod_p (1-p^{-s})^{-1}$, encoding unique factorization. $\\zeta(s) \\neq 0$ for $\\text{Re}(s) > 1$."
     },
     {
       "id": "arithmetic-consequences",
       "title": "Parts XXXII-XXXVIII: Arithmetic Consequences",
       "startLine": 3080,
       "endLine": 3800,
-      "summary": "Explicit estimates (Rosser-Schoenfeld, Dusart, Littlewood oscillation, Skewes number), cryptography (Miller primality under GRH), Dirichlet consequences (Linnik constant, Artin primitive root), Bombieri-Vinogradov, Elliott-Halberstam, Schoenfeld explicit bounds, Platt-Trudgian verification."
+      "summary": "Explicit estimates (Rosser-Schoenfeld, Dusart, Littlewood oscillation, Skewes number), cryptography (Miller primality under GRH), Dirichlet consequences (Linnik constant, Artin primitive root), Bombieri-Vinogradov, Elliott-Halberstam, Schoenfeld explicit bounds, Platt-Trudgian verification.",
+      "mathContext": "$\\zeta(s) = 2^s \\pi^{s-1} \\sin(\\pi s/2) \\Gamma(1-s) \\zeta(1-s)$. Reflects across $\\text{Re}(s) = 1/2$."
     },
     {
       "id": "structure-theorems",
       "title": "Parts XXXIX-XLVI: Structure Theorems (All Proved)",
       "startLine": 3800,
       "endLine": 5155,
-      "summary": "Siegel zeros, critical line proportion (Conrey 2/5), completed zeta structure, analytic properties, equivalence network K₉ (36 pairwise equivalences including Connes' positivity), Euler product algebra, counterexample structure (¬RH→4 off-line zeros), failure consequences, GRH comprehensive (GRH implies all 9+Lindelof)."
+      "summary": "Siegel zeros, critical line proportion (Conrey 2/5), completed zeta structure, analytic properties, equivalence network K\u2089 (36 pairwise equivalences including Connes' positivity), Euler product algebra, counterexample structure (\u00acRH\u21924 off-line zeros), failure consequences, GRH comprehensive (GRH implies all 9+Lindelof).",
+      "mathContext": "Trivial zeros: $s = -2,-4,-6,\\ldots$. Non-trivial zeros in $0 < \\text{Re}(s) < 1$. RH: $\\text{Re}(s) = 1/2$."
     },
     {
       "id": "li-criterion-k10",
-      "title": "Part XLVIII: Li's Criterion and K₁₀",
+      "title": "Part XLVIII: Li's Criterion and K\u2081\u2080",
       "startLine": 5377,
       "endLine": 5772,
-      "summary": "Li's criterion (1997): RH ↔ all Li coefficients λₙ ≥ 0. Extends the equivalence network from K₉ to K₁₀ with 45 pairwise equivalences. Keiper's conjecture (strict positivity and monotonicity), Bombieri-Lagarias generalization to L-functions, GRH implies all 10 formulations, single negative Li coefficient disproves everything."
+      "summary": "Li's criterion (1997): RH \u2194 all Li coefficients \u03bb\u2099 \u2265 0. Extends the equivalence network from K\u2089 to K\u2081\u2080 with 45 pairwise equivalences. Keiper's conjecture (strict positivity and monotonicity), Bombieri-Lagarias generalization to L-functions, GRH implies all 10 formulations, single negative Li coefficient disproves everything.",
+      "mathContext": "$\\pi(x) \\sim \\text{Li}(x)$. RH $\\Leftrightarrow |\\pi(x) - \\text{Li}(x)| = O(\\sqrt{x} \\log x)$."
     },
     {
       "id": "moment-conjectures",
       "title": "Part LIV: Moment Conjectures and Mean Value Theorems",
       "startLine": 6408,
       "endLine": 6610,
-      "summary": "Mean values of |ζ(1/2+it)|^{2k}: Hardy-Littlewood second moment (T log T), Ingham fourth moment (T log⁴T/(2π²)), CFKRS conjecture for all k, Soundararajan/Harper upper bounds, Radziwiłł-Soundararajan lower bounds. Growth rate T·(log T)^{k²} determined under RH. Random matrix connection via Keating-Snaith dictionary."
+      "summary": "Mean values of |\u03b6(1/2+it)|^{2k}: Hardy-Littlewood second moment (T log T), Ingham fourth moment (T log\u2074T/(2\u03c0\u00b2)), CFKRS conjecture for all k, Soundararajan/Harper upper bounds, Radziwi\u0142\u0142-Soundararajan lower bounds. Growth rate T\u00b7(log T)^{k\u00b2} determined under RH. Random matrix connection via Keating-Snaith dictionary.",
+      "mathContext": "Axiomatized: zeta definition, functional equation, Euler product, analytic continuation, non-vanishing on $\\text{Re}(s) = 1$."
     },
     {
       "id": "integral-criteria",
       "title": "Part LV: Integral Criteria and Alternative Reformulations",
       "startLine": 6610,
       "endLine": 6762,
-      "summary": "Four additional equivalent formulations of RH beyond K₁₀: Balazard-Saias-Yor vanishing integral, Riesz criterion (growth of entire function from ζ(2k)), Báez-Duarte criterion (coefficients from ζ values at even integers), Volchkov's integral criterion (single integral equals explicit constant). All proved pairwise equivalent via RH transitivity."
+      "summary": "Four additional equivalent formulations of RH beyond K\u2081\u2080: Balazard-Saias-Yor vanishing integral, Riesz criterion (growth of entire function from \u03b6(2k)), B\u00e1ez-Duarte criterion (coefficients from \u03b6 values at even integers), Volchkov's integral criterion (single integral equals explicit constant). All proved pairwise equivalent via RH transitivity.",
+      "mathContext": "Type verification of all axiomatized properties and the RH statement."
     }
   ],
   "conclusion": {
-    "summary": "The Riemann Hypothesis remains one of the deepest unsolved problems in mathematics. This formalization (8188 lines, 540 theorems, 42 axioms, 0 sorries) provides:\n\n1. A precise formal statement using Mathlib's riemannZeta function\n2. 14 equivalent formulations: K₁₀ network + BSY, Riesz, Báez-Duarte, Volchkov integral criteria\n3. GRH→RH proved from Mathlib's Dirichlet L-function infrastructure\n4. Counterexample structure: ¬RH forces 4 distinct off-line zeros\n5. Moment conjectures: Hardy-Littlewood, Ingham, CFKRS, growth rate determined\n6. Deep theory: Selberg class, de Bruijn-Newman constant, random matrix connections\n7. Arithmetic consequences: explicit prime bounds, GRH-conditional results\n8. Li's criterion, Connes' positivity, and Keiper's conjecture\n\nThe 'axiom' badge indicates this formalization assumes deep mathematical results as axioms.",
+    "summary": "The Riemann Hypothesis remains one of the deepest unsolved problems in mathematics. This formalization (8188 lines, 540 theorems, 42 axioms, 0 sorries) provides:\n\n1. A precise formal statement using Mathlib's riemannZeta function\n2. 14 equivalent formulations: K\u2081\u2080 network + BSY, Riesz, B\u00e1ez-Duarte, Volchkov integral criteria\n3. GRH\u2192RH proved from Mathlib's Dirichlet L-function infrastructure\n4. Counterexample structure: \u00acRH forces 4 distinct off-line zeros\n5. Moment conjectures: Hardy-Littlewood, Ingham, CFKRS, growth rate determined\n6. Deep theory: Selberg class, de Bruijn-Newman constant, random matrix connections\n7. Arithmetic consequences: explicit prime bounds, GRH-conditional results\n8. Li's criterion, Connes' positivity, and Keiper's conjecture\n\nThe 'axiom' badge indicates this formalization assumes deep mathematical results as axioms.",
     "implications": "If RH is true, it would:\n- Give the best possible error term in the Prime Number Theorem\n- Provide tight bounds on prime gaps: p_{n+1} - p_n = O(sqrt(p_n) log^2 p_n)\n- Enable effective bounds in many number-theoretic problems\n- Have implications for the security analysis of cryptographic systems\n\nIf RH is false, it would be equally revolutionary, revealing unexpected structure in the distribution of primes.",
     "openQuestions": [
       "Is RH true? (The $1 million question)",
@@ -137,5 +145,33 @@
       "Are there connections to random matrix theory that could prove RH?",
       "Can we prove RH for specific L-functions (like Dirichlet L-functions)?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "Basel identity is zeta(2) = pi^2/6, the simplest evaluation of the same zeta function whose zeros RH concerns"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "Euclid proves qualitatively that primes are infinite; RH gives the best possible quantitative error term for pi(x)"
+    },
+    {
+      "targetId": "fermats-last-theorem",
+      "relationship": "related",
+      "description": "Both are landmark problems. FLT was resolved via modularity; RH remains open and is the most important unsolved problem in mathematics"
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "related",
+      "description": "The pole of zeta(s) at s=1 corresponds to harmonic series divergence \u2014 the boundary of p-series convergence"
+    }
+  ],
+  "relatedProofs": [
+    "basel-problem",
+    "infinitude-primes",
+    "fermats-last-theorem",
+    "harmonic-divergence"
+  ]
 }
