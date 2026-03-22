@@ -6,9 +6,10 @@
     "range": { "startLine": 1, "endLine": 22 },
     "title": "Problem Overview",
     "content": "Erdős Problem 935 studies the powerful part Q₂ of consecutive integer products n(n+1)···(n+l). Three conjectures address how Q₂ grows: (1) Q₂ < n^{2+ε}, (2) lim sup Q₂/n² = ∞ for l ≥ 2, and (3) Q₂/n^{l+1} → 0.",
-    "mathContext": "The powerful part extracts the 'square-full' component of a number: the product of all prime powers p^{kₚ} with kₚ ≥ 2. Consecutive products have rich factorization structure because consecutive integers share no common factor, making Q₂ sensitive to how prime squares distribute among them.",
+    "mathContext": "The powerful part extracts the 'square-full' component: $Q_2(n) = \\prod_{k_p \\geq 2} p^{k_p}$. Consecutive products have rich factorization structure because consecutive integers share no common factor, making $Q_2$ sensitive to how prime squares distribute among them.",
     "significance": "essential",
-    "relatedConcepts": ["powerful-numbers", "consecutive-products", "multiplicative-structure"]
+    "relatedConcepts": ["powerful numbers", "consecutive products", "multiplicative number theory", "prime power distribution"],
+    "prerequisites": ["prime factorization", "powerful (squarefull) numbers", "limsup"]
   },
   {
     "id": "erdos-935-imports",
@@ -17,8 +18,10 @@
     "range": { "startLine": 24, "endLine": 27 },
     "title": "Imports and Setup",
     "content": "Uses `Nat.Basic`, `Finset.Basic`, and `Rat.Basic` for natural number operations, finite set products, and rational arithmetic for the asymptotic comparisons.",
+    "mathContext": "Rational arithmetic ($\\mathbb{Q}$) is used for the asymptotic bounds since expressions like $n^{2+\\varepsilon}$ require non-integer exponents. `Finset.range` is used for the consecutive product.",
     "significance": "supporting",
-    "relatedConcepts": ["mathlib", "rational-arithmetic"]
+    "relatedConcepts": ["Mathlib", "rational arithmetic", "Finset.range"],
+    "prerequisites": ["Lean 4 imports", "rational numbers in Lean"]
   },
   {
     "id": "erdos-935-powerful-part",
@@ -27,9 +30,10 @@
     "range": { "startLine": 29, "endLine": 48 },
     "title": "Powerful Part Q₂(n) and Properties",
     "content": "**`powerfulPart n`** extracts the product of all prime powers p^{kₚ} with kₚ ≥ 2. Key properties: Q₂(1) = 1, Q₂(n) | n, Q₂(n) is powerful (every prime divides it to power ≥ 2), and Q₂ is multiplicative on coprime inputs.",
-    "mathContext": "For n = 2³ · 3 · 5² · 7, we have Q₂(n) = 2³ · 5² = 200. The squarefree part n/Q₂(n) = 3 · 7 = 21 captures the 'thin' component. Multiplicativity on coprimes is crucial for analyzing consecutive products since gcd(n, n+1) = 1.",
+    "mathContext": "For $n = 2^3 \\cdot 3 \\cdot 5^2 \\cdot 7$, we have $Q_2(n) = 2^3 \\cdot 5^2 = 200$. The squarefree part $n/Q_2(n) = 3 \\cdot 7 = 21$ captures the 'thin' component. Multiplicativity: $\\gcd(a,b) = 1 \\implies Q_2(ab) = Q_2(a) \\cdot Q_2(b)$.",
     "significance": "essential",
-    "relatedConcepts": ["powerful-number", "multiplicativity", "squarefree-part"]
+    "relatedConcepts": ["powerful number", "multiplicative functions", "squarefree part", "prime factorization"],
+    "prerequisites": ["prime factorization", "divisibility", "coprimality", "powerful numbers"]
   },
   {
     "id": "erdos-935-consecutive",
@@ -38,9 +42,10 @@
     "range": { "startLine": 52, "endLine": 58 },
     "title": "Consecutive Product and Its Powerful Part",
     "content": "**`consecutiveProduct n l`** = n(n+1)···(n+l). **`Q2consec n l`** = Q₂(consecutiveProduct n l). These compose the powerful part extractor with the product of l+1 consecutive integers.",
-    "mathContext": "The product of l+1 consecutive integers starting at n grows as ~n^{l+1}. Its powerful part captures how much 'square-full' content accumulates. For l = 0, Q₂(n) depends on individual factorization; for larger l, the interaction between consecutive factors matters.",
+    "mathContext": "The product of $\\ell+1$ consecutive integers starting at $n$ grows as $\\sim n^{\\ell+1}$. Its powerful part captures how much 'square-full' content accumulates. For $\\ell = 0$, $Q_2(n)$ depends on individual factorization; for larger $\\ell$, the interaction between consecutive factors matters.",
     "significance": "essential",
-    "relatedConcepts": ["consecutive-integers", "product-factorization"]
+    "relatedConcepts": ["consecutive integers", "Finset.prod", "product factorization"],
+    "prerequisites": ["Finset.range", "Finset.prod", "powerfulPart definition"]
   },
   {
     "id": "erdos-935-mahler",
@@ -49,9 +54,10 @@
     "range": { "startLine": 62, "endLine": 67 },
     "title": "Mahler's Lower Bound",
     "content": "**Mahler's theorem**: For every l ≥ 1, lim sup Q₂(n(n+1)···(n+l))/n² ≥ 1. Formalized as: for every N₀, there exists n ≥ N₀ with Q₂(···) ≥ n².",
-    "mathContext": "Mahler's result provides the baseline: the powerful part infinitely often reaches the n² scale. The conjectures ask whether it can exceed n² (Part 2 says yes for l ≥ 2) and whether it stays below n^{2+ε} (Part 1).",
+    "mathContext": "Mahler's result provides the baseline: $\\limsup_{n \\to \\infty} Q_2(n(n+1)\\cdots(n+\\ell))/n^2 \\geq 1$. The conjectures ask whether it can exceed $n^2$ (Part 2 says yes for $\\ell \\geq 2$) and whether it stays below $n^{2+\\varepsilon}$ (Part 1).",
     "significance": "essential",
-    "relatedConcepts": ["mahler", "lim-sup", "lower-bound"]
+    "relatedConcepts": ["Mahler's theorem", "limsup", "lower bound", "infinitely often"],
+    "prerequisites": ["limsup definition", "Q2consec definition", "rational comparison"]
   },
   {
     "id": "erdos-935-part1",
@@ -60,9 +66,10 @@
     "range": { "startLine": 71, "endLine": 76 },
     "title": "Part 1: Upper Bound n^{2+ε}",
     "content": "For every ε > 0 and l ≥ 1, Q₂(n(n+1)···(n+l)) < n^{2+ε} for sufficiently large n. This says the powerful part never significantly exceeds n².",
-    "mathContext": "Combined with Mahler's lower bound, Part 1 would show Q₂ ~ n² in a logarithmic sense. The ε-room is necessary: the powerful part can exceed n² by subpolynomial factors.",
+    "mathContext": "Combined with Mahler's lower bound, Part 1 would show $Q_2 \\sim n^2$ in a logarithmic sense: $\\log Q_2 / \\log n \\to 2$. The $\\varepsilon$-room is necessary since subpolynomial factors can push $Q_2$ slightly above $n^2$.",
     "significance": "essential",
-    "relatedConcepts": ["upper-bound", "subpolynomial", "open-problem"]
+    "relatedConcepts": ["upper bound", "subpolynomial growth", "open conjecture"],
+    "prerequisites": ["Q2consec definition", "rational exponentiation", "eventually-for-all"]
   },
   {
     "id": "erdos-935-part2",
@@ -71,9 +78,10 @@
     "range": { "startLine": 78, "endLine": 82 },
     "title": "Part 2: Divergent Lim Sup for l ≥ 2",
     "content": "For l ≥ 2, lim sup Q₂(n(n+1)···(n+l))/n² = ∞. Multiple consecutive factors push Q₂ well beyond n². Formalized as: for every M > 0, there exists n with Q₂ > M · n².",
-    "mathContext": "The l ≥ 2 threshold is key: with 3+ consecutive integers, there are more opportunities for prime squares to accumulate. For l = 1, Mahler's bound may be tight (lim sup could equal 1).",
+    "mathContext": "The $\\ell \\geq 2$ threshold is key: with 3+ consecutive integers, there are more opportunities for prime squares to accumulate. For $\\ell = 1$ (two consecutive integers), Mahler's bound may be tight ($\\limsup$ could equal 1).",
     "significance": "essential",
-    "relatedConcepts": ["divergence", "threshold-phenomenon"]
+    "relatedConcepts": ["divergence", "threshold phenomenon", "open conjecture"],
+    "prerequisites": ["Q2consec definition", "Mahler's lower bound", "limsup = ∞"]
   },
   {
     "id": "erdos-935-part3",
@@ -82,9 +90,10 @@
     "range": { "startLine": 84, "endLine": 88 },
     "title": "Part 3: Decay Relative to n^{l+1}",
     "content": "For l ≥ 2, Q₂(n(n+1)···(n+l))/n^{l+1} → 0. Even though Q₂ grows faster than n², it is negligible compared to the full product ~n^{l+1}.",
-    "mathContext": "Since the product n(n+1)···(n+l) ~ n^{l+1}, and Q₂ ≤ n^{2+ε} by Part 1, we need 2+ε < l+1, i.e., l ≥ 2. Parts 1-3 together paint a complete picture: Q₂ is concentrated in a narrow band around n².",
+    "mathContext": "Since $n(n+1)\\cdots(n+\\ell) \\sim n^{\\ell+1}$, and $Q_2 \\leq n^{2+\\varepsilon}$ by Part 1, we need $2+\\varepsilon < \\ell+1$, i.e., $\\ell \\geq 2$. Parts 1-3 together paint a complete picture: $Q_2$ is concentrated in a narrow band around $n^2$.",
     "significance": "essential",
-    "relatedConcepts": ["decay-rate", "asymptotic-analysis"]
+    "relatedConcepts": ["decay rate", "asymptotic analysis", "little-o notation"],
+    "prerequisites": ["Q2consec definition", "Part 1 upper bound", "limit = 0"]
   },
   {
     "id": "erdos-935-combined",
@@ -93,7 +102,9 @@
     "range": { "startLine": 90, "endLine": 93 },
     "title": "Combined Statement",
     "content": "**`ErdosProblem935`** is the conjunction of all three parts. Together they characterize the powerful part of consecutive products: it grows like n² (up to subpolynomial factors), diverges relative to n² for l ≥ 2, but is o(n^{l+1}).",
+    "mathContext": "$\\text{ErdosProblem935} = \\text{Part1} \\land \\text{Part2} \\land \\text{Part3}$. This gives the complete asymptotic picture: $n^2 \\lesssim Q_2 \\lesssim n^{2+\\varepsilon}$ and $Q_2 = o(n^{\\ell+1})$.",
     "significance": "essential",
-    "relatedConcepts": ["complete-characterization", "three-part-conjecture"]
+    "relatedConcepts": ["conjunction", "complete characterization", "three-part conjecture"],
+    "prerequisites": ["Parts 1-3 definitions", "logical conjunction"]
   }
 ]

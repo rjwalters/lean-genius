@@ -49,7 +49,31 @@
       "Combined all three parts in ErdosProblem935"
     ],
     "axiomCount": 6,
-    "lineCount": 92
+    "lineCount": 92,
+    "assumptions": [
+      "powerfulPart: The powerful part function Q₂ : ℕ → ℕ — axiomatized since Mathlib lacks a direct definition",
+      "powerfulPart_one: Q₂(1) = 1 (unit has no prime factors)",
+      "powerfulPart_dvd: Q₂(n) | n for all n (powerful part divides the original)",
+      "powerfulPart_is_powerful: Q₂(n) is powerful — every prime dividing it appears to power ≥ 2",
+      "powerfulPart_mul: Q₂(ab) = Q₂(a)·Q₂(b) for coprime a, b (multiplicativity)",
+      "mahler_lower_bound: Mahler's theorem — lim sup Q₂(n···(n+ℓ))/n² ≥ 1 for ℓ ≥ 1"
+    ],
+    "references": [
+      {
+        "authors": "Mahler, Kurt",
+        "title": "On the greatest prime factor of consecutive integers",
+        "year": "1955",
+        "venue": "Journal of the London Mathematical Society",
+        "note": "Proved the lower bound lim sup Q₂(n(n+1)···(n+ℓ))/n² ≥ 1 for all ℓ ≥ 1"
+      },
+      {
+        "authors": "Erdős, Paul",
+        "title": "Problems and results on consecutive integers",
+        "year": "1975",
+        "venue": "Publicationes Mathematicae Debrecen",
+        "note": "Posed the three-part conjecture about Q₂ growth, remarking the problems 'seem very difficult'"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "Erdős studied the powerful part of integers — the product of all prime power factors p^k with k ≥ 2 — as a measure of how 'square-full' a number is. For a single integer n, Q₂(n) captures the contribution of repeated prime factors. When applied to products of consecutive integers n(n+1)···(n+ℓ), the powerful part reflects the distribution of large prime powers across nearby integers.\n\nMahler proved the fundamental lower bound: for every ℓ ≥ 1, there are infinitely many n with Q₂(n(n+1)···(n+ℓ)) ≥ n². This shows that the powerful part can be as large as n², at least infinitely often. Erdős then asked three progressively finer questions about the growth rate.\n\nErdős remarked that the problems 'seem very difficult to prove,' placing them among his harder conjectures in multiplicative number theory. The interplay between consecutive integers and prime factorization is subtle: while consecutive integers are coprime in pairs, products of several consecutive integers can accumulate large prime powers through coincidences in the prime factorization structure.",
@@ -65,32 +89,44 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "Module docstring defining Q₂ and stating the three conjectures. References Mahler's known lower bound. Imports Nat.Basic, Finset.Basic, Rat.Basic, and Tactic.",
+      "mathContext": "For $n = \\prod p^{k_p}$, define $Q_2(n) = \\prod_{k_p \\geq 2} p^{k_p}$. Three questions about $Q_2(n(n+1)\\cdots(n+\\ell))$."
+    },
+    {
       "id": "powerful-part",
-      "title": "Powerful Part",
+      "title": "Powerful Part Q₂",
       "startLine": 29,
       "endLine": 48,
-      "summary": "Axiomatises powerfulPart with four properties: Q₂(1)=1, Q₂(n)|n, Q₂(n) is powerful, Q₂ is multiplicative on coprimes."
+      "summary": "Axiomatises powerfulPart with four properties: Q₂(1)=1, Q₂(n)|n, Q₂(n) is powerful (every prime divides to power ≥ 2), Q₂ is multiplicative on coprimes.",
+      "mathContext": "$Q_2(1) = 1$, $Q_2(n) \\mid n$, $p \\mid Q_2(n) \\implies p^2 \\mid Q_2(n)$, and $\\gcd(a,b) = 1 \\implies Q_2(ab) = Q_2(a) \\cdot Q_2(b)$."
     },
     {
       "id": "consecutive-products",
       "title": "Consecutive Products",
       "startLine": 50,
       "endLine": 58,
-      "summary": "Defines consecutiveProduct n(n+1)···(n+ℓ) via Finset.range and Q2consec as its powerful part."
+      "summary": "Defines consecutiveProduct n(n+1)···(n+ℓ) via Finset.range and Q2consec as its powerful part.",
+      "mathContext": "$\\text{consecutiveProduct}(n, \\ell) = \\prod_{i=0}^{\\ell} (n+i) = n(n+1)\\cdots(n+\\ell)$. $\\text{Q2consec}(n, \\ell) = Q_2(\\text{consecutiveProduct}(n, \\ell))$."
     },
     {
       "id": "mahler",
       "title": "Mahler's Result",
       "startLine": 60,
       "endLine": 67,
-      "summary": "Mahler's lower bound: for every ℓ ≥ 1, lim sup Q₂(···)/n² ≥ 1 — infinitely many n achieve Q₂ ≥ n²."
+      "summary": "Mahler's lower bound: for every ℓ ≥ 1, lim sup Q₂(n···(n+ℓ))/n² ≥ 1 — infinitely many n achieve Q₂ ≥ n².",
+      "mathContext": "$\\forall \\ell \\geq 1,\\; \\limsup_{n \\to \\infty} Q_2(n(n+1)\\cdots(n+\\ell))/n^2 \\geq 1$. Formalized: $\\forall N_0,\\; \\exists n \\geq N_0,\\; (n : \\mathbb{Q})^2 \\leq Q_2(\\cdots)$."
     },
     {
       "id": "main-conjectures",
       "title": "Main Conjectures",
       "startLine": 69,
       "endLine": 93,
-      "summary": "Three open questions formalized: Part 1 (n^{2+ε} upper bound), Part 2 (divergent lim sup for ℓ ≥ 2), Part 3 (vanishing Q₂/n^{ℓ+1}). Combined in ErdosProblem935."
+      "summary": "Three open conjectures: Part 1 ($Q_2 < n^{2+\\varepsilon}$ for large $n$), Part 2 ($\\limsup Q_2/n^2 = \\infty$ for $\\ell \\geq 2$), Part 3 ($Q_2/n^{\\ell+1} \\to 0$ for $\\ell \\geq 2$). Combined in ErdosProblem935.",
+      "mathContext": "Part 1: $\\forall \\varepsilon > 0$, $Q_2 < n^{2+\\varepsilon}$ eventually. Part 2: $\\forall M$, $\\exists n$ with $Q_2 > Mn^2$. Part 3: $\\forall \\varepsilon > 0$, $Q_2 < \\varepsilon n^{\\ell+1}$ eventually."
     }
   ],
   "conclusion": {
@@ -103,5 +139,27 @@
       "What about the generalisation to Q_r for r-powerful parts (r > 2)?",
       "Can sieve methods or the abc conjecture make progress on Part 1?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1081",
+      "relationship": "thematic",
+      "description": "Both problems study powerful (squarefull) numbers — #1081 asks about representing integers as sums of two squarefull numbers"
+    },
+    {
+      "targetId": "erdos-1107",
+      "relationship": "thematic",
+      "description": "Both problems concern r-powerful numbers; #1107 asks about sums of r-powerful numbers, while #935 studies the powerful part of products"
+    },
+    {
+      "targetId": "erdos-1102",
+      "relationship": "related",
+      "description": "Both involve squarefree and squarefull decompositions of integers; #1102 studies squarefree properties P and Q"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1081",
+    "erdos-1107",
+    "erdos-1102"
+  ]
 }
