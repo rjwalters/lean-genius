@@ -149,6 +149,21 @@
       "targetId": "ballot-problem-oq-03",
       "relationship": "extended-by",
       "description": "Sub-entry with additional ballot problem variants and applications"
+    },
+    {
+      "targetId": "derangements",
+      "relationship": "related",
+      "description": "Both are classical combinatorics problems solved by bijective counting: the ballot problem uses the reflection principle while derangements use inclusion-exclusion — both transform a counting constraint into a simpler enumeration"
+    },
+    {
+      "targetId": "inclusion-exclusion",
+      "relationship": "related",
+      "description": "Inclusion-exclusion is a complementary counting technique to the ballot problem's reflection principle — both reduce constrained counting to simpler enumerations, and some ballot problem proofs use inclusion-exclusion directly"
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "related",
+      "description": "The ballot problem concerns random walks with a bias (p > q votes), which in the limit connects to the central limit theorem: the vote-counting sequence is a biased random walk, and CLT describes its asymptotic distribution"
     }
   ],
   "relatedProofs": [
@@ -159,7 +174,10 @@
     "birthday-problem",
     "ballot-problem-oq-01",
     "ballot-problem-oq-02",
-    "ballot-problem-oq-03"
+    "ballot-problem-oq-03",
+    "derangements",
+    "inclusion-exclusion",
+    "central-limit-theorem"
   ],
   "references": [
     {
