@@ -107,13 +107,23 @@ theorem lcm_gcd_dvd_gcd_lcm (a b c : R) :
     min(max(vₚ(a), vₚ(b)), vₚ(c)) = max(min(vₚ(a), vₚ(c)), min(vₚ(b), vₚ(c)))
     for each prime p, which is the standard min/max distributive law.
 
-    Proof via coprime decomposition:
-    Factor a = g·α, b = g·β where g = gcd(a,b), with IsCoprime α β.
-    Then d = gcd(g·α·β, c) decomposes as d_g·d_α·d_β where each piece
-    divides the corresponding factor. The coprimality of d_α and d_β
-    (inherited from IsCoprime α β) lets us recombine: d_g·d_α | gcd(a,c)
-    and d_g·d_β | gcd(b,c), with d_α, d_β coprime, giving
-    d = d_g·d_α·d_β | lcm(gcd(a,c), gcd(b,c)). -/
+    Proof strategy (reduction to IsCoprime):
+    Let d = gcd(lcm(a,b), c) and M = lcm(gcd(a,c), gcd(b,c)).
+    Easy direction (proved above): M | d.
+    So define V = lcm(a,b)/M and W = c/M (both well-defined since M | each).
+    By gcd_mul_left: d = gcd(M*V, M*W) ~ M * gcd(V, W).
+    The hard direction d | M reduces to showing gcd(V, W) is a unit,
+    i.e., IsCoprime V W. At each prime p, if p | V and p | W, then:
+    - v_p(V) > 0 implies max(v_p(a), v_p(b)) > max(min(v_p(a), v_p(c)), min(v_p(b), v_p(c)))
+    - v_p(W) > 0 implies v_p(c) > max(min(v_p(a), v_p(c)), min(v_p(b), v_p(c)))
+    These together require v_p(a) < v_p(c) and v_p(b) < v_p(c), but then
+    max(v_p(a),v_p(b)) = max(min(v_p(a),v_p(c)), min(v_p(b),v_p(c))),
+    contradicting v_p(V) > 0. So no such prime exists.
+
+    Formalizing this requires UniqueFactorizationMonoid machinery (factorization
+    into primes) which is available in Mathlib but would add significant complexity.
+    See ChineseRemainderNonCoprimeOQ03Aristotle.lean for proved helper lemmas,
+    including the "coprime part" of the distributive law. -/
 theorem gcd_lcm_dvd_lcm_gcd (a b c : R) :
     EuclideanDomain.gcd (EuclideanDomain.lcm a b) c ∣
     EuclideanDomain.lcm (EuclideanDomain.gcd a c) (EuclideanDomain.gcd b c) := by
@@ -185,7 +195,9 @@ theorem ed_crt_three_unique {m₁ m₂ m₃ a₁ a₂ a₃ x y : R}
 
 ### Previous: 0 sorries, 1 axiom (gcd_lcm_distrib)
 ### Current: 1 sorry (gcd_lcm_dvd_lcm_gcd), 0 axioms
-### Status: Axiom eliminated, replaced with sorry pending coprime decomposition proof
+### Status: Axiom eliminated, sorry needs UFD factorization to formalize
+### Proof strategy: Reduce to IsCoprime V W where V=lcm(a,b)/M, W=c/M
+### Helper lemmas: See ChineseRemainderNonCoprimeOQ03Aristotle.lean (coprime_gcd_dvd_lcm_gcd etc.)
 -/
 
 end ChineseRemainderNonCoprimeOQ03

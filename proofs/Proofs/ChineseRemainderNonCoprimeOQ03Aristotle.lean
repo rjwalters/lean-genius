@@ -11,6 +11,16 @@
   - Known results likely provable from Mathlib
   - Clean theorem statements with no definition sorries
   - No axioms
+
+  Proof strategy for the main sorry (gcd_lcm_dvd_lcm_gcd):
+  Let d = gcd(lcm(a,b), c), M = lcm(gcd(a,c), gcd(b,c)).
+  Easy direction (proved): M | d.
+  Hard direction (sorry): d | M.
+  Key reduction: M | lcm(a,b) and M | c, so define V = lcm(a,b)/M, W = c/M.
+  Then d = M * gcd(V,W) (by gcd_mul_left). The hard direction reduces to
+  showing gcd(V,W) is a unit, i.e., IsCoprime V W. This follows from
+  min(max(x,y), z) = max(min(x,z), min(y,z)) at each prime valuation,
+  but requires UniqueFactorizationMonoid machinery to formalize.
 -/
 import Mathlib
 
@@ -39,15 +49,23 @@ theorem bezout_coprime_factors {a b g α β : R} (hg : g ≠ 0)
     (hα : a = g * α) (hβ : b = g * β)
     (hgcd : EuclideanDomain.gcd a b = g) :
     α * EuclideanDomain.gcdA a b + β * EuclideanDomain.gcdB a b = 1 := by
-  sorry
+  have hbez := EuclideanDomain.gcd_eq_gcd_ab a b
+  rw [hgcd, hα, hβ] at hbez
+  -- hbez : g = g * α * gcdA a b + g * β * gcdB a b
+  have hfactor : g * 1 = g * (α * EuclideanDomain.gcdA a b + β * EuclideanDomain.gcdB a b) := by
+    rw [mul_one]
+    calc g = g * α * EuclideanDomain.gcdA a b + g * β * EuclideanDomain.gcdB a b := hbez
+      _ = g * (α * EuclideanDomain.gcdA a b + β * EuclideanDomain.gcdB a b) := by ring
+  exact (mul_left_cancel₀ hg hfactor).symm
 
 /-- If g | a and g | b and gcd(a,b) = g and g ≠ 0, then the
     quotients a/g and b/g are coprime. -/
 theorem isCoprime_of_gcd_factoring {a b g α β : R} (hg : g ≠ 0)
     (hα : a = g * α) (hβ : b = g * β)
     (hgcd : EuclideanDomain.gcd a b = g) :
-    IsCoprime α β := by
-  sorry
+    IsCoprime α β :=
+  ⟨EuclideanDomain.gcdA a b, EuclideanDomain.gcdB a b,
+   bezout_coprime_factors hg hα hβ hgcd⟩
 
 /-
 ## Part 2: Cancellation and divisibility in EuclideanDomain
@@ -55,13 +73,13 @@ theorem isCoprime_of_gcd_factoring {a b g α β : R} (hg : g ≠ 0)
 
 /-- In an integral domain, a * b | a * c with a ≠ 0 implies b | c. -/
 theorem dvd_of_mul_dvd_mul_left_ne_zero {a b c : R} (ha : a ≠ 0)
-    (h : a * b ∣ a * c) : b ∣ c := by
-  sorry
+    (h : a * b ∣ a * c) : b ∣ c :=
+  (mul_dvd_mul_iff_left ha).mp h
 
 /-- If d ≠ 0 and d * x | d * y * z, then x | y * z. -/
 theorem dvd_of_mul_dvd_mul_left_assoc {d x y z : R} (hd : d ≠ 0)
-    (h : d * x ∣ d * (y * z)) : x ∣ y * z := by
-  sorry
+    (h : d * x ∣ d * (y * z)) : x ∣ y * z :=
+  dvd_of_mul_dvd_mul_left_ne_zero hd h
 
 /-
 ## Part 3: Coprimality inheritance
@@ -76,32 +94,32 @@ if gcd(x,y) = d and x = d*x' and y = d*y', then IsCoprime x' y'.
 theorem isCoprime_quotients_of_gcd {x y d x' y' : R} (hd : d ≠ 0)
     (hx : x = d * x') (hy : y = d * y')
     (hgcd : EuclideanDomain.gcd x y = d) :
-    IsCoprime x' y' := by
-  sorry
+    IsCoprime x' y' :=
+  isCoprime_of_gcd_factoring hd hx hy hgcd
 
 /-
-## Part 4: Coprime product decomposition
+## Part 4: IsCoprime inheritance through gcd
 
-The key ingredient: if IsCoprime α β and d | α*β,
-then d = gcd(d,α) * (d/gcd(d,α)) where the second factor divides β.
+If IsCoprime α β, then gcd(c,α) and gcd(c,β) are coprime.
+This is because any common divisor of gcd(c,α) and gcd(c,β)
+divides both α and β, hence is a unit.
 -/
 
-/-- If IsCoprime α β and d | α*β, then d/gcd(d,α) divides β.
-    More precisely, if dα | d (as gcd(d,α)) and d = dα * dβ, then dβ | β. -/
-theorem coprime_dvd_factor {α β d dα dβ : R} (hdα_ne : dα ≠ 0)
-    (hcop : IsCoprime α β)
-    (hd_eq : d = dα * dβ)
-    (hdα_d : dα ∣ d)
-    (hdα_α : dα ∣ α)
-    (hd_αβ : d ∣ α * β) :
-    dβ ∣ β := by
-  sorry
+/-- If IsCoprime α β, then gcd(c,α) and gcd(c,β) are coprime. -/
+theorem isCoprime_gcd_of_isCoprime {α β c : R}
+    (hcop : IsCoprime α β) :
+    IsCoprime (EuclideanDomain.gcd c α) (EuclideanDomain.gcd c β) := by
+  obtain ⟨u, v, huv⟩ := hcop
+  obtain ⟨α', hα'⟩ := EuclideanDomain.gcd_dvd_right c α
+  obtain ⟨β', hβ'⟩ := EuclideanDomain.gcd_dvd_right c β
+  exact ⟨α' * u, β' * v, by
+    calc EuclideanDomain.gcd c α * (α' * u) + EuclideanDomain.gcd c β * (β' * v)
+        = (EuclideanDomain.gcd c α * α') * u + (EuclideanDomain.gcd c β * β') * v := by ring
+      _ = α * u + β * v := by rw [← hα', ← hβ']
+      _ = 1 := huv⟩
 
 /-
-## Part 5: IsCoprime.mul_dvd application
-
-If we can show dg*dα | ga and dg*dβ | gb with IsCoprime dα dβ,
-then dg*dα*dβ | lcm(ga, gb).
+## Part 5: IsCoprime.mul_dvd applications
 -/
 
 /-- If x | lcm(p,q) and y | lcm(p,q) and IsCoprime x y, then x*y | lcm(p,q). -/
@@ -118,7 +136,57 @@ theorem coprime_dvd_factors_dvd_lcm {a b p q : R}
     (hcop : IsCoprime a b)
     (ha : a ∣ p)
     (hb : b ∣ q) :
-    a * b ∣ EuclideanDomain.lcm p q := by
-  sorry
+    a * b ∣ EuclideanDomain.lcm p q :=
+  hcop.mul_dvd (dvd_trans ha (EuclideanDomain.dvd_lcm_left p q))
+    (dvd_trans hb (EuclideanDomain.dvd_lcm_right p q))
+
+/-
+## Part 6: Key divisibility chains for the distributive law
+
+gcd(c, α) | gcd(a, c) when a = g * α (since gcd(c,α) | α | g*α = a and gcd(c,α) | c).
+-/
+
+/-- If a = g * α then gcd(c, α) | gcd(a, c). -/
+theorem gcd_factor_dvd_gcd {a c g α : R}
+    (hα : a = g * α) :
+    EuclideanDomain.gcd c α ∣ EuclideanDomain.gcd a c := by
+  apply EuclideanDomain.dvd_gcd
+  · calc EuclideanDomain.gcd c α ∣ α := EuclideanDomain.gcd_dvd_right c α
+      _ ∣ g * α := dvd_mul_left α g
+      _ = a := hα.symm
+  · exact EuclideanDomain.gcd_dvd_left c α
+
+/-- Dual: if a = g * α then gcd(c, g) | gcd(a, c). -/
+theorem gcd_common_factor_dvd_gcd {a c g α : R}
+    (hα : a = g * α) :
+    EuclideanDomain.gcd c g ∣ EuclideanDomain.gcd a c := by
+  apply EuclideanDomain.dvd_gcd
+  · calc EuclideanDomain.gcd c g ∣ g := EuclideanDomain.gcd_dvd_right c g
+      _ ∣ g * α := dvd_mul_right g α
+      _ = a := hα.symm
+  · exact EuclideanDomain.gcd_dvd_left c g
+
+/-
+## Part 7: Partial result for the distributive law
+
+Using gcd_mul_dvd_mul_gcd and coprime factoring, we can show:
+gcd(c, α)*gcd(c, β) | lcm(gcd(a,c), gcd(b,c))
+when a = g*α, b = g*β, IsCoprime α β.
+
+This is a KEY partial result: it handles the "coprime part" of the
+distributive law. The remaining difficulty is handling the shared
+factor g, which requires UniqueFactorizationMonoid machinery.
+-/
+
+/-- Coprime part of the distributive law: if a = g*α, b = g*β with
+    IsCoprime α β, then gcd(c,α)*gcd(c,β) | lcm(gcd(a,c), gcd(b,c)). -/
+theorem coprime_gcd_dvd_lcm_gcd {a b c g α β : R}
+    (hα : a = g * α) (hβ : b = g * β) (hcop : IsCoprime α β) :
+    EuclideanDomain.gcd c α * EuclideanDomain.gcd c β ∣
+    EuclideanDomain.lcm (EuclideanDomain.gcd a c) (EuclideanDomain.gcd b c) := by
+  apply coprime_dvd_factors_dvd_lcm
+  · exact isCoprime_gcd_of_isCoprime hcop
+  · exact gcd_factor_dvd_gcd hα
+  · exact gcd_factor_dvd_gcd hβ
 
 end CRTOQ03Helpers
