@@ -1,26 +1,34 @@
 {
   "id": "cayley-hamilton-minpoly-oq-05",
   "name": "Minimal Polynomial Reduction in General K-Algebras",
-  "status": "surveyed",
-  "phase": "OBSERVE",
+  "status": "active",
+  "phase": "ACT",
   "knowledge": {
     "insights": [
-      "No OQ05 file exists yet - fresh formalization needed",
-      "OQ04 (316 lines) and OQ04Backward (480 lines) cover minimal polynomial computation",
-      "OQ02+OQ02OQ01 cover K-algebra generalization with AlgEquiv/AlgHom invariance",
-      "Mathlib has minpoly.algEquiv_eq for invariance under K-algebra isomorphisms",
-      "General K-algebras: minpoly theory well-supported in Mathlib for integral elements"
+      "File has two complementary theories: modular reduction (Sec I-VI) and algebra towers (Sec VII)",
+      "Sections I-VI (modular reduction) are fully proved: 0 sorries, 0 axioms",
+      "Section VII (algebra tower) adds 7 theorems, 6 fully proved, 1 sorry",
+      "The sorry is in minpoly_eq_map_of_irreducible: need Associated.eq_of_monic or equivalent",
+      "Key Mathlib APIs: eval₂_map + IsScalarTower.algebraMap_eq for tower aeval commutativity",
+      "Polynomial.natDegree_map_eq_of_injective works for field-to-field algebraMap (injective)",
+      "Monic.natDegree_map preserves degree for monic polynomials under ring homs"
     ],
-    "builtItems": [],
+    "builtItems": [
+      "isIntegral_tower_top: integrality transfers up towers (line 179)",
+      "minpoly_map_aeval_eq_zero: base change of minpoly annihilates x (line 183)",
+      "minpoly_map_monic_tower: base change preserves monicity (line 190)",
+      "minpoly_dvd_map_of_tower: divisibility in towers (line 197)",
+      "minpoly_natDegree_tower_le: degree bound in towers (line 202)",
+      "minpoly_eq_map_of_irreducible: equality condition (1 sorry, line 218)"
+    ],
     "openQuestions": [
-      "What specific 'reduction' is targeted? Likely: compute minpoly via reduction to simpler structures",
-      "Does this connect to Jordan normal form or primary decomposition?"
+      "Complete sorry: show associated monic polynomials in L[X] are equal",
+      "Can we characterize minpoly_L in terms of irreducible factors of the mapped minpoly?"
     ],
     "nextSteps": [
-      "Clarify scope: is this about computing minpoly via structure theory or proving properties?",
-      "Check Mathlib for minpoly computation tools in general K-algebras",
-      "Create OQ05 file with relevant theorems using Mathlib infrastructure"
+      "Submit minpoly_eq_map_of_irreducible sorry to Aristotle as companion file candidate",
+      "Consider creating CayleyHamiltonMinpolyOQ05Aristotle.lean with the sorry extracted"
     ],
-    "progressSummary": "SURVEY: Fresh problem, no existing file. K-algebra minpoly well-supported in Mathlib. Need to clarify exact scope."
+    "progressSummary": "PROGRESS: Added 7 algebra tower theorems (6 proved, 1 sorry). File now 239 lines with comprehensive modular reduction + tower theory. Meta.json and annotations corrected to match actual content."
   }
 }

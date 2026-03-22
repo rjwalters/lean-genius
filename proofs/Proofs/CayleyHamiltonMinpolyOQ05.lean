@@ -163,4 +163,77 @@ theorem minpoly_dvd_of_nilpotent (x : A) (hx : IsIntegral K x)
   apply minpoly.dvd K x
   simp [aeval_X_pow, hnil]
 
+-- ============================================================
+-- SECTION VII: Algebra Tower Reduction
+-- ============================================================
+
+-- In an algebra tower K → L → A, the minimal polynomial over L
+-- divides the base change of the minimal polynomial over K.
+-- This means the degree can only decrease when extending the base field.
+
+section AlgebraTower
+
+variable {L : Type*} [Field L] [Algebra K L] [Algebra L A] [IsScalarTower K L A]
+
+-- Integrality transfers up the tower: integral over K implies integral over L
+theorem isIntegral_tower_top (x : A) (hx : IsIntegral K x) : IsIntegral L x :=
+  hx.tower_top
+
+-- The base change of the K-minimal polynomial annihilates x over L.
+-- Uses: eval₂ commutes with map, and algebraMap factors through the tower.
+theorem minpoly_map_aeval_eq_zero (x : A) :
+    aeval x ((minpoly K x).map (algebraMap K L)) = 0 := by
+  rw [aeval_def, eval₂_map, ← IsScalarTower.algebraMap_eq K L A, ← aeval_def]
+  exact minpoly.aeval K x
+
+-- The base change preserves monicity
+omit [Algebra L A] [IsScalarTower K L A] in
+theorem minpoly_map_monic_tower (x : A) (hx : IsIntegral K x) :
+    ((minpoly K x).map (algebraMap K L)).Monic :=
+  (minpoly.monic hx).map (algebraMap K L)
+
+-- Key theorem: minpoly over L divides the base-changed minpoly from K.
+-- This is because the base-changed polynomial annihilates x and the minimal
+-- polynomial divides any annihilating polynomial.
+theorem minpoly_dvd_map_of_tower (x : A) (hx : IsIntegral K x) :
+    minpoly L x ∣ (minpoly K x).map (algebraMap K L) :=
+  minpoly.dvd L x (minpoly_map_aeval_eq_zero (L := L) x)
+
+-- Degree consequence: the minimal polynomial degree can only decrease
+-- when extending the base field from K to L.
+theorem minpoly_natDegree_tower_le (x : A) (hx : IsIntegral K x) :
+    (minpoly L x).natDegree ≤ (minpoly K x).natDegree := by
+  have hdvd := minpoly_dvd_map_of_tower (L := L) x hx
+  have hne : (minpoly K x).map (algebraMap K L) ≠ 0 :=
+    (minpoly_map_monic_tower x hx).ne_zero
+  have hmap_deg : ((minpoly K x).map (algebraMap K L)).natDegree =
+      (minpoly K x).natDegree :=
+    (minpoly.monic hx).natDegree_map (algebraMap K L)
+  calc (minpoly L x).natDegree
+      ≤ ((minpoly K x).map (algebraMap K L)).natDegree :=
+        Polynomial.natDegree_le_of_dvd hdvd hne
+    _ = (minpoly K x).natDegree := hmap_deg
+
+-- Equality holds when the base-changed minpoly stays irreducible over L.
+-- Proof sketch: minpoly L x divides an irreducible, so they're associated.
+-- Both are monic, so the unit relating them must be 1.
+-- TODO: Aristotle candidate - prove associated monic polys are equal.
+theorem minpoly_eq_map_of_irreducible [IsDomain A] [NoZeroSMulDivisors L A]
+    (x : A) (hx : IsIntegral K x)
+    (hirr : Irreducible ((minpoly K x).map (algebraMap K L))) :
+    minpoly L x = (minpoly K x).map (algebraMap K L) := by
+  have hxL : IsIntegral L x := hx.tower_top
+  have hdvd := minpoly_dvd_map_of_tower (L := L) x hx
+  have hirr_L := minpoly.irreducible hxL
+  -- Two irreducibles where one divides the other are associated
+  have hassoc := hirr_L.associated_of_dvd hirr hdvd
+  -- Both are monic; extract the unit and show it must be 1
+  obtain ⟨u, hu⟩ := hassoc
+  -- hu : minpoly L x * ↑u = map (algebraMap K L) (minpoly K x)
+  -- Since both sides are monic and units in L[X] are nonzero constants,
+  -- u must be C(1) = 1, giving us the equality.
+  sorry
+
+end AlgebraTower
+
 end MinpolyReductionAlg
