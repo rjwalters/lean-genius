@@ -1,0 +1,26 @@
+{
+  "id": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
+  "name": "Skolem-Noether Theorem: K-Algebra Automorphisms of Mn(K)",
+  "status": "surveyed",
+  "phase": "OBSERVE",
+  "knowledge": {
+    "insights": [
+      "Parent file CayleyHamiltonMinpolyOQ02OQ01.lean is complete (217 lines, 0 axioms, 0 sorries)",
+      "Parent establishes minpoly invariance under K-algebra isomorphisms via Mathlib minpoly.algEquiv_eq",
+      "Skolem-Noether: every K-algebra automorphism of Mn(K) is inner (conjugation by invertible matrix)",
+      "Mathlib has AlgEquiv for K-algebra isomorphisms but may not have Skolem-Noether directly",
+      "Key ingredient: central simple algebras theory - may not be in Mathlib v4.26.0"
+    ],
+    "builtItems": [],
+    "openQuestions": [
+      "Does Mathlib have Skolem-Noether or Wedderburn theory for CSAs?",
+      "Can Skolem-Noether for Mn(K) be proved from simpler ingredients (matrix algebra structure)?"
+    ],
+    "nextSteps": [
+      "Search Mathlib for Skolem-Noether, central simple algebra, or Wedderburn results",
+      "For Mn(K) specifically: every automorphism is inner could be proved from matrix structure directly",
+      "State the theorem and attempt proof using AlgEquiv infrastructure"
+    ],
+    "progressSummary": "SURVEY: Skolem-Noether for Mn(K). Parent complete. Needs central simple algebra theory or direct matrix approach."
+  }
+}
