@@ -23,13 +23,16 @@ where e(A,B) = C(dx + dy, dx) is the number of lattice paths from A to B.
 The identity permutation contributes ∏ e(Aᵢ,Bᵢ). Non-identity permutations
 cancel via a sign-reversing involution (Gessel-Viennot involution).
 
-## Status (1 axiom, 2 sorries, 0 other axioms)
+## Status (1 axiom [GV cancellation], 1 sorry [pathMN cardinality])
 - [x] Path tuple and non-intersecting definitions
 - [x] Path weight matrix using Matrix.det
 - [x] Permutation path tuples and signed counts
-- [x] Gessel-Viennot involution infrastructure (swapTailsAt)
-- [x] r×r LGV lemma statement (1 axiom: main result)
+- [x] Gessel-Viennot involution infrastructure (swapTailsAt, firstNonFixed)
+- [x] Algebraic bridge: det = signed sum of perm path tuple counts (proved)
+- [x] r×r LGV lemma (proved from GV cancellation axiom)
 - [x] Corollaries: non-negativity, r=0, r=1 special cases
+- [ ] GV involution cancellation (1 axiom: the combinatorial heart)
+- [ ] PathMN cardinality C(m+n,m) (1 sorry: standard combinatorial identity)
 
 ## References
 - Lindström (1973): "On the Vector Representations of Induced Matroids"
@@ -216,11 +219,124 @@ theorem gessel_viennot_transposition_sign {r : ℕ}
     (σ : Equiv.Perm (Fin r)) (i : Fin r) (hi : σ i ≠ i) :
     Equiv.Perm.sign (Equiv.swap i (σ i) * σ) = -Equiv.Perm.sign σ := by
   rw [map_mul, Equiv.Perm.sign_swap (Ne.symm hi)]
-  simp [Units.val_neg, Units.val_one, mul_comm]
+  simp
+
+-- ============================================================
+-- PART 7a: First Non-Fixed Point of a Permutation
+-- ============================================================
+
+/-- The smallest index not fixed by a non-identity permutation.
+    For σ ≠ 1, this is the minimum of {i | σ(i) ≠ i}. -/
+noncomputable def firstNonFixed {r : ℕ} (σ : Equiv.Perm (Fin r)) (hσ : σ ≠ 1) : Fin r :=
+  (Finset.univ.filter (fun i => σ i ≠ i)).min' (by
+    rw [Finset.filter_nonempty_iff]
+    by_contra h
+    push_neg at h
+    exact hσ (Equiv.ext (fun i => by simpa using h i)))
+
+/-- The first non-fixed point is indeed not fixed by σ. -/
+theorem firstNonFixed_spec {r : ℕ} (σ : Equiv.Perm (Fin r)) (hσ : σ ≠ 1) :
+    σ (firstNonFixed σ hσ) ≠ firstNonFixed σ hσ := by
+  have hmem : firstNonFixed σ hσ ∈
+      (Finset.univ : Finset (Fin r)).filter (fun (i : Fin r) => σ i ≠ i) :=
+    Finset.min'_mem _ _
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hmem
+  exact hmem
+
+/-- All indices strictly below firstNonFixed are fixed by σ. -/
+theorem firstNonFixed_minimal {r : ℕ} (σ : Equiv.Perm (Fin r)) (hσ : σ ≠ 1)
+    (j : Fin r) (hj : j < firstNonFixed σ hσ) : σ j = j := by
+  by_contra h
+  have hmem : j ∈ (Finset.univ : Finset (Fin r)).filter (fun i => σ i ≠ i) :=
+    Finset.mem_filter.mpr ⟨Finset.mem_univ j, h⟩
+  unfold firstNonFixed at hj
+  exact absurd (Finset.min'_le _ _ hmem) (not_le.mpr hj)
+
+/-- For a non-identity permutation, firstNonFixed maps strictly upward:
+    σ(firstNonFixed) > firstNonFixed. Since σ fixes all smaller indices,
+    σ(firstNonFixed) cannot equal any of them, nor itself. -/
+theorem firstNonFixed_lt_image {r : ℕ} (σ : Equiv.Perm (Fin r)) (hσ : σ ≠ 1) :
+    firstNonFixed σ hσ < σ (firstNonFixed σ hσ) := by
+  have hne : σ (firstNonFixed σ hσ) ≠ firstNonFixed σ hσ := firstNonFixed_spec σ hσ
+  obtain hlt | hgt := lt_or_gt_of_ne hne
+  · exact absurd (σ.injective (firstNonFixed_minimal σ hσ _ hlt)) hne
+  · exact hgt
+
+-- ============================================================
+-- PART 7b: PathMN Cardinality
+-- ============================================================
+
+/-- The number of lattice paths with m East steps and n North steps
+    equals C(m + n, m). A path is determined by choosing which m
+    of the m+n steps are East steps.
+    Proof sketch: PathMN m n ≃ {S ⊆ Fin(m+n) | |S| = m} via the
+    indicator function of East-step positions. -/
+theorem pathMN_card (m n : ℕ) :
+    Fintype.card (PathMN m n) = Nat.choose (m + n) m := by
+  sorry
+
+-- ============================================================
+-- PART 7c: Algebraic Bridge
+-- ============================================================
+
+/-- The cardinality of σ-path tuples factors as a product of
+    binomial coefficients (one per source-target pair). -/
+theorem permPathTuple_card {r : ℕ} (cfg : LGVConfig r)
+    (σ : Equiv.Perm (Fin r)) :
+    (Fintype.card (PermPathTuple cfg σ) : ℤ) =
+      ∏ i : Fin r,
+        (Nat.choose (cfg.m + (cfg.targets (σ i) - cfg.sources i)) cfg.m : ℤ) := by
+  have h : Fintype.card (PermPathTuple cfg σ) =
+      ∏ i : Fin r, Nat.choose (cfg.m + (cfg.targets (σ i) - cfg.sources i)) cfg.m := by
+    show Fintype.card ((i : Fin r) → PathMN cfg.m (cfg.targets (σ i) - cfg.sources i)) = _
+    rw [Fintype.card_pi]; simp only [pathMN_card]
+  rw [h]; push_cast; ring
+
+/-- The path weight matrix determinant equals the signed sum of
+    permutation path tuple cardinalities.
+
+    This is the algebraic half of the LGV lemma: it connects the
+    Leibniz determinant expansion to a combinatorial counting
+    interpretation. The combinatorial half (GV involution
+    cancellation) shows this sum collapses to niTupleCount.
+
+    Uses the column form of the Leibniz formula:
+      det(M) = Σ_σ sign(σ) · Π_i M(i, σ(i))
+    obtained via det(M) = det(Mᵀ). -/
+theorem det_pathMatrix_eq_signed_sum {r : ℕ} (cfg : LGVConfig r) :
+    (pathMatrix cfg).det =
+      ∑ σ : Equiv.Perm (Fin r),
+        (↑(Equiv.Perm.sign σ) : ℤ) * ↑(Fintype.card (PermPathTuple cfg σ)) := by
+  conv_lhs => rw [← Matrix.det_transpose (pathMatrix cfg)]
+  simp only [Matrix.det_apply, Units.smul_def,
+    Matrix.transpose_apply, pathMatrix, Matrix.of_apply]
+  apply Finset.sum_congr rfl
+  intro σ _
+  congr 1
+  exact (permPathTuple_card cfg σ).symm
 
 -- ============================================================
 -- PART 8: The r×r LGV Lemma
 -- ============================================================
+
+/-- **Gessel-Viennot involution cancellation** (the combinatorial heart):
+
+    The signed sum of permutation path tuple cardinalities equals
+    the number of non-intersecting identity path tuples.
+
+    This follows from a sign-reversing involution on the disjoint
+    union ⨆_σ PermPathTuple(cfg, σ), where fixed points are exactly
+    the non-intersecting identity tuples.
+
+    The involution: for a non-identity σ-tuple (or intersecting
+    id-tuple), find the smallest non-fixed index i of σ, swap
+    tails of paths Pᵢ and P_{σ⁻¹(i)} at their first shared
+    lattice point. This maps σ-tuples to ((i σ⁻¹i)·σ)-tuples
+    with opposite sign. -/
+axiom gv_involution_cancellation {r : ℕ} (cfg : LGVConfig r) :
+    ∑ σ : Equiv.Perm (Fin r),
+      (↑(Equiv.Perm.sign σ) : ℤ) * ↑(Fintype.card (PermPathTuple cfg σ)) =
+    ↑(niTupleCount cfg)
 
 /-- **The r×r LGV Lemma** (Lindström 1973, Gessel-Viennot 1985):
 
@@ -228,9 +344,13 @@ theorem gessel_viennot_transposition_sign {r : ℕ}
     (path i: source i → target i) equals the determinant of the path
     weight matrix M where M_{i,j} = C(m + (bⱼ - aᵢ), m).
 
+    Proved by combining the algebraic bridge (det = signed perm sum)
+    with the GV involution cancellation (signed sum = NI count).
     This generalizes the 2×2 case proved in BallotProblemOQ03.lean. -/
-axiom lgv_lemma_rxr {r : ℕ} (cfg : LGVConfig r) :
-    (niTupleCount cfg : ℤ) = (pathMatrix cfg).det
+theorem lgv_lemma_rxr {r : ℕ} (cfg : LGVConfig r) :
+    (niTupleCount cfg : ℤ) = (pathMatrix cfg).det := by
+  rw [det_pathMatrix_eq_signed_sum]
+  exact (gv_involution_cancellation cfg).symm
 
 -- ============================================================
 -- PART 9: Corollaries

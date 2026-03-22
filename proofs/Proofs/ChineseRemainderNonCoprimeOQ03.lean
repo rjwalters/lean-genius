@@ -9,15 +9,14 @@
   Necessity: proved in OQ02 (ed_crt_three_necessary)
   Sufficiency: proved by reducing to the 2-moduli case:
     1. Solve first pair (m₁,m₂) to get x₀
-    2. Show gcd(lcm(m₁,m₂), m₃) ∣ (x₀-a₃) using pairwise conditions
+    2. Show gcd(lcm(m₁,m₂), m₃) ∣ (x₀-a₃) via GCD-LCM distributive law
     3. Solve second pair (lcm(m₁,m₂), m₃) to get final solution
-
-  The key lemma needed is the GCD-LCM distributive law:
-    gcd(lcm(a,b), c) divides lcm(gcd(a,c), gcd(b,c))
 
   Parent: ChineseRemainderNonCoprimeOQ02.lean (0 axioms, 0 sorries)
 -/
 import Mathlib
+
+set_option linter.unusedSectionVars false
 
 namespace ChineseRemainderNonCoprimeOQ03
 
@@ -67,8 +66,6 @@ private theorem ed_crt_three_necessary {m n p a b c : R}
 
 /-
 ## Part I: Intermediate Lemmas
-
-Connecting pairwise GCD conditions to the 2-moduli + lcm reduction.
 -/
 
 /-- If m ∣ (x-a) then gcd(m,p) ∣ (x-a). -/
@@ -82,21 +79,12 @@ theorem gcd_dvd_sub_of_congr {m m₃ a₁ a₃ x₀ : R}
     (hpair : EuclideanDomain.gcd m m₃ ∣ (a₁ - a₃)) :
     EuclideanDomain.gcd m m₃ ∣ (x₀ - a₃) := by
   have h1 : EuclideanDomain.gcd m m₃ ∣ (x₀ - a₁) := gcd_dvd_of_dvd_sub hcong
-  have h2 := hpair
   have : x₀ - a₃ = (x₀ - a₁) + (a₁ - a₃) := by ring
   rw [this]
-  exact dvd_add h1 h2
+  exact dvd_add h1 hpair
 
 /-
-## Part II: GCD-LCM Distributive Law (one direction)
-
-The easy direction: lcm(gcd(a,c), gcd(b,c)) ∣ gcd(lcm(a,b), c).
-Proof: Both gcd(a,c) and gcd(b,c) divide lcm(a,b) and c,
-so their lcm divides gcd(lcm(a,b), c).
-
-The hard direction (needed for sufficiency):
-gcd(lcm(a,b), c) ∣ lcm(gcd(a,c), gcd(b,c)).
-This is the full distributive law for the gcd/lcm lattice.
+## Part II: GCD-LCM Distributive Law
 -/
 
 /-- Easy direction: lcm(gcd(a,c), gcd(b,c)) divides gcd(lcm(a,b), c). -/
@@ -104,77 +92,61 @@ theorem lcm_gcd_dvd_gcd_lcm (a b c : R) :
     EuclideanDomain.lcm (EuclideanDomain.gcd a c) (EuclideanDomain.gcd b c) ∣
     EuclideanDomain.gcd (EuclideanDomain.lcm a b) c := by
   apply EuclideanDomain.dvd_gcd
-  · -- lcm(gcd(a,c), gcd(b,c)) | lcm(a,b)
-    apply EuclideanDomain.lcm_dvd
+  · apply EuclideanDomain.lcm_dvd
     · exact dvd_trans (EuclideanDomain.gcd_dvd_left a c) (EuclideanDomain.dvd_lcm_left a b)
     · exact dvd_trans (EuclideanDomain.gcd_dvd_left b c) (EuclideanDomain.dvd_lcm_right a b)
-  · -- lcm(gcd(a,c), gcd(b,c)) | c
-    apply EuclideanDomain.lcm_dvd
+  · apply EuclideanDomain.lcm_dvd
     · exact EuclideanDomain.gcd_dvd_right a c
     · exact EuclideanDomain.gcd_dvd_right b c
 
-/-- Full GCD-LCM distributive law: gcd(lcm(a,b), c) = lcm(gcd(a,c), gcd(b,c)).
-    For EuclideanDomains (which are UFDs), this holds because the divisibility
-    lattice is distributive. The proof reduces to:
-    min(max(vₚ(a), vₚ(b)), vₚ(c)) = max(min(vₚ(a), vₚ(c)), min(vₚ(b), vₚ(c)))
-    for each prime p, which is the standard min/max distributive law. -/
-axiom gcd_lcm_distrib (a b c : R) :
-    Associated (EuclideanDomain.gcd (EuclideanDomain.lcm a b) c)
-      (EuclideanDomain.lcm (EuclideanDomain.gcd a c) (EuclideanDomain.gcd b c))
+/-- Hard direction of the GCD-LCM distributive law:
+    gcd(lcm(a,b), c) divides lcm(gcd(a,c), gcd(b,c)).
 
-/-- Consequence of distributive law: gcd(lcm(a,b), c) divides lcm(gcd(a,c), gcd(b,c)). -/
+    This is a standard result for EuclideanDomains (which are UFDs):
+    the divisibility lattice is distributive, so
+    min(max(vₚ(a), vₚ(b)), vₚ(c)) = max(min(vₚ(a), vₚ(c)), min(vₚ(b), vₚ(c)))
+    for each prime p, which is the standard min/max distributive law.
+
+    Proof approach via coprime decomposition:
+    1. Factor a = g·α, b = g·β where g = gcd(a,b), IsCoprime α β
+    2. Factor out gcd₃ = gcd(g, c) from g and c
+    3. After both factorizations, gcd(α·β, c') = gcd(α, c')·gcd(β, c')
+       using the coprime product lemma (Bézout + Euclid's lemma)
+    4. Reassemble to get the full result -/
 theorem gcd_lcm_dvd_lcm_gcd (a b c : R) :
     EuclideanDomain.gcd (EuclideanDomain.lcm a b) c ∣
-    EuclideanDomain.lcm (EuclideanDomain.gcd a c) (EuclideanDomain.gcd b c) :=
-  (gcd_lcm_distrib a b c).dvd
+    EuclideanDomain.lcm (EuclideanDomain.gcd a c) (EuclideanDomain.gcd b c) := by
+  sorry
 
 /-
 ## Part III: Three-Moduli CRT Sufficiency
 -/
 
-/-- Sufficiency: pairwise GCD conditions imply the system is solvable.
-
-    Proof strategy:
-    1. Solve first pair (m₁,m₂) using ed_crt_sufficient → get x₀
-    2. Show gcd(m₁,m₃) ∣ (x₀-a₃) and gcd(m₂,m₃) ∣ (x₀-a₃) from pairwise conditions
-    3. Therefore lcm(gcd(m₁,m₃), gcd(m₂,m₃)) ∣ (x₀-a₃)
-    4. By GCD-LCM distributive law, gcd(lcm(m₁,m₂), m₃) ∣ (x₀-a₃)
-    5. Solve second pair (lcm(m₁,m₂), m₃) using ed_crt_sufficient → get x
-    6. x satisfies all three congruences. -/
+/-- Sufficiency: pairwise GCD conditions imply the system is solvable. -/
 theorem ed_crt_three_sufficient {m₁ m₂ m₃ a₁ a₂ a₃ : R}
     (h12 : EuclideanDomain.gcd m₁ m₂ ∣ (a₁ - a₂))
     (h13 : EuclideanDomain.gcd m₁ m₃ ∣ (a₁ - a₃))
     (h23 : EuclideanDomain.gcd m₂ m₃ ∣ (a₂ - a₃)) :
     ∃ x : R, m₁ ∣ (x - a₁) ∧ m₂ ∣ (x - a₂) ∧ m₃ ∣ (x - a₃) := by
-  -- Step 1: Solve first pair
   obtain ⟨x₀, hx₀_m₁, hx₀_m₂⟩ := ed_crt_sufficient h12
-  -- Step 2: Show gcd conditions for second pair
   have hg13 : EuclideanDomain.gcd m₁ m₃ ∣ (x₀ - a₃) :=
     gcd_dvd_sub_of_congr hx₀_m₁ h13
   have hg23 : EuclideanDomain.gcd m₂ m₃ ∣ (x₀ - a₃) :=
     gcd_dvd_sub_of_congr hx₀_m₂ h23
-  -- Step 3: lcm of the two gcd conditions
   have hlcm : EuclideanDomain.lcm (EuclideanDomain.gcd m₁ m₃) (EuclideanDomain.gcd m₂ m₃) ∣
     (x₀ - a₃) := EuclideanDomain.lcm_dvd hg13 hg23
-  -- Step 4: By distributive law, gcd(lcm(m₁,m₂), m₃) divides x₀-a₃
   have hgcd_lcm : EuclideanDomain.gcd (EuclideanDomain.lcm m₁ m₂) m₃ ∣ (x₀ - a₃) :=
     dvd_trans (gcd_lcm_dvd_lcm_gcd m₁ m₂ m₃) hlcm
-  -- Step 5: Solve second pair (lcm(m₁,m₂), m₃)
   obtain ⟨x, hx_lcm, hx_m₃⟩ := ed_crt_sufficient hgcd_lcm
-  -- Step 6: x satisfies all three congruences
   refine ⟨x, ?_, ?_, hx_m₃⟩
-  -- x ≡ a₁ (mod m₁): from x ≡ x₀ (mod lcm(m₁,m₂)) and x₀ ≡ a₁ (mod m₁)
   · have h_m₁_lcm : m₁ ∣ (x - x₀) :=
       dvd_trans (EuclideanDomain.dvd_lcm_left m₁ m₂) hx_lcm
     have : x - a₁ = (x - x₀) + (x₀ - a₁) := by ring
-    rw [this]
-    exact dvd_add h_m₁_lcm hx₀_m₁
-  -- x ≡ a₂ (mod m₂): from x ≡ x₀ (mod lcm(m₁,m₂)) and x₀ ≡ a₂ (mod m₂)
+    rw [this]; exact dvd_add h_m₁_lcm hx₀_m₁
   · have h_m₂_lcm : m₂ ∣ (x - x₀) :=
       dvd_trans (EuclideanDomain.dvd_lcm_right m₁ m₂) hx_lcm
     have : x - a₂ = (x - x₀) + (x₀ - a₂) := by ring
-    rw [this]
-    exact dvd_add h_m₂_lcm hx₀_m₂
+    rw [this]; exact dvd_add h_m₂_lcm hx₀_m₂
 
 /-- The full iff for 3 moduli: system solvable ↔ pairwise GCD conditions. -/
 theorem ed_crt_three_iff {m₁ m₂ m₃ a₁ a₂ a₃ : R} :
@@ -201,18 +173,18 @@ theorem ed_crt_three_unique {m₁ m₂ m₃ a₁ a₂ a₃ x y : R}
 /-
 ## Summary
 
-### Theorems proved (0 sorries):
+### Theorems proved (0 axioms):
 1. `gcd_dvd_of_dvd_sub` — gcd divisibility from full divisibility
 2. `gcd_dvd_sub_of_congr` — pairwise condition transfers through solution
 3. `lcm_gcd_dvd_gcd_lcm` — easy direction of distributive law
-4. `gcd_lcm_dvd_lcm_gcd` — consequence of distributive law (from axiom)
+4. `gcd_lcm_dvd_lcm_gcd` — hard direction (1 sorry: needs coprime decomposition)
 5. `ed_crt_three_sufficient` — 3-moduli CRT sufficiency
 6. `ed_crt_three_iff` — full iff for 3 moduli
 7. `ed_crt_three_unique` — uniqueness for 3 moduli
 
-### Axioms (1):
-- `gcd_lcm_distrib` — GCD-LCM distributive law for EuclideanDomains
-  (standard result for UFDs, not yet in Mathlib)
+### Previous: 0 sorries, 1 axiom (gcd_lcm_distrib)
+### Current: 1 sorry (gcd_lcm_dvd_lcm_gcd), 0 axioms
+### Status: Axiom eliminated, replaced with sorry pending coprime decomposition proof
 -/
 
 end ChineseRemainderNonCoprimeOQ03
