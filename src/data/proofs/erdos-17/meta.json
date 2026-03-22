@@ -126,5 +126,17 @@
       "Is there a structural characterization of cluster primes?",
       "How do cluster primes relate to prime k-tuples conjectures?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Bounded prime gaps (Maynard-Tao) ensure small differences exist, but cluster primes require ALL small even differences — a much stronger condition"
+    },
+    {
+      "targetId": "erdos-16",
+      "relationship": "related",
+      "description": "Both are Erdős problems about prime distribution: #16 concerns representing odds as 2^k + p, while #17 concerns covering even differences with prime pairs"
+    }
+  ]
 }
