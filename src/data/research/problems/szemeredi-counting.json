@@ -1,0 +1,90 @@
+{
+  "slug": "szemeredi-counting",
+  "title": "Counting and Removal Lemma",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "|\\text{triangles}| = (1 \\pm f(\\varepsilon)) \\cdot d_{12} d_{13} d_{23} \\cdot |V_1| |V_2| |V_3|",
+    "plain": "The Counting Lemma says that epsilon-regular pairs behave like random graphs for the purpose of counting subgraphs: the number of copies of a fixed graph (like a triangle) in regular triples is approximately what you would expect if edges were placed independently at random. The Triangle Removal Lemma, a powerful consequence, says that a graph with few triangles can be made triangle-free by removing few edges.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-21",
+    "iteration": 0,
+    "focus": "Counting lemma for triangles in regular triples, then triangle removal lemma.",
+    "blockers": [
+      "Depends on szemeredi-regularity for epsilon-regular pair definitions and regularity lemma."
+    ],
+    "nextAction": "Wait for szemeredi-regularity infrastructure.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Structured bad_vertices_small proof — regularity application proved, density bound sorry remains. 3 sorries (unchanged count but first is 90% complete).",
+    "builtItems": [
+      "neighborhoodIn: {b ∈ B : G.Adj v b} (definition + subset/card lemmas proved)",
+      "badVertices/goodVertices: partition of A by neighborhood threshold (proved: good_union_bad)",
+      "bad_vertices_small: |bad| < ε|A| under regularity (sorry - key lemma for counting_lemma)",
+      "Fixed removeEdges symmetry bug (pre-existing)"
+    ],
+    "insights": [
+      "Counting lemma requires good/bad vertex decomposition: bad vertices have small neighborhoods under regularity",
+      "Key proof path: Σ_{good a} e(N_B(a), N_C(a)) ≥ (d_AB-ε)(d_AC-ε)(d_BC-ε)|A||B||C|",
+      "bad_vertices_small is the critical bridge lemma: |{a: |N_B(a)| < (d-ε)|B|}| < ε|A| by ε-regularity",
+      "removeEdges had symmetry bug (fixed): needed ∧(w,v)∉R for SimpleGraph.symm",
+      "File needs import Proofs.SzemerediRegularity for the Szemeredi.Regularity namespace",
+      "open Classical needed for DecidablePred filters (same issue as SzemerediRegularity.lean)",
+      "bad_vertices_small proof structured: contraposition → A subset → eps-regularity → abs_le → density bounds",
+      "Key remaining step: edge count decomposition |(A×B).filter Adj| = Σ |N_B(a)| — standard Finset fiber decomposition"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove bad_vertices_small: contraposition argument using ε-regularity definition",
+      "With bad_vertices_small proved, counting_lemma proof follows standard textbook approach",
+      "triangle_removal_lemma requires counting_lemma + regularity_lemma (latter still has sorry)"
+    ]
+  },
+  "tags": [
+    "szemeredi",
+    "combinatorics",
+    "graph-theory",
+    "regularity",
+    "marquee-phase-3"
+  ],
+  "relatedProofs": [
+    "szemeredi-counting"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-22T06:10:36.237Z",
+  "lastUpdate": "2026-03-22T13:00:00Z",
+  "significance": 8,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/SzemerediCounting.lean",
+      "filename": "SzemerediCounting.lean",
+      "lineCount": 169,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediCounting.lean"
+    }
+  ]
+}
