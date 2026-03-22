@@ -26,14 +26,41 @@
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-23",
     "references": [
-      "Erdős, P. (1955): Original problem formulation and 1/4 lower bound",
-      "Scherk, P. (1955): Lower bound 1 − 1/√2 ≈ 0.293 via Fourier analysis",
-      "Haugland, J.K. (2016): Upper bound 0.380926 via step-function constructions",
-      "White, E. (2022): Lower bound 0.379005 via elementary Fourier analysis and convex optimization",
-      "TTT-Discover (2026): Upper bound improved to 0.380876 via AI-assisted optimization",
-      "Guy, R.K.: 'Unsolved Problems in Number Theory', Problem C17",
-      "https://erdosproblems.com/36",
-      "https://en.wikipedia.org/wiki/Minimum_overlap_problem"
+      {
+        "authors": "Erdős, Paul",
+        "title": "Problem formulation on minimum overlap of equal partitions",
+        "year": "1955",
+        "venue": "Various correspondence",
+        "note": "Original problem formulation and trivial 1/4 lower bound via pigeonhole"
+      },
+      {
+        "authors": "Scherk, Peter",
+        "title": "Distinct elements in a set of sums",
+        "year": "1955",
+        "venue": "American Mathematical Monthly 62(1), 46-47",
+        "note": "Lower bound 1 − 1/√2 ≈ 0.293 via Fourier analysis — first non-trivial bound"
+      },
+      {
+        "authors": "Haugland, Jan Kristian",
+        "title": "Upper bounds for the minimum overlap problem",
+        "year": "2016",
+        "venue": "Preprint",
+        "note": "Upper bound 0.380926 via step-function partition constructions"
+      },
+      {
+        "authors": "White, Ethan",
+        "title": "An improved lower bound for the minimum overlap problem",
+        "year": "2022",
+        "venue": "arXiv preprint",
+        "note": "Best known lower bound 0.379005 via elementary Fourier analysis and convex optimization (SDP)"
+      },
+      {
+        "authors": "Guy, Richard K.",
+        "title": "Unsolved Problems in Number Theory",
+        "year": "2004",
+        "venue": "Springer, 3rd edition",
+        "note": "Problem C17: Minimum overlap of equal partitions"
+      }
     ],
     "mathlibDependencies": [
       {
@@ -72,7 +99,7 @@
   },
   "leanFile": {
     "path": "Proofs/Erdos36Problem.lean",
-    "lineCount": 92,
+    "lineCount": 91,
     "namespace": "root",
     "imports": [
       "Mathlib.Data.Nat.Basic",
@@ -92,6 +119,14 @@
     "sorryCount": 0
   },
   "sections": [
+    {
+      "id": "header",
+      "title": "Module Header",
+      "startLine": 1,
+      "endLine": 17,
+      "summary": "Problem statement: partition {1,...,2N} into equal halves, minimize maximum overlap. Known bounds 0.379 < c < 0.381. Status: OPEN.",
+      "mathContext": "$c = \\lim M(N)/N$ with $0.379005 < c < 0.380876$."
+    },
     {
       "id": "imports",
       "title": "Imports",
