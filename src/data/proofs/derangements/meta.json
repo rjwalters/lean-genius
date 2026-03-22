@@ -190,6 +190,22 @@
       "relationship": "Both are classic combinatorial probability problems. The birthday problem counts collisions in random mappings, while derangements count fixed-point-free permutations. Both exhibit surprising threshold behavior."
     }
   ],
+  "references": [
+    {
+      "authors": "de Montmort, Pierre Rémond",
+      "title": "Essay d'analyse sur les jeux de hazard",
+      "year": "1708",
+      "venue": "Paris: Quillau",
+      "note": "First study of derangements as the 'problème des rencontres' (problem of coincidences), computing the probability of no fixed point in a random permutation"
+    },
+    {
+      "authors": "Euler, Leonhard",
+      "title": "Calcul de la probabilité dans le jeu de rencontre",
+      "year": "1753",
+      "venue": "Mémoires de l'Académie des Sciences de Berlin, 7, pp. 255-270",
+      "note": "Derived the derangement formula D(n) = n!·Σ(-1)^k/k! and proved D(n)/n! → 1/e as n → ∞"
+    }
+  ],
   "relatedProofs": [
     "inclusion-exclusion",
     "euler-totient",
