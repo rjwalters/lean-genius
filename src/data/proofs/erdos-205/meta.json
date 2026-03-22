@@ -46,7 +46,7 @@
     ],
     "originalContributions": [
       "Eliminated 3 axioms (bigOmega_prime_pow, bigOmega_mul, remainder_achieves_min) via Mathlib APIs",
-      "Covering system formalization with Erdős modulus 11184810",
+      "Covering system formalization with Erdős modulus 5592405",
       "De Polignac number verification (127 and 149: all remainders composite)",
       "12 concrete Ω computations via native_decide",
       "Main disproof theorem erdos_205_disproved from axiomatized counterexample"
@@ -72,6 +72,27 @@
         "year": "1917",
         "venue": "Quarterly Journal of Mathematics 48, pp. 76-92",
         "note": "Proved the average order of Ω(n) is log log n — the threshold in Erdős's conjecture"
+      },
+      {
+        "authors": "Erdős, Paul; Kac, Mark",
+        "title": "The Gaussian law of errors in the theory of additive number theoretic functions",
+        "year": "1940",
+        "venue": "American Journal of Mathematics 62, pp. 738-742",
+        "note": "Proved Ω(n) is asymptotically Gaussian around log log n — explains why the log log m threshold seemed natural"
+      },
+      {
+        "authors": "de Polignac, Alphonse",
+        "title": "Recherches nouvelles sur les nombres premiers",
+        "year": "1849",
+        "venue": "Comptes Rendus de l'Académie des Sciences 29, pp. 397-401",
+        "note": "Conjectured every odd number is 2^k + p for some prime p; the first conjecture in this family"
+      },
+      {
+        "authors": "Crocker, R.",
+        "title": "On a sum of a prime and two powers of two",
+        "year": "1971",
+        "venue": "Pacific Journal of Mathematics 36, pp. 103-107",
+        "note": "Extended Erdős's covering system method to show infinitely many odd n ≠ 2^a + 2^b + p"
       }
     ],
     "axiomCount": 6,
@@ -85,7 +106,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erdős asked whether all large n can be represented as 2^k + m with few prime factors. This extends classical questions about 2^k + prime representations. Romanoff (1934) proved a positive density of integers have 2^k + prime form. Erdős (1950) showed a positive density of odd integers do NOT, using covering systems. Problem 205 asked whether relaxing from primes to numbers with Ω(m) < log log m suffices. The answer, found in 2026 via AI-assisted proof, is no.",
+    "historicalContext": "The question of representing integers as $2^k + m$ with arithmetic restrictions on $m$ has roots stretching to de Polignac (1849), who conjectured every odd number is $2^k + p$ for some prime $p$. Romanoff (1934) proved a positive proportion of integers have the form $2^k + p$, establishing the first density result. Erdős (1950) dramatically showed de Polignac's conjecture fails: using covering systems — finite collections of congruence classes covering all integers — he constructed a positive density of odd counterexamples. The primes $\\{3, 5, 7, 13, 17, 241\\}$ whose orders of $2$ form a covering of $\\mathbb{Z}/24\\mathbb{Z}$ yield modulus $5{,}592{,}405$ such that every $n$ in a suitable arithmetic progression has all remainders $n - 2^k$ divisible by one of these primes. Crocker (1971) extended this to show infinitely many odd numbers fail $n = 2^a + 2^b + p$. Problem 205 asked whether the vastly weaker condition $\\Omega(m) < \\log\\log m$ — allowing $m$ to have many prime factors, just fewer than 'typical' — suffices for all large $n$. The Hardy-Ramanujan theorem (1917) shows $\\Omega(n) \\approx \\log\\log n$ on average, making this threshold natural. The Erdős-Kac theorem (1940) refined this to Gaussian concentration. Nevertheless, the conjecture was disproved in 2026: counterexamples exist where ALL remainders $n - 2^k$ have $\\Omega$ far exceeding $\\log\\log n$.",
     "problemStatement": "Is it true that all sufficiently large n can be written as 2^k + m for some k ≥ 0, where Ω(m) < log log m? Here Ω(m) counts prime divisors with multiplicity.",
     "proofStrategy": "The disproof uses a counterexample construction: there exist infinitely many n such that ALL remainders n - 2^k have at least c√(log n / log log n) prime factors, which dominates log log n for large n. The formalization axiomatizes the counterexample and proves the disproof by contradiction: if n had a small-Ω representation, then Ω(m) < log log m ≤ log log n < Ω(m), a contradiction.",
     "keyInsights": [
@@ -93,7 +114,9 @@
       "The Erdős-Kac theorem (1940) shows Ω concentrates around log log n with Gaussian fluctuations",
       "Covering systems using orders of 2 mod {3,5,7,13,17,241} obstruct 2^k + prime representations",
       "127 is the smallest de Polignac number (odd, but 127 - 2^k is composite for all k)",
-      "The counterexample threshold √(log n / log log n) grows faster than log log n"
+      "The counterexample threshold √(log n / log log n) grows faster than log log n",
+      "The disproof chain Ω(m) ≥ minΩ(n) ≥ c·threshold(n) > log log n ≥ log log m uses four lemmas, each isolating one mathematical fact — a clean modular proof architecture",
+      "De Polignac numbers (127, 149, ...) are finite witnesses to covering system obstructions, verified by exhaustive compositeness checks via native_decide"
     ]
   },
   "sections": [
@@ -156,11 +179,12 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #205 is DISPROVED. The formalization proves ¬Erdos205Conjecture from axiomatized counterexample results, with 0 sorries and only 6 axioms (all deep analytic results). Three previously-axiomatized properties (Ω(p^k)=k, Ω(ab)=Ω(a)+Ω(b), and the Finset.inf' bound) are now proved from Mathlib.",
-    "implications": "Even the very weak bound Ω(m) < log log m is insufficient to guarantee 2^k + m representations for all large integers. The covering system technique, pioneered by Erdős for the 2^k + prime case, extends to this more general setting.",
+    "implications": "Even the very weak bound $\\Omega(m) < \\log\\log m$ is insufficient to guarantee $2^k + m$ representations for all large integers. This is surprising because $\\Omega(n) \\approx \\log\\log n$ for 'almost all' $n$ by the Erdős-Kac theorem, so the condition excludes only atypically smooth numbers — yet the counterexamples force every remainder to be atypically rough. The covering system technique, pioneered by Erdős for the $2^k + p$ case, extends to this more general setting. The result suggests a fundamental limitation of additive decomposition into powers of 2 and arithmetically constrained summands: the 'wrong' residue structure can force all remainders to have correlated, elevated prime factor counts.",
     "openQuestions": [
       "Do arbitrarily large ODD counterexamples exist? (Current construction uses n divisible by large powers of 2)",
       "What is the optimal growth rate f(n) such that all large n have representation with Ω(m) < f(n)?",
-      "Can the density of exceptional n be quantified?"
+      "Can the density of exceptional n be quantified?",
+      "Is there a threshold function f(n) between log log n and √(log n / log log n) that exactly characterizes representability?"
     ]
   },
   "crossReferences": [
@@ -178,6 +202,26 @@
       "targetId": "infinitude-primes",
       "relationship": "uses",
       "description": "The covering system construction relies on infinitely many primes to build congruence covers"
+    },
+    {
+      "targetId": "erdos-203",
+      "relationship": "related",
+      "description": "Both use covering systems as a central technique: #203 studies prime avoidance via covers, #205 uses covers in the counterexample construction"
+    },
+    {
+      "targetId": "erdos-9",
+      "relationship": "related",
+      "description": "Both concern representations involving powers of 2: #9 asks about p + 2^k + 2^l, #205 asks about 2^k + m with Ω constraints"
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "uses",
+      "description": "The Chinese Remainder Theorem underlies the covering system construction: simultaneous congruences mod {3,5,7,13,17,241} produce the arithmetic progression of counterexamples"
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "related",
+      "description": "The Erdős-Kac theorem (axiomatized here) is a number-theoretic analogue of the CLT: Ω(n) is asymptotically Gaussian, paralleling the classical CLT for independent random variables"
     }
   ]
 }
