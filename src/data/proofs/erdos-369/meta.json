@@ -64,6 +64,21 @@
       "targetId": "erdos-143",
       "relationship": "related",
       "description": "Erdős #143 studies dilation-avoiding sets, another problem where prime factorization structure controls combinatorial density"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "PNT gives the density of primes as π(x) ~ x/log x. The smooth number counting function Ψ(x,y) is the multiplicative analog — both concern the distribution of numbers with restricted prime factorization. The Dickman function ρ(u) governing smooth number density is derived from PNT-like analytic methods"
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate guarantees a prime in (n, 2n). Erdős #369 asks a complementary question: are there consecutive composite-like (smooth) numbers near n? Both concern the local distribution of numbers with extreme factorization properties"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization is the foundation of smooth number theory: P⁺(n) (the largest prime factor) is well-defined by FTA, and smoothness is defined in terms of the factorization structure that FTA guarantees"
     }
   ],
   "sections": [
@@ -125,7 +140,7 @@
     }
   ],
   "overview": {
-    "historicalContext": "Erdős and Graham posed this problem in 1980 (p.69 of 'Old and New Problems and Results in Combinatorial Number Theory'), calling it 'very hard' even for $k = 2$. The problem sits at the intersection of smooth number theory and the study of consecutive integers. The Dickman-de Bruijn function $\\rho(u)$, introduced by Dickman (1930) and refined by de Bruijn (1951), governs the density of smooth numbers: among integers near $x$, the fraction that are $x^{1/u}$-smooth is $\\rho(u)$. Hildebrand and Tenenbaum (1986) obtained precise uniform estimates for $\\Psi(x,y)$. The major partial result is due to Balog and Wooley (1998), who proved that infinitely many $n$ have both $n$ and $n+1$ smooth, using sieve methods and exponential sum techniques. However, the gap between 'infinitely many' and 'all sufficiently large' remains wide open and may require breakthroughs in multiplicative number theory or progress on the abc conjecture.",
+    "historicalContext": "Erdős and Graham posed this problem in 1980 (p.69 of *Old and New Problems and Results in Combinatorial Number Theory*), calling it 'very hard' even for $k = 2$. The problem sits at the intersection of smooth number theory and the study of consecutive integers.\n\n**Smooth number theory foundations:** The *Dickman-de Bruijn function* $\\rho(u)$, introduced by Dickman (1930) and refined by de Bruijn (1951), governs the density of smooth numbers: among integers near $x$, the fraction that are $x^{1/u}$-smooth is asymptotically $\\rho(u)$. The function satisfies $u\\rho'(u) = -\\rho(u-1)$ for $u > 1$ with $\\rho(u) = 1$ for $0 \\leq u \\leq 1$, and decays as $\\rho(u) \\sim u^{-u(1+o(1))}$. Hildebrand and Tenenbaum (1986) obtained precise uniform estimates for $\\Psi(x,y) = |\\{n \\leq x : P^+(n) \\leq y\\}|$, the smooth number counting function.\n\n**The consecutive smoothness challenge:** While individual smooth numbers are well understood via $\\Psi(x,y)$, *consecutive* smoothness introduces multiplicative independence constraints — $n$ and $n+1$ are coprime, so their smoothness events are nearly independent heuristically but not provably so. The major partial result is due to **Balog and Wooley (1998)**, who proved that infinitely many $n$ have both $n$ and $n+1$ simultaneously $n^\\varepsilon$-smooth, using sieve methods and exponential sum techniques. Their approach combines Type I/II estimates with bilinear form bounds.\n\nHowever, the gap between 'infinitely many' ($\\exists^\\infty$) and 'all sufficiently large' ($\\forall^\\infty$) remains wide open. Closing this gap may require breakthroughs in multiplicative number theory — possibly leveraging effective forms of the abc conjecture (which constrains the simultaneous smoothness of $a, b, a+b$) or new developments in the theory of multiplicative functions on short intervals.",
     "problemStatement": "Let $\\varepsilon > 0$ and $k \\geq 2$. For all sufficiently large $n$, does $\\{1, \\ldots, n\\}$ contain $k$ consecutive $n^\\varepsilon$-smooth integers (integers with no prime factor exceeding $n^\\varepsilon$)?",
     "proofStrategy": "The formalization defines $B$-smooth numbers via the predicate `IsSmooth m B` (all prime factors $\\leq B$), consecutive smooth runs via `ConsecutiveSmoothRun`, and parametrizes the conjecture using a smoothness bound function `smoothBound : ℕ → ℕ` that diverges but stays $\\leq n$. This avoids real exponentiation while capturing the $n^\\varepsilon$ condition. The Balog-Wooley partial result is axiomatized as providing infinitely many witnesses.",
     "keyInsights": [
@@ -154,7 +169,10 @@
   },
   "relatedProofs": [
     "erdos-370",
-    "erdos-143"
+    "erdos-143",
+    "prime-number-theorem",
+    "bertrands-postulate",
+    "fundamental-arithmetic"
   ],
   "leanFile": {
     "imports": [
