@@ -103,6 +103,7 @@
     "type": "definition",
     "title": "The Erdős Conjecture",
     "content": "**Erdős's Conjecture (1975):**\n\nIf A ⊆ ℕ has positive upper density, then there exists an infinite B ⊆ ℕ and integer t such that B + B + t ⊆ A.\n\nThis is a 'density version' of Hindman: instead of coloring, use density > 0.\n\nNote: We only get B + B + t, not all of FS(B). The density condition is weaker than 'one color class', so we get a weaker conclusion.",
+    "mathContext": "$\\bar{d}(A) > 0 \\Rightarrow \\exists B \\subseteq \\mathbb{N}$ infinite, $\\exists t \\in \\mathbb{Z}: B + B + t \\subseteq A$, where $B + B = \\{b_1 + b_2 : b_1, b_2 \\in B\\}$.",
     "significance": "critical"
   },
   {
