@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #240**: Gaps Between P-Smooth Numbers\n\nIs there an infinite set of primes P such that gaps between consecutive P-smooth numbers → ∞?\n\n**Status**: SOLVED (Tijdeman 1973)\n\n**Answer**: YES - For any ε > 0, there exists an infinite P with gaps ≫ aᵢ^{1-ε}.\n\n**Origin**: Asked to Erdős by Wintner.",
     "mathContext": "P-smooth numbers are integers divisible only by primes in P. The question asks whether P can be infinite while gaps still grow unboundedly.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "smooth-numbers",
       "prime-factors",
@@ -30,7 +30,7 @@
     "title": "P-Smooth Numbers",
     "content": "**isPSmooth P n**: A positive integer n is P-smooth if all its prime factors lie in P.\n\n```lean\ndef isPSmooth (P : Set ℕ) (n : ℕ) : Prop :=\n  n > 0 ∧ ∀ p : ℕ, p.Prime → p ∣ n → p ∈ P\n```\n\n**smoothNumbers P**: The set {n : isPSmooth P n}\n\n**Examples**:\n- If P = {2, 3}, then 12 = 2² · 3 is P-smooth\n- If P = {2}, only powers of 2 are P-smooth",
     "mathContext": "Smooth numbers play a key role in factorization algorithms and Diophantine equations. The terminology 'smooth' refers to having only 'small' prime factors.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "prime-factorization",
       "smooth-numbers",
@@ -87,7 +87,7 @@
     "title": "Gap Function",
     "content": "**def gap P i**: The gap between consecutive P-smooth numbers.\n\n```lean\ndef gap (P : Set ℕ) (i : ℕ) : ℕ :=\n  smoothEnum P (i + 1) - smoothEnum P i\n```\n\nThis is aᵢ₊₁ - aᵢ where (aᵢ) is the sequence of P-smooth numbers.",
     "mathContext": "The central quantity in this problem. For finite P, gaps grow due to Pólya's theorem. For infinite P, the behavior depends on P's structure.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "gaps",
       "consecutive",
@@ -106,7 +106,7 @@
     "title": "The Main Question",
     "content": "**gapsTendToInfinity P**: For every M, some gap exceeds M.\n\n```lean\ndef gapsTendToInfinity (P : Set ℕ) : Prop :=\n  ∀ M : ℕ, ∃ i : ℕ, gap P i > M\n```\n\n**erdos240Question**: Does there exist an INFINITE P with unbounded gaps?\n\n```lean\ndef erdos240Question : Prop :=\n  ∃ P : Set ℕ, (∀ p ∈ P, Nat.Prime p) ∧ P.Infinite ∧ gapsTendToInfinity P\n```",
     "mathContext": "For finite P, gaps → ∞ is well-known. The question asks if this can happen even with infinitely many allowed primes.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "unbounded",
       "infinite-set",
@@ -125,7 +125,7 @@
     "title": "Pólya's Theorem (1918)",
     "content": "**axiom polya_theorem**: For quadratic f(n) = an² + bn + c without repeated roots, the largest prime factor of f(n) → ∞.\n\n**polya_corollary**: For n(n+k), there are arbitrarily large primes dividing some value.\n\n**Why it matters**: If consecutive integers n and n+k are both P-smooth for finite P, then n(n+k) is also P-smooth. But Pólya says n(n+k) eventually has prime factors outside any finite P.",
     "mathContext": "Pólya's 1918 paper 'Zur arithmetischen Untersuchung der Polynome' established this fundamental result about prime factors of polynomial values.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "polya-1918",
       "quadratic",
@@ -163,7 +163,7 @@
     "title": "Tijdeman's Main Theorem (1973)",
     "content": "**axiom tijdeman_main_theorem**: For any ε > 0, there exists an INFINITE P such that:\n```\ngap(P, i) ≥ c · aᵢ^{1-ε}\n```\n\n**Key insight**: Make P 'sparse' - if primes in P grow fast, P-smooth numbers are sparse, hence large gaps.\n\n**erdos240_answer**: Applies Tijdeman with ε = 1/2 to answer YES.\n\nThis completely resolves the Erdős-Wintner question.",
     "mathContext": "Tijdeman's 1973 paper 'On integers with many small prime factors' was the definitive resolution. The construction chooses primes growing super-polynomially.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "tijdeman-1973",
       "sparse-primes",
@@ -232,7 +232,7 @@
     "id": "ann-e240-summary",
     "proofId": "erdos-240",
     "range": {
-      "startLine": 257,
+      "startLine": 261,
       "endLine": 278
     },
     "type": "theorem",
@@ -252,38 +252,19 @@
     "proofId": "erdos-240",
     "range": {
       "startLine": 279,
-      "endLine": 291
+      "endLine": 288
     },
     "type": "theorem",
     "title": "Main Result: erdos_240",
     "content": "**theorem erdos_240 : erdos240Question**\n\n**Statement**: There exists an infinite set of primes P such that gaps between consecutive P-smooth numbers tend to infinity.\n\n**Proof**: Follows immediately from erdos240_answer, which applies Tijdeman's theorem.\n\n**Status**: SOLVED by Tijdeman (1973)",
     "mathContext": "This is the formal statement that the answer to Erdős Problem #240 is YES. The theorem is the culmination of all the machinery developed above.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "main-theorem",
       "erdos-240",
       "solved"
     ],
     "tags": ["main-result", "erdos-problems", "solved-problems", "smooth-numbers"]
-  },
-  {
-    "id": "ann-e240-historical",
-    "proofId": "erdos-240",
-    "range": {
-      "startLine": 1,
-      "endLine": 29
-    },
-    "type": "concept",
-    "title": "Historical Context",
-    "content": "**Timeline**:\n- **Wintner**: Originally posed the question to Erdős\n- **Pólya (1918)**: Proved prime factors of quadratics grow unboundedly\n- **Tijdeman (1973)**: Completely resolved the question\n\n**Related problems**:\n- Erdős Problem #368 on erdosproblems.com\n- S-unit equations in Diophantine analysis\n- Cryptographic applications of smooth numbers",
-    "mathContext": "This problem sits at the intersection of analytic number theory (prime factors of polynomials) and combinatorics (structure of smooth number sets).",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "history",
-      "wintner",
-      "timeline"
-    ],
-    "tags": ["historical-context", "wintner", "tijdeman-theorem", "number-theory"]
   },
   {
     "id": "ann-e240-intuition",
