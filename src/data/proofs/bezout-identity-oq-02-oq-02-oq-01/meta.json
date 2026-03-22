@@ -122,7 +122,8 @@
       "**Ring-axiomatic generality**: The quotient formula works in ANY CommRing — the only ℕ-specific part is computing the Bézout coefficients.",
       "**Uniqueness comes free**: In an integral domain, the quotient is unique by left cancellation.",
       "**Computational verification**: native_decide confirms the extGcd implementation matches expected values for small inputs.",
-      "**Agreement with Mathlib**: The abstract version reduces to Mathlib's IsCoprime.dvd_of_dvd_mul_left, confirming consistency."
+      "**Agreement with Mathlib**: The abstract version reduces to Mathlib's IsCoprime.dvd_of_dvd_mul_left, confirming consistency.",
+      "**Historical algorithm-proof duality**: The kuṭṭaka algorithm (Aryabhata, 499 CE) and Bachet's extended algorithm (1624) are the same computation — this formalization shows that the 2300-year-old Euclidean algorithm already *contained* the constructive proof of Euclid's lemma, centuries before the abstract algebraic formulation"
     ],
     "keyIdea": "The proof of Euclid's lemma already contains the algorithm: if u*a + v*b = 1 and b*c = a*k, then c = a*(u*c + v*k). The Bézout coefficients from the extended GCD provide the explicit quotient formula.",
     "prerequisites": [
@@ -236,30 +237,10 @@
     }
   ],
   "relatedProofs": [
-    {
-      "id": "bezout-identity",
-      "relationship": "grandparent",
-      "description": "Root formalization of Bézout's identity; this file extends it with a constructive divisibility algorithm"
-    },
-    {
-      "id": "bezout-identity-oq-02",
-      "relationship": "parent",
-      "description": "Parent: Euclid's lemma generalization; this resolves the sub-question about constructive quotient computation"
-    },
-    {
-      "id": "chinese-remainder-constructive",
-      "relationship": "sibling",
-      "description": "Both use the extended Euclidean algorithm constructively: CRT for simultaneous congruences, this for quotient extraction"
-    },
-    {
-      "id": "infinitude-primes",
-      "relationship": "related",
-      "description": "Euclid's lemma (proved constructively here) is a key ingredient in proofs about prime distribution"
-    },
-    {
-      "id": "fermat-two-squares",
-      "relationship": "related",
-      "description": "Fermat's two-squares theorem uses coprimality and descent arguments related to the Bézout machinery here"
-    }
+    "bezout-identity",
+    "bezout-identity-oq-02",
+    "chinese-remainder-constructive",
+    "infinitude-primes",
+    "fermat-two-squares"
   ]
 }
