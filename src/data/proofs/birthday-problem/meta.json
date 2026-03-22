@@ -234,6 +234,13 @@
       "year": "2009",
       "venue": "Cambridge University Press",
       "note": "Modern treatment using generating functions and analytic methods, with sharp asymptotics for birthday-type problems"
+    },
+    {
+      "authors": "Yuval, Gideon",
+      "title": "How to Swindle Rabin",
+      "year": "1979",
+      "venue": "Unpublished manuscript, later cited in Menezes et al., Handbook of Applied Cryptography",
+      "note": "Introduced the birthday attack on hash functions, showing collisions can be found in O(2^(n/2)) time — fundamentally changing hash output length requirements in cryptography"
     }
   ]
 }
