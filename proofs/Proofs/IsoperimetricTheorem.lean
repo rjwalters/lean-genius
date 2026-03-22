@@ -226,7 +226,10 @@ theorem isoperimetric_ratio_bound (C : SimpleClosedCurve) :
   unfold isoperimetricRatio optimalRatio SimpleClosedCurve.A SimpleClosedCurve.L
   have hL2 : 0 < C.perimeter ^ 2 := sq_pos_of_pos C.perimeter_pos
   have h4pi : 0 < 4 * π := by linarith [Real.pi_pos]
-  sorry
+  have hineq := isoperimetric_inequality C
+  unfold SimpleClosedCurve.A SimpleClosedCurve.L at hineq
+  rw [div_le_div_iff₀ hL2 h4pi]
+  linarith
 
 -- ============================================================
 -- PART 6: Characterizing Equality
@@ -245,8 +248,11 @@ theorem isOptimal_iff_ratio (C : SimpleClosedCurve) :
   have h4pi : 4 * π ≠ 0 := ne_of_gt (by linarith [Real.pi_pos])
   constructor
   · intro h
-    sorry
-  · sorry
+    rw [div_eq_div_iff (ne_of_gt (sq_pos_of_pos C.perimeter_pos)) h4pi]
+    linarith
+  · intro h
+    have := (div_eq_div_iff (ne_of_gt (sq_pos_of_pos C.perimeter_pos)) h4pi).mp h
+    linarith
 
 /-- Circles are optimal -/
 theorem circle_isOptimal (c : Circle) : IsOptimal c.toCurve := by
@@ -355,7 +361,9 @@ theorem square_suboptimal (sq : Square) :
   rw [square_ratio]
   unfold optimalRatio
   have hpi_pos : 0 < π := Real.pi_pos
-  have hpi_lt : π < 4 := by linarith [show π < 3.1416 from by sorry]
+  have hpi_lt : π < 4 := by
+    calc π < 2 * π := by linarith [Real.pi_pos]
+      _ ≤ 4 := by nlinarith [Real.two_le_pi]
   rw [div_lt_div_iff₀ (by linarith : (0 : ℝ) < 16) (by linarith : 0 < 4 * π)]
   nlinarith
 
