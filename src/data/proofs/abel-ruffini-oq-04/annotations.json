@@ -179,6 +179,27 @@
     ]
   },
   {
+    "id": "ann-part-iv-header",
+    "proofId": "abel-ruffini-oq-04",
+    "range": {
+      "startLine": 77,
+      "endLine": 80
+    },
+    "type": "context",
+    "title": "Part IV: Packaging the Sharp Dichotomy",
+    "content": "Part IV distills the results of Parts II and III into a single theorem witnessing the solvability threshold. Where Part II proved non-solvability for n ≥ 5 and Part III showed solvability for small n, Part IV packages these into a conjunction that formally locates the phase transition. This step is mathematically trivial but pedagogically essential: it makes the sharp dichotomy at n = 5 a single quotable result rather than a pair of separate theorems scattered across the file.",
+    "mathContext": "The solvability threshold theorem: $\\text{IsSolvable}(S_1) \\wedge \\neg\\text{IsSolvable}(S_5)$ witnesses the exact transition at $n = 5$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "phase transition",
+      "proof packaging",
+      "pedagogical formalization"
+    ],
+    "prerequisites": [
+      "Parts II and III of this file"
+    ]
+  },
+  {
     "id": "ann-threshold",
     "proofId": "abel-ruffini-oq-04",
     "range": {
@@ -198,6 +219,28 @@
     "prerequisites": [
       "group theory",
       "finite group classification"
+    ]
+  },
+  {
+    "id": "ann-part-v-header",
+    "proofId": "abel-ruffini-oq-04",
+    "range": {
+      "startLine": 88,
+      "endLine": 91
+    },
+    "type": "context",
+    "title": "Part V: The Full Chain in Documentation",
+    "content": "Part V shifts from executable Lean code to comprehensive mathematical documentation. While Parts I–IV contain machine-checked theorems, Part V reconstructs the complete 5-step proof chain (including Steps 2, 4, and 5 which are handled internally by Mathlib or require field theory not formalized here) in a structured comment. This serves a dual purpose: it connects the formalized steps to the full mathematical narrative, and it provides degree-by-degree comparison tables that make the 'Why 5?' question visually concrete.",
+    "mathContext": "The full chain: $A_5$ simple $\\Rightarrow$ $A_5$ not solvable $\\Rightarrow$ $S_n$ ($n \\geq 5$) not solvable $\\Rightarrow$ solvable Galois group needed $\\Rightarrow$ generic quintic unsolvable by radicals.",
+    "significance": "context",
+    "relatedConcepts": [
+      "literate programming",
+      "proof documentation",
+      "Galois bridge"
+    ],
+    "prerequisites": [
+      "Galois theory",
+      "Parts I–IV of this file"
     ]
   },
   {
