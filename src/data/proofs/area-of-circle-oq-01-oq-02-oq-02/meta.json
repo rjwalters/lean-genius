@@ -86,7 +86,8 @@
       "The chain rule for ofRealCLM ∘ f uses ContinuousLinearMap.hasDerivAt composed with HasDerivAt.scomp",
       "Periodicity is the key simplification: without it, the IBP formula has a non-trivial boundary correction",
       "The proof leverages Mathlib's fourierCoeffOn_of_hasDerivAt which does the heavy integration-by-parts work",
-      "field_simp handles the complex algebra involving π, I, and n after boundary elimination"
+      "field_simp handles the complex algebra involving π, I, and n after boundary elimination",
+      "The n ≠ 0 hypothesis is essential: for n = 0 the Fourier coefficient is just the average value, and differentiation sends constants to zero rather than multiplying by in"
     ],
     "keyIdea": "Differentiation in the time domain corresponds to multiplication by in in the frequency domain. For periodic functions, the IBP boundary term vanishes, giving a clean formula.",
     "prerequisites": [
@@ -106,6 +107,16 @@
       "targetId": "area-of-circle-oq-01-oq-03",
       "relationship": "supports",
       "description": "The Wirtinger inequality entry uses Fourier decomposition for the isoperimetric proof; this IBP formula is a key ingredient."
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "specializes",
+      "description": "The general Fourier series theory provides the foundation; this entry proves a specific derivative property of Fourier coefficients used in geometric applications."
+    },
+    {
+      "targetId": "isoperimetric-theorem",
+      "relationship": "supports",
+      "description": "This IBP formula is a key analytical ingredient in the Fourier-analytic proof of the isoperimetric inequality $C^2 \\geq 4\\pi A$."
     }
   ],
   "sections": [
@@ -126,12 +137,28 @@
       "mathContext": "Chain rule: d/dx(ofReal ∘ f)(x) = ofReal(f'(x)) since ofRealCLM' = id and (g ∘ f)' = f' · g'."
     },
     {
-      "id": "ibp-fourier",
-      "title": "IBP for Fourier Coefficients (Main Theorem)",
+      "id": "ibp-statement",
+      "title": "IBP Theorem Statement and Hypotheses",
       "startLine": 47,
-      "endLine": 80,
-      "summary": "Proves ĉₙ(f') = i·n·ĉₙ(f) for 2π-periodic C¹ functions. Applies fourierCoeffOn_of_hasDerivAt, eliminates the boundary term via periodicity, and closes with field_simp/ring.",
-      "mathContext": "ĉₙ(f') = in · ĉₙ(f) via IBP: ∫₀²π f'e^{-int}dt = [fe^{-int}]₀²π (=0 by periodicity) + in∫₀²π fe^{-int}dt."
+      "endLine": 58,
+      "summary": "States the main theorem: for C¹ periodic f with period 2π and n ≠ 0, fourierCoeffOn of (ofReal ∘ deriv f) equals I * n * fourierCoeffOn of (ofReal ∘ f). The hypotheses encode regularity (ContDiff ℝ 1 f), periodicity (∀ t, f(t + 2π) = f(t)), and the non-degeneracy condition n ≠ 0.",
+      "mathContext": "For $f \\in C^1(\\mathbb{R})$ with $f(t+2\\pi) = f(t)$ and $n \\in \\mathbb{Z} \\setminus \\{0\\}$: $\\hat{c}_n(f') = in \\cdot \\hat{c}_n(f)$."
+    },
+    {
+      "id": "ibp-core",
+      "title": "IBP Application and Periodicity Elimination",
+      "startLine": 59,
+      "endLine": 69,
+      "summary": "Steps 1-4 of the proof: establishes the HasDerivAt hypothesis for all x ∈ [0, 2π], proves integrability of ofReal ∘ deriv f, applies Mathlib's fourierCoeffOn_of_hasDerivAt to get the IBP formula with boundary term, and uses periodicity f(2π) = f(0) to eliminate the boundary contribution.",
+      "mathContext": "IBP: $\\int_0^{2\\pi} f'(t)e^{-int}\\,dt = [f(t)e^{-int}]_0^{2\\pi} + in\\int_0^{2\\pi} f(t)e^{-int}\\,dt$. Periodicity: $f(2\\pi) = f(0)$ kills the boundary."
+    },
+    {
+      "id": "ibp-algebra",
+      "title": "Algebraic Simplification and Closure",
+      "startLine": 70,
+      "endLine": 82,
+      "summary": "Step 5: after boundary elimination via simp, establishes non-vanishing of π, I, and n as complex numbers, then uses field_simp to clear denominators and ring to close the complex arithmetic identity. Ends the IsoperimetricFourier namespace.",
+      "mathContext": "After eliminating boundary terms, the remaining goal is a complex algebraic identity involving $\\pi$, $i$, $n$, and integrals. The non-vanishing hypotheses $\\pi \\neq 0$, $i \\neq 0$, $n \\neq 0$ allow `field_simp` to safely clear fractions."
     }
   ],
   "conclusion": {
@@ -146,7 +173,9 @@
   "relatedProofs": [
     "area-of-circle-oq-01-oq-02",
     "area-of-circle-oq-01-oq-03",
-    "area-of-circle-oq-01-oq-02-oq-01"
+    "area-of-circle-oq-01-oq-02-oq-01",
+    "fourier-series",
+    "isoperimetric-theorem"
   ],
   "leanFile": {
     "imports": [
