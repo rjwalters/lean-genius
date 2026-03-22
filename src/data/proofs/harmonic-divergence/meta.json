@@ -53,7 +53,8 @@
       "Terms approaching zero is NOT sufficient for convergence—the harmonic series is the classic counterexample",
       "Oresme's grouping shows each power-of-2 block contributes at least 1/2 to the sum",
       "The divergence is extremely slow: $H_n \\approx \\ln(n) + \\gamma$ where $\\gamma \\approx 0.5772$ is the Euler-Mascheroni constant",
-      "Slight modification to $\\sum 1/n^p$ converges for any $p > 1$—the harmonic series is at the boundary"
+      "Slight modification to $\\sum 1/n^p$ converges for any $p > 1$—the harmonic series is at the boundary",
+      "**Multiplicative number theory connection**: The harmonic sum $H_n \\sim \\ln n$ underlies the natural density and logarithmic density of number-theoretic sets; the divergence of $\\sum 1/p$ over primes (Euler's theorem) is a refinement of harmonic divergence"
     ]
   },
   "sections": [
@@ -62,35 +63,40 @@
       "title": "The Main Theorem",
       "startLine": 40,
       "endLine": 60,
-      "summary": "The harmonic series is not summable—its partial sums grow without bound."
+      "summary": "The harmonic series is not summable — its partial sums grow without bound. Uses `Real.not_summable_one_div_natCast` from Mathlib.",
+      "mathContext": "$\\neg\\text{Summable}(n \\mapsto 1/n)$: the series $\\sum_{n=1}^{\\infty} 1/n$ diverges. Equivalent to $H_n = \\sum_{k=1}^{n} 1/k \\to \\infty$."
     },
     {
       "id": "partial-sums",
       "title": "Partial Sums Tend to Infinity",
       "startLine": 62,
       "endLine": 75,
-      "summary": "An equivalent formulation: the partial sums H_n → ∞."
+      "summary": "Equivalent formulation: the partial sums $H_n \\to \\infty$ as $n \\to \\infty$. Uses `Filter.Tendsto` with `Filter.atTop`.",
+      "mathContext": "$\\text{Filter.Tendsto}(n \\mapsto \\sum_{k=1}^{n} 1/k,\\; \\text{atTop},\\; \\text{atTop})$: for every $M$, eventually $H_n > M$."
     },
     {
       "id": "oresme-argument",
       "title": "Oresme's Grouping Argument",
       "startLine": 77,
       "endLine": 130,
-      "summary": "The classical proof showing each group of 2^k terms sums to at least 1/2."
+      "summary": "The classical proof from ~1350. Proves positivity of terms and the key lemma: each group of $2^k$ terms from $2^k$ to $2^{k+1}-1$ sums to at least $1/2$.",
+      "mathContext": "$\\sum_{i=2^k}^{2^{k+1}-1} \\frac{1}{i} \\geq 2^k \\cdot \\frac{1}{2^{k+1}} = \\frac{1}{2}$. Infinitely many groups of $\\geq 1/2$ force divergence."
     },
     {
       "id": "convergent-contrast",
       "title": "Contrast with Convergent Series",
       "startLine": 132,
       "endLine": 150,
-      "summary": "The p-series with p > 1 converges, showing harmonic is at the boundary."
+      "summary": "The p-series $\\sum 1/n^p$ converges for $p > 1$, showing the harmonic series ($p=1$) is exactly at the convergence boundary.",
+      "mathContext": "`Real.summable_nat_rpow_inv`: $\\sum 1/n^p$ converges $\\iff$ $p > 1$. The Basel problem gives $\\sum 1/n^2 = \\pi^2/6$."
     },
     {
       "id": "growth-rate",
       "title": "Asymptotic Growth Rate",
       "startLine": 152,
       "endLine": 175,
-      "summary": "The harmonic series grows like ln(n), explaining its slow divergence."
+      "summary": "The harmonic series grows like $\\ln(n)$: $H_n = \\ln n + \\gamma + O(1/n)$ where $\\gamma \\approx 0.5772$ is the Euler-Mascheroni constant.",
+      "mathContext": "$H_n \\sim \\ln n + \\gamma$ where $\\gamma = \\lim_{n \\to \\infty}(H_n - \\ln n) \\approx 0.57721566\\ldots$ (rationality unknown)."
     }
   ],
   "conclusion": {
@@ -123,9 +129,21 @@
       "targetId": "basel-problem",
       "relationship": "contrasts",
       "description": "The harmonic series (p=1) diverges while the Basel series (p=2) converges to π²/6. The p-series boundary at p=1 is a fundamental divide in analysis"
+    },
+    {
+      "targetId": "erdos-486",
+      "relationship": "applied-in",
+      "description": "Logarithmic density is defined as logSum(A,x)/log(x), where logSum uses harmonic-type sums Σ 1/n; the divergence of the harmonic series is why log(x) normalization yields a nontrivial density"
+    },
+    {
+      "targetId": "erdos-25",
+      "relationship": "applied-in",
+      "description": "The Davenport-Erdős theorem on logarithmic density of congruence-sieved sets relies on harmonic sum asymptotics"
     }
   ],
   "relatedProofs": [
-    "basel-problem"
+    "basel-problem",
+    "erdos-486",
+    "erdos-25"
   ]
 }
