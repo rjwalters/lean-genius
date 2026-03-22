@@ -113,6 +113,60 @@ def IsFullyColored {n : ℕ} (c : Coloring n) (t : GridTriangle n) : Prop :=
   colors = {0, 1, 2}
 
 -- ============================================================
+-- SECTION II-b: ZMod 2 Parity Helpers
+-- ============================================================
+
+/-- In ZMod 2, a + a = 0 (characteristic 2). -/
+private lemma zmod2_add_self (a : ZMod 2) : a + a = 0 := by
+  have h2 : (2 : ZMod 2) = 0 := by decide
+  calc a + a = 2 * a := by ring
+    _ = 0 * a := by rw [h2]
+    _ = 0 := by ring
+
+/-- In ZMod 2, the indicator of "not equal" equals addition.
+    (if a ≠ b then 1 else 0) = a + b, since in ZMod 2:
+    a = b implies a + b = 0; a ≠ b implies {a,b} = {0,1} so a + b = 1. -/
+private lemma zmod2_ne_indicator (a b : ZMod 2) :
+    (if a ≠ b then (1 : ZMod 2) else 0) = a + b := by
+  fin_cases a <;> fin_cases b <;> decide
+
+/-- Telescoping sum in ZMod 2 over Fin n:
+    ∑_{i=0}^{n-1} (f(i) + f(i+1)) = f(n) + f(0).
+    Each interior term appears twice and cancels in characteristic 2. -/
+private lemma sum_telescope :
+    ∀ (n : ℕ) (f : Fin (n + 1) → ZMod 2),
+    ∑ i : Fin n, (f ⟨i.val, by omega⟩ + f ⟨i.val + 1, by omega⟩) =
+    f ⟨n, by omega⟩ + f ⟨0, by omega⟩ := by
+  intro n
+  induction n with
+  | zero =>
+    intro f
+    simp only [Finset.univ_eq_empty, Finset.sum_empty]
+    exact (zmod2_add_self _).symm
+  | succ k ih =>
+    intro f
+    rw [Fin.sum_univ_castSucc]
+    simp only [Fin.coe_castSucc, Fin.val_last]
+    -- Apply IH to the restriction of f to the first k+1 vertices
+    have h := ih (fun j : Fin (k + 1) => f ⟨j.val, by omega⟩)
+    simp only at h
+    rw [h]
+    -- Goal: f⟨k,_⟩ + f⟨0,_⟩ + (f⟨k,_⟩ + f⟨k+1,_⟩) = f⟨k+1,_⟩ + f⟨0,_⟩
+    have cancel := zmod2_add_self (f ⟨k, by omega⟩)
+    calc f ⟨k, by omega⟩ + f ⟨0, by omega⟩ + (f ⟨k, by omega⟩ + f ⟨k + 1, by omega⟩)
+        = (f ⟨k, by omega⟩ + f ⟨k, by omega⟩) + (f ⟨0, by omega⟩ + f ⟨k + 1, by omega⟩) := by
+          ring
+      _ = 0 + (f ⟨0, by omega⟩ + f ⟨k + 1, by omega⟩) := by rw [cancel]
+      _ = f ⟨k + 1, by omega⟩ + f ⟨0, by omega⟩ := by ring
+
+/-- Convert "cast to ZMod 2 equals 1" into Odd. -/
+private lemma odd_of_zmod2_eq_one (m : ℕ) (h : (m : ZMod 2) = 1) : Odd m := by
+  rw [Nat.odd_iff]
+  have hval := ZMod.val_natCast (n := 2) m
+  rw [h] at hval
+  simpa using hval.symm
+
+-- ============================================================
 -- SECTION III: 1D Sperner on the Bottom Edge (Base Case)
 -- ============================================================
 
@@ -127,20 +181,17 @@ def bottomTransitions {n : ℕ} (c : Coloring n) : ℕ :=
     (fun i : Fin n => c (botVertex n ⟨i.val, by omega⟩) ≠ c (botVertex n ⟨i.val + 1, by omega⟩))
     Finset.univ)
 
-/-- The number of transitions in a sequence modulo 2 equals
-    the XOR of first and last values (telescoping in ZMod 2).
-    If f(0) = 0 and f(n) = 1 (as ZMod 2 values), transitions are odd. -/
-private theorem transitions_parity_aux :
-    ∀ (n : ℕ) (f : Fin (n + 1) → ZMod 2),
+/-- The transition count modulo 2 equals the sum of endpoint values.
+    Converts card(filter) to a sum of ZMod 2 indicators, then telescopes. -/
+private theorem transitions_parity_aux (n : ℕ) (f : Fin (n + 1) → ZMod 2) :
     (Finset.card (Finset.filter (fun i : Fin n => f ⟨i.val, by omega⟩ ≠ f ⟨i.val + 1, by omega⟩)
       Finset.univ) : ZMod 2) = f ⟨n, by omega⟩ + f ⟨0, by omega⟩ := by
-  -- Proof by induction on n.
-  -- Base (n=0): Fin 0 = ∅, card = 0, RHS = f(0)+f(0) = 0 in ZMod 2.
-  -- Step (n=m+1): Split filter into first m transitions + last transition.
-  --   By IH: first m transitions ≡ f(m)+f(0) mod 2.
-  --   Last: +1 if f(m)≠f(m+1), +0 otherwise.
-  --   Total: f(m)+f(0) + (f(m)+f(m+1)) = f(m+1)+f(0) in ZMod 2 (f(m) cancels).
-  sorry
+  -- Step 1: card(filter P univ) = ∑ indicators (via sum_boole)
+  rw [← Finset.sum_boole]
+  -- Step 2: Rewrite each indicator to f(i) + f(i+1) in ZMod 2
+  simp_rw [zmod2_ne_indicator]
+  -- Step 4: Apply the telescoping lemma
+  exact sum_telescope n f
 
 /-- On the bottom edge (j=0), a Sperner coloring has an odd
     number of transitions (adjacent pairs with different colors).
@@ -148,9 +199,15 @@ private theorem transitions_parity_aux :
 theorem bottom_transitions_odd {n : ℕ} (hn : 0 < n) (c : Coloring n)
     (hc : IsSperner hn c) : Odd (bottomTransitions c) := by
   obtain ⟨hv0, hv1, _, hbot, _, _⟩ := hc
-  -- The bottom edge uses only colors 0 and 1 (Sperner condition).
-  -- Going from color 0 to color 1 requires an odd number of transitions.
-  -- We reduce to transitions_parity_aux via a ZMod 2 projection.
+  -- Project the Fin 3 coloring to ZMod 2: color 0 → 0, others → 1.
+  -- On the bottom edge (j=0), colors are in {0, 1} (Sperner excludes 2),
+  -- so the projection is injective on the relevant values.
+  -- We need: (bottomTransitions c : ZMod 2) = 1, then conclude Odd.
+  --
+  -- The projection preserves transitions on {0,1}-valued sequences:
+  -- c(v) ≠ c(w) ↔ proj(c(v)) ≠ proj(c(w)) when both colors ∈ {0,1}.
+  -- After projection: g(0) = 0, g(n) = 1, so transitions_parity_aux gives
+  -- (bottomTransitions : ZMod 2) = 1 + 0 = 1, hence Odd.
   sorry
 
 -- ============================================================
@@ -168,6 +225,10 @@ theorem fully_colored_one_door {n : ℕ} (c : Coloring n)
     (t : GridTriangle n) (hfc : IsFullyColored c t) :
     ∃! (e : Fin 3 × Fin 3), e.1 < e.2 ∧
       IsDoor c (t.vertices e.1) (t.vertices e.2) := by
+  -- From IsFullyColored: the coloring on the 3 vertices is a bijection on {0,1,2}.
+  -- The unique {0,1}-door connects the vertices colored 0 and 1.
+  -- Proof: the coloring is injective (Fintype.injective_iff_surjective),
+  -- so exactly one pair of vertices has colors {0, 1}.
   sorry
 
 /-- Sperner's Lemma (2D): Every Sperner-colored triangulation of the
@@ -176,9 +237,9 @@ theorem fully_colored_one_door {n : ℕ} (c : Coloring n)
 theorem sperner_2d {n : ℕ} (hn : 0 < n) (c : Coloring n) (hc : IsSperner hn c) :
     ∃ t : GridTriangle n, IsFullyColored c t := by
   -- The proof follows from the door-counting argument:
-  -- 1. Count {0,1}-doors on the boundary: odd (bottom_edge_doors_odd)
+  -- 1. Count {0,1}-doors on the boundary: odd (bottom_transitions_odd)
   -- 2. Interior doors pair up (shared by two triangles): even contribution
-  -- 3. Each fully-colored triangle contributes 1 door
+  -- 3. Each fully-colored triangle contributes 1 door (fully_colored_one_door)
   -- 4. Each {0,1}-only triangle contributes 2 doors (even)
   -- 5. Parity: #(fully-colored) ≡ #(boundary doors) ≡ 1 (mod 2)
   -- 6. Therefore #(fully-colored) ≥ 1
