@@ -45,72 +45,72 @@
     {
       "id": "prime-enumeration",
       "title": "Part 1: Prime Enumeration",
-      "startLine": 34,
-      "endLine": 52,
-      "summary": "nthPrime via Nat.nth and primeGap = p_{n+1} - p_n."
+      "startLine": 35,
+      "endLine": 49,
+      "summary": "nthPrime via Nat.nth Nat.Prime (noncomputable), primeGap = p_{n+1} - p_n"
     },
     {
       "id": "consecutive-sequences",
       "title": "Part 2: Consecutive Prime Sequences",
-      "startLine": 54,
-      "endLine": 82,
-      "summary": "consecutivePrimes, allPrimesLeX (bounded by x), allGapsLarge (gaps > c₂)."
+      "startLine": 51,
+      "endLine": 75,
+      "summary": "consecutivePrimes (k primes starting from p_m), allPrimesLeX (bounded by x), allGapsLarge (all k-1 gaps exceed c₂)"
     },
     {
       "id": "main-conjecture",
       "title": "Part 3: The Main Conjecture",
-      "startLine": 84,
-      "endLine": 100,
-      "summary": "mainConjecture: ∀ c₁,c₂ > 0, eventually ∃ k > c₁·log(x) consecutive primes ≤ x with all gaps > c₂."
+      "startLine": 77,
+      "endLine": 89,
+      "summary": "mainConjecture: ∀ c₁, c₂ > 0, ∀ᶠ x in atTop, ∃ run of k > c₁·log(x) primes ≤ x with all gaps > c₂"
     },
     {
       "id": "negation",
       "title": "Part 4: The Negation",
-      "startLine": 102,
-      "endLine": 117,
-      "summary": "What failure means: ∃ c₁,c₂ > 0 blocking long runs for infinitely many x."
+      "startLine": 91,
+      "endLine": 102,
+      "summary": "conjectureNegation: what failure means — ∃ c₁, c₂ blocking long large-gap runs for infinitely many x"
     },
     {
       "id": "partial-result",
       "title": "Part 5: Erdős's Partial Result",
-      "startLine": 119,
-      "endLine": 136,
-      "summary": "Axiom: ∀ c₂ > 0, ∃ c₁ > 0 (small) making the conjecture hold. Quantifier order matters."
+      "startLine": 104,
+      "endLine": 117,
+      "summary": "erdos_partial_result (axiom): ∀ c₂ > 0, ∃ c₁ > 0 (small, depending on c₂) making the conjecture hold. The ∃c₁ vs ∀c₁ quantifier swap is the open gap."
     },
     {
       "id": "pnt-context",
       "title": "Part 6: PNT Context",
-      "startLine": 138,
-      "endLine": 164,
-      "summary": "Average gap grows as log(x). PNT asymptotic: π(x) ~ x/log(x)."
+      "startLine": 119,
+      "endLine": 141,
+      "summary": "average_gap_grows (axiom): some gap near x exceeds c₂. prime_number_theorem_asymptotic (axiom): π(x) ~ x/log(x)"
     },
     {
       "id": "run-length",
       "title": "Part 7: Run Length Analysis",
-      "startLine": 166,
-      "endLine": 191,
-      "summary": "maxRunLength function and conjecture_implies_run_growth axiom."
+      "startLine": 143,
+      "endLine": 164,
+      "summary": "maxRunLength via sSup and conjecture_implies_run_growth (axiom): conjecture ⟹ run length grows as log(x)"
     },
     {
       "id": "heuristics",
       "title": "Part 8: Heuristic Analysis",
-      "startLine": 193,
-      "endLine": 210,
-      "summary": "Probabilistic argument: large gaps are common, so long runs should exist."
+      "startLine": 166,
+      "endLine": 181,
+      "summary": "large_gaps_eventually_dominate (PROVED theorem): for fixed c₂, some gap near x exceeds c₂. Proved by forwarding to average_gap_grows."
     },
     {
       "id": "cramer",
       "title": "Part 9: Cramér's Conjecture",
-      "startLine": 212,
-      "endLine": 229,
-      "summary": "Cramér's conjecture: maximal gap ≤ C·(log x)². Provides supporting context."
+      "startLine": 183,
+      "endLine": 196,
+      "summary": "cramersConjecture definition: maximal prime gap ≤ C·(log x)². Open conjecture providing supporting context."
     },
     {
-      "id": "summary",
-      "title": "Part 10: Summary",
-      "startLine": 231,
-      "endLine": 253,
-      "summary": "Summary theorem combining partial result and conjecture statement. Status: OPEN (general), SOLVED (small c₁)."
+      "id": "structural",
+      "title": "Part 10: Structural Theorems and Summary",
+      "startLine": 198,
+      "endLine": 234,
+      "summary": "partial_weaker_than_full (PROVED): full conjecture ⟹ partial. conjecture_vs_negation (PROVED): full ⟹ ¬negation. erdos_238_summary: combines partial result."
     }
   ],
   "conclusion": {
@@ -118,9 +118,26 @@
     "implications": "Resolution would illuminate prime gap distribution and whether gaps exhibit sufficient uniformity to support long runs of large values.",
     "openQuestions": [
       "Does the conjecture hold for all c₁, c₂ > 0?",
-      "What is the optimal dependence of c₁ on c₂?",
-      "How does the answer relate to Cramér's conjecture?",
-      "Can probabilistic models be made rigorous for this problem?"
+      "What is the optimal dependence of c₁ on c₂ in Erdős's partial result?",
+      "How does the answer relate to Cramér's conjecture on maximal gaps?",
+      "Can probabilistic models (Cramér random model) be made rigorous for this problem?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Maynard-Tao bounded gaps prove infinitely many gaps ≤ 246; Problem #238 asks about long runs where ALL gaps are large — opposite end of the gap distribution spectrum"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "uses",
+      "description": "The PNT (π(x) ~ x/log x) establishes that average prime gap near x is ~log x, which is the fundamental reason large gaps become common for large x"
+    },
+    {
+      "targetId": "erdos-17",
+      "relationship": "related",
+      "description": "Both concern collective properties of consecutive primes: #17 asks about differences covering all even numbers (cluster primes), #238 asks about long runs with all gaps large"
+    }
+  ]
 }
