@@ -134,11 +134,35 @@
       "targetId": "infinitude-primes",
       "relationship": "related",
       "description": "Both are foundational impossibility/existence results that shaped the development of mathematics"
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "complementary",
+      "description": "FTA guarantees every polynomial has roots in C. Abel-Ruffini shows those roots cannot always be expressed by radicals — the roots exist but may not be 'nameable' in closed form"
+    },
+    {
+      "targetId": "inverse-galois",
+      "relationship": "extends",
+      "description": "Abel-Ruffini uses that S₅ occurs as a Galois group. The Inverse Galois Problem asks which groups appear as Galois groups over Q — directly extending the question Abel-Ruffini raises"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem on subgroup orders underpins the group-theoretic machinery: the derived series, composition factors, and index calculations used to analyze S₅ and A₅"
+    },
+    {
+      "targetId": "sylow-theorems",
+      "relationship": "related",
+      "description": "Sylow theorems provide structural information about finite groups that complements the solvability analysis — Sylow subgroups help determine composition factors of S_n"
     }
   ],
   "relatedProofs": [
     "angle-trisection",
-    "infinitude-primes"
+    "infinitude-primes",
+    "fundamental-theorem-algebra",
+    "inverse-galois",
+    "lagrange-theorem",
+    "sylow-theorems"
   ]
 ,
   "references": [
