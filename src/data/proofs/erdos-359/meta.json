@@ -62,7 +62,8 @@
       "**Consecutive sums**: Unlike subset sums, we only consider sums of consecutive terms. This is more restrictive but creates interesting gaps.",
       "**OEIS A002048**: The MacMahon sequence 1, 2, 4, 5, 8, 10, 14, 15, ... is well-studied. Note 3 is missing because 3 = 1 + 2.",
       "**Andrews' conjecture**: The growth rate a_k ~ (k log k) / (log log k) is superlinear but subpolynomial - a delicate intermediate growth.",
-      "**Porubsky's comparison**: The sequence is denser than primes by a factor of at least 1/log(2), connecting to prime number theory."
+      "**Porubsky's comparison**: The sequence is denser than primes by a factor of at least 1/log(2), connecting to prime number theory.",
+      "**Greedy construction**: The sequence is defined greedily (always pick the smallest non-representable integer), yet its growth rate is analytically subtle — a common phenomenon in additive combinatorics where simple recursive definitions yield complex asymptotic behavior"
     ]
   },
   "sections": [
