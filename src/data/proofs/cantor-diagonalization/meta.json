@@ -95,52 +95,60 @@
       "The Continuum Hypothesis: Is there a cardinality between countable and continuum?",
       "What is the cardinality of the set of all countable ordinals?",
       "Which mathematical statements are independent of ZFC due to cardinality considerations?"
-    ],
-    "references": [
-      {
-        "authors": "Cantor, Georg",
-        "title": "Ueber eine elementare Frage der Mannigfaltigkeitslehre",
-        "year": "1891",
-        "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung, 1, pp. 75-78",
-        "note": "The original diagonal argument paper, proving that the set of all infinite binary sequences is uncountable"
-      },
-      {
-        "authors": "Cantor, Georg",
-        "title": "Ueber eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen",
-        "year": "1874",
-        "venue": "Journal für die reine und angewandte Mathematik, 77, pp. 258-262",
-        "note": "Cantor's first proof of uncountability of the reals, using a nested interval argument rather than diagonalization"
-      }
-    ],
-    "crossReferences": [
-      {
-        "targetId": "cantors-theorem",
-        "relationship": "generalizes",
-        "description": "Cantor's theorem that |S| < |P(S)| for any set S is the generalization of diagonalization from binary sequences to arbitrary sets. The diagonal argument is the special case S = ℕ."
-      },
-      {
-        "targetId": "continuum-hypothesis",
-        "relationship": "motivates",
-        "description": "Diagonalization proves |ℕ| < |ℝ|, but leaves open whether any cardinality lies between them. The Continuum Hypothesis (independent of ZFC) addresses exactly this gap."
-      },
-      {
-        "targetId": "halting-problem",
-        "relationship": "technique",
-        "description": "Turing's proof of the halting problem (1936) uses the same diagonal construction: assume a program H decides halting, then build a program D that does the opposite of what H predicts for D — a direct analogue of flipping the diagonal bit."
-      },
-      {
-        "targetId": "godel-incompleteness",
-        "relationship": "technique",
-        "description": "Gödel's incompleteness theorems (1931) use diagonalization via self-referential sentences: 'This statement is not provable.' The diagonal construction of unprovable truths parallels Cantor's construction of unlisted sequences."
-      }
-    ],
-    "relatedProofs": [
-      "cantors-theorem",
-      "continuum-hypothesis",
-      "halting-problem",
-      "godel-incompleteness"
-    ],
-    "alternativeInterpretation": {
+    ]
+  },
+  "references": [
+    {
+      "authors": "Cantor, Georg",
+      "title": "Ueber eine elementare Frage der Mannigfaltigkeitslehre",
+      "year": "1891",
+      "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung, 1, pp. 75-78",
+      "note": "The original diagonal argument paper, proving that the set of all infinite binary sequences is uncountable"
+    },
+    {
+      "authors": "Cantor, Georg",
+      "title": "Ueber eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen",
+      "year": "1874",
+      "venue": "Journal für die reine und angewandte Mathematik, 77, pp. 258-262",
+      "note": "Cantor's first proof of uncountability of the reals, using a nested interval argument rather than diagonalization"
+    },
+    {
+      "authors": "Dauben, Joseph Warren",
+      "title": "Georg Cantor: His Mathematics and Philosophy of the Infinite",
+      "year": "1979",
+      "venue": "Harvard University Press",
+      "note": "Definitive biography covering Cantor's development of set theory, the diagonal argument, and the philosophical controversies it provoked"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cantors-theorem",
+      "relationship": "generalizes",
+      "description": "Cantor's theorem that |S| < |P(S)| for any set S is the generalization of diagonalization from binary sequences to arbitrary sets. The diagonal argument is the special case S = ℕ."
+    },
+    {
+      "targetId": "continuum-hypothesis",
+      "relationship": "motivates",
+      "description": "Diagonalization proves |ℕ| < |ℝ|, but leaves open whether any cardinality lies between them. The Continuum Hypothesis (independent of ZFC) addresses exactly this gap."
+    },
+    {
+      "targetId": "halting-problem",
+      "relationship": "technique",
+      "description": "Turing's proof of the halting problem (1936) uses the same diagonal construction: assume a program H decides halting, then build a program D that does the opposite of what H predicts for D — a direct analogue of flipping the diagonal bit."
+    },
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "technique",
+      "description": "Gödel's incompleteness theorems (1931) use diagonalization via self-referential sentences: 'This statement is not provable.' The diagonal construction of unprovable truths parallels Cantor's construction of unlisted sequences."
+    }
+  ],
+  "relatedProofs": [
+    "cantors-theorem",
+    "continuum-hypothesis",
+    "halting-problem",
+    "godel-incompleteness"
+  ],
+  "alternativeInterpretation": {
       "title": "The Constructivist View: Why the Reals Don't Exist",
       "summary": "The same formal proof supports a radically different conclusion depending on foundational assumptions. Where classical mathematicians see proof of uncountability, constructivists see proof that 'the set of all real numbers' is an incoherent concept.",
       "perspective": "**The Classical View** (presented above): 'The set of real numbers is uncountable—there are strictly more reals than naturals.'\n\n**The Constructivist View**: 'The diagonal argument shows that the real numbers do not form a legitimate mathematical object.'\n\nThe formal steps are identical; the interpretation differs:\n\n1. Assume a complete enumeration of reals exists\n2. The diagonalization constructs a 'new' real\n3. But this construction never terminates—it requires infinitely many decisions\n4. **Conclusion**: The concept of 'all reals' is incoherent; $\\mathbb{R}$ doesn't exist as a completed totality\n\nFor constructivists, the diagonal argument isn't proving there are 'too many' reals—it's proving that the reals form an **ill-defined collection**. The proof is not a triumph showing infinite hierarchies; it's a warning sign that we've asked an invalid question.",
@@ -148,5 +156,4 @@
       "historicalContext": "This interpretation has a distinguished lineage:\n\n**L.E.J. Brouwer** (1881-1966) founded intuitionism, rejecting completed infinities and the law of excluded middle. He viewed Cantor's diagonal as evidence against classical set theory, not for it.\n\n**Errett Bishop** (1928-1983) developed constructive analysis, showing much of mathematics can be done without completed infinities.\n\n**Per Martin-Löf** (born 1942) created intuitionistic type theory, which underlies proof assistants like Agda and influences Lean's type system.\n\nThe debate continues today. Most working mathematicians accept classical logic, but constructive mathematics has found new relevance in computer science, where all proofs must correspond to terminating computations.",
       "leanFoundations": "Interestingly, Lean's type theory is foundationally closer to constructive mathematics than to classical set theory. The Calculus of Inductive Constructions (CIC) that underlies Lean is constructive by default.\n\nHowever, Lean's `Mathlib` library adds classical axioms:\n- `Classical.choice` (axiom of choice)\n- `propext` (propositional extensionality)\n- These together imply the law of excluded middle\n\nSo when Lean proves Cantor's theorem, it's using classical axioms that a strict constructivist would reject. The proof is valid within Lean's classical framework, but the interpretation of what it *means* remains a philosophical choice.\n\nThe formal proof is neutral on ontology—it shows that a certain logical statement is derivable. What that statement tells us about mathematical reality depends on your foundational commitments."
     }
-  }
 }
