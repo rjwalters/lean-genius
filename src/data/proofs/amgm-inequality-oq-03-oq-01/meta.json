@@ -109,6 +109,11 @@
         "targetId": "triangle-inequality",
         "relationship": "related",
         "description": "For p ≥ 1, power mean monotonicity M₁ ≤ M_p implies Minkowski's inequality (the L^p triangle inequality), connecting the discrete mean hierarchy to normed space geometry"
+      },
+      {
+        "targetId": "shannon-entropy",
+        "relationship": "related",
+        "description": "Shannon entropy H(X) = -∑ pᵢ log pᵢ is the α→1 limit of Rényi entropy H_α = (1/(1-α))·log ∑ pᵢ^α. Since H_α ∝ log M_{α-1}, the duality M_r(z) = M_{-r}(z⁻¹)⁻¹ translates to a duality on Rényi entropies — the negative power mean monotonicity here implies the corresponding Rényi entropy monotonicity for α > 1"
       }
     ],
     "dateAdded": "2026-03-21",
@@ -122,7 +127,8 @@
       "amgm-inequality-oq-03-oq-02",
       "cauchy-schwarz",
       "cauchy-schwarz-integral",
-    "triangle-inequality"
+    "triangle-inequality",
+    "shannon-entropy"
     ]
   },
   "overview": {
