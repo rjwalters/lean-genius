@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-tucker-labeling-defs",
+    "proofId": "borsuk-ulam-oq-03-oq-01-oq-01",
+    "range": { "startLine": 37, "endLine": 50 },
+    "type": "definition",
+    "title": "Tucker Labeling and Antipodal Extension",
+    "content": "Defines `TuckerLabeling V` as a function $\\lambda : V \\to \\{\\pm 1, \\pm 2\\}$ with a proof that every vertex receives one of these four values. The antipodal extension `AntipodalTuckerLabeling` adds an involution $\\sigma$ satisfying $\\lambda(\\sigma(v)) = -\\lambda(v)$, modeling the antipodal constraint on the boundary of a centrally-symmetric triangulation. The four-label restriction (rather than arbitrary integers) is essential: Tucker's lemma fails for larger label sets.",
+    "mathContext": "$\\lambda : V \\to \\{\\pm 1, \\pm 2\\},\\quad \\sigma^2 = \\mathrm{id},\\quad \\lambda(\\sigma(v)) = -\\lambda(v)$",
+    "significance": "key",
+    "relatedConcepts": ["antipodal maps", "Borsuk-Ulam theorem", "equivariant maps", "Z/2-actions"],
+    "prerequisites": ["Fintype", "structure definitions"]
+  },
+  {
+    "id": "ann-tucker-complementary",
+    "proofId": "borsuk-ulam-oq-03-oq-01-oq-01",
+    "range": { "startLine": 48, "endLine": 65 },
+    "type": "definition",
+    "title": "Complementary Pairs and Properties",
+    "content": "Defines `isComplementary l v w` as $\\lambda(v) + \\lambda(w) = 0$ and proves three properties: decidability (since it reduces to integer equality), symmetry (commutativity of addition), and that antipodal vertices are always complementary ($\\lambda(v) + \\lambda(\\sigma(v)) = \\lambda(v) - \\lambda(v) = 0$). The decidability instance is crucial for the `Finset.filter` computations in the parity argument.",
+    "mathContext": "$v \\sim w \\iff \\lambda(v) + \\lambda(w) = 0 \\iff \\lambda(v) = -\\lambda(w)$",
+    "significance": "key",
+    "relatedConcepts": ["decidable propositions", "symmetric relations", "complementary edges"],
+    "prerequisites": ["isComplementary", "Decidable", "add_comm"]
+  },
+  {
+    "id": "ann-tucker-pair-classification",
+    "proofId": "borsuk-ulam-oq-03-oq-01-oq-01",
+    "range": { "startLine": 72, "endLine": 81 },
+    "type": "technique",
+    "title": "Exhaustive Complementary Pair Classification",
+    "content": "Proves by exhaustive case analysis that the only complementary pairs from $\\{\\pm 1, \\pm 2\\}$ are $(1,-1)$, $(-1,1)$, $(2,-2)$, and $(-2,2)$. The proof uses `rcases` on the range constraint for both vertices, creating $4 \\times 4 = 16$ cases, and `simp_all` with `decide := true` to close all branches. This classification is used to verify that complementary edges correspond to genuine sign-changes in the labeling.",
+    "mathContext": "$a + b = 0,\\; a,b \\in \\{\\pm 1, \\pm 2\\} \\implies (a,b) \\in \\{(1,-1), (-1,1), (2,-2), (-2,2)\\}$",
+    "significance": "supporting",
+    "relatedConcepts": ["case analysis", "exhaustive enumeration", "sign changes"],
+    "prerequisites": ["TuckerLabeling.range", "rcases tactic", "simp_all"]
+  },
+  {
+    "id": "ann-tucker-complex",
+    "proofId": "borsuk-ulam-oq-03-oq-01-oq-01",
+    "range": { "startLine": 88, "endLine": 106 },
+    "type": "definition",
+    "title": "Triangulated Complex and Complementary Edges",
+    "content": "Defines `TriangulatedComplex V T` as a type with vertex set $V$ and triangle set $T$, where each triangle has 3 vertices (via `Fin 3 \\to V`) and a symmetric, irreflexive adjacency relation. The predicate `hasComplementaryEdge` checks if any two of a triangle's three vertices form a complementary pair. This abstraction separates the combinatorial argument from the topological triangulation construction.",
+    "mathContext": "$K = (V, T, \\partial : T \\to (\\mathrm{Fin}\\,3 \\to V))$. Triangle $t$ has complementary edge iff $\\exists i \\ne j,\\; \\lambda(v_i) + \\lambda(v_j) = 0$.",
+    "significance": "key",
+    "relatedConcepts": ["simplicial complexes", "triangulations", "abstract simplicial complexes", "CW complexes"],
+    "prerequisites": ["Fintype", "SimpleGraph.Basic", "Fin 3"]
+  },
+  {
+    "id": "ann-tucker-boundary",
+    "proofId": "borsuk-ulam-oq-03-oq-01-oq-01",
+    "range": { "startLine": 113, "endLine": 117 },
+    "type": "definition",
+    "title": "Boundary Classification",
+    "content": "Defines `HasBoundary T` as a typeclass providing a decidable predicate `isBoundary : T \\to \\mathrm{Prop}` distinguishing boundary triangles from interior ones. This classification is essential for the parity argument: interior edges are shared by 2 triangles while boundary edges belong to exactly 1, creating the even/odd asymmetry that forces the existence of an interior complementary edge.",
+    "mathContext": "$T = T_{\\text{int}} \\sqcup T_{\\text{bdy}}$, with boundary edges in exactly 1 triangle and interior edges in exactly 2.",
+    "significance": "supporting",
+    "relatedConcepts": ["boundary operator", "manifolds with boundary", "Euler characteristic"],
+    "prerequisites": ["DecidablePred", "typeclass"]
+  },
+  {
+    "id": "ann-tucker-parity",
+    "proofId": "borsuk-ulam-oq-03-oq-01-oq-01",
+    "range": { "startLine": 152, "endLine": 162 },
+    "type": "insight",
+    "title": "Tucker's Parity Principle",
+    "content": "States the combinatorial core of Tucker's lemma: if the number of boundary triangles with complementary edges is odd, then there exists an interior triangle with a complementary edge. The underlying double-counting argument is: $\\sum_t \\deg(t) = 2|E_{\\text{int}}| + |E_{\\text{bdy}}|$. If $|E_{\\text{bdy}}|$ is odd, the total sum is odd, so at least one triangle (necessarily interior) must have a complementary edge. Contains the file's sole sorry.",
+    "mathContext": "$|E_{\\text{bdy}}| \\equiv 1 \\pmod{2} \\implies \\exists t \\in T_{\\text{int}},\\; t \\text{ has complementary edge}$",
+    "significance": "key",
+    "relatedConcepts": ["handshaking lemma", "double counting", "parity arguments", "Sperner's lemma"],
+    "prerequisites": ["Odd", "Finset.filter", "hasComplementaryEdge", "HasBoundary"]
+  },
+  {
+    "id": "ann-tucker-2d-combined",
+    "proofId": "borsuk-ulam-oq-03-oq-01-oq-01",
+    "range": { "startLine": 171, "endLine": 186 },
+    "type": "insight",
+    "title": "Tucker 2D from Parity + 1D Tucker",
+    "content": "Combines the parity principle with the 1D Tucker result (proved in the parent file) to obtain the full 2D Tucker lemma: given an antipodally-labeled triangulated disk, there exist adjacent interior vertices with opposite labels. The proof is a direct extraction from the parity principle: `obtain` the interior triangle and its complementary edge, then return the two witness vertices. This decomposition into 1D boundary + parity + assembly is the essence of the inductive approach to Tucker's lemma.",
+    "mathContext": "$\\text{1D Tucker (boundary odd)} + \\text{parity principle} \\implies \\exists v, w \\text{ interior adjacent with } \\lambda(v) + \\lambda(w) = 0$",
+    "significance": "key",
+    "relatedConcepts": ["inductive dimension reduction", "Tucker's lemma in higher dimensions", "Ky Fan's theorem"],
+    "prerequisites": ["tucker_parity_principle", "AntipodalTuckerLabeling"]
+  }
+]

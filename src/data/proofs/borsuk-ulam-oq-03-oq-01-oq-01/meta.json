@@ -33,13 +33,18 @@
         "theorem": "Fintype",
         "description": "Finite type infrastructure for finite complexes",
         "module": "Mathlib.Data.Fintype.Basic"
+      },
+      {
+        "theorem": "ZMod.Basic",
+        "description": "Modular arithmetic for parity arguments",
+        "module": "Mathlib.Data.ZMod.Basic"
       }
     ],
     "originalContributions": [
       "TuckerLabeling structure: {±1, ±2}-valued labelings with range proof",
       "AntipodalTuckerLabeling: extends with involution and antipodal label property",
-      "complementary_pairs: classifies all possible complementary label pairs",
-      "TriangulatedComplex: finite triangulated 2-complex with adjacency",
+      "complementary_pairs: classifies all possible complementary label pairs by exhaustive case analysis",
+      "TriangulatedComplex: finite triangulated 2-complex with adjacency and boundary classification",
       "tucker_parity_principle: parity argument core (odd boundary → interior edge exists)",
       "tucker_2d_from_parity: combines parity with 1D Tucker for full 2D result"
     ],
@@ -53,17 +58,24 @@
         "key": "Ma03",
         "citation": "Matousek, J., Using the Borsuk-Ulam Theorem, Springer (2003), Chapter 2.",
         "type": "book"
+      },
+      {
+        "key": "FT81",
+        "citation": "Freund, R.M. and Todd, M.J., A constructive proof of Tucker's combinatorial lemma, Journal of Combinatorial Theory A (1981), 321-325.",
+        "type": "paper"
       }
     ]
   },
   "overview": {
-    "historicalContext": "Tucker's lemma (1946) is the combinatorial analogue of the Borsuk-Ulam theorem. Albert Tucker proved that any antipodal labeling of a triangulated sphere must contain a complementary edge — two adjacent vertices with opposite labels. The graph-theoretic path-following proof, popularized by Matousek's textbook, constructs a graph from the labeling and uses a parity argument to find the complementary edge constructively.",
-    "problemStatement": "Formalize the graph-theoretic path-following proof of Tucker's 2D lemma: given an antipodally-labeled triangulated disk, prove the existence of an interior complementary edge via the parity principle.",
-    "proofStrategy": "Define Tucker labelings and triangulated complexes. State the parity principle: if boundary complementary edges have odd count (from 1D Tucker), then interior complementary edges must exist. The proof is a double-counting/handshaking argument on the Tucker graph.",
+    "historicalContext": "Tucker's lemma was proved by Albert W. Tucker in 1946 as a combinatorial counterpart to the Borsuk-Ulam theorem. While Borsuk-Ulam states that every continuous map from $S^n$ to $\\mathbb{R}^n$ has a point where $f(x) = f(-x)$, Tucker's lemma gives the discrete analogue: any antipodal labeling of a triangulated sphere must contain a complementary edge. The graph-theoretic path-following proof was developed by Freund and Todd (1981) and popularized by Matou\\v{s}ek's 2003 textbook. This approach is notable because it is constructive: rather than merely proving existence, it provides an algorithm (following paths in a degree-2 graph) that efficiently finds the complementary edge. The same path-following paradigm underlies the Lemke-Howson algorithm for Nash equilibria and Scarf's algorithm for fixed points.",
+    "problemStatement": "Given an antipodally-labeled triangulated disk with $\\lambda : V \\to \\{\\pm 1, \\pm 2\\}$ and $\\lambda(\\sigma(v)) = -\\lambda(v)$, prove the existence of an interior complementary edge: adjacent vertices $v, w$ with $\\lambda(v) + \\lambda(w) = 0$.",
+    "proofStrategy": "The proof decomposes Tucker 2D into three modular steps: (1) 1D Tucker on the boundary gives an odd number of boundary complementary edges (proved in parent file). (2) The parity principle: double-counting complementary edges across triangles gives $\\sum_t \\deg(t) = 2|E_{\\text{int}}| + |E_{\\text{bdy}}|$; odd $|E_{\\text{bdy}}|$ forces the existence of an interior complementary edge. (3) Assembly: combine (1) and (2) to extract interior complementary vertices.",
     "keyInsights": [
-      "The parity argument is the combinatorial core: double-counting complementary edges across triangles gives sum = 2*(interior) + 1*(boundary). Odd boundary forces odd sum forces interior edges.",
-      "Tucker's path-following is constructive: follow complementary edges through triangles until reaching an interior dead-end.",
-      "The approach separates into three levels: (1) 1D Tucker on boundary (already proved in parent), (2) parity principle (this file), (3) topological triangulation (future work)."
+      "The double-counting/handshaking argument is the combinatorial engine: each interior complementary edge is shared by exactly 2 triangles, each boundary edge by exactly 1, giving $\\sum_t \\deg(t) = 2|E_{\\text{int}}| + |E_{\\text{bdy}}|$",
+      "Tucker's path-following is constructive and algorithmic: follow complementary edges through the triangulation until reaching an interior dead-end (degree-1 vertex in the path graph)",
+      "The three-level decomposition (1D boundary, parity principle, assembly) mirrors how Tucker's lemma generalizes inductively to higher dimensions via the same pattern",
+      "The label restriction to $\\{\\pm 1, \\pm 2\\}$ is not arbitrary: it matches the dimension (2D), and the $n$-dimensional Tucker lemma uses labels $\\{\\pm 1, \\ldots, \\pm n\\}$",
+      "The same parity/path-following paradigm appears in Sperner's lemma, the Lemke-Howson algorithm for Nash equilibria, and the PPAD complexity class"
     ]
   },
   "sections": [
@@ -72,43 +84,85 @@
       "title": "Tucker Labeling Definitions",
       "startLine": 32,
       "endLine": 65,
-      "summary": "Defines TuckerLabeling, AntipodalTuckerLabeling, isComplementary predicate with decidability, symmetry, and antipodal complementarity.",
-      "mathContext": "Tucker labeling $\\lambda : V \\to \\{\\pm 1, \\pm 2\\}$. Complementary: $\\lambda(v) + \\lambda(w) = 0$."
+      "summary": "Defines TuckerLabeling ({±1, ±2}-valued), AntipodalTuckerLabeling (with involution σ), isComplementary predicate with decidability, symmetry, and antipodal complementarity."
     },
     {
       "id": "pairs",
       "title": "Complementary Pair Classification",
-      "startLine": 69,
-      "endLine": 82,
-      "summary": "Proves the only complementary pairs are (1,-1), (-1,1), (2,-2), (-2,2) by exhaustive case analysis.",
-      "mathContext": "From $\\{\\pm 1, \\pm 2\\}$: $a + b = 0$ iff $(a,b) \\in \\{(1,-1), (-1,1), (2,-2), (-2,2)\\}$."
+      "startLine": 67,
+      "endLine": 81,
+      "summary": "Proves by 4×4 exhaustive case analysis that the only complementary pairs from {±1, ±2} are (1,-1), (-1,1), (2,-2), (-2,2)."
     },
     {
       "id": "complex",
       "title": "Triangulated Complex",
-      "startLine": 86,
-      "endLine": 115,
-      "summary": "Defines TriangulatedComplex with vertices, adjacency. Defines hasComplementaryEdge for triangles.",
-      "mathContext": "2-complex $K$ with triangles $T$, each triangle has 3 vertices. Complementary edge in triangle $t$: $\\exists i \\neq j, \\lambda(v_i) + \\lambda(v_j) = 0$."
+      "startLine": 83,
+      "endLine": 106,
+      "summary": "Defines TriangulatedComplex with vertices, adjacency, and hasComplementaryEdge predicate. Provides decidability instance."
+    },
+    {
+      "id": "boundary",
+      "title": "Boundary Classification",
+      "startLine": 108,
+      "endLine": 117,
+      "summary": "Defines HasBoundary typeclass with decidable isBoundary predicate, distinguishing interior from boundary triangles."
     },
     {
       "id": "parity",
       "title": "The Parity Principle",
-      "startLine": 125,
-      "endLine": 175,
-      "summary": "States tucker_parity_principle and tucker_2d_from_parity. Documents the double-counting argument in detail.",
-      "mathContext": "$\\sum_t \\text{deg}(t) = 2|E_{\\text{int}}| + |E_{\\text{bdy}}|$. If $|E_{\\text{bdy}}|$ odd, $\\exists$ interior complementary edge."
+      "startLine": 119,
+      "endLine": 162,
+      "summary": "States tucker_parity_principle: odd boundary complementary count forces existence of interior complementary edge. Contains the file's sole sorry."
+    },
+    {
+      "id": "assembly",
+      "title": "Tucker 2D Assembly",
+      "startLine": 164,
+      "endLine": 186,
+      "summary": "Combines parity principle with 1D Tucker to obtain the full 2D result: extracts interior complementary vertices from the parity principle output."
+    },
+    {
+      "id": "algorithm",
+      "title": "Path-Following Algorithm (Description)",
+      "startLine": 188,
+      "endLine": 213,
+      "summary": "Documents the constructive path-following algorithm: start at boundary complementary edge, follow through triangles, terminate at interior dead-end."
+    },
+    {
+      "id": "example",
+      "title": "Concrete Example",
+      "startLine": 215,
+      "endLine": 237,
+      "summary": "Illustrates with a minimal triangulation of 5 vertices and 3 triangles, showing how complementary edges arise."
     }
   ],
   "conclusion": {
-    "summary": "Infrastructure for Tucker 2D via graph-theoretic path-following: 249 lines, 13 definitions/theorems, 1 sorry (parity principle). Defines Tucker labelings, triangulated complexes, complementary edges, and states the parity argument.",
-    "implications": "The parity principle separates Tucker 2D into (1) 1D Tucker on boundary (proved), (2) combinatorial parity (this file), and (3) triangulation existence (topology). This decomposition makes the proof modular.",
+    "summary": "Formalizes the combinatorial infrastructure for Tucker's 2D lemma via graph-theoretic path-following: Tucker labelings, triangulated complexes, complementary edge classification, boundary detection, and the parity principle. The sole remaining sorry is the parity principle itself (the double-counting argument).",
+    "implications": "Completing the parity principle sorry would give a fully constructive proof of Tucker 2D, which combined with the parent files' 1D Tucker gives a modular chain toward the full combinatorial Borsuk-Ulam theorem. The path-following approach also connects to computational complexity (PPAD class) and algorithmic game theory.",
     "openQuestions": [
-      "Prove tucker_parity_principle via double-counting / handshaking lemma",
-      "Formalize the path-following algorithm as a constructive proof",
-      "Connect to the existing tucker_2d axiom in BorsukUlamOQ03OQ01.lean"
+      "Can the parity principle be proved via Mathlib's handshaking lemma (SimpleGraph.sum_degrees_eq_twice_card_edges)?",
+      "Can the path-following algorithm be formalized as a constructive proof producing an actual witness path?",
+      "Can this infrastructure be lifted to higher dimensions (n-dimensional Tucker with labels {±1, ..., ±n}) using the same inductive pattern?",
+      "What is the relationship between Tucker path-following and the PPAD complexity class in the formal setting?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "borsuk-ulam-oq-03-oq-01",
+      "relationship": "extends",
+      "description": "Extends the parent file which proves 1D Tucker and quantitative Borsuk-Ulam bounds; uses the 1D Tucker odd-boundary result as input"
+    },
+    {
+      "targetId": "borsuk-ulam-oq-03",
+      "relationship": "extends",
+      "description": "Part of the constructive Borsuk-Ulam chain; OQ-03 gives the constructive 1D result that feeds into 2D Tucker"
+    },
+    {
+      "targetId": "borsuk-ulam",
+      "relationship": "related",
+      "description": "Tucker's lemma is the combinatorial discrete analogue of the topological Borsuk-Ulam theorem"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Combinatorics.SimpleGraph.Basic",
