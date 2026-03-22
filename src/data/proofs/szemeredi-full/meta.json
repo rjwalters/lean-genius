@@ -45,7 +45,14 @@
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 1,
-    "lineCount": 335
+    "lineCount": 335,
+    "prerequisites": [
+      "Arithmetic progressions and upper density of integer sets",
+      "Roth's theorem (k=3 case via Fourier analysis or corners)",
+      "Szemeredi regularity lemma and pseudorandom graphs",
+      "Furstenberg's ergodic correspondence principle",
+      "Van der Waerden's theorem on monochromatic APs"
+    ]
   },
   "overview": {
     "historicalContext": "Szemeredi's theorem, proved by Endre Szemeredi in 1975, is one of the most celebrated results in combinatorics and number theory. It resolved the Erdos-Turan conjecture from 1936, which asked whether every dense subset of the integers must contain long arithmetic progressions.\n\nThe theorem has inspired multiple independent proofs using fundamentally different techniques:\n- Szemeredi's original proof (1975) uses the regularity lemma and a sophisticated induction on the AP length k\n- Furstenberg (1977) gave an ergodic-theoretic proof using multiple recurrence, launching a new field\n- Gowers (2001) gave a quantitative proof using higher-order Fourier analysis (uniformity norms), earning the Fields Medal in part for this work\n- The Green-Tao theorem (2004) extended Szemeredi's theorem to the primes, proving that the primes contain arbitrarily long arithmetic progressions\n\nThe question traces back even further: in 1927, van der Waerden proved that any finite coloring of the integers contains arbitrarily long monochromatic APs. Erdos and Turan conjectured in 1936 that van der Waerden's theorem could be strengthened from colorings to density, asking: does every set of positive upper density contain arbitrarily long APs? The k=3 case was proved by Klaus Roth in 1953 (earning him a Fields Medal in 1958), but the general case resisted for nearly 40 years until Szemeredi's breakthrough.\n\nNo formalization of the full Szemeredi theorem has been completed in any proof assistant (Lean, Coq, Isabelle, or others). This formalization proves three of the four cases from scratch and connects to one of Mathlib's deepest theorem chains. The theorem's significance extends far beyond its statement: it has connections to ergodic theory (Furstenberg correspondence), harmonic analysis (Gowers uniformity norms), theoretical computer science (property testing, PCP theorem), and model theory (ultraproduct proofs).",

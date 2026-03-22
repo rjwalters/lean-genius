@@ -37,6 +37,13 @@
     "dateAdded": "2025-12-22",
     "lineCount": 266,
     "axiomCount": 1,
+    "prerequisites": [
+      "Algebraic topology: fundamental groups and covering spaces",
+      "Continuous functions on spheres and antipodal maps",
+      "Real projective space RP^n and the Z_2 action",
+      "Odd functions and equivariant maps",
+      "Basic topology: compactness and connectedness"
+    ],
     "assumptions": [
       "no_continuous_odd_nonzero_on_sphere: For n ≥ 1, there is no continuous odd function h: ℝ^(n+1) → ℝ^n that is nonzero on the n-sphere. This requires covering space theory and fundamental groups beyond Mathlib's current algebraic topology coverage."
     ]

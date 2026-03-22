@@ -77,6 +77,13 @@
       "minpoly_eq_map_of_irreducible: equality when base-changed minpoly stays irreducible (1 sorry)"
     ],
     "dateAdded": "2026-03-21",
+    "prerequisites": [
+      "Minimal polynomials and the Cayley-Hamilton theorem",
+      "Polynomial evaluation in K-algebras (aeval)",
+      "Field extensions and scalar towers",
+      "Polynomial division algorithm and quotient rings",
+      "Integral elements and algebraic elements in ring theory"
+    ],
     "relatedProblems": [
       {
         "id": "cayley-hamilton-minpoly-oq-02-oq-01",

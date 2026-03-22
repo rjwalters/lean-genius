@@ -24,6 +24,13 @@
     "sorries": 0,
     "axiomCount": 0,
     "dateAdded": "2026-03-22",
+    "prerequisites": [
+      "Countability and enumerability of the rationals",
+      "Continued fractions and Farey sequences",
+      "Coprimality and the GCD",
+      "Binary trees and structural induction",
+      "Mediants and the Stern-Brocot sequence"
+    ],
     "mathlibDependencies": [
       {
         "theorem": "Nat.Coprime / Nat.gcd",
