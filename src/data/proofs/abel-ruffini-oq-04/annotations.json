@@ -67,6 +67,27 @@
     ]
   },
   {
+    "id": "ann-part-ii-header",
+    "proofId": "abel-ruffini-oq-04",
+    "range": {
+      "startLine": 42,
+      "endLine": 45
+    },
+    "type": "context",
+    "title": "Part II: Propagating Non-Solvability to Symmetric Groups",
+    "content": "Part II takes the A₅ simplicity established in Part I and propagates it upward: since A₅ is non-solvable and A₅ embeds into Aₙ for all n ≥ 5, and Aₙ is a normal subgroup of Sₙ, the entire symmetric group Sₙ is forced to be non-solvable. This is the step that converts a fact about one specific group (A₅) into a universal statement about all large symmetric groups.",
+    "mathContext": "$A_5 \\hookrightarrow A_n \\trianglelefteq S_n$ for $n \\geq 5$. Non-solvability propagates: $A_5$ not solvable $\\Rightarrow$ $A_n$ not solvable $\\Rightarrow$ $S_n$ not solvable.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "non-solvability propagation",
+      "subgroup embedding",
+      "normal subgroup"
+    ],
+    "prerequisites": [
+      "group theory"
+    ]
+  },
+  {
     "id": "ann-symmetric-not-solvable",
     "proofId": "abel-ruffini-oq-04",
     "range": {
@@ -110,6 +131,27 @@
     "prerequisites": [
       "arithmetic",
       "tactic-based proofs"
+    ]
+  },
+  {
+    "id": "ann-part-iii-header",
+    "proofId": "abel-ruffini-oq-04",
+    "range": {
+      "startLine": 67,
+      "endLine": 70
+    },
+    "type": "context",
+    "title": "Part III: The Solvable Side — Contrast Cases",
+    "content": "Part III provides the other side of the dichotomy: small symmetric groups ARE solvable. This section exists for pedagogical completeness — without knowing that S₀ through S₄ are solvable, the non-solvability of S₅ lacks context. The contrast makes the threshold at degree 5 visually and conceptually sharp: we see exactly where the boundary lies.",
+    "mathContext": "Contrast: $S_0, S_1, S_2, S_3, S_4$ are all solvable. The transition $S_4 \\to S_5$ is the exact break point, driven by $A_5$ being the first non-abelian simple group.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "contrast case",
+      "solvable group",
+      "pedagogical exposition"
+    ],
+    "prerequisites": [
+      "basic group theory"
     ]
   },
   {
