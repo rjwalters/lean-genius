@@ -147,3 +147,28 @@ Note: `zhang_bounded_gaps_70M` was converted from axiom to theorem (derived from
 All 4 remaining axioms are genuinely deep results requiring substantial infrastructure not in Mathlib.
 
 **Outcome**: 6→4 axioms eliminated, 0 sorries, all 5 files compile. Build verified via Docker.
+
+### Assessment Session (2026-03-22)
+**Mode**: REVISIT (researcher-2)
+**Decision**: No tractable work remaining — architectural bottleneck
+
+**Key Finding**: `BoundedPrimeGapsOQ03OQ01.lean` has:
+- `opaque minAdmissibleDiameter : ℕ → ℕ` — opaque function blocks all further proofs
+- 4 axioms specifying D(2)=2, D(3)=6, D(50)=246 — could be provable if function were proper def
+- 2 sorries (`diameter_lower_bound`, `diameter_upper_bound_exists`) — permanently stuck due to opacity
+- 1 deep axiom (`maynard_under_eh`) — genuinely unprovable
+
+**Architectural recommendation**: Replace `opaque minAdmissibleDiameter` with a proper `noncomputable def` using `Nat.find` or `sInf`. This would:
+1. Eliminate 3 structural axioms (D(2)=2, D(3)=6, D(50)=246 become provable)
+2. Unblock 2 sorries (general diameter bounds become provable)
+3. Require proving `Decidable (IsAdmissible H)` generically (finite check on primes ≤ |H|)
+
+**Full axiom inventory (13 total across 7 files)**:
+| File | Axioms | Type |
+|------|--------|------|
+| BoundedPrimeGaps.lean | 3 | Deep sieve theory |
+| BoundedPrimeGapsOQ03.lean | 1 | Computational (Engelsma) |
+| BoundedPrimeGapsOQ03OQ01.lean | 4 | Structural (opaque values) + 1 deep (EH) |
+| Erdos5PrimeGaps.lean | 5 | Deep gap distribution |
+
+**Status**: COMPLETED — no further work without architectural refactor
