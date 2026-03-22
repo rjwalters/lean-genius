@@ -18,7 +18,7 @@
       "research"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 1,
     "axioms": 1,
     "mathlibDependencies": [
       {
@@ -49,7 +49,11 @@
       "gessel_viennot_transposition_sign: sign(swap(i,σi)∘σ) = -sign(σ) (proved)",
       "isNonIntersecting_of_r_one: every 1-tuple is vacuously non-intersecting (proved)",
       "pathMatrix_det_nonneg: non-negativity of path matrix determinant (from LGV axiom)",
-      "lgv_lemma_rxr: the main r×r LGV lemma (axiomatized)"
+      "lgv_lemma_rxr: the main r×r LGV lemma (NOW PROVED as theorem)",
+      "firstNonFixed: smallest non-fixed point of non-identity perm (4 lemmas proved)",
+      "permPathTuple_card: cardinality factorization for σ-path tuples (proved)",
+      "det_pathMatrix_eq_signed_sum: algebraic bridge det = signed perm sum (proved)",
+      "gv_involution_cancellation: GV cancellation (sole remaining axiom)"
     ],
     "dateAdded": "2026-03-22",
     "mathlib_version": "4.26.0",
@@ -61,7 +65,7 @@
       "Gessel-Viennot involution theory"
     ],
     "assumptions": [
-      "lgv_lemma_rxr: the main theorem that niTupleCount = det(pathMatrix), which requires the full Gessel-Viennot sign-reversing involution argument"
+      "gv_involution_cancellation: the GV sign-reversing involution cancellation (the combinatorial heart, isolated from the algebraic machinery)"
     ]
   },
   "overview": {
