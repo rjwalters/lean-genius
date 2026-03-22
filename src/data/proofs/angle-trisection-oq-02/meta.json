@@ -66,7 +66,41 @@
       "Field extensions and degree computations",
       "Compass-and-straightedge constructibility (from OQ-01)"
     ],
-    "lineCount": 298
+    "lineCount": 298,
+    "references": [
+      {
+        "key": "Wa37",
+        "citation": "Wantzel, P.L., Recherches sur les moyens de reconnaître si un Problème de Géométrie peut se résoudre avec la règle et le compas, Journal de mathématiques pures et appliquées 2 (1837), 366–372.",
+        "type": "paper"
+      },
+      {
+        "key": "St04",
+        "citation": "Stewart, I., Galois Theory, 3rd ed., Chapman & Hall/CRC (2004), Chapter 5.",
+        "type": "book"
+      }
+    ],
+    "relatedProofs": [
+      {
+        "id": "angle-trisection",
+        "relationship": "extends",
+        "description": "Parent file with degree criterion (necessary condition)"
+      },
+      {
+        "id": "abel-ruffini",
+        "relationship": "related",
+        "description": "Both use Galois groups for impossibility results"
+      },
+      {
+        "id": "inverse-galois",
+        "relationship": "related",
+        "description": "Concrete Galois group realizations appear here"
+      },
+      {
+        "id": "sylow-theorems",
+        "relationship": "foundational",
+        "description": "Structure theorems for p-groups underlie the 2-group characterization"
+      }
+    ]
   },
   "crossReferences": [
     {
@@ -160,5 +194,20 @@
       "Can cos20_gal_order (|Gal(8x³-6x-1/ℚ)| = 3) be proved? The discriminant 72² is a perfect square, so this follows from the criterion for cubic Galois groups.",
       "Can the Gauss-Wantzel theorem (regular n-gon constructible ↔ φ(n) = 2^k) be formalized in Lean 4?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.InverseGalois",
+      "Proofs.InverseGaloisD4",
+      "Proofs.NthRootIrrationalOQ01",
+      "Proofs.AngleTrisectionCos20Gal"
+    ],
+    "opens": ["Polynomial", "IntermediateField", "FiniteDimensional"],
+    "namespace": null,
+    "lineCount": 298,
+    "axiomCount": 2,
+    "theoremCount": 15,
+    "definitionCount": 1
   }
 }

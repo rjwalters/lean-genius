@@ -185,5 +185,20 @@
   "relatedProofs": [
     "basel-problem",
     "pi-transcendental"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Complex.Circle",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
+    ],
+    "opens": [
+      "Complex",
+      "Real"
+    ],
+    "namespace": null,
+    "lineCount": 258,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0
+  }
 }

@@ -103,5 +103,18 @@
       "What are the connections to Catalan numbers and other combinatorial sequences?",
       "How does the q-analog of binomial coefficients arise in quantum groups?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "CombinationsFormula",
+    "lineCount": 401,
+    "axiomCount": 0,
+    "theoremCount": 25,
+    "definitionCount": 2
   }
 }

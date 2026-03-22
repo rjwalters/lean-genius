@@ -147,5 +147,21 @@
     "cauchy-schwarz",
     "fourier-series",
     "basel-problem"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Function.L2Space",
+      "Mathlib.MeasureTheory.Integral.Bochner.Basic",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory"
+    ],
+    "namespace": "BunyakovskySchwarz",
+    "lineCount": 118,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0
+  }
 }

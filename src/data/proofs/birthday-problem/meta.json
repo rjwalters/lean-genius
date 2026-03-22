@@ -172,5 +172,22 @@
   ],
   "relatedProofs": [
     "birthday-problem-oq-03"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Fintype.BigOperators",
+      "Mathlib.Data.Fintype.Card",
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Logic.Embedding.Basic",
+      "Mathlib.Algebra.BigOperators.Fin",
+      "Mathlib.Algebra.Order.Field.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "BirthdayProblem",
+    "lineCount": 402,
+    "axiomCount": 0,
+    "theoremCount": 27,
+    "definitionCount": 0
+  }
 }

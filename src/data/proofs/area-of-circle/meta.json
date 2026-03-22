@@ -130,5 +130,21 @@
       "relationship": "related",
       "description": "Both involve pi: Buffon's needle gives a probabilistic characterization P = 2/(pi), area of circle gives the geometric characterization A = pi*r^2"
     }
-  ]
+  ],
+  "relatedProofs": [
+    "angle-trisection",
+    "buffons-needle"
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["MeasureTheory", "Metric"],
+    "namespace": "AreaOfCircle",
+    "lineCount": 155,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0
+  }
 }
