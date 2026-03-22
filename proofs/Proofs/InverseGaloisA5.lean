@@ -1293,14 +1293,10 @@ theorem prod_eval_derivative_eq_resultant :
 /-- q'(x) = 5x⁴ - 20x³ + 30x² - 20x + 25. -/
 private theorem q_derivative_eq :
     Polynomial.derivative q = C 5 * X ^ 4 - C 20 * X ^ 3 + C 30 * X ^ 2 - C 20 * X + C 25 := by
-  unfold q
   ext n
-  simp only [q, Polynomial.coeff_derivative, Polynomial.coeff_sub, Polynomial.coeff_add,
-    Polynomial.coeff_mul_C, Polynomial.coeff_C_mul, Polynomial.coeff_X_pow,
-    Polynomial.coeff_C, Polynomial.coeff_one, Polynomial.coeff_X]
-  -- Trivial derivative computation, needs Mathlib API adaptation for v4.26.0
-  -- Verified numerically: d/dx(x⁵-5x⁴+10x³-10x²+25x-5) = 5x⁴-20x³+30x²-20x+25
-  sorry
+  unfold q
+  simp only [coeff_derivative, coeff_sub, coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X]
+  rcases n with _ | _ | _ | _ | _ | n <;> simp <;> ring
 
 private theorem q_derivative_natDegree :
     (Polynomial.derivative q).natDegree = 4 := by
@@ -1338,26 +1334,7 @@ private theorem eval_derivative_factored (x : SF) :
 -- Step F2: Sophie Germain identity
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-/-- disc(q) = 1024000000 over ℚ.
-    The discriminant of X⁵ - 5X⁴ + 10X³ - 10X² + 25X - 5
-    equals 2¹⁶ · 5⁶ = 1024000000.
-
-    **Verified approach** (Session 2026-03-21):
-    1. disc(q) = Res(q, q') = det(sylvester q q' 5 4) — 9×9 Sylvester matrix.
-    2. `native_decide` on 9×9 `Matrix.det` stack-overflows in Lean 4 (even with
-       `LEAN_STACK_SIZE=256MB`). So does `decide`. 9! = 362880 permutations exceeds
-       the compiler's recursion limit.
-    3. Double cofactor expansion along column 0 reduces to 5 unique 7×7 determinants,
-       all verified by `native_decide` on `Matrix (Fin 7) (Fin 7) ℤ`:
-       - A₀ = 1924000000, A₃ = 256000000, A₄ = -1012000000
-       - B₁ = 1012000000, B₄ = 420000000
-    4. det(M) = 1·(A₀ + 20·A₃ + 5·A₄) + 5·(-5·A₃ - B₁ + 5·B₄)
-             = 1984000000 + 5·(-192000000) = 1024000000 ✓
-    5. Remaining: connect `Polynomial.sylvester` entries to explicit 7×7 ℤ matrices
-       via `Matrix.det_succ_column_zero` and `Polynomial.coeff` lemmas (~200 lines).
-
-    **Actual proof**: See `disc_q_val` after `vandermondeProduct_sq_eq_proved`. -/
-theorem disc_q_val : Polynomial.discr q = (1024000000 : ℚ) := by sorry -- proved below
+-- disc(q) = 1024000000: See `disc_q_val_proved` after `vandermondeProduct_sq_eq_proved`.
 
 /-- Sophie Germain: y⁴ + 4 = (y²+2y+2)(y²-2y+2). -/
 private theorem sophie_germain {R : Type*} [CommRing R] (y : R) :
@@ -1600,6 +1577,9 @@ theorem disc_q_val_proved : Polynomial.discr q = (1024000000 : ℚ) := by
   rw [vandermondeProduct_sq_eq_proved]
   rw [show (1024000000 : ℚ) = ((1024000000 : ℤ) : ℚ) from by norm_cast]
   exact (IsScalarTower.algebraMap_apply ℤ ℚ q.SplittingField 1024000000).symm
+
+/-- Alias for backward compatibility. -/
+theorem disc_q_val : Polynomial.discr q = (1024000000 : ℚ) := disc_q_val_proved
 
 -- Section E: Axiom Replacement Summary
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
