@@ -6,7 +6,7 @@
   "meta": {
     "author": "Endre Szemeredi (formalized in Lean 4)",
     "date": "1975",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/SzemerediTheorem.lean",
     "tags": [
       "combinatorics",
@@ -53,7 +53,8 @@
       "The regularity lemma decomposed sparse graphs into 'regular' pieces",
       "Corners theorem bridges 2D grid patterns to 1D progressions",
       "The k=3 proof chain is complete in Mathlib",
-      "k >= 4 requires hypergraph regularity (open in Mathlib)"
+      "k >= 4 requires hypergraph regularity (open in Mathlib)",
+      "The axiom reduction strategy proves the full theorem from just one axiom (k>=4), minimizing the formalization gap to exactly what Mathlib currently lacks"
     ]
   },
   "sections": [
