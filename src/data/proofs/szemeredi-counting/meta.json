@@ -84,36 +84,44 @@
   },
   "sections": [
     {
-      "id": "introduction",
+      "id": "preamble",
       "title": "Module Docstring and Imports",
       "startLine": 1,
-      "endLine": 19,
-      "summary": "Overview, imports from Mathlib, namespace and variable declarations for finite vertex type V.",
-      "mathContext": "Setting: $G = (V, E)$ simple graph, $V$ finite with decidable equality."
+      "endLine": 22,
+      "summary": "Module docstring listing Parts I–III (counting lemma, triangle removal, graph removal), references to Ruzsa-Szemerédi (1978) and Komlós-Simonovits (1996). Imports Mathlib and `Proofs.SzemerediRegularity`. Opens `Classical`, declares variables for finite vertex type $V$.",
+      "mathContext": "Setting: $G = (V, E)$ simple graph, $V$ finite with decidable equality. Depends on $\\varepsilon$-regularity from the regularity module."
+    },
+    {
+      "id": "infrastructure",
+      "title": "Neighborhood and Density Infrastructure",
+      "startLine": 24,
+      "endLine": 83,
+      "summary": "Defines `neighborhoodIn G v B` ($N_B(v)$), `badVertices` (vertices with small neighborhoods), `goodVertices` (complement). **Proves** subset and cardinality lemmas, good/bad partition (`good_union_bad`). States `bad_vertices_small`: in an $\\varepsilon$-regular pair with density $\\geq \\varepsilon$, fewer than $\\varepsilon|A|$ vertices have small neighborhoods. Sorry'd.",
+      "mathContext": "$N_B(v) = \\{b \\in B : vb \\in E\\}$. Bad vertices: $\\{a \\in A : |N_B(a)| < (d - \\varepsilon)|B|\\}$. Key lemma: $|\\text{bad}| < \\varepsilon|A|$ for $\\varepsilon$-regular pairs with $d \\geq \\varepsilon$."
     },
     {
       "id": "counting-lemma",
       "title": "Part I: Counting Lemma for Regular Triples",
-      "startLine": 21,
-      "endLine": 51,
-      "summary": "Defines triangleCount and states the counting lemma: triangles in an epsilon-regular triple are bounded below by (d_AB - eps)(d_AC - eps)(d_BC - eps)|A||B||C|. Sorry'd.",
-      "mathContext": "$T(A,B,C) \\geq (d_{AB} - \\varepsilon)(d_{AC} - \\varepsilon)(d_{BC} - \\varepsilon)|A||B||C|$"
+      "startLine": 85,
+      "endLine": 115,
+      "summary": "Defines `triangleCount G A B C` as the number of ordered triples $(a,b,c) \\in A \\times B \\times C$ with all three edges present. States the counting lemma: for $\\varepsilon$-regular pairs with densities $\\geq \\varepsilon$, $T(A,B,C) \\geq (d_{AB} - \\varepsilon)(d_{AC} - \\varepsilon)(d_{BC} - \\varepsilon)|A||B||C|$. Sorry'd.",
+      "mathContext": "$T(A,B,C) \\geq (d_{AB} - \\varepsilon)(d_{AC} - \\varepsilon)(d_{BC} - \\varepsilon)|A||B||C|$ for $\\varepsilon$-regular triples with $d \\geq \\varepsilon$."
     },
     {
       "id": "triangle-removal",
       "title": "Part II: Triangle Removal Lemma",
-      "startLine": 53,
-      "endLine": 86,
-      "summary": "Defines edgeSet and removeEdges, then states the triangle removal lemma: few triangles implies triangle-free after removing few edges. Sorry'd.",
-      "mathContext": "$T(G) \\leq \\gamma n^3 \\Rightarrow \\exists R, |R| \\leq \\delta n^2 \\wedge G \\setminus R$ triangle-free"
+      "startLine": 117,
+      "endLine": 151,
+      "summary": "Defines `edgeSet G` and `removeEdges G R` (symmetric edge removal). States the triangle removal lemma: $\\forall \\delta > 0, \\exists \\gamma > 0$ such that $T(G) \\leq \\gamma n^3 \\Rightarrow$ removable to triangle-free with $\\leq \\delta n^2$ edge deletions. Sorry'd.",
+      "mathContext": "$\\forall \\delta > 0,\\, \\exists \\gamma > 0: T(G) \\leq \\gamma n^3 \\Rightarrow \\exists R \\subseteq E,\\, |R| \\leq \\delta n^2,\\, G \\setminus R$ triangle-free."
     },
     {
       "id": "graph-removal",
       "title": "Part III: General Graph Removal Lemma",
-      "startLine": 88,
-      "endLine": 103,
-      "summary": "Stub for the general graph removal lemma for arbitrary subgraphs H on h >= 3 vertices. Currently only proves existence of gamma > 0 without the full removal property.",
-      "mathContext": "Full statement: $\\forall H$ on $h$ vertices, $\\forall \\delta > 0, \\exists \\gamma > 0$: few copies of $H$ implies cheap removal"
+      "startLine": 153,
+      "endLine": 168,
+      "summary": "States the general graph removal lemma for arbitrary subgraph $H$ on $h \\geq 3$ vertices. Currently a stub proving only $\\exists \\gamma > 0$ without the full removal property. Closes namespace.",
+      "mathContext": "$\\forall H$ on $h$ vertices, $\\forall \\delta > 0, \\exists \\gamma > 0$: $\\text{copies}(H, G) \\leq \\gamma n^h \\Rightarrow$ removable to $H$-free with $\\leq \\delta n^2$ edges."
     }
   ],
   "crossReferences": [

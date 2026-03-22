@@ -78,9 +78,9 @@
       "id": "zero-form",
       "title": "The 0/0 Form",
       "startLine": 51,
-      "endLine": 103,
-      "summary": "L'Hopital's rule for right limits, left limits, and limits at infinity.",
-      "mathContext": "Four variants: $\\lim_{x \\to a^+}$, $\\lim_{x \\to b^-}$, $\\lim_{x \\to +\\infty}$, $\\lim_{x \\to -\\infty}$ all for the $0/0$ form"
+      "endLine": 118,
+      "summary": "All four directional variants of L'Hopital's rule for the $0/0$ indeterminate form: right limit on $(a,b)$, left limit on $(a,b)$, limit at $+\\infty$ on $(a,\\infty)$, and limit at $-\\infty$ on $(-\\infty,a)$. Each wraps the corresponding Mathlib theorem.",
+      "mathContext": "Four variants: $\\lim_{x \\to a^+}$, $\\lim_{x \\to b^-}$, $\\lim_{x \\to +\\infty}$, $\\lim_{x \\to -\\infty}$ for the $0/0$ form. Domains: $\\text{Ioo}\\,a\\,b$, $\\text{Ioi}\\,a$, $\\text{Iio}\\,a$."
     },
     {
       "id": "why-it-works",
@@ -95,8 +95,16 @@
       "title": "Applications",
       "startLine": 134,
       "endLine": 146,
-      "summary": "Common use cases including sin(x)/x and exponential limits.",
+      "summary": "Common use cases including sin(x)/x and exponential limits. Notes on the $\\infty/\\infty$ form.",
       "mathContext": "$\\lim_{x \\to 0} \\frac{\\sin x}{x} = 1$, $\\lim_{x \\to 0} \\frac{e^x - 1}{x} = 1$, $\\lim_{x \\to 0^+} x \\ln x = 0$"
+    },
+    {
+      "id": "verification",
+      "title": "Verification and Closing",
+      "startLine": 147,
+      "endLine": 155,
+      "summary": "Verifies all four theorem variants via `#check` and closes the `LHopital` namespace.",
+      "mathContext": "Confirms the four variants are well-typed: `lhopital_zero_right`, `lhopital_zero_left`, `lhopital_zero_atTop`, `lhopital_zero_atBot`."
     }
   ],
   "crossReferences": [
@@ -120,6 +128,12 @@
       "relationship": "related",
       "description": "The Leibniz series involves limits and series convergence, areas where L'Hopital's rule provides useful asymptotic tools"
     }
+  ],
+  "relatedProofs": [
+    "mean-value-theorem",
+    "fundamental-theorem-calculus",
+    "taylor-theorem",
+    "leibniz-pi"
   ],
   "conclusion": {
     "summary": "L'Hopital's Rule is fully verified using Mathlib's calculus infrastructure. We provide the theorem in multiple forms: right limits, left limits, and limits at infinity.",

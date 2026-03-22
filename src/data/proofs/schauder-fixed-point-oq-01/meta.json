@@ -56,54 +56,85 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Module docstring, Mathlib imports for topology, convex analysis, and normed spaces. Opens namespaces and declares variables for normed space $E$ over $\\mathbb{R}$.",
+      "mathContext": "Setting: $(E, \\|\\cdot\\|)$ a real normed space, $K \\subseteq E$ compact, $\\varepsilon > 0$. Goal: construct continuous $\\pi: E \\to \\text{conv}\\{x_1,\\ldots,x_n\\}$ with $\\|\\pi(x) - x\\| < \\varepsilon$ on $K$."
+    },
+    {
       "id": "convex-hull-compactness",
       "title": "Convex Hull Compactness",
       "startLine": 46,
       "endLine": 60,
-      "summary": "Two auxiliary results: the convex hull of a finite set is closed, and the convex hull of a finite range is compact."
+      "summary": "Two auxiliary results: the convex hull of a finite set is closed, and the convex hull of a finite range is compact.",
+      "mathContext": "$S$ finite $\\Rightarrow \\text{conv}(S)$ is closed (in finite dimensions) and compact."
     },
     {
       "id": "bump-functions",
       "title": "Bump Function Infrastructure",
       "startLine": 62,
       "endLine": 104,
-      "summary": "Defining bump functions phi(x) = max(0, eps - ||x - c||) and proving their key properties: nonnegativity, continuity, positivity in balls, and vanishing outside balls."
+      "summary": "Defines bump functions $\\varphi_i(x) = \\max(0, \\varepsilon - \\|x - c_i\\|)$ and proves: nonnegativity, continuity, positivity in $B(c_i, \\varepsilon)$, and vanishing outside $B(c_i, \\varepsilon)$.",
+      "mathContext": "$\\varphi_i(x) = \\max(0, \\varepsilon - \\|x - c_i\\|)$. Properties: $\\varphi_i \\geq 0$, $\\varphi_i$ continuous, $\\varphi_i(x) > 0 \\iff \\|x - c_i\\| < \\varepsilon$."
     },
     {
       "id": "bump-sum",
       "title": "Sum of Bumps and Positivity",
       "startLine": 106,
       "endLine": 131,
-      "summary": "The sum of bump functions over a finite covering, with continuity and positivity on the covered set."
+      "summary": "The sum $\\Phi(x) = \\sum_i \\varphi_i(x)$ is continuous and positive on $K$ (since the $\\varepsilon$-balls cover $K$).",
+      "mathContext": "$\\Phi(x) = \\sum_{i=1}^n \\varphi_i(x) > 0$ for $x \\in K$, because $\\exists i: \\|x - c_i\\| < \\varepsilon$."
     },
     {
       "id": "projection-map",
       "title": "The Schauder Projection Map",
       "startLine": 132,
       "endLine": 141,
-      "summary": "Definition of the Schauder projection as a weighted average: pi(x) = sum(phi_i(x) * x_i) / sum(phi_i(x))."
+      "summary": "Defines the Schauder projection $\\pi(x) = \\sum_i \\varphi_i(x) \\cdot c_i / \\Phi(x)$ as a weighted average of centers.",
+      "mathContext": "$\\pi(x) = \\frac{\\sum_i \\varphi_i(x) c_i}{\\sum_i \\varphi_i(x)}$, a convex combination of the centers $c_1, \\ldots, c_n$."
     },
     {
       "id": "projection-properties",
       "title": "Properties of the Projection",
       "startLine": 142,
       "endLine": 234,
-      "summary": "Three key properties: continuity on the covered set, image in the convex hull (convex combination), and epsilon-approximation bound."
+      "summary": "Three key properties proved: (1) continuity on $K$ (quotient of continuous functions with positive denominator), (2) image in convex hull (convex combination), (3) $\\varepsilon$-approximation ($\\|\\pi(x) - x\\| < \\varepsilon$ since only nearby centers contribute).",
+      "mathContext": "(1) $\\pi$ continuous on $K$. (2) $\\pi(K) \\subseteq \\text{conv}\\{c_1,\\ldots,c_n\\}$. (3) $\\|\\pi(x) - x\\| < \\varepsilon$ for $x \\in K$."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
       "startLine": 235,
       "endLine": 297,
-      "summary": "The Schauder projection lemma: combining compactness (finite subcover), bump function construction, and the three properties."
+      "summary": "The Schauder projection lemma: combines compactness (finite subcover), bump function construction, and the three properties into the complete result.",
+      "mathContext": "For compact $K \\subseteq E$ and $\\varepsilon > 0$: $\\exists$ finitely many $c_i \\in K$ and continuous $\\pi: E \\to \\text{conv}\\{c_i\\}$ with $\\|\\pi(x) - x\\| < \\varepsilon$ on $K$."
     },
     {
       "id": "applications",
       "title": "Applications: Convex Hull Results",
       "startLine": 298,
       "endLine": 315,
-      "summary": "Corollaries: compactness and closedness of convex hulls of finite ranges, resolving a sorry in SchauderFixedPoint.lean."
+      "summary": "Corollaries: compactness and closedness of convex hulls of finite ranges, resolving a sorry in SchauderFixedPoint.lean.",
+      "mathContext": "$f: \\text{Fin}\\,n \\to E \\Rightarrow \\text{conv}(\\text{range}\\,f)$ is compact and closed."
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "schauder-fixed-point",
+      "relationship": "used-by",
+      "description": "The projection lemma is the key technical ingredient for the Schauder fixed point theorem"
+    },
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "depends-on",
+      "description": "The Schauder theorem leverages Brouwer's theorem on the finite-dimensional convex hull produced by this projection"
+    }
+  ],
+  "relatedProofs": [
+    "schauder-fixed-point",
+    "brouwer-fixed-point"
   ],
   "conclusion": {
     "summary": "The Schauder projection lemma has been proved completely from first principles, with zero sorries and zero axioms. The proof constructs an explicit partition of unity using bump functions and verifies all required properties: continuity, convex hull membership, and epsilon-approximation.",

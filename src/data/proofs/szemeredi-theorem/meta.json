@@ -58,39 +58,60 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Module docstring with proof status: k=1,2 trivial, k=3 proved via Mathlib corner theorem chain, k$\\geq$4 axiomatized. Lists what Mathlib provides and what's missing. Imports `Nat.Prime.Basic`, `AP.Three.Defs`, `Corner.Roth`, `Tactic`.",
+      "mathContext": "Szemerédi: $\\forall k, \\delta > 0, \\exists N_0: N \\geq N_0, |S \\cap [N]| \\geq \\delta N \\Rightarrow S$ contains a $k$-AP. Status: proved for $k \\leq 3$, axiomatized for $k \\geq 4$."
+    },
+    {
       "id": "definitions",
       "title": "Arithmetic Progressions",
       "startLine": 40,
       "endLine": 71,
-      "summary": "HasAPOfLength, IsAPFree, and formal theorem statement."
+      "summary": "Defines `HasAPOfLength S k` (set contains $k$-term AP with positive common difference), `IsAPFree S k` (no $k$-AP in $S$), `hasAPOfLengthFinset`, and the formal `SzemerediTheorem` statement.",
+      "mathContext": "$S$ has a $k$-AP: $\\exists a, d > 0, \\{a, a+d, \\ldots, a+(k-1)d\\} \\subseteq S$. Szemerédi: $\\forall k, \\delta > 0, \\exists N_0$: dense subsets of $[N]$ contain a $k$-AP."
     },
     {
       "id": "trivial",
-      "title": "Trivial Cases",
+      "title": "Trivial Cases (k=1,2)",
       "startLine": 73,
-      "endLine": 106,
-      "summary": "k=1 and k=2 proved directly."
+      "endLine": 108,
+      "summary": "**Proved.** `szemeredi_k1`: any nonempty set has a 1-AP. `szemeredi_k2`: any set with $\\geq 2$ elements has a 2-AP (just pick two distinct elements).",
+      "mathContext": "$k=1$: trivial ($\\{a\\}$ is a 1-AP). $k=2$: if $|S| \\geq 2$, pick $a < b \\in S$; then $\\{a, b\\}$ is a 2-AP with $d = b - a$."
+    },
+    {
+      "id": "axiom-k4",
+      "title": "Axiom Reduction (k≥4)",
+      "startLine": 109,
+      "endLine": 126,
+      "summary": "Axiomatizes `szemeredi_k_ge_4`: Szemerédi's theorem for $k \\geq 4$, which requires hypergraph regularity not yet in Mathlib. This is the only axiom in the file.",
+      "mathContext": "Axiom: $\\forall k \\geq 4, \\delta > 0, \\exists N_0: N \\geq N_0, |S| \\geq \\delta N \\Rightarrow S$ has a $k$-AP. Proof requires hypergraph regularity or Furstenberg's ergodic approach."
     },
     {
       "id": "mathlib-connection",
       "title": "Mathlib Connection",
-      "startLine": 128,
+      "startLine": 127,
       "endLine": 186,
-      "summary": "Equivalence between IsAPFree and ThreeAPFree."
+      "summary": "**Proved.** Establishes `threeAPFree_iff_isAPFree`: equivalence between Mathlib's `ThreeAPFree` and our `IsAPFree S 3`. Bridges the two API styles.",
+      "mathContext": "`ThreeAPFree S` $\\iff$ `IsAPFree S 3`. The key step: Mathlib's 3-AP is defined via $x + z = 2y$, ours via $\\{a, a+d, a+2d\\} \\subseteq S$."
     },
     {
       "id": "roth",
-      "title": "Roth's Theorem",
+      "title": "Roth's Theorem (k=3)",
       "startLine": 188,
       "endLine": 271,
-      "summary": "The k=3 case via Mathlib's roth_3ap_theorem_nat."
+      "summary": "**Proved.** Derives `szemeredi_k3` from Mathlib's `roth_3ap_theorem_nat` via the ThreeAPFree equivalence. This is the deepest proved case.",
+      "mathContext": "Roth (1953): $\\forall \\delta > 0, \\exists N_0: |S \\cap [N]| \\geq \\delta N, N \\geq N_0 \\Rightarrow S$ has a 3-AP. Proved in Mathlib via corners $\\to$ triangle removal $\\to$ regularity."
     },
     {
-      "id": "axiom-reduction",
+      "id": "full-theorem",
       "title": "Full Theorem (Proved by Cases)",
       "startLine": 273,
       "endLine": 335,
-      "summary": "Assembles full SzemerediTheorem from k=1,2 density lemmas, k=3 Roth, and k>=4 axiom."
+      "summary": "**Proved.** Assembles `SzemerediTheorem` by case analysis on $k$: $k=1$ (trivial), $k=2$ (trivial), $k=3$ (Roth), $k \\geq 4$ (axiom). The case split uses `Nat.lt_or_ge` to dispatch to the appropriate lemma.",
+      "mathContext": "Full theorem: $\\text{SzemerediTheorem}(k, \\delta) := k \\leq 2 \\to$ trivial $\\mid k = 3 \\to$ Roth $\\mid k \\geq 4 \\to$ axiom. All glued via `Nat.lt_or_ge`."
     }
   ],
   "crossReferences": [

@@ -44,58 +44,76 @@
       "id": "header",
       "title": "Introduction",
       "startLine": 1,
-      "endLine": 15,
-      "summary": "Overview of the proof and its historical significance, explaining how type theory simplifies what was once a monumental undertaking."
+      "endLine": 31,
+      "summary": "Module docstring with proof overview, approach (no Mathlib imports, self-contained Peano arithmetic), original contributions, and historical note about Principia Mathematica. Opens `Peano` namespace.",
+      "mathContext": "Goal: prove $1 + 1 = 2$ from first principles via Peano's axioms. In type theory, this is definitional: $S(0) + S(0) = S(S(0) + 0) = S(S(0)) = 2$ by `rfl`."
     },
     {
       "id": "peano-naturals",
       "title": "Building Natural Numbers",
-      "startLine": 17,
-      "endLine": 33,
-      "summary": "Defining the natural numbers from scratch using Peano's axioms: zero and successor, with numeric notation for convenience."
+      "startLine": 34,
+      "endLine": 49,
+      "summary": "Defines `Peano.ℕ` as an inductive type with constructors `zero` and `succ`. Declares numeric notation: $1 = S(0)$, $2 = S(S(0))$, $3 = S(S(S(0)))$.",
+      "mathContext": "$\\mathbb{N} ::= 0 \\mid S(n)$. Numeric abbreviations: $1 \\stackrel{\\text{def}}{=} S(0)$, $2 \\stackrel{\\text{def}}{=} S(S(0))$."
     },
     {
       "id": "addition-definition",
       "title": "Defining Addition",
-      "startLine": 35,
-      "endLine": 49,
-      "summary": "Recursive definition of addition following Peano's original formulation: n + 0 = n and n + succ(m) = succ(n + m)."
+      "startLine": 51,
+      "endLine": 61,
+      "summary": "Recursive definition of addition by pattern matching on the second argument: $n + 0 = n$, $n + S(m) = S(n + m)$.",
+      "mathContext": "$\\text{add}(n, 0) = n$, $\\text{add}(n, S(m)) = S(\\text{add}(n, m))$. Well-founded by structural recursion on the second argument."
     },
     {
       "id": "main-theorem",
       "title": "The Famous Theorem",
-      "startLine": 51,
-      "endLine": 66,
-      "summary": "The proof of 1+1=2, showing step-by-step how the definitions unfold, and the ultimate simplicity of 'rfl'."
+      "startLine": 63,
+      "endLine": 79,
+      "summary": "Proves `one_plus_one_eq_two : add one one = two` both by step-by-step unfolding and by `rfl`. The computation chain: $S(0) + S(0) \\to S(S(0) + 0) \\to S(S(0)) = 2$.",
+      "mathContext": "$S(0) + S(0) = S(S(0) + 0) = S(S(0)) = 2$. Proof: `rfl` (definitional equality in type theory)."
     },
     {
       "id": "arithmetic-properties",
       "title": "Building Up Arithmetic",
-      "startLine": 68,
+      "startLine": 81,
       "endLine": 99,
-      "summary": "Developing fundamental properties of addition: identity laws, commutativity, and associativity—the algebraic structure emerges."
+      "summary": "Proves fundamental properties: $n + 0 = n$ (by definition), $0 + n = n$ (by induction), $S(n) + m = S(n+m)$ (by induction), commutativity $n + m = m + n$, and associativity $(a+b)+c = a+(b+c)$.",
+      "mathContext": "$(\\mathbb{N}, +, 0)$ is a commutative monoid. Right identity is definitional; left identity and commutativity require induction because `add` recurses on the right argument."
     },
     {
       "id": "consequences",
       "title": "More Consequences",
       "startLine": 101,
       "endLine": 111,
-      "summary": "Extending the pattern to prove 2+1=3, 1+2=3, and 2+2=4, all following immediately from definitions."
+      "summary": "Proves $2+1=3$, $1+2=3$, and $2+2=4$, all by `rfl`.",
+      "mathContext": "All definitionally true: $S(S(0)) + S(0) = S(S(S(0)))$, etc. Each follows from the recursive unfolding of `add`."
     },
     {
       "id": "builtin-naturals",
       "title": "Using Built-in Naturals",
       "startLine": 113,
-      "endLine": 130,
-      "summary": "Demonstrating that Lean's standard library naturals work identically, with the same trivial proof."
+      "endLine": 165,
+      "summary": "Shows Lean's built-in `Nat` is isomorphic to `Peano.ℕ` with identical `add`. Proves `(1 : Nat) + 1 = 2` by `rfl`. Comments explain the correspondence.",
+      "mathContext": "Lean's `Nat` $\\cong$ `Peano.ℕ`: same inductive type, same recursive `add`. The numerals `1`, `2` are notation for `Nat.succ Nat.zero`, etc."
     },
     {
       "id": "principia-comparison",
       "title": "Why Principia Took 362 Pages",
-      "startLine": 132,
-      "endLine": 155,
-      "summary": "Historical context explaining Russell's set-theoretic approach versus modern type theory, and why the complexity was necessary in 1910."
+      "startLine": 167,
+      "endLine": 197,
+      "summary": "Explains Russell-Whitehead's set-theoretic approach: numbers as equivalence classes of equinumerous sets, addition via disjoint unions, ramified type theory. Contrasts with modern type theory's inductive definitions. Final `#check` verification of both proofs.",
+      "mathContext": "Principia: $1 = \\{X : |X| = 1\\}$, $2 = \\{X : |X| = 2\\}$, $1 + 1 = 2$ requires showing $|A \\cup B| = 2$ for disjoint singletons $A, B$. Type theory: $1 + 1 = 2$ by computation."
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "derangements",
+      "relationship": "related",
+      "description": "Both involve natural number arithmetic formalized in Lean — derangements uses Nat.factorial and Nat.choose where this proof builds Nat from scratch"
+    }
+  ],
+  "relatedProofs": [
+    "derangements"
   ],
   "conclusion": {
     "summary": "This formalization demonstrates the dramatic simplification that type theory brings to mathematical foundations. What took Russell and Whitehead hundreds of pages is now a single rfl—not because we're cheating, but because we've chosen a cleaner foundation where natural numbers and their operations are primitive concepts rather than derived constructions.",

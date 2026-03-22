@@ -39,6 +39,7 @@
     "type": "theorem",
     "title": "R(1, s) = 1",
     "content": "Any nonempty type has a red 1-clique: just pick any vertex. A single vertex trivially forms a clique since there are no pairs to check.",
+    "mathContext": "$R(1,s) = 1$ for all $s$: a single vertex is a trivial $K_1$ in any color. This is the base case for the induction on $r + s$.",
     "significance": "key",
     "prerequisites": ["singleton-clique"],
     "relatedConcepts": ["base-case", "induction"]
@@ -68,6 +69,7 @@
     "type": "theorem",
     "title": "Red Clique Extension",
     "content": "If s is a red clique contained in v's red neighborhood and v ∉ s, then (insert v s) is also a red clique. The new edges from v to s are all red by definition of red neighborhood.",
+    "mathContext": "If $S \\subseteq N_{\\text{red}}(v)$ is a red $K_r$ and $v \\notin S$, then $S \\cup \\{v\\}$ is a red $K_{r+1}$. Key: all edges $\\{v, w\\}$ for $w \\in S$ are red since $S \\subseteq N_{\\text{red}}(v)$.",
     "significance": "critical",
     "prerequisites": ["clique-definition", "neighborhood"],
     "relatedConcepts": ["induction-step", "clique-growth"]
@@ -112,6 +114,7 @@
     "type": "insight",
     "title": "Pigeonhole Principle Application",
     "content": "With n = R(r-1,s) + R(r,s-1) vertices and v removed, the remaining n-1 vertices partition into red and blue neighborhoods. The sum of their sizes is n-1, so one must be large enough for the IH.",
+    "mathContext": "$|N_{\\text{red}}(v)| + |N_{\\text{blue}}(v)| = n - 1 = R(r-1,s) + R(r,s-1) - 1$, so $|N_{\\text{red}}| \\geq R(r-1,s)$ or $|N_{\\text{blue}}| \\geq R(r,s-1)$.",
     "significance": "key",
     "prerequisites": ["pigeonhole-principle", "neighborhood-partition"],
     "relatedConcepts": ["counting-argument", "induction"]
