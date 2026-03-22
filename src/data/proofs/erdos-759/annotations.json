@@ -12,11 +12,11 @@
     "mathContext": "Cochromatic number generalizes chromatic number by allowing color classes to be cliques (not just independent sets).",
     "significance": "critical",
     "relatedConcepts": [
-      "cochromatic-number",
-      "surface-embedding",
-      "genus",
-      "growth-rate"
+      "Cochromatic number (Lesniak-Straight 1977)",
+      "Surface embedding and genus",
+      "Asymptotic growth rate $\\Theta(\\sqrt{n}/\\log n)$"
     ],
+    "prerequisites": ["SimpleGraph", "Orientable surfaces", "Cochromatic coloring", "Asymptotic notation"],
     "tags": ["cochromatic-number", "topological-graph-theory", "surface-embedding", "asymptotic-growth"]
   },
   {
@@ -32,10 +32,11 @@
     "mathContext": "In chromatic coloring, color classes must be independent. In cochromatic coloring, they can also be cliques - a more flexible condition.",
     "significance": "critical",
     "relatedConcepts": [
-      "clique",
-      "independent-set",
-      "cochromatic-valid"
+      "Clique definition (complete subgraph)",
+      "Independent set (stable set)",
+      "Cochromatic partition flexibility"
     ],
+    "prerequisites": ["SimpleGraph.Adj", "Set membership", "Disjunction (∨)"],
     "tags": ["graph-coloring", "clique", "independent-set", "cochromatic-partition"]
   },
   {
@@ -51,10 +52,11 @@
     "mathContext": "The cochromatic number was introduced to study graph structure. It can be much smaller than chromatic number for graphs with large cliques.",
     "significance": "critical",
     "relatedConcepts": [
-      "cochromatic-number",
-      "chromatic-number",
-      "relaxation"
+      "Cochromatic number as chromatic relaxation",
+      "Chromatic number upper bound $\\zeta \\leq \\chi$",
+      "Graph partition theory"
     ],
+    "prerequisites": ["isCochromaticValid", "isCochromaticColoring", "Graph coloring basics"],
     "tags": ["cochromatic-number", "chromatic-number", "graph-coloring", "axiomatized"]
   },
   {
@@ -70,10 +72,11 @@
     "mathContext": "Genus measures the 'complexity' of a surface. Higher genus allows denser graphs to be embedded.",
     "significance": "key",
     "relatedConcepts": [
-      "orientable-surface",
-      "genus",
-      "euler-formula"
+      "Orientable surface classification",
+      "Genus and Euler characteristic",
+      "Euler's formula for surface embeddings"
     ],
+    "prerequisites": ["Topological surfaces", "Connected sum construction", "Euler's formula"],
     "tags": ["orientable-surface", "genus", "euler-formula", "topology"]
   },
   {
@@ -184,10 +187,11 @@
     "mathContext": "The 1997 paper 'Coloring graphs with fixed genus and girth' appeared in Trans. Amer. Math. Soc. The proof uses deep structural arguments about surface embeddings.",
     "significance": "critical",
     "relatedConcepts": [
-      "gimbel-thomassen-1997",
-      "tight-bound",
-      "resolution"
+      "Gimbel-Thomassen 1997 (Trans. AMS)",
+      "Tight asymptotic bounds",
+      "Problem resolution after 11-year gap"
     ],
+    "prerequisites": ["gimbel_lower_bound", "maxCochromaticNumber", "erdos759Question", "Real.sqrt", "Real.log"],
     "tags": ["tight-bound", "topological-graph-theory", "cochromatic-number", "solved"]
   },
   {
