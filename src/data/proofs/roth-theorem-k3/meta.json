@@ -17,7 +17,7 @@
       "marquee-phase-3"
     ],
     "badge": "formalized",
-    "sorries": 3,
+    "sorries": 6,
     "mathlibDependencies": [
       {
         "theorem": "Finset.card",
@@ -59,46 +59,46 @@
   },
   "sections": [
     {
-      "id": "docstring",
-      "title": "Module Docstring and Imports",
-      "startLine": 1,
-      "endLine": 15,
-      "summary": "Documents four-part structure. Credits Roth (1953), Bourgain (1999), Bloom-Sisask (2020). Imports full Mathlib."
-    },
-    {
-      "id": "setup",
-      "title": "Namespace and Setup",
-      "startLine": 17,
-      "endLine": 17,
-      "summary": "Opens the Szemeredi.Roth namespace for the formalization."
-    },
-    {
       "id": "ap-free",
-      "title": "AP-Free Set Definitions",
-      "startLine": 19,
-      "endLine": 39,
-      "summary": "Defines APFree on Z/NZ. Proves empty set and singletons are AP-free (0 sorries)."
+      "title": "Part I: AP-Free Set Definitions",
+      "startLine": 22,
+      "endLine": 65,
+      "summary": "Defines APFree on Z/NZ. Proves empty, singleton, subset closure, and cardinality bounds (0 sorries)."
+    },
+    {
+      "id": "ap-counting",
+      "title": "Part II: AP Counting",
+      "startLine": 67,
+      "endLine": 91,
+      "summary": "Defines tripleCount and proves APFree ↔ tripleCount = 0 (0 sorries, fully proved)."
     },
     {
       "id": "fourier",
-      "title": "Fourier Analysis on Z/NZ",
-      "startLine": 41,
-      "endLine": 58,
-      "summary": "Defines fourierCoeff via discrete exponential sums. States fourier_large_coefficient (1 sorry)."
+      "title": "Part III: Fourier Analysis on Z/NZ",
+      "startLine": 93,
+      "endLine": 124,
+      "summary": "Defines fourierCoeff. States norm bound, Parseval identity, and AP-Fourier identity (3 sorries)."
+    },
+    {
+      "id": "large-coeff",
+      "title": "Part IV: Large Fourier Coefficient",
+      "startLine": 126,
+      "endLine": 141,
+      "summary": "States fourier_large_coefficient: AP-free + dense implies large Fourier coefficient (1 sorry)."
     },
     {
       "id": "increment",
-      "title": "Density Increment Lemma",
-      "startLine": 60,
-      "endLine": 73,
-      "summary": "States density_increment_lemma: AP-free + density δ implies density δ + δ²/100 on subprogression (1 sorry)."
+      "title": "Part V: Density Increment Lemma",
+      "startLine": 143,
+      "endLine": 162,
+      "summary": "States density_increment_lemma with APFree B and 0 < M in conclusion (1 sorry)."
     },
     {
       "id": "main",
-      "title": "Roth's Theorem (Main Result)",
-      "startLine": 75,
-      "endLine": 92,
-      "summary": "States roth_density_bound: r₃(N) = o(N) via iterated density increment (1 sorry)."
+      "title": "Part VI: Iteration and Main Result",
+      "startLine": 164,
+      "endLine": 233,
+      "summary": "Proves density_increment_step and density_iteration from density_increment_lemma (0 sorries). States roth_density_bound (1 sorry)."
     }
   ],
   "crossReferences": [
@@ -139,9 +139,9 @@
     ],
     "opens": [],
     "namespace": "Szemeredi.Roth",
-    "lineCount": 92,
+    "lineCount": 233,
     "axiomCount": 0,
-    "theoremCount": 5,
-    "definitionCount": 2
+    "theoremCount": 14,
+    "definitionCount": 3
   }
 }

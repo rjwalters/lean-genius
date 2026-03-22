@@ -1,26 +1,39 @@
 # Research State: roth-theorem-k3
 
 ## Current State
-**Phase**: NEW
+**Phase**: ORIENT
 **Path**: full
-**Since**: 2026-03-21
-**Iteration**: 0
+**Since**: 2026-03-22
+**Iteration**: 1
 
 ## Current Focus
-Fourier analytic approach to AP-free set bounds. Entry point for Szemeredi program.
+Infrastructure and proof architecture for Roth's theorem via Fourier density increment.
 
 ## Active Approach
-None yet.
+Fourier-analytic density increment. Six-part proof structure:
+1. AP-free definitions (COMPLETE)
+2. AP counting via tripleCount (COMPLETE — proved APFree ↔ tripleCount = 0)
+3. Fourier analysis infrastructure (3 sorries: norm bound, Parseval, AP-Fourier identity)
+4. Large Fourier coefficient (1 sorry)
+5. Density increment lemma (1 sorry — fixed to include APFree B)
+6. Iteration + main theorem (iteration PROVED from density_increment_lemma, main sorry)
 
 ## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1
+- Current approach attempts: 1
+- Approaches tried: 1
 
 ## Blockers
-None. Independent problem, can start immediately.
+None critical. Remaining sorries are well-structured intermediate results.
+
+## Key Findings
+- Mathlib has ZMod.dft, ZMod.stdAddChar, ThreeAPFree, additive energy — rich infrastructure
+- Mathlib may have roth_3ap_theorem via regularity/corners — verify and potentially connect
+- density_iteration theorem PROVED: k applications boost density by k·δ²/100
+- Original density_increment_lemma was missing APFree B in conclusion — fixed
 
 ## Next Action
-Survey Mathlib for ZMod Fourier analysis infrastructure.
-Formalize AP-free set definition and basic properties.
-Design density increment argument structure.
+1. Fill Fourier infrastructure sorries (fourierCoeff_norm_le, parseval_on_zmod)
+2. Connect APFree to Mathlib's ThreeAPFree for access to existing results
+3. Investigate if Mathlib's roth_3ap_theorem can close roth_density_bound directly
+4. Prove fourier_large_coefficient using Parseval + AP counting identity
