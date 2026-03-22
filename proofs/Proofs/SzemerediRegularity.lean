@@ -543,4 +543,54 @@ theorem regularity_lemma_strong (eps : ℚ) (heps : 0 < eps) (m₀ : ℕ) (hm₀
     rw [h_cast_kk] at h_unif
     linarith
 
+/-- **Szemeredi Regularity Lemma (Full Form)**: Like regularity_lemma_strong,
+    but also exposes partition structure: every vertex belongs to exactly one part.
+    This is needed for applications like the triangle removal lemma where
+    we must assign vertices to partition classes. -/
+theorem regularity_lemma_full (eps : ℚ) (heps : 0 < eps) (m₀ : ℕ) (hm₀ : 1 ≤ m₀) :
+    ∃ M : ℕ, m₀ ≤ M ∧
+      ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V)
+        [DecidableRel G.Adj],
+        Fintype.card V ≥ M →
+        ∃ parts : Finset (Finset V),
+          IsRegularPartition G eps parts ∧
+          m₀ ≤ parts.card ∧ parts.card ≤ M ∧
+          -- Partition structure: covers V and parts are pairwise disjoint
+          (∀ v : V, ∃ P ∈ parts, v ∈ P) ∧
+          (∀ P Q : Finset V, P ∈ parts → Q ∈ parts → P ≠ Q → Disjoint P Q) := by
+  set M := max m₀ (SzemerediRegularity.bound (↑eps : ℝ) m₀) with hM_def
+  refine ⟨M, le_max_left _ _, fun V _ _ G _ hV => ?_⟩
+  have heps_real : (0 : ℝ) < (↑eps : ℝ) := by exact_mod_cast heps
+  have hl : m₀ ≤ Fintype.card V := le_trans (le_max_left _ _) hV
+  obtain ⟨P, hequi, hle, hbound, hunif⟩ := szemeredi_regularity G heps_real hl
+  refine ⟨P.parts, ⟨?_, ?_⟩, hle, le_trans hbound (le_max_right _ _), ?_, ?_⟩
+  · -- Equitability
+    exact equipartition_imp_equitable P hequi
+  · -- Irregularity count (same proof as regularity_lemma_strong)
+    have h_sub := irregular_subset_nonuniform G eps P
+    have h_unif : (↑(P.nonUniforms G (↑eps : ℝ)).card : ℝ) ≤
+        ↑(P.parts.card * (P.parts.card - 1)) * ↑eps := hunif
+    suffices h_real :
+        (↑((P.parts.product P.parts).filter (fun pq =>
+          pq.1 ≠ pq.2 ∧ ¬IsEpsilonRegular G eps pq.1 pq.2)).card : ℝ) ≤
+        (↑eps : ℝ) * ((↑P.parts.card : ℝ) * ((↑P.parts.card : ℝ) - 1)) by
+      exact_mod_cast h_real
+    have h_sub_real : (↑((P.parts.product P.parts).filter (fun pq =>
+          pq.1 ≠ pq.2 ∧ ¬IsEpsilonRegular G eps pq.1 pq.2)).card : ℝ) ≤
+        (↑(P.nonUniforms G (↑eps : ℝ)).card : ℝ) := by exact_mod_cast h_sub
+    have h_k1 : 1 ≤ P.parts.card := le_trans hm₀ hle
+    have h_cast_kk : (↑(P.parts.card * (P.parts.card - 1)) : ℝ) =
+        (↑P.parts.card : ℝ) * ((↑P.parts.card : ℝ) - 1) := by
+      rw [Nat.cast_mul, Nat.cast_sub h_k1]; simp
+    rw [h_cast_kk] at h_unif
+    linarith
+  · -- Coverage: every vertex belongs to some part
+    intro v
+    have hv : v ∈ (Finset.univ : Finset V) := Finset.mem_univ v
+    rw [← P.supParts] at hv
+    exact Finset.mem_sup.mp hv
+  · -- Disjointness: distinct parts are disjoint
+    intro A B hA hB hne
+    exact P.disjoint (Finset.mem_coe.mpr hA) (Finset.mem_coe.mpr hB) hne
+
 end Szemeredi.Regularity
