@@ -160,5 +160,17 @@
       "relationship": "ancestor",
       "description": "Base impossibility proof — this file extends the constructibility theory to regular polygon characterization"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.AngleTrisectionEmbedding"
+    ],
+    "opens": ["Polynomial"],
+    "namespace": "AngleTrisectionOQ02OQ03OQ01",
+    "lineCount": 740,
+    "axiomCount": 0,
+    "theoremCount": 41,
+    "definitionCount": 0
+  }
 }

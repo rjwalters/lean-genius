@@ -222,5 +222,17 @@
     "angle-trisection",
     "angle-trisection-oq-02",
     "combinations-formula"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.AngleTrisectionOQ02OQ03OQ01"
+    ],
+    "opens": ["Polynomial", "IntermediateField"],
+    "namespace": "AngleTrisectionOQ02OQ03",
+    "lineCount": 1799,
+    "axiomCount": 0,
+    "theoremCount": 38,
+    "definitionCount": 2
+  }
 }

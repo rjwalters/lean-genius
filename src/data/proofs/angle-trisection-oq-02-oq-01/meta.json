@@ -210,5 +210,17 @@
     "angle-trisection-oq-02-oq-03-oq-01",
     "inverse-galois",
     "abel-ruffini"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.AngleTrisectionOQ01"
+    ],
+    "opens": ["Polynomial"],
+    "namespace": "AngleTrisectionOQ02OQ01",
+    "lineCount": 115,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0
+  }
 }
