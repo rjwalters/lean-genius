@@ -46,7 +46,8 @@
       "Statements of Erdős-Mirsky bounds and Beker's improvement",
       "Conditional result under Cramér's conjecture"
     ],
-    "axiomCount": 6
+    "axiomCount": 6,
+    "lineCount": 170
   },
   "overview": {
     "historicalContext": "This problem, posed by Erdős and Mirsky in their 1952 paper on the distribution of the divisor function, asks a natural question: how long can consecutive integers maintain distinct divisor counts?\n\nThe divisor function τ(n) counts divisors of n. While τ varies considerably—primes have τ = 2, highly composite numbers have large τ—the question is whether collisions (τ(a) = τ(b) for distinct a, b) must occur within short intervals.\n\nErdős and Mirsky established both lower and upper bounds in 1952, but the gap between them has resisted closure for over 70 years. Beker later improved the upper bound, and connections to Cramér's conjecture on prime gaps have been observed.",
@@ -56,7 +57,8 @@
       "**Divisor Collisions**: τ(n) takes relatively few values compared to n, so collisions are inevitable. The question is *how quickly* they must occur.",
       "**Exponential Gap**: The Erdős-Mirsky bounds have an exponential gap—lower bound is polynomial in log, upper is exponential in √log. Closing this is the main challenge.",
       "**Prime Gap Connection**: Cramér's conjecture (prime gaps ≤ (log p)²) would imply F(x) ≤ (log x)², nearly resolving the problem.",
-      "**Problem B18**: This appears as problem B18 in Guy's 'Unsolved Problems in Number Theory', highlighting its importance."
+      "**Problem B18**: This appears as problem B18 in Guy's 'Unsolved Problems in Number Theory', highlighting its importance.",
+      "**Highly composite witnesses**: The first counterexample to long runs must involve highly composite numbers (n with many divisors), since these create more opportunities for τ(n) = τ(n+1) coincidences — connecting the problem to Ramanujan's theory of highly composite numbers."
     ]
   },
   "sections": [

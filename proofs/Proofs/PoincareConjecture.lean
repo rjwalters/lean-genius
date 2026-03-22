@@ -3450,12 +3450,6 @@ Every irreducible manifold is prime, but S¹ × S² is prime but not irreducible
 
 section PrimeDecompositionStructure
 
-/-- Connected sum is associative: (M # N) # P ≅ M # (N # P). -/
-axiom connected_sum_assoc (M N P : Type)
-    [TopologicalSpace M] [TopologicalSpace N] [TopologicalSpace P] :
-    AreHomeomorphic (ConnectedSum (ConnectedSum M N) P)
-                    (ConnectedSum M (ConnectedSum N P))
-
 /-- A 3-manifold is IRREDUCIBLE if every embedded 2-sphere bounds a 3-ball.
     Irreducibility is strictly stronger than primality:
     - S¹ × S² is prime but not irreducible (contains a non-separating S²)
@@ -3558,12 +3552,6 @@ theorem S1_cross_S2_closed : @Closed3Manifold S1_cross_S2 instS1S2Top where
     exact ⟨U₁ ×ˢ U₂, hU₁_open.prod hU₂_open, ⟨hx_mem, hy_mem⟩,
       ⟨(subtypeProdHomeomorph U₁ U₂).trans
         ((φ₁.prodCongr φ₂).trans euclideanSpaceProdHomeomorph)⟩⟩
-
-/- S1_cross_S2_prime (removed - unused downstream):
-   S¹ × S² is prime but not irreducible. The unique non-irreducible prime 3-manifold. -/
-
-axiom S1_cross_S2_not_irreducible :
-    ¬ @IsIrreducible3Manifold S1_cross_S2 instS1S2Top S1_cross_S2_closed
 
 -- S1_cross_S2_not_SC and S1_cross_S2_not_S3:
 -- Proved using covering space theory from Part LXI. Moved after Part LXI
@@ -3685,18 +3673,6 @@ theorem hamilton_short_time_existence (M : Type) [TopologicalSpace M]
     (_hM : Closed3Manifold M) :
     ∃ (sol : RicciFlowSolution M), sol.maxTime > 0 :=
   ⟨⟨1, by norm_num, fun _ => 0, fun _ _ _ => ⟨0, by simp⟩⟩, by norm_num⟩
-
-/-- The scalar curvature satisfies a maximum principle under Ricci flow:
-    if R_min(0) ≥ c, then R_min(t) ≥ c/(1 - 2ct/3).
-    In particular, the minimum scalar curvature is non-decreasing.
-
-    This is a key consequence of the evolution equation
-    ∂R/∂t = ΔR + 2|Ric|² ≥ ΔR + (2/3)R². -/
-axiom scalar_curvature_max_principle (M : Type) [TopologicalSpace M]
-    (sol : RicciFlowSolution M)
-    (R_min_0 : ℝ) (h_init : sol.scalarCurvature 0 ≥ R_min_0)
-    (t : ℝ) (ht : 0 ≤ t) (htmax : t < sol.maxTime) :
-    sol.scalarCurvature t ≥ R_min_0
 
 /-- Hamilton's Sphere Theorem (1982): If a closed 3-manifold admits a
     metric with positive Ricci curvature, then the Ricci flow converges

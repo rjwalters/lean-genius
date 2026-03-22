@@ -52,7 +52,8 @@
       "Formalization of Andrews' asymptotic conjecture",
       "Formalization of Porubsky's density bounds"
     ],
-    "axiomCount": 7
+    "axiomCount": 7,
+    "lineCount": 235
   },
   "overview": {
     "historicalContext": "Erdos Problem #359 concerns MacMahon's 'prime numbers of measurement' (OEIS A002048), a sequence defined by P.A. MacMahon in the early 20th century. The sequence starts with 1, and each subsequent term is the smallest positive integer that cannot be expressed as a sum of consecutive earlier terms.\n\nThe sequence begins: 1, 2, 4, 5, 8, 10, 14, 15, 21, 22, 26, 28, ...\n\nGeorge Andrews studied this sequence in 1975 and conjectured that a_k ~ (k log k) / (log log k). Stefan Porubsky proved partial results in 1977, establishing bounds comparing the sequence to the prime counting function.\n\nThe question of the exact growth rate remains OPEN. It is conjectured that a_k/k tends to infinity (superlinear growth) but a_k/k^{1+c} tends to 0 for any c > 0 (subpolynomial growth).",
@@ -62,7 +63,8 @@
       "**Consecutive sums**: Unlike subset sums, we only consider sums of consecutive terms. This is more restrictive but creates interesting gaps.",
       "**OEIS A002048**: The MacMahon sequence 1, 2, 4, 5, 8, 10, 14, 15, ... is well-studied. Note 3 is missing because 3 = 1 + 2.",
       "**Andrews' conjecture**: The growth rate a_k ~ (k log k) / (log log k) is superlinear but subpolynomial - a delicate intermediate growth.",
-      "**Porubsky's comparison**: The sequence is denser than primes by a factor of at least 1/log(2), connecting to prime number theory."
+      "**Porubsky's comparison**: The sequence is denser than primes by a factor of at least 1/log(2), connecting to prime number theory.",
+      "**Greedy construction**: The sequence is defined greedily (always pick the smallest non-representable integer), yet its growth rate is analytically subtle — a common phenomenon in additive combinatorics where simple recursive definitions yield complex asymptotic behavior"
     ]
   },
   "sections": [

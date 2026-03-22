@@ -47,7 +47,8 @@
       "Hickerson's conjecture on complete classification",
       "Suranyi's conjecture on two-factor solutions"
     ],
-    "axiomCount": 13
+    "axiomCount": 13,
+    "lineCount": 217
   },
   "overview": {
     "historicalContext": "Erdos Problem #373 asks whether the Diophantine equation n! = a_1! * a_2! * ... * a_k! (with the constraint n-1 > a_1 >= a_2 >= ... >= a_k >= 2) has only finitely many solutions.\n\nThe constraint a_1 < n-1 rules out trivial solutions like n! = (n-1)! * n = (n-1)! * a_2! * ... where n factors as a product of factorials of smaller numbers.\n\nSuranyi was the first to conjecture that 6!7! = 10! is the only two-factor solution. Hickerson conjectured that there are exactly four non-trivial solutions in total.\n\nFlorian Luca proved in 2007 that the set of solutions is finite, assuming the ABC conjecture. Erdos showed that finiteness would follow from the number-theoretic conjecture P(n(n-1)) > 4 log n for large n, where P(m) is the largest prime factor of m.",
@@ -57,7 +58,8 @@
       "**Trivial vs non-trivial**: The constraint a_1 < n-1 rules out n! = (n-1)! * n which always holds when n is a product of smaller factorials.",
       "**ABC connection**: Luca's 2007 result uses the ABC conjecture to control the size of solutions, giving conditional finiteness.",
       "**Computational evidence**: No two-factor solutions except 10! = 6!7! exist for n <= 10^3000, strong evidence for Suranyi's conjecture.",
-      "**Prime factor bounds**: Erdos showed the problem reduces to P(n(n-1)) > 4 log n, connecting to open problems in analytic number theory."
+      "**Prime factor bounds**: Erdos showed the problem reduces to P(n(n-1)) > 4 log n, connecting to open problems in analytic number theory.",
+      "**Unique factorization paradox**: Despite ℕ having unique factorization, factorials grow so rapidly that the equation n! = a₁!·a₂!···aₖ! becomes extremely overdetermined — the existence of even one non-trivial solution (10! = 6!·7!) is itself remarkable"
     ]
   },
   "sections": [

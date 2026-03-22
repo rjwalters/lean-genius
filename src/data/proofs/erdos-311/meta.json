@@ -60,9 +60,17 @@
       "tang_upper_bound axiom (subexponential upper bound)",
       "erdos_311_conjecture axiom (ε-N₀ form)"
     ],
-    "axiomCount": 5
+    "axiomCount": 5,
+    "lineCount": 61
   },
   "sections": [
+    {
+      "id": "header-setup",
+      "title": "Module Header and Problem Statement",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "Documents Erdős Problem #311 on the maximum number of unit fractions needed when denominators are bounded by b. Known: Ω(log b) ≤ f(b) ≤ O(b^{1/3+ε}). Connected to the Erdős-Straus conjecture on 4/n representations. Imports Mathlib."
+    },
     {
       "id": "definitions",
       "title": "Definitions",

@@ -67,7 +67,8 @@
       "Convex optimization (White's improved bounds)",
       "Asymptotic analysis: limit of M(N)/N"
     ],
-    "assumptions": "6 axiom declarations: erdos_36_limit_exists (the limit c = lim M(N)/N exists — the main open question), erdos_lower_quarter (Erdős's 1/4 lower bound), scherk_lower (Scherk's 1−1/√2 ≈ 0.293 lower bound via Fourier), white_lower (White's 0.379 lower bound via convex optimization), upper_bound (Haugland's 0.381 upper bound), small_values (computed M(N) for small N). The limit existence and bounds are established results."
+    "assumptions": "6 axiom declarations: erdos_36_limit_exists (the limit c = lim M(N)/N exists — the main open question), erdos_lower_quarter (Erdős's 1/4 lower bound), scherk_lower (Scherk's 1−1/√2 ≈ 0.293 lower bound via Fourier), white_lower (White's 0.379 lower bound via convex optimization), upper_bound (Haugland's 0.381 upper bound), small_values (computed M(N) for small N). The limit existence and bounds are established results.",
+    "lineCount": 91
   },
   "leanFile": {
     "path": "Proofs/Erdos36Problem.lean",

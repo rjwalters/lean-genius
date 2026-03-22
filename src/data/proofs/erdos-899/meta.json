@@ -45,7 +45,8 @@
       "Examples with powers of 2",
       "Connection to additive combinatorics"
     ],
-    "axiomCount": 1
+    "axiomCount": 1,
+    "lineCount": 140
   },
   "overview": {
     "historicalContext": "Erdős Problem 899 concerns the growth rate of difference sets, a fundamental question in additive combinatorics. Given a set A of natural numbers, the difference set A - A consists of all integers of the form a - b where a, b ∈ A.\n\nThe question asks: if A is sparse (has zero density), can A - A also be sparse relative to A? Intuitively, if A has large gaps, the differences should spread out, forcing A - A to be much larger than A.\n\nImre Ruzsa proved in 1978 that the answer is no—the ratio |A - A| / |A| must tend to infinity. This result is foundational in additive combinatorics and connects to the study of sumsets, Freiman's theorem, and the structure of sets with small doubling.",
@@ -55,7 +56,8 @@
       "**Difference sets:** A - A = {a - b : a, b ∈ A} captures the \"additive structure\" of A.",
       "**Zero density:** A set has density 0 if |A ∩ [1,N]| / N → 0. Examples: primes, perfect squares, powers of 2.",
       "**Growth dichotomy:** Dense sets have bounded |A-A|/|A|; sparse sets have unbounded ratio.",
-      "**Connection to sumsets:** Similar questions for A + A lead to Problem 245."
+      "**Connection to sumsets:** Similar questions for A + A lead to Problem 245.",
+      "**Freiman-Ruzsa structure**: For finite sets, |A - A| ≤ K|A| implies A lies in a generalized arithmetic progression of bounded rank — constraining what zero-density sets with slow difference-set growth can look like."
     ]
   },
   "sections": [

@@ -89,7 +89,8 @@
         "relationship": "thematic",
         "description": "Related number-theoretic irrationality problem involving prime-related sequences"
       }
-    ]
+    ],
+    "lineCount": 143
   },
   "overview": {
     "historicalContext": "This problem appears as Problem A2 in Guy's *Unsolved Problems in Number Theory* [Gu04], attributed to Erdős. It asks about the interaction between primes and factorials through subtraction. The factorials $1, 2, 6, 24, 120, 720, \\ldots$ grow super-exponentially, so only $O(\\log n / \\log \\log n)$ factorials lie below $n$. This means the factorial-subtraction condition is mild: it requires checking only a few values.\n\nThe known examples are $p = 101$ (factorials to check: $1, 2, 6, 24$) and $p = 211$ (factorials: $1, 2, 6, 24, 120$). The prime $89$ fails because $89 - 6 = 83$ is prime. These are listed in OEIS A064152.\n\nErdős suggested a potentially easier variant: find infinitely many $n$ in $(l!, (l+1)!]$ whose prime factors all exceed $l$ and whose factorial subtractions are all composite. This removes the requirement that $n$ itself be prime, possibly making the problem more tractable via sieve methods.",
@@ -161,9 +162,20 @@
       "mathContext": "Summary: $101, 211 \\in $ OEIS A064152, both verified prime and factorial-avoiding."
     }
   ],
-  "relatedProofs": ["infinitude-primes", "wilsons-theorem", "bertrands-postulate", "erdos-1057"],
+  "relatedProofs": [
+    "infinitude-primes",
+    "wilsons-theorem",
+    "bertrands-postulate",
+    "erdos-1057"
+  ],
   "leanFile": {
-    "imports": ["Mathlib.Data.Nat.Prime.Basic", "Mathlib.Data.Nat.Factorial.Basic", "Mathlib.Data.Set.Basic", "Mathlib.Data.Finset.Basic", "Mathlib.Tactic"],
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
     "opens": [],
     "namespace": "Erdos1059",
     "lineCount": 143,

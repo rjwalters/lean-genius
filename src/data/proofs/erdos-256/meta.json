@@ -66,16 +66,48 @@
       "bounds_summary axiom"
     ],
     "references": [
-      {"key": "ES59", "citation": "Erdős, P. and Szekeres, G., On the product ∏(1-z^{aᵢ}), Acad. Serbe Sci. Publ. Inst. Math. (1959). Initiated the study; proved f(n) > √(2n).", "type": "paper"},
-      {"key": "At61", "citation": "Atkinson, F.V., On a problem of Erdős and Szekeres, Acta Sci. Math. (Szeged) (1961). Upper bound: log f(n) ≪ n^{1/2} log n.", "type": "paper"},
-      {"key": "BK96", "citation": "Belov, A.S. and Konyagin, S.V., On an Erdős-Szekeres problem (1996). Definitive answer: log f(n) ≪ (log n)⁴.", "type": "paper"},
-      {"key": "BC18", "citation": "Bourgain, J. and Chang, M.-C., On a multilinear character sum of Burgess, Comptes Rendus Mathématique (2018). Bounds for distinct exponents case.", "type": "paper"}
+      {
+        "key": "ES59",
+        "citation": "Erdős, P. and Szekeres, G., On the product ∏(1-z^{aᵢ}), Acad. Serbe Sci. Publ. Inst. Math. (1959). Initiated the study; proved f(n) > √(2n).",
+        "type": "paper"
+      },
+      {
+        "key": "At61",
+        "citation": "Atkinson, F.V., On a problem of Erdős and Szekeres, Acta Sci. Math. (Szeged) (1961). Upper bound: log f(n) ≪ n^{1/2} log n.",
+        "type": "paper"
+      },
+      {
+        "key": "BK96",
+        "citation": "Belov, A.S. and Konyagin, S.V., On an Erdős-Szekeres problem (1996). Definitive answer: log f(n) ≪ (log n)⁴.",
+        "type": "paper"
+      },
+      {
+        "key": "BC18",
+        "citation": "Bourgain, J. and Chang, M.-C., On a multilinear character sum of Burgess, Comptes Rendus Mathématique (2018). Bounds for distinct exponents case.",
+        "type": "paper"
+      }
     ],
     "relatedProofs": [
-      {"id": "erdos-510", "relationship": "directly-related", "description": "The Chowla cosine problem — Atkinson showed log f*(n) ≤ C·M·log n when min cosine sum < −M, giving a direct bridge between the two problems"},
-      {"id": "erdos-228", "relationship": "related", "description": "Flat Littlewood polynomials: another problem about controlling polynomial values on the unit circle, with ±1 coefficients instead of product factors"},
-      {"id": "erdos-230", "relationship": "related", "description": "Ultraflat unimodular polynomials on the unit circle — studies how uniformly bounded polynomial values on |z|=1 can be"},
-      {"id": "erdos-512", "relationship": "related", "description": "Littlewood's conjecture on L¹ norms of exponential sums — another extremal problem about oscillatory sums on the circle"}
+      {
+        "id": "erdos-510",
+        "relationship": "directly-related",
+        "description": "The Chowla cosine problem — Atkinson showed log f*(n) ≤ C·M·log n when min cosine sum < −M, giving a direct bridge between the two problems"
+      },
+      {
+        "id": "erdos-228",
+        "relationship": "related",
+        "description": "Flat Littlewood polynomials: another problem about controlling polynomial values on the unit circle, with ±1 coefficients instead of product factors"
+      },
+      {
+        "id": "erdos-230",
+        "relationship": "related",
+        "description": "Ultraflat unimodular polynomials on the unit circle — studies how uniformly bounded polynomial values on |z|=1 can be"
+      },
+      {
+        "id": "erdos-512",
+        "relationship": "related",
+        "description": "Littlewood's conjecture on L¹ norms of exponential sums — another extremal problem about oscillatory sums on the circle"
+      }
     ],
     "axiomCount": 10,
     "prerequisites": [
@@ -84,7 +116,8 @@
       "Real analysis (supremum, infimum, logarithmic growth rates)",
       "Number theory (primitive roots of unity, modular arithmetic)",
       "Asymptotic analysis (big-O notation, polynomial vs polylogarithmic growth)"
-    ]
+    ],
+    "lineCount": 262
   },
   "overview": {
     "historicalContext": "This problem traces a 37-year arc through 20th-century harmonic analysis. Paul Erdős and George Szekeres introduced the function f(n) in 1959 in the Acad. Serbe Sci. Publ., proving the lower bound f(n) > √(2n) via a counting argument on roots of unity. Erdős himself obtained the first subexponential upper bound, showing log f(n) ≪ n^{1-c}. Frederick Atkinson improved this to n^{1/2} log n in 1961 using estimates on character sums. Andrew Odlyzko pushed the exponent further to n^{1/3}(log n)^{4/3} in 1982 with methods from analytic number theory. For two decades, the question remained: is the growth polynomial in n (as the upper bounds suggested) or could f(n) be even smaller? Alexander Belov and Sergei Konyagin settled this decisively in 1996 by constructing sequences of exponents for which the product maximum grows only polylogarithmically: log f(n) ≪ (log n)⁴. Their construction used sophisticated probabilistic and harmonic analysis techniques, answering Erdős's question in the negative. More recently, Jean Bourgain and Mei-Chu Chang (2018) studied the variant with distinct exponents, showing different but still subpolynomial behavior.",
@@ -175,7 +208,13 @@
     ]
   },
   "leanFile": {
-    "imports": ["Mathlib.Data.Complex.Basic", "Mathlib.Analysis.SpecialFunctions.Log.Basic", "Mathlib.Analysis.SpecialFunctions.Pow.Real", "Mathlib.Data.Finset.Basic", "Mathlib.Tactic"],
+    "imports": [
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
     "namespace": "Erdos256",
     "lineCount": 262,
     "axiomCount": 10,

@@ -19,7 +19,7 @@
     ],
     "badge": "formalized",
     "sorries": 2,
-    "dateAdded": "03/21/26",
+    "dateAdded": "2026-03-21",
     "axiomCount": 0,
     "originalContributions": [
       "bisectStep: single bisection interval-halving step",
@@ -62,7 +62,8 @@
         "venue": "Cengage Learning (9th edition)",
         "note": "Chapter 2.1: The bisection method, convergence analysis, and comparison with Newton's method"
       }
-    ]
+    ],
+    "lineCount": 124
   },
   "overview": {
     "historicalContext": "The Intermediate Value Theorem was first rigorously proved by Bernard Bolzano in 1817, though Cauchy gave a more widely known proof in 1821. Both proofs are non-constructive — they assert existence of a root without providing a method to find it. The bisection method, known since antiquity (used implicitly by the Babylonians for $\\sqrt{2}$ approximations and described by al-Tusi in the 13th century), makes the IVT constructive: given a continuous $f$ with $f(a) \\cdot f(b) < 0$, it produces an explicit sequence converging to a root. The method is the simplest root-finding algorithm with guaranteed convergence, requiring only function evaluation and sign comparison. While Newton's method converges quadratically (doubling correct digits each step), bisection's linear convergence ($\\sim$3.32 steps per decimal digit) is unconditionally reliable — no smoothness or initial guess quality required.",

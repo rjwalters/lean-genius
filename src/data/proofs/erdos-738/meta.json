@@ -44,7 +44,41 @@
       "Stated the finite-implies-infinite reduction theorem",
       "Axiomatized partial results by Kierstead-Penrice and Scott"
     ],
-    "axiomCount": 7
+    "axiomCount": 7,
+    "lineCount": 140,
+    "assumptions": [
+      "gyarfas_conjecture: The main open conjecture — every triangle-free graph with χ(G)=∞ contains every finite tree as an induced subgraph",
+      "infinite_chrom_contains_paths: Triangle-free graphs with χ=∞ contain arbitrarily long induced paths",
+      "infinite_chrom_contains_stars: Triangle-free graphs with χ=∞ contain stars of every size",
+      "kierstead_penrice_radius2: The conjecture holds for trees of radius ≤ 2 (Kierstead-Penrice 1994)",
+      "triangle_free_large_chrom_local_tree: Triangle-free graphs with χ=∞ have locally tree-like structure",
+      "gyarfas_finite_version: Finite quantitative version with explicit chromatic threshold N(T)",
+      "scott_caterpillars: The conjecture holds for caterpillars and spiders (Scott 1997)"
+    ],
+    "references": [
+      {
+        "authors": "Gyárfás, András",
+        "title": "On Ramsey covering-numbers",
+        "year": "1975",
+        "venue": "Infinite and Finite Sets, Colloq. Math. Soc. János Bolyai, vol. 10",
+        "note": "Original statement of the conjecture that χ-bounded classes must contain all trees as induced subgraphs"
+      },
+      {
+        "authors": "Kierstead, Henry A.; Penrice, Stephen G.",
+        "title": "Radius two trees specify χ-bounded classes",
+        "year": "1994",
+        "venue": "Journal of Graph Theory, 18(2), pp. 119-129",
+        "note": "Proved the Gyárfás conjecture for trees of radius at most 2"
+      },
+      {
+        "authors": "Scott, Alex",
+        "title": "Induced trees in graphs of large chromatic number",
+        "year": "1997",
+        "venue": "Journal of Graph Theory, 24(4), pp. 297-311",
+        "note": "Extended the result to caterpillars and spiders with at most 3 legs"
+      }
+    ],
+    "dateAdded": "2025-12-22"
   },
   "overview": {
     "historicalContext": "Gyárfás conjectured in 1975 that for every tree $T$, there exists $f(T)$ such that every graph with chromatic number $\\geq f(T)$ contains $T$ as an induced subgraph. Problem 738, popularized by Erdős, focuses on the triangle-free case: if $G$ is triangle-free with $\\chi(G) = \\infty$, must $G$ contain every finite tree as an induced subgraph? This is stronger than the general conjecture because triangle-freeness constrains the graph's local structure to be tree-like (no short cycles), making induced tree copies more plausible. Kierstead and Penrice (1994) proved the conjecture for trees of radius $\\leq 2$, Scott (1997) extended it to caterpillars (trees where all vertices are within distance 1 of a central path), and Chudnovsky, Scott, and Seymour (2020) made progress on subdivisions. The problem connects to the broader theory of $\\chi$-bounded graph classes initiated by Gyárfás.",
@@ -60,36 +94,48 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "Module docstring stating the Gyárfás conjecture, key results by Kierstead-Penrice and Scott, and references. Imports SimpleGraph, Clique, Coloring, and Fintype from Mathlib.",
+      "mathContext": "Erdős Problem #738: Does every triangle-free graph $G$ with $\\chi(G) = \\infty$ contain every finite tree as an induced subgraph?"
+    },
+    {
       "id": "definitions",
       "title": "Core Definitions",
-      "startLine": 24,
+      "startLine": 29,
       "endLine": 53,
-      "summary": "Defines `IsTriangleFree` via `CliqueFree 3`, `ChromAtMost k` via `Nonempty (Coloring (Fin k))`, `HasInfiniteChrom` as $\\forall k, \\neg\\text{ChromAtMost}\\, k$, `FiniteTree n` as a structure wrapping `SimpleGraph (Fin n)`, and `HasInducedCopy` via injective adjacency-preserving maps."
+      "summary": "Defines `IsTriangleFree` via `CliqueFree 3`, `ChromAtMost k` via `Nonempty (Coloring (Fin k))`, `HasInfiniteChrom` as $\\forall k, \\neg\\text{ChromAtMost}\\, k$, `FiniteTree n` as a structure wrapping `SimpleGraph (Fin n)`, and `HasInducedCopy` via injective adjacency-preserving maps.",
+      "mathContext": "Formalizes $\\omega(G) \\leq 2$, $\\chi(G) \\leq k$, $\\chi(G) = \\infty$, finite trees $T$ on $\\text{Fin}\\, n$, and induced copies $G \\supseteq_{\\text{ind}} T$ via injective adjacency-preserving maps."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
       "startLine": 55,
       "endLine": 63,
-      "summary": "Axiomatizes `gyarfas_conjecture`: for all $G$ that are triangle-free with $\\chi(G) = \\infty$, and for all finite trees $T$ on $n$ vertices, $G$ contains an induced copy of $T$."
+      "summary": "Axiomatizes `gyarfas_conjecture`: for all $G$ that are triangle-free with $\\chi(G) = \\infty$, and for all finite trees $T$ on $n$ vertices, $G$ contains an induced copy of $T$.",
+      "mathContext": "$\\forall G$ triangle-free with $\\chi(G) = \\infty$, $\\forall n$, $\\forall T \\in \\text{FiniteTree}(n)$: $G \\supseteq_{\\text{ind}} T$."
     },
     {
       "id": "partial",
       "title": "Known Partial Results",
       "startLine": 65,
       "endLine": 99,
-      "summary": "Defines `pathGraph` and `starGraph` with proved `symm` and `loopless` properties. Axiomatizes `infinite_chrom_contains_paths` (all paths present), `infinite_chrom_contains_stars` (all stars present), and `kierstead_penrice_radius2` (radius-$2$ trees)."
+      "summary": "Defines `pathGraph` and `starGraph` with proved `symm` and `loopless` properties. Axiomatizes `infinite_chrom_contains_paths` (all paths present), `infinite_chrom_contains_stars` (all stars present), and `kierstead_penrice_radius2` (radius-$2$ trees).",
+      "mathContext": "Concrete constructions: $P_n$ (path on $n$ vertices, edges $\\{i, i+1\\}$) and $K_{1,n}$ (star with center $0$). Three axiomatized special cases covering the known partial results."
     },
     {
       "id": "structural",
-      "title": "Structural Observations",
+      "title": "Structural Observations and Reductions",
       "startLine": 101,
       "endLine": 141,
-      "summary": "Axiomatizes local tree-like structure (`triangle_free_large_chrom_local_tree`), the finite version `gyarfas_finite_version` (with explicit threshold $N$), Scott's caterpillar result, and the `finite_implies_infinite_version` theorem reducing the infinite case to finite bounds."
+      "summary": "Axiomatizes local tree-like structure (`triangle_free_large_chrom_local_tree`), the finite version `gyarfas_finite_version` (with explicit threshold $N$), Scott's caterpillar result, and the `finite_implies_infinite_version` theorem reducing the infinite case to finite bounds.",
+      "mathContext": "Key structural result: $\\forall k$, $\\exists v$ such that all neighbors $w \\sim v$ satisfy $\\chi(G[N(w)]) > k$. Finite version: $\\forall T$, $\\exists N(T)$ such that $\\chi(G) > N(T) \\implies G \\supseteq_{\\text{ind}} T$."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #738 (Gyárfás conjecture) is formalized with concrete graph constructions (paths, stars), the main conjecture, three axiomatized partial results, and the finite-to-infinite reduction. The file has 0 sorries but relies on 6 axioms for the deep results.",
+    "summary": "Erdős Problem #738 (Gyárfás conjecture) is formalized with concrete graph constructions (paths, stars with proved properties), the main conjecture, five axiomatized partial results, and the finite-to-infinite reduction theorem. The file has 0 sorries but relies on 7 axioms for the deep results.",
     "implications": "A resolution would advance the theory of $\\chi$-bounded graph classes, establishing that triangle-free graphs with unbounded chromatic number are 'structurally rich' enough to contain all finite trees. This would extend the classical Ramsey-theoretic understanding of graph coloring to induced subgraph containment, with applications to graph decomposition and structural graph theory.",
     "openQuestions": [
       "Does every triangle-free graph with $\\chi(G) = \\infty$ contain every finite tree as an induced subgraph?",
@@ -100,24 +146,24 @@
   },
   "crossReferences": [
     {
-      "targetId": "ramsey-theory",
-      "relationship": "related",
-      "description": "Ramsey-type arguments underlie the path and star special cases, and connect chromatic number to induced subgraph structure"
+      "targetId": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "Ramsey-type arguments underlie the path and star special cases; the Ramsey theorem connects chromatic number to induced subgraph structure"
     },
     {
       "targetId": "four-color-theorem",
-      "relationship": "related",
-      "description": "Graph coloring theory provides the foundation; the four-color theorem concerns planar graphs while this concerns triangle-free graphs"
+      "relationship": "thematic",
+      "description": "Graph coloring theory provides the foundation; the four-color theorem concerns planar graphs while this concerns triangle-free graphs with unbounded chromatic number"
     },
     {
-      "targetId": "erdos-hajnal-conjecture",
+      "targetId": "erdos-1011",
       "relationship": "related",
-      "description": "The Erdős-Hajnal conjecture relates forbidden induced subgraphs to large cliques or independent sets, a parallel structural question"
+      "description": "Problem #1011 studies triangles in graphs with high chromatic number — the complementary perspective to triangle-free graphs with high χ"
     }
   ],
   "relatedProofs": [
-    "ramsey-theory",
+    "ramseys-theorem",
     "four-color-theorem",
-    "erdos-hajnal-conjecture"
+    "erdos-1011"
   ]
 }

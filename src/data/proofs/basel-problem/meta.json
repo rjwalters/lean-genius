@@ -47,8 +47,9 @@
       "Bounds on partial sums and rate of convergence",
       "Historical context on Euler's original sin(x) factorization approach"
     ],
-    "dateAdded": "12/26/25",
-    "axiomCount": 0
+    "dateAdded": "2025-12-26",
+    "axiomCount": 0,
+    "lineCount": 164
   },
   "overview": {
     "historicalContext": "The Basel Problem was posed by Pietro Mengoli in 1650 and named after Basel, the hometown of the Bernoulli family who publicized it. Jakob Bernoulli himself tried and failed to find the sum, knowing only that $\\sum 1/n^2 < 2$. In 1734, the 27-year-old Leonhard Euler stunned the mathematical world by proving $\\sum 1/n^2 = \\pi^2/6$. His original proof used a daring factorization of $\\sin(x)/x$ as an infinite product $\\prod(1 - x^2/n^2\\pi^2)$, then compared the $x^2$ coefficient with the Taylor expansion — a method that was brilliant but not fully rigorous by modern standards. Euler's manipulation anticipated the Weierstrass factorization theorem by over a century. The result was later proved rigorously via Fourier analysis: Parseval's identity applied to a suitable function yields the Basel sum directly. Euler went on to compute $\\zeta(2k)$ for all positive integers $k$, discovering the general formula involving Bernoulli numbers. Today the Basel identity is recognized as $\\zeta(2) = \\pi^2/6$, the simplest special value of the Riemann zeta function, connecting a sum over integers to the transcendental number $\\pi$ and hinting at the deep links between number theory and analysis that would later inspire Riemann's 1859 memoir on primes.",

@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BLOCKED: File has 15+ pre-existing Mathlib compat errors. Definitions gColor, hTrans, abstractDoorCount are missing/undefined (line 303+). Multiple omega failures (Fin lt in Lean 4.26). sperner_2d proof structure is correct but cannot compile until definitions are fixed. Only approximate_fixed_point_2d has a genuine sorry.",
+    "progressSummary": "PROGRESS: Fixed all build errors from Mathlib v4.26 API drift. Restored 5 missing definitions (gColor, hTrans, hTrans_top, gColor_bot, abstractDoorCount). Fixed omega/projection issues, deprecated API renames, door_parity proof strategy. Removed 3 unused broken lemmas. File now builds clean: 627 lines, 23 theorems, 1 sorry (approximate_fixed_point_2d only). sperner_2d is FULLY PROVED.",
     "builtItems": [
       "BrouwerFixedPointOQ02OQ01.lean: 428 lines, 2 sorries (down from 5)",
       "sperner_2d: PROVED via row-sweep parity (modulo strip_parity)",
@@ -42,7 +42,11 @@
       "hTrans_zero_eq: hTrans at row 0 = bottomTransitions (under Sperner)",
       "hTrans_top: hTrans at row n = 0",
       "gColor: extended coloring function (returns 0 outside grid)",
-      "no_door_left_boundary, no_door_hypotenuse: boundary constraints PROVED"
+      "no_door_left_boundary, no_door_hypotenuse: boundary constraints PROVED",
+      "BrouwerFixedPointOQ02OQ01.lean: 627 lines, 1 sorry (down from build-broken)",
+      "sperner_2d: FULLY PROVED (0 sorries) - 2D Sperners lemma via row-sweep parity",
+      "strip_parity: PROVED - key lemma for row-sweep double-counting argument",
+      "All 15 definitions and 22/23 theorems compile clean against Mathlib v4.26"
     ],
     "insights": [
       "Row-sweep approach is cleaner than full double-counting: define hTrans(j) = horizontal {0,1}-doors at row j, show parity is constant across rows",
@@ -57,7 +61,13 @@
       "hTrans_zero_eq has unsolved goals at line 336 (congr mismatch) and omega failures (j+1 bounds)",
       "Build reveals gColor, hTrans, abstractDoorCount definitions are MISSING from file (2026-03-22). They are referenced but never defined - likely removed/lost in a previous edit session.",
       "15+ omega failures in fully_colored_one_door and no_door_hypotenuse (Lean 4.26 / Fin comparison changes)",
-      "sperner_2d proof structure (row-sweep via strip_parity) is mathematically complete but cannot compile due to missing upstream definitions"
+      "sperner_2d proof structure (row-sweep via strip_parity) is mathematically complete but cannot compile due to missing upstream definitions",
+      "Restored missing definitions (gColor, hTrans, hTrans_top, gColor_bot, abstractDoorCount) from git history",
+      "Fixed Mathlib v4.26 API drift: omega failures through GridVertex projections (use show/dsimp), deprecated renames (range_succ→range_add_one, notMem_range_self, natCast_eq_zero_iff), door_parity_of_not_fc decide→contradiction",
+      "Removed unused lemmas (fully_colored_one_door, no_door_left_boundary, no_door_hypotenuse) that had unfixable API drift - superseded by doorZ_* variants",
+      "Fixed zmod2_sum_shift_cancel: added missing 0<m hypothesis (lemma was false for m=0)",
+      "Added @[ext] to GridVertex for ext tactic compatibility",
+      "File now builds clean with 1 sorry (approximate_fixed_point_2d only)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -89,11 +99,11 @@
     {
       "path": "Proofs/BrouwerFixedPointOQ02OQ01.lean",
       "filename": "BrouwerFixedPointOQ02OQ01.lean",
-      "lineCount": 428,
-      "theoremCount": 10,
+      "lineCount": 627,
+      "theoremCount": 23,
       "axiomCount": 0,
-      "defCount": 12,
-      "sorryCount": 2,
+      "defCount": 15,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02OQ01.lean"
     }

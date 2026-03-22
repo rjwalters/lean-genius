@@ -1869,31 +1869,7 @@ theorem tateObject_component_top :
 def TateObject.idMorphism : HodgeStructureMorphism TateObject TateObject :=
   HodgeStructureMorphism.id TateObject
 
-/-- **Tate twist of a Hodge structure** (axiomatized)
-
-    For a pure Hodge structure H of weight k and a natural number n,
-    H(n) is a pure Hodge structure of weight k + 2n (in our ℕ model)
-    with the same underlying spaces but shifted Hodge components:
-    H(n)^{p,q} = H^{p+n, q+n}.
-
-    The twist corresponds to tensoring with ℚ(n), the n-th power of
-    the Tate object. Since ℚ(n) is 1-dimensional, the underlying
-    spaces don't change.
-
-    **Why axiomatized?** The precise tensor product construction with
-    ℚ(n) requires careful handling of TensorProduct in Mathlib, which
-    is technically involved for a 1-dimensional twist. The mathematical
-    content is straightforward: just shift the indices. -/
-axiom tateTwist (k n : ℕ) (H : PureHodgeStructure k) :
-    PureHodgeStructure (k + 2 * n)
-
-/-- Tate twist shifts Hodge components: H(n)^{p,q} = H^{p+n, q+n}.
-    We prove: the shifted indices (p-n) + (q-n) = k, witnessing that
-    the Tate twist correctly maps weight-(k+2n) bidegree (p,q) back
-    to weight-k bidegree (p-n, q-n). -/
-theorem tateTwist_component (k n : ℕ) (H : PureHodgeStructure k)
-    (p q : ℕ) (hpq : p + q = k + 2 * n) (hp : n ≤ p) (hq : n ≤ q) :
-    (p - n) + (q - n) = k := by omega
+-- tateTwist and tateTwist_component removed: unused in any proof
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XVI-C: DUAL HODGE STRUCTURE
@@ -2275,14 +2251,7 @@ axiom tensorHodge {k₁ k₂ : ℕ}
     (H₂ : PureHodgeStructure k₂) :
     PureHodgeStructure (k₁ + k₂)
 
-/-- The **Tate Hodge structure** ℚ(0): the unit for tensor product.
-
-    This is a weight-0 Hodge structure with VQ = ℚ and all mass
-    in H^{0,0}. It serves as the unit for the tensor product:
-    H ⊗ ℚ(0) ≅ H. -/
-axiom tateStructure : PureHodgeStructure 0
-
--- tateTwistObj removed: was unused and the Tate twist is already captured by tateTwist above
+-- tateStructure removed: unused in any proof (was only #checked)
 
 /-- The evaluation map: H ⊗ H* → ℚ(0) is a morphism of Hodge structures.
     This gives the rigid structure of the tensor category. -/
@@ -2310,10 +2279,8 @@ behaves under products: if HC holds for X and Y, does it hold for X × Y?
     product Hodge structure, making the existential witness trivial. -/
 theorem kuenneth_formula (X Y : ProjectiveVariety) (k : ℕ)
     (H_X : PureHodgeStructure k) (H_Y : PureHodgeStructure k) :
-    ∃ (H_XY : PureHodgeStructure (k + k)),
-    ∃ φ : HodgeStructureMorphism (tensorHodge H_X H_Y) H_XY,
-    True := by
-  exact ⟨tensorHodge H_X H_Y, HodgeStructureMorphism.id (tensorHodge H_X H_Y), trivial⟩
+    ∃ (_ : PureHodgeStructure (k + k)), True :=
+  ⟨tensorHodge H_X H_Y, trivial⟩
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XI: HODGE NUMBERS AND NUMERICAL INVARIANTS
@@ -3460,21 +3427,7 @@ noncomputable def deligne_exact_sequence (X : ProjectiveVariety) (p : ℕ)
     IntermediateJacobian X p :=
   intermediate_jacobian_exists X p hp hp'
 
-/-- **Axiom: Cycle class lifts to Deligne cohomology.**
-
-The cycle class map cl : CH^p(X) → H^{2p}(X,ℤ) lifts to the
-Deligne cycle class cl_D : CH^p(X) → H^{2p}_D(X, ℤ(p)).
-
-This lift encodes more information than the classical cycle class:
-- For homologically trivial cycles, cl_D gives the Abel-Jacobi invariant
-- cl_D is functorial for morphisms of varieties
-
-**Why an axiom?** Requires integration of holomorphic forms and
-the construction of currents associated to algebraic cycles. -/
-axiom deligne_cycle_class (X : ProjectiveVariety) (p : ℕ)
-    (hp : p ≤ X.dim) (HD : DeligneCohomology X (2 * p) p)
-    (Z : AlgebraicCycle X p) :
-    HD.carrier
+-- deligne_cycle_class removed: unused in any proof (was only #checked)
 
 /-- **PROVED: Deligne cohomology exists for codimension 1 (line bundles).**
 
@@ -3959,8 +3912,7 @@ PART XVIII-FINAL: SUMMARY OF ALL RESULTS
 
 -- Tensor product
 #check tensorHodge                    -- H₁ ⊗ H₂ (Hodge structure)
-#check tateStructure                  -- ℚ(0) (unit)
-#check tateTwist                      -- ℚ(n) (Tate twist)
+-- tateStructure, tateTwist removed (unused)
 
 -- Dual
 #check dualHodge                      -- H* (dual Hodge structure)
@@ -4106,7 +4058,6 @@ PART XVIII-FINAL: SUMMARY OF ALL RESULTS
 #check TateObject                      -- ℚ(1) as weight-0 structure
 #check tateObject_rational_is_Q        -- VQ = ℚ
 #check tateObject_component_top        -- concentrated in (0,0)
-#check tateTwist                       -- H(n) twist operation
 -- Dual Hodge structures
 #check dualHodge                       -- H* dual structure
 #check dualHodge_involution            -- H** ≅ H
@@ -4169,7 +4120,7 @@ PART XVIII-FINAL: SUMMARY OF ALL RESULTS
 -- Deligne cohomology
 #check DeligneCohomology                 -- H^k_D(X, ℤ(p))
 #check deligne_exact_sequence            -- 0 → J^p → H_D → Hdg → 0
-#check deligne_cycle_class               -- cl_D : CH^p → H_D
+-- deligne_cycle_class removed (unused)
 #check deligne_codim1_is_picard          -- PROVED: H^2_D = Pic
 #check deligne_projects_to_classical     -- PROVED: π ∘ cl_D = cl
 
@@ -4523,7 +4474,7 @@ theorem motivic_to_k_theory (X : ProjectiveVariety) :
     -- connects motivic and K-theory.
     -- We prove: every variety carries a canonical MHS (Deligne), which is the
     -- foundational link between motivic cohomology and classical cohomology.
-    Nonempty MixedHodgeStructure :=
+    Nonempty MixedHodgeStructure.{0} :=
   ⟨deligne_mixed_hodge_structure X⟩
 
 /-- **Axiom: The cycle class map factors through motivic cohomology.**

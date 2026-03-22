@@ -45,7 +45,8 @@
       "Connection to Eisenstein series and modular functions explained",
       "Lambert series alternative representation defined"
     ],
-    "axiomCount": 3
+    "axiomCount": 3,
+    "lineCount": 173
   },
   "overview": {
     "historicalContext": "**Erdos's Question on Divisor Sum Series**\n\nErdos posed the question of whether $\\sum_{n=1}^{\\infty} \\sigma(n)/2^n$ is irrational, where $\\sigma(n) = \\sum_{d|n} d$ is the sum of divisors function. This was part of his broader program of asking whether specific naturally-occurring constants are irrational -- a notoriously difficult class of problems in number theory.\n\n**Why Is This Hard?**\nProving irrationality of explicitly defined real numbers is one of the hardest tasks in mathematics. Even for seemingly simple constants, proofs often require deep structural insights. Euler proved $e$ is irrational in 1737; Lambert proved $\\pi$ is irrational in 1768. But many constants formed from arithmetic functions resist all known approaches. Erdos's question about the sigma series seemed intractable until a breakthrough from an unexpected direction.\n\n**Nesterenko's Revolution (1996):**\nYuri Nesterenko resolved the problem as a consequence of his landmark work on algebraic independence of values of modular functions. His main theorem (Mat. Sb. 187, 1996) established that for algebraic $q$ with $0 < |q| < 1$, the three Ramanujan-Eisenstein series $P(q)$, $Q(q)$, $R(q)$ are algebraically independent over $\\mathbb{Q}$. Since $\\sum \\sigma(n)/2^n = (1 - P(1/2))/24$, the transcendence of $P(1/2)$ immediately gives transcendence (hence irrationality) of the sigma series.\n\n**Broader Impact:**\nNesterenko's methods also proved the algebraic independence of $\\pi$, $e^\\pi$, and $\\Gamma(1/4)$ -- one of the deepest results in transcendental number theory, settling questions that had been open since Hilbert's 7th problem (1900). The sigma series irrationality was, in a sense, an easy corollary of a far deeper theorem.",
@@ -60,6 +61,13 @@
     ]
   },
   "sections": [
+    {
+      "id": "header-setup",
+      "title": "Module Header and Problem Statement",
+      "startLine": 1,
+      "endLine": 24,
+      "summary": "Documents Erdős Problem #250: is Σ σ(n)/2^n irrational? Solved by Nesterenko (1996) who proved the stronger result that the sum is transcendental, as a corollary of algebraic independence of Ramanujan-Eisenstein series P(q), Q(q), R(q) at algebraic q. Imports Mathlib for arithmetic functions and analysis."
+    },
     {
       "id": "background",
       "title": "Background and Definitions",

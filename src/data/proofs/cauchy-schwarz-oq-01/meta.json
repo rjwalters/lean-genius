@@ -74,8 +74,9 @@
         "note": "Independent discovery of the integral form"
       }
     ],
-    "dateAdded": "02/24/26",
-    "axiomCount": 0
+    "dateAdded": "2026-02-24",
+    "axiomCount": 0,
+    "lineCount": 138
   },
   "overview": {
     "historicalContext": "**From Real to Complex: Extending Cauchy-Schwarz**\n\nThe classical Cauchy-Schwarz inequality for real inner product spaces states:\n$$|\\langle u, v \\rangle| \\leq \\|u\\| \\cdot \\|v\\|$$\n\nFor complex inner product spaces, the inner product $\\langle u, v \\rangle_\\mathbb{C}$ is **sesquilinear**: conjugate-linear in the first argument, linear in the second. The generalization requires the complex modulus:\n$$\\|\\langle u, v \\rangle_\\mathbb{C}\\| \\leq \\|u\\| \\cdot \\|v\\|$$\n\n**The Open Question**: Can the existing real Cauchy-Schwarz formalization be extended to complex inner product spaces using Mathlib's `inner_mul_le_norm_mul_norm`?\n\n**The Answer**: YES — and even more is true. Mathlib's `norm_inner_le_norm` works uniformly for any field `𝕜` satisfying `[RCLike 𝕜]`, which includes both `ℝ` and `ℂ`. The complex case requires no additional work beyond what Mathlib already provides.",
@@ -85,7 +86,8 @@
       "**RCLike Unification**: Mathlib's `[RCLike 𝕜]` typeclass abstracts over ℝ and ℂ simultaneously. The Cauchy-Schwarz `norm_inner_le_norm` works for both without any case split.",
       "**No Extra Proof**: The complex case requires zero additional mathematical work. The `open scoped InnerProductSpace` notation opens `⟪·,·⟫_𝕜` and `norm_inner_le_norm` does the rest.",
       "**Conjugate-linearity is handled**: In Mathlib, complex inner products are built with conjugate-linearity in the first argument by convention. The `norm_inner_le_norm` inequality correctly bounds the complex modulus, handling the conjugation automatically.",
-      "**Self-inner product elaboration**: `inner_self_eq_norm_sq_to_K` gives `⟪u,u⟫_𝕜 = (↑‖u‖)^2` where the coercion is `‖u‖ : ℝ → 𝕜`. For `𝕜 = ℂ`, this is `(↑‖u‖ : ℂ)^2 = (Complex.ofReal ‖u‖)^2`, whose imaginary part is 0 by `Complex.mul_im` and `Complex.ofReal_im`."
+      "**Self-inner product elaboration**: `inner_self_eq_norm_sq_to_K` gives `⟪u,u⟫_𝕜 = (↑‖u‖)^2` where the coercion is `‖u‖ : ℝ → 𝕜`. For `𝕜 = ℂ`, this is `(↑‖u‖ : ℂ)^2 = (Complex.ofReal ‖u‖)^2`, whose imaginary part is 0 by `Complex.mul_im` and `Complex.ofReal_im`.",
+      "**Concrete instantiation**: The EuclideanSpace ℝ n specialization demonstrates that abstract inner product theorems apply to $\\mathbb{R}^n$ with the standard dot product, bridging abstract and concrete linear algebra"
     ]
   },
   "sections": [

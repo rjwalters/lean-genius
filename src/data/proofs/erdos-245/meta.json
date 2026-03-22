@@ -21,7 +21,8 @@
     "erdosNumber": 245,
     "erdosUrl": "https://erdosproblems.com/245",
     "erdosProblemStatus": "solved",
-    "axiomCount": 3
+    "axiomCount": 3,
+    "lineCount": 187
   },
   "overview": {
     "historicalContext": "This problem explores how sumsets grow relative to the original set for sparse sequences. Erdos observed that for sets A with zero density (meaning |A cap {1,...,N}| = o(N)), the sumset A+A grows faster than A itself.\n\nErdos noted it is 'easy to see' that the growth ratio is at least 2, citing Mann's 1960 work on sumset densities. However, he conjectured the sharp bound is 3, which was proved by G.A. Freiman in his foundational 1973 monograph 'Foundations of a structural theory of set addition.'\n\nFreiman's work on this problem was part of his broader development of additive combinatorics, including what is now called Freiman's theorem on sets with small doubling constants.",
@@ -31,7 +32,8 @@
       "**Zero density sets**: A set has zero density if its counting function grows slower than linear - examples include primes, squares, and geometric progressions",
       "**Sumset growth**: For sparse sets, A+A = {a+b : a,b in A} tends to grow faster than A because there's 'room to spread'",
       "**The bound 3 is optimal**: Powers of 2 achieve the minimal growth ratio of 3 asymptotically",
-      "**Connection to Freiman's structure theory**: This result is part of Freiman's broader program understanding sets with small doubling"
+      "**Connection to Freiman's structure theory**: This result is part of Freiman's broader program understanding sets with small doubling",
+      "**Mann's 1960 bound of 2**: The easier bound follows from basic counting — each element of $A$ contributes at least itself and itself+min(A) to $A+A$, giving doubling, while Freiman's strengthening to 3 requires deeper structural analysis"
     ]
   },
   "sections": [

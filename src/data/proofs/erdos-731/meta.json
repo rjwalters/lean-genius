@@ -20,7 +20,41 @@
     "erdosNumber": 731,
     "erdosUrl": "https://erdosproblems.com/731",
     "erdosProblemStatus": "open",
-    "axiomCount": 12
+    "axiomCount": 12,
+    "lineCount": 115,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficient C(n,k) used to define centralBinom",
+        "module": "Mathlib.Data.Nat.Choose.Central"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate used in divisibility axioms",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.find",
+        "description": "Well-ordering principle used to define leastNonDivisor",
+        "module": "Mathlib.Order.WellFounded"
+      }
+    ],
+    "references": [
+      {
+        "authors": "P. Erdős, R. L. Graham, I. Z. Ruzsa, E. G. Straus",
+        "title": "On the prime factors of $\\binom{2n}{n}$",
+        "year": "1975",
+        "venue": "Mathematische Zeitschrift, 148(3), pp. 287-295",
+        "note": "Establishes the heuristic m = exp((log n)^{1/2+o(1)}) for the least non-divisor via Kummer's theorem and digit structure"
+      },
+      {
+        "authors": "E. E. Kummer",
+        "title": "Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen",
+        "year": "1852",
+        "venue": "Journal für die reine und angewandte Mathematik, 44, pp. 93-146",
+        "note": "Proves that v_p(C(m+n,m)) equals the number of carries in base-p addition of m and n"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "Erdős, Graham, Ruzsa, and Straus (1975) studied the divisibility properties of central binomial coefficients $\\binom{2n}{n}$ and observed that the least integer not dividing $\\binom{2n}{n}$ is typically $\\exp((\\log n)^{1/2+o(1)})$. This observation connects deeply to Kummer's theorem (1852), which states that $v_p(\\binom{m+n}{m})$ equals the number of carries in base-$p$ addition of $m$ and $n$. For $\\binom{2n}{n}$, the carries arise when doubling $n$ in base $p$, which happens precisely when some base-$p$ digit of $n$ is $\\geq \\lceil p/2 \\rceil$. The heuristic is that a random $n$ has each base-$p$ digit independently uniform, so the probability of no carry (and hence $p \\nmid \\binom{2n}{n}$) is approximately $(1/2)^{\\log n/\\log p}$, which transitions from negligible to significant when $\\log p \\approx (\\log n)^{1/2}$. The sequence of least non-divisors appears as OEIS A006197.",
@@ -35,6 +69,13 @@
     ]
   },
   "sections": [
+    {
+      "id": "header",
+      "title": "Preamble: Problem Context and Imports",
+      "startLine": 1,
+      "endLine": 24,
+      "summary": "File docstring establishing the problem: find f(n) approximating the least m with m ∤ C(2n,n). Cites the EGRS (1975) result m = exp((log n)^{1/2+o(1)}), Kummer's theorem on carries, and OEIS A006197. Imports Mathlib.Data.Nat.Choose.Central for central binomial coefficients, Mathlib.Data.Nat.Prime.Basic for primality, and Mathlib.Tactic for proof automation."
+    },
     {
       "id": "definitions",
       "title": "Core Definitions",

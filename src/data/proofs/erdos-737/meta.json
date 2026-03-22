@@ -49,7 +49,8 @@
       "thomassen_1983 axiom: edge in all large cycles",
       "isUniversalCycleEdge: edge characterization"
     ],
-    "axiomCount": 5
+    "axiomCount": 5,
+    "lineCount": 154
   },
   "overview": {
     "historicalContext": "**Erdős Problem #737**\n\nThis problem connects the chromatic number of infinite graphs to their cycle structure.\n\n**History:**\n- Erdős, Hajnal, and Shelah (1974) posed the problem and proved that graphs with χ(G) = ℵ₁ contain all sufficiently large cycles\n- They asked whether the cycles could all pass through a single edge\n- Thomassen (1983) proved YES in a short paper in Combinatorica\n\n**Context:** The uncountable chromatic number ℵ₁ is a critical threshold. Finite or countably infinite chromatic number doesn't give this strong cycle property.",

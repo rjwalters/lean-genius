@@ -81,7 +81,8 @@
         "note": "Modern treatment of the Wantzel-Galois constructibility criterion using the tower law, paralleling this formalization's approach"
       }
     ],
-    "dateAdded": "03/21/26",
+    "dateAdded": "2026-03-21",
+    "lineCount": 115,
     "axiomCount": 0
   },
   "overview": {
@@ -98,32 +99,44 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "File Header and Imports",
+      "startLine": 1,
+      "endLine": 20,
+      "summary": "Module docstring describing the file's contribution (proving galois_2group_implies_degree_pow2 from Mathlib), imports for Mathlib and the parent OQ-01 file, and opening the Polynomial and IntermediateField namespaces.",
+      "mathContext": "Imports bring into scope the key Mathlib APIs: `Polynomial.Gal` (Galois group of a polynomial), `IsPGroup` (p-group characterization), `IntermediateField` (tower of field extensions), and `SplittingField` (splitting field construction). From OQ-01: `dvd_pow_two_is_pow_two` ($d > 0 \\wedge d \\mid 2^n \\Rightarrow d = 2^k$)."
+    },
+    {
       "id": "natdegree-dvd-gal",
       "title": "Part I: natDegree Divides |Gal| for Irreducible Polynomials",
       "startLine": 22,
       "endLine": 58,
-      "summary": "The central generalization: for any irreducible polynomial p over a CharZero field F, natDegree(p) divides |Gal(p)|. Proved via the tower law on F ⊂ F(α) ⊂ SplittingField(p), using rootOfSplits to construct a root α, then showing minpoly(F,α) and p are associates (both irreducible, one divides the other). Generalizes Mathlib's prime_degree_dvd_card to all degrees."
+      "summary": "The central generalization: for any irreducible polynomial p over a CharZero field F, natDegree(p) divides |Gal(p)|. Proved via the tower law on F ⊂ F(α) ⊂ SplittingField(p), using rootOfSplits to construct a root α, then showing minpoly(F,α) and p are associates (both irreducible, one divides the other). Generalizes Mathlib's prime_degree_dvd_card to all degrees.",
+      "mathContext": "Tower law: $[L:F] = [L:K] \\cdot [K:F]$ applied to $F \\subseteq F(\\alpha) \\subseteq \\text{SplittingField}(p)$ yields $|\\text{Gal}(p)| = [\\text{SplittingField}:F(\\alpha)] \\cdot \\text{natDegree}(p)$, so $\\text{natDegree}(p) \\mid |\\text{Gal}(p)|$. The equality $[F(\\alpha):F] = \\text{natDegree}(p)$ follows from $\\text{minpoly}(F,\\alpha) \\sim p$ (associates in the UFD $F[X]$)."
     },
     {
       "id": "2group-degree-divisibility",
       "title": "Part II: 2-Group Galois → Degree Divides 2^n",
       "startLine": 60,
       "endLine": 82,
-      "summary": "Two theorems chaining the Part I result with 2-group theory: (1) galois_2group_implies_degree_pow2 — if Gal(minpoly(ℚ,α)) is a 2-group then natDegree divides 2^n, and (2) galois_2group_implies_degree_is_pow2 — the stronger result that natDegree IS a power of 2, using OQ-01's dvd_pow_two_is_pow_two. Together these eliminate the axiom galois_2group_implies_degree_pow2 from OQ-02."
+      "summary": "Two theorems chaining the Part I result with 2-group theory: (1) galois_2group_implies_degree_pow2 — if Gal(minpoly(ℚ,α)) is a 2-group then natDegree divides 2^n, and (2) galois_2group_implies_degree_is_pow2 — the stronger result that natDegree IS a power of 2, using OQ-01's dvd_pow_two_is_pow_two. Together these eliminate the axiom galois_2group_implies_degree_pow2 from OQ-02.",
+      "mathContext": "$\\text{IsPGroup}\\; 2\\; G \\iff |G| = 2^n$. Combined with $\\text{natDegree}(p) \\mid |\\text{Gal}(p)|$: $\\text{natDegree} \\mid 2^n$. Since $\\text{natDegree} > 0$ (irreducible), the number-theoretic lemma $d > 0 \\wedge d \\mid 2^n \\Rightarrow d = 2^k$ gives $\\text{natDegree} = 2^k$."
     },
     {
       "id": "oq02-to-oq01-bridge",
       "title": "Part III: Connecting OQ-02 to OQ-01",
       "startLine": 84,
       "endLine": 100,
-      "summary": "Defines IsConstructibleFromQ (reproduced from OQ-02 for self-containedness) and proves galois_criterion_implies_degree_criterion: the Galois criterion (2-group Gal) implies the degree criterion (degree = 2^k). This bridges the two characterizations of constructibility."
+      "summary": "Defines IsConstructibleFromQ (reproduced from OQ-02 for self-containedness) and proves galois_criterion_implies_degree_criterion: the Galois criterion (2-group Gal) implies the degree criterion (degree = 2^k). This bridges the two characterizations of constructibility.",
+      "mathContext": "$\\alpha$ is constructible $\\iff \\exists K,\\; \\mathbb{Q} \\subseteq K \\subseteq \\mathbb{R},\\; [K:\\mathbb{Q}] = 2^n,\\; \\alpha \\in K$. The bridge theorem: $\\text{IsPGroup}\\; 2\\; \\text{Gal}(\\text{minpoly}(\\mathbb{Q}, \\alpha)) \\Rightarrow \\text{natDegree}(\\text{minpoly}(\\mathbb{Q}, \\alpha)) = 2^k$, connecting the Galois-theoretic criterion (OQ-02) to the degree-theoretic criterion (OQ-01)."
     },
     {
       "id": "summary",
       "title": "Summary: Axiom Elimination",
       "startLine": 102,
       "endLine": 115,
-      "summary": "Summary of results: 4 theorems proved with 0 sorries and 0 axioms. Eliminates 1 of OQ-02's 6 axioms (galois_2group_implies_degree_pow2) by proving it from Mathlib's Polynomial.Gal infrastructure."
+      "summary": "Summary of results: 4 theorems proved with 0 sorries and 0 axioms. Eliminates 1 of OQ-02's 6 axioms (galois_2group_implies_degree_pow2) by proving it from Mathlib's Polynomial.Gal infrastructure.",
+      "mathContext": "Axiom scorecard: OQ-02 had 6 axioms. After this file, 5 remain. The eliminated axiom ($\\text{IsPGroup}\\; 2\\; \\text{Gal} \\Rightarrow \\text{natDegree} \\mid 2^n$) was the most tractable because it follows from the general tower law, whereas the remaining axioms require computing specific Galois group orders (e.g., $|\\text{Gal}(x^3 - 2)| = 6$)."
     }
   ],
   "conclusion": {

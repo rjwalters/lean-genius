@@ -78,7 +78,8 @@
         "relevance": "Original source of the conjecture (monograph on combinatorial number theory problems)"
       }
     ],
-    "axiomCount": 1
+    "axiomCount": 1,
+    "lineCount": 116
   },
   "overview": {
     "historicalContext": "This problem belongs to the rich tradition of **Egyptian fraction** problems — the study of representations of rationals as sums of distinct unit fractions $1/n$. The ancient Egyptians used such representations exclusively, and the modern study was revitalized by Erdős, who made dozens of conjectures about unit fraction sums.\n\nErdős and Graham posed this specific question in their influential 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory*. The conjecture seemed natural: if a set's reciprocal sum is below 2, the 'spare capacity' should allow a balanced bisection. This intuition works for most random sets but fails for carefully constructed ones.\n\nThe conjecture remained open for 17 years until Csaba Sándor disproved it in 1997 in his paper \"On a problem of Erdős\" published in the *Journal of Number Theory*. Sándor not only found a counterexample but proved a more general negative result: for every $n \\ge 2$, there exists a set with reciprocal sum $< n$ that resists $n$-partition.\n\nThe minimal counterexample set $\\{2, 3, 4, 5, 6, 7, 10, 11, 13, 14, 15\\}$ was discovered by Tom Stobart through computational search over subsets of $\\{2, \\ldots, 15\\}$. This 11-element set has reciprocal sum $4234829/2162160 \\approx 1.9586$, yet any partition into two parts must have at least one part with reciprocal sum $\\ge 1$. The gap of $2 - 1.9586 \\approx 0.041$ is precisely too small for any balanced split.",
@@ -101,11 +102,18 @@
       "summary": "Problem statement: can every finite $A \\subseteq \\mathbb{N} \\setminus \\{1\\}$ with $\\sum_{n \\in A} 1/n < 2$ be partitioned into two parts each with sum $< 1$? Answer: NO (Sándor 1997). References to Erdős–Graham 1980 monograph."
     },
     {
-      "id": "main-result",
-      "title": "Main Result",
+      "id": "counterexample-construction",
+      "title": "Counterexample Construction",
       "startLine": 25,
-      "endLine": 79,
-      "summary": "Defines $A = \\{2,3,4,5,6,7,10,11,13,14,15\\}$, proves $\\sum_{n \\in A} 1/n = 4234829/2162160 < 2$, verifies $0,1 \\notin A$, then exhaustively checks all $2^{11} = 2048$ subsets via `decide +kernel` to show no valid bipartition exists."
+      "endLine": 59,
+      "summary": "Introduces the counterexample set A = {2, 3, 4, 5, 6, 7, 10, 11, 13, 14, 15} with reciprocal sum 4234829/2162160 ≈ 1.9586 < 2. Describes the four-step proof strategy: exhibit, verify sum, exhaustively check all 2048 partitions."
+    },
+    {
+      "id": "exhaustive-verification",
+      "title": "Exhaustive Verification via decide+kernel",
+      "startLine": 60,
+      "endLine": 72,
+      "summary": "The erdos_316 theorem: constructs A, verifies sum < 2 via decide+kernel, then proves that for every B ⊆ A with ∑(1/n) < 1, the complement A \\ B has ∑(1/n) ≥ 1. The exhaustive check of 2048 subsets is dispatched by decide+kernel, producing a kernel-level proof certificate."
     },
     {
       "id": "multiset-variant",

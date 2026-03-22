@@ -101,7 +101,7 @@
         "note": "The kuṭṭaka (pulverizer) algorithm for linear Diophantine equations, independently equivalent to the extended Euclidean algorithm"
       }
     ],
-    "dateAdded": "03/06/26",
+    "dateAdded": "2026-03-06",
     "axiomCount": 0,
     "prerequisites": [
       "The Euclidean algorithm and GCD computation",
@@ -109,7 +109,8 @@
       "Coprimality and Euclid's lemma",
       "Commutative ring axioms and integral domains",
       "Lean 4 well-founded recursion and termination proofs"
-    ]
+    ],
+    "lineCount": 200
   },
   "overview": {
     "summary": "Combines the extended Euclidean algorithm with Bézout's identity to construct an explicit divisibility algorithm: given coprime a, b and a proof that a divides b*c, compute the quotient q = c/a. The core formula q = u*c + v*k (where u*a + v*b = 1 and b*c = a*k) works in any commutative ring, and is instantiated over ℕ/ℤ via the extended GCD.",

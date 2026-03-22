@@ -303,6 +303,13 @@ theorem lb_ge_after_right (s : State) (p : Path) :
   have h2 := lb_ge_eval s.right p
   omega
 
+/-- After going right, la ≥ la + ra (the parent's numerator sum). -/
+theorem la_ge_after_right (s : State) (p : Path) :
+    (eval s.right p).la ≥ s.la + s.ra := by
+  have h1 : s.right.la = s.la + s.ra := rfl
+  have h2 := la_ge_eval s.right p
+  omega
+
 /-- Key BST invariant: if det = 1 and the numerator sum < denominator sum,
     this inequality is preserved through all navigation steps.
     (Subtrees with value < 1 relative to parent stay that way.) -/
@@ -356,19 +363,113 @@ theorem num_gt_den_preserved (s : State) (p : Path) (hdet : s.det = 1)
         zify at hgt ⊢; nlinarith
       exact ih s.right hdet' hgt'
 
-/-- Different paths from the root yield different (num, den) pairs.
+/-- From det = 1, we have ra > 0. -/
+theorem ra_pos_of_det (s : State) (h : s.det = 1) : 0 < s.ra := by
+  simp only [State.det] at h; nlinarith
 
-    Proof strategy (not yet fully formalized):
-    1. Empty vs non-empty: after any step from a det=1 state, at least one
-       component strictly increases (la increases after R, rb increases after L).
-    2. L vs R from same state: the cross-product interval approach shows
-       left descendants have value < parent mediant and right descendants
-       have value > parent mediant. Requires proving the upper bound invariant
-       (ra*(parent.lb+rb) ≤ (parent.la+ra)*rb for left descendants) and using
-       mediant_strictly_between to chain the inequalities. -/
+/-- From det = 1, we have lb > 0. -/
+theorem lb_pos_of_det (s : State) (h : s.det = 1) : 0 < s.lb := by
+  simp only [State.det] at h; nlinarith
+
+/-- The value at any descendant lies strictly between the left and right ancestors
+    (in cross-multiplication form, avoiding division).
+    Part 1: la/lb < value(descendant)  — i.e., la · den(t) < num(t) · lb
+    Part 2: value(descendant) < ra/rb  — i.e., num(t) · rb < ra · den(t)
+
+    This is the key BST ordering invariant for the Stern-Brocot tree. -/
+theorem value_between_ancestors (s : State) (p : Path) (hdet : s.det = 1) :
+    (s.la : ℤ) * (↑(eval s p).lb + ↑(eval s p).rb) <
+      (↑(eval s p).la + ↑(eval s p).ra) * ↑s.lb ∧
+    (↑(eval s p).la + ↑(eval s p).ra) * ↑s.rb <
+      ↑s.ra * (↑(eval s p).lb + ↑(eval s p).rb) := by
+  induction p generalizing s with
+  | nil =>
+    simp only [eval]
+    simp only [State.det] at hdet
+    constructor <;> nlinarith
+  | cons d rest ih =>
+    cases d with
+    | L =>
+      obtain ⟨ih1, ih2⟩ := ih s.left (det_left s hdet)
+      simp only [eval, State.left] at ih1 ih2 ⊢
+      constructor
+      · exact ih1
+      · nlinarith
+    | R =>
+      obtain ⟨ih1, ih2⟩ := ih s.right (det_right s hdet)
+      simp only [eval, State.right] at ih1 ih2 ⊢
+      constructor
+      · nlinarith
+      · exact ih2
+
+/-- eval is injective from any state with det = 1. -/
+theorem eval_injective_gen (s : State) (p1 p2 : Path) (hdet : s.det = 1)
+    (h : eval s p1 = eval s p2) : p1 = p2 := by
+  induction p1 generalizing s p2 with
+  | nil =>
+    cases p2 with
+    | nil => rfl
+    | cons d rest =>
+      exfalso
+      cases d with
+      | L =>
+        simp only [eval] at h
+        have hrb := rb_ge_after_left s rest
+        have hlb := lb_pos_of_det s hdet
+        rw [← h] at hrb; omega
+      | R =>
+        simp only [eval] at h
+        have hla := la_ge_after_right s rest
+        have hra := ra_pos_of_det s hdet
+        rw [← h] at hla; omega
+  | cons d1 rest1 ih =>
+    cases p2 with
+    | nil =>
+      exfalso
+      cases d1 with
+      | L =>
+        simp only [eval] at h
+        have hrb := rb_ge_after_left s rest1
+        have hlb := lb_pos_of_det s hdet
+        rw [h] at hrb; omega
+      | R =>
+        simp only [eval] at h
+        have hla := la_ge_after_right s rest1
+        have hra := ra_pos_of_det s hdet
+        rw [h] at hla; omega
+    | cons d2 rest2 =>
+      cases d1 with
+      | L =>
+        cases d2 with
+        | L =>
+          simp only [eval] at h
+          exact congrArg (List.cons Dir.L) (ih s.left rest2 (det_left s hdet) h)
+        | R =>
+          exfalso
+          simp only [eval] at h
+          have hL := (value_between_ancestors s.left rest1 (det_left s hdet)).2
+          have hR := (value_between_ancestors s.right rest2 (det_right s hdet)).1
+          rw [h] at hL
+          simp only [State.left, State.right] at hL hR
+          linarith
+      | R =>
+        cases d2 with
+        | L =>
+          exfalso
+          simp only [eval] at h
+          have hR := (value_between_ancestors s.right rest1 (det_right s hdet)).1
+          have hL := (value_between_ancestors s.left rest2 (det_left s hdet)).2
+          rw [← h] at hL
+          simp only [State.left, State.right] at hR hL
+          linarith
+        | R =>
+          simp only [eval] at h
+          exact congrArg (List.cons Dir.R) (ih s.right rest2 (det_right s hdet) h)
+
+/-- Different paths from the root yield different states, hence different (num, den) pairs. -/
 theorem eval_injective (p1 p2 : Path) (h : evalPath p1 = evalPath p2) :
-    p1 = p2 := by
-  sorry
+    p1 = p2 :=
+  eval_injective_gen State.init p1 p2 det_init h
 
 -- ========================================================================
 -- Part VIII: Concrete Examples

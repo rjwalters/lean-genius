@@ -49,8 +49,9 @@
       "8 coprime factorization rules (6, 12, 15, 18, 36, 45, 60, 90)",
       "Digit-sum rules in 10+ bases (hex, octal, base 7, base 1000)"
     ],
-    "dateAdded": "02/10/26",
-    "axiomCount": 0
+    "dateAdded": "2026-02-10",
+    "axiomCount": 0,
+    "lineCount": 550
   },
   "overview": {
     "historicalContext": "Divisibility rules have been known since ancient times. This extension formalizes a comprehensive collection of such rules in Lean 4, going far beyond the basic divisibility-by-3 rule.\n\nThe rules fall into three families:\n1. **Last-k-digits rules**: When d divides the base power (e.g., 4|100), check the last k digits\n2. **Digit-sum rules**: When base ≡ 1 (mod d), check the digit sum\n3. **Truncation rules**: Reduce the number by removing a digit and adjusting (e.g., for 7 and 13)\n\nAll three families are unified through modular arithmetic.",

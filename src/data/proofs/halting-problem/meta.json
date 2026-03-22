@@ -22,7 +22,7 @@
       "Self-contained formalization of diagonal argument",
       "Demonstrates pure logical reasoning in Lean"
     ],
-    "dateAdded": "12/21/25",
+    "dateAdded": "2025-12-21",
     "axiomCount": 0
   },
   "overview": {
@@ -33,7 +33,8 @@
       "Self-reference plus negation creates undecidability",
       "The diagonal program 'does the opposite' of what the oracle predicts",
       "This is the same technique used in Cantor's uncountability proof and Godel's incompleteness",
-      "No amount of computational power can solve this - it's a logical impossibility"
+      "No amount of computational power can solve this - it's a logical impossibility",
+      "The halting problem establishes a hierarchy of undecidable problems via Turing reductions — any question about program behavior that is at least as hard as halting (e.g., Rice's theorem for non-trivial semantic properties) is also undecidable"
     ]
   },
   "sections": [
@@ -81,5 +82,37 @@
       "How do real-world static analyzers balance precision and recall?",
       "Can interactive systems (human + machine) solve undecidable problems?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Turing, Alan M.",
+      "title": "On Computable Numbers, with an Application to the Entscheidungsproblem",
+      "year": "1936",
+      "venue": "Proceedings of the London Mathematical Society, s2-42(1), pp. 230-265",
+      "note": "Foundational paper introducing Turing machines and proving the undecidability of the halting problem via diagonalization"
+    },
+    {
+      "authors": "Sipser, Michael",
+      "title": "Introduction to the Theory of Computation",
+      "year": "2012",
+      "venue": "Cengage Learning, 3rd edition",
+      "note": "Chapter 4 gives a modern treatment of the halting problem, its proof via diagonalization, and consequences including Rice's theorem"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "technique",
+      "description": "Both use the diagonal argument: Cantor constructs a real not in any enumeration, Turing constructs a program that any halting oracle gets wrong"
+    },
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "related",
+      "description": "Both are impossibility results about formal systems. Gödel shows no consistent system proves all truths; Turing shows no algorithm decides all halting questions"
+    }
+  ],
+  "relatedProofs": [
+    "cantor-diagonalization",
+    "godel-incompleteness"
+  ]
 }

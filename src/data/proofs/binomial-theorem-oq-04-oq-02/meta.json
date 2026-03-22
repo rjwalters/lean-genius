@@ -8,15 +8,37 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Vandermonde%27s_identity",
     "date": "1772",
     "status": "verified",
-    "tags": ["combinatorics", "algebra", "polynomials", "classic", "research"],
+    "tags": [
+      "combinatorics",
+      "algebra",
+      "polynomials",
+      "classic",
+      "research"
+    ],
     "proofRepoPath": "Proofs/BinomialTheoremOQ04OQ02.lean",
     "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
-      {"theorem": "Nat.add_choose_eq", "description": "Vandermonde identity (antidiagonal form)", "module": "Mathlib.Data.Nat.Choose.Sum"},
-      {"theorem": "Polynomial.coeff_mul", "description": "Cauchy product for polynomial coefficients", "module": "Mathlib.Algebra.Polynomial.Coeff"},
-      {"theorem": "pow_add", "description": "Monoid exponent law a^(m+n) = a^m · a^n", "module": "Mathlib.Algebra.Group.Defs"},
-      {"theorem": "Nat.choose_succ_succ", "description": "Pascal's rule for binomial coefficients", "module": "Mathlib.Data.Nat.Choose.Basic"}
+      {
+        "theorem": "Nat.add_choose_eq",
+        "description": "Vandermonde identity (antidiagonal form)",
+        "module": "Mathlib.Data.Nat.Choose.Sum"
+      },
+      {
+        "theorem": "Polynomial.coeff_mul",
+        "description": "Cauchy product for polynomial coefficients",
+        "module": "Mathlib.Algebra.Polynomial.Coeff"
+      },
+      {
+        "theorem": "pow_add",
+        "description": "Monoid exponent law a^(m+n) = a^m · a^n",
+        "module": "Mathlib.Algebra.Group.Defs"
+      },
+      {
+        "theorem": "Nat.choose_succ_succ",
+        "description": "Pascal's rule for binomial coefficients",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
     ],
     "originalContributions": [
       "Exponent law: (1+X)^(m+n) = (1+X)^m · (1+X)^n in ℕ[X]",
@@ -48,7 +70,7 @@
         "note": "Section 1.2.6: comprehensive treatment of binomial coefficient identities including Vandermonde"
       }
     ],
-    "dateAdded": "03/22/26",
+    "dateAdded": "2026-03-22",
     "axiomCount": 0,
     "crossReferences": [
       {
@@ -75,7 +97,8 @@
         "relationship": "related",
         "note": "Another deep structural property of Pascal's triangle derived from binomial coefficient identities"
       }
-    ]
+    ],
+    "lineCount": 111
   },
   "overview": {
     "historicalContext": "Vandermonde's identity $\\binom{m+n}{r} = \\sum_{i+j=r} \\binom{m}{i}\\binom{n}{j}$ was published by Alexandre-Théophile Vandermonde in 1772, though instances appear in Chu Shih-Chieh's 'Precious Mirror of the Four Elements' (1303). The identity is one of the most fundamental in combinatorics, encoding the fact that choosing $r$ items from $m+n$ objects is equivalent to choosing some from the first $m$ and the rest from the last $n$. The algebraic proof via coefficient comparison — factoring $(1+X)^{m+n}$ as $(1+X)^m \\cdot (1+X)^n$ and equating coefficients of $X^r$ — is perhaps the most elegant approach, reducing the combinatorial identity to the monoid law $a^{m+n} = a^m \\cdot a^n$ and the Cauchy product formula for polynomial multiplication. This proof technique, sometimes called the 'generating function method', has become a standard tool in algebraic combinatorics.",
@@ -90,12 +113,48 @@
     ]
   },
   "sections": [
-    {"id": "header", "title": "Module Documentation", "summary": "States the open question (can the algebraic coefficient-comparison proof be formalized?), outlines the four components, and lists references.", "startLine": 1, "endLine": 24},
-    {"id": "exponent-law", "title": "Exponent Law", "summary": "The polynomial identity (1+X)^(m+n) = (1+X)^m · (1+X)^n, proved in one line via pow_add — the monoid exponent law applied to ℕ[X].", "startLine": 28, "endLine": 36},
-    {"id": "vandermonde", "title": "Vandermonde's Identity", "summary": "The antidiagonal convolution formula C(m+n,r) = Σ_{i+j=r} C(m,i)·C(n,j) via Nat.add_choose_eq, plus the symmetry theorem.", "startLine": 38, "endLine": 54},
-    {"id": "cauchy", "title": "Cauchy Product Structure", "summary": "The Cauchy product formula, coefficient comparison principle, and the algebraic proof structure connecting all three layers.", "startLine": 56, "endLine": 77},
-    {"id": "corollaries", "title": "Corollaries", "summary": "Equal parameters case C(2n,r) = Σ C(n,i)·C(n,j) and Pascal's rule as the m=1 specialization of Vandermonde.", "startLine": 79, "endLine": 92},
-    {"id": "summary", "title": "Summary", "summary": "Packaging theorem bundling the exponent law, Vandermonde identity, and Cauchy product into a single conjunction.", "startLine": 94, "endLine": 111}
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "summary": "States the open question (can the algebraic coefficient-comparison proof be formalized?), outlines the four components, and lists references.",
+      "startLine": 1,
+      "endLine": 24
+    },
+    {
+      "id": "exponent-law",
+      "title": "Exponent Law",
+      "summary": "The polynomial identity (1+X)^(m+n) = (1+X)^m · (1+X)^n, proved in one line via pow_add — the monoid exponent law applied to ℕ[X].",
+      "startLine": 28,
+      "endLine": 36
+    },
+    {
+      "id": "vandermonde",
+      "title": "Vandermonde's Identity",
+      "summary": "The antidiagonal convolution formula C(m+n,r) = Σ_{i+j=r} C(m,i)·C(n,j) via Nat.add_choose_eq, plus the symmetry theorem.",
+      "startLine": 38,
+      "endLine": 54
+    },
+    {
+      "id": "cauchy",
+      "title": "Cauchy Product Structure",
+      "summary": "The Cauchy product formula, coefficient comparison principle, and the algebraic proof structure connecting all three layers.",
+      "startLine": 56,
+      "endLine": 77
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries",
+      "summary": "Equal parameters case C(2n,r) = Σ C(n,i)·C(n,j) and Pascal's rule as the m=1 specialization of Vandermonde.",
+      "startLine": 79,
+      "endLine": 92
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Packaging theorem bundling the exponent law, Vandermonde identity, and Cauchy product into a single conjunction.",
+      "startLine": 94,
+      "endLine": 111
+    }
   ],
   "conclusion": {
     "summary": "10 theorems proved with 0 sorries and 0 axioms. The algebraic proof of Vandermonde's identity via polynomial coefficient comparison is fully formalized, demonstrating how a single algebraic fact (the monoid exponent law) generates a fundamental combinatorial identity through the Cauchy product structure of polynomial multiplication.",

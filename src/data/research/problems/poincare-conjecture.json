@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BLOCKED: 35 axioms remain, all deep mathematical results. No Mathlib-provable targets found. Last elimination (37→35) was S1_cross_S2_closed via product charts. Remaining: Perelman (3), Smale/Freedman (2), topology primitives (ConnectedSum/PoincareHS/Whitehead/DehnSurgery: 14), covering space theory (1), 3-manifold theory (sphere3_not_contractible, irreducibility, JSJ, etc.: 15).",
+    "progressSummary": "PROGRESS: 3 unused axioms deleted (35→32). Remaining 32 axioms all used in proofs - deep mathematical results.",
     "builtItems": [
       "Proved perelman_entropy_monotone via concrete PerelmanWEntropy",
       "Proved perelman_surgery via reflexive witness",
@@ -253,7 +253,12 @@
       "Fixed sphere3_has_diameter_two (replaced missing sphere3_north/south refs)",
       "Fixed 3 duplicate declarations: binary_icosahedral_order_ssf, seifertS3_inv, seifertT3_inv",
       "Fixed 6 unused variable warnings and 1 redundant ring tactic",
-      "S1_cross_S2_closed: axiom→theorem via product charts (stereographic on S¹×S² + orthonormal basis ℝ¹×ℝ²≃ₜℝ³)"
+      "S1_cross_S2_closed: axiom→theorem via product charts (stereographic on S¹×S² + orthonormal basis ℝ¹×ℝ²≃ₜℝ³)",
+      {
+        "name": "PoincareConjecture axiom cleanup",
+        "description": "Removed 3 unused axioms (35→32). Pre-existing Mathlib compat errors at line 2704 unrelated.",
+        "proven": true
+      }
     ],
     "insights": [
       "Massive axiom reduction: 39 axioms converted to theorems/defs (115→76)",
@@ -416,7 +421,8 @@
       "All 35 remaining axioms classified as deep mathematical results (2026-03-22)",
       "Axiom categories: Perelman/Hamilton (3), generalized Poincare (3), topology types (14 across ConnectedSum/PHS/Whitehead/DehnSurgery), covering spaces (1), 3-manifold theory (14 across irreducibility/JSJ/surgery/foliations)",
       "IsIrreducible3Manifold defined as opaque - prevents trivial proof/disproof of irreducibility axioms",
-      "sphere3_not_contractible requires either homology (H_3 nontrivial), degree theory (identity has degree 1), or Brouwer fixed point (no retraction B^4 → S^3) - none available in Mathlib"
+      "sphere3_not_contractible requires either homology (H_3 nontrivial), degree theory (identity has degree 1), or Brouwer fixed point (no retraction B^4 → S^3) - none available in Mathlib",
+      "Deleted 3 unused axioms from PoincareConjecture.lean (35→32): connected_sum_assoc (comment-only), S1_cross_S2_not_irreducible (comment-only, previously flagged unsound), scalar_curvature_max_principle (comment-only)"
     ],
     "mathlibGaps": [
       "3-manifolds",

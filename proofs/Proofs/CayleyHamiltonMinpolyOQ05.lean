@@ -221,28 +221,12 @@ theorem minpoly_natDegree_tower_le (x : A) (hx : IsIntegral K x) :
 theorem minpoly_eq_map_of_irreducible [IsDomain A] [NoZeroSMulDivisors L A]
     (x : A) (hx : IsIntegral K x)
     (hirr : Irreducible ((minpoly K x).map (algebraMap K L))) :
-    minpoly L x = (minpoly K x).map (algebraMap K L) := by
-  have hxL : IsIntegral L x := hx.tower_top
-  have hdvd := minpoly_dvd_map_of_tower (L := L) x hx
-  have hirr_L := minpoly.irreducible hxL
-  -- Both irreducible: associated. Both monic: the unit is 1, so they're equal.
-  have hm1 := minpoly.monic hxL
-  have hm2 := (minpoly.monic hx).map (algebraMap K L)
-  have hassoc := hirr_L.associated_of_dvd hirr hdvd
-  obtain ⟨u, hu⟩ := hassoc
-  -- hu : minpoly L x * ↑u = map (algebraMap K L) (minpoly K x)
-  -- Show ↑u is monic (leadingCoeff = 1) from the product being monic
-  have hu_ne : (↑u : Polynomial L) ≠ 0 := Units.ne_zero u
-  have hu_lc : (↑u : Polynomial L).leadingCoeff = 1 := by
-    have h := congr_arg Polynomial.leadingCoeff hu
-    simp only [Polynomial.leadingCoeff_mul, hm1.leadingCoeff, one_mul,
-      hm2.leadingCoeff] at h
-    exact h
-  -- A monic unit polynomial must be 1
-  have : (↑u : Polynomial L) = 1 :=
-    Polynomial.Monic.eq_one_of_isUnit hu_lc ⟨u, rfl⟩
-  rw [this, mul_one] at hu
-  exact hu
+    minpoly L x = (minpoly K x).map (algebraMap K L) :=
+  -- The base-changed polynomial is irreducible, monic, and annihilates x.
+  -- By minimality of minpoly, it must equal the minimal polynomial over L.
+  (minpoly.eq_of_irreducible_of_monic hirr
+    (minpoly_map_aeval_eq_zero (L := L) x)
+    (minpoly_map_monic_tower x hx)).symm
 
 end AlgebraTower
 

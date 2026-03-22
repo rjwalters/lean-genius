@@ -40,7 +40,7 @@
       "Proof that complement of independent set is a clique transversal",
       "Formal statement of the Erdős-Gallai conjecture with K₄-free variant"
     ],
-    "dateAdded": "02/15/26",
+    "dateAdded": "2026-02-15",
     "relatedProblems": [
       {
         "id": "ramseys-theorem",
@@ -58,7 +58,8 @@
         "id": "four-color-theorem",
         "relationship": "Both involve graph coloring/independence structure; the four-color theorem guarantees large independent sets in planar graphs"
       }
-    ]
+    ],
+    "lineCount": 194
   },
   "overview": {
     "historicalContext": "Paul Erdős and Tibor Gallai proposed this conjecture connecting two fundamental graph-theoretic quantities: the clique transversal number $\\tau(G)$ and the triangle-free independence function $H(n)$. The function $H(n)$, defined as the largest $k$ such that every triangle-free graph on $n$ vertices has an independent set of size $\\ge k$, is intimately tied to the Ramsey number $R(3,t)$. Kim (1995) proved $R(3,t) = \\Theta(t^2/\\log t)$, implying $H(n) = \\Theta(\\sqrt{n \\log n})$. The easy bound $\\tau(G) \\le n - \\sqrt{n}$ follows from the Ramsey-theoretic lower bound on independence numbers: every graph on $n$ vertices has $\\alpha(G) \\ge \\sqrt{n}$ (since $R(\\omega+1, t) \\ge t$ for some $t \\sim \\sqrt{n}$), and the complement of any independent set is a clique transversal. Erdős famously described this conjecture as 'perhaps completely wrongheaded,' expressing genuine uncertainty about its truth — unusual for Erdős, who typically had strong intuitions. Even the restricted case for $K_4$-free graphs remains open, suggesting the problem is fundamentally hard.",
@@ -68,10 +69,18 @@
       "τ(G) is the minimum vertex set hitting every maximal clique of size ≥ 2",
       "H(n) ~ √n by Ramsey theory (R(3,k) gives triangle-free independent sets)",
       "The easy bound τ ≤ n − √n falls short of the conjecture",
-      "Even the K₄-free case remains open"
+      "Even the K₄-free case remains open",
+      "The conjecture's difficulty stems from τ(G) depending on global clique structure while H(n) depends on local triangle-freeness — bridging these requires understanding how clique transversals interact with Ramsey-theoretic bounds"
     ]
   },
   "sections": [
+    {
+      "id": "header-setup",
+      "title": "Module Header and Problem Context",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "Documents Erdős Problem #151: the Erdős-Gallai conjecture τ(G) ≤ n − H(n) connecting clique transversal numbers to triangle-free independence. Notes Erdős's own uncertainty about the conjecture and the connection to Ramsey numbers R(3,t). Imports Mathlib."
+    },
     {
       "id": "graph-properties",
       "title": "Graph Properties",

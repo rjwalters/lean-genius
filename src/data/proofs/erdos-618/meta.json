@@ -54,7 +54,8 @@
       "mantel_theorem: triangle-free edge bound",
       "erdos_618: summary combining main conjecture + threshold"
     ],
-    "axiomCount": 7
+    "axiomCount": 7,
+    "lineCount": 276
   },
   "overview": {
     "historicalContext": "Erdős Problem #618 was posed by Erdős, Gyárfás, and Ruszinkó in their 1998 Combinatorica paper 'How to decrease the diameter of triangle-free graphs.' For a triangle-free graph G on n vertices, h₂(G) denotes the minimum number of edges that must be added so that the resulting graph has diameter at most 2 while remaining triangle-free. The authors proved that for bounded degree graphs (Δ = O(1)) with no isolated vertices, h₂(G) = O(n log n).\n\nSimonovits showed the complementary direction: there exist triangle-free graphs with maximum degree ≫ √n for which h₂(G) = Θ(n²). This established that √n is a critical threshold for the maximum degree. The central conjecture asked whether Δ = o(√n) always implies h₂(G) = o(n²). Noga Alon resolved this conjecture affirmatively, observing that the problem is essentially identical to Erdős Problem #134.\n\nThe √n threshold arises naturally from the interplay between Mantel's theorem (triangle-free graphs have at most n²/4 edges) and the structural requirements for diameter 2. A graph with degree ≈ √n has roughly n^{3/2} edges, which is the scale at which triangle-free diameter-2 graphs transition between sparse and dense behavior. Alon's proof uses probabilistic and extremal graph theory methods.",
@@ -64,7 +65,8 @@
       "The √n degree threshold is sharp: below it h₂ = o(n²), above it h₂ can be Θ(n²)",
       "Triangle-free + diameter 2 severely constrains the graph structure",
       "The problem is essentially identical to Erdős Problem #134",
-      "For bounded degree graphs, h₂(G) = O(n log n) (EGR98)"
+      "For bounded degree graphs, h₂(G) = O(n log n) (EGR98)",
+      "Alon's probabilistic argument shows that random triangle-free graphs near the √n threshold exhibit a phase transition in h₂ — a phenomenon typical of random graph thresholds but unusual for deterministic extremal problems"
     ]
   },
   "sections": [

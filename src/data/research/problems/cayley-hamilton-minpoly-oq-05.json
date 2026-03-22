@@ -2,7 +2,7 @@
   "id": "cayley-hamilton-minpoly-oq-05",
   "name": "Minimal Polynomial Reduction in General K-Algebras",
   "status": "active",
-  "phase": "ACT",
+  "phase": "COMPLETED",
   "knowledge": {
     "insights": [
       "File has two complementary theories: modular reduction (Sec I-VI) and algebra towers (Sec VII)",
@@ -11,7 +11,9 @@
       "The sorry is in minpoly_eq_map_of_irreducible: need Associated.eq_of_monic or equivalent",
       "Key Mathlib APIs: eval₂_map + IsScalarTower.algebraMap_eq for tower aeval commutativity",
       "Polynomial.natDegree_map_eq_of_injective works for field-to-field algebraMap (injective)",
-      "Monic.natDegree_map preserves degree for monic polynomials under ring homs"
+      "Monic.natDegree_map preserves degree for monic polynomials under ring homs",
+      "PROVED minpoly_eq_map_of_irreducible using minpoly.eq_of_irreducible_of_monic (direct Mathlib API). Previous approach via associated_of_dvd was overengineered.",
+      "File now 0 sorries, 0 axioms - FULLY VERIFIED. All 7 algebra tower theorems proved."
     ],
     "builtItems": [
       "isIntegral_tower_top: integrality transfers up towers (line 179)",
@@ -19,7 +21,9 @@
       "minpoly_map_monic_tower: base change preserves monicity (line 190)",
       "minpoly_dvd_map_of_tower: divisibility in towers (line 197)",
       "minpoly_natDegree_tower_le: degree bound in towers (line 202)",
-      "minpoly_eq_map_of_irreducible: equality condition (1 sorry, line 218)"
+      "minpoly_eq_map_of_irreducible: equality condition (1 sorry, line 218)",
+      "minpoly_eq_map_of_irreducible: PROVED (was sorry) - 3-line proof via minpoly.eq_of_irreducible_of_monic",
+      "CayleyHamiltonMinpolyOQ05.lean: 239 lines, 0 sorries, 0 axioms - FULLY VERIFIED"
     ],
     "openQuestions": [
       "Complete sorry: show associated monic polynomials in L[X] are equal",
@@ -29,6 +33,6 @@
       "Submit minpoly_eq_map_of_irreducible sorry to Aristotle as companion file candidate",
       "Consider creating CayleyHamiltonMinpolyOQ05Aristotle.lean with the sorry extracted"
     ],
-    "progressSummary": "PROGRESS: Added 7 algebra tower theorems (6 proved, 1 sorry). File now 239 lines with comprehensive modular reduction + tower theory. Meta.json and annotations corrected to match actual content."
+    "progressSummary": "COMPLETED: All sorries eliminated. File is FULLY VERIFIED (0 sorries, 0 axioms). minpoly_eq_map_of_irreducible proved via minpoly.eq_of_irreducible_of_monic."
   }
 }

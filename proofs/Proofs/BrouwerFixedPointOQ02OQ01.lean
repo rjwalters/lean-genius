@@ -290,28 +290,24 @@ private lemma no_door_hypotenuse {n : ℕ} (hn : 0 < n) (c : Coloring n)
 -- SECTION IV-b: Row-Sweep Parity Argument for Sperner's Lemma
 -- ============================================================
 
-/-- Helper: is this triple a permutation of {0,1,2}? -/
-private def isFC (a b c : Fin 3) : Bool :=
-  ({a, b, c} : Finset (Fin 3)) = {0, 1, 2}
+-- Extended coloring: returns 0 for coordinates outside the grid
+private def gColor {n : ℕ} (c : Coloring n) (i j : ℕ) : Fin 3 :=
+  if h : i + j ≤ n then c ⟨i, j, h⟩ else 0
 
-/-- Key parity lemma: for any 3 colors from Fin 3, the number of {0,1}-doors
-    among the 3 edges has the same parity as whether the triple is a
-    permutation of {0,1,2} (fully colored).
+-- Number of horizontal {0,1}-door transitions at row j
+private def hTrans {n : ℕ} (c : Coloring n) (j : ℕ) : ℕ :=
+  ((Finset.range (n - j)).filter (fun i =>
+    (gColor c i j = 0 ∧ gColor c (i + 1) j = 1) ∨
+    (gColor c i j = 1 ∧ gColor c (i + 1) j = 0))).card
 
-    PROVED by exhaustive case analysis on 27 cases. -/
-theorem abstractDoorCount_parity (a b c : Fin 3) :
-    abstractDoorCount a b c % 2 = if isFC a b c then 1 else 0 := by
-  fin_cases a <;> fin_cases b <;> fin_cases c <;> decide
+-- hTrans at row n is 0 (no edges at the apex)
+private lemma hTrans_top {n : ℕ} (c : Coloring n) : hTrans c n = 0 := by
+  simp [hTrans, Nat.sub_self]
 
--- Proof strategy for sperner_2d:
--- 1. bottomTransitions c is odd (from bottom_transitions_odd)
--- 2. Boundary {0,1}-doors appear ONLY on the bottom edge
---    (left edge: colors ∈ {0,2}, no color 1 → no doors)
---    (hypotenuse: colors ∈ {1,2}, no color 0 → no doors)
--- 3. Double-counting: ∑_T doorCount(T) = 2·|interior doors| + |boundary doors|
--- 4. Each fully-colored triangle has exactly 1 door (fully_colored_one_door)
--- 5. Each non-fully-colored triangle has 0 or 2 doors (even)
--- 6. Therefore: #FC ≡ bottomTransitions ≡ 1 (mod 2), so #FC ≥ 1
+-- gColor matches botColor for valid bottom-row points
+private lemma gColor_bot {n : ℕ} (c : Coloring n) (i : ℕ) (hi : i ≤ n) :
+    gColor c i 0 = botColor c i := by
+  simp only [gColor, botColor, dif_pos (show i + 0 ≤ n by omega), dif_pos hi]
 
 -- hTrans at row 0 equals bottomTransitions under Sperner condition
 private lemma hTrans_zero_eq {n : ℕ} (hn : 0 < n) (c : Coloring n)
@@ -602,14 +598,41 @@ theorem sperner_2d {n : ℕ} (hn : 0 < n) (c : Coloring n) (hc : IsSperner hn c)
 -- SECTION V: Existence of Approximate Fixed Points (Application)
 -- ============================================================
 
--- Construct a Sperner coloring from a continuous map f on the simplex.
--- The key idea: at each grid vertex, assign the color of the direction
--- in which f moves the point the most (relative to barycentric coords).
--- On boundary vertices, this automatically satisfies the Sperner condition.
--- The proof that this yields an approximate fixed point uses compactness
--- and the continuity of f to bound the displacement.
--- TODO: Full formalization requires careful barycentric coordinate handling.
--- For now, we provide the statement and leave it as an Aristotle candidate.
+-- Convert grid vertex to real coordinates in the unit simplex
+noncomputable def gridToReal (n : ℕ) (v : GridVertex n) : ℝ × ℝ :=
+  ((v.i : ℝ) / n, (v.j : ℝ) / n)
+
+-- Displacement-based Sperner coloring from continuous function f.
+-- Color vertex with index of most negative barycentric displacement.
+noncomputable def displacementColoring (n : ℕ)
+    (f : ℝ × ℝ → ℝ × ℝ) : Coloring n := fun v =>
+  let p := gridToReal n v
+  let d1 := (f p).1 - p.1
+  let d2 := (f p).2 - p.2
+  let d0 := -(d1 + d2)
+  if d0 ≤ d1 ∧ d0 ≤ d2 then 0
+  else if d1 ≤ d2 then 1
+  else 2
+
+-- The displacement coloring satisfies Sperner boundary conditions.
+private lemma displacementColoring_isSperner (n : ℕ) (hn : 0 < n)
+    (f : ℝ × ℝ → ℝ × ℝ)
+    (hrange : ∀ p, p.1 ≥ 0 → p.2 ≥ 0 → p.1 + p.2 ≤ 1 →
+      (f p).1 ≥ 0 ∧ (f p).2 ≥ 0 ∧ (f p).1 + (f p).2 ≤ 1) :
+    IsSperner hn (displacementColoring n f) := by
+  sorry
+
+-- Fully-colored triangle yields approximate fixed point.
+private lemma fully_colored_gives_approx
+    {n : ℕ} (hn : 0 < n) {f : ℝ × ℝ → ℝ × ℝ}
+    (hcont : Continuous f)
+    (hrange : ∀ p, p.1 ≥ 0 → p.2 ≥ 0 → p.1 + p.2 ≤ 1 →
+      (f p).1 ≥ 0 ∧ (f p).2 ≥ 0 ∧ (f p).1 + (f p).2 ≤ 1)
+    (t : GridTriangle n) (ht : IsFullyColored (displacementColoring n f) t) :
+    ∃ p : ℝ × ℝ, p.1 ≥ 0 ∧ p.2 ≥ 0 ∧ p.1 + p.2 ≤ 1 ∧
+      dist p (f p) < Real.sqrt 2 / n := by
+  sorry
+
 theorem approximate_fixed_point_2d
     {f : ℝ × ℝ → ℝ × ℝ}
     (hcont : Continuous f)
@@ -618,6 +641,21 @@ theorem approximate_fixed_point_2d
     (ε : ℝ) (hε : 0 < ε) :
     ∃ p : ℝ × ℝ, p.1 ≥ 0 ∧ p.2 ≥ 0 ∧ p.1 + p.2 ≤ 1 ∧
       dist p (f p) < ε := by
-  sorry
+  -- Choose n large enough that √2/n < ε
+  obtain ⟨n, hn⟩ := exists_nat_gt (Real.sqrt 2 / ε)
+  have hn_pos : 0 < n := by
+    by_contra h; push_neg at h; interval_cases n
+    linarith [div_pos (Real.sqrt_pos_of_pos (by norm_num : (0:ℝ) < 2)) hε]
+  have hSperner := displacementColoring_isSperner n hn_pos f hrange
+  obtain ⟨t, ht⟩ := sperner_2d hn_pos (displacementColoring n f) hSperner
+  obtain ⟨p, hp1, hp2, hp3, hpdist⟩ := fully_colored_gives_approx hn_pos hcont hrange t ht
+  exact ⟨p, hp1, hp2, hp3, by
+    have hsqrt2_pos := Real.sqrt_pos_of_pos (by norm_num : (0:ℝ) < 2)
+    calc dist p (f p)
+        < Real.sqrt 2 / ↑n := hpdist
+      _ < Real.sqrt 2 / (Real.sqrt 2 / ε) := by
+          apply div_lt_div_of_pos_left hsqrt2_pos
+            (div_pos hsqrt2_pos hε) (by exact_mod_cast hn)
+      _ = ε := by field_simp⟩
 
 end Sperner2D

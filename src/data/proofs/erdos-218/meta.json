@@ -29,10 +29,11 @@
       "Arithmetic progressions in the primes",
       "Green-Tao theorem (arbitrarily long APs in primes)",
       "Cramér probabilistic model for primes"
-    ]
+    ],
+    "lineCount": 340
   },
   "overview": {
-    "historicalContext": "Erd\u0151s posed this problem across several papers from 1955-1985, asking about the local statistical behavior of prime gaps $d_n = p_{n+1} - p_n$. While the Prime Number Theorem (Hadamard, de la Vall\u00e9e-Poussin 1896) shows $d_n \\sim \\log p_n$ on average, the local behavior \u2014 whether consecutive gaps tend to increase, decrease, or stay equal \u2014 is far subtler. Cram\u00e9r's probabilistic model (1936) suggests that gap comparisons should behave like independent coin flips, yielding density $1/2$ for both increasing and decreasing gaps. However, primes exhibit nontrivial correlations (e.g., the Hardy-Littlewood prime $k$-tuples conjecture) that could affect local gap statistics. The equal-gap conjecture ($d_n = d_{n+1}$ infinitely often) is equivalent to asking for infinitely many 3-term arithmetic progressions of consecutive primes. The Green-Tao theorem (2004) gives arbitrarily long APs in primes, but not of consecutive primes. Terence Tao assessed this problem as 'looks difficult' on his blog.",
+    "historicalContext": "Erdős posed this problem across several papers from 1955-1985, asking about the local statistical behavior of prime gaps $d_n = p_{n+1} - p_n$. While the Prime Number Theorem (Hadamard, de la Vallée-Poussin 1896) shows $d_n \\sim \\log p_n$ on average, the local behavior — whether consecutive gaps tend to increase, decrease, or stay equal — is far subtler. Cramér's probabilistic model (1936) suggests that gap comparisons should behave like independent coin flips, yielding density $1/2$ for both increasing and decreasing gaps. However, primes exhibit nontrivial correlations (e.g., the Hardy-Littlewood prime $k$-tuples conjecture) that could affect local gap statistics. The equal-gap conjecture ($d_n = d_{n+1}$ infinitely often) is equivalent to asking for infinitely many 3-term arithmetic progressions of consecutive primes. The Green-Tao theorem (2004) gives arbitrarily long APs in primes, but not of consecutive primes. Terence Tao assessed this problem as 'looks difficult' on his blog.",
     "problemStatement": "Let d_n = p_{n+1} - p_n. Conjectures: (1) {n : d_{n+1} ≥ d_n} has density 1/2, (2) {n : d_{n+1} ≤ d_n} has density 1/2, (3) infinitely many n have d_n = d_{n+1}. All three remain OPEN. Conjecture 3 is equivalent to infinitely many 3-term APs of consecutive primes.",
     "proofStrategy": "The formalization defines nthPrime (via Nat.nth), primeGap, HasDensity (via Tendsto), and the three key sets (gapIncreasingSet, gapDecreasingSet, gapEqualSet). The three conjectures are axioms. Key proved results: primeGap_pos, gapEqualSet_eq_inter, partition of ℕ by gap comparison. The connection gapEqual ↔ threePrimesInAP is axiomatized. Green-Tao theorem is stated for context.",
     "keyInsights": [
@@ -125,13 +126,13 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #218 asks about the natural density of indices where consecutive prime gaps increase, decrease, or stay equal. All three parts remain OPEN. The equal gap conjecture is equivalent to infinitely many 3-term APs of consecutive primes. Green-Tao gives arbitrarily long APs in primes but not necessarily consecutive.",
-    "implications": "Resolution would reveal whether local prime gap statistics match the Cram\u00e9r random model or exhibit deeper correlations. The equal-gap conjecture connects to the Hardy-Littlewood prime $k$-tuples conjecture (for $k=3$): if the $k$-tuples conjecture is true, then infinitely many consecutive prime triples form APs. This tests the boundary between what the Green-Tao methods can reach and what remains beyond current technology.",
+    "implications": "Resolution would reveal whether local prime gap statistics match the Cramér random model or exhibit deeper correlations. The equal-gap conjecture connects to the Hardy-Littlewood prime $k$-tuples conjecture (for $k=3$): if the $k$-tuples conjecture is true, then infinitely many consecutive prime triples form APs. This tests the boundary between what the Green-Tao methods can reach and what remains beyond current technology.",
     "openQuestions": [
       "Do the sets $\\{n : d_{n+1} \\geq d_n\\}$ and $\\{n : d_{n+1} \\leq d_n\\}$ each have natural density $1/2$?",
       "Are there infinitely many $n$ with $d_n = d_{n+1}$ (i.e., infinitely many 3-term APs of consecutive primes)?",
       "What is the natural density of $\\{n : d_n = d_{n+1}\\}$? Expected to be 0 by Hardy-Littlewood heuristics",
       "Can sieve methods or the Green-Tao machinery be adapted to consecutive primes?",
-      "What is the distribution of $d_{n+1}/d_n$? Is it concentrated near 1 (as Cram\u00e9r predicts)?"
+      "What is the distribution of $d_{n+1}/d_n$? Is it concentrated near 1 (as Cramér predicts)?"
     ]
   }
 }

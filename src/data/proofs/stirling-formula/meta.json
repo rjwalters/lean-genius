@@ -41,8 +41,9 @@
       "Numerical examples showing approximation accuracy",
       "Connection to log-factorial approximation for entropy calculations"
     ],
-    "dateAdded": "12/27/25",
-    "axiomCount": 1
+    "dateAdded": "2025-12-27",
+    "axiomCount": 1,
+    "lineCount": 497
   },
   "overview": {
     "historicalContext": "Abraham de Moivre discovered the leading form $(n/e)^n \\sqrt{n}$ around 1721 while studying the normal distribution as an approximation to the binomial. James Stirling refined this in his 1730 book *Methodus Differentialis*, identifying the constant $\\sqrt{2\\pi}$ and the full asymptotic series $n! \\sim \\sqrt{2\\pi n}(n/e)^n(1 + \\frac{1}{12n} + \\frac{1}{288n^2} - \\cdots)$.\n\nThe formula is intimately connected to the Wallis product ($\\pi/2 = \\prod_{n=1}^\\infty \\frac{4n^2}{4n^2-1}$, John Wallis 1656), which provides the $\\pi$ factor through factorial ratios. Euler later extended Stirling's formula to the Gamma function: $\\Gamma(x+1) \\sim \\sqrt{2\\pi x}(x/e)^x$ for large real $x$, revealing it as a fundamental statement about the growth of the Gamma function along the real axis.",
@@ -101,4 +102,14 @@
       "Extension to the Gamma function: Gamma(x+1) ~ sqrt(2*pi*x) * (x/e)^x"
     ]
   }
+,
+  "references": [
+    {
+      "authors": "Stirling, James",
+      "title": "Methodus Differentialis",
+      "year": "1730",
+      "venue": "London",
+      "note": "Original derivation of the approximation n! ~ √(2πn)(n/e)^n, though the constant √(2π) was determined by de Moivre"
+    }
+  ]
 }

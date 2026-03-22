@@ -51,7 +51,8 @@
       "Verified boundary cases: empty sets, k=0, N=0",
       "Concrete verification that gcd(2,4) = 2 (even numbers share factors)"
     ],
-    "axiomCount": 1
+    "axiomCount": 1,
+    "lineCount": 134
   },
   "overview": {
     "historicalContext": "Erdős Problem #56 addresses a fundamental question in combinatorial number theory: how large can a subset of {1,...,N} be if we forbid too many pairwise coprime elements?\n\nThe conjecture seemed natural: take all multiples of the first k primes (2, 3, 5, ..., p_k). Any k+1 numbers from this set must include two that share a prime factor, so they can't all be pairwise coprime. Erdős conjectured this construction was optimal.\n\nSurprisingly, Ahlswede and Khachatrian disproved this in 1994, finding a counterexample at k=212. However, they later proved (1995) that Erdős's conjecture IS true when N is sufficiently large relative to k. This reveals a subtle phase transition in the problem's behavior.",
@@ -74,11 +75,18 @@
       "summary": "Module documentation explaining the problem and Mathlib imports for primes, finsets, and coprimality."
     },
     {
-      "id": "definitions",
-      "title": "Key Definitions",
+      "id": "weak-divisibility",
+      "title": "WeaklyDivisible and Basic Properties",
       "startLine": 27,
+      "endLine": 57,
+      "summary": "Defines WeaklyDivisible k A: no k+1 pairwise coprime elements exist in A. Proves three basic lemmas: empty set is vacuously k-weakly divisible, singletons are k-weakly divisible for k ≥ 1, and no nonempty set is 0-weakly divisible."
+    },
+    {
+      "id": "optimization-defs",
+      "title": "Optimization Definitions",
+      "startLine": 59,
       "endLine": 75,
-      "summary": "Defines WeaklyDivisible, MaxWeaklyDivisible, and FirstPrimesMultiples with doc comments."
+      "summary": "MaxWeaklyDivisible(N,k): maximum cardinality of a k-weakly divisible subset of {1,...,N} (the quantity Erdős asked about). FirstPrimesMultiples(N,k): multiples of the first k primes in {1,...,N} (Erdős's conjectured optimal construction)."
     },
     {
       "id": "main-theorem",

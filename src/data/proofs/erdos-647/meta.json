@@ -49,7 +49,8 @@
       "Definition of highly composite numbers and verification that 24 is highly composite",
       "Connection to Problem #679 (stronger version with 2^ω(m))"
     ],
-    "axiomCount": 1
+    "axiomCount": 1,
+    "lineCount": 300
   },
   "overview": {
     "historicalContext": "The divisor function τ(n) is one of the most studied functions in number theory. Highly composite numbers—those with more divisors than any smaller number—play a key role in extremal problems.\n\nErdős posed this problem asking about a subtle gap property: when can ALL smaller numbers m have m + τ(m) bounded by n + 2? The constraint involves both the size of m and its divisor count.\n\nn = 24 is the largest known value satisfying this condition. The fact that 24 is highly composite (τ(24) = 8 is maximal for its size) makes it particularly special—it sits at a boundary where its own m + τ(m) = 32 doesn't obstruct itself, but does obstruct all larger n.\n\nErdős offered £25 for finding any n > 24, but expressed doubt that such an n exists.",
@@ -59,7 +60,8 @@
       "**Why n=24 is Special**: 24 is highly composite with τ(24)=8. The value 24+8=32 is just large enough to obstruct all n > 24, but n=24 itself only requires checking m < 24.",
       "**Highly Composite Obstruction**: Each highly composite number hc creates a 'shadow' blocking all n with n < hc + τ(hc) - 2 from satisfying the condition.",
       "**Connection to Problem #679**: A stronger version uses 2^ω(m) instead of τ(m), where ω counts distinct prime factors. Since τ(m) ≥ 2^ω(m), solutions to #679 would solve #647.",
-      "**Erdős's Asymptotic Conjecture**: The excess max(m+τ(m))-n grows without bound, implying only finitely many solutions."
+      "**Erdős's Asymptotic Conjecture**: The excess max(m+τ(m))-n grows without bound, implying only finitely many solutions.",
+      "**Computational verification**: The proof that n=24 works uses interval_cases to check all m < 24 exhaustively — a clean example of how Lean's tactic system handles bounded verification, while the open conjecture (whether n=24 is the largest) requires analytic number theory beyond exhaustive search"
     ]
   },
   "sections": [

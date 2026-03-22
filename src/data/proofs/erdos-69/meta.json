@@ -44,7 +44,8 @@
       "Geometric series calculation for prime multiples",
       "Structure connecting Problem 69 to Problem 257"
     ],
-    "axiomCount": 0
+    "axiomCount": 0,
+    "lineCount": 189
   },
   "overview": {
     "historicalContext": "Erdős Problem #69 asks about the irrationality of a sum involving the prime omega function ω(n), which counts distinct prime divisors. Erdős (1948) had proved that ∑d(n)/2^n is irrational, where d(n) is the divisor function.\n\nThe breakthrough came from Tao's observation that ∑ω(n)/2^n equals ∑1/(2^p-1) over primes p. This identity transforms the problem into a special case of Problem 257. Pratt (2024) proved irrationality conditional on a prime k-tuples conjecture. Finally, Tao and Teräväinen (2025) proved it unconditionally using advanced analytic number theory.",
@@ -54,7 +55,8 @@
       "**Tao's identity**: ∑ω(n)/2^n = ∑_p 1/(2^p-1) - a non-obvious equivalence via double sum interchange",
       "**Geometric series**: For each prime p, summing 1/2^(pk) over k≥1 gives 1/(2^p-1)",
       "**Reduction to Problem 257**: This transforms the original sum into the 'prime reciprocal' form",
-      "**Analytic number theory**: The unconditional irrationality proof requires techniques beyond elementary methods"
+      "**Analytic number theory**: The unconditional irrationality proof requires techniques beyond elementary methods",
+      "**Nesterenko's algebraic independence**: The resolution via modular form theory (same machinery as Erdős #250) shows that seemingly unrelated number-theoretic series are governed by common deep structures in transcendental number theory"
     ]
   },
   "sections": [

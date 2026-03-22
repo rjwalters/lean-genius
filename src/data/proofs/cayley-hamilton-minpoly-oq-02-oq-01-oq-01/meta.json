@@ -51,7 +51,7 @@
       "skolemNoether_one: fully proved n=1 case (no axioms needed)",
       "automorphism_preserves_minpoly: minpoly invariance under arbitrary automorphisms"
     ],
-    "dateAdded": "03/21/26",
+    "dateAdded": "2026-03-21",
     "relatedProblems": [
       {
         "id": "cayley-hamilton-minpoly-oq-02-oq-01",
@@ -66,7 +66,8 @@
         "relationship": "Foundational: Cayley-Hamilton provides integrality of matrices"
       }
     ],
-    "axiomCount": 1
+    "axiomCount": 1,
+    "lineCount": 262
   },
   "overview": {
     "historicalContext": "**The Skolem-Noether Theorem**\n\nThe Skolem-Noether theorem, proved independently by Thoralf Skolem (1927) and Emmy Noether (1929), is a cornerstone of the theory of central simple algebras. In its most general form, it states that every automorphism of a central simple algebra over a field is inner.\n\nFor the matrix algebra $M_n(K)$, this says: every $K$-algebra automorphism $\\varphi : M_n(K) \\to M_n(K)$ has the form $\\varphi(A) = P^{-1}AP$ for some invertible matrix $P$. In other words, the only way to rearrange $M_n(K)$ while preserving its $K$-algebra structure is by a change of basis.\n\nThe standard proof uses the theory of simple modules: $K^n$ is the unique simple $M_n(K)$-module up to isomorphism. Given an automorphism $\\varphi$, one constructs a 'twisted' module where $M$ acts as $\\varphi(M)$. By uniqueness of simple modules (Artin-Wedderburn theory), the original and twisted modules are isomorphic, and the isomorphism gives the conjugating matrix.\n\nThis result has deep consequences: it shows that $\\text{Aut}_K(M_n(K)) \\cong \\text{PGL}_n(K)$, connecting algebra automorphisms to projective geometry.",

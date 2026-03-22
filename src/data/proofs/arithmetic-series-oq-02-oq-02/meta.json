@@ -9,7 +9,12 @@
     "date": "",
     "status": "verified",
     "proofRepoPath": "Proofs/ArithmeticSeriesOQ02OQ02.lean",
-    "tags": ["combinatorics", "pascal", "induction", "research"],
+    "tags": [
+      "combinatorics",
+      "pascal",
+      "induction",
+      "research"
+    ],
     "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
@@ -49,9 +54,13 @@
         "note": "Comprehensive catalog including parallel Vandermonde and hockey stick generalizations"
       }
     ],
-    "dateAdded": "03/22/26",
+    "dateAdded": "2026-03-22",
     "axiomCount": 0,
-    "prerequisites": ["Binomial coefficients", "Pascal's identity", "Simplicial numbers"],
+    "prerequisites": [
+      "Binomial coefficients",
+      "Pascal's identity",
+      "Simplicial numbers"
+    ],
     "crossReferences": [
       {
         "proofId": "arithmetic-series-oq-02",
@@ -77,7 +86,8 @@
         "relationship": "related",
         "note": "Another deep property of Pascal's triangle, connecting products of alternating entries in a hexagonal pattern"
       }
-    ]
+    ],
+    "lineCount": 154
   },
   "overview": {
     "historicalContext": "The hockey stick identity (also called the Christmas stocking identity) has been known since at least the 17th century as a pattern in Pascal's triangle: summing entries along a diagonal yields the entry one step further on the next diagonal. The Vandermonde convolution identity $\\sum \\binom{m}{j}\\binom{s}{r-j} = \\binom{m+s}{r}$, first published by Alexandre-Théophile Vandermonde in 1772, is one of the most fundamental identities in combinatorics. The 'parallel' variant used here — summing products $\\binom{i+a}{a}\\binom{j+b}{b}$ over pairs with $i+j=n$ — is equivalent to the convolution of two negative binomial (simplicial) sequences and arises naturally in lattice path enumeration: the number of paths from $(0,0)$ to $(n,a+b+1)$ that must pass through a specific column decomposes as exactly this sum. The 2D hockey stick generalizes to triangular-region sums, counting lattice points in higher-dimensional simplicial polytopes.",
@@ -145,5 +155,7 @@
       "Can the identity be proved purely by a combinatorial bijection (counting lattice paths two ways) without induction?"
     ]
   },
-  "relatedProofs": ["arithmetic-series-oq-02"]
+  "relatedProofs": [
+    "arithmetic-series-oq-02"
+  ]
 }

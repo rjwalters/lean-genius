@@ -87,8 +87,9 @@
         "note": "Both are fundamental inequalities in analysis; Cauchy-Schwarz can be derived from the r=2 power mean"
       }
     ],
-    "dateAdded": "03/21/26",
-    "axiomCount": 0
+    "dateAdded": "2026-03-21",
+    "axiomCount": 0,
+    "lineCount": 372
   },
   "overview": {
     "historicalContext": "The Power Mean Inequality states that M_r ≤ M_s whenever r ≤ s. While the positive-exponent case (0 < r ≤ s) follows directly from Jensen's inequality, the negative-exponent case requires a different approach. The classical trick, due to Hardy, Littlewood, and Pólya (1934), exploits the algebraic duality between positive and negative power means via value inversion.\n\nAs of early 2026, Mathlib4 had an explicit TODO noting the gap for 'generalized mean inequality with any p ≤ q, including negative numbers'. This formalization fills that gap for the r ≤ s < 0 case, complementing the positive case proved in the parent file AmgmInequalityOQ03.lean.",

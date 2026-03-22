@@ -59,11 +59,29 @@
       "Column-sum decomposition separating m-parity classes"
     ],
     "references": [
-      {"authors": "D. N. Lehmer", "title": "Asymptotic evaluation of certain totient sums", "year": "1900", "venue": "American Journal of Mathematics", "note": "Early work on the density of primitive Pythagorean triples"},
-      {"authors": "E. Cesàro", "title": "Question 75 (Solution)", "year": "1883", "venue": "Mathesis 3, 224-225", "note": "Probability that two random integers are coprime is 6/π²"},
-      {"authors": "C. F. Gauss", "title": "Disquisitiones Arithmeticae", "year": "1801", "venue": "Leipzig", "note": "Gauss circle problem: lattice points in circular regions"}
+      {
+        "authors": "D. N. Lehmer",
+        "title": "Asymptotic evaluation of certain totient sums",
+        "year": "1900",
+        "venue": "American Journal of Mathematics",
+        "note": "Early work on the density of primitive Pythagorean triples"
+      },
+      {
+        "authors": "E. Cesàro",
+        "title": "Question 75 (Solution)",
+        "year": "1883",
+        "venue": "Mathesis 3, 224-225",
+        "note": "Probability that two random integers are coprime is 6/π²"
+      },
+      {
+        "authors": "C. F. Gauss",
+        "title": "Disquisitiones Arithmeticae",
+        "year": "1801",
+        "venue": "Leipzig",
+        "note": "Gauss circle problem: lattice points in circular regions"
+      }
     ],
-    "dateAdded": "03/14/26",
+    "dateAdded": "2026-03-14",
     "relatedProblems": [
       {
         "id": "pythagorean-triples",
@@ -90,7 +108,8 @@
         "relationship": "CRT structure underlies the independence of coprime conditions modulo different primes"
       }
     ],
-    "axiomCount": 7
+    "axiomCount": 7,
+    "lineCount": 2485
   },
   "overview": {
     "historicalContext": "**Density of Primitive Pythagorean Triples**\n\nPythagorean triples have been studied since Babylonian times (the tablet Plimpton 322, c. 1800 BCE, lists 15 triples). Euclid gave the first complete parametrization in Book X of the *Elements*: every primitive triple $(a,b,c)$ with $a^2+b^2=c^2$ and $\\gcd(a,b,c)=1$ corresponds to a unique pair $(m,n)$ with $m>n>0$, $\\gcd(m,n)=1$, $m \\not\\equiv n \\pmod{2}$, via $a=m^2-n^2$, $b=2mn$, $c=m^2+n^2$.\n\nThe asymptotic density question—how many primitive triples have hypotenuse $c \\le N$?—was answered by D. N. Lehmer in 1900 and refined by subsequent work connecting it to the Gauss circle problem and the density of coprime integers. The result $N/(2\\pi)$ combines three classical facts: lattice point counting in circular sectors (Gauss, 1801), the probability $6/\\pi^2$ that two random integers are coprime (Euler/Cesàro, 1883), and the parity structure of coprime pairs. This formalization appears to be the first mechanized proof of this density result.",

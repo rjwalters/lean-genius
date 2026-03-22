@@ -18,7 +18,7 @@
       "research"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "axioms": 1,
     "mathlibDependencies": [
       {
@@ -58,8 +58,8 @@
     "dateAdded": "2026-03-22",
     "mathlib_version": "4.26.0",
     "axiomCount": 1,
-    "lineCount": 404,
-    "theoremCount": 15,
+    "lineCount": 509,
+    "theoremCount": 22,
     "prerequisites": [
       "Matrix determinants and permutation signs (Mathlib)",
       "Binomial coefficients (Mathlib)",
@@ -140,7 +140,7 @@
       "title": "Parts 7b–7c: PathMN Cardinality and Algebraic Bridge",
       "startLine": 265,
       "endLine": 316,
-      "summary": "pathMN_card (sorry: C(m+n,m)), permPathTuple_card (product factorization), det_pathMatrix_eq_signed_sum (det = Σ sign(σ)·|PermPathTuple(σ)|).",
+      "summary": "pathMN_card (PROVED: C(m+n,m) via double induction + Pascal's rule + cons decomposition), permPathTuple_card (product factorization), det_pathMatrix_eq_signed_sum (det = Σ sign(σ)·|PermPathTuple(σ)|).",
       "mathContext": "$\\det M = \\sum_{\\sigma} \\mathrm{sgn}(\\sigma) \\prod_{i} \\binom{m+(b_{\\sigma(i)}-a_i)}{m}$"
     },
     {

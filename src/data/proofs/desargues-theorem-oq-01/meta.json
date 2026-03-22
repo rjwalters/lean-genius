@@ -43,8 +43,9 @@
       "desargues_converse_K: Converse direction over any IntegralDomain K with non-degeneracy condition",
       "Corollaries for ℚ, ℤ, ZMod p (finite fields), and Polynomial K without additional proof"
     ],
-    "dateAdded": "02/23/26",
-    "axiomCount": 0
+    "dateAdded": "2026-02-23",
+    "axiomCount": 0,
+    "lineCount": 285
   },
   "overview": {
     "historicalContext": "The original Desargues theorem formalization in this gallery (DesarguesTheorem.lean) relied on Mathlib.LinearAlgebra.CrossProduct, which was deprecated and removed in Mathlib v4.26.0. The open question was: can the proof be redone without this dependency, and can it be made more general?\n\nThis formalization answers both questions: YES, and the proof naturally generalizes from ℝ to any commutative ring K. The key insight is that the entire proof is a polynomial identity — no field properties, continuity, or topology are needed.",

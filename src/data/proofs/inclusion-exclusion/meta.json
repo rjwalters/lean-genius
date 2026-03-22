@@ -37,9 +37,10 @@
       "Symmetric difference cardinality formula",
       "Venn diagram intuition explained"
     ],
-    "dateAdded": "12/26/25",
+    "dateAdded": "2025-12-26",
     "wiedijkNumber": 96,
-    "axiomCount": 0
+    "axiomCount": 0,
+    "lineCount": 218
   },
   "overview": {
     "historicalContext": "The inclusion-exclusion principle was first formulated by Abraham de Moivre in 1718 for computing probabilities. It was later generalized by Daniel da Silva (1854) and Joseph Sylvester. The principle is fundamental in combinatorics, probability theory, and number theory (e.g., Euler's totient function uses inclusion-exclusion).\n\nThe basic idea addresses a common counting problem: when we add the sizes of two sets, elements in their intersection get counted twice. The principle systematically corrects for this overcounting.",
@@ -97,5 +98,30 @@
       "How does this connect to Möbius inversion on posets?",
       "What are efficient algorithms for computing inclusion-exclusion sums?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Rota, Gian-Carlo",
+      "title": "On the Foundations of Combinatorial Theory I: Theory of Möbius Functions",
+      "year": "1964",
+      "venue": "Zeitschrift für Wahrscheinlichkeitstheorie, 2, pp. 340-368",
+      "note": "Generalized inclusion-exclusion to Möbius inversion on partially ordered sets, unifying combinatorial counting principles"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "derangements",
+      "relationship": "applies",
+      "description": "The derangement formula D(n) = n!·Σ(-1)^k/k! is a direct application of inclusion-exclusion to count permutations with no fixed points"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "applies",
+      "description": "Euler's totient φ(n) = n·Π(1-1/p) uses inclusion-exclusion to count integers coprime to n"
+    }
+  ],
+  "relatedProofs": [
+    "derangements",
+    "euler-totient"
+  ]
 }

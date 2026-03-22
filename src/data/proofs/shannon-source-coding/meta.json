@@ -41,8 +41,9 @@
       "Source coding achievability via typical set encoding",
       "Converse via entropy lower bound on code lengths"
     ],
-    "dateAdded": "03/21/26",
-    "axiomCount": 0
+    "dateAdded": "2026-03-21",
+    "axiomCount": 0,
+    "lineCount": 44
   },
   "overview": {
     "historicalContext": "Shannon's source coding theorem, proved in his landmark 1948 paper, established the fundamental limit of lossless data compression. The theorem states that the entropy H(X) of a source is the minimum average number of bits per symbol needed to represent the source without loss. No lossless code can do better than H(X) bits per symbol, and there exist codes that come arbitrarily close.\n\nThis theorem answered a question that had been implicit since Morse code: what is the best possible compression? Morse used shorter codes for common letters (E is a single dot), but Shannon showed that the optimal average code length equals the entropy, providing both the limit and a constructive approach.\n\nThe proof technique -- typical sequences -- became a cornerstone of information theory. The Asymptotic Equipartition Property (AEP) shows that for long sequences from an i.i.d. source, almost all probability mass concentrates on a 'typical set' of approximately 2^(nH) sequences out of the |X|^n possible sequences. Encoding only the typical sequences requires approximately H bits per symbol.",

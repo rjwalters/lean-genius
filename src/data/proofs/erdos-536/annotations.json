@@ -7,7 +7,7 @@
     "title": "Equal Pairwise LCM Triple",
     "content": "**HasEqualPairwiseLCM a b c**: Three distinct natural numbers have equal pairwise LCMs: $a \\neq b \\wedge b \\neq c \\wedge a \\neq c$ and $[a,b] = [b,c] = [a,c]$. The LCM is computed via `Nat.lcm`. This forces a rigid multiplicative structure: if the common LCM is $L$, then $a, b, c$ all divide $L$, and each pair must jointly cover every prime power in the factorization of $L$.",
     "mathContext": "$\\text{HasEqualPairwiseLCM}(a,b,c) \\iff a \\neq b \\neq c \\neq a \\wedge [a,b] = [b,c] = [a,c]$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Nat.lcm", "pairwise equality", "divisibility structure"],
     "prerequisites": ["Nat.lcm"]
   },
@@ -19,7 +19,7 @@
     "title": "LCM Triple in a Set",
     "content": "**HasLCMTriple A**: The set $A$ contains three elements forming an equal pairwise LCM triple. Formally, $\\exists a\\, b\\, c \\in A, \\text{HasEqualPairwiseLCM}(a, b, c)$. This is the property that the density conjecture asserts must hold for large dense subsets of $\\{1,\\ldots,N\\}$.",
     "mathContext": "$\\exists a, b, c \\in A : [a,b] = [b,c] = [a,c]$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Finset membership", "existential quantifier", "HasEqualPairwiseLCM"],
     "prerequisites": ["HasEqualPairwiseLCM", "Finset"]
   },
@@ -31,7 +31,7 @@
     "title": "Erdős Problem #536: Density Conjecture",
     "content": "**erdos_536_conjecture**: Axiomatizes the main conjecture: for every $\\varepsilon > 0$, there exists $N_0$ such that for all $N \\geq N_0$, any $A \\subseteq \\{1,\\ldots,N\\}$ with $|A| \\geq \\varepsilon N$ contains an LCM triple. This is a density Ramsey-type statement—positive density forces multiplicative structure. The conjecture is analogous to Szemerédi's theorem but for a multiplicative rather than additive pattern.",
     "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists N_0 : \\forall N \\geq N_0,\\; A \\subseteq [N],\\; |A| \\geq \\varepsilon N \\Rightarrow \\text{HasLCMTriple}(A)$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["density Ramsey theory", "Finset.Icc", "open problem", "axiom"],
     "prerequisites": ["HasLCMTriple", "Finset.Icc", "Real"]
   },
@@ -43,7 +43,7 @@
     "title": "Weisenberg's Partial Result: ε > 221/225",
     "content": "**weisenberg_dense_case**: Axiomatizes that the conjecture holds for the specific density threshold $\\varepsilon > 221/225 \\approx 0.982$. This means sets containing more than 98.2% of $\\{1,\\ldots,N\\}$ must contain an LCM triple. The bound $221/225 = 1 - 4/225$ is remarkably close to 1, leaving only a narrow gap to the full conjecture. The proof uses the fact that very dense sets must contain many divisor pairs.",
     "mathContext": "$|A| \\geq \\frac{221}{225} N \\Rightarrow \\text{HasLCMTriple}(A)$ for $N \\gg 1$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["partial result", "density threshold", "221/225", "axiom"],
     "prerequisites": ["HasLCMTriple", "Finset.Icc", "Real"]
   },

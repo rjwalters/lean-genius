@@ -63,7 +63,8 @@
       "R_C5_3 axiom: R(C_5;3) = 17",
       "erdos_556 theorem: complete resolution"
     ],
-    "axiomCount": 15
+    "axiomCount": 15,
+    "lineCount": 219
   },
   "overview": {
     "historicalContext": "**The 3-Color Ramsey Number for Cycles**\n\nBondy and Erdős conjectured that R(C_n;3) ≤ 4n - 3, where R(G;3) is the minimum m such that any 3-coloring of K_m contains a monochromatic copy of G.\n\n**Historical Development:**\n- **Bondy-Erdős:** Original conjecture R(C_n;3) ≤ 4n - 3\n- **Łuczak (1999):** Proved R(C_n;3) ≤ (4+o(1))n; improved to (3+o(1))n for even n\n- **Kohayakawa-Simonovits-Skokan (2005):** Exact bound 4n-3 for large odd n\n- **Benevides-Skokan (2009):** Exact bound R(C_n;3) = 2n for large even n\n\nThe problem is completely resolved with a beautiful dichotomy: odd and even cycles have dramatically different Ramsey numbers!",
@@ -84,70 +85,80 @@
       "title": "Basic Definitions",
       "startLine": 33,
       "endLine": 64,
-      "summary": "Edge colorings, cycle graphs, monochromatic cycles, and R(C_n;3) definition."
+      "summary": "Edge colorings, cycle graphs, monochromatic cycles, and R(C_n;3) definition.",
+      "mathContext": "$R(C_n; 3) = \\min\\{m : \\forall$ 3-colorings of $K_m$, $\\exists$ monochromatic $C_n\\}$. Edge colorings use `Fin 3` for 3 colors."
     },
     {
       "id": "bondy-erdos",
       "title": "The Bondy-Erdős Conjecture",
       "startLine": 66,
       "endLine": 78,
-      "summary": "The original conjecture R(C_n;3) ≤ 4n - 3."
+      "summary": "The original conjecture R(C_n;3) ≤ 4n - 3.",
+      "mathContext": "Bondy-Erdős conjecture: $R(C_n; 3) \\leq 4n - 3$ for all $n \\geq 3$."
     },
     {
       "id": "luczak-1999",
       "title": "Łuczak's Result (1999)",
       "startLine": 80,
       "endLine": 93,
-      "summary": "Asymptotic bounds (4+o(1))n for all n, (3+o(1))n for even n."
+      "summary": "Asymptotic bounds (4+o(1))n for all n, (3+o(1))n for even n.",
+      "mathContext": "Łuczak (1999): $R(C_n; 3) \\leq (4 + o(1))n$; for even $n$: $R(C_n; 3) \\leq (3 + o(1))n$."
     },
     {
       "id": "kss-2005",
       "title": "Exact Bound for Odd Cycles (KSS 2005)",
       "startLine": 95,
       "endLine": 118,
-      "summary": "R(C_n;3) = 4n - 3 for sufficiently large odd n."
+      "summary": "R(C_n;3) = 4n - 3 for sufficiently large odd n.",
+      "mathContext": "KSS (2005): for large odd $n$, $R(C_n; 3) = 4n - 3$. Both upper and lower bounds are tight."
     },
     {
       "id": "benevides-skokan",
       "title": "Exact Bound for Even Cycles (2009)",
       "startLine": 120,
       "endLine": 134,
-      "summary": "R(C_n;3) = 2n for sufficiently large even n."
+      "summary": "R(C_n;3) = 2n for sufficiently large even n.",
+      "mathContext": "Benevides-Skokan (2009): for large even $n$, $R(C_n; 3) = 2n$. Dramatically smaller than the odd case ($4n - 3$)."
     },
     {
       "id": "dichotomy",
       "title": "Why the Dichotomy?",
       "startLine": 136,
       "endLine": 152,
-      "summary": "Structural reasons why odd and even cycles behave differently."
+      "summary": "Structural reasons why odd and even cycles behave differently.",
+      "mathContext": "Odd $C_n$ is not bipartite ($\\chi = 3$); even $C_n$ is bipartite ($\\chi = 2$). In 3-colorings, bipartite graphs embed more easily, explaining the $2n$ vs $4n-3$ gap."
     },
     {
       "id": "small-cases",
       "title": "Small Cases",
       "startLine": 154,
       "endLine": 171,
-      "summary": "R(C_3;3) = 17, R(C_4;3) = 8, R(C_5;3) = 17."
+      "summary": "R(C_3;3) = 17, R(C_4;3) = 8, R(C_5;3) = 17.",
+      "mathContext": "$R(C_3; 3) = R(K_3; 3) = 17$ (Schur number + 1). $R(C_4; 3) = 8 = 2 \\cdot 4$. $R(C_5; 3) = 17 = 4 \\cdot 5 - 3$."
     },
     {
       "id": "regularity-method",
       "title": "The Regularity Method",
       "startLine": 173,
       "endLine": 188,
-      "summary": "Szemerédi Regularity Lemma and Blow-up Lemma in proofs."
+      "summary": "Szemerédi Regularity Lemma and Blow-up Lemma in proofs.",
+      "mathContext": "Szemerédi Regularity Lemma partitions $V(K_m)$ into $\\varepsilon$-regular pairs. Blow-up Lemma embeds $C_n$ into the regular cluster graph. Both are key tools in modern Ramsey theory."
     },
     {
       "id": "two-vs-three",
       "title": "Connection to 2-Color Ramsey",
       "startLine": 190,
       "endLine": 202,
-      "summary": "Comparison with 2-color Ramsey numbers for cycles."
+      "summary": "Comparison with 2-color Ramsey numbers for cycles.",
+      "mathContext": "$R(C_n; 2)$: for odd $n \\geq 3$, $R(C_n; 2) = 2n - 1$; for even $n \\geq 4$, $R(C_n; 2) = \\frac{3n}{2} - 1$. The 3-color case amplifies the parity effect."
     },
     {
       "id": "main-results",
       "title": "Main Results Summary",
       "startLine": 204,
-      "endLine": 231,
-      "summary": "The erdos_556 theorem combining all results."
+      "endLine": 219,
+      "summary": "The erdos_556 theorem combining all results.",
+      "mathContext": "`erdos_556`: $\\forall n \\geq 3$, Bondy-Erdős holds: $R(C_n; 3) \\leq 4n - 3$. Combines KSS (odd, exact) + Benevides-Skokan (even, $2n < 4n-3$) + small cases."
     }
   ],
   "conclusion": {

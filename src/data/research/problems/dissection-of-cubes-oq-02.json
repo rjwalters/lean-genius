@@ -10,28 +10,38 @@
       "No OQ02 file exists - fresh formalization for 3D generalizations",
       "Dehn's theorem: tetrahedra cannot be dissected into cubes without Dehn invariant matching",
       "3D dissection is richer than 2D: Hilbert's third problem was solved by Dehn (1900)",
-      "The simplified boolean Dehn invariant (are all angles rational multiples of \u03c0?) captures the key obstruction",
+      "The simplified boolean Dehn invariant (are all angles rational multiples of π?) captures the key obstruction",
       "The deep sorry is tetrahedron_angle_irrational_pi - this is Niven's theorem applied to arccos(1/3)",
-      "The 2D case is trivially zero because all polygon angles are integer multiples of \u03c0"
+      "The 2D case is trivially zero because all polygon angles are integer multiples of π",
+      "PROVED tetrahedron_angle_irrational_pi: arccos(1/3)/π is irrational via Chebyshev recurrence (Niven theorem)",
+      "Proof uses integer sequence c_k with recurrence c_{k+2}=2c_{k+1}-9c_k, where 3∤c_k but 3|c_b if arccos(1/3)=(a/b)π",
+      "Added cos_nat_mul_pi and cos_int_mul_pi helper lemmas (cos(nπ) = (-1)^n)"
     ],
     "builtItems": [
       "DissectionOfCubesOQ02.lean: Dehn invariant formalization (222 lines)",
-      "cube_dehn_zero: cube dihedral angle \u03c0/2 is rational multiple of \u03c0",
-      "tetrahedron_dehn_nonzero: arccos(1/3) is irrational multiple of \u03c0",
+      "cube_dehn_zero: cube dihedral angle π/2 is rational multiple of π",
+      "tetrahedron_dehn_nonzero: arccos(1/3) is irrational multiple of π",
       "dehn_obstruction: cube and tetrahedron have different Dehn invariants",
       "polygon_dehn_zero: 2D Bolyai-Gerwien analog",
-      "Comprehensive documentation: Hilbert 3rd, Dehn-Sydler, dimension contrast"
+      "Comprehensive documentation: Hilbert 3rd, Dehn-Sydler, dimension contrast",
+      "nivenSeq: integer Chebyshev sequence (c₀=c₁=2, c_{k+2}=2c_{k+1}-9c_k)",
+      "three_ndvd_nivenSeq: 3 never divides nivenSeq k (pair induction + Euclid lemma)",
+      "cos_step: cosine addition recurrence cos((k+2)θ)=2cosθ·cos((k+1)θ)-cos(kθ)",
+      "nivenSeq_eq_cos: nivenSeq k = 3^k · 2cos(k·arccos(1/3)) (pair induction)",
+      "cos_nat_mul_pi: cos(nπ) = (-1)^n for natural n",
+      "cos_int_mul_pi: cos(nπ) = (-1)^|n| for integer n",
+      "tetrahedron_angle_irrational_pi: FULLY PROVED (0 sorries)"
     ],
     "openQuestions": [
       "What specific 3D generalization is targeted?",
       "Does Mathlib have volume-preserving or Dehn invariant infrastructure?"
     ],
     "nextSteps": [
-      "Prove arccos(1/3)/\u03c0 is irrational (Niven's theorem)",
+      "Prove arccos(1/3)/π is irrational (Niven's theorem)",
       "Formalize full tensor product Dehn invariant",
       "Prove Dehn's theorem (invariance under dissection)"
     ],
-    "progressSummary": "PROGRESS: Formalized Dehn invariant approach to Hilbert's 3rd problem. Proved cube_dehn_zero, tetrahedron_dehn_nonzero, polygon_dehn_zero. 222 lines, 3 sorries."
+    "progressSummary": "COMPLETED: Proved arccos(1/3)/π is irrational via Chebyshev recurrence. Reduced file from 3 to 2 sorries. The eliminated sorry was the deepest one (Niven theorem application)."
   },
-  "lastUpdate": "2026-03-22T06:42:19Z"
+  "lastUpdate": "2026-03-22T09:30:00Z"
 }

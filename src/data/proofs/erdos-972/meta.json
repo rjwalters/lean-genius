@@ -56,7 +56,8 @@
       "Golden ratio case study with irrationality",
       "Verified examples for rational α values"
     ],
-    "axiomCount": 1
+    "axiomCount": 1,
+    "lineCount": 226
   },
   "overview": {
     "historicalContext": "This problem asks about the intersection of prime number theory and the floor function applied to irrational scaling. Given an irrational α > 1, we scale each prime p by α, take the floor, and ask whether infinitely many such values are also prime.\n\nVinogradov (1948) proved that the sequence {pα} is uniformly distributed for every irrational α, which answers a related but distinct question: there are infinitely many primes of the form p = ⌊nα⌋ (primes obtained as floors of scaled integers). However, Problem #972 asks the 'converse': starting with primes p, are the floors ⌊pα⌋ also often prime?\n\nThe distinction is subtle but fundamental. Vinogradov's result concerns which integers n produce primes when scaled, while Erdős's question concerns what happens when we scale primes specifically.",
@@ -66,7 +67,8 @@
       "**Domain vs Range question**: Vinogradov asks which n give primes ⌊nα⌋ (infinitely many). Erdős asks which primes p have ⌊pα⌋ prime (unknown).",
       "**Irrational scaling**: The restriction to irrational α is crucial - rational α would have periodic behavior that makes the question trivial or different.",
       "**Floor function barrier**: The floor operation 'loses information' about α, making it hard to connect multiplicative properties of primes to their scaled images.",
-      "**Golden ratio**: φ is a natural test case due to its algebraic properties and connection to Fibonacci numbers."
+      "**Golden ratio**: φ is a natural test case due to its algebraic properties and connection to Fibonacci numbers.",
+      "**Density heuristic**: If primes have density ~1/log(n), then ⌊pα⌋ is prime with 'probability' ~1/log(pα) ≈ 1/log(p). Since Σ 1/log(p) diverges over primes, the heuristic predicts infinitely many — but making this rigorous requires controlling correlations between p and ⌊pα⌋."
     ]
   },
   "sections": [

@@ -42,7 +42,8 @@
       "Machine-verified Lander-Parkin identity (27^5 + 84^5 + 110^5 + 133^5 = 144^5)",
       "Theorem that perfect r-th powers are r-powerful"
     ],
-    "axiomCount": 6
+    "axiomCount": 6,
+    "lineCount": 223
   },
   "overview": {
     "historicalContext": "An integer n is **r-powerful** (or r-full) if whenever a prime p divides n, we have p^r also divides n. For example, 8 = 2³ is 3-powerful since its only prime factor 2 appears with exponent 3.\n\nErdős posed a fascinating question about sums of r-powerful numbers: for r ≥ 4, can r-2 coprime r-powerful numbers sum to another r-powerful number? This connects to Euler's 1769 conjecture that k-1 k-th powers cannot sum to a k-th power.\n\nThe Euler conjecture was dramatically disproved in 1967 when Lander and Parkin found 27^5 + 84^5 + 110^5 + 133^5 = 144^5 by computer search. Since perfect k-th powers are trivially k-powerful, this inspired investigation of the more general r-powerful case.\n\nCambie found explicit examples for r = 5, 7, and 8, but whether such solutions exist for all r ≥ 4 remains open.",
@@ -52,7 +53,8 @@
       "**r-Powerful Structure**: A number is r-powerful iff all prime exponents are ≥ r. This includes all r-th powers (trivially) but also products like 2^4 · 3^5 (which is 4-powerful).",
       "**Euler's Conjecture**: The 1967 Lander-Parkin counterexample 27^5 + 84^5 + 110^5 + 133^5 = 144^5 showed that k-1 k-th powers CAN sum to a k-th power.",
       "**Cambie's Discovery**: Explicit solutions for r = 5, 7, 8 suggest the answer to the existence question might be YES, but no proof covers all r ≥ 4.",
-      "**Nitaj's Triples**: The 3-powerful case (r = 3, looking for a + b = c) has infinitely many solutions, but this doesn't directly answer the r ≥ 4 case."
+      "**Nitaj's Triples**: The 3-powerful case (r = 3, looking for a + b = c) has infinitely many solutions, but this doesn't directly answer the r ≥ 4 case.",
+      "**abc conjecture connection**: The abc conjecture would impose strong constraints on r-powerful sums a + b = c, since rad(abc) is small when all three are r-powerful — making the existence of such triples for large r increasingly surprising."
     ]
   },
   "sections": [
