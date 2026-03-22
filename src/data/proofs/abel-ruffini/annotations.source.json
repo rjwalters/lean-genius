@@ -14,6 +14,10 @@
       "Galois theory",
       "radical extensions",
       "polynomial solvability"
+    ],
+    "prerequisites": [
+      "polynomial equations",
+      "field extensions"
     ]
   },
   {
@@ -32,6 +36,10 @@
       "Mathlib",
       "Galois theory",
       "group theory"
+    ],
+    "prerequisites": [
+      "Lean 4 module system",
+      "Mathlib library structure"
     ]
   },
   {
@@ -50,6 +58,11 @@
       "radical extension",
       "intermediate field",
       "inductive definition"
+    ],
+    "prerequisites": [
+      "field extensions",
+      "radical expressions",
+      "inductive types in Lean"
     ]
   },
   {
@@ -69,6 +82,11 @@
       "Galois group",
       "solvable group",
       "minimal polynomial"
+    ],
+    "prerequisites": [
+      "Galois theory",
+      "solvable groups",
+      "irreducible polynomials"
     ]
   },
   {
@@ -89,6 +107,11 @@
       "simple group",
       "normal subgroup",
       "cycle type"
+    ],
+    "prerequisites": [
+      "group theory",
+      "permutation groups",
+      "normal subgroups"
     ]
   },
   {
@@ -110,6 +133,11 @@
       "perfect group",
       "composition series",
       "simple group"
+    ],
+    "prerequisites": [
+      "symmetric groups",
+      "derived series",
+      "cardinal arithmetic in Lean"
     ]
   },
   {
@@ -129,6 +157,57 @@
       "abelian group",
       "typeclass inference",
       "quadratic formula"
+    ],
+    "prerequisites": [
+      "solvable groups",
+      "Lean typeclass system"
+    ]
+  },
+  {
+    "id": "ann-namespace-variables",
+    "proofId": "abel-ruffini",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "Part I: Solvable by Radicals"
+    },
+    "type": "context",
+    "title": "Namespace and Universe Setup",
+    "content": "The `AbelRuffini` namespace groups all theorems in this file. The universe-polymorphic variable declarations `{F : Type*} [Field F]` and `{E : Type*} [Field E] [Algebra F E]` set up the field extension $E/F$ that persists throughout the formalization.\n\nPart I's docstring explains 'solvable by radicals' informally: an element $\\alpha \\in E$ is solvable by radicals over $F$ if it can be reached from $F$ by field operations and $n$th root extraction. Mathlib captures this via the inductive predicate `IsSolvableByRad`.",
+    "mathContext": "The setup `[Field F] [Field E] [Algebra F E]` means $E$ is an $F$-algebra, i.e., there is a ring homomorphism $F \\to E$ making $E$ a vector space over $F$. This is the standard framework for field extensions. The `Type*` universe polymorphism lets $F$ and $E$ live in any Lean universe.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "field extension",
+      "algebra over a field",
+      "universe polymorphism",
+      "Lean namespace"
+    ],
+    "prerequisites": [
+      "Lean 4 syntax",
+      "field theory basics"
+    ]
+  },
+  {
+    "id": "ann-exists-quintic",
+    "proofId": "abel-ruffini",
+    "anchor": {
+      "type": "declaration",
+      "name": "exists_quintic",
+      "kind": "theorem"
+    },
+    "type": "technique",
+    "title": "Existence of Quintic Polynomials and Setup for Abel-Ruffini",
+    "content": "The Part V docstring explains the logical flow combining Parts II and III. `exists_quintic` provides a trivial witness that degree-5 polynomials exist over $\\mathbb{Q}$: namely $X^5$. The proof uses `Polynomial.natDegree_pow` and `Polynomial.natDegree_X` to compute `natDegree(X^5) = 5`.\n\nThis is a pedagogical stepping stone, not the core argument. The real content follows in `not_solvable_by_rad_of_not_solvable_gal`. A complete instantiation of Abel-Ruffini for a *specific* unsolvable quintic (e.g., $x^5 - x - 1$ over $\\mathbb{Q}$) would require computing the Galois group explicitly — a non-trivial computation not attempted here.",
+    "mathContext": "$X^5 \\in \\mathbb{Q}[X]$ has $\\deg(X^5) = 5 \\cdot \\deg(X) = 5 \\cdot 1 = 5$. This is a reducible polynomial ($X^5 = X \\cdot X^4$), so it does not itself serve as an example of an unsolvable quintic. An irreducible example like $x^5 - x - 1$ has Galois group $S_5$ (verifiable by showing it has exactly 3 real roots and applying a discriminant argument).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "polynomial degree",
+      "natural degree in Lean",
+      "irreducibility",
+      "Galois group computation"
+    ],
+    "prerequisites": [
+      "polynomial rings",
+      "degree computation"
     ]
   },
   {
@@ -149,6 +228,10 @@
       "proof by contradiction",
       "irreducible polynomial",
       "Galois group computation"
+    ],
+    "prerequisites": [
+      "Galois theory",
+      "propositional logic (contrapositive)"
     ]
   },
   {
@@ -168,6 +251,11 @@
       "Fundamental Theorem of Algebra",
       "transcendence of pi",
       "Gödel incompleteness"
+    ],
+    "prerequisites": [
+      "history of algebra",
+      "conjugacy classes",
+      "Lagrange's theorem"
     ]
   }
 ]
