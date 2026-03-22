@@ -159,17 +159,24 @@
     },
     {
       "id": "related",
-      "title": "Related Problems",
-      "summary": "Erdős-Straus, odd greedy, OEIS",
+      "title": "Connection to Other Problems",
+      "summary": "Erdős-Straus conjecture (4/n = 1/a + 1/b + 1/c), odd greedy expansion, OEIS references A000058 and A076393.",
       "startLine": 211,
-      "endLine": 232
+      "endLine": 227
+    },
+    {
+      "id": "historical",
+      "title": "Historical Note",
+      "summary": "The original [ErGr80] formulation used u₁=1, u_{n+1}=u_n(u_n+1), which doesn't satisfy Σ 1/u_n = 1. Corrected by Quanyu Tang.",
+      "startLine": 228,
+      "endLine": 236
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_315_solved, erdos_315_summary",
-      "startLine": 234,
-      "endLine": 259
+      "summary": "erdos_315 and erdos_315_summary combine the solved conjecture with Vardi constant bounds 1.264 < c₀ < 1.265.",
+      "startLine": 238,
+      "endLine": 266
     }
   ],
   "conclusion": {
@@ -192,6 +199,11 @@
       "targetId": "erdos-267",
       "relationship": "related",
       "description": "Both involve irrationality/transcendence of sums related to number-theoretic sequences (Fibonacci vs Sylvester)"
+    },
+    {
+      "targetId": "erdos-285",
+      "relationship": "related",
+      "description": "Both concern Egyptian fraction structure: #285 studies asymptotics of Egyptian fraction representations, #315 characterizes the optimal growth rate among all Egyptian sequences for 1"
     }
   ]
 }
