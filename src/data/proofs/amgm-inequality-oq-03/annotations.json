@@ -72,15 +72,27 @@
     "prerequisites": ["Jensen's inequality", "rpow composition", "positivity tactic", "field_simp"]
   },
   {
-    "id": "ann-amgm-oq03-07-axiom-summary",
+    "id": "ann-amgm-oq03-07-duality-neg",
     "proofId": "amgm-inequality-oq-03",
-    "range": { "startLine": 220, "endLine": 263 },
+    "range": { "startLine": 220, "endLine": 343 },
+    "type": "theorem",
+    "title": "Duality Identity and Negative Power Mean Monotonicity (Fully Proved)",
+    "content": "power_mean_neg_inv establishes M_r(z) = M_{-r}(z⁻¹)⁻¹ by showing (zᵢ⁻¹)^(-r) = zᵢ^r (via inv_rpow + rpow_neg + inv_inv) and A^(1/r) = (A^(1/(-r)))⁻¹ (via rpow_neg). Helper lemmas weighted_sum_pos and weightedPowerMean_pos establish positivity. power_mean_monotone_neg proves M_r ≤ M_s for r ≤ s < 0 by negating exponents (0 < -s ≤ -r), applying power_mean_monotone_pos to z⁻¹, and inverting. The inversion uses explicit calc blocks (1 = A·A⁻¹ ≤ B·A⁻¹, then multiply by B⁻¹) to avoid inv_le_inv_of_le.",
+    "mathContext": "The full chain $\\min(z) \\leq \\cdots \\leq M_{-1} \\leq M_0 \\leq M_1 \\leq M_2 \\leq \\cdots \\leq \\max(z)$ is now proved for all same-sign exponents: $M_r \\leq M_s$ for $0 < r \\leq s$ (Jensen) and $r \\leq s < 0$ (duality). Only the mixed-sign case $r < 0 < s$ remains.",
+    "significance": "key",
+    "relatedConcepts": ["power mean duality", "Real.inv_rpow", "Real.rpow_neg", "inequality inversion", "power mean chain"],
+    "prerequisites": ["power_mean_monotone_pos", "Real.rpow properties", "Finset positivity"]
+  },
+  {
+    "id": "ann-amgm-oq03-08-summary",
+    "proofId": "amgm-inequality-oq-03",
+    "range": { "startLine": 345, "endLine": 373 },
     "type": "insight",
-    "title": "General Monotonicity Axiom and Interpolation Chain Summary",
-    "content": "The general power_mean_monotone is stated as an axiom because the case of negative r (including M_{-1} <= M_0, i.e., HM <= GM via the power mean framework) is not currently provable with Mathlib tools. The Mathlib TODO explicitly notes 'generalized mean inequality with any p <= q, including negative numbers' as an open gap. The summary theorem power_mean_interpolation_summary (a True := trivial placeholder) catalogs what is proved vs. axiomatized. The harmonic_mean_le_geom_mean_via_power theorem bridges the direct HM <= GM proof to the power mean framework by accepting M_{-1} = HM as a hypothesis.",
-    "mathContext": "The full chain $\\min(z) \\leq \\cdots \\leq M_{-1} \\leq M_0 \\leq M_1 \\leq M_2 \\leq \\cdots \\leq \\max(z)$ is proved for $M_0 \\leq M_1$ (GM \\leq AM), $M_1 \\leq M_p$ ($p \\geq 1$), $M_r \\leq M_s$ ($0 < r \\leq s$, new), and HM \\leq GM directly. The case $r < 0$ requires extension of Mathlib's analysis infrastructure.",
+    "title": "Interpolation Chain Summary: All Same-Sign Cases Proved",
+    "content": "The summary theorem power_mean_interpolation_summary catalogs the complete status: GM ≤ AM (Mathlib), AM ≤ M_p for p ≥ 1 (Mathlib), HM ≤ GM (new direct proof), M_r ≤ M_s for 0 < r ≤ s (new, Jensen), M_r ≤ M_s for r ≤ s < 0 (new, duality). The file compiles with 0 axioms and 0 sorries. Only the mixed-sign case (r < 0 < s, crossing the geometric mean limit) remains as a future direction.",
+    "mathContext": "All proved: $\\text{GM} \\leq \\text{AM}$, $\\text{AM} \\leq M_p$ ($p \\geq 1$), $\\text{HM} \\leq \\text{GM}$, $M_r \\leq M_s$ ($0 < r \\leq s$), $M_r \\leq M_s$ ($r \\leq s < 0$). Open: $M_r \\leq M_s$ for $r < 0 < s$.",
     "significance": "supporting",
-    "relatedConcepts": ["axiom in Lean 4", "open Mathlib gaps", "power mean chain", "harmonic mean"],
-    "prerequisites": ["power mean definitions", "Lean 4 axiom keyword", "Mathlib.Analysis.MeanInequalities TODO"]
+    "relatedConcepts": ["power mean chain", "open Mathlib gaps", "harmonic mean", "geometric mean"],
+    "prerequisites": ["power mean definitions", "all preceding theorems in this file"]
   }
 ]

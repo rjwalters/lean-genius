@@ -44,11 +44,13 @@
     "originalContributions": [
       "harmonic_mean_le_geom_mean_direct: HM ≤ GM proved directly via GM(z⁻¹)·GM(z) = 1 and AM-GM on z⁻¹",
       "power_mean_monotone_pos: M_r ≤ M_s for 0 < r ≤ s proved via Jensen applied to t ↦ t^(s/r)",
+      "power_mean_monotone_neg: M_r ≤ M_s for r ≤ s < 0 proved via duality M_r(z) = M_{-r}(z⁻¹)⁻¹",
+      "power_mean_neg_inv: Algebraic identity M_r(z) = M_{-r}(z⁻¹)⁻¹ via inv_rpow + rpow_neg",
       "Key algebraic trick: GM(z⁻¹) = GM(z)⁻¹ proved using Real.mul_rpow + Finset.prod_mul_distrib",
       "Avoids div_le_iff/le_div_iff (unavailable in Lean4) via explicit multiplicative calc proofs"
     ],
     "dateAdded": "02/23/26",
-    "axiomCount": 1
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "The AM-GM inequality (∏ zᵢ^wᵢ ≤ ∑ wᵢzᵢ) is one of the most classical results in mathematics, known since antiquity. Hardy, Littlewood, and Pólya (1934) unified AM, GM, HM, and all intermediate means into the power mean family M_r(z,w) = (∑ wᵢzᵢ^r)^(1/r).\n\nThe Power Mean Inequality states that M_r ≤ M_s for r ≤ s — this single monotonicity theorem captures HM ≤ GM ≤ AM as special cases (r=-1,0,1). The case r → 0 requires L'Hôpital analysis to show lim_{r→0} M_r = GM (the geometric mean).\n\nAs of Mathlib 4.26.0, the general monotonicity M_r ≤ M_s is not fully formalized — Mathlib has a TODO comment noting 'generalized mean inequality with any p ≤ q, including negative numbers'. This open question formalizes what is currently provable.",
@@ -100,20 +102,25 @@
       "summary": "power_mean_monotone_pos: M_r ≤ M_s for 0 < r ≤ s. Uses Jensen with exponent s/r ≥ 1, then raises to 1/s. Also proves r·r⁻¹ ≤ t·r⁻¹ for hq : 1 ≤ t/r without le_div_iff."
     },
     {
-      "id": "general-monotonicity",
-      "title": "General Monotonicity (Axiom + Discussion)",
-      "startLine": 214,
-      "endLine": 258,
-      "summary": "power_mean_monotone axiomatized for general r,s. The negative r case (including HM ≤ GM as M_{-1} ≤ M_0) remains open in Mathlib4. Summary theorem catalogues what is proved vs. open."
+      "id": "duality-and-neg-mono",
+      "title": "Duality Identity and Negative Power Mean Monotonicity",
+      "startLine": 220,
+      "endLine": 343,
+      "summary": "power_mean_neg_inv: M_r(z) = M_{-r}(z⁻¹)⁻¹. power_mean_monotone_neg: M_r ≤ M_s for r ≤ s < 0 via dual argument. Helper lemmas for positivity."
+    },
+    {
+      "id": "summary",
+      "title": "Interpolation Chain Summary",
+      "startLine": 345,
+      "endLine": 373,
+      "summary": "All same-sign cases proved. Only mixed-sign case (r < 0 < s) remains open."
     }
   ],
   "conclusion": {
-    "summary": "This formalization proves two new key cases of the Power Mean Inequality: HM ≤ GM (harmonic_mean_le_geom_mean_direct) and M_r ≤ M_s for 0 < r ≤ s (power_mean_monotone_pos). The proofs avoid lemma names unavailable in Lean4/Mathlib v4.26.0 (div_le_iff, le_div_iff, inv_le_inv_of_le) by using explicit multiplicative algebra. The file compiles with 0 sorries except for the axiomatized general monotonicity.",
-    "implications": "**If the full Power Mean Inequality were formalized in Mathlib**:\n\n**For inequalities**: Would provide a single theorem subsuming HM ≤ GM ≤ AM ≤ M_2 ≤ ..., simplifying many proofs that currently chain through AM-GM.\n\n**For analysis**: The r=0 case (geometric mean as a limit) requires formalizing L'Hôpital-style arguments or exp/log analysis, which would be valuable infrastructure.\n\n**For Lean**: Current Mathlib TODO acknowledges this gap. Completing it would strengthen the mean inequalities library significantly.",
+    "summary": "This formalization proves three key cases of the Power Mean Inequality with 0 axioms and 0 sorries: HM ≤ GM (harmonic_mean_le_geom_mean_direct), M_r ≤ M_s for 0 < r ≤ s (power_mean_monotone_pos via Jensen), and M_r ≤ M_s for r ≤ s < 0 (power_mean_monotone_neg via duality). The proofs avoid lemma names unavailable in Lean4/Mathlib (div_le_iff, le_div_iff, inv_le_inv_of_le) by using explicit multiplicative algebra.",
+    "implications": "**For the power mean chain**: This file proves monotonicity for both positive and negative exponents. Combined with the r=0 limit (proved in PowerMeanLimitOQ.lean), only the mixed-sign case (r < 0 < s) remains.\n\n**For Mathlib**: This fills part of the known TODO in Mathlib.Analysis.MeanInequalitiesPow for negative exponents.\n\n**For Lean**: The duality technique M_r(z) = M_{-r}(z⁻¹)⁻¹ is reusable for other mean inequality problems.",
     "openQuestions": [
-      "Prove M_r ≤ M_s for r ≤ s < 0 (negative power means) — requires inverse analysis",
-      "Prove the r=0 case: lim_{r→0} M_r = GM (geometric mean as a limit) — requires L'Hôpital or exp/log continuity",
-      "Prove M_r ≤ M_s for r < 0 < s (crossing zero) — the most subtle case",
+      "Prove M_r ≤ M_s for r < 0 < s (crossing zero) — the most subtle case, requires combining with the r=0 limit",
       "Add this to Mathlib as a proper contribution filling the existing TODO"
     ]
   }

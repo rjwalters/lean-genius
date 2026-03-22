@@ -1,0 +1,70 @@
+{
+  "id": "bezout-identity-oq-02-oq-02-oq-01-oq-01",
+  "title": "Constructive Divisibility: Removing the Noncomputable Annotation",
+  "slug": "bezout-identity-oq-02-oq-02-oq-01-oq-01",
+  "description": "The parent file's constructive_div used classical choice (hdvd.choose) and required the noncomputable annotation. This formalization replaces the choice-based witness with computable integer division (b*c)/a, producing a fully computable constructive_div_computable that can be evaluated with #eval. The key insight: the divisibility proof is only needed at verification time, not at runtime.",
+  "meta": {
+    "author": "Euclid; formalized here",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Euclid%27s_lemma",
+    "date": "~300 BCE",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BezoutIdentityOQ02OQ02OQ01OQ01.lean",
+    "tags": [
+      "number-theory",
+      "constructive-math",
+      "algorithms",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.mul_ediv_cancel'",
+        "description": "a * (b / a) = b when a ∣ b — connects computable division to divisibility witness",
+        "module": "Mathlib.Data.Int.Lemmas"
+      }
+    ],
+    "originalContributions": [
+      "constructive_div_computable: Fully computable quotient extraction (NOT noncomputable)",
+      "constructive_div_computable_correct: Correctness proof a * q = c",
+      "div_witness_correct: The computable witness equals the classical one",
+      "Key insight: replace hdvd.choose with (b*c)/a to eliminate classical choice"
+    ],
+    "dateAdded": "03/21/26",
+    "axiomCount": 0
+  },
+  "overview": {
+    "historicalContext": "Euclid's lemma states that if a prime p divides a*b, then p divides a or p divides b. The constructive version with explicit quotient extraction was formalized in the parent file, but used Lean's classical choice (Exists.choose) making it noncomputable. This file removes that limitation by using decidable integer division.",
+    "problemStatement": "**Goal**: Define a version of constructive_div that does NOT require the noncomputable annotation, while still producing correct quotients.\n\n**Solution**: Replace `hdvd.choose` (classical) with `(b * c) / a` (computable integer division). The correctness proof uses Int.mul_ediv_cancel' to show the quotient is correct.",
+    "proofStrategy": "The algorithm computes q = x*c + y*((b*c)/a) where x,y are Bezout coefficients from extGcd. The correctness proof shows a*q = c via the algebraic identity a*(x*c + y*k) = (x*a + y*b)*c = 1*c = c.",
+    "keyInsights": [
+      "The divisibility proof hdvd is only needed for verification, not computation — the algorithm only uses a, b, c",
+      "Int.mul_ediv_cancel' bridges computable division to the divisibility equation",
+      "The function passes Lean's computability check and can be used with #eval"
+    ]
+  },
+  "sections": [
+    {
+      "id": "computable-div",
+      "title": "Fully Computable Constructive Quotient",
+      "startLine": 95,
+      "endLine": 135,
+      "summary": "constructive_div_computable: replaces hdvd.choose with (b*c)/a. Correctness proof via Int.mul_ediv_cancel' and the Bezout identity."
+    },
+    {
+      "id": "examples",
+      "title": "Computational Verification",
+      "startLine": 137,
+      "endLine": 160,
+      "summary": "native_decide examples verify computed values. #eval demonstrates the function evaluates without noncomputable."
+    }
+  ],
+  "conclusion": {
+    "summary": "Successfully removed the noncomputable annotation from constructive_div by replacing classical choice with computable integer division. The function can now be evaluated at compile time via #eval.",
+    "implications": "Demonstrates that constructive proofs in Lean 4 can often be made computable by replacing choice with decidable operations.",
+    "openQuestions": [
+      "Can the complexity bound O(log min(a,b)) for extGcd be formalized?",
+      "Extend to polynomial rings where division algorithms exist"
+    ]
+  }
+}
