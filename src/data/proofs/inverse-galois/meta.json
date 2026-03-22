@@ -28,6 +28,12 @@
     "badge": "axiom",
     "sorries": 2,
     "axiomCount": 3,
+    "prerequisites": [
+      "Galois theory (field extensions, Galois groups, splitting fields)",
+      "Cyclotomic fields and Kronecker-Weber theorem",
+      "Group theory (symmetric and alternating groups, Sylow theorems, solvability)",
+      "Algebraic number theory (Eisenstein criterion, Dedekind's theorem)"
+    ],
     "assumptions": "3 axiom declarations across 2 files (all independent): (1) abelian_realizable — all finite abelian groups are realizable (needs Kronecker-Weber, not in Mathlib), (2) shafarevich_theorem — all finite solvable groups are realizable (deep class field theory, not in Mathlib), (3) three_dvd_gal_card — mod-7 factorization gives 3-cycle in Gal(q) via Dedekind's theorem (not in Mathlib). vandermondeProduct_sq_eq PROVED via ℂ embedding + Sophie Germain identity. gal_card_dvd_60 PROVED via Vandermonde chain. 2 sorries (open conjecture + Hilbert irreducibility).",
     "leanFile": {
       "lineCount": 5735,
@@ -268,6 +274,40 @@
     "theoremCount": 108,
     "definitionCount": 1
   },
+  "crossReferences": [
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "complementary",
+      "description": "Abel-Ruffini uses that S5 occurs as a Galois group; the Inverse Galois Problem asks which groups appear as Galois groups over Q — directly extending the question Abel-Ruffini raises about the structure of polynomial symmetry groups"
+    },
+    {
+      "targetId": "abel-ruffini-oq-04",
+      "relationship": "related",
+      "description": "The OQ-04 extension of Abel-Ruffini exposes the A5 simplicity chain — the same A5 realization proved here via Gal(x^5-5x^4+10x^3-10x^2+25x-5) is the first non-solvable case"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem on subgroup orders underpins the Sylow-theoretic arguments used to identify Galois groups by order and subgroup structure"
+    },
+    {
+      "targetId": "sylow-theorems",
+      "relationship": "foundational",
+      "description": "Sylow theorems are essential for the A5 realization — proving |Gal(q)| divides 60 and identifying the Galois group by its Sylow subgroup structure"
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "FTA guarantees polynomial roots exist over C; the Inverse Galois Problem asks about the symmetry structure of those roots over Q"
+    }
+  ],
+  "relatedProofs": [
+    "abel-ruffini",
+    "abel-ruffini-oq-04",
+    "lagrange-theorem",
+    "sylow-theorems",
+    "fundamental-theorem-algebra"
+  ],
   "references": [
     {
       "authors": "Malle, Gunter; Matzat, B. Heinrich",
@@ -282,6 +322,13 @@
       "year": "1992",
       "venue": "Jones and Bartlett",
       "note": "Lecture notes covering Hilbert irreducibility, rigidity, and applications to the inverse Galois problem"
+    },
+    {
+      "authors": "Hilbert, David",
+      "title": "Ueber die Irreducibilitaet ganzer rationaler Functionen mit ganzzahligen Coefficienten",
+      "year": "1892",
+      "venue": "Journal fuer die reine und angewandte Mathematik 110, 104-129",
+      "note": "Proved S_n and A_n are realizable over Q via Hilbert irreducibility, establishing the first systematic results on the Inverse Galois Problem"
     }
   ]
 }
