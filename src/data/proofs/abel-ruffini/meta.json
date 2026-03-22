@@ -110,5 +110,17 @@
       "The Inverse Galois Problem — every finite group appears as a Galois group over $\\mathbb{Q}$ — is a deep open problem. Can partial results (e.g., every abelian group is a Galois group over $\\mathbb{Q}$ by Kronecker-Weber) be formalized in Lean?",
       "The file relies on `Equiv.Perm.not_solvable` and `solvableByRad.isSolvable'` as black boxes. Can we expose the full proof chain — derived series, composition factors, simplicity of $A_5$ — as individual Lean lemmas for a pedagogically complete formalization?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "angle-trisection",
+      "relationship": "related",
+      "description": "Both are impossibility results proved via Galois theory: Abel-Ruffini shows quintics are unsolvable by radicals, angle trisection shows the general angle cannot be trisected by compass and straightedge"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "related",
+      "description": "Both are foundational impossibility/existence results that shaped the development of mathematics"
+    }
+  ]
 }
