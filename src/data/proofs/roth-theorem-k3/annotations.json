@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-docstring",
+    "proofId": "roth-theorem-k3",
+    "range": { "startLine": 1, "endLine": 15 },
+    "type": "context",
+    "title": "Module Overview and Historical Credits",
+    "content": "Documents the four-part structure of the formalization and imports full Mathlib. Credits Roth (1953) for the original proof, Bourgain (1999) for improved bounds, and Bloom-Sisask (2020) for the near-optimal result. The Fourier-analytic approach introduced by Roth was revolutionary — before this, additive combinatorics relied primarily on combinatorial/ergodic methods. Roth's method showed that harmonic analysis could yield quantitative bounds in number-theoretic problems.",
+    "mathContext": "$r_3(N) = \\max\\{|A| : A \\subseteq [N],\\; A \\text{ AP-free}\\} = o(N)$",
+    "significance": "supporting",
+    "relatedConcepts": ["Fourier analysis", "density increment", "arithmetic progressions"],
+    "prerequisites": ["additive combinatorics", "harmonic analysis"]
+  },
+  {
+    "id": "ann-apfree-def",
+    "proofId": "roth-theorem-k3",
+    "range": { "startLine": 19, "endLine": 39 },
+    "type": "definition",
+    "title": "AP-Free Sets: Definition and Basic Properties",
+    "content": "Defines `APFree A` for $A \\subseteq \\mathbb{Z}/N\\mathbb{Z}$: the set contains no 3-term arithmetic progression $a, a+d, a+2d$ with $d \\neq 0$. Working in $\\mathbb{Z}/N\\mathbb{Z}$ (cyclic group) rather than $[N]$ simplifies the Fourier analysis — roots of unity are naturally defined on cyclic groups. The empty set and singletons are proved AP-free as base cases. The singleton proof uses the key observation that if $a$ and $a+d$ are both $x$, then $d = 0$, contradicting the non-degeneracy condition.",
+    "mathContext": "$A \\subseteq \\mathbb{Z}/N\\mathbb{Z}$ is AP-free: $\\forall a, d \\in \\mathbb{Z}/N\\mathbb{Z},\\; d \\neq 0 \\implies \\neg(a \\in A \\wedge a+d \\in A \\wedge a+2d \\in A)$.",
+    "significance": "key",
+    "relatedConcepts": ["arithmetic progressions", "cap sets", "Salem-Spencer sets"],
+    "prerequisites": ["modular arithmetic", "finite sets"]
+  },
+  {
+    "id": "ann-fourier",
+    "proofId": "roth-theorem-k3",
+    "range": { "startLine": 41, "endLine": 58 },
+    "type": "technique",
+    "title": "Fourier Analysis on Z/NZ: Large Coefficient from AP-Freeness",
+    "content": "Defines `fourierCoeff A r` as the discrete Fourier transform of the characteristic function $1_A$ at frequency $r$: $\\hat{1_A}(r) = \\sum_{x \\in A} e^{2\\pi i rx/N}$. The theorem `fourier_large_coefficient` states the key analytic step: if $A$ has density $\\delta$ and is AP-free, then some non-zero Fourier coefficient has magnitude at least $\\delta^2 N / 2$. The proof (sorry'd) uses the identity relating 3-AP count to Fourier coefficients: $\\Lambda_3(A) = N^{-1} \\sum_r |\\hat{1_A}(r)|^2 \\hat{1_A}(-2r)$. If $\\Lambda_3(A) = 0$ (AP-free) and $\\hat{1_A}(0) = |A| = \\delta N$ is large, the non-zero coefficients must compensate.",
+    "mathContext": "$\\hat{1_A}(r) = \\sum_{x \\in A} e^{2\\pi i rx/N}$. 3-AP count: $\\Lambda_3(A) = N^{-1} \\sum_r |\\hat{1_A}(r)|^2 \\hat{1_A}(-2r)$. Parseval: $\\sum_r |\\hat{1_A}(r)|^2 = N|A|$.",
+    "significance": "key",
+    "relatedConcepts": ["discrete Fourier transform", "Parseval's identity", "exponential sums", "Roth's method"],
+    "prerequisites": ["complex analysis", "Fourier analysis", "roots of unity"]
+  },
+  {
+    "id": "ann-density-increment",
+    "proofId": "roth-theorem-k3",
+    "range": { "startLine": 60, "endLine": 73 },
+    "type": "technique",
+    "title": "Density Increment Lemma: The Core Inductive Step",
+    "content": "States the density increment lemma: if $A \\subseteq \\mathbb{Z}/N\\mathbb{Z}$ has density $\\delta$ and is AP-free, then there exists a subprogression of length $\\geq \\sqrt{N}$ where $A$ has density $\\geq \\delta + \\delta^2/100$. This is the heart of Roth's proof. A large Fourier coefficient at frequency $r$ means $A$ correlates with the character $e^{2\\pi i rx/N}$, which restricts to a constant on arithmetic progressions with common difference coprime to $r$. By pigeonhole, $A$ has increased density on one such progression. The $\\delta^2/100$ increment and $\\sqrt{N}$ length are not optimal but suffice for the asymptotic result.",
+    "mathContext": "AP-free + density $\\delta$ on $\\mathbb{Z}/N\\mathbb{Z}$ $\\implies$ density $\\geq \\delta + \\delta^2/100$ on some AP of length $\\geq \\sqrt{N}$.",
+    "significance": "key",
+    "relatedConcepts": ["density increment", "arithmetic progressions", "pigeonhole principle", "character sums"],
+    "prerequisites": ["Fourier analysis", "arithmetic progressions"]
+  },
+  {
+    "id": "ann-roth-main",
+    "proofId": "roth-theorem-k3",
+    "range": { "startLine": 75, "endLine": 92 },
+    "type": "insight",
+    "title": "Roth's Theorem: r₃(N) = o(N)",
+    "content": "The main theorem: for every $\\delta > 0$, sufficiently large AP-free subsets of $[N]$ do not exist. The proof iterates the density increment: starting with density $\\delta$, each application of the density increment increases density by $\\Omega(\\delta^2)$ on a subprogression of length $\\geq \\sqrt{N}$. After $O(1/\\delta)$ iterations, the density exceeds 1 — impossible. The subprogression length decreases (from $N$ to $\\sqrt{N}$ to $N^{1/4}$ etc.), but as long as it remains $> 1$, the argument continues. The bound $N_0$ depends on $\\delta$: one needs $N$ large enough that $O(1/\\delta)$ squarings still leave a positive length.",
+    "mathContext": "$\\forall \\delta > 0,\\; \\exists N_0$: $\\forall N \\geq N_0,\\; |A| \\geq \\delta N \\implies A$ contains a 3-AP. Equivalently: $r_3(N)/N \\to 0$.",
+    "significance": "key",
+    "relatedConcepts": ["Szemer\u00e9di's theorem", "density Hales-Jewett", "Green-Tao theorem"],
+    "prerequisites": ["density increment", "iteration arguments"]
+  }
+]
