@@ -122,5 +122,38 @@
       "How does the answer change for r-full parts with r ≥ 3?",
       "Are there explicit constructions achieving van Doorn's lower bound?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Ivić, Aleksandar",
+      "title": "On the iterates of the enumerating function of finite Abelian groups",
+      "year": "1982",
+      "venue": "Bull. Acad. Serbe Sci. Math.",
+      "note": "Contains early discussion of powerful numbers and their distribution among consecutive integers"
+    },
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "note": "[ErGr80] where Problem 367 appears"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-366",
+      "relationship": "related",
+      "description": "Directly related: #366 concerns consecutive k-full numbers (B_k(n) = n case), while #367 studies the product of 2-full parts B₂ over consecutive integers"
+    },
+    {
+      "targetId": "erdos-369",
+      "relationship": "related",
+      "description": "Both concern multiplicative structure of consecutive integers: #369 studies consecutive smooth numbers, #367 studies products of powerful parts"
+    },
+    {
+      "targetId": "erdos-368",
+      "relationship": "related",
+      "description": "Both study prime factor structure of consecutive integers: #368 asks about the largest prime factor of n(n+1), while #367 concerns the 2-full part"
+    }
+  ]
 }
