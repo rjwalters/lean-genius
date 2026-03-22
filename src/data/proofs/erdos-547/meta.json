@@ -144,5 +144,38 @@
       "Complete formal proofs of the axiomatized results (27 axioms), especially Chvátal's embedding theorem",
       "Connect to size Ramsey numbers: ŝ(T) ≤ cn for some constant c (Beck's theorem)"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Chvátal, Václav",
+      "title": "Tree-complete graph Ramsey numbers",
+      "year": "1977",
+      "venue": "J. Graph Theory 1, pp. 93-93",
+      "note": "Proved R(T_n, K_m) = (n-1)(m-1) + 1; for 2-color case gives R(T) ≤ (Δ-1)(n-1) + 1"
+    },
+    {
+      "authors": "Zhao, Yufei; et al.",
+      "title": "The Erdős-Burr conjecture for large n",
+      "year": "2019",
+      "venue": "Advances in Mathematics",
+      "note": "Proved R(T) ≤ 2n - 2 for sufficiently large n using the regularity method"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "uses",
+      "description": "Tree Ramsey numbers are special cases of the general Ramsey problem; R(T) ≤ 2n-2 is tighter than the general Ramsey bound"
+    },
+    {
+      "targetId": "erdos-548",
+      "relationship": "related",
+      "description": "Turán-side complement: #548 (Erdős-Sós conjecture) asks about dense graphs containing all trees, while #547 asks about edge-colorings"
+    },
+    {
+      "targetId": "erdos-549",
+      "relationship": "related",
+      "description": "Bipartite variant: #549 studies bipartite tree Ramsey numbers with sharper structural constraints"
+    }
+  ]
 }

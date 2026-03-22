@@ -128,5 +128,28 @@
       "What is the structure of extremal sets?",
       "Can the lower bound be improved?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Szemerédi, Endre",
+      "title": "On the number of distinct values of the GCD of some sequences",
+      "year": "1983",
+      "venue": "Ann. Univ. Sci. Budapest. Eötvös Sect. Math.",
+      "note": "Established the initial bounds n^{1/2} ≪ h(n) ≪ n^{1-c}"
+    },
+    {
+      "authors": "Freiman, Gregory A.; Lev, Vsevolod F.",
+      "title": "GCD quotient sets",
+      "year": "2003",
+      "venue": "Combinatorica",
+      "note": "Improved upper bound to n^{2/3}"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-302",
+      "relationship": "related",
+      "description": "Both are extremal problems about structured subsets: #302 studies maximum sum-free sets, #539 studies minimum GCD quotient sets"
+    }
+  ]
 }

@@ -116,5 +116,21 @@
       "Are there arithmetic structures causing large gaps?",
       "How does the answer depend on k?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "Some problems on the distribution of prime numbers",
+      "year": "1955",
+      "venue": "Teoria dei numeri, Math. Congr. Varenna",
+      "note": "Related work on divisors in intervals"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-367",
+      "relationship": "related",
+      "description": "Both study multiplicative structure in intervals: #367 studies powerful parts, #693 studies divisors in intervals"
+    }
+  ]
 }

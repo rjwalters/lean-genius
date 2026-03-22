@@ -128,5 +128,21 @@
       "What is the computational complexity of finding the dense subset $S$? Is there a polynomial-time algorithm, or does derandomization require quasi-polynomial time?",
       "For $\\alpha(G) \\leq n^{\\beta}$ with general $\\beta \\in (0, 1)$, what is the optimal edge count in a $n^{\\beta}$-vertex subset as a function of $\\beta$?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "note": "[ErGr80] original formulation"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-806",
+      "relationship": "related",
+      "description": "Both are Erdős problems in the 800s about structural properties of integers"
+    }
+  ]
 }

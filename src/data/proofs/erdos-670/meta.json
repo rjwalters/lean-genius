@@ -145,5 +145,21 @@
       "What is the optimal construction in dimension d?",
       "Is there a dimension-independent proof?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "On sets of distances of n points",
+      "year": "1946",
+      "venue": "Amer. Math. Monthly 53(5), pp. 248-250",
+      "note": "Foundational paper on distinct distances, motivating this problem"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-604",
+      "relationship": "related",
+      "description": "Both concern point configurations with distance constraints: #604 studies pinned distances, #670 studies diameter of sets with distinct pairwise distances"
+    }
+  ]
 }

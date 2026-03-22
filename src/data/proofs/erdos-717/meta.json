@@ -170,5 +170,21 @@
       "Algorithmic aspects of finding clique subdivisions",
       "Extensions to hypergraphs"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Fox, Jacob; Loh, Po-Shen",
+      "title": "On a problem of Erdős on graph colorability",
+      "year": "2008",
+      "venue": "J. Combin. Theory Ser. B",
+      "note": "Proved the conjecture relating chromatic number to stability number"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-637",
+      "relationship": "related",
+      "description": "Both concern structural properties of graphs with bounded clique/independence: #637 studies distinct degrees, #717 studies chromatic-stability ratio"
+    }
+  ]
 }
