@@ -153,6 +153,11 @@
       "targetId": "ballot-problem",
       "relationship": "ancestor",
       "description": "Classical Bertrand ballot theorem: setting k=1 in the cycle lemma recovers the ballot problem probability (a-b)/(a+b)"
+    },
+    {
+      "targetId": "intermediate-value-theorem",
+      "relationship": "related",
+      "description": "This file proves a discrete analog of the IVT: for {+1,-k}-sequences, prefix sums that start below and end above a target value v must achieve exactly v at some intermediate position — the same 'crossing' principle as the continuous IVT"
     }
   ],
   "conclusion": {
@@ -166,7 +171,8 @@
   },
   "relatedProofs": [
     "ballot-problem-oq-01",
-    "ballot-problem"
+    "ballot-problem",
+    "intermediate-value-theorem"
   ],
   "leanFile": {
     "imports": [

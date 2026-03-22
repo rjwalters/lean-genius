@@ -159,6 +159,45 @@
       "targetId": "angle-trisection",
       "relationship": "ancestor",
       "description": "Base impossibility proof — this file extends the constructibility theory to regular polygon characterization"
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-01",
+      "relationship": "sibling",
+      "description": "Proves natDegree | |Gal| via the tower law — both files eliminate axioms from OQ-02 using Mathlib's Galois infrastructure"
+    },
+    {
+      "targetId": "inverse-galois",
+      "relationship": "related",
+      "description": "The cyclotomic Galois group Gal(Φₙ/ℚ) ≅ (ℤ/nℤ)* realizes concrete abelian groups — the simplest case of the inverse Galois problem, proved here via galCyclotomicEquivUnitsZMod"
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "related",
+      "description": "The roots of unity ζₙ = exp(2πi/n) involve π — this file uses cyclotomic properties of ζₙ, while π's transcendence (proved in the gallery) separately implies circle squaring is impossible"
+    }
+  ],
+  "relatedProofs": [
+    "angle-trisection-oq-02-oq-03",
+    "angle-trisection-oq-02",
+    "angle-trisection-oq-02-oq-01",
+    "angle-trisection",
+    "inverse-galois",
+    "pi-transcendental"
+  ],
+  "references": [
+    {
+      "authors": "Gauss, Carl Friedrich",
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Leipzig",
+      "note": "Section VII: Gaussian periods and the theory of cyclotomic polynomials underlying the constructibility of regular polygons"
+    },
+    {
+      "authors": "Washington, Lawrence C.",
+      "title": "Introduction to Cyclotomic Fields",
+      "year": "1997",
+      "venue": "Springer GTM 83, 2nd edition",
+      "note": "Standard reference for cyclotomic field theory, including the Galois theory of Φₙ and the connection to constructibility"
     }
   ],
   "leanFile": {

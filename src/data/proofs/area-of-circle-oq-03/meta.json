@@ -145,11 +145,23 @@
       "targetId": "area-of-circle-oq-01",
       "relationship": "technique",
       "description": "Both proofs rely on the key limit n·sin(2π/n) → 2π. The isoperimetric approach in OQ-01 and the exhaustion approach here share this fundamental trigonometric limit, revealing deep structural connections."
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "foundational",
+      "description": "Inscribed polygon areas use right triangles with hypotenuse r — the Pythagorean theorem underpins the r²·sin(2π/n)/2 area formula for each isosceles triangle of the inscribed polygon"
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "related",
+      "description": "Archimedes' exhaustion defines π as the limit of polygon areas — the same constant later proved transcendental by Lindemann (1882), making the circle area πr² involve a transcendental constant"
     }
   ],
   "relatedProofs": [
     "area-of-circle",
-    "area-of-circle-oq-01"
+    "area-of-circle-oq-01",
+    "pythagorean-theorem",
+    "pi-transcendental"
   ],
   "leanFile": {
     "imports": [

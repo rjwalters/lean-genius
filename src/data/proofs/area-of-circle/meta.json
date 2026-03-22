@@ -129,11 +129,29 @@
       "targetId": "buffons-needle",
       "relationship": "related",
       "description": "Both involve pi: Buffon's needle gives a probabilistic characterization P = 2/(pi), area of circle gives the geometric characterization A = pi*r^2"
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "related",
+      "description": "π is transcendental (Lindemann 1882) — the same constant whose geometric meaning as the area-to-radius-squared ratio this file formalizes. Transcendence means πr² cannot be a constructible area for all r"
+    },
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "The area πr² can be derived by integrating √(r²-x²) from -r to r — the fundamental theorem of calculus converts this circle-area problem into a definite integral evaluation"
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "foundational",
+      "description": "The circle x²+y²=r² is defined by the Pythagorean relation — the equation underpinning the Lebesgue measure computation of the disk's area"
     }
   ],
   "relatedProofs": [
     "angle-trisection",
-    "buffons-needle"
+    "buffons-needle",
+    "pi-transcendental",
+    "fundamental-theorem-calculus",
+    "pythagorean-theorem"
   ],
   "leanFile": {
     "imports": [

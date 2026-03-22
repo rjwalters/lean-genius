@@ -81,6 +81,16 @@
       "targetId": "fundamental-theorem-calculus",
       "relationship": "uses",
       "description": "This proof is a direct application of FTC Part 2 (integral_eq_sub_of_hasDerivAt) from the Fundamental Theorem of Calculus entry."
+    },
+    {
+      "targetId": "isoperimetric-theorem",
+      "relationship": "related",
+      "description": "The annulus area formula ∫_{r₁}^{r₂} 2πρ dρ = π(r₂²-r₁²) proved here relates to the isoperimetric inequality: the circle achieves the maximum area-to-perimeter ratio"
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "related",
+      "description": "Both use Mathlib's π: the integral ∫₀ʳ 2πρ dρ = πr² involves the same transcendental constant whose properties are established in the π-transcendence formalization"
     }
   ],
   "sections": [
@@ -132,7 +142,9 @@
   "relatedProofs": [
     "area-of-circle",
     "area-of-circle-oq-01",
-    "fundamental-theorem-calculus"
+    "fundamental-theorem-calculus",
+    "isoperimetric-theorem",
+    "pi-transcendental"
   ],
   "leanFile": {
     "imports": [

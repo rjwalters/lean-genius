@@ -117,6 +117,11 @@
       "targetId": "isoperimetric-theorem",
       "relationship": "supports",
       "description": "This IBP formula is a key analytical ingredient in the Fourier-analytic proof of the isoperimetric inequality $C^2 \\geq 4\\pi A$."
+    },
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "Integration by parts is derived from the product rule and FTC — the IBP formula fourierCoeffOn_of_hasDerivAt used here is Mathlib's formalization of this principle for interval integrals"
     }
   ],
   "sections": [
@@ -175,7 +180,8 @@
     "area-of-circle-oq-01-oq-03",
     "area-of-circle-oq-01-oq-02-oq-01",
     "fourier-series",
-    "isoperimetric-theorem"
+    "isoperimetric-theorem",
+    "fundamental-theorem-calculus"
   ],
   "leanFile": {
     "imports": [

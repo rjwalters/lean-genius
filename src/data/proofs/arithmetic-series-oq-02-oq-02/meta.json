@@ -155,8 +155,33 @@
       "Can the identity be proved purely by a combinatorial bijection (counting lattice paths two ways) without induction?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "arithmetic-series-oq-02",
+      "relationship": "extends",
+      "description": "Parent entry proving the 1D hockey stick identity ∑C(i+k,k) = C(n+k+1,k+1) — this file generalizes to 2D via the parallel Vandermonde convolution"
+    },
+    {
+      "targetId": "arithmetic-series",
+      "relationship": "ancestor",
+      "description": "The original arithmetic series ∑k = n(n+1)/2 — this file shows it's the simplest special case (a=0, b=0) of the 2D hockey stick"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "The Vandermonde convolution ∑C(m,j)C(s,r-j) = C(m+s,r) is a fundamental identity in binomial coefficient theory, and the parallel variant proved here is its shifted analogue"
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "foundational",
+      "description": "Pascal's recurrence C(n+1,k+1) = C(n,k) + C(n,k+1) drives the nested induction — the same identity underlying Pascal's triangle"
+    }
+  ],
   "relatedProofs": [
-    "arithmetic-series-oq-02"
+    "arithmetic-series-oq-02",
+    "arithmetic-series",
+    "binomial-theorem",
+    "combinations-formula"
   ],
   "leanFile": {
     "imports": [

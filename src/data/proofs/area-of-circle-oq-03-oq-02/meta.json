@@ -167,6 +167,28 @@
       "Can the Dalzell–Niven integral ∫₀¹ t⁴(1-t)⁴/(1+t²) dt = 22/7 − π be formalized in Lean 4 as an alternative proof of the upper bound?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle-oq-03",
+      "relationship": "extends",
+      "description": "Parent entry formalizing Archimedes' method of exhaustion — this file verifies Archimedes' specific numerical bounds 223/71 < π < 22/7 using the same polygon-based approach"
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "ancestor",
+      "description": "The area formula A = πr² requires knowing π — this file verifies Archimedes' classical 3-decimal approximation of the constant"
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "related",
+      "description": "Archimedes' bounds give rational approximations to π (223/71, 22/7), while Lindemann's transcendence proof shows π can never be an exact algebraic number — the bounds are the best we can do with rationals"
+    }
+  ],
+  "relatedProofs": [
+    "area-of-circle-oq-03",
+    "area-of-circle",
+    "pi-transcendental"
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
