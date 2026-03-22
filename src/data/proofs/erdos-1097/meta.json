@@ -37,9 +37,10 @@
       "The connection to the Kakeya conjecture means resolving this problem would impact fundamental questions in geometric measure theory about Besicovitch sets in R^n"
     ],
     "prerequisites": [
-      "Graph theory: chromatic number, cliques, independent sets",
-      "Ramsey theory and extremal graph theory",
-      "Probabilistic method in combinatorics"
+      "Additive combinatorics: sumsets, difference sets, and arithmetic progressions",
+      "The probabilistic method (Erdős-Spencer construction for the lower bound)",
+      "Incidence geometry: the Szemerédi-Trotter theorem and its applications to sum-product problems",
+      "Basic real analysis: asymptotic notation, limits, and exponents"
     ]
   },
   "sections": [
@@ -134,12 +135,18 @@
       "targetId": "arithmetic-series",
       "relationship": "foundational",
       "description": "Basic arithmetic series formulas underlie the counting of arithmetic progressions in intervals"
+    },
+    {
+      "targetId": "roth-theorem-k3",
+      "relationship": "related",
+      "description": "Roth's theorem guarantees 3-term APs in dense subsets of $\\{1,\\ldots,N\\}$. Problem #1097 goes further: given that 3-APs exist, how many distinct common differences must they have? Both are central problems in additive combinatorics"
     }
   ],
   "relatedProofs": [
     "szemeredi-theorem",
     "erdos-3",
-    "arithmetic-series"
+    "arithmetic-series",
+    "roth-theorem-k3"
   ],
   "leanFile": {
     "imports": [
