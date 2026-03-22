@@ -6,6 +6,7 @@
     "type": "concept",
     "title": "Buffon's Needle Problem: Wiedijk #99",
     "content": "**Buffon's Needle** (1777):\n\nA needle of length $\\ell$ is dropped onto a floor with parallel lines spaced $d$ apart. If $\\ell \\leq d$:\n$$P(\\text{crosses line}) = \\frac{2\\ell}{\\pi d}$$\n\n**Why Remarkable**:\n1. One of the first problems in **geometric probability**\n2. Provides a **Monte Carlo method** to estimate $\\pi$!\n3. Connects probability to **integral geometry**\n\n**Historical**: Posed by Georges-Louis Leclerc, Comte de Buffon (1777) in \"Essai d'arithmétique morale\".\n\n**Key Insight**: The appearance of $\\pi$ arises from integrating $\\sin\\theta$ over the angle.",
+    "mathContext": "For needle length $\\ell \\leq d$ (line spacing): $P(\\text{crosses}) = \\frac{2\\ell}{\\pi d}$. The $\\pi$ arises from $\\int_0^\\pi \\sin\\theta\\,d\\theta = 2$.",
     "significance": "critical",
     "relatedConcepts": ["geometric probability", "Monte Carlo", "integral geometry"],
     "prerequisites": ["uniform probability distributions", "integration of trigonometric functions", "geometric measure theory"]
@@ -77,6 +78,7 @@
     "type": "note",
     "title": "Numerical Examples",
     "content": "**Special Cases Verified**:\n\n**Equal Length** ($\\ell = d$):\n```lean\ntheorem buffon_equal_length (h : ℓ = d) :\n    2 * ℓ / (π * d) = 2 / π\n```\n$P = 2/\\pi \\approx 0.6366$ (about 64% chance of crossing)\n\n**Half Length** ($\\ell = d/2$):\n```lean\ntheorem buffon_half_length (h : ℓ = d / 2) :\n    2 * ℓ / (π * d) = 1 / π\n```\n$P = 1/\\pi \\approx 0.3183$ (about 32% chance of crossing)\n\n**Note**: As $\\ell \\to 0$, $P \\to 0$ (tiny needles rarely cross).",
+    "mathContext": "$\\ell = d \\Rightarrow P = 2/\\pi \\approx 0.637$; $\\ell = d/2 \\Rightarrow P = 1/\\pi \\approx 0.318$; $\\ell \\to 0 \\Rightarrow P \\to 0$.",
     "significance": "supporting",
     "relatedConcepts": ["special cases", "numerical verification", "field_simp"],
     "prerequisites": ["buffon_needle_probability", "field_simp tactic"]
@@ -88,6 +90,7 @@
     "type": "note",
     "title": "Long Needle Case",
     "content": "**When ℓ > d (Long Needle)**:\n\nThe formula becomes more complex:\n$$P = \\frac{2}{\\pi}\\left[\\frac{\\ell}{d} - \\sqrt{\\left(\\frac{\\ell}{d}\\right)^2 - 1} + \\arccos\\left(\\frac{d}{\\ell}\\right)\\right]$$\n\n**Why Different?**\n- When $\\ell > d$, the needle can cross multiple lines\n- For some angles, crossing is guaranteed\n- The geometry becomes more intricate\n\n**Limiting Behavior**: As $\\ell \\to \\infty$, $P \\to 1$ (always crosses).",
+    "mathContext": "Long needle ($\\ell > d$): $P = \\frac{2}{\\pi}\\left[\\frac{\\ell}{d} - \\sqrt{(\\ell/d)^2-1} + \\arccos(d/\\ell)\\right]$. As $\\ell/d \\to \\infty$, $P \\to 1$.",
     "significance": "supporting",
     "relatedConcepts": ["long needle", "arccos", "multiple crossings"],
     "prerequisites": ["short needle formula (ℓ ≤ d case)", "arccos function for angle computation"]
@@ -99,6 +102,7 @@
     "type": "note",
     "title": "Applications and Context",
     "content": "**Cauchy-Crofton Formula**:\n\nBuffon's Needle is a special case of the general formula relating curve length to expected line intersections.\n\n**Applications**:\n1. **Stereology**: Estimating lengths/areas from random sections\n2. **Quality control**: Inspecting surfaces with random probes\n3. **Computer graphics**: Ray tracing, visibility computations\n4. **Biology**: Estimating fiber lengths from cross-sections\n\n**The Deep Connection**:\n\nThe appearance of $\\pi$ is not coincidental—it connects:\n- **Geometry** (circles, angles)\n- **Analysis** ($\\int\\sin\\theta$)\n- **Probability** (uniform distributions)\n- **Measure theory** (area ratios)\n\nThis is why geometric probability is so elegant!",
+    "mathContext": "Cauchy-Crofton formula: $\\text{length}(\\gamma) = \\frac{1}{2}\\int_{\\text{lines}} |\\gamma \\cap L|\\,dL$ — the length of a curve equals the expected number of line intersections. Buffon's needle is the special case where $\\gamma$ is a line segment.",
     "significance": "key",
     "relatedConcepts": ["Cauchy-Crofton", "stereology", "integral geometry"],
     "prerequisites": ["Buffon's needle formula", "Cauchy-Crofton formula (background)", "measure theory"]

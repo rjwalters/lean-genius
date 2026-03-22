@@ -3,11 +3,11 @@
     "id": "ann-header",
     "proofId": "abel-ruffini",
     "range": {
-      "startLine": 1,
-      "endLine": 4
+      "startLine": 6,
+      "endLine": 32
     },
     "type": "concept",
-    "title": "Historical Introduction",
+    "title": "Module Documentation",
     "content": "The Abel-Ruffini theorem, proven by Niels Henrik Abel in 1824 and later illuminated by Galois's theory, answers a 300-year-old question: why is there no 'quintic formula' like the quadratic formula?\n\nGalois discovered that solvability by radicals is equivalent to having a solvable Galois group, revealing a profound connection between field theory and group theory.",
     "mathContext": "The question: Given $ax^5 + bx^4 + cx^3 + dx^2 + ex + f = 0$, is there a formula for $x$ using only $+, -, \\times, \\div,$ and $\\sqrt[n]{\\phantom{x}}$?",
     "significance": "supporting",
@@ -25,8 +25,8 @@
     "id": "ann-imports",
     "proofId": "abel-ruffini",
     "range": {
-      "startLine": 6,
-      "endLine": 32
+      "startLine": 1,
+      "endLine": 4
     },
     "type": "concept",
     "title": "Mathlib Imports",
@@ -44,27 +44,23 @@
     ]
   },
   {
-    "id": "ann-namespace-variables",
+    "id": "ann-namespace",
     "proofId": "abel-ruffini",
     "range": {
       "startLine": 34,
-      "endLine": 49
+      "endLine": 35
     },
     "type": "context",
-    "title": "Namespace and Universe-Polymorphic Field Variables",
-    "content": "The `AbelRuffini` namespace scopes all theorems. The universe-polymorphic variables `F` and `E` set up the proof's field-extension context: `F` is an arbitrary field (the 'base'), `E` is an extension field with an `Algebra F E` instance encoding the inclusion $F \\hookrightarrow E$.\n\nThis polymorphism means the theorems apply to any field extension — $\\mathbb{Q} \\hookrightarrow \\mathbb{R}$, $\\mathbb{Q} \\hookrightarrow \\mathbb{C}$, $\\mathbb{F}_p \\hookrightarrow \\overline{\\mathbb{F}_p}$, etc. The `{F : Type*}` syntax uses auto-bound implicit universes, allowing Lean to infer the universe level.",
-    "mathContext": "The `Algebra F E` instance encodes a ring homomorphism $\\phi: F \\to E$ making $E$ an $F$-algebra. For field extensions, this is the inclusion map. Universe polymorphism means theorems hold at any universe level, not just `Type 0` (= `Type`).",
+    "title": "Namespace Declaration",
+    "content": "The `AbelRuffini` namespace scopes all theorems in the file. All theorem names are prefixed with `AbelRuffini.` when referenced externally (e.g., `AbelRuffini.galois_bridge`). The namespace is closed at line 185 with `end AbelRuffini`.",
+    "mathContext": "Lean 4 namespaces organize declarations hierarchically. The `AbelRuffini` namespace groups `galois_bridge`, `symmetric_group_not_solvable`, `not_solvable_by_rad_of_not_solvable_gal`, etc. under a common prefix.",
     "significance": "context",
     "prerequisites": [
-      "Lean 4 universe polymorphism",
-      "Algebra typeclass",
-      "field extensions"
+      "Lean 4 namespace system"
     ],
     "relatedConcepts": [
-      "universe polymorphism",
-      "Algebra F E",
-      "field extension",
-      "auto-bound implicit"
+      "Lean 4 namespaces",
+      "module organization"
     ]
   },
   {
@@ -72,10 +68,10 @@
     "proofId": "abel-ruffini",
     "range": {
       "startLine": 36,
-      "endLine": 46
+      "endLine": 49
     },
     "type": "definition",
-    "title": "Solvable by Radicals",
+    "title": "Solvable by Radicals and Field Variables",
     "content": "An element α is 'solvable by radicals' if it can be built from the base field using field operations and nth roots. The quadratic formula is an example: $x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}$\n\nMathlib defines this inductively via `IsSolvableByRad`, with constructors for: base field elements, arithmetic operations, and radical extraction.",
     "mathContext": "`solvableByRad F E` is the intermediate field of all elements solvable by radicals over F.\n\nExample: $\\sqrt{1 + \\sqrt{2}}$ is built by: 2 ∈ ℚ, then √2, then 1+√2, then √(1+√2).",
     "significance": "critical",
@@ -98,7 +94,7 @@
       "endLine": 67
     },
     "type": "theorem",
-    "title": "Abel-Ruffini Theorem (One Direction)",
+    "title": "The Galois Bridge Theorem",
     "content": "**Theorem**: If α is expressible using radicals, then the Galois group of its minimal polynomial is solvable.\n\nThis is the key bridge: radical solvability (field theory) → group solvability (group theory).\n\nThe proof proceeds by induction on `IsSolvableByRad`. The key case: if α^n is solvable, then adjoining α creates a cyclic extension, and cyclic groups are abelian (hence solvable).",
     "mathContext": "$\\alpha$ solvable by radicals $\\Rightarrow$ Gal(minpoly(α)) is solvable\n\nContrapositive: If Galois group is NOT solvable, roots are NOT expressible by radicals.",
     "significance": "critical",
@@ -166,7 +162,7 @@
     "proofId": "abel-ruffini",
     "range": {
       "startLine": 86,
-      "endLine": 100
+      "endLine": 93
     },
     "type": "technique",
     "title": "Instantiating Non-Solvability for S₅ and S₆",
@@ -214,7 +210,7 @@
     "proofId": "abel-ruffini",
     "range": {
       "startLine": 100,
-      "endLine": 112
+      "endLine": 118
     },
     "type": "insight",
     "title": "Solvable Small Symmetric Groups: The Other Side of the Threshold",
