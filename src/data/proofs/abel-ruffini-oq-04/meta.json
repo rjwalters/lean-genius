@@ -82,7 +82,10 @@
       "hermite-lindemann",
       "sqrt2-irrational",
       "e-transcendental",
-      "pi-transcendental"
+      "pi-transcendental",
+      "godel-incompleteness",
+      "halting-problem",
+      "cantor-diagonalization"
     ],
     "prerequisites": [
       "Group theory (normal subgroups, derived series, solvability)",
@@ -157,6 +160,21 @@
       "targetId": "pi-transcendental",
       "relationship": "related",
       "description": "Lindemann's proof that π is transcendental (1882) is a successor impossibility result: the transcendence of π implies the impossibility of squaring the circle, paralleling Abel-Ruffini's impossibility of the quintic formula — both show certain quantities escape finite algebraic description"
+    },
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "thematic",
+      "description": "Gödel's incompleteness (1931) extends the impossibility paradigm: Abel-Ruffini shows no radical formula captures all quintic roots, Gödel shows no formal system captures all arithmetic truths — both reveal fundamental limits of finite symbolic methods"
+    },
+    {
+      "targetId": "halting-problem",
+      "relationship": "thematic",
+      "description": "Turing's halting problem (1936) parallels Abel-Ruffini: no algorithm decides all halting questions, just as no radical formula solves all quintics — both establish undecidability within natural-seeming computational frameworks"
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "thematic",
+      "description": "Cantor's diagonal argument (1891) established the impossibility proof paradigm used in different form by Abel-Ruffini: no enumeration captures all reals, just as no radical formula captures all quintic roots — both prove that certain 'natural' operations cannot reach all targets"
     }
   ],
   "overview": {
