@@ -78,17 +78,12 @@
     "problemStatement": "**Lindström-Gessel-Viennot Lemma (2×2 case)**:\nGiven sources A₁ = (0, a₁), A₂ = (0, a₂) with a₁ ≤ a₂, and targets B₁ = (m, b₁), B₂ = (m, b₂) with b₁ ≤ b₂, the count of non-intersecting path pairs equals:\n\n  niPairCount = C(m+b₁-a₁, m) · C(m+b₂-a₂, m) − C(m+b₁-a₂, m) · C(m+b₂-a₁, m)\n\n**Crossing Lemma** (proved): If y₁ < y₂ and y₁+n₁ > y₂+n₂, paths from (0,y₁) and (0,y₂) with n₁ and n₂ North steps respectively MUST share a lattice point.",
     "proofStrategy": "**Lindström Involution Approach**:\n1. **Crossing Lemma** proves all 'crossing' path pairs (A₁→B₂, A₂→B₁) are intersecting when a₁ ≤ a₂ and b₁ ≤ b₂\n2. **Path Count Formula** gives |pathType m n| = C(m+n, m) by induction (Pascal's identity)\n3. **Lindström Involution**: For any intersecting identity pair (P₁:A₁→B₁, P₂:A₂→B₂), swap tails at first meeting column to get a crossing pair; this is a bijection by Crossing Lemma\n4. **Conclusion**: NI count = all identity - intersecting = all identity - all crossing = lgvDet\n\n**Status**: Crossing Lemma and path count formula fully proved. swapTails infrastructure added. Full involution proof (lgv_lemma_2x2) remains as a sorry.",
     "keyInsights": [
-      "northBeforeEast l k is the key function: y-offset at k-th East step, connecting path representation to geometric meaning",
-      "colEntry l k = northBeforeEast l (k-1) gives the entry y-height at column k, enabling column-by-column analysis",
-      "The Crossing Lemma proof uses induction: if NI and P₁ enters column k below P₂, then P₁ also enters column k+1 below P₂ (by the disjoint-range argument); at column m this contradicts the crossing condition",
-      "path_count_eq_choose uses a perfect bijection: paths starting with East → (m-1, n) paths; paths starting with North → (m, n-1) paths; giving Pascal's recurrence",
-      "swapTails is the Lindström involution kernel: splitAfterEast gives prefix/suffix, swapping suffixes produces crossing pairs with correct type",
-      "pathFlip (l.map (!·)) transposes the grid: m East + n North ↔ n East + m North, giving C(m+n,m) = C(m+n,n) combinatorially",
-      "lgvDet is antisymmetric in both sources and targets: swapping negates, double swap recovers original",
-      "lgvDet_nonneg follows from lgv_lemma_2x2 since niPairCount is a natural number cast to ℤ",
-      "Catalan and ballot are the same: Cn(n) = ballotSeqCount(n+1,n) = C(2n,n) - C(2n,n+1)",
-      "Entry gap framework: entryGap(k) = (y₂+entry₂(k)) - (y₁+entry₁(k)) captures crossing analysis; NI preserves gap positivity, but positive gap does NOT imply NI (ranges are intervals, not points)",
-      "swapTails preserves East step count: pre₁ has k East steps + suf₂ has (m-k) East steps = m total"
+      "**Path Representation:** `northBeforeEast l k` gives the $y$-offset at the $k$-th East step, and `colEntry l k` = $y$-height at column $k$. This converts lattice paths into column-indexed sequences for inductive analysis.",
+      "**Crossing Lemma (Inductive):** If paths are non-intersecting and $P_1$ enters column $k$ below $P_2$, then $P_1$ also enters column $k+1$ below $P_2$ (disjoint range argument). At column $m$, this contradicts the crossing destination condition.",
+      "**Path Count = Binomial:** $|\\text{pathType}(m,n)| = \\binom{m+n}{m}$ by Pascal's recurrence: paths starting East $\\to$ $(m{-}1,n)$ paths, paths starting North $\\to$ $(m,n{-}1)$ paths. The `pathFlip` bijection gives $\\binom{m+n}{m} = \\binom{m+n}{n}$.",
+      "**Lindström Involution:** For intersecting identity pairs $(P_1: A_1 \\to B_1,\\; P_2: A_2 \\to B_2)$, `swapTails` at the first meeting column produces a crossing pair. The Crossing Lemma guarantees this is a bijection: non-intersecting identity pairs $\\leftrightarrow$ lgvDet.",
+      "**Catalan-Ballot Unification:** $C_n = \\text{ballotSeqCount}(n{+}1, n) = \\binom{2n}{n} - \\binom{2n}{n{+}1} = \\frac{1}{n{+}1}\\binom{2n}{n}$. The ballot count equals the Catalan number — paths that stay strictly above the diagonal correspond to valid ballot sequences.",
+      "**LGV Determinant Properties:** The $2 \\times 2$ LGV determinant $\\det\\begin{pmatrix} p_{11} & p_{12} \\\\ p_{21} & p_{22} \\end{pmatrix}$ is antisymmetric in both sources and targets, and non-negative when sources and targets are properly ordered."
     ]
   },
   "sections": [
