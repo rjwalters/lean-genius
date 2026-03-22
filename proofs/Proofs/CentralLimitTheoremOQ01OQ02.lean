@@ -186,17 +186,22 @@ theorem stableExponent_zero (α c : ℝ) (hα : α ≠ 0) :
 /-- The n-fold convolution scaling property of stable distributions:
     ψ(t/n^{1/α}) × n = ψ(t).
     This is the defining property of α-stable laws. -/
+private lemma rpow_scaling_identity (α : ℝ) (n : ℕ) (hn : 0 < n) (hα : 0 < α) (t : ℝ) :
+    (n : ℝ) * |t / (n : ℝ) ^ ((1 : ℝ) / α)| ^ α = |t| ^ α := by
+  have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn
+  have hn_nonneg : (0 : ℝ) ≤ n := le_of_lt hn_pos
+  have hn_rpow_pos : (0 : ℝ) < (n : ℝ) ^ ((1 : ℝ) / α) := rpow_pos_of_pos hn_pos _
+  rw [abs_div, abs_of_pos hn_rpow_pos,
+      div_rpow (abs_nonneg t) (le_of_lt hn_rpow_pos),
+      ← rpow_mul hn_nonneg, one_div, inv_mul_cancel₀ (ne_of_gt hα), rpow_one,
+      mul_div_cancel₀ _ (ne_of_gt hn_pos)]
+
 theorem stable_scaling (α c : ℝ) (n : ℕ) (hn : 0 < n) (hα : 0 < α) (_hc : 0 < c) (t : ℝ) :
     (n : ℂ) * stableExponent α c (t / (n : ℝ) ^ ((1 : ℝ) / α)) = stableExponent α c t := by
-  -- Key identity: n · c|t/n^{1/α}|^α = c|t|^α
-  -- Uses: |t/n^{1/α}|^α = |t|^α / (n^{1/α})^α = |t|^α / n
   unfold stableExponent
-  -- Goal: (n : ℂ) * -(↑(c * |t / n^(1/α)|^α)) = -(↑(c * |t|^α))
-  push_cast
-  ring_nf
-  -- After ring_nf: need to show the rpow identity
-  -- |t / n^(1/α)|^α = |t|^α * n⁻¹ (so n * that = |t|^α)
-  sorry
+  have key := rpow_scaling_identity α n hn hα t
+  simp only [mul_neg, ← neg_mul, ← Complex.ofReal_natCast, ← Complex.ofReal_mul,
+    mul_comm c, ← mul_assoc, key]
 
 /-- α-stable distributions are infinitely divisible.
     This follows because φ(t)^{1/n} = φ(t/n^{1/α}) is a valid char. fn. for each n. -/
@@ -256,11 +261,22 @@ theorem triplet_no_gaussian_is_compound_poisson (τ : LevyTriplet)
     (hσ : τ.σ_sq = 0) : τ.σ_sq = 0 ∧ 0 ≤ τ.ν_total := ⟨hσ, τ.hν⟩
 
 /-- The Gaussian variance is the unique quadratic term in the Lévy-Khintchine
-    exponent: lim_{t→0} −2ψ(t)/t² = σ². -/
-theorem gaussian_variance_from_exponent (μ σ_sq : ℝ) :
+    exponent: −2ψ(t)/t² = σ² when the drift μ = 0.
+    For μ ≠ 0, the limit does not exist (the iμt term gives a −2iμ/t divergence).
+    The general formula requires the second derivative ψ''(0) = −σ². -/
+theorem gaussian_variance_from_exponent (σ_sq : ℝ) :
     ∀ ε > 0, ∃ δ > 0, ∀ t : ℝ, 0 < |t| → |t| < δ →
-    ‖(-2 * gaussianExponent μ σ_sq t / ↑(t ^ 2) - ↑σ_sq)‖ < ε := by
-  sorry
+    ‖(-2 * gaussianExponent 0 σ_sq t / ↑(t ^ 2) - ↑σ_sq)‖ < ε := by
+  intro ε hε
+  exact ⟨1, one_pos, fun t _ _ => by
+    unfold gaussianExponent
+    simp only [zero_mul, Complex.ofReal_zero, zero_mul, zero_sub, neg_neg, mul_neg,
+      neg_mul, neg_neg]
+    rw [show (-2 : ℂ) * -(↑(σ_sq * t ^ 2 / 2)) = ↑(σ_sq * t ^ 2) from by push_cast; ring]
+    rw [show (↑(t ^ 2) : ℂ) = ↑(t ^ 2) from rfl]
+    rw [Complex.ofReal_div_ofReal, div_self, sub_self, norm_zero]
+    · exact hε
+    · exact Complex.ofReal_ne_zero.mpr (pow_ne_zero 2 (by intro h; simp [h] at *))⟩
 
 /-- The Poisson rate λ equals the total mass of the Lévy measure.
     For Poisson(λ): ν = λ · δ₁ (point mass at 1), so ∫ min(1,x²) dν = λ. -/
