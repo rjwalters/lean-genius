@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős–Graham–Dickson",
     "sourceUrl": "https://erdosproblems.com/341",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos341Problem.lean",
     "tags": [
       "erdos",
@@ -35,7 +35,42 @@
       "If true, the eventual period p and offset N are computable functions of A0, and the asymptotic growth rate a_n/n converges to a rational number"
     ]
   },
+  "references": [
+    {
+      "authors": "Dickson, Leonard Eugene",
+      "title": "History of the Theory of Numbers",
+      "year": "1919",
+      "venue": "Carnegie Institution of Washington, Volume II",
+      "note": "Early study of sum-free extensions and the greedy construction that produces eventually periodic differences"
+    },
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "L'Enseignement Mathématique, Monograph 28, p.53",
+      "note": "Highlighted Dickson's problem and posed it in the modern framework of additive combinatorics"
+    }
+  ],
+  "mathlibDependencies": [
+    {
+      "theorem": "Finset.product",
+      "description": "Cartesian product of finite sets for computing pairwise sums",
+      "module": "Mathlib.Data.Finset.Basic"
+    },
+    {
+      "theorem": "Nat.find",
+      "description": "Finds the smallest natural number satisfying a predicate",
+      "module": "Mathlib.Data.Nat.Find"
+    }
+  ],
   "sections": [
+    {
+      "id": "preamble",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 22,
+      "summary": "File header documenting Dickson's sum-free extension problem, the eventual periodicity conjecture, and its OPEN status. Imports Mathlib for Finset, natural numbers, and tactics."
+    },
     {
       "id": "definitions",
       "title": "Core Definitions",
