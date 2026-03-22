@@ -311,13 +311,89 @@ theorem mutual_info_nonneg {α β : Type*} [Fintype α] [Fintype β]
 
 -- Chain rule: I(X;Y) = H(X) - H(X|Y)
 -- This connects mutual information (as KL divergence from product) to entropy difference.
+--
+-- Proof strategy: Expand all three definitions. The key algebraic identity is
+--   log(p(x,y)/(pX(x)*pY(y))) = log(p(x,y)/pY(y)) - log(pX(x))
+-- for p(x,y) > 0 (which forces pX(x), pY(y) > 0).
+-- Summing p(x,y)*log(pX(x)) over y yields pX(x)*log(pX(x)), connecting
+-- the mutual information sum to the difference H(X) - H(X|Y).
+--
+-- The formalization is nontrivial due to the if-then-else branches in all three
+-- definitions (0*log(0) convention). The proof works by:
+-- 1. Showing MI = sum of conditional entropy terms minus sum of marginal entropy terms
+-- 2. The conditional sum equals -H(X|Y), the marginal sum equals -H(X)
+-- 3. Therefore MI = -H(X|Y) - (-H(X)) = H(X) - H(X|Y)
 theorem chain_rule {α β : Type*} [Fintype α] [Fintype β]
     [DecidableEq α] [DecidableEq β]
     {pXY : α × β → ℝ} (hp : ∀ xy, 0 ≤ pXY xy)
     (hsum : ∑ xy : α × β, pXY xy = 1) :
     mutualInformation pXY =
     shannonEntropy (fun x => ∑ y : β, pXY (x, y)) - conditionalEntropy pXY := by
-  sorry
+  -- Step 1: Key term-by-term identity
+  -- For each (x,y): the MI term splits into a conditional entropy term minus
+  -- a marginal entropy term, using log(a/(b*c)) = log(a/c) - log(b).
+  have hterm : ∀ x y,
+      (if pXY (x, y) = 0 then (0 : ℝ)
+       else pXY (x, y) * Real.log (pXY (x, y) /
+         ((∑ y' : β, pXY (x, y')) * (∑ x' : α, pXY (x', y))))) =
+      (if pXY (x, y) = 0 then 0
+       else pXY (x, y) * Real.log (pXY (x, y) / (∑ x' : α, pXY (x', y)))) -
+      (if pXY (x, y) = 0 then 0
+       else pXY (x, y) * Real.log (∑ y' : β, pXY (x, y'))) := by
+    intro x y
+    by_cases hpxy : pXY (x, y) = 0
+    · simp [hpxy]
+    · simp [hpxy]
+      have hpxy_pos : 0 < pXY (x, y) :=
+        lt_of_le_of_ne (hp (x, y)) (Ne.symm hpxy)
+      have hpx_pos : 0 < ∑ y' : β, pXY (x, y') :=
+        calc 0 < pXY (x, y) := hpxy_pos
+          _ ≤ ∑ y' : β, pXY (x, y') :=
+            Finset.single_le_sum (f := fun y' => pXY (x, y'))
+              (fun y' _ => hp (x, y')) (Finset.mem_univ y)
+      have hpy_pos : 0 < ∑ x' : α, pXY (x', y) :=
+        calc 0 < pXY (x, y) := hpxy_pos
+          _ ≤ ∑ x' : α, pXY (x', y) :=
+            Finset.single_le_sum (f := fun x' => pXY (x', y))
+              (fun x' _ => hp (x', y)) (Finset.mem_univ x)
+      rw [Real.log_div (ne_of_gt hpxy_pos) (ne_of_gt (mul_pos hpx_pos hpy_pos)),
+          Real.log_mul (ne_of_gt hpx_pos) (ne_of_gt hpy_pos),
+          Real.log_div (ne_of_gt hpxy_pos) (ne_of_gt hpy_pos)]
+      ring
+  -- Step 2: The marginal sum telescopes
+  -- sum_y [if p(x,y)=0 then 0 else p(x,y)*log(pX(x))]
+  -- = if pX(x)=0 then 0 else pX(x)*log(pX(x))
+  have hmarg : ∀ x,
+      ∑ y : β, (if pXY (x, y) = 0 then (0 : ℝ)
+        else pXY (x, y) * Real.log (∑ y' : β, pXY (x, y'))) =
+      (if (∑ y : β, pXY (x, y)) = 0 then 0
+       else (∑ y : β, pXY (x, y)) * Real.log (∑ y : β, pXY (x, y))) := by
+    intro x
+    by_cases hpx : (∑ y : β, pXY (x, y)) = 0
+    · have hall : ∀ y, pXY (x, y) = 0 := by
+        intro y
+        have h1 := hp (x, y)
+        have h2 : pXY (x, y) ≤ ∑ y' : β, pXY (x, y') :=
+          Finset.single_le_sum (f := fun y' => pXY (x, y'))
+            (fun y' _ => hp (x, y')) (Finset.mem_univ y)
+        linarith
+      simp [hpx, hall]
+    · simp [hpx]
+      have : ∑ y : β, (if pXY (x, y) = 0 then (0 : ℝ)
+          else pXY (x, y) * Real.log (∑ y' : β, pXY (x, y'))) =
+          ∑ y : β, pXY (x, y) * Real.log (∑ y' : β, pXY (x, y')) := by
+        apply Finset.sum_congr rfl
+        intro y _
+        by_cases hpxy : pXY (x, y) = 0
+        · simp [hpxy]
+        · simp [hpxy]
+      rw [this, ← Finset.sum_mul]
+  -- Step 3: Assemble the proof
+  unfold mutualInformation shannonEntropy conditionalEntropy
+  -- Beta-reduce (fun x => ...) x that arises from shannonEntropy application
+  dsimp only
+  simp_rw [hterm, Finset.sum_sub_distrib, hmarg]
+  ring
 
 -- Conditioning reduces entropy: H(X|Y) ≤ H(X)
 -- Proof: by the chain rule, H(X) - H(X|Y) = I(X;Y) ≥ 0.

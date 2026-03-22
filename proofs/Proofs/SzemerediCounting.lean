@@ -1,7 +1,7 @@
 /-
   Counting and Removal Lemma
 
-  The triangle removal lemma and graph counting lemma — key consequences
+  The triangle removal lemma and graph counting lemma -- key consequences
   of the Szemeredi Regularity Lemma. Regular pairs behave like random
   bipartite graphs for subgraph counting, and a graph with few triangles
   can be made triangle-free by removing few edges.
@@ -13,11 +13,12 @@
   Ruzsa-Szemeredi (1978), Komlos-Simonovits (1996)
 -/
 import Mathlib
+import Proofs.SzemerediCore
 import Proofs.SzemerediRegularity
 
 namespace Szemeredi.Counting
 
-open Classical
+open Classical Szemeredi.Core
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
@@ -107,7 +108,7 @@ theorem bad_vertices_small (G : SimpleGraph V) [DecidableRel G.Adj]
   have hdU : Szemeredi.Regularity.edgeDensity G A' B < d - eps := by
     -- Each a ∈ A' = badVertices has |N_B(a)| < (d-ε)|B|.
     -- Total edges = Σ|N_B(a)| < |A'|*(d-ε)*|B|, so density < d-ε.
-    unfold Szemeredi.Regularity.edgeDensity
+    unfold Szemeredi.Core.edgeDensity
     have hA'B_pos : (0 : ℚ) < (A'.card : ℚ) * B.card := by positivity
     rw [dif_neg (ne_of_gt hA'B_pos)]
     rw [div_lt_iff₀ hA'B_pos]
