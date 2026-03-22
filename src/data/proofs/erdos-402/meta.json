@@ -22,6 +22,12 @@
     "erdosUrl": "https://erdosproblems.com/402",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-19",
+    "prerequisites": [
+      "GCD and Nat.gcd from Mathlib",
+      "Combinatorial number theory",
+      "Finset operations for GCD matrices",
+      "Divisibility theory"
+    ],
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
       {
