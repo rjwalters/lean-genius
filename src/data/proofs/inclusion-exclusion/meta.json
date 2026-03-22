@@ -47,10 +47,11 @@
     "problemStatement": "**Two-Set Formula**: For finite sets A and B:\n\n$$|A \\cup B| = |A| + |B| - |A \\cap B|$$\n\n**Three-Set Formula**: For finite sets A, B, and C:\n\n$$|A \\cup B \\cup C| = |A| + |B| + |C| - |A \\cap B| - |A \\cap C| - |B \\cap C| + |A \\cap B \\cap C|$$\n\nThis is Wiedijk's 100 Theorems #96.",
     "proofStrategy": "**The Venn Diagram Intuition:**\n\nWhen counting |A ∪ B| by adding |A| and |B|:\n- Elements only in A are counted once (correct)\n- Elements only in B are counted once (correct)\n- Elements in A ∩ B are counted twice (overcounted!)\n\nSo we subtract |A ∩ B| to correct. For three sets, we:\n1. Add individual sets (overcount pairwise intersections)\n2. Subtract pairwise intersections (oversubtract triple intersection)\n3. Add back the triple intersection\n\nThe formalization uses Mathlib's `card_union_add_card_inter` identity and derives the classical subtraction form.",
     "keyInsights": [
-      "The additive form |A ∪ B| + |A ∩ B| = |A| + |B| is often easier to work with",
-      "Each element is counted exactly once in the alternating sum",
-      "For n sets, alternating sums involve all possible intersections",
-      "The principle extends to probability: P(A ∪ B) = P(A) + P(B) - P(A ∩ B)"
+      "**Additive form first**: The identity $|A \\cup B| + |A \\cap B| = |A| + |B|$ (Mathlib's `card_union_add_card_inter`) avoids natural number subtraction pitfalls. The classical $|A \\cup B| = |A| + |B| - |A \\cap B|$ is derived from it via `omega`.",
+      "**Exact counting by alternation**: Each element is counted exactly once in the alternating sum. An element in $k$ of the $n$ sets contributes $\\binom{k}{1} - \\binom{k}{2} + \\cdots + (-1)^{k+1}\\binom{k}{k} = 1$ by the binomial theorem.",
+      "**Three-set proof strategy**: The proof applies two-set inclusion-exclusion twice, then uses distributivity $(A \\cup B) \\cap C = (A \\cap C) \\cup (B \\cap C)$ to decompose the resulting intersection. Cardinality bounds ($|A \\cap B| \\leq |A|$) are needed for `omega` to handle the natural number arithmetic.",
+      "**Probability extension**: The principle extends to probability measures: $P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$, foundational for computing compound event probabilities.",
+      "**Symmetric difference connection**: $|A \\triangle B| = |A| + |B| - 2|A \\cap B|$ is proved by decomposing into disjoint set differences and applying `card_sdiff`. This formula is the XOR analog of inclusion-exclusion."
     ]
   },
   "sections": [
@@ -118,10 +119,28 @@
       "targetId": "euler-totient",
       "relationship": "applies",
       "description": "Euler's totient φ(n) = n·Π(1-1/p) uses inclusion-exclusion to count integers coprime to n"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "The binomial theorem explains why the alternating sum counts each element exactly once: Σ(-1)^(k+1)C(k,j) = 1 for k ≥ 1"
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "prerequisite",
+      "description": "Binomial coefficients C(n,k) appear in the general n-set inclusion-exclusion formula as weights on intersection terms"
+    },
+    {
+      "targetId": "subset-count",
+      "relationship": "related",
+      "description": "The number of subsets of a finite set connects to inclusion-exclusion through the power set structure"
     }
   ],
   "relatedProofs": [
     "derangements",
-    "euler-totient"
+    "euler-totient",
+    "binomial-theorem",
+    "combinations-formula",
+    "subset-count"
   ]
 }
