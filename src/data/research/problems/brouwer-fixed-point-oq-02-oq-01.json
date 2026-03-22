@@ -18,18 +18,18 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-21T17:07:38.705Z",
-    "iteration": 2,
-    "focus": "Proved fully_colored_one_door, added boundary lemmas. 2 sorries remain.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "iteration": 3,
+    "focus": "Detailed strip_parity proof strategy developed; needs interactive Lean session",
+    "blockers": ["strip_parity proof requires complex Finset.sum manipulation best done interactively"],
+    "nextAction": "Prove strip_parity: define doorPair/fcTriple/gColor/hDoorSum, prove cell_cancel, vertical telescope, boundary zero",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 3,
+      "currentApproach": 2,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 2 sorries remain (down from 3). Proved fully_colored_one_door via bijection+case-analysis. Added boundary no-door lemmas for left edge and hypotenuse. Detailed proof strategy for sperner_2d documented.",
+    "progressSummary": "PROGRESS: 2 sorries remain (sperner_2d, approximate_fixed_point_2d). Detailed algebraic proof strategy for strip_parity developed: define doorPair/fcTriple in ZMod 2, cell_cancel lemma shows lower+upper FC = boundary doors (diagonal cancels), vertical edges telescope leaving leftVert(0)=0, hypotenuse diagonal=0. Total: FC_strip = hDoorSum(j) + hDoorSum(j+1). Then telescoping gives total_FC = hDoorSum(0) = 1 (odd).",
     "builtItems": [
       "BrouwerFixedPointOQ02OQ01.lean: 213 lines, grid triangulation + Sperner coloring + 2D lemma statement",
       "GridVertex, GridTriangle, TriType: core triangulation types",
@@ -59,9 +59,10 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove sperner_2d via ZMod 2 double-counting (key: enumerate triangles, classify edges as interior/boundary)",
-      "Alternative: row-sweep approach processing strips j\u2192j+1, telescoping htrans(0)+htrans(n) = 1+0 = 1",
-      "Prove approximate_fixed_point_2d from sperner_2d (construct Sperner coloring from continuous map)"
+      "Prove strip_parity: 1) define doorPair (a b : Fin 3) : ZMod 2, fcTriple, gColor, hDoorSum. 2) Prove fcTriple_eq_doors by decide on 27 cases. 3) Prove cell_cancel: fcTriple(a,b,e)+fcTriple(b,e,d) = doorPair(a,b)+doorPair(a,e)+doorPair(b,d)+doorPair(e,d) via ring in ZMod 2. 4) Sum over cells: diagonal cancels (2x), vertical telescopes leaving vert(0)=0, hyp_diag=0. Result: FC_strip = hDoorSum(j) + hDoorSum(j+1)",
+      "Prove sperner_2d from strip_parity: by_contra, all fcTriple=0 ⟹ total FC sum = 0. But strip_parity + telescoping gives total = hDoorSum(0) + hDoorSum(n) = 1 + 0 = 1 ≠ 0",
+      "Prove approximate_fixed_point_2d from sperner_2d (construct Sperner coloring from continuous map, take limit as n→∞)",
+      "CRITICAL: the Finset.sum manipulation for strip_parity is the hard part — needs Finset.sum_add_distrib, careful range splitting, and proofs that shared edges appear exactly twice"
     ]
   },
   "tags": [
