@@ -39,6 +39,7 @@ import Mathlib
 import Proofs.InverseGalois
 import Proofs.InverseGaloisD4
 import Proofs.NthRootIrrationalOQ01
+import Proofs.AngleTrisectionCos20Gal
 
 open Polynomial IntermediateField FiniteDimensional
 
@@ -118,10 +119,10 @@ theorem x_cube_sub_2_gal_not_2group : ¬ IsPGroup 2 (X ^ 3 - C 2 : ℚ[X]).Gal :
   exact not_pow_two_of_eq_six hn
 
 /-- The Galois group of 8x³ - 6x - 1 (minimal polynomial of cos(20°)) has order 3.
-    The discriminant of 8x³-6x-1 is 5184 = 72², a perfect square, so
-    Gal ≅ A₃ ≅ ℤ/3ℤ (order 3), NOT S₃ (order 6). -/
-axiom cos20_gal_order :
-    Fintype.card (8 * X ^ 3 - 6 * X - C 1 : ℚ[X]).Gal = 3
+    Proved in AngleTrisectionCos20Gal.lean via Eisenstein criterion + splitting field analysis. -/
+theorem cos20_gal_order :
+    Fintype.card (8 * X ^ 3 - 6 * X - C 1 : ℚ[X]).Gal = 3 :=
+  AngleTrisectionCos20Gal.cos20_gal_card
 
 /-- 3 is not a power of 2. -/
 private lemma not_pow_two_of_eq_three {n : ℕ} (h : 3 = 2 ^ n) : False := by
@@ -283,10 +284,10 @@ An algebraic number α is constructible from ℚ iff Gal(minpoly(ℚ,α)) is a 2
 ### Proved (imported from other files):
 14. `x_cube_sub_2_gal_order` - |Gal(x³-2/ℚ)| = 6 (from InverseGalois.lean)
 15. `x_4th_sub_2_gal_order` - |Gal(x⁴-2/ℚ)| = 8 (from InverseGaloisD4.lean)
+16. `cos20_gal_order` - |Gal(8x³-6x-1/ℚ)| = 3 (from AngleTrisectionCos20Gal.lean, proved via Eisenstein)
 
-### Axiomatized (2 remaining):
+### Axiomatized (1 remaining):
 1. `wantzel_galois_characterization` - main constructibility ↔ 2-group theorem
-2. `cos20_gal_order` - |Gal(8x³-6x-1/ℚ)| = 3 (corrected from 6: disc = 72², Gal ≅ A₃)
 -/
 
 #check isPGroup_iff_card_pow_two

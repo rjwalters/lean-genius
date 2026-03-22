@@ -84,12 +84,151 @@ private theorem p_degree_ne_zero : (p : ℚ[X]).degree ≠ 0 := by
   rw [Polynomial.degree_eq_natDegree p_ne_zero, p_natDegree]
   exact (by norm_num : (3 : WithBot ℕ) ≠ 0)
 
+/-
+## Part II-B: Irreducibility of p via Eisenstein Criterion
+
+Strategy: The polynomial q = X³-6X²+9X-3 is Eisenstein at p=3, hence irreducible
+over ℤ and ℚ. The linear substitution Y = 2X+2 gives q(2X+2) = 8X³-6X-1 = p.
+Since irreducibility is preserved under invertible linear substitutions, p is irreducible.
+-/
+
+/-- The Eisenstein polynomial: q = X³ - 6X² + 9X - 3 over ℤ. -/
+private noncomputable def q_eis_int : ℤ[X] := X ^ 3 - C 6 * X ^ 2 + C 9 * X - C 3
+
+private theorem q_eis_int_natDegree : q_eis_int.natDegree = 3 := by
+  unfold q_eis_int; compute_degree!
+
+private theorem q_eis_int_degree : q_eis_int.degree = 3 := by
+  unfold q_eis_int; compute_degree!
+
+private theorem q_eis_int_monic : q_eis_int.Monic := by
+  rw [Polynomial.Monic, Polynomial.leadingCoeff, q_eis_int_natDegree]
+  unfold q_eis_int
+  simp only [coeff_sub, coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X]
+  norm_num
+
+/-- q is irreducible over ℤ by Eisenstein's criterion at p = 3. -/
+private theorem q_eis_int_irreducible : Irreducible q_eis_int := by
+  apply Polynomial.irreducible_of_eisenstein_criterion (P := Ideal.span {(3 : ℤ)})
+  · -- (3) is a prime ideal in ℤ
+    rw [Ideal.span_singleton_prime (show (3 : ℤ) ≠ 0 from by norm_num)]
+    exact Int.prime_iff_natAbs_prime.mpr (by norm_num)
+  · -- leadingCoeff ∉ (3)
+    rw [show q_eis_int.leadingCoeff = 1 from q_eis_int_monic, Ideal.mem_span_singleton]
+    norm_num
+  · -- ∀ k < degree, coeff k ∈ (3)
+    intro k hk
+    rw [q_eis_int_degree] at hk
+    have hkn : k < 3 := WithBot.coe_lt_coe.mp hk
+    simp only [Ideal.mem_span_singleton]
+    unfold q_eis_int
+    simp only [coeff_sub, coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X]
+    interval_cases k <;> norm_num
+  · -- 0 < degree
+    rw [q_eis_int_degree]; exact_mod_cast Nat.zero_lt_succ 2
+  · -- coeff 0 ∉ (3)²
+    rw [Ideal.span_singleton_pow, Ideal.mem_span_singleton]
+    unfold q_eis_int
+    simp only [coeff_sub, coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X]
+    norm_num
+  · -- isPrimitive (monic → primitive)
+    exact q_eis_int_monic.isPrimitive
+
+/-- The same polynomial over ℚ. -/
+private noncomputable def q_eis_rat : ℚ[X] := X ^ 3 - C 6 * X ^ 2 + C 9 * X - C 3
+
+/-- q is irreducible over ℚ (Gauss's lemma: monic + ℤ-irreducible → ℚ-irreducible). -/
+private theorem q_eis_rat_irreducible : Irreducible q_eis_rat := by
+  have hprim := q_eis_int_monic.isPrimitive
+  have hirr := (IsPrimitive.Int.irreducible_iff_irreducible_map_cast hprim).mp q_eis_int_irreducible
+  convert hirr using 1
+  unfold q_eis_rat q_eis_int
+  simp only [Polynomial.map_sub, Polynomial.map_add, Polynomial.map_mul,
+    Polynomial.map_C, Polynomial.map_X, Polynomial.map_pow]
+  push_cast
+  ring
+
+/-- Key identity: q(2X+2) = p, i.e., the linear substitution Y=2X+2 transforms q into p.
+    Verified by expanding: (2X+2)³-6(2X+2)²+9(2X+2)-3 = 8X³-6X-1. -/
+private theorem q_comp_eq_p :
+    q_eis_rat.comp (C 2 * X + C 2) = p := by
+  unfold q_eis_rat p
+  simp only [Polynomial.sub_comp, Polynomial.add_comp, Polynomial.mul_comp,
+    Polynomial.pow_comp, Polynomial.X_comp, Polynomial.C_comp]
+  ring
+
 /-- 8X³-6X-1 is irreducible over ℚ.
-    This is the same polynomial as `trisectionPolynomial` in AngleTrisection.lean,
-    where it is axiomatized. Here we also take it as an axiom since proving it
-    requires showing the polynomial has no rational root among ±1, ±1/2, ±1/4, ±1/8
-    (the only candidates by the rational root theorem for a degree 3 polynomial). -/
-axiom p_irreducible : Irreducible (p : ℚ[X])
+
+    Proof: The shifted polynomial q = X³-6X²+9X-3 is Eisenstein at p=3,
+    so q is irreducible over ℚ by Gauss's lemma. Since p = q(2X+2)
+    and the substitution X ↦ 2X+2 is invertible (inverse: X ↦ X/2-1),
+    irreducibility transfers from q to p. -/
+private theorem p_irreducible : Irreducible (p : ℚ[X]) := by
+  -- p = q.comp ℓ where ℓ = 2X+2 is invertible (inverse ℓ⁻¹ = X/2 - 1)
+  rw [← q_comp_eq_p]
+  -- Prove irreducibility of q.comp ℓ from irreducibility of q
+  rw [irreducible_iff]
+  refine ⟨?_, ?_⟩
+  · -- q.comp ℓ is not a unit (has degree 3)
+    intro h
+    have hd := Polynomial.natDegree_eq_zero_of_isUnit h
+    have : (q_eis_rat.comp (C 2 * X + C 2)).natDegree = 3 := by
+      rw [q_comp_eq_p]; exact p_natDegree
+    omega
+  · -- if q.comp ℓ = a * b, then one is a unit
+    intro a b hab
+    -- Define the inverse substitution ℓ⁻¹ = (1/2)X - 1
+    set ℓ := (C (2 : ℚ) * X + C 2 : ℚ[X])
+    set ℓ_inv := (C (2⁻¹ : ℚ) * X - C 1 : ℚ[X])
+    -- Key: composing both sides of hab with ℓ⁻¹ gives a factoring of q
+    have hq_factor : q_eis_rat = (a.comp ℓ_inv) * (b.comp ℓ_inv) := by
+      have h1 : ℓ.comp ℓ_inv = X := by
+        ext n
+        simp only [ℓ, ℓ_inv, Polynomial.sub_comp, Polynomial.add_comp,
+          Polynomial.mul_comp, Polynomial.C_comp, Polynomial.X_comp]
+        simp only [coeff_sub, coeff_add, coeff_mul_C, coeff_C_mul, coeff_X, coeff_C]
+        rcases n with _ | _ | _ <;> simp <;> ring
+      calc q_eis_rat
+          = q_eis_rat.comp X := (Polynomial.comp_X q_eis_rat).symm
+        _ = q_eis_rat.comp (ℓ.comp ℓ_inv) := by rw [h1]
+        _ = (q_eis_rat.comp ℓ).comp ℓ_inv := by
+            simp only [Polynomial.comp, Polynomial.eval₂_map]
+        _ = (a * b).comp ℓ_inv := by rw [hab]
+        _ = (a.comp ℓ_inv) * (b.comp ℓ_inv) := Polynomial.mul_comp a b ℓ_inv
+    -- Since q is irreducible, one factor is a unit
+    rcases q_eis_rat_irreducible.isUnit_or_isUnit hq_factor with ha | hb
+    · -- a.comp ℓ⁻¹ is a unit → a is a unit
+      left
+      -- A unit in k[X] is a nonzero constant C c
+      rw [Polynomial.isUnit_iff] at ha ⊢
+      obtain ⟨c, hc_ne, hc_eq⟩ := ha
+      -- a = (a.comp ℓ⁻¹).comp ℓ = (C c).comp ℓ = C c
+      have h_inv : ℓ_inv.comp ℓ = X := by
+        ext n
+        simp only [ℓ, ℓ_inv, Polynomial.sub_comp, Polynomial.add_comp,
+          Polynomial.mul_comp, Polynomial.C_comp, Polynomial.X_comp]
+        simp only [coeff_sub, coeff_add, coeff_mul_C, coeff_C_mul, coeff_X, coeff_C]
+        rcases n with _ | _ | _ <;> simp <;> ring
+      have ha_eq : a = (a.comp ℓ_inv).comp ℓ := by
+        conv_lhs => rw [← Polynomial.comp_X a, ← h_inv]
+        simp only [Polynomial.comp, Polynomial.eval₂_map]
+      rw [ha_eq, hc_eq, Polynomial.C_comp]
+      exact ⟨c, hc_ne, rfl⟩
+    · -- b.comp ℓ⁻¹ is a unit → b is a unit (symmetric)
+      right
+      rw [Polynomial.isUnit_iff] at hb ⊢
+      obtain ⟨c, hc_ne, hc_eq⟩ := hb
+      have h_inv : ℓ_inv.comp ℓ = X := by
+        ext n
+        simp only [ℓ, ℓ_inv, Polynomial.sub_comp, Polynomial.add_comp,
+          Polynomial.mul_comp, Polynomial.C_comp, Polynomial.X_comp]
+        simp only [coeff_sub, coeff_add, coeff_mul_C, coeff_C_mul, coeff_X, coeff_C]
+        rcases n with _ | _ | _ <;> simp <;> ring
+      have hb_eq : b = (b.comp ℓ_inv).comp ℓ := by
+        conv_lhs => rw [← Polynomial.comp_X b, ← h_inv]
+        simp only [Polynomial.comp, Polynomial.eval₂_map]
+      rw [hb_eq, hc_eq, Polynomial.C_comp]
+      exact ⟨c, hc_ne, rfl⟩
 
 private theorem p_separable : (p : ℚ[X]).Separable :=
   p_irreducible.separable
