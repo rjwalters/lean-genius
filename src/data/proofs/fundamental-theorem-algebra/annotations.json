@@ -1,109 +1,91 @@
 [
   {
-    "id": "ann-module-docstring",
+    "id": "ann-polynomial-example",
     "proofId": "fundamental-theorem-algebra",
     "range": {
       "startLine": 6,
       "endLine": 40
     },
-    "type": "context",
-    "title": "Module Documentation and Approach",
-    "content": "The module docstring surveys the Fundamental Theorem of Algebra: every non-constant polynomial over $\\mathbb{C}$ has a root. The core result (`Complex.exists_root`) comes from Mathlib, proved via Liouville's theorem from complex analysis. This file contributes pedagogical exposition, the contrapositive formulation, root-counting, complete factorization, and a worked quadratic case.\n\nDespite its name, FTA is fundamentally analytic — every known proof relies on completeness of $\\mathbb{R}$ (or $\\mathbb{C}$). The Mathlib proof uses: $p$ has no roots $\\Rightarrow$ $1/p$ is bounded entire $\\Rightarrow$ $1/p$ is constant (Liouville) $\\Rightarrow$ $p$ is constant — contradiction.",
-    "mathContext": "The four imports provide the complete toolkit: `Analysis.Complex.Polynomial.Basic` for `Complex.exists_root` (FTA), `Polynomial.Basic` and `Degree.Definitions` for polynomial API, `IsAlgClosed.Basic` for the algebraic closure instance `Complex.isAlgClosed` and `Splits`.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Liouville's theorem",
-      "algebraic closure",
-      "Mathlib infrastructure"
-    ]
-  },
-  {
-    "id": "ann-examples",
-    "proofId": "fundamental-theorem-algebra",
-    "range": {
-      "startLine": 56,
-      "endLine": 63
-    },
     "type": "example",
-    "title": "Worked Examples: z² + 1",
-    "content": "Two concrete examples demonstrating Lean's polynomial API: (1) `degree (X^2 + 1) = 2` is verified using `degree_add_eq_left_of_degree_lt`, showing the higher-degree term dominates; (2) `IsRoot (X^2 + 1) I` — the imaginary unit $i$ is a root, verified by `simp` with `Complex.I_sq` ($i^2 = -1$) and `norm_num`.\n\nThese examples motivate the general theorem: $z^2 + 1$ has no real roots but has complex roots $\\pm i$. The FTA guarantees such roots always exist for non-constant polynomials.",
-    "mathContext": "$z^2 + 1 = (z - i)(z + i)$, so $i$ is a root: $i^2 + 1 = -1 + 1 = 0$. This is the simplest polynomial requiring complex numbers.",
-    "significance": "supporting",
+    "title": "Degree of a Polynomial",
+    "content": "The **degree** of a polynomial is the highest power of the variable with a non-zero coefficient.\n\nFor $z^2 + 1$, the degree is 2. The polynomial $z^3 - 2z + 5$ has degree 3.\n\nDegree 0 means a constant polynomial. The fundamental theorem requires degree at least 1 (non-constant).",
+    "mathContext": "$\\deg(z^n + \\text{lower terms}) = n$\n\n$\\deg(c) = 0$ for constant $c \\neq 0$\n\n$\\deg(0) = -\\infty$ (by convention)",
+    "significance": "key",
     "relatedConcepts": [
-      "imaginary unit",
-      "polynomial evaluation",
-      "Lean 4 simp tactic"
+      "polynomial",
+      "degree",
+      "non-constant"
     ]
   },
   {
     "id": "ann-main-theorem",
     "proofId": "fundamental-theorem-algebra",
     "range": {
-      "startLine": 74,
+      "startLine": 75,
       "endLine": 77
     },
     "type": "theorem",
     "title": "The Fundamental Theorem of Algebra",
-    "content": "`fundamental_theorem_of_algebra`: every non-constant polynomial with complex coefficients has at least one complex root. The proof is a one-liner delegating to Mathlib's `Complex.exists_root`.\n\nThis is Wiedijk's #2 on the list of 100 Greatest Theorems. Despite its algebraic statement, every known proof uses analytic or topological properties of $\\mathbb{C}$: Liouville's theorem (Mathlib's approach), winding numbers, Galois theory + intermediate value theorem, or the maximum modulus principle.",
-    "mathContext": "$\\forall p \\in \\mathbb{C}[z],\\, \\deg p \\geq 1 \\implies \\exists z_0 \\in \\mathbb{C},\\, p(z_0) = 0$. Equivalently: $\\mathbb{C}$ is algebraically closed.",
+    "content": "**Every non-constant polynomial with complex coefficients has at least one complex root.**\n\nThis seemingly simple statement has profound consequences:\n- No need to extend numbers beyond the complexes for algebra\n- Every polynomial equation is solvable (has solutions)\n- The complex numbers are 'algebraically complete'\n\nDespite the name 'algebra', every known proof uses analysis or topology.",
+    "mathContext": "$\\forall p \\in \\mathbb{C}[z], \\deg p \\geq 1 \\Rightarrow \\exists z_0 \\in \\mathbb{C}, p(z_0) = 0$",
     "significance": "critical",
     "relatedConcepts": [
       "Complex.exists_root",
-      "algebraic closure",
-      "Liouville's theorem"
+      "algebraically closed",
+      "polynomial roots"
     ]
   },
   {
-    "id": "ann-contrapositive",
+    "id": "ann-no-roots-constant",
     "proofId": "fundamental-theorem-algebra",
     "range": {
       "startLine": 81,
       "endLine": 100
     },
     "type": "theorem",
-    "title": "Contrapositive: No Roots Implies Constant",
-    "content": "`no_roots_implies_constant`: if $p(z) \\neq 0$ for all $z \\in \\mathbb{C}$, then $\\deg p = 0$ (i.e., $p$ is constant). This is the contrapositive of FTA and sometimes the more convenient formulation.\n\nThe proof uses `by_contra` to assume $\\deg p \\neq 0$, splits on $p = 0$ vs $p \\neq 0$ (the zero polynomial has every element as a root, contradicting the hypothesis), then shows $\\deg p > 0$ and applies FTA to find a root — contradicting the no-roots hypothesis.",
-    "mathContext": "$(\\forall z \\in \\mathbb{C},\\, p(z) \\neq 0) \\Rightarrow \\deg p = 0$. This is logically equivalent to FTA by contraposition: $\\neg(\\exists z,\\, p(z) = 0) \\Rightarrow \\neg(\\deg p \\geq 1)$.",
+    "title": "Contrapositive Form",
+    "content": "An equivalent statement of FTA: **if a polynomial has no roots, it must be constant.**\n\nThis is the contrapositive of the main theorem:\n- Original: $\\deg p \\geq 1 \\Rightarrow \\exists$ root\n- Contrapositive: no roots $\\Rightarrow \\deg p = 0$\n\nBoth say the same thing logically, but this form is sometimes more useful.",
+    "mathContext": "$(\\deg p \\geq 1 \\Rightarrow \\exists z, p(z) = 0)$\n\n$\\equiv$\n\n$(\\forall z, p(z) \\neq 0 \\Rightarrow \\deg p = 0)$",
     "significance": "key",
     "relatedConcepts": [
-      "contrapositive reasoning",
-      "proof by contradiction",
-      "degree of zero polynomial"
+      "contrapositive",
+      "logical equivalence",
+      "constant polynomial"
     ]
   },
   {
-    "id": "ann-algebraic-closure",
+    "id": "ann-splits",
     "proofId": "fundamental-theorem-algebra",
     "range": {
-      "startLine": 112,
-      "endLine": 117
+      "startLine": 81,
+      "endLine": 100
     },
     "type": "theorem",
-    "title": "Algebraic Closure and Complete Splitting",
-    "content": "`Complex.isAlgClosed` is Mathlib's instance asserting $\\mathbb{C}$ is algebraically closed. `splits_over_complex` applies `IsAlgClosed.splits_codomain` to show every polynomial splits completely into linear factors over $\\mathbb{C}$.\n\n'Splitting' means $p(z) = c \\prod_{i}(z - r_i)$ where the $r_i$ are the roots. This is the factorization-theoretic restatement of FTA: not only does a root exist, but repeated root extraction decomposes $p$ entirely.",
-    "mathContext": "$\\mathbb{C}$ is algebraically closed $\\iff$ every $p \\in \\mathbb{C}[z]$ splits into linear factors. `Splits f p` in Mathlib means $p.\\text{map}(f)$ is a product of linear factors. With $f = \\text{id}_{\\mathbb{C}}$, this gives the splitting over $\\mathbb{C}$ itself.",
+    "title": "Complete Splitting",
+    "content": "Every complex polynomial **splits** into linear factors.\n\nThis means for any $p \\in \\mathbb{C}[z]$ of degree $n$:\n$p(z) = c(z - r_1)(z - r_2)\\cdots(z - r_n)$\n\nwhere $c$ is the leading coefficient and $r_1, \\ldots, r_n$ are the roots.\n\nThis is immediate from algebraic closure: keep factoring out roots until nothing's left.",
+    "mathContext": "A polynomial *splits* over $K$ if:\n\n$p = c \\prod_i (x - r_i)$ where $r_i \\in K$\n\nEvery polynomial splits over its algebraic closure.",
     "significance": "key",
     "relatedConcepts": [
-      "algebraically closed field",
       "Splits",
-      "linear factorization"
+      "linear factors",
+      "factorization"
     ]
   },
   {
-    "id": "ann-root-counting",
+    "id": "ann-roots-count",
     "proofId": "fundamental-theorem-algebra",
     "range": {
-      "startLine": 130,
-      "endLine": 140
+      "startLine": 81,
+      "endLine": 100
     },
     "type": "theorem",
-    "title": "Root Count Equals Degree",
-    "content": "`card_roots_eq_degree`: for a non-zero polynomial $p \\in \\mathbb{C}[z]$, the number of roots (counted with multiplicity) equals the degree. The proof uses `IsAlgClosed.splits_codomain` to get splitting, then `natDegree_eq_card_roots` to count roots from the factorization.\n\nMathlib represents roots as a `Multiset` (a list up to permutation), where multiplicity is encoded by repetition. `Multiset.card` counts with multiplicity.",
-    "mathContext": "$|\\text{roots}(p)| = \\deg p$ for $p \\neq 0$. Example: $z^3 - z^2 = z^2(z-1)$ has $\\text{roots} = \\{0, 0, 1\\}$, $|\\text{roots}| = 3 = \\deg p$.",
+    "title": "Counting Roots",
+    "content": "**A degree-n polynomial has exactly n roots, counted with multiplicity.**\n\nMultiplicity: if $(z - r)^k$ divides $p$ but $(z - r)^{k+1}$ doesn't, then $r$ has multiplicity $k$.\n\nExample: $z^3 - z^2 = z^2(z-1)$ has:\n- Root 0 with multiplicity 2\n- Root 1 with multiplicity 1\n- Total: 2 + 1 = 3 = degree",
+    "mathContext": "For $p \\neq 0$: $\\sum_{r : p(r) = 0} \\text{mult}_r(p) = \\deg p$\n\nMathlib represents this via multisets: $|\\text{roots}(p)| = \\deg p$",
     "significance": "critical",
     "relatedConcepts": [
       "multiplicity",
-      "Multiset",
+      "Multiset.card",
       "natDegree"
     ]
   },
@@ -111,37 +93,36 @@
     "id": "ann-monic-factorization",
     "proofId": "fundamental-theorem-algebra",
     "range": {
-      "startLine": 142,
-      "endLine": 155
+      "startLine": 102,
+      "endLine": 110
     },
     "type": "theorem",
-    "title": "Monic Polynomial Complete Factorization",
-    "content": "`monic_prod_roots`: a monic polynomial $p$ equals $\\prod_{r \\in \\text{roots}(p)} (X - r)$. This is the canonical factorization for monic polynomials over algebraically closed fields.\n\nThe proof establishes splitting via `IsAlgClosed.splits_codomain`, obtains the root count via `natDegree_eq_card_roots`, then invokes Mathlib's `prod_multiset_X_sub_C_of_monic_of_roots_card_eq` — the theorem that a monic polynomial with matching root count equals the product of its linear factors.",
-    "mathContext": "For monic $p$: $p(z) = \\prod_{i=1}^{n}(z - r_i)$ where $r_1, \\ldots, r_n$ are roots with multiplicity. Combined with Vieta's formulas, this gives $a_{n-1} = -(r_1 + \\cdots + r_n)$, $a_0 = (-1)^n r_1 \\cdots r_n$.",
+    "title": "Monic Polynomial Factorization",
+    "content": "A **monic** polynomial (leading coefficient 1) equals the product of its root factors.\n\nIf $p(z) = z^n + a_{n-1}z^{n-1} + \\cdots + a_0$ and $r_1, \\ldots, r_n$ are its roots:\n\n$p(z) = (z - r_1)(z - r_2)\\cdots(z - r_n)$\n\nThis gives a complete representation of any monic polynomial in terms of its roots.",
+    "mathContext": "For monic $p$:\n\n$p = \\prod_{r \\in \\text{roots}(p)} (X - r)$\n\nwhere the product is over the multiset of roots (with repetition)",
     "significance": "key",
     "relatedConcepts": [
       "monic polynomial",
       "Vieta's formulas",
-      "complete factorization"
+      "product of roots"
     ]
   },
   {
     "id": "ann-quadratic-case",
     "proofId": "fundamental-theorem-algebra",
     "range": {
-      "startLine": 176,
-      "endLine": 208
+      "startLine": 119,
+      "endLine": 128
     },
-    "type": "theorem",
-    "title": "Quadratic Case: Every Quadratic Has Roots",
-    "content": "`quadratic_has_root`: for $a, b, c \\in \\mathbb{C}$ with $a \\neq 0$, there exists $z$ with $az^2 + bz + c = 0$. The proof constructs the polynomial $p = C(a) \\cdot X^2 + C(b) \\cdot X + C(c)$, shows $\\deg p = 2 > 0$ (a non-trivial calculation requiring `degree_add_eq_left_of_degree_lt` and careful degree estimates for each term), then applies FTA.\n\nThe degree computation is the longest part of the proof (lines 181-201) because polynomial degree in Lean is defined as a `WithBot ℕ` (natural numbers with $-\\infty$), requiring careful handling of the zero cases and comparison with the `degree_C` and `degree_X_pow` lemmas.",
-    "mathContext": "The classical quadratic formula $z = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$ gives roots explicitly. Over $\\mathbb{C}$, the discriminant $\\Delta = b^2 - 4ac$ always has a square root (since $\\mathbb{C}$ is algebraically closed), so complex roots always exist. The FTA proof here is more general: it doesn't need to exhibit the root, only to prove existence.",
-    "significance": "supporting",
+    "type": "example",
+    "title": "Quadratics Always Have Roots",
+    "content": "As a special case: **every quadratic $az^2 + bz + c$ (with $a \\neq 0$) has roots.**\n\nThe famous quadratic formula gives them explicitly:\n$z = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$\n\nIn the complex numbers, $\\sqrt{b^2 - 4ac}$ always exists (complex square roots exist), so roots always exist.\n\nThe proof here derives this from the general FTA.",
+    "mathContext": "Quadratic formula: $z = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$\n\nDiscriminant $\\Delta = b^2 - 4ac$:\n- $\\Delta > 0$: two real roots\n- $\\Delta = 0$: one repeated root\n- $\\Delta < 0$: two complex conjugate roots",
+    "significance": "key",
     "relatedConcepts": [
       "quadratic formula",
       "discriminant",
-      "WithBot ℕ",
-      "degree computation in Lean"
+      "complex square roots"
     ]
   }
 ]
