@@ -23,6 +23,12 @@
       "Demonstrates pure logical reasoning in Lean"
     ],
     "dateAdded": "2025-12-21",
+    "prerequisites": [
+      "Computability theory and Turing machines",
+      "Decidability predicates in Lean",
+      "Proof by contradiction (diagonal argument)",
+      "Function types and higher-order functions"
+    ],
     "axiomCount": 0
   },
   "overview": {
@@ -43,35 +49,40 @@
       "title": "Definitions",
       "startLine": 21,
       "endLine": 33,
-      "summary": "Defines halting oracles as functions from (program, input) pairs to Bool, and the diagonal behavior that negates the oracle's self-prediction."
+      "summary": "Defines halting oracles as functions from (program, input) pairs to Bool, and the diagonal behavior that negates the oracle's self-prediction.",
+      "mathContext": "$$H : \\mathbb{N} \\times \\mathbb{N} \\to \\{\\text{true}, \\text{false}\\}, \\quad D(n) = \\lnot H(n, n)$$"
     },
     {
       "id": "diagonal-lemma",
       "title": "The Diagonal Differs",
       "startLine": 35,
       "endLine": 43,
-      "summary": "Proves the key lemma: the diagonal behavior always differs from the oracle's prediction at self-application points."
+      "summary": "Proves the key lemma: the diagonal behavior always differs from the oracle's prediction at self-application points.",
+      "mathContext": "$$\\forall n,\\; D(n) \\neq H(n, n) \\quad \\text{(the diagonal always disagrees)}$$"
     },
     {
       "id": "main-theorem",
       "title": "No Correct Oracle",
       "startLine": 45,
       "endLine": 76,
-      "summary": "Proves that no oracle can correctly predict the diagonal program's behavior, by deriving a contradiction from either prediction."
+      "summary": "Proves that no oracle can correctly predict the diagonal program's behavior, by deriving a contradiction from either prediction.",
+      "mathContext": "$$H(d, d) = \\text{true} \\Rightarrow D(d) = \\text{false}, \\quad H(d, d) = \\text{false} \\Rightarrow D(d) = \\text{true} \\quad \\Rightarrow\\!\\Leftarrow$$"
     },
     {
       "id": "undecidability",
       "title": "Halting Undecidable",
       "startLine": 78,
       "endLine": 97,
-      "summary": "Restates the result using logical equivalence: no oracle-code pair achieves correctness for the diagonal behavior."
+      "summary": "Restates the result using logical equivalence: no oracle-code pair achieves correctness for the diagonal behavior.",
+      "mathContext": "$$\\nexists H.\\; \\forall p\\, i.\\; H(p, i) = \\text{true} \\iff P_p(i)\\downarrow$$"
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "startLine": 120,
       "endLine": 131,
-      "summary": "Final statement: for any halting oracle, the diagonal program provides an explicit counterexample."
+      "summary": "Final statement: for any halting oracle, the diagonal program provides an explicit counterexample.",
+      "mathContext": "$$\\forall H.\\; \\exists d.\\; H(d, d) \\neq D(d) \\quad \\text{(explicit counterexample via diagonalization)}$$"
     }
   ],
   "conclusion": {

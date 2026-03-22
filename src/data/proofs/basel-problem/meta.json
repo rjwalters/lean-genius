@@ -48,6 +48,12 @@
       "Historical context on Euler's original sin(x) factorization approach"
     ],
     "dateAdded": "2025-12-26",
+    "prerequisites": [
+      "Real analysis and series convergence",
+      "Partial fraction decomposition",
+      "Trigonometric identities and sin(x)/x product",
+      "Finset.sum and limits from Mathlib"
+    ],
     "axiomCount": 0,
     "lineCount": 164
   },
@@ -69,42 +75,48 @@
       "title": "The Basel Identity",
       "startLine": 58,
       "endLine": 74,
-      "summary": "The core theorems: `basel_hasSum` proves HasSum (fun n => 1/n²) (π²/6) via Mathlib's `hasSum_zeta_two`, and `basel_tsum` gives the equivalent ∑' form. The one-line proof belies the deep Bernoulli polynomial machinery underneath."
+      "summary": "The core theorems: `basel_hasSum` proves HasSum (fun n => 1/n²) (π²/6) via Mathlib's `hasSum_zeta_two`, and `basel_tsum` gives the equivalent ∑' form. The one-line proof belies the deep Bernoulli polynomial machinery underneath.",
+      "mathContext": "$$\\sum_{n=1}^{\\infty} \\frac{1}{n^2} = \\frac{\\pi^2}{6}$$"
     },
     {
       "id": "convergence",
       "title": "Series Convergence",
       "startLine": 76,
       "endLine": 91,
-      "summary": "Proves the series ∑ 1/n² is summable via p-series convergence (p = 2 > 1), using `Real.summable_nat_rpow_inv`. The conversion from rpow to natural power requires `rpow_natCast` and careful `div_eq_mul_inv` rewriting."
+      "summary": "Proves the series ∑ 1/n² is summable via p-series convergence (p = 2 > 1), using `Real.summable_nat_rpow_inv`. The conversion from rpow to natural power requires `rpow_natCast` and careful `div_eq_mul_inv` rewriting.",
+      "mathContext": "$$\\sum_{n=1}^{\\infty} \\frac{1}{n^p} < \\infty \\iff p > 1$$"
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 93,
       "endLine": 106,
-      "summary": "Three simple properties established by the `positivity` tactic: each term 1/n² is positive (for n > 0) and nonneg, and the sum π²/6 is positive. These serve as building blocks for more complex arguments."
+      "summary": "Three simple properties established by the `positivity` tactic: each term 1/n² is positive (for n > 0) and nonneg, and the sum π²/6 is positive. These serve as building blocks for more complex arguments.",
+      "mathContext": "$$\\frac{1}{n^2} > 0 \\text{ for } n \\geq 1, \\quad \\frac{\\pi^2}{6} > 0$$"
     },
     {
       "id": "historical",
       "title": "Euler's Original Approach",
       "startLine": 108,
       "endLine": 123,
-      "summary": "A documentation section recounting Euler's 1734 proof via the Weierstrass-style factorization of sin(x)/x into an infinite product. Comparing the x² coefficient with the Taylor expansion yields the Basel identity — brilliant but not fully rigorous until the Weierstrass factorization theorem was established in the 19th century."
+      "summary": "A documentation section recounting Euler's 1734 proof via the Weierstrass-style factorization of sin(x)/x into an infinite product. Comparing the x² coefficient with the Taylor expansion yields the Basel identity — brilliant but not fully rigorous until the Weierstrass factorization theorem was established in the 19th century.",
+      "mathContext": "$$\\frac{\\sin x}{x} = \\prod_{n=1}^{\\infty} \\left(1 - \\frac{x^2}{n^2\\pi^2}\\right)$$"
     },
     {
       "id": "zeta-values",
       "title": "Other Zeta Values",
       "startLine": 125,
       "endLine": 143,
-      "summary": "Extends to ζ(4) = π⁴/90 via `hasSum_zeta_four` and the general Euler formula ζ(2k) = (-1)^(k+1) · 2^(2k-1) · π^(2k) · B_{2k} / (2k)! via `hasSum_zeta_nat`. Demonstrates that the Basel problem is the tip of a vast iceberg connecting zeta values, Bernoulli numbers, and powers of π."
+      "summary": "Extends to ζ(4) = π⁴/90 via `hasSum_zeta_four` and the general Euler formula ζ(2k) = (-1)^(k+1) · 2^(2k-1) · π^(2k) · B_{2k} / (2k)! via `hasSum_zeta_nat`. Demonstrates that the Basel problem is the tip of a vast iceberg connecting zeta values, Bernoulli numbers, and powers of π.",
+      "mathContext": "$$\\zeta(2k) = \\frac{(-1)^{k+1} 2^{2k-1} \\pi^{2k} B_{2k}}{(2k)!}, \\quad \\zeta(4) = \\frac{\\pi^4}{90}$$"
     },
     {
       "id": "numerical",
       "title": "Numerical Approximation",
       "startLine": 145,
       "endLine": 163,
-      "summary": "Concrete examples: the n=0 term is 0 (since 1/0² = 0 in Lean), the n=1 term is 1, the n=2 term is 1/4. A partial sum example shows ∑_{n=0}^{1} 1/n² = 1. The slow convergence (~O(1/N) error after N terms) contrasts with the exactness of the infinite sum."
+      "summary": "Concrete examples: the n=0 term is 0 (since 1/0² = 0 in Lean), the n=1 term is 1, the n=2 term is 1/4. A partial sum example shows ∑_{n=0}^{1} 1/n² = 1. The slow convergence (~O(1/N) error after N terms) contrasts with the exactness of the infinite sum.",
+      "mathContext": "$$\\left|\\frac{\\pi^2}{6} - \\sum_{n=1}^{N} \\frac{1}{n^2}\\right| \\approx \\frac{1}{N}$$"
     }
   ],
   "conclusion": {
