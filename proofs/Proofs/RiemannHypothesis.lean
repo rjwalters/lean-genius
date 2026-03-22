@@ -686,16 +686,93 @@ theorem zeta_conj_of_one_lt_re {s : ℂ} (hs : 1 < s.re) :
   ext n
   simp only [map_div₀, map_one, conj_natCast_cpow]
 
-/-- **Axiom: Conjugation symmetry of the Riemann zeta function (full)**
+/-- (2 * π : ℂ) is a positive real, so its arg is 0 ≠ π -/
+private lemma two_pi_arg_ne_pi : (2 * (Real.pi : ℂ)).arg ≠ Real.pi := by
+  have h : (0 : ℝ) ≤ 2 * Real.pi := by positivity
+  rw [show (2 : ℂ) * (Real.pi : ℂ) = ((2 * Real.pi : ℝ) : ℂ) from by push_cast; ring]
+  rw [Complex.arg_ofReal_of_nonneg h]
+  exact ne_of_lt Real.pi_pos
+
+/-- conj((2π)^s) = (2π)^conj(s), since 2π is a positive real. -/
+private lemma conj_two_pi_cpow (s : ℂ) :
+    starRingEnd ℂ ((2 * (Real.pi : ℂ)) ^ s) =
+      (2 * (Real.pi : ℂ)) ^ (starRingEnd ℂ s) := by
+  have h := cpow_conj (2 * (Real.pi : ℂ)) s two_pi_arg_ne_pi
+  have hconj : starRingEnd ℂ (2 * (Real.pi : ℂ)) = 2 * (Real.pi : ℂ) := by
+    rw [show (2 : ℂ) * (Real.pi : ℂ) = ((2 * Real.pi : ℝ) : ℂ) from by push_cast; ring]
+    exact Complex.conj_ofReal _
+  rw [hconj] at h
+  exact h.symm
+
+/-- **Conjugation symmetry of ζ(s) for Re(s) < 0** (PROVEN)
+
+ζ(conj(s)) = conj(ζ(s)) when Re(s) < 0.
+
+**Proof**: Apply the functional equation ζ(1-w) = 2(2π)^{-w} Γ(w) cos(πw/2) ζ(w)
+at both w = 1-s and w = conj(1-s). Since Re(1-s) > 1, the half-plane result
+gives ζ(conj(1-s)) = conj(ζ(1-s)), and conjugation symmetries of Γ, cos, and
+cpow match all remaining factors. -/
+theorem zeta_conj_of_neg_re {s : ℂ} (hs : s.re < 0) :
+    riemannZeta (starRingEnd ℂ s) = starRingEnd ℂ (riemannZeta s) := by
+  -- w = 1-s has Re(w) > 1
+  set w := 1 - s with hw_def
+  have hw_re : 1 < w.re := by simp [hw_def, sub_re]; linarith
+  -- Conditions for functional equation at w
+  have hw_nn : ∀ n : ℕ, w ≠ -(n : ℂ) := by
+    intro n hn; have := congrArg Complex.re hn; simp at this; linarith
+  have hw_ne : w ≠ 1 := by
+    intro h; have := congrArg Complex.re h
+    simp [hw_def, sub_re] at this; linarith
+  -- Conditions for functional equation at conj(w)
+  have hcw_re : 1 < (starRingEnd ℂ w).re := by rw [Complex.conj_re]; exact hw_re
+  have hcw_nn : ∀ n : ℕ, starRingEnd ℂ w ≠ -(n : ℂ) := by
+    intro n hn; have := congrArg Complex.re hn
+    simp [Complex.conj_re] at this; linarith
+  have hcw_ne : starRingEnd ℂ w ≠ 1 := by
+    intro h; have := congrArg Complex.re h
+    simp [Complex.conj_re] at this; linarith
+  -- Functional equation at w: ζ(1-w) = ζ(s)
+  have feq := riemannZeta_one_sub hw_nn hw_ne
+  rw [show (1 : ℂ) - w = s from by simp [hw_def]] at feq
+  -- Functional equation at conj(w): ζ(1-conj(w)) = ζ(conj(s))
+  have feq_c := riemannZeta_one_sub hcw_nn hcw_ne
+  rw [show (1 : ℂ) - starRingEnd ℂ w = starRingEnd ℂ s from by
+    simp [hw_def, map_sub, map_one]] at feq_c
+  -- Now: ζ(s) = 2(2π)^(-w) Γ(w) cos(πw/2) ζ(w)
+  -- And: ζ(conj(s)) = 2(2π)^(-conj(w)) Γ(conj(w)) cos(π·conj(w)/2) ζ(conj(w))
+  rw [feq, feq_c]
+  -- Goal: RHS factors at conj(w) = conj(RHS factors at w)
+  simp only [map_mul, map_ofNat]
+  congr 1; congr 1; congr 1; congr 1
+  · -- (2π)^(-conj w) = conj((2π)^(-w))
+    rw [show -(starRingEnd ℂ w) = starRingEnd ℂ (-w) from (map_neg _ _).symm,
+        conj_two_pi_cpow]
+  · -- Γ(conj w) = conj(Γ(w))
+    exact Complex.Gamma_conj w
+  · -- cos(π·conj(w)/2) = conj(cos(πw/2))
+    have : (↑Real.pi * starRingEnd ℂ w / 2 : ℂ) =
+        starRingEnd ℂ (↑Real.pi * w / 2) := by
+      rw [map_div₀, map_mul, Complex.conj_ofReal]
+      rw [show starRingEnd ℂ (2 : ℂ) = (2 : ℂ) from by
+        rw [show (2 : ℂ) = ((2 : ℝ) : ℂ) from by norm_cast]; exact Complex.conj_ofReal _]
+    rw [this]
+    exact Complex.cos_conj _
+  · -- ζ(conj(w)) = conj(ζ(w)) [half-plane, Re(w) > 1]
+    exact zeta_conj_of_one_lt_re hcw_re
+
+/-- **Axiom: Conjugation symmetry of the Riemann zeta function (critical strip)**
 
 ζ(conj(s)) = conj(ζ(s)) for all s ∈ ℂ.
 
-**Partially proved**: `zeta_conj_of_one_lt_re` proves this for Re(s) > 1 via the
-Dirichlet series. The full result extends to all s by the identity theorem for
-holomorphic functions: both sides are meromorphic on ℂ \ {1} and agree on the
-half-plane Re(s) > 1. Formalizing the identity theorem argument requires showing
-that conj ∘ ζ ∘ conj is holomorphic (as a composition of antiholomorphic maps),
-which is not yet straightforward in Mathlib.
+**Proved for Re(s) > 1** by `zeta_conj_of_one_lt_re` (Dirichlet series).
+**Proved for Re(s) < 0** by `zeta_conj_of_neg_re` (functional equation).
+
+**Remaining gap**: 0 ≤ Re(s) ≤ 1 (the critical strip). This requires the identity
+theorem for analytic functions, specifically showing that conj ∘ ζ ∘ conj is
+holomorphic (as a composition of two antiholomorphic maps). Mathlib's identity
+theorem (`AnalyticOnNhd.eqOn_of_preconnected_of_eventuallyEq`) is available,
+but the holomorphicity of conj ∘ f ∘ conj for ℂ-differentiable f is not yet
+established as a Mathlib lemma.
 
 **References**:
 - Titchmarsh, "The Theory of the Riemann Zeta-function", Chapter 2. -/

@@ -1,5 +1,57 @@
 # Knowledge Base: Riemann Hypothesis
 
+## Session 2026-03-22 (researcher-5) - Proved zeta_conj for Re(s) < 0
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 64)
+**Outcome**: progress — proved `zeta_conj_of_neg_re` theorem, narrowing axiom scope
+
+### Methodology
+
+Systematic assessment of all 42 axioms for provability from Mathlib v4.26.0.
+All are deep results from analytic number theory. The `zeta_conj` axiom was identified
+as partially reducible via the functional equation.
+
+### What Was Proved
+
+**New theorem: `zeta_conj_of_neg_re`** (~60 lines)
+- States: ζ(conj(s)) = conj(ζ(s)) for all s with Re(s) < 0
+- Proof strategy: Apply `riemannZeta_one_sub` at both w=1-s and conj(w), then match
+  factors using `Gamma_conj`, `cos_conj`, `cpow_conj`, and the existing half-plane result
+- Key auxiliary lemmas: `two_pi_arg_ne_pi`, `conj_two_pi_cpow`
+
+### Axiom Scope Reduction
+
+The `zeta_conj` axiom now has proved coverage for:
+- Re(s) > 1: `zeta_conj_of_one_lt_re` (Dirichlet series, prior work)
+- Re(s) < 0: `zeta_conj_of_neg_re` (functional equation, this session)
+
+**Remaining gap**: 0 ≤ Re(s) ≤ 1 (the critical strip only).
+
+### What's Needed for Full Elimination
+
+To fully eliminate the `zeta_conj` axiom, one needs the identity theorem:
+1. `AnalyticOnNhd.eqOn_of_preconnected_of_eventuallyEq` IS in Mathlib
+2. BUT: requires showing conj ∘ ζ ∘ conj is ℂ-differentiable (holomorphic)
+3. This is a standard fact (conj ∘ holomorphic ∘ conj is holomorphic via Cauchy-Riemann)
+4. Mathlib does NOT have this as a ready-made lemma
+5. A contribution to Mathlib adding `DifferentiableAt.conj_comp_conj` would unlock this
+
+### Key Mathlib Tools Used
+- `Complex.Gamma_conj`: Γ(conj(s)) = conj(Γ(s))
+- `Complex.cos_conj`: cos(conj(z)) = conj(cos(z))
+- `Complex.cpow_conj`: x^conj(s) = conj(conj(x)^s) when x.arg ≠ π
+- `riemannZeta_one_sub`: functional equation
+- `RCLike.conj_tsum`: conj commutes with tsum
+
+### Files Modified
+- `proofs/Proofs/RiemannHypothesis.lean` — added ~70 lines (3 lemmas + 1 theorem)
+- `src/data/proofs/riemann-hypothesis/meta.json` — updated contributions
+
+### Docker Build
+Both RiemannHypothesis.lean and RiemannHypothesisConsequences.lean pass.
+
+---
+
 ## Session 2026-03-21 (researcher-3) - Further Axiom Cleanup (50→42 axioms, -16%)
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 63)
