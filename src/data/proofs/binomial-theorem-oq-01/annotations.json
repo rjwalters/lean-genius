@@ -2,7 +2,7 @@
   {
     "id": "ann-binomial-oq01-01-header",
     "proofId": "binomial-theorem-oq-01",
-    "range": { "startLine": 1, "endLine": 33 },
+    "range": { "startLine": 1, "endLine": 28 },
     "type": "context",
     "title": "Newton's Generalized Binomial Theorem: From Integers to All Reals",
     "content": "The header introduces Newton's 1665 generalization: (1+x)^α = Σ C(α,k) x^k for any real α, convergent for |x| < 1. The generalized coefficient C(α,k) = α(α-1)···(α-k+1)/k! reduces to Nat.choose when α is natural. Key special cases: α=-1 gives the geometric series 1/(1+x), α=1/2 gives the square root series √(1+x). The convergence radius |x| < 1 is both necessary and sufficient. The file proves this using Mathlib's Real.one_add_rpow_hasFPowerSeriesOnBall_zero.",
@@ -15,7 +15,7 @@
   {
     "id": "ann-binomial-oq01-02-genbinom-def",
     "proofId": "binomial-theorem-oq-01",
-    "range": { "startLine": 29, "endLine": 92 },
+    "range": { "startLine": 29, "endLine": 67 },
     "type": "definition",
     "title": "genBinom Definition and Basic Properties",
     "content": "genBinom α k := (∏ i ∈ range k, (α - i)) / (k! : ℝ) is the generalized binomial coefficient. Five basic properties are proved: genBinom_zero (C(α,0) = 1), genBinom_one (C(α,1) = α), genBinom_two (C(α,2) = α(α-1)/2), genBinom_succ (recurrence: C(α,k+1) = C(α,k)·(α-k)/(k+1)), and genBinom_nat_zero_of_gt (C(n,k) = 0 for k > n, proved via Finset.prod_eq_zero on the factor (n-k) = 0 in the product). These establish genBinom as the correct generalization before proving the main theorem.",
