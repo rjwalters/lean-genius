@@ -144,5 +144,21 @@
       "What about the != k constraint for general k?",
       "Are there explicit families requiring many colors?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Komjáth, Péter",
+      "title": "Set systems with restricted intersections",
+      "year": "2003",
+      "venue": "Combinatorica",
+      "note": "Solved the |A_i ∩ A_j| ≠ 1 case; provides contrast with the ≠ 2 version"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both concern coloring/partition problems: Ramsey theory partitions edges, #603 partitions hypergraph vertices (set families) avoiding intersection conditions"
+    }
+  ]
 }
