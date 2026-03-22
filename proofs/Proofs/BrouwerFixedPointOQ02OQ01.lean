@@ -382,6 +382,25 @@ private lemma hTrans_zero_eq {n : ℕ} (hn : 0 < n) (c : Coloring n)
 -- Sperner => d_{m-1} = 0 (hypotenuse, colors in {1,2})
 -- No FC => total = 0
 -- Therefore hTrans(j) + hTrans(j+1) = 0 in ZMod 2 => same parity.
+
+-- Helper: {0,1}-door indicator in ZMod 2
+private def doorZ {n : ℕ} (c : Coloring n) (i₁ j₁ i₂ j₂ : ℕ) : ZMod 2 :=
+  if (gColor c i₁ j₁ = 0 ∧ gColor c i₂ j₂ = 1) ∨
+     (gColor c i₁ j₁ = 1 ∧ gColor c i₂ j₂ = 0) then 1 else 0
+
+-- Key fact: three vertex colors that are not all distinct yield even door count.
+-- If {a, b, c} ≠ {0,1,2}, the number of {0,1}-pairs among (a,b), (a,c), (b,c) is 0 or 2.
+private lemma door_parity_of_not_fc (a b c₃ : Fin 3)
+    (h : ¬(({a, b, c₃} : Finset (Fin 3)) = {0, 1, 2})) :
+    (if (a = 0 ∧ b = 1) ∨ (a = 1 ∧ b = 0) then (1 : ZMod 2) else 0) +
+    (if (a = 0 ∧ c₃ = 1) ∨ (a = 1 ∧ c₃ = 0) then 1 else 0) +
+    (if (b = 0 ∧ c₃ = 1) ∨ (b = 1 ∧ c₃ = 0) then 1 else 0) = 0 := by
+  fin_cases a <;> fin_cases b <;> fin_cases c₃ <;> simp_all [Finset.pair_comm] <;> decide
+
+-- To prove strip_parity, apply door_parity_of_not_fc to each triangle in the strip,
+-- then use algebraic sum manipulation in ZMod 2 to cancel internal (doubled) edges,
+-- leaving boundary terms that are 0 under Sperner conditions.
+
 private lemma strip_parity {n : ℕ} (hn : 0 < n) (c : Coloring n) (hc : IsSperner hn c)
     (j : ℕ) (hj : j + 1 ≤ n)
     (hno_fc : ∀ t : GridTriangle n, ¬ IsFullyColored c t) :
