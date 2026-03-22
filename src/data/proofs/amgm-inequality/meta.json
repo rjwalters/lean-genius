@@ -95,6 +95,14 @@
   ],
   "sections": [
     {
+      "id": "imports-and-docstring",
+      "title": "Imports, Module Docstring, and Setup",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Four Mathlib imports (`MeanInequalities`, `Pow.Real`, `Field.Basic`, `Tactic`), module docstring describing the AM-GM inequality for two and n variables, the elementary proof strategy, Mathlib dependencies, historical notes (Euclid, Cauchy), and Wiedijk #38 status. Namespace `AMGMInequality` opens at line 51.",
+      "mathContext": "The module docstring gives the two-variable form $(a+b)/2 \\geq \\sqrt{ab}$ and the general $n$-variable form $(a_1 + \\cdots + a_n)/n \\geq \\sqrt[n]{a_1 \\cdots a_n}$. The proof strategy reduces to $(\\sqrt{a} - \\sqrt{b})^2 \\geq 0$ for the elementary case, and delegates to `Real.geom_mean_le_arith_mean_weighted` (via Jensen's inequality) for the general case."
+    },
+    {
       "id": "two-variable",
       "title": "Two-Variable Elementary Proof",
       "startLine": 53,
@@ -133,6 +141,14 @@
       "endLine": 218,
       "summary": "Product-sum inequality $ab \\leq ((a+b)/2)^2$, alias `am_ge_gm`, and three-variable AM-GM via Mathlib's weighted form.",
       "mathContext": "$ab \\leq ((a+b)/2)^2$ and $\\sqrt[3]{abc} \\leq (a+b+c)/3$"
+    },
+    {
+      "id": "check-epilogue",
+      "title": "Type-Check Verification",
+      "startLine": 219,
+      "endLine": 226,
+      "summary": "Four `#check` commands verifying the signatures of `am_gm_two`, `am_gm_two_eq_iff`, `am_gm_weighted`, and `am_gm_three`. Namespace `AMGMInequality` closes.",
+      "mathContext": "The four verified theorems span the hierarchy: elementary two-variable, equality characterization, general weighted (Finset-based), and three-variable specialization."
     }
   ],
   "conclusion": {
@@ -158,6 +174,13 @@
       "year": "1729",
       "venue": "Philosophical Transactions of the Royal Society",
       "note": "Introduced the symmetric function inequalities (Maclaurin's inequalities) that strictly refine AM-GM for distinct values"
+    },
+    {
+      "authors": "Hardy, G. H.; Littlewood, J. E.; Polya, G.",
+      "title": "Inequalities",
+      "year": "1934",
+      "venue": "Cambridge University Press",
+      "note": "The definitive reference on classical inequalities, including six distinct proofs of AM-GM and its connections to convexity, power means, and rearrangement inequalities"
     }
   ],
   "leanFile": {
