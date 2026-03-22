@@ -8,13 +8,16 @@
   - Known result likely in Mathlib (norm bounds, Parseval, etc.)
   - Clean theorem statement with no definition sorries
   - No axioms (use theorem ... := by sorry instead)
+
+  Status: fourierCoeff_norm_le and roth_density_bound now proved in main file.
+  Remaining targets: exp norm, Parseval identity, basic ZMod lemmas.
 -/
 import Mathlib
 
 namespace Szemeredi.Roth.Aristotle
 
 -- ═══════════════════════════════════════════════════════════════════
--- Fourier coefficient bounds
+-- Fourier coefficient infrastructure
 -- ═══════════════════════════════════════════════════════════════════
 
 /-- Fourier coefficient definition (duplicated for self-containment). -/
@@ -27,19 +30,11 @@ theorem exp_term_norm_one {N : ℕ} (r x : ZMod N) :
     ‖Complex.exp (2 * Real.pi * Complex.I * (↑(ZMod.val (r * x)) / ↑N))‖ = 1 := by
   sorry
 
-/-- The Fourier coefficient at r is bounded by |A| (triangle inequality). -/
-theorem fourierCoeff_norm_le {N : ℕ} (A : Finset (ZMod N)) (r : ZMod N) :
-    ‖fourierCoeff A r‖ ≤ A.card := by
-  sorry
-
-/-- Cardinality of any subset of ZMod N is at most N. -/
-theorem card_le_zmod {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
-    A.card ≤ N := by
-  sorry
-
-/-- Cardinality bound in ℝ: (A.card : ℝ) ≤ N. -/
-theorem card_le_zmod_real {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
-    (A.card : ℝ) ≤ (N : ℝ) := by
+/-- Parseval's identity on Z/NZ: Σ_r |Â(r)|² = |A| · N.
+    The total energy of the Fourier transform equals |A| times the group order.
+    This follows from orthogonality of characters. -/
+theorem parseval_on_zmod {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
+    (Finset.univ.sum fun r => ‖fourierCoeff A r‖ ^ 2) = A.card * N := by
   sorry
 
 -- ═══════════════════════════════════════════════════════════════════
