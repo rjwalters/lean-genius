@@ -80,26 +80,12 @@
       }
     ],
     "relatedProofs": [
-      {
-        "id": "angle-trisection",
-        "relationship": "extends",
-        "description": "Parent file with degree criterion (necessary condition)"
-      },
-      {
-        "id": "abel-ruffini",
-        "relationship": "related",
-        "description": "Both use Galois groups for impossibility results"
-      },
-      {
-        "id": "inverse-galois",
-        "relationship": "related",
-        "description": "Concrete Galois group realizations appear here"
-      },
-      {
-        "id": "sylow-theorems",
-        "relationship": "foundational",
-        "description": "Structure theorems for p-groups underlie the 2-group characterization"
-      }
+      "angle-trisection",
+      "abel-ruffini",
+      "inverse-galois",
+      "sylow-theorems",
+      "lagrange-theorem",
+      "sqrt2-irrational"
     ]
   },
   "crossReferences": [
@@ -122,6 +108,16 @@
       "targetId": "sylow-theorems",
       "relationship": "foundational",
       "description": "Sylow theory provides structure theorems for p-groups; the 2-group characterization of constructibility relies on 2-Sylow subgroups"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "The tower law [K:ℚ] = ∏[Kᵢ₊₁:Kᵢ] — a consequence of Lagrange's theorem — underpins galois_2group_implies_degree_pow2: the minimal polynomial degree divides |Gal| = 2^k"
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "complementary",
+      "description": "√2 is the canonical constructible irrational: |Gal(x²-2/ℚ)| = 2 = 2¹, proved here by divisibility squeeze. Its irrationality is the first step beyond ℚ in the constructible tower"
     }
   ],
   "overview": {
