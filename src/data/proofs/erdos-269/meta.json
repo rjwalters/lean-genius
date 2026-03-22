@@ -85,79 +85,90 @@
     {
       "id": "psmooth",
       "title": "P-smooth Numbers",
-      "summary": "IsPSmooth definition, basic properties",
+      "summary": "Defines IsPSmooth: $n$ is $P$-smooth if all prime divisors of $n$ lie in $P$. Proves basic properties including closure under multiplication and primality checks.",
       "startLine": 34,
-      "endLine": 72
+      "endLine": 72,
+      "mathContext": "$\\text{IsPSmooth}(P, n) \\iff n > 0 \\wedge \\forall p \\mid n,\\; p \\text{ prime} \\implies p \\in P$"
     },
     {
       "id": "sequence",
       "title": "The P-smooth Sequence",
-      "summary": "smoothSeq enumeration and properties",
+      "summary": "Enumerates $P$-smooth numbers in increasing order as `smoothSeq P`. Properties: strictly increasing, all terms are $P$-smooth.",
       "startLine": 74,
-      "endLine": 92
+      "endLine": 92,
+      "mathContext": "$a_0 < a_1 < a_2 < \\cdots$ where $\\{a_n\\} = \\{n \\in \\mathbb{N} : n \\text{ is } P\\text{-smooth}\\}$"
     },
     {
       "id": "partial-lcm",
       "title": "Partial LCM",
-      "summary": "L_n = [a_0,...,a_{n-1}] definition and properties",
+      "summary": "Defines $L_n = \\text{lcm}(a_0, \\ldots, a_{n-1})$ as the cumulative LCM of the first $n$ smooth numbers. Properties: divisibility chain $L_n \\mid L_{n+1}$, growth bounds.",
       "startLine": 94,
-      "endLine": 128
+      "endLine": 128,
+      "mathContext": "$L_n = [a_0, a_1, \\ldots, a_{n-1}]$ with $L_n \\mid L_{n+1}$ and $L_n = \\prod_{p \\in P} p^{\\lfloor \\log_p a_{n-1} \\rfloor}$"
     },
     {
       "id": "series",
       "title": "The Series",
-      "summary": "lcmSeries definition, convergence, positivity",
+      "summary": "Defines the LCM series $S = \\sum_{n=1}^{\\infty} 1/L_n$. Axiomatizes convergence and positivity. This is the central object whose irrationality is questioned.",
       "startLine": 130,
-      "endLine": 151
+      "endLine": 151,
+      "mathContext": "$S_P = \\sum_{n=1}^{\\infty} \\frac{1}{L_n}$, where $L_n$ grows at least exponentially"
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture (OPEN)",
-      "summary": "erdos_269 axiom for finite P",
+      "summary": "Axiom erdos_269: for any finite $P$ with $|P| \\geq 2$, the series $S_P$ is irrational. This is the open problem.",
       "startLine": 153,
-      "endLine": 175
+      "endLine": 175,
+      "mathContext": "$|P| \\geq 2,\\; P \\text{ finite} \\implies S_P \\notin \\mathbb{Q}$"
     },
     {
       "id": "infinite-case",
       "title": "The Infinite Case (SOLVED)",
-      "summary": "erdos_269_infinite axiom",
+      "summary": "Axiom erdos_269_infinite: when $P$ is the set of all primes, $S_P$ is always irrational. This resolved case uses that $L_n = \\text{lcm}(1, \\ldots, n) \\sim e^n$.",
       "startLine": 177,
-      "endLine": 192
+      "endLine": 192,
+      "mathContext": "$P = \\{\\text{all primes}\\} \\implies L_n = \\text{lcm}(1, \\ldots, n)$ and $\\sum 1/L_n \\notin \\mathbb{Q}$"
     },
     {
       "id": "examples",
       "title": "Examples",
-      "summary": "P = {2,3} worked examples",
+      "summary": "Worked examples for $P = \\{2,3\\}$: smooth sequence is 1, 2, 3, 4, 6, 8, 9, 12, ...; LCMs and series partial sums computed explicitly.",
       "startLine": 194,
-      "endLine": 228
+      "endLine": 228,
+      "mathContext": "$P = \\{2,3\\}$: $L_1 = 1, L_2 = 2, L_3 = 6, L_4 = 12, \\ldots$"
     },
     {
       "id": "padic",
       "title": "Structural Properties",
-      "summary": "P-adic valuation analysis",
+      "summary": "$p$-adic valuation analysis of $L_n$: $v_p(L_n) = \\max\\{v_p(a_i) : i < n\\}$ for each $p \\in P$. This determines when $L_n$ increases.",
       "startLine": 230,
-      "endLine": 256
+      "endLine": 256,
+      "mathContext": "$v_p(L_n) = \\max_{i < n} v_p(a_i) = \\lfloor \\log_p(a_{n-1}) \\rfloor$ for $p \\in P$"
     },
     {
       "id": "difficulty",
       "title": "Why It's Hard",
-      "summary": "Analysis of the finite P difficulty",
+      "summary": "Analysis of why the finite $P$ case resists known irrationality techniques. The $P$-smooth numbers have multiplicative structure that complicates standard approaches (Nesterenko, Zudilin, etc.).",
       "startLine": 258,
-      "endLine": 282
+      "endLine": 282,
+      "mathContext": "For finite $P$, consecutive $L_n$ ratios are bounded, unlike the infinite case where $L_{n+1}/L_n$ can be any prime"
     },
     {
       "id": "partial-result",
       "title": "Known Partial Result",
-      "summary": "Distinct terms case is solved",
+      "summary": "The distinct-terms case is solved: if duplicate LCM values are removed, the resulting series is irrational. Axiom erdos_269_distinct_terms.",
       "startLine": 284,
-      "endLine": 306
+      "endLine": 306,
+      "mathContext": "$\\sum_{L_n \\neq L_{n-1}} \\frac{1}{L_n} \\notin \\mathbb{Q}$ (dropping repeated terms preserves irrationality)"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_269_summary theorem",
+      "summary": "erdos_269_summary: combines the open finite case, solved infinite case, and solved distinct-terms case into one theorem.",
       "startLine": 308,
-      "endLine": 340
+      "endLine": 340,
+      "mathContext": "Finite $P$ (OPEN) $\\wedge$ Infinite $P$ (irrational) $\\wedge$ Distinct terms (irrational)"
     }
   ],
   "conclusion": {
