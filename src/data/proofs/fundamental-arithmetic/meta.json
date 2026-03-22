@@ -146,6 +146,22 @@
       "summary": "Proves prime iff singleton factorization, coprime implies disjoint factors ($\\gcd(m,n) = 1 \\Rightarrow$ disjoint lists), and connects `primeFactorsList.count` to `Nat.factorization` (the Finsupp representation)."
     }
   ],
+  "references": [
+    {
+      "authors": "Euclid",
+      "title": "Elements, Book VII, Proposition 30",
+      "year": "c. 300 BCE",
+      "venue": "Classical geometry",
+      "note": "Euclid's lemma: if a prime divides a product, it divides one of the factors — the key lemma for uniqueness of prime factorization"
+    },
+    {
+      "authors": "Gauss, Carl Friedrich",
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Leipzig: Fleischer",
+      "note": "First rigorous proof of the Fundamental Theorem of Arithmetic (Article 16), establishing unique prime factorization as a foundation for number theory"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "bezout-identity",
