@@ -83,6 +83,13 @@
   },
   "sections": [
     {
+      "id": "header-setup",
+      "title": "Module Header and Problem Context",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Documents Erdős Problem #536 on equal pairwise LCMs in dense sets. Notes the partial resolution by Weisenberg (ε > 221/225) and the failure for quadruples at density 1/2. Imports Mathlib for Nat.lcm, Finset, and rational arithmetic."
+    },
+    {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 27,
