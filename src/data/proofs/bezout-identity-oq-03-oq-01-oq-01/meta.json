@@ -83,7 +83,8 @@
       "CRTProd as a recursive type avoids the ZMod (n*1) ≠ ZMod n definitional equality issue",
       "The base case ZMod 1 ≅ PUnit uses Subsingleton since ZMod 1 has exactly one element",
       "Explicit crt3/crt4 use ring to prove associativity a*b*c = a*(b*c) at the ℕ level",
-      "All coprimality conditions are decidable, so examples use `by decide`"
+      "All coprimality conditions are decidable, so examples use `by decide`",
+      "The k-fold totient multiplicativity φ(∏nᵢ) = ∏φ(nᵢ) is a 'free' corollary: the CRT isomorphism preserves units, so |(ℤ/∏nᵢℤ)*| = ∏|(ℤ/nᵢℤ)*| — the algebraic proof is more natural than the number-theoretic one"
     ]
   },
   "sections": [
@@ -138,6 +139,16 @@
       "targetId": "fundamental-arithmetic",
       "relationship": "related",
       "description": "The Fundamental Theorem of Arithmetic (unique prime factorization) provides the canonical pairwise coprime decomposition $n = p_1^{a_1} \\cdots p_k^{a_k}$, making the $k$-fold CRT applicable to any modulus."
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "The Euler totient function $\\varphi(n)$. This file proves the $k$-fold multiplicativity $\\varphi(\\prod n_i) = \\prod \\varphi(n_i)$ as a CRT corollary, extending Euler's classical result."
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "related",
+      "description": "Primitive roots modulo primes: $(\\mathbb{Z}/p\\mathbb{Z})^*$ is cyclic. The CRT decomposes $(\\mathbb{Z}/n\\mathbb{Z})^* \\cong \\prod (\\mathbb{Z}/p_i^{a_i}\\mathbb{Z})^*$, reducing unit group structure to prime power components."
     }
   ],
   "conclusion": {
