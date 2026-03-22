@@ -218,6 +218,16 @@
       "targetId": "sylow-theorems",
       "relationship": "foundational",
       "description": "Sylow theory underpins the p-group characterization: IsPGroup 2 G ↔ |G| = 2^n, which converts the 2-group hypothesis into a divisibility condition on |Gal|"
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "The Gauss-Wantzel theorem (regular n-gon constructible iff φ(n) = 2^k) connects constructibility to Fermat primes, which are linked to quadratic residue structure. The Galois groups of cyclotomic fields are (ℤ/nℤ)×, and their 2-group structure determines constructibility"
+    },
+    {
+      "targetId": "abel-ruffini-oq-04",
+      "relationship": "related",
+      "description": "Both formalize Galois group obstructions: OQ-04 shows A₅ simplicity blocks quintic solvability, while this file uses 2-group structure to characterize constructibility — different group-theoretic criteria within the same Galois framework"
     }
   ],
   "relatedProofs": [
@@ -228,7 +238,9 @@
     "inverse-galois",
     "abel-ruffini",
     "lagrange-theorem",
-    "sylow-theorems"
+    "sylow-theorems",
+    "quadratic-reciprocity",
+    "abel-ruffini-oq-04"
   ],
   "leanFile": {
     "imports": [
