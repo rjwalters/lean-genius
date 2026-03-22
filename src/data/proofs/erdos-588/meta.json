@@ -115,6 +115,13 @@
   },
   "sections": [
     {
+      "id": "header-setup",
+      "title": "Module Header and Problem Context",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Documents Erdős Problem #588 ($100 prize): is f_k(n) = o(n²) for k ≥ 4? Traces developments from Sylvester (k=3 quadratic) through Grünbaum (superpolynomial lower bounds) to Solymosi-Stojaković (n^{2-o(1)} lower bound). Imports Mathlib for geometry and combinatorics."
+    },
+    {
       "id": "definitions",
       "title": "Part I: Definitions",
       "summary": "Defines `Point := ℝ × ℝ` and axiomatizes the extremal function `f (k n : ℕ) : ℕ` representing the maximum number of $k$-rich lines for $n$ points with no $k+1$ collinear.",
