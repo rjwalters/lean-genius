@@ -207,8 +207,8 @@
       "phase": "COMPLETED",
       "path": "full",
       "started": "2026-01-01T05:32:39.472Z",
-      "status": "graduated",
-      "lastUpdate": "2026-03-22T03:25:45.572Z",
+      "status": "blocked",
+      "lastUpdate": "2026-03-22T06:10:36.237Z",
       "completed": "2026-02-07T00:59:53.359Z"
     },
     {
@@ -216,8 +216,8 @@
       "phase": "COMPLETED",
       "path": "full",
       "started": "2026-01-01T05:32:39.476Z",
-      "status": "graduated",
-      "lastUpdate": "2026-03-22T03:34:37.835Z",
+      "status": "blocked",
+      "lastUpdate": "2026-03-22T06:10:36.237Z",
       "completed": "2026-02-07T00:59:53.358Z"
     },
     {
@@ -252,8 +252,8 @@
       "phase": "COMPLETED",
       "path": "fast",
       "started": "2026-01-01T05:32:39.478Z",
-      "status": "graduated",
-      "lastUpdate": "2026-03-22T03:34:37.854Z",
+      "status": "blocked",
+      "lastUpdate": "2026-03-22T06:10:36.258Z",
       "completed": "2026-02-11T05:41:00.789Z"
     },
     {
@@ -342,8 +342,8 @@
       "phase": "COMPLETED",
       "path": "full",
       "started": "2026-01-01T21:55:27.885Z",
-      "status": "graduated",
-      "lastUpdate": "2026-03-22T03:34:37.833Z",
+      "status": "blocked",
+      "lastUpdate": "2026-03-22T06:10:36.235Z",
       "completed": "2026-03-15T17:29:13.116Z"
     },
     {
@@ -351,8 +351,8 @@
       "phase": "COMPLETED",
       "path": "full",
       "started": "2026-01-01T21:55:27.886Z",
-      "status": "graduated",
-      "lastUpdate": "2026-03-22T03:34:37.831Z",
+      "status": "blocked",
+      "lastUpdate": "2026-03-22T06:10:36.234Z",
       "completed": "2026-02-11T05:41:00.786Z"
     },
     {
@@ -360,8 +360,8 @@
       "phase": "COMPLETED",
       "path": "full",
       "started": "2026-01-01T21:55:27.887Z",
-      "status": "graduated",
-      "lastUpdate": "2026-03-22T03:34:37.832Z",
+      "status": "blocked",
+      "lastUpdate": "2026-03-22T06:10:36.234Z",
       "completed": "2026-03-16T16:51:32.259Z"
     },
     {
@@ -369,8 +369,8 @@
       "phase": "COMPLETED",
       "path": "full",
       "started": "2026-01-01T21:55:27.887Z",
-      "status": "graduated",
-      "lastUpdate": "2026-03-22T03:25:45.570Z",
+      "status": "blocked",
+      "lastUpdate": "2026-03-22T06:10:36.235Z",
       "completed": "2026-03-13T17:50:22.123Z"
     },
     {
@@ -378,8 +378,8 @@
       "phase": "COMPLETED",
       "path": "full",
       "started": "2026-01-01T21:55:27.887Z",
-      "status": "graduated",
-      "lastUpdate": "2026-03-22T04:19:59.449Z",
+      "status": "blocked",
+      "lastUpdate": "2026-03-22T06:10:36.235Z",
       "completed": "2026-03-15T22:28:57.349Z"
     },
     {
@@ -387,8 +387,8 @@
       "phase": "COMPLETED",
       "path": "full",
       "started": "2026-01-01T21:55:27.888Z",
-      "status": "graduated",
-      "lastUpdate": "2026-03-22T03:34:37.833Z",
+      "status": "blocked",
+      "lastUpdate": "2026-03-22T06:10:36.235Z",
       "completed": "2026-02-11T05:41:00.787Z"
     },
     {
@@ -396,8 +396,8 @@
       "phase": "COMPLETED",
       "path": "full",
       "started": "2026-01-01T21:55:27.888Z",
-      "status": "graduated",
-      "lastUpdate": "2026-03-22T03:25:45.569Z",
+      "status": "blocked",
+      "lastUpdate": "2026-03-22T06:10:36.235Z",
       "completed": "2026-03-21T19:47:15.949Z"
     },
     {
@@ -5113,6 +5113,38 @@
       "started": "2026-03-22T04:19:59.477Z",
       "status": "active",
       "lastUpdate": "2026-03-22T04:19:59.494Z"
+    },
+    {
+      "slug": "roth-theorem-k3",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-03-22T06:10:36.236Z",
+      "status": "active",
+      "lastUpdate": "2026-03-22T06:10:36.236Z"
+    },
+    {
+      "slug": "szemeredi-full",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-03-22T06:10:36.236Z",
+      "status": "active",
+      "lastUpdate": "2026-03-22T06:10:36.236Z"
+    },
+    {
+      "slug": "szemeredi-regularity",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-03-22T06:10:36.236Z",
+      "status": "active",
+      "lastUpdate": "2026-03-22T06:10:36.236Z"
+    },
+    {
+      "slug": "szemeredi-counting",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-03-22T06:10:36.237Z",
+      "status": "active",
+      "lastUpdate": "2026-03-22T06:10:36.237Z"
     }
   ],
   "config": {
