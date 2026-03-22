@@ -79,63 +79,72 @@
       "title": "Graph Definitions",
       "summary": "Independence number, complete bipartite subgraphs, bipartite covers, bipartition number",
       "startLine": 38,
-      "endLine": 83
+      "endLine": 83,
+      "mathContext": "Defines $\\alpha(G)$, `CompleteBipartite`, edge-disjoint `BipartiteCover`, and $\\tau(G) = \\inf\\{|\\mathcal{C}|\\}$."
     },
     {
       "id": "erw-conjecture",
       "title": "The ERW Conjecture",
       "summary": "Original conjecture formulation: tau(G) = n - alpha(G) almost surely",
       "startLine": 84,
-      "endLine": 98
+      "endLine": 98,
+      "mathContext": "Defines the ERW conjecture: $\\tau(G) = n - \\alpha(G)$ a.s. for $G \\in G(n, 1/2)$."
     },
     {
       "id": "alon-refutation",
       "title": "Alon's Refutation (2015)",
       "summary": "Disproof showing tau(G) <= n - alpha(G) - 1 almost surely",
       "startLine": 99,
-      "endLine": 128
+      "endLine": 128,
+      "mathContext": "a.s. $\\tau(G) \\leq n - \\alpha(G) - 1$ for $G \\in G(n, 1/2)$, refuting the ERW conjecture."
     },
     {
       "id": "alon-bohman-huang",
       "title": "Alon-Bohman-Huang Improvement (2017)",
       "summary": "Stronger result: tau(G) <= n - (1+c)alpha(G) for some c > 0",
       "startLine": 129,
-      "endLine": 147
+      "endLine": 147,
+      "mathContext": "$\\exists\\, c > 0$: a.s. $\\tau(G) \\leq n - (1+c)\\alpha(G)$, a multiplicative improvement."
     },
     {
       "id": "bounds",
       "title": "Lower and Upper Bounds",
       "summary": "Graham-Pollak theorem and general bounds",
       "startLine": 148,
-      "endLine": 167
+      "endLine": 167,
+      "mathContext": "Graham-Pollak: $\\tau(K_n) = n - 1$. General: $\\tau(G) \\geq 1$ for non-edgeless graphs."
     },
     {
       "id": "random-graph-properties",
       "title": "Properties of Random Graphs",
       "summary": "Expected independence number and bipartition number for G(n, 1/2)",
       "startLine": 168,
-      "endLine": 187
+      "endLine": 187,
+      "mathContext": "For $G \\in G(n, 1/2)$: $\\alpha(G) \\sim 2\\log_2 n$ and $\\tau(G) \\leq n - (1+c) \\cdot 2\\log_2 n$."
     },
     {
       "id": "main-results",
       "title": "Main Results",
       "summary": "erdos_807 theorem and erdos_807_answer summary",
       "startLine": 188,
-      "endLine": 214
+      "endLine": 214,
+      "mathContext": "$\\exists\\, c > 0$ s.t. a.s. $\\tau(G) \\leq n - (1+c)\\alpha(G)$, refuting $\\tau = n - \\alpha$."
     },
     {
       "id": "related-concepts",
       "title": "Related Concepts",
       "summary": "Clique cover number and chromatic number connections",
       "startLine": 215,
-      "endLine": 235
+      "endLine": 235,
+      "mathContext": "Clique cover: $\\theta(G) = \\min\\{k : E(G) \\subseteq \\bigcup_{i=1}^k E(K_{n_i})\\}$. $\\tau(G) \\leq \\theta(G)$."
     },
     {
       "id": "probabilistic-methods",
       "title": "Probabilistic Methods",
       "summary": "Techniques used in the proofs: probabilistic method and concentration inequalities",
       "startLine": 236,
-      "endLine": 260
+      "endLine": 260,
+      "mathContext": "Probabilistic method: $\\mathbb{E}[X] > 0 \\Rightarrow \\exists$ witness. Concentration via Chernoff, Azuma-Hoeffding."
     }
   ],
   "conclusion": {
