@@ -63,7 +63,7 @@
       "startLine": 42,
       "endLine": 57
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Properties of \u03a9 (Verified)",
     "content": "**Verified theorems**:\n- `bigOmega_one`: \u03a9(1) = 0 \u2713\n- `bigOmega_prime`: \u03a9(p) = 1 for prime p \u2713\n\n**Axioms** (provable but complex):\n- `bigOmega_prime_pow_ax`: \u03a9(p^k) = k\n- `bigOmega_mul_ax`: \u03a9(ab) = \u03a9(a) + \u03a9(b) for a,b > 0",
     "mathContext": "\u03a9 is completely additive: \u03a9(ab) = \u03a9(a) + \u03a9(b). This follows from concatenation of prime factor lists.",
@@ -147,7 +147,7 @@
       "startLine": 87,
       "endLine": 99
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Barreto-Leeham Counterexample",
     "content": "**barreto_leeham_counterexample**: There exist c > 0 and infinitely many n such that:\n\n1. minOmegaRemainder(n) \u2265 c \u00b7 \u221a(log n / log log n)\n2. All remainders n - 2^k \u2265 16 (for monotonicity)\n\nSince \u221a(log n / log log n) >> log log n, these n violate the conjecture.",
     "mathContext": "For n = 10^100: log log n \u2248 5.3 but \u221a(log n / log log n) \u2248 6.5. The gap widens as n grows.",
@@ -175,7 +175,7 @@
       "startLine": 101,
       "endLine": 115
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Auxiliary Lemmas",
     "content": "**threshold_dominates_loglog**: For any c > 0, eventually c \u00b7 \u221a(log n / log log n) > log log n.\n\n**remainder_achieves_min**: minOmegaRemainder(n) \u2264 \u03a9(n - 2^k) for valid k.\n\n**loglog_mono_nat**: log log is increasing for m \u2265 16.\n\nThese lemmas connect the counterexample to the conjecture's failure.",
     "mathContext": "The key inequality: \u221a(log n / log log n) / log log n = \u221a(log n) / (log log n)^(3/2) \u2192 \u221e",
@@ -203,7 +203,7 @@
       "startLine": 118,
       "endLine": 165
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Disproof of Conjecture (Verified)",
     "content": "**theorem erdos_205_disproved : \u00acErdos205Conjecture**\n\n**Proof outline**:\n1. Assume conjecture holds with threshold N\u2080\n2. Get counterexample constant c and threshold N\u2081 where c\u00b7threshold > log log\n3. Find n > max(N\u2080, N\u2081) from counterexample\n4. Conjecture gives n = 2^k + m with \u03a9(m) < log log m\n5. But \u03a9(m) \u2265 minOmega \u2265 c\u00b7threshold > log log n \u2265 log log m\n6. Contradiction: \u03a9(m) < log log m AND \u03a9(m) > log log m",
     "mathContext": "Uses linarith for the final contradiction. Key: m = n - 2^k \u2264 n, so log log m \u2264 log log n by monotonicity.",
@@ -231,7 +231,7 @@
       "startLine": 167,
       "endLine": 180
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Romanoff's Theorem (1934)",
     "content": "**romanoff_positive_density**: A positive proportion \u03b4 > 0 of integers can be written as 2^k + p for prime p.\n\nThis is a POSITIVE result: asking for \u03a9(m) = 1 (m prime) works for many n.\n\nBut not all: the conjecture asked for the weaker \u03a9(m) < log log m and still failed!",
     "mathContext": "The density \u03b4 \u2248 0.43... is known but complicated to compute exactly. Uses probabilistic methods.",
@@ -259,7 +259,7 @@
       "startLine": 182,
       "endLine": 187
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erd\u0151s's Covering Obstruction",
     "content": "**erdos_covering_obstruction**: A positive density of ODD integers CANNOT be written as 2^k + p.\n\n**Method**: Covering systems - congruence classes that 'cover' all integers.\n\nExample: n \u2261 1 (mod 2) and n \u2261 0 (mod 3) may force all 2^k + (n - 2^k) to have composite remainder.",
     "mathContext": "Erd\u0151s famously used covering systems for many number theory problems. This shows 2^k + p doesn't represent all odd numbers.",
@@ -287,7 +287,7 @@
       "startLine": 191,
       "endLine": 205
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Average and Typical \u03a9",
     "content": "**average_omega_asymptotic**: The average of \u03a9(n) for n \u2264 N is ~ log log N.\n\n**omega_concentration** (Erd\u0151s-Kac flavor): Most n have \u03a9(n) \u2248 log log n \u00b1 O(\u221a(log log n)).\n\nSo \u03a9(n) < log log n fails for about half of all n, but almost all n have some m = n - 2^k with small \u03a9.",
     "mathContext": "The Erd\u0151s-Kac theorem says (\u03a9(n) - log log n) / \u221a(log log n) is asymptotically normal. This is the 'probabilistic' flavor of number theory.",
