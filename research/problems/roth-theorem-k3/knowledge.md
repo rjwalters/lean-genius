@@ -82,3 +82,43 @@ triple_count_fourier (sorry) ─────────────────
 - `div_lt_iff` does NOT exist as a bare identifier in current Mathlib — use `field_simp` or `mul_lt_mul_of_pos_right` to clear denominators
 - `mul_lt_mul_of_pos_right` works for `a < b → 0 < c → a*c < b*c`
 - `NeZero M` instance from `0 < M`: `⟨by omega⟩`
+
+## Session 3 (2026-03-22, researcher-7)
+
+### What Was Done
+1. **Proved exp_eq_pow_root**: exp(2πik/N) = (exp(2πi/N))^k via Complex.exp_nat_mul
+2. **Proved root_pow_eq_one**: exp(2πi/N)^N = 1 via Complex.exp_two_pi_mul_I
+3. **Proved root_unity_sum_zero**: ∑_{k=0}^{N-1} ω^k = 0 for ω^N=1, ω≠1 via mul_neg_geom_sum
+4. **Proved exp_val_mul_eq**: exp(2πi·val(a*b)/N) = exp(2πi·val(a)·val(b)/N)
+   - Uses ZMod.val_mul to get val(a*b) = (val(a)·val(b)) % N
+   - Decomposes k = N·(k/N) + k%N and shows exp absorbs the integer part
+5. **Proved psi_eq_pow**: ψ(r*x) = ω_x^{val(r)} using exp_val_mul_eq + exp_nat_mul
+6. **Proved char_orthogonality**: ∑_{r:ZMod N} ψ(r·c) = N·δ(c,0) — the KEY result
+   - c = 0 case: simp (each term exp(0) = 1)
+   - c ≠ 0 case: reindex via Fin.sum_univ_eq_sum_range, apply root_unity_sum_zero
+   - ω ≠ 1 via Complex.exp_eq_exp_iff_exists_int + integer squeeze (0 ≤ n < 1 for n : ℤ)
+7. All 6 lemmas compile without sorry (Docker build verified)
+
+### Key Technical Discoveries
+- `ZMod N = Fin N` definitionally when N > 0, so `change` works for sum reindexing
+- `Fin.sum_univ_eq_sum_range (fun k => ω^k)` handles ZMod→Fin→range conversion cleanly
+- `Complex.exp_eq_exp_iff_exists_int`: exp(a) = exp(b) ↔ ∃n:ℤ, a = b + n·2πi (confirmed in codebase)
+- `mul_right_cancel₀` + `Complex.ofReal_injective` extracts ℝ equations from ℂ
+
+### Parseval Proof Analysis
+The Parseval proof `∑_r ‖Â(r)‖² = |A|·N` requires:
+1. Expand ‖z‖² = normSq(z) = z · conj(z) as double sum
+2. Use `exp_val_mul_eq` to rewrite each ψ(rx) · conj(ψ(ry))
+3. Swap sum order via `Finset.sum_comm`
+4. Apply `char_orthogonality` (proved!) to extract diagonal
+5. Sum diagonal: ∑_{x∈A} N = |A|·N
+
+**Blockers for Parseval**: Steps 1-2 require expanding `normSq(∑ f(x))` as a double sum and showing `ψ(rx)·conj(ψ(ry)) = exp(2πi·val(r)·(val(x)-val(y))/N)`. The character property `conj(ψ(a)) = ψ(-a)` needs `val(-a) ≡ -val(a) (mod N)`, which is tricky since `val` returns ℕ not ℤ. Better approach: work directly with the exp form and use `conj(exp(iθ)) = exp(-iθ)` from Mathlib.
+
+### Sorry Classification (Updated)
+| Sorry | Difficulty | Notes |
+|-------|-----------|-------|
+| parseval_on_zmod | Medium | char_orthogonality proved; needs normSq expansion |
+| triple_count_fourier | Hard | Similar structure to Parseval but triple product |
+| fourier_large_coefficient | Medium | Follows from Parseval + triple_count |
+| density_increment_lemma | Hard | Needs fourier_large_coefficient + pigeonhole on subprogressions |
