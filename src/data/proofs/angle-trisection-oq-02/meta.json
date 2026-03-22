@@ -130,6 +130,12 @@
       "Non-constructibility proof technique: Gal(p/ℚ) has order 6 = 2·3, not a power of 2. Key: 3 | 6 but gcd(3,2) = 1, so 3 ∤ 2^n → 6 ≠ 2^n",
       "∛2 is not constructible because Gal(x³-2/ℚ) ≅ S₃ has order 6 (not a 2-power). cos(20°) is not constructible because Gal(8x³-6x-1/ℚ) ≅ ℤ/3ℤ has order 3 (also not a 2-power)",
       "Module.finrank ℚ K (not `finrank` or `IsFiniteDimensional`) is the correct Mathlib4 API for field extension degree"
+    ],
+    "prerequisites": [
+      "Galois theory: Galois groups, the Galois correspondence between subgroups and intermediate fields",
+      "2-groups: a finite group whose order is a power of 2; equivalently, every composition factor is $\\mathbb{Z}/2\\mathbb{Z}$",
+      "Field extension towers: $[L:K] = [L:F][F:K]$ and its relation to constructibility (each step = degree 2)",
+      "Polynomial irreducibility over $\\mathbb{Q}$ and minimal polynomials"
     ]
   },
   "sections": [
