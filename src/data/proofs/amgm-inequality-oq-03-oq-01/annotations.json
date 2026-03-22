@@ -34,5 +34,29 @@
     "significance": "key",
     "relatedConcepts": ["power mean monotonicity", "duality argument", "inequality inversion", "mul_le_mul_of_nonneg_right"],
     "prerequisites": ["power_mean_monotone_pos", "power_mean_neg_inv", "weightedPowerMean_pos", "calc blocks"]
+  },
+  {
+    "id": "ann-amgm-oq03-oq01-04-hm-gm",
+    "proofId": "amgm-inequality-oq-03-oq-01",
+    "range": { "startLine": 345, "endLine": 355 },
+    "type": "insight",
+    "title": "Harmonic Mean ≤ Geometric Mean as Power Mean Corollary",
+    "content": "The classical inequality HM ≤ GM is the $r = -1$ case of the power mean chain. Here it is proved via `harmonic_mean_le_geom_mean_direct` (a standalone proof from the parent file), with the `_hHM` hypothesis documenting the connection: $M_{-1}(z,w) = (\\sum w_i / z_i)^{-1}$ is exactly the weighted harmonic mean. This theorem demonstrates how classical named inequalities (HM-GM, AM-GM, QM-AM) are all specializations of a single monotonicity result.",
+    "mathContext": "$\\text{HM}(z,w) = \\left(\\sum_i w_i z_i^{-1}\\right)^{-1} = M_{-1}(z,w) \\leq M_0(z,w) = \\text{GM}(z,w) = \\prod_i z_i^{w_i}$",
+    "significance": "supporting",
+    "relatedConcepts": ["harmonic mean", "geometric mean", "HM-GM inequality", "power mean specialization"],
+    "prerequisites": ["harmonic_mean_le_geom_mean_direct", "weightedPowerMean at r=-1"]
+  },
+  {
+    "id": "ann-amgm-oq03-oq01-05-chain",
+    "proofId": "amgm-inequality-oq-03-oq-01",
+    "range": { "startLine": 357, "endLine": 372 },
+    "type": "context",
+    "title": "The Power Mean Interpolation Chain: Status Summary",
+    "content": "A documentation theorem summarizing the full power mean chain $\\min(z) \\leq \\cdots \\leq \\text{HM} \\leq \\text{GM} \\leq \\text{AM} \\leq M_2 \\leq \\cdots \\leq \\max(z)$, marking which links are proved. Seven results are marked [✓]: GM ≤ AM (from Mathlib), AM ≤ M_p for p ≥ 1 (Mathlib), GM ≤ M_p for p ≥ 1, Jensen's inequality, HM ≤ GM (proved here), positive monotonicity (proved here), and negative monotonicity (proved here via duality). Only the mixed-sign crossing (r < 0 < s, requiring the r → 0 limit) remains as an axiom.",
+    "mathContext": "$\\min(z) \\leq \\cdots \\leq M_{-1} = \\text{HM} \\leq M_0 = \\text{GM} \\leq M_1 = \\text{AM} \\leq M_2 \\leq \\cdots \\leq \\max(z)$. Proved: $M_r \\leq M_s$ for $0 < r \\leq s$ and for $r \\leq s < 0$. Remaining: $r < 0 < s$ (mixed sign).",
+    "significance": "context",
+    "relatedConcepts": ["power mean chain", "mean inequality hierarchy", "interpolation"],
+    "prerequisites": []
   }
 ]
