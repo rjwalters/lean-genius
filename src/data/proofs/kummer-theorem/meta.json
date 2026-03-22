@@ -64,11 +64,19 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Imports",
+      "startLine": 1,
+      "endLine": 4,
+      "summary": "Imports `Nat.Multiplicity` (Kummer's theorem via `multiplicity_choose`), `Choose.Lucas` (Lucas' theorem), and `Tactic`.",
+      "mathContext": "Core dependency: `Nat.Prime.multiplicity_choose` provides $\\nu_p\\binom{n}{k}$ as a carry count, and `Choose.lucas_theorem` gives $\\binom{n}{k} \\equiv \\prod_i \\binom{n_i}{k_i} \\pmod{p}$."
+    },
+    {
       "id": "intro",
       "title": "Introduction and Context",
       "startLine": 5,
-      "endLine": 58,
-      "summary": "Historical background, statement of Kummer's theorem, and its relationship to Lucas' theorem.",
+      "endLine": 63,
+      "summary": "Module docstring with historical background, statement of Kummer's theorem, its relationship to Lucas' theorem, proof approach, and Mathlib dependencies. Opens the `KummerTheorem` namespace and `Nat Finset`.",
       "mathContext": "Kummer (1852): $\\nu_p\\binom{n}{k}$ = number of carries when adding $k$ and $n-k$ in base $p$. Equivalently: $(p-1)\\nu_p\\binom{n}{k} = S_p(k) + S_p(n-k) - S_p(n)$ where $S_p$ is the digit sum."
     },
     {
@@ -110,6 +118,14 @@
       "endLine": 170,
       "summary": "The equivalent formula using digit sums: (p-1)·ν_p(C(n,k)) = S_p(k) + S_p(n-k) - S_p(n).",
       "mathContext": "Legendre-Kummer: $(p-1)\\nu_p\\binom{n}{k} = S_p(k) + S_p(n-k) - S_p(n)$. Each carry reduces the digit sum by $p-1$, so carries $= (S_p(k) + S_p(n-k) - S_p(n))/(p-1)$."
+    },
+    {
+      "id": "applications",
+      "title": "Applications and Closing",
+      "startLine": 172,
+      "endLine": 191,
+      "summary": "Discusses computational, structural, and mathematical applications of Kummer's theorem: efficient $\\nu_p$ computation, Pascal's triangle mod $p$ (Sierpiński triangle), Catalan numbers, and generalizations to multinomials and $q$-analogs. Includes `#check` verification of the three main theorems.",
+      "mathContext": "Applications: (1) compute $\\nu_p\\binom{n}{k}$ in $O(\\log_p n)$ time via carry counting, (2) $\\binom{n}{k} \\not\\equiv 0 \\pmod{p} \\iff$ no carries $\\iff$ each digit of $k \\leq$ corresponding digit of $n$ (fractal structure of Pascal's triangle mod $p$)."
     }
   ],
   "conclusion": {
