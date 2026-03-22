@@ -92,7 +92,8 @@
       "PROVED 7 sorries in core Sperner machinery (Sections I-IV): no_door_left_boundary, no_door_hypotenuse, hTrans_zero_eq, lower_door_sum_zero, upper_door_sum_zero, doorZ_hyp_boundary, hTrans_cast",
       "Fixed hTrans definition bug: was counting ALL color transitions instead of {0,1}-doors only",
       "Added @[ext] to GridVertex for structural equality proofs",
-      "Core Sperner (Sections I-IV) now compiles with 0 sorries. Only approximate_fixed_point_2d (Section V) has 1 sorry remaining."
+      "Core Sperner (Sections I-IV) now compiles with 0 sorries. Only approximate_fixed_point_2d (Section V) has 1 sorry remaining.",
+      "approximate_fixed_point_2d sorry is blocked by Section V API drift errors. Need to fix displacementColoring_isSperner first (linarith/nlinarith changes in Lean 4.26)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
