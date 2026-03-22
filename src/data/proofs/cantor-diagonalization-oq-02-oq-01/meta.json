@@ -1,0 +1,50 @@
+{
+  "id": "cantor-diagonalization-oq-02-oq-01",
+  "title": "ω₁ Properties: Aleph Hierarchy, Regularity, and Cofinality",
+  "slug": "cantor-diagonalization-oq-02-oq-01",
+  "description": "Structural properties of ω₁ = (ℵ₁).ord: aleph hierarchy ℵ_α < ℵ_(α+1), regularity of ℵ₁, uncountable cofinality, and ordinal characterizations.",
+  "meta": {
+    "author": "Cantor (1895), Hausdorff (1908), formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/First_uncountable_ordinal",
+    "date": "1895",
+    "status": "verified",
+    "tags": ["set-theory", "ordinals", "cardinals", "classic", "research"],
+    "proofRepoPath": "Proofs/CantorDiagonalizationOQ02OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {"theorem": "Cardinal.aleph_lt_aleph", "description": "ℵ_α < ℵ_β ↔ α < β", "module": "Mathlib.SetTheory.Cardinal.Ordinal"},
+      {"theorem": "Cardinal.aleph_succ", "description": "ℵ_(succ α) = succ(ℵ_α)", "module": "Mathlib.SetTheory.Cardinal.Ordinal"},
+      {"theorem": "Cardinal.isRegular_aleph_one", "description": "ℵ₁ is regular", "module": "Mathlib.SetTheory.Cardinal.Cofinality"},
+      {"theorem": "Cardinal.card_ord", "description": "card(c.ord) = c", "module": "Mathlib.SetTheory.Cardinal.Ordinal"},
+      {"theorem": "Cardinal.lt_ord", "description": "α < c.ord ↔ card(α) < c", "module": "Mathlib.SetTheory.Cardinal.Ordinal"}
+    ],
+    "originalContributions": [
+      "Aleph hierarchy: ℵ_α < ℵ_(α+1) for all ordinals α",
+      "Aleph strict monotonicity and injectivity",
+      "ℵ₁ regularity and cofinality = ℵ₁ (uncountable cofinality)",
+      "Countable cardinal characterization: κ < ℵ₁ ↔ κ ≤ ℵ₀",
+      "Ordinal characterization: α < (ℵ₁).ord ↔ card(α) ≤ ℵ₀",
+      "ω₁ is not countable: ¬(card((ℵ₁).ord) ≤ ℵ₀)"
+    ],
+    "references": [
+      {"authors": "G. Cantor", "title": "Beiträge zur Begründung der transfiniten Mengenlehre", "year": "1895"},
+      {"authors": "F. Hausdorff", "title": "Grundzüge einer Theorie der geordneten Mengen", "year": "1908"}
+    ],
+    "dateAdded": "03/21/26",
+    "axiomCount": 0
+  },
+  "sections": [
+    {"id": "hierarchy", "title": "Aleph Hierarchy", "summary": "Strict monotonicity: ℵ_α < ℵ_(α+1) for all α. Injectivity of the aleph function.", "startLine": 30, "endLine": 50},
+    {"id": "regularity", "title": "Cofinality and Regularity", "summary": "ℵ₁ is regular, cof(ω₁) = ℵ₁, uncountable cofinality.", "startLine": 55, "endLine": 72},
+    {"id": "cardinal", "title": "Cardinal Properties", "summary": "ℵ₁ = succ(ℵ₀), κ < ℵ₁ ↔ κ ≤ ℵ₀, countable cardinal characterization.", "startLine": 77, "endLine": 92},
+    {"id": "ordinal", "title": "Ordinal of ℵ₁", "summary": "card((ℵ₁).ord) = ℵ₁, ω < ω₁, α < ω₁ ↔ countable, ω₁ not countable.", "startLine": 97, "endLine": 118}
+  ],
+  "conclusion": {
+    "summary": "14 theorems proved with 0 sorries and 0 axioms, completing the structural characterization of ω₁.",
+    "openQuestions": [
+      "Can the generalized Hartogs theorem (for any infinite cardinal κ, the set of ordinals of cardinality < κ has cardinality κ) be formalized?",
+      "Can König's theorem (cof(ℵ_ω) > ℵ₀) be proved for singular cardinals?"
+    ]
+  }
+}
