@@ -58,7 +58,8 @@
       "**Crossed Pairs Generalize C₄**: For graphs (t=2), avoiding crossed pairs is equivalent to avoiding 4-cycles. The Kővári–Sós–Turán theorem gives f(n,2) = Θ(n^{3/2}).",
       "**Sunflowers Avoid Crossed Pairs**: A sunflower (all edges share a common core) cannot contain crossed pairs because any two edges intersect in the nonempty core.",
       "**The Gap to Optimal**: The lower bound C(n-1,t-1) comes from sunflower constructions. The conjecture is that this is essentially tight.",
-      "**Connection to Erdős-Rado**: The Sunflower Lemma (large uniform families contain sunflowers) is a related structural result in extremal combinatorics."
+      "**Connection to Erdős-Rado**: The Sunflower Lemma (large uniform families contain sunflowers) is a related structural result in extremal combinatorics.",
+      "**Pikhurko-Verstraëte breakthrough**: Their upper bound f(n,t) = O(n^{t-1}/log^c n) improves the trivial O(n^{t-1}) by a logarithmic factor, suggesting the true answer lies between n^{t-1-ε} and n^{t-1}/polylog"
     ]
   },
   "sections": [
