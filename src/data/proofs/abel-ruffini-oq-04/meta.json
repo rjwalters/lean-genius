@@ -94,6 +94,11 @@
         "id": "solution-of-cubic",
         "relationship": "complementary",
         "description": "Cardano's formula (1545) gives radical solutions for cubics — the last degree where a general radical formula exists, before the solvability barrier at degree 5"
+      },
+      {
+        "id": "general-quartic",
+        "relationship": "complementary",
+        "description": "Ferrari's method (1540) gives radical solutions for quartics — degree 4 is the last where a general radical formula exists, since S₄ is solvable but S₅ is not"
       }
     ],
     "prerequisites": [
@@ -144,6 +149,11 @@
       "targetId": "solution-of-cubic",
       "relationship": "complementary",
       "description": "Cardano's formula (1545) gives explicit radical solutions for cubics — the last degree where a general radical formula exists. This file proves why no such formula exists for degree ≥ 5"
+    },
+    {
+      "targetId": "general-quartic",
+      "relationship": "complementary",
+      "description": "Ferrari's quartic formula (1540) is the highest-degree general radical solution. S₄ is solvable (derived series {e} ◁ V₄ ◁ A₄ ◁ S₄) but S₅ is not — this file proves the exact threshold"
     }
   ],
   "overview": {
@@ -155,10 +165,19 @@
       "The derived series gets stuck: for simple non-abelian G, [G,G] = G (since [G,G] is a non-trivial normal subgroup), so the series G ⊵ G ⊵ G ⊵ ··· never reaches {e}",
       "The threshold is exact: S₄ is solvable (derived series {e} ◁ V₄ ◁ A₄ ◁ S₄ reaches {e}) but S₅ is not, because A₅ is simple while A₄ has V₄ as a normal subgroup",
       "The distinction between 'no general formula' and 'no specific quintic is solvable' is crucial: x⁵ - 1 has a solvable Galois group (cyclic), but the generic quintic has Galois group S₅",
-      "Mathlib's typeclass system enables automatic solvability proofs for small groups via inferInstance, while the general non-solvability requires an explicit argument through cardinal arithmetic"
+      "Mathlib's typeclass system enables automatic solvability proofs for small groups via inferInstance, while the general non-solvability requires an explicit argument through cardinal arithmetic",
+      "The proof chain reveals a hierarchy of mathematical eras: Cardano/Ferrari solved cubics/quartics (1540s) by clever substitutions, but Ruffini/Abel (1799-1824) needed permutation group theory, and Galois (1832) needed a wholly new framework — the difficulty of the problem drove fundamental advances in algebra"
     ]
   },
   "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "Imports three Mathlib modules (GroupTheory.Solvable, SpecificGroups.Alternating, Tactic) and documents the 4-step proof chain architecture. Part of Wiedijk's 100 Theorems (#83). References sibling files AbelRuffini.lean and AbelRuffiniGaloisExtensions.lean.",
+      "mathContext": "Dependencies: `IsSolvable`, `alternatingGroup`, `isSimpleGroup_five`, `Equiv.Perm.not_solvable` from Mathlib's group theory library."
+    },
     {
       "id": "simple",
       "title": "A₅ Is Simple",
