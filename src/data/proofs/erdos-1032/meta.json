@@ -71,6 +71,13 @@
       "summary": "Axiomatised vertexCount, minDegree, chromaticNumber, edgeCount. Defines IsKChromaticCritical as χ = k with edge-critical property."
     },
     {
+      "id": "header-setup",
+      "title": "Module Header and Problem Context",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "Documents Erdős Problem #1032: do 4-chromatic critical graphs with linear minimum degree exist? Frames the problem between Dirac's k=6 result (δ > n/2) and Simonovits-Toft's k=4 result (δ ≫ n^{1/3}). Imports Mathlib's natural number, finset, rational, and tactic libraries."
+    },
+    {
       "id": "known-constructions",
       "title": "Known Constructions",
       "startLine": 48,
