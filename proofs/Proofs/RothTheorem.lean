@@ -239,35 +239,21 @@ private lemma conj_psi {N : ℕ} [NeZero N] (x : ZMod N) :
 private lemma psi_ne_one {N : ℕ} [NeZero N] (c : ZMod N) (hc : c ≠ 0) :
     ψ c ≠ 1 := by
   simp only [ψ]
-  -- val(c) ∈ {1,...,N-1} when c ≠ 0
-  have hval_pos : 0 < ZMod.val c := by
-    rw [Nat.pos_iff_ne_zero]
-    intro h
-    exact hc (ZMod.val_eq_zero.mp h)
-  have hval_lt : ZMod.val c < N := ZMod.val_lt c
-  -- exp(2πi·val(c)/N) = 1 iff val(c)/N ∈ ℤ, but 0 < val(c)/N < 1
   intro h
+  apply hc
   rw [Complex.exp_eq_one_iff] at h
   obtain ⟨n, hn⟩ := h
-  -- hn : 2πi * val(c)/N = 2πi * n
   have hpi : (2 : ℂ) * ↑Real.pi * Complex.I ≠ 0 := by
-    apply mul_ne_zero (mul_ne_zero _ _) Complex.I_ne_zero
-    · exact two_ne_zero
-    · exact_mod_cast Real.pi_ne_zero
-  have hN : (N : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (NeZero.ne N)
-  -- From hn: val(c)/N = n (as complex numbers)
-  have heq : (↑(ZMod.val c) : ℂ) / ↑N = ↑n := by
-    have h1 := congr_arg (· / (2 * ↑Real.pi * Complex.I)) hn
-    simp only [mul_div_cancel_left₀ _ hpi] at h1
-    linarith
-  -- val(c) = n * N
-  have heq_nat : (ZMod.val c : ℤ) = n * N := by
-    have : (↑(ZMod.val c) : ℂ) = ↑n * ↑N := by
-      rw [eq_comm, mul_div_eq_iff₀ hN] at heq; linarith
+    apply mul_ne_zero (mul_ne_zero two_ne_zero _) Complex.I_ne_zero
+    exact_mod_cast Real.pi_ne_zero
+  have hNc : (N : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (NeZero.ne N)
+  have heq : (↑(ZMod.val c) : ℂ) / ↑N = ↑n :=
+    mul_left_cancel₀ hpi (hn.trans (mul_comm _ _))
+  have hval_eq : (ZMod.val c : ℤ) = n * N := by
+    have : (↑(ZMod.val c) : ℂ) = ↑n * ↑N := by rwa [div_eq_iff hNc] at heq
     exact_mod_cast this
-  -- But 0 < val(c) < N, so n must be 0 (giving val(c) = 0, contradiction)
-  -- or n ≥ 1 (giving val(c) ≥ N, contradiction)
-  omega
+  have : ZMod.val c = 0 := by omega
+  rwa [← ZMod.val_eq_zero]
 
 /-- Character orthogonality: ∑_{r : ZMod N} ψ(r·c) = N if c = 0, 0 if c ≠ 0.
     When c = 0, every term is 1. When c ≠ 0, the sum is a geometric series
@@ -360,6 +346,28 @@ private lemma char_sum_int {N : ℕ} [NeZero N] (m : ℤ) :
 
 theorem parseval_on_zmod {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
     (Finset.univ.sum fun r => ‖fourierCoeff A r‖ ^ 2) = A.card * N := by
+  -- Lift to ℂ: suffices ↑(∑ ‖Â(r)‖²) = ↑(|A|·N)
+  suffices h : (↑(Finset.univ.sum fun r => ‖fourierCoeff A r‖ ^ 2) : ℂ) =
+      ↑((A.card : ℕ) * N) by exact_mod_cast h
+  -- ∑_r ↑(‖Â(r)‖²) = ∑_r Â(r) · conj(Â(r)) [using ‖z‖² = z · conj(z) as ℂ]
+  simp_rw [Complex.ofReal_sum, Complex.ofReal_pow, Complex.ofReal_norm_eq_coe_abs,
+    Complex.sq_abs]
+  -- Expand Â(r) = ∑_{x∈A} ψ(rx), distribute product
+  simp_rw [fourierCoeff_eq_sum_psi, map_sum, Finset.sum_mul, Finset.mul_sum]
+  -- Swap: ∑_r ∑_{x∈A} ∑_{y∈A} ψ(rx) · conj(ψ(ry)) = ∑_x ∑_y ∑_r ψ(rx)·conj(ψ(ry))
+  rw [Finset.sum_comm]
+  simp_rw [← Finset.sum_comm (s := A)]
+  -- Use conj(ψ(ry)) = ψ(r·(-y)) and ψ(rx)·ψ(r·(-y)) = ψ(r·(x-y))
+  simp_rw [conj_psi, ← psi_add, show ∀ (r x y : ZMod N), r * x + r * (-y) = r * (x - y)
+    from fun r x y => by ring]
+  -- Inner sum is char_orthogonality at c = x - y
+  simp_rw [char_orthogonality]
+  -- ∑_x ∑_y (if x - y = 0 then ↑N else 0) = ∑_x ↑N = |A| · ↑N
+  simp only [sub_eq_zero]
+  simp_rw [Finset.sum_ite_eq' A]
+  simp only [Finset.mem_coe]
+  simp_rw [if_pos]
+  simp [Finset.sum_const, Finset.card_coe, smul_eq_mul, mul_comm]
   sorry
 
 /-- The Fourier identity for AP counting:
