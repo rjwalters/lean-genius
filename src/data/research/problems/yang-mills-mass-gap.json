@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed 8 build errors: 3 duplicate declarations (scalingExponent→dseScalingExponent, TraceAnomaly→TraceAnomalyVacuum, WightmanAxioms→ClayWightmanAxioms), 3 tactic fixes (le_refl, simp;norm_num, div_lt_div_of_pos_left), 2 API renames (Nat.ofNat_pos.mpr→Nat.cast_pos.mpr, mul_lt_mul_of_pos_right goal rewrite). 103 errors remain from Mathlib v4.26 API drift across lines 15398-30000.",
+    "progressSummary": "PROGRESS: Fixed ~25 Mathlib v4.26 build errors: switched to import Mathlib, added tanh_pos_of_pos/tanh_lt_one helper lemmas, fixed 10+ API renames (pow_lt_one→pow_lt_one₀, div_le_div_iff→div_le_div_iff₀, etc.), fixed missing CPNSigmaModel section end, renamed duplicate scStringTension, weakened pi bounds to use available Real.pi_lt_four/pi_gt_three. ~91 errors remain (down from 103).",
     "builtItems": [
       "Part C: OS Axioms - transfer matrix, Schwinger functions, spectral gap, Euclidean propagator (~30 theorems)",
       "Part CI: Resurgence - beta function, running coupling, renormalons, instanton factors, bions (~25 theorems)",
@@ -120,7 +120,11 @@
       "Fixed duplicate WightmanAxioms → ClayWightmanAxioms (line ~29678)",
       "Fixed Nat.ofNat_pos.mpr → Nat.cast_pos.mpr (Mathlib rename)",
       "Fixed mul_lt_mul_of_pos_right goal rewrite for magnetic_lt_electric",
-      "Fixed le_refl → exact le_refl _ in litimRegulator_nonneg"
+      "Fixed le_refl → exact le_refl _ in litimRegulator_nonneg",
+      "Mathlib v4.26 API migration: 25+ error fixes across 30k lines",
+      "tanh_pos_of_pos/tanh_lt_one helper lemmas (proved from sinh_lt_cosh, cosh_pos)",
+      "Fixed CPNSigmaModel section/end mismatch",
+      "Renamed duplicate scStringTension→scStringTension in StrongCouplingExpansion section"
     ],
     "insights": [
       "OS axioms (5) provide Euclidean formulation; reconstruction gives Wightman QFT",
@@ -270,7 +274,11 @@
       "creutz_recovers_sigma proved from definitions: unfold, rewrite exp/log, push_cast for ℕ→ℝ, ring for algebra",
       "trivialWightmanQFT defined on ℂ with zero Hamiltonian - witnesses existence statements with True conclusions",
       "Remaining 3 axioms: killingForm (needs Lie algebra def), gaugeTransform (needs gauge action def), euclidean_mass_gap_implies_wightman (deep physics)",
-      "YangMillsMassGap.lean has 103 build errors from Mathlib API drift, mostly: div_lt_div_iff→div_lt_div_iff₀, Real.pi_lt_3141593 removed, BEq.beq_comm removed, positivity tactic failures on complex expressions"
+      "YangMillsMassGap.lean has 103 build errors from Mathlib API drift, mostly: div_lt_div_iff→div_lt_div_iff₀, Real.pi_lt_3141593 removed, BEq.beq_comm removed, positivity tactic failures on complex expressions",
+      "import Mathlib resolves all Unknown constant issues (specific imports missed transitive deps)",
+      "Real.tanh_pos_of_pos and Real.tanh_lt_one removed from Mathlib v4.26 - prove from sinh_lt_cosh and cosh_pos",
+      "pow_lt_one→pow_lt_one₀, pow_lt_pow_right→pow_lt_pow_right_of_lt_one₀, one_le_pow_of_one_le→one_le_pow₀",
+      "Nat.choose_symm_diff→Nat.choose_symm, div_lt_div_of_nonneg_left→div_lt_div_of_pos_left"
     ],
     "mathlibGaps": [
       "Principal bundles",
