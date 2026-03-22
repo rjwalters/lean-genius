@@ -136,5 +136,37 @@
       "Are there other 'identities of identities' connecting fundamental constants we haven't discovered?",
       "How does Euler's identity generalize to quaternions and other number systems?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Euler, Leonhard",
+      "title": "Introductio in analysin infinitorum",
+      "year": "1748",
+      "venue": "Lausanne: Bousquet",
+      "note": "Chapter 8 derives e^(ix) = cos(x) + i·sin(x), from which the identity e^(iπ) + 1 = 0 follows immediately"
+    },
+    {
+      "authors": "Nahin, Paul J.",
+      "title": "Dr. Euler's Fabulous Formula: Cures Many Mathematical Ills",
+      "year": "2006",
+      "venue": "Princeton University Press",
+      "note": "Popular account of the history and significance of e^(iπ) + 1 = 0, tracing its connections to signal processing, number theory, and physics"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "Both are crown jewels of Euler's work. The Basel identity ζ(2) = π²/6 and Euler's identity e^(iπ) + 1 = 0 both connect fundamental constants in unexpected ways"
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "uses",
+      "description": "Euler's identity uses π as a specific value. The transcendence of π (Lindemann 1882) means e^(iπ) = -1 is an equation relating transcendental quantities to a rational number"
+    }
+  ],
+  "relatedProofs": [
+    "basel-problem",
+    "pi-transcendental"
+  ]
 }
