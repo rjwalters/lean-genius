@@ -124,19 +124,69 @@ theorem signed_sum_subsets (S : Finset α) :
 
 /-- **Möbius inversion theorem**: μ ∘ ζ = id on subset functions.
     For any f : 2^α → ℤ, if g = ζf then μg = f. -/
+/-- Inner sum identity: ∑_{T: U⊆T⊆S} (-1)^|S\T| = [U = S].
+    Via bijection T ↦ T\U between {T : U⊆T⊆S} and (S\U).powerset,
+    this reduces to signed_sum_subsets. -/
+private theorem inner_sum_eq (S U : Finset α) (hU : U ⊆ S) :
+    (∑ T ∈ S.powerset.filter (U ⊆ ·), (-1 : ℤ) ^ (S \ T).card) =
+      if U = S then 1 else 0 := by
+  -- Key insight: the sets {T : U⊆T⊆S} and (S\U).powerset are in bijection via T ↦ T\U.
+  -- Under this bijection |S\T| = |(S\U)\(T\U)|, so the sum equals signed_sum_subsets(S\U).
+  -- First establish: S\U = ∅ ↔ U = S
+  have sdiff_empty_iff : S \ U = ∅ ↔ U = S := by
+    rw [Finset.sdiff_eq_empty_iff_subset]; exact ⟨fun h => le_antisymm hU h, fun h => h ▸ le_refl _⟩
+  -- Rewrite each term: |S\T| = |(S\U)\(T\U)| when U ⊆ T ⊆ S
+  have card_eq : ∀ T ∈ S.powerset.filter (U ⊆ ·),
+      (S \ T).card = ((S \ U) \ (T \ U)).card := by
+    intro T hT
+    simp only [Finset.mem_filter, Finset.mem_powerset] at hT
+    congr 1; ext x; simp only [Finset.mem_sdiff]; tauto
+  conv_lhs => arg 2; ext T; rw [card_eq T (by assumption)]
+  -- Bijection via sum_nbij: T ↦ T\U from {T:U⊆T⊆S} to (S\U).powerset
+  rw [Finset.sum_nbij (fun T => T \ U)
+    (fun T hT => by
+      simp only [Finset.mem_filter, Finset.mem_powerset] at hT ⊢
+      exact Finset.sdiff_subset_sdiff_left hT.1)
+    (fun T₁ hT₁ T₂ hT₂ h => by
+      simp only [Finset.mem_filter, Finset.mem_powerset] at hT₁ hT₂
+      ext x; by_cases hx : x ∈ U
+      · exact ⟨fun _ => hT₂.2 hx, fun _ => hT₁.2 hx⟩
+      · have := Finset.ext_iff.mp h x
+        simp only [Finset.mem_sdiff] at this
+        constructor
+        · intro hx1; exact (this.mp ⟨hx1, hx⟩).1
+        · intro hx2; exact (this.mpr ⟨hx2, hx⟩).1)
+    (fun W hW => by
+      simp only [Finset.mem_powerset] at hW
+      exact ⟨W ∪ U, by
+        simp only [Finset.mem_filter, Finset.mem_powerset]
+        exact ⟨Finset.union_subset (hW.trans Finset.sdiff_subset) hU, Finset.subset_union_right⟩,
+        by ext x; simp only [Finset.mem_sdiff, Finset.mem_union]; tauto⟩)
+    (fun T _ => rfl)]
+  -- Now goal: ∑ W ∈ (S\U).powerset, (-1)^|(S\U)\W| = if U = S then 1 else 0
+  rw [signed_sum_subsets]
+  simp [sdiff_empty_iff]
+
 theorem mobius_inverts_zeta (f : SubsetFn α) :
     mobiusTransform (zetaTransform f) = f := by
   ext S
   simp only [mobiusTransform, zetaTransform]
-  -- PROOF STRATEGY (requires Fubini exchange of finite sums):
-  -- (μ(ζf))(S) = ∑_{T ⊆ S} (-1)^|S\T| · ∑_{U ⊆ T} f(U)
-  -- After distributing and exchanging summation order:
-  -- = ∑_{U ⊆ S} f(U) · (∑_{T: U⊆T⊆S} (-1)^|S\T|)
-  -- The inner sum = signed_sum_subsets(S\U) via bijection T ↦ T\U:
-  --   {T : U⊆T⊆S} ≅ {W : W⊆S\U}, and |S\T| = |(S\U)\W|
-  -- By signed_sum_subsets: inner sum = [S\U = ∅] = [U = S]
-  -- So the total = f(S) · 1 + ∑_{U⊊S} f(U) · 0 = f(S)
-  sorry
+  simp_rw [Finset.mul_sum]
+  rw [Finset.sum_comm' (s' := S.powerset)
+    (t' := fun U => S.powerset.filter (U ⊆ ·))
+    (h := fun T U => by
+      simp only [Finset.mem_powerset, Finset.mem_filter]
+      exact ⟨fun ⟨hTS, hUT⟩ => ⟨hUT.trans hTS, hTS, hUT⟩,
+             fun ⟨_, hTS, hUT⟩ => ⟨hTS, hUT⟩⟩)]
+  conv_lhs => arg 2; ext U; rw [← Finset.sum_mul]; rw [mul_comm]
+  have : ∀ U ∈ S.powerset,
+      f U * (∑ T ∈ S.powerset.filter (U ⊆ ·), (-1 : ℤ) ^ (S \ T).card) =
+        if U = S then f S else 0 := by
+    intro U hU
+    rw [inner_sum_eq S U (Finset.mem_powerset.mp hU)]
+    split_ifs with h <;> simp [h]
+  rw [Finset.sum_congr rfl this]
+  simp [Finset.sum_ite_eq', Finset.mem_powerset]
 
 -- ============================================================
 -- PART 4: Connection to Inclusion-Exclusion

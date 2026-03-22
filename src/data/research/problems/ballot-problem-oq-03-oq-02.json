@@ -1,54 +1,55 @@
 {
   "id": "ballot-problem-oq-03-oq-02",
-  "name": "General LGV Lemma: r\u00d7r Lindstr\u00f6m-Gessel-Viennot Determinant",
+  "name": "General LGV Lemma: r×r Lindström-Gessel-Viennot Determinant",
   "status": "surveyed",
   "phase": "ACT",
   "knowledge": {
     "insights": [
-      "Parent OQ03 (2878 lines, 0 axioms, 0 sorries) proves the 2\u00d72 LGV lemma completely",
-      "2\u00d72 LGV: non-intersecting path pairs = e(A1,B1)e(A2,B2) - e(A1,B2)e(A2,B1) = det[[e(Ai,Bj)]]",
-      "General r\u00d7r LGV: non-intersecting r-tuples = det[[e(Ai,Bj)]] for i,j = 1..r",
-      "Proof for r\u00d7r requires sign-reversing involution on r-tuples of paths",
+      "Parent OQ03 (2878 lines, 0 axioms, 0 sorries) proves the 2×2 LGV lemma completely",
+      "2×2 LGV: non-intersecting path pairs = e(A1,B1)e(A2,B2) - e(A1,B2)e(A2,B1) = det[[e(Ai,Bj)]]",
+      "General r×r LGV: non-intersecting r-tuples = det[[e(Ai,Bj)]] for i,j = 1..r",
+      "Proof for r×r requires sign-reversing involution on r-tuples of paths",
       "Mathlib has Matrix.det and Equiv.Perm infrastructure for the sign arguments",
       "Matrix.det_fin_two and Matrix.det_fin_three from Mathlib verify small cases automatically",
-      "The Leibniz formula bridge (det = \u03a3 sign(\u03c3)\u00b7\u03a0) needs careful cast handling between Perm.sign (Units \u2124) and \u2124",
+      "The Leibniz formula bridge (det = Σ sign(σ)·Π) needs careful cast handling between Perm.sign (Units ℤ) and ℤ",
       "The GV involution is the key sorry: needs definition of 'first intersection point' and proof of sign reversal",
       "Separating the involution hypothesis from the algebraic machinery makes the proof modular",
       "Algebraic bridge proved: det(pathMatrix) = sum_sigma sign(sigma) * card(PermPathTuple) via column Leibniz formula",
       "permPathTuple_card proved: card of sigma-tuples = product of binomial coefficients (from pathMN_card)",
       "firstNonFixed infrastructure: smallest non-fixed point of perm, with spec/minimal/lt_image lemmas all proved",
       "GV cancellation isolated as sole axiom; lgv_lemma_rxr is now a theorem proved from algebraic bridge + GV axiom",
-      "Units.smul_def handles sign coercion (\u2124\u02e3 \u2022 \u2124 = \u2191\u2124\u02e3 * \u2124) in det formula connection",
+      "Units.smul_def handles sign coercion (ℤˣ • ℤ = ↑ℤˣ * ℤ) in det formula connection",
       "File builds clean against Mathlib v4.26 (verified). 1 axiom (gv_involution_cancellation), 1 sorry (pathMN_card).",
-      "pathMN_card proof strategy: PathMN m n \u2243 Finset.univ.powersetCard m via indicator bijection, then use Finset.card_powersetCard. Requires building explicit Equiv between List Bool positions and Finset (Fin (m+n)).",
+      "pathMN_card proof strategy: PathMN m n ≃ Finset.univ.powersetCard m via indicator bijection, then use Finset.card_powersetCard. Requires building explicit Equiv between List Bool positions and Finset (Fin (m+n)).",
       "pathMN_card is a good Aristotle candidate - standard combinatorial identity C(m+n,m) = |{binary strings of length m+n with m zeros}|",
       "pathMN_card proved via double induction + Pascal identity + splitting equiv. 0 sorries now.",
-      "permPathTuple_one_equiv PROVED: PermPathTuple cfg 1 \u2243 PathTuple cfg (identity perm tuples = regular tuples)",
-      "niTupleCount_eq_card_of_all_ni PROVED: when all tuples are NI, niTupleCount = card(PathTuple)",
-      "gv_cancellation_r_zero PROVED: GV cancellation holds for r=0 (single perm, vacuously NI)",
-      "gv_cancellation_r_one PROVED: GV cancellation holds for r=1 (single perm, vacuously NI)",
-      "For r \u2264 1, Perm(Fin r) has exactly one element (the identity), making the signed sum trivial",
-      "The GV involution is only needed for r \u2265 2 where non-identity permutations exist"
+      "GV cancellation requires well-formedness: ∀ i j, sources i ≤ targets j (Nat subtraction gives wrong path counts otherwise)",
+      "Axiom eliminated: gv_involution_cancellation converted to theorem with structured sorry decomposition",
+      "sum_tagged_eq_sum_perm proved: signed perm sum = sum over sigma type Σ_σ PermPathTuple(σ)",
+      "perm_ne_one_has_inversion proved: non-id perms on strictly ordered domain have inversions (via firstNonFixed)",
+      "nonid_perm_paths_cross proved (modulo crossing lemma): uses inversion + crossing lemma + omega",
+      "wellFormed condition: equivalent to sources(r-1) ≤ targets(0) when both strictly mono",
+      "NonIntersecting definition may be incomplete: does not check trailing North steps after last East step"
     ],
     "builtItems": [
-      "BallotProblemOQ03OQ02.lean: r\u00d7r LGV infrastructure (204 lines)",
+      "BallotProblemOQ03OQ02.lean: r×r LGV infrastructure (204 lines)",
       "pathMatrix / latticePathMatrix: path weight matrix over Fin r",
       "permPathCount / signedPermPathCount: signed permutation path counting",
-      "lgv_lemma_general: general r\u00d7r LGV statement from involution hypothesis",
-      "lgv_2x2_det: verified 2\u00d72 determinant specialization",
-      "lgv_3x3_det: verified 3\u00d73 determinant expansion (6 terms)",
+      "lgv_lemma_general: general r×r LGV statement from involution hypothesis",
+      "lgv_2x2_det: verified 2×2 determinant specialization",
+      "lgv_3x3_det: verified 3×3 determinant expansion (6 terms)",
       "GV involution algorithm documented in detail (swap tails at first intersection)",
       "firstNonFixed: smallest non-fixed point of non-identity perm (def + 3 lemmas, all proved)",
       "permPathTuple_card: card(PermPathTuple cfg sigma) = prod of C(m+(b_sigma(i)-a_i), m) (proved from pathMN_card)",
       "det_pathMatrix_eq_signed_sum: det = signed sum of perm path tuple counts (proved via column Leibniz)",
       "gv_involution_cancellation: GV cancellation axiom (the single remaining axiom)",
       "lgv_lemma_rxr: NOW A THEOREM (was axiom), proved from algebraic bridge + GV cancellation",
-      "permPathTuple_one_equiv: PermPathTuple cfg 1 \u2243 PathTuple cfg (proved)",
-      "permPathTuple_one_card: card(PermPathTuple cfg 1) = card(PathTuple cfg) (proved)",
-      "niTupleCount_eq_card_of_all_ni: NI count = total count when all NI (proved)",
-      "isNonIntersecting_of_r_zero: vacuous NI for r=0 (proved)",
-      "gv_cancellation_r_zero: GV cancellation theorem for r=0 (proved, not axiom)",
-      "gv_cancellation_r_one: GV cancellation theorem for r=1 (proved, not axiom)"
+      "TaggedPathTuple: sigma type Σ_σ PermPathTuple(cfg, σ) with Fintype instance (688 lines total)",
+      "sum_tagged_eq_sum_perm: algebraic sum decomposition (proved)",
+      "perm_ne_one_has_inversion: inversion existence for non-id perms (proved)",
+      "nonid_perm_paths_cross: non-id σ-tuples cross (proved from crossing lemma)",
+      "LGVConfig.wellFormed: necessary condition for GV cancellation (proved iff characterization)",
+      "PermPathTuple.toPathTuple: cast from σ=1 perm tuple to identity path tuple"
     ],
     "openQuestions": [
       "Can pathMN_card be proved via bijection with Finset.powersetCard?",
@@ -56,110 +57,12 @@
       "GV involution: need proof that non-identity perm paths must cross (crossing lemma)"
     ],
     "nextSteps": [
-      "For r \u2265 2: prove the crossing lemma (non-identity perm paths must intersect)",
-      "For r \u2265 2: construct the GV involution (swap tails at first intersection)",
-      "For r \u2265 2: prove involution is sign-reversing and its own inverse",
-      "Prove gv_involution_cancellation as theorem from the involution construction"
+      "Prove lattice_paths_must_cross (crossing lemma): discrete IVT for lattice paths. Key challenge: colEntry may not capture trailing North steps.",
+      "Prove gv_involution_cancellation: build sign-reversing involution on TaggedPathTuple. Needs first-crossing finder + tail-swap construction.",
+      "Investigate NonIntersecting definition completeness: does it handle trailing North steps correctly?",
+      "Consider strengthening NonIntersecting to check all lattice points, not just column y-ranges"
     ],
-    "progressSummary": "PROGRESS: Added 6 proved theorems including GV cancellation for r=0,1. File: 571 lines, 1 axiom (gv_involution_cancellation), 0 sorries. Axiom only needed for r\u22652."
+    "progressSummary": "PROGRESS: Axiom eliminated. gv_involution_cancellation converted from axiom to theorem. 2 sorries remain (crossing lemma + involution bookkeeping). 5 new theorems proved. Well-formedness condition discovered and formalized. File: 688 lines, 0 axioms, 2 sorries."
   },
-  "lastUpdate": "2026-03-22T16:10:00Z",
-  "leanFiles": [
-    {
-      "path": "Proofs/BallotProblem.lean",
-      "filename": "BallotProblem.lean",
-      "lineCount": 256,
-      "theoremCount": 7,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblem.lean"
-    },
-    {
-      "path": "Proofs/BallotProblemOQ01.lean",
-      "filename": "BallotProblemOQ01.lean",
-      "lineCount": 711,
-      "theoremCount": 44,
-      "axiomCount": 0,
-      "defCount": 8,
-      "sorryCount": 2,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01.lean"
-    },
-    {
-      "path": "Proofs/BallotProblemOQ01OQ01.lean",
-      "filename": "BallotProblemOQ01OQ01.lean",
-      "lineCount": 131,
-      "theoremCount": 3,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 2,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ01.lean"
-    },
-    {
-      "path": "Proofs/BallotProblemOQ01OQ02.lean",
-      "filename": "BallotProblemOQ01OQ02.lean",
-      "lineCount": 935,
-      "theoremCount": 36,
-      "axiomCount": 1,
-      "defCount": 18,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02.lean"
-    },
-    {
-      "path": "Proofs/BallotProblemOQ02.lean",
-      "filename": "BallotProblemOQ02.lean",
-      "lineCount": 340,
-      "theoremCount": 8,
-      "axiomCount": 2,
-      "defCount": 3,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ02.lean"
-    },
-    {
-      "path": "Proofs/BallotProblemOQ03.lean",
-      "filename": "BallotProblemOQ03.lean",
-      "lineCount": 2879,
-      "theoremCount": 119,
-      "axiomCount": 0,
-      "defCount": 31,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03.lean"
-    },
-    {
-      "path": "Proofs/BallotProblemOQ03OQ02.lean",
-      "filename": "BallotProblemOQ03OQ02.lean",
-      "lineCount": 571,
-      "theoremCount": 22,
-      "axiomCount": 1,
-      "defCount": 17,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ02.lean"
-    },
-    {
-      "path": "Proofs/BallotProblemOQ03OQ03.lean",
-      "filename": "BallotProblemOQ03OQ03.lean",
-      "lineCount": 139,
-      "theoremCount": 8,
-      "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ03.lean"
-    }
-  ],
-  "relatedProofs": [
-    "ballot-problem",
-    "ballot-problem-oq-01",
-    "ballot-problem-oq-01-oq-01",
-    "ballot-problem-oq-02",
-    "ballot-problem-oq-03",
-    "ballot-problem-oq-03-oq-02"
-  ]
+  "lastUpdate": "2026-03-22T08:00:00Z"
 }
