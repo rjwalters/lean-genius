@@ -1,68 +1,40 @@
 {
   "id": "ballot-problem-oq-03-oq-02",
   "name": "General LGV Lemma: r×r Lindström-Gessel-Viennot Determinant",
-  "status": "surveyed",
+  "status": "in-progress",
   "phase": "ACT",
   "knowledge": {
     "insights": [
       "Parent OQ03 (2878 lines, 0 axioms, 0 sorries) proves the 2×2 LGV lemma completely",
-      "2×2 LGV: non-intersecting path pairs = e(A1,B1)e(A2,B2) - e(A1,B2)e(A2,B1) = det[[e(Ai,Bj)]]",
       "General r×r LGV: non-intersecting r-tuples = det[[e(Ai,Bj)]] for i,j = 1..r",
       "Proof for r×r requires sign-reversing involution on r-tuples of paths",
-      "Mathlib has Matrix.det and Equiv.Perm infrastructure for the sign arguments",
-      "Matrix.det_fin_two and Matrix.det_fin_three from Mathlib verify small cases automatically",
-      "The Leibniz formula bridge (det = Σ sign(σ)·Π) needs careful cast handling between Perm.sign (Units ℤ) and ℤ",
-      "The GV involution is the key sorry: needs definition of 'first intersection point' and proof of sign reversal",
-      "Separating the involution hypothesis from the algebraic machinery makes the proof modular",
-      "Algebraic bridge proved: det(pathMatrix) = sum_sigma sign(sigma) * card(PermPathTuple) via column Leibniz formula",
-      "permPathTuple_card proved: card of sigma-tuples = product of binomial coefficients (from pathMN_card)",
-      "firstNonFixed infrastructure: smallest non-fixed point of perm, with spec/minimal/lt_image lemmas all proved",
-      "GV cancellation isolated as sole axiom; lgv_lemma_rxr is now a theorem proved from algebraic bridge + GV axiom",
-      "Units.smul_def handles sign coercion (ℤˣ • ℤ = ↑ℤˣ * ℤ) in det formula connection",
-      "File builds clean against Mathlib v4.26 (verified). 1 axiom (gv_involution_cancellation), 1 sorry (pathMN_card).",
-      "pathMN_card proof strategy: PathMN m n ≃ Finset.univ.powersetCard m via indicator bijection, then use Finset.card_powersetCard. Requires building explicit Equiv between List Bool positions and Finset (Fin (m+n)).",
-      "pathMN_card is a good Aristotle candidate - standard combinatorial identity C(m+n,m) = |{binary strings of length m+n with m zeros}|",
-      "pathMN_card proved via double induction + Pascal identity + splitting equiv. 0 sorries now.",
-      "GV cancellation requires well-formedness: ∀ i j, sources i ≤ targets j (Nat subtraction gives wrong path counts otherwise)",
-      "Axiom eliminated: gv_involution_cancellation converted to theorem with structured sorry decomposition",
-      "sum_tagged_eq_sum_perm proved: signed perm sum = sum over sigma type Σ_σ PermPathTuple(σ)",
-      "perm_ne_one_has_inversion proved: non-id perms on strictly ordered domain have inversions (via firstNonFixed)",
-      "nonid_perm_paths_cross proved (modulo crossing lemma): uses inversion + crossing lemma + omega",
-      "wellFormed condition: equivalent to sources(r-1) ≤ targets(0) when both strictly mono",
-      "NonIntersecting definition may be incomplete: does not check trailing North steps after last East step"
+      "Algebraic bridge proved: det(pathMatrix) = sum_sigma sign(sigma) * card(PermPathTuple)",
+      "pathMN_card proved via double induction + Pascal identity + splitting equiv",
+      "GV cancellation requires well-formedness: ∀ i j, sources i ≤ targets j",
+      "FIXED: NonIntersecting definition was incomplete - half-open intervals missed entry points and trailing North steps. Now uses closed intervals + final column with n₁,n₂ params.",
+      "PROVED: lattice_paths_must_cross via discrete IVT (crossing_column_exists using Finset.max') + colEntry monotonicity",
+      "colEntry_mono proved: colEntry is non-decreasing (from northBeforeEast_mono)",
+      "colEntry_le_north proved: colEntry P.val k ≤ n for PathMN m n",
+      "Crossing lemma proof: (1) final column first disjunct contradicts hend, (2) second disjunct gives p(m)>q(m), (3) IVT finds crossing, (4) colEntry monotonicity kills both disjointness options"
     ],
     "builtItems": [
-      "BallotProblemOQ03OQ02.lean: r×r LGV infrastructure (204 lines)",
-      "pathMatrix / latticePathMatrix: path weight matrix over Fin r",
-      "permPathCount / signedPermPathCount: signed permutation path counting",
-      "lgv_lemma_general: general r×r LGV statement from involution hypothesis",
-      "lgv_2x2_det: verified 2×2 determinant specialization",
-      "lgv_3x3_det: verified 3×3 determinant expansion (6 terms)",
-      "GV involution algorithm documented in detail (swap tails at first intersection)",
-      "firstNonFixed: smallest non-fixed point of non-identity perm (def + 3 lemmas, all proved)",
-      "permPathTuple_card: card(PermPathTuple cfg sigma) = prod of C(m+(b_sigma(i)-a_i), m) (proved from pathMN_card)",
-      "det_pathMatrix_eq_signed_sum: det = signed sum of perm path tuple counts (proved via column Leibniz)",
-      "gv_involution_cancellation: GV cancellation axiom (the single remaining axiom)",
-      "lgv_lemma_rxr: NOW A THEOREM (was axiom), proved from algebraic bridge + GV cancellation",
-      "TaggedPathTuple: sigma type Σ_σ PermPathTuple(cfg, σ) with Fintype instance (688 lines total)",
-      "sum_tagged_eq_sum_perm: algebraic sum decomposition (proved)",
-      "perm_ne_one_has_inversion: inversion existence for non-id perms (proved)",
+      "BallotProblemOQ03OQ02.lean: r×r LGV lemma formalization (896 lines)",
+      "lgv_lemma_rxr: r×r LGV theorem (proved from algebraic bridge + GV cancellation)",
+      "lattice_paths_must_cross: crossing lemma for lattice paths (PROVED)",
+      "crossing_column_exists: discrete IVT via Finset.max' (proved)",
+      "colEntry_mono, colEntry_le_north, northBeforeEast_mono (proved)",
       "nonid_perm_paths_cross: non-id σ-tuples cross (proved from crossing lemma)",
-      "LGVConfig.wellFormed: necessary condition for GV cancellation (proved iff characterization)",
-      "PermPathTuple.toPathTuple: cast from σ=1 perm tuple to identity path tuple"
+      "TaggedPathTuple: sigma type with sum decomposition (proved)"
     ],
     "openQuestions": [
-      "Can pathMN_card be proved via bijection with Finset.powersetCard?",
-      "GV involution: need first intersection point definition for lattice paths",
-      "GV involution: need proof that non-identity perm paths must cross (crossing lemma)"
+      "GV involution: need first intersection point definition using closed-interval NonIntersecting",
+      "GV involution: tail-swap construction must preserve PathMN validity"
     ],
     "nextSteps": [
-      "Prove lattice_paths_must_cross (crossing lemma): discrete IVT for lattice paths. Key challenge: colEntry may not capture trailing North steps.",
-      "Prove gv_involution_cancellation: build sign-reversing involution on TaggedPathTuple. Needs first-crossing finder + tail-swap construction.",
-      "Investigate NonIntersecting definition completeness: does it handle trailing North steps correctly?",
-      "Consider strengthening NonIntersecting to check all lattice points, not just column y-ranges"
+      "Prove gv_involution_cancellation: build sign-reversing involution on TaggedPathTuple",
+      "Key challenge: define first crossing column, swap suffixes, show swap preserves validity and changes sign"
     ],
-    "progressSummary": "PROGRESS: Axiom eliminated. gv_involution_cancellation converted from axiom to theorem. 2 sorries remain (crossing lemma + involution bookkeeping). 5 new theorems proved. Well-formedness condition discovered and formalized. File: 688 lines, 0 axioms, 2 sorries."
+    "progressSummary": "PROGRESS: Crossing lemma proved! Fixed NonIntersecting to use closed intervals + final column. Added 6 helper lemmas. File: 896 lines, 0 axioms, 1 sorry (GV involution bookkeeping only)."
   },
-  "lastUpdate": "2026-03-22T08:00:00Z"
+  "lastUpdate": "2026-03-22T20:00:00Z"
 }

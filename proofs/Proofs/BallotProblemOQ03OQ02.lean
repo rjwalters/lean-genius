@@ -23,8 +23,8 @@ where e(A,B) = C(dx + dy, dx) is the number of lattice paths from A to B.
 The identity permutation contributes ∏ e(Aᵢ,Bᵢ). Non-identity permutations
 cancel via a sign-reversing involution (Gessel-Viennot involution).
 
-## Status (0 axioms, 2 sorries)
-- [x] Path tuple and non-intersecting definitions
+## Status (0 axioms, 1 sorry)
+- [x] Path tuple and non-intersecting definitions (closed-interval formulation)
 - [x] Path weight matrix using Matrix.det
 - [x] Permutation path tuples and signed counts
 - [x] Gessel-Viennot involution infrastructure (swapTailsAt, firstNonFixed)
@@ -37,7 +37,9 @@ cancel via a sign-reversing involution (Gessel-Viennot involution).
 - [x] Non-identity permutations have inversions (proved)
 - [x] Non-identity σ-tuples always cross (proved from crossing lemma)
 - [x] Well-formedness condition (∀ i j, sources i ≤ targets j)
-- [ ] Crossing lemma: discrete IVT for lattice paths (1 sorry)
+- [x] Crossing lemma: discrete IVT for lattice paths (PROVED)
+- [x] NonIntersecting definition fixed: closed intervals + final column
+- [x] colEntry monotonicity and bound lemmas (proved)
 - [ ] GV involution cancellation (1 sorry: involution bookkeeping)
 
 ## References
@@ -102,16 +104,91 @@ def colEntry (l : LPath) : ℕ → ℕ
   | 0 => 0
   | k + 1 => northBeforeEast l k
 
-/-- The set of y-values visited by path l (starting at y₀) in column x. -/
+-- ============================================================
+-- Column Entry Monotonicity
+-- ============================================================
+
+/-- northBeforeEast is non-decreasing in k. -/
+private lemma northBeforeEast_mono (l : LPath) (k : ℕ) :
+    northBeforeEast l k ≤ northBeforeEast l (k + 1) := by
+  induction l with
+  | nil => simp [northBeforeEast]
+  | cons b xs ih =>
+    cases b with
+    | false =>
+      cases k with
+      | zero =>
+        simp [northBeforeEast]
+        exact Nat.zero_le _
+      | succ k' =>
+        simp only [northBeforeEast]
+        exact ih k'
+    | true =>
+      simp only [northBeforeEast]
+      exact Nat.add_le_add_left (ih k) 1
+
+/-- colEntry is non-decreasing: colEntry l x ≤ colEntry l (x + 1). -/
+lemma colEntry_mono (l : LPath) (x : ℕ) : colEntry l x ≤ colEntry l (x + 1) := by
+  cases x with
+  | zero => simp [colEntry]; exact Nat.zero_le _
+  | succ k => exact northBeforeEast_mono l k
+
+/-- northBeforeEast l k ≤ total number of North (true) steps in l. -/
+private lemma northBeforeEast_le_countP_true (l : LPath) (k : ℕ) :
+    northBeforeEast l k ≤ l.countP (· = true) := by
+  induction l with
+  | nil => simp [northBeforeEast]
+  | cons b xs ih =>
+    cases b with
+    | false =>
+      cases k with
+      | zero => simp [northBeforeEast]
+      | succ k' =>
+        simp only [northBeforeEast, List.countP_cons, decide_false, Bool.false_eq_true,
+          ite_false, Nat.zero_add]
+        exact ih k'
+    | true =>
+      simp only [northBeforeEast, List.countP_cons, decide_true, ite_true]
+      exact Nat.add_le_add_left (ih k) 1
+
+/-- For PathMN m n, the total number of North (true) steps equals n. -/
+private lemma pathMN_countP_true {m n : ℕ} (P : PathMN m n) :
+    P.val.countP (· = true) = n := by
+  have hlen := P.property.1
+  have heast := P.property.2
+  have hsum := bool_countP_sum P.val
+  omega
+
+/-- For PathMN m n, colEntry P.val k ≤ n for any column k. -/
+lemma colEntry_le_north {m n : ℕ} (P : PathMN m n) (k : ℕ) :
+    colEntry P.val k ≤ n := by
+  cases k with
+  | zero => simp [colEntry]
+  | succ k =>
+    simp only [colEntry]
+    calc northBeforeEast P.val k
+        ≤ P.val.countP (· = true) := northBeforeEast_le_countP_true P.val k
+      _ = n := pathMN_countP_true P
+
+/-- The set of y-values visited by path l (starting at y₀) in column x.
+    (Retained for reference; not used in NonIntersecting.) -/
 def colYRange (l : LPath) (y₀ x : ℕ) : Set ℕ :=
   { y | y₀ + colEntry l x ≤ y ∧ y < y₀ + colEntry l (x + 1) }
 
-/-- Two paths are non-intersecting if their column ranges never overlap
-    and their final positions differ. -/
-def NonIntersecting (l₁ l₂ : LPath) (m y₁ y₂ : ℕ) : Prop :=
+/-- Two paths are non-intersecting if they share no lattice point.
+
+    At each column x < m, the visited y-values form the closed interval
+    [y₁ + colEntry l x, y₁ + colEntry l (x+1)].  Two such intervals are
+    disjoint iff one ends strictly before the other begins.
+
+    At the final column m, the interval extends to include trailing North
+    steps: [y₁ + colEntry l m, y₁ + n₁].  The parameters n₁, n₂ are the
+    total North step counts of each path (needed for the final column). -/
+def NonIntersecting (l₁ l₂ : LPath) (m y₁ y₂ n₁ n₂ : ℕ) : Prop :=
   (∀ x : ℕ, x < m →
-    Disjoint (colYRange l₁ y₁ x) (colYRange l₂ y₂ x)) ∧
-  y₁ + colEntry l₁ m ≠ y₂ + colEntry l₂ m
+    y₁ + colEntry l₁ (x + 1) < y₂ + colEntry l₂ x ∨
+    y₂ + colEntry l₂ (x + 1) < y₁ + colEntry l₁ x) ∧
+  (y₁ + n₁ < y₂ + colEntry l₂ m ∨ y₂ + n₂ < y₁ + colEntry l₁ m)
 
 -- ============================================================
 -- PART 3: r-Tuple Infrastructure
@@ -134,11 +211,13 @@ noncomputable instance PathTuple.instFintype {r : ℕ} (cfg : LGVConfig r) :
     Fintype (PathTuple cfg) := by
   unfold PathTuple; infer_instance
 
-/-- A path tuple is non-intersecting if all pairs (i < j) are non-intersecting. -/
+/-- A path tuple is non-intersecting if all pairs (i < j) are non-intersecting.
+    Each path i has n = targets(i) - sources(i) North steps. -/
 def IsNonIntersecting {r : ℕ} (cfg : LGVConfig r) (paths : PathTuple cfg) : Prop :=
   ∀ i j : Fin r, i < j →
     NonIntersecting (paths i).val (paths j).val cfg.m
       (cfg.sources i) (cfg.sources j)
+      (cfg.targets i - cfg.sources i) (cfg.targets j - cfg.sources j)
 
 -- ============================================================
 -- PART 4: The Path Weight Matrix
@@ -549,25 +628,80 @@ def yAtCol (l : LPath) (y₀ : ℕ) (x : ℕ) : ℕ := y₀ + colEntry l x
 theorem yAtCol_zero (l : LPath) (y₀ : ℕ) : yAtCol l y₀ 0 = y₀ := by
   simp [yAtCol, colEntry]
 
+/-- Discrete IVT: if p(0) < q(0) and q(m) ≤ p(m), there is a crossing column. -/
+private lemma crossing_column_exists {m : ℕ} (p q : ℕ → ℕ)
+    (hm : 0 < m) (h0 : p 0 < q 0) (hfin : q m ≤ p m) :
+    ∃ k, k < m ∧ p k < q k ∧ q (k + 1) ≤ p (k + 1) := by
+  -- Take the largest k < m with p(k) < q(k)
+  let S := (Finset.range m).filter (fun k => p k < q k)
+  have hS : S.Nonempty := ⟨0, by simp [S, Finset.mem_filter, Finset.mem_range]; exact ⟨hm, h0⟩⟩
+  refine ⟨S.max' hS, ?_, ?_, ?_⟩
+  · exact Finset.mem_range.mp ((Finset.filter_subset _ _) (Finset.max'_mem S hS))
+  · exact (Finset.mem_filter.mp (Finset.max'_mem S hS)).2
+  · -- k₀ + 1 ∉ S (since k₀ is max), so either k₀ + 1 ≥ m or q(k₀+1) ≤ p(k₀+1)
+    by_contra h
+    push_neg at h
+    have hmem : S.max' hS + 1 ∈ S := by
+      simp only [S, Finset.mem_filter, Finset.mem_range]
+      constructor
+      · by_contra hge
+        push_neg at hge
+        have : S.max' hS + 1 = m := by
+          have := Finset.mem_range.mp ((Finset.filter_subset _ _) (Finset.max'_mem S hS))
+          omega
+        omega
+      · exact h
+    exact absurd (Finset.le_max' S _ hmem) (by omega)
+
 /-- **Crossing lemma for lattice paths (discrete IVT).**
     If path P starts strictly below path Q (y₁ < y₂) but P ends at
-    or above Q at column m, then their column y-ranges overlap at some
+    or above Q at column m, then their visited y-ranges overlap at some
     column — i.e., the paths share a lattice point.
 
     This is the combinatorial engine of the GV involution: it ensures
     that non-identity permutation path tuples always have crossings,
-    so the involution is total on non-fixed-point tuples. -/
+    so the involution is total on non-fixed-point tuples.
+
+    **Proof**: The final column condition cannot hold:
+    - First disjunct contradicts hend (colEntry ≤ n).
+    - Second disjunct gives p_entry(m) > q_end. Then by discrete IVT
+      on column entries, find x₀ where p crosses above q. At x₀,
+      neither closed-interval disjointness condition can hold
+      (both need colEntry non-decreasing). -/
 theorem lattice_paths_must_cross {m : ℕ} {n₁ n₂ : ℕ} {y₁ y₂ : ℕ}
     (P : PathMN m n₁) (Q : PathMN m n₂)
     (hstart : y₁ < y₂)
     (hend : y₂ + n₂ ≤ y₁ + n₁) :
-    ¬NonIntersecting P.val Q.val m y₁ y₂ := by
-  intro ⟨hdisjoint, hfinal⟩
-  -- The y-ranges are nested intervals at each column.
-  -- Since P starts below Q but ends at or above Q,
-  -- by a discrete intermediate value argument on the
-  -- difference of y-coordinates, the ranges must overlap.
-  sorry
+    ¬NonIntersecting P.val Q.val m y₁ y₂ n₁ n₂ := by
+  intro ⟨hcols, hfinal⟩
+  rcases hfinal with h1 | h2
+  · -- y₁ + n₁ < y₂ + colEntry Q m: contradicts hend since colEntry Q m ≤ n₂
+    have := colEntry_le_north Q m
+    omega
+  · -- y₂ + n₂ < y₁ + colEntry P m: P enters column m above Q's endpoint
+    -- Therefore q_entry(m) ≤ q_end < p_entry(m)
+    have hQ_le : colEntry Q.val m ≤ n₂ := colEntry_le_north Q m
+    -- At column 0: p < q. At column m: p > q. Find the crossing.
+    have hm_pos : 0 < m := by
+      by_contra hm0
+      push_neg at hm0
+      interval_cases m
+      simp [colEntry] at h2
+      omega
+    have hfin : y₂ + colEntry Q.val m ≤ y₁ + colEntry P.val m := by omega
+    obtain ⟨k, hk, hbelow, habove⟩ := crossing_column_exists
+      (fun x => y₁ + colEntry P.val x) (fun x => y₂ + colEntry Q.val x)
+      hm_pos (by simp [colEntry]; omega) hfin
+    -- At column k: p(k) < q(k) and p(k+1) ≥ q(k+1)
+    -- Check the column disjointness condition at k
+    have hcol_k := hcols k hk
+    rcases hcol_k with hleft | hright
+    · -- p_entry(k+1) < q_entry(k): but p(k+1) ≥ q(k+1) ≥ q(k)
+      have := colEntry_mono Q.val k
+      omega
+    · -- q_entry(k+1) < p_entry(k): but q(k+1) ≥ q(k) > p(k)
+      have := colEntry_mono Q.val k
+      omega
 
 -- ============================================================
 -- PART 7f: GV Involution Construction
@@ -640,7 +774,8 @@ theorem nonid_perm_paths_cross {r : ℕ} (cfg : LGVConfig r)
     (paths : PermPathTuple cfg σ) :
     ∃ i j : Fin r, i < j ∧
       ¬NonIntersecting (paths i).val (paths j).val cfg.m
-        (cfg.sources i) (cfg.sources j) := by
+        (cfg.sources i) (cfg.sources j)
+        (cfg.targets (σ i) - cfg.sources i) (cfg.targets (σ j) - cfg.sources j) := by
   -- By perm_ne_one_has_inversion, ∃ i < j with targets(σ j) < targets(σ i).
   obtain ⟨i, j, hij, hinv⟩ := perm_ne_one_has_inversion σ hσ cfg.targets_strictMono
   refine ⟨i, j, hij, ?_⟩
