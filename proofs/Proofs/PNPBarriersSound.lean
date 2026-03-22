@@ -6456,6 +6456,119 @@ theorem ugc_inapproximability_landscape (h_ugc : UGC) (h_pnp : P ≠ NP) :
    ugc_vertex_cover_optimal h_ugc h_pnp⟩
 
 -- ============================================================
+-- PART 53: Cross-Area Conditional Landscapes
+-- ============================================================
+
+/-
+### Conditional Landscapes
+
+The richness of complexity theory lies in the *web of conditional implications*.
+Different assumptions (OWF, ETH, SETH, P≠NP) each unlock a different subset
+of the known results. Here we consolidate these into unified landscape theorems
+that connect all areas of the formalization.
+-/
+
+/-- **SETH Complete Landscape**: Everything that follows from SETH, spanning
+    separation, derandomization, circuit complexity, parameterized complexity,
+    and fine-grained complexity. SETH is the strongest standard assumption
+    and activates the most results. -/
+theorem SETH_complete_landscape (h : SETH) :
+    -- Separation
+    P ≠ NP ∧
+    -- Derandomization
+    BPP = P ∧
+    -- Circuit complexity
+    ¬(NP ⊆ P_poly) ∧
+    -- Parameterized complexity
+    FPT_ne_W1_conjecture ∧
+    -- Fine-grained: near-quadratic lower bounds for string/geometric problems
+    (∀ n, n ≥ 2 → EditDist_time n ≥ n * n / (Nat.log2 n + 1)) ∧
+    (∀ n, n ≥ 2 → LCS_time n ≥ n * n / (Nat.log2 n + 1)) ∧
+    (∀ n, n ≥ 2 → Frechet_time n ≥ n * n / (Nat.log2 n + 1)) :=
+  ⟨SETH_implies_P_ne_NP h,
+   SETH_implies_BPP_eq_P h,
+   SETH_implies_NP_not_in_Ppoly h,
+   ETH_implies_FPT_ne_W1 (SETH_implies_ETH h),
+   SETH_edit_distance_hardness h,
+   SETH_LCS_hardness h,
+   SETH_frechet_hardness h⟩
+
+/-- **OWF Complete Landscape**: Everything that follows from one-way functions,
+    spanning separation, derandomization, zero-knowledge, average-case hardness,
+    and meta-complexity. OWF existence is the minimal cryptographic assumption. -/
+theorem OWF_complete_landscape (howf : OWF_exist) :
+    -- Separation
+    P ≠ NP ∧
+    -- Derandomization
+    BPP = P ∧
+    -- Zero-knowledge: NP has zero-knowledge proofs, IP = CZK
+    NP ⊆ CZK ∧ IP = CZK ∧
+    -- Average-case hardness
+    ¬AvgP_eq_DistNP ∧
+    -- Meta-complexity: Kt is hard on average
+    KtComplexity ∉ BPP ∧
+    -- Hardcore bits exist
+    (∃ f : ℕ → Bool, ∀ s : ℕ, s > 0 → IsHard f s 3) :=
+  ⟨owf_implies_P_ne_NP howf,
+   HILL_owf_to_prg howf,
+   owf_implies_NP_subset_CZK howf,
+   owf_implies_IP_eq_CZK howf,
+   owf_implies_not_AvgP_eq_DistNP howf,
+   owf_implies_Kt_hard howf,
+   goldreich_levin howf⟩
+
+/-- **SZK containment in PSPACE**: Statistical zero-knowledge is in PSPACE.
+    Proof: SZK ⊆ AM ∩ coAM ⊆ AM ⊆ PH ⊆ PSPACE.
+    This places SZK firmly in the polynomial space hierarchy. -/
+theorem SZK_subset_PSPACE : SZK ⊆ PSPACE := by
+  intro f hf
+  have hAM := (SZK_subset_AM_inter_coAM hf).1
+  exact PH_subset_PSPACE (AM_subset_PH hAM)
+
+/-- **CZK containment in PSPACE**: Computational zero-knowledge is in PSPACE.
+    Proof: CZK ⊆ IP = PSPACE (Shamir). -/
+theorem CZK_subset_PSPACE : CZK ⊆ PSPACE :=
+  shamir_IP_eq_PSPACE ▸ CZK_subset_IP
+
+/-- **GI in PSPACE**: Graph Isomorphism is in PSPACE.
+    Proof: GI ∈ SZK ⊆ PSPACE. -/
+theorem GI_in_PSPACE : GI ∈ PSPACE :=
+  SZK_subset_PSPACE (GI_in_SZK)
+
+/-- **BPP ⊆ CZK**: BPP problems have computational zero-knowledge proofs.
+    Proof: BPP ⊆ SZK ⊆ CZK. The trivial proof is already a zero-knowledge
+    protocol (the verifier can simulate it alone). -/
+theorem BPP_subset_CZK : BPP ⊆ CZK :=
+  Set.Subset.trans BPP_subset_SZK SZK_subset_CZK
+
+/-- **The Zero-Knowledge Chain**: BPP ⊆ SZK ⊆ CZK ⊆ IP = PSPACE.
+    Both SZK and CZK sit between BPP and PSPACE. -/
+theorem zk_containment_chain :
+    BPP ⊆ SZK ∧ SZK ⊆ CZK ∧ CZK ⊆ PSPACE ∧ SZK ⊆ PSPACE :=
+  ⟨BPP_subset_SZK, SZK_subset_CZK, CZK_subset_PSPACE, SZK_subset_PSPACE⟩
+
+/-- **Circuit-Branching-Space Chain**: Connecting circuits to branching programs
+    to space to time.
+    AC⁰ ⊆ ACC⁰ ⊆ TC⁰ ⊆ NC¹ = BPWidth(5) ⊆ NC ⊆ P ⊆ NP ⊆ PSPACE.
+    Additionally: NEXP ⊄ ACC⁰ (Williams) and NL ⊆ P (space). -/
+theorem circuit_to_space_chain :
+    -- Circuit hierarchy
+    AC_k 0 ⊆ ACC0 ∧ ACC0 ⊆ TC_k 0 ∧ TC_k 0 ⊆ NC_k 1 ∧
+    -- Branching program characterization
+    NC_k 1 = BPWidth 5 ∧
+    -- NC hierarchy
+    NC ⊆ P ∧ P ⊆ NP ∧ NP ⊆ PSPACE ∧
+    -- Space hierarchy
+    L ⊆ NL ∧ NL ⊆ P ∧ NL = coNL ∧
+    -- Unconditional separation
+    ¬(NEXP ⊆ ACC0) :=
+  ⟨AC0_subset_ACC0, ACC0_subset_TC0, TC_k_subset_NC_k_succ 0,
+   barrington_theorem,
+   NC_subset_P, P_subset_NP, NP_subset_PSPACE,
+   L_subset_NL, NL_subset_P, immerman_szelepcsenyi,
+   williams_NEXP_not_in_ACC0⟩
+
+-- ============================================================
 -- PART 42: The P vs NP Grand Unification
 -- ============================================================
 
@@ -6489,8 +6602,10 @@ Together, these form the most comprehensive formal complexity theory
 encyclopedia in Lean.
 -/
 
-/-- **The Master Theorem**: a single statement connecting all major
-    components of our formalization. -/
+/-- **The Master Theorem**: a single statement connecting all 21 major
+    components of our formalization. Extended from 15 to 21 components
+    to cover circuits, parameterized complexity, proof complexity,
+    OWF landscape, and SETH landscape. -/
 theorem p_vs_np_master_summary :
     -- I. Sound model
     (P ≠ Set.univ) ∧
@@ -6519,10 +6634,23 @@ theorem p_vs_np_master_summary :
     (QIP = PSPACE) ∧
     -- XIII. NL-completeness: PATH is the canonical space-complete problem
     (NLComplete PATH ∧ NL = coNL) ∧
-    -- XIV. Zero-knowledge: SZK sits in AM ∩ coAM, CZK captures IP with OWFs
-    (BPP ⊆ SZK ∧ SZK ⊆ AM ∩ coAM ∧ CZK ⊆ IP) ∧
+    -- XIV. Zero-knowledge: full chain BPP ⊆ SZK ⊆ CZK ⊆ IP = PSPACE
+    (BPP ⊆ SZK ∧ SZK ⊆ AM ∩ coAM ∧ CZK ⊆ PSPACE ∧ SZK ⊆ PSPACE) ∧
     -- XV. Reingold: undirected connectivity in L, derandomizing space
-    (SL = L ∧ RL = L ∧ USTCON ∈ L) :=
+    (SL = L ∧ RL = L ∧ USTCON ∈ L) ∧
+    -- XVI. Barrington: NC¹ = width-5 branching programs
+    (NC_k 1 = BPWidth 5 ∧ BPWidth 4 ⊆ ACC0 ∧ ACC0 ⊆ NC_k 1) ∧
+    -- XVII. Circuit hierarchy: AC⁰ ⊆ ACC⁰ ⊆ TC⁰ ⊆ NC¹ ⊆ NC ⊆ P
+    (AC_k 0 ⊆ ACC0 ∧ ACC0 ⊆ TC_k 0 ∧ NC ⊆ P ∧ ¬(NEXP ⊆ ACC0)) ∧
+    -- XVIII. Parameterized: FPT ⊆ W[1] ⊆ XP ⊆ paraNP
+    (FPT ⊆ W_class 1 ∧ W_class 1 ⊆ XP_param ∧ XP_param ⊆ paraNP) ∧
+    -- XIX. Proof complexity: NP = coNP ↔ polynomial proof system (Cook-Reckhow)
+    (NP = coNP ↔ ∃ sys : PropProofSystem,
+      ∀ τ : ℕ, ∃ (p : Polynomial), proofLength sys τ ≤ p.eval (inputSize τ)) ∧
+    -- XX. OWF landscape: OWFs → P ≠ NP ∧ BPP = P ∧ NP ⊆ CZK
+    ((OWF_exist → P ≠ NP) ∧ (OWF_exist → BPP = P) ∧ (OWF_exist → NP ⊆ CZK)) ∧
+    -- XXI. SETH landscape: SETH → P ≠ NP ∧ BPP = P ∧ NP ⊄ P/poly ∧ FPT ≠ W[1]
+    ((SETH → P ≠ NP) ∧ (SETH → BPP = P) ∧ (SETH → ¬(NP ⊆ P_poly))) :=
   ⟨P_nontrivial,
    ⟨P_subset_NP, NP_subset_PH, PH_subset_PSPACE, PSPACE_subset_EXP⟩,
    P_strict_subset_EXP,
@@ -6537,8 +6665,14 @@ theorem p_vs_np_master_summary :
    entanglement_strictly_strengthens_MIP,
    jain_QIP_eq_PSPACE,
    ⟨PATH_NL_complete, immerman_szelepcsenyi⟩,
-   ⟨BPP_subset_SZK, SZK_subset_AM_inter_coAM, CZK_subset_IP⟩,
-   ⟨reingold_SL_eq_L, reingold_RL_eq_L, reingold_USTCON_in_L⟩⟩
+   ⟨BPP_subset_SZK, SZK_subset_AM_inter_coAM, CZK_subset_PSPACE, SZK_subset_PSPACE⟩,
+   ⟨reingold_SL_eq_L, reingold_RL_eq_L, reingold_USTCON_in_L⟩,
+   ⟨barrington_theorem, width4_subset_ACC0, ACC0_subset_NC1⟩,
+   ⟨AC0_subset_ACC0, ACC0_subset_TC0, NC_subset_P, williams_NEXP_not_in_ACC0⟩,
+   ⟨FPT_subset_W1, Set.Subset.trans (W_monotone 1) (W_subset_XP 2), XP_subset_paraNP⟩,
+   cook_reckhow,
+   ⟨owf_implies_P_ne_NP, HILL_owf_to_prg, owf_implies_NP_subset_CZK⟩,
+   ⟨SETH_implies_P_ne_NP, SETH_implies_BPP_eq_P, SETH_implies_NP_not_in_Ppoly⟩⟩
 
 -- ============================================================
 -- Verification: TFNP, Descriptive, Counting, Oracle, Unconditional
@@ -6614,7 +6748,17 @@ theorem p_vs_np_master_summary :
 #check ugc_strengthens_pcp             -- PCP + UGC landscape (proved)
 #check ugc_inapproximability_landscape -- Full UGC landscape (proved)
 
+-- Cross-Area Conditional Landscapes
+#check SETH_complete_landscape         -- SETH → 7-part landscape (proved)
+#check OWF_complete_landscape          -- OWF → 7-part landscape (proved)
+#check SZK_subset_PSPACE               -- SZK ⊆ PSPACE (proved)
+#check CZK_subset_PSPACE               -- CZK ⊆ PSPACE (proved)
+#check GI_in_PSPACE                    -- GI ∈ PSPACE (proved)
+#check BPP_subset_CZK                  -- BPP ⊆ CZK (proved)
+#check zk_containment_chain            -- Full ZK chain (proved)
+#check circuit_to_space_chain          -- Circuit→Space chain (proved)
+
 -- Grand Unification
-#check p_vs_np_master_summary         -- Master summary (proved)
+#check p_vs_np_master_summary         -- Master summary: 21 components (proved)
 
 end PNPBarriersSound
