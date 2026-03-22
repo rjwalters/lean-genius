@@ -1,0 +1,42 @@
+{
+  "id": "binomial-theorem-oq-04-oq-02",
+  "title": "Vandermonde Identity: Algebraic Proof via Coefficient Comparison",
+  "slug": "binomial-theorem-oq-04-oq-02",
+  "description": "Algebraic proof of Vandermonde's identity by comparing coefficients of X^r in (1+X)^(m+n) = (1+X)^m · (1+X)^n, using polynomial Cauchy product.",
+  "meta": {
+    "author": "Vandermonde (1772), formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Vandermonde%27s_identity",
+    "date": "1772",
+    "status": "verified",
+    "tags": ["combinatorics", "algebra", "polynomials", "classic", "research"],
+    "proofRepoPath": "Proofs/BinomialTheoremOQ04OQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {"theorem": "Nat.add_choose_eq", "description": "Vandermonde identity (antidiagonal form)", "module": "Mathlib.Data.Nat.Choose.Sum"},
+      {"theorem": "Polynomial.coeff_mul", "description": "Cauchy product for polynomial coefficients", "module": "Mathlib.Algebra.Polynomial.Coeff"}
+    ],
+    "originalContributions": [
+      "Exponent law: (1+X)^(m+n) = (1+X)^m · (1+X)^n in ℕ[X]",
+      "Vandermonde via antidiagonal: C(m+n,r) = Σ_{i+j=r} C(m,i)·C(n,j)",
+      "Cauchy product structure connecting polynomial multiplication to convolution",
+      "Algebraic proof structure: coefficient comparison of exponent law",
+      "Symmetry, special cases, Pascal's rule as corollaries"
+    ],
+    "dateAdded": "03/22/26",
+    "axiomCount": 0
+  },
+  "sections": [
+    {"id": "exponent-law", "title": "Exponent Law", "summary": "The polynomial identity (1+X)^(m+n) = (1+X)^m · (1+X)^n.", "startLine": 30, "endLine": 38},
+    {"id": "vandermonde", "title": "Vandermonde's Identity", "summary": "The antidiagonal convolution formula and its symmetry.", "startLine": 43, "endLine": 57},
+    {"id": "cauchy", "title": "Cauchy Product", "summary": "Polynomial coefficient multiplication equals antidiagonal sum.", "startLine": 62, "endLine": 82},
+    {"id": "corollaries", "title": "Corollaries", "summary": "Equal parameters case and Pascal's rule.", "startLine": 87, "endLine": 98}
+  ],
+  "conclusion": {
+    "summary": "10 theorems proved with 0 sorries, 0 axioms. The algebraic proof of Vandermonde's identity via polynomial coefficient comparison is fully formalized.",
+    "openQuestions": [
+      "Can the q-Vandermonde identity for Gaussian binomial coefficients be formalized?",
+      "Can the Lindström-Gessel-Viennot lemma be derived from this algebraic framework?"
+    ]
+  }
+}
