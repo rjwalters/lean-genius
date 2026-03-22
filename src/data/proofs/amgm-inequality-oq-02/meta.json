@@ -18,8 +18,8 @@
       "open-problem",
       "elementary-symmetric-polynomials"
     ],
-    "badge": "open",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Real.geom_mean_le_arith_mean_weighted",
@@ -60,8 +60,36 @@
     ],
     "dateAdded": "2026-02-24",
     "axiomCount": 2,
+    "prerequisites": [
+      "Elementary symmetric polynomials and their basic properties",
+      "Cauchy-Schwarz inequality and sum-of-squares methods",
+      "Real analysis (rpow, sqrt, mean inequalities)",
+      "Finset combinatorics (powersetCard, sum, prod)"
+    ],
     "lineCount": 543
   },
+  "crossReferences": [
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "extends",
+      "description": "Base AM-GM inequality — this file extends it by showing AM-GM is the coarsest case of Maclaurin's chain M₁ ≥ M₂ ≥ ... ≥ Mₙ"
+    },
+    {
+      "targetId": "amgm-inequality-oq-03",
+      "relationship": "related",
+      "description": "Power mean inequalities — another refinement of AM-GM, connecting to Maclaurin means via different averaging methods"
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "uses",
+      "description": "The Cauchy-Schwarz sum inequality n·∑xᵢ² ≥ (∑xᵢ)² is the key engine for proving M₁² ≥ M₂ in the general case"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "Binomial coefficients C(n,k) normalize the elementary symmetric polynomials to form Maclaurin means"
+    }
+  ],
   "overview": {
     "historicalContext": "In 1729, Colin Maclaurin discovered a remarkable chain of inequalities that strictly refines the AM-GM inequality. Writing the $k$-th elementary symmetric polynomial as $e_k(x_1,\\ldots,x_n) = \\sum_{|S|=k} \\prod_{i\\in S} x_i$ and defining the **Maclaurin mean** $M_k = (e_k/\\binom{n}{k})^{1/k}$, Maclaurin proved:\n\n$$M_1 \\geq M_2 \\geq \\cdots \\geq M_n \\geq 0$$\n\nfor non-negative reals $x_1, \\ldots, x_n$. The endpoints give $M_1 = \\text{AM}$ and $M_n = \\text{GM}$, recovering AM-GM as the coarsest inequality in the chain.\n\nThe key engine behind Maclaurin's inequalities is **Newton's inequalities** (1687), which state that the sequence $e_k/\\binom{n}{k}$ is log-concave: $(e_k/\\binom{n}{k})^2 \\geq (e_{k-1}/\\binom{n}{k-1}) \\cdot (e_{k+1}/\\binom{n}{k+1})$. From log-concavity, one derives $M_k \\geq M_{k+1}$ step by step.\n\nMaclaurin's inequalities are fundamental in symmetric function theory and appear throughout analytic number theory, combinatorics, and mathematical programming.",
     "problemStatement": "**Open Question (amgm-inequality-oq-02)**: Fully formalize Maclaurin's chain $M_1 \\geq M_2 \\geq \\cdots \\geq M_n$ in Lean 4, removing all axioms.\n\n**Definitions**:\n- $e_k(x) = \\sum_{|S|=k} \\prod_{i\\in S} x_i$ (k-th elementary symmetric polynomial)\n- $M_k = (e_k/\\binom{n}{k})^{1/k}$ (normalized Maclaurin mean)\n\n**Currently proved**: Elementary symmetric polynomial infrastructure, $M_1^2 \\geq M_2$ for $n = 2, 3, 4$, and the general case $\\binom{n}{2}(\\sum x_i)^2 \\geq n^2 e_2$ via Cauchy-Schwarz (modulo a binomial identity sorry).\n\n**Main gaps**: Newton's log-concavity and the Maclaurin step $M_k \\geq M_{k+1}$ are axiomatized. The binomial identity $(\\sum x_i)^2 = \\sum x_i^2 + 2e_2$ has 1 sorry in the supporting lemma.",
@@ -81,49 +109,87 @@
       "title": "Problem Statement and References",
       "startLine": 1,
       "endLine": 36,
-      "summary": "Overview of Maclaurin's inequalities, Newton's log-concavity engine, and the structure of the formalization."
+      "summary": "Overview of Maclaurin's inequalities, Newton's log-concavity engine, and the structure of the formalization.",
+      "mathContext": "Maclaurin chain: $M_1 \\geq M_2 \\geq \\cdots \\geq M_n$ where $M_k = (e_k/\\binom{n}{k})^{1/k}$. Engine: Newton's log-concavity $(e_k/\\binom{n}{k})^2 \\geq (e_{k-1}/\\binom{n}{k-1})(e_{k+1}/\\binom{n}{k+1})$."
     },
     {
       "id": "esymm",
       "title": "Elementary Symmetric Polynomials",
       "startLine": 40,
       "endLine": 60,
-      "summary": "Definition of elemSymm k x = ∑ s ∈ univ.powersetCard k, ∏ i ∈ s, x i. Proves e₀=1, e₁=∑xᵢ, eₖ ≥ 0 for non-negative inputs."
+      "summary": "Definition of elemSymm k x = ∑ s ∈ univ.powersetCard k, ∏ i ∈ s, x i. Proves e₀=1, e₁=∑xᵢ, eₖ ≥ 0 for non-negative inputs.",
+      "mathContext": "$e_k(x) = \\sum_{S \\in \\binom{[n]}{k}} \\prod_{i \\in S} x_i$. Base cases: $e_0 = 1$, $e_1 = \\sum x_i$. Non-negativity: $x_i \\geq 0 \\Rightarrow e_k \\geq 0$ by `sum_nonneg` + `prod_nonneg`."
     },
     {
       "id": "small-cases",
       "title": "M₁ ≥ M₂ for n = 2, 3, 4",
       "startLine": 64,
       "endLine": 110,
-      "summary": "Direct proofs using sum-of-squares. n=2: (√a-√b)²≥0. n=3: nlinarith with 3 squared differences. n=4: nlinarith with 6 squared differences."
+      "summary": "Direct proofs using sum-of-squares. n=2: (√a-√b)²≥0. n=3: nlinarith with 3 squared differences. n=4: nlinarith with 6 squared differences.",
+      "mathContext": "n=2: $(\\sqrt{a}-\\sqrt{b})^2 \\geq 0 \\Rightarrow a+b \\geq 2\\sqrt{ab}$. n=3: $(a-b)^2+(b-c)^2+(c-a)^2 \\geq 0 \\Rightarrow (a+b+c)^2 \\geq 3(ab+bc+ca)$. n=4: 6 squared differences, closed by `nlinarith`."
     },
     {
       "id": "cauchy-schwarz",
       "title": "Cauchy-Schwarz and General M₁² ≥ M₂",
       "startLine": 94,
       "endLine": 158,
-      "summary": "cauchy_schwarz_sum: n·∑xᵢ² ≥ (∑xᵢ)² for general n. maclaurin_sq_m1_ge_m2_general: C(n,2)·(∑xᵢ)² ≥ n²·e₂ using Cauchy-Schwarz + binomial identity (1 sorry)."
+      "summary": "cauchy_schwarz_sum: n·∑xᵢ² ≥ (∑xᵢ)² for general n via double-sum expansion. The Cauchy-Schwarz bound feeds into the general M₁²≥M₂ inequality.",
+      "mathContext": "$\\sum_i \\sum_j (x_i - x_j)^2 = 2(n\\sum x_i^2 - (\\sum x_i)^2) \\geq 0$, giving $n\\sum x_i^2 \\geq (\\sum x_i)^2$."
     },
     {
       "id": "newton-chain",
       "title": "Newton Log-Concavity and Maclaurin Chain (Axioms)",
       "startLine": 160,
       "endLine": 195,
-      "summary": "newton_log_concavity (axiom): (eₖ/C(n,k))² ≥ (eₖ₋₁/C(n,k-1))·(eₖ₊₁/C(n,k+1)). maclaurin_step (axiom): Mₖ ≥ Mₖ₊₁. maclaurinMean_nonneg: Mₖ ≥ 0 for non-negative inputs (proved)."
+      "summary": "newton_log_concavity (axiom): (eₖ/C(n,k))² ≥ (eₖ₋₁/C(n,k-1))·(eₖ₊₁/C(n,k+1)). maclaurin_step (axiom): Mₖ ≥ Mₖ₊₁. maclaurinMean def and maclaurinMean_nonneg: Mₖ ≥ 0 for non-negative inputs (proved).",
+      "mathContext": "Newton: $(e_k/\\binom{n}{k})^2 \\geq (e_{k-1}/\\binom{n}{k-1})(e_{k+1}/\\binom{n}{k+1})$. Maclaurin mean: $M_k = (e_k/\\binom{n}{k})^{1/k}$. Step: $M_k \\geq M_{k+1}$ follows from Newton + monotonicity of $t^{1/k}$."
     },
     {
       "id": "amgm",
       "title": "AM-GM as Corollary",
       "startLine": 200,
       "endLine": 218,
-      "summary": "amgm_from_maclaurin: ∏ xᵢ^(1/n) ≤ (∑ xᵢ)/n proved directly from Real.geom_mean_le_arith_mean_weighted with uniform weights."
+      "summary": "amgm_from_maclaurin: ∏ xᵢ^(1/n) ≤ (∑ xᵢ)/n proved directly from Real.geom_mean_le_arith_mean_weighted with uniform weights.",
+      "mathContext": "Mathlib's weighted AM-GM: $\\prod z_i^{w_i} \\leq \\sum w_i z_i$ when $w_i \\geq 0, \\sum w_i = 1$. With $w_i = 1/n$: $(\\prod x_i)^{1/n} \\leq (\\sum x_i)/n$."
+    },
+    {
+      "id": "binomial-helpers",
+      "title": "Binomial Identity Helpers and Inductive Proof",
+      "startLine": 112,
+      "endLine": 271,
+      "summary": "Private infrastructure for the binomial identity (∑xᵢ)² = ∑xᵢ² + 2·e₂. Includes csEmb (castSucc embedding), elemSymm_two_succ (recurrence e₂(succ) = e₂(castSucc) + xₙ·e₁(castSucc)), sq_sum_eq_sum_sq_add_two_elemSymm (binomial identity by induction on n), and maclaurin_sq_m1_ge_m2_general (the general M₁²≥M₂ combining Cauchy-Schwarz with the binomial identity).",
+      "mathContext": "The key identity $(\\sum x_i)^2 = \\sum x_i^2 + 2e_2$ is proved by induction using $e_2(x_1,\\ldots,x_{n+1}) = e_2(x_1,\\ldots,x_n) + x_{n+1} \\cdot e_1(x_1,\\ldots,x_n)$. Combined with Cauchy-Schwarz: $\\binom{n}{2}(\\sum x_i)^2 \\geq n^2 e_2$."
+    },
+    {
+      "id": "maclaurin-chain",
+      "title": "Maclaurin Chain by Induction",
+      "startLine": 330,
+      "endLine": 391,
+      "summary": "maclaurin_chain: Mⱼ ≥ Mₖ for j ≤ k ≤ n by induction on d = k-j. maclaurin_m1_ge_mn: M₁ ≥ Mₙ (AM ≥ GM in Maclaurin language) as a one-line corollary. Uses maclaurin_step axiom for the inductive step.",
+      "mathContext": "Induction on gap $d = k - j$: $M_j \\geq M_{j+e}$ (IH) and $M_{j+e} \\geq M_{j+e+1}$ (step axiom) give $M_j \\geq M_{j+e+1}$. Corollary: $M_1 \\geq M_n$, i.e., AM $\\geq$ GM."
+    },
+    {
+      "id": "general-recurrence",
+      "title": "General Recurrence and Structural Theorems",
+      "startLine": 392,
+      "endLine": 511,
+      "summary": "elemSymm_succ: general recurrence eₖ₊₁(succ) = eₖ₊₁(castSucc) + xₙ·eₖ(castSucc). elemSymm_gt_eq_zero: eₖ = 0 for k > n. elemSymm_n_eq_prod: eₙ = ∏xᵢ. newton_k1: Newton's inequality at k=1 proved without axioms, using maclaurin_sq_m1_ge_m2_general and field_simp.",
+      "mathContext": "The recurrence $e_{k+1}(x_1,\\ldots,x_{n+1}) = e_{k+1}(x_1,\\ldots,x_n) + x_{n+1} \\cdot e_k(x_1,\\ldots,x_n)$ generalizes the $k=1$ case used in the binomial identity proof. Newton at $k=1$: $(e_1/n)^2 \\geq e_2/\\binom{n}{2}$, proved from $\\binom{n}{2}(\\sum x_i)^2 \\geq n^2 e_2$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary of Results",
+      "startLine": 513,
+      "endLine": 543,
+      "summary": "Comprehensive listing of all 17 proved theorems and 2 axioms. The file proves elementary symmetric polynomial infrastructure, M₁²≥M₂ for small and general n, the full Maclaurin chain (via axioms), and AM-GM from Mathlib.",
+      "mathContext": "17 proved results + 2 axioms. Key results: $e_k$ definition and properties, $(\\sum x_i)^2 = \\sum x_i^2 + 2e_2$ (inductive), $\\binom{n}{2}(\\sum x_i)^2 \\geq n^2 e_2$ (Cauchy-Schwarz), $M_j \\geq M_k$ for $j \\leq k$ (chain). Axioms: Newton log-concavity, Maclaurin step."
     }
   ],
   "conclusion": {
-    "summary": "This formalization provides elementary symmetric polynomial infrastructure and proves the key M₁² ≥ M₂ inequality for general n (modulo a binomial identity sorry) using the Cauchy-Schwarz method. The full Maclaurin chain (Newton log-concavity + Maclaurin step) is axiomatized. The file compiles with 1 sorry (h_binom binomial identity inside maclaurin_sq_m1_ge_m2_general) and 2 axioms for deep classical results.",
+    "summary": "This formalization provides elementary symmetric polynomial infrastructure and proves the key M₁² ≥ M₂ inequality for general n using the Cauchy-Schwarz method. The binomial identity (∑xᵢ)² = ∑xᵢ² + 2·e₂ is fully proved by induction (via sq_sum_eq_sum_sq_add_two_elemSymm). 17 theorems proved with 0 sorries. The full Maclaurin chain is established via 2 axioms: Newton's log-concavity and the Maclaurin step Mₖ ≥ Mₖ₊₁.",
     "implications": "**If the full Maclaurin chain were formalized in Mathlib**:\n\n**For inequalities**: Would provide n-1 intermediate inequalities between AM and GM, useful in optimization, symmetric function theory, and combinatorics.\n\n**For the proof of h_binom**: The sorry requires a bijection between off-diagonal ordered pairs in Fin n × Fin n and 2× the elements of powersetCard 2. The cleanest approach uses the elemSymm recurrence e₂(castSucc + last) = e₂(castSucc) + last·e₁(castSucc) with Finset.powersetCard_succ_insert.\n\n**For Newton's inequalities**: Would be a major addition to Mathlib's symmetric function library, enabling proofs of Schur convexity and other deep results.",
     "openQuestions": [
-      "Prove h_binom: (∑ xᵢ)² = ∑ xᵢ² + 2·e₂ by induction using the elemSymm recurrence e₂(succ) = e₂(castSucc) + last·e₁(castSucc)",
+      "Extend newton_k1 (proved for k=1 without axioms) to arbitrary k, removing the newton_log_concavity axiom — the classical proof uses polarization + induction on n (Hardy-Littlewood-Pólya §2.22)",
       "Formalize Newton's log-concavity: (eₖ/C(n,k))² ≥ (eₖ₋₁/C(n,k-1))·(eₖ₊₁/C(n,k+1)) by induction with polarization",
       "Derive the full Maclaurin chain Mₖ ≥ Mₖ₊₁ from Newton log-concavity",
       "Connect to Maclaurin's original 1729 proof via equal-variable symmetrization"
