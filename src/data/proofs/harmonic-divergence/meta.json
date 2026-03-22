@@ -100,5 +100,31 @@
       "What is the precise rate of convergence of H_n - ln(n) to γ?",
       "How does the alternating harmonic series 1 - 1/2 + 1/3 - 1/4 + ... = ln(2) relate?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Oresme, Nicole",
+      "title": "Quaestiones super geometriam Euclidis",
+      "year": "c. 1360",
+      "venue": "Medieval mathematics",
+      "note": "First proof that the harmonic series diverges, using the grouping argument: 1/3+1/4 > 1/2, 1/5+...+1/8 > 1/2, etc."
+    },
+    {
+      "authors": "Euler, Leonhard",
+      "title": "De progressionibus harmonicis observationes",
+      "year": "1734",
+      "venue": "Commentarii academiae scientiarum Petropolitanae",
+      "note": "Computed the asymptotic expansion H_n ~ ln(n) + γ, introducing the Euler-Mascheroni constant γ ≈ 0.5772"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "basel-problem",
+      "relationship": "contrasts",
+      "description": "The harmonic series (p=1) diverges while the Basel series (p=2) converges to π²/6. The p-series boundary at p=1 is a fundamental divide in analysis"
+    }
+  ],
+  "relatedProofs": [
+    "basel-problem"
+  ]
 }
