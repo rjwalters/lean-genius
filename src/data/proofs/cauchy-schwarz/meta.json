@@ -87,6 +87,18 @@
       {
         "id": "amgm-inequality",
         "relationship": "AM-GM inequality is another fundamental inequality; Cauchy-Schwarz can be derived from AM-GM and vice versa in certain settings"
+      },
+      {
+        "id": "cauchy-schwarz-oq-01",
+        "relationship": "Sub-entry extending Cauchy-Schwarz to additional forms or applications"
+      },
+      {
+        "id": "cauchy-schwarz-oq-03",
+        "relationship": "Sub-entry exploring generalizations such as Hölder's inequality"
+      },
+      {
+        "id": "cauchy-schwarz-oq-04",
+        "relationship": "Sub-entry strengthening equality condition with exact proportionality constant"
       }
     ],
     "dateAdded": "2025-12-26",
@@ -112,35 +124,40 @@
       "title": "Imports and Namespace",
       "summary": "Imports `InnerProductSpace.Basic`, `InnerProductSpace.PiL2` (for `EuclideanSpace`), `BigOperators.Ring.Finset` (for $\\sum$), and general tactics.",
       "startLine": 1,
-      "endLine": 49
+      "endLine": 49,
+      "mathContext": "Provides `InnerProductSpace ℝ F` (real inner product spaces), `EuclideanSpace ℝ (Fin n)` ($\\mathbb{R}^n$ with standard inner product), and `∑` notation over finite sets."
     },
     {
       "id": "inner-product-form",
       "title": "Inner Product Form",
       "summary": "States and proves $|\\langle u,v\\rangle_{\\mathbb{R}}| \\leq \\|u\\|\\|v\\|$ via `abs_real_inner_le_norm`. Also derives the squared form $\\langle u,v\\rangle^2 \\leq \\langle u,u\\rangle\\langle v,v\\rangle$.",
       "startLine": 51,
-      "endLine": 79
+      "endLine": 79,
+      "mathContext": "$|\\langle u,v \\rangle| \\leq \\|u\\| \\cdot \\|v\\|$ and equivalently $\\langle u,v \\rangle^2 \\leq \\langle u,u \\rangle \\langle v,v \\rangle$ since $\\|u\\|^2 = \\langle u,u \\rangle$."
     },
     {
       "id": "two-variable",
       "title": "Two-Variable Algebraic Form",
       "summary": "Elementary proof of $(a_1b_1+a_2b_2)^2 \\leq (a_1^2+a_2^2)(b_1^2+b_2^2)$ using the Lagrange identity $(a_1b_2-a_2b_1)^2 \\geq 0$, plus the equality characterization $a_1b_2 = a_2b_1$.",
       "startLine": 81,
-      "endLine": 114
+      "endLine": 114,
+      "mathContext": "Lagrange identity: $(a_1^2+a_2^2)(b_1^2+b_2^2) - (a_1b_1+a_2b_2)^2 = (a_1b_2-a_2b_1)^2 \\geq 0$."
     },
     {
       "id": "finite-sum",
       "title": "Finite Sum Form",
       "summary": "Proves $(\\sum a_ib_i)^2 \\leq (\\sum a_i^2)(\\sum b_i^2)$ by embedding into `EuclideanSpace $\\mathbb{R}$ (Fin $n$)` and the non-squared form via `Real.sqrt_le_sqrt`.",
       "startLine": 116,
-      "endLine": 157
+      "endLine": 157,
+      "mathContext": "$(\\sum_{i=1}^n a_ib_i)^2 \\leq (\\sum_{i=1}^n a_i^2)(\\sum_{i=1}^n b_i^2)$ — the classical Cauchy inequality for finite sums."
     },
     {
       "id": "equality",
       "title": "Equality Characterization",
       "summary": "Proves $|\\langle u,v\\rangle| = \\|u\\|\\|v\\| \\iff \\exists c: u = cv$ for nonzero vectors, using `norm_inner_eq_norm_iff` and `inner_smul_left`.",
       "startLine": 159,
-      "endLine": 179
+      "endLine": 179,
+      "mathContext": "$|\\langle u,v\\rangle| = \\|u\\|\\|v\\| \\iff \\exists c \\in \\mathbb{R}: u = cv$ — equality iff vectors are collinear."
     },
     {
       "id": "examples",
@@ -203,6 +220,11 @@
   },
   "relatedProofs": [
     "cauchy-schwarz-integral",
+    "cauchy-schwarz-oq-01",
+    "cauchy-schwarz-oq-01-oq-01",
+    "cauchy-schwarz-oq-03",
+    "cauchy-schwarz-oq-03-oq-01",
+    "cauchy-schwarz-oq-04",
     "triangle-inequality",
     "amgm-inequality",
     "hurwitz-theorem",
