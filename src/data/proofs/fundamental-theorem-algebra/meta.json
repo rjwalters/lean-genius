@@ -42,7 +42,27 @@
     ],
     "dateAdded": "2025-12-21",
     "wiedijkNumber": 2,
-    "axiomCount": 0
+    "axiomCount": 0,
+    "prerequisites": [
+      "Complex numbers and polynomial evaluation (Polynomial.eval₂)",
+      "Algebraic closure and splitting fields",
+      "Liouville's theorem from complex analysis",
+      "Polynomial degree and leading coefficient"
+    ],
+    "references": [
+      {
+        "title": "Demonstratio nova theorematis omnem functionem algebraicam rationalem integram unius variabilis in factores reales primi vel secundi gradus resolvi posse",
+        "author": "Gauss, C.F.",
+        "year": 1799,
+        "citation": "Gauss, C.F. (1799). First rigorous proof of the Fundamental Theorem of Algebra (doctoral dissertation)."
+      },
+      {
+        "title": "Algebraic closure of the complex numbers in Mathlib",
+        "author": "mathlib-community",
+        "year": 2023,
+        "citation": "Mathlib. Complex.exists_root and IsAlgClosed formalization."
+      }
+    ]
   },
   "overview": {
     "historicalContext": "The Fundamental Theorem of Algebra has a fascinating history spanning centuries. First conjectured by Albert Girard in 1629, it was attempted by many great mathematicians including d'Alembert, Euler, and Lagrange. Carl Friedrich Gauss provided the first rigorous proof in his 1799 doctoral dissertation, though he would go on to publish three more proofs throughout his career.\n\nDespite its name, the theorem is fundamentally analytic rather than algebraic. Every known proof relies on some completeness property of the real numbers - whether through analysis, topology, or complex function theory. The proof in Mathlib uses Liouville's theorem from complex analysis: a bounded entire function must be constant.",
@@ -62,42 +82,48 @@
       "title": "Introduction",
       "startLine": 1,
       "endLine": 22,
-      "summary": "Overview of the Fundamental Theorem of Algebra and its historical significance as the foundation of algebraic closure."
+      "summary": "Overview of the Fundamental Theorem of Algebra and its historical significance as the foundation of algebraic closure.",
+      "mathContext": "Every non-constant polynomial $p(z) \\in \\mathbb{C}[z]$ has a root: $\\exists z_0 \\in \\mathbb{C},\\, p(z_0) = 0$. Equivalently, $\\mathbb{C}$ is algebraically closed."
     },
     {
       "id": "mathlib-imports",
       "title": "Mathlib Imports",
       "startLine": 24,
       "endLine": 32,
-      "summary": "Importing the complex polynomial theory from Mathlib, which provides the formalized theorem."
+      "summary": "Importing the complex polynomial theory from Mathlib, which provides the formalized theorem.",
+      "mathContext": "Imports `Mathlib.Analysis.SpecificLimits.Complex` and `Polynomial` modules providing `Complex.exists_root` and `IsAlgClosed`"
     },
     {
       "id": "polynomial-basics",
       "title": "Polynomial Foundations",
       "startLine": 34,
       "endLine": 55,
-      "summary": "Setting up polynomial notation and reviewing key concepts: degree, evaluation, and what it means to be a root."
+      "summary": "Setting up polynomial notation and reviewing key concepts: degree, evaluation, and what it means to be a root.",
+      "mathContext": "`Polynomial.eval₂` for evaluation $p(z_0)$, `Polynomial.degree` for $\\deg p$, `Polynomial.IsRoot` for $p(z_0) = 0$"
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem",
       "startLine": 57,
       "endLine": 82,
-      "summary": "Stating and proving the Fundamental Theorem of Algebra using Mathlib's Complex.exists_root theorem."
+      "summary": "Stating and proving the Fundamental Theorem of Algebra using Mathlib's Complex.exists_root theorem.",
+      "mathContext": "$\\forall p \\in \\mathbb{C}[z],\\, \\deg p \\geq 1 \\implies \\exists z_0 \\in \\mathbb{C},\\, p(z_0) = 0$. Proof via Liouville: if $p(z) \\neq 0$ everywhere, then $1/p$ is bounded entire, hence constant — contradiction."
     },
     {
       "id": "algebraic-closure",
       "title": "Algebraic Closure",
       "startLine": 84,
       "endLine": 105,
-      "summary": "The powerful consequence: the complex numbers form an algebraically closed field."
+      "summary": "The powerful consequence: the complex numbers form an algebraically closed field.",
+      "mathContext": "$\\mathbb{C}$ is algebraically closed: `IsAlgClosed \\mathbb{C}`. Every polynomial over $\\mathbb{C}$ of degree $\\geq 1$ has a root, so no proper algebraic extension of $\\mathbb{C}$ exists."
     },
     {
       "id": "complete-factorization",
       "title": "Complete Factorization",
       "startLine": 107,
       "endLine": 135,
-      "summary": "Every complex polynomial splits into a product of linear factors - the full power of algebraic closure."
+      "summary": "Every complex polynomial splits into a product of linear factors - the full power of algebraic closure.",
+      "mathContext": "$p(z) = a_n \\prod_{i=1}^{n} (z - z_i)$ where $z_1, \\ldots, z_n$ are the roots (with multiplicity). Uses `Polynomial.roots` and `monic_prod_roots`."
     }
   ],
   "conclusion": {
@@ -109,5 +135,15 @@
       "How does the theorem generalize to other coefficient fields and algebraic closure?",
       "What computational aspects arise when actually finding roots numerically?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "fermats-last-theorem",
+      "relationship": "related",
+      "description": "FLT uses algebraic number theory over number fields — the FTA ensures these fields embed in C, providing the complex-analytic tools needed for the proof"
+    }
+  ],
+  "relatedProofs": [
+    "fermats-last-theorem"
+  ]
 }
