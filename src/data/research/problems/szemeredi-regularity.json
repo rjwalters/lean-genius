@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 4 proved theorems supporting energy_increment_step. File: 342 lines, 13 theorems, 2 sorries (energy_increment_step, regularity_lemma_strong). The algebraic infrastructure for energy increment is now complete.",
+    "progressSummary": "NEAR-COMPLETE: Only energy_increment_step sorry remains. Main result regularity_lemma_strong already PROVED via Mathlib bridge. 0 axioms, 1 sorry.",
     "builtItems": [
       "edgeDensity_nonneg: 0 ≤ edgeDensity G A B (proved)",
       "edgeDensity_le_one: edgeDensity G A B ≤ 1 (proved)",
@@ -70,13 +70,17 @@
       "The four new lemmas are the key building blocks for energy_increment_step",
       "Positivity of parts.card*(parts.card-1) in ℚ needs case split on parts.card = 0 vs > 0",
       "energy_increment_step is the sole remaining sorry but is NOT used by regularity_lemma_strong (which bridges to Mathlib). It is standalone.",
-      "The proof requires: (1) extract irregular pair from non-regular partition, (2) get witness subsets, (3) construct refined partition, (4) prove energy increment >= eps^5, (5) bound cardinality. Steps 1-2 have helper lemmas (exists_irregular_witness). Step 3-4 need careful Finset construction and application of split_energy_excess_bound."
+      "The proof requires: (1) extract irregular pair from non-regular partition, (2) get witness subsets, (3) construct refined partition, (4) prove energy increment >= eps^5, (5) bound cardinality. Steps 1-2 have helper lemmas (exists_irregular_witness). Step 3-4 need careful Finset construction and application of split_energy_excess_bound.",
+      "STATUS CORRECTION: regularity_lemma_strong is PROVED (not sorry!) via Mathlib bridge to szemeredi_regularity",
+      "Only 1 sorry remains: energy_increment_step - non-critical since main result proved via Mathlib",
+      "File: 453 lines, 0 axioms, 1 sorry (energy_increment_step only)",
+      "energy_increment_step is standalone infrastructure for self-contained proof, not needed for regularity_lemma_strong"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "energy_increment_step: find irregular pair in partition, extract witness subsets, split vertices, apply density_sq_convex, bound energy gain by eps^5",
-      "regularity_lemma_strong: construct initial m₀-equipartition, iterate energy_increment_step, use max_iterations + partitionEnergy_le_one for termination",
-      "Consider creating SzemerediRegularityAristotle.lean companion file for provable supporting lemmas"
+      "OPTIONAL: Prove energy_increment_step for self-contained proof path (non-critical, main result already proved)",
+      "Steps: extract irregular pair, get witnesses, construct refined partition, prove energy gain >= eps^5",
+      "Algebraic infrastructure complete: split_energy_identity, split_energy_excess_bound"
     ]
   },
   "tags": [
