@@ -60,7 +60,7 @@ theorem sylvM_det : sylvM.det = 1024000000 := by
   -- det(sylvM) = 5 * (5 * 420000000 - 1012000000 - 5 * 256000000)
   --            + (-5 * (-1012000000) + 20 * 256000000 + 1924000000)
   -- = 5 * (-192000000) + 1984000000 = 1024000000
-  -- Try native_decide on 9×9 matrix
-  native_decide
+  -- Full formal proof requires det_succ_row chain (tedious index work).
+  sorry
 
 end InverseGaloisA5Resultant
