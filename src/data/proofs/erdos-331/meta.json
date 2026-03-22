@@ -72,8 +72,10 @@
       "**Ruzsa's Open Variant Remains Subtle:** Even though Ruzsa's own sets have exact √N density, it is unknown whether ALL sets with exact density ~c√N must share common differences. The exact asymptotic condition (convergence of A(N)/√N) imposes regularity that might prevent the extreme sparseness needed to avoid common differences. This is one of the few cases where strengthening 'big-O' to 'asymptotic' might change the answer"
     ],
     "prerequisites": [
-      "Combinatorics: counting arguments and extremal methods",
-      "Mathematical maturity and proof techniques"
+      "Additive combinatorics: difference sets $A - A$, sumsets, and counting common differences",
+      "Density of integer sequences: counting functions $|A \\cap [1,N]|$ and their asymptotics",
+      "Binary representations and digit-based constructions (Ruzsa's counterexample)",
+      "Filter-based limits in Lean 4 (Filter.Tendsto for density convergence)"
     ]
   },
   "sections": [
@@ -166,6 +168,22 @@
       "Do analogues of Ruzsa's construction exist for other algebraic structures (e.g., ℤ_p, ℤ/nℤ, or function fields)?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "szemeredi-theorem",
+      "relationship": "related",
+      "description": "Both concern arithmetic structure in dense sets. Szemerédi's theorem guarantees APs in dense sets; Problem #331 asks about common differences between two sets of density $\\sim \\sqrt{N}$"
+    },
+    {
+      "targetId": "erdos-1097",
+      "relationship": "related",
+      "description": "Both study common differences and additive structure: #1097 asks about the number of common differences in 3-term APs within a single set, while #331 asks about common differences between two distinct sets"
+    }
+  ],
+  "relatedProofs": [
+    "szemeredi-theorem",
+    "erdos-1097"
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",
