@@ -196,22 +196,6 @@
     "euler-identity",
     "prime-reciprocal-divergence"
   ],
-  "references": [
-    {
-      "authors": "Riemann, Bernhard",
-      "title": "Ueber die Anzahl der Primzahlen unter einer gegebenen Grösse",
-      "year": "1859",
-      "venue": "Monatsberichte der Berliner Akademie",
-      "note": "The 8-page paper where Riemann introduced the zeta function, its analytic continuation, and conjectured that all non-trivial zeros have real part 1/2"
-    },
-    {
-      "authors": "Conrey, J. Brian",
-      "title": "More than two fifths of the zeros of the Riemann zeta function are on the critical line",
-      "year": "2003",
-      "venue": "Journal für die reine und angewandte Mathematik",
-      "note": "Current best result: at least 2/5 of non-trivial zeros lie on Re(s) = 1/2"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.NumberTheory.LSeries.RiemannZeta",
