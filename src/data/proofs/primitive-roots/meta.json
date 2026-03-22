@@ -66,42 +66,48 @@
       "title": "Definitions and Setup",
       "startLine": 55,
       "endLine": 72,
-      "summary": "Define IsPrimitiveRoot as having order equal to |G|, and prove it's equivalent to having order p-1."
+      "summary": "Define IsPrimitiveRoot as having order equal to |G|, and prove it's equivalent to having order p-1.",
+      "mathContext": "`IsPrimitiveRoot g` $\\iff \\text{orderOf}(g) = |G|$. For $(\\mathbb{Z}/p\\mathbb{Z})^*$: $\\text{orderOf}(g) = p-1$."
     },
     {
       "id": "cyclic",
       "title": "The Multiplicative Group is Cyclic",
       "startLine": 73,
       "endLine": 87,
-      "summary": "Prove (ℤ/pℤ)* is cyclic using the integral domain theorem, and that its order is p-1."
+      "summary": "Prove (ℤ/pℤ)* is cyclic using the integral domain theorem, and that its order is p-1.",
+      "mathContext": "$(\\mathbb{Z}/p\\mathbb{Z})^*$ is cyclic of order $p-1$. Uses `isCyclic_of_subgroup_isDomain`: finite subgroups of $k^*$ for integral domain $k$ are cyclic."
     },
     {
       "id": "existence",
       "title": "Existence of Primitive Roots",
       "startLine": 88,
       "endLine": 98,
-      "summary": "Since cyclic groups have generators, primitive roots exist."
+      "summary": "Since cyclic groups have generators, primitive roots exist.",
+      "mathContext": "Cyclic $\\implies$ $\\exists g$ with $\\text{orderOf}(g) = p-1$. This $g$ is a primitive root: $\\{g^0, g^1, \\ldots, g^{p-2}\\} = (\\mathbb{Z}/p\\mathbb{Z})^*$."
     },
     {
       "id": "counting",
       "title": "Counting Primitive Roots",
       "startLine": 99,
       "endLine": 131,
-      "summary": "The main theorem: there are exactly φ(p-1) primitive roots, using the cyclic group counting theorem."
+      "summary": "The main theorem: there are exactly φ(p-1) primitive roots, using the cyclic group counting theorem.",
+      "mathContext": "In a cyclic group of order $n$: $|\\{g : \\text{orderOf}(g) = d\\}| = \\varphi(d)$ for $d \\mid n$. Apply with $n = p-1$, $d = p-1$: $\\varphi(p-1)$ primitive roots."
     },
     {
       "id": "examples",
       "title": "Examples",
       "startLine": 132,
       "endLine": 155,
-      "summary": "Concrete examples: φ(1)=1, φ(2)=1, φ(4)=2, φ(6)=2, φ(10)=4, φ(12)=4."
+      "summary": "Concrete examples: φ(1)=1, φ(2)=1, φ(4)=2, φ(6)=2, φ(10)=4, φ(12)=4.",
+      "mathContext": "Examples: $\\varphi(6) = 2$ so $p = 7$ has 2 primitive roots ($3$ and $5$). $\\varphi(10) = 4$ so $p = 11$ has 4 primitive roots."
     },
     {
       "id": "generators",
       "title": "Connection to Group Theory",
       "startLine": 156,
       "endLine": 178,
-      "summary": "Prove that primitive roots are exactly the generators of (ℤ/pℤ)*."
+      "summary": "Prove that primitive roots are exactly the generators of (ℤ/pℤ)*.",
+      "mathContext": "Primitive root $g \\iff g$ generates $(\\mathbb{Z}/p\\mathbb{Z})^* \\iff \\text{orderOf}(g) = p-1 \\iff g^k \\neq 1$ for $0 < k < p-1$."
     }
   ],
   "conclusion": {
