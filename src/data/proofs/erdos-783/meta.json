@@ -5,7 +5,7 @@
   "description": "Given budget C on reciprocal sums, which pairwise coprime A ⊆ {2,...,n} minimizes unsieved integers? Conjectured: first k primes with Σ 1/p_i ≤ C. Status: OPEN.",
   "meta": {
     "erdosNumber": 783,
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos783Problem.lean",
     "tags": [
       "erdos",
@@ -15,7 +15,7 @@
       "prime-numbers",
       "open"
     ],
-    "badge": "formalized",
+    "badge": "axiom",
     "references": [
       "Erdős (1973): original problem",
       "https://erdosproblems.com/783"

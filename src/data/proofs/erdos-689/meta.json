@@ -5,7 +5,7 @@
   "description": "For large n, can we choose a_p for each prime p ≤ n so that every m ∈ [1,n] satisfies m ≡ a_p (mod p) for at least 2 primes? Generalizes to r-fold covering. Open.",
   "meta": {
     "erdosNumber": 689,
-    "status": "formalized",
+    "status": "axiomatized",
     "tags": [
       "erdos",
       "number-theory",
@@ -21,7 +21,7 @@
     "leanFile": "Proofs/Erdos689Problem.lean",
     "proofRepoPath": "Proofs/Erdos689Problem.lean",
     "sorries": 0,
-    "badge": "formalized",
+    "badge": "axiom",
     "sourceUrl": "https://erdosproblems.com/689",
     "erdosUrl": "https://erdosproblems.com/689",
     "erdosProblemStatus": "open",

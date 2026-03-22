@@ -5,7 +5,7 @@
   "description": "Let F(N) be the largest Sidon subset of {1,...,N}. Is F(N+k) ≤ F(N)+1 for all sufficiently large N, for every fixed k? Possibly even for k ≈ ε√N. F(N) ~ √N. Status: OPEN.",
   "meta": {
     "erdosNumber": 155,
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos155Problem.lean",
     "badge": "axiom",
     "erdosProblemStatus": "open",
