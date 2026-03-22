@@ -21,6 +21,43 @@
     "erdosNumber": 288,
     "erdosUrl": "https://erdosproblems.com/288",
     "erdosProblemStatus": "open",
+    "dateAdded": "02/06/26",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets (used for harmonic interval sums)",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Set.Finite",
+        "description": "Finiteness predicate on sets (used for the main conjecture)",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "harmonicInterval definition over ℚ using Finset.sum",
+      "IntervalPair type and pairSum, IsIntegerSum predicates",
+      "integerSumPairs set definition and ErdosConjecture288 as Set.Finite",
+      "Singleton and k-interval variant definitions",
+      "erdos_288_statement proved by simp",
+      "erdos_288_summary combining statement and conjecture"
+    ],
+    "references": [
+      {
+        "authors": "Erdős, Paul; Graham, Ronald L.",
+        "title": "Old and New Problems and Results in Combinatorial Number Theory",
+        "year": "1980",
+        "venue": "Monographies de L'Enseignement Mathématique 28",
+        "note": "[ErGr80] where Problem 288 appears; includes the example H(3,6) + H(20,20) = 1"
+      },
+      {
+        "authors": "Guy, Richard K.",
+        "title": "Unsolved Problems in Number Theory",
+        "year": "2004",
+        "venue": "Springer, 3rd edition",
+        "note": "Section D11 discusses Egyptian fractions and integer harmonic sum problems"
+      }
+    ],
     "axiomCount": 8,
     "prerequisites": [
       "Rational number arithmetic (ℚ)",
@@ -102,5 +139,12 @@
       "Does the finiteness hold for k intervals for any k?",
       "What are all solutions beyond the known example?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-249",
+      "relationship": "related",
+      "description": "Both are Erdős problems about the arithmetic nature of infinite sums involving number-theoretic functions"
+    }
+  ]
 }
