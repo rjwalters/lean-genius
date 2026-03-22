@@ -135,6 +135,40 @@
     "theoremCount": 12,
     "definitionCount": 0
   },
+  "crossReferences": [
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "extends",
+      "description": "The fixed point theorem for continuous self-maps of $[a,b]$ (proved here as a corollary of IVT) is the 1-dimensional case of Brouwer's fixed point theorem, which generalizes to continuous self-maps of $[0,1]^n$"
+    },
+    {
+      "targetId": "borsuk-ulam",
+      "relationship": "related",
+      "description": "The $n=1$ case of Borsuk-Ulam — every continuous $f: S^1 \\to \\mathbb{R}$ has $f(x) = f(-x)$ — is equivalent to IVT applied to $g(\\theta) = f(\\theta) - f(\\theta + \\pi)$ on the circle. Borsuk-Ulam is the higher-dimensional generalization"
+    },
+    {
+      "targetId": "mean-value-theorem",
+      "relationship": "related",
+      "description": "Both are consequences of the completeness of $\\mathbb{R}$: IVT uses connectedness of intervals, MVT uses compactness (via the extreme value theorem). MVT extends IVT to derivatives: the mean value $\\frac{f(b)-f(a)}{b-a}$ is achieved by $f'$ at some interior point"
+    },
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "extends",
+      "description": "The Fundamental Theorem of Calculus uses continuity of the integrand and the IVT-style reasoning that continuous functions on intervals attain all intermediate values, connecting antiderivatives to definite integrals"
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "related",
+      "description": "The failure of IVT over $\\mathbb{Q}$ is witnessed by $f(x) = x^2 - 2$: $f(1) < 0 < f(2)$ but $\\sqrt{2} \\notin \\mathbb{Q}$. The irrationality of $\\sqrt{2}$ thus demonstrates why completeness is essential for IVT"
+    }
+  ],
+  "relatedProofs": [
+    "brouwer-fixed-point",
+    "borsuk-ulam",
+    "mean-value-theorem",
+    "fundamental-theorem-calculus",
+    "sqrt2-irrational"
+  ],
   "references": [
     {
       "authors": "Bolzano, Bernard",
