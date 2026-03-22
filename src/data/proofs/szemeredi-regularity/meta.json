@@ -95,12 +95,12 @@
   },
   "sections": [
     {
-      "id": "introduction",
-      "title": "Module Docstring and Imports",
+      "id": "preamble",
+      "title": "Preamble",
       "startLine": 1,
-      "endLine": 16,
-      "summary": "Overview of the Regularity Lemma formalization covering epsilon-regular pairs, partition energy, energy increment, and the main regularity existence result.",
-      "mathContext": "Every large graph admits an epsilon-regular partition into bounded many parts."
+      "endLine": 22,
+      "summary": "Module documentation, Mathlib imports, namespace Szemeredi.Regularity, and variable declarations for finite vertex type V",
+      "mathContext": "Imports `SimpleGraph`, `Finpartition`, `Finset.card` from Mathlib. Sets up namespace `Szemeredi.Regularity` with variables `{V : Type*} [Fintype V] [DecidableEq V]`."
     },
     {
       "id": "definitions",
@@ -137,6 +137,20 @@
       "What is the optimal energy increment constant, and can we formalize tight bounds?"
     ]
   },
+  "crossReferences": [
+    {
+      "proofId": "szemeredi-counting",
+      "relationship": "The counting and removal lemmas are the primary applications of regularity"
+    },
+    {
+      "proofId": "ramseys-theorem",
+      "relationship": "Ramsey theory and regularity are complementary tools for finding structure in large graphs"
+    },
+    {
+      "proofId": "prob-method-alteration",
+      "relationship": "Regularity captures pseudo-randomness, bridging deterministic graphs and probabilistic arguments"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"

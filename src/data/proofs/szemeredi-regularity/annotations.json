@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-preamble",
+    "proofId": "szemeredi-regularity",
+    "range": { "startLine": 1, "endLine": 22 },
+    "type": "context",
+    "title": "Module Documentation and Setup",
+    "content": "The module docstring establishes this as the Szemerédi Regularity Lemma formalization. It outlines the four-part structure: epsilon-regular pairs, partition energy, energy increment, and the main lemma.\n\nImports Mathlib for `SimpleGraph`, `Finpartition`, and arithmetic. The namespace `Szemeredi.Regularity` organizes all definitions and theorems. Variables `{V : Type*} [Fintype V] [DecidableEq V]` set up the finite graph context.",
+    "mathContext": "The Regularity Lemma (Szemerédi 1975): $\\forall \\varepsilon > 0, \\exists M(\\varepsilon)$ such that every graph on $n \\geq M$ vertices has an $\\varepsilon$-regular partition into $\\leq M$ parts. The bound $M(\\varepsilon) = \\text{tower}(O(\\varepsilon^{-5}))$ is unavoidable (Gowers 1997).",
+    "significance": "context",
+    "relatedConcepts": ["Szemerédi", "regularity lemma", "tower function"],
+    "prerequisites": ["SimpleGraph", "Finpartition", "Lean 4 syntax"]
+  },
+  {
     "id": "ann-edge-density",
     "proofId": "szemeredi-regularity",
     "range": { "startLine": 24, "endLine": 29 },
