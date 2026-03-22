@@ -202,21 +202,31 @@
   },
   "crossReferences": [
     {
-      "id": "ballot-problem",
-      "title": "The Ballot Problem",
-      "relationship": "extension",
-      "description": "Extends the classical ballot problem's 1D reflection principle to 2D lattice path pairs, providing the combinatorial foundation for the LGV lemma."
+      "targetId": "ballot-problem",
+      "relationship": "extends",
+      "description": "Extends the classical ballot problem's 1D reflection principle to 2D lattice path pairs, providing the combinatorial foundation for the LGV lemma"
     },
     {
-      "id": "catalan-numbers",
-      "title": "Catalan Numbers",
+      "targetId": "ballot-problem-oq-01",
+      "relationship": "extends",
+      "description": "The generalized k-fold ballot problem — this file extends the lattice path framework from 1D to 2D pairs with the Lindström involution"
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "foundational",
+      "description": "Path counts use C(m+n, m) for the number of monotone lattice paths from (0,0) to (m,n) — the binomial coefficient is the fundamental building block"
+    },
+    {
+      "targetId": "binomial-theorem",
       "relationship": "related",
-      "description": "The Catalan number Cₙ = C(2n,n)/(n+1) counts non-crossing lattice paths (Dyck paths). This proof unifies Catalan and ballot formulas via catalan_eq_ballot."
+      "description": "The Vandermonde identity C(m+n,r) = ∑C(m,j)C(n,r-j) proved here via lattice path decomposition has a natural connection to the binomial expansion (x+y)^n"
     }
   ],
   "relatedProofs": [
     "ballot-problem",
-    "catalan-numbers"
+    "ballot-problem-oq-01",
+    "combinations-formula",
+    "binomial-theorem"
   ],
   "leanFile": {
     "imports": [

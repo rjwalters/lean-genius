@@ -123,9 +123,25 @@
       "id": "complete-factorization",
       "title": "Complete Factorization",
       "startLine": 107,
-      "endLine": 135,
-      "summary": "Every complex polynomial splits into a product of linear factors - the full power of algebraic closure.",
-      "mathContext": "$p(z) = a_n \\prod_{i=1}^{n} (z - z_i)$ where $z_1, \\ldots, z_n$ are the roots (with multiplicity). Uses `Polynomial.roots` and `monic_prod_roots`."
+      "endLine": 155,
+      "summary": "Root counting (card_roots_eq_degree) and monic factorization (monic_prod_roots) — a degree-n polynomial has exactly n roots with multiplicity, and monic polynomials equal the product of their linear factors.",
+      "mathContext": "$p(z) = a_n \\prod_{i=1}^{n} (z - z_i)$ where $z_1, \\ldots, z_n$ are the roots (with multiplicity). Uses `Polynomial.roots`, `natDegree_eq_card_roots`, and `prod_multiset_X_sub_C_of_monic_of_roots_card_eq`."
+    },
+    {
+      "id": "significance",
+      "title": "Why This Matters",
+      "startLine": 157,
+      "endLine": 172,
+      "summary": "Documentary commentary on FTA's consequences: algebraic completeness of ℂ, eigenvalue existence in linear algebra, ℂ as the algebraic closure of ℝ and ℚ, and the connection to topology/analysis.",
+      "mathContext": "FTA implies: (1) every $n \\times n$ complex matrix has an eigenvalue ($\\det(A - \\lambda I)$ is a degree-$n$ polynomial in $\\lambda$); (2) $\\overline{\\mathbb{Q}} \\subset \\mathbb{C}$ is an algebraic closure; (3) Jordan normal form exists over $\\mathbb{C}$."
+    },
+    {
+      "id": "quadratic-case",
+      "title": "Quadratic Special Case",
+      "startLine": 174,
+      "endLine": 214,
+      "summary": "Worked example: quadratic_has_root proves every quadratic az²+bz+c with a≠0 has a complex root, applying FTA after establishing degree = 2 > 0. Concludes with #check verification of the main theorems.",
+      "mathContext": "The quadratic formula $z = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}$ gives roots explicitly. This proof instead derives existence from FTA, demonstrating the theorem's power: it avoids the explicit formula entirely."
     }
   ],
   "conclusion": {
@@ -140,57 +156,73 @@
   },
   "crossReferences": [
     {
-      "targetId": "fermats-last-theorem",
-      "relationship": "related",
-      "description": "FLT uses algebraic number theory over number fields — the FTA ensures these fields embed in C, providing the complex-analytic tools needed for the proof"
-    },
-    {
       "targetId": "abel-ruffini",
       "relationship": "complementary",
       "description": "FTA guarantees roots exist in C; Abel-Ruffini shows they cannot always be expressed by radicals — existence does not imply explicit formulas"
     },
     {
-      "targetId": "quadratic-formula",
+      "targetId": "fermats-last-theorem",
+      "relationship": "related",
+      "description": "FLT uses algebraic number theory over number fields — FTA ensures these fields embed in C, providing the complex-analytic tools needed for Wiles's proof via modular forms"
+    },
+    {
+      "targetId": "liouville-theorem",
+      "relationship": "uses",
+      "description": "The Mathlib proof of FTA relies on Liouville's theorem (bounded entire function is constant): if p(z) ≠ 0 everywhere, then 1/p is bounded entire, hence constant — contradiction"
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "complementary",
+      "description": "FTA guarantees the polynomial 8x³-6x-1 has roots in C; the angle trisection impossibility shows those roots lie outside the constructible field (degree 2^n extensions)"
+    },
+    {
+      "targetId": "solution-of-cubic",
       "relationship": "specializes",
-      "description": "The quadratic formula provides an explicit root for degree-2 polynomials; FTA guarantees existence for all degrees"
+      "description": "Cardano's cubic formula provides explicit complex roots for degree-3 polynomials; FTA guarantees such roots exist without needing an explicit formula"
+    },
+    {
+      "targetId": "inverse-galois",
+      "relationship": "related",
+      "description": "FTA shows every polynomial splits over C, so every Galois group embeds in some S_n. The Inverse Galois Problem asks which groups arise over Q — a question that presupposes FTA's guarantee that roots exist"
+    },
+    {
+      "targetId": "hermite-lindemann",
+      "relationship": "related",
+      "description": "Hermite-Lindemann proves e^α is transcendental for algebraic α ≠ 0. FTA concerns algebraic numbers (roots of polynomials); transcendental numbers like e and π lie permanently outside the algebraic closure of Q but inside C"
     }
   ],
   "relatedProofs": [
-    {
-      "id": "abel-ruffini",
-      "relationship": "complementary",
-      "description": "FTA guarantees every polynomial has complex roots; Abel-Ruffini shows those roots cannot always be expressed by radicals for degree ≥ 5"
-    },
-    {
-      "id": "angle-trisection",
-      "relationship": "related",
-      "description": "FTA guarantees the trisection polynomial 8x³-6x-1 has roots; the impossibility is about constructibility, not existence"
-    },
-    {
-      "id": "inverse-galois",
-      "relationship": "related",
-      "description": "FTA implies every finite group occurs as a quotient of the absolute Galois group of ℚ — the starting point of the inverse Galois problem"
-    },
-    {
-      "id": "solution-of-cubic",
-      "relationship": "related",
-      "description": "Cardano's formula gives explicit roots for cubics; FTA guarantees their existence without constructive extraction"
-    }
+    "abel-ruffini",
+    "angle-trisection",
+    "inverse-galois",
+    "solution-of-cubic",
+    "fermats-last-theorem",
+    "liouville-theorem",
+    "hermite-lindemann",
+    "general-quartic",
+    "lagrange-theorem"
   ],
   "references": [
     {
       "authors": "Gauss, Carl Friedrich",
       "title": "Demonstratio nova theorematis omnem functionem algebraicam rationalem integram unius variabilis in factores reales primi vel secundi gradus resolvi posse",
       "year": "1799",
-      "venue": "Doctoral dissertation, University of Helmstedt",
-      "note": "Gauss's first proof of FTA — he gave four proofs total throughout his career"
+      "venue": "Helmstedt (doctoral dissertation)",
+      "note": "First rigorous proof (with a topological gap later filled) that every polynomial has a complex root"
     },
     {
       "authors": "Fine, Benjamin; Rosenberger, Gerhard",
       "title": "The Fundamental Theorem of Algebra",
       "year": "1997",
       "venue": "Springer Undergraduate Texts in Mathematics",
-      "note": "Modern exposition covering algebraic, analytic, and topological proofs of FTA"
+      "note": "Collects and presents multiple proofs — algebraic, analytic, and topological"
+    },
+    {
+      "authors": "d'Alembert, Jean le Rond",
+      "title": "Recherches sur le calcul intégral",
+      "year": "1746",
+      "venue": "Histoire de l'Académie Royale des Sciences et Belles-Lettres de Berlin",
+      "note": "First attempted proof of FTA (incomplete — assumed continuity properties without proof). The theorem is sometimes called the d'Alembert-Gauss theorem in French"
     }
   ],
   "leanFile": {
@@ -206,21 +238,5 @@
     "axiomCount": 0,
     "theoremCount": 4,
     "definitionCount": 0
-  },
-  "references": [
-    {
-      "authors": "Gauss, Carl Friedrich",
-      "title": "Demonstratio nova theorematis omnem functionem algebraicam rationalem integram unius variabilis in factores reales primi vel secundi gradus resolvi posse",
-      "year": "1799",
-      "venue": "Helmstedt (doctoral dissertation)",
-      "note": "First rigorous proof (with a topological gap later filled) that every polynomial has a complex root"
-    },
-    {
-      "authors": "Fine, Benjamin; Rosenberger, Gerhard",
-      "title": "The Fundamental Theorem of Algebra",
-      "year": "1997",
-      "venue": "Springer Undergraduate Texts in Mathematics",
-      "note": "Collects and presents multiple proofs — algebraic, analytic, and topological"
-    }
-  ]
+  }
 }

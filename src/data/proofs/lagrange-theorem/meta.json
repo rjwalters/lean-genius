@@ -137,6 +137,21 @@
       "targetId": "cayley-hamilton",
       "relationship": "related",
       "description": "Both are foundational results about algebraic structures: Lagrange constrains subgroup orders in groups, Cayley-Hamilton constrains the minimal polynomial of a matrix. Cayley's theorem (every group embeds in a symmetric group) directly uses Lagrange's coset partition"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "extends",
+      "description": "Euler's theorem (a^φ(n) ≡ 1 mod n) is a direct corollary of Lagrange applied to (Z/nZ)× of order φ(n). The formalization derives Fermat's little theorem (the prime case); Euler's theorem is the general case"
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "foundational",
+      "description": "The tower law for field extension degrees ([F_n:Q] = ∏[F_{i+1}:F_i] = 2^n) is a consequence of Lagrange's theorem on subgroup indices, underpinning the degree-divisibility argument for constructibility"
+    },
+    {
+      "targetId": "inverse-galois",
+      "relationship": "related",
+      "description": "Lagrange's original 1771 work on permutations of polynomial roots was the direct precursor to Galois theory. The Inverse Galois Problem asks which groups appear as Galois groups — Lagrange's theorem constrains which subgroups can appear in any finite group"
     }
   ],
   "relatedProofs": [
@@ -145,7 +160,10 @@
     "abel-ruffini-oq-04",
     "fermats-last-theorem",
     "fundamental-arithmetic",
-    "cayley-hamilton"
+    "cayley-hamilton",
+    "euler-totient",
+    "angle-trisection",
+    "inverse-galois"
   ],
   "references": [
     {
@@ -161,6 +179,13 @@
       "year": "2008",
       "venue": "https://www.cs.ru.nl/~freek/100/",
       "note": "Lagrange's theorem is #71 on the list of 100 greatest theorems formalized"
+    },
+    {
+      "authors": "Herstein, Israel Nathan",
+      "title": "Topics in Algebra",
+      "year": "1975",
+      "venue": "Wiley, 2nd edition",
+      "note": "Chapter 2 presents the coset partition proof of Lagrange's theorem with applications to element orders, Fermat's theorem, and the structure of prime-order groups"
     }
   ],
   "prerequisites": [

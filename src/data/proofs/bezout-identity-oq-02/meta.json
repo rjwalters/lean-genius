@@ -130,6 +130,29 @@
       "Does the `linear_combination` tactic approach scale to Gauss's lemma (the analog for polynomial rings: if f is primitive and f | g·h over ℤ[x], then f | g or f | h)?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "bezout-identity",
+      "relationship": "extends",
+      "description": "Parent entry proving gcd(a,b) = ax + by and coprime_iff_linear_combination — this file uses the coprimality characterization to prove Euclid's lemma"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "extended-by",
+      "description": "Euclid's lemma (p|ab → p|a or p|b) is the key step toward unique prime factorization — FTA follows by induction using this result"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "related",
+      "description": "Euclid's original proof of infinite primes can be strengthened using Euclid's lemma: the product p₁p₂...pₙ + 1 must have a prime factor not in the list"
+    }
+  ],
+  "relatedProofs": [
+    "bezout-identity",
+    "bezout-identity-oq-03",
+    "fundamental-arithmetic",
+    "infinitude-primes"
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.GCD.Basic",

@@ -117,6 +117,28 @@
     "theoremCount": 11,
     "definitionCount": 1
   },
+  "crossReferences": [
+    {
+      "targetId": "geometric-series",
+      "relationship": "complementary",
+      "description": "The two fundamental series formulas: arithmetic series ∑(a+kd) = n(2a+(n-1)d)/2 and geometric series ∑ar^k = a(r^n-1)/(r-1) — both foundational to discrete mathematics and both proved by elegant algebraic tricks"
+    },
+    {
+      "targetId": "mathematical-induction",
+      "relationship": "foundational",
+      "description": "The arithmetic series formula ∑k = n(n+1)/2 is one of the canonical examples of proof by mathematical induction — though Gauss's pairing argument provides a direct proof"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "The binomial theorem generalizes finite sum identities: ∑C(n,k) = 2^n, while the arithmetic series ∑k = n(n+1)/2 is the simplest non-trivial case of summing polynomial expressions"
+    }
+  ],
+  "relatedProofs": [
+    "geometric-series",
+    "mathematical-induction",
+    "binomial-theorem"
+  ],
   "references": [
     {
       "authors": "Gauss, Carl Friedrich",

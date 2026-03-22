@@ -101,6 +101,16 @@
       "targetId": "amgm-inequality-oq-03-oq-02",
       "relationship": "extended-by",
       "description": "Proves lim_{r→0} M_r = GM — the missing r=0 case that would bridge the positive and negative exponent monotonicity results"
+    },
+    {
+      "targetId": "amgm-inequality-oq-03-oq-01",
+      "relationship": "extended-by",
+      "description": "Dedicated formalization of M_r ≤ M_s for r ≤ s < 0 — the negative exponent case proved here via duality, isolated as a standalone entry"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "related",
+      "description": "The Bunyakovsky-Schwarz integral inequality is the continuous analog of the M₁ ≤ M₂ case: for equal weights, (∑wᵢzᵢ)² ≤ ∑wᵢzᵢ² is Cauchy-Schwarz, and the integral version extends this to L² spaces"
     }
   ],
   "overview": {
@@ -179,7 +189,8 @@
     "implications": "**For the power mean chain**: This file proves monotonicity for both positive and negative exponents. Combined with the r=0 limit (proved in PowerMeanLimitOQ.lean), only the mixed-sign case (r < 0 < s) remains.\n\n**For Mathlib**: This fills part of the known TODO in Mathlib.Analysis.MeanInequalitiesPow for negative exponents.\n\n**For Lean**: The duality technique M_r(z) = M_{-r}(z⁻¹)⁻¹ is reusable for other mean inequality problems.",
     "openQuestions": [
       "Prove M_r ≤ M_s for r < 0 < s (crossing zero) — the most subtle case, requires combining with the r=0 limit",
-      "Add this to Mathlib as a proper contribution filling the existing TODO"
+      "Add this to Mathlib as a proper contribution filling the existing TODO",
+      "Formalize the extreme cases: $\\lim_{r \\to +\\infty} M_r = \\max(z)$ and $\\lim_{r \\to -\\infty} M_r = \\min(z)$ — these complete the power mean chain from $\\min$ to $\\max$ and require dominated convergence or direct epsilon-delta arguments"
     ]
   },
   "leanFile": {
@@ -201,6 +212,7 @@
     "amgm-inequality-oq-02",
     "cauchy-schwarz",
     "amgm-inequality-oq-03-oq-01",
-    "amgm-inequality-oq-03-oq-02"
+    "amgm-inequality-oq-03-oq-02",
+    "cauchy-schwarz-integral"
   ]
 }

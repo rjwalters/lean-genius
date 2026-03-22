@@ -55,7 +55,29 @@
       "Trigonometric identities (triple angle formula)",
       "Basic Galois theory (constructibility criterion)"
     ],
-    "lineCount": 389
+    "lineCount": 389,
+    "references": [
+      {
+        "key": "Wa37",
+        "citation": "Wantzel, P.L., Recherches sur les moyens de reconnaître si un Problème de Géométrie peut se résoudre avec la règle et le compas, Journal de Mathématiques Pures et Appliquées 2 (1837), 366–372.",
+        "type": "paper"
+      },
+      {
+        "key": "Ma70",
+        "citation": "Martin, G.E., Geometric Constructions, Springer (1998), Chapters 2–5.",
+        "type": "book"
+      },
+      {
+        "key": "St04",
+        "citation": "Stewart, I., Galois Theory, 3rd ed., Chapman & Hall/CRC (2004), Chapter 6: Ruler-and-compass constructions.",
+        "type": "book"
+      },
+      {
+        "key": "Pe07",
+        "citation": "Petersen, P., Classical and Computational Constructive Geometry, in: Geometric Constructions (2007). Contains the polynomial approach to constructibility.",
+        "type": "book"
+      }
+    ]
   },
   "leanFile": {
     "imports": [
@@ -116,6 +138,21 @@
       "targetId": "lagrange-theorem",
       "relationship": "foundational",
       "description": "The tower law for field extensions (a consequence of Lagrange's theorem on subgroup indices) underpins the degree divisibility argument: [F_n:ℚ] = ∏[F_{i+1}:F_i] = 2^n, so [ℚ(α):ℚ] divides 2^n"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "Lindemann's proof that e is transcendental uses the same Lindemann-Weierstrass framework that proves π transcendental — this file imports π's transcendence to settle circle squaring, the third classical Greek problem"
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "complementary",
+      "description": "√2 IS constructible (as the diagonal of a unit square, a basic compass-and-straightedge construction) because its minimal polynomial x²-2 has degree 2 = 2¹ — contrasting with cos(20°) whose degree 3 ≠ 2ⁿ blocks constructibility"
+    },
+    {
+      "targetId": "hermite-lindemann",
+      "relationship": "uses",
+      "description": "This formalization directly imports the Hermite-Lindemann result (π transcendental) to prove squaring the circle impossible — Lindemann's 1882 theorem provides a strictly stronger impossibility than the degree argument used for trisection and cube doubling"
     }
   ],
   "overview": {
@@ -208,7 +245,10 @@
     "halting-problem",
     "pi-transcendental",
     "quadratic-reciprocity",
-    "lagrange-theorem"
+    "lagrange-theorem",
+    "e-transcendental",
+    "sqrt2-irrational",
+    "hermite-lindemann"
   ],
   "references": [
     {
@@ -231,6 +271,13 @@
       "year": "1998",
       "venue": "Springer Undergraduate Texts in Mathematics",
       "note": "Modern textbook covering constructibility theory, field extension characterization, and all three classical impossibilities with full algebraic proofs"
+    },
+    {
+      "authors": "Gauss, Carl Friedrich",
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Leipzig",
+      "note": "Section VII proves the constructibility of the regular 17-gon and establishes that a regular n-gon is constructible iff n is a product of a power of 2 and distinct Fermat primes — the foundational result connecting number theory to constructibility"
     }
   ]
 }

@@ -227,25 +227,9 @@
     "definitionCount": 3
   },
   "relatedProofs": [
-    {
-      "id": "amgm-inequality",
-      "relationship": "extends",
-      "description": "Base AM-GM inequality — Maclaurin's chain refines it by providing n-1 intermediate inequalities between AM and GM"
-    },
-    {
-      "id": "amgm-inequality-oq-03",
-      "relationship": "related",
-      "description": "Power mean inequalities provide another refinement of AM-GM, connecting through different averaging methods"
-    },
-    {
-      "id": "cauchy-schwarz",
-      "relationship": "uses",
-      "description": "Cauchy-Schwarz sum inequality n·∑xᵢ² ≥ (∑xᵢ)² is the key engine for the M₁² ≥ M₂ proof"
-    },
-    {
-      "id": "binomial-theorem",
-      "relationship": "related",
-      "description": "Binomial coefficients C(n,k) normalize the elementary symmetric polynomials to form Maclaurin means Mₖ = (eₖ/C(n,k))^(1/k)"
-    }
+    "amgm-inequality",
+    "amgm-inequality-oq-03",
+    "cauchy-schwarz",
+    "binomial-theorem"
   ]
 }

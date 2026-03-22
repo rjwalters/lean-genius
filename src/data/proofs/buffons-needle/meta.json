@@ -145,26 +145,10 @@
     }
   ],
   "relatedProofs": [
-    {
-      "id": "area-of-circle",
-      "relationship": "technique",
-      "description": "Both involve integrating trigonometric functions connecting geometry to π; area of circle (πr²) and Buffon's probability (2ℓ/πd)"
-    },
-    {
-      "id": "birthday-problem",
-      "relationship": "related",
-      "description": "Both are classic probability problems with surprising answers — Buffon connects geometric randomness to π"
-    },
-    {
-      "id": "pi-transcendental",
-      "relationship": "related",
-      "description": "Buffon's needle provides a probabilistic method to estimate the transcendental number π"
-    },
-    {
-      "id": "stirling-formula",
-      "relationship": "related",
-      "description": "Stirling's formula appears in the asymptotic analysis of Buffon's needle experiments with many drops"
-    }
+    "area-of-circle",
+    "birthday-problem",
+    "pi-transcendental",
+    "stirling-formula"
   ],
   "leanFile": {
     "imports": [

@@ -94,5 +94,41 @@
     "significance": "key",
     "relatedConcepts": ["maclaurin_step axiom", "induction on Nat.le", "Nat.exists_eq_add_of_le", "calc blocks", "transitivity"],
     "prerequisites": ["maclaurin_step", "Nat.exists_eq_add_of_le", "GE.ge.trans", "omega"]
+  },
+  {
+    "id": "ann-amgm-oq02-inductive-infra",
+    "proofId": "amgm-inequality-oq-02",
+    "range": { "startLine": 161, "endLine": 170 },
+    "type": "technique",
+    "title": "Inductive Infrastructure: castSucc Embedding and e₂ Recurrence",
+    "content": "The private infrastructure for the inductive binomial identity proof centers on a custom embedding csEmb : Fin n ↪ Fin (n+1) wrapping Fin.castSucc, needed to work around API naming issues in Docker Lean 4.26.0. The key lemma fin_univ_insert_last decomposes (univ : Finset (Fin (n+1))) as insert (Fin.last n) (univ.map (csEmb n)) — splitting {0,...,n} into {n} ∪ {0,...,n-1}. This decomposition enables elemSymm_two_succ, the fundamental recurrence: e₂(x₀,...,xₙ) = e₂(x₀,...,xₙ₋₁) + xₙ · e₁(x₀,...,xₙ₋₁). The proof uses Finset.powersetCard_succ_insert to split 2-element subsets of {0,...,n} into those not containing n (powersetCard 2 of the mapped range) and those containing n (image of insert (Fin.last n) on 1-element subsets). The disjointness lemma pc_disj ensures the union is valid. This recurrence is the backbone of the entire file — it later generalizes to elemSymm_succ and drives the inductive proof of the binomial identity.",
+    "mathContext": "$e_2(x_0,\\ldots,x_n) = e_2(x_0,\\ldots,x_{n-1}) + x_n \\cdot e_1(x_0,\\ldots,x_{n-1})$. Proof: the 2-element subsets of $\\{0,\\ldots,n\\}$ split into those avoiding $n$ (giving $e_2(x_0,\\ldots,x_{n-1})$) and those containing $n$ (giving $x_n \\cdot \\sum_{i<n} x_i = x_n \\cdot e_1(x_0,\\ldots,x_{n-1})$). General: $e_{k+1}(n+1) = e_{k+1}(n) + x_n \\cdot e_k(n)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.powersetCard_succ_insert", "Fin.castSucc", "Fin.last", "Finset.mapEmbedding", "inductive decomposition"],
+    "prerequisites": ["Finset.powersetCard", "Fin.castSucc", "Fin.last", "Finset.disjoint_left"]
+  },
+  {
+    "id": "ann-amgm-oq02-general-recurrence",
+    "proofId": "amgm-inequality-oq-02",
+    "range": { "startLine": 416, "endLine": 486 },
+    "type": "technique",
+    "title": "General Recurrence, Vanishing, and Product Identities",
+    "content": "Three structural theorems that complete the elementary symmetric polynomial toolkit. elemSymm_succ generalizes the k=1 recurrence to arbitrary k: eₖ₊₁(x₁,...,xₙ₊₁) = eₖ₊₁(x₁,...,xₙ) + xₙ₊₁·eₖ(x₁,...,xₙ). The proof mirrors elemSymm_two_succ with a generalized disjointness lemma pc_disj_general and an injectivity argument for insert on subsets not containing Fin.last. elemSymm_gt_eq_zero proves eₖ = 0 for k > n — there are no k-element subsets of an n-element set when k > n, so the defining sum is empty (Finset.sum_eq_zero via card contradiction using omega). elemSymm_n_eq_prod proves eₙ(x₁,...,xₙ) = ∏ᵢ xᵢ — the unique n-element subset of Fin n is univ itself, shown by Finset.eq_univ_of_card.",
+    "mathContext": "The recurrence $e_{k+1}(x_1,\\ldots,x_{n+1}) = e_{k+1}(x_1,\\ldots,x_n) + x_{n+1} \\cdot e_k(x_1,\\ldots,x_n)$ is the symmetric polynomial analog of Pascal's rule $\\binom{n+1}{k+1} = \\binom{n}{k+1} + \\binom{n}{k}$ (counting $k+1$-element subsets by whether they contain the last element). Boundary: $e_k = 0$ for $k > n$ (no subsets), $e_n = \\prod x_i$ (unique full subset).",
+    "significance": "key",
+    "relatedConcepts": ["Pascal's rule", "Finset.eq_univ_of_card", "generating function identity", "symmetric polynomial recurrence"],
+    "prerequisites": ["Finset.powersetCard_succ_insert", "Finset.card_le_card", "Fintype.card_fin", "omega"]
+  },
+  {
+    "id": "ann-amgm-oq02-newton-k1",
+    "proofId": "amgm-inequality-oq-02",
+    "range": { "startLine": 488, "endLine": 511 },
+    "type": "insight",
+    "title": "Newton's Inequality at k=1: Proved Without Axioms",
+    "content": "newton_k1 proves the first case of Newton's log-concavity entirely from scratch (no axioms): (e₁/C(n,1))² ≥ (e₀/C(n,0))·(e₂/C(n,2)), which simplifies to (∑xᵢ/n)² ≥ e₂/C(n,2). The proof strategy: (1) simplify e₀ = 1, e₁ = ∑xᵢ, C(n,0) = 1, C(n,1) = n to reduce to (∑xᵢ)²/n² ≥ e₂/C(n,2); (2) rewrite as (C(n,2)·(∑xᵢ)² - n²·e₂) / (n²·C(n,2)) ≥ 0 via field_simp; (3) apply maclaurin_sq_m1_ge_m2_general (the Cauchy-Schwarz result) via linarith for the numerator; (4) positivity (mul_pos, pow_pos) for the denominator. This is the only case of Newton's inequality proved without axioms, suggesting that extending to general k requires substantially different machinery (polarization).",
+    "mathContext": "Newton at $k=1$: $(e_1/n)^2 \\geq e_2/\\binom{n}{2}$, i.e., $\\binom{n}{2}(\\sum x_i)^2 \\geq n^2 e_2$. This holds for ALL reals (not just non-negative), because it follows from $\\binom{n}{2}(\\sum x_i)^2 = \\frac{n(n-1)}{2}(\\sum x_i)^2$ and the Cauchy-Schwarz bound $n\\sum x_i^2 \\geq (\\sum x_i)^2$ combined with $(\\sum x_i)^2 = \\sum x_i^2 + 2e_2$. The general Newton inequality $(e_k/\\binom{n}{k})^2 \\geq (e_{k-1}/\\binom{n}{k-1})(e_{k+1}/\\binom{n}{k+1})$ remains open in Lean for $k \\geq 2$.",
+    "significance": "key",
+    "relatedConcepts": ["Newton's inequalities", "field_simp", "div_nonneg", "linarith from Cauchy-Schwarz", "polarization method"],
+    "prerequisites": ["maclaurin_sq_m1_ge_m2_general", "field_simp", "div_nonneg", "mul_pos", "pow_pos"]
   }
 ]

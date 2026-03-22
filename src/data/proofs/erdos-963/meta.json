@@ -111,22 +111,10 @@
     ]
   },
   "relatedProofs": [
-    {
-      "id": "erdos-1",
-      "relationship": "Erdős Problem #1 studies distinct subset sums from the dual perspective: given $A \\subseteq \\{1,\\ldots,N\\}$ with all $2^n$ subset sums distinct, how large must $N$ be? Both problems concern the injectivity of the subset-sum map."
-    },
-    {
-      "id": "erdos-954",
-      "relationship": "Rosen's greedy additive sequence also employs a greedy algorithm to control representation counts, mirroring the greedy construction in the dissociated subset lower bound."
-    },
-    {
-      "id": "erdos-949",
-      "relationship": "Sum-free sets and Sidon sets share the additive structure constraints of dissociated sets; the Sidon condition (distinct pairwise sums) is a weakening of the dissociated condition (distinct all-subset sums)."
-    },
-    {
-      "id": "erdos-948",
-      "relationship": "Hindman-type problems on subset sums and colorings explore the Ramsey-theoretic side of subset-sum structures, complementing the extremal perspective of dissociated sets."
-    }
+    "erdos-1",
+    "erdos-954",
+    "erdos-949",
+    "erdos-948"
   ],
   "leanFile": {
     "imports": [

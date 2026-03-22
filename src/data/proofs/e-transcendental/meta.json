@@ -133,61 +133,11 @@
     ]
   },
   "relatedProofs": [
-    {
-      "id": "pi-transcendental",
-      "relationship": "related",
-      "description": "Lindemann (1882) extended Hermite's technique to prove π transcendental — settling squaring the circle"
-    },
-    {
-      "id": "hermite-lindemann",
-      "relationship": "related",
-      "description": "The full Hermite-Lindemann theorem generalizes e's transcendence: e^α is transcendental for algebraic α ≠ 0"
-    },
-    {
-      "id": "leibniz-pi",
-      "relationship": "related",
-      "description": "Leibniz series for π uses the same transcendental constant that Lindemann proved irrational"
-    },
-    {
-      "id": "euler-identity",
-      "relationship": "related",
-      "description": "Euler's identity e^(iπ) + 1 = 0 connects e and π — both transcendental by Hermite-Lindemann"
-    }
+    "pi-transcendental",
+    "hermite-lindemann",
+    "leibniz-pi",
+    "euler-identity"
   ],
-  "references": [
-    {
-      "authors": "Hermite, Charles",
-      "title": "Sur la fonction exponentielle",
-      "year": "1873",
-      "venue": "Comptes rendus de l'Académie des Sciences 77, pp. 18-24",
-      "note": "First proof that e is transcendental — the first number proven transcendental by construction (Liouville's 1844 examples were specifically designed)"
-    },
-    {
-      "authors": "Niven, Ivan",
-      "title": "Irrational Numbers",
-      "year": "1956",
-      "venue": "Carus Mathematical Monographs #11, MAA",
-      "note": "Standard reference for transcendence proofs including Hermite's method and the Lindemann-Weierstrass theorem"
-    }
-  ],
-  "leanFile": {
-    "imports": [
-      "Mathlib.RingTheory.Algebraic.Basic",
-      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
-      "Mathlib.Analysis.SpecialFunctions.Complex.Analytic",
-      "Mathlib.Data.Real.Irrational",
-      "Mathlib.Data.Complex.ExponentialBounds"
-    ],
-    "opens": [
-      "Real",
-      "Polynomial"
-    ],
-    "namespace": null,
-    "lineCount": 268,
-    "axiomCount": 5,
-    "theoremCount": 8,
-    "definitionCount": 0
-  },
   "references": [
     {
       "authors": "Hermite, Charles",
@@ -210,5 +160,23 @@
       "venue": "Cambridge University Press",
       "note": "Standard reference for transcendence methods including Hermite's approach and its generalizations"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.RingTheory.Algebraic.Basic",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
+      "Mathlib.Analysis.SpecialFunctions.Complex.Analytic",
+      "Mathlib.Data.Real.Irrational",
+      "Mathlib.Data.Complex.ExponentialBounds"
+    ],
+    "opens": [
+      "Real",
+      "Polynomial"
+    ],
+    "namespace": null,
+    "lineCount": 268,
+    "axiomCount": 5,
+    "theoremCount": 8,
+    "definitionCount": 0
+  }
 }

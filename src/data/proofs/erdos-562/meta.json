@@ -104,34 +104,13 @@
     ]
   },
   "relatedProofs": [
-    {
-      "id": "erdos-564",
-      "relationship": "Sibling problem — addresses 3-uniform hypergraph Ramsey numbers R₃(n) with the same tower function framework"
-    },
-    {
-      "id": "ramseys-theorem",
-      "relationship": "Foundational — Ramsey's theorem provides the existence guarantee for monochromatic substructures that underlies the entire hypergraph Ramsey hierarchy"
-    },
-    {
-      "id": "erdos-546",
-      "relationship": "Graph Ramsey variant — studies R(G) ≤ 2^{O(√m)} for graphs with m edges, sharing exponential-growth analysis at the r=2 level"
-    },
-    {
-      "id": "erdos-545",
-      "relationship": "Ramsey number optimization — asks which graphs maximize Ramsey numbers, complementing the hypergraph growth rate question"
-    },
-    {
-      "id": "erdos-szekeres",
-      "relationship": "Classical foundation — the Erdős-Szekeres theorem on monotonic subsequences uses the same pigeonhole/Ramsey principles"
-    },
-    {
-      "id": "erdos-55",
-      "relationship": "Ramsey + additive combinatorics — growth rate characterization of Ramsey r-complete sets shares the density analysis paradigm"
-    },
-    {
-      "id": "erdos-500",
-      "relationship": "Hypergraph extremal theory — Turán density of K₄³ studies 3-uniform hypergraph extremal problems with related methodology"
-    }
+    "erdos-564",
+    "ramseys-theorem",
+    "erdos-546",
+    "erdos-545",
+    "erdos-szekeres",
+    "erdos-55",
+    "erdos-500"
   ],
   "references": [
     "Erdős, P., Hajnal, A., and Rado, R. (1965). 'Partition relations for cardinal numbers.' Acta Math. Acad. Sci. Hungar., 16, 93–196.",

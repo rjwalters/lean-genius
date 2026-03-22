@@ -152,26 +152,14 @@
     }
   ],
   "relatedProofs": [
-    {
-      "id": "fair-games-theorem",
-      "relationship": "related",
-      "description": "Both use conditional probability over finite sample spaces; ballot problem's staysPositive connects to fair game stopping conditions"
-    },
-    {
-      "id": "binomial-theorem",
-      "relationship": "uses",
-      "description": "The ballot formula relies on binomial coefficients C(p+q,p) for counting vote sequences"
-    },
-    {
-      "id": "combinations-formula",
-      "relationship": "uses",
-      "description": "The counting of vote sequences uses combinations C(n,k); the ballot probability is a ratio of binomial coefficients"
-    },
-    {
-      "id": "erdos-szekeres",
-      "relationship": "related",
-      "description": "Both are celebrated results in combinatorics using counting arguments; Erdős-Szekeres uses pigeonhole while ballot uses reflection"
-    }
+    "fair-games-theorem",
+    "binomial-theorem",
+    "combinations-formula",
+    "erdos-szekeres",
+    "birthday-problem",
+    "ballot-problem-oq-01",
+    "ballot-problem-oq-02",
+    "ballot-problem-oq-03"
   ],
   "references": [
     {
