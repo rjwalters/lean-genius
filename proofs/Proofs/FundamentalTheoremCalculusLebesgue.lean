@@ -96,10 +96,19 @@ theorem lipschitz_implies_ac {F : ℝ → ℝ} {K : ℝ} (hK : K ≥ 0)
   -- Use δ = ε / (K + 1)
   refine ⟨ε / (K + 1), div_pos hε (by linarith), ?_⟩
   intro n as bs hsub _ htotal
-  -- Each |F(bₖ) - F(aₖ)| ≤ K * (bₖ - aₖ) by Lipschitz
-  -- Each |F(bₖ) - F(aₖ)| ≤ K * (bₖ - aₖ) by Lipschitz
-  -- Total ≤ K * Σ(bₖ - aₖ) < K * ε/(K+1) ≤ ε
-  sorry -- Arithmetic: K * (total_length) < K * ε/(K+1) ≤ ε
+  have hKp : (0 : ℝ) < K + 1 := by linarith
+  calc ∑ k, |F (bs k) - F (as k)|
+      ≤ ∑ k, K * (bs k - as k) := by
+        apply Finset.sum_le_sum; intro k _
+        have hk := hsub k
+        have has_mem : as k ∈ Icc a b := ⟨hk.1, le_trans hk.2.1 hk.2.2⟩
+        have hbs_mem : bs k ∈ Icc a b := ⟨le_trans hk.1 hk.2.1, hk.2.2⟩
+        have hlip := hF (bs k) (as k) hbs_mem has_mem
+        rwa [abs_of_nonneg (sub_nonneg.mpr hk.2.1)] at hlip
+    _ = K * ∑ k, (bs k - as k) := (Finset.mul_sum ..).symm
+    _ ≤ K * (ε / (K + 1)) := by
+        apply mul_le_mul_of_nonneg_left (le_of_lt htotal) hK
+    _ < ε := by rw [mul_div_assoc]; exact div_lt_self hε (by linarith)
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART III: AC ⟹ Uniformly Continuous (PROVED)
@@ -116,11 +125,20 @@ theorem ac_implies_uniformly_continuous {F : ℝ → ℝ} {a b : ℝ}
   obtain ⟨δ, hδ, hac⟩ := hF ε hε
   refine ⟨δ, hδ, ?_⟩
   intro x y hx hy hxy
-  -- Apply the AC definition with a single interval
-  -- The full formal argument with Fin 1 is technical; we extract the key idea
-  -- AC gives δ such that any collection of intervals with total length < δ
-  -- has total variation < ε. A single interval (x,y) with |x-y| < δ suffices.
-  sorry -- Technical: instantiate AC with n=1 and Fin 1 functions
+  by_cases hle : x ≤ y
+  · have hres := hac 1 (fun _ => x) (fun _ => y)
+      (fun _ => ⟨hx.1, hle, hy.2⟩)
+      (fun j k hjk => absurd (Subsingleton.elim j k) hjk)
+      (by simp [Fin.sum_univ_one]
+          exact lt_of_abs_lt (by rwa [abs_sub_comm] at hxy))
+    simp only [Fin.sum_univ_one] at hres
+    rwa [abs_sub_comm]
+  · push_neg at hle
+    have hres := hac 1 (fun _ => y) (fun _ => x)
+      (fun _ => ⟨hy.1, hle.le, hx.2⟩)
+      (fun j k hjk => absurd (Subsingleton.elim j k) hjk)
+      (by simp [Fin.sum_univ_one]; exact lt_of_abs_lt hxy)
+    simpa [Fin.sum_univ_one] using hres
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART IV: The Lebesgue FTC (AXIOM)
