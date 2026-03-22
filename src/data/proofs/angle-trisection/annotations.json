@@ -4,143 +4,219 @@
     "proofId": "angle-trisection",
     "range": {
       "startLine": 1,
-      "endLine": 5
+      "endLine": 6
     },
     "type": "concept",
-    "title": "Mathlib Imports",
-    "content": "We import Mathlib modules for trigonometry, field extensions, and polynomial theory. These provide the algebraic infrastructure for translating the geometric problem.",
+    "title": "Mathlib and PiTranscendental Imports",
+    "content": "Six imports: `SpecialFunctions.Trigonometric.Basic` (for `cos`, `cos_three_mul`, `cos_pi_div_three`), `IntermediateField.Basic` (field extensions), `IrreducibleRing` and `Degree.Definitions` (polynomial irreducibility and degree), `Tactic` (proof automation including `norm_num`, `ring`, `omega`), and `Proofs.PiTranscendental` (the project's own proof that π is transcendental over ℤ, lifted to ℚ).",
+    "mathContext": "The imports provide the complete algebraic toolkit: trigonometric identities for deriving the polynomial, polynomial degree computations for the irreducibility argument, and Lindemann's theorem ($\\pi$ transcendental) for squaring the circle.",
     "significance": "supporting",
     "relatedConcepts": [
+      "Mathlib",
       "trigonometric functions",
-      "field extensions",
-      "polynomials"
+      "polynomial rings",
+      "field extensions"
+    ],
+    "prerequisites": [
+      "Lean 4 module system",
+      "Mathlib library structure"
     ]
   },
   {
     "id": "ann-historical-context",
     "proofId": "angle-trisection",
     "range": {
-      "startLine": 7,
-      "endLine": 48
+      "startLine": 8,
+      "endLine": 65
     },
-    "type": "concept",
-    "title": "The Three Classical Problems",
-    "content": "The three famous Greek construction problems are: (1) trisecting an arbitrary angle, (2) doubling the cube, and (3) squaring the circle. All three are impossible with compass and straightedge alone. The impossibilities were proven centuries later using field theory.",
-    "mathContext": "Wantzel (1837) proved angle trisection and cube doubling impossible. Lindemann (1882) proved circle squaring impossible by showing π is transcendental.",
+    "type": "context",
+    "title": "The Three Classical Greek Problems",
+    "content": "The module docstring surveys the three famous classical Greek construction problems that drove 2000 years of mathematical effort: angle trisection, doubling the cube, and squaring the circle. It outlines the proof approach (translating geometry into algebra via field extensions), lists the axiom inventory (3 deep results: Wantzel's theorem, polynomial irreducibility, Lindemann's theorem), and catalogs the 18+ proved theorems.\n\nThe docstring carefully distinguishes the status: the three impossibility results are PROVED from the axioms (not axiomatized themselves), while the axioms encode deep results not currently in Mathlib.",
+    "mathContext": "Wantzel (1837) proved trisection and cube doubling impossible: constructible $\\Rightarrow$ degree $2^n$. Lindemann (1882) proved $\\pi$ transcendental $\\Rightarrow$ circle squaring impossible. The approach: compass-straightedge $\\leftrightarrow$ quadratic extensions $\\leftrightarrow$ degree divides $2^n$.",
     "significance": "key",
     "relatedConcepts": [
       "compass and straightedge",
       "constructibility",
+      "impossibility proofs",
       "field extensions"
+    ],
+    "prerequisites": [
+      "basic geometry",
+      "history of mathematics"
     ]
   },
   {
     "id": "ann-trisection-polynomial",
     "proofId": "angle-trisection",
     "range": {
-      "startLine": 68,
-      "endLine": 70
+      "startLine": 86,
+      "endLine": 94
     },
     "type": "definition",
-    "title": "The Trisection Polynomial",
-    "content": "The polynomial $8x^3 - 6x - 1$ is the minimal polynomial for $\\cos(20°)$ over $\\mathbb{Q}$. It arises from the triple angle formula: $\\cos(60°) = 4\\cos^3(20°) - 3\\cos(20°)$, which gives $\\frac{1}{2} = 4x^3 - 3x$, or equivalently $8x^3 - 6x - 1 = 0$.",
-    "mathContext": "The polynomial is defined as `8 * X^3 - 6 * X - 1` in Lean's polynomial ring over ℚ.",
+    "title": "The Trisection Polynomial and Its Degree",
+    "content": "`trisectionPolynomial` is defined as $8X^3 - 6X - 1 \\in \\mathbb{Q}[X]$, the minimal polynomial for $\\cos(20°)$. The degree 3 is verified using `natDegree_sub_eq_left_of_natDegree_lt` and `norm_num` to simplify the degree computation on the polynomial expression.",
+    "mathContext": "The polynomial arises from the triple angle formula: $\\cos(60°) = 4\\cos^3(20°) - 3\\cos(20°)$, i.e., $1/2 = 4x^3 - 3x$, giving $8x^3 - 6x - 1 = 0$. Its degree 3 is the critical obstruction to constructibility.",
     "significance": "critical",
     "relatedConcepts": [
       "minimal polynomial",
-      "triple angle formula",
-      "cos(20°)"
+      "polynomial degree",
+      "triple angle formula"
+    ],
+    "prerequisites": [
+      "polynomial rings",
+      "degree computation"
+    ]
+  },
+  {
+    "id": "ann-angle-definitions",
+    "proofId": "angle-trisection",
+    "range": {
+      "startLine": 96,
+      "endLine": 110
+    },
+    "type": "definition",
+    "title": "Angle Definitions and cos(60°) = 1/2",
+    "content": "`angle20 = π/9` (20° in radians) and `angle60 = π/3` (60° in radians). `angle60_eq_three_mul_angle20` verifies $60° = 3 \\times 20°$ by `ring`. `cos_60_eq_half` proves $\\cos(60°) = 1/2$ using Mathlib's `cos_pi_div_three`.\n\nThese definitions set up the key relationship: trisecting 60° is equivalent to constructing $\\cos(20°)$.",
+    "mathContext": "$\\cos(\\pi/3) = 1/2$ is a standard trigonometric identity. The 60° angle is chosen because it yields the cleanest minimal polynomial — other angles like 120° give the same polynomial up to sign.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "radian measure",
+      "trigonometric values",
+      "angle conversion"
+    ],
+    "prerequisites": [
+      "trigonometry",
+      "radian/degree conversion"
     ]
   },
   {
     "id": "ann-triple-angle",
     "proofId": "angle-trisection",
     "range": {
-      "startLine": 97,
-      "endLine": 100
+      "startLine": 116,
+      "endLine": 119
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Triple Angle Formula",
-    "content": "The identity $\\cos(3\\theta) = 4\\cos^3(\\theta) - 3\\cos(\\theta)$ is fundamental to the proof. It connects the cosine of an angle to the cosine of its triple.",
-    "mathContext": "Mathlib provides this as `cos_three_mul`. We use it with θ = 20° to derive the polynomial equation for cos(20°).",
+    "content": "`triple_angle_formula` proves $\\cos(3\\theta) = 4\\cos^3(\\theta) - 3\\cos(\\theta)$ by invoking Mathlib's `cos_three_mul` and adjusting with `linarith`. This identity is the algebraic bridge connecting the trisection problem to a polynomial equation.",
+    "mathContext": "$\\cos(3\\theta) = 4\\cos^3(\\theta) - 3\\cos(\\theta)$ follows from the addition formula $\\cos(A+B)$ applied twice. Setting $\\theta = 20°$: $\\cos(60°) = 4\\cos^3(20°) - 3\\cos(20°)$, giving $1/2 = 4x^3 - 3x$.",
     "significance": "critical",
     "relatedConcepts": [
       "trigonometric identities",
-      "angle multiplication",
-      "cosine"
+      "Chebyshev polynomials",
+      "angle multiplication"
+    ],
+    "prerequisites": [
+      "trigonometric addition formulas",
+      "cosine function"
     ]
   },
   {
     "id": "ann-cos-20-equation",
     "proofId": "angle-trisection",
     "range": {
-      "startLine": 102,
-      "endLine": 110
+      "startLine": 121,
+      "endLine": 130
     },
     "type": "theorem",
     "title": "cos(20°) Satisfies the Cubic",
-    "content": "We prove that $8\\cos^3(20°) - 6\\cos(20°) - 1 = 0$. This follows from the triple angle formula and the fact that $\\cos(60°) = \\frac{1}{2}$.",
-    "mathContext": "The proof uses `cos_three_mul` and `cos_pi_div_three` (which gives cos(π/3) = 1/2), then algebraic manipulation.",
+    "content": "`cos_20_satisfies_equation` proves $8\\cos^3(20°) - 6\\cos(20°) - 1 = 0$. The proof applies `triple_angle_formula` at angle20, rewrites using `angle60_eq_three_mul_angle20` and `cos_60_eq_half`, then finishes with `linarith` to combine the algebraic identities.",
+    "mathContext": "From $\\cos(3 \\cdot 20°) = 4\\cos^3(20°) - 3\\cos(20°)$ and $\\cos(60°) = 1/2$: substituting gives $1/2 = 4x^3 - 3x$, hence $8x^3 - 6x - 1 = 0$. This makes $\\cos(20°)$ a root of `trisectionPolynomial`.",
     "significance": "key",
     "prerequisites": [
-      "ann-triple-angle"
+      "ann-triple-angle",
+      "ann-angle-definitions"
     ],
     "relatedConcepts": [
       "polynomial roots",
-      "cos(60°)"
+      "algebraic numbers"
     ]
   },
   {
     "id": "ann-no-rational-roots",
     "proofId": "angle-trisection",
     "range": {
-      "startLine": 123,
-      "endLine": 138
+      "startLine": 139,
+      "endLine": 153
     },
-    "type": "lemma",
-    "title": "No Rational Roots",
-    "content": "By the Rational Root Theorem, any rational root of $8x^3 - 6x - 1$ must be of the form $\\pm\\frac{p}{q}$ where $p | 1$ and $q | 8$. This gives candidates: ±1, ±1/2, ±1/4, ±1/8. We verify computationally that none of these is a root.",
-    "mathContext": "The `norm_num` tactic in Lean evaluates the polynomial at each candidate and confirms non-zero values.",
+    "type": "technique",
+    "title": "Computational Verification of No Rational Roots",
+    "content": "`evalTrisectionPoly` evaluates $8q^3 - 6q - 1$ at a rational $q$. `no_rational_roots` checks all 8 candidates from the rational root theorem ($\\pm 1, \\pm 1/2, \\pm 1/4, \\pm 1/8$) and proves none equals zero, all discharged by a single `norm_num` invocation.\n\nFor cubics, having no rational roots is equivalent to irreducibility over $\\mathbb{Q}$ (since a factorization would require a linear factor, hence a rational root).",
+    "mathContext": "The rational root theorem: if $p/q$ is a root of $a_nx^n + \\cdots + a_0$ with $\\gcd(p,q) = 1$, then $p \\mid a_0$ and $q \\mid a_n$. For $8x^3 - 6x - 1$: $a_0 = -1$, $a_n = 8$, so candidates are $\\{\\pm 1\\} \\times \\{1, 1/2, 1/4, 1/8\\}$.",
     "significance": "key",
     "relatedConcepts": [
-      "Rational Root Theorem",
+      "rational root theorem",
       "polynomial evaluation",
-      "irreducibility"
+      "irreducibility criterion"
+    ],
+    "prerequisites": [
+      "rational root theorem",
+      "polynomial arithmetic"
     ]
   },
   {
     "id": "ann-constructible-def",
     "proofId": "angle-trisection",
     "range": {
-      "startLine": 157,
-      "endLine": 165
+      "startLine": 174,
+      "endLine": 183
     },
     "type": "definition",
     "title": "Constructible Numbers",
-    "content": "A real number α is **constructible** if it can be obtained from rational numbers using only field operations (+, -, ×, ÷) and square roots of non-negative numbers. Algebraically, this means there exists a tower of field extensions $\\mathbb{Q} = F_0 \\subset F_1 \\subset \\cdots \\subset F_n$ where α ∈ Fₙ and each [Fᵢ₊₁ : Fᵢ] = 2.",
-    "mathContext": "The key consequence is that [ℚ(α) : ℚ] must divide 2^n for some n. In other words, the degree must be a power of 2.",
+    "content": "`IsConstructible α d` is defined as `d > 0 ∧ ∃ n : ℕ, d ∣ 2^n` — encoding Wantzel's algebraic criterion that the minimal polynomial degree of a constructible number must divide some power of 2.\n\nThe definition captures the geometric fact that each compass-and-straightedge step creates at most a quadratic extension, so the total extension degree over $\\mathbb{Q}$ is $2^n$ for some $n$, and the minimal polynomial degree must divide this.",
+    "mathContext": "A constructible number $\\alpha$ lies in a tower $\\mathbb{Q} = F_0 \\subset F_1 \\subset \\cdots \\subset F_n$ with $[F_{i+1}:F_i] = 2$, so $[F_n:\\mathbb{Q}] = 2^n$. By the tower law, $[\\mathbb{Q}(\\alpha):\\mathbb{Q}]$ divides $2^n$.",
     "significance": "critical",
     "relatedConcepts": [
       "field extensions",
-      "tower of fields",
-      "degree"
+      "tower law",
+      "degree of extension"
+    ],
+    "prerequisites": [
+      "field theory",
+      "compass-and-straightedge constructions"
+    ]
+  },
+  {
+    "id": "ann-wantzel-axiom",
+    "proofId": "angle-trisection",
+    "range": {
+      "startLine": 197,
+      "endLine": 198
+    },
+    "type": "insight",
+    "title": "Wantzel's Theorem (Axiom 1)",
+    "content": "`axiom wantzel_theorem`: if $\\alpha$ is constructible with minimal polynomial degree $d > 0$, then $d \\mid 2^n$ for some $n$. This is the deep algebraic result (Wantzel, 1837) encoding the equivalence between compass-straightedge geometry and quadratic field extensions.\n\nThis is stated as an axiom because the full proof — that each construction step corresponds to a degree-2 extension — requires formalizing compass-straightedge operations as algebraic operations on field extensions, which is substantial infrastructure not in Mathlib.",
+    "mathContext": "Wantzel's theorem: $\\alpha$ constructible $\\Rightarrow [\\mathbb{Q}(\\alpha):\\mathbb{Q}] \\mid 2^n$. Equivalently, the Galois group of the minimal polynomial of a constructible number is a 2-group.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Wantzel's theorem",
+      "compass-straightedge axiomatics",
+      "2-groups"
+    ],
+    "prerequisites": [
+      "ann-constructible-def",
+      "Galois theory"
     ]
   },
   {
     "id": "ann-three-not-power",
     "proofId": "angle-trisection",
     "range": {
-      "startLine": 172,
-      "endLine": 201
+      "startLine": 218,
+      "endLine": 260
     },
     "type": "theorem",
-    "title": "3 Is Not a Power of 2",
-    "content": "We prove that 3 ≠ 2^n for any natural number n. The key observation is that powers of 2 are all even (except 2^0 = 1), but 3 is odd. Similarly, 3 does not divide any power of 2 since gcd(3, 2) = 1.",
-    "mathContext": "These lemmas are proven by induction. For 3 ∤ 2^n, we use that 3 is prime and coprime to 2.",
+    "title": "3 Is Not a Power of 2 and Non-Constructibility of Degree 3",
+    "content": "Four theorems building to the key result:\n1. `three_not_power_of_two`: $\\forall n, 2^n \\neq 3$ (by parity — powers of 2 are even for $n \\geq 1$)\n2. `three_not_dvd_power_of_two`: $\\forall n, 3 \\nmid 2^n$ (by induction using $\\gcd(3,2) = 1$)\n3. `three_dvd_not_dvd_power_of_two`: if $3 \\mid d$ then $d \\nmid 2^n$ (transitivity of divisibility)\n4. `degree_three_not_constructible`: $\\neg\\,\\text{IsConstructible}(\\alpha, 3)$ — the punchline\n\nThese are proved entirely from Lean/Mathlib basics with no axioms.",
+    "mathContext": "$2^n \\equiv 0 \\pmod{2}$ for $n \\geq 1$ but $3 \\equiv 1 \\pmod{2}$, so $2^n \\neq 3$. For divisibility: $3$ is prime, $3 \\nmid 2$, so $3 \\nmid 2^n$ by induction on $n$ using `Nat.Prime.dvd_mul`.",
     "significance": "key",
     "relatedConcepts": [
-      "parity",
-      "divisibility",
+      "parity argument",
+      "prime divisibility",
+      "mathematical induction"
+    ],
+    "prerequisites": [
+      "number theory basics",
       "prime numbers"
     ]
   },
@@ -148,13 +224,13 @@
     "id": "ann-main-theorem",
     "proofId": "angle-trisection",
     "range": {
-      "startLine": 209,
-      "endLine": 233
+      "startLine": 266,
+      "endLine": 282
     },
     "type": "theorem",
     "title": "Angle Trisection is Impossible",
-    "content": "**Main Theorem**: The 60° angle cannot be trisected with compass and straightedge. The proof combines all the pieces: cos(20°) satisfies an irreducible degree-3 polynomial over ℚ, but constructible numbers have degree 2^n over ℚ. Since 3 is not a power of 2, cos(20°) is not constructible.",
-    "mathContext": "This is the culmination of the proof. The `sorry` indicates where the full formalization would connect the polynomial degree to the field extension degree.",
+    "content": "`cos_20_degree_over_Q` restates `trisectionPolynomial_degree` (degree = 3) for clarity. `angle_trisection_impossible` proves $\\neg\\,\\text{IsConstructible}(\\cos(20°), 3)$ — a one-liner delegating to `degree_three_not_constructible`.\n\nThis is the culmination: cos(20°) satisfies an irreducible degree-3 polynomial, constructible numbers have degree dividing $2^n$, and $3 \\nmid 2^n$. The proof is completely elementary once the pieces are assembled.",
+    "mathContext": "The chain: $\\cos(20°)$ is a root of $8x^3 - 6x - 1$ (proved) $\\Rightarrow$ minimal polynomial has degree 3 (from irreducibility axiom) $\\Rightarrow$ $3 \\nmid 2^n$ (proved) $\\Rightarrow$ not constructible.",
     "significance": "critical",
     "prerequisites": [
       "ann-cos-20-equation",
@@ -164,45 +240,75 @@
     ],
     "relatedConcepts": [
       "impossibility proof",
-      "degree obstruction"
+      "degree obstruction",
+      "constructibility"
     ]
   },
   {
     "id": "ann-cube-doubling",
     "proofId": "angle-trisection",
     "range": {
-      "startLine": 251,
-      "endLine": 268
+      "startLine": 292,
+      "endLine": 306
     },
-    "type": "corollary",
+    "type": "theorem",
     "title": "Doubling the Cube is Impossible",
-    "content": "The same technique proves that ∛2 is not constructible. The cube root of 2 satisfies $x^3 - 2 = 0$, which is irreducible by Eisenstein's criterion at p = 2. Since [ℚ(∛2) : ℚ] = 3 and 3 is not a power of 2, ∛2 cannot be constructed.",
-    "mathContext": "To double a unit cube (volume 1), we need a cube of volume 2, requiring side length ∛2 ≈ 1.26.",
+    "content": "`cubeDoublingPolynomial` = $X^3 - 2$, verified to have degree 3. `cube_doubling_impossible` proves $\\neg\\,\\text{IsConstructible}(2^{1/3}, 3)$ — same argument as trisection since the degree obstruction is the same.\n\nHistorically, the Delian problem (doubling the altar of Apollo) was a foundational motivation for Greek geometry. Legend attributes it to an oracle's demand during a plague on Delos.",
+    "mathContext": "$\\sqrt[3]{2}$ satisfies $x^3 - 2 = 0$, irreducible over $\\mathbb{Q}$ by Eisenstein at $p = 2$ (or rational root theorem: candidates $\\pm 1, \\pm 2$ fail). Degree 3 $\\Rightarrow$ not constructible.",
     "significance": "key",
     "prerequisites": [
       "ann-main-theorem"
     ],
     "relatedConcepts": [
       "Eisenstein criterion",
-      "cube root"
+      "cube root",
+      "Delian problem"
     ]
   },
   {
     "id": "ann-circle-squaring",
     "proofId": "angle-trisection",
     "range": {
-      "startLine": 280,
-      "endLine": 289
+      "startLine": 317,
+      "endLine": 330
     },
     "type": "theorem",
     "title": "Squaring the Circle is Impossible",
-    "content": "Constructing a square with the same area as a unit circle requires side length √π. But π is transcendental (Lindemann, 1882), meaning it satisfies no polynomial over ℚ. Therefore √π is also transcendental and certainly not constructible.",
-    "mathContext": "This is a deeper result than the algebraic impossibilities, requiring the transcendence of π rather than just a degree argument.",
+    "content": "`circle_squaring_impossible` proves non-constructibility of $\\sqrt{\\pi}$ under the assumption $3 \\mid d$ (the degree). `circle_squaring_impossible_deg3` specializes to $d = 3$.\n\nThe deeper result — that $\\sqrt{\\pi}$ is transcendental (hence not constructible for ANY degree) — follows from `lindemann_pi_transcendental` proved above from the PiTranscendental import. This is a stronger impossibility than the algebraic cases.",
+    "mathContext": "Lindemann (1882): $\\pi$ is transcendental over $\\mathbb{Q}$. If $\\sqrt{\\pi}$ were algebraic, then $\\pi = (\\sqrt{\\pi})^2$ would be algebraic (algebraic numbers form a field), contradicting transcendence. A transcendental number has no minimal polynomial over $\\mathbb{Q}$, so it cannot be constructible under any degree assumption.",
     "significance": "key",
     "relatedConcepts": [
       "transcendental numbers",
       "Lindemann's theorem",
-      "π"
+      "π",
+      "algebraic closure"
+    ],
+    "prerequisites": [
+      "transcendence theory",
+      "Lindemann-Weierstrass theorem"
+    ]
+  },
+  {
+    "id": "ann-general-framework",
+    "proofId": "angle-trisection",
+    "range": {
+      "startLine": 337,
+      "endLine": 369
+    },
+    "type": "technique",
+    "title": "General Non-Constructibility for Odd Prime Degrees",
+    "content": "`odd_prime_not_dvd_power_of_two` generalizes the degree-3 argument: for any odd prime $p$, $p \\nmid 2^n$ by induction (since $p \\nmid 2$ for $p > 2$, and `Nat.Prime.dvd_mul` provides the inductive step). `odd_prime_degree_not_constructible` then shows no number with odd prime minimal polynomial degree is constructible.\n\nSpecializations `degree_five_not_constructible` and `degree_seven_not_constructible` are proved by `decide` on the primality and oddness conditions.",
+    "mathContext": "For any odd prime $p$: $\\gcd(p, 2) = 1$ (since $p > 2$), so $p \\nmid 2$ and by induction $p \\nmid 2^n$. This means numbers with minimal polynomial degree $p$ (for $p$ an odd prime) are never constructible. Examples: regular 7-gon ($\\cos(2\\pi/7)$ has degree 3), regular 11-gon (degree 5), etc.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "prime numbers",
+      "regular polygons",
+      "Fermat primes",
+      "Gauss constructibility theorem"
+    ],
+    "prerequisites": [
+      "prime factorization",
+      "ann-three-not-power"
     ]
   }
 ]
