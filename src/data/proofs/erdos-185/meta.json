@@ -70,7 +70,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "This problem asks about cap sets - subsets of {0,1,2}^n with no three collinear points (where x + z = 2y). Moser posed the question and showed f₃(n) ≫ 3^n/√n. The density Hales-Jewett theorem, proved by Furstenberg-Katznelson (1991), implies f₃(n) = o(3^n). More recently, Ellenberg-Gijswijt (2016) proved f₃(n) ≤ c^n for c < 3, a major breakthrough.",
+    "historicalContext": "Cap sets — subsets of $\\{0,1,2\\}^n$ with no three collinear points (i.e., no $x,y,z$ with $x+z=2y$ in $\\mathbb{F}_3^n$) — arose from the study of arithmetic progressions in finite geometry. Leo Moser posed the problem and constructed cap sets of size $\\Omega(3^n/\\sqrt{n})$ using coordinate-sum restrictions. Hillel Furstenberg and Yitzhak Katznelson (1991) proved the density Hales-Jewett theorem using ergodic theory, implying $f_3(n) = o(3^n)$. Roy Meshulam (1995) gave the first quantitative bound $f_3(n) \\leq 3^n/n$ using Fourier-analytic methods. The breakthrough came in 2016 when Jordan Ellenberg and Dion Gijswijt, building on Croot-Lev-Pach's polynomial method, proved $f_3(n) \\leq c^n$ with $c = 3 \\cdot (207 + 33\\sqrt{33})^{1/3}/8 \\approx 2.756$. This resolved a central problem in additive combinatorics and had immediate implications for the sunflower conjecture and other problems.",
     "problemStatement": "**Question:** Is f₃(n) = o(3^n)?\n\n**Answer: YES** (Furstenberg-Katznelson 1991)\n\nLet f₃(n) = max size of a subset of {0,1,2}^n with no three collinear points.\n\nThe density Hales-Jewett theorem implies cap sets have density → 0.",
     "proofStrategy": "The formalization defines:\n\n1. **TernaryHypercube:** {0,1,2}^n as Fin n → ZMod 3\n2. **OnLine:** Collinearity via x + z = 2y\n3. **CombinatorialLine:** Lines in Hales-Jewett sense\n4. **IsCapSet:** No three collinear points\n5. **f3(n):** Maximum cap set size\n\nWe axiomatize the density Hales-Jewett theorem and derive f₃(n) = o(3^n).",
     "keyInsights": [
@@ -162,10 +162,11 @@
     "summary": "Erdős Problem #185 asked whether f₃(n) = o(3^n), where f₃(n) is the maximum cap set in {0,1,2}^n. The answer is YES, proved as a corollary of the density Hales-Jewett theorem (Furstenberg-Katznelson 1991). More recent work by Ellenberg-Gijswijt (2016) showed f₃(n) ≤ c^n with c < 3, a major quantitative improvement.",
     "implications": "**Additive Combinatorics Connections:**\n\n1. **Cap Set Problem:** Central problem in finite geometry and coding theory.\n\n2. **Hales-Jewett Theorem:** Fundamental result in Ramsey theory.\n\n3. **Polynomial Method:** Ellenberg-Gijswijt's proof revolutionized the field.\n\n4. **Sunflower Conjecture:** Cap set bounds have implications for other problems.\n\n5. **Coding Theory:** Cap sets relate to error-correcting codes over F₃.",
     "openQuestions": [
-      "What is the exact value of lim sup f₃(n)^{1/n}?",
-      "Optimal lower bounds for f₃(n)?",
-      "Analogous questions for {0,1,...,k-1}^n",
-      "Explicit constructions achieving near-optimal bounds"
+      "What is $\\lim_{n\\to\\infty} f_3(n)^{1/n}$? Known: between $\\approx 2.217$ (Edel lower bound) and $\\approx 2.756$ (Ellenberg-Gijswijt)",
+      "Can the Croot-Lev-Pach polynomial method be improved to match the lower bound?",
+      "Analogous cap set problems over $\\mathbb{F}_q^n$ for $q > 3$: what is $\\lim f_q(n)^{1/n}$?",
+      "Is there an explicit construction of cap sets of size $c^n$ for any $c > 2.217$?",
+      "Does the density Hales-Jewett theorem have a purely combinatorial proof (avoiding ergodic theory)?"
     ]
   }
 }
