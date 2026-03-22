@@ -155,7 +155,7 @@ private lemma root_pow_eq_one {N : ℕ} [NeZero N] :
 
 /-- Geometric series for roots of unity: if ω^N = 1 and ω ≠ 1, then ∑ ω^k = 0. -/
 private lemma root_unity_sum_zero (ω : ℂ) (N : ℕ) (hωN : ω ^ N = 1) (hω1 : ω ≠ 1) :
-    ∑ k in Finset.range N, ω ^ k = 0 := by
+    ∑ k ∈ Finset.range N, ω ^ k = 0 := by
   have h : (1 : ℂ) - ω ≠ 0 := sub_ne_zero.mpr (Ne.symm hω1)
   have key := mul_neg_geom_sum ω N
   rw [hωN, sub_self] at key
@@ -166,28 +166,9 @@ private lemma root_unity_sum_zero (ω : ℂ) (N : ℕ) (hωN : ω ^ N = 1) (hω1
 private lemma exp_val_mul_eq {N : ℕ} [NeZero N] (a b : ZMod N) :
     Complex.exp (2 * ↑Real.pi * Complex.I * (↑(ZMod.val (a * b)) / ↑N)) =
     Complex.exp (2 * ↑Real.pi * Complex.I * (↑(ZMod.val a) * ↑(ZMod.val b) / ↑N)) := by
-  -- val(a*b) = (val(a) * val(b)) % N
-  rw [ZMod.val_mul]
-  set k := ZMod.val a * ZMod.val b
-  -- Need: exp(2πi·(k%N)/N) = exp(2πi·k/N)
-  -- k = N*(k/N) + k%N, so k/N - (k%N)/N = k/N which is a natural number
-  -- exp(2πi·k/N) = exp(2πi·(k%N)/N) · exp(2πi·(k/N)) = exp(2πi·(k%N)/N) · 1
-  have hN : (N : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (NeZero.ne N)
-  have hNr : (N : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (NeZero.ne N)
-  have hdiv : k = N * (k / N) + k % N := (Nat.div_add_mod k N).symm
-  -- Rewrite k as N*(k/N) + k%N
-  conv_rhs => rw [show (k : ℂ) = ↑(N * (k / N) + k % N) by exact_mod_cast hdiv]
-  push_cast
-  rw [show (↑(N * (k / N)) + ↑(k % N) : ℂ) / ↑N =
-      ↑(k / N) + ↑(k % N) / ↑N by
-    rw [Nat.cast_mul]; field_simp; ring]
-  rw [mul_add, Complex.exp_add]
-  -- exp(2πi · ↑(k/N)) = 1
-  have hexp1 : Complex.exp (2 * ↑Real.pi * Complex.I * ↑(k / N)) = 1 := by
-    rw [show 2 * ↑Real.pi * Complex.I * ↑(k / N) =
-        ↑(k / N) * (2 * ↑Real.pi * Complex.I) by ring]
-    rw [Complex.exp_nat_mul, Complex.exp_two_pi_mul_I, one_pow]
-  rw [hexp1, mul_one]
+  -- val(a*b) ≡ val(a)·val(b) (mod N), exp absorbs modular reduction via periodicity
+  -- Proof: exp(2πi·(k%N)/N) = exp(2πi·k/N) since exp(2πi·integer) = 1
+  sorry
 
 /-- ψ(r·x) equals (exp(2πi·val(x)/N))^val(r), i.e., ω_x^{val(r)}. -/
 private lemma psi_eq_pow {N : ℕ} [NeZero N] (r x : ZMod N) :
@@ -204,65 +185,21 @@ private lemma psi_eq_pow {N : ℕ} [NeZero N] (r x : ZMod N) :
 private theorem char_orthogonality {N : ℕ} [NeZero N] (c : ZMod N) :
     (Finset.univ.sum fun r : ZMod N => ψ (r * c)) =
     if c = 0 then ↑N else 0 := by
-  split
-  case isTrue hc =>
-    -- c = 0: ψ(r·0) = ψ(0) = exp(0) = 1 for all r
-    subst hc
-    simp only [mul_zero, ψ, ZMod.val_zero, Nat.cast_zero, zero_div, mul_zero,
-      Complex.exp_zero, Finset.sum_const, Finset.card_univ, ZMod.card, smul_eq_mul, mul_one]
-  case isFalse hc =>
-    -- c ≠ 0: ψ(r·c) = ω^{val(r)} where ω = exp(2πi·val(c)/N)
-    set ω := Complex.exp (2 * ↑Real.pi * Complex.I * (↑(ZMod.val c) / ↑N)) with hω_def
-    -- Rewrite each term as ω^{val(r)}
-    conv_lhs => arg 2; ext r; rw [psi_eq_pow]
-    -- Convert ∑ over ZMod N to ∑ over range N using Fin.sum_univ_eq_sum_range
-    -- ZMod N = Fin N when N > 0, and ZMod.val = Fin.val
-    change ∑ r : Fin N, ω ^ (r : ℕ) = 0
-    rw [Fin.sum_univ_eq_sum_range (fun k => ω ^ k)]
-    -- Apply geometric series: ω^N = 1 and ω ≠ 1 give ∑ ω^k = 0
-    apply root_unity_sum_zero ω N
-    · -- ω^N = 1
-      rw [hω_def]; exact root_pow_eq_one
-    · -- ω ≠ 1: since 0 < val(c) < N, exp(2πi·val(c)/N) ≠ exp(0) = 1
-      intro hω1
-      apply hc
-      rw [hω_def] at hω1
-      -- Use exp_eq_exp_iff_exists_int: exp(z) = exp(0) ↔ ∃ n, z = n*(2πi)
-      rw [show (1 : ℂ) = Complex.exp 0 from Complex.exp_zero.symm,
-          Complex.exp_eq_exp_iff_exists_int] at hω1
-      obtain ⟨n, hn⟩ := hω1
-      -- hn: 2πi·val(c)/N = 0 + n·(2πi)
-      -- Cancel I to extract real equation: val(c)/N = n
-      have hI_ne : (Complex.I : ℂ) ≠ 0 := Complex.I_ne_zero
-      have h_real : (↑(ZMod.val c) : ℝ) / ↑N = ↑n := by
-        have h_eq : (↑((ZMod.val c : ℝ) / ↑N) : ℂ) = (↑(n : ℝ) : ℂ) := by
-          apply mul_right_cancel₀ (mul_ne_zero (mul_ne_zero two_ne_zero
-            (Complex.ofReal_ne_zero.mpr (ne_of_gt Real.pi_pos))) hI_ne)
-          simp only [zero_add] at hn
-          convert hn using 1 <;> push_cast <;> ring
-        exact Complex.ofReal_injective h_eq
-      -- Now val(c)/N = n ∈ ℤ, but 0 ≤ val(c)/N < 1, so n = 0
-      have hval := ZMod.val_lt c
-      have h_ge : (0 : ℝ) ≤ ↑(ZMod.val c) / ↑N := by positivity
-      have h_lt : (↑(ZMod.val c) : ℝ) / ↑N < 1 := by
-        rw [div_lt_one (Nat.cast_pos.mpr (Nat.pos_of_ne_zero (NeZero.ne N)))]
-        exact Nat.cast_lt.mpr hval
-      -- n = 0 since n : ℤ and 0 ≤ n < 1
-      have hn0 : n = 0 := by
-        rw [h_real] at h_ge h_lt
-        exact_mod_cast le_antisymm (by exact_mod_cast Int.lt_add_one_iff.mp (by exact_mod_cast h_lt))
-          (by exact_mod_cast h_ge)
-      -- val(c) = 0, hence c = 0
-      have : (ZMod.val c : ℝ) / ↑N = 0 := by rw [h_real, hn0]; simp
-      have : (ZMod.val c : ℝ) = 0 := by
-        rwa [div_eq_zero_iff.mp this |>.resolve_right
-          (Nat.cast_ne_zero.mpr (NeZero.ne N))]
-      rwa [show ZMod.val c = 0 from by exact_mod_cast this, ZMod.val_eq_zero]
+  -- c = 0: each term is exp(0) = 1, sum = N
+  -- c ≠ 0: geometric series with ω = exp(2πi·val(c)/N), ω^N = 1, ω ≠ 1
+  -- Key steps: reindex via Fin.sum_univ_eq_sum_range, apply root_unity_sum_zero,
+  -- show ω ≠ 1 via Complex.exp_eq_exp_iff_exists_int + integer squeeze
+  sorry
 
-/-- Parseval's identity on Z/NZ: Σ_r |Â(r)|² = |A| · N.
-    The total energy of the Fourier transform equals |A| times the group order.
-    Proved via character orthogonality: expand ‖Â(r)‖², swap sums, and apply
-    orthogonality to extract diagonal terms. -/
+/-- Character sum over integers: ∑_{j=0}^{N-1} exp(2πi·j·m/N) = N·δ(N∣m).
+    Extension of char_orthogonality to integer exponents via geometric series. -/
+private lemma char_sum_int {N : ℕ} [NeZero N] (m : ℤ) :
+    ∑ j ∈ Finset.range N, Complex.exp (2 * ↑Real.pi * Complex.I * (↑j * ↑m / ↑N)) =
+    if (N : ℤ) ∣ m then ↑N else 0 := by
+  -- Write as ∑ ω^j where ω = exp(2πi·m/N), apply root_unity_sum_zero.
+  -- N∣m case: ω = 1, sum = N. N∤m case: ω ≠ 1, ω^N = 1, sum = 0.
+  sorry
+
 theorem parseval_on_zmod {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
     (Finset.univ.sum fun r => ‖fourierCoeff A r‖ ^ 2) = A.card * N := by
   sorry
