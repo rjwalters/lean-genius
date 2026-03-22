@@ -135,12 +135,46 @@ private theorem intertwine_prop
   · rfl
   · exact Matrix.zero_mulVec v₀
 
+-- Key helper: each p_j is nonzero
+private theorem p_ne_zero
+    (φ : Matrix n n K ≃ₐ[K] Matrix n n K) (i₀ : n)
+    (v₀ : n → K) (hv₀ : (φ (Matrix.stdBasisMatrix i₀ i₀ 1)).mulVec v₀ ≠ 0)
+    (j : n) : (φ (Matrix.stdBasisMatrix j i₀ 1)).mulVec v₀ ≠ 0 := by
+  intro hpj
+  -- By intertwine_prop: phi(E_{i0,j}).mulVec(p_j) = p_{i0} (nonzero)
+  have h := intertwine_prop φ i₀ v₀ i₀ j j
+  simp only [if_pos rfl] at h
+  -- But p_j = 0, so phi(E_{i0,j}).mulVec(0) = 0
+  rw [hpj, Matrix.mulVec_zero] at h
+  -- 0 = p_{i0}, contradicting hv₀
+  exact hv₀ h.symm
+
 -- Key helper: linear independence of constructed vectors
 private theorem p_linearIndependent
     (φ : Matrix n n K ≃ₐ[K] Matrix n n K) (i₀ : n)
     (v₀ : n → K) (hv₀ : (φ (Matrix.stdBasisMatrix i₀ i₀ 1)).mulVec v₀ ≠ 0) :
     LinearIndependent K
-      (fun j : n => (φ (Matrix.stdBasisMatrix j i₀ 1)).mulVec v₀) := by sorry
+      (fun j : n => (φ (Matrix.stdBasisMatrix j i₀ 1)).mulVec v₀) := by
+  rw [Fintype.linearIndependent_iff]
+  intro c hsum k
+  -- hsum: ∑ j, c j • p_j = 0
+  -- Apply phi(E_{k,k}).mulVec to both sides via the linear map mulVecLin
+  set M := Matrix.mulVecLin (φ (Matrix.stdBasisMatrix k k 1)) with hM_def
+  have key : M (∑ j : n, c j • (φ (Matrix.stdBasisMatrix j i₀ 1)).mulVec v₀) = 0 := by
+    rw [hsum]; exact map_zero M
+  -- Distribute: M(∑ c_j • p_j) = ∑ c_j • M(p_j)
+  rw [map_sum] at key
+  simp only [map_smul] at key
+  -- Apply intertwine_prop: M(p_j) = phi(E_{k,k}).mulVec(p_j) = delta_{k,j} * p_k
+  simp only [hM_def, show ∀ j, Matrix.mulVecLin (φ (Matrix.stdBasisMatrix k k 1))
+      ((φ (Matrix.stdBasisMatrix j i₀ 1)).mulVec v₀) =
+      if k = j then (φ (Matrix.stdBasisMatrix k i₀ 1)).mulVec v₀ else 0 from
+      fun j => intertwine_prop φ i₀ v₀ k k j] at key
+  -- Sum collapses: ∑ c_j • (if k=j then p_k else 0) = c_k • p_k
+  simp only [smul_ite, smul_zero] at key
+  simp only [Finset.sum_ite_eq, Finset.mem_univ, ite_true] at key
+  -- key: c_k • p_k = 0, and p_k ≠ 0, so c_k = 0
+  exact (smul_eq_zero.mp key).resolve_right (p_ne_zero φ i₀ v₀ hv₀ k)
 
 /-- **Skolem-Noether Theorem**: Every K-algebra automorphism of Mn(K) is inner.
 
