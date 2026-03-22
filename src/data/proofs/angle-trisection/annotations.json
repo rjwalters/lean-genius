@@ -46,6 +46,28 @@
     ]
   },
   {
+    "id": "ann-namespace-and-derivation",
+    "proofId": "angle-trisection",
+    "range": {
+      "startLine": 67,
+      "endLine": 85
+    },
+    "type": "technique",
+    "title": "Part I: Deriving the Trisection Polynomial from cos(3θ)",
+    "content": "The namespace `AngleTrisection` and `open Polynomial Real` set up the algebraic context. Part I derives the minimal polynomial for cos(20°) from the triple angle formula.\n\nThe derivation: to trisect 60°, we need cos(20°). The triple angle formula gives cos(3θ) = 4cos³(θ) - 3cos(θ). Setting θ = 20° and cos(60°) = 1/2: 1/2 = 4x³ - 3x where x = cos(20°). Multiplying by 2: 8x³ - 6x - 1 = 0. This cubic with rational coefficients is the polynomial whose properties determine constructibility.",
+    "mathContext": "Setting $\\theta = 20°$ in $\\cos(3\\theta) = 4\\cos^3(\\theta) - 3\\cos(\\theta)$: $\\frac{1}{2} = 4x^3 - 3x$ where $x = \\cos(20°)$. Clearing denominators: $8x^3 - 6x - 1 = 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "triple angle formula",
+      "minimal polynomial derivation",
+      "rational coefficients"
+    ],
+    "prerequisites": [
+      "trigonometric identities",
+      "polynomial roots"
+    ]
+  },
+  {
     "id": "ann-trisection-polynomial",
     "proofId": "angle-trisection",
     "range": {
@@ -152,6 +174,30 @@
     "prerequisites": [
       "rational root theorem",
       "polynomial arithmetic"
+    ]
+  },
+  {
+    "id": "ann-wantzel-context",
+    "proofId": "angle-trisection",
+    "range": {
+      "startLine": 155,
+      "endLine": 173
+    },
+    "type": "concept",
+    "title": "Part IV: Constructible Numbers and Wantzel's Criterion",
+    "content": "Part IV docstring defines constructible numbers and states Wantzel's key theorem (1837): a real number α is constructible iff there is a tower of field extensions Q = F₀ ⊂ F₁ ⊂ ... ⊂ Fₙ where α ∈ Fₙ and each [Fᵢ₊₁:Fᵢ] = 2.\n\nThe corollary is that [Q(α):Q] must divide 2ⁿ. Since constructing a point with compass and straightedge can only intersect lines and circles — yielding at most degree-2 extensions — the total extension degree is always a power of 2. This is why degree-3 minimal polynomials (like 8x³ - 6x - 1 for cos(20°)) imply non-constructibility: 3 does not divide any power of 2.",
+    "mathContext": "Wantzel (1837): $\\alpha$ constructible $\\iff$ $\\exists$ tower $\\mathbb{Q} = F_0 \\subset \\cdots \\subset F_n$ with $[F_{i+1}:F_i] = 2$ and $\\alpha \\in F_n$. Corollary: $\\deg(\\min_{\\mathbb{Q}}(\\alpha)) \\mid 2^n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "field extension tower",
+      "degree of extension",
+      "compass and straightedge",
+      "Wantzel's theorem"
+    ],
+    "prerequisites": [
+      "field extensions",
+      "tower law",
+      "degree of minimal polynomial"
     ]
   },
   {
