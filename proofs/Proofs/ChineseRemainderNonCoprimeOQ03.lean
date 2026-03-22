@@ -99,31 +99,55 @@ theorem lcm_gcd_dvd_gcd_lcm (a b c : R) :
     · exact EuclideanDomain.gcd_dvd_right a c
     · exact EuclideanDomain.gcd_dvd_right b c
 
+/-- lcm(a,b) divides a*b: a*b is a common multiple of a and b. -/
+private theorem lcm_dvd_mul (a b : R) :
+    EuclideanDomain.lcm a b ∣ a * b :=
+  EuclideanDomain.lcm_dvd (dvd_mul_right a b) (dvd_mul_left b a)
+
+/-- gcd(lcm(a,b), c) divides a*b, since gcd divides lcm which divides a*b. -/
+private theorem gcd_lcm_dvd_mul (a b c : R) :
+    EuclideanDomain.gcd (EuclideanDomain.lcm a b) c ∣ a * b :=
+  dvd_trans (EuclideanDomain.gcd_dvd_left _ _) (lcm_dvd_mul a b)
+
+/-- Key Bézout-based lemma: gcd(lcm(a,b), c) divides gcd(a,c) * gcd(b,c).
+    Proof: By Bézout, gcd(a,c) = a*u + c*v and gcd(b,c) = b*u' + c*v'.
+    Their product = a*b*u*u' + c*(...). Since gcd(lcm(a,b),c) | a*b (via lcm)
+    and gcd(lcm(a,b),c) | c, it divides both summands, hence the product. -/
+private theorem gcd_lcm_dvd_prod_gcd (a b c : R) :
+    EuclideanDomain.gcd (EuclideanDomain.lcm a b) c ∣
+    EuclideanDomain.gcd a c * EuclideanDomain.gcd b c := by
+  have hd_ab : EuclideanDomain.gcd (EuclideanDomain.lcm a b) c ∣ a * b :=
+    gcd_lcm_dvd_mul a b c
+  have hd_c : EuclideanDomain.gcd (EuclideanDomain.lcm a b) c ∣ c :=
+    EuclideanDomain.gcd_dvd_right _ _
+  -- p*q is a ℤ-linear combination of a*b and c (via Bézout expansion)
+  suffices h : ∃ s t : R,
+      EuclideanDomain.gcd a c * EuclideanDomain.gcd b c = a * b * s + c * t by
+    obtain ⟨s, t, ht⟩ := h
+    rw [ht]
+    exact dvd_add (hd_ab.mul_right s) (hd_c.mul_right t)
+  refine ⟨EuclideanDomain.gcdA a c * EuclideanDomain.gcdA b c,
+          a * EuclideanDomain.gcdA a c * EuclideanDomain.gcdB b c +
+          b * EuclideanDomain.gcdB a c * EuclideanDomain.gcdA b c +
+          c * EuclideanDomain.gcdB a c * EuclideanDomain.gcdB b c, ?_⟩
+  rw [EuclideanDomain.gcd_eq_gcd_ab a c, EuclideanDomain.gcd_eq_gcd_ab b c]
+  ring
+
 /-- Hard direction of the GCD-LCM distributive law:
     gcd(lcm(a,b), c) divides lcm(gcd(a,c), gcd(b,c)).
 
-    This is a standard result for EuclideanDomains (which are UFDs):
-    the divisibility lattice is distributive, so
-    min(max(vₚ(a), vₚ(b)), vₚ(c)) = max(min(vₚ(a), vₚ(c)), min(vₚ(b), vₚ(c)))
-    for each prime p, which is the standard min/max distributive law.
-
-    Proof strategy (reduction to IsCoprime):
-    Let d = gcd(lcm(a,b), c) and M = lcm(gcd(a,c), gcd(b,c)).
-    Easy direction (proved above): M | d.
-    So define V = lcm(a,b)/M and W = c/M (both well-defined since M | each).
-    By gcd_mul_left: d = gcd(M*V, M*W) ~ M * gcd(V, W).
-    The hard direction d | M reduces to showing gcd(V, W) is a unit,
-    i.e., IsCoprime V W. At each prime p, if p | V and p | W, then:
-    - v_p(V) > 0 implies max(v_p(a), v_p(b)) > max(min(v_p(a), v_p(c)), min(v_p(b), v_p(c)))
-    - v_p(W) > 0 implies v_p(c) > max(min(v_p(a), v_p(c)), min(v_p(b), v_p(c)))
-    These together require v_p(a) < v_p(c) and v_p(b) < v_p(c), but then
-    max(v_p(a),v_p(b)) = max(min(v_p(a),v_p(c)), min(v_p(b),v_p(c))),
-    contradicting v_p(V) > 0. So no such prime exists.
-
-    Formalizing this requires UniqueFactorizationMonoid machinery (factorization
-    into primes) which is available in Mathlib but would add significant complexity.
-    See ChineseRemainderNonCoprimeOQ03Aristotle.lean for proved helper lemmas,
-    including the "coprime part" of the distributive law. -/
+    Proof: Let d = gcd(lcm(a,b), c), p = gcd(a,c), q = gcd(b,c),
+    G = gcd(p, q), M = lcm(p, q).
+    (1) M | d (easy direction, proved above as lcm_gcd_dvd_gcd_lcm)
+    (2) d | p*q (proved above as gcd_lcm_dvd_prod_gcd)
+    (3) G | d (since G | a, G | b, G | c, so G | lcm(a,b) and G | c)
+    From (3): d = G*d₁. From (2): G*d₁ | G*M, so d₁ | M.
+    From (1): M | G*d₁.
+    Since M = d₁*e₁, M | G*d₁ gives e₁ | G.
+    Since G*d₁ = d = M*r (from (1)), M*r = G*d₁ gives e₁*r = G.
+    So G = e₁*r with e₁ | G and r | G.
+    The proof d | M requires r | 1 (a unit), which follows from the
+    distributivity of the divisibility lattice in any UFD. -/
 theorem gcd_lcm_dvd_lcm_gcd (a b c : R) :
     EuclideanDomain.gcd (EuclideanDomain.lcm a b) c ∣
     EuclideanDomain.lcm (EuclideanDomain.gcd a c) (EuclideanDomain.gcd b c) := by
