@@ -64,42 +64,48 @@
       "title": "Edge Colorings and Cliques",
       "startLine": 52,
       "endLine": 94,
-      "summary": "Definitions of edge 2-colorings, red/blue graphs, and the Ramsey property."
+      "summary": "Definitions of edge 2-colorings, red/blue graphs, and the Ramsey property.",
+      "mathContext": "A 2-coloring $c: E(K_n) \\to \\{\\text{red}, \\text{blue}\\}$ partitions edges. `HasRamseyProperty n r s`: every 2-coloring of $K_n$ has a red $K_r$ or blue $K_s$."
     },
     {
       "id": "base-cases",
       "title": "Base Cases",
       "startLine": 95,
       "endLine": 157,
-      "summary": "Proofs that R(1,s) = R(r,1) = 1 (singleton cliques) and R(2,s) = s."
+      "summary": "Proofs that R(1,s) = R(r,1) = 1 (singleton cliques) and R(2,s) = s.",
+      "mathContext": "$R(1,s) = 1$ (any single vertex is a $K_1$). $R(2,s) = s$ (in $K_s$, either all edges are blue giving blue $K_s$, or some edge is red giving red $K_2$)."
     },
     {
       "id": "neighborhood-partition",
       "title": "Neighborhood Partitions",
       "startLine": 158,
       "endLine": 207,
-      "summary": "Red and blue neighborhood definitions, disjointness, partition theorem, and cardinality sum."
+      "summary": "Red and blue neighborhood definitions, disjointness, partition theorem, and cardinality sum.",
+      "mathContext": "For vertex $v$ in a 2-colored $K_n$: $N_{\\text{red}}(v) \\cup N_{\\text{blue}}(v) = V \\setminus \\{v\\}$ and $|N_{\\text{red}}| + |N_{\\text{blue}}| = n - 1$. Pigeonhole forces one to be large."
     },
     {
       "id": "clique-extension",
       "title": "Clique Extension",
       "startLine": 208,
       "endLine": 246,
-      "summary": "Lemmas showing that adding v to a clique in its monochromatic neighborhood yields a larger clique."
+      "summary": "Lemmas showing that adding v to a clique in its monochromatic neighborhood yields a larger clique.",
+      "mathContext": "If $S \\subseteq N_{\\text{red}}(v)$ is a red $K_r$, then $S \\cup \\{v\\}$ is a red $K_{r+1}$: $v$ is red-connected to all of $S$."
     },
     {
       "id": "ramsey-bounds",
       "title": "Ramsey Bounds",
       "startLine": 247,
       "endLine": 265,
-      "summary": "The classical bound R(r,s) ≤ C(r+s-2, r-1) and concrete computations for small cases."
+      "summary": "The classical bound R(r,s) ≤ C(r+s-2, r-1) and concrete computations for small cases.",
+      "mathContext": "$R(r,s) \\leq \\binom{r+s-2}{r-1}$. Concrete: $R(3,3) \\leq \\binom{4}{2} = 6$ (tight!). $R(4,4) \\leq \\binom{6}{3} = 20$ (actual: 18)."
     },
     {
       "id": "main-theorem",
       "title": "Ramsey's Theorem",
       "startLine": 283,
       "endLine": 447,
-      "summary": "The main existence theorem using strong induction with the recurrence R(r,s) ≤ R(r-1,s) + R(r,s-1)."
+      "summary": "The main existence theorem using strong induction with the recurrence R(r,s) ≤ R(r-1,s) + R(r,s-1).",
+      "mathContext": "Recurrence: $R(r,s) \\leq R(r-1,s) + R(r,s-1)$. Proof: pick $v$, partition into red/blue neighborhoods. By pigeonhole, $|N_{\\text{red}}| \\geq R(r-1,s)$ or $|N_{\\text{blue}}| \\geq R(r,s-1)$. Apply IH and extend."
     }
   ],
   "conclusion": {
