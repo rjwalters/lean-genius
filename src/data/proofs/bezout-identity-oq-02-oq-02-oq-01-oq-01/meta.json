@@ -34,37 +34,62 @@
     "axiomCount": 0
   },
   "overview": {
-    "historicalContext": "Euclid's lemma states that if a prime p divides a*b, then p divides a or p divides b. The constructive version with explicit quotient extraction was formalized in the parent file, but used Lean's classical choice (Exists.choose) making it noncomputable. This file removes that limitation by using decidable integer division.",
-    "problemStatement": "**Goal**: Define a version of constructive_div that does NOT require the noncomputable annotation, while still producing correct quotients.\n\n**Solution**: Replace `hdvd.choose` (classical) with `(b * c) / a` (computable integer division). The correctness proof uses Int.mul_ediv_cancel' to show the quotient is correct.",
-    "proofStrategy": "The algorithm computes q = x*c + y*((b*c)/a) where x,y are Bezout coefficients from extGcd. The correctness proof shows a*q = c via the algebraic identity a*(x*c + y*k) = (x*a + y*b)*c = 1*c = c.",
+    "historicalContext": "The tension between classical existence proofs and constructive algorithms is one of the deepest themes in the foundations of mathematics. Euclid's original algorithm (c. 300 BCE) in Book VII of the Elements was inherently constructive — it computed the GCD by iterated subtraction. The extended Euclidean algorithm, which produces Bézout coefficients $x, y$ such that $ax + by = \\gcd(a,b)$, was developed by Étienne Bézout in 1779 and later formalized by Bachet and others. In modern proof assistants like Lean 4, the classical axiom of choice (via `Exists.choose`) allows extracting witnesses from existence proofs but marks definitions as `noncomputable`, preventing evaluation. This formalization demonstrates a general technique in constructive algebra: replacing choice-extracted witnesses with decidable operations (here, integer division) to recover computability while preserving correctness. The approach connects to Bishop's constructive mathematics program and the Curry-Howard correspondence, where computational content is extracted from proofs.",
+    "problemStatement": "Given coprime natural numbers $a, b$ with $a \\mid bc$, construct a **computable** function that produces a quotient $q$ satisfying $aq = c$, without using Lean's `noncomputable` annotation or classical choice (`Exists.choose`).",
+    "proofStrategy": "The algorithm uses the extended Euclidean algorithm to find Bézout coefficients $x, y$ with $ax + by = 1$, then computes $q = xc + y \\cdot \\lfloor bc/a \\rfloor$. The key step replaces the classical witness `hdvd.choose` (which extracts a value from a divisibility proof using the axiom of choice) with computable integer division $\\lfloor bc/a \\rfloor$. The correctness proof uses `Int.mul_ediv_cancel'` to show that $a \\cdot \\lfloor bc/a \\rfloor = bc$ when $a \\mid bc$, and then the Bézout identity to reduce $a(xc + yk) = (ax + by)c = 1 \\cdot c = c$. The `calc` chain makes this algebraic reduction transparent.",
     "keyInsights": [
-      "The divisibility proof hdvd is only needed for verification, not computation — the algorithm only uses a, b, c",
-      "Int.mul_ediv_cancel' bridges computable division to the divisibility equation",
-      "The function passes Lean's computability check and can be used with #eval"
+      "The divisibility hypothesis $a \\mid bc$ is a proof-level artifact: the algorithm only needs the values $a, b, c$ at runtime, and the divisibility proof is consumed only during verification — a clean separation of computation from verification",
+      "Replacing `Exists.choose` with `Int.ediv` (integer division) is a general strategy: whenever a constructive proof extracts a witness from a divisibility fact, computable division can often serve as the witness directly",
+      "The `calc` chain decomposes the correctness proof into a sequence of rewriting steps that mirror the algebraic identity $a(xc + yk) = (xa + yb)c = c$, making the proof both machine-checkable and human-readable",
+      "The `#eval` demonstrations at the end serve as computational certificates: they prove that Lean's kernel can actually evaluate the function, confirming the absence of any hidden noncomputable dependencies",
+      "This technique generalizes beyond integers: in any Euclidean domain where division is computable, classical choice can be replaced with explicit division to make constructive proofs executable"
     ]
   },
   "sections": [
     {
-      "id": "computable-div",
-      "title": "Fully Computable Constructive Quotient",
-      "startLine": 95,
-      "endLine": 135,
-      "summary": "constructive_div_computable: replaces hdvd.choose with (b*c)/a. Correctness proof via Int.mul_ediv_cancel' and the Bezout identity."
+      "id": "ext-gcd",
+      "title": "Extended Euclidean Algorithm",
+      "startLine": 29,
+      "endLine": 79,
+      "summary": "Implements `extGcd` as a recursive function returning Bézout coefficients $(x, y, g)$ with $ax + by = g = \\gcd(a,b)$, along with correctness proofs `extGcd_gcd` and `extGcd_bezout` by strong induction on $b$."
     },
     {
-      "id": "examples",
+      "id": "computable-div",
+      "title": "Fully Computable Constructive Quotient",
+      "startLine": 81,
+      "endLine": 134,
+      "summary": "Defines `constructive_div_computable` using $q = xc + y \\cdot \\lfloor bc/a \\rfloor$ and proves its correctness via `Int.mul_ediv_cancel'` and the Bézout identity. The function passes Lean's computability checker."
+    },
+    {
+      "id": "eval-examples",
       "title": "Computational Verification",
-      "startLine": 137,
-      "endLine": 160,
-      "summary": "native_decide examples verify computed values. #eval demonstrates the function evaluates without noncomputable."
+      "startLine": 136,
+      "endLine": 158,
+      "summary": "Demonstrates computability with `native_decide` examples and `#eval` evaluations, confirming the function produces correct quotients for concrete inputs like $\\gcd(3,7)=1, 3 \\mid 42$ giving $q=2$."
+    },
+    {
+      "id": "key-insight",
+      "title": "Why Integer Division Works",
+      "startLine": 160,
+      "endLine": 181,
+      "summary": "The theorem `div_witness_correct` isolates the core insight: when $a \\mid bc$, the integer division $\\lfloor bc/a \\rfloor$ is exact, so $a \\cdot (bc/a) = bc$. This is what eliminates the need for classical choice."
     }
   ],
   "conclusion": {
-    "summary": "Successfully removed the noncomputable annotation from constructive_div by replacing classical choice with computable integer division. The function can now be evaluated at compile time via #eval.",
-    "implications": "Demonstrates that constructive proofs in Lean 4 can often be made computable by replacing choice with decidable operations.",
+    "summary": "Successfully removed the noncomputable annotation from constructive_div by replacing classical choice with computable integer division. The function evaluates at compile time via #eval, demonstrating a clean separation between proof-level hypotheses and runtime computation.",
+    "implications": "This formalization demonstrates a general technique for making constructive proofs computable in Lean 4: replace choice-based witness extraction with decidable arithmetic operations. The approach is applicable whenever a divisibility or existence proof is used to extract a value that can be computed directly. It connects to broader themes in constructive mathematics, where the computational content of proofs is a first-class concern.",
     "openQuestions": [
-      "Can the complexity bound O(log min(a,b)) for extGcd be formalized?",
-      "Extend to polynomial rings where division algorithms exist"
+      "Can the time complexity bound $O(\\log \\min(a,b))$ for the extended Euclidean algorithm be formally verified in Lean?",
+      "Does this constructive approach extend to polynomial rings where Euclidean division provides computable quotients?",
+      "Can the technique be generalized to extract computable witnesses from arbitrary divisibility proofs in Euclidean domains?"
     ]
-  }
+  },
+  "crossReferences": [
+    {"id": "bezout-identity", "relationship": "ancestor", "description": "The root formalization of Bézout's identity, which establishes the extended Euclidean algorithm used here"},
+    {"id": "bezout-identity-oq-02", "relationship": "ancestor", "description": "Euclid's lemma via coprimality — the classical (noncomputable) version that this entry makes computable"},
+    {"id": "bezout-identity-oq-02-oq-02-oq-01", "relationship": "parent", "description": "The direct parent: constructive divisibility via Bézout coefficients using classical choice (`hdvd.choose`)"},
+    {"id": "bezout-identity-oq-02-oq-02", "relationship": "related", "description": "Euclid's lemma in Bézout domains and PIDs — the abstract algebraic generalization"},
+    {"id": "bezout-identity-oq-02-oq-01", "relationship": "related", "description": "The Fundamental Theorem of Arithmetic from Euclid's lemma — a key application of the divisibility result made computable here"},
+    {"id": "chinese-remainder-non-coprime", "relationship": "related", "description": "The Chinese Remainder Theorem uses similar coprimality and Bézout coefficient techniques"}
+  ]
 }
