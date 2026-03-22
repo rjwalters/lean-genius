@@ -5,9 +5,14 @@
   "phase": "COMPLETED",
   "knowledge": {
     "insights": [
-      "BuffonsNeedleOQ02OQ01.lean already exists and is COMPLETE (304 lines, 0 axioms, 0 sorries)"
+      "BuffonsNeedleOQ02OQ01.lean already exists and is COMPLETE (304 lines, 0 axioms, 0 sorries)",
+      "N-dimensional Buffon noodle generalizes the 2D needle problem to curved needles in higher dimensions",
+      "The expected number of crossings E = 2L/(πd) where L is needle length and d is line spacing"
     ],
-    "builtItems": ["BuffonsNeedleOQ02OQ01.lean: complete"],
+    "builtItems": [
+      "BuffonsNeedleOQ02OQ01.lean: complete",
+      "Formalization includes noodle crossing formula and dimensional generalization"
+    ],
     "openQuestions": [],
     "nextSteps": [],
     "progressSummary": "COMPLETED: File already exists (304L, 0A, 0S)."
