@@ -49,7 +49,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The Borsuk-Ulam theorem was conjectured by Stanislaw Ulam and proved by Karol Borsuk in 1933. It emerged from the Polish school of topology and quickly became one of the most celebrated results in algebraic topology.\n\nThe theorem has a beautifully intuitive interpretation: at any given moment, there exist two antipodal points on Earth (opposite ends of a diameter) that have exactly the same temperature AND the same atmospheric pressure. This 'weather interpretation' makes abstract topology tangible.\n\nWhat makes Borsuk-Ulam remarkable is its wide range of applications. In 1978, Laszlo Lovasz used it to prove Kneser's conjecture about graph coloring, launching the field of topological combinatorics. It also implies the Ham Sandwich Theorem (any n objects in n-dimensional space can be simultaneously bisected by a single hyperplane) and has applications to fair division problems.",
+    "historicalContext": "The Borsuk-Ulam theorem was conjectured by Stanisław Ulam and proved by Karol Borsuk in 1933, published in *Fundamenta Mathematicae* — the journal founded in 1920 by the Lwów-Warsaw school of mathematicians (Kuratowski, Sierpiński, Mazurkiewicz) that became the world center of point-set and algebraic topology. The theorem has a beautifully intuitive interpretation: at any given moment, there exist two antipodal points on Earth that have exactly the same temperature AND atmospheric pressure.\n\nBorsuk's original proof used the degree theory of continuous maps: an antipodal-preserving map $S^n \\to S^n$ has odd degree, and the nonexistence of an odd map $S^n \\to S^{n-1}$ follows from comparing cohomology rings. Modern proofs use three main approaches: (1) covering spaces via the double cover $S^n \\to \\mathbb{RP}^n$ and $\\pi_1(\\mathbb{RP}^n) \\cong \\mathbb{Z}/2\\mathbb{Z}$; (2) $\\mathbb{Z}/2$-homology and the transfer; (3) the Tucker lemma (a combinatorial analog, proved by Ky Fan 1952).\n\nWhat makes Borsuk-Ulam remarkable is its extraordinary range of applications. In 1978, László Lovász used it to prove Kneser's conjecture — that the chromatic number of the Kneser graph $KG(n,k)$ is $n - 2k + 2$ — launching the field of **topological combinatorics**. It implies the ham sandwich theorem (any $n$ measurable sets in $\\mathbb{R}^n$ can be simultaneously bisected by a hyperplane) and has applications to fair division (envy-free cake cutting), discrete geometry, and even economics (equilibrium existence). Jiří Matoušek's *Using the Borsuk-Ulam Theorem* (2003) surveys dozens of applications across mathematics.",
     "problemStatement": "Borsuk-Ulam Theorem: For any continuous function $f: S^n \\to \\mathbb{R}^n$, there exists a point $x \\in S^n$ such that $f(x) = f(-x)$.\n\nEquivalently: there is no continuous antipode-preserving (odd) map from $S^n$ to $S^{n-1}$.\n\nThe intuitive statement: on any sphere, for any continuous measurement of n quantities, some pair of antipodal points gives identical readings.",
     "proofStrategy": "The proof proceeds by contradiction using covering space theory:\n\n1. Suppose $f: S^n \\to \\mathbb{R}^n$ has no antipodal pair, i.e., $f(x) \\neq f(-x)$ for all $x$.\n\n2. Define the 'gadget function' $g(x) = f(x) - f(-x)$. Since $f(x) \\neq f(-x)$, we have $g(x) \\neq 0$ for all $x$.\n\n3. Observe that $g(-x) = -g(x)$ (g is an odd function).\n\n4. Normalize: $h(x) = g(x)/|g(x)|$ gives a continuous map $h: S^n \\to S^{n-1}$ with $h(-x) = -h(x)$.\n\n5. The key lemma: No continuous antipode-preserving map $S^n \\to S^{n-1}$ can exist.\n\n6. This is proved using covering spaces: such a map would induce a map $\\mathbb{R}P^n \\to \\mathbb{R}P^{n-1}$ on projective spaces, leading to contradictions in fundamental groups.\n\n7. Contradiction! Therefore $f$ must have an antipodal pair.",
     "keyInsights": [
@@ -154,6 +154,11 @@
       "targetId": "brouwer-fixed-point",
       "relationship": "implication",
       "description": "Borsuk-Ulam implies Brouwer's Fixed Point Theorem: the retraction proof shows that a continuous map without a fixed point would yield an antipode-preserving map, contradicting Borsuk-Ulam"
+    },
+    {
+      "targetId": "intermediate-value-theorem",
+      "relationship": "related",
+      "description": "The n=1 case of Borsuk-Ulam (every continuous f: S¹ → ℝ has f(x) = f(-x)) is equivalent to the intermediate value theorem applied to g(θ) = f(θ) - f(θ+π) on the circle — Borsuk-Ulam is the higher-dimensional generalization of IVT"
     }
   ],
   "conclusion": {
@@ -167,7 +172,8 @@
     ]
   },
   "relatedProofs": [
-    "brouwer-fixed-point"
+    "brouwer-fixed-point",
+    "intermediate-value-theorem"
   ],
   "leanFile": {
     "imports": [
