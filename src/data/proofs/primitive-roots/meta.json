@@ -54,10 +54,11 @@
     "problemStatement": "**Theorem (Euler, 1773)**: For any prime p, the multiplicative group (ℤ/pℤ)* is cyclic of order p-1.\n\n**Corollary**: There are exactly φ(p-1) primitive roots modulo p, where φ is Euler's totient function.\n\nA **primitive root** g modulo p is an element whose powers g, g², g³, ..., g^(p-1) give all p-1 non-zero residues modulo p. Equivalently, g generates the entire group (ℤ/pℤ)*.",
     "proofStrategy": "The proof elegantly combines two powerful results:\n\n1. **Cyclic Structure**: ZMod p is a field (for prime p), hence an integral domain. Mathlib's theorem `isCyclic_of_subgroup_isDomain` tells us that any finite subgroup of units in an integral domain is cyclic. Therefore (ℤ/pℤ)* is cyclic.\n\n2. **Counting by Order**: In any cyclic group of order n, there are exactly φ(d) elements of order d for each divisor d of n. This is `IsCyclic.card_orderOf_eq_totient` in Mathlib.\n\n3. **Application**: Primitive roots are elements of order p-1 in a cyclic group of order p-1. By the counting theorem, there are exactly φ(p-1) such elements.\n\nThe proof is essentially a two-line application of these deep structural results!",
     "keyInsights": [
-      "The multiplicative group (ℤ/pℤ)* is cyclic because ZMod p is a field—this is the key structural fact",
-      "Primitive roots = generators = elements of maximal order",
-      "The formula ∑_{d|n} φ(d) = n partitions a cyclic group by element orders",
-      "φ(p-1) can be computed from the prime factorization of p-1"
+      "**Cyclic from fields**: $(\\mathbb{Z}/p\\mathbb{Z})^*$ is cyclic because $\\mathbb{Z}/p\\mathbb{Z}$ is a field, hence an integral domain. Mathlib's `isCyclic_of_subgroup_isDomain` gives cyclicity of finite subgroups of $k^*$ for any integral domain $k$.",
+      "**Three equivalent views**: Primitive root $\\iff$ generator $\\iff$ element of maximal order $p-1$. The proof freely moves between these perspectives.",
+      "**Partition by order**: The identity $\\sum_{d \\mid n} \\varphi(d) = n$ partitions a cyclic group of order $n$ by element orders. Setting $d = n$ gives $\\varphi(n)$ generators.",
+      "**Computational**: $\\varphi(p-1)$ is computed from the prime factorization of $p-1$ via $\\varphi(n) = n \\prod_{p \\mid n}(1 - 1/p)$. Finding an actual primitive root is harder — no deterministic polynomial-time algorithm is known.",
+      "**Essentially a two-line proof**: The entire argument is: (1) $(\\mathbb{Z}/p\\mathbb{Z})^*$ is cyclic (integral domain theorem), (2) apply cyclic group counting ($\\varphi(d)$ elements of order $d$). This showcases the power of structural algebra over ad-hoc arguments."
     ]
   },
   "sections": [
@@ -108,6 +109,23 @@
       "endLine": 178,
       "summary": "Prove that primitive roots are exactly the generators of (ℤ/pℤ)*.",
       "mathContext": "Primitive root $g \\iff g$ generates $(\\mathbb{Z}/p\\mathbb{Z})^* \\iff \\text{orderOf}(g) = p-1 \\iff g^k \\neq 1$ for $0 < k < p-1$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "euler-totient",
+      "relationship": "prerequisite",
+      "description": "Euler's totient φ(n) counts primitive roots: there are φ(p-1) of them modulo prime p"
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Quadratic residues mod p are determined by primitive roots: a is a QR iff its discrete log is even"
+    },
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "related",
+      "description": "Fermat's two-square theorem uses quadratic residues, which are characterized via primitive roots"
     }
   ],
   "conclusion": {

@@ -85,14 +85,53 @@
       "endLine": 139,
       "summary": "Properties of individual terms: even-indexed positive, odd-indexed negative.",
       "mathContext": "$a_n = (-1)^n/(2n+1)$. Even terms positive, odd terms negative. $|a_n| \\searrow 0$."
+    },
+    {
+      "id": "significance",
+      "title": "Mathematical Significance",
+      "startLine": 141,
+      "endLine": 163,
+      "summary": "Discussion of the formula's historical importance, conditional convergence, and connection to transcendence.",
+      "mathContext": "Conditional convergence: $\\sum |a_n| = \\infty$ but $\\sum a_n = \\pi/4$. By Riemann rearrangement, conditionally convergent series can be rearranged to any value."
+    },
+    {
+      "id": "faster-formulas",
+      "title": "Faster Converging Alternatives",
+      "startLine": 165,
+      "endLine": 178,
+      "summary": "Machin's formula, Chudnovsky algorithm, and BBP formula for faster π computation.",
+      "mathContext": "Machin: $\\pi/4 = 4\\arctan(1/5) - \\arctan(1/239)$. Chudnovsky: 14+ digits/term."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "The Basel problem (π²/6 = Σ1/n²) is another famous infinite series for π, converging much faster than Leibniz's series"
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "related",
+      "description": "π is transcendental (Lindemann 1882), making the Leibniz series a rational approximation scheme for a non-algebraic number"
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "contrasts",
+      "description": "The harmonic series Σ1/n diverges, but alternating signs in Σ(-1)^n/(2n+1) create enough cancellation for convergence — illustrating conditional convergence"
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "related",
+      "description": "Euler's identity e^(iπ) = -1 connects π to complex exponentials; the Leibniz series connects π to real arctangent — both reveal π's role in analysis"
     }
   ],
   "conclusion": {
     "summary": "The Leibniz series is one of the most famous formulas in mathematics, demonstrating that pi can be expressed through the simple pattern of alternating fractions with odd denominators. Though it converges too slowly for practical computation, it reveals the deep connection between pi and the arctangent function.",
     "implications": "**Theoretical Significance:**\n\n**1. Historical importance**\nOne of the first infinite series for pi.\n\n**2. Connection to arctangent**\nShows the relationship between pi and inverse trigonometric functions.\n\n**3. Conditional convergence**\nA beautiful example where alternating signs create sufficient cancellation.\n\n**Faster Alternatives:**\n\n- Machin's formula (1706): pi/4 = 4*arctan(1/5) - arctan(1/239)\n- Chudnovsky algorithm: Converges at 14+ digits per term",
     "openQuestions": [
-      "What is the optimal rate of convergence for arctangent-based series?",
-      "How do generalized Leibniz-type formulas extend to other constants?"
+      "What is the optimal rate of convergence for arctangent-based series for π?",
+      "How do generalized Leibniz-type formulas extend to other constants (e.g., Catalan's constant G = Σ(-1)^n/(2n+1)²)?",
+      "Can the Leibniz series be accelerated by Euler or Richardson transforms to achieve practical convergence rates?"
     ]
   }
 }

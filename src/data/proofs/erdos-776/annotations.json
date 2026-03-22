@@ -1,5 +1,29 @@
 [
   {
+    "id": "erdos-776-ann-header",
+    "proofId": "erdos-776",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 19 },
+    "title": "Problem Statement and References",
+    "content": "Erdős Problem #776 asks: given a multiplicity constraint $r \\geq 2$ (every occurring set size must appear at least $r$ times), how many distinct set sizes can an antichain in $2^{[n]}$ achieve? The answer is $n - 3$ for sufficiently large $n$, down from $n - 2$ when $r = 1$. The threshold $N(r)$ — the smallest $n$ where $n - 3$ is both achievable and optimal — is the open problem.\n\nThe file references Griggs [Gu83] for the $r = 1$ case and the Erdős problems database.",
+    "mathContext": "An antichain in $2^{[n]}$ is a family $\\mathcal{F}$ of subsets of $[n] = \\{1, \\ldots, n\\}$ where no set contains another. The multiplicity-$r$ constraint requires $|\\{A \\in \\mathcal{F} : |A| = k\\}| \\geq r$ for every size $k$ that appears.",
+    "significance": "critical",
+    "relatedConcepts": ["antichain", "Boolean lattice", "extremal set theory", "multiplicity constraint"],
+    "prerequisites": ["set-theory", "combinatorics-basics", "partial-orders"]
+  },
+  {
+    "id": "erdos-776-ann-imports",
+    "proofId": "erdos-776",
+    "type": "concept",
+    "range": { "startLine": 21, "endLine": 27 },
+    "title": "Imports and Setup",
+    "content": "Imports Mathlib modules for finite sets (`Finset.Basic`, `Finset.Powerset`), the order-theoretic antichain definition (`Order.Antichain`), and standard tactics. Note: the formalization defines its own `IsAntichain` predicate rather than using Mathlib's `IsAntichain` from `Order.Antichain`, since the subset-inclusion version is more natural for the combinatorial setting.",
+    "mathContext": "The `open Finset` command brings `Finset.card`, `Finset.image`, `Finset.filter`, `Finset.sup` into scope without qualification.",
+    "significance": "supporting",
+    "relatedConcepts": ["Mathlib imports", "Finset", "Order.Antichain"],
+    "prerequisites": ["lean4-syntax", "mathlib-modules"]
+  },
+  {
     "id": "erdos-776-ann-family",
     "proofId": "erdos-776",
     "type": "definition",

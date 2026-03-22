@@ -56,7 +56,8 @@
       "For $r > 1$: sizes $k$ with $\\binom{n}{k} < r$ are forbidden, excluding extreme layers. Since $\\binom{n}{0} = \\binom{n}{n} = 1 < r$ and $\\binom{n}{1} = \\binom{n}{n-1} = n$, sizes $0$ and $n$ are always excluded for $r \\geq 2$, and sizes $1$ and $n-1$ are excluded when $r > n$",
       "Sperner's theorem $|\\mathcal{F}| \\leq \\binom{n}{\\lfloor n/2 \\rfloor}$ bounds the total family size, creating a tension: more distinct sizes require spreading sets across layers, but each layer contributes at most $\\binom{n}{k}$ sets",
       "The size-variety tradeoff $|\\mathcal{F}| \\geq r \\cdot d$ (where $d$ is the number of distinct sizes) combined with Sperner's bound gives $d \\leq \\binom{n}{\\lfloor n/2 \\rfloor}/r$, which for fixed $r$ is $\\Theta(2^n/\\sqrt{n})$, far above $n - 3$, so the real constraint comes from the antichain property, not the size bound",
-      "The proof of `erdos_trotter_exact` takes $N = \\max(N_1, N_2)$ from the two axioms and uses `omega` to close the equality from $\\leq$ and $\\geq$, a clean example of the sandwich technique in extremal combinatorics"
+      "The proof of `erdos_trotter_exact` takes $N = \\max(N_1, N_2)$ from the two axioms and uses `omega` to close the equality from $\\leq$ and $\\geq$, a clean example of the sandwich technique in extremal combinatorics",
+      "**Unimodality barrier**: The binomial coefficients $\\binom{n}{k}$ are unimodal (increasing then decreasing), so layers with $\\binom{n}{k} < r$ cluster at the extremes. For fixed $r$, exactly the outermost layers are excluded, and their count stabilizes once $n$ is large enough — this is why a finite threshold $N(r)$ exists"
     ]
   },
   "sections": [
@@ -101,24 +102,36 @@
   },
   "crossReferences": [
     {
-      "targetId": "sperner-theorem",
-      "relationship": "depends-on",
-      "description": "Sperner's theorem provides the fundamental upper bound on antichain size that constrains multiplicity-r families"
+      "targetId": "erdos-777",
+      "relationship": "related",
+      "description": "Problem #777 studies comparable pairs in families of sets — the dual perspective to antichains, where Problem #776 forbids comparability"
     },
     {
-      "targetId": "erdos-ko-rado",
+      "targetId": "erdos-497",
       "relationship": "related",
-      "description": "The Erdős-Ko-Rado theorem is another extremal result on set families with intersection constraints, a cousin of antichain problems"
+      "description": "Problem #497 (Dedekind's Problem) counts the total number of antichains in 2^[n], the enumerative counterpart to this extremal question"
+    },
+    {
+      "targetId": "erdos-447",
+      "relationship": "related",
+      "description": "Problem #447 studies union-free collections of sets, another extremal set family problem with structural constraints"
     },
     {
       "targetId": "kummer-theorem",
       "relationship": "related",
-      "description": "Binomial coefficient structure (via Kummer's theorem) determines which layers have enough sets for multiplicity r"
+      "description": "Kummer's theorem on binomial coefficient divisibility determines which layers have enough sets for multiplicity r"
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "prerequisite",
+      "description": "The binomial coefficient formula C(n,k) underlies layer sizes and the Sperner bound"
     }
   ],
   "relatedProofs": [
-    "sperner-theorem",
-    "erdos-ko-rado",
-    "kummer-theorem"
+    "erdos-777",
+    "erdos-497",
+    "erdos-447",
+    "kummer-theorem",
+    "combinations-formula"
   ]
 }

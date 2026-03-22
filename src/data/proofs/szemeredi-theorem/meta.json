@@ -93,6 +93,28 @@
       "summary": "Assembles full SzemerediTheorem from k=1,2 density lemmas, k=3 Roth, and k>=4 axiom."
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "roth-theorem-k3",
+      "relationship": "depends-on",
+      "description": "The k=3 case (Roth's theorem) is the proved component of this formalization, using Mathlib's roth_3ap_theorem_nat"
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "The Szemerédi Regularity Lemma is the key tool in the original proof for k≥4 and is a major target for Mathlib formalization"
+    },
+    {
+      "targetId": "szemeredi-counting",
+      "relationship": "related",
+      "description": "The counting lemma complements the regularity lemma to give density-based AP results"
+    },
+    {
+      "targetId": "erdos-817",
+      "relationship": "applied-in",
+      "description": "Szemerédi's theorem is axiomatized in erdos-817 to provide density bounds forcing exponential growth of g_k(n)"
+    }
+  ],
   "conclusion": {
     "summary": "This formalization proves Szemeredi's theorem by combining proved cases (k=1,2 trivial, k=3 Roth via Mathlib) with an axiom for k>=4. The key achievements are: the equivalence `threeAPFree_iff_isAPFree` connecting to Mathlib, density lemmas for k=1,2, and axiom reduction from the full theorem to just k>=4.\n\nOnly k >= 4 remains axiomatized, awaiting hypergraph regularity in Mathlib.",
     "implications": "**Theoretical Significance**\n\nSzemeredi's theorem has deep connections to:\n1. **Ergodic Theory**: Furstenberg's proof initiated the field of ergodic Ramsey theory\n2. **Fourier Analysis**: Gowers' proof introduced influential new techniques\n3. **Regularity Lemma**: Became a fundamental tool in graph theory\n\n**The Green-Tao Theorem**\n\nBuilding on Szemeredi, Green and Tao (2004) proved the primes contain arbitrarily long arithmetic progressions. This is one of the most celebrated results in 21st century mathematics.",
