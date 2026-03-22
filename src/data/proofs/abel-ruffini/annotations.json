@@ -15,7 +15,8 @@
       "Galois theory",
       "radical extensions",
       "polynomial solvability"
-    ]
+    ],
+    "prerequisites": ["polynomial equations", "field operations"]
   },
   {
     "id": "ann-imports",
@@ -33,14 +34,15 @@
       "Mathlib",
       "Galois theory",
       "group theory"
-    ]
+    ],
+    "prerequisites": ["Lean 4 import system", "Mathlib library structure"]
   },
   {
     "id": "ann-solvable-by-rad",
     "proofId": "abel-ruffini",
     "range": {
-      "startLine": 6,
-      "endLine": 32
+      "startLine": 36,
+      "endLine": 49
     },
     "type": "definition",
     "title": "Solvable by Radicals",
@@ -51,7 +53,8 @@
       "radical extension",
       "intermediate field",
       "inductive definition"
-    ]
+    ],
+    "prerequisites": ["field extensions", "nth roots", "IsSolvableByRad"]
   },
   {
     "id": "ann-abel-ruffini-theorem",
@@ -69,14 +72,15 @@
       "Galois group",
       "solvable group",
       "minimal polynomial"
-    ]
+    ],
+    "prerequisites": ["field extensions", "Galois theory", "solvableByRad.isSolvable'"]
   },
   {
     "id": "ann-a5-simple",
     "proofId": "abel-ruffini",
     "range": {
-      "startLine": 77,
-      "endLine": 84
+      "startLine": 94,
+      "endLine": 98
     },
     "type": "theorem",
     "title": "A₅ is Simple",
@@ -88,14 +92,15 @@
       "simple group",
       "normal subgroup",
       "cycle type"
-    ]
+    ],
+    "prerequisites": ["permutation groups", "normal subgroups", "alternatingGroup.isSimpleGroup_five"]
   },
   {
     "id": "ann-s5-s6-not-solvable",
     "proofId": "abel-ruffini",
     "range": {
       "startLine": 86,
-      "endLine": 100
+      "endLine": 92
     },
     "type": "technique",
     "title": "Instantiating Non-Solvability for S₅ and S₆",
@@ -107,14 +112,15 @@
       "perfect group",
       "composition series",
       "simple group"
-    ]
+    ],
+    "prerequisites": ["symmetric_group_not_solvable", "le_rfl", "omega tactic"]
   },
   {
     "id": "ann-small-solvable",
     "proofId": "abel-ruffini",
     "range": {
       "startLine": 100,
-      "endLine": 112
+      "endLine": 118
     },
     "type": "insight",
     "title": "Solvable Small Symmetric Groups: The Other Side of the Threshold",
@@ -127,6 +133,25 @@
       "typeclass inference",
       "quadratic formula"
     ]
+  },
+  {
+    "id": "ann-exists-quintic",
+    "proofId": "abel-ruffini",
+    "range": {
+      "startLine": 120,
+      "endLine": 136
+    },
+    "type": "technique",
+    "title": "Part V Setup: Existence of Quintics and the Main Theorem Preamble",
+    "content": "Part V combines the Galois bridge (Part II) with non-solvability of $S_n$ (Part III) to state the Abel-Ruffini theorem.\n\n`exists_quintic` provides a trivial witness that degree-5 polynomials exist: $X^5$ has `natDegree = 5`, proved by `simp` on `Polynomial.natDegree_pow` and `Polynomial.natDegree_X`. This is a sanity check — the substantive content is in `not_solvable_by_rad_of_not_solvable_gal` that follows.\n\nThe Part V docstring frames the logical structure: the contrapositive of `galois_bridge` converts \"solvable by radicals → solvable Galois group\" into \"unsolvable Galois group → not solvable by radicals.\" Since $S_5$ is not solvable, any polynomial with Galois group $S_5$ has roots that are not expressible by radicals.",
+    "mathContext": "$\\exists p \\in \\mathbb{Q}[X],\\; \\deg(p) = 5$. Witness: $p = X^5$.\n\n$\\text{natDegree}(X^n) = n \\cdot \\text{natDegree}(X) = n \\cdot 1 = n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Polynomial.natDegree",
+      "witness construction",
+      "contrapositive setup"
+    ],
+    "prerequisites": ["Polynomial.natDegree_pow", "Polynomial.natDegree_X"]
   },
   {
     "id": "ann-contrapositive",
@@ -145,7 +170,8 @@
       "proof by contradiction",
       "irreducible polynomial",
       "Galois group computation"
-    ]
+    ],
+    "prerequisites": ["galois_bridge", "IsSolvable", "IsSolvableByRad"]
   },
   {
     "id": "ann-threshold-commentary",
@@ -164,7 +190,8 @@
       "Fundamental Theorem of Algebra",
       "transcendence of pi",
       "Gödel incompleteness"
-    ]
+    ],
+    "prerequisites": ["derived series", "composition series", "simple groups"]
   },
   {
     "id": "ann-cardinal-bridge",
