@@ -142,5 +142,21 @@
       "Can the result be strengthened for special graph classes?",
       "What is the computational complexity of finding the optimal subgraph H?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "note": "[ErGr80] original formulation"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-759",
+      "relationship": "related",
+      "description": "Consecutive Erdős problems in the same family of number-theoretic questions"
+    }
+  ]
 }
