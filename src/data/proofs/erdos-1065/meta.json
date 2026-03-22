@@ -29,23 +29,6 @@
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/1065",
     "erdosUrl": "https://erdosproblems.com/1065",
-    "crossReferences": [
-      {
-        "proofId": "sophie-germain",
-        "relationship": "generalizes",
-        "description": "Safe primes (p = 2q + 1) are the k=1 special case of Form A primes; the infinitude of safe primes would imply Conjecture A."
-      },
-      {
-        "proofId": "primitive-roots",
-        "relationship": "related",
-        "description": "Artin's primitive root conjecture concerns primes p where a given integer is a primitive root, which depends on the factorization of p−1 — exactly the structure constrained by Form A."
-      },
-      {
-        "proofId": "dirichlets-theorem",
-        "relationship": "related",
-        "description": "Dirichlet's theorem on primes in arithmetic progressions is the prototype result on prime distribution in structured sets; Erdős's question asks about a more restrictive structured set."
-      }
-    ],
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -153,5 +136,27 @@
       "What is the density of Form A primes among all primes? Heuristics suggest positive lower density",
       "Does allowing the factor $3^l$ in Form B significantly increase the density, or are most Form B primes already Form A?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "sophie-germain",
+      "relationship": "generalizes",
+      "description": "Safe primes (p = 2q + 1) are the k=1 special case of Form A primes; the infinitude of safe primes would imply Conjecture A"
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "related",
+      "description": "Artin's primitive root conjecture depends on the factorization of p-1 — exactly the structure constrained by Form A"
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Dirichlet's theorem on primes in arithmetic progressions is the prototype for prime distribution in structured sets; Erdős asks about a more restrictive structured set"
+    }
+  ],
+  "relatedProofs": [
+    "sophie-germain",
+    "primitive-roots",
+    "dirichlets-theorem"
+  ]
 }
