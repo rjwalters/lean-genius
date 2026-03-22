@@ -1,0 +1,89 @@
+[
+  {
+    "id": "counting-header",
+    "proofId": "szemeredi-counting",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 19 },
+    "title": "Module Overview and Setup",
+    "content": "The counting and removal lemmas are the key applications of the Szemer\u00e9di Regularity Lemma. This formalization covers three results of increasing generality: the counting lemma for triangles in regular triples, the triangle removal lemma, and the general graph removal lemma.\n\nThe formalization works over a finite vertex type `V` with `DecidableEq`, and uses Mathlib's `SimpleGraph` infrastructure throughout.",
+    "mathContext": "Setting: finite simple graph $G = (V, E)$ with $|V| = n$, $\\varepsilon$-regular pairs from Szemer\u00e9di's Regularity Lemma.",
+    "significance": "key",
+    "relatedConcepts": ["Szemer\u00e9di Regularity Lemma", "SimpleGraph", "epsilon-regular pairs"],
+    "prerequisites": ["SimpleGraph", "Fintype", "DecidableEq", "Szemer\u00e9di regularity"],
+    "crossReferences": ["szemeredi-regularity"]
+  },
+  {
+    "id": "counting-triangle-count",
+    "proofId": "szemeredi-counting",
+    "type": "definition",
+    "range": { "startLine": 25, "endLine": 29 },
+    "title": "Triangle Count Definition",
+    "content": "`triangleCount G A B C` counts ordered triples $(a, b, c) \\in A \\times B \\times C$ forming a triangle in $G$. Implemented via filtering the product set $A \\times (B \\times C)$ for triples where all three pairs are adjacent.\n\nThis counts ordered triples, so each triangle contributes 1 to the count (since vertices are in distinct sets $A$, $B$, $C$). For the counting lemma, this is the natural quantity to estimate.",
+    "mathContext": "$T(A,B,C) = |\\{(a,b,c) \\in A \\times B \\times C : ab, ac, bc \\in E(G)\\}|$. For random bipartite graphs with densities $d_{12}, d_{13}, d_{23}$, $\\mathbb{E}[T] = d_{12} d_{13} d_{23} |A||B||C|$.",
+    "significance": "key",
+    "relatedConcepts": ["triangle counting", "Finset.product", "Finset.filter"],
+    "prerequisites": ["SimpleGraph.Adj", "Finset.product", "Finset.filter"]
+  },
+  {
+    "id": "counting-lemma-thm",
+    "proofId": "szemeredi-counting",
+    "type": "technique",
+    "range": { "startLine": 31, "endLine": 51 },
+    "title": "Counting Lemma (sorry)",
+    "content": "The counting lemma: if $(A, B)$, $(A, C)$, and $(B, C)$ are all $\\varepsilon$-regular pairs with edge densities $\\geq \\varepsilon$, then the triangle count is at least $(d_{AB} - \\varepsilon)(d_{AC} - \\varepsilon)(d_{BC} - \\varepsilon)|A||B||C|$.\n\nThe proof idea: for a vertex $a \\in A$, its neighborhood in $B$ has size $\\approx d_{AB}|B|$ by regularity (for all but $\\varepsilon|A|$ vertices). Similarly for $C$. The number of edges between $N(a) \\cap B$ and $N(a) \\cap C$ is $\\approx d_{BC}|N(a) \\cap B||N(a) \\cap C|$ by regularity of $(B, C)$. Summing over $a$ and handling error terms gives the bound.",
+    "mathContext": "$T(A,B,C) \\geq (d_{AB} - \\varepsilon)(d_{AC} - \\varepsilon)(d_{BC} - \\varepsilon)|A||B||C|$. The error bound is at most $3\\varepsilon|A||B||C|$ when densities are $\\Theta(1)$.",
+    "significance": "key",
+    "relatedConcepts": ["epsilon-regularity", "edge density", "neighborhood counting", "error propagation"],
+    "prerequisites": ["IsEpsilonRegular", "edgeDensity", "triangleCount"],
+    "crossReferences": ["szemeredi-regularity"]
+  },
+  {
+    "id": "counting-edge-set",
+    "proofId": "szemeredi-counting",
+    "type": "definition",
+    "range": { "startLine": 57, "endLine": 59 },
+    "title": "Edge Set Representation",
+    "content": "`edgeSet G` represents the edges of $G$ as ordered pairs $(v, w)$ where $G.Adj(v, w)$. This representation is used for the removal operation — edges to remove are specified as a subset of these pairs.",
+    "mathContext": "$E(G) = \\{(v,w) \\in V \\times V : v \\sim_G w\\}$. Since $G$ is simple, $|E| = 2|E(G)|$ counting ordered pairs.",
+    "significance": "supporting",
+    "relatedConcepts": ["edge representation", "Finset.product", "graph edges"],
+    "prerequisites": ["SimpleGraph.Adj", "Finset.product"]
+  },
+  {
+    "id": "counting-remove-edges",
+    "proofId": "szemeredi-counting",
+    "type": "definition",
+    "range": { "startLine": 61, "endLine": 65 },
+    "title": "Edge Removal Operation",
+    "content": "`removeEdges G R` constructs a subgraph of $G$ by removing all edges in the set $R$. The symmetry proof handles the fact that if $(v, w) \\notin R$ we need $(w, v) \\notin R$ — this requires the removal set to be symmetric, which is ensured by the `rwa` tactic in the symmetry proof.\n\nThis is the key operation for the removal lemma: we need to find a small $R$ that eliminates all triangles.",
+    "mathContext": "$G' = G \\setminus R$ where $v \\sim_{G'} w \\iff v \\sim_G w \\wedge (v,w) \\notin R$. The goal: $|R| \\leq \\delta n^2$ and $G'$ is triangle-free.",
+    "significance": "supporting",
+    "relatedConcepts": ["graph modification", "subgraph", "edge deletion"],
+    "prerequisites": ["SimpleGraph", "Set membership"]
+  },
+  {
+    "id": "counting-triangle-removal",
+    "proofId": "szemeredi-counting",
+    "type": "technique",
+    "range": { "startLine": 67, "endLine": 86 },
+    "title": "Triangle Removal Lemma (sorry)",
+    "content": "For every $\\delta > 0$, there exists $\\gamma > 0$ such that any graph with at most $\\gamma n^3$ triangles can be made triangle-free by removing at most $\\delta n^2$ edges.\n\nThe proof strategy: (1) Apply the Regularity Lemma with $\\varepsilon = \\delta/2$ to get a partition. (2) Remove all edges within parts, in irregular pairs, and in regular pairs with density $< \\delta/2$. This removes at most $\\delta n^2$ edges. (3) Any remaining triangle must have vertices in three mutually regular, dense parts. (4) By the counting lemma, this yields at least $c n^3$ triangles. (5) So if the graph has fewer than $c n^3$ triangles, no such triangle exists and the graph is triangle-free.\n\nThe statement uses `True` as a placeholder for the edge count bound, which should be `(Finset.filter ... R).card \\leq delta * n^2`.",
+    "mathContext": "$\\forall \\delta > 0, \\exists \\gamma > 0, \\forall G$ on $n$ vertices: $T(G) \\leq \\gamma n^3 \\Rightarrow \\exists R \\subseteq E(G), |R| \\leq \\delta n^2 \\wedge G \\setminus R$ is triangle-free.",
+    "significance": "key",
+    "relatedConcepts": ["Szemer\u00e9di Regularity Lemma", "counting lemma", "stability", "Ruzsa-Szemer\u00e9di"],
+    "prerequisites": ["counting_lemma", "Szemer\u00e9di Regularity Lemma", "triangleCount"],
+    "crossReferences": ["szemeredi-regularity", "roth-theorem-k3"]
+  },
+  {
+    "id": "counting-graph-removal",
+    "proofId": "szemeredi-counting",
+    "type": "concept",
+    "range": { "startLine": 88, "endLine": 103 },
+    "title": "General Graph Removal Lemma (stub)",
+    "content": "The general graph removal lemma extends the triangle case to arbitrary subgraphs $H$ on $h$ vertices. The statement: for every $H$ with $h \\geq 3$ vertices and every $\\delta > 0$, there exists $\\gamma > 0$ such that any $G$ with at most $\\gamma n^h$ copies of $H$ can be made $H$-free by removing at most $\\delta n^2$ edges.\n\nThe current formalization is a stub: it only asserts $\\exists \\gamma > 0$ (proved by $\\gamma = 1$) without the actual removal property. The full statement would quantify over all graphs $G$ and assert the removal property.",
+    "mathContext": "General removal: $\\forall H$ on $h$ vertices, $\\forall \\delta > 0, \\exists \\gamma > 0$: $\\text{copies}(H, G) \\leq \\gamma n^h \\Rightarrow G$ can be made $H$-free by removing $\\leq \\delta n^2$ edges. Special case $H = K_3$: the triangle removal lemma.",
+    "significance": "supporting",
+    "relatedConcepts": ["graph homomorphism", "subgraph counting", "hypergraph removal"],
+    "prerequisites": ["triangle_removal_lemma", "subgraph embedding"]
+  }
+]
