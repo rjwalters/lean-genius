@@ -61,35 +61,40 @@
       "title": "Gauss's Summation Formula",
       "startLine": 50,
       "endLine": 70,
-      "summary": "The fundamental formulas for summing 0..n-1 and 0..n."
+      "summary": "The fundamental formulas for summing 0..n-1 and 0..n.",
+      "mathContext": "$\\sum_{i=0}^{n-1} i = \\frac{n(n-1)}{2}$ and $\\sum_{i=0}^{n} i = \\frac{n(n+1)}{2}$. Mathlib's `Finset.sum_range_id` gives the 0-indexed version directly."
     },
     {
       "id": "pairing-argument",
       "title": "The Pairing Argument",
       "startLine": 72,
       "endLine": 94,
-      "summary": "The algebraic heart of Gauss's proof: 2S = n(n+1)."
+      "summary": "The algebraic heart of Gauss's proof: 2S = n(n+1).",
+      "mathContext": "$S + S = \\sum_{i=0}^{n} i + \\sum_{i=0}^{n} (n-i) = \\sum_{i=0}^{n} (n) = n(n+1)$, so $S = \\frac{n(n+1)}{2}$."
     },
     {
       "id": "general-series",
       "title": "General Arithmetic Series",
       "startLine": 96,
       "endLine": 108,
-      "summary": "Generalization to arithmetic progressions with arbitrary first term and difference."
+      "summary": "Generalization to arithmetic progressions with arbitrary first term and difference.",
+      "mathContext": "$\\sum_{k=0}^{n-1} (a + kd) = na + d \\cdot \\frac{n(n-1)}{2}$. Specializes to Gauss's formula when $a = 0, d = 1$."
     },
     {
       "id": "special-cases",
       "title": "Famous Special Cases",
       "startLine": 110,
       "endLine": 139,
-      "summary": "Gauss's original 1-100 problem, sum of odd numbers, and sum of even numbers."
+      "summary": "Gauss's original 1-100 problem, sum of odd numbers, and sum of even numbers.",
+      "mathContext": "$1 + 2 + \\cdots + 100 = 5050$. Sum of first $n$ odd numbers: $1 + 3 + \\cdots + (2n-1) = n^2$. Sum of first $n$ even numbers: $0 + 2 + \\cdots + 2(n-1) = n(n-1)$."
     },
     {
       "id": "triangular-numbers",
       "title": "Triangular Numbers",
       "startLine": 141,
       "endLine": 178,
-      "summary": "Definition and properties of triangular numbers."
+      "summary": "Definition and properties of triangular numbers.",
+      "mathContext": "$T(n) = \\frac{n(n+1)}{2} = \\binom{n+1}{2}$. Recurrence: $T(n+1) = T(n) + (n+1)$. First few: $1, 3, 6, 10, 15, 21, \\ldots$"
     }
   ],
   "conclusion": {
@@ -100,5 +105,27 @@
       "How does this generalize to higher-dimensional simplicial numbers?",
       "What is the relationship to the Riemann zeta function at negative integers?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "Triangular numbers are binomial coefficients: T(n) = C(n+1, 2). The binomial theorem provides the framework for understanding figurate numbers"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "related",
+      "description": "Both are fundamental results in elementary number theory — the arithmetic series formula is essential for estimating prime-counting functions and sieve methods"
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "The sum of odd numbers identity 1+3+...+(2n-1) = n² provides a number-theoretic proof that n² is the sum of n consecutive odd numbers, connecting to square numbers in Pythagorean theory"
+    }
+  ],
+  "relatedProofs": [
+    "binomial-theorem",
+    "infinitude-primes",
+    "pythagorean-theorem"
+  ]
 }
