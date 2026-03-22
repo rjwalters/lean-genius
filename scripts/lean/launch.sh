@@ -1627,6 +1627,21 @@ cmd_daemon() {
 
         total_respawns=$((total_respawns + cycle_respawns))
 
+        # 2a. Periodic research DB sync (JSON -> DB, every 10 cycles)
+        if [[ $((cycle_count % 10)) -eq 1 ]]; then
+            if [[ -f "research/db/sync_from_json.py" ]] && [[ -f "research/db/knowledge.db" ]]; then
+                daemon_log "INFO" "Running research DB sync (JSON -> DB)..."
+                if python3 research/db/sync_from_json.py 2>&1 | while IFS= read -r line; do daemon_log "INFO" "sync_from_json: $line"; done; then
+                    # Regenerate candidate pool from updated DB
+                    if python3 research/db/sync_pool.py 2>&1 | while IFS= read -r line; do daemon_log "INFO" "sync_pool: $line"; done; then
+                        daemon_log "INFO" "Research DB sync complete"
+                    fi
+                else
+                    daemon_log "WARN" "Research DB sync failed (non-fatal)"
+                fi
+            fi
+        fi
+
         # 2a-post. Sweep for orphaned claude processes (detached from any tmux session)
         local orphan_pids
         orphan_pids=$(ps aux | grep '[c]laude -p.*\(researcher\|enricher\|deployer\|seeker\|aristotle\)' | awk '$7 == "??" {print $2}')
