@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: bad_vertices_small proof 95% complete. Fiber decomposition: |(A'×B).filter Adj| = Σ |N_B(a)|. Use Finset.card_eq_sum_card_fiberwise with Prod.fst. Then each a∈A'(=badVertices) has |N_B(a)| < (d-ε)|B|, giving sum < |A'|(d-ε)|B|. 3 sorries total.",
+    "progressSummary": "SURVEY: File builds clean with 3 sorries. Key sorry (line 120) needs fiber decomposition of product filter into sum of neighborhood cardinalities.",
     "builtItems": [
       "neighborhoodIn: {b ∈ B : G.Adj v b} (definition + subset/card lemmas proved)",
       "badVertices/goodVertices: partition of A by neighborhood threshold (proved: good_union_bad)",
@@ -48,7 +48,10 @@
       "bad_vertices_small proof structured: contraposition → A subset → eps-regularity → abs_le → density bounds",
       "Key remaining step: edge count decomposition |(A×B).filter Adj| = Σ |N_B(a)| — standard Finset fiber decomposition",
       "bad_vertices_small proof fully structured: unfold edgeDensity, dif_neg, div_lt_iff₀, then fiber decomposition + sum bound. Only the fiber decomposition (relating edge count to sum of neighborhoods) remains as sorry.",
-      "Fiber decomposition: |(A×B).filter G.Adj| = Σ_{a∈A} |neighborhoodIn G a B|. Need Finset.card_biUnion or Finset.card_eq_sum_card_fiberwise with Prod.fst as fiber map."
+      "Fiber decomposition: |(A×B).filter G.Adj| = Σ_{a∈A} |neighborhoodIn G a B|. Need Finset.card_biUnion or Finset.card_eq_sum_card_fiberwise with Prod.fst as fiber map.",
+      "File builds clean (3 sorries). Imports SzemerediRegularity successfully.",
+      "bad_vertices_small sorry at line 120: after div_lt_iff₀, goal is cast edge_count < (d-ε)*|A|*|B|. Need fiber decomposition + sum bound.",
+      "Fiber decomposition identity: ((A×B).filter Adj).card = Σ_{a∈A} (B.filter (Adj a)).card. Try Finset.card_sigma or direct induction."
     ],
     "mathlibGaps": [],
     "nextSteps": [
