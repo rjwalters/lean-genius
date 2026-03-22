@@ -141,12 +141,24 @@
       "targetId": "basel-problem",
       "relationship": "related",
       "description": "The Basel identity ζ(2) = π²/6 can be derived using Parseval's theorem applied to f(x) = x on [-π,π], which is a direct application of the L² inner product structure that the Cauchy-Schwarz integral inequality governs."
+    },
+    {
+      "targetId": "triangle-inequality",
+      "relationship": "implication",
+      "description": "The Minkowski inequality (L^p triangle inequality) ‖f+g‖_p ≤ ‖f‖_p + ‖g‖_p for p=2 follows directly from the integral Cauchy-Schwarz, exactly as the discrete triangle inequality follows from the discrete Cauchy-Schwarz"
+    },
+    {
+      "targetId": "amgm-inequality-oq-03",
+      "relationship": "related",
+      "description": "Power mean monotonicity M₁ ≤ M₂ is the discrete Cauchy-Schwarz for equal weights; the integral analog extends this to continuous power means on measure spaces, connecting power mean theory to L^p analysis"
     }
   ],
   "relatedProofs": [
     "cauchy-schwarz",
     "fourier-series",
-    "basel-problem"
+    "basel-problem",
+    "triangle-inequality",
+    "amgm-inequality-oq-03"
   ],
   "leanFile": {
     "imports": [

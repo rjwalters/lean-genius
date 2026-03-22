@@ -166,6 +166,16 @@
       "targetId": "fundamental-arithmetic",
       "relationship": "related",
       "description": "The factorial n! in the derangement formula connects to prime factorization: D(n)/n! converges to 1/e, linking combinatorics to analysis via the Fundamental Theorem of Arithmetic."
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "The derangement probability D_n/n! = ∑(-1)^k/k! converges to 1/e as n→∞ — the Taylor series of e^{-1} truncated at the n-th term. The transcendence of e means D_n/n! is never exactly 1/e for finite n"
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's approximation n! ≈ √(2πn)(n/e)^n combined with D_n ≈ n!/e gives D_n ≈ √(2πn)(n/e)^n/e — an asymptotic formula for derangement counts involving both π and e"
     }
   ],
   "conclusion": {
@@ -211,7 +221,9 @@
     "inclusion-exclusion",
     "euler-totient",
     "fundamental-arithmetic",
-    "binomial-theorem"
+    "binomial-theorem",
+    "e-transcendental",
+    "stirling-formula"
   ],
   "leanFile": {
     "imports": [

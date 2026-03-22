@@ -156,5 +156,33 @@
       "What is the categorical structure of probability distributions under convolution? This leads to operads and higher category theory.",
       "How does the topological perspective extend to non-commutative probability (free probability theory)? The free CLT produces semicircular rather than Gaussian distributions."
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "birthday-problem",
+      "relationship": "related",
+      "description": "Both are fundamental results in probability theory. The birthday problem illustrates combinatorial probability, while CLT explains why the normal distribution dominates averaged statistics"
+    },
+    {
+      "targetId": "buffons-needle",
+      "relationship": "related",
+      "description": "Buffon's needle uses random variable theory; CLT explains why repeated needle-dropping experiments converge to a normal distribution of π estimates with rate 1/√n"
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "foundational",
+      "description": "Stirling's formula n! ≈ √(2πn)(n/e)^n provides the √(2π) factor in the Gaussian density — the binomial distribution approaches the normal via Stirling, giving de Moivre's original CLT (1733)"
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "thematic",
+      "description": "Both reveal π in unexpected contexts: the area formula gives π geometrically, while the CLT's Gaussian density (2πσ²)^{-1/2}·exp(-x²/2σ²) contains π through the normalization constant ∫e^{-x²}dx = √π"
+    }
+  ],
+  "relatedProofs": [
+    "birthday-problem",
+    "buffons-needle",
+    "stirling-formula",
+    "area-of-circle"
+  ]
 }

@@ -119,6 +119,34 @@
     "theoremCount": 7,
     "definitionCount": 1
   },
+  "crossReferences": [
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "related",
+      "description": "Cantor's diagonalization (uncountability of ℝ) uses the same diagonal technique; Cantor's theorem generalizes it to show |S| < |P(S)| for ALL sets S, not just ℕ"
+    },
+    {
+      "targetId": "continuum-hypothesis",
+      "relationship": "extends",
+      "description": "Cantor's theorem shows |ℕ| < |P(ℕ)| = |ℝ|. The continuum hypothesis asks whether any cardinality lies strictly between — proved independent by Gödel (1940) and Cohen (1963)"
+    },
+    {
+      "targetId": "schroeder-bernstein",
+      "relationship": "complementary",
+      "description": "Schröder-Bernstein establishes cardinality equality from mutual injections; Cantor's theorem shows the injection A → P(A) (singletons) has no reverse, giving strict inequality"
+    },
+    {
+      "targetId": "halting-problem",
+      "relationship": "related",
+      "description": "The halting problem's undecidability proof is structurally identical to Cantor's theorem: the 'diagonal machine' that asks 'does this machine halt on itself?' is the Turing machine analog of the set {x : x ∉ f(x)}"
+    }
+  ],
+  "relatedProofs": [
+    "cantor-diagonalization",
+    "continuum-hypothesis",
+    "schroeder-bernstein",
+    "halting-problem"
+  ],
   "references": [
     {
       "authors": "Cantor, Georg",
