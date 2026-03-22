@@ -58,7 +58,8 @@
     "relatedProofs": [
       "infinitude-primes",
       "fermat-two-squares",
-      "elementary-quadratic-reciprocity"
+      "elementary-quadratic-reciprocity",
+      "erdos-844"
     ]
   },
   "crossReferences": [
@@ -76,6 +77,11 @@
       "targetId": "elementary-quadratic-reciprocity",
       "relationship": "related",
       "description": "The quadratic residue structure — specifically, -1 is a square mod p iff p ≡ 1 (mod 4) — determines which primes p can have p² | ab+1 for elements in the extremal set. This is a direct application of quadratic reciprocity"
+    },
+    {
+      "targetId": "erdos-844",
+      "relationship": "sibling",
+      "description": "Erdős #844 studies the closely related problem where ab (not ab+1) must be non-squarefree. The shift by 1 changes the extremal structure entirely: #844's answer involves even numbers and non-squarefree odds, while #848's answer is governed by quadratic residues mod 25. Both are solved problems in the same family of extremal multiplicative number theory questions"
     }
   ],
   "overview": {
@@ -107,11 +113,11 @@
     },
     {
       "id": "definitions",
-      "title": "Definitions",
+      "title": "Definitions and Extremal Function",
       "startLine": 21,
       "endLine": 37,
-      "summary": "IsSquarefree (no prime squared divides n), HasNonSqfreeProductProp (pairwise non-squarefree products), maxNonSqfreeSet (axiomatized extremal function with upper bound ≤ N).",
-      "mathContext": "$\\text{IsSquarefree}(n) :\\Leftrightarrow \\forall p$ prime, $p^2 \\nmid n$. $\\text{HasNonSqfreeProductProp}(A) :\\Leftrightarrow \\forall a,b \\in A,\\ \\neg\\text{IsSquarefree}(ab+1)$."
+      "summary": "IsSquarefree (no prime squared divides n), HasNonSqfreeProductProp (pairwise non-squarefree products), maxNonSqfreeSet (axiomatized extremal function), and the trivial upper bound maxNonSqfreeSet(N) ≤ N.",
+      "mathContext": "$\\text{IsSquarefree}(n) :\\Leftrightarrow \\forall p$ prime, $p^2 \\nmid n$. $\\text{HasNonSqfreeProductProp}(A) :\\Leftrightarrow \\forall a,b \\in A,\\ \\neg\\text{IsSquarefree}(ab+1)$. The extremal function and its bound are axiomatized since formalizing the maximum over all valid subsets would require significant Finset machinery."
     },
     {
       "id": "known-results",
