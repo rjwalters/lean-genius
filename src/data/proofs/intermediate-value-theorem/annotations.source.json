@@ -15,6 +15,11 @@
       "continuity",
       "closed interval",
       "image of a function"
+    ],
+    "prerequisites": [
+      "continuity",
+      "closed intervals",
+      "Mathlib intermediate_value_Icc"
     ]
   },
   {
@@ -33,6 +38,10 @@
     "relatedConcepts": [
       "symmetric statement",
       "interval notation"
+    ],
+    "prerequisites": [
+      "ivt_main",
+      "interval ordering"
     ]
   },
   {
@@ -52,6 +61,11 @@
       "existence theorem",
       "witness",
       "non-uniqueness"
+    ],
+    "prerequisites": [
+      "ivt_main",
+      "existential quantifier",
+      "Set.mem_Icc"
     ]
   },
   {
@@ -71,6 +85,11 @@
       "root finding",
       "Bolzano",
       "sign change"
+    ],
+    "prerequisites": [
+      "ivt_main",
+      "sign change",
+      "open vs closed intervals"
     ]
   },
   {
@@ -88,6 +107,11 @@
     "significance": "key",
     "relatedConcepts": [
       "proof by contradiction",
+      "endpoint exclusion"
+    ],
+    "prerequisites": [
+      "ivt_main",
+      "proof by cases",
       "endpoint exclusion"
     ]
   },
@@ -107,6 +131,11 @@
     "relatedConcepts": [
       "product of signs",
       "bisection method"
+    ],
+    "prerequisites": [
+      "bolzano",
+      "product of real numbers",
+      "sign analysis"
     ]
   },
   {
@@ -126,6 +155,11 @@
       "connectedness",
       "topological property",
       "preservation under continuity"
+    ],
+    "prerequisites": [
+      "connectedness",
+      "continuous maps",
+      "topological invariants"
     ]
   },
   {
@@ -145,6 +179,11 @@
       "polynomial roots",
       "limits at infinity",
       "existence theorem"
+    ],
+    "prerequisites": [
+      "bolzano",
+      "polynomial limits at infinity",
+      "leading coefficient"
     ]
   },
   {
@@ -164,6 +203,11 @@
       "fixed point",
       "Brouwer theorem",
       "self-maps"
+    ],
+    "prerequisites": [
+      "bolzano",
+      "self-maps of intervals",
+      "Brouwer fixed point (1D)"
     ]
   },
   {
@@ -183,6 +227,11 @@
       "rational numbers",
       "irrational numbers",
       "Dedekind cuts"
+    ],
+    "prerequisites": [
+      "least upper bound property",
+      "connected subsets of R",
+      "irrationality of sqrt(2)"
     ]
   }
 ]

@@ -130,6 +130,21 @@
       "targetId": "general-quartic",
       "relationship": "complementary",
       "description": "Ferrari's quartic formula shows all quartics are solvable by radicals (S₄ solvable), while this file shows 2^(1/4) is constructible because Gal(x⁴-2/ℚ) ≅ D₄ has order 8 = 2³ — the quartic sits at the intersection of radical solvability and constructibility"
+    },
+    {
+      "targetId": "abel-ruffini-oq-04",
+      "relationship": "related",
+      "description": "Both expose Galois group obstructions: OQ-04 shows A₅ simplicity → S₅ not solvable → quintics unsolvable by radicals, while this file shows non-2-group Galois groups → non-constructibility. Same framework (Galois groups control algebraic capabilities), different group-theoretic criteria (solvable vs 2-group)"
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Gauss's constructibility theorem for regular n-gons requires φ(n) = 2^k, which forces n = 2^a · p₁···pₘ with distinct Fermat primes pᵢ = 2^(2^eᵢ) + 1. Fermat prime structure connects to quadratic residues: the Gauss periods that build the constructive tower are indexed by quadratic residue classes mod p"
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-01",
+      "relationship": "extended-by",
+      "description": "Sub-entry extending the 2-group characterization with additional constructibility examples or refined analysis"
     }
   ],
   "overview": {
@@ -259,6 +274,9 @@
     "pi-transcendental",
     "fundamental-theorem-algebra",
     "angle-trisection-oq-02-oq-03",
-    "general-quartic"
+    "general-quartic",
+    "abel-ruffini-oq-04",
+    "quadratic-reciprocity",
+    "angle-trisection-oq-02-oq-01"
   ]
 }

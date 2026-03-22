@@ -87,27 +87,26 @@
     ]
   },
   {
-    "id": "ann-galois-bridge-motivation",
+    "id": "ann-part-ii-header",
     "proofId": "abel-ruffini",
     "range": {
       "startLine": 51,
       "endLine": 57
     },
     "type": "context",
-    "title": "Part II Motivation: Why Galois Groups?",
-    "content": "The Part II docstring frames Galois's central insight: solvability by radicals (an algebraic/field-theoretic property) is equivalent to solvability of the Galois group (a group-theoretic property). This translation between two mathematical worlds is the conceptual core of the proof.\n\nHistorically, this was Galois's revolutionary contribution beyond Abel. Abel proved the quintic is unsolvable by analyzing the algebraic structure of radical expressions directly. Galois showed that the entire question reduces to a property of a finite group — making the answer computable for any specific polynomial by analyzing its symmetry group.",
-    "mathContext": "The Galois correspondence: intermediate fields of $E/F$ $\\longleftrightarrow$ subgroups of $\\text{Gal}(E/F)$. Radical extensions correspond to cyclic extensions (adding $\\sqrt[n]{a}$ gives $\\text{Gal} \\cong \\mathbb{Z}/n$ or a subgroup). A tower of radical extensions yields a tower of cyclic/abelian extensions, i.e., a solvable group.",
+    "title": "Part II: The Galois-Theoretic Bridge — Conceptual Setup",
+    "content": "Part II introduces the central insight of Galois theory: the connection between solvability by radicals (a field-theoretic property) and solvability of groups (an algebraic property). This bridge is the conceptual heart of the entire proof — it transforms the question 'can we write roots using radicals?' into the purely group-theoretic question 'is the Galois group solvable?' The transformation works because each radical extension (adjoining an nth root) corresponds to a cyclic quotient in the Galois group, and a group built from cyclic quotients is exactly a solvable group.",
+    "mathContext": "The Galois correspondence: $\\alpha \\in \\text{solvableByRad}(F, E) \\iff \\text{Gal}(\\text{minpoly}_F(\\alpha)) \\text{ is solvable}$. The forward direction ($\\Rightarrow$) is `solvableByRad.isSolvable'`; the backward direction ($\\Leftarrow$) constructs the radical tower. Only the forward direction is needed for Abel-Ruffini.",
     "significance": "supporting",
-    "prerequisites": [
-      "Galois correspondence",
-      "radical extension",
-      "cyclic extension"
-    ],
     "relatedConcepts": [
       "Galois correspondence",
-      "field-group duality",
-      "solvable tower",
-      "intermediate field lattice"
+      "radical tower",
+      "cyclic extension",
+      "solvable group"
+    ],
+    "prerequisites": [
+      "field extensions",
+      "Galois theory"
     ]
   },
   {
@@ -214,8 +213,8 @@
     },
     "type": "theorem",
     "title": "A₅ is Simple",
-    "content": "A group is simple if its only normal subgroups are {1} and the whole group. The alternating group A₅ is simple — it is the smallest non-abelian simple group, with 60 elements.\n\nThe proof analyzes the five conjugacy classes of A₅: identity (1), double transpositions (15), 3-cycles (20), and two classes of 5-cycles (12 each). Note that unlike in S₅ where all 24 five-cycles form one conjugacy class, in A₅ they split into two classes of 12 — this splitting is crucial since a normal subgroup must be a union of conjugacy classes. No proper sub-sum of $\\{1, 12, 12, 15, 20\\}$ that includes 1 divides 60, so A₅ has no proper normal subgroups.",
-    "mathContext": "$A_5 = \\ker(\\text{sign} : S_5 \\to \\{\\pm 1\\})$, $|A_5| = 60 = 5!/2$. Conjugacy classes: $\\{e\\}$ (1), $(ab)(cd)$-type (15), $(abc)$-type (20), $(abcde)$-type split into two classes (12 + 12). The splitting of 5-cycles distinguishes $A_5$ from $S_5$ and is the reason the simplicity proof requires checking 5 classes, not 4.",
+    "content": "A group is simple if its only normal subgroups are {1} and the whole group. The alternating group A₅ is simple - it's the smallest non-abelian simple group, with 60 elements.\n\nThe proof analyzes cycle types: identity (1), 3-cycles (20), 5-cycles (24), double transpositions (15). Any normal subgroup containing a non-identity element must contain a 3-cycle, and 3-cycles generate all of A₅.",
+    "mathContext": "A₅ = {even permutations of 5 objects} = ker(sign : S₅ → {±1})\n\n|A₅| = 60 = 5!/2",
     "significance": "critical",
     "prerequisites": [
       "permutation groups",

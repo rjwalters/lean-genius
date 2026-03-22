@@ -60,16 +60,28 @@
     "prerequisites": ["Jensen's inequality", "rpow composition", "positivity tactic", "field_simp"]
   },
   {
-    "id": "ann-amgm-oq03-07-duality-neg",
+    "id": "ann-amgm-oq03-05-duality-identity",
     "proofId": "amgm-inequality-oq-03",
-    "range": { "startLine": 220, "endLine": 343 },
+    "range": { "startLine": 220, "endLine": 280 },
     "type": "technique",
-    "title": "Duality Identity and Negative Power Mean Monotonicity (Fully Proved)",
-    "content": "power_mean_neg_inv establishes M_r(z) = M_{-r}(z⁻¹)⁻¹ by showing (zᵢ⁻¹)^(-r) = zᵢ^r (via inv_rpow + rpow_neg + inv_inv) and A^(1/r) = (A^(1/(-r)))⁻¹ (via rpow_neg). Helper lemmas weighted_sum_pos and weightedPowerMean_pos establish positivity. power_mean_monotone_neg proves M_r ≤ M_s for r ≤ s < 0 by negating exponents (0 < -s ≤ -r), applying power_mean_monotone_pos to z⁻¹, and inverting. The inversion uses explicit calc blocks (1 = A·A⁻¹ ≤ B·A⁻¹, then multiply by B⁻¹) to avoid inv_le_inv_of_le.",
-    "mathContext": "The full chain $\\min(z) \\leq \\cdots \\leq M_{-1} \\leq M_0 \\leq M_1 \\leq M_2 \\leq \\cdots \\leq \\max(z)$ is now proved for all same-sign exponents: $M_r \\leq M_s$ for $0 < r \\leq s$ (Jensen) and $r \\leq s < 0$ (duality). Only the mixed-sign case $r < 0 < s$ remains.",
+    "title": "Duality Identity: M_r(z) = M_{-r}(z⁻¹)⁻¹",
+    "content": "`power_mean_neg_inv` establishes the algebraic identity $M_r(z) = M_{-r}(z^{-1})^{-1}$ by two key steps. First, the sum equality: $(z_i^{-1})^{-r} = z_i^r$ via `inv_rpow` + `rpow_neg` + `inv_inv`. Second, the power equality: $A^{1/r} = (A^{1/(-r)})^{-1}$ since $1/(-r) = -(1/r)$ and `rpow_neg` + `inv_inv`. Helper lemmas `weighted_sum_pos` and `weightedPowerMean_pos` establish the positivity conditions needed for the inversion step. This identity is the key tool for reducing negative-exponent power mean problems to positive-exponent ones.",
+    "mathContext": "$M_r(z) = \\left(\\sum w_i z_i^r\\right)^{1/r} = \\left(\\sum w_i (z_i^{-1})^{-r}\\right)^{1/r} = \\left(\\left(\\sum w_i (z_i^{-1})^{-r}\\right)^{1/(-r)}\\right)^{-1} = M_{-r}(z^{-1})^{-1}$. The identity holds for all $r \\neq 0$ and $z_i > 0$.",
     "significance": "key",
-    "relatedConcepts": ["power mean duality", "Real.inv_rpow", "Real.rpow_neg", "inequality inversion", "power mean chain"],
-    "prerequisites": ["power_mean_monotone_pos", "Real.rpow properties", "Finset positivity"]
+    "relatedConcepts": ["power mean duality", "Real.inv_rpow", "Real.rpow_neg", "inv_inv", "algebraic identity"],
+    "prerequisites": ["Real.rpow properties", "Finset positivity", "weighted power mean definition"]
+  },
+  {
+    "id": "ann-amgm-oq03-07-neg-monotonicity",
+    "proofId": "amgm-inequality-oq-03",
+    "range": { "startLine": 281, "endLine": 343 },
+    "type": "technique",
+    "title": "Power Mean Monotonicity for r ≤ s < 0 (Dual Argument)",
+    "content": "`power_mean_monotone_neg` proves $M_r \\leq M_s$ for $r \\leq s < 0$ by a three-step dual argument: (1) negate exponents to get $0 < -s \\leq -r$; (2) apply `power_mean_monotone_pos` to $z^{-1}$ with exponents $-s \\leq -r$ to get $M_{-s}(z^{-1}) \\leq M_{-r}(z^{-1})$; (3) apply `power_mean_neg_inv` to convert back: $M_r(z) = M_{-r}(z^{-1})^{-1} \\leq M_{-s}(z^{-1})^{-1} = M_s(z)$. The inversion step (larger denominator gives smaller reciprocal) uses explicit `calc` blocks with multiplicative algebra to avoid `inv_le_inv_of_le` which was unavailable in the target Lean version.",
+    "mathContext": "For $r \\leq s < 0$: negate to $0 < -s \\leq -r$, apply positive monotonicity to $z^{-1}$: $M_{-s}(z^{-1}) \\leq M_{-r}(z^{-1})$. Invert (larger positive → smaller reciprocal): $M_{-r}(z^{-1})^{-1} \\leq M_{-s}(z^{-1})^{-1}$. By duality: $M_r(z) \\leq M_s(z)$. Combined with positive case: $M_r \\leq M_s$ for all same-sign $r \\leq s$.",
+    "significance": "key",
+    "relatedConcepts": ["duality argument", "inequality inversion", "negative exponents", "power mean chain"],
+    "prerequisites": ["power_mean_monotone_pos", "power_mean_neg_inv", "positivity of power means"]
   },
   {
     "id": "ann-amgm-oq03-08-summary",

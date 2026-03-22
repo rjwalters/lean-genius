@@ -13,7 +13,12 @@
       "inner product",
       "perpendicularity",
       "Euclidean geometry"
-    ]
+    ],
+    "prerequisites": [
+      "inner product spaces",
+      "normed vector spaces"
+    ],
+    "mathContext": "The Pythagorean theorem: $a^2 + b^2 = c^2$ for a right triangle with legs $a, b$ and hypotenuse $c$. Formalized using inner products: $\\|u\\|^2 + \\|v\\|^2 = \\|u + v\\|^2$ when $\\langle u, v \\rangle = 0$."
   },
   {
     "id": "ann-vec2",
@@ -30,6 +35,10 @@
     "relatedConcepts": [
       "coordinate geometry",
       "displacement"
+    ],
+    "prerequisites": [
+      "Euclidean geometry",
+      "real number arithmetic"
     ]
   },
   {
@@ -49,6 +58,10 @@
       "Euclidean norm",
       "length",
       "magnitude"
+    ],
+    "prerequisites": [
+      "inner product spaces",
+      "normed vector spaces"
     ]
   },
   {
@@ -68,6 +81,10 @@
       "orthogonality",
       "right angle",
       "inner product"
+    ],
+    "prerequisites": [
+      "inner product spaces",
+      "normed vector spaces"
     ]
   },
   {
@@ -87,6 +104,10 @@
       "linearity",
       "distributive property",
       "multilinear algebra"
+    ],
+    "prerequisites": [
+      "inner product spaces",
+      "normed vector spaces"
     ]
   },
   {
@@ -128,7 +149,13 @@
       "structure",
       "dependent type",
       "geometric modeling"
-    ]
+    ],
+    "prerequisites": [
+      "Euclidean geometry",
+      "right triangles",
+      "real number arithmetic"
+    ],
+    "mathContext": "$a^2 + b^2 = c^2$ where $a = \\|\\vec{AB}\\|$, $b = \\|\\vec{BC}\\|$, $c = \\|\\vec{AC}\\|$ for a right triangle $ABC$ with right angle at $B$."
   },
   {
     "id": "ann-classical",
@@ -169,6 +196,10 @@
       "number theory",
       "Diophantine equations",
       "Plimpton 322"
+    ],
+    "prerequisites": [
+      "Euclidean geometry",
+      "real number arithmetic"
     ]
   },
   {
@@ -187,7 +218,12 @@
       "decidability",
       "computation in type theory",
       "reflection"
-    ]
+    ],
+    "prerequisites": [
+      "Lean 4 tactics",
+      "linear arithmetic"
+    ],
+    "mathContext": "Lean's `native_decide` tactic evaluates decidable propositions by computation, e.g., $3^2 + 4^2 = 25 = 5^2$ is verified by reduction."
   },
   {
     "id": "ann-converse",
@@ -206,6 +242,10 @@
       "Euclid's Elements",
       "angle measurement",
       "construction"
+    ],
+    "prerequisites": [
+      "Euclidean geometry",
+      "real number arithmetic"
     ]
   },
   {
@@ -224,6 +264,12 @@
       "Euclid",
       "Plimpton 322",
       "history of mathematics"
-    ]
+    ],
+    "prerequisites": [
+      "trigonometry",
+      "law of cosines",
+      "angle measurement"
+    ],
+    "mathContext": "Law of cosines: $c^2 = a^2 + b^2 - 2ab\\cos(C)$. When $C = 90°$, $\\cos(C) = 0$, recovering $c^2 = a^2 + b^2$."
   }
 ]
