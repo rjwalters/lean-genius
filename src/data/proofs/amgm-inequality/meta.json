@@ -83,11 +83,29 @@
       "targetId": "amgm-inequality-oq-03",
       "relationship": "parent",
       "description": "Sub-entry exploring further generalizations or applications of AM-GM."
+    },
+    {
+      "targetId": "shannon-entropy",
+      "relationship": "supports",
+      "description": "AM-GM underlies the log-sum inequality used to bound Shannon entropy: the maximum entropy $H \\leq \\log n$ for $n$ outcomes follows from AM-GM applied to logarithms, showing the uniform distribution uniquely maximizes entropy."
+    },
+    {
+      "targetId": "triangle-inequality",
+      "relationship": "related",
+      "description": "Both AM-GM and the triangle inequality are fundamental non-negativity results: AM-GM exploits $(\\sqrt{a}-\\sqrt{b})^2 \\geq 0$ while the triangle inequality exploits $|x+y| \\leq |x|+|y|$. Together they form the backbone of analytic estimation."
+    },
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "extends",
+      "description": "The integral Cauchy-Schwarz inequality generalizes the discrete AM-GM to $L^2$ function spaces; AM-GM for two variables is the key ingredient in proving the pointwise bound $fg \\leq (f^2+g^2)/2$ that underlies integral inequalities."
     }
   ],
   "relatedProofs": [
     "cauchy-schwarz",
+    "cauchy-schwarz-integral",
     "isoperimetric-theorem",
+    "shannon-entropy",
+    "triangle-inequality",
     "amgm-inequality-oq-02",
     "amgm-inequality-oq-03",
     "amgm-inequality-oq-03-oq-01",
@@ -181,6 +199,13 @@
       "year": "1934",
       "venue": "Cambridge University Press",
       "note": "The definitive reference on classical inequalities, including six distinct proofs of AM-GM and its connections to convexity, power means, and rearrangement inequalities"
+    },
+    {
+      "authors": "Steele, J. Michael",
+      "title": "The Cauchy-Schwarz Master Class: An Introduction to the Art of Mathematical Inequalities",
+      "year": "2004",
+      "venue": "Cambridge University Press / MAA Problem Books",
+      "note": "Chapter 2 develops AM-GM from first principles with 12 proof exercises, including Pólya's proof via the exponential function ($e^{x-1} \\geq x$) and connections to Schur convexity"
     }
   ],
   "leanFile": {
