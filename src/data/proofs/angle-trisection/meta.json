@@ -55,8 +55,7 @@
       "Trigonometric identities (triple angle formula)",
       "Basic Galois theory (constructibility criterion)"
     ],
-    "lineCount": 389,
-    "leanFile": "proofs/Proofs/AngleTrisection.lean"
+    "lineCount": 389
   },
   "leanFile": {
     "imports": [
@@ -70,8 +69,11 @@
     "opens": [],
     "namespace": "AngleTrisection",
     "lineCount": 389,
+    "structureCount": 0,
     "axiomCount": 2,
     "theoremCount": 18,
+    "lemmaCount": 0,
+    "defCount": 4,
     "definitionCount": 4
   },
   "crossReferences": [
@@ -99,6 +101,21 @@
       "targetId": "halting-problem",
       "relationship": "related",
       "description": "Both are impossibility results: angle trisection shows a geometric construction is impossible, the halting problem shows a computational decision is impossible — each resolves a long-standing question by proving non-existence"
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "uses",
+      "description": "This file directly imports the pi transcendence proof to establish that squaring the circle is impossible — Lindemann's 1882 result that π is transcendental means √π has no minimal polynomial over ℚ"
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Gauss's constructibility theorem for regular n-gons requires n to be a product of a power of 2 and distinct Fermat primes — the same degree-over-ℚ framework as angle trisection, and Fermat prime structure connects to quadratic residues"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "The tower law for field extensions (a consequence of Lagrange's theorem on subgroup indices) underpins the degree divisibility argument: [F_n:ℚ] = ∏[F_{i+1}:F_i] = 2^n, so [ℚ(α):ℚ] divides 2^n"
     }
   ],
   "overview": {
@@ -183,36 +200,15 @@
     ]
   },
   "relatedProofs": [
-    {
-      "id": "abel-ruffini",
-      "relationship": "related",
-      "description": "Both are impossibility results via Galois theory: Abel-Ruffini for quintic formulas, trisection for geometric constructions"
-    },
-    {
-      "id": "abel-ruffini-oq-04",
-      "relationship": "related",
-      "description": "The A₅ simplicity proof chain — same algebraic framework of group theory and field extensions"
-    },
-    {
-      "id": "fundamental-theorem-algebra",
-      "relationship": "related",
-      "description": "FTA guarantees the trisection polynomial has complex roots; the impossibility is about constructibility, not existence"
-    },
-    {
-      "id": "inverse-galois",
-      "relationship": "related",
-      "description": "Constructibility is determined by Galois group structure — constructible numbers have 2-group Galois groups"
-    },
-    {
-      "id": "pythagorean-theorem",
-      "relationship": "foundational",
-      "description": "Pythagoras underpins compass-straightedge constructions — every constructible length uses the Pythagorean theorem"
-    },
-    {
-      "id": "pi-transcendental",
-      "relationship": "uses",
-      "description": "π's transcendence (Lindemann 1882) proves squaring the circle is impossible — imported directly in this file"
-    }
+    "abel-ruffini",
+    "abel-ruffini-oq-04",
+    "fundamental-theorem-algebra",
+    "inverse-galois",
+    "pythagorean-theorem",
+    "halting-problem",
+    "pi-transcendental",
+    "quadratic-reciprocity",
+    "lagrange-theorem"
   ],
   "references": [
     {
