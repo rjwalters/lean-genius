@@ -43,6 +43,13 @@
   },
   "sections": [
     {
+      "id": "header-setup",
+      "title": "Module Header and Problem Context",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "Documents Erdős Problem #279 on covering integers with shifted prime arithmetic progressions {aₚ + kp, aₚ + (k+1)p, ...} for all primes p. Even the k=3 case is open. Connection to Goldbach-type problems and Linnik's theorem on primes in progressions. Imports Mathlib."
+    },
+    {
       "id": "covering-setup",
       "title": "Covering by Shifted Progressions",
       "startLine": 24,
