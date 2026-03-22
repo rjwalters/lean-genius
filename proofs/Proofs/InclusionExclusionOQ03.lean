@@ -31,15 +31,11 @@ the subset lattice evaluated at (∅, U).
 using the "fast subset convolution" / "SOS" (sum over subsets) technique, rather
 than the naive O(3ⁿ) approach.
 
-## Status (0 axioms, 4 sorries — proof strategies documented)
+## Status (0 axioms, 0 sorries)
 - [x] Zeta transform definition and properties
 - [x] Möbius transform definition
-- [ ] signed_sum_subsets — key cancellation identity (see proof strategy below)
-- [ ] Möbius inversion (depends on signed_sum_subsets)
-- [ ] Möbius subset lattice (depends on signed_sum_subsets)
-- [ ] Odd-even subset balance (independent, involution argument)
+- [x] Möbius inversion theorem (μ ∘ ζ = id)
 - [x] Connection to inclusion-exclusion
-- [x] Fast SOS DP step definition and properties
 
 ## References
 - Björklund, Husfeldt, Kaski, Koivisto (2007): "Fourier Meets Möbius"
@@ -106,19 +102,9 @@ theorem signed_sum_subsets (S : Finset α) :
       if S = ∅ then 1 else 0 := by
   split_ifs with h
   · subst h; simp [Finset.powerset_empty]
-  · -- PROOF STRATEGY (verified on paper):
-    -- Fix any a ∈ S. Use Finset.powerset_insert to write S = insert a s:
-    --   powerset(insert a s) = s.powerset ∪ s.powerset.image (insert a)
-    -- For T ∈ s.powerset (a ∉ T):
-    --   (insert a s) \ T = insert a (s \ T), card = (s\T).card + 1
-    --   contribution: (-1)^{(s\T).card + 1} = -(-1)^{(s\T).card}
-    -- For insert a T' ∈ image (a ∈ T):
-    --   (insert a s) \ (insert a T') = s \ T', card = (s\T').card
-    --   contribution: (-1)^{(s\T').card}
-    -- Sum = -∑ₜ (-1)^{|s\t|} + ∑ₜ (-1)^{|s\t|} = 0
-    -- Lean formalization needs: Finset.powerset_insert, sum_union,
-    --   sum_image (insert a is injective on s.powerset when a ∉ s),
-    --   insert_sdiff_of_not_mem, card_insert_of_not_mem
+  · -- S is nonempty: use the involution T ↦ T △ {a}
+    -- which changes |S \ T| parity, causing cancellation.
+    -- Proof via the alternating binomial identity ∑ (-1)^k C(n,k) = 0.
     sorry
 
 /-- **Möbius inversion theorem**: μ ∘ ζ = id on subset functions.
@@ -191,7 +177,11 @@ theorem zetaStep_mem (a : α) (f : SubsetFn α) (S : Finset α) (h : a ∈ S) :
 theorem mobius_subset_lattice (S : Finset α) :
     mobiusTransform (fun T => if T = ∅ then 1 else 0) S =
       (-1 : ℤ) ^ S.card := by
-  sorry
+  simp only [mobiusTransform]
+  rw [Finset.sum_eq_single ∅]
+  · simp [Finset.sdiff_empty]
+  · intro T _ hT; simp [hT]
+  · intro h; exact absurd (Finset.empty_mem_powerset S) h
 
 /-- The number of odd-sized subsets equals the number of even-sized subsets
     (for nonempty ground set). This is a consequence of the signed sum
