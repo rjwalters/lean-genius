@@ -120,6 +120,16 @@
       "targetId": "fundamental-theorem-algebra",
       "relationship": "foundational",
       "description": "FTA guarantees that every polynomial over ℚ splits over ℂ, ensuring that the Galois group of minpoly(ℚ,α) is well-defined as Aut(splitting field/ℚ) — the foundation for the Galois characterization of constructibility"
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-03",
+      "relationship": "extended-by",
+      "description": "Sub-entry extending the Galois characterization of constructibility with additional results or concrete examples"
+    },
+    {
+      "targetId": "general-quartic",
+      "relationship": "complementary",
+      "description": "Ferrari's quartic formula shows all quartics are solvable by radicals (S₄ solvable), while this file shows 2^(1/4) is constructible because Gal(x⁴-2/ℚ) ≅ D₄ has order 8 = 2³ — the quartic sits at the intersection of radical solvability and constructibility"
     }
   ],
   "overview": {
@@ -247,6 +257,8 @@
     "lagrange-theorem",
     "sqrt2-irrational",
     "pi-transcendental",
-    "fundamental-theorem-algebra"
+    "fundamental-theorem-algebra",
+    "angle-trisection-oq-02-oq-03",
+    "general-quartic"
   ]
 }
