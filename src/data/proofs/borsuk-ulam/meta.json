@@ -159,6 +159,11 @@
       "targetId": "intermediate-value-theorem",
       "relationship": "related",
       "description": "The n=1 case of Borsuk-Ulam (every continuous f: S¹ → ℝ has f(x) = f(-x)) is equivalent to the intermediate value theorem applied to g(θ) = f(θ) - f(θ+π) on the circle — Borsuk-Ulam is the higher-dimensional generalization of IVT"
+    },
+    {
+      "targetId": "prob-method-lovasz-local",
+      "relationship": "related",
+      "description": "Lovász's 1978 proof of Kneser's conjecture used Borsuk-Ulam as the key topological ingredient, connecting the chromatic number of Kneser graphs to sphere connectivity. This launched the field of topological combinatorics that bridges Lovász's probabilistic/algebraic methods with topological fixed-point theory"
     }
   ],
   "conclusion": {
@@ -173,7 +178,8 @@
   },
   "relatedProofs": [
     "brouwer-fixed-point",
-    "intermediate-value-theorem"
+    "intermediate-value-theorem",
+    "prob-method-lovasz-local"
   ],
   "leanFile": {
     "imports": [
@@ -189,7 +195,7 @@
       "Metric"
     ],
     "namespace": "BorsukUlam",
-    "lineCount": 265,
+    "lineCount": 266,
     "axiomCount": 1,
     "theoremCount": 14,
     "definitionCount": 0
