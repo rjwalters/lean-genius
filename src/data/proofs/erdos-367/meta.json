@@ -44,7 +44,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "This problem concerns the 2-full (squareful) part B₂(n) of integers, which captures prime powers p² and higher. B₂(n) = n/squarefreePart(n). The problem asks about products of B₂ over k consecutive integers.\n\nFor k ≤ 2, the product is ≤ n² trivially since B₂(n) ≤ n. For k ≥ 3, van Doorn showed the strong n² bound fails: there exist infinitely many n with ∏B₂(m) ≫ n²·log n. The weak bound n^{2+o(1)} remains open for all k.",
+    "historicalContext": "This problem concerns the 2-full (squareful) part $B_2(n)$ of integers, which captures prime powers $p^2$ and higher in the factorization. The concept of powerful (squareful) numbers was systematically studied by Solomon Golomb in 1970, who showed that the number of powerful integers up to $x$ is asymptotic to $c\\sqrt{x}$ where $c = \\zeta(3/2)/\\zeta(3) \\approx 2.173$.\n\nProblem #367 appears in the Erdős–Graham monograph (1980), asking whether products of 2-full parts over $k$ consecutive integers grow at most as $n^{2+o(1)}$. For $k \\leq 2$, the product is $\\leq n^2$ trivially since $B_2(n) \\leq n$. The breakthrough came from van Doorn (2023), who showed the strong $n^2$ bound fails for $k \\geq 3$: there exist infinitely many $n$ with $\\prod_{n \\leq m < n+3} B_2(m) \\gg n^2 \\log n$. The logarithmic factor is the precise obstruction. The weak bound $n^{2+o(1)}$ — whether the logarithmic factor can be absorbed into $n^{o(1)}$ — remains open for all $k$.\n\nThe problem sits at the intersection of multiplicative number theory and the study of consecutive integers, connecting to questions about the distribution of smooth numbers, the abc conjecture, and the Erdős multiplication table problem.",
     "problemStatement": "Let B₂(n) = n/squarefreePart(n) denote the 2-full part. For every fixed k ≥ 1, is it true that ∏_{n ≤ m < n+k} B₂(m) ≪ n^{2+o(1)}? Or perhaps even ≪_k n²?",
     "proofStrategy": "The formalization defines squarefreePart, twoFullPart, and productTwoFullParts. Weak and strong bounds are defined as propositions. Known results (k ≤ 2 strong bound, k ≥ 3 failure, van Doorn lower bound) are axioms. Properties of B₂ (squarefree characterization, multiplicativity, divisibility) are axioms. The r-full generalization is defined with a proved consistency theorem. A summary theorem combines the known results.",
     "keyInsights": [
@@ -61,75 +61,85 @@
       "title": "Part 1: The 2-Full Part",
       "startLine": 39,
       "endLine": 72,
-      "summary": "Definitions of squarefreePart, twoFullPart (B₂), and twoFullPartAlt via prime factorization."
+      "summary": "Definitions of squarefreePart, twoFullPart (B₂), and twoFullPartAlt via prime factorization.",
+      "mathContext": "$B_2(n) = n / \\prod_{v_p(n)=1} p = \\prod_{v_p(n) \\geq 2} p^{v_p(n)}$"
     },
     {
       "id": "product",
       "title": "Part 2: Product over Consecutive Integers",
       "startLine": 74,
       "endLine": 87,
-      "summary": "productTwoFullParts(n, k) = ∏_{n ≤ m < n+k} B₂(m), the main object of study."
+      "summary": "productTwoFullParts(n, k) = ∏_{n ≤ m < n+k} B₂(m), the main object of study.",
+      "mathContext": "$P(n,k) = \\prod_{m=n}^{n+k-1} B_2(m)$"
     },
     {
       "id": "bounds",
       "title": "Part 3: The Bounds",
       "startLine": 89,
       "endLine": 111,
-      "summary": "weakBound (n^{2+ε} for all ε > 0) and strongBound (n²) as formal propositions."
+      "summary": "weakBound (n^{2+ε} for all ε > 0) and strongBound (n²) as formal propositions.",
+      "mathContext": "$\\text{weak}: P(n,k) \\leq C n^{2+\\varepsilon}$ vs $\\text{strong}: P(n,k) \\leq C n^2$"
     },
     {
       "id": "conjecture",
       "title": "Part 4: The Erdős Conjecture",
       "startLine": 113,
       "endLine": 127,
-      "summary": "erdos_367_conjecture: weakBound(k) holds for all k ≥ 1. The main open question."
+      "summary": "erdos_367_conjecture: weakBound(k) holds for all k ≥ 1. The main open question.",
+      "mathContext": "$\\forall k \\geq 1,\\; \\forall \\varepsilon > 0,\\; P(n,k) = O(n^{2+\\varepsilon})$"
     },
     {
       "id": "trivial-cases",
       "title": "Part 5: Trivial Cases (k ≤ 2)",
       "startLine": 129,
       "endLine": 147,
-      "summary": "Strong bound holds for k = 1 and k = 2, since B₂(n) ≤ n."
+      "summary": "Strong bound holds for k = 1 and k = 2, since B₂(n) ≤ n.",
+      "mathContext": "$B_2(n) \\leq n \\implies B_2(n) \\cdot B_2(n+1) \\leq n(n+1) < 2n^2$"
     },
     {
       "id": "failure",
       "title": "Part 6: Failure of Strong Bound (k ≥ 3)",
       "startLine": 149,
       "endLine": 171,
-      "summary": "van Doorn: strong bound fails for k = 3. Infinitely many n with ∏B₂(m) ≫ n²·log n."
+      "summary": "van Doorn: strong bound fails for k = 3. Infinitely many n with ∏B₂(m) ≫ n²·log n.",
+      "mathContext": "$\\exists c > 0,\\; \\forall N,\\; \\exists n \\geq N : P(n,3) \\geq c \\cdot n^2 \\log n$"
     },
     {
       "id": "properties",
       "title": "Part 7: Properties of B₂",
       "startLine": 173,
       "endLine": 221,
-      "summary": "B₂(n) = 1 iff squarefree, B₂(p) = 1, B₂(p²) = p², multiplicativity, B₂(n) ≤ n, B₂(n) | n."
+      "summary": "B₂(n) = 1 iff squarefree, B₂(p) = 1, B₂(p²) = p², multiplicativity, B₂(n) ≤ n, B₂(n) | n.",
+      "mathContext": "$B_2$ is multiplicative: $B_2(mn) = B_2(m) B_2(n)$ for $\\gcd(m,n)=1$"
     },
     {
       "id": "generalization",
       "title": "Part 8: r-Full Parts Generalization",
       "startLine": 223,
       "endLine": 254,
-      "summary": "rFullPart definition, proved twoFullPartAlt = rFullPart 2, generalized conjecture."
+      "summary": "rFullPart definition, proved twoFullPartAlt = rFullPart 2, generalized conjecture.",
+      "mathContext": "$B_r(n) = \\prod_{v_p(n) \\geq r} p^{v_p(n)}$, with $B_2 = B_r|_{r=2}$ proved by rfl"
     },
     {
       "id": "heuristics",
       "title": "Part 9: Heuristic Analysis",
       "startLine": 256,
       "endLine": 271,
-      "summary": "Average B₂(n) is bounded; products can be large when consecutive integers share prime powers."
+      "summary": "Average B₂(n) is bounded; products can be large when consecutive integers share prime powers.",
+      "mathContext": "$\\frac{1}{N} \\sum_{n=1}^{N} B_2(n) = O(1)$, yet $\\max_n P(n,k)$ grows faster"
     },
     {
       "id": "summary",
       "title": "Part 10: Summary",
       "startLine": 273,
       "endLine": 295,
-      "summary": "Summary theorem: strong bound for k ≤ 2, failure for k ≥ 3. Status: OPEN."
+      "summary": "Summary theorem: strong bound for k ≤ 2, failure for k ≥ 3. Status: OPEN.",
+      "mathContext": "$(\\text{strongBound}\\, 1 \\wedge \\text{strongBound}\\, 2) \\wedge \\neg\\text{strongBound}\\, 3$"
     }
   ],
   "conclusion": {
     "summary": "Erdős Problem #367 asks whether products of 2-full parts over k consecutive integers grow at most as n^{2+o(1)}. The strong n² bound fails for k ≥ 3 (van Doorn), but the weak bound remains open.",
-    "implications": "Resolution would illuminate the distribution of powerful parts among consecutive integers and connect to questions about smooth numbers and highly composite numbers.",
+    "implications": "Resolution of the weak bound conjecture would have several consequences:\n\n1. **Distribution of powerful parts**: Would quantify how prime power concentrations distribute among consecutive integers, a fundamental question in multiplicative number theory.\n\n2. **Connection to abc conjecture**: The abc conjecture implies strong constraints on how squareful parts can cluster, so progress on either problem may inform the other.\n\n3. **Smooth number theory**: Understanding products of $B_2$ relates to the distribution of smooth numbers (numbers with small prime factors) among consecutive integers.\n\n4. **Generalization path**: The $r$-full generalization formalized here provides a natural hierarchy of related open problems for $r \\geq 3$, each potentially requiring different techniques.",
     "openQuestions": [
       "Does ∏_{n ≤ m < n+k} B₂(m) ≪ n^{2+o(1)} hold for all k?",
       "What is the true growth rate for k = 3?",
