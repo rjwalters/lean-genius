@@ -86,8 +86,46 @@
         "description": "Sylow theorems provide structural information about A₅: its Sylow subgroups witness the 60 = 4·3·5 factorization and help prove simplicity"
       }
     ],
+    "prerequisites": [
+      "Group theory (normal subgroups, derived series, solvability)",
+      "Alternating and symmetric groups",
+      "Galois theory fundamentals (field extensions, Galois groups)",
+      "Familiarity with Lean 4 and Mathlib"
+    ],
     "lineCount": 163
   },
+  "crossReferences": [
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "extends",
+      "description": "Base Abel-Ruffini theorem using Mathlib's solvableByRad — this file exposes the internal proof chain with each step as a named theorem"
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "related",
+      "description": "Both are impossibility results via Galois theory: Abel-Ruffini shows quintics are unsolvable by radicals, angle trisection shows the general angle cannot be trisected by compass and straightedge"
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "complementary",
+      "description": "FTA guarantees every polynomial has complex roots; this file shows those roots cannot always be expressed with radicals — existence versus expressibility"
+    },
+    {
+      "targetId": "inverse-galois",
+      "relationship": "related",
+      "description": "The inverse Galois problem asks which groups occur as Galois groups — Sₙ occurs as Gal(generic degree-n polynomial), connecting directly to the solvability question"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem on subgroup orders is used throughout: |Aₙ| = n!/2, and the derived series quotients have predictable orders"
+    },
+    {
+      "targetId": "sylow-theorems",
+      "relationship": "related",
+      "description": "Sylow theorems provide structural information about A₅: its Sylow subgroups witness the 60 = 4·3·5 factorization and help prove simplicity"
+    }
+  ],
   "overview": {
     "historicalContext": "The Abel-Ruffini theorem (1824) stands as one of the most profound results in the history of algebra, settling a question that had occupied mathematicians for centuries. After Cardano (1545) and Ferrari (1540) found radical solutions for cubics and quartics, the search for a quintic formula consumed generations of mathematicians including Euler, Lagrange, and Vandermonde. Paolo Ruffini gave an incomplete proof of impossibility in 1799; Niels Henrik Abel provided the first rigorous proof in 1824, at age 21. Évariste Galois, before his death in a duel at 20, went much further in 1832: he characterized exactly which polynomials are solvable by radicals in terms of their symmetry groups. The key group-theoretic insight is that A₅, the alternating group on 5 elements, is the smallest non-abelian simple group — with order 60, it has no proper non-trivial normal subgroups, causing the derived series to get stuck. This single fact propagates upward through the chain: A₅ not solvable → Sₙ (n ≥ 5) not solvable → generic quintic not solvable by radicals. The classification of finite simple groups (completed circa 2004) shows that A₅ is the first in the infinite family of simple alternating groups Aₙ (n ≥ 5).",
     "problemStatement": "Expose the full proof chain from $A_5$ simplicity to the Abel-Ruffini theorem with each step as a named, machine-verified theorem: $A_5$ simple $\\Rightarrow$ $S_n$ ($n \\geq 5$) not solvable $\\Rightarrow$ no radical formula for the general degree-$n$ polynomial ($n \\geq 5$).",
