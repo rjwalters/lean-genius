@@ -33,6 +33,12 @@
       "**The $k \\ge 4$ barrier**: No value of $f(k)$ is known for $k \\ge 4$. The difficulty is that high chromatic number forces many odd cycles, but controlling the chromatic number of the subgraph they span requires understanding the global structure of the graph, not just local cycle existence.",
       "**Connection to $\\chi$-boundedness**: The conjecture relates to whether 'odd cycle span chromatic number' is $\\chi$-bounded—whether there exists a function bounding how high $\\chi(G)$ must be to guarantee a specific span chromatic number.",
       "**Induced subgraph chromatic number**: The key predicate `InducedChromaticAtLeast G S k` uses $\\neg\\mathrm{IsKColorable}(G[S], k-1)$, which is equivalent to $\\chi(G[S]) \\ge k$. This captures the hardness: it is not enough to find an odd cycle; its vertex neighborhood must resist coloring with few colors."
+    ],
+    "prerequisites": [
+      "Graph coloring: chromatic number $\\chi(G)$, $k$-colorability, induced subgraph chromatic number",
+      "Graph cycles: odd cycles, cycle detection, graph bipartiteness (2-colorable iff no odd cycle)",
+      "Extremal graph theory: Ramsey-type thresholds $f(k)$ and their growth rates",
+      "Induced subgraphs and their properties in Lean's SimpleGraph framework"
     ]
   },
   "sections": [
