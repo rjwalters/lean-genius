@@ -135,6 +135,11 @@
       "targetId": "cauchy-schwarz-integral",
       "relationship": "related",
       "description": "The integral Cauchy-Schwarz inequality (∫fg)² ≤ (∫f²)(∫g²) is the continuous analog of the finite Cauchy-Schwarz sum n·∑xᵢ² ≥ (∑xᵢ)² used here as the key engine for proving M₁² ≥ M₂"
+    },
+    {
+      "targetId": "amgm-inequality-oq-03-oq-01",
+      "relationship": "complementary",
+      "description": "Negative power mean monotonicity M_r ≤ M_s for r ≤ s < 0 extends the mean inequality chain in the complementary direction. Maclaurin means M_k are indexed by discrete k and use elementary symmetric polynomials; power means M_r use continuous r and direct summation — both refine AM-GM from different perspectives"
     }
   ],
   "overview": {
@@ -275,6 +280,7 @@
     "sum-of-kth-powers",
     "fundamental-theorem-algebra",
     "amgm-inequality-oq-03-oq-02",
-    "cauchy-schwarz-integral"
+    "cauchy-schwarz-integral",
+    "amgm-inequality-oq-03-oq-01"
   ]
 }
