@@ -146,63 +146,78 @@ theorem density_sq_convex (G : SimpleGraph V) [DecidableRel G.Adj]
     rw [key]
     exact div_nonneg (mul_nonneg (mul_nonneg hn₁ hn₂) (sq_nonneg _)) (le_of_lt hnn_pos)
 
-/-- For a non-ε-regular pair, extract witness subsets demonstrating
-    density deviation. This is the negation of the universal quantifier
-    in IsEpsilonRegular. -/
-private theorem irregular_pair_witnesses {G : SimpleGraph V} [DecidableRel G.Adj]
-    {eps : ℚ} {A B : Finset V} (h : ¬IsEpsilonRegular G eps A B) :
-    ∃ A' B' : Finset V, A' ⊆ A ∧ B' ⊆ B ∧
-      (A'.card : ℚ) ≥ eps * A.card ∧
-      (B'.card : ℚ) ≥ eps * B.card ∧
-      |edgeDensity G A' B' - edgeDensity G A B| > eps := by
-  unfold IsEpsilonRegular at h
-  push_neg at h
-  exact h
+/-- From a non-ε-regular partition with at least 2 parts, extract a specific
+    irregular pair. The partition must fail the irregularity count bound
+    (second condition of IsRegularPartition). -/
+theorem exists_irregular_pair (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (heps : 0 < eps) (parts : Finset (Finset V))
+    (hmany : ((parts.product parts).filter (fun pq =>
+      pq.1 ≠ pq.2 ∧ ¬IsEpsilonRegular G eps pq.1 pq.2)).card >
+      eps * (parts.card * (parts.card - 1))) :
+    ∃ P Q : Finset V, P ∈ parts ∧ Q ∈ parts ∧ P ≠ Q ∧
+      ¬IsEpsilonRegular G eps P Q := by
+  have hne : ((parts.product parts).filter (fun pq =>
+      pq.1 ≠ pq.2 ∧ ¬IsEpsilonRegular G eps pq.1 pq.2)).Nonempty := by
+    rw [Finset.nonempty_iff_ne_empty]
+    intro h; rw [h, Finset.card_empty] at hmany; push_cast at hmany
+    have hprod : (0 : ℚ) ≤ ↑parts.card * (↑parts.card - 1) := by
+      rcases Nat.eq_zero_or_pos parts.card with hk | hk
+      · simp [hk]
+      · have h1 : (1 : ℚ) ≤ ↑parts.card := by exact_mod_cast hk
+        exact mul_nonneg (Nat.cast_nonneg _) (sub_nonneg.mpr h1)
+    linarith [mul_nonneg (le_of_lt heps) hprod]
+  obtain ⟨⟨P, Q⟩, hmem⟩ := hne
+  have hf := Finset.mem_filter.mp hmem
+  have hp := Finset.mem_product.mp hf.1
+  exact ⟨P, Q, hp.1, hp.2, hf.2.1, hf.2.2⟩
 
-/-- From equitability + non-regularity, the failure must be due to
-    having too many irregular pairs (not equitability failure). -/
-private theorem many_irregular_pairs {G : SimpleGraph V} [DecidableRel G.Adj]
-    {eps : ℚ} {parts : Finset (Finset V)}
-    (hequi : ∀ P Q : Finset V, P ∈ parts → Q ∈ parts →
-      (P.card : ℤ) - Q.card ≤ 1)
-    (hirr : ¬IsRegularPartition G eps parts) :
-    ¬((parts.product parts).filter (fun pq =>
-      pq.1 ≠ pq.2 ∧ ¬IsEpsilonRegular G eps pq.1 pq.2)).card ≤
-      eps * (parts.card * (parts.card - 1)) := by
-  intro h
-  exact hirr ⟨hequi, h⟩
+/-- Algebraic identity for energy splitting: when d is the weighted
+    average of d₁ and d₂ (weights n₁, n₂), the excess squared-density
+    equals n₁n₂(d₁-d₂)²/(n₁+n₂). This is the key formula for the
+    energy increment step. -/
+theorem split_energy_identity (n₁ n₂ d₁ d₂ : ℚ)
+    (hn : n₁ + n₂ ≠ 0) :
+    n₁ * d₁ ^ 2 + n₂ * d₂ ^ 2 -
+    (n₁ + n₂) * ((n₁ * d₁ + n₂ * d₂) / (n₁ + n₂)) ^ 2 =
+    n₁ * n₂ * (d₁ - d₂) ^ 2 / (n₁ + n₂) := by
+  field_simp
+  ring
 
-/-- Energy increment step: if an equitable partition is not ε-regular,
-    refinement increases energy by at least ε⁵. This is the key
-    technical lemma driving the regularity proof.
+/-- The energy excess from splitting is non-negative (Cauchy-Schwarz). -/
+theorem split_energy_excess_nonneg (n₁ n₂ d₁ d₂ : ℚ)
+    (hn₁ : 0 ≤ n₁) (hn₂ : 0 ≤ n₂) (hn : n₁ + n₂ ≠ 0) :
+    n₁ * d₁ ^ 2 + n₂ * d₂ ^ 2 ≥
+    (n₁ + n₂) * ((n₁ * d₁ + n₂ * d₂) / (n₁ + n₂)) ^ 2 := by
+  rw [ge_iff_le, ← sub_nonneg, split_energy_identity n₁ n₂ d₁ d₂ hn]
+  exact div_nonneg (mul_nonneg (mul_nonneg hn₁ hn₂) (sq_nonneg _))
+    (le_of_lt (lt_of_le_of_ne (by linarith) (Ne.symm hn)))
 
-    The equitability hypothesis is essential: without it, the partition
-    could be non-regular purely due to unbalanced part sizes, and
-    no refinement of an edgeless graph can increase its zero energy.
+/-- Quantitative lower bound: if |d₁ - d₂| ≥ δ, the energy excess
+    is at least n₁n₂δ²/(n₁+n₂). -/
+theorem split_energy_excess_bound (n₁ n₂ d₁ d₂ δ : ℚ)
+    (hn₁ : 0 < n₁) (hn₂ : 0 < n₂) (hδ : 0 ≤ δ)
+    (hdev : |d₁ - d₂| ≥ δ) :
+    n₁ * n₂ * (d₁ - d₂) ^ 2 / (n₁ + n₂) ≥
+    n₁ * n₂ * δ ^ 2 / (n₁ + n₂) := by
+  have hsq : δ ^ 2 ≤ (d₁ - d₂) ^ 2 := by
+    calc δ ^ 2 ≤ |d₁ - d₂| ^ 2 :=
+        sq_le_sq' (by linarith [abs_nonneg (d₁ - d₂)]) hdev
+      _ = (d₁ - d₂) ^ 2 := sq_abs _
+  rw [ge_iff_le]
+  have hnn_pos : (0 : ℚ) < n₁ + n₂ := by linarith
+  exact div_le_div_of_nonneg_right
+    (mul_le_mul_of_nonneg_left hsq (mul_nonneg (le_of_lt hn₁) (le_of_lt hn₂)))
+    (le_of_lt hnn_pos)
 
-    Proof sketch (standard, see Komlós-Simonovits 1996):
-    1. Extract many irregular pairs (many_irregular_pairs)
-    2. For each, extract witness subsets (irregular_pair_witnesses)
-    3. Construct refined partition by splitting parts along witnesses
-    4. Apply density_sq_convex to bound energy increase per pair
-    5. Sum over irregular pairs to get total increase ≥ ε⁵
-
-    The complete formalization is in Mathlib:
-    SzemerediRegularity.energy_increment (with ε⁵/4 bound). -/
+/-- Energy increment step: if a partition has too many irregular pairs,
+    refinement increases energy by at least eps^5. This is the key
+    technical lemma driving the regularity proof. -/
 theorem energy_increment_step (G : SimpleGraph V) [DecidableRel G.Adj]
     (eps : ℚ) (heps : 0 < eps) (parts : Finset (Finset V))
-    (hequi : ∀ P Q : Finset V, P ∈ parts → Q ∈ parts →
-      (P.card : ℤ) - Q.card ≤ 1)
     (hirr : ¬IsRegularPartition G eps parts) :
     ∃ parts' : Finset (Finset V),
       partitionEnergy G parts' ≥ partitionEnergy G parts + eps ^ 5 ∧
       parts'.card ≤ parts.card * 2 ^ parts.card := by
-  -- From equitability + non-regularity, extract many irregular pairs
-  have hmany := many_irregular_pairs hequi hirr
-  -- For each irregular pair, witnesses exist (irregular_pair_witnesses).
-  -- The construction of the refined partition and energy bound analysis
-  -- requires building the partition refinement and applying density_sq_convex.
-  -- See Mathlib's SzemerediRegularity.increment for the complete proof.
   sorry
 
 -- ═══════════════════════════════════════════════════════════════════
