@@ -1,8 +1,8 @@
 {
   "id": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
   "name": "Skolem-Noether Theorem: K-Algebra Automorphisms of Mn(K)",
-  "status": "active",
-  "phase": "ACT",
+  "status": "completed",
+  "phase": "COMPLETED",
   "knowledge": {
     "insights": [
       "Parent file CayleyHamiltonMinpolyOQ02OQ01.lean is complete (217 lines, 0 axioms, 0 sorries)",
@@ -65,7 +65,7 @@
       "hintertwine: decompose A = ∑ A_{ij} E_{ij}, use phi linearity + existing E_ij intertwining",
       "Possibly use basisOfLinearIndependentOfCardEqFinrank for IsUnit proof"
     ],
-    "progressSummary": "COMPLETED: All sorries eliminated! 0 sorries, 0 axioms. Proved IsUnit Pmat (linearIndependent → injective mulVec → bijective → IsUnit) and hintertwine (decompose A = ∑ A_ij • E_ij, extend by K-linearity). Full Skolem-Noether theorem verified."
+    "progressSummary": "VERIFIED: Skolem-Noether theorem fully proved. 0 sorries, 0 axioms, 570 lines. Elementary matrix units proof (no Artin-Wedderburn). Gallery meta.json updated to verified status."
   },
   "leanFiles": [
     {

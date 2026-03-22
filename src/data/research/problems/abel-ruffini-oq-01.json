@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added resolvent sextic R₆ computation and proved it has no rational root via native_decide. This provides a second independent computational proof that Gal(q)≅A₅ (alongside the mod-7 Dedekind evidence). Updated axiom status docs: 1 axiom remains (three_dvd_gal_card), down from 5 originally.",
+    "progressSummary": "PROGRESS: Cleaned stale axiom count (2→1 remaining: three_dvd_gal_card). Removed dead sylvM_det sorry. Problem at frontier: all 3 axioms (abelian_realizable, shafarevich_theorem, three_dvd_gal_card) require Mathlib infrastructure not yet available.",
     "builtItems": [
       "InverseGalois.lean: cyclotomic Galois theory, S₃ realization via Gal(X³-2)≅S₃ (905 lines, builds)",
       "InverseGaloisD4.lean: D₄ realization via |Gal(X⁴-2)| = 8 (666 lines, builds)",
@@ -303,7 +303,9 @@
       "After this session: InverseGaloisA5.lean has 0 sorries, 1 axiom (three_dvd_gal_card)",
       "Resolvent sextic R₆(z) = z⁶ - 200z⁵ + 22000z⁴ - 1120000z³ + 28000000z² - 544000000z + 1600000000 has no rational root (verified by native_decide over all 234 divisors of 2¹²×5⁸)",
       "By Dummit theorem: irreducible quintic with square discriminant + resolvent has no rational root → Gal = A₅",
-      "The 12 values of θ = Σ xᵢxᵢ₊₁ come in ±pairs; R₁₂(y) = R₆(y²) where R₆ is the sextic resolvent"
+      "The 12 values of θ = Σ xᵢxᵢ₊₁ come in ±pairs; R₁₂(y) = R₆(y²) where R₆ is the sextic resolvent",
+      "vandermondeProduct_sq_eq axiom was eliminated (Part XV), only three_dvd_gal_card remains — 1 axiom total in A5 file",
+      "sylvM_det sorry in ResultantDet was dead code (discriminant proved via Vandermonde chain) — removed"
     ],
     "mathlibGaps": [],
     "nextSteps": [
