@@ -82,60 +82,84 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Documentation and Setup",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "Comprehensive header documenting the LGV lemma, proof approach via GV involution, status checklist (1 axiom, 1 sorry), and references to Lindström (1973), Gessel-Viennot (1985), and Aigner (2007)",
+      "mathContext": "The proof decomposes LGV into an algebraic half ($\\det M = \\sum_\\sigma \\text{sign}(\\sigma) \\prod_i M_{i,\\sigma(i)}$) and a combinatorial half (GV involution cancellation)."
+    },
+    {
       "id": "lattice-path-foundations",
-      "title": "Lattice Path Foundations",
-      "startLine": 46,
-      "endLine": 78,
-      "summary": "LPath, PathMN subtype with Fintype instance, pathCount function."
+      "title": "Part 1: Lattice Path Foundations",
+      "startLine": 49,
+      "endLine": 82,
+      "summary": "Defines `LPath` as `List Bool` (East = false, North = true), the subtype `PathMN m n` of paths with exactly $m$ East and $n$ North steps, proves it is a `Fintype`, and defines `pathCount m a b = C(m + (b-a), m)$",
+      "mathContext": "A lattice path from $(0, a)$ to $(m, b)$ consists of $m$ East steps and $b-a$ North steps in some order. The count is $\\binom{m + (b-a)}{m}$ — choosing which of the $m + (b-a)$ steps are East."
     },
     {
       "id": "non-intersection",
-      "title": "Column Entry and Non-Intersection",
-      "startLine": 80,
-      "endLine": 112,
-      "summary": "northBeforeEast, colEntry, colYRange, NonIntersecting predicate."
+      "title": "Part 2: Column Entry and Non-Intersection",
+      "startLine": 83,
+      "endLine": 109,
+      "summary": "Defines `northBeforeEast` (counting North steps before the $k$-th East step), `colEntry` and `colYRange` (tracking a path's $y$-coordinates in each column), and `NonIntersecting` requiring disjoint column ranges and distinct endpoints",
+      "mathContext": "Two paths are non-intersecting if they never occupy the same lattice point simultaneously. The column-based formulation checks this column by column: at each $x$, the $y$-ranges must be disjoint."
     },
     {
       "id": "r-tuple-infrastructure",
-      "title": "r-Tuple Infrastructure",
-      "startLine": 114,
-      "endLine": 134,
-      "summary": "LGVConfig structure, PathTuple, IsNonIntersecting."
+      "title": "Part 3: r-Tuple Infrastructure",
+      "startLine": 110,
+      "endLine": 136,
+      "summary": "`LGVConfig r` bundles grid width $m$, strictly monotone source/target arrays, and source $\\le$ target constraint. `PathTuple` is the dependent product type of $r$ paths, and `IsNonIntersecting` requires all pairs $(i < j)$ to be non-intersecting",
+      "mathContext": "The strict monotonicity $a_1 < \\cdots < a_r$ and $b_1 < \\cdots < b_r$ is essential: it ensures non-identity permutation path tuples must have crossings, enabling the GV involution."
     },
     {
       "id": "path-weight-matrix",
-      "title": "Path Weight Matrix",
-      "startLine": 136,
-      "endLine": 145,
-      "summary": "pathMatrix: r×r matrix with M_{i,j} = C(m+(bⱼ-aᵢ), m)."
+      "title": "Part 4: The Path Weight Matrix",
+      "startLine": 137,
+      "endLine": 146,
+      "summary": "`pathMatrix cfg` is the $r \\times r$ integer matrix with $M_{i,j} = \\binom{m + (b_j - a_i)}{m}$, the number of lattice paths from source $i$ to target $j$",
+      "mathContext": "This matrix $M$ is the Lindström-Gessel-Viennot matrix. Its determinant counts non-intersecting path tuples — this is the content of the LGV lemma."
     },
     {
       "id": "permutation-path-tuples",
-      "title": "Permutation Path Tuples",
+      "title": "Part 5: Permutation Path Tuples and Non-Intersecting Count",
       "startLine": 147,
-      "endLine": 170,
-      "summary": "PermPathTuple, signedPermCount, Fintype instances."
+      "endLine": 174,
+      "summary": "`PermPathTuple cfg σ` is a $\\sigma$-path tuple where path $i$ goes from source $i$ to target $\\sigma(i)$. `signedPermCount` computes $\\text{sign}(\\sigma) \\cdot \\prod_i M_{i,\\sigma(i)}$. `niTupleCount` counts non-intersecting identity tuples",
+      "mathContext": "The Leibniz expansion: $\\det M = \\sum_\\sigma \\text{sign}(\\sigma) \\prod_i M_{i,\\sigma(i)}$. Each product $\\prod_i M_{i,\\sigma(i)}$ counts $\\sigma$-path tuples."
     },
     {
       "id": "gv-involution",
-      "title": "Gessel-Viennot Involution Infrastructure",
+      "title": "Part 7: Gessel-Viennot Involution Infrastructure",
       "startLine": 175,
-      "endLine": 226,
-      "summary": "swapTailsAt operation, length preservation, transposition sign theorem."
+      "endLine": 264,
+      "summary": "Defines `swapTailsAt` (swap path suffixes), proves length preservation, proves the transposition sign theorem $\\text{sign}(\\text{swap}(i, \\sigma(i)) \\circ \\sigma) = -\\text{sign}(\\sigma)$, defines `firstNonFixed`, and proves it maps strictly upward",
+      "mathContext": "The GV involution swaps tails of crossing paths at their first shared lattice point. The key sign identity $\\text{sign}((i\\ \\sigma(i)) \\cdot \\sigma) = -\\text{sign}(\\sigma)$ ensures pairwise cancellation. The `firstNonFixed` machinery identifies which pair of paths to swap."
+    },
+    {
+      "id": "algebraic-bridge",
+      "title": "Parts 7b-7c: PathMN Cardinality and Algebraic Bridge",
+      "startLine": 265,
+      "endLine": 317,
+      "summary": "`pathMN_card` (sorry): $|\\text{PathMN}(m,n)| = \\binom{m+n}{m}$. `permPathTuple_card`: $|\\text{PermPathTuple}(\\sigma)| = \\prod_i \\binom{m + (b_{\\sigma(i)} - a_i)}{m}$. `det_pathMatrix_eq_signed_sum`: $\\det M = \\sum_\\sigma \\text{sign}(\\sigma) \\cdot |\\text{PermPathTuple}(\\sigma)|$ via the transposed Leibniz formula",
+      "mathContext": "The algebraic bridge connects the abstract determinant $\\det M$ to a concrete combinatorial sum over permutation path tuples. This is the fully proved algebraic half of the LGV proof."
     },
     {
       "id": "lgv-lemma",
-      "title": "The r×r LGV Lemma",
-      "startLine": 228,
-      "endLine": 244,
-      "summary": "Main theorem (axiomatized): niTupleCount = det(pathMatrix)."
+      "title": "Part 8: The r×r LGV Lemma",
+      "startLine": 318,
+      "endLine": 354,
+      "summary": "The GV involution cancellation axiom: $\\sum_\\sigma \\text{sign}(\\sigma) |\\text{PermPathTuple}(\\sigma)| = \\text{niTupleCount}$. The main theorem `lgv_lemma_rxr`: $\\text{niTupleCount} = \\det M$, proved by chaining the algebraic bridge with the cancellation axiom",
+      "mathContext": "The one remaining axiom `gv_involution_cancellation` encapsulates the combinatorial heart: the sign-reversing involution pairs non-identity permutation tuples with opposite-sign counterparts, leaving only non-intersecting identity tuples."
     },
     {
       "id": "corollaries",
-      "title": "Corollaries",
-      "startLine": 246,
-      "endLine": 284,
-      "summary": "Non-negativity, r=1 special case (vacuously NI), applications overview."
+      "title": "Parts 9-10: Corollaries and Applications",
+      "startLine": 355,
+      "endLine": 404,
+      "summary": "Corollaries: `pathMatrix_det_nonneg` ($\\det M \\ge 0$), `isNonIntersecting_of_r_one` (every 1-tuple is vacuously NI). `lgv_universality` packages the lemma. Applications docstring covers Schur polynomials, Catalan numbers, Aztec diamond, plane partitions",
+      "mathContext": "Non-negativity $\\det M \\ge 0$ follows immediately since $\\text{niTupleCount} \\in \\mathbb{N}$. The $r=1$ case is vacuously true since there are no pairs to check for intersection."
     }
   ],
   "conclusion": {
