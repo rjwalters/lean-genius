@@ -245,6 +245,16 @@
       "description": "Cantor's diagonal argument (1891) is a foundational impossibility technique — no surjection from a set to its power set. While Abel-Ruffini's method is group-theoretic rather than diagonal, both belong to the tradition of showing that certain natural-seeming capabilities (enumerating all subsets, solving all quintics by radicals) are provably impossible"
     },
     {
+      "targetId": "puiseux-theorem",
+      "relationship": "complementary",
+      "description": "Puiseux's theorem shows the field of fractional power series (Puiseux series) is algebraically closed — polynomial roots CAN be expressed as Puiseux series even when they cannot be expressed by radicals. This provides a concrete alternative framework where Abel-Ruffini's impossibility does not apply: the barrier is specific to the radical operations (+, -, ×, ÷, ⁿ√), not to all closed-form representations"
+    },
+    {
+      "targetId": "lagrange-theorem-oq-03",
+      "relationship": "related",
+      "description": "Hall's theorem (1928) is essentially a converse of Lagrange's theorem for solvable groups: every Hall divisor of a solvable group's order yields a subgroup. The solvability hypothesis is essential — A₅ provides a counterexample (order 6 divides 60 but A₅ has no subgroup of order 6). This directly connects to Abel-Ruffini: the very property (group solvability) that determines radical solvability of polynomials also governs subgroup existence via Hall's theorem"
+    },
+    {
       "targetId": "quadratic-reciprocity",
       "relationship": "related",
       "description": "Gauss's quadratic reciprocity law (1801) is a deep result about the structure of Z/pZ that foreshadowed Galois theory — both concern how algebraic objects (quadratic residues, polynomial roots) behave under symmetry. The Artin reciprocity law of class field theory generalizes both: it connects abelian Galois groups of number fields to ideal class groups, unifying quadratic reciprocity with the abelian case of Galois's solvability criterion"
@@ -288,7 +298,9 @@
     "quadratic-reciprocity",
     "fermats-last-theorem",
     "cayley-hamilton",
-    "liouville-theorem"
+    "liouville-theorem",
+    "puiseux-theorem",
+    "lagrange-theorem-oq-03"
   ],
   "references": [
     {

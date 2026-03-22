@@ -87,6 +87,30 @@
     ]
   },
   {
+    "id": "ann-galois-bridge-motivation",
+    "proofId": "abel-ruffini",
+    "range": {
+      "startLine": 51,
+      "endLine": 57
+    },
+    "type": "context",
+    "title": "Part II Motivation: Why Galois Groups?",
+    "content": "The Part II docstring frames Galois's central insight: solvability by radicals (an algebraic/field-theoretic property) is equivalent to solvability of the Galois group (a group-theoretic property). This translation between two mathematical worlds is the conceptual core of the proof.\n\nHistorically, this was Galois's revolutionary contribution beyond Abel. Abel proved the quintic is unsolvable by analyzing the algebraic structure of radical expressions directly. Galois showed that the entire question reduces to a property of a finite group — making the answer computable for any specific polynomial by analyzing its symmetry group.",
+    "mathContext": "The Galois correspondence: intermediate fields of $E/F$ $\\longleftrightarrow$ subgroups of $\\text{Gal}(E/F)$. Radical extensions correspond to cyclic extensions (adding $\\sqrt[n]{a}$ gives $\\text{Gal} \\cong \\mathbb{Z}/n$ or a subgroup). A tower of radical extensions yields a tower of cyclic/abelian extensions, i.e., a solvable group.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Galois correspondence",
+      "radical extension",
+      "cyclic extension"
+    ],
+    "relatedConcepts": [
+      "Galois correspondence",
+      "field-group duality",
+      "solvable tower",
+      "intermediate field lattice"
+    ]
+  },
+  {
     "id": "ann-abel-ruffini-theorem",
     "proofId": "abel-ruffini",
     "range": {
