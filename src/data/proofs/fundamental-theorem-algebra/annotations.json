@@ -15,6 +15,10 @@
       "polynomial",
       "degree",
       "non-constant"
+    ],
+    "prerequisites": [
+      "polynomial rings",
+      "complex numbers"
     ]
   },
   {
@@ -33,6 +37,10 @@
       "Complex.exists_root",
       "algebraically closed",
       "polynomial roots"
+    ],
+    "prerequisites": [
+      "complex analysis",
+      "polynomial theory"
     ]
   },
   {
@@ -51,6 +59,10 @@
       "contrapositive",
       "logical equivalence",
       "constant polynomial"
+    ],
+    "prerequisites": [
+      "polynomial degree",
+      "field theory"
     ]
   },
   {
@@ -69,6 +81,10 @@
       "Splits",
       "linear factors",
       "factorization"
+    ],
+    "prerequisites": [
+      "splitting fields",
+      "algebraic closure"
     ]
   },
   {
@@ -87,6 +103,10 @@
       "multiplicity",
       "Multiset.card",
       "natDegree"
+    ],
+    "prerequisites": [
+      "multiplicity",
+      "polynomial factorization"
     ]
   },
   {
@@ -105,6 +125,10 @@
       "monic polynomial",
       "Vieta's formulas",
       "product of roots"
+    ],
+    "prerequisites": [
+      "polynomial ring theory",
+      "unique factorization"
     ]
   },
   {
@@ -122,6 +146,10 @@
     "relatedConcepts": [
       "quadratic formula",
       "discriminant",
+      "complex square roots"
+    ],
+    "prerequisites": [
+      "quadratic formula",
       "complex square roots"
     ]
   }
