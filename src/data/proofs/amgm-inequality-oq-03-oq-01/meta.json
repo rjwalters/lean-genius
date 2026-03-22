@@ -99,6 +99,11 @@
         "targetId": "cauchy-schwarz-integral",
         "relationship": "related",
         "description": "The Bunyakovsky-Schwarz integral inequality is the continuous/L² analog of the discrete M₁ ≤ M₂ power mean inequality"
+      },
+      {
+        "targetId": "amgm-inequality-oq-02",
+        "relationship": "related",
+        "description": "Maclaurin's inequalities via elementary symmetric polynomials give an alternative chain between AM and GM using e_k means — complementary to the power mean approach used here"
       }
     ],
     "dateAdded": "2026-03-21",
@@ -108,6 +113,7 @@
     "relatedProofs": [
       "amgm-inequality-oq-03",
       "amgm-inequality",
+      "amgm-inequality-oq-02",
       "amgm-inequality-oq-03-oq-02",
       "cauchy-schwarz",
       "cauchy-schwarz-integral"
