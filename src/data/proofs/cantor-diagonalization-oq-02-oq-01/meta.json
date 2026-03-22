@@ -8,16 +8,42 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/First_uncountable_ordinal",
     "date": "1895",
     "status": "verified",
-    "tags": ["set-theory", "ordinals", "cardinals", "classic", "research"],
+    "tags": [
+      "set-theory",
+      "ordinals",
+      "cardinals",
+      "classic",
+      "research"
+    ],
     "proofRepoPath": "Proofs/CantorDiagonalizationOQ02OQ01.lean",
     "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
-      {"theorem": "Cardinal.aleph_lt_aleph", "description": "ℵ_α < ℵ_β ↔ α < β", "module": "Mathlib.SetTheory.Cardinal.Ordinal"},
-      {"theorem": "Cardinal.aleph_succ", "description": "ℵ_(succ α) = succ(ℵ_α)", "module": "Mathlib.SetTheory.Cardinal.Ordinal"},
-      {"theorem": "Cardinal.isRegular_aleph_one", "description": "ℵ₁ is regular", "module": "Mathlib.SetTheory.Cardinal.Cofinality"},
-      {"theorem": "Cardinal.card_ord", "description": "card(c.ord) = c", "module": "Mathlib.SetTheory.Cardinal.Ordinal"},
-      {"theorem": "Cardinal.lt_ord", "description": "α < c.ord ↔ card(α) < c", "module": "Mathlib.SetTheory.Cardinal.Ordinal"}
+      {
+        "theorem": "Cardinal.aleph_lt_aleph",
+        "description": "ℵ_α < ℵ_β ↔ α < β",
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      },
+      {
+        "theorem": "Cardinal.aleph_succ",
+        "description": "ℵ_(succ α) = succ(ℵ_α)",
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      },
+      {
+        "theorem": "Cardinal.isRegular_aleph_one",
+        "description": "ℵ₁ is regular",
+        "module": "Mathlib.SetTheory.Cardinal.Cofinality"
+      },
+      {
+        "theorem": "Cardinal.card_ord",
+        "description": "card(c.ord) = c",
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      },
+      {
+        "theorem": "Cardinal.lt_ord",
+        "description": "α < c.ord ↔ card(α) < c",
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      }
     ],
     "originalContributions": [
       "Aleph hierarchy: ℵ_α < ℵ_(α+1) for all ordinals α",
@@ -28,8 +54,16 @@
       "ω₁ is not countable: ¬(card((ℵ₁).ord) ≤ ℵ₀)"
     ],
     "references": [
-      {"authors": "G. Cantor", "title": "Beiträge zur Begründung der transfiniten Mengenlehre", "year": "1895"},
-      {"authors": "F. Hausdorff", "title": "Grundzüge einer Theorie der geordneten Mengen", "year": "1908"}
+      {
+        "authors": "G. Cantor",
+        "title": "Beiträge zur Begründung der transfiniten Mengenlehre",
+        "year": "1895"
+      },
+      {
+        "authors": "F. Hausdorff",
+        "title": "Grundzüge einer Theorie der geordneten Mengen",
+        "year": "1908"
+      }
     ],
     "dateAdded": "03/21/26",
     "axiomCount": 0
@@ -47,12 +81,48 @@
     ]
   },
   "sections": [
-    {"id": "preamble", "title": "Imports and Setup", "summary": "Imports Mathlib's cardinal-ordinal theory, cofinality theory, and ordinal arithmetic. Opens the `Cardinal` and `Ordinal` namespaces.", "startLine": 1, "endLine": 27},
-    {"id": "hierarchy", "title": "Part I: Aleph Hierarchy", "summary": "Proves the aleph function $\\alpha \\mapsto \\aleph_\\alpha$ is strictly monotone and injective. Derives $\\aleph_\\alpha < \\aleph_{\\alpha+1}$ for all ordinals $\\alpha$ and verifies the concrete chain $\\aleph_0 < \\aleph_1 < \\aleph_2$.", "startLine": 28, "endLine": 49},
-    {"id": "regularity", "title": "Part II: Cofinality and Regularity", "summary": "Establishes that $\\aleph_1$ is a regular cardinal: $\\text{cof}(\\omega_1) = \\aleph_1$, hence $\\text{cof}(\\omega_1) > \\aleph_0$. This means $\\omega_1$ cannot be expressed as a countable union of countable ordinals.", "startLine": 51, "endLine": 68},
-    {"id": "cardinal", "title": "Part III: Cardinal Properties", "summary": "Characterizes $\\aleph_1 = \\text{succ}(\\aleph_0)$ and derives the equivalence $\\kappa < \\aleph_1 \\iff \\kappa \\leq \\aleph_0$: a cardinal is countable if and only if it is at most $\\aleph_0$.", "startLine": 70, "endLine": 88},
-    {"id": "ordinal", "title": "Part IV: Ordinal of $\\aleph_1$", "summary": "Proves $|\\omega_1| = \\aleph_1$, $\\omega < \\omega_1$, and the characterization $\\alpha < \\omega_1 \\iff |\\alpha| \\leq \\aleph_0$. Concludes that $\\omega_1$ itself is not countable.", "startLine": 90, "endLine": 112},
-    {"id": "summary", "title": "Part V: Summary", "summary": "Bundles the four main properties (aleph hierarchy, regularity, uncountable cofinality, $\\omega < \\omega_1$) into a single conjunction theorem `omega1_properties_summary`.", "startLine": 114, "endLine": 130}
+    {
+      "id": "preamble",
+      "title": "Imports and Setup",
+      "summary": "Imports Mathlib's cardinal-ordinal theory, cofinality theory, and ordinal arithmetic. Opens the `Cardinal` and `Ordinal` namespaces.",
+      "startLine": 1,
+      "endLine": 27
+    },
+    {
+      "id": "hierarchy",
+      "title": "Part I: Aleph Hierarchy",
+      "summary": "Proves the aleph function $\\alpha \\mapsto \\aleph_\\alpha$ is strictly monotone and injective. Derives $\\aleph_\\alpha < \\aleph_{\\alpha+1}$ for all ordinals $\\alpha$ and verifies the concrete chain $\\aleph_0 < \\aleph_1 < \\aleph_2$.",
+      "startLine": 28,
+      "endLine": 49
+    },
+    {
+      "id": "regularity",
+      "title": "Part II: Cofinality and Regularity",
+      "summary": "Establishes that $\\aleph_1$ is a regular cardinal: $\\text{cof}(\\omega_1) = \\aleph_1$, hence $\\text{cof}(\\omega_1) > \\aleph_0$. This means $\\omega_1$ cannot be expressed as a countable union of countable ordinals.",
+      "startLine": 51,
+      "endLine": 68
+    },
+    {
+      "id": "cardinal",
+      "title": "Part III: Cardinal Properties",
+      "summary": "Characterizes $\\aleph_1 = \\text{succ}(\\aleph_0)$ and derives the equivalence $\\kappa < \\aleph_1 \\iff \\kappa \\leq \\aleph_0$: a cardinal is countable if and only if it is at most $\\aleph_0$.",
+      "startLine": 70,
+      "endLine": 88
+    },
+    {
+      "id": "ordinal",
+      "title": "Part IV: Ordinal of $\\aleph_1$",
+      "summary": "Proves $|\\omega_1| = \\aleph_1$, $\\omega < \\omega_1$, and the characterization $\\alpha < \\omega_1 \\iff |\\alpha| \\leq \\aleph_0$. Concludes that $\\omega_1$ itself is not countable.",
+      "startLine": 90,
+      "endLine": 112
+    },
+    {
+      "id": "summary",
+      "title": "Part V: Summary",
+      "summary": "Bundles the four main properties (aleph hierarchy, regularity, uncountable cofinality, $\\omega < \\omega_1$) into a single conjunction theorem `omega1_properties_summary`.",
+      "startLine": 114,
+      "endLine": 130
+    }
   ],
   "crossReferences": [
     {
@@ -79,5 +149,10 @@
       "Can König's theorem ($\\text{cof}(\\aleph_\\omega) > \\aleph_0$) be proved for singular cardinals?",
       "Can Aronszajn's theorem (there exists an $\\aleph_1$-tree with no uncountable branch) be formalized using these $\\omega_1$ properties?"
     ]
-  }
+  },
+  "relatedProofs": [
+    "cantor-diagonalization",
+    "cantor-diagonalization-oq-02",
+    "continuum-hypothesis"
+  ]
 }

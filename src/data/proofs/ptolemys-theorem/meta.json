@@ -161,5 +161,10 @@
       "Can the complex-number proof be formalized, showing that Ptolemy's theorem follows from the algebraic identity (z₁-z₃)(z₂-z₄) = (z₁-z₂)(z₃-z₄) + (z₁-z₄)(z₂-z₃) applied to points on a circle?",
       "Can the derivation of the sine addition formula from Ptolemy's theorem be formalized, showing the historical connection between chord tables and modern trigonometry?"
     ]
-  }
+  },
+  "relatedProofs": [
+    "pythagorean-theorem",
+    "herons-formula",
+    "triangle-angle-sum"
+  ]
 }

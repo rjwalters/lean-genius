@@ -181,5 +181,11 @@
       "Can the RSA correctness proof be formalized as a direct application of Euler's theorem?",
       "Can the identity $n = \\sum_{d \\mid n} \\varphi(d)$ be proved from Mathlib's partition-of-unity results?"
     ]
-  }
+  },
+  "relatedProofs": [
+    "chinese-remainder-non-coprime",
+    "infinitude-primes",
+    "fundamental-arithmetic",
+    "gcd-algorithm"
+  ]
 }

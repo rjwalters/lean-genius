@@ -9,7 +9,14 @@
     "date": "1817",
     "status": "formalized",
     "proofRepoPath": "Proofs/IntermediateValueTheoremOQ01.lean",
-    "tags": ["analysis", "ivt", "bisection", "numerical-methods", "constructive", "convergence"],
+    "tags": [
+      "analysis",
+      "ivt",
+      "bisection",
+      "numerical-methods",
+      "constructive",
+      "convergence"
+    ],
     "badge": "formalized",
     "sorries": 2,
     "dateAdded": "03/21/26",
@@ -127,5 +134,9 @@
       "Connect bisectIter to Mathlib's Filter.Tendsto to prove full convergence to a root",
       "Formalize Newton's method and prove its quadratic convergence for comparison"
     ]
-  }
+  },
+  "relatedProofs": [
+    "intermediate-value-theorem",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-01"
+  ]
 }

@@ -196,5 +196,12 @@
       "Is there a uniform proof for all $k$ that avoids reliance on Schinzel's Hypothesis H or the prime $k$-tuples conjecture?",
       "Can the formalization be extended to prove $\\sigma_k(p) = 1 + p^k$ and the convergence bound $\\sigma_k(n) \\leq n^{k+1}$ directly in Lean, rather than axiomatizing them?"
     ]
-  }
+  },
+  "relatedProofs": [
+    "erdos-250",
+    "erdos-251",
+    "perfect-numbers",
+    "sqrt2-irrational",
+    "pi-transcendental"
+  ]
 }

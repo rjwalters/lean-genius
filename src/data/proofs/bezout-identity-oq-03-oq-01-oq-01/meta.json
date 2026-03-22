@@ -178,5 +178,13 @@
       "Prove cardinality preservation: |ZMod (∏nᵢ)| = ∏|ZMod nᵢ| = ∏nᵢ for the k-fold case",
       "Connect to the Pi-type formulation: ZMod (∏ nᵢ) ≅ (i : Fin k) → ZMod (ns i)"
     ]
-  }
+  },
+  "relatedProofs": [
+    "bezout-identity",
+    "bezout-identity-oq-03",
+    "fundamental-arithmetic",
+    "euler-totient",
+    "primitive-roots",
+    "chinese-remainder-non-coprime"
+  ]
 }

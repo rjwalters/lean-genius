@@ -49,7 +49,13 @@
       "Mathlib.Data.Set.Basic"
     ],
     "namespace": "PNPBarriersSound",
-    "structures": ["Program", "Polynomial", "Verifier", "Reduction", "PolyReduction"],
+    "structures": [
+      "Program",
+      "Polynomial",
+      "Verifier",
+      "Reduction",
+      "PolyReduction"
+    ],
     "axioms": [
       "cook_levin_axiom",
       "time_hierarchy",
@@ -244,5 +250,11 @@
       "Is Graph Isomorphism NP-intermediate? Babai (2015) showed it's in quasi-polynomial time, but its exact complexity remains unknown.",
       "Does NP = coNP? This is closely related to P vs NP — if P ≠ NP, most complexity theorists believe NP ≠ coNP as well."
     ]
-  }
+  },
+  "relatedProofs": [
+    "halting-problem",
+    "cantors-theorem",
+    "ramseys-theorem",
+    "erdos-szekeres"
+  ]
 }

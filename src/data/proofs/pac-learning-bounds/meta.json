@@ -149,5 +149,10 @@
       "Formalize the full equivalence (not just the placeholder True) — requires defining PAC learnability, ERM, and uniform convergence as proper Lean types",
       "Can the epsilon-net theorem be formalized in Lean to get the tighter sample complexity bound without the log(1/ε) factor?"
     ]
-  }
+  },
+  "relatedProofs": [
+    "shannon-entropy",
+    "prob-method-expectation",
+    "prob-method-second-moment"
+  ]
 }
