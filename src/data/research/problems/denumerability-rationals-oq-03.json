@@ -1,8 +1,8 @@
 {
   "slug": "denumerability-rationals-oq-03",
   "title": "Stern-Brocot Tree Encoding of Rationals",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-03-22T05:54:35Z",
     "iteration": 1,
-    "focus": "Formalized Stern-Brocot tree with coprimality and ordering proofs",
+    "focus": "Injectivity proved, 0 sorries, 0 axioms",
     "blockers": [],
     "nextAction": "Prove injectivity (eval_injective) and surjectivity",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: DenumerabilityRationalsOQ03.lean fully verified (0 sorries, 0 axioms, 674 lines, 43 theorems). Proved eval_injective: different paths yield different states via mediant ordering bounds with cross-multiplication transitivity. Added la_ge_eval, mediant_lt_ra_rb, mediant_gt_la_lb, eval_injective_gen.",
+    "progressSummary": "COMPLETED: DenumerabilityRationalsOQ03.lean - Stern-Brocot tree, 584 lines, 0 axioms, 0 sorries, 30 theorems. Injectivity proved via BST ordering invariant.",
     "builtItems": [
       "DenumerabilityRationalsOQ03.lean: State-based Stern-Brocot tree (349 lines)",
       "det_path: Determinant invariant preserved through all navigation",
@@ -42,12 +42,11 @@
       "mediant_lt_right, mediant_gt_left: mediant bounded by ancestors for all descendants",
       "rb_le_eval, la_le_eval, rb_increase_left, la_increase_right: monotonicity lemmas",
       "ra_pos_eval, lb_pos_eval: positivity preservation lemmas",
-      "la_ge_eval: la non-decreasing along any path",
-      "lb_pos_of_det / ra_pos_of_det: component positivity from det=1",
-      "mediant_lt_ra_rb: mediant < right ancestor (cross-product, proved by induction with transitivity chain)",
-      "mediant_gt_la_lb: mediant > left ancestor (cross-product, symmetric proof)",
-      "eval_injective_gen: generalized injectivity from any valid state via mediant ordering",
-      "eval_injective: injectivity from root (0 sorries)"
+      "value_between_ancestors: BST invariant for cross-product ordering (key to injectivity)",
+      "eval_injective_gen: generalized injectivity from any det=1 state",
+      "eval_injective: injectivity from root (0 sorries)",
+      "ra_pos_of_det, lb_pos_of_det: positivity from det=1",
+      "la_ge_after_right: monotonicity after right step"
     ],
     "insights": [
       "State machine approach (la/lb, ra/rb) is more natural for formal verification than recursive tree type",
@@ -59,9 +58,11 @@
       "mediant_lt_right: induction on path, L case needs cross-mult transitivity, R case direct since right ancestor unchanged",
       "L vs R case in injectivity: mediant(eval s.left rest1) < mediant(s) from mediant_lt_right of s.left, and mediant(s) < mediant(eval s.right rest2) from mediant_gt_left of s.right — contradiction since same state",
       "nil vs cons: use rb_increase_left (rb strictly increases after L) and la_increase_right (la strictly increases after R)",
-      "Injectivity proof strategy: nil-vs-cons uses component monotonicity (rb increases after L, la increases after R); L-vs-R uses mediant ordering bounds; same-direction recurses",
-      "Cross-multiplication transitivity: from A*C < B*D and B*E < F*C with C,D,E > 0, derive A*E < F*D by multiplying and canceling",
-      "Key lemma mediant_lt_ra_rb: descendants bounded by right ancestor ra/rb, proved by induction with R case direct and L case via transitivity chain"
+      "eval_injective proof strategy: (1) rb_ge_ra_of_num_lt_den: if det=1 and num<den then rb≥ra (by nlinarith with cross-product), (2) num_lt_den_preserved: all left descendants have num<den (cross-product gives (2la+ra)(lb+rb)+1=(la+ra)(2lb+rb)), (3) num_gt_den_preserved: all right descendants have num>den, (4) L and R subtrees disjoint by num<den vs num>den",
+      "Key cross-product identities for Stern-Brocot: going left gives (2la+ra)(lb+rb) = (la+ra)(2lb+rb) - 1 (left mediant < parent), going right gives (la+2ra)(lb+rb) = (la+ra)(lb+2rb) + 1 (right mediant > parent). Need nlinarith with these products, not omega alone.",
+      "Injectivity proof decomposition: nil-vs-cons uses rb/la monotonicity (omega), L-vs-R uses BST ordering (linarith), same-direction uses IH (congrArg)",
+      "value_between_ancestors key trick: for L case, Goal1=IH1 directly, Goal2 follows by adding IH1+IH2 (nlinarith). R case symmetric.",
+      "push_cast unnecessary when simp already normalizes Nat.cast via State.left/State.right — linarith handles cross-product contradictions directly"
     ],
     "mathlibGaps": [
       "No Stern-Brocot tree or Calkin-Wilf tree in Mathlib",
@@ -69,8 +70,9 @@
       "Would benefit from: nat_coprime_of_int_bezout or similar bridge lemma"
     ],
     "nextSteps": [
-      "Surjectivity: show every positive rational has a path (Euclidean algorithm connection)",
-      "Continued fraction correspondence: run-length encoding equals CF coefficients"
+      "Prove surjectivity via Euclidean algorithm",
+      "Formalize continued fraction correspondence",
+      "Establish full bijection Path ≃ ℚ⁺"
     ],
     "markdown": "# Knowledge Base: denumerability-rationals-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -111,10 +113,10 @@
     {
       "path": "Proofs/DenumerabilityRationalsOQ03.lean",
       "filename": "DenumerabilityRationalsOQ03.lean",
-      "lineCount": 674,
-      "theoremCount": 43,
+      "lineCount": 584,
+      "theoremCount": 30,
       "axiomCount": 0,
-      "defCount": 7,
+      "defCount": 12,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DenumerabilityRationalsOQ03.lean"
