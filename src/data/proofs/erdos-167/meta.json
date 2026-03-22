@@ -44,53 +44,53 @@
   },
   "sections": [
     {
-      "id": "erd-s-problem-167-tuza-s-conje",
-      "title": "Erdős Problem #167: Tuza's Conjecture on Triangle Covering",
+      "id": "problem-statement",
+      "title": "Problem Statement and Context",
       "startLine": 20,
       "endLine": 53,
-      "summary": "Erdős Problem #167: Tuza's Conjecture on Triangle Covering"
+      "summary": "Documentation of Erdős Problem #167: Tuza's 1981 conjecture that τ(G) ≤ 2ν(G), where τ is the minimum triangle edge cover and ν is the maximum triangle packing. Includes status, references, and formalization roadmap."
     },
     {
       "id": "core-definitions",
-      "title": "/- ## Core Definitions -/",
+      "title": "Core Definitions",
       "startLine": 54,
       "endLine": 85,
-      "summary": "/- ## Core Definitions -/"
+      "summary": "Defines Triangle (3-element subset with all edges present), IsEdgeDisjointTrianglePacking (set of triangles with no shared edges), and IsTriangleCover (edge set whose removal eliminates all triangles). These are the primitives for stating Tuza's conjecture."
     },
     {
-      "id": "tuza-s-conjecture",
-      "title": "/- ## Tuza's Conjecture -/",
+      "id": "tuza-conjecture",
+      "title": "Tuza's Conjecture Statement",
       "startLine": 86,
       "endLine": 94,
-      "summary": "/- ## Tuza's Conjecture -/"
+      "summary": "Formal statement of Tuza's conjecture: for every graph G, the minimum triangle cover size τ(G) is at most 2ν(G) where ν(G) is the maximum triangle packing size. Axiomatized as the conjecture is open."
     },
     {
       "id": "trivial-bound",
-      "title": "/- ## Trivial Bound -/",
+      "title": "Trivial Bound: τ ≤ 3ν",
       "startLine": 95,
       "endLine": 175,
-      "summary": "/- ## Trivial Bound -/"
+      "summary": "Proves the trivial bound τ(G) ≤ 3ν(G): given a maximum packing of ν edge-disjoint triangles, removing all 3 edges of each triangle yields a cover of size 3ν. Aristotle-verified."
     },
     {
       "id": "known-results",
-      "title": "/- ## Known Results -/",
+      "title": "Known Results: K₄ and K₅ Tightness, Haxell-Kohayakawa",
       "startLine": 176,
       "endLine": 253,
-      "summary": "/- ## Known Results -/"
+      "summary": "Tightness examples: K₄ has ν=1, τ=2 (ratio 2, matching conjecture) and K₅ has ν=2, τ=4 (also ratio 2). Both verified by native_decide. Axiomatizes the Haxell-Kohayakawa bound τ ≤ (3-3/23)ν ≈ 2.87ν and special cases (K₄-free, planar)."
     },
     {
       "id": "fractional-version",
-      "title": "/- ## Fractional Version -/",
+      "title": "Fractional Version",
       "startLine": 254,
       "endLine": 265,
-      "summary": "/- ## Fractional Version -/"
+      "summary": "Axiomatizes the fractional relaxation τ*(G) ≤ 2ν*(G), which is known to be true via LP duality. The integral conjecture would follow from suitable rounding."
     },
     {
       "id": "summary",
-      "title": "/- ## Summary",
+      "title": "Summary",
       "startLine": 266,
       "endLine": 289,
-      "summary": "/- ## Summary"
+      "summary": "Summary of formalization status: 3 Aristotle-verified theorems (trivial bound, K₄ tightness, K₅ tightness), 5 axioms (Tuza conjecture, Haxell-Kohayakawa bound, special cases, fractional version). The main conjecture remains open."
     }
   ],
   "conclusion": {
@@ -107,7 +107,12 @@
     {
       "targetId": "erdos-140",
       "relationship": "related",
-      "description": "Both concern extremal combinatorics: #140 addresses arithmetic progression-free sets, #167 addresses triangle packing/covering in graphs"
+      "description": "Both concern extremal combinatorics: #140 addresses density of 3-AP-free sets, #167 addresses triangle packing/covering tradeoffs in graphs"
+    },
+    {
+      "targetId": "erdos-136",
+      "relationship": "related",
+      "description": "Both are graph coloring/structure problems from Erdős. #136 concerns the Erdős-Gyárfás function f(n,4,5) relating graph size to clique/independence structure, #167 concerns triangle substructure"
     }
   ]
 }
