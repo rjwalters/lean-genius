@@ -44,7 +44,8 @@
       "Stated precise infimum bounds with ENNReal measure types",
       "Provided educational structure connecting potential theory to polynomial analysis"
     ],
-    "axiomCount": 5
+    "axiomCount": 5,
+    "lineCount": 117
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős, Herzog, and Piranian in their 1958 paper 'Metric properties of polynomials.' They studied the sublevel set {x ∈ ℝ : |f(x)| < 1} for monic polynomials with real roots restricted to [-1, 1].\n\nThe 1958 paper proved the upper bound sup ≤ 2√2 when roots are in {-1, 1}, and conjectured this is optimal for roots in [-1, 1]. They also showed the infimum is less than 2 using polynomials like (x+1)(x-1)³.\n\nTerence Tao resolved the supremum question in December 2025, confirming that sup = 2√2 for the full class of polynomials with roots in [-1, 1]. The exact infimum remains an open problem, with current best bounds 2^(4/3) - 1 ≈ 1.519 ≤ inf ≤ 1.835.",

@@ -60,7 +60,8 @@
         "relationship": "Erdős Problem #90 (maximum unit distances u(n)) is the prerequisite problem — #668 studies uniqueness of configurations achieving u(n)"
       }
     ],
-    "axiomCount": 7
+    "axiomCount": 7,
+    "lineCount": 189
   },
   "overview": {
     "historicalContext": "**Erdos Problem #668**\n\nThis problem explores the structure of extremal configurations for the classical unit distance problem in the plane.\n\n**Background:**\nThe unit distance problem (Erdos Problem #90) asks: what is the maximum number u(n) of unit distances among n points in the plane? Problem #668 goes further, asking about the UNIQUENESS of configurations achieving this maximum.\n\n**Historical Development:**\n- The unit distance problem was posed by Erdos in 1946\n- The case n=4 is fully understood: exactly one configuration (the double triangle)\n- Computational work by Engel, Hammond-Lee, Su, Varga, Zsamboki [EHSVZ25] and Alexeev, Mixon, Parshall [AMP25] suggests uniqueness for 5 <= n <= 21\n\n**Status:** OPEN",
@@ -153,7 +154,9 @@
       "description": "Both are Erdős problems from the combinatorial number theory/geometry domain with axiomatized deep results"
     }
   ],
-  "relatedProofs": ["erdos-646"],
+  "relatedProofs": [
+    "erdos-646"
+  ],
   "conclusion": {
     "summary": "Erdos Problem #668 asks about the multiplicity of extremal unit distance configurations. While f(4)=1 is known (the unique double-triangle), and computational evidence suggests f(n)=1 for n up to 21, the questions of whether f(n) tends to infinity or exceeds 1 for large n remain OPEN.",
     "implications": "**Geometric Significance**\n\n1. **Extremal Structure:** Understanding f(n) reveals how constrained or flexible extremal configurations are\n\n2. **Uniqueness Phenomenon:** If f(n)=1 persists, extremal structures have remarkable rigidity\n\n3. **Asymptotic Behavior:** The growth of f(n) reflects the complexity of the unit distance problem\n\n4. **Computational Geometry:** Results inform algorithms for geometric optimization\n\n5. **Connection to Erdos-Ko-Rado Type Problems:** Extremal configurations in discrete geometry",

@@ -128,7 +128,8 @@
       "Simple graph theory (SimpleGraph, CliqueFree)",
       "Topological convergence (Filter.Tendsto, nhds)",
       "Asymptotic notation (Θ, O, Ω)"
-    ]
+    ],
+    "lineCount": 489
   },
   "sections": [
     {
@@ -225,12 +226,26 @@
     ]
   },
   "crossReferences": [
-    {"proofId": "erdos-1155", "relationship": "parent", "description": "Parent formalization of Erdős Problem #1155; this file extends with exact asymptotic gap analysis"},
-    {"proofId": "ramseys-theorem", "relationship": "related", "description": "Ramsey theory provides related combinatorial bounds for structural properties of random graphs"}
+    {
+      "proofId": "erdos-1155",
+      "relationship": "parent",
+      "description": "Parent formalization of Erdős Problem #1155; this file extends with exact asymptotic gap analysis"
+    },
+    {
+      "proofId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey theory provides related combinatorial bounds for structural properties of random graphs"
+    }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Filter", "SimpleGraph", "Finset"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "SimpleGraph",
+      "Finset"
+    ],
     "namespace": null,
     "lineCount": 489,
     "axiomCount": 5,

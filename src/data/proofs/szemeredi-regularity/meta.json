@@ -46,15 +46,40 @@
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
     "references": [
-      {"key": "Sz75", "citation": "Szemerédi, E., On sets of integers containing no k elements in arithmetic progression, Acta Arith. 27 (1975), 199-245.", "type": "paper"},
-      {"key": "KS96", "citation": "Komlós, J. and Simonovits, M., Szemerédi's regularity lemma and its applications in graph theory, Combinatorics, Paul Erdős is Eighty, Vol. 2 (1996), 295-352.", "type": "paper"},
-      {"key": "Go97", "citation": "Gowers, W.T., Lower bounds of tower type for Szemerédi's uniformity lemma, GAFA 7 (1997), 322-337.", "type": "paper"},
-      {"key": "FK99", "citation": "Frieze, A. and Kannan, R., Quick approximation to matrices and applications, Combinatorica 19 (1999), 175-220.", "type": "paper"}
+      {
+        "key": "Sz75",
+        "citation": "Szemerédi, E., On sets of integers containing no k elements in arithmetic progression, Acta Arith. 27 (1975), 199-245.",
+        "type": "paper"
+      },
+      {
+        "key": "KS96",
+        "citation": "Komlós, J. and Simonovits, M., Szemerédi's regularity lemma and its applications in graph theory, Combinatorics, Paul Erdős is Eighty, Vol. 2 (1996), 295-352.",
+        "type": "paper"
+      },
+      {
+        "key": "Go97",
+        "citation": "Gowers, W.T., Lower bounds of tower type for Szemerédi's uniformity lemma, GAFA 7 (1997), 322-337.",
+        "type": "paper"
+      },
+      {
+        "key": "FK99",
+        "citation": "Frieze, A. and Kannan, R., Quick approximation to matrices and applications, Combinatorica 19 (1999), 175-220.",
+        "type": "paper"
+      }
     ],
     "relatedProofs": [
-      {"id": "szemeredi-full", "relationship": "used-by", "description": "The full Szemerédi theorem uses regularity + counting to find arithmetic progressions"},
-      {"id": "roth-theorem-k3", "relationship": "related", "description": "Roth's theorem can be proved via regularity + triangle removal"}
-    ]
+      {
+        "id": "szemeredi-full",
+        "relationship": "used-by",
+        "description": "The full Szemerédi theorem uses regularity + counting to find arithmetic progressions"
+      },
+      {
+        "id": "roth-theorem-k3",
+        "relationship": "related",
+        "description": "Roth's theorem can be proved via regularity + triangle removal"
+      }
+    ],
+    "lineCount": 167
   },
   "overview": {
     "historicalContext": "The Szemeredi Regularity Lemma, proved by Endre Szemeredi in 1975 as a key tool in his proof of Szemeredi's theorem, has become one of the most important and widely-used results in combinatorics. It provides a universal structural decomposition for graphs: any sufficiently large graph can be partitioned into a bounded number of parts such that the edges between almost all pairs of parts behave pseudo-randomly.\n\nThe lemma's power lies in reducing arbitrary graph problems to problems about dense random-like bipartite graphs. This 'structure vs randomness' paradigm has transformed graph theory, additive combinatorics, and theoretical computer science.\n\nGowers (1997) showed that the tower-type bound on the number of parts is unavoidable: the partition size must grow as a tower of exponentials in 1/epsilon. Despite this, the lemma's qualitative power is undiminished, and it remains the primary tool for transferring results from random graphs to arbitrary graphs.\n\nThe regularity lemma has inspired numerous variants: the strong regularity lemma (Alon-Fischer-Krivelevich-Szegedy), weak regularity (Frieze-Kannan), arithmetic regularity (Green), and hypergraph regularity (Gowers, Rodl-Skokan).",
@@ -113,7 +138,9 @@
     ]
   },
   "leanFile": {
-    "imports": ["Mathlib"],
+    "imports": [
+      "Mathlib"
+    ],
     "namespace": "Szemeredi.Regularity",
     "lineCount": 115,
     "axiomCount": 0,

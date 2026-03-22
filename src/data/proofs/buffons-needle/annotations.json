@@ -18,7 +18,7 @@
     "title": "Physical Setup",
     "content": "**Parameters**:\n\n- $\\ell$: needle length\n- $d$: spacing between parallel lines\n- $\\ell \\leq d$: short needle case\n\n**Random Variables** (uniformly distributed):\n\n- $\\theta \\in [0, \\pi)$: angle from horizontal\n- $x \\in [0, d/2]$: distance from needle center to nearest line\n\n```lean\nvariable (ℓ : ℝ) (hℓ : 0 < ℓ)\nvariable (d : ℝ) (hd : 0 < d)\nvariable (hℓd : ℓ ≤ d)\n```\n\n**Why d/2?** By symmetry, we only consider distance to the *nearest* line.",
     "mathContext": "θ ∈ [0,π), x ∈ [0,d/2]",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": ["uniform distribution", "symmetry", "geometric probability"],
     "prerequisites": ["Lean variable declarations and positivity conditions", "uniform distribution on intervals"]
   },
@@ -66,7 +66,7 @@
     "title": "Monte Carlo Estimation of π",
     "content": "**Estimating π by Dropping Needles!**\n\nFrom $P = 2\\ell/(\\pi d)$, solve for $\\pi$:\n$$\\pi = \\frac{2\\ell}{Pd}$$\n\n**Experiment**: Drop $n$ needles, count $k$ crossings:\n- Estimated $P \\approx k/n$\n- Estimated $\\pi \\approx 2\\ell n / (kd)$\n\n```lean\ntheorem pi_from_crossing_probability (p : ℝ) (hp : 0 < p)\n    (h_buffon : p = 2 * ℓ / (π * d)) :\n    π = 2 * ℓ / (p * d)\n```\n\n**Historical Note**: This predates the term \"Monte Carlo method\" by almost 200 years! Laplace and others actually performed this experiment.\n\n**Practical**: Mario Lazzarini (1901) claimed to estimate $\\pi$ to 6 decimal places with 3408 needle drops (likely fabricated).",
     "mathContext": "π = 2ℓn/(kd) from k crossings in n drops",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": ["Monte Carlo", "pi estimation", "random sampling"],
     "prerequisites": ["buffon_needle_probability (proved earlier)", "algebraic manipulation of the probability formula"]
   },
@@ -77,7 +77,7 @@
     "type": "note",
     "title": "Numerical Examples",
     "content": "**Special Cases Verified**:\n\n**Equal Length** ($\\ell = d$):\n```lean\ntheorem buffon_equal_length (h : ℓ = d) :\n    2 * ℓ / (π * d) = 2 / π\n```\n$P = 2/\\pi \\approx 0.6366$ (about 64% chance of crossing)\n\n**Half Length** ($\\ell = d/2$):\n```lean\ntheorem buffon_half_length (h : ℓ = d / 2) :\n    2 * ℓ / (π * d) = 1 / π\n```\n$P = 1/\\pi \\approx 0.3183$ (about 32% chance of crossing)\n\n**Note**: As $\\ell \\to 0$, $P \\to 0$ (tiny needles rarely cross).",
-    "significance": "minor",
+    "significance": "supporting",
     "relatedConcepts": ["special cases", "numerical verification", "field_simp"],
     "prerequisites": ["buffon_needle_probability", "field_simp tactic"]
   },
@@ -88,7 +88,7 @@
     "type": "note",
     "title": "Long Needle Case",
     "content": "**When ℓ > d (Long Needle)**:\n\nThe formula becomes more complex:\n$$P = \\frac{2}{\\pi}\\left[\\frac{\\ell}{d} - \\sqrt{\\left(\\frac{\\ell}{d}\\right)^2 - 1} + \\arccos\\left(\\frac{d}{\\ell}\\right)\\right]$$\n\n**Why Different?**\n- When $\\ell > d$, the needle can cross multiple lines\n- For some angles, crossing is guaranteed\n- The geometry becomes more intricate\n\n**Limiting Behavior**: As $\\ell \\to \\infty$, $P \\to 1$ (always crosses).",
-    "significance": "minor",
+    "significance": "supporting",
     "relatedConcepts": ["long needle", "arccos", "multiple crossings"],
     "prerequisites": ["short needle formula (ℓ ≤ d case)", "arccos function for angle computation"]
   },
@@ -99,7 +99,7 @@
     "type": "note",
     "title": "Applications and Context",
     "content": "**Cauchy-Crofton Formula**:\n\nBuffon's Needle is a special case of the general formula relating curve length to expected line intersections.\n\n**Applications**:\n1. **Stereology**: Estimating lengths/areas from random sections\n2. **Quality control**: Inspecting surfaces with random probes\n3. **Computer graphics**: Ray tracing, visibility computations\n4. **Biology**: Estimating fiber lengths from cross-sections\n\n**The Deep Connection**:\n\nThe appearance of $\\pi$ is not coincidental—it connects:\n- **Geometry** (circles, angles)\n- **Analysis** ($\\int\\sin\\theta$)\n- **Probability** (uniform distributions)\n- **Measure theory** (area ratios)\n\nThis is why geometric probability is so elegant!",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": ["Cauchy-Crofton", "stereology", "integral geometry"],
     "prerequisites": ["Buffon's needle formula", "Cauchy-Crofton formula (background)", "measure theory"]
   }

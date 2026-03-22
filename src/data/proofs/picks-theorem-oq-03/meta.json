@@ -62,7 +62,7 @@
       "Boundary count pattern: B(β_d) = 2d vertices (proved for d=1,2,3)",
       "Volume product formula: vol(β_d)·vol(□_d) = 4^d/d! (proved for all d)"
     ],
-    "dateAdded": "03/06/26",
+    "dateAdded": "2026-03-06",
     "leanFile": {
       "lineCount": 721,
       "structures": 2,
@@ -82,7 +82,8 @@
         "description": "Cross-polytope (hyperoctahedron) Ehrhart theory: polynomials, reciprocity, h*-vectors, duality"
       }
     ],
-    "axiomCount": 3
+    "axiomCount": 3,
+    "lineCount": 710
   },
   "overview": {
     "historicalContext": "Eugène Ehrhart (1906-2000) was a French mathematician who published his landmark theorem in 1962, showing that for any d-dimensional lattice polytope P and positive integer n, the number of lattice points in the dilated polytope nP is a polynomial of degree d in n. This polynomial, now called the Ehrhart polynomial, encodes deep geometric and combinatorial information about the polytope.\n\nEhrhart's theorem provides the correct higher-dimensional generalization of Pick's theorem (1899). While Pick's formula A = i + b/2 - 1 works beautifully in 2D, the Reeve tetrahedra show it cannot extend to 3D. Ehrhart theory explains why: in 2D the polynomial has 3 coefficients determined by 2 independent counts (i and b), but in 3D the polynomial has 4 coefficients while i and b provide only 2 equations.\n\nThe theory was further enriched by Macdonald's reciprocity theorem (1971), connecting interior and boundary counts through sign changes in the polynomial, and Stanley's nonnegativity theorem (1980) for h*-vectors.",

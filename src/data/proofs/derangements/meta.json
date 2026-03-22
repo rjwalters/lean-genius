@@ -75,10 +75,11 @@
         "note": "Standard reference for derangement theory and the exponential formula"
       }
     ],
-    "dateAdded": "12/26/25",
+    "dateAdded": "2025-12-26",
     "wiedijkNumber": 88,
     "mathlib_version": "4.15.0",
-    "axiomCount": 0
+    "axiomCount": 0,
+    "lineCount": 227
   },
   "overview": {
     "historicalContext": "The derangement problem — also known as the 'problème des rencontres' (problem of coincidences) or the 'hat-check problem' — was first studied by Pierre Rémond de Montmort in his 1708 book 'Essay d'Analyse sur les Jeux de Hazard'. Montmort computed $D_n$ for small $n$ and conjectured the general formula. Nikolaus Bernoulli corresponded with Montmort about the problem, and Euler later derived the formula $D_n = n! \\sum (-1)^k/k!$ using inclusion-exclusion in 1751. The subfactorial notation $!n$ was introduced by William Allen Whitworth in 1878. The convergence $D_n/n! \\to 1/e$ is a celebrated result in combinatorial probability — it means that for large $n$, a random permutation has roughly a 36.79% chance of being a derangement, regardless of $n$. This is an early example of a 'universal' probability that doesn't depend on the problem size.",
@@ -188,6 +189,22 @@
     {
       "id": "birthday-problem",
       "relationship": "Both are classic combinatorial probability problems. The birthday problem counts collisions in random mappings, while derangements count fixed-point-free permutations. Both exhibit surprising threshold behavior."
+    }
+  ],
+  "references": [
+    {
+      "authors": "de Montmort, Pierre Rémond",
+      "title": "Essay d'analyse sur les jeux de hazard",
+      "year": "1708",
+      "venue": "Paris: Quillau",
+      "note": "First study of derangements as the 'problème des rencontres' (problem of coincidences), computing the probability of no fixed point in a random permutation"
+    },
+    {
+      "authors": "Euler, Leonhard",
+      "title": "Calcul de la probabilité dans le jeu de rencontre",
+      "year": "1753",
+      "venue": "Mémoires de l'Académie des Sciences de Berlin, 7, pp. 255-270",
+      "note": "Derived the derangement formula D(n) = n!·Σ(-1)^k/k! and proved D(n)/n! → 1/e as n → ∞"
     }
   ],
   "relatedProofs": [
