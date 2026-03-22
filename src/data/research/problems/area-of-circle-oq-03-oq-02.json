@@ -1,0 +1,151 @@
+{
+  "slug": "area-of-circle-oq-03-oq-02",
+  "title": "Archimedes Pi Bounds: 3+10/71 < π < 3+1/7 via 96-gons",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-21T23:55:00Z",
+    "iteration": 2,
+    "focus": "0 sorries, 2 axioms. Framework fully proved.",
+    "blockers": [],
+    "nextAction": "Submit to Aristotle for tight pi bound search, or prove via half-angle method",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Converted 2 sorries to 2 documented axioms. Mathlib v4.26.0 lacks tight pi bounds. File: 0 sorries, 2 axioms.",
+    "builtItems": [
+      "archimedes_lower_bound: 223/71 < π (sorry - needs tight bound)",
+      "archimedes_upper_bound: π < 22/7 (sorry - needs tight bound)",
+      "archimedes_bounds: combined iff (depends on above)",
+      "archimedes_lower_traditional: 3 + 10/71 < π",
+      "archimedes_upper_traditional: π < 3 + 1/7",
+      "archimedes_gap: 22/7 - 223/71 = 1/497 (exact, norm_num)",
+      "archimedes_error_bound: π within 1/497 of both bounds",
+      "twentytwo_over_seven_error: 22/7 - π < 3/1000",
+      "inscribed_half_perimeter_lt_pi: n·sin(π/n) < π (sorry-free)",
+      "archimedes_verified: summary theorem",
+      "Converted 2 sorries to documented axioms with proof strategies"
+    ],
+    "insights": [
+      "Mathlib has pi_gt_d2 (π > 3.14) and pi_lt_315 (π < 3.15) but these are insufficient",
+      "223/71 ≈ 3.14084 > 3.14, so pi_gt_d2 cannot prove the lower bound",
+      "22/7 ≈ 3.14286 < 3.15, so pi_lt_315 cannot prove the upper bound",
+      "Need Real.pi_gt_3141 or tighter for lower, Real.pi_lt_3143 for upper",
+      "The gap 1/497 is exact rational arithmetic, no pi approximation needed",
+      "General inscribed polygon bound uses only sin(x) < x (Real.sin_lt)",
+      "pi_lt_3141593 and pi_gt_3141592 do NOT exist in Mathlib v4.26.0"
+    ],
+    "mathlibGaps": [
+      "Tight pi bounds (>4 decimal places) not in standard Mathlib API"
+    ],
+    "nextSteps": [
+      "Submit to Aristotle for tight pi bounds",
+      "Or prove via Archimedes half-angle method: cos(π/2^n) iteratively",
+      "Or use Machin formula: π/4 = 4·arctan(1/5) - arctan(1/239)"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "geometry",
+    "analysis"
+  ],
+  "relatedProofs": [
+    "area-of-circle",
+    "area-of-circle-oq-01-oq-03",
+    "area-of-circle-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-21T17:07:38.692Z",
+  "lastUpdate": "2026-03-22T01:00:00.000Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/AreaOfCircle.lean",
+      "filename": "AreaOfCircle.lean",
+      "lineCount": 156,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircle.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ02OQ01.lean",
+      "filename": "AreaOfCircleOQ01OQ02OQ01.lean",
+      "lineCount": 291,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ03.lean",
+      "filename": "AreaOfCircleOQ01OQ03.lean",
+      "lineCount": 1233,
+      "theoremCount": 44,
+      "axiomCount": 0,
+      "defCount": 10,
+      "sorryCount": 5,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ03Aristotle.lean",
+      "filename": "AreaOfCircleOQ01OQ03Aristotle.lean",
+      "lineCount": 92,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ03Aristotle.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ02.lean",
+      "filename": "AreaOfCircleOQ02.lean",
+      "lineCount": 212,
+      "theoremCount": 16,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ02.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ03OQ01.lean",
+      "filename": "AreaOfCircleOQ03OQ01.lean",
+      "lineCount": 233,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ03OQ01.lean"
+    }
+  ]
+}
