@@ -322,13 +322,87 @@ theorem regularity_lemma (eps : ℚ) (heps : 0 < eps) :
     rw [h, Finset.card_empty, Nat.cast_zero]
     simp [Finset.card_singleton]
 
+-- ═══════════════════════════════════════════════════════════════════
+-- BRIDGE TO MATHLIB'S SZEMEREDI REGULARITY
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Our edge density agrees with Mathlib's SimpleGraph.edgeDensity. -/
+private theorem edgeDensity_eq_mathlib (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A B : Finset V) :
+    edgeDensity G A B = G.edgeDensity A B := by
+  unfold edgeDensity
+  simp only [SimpleGraph.edgeDensity, Rel.edgeDensity, Rel.interedges]
+  split_ifs with h
+  · -- Denominator is 0: both sides are 0
+    have h0 : A.card * B.card = 0 := by
+      cases mul_eq_zero.mp h with
+      | inl ha => exact mul_eq_zero.mpr (Or.inl (Nat.cast_eq_zero.mp ha))
+      | inr hb => exact mul_eq_zero.mpr (Or.inr (Nat.cast_eq_zero.mp hb))
+    rw [show (↑A.card : ℚ) * ↑B.card = 0 from h, div_zero]
+  · -- Non-zero: same rational expression
+    rfl
+
+/-- Mathlib's pairwise uniformity (strict <) implies our ε-regularity (≤). -/
+private theorem mathlib_uniform_imp_regular (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (A B : Finset V)
+    (h : G.IsUniform (↑eps : ℝ) A B) :
+    IsEpsilonRegular G eps A B := by
+  intro A' B' hA' hB' hcA' hcB'
+  -- The density comparison: |d(A',B') - d(A,B)| ≤ eps
+  rw [edgeDensity_eq_mathlib, edgeDensity_eq_mathlib]
+  -- Apply Mathlib's uniformity condition
+  have hcA'_real : (↑A.card : ℝ) * ↑eps ≤ ↑A'.card := by
+    have : (↑A.card : ℚ) * eps ≤ ↑A'.card := by linarith
+    exact_mod_cast this
+  have hcB'_real : (↑B.card : ℝ) * ↑eps ≤ ↑B'.card := by
+    have : (↑B.card : ℚ) * eps ≤ ↑B'.card := by linarith
+    exact_mod_cast this
+  have hlt := h hA' hB' hcA'_real hcB'_real
+  -- Convert strict < in ℝ to ≤ in ℚ
+  have : |(↑(G.edgeDensity A' B') : ℝ) - ↑(G.edgeDensity A B)| < ↑eps := hlt
+  rw [← Rat.cast_sub, ← Rat.cast_abs] at this
+  exact_mod_cast le_of_lt this
+
+/-- Equipartition in Mathlib's sense implies our equitability condition:
+    all parts differ in size by at most 1. -/
+private theorem equipartition_imp_equitable
+    (P : Finpartition (Finset.univ : Finset V))
+    (hequi : P.IsEquipartition) :
+    ∀ A B : Finset V, A ∈ P.parts → B ∈ P.parts →
+      (A.card : ℤ) - B.card ≤ 1 := by
+  intro A B hA hB
+  -- IsEquipartition unfolds to EquitableOn Finset.card:
+  -- ∀ a ∈ ↑P.parts, ∀ b ∈ ↑P.parts, a.card ≤ b.card + 1
+  have h := hequi (Finset.mem_coe.mpr hA) (Finset.mem_coe.mpr hB)
+  -- h : A.card ≤ B.card + 1 (in ℕ)
+  omega
+
+/-- The set of our irregular pairs is a subset of Mathlib's non-uniform pairs.
+    This is because Mathlib uses strict < while we use ≤. -/
+private theorem irregular_subset_nonuniform (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (P : Finpartition (Finset.univ : Finset V)) :
+    ((P.parts.product P.parts).filter (fun pq =>
+      pq.1 ≠ pq.2 ∧ ¬IsEpsilonRegular G eps pq.1 pq.2)).card ≤
+    (P.nonUniforms G (↑eps : ℝ)).card := by
+  apply Finset.card_le_card
+  intro ⟨A, B⟩ hmem
+  have hf := Finset.mem_filter.mp hmem
+  have hp := Finset.mem_product.mp hf.1
+  -- Our pair is not ε-regular, so it's not ε-uniform (contrapositive)
+  have hne := hf.2.1
+  have hnreg := hf.2.2
+  have hnunif : ¬G.IsUniform (↑eps : ℝ) A B :=
+    fun hunif => hnreg (mathlib_uniform_imp_regular G eps A B hunif)
+  -- Show membership in nonUniforms
+  simp only [Finpartition.nonUniforms, Finset.mem_filter, Finset.mem_offDiag]
+  exact ⟨⟨hp.1, hp.2, hne⟩, hnunif⟩
+
 /-- **Szemeredi Regularity Lemma (Strong Form)**: For every epsilon > 0
     and m₀ ≥ 1, there exists M such that every graph on ≥ M vertices
     admits an ε-regular equipartition into k parts with m₀ ≤ k ≤ M.
 
-    This is the standard formulation requiring non-trivial partitioning.
-    The proof iterates energy_increment_step at most ⌈1/ε⁵⌉ times,
-    using partitionEnergy ∈ [0,1] for termination. -/
+    Proved by bridging to Mathlib's szemeredi_regularity theorem,
+    which provides a complete formalization of the regularity lemma. -/
 theorem regularity_lemma_strong (eps : ℚ) (heps : 0 < eps) (m₀ : ℕ) (hm₀ : 1 ≤ m₀) :
     ∃ M : ℕ, m₀ ≤ M ∧
       ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V)
@@ -337,6 +411,43 @@ theorem regularity_lemma_strong (eps : ℚ) (heps : 0 < eps) (m₀ : ℕ) (hm₀
         ∃ parts : Finset (Finset V),
           IsRegularPartition G eps parts ∧
           m₀ ≤ parts.card ∧ parts.card ≤ M := by
-  sorry
+  -- Use Mathlib's Szemeredi Regularity Lemma
+  set M := max m₀ (SzemerediRegularity.bound (↑eps : ℝ) m₀) with hM_def
+  refine ⟨M, le_max_left _ _, fun V _ _ G _ hV => ?_⟩
+  -- Apply Mathlib's theorem with l = m₀
+  have heps_real : (0 : ℝ) < (↑eps : ℝ) := by exact_mod_cast heps
+  have hl : m₀ ≤ Fintype.card V :=
+    le_trans (le_max_left _ _) hV
+  obtain ⟨P, hequi, hle, hbound, hunif⟩ :=
+    szemeredi_regularity G heps_real hl
+  refine ⟨P.parts, ⟨?_, ?_⟩, hle, le_trans hbound (le_max_right _ _)⟩
+  · -- Equitability: IsEquipartition → our equitability condition
+    exact equipartition_imp_equitable P hequi
+  · -- Irregularity count: IsUniform → at most eps * k*(k-1) irregular pairs
+    -- Mathlib's IsUniform gives: nonUniforms.card ≤ k*(k-1) * eps (in ℝ)
+    -- Our irregular pairs ⊆ Mathlib's non-uniform pairs
+    have h_sub := irregular_subset_nonuniform G eps P
+    -- Mathlib's uniformity bound
+    have h_unif : (↑(P.nonUniforms G (↑eps : ℝ)).card : ℝ) ≤
+        ↑(P.parts.card * (P.parts.card - 1)) * ↑eps := hunif
+    -- Chain: our_count ≤ nonUniforms_count ≤ k*(k-1)*eps
+    -- Work entirely in ℝ to avoid cast headaches, then cast back
+    suffices h_real :
+        (↑((P.parts.product P.parts).filter (fun pq =>
+          pq.1 ≠ pq.2 ∧ ¬IsEpsilonRegular G eps pq.1 pq.2)).card : ℝ) ≤
+        (↑eps : ℝ) * ((↑P.parts.card : ℝ) * ((↑P.parts.card : ℝ) - 1)) by
+      exact_mod_cast h_real
+    -- In ℝ: our_count ≤ nonUniforms_count ≤ k*(k-1) * eps
+    have h_sub_real : (↑((P.parts.product P.parts).filter (fun pq =>
+          pq.1 ≠ pq.2 ∧ ¬IsEpsilonRegular G eps pq.1 pq.2)).card : ℝ) ≤
+        (↑(P.nonUniforms G (↑eps : ℝ)).card : ℝ) := by exact_mod_cast h_sub
+    -- Mathlib bound: nonUniforms.card ≤ ↑(k*(k-1)) * eps
+    -- Rewrite ↑(k*(k-1)) as ↑k * (↑k - 1) using k ≥ 1
+    have h_k1 : 1 ≤ P.parts.card := le_trans hm₀ hle
+    have h_cast_kk : (↑(P.parts.card * (P.parts.card - 1)) : ℝ) =
+        (↑P.parts.card : ℝ) * ((↑P.parts.card : ℝ) - 1) := by
+      rw [Nat.cast_mul, Nat.cast_sub h_k1]; simp
+    rw [h_cast_kk] at h_unif
+    linarith
 
 end Szemeredi.Regularity
