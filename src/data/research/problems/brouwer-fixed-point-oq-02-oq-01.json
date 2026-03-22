@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Found bug in displacementColoring tie-breaking. Current coloring violates Sperner on hypotenuse when f(p)=p. Needs face-aware tie-breaking fix.",
+    "progressSummary": "PROGRESS: Proved door_parity_of_not_fc (1 sorry eliminated). Core Sperner (Sections I-IV) has 8 sorries. Application section (Section V) has build errors from Lean 4.26 API drift.",
     "builtItems": [
       "BrouwerFixedPointOQ02OQ01.lean: 428 lines, 2 sorries (down from 5)",
       "sperner_2d: PROVED via row-sweep parity (modulo strip_parity)",
@@ -49,7 +49,8 @@
       "All 15 definitions and 22/23 theorems compile clean against Mathlib v4.26",
       "displacementColoring_isSperner: PROVED with hno_fix hypothesis (6 cases, ~90 lines)",
       "gridToReal_in_simplex: PROVED helper lemma for simplex membership",
-      "approximate_fixed_point_2d: restructured to handle boundary fixed points (1 sorry remains for uniform continuity)"
+      "approximate_fixed_point_2d: restructured to handle boundary fixed points (1 sorry remains for uniform continuity)",
+      "PROVED door_parity_of_not_fc: non-FC triples have even {0,1}-door count (was sorry)"
     ],
     "insights": [
       "Row-sweep approach is cleaner than full double-counting: define hTrans(j) = horizontal {0,1}-doors at row j, show parity is constant across rows",
@@ -75,15 +76,18 @@
       "Root cause: tie-breaking picks smallest index (color 0 first), but on hypotenuse need color 0 to have LOWEST priority.",
       "Fix: reverse tie-breaking priority OR use face-aware tie-breaking where vertex-opposite colors get low priority.",
       "Standard fix from literature: argmin with tie-broken by largest index (so all-zeros → color 2, which is fine on hypotenuse).",
-      "On bottom edge (d2≥0): reversed priority would give color 2 when all zeros. Need face-aware tie-breaking for corners."
+      "On bottom edge (d2≥0): reversed priority would give color 2 when all zeros. Need face-aware tie-breaking for corners.",
+      "door_parity_of_not_fc PROVED: fin_cases + simp_all (config := {decide := true}) closes all 27 cases",
+      "Confirmed: displacementColoring tie-breaking already fixed by previous session (face-aware)",
+      "Application section (lines 600+) has 7+ build errors from Lean 4.26 linarith/nlinarith changes",
+      "Core Sperner machinery (Sections I-IV) compiles with 8 sorries remaining"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "FIX displacementColoring: use face-aware tie-breaking that ensures Sperner conditions",
-      "One approach: color = max index k such that d_k is minimal among {d0,d1,d2}",
-      "Alternative: separate handling for boundary vs interior vertices",
-      "After fixing coloring, displacementColoring_isSperner should be provable by case analysis on boundary face + displacement sign",
-      "fully_colored_gives_approx: show all-3-colors triangle has diameter ≤ sqrt(2)/n and displacement is small"
+      "Fix lower_door_sum_zero and upper_door_sum_zero: need IsFullyColored ↔ Finset conversion",
+      "Fix doorZ_left_boundary and doorZ_hyp_boundary: Sperner boundary color constraints",
+      "Fix application section (displacementColoring_isSperner): linarith/nlinarith API drift",
+      "Fix hTrans_zero_eq: unfold definitions and match at row 0"
     ]
   },
   "tags": [
