@@ -37,14 +37,22 @@
       "num_pos_path / den_pos_path: Positivity by structural induction",
       "mediant_strictly_between: Ordering proof for mediant",
       "toRat / toRat_pos: Rational value function with positivity",
-      "7 concrete verification examples (levels 0-2)"
+      "7 concrete verification examples (levels 0-2)",
+      "eval_injective_gen: generalized injectivity from any valid state (proof architecture, needs build fixes)",
+      "mediant_lt_right, mediant_gt_left: mediant bounded by ancestors for all descendants",
+      "rb_le_eval, la_le_eval, rb_increase_left, la_increase_right: monotonicity lemmas",
+      "ra_pos_eval, lb_pos_eval: positivity preservation lemmas"
     ],
     "insights": [
       "State machine approach (la/lb, ra/rb) is more natural for formal verification than recursive tree type",
       "The single determinant invariant det = 1 drives coprimality, ordering, and will drive completeness",
-      "Coprimality proof requires careful \u2115\u2192\u2124 lifting: show gcd | 1 as integers, then cast back",
+      "Coprimality proof requires careful ℕ→ℤ lifting: show gcd | 1 as integers, then cast back",
       "Lean's omega tactic can't unfold structure field access - need explicit 'show' or 'simp' first",
-      "No Mathlib Stern-Brocot module exists - this is fully original formalization"
+      "No Mathlib Stern-Brocot module exists - this is fully original formalization",
+      "eval_injective proof: use mediant ordering (mediant of left desc < mediant(s) < mediant of right desc)",
+      "mediant_lt_right: induction on path, L case needs cross-mult transitivity, R case direct since right ancestor unchanged",
+      "L vs R case in injectivity: mediant(eval s.left rest1) < mediant(s) from mediant_lt_right of s.left, and mediant(s) < mediant(eval s.right rest2) from mediant_gt_left of s.right — contradiction since same state",
+      "nil vs cons: use rb_increase_left (rb strictly increases after L) and la_increase_right (la strictly increases after R)"
     ],
     "mathlibGaps": [
       "No Stern-Brocot tree or Calkin-Wilf tree in Mathlib",
@@ -52,10 +60,7 @@
       "Would benefit from: nat_coprime_of_int_bezout or similar bridge lemma"
     ],
     "nextSteps": [
-      "Prove eval_injective: different paths give different rationals (via ordering induction)",
-      "Prove surjectivity: every \u211a\u207a appears via Euclidean algorithm search",
-      "Formalize continued fraction correspondence (run-length encoding = CF coefficients)",
-      "Establish full bijection \u2115 \u2192 \u211a\u207a via BFS tree enumeration"
+      "Fix build: rfl.le base cases → le_refl or simp [eval], nlinarith transitivity needs mul_pos hint, lt_irrefl matching"
     ],
     "markdown": "# Knowledge Base: denumerability-rationals-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -69,7 +74,7 @@
     "mathlib": []
   },
   "started": "2026-03-22T04:19:59.477Z",
-  "lastUpdate": "2026-03-22T05:54:35Z",
+  "lastUpdate": "2026-03-22T08:00:00Z",
   "leanFiles": [
     {
       "path": "Proofs/DenumerabilityRationals.lean",
