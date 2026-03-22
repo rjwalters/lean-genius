@@ -52,7 +52,9 @@
       "eval_injective proof: use mediant ordering (mediant of left desc < mediant(s) < mediant of right desc)",
       "mediant_lt_right: induction on path, L case needs cross-mult transitivity, R case direct since right ancestor unchanged",
       "L vs R case in injectivity: mediant(eval s.left rest1) < mediant(s) from mediant_lt_right of s.left, and mediant(s) < mediant(eval s.right rest2) from mediant_gt_left of s.right — contradiction since same state",
-      "nil vs cons: use rb_increase_left (rb strictly increases after L) and la_increase_right (la strictly increases after R)"
+      "nil vs cons: use rb_increase_left (rb strictly increases after L) and la_increase_right (la strictly increases after R)",
+      "eval_injective proof strategy: (1) rb_ge_ra_of_num_lt_den: if det=1 and num<den then rb≥ra (by nlinarith with cross-product), (2) num_lt_den_preserved: all left descendants have num<den (cross-product gives (2la+ra)(lb+rb)+1=(la+ra)(2lb+rb)), (3) num_gt_den_preserved: all right descendants have num>den, (4) L and R subtrees disjoint by num<den vs num>den",
+      "Key cross-product identities for Stern-Brocot: going left gives (2la+ra)(lb+rb) = (la+ra)(2lb+rb) - 1 (left mediant < parent), going right gives (la+2ra)(lb+rb) = (la+ra)(lb+2rb) + 1 (right mediant > parent). Need nlinarith with these products, not omega alone."
     ],
     "mathlibGaps": [
       "No Stern-Brocot tree or Calkin-Wilf tree in Mathlib",
