@@ -1,8 +1,8 @@
 {
   "id": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
   "name": "Skolem-Noether Theorem: K-Algebra Automorphisms of Mn(K)",
-  "status": "progress",
-  "phase": "ORIENT",
+  "status": "active",
+  "phase": "ACT",
   "knowledge": {
     "insights": [
       "Parent file CayleyHamiltonMinpolyOQ02OQ01.lean is complete (217 lines, 0 axioms, 0 sorries)",
@@ -29,7 +29,13 @@
       "Key structure: intertwine_prop gives phi(E_ij).mulVec(p_k) = delta_jk p_i",
       "Matrix.mulVec_mulVec needed careful handling: use show/rw not direct rewrite",
       "Matrix.stdBasisMatrix deprecated to Matrix.single in current Mathlib",
-      "congr_fun (intertwine_prop ...) a converts mulVec equality to entry-wise"
+      "congr_fun (intertwine_prop ...) a converts mulVec equality to entry-wise",
+      "PROVED stdBasis_entry: Matrix.stdBasisMatrix entry unfolding via Matrix.single",
+      "PROVED stdBasis_mul: E_ij * E_kl = δ_jk * E_il via Finset.sum_eq_single + split_ifs",
+      "PROVED intertwine_prop: phi(E_ij).mulVec(p_k) = δ_jk p_i via mulVec_mulVec + f_mul",
+      "PROVED ∃ v₀: nonzero matrix has nonzero mulVec action via Pi.single column test",
+      "Matrix.stdBasisMatrix normalizes to Matrix.single in current Mathlib - need Matrix.single in simp set",
+      "Matrix.dotProduct does NOT exist in current Mathlib - use Matrix.mulVec directly with Finset.sum_ite_eq"
     ],
     "builtItems": [
       "Complete elementary proof strategy (no Artin-Wedderburn needed)",
@@ -37,7 +43,10 @@
       "Proof steps 1-3 (hf_mul, hfp, hp_ne) have verified strategies",
       "stdBasisMatrix_mul: E_ij * E_kl = δ_jk * E_il (proved, key infrastructure for Skolem-Noether)",
       "theorem skolemNoether: 0 axioms, compiles with 7 helper sorries",
-      "Proof architecture: stdBasis_mul -> f_mul -> intertwine_prop -> p_linearIndependent -> skolemNoether"
+      "Proof architecture: stdBasis_mul -> f_mul -> intertwine_prop -> p_linearIndependent -> skolemNoether",
+      "stdBasis_entry helper lemma for unfolding Matrix.stdBasisMatrix entries",
+      "Aristotle companion file: SkolemNoetherMatrixAutAristotle.lean with 4 lemmas",
+      "mulvec_single helper: M.mulVec (Pi.single j 1) i = M i j"
     ],
     "openQuestions": [
       "RESOLVED: Artin-Wedderburn NOT needed",
@@ -53,7 +62,7 @@
       "hP_intertwine: Entry-wise via Matrix.mul_apply + Pi.single_apply + mulVec/dotProduct",
       "hP_comm: Extend from generators using matrix_eq_sum_single + congr lemmas"
     ],
-    "progressSummary": "PROGRESS: Eliminated axiom! Converted axiom skolemNoether to theorem with 7 helper sorries. 0 axioms, 7 sorries. Elementary matrix units proof structure compiles. Sorries are routine: matrix unit multiplication, intertwining, linear independence, invertibility."
+    "progressSummary": "PROGRESS: 3 more sorries eliminated (stdBasis_mul, intertwine_prop, ∃v₀). Down from 6 to 3 sorries, 0 axioms. Remaining: p_linearIndependent, IsUnit Pmat, hintertwine. Aristotle companion file created."
   },
   "leanFiles": [
     {

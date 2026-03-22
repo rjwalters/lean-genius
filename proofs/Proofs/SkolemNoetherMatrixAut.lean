@@ -98,9 +98,24 @@ theorem isInnerAut_trans {φ ψ : Matrix n n K ≃ₐ[K] Matrix n n K}
 section SkolemNoetherProof
 
 -- Key helper: matrix unit multiplication (routine computation)
+private theorem stdBasis_entry (i₀ j₀ : n) (c : K) (a₀ b₀ : n) :
+    Matrix.stdBasisMatrix i₀ j₀ c a₀ b₀ = if i₀ = a₀ ∧ j₀ = b₀ then c else 0 := by
+  simp [Matrix.stdBasisMatrix, Matrix.single]
+
 private theorem stdBasis_mul (i j k l : n) :
     Matrix.stdBasisMatrix i j (1 : K) * Matrix.stdBasisMatrix k l 1 =
-      if j = k then Matrix.stdBasisMatrix i l 1 else 0 := by sorry
+      if j = k then Matrix.stdBasisMatrix i l 1 else 0 := by
+  ext a b
+  simp only [Matrix.mul_apply, Matrix.zero_apply, stdBasis_entry]
+  by_cases hjk : j = k
+  · subst hjk; simp only [if_pos rfl, stdBasis_entry]
+    rw [Finset.sum_eq_single j
+      (fun m _ hm => by simp [Ne.symm hm])
+      (fun h => absurd (Finset.mem_univ _) h)]
+    split_ifs <;> simp_all [stdBasis_entry]
+  · simp only [if_neg hjk]
+    apply Finset.sum_eq_zero; intro m _
+    split_ifs <;> simp_all [stdBasis_entry]
 
 -- Key helper: phi preserves matrix unit multiplication
 private theorem f_mul (φ : Matrix n n K ≃ₐ[K] Matrix n n K) (i j k l : n) :
@@ -114,7 +129,11 @@ private theorem intertwine_prop
     (i j k : n) :
     (φ (Matrix.stdBasisMatrix i j 1)).mulVec
       ((φ (Matrix.stdBasisMatrix k i₀ 1)).mulVec v₀) =
-    if j = k then (φ (Matrix.stdBasisMatrix i i₀ 1)).mulVec v₀ else 0 := by sorry
+    if j = k then (φ (Matrix.stdBasisMatrix i i₀ 1)).mulVec v₀ else 0 := by
+  rw [Matrix.mulVec_mulVec, f_mul φ i j k i₀]
+  split_ifs
+  · rfl
+  · exact Matrix.zero_mulVec v₀
 
 -- Key helper: linear independence of constructed vectors
 private theorem p_linearIndependent
@@ -134,7 +153,22 @@ theorem skolemNoether [Nonempty n] (φ : Matrix n n K ≃ₐ[K] Matrix n n K) :
   obtain ⟨i₀⟩ := ‹Nonempty n›
   -- phi(E_{i0,i0}) != 0, so find v0 with nonzero action
   obtain ⟨v₀, hv₀⟩ : ∃ v : n → K,
-      (φ (Matrix.stdBasisMatrix i₀ i₀ 1)).mulVec v ≠ 0 := by sorry
+      (φ (Matrix.stdBasisMatrix i₀ i₀ 1)).mulVec v ≠ 0 := by
+    by_contra hall; push_neg at hall
+    have hzero : φ (Matrix.stdBasisMatrix i₀ i₀ 1) = 0 := by
+      have mulvec_single : ∀ (M : Matrix n n K) (i j : n),
+          M.mulVec (Pi.single j 1) i = M i j := by
+        intro M i j
+        simp [Matrix.mulVec, Matrix.vecMul, Pi.single_apply,
+              Finset.sum_ite_eq', Finset.mem_univ]
+      ext a b
+      have key := congr_fun (hall (Pi.single b 1)) a
+      simp only [Pi.zero_apply] at key
+      rwa [mulvec_single] at key
+    have hne : Matrix.stdBasisMatrix i₀ i₀ (1 : K) ≠ 0 := by
+      intro h; have := congr_fun (congr_fun h i₀) i₀
+      simp [Matrix.stdBasisMatrix, Matrix.of_apply] at this
+    exact hne (φ.injective (hzero.trans (map_zero φ).symm))
   -- Define column vectors p_j and matrix P
   set p : n → (n → K) := fun j => (φ (Matrix.stdBasisMatrix j i₀ 1)).mulVec v₀
   set Pmat : Matrix n n K := Matrix.of (fun i j => p j i)
