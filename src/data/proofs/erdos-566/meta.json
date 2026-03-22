@@ -5,7 +5,7 @@
   "description": "If every k-vertex subgraph of G has at most 2k−3 edges, is G Ramsey size linear? True for ≤ n+1 edges (EFRS 1993), false for 2n−2 edges. Implies Problem #567. Open.",
   "meta": {
     "erdosNumber": 566,
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "erdos",
       "graph-theory",
@@ -29,8 +29,8 @@
       "erdos-567",
       "erdos-565"
     ],
-    "axiomCount": 0,
-    "badge": "verified"
+    "axiomCount": 4,
+    "badge": "axiom"
   },
   "sections": [
     {
