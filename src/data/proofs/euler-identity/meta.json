@@ -41,6 +41,12 @@
       "Geometric interpretation via unit circle"
     ],
     "dateAdded": "2025-12-21",
+    "prerequisites": [
+      "Complex exponential function and Taylor series",
+      "Trigonometric functions (sin, cos)",
+      "Complex numbers from Mathlib",
+      "Real.pi definition"
+    ],
     "axiomCount": 0,
     "lineCount": 257
   },
@@ -62,70 +68,80 @@
       "title": "Introduction",
       "startLine": 1,
       "endLine": 22,
-      "summary": "Overview of Euler's Identity and its significance as 'the most beautiful equation in mathematics.'"
+      "summary": "Overview of Euler's Identity and its significance as 'the most beautiful equation in mathematics.'",
+      "mathContext": "$$e^{i\\pi} + 1 = 0$$"
     },
     {
       "id": "complex-numbers",
       "title": "Complex Numbers in Mathlib",
       "startLine": 24,
       "endLine": 41,
-      "summary": "Mathlib's complete development of complex numbers: Complex.I, Complex.exp, and arithmetic properties."
+      "summary": "Mathlib's complete development of complex numbers: Complex.I, Complex.exp, and arithmetic properties.",
+      "mathContext": "$$\\mathbb{C} = \\{a + bi \\mid a, b \\in \\mathbb{R}\\}, \\quad i^2 = -1$$"
     },
     {
       "id": "eulers-formula",
       "title": "Euler's Formula in Mathlib",
       "startLine": 43,
       "endLine": 63,
-      "summary": "The foundational identity e^(ix) = cos(x) + i·sin(x), provided by Mathlib as Complex.exp_mul_I."
+      "summary": "The foundational identity e^(ix) = cos(x) + i·sin(x), provided by Mathlib as Complex.exp_mul_I.",
+      "mathContext": "$$e^{ix} = \\cos(x) + i\\sin(x)$$"
     },
     {
       "id": "trig-values",
       "title": "Key Trigonometric Values",
       "startLine": 65,
       "endLine": 78,
-      "summary": "Mathlib's proofs that cos(π) = -1 and sin(π) = 0."
+      "summary": "Mathlib's proofs that cos(π) = -1 and sin(π) = 0.",
+      "mathContext": "$$\\cos(\\pi) = -1, \\quad \\sin(\\pi) = 0$$"
     },
     {
       "id": "eulers-identity",
       "title": "Euler's Identity - The Main Theorem",
       "startLine": 80,
       "endLine": 115,
-      "summary": "The complete proof: e^(iπ) = -1 and therefore e^(iπ) + 1 = 0, verified without axioms."
+      "summary": "The complete proof: e^(iπ) = -1 and therefore e^(iπ) + 1 = 0, verified without axioms.",
+      "mathContext": "$$e^{i\\pi} = \\cos(\\pi) + i\\sin(\\pi) = -1 + 0i = -1 \\implies e^{i\\pi} + 1 = 0$$"
     },
     {
       "id": "alternative-forms",
       "title": "Alternative Forms",
       "startLine": 117,
       "endLine": 144,
-      "summary": "Full rotation e^(2πi) = 1, half rotation e^(πi) = -1, and quarter rotation e^(πi/2) = i."
+      "summary": "Full rotation e^(2πi) = 1, half rotation e^(πi) = -1, and quarter rotation e^(πi/2) = i.",
+      "mathContext": "$$e^{2\\pi i} = 1, \\quad e^{\\pi i} = -1, \\quad e^{\\pi i/2} = i$$"
     },
     {
       "id": "geometric-interpretation",
       "title": "Geometric Interpretation",
       "startLine": 146,
       "endLine": 167,
-      "summary": "How e^(iθ) traces the unit circle, with proof that |e^(iθ)| = 1."
+      "summary": "How e^(iθ) traces the unit circle, with proof that |e^(iθ)| = 1.",
+      "mathContext": "$$|e^{i\\theta}| = 1, \\quad e^{i\\theta} \\in S^1 \\subset \\mathbb{C}$$"
     },
     {
       "id": "trig-connection",
       "title": "Connection to Trigonometry",
       "startLine": 169,
       "endLine": 188,
-      "summary": "Cosine and sine expressed in terms of complex exponentials."
+      "summary": "Cosine and sine expressed in terms of complex exponentials.",
+      "mathContext": "$$\\cos(x) = \\frac{e^{ix} + e^{-ix}}{2}, \\quad \\sin(x) = \\frac{e^{ix} - e^{-ix}}{2i}$$"
     },
     {
       "id": "applications",
       "title": "Why This Matters",
       "startLine": 190,
       "endLine": 212,
-      "summary": "Applications in physics, engineering, and the philosophical significance of the identity."
+      "summary": "Applications in physics, engineering, and the philosophical significance of the identity.",
+      "mathContext": "$$f(t) = A e^{i\\omega t} = A(\\cos(\\omega t) + i\\sin(\\omega t))$$"
     },
     {
       "id": "history",
       "title": "Historical Context",
       "startLine": 214,
       "endLine": 243,
-      "summary": "From Cotes to Euler to Feynman—the identity's journey through mathematical history."
+      "summary": "From Cotes to Euler to Feynman—the identity's journey through mathematical history.",
+      "mathContext": "$$e^{i\\theta} = \\cos\\theta + i\\sin\\theta \\quad \\text{(Euler, 1748)}$$"
     }
   ],
   "conclusion": {

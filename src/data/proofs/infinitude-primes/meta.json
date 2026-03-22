@@ -38,7 +38,13 @@
     "dateAdded": "2025-12-21",
     "wiedijkNumber": 11,
     "axiomCount": 0,
-    "lineCount": 127
+    "lineCount": 127,
+    "prerequisites": [
+      "Natural number arithmetic and divisibility (Nat.dvd)",
+      "Prime numbers (Nat.Prime) from Mathlib",
+      "Factorial function (Nat.factorial) from Mathlib",
+      "Proof by contradiction (by_contra)"
+    ]
   },
   "overview": {
     "historicalContext": "Euclid's theorem on the infinitude of primes appears as Proposition 20 in Book IX of his Elements, written around 300 BCE in Alexandria. This makes it one of the oldest theorems with a proof that is still taught essentially unchanged today.\n\nThe result answered a question that must have puzzled ancient mathematicians: the primes 2, 3, 5, 7, 11, 13... seem to thin out as numbers grow larger. Do they eventually stop? Euclid showed definitively that they do not.\n\nWhat makes this proof remarkable is its method. Rather than trying to find large primes directly (which is computationally hard even today), Euclid showed that assuming finitely many primes leads to a contradiction. This proof by contradiction became a template for countless mathematical arguments.\n\nThe theorem launched two millennia of investigation into prime distribution, from Euler's proof that $\\sum 1/p$ diverges, to the Prime Number Theorem (1896), to the still-unsolved Riemann Hypothesis.",
@@ -58,35 +64,40 @@
       "title": "Module Documentation",
       "startLine": 5,
       "endLine": 38,
-      "summary": "Module-level documentation explaining what is proved (Euclid's theorem), the approach (Mathlib foundations + original lemmas), and Mathlib dependencies (Nat.Prime, Nat.factorial, Nat.dvd_factorial, Nat.exists_prime_and_dvd)."
+      "summary": "Module-level documentation explaining what is proved (Euclid's theorem), the approach (Mathlib foundations + original lemmas), and Mathlib dependencies (Nat.Prime, Nat.factorial, Nat.dvd_factorial, Nat.exists_prime_and_dvd).",
+      "mathContext": "Sets up the proof of $\\forall n,\\, \\exists p$ prime with $p > n$, using `Nat.Prime`, `Nat.factorial`, and `Nat.exists_prime_and_dvd` from Mathlib"
     },
     {
       "id": "key-lemmas",
       "title": "Key Lemmas",
       "startLine": 42,
       "endLine": 61,
-      "summary": "Three supporting lemmas: dvd_factorial (any k ≤ n divides n!), factorial_succ_ge_two (n! + 1 ≥ 2), and dvd_of_dvd_add_one (if p divides both a and a+1, then p divides 1)."
+      "summary": "Three supporting lemmas: dvd_factorial (any k ≤ n divides n!), factorial_succ_ge_two (n! + 1 ≥ 2), and dvd_of_dvd_add_one (if p divides both a and a+1, then p divides 1).",
+      "mathContext": "$k \\leq n \\implies k \\mid n!$; $n! + 1 \\geq 2$; $p \\mid a \\wedge p \\mid (a+1) \\implies p \\mid 1$. These three lemmas are the building blocks of Euclid's argument."
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem",
       "startLine": 63,
       "endLine": 104,
-      "summary": "Euclid's theorem (unbounded_primes): for any n, there exists a prime p > n. Constructs Q = n! + 1, finds its prime divisor p via Nat.exists_prime_and_dvd, and proves p > n by contradiction using dvd_factorial and dvd_of_dvd_add_one."
+      "summary": "Euclid's theorem (unbounded_primes): for any n, there exists a prime p > n. Constructs Q = n! + 1, finds its prime divisor p via Nat.exists_prime_and_dvd, and proves p > n by contradiction using dvd_factorial and dvd_of_dvd_add_one.",
+      "mathContext": "Let $Q = n! + 1 \\geq 2$. By `Nat.exists_prime_and_dvd`, $\\exists p$ prime with $p \\mid Q$. If $p \\leq n$ then $p \\mid n!$, so $p \\mid (Q - n!) = 1$, contradicting $p \\geq 2$. Therefore $p > n$."
     },
     {
       "id": "alternate-statement",
       "title": "Alternate Infinitude Statement",
       "startLine": 106,
       "endLine": 108,
-      "summary": "primes_infinite: an alias for unbounded_primes emphasizing the infinitude framing — for any bound n, a prime exceeding n exists."
+      "summary": "primes_infinite: an alias for unbounded_primes emphasizing the infinitude framing — for any bound n, a prime exceeding n exists.",
+      "mathContext": "`primes_infinite` := `unbounded_primes`: $\\forall n,\\, \\exists p$ prime, $p > n$ — equivalent to saying the set of primes is infinite"
     },
     {
       "id": "corollaries",
       "title": "Corollaries",
       "startLine": 110,
       "endLine": 127,
-      "summary": "Two corollaries: exists_prime_gt_prime (every prime has a larger prime) and no_largest_prime (there is no maximal prime). Both follow directly from unbounded_primes."
+      "summary": "Two corollaries: exists_prime_gt_prime (every prime has a larger prime) and no_largest_prime (there is no maximal prime). Both follow directly from unbounded_primes.",
+      "mathContext": "$\\forall p$ prime, $\\exists q$ prime with $q > p$; and $\\neg\\exists p$ prime $\\forall q$ prime, $q \\leq p$. Both are immediate from `unbounded_primes`."
     }
   ],
   "conclusion": {
@@ -97,8 +108,7 @@
       "How large can gaps between consecutive primes grow?",
       "Are there infinitely many Mersenne primes ($2^p - 1$)? Sophie Germain primes? Twin primes?"
     ]
-  }
-,
+  },
   "references": [
     {
       "authors": "Euclid",
