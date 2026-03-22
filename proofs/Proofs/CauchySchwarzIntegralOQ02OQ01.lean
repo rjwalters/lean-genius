@@ -23,16 +23,37 @@ variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 /-- Inner product with proportional vectors: if ‖f‖•g = ‖g‖•f then ⟪f,g⟫ = ‖f‖·‖g‖. -/
 theorem inner_eq_of_proportional (f g : E) (h : ‖f‖ • g = ‖g‖ • f) :
     ⟪f, g⟫_ℝ = ‖f‖ * ‖g‖ := by
-  -- Take ⟪f, ·⟫ of both sides: ‖f‖⟪f,g⟫ = ‖g‖⟪f,f⟫ = ‖g‖‖f‖²
-  -- Divide by ‖f‖ (if nonzero) to get ⟪f,g⟫ = ‖f‖‖g‖
-  sorry
+  by_cases hf : f = 0
+  · simp [hf]
+  · -- Apply ⟪f, ·⟫ to both sides: ‖f‖⟪f,g⟫ = ‖g‖⟪f,f⟫ = ‖g‖·‖f‖²
+    have h1 : ⟪f, ‖f‖ • g⟫_ℝ = ⟪f, ‖g‖ • f⟫_ℝ := by rw [h]
+    simp only [real_inner_smul_right] at h1
+    rw [real_inner_self_eq_norm_sq] at h1
+    -- h1: ‖f‖ * ⟪f,g⟫ = ‖g‖ * ‖f‖²
+    have hfn : ‖f‖ ≠ 0 := norm_ne_zero_iff.mpr hf
+    have h2 : ⟪f, g⟫_ℝ = ‖g‖ * ‖f‖ := by
+      have := mul_right_cancel₀ hfn (show ⟪f, g⟫_ℝ * ‖f‖ = ‖g‖ * ‖f‖ * ‖f‖ by nlinarith)
+      linarith
+    linarith
 
 /-- Cauchy-Schwarz equality implies proportionality:
     ⟪f,g⟫ = ‖f‖·‖g‖ → ‖‖f‖•g - ‖g‖•f‖² = 2‖f‖²‖g‖² - 2‖f‖‖g‖⟪f,g⟫ = 0. -/
 theorem proportional_of_inner_eq (f g : E) (h : ⟪f, g⟫_ℝ = ‖f‖ * ‖g‖) :
     ‖f‖ • g = ‖g‖ • f := by
-  -- ‖‖f‖•g - ‖g‖•f‖² = 2‖f‖²‖g‖² - 2‖f‖‖g‖⟪f,g⟫ = 0 when ⟪f,g⟫ = ‖f‖‖g‖
-  sorry
+  -- Show ‖‖f‖•g - ‖g‖•f‖ = 0
+  rw [← sub_eq_zero]
+  rw [← norm_eq_zero]
+  rw [← sq_eq_zero_iff]
+  -- Expand ‖a - b‖² = ‖a‖² + ‖b‖² - 2⟪a,b⟫
+  rw [@norm_sub_sq_real E]
+  -- Simplify norms: ‖c • x‖ = |c| * ‖x‖
+  simp only [norm_smul, Real.norm_of_nonneg (norm_nonneg f),
+    Real.norm_of_nonneg (norm_nonneg g)]
+  -- Simplify inner product: ⟪‖f‖•g, ‖g‖•f⟫ = ‖f‖*‖g‖*⟪g,f⟫
+  rw [real_inner_smul_left, real_inner_smul_right]
+  -- Use ⟪g,f⟫ = ⟪f,g⟫ = ‖f‖*‖g‖
+  rw [real_inner_comm, h]
+  ring
 
 -- ============================================================
 -- SECTION II: Strict Minkowski Inequality (Main Result)
