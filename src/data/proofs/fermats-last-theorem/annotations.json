@@ -8,12 +8,16 @@
     },
     "type": "concept",
     "title": "Mathlib Imports",
-    "content": "We import from Mathlib's FLT modules: `FLT.Basic` for the theorem statement, `FLT.Four` for Fermat's descent proof of the n=4 case, and ring theory for integer properties.",
+    "content": "We import from Mathlib's FLT modules: `FLT.Basic` for the `FermatLastTheoremFor` predicate, `FLT.Four` for Fermat's descent proof of the n=4 case, and ring theory for integer properties.",
     "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
       "Lean 4",
       "formalization"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib FLT modules"
     ]
   },
   {
@@ -25,13 +29,39 @@
     },
     "type": "insight",
     "title": "358 Years of History",
-    "content": "Fermat's marginal note in 1637 launched the longest-running open problem in mathematics. His claim to have a \"truly marvelous proof\" almost certainly referred only to the n=4 case, which uses infinite descent. The full theorem required 20th-century machinery that Fermat could not have imagined.",
+    "content": "Fermat's marginal note in 1637 launched the longest-running open problem in mathematics. His claim to have a 'truly marvelous proof' almost certainly referred only to the n=4 case, which uses infinite descent. The full theorem required 20th-century machinery that Fermat could not have imagined.\n\nThe docstring traces the proof's architecture: Frey's construction (1984), Serre's epsilon conjecture, Ribet's theorem (1986), and Wiles' modularity theorem (1995). It also catalogs the axiom inventory: three axioms for deep results not yet in Mathlib.",
     "mathContext": "The theorem resisted attack for centuries: Euler proved n=3 (1770), Sophie Germain developed techniques for certain primes (1823), and Kummer proved it for regular primes (1850s). But the full proof waited for Wiles.",
     "significance": "key",
     "relatedConcepts": [
       "history of mathematics",
       "number theory",
       "elliptic curves"
+    ],
+    "prerequisites": [
+      "basic number theory",
+      "history of Fermat's Last Theorem"
+    ]
+  },
+  {
+    "id": "ann-flt-checks-setup",
+    "proofId": "fermats-last-theorem",
+    "range": {
+      "startLine": 46,
+      "endLine": 56
+    },
+    "type": "context",
+    "title": "Mathlib API Check and Part I Setup",
+    "content": "Three `#check` commands verify the Mathlib API: `FermatLastTheoremFor` (the theorem statement predicate), `fermatLastTheoremFour` (the n=4 proof), and `fermatLastTheoremThree` (the n=3 proof). These are the Mathlib results this file builds on.\n\nThe Part I docstring (lines 51–54) frames the theorem statement, and the `FermatsLastTheorem` namespace opens at line 56.",
+    "mathContext": "`FermatLastTheoremFor n` states $\\forall a\\,b\\,c : \\mathbb{Z},\\; a \\neq 0 \\to b \\neq 0 \\to c \\neq 0 \\to a^n + b^n \\neq c^n$. The n=3 and n=4 cases are fully proved in Mathlib; all other primes are axiomatized here.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "#check command",
+      "FermatLastTheoremFor",
+      "Mathlib API"
+    ],
+    "prerequisites": [
+      "Lean 4 #check",
+      "Mathlib FLT"
     ]
   },
   {
@@ -39,17 +69,21 @@
     "proofId": "fermats-last-theorem",
     "range": {
       "startLine": 58,
-      "endLine": 61
+      "endLine": 65
     },
     "type": "definition",
-    "title": "FermatLastTheoremFor",
-    "content": "Mathlib defines `FermatLastTheoremFor n` as: for all integers a, b, c, if all three are non-zero, then $a^n + b^n \\neq c^n$. This is the standard formulation excluding trivial solutions where any variable is zero.",
-    "mathContext": "The formulation allows negative integers, which is equivalent to the positive integer statement. If $(-a)^n + b^n = c^n$ with a positive, we can rearrange to get a positive solution.",
+    "title": "FermatLastTheoremFor: The Statement",
+    "content": "Mathlib defines `FermatLastTheoremFor n` as: for all integers a, b, c, if all three are non-zero, then $a^n + b^n \\neq c^n$. This is the standard formulation excluding trivial solutions where any variable is zero.\n\nThe `example` at line 65 demonstrates the type: `FermatLastTheoremFor n` is a `Prop`.",
+    "mathContext": "The formulation allows negative integers, which is equivalent to the positive integer statement. If $(-a)^n + b^n = c^n$ with $a$ positive, we can rearrange to get a positive solution for even $n$, or negate for odd $n$.",
     "significance": "critical",
     "relatedConcepts": [
       "Diophantine equations",
       "integer solutions",
       "Fermat"
+    ],
+    "prerequisites": [
+      "integer arithmetic",
+      "Lean Prop type"
     ]
   },
   {
@@ -62,13 +96,17 @@
     "type": "concept",
     "title": "The Frey Curve",
     "content": "The Frey curve is the key construction. Given a hypothetical counterexample $(a, b, c)$ with $a^p + b^p = c^p$, we build the elliptic curve $E: y^2 = x(x - a^p)(x + b^p)$. This curve has unusual arithmetic properties that lead to a contradiction.",
-    "mathContext": "Gerhard Frey proposed in 1984 that such a curve would be \"too weird to exist\" - specifically, it would violate the Taniyama-Shimura conjecture about modularity. This brilliant insight connected Fermat to elliptic curves.",
+    "mathContext": "Gerhard Frey proposed in 1984 that such a curve would be 'too weird to exist' — specifically, it would violate the Taniyama-Shimura conjecture about modularity. This brilliant insight connected Fermat to elliptic curves.",
     "significance": "critical",
     "relatedConcepts": [
       "elliptic curves",
       "Frey",
       "algebraic geometry",
       "conductor"
+    ],
+    "prerequisites": [
+      "elliptic curves over Q",
+      "Weierstrass form"
     ]
   },
   {
@@ -84,12 +122,13 @@
     "mathContext": "Semi-stability is a technical condition on how the curve reduces modulo primes. The Frey curve has multiplicative reduction at the primes dividing $abc$, and good reduction elsewhere.",
     "significance": "key",
     "prerequisites": [
+      "reduction of elliptic curves",
       "ann-flt-frey"
     ],
     "relatedConcepts": [
       "reduction",
       "bad primes",
-      "Neron model"
+      "Néron model"
     ]
   },
   {
@@ -97,11 +136,11 @@
     "proofId": "fermats-last-theorem",
     "range": {
       "startLine": 91,
-      "endLine": 101
+      "endLine": 106
     },
     "type": "theorem",
-    "title": "The Modularity Theorem",
-    "content": "**Wiles' Main Theorem**: Every semi-stable elliptic curve over $\\mathbb{Q}$ is modular. This means there exists a modular form $f$ of weight 2 such that $L(E, s) = L(f, s)$ - the L-functions match.",
+    "title": "The Modularity Theorem (Axiom 1)",
+    "content": "**Wiles' Main Theorem**: Every semi-stable elliptic curve over $\\mathbb{Q}$ is modular. This means there exists a modular form $f$ of weight 2 such that $L(E, s) = L(f, s)$ — the L-functions match.\n\nAxiomatized as `ModularityTheorem_semistable : True` (placeholder). The actual statement is: for every semi-stable $E/\\mathbb{Q}$, there exists a newform $f \\in S_2(\\Gamma_0(N))$ with matching $a_p$ coefficients.",
     "mathContext": "Modularity connects geometry (elliptic curves) to analysis (modular forms). The L-function encodes how many points $E$ has over each finite field $\\mathbb{F}_p$. This deep connection is part of the Langlands program.",
     "significance": "critical",
     "relatedConcepts": [
@@ -109,41 +148,48 @@
       "L-functions",
       "Taniyama-Shimura-Weil",
       "Langlands program"
+    ],
+    "prerequisites": [
+      "modular forms",
+      "L-functions of elliptic curves",
+      "ann-flt-semistable"
     ]
   },
   {
     "id": "ann-flt-ribet",
     "proofId": "fermats-last-theorem",
     "range": {
-      "startLine": 117,
-      "endLine": 118
+      "startLine": 108,
+      "endLine": 122
     },
     "type": "theorem",
-    "title": "Ribet's Theorem (The Epsilon Conjecture)",
-    "content": "**Ribet's Theorem (1986)**: If a Frey curve were modular, it would correspond to a cusp form of level 2. But there are no such forms! Therefore, Frey curves cannot be modular.",
-    "mathContext": "Ribet proved what Serre had conjectured: the \"level-lowering\" property of Galois representations forces the Frey curve's modular form to have impossibly low level. This was the missing link between Taniyama-Shimura and Fermat.",
+    "title": "Ribet's Theorem (Axiom 2)",
+    "content": "**Ribet's Theorem (1986)**: If a Frey curve were modular, it would correspond to a cusp form of level 2. But there are no such forms! Therefore, Frey curves cannot be modular.\n\nAxiomatized as `RibetTheorem` with the full quantified signature: $\\forall a\\,b\\,c : \\mathbb{Z},\\; \\forall p : \\mathbb{N},\\; p > 2 \\to a^p + b^p = c^p \\to \\ldots \\to \\text{True}$ (placeholder).\n\nRibet proved what Serre had conjectured: the 'level-lowering' property of Galois representations forces the Frey curve's modular form to have impossibly low level.",
+    "mathContext": "Serre conjectured (1985) that modular Galois representations can be 'level-lowered' — their conductor can be reduced. Ribet proved this, showing the Frey curve's form must have level $N = 2$. Since $\\dim S_2(\\Gamma_0(2)) = 0$ (no weight-2 cusp forms of level 2), contradiction.",
     "significance": "critical",
     "prerequisites": [
+      "Galois representations",
+      "modular forms",
       "ann-flt-frey",
       "ann-flt-modularity"
     ],
     "relatedConcepts": [
       "Galois representations",
-      "Serre",
+      "Serre's conjecture",
       "level lowering"
     ]
   },
   {
-    "id": "ann-flt-contradiction",
+    "id": "ann-flt-proof-structure",
     "proofId": "fermats-last-theorem",
     "range": {
-      "startLine": 138,
-      "endLine": 140
+      "startLine": 124,
+      "endLine": 136
     },
     "type": "insight",
-    "title": "The Beautiful Contradiction",
-    "content": "The proof's logic is elegant:\n1. Assume a counterexample exists\n2. Build the Frey curve from it\n3. By Modularity, the curve IS modular\n4. By Ribet, the curve is NOT modular\n5. Contradiction - no counterexample exists",
-    "mathContext": "This is proof by contradiction at a grand scale. The Frey curve's existence would require it to be both modular (Wiles) and non-modular (Ribet). Since this is impossible, the counterexample cannot exist.",
+    "title": "Part V: The Proof Architecture for Odd Primes",
+    "content": "The Part V docstring (lines 124–131) outlines the 5-step proof by contradiction for odd prime exponents: assume a counterexample, construct Frey curve, apply Modularity (it's modular), apply Ribet (it's not modular), contradiction.\n\n`FLT_for_odd_primes` (axiom 3, lines 135–136) states this conclusion: for every odd prime $p$, `FermatLastTheoremFor p` holds. It's axiomatized because unpacking the Modularity + Ribet argument requires deep infrastructure.",
+    "mathContext": "The logical chain: counterexample $(a,b,c,p)$ → Frey curve $E$ → $E$ semi-stable (Ogg-Saito) → $E$ modular (Wiles) → level-lowering (Ribet) → $f \\in S_2(\\Gamma_0(2))$ → contradiction ($\\dim = 0$).",
     "significance": "critical",
     "prerequisites": [
       "ann-flt-modularity",
@@ -151,42 +197,30 @@
     ],
     "relatedConcepts": [
       "proof by contradiction",
-      "reductio ad absurdum"
+      "reductio ad absurdum",
+      "axiomatization"
     ]
   },
   {
-    "id": "ann-flt-four",
+    "id": "ann-flt-elementary",
     "proofId": "fermats-last-theorem",
     "range": {
-      "startLine": 160,
-      "endLine": 161
+      "startLine": 138,
+      "endLine": 158
     },
     "type": "theorem",
-    "title": "Fermat's Case n = 4",
-    "content": "Fermat himself proved the n=4 case using **infinite descent**: assume the smallest solution exists, construct a strictly smaller solution, contradiction. This is the only case Fermat definitely proved.",
-    "mathContext": "The proof actually shows $x^4 + y^4 = z^2$ has no positive solutions, which is stronger. Fermat's descent uses the parameterization of Pythagorean triples repeatedly.",
+    "title": "Part VI: Elementary Cases n=4 and n=3",
+    "content": "**n=4** (Fermat, ~1640): `fermat_four` delegates to Mathlib's `fermatLastTheoremFour`, proved via infinite descent. Fermat showed $x^4 + y^4 = z^2$ has no positive solutions by constructing a strictly smaller solution from any given one.\n\n**n=3** (Euler, 1770): `fermat_three` delegates to Mathlib's `fermatLastTheoremThree`, proved via the Eisenstein integers $\\mathbb{Z}[\\omega]$ where $\\omega = e^{2\\pi i/3}$. The factorization $x^3 + y^3 = (x+y)(x+\\omega y)(x+\\omega^2 y)$ in this UFD enables a descent argument.\n\nBoth are PROVED in Mathlib — no axioms needed.",
+    "mathContext": "For n=4: the descent uses Pythagorean triple parametrization $(m^2-n^2, 2mn, m^2+n^2)$ iteratively. For n=3: $\\mathbb{Z}[\\omega]$ is a PID (class number 1), so unique factorization holds and the coprimality argument goes through.",
     "significance": "key",
     "relatedConcepts": [
       "infinite descent",
-      "Pythagorean triples",
-      "Fermat"
-    ]
-  },
-  {
-    "id": "ann-flt-three",
-    "proofId": "fermats-last-theorem",
-    "range": {
-      "startLine": 160,
-      "endLine": 172
-    },
-    "type": "theorem",
-    "title": "Euler's Case n = 3",
-    "content": "Euler proved n=3 in 1770 using the **Eisenstein integers** $\\mathbb{Z}[\\omega]$ where $\\omega = e^{2\\pi i/3}$. This ring has unique factorization, enabling a descent argument. The proof is fully formalized in Mathlib!",
-    "mathContext": "The key is that $x^3 + y^3 = (x + y)(x + \\omega y)(x + \\omega^2 y)$ factors in $\\mathbb{Z}[\\omega]$. Analyzing this factorization leads to a contradiction.",
-    "significance": "key",
-    "relatedConcepts": [
       "Eisenstein integers",
       "unique factorization",
+      "Pythagorean triples"
+    ],
+    "prerequisites": [
+      "number theory",
       "algebraic integers"
     ]
   },
@@ -194,42 +228,45 @@
     "id": "ann-flt-reduction",
     "proofId": "fermats-last-theorem",
     "range": {
-      "startLine": 174,
-      "endLine": 178
+      "startLine": 160,
+      "endLine": 172
     },
-    "type": "lemma",
-    "title": "Reduction to Primes",
-    "content": "If FLT holds for exponent $n$, it holds for all multiples of $n$. Why? If $a^{nm} + b^{nm} = c^{nm}$, then $(a^m)^n + (b^m)^n = (c^m)^n$, contradicting FLT for $n$.",
-    "mathContext": "This means we only need to prove FLT for n=4 and all odd primes. Since every n ≥ 3 is divisible by 4 or an odd prime, this covers everything.",
-    "significance": "supporting",
+    "type": "theorem",
+    "title": "Reduction to Prime Exponents",
+    "content": "`flt_multiple` proves: if FLT holds for exponent $n$, it holds for all multiples $mn$. The proof is constructive: if $a^{mn} + b^{mn} = c^{mn}$, rewrite as $(a^m)^n + (b^m)^n = (c^m)^n$ and apply FLT for $n$ with $a^m, b^m, c^m$ as the variables (all non-zero by `pow_ne_zero`).\n\nThis means we only need FLT for $n = 4$ and all odd primes, since every $n \\geq 3$ is divisible by 4 or an odd prime.",
+    "mathContext": "Every integer $n \\geq 3$ is either divisible by 4 (if even and $\\geq 4$), equal to an odd prime, or divisible by an odd prime. Cases: $n = 3$ (prime), $n = 4$ (covered), $n = 5$ (prime), $n = 6 = 2 \\times 3$ (reduce to 3), etc.",
+    "significance": "key",
     "relatedConcepts": [
-      "reduction",
+      "reduction to primes",
       "prime factorization",
-      "exponentiation"
+      "power of powers"
+    ],
+    "prerequisites": [
+      "pow_ne_zero",
+      "pow_mul"
     ]
   },
   {
-    "id": "ann-flt-full",
+    "id": "ann-flt-full-and-corollaries",
     "proofId": "fermats-last-theorem",
     "range": {
-      "startLine": 196,
-      "endLine": 198
+      "startLine": 174,
+      "endLine": 204
     },
     "type": "theorem",
-    "title": "The Full Theorem",
-    "content": "Combining n=4 (Fermat), n=3 (Euler), odd primes (Wiles), and reduction to primes, we get the full theorem: for all n ≥ 3, there are no positive integer solutions to $a^n + b^n = c^n$.",
-    "mathContext": "The theorem is currently axiomatized in this formalization. The Lean FLT project at Imperial College London is working on a complete formalization of Wiles' proof.",
+    "title": "Part VII: The Full Theorem and Corollaries",
+    "content": "**The Full Statement** (`fermatLastTheorem`, axiom): $\\forall n \\geq 3$, `FermatLastTheoremFor n`. Axiomatized pending the Lean FLT project at Imperial College London.\n\n**Corollaries** (proved from Mathlib + axiom):\n- `no_sum_of_cubes`: FLT for n=3 (from Mathlib's `fermatLastTheoremThree`)\n- `no_sum_of_fourth_powers`: FLT for n=4 (from Mathlib's `fermatLastTheoremFour`)\n- `no_sum_of_fifth_powers`: FLT for n=5 (from the axiom via `by norm_num`)\n\nThe namespace closes at line 204.",
+    "mathContext": "The axiom `fermatLastTheorem` combines all cases: n=4 (Fermat), n=3 (Euler), odd primes (Wiles-Taylor), and reduction to primes (flt_multiple). The n=5 corollary demonstrates that the axiom can be instantiated for specific primes.",
     "significance": "critical",
     "prerequisites": [
-      "ann-flt-four",
-      "ann-flt-three",
-      "ann-flt-contradiction",
-      "ann-flt-reduction"
+      "ann-flt-elementary",
+      "ann-flt-reduction",
+      "ann-flt-proof-structure"
     ],
     "relatedConcepts": [
-      "axiom",
-      "formalization",
-      "Lean FLT project"
+      "axiomatization",
+      "Lean FLT project",
+      "norm_num"
     ]
   }
 ]
