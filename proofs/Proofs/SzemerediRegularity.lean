@@ -99,6 +99,16 @@ theorem partitionEnergy_nonneg (G : SimpleGraph V) [DecidableRel G.Adj]
     · positivity
     · exact Finset.sum_nonneg (fun _ _ => sq_nonneg _)
 
+/-- Convexity lemma: splitting a vertex set increases the sum of squared densities.
+    If A = A₁ ∪ A₂ (disjoint), then |A₁|*d(A₁,B)² + |A₂|*d(A₂,B)² ≥ |A|*d(A,B)².
+    This is the Cauchy-Schwarz ingredient for the energy increment. -/
+theorem density_sq_convex (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A₁ A₂ B : Finset V) (hA : Disjoint A₁ A₂) :
+    (A₁.card : ℚ) * (edgeDensity G A₁ B) ^ 2 +
+    (A₂.card : ℚ) * (edgeDensity G A₂ B) ^ 2 ≥
+    ((A₁.card + A₂.card) : ℚ) * (edgeDensity G (A₁ ∪ A₂) B) ^ 2 := by
+  sorry
+
 /-- Energy increment step: if a partition has too many irregular pairs,
     refinement increases energy by at least eps^5. This is the key
     technical lemma driving the regularity proof. -/
@@ -148,6 +158,15 @@ theorem partitionEnergy_le_one (G : SimpleGraph V) [DecidableRel G.Adj]
         ≤ 1 / ↑(parts.card ^ 2) * ↑(parts.card ^ 2) :=
           mul_le_mul_of_nonneg_left hsum (by positivity)
       _ = 1 := by field_simp
+
+/-- The energy of a regular partition is finite-step achievable: since
+    energy lies in [0,1] and each increment adds at least eps^5,
+    we need at most ⌈1/eps^5⌉ iterations. -/
+theorem max_iterations (eps : ℚ) (heps : 0 < eps) :
+    ∃ N : ℕ, ∀ e : ℚ, 0 ≤ e → e ≤ 1 → e + N * eps ^ 5 > 1 := by
+  -- N = ⌈1/eps^5⌉ + 1 suffices: N * eps^5 > 1 since N > 1/eps^5,
+  -- and e ≥ 0 gives e + N * eps^5 > 1.
+  sorry
 
 /-- **Szemeredi Regularity Lemma**: For every epsilon > 0, every
     sufficiently large graph admits an epsilon-regular partition into
