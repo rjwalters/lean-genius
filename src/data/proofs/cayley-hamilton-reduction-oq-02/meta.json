@@ -1,0 +1,37 @@
+{
+  "id": "cayley-hamilton-reduction-oq-02",
+  "title": "Minimal Polynomial vs Characteristic Polynomial Reduction",
+  "description": "Formalizes the relationship between reducing polynomials mod the minimal vs characteristic polynomial of a matrix, proving minpoly divides charpoly, degree comparisons, and introducing non-derogatory matrices.",
+  "category": "linear-algebra",
+  "status": "formalized",
+  "badge": "formalized",
+  "difficulty": "intermediate",
+  "leanFile": "Proofs/CayleyHamiltonReductionOQ02.lean",
+  "lineCount": 118,
+  "theoremCount": 6,
+  "axiomCount": 0,
+  "sorryCount": 2,
+  "assumptions": [],
+  "keyInsights": [
+    {
+      "title": "Minpoly Divides Charpoly",
+      "description": "By Cayley-Hamilton, charpoly annihilates M. By minimality of minpoly, minpoly divides any annihilating polynomial. Hence minpoly | charpoly."
+    },
+    {
+      "title": "Efficiency of Minpoly Reduction",
+      "description": "Reducing mod minpoly gives degree < deg(minpoly) ≤ deg(charpoly) = n. When minpoly has strictly lower degree (derogatory case), minpoly reduction produces shorter results."
+    },
+    {
+      "title": "Non-Derogatory Characterization",
+      "description": "A matrix is non-derogatory when deg(minpoly) = deg(charpoly). For such matrices, the reductions are equally efficient. Companion matrices are the canonical non-derogatory examples."
+    }
+  ],
+  "crossRefs": [
+    "cayley-hamilton",
+    "cayley-hamilton-reduction",
+    "cayley-hamilton-minpoly"
+  ],
+  "parentProof": "cayley-hamilton-reduction",
+  "openQuestion": "What is the relationship between reducing by the minimal polynomial vs the characteristic polynomial?",
+  "tags": ["linear-algebra", "polynomial", "cayley-hamilton", "minpoly"]
+}
