@@ -70,6 +70,13 @@
   },
   "sections": [
     {
+      "id": "header-setup",
+      "title": "Module Header and Problem Context",
+      "startLine": 1,
+      "endLine": 20,
+      "summary": "Documents Erdős Problem #685: the number of distinct prime divisors of C(n,k) is asymptotically k·Σ_{k<p≤n} 1/p for n^ε < k ≤ n^{1-ε}. This connects the prime factorization of binomial coefficients to Mertens' theorem. Status: OPEN. Imports Mathlib."
+    },
+    {
       "id": "omega",
       "title": "Prime Divisor Count",
       "startLine": 21,
