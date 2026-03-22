@@ -48,6 +48,7 @@
     "type": "definition",
     "title": "Bipartition Number",
     "content": "**bipartitionNumber** tau(G):\n\nThe smallest number of pairwise edge-disjoint complete bipartite subgraphs whose union covers all edges of G.\n\n**Definition:**\n```lean\ndef bipartitionNumber (G : SimpleGraph V) : N :=\n  sInf {k : N | exists cover : BipartiteCover G, cover.parts.card = k}\n```\n\nThis is the central quantity in Erdos #807.",
+    "mathContext": "$\\tau(G) = \\min\\{k : E(G) = \\bigsqcup_{i=1}^k E(K_{a_i, b_i})\\}$ where the union is edge-disjoint over complete bipartite subgraphs.",
     "significance": "critical",
     "relatedConcepts": ["Graph decomposition", "Complete bipartite graphs"]
   },
@@ -58,6 +59,7 @@
     "type": "concept",
     "title": "The ERW Conjecture",
     "content": "**ERW_conjecture:**\n\nThe original conjecture by Erdos-Recski-Wormald:\n\nFor a random graph G on n vertices with edge probability 1/2, is tau(G) = n - alpha(G) almost surely?\n\nThis conjecture was motivated by connections to the Graham-Pollak theorem, which shows tau(K_n) = n - 1.",
+    "mathContext": "Conjecture: $\\tau(G) = n - \\alpha(G)$ a.s. for $G \\in G(n, 1/2)$. Motivated by Graham-Pollak: $\\tau(K_n) = n - 1$.",
     "significance": "key",
     "relatedConcepts": ["Graham-Pollak theorem", "Random graphs"]
   },
@@ -97,6 +99,7 @@
     "type": "axiom",
     "title": "Graham-Pollak Theorem",
     "content": "**graham_pollak:**\n\nA classical result in graph theory.\n\n**Statement:** tau(K_n) = n - 1 for the complete graph on n vertices.\n\nThis is optimal: you need exactly n - 1 complete bipartite subgraphs to decompose the complete graph.\n\nThe proof uses linear algebra over GF(2).",
+    "mathContext": "$\\tau(K_n) = n - 1$. The lower bound uses a rank argument: $J - I$ has rank $n-1$ and each complete bipartite subgraph contributes a rank-1 matrix.",
     "significance": "key",
     "relatedConcepts": ["Complete graphs", "Linear algebra"]
   },
@@ -117,6 +120,7 @@
     "type": "theorem",
     "title": "Erdos Problem #807: DISPROVED",
     "content": "**erdos_807:**\n\nThe main result: The ERW conjecture is false, with a quantitative gap.\n\n```lean\ntheorem erdos_807 : exists c : R, c > 0 and\n    -- The ERW conjecture is false with gap at least c * alpha(G)\n    True :=\n  alon_bohman_huang_2017\n```\n\n**Summary:**\n1. Alon (2015): tau(G) <= n - alpha(G) - 1 almost surely\n2. ABH (2017): tau(G) <= n - (1+c)alpha(G) for some c > 0",
+    "mathContext": "$\\exists\\, c > 0$ such that a.s. $\\tau(G) \\leq n - (1+c)\\alpha(G)$ for $G \\in G(n, 1/2)$, refuting $\\tau(G) = n - \\alpha(G)$.",
     "significance": "critical"
   },
   {
