@@ -91,7 +91,7 @@
     "id": "ann-main-theorem",
     "proofId": "pythagorean-theorem",
     "range": {
-      "startLine": 94,
+      "startLine": 86,
       "endLine": 107
     },
     "type": "theorem",
@@ -113,8 +113,8 @@
     "id": "ann-right-triangle",
     "proofId": "pythagorean-theorem",
     "range": {
-      "startLine": 113,
-      "endLine": 121
+      "startLine": 132,
+      "endLine": 132
     },
     "type": "definition",
     "title": "Right Triangle Structure",
@@ -130,8 +130,8 @@
     "id": "ann-classical",
     "proofId": "pythagorean-theorem",
     "range": {
-      "startLine": 123,
-      "endLine": 132
+      "startLine": 138,
+      "endLine": 152
     },
     "type": "theorem",
     "title": "Classical Formulation: a² + b² = c²",
@@ -151,8 +151,8 @@
     "id": "ann-triples",
     "proofId": "pythagorean-theorem",
     "range": {
-      "startLine": 125,
-      "endLine": 132
+      "startLine": 138,
+      "endLine": 152
     },
     "type": "concept",
     "title": "Pythagorean Triples",
@@ -166,32 +166,28 @@
     ]
   },
   {
-    "id": "ann-generalized",
+    "id": "ann-native-decide",
     "proofId": "pythagorean-theorem",
     "range": {
       "startLine": 171,
       "endLine": 209
     },
-    "type": "theorem",
-    "title": "Generalized Pythagorean Theorem for n Vectors",
-    "content": "`pythagorean_sum`: for mutually perpendicular vectors $v_1, \\ldots, v_k$:\n$$\\|\\sum_i v_i\\|^2 = \\sum_i \\|v_i\\|^2$$\n\nThe proof uses `Finset.induction_on`: base case is trivial (empty sum), inductive step shows $v_a \\perp \\sum_{i \\in s'} v_i$ by distributing the inner product over the sum (`inner_sum`), then applies the two-vector Pythagorean theorem.\n\nThis generalization is the foundation of orthogonal decomposition in functional analysis and quantum mechanics.",
-    "mathContext": "For mutually orthogonal $\\{v_i\\}_{i \\in s}$: $\\|\\sum_{i \\in s} v_i\\|^2 = \\sum_{i \\in s} \\|v_i\\|^2$. The key step: $\\langle v_a, \\sum_{i \\in s'} v_i \\rangle = \\sum_{i \\in s'} \\langle v_a, v_i \\rangle = 0$.",
-    "significance": "key",
-    "prerequisites": [
-      "ann-main-theorem"
-    ],
+    "type": "tactic",
+    "title": "Computational Verification",
+    "content": "Lean can **compute** that these are valid Pythagorean triples using `native_decide`. This tactic evaluates the arithmetic and checks that both sides equal the same value.\n\nFor $(3, 4, 5)$:\n- Left side: $3^2 + 4^2 = 9 + 16 = 25$\n- Right side: $5^2 = 25$\n- Equal? Yes! Proof complete.\n\nThis is one of Lean's strengths: verifiable computation meets rigorous proof.",
+    "significance": "supporting",
     "relatedConcepts": [
-      "Parseval's identity",
-      "orthogonal decomposition",
-      "Finset induction"
+      "decidability",
+      "computation in type theory",
+      "reflection"
     ]
   },
   {
     "id": "ann-converse",
     "proofId": "pythagorean-theorem",
     "range": {
-      "startLine": 138,
-      "endLine": 152
+      "startLine": 171,
+      "endLine": 209
     },
     "type": "theorem",
     "title": "The Converse Theorem",
@@ -208,8 +204,8 @@
     "id": "ann-history",
     "proofId": "pythagorean-theorem",
     "range": {
-      "startLine": 158,
-      "endLine": 169
+      "startLine": 171,
+      "endLine": 209
     },
     "type": "concept",
     "title": "4000 Years of History",
