@@ -29,33 +29,51 @@
     ],
     "references": [
       {"key": "Li73", "citation": "Lindström, B., On the vector representations of induced matroids, Bull. London Math. Soc. 5 (1973), 85-90.", "type": "paper"},
-      {"key": "GV85", "citation": "Gessel, I., Viennot, G., Binomial determinants, paths, and hook length formulae, Adv. Math. 58 (1985), 300-321.", "type": "paper"}
+      {"key": "GV85", "citation": "Gessel, I., Viennot, G., Binomial determinants, paths, and hook length formulae, Adv. Math. 58 (1985), 300-321.", "type": "paper"},
+      {"key": "Ka72", "citation": "Karlin, S., McGregor, J., Coincidence probabilities, Pacific J. Math. 9 (1959), 1141-1164.", "type": "paper"}
     ]
   },
   "overview": {
-    "historicalContext": "The LGV lemma was proved by Lindström (1973) for matroids and independently discovered by Gessel and Viennot (1985) for lattice paths. It expresses the number of non-intersecting path r-tuples as a determinant, connecting combinatorics to linear algebra.",
-    "problemStatement": "Generalize the 2×2 LGV lemma (proved in parent) to the r×r case using the sign-reversing involution (Gessel-Viennot bijection).",
-    "proofStrategy": "Define the path weight matrix, express the determinant via the Leibniz formula as a sum over permutations, then show that intersecting tuples cancel via the GV involution.",
+    "historicalContext": "The Lindström-Gessel-Viennot lemma is a foundational result connecting enumerative combinatorics to linear algebra. Bernt Lindström proved the matroid version in 1973, showing that certain matroid representability questions reduce to determinantal identities. Independently, Ira Gessel and Gérard Viennot discovered the lattice path version in 1985, motivated by the problem of counting non-intersecting lattice paths — a question arising naturally in the theory of Young tableaux and symmetric functions. The key insight, that intersecting path tuples cancel via a sign-reversing involution, had precursors in Karlin and McGregor's 1959 work on coincidence probabilities for Markov chains. The LGV lemma has since become one of the most versatile tools in algebraic combinatorics, with applications to random matrix theory (via determinantal point processes), the theory of Schur polynomials, exact enumeration of tilings and perfect matchings, and the proof of the Cauchy-Binet formula for minors.",
+    "problemStatement": "Generalize the 2×2 LGV lemma (proved in the parent file `BallotProblemOQ03.lean`) to the $r \\times r$ case: $\\#\\{\\text{non-intersecting } r\\text{-tuples } (P_1,\\ldots,P_r) : P_i\\colon A_i \\to B_i\\} = \\det[e(A_i, B_j)]_{1 \\leq i,j \\leq r}$ where $e(A,B)$ counts weighted paths from $A$ to $B$ in a DAG.",
+    "proofStrategy": "The formalization proceeds in three stages: (1) Define the path weight matrix and express its determinant via the Leibniz formula as a signed sum over permutations $S_r$; (2) Interpret each summand combinatorially as path tuples routed according to the permutation; (3) Invoke the Gessel-Viennot involution to show that all intersecting tuples (corresponding to $\\sigma \\neq \\text{id}$) cancel in pairs, leaving only the non-intersecting contribution from $\\sigma = \\text{id}$. The formalization verifies this framework for $r = 2$ and $r = 3$ using Mathlib's `Matrix.det_fin_two` and `Matrix.det_fin_three`.",
     "keyInsights": [
-      "The Leibniz formula det[M] = Σ_σ sign(σ) Π M(i,σ(i)) naturally decomposes into path counting by permutation",
-      "The GV involution pairs intersecting tuples with opposite-sign partners, canceling all non-identity permutation contributions",
-      "The 2×2 and 3×3 determinant specializations verify the framework against known formulas"
+      "The Leibniz formula $\\det(M) = \\sum_{\\sigma \\in S_r} \\operatorname{sgn}(\\sigma) \\prod_i M_{i,\\sigma(i)}$ provides a natural combinatorial decomposition where each permutation routes paths from sources to sinks",
+      "The Gessel-Viennot sign-reversing involution pairs intersecting r-tuples with opposite-sign partners by swapping path tails at the first intersection, achieving exact cancellation",
+      "The involution approach is modular: the general LGV theorem is stated conditional on the cancellation hypothesis, enabling compositional formalization",
+      "The 2×2 and 3×3 verified specializations serve as ground-truth checks and connect to the parent file's complete 2878-line proof of the 2-path case",
+      "The antisymmetry and repeated-source properties (swapping sources negates the determinant, equal sources give zero) follow from the alternating nature of the determinant and have direct combinatorial meaning for path configurations"
     ]
   },
   "sections": [
-    {"id": "matrix", "title": "Path Weight Matrix", "startLine": 45, "endLine": 60, "summary": "Defines pathMatrix and latticePathMatrix."},
-    {"id": "counting", "title": "Permutation Path Counting", "startLine": 64, "endLine": 83, "summary": "Defines permPathCount, signedPermPathCount, and Leibniz bridge."},
-    {"id": "general", "title": "General LGV Statement", "startLine": 125, "endLine": 150, "summary": "States lgv_lemma_general with involution hypothesis."},
-    {"id": "specializations", "title": "2×2 and 3×3 Cases", "startLine": 155, "endLine": 180, "summary": "Verifies determinant expansions for small cases."}
+    {"id": "imports", "title": "Imports and Setup", "startLine": 1, "endLine": 4, "summary": "Imports Mathlib determinant, permutation sign, big operators, and tactics."},
+    {"id": "docstring", "title": "Module Documentation", "startLine": 6, "endLine": 38, "summary": "Documents the r×r LGV lemma, proof strategy, and relationship to the parent 2×2 proof."},
+    {"id": "matrix", "title": "Path Weight Matrix", "startLine": 44, "endLine": 57, "summary": "Defines pathMatrix (general DAG weights) and latticePathMatrix (binomial coefficient specialization)."},
+    {"id": "counting", "title": "Permutation Path Counting", "startLine": 59, "endLine": 71, "summary": "Defines permPathCount (unsigned product) and signedPermPathCount (with permutation sign)."},
+    {"id": "leibniz", "title": "Determinant as Signed Sum", "startLine": 73, "endLine": 82, "summary": "States det_eq_signed_sum: the Leibniz bridge connecting pathMatrix determinant to permutation sums."},
+    {"id": "nonintersecting", "title": "Non-Intersecting r-Tuples", "startLine": 84, "endLine": 94, "summary": "Defines the NonIntersecting predicate for abstract path families with disjoint vertex sets."},
+    {"id": "involution", "title": "Gessel-Viennot Involution", "startLine": 96, "endLine": 130, "summary": "Documents and states the sign-reversing involution that cancels all non-identity permutation contributions."},
+    {"id": "general", "title": "General r×r LGV Lemma", "startLine": 132, "endLine": 149, "summary": "States lgv_lemma_general: det = identity permutation count, conditional on involution cancellation."},
+    {"id": "2x2", "title": "2×2 Specialization", "startLine": 151, "endLine": 164, "summary": "Verified: 2×2 determinant formula and identity permutation contribution (0 sorries)."},
+    {"id": "3x3", "title": "3×3 Specialization", "startLine": 166, "endLine": 176, "summary": "Verified: 3×3 determinant six-term Leibniz expansion (0 sorries)."},
+    {"id": "properties", "title": "Determinantal Properties", "startLine": 178, "endLine": 192, "summary": "States antisymmetry under source-swapping and vanishing for repeated sources."}
   ],
   "conclusion": {
-    "summary": "Infrastructure for the general r×r LGV lemma: 204 lines, 13 defs/theorems, 5 sorries, 0 axioms. Verified 2×2 and 3×3 determinant specializations. The GV involution cancellation is the main remaining sorry.",
+    "summary": "This file establishes the general r×r LGV lemma infrastructure in 204 lines: 3 definitions, 10 theorems, 5 sorries, 0 axioms. The verified 2×2 and 3×3 specializations confirm the framework, while the main remaining challenge is formalizing the Gessel-Viennot sign-reversing involution that eliminates intersecting path contributions.",
+    "implications": "Completing the GV involution proof would yield a fully formal r×r LGV lemma — a cornerstone result enabling formal proofs of Schur polynomial identities, determinantal formulas for Young tableaux (the Jacobi-Trudi identity), rhombus tiling counts, and the Cauchy-Binet formula. The modular structure (involution hypothesis as an explicit parameter) means partial progress is immediately usable.",
     "openQuestions": [
-      "Prove the Leibniz formula bridge (det_eq_signed_sum)",
-      "Implement the GV involution and prove cancellation",
-      "Connect to the parent's 2×2 proof infrastructure"
+      "Prove the Leibniz formula bridge (det_eq_signed_sum) — requires careful handling of Perm.sign casts between the sign group and integers",
+      "Formalize the GV involution construction: first-intersection detection, tail-swapping, well-definedness as a fixpoint-free involution on intersecting tuples",
+      "Connect to the parent's 2×2 proof infrastructure, potentially extracting the 2-path involution as the r=2 special case",
+      "Extend to weighted versions needed for applications to Schur polynomials and the Jacobi-Trudi identity"
     ]
   },
+  "crossReferences": [
+    {"proofId": "ballot-problem-oq-03", "relationship": "parent", "description": "Full 2×2 LGV proof (2878 lines, 0 sorries) — this file generalizes that result to arbitrary r"},
+    {"proofId": "ballot-problem", "relationship": "ancestor", "description": "Classical ballot problem via reflection principle — the combinatorial origin of the lattice path approach"},
+    {"proofId": "ballot-problem-oq-02", "relationship": "sibling", "description": "Continuous-time ballot via Brownian motion — a parallel generalization through probability theory"},
+    {"proofId": "ballot-problem-oq-01", "relationship": "sibling", "description": "Generalized ballot with k-fold dominance via the Dvoretzky-Motzkin Cycle Lemma"}
+  ],
   "leanFile": {
     "imports": ["Mathlib.LinearAlgebra.Matrix.Determinant.Basic", "Mathlib.GroupTheory.Perm.Sign", "Mathlib.Data.Fintype.BigOperators", "Mathlib.Tactic"],
     "opens": ["Matrix", "Equiv", "Finset", "BigOperators"],
