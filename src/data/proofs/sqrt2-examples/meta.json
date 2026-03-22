@@ -69,6 +69,23 @@
       }
     ]
   },
+  "crossReferences": [
+    {
+      "proofId": "sqrt2-irrational",
+      "relationship": "related",
+      "description": "Companion proof about sqrt(2): demonstrates basic tactics here, proves irrationality there"
+    },
+    {
+      "proofId": "sqrt2-from-axioms",
+      "relationship": "related",
+      "description": "Alternative sqrt(2) formalization built from first principles rather than Mathlib"
+    },
+    {
+      "proofId": "amgm-inequality",
+      "relationship": "related",
+      "description": "AM-GM inequality relies on non-negativity of squares as a building block"
+    }
+  ],
   "overview": {
     "historicalContext": "The non-negativity of squares is one of the most elementary properties of ordered rings, known since antiquity and fundamental to Euclid's *Elements* (c. 300 BCE). In modern algebra, the property $n^2 \\geq 0$ characterizes ordered fields and is an axiom in real closed field theory, formalized by Artin and Schreier in the 1920s. Implication transitivity, meanwhile, is a core rule of propositional logic tracing back to the Stoic logicians (3rd century BCE) and later formalized by Frege in his *Begriffsschrift* (1879) as one of the foundational inference rules. Together these results illustrate how even the simplest mathematical facts connect to deep structural properties of number systems and logical frameworks.",
     "problemStatement": "**Examples proven:**\n\n1. For any integer $n$: $n \\cdot n \\geq 0$ (squares are non-negative)\n2. Implication transitivity: $(P \\to Q) \\to (Q \\to R) \\to (P \\to R)$",
@@ -102,6 +119,20 @@
       "startLine": 42,
       "endLine": 48,
       "summary": "Proves $(P \\to Q) \\to (Q \\to R) \\to (P \\to R)$ using backward reasoning with `intro`, `apply`, and `exact`, demonstrating Lean's natural deduction style."
+    },
+    {
+      "id": "positive-case",
+      "title": "Positive Case: n >= 0",
+      "startLine": 34,
+      "endLine": 35,
+      "summary": "When $n \\geq 0$, the result $n \\cdot n \\geq 0$ follows directly from `mul_nonneg h h`, applying the Mathlib lemma that a product of non-negative numbers is non-negative."
+    },
+    {
+      "id": "negative-case",
+      "title": "Negative Case: n < 0",
+      "startLine": 36,
+      "endLine": 40,
+      "summary": "When $n < 0$, derives $-n \\geq 0$, then uses a `calc` block: $n \\cdot n = (-n) \\cdot (-n) \\geq 0$. The `ring` tactic proves the equality $n \\cdot n = (-n)(-n)$ and `mul_nonneg` closes the inequality."
     }
   ],
   "conclusion": {
