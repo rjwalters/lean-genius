@@ -29,7 +29,7 @@
       "endLine": 35
     },
     "type": "context",
-    "title": "Namespace and Proof Architecture",
+    "title": "Part I Header and Proof Architecture",
     "content": "The file is organized into a single namespace `AbelRuffiniOQ04` with five clearly separated parts, mirroring the logical structure of the Abel-Ruffini proof chain. Part I establishes the foundation (A₅ simplicity), Part II builds the main non-solvability theorem, Part III provides contrast cases, Part IV packages the threshold result, and Part V provides comprehensive documentation. This 'OQ-04' designation indicates the fourth original question/exploration branching from the base `abel-ruffini` gallery entry, focusing specifically on making the internal proof chain explicit.",
     "mathContext": "The proof chain architecture: foundation ($A_5$ simple) $\\to$ propagation ($S_n$ not solvable) $\\to$ contrast ($S_{\\leq 4}$ solvable) $\\to$ threshold (exact dichotomy) $\\to$ documentation (full chain).",
     "significance": "context",
@@ -75,7 +75,7 @@
     },
     "type": "technique",
     "title": "Sₙ Not Solvable for n ≥ 5",
-    "content": "The main theorem: the symmetric group Sₙ is not solvable for n ≥ 5. The proof uses Mathlib's Equiv.Perm.not_solvable, which internally works via the chain: A₅ is simple and non-abelian → A₅ is not solvable → Aₙ contains A₅ for n ≥ 5 → Aₙ is not solvable → Sₙ is not solvable (since quotients of solvable groups are solvable, but Sₙ/Aₙ ≅ ℤ/2ℤ would make Aₙ solvable if Sₙ were). The proof converts the natural number inequality 5 ≤ n to a cardinal inequality 5 ≤ |Fin n| using exact_mod_cast.",
+    "content": "The main theorem: the symmetric group Sₙ is not solvable for n ≥ 5. The proof uses Mathlib's Equiv.Perm.not_solvable, which internally works via the chain: A₅ is simple and non-abelian → A₅ is not solvable → Aₙ contains A₅ for n ≥ 5 → Aₙ is not solvable → Sₙ is not solvable (since quotients of solvable groups are solvable, but Sₙ/Aₙ ≅ ℤ/2ℤ would make Aₙ solvable if Sₙ were). The proof converts the natural number inequality 5 ≤ n to a cardinal inequality 5 ≤ |Fin n| using exact_mod_cast, then passes it to Mathlib's cardinal-level statement.",
     "mathContext": "For $n \\geq 5$: $A_5 \\hookrightarrow A_n \\trianglelefteq S_n$. If $S_n$ were solvable, so would $A_n$ (as a subgroup), hence $A_5$ — contradicting its non-solvability. Therefore $S_n$ is not solvable.",
     "significance": "key",
     "relatedConcepts": [
@@ -159,28 +159,26 @@
     ]
   },
   {
-    "id": "ann-proof-chain",
+    "id": "ann-chain-overview",
     "proofId": "abel-ruffini-oq-04",
     "range": {
       "startLine": 92,
-      "endLine": 152
+      "endLine": 100
     },
     "type": "context",
-    "title": "The Complete 5-Step Abel-Ruffini Proof Chain",
-    "content": "Comprehensive documentation of the entire proof chain from A₅ simplicity to the Abel-Ruffini theorem, with two key tables. The 5-step chain is: (1) A₅ is simple, (2) simple non-abelian ⟹ not solvable (derived series stuck at [G,G] = G), (3) Sₙ not solvable for n ≥ 5 (contains non-solvable A₅), (4) Galois bridge (solvable by radicals ⟹ solvable Galois group), (5) generic quintic has Galois group S₅. The 'Why Exactly 5?' table shows derived series for each Sₙ, and the 'Crucial Asymmetry' table shows the degree-by-degree breakdown of radical solvability from linear through quintic, including the historical formula discoverers (Cardano 1545, Ferrari 1540, Abel 1824).",
-    "mathContext": "The chain: $A_5$ simple $\\Rightarrow$ $A_5$ not solvable $\\Rightarrow$ $S_n$ ($n \\geq 5$) not solvable $\\Rightarrow$ $\\text{Gal}(x^5 + a_1 x^4 + \\cdots + a_5) = S_5$ not solvable $\\Rightarrow$ no radical formula for degree $\\geq 5$.",
+    "title": "Proof Chain Documentation: Overview and Step 1",
+    "content": "Part V opens with comprehensive documentation of the full Abel-Ruffini proof chain. The chain begins with Step 1: A₅ is simple and non-abelian, established by Mathlib's `alternatingGroup.isSimpleGroup_five`. This is the only step where the specific structure of A₅ matters — everything else follows by general group-theoretic arguments. The documentation emphasizes three key properties: |A₅| = 60 (the smallest non-abelian simple group), A₅ has no proper non-trivial normal subgroups, and this single fact about A₅ drives the entire impossibility result for the quintic.",
+    "mathContext": "Step 1: $A_5$ is simple and non-abelian with $|A_5| = 60 = 5!/2$. This is the unique deepest fact in the chain — all subsequent steps are general consequences of simplicity and non-abelianness.",
     "significance": "key",
     "relatedConcepts": [
-      "Galois theory",
-      "radical extensions",
-      "derived series",
-      "Cardano's formula",
-      "Ferrari's method"
+      "proof chain architecture",
+      "mathematical exposition",
+      "simple group",
+      "alternating group"
     ],
     "prerequisites": [
-      "Galois theory",
-      "field theory",
-      "group theory"
+      "group theory",
+      "Galois theory"
     ]
   },
   {
@@ -205,6 +203,78 @@
       "group theory",
       "normal subgroups",
       "commutators"
+    ]
+  },
+  {
+    "id": "ann-chain-propagation",
+    "proofId": "abel-ruffini-oq-04",
+    "range": {
+      "startLine": 109,
+      "endLine": 124
+    },
+    "type": "technique",
+    "title": "Proof Chain Steps 3–5: From Group Theory to Algebra",
+    "content": "Steps 3–5 propagate the non-solvability of A₅ into the impossibility of a radical quintic formula. Step 3 (this file's `symmetric_not_solvable`): Aₙ ◁ Sₙ is normal (kernel of the sign homomorphism), and Aₙ contains A₅ for n ≥ 5 via the natural embedding Fin 5 → Fin n. If Sₙ were solvable, Aₙ would be too (subgroups of solvable groups are solvable), contradicting A₅'s non-solvability. Step 4 (Galois bridge via `solvableByRad.isSolvable'`): radical solvability implies a solvable Galois group, so the contrapositive gives the algebraic impossibility. Step 5 (field theory): the generic quintic x⁵ + a₁x⁴ + ··· + a₅ over ℚ(a₁,...,a₅) has Galois group S₅, which is not solvable by Step 3.",
+    "mathContext": "Step 3: $A_n \\trianglelefteq S_n$ with $A_5 \\leq A_n$ for $n \\geq 5$, so $S_n$ not solvable. Step 4: solvable by radicals $\\Rightarrow$ solvable Galois group. Step 5: $\\text{Gal}(x^5 + a_1 x^4 + \\cdots + a_5 / \\mathbb{Q}(a_1,\\ldots,a_5)) \\cong S_5$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Galois group",
+      "radical extensions",
+      "sign homomorphism",
+      "solvableByRad"
+    ],
+    "prerequisites": [
+      "Galois theory",
+      "field extensions",
+      "group homomorphisms"
+    ]
+  },
+  {
+    "id": "ann-why-five",
+    "proofId": "abel-ruffini-oq-04",
+    "range": {
+      "startLine": 125,
+      "endLine": 139
+    },
+    "type": "insight",
+    "title": "Why Exactly Degree 5? — Derived Series Table",
+    "content": "A summary table showing the derived series for each symmetric group S₁ through S₅, explaining why 5 is the exact threshold. For n ≤ 4, each derived series terminates at {e}: S₂ has one step, S₃ passes through A₃ ≅ ℤ/3ℤ, and S₄ has the longest chain {e} ◁ V₄ ◁ A₄ ◁ S₄. At n = 5, the derived series gets stuck because A₅ is simple: [A₅, A₅] = A₅, so the series A₅ = A₅ = A₅ = ··· never descends. The table crystallizes the insight that A₅ being the first non-abelian simple group (order 60) is the precise algebraic obstruction.",
+    "mathContext": "Derived series: $S_4$: $\\{e\\} \\triangleleft V_4 \\triangleleft A_4 \\triangleleft S_4$ (terminates). $S_5$: $A_5 = [A_5, A_5]$ is simple, series stuck at $A_5$. The transition $S_4$ solvable $\\to$ $S_5$ not solvable is sharp.",
+    "significance": "key",
+    "relatedConcepts": [
+      "derived series",
+      "Klein four-group",
+      "solvable group",
+      "composition series"
+    ],
+    "prerequisites": [
+      "group theory",
+      "normal series"
+    ]
+  },
+  {
+    "id": "ann-crucial-asymmetry",
+    "proofId": "abel-ruffini-oq-04",
+    "range": {
+      "startLine": 140,
+      "endLine": 152
+    },
+    "type": "context",
+    "title": "The Crucial Asymmetry — Degree-by-Degree Radical Solvability",
+    "content": "A comparison table showing radical solvability by polynomial degree, from linear through quintic. Degrees 1–4 have explicit radical formulas: the quadratic formula (antiquity), Cardano's cubic formula (1545), and Ferrari's quartic method (1540). At degree 5, the Galois group can be S₅ (which is not solvable), so no general radical formula exists. The table concludes with the crucial distinction: specific quintics like x⁵ - 1 have solvable Galois groups (cyclic, in this case), so the Abel-Ruffini theorem is about the non-existence of a *general* formula, not the unsolvability of every individual quintic.",
+    "mathContext": "Degree $n$ solvable by radicals for all polynomials $\\iff$ $S_n$ solvable $\\iff$ $n \\leq 4$. Specific solvable quintics exist: $\\text{Gal}(x^5 - 1/\\mathbb{Q}) \\cong \\mathbb{Z}/5\\mathbb{Z}$ is cyclic, hence solvable.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Cardano's formula",
+      "Ferrari's method",
+      "quadratic formula",
+      "cyclotomic polynomial",
+      "generic vs specific solvability"
+    ],
+    "prerequisites": [
+      "field theory",
+      "Galois theory",
+      "history of algebra"
     ]
   },
   {
