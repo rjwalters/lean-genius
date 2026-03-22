@@ -149,6 +149,13 @@
       "year": "1979",
       "venue": "Astérisque 61, pp. 11-13",
       "note": "Proved ζ(3) is irrational — the first odd zeta value shown to be irrational, a major breakthrough"
+    },
+    {
+      "authors": "Dunham, William",
+      "title": "Euler: The Master of Us All",
+      "year": "1999",
+      "venue": "MAA Dolciani Mathematical Expositions 22",
+      "note": "Chapter 3 gives a detailed account of Euler's Basel Problem solution including the sin(x)/x factorization, his computation of higher zeta values, and the historical context of the Bernoulli family's failed attempts"
     }
   ],
   "crossReferences": [
@@ -181,6 +188,16 @@
       "targetId": "infinitude-primes",
       "relationship": "related",
       "description": "Euler's proof of the infinitude of primes uses the Euler product ζ(s) = ∏(1-p⁻ˢ)⁻¹ — the same zeta function whose value at s=2 is the Basel problem"
+    },
+    {
+      "targetId": "buffons-needle",
+      "relationship": "related",
+      "description": "Both reveal π in unexpected contexts: Basel finds π in a sum over integers, Buffon finds π in a probability of needle crossings. Together they illustrate π's ubiquity beyond geometry — connecting number theory and probability to the circle constant."
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's approximation $n! \\approx \\sqrt{2\\pi n}(n/e)^n$ shares the same mysterious appearance of π in a discrete context. Both results ultimately trace to Fourier analysis: Basel via Bernoulli polynomial Fourier expansions, Stirling via the saddle-point method on the Gamma function."
     }
   ],
   "relatedProofs": [
@@ -190,7 +207,9 @@
     "euler-identity",
     "prime-reciprocal-divergence",
     "pi-transcendental",
-    "e-transcendental"
+    "e-transcendental",
+    "buffons-needle",
+    "stirling-formula"
   ],
   "leanFile": {
     "imports": [
