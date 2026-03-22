@@ -19,7 +19,7 @@
     "phase": "ACT",
     "since": "2026-03-21",
     "iteration": 4,
-    "focus": "char_orthogonality RE-PROVED, char_sum_int PROVED. 4 sorries remain: parseval_on_zmod, triple_count_fourier, fourier_large_coefficient, density_increment_lemma",
+    "focus": "psi_add FIXED, char_orthogonality RE-PROVED, char_sum_int PROVED. 4 sorries remain. psi_add now available for parseval_on_zmod proof.",
     "blockers": [
       "None. Independent problem, can start immediately."
     ],
@@ -38,7 +38,8 @@
       "Proved fourierCoeff_norm_le: triangle inequality with |exp(i\u03b8)|=1 via push_cast+ring",
       "Proved roth_density_bound: iterate density_iteration, choose K>100/\u03b4\u00b2, density>1 contradicts card_le_nat",
       "Re-proved char_orthogonality: fixed ZMod.val_eq_zero API, replaced conv ext with simp_rw, used exp_eq_one_iff for omega \u2260 1",
-      "Proved char_sum_int: \u2211_{j=0}^{N-1} exp(2\u03c0ij\u00b7m/N) = N\u00b7\u03b4(N|m) via geometric series + root_unity_sum_zero + exp_eq_one_iff"
+      "Proved char_sum_int: \u2211_{j=0}^{N-1} exp(2\u03c0ij\u00b7m/N) = N\u00b7\u03b4(N|m) via geometric series + root_unity_sum_zero + exp_eq_one_iff",
+      "Fixed psi_add: original proof used ring for false equation (k%N)/N \u2260 val(a)/N + val(b)/N. Fix: combine RHS fractions, decompose k/N, absorb integer part"
     ],
     "insights": [
       "RothTheorem.lean had 3 build errors: deprecated Finset.not_mem_empty, broken apFree_singleton, non-existent Complex.abs",
@@ -51,7 +52,8 @@
       "ZMod.val_eq_zero still exists in Mathlib but .mp projection fails; use rwa [\u2190 ZMod.val_eq_zero] instead",
       "conv ext tactic removed in recent Lean; use simp_rw with explicit function equality instead",
       "mul_left_cancel\u2080 cleaner than congr_arg+mul_div_cancel for extracting equations from 2\u03c0i\u00b7x = 2\u03c0i\u00b7y",
-      "field_simp alone closes N*(2\u03c0i*m/N) = m*2\u03c0i without ring (ring causes No goals error)"
+      "field_simp alone closes N*(2\u03c0i*m/N) = m*2\u03c0i without ring (ring causes No goals error)",
+      "psi_add was broken since session 3: ring cannot prove (k%N)/N = k/N in general. Fix: rewrite RHS to k/N first, then decompose"
     ],
     "mathlibGaps": [],
     "nextSteps": [
