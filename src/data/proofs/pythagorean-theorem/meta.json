@@ -14,7 +14,7 @@
       "classic",
       "beginner"
     ],
-    "proofRepoPath": "Proofs/Pythagorean.lean",
+    "proofRepoPath": "Proofs/PythagoreanTheorem.lean",
     "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
@@ -37,7 +37,8 @@
       "Norm and distance definitions"
     ],
     "wiedijkNumber": 4,
-    "axiomCount": 0
+    "axiomCount": 0,
+    "lineCount": 215
   },
   "overview": {
     "historicalContext": "The Pythagorean theorem is arguably the most recognized result in all of mathematics. While named after the Greek mathematician Pythagoras (c. 570-495 BCE), evidence suggests the theorem was known to Babylonian mathematicians over 1000 years earlier—clay tablet Plimpton 322 (c. 1800 BCE) contains a list of Pythagorean triples.\n\nPythagoras, or more likely his school, is credited with providing the first general proof. The theorem appears as Proposition 47 in Book I of Euclid's Elements (c. 300 BCE), where it's proved using areas of squares constructed on the triangle's sides.\n\nBy 1940, mathematician Elisha Loomis had catalogued 367 distinct proofs, and new proofs continue to be discovered. James Garfield, before becoming the 20th US President, published an original proof in 1876.",
@@ -54,82 +55,59 @@
   "sections": [
     {
       "id": "header",
-      "title": "Introduction",
+      "title": "Imports and Module Docstring",
       "startLine": 1,
-      "endLine": 13,
-      "summary": "Overview of the theorem and its historical significance, from ancient Babylon through Pythagoras to modern formalization.",
-      "mathContext": "The Pythagorean theorem: $a^2 + b^2 = c^2$ for right triangles, proved via inner product spaces in Lean 4"
-    },
-    {
-      "id": "real-numbers",
-      "title": "Real Number Foundations",
-      "startLine": 15,
-      "endLine": 32,
-      "summary": "Setting up the real number type and basic operations needed for geometric quantities.",
-      "mathContext": "Uses $\\mathbb{R}$ from Mathlib with field operations. Defines `Vec2` as a pair $(x, y) \\in \\mathbb{R}^2$"
+      "endLine": 44,
+      "summary": "Five Mathlib imports (InnerProductSpace.Basic, PiL2, Real.Basic, Real.Sqrt, Tactic), the module docstring covering the theorem statement, inner product approach, and Mathlib dependencies. Opens `RealInnerProductSpace` scoped instance.",
+      "mathContext": "The file uses Mathlib's `InnerProductSpace` over $\\mathbb{R}$ with `EuclideanSpace \\mathbb{R} (\\text{Fin}\\ 2)$ as the concrete $\\mathbb{R}^2$. Key API: `inner`, `norm`, `real_inner_self_eq_norm_mul_norm`, `inner_add_left/right`."
     },
     {
       "id": "vector-space",
-      "title": "Vector Space Structure",
-      "startLine": 34,
-      "endLine": 54,
-      "summary": "Defining 2D vectors and vector operations (addition, subtraction) for representing geometric points.",
-      "mathContext": "Vector addition $(v_1 + w_1, v_2 + w_2)$, subtraction, and scalar multiplication on $\\mathbb{R}^2$"
-    },
-    {
-      "id": "inner-product",
-      "title": "The Inner Product",
-      "startLine": 56,
-      "endLine": 73,
-      "summary": "Introducing the dot product and norm—the algebraic tools that encode geometry.",
-      "mathContext": "$\\langle v, w \\rangle = v_1 w_1 + v_2 w_2$, $\\|v\\|^2 = \\langle v, v \\rangle = v_1^2 + v_2^2$"
+      "title": "Vector Space and Inner Product",
+      "startLine": 46,
+      "endLine": 65,
+      "summary": "Parts 1–2: defines `Vec2 := EuclideanSpace ℝ (Fin 2)`, checks inner product type, and proves `norm_sq_eq_inner`: $\\|v\\|^2 = \\langle v, v \\rangle$.",
+      "mathContext": "$\\text{Vec2} = \\mathbb{R}^2$ via `EuclideanSpace`. The norm-inner product relation $\\|v\\|^2 = \\langle v, v \\rangle$ is proved from `real_inner_self_eq_norm_mul_norm`."
     },
     {
       "id": "perpendicularity",
       "title": "Perpendicularity",
-      "startLine": 75,
-      "endLine": 85,
-      "summary": "Defining perpendicular vectors as those with zero inner product—the key to the theorem.",
-      "mathContext": "$v \\perp w \\iff \\langle v, w \\rangle = 0$. Perpendicularity is symmetric: $\\langle v, w \\rangle = 0 \\iff \\langle w, v \\rangle = 0$"
+      "startLine": 67,
+      "endLine": 80,
+      "summary": "Part 3: defines `perpendicular v w := inner v w = 0`, notation `v ⊥ w`, and proves symmetry `perp_symm` via `real_inner_comm`.",
+      "mathContext": "$v \\perp w \\iff \\langle v, w \\rangle = 0$. Symmetry: $\\langle v, w \\rangle = \\langle w, v \\rangle$ (real inner products are symmetric)."
     },
     {
       "id": "main-theorem",
       "title": "The Pythagorean Theorem",
-      "startLine": 87,
-      "endLine": 117,
-      "summary": "The main proof using bilinearity of inner products and the perpendicularity condition.",
-      "mathContext": "$v \\perp w \\implies \\|v + w\\|^2 = \\|v\\|^2 + \\|w\\|^2$. Proof: expand by bilinearity, cross terms $\\langle v, w \\rangle = 0$ vanish"
+      "startLine": 82,
+      "endLine": 107,
+      "summary": "Part 4: `pythagorean_theorem` — if $v \\perp w$ then $\\|v + w\\|^2 = \\|v\\|^2 + \\|w\\|^2$. Proof: expand $\\langle v+w, v+w \\rangle$ by `inner_add_left/right`, use perpendicularity to zero cross terms, finish with `ring`.",
+      "mathContext": "$\\|v + w\\|^2 = \\langle v+w, v+w \\rangle = \\langle v,v \\rangle + \\langle v,w \\rangle + \\langle w,v \\rangle + \\langle w,w \\rangle = \\|v\\|^2 + 0 + 0 + \\|w\\|^2$"
     },
     {
-      "id": "geometric-interpretation",
-      "title": "Geometric Interpretation",
-      "startLine": 119,
-      "endLine": 147,
-      "summary": "Connecting the vector formulation to the classical triangle with sides a, b, c.",
-      "mathContext": "For triangle with vertices $A, B, C$ and right angle at $C$: legs $a = \\|B - C\\|$, $b = \\|A - C\\|$, hypotenuse $c = \\|A - B\\|$, giving $a^2 + b^2 = c^2$"
-    },
-    {
-      "id": "pythagorean-triples",
-      "title": "Pythagorean Triples",
-      "startLine": 149,
-      "endLine": 177,
-      "summary": "Integer solutions like (3,4,5), verified computationally, and the generating formula.",
-      "mathContext": "Integer solutions $(a, b, c)$: $(3, 4, 5)$, $(5, 12, 13)$, $(8, 15, 17)$. Parametrization: $a = m^2 - n^2$, $b = 2mn$, $c = m^2 + n^2$"
+      "id": "classical",
+      "title": "Classical Formulation and Triples",
+      "startLine": 109,
+      "endLine": 132,
+      "summary": "Part 5: `RightTriangle` structure (legs a, b, hypotenuse c with positivity and $a^2 + b^2 = c^2$), then three Pythagorean triples verified by `norm_num`: $(3,4,5)$, $(5,12,13)$, $(8,15,17)$.",
+      "mathContext": "Pythagorean triples verified: $3^2 + 4^2 = 9 + 16 = 25 = 5^2$, etc. All primitive triples are generated by $a = m^2-n^2$, $b = 2mn$, $c = m^2+n^2$."
     },
     {
       "id": "converse",
       "title": "The Converse",
-      "startLine": 179,
-      "endLine": 195,
-      "summary": "If a² + b² = c², then the triangle has a right angle—Euclid's Proposition 48."
+      "startLine": 134,
+      "endLine": 152,
+      "summary": "Part 6: `pythagorean_converse` — if $\\|v+w\\|^2 = \\|v\\|^2 + \\|w\\|^2$ then $v \\perp w$. Proof: expand, cancel the self-inner products, deduce $2\\langle v,w \\rangle = 0$ by `linarith`.",
+      "mathContext": "Euclid's Proposition I.48: $a^2 + b^2 = c^2 \\Rightarrow$ right angle. The converse: expanding gives $\\langle v,v \\rangle + 2\\langle v,w \\rangle + \\langle w,w \\rangle = \\langle v,v \\rangle + \\langle w,w \\rangle$, so $\\langle v,w \\rangle = 0$."
     },
     {
-      "id": "history",
-      "title": "Historical Context",
-      "startLine": 197,
-      "endLine": 225,
-      "summary": "Timeline from Babylon to modern times, proof methods, and generalizations.",
-      "mathContext": "From Babylonian tablet Plimpton 322 (~1800 BCE) to Euclid's Elements I.47 (~300 BCE) to modern inner product space proofs"
+      "id": "generalization",
+      "title": "Generalized Pythagorean Theorem",
+      "startLine": 154,
+      "endLine": 215,
+      "summary": "Part 7: `pythagorean_sum` — for mutually perpendicular vectors $\\{v_i\\}$, $\\|\\sum v_i\\|^2 = \\sum \\|v_i\\|^2$. Proved by `Finset.induction_on` with the key step showing $\\langle v_a, \\sum_{s'} v_i \\rangle = 0$ via `inner_sum`.",
+      "mathContext": "The $n$-dimensional Pythagorean theorem: $\\|\\sum_{i=1}^k v_i\\|^2 = \\sum_{i=1}^k \\|v_i\\|^2$ when $\\langle v_i, v_j \\rangle = 0$ for $i \\neq j$. This is the foundation of Parseval's identity in Hilbert spaces."
     }
   ],
   "conclusion": {
@@ -163,9 +141,27 @@
       "targetId": "area-of-circle",
       "relationship": "related",
       "description": "Both are fundamental results in Euclidean geometry. The Pythagorean theorem relates side lengths; the area formula uses πr² which depends on the same metric structure"
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "related",
+      "description": "The Pythagorean theorem underpins compass-and-straightedge constructions — every constructible length arises from iterated application of the theorem via circle-line intersections"
+    },
+    {
+      "targetId": "fermats-last-theorem",
+      "relationship": "foundational",
+      "description": "FLT generalizes the Pythagorean equation: while a²+b²=c² has infinitely many integer solutions, aⁿ+bⁿ=cⁿ has none for n≥3"
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "related",
+      "description": "Both are consequences of inner product space structure: Pythagorean theorem uses orthogonality (⟨v,w⟩=0), Cauchy-Schwarz bounds the general case (|⟨v,w⟩| ≤ ‖v‖‖w‖)"
     }
   ],
   "relatedProofs": [
-    "area-of-circle"
+    "area-of-circle",
+    "angle-trisection",
+    "fermats-last-theorem",
+    "cauchy-schwarz"
   ]
 }
