@@ -97,5 +97,30 @@
       "How does this connect to Möbius inversion on posets?",
       "What are efficient algorithms for computing inclusion-exclusion sums?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Rota, Gian-Carlo",
+      "title": "On the Foundations of Combinatorial Theory I: Theory of Möbius Functions",
+      "year": "1964",
+      "venue": "Zeitschrift für Wahrscheinlichkeitstheorie, 2, pp. 340-368",
+      "note": "Generalized inclusion-exclusion to Möbius inversion on partially ordered sets, unifying combinatorial counting principles"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "derangements",
+      "relationship": "applies",
+      "description": "The derangement formula D(n) = n!·Σ(-1)^k/k! is a direct application of inclusion-exclusion to count permutations with no fixed points"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "applies",
+      "description": "Euler's totient φ(n) = n·Π(1-1/p) uses inclusion-exclusion to count integers coprime to n"
+    }
+  ],
+  "relatedProofs": [
+    "derangements",
+    "euler-totient"
+  ]
 }
