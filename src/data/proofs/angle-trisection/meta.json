@@ -6,7 +6,7 @@
   "meta": {
     "author": "Pierre Wantzel (1837)",
     "date": "1837",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "geometry",
       "galois-theory",
@@ -72,6 +72,16 @@
       "targetId": "inverse-galois",
       "relationship": "related",
       "description": "Constructibility is determined by the Galois group of the minimal polynomial — the constructible numbers have Galois groups that are 2-groups"
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "Pythagoras is the cornerstone of Euclidean geometry that underpins compass-and-straightedge constructions — every constructible length arises from iterated application of the Pythagorean theorem via intersections of circles and lines"
+    },
+    {
+      "targetId": "halting-problem",
+      "relationship": "related",
+      "description": "Both are impossibility results: angle trisection shows a geometric construction is impossible, the halting problem shows a computational decision is impossible — each resolves a long-standing question by proving non-existence"
     }
   ],
   "overview": {
@@ -90,51 +100,59 @@
   "sections": [
     {
       "id": "setup",
-      "title": "Setup and the Minimal Polynomial",
+      "title": "Imports and Historical Context",
       "startLine": 1,
-      "endLine": 80,
-      "summary": "Introduction, imports, and derivation of the polynomial 8x³ - 6x - 1 that cos(20°) satisfies.",
-      "mathContext": "Trisecting $60°$ requires constructing $\\cos(20°)$, which satisfies $8x^3 - 6x - 1 = 0$ (from $\\cos(60°) = 4\\cos^3(20°) - 3\\cos(20°)$)."
+      "endLine": 69,
+      "summary": "Imports from Mathlib (trigonometry, field theory, polynomials) and PiTranscendental, plus the 2000-word docstring covering the three classical Greek problems, approach, axiom inventory, and proof structure.",
+      "mathContext": "The file imports `SpecialFunctions.Trigonometric.Basic` for $\\cos$ and `cos\\_three\\_mul$, `IntermediateField.Basic` for field extensions, and `Proofs.PiTranscendental` for $\\pi$'s transcendence over $\\mathbb{Z}$ (lifted to $\\mathbb{Q}$)."
     },
     {
-      "id": "triple-angle",
-      "title": "The Triple Angle Formula",
-      "startLine": 82,
-      "endLine": 110,
-      "summary": "Proof of the identity cos(3θ) = 4cos³(θ) - 3cos(θ) and its application to cos(20°).",
-      "mathContext": "$\\cos(3\\theta) = 4\\cos^3(\\theta) - 3\\cos(\\theta)$. With $\\theta = 20°$: $\\cos(60°) = 1/2 = 4\\cos^3(20°) - 3\\cos(20°)$."
+      "id": "minimal-polynomial",
+      "title": "The Minimal Polynomial for cos(20°)",
+      "startLine": 71,
+      "endLine": 130,
+      "summary": "Part I–II: defines `trisectionPolynomial` ($8x^3 - 6x - 1$), proves its degree is 3, defines angles 20° and 60° in radians, proves the triple angle formula, and shows cos(20°) satisfies the cubic equation.",
+      "mathContext": "From $\\cos(3\\theta) = 4\\cos^3(\\theta) - 3\\cos(\\theta)$ with $\\theta = \\pi/9$ (20°) and $\\cos(\\pi/3) = 1/2$: $1/2 = 4x^3 - 3x$ gives $8x^3 - 6x - 1 = 0$ where $x = \\cos(20°)$."
     },
     {
       "id": "irreducibility",
-      "title": "Irreducibility over ℚ",
-      "startLine": 112,
-      "endLine": 140,
-      "summary": "Verification that the cubic polynomial has no rational roots, hence is irreducible.",
-      "mathContext": "By the rational root theorem, candidates are $\\pm 1, \\pm 1/2, \\pm 1/4, \\pm 1/8$. None satisfy $8x^3 - 6x - 1 = 0$, so the cubic is irreducible over $\\mathbb{Q}$."
+      "title": "Irreducibility and Rational Root Check",
+      "startLine": 132,
+      "endLine": 153,
+      "summary": "Part III: defines `evalTrisectionPoly` for evaluation at rationals, then computationally verifies all 8 rational root candidates ($\\pm 1, \\pm 1/2, \\pm 1/4, \\pm 1/8$) are not roots using `norm_num`.",
+      "mathContext": "By the rational root theorem, any rational root $p/q$ of $8x^3 - 6x - 1$ must have $p \\mid 1$ and $q \\mid 8$. None of the 8 candidates evaluates to zero, so the cubic has no linear factor over $\\mathbb{Q}$ and is therefore irreducible."
     },
     {
       "id": "constructible",
-      "title": "Constructible Numbers",
-      "startLine": 142,
-      "endLine": 195,
-      "summary": "The algebraic characterization: constructible numbers have degree 2^n over ℚ.",
-      "mathContext": "Wantzel's criterion: $\\alpha$ constructible $\\Rightarrow [\\mathbb{Q}(\\alpha) : \\mathbb{Q}] = 2^n$ for some $n$. Each compass-straightedge step solves at most a quadratic, extending the field by degree 2."
+      "title": "Constructible Numbers and Axioms",
+      "startLine": 155,
+      "endLine": 214,
+      "summary": "Part IV: defines `IsConstructible` (degree divides $2^n$), states `wantzel_theorem` (axiom 1), `trisectionPolynomial_irreducible` (axiom 2), and proves `lindemann_pi_transcendental` from the PiTranscendental import.",
+      "mathContext": "Wantzel's criterion: $\\alpha$ constructible $\\Rightarrow [\\mathbb{Q}(\\alpha) : \\mathbb{Q}]$ divides $2^n$. The two axioms encode deep results not in Mathlib: Wantzel's theorem connecting geometry to algebra, and the irreducibility of $8x^3 - 6x - 1$."
     },
     {
-      "id": "main-theorem",
-      "title": "The Impossibility Theorem",
-      "startLine": 197,
-      "endLine": 235,
-      "summary": "The main result: 60° cannot be trisected because cos(20°) has degree 3, not a power of 2.",
-      "mathContext": "$[\\mathbb{Q}(\\cos 20°) : \\mathbb{Q}] = 3$ (irreducible cubic). Since $3 \\neq 2^n$ for any $n$, $\\cos(20°)$ is not constructible."
+      "id": "number-theory",
+      "title": "Number-Theoretic Lemmas",
+      "startLine": 216,
+      "endLine": 260,
+      "summary": "Part V: proves $3 \\neq 2^n$ (by parity), $3 \\nmid 2^n$ (using primality of 3), the general `three_dvd_not_dvd_power_of_two`, and `degree_three_not_constructible` — the key lemma that degree 3 implies non-constructibility.",
+      "mathContext": "$2^n$ is always even for $n \\geq 1$, so $2^n \\neq 3$. Since $\\gcd(3,2) = 1$ and 3 is prime, $3 \\nmid 2^n$ by induction. Therefore any number with minimal polynomial degree 3 has $3 \\mid d$ but $d \\nmid 2^n$, ruling out constructibility."
     },
     {
-      "id": "corollaries",
-      "title": "Other Classical Impossibilities",
-      "startLine": 237,
-      "endLine": 290,
-      "summary": "Application to doubling the cube (∛2) and squaring the circle (√π).",
-      "mathContext": "Doubling the cube: $\\sqrt[3]{2}$ satisfies $x^3 - 2 = 0$ (irreducible, degree 3). Squaring the circle: $\\sqrt{\\pi}$ is transcendental (Lindemann, 1882), hence not algebraic and a fortiori not constructible."
+      "id": "main-theorems",
+      "title": "The Main Impossibility Theorems",
+      "startLine": 262,
+      "endLine": 330,
+      "summary": "Parts VI–VII: the three classical impossibilities — `angle_trisection_impossible` (cos(20°) not constructible), `cube_doubling_impossible` ($\\sqrt[3]{2}$ not constructible), and `circle_squaring_impossible` ($\\sqrt{\\pi}$ not constructible).",
+      "mathContext": "Angle trisection: $[\\mathbb{Q}(\\cos 20°) : \\mathbb{Q}] = 3 \\neq 2^n$. Cube doubling: $[\\mathbb{Q}(\\sqrt[3]{2}) : \\mathbb{Q}] = 3 \\neq 2^n$. Circle squaring: $\\pi$ is transcendental so $\\sqrt{\\pi}$ has no finite degree over $\\mathbb{Q}$."
+    },
+    {
+      "id": "general-framework",
+      "title": "General Non-Constructibility Framework",
+      "startLine": 332,
+      "endLine": 389,
+      "summary": "Part VIII: generalizes to any odd prime degree — proves `odd_prime_not_dvd_power_of_two` and `odd_prime_degree_not_constructible`, with specializations to degrees 5 and 7. Concluding summary.",
+      "mathContext": "For any odd prime $p$: $p \\nmid 2$ (since $p > 2$), so by primality $p \\nmid 2^n$ by induction. Any number with minimal polynomial of odd prime degree is therefore not constructible. This extends the degree-3 argument to all odd primes."
     }
   ],
   "conclusion": {
@@ -146,8 +164,14 @@
       "What is the computational complexity of determining constructibility?",
       "Are there natural generalizations to constructions with additional tools (e.g., compass-only, straightedge-only)?"
     ]
-  }
-,
+  },
+  "relatedProofs": [
+    "abel-ruffini",
+    "fundamental-theorem-algebra",
+    "inverse-galois",
+    "pythagorean-theorem",
+    "halting-problem"
+  ],
   "references": [
     {
       "authors": "Wantzel, Pierre Laurent",
@@ -155,6 +179,20 @@
       "year": "1837",
       "venue": "Journal de Mathématiques Pures et Appliquées",
       "note": "First rigorous proof that angle trisection is impossible with compass and straightedge, establishing the degree criterion"
+    },
+    {
+      "authors": "Lindemann, Ferdinand von",
+      "title": "Über die Zahl π",
+      "year": "1882",
+      "venue": "Mathematische Annalen",
+      "note": "Proved π is transcendental, completing the impossibility of squaring the circle — the third and final classical Greek problem to be resolved"
+    },
+    {
+      "authors": "Martin, George E.",
+      "title": "Geometric Constructions",
+      "year": "1998",
+      "venue": "Springer Undergraduate Texts in Mathematics",
+      "note": "Modern textbook covering constructibility theory, field extension characterization, and all three classical impossibilities with full algebraic proofs"
     }
   ]
 }
