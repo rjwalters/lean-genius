@@ -65,8 +65,10 @@
       "**Dual problem $h^{(m)}(n)$:** Maximizing $\\chi$ for fixed girth gives polynomial bounds $\\Theta(n^{1/(m-1)})$ (with log corrections), connecting to the cage problem and Moore graphs in algebraic graph theory."
     ],
     "prerequisites": [
-      "Graph theory fundamentals",
-      "Probabilistic method in combinatorics"
+      "Graph coloring: chromatic number $\\chi(G)$, list coloring, degeneracy",
+      "Graph girth: shortest cycle length, connections to cage problem and Ramanujan graphs",
+      "Probabilistic method (Erdős 1959): random graph constructions for high-chromatic, high-girth graphs",
+      "Extremal graph theory: Moore bound, algebraic constructions of graphs with prescribed girth"
     ]
   },
   "sections": [
