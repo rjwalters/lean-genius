@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-21",
-    "iteration": 2,
-    "focus": "Proving remaining 4 Fourier-analytic sorries toward complete formalization",
+    "iteration": 3,
+    "focus": "char_orthogonality PROVED. 5 sorries remain: char_sum_int, parseval_on_zmod, triple_count_fourier, fourier_large_coefficient, density_increment_lemma",
     "blockers": [
       "None. Independent problem, can start immediately."
     ],
@@ -31,12 +31,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved fourierCoeff_norm_le (triangle inequality + |exp(iθ)|=1) and roth_density_bound (main theorem via density iteration to contradiction). Reduced from 6 to 4 sorries.",
+    "progressSummary": "PROGRESS: Proved 4 new Fourier lemmas: psi_add (additivity), psi_zero, psi_ne_one, char_orthogonality (key character sum identity via shift argument). Reduced from 6 to 5 sorries. Remaining: char_sum_int, parseval_on_zmod, triple_count_fourier, fourier_large_coefficient, density_increment_lemma.",
     "builtItems": [
       "Fixed apFree_singleton proof, Complex.abs -> norm, added apFree_subset, removed incorrect apFree_pair",
       "Build now succeeds: 0 axioms, 3 sorries",
       "Proved fourierCoeff_norm_le: triangle inequality with |exp(iθ)|=1 via push_cast+ring",
-      "Proved roth_density_bound: iterate density_iteration, choose K>100/δ², density>1 contradicts card_le_nat"
+      "Proved roth_density_bound: iterate density_iteration, choose K>100/δ², density>1 contradicts card_le_nat",
+      "Proved psi_add: ψ(a+b) = ψ(a)·ψ(b) via val_add + exp periodicity (same pattern as exp_val_mul_eq)",
+      "Proved psi_zero: ψ(0) = 1",
+      "Proved psi_ne_one: ψ(c) ≠ 1 when c ≠ 0, via Complex.exp_eq_one_iff + integer squeeze on val(c)",
+      "Proved char_orthogonality: Σ ψ(r·c) = N·δ(c=0) via shift argument (r↦r+1 bijection on ZMod N)"
     ],
     "insights": [
       "RothTheorem.lean had 3 build errors: deprecated Finset.not_mem_empty, broken apFree_singleton, non-existent Complex.abs",
@@ -45,12 +49,16 @@
       "roth_density_bound could be proved from density_increment_lemma via iterated application",
       "field_simp handles div_mul_cancel cleanly when clearing denominators",
       "push_cast normalizes ↑(k+1) to ↑k+1 for cast unification",
-      "Key lemma chain: density_iteration (proved) → roth_density_bound (now proved)"
+      "Key lemma chain: density_iteration (proved) → roth_density_bound (now proved)",
+      "char_orthogonality proved via elegant shift argument: ψ(c)·S = S where S is the sum, and ψ(c) ≠ 1 forces S = 0",
+      "psi_add proof follows same pattern as exp_val_mul_eq: val(a+b) = (val(a)+val(b))%N, exponents differ by integer*2πi",
+      "psi_ne_one key step: Complex.exp_eq_one_iff reduces to val(c)/N ∈ ℤ, then 0 < val(c) < N gives contradiction"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove parseval_on_zmod via orthogonality of characters",
-      "Prove triple_count_fourier via expanding triple sum with orthogonality",
+      "Prove parseval_on_zmod: use char_orthogonality + ‖exp‖=1 to compute Σ|Â(r)|²",
+      "Prove char_sum_int: similar to char_orthogonality but with integer exponents",
+      "Prove triple_count_fourier via expanding triple sum with char_orthogonality",
       "Prove fourier_large_coefficient from Parseval + AP-freeness + cancellation",
       "Prove density_increment_lemma from large Fourier coefficient + pigeonhole"
     ]
