@@ -1,0 +1,59 @@
+{
+  "id": "birthday-problem-oq-02",
+  "title": "Birthday Problem: Tight Collision Asymptotics",
+  "slug": "birthday-problem-oq-02",
+  "description": "Proves the asymptotic upper bound for the birthday collision probability: ∏(1-i/n) ≤ exp(-k(k-1)/(2n)). Fully proved from Mathlib with 0 axioms and 0 sorries, using the fundamental inequality 1-x ≤ exp(-x) and Gauss's summation formula.",
+  "meta": {
+    "status": "verified",
+    "tags": ["combinatorics", "probability", "asymptotics", "open-question"],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. All theorems fully proved from Mathlib.",
+    "mathlibDependencies": [
+      {
+        "theorem": "add_one_le_exp",
+        "description": "1 + x ≤ exp(x) for all x",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.exp_sum",
+        "description": "exp of sum equals product of exp",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Birthday collision upper bound: ∏(1-i/n) ≤ exp(-k(k-1)/(2n)) (fully proved)",
+      "Collision probability lower bound: P(collision) ≥ 1 - exp(-k(k-1)/(2n)) (fully proved)",
+      "Gauss formula adapted for asymptotic exponent"
+    ],
+    "dateAdded": "03/22/26"
+  },
+  "overview": {
+    "historicalContext": "The birthday problem asymptotic approximation shows that for large n, the collision probability is well-approximated by 1 - exp(-k²/(2n)). This approximation underlies cryptographic hash collision analysis.",
+    "problemStatement": "Prove: ∏_{i=0}^{k-1} (1 - i/n) ≤ exp(-k(k-1)/(2n)) for k ≤ n.",
+    "proofStrategy": "Apply 1-x ≤ exp(-x) to each factor, multiply, and simplify the sum using Gauss's formula.",
+    "keyInsights": [
+      "The inequality 1-x ≤ exp(-x) is the key bridge between products and exponentials",
+      "The sum ∑i/n = k(k-1)/(2n) by Gauss's formula",
+      "The 50% threshold k ≈ √(2n ln 2) follows from this bound"
+    ]
+  },
+  "sections": [
+    {
+      "id": "main",
+      "title": "Birthday Collision Asymptotics",
+      "startLine": 1,
+      "endLine": 90,
+      "summary": "Key inequality, product bound, Gauss sum, main theorem, collision lower bound."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully proved the birthday collision upper bound with 0 axioms and 0 sorries.",
+    "implications": "This bound is used in cryptographic hash collision analysis: to find a collision in a hash with n outputs, expect to need about √(2n ln 2) trials.",
+    "openQuestions": [
+      "Can we prove a matching lower bound (∏(1-i/n) ≥ exp(-k(k-1)/(2n) - O(k³/n²)))?",
+      "Can we numerically verify for n=365, k=23?"
+    ]
+  }
+}
