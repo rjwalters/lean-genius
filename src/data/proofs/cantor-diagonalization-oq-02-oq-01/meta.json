@@ -42,6 +42,7 @@
   ],
   "conclusion": {
     "summary": "14 theorems proved with 0 sorries and 0 axioms, completing the structural characterization of ω₁.",
+    "implications": "Provides a complete formal foundation for first uncountable ordinal properties, enabling further set-theoretic constructions in Lean 4.",
     "openQuestions": [
       "Can the generalized Hartogs theorem (for any infinite cardinal κ, the set of ordinals of cardinality < κ has cardinality κ) be formalized?",
       "Can König's theorem (cof(ℵ_ω) > ℵ₀) be proved for singular cardinals?"
