@@ -50,7 +50,7 @@
   {
     "id": "ann-amgm-oq02-binomial-identity",
     "proofId": "amgm-inequality-oq-02",
-    "range": { "startLine": 229, "endLine": 271 },
+    "range": { "startLine": 226, "endLine": 271 },
     "type": "technique",
     "title": "General M₁² ≥ M₂: Binomial Identity + Cauchy-Schwarz",
     "content": "maclaurin_sq_m1_ge_m2_general proves C(n,2)·(∑xᵢ)² ≥ n²·e₂ for ALL reals (no non-negativity needed) using: (1) Cauchy-Schwarz (h_cs: n·∑xᵢ² ≥ (∑xᵢ)²); (2) Binomial identity (h_binom: (∑xᵢ)² = ∑xᵢ² + 2·e₂, proved by private theorem sq_sum_eq_sum_sq_add_two_elemSymm via induction using the recurrence e₂(succ) = e₂(castSucc) + xₙ·e₁(castSucc)); (3) Pascal identity (h_2cn2: 2·C(n,2) = n·(n-1), proved by induction via Nat.choose_succ_succ). The algebraic chain: 2·(C·S₁² - n²·e₂) = n·(n·S₂ - S₁²) ≥ 0 follows from Cauchy-Schwarz, closed by nlinarith.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-amgm-oq02-newton-axiom",
     "proofId": "amgm-inequality-oq-02",
-    "range": { "startLine": 277, "endLine": 301 },
+    "range": { "startLine": 277, "endLine": 309 },
     "type": "insight",
     "title": "Newton Log-Concavity and Maclaurin Means: The Axiom Engine",
     "content": "The newton_log_concavity axiom states (eₖ/C(n,k))² ≥ (eₖ₋₁/C(n,k-1)) · (eₖ₊₁/C(n,k+1)) for non-negative inputs — log-concavity of the normalized elementary symmetric sequence. The proof strategy is polarization + induction on n (Hardy-Littlewood-Pólya §2.22), currently not in Mathlib. The maclaurin_step axiom states Mₖ ≥ Mₖ₊₁ for consecutive Maclaurin means (following from Newton by monotonicity of t^(1/k)). The maclaurinMean definition uses Real.rpow for the (1/k) power: Mₖ = (eₖ/C(n,k))^(1/k), which is noncomputable. maclaurinMean_nonneg (fully proved) uses rpow_nonneg + elemSymm_nonneg.",
@@ -98,10 +98,10 @@
   {
     "id": "ann-amgm-oq02-inductive-infra",
     "proofId": "amgm-inequality-oq-02",
-    "range": { "startLine": 161, "endLine": 170 },
-    "type": "technique",
+    "range": { "startLine": 119, "endLine": 202 },
+    "type": "definition",
     "title": "Inductive Infrastructure: castSucc Embedding and e₂ Recurrence",
-    "content": "The private infrastructure for the inductive binomial identity proof centers on a custom embedding csEmb : Fin n ↪ Fin (n+1) wrapping Fin.castSucc, needed to work around API naming issues in Docker Lean 4.26.0. The key lemma fin_univ_insert_last decomposes (univ : Finset (Fin (n+1))) as insert (Fin.last n) (univ.map (csEmb n)) — splitting {0,...,n} into {n} ∪ {0,...,n-1}. This decomposition enables elemSymm_two_succ, the fundamental recurrence: e₂(x₀,...,xₙ) = e₂(x₀,...,xₙ₋₁) + xₙ · e₁(x₀,...,xₙ₋₁). The proof uses Finset.powersetCard_succ_insert to split 2-element subsets of {0,...,n} into those not containing n (powersetCard 2 of the mapped range) and those containing n (image of insert (Fin.last n) on 1-element subsets). The disjointness lemma pc_disj ensures the union is valid. This recurrence is the backbone of the entire file — it later generalizes to elemSymm_succ and drives the inductive proof of the binomial identity.",
+    "content": "The private infrastructure for the inductive binomial identity proof centers on a custom embedding csEmb : Fin n ↪ Fin (n+1) wrapping Fin.castSucc (line 119), needed to work around API naming issues in Docker Lean 4.26.0. The key lemma fin_univ_insert_last (line 128) decomposes (univ : Finset (Fin (n+1))) as insert (Fin.last n) (univ.map (csEmb n)) — splitting {0,...,n} into {n} ∪ {0,...,n-1}. This decomposition enables elemSymm_two_succ (line 161), the fundamental recurrence: e₂(x₀,...,xₙ) = e₂(x₀,...,xₙ₋₁) + xₙ · e₁(x₀,...,xₙ₋₁). The proof uses Finset.powersetCard_succ_insert to split 2-element subsets of {0,...,n} into those not containing n and those containing n, with disjointness via pc_disj (line 141). The infrastructure block concludes with the insert injectivity argument (line 174) that validates the sum decomposition.",
     "mathContext": "$e_2(x_0,\\ldots,x_n) = e_2(x_0,\\ldots,x_{n-1}) + x_n \\cdot e_1(x_0,\\ldots,x_{n-1})$. Proof: the 2-element subsets of $\\{0,\\ldots,n\\}$ split into those avoiding $n$ (giving $e_2(x_0,\\ldots,x_{n-1})$) and those containing $n$ (giving $x_n \\cdot \\sum_{i<n} x_i = x_n \\cdot e_1(x_0,\\ldots,x_{n-1})$). General: $e_{k+1}(n+1) = e_{k+1}(n) + x_n \\cdot e_k(n)$.",
     "significance": "supporting",
     "relatedConcepts": ["Finset.powersetCard_succ_insert", "Fin.castSucc", "Fin.last", "Finset.mapEmbedding", "inductive decomposition"],
@@ -130,5 +130,29 @@
     "significance": "key",
     "relatedConcepts": ["Newton's inequalities", "field_simp", "div_nonneg", "linarith from Cauchy-Schwarz", "polarization method"],
     "prerequisites": ["maclaurin_sq_m1_ge_m2_general", "field_simp", "div_nonneg", "mul_pos", "pow_pos"]
+  },
+  {
+    "id": "ann-amgm-oq02-from-newton",
+    "proofId": "amgm-inequality-oq-02",
+    "range": { "startLine": 336, "endLine": 364 },
+    "type": "technique",
+    "title": "M₁² ≥ M₂ from Newton's Log-Concavity Axiom",
+    "content": "maclaurin_sq_m1_ge_m2_from_newton provides an alternative proof of C(n,2)·(∑xᵢ)² ≥ n²·e₂ for non-negative inputs by directly invoking the newton_log_concavity axiom at k=1. The proof: (1) instantiate Newton at k=1 to get ((∑xᵢ)/n)² ≥ e₂/C(n,2); (2) simplify using e₀=1, e₁=∑xᵢ, C(n,0)=1, C(n,1)=n; (3) cross-multiply both sides by n²·C(n,2) > 0 via div_nonneg and field_simp. This contrasts with maclaurin_sq_m1_ge_m2_general, which proves the same inequality axiom-free for ALL reals (not just non-negative) using Cauchy-Schwarz + the binomial identity.",
+    "mathContext": "Newton at $k=1$: $((\\sum x_i)/n)^2 \\geq e_2/\\binom{n}{2}$, cross-multiplied to $\\binom{n}{2}(\\sum x_i)^2 \\geq n^2 e_2$. Requires $x_i \\geq 0$ (via the axiom), unlike the Cauchy-Schwarz proof which works for all reals.",
+    "significance": "supporting",
+    "relatedConcepts": ["Newton's inequalities", "cross-multiplication", "axiom vs axiom-free proof"],
+    "prerequisites": ["newton_log_concavity", "elemSymm_zero", "elemSymm_one", "field_simp"]
+  },
+  {
+    "id": "ann-amgm-oq02-summary",
+    "proofId": "amgm-inequality-oq-02",
+    "range": { "startLine": 513, "endLine": 543 },
+    "type": "context",
+    "title": "Summary: 17 Proved Theorems and 2 Axioms",
+    "content": "A comprehensive listing of all results. The 17 proved theorems span: elementary symmetric polynomial infrastructure (elemSymm_zero, elemSymm_one, elemSymm_nonneg), small-case M₁²≥M₂ (n=2,3,4 via sum-of-squares), the binomial identity (∑xᵢ)²=∑xᵢ²+2e₂ by induction, the general M₁²≥M₂ via Cauchy-Schwarz, Maclaurin mean definitions and non-negativity, AM-GM from Mathlib, the Maclaurin chain Mⱼ≥Mₖ via induction, and structural theorems (general recurrence, vanishing, product identity, Newton at k=1). The 2 axioms — newton_log_concavity and maclaurin_step — encode the deep classical results requiring polarization + induction (Hardy-Littlewood-Pólya §2.22).",
+    "mathContext": "17 proved results + 2 axioms. Fully proved: $e_k$ definition/properties, $(\\sum x_i)^2 = \\sum x_i^2 + 2e_2$ (inductive), $\\binom{n}{2}(\\sum x_i)^2 \\geq n^2 e_2$ (Cauchy-Schwarz), $M_j \\geq M_k$ for $j \\leq k$ (chain), Newton at $k=1$. Axiomatized: Newton log-concavity for general $k$, Maclaurin step $M_k \\geq M_{k+1}$.",
+    "significance": "context",
+    "relatedConcepts": ["summary", "proof inventory", "axiom audit"],
+    "prerequisites": ["all preceding theorems"]
   }
 ]

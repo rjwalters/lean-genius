@@ -125,13 +125,13 @@
       "id": "header",
       "title": "Problem Statement and References",
       "startLine": 1,
-      "endLine": 36,
-      "summary": "Overview of Maclaurin's inequalities, Newton's log-concavity engine, and the structure of the formalization.",
+      "endLine": 38,
+      "summary": "Overview of Maclaurin's inequalities, Newton's log-concavity engine, and the structure of the formalization. Imports Mathlib and opens Finset, Real.",
       "mathContext": "Maclaurin chain: $M_1 \\geq M_2 \\geq \\cdots \\geq M_n$ where $M_k = (e_k/\\binom{n}{k})^{1/k}$. Engine: Newton's log-concavity $(e_k/\\binom{n}{k})^2 \\geq (e_{k-1}/\\binom{n}{k-1})(e_{k+1}/\\binom{n}{k+1})$."
     },
     {
       "id": "esymm",
-      "title": "Elementary Symmetric Polynomials",
+      "title": "Part I: Elementary Symmetric Polynomials",
       "startLine": 40,
       "endLine": 60,
       "summary": "Definition of elemSymm k x = ∑ s ∈ univ.powersetCard k, ∏ i ∈ s, x i. Proves e₀=1, e₁=∑xᵢ, eₖ ≥ 0 for non-negative inputs.",
@@ -139,59 +139,67 @@
     },
     {
       "id": "small-cases",
-      "title": "M₁ ≥ M₂ for n = 2, 3, 4",
-      "startLine": 64,
-      "endLine": 110,
+      "title": "Part II: M₁ ≥ M₂ for n = 2, 3, 4",
+      "startLine": 62,
+      "endLine": 92,
       "summary": "Direct proofs using sum-of-squares. n=2: (√a-√b)²≥0. n=3: nlinarith with 3 squared differences. n=4: nlinarith with 6 squared differences.",
       "mathContext": "n=2: $(\\sqrt{a}-\\sqrt{b})^2 \\geq 0 \\Rightarrow a+b \\geq 2\\sqrt{ab}$. n=3: $(a-b)^2+(b-c)^2+(c-a)^2 \\geq 0 \\Rightarrow (a+b+c)^2 \\geq 3(ab+bc+ca)$. n=4: 6 squared differences, closed by `nlinarith`."
     },
     {
       "id": "cauchy-schwarz",
-      "title": "Cauchy-Schwarz and General M₁² ≥ M₂",
+      "title": "Cauchy-Schwarz Sum Inequality",
       "startLine": 94,
-      "endLine": 158,
-      "summary": "cauchy_schwarz_sum: n·∑xᵢ² ≥ (∑xᵢ)² for general n via double-sum expansion. The Cauchy-Schwarz bound feeds into the general M₁²≥M₂ inequality.",
+      "endLine": 110,
+      "summary": "cauchy_schwarz_sum: n·∑xᵢ² ≥ (∑xᵢ)² for general n via double-sum expansion ∑ᵢ∑ⱼ(xᵢ-xⱼ)² = 2(n·∑xᵢ² - (∑xᵢ)²) ≥ 0.",
       "mathContext": "$\\sum_i \\sum_j (x_i - x_j)^2 = 2(n\\sum x_i^2 - (\\sum x_i)^2) \\geq 0$, giving $n\\sum x_i^2 \\geq (\\sum x_i)^2$."
     },
     {
+      "id": "binomial-helpers",
+      "title": "Binomial Identity and General M₁² ≥ M₂",
+      "startLine": 112,
+      "endLine": 271,
+      "summary": "Private infrastructure for the binomial identity (∑xᵢ)² = ∑xᵢ² + 2·e₂ proved by induction. Includes csEmb embedding, elemSymm_two_succ recurrence, sq_sum_eq_sum_sq_add_two_elemSymm (inductive proof), and maclaurin_sq_m1_ge_m2_general (general M₁²≥M₂ combining Cauchy-Schwarz with the binomial identity).",
+      "mathContext": "The key identity $(\\sum x_i)^2 = \\sum x_i^2 + 2e_2$ is proved by induction using $e_2(x_1,\\ldots,x_{n+1}) = e_2(x_1,\\ldots,x_n) + x_{n+1} \\cdot e_1(x_1,\\ldots,x_n)$. Combined with Cauchy-Schwarz: $\\binom{n}{2}(\\sum x_i)^2 \\geq n^2 e_2$."
+    },
+    {
       "id": "newton-chain",
-      "title": "Newton Log-Concavity and Maclaurin Chain (Axioms)",
-      "startLine": 160,
-      "endLine": 195,
-      "summary": "newton_log_concavity (axiom): (eₖ/C(n,k))² ≥ (eₖ₋₁/C(n,k-1))·(eₖ₊₁/C(n,k+1)). maclaurin_step (axiom): Mₖ ≥ Mₖ₊₁. maclaurinMean def and maclaurinMean_nonneg: Mₖ ≥ 0 for non-negative inputs (proved).",
+      "title": "Part III: Newton Log-Concavity and Maclaurin Means",
+      "startLine": 273,
+      "endLine": 309,
+      "summary": "newton_log_concavity (axiom): normalized eₖ sequence is log-concave. maclaurinMean definition: Mₖ = (eₖ/C(n,k))^(1/k). maclaurin_step (axiom): Mₖ ≥ Mₖ₊₁. maclaurinMean_nonneg: proved via rpow_nonneg.",
       "mathContext": "Newton: $(e_k/\\binom{n}{k})^2 \\geq (e_{k-1}/\\binom{n}{k-1})(e_{k+1}/\\binom{n}{k+1})$. Maclaurin mean: $M_k = (e_k/\\binom{n}{k})^{1/k}$. Step: $M_k \\geq M_{k+1}$ follows from Newton + monotonicity of $t^{1/k}$."
     },
     {
       "id": "amgm",
-      "title": "AM-GM as Corollary",
-      "startLine": 200,
-      "endLine": 218,
-      "summary": "amgm_from_maclaurin: ∏ xᵢ^(1/n) ≤ (∑ xᵢ)/n proved directly from Real.geom_mean_le_arith_mean_weighted with uniform weights.",
+      "title": "Part IV: AM-GM as Corollary",
+      "startLine": 311,
+      "endLine": 330,
+      "summary": "amgm_from_maclaurin: ∏ xᵢ^(1/n) ≤ (∑ xᵢ)/n proved directly from Real.geom_mean_le_arith_mean_weighted with uniform weights 1/n.",
       "mathContext": "Mathlib's weighted AM-GM: $\\prod z_i^{w_i} \\leq \\sum w_i z_i$ when $w_i \\geq 0, \\sum w_i = 1$. With $w_i = 1/n$: $(\\prod x_i)^{1/n} \\leq (\\sum x_i)/n$."
     },
     {
-      "id": "binomial-helpers",
-      "title": "Binomial Identity Helpers and Inductive Proof",
-      "startLine": 112,
-      "endLine": 271,
-      "summary": "Private infrastructure for the binomial identity (∑xᵢ)² = ∑xᵢ² + 2·e₂. Includes csEmb (castSucc embedding), elemSymm_two_succ (recurrence e₂(succ) = e₂(castSucc) + xₙ·e₁(castSucc)), sq_sum_eq_sum_sq_add_two_elemSymm (binomial identity by induction on n), and maclaurin_sq_m1_ge_m2_general (the general M₁²≥M₂ combining Cauchy-Schwarz with the binomial identity).",
-      "mathContext": "The key identity $(\\sum x_i)^2 = \\sum x_i^2 + 2e_2$ is proved by induction using $e_2(x_1,\\ldots,x_{n+1}) = e_2(x_1,\\ldots,x_n) + x_{n+1} \\cdot e_1(x_1,\\ldots,x_n)$. Combined with Cauchy-Schwarz: $\\binom{n}{2}(\\sum x_i)^2 \\geq n^2 e_2$."
+      "id": "from-newton",
+      "title": "Part V: M₁² ≥ M₂ from Newton's Axiom",
+      "startLine": 332,
+      "endLine": 364,
+      "summary": "maclaurin_sq_m1_ge_m2_from_newton: alternative proof of C(n,2)·(∑xᵢ)² ≥ n²·e₂ for non-negative inputs using the newton_log_concavity axiom at k=1 and cross-multiplication.",
+      "mathContext": "Newton at $k=1$: $((\\sum x_i)/n)^2 \\geq e_2/\\binom{n}{2}$, cross-multiplied to $\\binom{n}{2}(\\sum x_i)^2 \\geq n^2 e_2$. Complements the axiom-free proof `maclaurin_sq_m1_ge_m2_general` which works for all reals."
     },
     {
       "id": "maclaurin-chain",
       "title": "Maclaurin Chain by Induction",
-      "startLine": 330,
+      "startLine": 366,
       "endLine": 391,
-      "summary": "maclaurin_chain: Mⱼ ≥ Mₖ for j ≤ k ≤ n by induction on d = k-j. maclaurin_m1_ge_mn: M₁ ≥ Mₙ (AM ≥ GM in Maclaurin language) as a one-line corollary. Uses maclaurin_step axiom for the inductive step.",
+      "summary": "maclaurin_chain: Mⱼ ≥ Mₖ for j ≤ k ≤ n by induction on d = k-j. maclaurin_m1_ge_mn: M₁ ≥ Mₙ (AM ≥ GM in Maclaurin language) as a one-line corollary.",
       "mathContext": "Induction on gap $d = k - j$: $M_j \\geq M_{j+e}$ (IH) and $M_{j+e} \\geq M_{j+e+1}$ (step axiom) give $M_j \\geq M_{j+e+1}$. Corollary: $M_1 \\geq M_n$, i.e., AM $\\geq$ GM."
     },
     {
       "id": "general-recurrence",
-      "title": "General Recurrence and Structural Theorems",
-      "startLine": 392,
+      "title": "Part VI: General Recurrence and Structural Theorems",
+      "startLine": 393,
       "endLine": 511,
-      "summary": "elemSymm_succ: general recurrence eₖ₊₁(succ) = eₖ₊₁(castSucc) + xₙ·eₖ(castSucc). elemSymm_gt_eq_zero: eₖ = 0 for k > n. elemSymm_n_eq_prod: eₙ = ∏xᵢ. newton_k1: Newton's inequality at k=1 proved without axioms, using maclaurin_sq_m1_ge_m2_general and field_simp.",
-      "mathContext": "The recurrence $e_{k+1}(x_1,\\ldots,x_{n+1}) = e_{k+1}(x_1,\\ldots,x_n) + x_{n+1} \\cdot e_k(x_1,\\ldots,x_n)$ generalizes the $k=1$ case used in the binomial identity proof. Newton at $k=1$: $(e_1/n)^2 \\geq e_2/\\binom{n}{2}$, proved from $\\binom{n}{2}(\\sum x_i)^2 \\geq n^2 e_2$."
+      "summary": "elemSymm_succ: general recurrence eₖ₊₁(succ) = eₖ₊₁(castSucc) + xₙ·eₖ(castSucc). elemSymm_gt_eq_zero: eₖ = 0 for k > n. elemSymm_n_eq_prod: eₙ = ∏xᵢ. newton_k1: Newton's inequality at k=1 proved without axioms.",
+      "mathContext": "The recurrence $e_{k+1}(x_1,\\ldots,x_{n+1}) = e_{k+1}(x_1,\\ldots,x_n) + x_{n+1} \\cdot e_k(x_1,\\ldots,x_n)$ generalizes the $k=1$ case. Newton at $k=1$: $(e_1/n)^2 \\geq e_2/\\binom{n}{2}$, proved from $\\binom{n}{2}(\\sum x_i)^2 \\geq n^2 e_2$."
     },
     {
       "id": "summary",

@@ -194,7 +194,7 @@
       "title": "Sₙ Not Solvable for n ≥ 5",
       "startLine": 42,
       "endLine": 65,
-      "summary": "Proves symmetric_not_solvable: Sₙ is not solvable for n ≥ 5. Converts natural number bound to cardinal bound via exact_mod_cast, then applies Mathlib's Equiv.Perm.not_solvable. Instantiates for S₅, S₆, S₇.",
+      "summary": "Part II: Proves symmetric_not_solvable — Sₙ is not solvable for n ≥ 5. Converts natural number bound to cardinal bound via exact_mod_cast, then applies Mathlib's Equiv.Perm.not_solvable. Instantiates for S₅, S₆, S₇ using le_rfl and omega.",
       "mathContext": "$\\forall n \\geq 5,\\ \\neg\\text{IsSolvable}(S_n)$. Proof: $5 \\leq |\\text{Fin}\\, n|$ via `exact_mod_cast`, then `Equiv.Perm.not_solvable`."
     },
     {
