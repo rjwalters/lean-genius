@@ -62,6 +62,14 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Imports Finset operations from Mathlib (card, union, inter, sdiff, symmDiff) and general tactics. Module docstring documents the two-set and three-set formulas, proof strategy via Venn diagram overcounting correction, and status as Wiedijk #96. Historical attribution to de Moivre (1718).",
+      "mathContext": "Dependencies: `Finset.card_union_add_card_inter` ($|A \\cup B| + |A \\cap B| = |A| + |B|$), `Finset.card_union_of_disjoint`, `Finset.inter_distrib_left`."
+    },
+    {
       "id": "two-set-case",
       "title": "The Two-Set Case",
       "startLine": 56,
@@ -145,6 +153,21 @@
       "targetId": "subset-count",
       "relationship": "related",
       "description": "The number of subsets of a finite set connects to inclusion-exclusion through the power set structure"
+    },
+    {
+      "targetId": "birthday-problem",
+      "relationship": "applies",
+      "description": "The birthday problem can be solved via inclusion-exclusion: P(at least one shared birthday) = 1 - P(all distinct), where P(all distinct) avoids the overcounting that inclusion-exclusion corrects"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "related",
+      "description": "The sieve of Eratosthenes is an inclusion-exclusion argument: count integers not divisible by any prime up to √n by alternately subtracting and adding multiples of prime products"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization enables inclusion-exclusion over prime divisors: φ(n) = n·∏(1-1/p) uses I-E with sets A_p = {k ≤ n : p | k} for each prime p | n"
     }
   ],
   "relatedProofs": [
@@ -152,7 +175,10 @@
     "euler-totient",
     "binomial-theorem",
     "combinations-formula",
-    "subset-count"
+    "subset-count",
+    "birthday-problem",
+    "infinitude-primes",
+    "fundamental-arithmetic"
   ],
   "leanFile": {
     "imports": [
