@@ -1,7 +1,7 @@
 {
   "slug": "angle-trisection-oq-02-oq-01",
   "title": "Wantzel Galois Characterization from Mathlib",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "surveyed",
   "tier": "B",
   "path": "full",
@@ -16,25 +16,30 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-03-21T17:07:38.698Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Proving cos20_gal_order via root map identities",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Fill in sorry for irreducibility (Eisenstein via shift) and splitting field degree",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed 2 Mathlib API build errors in AngleTrisectionOQ02.lean. Docker build now passes. cos20_gal_order axiom requires discriminant theory not in Mathlib.",
+    "progressSummary": "PROGRESS: Created AngleTrisectionCos20Gal.lean proving 5 algebraic identity theorems for cos20_gal_order. Key insight: if \u03b1 is a root of 8x\u00b3-6x-1, then 1-2\u03b1\u00b2 and 2\u03b1\u00b2-\u03b1-1 are also roots, so all roots lie in Q(\u03b1) and splitting field has degree 3. Full factorization identity proved. 3 sorry remain (irreducibility, splitting field degree, main theorem).",
     "builtItems": [
-      "AngleTrisectionOQ02.lean: eliminated x_cube_sub_2_gal_order axiom (→ InverseGalois.lean)",
-      "AngleTrisectionOQ02.lean: eliminated x_4th_sub_2_gal_order axiom (→ InverseGaloisD4.lean)",
+      "AngleTrisectionOQ02.lean: eliminated x_cube_sub_2_gal_order axiom (\u2192 InverseGalois.lean)",
+      "AngleTrisectionOQ02.lean: eliminated x_4th_sub_2_gal_order axiom (\u2192 InverseGaloisD4.lean)",
       "Fixed interval_cases in not_pow_two_of_eq_three: added explicit upper bound via Nat.pow_le_pow_right",
-      "Fixed galois_2group_implies_degree_pow2: replaced rw with hcard.symm.trans hk for Mathlib v4.26.0 compatibility"
+      "Fixed galois_2group_implies_degree_pow2: replaced rw with hcard.symm.trans hk for Mathlib v4.26.0 compatibility",
+      "AngleTrisectionCos20Gal.lean: root_map_is_root - if 8\u03b1\u00b3-6\u03b1-1=0 then 8(1-2\u03b1\u00b2)\u00b3-6(1-2\u03b1\u00b2)-1=0",
+      "AngleTrisectionCos20Gal.lean: root_map_third_root - third root identity via linear_combination",
+      "AngleTrisectionCos20Gal.lean: roots_sum_zero - Vieta sum = 0",
+      "AngleTrisectionCos20Gal.lean: roots_product - 8\u00b7\u03b1\u00b7\u03b2\u2081\u00b7\u03b2\u2082 = 1 when 8\u03b1\u00b3-6\u03b1-1=0",
+      "AngleTrisectionCos20Gal.lean: factorization_identity - complete factorization in any CommRing"
     ],
     "insights": [
       "All 9 existing AngleTrisection*.lean files have 0 sorries",
@@ -45,13 +50,18 @@
       "x_4th_sub_2_gal_order proved by importing InverseGaloisExtensions.x4_sub_2_gal_card from InverseGaloisD4.lean",
       "Axiom count reduced from 6 to 4 via cross-file imports",
       "AngleTrisectionOQ02.lean had 2 Mathlib API breakages: interval_cases needs explicit upper bound, Gal.card_of_separable/rw pattern changed",
-      "cos20_gal_order axiom provable via discriminant (5184=72² is perfect square → Gal⊂A₃) but needs discriminant-alternating group API not in Mathlib"
+      "cos20_gal_order axiom provable via discriminant (5184=72\u00b2 is perfect square \u2192 Gal\u2282A\u2083) but needs discriminant-alternating group API not in Mathlib",
+      "8(1-2\u03b1\u00b2)\u00b3-6(1-2\u03b1\u00b2)-1 = (-8\u03b1\u00b3+6\u03b1-1)(8\u03b1\u00b3-6\u03b1-1) \u2014 polynomial identity holds in any commutative ring",
+      "8(2\u03b1\u00b2-\u03b1-1)\u00b3-6(2\u03b1\u00b2-\u03b1-1)-1 = (8\u03b1\u00b3-12\u03b1\u00b2+3)(8\u03b1\u00b3-6\u03b1-1) \u2014 second root map identity",
+      "cos20_gal_order reduces to: irreducibility + splitting field degree = 3",
+      "Eisenstein approach: Y\u00b3-6Y\u00b2+9Y-3 is monic Eisenstein at 3, and Y=2X+2 gives 8X\u00b3-6X-1",
+      "Discriminant 5184=72\u00b2 confirms Gal\u2245A\u2083 (order 3 not 6), but discriminant-Gal theorem not in Mathlib"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Create AngleTrisectionOQ02OQ01.lean connecting to Mathlib.FieldTheory.Galois",
-      "Use IntermediateField.finiteDimensional for degree conditions",
-      "Prove Wantzel criterion: constructible iff [Q(α):Q] = 2^k"
+      "Prove cos20_poly_irreducible via Eisenstein on Y\u00b3-6Y\u00b2+9Y-3 at p=3, then substitution Y=2X+2",
+      "Prove cos20_splitting_finrank=3 by showing p splits in AdjoinRoot via root_map_is_root",
+      "Update AngleTrisectionOQ02.lean to import cos20_gal_order theorem (replaces axiom)"
     ]
   },
   "tags": [
