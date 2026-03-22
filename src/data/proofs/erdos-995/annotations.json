@@ -9,7 +9,7 @@
     "mathContext": "The problem sits at the interface of harmonic analysis ($\\sum e(\\alpha n_k)$ Weyl sums), probability (LIL, CLT for quasi-independent variables), and ergodic theory (Birkhoff averages along subsequences). The 75-year gap between $(\\log\\log N)^{1/2}$ and $(\\log N)^{1/2}$ is one of the longest-standing open problems in metric number theory.",
     "significance": "context",
     "relatedConcepts": ["metric number theory", "Weyl sums", "LIL", "ergodic theory", "Mathlib imports"],
-    "prerequisites": ["Mathlib.Analysis.SpecialFunctions.Log", "Mathlib.MeasureTheory.Measure.Lebesgue"]
+    "prerequisites": ["metric number theory", "Lebesgue measure and almost-everywhere statements", "harmonic analysis on the circle"]
   },
   {
     "id": "ann-995-frac",
@@ -21,7 +21,7 @@
     "mathContext": "The fractional part map $x \\mapsto \\{x\\} = x - \\lfloor x \\rfloor$ is the canonical projection $\\mathbb{R} \\to \\mathbb{R}/\\mathbb{Z} \\cong [0,1)$. For irrational $\\alpha$, the sequence $\\{\\alpha\\}, \\{2\\alpha\\}, \\{3\\alpha\\}, \\ldots$ is equidistributed by Weyl's theorem (1916). For lacunary sequences, $\\{\\alpha n_k\\}$ inherits stronger independence properties — the terms behave almost like i.i.d. uniform random variables on $[0,1)$.",
     "significance": "supporting",
     "relatedConcepts": ["Weyl equidistribution", "floor function", "mod 1 arithmetic", "circle rotation"],
-    "prerequisites": ["Int.floor", "Real.sub"]
+    "prerequisites": ["floor function", "modular arithmetic on the reals"]
   },
   {
     "id": "ann-995-lacunary",
@@ -33,7 +33,7 @@
     "mathContext": "Lacunary (or Hadamard gap) sequences were introduced by Hadamard in his study of power series convergence (1892). The gap condition $n_{k+1}/n_k \\geq q > 1$ ensures exponential growth: $n_k \\geq n_1 \\cdot q^{k-1}$. This exponential spacing destroys correlations between $\\cos(2\\pi n_k \\alpha)$ for different $k$ — the Fourier coefficients of $f(\\{\\alpha n_k\\})$ become nearly orthogonal. This 'quasi-independence' is formalized in Kac's CLT (1946): $\\sum \\cos(2\\pi n_k \\alpha)/\\sqrt{N} \\to \\mathcal{N}(0, 1/2)$ in distribution. The lacunarity ratio $q$ can be arbitrarily close to 1; even $q = 1 + \\varepsilon$ suffices for most results.",
     "significance": "key",
     "relatedConcepts": ["Hadamard gap condition", "exponential growth", "quasi-independence", "Kac CLT", "power series convergence"],
-    "prerequisites": ["Nat.cast_le", "Real.lt_iff_lt"]
+    "prerequisites": ["exponential growth of sequences", "Hadamard gap condition", "power series convergence theory"]
   },
   {
     "id": "ann-995-sum",
@@ -57,7 +57,7 @@
     "mathContext": "The conjecture $o(N\\sqrt{\\log\\log N})$ corresponds precisely to the scale of the Law of the Iterated Logarithm (LIL). For independent random variables $X_k$ with variance $\\sigma^2$, the LIL (Khintchine 1924) says $\\limsup S_N / \\sqrt{2N\\sigma^2 \\log \\log N} = 1$ a.s. Since lacunary sums mimic independent sums, Erdős conjectured that the LIL-scale bound holds. The measure-theoretic 'almost all $\\alpha$' formulation uses $\\forall^{\\text{m}} \\alpha \\partial(\\text{volume.restrict}(\\text{Set.Icc}\\; 0\\; 1))$, asserting the statement for Lebesgue-a.e. $\\alpha \\in [0,1]$. The `ErdosQuestion` universally quantifies over all lacunary sequences and $L^2$ functions.",
     "significance": "key",
     "relatedConcepts": ["Law of the Iterated Logarithm", "Khintchine", "almost everywhere", "MeasureTheory.ae", "little-o notation"],
-    "prerequisites": ["MeasureTheory.volume", "Set.Icc", "Real.sqrt", "Real.log", "Filter.Eventually"]
+    "prerequisites": ["Lebesgue measure on [0,1]", "Law of the Iterated Logarithm", "little-o asymptotic notation"]
   },
   {
     "id": "ann-995-lower",
@@ -69,7 +69,7 @@
     "mathContext": "In 'On the strong law of large numbers' (1949), Erdős constructed specific lacunary sequences where the sum $\\sum f(\\{\\alpha n_k\\})$ exceeds $N(\\log\\log N)^{1/2-\\varepsilon}$ infinitely often for a.e. $\\alpha$. The construction exploits resonances between the lacunary ratios and the Fourier coefficients of $f$. The $\\limsup = \\top$ formulation (using the extended real line $\\overline{\\mathbb{R}}$) means the ratio $|S_N| / (N(\\log\\log N)^{1/2-\\varepsilon})$ is unbounded along a subsequence. This shows the sum must grow at least as fast as $N(\\log\\log N)^{1/2-\\varepsilon}$, ruling out any bound better than $O(N(\\log\\log N)^{1/2})$.",
     "significance": "key",
     "relatedConcepts": ["Filter.limsup", "extended reals", "constructive lower bound", "resonance", "Fourier coefficients"],
-    "prerequisites": ["Filter.limsup", "Filter.atTop", "MeasureTheory.ae", "IsLacunarySeq"]
+    "prerequisites": ["limit superior", "Fourier analysis", "constructive lower bound techniques"]
   },
   {
     "id": "ann-995-upper",
@@ -81,7 +81,7 @@
     "mathContext": "The upper bound $o(N(\\log N)^{1/2+\\varepsilon})$ is proved using second-moment methods and exponential sum estimates. The key input is that for lacunary $\\{n_k\\}$, the Weyl sums $|\\sum e(\\alpha n_k)|^2$ have controlled second moments over $\\alpha \\in [0,1]$. The proof uses Parseval's identity and the near-orthogonality of exponentials at lacunary frequencies. The $(\\log N)^{1/2+\\varepsilon}$ factor arises from the maximal inequality needed to pass from $L^2$ bounds to almost sure bounds. This is universal — it holds for ALL lacunary sequences and ALL $L^2$ functions, unlike the lower bound which is existential.",
     "significance": "key",
     "relatedConcepts": ["Weyl sums", "Parseval identity", "maximal inequality", "second moment method", "exponential sums"],
-    "prerequisites": ["IsLacunarySeq", "MeasureTheory.ae", "Real.log", "Real.rpow"]
+    "prerequisites": ["second moment method", "exponential sum estimates", "maximal inequalities"]
   },
   {
     "id": "ann-995-gap",
@@ -93,7 +93,7 @@
     "mathContext": "The gap between $(\\log\\log N)^{1/2}$ and $(\\log N)^{1/2}$ is qualitatively immense: at $N = 10^{10^{10}}$, $\\log N \\approx 2.3 \\times 10^{10}$ while $\\log\\log N \\approx 23.8$. So $(\\log N)^{1/2} \\approx 151{,}000$ while $(\\log\\log N)^{1/2} \\approx 4.9$ — a factor of $30{,}000$. Closing this gap has resisted 75+ years of effort. The existential lower bound ($\\exists f, n$) vs universal upper bound ($\\forall f, n$) structure means the true answer could depend on the specific lacunary sequence.",
     "significance": "key",
     "relatedConcepts": ["iterated logarithm", "existential vs universal bounds", "open problem", "metric number theory"],
-    "prerequisites": ["LowerBoundGrowth", "UpperBoundGrowth", "IsLacunarySeq"]
+    "prerequisites": ["iterated logarithm comparison", "lower and upper bound axioms", "lacunary sequence definition"]
   },
   {
     "id": "ann-995-exponent-gap",
