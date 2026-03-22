@@ -26,11 +26,11 @@
     "proofId": "abel-ruffini",
     "range": {
       "startLine": 6,
-      "endLine": 34
+      "endLine": 32
     },
     "type": "concept",
-    "title": "Mathlib Imports and Namespace",
-    "content": "We import the key Mathlib modules:\n- `AbelRuffini`: The main theorem connecting radicals to solvable groups\n- `Solvable`: Definition of solvable groups and key theorems\n- `Alternating`: Properties of alternating groups, including A₅ simplicity\n- `Galois.Basic`: Galois group definitions and correspondence\n\nThe `AbelRuffini` namespace opens at line 34, scoping all theorems to avoid collisions with Mathlib's own definitions.",
+    "title": "Mathlib Imports",
+    "content": "We import the key Mathlib modules:\n- `AbelRuffini`: The main theorem connecting radicals to solvable groups\n- `Solvable`: Definition of solvable groups and key theorems\n- `Alternating`: Properties of alternating groups, including A₅ simplicity\n- `Galois.Basic`: Galois group definitions and correspondence",
     "mathContext": "The four imports form a complete logical chain: `FieldTheory.AbelRuffini` provides `solvableByRad.isSolvable'` ($\\alpha$ solvable by radicals $\\Rightarrow$ $\\text{Gal}(\\text{minpoly}(\\alpha))$ solvable); `GroupTheory.Solvable` provides `IsSolvable` and `Equiv.Perm.not_solvable` ($5 \\leq |X| \\Rightarrow S_X$ not solvable); `SpecificGroups.Alternating` provides `alternatingGroup.isSimpleGroup_five` ($A_5$ simple); `FieldTheory.Galois.Basic` provides $\\text{Polynomial.Gal}$, the type of the Galois group of a polynomial.",
     "significance": "supporting",
     "prerequisites": [
@@ -72,12 +72,12 @@
     "proofId": "abel-ruffini",
     "range": {
       "startLine": 36,
-      "endLine": 57
+      "endLine": 46
     },
     "type": "definition",
-    "title": "Solvable by Radicals and the Galois-Theoretic Setup",
-    "content": "An element α is 'solvable by radicals' if it can be built from the base field using field operations and nth roots. The quadratic formula is an example: $x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}$.\n\nMathlib defines this inductively via `IsSolvableByRad`, with constructors for: base field elements, arithmetic operations, and radical extraction. The universe-polymorphic variables `F : Type*` (base field) and `E : Type*` (extension field with `[Algebra F E]`) at lines 48-49 set up the context for all subsequent theorems.\n\nThe Part II docstring (lines 51-57) frames the Galois-theoretic bridge: solvability by radicals is a *field-theoretic* property, while solvability of a group is a *group-theoretic* property. Galois's genius was connecting these two worlds: the symmetry group of a polynomial's roots determines whether those roots can be expressed by radicals.",
-    "mathContext": "`solvableByRad F E` is the intermediate field of all elements solvable by radicals over F. The inductive definition: (1) $F \\subseteq \\text{solvableByRad}(F,E)$, (2) closed under $+,-,\\times,\\div$, (3) if $\\alpha^n \\in \\text{solvableByRad}(F,E)$ then $\\alpha \\in \\text{solvableByRad}(F,E)$.\n\nExample: $\\sqrt{1 + \\sqrt{2}}$ is built by: $2 \\in \\mathbb{Q}$, then $\\sqrt{2}$ (radical extraction), then $1+\\sqrt{2}$ (addition), then $\\sqrt{1+\\sqrt{2}}$ (radical extraction).",
+    "title": "Solvable by Radicals",
+    "content": "An element α is 'solvable by radicals' if it can be built from the base field using field operations and nth roots. The quadratic formula is an example: $x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}$\n\nMathlib defines this inductively via `IsSolvableByRad`, with constructors for: base field elements, arithmetic operations, and radical extraction.",
+    "mathContext": "`solvableByRad F E` is the intermediate field of all elements solvable by radicals over F.\n\nExample: $\\sqrt{1 + \\sqrt{2}}$ is built by: 2 ∈ ℚ, then √2, then 1+√2, then √(1+√2).",
     "significance": "critical",
     "prerequisites": [
       "field extensions",
@@ -214,11 +214,11 @@
     "proofId": "abel-ruffini",
     "range": {
       "startLine": 100,
-      "endLine": 118
+      "endLine": 112
     },
     "type": "insight",
     "title": "Solvable Small Symmetric Groups: The Other Side of the Threshold",
-    "content": "Part IV (lines 100-112 docstring, lines 114-118 theorems) documents the solvable side of the threshold. The docstring lays out the derived series for $S_2$ through $S_4$, showing why each is solvable, contrasted with $S_n$ ($n \\geq 5$) which is not.\n\n`s0_solvable` and `s1_solvable` (lines 114-118) are proved by `inferInstance` — Lean's typeclass inference automatically finds the `IsSolvable` instances for these trivial groups ($|S_0| = |S_1| = 1$). This is the simplest possible proof: the type system already knows trivial groups are solvable.\n\nHistorically, $S_2$ (quadratic formula, ~2000 BCE), $S_3$ (Cardano's cubic formula, 1545), and $S_4$ (Ferrari's quartic formula, 1545) are all solvable — each corresponding to a classical radical formula. The file notes that Mathlib did not yet provide `IsSolvable` instances for $S_2, S_3, S_4$ at time of writing, making `s0_solvable` and `s1_solvable` the only constructive examples in this formalization.",
+    "content": "$S_0$ and $S_1$ are trivially solvable (both are the trivial group of order 1), and Lean's typeclass inference (`inferInstance`) finds their `IsSolvable` instances automatically. These contrast with $S_5$ and beyond, highlighting the sharp boundary.\n\nHistorically, $S_2$ (quadratic formula, ~2000 BCE), $S_3$ (Cardano's cubic formula, 1545), and $S_4$ (Ferrari's quartic formula, 1545) are all solvable — each corresponding to a classical radical formula. The file notes that Mathlib did not yet provide `IsSolvable` instances for $S_2, S_3, S_4$ at time of writing.",
     "mathContext": "$S_0 \\cong S_1 \\cong \\{e\\}$ (trivial). $S_2 \\cong \\mathbb{Z}/2$ (abelian). $S_3$: derived series $S_3 \\triangleright A_3 \\cong \\mathbb{Z}/3 \\triangleright \\{e\\}$. $S_4$: derived series $S_4 \\triangleright A_4 \\triangleright V_4 \\triangleright \\mathbb{Z}/2 \\triangleright \\{e\\}$, where $V_4 = \\{e,(12)(34),(13)(24),(14)(23)\\}$ is the Klein four-group.",
     "significance": "supporting",
     "prerequisites": [
@@ -261,12 +261,12 @@
     "id": "ann-exists-quintic",
     "proofId": "abel-ruffini",
     "range": {
-      "startLine": 120,
+      "startLine": 131,
       "endLine": 135
     },
     "type": "technique",
     "title": "Part V Setup: Existence of Quintics and the Main Theorem Preamble",
-    "content": "Part V (lines 120-129 docstring, lines 131-135 theorem) combines the Galois bridge (Part II) with non-solvability of $S_n$ (Part III) to state the Abel-Ruffini theorem.\n\nThe Part V docstring (lines 120-129) frames the logical structure: the contrapositive of `galois_bridge` converts 'solvable by radicals → solvable Galois group' into 'unsolvable Galois group → not solvable by radicals.' Since $S_5$ is not solvable, any polynomial with Galois group $S_5$ has roots that are not expressible by radicals.\n\n`exists_quintic` (lines 131-135) provides a trivial witness that degree-5 polynomials exist: $X^5$ has `natDegree = 5`, proved by `simp` on `Polynomial.natDegree_pow` and `Polynomial.natDegree_X`. This is a sanity check — the substantive content is in `not_solvable_by_rad_of_not_solvable_gal` that follows.",
+    "content": "Part V combines the Galois bridge (Part II) with non-solvability of $S_n$ (Part III) to state the Abel-Ruffini theorem.\n\n`exists_quintic` provides a trivial witness that degree-5 polynomials exist: $X^5$ has `natDegree = 5`, proved by `simp` on `Polynomial.natDegree_pow` and `Polynomial.natDegree_X`. This is a sanity check — the substantive content is in `not_solvable_by_rad_of_not_solvable_gal` that follows.\n\nThe Part V docstring frames the logical structure: the contrapositive of `galois_bridge` converts \"solvable by radicals → solvable Galois group\" into \"unsolvable Galois group → not solvable by radicals.\" Since $S_5$ is not solvable, any polynomial with Galois group $S_5$ has roots that are not expressible by radicals.",
     "mathContext": "$\\exists p \\in \\mathbb{Q}[X],\\; \\deg(p) = 5$. Witness: $p = X^5$.\n\n$\\text{natDegree}(X^n) = n \\cdot \\text{natDegree}(X) = n \\cdot 1 = n$.",
     "significance": "supporting",
     "prerequisites": [
@@ -308,7 +308,7 @@
     "proofId": "abel-ruffini",
     "range": {
       "startLine": 151,
-      "endLine": 185
+      "endLine": 183
     },
     "type": "context",
     "title": "Why Degree 5 and the Historical Revolution",
