@@ -30,6 +30,12 @@
       "Geometric interpretation connecting to classical triangle formulation"
     ],
     "dateAdded": "2025-12-21",
+    "prerequisites": [
+      "Inner product spaces and bilinearity",
+      "Real number arithmetic from Mathlib",
+      "Vector operations in R^2",
+      "Norm and distance definitions"
+    ],
     "wiedijkNumber": 4,
     "axiomCount": 0
   },
@@ -51,56 +57,64 @@
       "title": "Introduction",
       "startLine": 1,
       "endLine": 13,
-      "summary": "Overview of the theorem and its historical significance, from ancient Babylon through Pythagoras to modern formalization."
+      "summary": "Overview of the theorem and its historical significance, from ancient Babylon through Pythagoras to modern formalization.",
+      "mathContext": "The Pythagorean theorem: $a^2 + b^2 = c^2$ for right triangles, proved via inner product spaces in Lean 4"
     },
     {
       "id": "real-numbers",
       "title": "Real Number Foundations",
       "startLine": 15,
       "endLine": 32,
-      "summary": "Setting up the real number type and basic operations needed for geometric quantities."
+      "summary": "Setting up the real number type and basic operations needed for geometric quantities.",
+      "mathContext": "Uses $\\mathbb{R}$ from Mathlib with field operations. Defines `Vec2` as a pair $(x, y) \\in \\mathbb{R}^2$"
     },
     {
       "id": "vector-space",
       "title": "Vector Space Structure",
       "startLine": 34,
       "endLine": 54,
-      "summary": "Defining 2D vectors and vector operations (addition, subtraction) for representing geometric points."
+      "summary": "Defining 2D vectors and vector operations (addition, subtraction) for representing geometric points.",
+      "mathContext": "Vector addition $(v_1 + w_1, v_2 + w_2)$, subtraction, and scalar multiplication on $\\mathbb{R}^2$"
     },
     {
       "id": "inner-product",
       "title": "The Inner Product",
       "startLine": 56,
       "endLine": 73,
-      "summary": "Introducing the dot product and norm—the algebraic tools that encode geometry."
+      "summary": "Introducing the dot product and norm—the algebraic tools that encode geometry.",
+      "mathContext": "$\\langle v, w \\rangle = v_1 w_1 + v_2 w_2$, $\\|v\\|^2 = \\langle v, v \\rangle = v_1^2 + v_2^2$"
     },
     {
       "id": "perpendicularity",
       "title": "Perpendicularity",
       "startLine": 75,
       "endLine": 85,
-      "summary": "Defining perpendicular vectors as those with zero inner product—the key to the theorem."
+      "summary": "Defining perpendicular vectors as those with zero inner product—the key to the theorem.",
+      "mathContext": "$v \\perp w \\iff \\langle v, w \\rangle = 0$. Perpendicularity is symmetric: $\\langle v, w \\rangle = 0 \\iff \\langle w, v \\rangle = 0$"
     },
     {
       "id": "main-theorem",
       "title": "The Pythagorean Theorem",
       "startLine": 87,
       "endLine": 117,
-      "summary": "The main proof using bilinearity of inner products and the perpendicularity condition."
+      "summary": "The main proof using bilinearity of inner products and the perpendicularity condition.",
+      "mathContext": "$v \\perp w \\implies \\|v + w\\|^2 = \\|v\\|^2 + \\|w\\|^2$. Proof: expand by bilinearity, cross terms $\\langle v, w \\rangle = 0$ vanish"
     },
     {
       "id": "geometric-interpretation",
       "title": "Geometric Interpretation",
       "startLine": 119,
       "endLine": 147,
-      "summary": "Connecting the vector formulation to the classical triangle with sides a, b, c."
+      "summary": "Connecting the vector formulation to the classical triangle with sides a, b, c.",
+      "mathContext": "For triangle with vertices $A, B, C$ and right angle at $C$: legs $a = \\|B - C\\|$, $b = \\|A - C\\|$, hypotenuse $c = \\|A - B\\|$, giving $a^2 + b^2 = c^2$"
     },
     {
       "id": "pythagorean-triples",
       "title": "Pythagorean Triples",
       "startLine": 149,
       "endLine": 177,
-      "summary": "Integer solutions like (3,4,5), verified computationally, and the generating formula."
+      "summary": "Integer solutions like (3,4,5), verified computationally, and the generating formula.",
+      "mathContext": "Integer solutions $(a, b, c)$: $(3, 4, 5)$, $(5, 12, 13)$, $(8, 15, 17)$. Parametrization: $a = m^2 - n^2$, $b = 2mn$, $c = m^2 + n^2$"
     },
     {
       "id": "converse",
@@ -114,7 +128,8 @@
       "title": "Historical Context",
       "startLine": 197,
       "endLine": 225,
-      "summary": "Timeline from Babylon to modern times, proof methods, and generalizations."
+      "summary": "Timeline from Babylon to modern times, proof methods, and generalizations.",
+      "mathContext": "From Babylonian tablet Plimpton 322 (~1800 BCE) to Euclid's Elements I.47 (~300 BCE) to modern inner product space proofs"
     }
   ],
   "conclusion": {
@@ -126,8 +141,7 @@
       "What's the analog of the Pythagorean theorem in hyperbolic and spherical geometry?",
       "Can all Pythagorean triples be found efficiently for very large numbers?"
     ]
-  }
-,
+  },
   "references": [
     {
       "authors": "Euclid",
