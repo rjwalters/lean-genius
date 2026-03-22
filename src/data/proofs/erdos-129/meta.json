@@ -48,6 +48,13 @@
   },
   "sections": [
     {
+      "id": "header-setup",
+      "title": "Module Header and Problem Statement",
+      "startLine": 1,
+      "endLine": 22,
+      "summary": "Documents Erdős Problem #129: bounding R(n; k, r), the smallest N such that any r-coloring of K_N contains an n-vertex set with no monochromatic K_k. Introduces the connection to Ramsey theory and the Erdős-Gyárfás exponential lower bound. Imports Mathlib for Finset, Fintype, and combinatorial infrastructure."
+    },
+    {
       "id": "coloring",
       "title": "Edge Coloring and Clique Avoidance",
       "startLine": 23,
