@@ -1,5 +1,17 @@
 [
   {
+    "id": "erdos-1097-ann-header",
+    "proofId": "erdos-1097",
+    "range": { "startLine": 1, "endLine": 37 },
+    "type": "context",
+    "title": "Problem Statement, References, and Imports",
+    "content": "The module docstring sets up Erdős Problem #1097: estimating $|D(A)|$ for $n$-element sets $A \\subseteq \\mathbb{Z}$. The known bounds $n^{1.778} \\leq |D(A)| \\leq n^{11/6}$ and the conjectured $O(n^{3/2})$ are stated, along with the connection to Bourgain's sums-differences problem and the Kakeya conjecture. Three Mathlib imports provide tactics, finite sets, and real powers. The `open Finset` declaration enables direct use of `Finset.filter`, `Finset.image`, etc.",
+    "mathContext": "The problem asks: for $A \\subseteq \\mathbb{Z}$ with $|A| = n$, is $|D(A)| = O(n^{3/2})$? Current bounds: $n^{1.778} \\leq \\max_{|A|=n} |D(A)| \\leq C \\cdot n^{11/6}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Kakeya conjecture", "Bourgain's theorem", "additive combinatorics"],
+    "prerequisites": ["Lean 4 imports", "Mathlib"]
+  },
+  {
     "id": "erdos-1097-ann-threeAP",
     "proofId": "erdos-1097",
     "range": { "startLine": 38, "endLine": 41 },

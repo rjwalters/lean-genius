@@ -214,8 +214,8 @@
     },
     "type": "theorem",
     "title": "A₅ is Simple",
-    "content": "A group is simple if its only normal subgroups are {1} and the whole group. The alternating group A₅ is simple - it's the smallest non-abelian simple group, with 60 elements.\n\nThe proof analyzes cycle types: identity (1), 3-cycles (20), 5-cycles (24), double transpositions (15). Any normal subgroup containing a non-identity element must contain a 3-cycle, and 3-cycles generate all of A₅.",
-    "mathContext": "A₅ = {even permutations of 5 objects} = ker(sign : S₅ → {±1})\n\n|A₅| = 60 = 5!/2",
+    "content": "A group is simple if its only normal subgroups are {1} and the whole group. The alternating group A₅ is simple — it is the smallest non-abelian simple group, with 60 elements.\n\nThe proof analyzes the five conjugacy classes of A₅: identity (1), double transpositions (15), 3-cycles (20), and two classes of 5-cycles (12 each). Note that unlike in S₅ where all 24 five-cycles form one conjugacy class, in A₅ they split into two classes of 12 — this splitting is crucial since a normal subgroup must be a union of conjugacy classes. No proper sub-sum of $\\{1, 12, 12, 15, 20\\}$ that includes 1 divides 60, so A₅ has no proper normal subgroups.",
+    "mathContext": "$A_5 = \\ker(\\text{sign} : S_5 \\to \\{\\pm 1\\})$, $|A_5| = 60 = 5!/2$. Conjugacy classes: $\\{e\\}$ (1), $(ab)(cd)$-type (15), $(abc)$-type (20), $(abcde)$-type split into two classes (12 + 12). The splitting of 5-cycles distinguishes $A_5$ from $S_5$ and is the reason the simplicity proof requires checking 5 classes, not 4.",
     "significance": "critical",
     "prerequisites": [
       "permutation groups",

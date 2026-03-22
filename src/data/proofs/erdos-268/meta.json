@@ -71,8 +71,10 @@
       "**Geometric Constraints on X:** Despite having interior, X is geometrically constrained: all coordinates are positive, strictly decreasing (x₀ > x₁ > ··· > x_{d-1} > 0), and projecting to fewer coordinates preserves the set. X lives in a narrow cone, yet still contains balls"
     ],
     "prerequisites": [
-      "Elementary number theory: primes, divisibility, factorization",
-      "Topology: continuity, compactness, connectedness"
+      "Real analysis: convergence of series, harmonic subseries $\\sum_{n \\in A} 1/n$, summability theory",
+      "Point-set topology: interior of subsets of $\\mathbb{R}^d$, open balls, path-connectedness",
+      "Metric space theory: Euclidean distance in $\\mathbb{R}^d$, metric-ball formulations",
+      "Egyptian fractions / Ahmes series: representing reals as sums of distinct unit fractions"
     ]
   },
   "sections": [
@@ -158,6 +160,16 @@
       "Is there an effective version of the Kovač-Tao result that gives explicit bounds on the ball radius as a function of d?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "The squares example $A = \\{n^2\\}$ connects directly to the Basel problem: $\\sum 1/n^2 = \\pi^2/6$. This specific harmonic subseries point lies in the interior of $X_1$, providing a concrete witness"
+    }
+  ],
+  "relatedProofs": [
+    "basel-problem"
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Topology.Instances.Real",
