@@ -93,5 +93,20 @@
       "What is the minimal cardinality |S| needed for the representation of n as a function of n?",
       "Can the Borwein–Loring family be extended to cover all n, or are there n requiring non-consecutive blocks?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 95,
+    "axiomCount": 6,
+    "theoremCount": 1,
+    "definitionCount": 5
   }
 }

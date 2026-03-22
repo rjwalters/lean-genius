@@ -127,5 +127,19 @@
       "How does the problem change if denominators must lie in an arithmetic progression?",
       "What is the best constant for k in a bounded range (not asymptotic)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos286",
+    "lineCount": 246,
+    "axiomCount": 5,
+    "theoremCount": 7,
+    "definitionCount": 7
   }
 }

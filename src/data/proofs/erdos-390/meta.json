@@ -95,5 +95,19 @@
       "What is the distribution of $f(n) - 2n - c \\cdot n/\\log n$ (the secondary term)?",
       "Can the EGS bounds be tightened to give explicit constants $c$ and $C$?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 172,
+    "axiomCount": 1,
+    "theoremCount": 7,
+    "definitionCount": 7
   }
 }

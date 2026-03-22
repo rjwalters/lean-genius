@@ -137,5 +137,22 @@
       "Is Hypothesis K* true?",
       "Characterize n with exceptionally many representations"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos322",
+    "lineCount": 192,
+    "axiomCount": 5,
+    "theoremCount": 2,
+    "definitionCount": 5
   }
 }

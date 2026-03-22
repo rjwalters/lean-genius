@@ -136,5 +136,21 @@
       "What happens for four or more odd primes?",
       "What is the density of the intersection as the number of primes increases?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Set",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos376",
+    "lineCount": 127,
+    "axiomCount": 1,
+    "theoremCount": 6,
+    "definitionCount": 6
   }
 }

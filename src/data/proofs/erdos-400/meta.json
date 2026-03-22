@@ -146,5 +146,21 @@
       "How do the constants $c_k$ behave as $k \\to \\infty$? Is $c_k \\sim C/k$ for some universal $C$?",
       "Can the Erdős-Graham bound $g_k(n) = O(\\log n)$ be sharpened to $g_k(n) \\le c_k \\log n + O(1)$?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.Asymptotics.Asymptotics",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 114,
+    "axiomCount": 5,
+    "theoremCount": 0,
+    "definitionCount": 6
   }
 }

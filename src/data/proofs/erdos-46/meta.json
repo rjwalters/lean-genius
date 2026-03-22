@@ -148,5 +148,24 @@
       "proofId": "erdos-311",
       "relationship": "Problem 311 studies unit fraction sums and their deviation — both problems concern the additive structure of unit fractions"
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Rat.Defs",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 92,
+    "axiomCount": 3,
+    "theoremCount": 3,
+    "definitionCount": 7
+  },
+  "relatedProofs": [
+    ""
   ]
 }

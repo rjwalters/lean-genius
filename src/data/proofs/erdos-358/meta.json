@@ -140,5 +140,22 @@
       "What is the structure of consecutive prime sums?",
       "Exact connection to Problem #356 (finite analogue)"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Filter",
+      "Set",
+      "BigOperators",
+      "Finset"
+    ],
+    "namespace": "Erdos358",
+    "lineCount": 184,
+    "axiomCount": 7,
+    "theoremCount": 4,
+    "definitionCount": 8
   }
 }

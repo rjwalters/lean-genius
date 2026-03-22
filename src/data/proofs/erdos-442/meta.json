@@ -156,5 +156,31 @@
       "Are there natural examples of sets at the threshold?",
       "What happens for other normalized sums (e.g., involving gcd instead of lcm)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Primorial",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Algebra.BigOperators.Finprod",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Order.Filter.AtTopBot.Basic",
+      "Mathlib.Order.Filter.FilterProduct",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "BigOperators",
+      "Filter",
+      "Real",
+      "Set",
+      "Classical"
+    ],
+    "namespace": "Erdos442",
+    "lineCount": 266,
+    "axiomCount": 5,
+    "theoremCount": 8,
+    "definitionCount": 12
   }
 }

@@ -124,5 +124,24 @@
       "Are there constructions using higher moduli that beat the odd-numbers bound?",
       "What is the exact value of maxAvoidSize(N) for small N (e.g., N ≤ 100)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Classical"
+    ],
+    "namespace": null,
+    "lineCount": 147,
+    "axiomCount": 2,
+    "theoremCount": 7,
+    "definitionCount": 5
   }
 }

@@ -130,5 +130,19 @@
       "How does the number of new elements per generation grow asymptotically?",
       "Can the problem be attacked via ergodic theory, dynamical systems, or sieve methods?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 85,
+    "axiomCount": 6,
+    "theoremCount": 0,
+    "definitionCount": 4
   }
 }

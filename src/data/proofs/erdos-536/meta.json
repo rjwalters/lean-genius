@@ -135,5 +135,19 @@
       "What is the maximum size of a set avoiding LCM triples?",
       "Are there modular obstructions analogous to those in additive problems?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 88,
+    "axiomCount": 5,
+    "theoremCount": 0,
+    "definitionCount": 2
   }
 }

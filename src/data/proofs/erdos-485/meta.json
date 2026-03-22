@@ -97,5 +97,20 @@
       "For which fields F does f_F(k) → ∞? The result holds in characteristic 0 and large characteristic, but positive characteristic allows new cancellations.",
       "What are the extremal polynomials achieving f(k)? No explicit optimal constructions are known for large k."
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos485",
+    "lineCount": 281,
+    "axiomCount": 2,
+    "theoremCount": 10,
+    "definitionCount": 6
   }
 }

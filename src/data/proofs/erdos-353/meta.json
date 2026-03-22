@@ -147,5 +147,22 @@
       "Extension to higher dimensions",
       "Quantitative bounds on configuration density"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Geometry.Euclidean.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Set"
+    ],
+    "namespace": "Erdos353",
+    "lineCount": 391,
+    "axiomCount": 8,
+    "theoremCount": 4,
+    "definitionCount": 14
   }
 }

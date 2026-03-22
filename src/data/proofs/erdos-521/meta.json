@@ -131,5 +131,22 @@
       "Handle roots outside [-1,1] with a.s. convergence",
       "Extend Do's method to the full real line"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Probability.ProbabilityMassFunction.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Real"
+    ],
+    "namespace": "Erdos521",
+    "lineCount": 194,
+    "axiomCount": 11,
+    "theoremCount": 1,
+    "definitionCount": 4
   }
 }

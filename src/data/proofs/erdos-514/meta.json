@@ -161,5 +161,25 @@
       "What is the relationship between path selection and the order of f?",
       "How does the central index ν(r) determine optimal path properties?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Complex.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Complex",
+      "Mathlib.Analysis.Calculus.ContDiff.Basic",
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Topology.Basic"
+    ],
+    "opens": [
+      "Complex",
+      "Set",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "Erdos514",
+    "lineCount": 356,
+    "axiomCount": 13,
+    "theoremCount": 3,
+    "definitionCount": 14
   }
 }

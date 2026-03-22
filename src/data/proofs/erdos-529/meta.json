@@ -196,5 +196,22 @@
       "Understand crossover behavior near d = 4",
       "Extend results to other lattices (honeycomb, triangular)"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Topology.MetricSpace.Basic"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "Erdos529",
+    "lineCount": 329,
+    "axiomCount": 13,
+    "theoremCount": 6,
+    "definitionCount": 5
   }
 }

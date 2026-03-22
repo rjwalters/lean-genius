@@ -106,5 +106,28 @@
       "Can we improve the o(1) error term to O(1/k)?",
       "What about Egyptian fraction representations of other rationals p/q?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Analysis.Asymptotics.Defs",
+      "Mathlib.Analysis.Asymptotics.Lemmas",
+      "Mathlib.Data.Fintype.BigOperators",
+      "Mathlib.Topology.Instances.Real.Lemmas",
+      "Mathlib.Analysis.Complex.ExponentialBounds"
+    ],
+    "opens": [
+      "Finset",
+      "Filter",
+      "Real",
+      "BigOperators",
+      "Topology",
+      "Real"
+    ],
+    "namespace": "Erdos285",
+    "lineCount": 375,
+    "axiomCount": 1,
+    "theoremCount": 21,
+    "definitionCount": 4
   }
 }

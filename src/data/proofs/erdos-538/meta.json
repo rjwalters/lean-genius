@@ -116,5 +116,20 @@
       "What is the extremal structure of sets achieving the maximum reciprocal sum?",
       "How does the problem change if the representation constraint uses all divisors, not just prime divisors?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 233,
+    "axiomCount": 0,
+    "theoremCount": 16,
+    "definitionCount": 5
   }
 }

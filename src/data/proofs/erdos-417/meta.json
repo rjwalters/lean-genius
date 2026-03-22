@@ -158,5 +158,24 @@
     "erdos-416",
     "euler-totient",
     "erdos-410"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Order.Filter.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Set",
+      "Filter",
+      "Finset"
+    ],
+    "namespace": "Erdos417",
+    "lineCount": 220,
+    "axiomCount": 3,
+    "theoremCount": 7,
+    "definitionCount": 7
+  }
 }

@@ -161,5 +161,20 @@
     "erdos-30",
     "erdos-340",
     "erdos-324"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.NumberTheory.Primorial",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos425",
+    "lineCount": 288,
+    "axiomCount": 7,
+    "theoremCount": 1,
+    "definitionCount": 11
+  }
 }

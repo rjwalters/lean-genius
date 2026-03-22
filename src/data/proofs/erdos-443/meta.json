@@ -155,5 +155,20 @@
       "What is the distribution of $|A_m \\cap B_n|$ for 'random' pairs $(m,n)$ in a large range? Is the typical intersection size much smaller than the worst case?",
       "Does the problem generalize to higher-degree products, e.g., $k(m-k)(m-2k)$? The divisor-function connection may extend to higher-dimensional Diophantine equations."
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Algebra.Order.Ring.Lemmas"
+    ],
+    "opens": [],
+    "namespace": "Erdos443",
+    "lineCount": 250,
+    "axiomCount": 19,
+    "theoremCount": 5,
+    "definitionCount": 8
   }
 }

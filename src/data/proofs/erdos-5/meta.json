@@ -106,5 +106,19 @@
       "What is the Hausdorff dimension of the complement [0,∞) \\ S?",
       "Does the Elliott-Halberstam conjecture imply S = [0, ∞)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Topology.Basic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 81,
+    "axiomCount": 8,
+    "theoremCount": 0,
+    "definitionCount": 2
   }
 }

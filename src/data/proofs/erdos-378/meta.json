@@ -153,5 +153,20 @@
       "Computational aspects of detecting squarefree binomials efficiently",
       "Connections to other multiplicative properties of binomial coefficients"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "Erdos378",
+    "lineCount": 341,
+    "axiomCount": 10,
+    "theoremCount": 10,
+    "definitionCount": 10
   }
 }

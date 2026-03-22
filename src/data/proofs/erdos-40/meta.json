@@ -98,5 +98,20 @@
       "What Fourier-analytic or combinatorial methods can handle the regime $A(N) \\sim \\sqrt{N}/g(N)$ with $g \\to \\infty$? Standard circle method arguments require $A(N) \\geq c\\sqrt{N}$.",
       "Can the threshold function $g^*$ be related to a natural arithmetic quantity, such as the density of primes in short intervals?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 110,
+    "axiomCount": 7,
+    "theoremCount": 0,
+    "definitionCount": 5
   }
 }

@@ -161,5 +161,23 @@
       "Is there a quantitative version: for sets with density ~N^α (α > 1/2), how many common differences are there up to N? What is the growth rate of |(A−A) ∩ (B−B) ∩ {1,...,N}|?",
       "Do analogues of Ruzsa's construction exist for other algebraic structures (e.g., ℤ_p, ℤ/nℤ, or function fields)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Digits",
+      "Mathlib.Order.Filter.Basic"
+    ],
+    "opens": [
+      "Real",
+      "Filter"
+    ],
+    "namespace": "Erdos331",
+    "lineCount": 246,
+    "axiomCount": 9,
+    "theoremCount": 5,
+    "definitionCount": 17
   }
 }

@@ -123,5 +123,21 @@
       "What's the density of primes appearing as greedy sums?",
       "Can Odlyzko's existence proof be made constructive?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Order.Filter.AtTopBot",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "Erdos473",
+    "lineCount": 274,
+    "axiomCount": 13,
+    "theoremCount": 2,
+    "definitionCount": 8
   }
 }

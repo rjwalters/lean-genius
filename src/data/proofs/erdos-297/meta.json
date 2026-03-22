@@ -166,5 +166,26 @@
       "What about counting representations with repeated elements allowed?",
       "Can the integral equation for c be solved in closed form?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Algebra.Order.Ring.Lemmas"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos297",
+    "lineCount": 302,
+    "axiomCount": 14,
+    "theoremCount": 4,
+    "definitionCount": 9
   }
 }

@@ -110,5 +110,20 @@
       "Can the proof technique of Bedert or Jin-Milojević-Tomon-Zhang be optimized to achieve exponent 1/3 or better?",
       "Is the problem equivalent to a natural question in discrepancy theory or combinatorial geometry?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 80,
+    "axiomCount": 3,
+    "theoremCount": 0,
+    "definitionCount": 2
   }
 }

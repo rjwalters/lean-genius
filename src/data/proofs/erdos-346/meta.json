@@ -94,5 +94,20 @@
       "What characterises the irregular (non-lacunary) examples?",
       "Can the lacunarity hypothesis be weakened?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Fib.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 97,
+    "axiomCount": 4,
+    "theoremCount": 0,
+    "definitionCount": 8
   }
 }

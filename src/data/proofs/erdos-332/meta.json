@@ -170,5 +170,22 @@
     "erdos-331",
     "erdos-333",
     "erdos-340"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Set"
+    ],
+    "namespace": null,
+    "lineCount": 98,
+    "axiomCount": 5,
+    "theoremCount": 0,
+    "definitionCount": 6
+  }
 }

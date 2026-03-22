@@ -111,5 +111,20 @@
       "What is the optimal growth rate threshold for guaranteed universal representation?",
       "Can we characterize which sequences satisfy both AP coverage and cofinite representation?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "Erdos253",
+    "lineCount": 115,
+    "axiomCount": 1,
+    "theoremCount": 4,
+    "definitionCount": 4
   }
 }

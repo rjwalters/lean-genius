@@ -160,5 +160,32 @@
       "What happens for k > 2 factors (a₁!...a_k!)?",
       "Are there other classes of n (besides Sothanaphan's) where the strong version fails?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Prime.Nth",
+      "Mathlib.Data.Nat.Multiplicity",
+      "Mathlib.Data.Nat.Digits.Defs",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Order.Filter.AtTopBot.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Order.ConditionallyCompleteLattice.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Real",
+      "BigOperators",
+      "Finset",
+      "Filter"
+    ],
+    "namespace": "Erdos401",
+    "lineCount": 320,
+    "axiomCount": 3,
+    "theoremCount": 20,
+    "definitionCount": 8
   }
 }

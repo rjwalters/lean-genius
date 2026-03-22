@@ -106,5 +106,18 @@
       "Is 10! = 48^4 - 36^4 the smallest such counterexample?",
       "Can we characterize all solutions, or is the problem intractable?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "Erdos399",
+    "lineCount": 137,
+    "axiomCount": 4,
+    "theoremCount": 16,
+    "definitionCount": 0
   }
 }

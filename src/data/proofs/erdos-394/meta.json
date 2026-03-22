@@ -156,5 +156,26 @@
       "Prove the hierarchy: Σ t_{k+1}(n) = o(Σ t_k(n))",
       "Study t_{n-3}(n!) and related factorial questions"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Nat",
+      "Real",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos394",
+    "lineCount": 307,
+    "axiomCount": 13,
+    "theoremCount": 6,
+    "definitionCount": 8
   }
 }

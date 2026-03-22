@@ -104,5 +104,22 @@
       "What is the optimal density increment for squares (k=4): is α + α(1-α)/4 tight?",
       "Can the 8 sorries be resolved via Mathlib lemmas or Aristotle proof search?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Set.Finite",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Set"
+    ],
+    "namespace": "Erdos35",
+    "lineCount": 226,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 9
   }
 }

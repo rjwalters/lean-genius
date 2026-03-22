@@ -107,5 +107,21 @@
       "What about p(x) = x³ or higher powers?",
       "Are there rational functions r(x) for which {r(n)} is strongly complete?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial",
+      "Finset",
+      "Filter",
+      "Set"
+    ],
+    "namespace": "Erdos351",
+    "lineCount": 116,
+    "axiomCount": 3,
+    "theoremCount": 8,
+    "definitionCount": 3
   }
 }

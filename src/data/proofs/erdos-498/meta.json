@@ -103,5 +103,19 @@
       "What is the optimal higher-dimensional version: for vectors in $\\mathbb{R}^d$ with $d$-dimensional balls replacing discs, is the bound still $\\binom{n}{\\lfloor n/2 \\rfloor}$?",
       "How does the signed sum count behave for structured sequences (e.g., $z_i = \\omega^i$ for a root of unity $\\omega$)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 90,
+    "axiomCount": 3,
+    "theoremCount": 0,
+    "definitionCount": 5
   }
 }

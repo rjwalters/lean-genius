@@ -145,5 +145,22 @@
       "Characterize exactly which starting values $n$ produce the 'nice' growth rate $k^{\\log_2 3}$ vs the 'generic' rate $k^2/\\log k$. Is the set of 'nice' $n$ related to powers of 3?",
       "Can the quadratic upper bound $a_k = O(k^2)$ be improved to $O(k^2/\\log k)$ for all $n$, or does there exist $n$ with genuinely quadratic growth?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.List.Basic",
+      "Mathlib.Algebra.Order.Ring.Nat"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos271",
+    "lineCount": 365,
+    "axiomCount": 13,
+    "theoremCount": 3,
+    "definitionCount": 14
   }
 }

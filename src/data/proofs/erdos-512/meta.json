@@ -194,5 +194,25 @@
       "What are the precise asymptotics of min_A ‖S_A‖₁ for |A| = N? Is the second-order term known?",
       "What are analogues of Littlewood's conjecture for exponential sums in higher dimensions over ℤ^d?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Complex.Exponential",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Complex.Log",
+      "Mathlib.MeasureTheory.Integral.Bochner"
+    ],
+    "opens": [
+      "Real",
+      "Complex",
+      "MeasureTheory"
+    ],
+    "namespace": "Erdos512",
+    "lineCount": 262,
+    "axiomCount": 7,
+    "theoremCount": 11,
+    "definitionCount": 16
   }
 }

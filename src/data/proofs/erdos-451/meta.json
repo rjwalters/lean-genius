@@ -106,5 +106,19 @@
       "What is the exact order of growth between k^{1+c} and e^{O(k)}?",
       "Can the Erdős-Graham lower bound exponent 1+c be improved?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Real"
+    ],
+    "namespace": null,
+    "lineCount": 156,
+    "axiomCount": 6,
+    "theoremCount": 5,
+    "definitionCount": 8
   }
 }

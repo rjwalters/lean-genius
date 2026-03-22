@@ -111,5 +111,23 @@
       "Can the Hechler construction be adapted to work under Martin's Axiom instead of CH?",
       "Is there a natural Borel-measurability condition on the family A_x that makes the problem decidable in ZFC?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.MeasureTheory.Measure.OuterMeasure.Basic",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Data.Set.Finite",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Set",
+      "MeasureTheory"
+    ],
+    "namespace": "Erdos501",
+    "lineCount": 207,
+    "axiomCount": 1,
+    "theoremCount": 9,
+    "definitionCount": 11
   }
 }

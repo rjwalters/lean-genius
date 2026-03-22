@@ -165,5 +165,24 @@
       "Does the denominator drop phenomenon persist for generalized harmonic sums Σ 1/n^s for all s ≥ 1?",
       "What explains the clustering of b-values near powers of 3 in the OEIS data? Is there a deeper connection to 3-adic analysis?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Data.Rat.Defs",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "BigOperators",
+      "Real"
+    ],
+    "namespace": "Erdos290",
+    "lineCount": 266,
+    "axiomCount": 9,
+    "theoremCount": 7,
+    "definitionCount": 21
   }
 }

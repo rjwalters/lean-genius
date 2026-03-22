@@ -129,5 +129,22 @@
       "Can the Erdős-Rényi probabilistic method be derandomized to give Sidon sets?",
       "What role do perfect difference sets play in optimal constructions?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Filter",
+      "Asymptotics",
+      "Real",
+      "Nat"
+    ],
+    "namespace": "Erdos39",
+    "lineCount": 195,
+    "axiomCount": 5,
+    "theoremCount": 6,
+    "definitionCount": 3
   }
 }

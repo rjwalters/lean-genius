@@ -174,5 +174,22 @@
   ],
   "relatedProofs": [
     "erdos-36"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Set",
+      "Filter"
+    ],
+    "namespace": null,
+    "lineCount": 123,
+    "axiomCount": 7,
+    "theoremCount": 1,
+    "definitionCount": 8
+  }
 }

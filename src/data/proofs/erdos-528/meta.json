@@ -180,5 +180,23 @@
       "Can the Duminil-Copin/Smirnov discrete holomorphicity methods be extended to the square lattice?",
       "What are exact formulas for C_k in higher dimensions (k ≥ 3)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Order.Filter.AtTopBot.Basic"
+    ],
+    "opens": [
+      "Filter",
+      "Real"
+    ],
+    "namespace": "Erdos528",
+    "lineCount": 273,
+    "axiomCount": 21,
+    "theoremCount": 3,
+    "definitionCount": 12
   }
 }

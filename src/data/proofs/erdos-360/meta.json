@@ -140,5 +140,22 @@
       "Algorithmic aspects: efficiently constructing optimal partitions",
       "Higher-dimensional analogues with multivariate sums"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.Data.Nat.Totient"
+    ],
+    "opens": [],
+    "namespace": "Erdos360",
+    "lineCount": 188,
+    "axiomCount": 4,
+    "theoremCount": 5,
+    "definitionCount": 4
   }
 }

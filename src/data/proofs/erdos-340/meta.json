@@ -99,5 +99,22 @@
   "relatedProofs": [
     "erdos-30",
     "erdos-156"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Order.Filter.AtTopBot",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Filter",
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 105,
+    "axiomCount": 8,
+    "theoremCount": 0,
+    "definitionCount": 4
+  }
 }

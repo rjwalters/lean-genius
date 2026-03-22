@@ -146,5 +146,23 @@
   ],
   "relatedProofs": [
     "erdos-342"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.List.Range",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos423",
+    "lineCount": 268,
+    "axiomCount": 6,
+    "theoremCount": 22,
+    "definitionCount": 7
+  }
 }

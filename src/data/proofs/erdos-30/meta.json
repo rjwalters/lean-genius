@@ -165,5 +165,21 @@
   ],
   "relatedProofs": [
     "erdos-432"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Finset",
+      "Nat",
+      "Real"
+    ],
+    "namespace": "Erdos30",
+    "lineCount": 250,
+    "axiomCount": 12,
+    "theoremCount": 4,
+    "definitionCount": 8
+  }
 }

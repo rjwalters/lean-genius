@@ -172,5 +172,22 @@
     "erdos-613",
     "erdos-625",
     "erdos-1031"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos439",
+    "lineCount": 226,
+    "axiomCount": 5,
+    "theoremCount": 2,
+    "definitionCount": 11
+  }
 }

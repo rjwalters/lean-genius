@@ -128,5 +128,18 @@
       "Which other Diophantine equations are partition regular?",
       "Can the proof be made constructive with explicit bounds?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set"
+    ],
+    "namespace": "Erdos303",
+    "lineCount": 259,
+    "axiomCount": 2,
+    "theoremCount": 8,
+    "definitionCount": 8
   }
 }

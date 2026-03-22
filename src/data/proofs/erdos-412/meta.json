@@ -165,5 +165,22 @@
       "What is the typical 'merging time' — how many iterations before sequences from $m$ and $n$ first agree?",
       "Is the merging behavior related to the shared prime factorization structure of the starting points?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.ArithmeticFunction.Defs",
+      "Mathlib.NumberTheory.ArithmeticFunction.Misc",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Algebra.BigOperators.Finprod",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "Erdos412",
+    "lineCount": 214,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 6
   }
 }

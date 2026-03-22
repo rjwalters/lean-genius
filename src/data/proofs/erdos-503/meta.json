@@ -128,5 +128,19 @@
       "What do extremal isosceles configurations look like in dimension n ≥ 4?",
       "What is the maximum isosceles set size in other metric spaces (e.g., ℓ¹, Hamming)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Erdos503",
+    "lineCount": 128,
+    "axiomCount": 6,
+    "theoremCount": 2,
+    "definitionCount": 1
   }
 }

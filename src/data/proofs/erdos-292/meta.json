@@ -157,5 +157,20 @@
       "Connections to the Erdős-Straus conjecture (4/n = 1/a + 1/b + 1/c)?",
       "Analogous problems for sums to other rationals?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [],
+    "namespace": "Erdos292",
+    "lineCount": 196,
+    "axiomCount": 13,
+    "theoremCount": 5,
+    "definitionCount": 6
   }
 }

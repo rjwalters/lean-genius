@@ -145,5 +145,19 @@
       "relationship": "related-problem",
       "description": "Both involve reciprocal sums of natural numbers; #191 studies monochromatic sets with large 1/log sum while #316 studies partition constraints on 1/n sums"
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "Erdos316",
+    "lineCount": 117,
+    "axiomCount": 1,
+    "theoremCount": 4,
+    "definitionCount": 1
+  },
+  "relatedProofs": [
+    ""
   ]
 }

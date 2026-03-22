@@ -134,5 +134,19 @@
       "What is the exact value of h(4)?",
       "Can the lower bound 1/3 be improved?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos336",
+    "lineCount": 181,
+    "axiomCount": 12,
+    "theoremCount": 4,
+    "definitionCount": 8
   }
 }

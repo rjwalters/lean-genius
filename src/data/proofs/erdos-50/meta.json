@@ -157,5 +157,21 @@
   "relatedProofs": [
     "euler-totient",
     "erdos-409"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+    ],
+    "opens": [
+      "Filter",
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 104,
+    "axiomCount": 9,
+    "theoremCount": 0,
+    "definitionCount": 3
+  }
 }

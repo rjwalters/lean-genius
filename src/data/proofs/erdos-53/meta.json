@@ -94,5 +94,22 @@
       "What are the extremal sets achieving the minimum representable count for each $|A|$?",
       "Does the result extend to subsets of $\\mathbb{Z}/p\\mathbb{Z}$ or other groups with both additive and multiplicative structure?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos53",
+    "lineCount": 130,
+    "axiomCount": 4,
+    "theoremCount": 0,
+    "definitionCount": 9
   }
 }

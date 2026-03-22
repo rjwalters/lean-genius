@@ -115,5 +115,21 @@
       "Is there a unified proof for all h ≥ 2?",
       "What is the optimal density bound for finite B_h sets in {1,...,N}?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Filter",
+      "Finset",
+      "Topology"
+    ],
+    "namespace": "Erdos41",
+    "lineCount": 171,
+    "axiomCount": 4,
+    "theoremCount": 6,
+    "definitionCount": 7
   }
 }

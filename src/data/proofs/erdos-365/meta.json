@@ -95,5 +95,19 @@
       "What is the exact asymptotic count of consecutive powerful pairs?",
       "Are there other families of Pell-like equations giving consecutive powerful pairs?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos365",
+    "lineCount": 190,
+    "axiomCount": 8,
+    "theoremCount": 2,
+    "definitionCount": 8
   }
 }

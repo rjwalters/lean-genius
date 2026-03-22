@@ -137,5 +137,22 @@
       "Can the result be extended to non-congruence coverage systems?",
       "What is the quantitative dependence on the growth rate of moduli?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 263,
+    "axiomCount": 3,
+    "theoremCount": 13,
+    "definitionCount": 11
   }
 }

@@ -120,5 +120,27 @@
       "Verify Andrews' conjecture: a_k ~ (k log k) / (log log k)",
       "Characterize the density for general starting value n"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Order.Filter.AtTopBot.Basic",
+      "Mathlib.Topology.Order.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Set",
+      "Filter"
+    ],
+    "namespace": "Erdos359",
+    "lineCount": 236,
+    "axiomCount": 7,
+    "theoremCount": 6,
+    "definitionCount": 7
   }
 }

@@ -191,5 +191,30 @@
       "targetProofId": "erdos-222",
       "relationship": "Both problems study the distribution of integers with special arithmetic properties in short intervals: #222 concerns sums of two squares, #452 concerns integers with many prime factors"
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.NumberTheory.ArithmeticFunction",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "ArithmeticFunction",
+      "Real"
+    ],
+    "namespace": "Erdos452",
+    "lineCount": 228,
+    "axiomCount": 16,
+    "theoremCount": 1,
+    "definitionCount": 9
+  },
+  "relatedProofs": [
+    "",
+    "",
+    "",
+    "",
+    ""
   ]
 }

@@ -155,5 +155,20 @@
       "What do extremal configurations (maximizing the minimum triangle area) look like for large n?",
       "What are the optimal exponents for the higher-dimensional analogs α_d(n)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 104,
+    "axiomCount": 7,
+    "theoremCount": 0,
+    "definitionCount": 4
   }
 }

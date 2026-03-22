@@ -147,5 +147,23 @@
       "Can the average (1/b)∑N(a,b) be bounded above by O(log log b)?",
       "What is the computational complexity of finding an optimal Egyptian fraction representation?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Rat.Cast.Lemmas",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Data.Nat.Log"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos304",
+    "lineCount": 239,
+    "axiomCount": 19,
+    "theoremCount": 1,
+    "definitionCount": 3
   }
 }

@@ -150,5 +150,24 @@
       "How many consecutive integers > n can be represented as consecutive sums (Problem #357)?",
       "What is the relationship between sequence structure and achievable sum count?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.List.Basic",
+      "Mathlib.Data.List.Range"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "List"
+    ],
+    "namespace": "Erdos356",
+    "lineCount": 264,
+    "axiomCount": 8,
+    "theoremCount": 2,
+    "definitionCount": 11
   }
 }

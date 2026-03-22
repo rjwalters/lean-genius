@@ -142,5 +142,25 @@
       "How do multi-dimensional generalizations behave?",
       "What is the discrepancy of algebraic number sequences?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Set.Countable",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.Topology.MetricSpace.Basic"
+    ],
+    "opens": [
+      "Set",
+      "Nat",
+      "Real"
+    ],
+    "namespace": "Erdos255",
+    "lineCount": 173,
+    "axiomCount": 6,
+    "theoremCount": 2,
+    "definitionCount": 10
   }
 }

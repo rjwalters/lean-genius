@@ -130,5 +130,22 @@
       "What makes 509203 special?",
       "Can we characterize which even numbers are non-cototients?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Order.Filter.AtTopBot.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "Erdos418",
+    "lineCount": 239,
+    "axiomCount": 6,
+    "theoremCount": 10,
+    "definitionCount": 11
   }
 }

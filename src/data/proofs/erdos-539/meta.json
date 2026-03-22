@@ -161,5 +161,25 @@
   ],
   "relatedProofs": [
     "erdos-302"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "Nat"
+    ],
+    "namespace": "Erdos539",
+    "lineCount": 268,
+    "axiomCount": 12,
+    "theoremCount": 5,
+    "definitionCount": 13
+  }
 }

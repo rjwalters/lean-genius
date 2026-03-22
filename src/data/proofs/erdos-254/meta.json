@@ -110,5 +110,24 @@
       "What is the weakest irrationality condition that suffices for subset sum representation?",
       "Can the threshold N₀ (above which all integers are representable) be bounded effectively?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Topology.Instances.Real",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Real",
+      "Set"
+    ],
+    "namespace": "Erdos254",
+    "lineCount": 186,
+    "axiomCount": 4,
+    "theoremCount": 1,
+    "definitionCount": 13
   }
 }

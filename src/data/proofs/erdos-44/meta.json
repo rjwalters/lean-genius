@@ -105,5 +105,21 @@
       "What is the optimal extension strategy for a given Sidon set?",
       "Are there obstructions to extension for specific Sidon sets?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.Erdos340GreedySidon"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "Erdos340"
+    ],
+    "namespace": "Erdos44",
+    "lineCount": 344,
+    "axiomCount": 2,
+    "theoremCount": 8,
+    "definitionCount": 0
   }
 }

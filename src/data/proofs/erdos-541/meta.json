@@ -170,5 +170,19 @@
       "Are there effective bounds on how the proof complexity depends on the modulus?",
       "How does this generalize to non-cyclic abelian groups?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Classical",
+      "Finset"
+    ],
+    "namespace": "Erdos541",
+    "lineCount": 175,
+    "axiomCount": 3,
+    "theoremCount": 2,
+    "definitionCount": 3
   }
 }

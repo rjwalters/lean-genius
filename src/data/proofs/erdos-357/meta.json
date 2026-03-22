@@ -208,5 +208,35 @@
       "Can conjecture_equiv (isLittleO ↔ Tendsto) be proved using Mathlib's asymptotic API?",
       "Can g_ge_f and h_ge_f be proved from the definitions (relaxation arguments)?"
     ]
-  }
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Finset.Sum",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Analysis.Asymptotics.Asymptotics",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Topology.Instances.Real",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Filter",
+      "Asymptotics",
+      "Finset"
+    ],
+    "namespace": "Erdos357",
+    "lineCount": 304,
+    "axiomCount": 4,
+    "theoremCount": 16,
+    "definitionCount": 16
+  },
+  "relatedProofs": [
+    "",
+    "",
+    "",
+    "",
+    ""
+  ]
 }

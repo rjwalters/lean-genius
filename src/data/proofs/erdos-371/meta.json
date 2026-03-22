@@ -170,5 +170,23 @@
         "relationship": "The Prime Number Theorem provides the foundational asymptotic $\\pi(x) \\sim x/\\ln x$ underlying all density arguments about prime-related sets in this formalization."
       }
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Classical",
+      "Nat",
+      "Real",
+      "Filter",
+      "Finset",
+      "Topology"
+    ],
+    "namespace": "Erdos371",
+    "lineCount": 372,
+    "axiomCount": 12,
+    "theoremCount": 18,
+    "definitionCount": 17
   }
 }

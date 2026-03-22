@@ -139,5 +139,22 @@
       "What is the exact coefficient of the O(N) error term?",
       "Can similar bounds be obtained for k-term AP intersections?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Algebra.Order.Floor"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos272",
+    "lineCount": 168,
+    "axiomCount": 10,
+    "theoremCount": 3,
+    "definitionCount": 5
   }
 }

@@ -108,5 +108,21 @@
       "What is the structure of extremal avoidance sets for small N?",
       "How does the answer change if decompositions of length exactly k are forbidden?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Rat.Defs",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 77,
+    "axiomCount": 4,
+    "theoremCount": 2,
+    "definitionCount": 4
   }
 }

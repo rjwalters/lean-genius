@@ -141,5 +141,24 @@
       "What is the distribution of r(n)/τ(n) on a logarithmic scale?",
       "Is there a Turán-Kubilius type inequality for r(n)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Divisors",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.NumberTheory.ArithmeticFunction"
+    ],
+    "opens": [
+      "Finset",
+      "Nat",
+      "ArithmeticFunction"
+    ],
+    "namespace": "Erdos449",
+    "lineCount": 177,
+    "axiomCount": 6,
+    "theoremCount": 1,
+    "definitionCount": 5
   }
 }

@@ -144,5 +144,24 @@
       "What happens for other sequences beyond primes?",
       "Can the density of solutions be quantified?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Data.Nat.ModEq",
+      "Mathlib.Order.Interval.Finset.Nat"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Set"
+    ],
+    "namespace": "Erdos427",
+    "lineCount": 301,
+    "axiomCount": 13,
+    "theoremCount": 7,
+    "definitionCount": 5
   }
 }

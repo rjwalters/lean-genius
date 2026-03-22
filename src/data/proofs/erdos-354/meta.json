@@ -152,5 +152,21 @@
       "What happens for base γ ∈ (1, 2)?",
       "Density of exceptional pairs (α, β) that fail completeness"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Finset",
+      "BigOperators",
+      "Real"
+    ],
+    "namespace": "Erdos354",
+    "lineCount": 252,
+    "axiomCount": 18,
+    "theoremCount": 1,
+    "definitionCount": 7
   }
 }

@@ -131,5 +131,24 @@
       "Can the proof be made constructive/computational?",
       "What happens for dissociated sets in other algebraic structures?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Algebra.BigOperators.Ring.Finset",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos350",
+    "lineCount": 171,
+    "axiomCount": 8,
+    "theoremCount": 7,
+    "definitionCount": 3
   }
 }

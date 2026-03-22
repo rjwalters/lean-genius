@@ -123,5 +123,25 @@
       "Is there an efficient algorithm to compute t(N)?",
       "What about Egyptian representations of other rationals?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "Nat",
+      "Real"
+    ],
+    "namespace": "Erdos294",
+    "lineCount": 331,
+    "axiomCount": 12,
+    "theoremCount": 2,
+    "definitionCount": 16
   }
 }

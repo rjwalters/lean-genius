@@ -115,5 +115,19 @@
       "What is the correct order of magnitude for f_{k,3}(x) when k is large?",
       "Are there k where the conjecture is known to be false?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Asymptotics",
+      "Filter"
+    ],
+    "namespace": "Erdos325",
+    "lineCount": 143,
+    "axiomCount": 4,
+    "theoremCount": 4,
+    "definitionCount": 4
   }
 }

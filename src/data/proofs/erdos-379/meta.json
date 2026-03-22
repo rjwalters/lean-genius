@@ -127,5 +127,24 @@
       "What other witness sequences achieve high S(n)?",
       "Are there connections to other properties of binomial coefficients?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Nat.Prime.Defs",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Order.Filter.AtTopBot.Basic",
+      "Mathlib.Topology.Instances.ENat",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Filter"
+    ],
+    "namespace": "Erdos379",
+    "lineCount": 199,
+    "axiomCount": 10,
+    "theoremCount": 7,
+    "definitionCount": 5
   }
 }

@@ -133,5 +133,22 @@
       "What is the density of SolutionSet(k) for various k?",
       "Can the Graham-Lehmer-Lehmer method extend to other cases?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Int.ModEq",
+      "Mathlib.Data.Set.Finite.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Set"
+    ],
+    "namespace": "Erdos479",
+    "lineCount": 222,
+    "axiomCount": 9,
+    "theoremCount": 1,
+    "definitionCount": 2
   }
 }

@@ -131,5 +131,27 @@
       "Non-uniform arc placement distributions",
       "Rate of convergence to full coverage"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Topology.Basic",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+    ],
+    "opens": [
+      "Real",
+      "MeasureTheory",
+      "Filter",
+      "Topology",
+      "BigOperators"
+    ],
+    "namespace": "Erdos526",
+    "lineCount": 279,
+    "axiomCount": 18,
+    "theoremCount": 2,
+    "definitionCount": 4
   }
 }

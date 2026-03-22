@@ -133,5 +133,28 @@
       "What about p(x) = x^k for k ≥ 3?",
       "Can the threshold 8542 for p(x) = x² be improved?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.Polynomial.Basic",
+      "Mathlib.Algebra.Polynomial.Eval.Defs",
+      "Mathlib.Algebra.Polynomial.Degree.Definitions",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Rat.Defs",
+      "Mathlib.Order.Filter.AtTopBot.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Sum",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Polynomial",
+      "Filter",
+      "Finset"
+    ],
+    "namespace": "Erdos283",
+    "lineCount": 176,
+    "axiomCount": 6,
+    "theoremCount": 7,
+    "definitionCount": 4
   }
 }

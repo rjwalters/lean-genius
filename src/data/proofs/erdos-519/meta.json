@@ -168,5 +168,22 @@
       "id": "de-moivre",
       "relationship": "De Moivre's formula underpins the roots of unity analysis: $e^{2\\pi i k/n}$ raised to powers exhibits the periodic cancellation central to understanding power sum extremals"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Complex",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [
+      "Complex",
+      "Finset"
+    ],
+    "namespace": "Erdos519",
+    "lineCount": 285,
+    "axiomCount": 7,
+    "theoremCount": 6,
+    "definitionCount": 7
+  }
 }

@@ -150,5 +150,18 @@
       "What is the asymptotic density of powerful numbers? (Known: ~c·√n for some constant c)",
       "Can the abc conjecture approach be made unconditional for this problem?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "Erdos364",
+    "lineCount": 206,
+    "axiomCount": 4,
+    "theoremCount": 7,
+    "definitionCount": 1
   }
 }

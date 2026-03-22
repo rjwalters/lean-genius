@@ -164,5 +164,26 @@
       "targetProofId": "erdos-281",
       "relationship": "Density complement: #281 studies asymptotic density properties of covering systems via the Davenport–Erdős theorem, contrasting with #275's discrete consecutive-integer criterion"
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Int.ModEq",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card"
+    ],
+    "opens": [],
+    "namespace": "Erdos275",
+    "lineCount": 182,
+    "axiomCount": 4,
+    "theoremCount": 1,
+    "definitionCount": 8
+  },
+  "relatedProofs": [
+    "",
+    "",
+    "",
+    "",
+    ""
   ]
 }

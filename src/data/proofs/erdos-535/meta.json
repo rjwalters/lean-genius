@@ -119,5 +119,24 @@
       "Can the Abbott-Hanson exponent $1/2$ be improved, even to $1/2 - \\varepsilon$?",
       "Does the answer depend on $r$, or is the growth rate of $f_r(N)$ independent of $r \\geq 3$?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Real",
+      "Finset"
+    ],
+    "namespace": "Erdos535",
+    "lineCount": 221,
+    "axiomCount": 5,
+    "theoremCount": 2,
+    "definitionCount": 5
   }
 }

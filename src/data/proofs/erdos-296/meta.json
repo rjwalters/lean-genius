@@ -178,5 +178,19 @@
       "**Weighted Variants:** What if each unit set must sum to a value other than 1, or if different sets can sum to different targets?",
       "**Structured Packings:** Can the disjoint unit sets be organized with additional structure (e.g., all having the same cardinality)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": null,
+    "lineCount": 174,
+    "axiomCount": 6,
+    "theoremCount": 2,
+    "definitionCount": 5
   }
 }
