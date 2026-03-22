@@ -29,13 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: All existing angle trisection files are sorry-free. This OQ needs a new file connecting to Mathlib Galois theory.",
-    "builtItems": [],
+    "progressSummary": "PROGRESS: Eliminated 2 axioms from AngleTrisectionOQ02.lean by importing proved Galois group orders from InverseGalois and InverseGaloisD4. Axiom count: 6 → 4. Remaining: wantzel_galois_characterization, cos20_gal_order, x_sq_sub_2_gal_order, galois_2group_implies_degree_pow2.",
+    "builtItems": [
+      "AngleTrisectionOQ02.lean: eliminated x_cube_sub_2_gal_order axiom (→ InverseGalois.lean)",
+      "AngleTrisectionOQ02.lean: eliminated x_4th_sub_2_gal_order axiom (→ InverseGaloisD4.lean)"
+    ],
     "insights": [
       "All 9 existing AngleTrisection*.lean files have 0 sorries",
       "Wantzel characterization: angle constructible iff minimal polynomial degree is power of 2",
       "Mathlib has Galois theory (FieldTheory.Galois) and polynomial splitting fields",
-      "Key: connect constructibility (from existing files) to degree conditions via Mathlib"
+      "Key: connect constructibility (from existing files) to degree conditions via Mathlib",
+      "x_cube_sub_2_gal_order proved by importing InverseGaloisProblem.x_cube_sub_2_gal_card from InverseGalois.lean",
+      "x_4th_sub_2_gal_order proved by importing InverseGaloisExtensions.x4_sub_2_gal_card from InverseGaloisD4.lean",
+      "Axiom count reduced from 6 to 4 via cross-file imports"
     ],
     "mathlibGaps": [],
     "nextSteps": [
