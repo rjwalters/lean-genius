@@ -160,14 +160,14 @@
       "description": "Cardano's formula solves the general cubic by radicals — the trisection polynomial 8x³-6x-1 is a specific cubic whose roots CAN be expressed using cube roots (via Cardano's formula involving complex numbers), but this expression involves cube roots of complex numbers (casus irreducibilis), so it does not yield a compass-straightedge construction"
     },
     {
-      "targetId": "angle-trisection-oq-02",
-      "relationship": "extended-by",
-      "description": "OQ-02 develops the complete Galois-theoretic characterization: α is constructible iff Gal(minpoly(α)) is a 2-group. This strengthens the degree-divides-2^n criterion used here into a group-theoretic equivalence, connecting constructibility to the full Galois correspondence"
+      "targetId": "abel-ruffini-oq-04",
+      "relationship": "related",
+      "description": "Both use the non-solvability of specific groups to prove impossibility: Abel-Ruffini-OQ-04 proves S₅ is not solvable (blocking quintic radical solutions), while this file proves degree-3 extensions are incompatible with the 2-group structure required for constructibility — different group-theoretic obstructions within the same Galois framework"
     },
     {
-      "targetId": "angle-trisection-oq-02-oq-03",
+      "targetId": "angle-trisection-oq-02",
       "relationship": "extended-by",
-      "description": "The Gauss-Wantzel theorem on regular n-gon constructibility: a regular n-gon is constructible iff φ(n) is a power of 2, equivalently iff n = 2^k · p₁ · ... · pₘ with distinct Fermat primes pᵢ. This is the most celebrated application of the same degree-over-ℚ framework used here for angle trisection"
+      "description": "OQ-02 extends the degree argument to a complete Galois characterization: α is constructible iff Gal(minpoly(α)/ℚ) is a 2-group. This strengthens Wantzel's degree criterion (degree divides 2ⁿ) to a group-theoretic criterion that captures all obstructions"
     }
   ],
   "overview": {
@@ -273,7 +273,6 @@
     "sqrt2-irrational",
     "hermite-lindemann",
     "solution-of-cubic",
-    "angle-trisection-oq-02",
-    "angle-trisection-oq-02-oq-03"
+    "angle-trisection-oq-02"
   ]
 }
