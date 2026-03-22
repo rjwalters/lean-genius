@@ -1,10 +1,9 @@
-import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, TacticState } from '@/types/proof'
+import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
-import tacticStatesJson from './tacticStates.json'
 import sourceRaw from '../../../../proofs/Proofs/BallotProblemOQ03OQ02.lean?raw'
 
-const meta = metaJson as {
+const meta = metaJson as unknown as {
   id: string
   title: string
   slug: string
@@ -28,10 +27,10 @@ export const ballotProblemOq03Oq02Proof: Proof = {
 }
 
 export const ballotProblemOq03Oq02Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
-export const ballotProblemOq03Oq02TacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const ballotProblemOq03Oq02Data: ProofData = {
   proof: ballotProblemOq03Oq02Proof,
   annotations: ballotProblemOq03Oq02Annotations,
-  tacticStates: ballotProblemOq03Oq02TacticStates,
 }
+
+export default ballotProblemOq03Oq02Data
