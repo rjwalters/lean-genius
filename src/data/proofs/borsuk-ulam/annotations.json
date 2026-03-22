@@ -9,6 +9,7 @@
     "type": "concept",
     "title": "The Theorem That Connects Temperature to Topology",
     "content": "The Borsuk-Ulam Theorem states: for any continuous function f: S^n -> R^n, there exist antipodal points x and -x with f(x) = f(-x).\n\nThe intuition is captivating: at any moment, there are two points on opposite sides of Earth with exactly the same temperature AND pressure. You can continuously measure any n quantities on an n-sphere, and somewhere, antipodal points match.\n\nThis 1933 result by Karol Borsuk (answering Stanislaw Ulam's question) became a cornerstone of algebraic topology with surprising applications from graph theory to fair division.\n\nThis formalization presents the conceptual structure. The full proof requires covering space theory, which we axiomatize to focus on the logical flow.",
+    "mathContext": "For any continuous $f: S^n \\to \\mathbb{R}^n$, $\\exists x \\in S^n$ such that $f(x) = f(-x)$. Equivalently, the odd part $g(x) = f(x) - f(-x)$ must vanish somewhere on $S^n$.",
     "significance": "critical",
     "relatedConcepts": [
       "antipodal points",
@@ -26,6 +27,7 @@
     "type": "definition",
     "title": "The Antipodal Map: Flipping the Sphere",
     "content": "The **antipodal map** A: S^n -> S^n sends each point to its diametrically opposite point: A(x) = -x.\n\nKey properties:\n- **Involution**: A(A(x)) = x (applying twice returns to original)\n- **No fixed points**: A(x) != x for all x (you can't be your own opposite)\n- **Isometry**: Preserves distances on the sphere\n- **Free Z_2 action**: The two-element group {1, A} acts freely on S^n\n\nThe quotient space S^n / Z_2 (identifying x with -x) is **real projective space** RP^n. This quotient is central to the proof:\n- RP^n has fundamental group Z_2\n- The quotient map p: S^n -> RP^n is a 2-sheeted covering\n- This covering space structure is what makes the theorem work",
+    "mathContext": "Antipodal map $A: S^n \\to S^n$, $A(x) = -x$. Quotient $S^n/\\mathbb{Z}_2 = \\mathbb{RP}^n$ with $\\pi_1(\\mathbb{RP}^n) = \\mathbb{Z}_2$ and 2-sheeted covering $p: S^n \\to \\mathbb{RP}^n$.",
     "significance": "key",
     "relatedConcepts": [
       "involution",

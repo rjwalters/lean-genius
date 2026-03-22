@@ -63,7 +63,8 @@
       "**Unit fraction identity**: 1/n = 1/(n+1) + 1/(n(n+1)) for all n ≥ 2, providing infinitely many solutions.",
       "**Algebraic reformulation**: 1/a = 1/b + 1/c is equivalent to bc = a(b+c), avoiding division.",
       "**Ramsey principle**: No matter how you colour ℤ with finitely many colours, some colour class contains a unit fraction triple.",
-      "**Density connection**: The colouring version (this problem) is the Ramsey analog of the density version (Erdős #302)."
+      "**Density connection**: The colouring version (this problem) is the Ramsey analog of the density version (Erdős #302).",
+      "**Computable witnesses**: The identity 1/n = 1/(n+1) + 1/(n(n+1)) is verified by native_decide for specific n, showing that formalized number theory can produce machine-checkable computational certificates alongside abstract theorems"
     ]
   },
   "sections": [

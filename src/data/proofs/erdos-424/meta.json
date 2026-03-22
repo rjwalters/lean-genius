@@ -84,6 +84,13 @@
   },
   "sections": [
     {
+      "id": "header-setup",
+      "title": "Module Header and Problem Context",
+      "startLine": 1,
+      "endLine": 21,
+      "summary": "Documents Erdős Problem #424: starting from {2,3}, iteratively adjoin a_i·a_j − 1 for distinct elements. The resulting set's density is unknown. OEIS A005244. Notes the mod 3 obstruction giving density ≤ 2/3. Imports Mathlib for Finset and arithmetic."
+    },
+    {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 22,

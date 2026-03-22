@@ -48,6 +48,13 @@
   },
   "sections": [
     {
+      "id": "header-setup",
+      "title": "Module Header and Problem Statement",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Documents Erdős Problem #261: can every positive integer be represented as Σ k/2^k over a finite set S? Notes Part 1 (infinitely many) resolved by Cusick and Part 2 (all integers) remains open. Verified computationally for n ≤ 10000 by Tengely-Ulas-Zygadło. Imports Mathlib."
+    },
+    {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 27,

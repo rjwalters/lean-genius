@@ -86,6 +86,13 @@
       "summary": "GraphOrientation structure: arc/covers/exclusive/respects. isAcyclic: existence of rank function. hasDependentArc: forced rank inequality for consistent rankings. isRobustlyAcyclic: acyclic AND no dependent arcs. admitsRobustAcyclicOrientation: existential wrapper."
     },
     {
+      "id": "header-setup",
+      "title": "Module Header and FFLLW Context",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Documents the open question origin (direct proof of the FFLLW theorem from Mathlib primitives) and the key insight: under rank-based 'robustly acyclic' formulation, the coloring orientation is always robustly acyclic, making the girth condition unnecessary. Imports Mathlib and the parent Erdos1006 file."
+    },
+    {
       "id": "coloring-orientation",
       "title": "The Coloring Orientation Construction",
       "startLine": 84,

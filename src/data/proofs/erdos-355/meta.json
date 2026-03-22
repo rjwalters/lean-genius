@@ -57,7 +57,8 @@
       "**Lacunary sequences**: Sequences where terms grow at least exponentially (a_{n+1}/a_n ≥ λ > 1). Powers of 2 are the canonical example with λ = 2.",
       "**The critical threshold λ = 2**: For λ = 2, reciprocal sums are dyadic rationals and cannot fill an interval. For λ < 2, there's enough 'overlap' to achieve density.",
       "**Egyptian fractions connection**: Finite sums of distinct unit fractions. The question asks when these can cover all rationals in an interval.",
-      "**Disproving Bleicher-Erdős**: The 2025 result showed their NO conjecture was wrong for λ < 2, demonstrating the subtlety of the problem."
+      "**Disproving Bleicher-Erdős**: The 2025 result showed their NO conjecture was wrong for λ < 2, demonstrating the subtlety of the problem.",
+      "**Density vs sparsity tradeoff**: The construction must balance exponential growth (lacunarity) against arithmetic density of reciprocal sums — the sweet spot at λ ∈ (1,2) allows terms close enough for sum overlaps but far enough apart for the growth condition"
     ]
   },
   "sections": [

@@ -57,7 +57,8 @@
       "**Trivial vs non-trivial**: The constraint a_1 < n-1 rules out n! = (n-1)! * n which always holds when n is a product of smaller factorials.",
       "**ABC connection**: Luca's 2007 result uses the ABC conjecture to control the size of solutions, giving conditional finiteness.",
       "**Computational evidence**: No two-factor solutions except 10! = 6!7! exist for n <= 10^3000, strong evidence for Suranyi's conjecture.",
-      "**Prime factor bounds**: Erdos showed the problem reduces to P(n(n-1)) > 4 log n, connecting to open problems in analytic number theory."
+      "**Prime factor bounds**: Erdos showed the problem reduces to P(n(n-1)) > 4 log n, connecting to open problems in analytic number theory.",
+      "**Unique factorization paradox**: Despite ℕ having unique factorization, factorials grow so rapidly that the equation n! = a₁!·a₂!···aₖ! becomes extremely overdetermined — the existence of even one non-trivial solution (10! = 6!·7!) is itself remarkable"
     ]
   },
   "sections": [

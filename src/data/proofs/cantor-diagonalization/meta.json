@@ -40,7 +40,8 @@
       "The diagonal construction guarantees disagreement with every listed sequence at a specific position",
       "Binary sequences correspond to real numbers via $0.b_0b_1b_2\\ldots$ in binary",
       "The same argument proves $|P(S)| > |S|$ for any set $S$ (the power set is always strictly larger)",
-      "This technique reappears in the halting problem, Godel's incompleteness, and Rice's theorem"
+      "This technique reappears in the halting problem, Godel's incompleteness, and Rice's theorem",
+      "In Lean 4, the proof is remarkably concise: `funext` reduces function inequality to pointwise disagreement, and `Bool.eq_not_iff` handles the bit-flip contradiction — showing how type theory naturally captures the diagonal argument"
     ]
   },
   "sections": [

@@ -68,6 +68,21 @@
   },
   "sections": [
     {
+      "id": "header-setup",
+      "title": "Module Header and Variable Setup",
+      "startLine": 1,
+      "endLine": 59,
+      "summary": "Documents the open question (can spherical Ceva use concrete unit vectors?) and the affirmative answer via weight-balance. Imports InnerProductSpace, trigonometric functions, and tactics. Declares the inner product space variable V and the CevasOQ02OQ01 namespace.",
+      "mathContext": "Working in a generic real inner product space $V$ with $\\|\\cdot\\|$ and $\\langle \\cdot, \\cdot \\rangle$, where unit vectors $A, B, C$ with $\\|A\\|=\\|B\\|=\\|C\\|=1$ represent spherical triangle vertices."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases and Symmetry",
+      "startLine": 200,
+      "endLine": 262,
+      "summary": "weight_balance_symmetric: the weight-balance condition is symmetric under cyclic permutation of cevians. equal_weight_ceva: equal weights α_i = β_i = 1 give the medial cevians (concurrent by α·α·α = β·β·β = 1). spherical_ceva_iff_weight_balance: the full iff statement connecting the sin-product form to the weight-product form."
+    },
+    {
       "id": "sin-ratio-formula",
       "title": "Sin-Ratio Formula for a Single Cevian",
       "startLine": 60,

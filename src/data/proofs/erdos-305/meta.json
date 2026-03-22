@@ -71,6 +71,13 @@
   },
   "sections": [
     {
+      "id": "header-setup",
+      "title": "Module Header and Problem Context",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Documents Erdős Problem #305 on bounding D(b), the maximum denominator in optimal Egyptian fraction representations. Traces the history from Bleicher-Erdős (1976) through Yokota (1988) to Liu-Sawhney (2024). Imports Mathlib for Finset, arithmetic, and order theory."
+    },
+    {
       "id": "egyptian-basics",
       "title": "Egyptian Fractions",
       "summary": "Defines isEgyptianFraction (all denominators ≥ 1), unitFractionSum (∑1/n over ℚ), isEgyptianRepresentation (S represents a/b), and axiomatizes existence via the Fibonacci-Sylvester algorithm.",

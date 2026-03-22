@@ -157,12 +157,20 @@
       "mathContext": "Establishes $\\langle f,g \\rangle = \\|f\\|\\|g\\| \\iff \\|f\\|g = \\|g\\|f$. Forward: apply $\\langle f, \\cdot \\rangle$ to get $\\|f\\|\\langle f,g\\rangle = \\|g\\|\\|f\\|^2$. Backward: expand $\\|\\|f\\|g - \\|g\\|f\\|^2 = 2\\|f\\|^2\\|g\\|^2 - 2\\|f\\|\\|g\\|\\langle f,g\\rangle = 0$."
     },
     {
-      "id": "main-result",
-      "title": "Section II: Strict Minkowski Inequality (Main Result)",
+      "id": "forward-direction",
+      "title": "Forward: Minkowski Equality → Proportionality",
       "startLine": 58,
+      "endLine": 78,
+      "summary": "Squaring ‖f+g‖ = ‖f‖+‖g‖ and expanding via norm_add_sq_real yields ⟪f,g⟫ = ‖f‖·‖g‖ (Cauchy-Schwarz equality). Then proportional_of_inner_eq gives ‖f‖•g = ‖g‖•f.",
+      "mathContext": "$\\|f+g\\|^2 = (\\|f\\|+\\|g\\|)^2$ and $\\|f+g\\|^2 = \\|f\\|^2 + 2\\langle f,g\\rangle + \\|g\\|^2$ give $\\langle f,g\\rangle = \\|f\\|\\|g\\|$."
+    },
+    {
+      "id": "backward-direction",
+      "title": "Backward: Proportionality → Minkowski Equality",
+      "startLine": 79,
       "endLine": 91,
-      "summary": "norm_add_eq_iff_proportional: the main iff theorem. Forward: squaring + norm_add_sq_real gives CS equality, then proportional_of_inner_eq. Backward: inner_eq_of_proportional gives CS equality, substitute into norm expansion, factor (a-b)(a+b)=0.",
-      "mathContext": "$\\|f+g\\| = \\|f\\| + \\|g\\| \\iff \\|f\\|g = \\|g\\|f$. The proof chains: Minkowski equality $\\xrightarrow{\\text{square}}$ CS equality $\\xrightarrow{\\text{norm expansion}}$ proportionality, and vice versa."
+      "summary": "From ‖f‖•g = ‖g‖•f, derives ⟪f,g⟫ = ‖f‖·‖g‖ via inner_eq_of_proportional. Substitutes into ‖f+g‖² = ‖f‖²+2⟪f,g⟫+‖g‖² = (‖f‖+‖g‖)². Factors (a-b)(a+b)=0 with non-negativity to conclude a=b.",
+      "mathContext": "$\\|f\\|g = \\|g\\|f \\Rightarrow \\langle f,g\\rangle = \\|f\\|\\|g\\| \\Rightarrow \\|f+g\\|^2 = (\\|f\\|+\\|g\\|)^2 \\Rightarrow \\|f+g\\| = \\|f\\|+\\|g\\|$."
     }
   ],
   "conclusion": {

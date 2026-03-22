@@ -88,6 +88,13 @@
       "summary": "Statement of Erdős Problem #253 as an axiom asserting the conjecture is false."
     },
     {
+      "id": "structural-lemmas",
+      "title": "Structural Lemmas",
+      "startLine": 75,
+      "endLine": 88,
+      "summary": "Basic properties: zero_mem_subsetSums (empty set has sum 0) and mem_subsetSums_of_mem (singletons are subset sums). These establish that subsetSums S always contains 0 and S itself."
+    },
+    {
       "id": "supporting",
       "title": "Supporting Lemmas",
       "startLine": 77,

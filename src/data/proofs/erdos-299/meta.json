@@ -63,7 +63,8 @@
       "**Egyptian fractions**: Sums of distinct unit fractions equaling 1, like 1/2 + 1/3 + 1/6 = 1. The ancient Egyptians used only such fractions.",
       "**Bounded gaps and density**: A sequence with gaps ≤ C has density at least 1/C, since it contains roughly N/C elements below N.",
       "**Bloom's breakthrough**: The 2021 result showing positive density sets contain unit fraction sums resolved a 50+ year old Erdős-Graham conjecture.",
-      "**Contrast with sparse sequences**: Powers of 2 have unbounded gaps and their reciprocals sum to less than 1 (geometric series). Bounded gaps prevent such avoidance."
+      "**Contrast with sparse sequences**: Powers of 2 have unbounded gaps and their reciprocals sum to less than 1 (geometric series). Bounded gaps prevent such avoidance.",
+      "**Greedy algorithm connection**: The greedy algorithm for Egyptian fractions (Sylvester 1880) always terminates, but finding a subset of a given sequence summing to 1 is computationally harder — the bounded-gap condition provides the structural guarantee that such subsets must exist"
     ]
   },
   "sections": [

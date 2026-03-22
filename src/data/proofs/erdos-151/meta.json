@@ -68,10 +68,18 @@
       "τ(G) is the minimum vertex set hitting every maximal clique of size ≥ 2",
       "H(n) ~ √n by Ramsey theory (R(3,k) gives triangle-free independent sets)",
       "The easy bound τ ≤ n − √n falls short of the conjecture",
-      "Even the K₄-free case remains open"
+      "Even the K₄-free case remains open",
+      "The conjecture's difficulty stems from τ(G) depending on global clique structure while H(n) depends on local triangle-freeness — bridging these requires understanding how clique transversals interact with Ramsey-theoretic bounds"
     ]
   },
   "sections": [
+    {
+      "id": "header-setup",
+      "title": "Module Header and Problem Context",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "Documents Erdős Problem #151: the Erdős-Gallai conjecture τ(G) ≤ n − H(n) connecting clique transversal numbers to triangle-free independence. Notes Erdős's own uncertainty about the conjecture and the connection to Ramsey numbers R(3,t). Imports Mathlib."
+    },
     {
       "id": "graph-properties",
       "title": "Graph Properties",

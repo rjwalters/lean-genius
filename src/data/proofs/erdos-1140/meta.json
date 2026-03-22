@@ -86,6 +86,13 @@
   },
   "sections": [
     {
+      "id": "header-setup",
+      "title": "Module Header and Problem History",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "Documents the problem statement, its disproof by Epure-Gica (2010), and the complete list of known values {2, 5, 7, 13, 31, 61, 181, 199}. Notes the connection to class numbers of imaginary quadratic fields Q(√(-2n)) and Mollin-Williams (1989). Imports Mathlib."
+    },
+    {
       "id": "definitions",
       "title": "Basic Definitions",
       "summary": "Defines AllShiftsArePrime(n) as ∀ x, 2x² < n → Nat.Prime(n - 2x²), the core predicate. Also defines KnownValues = {2, 5, 7, 13, 31, 61, 181, 199} as a Finset. The quantifier ranges over x ∈ {0, ..., ⌊√((n-1)/2)⌋}, with x = 0 forcing n itself to be prime.",
