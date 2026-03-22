@@ -154,5 +154,21 @@
     "axiomCount": 0,
     "theoremCount": 15,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "Euclid",
+      "title": "Elements, Book VII, Propositions 1–2",
+      "year": "~300 BCE",
+      "venue": "Alexandria",
+      "note": "The earliest known description of the Euclidean algorithm for computing greatest common divisors"
+    },
+    {
+      "authors": "Knuth, Donald E.",
+      "title": "The Art of Computer Programming, Vol. 2: Seminumerical Algorithms",
+      "year": "1997",
+      "venue": "Addison-Wesley, 3rd edition",
+      "note": "Comprehensive analysis of the Euclidean algorithm including complexity bounds and extended GCD"
+    }
+  ]
 }

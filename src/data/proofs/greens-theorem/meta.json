@@ -179,5 +179,21 @@
     "axiomCount": 2,
     "theoremCount": 6,
     "definitionCount": 14
-  }
+  },
+  "references": [
+    {
+      "authors": "Green, George",
+      "title": "An Essay on the Application of Mathematical Analysis to the Theories of Electricity and Magnetism",
+      "year": "1828",
+      "venue": "Nottingham (self-published)",
+      "note": "Original statement of Green's theorem relating a line integral around a curve to a double integral over the enclosed region"
+    },
+    {
+      "authors": "Spivak, Michael",
+      "title": "Calculus on Manifolds",
+      "year": "1965",
+      "venue": "W.A. Benjamin",
+      "note": "Modern proof using differential forms, presenting Green's theorem as a special case of Stokes' theorem"
+    }
+  ]
 }

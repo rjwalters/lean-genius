@@ -228,5 +228,28 @@
     "axiomCount": 0,
     "theoremCount": 17,
     "definitionCount": 2
-  }
+  },
+  "references": [
+    {
+      "authors": "Sunzi (Sun Tzu)",
+      "title": "Sunzi Suanjing (The Mathematical Classic of Sun Tzu)",
+      "year": "~400 CE",
+      "venue": "Chinese mathematical manuscript",
+      "note": "Earliest known statement of the Chinese Remainder Theorem: 'There are things whose number is unknown. When divided by 3, remainder 2; by 5, remainder 3; by 7, remainder 2. What is the number?'"
+    },
+    {
+      "authors": "Gauss, Carl Friedrich",
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Leipzig: Gerhard Fleischer",
+      "note": "Systematic treatment of modular arithmetic and congruence systems in Articles 32–36"
+    },
+    {
+      "authors": "Ireland, Kenneth; Rosen, Michael",
+      "title": "A Classical Introduction to Modern Number Theory",
+      "year": "1990",
+      "venue": "Springer GTM 84, 2nd edition",
+      "note": "Modern exposition with the ring-theoretic generalization and applications to polynomial rings"
+    }
+  ]
 }
