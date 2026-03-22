@@ -86,14 +86,26 @@
   {
     "id": "ann-product-sum",
     "proofId": "amgm-inequality",
-    "range": {"startLine": 184, "endLine": 203},
+    "range": {"startLine": 184, "endLine": 194},
     "type": "insight",
     "title": "Product-Sum Corollary: ab ≤ ((a+b)/2)²",
-    "content": "**Corollary**: For non-negative $a, b$:\n$$ab \\leq \\left(\\frac{a+b}{2}\\right)^2$$\n\n**Proof**: Square both sides of AM-GM:\n$$\\sqrt{ab} \\leq \\frac{a+b}{2} \\implies ab = (\\sqrt{ab})^2 \\leq \\left(\\frac{a+b}{2}\\right)^2$$\n\nThe Lean proof uses `sq_le_sq'` to square the inequality, combined with `Real.sq_sqrt` to recover $ab$ from $(\\sqrt{ab})^2$.\n\n**Application**: This is the key step in proving that among all rectangles with fixed perimeter, the square maximizes area—a classical isoperimetric principle. With perimeter $2(a+b) = P$, area $= ab \\leq ((P/4))^2$, achieved when $a = b$.\n\n**Also proved**: The trivial alias `am_ge_gm` at lines 201–203 restates AM-GM for clarity of import.",
+    "content": "**Corollary**: For non-negative $a, b$:\n$$ab \\leq \\left(\\frac{a+b}{2}\\right)^2$$\n\n**Proof**: Square both sides of AM-GM:\n$$\\sqrt{ab} \\leq \\frac{a+b}{2} \\implies ab = (\\sqrt{ab})^2 \\leq \\left(\\frac{a+b}{2}\\right)^2$$\n\nThe Lean proof uses `sq_le_sq'` to square the inequality, combined with `Real.sq_sqrt` to recover $ab$ from $(\\sqrt{ab})^2$.\n\n**Application**: This is the key step in proving that among all rectangles with fixed perimeter, the square maximizes area—a classical isoperimetric principle. With perimeter $2(a+b) = P$, area $= ab \\leq (P/4)^2$, achieved when $a = b$. This is also the core ingredient in the arithmetic-geometric mean iteration used by Gauss and Legendre to compute elliptic integrals.",
     "mathContext": "$$ab = (\\sqrt{ab})^2 \\leq \\left(\\frac{a+b}{2}\\right)^2$$",
     "significance": "supporting",
-    "relatedConcepts": ["isoperimetric inequality", "optimization", "sq_le_sq'", "product maximization"],
+    "relatedConcepts": ["isoperimetric inequality", "optimization", "sq_le_sq'", "product maximization", "Gauss AGM iteration"],
     "prerequisites": ["am_gm_two", "Real.sq_sqrt", "sq_le_sq'"]
+  },
+  {
+    "id": "ann-mean-chain",
+    "proofId": "amgm-inequality",
+    "range": {"startLine": 196, "endLine": 203},
+    "type": "concept",
+    "title": "The Mean Inequality Chain: QM ≥ AM ≥ GM",
+    "content": "**The Power Mean Hierarchy**:\n\nThe `am_ge_gm` alias places AM-GM in the classical chain of mean inequalities:\n$$\\text{QM} = \\sqrt{\\frac{a^2+b^2}{2}} \\;\\geq\\; \\text{AM} = \\frac{a+b}{2} \\;\\geq\\; \\text{GM} = \\sqrt{ab} \\;\\geq\\; \\text{HM} = \\frac{2ab}{a+b}$$\n\nMore generally, the **power mean** $M_p(a,b) = \\left(\\frac{a^p+b^p}{2}\\right)^{1/p}$ satisfies $M_p \\leq M_q$ whenever $p \\leq q$, with $M_0 = \\text{GM}$, $M_1 = \\text{AM}$, $M_2 = \\text{QM}$, and $M_{-1} = \\text{HM}$. AM-GM is the single step $M_0 \\leq M_1$ in this chain.\n\nThis monotonicity of power means is equivalent to Jensen's inequality for the convex function $t \\mapsto t^{q/p}$ and unifies all classical mean comparisons under one principle.",
+    "mathContext": "$$M_{-1} \\leq M_0 \\leq M_1 \\leq M_2, \\quad M_p = \\left(\\frac{a^p+b^p}{2}\\right)^{1/p}$$",
+    "significance": "key",
+    "relatedConcepts": ["power mean", "quadratic mean", "harmonic mean", "Jensen's inequality", "convexity"],
+    "prerequisites": ["arithmetic mean", "geometric mean", "convex functions"]
   },
   {
     "id": "ann-three-variable",
