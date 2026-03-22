@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-header-imports",
+    "proofId": "abel-ruffini-oq-04",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "context",
+    "title": "Module Overview and Imports",
+    "content": "The file imports three Mathlib modules: `GroupTheory.Solvable` (definition of `IsSolvable` and the derived series), `GroupTheory.SpecificGroups.Alternating` (the proof that $A_5$ is simple via `alternatingGroup.isSimpleGroup_five`), and `Tactic` (general-purpose tactics). The module documents the 4-step proof chain from $A_5$ simplicity to Abel-Ruffini and connects to two sibling files in the gallery: `AbelRuffini.lean` (base theorem via `solvableByRad`) and `AbelRuffiniGaloisExtensions.lean` (solvability classifications). This is part of Wiedijk's \"100 Theorems\" project (#83).",
+    "mathContext": "The file formalizes the proof chain: $A_5$ simple $\\Rightarrow$ $S_n$ ($n \\geq 5$) not solvable $\\Rightarrow$ no radical formula for the general quintic. All group-theoretic content comes from Mathlib's `GroupTheory` library.",
+    "significance": "context",
+    "relatedConcepts": ["Mathlib imports", "Wiedijk 100 theorems", "modular proof organization"],
+    "prerequisites": ["Lean 4 module system", "Mathlib library structure"]
+  },
+  {
     "id": "ann-a5-simple",
     "proofId": "abel-ruffini-oq-04",
     "range": { "startLine": 36, "endLine": 40 },
@@ -82,5 +94,17 @@
     "significance": "key",
     "relatedConcepts": ["derived subgroup", "commutator subgroup", "derived series", "composition series"],
     "prerequisites": ["group theory", "normal subgroups", "commutators"]
+  },
+  {
+    "id": "ann-verification",
+    "proofId": "abel-ruffini-oq-04",
+    "range": { "startLine": 154, "endLine": 163 },
+    "type": "technique",
+    "title": "Verification via #check",
+    "content": "The file ends by type-checking all four main theorems using Lean's `#check` command: `a5_is_simple`, `s5_not_solvable`, `symmetric_not_solvable`, and `five_is_the_threshold`. This serves as a verification stamp — if any theorem had a type error or unsatisfied hypothesis, `#check` would fail. The four theorems represent the complete proof chain from $A_5$ simplicity through the solvability threshold.",
+    "mathContext": "The four checked theorems: (1) `IsSimpleGroup(A_5)`, (2) $\\neg\\text{IsSolvable}(S_5)$, (3) $\\forall n \\geq 5,\\ \\neg\\text{IsSolvable}(S_n)$, (4) $\\text{IsSolvable}(S_1) \\wedge \\neg\\text{IsSolvable}(S_5)$.",
+    "significance": "context",
+    "relatedConcepts": ["type checking", "#check command", "proof verification"],
+    "prerequisites": ["Lean 4 meta-commands"]
   }
 ]

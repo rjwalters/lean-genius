@@ -68,7 +68,22 @@
       {
         "id": "abel-ruffini",
         "relationship": "extends",
-        "description": "Base Abel-Ruffini theorem using Mathlib's solvableByRad"
+        "description": "Base Abel-Ruffini theorem using Mathlib's solvableByRad — this file exposes the internal proof chain"
+      },
+      {
+        "id": "inverse-galois",
+        "relationship": "related",
+        "description": "The inverse Galois problem asks which groups occur as Galois groups — Sₙ occurs as Gal(generic degree-n polynomial), connecting directly to the solvability question"
+      },
+      {
+        "id": "lagrange-theorem",
+        "relationship": "foundational",
+        "description": "Lagrange's theorem on subgroup orders is used throughout: |Aₙ| = n!/2, and the derived series quotients have predictable orders"
+      },
+      {
+        "id": "sylow-theorems",
+        "relationship": "related",
+        "description": "Sylow theorems provide structural information about A₅: its Sylow subgroups witness the 60 = 4·3·5 factorization and help prove simplicity"
       }
     ],
     "lineCount": 163
@@ -91,42 +106,48 @@
       "title": "A₅ Is Simple",
       "startLine": 32,
       "endLine": 40,
-      "summary": "Extracts A₅ simplicity from Mathlib's alternatingGroup.isSimpleGroup_five as a named theorem. A₅ is the smallest non-abelian simple group (order 60, no proper non-trivial normal subgroups)."
+      "summary": "Extracts A₅ simplicity from Mathlib's alternatingGroup.isSimpleGroup_five as a named theorem. A₅ is the smallest non-abelian simple group (order 60, no proper non-trivial normal subgroups).",
+      "mathContext": "$A_5$ is simple: its only normal subgroups are $\\{e\\}$ and $A_5$. $|A_5| = 60 = 5!/2$."
     },
     {
       "id": "not-solvable",
       "title": "Sₙ Not Solvable for n ≥ 5",
       "startLine": 42,
       "endLine": 65,
-      "summary": "Proves symmetric_not_solvable: Sₙ is not solvable for n ≥ 5. Converts natural number bound to cardinal bound via exact_mod_cast, then applies Mathlib's Equiv.Perm.not_solvable. Instantiates for S₅, S₆, S₇."
+      "summary": "Proves symmetric_not_solvable: Sₙ is not solvable for n ≥ 5. Converts natural number bound to cardinal bound via exact_mod_cast, then applies Mathlib's Equiv.Perm.not_solvable. Instantiates for S₅, S₆, S₇.",
+      "mathContext": "$\\forall n \\geq 5,\\ \\neg\\text{IsSolvable}(S_n)$. Proof: $5 \\leq |\\text{Fin}\\, n|$ via `exact_mod_cast`, then `Equiv.Perm.not_solvable`."
     },
     {
       "id": "small",
       "title": "Small Symmetric Groups Are Solvable",
       "startLine": 67,
       "endLine": 75,
-      "summary": "Shows S₀ and S₁ are solvable via Lean's typeclass inference (inferInstance). These trivial cases contrast with the non-solvable S₅ and above."
+      "summary": "Shows S₀ and S₁ are solvable via Lean's typeclass inference (inferInstance). These trivial cases contrast with the non-solvable S₅ and above.",
+      "mathContext": "$S_0 \\cong S_1 \\cong \\{e\\}$ are trivially solvable. Full picture: $S_n$ solvable $\\iff n \\leq 4$."
     },
     {
       "id": "threshold",
       "title": "The Solvability Threshold",
       "startLine": 77,
       "endLine": 86,
-      "summary": "Packages the sharp dichotomy: S₁ solvable ∧ S₅ not solvable. Witnesses the exact transition point at n = 5 where radical solvability breaks."
+      "summary": "Packages the sharp dichotomy: S₁ solvable ∧ S₅ not solvable. Witnesses the exact transition point at n = 5 where radical solvability breaks.",
+      "mathContext": "$\\text{IsSolvable}(S_1) \\wedge \\neg\\text{IsSolvable}(S_5)$: the transition is sharp at $n = 5$."
     },
     {
       "id": "chain",
       "title": "The Complete Proof Chain (Documentation)",
       "startLine": 88,
       "endLine": 152,
-      "summary": "Comprehensive documentation of the 5-step proof chain (A₅ simple → non-solvable → Sₙ not solvable → Galois bridge → generic quintic). Includes 'Why Exactly 5?' table (derived series for S₁ through S₅) and 'Crucial Asymmetry' table (degree-by-degree radical solvability with historical formula discoverers)."
+      "summary": "Comprehensive documentation of the 5-step proof chain (A₅ simple → non-solvable → Sₙ not solvable → Galois bridge → generic quintic). Includes 'Why Exactly 5?' table (derived series for S₁ through S₅) and 'Crucial Asymmetry' table (degree-by-degree radical solvability with historical formula discoverers).",
+      "mathContext": "$A_5$ simple $\\Rightarrow$ $[A_5, A_5] = A_5$ $\\Rightarrow$ $S_n$ not solvable $\\Rightarrow$ $\\text{Gal}(x^5 + \\cdots) \\cong S_5$ not solvable $\\Rightarrow$ no radical formula."
     },
     {
       "id": "verification",
       "title": "Verification",
       "startLine": 154,
       "endLine": 163,
-      "summary": "Type-checks all four main theorems: a5_is_simple, s5_not_solvable, symmetric_not_solvable, five_is_the_threshold."
+      "summary": "Type-checks all four main theorems: a5_is_simple, s5_not_solvable, symmetric_not_solvable, five_is_the_threshold.",
+      "mathContext": "All four theorems verified: `IsSimpleGroup(A_5)`, $\\neg\\text{IsSolvable}(S_5)$, $\\forall n \\geq 5, \\neg\\text{IsSolvable}(S_n)$, threshold witness."
     }
   ],
   "conclusion": {
