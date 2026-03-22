@@ -2,7 +2,7 @@
   {
     "id": "ann-smm-imports",
     "proofId": "prob-method-second-moment",
-    "range": { "startLine": 1, "endLine": 14 },
+    "range": { "startLine": 1, "endLine": 17 },
     "type": "context",
     "title": "Module Setup and Namespace",
     "content": "The file imports the full Mathlib library and works within the `ProbMethod.SecondMoment` namespace. The formalization uses finite probability spaces modeled over `Finset α` with rational-valued random variables (`α → ℚ`), giving exact arithmetic without floating-point concerns. This discrete framework suffices for combinatorial applications where the sample space is finite.",
@@ -14,7 +14,7 @@
   {
     "id": "ann-smm-chebyshev",
     "proofId": "prob-method-second-moment",
-    "range": { "startLine": 18, "endLine": 22 },
+    "range": { "startLine": 19, "endLine": 55 },
     "type": "theorem",
     "title": "Chebyshev's Inequality (Finite Version)",
     "content": "Formalizes Chebyshev's inequality for finite probability spaces. The mean $\\mu$ and variance $\\operatorname{Var}[X]$ are computed as finite sums over a `Finset`. The bound states that the fraction of elements deviating from the mean by at least $t$ is at most $\\operatorname{Var}[X]/t^2$. This is proved by applying Markov's inequality to the non-negative random variable $(X - \\mu)^2$, which is the standard textbook approach lifted to the Finset setting.",
@@ -26,7 +26,7 @@
   {
     "id": "ann-smm-paley-zygmund",
     "proofId": "prob-method-second-moment",
-    "range": { "startLine": 26, "endLine": 29 },
+    "range": { "startLine": 57, "endLine": 75 },
     "type": "theorem",
     "title": "Paley-Zygmund Inequality",
     "content": "Formalizes the Paley-Zygmund inequality, which provides a lower bound on $\\Pr[X > 0]$ for non-negative random variables. While Chebyshev bounds deviation probabilities from above, Paley-Zygmund bounds positivity probability from below — making it the key tool for existence proofs. The proof uses the Cauchy-Schwarz inequality: $E[X]^2 = E[X \\cdot \\mathbf{1}_{X>0}]^2 \\leq E[X^2] \\cdot \\Pr[X > 0]$. This formalization states the qualitative version: if $E[X] > 0$ and $X \\geq 0$, then $X$ is positive on a non-empty subset.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-smm-existence",
     "proofId": "prob-method-second-moment",
-    "range": { "startLine": 33, "endLine": 37 },
+    "range": { "startLine": 115, "endLine": 159 },
     "type": "theorem",
     "title": "Second Moment Existence Theorem",
     "content": "The main application theorem: if the second moment $E[X^2]$ is at most $2(E[X])^2/|s|$, then at least half the sample space has $X > 0$. This is the workhorse of the second moment method in combinatorics — it converts a variance bound into a quantitative existence guarantee. The factor of 2 comes from the Paley-Zygmund bound: $\\Pr[X > 0] \\geq (E[X])^2/E[X^2] \\geq 1/2$. In random graph theory, this is exactly how one proves that $G(n,p)$ contains a given subgraph with high probability when $p$ is above the threshold.",
@@ -48,15 +48,15 @@
     "prerequisites": ["Paley-Zygmund inequality", "indicator sum variance", "random graph model"]
   },
   {
-    "id": "ann-smm-sorry-strategy",
+    "id": "ann-smm-helpers",
     "proofId": "prob-method-second-moment",
-    "range": { "startLine": 18, "endLine": 37 },
-    "type": "theorem",
-    "title": "Proof Status and Formalization Approach",
-    "content": "All three theorems currently use `sorry` placeholders. The proof strategies are well-understood: Chebyshev follows from Markov applied to $(X-\\mu)^2$, Paley-Zygmund from Cauchy-Schwarz, and the existence theorem from direct application of Paley-Zygmund. The formalization uses `Finset.filter` to model events and `Finset.sum` for expectations, keeping everything in the decidable `ℚ` arithmetic. Completing these proofs would involve finite summation manipulations and algebraic rearrangement — routine but requiring careful interaction with Mathlib's `Finset` API.",
-    "mathContext": "The proof chain is: Markov $\\Rightarrow$ Chebyshev $\\Rightarrow$ Paley-Zygmund $\\Rightarrow$ existence theorem. Each step is a standard inequality derivation over finite sums.",
+    "range": { "startLine": 77, "endLine": 113 },
+    "type": "technique",
+    "title": "Helper Lemmas: Cauchy-Schwarz and Support",
+    "content": "Three private lemmas building toward the existence theorem:\n\n1. **Finite Cauchy-Schwarz**: $(\\sum f)^2 \\leq |s| \\cdot \\sum f^2$, proved by induction on `Finset` using the non-negativity of $\\sum (f(a) - f(b))^2$.\n\n2. **Support equality**: For $f \\geq 0$, the sum over all of $s$ equals the sum over the positive support $\\{a : f(a) > 0\\}$, since zero-valued elements contribute nothing.\n\n3. **Filter monotonicity**: $\\sum_{\\text{pos}} f^2 \\leq \\sum_s f^2$ since squares are non-negative and the filter is a subset.\n\nThese are the standard building blocks for Paley-Zygmund-type arguments in finite probability.",
+    "mathContext": "Cauchy-Schwarz: $(\\sum f)^2 \\leq |s| \\sum f^2$. Support: $f \\geq 0 \\implies \\sum_s f = \\sum_{\\{f>0\\}} f$. Monotonicity: $\\sum_{\\{f>0\\}} f^2 \\leq \\sum_s f^2$.",
     "significance": "supporting",
-    "relatedConcepts": ["sorry placeholder", "Lean 4 tactics", "Finset API", "algebraic manipulation"],
-    "prerequisites": ["Lean 4 proof tactics", "Finset.sum", "Finset.filter"]
+    "relatedConcepts": ["Cauchy-Schwarz inequality", "Finset.induction_on", "support of a function", "filter monotonicity"],
+    "prerequisites": ["Finset.induction_on", "Finset.sum_le_sum_of_subset_of_nonneg", "nlinarith"]
   }
 ]
