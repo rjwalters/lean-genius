@@ -216,52 +216,47 @@ private lemma pow2_sum_inj : ∀ (n : ℕ) (a b c d : ℕ),
           · exact absurd (Nat.pow_lt_pow_right (by norm_num : 1 < 2) h) (by omega)
       · -- a = 0, c ≥ 1: parity contradiction
         exfalso
-        have hc' : 1 ≤ c := by omega
-        have hd' : 1 ≤ d := by omega
-        -- LHS = 1 + 2^b
         simp only [pow_zero] at heq
+        -- heq : 1 + 2 ^ b = 2 ^ c + 2 ^ d, with c ≥ 1 and d ≥ c ≥ 1
         by_cases hb : b = 0
-        · -- LHS = 2, RHS ≥ 2^1 + 2^1 = 4
+        · -- b = 0: LHS = 2 but RHS ≥ 4 since c,d ≥ 1
           subst hb; simp only [pow_zero] at heq
-          have : 2 ^ c ≥ 2 := Nat.one_le_pow c 2 (by norm_num) |>.trans_lt (by omega) |>.le
-          have : 2 ^ d ≥ 2 := Nat.one_le_pow d 2 (by norm_num) |>.trans_lt (by omega) |>.le
+          have hc1 : 2 ≤ 2 ^ c :=
+            le_trans (show 2 ≤ 2 ^ 1 from le_refl _) (Nat.pow_le_pow_right (by omega) (by omega))
+          have hd1 : 2 ≤ 2 ^ d :=
+            le_trans (show 2 ≤ 2 ^ 1 from le_refl _) (Nat.pow_le_pow_right (by omega) (by omega))
           omega
-        · -- LHS = 1 + 2^b is odd, RHS is even
-          have hb' : 1 ≤ b := by omega
-          -- 2 divides RHS since c ≥ 1 and d ≥ 1
-          have hrhs_even : 2 ∣ (2 ^ c + 2 ^ d) := by
-            have h1 : 2 ∣ 2 ^ c := dvd_pow_self 2 (by omega : c ≠ 0)
-            have h2 : 2 ∣ 2 ^ d := dvd_pow_self 2 (by omega : d ≠ 0)
-            exact dvd_add h1 h2
-          -- But LHS = 1 + 2^b is odd
-          have hlhs_odd : ¬ 2 ∣ (1 + 2 ^ b) := by
-            have h2b : 2 ∣ 2 ^ b := dvd_pow_self 2 (by omega : b ≠ 0)
-            intro ⟨m, hm⟩
-            have : 2 ∣ (1 + 2 ^ b - 2 ^ b) := Nat.dvd_sub' ⟨m, hm⟩ h2b
-            simp at this
-          exact hlhs_odd (heq ▸ hrhs_even)
+        · -- b ≥ 1: factor out 2 to get 1 + 2·X = 2·Y (odd = even)
+          have fb : 2 ^ b = 2 * 2 ^ (b - 1) := by
+            conv_lhs => rw [show b = (b - 1) + 1 from by omega, pow_succ']
+          have fc : 2 ^ c = 2 * 2 ^ (c - 1) := by
+            conv_lhs => rw [show c = (c - 1) + 1 from by omega, pow_succ']
+          have fd : 2 ^ d = 2 * 2 ^ (d - 1) := by
+            conv_lhs => rw [show d = (d - 1) + 1 from by omega, pow_succ']
+          rw [fb, fc, fd] at heq
+          omega
     · by_cases hc : c = 0
       · -- a ≥ 1, c = 0: symmetric parity contradiction
         exfalso
-        have ha' : 1 ≤ a := by omega
-        have hb' : 1 ≤ b := by omega
-        simp only [pow_zero] at heq
+        subst hc; simp only [pow_zero] at heq
+        -- heq : 2 ^ a + 2 ^ b = 1 + 2 ^ d, with a ≥ 1 and b ≥ a ≥ 1
         by_cases hd : d = 0
-        · subst hd; simp only [pow_zero] at heq
-          have : 2 ^ a ≥ 2 := Nat.one_le_pow a 2 (by norm_num) |>.trans_lt (by omega) |>.le
-          have : 2 ^ b ≥ 2 := Nat.one_le_pow b 2 (by norm_num) |>.trans_lt (by omega) |>.le
+        · -- d = 0: RHS = 2 but LHS ≥ 4
+          subst hd; simp only [pow_zero] at heq
+          have ha1 : 2 ≤ 2 ^ a :=
+            le_trans (show 2 ≤ 2 ^ 1 from le_refl _) (Nat.pow_le_pow_right (by omega) (by omega))
+          have hb1 : 2 ≤ 2 ^ b :=
+            le_trans (show 2 ≤ 2 ^ 1 from le_refl _) (Nat.pow_le_pow_right (by omega) (by omega))
           omega
-        · have hd' : 1 ≤ d := by omega
-          have hlhs_even : 2 ∣ (2 ^ a + 2 ^ b) := by
-            have h1 : 2 ∣ 2 ^ a := dvd_pow_self 2 (by omega : a ≠ 0)
-            have h2 : 2 ∣ 2 ^ b := dvd_pow_self 2 (by omega : b ≠ 0)
-            exact dvd_add h1 h2
-          have hrhs_odd : ¬ 2 ∣ (1 + 2 ^ d) := by
-            have h2d : 2 ∣ 2 ^ d := dvd_pow_self 2 (by omega : d ≠ 0)
-            intro ⟨m, hm⟩
-            have : 2 ∣ (1 + 2 ^ d - 2 ^ d) := Nat.dvd_sub' ⟨m, hm⟩ h2d
-            simp at this
-          exact hrhs_odd (heq.symm ▸ hlhs_even)
+        · -- d ≥ 1: factor out 2 to get 2·X = 1 + 2·Y (even = odd)
+          have fa : 2 ^ a = 2 * 2 ^ (a - 1) := by
+            conv_lhs => rw [show a = (a - 1) + 1 from by omega, pow_succ']
+          have fb : 2 ^ b = 2 * 2 ^ (b - 1) := by
+            conv_lhs => rw [show b = (b - 1) + 1 from by omega, pow_succ']
+          have fd : 2 ^ d = 2 * 2 ^ (d - 1) := by
+            conv_lhs => rw [show d = (d - 1) + 1 from by omega, pow_succ']
+          rw [fa, fb, fd] at heq
+          omega
       · -- a ≥ 1, c ≥ 1: divide by 2 and recurse
         have ha' : 1 ≤ a := by omega
         have hc' : 1 ≤ c := by omega
@@ -309,24 +304,12 @@ theorem isSidon_powers_of_two (k : ℕ) : IsSidon ((range k).image (2 ^ ·)) := 
   have ⟨hac, hbd⟩ := pow2_sum_inj (a + c) a b c d le_rfl hab hcd heq
   exact ⟨congr_arg (2 ^ ·) hac, congr_arg (2 ^ ·) hbd⟩
 
-/-- There exists a Sidon set of size at least √N / 2 in {1,...,N}.
-
-**Proof**: Use powers of 2 up to N: {1, 2, 4, ..., 2^k} where 2^k ≤ N < 2^{k+1}.
-This gives k+1 elements and k ≈ log₂(N), so k+1 ≈ log₂(N).
-Since log₂(N) ≥ √N/2 for N ≥ 4 is NOT true... we need another approach.
-
-Actually, the statement √N/2 ≤ |A| for some Sidon A ⊆ [1,N] is achievable
-using a different construction. For √N/2 elements, their pairwise sums span
-(√N/2)² = N/4 values, fitting in [2, 2N]. The greedy construction achieves this.
-
-**Proof status**: HARD - requires showing greedy Sidon construction achieves Ω(√N) density.
-This uses the Singer construction from finite projective planes (Singer 1938).
+/-
+  sidon_set_lower_bound_exists: Proved in Erdos44SidonLowerBound.lean
+  using the modular parabola construction and Bertrand's postulate.
+  Available as Erdos44.sidon_set_lower_bound_exists.
+  Contains 2 sorries: the Sidon property (modular arithmetic) and sqrt²≤N.
 -/
--- sidon_set_lower_bound_exists: Previously an axiom, now proved in
--- Erdos44SidonLowerBound.lean using the modular parabola construction
--- and Bertrand's postulate. Available as Erdos44.sidon_set_lower_bound_exists.
--- Contains 2 sorries: the Sidon property (modular arithmetic) and sqrt²≤N.
-
 /- ## Part 4: Main Conjecture (OPEN) -/
 
 /-- **OPEN CONJECTURE**: Any Sidon set can be extended to achieve near-optimal density.

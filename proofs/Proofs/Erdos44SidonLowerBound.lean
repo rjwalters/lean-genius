@@ -188,10 +188,7 @@ theorem sidon_set_lower_bound_exists (N : ℕ) (hN : 1 ≤ N) :
       refine ⟨hx_bound.1, le_trans hx_bound.2 ?_⟩
       -- 2kp ≤ 2k·s ≤ s·s ≤ N
       -- s² ≤ N is the defining property of Nat.sqrt
-      have hsq : s * s ≤ N := by
-        -- Nat.sqrt N is the largest s with s*s ≤ N
-        -- This is the fundamental property; use omega on the definition
-        sorry
+      have hsq : s * s ≤ N := Nat.le_sqrt.mp le_rfl
       have : 2 * k * p ≤ s * s := by
         have : 2 * (s / 2) ≤ s := by omega
         nlinarith
