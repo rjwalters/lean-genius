@@ -111,6 +111,16 @@
       "targetId": "cauchy-schwarz-integral",
       "relationship": "related",
       "description": "The Bunyakovsky-Schwarz integral inequality is the continuous analog of the M₁ ≤ M₂ case: for equal weights, (∑wᵢzᵢ)² ≤ ∑wᵢzᵢ² is Cauchy-Schwarz, and the integral version extends this to L² spaces"
+    },
+    {
+      "targetId": "mean-value-theorem",
+      "relationship": "related",
+      "description": "MVT is foundational for proving the r=0 limit case: lim_{r→0} M_r = GM requires L'Hôpital's rule, which itself depends on the mean value theorem"
+    },
+    {
+      "targetId": "triangle-inequality",
+      "relationship": "related",
+      "description": "For p ≥ 1, the power mean inequality M₁ ≤ M_p implies (via Minkowski) the L^p triangle inequality — connecting discrete power means to the geometry of normed spaces"
     }
   ],
   "overview": {
@@ -219,6 +229,8 @@
     "cauchy-schwarz",
     "amgm-inequality-oq-03-oq-01",
     "amgm-inequality-oq-03-oq-02",
-    "cauchy-schwarz-integral"
+    "cauchy-schwarz-integral",
+    "mean-value-theorem",
+    "triangle-inequality"
   ]
 }
