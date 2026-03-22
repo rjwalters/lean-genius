@@ -18,11 +18,11 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-22",
-    "iteration": 5,
-    "focus": "energy_increment_step decomposed into Case A (equitable, too many irregular pairs) and Case B (non-equitable). Core difficulty identified: 1/k² normalization.",
+    "iteration": 6,
+    "focus": "Size-weighted energy resolves normalization. Needs: variance lemma, le_one, refinement construction.",
     "blockers": [
-      "energy_increment_step Case A: 1/k² normalization not monotone under refinement — standard Komlos-Simonovits eps^5 bound uses size-weighted energy, not unweighted. Splitting one part changes denominator from k² to (k+1)², diluting energy. Need either: (a) all-parts-simultaneous refinement showing gain overcomes 4^k normalization dilution, (b) k-preserving vertex rearrangement, or (c) change energy definition to size-weighted.",
-      "energy_increment_step Case B: non-equitable case requires separate construction."
+      "weighted_variance_lower_bound (pure algebra)",
+      "Common refinement construction"
     ],
     "nextAction": "Consider changing partitionEnergy to size-weighted Σ(nᵢnⱼ/n²)d² which is monotone under refinement, then energy_increment_step follows from standard argument. Alternatively, prove Case A by showing enough irregular pairs (>eps*k²) produce total gain exceeding the normalization dilution.",
     "attemptCounts": {
@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "NEAR-COMPLETE: energy_increment_step decomposed into 2 sub-cases with 2 new helper lemmas proved. Main result regularity_lemma_strong PROVED via Mathlib bridge. 0 axioms, 2 sorries (both in energy_increment_step sub-cases). File: 546 lines, 19 theorems.",
+    "progressSummary": "PROGRESS: Changed partitionEnergy to size-weighted (resolves 5-iteration blocker). Bound ε⁵→ε⁵/2. 4 sorries remain (variance lemma, le_one, Cases A&B). Main results still proved.",
     "builtItems": [
       "edgeDensity_nonneg: 0 ≤ edgeDensity G A B (proved)",
       "edgeDensity_le_one: edgeDensity G A B ≤ 1 (proved)",
@@ -51,7 +51,11 @@
       "unweighted_density_sq_split: d(A₁,B)²+d(A₂,B)² ≥ d(A₁∪A₂,B)² without size weighting (proved)",
       "card_split_le_bound: k+1 ≤ k*2^k for k≥2 (proved)",
       "energy_increment_step Case A structure: equitable→irregularity_bound fails→extract pair+witnesses (proved framework, sorry on energy bound)",
-      "energy_increment_step Case B structure: non-equitable case (sorry)"
+      "energy_increment_step Case B structure: non-equitable case (sorry)",
+      "partitionEnergy: changed to size-weighted definition Σ(nᵢnⱼ/n²)d²",
+      "partitionEnergy_nonneg: reproved for new definition",
+      "weighted_variance_lower_bound: stated (sorry, pure algebra)",
+      "energy_increment_step: bound ε⁵→ε⁵/2, documented proof strategy"
     ],
     "insights": [
       "Seed file on main (115 lines) has good definitions: edgeDensity, IsEpsRegular, IsRegularPartition, partitionEnergy",
@@ -84,14 +88,19 @@
       "Unweighted convexity PROVED: d(A₁,B)²+d(A₂,B)² ≥ d(A₁∪A₂,B)² — the unweighted sum NEVER decreases under splitting, but the 1/k² normalization dilution from k²→(k+1)² can overwhelm this gain.",
       "For Case A, the proof extracts irregular pair + witnesses correctly (using exists_irregular_pair + exists_irregular_witness). Remaining: construct refined partition and prove energy increase accounts for normalization change.",
       "Possible fix: change partitionEnergy def to size-weighted Σ(|Pᵢ||Pⱼ|/|V|²)d(Pᵢ,Pⱼ)². Then density_sq_convex directly gives monotonicity, and standard eps^5 bound follows. This would require updating partitionEnergy_le_one and max_iterations but NOT regularity_lemma_strong (which bridges to Mathlib).",
-      "Alternative: prove energy_increment_step by choosing parts' with SAME k (rearranging vertices, not adding parts), avoiding normalization change. Requires showing irregular witnesses can improve energy within fixed k parts."
+      "Alternative: prove energy_increment_step by choosing parts' with SAME k (rearranging vertices, not adding parts), avoiding normalization change. Requires showing irregular witnesses can improve energy within fixed k parts.",
+      "BREAKTHROUGH (iteration 6): Changed partitionEnergy from 1/k²-normalized to size-weighted (Σ(nᵢnⱼ/n²)d²). Resolves fundamental normalization dilution issue from iterations 1-5.",
+      "Size-weighted energy is monotone under refinement: splitting any part never decreases energy (by density_sq_convex).",
+      "Energy increment bound corrected from ε⁵ to ε⁵/2. The ε⁵ bound was too strong for finite k: gain = ε⁵·(k-1)/k < ε⁵.",
+      "Proof structure for Case A: extract irregular pair, take common refinement, bilinear variance bound gives per-pair gain ≥ ε⁴·|P|·|Q|/n², sum over ε·k(k-1) pairs ≥ ε⁵/2.",
+      "Case B (non-equitable) not needed by downstream theorems since regularity_lemma_strong bridges to Mathlib."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "HIGH PRIORITY: Consider changing partitionEnergy to size-weighted definition Σ(|Pᵢ||Pⱼ|/|V|²)d². This makes energy monotone under refinement and the standard eps^5 bound applies directly. Would require updating ~3 downstream theorems.",
-      "ALTERNATIVE: For Case A, try constructing parts' with same k parts but rearranged vertices (no normalization change). Use irregular witnesses to improve d² sum within fixed k.",
-      "Case B (non-equitable): prove by splitting the larger part, or by equitizing. Lower priority than Case A.",
-      "All algebraic infrastructure complete: split_energy_identity, split_energy_excess_bound, unweighted_density_sq_split, card_split_le_bound."
+      "Prove weighted_variance_lower_bound: expand Σwᵢ(dᵢ-μ)² = Σwᵢdᵢ² - Wμ², use single_le_sum.",
+      "Prove partitionEnergy_le_one: d²≤1 gives weights sum to 1 for valid partition.",
+      "Prove energy_increment_step Case A: construct common refinement, apply variance bound.",
+      "Case B: handle via equitization or note unreachable in iteration."
     ]
   },
   "tags": [
