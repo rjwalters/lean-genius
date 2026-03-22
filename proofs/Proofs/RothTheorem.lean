@@ -231,8 +231,9 @@ private lemma conj_psi {N : ℕ} [NeZero N] (x : ZMod N) :
       ring
     rw [this, Real.exp_zero]
   have h2 : ψ x * starRingEnd ℂ (ψ x) = 1 := by
-    rw [Complex.mul_conj, Complex.normSq_eq_abs, Complex.norm_eq_abs ▸ h_norm, one_pow]
-    simp
+    rw [← Complex.sq_abs]
+    rw [show Complex.abs (ψ x) ^ 2 = (1 : ℝ) from by
+      rw [← Complex.norm_eq_abs, h_norm, one_pow]]; exact Complex.ofReal_one
   exact mul_left_cancel₀ hne (h2.trans h1.symm)
 
 /-- ψ(c) ≠ 1 when c ≠ 0: a nontrivial character is not the identity.
@@ -257,7 +258,7 @@ private lemma psi_ne_one {N : ℕ} [NeZero N] (c : ZMod N) (hc : c ≠ 0) :
   have hn0 : n = 0 := by
     have h1 : (0 : ℤ) ≤ n * N := hval_eq ▸ Int.natCast_nonneg _
     have h2 : n * (N : ℤ) < N := hval_eq ▸ (by exact_mod_cast ZMod.val_lt c)
-    have : (0 : ℤ) < N := by positivity
+    have : (0 : ℤ) < N := Nat.cast_pos.mpr (Nat.pos_of_ne_zero (NeZero.ne N))
     nlinarith [sq_nonneg n]
   rw [hn0, zero_mul, Int.ofNat_eq_zero] at hval_eq
   rwa [← ZMod.val_eq_zero]
