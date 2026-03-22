@@ -5,6 +5,7 @@
   "description": "Cantor's elegant 1891 proof that the real numbers are uncountable, using the famous diagonal argument to show no enumeration can list all infinite binary sequences.",
   "meta": {
     "author": "Georg Cantor (1891)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cantor%27s_diagonal_argument",
     "date": "1891",
     "status": "verified",
     "tags": [
@@ -12,7 +13,8 @@
       "infinity",
       "cardinality",
       "classic",
-      "intermediate"
+      "intermediate",
+      "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/CantorDiagonalization.lean",
     "badge": "original",
