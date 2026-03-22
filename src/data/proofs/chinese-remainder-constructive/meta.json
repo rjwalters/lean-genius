@@ -85,20 +85,55 @@
     ],
     "crossReferences": [
       {
-        "proofId": "bezout-identity",
+        "targetId": "bezout-identity",
         "relationship": "uses",
-        "description": "Bezout's identity provides the coefficients mu + nv = 1 that give the constructive CRT solution formula"
+        "description": "Bezout's identity provides the coefficients mu + nv = 1 that give the constructive CRT solution formula: x = a*nv + b*mu"
       },
       {
-        "proofId": "chinese-remainder-non-coprime",
+        "targetId": "chinese-remainder-non-coprime",
         "relationship": "extends",
         "description": "Generalizes CRT to non-coprime moduli where solutions exist iff the remainders are compatible: a = b (mod gcd(m,n))"
       },
       {
-        "proofId": "fermats-last-theorem",
+        "targetId": "fermats-last-theorem",
         "relationship": "related",
         "description": "Modular arithmetic and CRT are fundamental tools in the theory of Diophantine equations; Wiles's proof uses CRT-related techniques in the study of Galois representations"
+      },
+      {
+        "targetId": "fundamental-arithmetic",
+        "relationship": "foundational",
+        "description": "Unique prime factorization underpins CRT: the pairwise coprimality condition gcd(m_i, m_j) = 1 is equivalent to requiring distinct prime factors, and the product M = m_1*...*m_k factors uniquely"
+      },
+      {
+        "targetId": "lagrange-theorem",
+        "relationship": "related",
+        "description": "Lagrange's theorem on subgroup orders connects to CRT via the ring isomorphism Z/mnZ -> Z/mZ x Z/nZ: the additive group of the product has order mn = |Z/mZ| * |Z/nZ|"
+      },
+      {
+        "targetId": "infinitude-primes",
+        "relationship": "related",
+        "description": "The infinitude of primes guarantees arbitrarily long sequences of pairwise coprime moduli (use distinct primes), enabling CRT systems of arbitrary size"
+      },
+      {
+        "targetId": "euler-totient",
+        "relationship": "related",
+        "description": "CRT implies the multiplicativity of Euler's totient: phi(mn) = phi(m)*phi(n) for coprime m,n, since the ring isomorphism Z/mnZ -> Z/mZ x Z/nZ restricts to a bijection on units"
+      },
+      {
+        "targetId": "quadratic-reciprocity",
+        "relationship": "related",
+        "description": "Quadratic reciprocity and CRT both belong to Gauss's Disquisitiones Arithmeticae (1801). CRT decomposes congruences by prime power moduli, which is a key technique in proving reciprocity laws"
       }
+    ],
+    "relatedProofs": [
+      "bezout-identity",
+      "chinese-remainder-non-coprime",
+      "fermats-last-theorem",
+      "fundamental-arithmetic",
+      "lagrange-theorem",
+      "infinitude-primes",
+      "euler-totient",
+      "quadratic-reciprocity"
     ],
     "dateAdded": "2025-12-31",
     "axiomCount": 0,
