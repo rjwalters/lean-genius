@@ -14,6 +14,11 @@
       "quadratic residues",
       "Legendre symbol",
       "number theory"
+    ],
+    "prerequisites": [
+      "number theory",
+      "modular arithmetic",
+      "Legendre symbol"
     ]
   },
   {
@@ -32,6 +37,10 @@
       "Euler's criterion",
       "quadratic residues",
       "Fermat's little theorem"
+    ],
+    "prerequisites": [
+      "quadratic residues",
+      "modular arithmetic"
     ]
   },
   {
@@ -49,6 +58,10 @@
     "relatedConcepts": [
       "Legendre symbol",
       "modular arithmetic"
+    ],
+    "prerequisites": [
+      "Legendre symbol",
+      "odd primes"
     ]
   },
   {
@@ -66,6 +79,10 @@
     "relatedConcepts": [
       "quadratic residues",
       "Fermat's theorem on sums of squares"
+    ],
+    "prerequisites": [
+      "quadratic residues",
+      "modular arithmetic"
     ]
   },
   {
@@ -83,6 +100,10 @@
     "relatedConcepts": [
       "quadratic residues",
       "modular arithmetic"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "parity arguments"
     ]
   },
   {
@@ -98,6 +119,10 @@
     "mathContext": "$(a/p) = a^{(p-1)/2} \\mod p$",
     "significance": "key",
     "relatedConcepts": [
+      "Fermat's little theorem",
+      "modular exponentiation"
+    ],
+    "prerequisites": [
       "Fermat's little theorem",
       "modular exponentiation"
     ]
@@ -117,6 +142,10 @@
     "relatedConcepts": [
       "multiplicative functions",
       "factorization"
+    ],
+    "prerequisites": [
+      "Legendre symbol",
+      "multiplicativity"
     ]
   }
 ]
