@@ -774,8 +774,16 @@ theorem triangle_removal_quantitative (delta : ℚ) (hdelta : 0 < delta) :
           fun T hT => hequi (Finset.mem_coe.mpr hT) (Finset.mem_coe.mpr hS)
         -- n ≤ k * (S.card + 1): sum of parts = n, each ≤ S.card + 1
         have hn_le : n ≤ k * (S.card + 1) := by
-          -- Partition: sum of part sizes = n (from Finpartition structure)
-          sorry -- needs: P.parts.sum Finset.card = Fintype.card V
+          -- Sum of part sizes = n (from Finpartition structure)
+          have hsum : P.parts.sum Finset.card = n := by
+            rw [hn_def, Fintype.card, ← P.sup_parts]
+            exact (Finset.card_biUnion fun a ha b hb hab =>
+              Finset.disjoint_coe.mp <| P.supIndep.pairwiseDisjoint ha hb hab).symm
+          calc n = P.parts.sum Finset.card := hsum.symm
+            _ ≤ P.parts.sum (fun _ => S.card + 1) :=
+                Finset.sum_le_sum fun T hT => hbound T hT
+            _ = k * (S.card + 1) := by
+                simp [Finset.sum_const, hk_def]
         -- S.card ≥ n/k - 1 (in ℚ)
         have hS_ge : (S.card : ℚ) ≥ (n : ℚ) / k - 1 := by
           rw [ge_iff_le, sub_le_iff_le_add, div_le_iff₀ hkQ]
