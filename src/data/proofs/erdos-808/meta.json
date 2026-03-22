@@ -7,7 +7,7 @@
     "author": "Alon, Ruzsa, Solymosi (2020)",
     "sourceUrl": "https://erdosproblems.com/808",
     "date": "2020",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos808Problem.lean",
     "tags": [
       "erdos",
@@ -16,7 +16,7 @@
       "graph-theory",
       "disproved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 808,
     "erdosUrl": "https://erdosproblems.com/808",
@@ -60,10 +60,11 @@
     "problemStatement": "If A ⊂ ℕ with |A| = n and graph G on A has ≥ n^{1+c} edges, is max(|A +_G A|, |A ·_G A|) ≥ n^{1+c-ε}? Here A +_G A = {a+b : (a,b) ∈ G}.",
     "proofStrategy": "ARS constructed sets with arithmetic structure where many edges (n^{5/3}) produce few distinct sums/products (n^{4/3}). They also proved a positive lower bound using different techniques.",
     "keyInsights": [
-      "The conjecture is FALSE: n^{5/3} edges can yield only n^{4/3} outputs",
-      "Arithmetic structure allows many edges without many new sums",
-      "Positive result: max ≥ c · m^{3/2} · n^{-7/4} where m = edges",
-      "Graph structure fundamentally changes sum-product behavior vs complete graph"
+      "The conjecture is FALSE: n^{5/3} edges can yield only n^{4/3} outputs, an exponent gap of 1/3",
+      "Arithmetic structure (like APs with |A+A| ≤ 2|A|-1) allows many edges without many new sums",
+      "Positive result: max(|A+_G A|, |A·_G A|) ≥ c · m^{3/2} · n^{-7/4} still guarantees some expansion",
+      "Graph structure fundamentally changes sum-product behavior: sparse graphs defeat expansion that complete graphs guarantee",
+      "The complete graph case reduces to the classical Erdős-Szemerédi conjecture (Problem 52), which remains open — sparsity is the essential obstruction"
     ]
   },
   "sections": [
