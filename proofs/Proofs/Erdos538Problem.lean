@@ -239,7 +239,30 @@ theorem primes_for_element_bound (A : Finset ℕ) (N : ℕ) (a : ℕ)
 theorem sum_reprCount_bound (A : Finset ℕ) (N : ℕ)
     (hA : A ⊆ Finset.range (N + 1)) (hpos : ∀ a ∈ A, 0 < a) :
     ∑ m ∈ Finset.range (N + 1), reprCount A m ≤ A.card * N := by
-  sorry
+  -- Step 1: reprCount A 0 = 0 when all elements of A are positive
+  -- (0 = p*a with p prime ≥ 2 and a ≥ 1 is impossible)
+  have h0 : reprCount A 0 = 0 := by
+    simp only [reprCount, Finset.card_eq_zero, Finset.filter_eq_empty_iff]
+    intro a ha ⟨p, hp, heq⟩
+    have := Nat.mul_le_mul_left 1 (hpos a ha)
+    have := Nat.mul_le_mul_right a hp.two_le
+    omega
+  -- Step 2: Split range(N+1) = {0} ∪ Ico(1, N+1), peel off the m=0 term
+  have h0_mem : (0 : ℕ) ∈ Finset.range (N + 1) := Finset.mem_range.mpr (Nat.zero_lt_succ N)
+  have hsplit : ∑ m ∈ Finset.range (N + 1), reprCount A m =
+      reprCount A 0 + ∑ m ∈ (Finset.range (N + 1)).erase 0, reprCount A m :=
+    (Finset.add_sum_erase _ (fun m => reprCount A m) h0_mem).symm
+  rw [hsplit, h0, zero_add]
+  -- Step 3: The remaining set has N elements, each contributing ≤ A.card
+  have hcard_erase : ((Finset.range (N + 1)).erase 0).card = N := by
+    rw [Finset.card_erase_of_mem h0_mem, Finset.card_range]
+  calc ∑ m ∈ (Finset.range (N + 1)).erase 0, reprCount A m
+      ≤ ∑ m ∈ (Finset.range (N + 1)).erase 0, A.card :=
+        Finset.sum_le_sum (fun m _ => reprCount_le_card A m)
+    _ = ((Finset.range (N + 1)).erase 0).card * A.card := by
+        simp [Finset.sum_const, smul_eq_mul]
+    _ = N * A.card := by rw [hcard_erase]
+    _ = A.card * N := Nat.mul_comm _ _
 
 /-
 ## Section VIII: Connections to Multiplicative Structure
