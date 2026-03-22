@@ -167,5 +167,21 @@
       "description": "Filtering finite sets for sieved elements",
       "module": "Mathlib.Data.Finset.Basic"
     }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "note": "[ErGr80] original formulation"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-760",
+      "relationship": "related",
+      "description": "Both are Erdős combinatorics problems from the ErGr80 collection"
+    }
   ]
 }
