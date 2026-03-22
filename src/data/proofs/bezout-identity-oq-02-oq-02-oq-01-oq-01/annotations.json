@@ -1,1 +1,67 @@
-[]
+[
+  {
+    "id": "ann-bzoq-header",
+    "proofId": "bezout-identity-oq-02-oq-02-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "concept",
+    "title": "Constructive Divisibility Overview",
+    "content": "Removes the `noncomputable` annotation from `constructive_div` by replacing classical choice (`hdvd.choose`) with computable integer division `(b*c)/a`. All theorems proved with 0 sorries and 0 axioms.",
+    "mathContext": "Classical choice in Lean 4 (via `Exists.choose`) produces a witness that exists but cannot be evaluated at runtime. Replacing it with integer division $(bc)/a$ makes the function computable while preserving correctness when $a \\mid bc$.",
+    "significance": "key",
+    "relatedConcepts": ["classical choice", "computability", "integer division"],
+    "prerequisites": ["Lean 4 computability model", "Exists.choose", "Int.ediv"],
+    "tags": ["constructive-math", "computability", "noncomputable"]
+  },
+  {
+    "id": "ann-bzoq-extgcd",
+    "proofId": "bezout-identity-oq-02-oq-02-oq-01-oq-01",
+    "range": { "startLine": 34, "endLine": 79 },
+    "type": "definition",
+    "title": "Extended Euclidean Algorithm",
+    "content": "**extGcd a b** returns $(x, y, g)$ where $ax + by = g = \\gcd(a,b)$. Proved correct via `extGcd_gcd` (output gcd matches `Nat.gcd`) and `extGcd_bezout` (Bézout identity holds). Both proofs use strong induction on $b$ with the recurrence $\\gcd(a, b+1) = \\gcd(b+1, a \\bmod (b+1))$.",
+    "mathContext": "The extended Euclidean algorithm runs in $O(\\log \\min(a,b))$ steps. The Bézout coefficients $x, y$ satisfy $ax + by = \\gcd(a,b)$ and are the foundation for constructive divisibility: when $\\gcd(a,b) = 1$, we get $ax + by = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Bézout's identity", "Euclidean algorithm", "GCD"],
+    "prerequisites": ["Nat.gcd", "strong induction", "Nat.mod_lt"],
+    "tags": ["algorithm", "euclidean", "bezout-identity"]
+  },
+  {
+    "id": "ann-bzoq-computable",
+    "proofId": "bezout-identity-oq-02-oq-02-oq-01-oq-01",
+    "range": { "startLine": 95, "endLine": 126 },
+    "type": "technique",
+    "title": "Computable Constructive Quotient",
+    "content": "**constructive_div_computable a b c** computes $q = xc + y \\cdot (bc/a)$ where $x, y$ are Bézout coefficients. The correctness proof shows $a \\cdot q = c$ via the chain: $a(xc + yk) = xac + y(ak) = xac + y(bc) = (xa + yb)c = 1 \\cdot c = c$, using `Int.mul_ediv_cancel'` to establish $ak = bc$.",
+    "mathContext": "The key substitution replaces `hdvd.choose` (the classical witness that $a \\mid bc$) with $(bc)/a$ (computable integer division). Since $a \\mid bc$, we have $a \\cdot (bc/a) = bc$ by `Int.mul_ediv_cancel'`. The `calc` block chains ring equalities with the Bézout identity $ax + by = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Int.mul_ediv_cancel'", "ring tactic", "calc blocks"],
+    "prerequisites": ["extGcd", "Int.mul_ediv_cancel'", "Nat.Coprime"],
+    "tags": ["computable", "constructive-proof", "key-theorem"]
+  },
+  {
+    "id": "ann-bzoq-examples",
+    "proofId": "bezout-identity-oq-02-oq-02-oq-01-oq-01",
+    "range": { "startLine": 141, "endLine": 158 },
+    "type": "insight",
+    "title": "Computability Demonstration",
+    "content": "Four `native_decide` examples verify concrete values, and four `#eval` lines demonstrate the function evaluates without the `noncomputable` annotation. For example, `constructive_div_computable 3 7 6 = 2` because $\\gcd(3,7) = 1$, $3 \\mid 42$, and $3 \\times 2 = 6$.",
+    "mathContext": "The `#eval` lines are the proof that the annotation was successfully removed: Lean's kernel evaluator can reduce `constructive_div_computable` without encountering `sorry`, `axiom`, or `noncomputable` markers.",
+    "significance": "supporting",
+    "relatedConcepts": ["native_decide", "#eval", "kernel evaluation"],
+    "prerequisites": ["constructive_div_computable"],
+    "tags": ["computational-verification", "eval", "native-decide"]
+  },
+  {
+    "id": "ann-bzoq-witness",
+    "proofId": "bezout-identity-oq-02-oq-02-oq-01-oq-01",
+    "range": { "startLine": 165, "endLine": 181 },
+    "type": "insight",
+    "title": "Key Insight: Division Equals Classical Witness",
+    "content": "**div_witness_correct**: when $a \\mid bc$, integer division $bc/a$ gives the same value as the classical choice witness. This one-line proof (`Int.mul_ediv_cancel'`) is the bridge between computable and classical: the divisibility proof is only needed for verification, not for computation.",
+    "mathContext": "The fundamental insight is separation of concerns: the runtime algorithm uses only $a, b, c$ (computable data), while the divisibility hypothesis $a \\mid bc$ is only needed in the proof term. This pattern — classical proofs about computable functions — is a general technique for removing `noncomputable` in Lean 4.",
+    "significance": "key",
+    "relatedConcepts": ["proof irrelevance", "computation vs verification", "Int.mul_ediv_cancel'"],
+    "prerequisites": ["Int.mul_ediv_cancel'", "divisibility"],
+    "tags": ["key-insight", "proof-technique", "computability"]
+  }
+]

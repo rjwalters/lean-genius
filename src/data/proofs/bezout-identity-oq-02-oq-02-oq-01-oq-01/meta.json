@@ -31,7 +31,14 @@
       "Key insight: replace hdvd.choose with (b*c)/a to eliminate classical choice"
     ],
     "dateAdded": "03/21/26",
-    "axiomCount": 0
+    "axiomCount": 0,
+    "prerequisites": [
+      "Extended Euclidean algorithm",
+      "Bézout's identity",
+      "Integer divisibility and Int.ediv",
+      "Lean 4 computability (noncomputable vs computable)",
+      "Int.mul_ediv_cancel'"
+    ]
   },
   "overview": {
     "historicalContext": "Euclid's lemma states that if a prime p divides a*b, then p divides a or p divides b. The constructive version with explicit quotient extraction was formalized in the parent file, but used Lean's classical choice (Exists.choose) making it noncomputable. This file removes that limitation by using decidable integer division.",
@@ -66,5 +73,17 @@
       "Can the complexity bound O(log min(a,b)) for extGcd be formalized?",
       "Extend to polynomial rings where division algorithms exist"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "bezout-identity",
+      "relationship": "extends",
+      "description": "Root formalization of Bézout's identity; this file answers the open question about removing the noncomputable annotation from the constructive divisibility witness"
+    },
+    {
+      "targetId": "bezout-identity-oq-02",
+      "relationship": "extends",
+      "description": "Parent open question chain: explores constructive divisibility, leading to this computability result"
+    }
+  ]
 }
