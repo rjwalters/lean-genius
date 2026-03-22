@@ -41,6 +41,7 @@
   ],
   "conclusion": {
     "summary": "Formalizes the Dehn invariant approach to scissors congruence with 3 sorries, 0 axioms. Key proved: cube_dehn_zero, tetrahedron_dehn_nonzero (modulo angle irrationality), dehn_obstruction, polygon_dehn_zero.",
+    "implications": "Provides a machine-checked formalization of Hilbert's Third Problem via the Dehn invariant, demonstrating that equal-volume polyhedra need not be scissors congruent — unlike the 2D case (Bolyai-Gerwien theorem).",
     "openQuestions": [
       "Prove tetrahedron_angle_irrational_pi (Niven's theorem: arccos(1/3)/π is irrational)",
       "Formalize the full tensor product Dehn invariant in ℝ ⊗_ℤ (ℝ/πℤ)",
