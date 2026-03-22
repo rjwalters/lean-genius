@@ -87,7 +87,15 @@
       "startLine": 57,
       "endLine": 75,
       "summary": "Qualitative Paley-Zygmund: for a non-negative function on a Finset with positive sum, there exists an element where the function is positive. This is the existential core of the second moment method.",
-      "mathContext": "Paley-Zygmund: for $X \\geq 0$ with $E[X] > 0$, $\\Pr[X > 0] > 0$. The quantitative form gives $\\Pr[X > 0] \\geq (E[X])^2 / E[X^2]$. Proof via Cauchy-Schwarz: $E[X]^2 = E[X \\cdot \\mathbf{1}_{X>0}]^2 \\leq E[X^2] \\cdot \\Pr[X > 0]$."
+      "mathContext": "Paley-Zygmund: $\\sum f > 0 \\wedge f \\geq 0 \\implies \\exists a: f(a) > 0$. Standard form: $\\Pr[X > 0] \\geq (E[X])^2/E[X^2]$."
+    },
+    {
+      "id": "helper-lemmas",
+      "title": "Helper Lemmas",
+      "startLine": 77,
+      "endLine": 114,
+      "summary": "Three private lemmas supporting the second moment existence theorem: Cauchy-Schwarz for finite sums $(\\sum f)^2 \\leq |S| \\cdot \\sum f^2$, sum over positive support equals total sum for non-negative functions, and monotonicity of $\\sum f^2$ under subset restriction.",
+      "mathContext": "Cauchy-Schwarz: $(\\sum_{a \\in S} f(a))^2 \\leq |S| \\cdot \\sum_{a \\in S} f(a)^2$. Proved by induction on $S$ using the identity $\\sum (f(a) - f(b))^2 \\geq 0$."
     },
     {
       "id": "existence-theorem",
