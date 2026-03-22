@@ -55,7 +55,8 @@
       "**Logarithmic vs Natural Density**: Logarithmic density weights smaller integers more heavily (by 1/n), making it more likely to exist. Besicovitch showed natural density can fail even in simple cases.",
       "**Modular Avoidance**: Forbidding residue classes {0} mod n is just divisibility avoidance. The general case allows forbidding any residues, a strictly more complex condition.",
       "**Davenport-Erdős Foundation**: The 1936 theorem proves the special case X_n = {0}, establishing logarithmic density for non-divisibility sets.",
-      "**Generalization Hierarchy**: This problem (#486) generalizes #25 (single forbidden class per modulus), which in turn generalizes divisibility avoidance."
+      "**Generalization Hierarchy**: This problem (#486) generalizes #25 (single forbidden class per modulus), which in turn generalizes divisibility avoidance.",
+      "**Sieve theory connection**: The restriction to coprime residue classes echoes Selberg's sieve — excluding residue classes modulo primes is the foundation of sieve methods, making this problem a natural generalization from a sieve-theoretic perspective"
     ]
   },
   "sections": [

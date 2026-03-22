@@ -54,7 +54,8 @@
       "**Moree-Osburn lattice**: The set {(a, b√2) : a,b ∈ ℤ} 'stretches' the integer lattice by √2 in one direction, breaking symmetries that would create regular polygons",
       "**Landau's theorem**: The number of integers ≤ N representable as x² + 2y² is Θ(N/√log N), controlling the distance count",
       "**Configuration classification**: Only 6 ways exist for 4 points to have exactly 2 distances; this lattice avoids all of them",
-      "**Quadratic forms**: Distances are √(x² + 2y²) - a positive definite binary quadratic form whose representation theory is well understood"
+      "**Quadratic forms**: Distances are √(x² + 2y²) - a positive definite binary quadratic form whose representation theory is well understood",
+      "**Near-optimality**: The Guth-Katz theorem (2015) shows any n points determine ≥ Ω(n/log n) distinct distances, so this construction achieves the optimal order — the 4-point property comes 'for free' from the lattice structure"
     ]
   },
   "sections": [
