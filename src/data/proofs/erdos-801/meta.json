@@ -71,7 +71,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem in 1979, asking whether graphs with bounded independence number must contain locally dense subsets. The problem captures a fundamental local-global phenomenon in extremal graph theory. Noga Alon resolved it affirmatively in 1996 using sophisticated probabilistic techniques.",
+    "historicalContext": "Erdős posed this problem circa 1979, asking whether graphs with bounded independence number must contain locally dense subsets — a fundamental local-global question in extremal graph theory. The problem is motivated by Ramsey theory: if $\\alpha(G) \\leq \\sqrt{n}$, then by Ramsey-type reasoning, the graph must be 'dense' in some sense, but can this density be localized to a small subset? Noga Alon resolved it affirmatively in 1996 using the probabilistic method — specifically, random sampling of $\\sqrt{n}$-vertex subsets. The expected number of induced edges in a random $\\sqrt{n}$-subset is $\\Omega(\\sqrt{n} \\log n)$ when $\\alpha(G) \\leq \\sqrt{n}$ implies $e(G) = \\Omega(n \\log n)$, so some $\\sqrt{n}$-subset achieves this bound. The $\\log n$ factor is tight: Paley graphs (constructed from quadratic residues modulo primes) show no $\\sqrt{n}$-subset can induce more than $O(\\sqrt{n} \\log n)$ edges. This connects to deep questions about pseudo-random graphs and Ramsey multiplicity.",
     "problemStatement": "If G is a graph on n vertices containing no independent set on more than √n vertices, then there is a set of at most √n vertices containing at least c · √n · log n edges for some constant c > 0.",
     "proofStrategy": "The formalization wraps `SimpleGraph (Fin n)` as `FiniteGraph n`, defines $\\alpha(G)$ via `sSup` over independent sets (`IsIndependent`), and counts induced edges via `Finset.filter` on ordered pairs. `Erdos801Statement` quantifies: $\\exists c > 0,\\; \\forall n \\geq 2,\\; \\forall G$ with $\\alpha(G) \\leq \\sqrt{n}$, $\\exists S$ with $|S| \\leq \\sqrt{n}$ and $e(S) \\geq c\\sqrt{n}\\log n$. Alon's theorem, log-factor necessity, and vertex-size optimality are axiomatized. The summary theorem pairs existence with tightness. 0 sorries.",
     "keyInsights": [
@@ -88,35 +88,40 @@
       "title": "Imports and Setup",
       "startLine": 30,
       "endLine": 39,
-      "summary": "Imports `SimpleGraph.Basic`, `Finset.Basic`, `SpecialFunctions.Log.Basic`, `Filter.Basic`, and `Tactic`. Opens `Finset` and `Real` namespaces."
+      "summary": "Imports `SimpleGraph.Basic`, `Finset.Basic`, `SpecialFunctions.Log.Basic`, `Filter.Basic`, and `Tactic`. Opens `Finset` and `Real` namespaces.",
+      "mathContext": "The imports reflect the hybrid discrete/continuous nature: `SimpleGraph` for graph structure, `Finset` for counting, `Real.log` for the $\\log n$ factor, and `Filter.atTop` for asymptotic tightness."
     },
     {
       "id": "definitions",
       "title": "Basic Graph Definitions",
       "startLine": 40,
       "endLine": 58,
-      "summary": "Defines `FiniteGraph` as `SimpleGraph (Fin n)`, $\\alpha(G)$ via `sSup` over `IsIndependent` sets, `HasBoundedIndependence`, and `inducedEdges` via `Finset.filter` on ordered pairs."
+      "summary": "Defines `FiniteGraph` as `SimpleGraph (Fin n)`, $\\alpha(G)$ via `sSup` over `IsIndependent` sets, `HasBoundedIndependence`, and `inducedEdges` via `Finset.filter` on ordered pairs.",
+      "mathContext": "$\\alpha(G) = \\sup\\{|S| : S \\subseteq V, G.\\text{IsIndependent}\\, S\\}$. Induced edges: $e_G(S) = |\\{(u,v) \\in S \\times S : u < v \\wedge G.\\text{Adj}\\, u\\, v\\}|$."
     },
     {
       "id": "main-statement",
       "title": "The Main Statement",
       "startLine": 60,
       "endLine": 78,
-      "summary": "Defines `Erdos801Statement`: $\\exists c > 0,\\; \\forall G$ with $\\alpha(G) \\leq \\sqrt{n}$, $\\exists S$ with $|S| \\leq \\sqrt{n}$ and $e(S) \\geq c\\sqrt{n}\\log n$. Axiom `alon_1996` and wrapper `erdos_801_solved`."
+      "summary": "Defines `Erdos801Statement`: $\\exists c > 0,\\; \\forall G$ with $\\alpha(G) \\leq \\sqrt{n}$, $\\exists S$ with $|S| \\leq \\sqrt{n}$ and $e(S) \\geq c\\sqrt{n}\\log n$. Axiom `alon_1996` and wrapper `erdos_801_solved`.",
+      "mathContext": "$\\exists c > 0, \\forall n \\geq 2, \\forall G$ on $n$ vertices: $\\alpha(G) \\leq \\lfloor\\sqrt{n}\\rfloor \\implies \\exists S \\subseteq V(G), |S| \\leq \\lfloor\\sqrt{n}\\rfloor \\wedge e_G(S) \\geq c\\sqrt{n}\\log n$."
     },
     {
       "id": "tightness",
       "title": "Tightness and Optimality",
       "startLine": 79,
       "endLine": 104,
-      "summary": "Axioms: `log_factor_necessary` ($\\sqrt{n}\\log n$ is tight) and `vertex_set_size_optimal` ($\\sqrt{n}$ vertex budget cannot be reduced to $o(\\sqrt{n})$). Uses `Filter.atTop` for asymptotic quantification."
+      "summary": "Axioms: `log_factor_necessary` ($\\sqrt{n}\\log n$ is tight) and `vertex_set_size_optimal` ($\\sqrt{n}$ vertex budget cannot be reduced to $o(\\sqrt{n})$). Uses `Filter.atTop` for asymptotic quantification.",
+      "mathContext": "Tightness: $\\exists$ graphs with $\\alpha(G) \\leq \\sqrt{n}$ where every $\\sqrt{n}$-vertex subset has $e(S) = O(\\sqrt{n}\\log n)$ (Paley graphs). Optimality: reducing $|S|$ to $\\varepsilon\\sqrt{n}$ drops the guarantee below $\\sqrt{n}$."
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "startLine": 105,
       "endLine": 123,
-      "summary": "Theorem `erdos_801_summary`: conjunction of `alon_1996` (existence) and `log_factor_necessary` (tightness), proved as `⟨alon_1996, log_factor_necessary⟩`."
+      "summary": "Theorem `erdos_801_summary`: conjunction of `alon_1996` (existence) and `log_factor_necessary` (tightness), proved as `⟨alon_1996, log_factor_necessary⟩`.",
+      "mathContext": "The summary pairs existence ($\\sqrt{n}\\log n$ edges achievable) with tightness ($\\sqrt{n}\\log n$ cannot be improved). Proved as a conjunction of the two axioms."
     }
   ],
   "conclusion": {
@@ -131,6 +136,13 @@
   },
   "references": [
     {
+      "authors": "Alon, Noga",
+      "title": "Independence numbers of locally sparse graphs and a Ramsey type problem",
+      "year": "1996",
+      "venue": "Random Structures & Algorithms",
+      "note": "Proved the existence of dense √n-vertex subsets in graphs with α(G) ≤ √n"
+    },
+    {
       "authors": "Erdős, Paul; Graham, Ronald L.",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": "1980",
@@ -140,12 +152,12 @@
   ],
   "crossReferences": [
     {
-      "targetId": "erdos-806",
-      "relationship": "related",
-      "description": "Both are Erdős problems in the 800s about structural properties of integers"
+      "target": "ramseys-theorem",
+      "context": "The independence/clique duality underlying Alon's proof — α(G) ≤ √n is a Ramsey-type constraint"
+    },
+    {
+      "target": "erdos-806",
+      "context": "Both are Erdős problems about structural graph-theoretic properties"
     }
-  ],
-  "relatedProofs": [
-    "erdos-806"
   ]
 }

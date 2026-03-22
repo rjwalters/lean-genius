@@ -49,7 +49,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #596 from [Er87] asks for a characterization of graph pairs (G₁, G₂) satisfying a finite/countable Ramsey-type dichotomy. Erdős and Hajnal originally conjectured no such pairs exist, but Nešetřil-Rödl and Erdős-Hajnal showed that (C₄, C₆) is a valid pair. The related Problem #595 asks specifically about (K₄, K₃).",
+    "historicalContext": "Erdős Problem #596 from [Er87] asks for a characterization of graph pairs (G₁, G₂) satisfying a finite/countable Ramsey-type dichotomy. Erdős and Hajnal originally conjectured no such pairs exist, but Nešetřil-Rödl and Erdős-Hajnal showed that (C₄, C₆) is a valid pair. The related Problem #595 asks specifically about (K₄, K₃). The structural Ramsey theory context here traces back to the Nešetřil-Rödl theorem of the 1970s, which proved that for any graph H there exist graphs with arbitrarily high chromatic number containing no odd cycle shorter than any fixed length. Erdős and Hajnal's result that C₄-free graphs decompose into countably many trees (a consequence of their work on sparse graphs) provided the key tool for the countable coloring half of the (C₄, C₆) dichotomy.",
     "problemStatement": "For which pairs (G₁, G₂) is it true that (1) for every n, there exists a G₁-free graph H such that every n-coloring of H's edges contains a monochromatic G₂, and (2) every G₁-free graph H admits a countable edge coloring with no monochromatic G₂? OPEN.",
     "proofStrategy": "The formalization defines GraphProperty, FiniteRamseyProperty, CountableColoringProperty, and HasDichotomy. The known pair (C₄, C₆) is proved to satisfy the dichotomy from axioms of Nešetřil-Rödl and Erdős-Hajnal. The main problem asks for a complete characterization.",
     "keyInsights": [
@@ -66,49 +66,56 @@
       "title": "Part I: Graph Coloring Dichotomy",
       "startLine": 25,
       "endLine": 52,
-      "summary": "Defines GraphProperty, FiniteRamseyProperty, CountableColoringProperty, and HasDichotomy."
+      "summary": "Defines GraphProperty, FiniteRamseyProperty, CountableColoringProperty, and HasDichotomy.",
+      "mathContext": "FiniteRamseyProperty$(G_1, G_2)$: $\\forall n, \\exists H$ $G_1$-free such that every $n$-coloring of $E(H)$ has monochromatic $G_2$. CountableColoringProperty: every $G_1$-free $H$ admits $c : E(H) \\to \\mathbb{N}$ with no monochromatic $G_2$."
     },
     {
       "id": "known-examples",
       "title": "Part II: Known Examples",
       "startLine": 54,
       "endLine": 77,
-      "summary": "Defines IsC4Free, ContainsC6. Axioms: nesetril_rodl_c4_c6, erdos_hajnal_c4_trees."
+      "summary": "Defines IsC4Free, ContainsC6. Axioms: nesetril_rodl_c4_c6 (Ramsey for C₄-free/C₆), erdos_hajnal_c4_trees (C₄-free → countable decomposition).",
+      "mathContext": "Nešetřil-Rödl: $\\forall n, \\exists$ $C_4$-free $H$ with every $n$-coloring containing monochromatic $C_6$. Erdős-Hajnal: $C_4$-free graphs decompose into countably many forests."
     },
     {
       "id": "dichotomy-pair",
       "title": "Part III: The Known Dichotomy Pair",
       "startLine": 79,
       "endLine": 85,
-      "summary": "Theorem c4_c6_dichotomy: the pair (C₄, C₆) has the dichotomy property."
+      "summary": "Theorem c4_c6_dichotomy: (C₄, C₆) has the dichotomy property.",
+      "mathContext": "$(C_4, C_6)$ satisfies both properties simultaneously — initially thought impossible by Erdős-Hajnal."
     },
     {
       "id": "main-conjecture",
       "title": "Part IV: The Main Conjecture",
       "startLine": 87,
       "endLine": 99,
-      "summary": "Defines ErdosProblem596: existence of a characterization. Axiom erdos_596."
+      "summary": "Defines ErdosProblem596: existence of a structural characterization. Axiom erdos_596.",
+      "mathContext": "The problem asks for a classification: which $(G_1, G_2)$ satisfy HasDichotomy? Is there a structural characterization?"
     },
     {
       "id": "related-problem",
       "title": "Part V: Related Problem (K₄, K₃)",
       "startLine": 101,
       "endLine": 118,
-      "summary": "Defines IsK4Free, ContainsK3. Axiom erdos_595_k4_k3 for the (K₄, K₃) case."
+      "summary": "Defines IsK4Free, ContainsK3. Axiom erdos_595_k4_k3 for the (K₄, K₃) case.",
+      "mathContext": "Problem #595: Does $(K_4, K_3)$ satisfy the dichotomy? Can $K_4$-free graphs always avoid monochromatic triangles with countably many colors?"
     },
     {
       "id": "properties",
       "title": "Part VI: Properties",
       "startLine": 120,
       "endLine": 127,
-      "summary": "Theorem dichotomy_pairs_exist: at least one dichotomy pair exists."
+      "summary": "Theorem dichotomy_pairs_exist: at least one dichotomy pair exists.",
+      "mathContext": "Existence via $(C_4, C_6)$: `⟨IsC4Free, ContainsC6, c4_c6_dichotomy⟩`."
     },
     {
       "id": "summary",
       "title": "Part VII: Summary",
       "startLine": 129,
       "endLine": 144,
-      "summary": "erdos_596_summary theorem: conjunction of dichotomy and existence results. Problem remains OPEN."
+      "summary": "erdos_596_summary: conjunction of dichotomy and existence results. Problem remains OPEN.",
+      "mathContext": "Packages known results: $(C_4, C_6)$ has dichotomy and dichotomy pairs exist. Classification for all pairs remains open."
     }
   ],
   "conclusion": {
@@ -123,21 +130,31 @@
   },
   "references": [
     {
+      "authors": "Nešetřil, Jaroslav; Rödl, Vojtěch",
+      "title": "Partitions of finite relational and set systems",
+      "year": "1977",
+      "venue": "Journal of Combinatorial Theory, Series A",
+      "note": "Structural Ramsey theorem — basis for the finite Ramsey property of (C₄, C₆)"
+    },
+    {
       "authors": "Erdős, Paul; Hajnal, András; Pach, János",
       "title": "On chromatic numbers of graph families",
       "year": "1985",
       "venue": "Discrete Mathematics",
-      "note": "Related work on chromatic number bounds for forbidden subgraph classes"
+      "note": "Related work showing C₄-free graphs decompose into countably many forests"
     }
   ],
   "crossReferences": [
     {
-      "targetId": "ramseys-theorem",
-      "relationship": "related",
-      "description": "Both concern Ramsey-type structure: Ramsey's theorem guarantees monochromatic complete subgraphs, #596 asks about Ramsey dichotomy for forbidden subgraph pairs"
+      "target": "ramseys-theorem",
+      "context": "Both concern Ramsey-type structure: Ramsey's theorem guarantees monochromatic complete subgraphs, #596 asks about Ramsey dichotomy for forbidden subgraph pairs"
     }
   ],
   "relatedProofs": [
-    "ramseys-theorem"
+    {
+      "id": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "Classical Ramsey theorem — the finite Ramsey property generalizes Ramsey's theorem to forbidden subgraph classes"
+    }
   ]
 }

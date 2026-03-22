@@ -60,7 +60,8 @@
     "content": "The forward direction squares $\\|f+g\\| = \\|f\\| + \\|g\\|$ to get $\\|f+g\\|^2 = (\\|f\\|+\\|g\\|)^2$. Expanding the left side via `norm_add_sq_real` ($\\|f+g\\|^2 = \\|f\\|^2 + 2\\langle f,g\\rangle + \\|g\\|^2$) and comparing with the right side ($\\|f\\|^2 + 2\\|f\\|\\|g\\| + \\|g\\|^2$) gives $\\langle f,g\\rangle = \\|f\\|\\|g\\|$ via `linarith`.",
     "mathContext": "The squaring trick converts the nonlinear norm equality into a linear equation involving the inner product, making it amenable to algebraic manipulation.",
     "significance": "supporting",
-    "relatedConcepts": ["Squaring technique", "linarith tactic"],
+    "relatedConcepts": ["Squaring technique", "linarith tactic", "Monotonicity of squaring for non-negatives"],
+    "prerequisites": ["norm_add_sq_real", "Non-negative norm properties", "linarith"],
     "tags": ["squaring", "forward-direction", "linarith"]
   },
   {
@@ -72,7 +73,21 @@
     "content": "The backward direction first obtains CS equality from proportionality, then shows $\\|f+g\\|^2 = (\\|f\\|+\\|g\\|)^2$ via `nlinarith`. The key step: $a^2 = b^2$ is rewritten as $(a-b)(a+b) = 0$. Since norms are non-negative, $a + b \\geq 0$, so either $a - b = 0$ (the desired conclusion) or $a + b = 0$ (which forces both to be zero, also implying $a = b$).",
     "mathContext": "The factoring $(\\|f+g\\| - (\\|f\\|+\\|g\\|))(\\|f+g\\| + (\\|f\\|+\\|g\\|)) = 0$ with non-negativity constraints gives $\\|f+g\\| = \\|f\\| + \\|g\\|$ without needing a square root function.",
     "significance": "supporting",
-    "relatedConcepts": ["Difference of squares", "Non-negativity arguments", "nlinarith tactic"],
+    "relatedConcepts": ["Difference of squares", "Non-negativity arguments", "nlinarith tactic", "Square root avoidance"],
+    "prerequisites": ["inner_eq_of_proportional", "norm_add_sq_real", "nlinarith", "norm_nonneg"],
     "tags": ["factoring", "backward-direction", "nlinarith", "non-negativity"]
+  },
+  {
+    "id": "ann-csm-setup",
+    "proofId": "cauchy-schwarz-integral-oq-02-oq-01",
+    "range": { "startLine": 9, "endLine": 17 },
+    "type": "context",
+    "title": "Real Inner Product Space Setup",
+    "content": "The proof imports the full Mathlib library and works in a generic real inner product space `E`. The type class constraints `[NormedAddCommGroup E] [InnerProductSpace ℝ E]` ensure `E` carries both a compatible norm and a real-valued inner product satisfying $\\langle x, x \\rangle = \\|x\\|^2$. This generality means the theorem applies simultaneously to $\\mathbb{R}^n$ (with the dot product), $L^2(\\mu)$ (with $\\int fg\\,d\\mu$), and any separable Hilbert space.",
+    "mathContext": "The key compatibility axiom linking norm and inner product is $\\|x\\|^2 = \\langle x, x \\rangle_{\\mathbb{R}}$, which is `real_inner_self_eq_norm_sq` in Mathlib. The `set_option linter.unusedVariables false` suppresses warnings about universally quantified variables in intermediate steps.",
+    "significance": "context",
+    "relatedConcepts": ["Type class inference", "Mathlib inner product space hierarchy", "Generic programming over mathematical structures"],
+    "prerequisites": ["Normed spaces", "Inner product axioms", "Lean 4 type classes"],
+    "tags": ["setup", "type-classes", "inner-product-space", "mathlib"]
   }
 ]
