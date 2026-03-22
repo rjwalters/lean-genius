@@ -49,3 +49,37 @@ The single axiom `lgv_lemma_rxr` requires formalizing the full GV involution:
 
 ### Build
 Docker build passes with `LEAN_MEMORY_LIMIT=16384`.
+
+## Session 2026-03-22 (researcher-7) - GV Cancellation for Small r
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 35)
+**Problem**: ballot-problem-oq-03-oq-02
+**Prior Status**: 1 axiom (gv_involution_cancellation), 0 sorries, 504 lines
+
+### Work Done
+Added 6 proved theorems (67 new lines, total 571 lines):
+
+| Theorem | Purpose | Status |
+|---------|---------|--------|
+| `permPathTuple_one_equiv` | PermPathTuple cfg 1 ≃ PathTuple cfg | PROVED |
+| `permPathTuple_one_card` | Card equivalence for id perm | PROVED |
+| `niTupleCount_eq_card_of_all_ni` | NI count = total when all NI | PROVED |
+| `isNonIntersecting_of_r_zero` | Vacuous NI for r=0 | PROVED |
+| `gv_cancellation_r_zero` | GV cancellation for r=0 | PROVED |
+| `gv_cancellation_r_one` | GV cancellation for r=1 | PROVED |
+
+### Key Insights
+- For r ≤ 1, Perm(Fin r) has exactly one element (identity), so the signed sum is trivial
+- The GV involution is only needed for r ≥ 2 where non-identity permutations exist
+- `Equiv.subtypeUnivEquiv` from Mathlib handles the "all elements satisfy P" → subtype equiv
+- `Fintype` for subtype `{p // IsNonIntersecting cfg p}` needs explicit `Classical.dec` provision
+
+### What Remains
+The axiom `gv_involution_cancellation` is now proved for r=0 and r=1. For r ≥ 2:
+- Prove the crossing lemma (non-identity perm paths must intersect)
+- Construct the GV involution (swap tails at first intersection point)
+- Prove the involution is sign-reversing and its own inverse
+- Replace the axiom with the proved theorem
+
+### Build
+Docker build passes with `LEAN_MEMORY_LIMIT=16384`.

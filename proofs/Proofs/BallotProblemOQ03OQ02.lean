@@ -416,6 +416,73 @@ theorem det_pathMatrix_eq_signed_sum {r : ℕ} (cfg : LGVConfig r) :
   exact (permPathTuple_card cfg σ).symm
 
 -- ============================================================
+-- PART 7d: Identity Permutation Infrastructure
+-- ============================================================
+
+/-- PermPathTuple for the identity permutation equals PathTuple
+    (since (1 : Perm) i = i, targets match). -/
+noncomputable def permPathTuple_one_equiv {r : ℕ} (cfg : LGVConfig r) :
+    PermPathTuple cfg 1 ≃ PathTuple cfg := by
+  have heq : PermPathTuple cfg 1 = PathTuple cfg := by
+    simp only [PermPathTuple, PathTuple, Equiv.Perm.one_apply]
+  rw [heq]
+
+/-- Cardinality: identity-perm path tuples = regular path tuples. -/
+theorem permPathTuple_one_card {r : ℕ} (cfg : LGVConfig r) :
+    Fintype.card (PermPathTuple cfg 1) = Fintype.card (PathTuple cfg) :=
+  Fintype.card_congr (permPathTuple_one_equiv cfg)
+
+/-- When every path tuple is non-intersecting, niTupleCount = card(PathTuple). -/
+theorem niTupleCount_eq_card_of_all_ni {r : ℕ} (cfg : LGVConfig r)
+    (h : ∀ p : PathTuple cfg, IsNonIntersecting cfg p) :
+    niTupleCount cfg = Fintype.card (PathTuple cfg) := by
+  simp only [niTupleCount]
+  exact @Fintype.card_congr _ _
+    (@Subtype.fintype _ _ (fun _ => Classical.dec _) (PathTuple.instFintype cfg))
+    (PathTuple.instFintype cfg)
+    (Equiv.subtypeUnivEquiv h)
+
+-- ============================================================
+-- PART 7e: GV Cancellation for Small r (Proved Theorems)
+-- ============================================================
+
+/-- For r = 0, every path tuple is vacuously non-intersecting. -/
+theorem isNonIntersecting_of_r_zero (cfg : LGVConfig 0) (paths : PathTuple cfg) :
+    IsNonIntersecting cfg paths :=
+  fun i => Fin.elim0 i
+
+/-- GV cancellation for r = 0: proved (single perm, vacuously NI). -/
+theorem gv_cancellation_r_zero (cfg : LGVConfig 0) :
+    ∑ σ : Equiv.Perm (Fin 0),
+      (↑(Equiv.Perm.sign σ) : ℤ) * ↑(Fintype.card (PermPathTuple cfg σ)) =
+    ↑(niTupleCount cfg) := by
+  have huniq : ∀ σ : Equiv.Perm (Fin 0), σ = 1 :=
+    fun σ => Equiv.ext fun i => Fin.elim0 i
+  have huniv : (Finset.univ : Finset (Equiv.Perm (Fin 0))) = {1} :=
+    Finset.eq_singleton_iff_unique_mem.mpr ⟨Finset.mem_univ _, fun σ _ => huniq σ⟩
+  rw [huniv, Finset.sum_singleton]
+  simp only [Equiv.Perm.sign_one, Units.val_one, one_mul]
+  congr 1
+  rw [permPathTuple_one_card]
+  exact (niTupleCount_eq_card_of_all_ni cfg (isNonIntersecting_of_r_zero cfg)).symm
+
+/-- GV cancellation for r = 1: proved (single perm, vacuously NI). -/
+theorem gv_cancellation_r_one (cfg : LGVConfig 1) :
+    ∑ σ : Equiv.Perm (Fin 1),
+      (↑(Equiv.Perm.sign σ) : ℤ) * ↑(Fintype.card (PermPathTuple cfg σ)) =
+    ↑(niTupleCount cfg) := by
+  have huniq : ∀ σ : Equiv.Perm (Fin 1), σ = 1 :=
+    fun σ => Equiv.ext fun i => Subsingleton.elim _ _
+  have huniv : (Finset.univ : Finset (Equiv.Perm (Fin 1))) = {1} :=
+    Finset.eq_singleton_iff_unique_mem.mpr ⟨Finset.mem_univ _, fun σ _ => huniq σ⟩
+  rw [huniv, Finset.sum_singleton]
+  simp only [Equiv.Perm.sign_one, Units.val_one, one_mul]
+  congr 1
+  rw [permPathTuple_one_card]
+  exact (niTupleCount_eq_card_of_all_ni cfg
+    (fun p i j hij => absurd hij (by omega : ¬(i < j)))).symm
+
+-- ============================================================
 -- PART 8: The r×r LGV Lemma
 -- ============================================================
 
