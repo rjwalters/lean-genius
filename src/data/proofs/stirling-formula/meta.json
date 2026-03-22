@@ -101,8 +101,7 @@
       "Higher-order terms in the Stirling expansion",
       "Extension to the Gamma function: Gamma(x+1) ~ sqrt(2*pi*x) * (x/e)^x"
     ]
-  }
-,
+  },
   "references": [
     {
       "authors": "Stirling, James",
@@ -111,5 +110,25 @@
       "venue": "London",
       "note": "Original derivation of the approximation n! ~ √(2πn)(n/e)^n, though the constant √(2π) was determined by de Moivre"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Stirling",
+      "Mathlib.Analysis.Asymptotics.Defs",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Complex.ExponentialBounds",
+      "Mathlib.Data.Real.Pi.Bounds",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Stirling",
+      "Real",
+      "Filter"
+    ],
+    "namespace": "StirlingFormula",
+    "lineCount": 498,
+    "axiomCount": 1,
+    "theoremCount": 14,
+    "definitionCount": 1
+  }
 }

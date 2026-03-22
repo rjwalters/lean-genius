@@ -155,5 +155,19 @@
     "szemeredi-regularity",
     "roth-theorem-k3",
     "szemeredi-full"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.SzemerediRegularity"
+    ],
+    "opens": [
+      "Classical"
+    ],
+    "namespace": "Szemeredi.Counting",
+    "lineCount": 244,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 6
+  }
 }

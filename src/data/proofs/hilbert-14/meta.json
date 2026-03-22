@@ -112,5 +112,22 @@
       "How does the structure of the invariant ring relate to the geometry of the quotient?",
       "Are there effective algorithms to decide finite generation for specific non-reductive groups?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.RingTheory.Polynomial.Basic",
+      "Mathlib.RingTheory.Noetherian.Basic",
+      "Mathlib.RingTheory.FiniteType",
+      "Mathlib.Algebra.MvPolynomial.Basic",
+      "Mathlib.Algebra.Group.Defs",
+      "Mathlib.GroupTheory.GroupAction.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Hilbert14Invariants",
+    "lineCount": 365,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 1
   }
 }

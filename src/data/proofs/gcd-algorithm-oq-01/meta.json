@@ -152,5 +152,21 @@
       "How does the complexity analysis extend to the binary GCD algorithm or Stein's algorithm?",
       "Can the worst-case uniqueness be strengthened: are consecutive Fibonacci numbers the ONLY pairs achieving the maximum step count for a given $b$?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Fib.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Nat.Log",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "GCDAlgorithmOQ01",
+    "lineCount": 461,
+    "axiomCount": 0,
+    "theoremCount": 28,
+    "definitionCount": 4
   }
 }

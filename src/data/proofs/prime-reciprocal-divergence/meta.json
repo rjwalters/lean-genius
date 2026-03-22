@@ -151,5 +151,26 @@
       "relationship": "related",
       "description": "Dirichlet's theorem on primes in arithmetic progressions uses similar analytic techniques; the divergence of $\\sum 1/p$ for $p \\equiv a \\pmod{q}$ with $\\gcd(a,q) = 1$ is a key ingredient"
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.SumPrimeReciprocals",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "PrimeReciprocalDivergence",
+    "lineCount": 165,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0
+  },
+  "relatedProofs": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
   ]
 }

@@ -137,5 +137,23 @@
   },
   "relatedProofs": [
     "cayley-hamilton"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Geometry.Euclidean.Triangle",
+      "Mathlib.Geometry.Euclidean.Angle.Sphere",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Tactic",
+      "Archive.Wiedijk100Theorems.HeronsFormula"
+    ],
+    "opens": [
+      "EuclideanGeometry",
+      "Real"
+    ],
+    "namespace": "HeronsFormula",
+    "lineCount": 276,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 3
+  }
 }

@@ -145,5 +145,33 @@
     "infinitude-primes",
     "riemann-hypothesis",
     "basel-problem"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.PrimeCounting",
+      "Mathlib.Analysis.Asymptotics.Defs",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Integrals.Basic",
+      "Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Topology.Order.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Filter",
+      "Topology",
+      "Real",
+      "Set",
+      "Nat",
+      "Asymptotics",
+      "MeasureTheory",
+      "Topology",
+      "BigOperators"
+    ],
+    "namespace": "PrimeNumberTheorem",
+    "lineCount": 464,
+    "axiomCount": 13,
+    "theoremCount": 15,
+    "definitionCount": 9
+  }
 }

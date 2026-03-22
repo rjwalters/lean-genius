@@ -119,5 +119,22 @@
       "How does regularity extend to fully nonlinear equations?",
       "What are the regularity properties of solutions in fractional Sobolev spaces?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Calculus.ContDiff.Basic",
+      "Mathlib.Analysis.Calculus.FDeriv.Basic",
+      "Mathlib.Analysis.Calculus.Deriv.Basic",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.MeasureTheory.Function.LpSpace.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Hilbert19Regularity",
+    "lineCount": 338,
+    "axiomCount": 7,
+    "theoremCount": 7,
+    "definitionCount": 11
   }
 }

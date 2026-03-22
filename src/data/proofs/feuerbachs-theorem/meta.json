@@ -138,5 +138,18 @@
       "How does Feuerbach's theorem generalize to hyperbolic and spherical geometry?",
       "Can the proof via inversion centered at the Feuerbach point be formalized?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.FeuerbachsTheoremOQ01"
+    ],
+    "opens": [
+      "FeuerbachsTheoremOQ01"
+    ],
+    "namespace": "FeuerbachsTheorem",
+    "lineCount": 165,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0
   }
 }

@@ -174,5 +174,16 @@
     "prob-method-alteration",
     "prob-method-second-moment",
     "prob-method-lovasz-local"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "ProbMethod.Applications",
+    "lineCount": 52,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0
+  }
 }

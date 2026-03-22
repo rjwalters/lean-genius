@@ -112,5 +112,23 @@
       "Is there a categorical framework that unifies all physical theories?",
       "How do symmetry principles constrain possible axiom systems?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Measure.ProbabilityMeasure",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.MeasureTheory.Integral.Bochner.Basic",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Geometry.Manifold.Algebra.LieGroup",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Hilbert6PhysicsAxioms",
+    "lineCount": 327,
+    "axiomCount": 7,
+    "theoremCount": 10,
+    "definitionCount": 4
   }
 }

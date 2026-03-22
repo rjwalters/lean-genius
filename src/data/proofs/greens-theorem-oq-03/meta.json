@@ -172,5 +172,21 @@
     "greens-theorem-oq-01",
     "greens-theorem",
     "herons-formula"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.GreensTheoremOQ01"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "intervalIntegral",
+      "Real"
+    ],
+    "namespace": "GreensTheoremOQ03",
+    "lineCount": 558,
+    "axiomCount": 3,
+    "theoremCount": 31,
+    "definitionCount": 12
+  }
 }

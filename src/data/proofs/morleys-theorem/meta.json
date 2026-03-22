@@ -194,5 +194,31 @@
         "triangle-side-length"
       ]
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Geometry.Euclidean.Angle.Unoriented.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "MorleysTheorem",
+    "lineCount": 353,
+    "axiomCount": 2,
+    "theoremCount": 7,
+    "definitionCount": 15
+  },
+  "relatedProofs": [
+    "",
+    "",
+    "",
+    "",
+    ""
   ]
 }

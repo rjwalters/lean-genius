@@ -149,5 +149,19 @@
       "Can similar AI-assisted techniques discover other motivic identities?",
       "How does this relate to Gromov-Witten invariants of flag varieties?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial",
+      "BigOperators"
+    ],
+    "namespace": "MotivicFlagMaps",
+    "lineCount": 439,
+    "axiomCount": 2,
+    "theoremCount": 26,
+    "definitionCount": 17
   }
 }

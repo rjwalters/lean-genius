@@ -155,5 +155,24 @@
         "relationship": "Parent proof — this resolves Open Question #1 (Dirichlet function integral axiom)."
       }
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.MeasureTheory.Integral.Bochner.Basic",
+      "Mathlib.MeasureTheory.Integral.Bochner.Set",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Measure",
+      "Set",
+      "Filter"
+    ],
+    "namespace": "LebesgueMeasureOQ01",
+    "lineCount": 198,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 1
   }
 }

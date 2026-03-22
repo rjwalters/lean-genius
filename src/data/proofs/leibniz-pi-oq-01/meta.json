@@ -119,5 +119,25 @@
       "What is the optimal Machin-like formula (minimizing number of terms for given accuracy)?",
       "Can the arctan addition formula be proved purely from Mathlib's existing API?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.ArctanDeriv",
+      "Mathlib.Analysis.Real.Pi.Leibniz",
+      "Mathlib.Tactic",
+      "Mathlib.Order.Monotone.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "Filter",
+      "Real"
+    ],
+    "namespace": "LeibnizPiOQ01",
+    "lineCount": 135,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 1
   }
 }

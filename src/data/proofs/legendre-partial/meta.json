@@ -90,5 +90,16 @@
       "What is the smallest prime in (n^2, (n+1)^2) as a function of n?",
       "How many primes are in (n^2, (n+1)^2) on average?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Legendre",
+    "lineCount": 166,
+    "axiomCount": 1,
+    "theoremCount": 21,
+    "definitionCount": 3
   }
 }

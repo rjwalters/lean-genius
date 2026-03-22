@@ -134,5 +134,17 @@
       "How does the Pythagorean triple formula generalize to Gaussian integers, where a² + b² = c² factors as (a + bi)(a - bi) = c²?",
       "Can the rational circle parametrization approach be formalized in Lean for other Diophantine equations like x² + y² = p for primes p ≡ 1 (mod 4)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.PythagoreanTriples",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "PythagoreanTriplesFormula",
+    "lineCount": 269,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 0
   }
 }

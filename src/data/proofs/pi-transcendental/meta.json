@@ -166,8 +166,7 @@
       "relationship": "foundation",
       "description": "Irrationality of $\\sqrt{2}$ is the simplest case of showing a number is not rational; transcendence of $\\pi$ is the much stronger statement that $\\pi$ is not algebraic"
     }
-  ]
-,
+  ],
   "references": [
     {
       "authors": "Lindemann, Ferdinand von",
@@ -176,5 +175,31 @@
       "venue": "Mathematische Annalen, 20, pp. 213-225",
       "note": "Original proof that π is transcendental, resolving the ancient problem of squaring the circle"
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.RingTheory.Algebraic.Basic",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
+      "Mathlib.Analysis.SpecialFunctions.Complex.Circle",
+      "Mathlib.Data.Real.Irrational"
+    ],
+    "opens": [
+      "Real",
+      "Complex",
+      "Polynomial"
+    ],
+    "namespace": null,
+    "lineCount": 375,
+    "axiomCount": 8,
+    "theoremCount": 11,
+    "definitionCount": 0
+  },
+  "relatedProofs": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
   ]
 }

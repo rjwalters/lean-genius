@@ -118,5 +118,20 @@
       "What are the connections to ultrametric spaces where the strong triangle inequality holds?",
       "How does non-Euclidean geometry affect the triangle inequality?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Normed.Group.Basic",
+      "Mathlib.Analysis.Normed.Field.Basic",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "TriangleInequality",
+    "lineCount": 245,
+    "axiomCount": 0,
+    "theoremCount": 17,
+    "definitionCount": 0
   }
 }

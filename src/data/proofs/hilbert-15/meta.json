@@ -147,5 +147,33 @@
       "proofId": "fundamental-theorem-algebra",
       "relationship": "Bézout's theorem, which underpins the four lines proof, relies on algebraic closure (FTA) to ensure intersection points exist"
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.LinearAlgebra.Dimension.Finrank",
+      "Mathlib.LinearAlgebra.Dimension.DivisionRing",
+      "Mathlib.LinearAlgebra.FreeModule.Finite.Basic",
+      "Mathlib.Data.Fin.VecNotation",
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Algebra.Field.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Matrix",
+      "BigOperators",
+      "Set",
+      "Submodule",
+      "FiniteDimensional"
+    ],
+    "namespace": "Hilbert15",
+    "lineCount": 453,
+    "axiomCount": 8,
+    "theoremCount": 3,
+    "definitionCount": 14
+  },
+  "relatedProofs": [
+    "",
+    "",
+    ""
   ]
 }

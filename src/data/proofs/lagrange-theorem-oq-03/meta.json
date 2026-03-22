@@ -191,5 +191,19 @@
       "id": "lagrange-theorem",
       "relationship": "Parent Lagrange's theorem formalization"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Fintype",
+      "Subgroup"
+    ],
+    "namespace": "LagrangeTheoremOQ03",
+    "lineCount": 374,
+    "axiomCount": 2,
+    "theoremCount": 27,
+    "definitionCount": 1
+  }
 }

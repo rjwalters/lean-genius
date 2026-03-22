@@ -110,5 +110,18 @@
       "Are there irrational numbers that aren't roots of any polynomial? Yes—transcendental numbers like $\\pi$ and $e$. Proving their irrationality is much harder.",
       "Can this generalize to $\\sqrt[n]{m}$? Yes! $\\sqrt[n]{m}$ is irrational iff $m$ is not a perfect $n$-th power."
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Irrational",
+      "Mathlib.Algebra.Ring.Parity",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Sqrt2Irrational",
+    "lineCount": 223,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 0
   }
 }

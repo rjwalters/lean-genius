@@ -126,5 +126,17 @@
     "fermat-two-squares",
     "quadratic-reciprocity",
     "hurwitz-theorem"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.SumFourSquares",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "LagrangeFourSquares",
+    "lineCount": 399,
+    "axiomCount": 9,
+    "theoremCount": 15,
+    "definitionCount": 8
+  }
 }

@@ -143,5 +143,21 @@
     "Set theory: partitions, cardinality, Finset operations",
     "Modular arithmetic: ZMod, units of Z/pZ",
     "Number theory: Nat.totient, Fermat's little theorem"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.Coset.Basic",
+      "Mathlib.GroupTheory.Index",
+      "Mathlib.GroupTheory.OrderOfElement",
+      "Mathlib.GroupTheory.SpecificGroups.Cyclic",
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "LagrangeTheorem",
+    "lineCount": 223,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0
+  }
 }

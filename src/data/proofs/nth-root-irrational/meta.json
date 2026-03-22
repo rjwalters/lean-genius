@@ -129,5 +129,18 @@
   ],
   "relatedProofs": [
     "irrationality-sqrt2"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Real.Irrational",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "NthRootIrrational",
+    "lineCount": 313,
+    "axiomCount": 0,
+    "theoremCount": 22,
+    "definitionCount": 1
+  }
 }

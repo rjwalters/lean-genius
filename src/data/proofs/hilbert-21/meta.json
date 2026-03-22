@@ -96,5 +96,20 @@
       "Extensions to irregular singular points (Stokes phenomena)?",
       "Connections to the geometric Langlands program?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup.Basic",
+      "Mathlib.Topology.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [],
+    "namespace": "Hilbert21",
+    "lineCount": 388,
+    "axiomCount": 6,
+    "theoremCount": 3,
+    "definitionCount": 5
   }
 }

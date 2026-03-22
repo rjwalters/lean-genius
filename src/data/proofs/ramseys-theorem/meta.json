@@ -179,5 +179,24 @@
       "What are the asymptotic bounds for R(k,k) as k grows?",
       "How does Ramsey theory extend to hypergraphs and higher dimensions?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Data.Nat.Choose.Sum",
+      "Mathlib.Data.Fin.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "RamseysTheorem",
+    "lineCount": 628,
+    "axiomCount": 1,
+    "theoremCount": 24,
+    "definitionCount": 13
   }
 }

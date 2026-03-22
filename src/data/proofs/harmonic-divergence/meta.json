@@ -159,5 +159,18 @@
     "basel-problem",
     "erdos-486",
     "erdos-25"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.PSeries",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "HarmonicDivergence",
+    "lineCount": 182,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0
+  }
 }

@@ -141,5 +141,20 @@
     "infinitude-primes",
     "chinese-remainder-non-coprime",
     "dirichlets-theorem"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.FLT.Basic",
+      "Mathlib.NumberTheory.FLT.Four",
+      "Mathlib.NumberTheory.FLT.Three",
+      "Mathlib.Algebra.EuclideanDomain.Basic",
+      "Mathlib.RingTheory.Int.Basic"
+    ],
+    "opens": [],
+    "namespace": "FermatsLastTheorem",
+    "lineCount": 205,
+    "axiomCount": 5,
+    "theoremCount": 7,
+    "definitionCount": 0
+  }
 }

@@ -117,5 +117,22 @@
       "What is the constructive content of IVT, and can we compute x given c?",
       "How does IVT relate to Brouwer's fixed point theorem in higher dimensions?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Topology.Order.IntermediateValue",
+      "Mathlib.Topology.ContinuousMap.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Set",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "IntermediateValueTheorem",
+    "lineCount": 222,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 0
   }
 }

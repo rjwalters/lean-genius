@@ -147,8 +147,7 @@
       "[RESOLVED in MeanValueTheoremOQ03.lean] Can the MVT be generalized to vector-valued functions in Lean 4 (the mean value inequality replaces the equality)?",
       "What is the cleanest formalization of the fundamental theorem of calculus using constant_of_deriv_zero?"
     ]
-  }
-,
+  },
   "references": [
     {
       "authors": "Cauchy, Augustin-Louis",
@@ -167,5 +166,22 @@
   ],
   "relatedProofs": [
     "fundamental-theorem-calculus"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Calculus.Deriv.Basic",
+      "Mathlib.Analysis.Calculus.MeanValue",
+      "Mathlib.Analysis.Calculus.Deriv.Slope"
+    ],
+    "opens": [
+      "Set",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "MeanValueTheorem",
+    "lineCount": 164,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0
+  }
 }

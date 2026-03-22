@@ -179,5 +179,24 @@
     "fermat-two-squares",
     "pell-equation",
     "kroneckers-jugendtraum"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.LinearAlgebra.QuadraticForm.Basic",
+      "Mathlib.LinearAlgebra.QuadraticForm.Isometry",
+      "Mathlib.LinearAlgebra.Dimension.Finrank",
+      "Mathlib.NumberTheory.Padics.PadicNumbers",
+      "Mathlib.NumberTheory.NumberField.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "BigOperators",
+      "Matrix"
+    ],
+    "namespace": "Hilbert11QuadraticForms",
+    "lineCount": 498,
+    "axiomCount": 6,
+    "theoremCount": 7,
+    "definitionCount": 17
+  }
 }

@@ -167,5 +167,17 @@
     "area-of-circle",
     "navier-stokes",
     "cauchy-schwarz-integral"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "GreensTheorem",
+    "lineCount": 353,
+    "axiomCount": 2,
+    "theoremCount": 6,
+    "definitionCount": 14
+  }
 }

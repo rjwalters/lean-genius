@@ -129,5 +129,29 @@
   ],
   "relatedProofs": [
     "friendship-theorem-oq-01"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Combinatorics.SimpleGraph.DegreeSum",
+      "Mathlib.Combinatorics.SimpleGraph.Finite",
+      "Mathlib.Data.Fintype.Card",
+      "Mathlib.Algebra.BigOperators.Ring.Finset",
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Tactic.FinCases",
+      "Mathlib.Tactic.NormNum",
+      "Proofs.FriendshipTheoremOQ01"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "FriendshipTheorem",
+    "lineCount": 374,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 6
+  }
 }

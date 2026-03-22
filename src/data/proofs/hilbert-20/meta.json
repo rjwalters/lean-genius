@@ -112,5 +112,23 @@
       "Can machine learning methods discover new existence theorems?",
       "What are the obstructions to solvability beyond Hormander's condition?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Analysis.InnerProductSpace.Projection",
+      "Mathlib.Analysis.Normed.Field.Basic",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Topology.Algebra.Module.Basic",
+      "Mathlib.LinearAlgebra.Dual",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Hilbert20BoundaryValue",
+    "lineCount": 245,
+    "axiomCount": 4,
+    "theoremCount": 1,
+    "definitionCount": 7
   }
 }

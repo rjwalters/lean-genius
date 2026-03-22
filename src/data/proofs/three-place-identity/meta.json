@@ -143,5 +143,18 @@
       "leanFoundations": "Lean itself is built on the Calculus of Inductive Constructions—a dependent type theory that already has identity (Eq), propositions (Prop), and logical connectives as primitives. When we 'define' three-place identity in Lean, we're defining a structure using Lean's existing logical machinery, not building identity theory from scratch.\n\nThis isn't a criticism of the formalization—it's simply clarity about what's being proven. The algebraic elegance of Etter's bridges is real and verified. The philosophical claim about foundational priority requires additional argument beyond what any formalization in Lean can provide.",
       "seeAlso": "For an alternative Lean 4 formalization that addresses some of these concerns with a more modular approach, see [Jim Bowery's RelativeIdentity project](https://github.com/jabowery/RelativeIdentity)."
     }
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic.Tauto",
+      "Mathlib.Tactic.Push",
+      "Mathlib.Logic.Basic"
+    ],
+    "opens": [],
+    "namespace": "ThreePlaceIdentity",
+    "lineCount": 426,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 10
   }
 }
