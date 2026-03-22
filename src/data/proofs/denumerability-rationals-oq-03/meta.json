@@ -2,12 +2,12 @@
   "id": "denumerability-rationals-oq-03",
   "title": "Stern-Brocot Tree Encoding of Rationals",
   "slug": "denumerability-rationals-oq-03",
-  "description": "Formalizes the Stern-Brocot tree, an alternative to Cantor's diagonal enumeration that lists every positive rational exactly once in lowest terms. Proves the determinant invariant, automatic coprimality of all tree nodes, positivity, and the mediant ordering property.",
+  "description": "Formalizes the Stern-Brocot tree, an alternative to Cantor's diagonal enumeration that lists every positive rational exactly once in lowest terms. Proves the determinant invariant, automatic coprimality of all tree nodes, positivity, mediant ordering, and injectivity (different paths yield different rationals).",
   "meta": {
     "author": "Stern (1858), Brocot (1861)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Stern%E2%80%93Brocot_tree",
     "date": "1858",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/DenumerabilityRationalsOQ03.lean",
     "leanFile": "proofs/Proofs/DenumerabilityRationalsOQ03.lean",
     "tags": [
@@ -21,7 +21,7 @@
       "wiedijk-100"
     ],
     "badge": "original",
-    "sorries": 1,
+    "sorries": 0,
     "axiomCount": 0,
     "dateAdded": "2026-03-22",
     "mathlibDependencies": [
@@ -48,7 +48,9 @@
       "num_pos_path / den_pos_path: positivity of all tree nodes by structural induction",
       "mediant_strictly_between: ordering proof la/lb < mediant < ra/rb",
       "toRat_pos: every tree node represents a positive rational",
-      "7 concrete verification examples for first 3 tree levels"
+      "7 concrete verification examples for first 3 tree levels",
+      "mediant_lt_ra_rb / mediant_gt_la_lb: mediant of descendants bounded by ancestors (cross-product form)",
+      "eval_injective_gen / eval_injective: different paths yield different states, via mediant ordering"
     ],
     "references": [
       {
@@ -147,10 +149,9 @@
     }
   ],
   "conclusion": {
-    "summary": "The Stern-Brocot tree is formalized as a state-machine navigation system with 29 definitions and theorems in 349 lines, with 1 sorry remaining (injectivity). Key proved results: the determinant invariant (ra*lb - la*rb = 1 at all nodes), automatic coprimality, positivity, ordering, and 7 concrete verification examples spanning 3 tree levels. The formalization demonstrates that the Stern-Brocot encoding provides a mathematically richer alternative to Cantor's pairing function for enumerating the rationals.",
+    "summary": "The Stern-Brocot tree is formalized as a state-machine navigation system with 43 definitions and theorems in 674 lines, fully verified (0 sorries, 0 axioms). Key results: determinant invariant (ra*lb - la*rb = 1), automatic coprimality via Bezout identity, positivity, strict mediant ordering, and injectivity (different paths yield different rationals) proved via ancestor-mediant bounds with cross-multiplication transitivity.",
     "implications": "The Stern-Brocot tree connects multiple areas: number theory (continued fractions, Farey sequences), algorithms (the Euclidean algorithm), and set theory (enumerations of Q). The formalization opens paths to proving completeness (surjectivity) via the Euclidean algorithm connection, and to formalizing the relationship between tree paths and continued fraction expansions.",
     "openQuestions": [
-      "Prove eval_injective (injectivity): different paths give different rationals. This should follow from the ordering property by induction.",
       "Prove surjectivity: every positive rational appears somewhere in the tree, via the Euclidean algorithm connection.",
       "Formalize the continued fraction correspondence: run-length encoding of Stern-Brocot paths equals continued fraction coefficients.",
       "Establish the full bijection between binary words (or ℕ via BFS ordering) and ℚ⁺."
@@ -164,9 +165,9 @@
     ],
     "opens": [],
     "namespace": "SternBrocot",
-    "lineCount": 349,
+    "lineCount": 674,
     "axiomCount": 0,
-    "theoremCount": 22,
+    "theoremCount": 43,
     "definitionCount": 7
   },
   "references": [

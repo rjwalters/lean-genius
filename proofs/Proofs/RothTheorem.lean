@@ -20,32 +20,39 @@ namespace Szemeredi.Roth
 -- PART I: AP-FREE SET DEFINITIONS
 -- ═══════════════════════════════════════════════════════════════════
 
-/-- A subset of Fin N is AP-free (contains no 3-term arithmetic progression)
-    if there are no a, d with d > 0 such that {a, a+d, a+2d} ⊆ A. -/
+/-- A subset of ZMod N is AP-free (contains no 3-term arithmetic progression)
+    if there are no a, d with d ≠ 0 such that {a, a+d, a+2d} ⊆ A. -/
 def APFree {N : ℕ} (A : Finset (ZMod N)) : Prop :=
   ∀ a d : ZMod N, d ≠ 0 → a ∈ A → a + d ∈ A → a + 2 * d ∉ A
 
 /-- The empty set is AP-free. -/
 theorem apFree_empty {N : ℕ} : APFree (∅ : Finset (ZMod N)) := by
   intro a d _ ha
-  exact absurd ha (Finset.not_mem_empty a)
+  exact absurd ha (Finset.notMem_empty a)
 
 /-- A singleton set is AP-free. -/
 theorem apFree_singleton {N : ℕ} (x : ZMod N) : APFree ({x} : Finset (ZMod N)) := by
-  intro a d hd ha had
+  intro a d hd ha had _
   rw [Finset.mem_singleton] at ha had
-  subst ha
-  have : d = 0 := by linarith [had.symm ▸ show x + d = x from had]
-  exact absurd this hd
+  -- ha : a = x, had : a + d = x, so d = 0
+  apply hd
+  have : a + d - a = x - a := congr_arg (· - a) had
+  simp [add_sub_cancel_left] at this
+  rw [ha] at this
+  simp at this
+  exact this
+
+/-- Monotonicity: subsets of AP-free sets are AP-free. -/
+theorem apFree_subset {N : ℕ} {A B : Finset (ZMod N)} (h : B ⊆ A) (hA : APFree A) :
+    APFree B :=
+  fun a d hd ha had hadd => hA a d hd (h ha) (h had) (h hadd)
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART II: FOURIER ANALYSIS ON Z/NZ
 -- ═══════════════════════════════════════════════════════════════════
 
 /-- The Fourier coefficient of the characteristic function of a set A at
-    frequency r. In the full development, this would use roots of unity;
-    here we state the key property that large Fourier coefficients imply
-    density increment. -/
+    frequency r. Uses roots of unity on Z/NZ. -/
 noncomputable def fourierCoeff {N : ℕ} (A : Finset (ZMod N)) (r : ZMod N) : ℂ :=
   (A.sum fun x => Complex.exp (2 * Real.pi * Complex.I * (↑(ZMod.val (r * x)) / ↑N)))
 
@@ -54,7 +61,7 @@ noncomputable def fourierCoeff {N : ℕ} (A : Finset (ZMod N)) (r : ZMod N) : �
 theorem fourier_large_coefficient {N : ℕ} (hN : 0 < N) (A : Finset (ZMod N))
     (hAP : APFree A) (delta : ℝ) (hdelta : 0 < delta)
     (hdensity : (A.card : ℝ) ≥ delta * N) :
-    ∃ r : ZMod N, r ≠ 0 ∧ Complex.abs (fourierCoeff A r) ≥ delta ^ 2 * N / 2 := by
+    ∃ r : ZMod N, r ≠ 0 ∧ ‖fourierCoeff A r‖ ≥ delta ^ 2 * N / 2 := by
   sorry
 
 -- ═══════════════════════════════════════════════════════════════════
