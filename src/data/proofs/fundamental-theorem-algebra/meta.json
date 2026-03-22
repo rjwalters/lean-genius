@@ -189,6 +189,16 @@
       "targetId": "hermite-lindemann",
       "relationship": "related",
       "description": "Hermite-Lindemann proves e^α is transcendental for algebraic α ≠ 0. FTA concerns algebraic numbers (roots of polynomials); transcendental numbers like e and π lie permanently outside the algebraic closure of Q but inside C"
+    },
+    {
+      "targetId": "general-quartic",
+      "relationship": "specializes",
+      "description": "Ferrari's quartic formula provides explicit complex roots for degree-4 polynomials; FTA guarantees such roots exist for any degree, subsuming all explicit formula results"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem on subgroup orders underpins the group-theoretic proof of FTA via Sylow theory: the non-existence of degree-2 extensions of C follows from the fact that [C:R] = 2 and every odd-degree polynomial over R has a real root"
     }
   ],
   "relatedProofs": [
