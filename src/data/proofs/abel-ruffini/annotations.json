@@ -15,6 +15,10 @@
       "Galois theory",
       "radical extensions",
       "polynomial solvability"
+    ],
+    "prerequisites": [
+      "polynomial equations",
+      "field operations"
     ]
   },
   {
@@ -33,6 +37,10 @@
       "Mathlib",
       "Galois theory",
       "group theory"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib library structure"
     ]
   },
   {
@@ -51,6 +59,35 @@
       "radical extension",
       "intermediate field",
       "inductive definition"
+    ],
+    "prerequisites": [
+      "field extensions",
+      "nth roots",
+      "tower of fields"
+    ]
+  },
+  {
+    "id": "ann-namespace-variables",
+    "proofId": "abel-ruffini",
+    "range": {
+      "startLine": 34,
+      "endLine": 49
+    },
+    "type": "context",
+    "title": "Universe-Polymorphic Field Variables",
+    "content": "The namespace `AbelRuffini` scopes all theorems, and the `variable` declarations introduce the universe-polymorphic setup: a base field $F$ and an extension field $E$ with an $F$-algebra structure. This is Lean 4's mechanism for working with field extensions $E/F$ — the `[Algebra F E]` instance packages the ring homomorphism $F \\to E$ and the $F$-module structure on $E$.\n\nThe Part I docstring defines solvability by radicals informally before the formal Mathlib definitions are used. This pedagogical pattern — informal explanation followed by formal reference — recurs throughout the file.",
+    "mathContext": "The variables encode a field extension $E/F$: `[Field F]` and `[Field E]` make $F$ and $E$ fields, while `[Algebra F E]` provides the structure map $\\iota : F \\hookrightarrow E$. All theorems below are implicitly universally quantified over any such extension.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "field extension",
+      "universe polymorphism",
+      "algebra instance",
+      "Lean 4 variable declarations"
+    ],
+    "prerequisites": [
+      "Lean 4 type system",
+      "field extensions",
+      "algebraic structures in Lean"
     ]
   },
   {
@@ -69,6 +106,11 @@
       "Galois group",
       "solvable group",
       "minimal polynomial"
+    ],
+    "prerequisites": [
+      "Galois correspondence",
+      "solvable groups and derived series",
+      "cyclic extensions and Kummer theory"
     ]
   },
   {
@@ -88,6 +130,12 @@
       "simple group",
       "normal subgroup",
       "cycle type"
+    ],
+    "prerequisites": [
+      "permutation groups",
+      "conjugacy classes",
+      "normal subgroups",
+      "sign homomorphism"
     ]
   },
   {
@@ -107,6 +155,11 @@
       "perfect group",
       "composition series",
       "simple group"
+    ],
+    "prerequisites": [
+      "symmetric groups",
+      "cardinal arithmetic in Lean",
+      "omega tactic"
     ]
   },
   {
@@ -114,7 +167,7 @@
     "proofId": "abel-ruffini",
     "range": {
       "startLine": 100,
-      "endLine": 112
+      "endLine": 118
     },
     "type": "insight",
     "title": "Solvable Small Symmetric Groups: The Other Side of the Threshold",
@@ -126,6 +179,35 @@
       "abelian group",
       "typeclass inference",
       "quadratic formula"
+    ],
+    "prerequisites": [
+      "derived series",
+      "history of polynomial solving",
+      "Lean typeclass resolution"
+    ]
+  },
+  {
+    "id": "ann-exists-quintic",
+    "proofId": "abel-ruffini",
+    "range": {
+      "startLine": 120,
+      "endLine": 136
+    },
+    "type": "technique",
+    "title": "Part V Setup: Existence Witness and Contrapositive Framework",
+    "content": "Part V opens with a docstring summarizing the logical structure of the final theorem: combining the Galois bridge (Part II) with non-solvability of $S_n$ (Part III).\n\n`exists_quintic` provides a trivial witness that degree-5 polynomials exist: $X^5$ has `natDegree = 5`, proved by `simp` on `Polynomial.natDegree_pow` and `Polynomial.natDegree_X`. This is a structural necessity — before stating the impossibility, we need to confirm the object class is non-empty.\n\nThe real mathematical content follows in the contrapositive theorem. The separation highlights a useful formalization pattern: establish existence of the object class, then prove properties about it.",
+    "mathContext": "$X^5 \\in \\mathbb{Q}[X]$ with $\\deg(X^5) = 5$. More interesting witnesses include $x^5 - x - 1$ (Galois group $S_5$, irreducible by Eisenstein-like arguments) and $x^5 - 4x + 2$ (Galois group $S_5$ by discriminant analysis). The formalization uses $X^5$ for simplicity since only existence is needed.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "polynomial degree",
+      "existence witness",
+      "Lean simp tactic",
+      "natDegree computation"
+    ],
+    "prerequisites": [
+      "polynomial rings in Lean",
+      "Polynomial.natDegree API",
+      "simp lemmas for polynomial arithmetic"
     ]
   },
   {
@@ -145,6 +227,11 @@
       "proof by contradiction",
       "irreducible polynomial",
       "Galois group computation"
+    ],
+    "prerequisites": [
+      "propositional logic (contrapositive)",
+      "Galois bridge theorem",
+      "non-solvability of symmetric groups"
     ]
   },
   {
@@ -164,6 +251,11 @@
       "Fundamental Theorem of Algebra",
       "transcendence of pi",
       "Gödel incompleteness"
+    ],
+    "prerequisites": [
+      "conjugacy class structure of alternating groups",
+      "Lagrange's theorem on subgroup orders",
+      "composition series and Jordan-Holder theorem"
     ]
   }
 ]
