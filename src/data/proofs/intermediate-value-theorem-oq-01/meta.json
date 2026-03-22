@@ -1,0 +1,54 @@
+{
+  "id": "intermediate-value-theorem-oq-01",
+  "title": "Bisection Method: Constructive Root Finding from IVT",
+  "slug": "intermediate-value-theorem-oq-01",
+  "description": "Formalizes the bisection method for constructive root finding. Defines the bisection step, iterated bisection sequence, and proves the fundamental width decay property (each step halves the interval). Includes constructive proof that √2 exists in [1,2] and convergence rate bounds (1/2^n after n steps).",
+  "meta": {
+    "author": "Bolzano (1817), bisection method classical",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Bisection_method",
+    "date": "1817",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/IntermediateValueTheoremOQ01.lean",
+    "tags": ["analysis", "ivt", "bisection", "numerical-methods", "constructive", "convergence"],
+    "badge": "formalized",
+    "sorries": 2,
+    "dateAdded": "03/21/26",
+    "axiomCount": 0,
+    "originalContributions": [
+      "bisectStep: single bisection interval-halving step",
+      "bisectIter: iterated bisection sequence",
+      "bisectStep_width: width halves at each step",
+      "midpoint_mem_Icc: midpoint lies in [a,b]",
+      "sqrt2_between_1_and_2: constructive √2 ∈ [1,2]",
+      "bisect_10_width: 10 steps give width 1/1024",
+      "bisect_20_error: 20 steps give error < 10⁻⁶"
+    ],
+    "crossReferences": [
+      {
+        "proofId": "intermediate-value-theorem",
+        "relationship": "extends",
+        "description": "Constructive companion to the non-constructive IVT"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The bisection method is the simplest numerical root-finding algorithm, dating to antiquity. It makes the IVT constructive by iteratively halving an interval where f changes sign. While slower than Newton's method (linear vs quadratic convergence), it is guaranteed to converge for any continuous function.",
+    "problemStatement": "Formalize the bisection method and prove its convergence rate: after n steps, the interval width is (b-a)/2^n.",
+    "proofStrategy": "Define bisectStep via conditional midpoint selection, iterate it, and prove width decay by induction. The key lemma is that each step halves the width, proved by case analysis on the sign test.",
+    "keyInsights": [
+      "Each bisection step halves the interval width regardless of which half is chosen",
+      "Convergence is exponential: error ≤ (b-a)/2^n after n iterations",
+      "The method is constructive — it builds an explicit sequence of approximations"
+    ]
+  },
+  "sections": [
+    {"id": "part-i", "title": "Part I: The Bisection Step", "startLine": 27, "endLine": 53, "summary": "Defines bisectStep, midpoint, and proves midpoint membership and width formulas."},
+    {"id": "part-ii", "title": "Part II: Iterated Bisection", "startLine": 55, "endLine": 69, "summary": "Defines the iterated bisection sequence via recursion."},
+    {"id": "part-iii", "title": "Part III: Width Decay", "startLine": 71, "endLine": 99, "summary": "Proves single-step width halving and states n-step exponential decay."},
+    {"id": "part-v", "title": "Part V: Examples", "startLine": 101, "endLine": 124, "summary": "√2 existence, 10-step and 20-step error bounds."}
+  ],
+  "conclusion": {
+    "summary": "The bisection method is formalized with 7 proved theorems, 2 sorries (iterated width decay induction), and 0 axioms.",
+    "openQuestions": ["Prove bisect_width by induction on n", "Sign persistence through bisection", "Connect to Mathlib's IVT for full convergence theorem"]
+  }
+}
