@@ -1429,15 +1429,6 @@ All inclusions are believed to be strict, but none (except P ⊆ PSPACE) are pro
 /-- The P = BPP question: can all efficient randomized algorithms be derandomized? -/
 def P_eq_BPP_Question : Prop := P_unrelativized = BPP
 
-/-- The Impagliazzo-Wigderson Theorem (informal):
-    If E (exponential time) requires exponential-size circuits, then P = BPP.
-
-    This shows derandomization is connected to circuit lower bounds.
-    Stated as an axiom since it requires circuit complexity infrastructure. -/
-axiom impagliazzo_wigderson :
-  -- If E requires exponential circuits (informal)
-  True → P_eq_BPP_Question
-
 /-- The probabilistic complexity containment chain.
 
     The full picture:
@@ -2672,7 +2663,6 @@ theorem pcp_landscape :
 #check P_subset_ZPP
 #check ZPP_subset_BPP
 #check P_eq_BPP_Question
-#check impagliazzo_wigderson
 #check probabilistic_containments
 #check P_subset_BPP_subset_PSPACE
 -- Part 13 exports (RP, coRP, ZPP refinement)
@@ -10008,27 +9998,8 @@ def coNSPACE (f : Nat → Nat) : Set (Nat → Bool) :=
   Language.complement '' (NSPACE f)
 
 -- ### Savitch's Theorem (1970)
-
-/-- **Savitch's Theorem (1970)**: NSPACE(s(n)) ⊆ DSPACE(s(n)²).
-
-    **Proof idea**: To check if configuration C₁ can reach C₂ in at most
-    2^k steps, guess a midpoint configuration C_mid, and recursively
-    check C₁ → C_mid in 2^(k-1) steps and C_mid → C₂ in 2^(k-1) steps.
-
-    Each recursive call reuses the space of the previous one, giving
-    depth O(s(n)) recursion with O(s(n)) space per level = O(s(n)²) total.
-
-    **Key insight**: The recursion reuses space (unlike time, which is consumed).
-    This is why nondeterministic space can be simulated with only quadratic
-    blowup, while nondeterministic time (NP vs P) may require exponential.
-
-    **Tightness**: The quadratic blowup is essentially optimal:
-    STCONN ∈ NSPACE(log n) but requires DSPACE(log² n / log log n)
-    (Savitch's bound is nearly matched by lower bounds). -/
-axiom savitch_theorem :
-  ∀ (s : Nat → Nat),
-    (∀ n, s n ≥ n.log2 + 1) →  -- s(n) ≥ log n (space constructible)
-    NSPACE s ⊆ DSPACE (fun n => (s n) * (s n))
+-- Savitch's Theorem states NSPACE(s(n)) ⊆ DSPACE(s(n)²).
+-- The axiom was removed as unused in proofs; the key corollaries are stated directly.
 
 /-- Immediate corollary: NSPACE(poly) ⊆ DSPACE(poly).
     Since poly² is still polynomial, nondeterminism doesn't help
@@ -10043,7 +10014,7 @@ theorem NPSPACE_eq_PSPACE :
     Since log² n = o(n), this gives NL ⊆ P via space-time:
     DSPACE(s) ⊆ DTIME(2^O(s)), so DSPACE(log² n) ⊆ P. -/
 theorem NL_subset_DSPACE_log_sq : (1 : ℕ) + 1 = 2 := rfl
-  -- Abstract: follows from savitch_theorem applied to s = log n
+  -- Abstract: follows from Savitch's theorem applied to s = log n
 
 -- ### Immerman-Szelepcsényi Theorem (1987/1988)
 /-- The NL = coNL case is the most important special case.
@@ -10298,7 +10269,6 @@ theorem space_complexity_landscape :
 -- Part 41 exports (Space-Bounded Computation)
 #check NSPACE
 #check coNSPACE
-#check savitch_theorem
 #check NPSPACE_eq_PSPACE
 
 #check STCONN
@@ -13087,36 +13057,17 @@ theorem sensitivity_significance :
     -- Connects to lifting (Part 51) and barriers (Parts 3-5)
     (1 : ℕ) + 1 = 2 := rfl
 
-/-- **The Aaronson-Ambainis Conjecture** (2014):
-
-    For any total Boolean function f:
-    ∃ i such that Inf_i(f) ≥ deg(f)^{-O(1)}
-
-    In words: for every polynomial of degree d computing a Boolean function,
-    there exists a variable with influence at least 1/poly(d).
-
-    **Significance**: If true, would give a different proof of s(f) ≥ deg(f)^Ω(1)
-    and would also imply the "Law of Large Numbers" for randomized query complexity.
-
-    **Status**: Still open (as of 2025), despite progress by
-    Bansal-Sinha (2021) who proved a weaker version. -/
-axiom aaronson_ambainis_conjecture :
-    -- ∃ i, Inf_i(f) ≥ deg(f)^{-O(1)} for all total f
-    -- Status: open
-    True
-
 /-- Summary of Part 52:
 
     **Definitions**: D_query, C_query, bs_query, real_degree, approx_degree,
     s_query, fourierCoefficient
 
-    **Axioms** (10):
+    **Axioms** (9):
     - nisan_D_bs, nisan_szegedy_bs_deg, bbcmw_D_deg (classical)
     - gotsman_linial (equivalent to sensitivity conjecture)
     - huang_signed_adjacency, cauchy_interlacing (proof tools)
     - huang_sensitivity_theorem (main result)
-    - kkl_theorem, friedgut_junta (Fourier analysis)
-    - aaronson_ambainis_conjecture (open) -/
+    - kkl_theorem, friedgut_junta (Fourier analysis) -/
 theorem part52_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end SensitivityConjecture
@@ -13136,7 +13087,6 @@ end SensitivityConjecture
 #check fourierCoefficient
 #check sensitivity_to_depth
 #check sensitivity_significance
-#check aaronson_ambainis_conjecture
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART 53: THE POLYNOMIAL METHOD AND AC⁰ LOWER BOUNDS
