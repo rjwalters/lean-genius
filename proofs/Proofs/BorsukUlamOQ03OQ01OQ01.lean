@@ -145,11 +145,21 @@ theorem hasComplementaryEdge_iff_count_pos [Fintype V] [Fintype T] [DecidableEq 
   unfold hasComplementaryEdge complementaryEdgeCount
   constructor
   · rintro ⟨i, j, hij, hc⟩
-    simp only [List.length_filter]
-    sorry -- Requires showing the edge (min i j, max i j) is in triangleEdges
+    -- Show at least one edge in triangleEdges is complementary
+    -- Case-split on i, j : Fin 3 with i ≠ j to find the matching edge
+    apply List.length_pos_of_ne_nil
+    intro hempty
+    have hfilt := List.filter_eq_nil_iff.mp hempty
+    -- All 6 ordered pairs (i,j) with i≠j correspond to edges in triangleEdges
+    fin_cases i <;> fin_cases j <;> simp_all [triangleEdges, isComplementary] <;> omega
   · intro h
-    simp only [List.length_filter] at h
-    sorry -- Requires extracting the edge from the filter
+    -- Non-empty filter gives us an element
+    have hne : (triangleEdges.filter (fun e =>
+      isComplementary l (K.vertices t e.fst) (K.vertices t e.snd))) ≠ [] := by
+      intro hempty; simp [hempty] at h
+    obtain ⟨e, he⟩ := List.exists_mem_of_ne_nil _ hne
+    simp only [List.mem_filter, decide_eq_true_eq] at he
+    exact ⟨e.fst, e.snd, LT.lt.ne e.ordered, he.2⟩
 
 -- ========================================================================
 -- Part V.2: The Parity Principle (Core Argument)
