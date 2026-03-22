@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 8 cross-area derived theorems (SZK/CZK in PSPACE, SETH/OWF complete landscapes), extended master summary 15→21 components. Header docs fixed (124→123 axioms).",
+    "progressSummary": "PROGRESS: PNPBarriers.lean axiom cleanup — 62 unused axioms deleted (153→91, -40.5%). 0 sorries, 644 theorems preserved, Docker build passes.",
     "builtItems": [
       {
         "name": "P",
@@ -651,6 +651,11 @@
         "name": "circuit_to_space_chain",
         "description": "11-part AC⁰→ACC⁰→TC⁰→NC¹→NC→P→NP→PSPACE + space chain",
         "proven": true
+      },
+      {
+        "name": "PNPBarriers axiom cleanup",
+        "description": "Removed 62 unused axioms from PNPBarriers.lean. Categories: 7 Prop-type axioms (empty statements), 8 #check-only axioms, 47 doc-comment-only axioms. Docker build passes, 0 sorries, 644 theorems preserved.",
+        "proven": true
       }
     ],
     "insights": [
@@ -788,7 +793,8 @@
       "SZK_closed_complement was removed in a prior session but header still listed it (fixed)",
       "SZK ⊆ PSPACE provable via SZK ⊆ AM∩coAM → AM ⊆ PH ⊆ PSPACE",
       "CZK ⊆ PSPACE provable via CZK ⊆ IP = PSPACE (Shamir)",
-      "Master summary extended to 21 components covering all areas of the formalization"
+      "Master summary extended to 21 components covering all areas of the formalization",
+      "PNPBarriers.lean: 62 axioms deleted (153→91, -40.5%) — all unused in proofs (only referenced in #check or doc comments)"
     ],
     "mathlibGaps": [
       "Turing machines",
