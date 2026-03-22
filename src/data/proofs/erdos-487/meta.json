@@ -103,5 +103,28 @@
       "For density δ, how many distinct LCM triples exist up to N?",
       "Can the quantitative bounds from Kleitman's theorem be improved?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Kleitman, Daniel J.",
+      "title": "On families of subsets of a finite set",
+      "year": "1971",
+      "venue": "J. Combin. Theory Ser. A 11, pp. 155-161",
+      "note": "Proved the bound on union-free families that implies the LCM triple result"
+    },
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "note": "Where Problem 487 appears"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-483",
+      "relationship": "related",
+      "description": "Both are Erdős problems about additive/multiplicative structure forced by density: #483 studies Schur numbers (avoiding a+b=c), #487 studies LCM triples in dense sets"
+    }
+  ]
 }
