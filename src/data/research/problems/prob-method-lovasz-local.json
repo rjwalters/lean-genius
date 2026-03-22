@@ -18,10 +18,10 @@
     "phase": "ACT",
     "since": "2026-03-21T23:45:00Z",
     "iteration": 1,
-    "focus": "Built LLL framework: 253 lines, 21 theorems, 3 definitions, 1 sorry"
+    "focus": "Extended LLL: 229 lines, 0 sorries, threshold + dep graph + avoidance"
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Enhanced from 66-line stub to 253-line formalization. General LLL proved, symmetric LLL with threshold, dependency graph structure, k-SAT application, Moser-Tardos bound.",
+    "progressSummary": "PROGRESS: Extended to 229 lines with LLL threshold T(d), concrete values T(1..3), dependency graph structure, symmetric avoidance, T(d)≤1/4 for d≤3. All verified, 0 sorries.",
     "builtItems": [
       "LovaszLocalLemma.lean: 253 lines — general LLL, symmetric LLL, applications",
       "general_lll: algebraic core (product positivity from x_i bounds)",
@@ -58,11 +58,11 @@
     {
       "path": "Proofs/LovaszLocalLemma.lean",
       "filename": "LovaszLocalLemma.lean",
-      "lineCount": 253,
-      "theoremCount": 21,
+      "lineCount": 229,
+      "theoremCount": 20,
       "axiomCount": 0,
-      "defCount": 3,
-      "sorryCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LovaszLocalLemma.lean"
     }

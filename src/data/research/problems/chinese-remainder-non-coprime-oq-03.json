@@ -19,7 +19,8 @@
       "Coprime gcd decomposition proof: d|a*b coprime \u2192 d = gcd(d,a)*gcd(d,b) via IsCoprime.dvd_of_dvd_mul",
       "gcd(a, gcd(a*b,c)) = gcd(a,c) since gcd(a*b,c)|c gives one direction, gcd(a,c)|a*b and gcd(a,c)|c gives other",
       "Full proof needs 3 nested coprime decompositions: factor gcd(a,b), factor gcd(gcd(a,b),c), then apply coprime product gcd lemma",
-      "Estimated 60-80 lines for complete proof. Key Mathlib tools: IsCoprime.mul_dvd, IsCoprime.dvd_of_dvd_mul_left, dvd_gcd"
+      "Estimated 60-80 lines for complete proof. Key Mathlib tools: IsCoprime.mul_dvd, IsCoprime.dvd_of_dvd_mul_left, dvd_gcd",
+      "Associates lattice approach: divisibility poset forms a distributive lattice for GCDMonoid/UFD. Check Associates.instDistribLattice in Mathlib."
     ],
     "builtItems": [
       "Eliminated axiom gcd_lcm_distrib from ChineseRemainderNonCoprimeOQ03.lean",
@@ -33,7 +34,8 @@
       "Prove coprime_gcd_mul_dvd: for coprime a,b, gcd(a*b,c) dvd gcd(a,c)*gcd(b,c)",
       "Key step: show d|a*b + coprime a b implies d = gcd(d,a)*gcd(d,b) using IsCoprime.dvd_of_dvd_mul",
       "Then decompose a = gcd(a,b)*alpha, b = gcd(a,b)*beta, apply coprime_gcd_mul_dvd to alpha,beta",
-      "Alternative: specialize to Nat using factorization_gcd/lcm + inf_sup_left on Finsupp"
+      "Alternative: specialize to Nat using factorization_gcd/lcm + inf_sup_left on Finsupp",
+      "ALTERNATIVE: Use Associates lattice. gcd=inf, lcm=sup. If Associates has DistribLattice instance, inf_sup_left gives gcd(lcm(a,b),c) | lcm(gcd(a,c),gcd(b,c)) directly."
     ],
     "progressSummary": "PROGRESS: Eliminated 1 axiom (gcd_lcm_distrib), replaced with sorry. File now has 0 axioms, 1 sorry. Key mathematical approach identified: coprime decomposition via Bezout."
   }

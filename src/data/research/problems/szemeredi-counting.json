@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: bad_vertices_small proof 95% complete — only fiber decomposition sorry remains. Proof structure: unfold edgeDensity → dif_neg → div_lt_iff₀ → fiber decomposition → sum bound. 3 sorries unchanged but first is nearly done.",
+    "progressSummary": "PROGRESS: bad_vertices_small proof 95% complete. Fiber decomposition: |(A'×B).filter Adj| = Σ |N_B(a)|. Use Finset.card_eq_sum_card_fiberwise with Prod.fst. Then each a∈A'(=badVertices) has |N_B(a)| < (d-ε)|B|, giving sum < |A'|(d-ε)|B|. 3 sorries total.",
     "builtItems": [
       "neighborhoodIn: {b ∈ B : G.Adj v b} (definition + subset/card lemmas proved)",
       "badVertices/goodVertices: partition of A by neighborhood threshold (proved: good_union_bad)",
