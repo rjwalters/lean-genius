@@ -1,0 +1,77 @@
+{
+  "slug": "roth-theorem-k3",
+  "title": "Roth's Theorem (Szemeredi k=3)",
+  "phase": "OBSERVE",
+  "status": "surveyed",
+  "tier": "S",
+  "path": "full",
+  "problemStatement": {
+    "formal": "r_3(N) = \\max\\{|A| : A \\subseteq [N],\\ A \\text{ contains no 3-term arithmetic progression}\\} = o(N).",
+    "plain": "Roth's theorem says that any \"dense enough\" subset of the integers must contain a 3-term arithmetic progression (three equally spaced numbers like 3, 7, 11). No matter how cleverly you try to avoid creating such patterns, if your set occupies a positive fraction of {1, 2, ..., N}, a 3-term AP will appear once N is large enough. This is the k=3 case of Szemeredi's theorem.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-21",
+    "iteration": 2,
+    "focus": "Proving remaining 4 Fourier-analytic sorries toward complete formalization",
+    "blockers": [
+      "None. Independent problem, can start immediately."
+    ],
+    "nextAction": "Prove parseval_on_zmod via orthogonality of ZMod characters",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Proved fourierCoeff_norm_le (triangle inequality + |exp(iθ)|=1) and roth_density_bound (main theorem via density iteration to contradiction). Reduced from 6 to 4 sorries.",
+    "builtItems": [
+      "Fixed apFree_singleton proof, Complex.abs -> norm, added apFree_subset, removed incorrect apFree_pair",
+      "Build now succeeds: 0 axioms, 3 sorries",
+      "Proved fourierCoeff_norm_le: triangle inequality with |exp(iθ)|=1 via push_cast+ring",
+      "Proved roth_density_bound: iterate density_iteration, choose K>100/δ², density>1 contradicts card_le_nat"
+    ],
+    "insights": [
+      "RothTheorem.lean had 3 build errors: deprecated Finset.not_mem_empty, broken apFree_singleton, non-existent Complex.abs",
+      "apFree_pair is FALSE for general ZMod N: counterexample {0,2} in ZMod 4 with d=2",
+      "Complex.abs renamed in Mathlib v4.26.0 - use norm instead",
+      "roth_density_bound could be proved from density_increment_lemma via iterated application",
+      "field_simp handles div_mul_cancel cleanly when clearing denominators",
+      "push_cast normalizes ↑(k+1) to ↑k+1 for cast unification",
+      "Key lemma chain: density_iteration (proved) → roth_density_bound (now proved)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove parseval_on_zmod via orthogonality of characters",
+      "Prove triple_count_fourier via expanding triple sum with orthogonality",
+      "Prove fourier_large_coefficient from Parseval + AP-freeness + cancellation",
+      "Prove density_increment_lemma from large Fourier coefficient + pigeonhole"
+    ]
+  },
+  "tags": [
+    "szemeredi",
+    "combinatorics",
+    "additive-combinatorics",
+    "arithmetic-progressions",
+    "marquee-phase-3"
+  ],
+  "relatedProofs": [
+    "roth-theorem-k3"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-22T06:10:36.236Z",
+  "lastUpdate": "2026-03-22T06:10:36.236Z",
+  "significance": 9,
+  "tractability": 6
+}

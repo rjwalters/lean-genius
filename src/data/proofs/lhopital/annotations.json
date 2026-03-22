@@ -66,29 +66,6 @@
     ]
   },
   {
-    "id": "ann-atbot",
-    "proofId": "lhopital",
-    "range": {
-      "startLine": 105,
-      "endLine": 117
-    },
-    "type": "technique",
-    "title": "Limit at Negative Infinity",
-    "content": "L'Hopital's Rule for $x \\to -\\infty$: if $f$ and $g$ are differentiable on $(-\\infty, a)$, both tend to 0 as $x \\to -\\infty$, $g'(x) \\neq 0$, and $f'(x)/g'(x) \\to c$, then $f(x)/g(x) \\to c$. This completes the four directional variants: right ($a^+$), left ($b^-$), $+\\infty$, and $-\\infty$.",
-    "mathContext": "Lean uses `Tendsto f atBot (𝓝 0)` for $\\lim_{x \\to -\\infty} f(x) = 0$ and `Iio a` for the domain $(-\\infty, a)$",
-    "significance": "supporting",
-    "prerequisites": [
-      "ann-main-theorem",
-      "atBot filter",
-      "Iio intervals"
-    ],
-    "relatedConcepts": [
-      "negative infinity limits",
-      "atBot filter",
-      "symmetry with atTop"
-    ]
-  },
-  {
     "id": "ann-mvt",
     "proofId": "lhopital",
     "range": {

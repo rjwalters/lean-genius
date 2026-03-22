@@ -27,5 +27,33 @@
       "Connect to Vitali covering lemma and Lebesgue density theorem if available"
     ],
     "progressSummary": "PROGRESS: Eliminated 2 sorries (lipschitz_implies_ac arithmetic, ac_implies_uniformly_continuous Fin 1 instantiation). 1 sorry remains (Cantor function), 2 axioms (Lebesgue FTC)."
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/FundamentalTheoremCalculus.lean",
+      "filename": "FundamentalTheoremCalculus.lean",
+      "lineCount": 166,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremCalculus.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremCalculusLebesgue.lean",
+      "filename": "FundamentalTheoremCalculusLebesgue.lean",
+      "lineCount": 271,
+      "theoremCount": 7,
+      "axiomCount": 2,
+      "defCount": 1,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremCalculusLebesgue.lean"
+    }
+  ],
+  "relatedProofs": [
+    "fundamental-theorem-calculus",
+    "fundamental-theorem-calculus-oq-01"
+  ]
 }

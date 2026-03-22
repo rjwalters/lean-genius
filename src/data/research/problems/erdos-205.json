@@ -43,7 +43,11 @@
     "covering-systems",
     "powers-of-2"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "erdos-2",
+    "erdos-20",
+    "erdos-205"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -52,5 +56,18 @@
   "started": "2026-01-23T08:04:56.542Z",
   "lastUpdate": "2026-01-23T08:04:56.542Z",
   "significance": 7,
-  "tractability": 8
+  "tractability": 8,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos205Problem.lean",
+      "filename": "Erdos205Problem.lean",
+      "lineCount": 445,
+      "theoremCount": 44,
+      "axiomCount": 6,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos205Problem.lean"
+    }
+  ]
 }

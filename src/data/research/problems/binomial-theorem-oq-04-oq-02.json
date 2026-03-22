@@ -50,9 +50,11 @@
   "relatedProofs": [
     "binomial-theorem",
     "binomial-theorem-oq-01",
+    "binomial-theorem-oq-01-oq-01",
     "binomial-theorem-oq-02",
     "binomial-theorem-oq-03",
-    "binomial-theorem-oq-04"
+    "binomial-theorem-oq-04",
+    "binomial-theorem-oq-04-oq-02"
   ],
   "references": {
     "papers": [],
@@ -100,8 +102,8 @@
     {
       "path": "Proofs/BinomialTheoremOQ01OQ01.lean",
       "filename": "BinomialTheoremOQ01OQ01.lean",
-      "lineCount": 105,
-      "theoremCount": 11,
+      "lineCount": 221,
+      "theoremCount": 17,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
@@ -151,6 +153,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ04OQ02.lean",
+      "filename": "BinomialTheoremOQ04OQ02.lean",
+      "lineCount": 112,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ04OQ02.lean"
     }
   ]
 }

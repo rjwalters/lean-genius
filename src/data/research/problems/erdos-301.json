@@ -39,7 +39,11 @@
   "tags": [
     "erdos"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "erdos-3",
+    "erdos-30",
+    "erdos-301"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -48,5 +52,18 @@
   "started": "2026-01-12T23:48:29.416Z",
   "lastUpdate": "2026-03-13T07:52:17.045Z",
   "significance": 7,
-  "tractability": 5
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos301Problem.lean",
+      "filename": "Erdos301Problem.lean",
+      "lineCount": 77,
+      "theoremCount": 2,
+      "axiomCount": 4,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos301Problem.lean"
+    }
+  ]
 }

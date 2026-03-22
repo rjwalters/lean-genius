@@ -178,7 +178,9 @@
     "analytic",
     "open-conjecture"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "riemann-hypothesis"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -191,9 +193,26 @@
   "tractability": 1,
   "leanFiles": [
     {
+      "path": "Proofs/RiemannHypothesis.lean",
+      "filename": "RiemannHypothesis.lean",
+      "lineCount": 6595,
+      "theoremCount": 358,
       "axiomCount": 32,
-      "lineCount": 6594,
-      "sorryCount": 0
+      "defCount": 38,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RiemannHypothesis.lean"
+    },
+    {
+      "path": "Proofs/RiemannHypothesisConsequences.lean",
+      "filename": "RiemannHypothesisConsequences.lean",
+      "lineCount": 1736,
+      "theoremCount": 122,
+      "axiomCount": 9,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RiemannHypothesisConsequences.lean"
     }
   ]
 }

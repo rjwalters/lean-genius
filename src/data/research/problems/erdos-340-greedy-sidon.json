@@ -49,7 +49,11 @@
     "open-conjecture",
     "blocked-open-problem"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "erdos-3",
+    "erdos-34",
+    "erdos-340"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -58,5 +62,18 @@
   "started": "2026-01-12T09:10:09.147Z",
   "lastUpdate": "2026-03-20T09:30:00Z",
   "significance": 8,
-  "tractability": 1
+  "tractability": 1,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos340GreedySidon.lean",
+      "filename": "Erdos340GreedySidon.lean",
+      "lineCount": 538,
+      "theoremCount": 16,
+      "axiomCount": 21,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos340GreedySidon.lean"
+    }
+  ]
 }

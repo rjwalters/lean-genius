@@ -42,7 +42,9 @@
     "erdos-problem",
     "open-conjecture"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "erdos-5"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -52,5 +54,18 @@
   "lastUpdate": "2026-01-13T16:22:40.291Z",
   "completed": "2026-01-13T16:22:40.291Z",
   "significance": 7,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos5PrimeGaps.lean",
+      "filename": "Erdos5PrimeGaps.lean",
+      "lineCount": 343,
+      "theoremCount": 13,
+      "axiomCount": 5,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos5PrimeGaps.lean"
+    }
+  ]
 }

@@ -40,7 +40,10 @@
     "group-theory",
     "abstract-algebra"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "lagrange-theorem",
+    "lagrange-theorem-oq-03"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -50,5 +53,29 @@
   "lastUpdate": "2026-03-12T17:29:54.451Z",
   "completed": "2026-03-12T17:29:54.451Z",
   "significance": 7,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/LagrangeTheorem.lean",
+      "filename": "LagrangeTheorem.lean",
+      "lineCount": 223,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheorem.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ03.lean",
+      "filename": "LagrangeTheoremOQ03.lean",
+      "lineCount": 374,
+      "theoremCount": 27,
+      "axiomCount": 2,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ03.lean"
+    }
+  ]
 }

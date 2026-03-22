@@ -14,10 +14,6 @@
       "prime gaps",
       "prime distribution",
       "number theory"
-    ],
-    "prerequisites": [
-      "prime numbers",
-      "natural number ordering"
     ]
   },
   {
@@ -34,12 +30,7 @@
     "significance": "key",
     "relatedConcepts": [
       "history of mathematics",
-      "analytic number theory",
-      "Chebyshev functions"
-    ],
-    "prerequisites": [
-      "prime number theory",
-      "mathematical history"
+      "analytic number theory"
     ]
   },
   {
@@ -56,12 +47,7 @@
     "significance": "critical",
     "relatedConcepts": [
       "prime numbers",
-      "existence proofs",
-      "Nat.exists_prime_lt_and_le_two_mul"
-    ],
-    "prerequisites": [
-      "Nat.Prime",
-      "Nat.exists_prime_lt_and_le_two_mul"
+      "existence proofs"
     ]
   },
   {
@@ -78,12 +64,7 @@
     "significance": "key",
     "relatedConcepts": [
       "prime gaps",
-      "consecutive primes",
-      "Cramér's conjecture"
-    ],
-    "prerequisites": [
-      "bertrand_postulate",
-      "Nat.Prime"
+      "consecutive primes"
     ]
   },
   {
@@ -99,12 +80,7 @@
     "significance": "key",
     "relatedConcepts": [
       "infinitude of primes",
-      "Euclid's theorem",
-      "alternative proofs"
-    ],
-    "prerequisites": [
-      "bertrand_postulate",
-      "Set.Infinite"
+      "Euclid's theorem"
     ]
   },
   {
@@ -121,13 +97,7 @@
     "significance": "critical",
     "relatedConcepts": [
       "binomial coefficients",
-      "prime factorization",
-      "central binomial coefficient"
-    ],
-    "prerequisites": [
-      "Nat.choose",
-      "prime factorization",
-      "Nat.log"
+      "prime factorization"
     ]
   },
   {
@@ -143,12 +113,7 @@
     "significance": "key",
     "relatedConcepts": [
       "constructive proofs",
-      "explicit bounds",
-      "prime chain"
-    ],
-    "prerequisites": [
-      "Nat.Prime",
-      "decide tactic"
+      "explicit bounds"
     ]
   },
   {
@@ -167,10 +132,6 @@
       "Prime Number Theorem",
       "asymptotic analysis",
       "Riemann Hypothesis"
-    ],
-    "prerequisites": [
-      "asymptotic notation",
-      "prime counting function"
     ]
   }
 ]

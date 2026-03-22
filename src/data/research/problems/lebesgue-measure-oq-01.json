@@ -42,7 +42,11 @@
     "integration",
     "wiedijk-100"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "lebesgue-measure",
+    "lebesgue-measure-oq-01",
+    "lebesgue-measure-oq-02"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -52,5 +56,40 @@
   "lastUpdate": "2026-03-07T18:02:01.177Z",
   "completed": "2026-03-07T18:02:01.177Z",
   "significance": 7,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/LebesgueMeasure.lean",
+      "filename": "LebesgueMeasure.lean",
+      "lineCount": 426,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasure.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ01.lean",
+      "filename": "LebesgueMeasureOQ01.lean",
+      "lineCount": 198,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ01.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ02.lean",
+      "filename": "LebesgueMeasureOQ02.lean",
+      "lineCount": 225,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ02.lean"
+    }
+  ]
 }

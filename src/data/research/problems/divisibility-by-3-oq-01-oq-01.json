@@ -46,7 +46,11 @@
     "extension",
     "comprehensive"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "divisibility-by-3",
+    "divisibility-by-3-oq-01",
+    "divisibility-by-3-oq-02"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -56,5 +60,29 @@
   "lastUpdate": "2026-02-21T22:20:44.360Z",
   "completed": "2026-02-21T22:20:44.360Z",
   "significance": 6,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/DivisibilityBy3.lean",
+      "filename": "DivisibilityBy3.lean",
+      "lineCount": 236,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ02.lean",
+      "filename": "DivisibilityBy3OQ02.lean",
+      "lineCount": 163,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ02.lean"
+    }
+  ]
 }

@@ -39,7 +39,11 @@
   "tags": [
     "erdos"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "erdos-3",
+    "erdos-34",
+    "erdos-349"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -48,5 +52,18 @@
   "started": "2026-01-13T00:53:52.154Z",
   "lastUpdate": "2026-03-13T07:52:17.046Z",
   "significance": 6,
-  "tractability": 4
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos349Problem.lean",
+      "filename": "Erdos349Problem.lean",
+      "lineCount": 89,
+      "theoremCount": 0,
+      "axiomCount": 5,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos349Problem.lean"
+    }
+  ]
 }

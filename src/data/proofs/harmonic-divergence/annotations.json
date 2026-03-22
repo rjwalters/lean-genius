@@ -14,10 +14,6 @@
       "Mathlib",
       "p-series",
       "infinite sums"
-    ],
-    "prerequisites": [
-      "real analysis",
-      "infinite series"
     ]
   },
   {
@@ -36,10 +32,6 @@
       "Summable",
       "divergence",
       "harmonic series"
-    ],
-    "prerequisites": [
-      "real analysis",
-      "infinite series"
     ]
   },
   {
@@ -58,10 +50,6 @@
       "notation",
       "inverse",
       "equivalence"
-    ],
-    "prerequisites": [
-      "real analysis",
-      "infinite series"
     ]
   },
   {
@@ -80,10 +68,6 @@
       "grouping",
       "comparison",
       "Nicole Oresme"
-    ],
-    "prerequisites": [
-      "real analysis",
-      "infinite series"
     ]
   },
   {
@@ -96,15 +80,10 @@
     "type": "lemma",
     "title": "Terms are Positive",
     "content": "A simple but necessary fact: $1/n > 0$ for all $n > 0$. This ensures all our terms contribute positively to the sum.",
-    "mathContext": "$\\forall n > 0,\\; 1/(n : \\mathbb{R}) > 0$. Proved via `div_pos one_pos (Nat.cast_pos.mpr hn)`. Needed so that adding more terms always increases the partial sum.",
     "significance": "supporting",
     "relatedConcepts": [
       "positivity",
       "well-definedness"
-    ],
-    "prerequisites": [
-      "real analysis",
-      "infinite series"
     ]
   },
   {
@@ -144,10 +123,6 @@
       "p-series",
       "Basel problem",
       "convergence boundary"
-    ],
-    "prerequisites": [
-      "real analysis",
-      "infinite series"
     ]
   },
   {
@@ -166,10 +141,6 @@
       "logarithm",
       "Euler-Mascheroni constant",
       "asymptotics"
-    ],
-    "prerequisites": [
-      "real analysis",
-      "infinite series"
     ]
   },
   {

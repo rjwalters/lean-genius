@@ -6,28 +6,67 @@
   "knowledge": {
     "insights": [
       "AbelRuffini.lean (185L, 0A, 0S) and AbelRuffiniGaloisExtensions.lean (534L, 0A, 0S) both complete",
-      "No OQ04 file exists \u2014 fresh formalization needed",
-      "A\u2085 simplicity is key ingredient: A\u2085 is the smallest non-abelian simple group",
-      "Mathlib has Alternating.isSimple (or similar) for A\u2085 simplicity",
-      "Proof chain: A\u2085 simple \u2192 S\u2085 not solvable \u2192 degree \u2265 5 not solvable by radicals",
-      "Equiv.Perm.not_solvable takes the type \u03b1 and Cardinal.mk \u03b1 \u2265 5 inequality",
+      "No OQ04 file exists — fresh formalization needed",
+      "A₅ simplicity is key ingredient: A₅ is the smallest non-abelian simple group",
+      "Mathlib has Alternating.isSimple (or similar) for A₅ simplicity",
+      "Proof chain: A₅ simple → S₅ not solvable → degree ≥ 5 not solvable by radicals",
+      "Equiv.Perm.not_solvable takes the type α and Cardinal.mk α ≥ 5 inequality",
       "IsSolvable for Perm (Fin 0) and Perm (Fin 1) resolve by inferInstance",
       "The file is fully verified - every theorem proved with no sorry"
     ],
     "builtItems": [
-      "AbelRuffiniOQ04.lean: A\u2085 proof chain (163 lines, 0 sorries, 0 axioms)",
-      "a5_is_simple: A\u2085 simplicity from Mathlib",
-      "symmetric_not_solvable: general S\u2099 non-solvability for n \u2265 5",
+      "AbelRuffiniOQ04.lean: A₅ proof chain (163 lines, 0 sorries, 0 axioms)",
+      "a5_is_simple: A₅ simplicity from Mathlib",
+      "symmetric_not_solvable: general Sₙ non-solvability for n ≥ 5",
       "five_is_the_threshold: exact threshold theorem",
       "5-step proof chain documentation with degree comparison tables",
       "Gallery integration with full meta.json"
     ],
     "openQuestions": [
-      "Does Mathlib have A\u2085 simplicity proved?",
+      "Does Mathlib have A₅ simplicity proved?",
       "How does the existing file use solvability?"
     ],
     "nextSteps": [],
-    "progressSummary": "COMPLETED: Fully verified (0 sorries, 0 axioms) exposition of A\u2085 \u2192 Abel-Ruffini proof chain. 163 lines, 8 theorems. Named proof chain with comprehensive documentation."
+    "progressSummary": "COMPLETED: Fully verified (0 sorries, 0 axioms) exposition of A₅ → Abel-Ruffini proof chain. 163 lines, 8 theorems. Named proof chain with comprehensive documentation."
   },
-  "lastUpdate": "2026-03-22T06:34:32Z"
+  "lastUpdate": "2026-03-22T06:34:32Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/AbelRuffini.lean",
+      "filename": "AbelRuffini.lean",
+      "lineCount": 186,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffini.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniGaloisExtensions.lean",
+      "filename": "AbelRuffiniGaloisExtensions.lean",
+      "lineCount": 535,
+      "theoremCount": 57,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniGaloisExtensions.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04.lean",
+      "filename": "AbelRuffiniOQ04.lean",
+      "lineCount": 164,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04.lean"
+    }
+  ],
+  "relatedProofs": [
+    "abel-ruffini",
+    "abel-ruffini-oq-04"
+  ]
 }

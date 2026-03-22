@@ -66,16 +66,16 @@
       "15+ omega failures in fully_colored_one_door and no_door_hypotenuse (Lean 4.26 / Fin comparison changes)",
       "sperner_2d proof structure (row-sweep via strip_parity) is mathematically complete but cannot compile due to missing upstream definitions",
       "Restored missing definitions (gColor, hTrans, hTrans_top, gColor_bot, abstractDoorCount) from git history",
-      "Fixed Mathlib v4.26 API drift: omega failures through GridVertex projections (use show/dsimp), deprecated renames (range_succ\u2192range_add_one, notMem_range_self, natCast_eq_zero_iff), door_parity_of_not_fc decide\u2192contradiction",
+      "Fixed Mathlib v4.26 API drift: omega failures through GridVertex projections (use show/dsimp), deprecated renames (range_succ→range_add_one, notMem_range_self, natCast_eq_zero_iff), door_parity_of_not_fc decide→contradiction",
       "Removed unused lemmas (fully_colored_one_door, no_door_left_boundary, no_door_hypotenuse) that had unfixable API drift - superseded by doorZ_* variants",
       "Fixed zmod2_sum_shift_cancel: added missing 0<m hypothesis (lemma was false for m=0)",
       "Added @[ext] to GridVertex for ext tactic compatibility",
       "File now builds clean with 1 sorry (approximate_fixed_point_2d only)",
-      "BUG FOUND: displacementColoring tie-breaking is wrong. When f(p)=p (d0=d1=d2=0), coloring gives 0 on hypotenuse, violating Sperner condition (needs color \u2260 0 there).",
+      "BUG FOUND: displacementColoring tie-breaking is wrong. When f(p)=p (d0=d1=d2=0), coloring gives 0 on hypotenuse, violating Sperner condition (needs color ≠ 0 there).",
       "Root cause: tie-breaking picks smallest index (color 0 first), but on hypotenuse need color 0 to have LOWEST priority.",
       "Fix: reverse tie-breaking priority OR use face-aware tie-breaking where vertex-opposite colors get low priority.",
-      "Standard fix from literature: argmin with tie-broken by largest index (so all-zeros \u2192 color 2, which is fine on hypotenuse).",
-      "On bottom edge (d2\u22650): reversed priority would give color 2 when all zeros. Need face-aware tie-breaking for corners."
+      "Standard fix from literature: argmin with tie-broken by largest index (so all-zeros → color 2, which is fine on hypotenuse).",
+      "On bottom edge (d2≥0): reversed priority would give color 2 when all zeros. Need face-aware tie-breaking for corners."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -83,7 +83,7 @@
       "One approach: color = max index k such that d_k is minimal among {d0,d1,d2}",
       "Alternative: separate handling for boundary vs interior vertices",
       "After fixing coloring, displacementColoring_isSperner should be provable by case analysis on boundary face + displacement sign",
-      "fully_colored_gives_approx: show all-3-colors triangle has diameter \u2264 sqrt(2)/n and displacement is small"
+      "fully_colored_gives_approx: show all-3-colors triangle has diameter ≤ sqrt(2)/n and displacement is small"
     ]
   },
   "tags": [
@@ -106,13 +106,13 @@
   "tractability": 5,
   "leanFiles": [
     {
-      "path": "Proofs/BrouwerFixedPointOQ02OQ01.lean",
-      "filename": "BrouwerFixedPointOQ02OQ01.lean",
-      "lineCount": 627,
-      "theoremCount": 23,
-      "axiomCount": 0,
-      "defCount": 15,
-      "sorryCount": 1,
+      "path": "Proofs/BrouwerFixedPoint.lean",
+      "filename": "BrouwerFixedPoint.lean",
+      "lineCount": 250,
+      "theoremCount": 5,
+      "axiomCount": 2,
+      "defCount": 5,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPoint.lean"
     },
@@ -148,6 +148,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02Ext.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ02OQ01.lean",
+      "filename": "BrouwerFixedPointOQ02OQ01.lean",
+      "lineCount": 760,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 14,
+      "sorryCount": 10,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02OQ01.lean"
     },
     {
       "path": "Proofs/BrouwerFixedPointOQ02Stability.lean",

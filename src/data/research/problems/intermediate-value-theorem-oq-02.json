@@ -66,7 +66,8 @@
     "constructive"
   ],
   "relatedProofs": [
-    "intermediate-value-theorem"
+    "intermediate-value-theorem",
+    "intermediate-value-theorem-oq-01"
   ],
   "references": {
     "papers": [],
@@ -93,9 +94,20 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IntermediateValueTheorem.lean"
     },
     {
+      "path": "Proofs/IntermediateValueTheoremOQ01.lean",
+      "filename": "IntermediateValueTheoremOQ01.lean",
+      "lineCount": 125,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IntermediateValueTheoremOQ01.lean"
+    },
+    {
       "path": "Proofs/IntermediateValueTheoremOQ02.lean",
       "filename": "IntermediateValueTheoremOQ02.lean",
-      "lineCount": 243,
+      "lineCount": 244,
       "theoremCount": 13,
       "axiomCount": 0,
       "defCount": 3,

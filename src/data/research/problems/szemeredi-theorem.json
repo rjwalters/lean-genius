@@ -88,7 +88,10 @@
     "arithmetic-progressions",
     "regularity-lemma"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "szemeredi-full",
+    "szemeredi-theorem"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -97,5 +100,18 @@
   "started": "2025-12-31T16:00:00-08:00",
   "completed": "2025-12-31T17:00:00-08:00",
   "significance": 7,
-  "tractability": 5
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/SzemerediTheorem.lean",
+      "filename": "SzemerediTheorem.lean",
+      "lineCount": 336,
+      "theoremCount": 12,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediTheorem.lean"
+    }
+  ]
 }

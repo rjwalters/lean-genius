@@ -43,7 +43,11 @@
     "partitions",
     "representation-function"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "erdos-8",
+    "erdos-87",
+    "erdos-871"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -52,5 +56,18 @@
   "started": "2026-01-23T08:04:56.547Z",
   "lastUpdate": "2026-01-23T08:04:56.547Z",
   "significance": 7,
-  "tractability": 7
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos871Problem.lean",
+      "filename": "Erdos871Problem.lean",
+      "lineCount": 426,
+      "theoremCount": 25,
+      "axiomCount": 3,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos871Problem.lean"
+    }
+  ]
 }

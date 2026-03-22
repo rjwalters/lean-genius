@@ -67,8 +67,9 @@
     "completed"
   ],
   "relatedProofs": [
+    "divisibility-by-3-oq-01",
     "divisibility-truncation-general",
-    "divisibility-by-3-oq-01"
+    "divisibility-truncation-general-oq-01"
   ],
   "references": {
     "papers": [],
@@ -84,5 +85,29 @@
   "started": "2026-03-17T22:03:36.907Z",
   "lastUpdate": "2026-03-18T04:22:00.000Z",
   "significance": 6,
-  "tractability": 7
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/DivisibilityTruncationGeneral.lean",
+      "filename": "DivisibilityTruncationGeneral.lean",
+      "lineCount": 256,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityTruncationGeneral.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityTruncationGeneralOQ01.lean",
+      "filename": "DivisibilityTruncationGeneralOQ01.lean",
+      "lineCount": 160,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityTruncationGeneralOQ01.lean"
+    }
+  ]
 }

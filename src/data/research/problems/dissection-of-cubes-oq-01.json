@@ -51,7 +51,11 @@
     "combinatorics",
     "wiedijk-100"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "dissection-of-cubes",
+    "dissection-of-cubes-oq-01",
+    "dissection-of-cubes-oq-02"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -61,5 +65,51 @@
   "lastUpdate": "2026-02-24T05:02:41.701Z",
   "completed": "2026-02-24T05:02:41.701Z",
   "significance": 6,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/DissectionOfCubes.lean",
+      "filename": "DissectionOfCubes.lean",
+      "lineCount": 367,
+      "theoremCount": 7,
+      "axiomCount": 2,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubes.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ01.lean",
+      "filename": "DissectionOfCubesOQ01.lean",
+      "lineCount": 280,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ01.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ02.lean",
+      "filename": "DissectionOfCubesOQ02.lean",
+      "lineCount": 384,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ02.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ03.lean",
+      "filename": "DissectionOfCubesOQ03.lean",
+      "lineCount": 502,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 11,
+      "sorryCount": 8,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ03.lean"
+    }
+  ]
 }

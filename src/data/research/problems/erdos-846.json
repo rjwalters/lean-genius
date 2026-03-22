@@ -39,7 +39,11 @@
   "tags": [
     "erdos"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "erdos-8",
+    "erdos-84",
+    "erdos-846"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -48,5 +52,18 @@
   "started": "2026-01-15T10:25:45.155Z",
   "lastUpdate": "2026-03-13T07:52:17.053Z",
   "significance": 7,
-  "tractability": 5
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos846Problem.lean",
+      "filename": "Erdos846Problem.lean",
+      "lineCount": 200,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos846Problem.lean"
+    }
+  ]
 }
