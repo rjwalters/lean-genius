@@ -7,7 +7,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #1081: Sums of Two Squarefull Numbers**\n\nThis problem asks about the asymptotic count of integers expressible as sums of two squarefull numbers.\n\n**Question:**\nIs A(x) ~ c · x / √(log x) for some c > 0?\n\n**Answer: NO**\n\nOdoni (1981) disproved this. The correct asymptotic has exponent α = 1 - 2^(-1/3) ≈ 0.206, not 1/2.",
     "mathContext": "A squarefull (powerful) number is one where every prime divisor appears with exponent at least 2. Examples: 1, 4, 8, 9, 16, 25, 27, ...",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Squarefull numbers", "Asymptotic analysis", "Counting functions"]
   },
   {
@@ -18,7 +18,7 @@
     "title": "Squarefull Number Definition",
     "content": "**IsSquarefull m:**\n\nA positive integer m is squarefull if for every prime p dividing m, we have p² | m.\n\n**Definition:**\n```lean\ndef IsSquarefull (m : ℕ) : Prop :=\n  m > 0 ∧ ∀ p : ℕ, p.Prime → p ∣ m → p^2 ∣ m\n```\n\n**Examples:** 1, 4=2², 8=2³, 9=3², 16=2⁴, 25=5², 27=3³, ...\n\nAlso called 'powerful' numbers.",
     "mathContext": "The sequence of squarefull numbers begins: 1, 4, 8, 9, 16, 25, 27, 32, 36, 49, 64, 72, ... (OEIS A001694)",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Prime factorization", "Powerful numbers", "OEIS A001694"]
   },
   {
@@ -35,7 +35,7 @@
     "id": "ann-e1081-examples",
     "proofId": "erdos-1081",
     "range": { "startLine": 68, "endLine": 107 },
-    "type": "theorem",
+    "type": "technique",
     "title": "Squarefull Examples",
     "content": "**Verified squarefull numbers:**\n\n- **one_squarefull:** 1 is squarefull (vacuously true)\n- **four_squarefull:** 4 = 2² is squarefull\n- **eight_squarefull:** 8 = 2³ is squarefull\n- **nine_squarefull:** 9 = 3² is squarefull\n\nThese are proved using interval_cases to check all prime divisors.",
     "significance": "supporting",
@@ -48,14 +48,14 @@
     "type": "definition",
     "title": "Sums of Two Squarefull Numbers",
     "content": "**IsSumOfTwoSquarefull n:**\n\nn is expressible as a + b where both a and b are squarefull.\n\n**Definition:**\n```lean\ndef IsSumOfTwoSquarefull (n : ℕ) : Prop :=\n  ∃ a b : ℕ, IsSquarefull a ∧ IsSquarefull b ∧ n = a + b\n```\n\n**Examples:** 5 = 1 + 4, 13 = 4 + 9, 17 = 8 + 9, ...",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Squarefull numbers", "Additive representations"]
   },
   {
     "id": "ann-e1081-sum-examples",
     "proofId": "erdos-1081",
     "range": { "startLine": 119, "endLine": 131 },
-    "type": "theorem",
+    "type": "technique",
     "title": "Sum Examples",
     "content": "**five_is_sum:** 5 = 1 + 4 (both squarefull)\n\n**thirteen_is_sum:** 13 = 4 + 9 (both squarefull)\n\nThese are constructive proofs providing explicit witnesses.",
     "significance": "supporting",
@@ -76,22 +76,22 @@
     "id": "ann-e1081-conjecture",
     "proofId": "erdos-1081",
     "range": { "startLine": 164, "endLine": 179 },
-    "type": "axiom",
+    "type": "context",
     "title": "Erdős's Conjecture (Disproved)",
     "content": "**erdos_conjecture:**\n\nErdős conjectured (1976) that A(x) ~ c · x / √(log x) for some c > 0.\n\n**odoni_disproof:**\n```lean\naxiom odoni_disproof : ¬erdos_conjecture\n```\n\nOdoni (1981) proved this is FALSE. The count A(x) grows strictly faster than x/√(log x).",
     "mathContext": "Erdős's heuristic was based on naive probabilistic arguments that didn't account for the multiplicative structure of squarefull numbers.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Disproved conjectures", "Odoni's paper"]
   },
   {
     "id": "ann-e1081-odoni",
     "proofId": "erdos-1081",
     "range": { "startLine": 185, "endLine": 197 },
-    "type": "axiom",
+    "type": "context",
     "title": "Odoni's Lower Bound",
     "content": "**odoni_lower_bound:**\n\nOdoni (1981) proved:\n$$A(x) \\gg \\exp\\left(c \\frac{\\log\\log\\log x}{\\log\\log x}\\right) \\frac{x}{\\sqrt{\\log x}}$$\n\nThis shows A(x) exceeds x/√(log x) by a slowly growing (but unbounded) factor exp(c · log log log x / log log x).",
     "mathContext": "The triple-log growth rate is extremely slow but sufficient to disprove the asymptotic.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Lower bounds", "Triple logarithm", "Slow growth"]
   },
   {
@@ -102,25 +102,25 @@
     "title": "The Critical Exponent α",
     "content": "**alpha:**\n\nThe correct exponent for the counting function.\n\n```lean\nnoncomputable def alpha : ℝ := 1 - (2 : ℝ)^(-(1/3 : ℝ))\n```\n\nα = 1 - 2^(-1/3) ≈ 0.206299\n\nCompare: Erdős conjectured 1/2 = 0.5, but the true exponent is much smaller!",
     "mathContext": "This specific exponent arises from the analysis of binary quadratic forms with large discriminant.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Exponents", "Blomer-Granville", "Quadratic forms"]
   },
   {
     "id": "ann-e1081-blomer-granville",
     "proofId": "erdos-1081",
     "range": { "startLine": 211, "endLine": 223 },
-    "type": "axiom",
+    "type": "context",
     "title": "Blomer-Granville Theorem (2006)",
     "content": "**blomer_granville_2006:**\n\nThe correct asymptotic:\n$$A(x) = (\\log\\log x)^{O(1)} \\cdot \\frac{x}{(\\log x)^{\\alpha}}$$\n\nwhere α = 1 - 2^(-1/3) ≈ 0.206299.\n\nThis provides both upper and lower bounds with the correct exponent, up to polylogarithmic factors.",
     "mathContext": "Blomer and Granville used the theory of binary quadratic forms to obtain these tight bounds.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Blomer-Granville", "Quadratic forms", "Duke Math. J."]
   },
   {
     "id": "ann-e1081-comparison",
     "proofId": "erdos-1081",
     "range": { "startLine": 225, "endLine": 235 },
-    "type": "theorem",
+    "type": "technique",
     "title": "Exponent Comparison",
     "content": "**alpha_less_than_half:**\n\nα ≈ 0.206 < 1/2 = 0.5\n\nSince (log x)^α < (log x)^(1/2) = √(log x) for large x, we have:\nx / (log x)^α > x / √(log x)\n\nThis confirms A(x) grows FASTER than Erdős expected.",
     "significance": "key",
@@ -140,10 +140,10 @@
     "id": "ann-e1081-summary",
     "proofId": "erdos-1081",
     "range": { "startLine": 280, "endLine": 309 },
-    "type": "theorem",
+    "type": "technique",
     "title": "Problem Summary",
     "content": "**erdos_1081_summary:**\n\nThe complete answer to Erdős Problem #1081.\n\n**Results:**\n1. ¬erdos_conjecture (the conjecture is false)\n2. alpha < 1/2 (true exponent is smaller)\n3. The answer is NO\n\n**Key Insight:**\nA(x) grows as x/(log x)^α with α ≈ 0.206, significantly faster than the conjectured x/√(log x) = x/(log x)^(1/2).",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Erdős problems", "Disproved conjectures", "Correct asymptotics"]
   }
 ]
