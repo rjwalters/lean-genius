@@ -109,14 +109,16 @@
       "title": "Exact Bound for Odd Cycles (KSS 2005)",
       "startLine": 95,
       "endLine": 118,
-      "summary": "R(C_n;3) = 4n - 3 for sufficiently large odd n."
+      "summary": "R(C_n;3) = 4n - 3 for sufficiently large odd n.",
+      "mathContext": "KSS (2005): for large odd $n$, $R(C_n; 3) = 4n - 3$. Both upper and lower bounds are tight."
     },
     {
       "id": "benevides-skokan",
       "title": "Exact Bound for Even Cycles (2009)",
       "startLine": 120,
       "endLine": 134,
-      "summary": "R(C_n;3) = 2n for sufficiently large even n."
+      "summary": "R(C_n;3) = 2n for sufficiently large even n.",
+      "mathContext": "Benevides-Skokan (2009): for large even $n$, $R(C_n; 3) = 2n$. Dramatically smaller than the odd case ($4n - 3$)."
     },
     {
       "id": "dichotomy",
