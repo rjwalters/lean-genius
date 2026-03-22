@@ -36,10 +36,10 @@ theorem proportional_of_inner_eq (f g : E) (h : ⟪f, g⟫_ℝ = ‖f‖ * ‖g�
     ‖f‖ • g = ‖g‖ • f := by
   have key : ‖‖f‖ • g - ‖g‖ • f‖ ^ 2 = 0 := by
     have h1 : ⟪‖f‖ • g, ‖g‖ • f⟫_ℝ = ‖f‖ * ‖g‖ * ⟪g, f⟫_ℝ := by
-      simp [inner_smul_left, inner_smul_right, star_trivial]; ring
+      simp [inner_smul_left, inner_smul_right]; ring
     have h2 : ⟪g, f⟫_ℝ = ‖f‖ * ‖g‖ := by rw [real_inner_comm]; exact h
     rw [@norm_sub_sq_real E, h1, h2]
-    simp [norm_smul, Real.norm_eq_abs, abs_of_nonneg (norm_nonneg _)]
+    simp [norm_smul]
     ring
   rw [sq_eq_zero_iff, norm_eq_zero, sub_eq_zero] at key
   exact key
