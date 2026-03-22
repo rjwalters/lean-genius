@@ -1,0 +1,125 @@
+{
+  "id": "szemeredi-regularity",
+  "title": "Szemeredi Regularity Lemma",
+  "slug": "szemeredi-regularity",
+  "description": "Every large enough graph can be partitioned into a bounded number of parts such that edges between most pairs behave pseudo-randomly. The fundamental structural result in graph theory.",
+  "meta": {
+    "author": "Szemeredi (1975), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Szemer%C3%A9di_regularity_lemma",
+    "date": "1975",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/SzemerediRegularity.lean",
+    "tags": [
+      "szemeredi",
+      "combinatorics",
+      "graph-theory",
+      "regularity",
+      "marquee-phase-3"
+    ],
+    "badge": "formalized",
+    "sorries": 3,
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Graph structure for vertex and edge operations",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finpartition",
+        "description": "Finite partition infrastructure for vertex decomposition",
+        "module": "Mathlib.Order.Partition.Finpartition"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality for edge density computation",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "originalContributions": [
+      "Epsilon-regular pair definition for SimpleGraph bipartite subgraphs",
+      "Regular partition definition with equitable partition and bounded irregularity",
+      "Partition energy function and energy increment step",
+      "Regularity lemma via iterated energy refinement"
+    ],
+    "dateAdded": "03/21/26",
+    "axiomCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Szemeredi Regularity Lemma, proved by Endre Szemeredi in 1975 as a key tool in his proof of Szemeredi's theorem, has become one of the most important and widely-used results in combinatorics. It provides a universal structural decomposition for graphs: any sufficiently large graph can be partitioned into a bounded number of parts such that the edges between almost all pairs of parts behave pseudo-randomly.\n\nThe lemma's power lies in reducing arbitrary graph problems to problems about dense random-like bipartite graphs. This 'structure vs randomness' paradigm has transformed graph theory, additive combinatorics, and theoretical computer science.\n\nGowers (1997) showed that the tower-type bound on the number of parts is unavoidable: the partition size must grow as a tower of exponentials in 1/epsilon. Despite this, the lemma's qualitative power is undiminished, and it remains the primary tool for transferring results from random graphs to arbitrary graphs.\n\nThe regularity lemma has inspired numerous variants: the strong regularity lemma (Alon-Fischer-Krivelevich-Szegedy), weak regularity (Frieze-Kannan), arithmetic regularity (Green), and hypergraph regularity (Gowers, Rodl-Skokan).",
+    "problemStatement": "For every $\\varepsilon > 0$ and integer $m \\geq 1$, there exists $M = M(\\varepsilon, m)$ such that every graph $G$ on $n \\geq M$ vertices admits an $\\varepsilon$-regular partition into at most $M$ parts.\n\nA pair $(V_i, V_j)$ is $\\varepsilon$-regular if for all $A \\subseteq V_i$, $B \\subseteq V_j$ with $|A| \\geq \\varepsilon|V_i|$, $|B| \\geq \\varepsilon|V_j|$: $|d(A,B) - d(V_i,V_j)| \\leq \\varepsilon$, where $d(X,Y) = e(X,Y)/(|X||Y|)$ is the edge density.",
+    "proofStrategy": "The formalization uses the energy increment argument:\n\n1. **Epsilon-regular pairs**: Define edge density d(A,B) between vertex subsets and the epsilon-regularity condition. A pair is regular if all large sub-pairs have similar density.\n\n2. **Partition energy**: Define the energy E(P) = (1/k^2) * sum_{i,j} d(V_i, V_j)^2 for a k-partition P. Energy always lies in [0,1].\n\n3. **Energy increment**: If a partition has more than epsilon * C(k,2) irregular pairs, it can be refined into a partition with energy at least E(P) + epsilon^5. This is the key technical step.\n\n4. **Regularity lemma**: Start with an arbitrary equipartition. If it is not epsilon-regular, refine it. Since energy increases by at least epsilon^5 at each step and is bounded by 1, the process terminates after at most epsilon^{-5} refinements. The final partition is epsilon-regular with at most M = tower(epsilon^{-5}, m) parts.",
+    "keyInsights": [
+      "Epsilon-regularity captures pseudo-randomness: regular pairs behave like random bipartite graphs for subgraph counting",
+      "Partition energy E(P) is a natural potential function: it increases with refinement and is bounded by 1",
+      "The energy increment of epsilon^5 per irregular step guarantees termination in at most epsilon^{-5} refinements",
+      "The tower-type bound on the number of parts is necessary (Gowers 1997), showing the lemma is inherently non-polynomial",
+      "The 'structure vs randomness' decomposition is the conceptual heart: separate any graph into a structured part (partition) and random part (regular pairs)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "introduction",
+      "title": "Module Docstring and Imports",
+      "startLine": 1,
+      "endLine": 16,
+      "summary": "Overview of the Regularity Lemma formalization covering epsilon-regular pairs, partition energy, energy increment, and the main regularity existence result.",
+      "mathContext": "Every large graph admits an epsilon-regular partition into bounded many parts."
+    },
+    {
+      "id": "definitions",
+      "title": "Part I: Epsilon-Regular Pairs and Partitions",
+      "startLine": 18,
+      "endLine": 55,
+      "summary": "Core definitions: edge density between vertex subsets, epsilon-regular pair condition, and regular partition (equitable partition with few irregular pairs).",
+      "mathContext": "$(V_i, V_j)$ is $\\varepsilon$-regular if all large sub-pairs have density close to $d(V_i, V_j)$"
+    },
+    {
+      "id": "energy",
+      "title": "Part II: Partition Energy and Increment",
+      "startLine": 57,
+      "endLine": 90,
+      "summary": "Partition energy function E(P) and the energy increment step: if too many irregular pairs, refinement increases energy by epsilon^5.",
+      "mathContext": "$E(\\mathcal{P}) = \\frac{1}{k^2}\\sum_{i,j} d(V_i,V_j)^2 \\in [0,1]$, refinement gives $E(\\mathcal{P}') \\geq E(\\mathcal{P}) + \\varepsilon^5$"
+    },
+    {
+      "id": "regularity-lemma",
+      "title": "Part III: Regularity Lemma (Main Result)",
+      "startLine": 92,
+      "endLine": 115,
+      "summary": "The main Szemeredi Regularity Lemma: for every epsilon > 0, every large graph has an epsilon-regular partition. Proved by iterated energy increment.",
+      "mathContext": "For all $\\varepsilon > 0$, $\\exists M$: every graph on $\\geq M$ vertices has an $\\varepsilon$-regular partition into $\\leq M$ parts"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "szemeredi-counting",
+      "relationship": "used-by",
+      "description": "The counting lemma applies regularity to count subgraphs in regular partitions"
+    },
+    {
+      "targetId": "szemeredi-full",
+      "relationship": "used-by",
+      "description": "The full Szemeredi theorem uses regularity + counting to find arithmetic progressions"
+    },
+    {
+      "targetId": "roth-theorem-k3",
+      "relationship": "related",
+      "description": "Roth's theorem can be proved via regularity + triangle removal, connecting graph-theoretic and Fourier approaches"
+    },
+    {
+      "targetId": "prob-method-lovasz-local",
+      "relationship": "related",
+      "description": "Both regularity and the LLL provide structural decompositions that tame complexity in combinatorial objects"
+    }
+  ],
+  "conclusion": {
+    "summary": "The Szemeredi Regularity Lemma provides a universal structural decomposition of graphs into pseudo-random pieces. The formalization via energy increment establishes the foundational tool for the entire Szemeredi program.",
+    "implications": "This formalization provides:\n\n**1. Fundamental Graph Structure Theorem**\nThe Regularity Lemma is the most important structural result in graph theory, and this formalization makes its subtle conditions machine-checkable.\n\n**2. Foundation for Counting and Removal**\nRegularity is prerequisite for the counting lemma and triangle removal lemma, which in turn yield Szemeredi's theorem.\n\n**3. Structure vs Randomness Paradigm**\nThe regularity decomposition exemplifies the modern 'structure vs randomness' paradigm that has transformed combinatorics.\n\n**4. Reusable Infrastructure**\nEpsilon-regularity definitions, partition energy, and refinement tools are reusable across graph theory problems.\n\n**5. Path to Variants**\nThe formalization provides a template for strong regularity, arithmetic regularity, and hypergraph regularity variants.",
+    "openQuestions": [
+      "Can we formalize the Gowers lower bound showing the tower-type partition size is necessary?",
+      "How does Frieze-Kannan weak regularity compare, and can it serve as a simpler stepping stone?",
+      "Can the partition refinement be made algorithmic with polynomial-time guarantees (Alon-Duke-Lefmann-Rodl-Yuster)?",
+      "What is the optimal energy increment constant, and can we formalize tight bounds?"
+    ]
+  }
+}

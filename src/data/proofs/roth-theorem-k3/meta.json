@@ -1,0 +1,128 @@
+{
+  "id": "roth-theorem-k3",
+  "title": "Roth's Theorem (Szemeredi k=3)",
+  "slug": "roth-theorem-k3",
+  "description": "Every subset of [N] with no 3-term arithmetic progression has size o(N). The k=3 case of Szemeredi's theorem, proved by Roth via Fourier analysis.",
+  "meta": {
+    "author": "Roth (1953), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Roth%27s_theorem_on_arithmetic_progressions",
+    "date": "1953",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/RothTheorem.lean",
+    "tags": [
+      "szemeredi",
+      "combinatorics",
+      "additive-combinatorics",
+      "arithmetic-progressions",
+      "marquee-phase-3"
+    ],
+    "badge": "formalized",
+    "sorries": 3,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets for density arguments",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "ZMod",
+        "description": "Cyclic groups for discrete Fourier analysis",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Finite sums for Fourier coefficient computation",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      }
+    ],
+    "originalContributions": [
+      "AP-free set definition and characterization",
+      "Density increment lemma via large Fourier coefficients",
+      "Roth density bound r_3(N) = o(N)",
+      "Fourier analysis framework for additive combinatorics in Lean"
+    ],
+    "dateAdded": "03/21/26",
+    "axiomCount": 0
+  },
+  "overview": {
+    "historicalContext": "Roth's theorem, proved by Klaus Friedrich Roth in 1953, was a landmark achievement in number theory and combinatorics. It confirmed the k=3 case of the Erdos-Turan conjecture (1936) that every dense subset of the integers contains arithmetic progressions of any length.\n\nRoth introduced Fourier-analytic methods to additive combinatorics, a revolutionary approach that opened an entirely new toolbox. His key insight was the density increment strategy: if a set A of density delta in [N] has no 3-term AP, then there exists a long arithmetic progression P where A has density at least delta + c*delta^2. Iterating this increment (which can only happen O(1/delta) times before density exceeds 1) yields a contradiction.\n\nThe quantitative bounds have been dramatically improved over the decades: Bourgain (1999, 2008), Sanders (2011), and most recently Bloom and Sisask (2020) achieved r_3(N) = O(N/(log N)^{1+c}). In 2023, Kelley and Meka achieved the breakthrough bound r_3(N) = O(N * exp(-c * (log N)^{1/12})).\n\nRoth's theorem is the natural starting point for the Szemeredi program because it introduces the core techniques (Fourier analysis, density increment) in their simplest setting.",
+    "problemStatement": "Let $r_3(N) = \\max\\{|A| : A \\subseteq [N],\\ A \\text{ contains no 3-term AP}\\}$. Roth's theorem states that $r_3(N) = o(N)$, i.e., $r_3(N)/N \\to 0$ as $N \\to \\infty$.\n\nEquivalently: for every $\\delta > 0$, there exists $N_0$ such that every $A \\subseteq [N]$ with $|A| \\geq \\delta N$ and $N \\geq N_0$ contains a 3-term arithmetic progression $a, a+d, a+2d$ with $d > 0$.",
+    "proofStrategy": "The formalization follows the density increment approach:\n\n1. **AP-free sets**: Define what it means for a subset of [N] to be free of 3-term arithmetic progressions and establish basic properties.\n\n2. **Fourier analysis on Z/NZ**: Set up discrete Fourier analysis, defining Fourier coefficients of the characteristic function of A and relating them to 3-AP counts via the identity: the number of 3-APs in A equals N^{-1} * sum_r |hat{1_A}(r)|^2 * hat{1_A}(-2r).\n\n3. **Density increment lemma**: If A has density delta and no 3-AP, then some Fourier coefficient is large, which implies A has increased density on a long subprogression. Specifically, there exists an AP of length at least N^{c} where A has density at least delta + delta^2/C.\n\n4. **Main theorem**: Iterate the density increment. After at most O(1/delta) steps, the density exceeds 1, a contradiction. Therefore no AP-free set can have density delta for N sufficiently large.",
+    "keyInsights": [
+      "The number of 3-APs in a set A is controlled by the Fourier coefficients of 1_A: this is the fundamental Fourier-analytic identity",
+      "If A has no 3-AP, some Fourier coefficient must be large (by Parseval), giving structure that can be exploited",
+      "A large Fourier coefficient implies density increment on a subprogression: the set becomes denser on a structured subset",
+      "The density increment can only happen O(1/delta) times before exceeding 1, forcing a 3-AP to exist",
+      "Roth's method pioneered the density increment paradigm that underpins Szemeredi's full theorem and much of modern additive combinatorics"
+    ]
+  },
+  "sections": [
+    {
+      "id": "introduction",
+      "title": "Module Docstring and Imports",
+      "startLine": 1,
+      "endLine": 16,
+      "summary": "Overview of Roth's theorem formalization covering AP-free set definitions, Fourier analysis framework, density increment lemma, and the main r_3(N) = o(N) result.",
+      "mathContext": "Every dense subset of [N] contains a 3-term arithmetic progression."
+    },
+    {
+      "id": "ap-free-sets",
+      "title": "Part I: AP-Free Set Definitions",
+      "startLine": 18,
+      "endLine": 40,
+      "summary": "Definition of AP-free subsets of Fin N and basic properties. A set is AP-free if it contains no a, a+d, a+2d with d > 0.",
+      "mathContext": "$A$ is AP-free if $\\forall a, d > 0: \\{a, a+d, a+2d\\} \\not\\subseteq A$"
+    },
+    {
+      "id": "fourier-coefficient",
+      "title": "Part II: Fourier Analysis on Z/NZ",
+      "startLine": 42,
+      "endLine": 65,
+      "summary": "Fourier coefficient of a set and the key identity connecting large Fourier coefficients to arithmetic structure.",
+      "mathContext": "$\\hat{1_A}(r) = \\sum_{x \\in A} e^{2\\pi i r x / N}$"
+    },
+    {
+      "id": "density-increment",
+      "title": "Part III: Density Increment Lemma",
+      "startLine": 67,
+      "endLine": 90,
+      "summary": "If a dense set has no 3-AP, it has increased density on a long subprogression. The key inductive step of Roth's proof.",
+      "mathContext": "No 3-AP + density $\\delta$ implies density $\\delta + \\Omega(\\delta^2)$ on a subprogression"
+    },
+    {
+      "id": "main-theorem",
+      "title": "Part IV: Roth's Theorem (Main Result)",
+      "startLine": 92,
+      "endLine": 110,
+      "summary": "The main theorem: r_3(N) = o(N). Proved by iterating the density increment until density exceeds 1.",
+      "mathContext": "$r_3(N) = o(N)$: AP-free subsets of $[N]$ have vanishing density"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "Roth's theorem can also be proved via the regularity lemma and triangle removal, connecting Fourier and graph-theoretic approaches"
+    },
+    {
+      "targetId": "szemeredi-full",
+      "relationship": "used-by",
+      "description": "Roth's theorem is the k=3 base case of the full Szemeredi theorem"
+    },
+    {
+      "targetId": "prob-method-expectation",
+      "relationship": "related",
+      "description": "Both use counting arguments over structured combinatorial objects"
+    }
+  ],
+  "conclusion": {
+    "summary": "Roth's theorem formalizes the foundational result that AP-free subsets of [N] have density tending to zero. The proof via Fourier analysis and density increment introduces the core methodology of modern additive combinatorics.",
+    "implications": "This formalization provides:\n\n**1. Entry Point for Szemeredi Program**\nRoth's theorem is the natural first step, introducing density increment and Fourier methods in their simplest setting.\n\n**2. Fourier-Analytic Framework**\nThe Fourier analysis on Z/NZ infrastructure built here is reusable for many problems in additive combinatorics.\n\n**3. Density Increment Paradigm**\nThe density increment strategy formalized here generalizes to the full Szemeredi theorem and beyond.\n\n**4. Connection to Regularity**\nRoth's theorem can also be proved via triangle removal, connecting this to the regularity program.",
+    "openQuestions": [
+      "What quantitative bounds can we formalize? The best known bound (Kelley-Meka 2023) gives r_3(N) = O(N * exp(-c * (log N)^{1/12}))",
+      "Can we formalize the alternative proof via triangle removal lemma, showing the two approaches yield the same result?",
+      "How does the density increment strategy generalize to k-APs for k > 3?",
+      "Can the Fourier infrastructure be extended to handle polynomial progressions and other additive patterns?"
+    ]
+  }
+}

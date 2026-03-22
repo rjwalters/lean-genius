@@ -1,0 +1,120 @@
+{
+  "id": "szemeredi-counting",
+  "title": "Counting and Removal Lemma",
+  "slug": "szemeredi-counting",
+  "description": "The triangle removal lemma and graph counting lemma. Regular pairs behave like random graphs for subgraph counting, and graphs with few triangles can be made triangle-free cheaply.",
+  "meta": {
+    "author": "Ruzsa & Szemeredi (1978), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Triangle_removal_lemma",
+    "date": "1978",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/SzemerediCounting.lean",
+    "tags": [
+      "szemeredi",
+      "combinatorics",
+      "graph-theory",
+      "regularity",
+      "marquee-phase-3"
+    ],
+    "badge": "formalized",
+    "sorries": 3,
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Graph structure for triangle counting",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.CliqueFree",
+        "description": "Clique-free graphs and triangle detection",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality operations for counting subgraphs",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "originalContributions": [
+      "Counting lemma for triangles in epsilon-regular triples",
+      "Triangle removal lemma from regularity + counting",
+      "General graph removal lemma framework",
+      "Connection between triangle removal and Roth's theorem"
+    ],
+    "dateAdded": "03/21/26",
+    "axiomCount": 0
+  },
+  "overview": {
+    "historicalContext": "The counting lemma and triangle removal lemma are the key applications of the Szemeredi Regularity Lemma. The counting lemma, implicit in Szemeredi's 1975 work, states that epsilon-regular triples contain approximately the expected number of triangles (as if edges were random). The triangle removal lemma, proved by Ruzsa and Szemeredi in 1978, says that a graph with few triangles can be made triangle-free by removing few edges.\n\nThe profound connection between the triangle removal lemma and additive combinatorics was recognized by Ruzsa and Szemeredi: encoding a 3-AP-free set as a tripartite graph, the removal lemma implies Roth's theorem. This connection was later generalized by Solymosi and by Fox to give new proofs of Szemeredi's theorem via hypergraph removal.\n\nFox (2011) proved the best known quantitative bounds for the triangle removal lemma, showing that the dependence of gamma on delta can be made a tower of bounded height (rather than the tower of height polynomial in 1/delta coming from a direct application of regularity). The optimal bounds remain an important open problem.",
+    "problemStatement": "**Counting Lemma:** If $(V_1, V_2, V_3)$ is an $\\varepsilon$-regular triple with densities $d_{12}, d_{13}, d_{23} \\geq \\varepsilon$, then the number of triangles with one vertex in each part is $(1 \\pm f(\\varepsilon)) \\cdot d_{12} d_{13} d_{23} \\cdot |V_1||V_2||V_3|$ where $f(\\varepsilon) \\to 0$.\n\n**Triangle Removal Lemma:** For every $\\delta > 0$ there exists $\\gamma > 0$: if $G$ has at most $\\gamma n^3$ triangles, then $G$ can be made triangle-free by removing at most $\\delta n^2$ edges.",
+    "proofStrategy": "The formalization builds counting and removal in stages:\n\n1. **Counting lemma**: Given an epsilon-regular triple (V1, V2, V3) with densities all at least epsilon, count triangles by iterating over vertices in V1 and using regularity to estimate the number of edges between their neighborhoods in V2 and V3. Error accumulation is bounded by 3*epsilon.\n\n2. **Triangle removal lemma**: Apply the Regularity Lemma to get an epsilon-regular partition. Remove all edges in irregular pairs and sparse regular pairs (density < delta/2). The removed edges are at most delta*n^2. Any remaining triangle must have vertices in three regular, dense parts, but the counting lemma shows this gives at least c*n^3 triangles. So if the original graph has fewer than c*n^3 triangles, we have made it triangle-free.\n\n3. **Graph removal lemma**: Generalize from triangles to arbitrary subgraphs H. The same strategy works: apply regularity, remove irregular/sparse edges, and use the counting lemma for H.",
+    "keyInsights": [
+      "Regular pairs behave like random bipartite graphs: the triangle count in regular triples matches the random expectation up to small error",
+      "The removal lemma is a 'stability' result: few copies of H means few edges need to be removed to eliminate all copies",
+      "Triangle removal implies Roth's theorem: encode {a, a+d, a+2d} as triangles in a carefully constructed tripartite graph",
+      "The error propagation through the counting lemma is the key technical challenge: regularity in each pair gives controlled error in triangle count",
+      "The quantitative tower-type bounds arise from the regularity lemma application; improving them is a major open problem"
+    ]
+  },
+  "sections": [
+    {
+      "id": "introduction",
+      "title": "Module Docstring and Imports",
+      "startLine": 1,
+      "endLine": 14,
+      "summary": "Overview of the counting and removal lemma formalization covering triangle counting in regular triples, the removal lemma, and connections to additive combinatorics.",
+      "mathContext": "Regular pairs act like random graphs for counting subgraphs."
+    },
+    {
+      "id": "counting-lemma",
+      "title": "Part I: Counting Lemma for Regular Triples",
+      "startLine": 16,
+      "endLine": 50,
+      "summary": "The counting lemma: the number of triangles in an epsilon-regular triple is approximately d12 * d13 * d23 * |V1| * |V2| * |V3|.",
+      "mathContext": "Triangles in $\\varepsilon$-regular triple $\\approx d_{12}d_{13}d_{23}|V_1||V_2||V_3|$"
+    },
+    {
+      "id": "triangle-removal",
+      "title": "Part II: Triangle Removal Lemma",
+      "startLine": 52,
+      "endLine": 80,
+      "summary": "The triangle removal lemma: a graph with few triangles can be made triangle-free by removing few edges. Derived from regularity + counting.",
+      "mathContext": "At most $\\gamma n^3$ triangles implies triangle-free after removing $\\leq \\delta n^2$ edges"
+    },
+    {
+      "id": "graph-removal",
+      "title": "Part III: General Graph Removal Lemma",
+      "startLine": 82,
+      "endLine": 105,
+      "summary": "Extension from triangles to arbitrary subgraphs: for any graph H, few copies of H means few edge removals suffice to eliminate all copies.",
+      "mathContext": "Generalization to arbitrary subgraph $H$: few copies implies cheap removal"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "depends-on",
+      "description": "The counting and removal lemmas are direct applications of the Regularity Lemma"
+    },
+    {
+      "targetId": "roth-theorem-k3",
+      "relationship": "related",
+      "description": "Triangle removal implies Roth's theorem via encoding 3-APs as triangles"
+    },
+    {
+      "targetId": "szemeredi-full",
+      "relationship": "used-by",
+      "description": "The counting/removal lemma is used in the regularity proof of Szemeredi's theorem"
+    }
+  ],
+  "conclusion": {
+    "summary": "The counting and removal lemmas translate the structural guarantee of regularity into powerful counting tools. Regular pairs behave like random graphs for subgraph counting, and the removal lemma provides stability: few subgraph copies means few edges need to be removed to eliminate them all.",
+    "implications": "This formalization provides:\n\n**1. Key Bridge Between Graph Theory and Number Theory**\nThe triangle removal lemma implies Roth's theorem, giving a purely graph-theoretic proof of a number-theoretic result.\n\n**2. Counting Infrastructure**\nThe counting lemma for regular triples is the workhorse tool for applying regularity to specific problems.\n\n**3. Stability Paradigm**\nThe removal lemma introduces the important stability concept: approximate structure implies proximity to exact structure.\n\n**4. Path to Full Szemeredi**\nThe counting/removal lemma is the critical intermediate step between regularity and the full Szemeredi theorem.",
+    "openQuestions": [
+      "What are the optimal quantitative bounds for the triangle removal lemma? The gap between Fox's upper bound and known lower bounds is enormous.",
+      "Can the hypergraph counting lemma be formalized, generalizing from graph to k-uniform hypergraph regularity?",
+      "What is the relationship between removal lemma bounds and the tower-type bounds in the regularity lemma itself?",
+      "Can the removal lemma be proved without the regularity lemma (as in Fox's 2011 approach using the strong regularity lemma)?"
+    ]
+  }
+}
