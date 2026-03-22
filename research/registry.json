@@ -207,8 +207,8 @@
       "phase": "COMPLETED",
       "path": "full",
       "started": "2026-01-01T05:32:39.472Z",
-      "status": "blocked",
-      "lastUpdate": "2026-03-22T14:28:59.749Z",
+      "status": "graduated",
+      "lastUpdate": "2026-03-22T16:23:16.609Z",
       "completed": "2026-02-07T00:59:53.359Z"
     },
     {
@@ -216,8 +216,8 @@
       "phase": "COMPLETED",
       "path": "full",
       "started": "2026-01-01T05:32:39.476Z",
-      "status": "blocked",
-      "lastUpdate": "2026-03-22T14:28:59.749Z",
+      "status": "graduated",
+      "lastUpdate": "2026-03-22T16:23:16.610Z",
       "completed": "2026-02-07T00:59:53.358Z"
     },
     {
@@ -252,8 +252,8 @@
       "phase": "COMPLETED",
       "path": "fast",
       "started": "2026-01-01T05:32:39.478Z",
-      "status": "blocked",
-      "lastUpdate": "2026-03-22T14:28:59.771Z",
+      "status": "graduated",
+      "lastUpdate": "2026-03-22T16:23:16.663Z",
       "completed": "2026-02-11T05:41:00.789Z"
     },
     {
@@ -342,8 +342,8 @@
       "phase": "COMPLETED",
       "path": "full",
       "started": "2026-01-01T21:55:27.885Z",
-      "status": "blocked",
-      "lastUpdate": "2026-03-22T14:28:59.747Z",
+      "status": "graduated",
+      "lastUpdate": "2026-03-22T16:23:16.609Z",
       "completed": "2026-03-15T17:29:13.116Z"
     },
     {
@@ -351,8 +351,8 @@
       "phase": "COMPLETED",
       "path": "full",
       "started": "2026-01-01T21:55:27.886Z",
-      "status": "blocked",
-      "lastUpdate": "2026-03-22T14:28:59.745Z",
+      "status": "graduated",
+      "lastUpdate": "2026-03-22T16:23:16.609Z",
       "completed": "2026-02-11T05:41:00.786Z"
     },
     {
@@ -360,8 +360,8 @@
       "phase": "COMPLETED",
       "path": "full",
       "started": "2026-01-01T21:55:27.887Z",
-      "status": "blocked",
-      "lastUpdate": "2026-03-22T14:28:59.746Z",
+      "status": "graduated",
+      "lastUpdate": "2026-03-22T16:23:16.609Z",
       "completed": "2026-03-16T16:51:32.259Z"
     },
     {
@@ -387,8 +387,8 @@
       "phase": "COMPLETED",
       "path": "full",
       "started": "2026-01-01T21:55:27.888Z",
-      "status": "blocked",
-      "lastUpdate": "2026-03-22T14:28:59.746Z",
+      "status": "graduated",
+      "lastUpdate": "2026-03-22T16:23:16.609Z",
       "completed": "2026-02-11T05:41:00.787Z"
     },
     {
@@ -396,8 +396,8 @@
       "phase": "COMPLETED",
       "path": "full",
       "started": "2026-01-01T21:55:27.888Z",
-      "status": "blocked",
-      "lastUpdate": "2026-03-22T14:28:59.746Z",
+      "status": "graduated",
+      "lastUpdate": "2026-03-22T16:23:16.607Z",
       "completed": "2026-03-21T19:47:15.949Z"
     },
     {
@@ -507,11 +507,12 @@
     },
     {
       "slug": "erdos-340-greedy-sidon",
-      "phase": "NEW",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-01-12T09:10:09.147Z",
-      "status": "active",
-      "lastUpdate": "2026-01-12T09:10:09.147Z"
+      "status": "graduated",
+      "lastUpdate": "2026-03-22T16:23:16.610Z",
+      "completed": "2026-03-22T16:23:16.610Z"
     },
     {
       "slug": "erdos-5-prime-gaps",
@@ -5186,6 +5187,94 @@
       "status": "graduated",
       "lastUpdate": "2026-03-22T12:47:35.470Z",
       "completed": "2026-03-22T12:47:35.470Z"
+    },
+    {
+      "slug": "shannon-channel-coding-oq-04",
+      "phase": "OBSERVE",
+      "path": "fast",
+      "started": "2026-03-22T16:23:16.628Z",
+      "status": "active",
+      "lastUpdate": "2026-03-22T16:23:16.670Z"
+    },
+    {
+      "slug": "shannon-source-coding-oq-02",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-03-22T16:23:16.628Z",
+      "status": "active",
+      "lastUpdate": "2026-03-22T16:23:16.671Z"
+    },
+    {
+      "slug": "sylow-theorems-oq-02",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-03-22T16:23:16.628Z",
+      "status": "active",
+      "lastUpdate": "2026-03-22T16:23:16.671Z"
+    },
+    {
+      "slug": "schroeder-bernstein-oq-04",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-03-22T16:23:16.662Z",
+      "status": "active",
+      "lastUpdate": "2026-03-22T16:23:16.671Z"
+    },
+    {
+      "slug": "solution-of-cubic-oq-03",
+      "phase": "OBSERVE",
+      "path": "fast",
+      "started": "2026-03-22T16:23:16.662Z",
+      "status": "active",
+      "lastUpdate": "2026-03-22T16:23:16.671Z"
+    },
+    {
+      "slug": "sqrt2-from-axioms-oq-01",
+      "phase": "OBSERVE",
+      "path": "fast",
+      "started": "2026-03-22T16:23:16.662Z",
+      "status": "active",
+      "lastUpdate": "2026-03-22T16:23:16.672Z"
+    },
+    {
+      "slug": "sum-of-kth-powers-oq-02",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-03-22T16:23:16.662Z",
+      "status": "active",
+      "lastUpdate": "2026-03-22T16:23:16.672Z"
+    },
+    {
+      "slug": "taylor-theorem-oq-03",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-03-22T16:23:16.662Z",
+      "status": "active",
+      "lastUpdate": "2026-03-22T16:23:16.672Z"
+    },
+    {
+      "slug": "triangle-inequality-oq-03",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-03-22T16:23:16.662Z",
+      "status": "active",
+      "lastUpdate": "2026-03-22T16:23:16.673Z"
+    },
+    {
+      "slug": "vietas-formulas-oq-03",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-03-22T16:23:16.662Z",
+      "status": "active",
+      "lastUpdate": "2026-03-22T16:23:16.673Z"
+    },
+    {
+      "slug": "wolstenholme-theorem-oq-02",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-03-22T16:23:16.662Z",
+      "status": "active",
+      "lastUpdate": "2026-03-22T16:23:16.673Z"
     }
   ],
   "config": {
