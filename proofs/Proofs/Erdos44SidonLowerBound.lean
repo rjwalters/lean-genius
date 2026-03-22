@@ -74,17 +74,18 @@ lemma modParabola_subset_Icc {p k : ℕ} (hp : 1 ≤ p) (hk : k ≤ p) :
 
 /- ## The Sidon Property -/
 
+set_option maxHeartbeats 800000 in
 /-- **The modular parabola is Sidon** (for prime p).
 
-    Proof sketch (fully verified mathematically, key steps use sorry in Lean):
+    Proof:
     1. From f(a)+f(b)=f(c)+f(d), the 2p factor forces a+b=c+d (no carry)
     2. The remainders match: a²%p+b²%p = c²%p+d²%p
     3. Hence a²+b² ≡ c²+d² and then ab ≡ cd (mod p)
-    4. (a-c)(a-d) ≡ -(ab-cd) ≡ 0 (mod p), so p | (a-c) or p | (a-d)
+    4. (a-c)(a-d) = cd-ab ≡ 0 (mod p), so p | (a-c) or p | (a-d)
     5. Since |a-c|, |a-d| < p: a=c or a=d, giving {a,b}={c,d}
 
-    The proof is mathematically complete. The sorry is for the modular arithmetic
-    formalization in Lean (Int casting, ZMod divisibility). -/
+    For p=2, proved by case analysis on {0,1}⁴.
+    For p≥3 (odd prime), the full modular arithmetic argument is formalized in ℤ. -/
 theorem modParabola_isSidon (p : ℕ) (hp : Nat.Prime p) :
     IsSidon ((range p).image (modParabolaFn p)) := by
   intro x y u v hx hy hu hv hxy huv heq
@@ -108,8 +109,110 @@ theorem modParabola_isSidon (p : ℕ) (hp : Nat.Prime p) :
   -- With a≤b, c≤d, the second case gives a=b=c=d.
   suffices h : a = c ∧ b = d by
     exact ⟨congr_arg (modParabolaFn p) h.1, congr_arg (modParabolaFn p) h.2⟩
-  -- Key modular arithmetic steps (mathematically verified, see proof sketch above)
-  sorry
+  -- Full proof of the modular arithmetic argument
+  unfold modParabolaFn at heq
+  -- Case p = 2: brute force over {0, 1}
+  by_cases hp2 : p = 2
+  · subst hp2
+    interval_cases a <;> interval_cases b <;> interval_cases c <;> interval_cases d <;> omega
+  · -- p ≥ 3 (odd prime)
+    have hp3 : 3 ≤ p := by have := hp.two_le; omega
+    have hra : a ^ 2 % p < p := Nat.mod_lt _ hp.pos
+    have hrb : b ^ 2 % p < p := Nat.mod_lt _ hp.pos
+    have hrc : c ^ 2 % p < p := Nat.mod_lt _ hp.pos
+    have hrd : d ^ 2 % p < p := Nat.mod_lt _ hp.pos
+    -- No carry: 2(a+b)p + (a²%p + b²%p) = 2(c+d)p + (c²%p + d²%p)
+    -- with each remainder sum < 2p, so quotients must match
+    have hab_sum : a + b = c + d := by
+      by_contra hne
+      have hrem_ab : a ^ 2 % p + b ^ 2 % p < 2 * p := by omega
+      have hrem_cd : c ^ 2 % p + d ^ 2 % p < 2 * p := by omega
+      rcases Nat.lt_or_gt_of_ne hne with hlt | hgt
+      · -- a+b < c+d: LHS < 2*(a+b+1)*p ≤ 2*(c+d)*p ≤ RHS
+        have h1 : a + b + 1 ≤ c + d := by omega
+        have hexp : 2 * (a + b + 1) * p = 2 * a * p + 2 * b * p + 2 * p := by ring
+        have hlow : 2 * (c + d) * p ≤ 2 * c * p + c ^ 2 % p + (2 * d * p + d ^ 2 % p) := by
+          have : 2 * (c + d) * p = 2 * c * p + 2 * d * p := by ring
+          omega
+        have hmid : 2 * (a + b + 1) * p ≤ 2 * (c + d) * p := by nlinarith
+        linarith
+      · -- a+b > c+d: symmetric
+        have h1 : c + d + 1 ≤ a + b := by omega
+        have hexp : 2 * (c + d + 1) * p = 2 * c * p + 2 * d * p + 2 * p := by ring
+        have hlow : 2 * (a + b) * p ≤ 2 * a * p + a ^ 2 % p + (2 * b * p + b ^ 2 % p) := by
+          have : 2 * (a + b) * p = 2 * a * p + 2 * b * p := by ring
+          omega
+        have hmid : 2 * (c + d + 1) * p ≤ 2 * (a + b) * p := by nlinarith
+        linarith
+    have hrem : a ^ 2 % p + b ^ 2 % p = c ^ 2 % p + d ^ 2 % p := by
+      have hexp_ab : 2 * (a + b) * p = 2 * a * p + 2 * b * p := by ring
+      have hexp_cd : 2 * (c + d) * p = 2 * c * p + 2 * d * p := by ring
+      nlinarith
+    -- Work in ℤ for clean modular arithmetic
+    have hab_z : (a : ℤ) + b = c + d := by omega
+    -- p | (a² + b² - c² - d²) via Nat.div_add_mod
+    have hdvd_sq : (p : ℤ) ∣ ((a : ℤ) ^ 2 + b ^ 2 - c ^ 2 - d ^ 2) := by
+      refine ⟨↑(a ^ 2 / p) + ↑(b ^ 2 / p) - ↑(c ^ 2 / p) - ↑(d ^ 2 / p), ?_⟩
+      have ha2 : a ^ 2 = p * (a ^ 2 / p) + a ^ 2 % p := (Nat.div_add_mod _ _).symm
+      have hb2 : b ^ 2 = p * (b ^ 2 / p) + b ^ 2 % p := (Nat.div_add_mod _ _).symm
+      have hc2 : c ^ 2 = p * (c ^ 2 / p) + c ^ 2 % p := (Nat.div_add_mod _ _).symm
+      have hd2 : d ^ 2 = p * (d ^ 2 / p) + d ^ 2 % p := (Nat.div_add_mod _ _).symm
+      have hremz : (↑(a ^ 2 % p) : ℤ) + ↑(b ^ 2 % p) = ↑(c ^ 2 % p) + ↑(d ^ 2 % p) := by
+        exact_mod_cast hrem
+      have ha2z : (a : ℤ) ^ 2 = ↑p * ↑(a ^ 2 / p) + ↑(a ^ 2 % p) := by
+        exact_mod_cast ha2
+      have hb2z : (b : ℤ) ^ 2 = ↑p * ↑(b ^ 2 / p) + ↑(b ^ 2 % p) := by
+        exact_mod_cast hb2
+      have hc2z : (c : ℤ) ^ 2 = ↑p * ↑(c ^ 2 / p) + ↑(c ^ 2 % p) := by
+        exact_mod_cast hc2
+      have hd2z : (d : ℤ) ^ 2 = ↑p * ↑(d ^ 2 / p) + ↑(d ^ 2 % p) := by
+        exact_mod_cast hd2
+      linarith only [ha2z, hb2z, hc2z, hd2z, hremz]
+    -- (a+b)² = (c+d)² ⟹ a²+2ab+b² = c²+2cd+d² ⟹ a²+b²-c²-d² = 2(cd-ab)
+    have hsq_eq : ((a : ℤ) + b) ^ 2 = ((c : ℤ) + d) ^ 2 := by congr 1
+    have hexpand : (a : ℤ) ^ 2 + 2 * a * b + b ^ 2 = c ^ 2 + 2 * c * d + d ^ 2 := by
+      calc (a : ℤ) ^ 2 + 2 * a * b + b ^ 2 = ((a : ℤ) + b) ^ 2 := by ring
+        _ = ((c : ℤ) + d) ^ 2 := hsq_eq
+        _ = c ^ 2 + 2 * c * d + d ^ 2 := by ring
+    have hident : (a : ℤ) ^ 2 + b ^ 2 - c ^ 2 - d ^ 2 = 2 * (↑c * ↑d - ↑a * ↑b) := by
+      linarith only [hexpand]
+    -- p | 2(cd-ab), p ≥ 3 prime so p ∤ 2, hence p | (cd-ab)
+    have hp_prime_z : Prime (p : ℤ) := by
+      rw [Int.prime_iff_natAbs_prime]; exact hp
+    have hdvd_prod : (p : ℤ) ∣ (↑c * ↑d - ↑a * ↑b) := by
+      have hdvd_2 : (p : ℤ) ∣ (2 * (↑c * ↑d - ↑a * ↑b)) := hident ▸ hdvd_sq
+      have hp_ndvd_2 : ¬ (p : ℤ) ∣ 2 := by
+        intro h; have := Int.le_of_dvd (by norm_num) h; omega
+      exact (hp_prime_z.dvd_or_dvd hdvd_2).resolve_left hp_ndvd_2
+    -- cd - ab = (a-c)(a-d) using a+b = c+d
+    have hfactor : ↑c * ↑d - ↑a * (↑b : ℤ) = ((a : ℤ) - c) * (a - d) := by
+      have : (b : ℤ) = ↑c + ↑d - ↑a := by linarith only [hab_z]
+      rw [this]; ring
+    -- p | (a-c)(a-d), and p is prime
+    have hdvd_factor : (p : ℤ) ∣ ((a : ℤ) - c) * (a - d) := hfactor ▸ hdvd_prod
+    -- Helper: if p | (x - y) with |x - y| < p, then x = y
+    have div_small : ∀ x y : ℕ, x < p → y < p → (p : ℤ) ∣ ((x : ℤ) - y) → x = y := by
+      intro x y hx hy ⟨k, hk⟩
+      have h1 : (x : ℤ) - y < p := by omega
+      have h2 : -(p : ℤ) < (x : ℤ) - y := by omega
+      have hp_nn : (0 : ℤ) ≤ ↑p := by omega
+      have hk0 : k = 0 := by
+        rcases le_or_gt k (-1) with h | h
+        · have := mul_le_mul_of_nonneg_left h hp_nn
+          exfalso; linarith only [hk, h2, this]
+        rcases le_or_gt 1 k with h' | h'
+        · have := mul_le_mul_of_nonneg_left h' hp_nn
+          exfalso; linarith only [hk, h1, this]
+        omega
+      have hxy : (x : ℤ) = y := by rw [hk0, mul_zero] at hk; linarith only [hk]
+      exact_mod_cast hxy
+    rcases hp_prime_z.dvd_or_dvd hdvd_factor with hac | had
+    · -- p | (a-c) → a = c
+      have hac_eq := div_small a c ha hc hac
+      exact ⟨hac_eq, by omega⟩
+    · -- p | (a-d) → a = d → a=b=c=d
+      have had_eq := div_small a d ha hd had
+      exact ⟨by omega, by omega⟩
 
 /- ## Subset Sidon -/
 

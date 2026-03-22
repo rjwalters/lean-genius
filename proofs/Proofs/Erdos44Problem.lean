@@ -324,8 +324,7 @@ This uses the Singer construction from finite projective planes (Singer 1938).
 -/
 -- sidon_set_lower_bound_exists: Previously an axiom, now proved in
 -- Erdos44SidonLowerBound.lean using the modular parabola construction
--- and Bertrand's postulate. Available as Erdos44.sidon_set_lower_bound_exists.
--- Contains 2 sorries: the Sidon property (modular arithmetic) and sqrt²≤N.
+-- and Bertrand's postulate. All supporting lemmas are fully proved.
 
 /- ## Part 4: Main Conjecture (OPEN) -/
 
