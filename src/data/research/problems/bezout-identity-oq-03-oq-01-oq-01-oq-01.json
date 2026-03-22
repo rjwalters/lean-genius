@@ -1,25 +1,26 @@
 {
   "id": "bezout-identity-oq-03-oq-01-oq-01-oq-01",
-  "name": "Ideal-theoretic Chinese Remainder Theorem: R/⨅Iᵢ ≅ ∏ R/Iᵢ",
-  "status": "in-progress",
-  "phase": "ACT",
+  "name": "Ideal-theoretic Chinese Remainder Theorem: R/\u2a05I\u1d62 \u2245 \u220f R/I\u1d62",
+  "status": "completed",
+  "phase": "COMPLETED",
   "knowledge": {
     "insights": [
-      "Mathlib has Ideal.quotientInfRingEquivPiQuotient for the general k-fold CRT",
-      "Ideal.quotientInfEquivQuotientProd gives the 2-fold version",
-      "Ideal.isCoprime_iff_sup_eq connects IsCoprime to I ⊔ J = ⊤",
-      "The product = intersection lemma (I ⊓ J = I * J for coprime) needs the right Mathlib API",
-      "sup_inf_left gives the lattice distributive law for ideals but type mismatch with Ideal.isCoprime_iff_sup_eq",
-      "3 sorries remain: inf_eq_mul, crt_unique, coprime inheritance"
+      "Mathlib has Ideal.quotientInfRingEquivPiQuotient for k-fold CRT and quotientInfEquivQuotientProd for 2-fold",
+      "Ideal.isCoprime_iff_sup_eq bridges IsCoprime I J \u2194 I \u2294 J = \u22a4",
+      "I \u2229 J = I\u00b7J proof: decompose x = x\u00b7a + x\u00b7b using 1 = a + b from coprimality",
+      "Coprimality inheritance uses IsCoprime.mul_right plus Ideal.mul_le_inf",
+      "The 158-line version is much cleaner than the original 354-line attempt thanks to Mathlib API"
     ],
     "builtItems": [
-      "BezoutIdentityOQ03OQ01OQ01OQ01.lean: 146L, 12 theorems, 0 axioms, 3 sorries",
-      "crt_two: R/(I∩J) ≅ R/I × R/J (fully proved from Mathlib)",
-      "crt_general: R/⨅Iᵢ ≅ ∏ R/Iᵢ (fully proved from Mathlib)",
-      "crt_product: R/(I·J) ≅ R/I × R/J (depends on inf_eq_mul sorry)"
+      "BezoutIdentityOQ03OQ01OQ01OQ01.lean: 158L, 12 theorems, 0 axioms, 0 sorries",
+      "crt_general: R/(\u2a05 I\u1d62) \u2245 \u220f R/I\u1d62 for pairwise coprime ideals",
+      "crt_two: R/(I\u2229J) \u2245 R/I \u00d7 R/J via Ideal.quotientInfEquivQuotientProd",
+      "inf_eq_mul_of_coprime: I \u2229 J = I \u00b7 J for coprime ideals",
+      "crt_product: R/(I\u00b7J) \u2245 R/I \u00d7 R/J combining product = intersection with CRT",
+      "isCoprime_of_coprime_inf: coprimality inheritance I\u22a5J \u2227 I\u22a5K \u27f9 I\u22a5(J\u2229K)"
     ],
     "openQuestions": [
-      "What is the correct Mathlib name for I ⊓ J = I * J for coprime ideals?",
+      "What is the correct Mathlib name for I \u2293 J = I * J for coprime ideals?",
       "How to properly use sup_inf_left with Ideal.isCoprime_iff_sup_eq?"
     ],
     "nextSteps": [
@@ -27,6 +28,19 @@
       "Fix type mismatch in isCoprime_of_coprime_inf via proper lattice API",
       "Prove crt_unique using quotient API"
     ],
-    "progressSummary": "PROGRESS: Core CRT proved (2-fold and k-fold from Mathlib). 3 auxiliary sorries remain. 146L, 12 theorems."
-  }
+    "progressSummary": "COMPLETED: Ideal-theoretic CRT fully proved. 158L, 12 theorems, 0 axioms, 0 sorries."
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/BezoutIdentityOQ03OQ01OQ01OQ01.lean",
+      "filename": "BezoutIdentityOQ03OQ01OQ01OQ01.lean",
+      "lineCount": 158,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BezoutIdentityOQ03OQ01OQ01OQ01.lean"
+    }
+  ]
 }

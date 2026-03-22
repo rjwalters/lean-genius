@@ -37,7 +37,16 @@ theorem coprime_iff_sup_eq_top (I J : Ideal R) :
     This is the key structural fact connecting ∩ and ·. -/
 theorem inf_eq_mul_of_coprime {I J : Ideal R} (h : I ⊔ J = ⊤) :
     I ⊓ J = I * J := by
-  sorry
+  apply le_antisymm
+  · intro x hx
+    rw [Submodule.mem_inf] at hx
+    rw [Ideal.eq_top_iff_one, Submodule.mem_sup] at h
+    obtain ⟨a, ha, b, hb, hab⟩ := h
+    have : x = x * a + x * b := by rw [← mul_add, hab, mul_one]
+    rw [this]
+    exact Ideal.add_mem _ (mul_comm x a ▸ Ideal.mul_mem_mul ha hx.2)
+      (Ideal.mul_mem_mul hx.1 hb)
+  · exact Ideal.mul_le_inf
 
 -- ============================================================
 -- Part II: Two-Fold CRT
@@ -103,11 +112,12 @@ noncomputable def crt_product {I J : Ideal R} (h : IsCoprime I J) :
 
 /-- If I and J are coprime and x ≡ a (mod I) and x ≡ b (mod J),
     then x is unique modulo I ∩ J. -/
-theorem crt_unique {I J : Ideal R} (h : IsCoprime I J)
+theorem crt_unique {I J : Ideal R} (_h : IsCoprime I J)
     {x y : R} (hxI : Ideal.Quotient.mk I x = Ideal.Quotient.mk I y)
     (hxJ : Ideal.Quotient.mk J x = Ideal.Quotient.mk J y) :
     Ideal.Quotient.mk (I ⊓ J) x = Ideal.Quotient.mk (I ⊓ J) y := by
-  sorry
+  rw [Ideal.Quotient.eq] at hxI hxJ ⊢
+  exact Submodule.mem_inf.mpr ⟨hxI, hxJ⟩
 
 /-- Coprimality is symmetric. -/
 theorem isCoprime_comm_ideal {I J : Ideal R} (h : IsCoprime I J) :
@@ -119,13 +129,17 @@ theorem isCoprime_comm_ideal {I J : Ideal R} (h : IsCoprime I J) :
 theorem isCoprime_of_coprime_inf {I J K : Ideal R}
     (hIJ : IsCoprime I J) (hIK : IsCoprime I K) :
     IsCoprime I (J ⊓ K) := by
-  sorry
+  -- IsCoprime I J and IsCoprime I K give IsCoprime I (J * K)
+  -- Since J * K ≤ J ⊓ K, coprimality with J * K implies coprimality with J ⊓ K
+  have hprod : IsCoprime I (J * K) := hIJ.mul_right hIK
+  rw [Ideal.isCoprime_iff_sup_eq] at hprod ⊢
+  exact top_le_iff.mp (hprod ▸ sup_le_sup_left (Ideal.mul_le_inf) I)
 
 /-
   Summary
 
   This file formalizes the ideal-theoretic Chinese Remainder Theorem
-  with 12 theorems, 0 sorries, and 0 axioms.
+  with 12 theorems, 0 sorries, 0 axioms.
 
   Part I: Coprimality characterization (I + J = R ↔ IsCoprime I J)
   Part II: 2-fold CRT (R/(I∩J) ≅ R/I × R/J)
