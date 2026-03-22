@@ -1,8 +1,8 @@
 {
   "id": "cayley-hamilton-minpoly-oq-05",
-  "title": "Minimal Polynomial Reduction in Algebra Towers",
+  "title": "Minimal Polynomial Reduction in General K-Algebras",
   "slug": "cayley-hamilton-minpoly-oq-05",
-  "description": "Formalizes how the minimal polynomial behaves under base change in algebra towers K ⊂ L ⊂ A. The key result: minpoly L x divides (minpoly K x).map(algebraMap K L), so the degree over a larger field can only decrease.",
+  "description": "Formalizes modular reduction via the minimal polynomial in general K-algebras: evaluating f at x equals evaluating f mod minpoly(x). Also proves base change behavior in algebra towers K ⊂ L ⊂ A, showing degree can only decrease when extending the base field.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Minimal_polynomial_(field_theory)",
@@ -10,19 +10,28 @@
     "status": "formalized",
     "proofRepoPath": "Proofs/CayleyHamiltonMinpolyOQ05.lean",
     "tags": ["linear-algebra", "abstract-algebra", "minimal-polynomial", "field-extensions", "scalar-tower", "research"],
-    "badge": "verified",
+    "badge": "formalized",
     "sorries": 1,
     "mathlibDependencies": [
-      {"theorem": "minpoly.dvd", "description": "Minpoly divides any monic annihilating polynomial", "module": "Mathlib.FieldTheory.Minpoly.Basic"},
-      {"theorem": "minpoly.aeval", "description": "Minpoly annihilates its element", "module": "Mathlib.FieldTheory.Minpoly.Basic"},
-      {"theorem": "Polynomial.aeval_map_algebraMap", "description": "aeval commutes with algebraMap for polynomial evaluation", "module": "Mathlib.RingTheory.Polynomial.Basic"},
-      {"theorem": "IsIntegral.tower_top", "description": "Integrality transfers up algebra towers", "module": "Mathlib.RingTheory.IntegralClosure.IsIntegral.Basic"}
+      {"theorem": "minpoly.monic", "description": "Minimal polynomial of an integral element is monic", "module": "Mathlib.FieldTheory.Minpoly.Basic"},
+      {"theorem": "minpoly.aeval", "description": "Minimal polynomial annihilates its element", "module": "Mathlib.FieldTheory.Minpoly.Basic"},
+      {"theorem": "minpoly.dvd", "description": "Minpoly divides any annihilating polynomial", "module": "Mathlib.FieldTheory.Minpoly.Basic"},
+      {"theorem": "minpoly.irreducible", "description": "Minimal polynomial is irreducible over the base field", "module": "Mathlib.FieldTheory.Minpoly.Basic"},
+      {"theorem": "Polynomial.modByMonic_add_div", "description": "Division algorithm: f = (f mod m) + m * (f div m)", "module": "Mathlib.Algebra.Polynomial.Div"},
+      {"theorem": "Polynomial.eval₂_map", "description": "eval₂ commutes with polynomial map", "module": "Mathlib.Algebra.Polynomial.Eval.Ring"},
+      {"theorem": "IsScalarTower.algebraMap_eq", "description": "algebraMap factors through scalar towers", "module": "Mathlib.Algebra.Algebra.Tower"},
+      {"theorem": "IsIntegral.tower_top", "description": "Integrality transfers up algebra towers", "module": "Mathlib.RingTheory.IntegralClosure.IsIntegral.Basic"},
+      {"theorem": "Polynomial.natDegree_le_of_dvd", "description": "Degree of divisor bounded by degree of dividend", "module": "Mathlib.Algebra.Polynomial.Degree.Operations"}
     ],
     "originalContributions": [
-      "minpoly_dvd_map: minpoly L x ∣ (minpoly K x).map(algebraMap K L) in algebra towers",
-      "minpoly_natDegree_le: degree of minpoly over L ≤ degree over K",
-      "minpoly_eq_map_of_irreducible: equality when base-changed minpoly stays irreducible (1 sorry)",
-      "complex_I_isIntegral: concrete integrality example for i ∈ ℂ over ℝ"
+      "minpoly_reduction: aeval x f = aeval x (f mod minpoly) for any integral x in a K-algebra",
+      "minpoly_annihilator_iff: aeval x f = 0 ↔ minpoly K x | f (full characterization)",
+      "minpoly_congruence_iff: aeval x f = aeval x g ↔ minpoly K x | (f - g)",
+      "power_reduction: x^k = aeval x (X^k mod minpoly) for higher power computation",
+      "minpoly_dvd_of_idempotent/involutory/nilpotent: special element minpoly divisibility",
+      "minpoly_dvd_map_of_tower: minpoly L x | (minpoly K x).map(algebraMap K L) in towers",
+      "minpoly_natDegree_tower_le: degree over L ≤ degree over K",
+      "minpoly_eq_map_of_irreducible: equality when base-changed minpoly stays irreducible (1 sorry)"
     ],
     "dateAdded": "03/21/26",
     "relatedProblems": [
@@ -32,29 +41,31 @@
     "axiomCount": 0
   },
   "overview": {
-    "historicalContext": "**Minimal Polynomial and Field Extensions**\n\nWhen working with a tower of fields K ⊂ L, the minimal polynomial of an algebraic element x can be computed over either field. Over the larger field L, there may be more polynomials available to annihilate x, so the minimal polynomial can potentially have smaller degree. The precise relationship is: minpoly_L(x) divides the image of minpoly_K(x) under the ring map K[X] → L[X].",
-    "problemStatement": "Formalize the base change behavior of minimal polynomials in algebra towers K ⊂ L ⊂ A.",
-    "proofStrategy": "The divisibility theorem follows from the universal property of the minimal polynomial: it divides any monic polynomial that annihilates the element. The base-changed polynomial (minpoly K x).map(algebraMap K L) annihilates x (since aeval commutes with algebraMap) and is monic (mapping preserves leading coefficient), so the minimal polynomial over L must divide it.",
+    "historicalContext": "**Minimal Polynomial Arithmetic in Algebras**\n\nThe minimal polynomial of an algebraic element x in a K-algebra A generates the kernel of the evaluation map K[X] → A. This means polynomial arithmetic modulo the minimal polynomial captures all algebraic relations satisfied by x. When working in a tower K ⊂ L ⊂ A, the minimal polynomial over L divides the base change of the one over K, so the degree can only decrease with larger base fields.",
+    "problemStatement": "Formalize (1) modular reduction of polynomial evaluation via the minimal polynomial in general K-algebras, and (2) base change behavior of minimal polynomials in algebra towers.",
+    "proofStrategy": "For modular reduction: use the division algorithm f = (f mod m) + m · q, then evaluate at x where m(x) = 0. For tower divisibility: map minpoly K x through algebraMap K L to get an annihilating polynomial over L, then apply the universal property of the minimal polynomial over L.",
     "keyInsights": [
-      "The minimal polynomial degree can only decrease when extending the base field",
-      "Equality holds when the base-changed polynomial remains irreducible over L",
-      "The classical example: minpoly_ℝ(i) = X²+1 (degree 2) but minpoly_ℂ(i) = X-i (degree 1)"
+      "Evaluating f(x) only depends on f mod minpoly(x) — higher-degree information is annihilated",
+      "The annihilator ideal of x is exactly the principal ideal generated by the minimal polynomial",
+      "In algebra towers, the minimal polynomial degree can only decrease when extending the base field",
+      "Equality in towers holds precisely when the base-changed polynomial remains irreducible"
     ]
   },
   "sections": [
-    {"id": "integrality", "title": "Integrality Transfer", "startLine": 30, "endLine": 48, "summary": "Integrality of x over K implies integrality over L via IsIntegral.tower_top."},
-    {"id": "divisibility", "title": "Divisibility in Towers", "startLine": 50, "endLine": 95, "summary": "Key theorem: minpoly L x ∣ (minpoly K x).map(algebraMap K L)."},
-    {"id": "degree", "title": "Degree Reduction", "startLine": 97, "endLine": 125, "summary": "Degree over L ≤ degree over K, via divisibility + natDegree monotonicity."},
-    {"id": "equality", "title": "When Equality Holds", "startLine": 127, "endLine": 170, "summary": "Equality when base-changed polynomial stays irreducible (1 sorry)."},
-    {"id": "matrices", "title": "Application to Matrices", "startLine": 172, "endLine": 198, "summary": "Re-exports matrix integrality and minpoly-charpoly divisibility."},
-    {"id": "example", "title": "Concrete Example", "startLine": 200, "endLine": 215, "summary": "The imaginary unit i is integral over ℝ (satisfies X²+1=0)."}
+    {"id": "core-reduction", "title": "Core Reduction Theorem", "startLine": 28, "endLine": 60, "summary": "The fundamental theorem: aeval x f = aeval x (f mod minpoly K x), with corollaries for the quotient and difference."},
+    {"id": "annihilator", "title": "Annihilator Characterization", "startLine": 62, "endLine": 90, "summary": "Full characterization: aeval x f = 0 ↔ minpoly K x | f. The annihilator ideal is closed under addition and multiplication."},
+    {"id": "congruence", "title": "Congruence and Quotient Structure", "startLine": 92, "endLine": 106, "summary": "Congruence: aeval x f = aeval x g ↔ minpoly K x | (f - g). Same remainder implies same evaluation."},
+    {"id": "degree-bounds", "title": "Degree Bounds", "startLine": 108, "endLine": 128, "summary": "The remainder has degree strictly less than the minimal polynomial, which has positive degree in domains."},
+    {"id": "power-reduction", "title": "Power Reduction", "startLine": 130, "endLine": 143, "summary": "Powers x^k reduce via the minimal polynomial. The element x itself reduces to X mod minpoly."},
+    {"id": "special-elements", "title": "Special Elements", "startLine": 145, "endLine": 164, "summary": "Minimal polynomial divisibility for idempotent (x²=x), involutory (x²=1), and nilpotent (x^d=0) elements."},
+    {"id": "algebra-tower", "title": "Algebra Tower Reduction", "startLine": 166, "endLine": 239, "summary": "Base change: minpoly L x | (minpoly K x).map(algebraMap K L). Degree bound and equality condition (1 sorry)."}
   ],
   "conclusion": {
-    "summary": "This file formalizes the base change behavior of minimal polynomials: when extending from K to L, the minpoly over L divides the mapped minpoly from K. The degree consequence (degree can only decrease) and the equality condition (when the mapped polynomial stays irreducible) are also established.",
-    "implications": "These results connect to the existing K-algebra invariance theory, extending it from same-base-ring transformations to base-ring-changing transformations.",
+    "summary": "This file develops two complementary theories: (1) modular arithmetic of polynomial evaluation via the minimal polynomial, showing that evaluation depends only on the remainder mod minpoly, and (2) base change behavior in algebra towers, proving degree can only decrease. All results except the irreducibility equality condition are fully verified.",
+    "implications": "The modular reduction theory provides the algebraic foundation for efficient computation in quotient algebras K[x]/(minpoly). The tower results extend the K-algebra invariance theory to base-ring-changing transformations.",
     "openQuestions": [
-      "Complete the sorry in minpoly_eq_map_of_irreducible (Associated → monic equality)",
-      "Can the minpoly over L be characterized in terms of the irreducible factors of the mapped minpoly over L?",
+      "Complete the sorry in minpoly_eq_map_of_irreducible (show associated monic polynomials are equal)",
+      "Can the minpoly over L be characterized via irreducible factors of the mapped minpoly?",
       "What is the relationship between [L:K] and the degree drop of the minimal polynomial?"
     ]
   }
