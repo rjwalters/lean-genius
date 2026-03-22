@@ -104,6 +104,11 @@
         "targetId": "amgm-inequality-oq-02",
         "relationship": "related",
         "description": "Maclaurin's inequalities via elementary symmetric polynomials give an alternative chain between AM and GM using e_k means — complementary to the power mean approach used here"
+      },
+      {
+        "targetId": "triangle-inequality",
+        "relationship": "related",
+        "description": "For p ≥ 1, power mean monotonicity M₁ ≤ M_p implies Minkowski's inequality (the L^p triangle inequality), connecting the discrete mean hierarchy to normed space geometry"
       }
     ],
     "dateAdded": "2026-03-21",
@@ -116,7 +121,8 @@
       "amgm-inequality-oq-02",
       "amgm-inequality-oq-03-oq-02",
       "cauchy-schwarz",
-      "cauchy-schwarz-integral"
+      "cauchy-schwarz-integral",
+    "triangle-inequality"
     ]
   },
   "overview": {
