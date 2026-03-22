@@ -99,6 +99,13 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Preamble: Imports and Galois Theory Setup",
+      "startLine": 1,
+      "endLine": 20,
+      "summary": "Module header documenting the file's role in the OQ-02 axiom elimination program, followed by imports of full Mathlib (for Polynomial.Gal, IsPGroup, IntermediateField, tower law) and the parent file AngleTrisectionOQ01 (for dvd_pow_two_is_pow_two). Opens the Polynomial namespace for F[X] notation and scoped IntermediateField for F⟮α⟯ notation."
+    },
+    {
       "id": "natdegree-dvd-gal",
       "title": "Part I: natDegree Divides |Gal| for Irreducible Polynomials",
       "startLine": 22,
@@ -150,6 +157,13 @@
       "year": "1846",
       "venue": "Journal de Mathématiques Pures et Appliquées, 11, pp. 417-433",
       "note": "Posthumous publication establishing group theory foundations; the Galois group characterization of constructibility follows from this framework"
+    },
+    {
+      "authors": "Stewart, Ian",
+      "title": "Galois Theory",
+      "year": "2015",
+      "venue": "Chapman and Hall/CRC, 4th edition",
+      "note": "Modern textbook treatment of the Wantzel-Galois constructibility criterion via the tower law, paralleling this formalization's proof strategy"
     }
   ],
   "crossReferences": [
