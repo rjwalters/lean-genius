@@ -49,6 +49,7 @@
   ],
   "conclusion": {
     "summary": "The bisection method is formalized with 7 proved theorems, 2 sorries (iterated width decay induction), and 0 axioms.",
+    "implications": "Provides a constructive formalization of the bisection method for root-finding, bridging classical IVT with computational methods in Lean 4.",
     "openQuestions": ["Prove bisect_width by induction on n", "Sign persistence through bisection", "Connect to Mathlib's IVT for full convergence theorem"]
   }
 }
