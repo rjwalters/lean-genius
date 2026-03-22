@@ -170,6 +170,11 @@
       "The distinction between 'no general formula' and 'no specific quintic is solvable' is crucial: x⁵ - 1 has a solvable Galois group (cyclic), but the generic quintic has Galois group S₅",
       "Mathlib's typeclass system enables automatic solvability proofs for small groups via inferInstance, while the general non-solvability requires an explicit argument through cardinal arithmetic",
       "The proof chain reveals a hierarchy of mathematical eras: Cardano/Ferrari solved cubics/quartics (1540s) by clever substitutions, but Ruffini/Abel (1799-1824) needed permutation group theory, and Galois (1832) needed a wholly new framework — the difficulty of the problem drove fundamental advances in algebra"
+    ],
+    "prerequisites": [
+      "Group theory: normal subgroups, derived series, solvability, and the relationship between subgroups and quotient solvability",
+      "Alternating and symmetric groups: $S_n$, $A_n = \\ker(\\text{sign})$, cycle types, and the embedding $A_5 \\hookrightarrow A_n$ for $n \\geq 5$",
+      "Galois theory fundamentals: field extensions, Galois groups, and the connection between radical solvability and group solvability (for the full chain context)"
     ]
   },
   "sections": [
