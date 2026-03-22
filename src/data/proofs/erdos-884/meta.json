@@ -61,6 +61,7 @@
       "Examples: divisors of 6, prime divisors, prime case equality"
     ],
     "axiomCount": 12,
+    "assumptions": "12 axiom declarations: divisor list properties (sorted, membership, positive gaps), the main conjecture (∃ C, allPairsSum ≤ C(1 + consecutivePairsSum)), nonnegativity of both sums, gap lower bound (general gaps ≥ consecutive gaps), multiplicativity of τ, and concrete examples (divisors of 6, prime divisors). Most encode basic divisor arithmetic properties.",
     "lineCount": 155
   },
   "overview": {
@@ -81,71 +82,107 @@
       "title": "Problem Documentation",
       "summary": "Header with problem statement, references, and background",
       "startLine": 1,
-      "endLine": 18
+      "endLine": 18,
+      "mathContext": "For $n$ with divisors $d_1 < d_2 < \\cdots < d_t$, compare $\\sum_{i<j} \\frac{1}{d_j - d_i}$ (all pairs) with $\\sum_{i=1}^{t-1} \\frac{1}{d_{i+1} - d_i}$ (consecutive pairs). Conjecture: the former is $O(1 + \\text{latter})$."
     },
     {
       "id": "imports-setup",
       "title": "Imports and Setup",
       "summary": "Specific Mathlib imports and namespace opening",
       "startLine": 20,
-      "endLine": 38
+      "endLine": 38,
+      "mathContext": "Uses `Nat.divisors` for the divisor set, `List.sort` for ordering, and `BigOperators` for $\\sum$ notation over `Finset`."
     },
     {
       "id": "divisor-lists",
       "title": "Divisor Lists",
       "summary": "divisorList, numDivisors, divisor accessor, sorted and membership axioms",
       "startLine": 40,
-      "endLine": 58
+      "endLine": 58,
+      "mathContext": "The sorted divisor list $d_1 < d_2 < \\cdots < d_{\\tau(n)}$ where $\\tau(n) = |\\{d : d | n\\}|$ is the number-of-divisors function. Always $d_1 = 1$ and $d_{\\tau(n)} = n$."
     },
     {
       "id": "divisor-gaps",
       "title": "Divisor Gaps",
       "summary": "consecutiveGap, generalGap, positivity axioms",
       "startLine": 60,
-      "endLine": 76
+      "endLine": 76,
+      "mathContext": "Consecutive gap: $g_i = d_{i+1} - d_i > 0$. General gap: $d_j - d_i = \\sum_{k=i}^{j-1} g_k$ for $i < j$ (telescoping). Since general gaps are sums of consecutive gaps, $d_j - d_i \\geq d_{i+1} - d_i$."
     },
     {
       "id": "two-sums",
       "title": "The Two Sums",
       "summary": "allPairsSum and consecutivePairsSum definitions",
       "startLine": 78,
-      "endLine": 91
+      "endLine": 91,
+      "mathContext": "$S_{\\text{all}}(n) = \\sum_{1 \\leq i < j \\leq \\tau} \\frac{1}{d_j - d_i}$ has $\\binom{\\tau}{2}$ terms. $S_{\\text{consec}}(n) = \\sum_{i=1}^{\\tau-1} \\frac{1}{d_{i+1} - d_i}$ has $\\tau - 1$ terms. The conjecture: $S_{\\text{all}} \\leq C(1 + S_{\\text{consec}})$."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "summary": "ErdosConjecture884 definition and erdos_884 axiom",
       "startLine": 93,
-      "endLine": 103
+      "endLine": 103,
+      "mathContext": "$\\exists C > 0, \\forall n \\geq 1: S_{\\text{all}}(n) \\leq C \\cdot (1 + S_{\\text{consec}}(n))$. The '+1' handles the case $\\tau(n) = 2$ (primes) where $S_{\\text{consec}} = 1/(p-1)$ could be small."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "summary": "Nonnegativity axioms, consecutivePairsSum_num_terms theorem",
       "startLine": 105,
-      "endLine": 116
+      "endLine": 116,
+      "mathContext": "$S_{\\text{all}}(n) \\geq 0$ and $S_{\\text{consec}}(n) \\geq 0$ (sums of positive terms). The consecutive sum has exactly $\\tau(n) - 1$ terms."
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "divisors_6, divisors_prime, prime_case_equality",
       "startLine": 118,
-      "endLine": 129
+      "endLine": 129,
+      "mathContext": "$n = 6$: divisors $\\{1,2,3,6\\}$, consecutive gaps $1,1,3$. $n = p$ (prime): divisors $\\{1,p\\}$, both sums equal $1/(p-1)$, so $C = 1$ suffices. Primes are trivial; highly composite numbers are the hard case."
     },
     {
       "id": "structural",
       "title": "Structural Lemmas",
       "summary": "gap_lower_bound and numDivisors_mul_coprime axioms",
       "startLine": 131,
-      "endLine": 142
+      "endLine": 142,
+      "mathContext": "Gap lower bound: $d_j - d_i \\geq d_{i+1} - d_i$ (telescoping). Multiplicativity: $\\tau(mn) = \\tau(m) \\cdot \\tau(n)$ for $\\gcd(m,n) = 1$. Highly composite numbers $n = 2^{a_1} 3^{a_2} 5^{a_3} \\cdots$ maximize $\\tau(n)$."
     },
     {
       "id": "connections",
       "title": "Connections and Summary",
       "summary": "divisorHarmonicSum, erdos_884_statement (proved by rfl)",
       "startLine": 144,
-      "endLine": 155
+      "endLine": 155,
+      "mathContext": "The divisor harmonic sum $\\sigma_{-1}(n) = \\sum_{d|n} 1/d$ is related but distinct — it sums reciprocals of divisors, not reciprocals of gaps. The problem connects to Egyptian fraction representations and the Erdős-Straus conjecture."
     }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "Some problems on number theory",
+      "year": "1998",
+      "venue": "Proceedings of the Erdős Memorial Conference, Budapest",
+      "note": "Contains the original formulation of Problem #884 on divisor gap sums"
+    },
+    {
+      "authors": "Tenenbaum, Gérald",
+      "title": "Introduction to Analytic and Probabilistic Number Theory",
+      "year": "2015",
+      "venue": "Graduate Studies in Mathematics 163, AMS, 3rd edition",
+      "note": "Comprehensive reference on divisor distribution, including the anatomy of integers and gap statistics"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1059",
+      "relationship": "related",
+      "description": "Both concern arithmetic properties of divisor sequences; Problem #1059 studies divisor sum inequalities while #884 studies divisor gap sums"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1059"
   ],
   "conclusion": {
     "summary": "Erdős Problem #884 remains open. The formalization defines both the all-pairs and consecutive-pairs divisor gap sums, states the conjecture that the former is bounded by an absolute constant times the latter (plus 1), and provides structural lemmas and examples. The prime case shows both sums are equal, and the gap lower bound explains why the conjecture is plausible.",

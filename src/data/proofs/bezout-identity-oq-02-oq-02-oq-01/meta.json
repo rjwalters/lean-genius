@@ -234,6 +234,21 @@
       "targetId": "fermat-two-squares",
       "relationship": "related",
       "description": "Fermat's two-squares theorem uses coprimality and descent arguments closely related to the Bézout-based divisibility machinery formalized here"
+    },
+    {
+      "targetId": "bezout-identity-oq-02-oq-02",
+      "relationship": "extends",
+      "description": "Direct parent in the open question chain: generalizes Euclid's lemma to commutative rings. This entry adds the constructive quotient computation"
+    },
+    {
+      "targetId": "gcd-algorithm",
+      "relationship": "related",
+      "description": "Standard Euclidean algorithm for GCD computation. This entry implements the extended version that additionally returns Bézout coefficients"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "related",
+      "description": "Unique prime factorization relies on Euclid's lemma (if p | ab and p prime, then p | a or p | b) — the constructive version here gives the explicit quotient"
     }
   ],
   "relatedProofs": [
@@ -241,7 +256,10 @@
     "bezout-identity-oq-02",
     "chinese-remainder-constructive",
     "infinitude-primes",
-    "fermat-two-squares"
+    "fermat-two-squares",
+    "bezout-identity-oq-02-oq-02",
+    "gcd-algorithm",
+    "fundamental-arithmetic"
   ],
   "leanFile": {
     "imports": [
@@ -251,7 +269,7 @@
     ],
     "opens": [],
     "namespace": "BezoutIdentityOQ02OQ02OQ01",
-    "lineCount": 201,
+    "lineCount": 200,
     "axiomCount": 0,
     "theoremCount": 11,
     "definitionCount": 2
