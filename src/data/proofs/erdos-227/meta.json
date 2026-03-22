@@ -72,70 +72,80 @@
       "title": "Basic Definitions",
       "summary": "Defines EntireFunction as a structure with power series coefficients and infinitely-many-nonzero guarantee. Defines maxTerm μ(r) = ⨆ₙ |aₙ|rⁿ, maxModulus M(r) = ⨆θ |f(re^{iθ})|, and their ratio termModulusRatio.",
       "startLine": 34,
-      "endLine": 56
+      "endLine": 56,
+      "mathContext": "Entire function $f(z) = \\sum a_n z^n$. Maximum term: $\\mu(r) = \\max_n |a_n| r^n$. Maximum modulus: $M(r) = \\max_{|z|=r} |f(z)|$."
     },
     {
       "id": "original-conjecture",
       "title": "The Original Conjecture",
       "summary": "Formalizes Erdős's conjecture as OriginalConjecture: if the limit of μ(r)/M(r) exists, it must be 0. Axiomatizes Clunie's partial result: the conjecture holds for functions with non-negative real coefficients (aₙ ≥ 0).",
       "startLine": 57,
-      "endLine": 72
+      "endLine": 72,
+      "mathContext": "Erdős conjecture: $\\lim_{r \\to \\infty} \\mu(r)/M(r) = 0$ for all entire $f$ — i.e., the max term is negligible compared to the max modulus."
     },
     {
       "id": "counterexample",
       "title": "Clunie-Hayman Counterexample",
       "summary": "Axiomatizes the Clunie-Hayman 1964 result: for any λ ∈ [0, 1/2], there exists an entire function with μ(r)/M(r) → λ. Axiomatizes the sharp upper bound L ≤ 1/2. Proves original_conjecture_false by taking λ = 1/4 and deriving contradiction via norm_num.",
       "startLine": 73,
-      "endLine": 99
+      "endLine": 99,
+      "mathContext": "Clunie-Hayman (1964): counterexample. $\\forall \\lambda \\in [0, 1/2], \\exists f$ entire with $\\lim \\mu(r)/M(r) = \\lambda$. Disproves the conjecture."
     },
     {
       "id": "characterization",
       "title": "Complete Characterization",
       "summary": "Defines AchievableLimits as the set of all realizable limit values. Proves AchievableLimits = Set.Icc 0 (1/2) via set extensionality: forward direction uses upper bound (with a sorry for non-negativity), reverse uses Clunie-Hayman existence.",
       "startLine": 100,
-      "endLine": 125
+      "endLine": 125,
+      "mathContext": "Achievable limits: $\\{\\lambda : \\exists f \\text{ entire}, \\lim \\mu/M = \\lambda\\} = [0, 1/2]$. Complete characterization of the limit range."
     },
     {
       "id": "central-index",
       "title": "Central Index",
       "summary": "Defines centralIndex ν(r) as the index achieving the maximum term, via Classical.choose. Axiomatizes central_index_unbounded: ν(r) → ∞ as r → ∞, a consequence of transcendence.",
       "startLine": 126,
-      "endLine": 139
+      "endLine": 139,
+      "mathContext": "Central index: $\\nu(r) = \\arg\\max_n |a_n| r^n$ (the index achieving the max term). $\\nu(r)$ is non-decreasing and integer-valued."
     },
     {
       "id": "asymptotics",
       "title": "Asymptotic Relations",
       "summary": "Axiomatizes max_term_le_max_modulus: μ(r) ≤ M(r) for r > 0. Defines IsNormal as μ(r)/M(r) → 0. Proves positive_coeffs_normal (with sorry) connecting Clunie's result to the normality definition.",
       "startLine": 140,
-      "endLine": 161
+      "endLine": 161,
+      "mathContext": "$\\mu(r) \\leq M(r)$ always (max term $\\leq$ sum of all terms). $f$ is normal if $\\mu(r)/M(r) \\to 0$ as $r \\to \\infty$."
     },
     {
       "id": "order-type",
       "title": "Order and Type",
       "summary": "Defines order ρ = inf{ρ' : M(r) ≤ C exp(r^{ρ'})} and typeOfOrder σ for finer growth classification. Axiomatizes order_zero_normal: functions of order 0 are normal, restricting counterexamples to infinite-order functions.",
       "startLine": 162,
-      "endLine": 179
+      "endLine": 179,
+      "mathContext": "Order: $\\rho = \\inf\\{\\rho' : M(r) \\leq C e^{r^{\\rho'}}\\}$. Type: $\\sigma = \\limsup M(r) e^{-r^\\rho}$. Classification of growth rates."
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "Axiomatizes exp_is_normal: the exponential function (coefficients 1/n!) is normal. Axiomatizes pathological_examples_exist: for any λ ∈ (0, 1/2), there exist infinite-order functions achieving μ/M → λ.",
       "startLine": 180,
-      "endLine": 198
+      "endLine": 198,
+      "mathContext": "Example: $e^z$ (coefficients $1/n!$) is normal: $\\mu(r)/M(r) = r^{\\nu(r)}/\\nu(r)!/e^r \\to 0$. Order 1, type 1."
     },
     {
       "id": "main-statement",
       "title": "Main Problem Statement",
       "summary": "Assembles erdos_227_statement: a three-part conjunction — conjecture is false, positive-coefficient case holds, achievable limits = [0, 1/2]. Proof chains the three component results.",
       "startLine": 199,
-      "endLine": 218
+      "endLine": 218,
+      "mathContext": "Main statement: (1) conjecture is FALSE, (2) achievable limits = $[0, 1/2]$, (3) key examples are classified."
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Repackages results as erdos_227_summary (reordered conjunction for canonical reference). The erdos_227_answer marker records the final status: SOLVED (DISPROVED).",
       "startLine": 219,
-      "endLine": 242
+      "endLine": 242,
+      "mathContext": "Summary: Problem #227 is RESOLVED (Clunie-Hayman 1964). The achievable limit set $[0, 1/2]$ completely characterizes the ratio $\\mu/M$."
     }
   ],
   "conclusion": {
@@ -148,5 +158,7 @@
       "Is there an effective version: given λ ∈ [0, 1/2], can one explicitly construct (rather than just prove existence of) an entire function achieving that limit?",
       "What happens in several complex variables? For entire functions f : ℂⁿ → ℂ, does the analogous maximum-term-to-maximum-modulus ratio have a similar characterization?"
     ]
-  }
+  },
+  "crossReferences": [],
+  "relatedProofs": []
 }
