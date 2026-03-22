@@ -108,8 +108,7 @@
       "Maclaurin's inequalities $e_1/\\binom{n}{1} \\geq (e_2/\\binom{n}{2})^{1/2} \\geq \\cdots \\geq (e_n/\\binom{n}{n})^{1/n}$ (where $e_k$ are elementary symmetric polynomials) strictly refine AM-GM—are these fully formalized in Mathlib?",
       "How do weighted power means $M_p = (\\sum w_i z_i^p)^{1/p}$ interpolate between GM ($p \\to 0$) and AM ($p=1$), and can Lean verify the full monotonicity of $p \\mapsto M_p$?"
     ]
-  }
-,
+  },
   "references": [
     {
       "authors": "Cauchy, Augustin-Louis",
@@ -118,5 +117,19 @@
       "venue": "Paris: Debure",
       "note": "Contains Cauchy's proof of AM-GM by forward-backward induction — one of the most elegant proof techniques in mathematics"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.MeanInequalities",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Algebra.Order.Field.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "AMGMInequality",
+    "lineCount": 226,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0
+  }
 }

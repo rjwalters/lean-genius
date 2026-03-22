@@ -141,5 +141,18 @@
       "Can the approach generalize to Euclidean domains or PIDs using Mathlib's UniqueFactorizationDomain typeclass?",
       "Can the computable Bézout coefficients from BezoutIdentityOQ01.extGcd be used to make the uniqueness proof constructive, giving an explicit permutation witness?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "BezoutFTA",
+    "lineCount": 258,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0
   }
 }

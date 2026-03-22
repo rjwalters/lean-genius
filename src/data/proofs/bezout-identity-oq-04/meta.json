@@ -140,5 +140,19 @@
       "Can gcd_complete_characterization be generalized to any PID using Mathlib's UniqueFactorizationDomain typeclass, replacing gcd with the gcd of a Euclidean domain?",
       "Does the solution lattice structure have applications to the geometry of numbers (Minkowski's theorem) — can the number of solutions in a bounded region be estimated using lattice point counting?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Int.GCD",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.RingTheory.Coprime.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "BezoutIdentityOQ04",
+    "lineCount": 350,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0
   }
 }

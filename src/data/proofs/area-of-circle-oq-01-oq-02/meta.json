@@ -133,5 +133,26 @@
     "area-of-circle",
     "area-of-circle-oq-01",
     "fundamental-theorem-calculus"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Calculus.Deriv.Basic",
+      "Mathlib.Analysis.Calculus.Deriv.Pow",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic",
+      "Mathlib.MeasureTheory.Integral.Bochner.FundThmCalculus",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real",
+      "MeasureTheory",
+      "intervalIntegral",
+      "Topology"
+    ],
+    "namespace": "AreaFromCircumferenceIntegral",
+    "lineCount": 147,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 2
+  }
 }

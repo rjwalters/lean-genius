@@ -166,5 +166,18 @@
       "Can Archimedes' original half-angle doubling method (computing polygon side lengths via √((1-cos)/2)) be formalized as a constructive proof?",
       "Can the Dalzell–Niven integral ∫₀¹ t⁴(1-t)⁴/(1+t²) dt = 22/7 − π be formalized in Lean 4 as an alternative proof of the upper bound?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "AreaOfCircleOQ03OQ02",
+    "lineCount": 103,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0
   }
 }

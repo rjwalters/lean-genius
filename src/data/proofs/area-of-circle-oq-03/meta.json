@@ -150,5 +150,20 @@
   "relatedProofs": [
     "area-of-circle",
     "area-of-circle-oq-01"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "ArchimedesMethodOfExhaustion",
+    "lineCount": 367,
+    "axiomCount": 0,
+    "theoremCount": 17,
+    "definitionCount": 2
+  }
 }

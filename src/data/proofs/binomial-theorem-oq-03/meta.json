@@ -217,5 +217,21 @@
         "relationship": "Sibling OQ — another open question exploring consequences of the binomial theorem."
       }
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "BinomialTheoremOQ03",
+    "lineCount": 589,
+    "axiomCount": 0,
+    "theoremCount": 33,
+    "definitionCount": 2
   }
 }

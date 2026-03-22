@@ -169,5 +169,23 @@
   "relatedProofs": [
     "ballot-problem-oq-01-oq-01",
     "birthday-problem"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "ProbabilityTheory",
+      "Set",
+      "Real",
+      "ProbabilityTheory",
+      "MeasureTheory"
+    ],
+    "namespace": "ContinuousBallot",
+    "lineCount": 340,
+    "axiomCount": 2,
+    "theoremCount": 8,
+    "definitionCount": 3
+  }
 }

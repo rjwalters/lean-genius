@@ -145,5 +145,21 @@
       "Can the non-coprime case be formalized: ℤ/mnℤ ↪ ℤ/mℤ × ℤ/nℤ with characterization of the image?",
       "Can the CRT for general rings R/IJ ≅ R/I × R/J (coprime ideals) be connected to this concrete case?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Data.Int.GCD",
+      "Mathlib.RingTheory.Coprime.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "ZMod"
+    ],
+    "namespace": "BezoutCRT",
+    "lineCount": 316,
+    "axiomCount": 0,
+    "theoremCount": 25,
+    "definitionCount": 5
   }
 }

@@ -242,5 +242,18 @@
     "chinese-remainder-constructive",
     "infinitude-primes",
     "fermat-two-squares"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Int.GCD",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "BezoutIdentityOQ02OQ02OQ01",
+    "lineCount": 201,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 2
+  }
 }
