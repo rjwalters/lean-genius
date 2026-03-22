@@ -16,6 +16,11 @@
       "Galois group",
       "cyclotomic fields",
       "absolute Galois group"
+    ],
+    "prerequisites": [
+      "Galois theory basics",
+      "field extensions",
+      "Mathlib Galois.Basic"
     ]
   },
   {
@@ -35,6 +40,11 @@
       "formal conjecture",
       "IsGalois",
       "MulEquiv"
+    ],
+    "prerequisites": [
+      "group theory",
+      "finite groups",
+      "Galois extensions"
     ]
   },
   {
@@ -54,6 +64,11 @@
       "IsGalois",
       "separable polynomial",
       "splitting field"
+    ],
+    "prerequisites": [
+      "cyclotomic fields",
+      "Euler totient function",
+      "ZMod"
     ]
   },
   {
@@ -73,6 +88,11 @@
       "ZMod units",
       "Euler totient",
       "primitive root"
+    ],
+    "prerequisites": [
+      "group isomorphisms",
+      "polynomial Galois groups",
+      "MulEquiv"
     ]
   },
   {
@@ -92,6 +112,11 @@
       "cyclic group",
       "Euler totient",
       "finite field"
+    ],
+    "prerequisites": [
+      "finite group classification",
+      "symmetric groups",
+      "alternating groups"
     ]
   },
   {
@@ -111,6 +136,11 @@
       "class field theory",
       "abelian extension",
       "structure theorem"
+    ],
+    "prerequisites": [
+      "Kronecker-Weber theorem",
+      "class field theory",
+      "abelian groups"
     ]
   },
   {
@@ -130,6 +160,11 @@
       "embedding problem",
       "class field theory",
       "IsSolvable"
+    ],
+    "prerequisites": [
+      "solvable groups",
+      "Shafarevich's theorem",
+      "composition series"
     ]
   },
   {
@@ -149,6 +184,10 @@
       "symmetric group",
       "rational function field",
       "specialization"
+    ],
+    "prerequisites": [
+      "Hilbert irreducibility theorem",
+      "symmetric group realization"
     ]
   },
   {
@@ -168,6 +207,59 @@
       "sporadic simple groups",
       "Grothendieck programme",
       "Langlands programme"
+    ],
+    "prerequisites": [
+      "finite simple groups",
+      "sporadic groups",
+      "absolute Galois group"
+    ]
+  },
+  {
+    "id": "ann-known-and-open",
+    "proofId": "inverse-galois",
+    "range": {
+      "startLine": 398,
+      "endLine": 442
+    },
+    "type": "context",
+    "title": "Part VIII: What's Known and What's Open",
+    "content": "This commentary surveys the current state of the Inverse Galois Problem. The fully resolved cases form a hierarchy: abelian groups (Kronecker-Weber, 1853/1886), solvable groups (Shafarevich, 1954), symmetric groups $S_n$ (Hilbert, 1892), and alternating groups $A_n$ for $n \\geq 5$ (various authors). Most finite simple groups have been realized over $\\mathbb{Q}$, but the Mathieu group $M_{23}$ remains unconfirmed.\n\nThe deepest obstacle is the structure of the absolute Galois group $\\text{Gal}(\\overline{\\mathbb{Q}}/\\mathbb{Q})$. Over function fields like $\\mathbb{C}(t)$, Riemann's existence theorem solves the problem completely: every finite group appears as a monodromy group of a branched cover, hence as a Galois group. Over $\\mathbb{Q}$, the problem connects to Grothendieck's *dessin d'enfants* program and the Langlands programme.",
+    "mathContext": "The key contrast: over $\\mathbb{C}(t)$, every finite group $G$ is a Galois group (by Riemann's existence theorem and monodromy). Over $\\mathbb{Q}$, the problem is open. The difficulty lies in lifting covers from $\\mathbb{C}$ to $\\mathbb{Q}$: a $G$-cover of $\\mathbb{P}^1_{\\mathbb{C}}$ may not have a $\\mathbb{Q}$-rational model. Rigidity methods (Thompson, Malle, Matzat) solve this for many simple groups by showing that certain covers are forced to be defined over $\\mathbb{Q}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "absolute Galois group",
+      "Riemann existence theorem",
+      "dessin d'enfants",
+      "rigidity method"
+    ],
+    "prerequisites": [
+      "finite simple group classification",
+      "monodromy",
+      "branched covers"
+    ]
+  },
+  {
+    "id": "ann-abel-ruffini-connection",
+    "proofId": "inverse-galois",
+    "range": {
+      "startLine": 444,
+      "endLine": 483
+    },
+    "type": "insight",
+    "title": "Part IX: Connection to Abel-Ruffini",
+    "content": "This section formalizes the relationship between the Inverse Galois Problem and Abel-Ruffini. `connection_to_abel_ruffini` proves that there exists an irreducible degree-5 polynomial over $\\mathbb{Q}$ (namely $X^5 - 2$), whose Galois group contains $S_5$ — showing that non-solvable groups DO appear as Galois groups.\n\n`solvable_iff_solvable_galois_group` formalizes Galois's criterion: a polynomial is solvable by radicals iff its Galois group is solvable. The key distinction: Abel-Ruffini asks about the STRUCTURE of Galois groups (solvable vs. not), while the IGP asks about EXISTENCE (which groups appear at all). The two are complementary: $S_5$ is not solvable (blocking radical solutions), yet it IS realizable over $\\mathbb{Q}$ (answering the IGP positively for $S_5$).",
+    "mathContext": "$X^5 - 2$ is irreducible over $\\mathbb{Q}$ (Eisenstein at $p = 2$, then Gauss's lemma). Its splitting field has $\\text{Gal}(\\mathbb{Q}(\\sqrt[5]{2}, \\zeta_5)/\\mathbb{Q}) \\cong \\text{Aff}(\\mathbb{F}_5) \\cong \\mathbb{F}_5 \\rtimes \\mathbb{F}_5^\\times$, which is a subgroup of $S_5$ of order 20 (the Frobenius group). For the full $S_5$, one needs a different polynomial (e.g., $x^5 - x - 1$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Abel-Ruffini theorem",
+      "Eisenstein criterion",
+      "solvability by radicals",
+      "Galois's criterion"
+    ],
+    "prerequisites": [
+      "Eisenstein's criterion",
+      "Gauss's lemma",
+      "solvableByRad.isSolvable'"
     ]
   }
 ]
