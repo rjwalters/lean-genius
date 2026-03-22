@@ -218,6 +218,13 @@
       "**Strict hierarchy** Conjecture $\\Longrightarrow$ BFL $\\Longrightarrow$ Grable: each weakening loses information about whether the multiplicative constant is fixed or grows with $n$",
       "**Mantel connection**: the naive bound $f(n) \\leq n^2/4$ from extremal graph theory is vastly improved by BFL's $n^{7/4}$, and the conjecture's $n^{3/2}$ is tighter still",
       "**Axiomatization strategy**: The 5 axioms encode externally established results ($f(n)$ definition, BFL bounds, Mantel's theorem) while all *structural* theorems (decomposition, hierarchy, tightness) are fully proved from these axioms with 0 sorries — cleanly separating the hard analysis from the combinatorial-logical structure"
+    ],
+    "prerequisites": [
+      "Filter-based asymptotics (`Filter.Eventually`, `atTop`)",
+      "Real powers (`Real.rpow`) and their monotonicity properties",
+      "Simple graph theory (`SimpleGraph`, `CliqueFree`)",
+      "Topological convergence (`Filter.Tendsto`, `nhds`)",
+      "Asymptotic notation ($\\Theta$, $O$, $\\Omega$)"
     ]
   },
   "crossReferences": [
