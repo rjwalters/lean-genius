@@ -207,19 +207,73 @@ theorem max_iterations (eps : ℚ) (heps : 0 < eps) :
   obtain ⟨N, hN⟩ := exists_nat_gt (1 / eps ^ 5)
   exact ⟨N, fun e he0 _ => by linarith [((div_lt_iff₀ heps5).mp hN)]⟩
 
+/-- Extract witnesses from a non-ε-regular pair: there exist large subsets
+    whose density deviates from the pair density by more than ε. -/
+theorem exists_irregular_witness (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (A B : Finset V) (hirr : ¬IsEpsilonRegular G eps A B) :
+    ∃ A' B' : Finset V, A' ⊆ A ∧ B' ⊆ B ∧
+      (A'.card : ℚ) ≥ eps * A.card ∧
+      (B'.card : ℚ) ≥ eps * B.card ∧
+      |edgeDensity G A' B' - edgeDensity G A B| > eps := by
+  unfold IsEpsilonRegular at hirr
+  push_neg at hirr
+  obtain ⟨A', B', hA', hB', hcA', hcB', hd⟩ := hirr
+  exact ⟨A', B', hA', hB', hcA', hcB', hd⟩
+
 /-- **Szemeredi Regularity Lemma**: For every epsilon > 0, every
     sufficiently large graph admits an epsilon-regular partition into
     at most M(epsilon) parts.
 
     The proof iterates: start with an arbitrary equipartition. If not
     regular, refine to increase energy by eps^5. Since energy in [0,1],
-    this terminates after at most eps^{-5} steps. -/
+    this terminates after at most eps^{-5} steps.
+
+    NOTE: This formulation is vacuously satisfied by the one-part partition
+    {V} since it has no distinct pairs. The standard formulation requires
+    a lower bound parts.card ≥ m₀ (see regularity_lemma_strong). -/
 theorem regularity_lemma (eps : ℚ) (heps : 0 < eps) :
     ∃ M : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V)
       [DecidableRel G.Adj],
       Fintype.card V ≥ M →
       ∃ parts : Finset (Finset V), IsRegularPartition G eps parts ∧
         parts.card ≤ M := by
+  -- The one-part partition {Finset.univ} is vacuously ε-regular:
+  -- no distinct pairs exist, so the irregularity count is 0.
+  refine ⟨1, fun V _ _ G _ _ => ⟨{Finset.univ}, ⟨?_, ?_⟩, by simp⟩⟩
+  · -- Equitable: single part, P = Q, difference is 0 ≤ 1
+    intro P Q hP hQ
+    rw [Finset.mem_singleton.mp hP, Finset.mem_singleton.mp hQ]; simp
+  · -- All pairs (P,Q) in {univ}×{univ} have P = Q, so filter for P≠Q is empty
+    have h : (({Finset.univ} : Finset (Finset V)).product {Finset.univ}).filter
+        (fun pq => pq.1 ≠ pq.2 ∧ ¬IsEpsilonRegular G eps pq.1 pq.2) = ∅ := by
+      ext ⟨a, b⟩
+      constructor
+      · intro hmem
+        have hf := Finset.mem_filter.mp hmem
+        have hp := Finset.mem_product.mp hf.1
+        have ha : a = Finset.univ := Finset.mem_singleton.mp hp.1
+        have hb : b = Finset.univ := Finset.mem_singleton.mp hp.2
+        subst ha; subst hb
+        exact absurd rfl hf.2.1
+      · intro hmem; exact absurd hmem (Finset.notMem_empty _)
+    rw [h, Finset.card_empty, Nat.cast_zero]
+    simp [Finset.card_singleton]
+
+/-- **Szemeredi Regularity Lemma (Strong Form)**: For every epsilon > 0
+    and m₀ ≥ 1, there exists M such that every graph on ≥ M vertices
+    admits an ε-regular equipartition into k parts with m₀ ≤ k ≤ M.
+
+    This is the standard formulation requiring non-trivial partitioning.
+    The proof iterates energy_increment_step at most ⌈1/ε⁵⌉ times,
+    using partitionEnergy ∈ [0,1] for termination. -/
+theorem regularity_lemma_strong (eps : ℚ) (heps : 0 < eps) (m₀ : ℕ) (hm₀ : 1 ≤ m₀) :
+    ∃ M : ℕ, m₀ ≤ M ∧
+      ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V)
+        [DecidableRel G.Adj],
+        Fintype.card V ≥ M →
+        ∃ parts : Finset (Finset V),
+          IsRegularPartition G eps parts ∧
+          m₀ ≤ parts.card ∧ parts.card ≤ M := by
   sorry
 
 end Szemeredi.Regularity

@@ -22,12 +22,15 @@
       "LEAN API: Use ext + split_ifs for matrix unit multiplication (single_mul_single_of_ne has tricky sig)",
       "LEAN API: Matrix.mulVec_mulVec, Matrix.zero_mulVec, Matrix.mulVec_zero all exist",
       "LEAN API: mulVec_sum/mulVec_smul may need manual dist. Use Matrix.add_mulVec + smul_mulVec_assoc",
-      "LEAN API: For P invertibility: try basisOfLinearIndependentOfCardEqFinrank or det approach"
+      "LEAN API: For P invertibility: try basisOfLinearIndependentOfCardEqFinrank or det approach",
+      "stdBasisMatrix_mul proved via eij_mul_entry + split_ifs/simp_all \u2014 4 lines of Lean",
+      "Axiom elimination for skolemNoether requires ~150 lines: mulVec approach with matrix unit images forming a new basis"
     ],
     "builtItems": [
       "Complete elementary proof strategy (no Artin-Wedderburn needed)",
       "Identified all Lean4/Mathlib API names for formalization",
-      "Proof steps 1-3 (hf_mul, hfp, hp_ne) have verified strategies"
+      "Proof steps 1-3 (hf_mul, hfp, hp_ne) have verified strategies",
+      "stdBasisMatrix_mul: E_ij * E_kl = \u03b4_jk * E_il (proved, key infrastructure for Skolem-Noether)"
     ],
     "openQuestions": [
       "RESOLVED: Artin-Wedderburn NOT needed",
@@ -43,7 +46,7 @@
       "hP_intertwine: Entry-wise via Matrix.mul_apply + Pi.single_apply + mulVec/dotProduct",
       "hP_comm: Extend from generators using matrix_eq_sum_single + congr lemmas"
     ],
-    "progressSummary": "ORIENT: Complete proof strategy found. Elementary matrix units approach avoids Artin-Wedderburn. Key Lean4 API challenges mapped. Ready for implementation."
+    "progressSummary": "PROGRESS: Added stdBasisMatrix_mul (matrix unit product identity). Still need to prove skolemNoether axiom — elementary matrix units approach documented, ready for implementation."
   },
   "leanFiles": [
     {
