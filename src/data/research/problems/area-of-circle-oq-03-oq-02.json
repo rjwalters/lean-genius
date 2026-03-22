@@ -1,8 +1,8 @@
 {
   "slug": "area-of-circle-oq-03-oq-02",
   "title": "Archimedes Pi Bounds: 3+10/71 < π < 3+1/7 via 96-gons",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-03-21T23:55:00Z",
     "iteration": 2,
-    "focus": "0 sorries, 2 axioms. Framework fully proved.",
+    "focus": "Both axioms proved. File fully verified: 0 axioms, 0 sorries.",
     "blockers": [],
-    "nextAction": "Submit to Aristotle for tight pi bound search, or prove via half-angle method",
+    "nextAction": "None — completed.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Converted 2 sorries to 2 documented axioms. Mathlib v4.26.0 lacks tight pi bounds. File: 0 sorries, 2 axioms.",
+    "progressSummary": "COMPLETED: Both axioms eliminated. archimedes_lower_bound proved via pi_gt_d4 (3.1415 < π), archimedes_upper_bound proved via pi_lt_d4 (π < 3.1416). File now has 0 axioms, 0 sorries. Gallery updated to verified status.",
     "builtItems": [
       "archimedes_lower_bound: 223/71 < π (sorry - needs tight bound)",
       "archimedes_upper_bound: π < 22/7 (sorry - needs tight bound)",
@@ -41,7 +41,9 @@
       "twentytwo_over_seven_error: 22/7 - π < 3/1000",
       "inscribed_half_perimeter_lt_pi: n·sin(π/n) < π (sorry-free)",
       "archimedes_verified: summary theorem",
-      "Converted 2 sorries to documented axioms with proof strategies"
+      "Converted 2 sorries to documented axioms with proof strategies",
+      "Proved archimedes_lower_bound: (223/71) < π via pi_gt_d4 (axiom → theorem)",
+      "Proved archimedes_upper_bound: π < (22/7) via pi_lt_d4 (axiom → theorem)"
     ],
     "insights": [
       "Mathlib has pi_gt_d2 (π > 3.14) and pi_lt_315 (π < 3.15) but these are insufficient",
@@ -50,7 +52,10 @@
       "Need Real.pi_gt_3141 or tighter for lower, Real.pi_lt_3143 for upper",
       "The gap 1/497 is exact rational arithmetic, no pi approximation needed",
       "General inscribed polygon bound uses only sin(x) < x (Real.sin_lt)",
-      "pi_lt_3141593 and pi_gt_3141592 do NOT exist in Mathlib v4.26.0"
+      "pi_lt_3141593 and pi_gt_3141592 do NOT exist in Mathlib v4.26.0",
+      "Mathlib pi_gt_d4 (3.1415 < π) and pi_lt_d4 (π < 3.1416) provide sufficient precision - the previous researcher only checked pi_gt_d2",
+      "Simple linarith chain: 223/71 < 3.1415 (norm_num) and 3.1415 < π (pi_gt_d4)",
+      "Simple linarith chain: π < 3.1416 (pi_lt_d4) and 3.1416 < 22/7 (norm_num)"
     ],
     "mathlibGaps": [
       "Tight pi bounds (>4 decimal places) not in standard Mathlib API"
