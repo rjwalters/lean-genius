@@ -120,6 +120,7 @@
       "id": "header",
       "title": "Module Header and Imports",
       "summary": "Module docstring covering Problem #4 history (Rankin 1938 through FGKMT 2018). Single `import Mathlib` for all dependencies. Opens `Set`, `Nat`, `Real` namespaces.",
+      "mathContext": "Imports all of Mathlib. Uses `Nat.nth Nat.Prime` for the $n$th prime, `Real.log` for iterated logarithms, `Set.Infinite` for infinitude statements.",
       "startLine": 25,
       "endLine": 29
     },
@@ -127,6 +128,7 @@
       "id": "prime-notation",
       "title": "Prime Notation",
       "summary": "Defines **nthPrime** via `Nat.nth Nat.Prime` and **primeGap** = $p_{n+1} - p_n$. By PNT, average gap $\\sim \\log n$.",
+      "mathContext": "$p_n = \\text{nthPrime}(n)$, $g_n = p_{n+1} - p_n$. By PNT: $p_n \\sim n \\log n$, so the average gap $g_n \\sim \\log n$.",
       "startLine": 31,
       "endLine": 37
     },
@@ -134,6 +136,7 @@
       "id": "iterated-logs",
       "title": "Iterated Logarithms",
       "summary": "Defines **lg**, **lg2**, **lg3**, **lg4** as successive compositions of $\\log$. These arise from optimizing sieve parameters in Rankin's construction.",
+      "mathContext": "$\\text{lg} = \\log$, $\\text{lg2} = \\log\\log$, $\\text{lg3} = \\log\\log\\log$, $\\text{lg4} = \\log\\log\\log\\log$. These arise from optimizing sieve parameters in Rankin's method.",
       "startLine": 39,
       "endLine": 51
     },
@@ -141,6 +144,7 @@
       "id": "erdos-function",
       "title": "The Erdős Function",
       "summary": "**erdosFunction** = $(\\log\\log n \\cdot \\log\\log\\log\\log n)/(\\log\\log\\log n)^2 \\cdot \\log n$ and the simplified **rankinFunction**. Grows as $\\omega(\\log n)$ but $o((\\log n)^{1+\\varepsilon})$.",
+      "mathContext": "$f(n) = \\frac{\\log n \\cdot \\log\\log n \\cdot \\log\\log\\log\\log n}{(\\log\\log\\log n)^2}$. Growth: $f(n) = \\omega(\\log n)$ but $f(n) = o((\\log n)^{1+\\varepsilon})$ for any $\\varepsilon > 0$.",
       "startLine": 53,
       "endLine": 69
     },
@@ -148,6 +152,7 @@
       "id": "conjecture",
       "title": "The Erdős Conjecture (SOLVED)",
       "summary": "**erdos_4_conjecture**: $\\forall C > 0$, infinitely many $g_n > C \\cdot f(n)$. The 'for all $C$' quantifier is the key strengthening over Rankin's 'exists $C$'.",
+      "mathContext": "Erdős conjecture: $\\forall C > 0, \\exists^\\infty n: g_n > C \\cdot f(n)$. The $\\forall C$ quantifier distinguishes this from Rankin's $\\exists C$.",
       "startLine": 71,
       "endLine": 80
     },
@@ -155,6 +160,7 @@
       "id": "historical-results",
       "title": "Historical Results: Rankin (1938)",
       "summary": "**rankin_theorem**: $\\exists C > 0$ (specifically $C = e^\\gamma/3$) achieving the bound. Stood for 75+ years without improvement to the constant.",
+      "mathContext": "Rankin (1938): $\\limsup g_n / f(n) \\geq e^\\gamma / 3 \\approx 0.593$. This constant was not improved for 75 years (Erdős offered \\$10,000 for any improvement).",
       "startLine": 82,
       "endLine": 96
     },
@@ -162,6 +168,7 @@
       "id": "breakthrough-2016",
       "title": "2016 Breakthrough: Maynard and FGKT",
       "summary": "**maynard_theorem** and **ford_green_konyagin_tao_theorem**: Two independent proofs for ALL $C > 0$. Maynard used multidimensional sieve weights; FGKT used probabilistic methods with hypergraph covering.",
+      "mathContext": "Maynard (2016) and FGKT (2016): $\\limsup g_n / f(n) = \\infty$, resolving Erdős's conjecture. Two independent proofs: multidimensional sieve weights vs. probabilistic hypergraph covering.",
       "startLine": 98,
       "endLine": 116
     },
@@ -169,6 +176,7 @@
       "id": "improved-bounds",
       "title": "Improved Bounds: FGKMT (2018)",
       "summary": "**fgkmt_improved_bound**: All five authors proved a stronger bound with $\\log\\log\\log n$ (not squared) in the denominator, combining both teams' techniques.",
+      "mathContext": "FGKMT (2018): $g_n \\geq c \\cdot \\frac{\\log n \\cdot \\log\\log n \\cdot \\log\\log\\log\\log n}{\\log\\log\\log n}$ (removed the square in the denominator vs. Rankin's function).",
       "startLine": 118,
       "endLine": 132
     },
@@ -176,6 +184,7 @@
       "id": "upper-bounds",
       "title": "Upper Bounds: Baker-Harman-Pintz (2001)",
       "summary": "**baker_harman_pintz_upper_bound**: $g_n \\leq n^{0.525}$ unconditionally. Under RH: $g_n \\ll p_n^{1/2} \\log p_n$. The gap to lower bounds remains enormous.",
+      "mathContext": "BHP (2001): $g_n \\leq p_n^{0.525}$ unconditionally. Under RH: $g_n \\ll p_n^{1/2} \\log p_n$ (Cramér 1920). Gap: lower bound $\\omega(\\log n)$ vs. upper bound $n^{0.525}$.",
       "startLine": 134,
       "endLine": 147
     },
@@ -183,6 +192,7 @@
       "id": "cramer-conjecture",
       "title": "Cramér's Conjecture and Refinements",
       "summary": "**cramer_conjecture**: $g_n = O((\\log p_n)^2)$ (OPEN). **Cramér-Granville**: lim sup = $2e^{-\\gamma} \\approx 1.1229$, correcting Cramér's original constant of 1.",
+      "mathContext": "Cramér (1936): $\\limsup g_n / (\\log p_n)^2 \\leq 1$ (OPEN). Granville's refinement: $\\limsup g_n / (\\log p_n)^2 = 2e^{-\\gamma} \\approx 1.1229$.",
       "startLine": 149,
       "endLine": 166
     },
@@ -190,6 +200,7 @@
       "id": "simple-properties",
       "title": "Simple Properties",
       "summary": "**gap_0** = 1 (the only odd gap), **prime_gap_pos**, and **average_gap_asymptotic** ($p_n/(n\\log n) \\to 1$ via PNT).",
+      "mathContext": "$g_0 = p_1 - p_0 = 3 - 2 = 1$ (only odd gap). $g_n \\geq 1$ for all $n$. Average: $\\sum_{k<n} g_k / n = p_n / n \\sim \\log n$ by PNT.",
       "startLine": 168,
       "endLine": 179
     },
@@ -197,6 +208,7 @@
       "id": "comparison",
       "title": "Comparison of Bounds",
       "summary": "**erdos_function_growth**: $f(n) < (\\log n)^{1+\\varepsilon}$ eventually. **improved_stronger**: the FGKMT function dominates the original (sorry for technical inequality).",
+      "mathContext": "$f(n) < (\\log n)^{1+\\varepsilon}$ eventually for any $\\varepsilon > 0$. The FGKMT improved function $f'(n)$ satisfies $f'(n) / f(n) \\to \\infty$.",
       "startLine": 181,
       "endLine": 192
     },
@@ -204,6 +216,7 @@
       "id": "related-conjectures",
       "title": "Related Conjectures",
       "summary": "**erdos_stronger_conjecture**: $g_n > (\\log n)^{1+c}$ for some $c > 0$ (Erdős's $\\$10{,}000$ prize, OPEN). **firoozbakht_conjecture**: $p_n^{1/n}$ strictly decreasing (OPEN, incompatible with the stronger conjecture).",
+      "mathContext": "Erdős \\$10K: $\\exists c > 0: g_n > (\\log n)^{1+c}$ infinitely often (OPEN). Firoozbakht: $p_n^{1/n}$ strictly decreasing (OPEN, implies $g_n < (\\log p_n)^2 - \\log p_n$).",
       "startLine": 194,
       "endLine": 215
     }
