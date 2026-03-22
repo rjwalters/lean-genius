@@ -231,7 +231,8 @@ private lemma conj_psi {N : ℕ} [NeZero N] (x : ZMod N) :
       ring
     rw [this, Real.exp_zero]
   have h2 : ψ x * starRingEnd ℂ (ψ x) = 1 := by
-    rw [Complex.mul_conj]; simp [h_norm]
+    rw [Complex.mul_conj, Complex.normSq_eq_abs, Complex.norm_eq_abs ▸ h_norm, one_pow]
+    simp
   exact mul_left_cancel₀ hne (h2.trans h1.symm)
 
 /-- ψ(c) ≠ 1 when c ≠ 0: a nontrivial character is not the identity.
@@ -252,8 +253,13 @@ private lemma psi_ne_one {N : ℕ} [NeZero N] (c : ZMod N) (hc : c ≠ 0) :
   have hval_eq : (ZMod.val c : ℤ) = n * N := by
     have : (↑(ZMod.val c) : ℂ) = ↑n * ↑N := by rwa [div_eq_iff hNc] at heq
     exact_mod_cast this
-  have hval_lt := ZMod.val_lt c
-  have : ZMod.val c = 0 := by omega
+  -- n must be 0: 0 ≤ n*N < N with N > 0 forces n = 0
+  have hn0 : n = 0 := by
+    have h1 : (0 : ℤ) ≤ n * N := hval_eq ▸ Int.natCast_nonneg _
+    have h2 : n * (N : ℤ) < N := hval_eq ▸ (by exact_mod_cast ZMod.val_lt c)
+    have : (0 : ℤ) < N := by positivity
+    nlinarith [sq_nonneg n]
+  rw [hn0, zero_mul, Int.ofNat_eq_zero] at hval_eq
   rwa [← ZMod.val_eq_zero]
 
 /-- Character orthogonality: ∑_{r : ZMod N} ψ(r·c) = N if c = 0, 0 if c ≠ 0.
