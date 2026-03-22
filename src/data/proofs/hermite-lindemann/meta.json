@@ -217,5 +217,71 @@
       "venue": "Sitzungsberichte der Königlich Preußischen Akademie der Wissenschaften",
       "note": "Generalized Lindemann's result to the full Lindemann-Weierstrass theorem on algebraic independence"
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.RingTheory.Algebraic.Basic",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
+      "Mathlib.Analysis.SpecialFunctions.Complex.Analytic",
+      "Mathlib.Data.Real.Pi.Bounds",
+      "Mathlib.Data.Complex.Exponential",
+      "Mathlib.LinearAlgebra.LinearIndependent.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Complex",
+      "Polynomial",
+      "ComplexConjugate"
+    ],
+    "namespace": "HermiteLindemann",
+    "lineCount": 375,
+    "axiomCount": 4,
+    "theoremCount": 1,
+    "definitionCount": 1
+  },
+  "relatedProofs": [
+    {
+      "id": "e-transcendental",
+      "relationship": "specializes",
+      "description": "e's transcendence is the α=1 case: e^1 = e is transcendental since 1 is algebraic and nonzero"
+    },
+    {
+      "id": "pi-transcendental",
+      "relationship": "specializes",
+      "description": "π's transcendence follows: if π were algebraic, e^(iπ) = -1 would be transcendental by H-L, contradiction"
+    },
+    {
+      "id": "angle-trisection",
+      "relationship": "related",
+      "description": "H-L proves π transcendental, which proves squaring the circle is impossible"
+    },
+    {
+      "id": "gelfond-schneider",
+      "relationship": "related",
+      "description": "Gelfond-Schneider (1934) extends H-L: a^b is transcendental for algebraic a≠0,1 and irrational algebraic b"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Hermite, Charles",
+      "title": "Sur la fonction exponentielle",
+      "year": "1873",
+      "venue": "Comptes rendus de l'Académie des Sciences 77",
+      "note": "Proved e is transcendental — the first of the Hermite-Lindemann results"
+    },
+    {
+      "authors": "Lindemann, Ferdinand von",
+      "title": "Über die Zahl π",
+      "year": "1882",
+      "venue": "Mathematische Annalen 20, pp. 213-225",
+      "note": "Extended Hermite's method to prove π transcendental, settling the ancient problem of squaring the circle"
+    },
+    {
+      "authors": "Weierstrass, Karl",
+      "title": "Zu Lindemann's Abhandlung: Über die Ludolph'sche Zahl",
+      "year": "1885",
+      "venue": "Sitzungsberichte der Königlich Preußischen Akademie der Wissenschaften",
+      "note": "Generalized Lindemann's result to the full Lindemann-Weierstrass theorem on algebraic independence"
+    }
   ]
 }
