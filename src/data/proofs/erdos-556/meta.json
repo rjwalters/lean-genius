@@ -85,21 +85,24 @@
       "title": "Basic Definitions",
       "startLine": 33,
       "endLine": 64,
-      "summary": "Edge colorings, cycle graphs, monochromatic cycles, and R(C_n;3) definition."
+      "summary": "Edge colorings, cycle graphs, monochromatic cycles, and R(C_n;3) definition.",
+      "mathContext": "$R(C_n; 3) = \\min\\{m : \\forall$ 3-colorings of $K_m$, $\\exists$ monochromatic $C_n\\}$. Edge colorings use `Fin 3` for 3 colors."
     },
     {
       "id": "bondy-erdos",
       "title": "The Bondy-Erdős Conjecture",
       "startLine": 66,
       "endLine": 78,
-      "summary": "The original conjecture R(C_n;3) ≤ 4n - 3."
+      "summary": "The original conjecture R(C_n;3) ≤ 4n - 3.",
+      "mathContext": "Bondy-Erdős conjecture: $R(C_n; 3) \\leq 4n - 3$ for all $n \\geq 3$."
     },
     {
       "id": "luczak-1999",
       "title": "Łuczak's Result (1999)",
       "startLine": 80,
       "endLine": 93,
-      "summary": "Asymptotic bounds (4+o(1))n for all n, (3+o(1))n for even n."
+      "summary": "Asymptotic bounds (4+o(1))n for all n, (3+o(1))n for even n.",
+      "mathContext": "Łuczak (1999): $R(C_n; 3) \\leq (4 + o(1))n$; for even $n$: $R(C_n; 3) \\leq (3 + o(1))n$."
     },
     {
       "id": "kss-2005",
@@ -147,7 +150,7 @@
       "id": "main-results",
       "title": "Main Results Summary",
       "startLine": 204,
-      "endLine": 231,
+      "endLine": 219,
       "summary": "The erdos_556 theorem combining all results."
     }
   ],
