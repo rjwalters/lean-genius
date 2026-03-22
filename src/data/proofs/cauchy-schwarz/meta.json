@@ -208,6 +208,16 @@
       "targetId": "yang-mills",
       "relationship": "foundational",
       "description": "The Yang-Mills formalization uses Hilbert spaces and inner products (Wightman axioms) where Cauchy-Schwarz underpins the spectral theory and mass gap definition."
+    },
+    {
+      "targetId": "amgm-inequality-oq-03",
+      "relationship": "related",
+      "description": "For equal weights, the power mean inequality M₁ ≤ M₂ is equivalent to Cauchy-Schwarz: (∑wᵢzᵢ)² ≤ ∑wᵢzᵢ². Cauchy-Schwarz is the p=2 case of the general power mean monotonicity chain"
+    },
+    {
+      "targetId": "amgm-inequality-oq-02",
+      "relationship": "related",
+      "description": "The Cauchy-Schwarz sum n·∑xᵢ² ≥ (∑xᵢ)² is the key engine in the Maclaurin M₁²≥M₂ proof — directly connecting Cauchy-Schwarz to the elementary symmetric polynomial hierarchy"
     }
   ],
   "conclusion": {
@@ -233,7 +243,9 @@
     "cauchy-schwarz-oq-03",
     "cauchy-schwarz-oq-04",
     "hurwitz-theorem",
-    "yang-mills"
+    "yang-mills",
+    "amgm-inequality-oq-03",
+    "amgm-inequality-oq-02"
   ],
   "references": [
     {
