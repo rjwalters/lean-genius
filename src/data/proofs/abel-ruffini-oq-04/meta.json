@@ -28,30 +28,43 @@
     ],
     "references": [
       {"key": "Ab24", "citation": "Abel, N.H., Mémoire sur les équations algébriques, où l'on démontre l'impossibilité de la résolution de l'équation générale du cinquième degré (1824).", "type": "paper"},
-      {"key": "Ga32", "citation": "Galois, É., Mémoire sur les conditions de résolubilité des équations par radicaux (1832, published posthumously 1846).", "type": "paper"}
+      {"key": "Ga32", "citation": "Galois, É., Mémoire sur les conditions de résolubilité des équations par radicaux (1832, published posthumously 1846).", "type": "paper"},
+      {"key": "Ar42", "citation": "Artin, E., Galois Theory, Notre Dame Mathematical Lectures 2 (1942).", "type": "book"},
+      {"key": "Ro95", "citation": "Rotman, J.J., An Introduction to the Theory of Groups, 4th ed., Springer GTM 148 (1995), Chapter 8.", "type": "book"}
+    ],
+    "relatedProofs": [
+      {"id": "abel-ruffini", "relationship": "extends", "description": "Base Abel-Ruffini theorem using Mathlib's solvableByRad"}
     ]
   },
   "overview": {
-    "historicalContext": "Abel proved in 1824 that the general quintic has no radical solution. Galois later (1832) gave the complete characterization: a polynomial is solvable by radicals iff its Galois group is solvable. The key group-theoretic fact is that A₅ is the first non-abelian simple group, making S₅ the first non-solvable symmetric group.",
-    "problemStatement": "Expose the proof chain from A₅ simplicity to Abel-Ruffini with each step named and documented.",
-    "proofStrategy": "Use Mathlib's alternatingGroup.isSimpleGroup_five and Equiv.Perm.not_solvable, wrapping them in named theorems with pedagogical documentation.",
+    "historicalContext": "The Abel-Ruffini theorem (1824) stands as one of the most profound results in the history of algebra, settling a question that had occupied mathematicians for centuries. After Cardano (1545) and Ferrari (1540) found radical solutions for cubics and quartics, the search for a quintic formula consumed generations of mathematicians including Euler, Lagrange, and Vandermonde. Paolo Ruffini gave an incomplete proof of impossibility in 1799; Niels Henrik Abel provided the first rigorous proof in 1824, at age 21. Évariste Galois, before his death in a duel at 20, went much further in 1832: he characterized exactly which polynomials are solvable by radicals in terms of their symmetry groups. The key group-theoretic insight is that A₅, the alternating group on 5 elements, is the smallest non-abelian simple group — with order 60, it has no proper non-trivial normal subgroups, causing the derived series to get stuck. This single fact propagates upward through the chain: A₅ not solvable → Sₙ (n ≥ 5) not solvable → generic quintic not solvable by radicals. The classification of finite simple groups (completed circa 2004) shows that A₅ is the first in the infinite family of simple alternating groups Aₙ (n ≥ 5).",
+    "problemStatement": "Expose the full proof chain from $A_5$ simplicity to the Abel-Ruffini theorem with each step as a named, machine-verified theorem: $A_5$ simple $\\Rightarrow$ $S_n$ ($n \\geq 5$) not solvable $\\Rightarrow$ no radical formula for the general degree-$n$ polynomial ($n \\geq 5$).",
+    "proofStrategy": "The file provides a pedagogical exposition rather than new mathematical content: it wraps Mathlib's existing theorems (alternatingGroup.isSimpleGroup_five and Equiv.Perm.not_solvable) in named theorems with comprehensive documentation. The key technical contribution is symmetric_not_solvable, which bridges from Mathlib's cardinal-level statement to a natural number inequality via exact_mod_cast. The proof chain is made explicit by naming each link and documenting the logical dependencies.",
     "keyInsights": [
-      "A₅ (order 60) is the smallest non-abelian simple group — this single fact drives everything",
-      "The derived series gets stuck: [A₅, A₅] = A₅ because A₅ is simple and non-abelian",
-      "The threshold is exact: S₄ solvable (derived series terminates) but S₅ not solvable"
+      "A₅ (order 60) is the smallest non-abelian simple group — this single fact drives the entire Abel-Ruffini theorem through a chain of group-theoretic implications",
+      "The derived series gets stuck: for simple non-abelian G, [G,G] = G (since [G,G] is a non-trivial normal subgroup), so the series G ⊵ G ⊵ G ⊵ ··· never reaches {e}",
+      "The threshold is exact: S₄ is solvable (derived series {e} ◁ V₄ ◁ A₄ ◁ S₄ reaches {e}) but S₅ is not, because A₅ is simple while A₄ has V₄ as a normal subgroup",
+      "The distinction between 'no general formula' and 'no specific quintic is solvable' is crucial: x⁵ - 1 has a solvable Galois group (cyclic), but the generic quintic has Galois group S₅",
+      "Mathlib's typeclass system enables automatic solvability proofs for small groups via inferInstance, while the general non-solvability requires an explicit argument through cardinal arithmetic"
     ]
   },
   "sections": [
-    {"id": "simple", "title": "A₅ Is Simple", "startLine": 32, "endLine": 39, "summary": "A₅ is simple from Mathlib."},
-    {"id": "not-solvable", "title": "Sₙ Not Solvable", "startLine": 43, "endLine": 66, "summary": "General proof and specific cases S₅, S₆, S₇."},
-    {"id": "small", "title": "Small Groups Solvable", "startLine": 70, "endLine": 78, "summary": "S₀, S₁ solvable via inferInstance."},
-    {"id": "threshold", "title": "The Threshold", "startLine": 82, "endLine": 88, "summary": "five_is_the_threshold: S₁ solvable ∧ S₅ not solvable."},
-    {"id": "chain", "title": "The Complete Chain", "startLine": 92, "endLine": 155, "summary": "5-step proof chain documented with tables and historical context."}
+    {"id": "simple", "title": "A₅ Is Simple", "startLine": 32, "endLine": 40, "summary": "Extracts A₅ simplicity from Mathlib's alternatingGroup.isSimpleGroup_five as a named theorem. A₅ is the smallest non-abelian simple group (order 60, no proper non-trivial normal subgroups)."},
+    {"id": "not-solvable", "title": "Sₙ Not Solvable for n ≥ 5", "startLine": 42, "endLine": 65, "summary": "Proves symmetric_not_solvable: Sₙ is not solvable for n ≥ 5. Converts natural number bound to cardinal bound via exact_mod_cast, then applies Mathlib's Equiv.Perm.not_solvable. Instantiates for S₅, S₆, S₇."},
+    {"id": "small", "title": "Small Symmetric Groups Are Solvable", "startLine": 67, "endLine": 75, "summary": "Shows S₀ and S₁ are solvable via Lean's typeclass inference (inferInstance). These trivial cases contrast with the non-solvable S₅ and above."},
+    {"id": "threshold", "title": "The Solvability Threshold", "startLine": 77, "endLine": 86, "summary": "Packages the sharp dichotomy: S₁ solvable ∧ S₅ not solvable. Witnesses the exact transition point at n = 5 where radical solvability breaks."},
+    {"id": "chain", "title": "The Complete Proof Chain (Documentation)", "startLine": 88, "endLine": 152, "summary": "Comprehensive documentation of the 5-step proof chain (A₅ simple → non-solvable → Sₙ not solvable → Galois bridge → generic quintic). Includes 'Why Exactly 5?' table (derived series for S₁ through S₅) and 'Crucial Asymmetry' table (degree-by-degree radical solvability with historical formula discoverers)."},
+    {"id": "verification", "title": "Verification", "startLine": 154, "endLine": 163, "summary": "Type-checks all four main theorems: a5_is_simple, s5_not_solvable, symmetric_not_solvable, five_is_the_threshold."}
   ],
   "conclusion": {
-    "summary": "Fully verified (0 sorries, 0 axioms) exposition of the A₅ → Abel-Ruffini proof chain in 163 lines with 8 theorems. Each step is named, proved, and documented with the historical and mathematical context.",
-    "implications": "This file provides the pedagogical bridge between abstract group theory (A₅ simplicity) and classical algebra (quintic unsolvability), making the proof chain explicit and verifiable.",
-    "openQuestions": []
+    "summary": "Fully verified (0 sorries, 0 axioms) pedagogical exposition of the A₅ simplicity proof chain in 163 lines with 8 theorems. Each link in the chain from A₅ simplicity to the Abel-Ruffini theorem is named, machine-verified, and documented with historical and mathematical context. The key technical theorem is symmetric_not_solvable, which bridges Mathlib's cardinal-level statement to natural numbers.",
+    "implications": "This file serves as a pedagogical bridge between abstract group theory and classical algebra. By making the proof chain explicit — with each step named and independently checkable — it demonstrates that the Abel-Ruffini theorem follows from a single deep fact (A₅ simplicity) through a short chain of elementary implications. The file also highlights the role of Mathlib's typeclass system in automating solvability proofs for small groups.",
+    "openQuestions": [
+      "Formalize the Galois group computation for the generic quintic: Gal(x⁵ + a₁x⁴ + ··· + a₅ / ℚ(a₁,...,a₅)) = S₅",
+      "Prove S₂, S₃, S₄ solvable explicitly (not just S₀, S₁) to complete the degree-by-degree picture",
+      "Formalize Galois's criterion: a polynomial is solvable by radicals iff its Galois group is solvable",
+      "Exhibit specific solvable quintics (e.g., x⁵ - 1 with cyclic Galois group) to illustrate the generic/specific distinction"
+    ]
   },
   "leanFile": {
     "imports": ["Mathlib.GroupTheory.Solvable", "Mathlib.GroupTheory.SpecificGroups.Alternating", "Mathlib.Tactic"],
