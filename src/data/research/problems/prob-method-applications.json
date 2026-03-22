@@ -1,0 +1,73 @@
+{
+  "slug": "prob-method-applications",
+  "title": "Probabilistic Method Applications",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "Apply the full probabilistic method library to prove classical results:",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-21",
+    "iteration": 0,
+    "focus": "Integration testing for the full probabilistic method library.",
+    "blockers": [
+      "Blocked until probabilistic method library (expectation, alteration, second moment, LLL) is substantially complete."
+    ],
+    "nextAction": "Wait for library foundations, then apply to classical results.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "probabilistic-method",
+    "combinatorics",
+    "ramsey-theory",
+    "graph-theory",
+    "marquee-phase-1"
+  ],
+  "relatedProofs": [
+    "prob-method-applications"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-21T20:11:02.346Z",
+  "lastUpdate": "2026-03-21T21:57:07.470Z",
+  "completed": "2026-03-21T21:57:07.470Z",
+  "significance": 8,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/ProbMethodApplications.lean",
+      "filename": "ProbMethodApplications.lean",
+      "lineCount": 52,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProbMethodApplications.lean"
+    }
+  ]
+}

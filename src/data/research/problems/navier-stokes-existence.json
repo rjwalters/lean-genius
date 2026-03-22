@@ -188,7 +188,12 @@
     "pde",
     "open-conjecture"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "navier-stokes",
+    "navier-stokes-existence",
+    "navier-stokes-oq-01",
+    "navier-stokes-oq-02"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -201,10 +206,26 @@
   "tractability": 1,
   "leanFiles": [
     {
-      "lineCount": 22349
+      "path": "Proofs/NavierStokes.lean",
+      "filename": "NavierStokes.lean",
+      "lineCount": 22350,
+      "theoremCount": 1009,
+      "axiomCount": 0,
+      "defCount": 104,
+      "sorryCount": 43,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/NavierStokes.lean"
     },
     {
-      "lineCount": 1515
+      "path": "Proofs/NavierStokesAristotle.lean",
+      "filename": "NavierStokesAristotle.lean",
+      "lineCount": 1689,
+      "theoremCount": 371,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/NavierStokesAristotle.lean"
     }
   ]
 }

@@ -126,8 +126,29 @@
   "tractability": 8,
   "leanFiles": [
     {
-      "sorryCount": 2,
-      "theoremCount": 15
+      "path": "Proofs/ShannonEntropy.lean",
+      "filename": "ShannonEntropy.lean",
+      "lineCount": 335,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropy.lean"
+    },
+    {
+      "path": "Proofs/ShannonEntropyAristotle.lean",
+      "filename": "ShannonEntropyAristotle.lean",
+      "lineCount": 60,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 3,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropyAristotle.lean"
     }
+  ],
+  "relatedProofs": [
+    "shannon-entropy"
   ]
 }

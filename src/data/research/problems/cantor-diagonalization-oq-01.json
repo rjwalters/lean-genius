@@ -45,7 +45,12 @@
     "classic",
     "intermediate"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "cantor-diagonalization",
+    "cantor-diagonalization-oq-01",
+    "cantor-diagonalization-oq-02",
+    "cantor-diagonalization-oq-02-oq-01"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -55,5 +60,51 @@
   "lastUpdate": "2026-02-23T05:42:29.517Z",
   "completed": "2026-02-23T05:42:29.517Z",
   "significance": 6,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/CantorDiagonalization.lean",
+      "filename": "CantorDiagonalization.lean",
+      "lineCount": 176,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalization.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ01.lean",
+      "filename": "CantorDiagonalizationOQ01.lean",
+      "lineCount": 443,
+      "theoremCount": 27,
+      "axiomCount": 2,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ01.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ02.lean",
+      "filename": "CantorDiagonalizationOQ02.lean",
+      "lineCount": 273,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ02.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ02OQ01.lean",
+      "filename": "CantorDiagonalizationOQ02OQ01.lean",
+      "lineCount": 131,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ02OQ01.lean"
+    }
+  ]
 }

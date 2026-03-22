@@ -293,7 +293,10 @@
     "gauge-theory",
     "open-conjecture"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "yang-mills",
+    "yang-mills-mass-gap"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -303,5 +306,29 @@
   "lastUpdate": "2026-03-20T18:40:00.000Z",
   "completed": "2026-03-13T17:50:22.123Z",
   "significance": 10,
-  "tractability": 1
+  "tractability": 1,
+  "leanFiles": [
+    {
+      "path": "Proofs/YangMillsMassGap.lean",
+      "filename": "YangMillsMassGap.lean",
+      "lineCount": 30559,
+      "theoremCount": 1951,
+      "axiomCount": 1,
+      "defCount": 646,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/YangMillsMassGap.lean"
+    },
+    {
+      "path": "Proofs/YangMillsMassGapAristotle.lean",
+      "filename": "YangMillsMassGapAristotle.lean",
+      "lineCount": 230,
+      "theoremCount": 51,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/YangMillsMassGapAristotle.lean"
+    }
+  ]
 }

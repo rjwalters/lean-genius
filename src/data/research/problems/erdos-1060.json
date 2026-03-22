@@ -39,7 +39,12 @@
   "tags": [
     "erdos"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-106",
+    "erdos-1060"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -48,5 +53,18 @@
   "started": "2026-01-15T14:31:40.058Z",
   "lastUpdate": "2026-03-13T07:52:17.056Z",
   "significance": 7,
-  "tractability": 5
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1060Problem.lean",
+      "filename": "Erdos1060Problem.lean",
+      "lineCount": 242,
+      "theoremCount": 10,
+      "axiomCount": 2,
+      "defCount": 5,
+      "sorryCount": 6,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1060Problem.lean"
+    }
+  ]
 }

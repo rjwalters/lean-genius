@@ -51,5 +51,66 @@
       "Consider specializing theorem to Int where factorization_gcd/lcm exist"
     ],
     "progressSummary": "PROGRESS: Added 3 new lemmas including key Bezout result gcd(lcm,c)|gcd(a,c)*gcd(b,c). Fixed Aristotle companion (0 sorries, was 2). Remaining: 1 sorry (distributive law) requires UFD machinery not in Mathlib."
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/ChineseRemainderNonCoprime.lean",
+      "filename": "ChineseRemainderNonCoprime.lean",
+      "lineCount": 306,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderNonCoprime.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderNonCoprimeOQ01.lean",
+      "filename": "ChineseRemainderNonCoprimeOQ01.lean",
+      "lineCount": 309,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderNonCoprimeOQ01.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderNonCoprimeOQ02.lean",
+      "filename": "ChineseRemainderNonCoprimeOQ02.lean",
+      "lineCount": 706,
+      "theoremCount": 55,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderNonCoprimeOQ02.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderNonCoprimeOQ03.lean",
+      "filename": "ChineseRemainderNonCoprimeOQ03.lean",
+      "lineCount": 228,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderNonCoprimeOQ03.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderNonCoprimeOQ03Aristotle.lean",
+      "filename": "ChineseRemainderNonCoprimeOQ03Aristotle.lean",
+      "lineCount": 238,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderNonCoprimeOQ03Aristotle.lean"
+    }
+  ],
+  "relatedProofs": [
+    "chinese-remainder-non-coprime",
+    "chinese-remainder-non-coprime-oq-01"
+  ]
 }

@@ -170,7 +170,9 @@
     "topology",
     "open-conjecture"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "hodge-conjecture"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -183,7 +185,15 @@
   "tractability": 1,
   "leanFiles": [
     {
-      "lineCount": 11080
+      "path": "Proofs/HodgeConjecture.lean",
+      "filename": "HodgeConjecture.lean",
+      "lineCount": 10518,
+      "theoremCount": 430,
+      "axiomCount": 49,
+      "defCount": 80,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HodgeConjecture.lean"
     }
   ]
 }

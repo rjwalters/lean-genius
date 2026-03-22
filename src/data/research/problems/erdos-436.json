@@ -41,7 +41,11 @@
     "power-residues",
     "1-sorry"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "erdos-4",
+    "erdos-43",
+    "erdos-436"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -51,5 +55,29 @@
   "lastUpdate": "2026-02-07T00:59:53.378Z",
   "completed": "2026-02-07T00:59:53.378Z",
   "significance": 7,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos436Improvements.lean",
+      "filename": "Erdos436Improvements.lean",
+      "lineCount": 158,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos436Improvements.lean"
+    },
+    {
+      "path": "Proofs/Erdos436Problem.lean",
+      "filename": "Erdos436Problem.lean",
+      "lineCount": 635,
+      "theoremCount": 43,
+      "axiomCount": 15,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos436Problem.lean"
+    }
+  ]
 }

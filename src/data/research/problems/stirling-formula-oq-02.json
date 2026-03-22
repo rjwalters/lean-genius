@@ -41,7 +41,9 @@
     "asymptotics",
     "extension"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "stirling-formula"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -51,5 +53,29 @@
   "lastUpdate": "2026-02-09T23:59:13.858Z",
   "completed": "2026-02-09T23:59:13.858Z",
   "significance": 7,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/StirlingFormula.lean",
+      "filename": "StirlingFormula.lean",
+      "lineCount": 498,
+      "theoremCount": 14,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/StirlingFormula.lean"
+    },
+    {
+      "path": "Proofs/StirlingFormulaOQ02.lean",
+      "filename": "StirlingFormulaOQ02.lean",
+      "lineCount": 602,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/StirlingFormulaOQ02.lean"
+    }
+  ]
 }

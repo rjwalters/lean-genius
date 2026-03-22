@@ -167,7 +167,9 @@
     "graph-theory",
     "spectral-methods"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "friendship-theorem"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -176,5 +178,40 @@
   "started": "2026-03-15T12:11:41.208Z",
   "lastUpdate": "2026-03-20T00:00:00.000Z",
   "significance": 7,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/FriendshipTheorem.lean",
+      "filename": "FriendshipTheorem.lean",
+      "lineCount": 374,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FriendshipTheorem.lean"
+    },
+    {
+      "path": "Proofs/FriendshipTheoremOQ01.lean",
+      "filename": "FriendshipTheoremOQ01.lean",
+      "lineCount": 2277,
+      "theoremCount": 74,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FriendshipTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/FriendshipTheoremOQ02.lean",
+      "filename": "FriendshipTheoremOQ02.lean",
+      "lineCount": 378,
+      "theoremCount": 11,
+      "axiomCount": 1,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FriendshipTheoremOQ02.lean"
+    }
+  ]
 }

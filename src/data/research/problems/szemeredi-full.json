@@ -1,0 +1,59 @@
+{
+  "slug": "szemeredi-full",
+  "title": "Szemeredi's Theorem (Full)",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "S",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "Szemeredi's theorem says that any \"dense\" subset of the integers -- one that takes up a positive fraction of {1, 2, ..., N} for all large N -- must contain arithmetic progressions of every length. You cannot avoid long evenly-spaced patterns in a dense set, no matter how cleverly you construct it. This is one of the deepest and most celebrated results in all of combinatorics.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-21",
+    "iteration": 0,
+    "focus": "Full Szemeredi theorem via regularity lemma approach. Induction on k (AP length).",
+    "blockers": [
+      "Depends on szemeredi-regularity and szemeredi-counting."
+    ],
+    "nextAction": "Wait for regularity and counting lemma infrastructure.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "szemeredi",
+    "combinatorics",
+    "additive-combinatorics",
+    "arithmetic-progressions",
+    "marquee-phase-3"
+  ],
+  "relatedProofs": [
+    "szemeredi-full"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-22T06:10:36.236Z",
+  "lastUpdate": "2026-03-22T06:10:36.236Z",
+  "significance": 10,
+  "tractability": 3
+}

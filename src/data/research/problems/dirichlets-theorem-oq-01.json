@@ -48,7 +48,10 @@
     "l-functions",
     "arithmetic-progressions"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "dirichlets-theorem",
+    "dirichlets-theorem-oq-01"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -58,5 +61,29 @@
   "lastUpdate": "2026-03-06T06:42:42.096Z",
   "completed": "2026-03-06T06:42:42.096Z",
   "significance": 6,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/DirichletsTheorem.lean",
+      "filename": "DirichletsTheorem.lean",
+      "lineCount": 314,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheorem.lean"
+    },
+    {
+      "path": "Proofs/DirichletsTheoremOQ01.lean",
+      "filename": "DirichletsTheoremOQ01.lean",
+      "lineCount": 706,
+      "theoremCount": 31,
+      "axiomCount": 5,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ01.lean"
+    }
+  ]
 }

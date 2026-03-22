@@ -44,7 +44,9 @@
     "classical",
     "crt"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "chinese-remainder-constructive"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -53,5 +55,18 @@
   "started": "2025-12-31T14:00:00-08:00",
   "completed": "2025-12-31T15:00:00-08:00",
   "significance": 5,
-  "tractability": 9
+  "tractability": 9,
+  "leanFiles": [
+    {
+      "path": "Proofs/ChineseRemainderConstructive.lean",
+      "filename": "ChineseRemainderConstructive.lean",
+      "lineCount": 417,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructive.lean"
+    }
+  ]
 }

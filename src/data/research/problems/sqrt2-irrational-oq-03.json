@@ -42,7 +42,10 @@
     "irrationality",
     "generalization"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "sqrt2-from-axioms",
+    "sqrt2-irrational"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -52,5 +55,29 @@
   "lastUpdate": "2026-02-08T07:34:07.912Z",
   "completed": "2026-02-08T07:34:07.912Z",
   "significance": 7,
-  "tractability": 7
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/Sqrt2Irrational.lean",
+      "filename": "Sqrt2Irrational.lean",
+      "lineCount": 223,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2Irrational.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2IrrationalFromAxioms.lean",
+      "filename": "Sqrt2IrrationalFromAxioms.lean",
+      "lineCount": 236,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2IrrationalFromAxioms.lean"
+    }
+  ]
 }

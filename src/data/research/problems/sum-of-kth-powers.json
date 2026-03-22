@@ -44,7 +44,9 @@
     "bernoulli-numbers",
     "extension"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "sum-of-kth-powers"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -54,5 +56,18 @@
   "lastUpdate": "2026-02-08T06:11:43.708Z",
   "completed": "2026-02-08T06:11:43.708Z",
   "significance": 6,
-  "tractability": 7
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/SumOfKthPowers.lean",
+      "filename": "SumOfKthPowers.lean",
+      "lineCount": 601,
+      "theoremCount": 49,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfKthPowers.lean"
+    }
+  ]
 }

@@ -43,7 +43,10 @@
     "number-theory",
     "partition"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "partition-theorem",
+    "partition-theorem-oq-01"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -53,5 +56,29 @@
   "lastUpdate": "2026-03-15T19:52:05.292Z",
   "completed": "2026-03-15T19:52:05.292Z",
   "significance": 7,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/PartitionTheorem.lean",
+      "filename": "PartitionTheorem.lean",
+      "lineCount": 282,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PartitionTheorem.lean"
+    },
+    {
+      "path": "Proofs/PartitionTheoremOQ01.lean",
+      "filename": "PartitionTheoremOQ01.lean",
+      "lineCount": 3553,
+      "theoremCount": 129,
+      "axiomCount": 3,
+      "defCount": 40,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PartitionTheoremOQ01.lean"
+    }
+  ]
 }

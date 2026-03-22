@@ -43,7 +43,10 @@
     "open-conjecture",
     "prize-problem"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "erdos-2",
+    "erdos-28"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -53,5 +56,18 @@
   "lastUpdate": "2026-01-13T16:22:40.291Z",
   "completed": "2026-01-13T16:22:40.291Z",
   "significance": 6,
-  "tractability": 4
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos28AdditiveBases.lean",
+      "filename": "Erdos28AdditiveBases.lean",
+      "lineCount": 418,
+      "theoremCount": 9,
+      "axiomCount": 4,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos28AdditiveBases.lean"
+    }
+  ]
 }

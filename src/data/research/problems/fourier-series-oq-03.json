@@ -46,7 +46,10 @@
     "convergence",
     "bounded-variation"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "fourier-series",
+    "fourier-series-oq-03"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -56,5 +59,29 @@
   "lastUpdate": "2026-03-07T18:02:01.177Z",
   "completed": "2026-03-07T18:02:01.177Z",
   "significance": 7,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/FourierSeries.lean",
+      "filename": "FourierSeries.lean",
+      "lineCount": 467,
+      "theoremCount": 13,
+      "axiomCount": 2,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeries.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ03.lean",
+      "filename": "FourierSeriesOQ03.lean",
+      "lineCount": 732,
+      "theoremCount": 24,
+      "axiomCount": 6,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ03.lean"
+    }
+  ]
 }

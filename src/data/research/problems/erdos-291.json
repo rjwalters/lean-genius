@@ -44,7 +44,11 @@
     "wolstenholme",
     "1-sorry"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "erdos-2",
+    "erdos-29",
+    "erdos-291"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -54,5 +58,18 @@
   "lastUpdate": "2026-02-11T05:41:00.788Z",
   "completed": "2026-02-11T05:41:00.788Z",
   "significance": 6,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos291Problem.lean",
+      "filename": "Erdos291Problem.lean",
+      "lineCount": 933,
+      "theoremCount": 77,
+      "axiomCount": 2,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos291Problem.lean"
+    }
+  ]
 }

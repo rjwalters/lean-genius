@@ -44,7 +44,9 @@
     "classical",
     "wolstenholme"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "wolstenholme-theorem"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -53,5 +55,18 @@
   "started": "2025-12-31T14:00:00-08:00",
   "completed": "2025-12-31T15:00:00-08:00",
   "significance": 6,
-  "tractability": 7
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/WolstenholmeTheorem.lean",
+      "filename": "WolstenholmeTheorem.lean",
+      "lineCount": 215,
+      "theoremCount": 16,
+      "axiomCount": 3,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WolstenholmeTheorem.lean"
+    }
+  ]
 }

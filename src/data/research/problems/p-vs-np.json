@@ -810,7 +810,9 @@
     "complexity-theory",
     "open-conjecture"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "p-vs-np"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -819,5 +821,51 @@
   "started": "2026-01-01T21:55:27.888Z",
   "lastUpdate": "2026-03-20T14:45:00.000Z",
   "significance": 10,
-  "tractability": 2
+  "tractability": 2,
+  "leanFiles": [
+    {
+      "path": "Proofs/PNPBarriers.lean",
+      "filename": "PNPBarriers.lean",
+      "lineCount": 18001,
+      "theoremCount": 644,
+      "axiomCount": 91,
+      "defCount": 422,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PNPBarriers.lean"
+    },
+    {
+      "path": "Proofs/PNPBarriersOQ01.lean",
+      "filename": "PNPBarriersOQ01.lean",
+      "lineCount": 673,
+      "theoremCount": 42,
+      "axiomCount": 28,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PNPBarriersOQ01.lean"
+    },
+    {
+      "path": "Proofs/PNPBarriersSound.lean",
+      "filename": "PNPBarriersSound.lean",
+      "lineCount": 6765,
+      "theoremCount": 312,
+      "axiomCount": 123,
+      "defCount": 83,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PNPBarriersSound.lean"
+    },
+    {
+      "path": "Proofs/PvsNP.lean",
+      "filename": "PvsNP.lean",
+      "lineCount": 2463,
+      "theoremCount": 84,
+      "axiomCount": 7,
+      "defCount": 65,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PvsNP.lean"
+    }
+  ]
 }

@@ -47,7 +47,11 @@
     "seeker-selected",
     "number-theory"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "elementary-quadratic-reciprocity",
+    "elementary-quadratic-reciprocity-oq-01",
+    "elementary-quadratic-reciprocity-oq-03"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -56,5 +60,51 @@
   "started": "2026-03-17T22:03:36.908Z",
   "lastUpdate": "2026-03-20T09:25:00Z",
   "significance": 8,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocity.lean",
+      "filename": "ElementaryQuadraticReciprocity.lean",
+      "lineCount": 358,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocity.lean"
+    },
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ01.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ01.lean",
+      "lineCount": 629,
+      "theoremCount": 31,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ01.lean"
+    },
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ02.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ02.lean",
+      "lineCount": 176,
+      "theoremCount": 7,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ02.lean"
+    },
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ03.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ03.lean",
+      "lineCount": 110,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 9,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ03.lean"
+    }
+  ]
 }
