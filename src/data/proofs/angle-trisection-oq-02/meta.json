@@ -79,14 +79,7 @@
         "type": "book"
       }
     ],
-    "relatedProofs": [
-      "angle-trisection",
-      "abel-ruffini",
-      "inverse-galois",
-      "sylow-theorems",
-      "lagrange-theorem",
-      "sqrt2-irrational"
-    ]
+    "lineCount": 298
   },
   "crossReferences": [
     {
@@ -118,6 +111,16 @@
       "targetId": "sqrt2-irrational",
       "relationship": "complementary",
       "description": "√2 is the canonical constructible irrational: |Gal(x²-2/ℚ)| = 2 = 2¹, proved here by divisibility squeeze. Its irrationality is the first step beyond ℚ in the constructible tower"
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "related",
+      "description": "π is transcendental (Lindemann 1882), so it is not constructible — a strictly stronger impossibility than the Galois-theoretic criterion (constructibility requires algebraic). Squaring the circle reduces to constructing √π, which is also transcendental"
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "foundational",
+      "description": "FTA guarantees that every polynomial over ℚ splits over ℂ, ensuring that the Galois group of minpoly(ℚ,α) is well-defined as Aut(splitting field/ℚ) — the foundation for the Galois characterization of constructibility"
     }
   ],
   "overview": {
@@ -219,5 +222,15 @@
     "axiomCount": 2,
     "theoremCount": 15,
     "definitionCount": 1
-  }
+  },
+  "relatedProofs": [
+    "angle-trisection",
+    "abel-ruffini",
+    "inverse-galois",
+    "sylow-theorems",
+    "lagrange-theorem",
+    "sqrt2-irrational",
+    "pi-transcendental",
+    "fundamental-theorem-algebra"
+  ]
 }
