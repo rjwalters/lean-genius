@@ -8,13 +8,19 @@
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "Erdos Problem #188: Find the smallest k such that the plane can be 2-colored with no red unit distance and no blue k-term arithmetic progression with unit step. Status: OPEN.",
-    "mathContext": "Posed in [Er75] and [Er79]. Erdős-Graham showed k <= 10,000,000 exists. Tsaturian (2017) proved k >= 6.",
+    "content": "Erdős Problem #188 asks for the smallest $k$ such that $\\mathbb{R}^2$ can be 2-colored (red/blue) with no red unit distance and no blue $k$-term arithmetic progression with unit step. This is a central problem in Euclidean Ramsey theory, first studied by Erdős, Graham, Montgomery, Rothschild, Spencer, and Straus (1973).",
+    "mathContext": "Find $\\min s$ where $s = \\{k \\in \\mathbb{N} \\mid \\exists c : \\mathbb{R}^2 \\to \\{\\text{red}, \\text{blue}\\},\\, \\text{RedUnitDistFree}(c) \\land \\lnot\\text{BlueUnitAP}(c, k)\\}$. Known: $6 \\leq \\min s \\leq 10^7$.",
     "significance": "key",
     "relatedConcepts": [
       "plane-coloring",
-      "unit-distance",
-      "arithmetic-progression"
+      "unit-distance-graph",
+      "arithmetic-progression",
+      "Euclidean-Ramsey-theory"
+    ],
+    "prerequisites": [
+      "Euclidean distance in ℝ²",
+      "arithmetic progressions",
+      "graph coloring basics"
     ]
   },
   {
@@ -26,202 +32,295 @@
     },
     "type": "definition",
     "title": "Plane Coloring",
-    "content": "PlaneColoring := ℂ → Bool. The plane ℂ ≅ ℝ² is 2-colored with false = red and true = blue.",
-    "mathContext": "Using complex numbers as the plane allows elegant distance and direction formulas.",
+    "content": "`PlaneColoring := ℂ → Bool` models the plane $\\mathbb{R}^2 \\cong \\mathbb{C}$ as the complex numbers, with `false` = red and `true` = blue. The `redPoints` and `bluePoints` definitions extract the two color classes as subsets of $\\mathbb{C}$.",
+    "mathContext": "The identification $\\mathbb{R}^2 \\cong \\mathbb{C}$ gives access to Mathlib's `Complex.abs` for distance ($|z_1 - z_2|$) and scalar multiplication ($i \\cdot d$ for stepping along APs). A coloring is $c : \\mathbb{C} \\to \\{0, 1\\}$.",
     "significance": "key",
     "relatedConcepts": [
       "two-coloring",
-      "plane-geometry"
+      "complex-plane",
+      "metric-space"
+    ],
+    "prerequisites": [
+      "complex numbers",
+      "metric spaces",
+      "Boolean-valued functions"
     ]
   },
   {
     "id": "ann-188-red-constraint",
     "proofId": "erdos-188",
     "range": {
-      "startLine": 40,
-      "endLine": 45
+      "startLine": 44,
+      "endLine": 46
     },
     "type": "definition",
     "title": "Red Unit Distance Free",
-    "content": "RedUnitDistanceFree(c) := no two distinct red points are at distance 1. This avoids the unit distance graph in red.",
-    "mathContext": "The unit distance graph has vertices in ℝ² and edges between points at distance 1. We forbid red edges.",
+    "content": "`RedUnitDistanceFree(c)` requires that no two distinct red points are at Euclidean distance 1. Equivalently, the red set is an independent set in the unit distance graph $G(\\mathbb{R}^2)$. This connects the coloring problem to the Hadwiger-Nelson problem on $\\chi(G(\\mathbb{R}^2))$.",
+    "mathContext": "$\\text{RedUnitDistFree}(c) :\\equiv \\forall z_1, z_2 \\in \\mathbb{C},\\, c(z_1) = 0 \\land c(z_2) = 0 \\land z_1 \\neq z_2 \\implies |z_1 - z_2| \\neq 1$. The red points form an independent set in the unit distance graph.",
     "significance": "key",
     "relatedConcepts": [
       "unit-distance-graph",
-      "constraint"
+      "independent-set",
+      "Hadwiger-Nelson-problem"
+    ],
+    "prerequisites": [
+      "unit distance graph",
+      "graph independence",
+      "Euclidean distance"
     ]
   },
   {
     "id": "ann-188-blue-constraint",
     "proofId": "erdos-188",
     "range": {
-      "startLine": 47,
-      "endLine": 55
+      "startLine": 52,
+      "endLine": 60
     },
     "type": "definition",
     "title": "Blue Arithmetic Progression",
-    "content": "BlueContainsUnitAP(c, k) := exists blue k-term AP with unit step. Points a, a+d, a+2d, ..., a+(k-1)d with |d|=1 all blue.",
-    "mathContext": "The direction d can be any unit vector, so APs can point in any direction in the plane.",
+    "content": "`BlueContainsUnitAP(c, k)` asserts the existence of a $k$-term arithmetic progression $a, a+d, a+2d, \\ldots, a+(k-1)d$ where all points are blue and $|d| = 1$. The direction $d$ is a unit vector in $\\mathbb{C}$ but otherwise unconstrained, so APs can point in any direction in the plane.",
+    "mathContext": "$\\text{BlueUnitAP}(c, k) :\\equiv \\exists a, d \\in \\mathbb{C},\\, |d| = 1 \\land \\forall i < k,\\, c(a + i \\cdot d) = 1$. The unit step condition $|d| = 1$ is the crucial restriction that makes the problem well-posed (Alon showed the unrestricted version has no solution).",
     "significance": "key",
     "relatedConcepts": [
       "arithmetic-progression",
-      "unit-step",
-      "direction"
+      "unit-vector",
+      "Euclidean-direction"
+    ],
+    "prerequisites": [
+      "arithmetic progressions in ℝ²",
+      "complex scalar multiplication",
+      "unit vectors"
     ]
   },
   {
     "id": "ann-188-valid",
     "proofId": "erdos-188",
     "range": {
-      "startLine": 57,
-      "endLine": 62
+      "startLine": 62,
+      "endLine": 64
     },
     "type": "definition",
     "title": "Valid Coloring",
-    "content": "IsValidColoring(c, k) := RedUnitDistanceFree(c) AND BlueContainsUnitAP(c, k). Both constraints satisfied simultaneously.",
-    "mathContext": "Finding the minimum k for which a valid coloring exists is the core problem.",
+    "content": "`IsValidColoring(c, k)` is the conjunction: red is unit-distance-free AND blue does NOT contain a $k$-term unit-step AP. The tension between these two constraints is the heart of the problem — making more points red avoids blue APs but risks red unit distances.",
+    "mathContext": "$\\text{IsValid}(c, k) :\\equiv \\text{RedUnitDistFree}(c) \\land \\lnot\\text{BlueUnitAP}(c, k)$. The negation $\\lnot\\text{BlueUnitAP}$ means no such AP exists; a valid coloring simultaneously avoids red edges and long blue APs.",
     "significance": "key",
     "relatedConcepts": [
-      "valid-configuration",
-      "optimization"
+      "Ramsey-type-constraint",
+      "optimization",
+      "dual-avoidance"
+    ],
+    "prerequisites": [
+      "RedUnitDistanceFree definition",
+      "BlueContainsUnitAP definition",
+      "propositional logic"
     ]
   },
   {
     "id": "ann-188-achievable",
     "proofId": "erdos-188",
     "range": {
-      "startLine": 64,
-      "endLine": 70
+      "startLine": 73,
+      "endLine": 80
     },
     "type": "definition",
     "title": "Achievable Set",
-    "content": "achievableSet := {k | exists valid coloring for k}. minK := inf(achievableSet). The problem asks for minK.",
-    "mathContext": "If k works, then any k' > k also works (same coloring). So achievableSet is upward closed.",
+    "content": "`achievableSet := {k | ∃ c, IsValidColoring c k}` collects all $k$ values for which some valid coloring exists. Since a valid coloring for $k$ is also valid for any $k' > k$ (the AP condition is monotone), this set is upward-closed in $\\mathbb{N}$. The problem asks for $\\inf s = \\min s$.",
+    "mathContext": "$s = \\{k \\in \\mathbb{N} \\mid \\exists c,\\, \\text{IsValid}(c, k)\\}$ is upward-closed: $k \\in s \\land k' \\geq k \\implies k' \\in s$. Since $s$ is a nonempty upward-closed subset of $\\mathbb{N}$, it has a minimum. The `sInf` definition uses Lean's conditionally complete lattice structure.",
     "significance": "key",
     "relatedConcepts": [
-      "minimum",
-      "optimization"
+      "upward-closed-set",
+      "infimum",
+      "well-ordering"
+    ],
+    "prerequisites": [
+      "IsValidColoring definition",
+      "set-builder notation in Lean",
+      "conditionally complete lattices"
     ]
   },
   {
     "id": "ann-188-lower-bound",
     "proofId": "erdos-188",
     "range": {
-      "startLine": 78,
-      "endLine": 84
+      "startLine": 88,
+      "endLine": 92
     },
     "type": "context",
-    "title": "Lower Bound",
-    "content": "lower_bound_6: For all k in achievableSet, k >= 6. Tsaturian (2017) proved no valid coloring exists for k <= 5.",
-    "mathContext": "This uses geometric arguments about unit distance constraints forcing long blue APs.",
+    "title": "Lower Bounds (EGMRSS and Tsaturian)",
+    "content": "Two axiomatized lower bounds: `lower_bound_5` (EGMRSS 1973, $k \\geq 5$) and `lower_bound_6` (Tsaturian 2017, $k \\geq 6$). The proofs construct explicit finite point configurations in $\\mathbb{R}^2$ where any red-independent coloring is forced to contain a long blue unit-step AP. Tsaturian's improvement required a more intricate configuration.",
+    "mathContext": "$\\forall k \\in s,\\, k \\geq 6$. Tsaturian constructs a finite set $P \\subset \\mathbb{R}^2$ of unit-distance pairs such that in any 2-coloring with red independent, the blue points contain a 6-term unit-step AP. This combinatorial argument is axiomatized because it requires detailed case analysis on specific geometric configurations.",
     "significance": "key",
     "relatedConcepts": [
       "lower-bound",
-      "tsaturian"
+      "Tsaturian",
+      "EGMRSS",
+      "finite-configuration"
+    ],
+    "prerequisites": [
+      "achievableSet definition",
+      "unit distance graph configurations",
+      "combinatorial case analysis"
     ]
   },
   {
     "id": "ann-188-upper-bound",
     "proofId": "erdos-188",
     "range": {
-      "startLine": 86,
-      "endLine": 92
+      "startLine": 94,
+      "endLine": 95
     },
     "type": "context",
-    "title": "Upper Bound",
-    "content": "upper_bound_exists: exists k in achievableSet with k <= 10,000,000. Erdős-Graham constructed such a coloring.",
-    "mathContext": "The construction uses a very large grid and careful coloring to satisfy both constraints.",
+    "title": "Upper Bound (Erdős-Graham)",
+    "content": "`upper_bound_exists` axiomatizes the Erdős-Graham result: there exists $k \\leq 10^7$ in the achievable set. The construction uses a stripe-based coloring where red bands of carefully chosen width alternate with blue regions, ensuring no red unit distance while limiting the length of blue unit-step APs.",
+    "mathContext": "$\\exists k \\in s,\\, k \\leq 10{,}000{,}000$. The Erdős-Graham construction partitions $\\mathbb{R}^2$ into parallel strips. Points in thin strips (width chosen to avoid unit distances between strips) are colored red; the remaining blue points can contain APs of bounded length because the strip pattern breaks long collinear runs.",
     "significance": "key",
     "relatedConcepts": [
       "upper-bound",
-      "erdos-graham",
-      "construction"
+      "stripe-coloring",
+      "Erdős-Graham"
+    ],
+    "prerequisites": [
+      "achievableSet definition",
+      "geometric constructions in ℝ²",
+      "lattice-based colorings"
     ]
   },
   {
-    "id": "ann-188-conjecture",
+    "id": "ann-188-bounds-theorem",
     "proofId": "erdos-188",
     "range": {
-      "startLine": 94,
-      "endLine": 102
+      "startLine": 97,
+      "endLine": 105
+    },
+    "type": "technique",
+    "title": "Combined Bounds and Nonemptiness",
+    "content": "Two proved theorems: `achievable_nonempty` derives $s \\neq \\emptyset$ from the upper bound axiom (extracting the witness $k$), and `erdos_188_bounds` combines both bounds into a single statement: $\\forall k \\in s,\\, 6 \\leq k$ and $\\exists k' \\in s,\\, k' \\leq 10^7$. These are straightforward consequences of the axioms.",
+    "mathContext": "$s \\neq \\emptyset$ follows from $\\exists k \\in s,\\, k \\leq 10^7$ by projection. The combined bound theorem packages the interval $[6, 10^7]$ as the range containing $\\min s$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "nonemptiness",
+      "bound-combination",
+      "interval-containment"
+    ],
+    "prerequisites": [
+      "upper_bound_exists axiom",
+      "lower_bound_6 axiom",
+      "Lean exists elimination"
+    ]
+  },
+  {
+    "id": "ann-188-unit-graph",
+    "proofId": "erdos-188",
+    "range": {
+      "startLine": 107,
+      "endLine": 128
     },
     "type": "definition",
-    "title": "The Main Conjecture",
-    "content": "ErdosConjecture188 := minK = 6. The achievable set is exactly {k | k >= 6}.",
-    "mathContext": "This would mean Tsaturian's lower bound is tight - a valid coloring exists for k = 6.",
+    "title": "Unit Distance Graph",
+    "content": "`UnitDistanceGraph : SimpleGraph ℂ` has adjacency $z_1 \\sim z_2 :\\iff z_1 \\neq z_2 \\land \\text{dist}(z_1, z_2) = 1$. Symmetry follows from `dist_comm` and irreflexivity from the distinctness condition. The theorem `red_is_independent` formally proves that the red color class is independent in this graph, connecting the coloring constraints to graph theory.",
+    "mathContext": "The unit distance graph $G = (\\mathbb{C}, E)$ with $E = \\{\\{z_1, z_2\\} : |z_1 - z_2| = 1\\}$ has chromatic number $\\chi(G) \\in [5, 7]$ (Hadwiger-Nelson problem). The red constraint `RedUnitDistanceFree` is precisely independence in $G$: the red set uses at most $1/\\chi(G)$ of the plane's measure.",
     "significance": "key",
     "relatedConcepts": [
-      "conjecture",
-      "tight-bound"
+      "unit-distance-graph",
+      "SimpleGraph",
+      "Hadwiger-Nelson-problem",
+      "graph-independence"
+    ],
+    "prerequisites": [
+      "SimpleGraph from Mathlib",
+      "dist_comm and metric space API",
+      "graph independence"
     ]
   },
   {
     "id": "ann-188-van-der-waerden",
     "proofId": "erdos-188",
     "range": {
-      "startLine": 110,
-      "endLine": 124
+      "startLine": 136,
+      "endLine": 140
     },
     "type": "concept",
-    "title": "Van der Waerden Connection",
-    "content": "Van der Waerden theorem: any finite coloring of N contains arbitrarily long monochromatic APs. The plane version is more subtle.",
-    "mathContext": "For integers, 2-colorings must have arbitrarily long mono APs. The plane geometry changes things.",
+    "title": "Van der Waerden's Theorem",
+    "content": "The axiomatized `vanDerWaerden` states: for any $r$ colors and length $k$, there exists $N$ such that any $r$-coloring of $\\{1, \\ldots, N\\}$ contains a monochromatic $k$-term AP. This 1927 result is a pillar of Ramsey theory and explains why the original Problem #188 (without unit-step restriction) has no finite solution.",
+    "mathContext": "$\\forall r, k \\in \\mathbb{N},\\, r > 0 \\implies \\exists N,\\, \\forall c : \\text{Fin}\\, r \\to \\mathbb{N} \\to \\text{Bool},\\, \\exists$ monochromatic $k$-AP. Van der Waerden's theorem applies to any embedding of $\\mathbb{Z}$ in blue, forcing long blue APs if no step-length restriction is imposed.",
     "significance": "key",
     "relatedConcepts": [
-      "van-der-waerden",
-      "ramsey-theory"
+      "van-der-Waerden-theorem",
+      "Ramsey-theory",
+      "monochromatic-AP"
+    ],
+    "prerequisites": [
+      "finite colorings of integers",
+      "arithmetic progressions",
+      "Ramsey theory fundamentals"
     ]
   },
   {
     "id": "ann-188-alon",
     "proofId": "erdos-188",
     "range": {
-      "startLine": 126,
-      "endLine": 134
+      "startLine": 144,
+      "endLine": 146
     },
     "type": "context",
     "title": "Alon's Observation",
-    "content": "alon_observation: The plane can be 2-colored avoiding unit distances entirely. Uses number-theoretic coloring.",
-    "mathContext": "This shows the red constraint alone is satisfiable - it's the combination with blue APs that's hard.",
+    "content": "`alon_observation` axiomatizes Noga Alon's key insight: the original problem (forbidding blue APs with arbitrary step length) has no solution for any $k$. If the red set is independent in the unit distance graph, blue contains a copy of $\\mathbb{Z}$ via unit translations, and van der Waerden forces arbitrarily long monochromatic APs. This motivates the unit-step restriction.",
+    "mathContext": "$\\lnot\\exists k,\\, \\forall c,\\, \\text{RedUnitDistFree}(c) \\implies \\lnot\\exists a, d \\neq 0,\\, \\forall i < k,\\, c(a + id) = 1$. Alon's argument: embed $\\mathbb{Z}$ into blue via collinear unit-spaced points; by van der Waerden, blue must contain arbitrarily long APs regardless of $k$.",
     "significance": "key",
     "relatedConcepts": [
-      "alon",
-      "unit-distance",
-      "possibility"
+      "Noga-Alon",
+      "van-der-Waerden-application",
+      "problem-correction"
+    ],
+    "prerequisites": [
+      "van der Waerden's theorem",
+      "unit distance graph independence",
+      "embedding integers in the plane"
     ]
   },
   {
     "id": "ann-188-generalization",
     "proofId": "erdos-188",
     "range": {
-      "startLine": 142,
-      "endLine": 164
+      "startLine": 159,
+      "endLine": 161
     },
     "type": "concept",
-    "title": "Generalizations",
-    "content": "GeneralizedProblem(d, k, m) considers AP of length k, step size d, and m colors. Higher dimensions and more colors also studied.",
-    "mathContext": "The 2-color, unit step, unit distance case is the core problem. Generalizations are wide open.",
+    "title": "Constructions and Large k",
+    "content": "The theorem `large_k_valid` derives the existence of some valid coloring as an immediate consequence of `upper_bound_exists`. The Erdős-Graham stripe construction shows that for sufficiently large $k$ (at most $10^7$), one can color the plane to satisfy both constraints. The section also mentions schematic stripe-based colorings.",
+    "mathContext": "$\\exists k, c,\\, \\text{IsValid}(c, k)$. This is a simple projection from the upper bound axiom. The actual construction colors points red when they lie within thin strips (width $< 1/2$ to avoid unit distances) parallel to a fixed direction, leaving blue points in the gaps.",
     "significance": "supporting",
     "relatedConcepts": [
-      "generalization",
-      "higher-dimension"
+      "existence-proof",
+      "stripe-construction",
+      "upper-bound-consequence"
+    ],
+    "prerequisites": [
+      "upper_bound_exists axiom",
+      "Lean exists elimination"
     ]
   },
   {
     "id": "ann-188-status",
     "proofId": "erdos-188",
     "range": {
-      "startLine": 172,
-      "endLine": 202
+      "startLine": 170,
+      "endLine": 201
     },
     "type": "concept",
-    "title": "Problem Status",
-    "content": "The problem is OPEN. Best bounds: 6 <= minK <= 10,000,000. Huge gap between lower and upper bounds.",
-    "mathContext": "Improving either bound would be significant progress. The true value is conjectured to be 6.",
+    "title": "Problem Status and Formal Statement",
+    "content": "Records the problem as OPEN via `erdos_188_status`. The theorem `erdos_188_statement` proves the equivalence between `ErdosProblem188` (defined via `IsLeast`) and the more explicit formulation: $\\exists k \\in s,\\, \\forall k' \\in s,\\, k \\leq k'$. This is a definitional unfolding of `IsLeast` in Lean.",
+    "mathContext": "$\\text{ErdosProblem188} \\iff \\exists k \\in s,\\, \\forall k' \\in s,\\, k \\leq k'$. The equivalence follows from the definition `IsLeast s k :\\equiv k \\in s \\land \\forall k' \\in s,\\, k \\leq k'$. The proof is by splitting the conjunction in both directions.",
     "significance": "key",
     "relatedConcepts": [
       "open-problem",
-      "bounds-gap"
+      "IsLeast",
+      "formal-equivalence"
+    ],
+    "prerequisites": [
+      "IsLeast from Mathlib order theory",
+      "achievableSet definition",
+      "propositional equivalence"
     ]
   }
 ]
