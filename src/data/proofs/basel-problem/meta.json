@@ -71,6 +71,14 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Introduction and Historical Context",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Imports `ZetaValues`, `InfiniteSum.Basic`, `PSeries`, and `Tactic`. Extensive docstring covering the Basel Problem statement ($\\zeta(2) = \\pi^2/6$), Wiedijk #14 reference, mathematical approach via Bernoulli polynomials and Fourier analysis, Mathlib dependencies, and historical context (Mengoli 1650, Bernoulli family's failed attempts, Euler's 1734 solution).",
+      "mathContext": "The Basel Problem: $\\sum_{n=1}^{\\infty} \\frac{1}{n^2} = \\frac{\\pi^2}{6} \\approx 1.6449$. Posed by Mengoli in 1650, solved by Euler in 1734 using the factorization $\\frac{\\sin x}{x} = \\prod_{n=1}^{\\infty}(1 - x^2/n^2\\pi^2)$."
+    },
+    {
       "id": "main-theorem",
       "title": "The Basel Identity",
       "startLine": 58,
@@ -198,6 +206,16 @@
       "targetId": "stirling-formula",
       "relationship": "related",
       "description": "Stirling's approximation $n! \\approx \\sqrt{2\\pi n}(n/e)^n$ shares the same mysterious appearance of π in a discrete context. Both results ultimately trace to Fourier analysis: Basel via Bernoulli polynomial Fourier expansions, Stirling via the saddle-point method on the Gamma function."
+    },
+    {
+      "targetId": "prime-reciprocal-divergence",
+      "relationship": "related",
+      "description": "Euler proved ∑ 1/p diverges using the Euler product ζ(s) = ∏(1-p⁻ˢ)⁻¹ — the same zeta function framework. The divergence of ∑ 1/p contrasts with the convergence of ∑ 1/n² = π²/6, highlighting how prime density differs from integer density"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "The Basel identity ζ(2) = π²/6 involves two transcendental constants: π (Lindemann 1882) and implicitly e via the Gamma function and Bernoulli number machinery underlying the proof"
     }
   ],
   "relatedProofs": [
