@@ -2862,10 +2862,34 @@ private lemma rp3Gnomonic_right_inv (p : ↥Sphere3) (v : ↥(rp3Hemi p)) :
     mem_sphere_zero_iff_norm.mp (↑v : ↥Sphere3).2
   have hip : @inner ℝ _ _ (↑p : EuclideanSpace ℝ (Fin 4))
       (↑↑v : EuclideanSpace ℝ (Fin 4)) > 0 := v.2
-  -- TODO: Fix after Mathlib API stabilizes. The proof logic is:
-  -- p + (⟪p,v⟫⁻¹•v - p) = ⟪p,v⟫⁻¹•v, then ‖⟪p,v⟫⁻¹•v‖⁻¹ • (⟪p,v⟫⁻¹•v) = v
-  -- since ‖⟪p,v⟫⁻¹•v‖ = ⟪p,v⟫⁻¹ and ⟪p,v⟫ • (⟪p,v⟫⁻¹ • v) = v.
-  sorry
+  -- Proof: p + (⟪p,v⟫⁻¹•v - p) = ⟪p,v⟫⁻¹•v, then ‖⟪p,v⟫⁻¹•v‖⁻¹ • (⟪p,v⟫⁻¹•v) = v
+  -- since ‖⟪p,v⟫⁻¹•v‖ = ⟪p,v⟫⁻¹ (from ‖v‖=1) and ⟪p,v⟫ • (⟪p,v⟫⁻¹ • v) = v.
+  apply Subtype.ext; apply Subtype.ext
+  -- Goal: underlying EuclideanSpace vectors agree
+  -- The inverse map normalizes p + fwd(v): ‖p+u‖⁻¹ • (p+u)
+  change ‖(↑p : EuclideanSpace ℝ (Fin 4)) +
+      (↑(rp3GnomonicFwd p v) : EuclideanSpace ℝ (Fin 4))‖⁻¹ •
+    ((↑p : EuclideanSpace ℝ (Fin 4)) +
+      (↑(rp3GnomonicFwd p v) : EuclideanSpace ℝ (Fin 4))) =
+    (↑↑v : EuclideanSpace ℝ (Fin 4))
+  -- Forward map value: ⟪p,v⟫⁻¹ • v - p
+  have hfwd : (↑(rp3GnomonicFwd p v) : EuclideanSpace ℝ (Fin 4)) =
+      (@inner ℝ _ _ (↑p : EuclideanSpace ℝ (Fin 4))
+        (↑↑v : EuclideanSpace ℝ (Fin 4)))⁻¹ •
+      (↑↑v : EuclideanSpace ℝ (Fin 4)) - (↑p : EuclideanSpace ℝ (Fin 4)) := rfl
+  rw [hfwd]
+  -- Simplify p + (⟪p,v⟫⁻¹ • v - p) = ⟪p,v⟫⁻¹ • v
+  have h_cancel : (↑p : EuclideanSpace ℝ (Fin 4)) +
+      ((@inner ℝ _ _ (↑p : EuclideanSpace ℝ (Fin 4))
+        (↑↑v : EuclideanSpace ℝ (Fin 4)))⁻¹ •
+      (↑↑v : EuclideanSpace ℝ (Fin 4)) - (↑p : EuclideanSpace ℝ (Fin 4))) =
+      (@inner ℝ _ _ (↑p : EuclideanSpace ℝ (Fin 4))
+        (↑↑v : EuclideanSpace ℝ (Fin 4)))⁻¹ •
+      (↑↑v : EuclideanSpace ℝ (Fin 4)) := by abel
+  rw [h_cancel]
+  -- Now: ‖⟪p,v⟫⁻¹ • v‖⁻¹ • (⟪p,v⟫⁻¹ • v) = v
+  rw [norm_smul, norm_inv, Real.norm_of_nonneg (le_of_lt hip), hv_sphere, mul_one,
+    inv_inv, smul_smul, mul_inv_cancel₀ (ne_of_gt hip), one_smul]
 
 /-- The gnomonic forward map is continuous. -/
 private lemma rp3GnomonicFwd_continuous (p : ↥Sphere3) :
@@ -2935,118 +2959,10 @@ private lemma rp3_quotient_open_on_hemi (p : ↥Sphere3)
 theorem rp3_locallyEuclidean :
     ∀ x : RP3, ∃ U : Set RP3, @IsOpen RP3 instRP3Top U ∧ x ∈ U ∧
       Nonempty (U ≃ₜ EuclideanSpace ℝ (Fin 3)) := by
-  -- TODO: Full proof needs Mathlib API fixes for omega/finrank, Equiv.ofBijective, subst
-  -- Infrastructure (helpers, gnomonic maps, hemisphere homeomorph) all compile.
-  -- The proof strategy is correct: gnomonic projection on open hemispheres.
+  -- Infrastructure (gnomonic maps, hemisphere homeomorph, right inverse) all compile.
+  -- Remaining issues: Quotient.exact cases produce wrong types for injective/surjective
+  -- sub-proofs; Equiv.ofBijective needs API updates for v4.26.0.
   sorry
-  /- Original proof preserved for reference:
-  intro x
-  obtain ⟨p, rfl⟩ := @Quotient.exists_rep _ antipodalSetoid x
-  refine ⟨Quotient.mk' '' rp3Hemi p, ?_, ?_, ?_⟩
-  · -- Open: use rp3_quotient_open_on_hemi
-    exact rp3_quotient_open_on_hemi p _ (isOpen_rp3Hemi p) Set.Subset.rfl
-  · -- [p] ∈ image
-    exact Set.mem_image_of_mem _ (mem_rp3Hemi_self p)
-  · -- Homeomorphism: build ℝ³ ≃ₜ q(H_p) via gnomonic, then take symm
-    have hp_norm : ‖(↑p : EuclideanSpace ℝ (Fin 4))‖ = 1 := mem_sphere_zero_iff_norm.mp p.2
-    have hne : (↑p : EuclideanSpace ℝ (Fin 4)) ≠ 0 := by
-      intro h; rw [h, norm_zero] at hp_norm; exact one_ne_zero hp_norm.symm
-    -- Build orthCompHomeomorph: p⊥ ≃ₜ ℝ³
-    have hdim : Module.finrank ℝ
-        ↥(Submodule.span ℝ ({(↑p : EuclideanSpace ℝ (Fin 4))} : Set _))ᗮ = 3 := by
-      have h1 : Module.finrank ℝ (EuclideanSpace ℝ (Fin 4)) = 4 := finrank_euclideanSpace_fin
-      have h2 : Module.finrank ℝ (Submodule.span ℝ
-          ({(↑p : EuclideanSpace ℝ (Fin 4))} : Set _)) = 1 := finrank_span_singleton hne
-      omega
-    let b := stdOrthonormalBasis ℝ
-      ↥(Submodule.span ℝ ({(↑p : EuclideanSpace ℝ (Fin 4))} : Set _))ᗮ
-    have hcard : Fintype.card
-        (Fin (Module.finrank ℝ ↥(Submodule.span ℝ
-          ({(↑p : EuclideanSpace ℝ (Fin 4))} : Set _))ᗮ)) = 3 := by simp [hdim]
-    let orthHomeo := (b.reindex (Fintype.equivFinOfCardEq hcard)).repr.toHomeomorph
-    let hemiHomeo := rp3HemiHomeomorphOrthComp p
-    -- The backward map: ℝ³ → q(H_p)
-    -- Chain: ℝ³ →_{orthHomeo⁻¹} p⊥ →_{hemiHomeo⁻¹} H_p →_q q(H_p)
-    let g : EuclideanSpace ℝ (Fin 3) → ↥(Quotient.mk' '' rp3Hemi p) :=
-      fun w =>
-        let v := rp3GnomonicInv p (orthHomeo.symm w)
-        ⟨Quotient.mk' (↑v : ↥Sphere3), Set.mem_image_of_mem _ v.2⟩
-    -- g is continuous
-    have g_cont : Continuous g :=
-      Continuous.subtype_mk
-        (continuous_quotient_mk'.comp
-          (continuous_subtype_val.comp
-            ((rp3GnomonicInv_continuous p).comp orthHomeo.symm.continuous))) _
-    -- g is injective
-    have g_inj : Function.Injective g := by
-      intro w₁ w₂ h
-      have hval := congr_arg Subtype.val h
-      have hq := Quotient.exact hval
-      cases hq with
-      | inl heq =>
-        have := (rp3HemiHomeomorphOrthComp p).symm.injective
-          (Subtype.ext (Subtype.ext (congr_arg Subtype.val (congr_arg Subtype.val heq))))
-        exact orthHomeo.symm.injective this
-      | inr hanti =>
-        exfalso
-        exact rp3Hemi_antipodal_disjoint p _ (rp3GnomonicInv p (orthHomeo.symm w₂)).2
-          (hanti ▸ (rp3GnomonicInv p (orthHomeo.symm w₁)).2)
-    -- g is surjective
-    have g_surj : Function.Surjective g := by
-      intro ⟨x, hx⟩
-      obtain ⟨w, hw, hwx⟩ := hx
-      use orthHomeo (rp3GnomonicFwd p ⟨w, hw⟩)
-      simp only [g]
-      ext
-      have h1 : orthHomeo.symm (orthHomeo (rp3GnomonicFwd p ⟨w, hw⟩)) =
-          rp3GnomonicFwd p ⟨w, hw⟩ := orthHomeo.symm_apply_apply _
-      conv_rhs => rw [← hwx]
-      congr 1
-      have h2 := rp3Gnomonic_right_inv p ⟨w, hw⟩
-      exact congr_arg (fun v => (↑v : ↥Sphere3)) (congr_arg Subtype.val (h1 ▸ h2))
-    -- g is an open map (key step for proving the inverse is continuous)
-    have g_open : IsOpenMap g := by
-      intro W hW
-      -- g '' W is open in ↥(q '' H_p) iff ∃ T open in RP3 with g '' W = val ⁻¹' T
-      rw [isOpen_induced_iff]
-      -- V = image of W under ℝ³ → p⊥ → H_p → S³ (all homeomorphisms)
-      let V := Subtype.val '' (hemiHomeo.symm '' (orthHomeo.symm '' W))
-      refine ⟨Quotient.mk' '' V, ?_, ?_⟩
-      · -- q(V) is open in RP3
-        apply rp3_quotient_open_on_hemi p V
-        · -- V is open in S³
-          exact (isOpen_rp3Hemi p).isOpenMap_subtype_val _
-            (hemiHomeo.symm.isOpenMap _ (orthHomeo.symm.isOpenMap _ hW))
-        · -- V ⊆ rp3Hemi p
-          intro v ⟨⟨w, hw⟩, _, rfl⟩
-          exact hw
-      · -- g '' W = val ⁻¹' (q '' V) in ↥(q '' H_p)
-        ext ⟨x, hx⟩
-        simp only [Set.mem_preimage, Set.mem_image, Subtype.exists, V, g]
-        constructor
-        · rintro ⟨w, hw, rfl⟩
-          exact ⟨_, (rp3GnomonicInv p (orthHomeo.symm w)).2,
-            ⟨⟨_, (hemiHomeo.symm (orthHomeo.symm w)).2⟩,
-              ⟨orthHomeo.symm w, ⟨w, hw, rfl⟩, rfl⟩, rfl⟩, rfl⟩
-        · rintro ⟨v, _, ⟨⟨u, hu⟩, ⟨y, ⟨w, hw, rfl⟩, rfl⟩, rfl⟩, hvx⟩
-          refine ⟨w, hw, ?_⟩
-          ext
-          exact hvx
-    -- Build the Homeomorph: q(H_p) ≃ₜ ℝ³ via e.symm
-    let e := Equiv.ofBijective g ⟨g_inj, g_surj⟩
-    exact ⟨{
-      toEquiv := e.symm
-      continuous_toFun := by
-        rw [continuous_def]
-        intro U hU
-        have : e.symm ⁻¹' U = g '' U := by
-          ext x; simp only [Set.mem_preimage, Set.mem_image, e]
-          exact ⟨fun hx => ⟨e.symm x, hx, Equiv.ofBijective_apply_symm_apply g _ x⟩,
-                 fun ⟨w, hw, he⟩ => he ▸ (Equiv.ofBijective_symm_apply_apply g _ w ▸ hw)⟩
-        rw [this]; exact g_open U hU
-      continuous_invFun := g_cont
-    }⟩
-  -/
 
 /-- RP³ is a closed 3-manifold.
     Compact, connected, and nonempty are proved from quotient instances.
