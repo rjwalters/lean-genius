@@ -147,8 +147,9 @@ theorem barrier_246 :
     This gives m = 2 in a gap of size ≤ 12 (three primes in an interval of length 12).
 
     Without EH, the best provable bound via Maynard-Tao is 246. -/
-axiom elliott_halberstam_improvement :
-    True → minAdmissibleDiameter 3 = 6
+theorem elliott_halberstam_improvement :
+    True → minAdmissibleDiameter 3 = 6 :=
+  fun _ => minAdmissibleDiameter_3
 
 /-- Under EH, the bound drops from 246 to at most 12 (Maynard 2015). -/
 axiom maynard_under_eh : ∃ k : ℕ, 2 ≤ k ∧ minAdmissibleDiameter k ≤ 12
