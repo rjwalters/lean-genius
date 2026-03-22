@@ -20,7 +20,7 @@
       "maynard-tao",
       "research"
     ],
-    "badge": "research",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -186,5 +186,28 @@
     "axiomCount": 3,
     "theoremCount": 128,
     "definitionCount": 17
-  }
+  },
+  "references": [
+    {
+      "authors": "Zhang, Yitang",
+      "title": "Bounded gaps between primes",
+      "year": "2014",
+      "venue": "Annals of Mathematics 179(3), 1121–1174",
+      "note": "Breakthrough proof that there are infinitely many pairs of primes differing by at most 70 million"
+    },
+    {
+      "authors": "Maynard, James",
+      "title": "Small gaps between primes",
+      "year": "2015",
+      "venue": "Annals of Mathematics 181(1), 383–413",
+      "note": "Improved Zhang's bound to 600 and proved bounded gaps for arbitrarily many primes simultaneously"
+    },
+    {
+      "authors": "Polymath8",
+      "title": "Variants of the Selberg sieve, and bounded intervals containing many primes",
+      "year": "2014",
+      "venue": "Research in the Mathematical Sciences 1:12",
+      "note": "Collaborative project reducing the bounded gap to 246 — the current best result"
+    }
+  ]
 }

@@ -7,14 +7,14 @@
     "proofRepoPath": "Proofs/Hilbert21RiemannHilbert.lean",
     "author": "Josip Plemelj (1908), Andrey Bolibrukh (1989)",
     "date": "1908-1989",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "complex-analysis",
       "differential-equations",
       "hilbert-problems",
       "advanced"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -111,5 +111,21 @@
     "axiomCount": 6,
     "theoremCount": 3,
     "definitionCount": 5
-  }
+  },
+  "references": [
+    {
+      "authors": "Hilbert, David",
+      "title": "Mathematische Probleme",
+      "year": "1900",
+      "venue": "Nachrichten von der Gesellschaft der Wissenschaften zu Göttingen, 253–297",
+      "note": "The original lecture listing 23 problems that would shape 20th century mathematics"
+    },
+    {
+      "authors": "Bolibrukh, Andrei A.",
+      "title": "The Riemann-Hilbert problem",
+      "year": "1990",
+      "venue": "Russian Mathematical Surveys 45(2), 1–58",
+      "note": "Survey showing the negative resolution — not every monodromy representation arises from a regular singular system"
+    }
+  ]
 }

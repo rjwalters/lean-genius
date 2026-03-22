@@ -257,5 +257,21 @@
     "cantors-theorem",
     "ramseys-theorem",
     "erdos-szekeres"
+  ],
+  "references": [
+    {
+      "authors": "Cook, Stephen A.",
+      "title": "The complexity of theorem-proving procedures",
+      "year": "1971",
+      "venue": "Proceedings of the Third Annual ACM Symposium on Theory of Computing, 151–158",
+      "note": "Introduced the concept of NP-completeness and proved that SAT is NP-complete — the foundation of the P vs NP problem"
+    },
+    {
+      "authors": "Arora, Sanjeev; Barak, Boaz",
+      "title": "Computational Complexity: A Modern Approach",
+      "year": "2009",
+      "venue": "Cambridge University Press",
+      "note": "Comprehensive textbook covering P vs NP, circuit complexity, and the barriers (relativization, natural proofs, algebrization) to resolving the question"
+    }
   ]
 }

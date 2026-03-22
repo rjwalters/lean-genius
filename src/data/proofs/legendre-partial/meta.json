@@ -6,7 +6,7 @@
   "meta": {
     "author": "Adrien-Marie Legendre (formalized in Lean 4)",
     "date": "1798",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/LegendrePartial.lean",
     "tags": [
       "number-theory",
@@ -14,7 +14,7 @@
       "prime-gaps",
       "partial-progress"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -101,5 +101,14 @@
     "axiomCount": 1,
     "theoremCount": 21,
     "definitionCount": 3
-  }
+  },
+  "references": [
+    {
+      "authors": "Legendre, Adrien-Marie",
+      "title": "Recherches sur l'attraction des sphéroïdes homogènes",
+      "year": "1785",
+      "venue": "Mémoires de l'Académie Royale des Sciences de Paris, 411–434",
+      "note": "Introduction of Legendre polynomials in the context of gravitational attraction of ellipsoids"
+    }
+  ]
 }

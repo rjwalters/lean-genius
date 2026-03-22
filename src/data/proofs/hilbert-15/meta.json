@@ -6,14 +6,14 @@
   "meta": {
     "author": "Various (20th century)",
     "date": "1930s",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "algebraic-geometry",
       "intersection-theory",
       "hilbert-problems",
       "advanced"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -175,5 +175,21 @@
     "",
     "",
     ""
+  ],
+  "references": [
+    {
+      "authors": "Hilbert, David",
+      "title": "Mathematische Probleme",
+      "year": "1900",
+      "venue": "Nachrichten von der Gesellschaft der Wissenschaften zu Göttingen, 253–297",
+      "note": "The original lecture listing 23 problems that would shape 20th century mathematics"
+    },
+    {
+      "authors": "Kleiman, Steven L.",
+      "title": "Problem 15: Rigorous foundation of Schubert's enumerative calculus",
+      "year": "1976",
+      "venue": "Proceedings of Symposia in Pure Mathematics 28, 445–482",
+      "note": "Survey of progress on Schubert calculus and intersection theory related to Hilbert's 15th problem"
+    }
   ]
 }

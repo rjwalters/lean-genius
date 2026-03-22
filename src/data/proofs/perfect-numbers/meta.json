@@ -140,5 +140,21 @@
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "Euclid",
+      "title": "Elements, Book IX, Proposition 36",
+      "year": "~300 BCE",
+      "venue": "Alexandria",
+      "note": "Proved that 2^(p-1)(2^p - 1) is perfect when 2^p - 1 is prime — the Euclid-Euler theorem for even perfect numbers"
+    },
+    {
+      "authors": "Dickson, Leonard E.",
+      "title": "History of the Theory of Numbers, Vol. I: Divisibility and Primality",
+      "year": "1919",
+      "venue": "Carnegie Institution of Washington",
+      "note": "Extensive history of perfect numbers from antiquity through the early 20th century"
+    }
+  ]
 }

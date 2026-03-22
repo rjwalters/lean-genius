@@ -7,7 +7,7 @@
     "author": "Hardy, Littlewood, Pólya (1934); formalized here",
     "sourceUrl": "https://en.wikipedia.org/wiki/Power_mean",
     "date": "1934",
-    "status": "research",
+    "status": "formalized",
     "proofRepoPath": "Proofs/PowerMeanLimitOQ.lean",
     "tags": [
       "analysis",
@@ -190,7 +190,11 @@
       "Mathlib.Analysis.MeanInequalities",
       "Mathlib.Tactic"
     ],
-    "opens": ["Finset", "Real", "Filter"],
+    "opens": [
+      "Finset",
+      "Real",
+      "Filter"
+    ],
     "namespace": null,
     "lineCount": 316,
     "axiomCount": 0,

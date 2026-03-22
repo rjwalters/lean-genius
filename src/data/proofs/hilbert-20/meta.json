@@ -7,7 +7,7 @@
     "proofRepoPath": "Proofs/Hilbert20BoundaryValue.lean",
     "author": "Lax, Milgram, Sobolev, Lewy",
     "date": "1923-1957",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "analysis",
       "pde",
@@ -16,7 +16,7 @@
       "boundary-value",
       "intermediate"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -130,5 +130,21 @@
     "axiomCount": 4,
     "theoremCount": 1,
     "definitionCount": 7
-  }
+  },
+  "references": [
+    {
+      "authors": "Hilbert, David",
+      "title": "Mathematische Probleme",
+      "year": "1900",
+      "venue": "Nachrichten von der Gesellschaft der Wissenschaften zu Göttingen, 253–297",
+      "note": "The original lecture listing 23 problems that would shape 20th century mathematics"
+    },
+    {
+      "authors": "Evans, Lawrence C.",
+      "title": "Partial Differential Equations",
+      "year": "2010",
+      "venue": "American Mathematical Society, Graduate Studies in Mathematics 19, 2nd edition",
+      "note": "Modern treatment of existence and regularity for elliptic boundary value problems — context for Hilbert's 20th problem"
+    }
+  ]
 }

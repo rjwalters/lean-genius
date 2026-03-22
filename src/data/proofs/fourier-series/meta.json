@@ -9,7 +9,7 @@
     "author": "Joseph Fourier (1822)",
     "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/Fourier/AddCircle.html",
     "date": "1822",
-    "status": "axiom-based",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/FourierSeries.lean",
     "tags": [
       "analysis",
@@ -19,7 +19,7 @@
       "wiedijk-100",
       "classic"
     ],
-    "badge": "from-axioms",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2025-12-29",
     "mathlib_version": "4.15.0",
@@ -199,6 +199,29 @@
       "How does the convergence theory extend to higher-dimensional Fourier series on tori $\\mathbb{T}^n$?"
     ]
   },
+  "references": [
+    {
+      "authors": "Fourier, Joseph",
+      "title": "Théorie analytique de la chaleur",
+      "year": "1822",
+      "venue": "Firmin Didot, Paris",
+      "note": "Founding work where Fourier introduced trigonometric series representations of functions to solve the heat equation"
+    },
+    {
+      "authors": "Carleson, Lennart",
+      "title": "On convergence and growth of partial sums of Fourier series",
+      "year": "1966",
+      "venue": "Acta Mathematica 116(1), 135–157",
+      "note": "Proved that Fourier series of L² functions converge pointwise almost everywhere — a landmark in harmonic analysis"
+    },
+    {
+      "authors": "Katznelson, Yitzhak",
+      "title": "An Introduction to Harmonic Analysis",
+      "year": "2004",
+      "venue": "Cambridge University Press, 3rd edition",
+      "note": "Modern treatment of Fourier series convergence, Fejér's theorem, and related topics in harmonic analysis"
+    }
+  ],
   "relatedProofs": [
     {
       "id": "basel-problem",

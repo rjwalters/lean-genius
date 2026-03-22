@@ -187,5 +187,21 @@
     "axiomCount": 0,
     "theoremCount": 8,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "Bézout, Étienne",
+      "title": "Théorie générale des équations algébriques",
+      "year": "1779",
+      "venue": "Paris: Pierres",
+      "note": "Contains Bézout's identity for polynomials, with the integer version as a special case"
+    },
+    {
+      "authors": "Hardy, G.H.; Wright, E.M.",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "2008",
+      "venue": "Oxford University Press, 6th edition",
+      "note": "Standard reference with multiple proofs of Bézout's identity via the Euclidean algorithm"
+    }
+  ]
 }

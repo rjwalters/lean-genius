@@ -123,6 +123,29 @@
       "summary": "The broader impact of Brouwer's theorem across mathematics, economics, and computer science."
     }
   ],
+  "references": [
+    {
+      "authors": "Brouwer, L.E.J.",
+      "title": "Über Abbildung von Mannigfaltigkeiten",
+      "year": "1911",
+      "venue": "Mathematische Annalen 71(1), 97–115",
+      "note": "Original proof of the fixed point theorem for n-dimensional balls using degree theory"
+    },
+    {
+      "authors": "Milnor, John",
+      "title": "Topology from the Differentiable Viewpoint",
+      "year": "1965",
+      "venue": "University Press of Virginia",
+      "note": "Contains a clean proof of Brouwer's theorem using differential topology and Sard's theorem"
+    },
+    {
+      "authors": "Hatcher, Allen",
+      "title": "Algebraic Topology",
+      "year": "2002",
+      "venue": "Cambridge University Press",
+      "note": "Standard textbook with the homology-based proof that no retraction from the disk to its boundary exists"
+    }
+  ],
   "conclusion": {
     "summary": "The Brouwer Fixed Point Theorem demonstrates that every continuous self-map of a closed ball has a fixed point. The proof ingeniously transforms this dynamical question into a topological one: if no fixed point existed, we could construct a retraction from the ball to its boundary, which is impossible.",
     "implications": "This theorem has far-reaching consequences: Nash's Nobel Prize-winning proof of equilibrium existence in game theory relies on it; solutions to many differential equations are guaranteed by it; and it reveals deep connections between topology and dynamics. Computationally, finding fixed points is PPAD-complete, explaining why equilibrium computation is hard. The theorem beautifully illustrates how abstract topology answers concrete questions about continuous processes.",

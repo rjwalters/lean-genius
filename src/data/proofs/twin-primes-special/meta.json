@@ -6,7 +6,7 @@
   "meta": {
     "author": "Classical (formalized in Lean 4)",
     "date": "classical",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/TwinPrimes.lean",
     "tags": [
       "number-theory",
@@ -15,7 +15,7 @@
       "twin-primes",
       "classical"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -137,5 +137,21 @@
     "infinitude-primes",
     "prime-number-theorem",
     "dirichlets-theorem"
+  ],
+  "references": [
+    {
+      "authors": "de Polignac, Alphonse",
+      "title": "Recherches nouvelles sur les nombres premiers",
+      "year": "1849",
+      "venue": "Comptes Rendus des Séances de l'Académie des Sciences 29, 397–401, 738–739",
+      "note": "Conjectured that there are infinitely many twin primes (and more generally primes p, p+2k for any k)"
+    },
+    {
+      "authors": "Zhang, Yitang",
+      "title": "Bounded gaps between primes",
+      "year": "2014",
+      "venue": "Annals of Mathematics 179(3), 1121–1174",
+      "note": "Proved the first finite bound on prime gaps — a major step toward the twin prime conjecture"
+    }
   ]
 }

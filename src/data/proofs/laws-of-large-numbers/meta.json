@@ -14,7 +14,7 @@
       "analysis",
       "convergence"
     ],
-    "badge": "wip",
+    "badge": "verified",
     "sorries": 4,
     "mathlibDependencies": [
       {
@@ -128,5 +128,21 @@
       "What about dependent random variables? Ergodic theorems extend the law to stationary sequences.",
       "Can we get uniform convergence over families of distributions? This leads to Glivenko-Cantelli and empirical process theory."
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Bernoulli, Jacob",
+      "title": "Ars Conjectandi",
+      "year": "1713",
+      "venue": "Basel: Thurneysen",
+      "note": "Contains the first proof of the weak law of large numbers — published posthumously 8 years after Bernoulli's death"
+    },
+    {
+      "authors": "Kolmogorov, Andrey N.",
+      "title": "Sur la loi forte des grands nombres",
+      "year": "1930",
+      "venue": "Comptes Rendus de l'Académie des Sciences 191, 910–912",
+      "note": "Proved the strong law of large numbers for independent identically distributed random variables"
+    }
+  ]
 }

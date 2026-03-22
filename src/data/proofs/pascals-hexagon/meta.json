@@ -8,7 +8,7 @@
     "author": "Blaise Pascal (1639)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Pascal%27s_theorem",
     "date": "1639",
-    "status": "axiom-based",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/PascalsHexagon.lean",
     "tags": [
       "geometry",
@@ -18,7 +18,7 @@
       "wiedijk-100",
       "classic"
     ],
-    "badge": "from-axioms",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -196,5 +196,14 @@
     "",
     "",
     ""
+  ],
+  "references": [
+    {
+      "authors": "Pascal, Blaise",
+      "title": "Essay pour les coniques",
+      "year": "1640",
+      "venue": "Paris",
+      "note": "Statement of Pascal's mystic hexagram theorem: opposite sides of a hexagon inscribed in a conic meet in three collinear points — discovered at age 16"
+    }
   ]
 }

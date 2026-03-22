@@ -155,5 +155,21 @@
     "axiomCount": 0,
     "theoremCount": 11,
     "definitionCount": 3
-  }
+  },
+  "references": [
+    {
+      "authors": "Heron of Alexandria",
+      "title": "Metrica",
+      "year": "~60 CE",
+      "venue": "Alexandria",
+      "note": "Contains the formula A = √(s(s-a)(s-b)(s-c)) for the area of a triangle in terms of its side lengths"
+    },
+    {
+      "authors": "Heath, Thomas L.",
+      "title": "A History of Greek Mathematics, Vol. II",
+      "year": "1921",
+      "venue": "Oxford University Press (Dover reprint 1981)",
+      "note": "Historical analysis of Heron's formula including the proof from Metrica"
+    }
+  ]
 }

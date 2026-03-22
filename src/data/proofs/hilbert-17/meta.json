@@ -7,14 +7,14 @@
     "proofRepoPath": "Proofs/Hilbert17SumOfSquares.lean",
     "author": "Emil Artin (1927)",
     "date": "1927",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "algebra",
       "real-algebraic-geometry",
       "hilbert-problems",
       "intermediate"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -178,5 +178,21 @@
     "",
     "",
     ""
+  ],
+  "references": [
+    {
+      "authors": "Hilbert, David",
+      "title": "Mathematische Probleme",
+      "year": "1900",
+      "venue": "Nachrichten von der Gesellschaft der Wissenschaften zu Göttingen, 253–297",
+      "note": "The original lecture listing 23 problems that would shape 20th century mathematics"
+    },
+    {
+      "authors": "Artin, Emil",
+      "title": "Über die Zerlegung definiter Funktionen in Quadrate",
+      "year": "1927",
+      "venue": "Abhandlungen aus dem mathematischen Seminar der Universität Hamburg 5, 100–115",
+      "note": "Proved every positive semidefinite rational function is a sum of squares of rational functions — solving Hilbert's 17th problem"
+    }
   ]
 }

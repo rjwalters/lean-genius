@@ -8,7 +8,7 @@
     "author": "Godel (1940) and Cohen (1963)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Continuum_hypothesis",
     "date": "1963",
-    "status": "axiom-based",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/ContinuumHypothesis.lean",
     "tags": [
       "set-theory",
@@ -18,7 +18,7 @@
       "wiedijk-100",
       "hilbert"
     ],
-    "badge": "from-axioms",
+    "badge": "axiom",
     "sorries": 2,
     "mathlibDependencies": [
       {
@@ -114,5 +114,28 @@
     "axiomCount": 6,
     "theoremCount": 7,
     "definitionCount": 8
-  }
+  },
+  "references": [
+    {
+      "authors": "Cantor, Georg",
+      "title": "Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen",
+      "year": "1874",
+      "venue": "Journal für die reine und angewandte Mathematik 77, 258–262",
+      "note": "Cantor's proof that the reals are uncountable, motivating the continuum hypothesis"
+    },
+    {
+      "authors": "Gödel, Kurt",
+      "title": "The Consistency of the Continuum Hypothesis",
+      "year": "1940",
+      "venue": "Annals of Mathematics Studies 3, Princeton University Press",
+      "note": "Proved CH is consistent with ZFC using the constructible universe L"
+    },
+    {
+      "authors": "Cohen, Paul J.",
+      "title": "The Independence of the Continuum Hypothesis",
+      "year": "1963",
+      "venue": "Proceedings of the National Academy of Sciences 50(6), 1143–1148",
+      "note": "Proved CH is independent of ZFC using the method of forcing — won the Fields Medal in 1966"
+    }
+  ]
 }

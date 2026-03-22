@@ -8,7 +8,7 @@
     "author": "Frank Morley (1899)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Morley%27s_trisector_theorem",
     "date": "1899",
-    "status": "axiom-based",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/MorleysTheorem.lean",
     "tags": [
       "geometry",
@@ -18,7 +18,7 @@
       "wiedijk-100",
       "classic"
     ],
-    "badge": "from-axioms",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -220,5 +220,21 @@
     "",
     "",
     ""
+  ],
+  "references": [
+    {
+      "authors": "Morley, Frank",
+      "title": "Extensions of Clifford's chain-theorem",
+      "year": "1899",
+      "venue": "American Journal of Mathematics 51, 465–472",
+      "note": "Statement of the theorem that the angle trisectors of any triangle form an equilateral triangle — first proved by others ca. 1900"
+    },
+    {
+      "authors": "Connes, Alain",
+      "title": "A new proof of Morley's theorem",
+      "year": "1998",
+      "venue": "Les Relations entre les Mathématiques et la Physique Théorique, IHÉS",
+      "note": "Elegant proof using the group of affine transformations"
+    }
   ]
 }

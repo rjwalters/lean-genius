@@ -189,5 +189,21 @@
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "de Moivre, Abraham",
+      "title": "Miscellanea Analytica de Seriebus et Quadraturis",
+      "year": "1730",
+      "venue": "London: J. Tonson & J. Watts",
+      "note": "Contains the formula (cos θ + i sin θ)^n = cos nθ + i sin nθ, though stated without modern notation"
+    },
+    {
+      "authors": "Euler, Leonhard",
+      "title": "Introductio in analysin infinitorum",
+      "year": "1748",
+      "venue": "Lausanne: Marcum-Michaelem Bousquet",
+      "note": "Reformulated de Moivre's result using e^(iθ) = cos θ + i sin θ, connecting it to the exponential function"
+    }
+  ]
 }

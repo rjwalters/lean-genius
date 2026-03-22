@@ -8,7 +8,7 @@
     "author": "Joseph Liouville (1844)",
     "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/Liouville/Basic.html",
     "date": "1844",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/LiouvilleTheorem.lean",
     "tags": [
       "number-theory",
@@ -201,5 +201,14 @@
     "",
     "",
     ""
+  ],
+  "references": [
+    {
+      "authors": "Liouville, Joseph",
+      "title": "Sur des classes très-étendues de quantités dont la valeur n'est ni algébrique, ni même réductible à des irrationnelles algébriques",
+      "year": "1851",
+      "venue": "Journal de Mathématiques Pures et Appliquées 16, 133–142",
+      "note": "Proved the existence of transcendental numbers by constructing explicit examples using rapidly convergent series"
+    }
   ]
 }

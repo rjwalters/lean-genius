@@ -8,7 +8,7 @@
     "author": "Bolyai, Lobachevsky, Beltrami (19th century)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Parallel_postulate",
     "date": "1868",
-    "status": "axiom-based",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/ParallelPostulateIndependence.lean",
     "tags": [
       "geometry",
@@ -18,7 +18,7 @@
       "wiedijk-100",
       "independence"
     ],
-    "badge": "from-axioms",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -129,5 +129,21 @@
     "axiomCount": 7,
     "theoremCount": 3,
     "definitionCount": 3
-  }
+  },
+  "references": [
+    {
+      "authors": "Lobachevsky, Nikolai",
+      "title": "Geometrische Untersuchungen zur Theorie der Parallellinien",
+      "year": "1840",
+      "venue": "Berlin: Fincke",
+      "note": "Systematic development of hyperbolic geometry — first published proof that Euclid's parallel postulate is independent of the other axioms"
+    },
+    {
+      "authors": "Greenberg, Marvin Jay",
+      "title": "Euclidean and Non-Euclidean Geometries: Development and History",
+      "year": "2008",
+      "venue": "W.H. Freeman, 4th edition",
+      "note": "Comprehensive treatment of the parallel postulate's history and the development of non-Euclidean geometry"
+    }
+  ]
 }

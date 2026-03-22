@@ -8,7 +8,7 @@
     "author": "J.E. Littlewood",
     "sourceUrl": "https://en.wikipedia.org/wiki/Squaring_the_square",
     "date": "1953",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/DissectionOfCubes.lean",
     "tags": [
       "geometry",
@@ -17,7 +17,7 @@
       "combinatorics",
       "wiedijk-100"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 2,
     "mathlibDependencies": [
       {
@@ -182,5 +182,14 @@
     "axiomCount": 2,
     "theoremCount": 7,
     "definitionCount": 8
-  }
+  },
+  "references": [
+    {
+      "authors": "Dehn, Max",
+      "title": "Über den Rauminhalt",
+      "year": "1900",
+      "venue": "Mathematische Annalen 55, 465–478",
+      "note": "Proved that a regular tetrahedron cannot be dissected into a cube of equal volume — solving Hilbert's Third Problem"
+    }
+  ]
 }
