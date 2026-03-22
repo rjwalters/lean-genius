@@ -14,6 +14,7 @@
       "classic",
       "intermediate"
     ],
+    "proofRepoPath": "Proofs/CantorDiagonalization.lean",
     "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
@@ -52,52 +53,52 @@
   },
   "sections": [
     {
-      "id": "setup",
-      "title": "Binary Sequences",
-      "startLine": 23,
-      "endLine": 27,
-      "summary": "Defines binary sequences as functions from Nat to Bool, representing infinite strings of 0s and 1s.",
-      "mathContext": "$\\text{BinarySeq} := \\mathbb{N} \\to \\{0, 1\\}$, the set of all infinite binary strings. In Lean: `def BinarySeq := ℕ → Bool`"
+      "id": "imports-docstring",
+      "title": "Imports, Docstring, and Setup",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Three Mathlib imports (Logic.Function.Basic, Data.Set.Function, Tactic), module docstring documenting the diagonal argument and its history (Cantor 1891, Wiedijk #22), namespace `CantorDiagonalization`, and `BinarySeq` type alias for $\\mathbb{N} \\to \\text{Bool}$.",
+      "mathContext": "$\\text{BinarySeq} := \\mathbb{N} \\to \\text{Bool}$, representing infinite binary sequences. Each sequence corresponds to a real in $[0,1]$ via binary expansion $0.b_0b_1b_2\\ldots$."
     },
     {
       "id": "diagonal",
       "title": "The Diagonal Construction",
-      "startLine": 29,
-      "endLine": 44,
-      "summary": "Defines the diagonal function that flips each bit along the diagonal, and proves it differs from every input sequence.",
-      "mathContext": "Given $f: \\mathbb{N} \\to \\text{BinarySeq}$, define $d(n) = \\neg f(n)(n)$. Then $d \\neq f(n)$ for all $n$, since $d(n) \\neq f(n)(n)$"
+      "startLine": 47,
+      "endLine": 62,
+      "summary": "Defines `diagonal f n = !(f n n)` (flip the $n$-th bit of the $n$-th sequence) and proves `diagonal_differs`: the diagonal disagrees with $f(n)$ at position $n$, using boolean case analysis.",
+      "mathContext": "Given $f: \\mathbb{N} \\to \\text{BinarySeq}$, define $d(n) = \\neg f(n)(n)$. Key lemma: $d(n) \\neq f(n)(n)$ since $\\neg b \\neq b$ for any boolean $b$."
     },
     {
       "id": "main-theorem",
-      "title": "Cantor's Main Theorem",
-      "startLine": 46,
-      "endLine": 68,
-      "summary": "Proves that no function from Nat to BinarySeq can be surjective, establishing uncountability.",
-      "mathContext": "$\\nexists f: \\mathbb{N} \\to \\{0,1\\}^{\\mathbb{N}}$ surjective. Proof: the diagonal $d$ is not in the range of any $f$, so $f$ is not surjective."
-    },
-    {
-      "id": "corollary",
-      "title": "The Reals Are Uncountable",
-      "startLine": 70,
-      "endLine": 89,
-      "summary": "States the theorem in its classic form: no surjection from naturals to binary sequences exists.",
-      "mathContext": "$|\\mathbb{N}| < |\\{0,1\\}^{\\mathbb{N}}| = |\\mathbb{R}|$. The reals are uncountable: no enumeration $r_1, r_2, r_3, \\ldots$ can list all real numbers."
+      "title": "Cantor's Main Theorem and Reformulations",
+      "startLine": 64,
+      "endLine": 107,
+      "summary": "Three equivalent formulations: `cantor_diagonalization` ($\\forall f, \\exists s, \\forall n, f(n) \\neq s$), `no_surjection_nat_to_binary` ($\\neg\\exists f$ surjective), and `reals_uncountable` (alias). The main proof uses `diagonal f` as witness, then derives contradiction from `congrFun` and `diagonal_differs`.",
+      "mathContext": "$\\forall f: \\mathbb{N} \\to 2^{\\mathbb{N}},\\; \\exists s,\\; \\forall n,\\; f(n) \\neq s$. Equivalently: $\\neg\\exists f: \\mathbb{N} \\twoheadrightarrow 2^{\\mathbb{N}}$."
     },
     {
       "id": "powerset",
       "title": "Power Set Generalization",
-      "startLine": 91,
-      "endLine": 115,
-      "summary": "Proves the general theorem that for any set S, there is no surjection from S to its power set P(S).",
-      "mathContext": "Cantor's theorem: $\\nexists f: S \\twoheadrightarrow \\mathcal{P}(S)$ for any set $S$. Consider $D = \\{x \\in S : x \\notin f(x)\\}$; then $D \\neq f(y)$ for all $y$."
+      "startLine": 109,
+      "endLine": 133,
+      "summary": "Proves `cantor_powerset`: for any type $S$, no surjection $S \\to \\text{Set}\\,S$ exists. Uses the diagonal set $D = \\{x : x \\notin f(x)\\}$ and `by_cases` to derive $a \\in D \\iff a \\notin D$ — a contradiction.",
+      "mathContext": "$\\nexists f: S \\twoheadrightarrow \\mathcal{P}(S)$ for any set $S$. The diagonal set $D = \\{x \\in S : x \\notin f(x)\\}$ witnesses this: $D = f(a) \\Rightarrow (a \\in D \\iff a \\notin D)$."
     },
     {
       "id": "russell",
-      "title": "Connection to Russell's Paradox",
-      "startLine": 117,
-      "endLine": 133,
-      "summary": "Shows how the diagonal set construction relates to Russell's famous paradox about the set of all sets.",
-      "mathContext": "Russell's set $R = \\{x : x \\notin x\\}$ is the diagonal of the identity function on the 'set of all sets'. If $R \\in R$ then $R \\notin R$; if $R \\notin R$ then $R \\in R$."
+      "title": "Russell's Paradox Connection",
+      "startLine": 135,
+      "endLine": 151,
+      "summary": "Proves `diagonal_set_paradox`: if $f(a) = D$ then $a \\in D \\iff a \\notin D$. Notes that taking $f = \\text{id}$ yields Russell's paradox $R = \\{x : x \\notin x\\}$, resolved in type theory by stratification of types.",
+      "mathContext": "Russell's set $R = \\{x : x \\notin x\\}$ is the diagonal set for $f = \\text{id}$. In ZFC, the axiom of regularity prevents $x \\in x$; in type theory, $x \\in x$ is ill-typed."
+    },
+    {
+      "id": "visualization",
+      "title": "Visualization and Verification",
+      "startLine": 153,
+      "endLine": 175,
+      "summary": "ASCII art visualization of the diagonal argument showing the infinite table, diagonal extraction, and bit-flipping. Four `#check` commands verify the main theorems. Namespace closes.",
+      "mathContext": "The visual makes the argument concrete: row $n$ is $f(n)$, the diagonal is $f(n)(n)$ for each $n$, and flipping produces a sequence differing from every row at a guaranteed position."
     }
   ],
   "conclusion": {
@@ -152,13 +153,25 @@
       "targetId": "godel-incompleteness",
       "relationship": "technique",
       "description": "Gödel's incompleteness theorems (1931) use diagonalization via self-referential sentences: 'This statement is not provable.' The diagonal construction of unprovable truths parallels Cantor's construction of unlisted sequences."
+    },
+    {
+      "targetId": "schroeder-bernstein",
+      "relationship": "complementary",
+      "description": "The Schröder-Bernstein theorem (injections in both directions imply bijection) provides the positive tool for establishing cardinality equalities, while Cantor's diagonal argument provides the negative tool for establishing strict inequalities. Together they form the complete toolkit for comparing infinite cardinalities."
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "thematic",
+      "description": "Both are existence proofs via contradiction: Euclid shows no finite list contains all primes (construct p₁···pₙ + 1), Cantor shows no countable list contains all reals (construct the diagonal). The diagonal argument is the cardinality-theoretic analogue of Euclid's prime construction."
     }
   ],
   "relatedProofs": [
     "cantors-theorem",
     "continuum-hypothesis",
     "halting-problem",
-    "godel-incompleteness"
+    "godel-incompleteness",
+    "schroeder-bernstein",
+    "infinitude-primes"
   ],
   "alternativeInterpretation": {
     "title": "The Constructivist View: Why the Reals Don't Exist",
