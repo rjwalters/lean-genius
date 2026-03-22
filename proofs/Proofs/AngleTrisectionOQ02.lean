@@ -125,7 +125,12 @@ axiom cos20_gal_order :
 
 /-- 3 is not a power of 2. -/
 private lemma not_pow_two_of_eq_three {n : ℕ} (h : 3 = 2 ^ n) : False := by
-  interval_cases n <;> omega
+  have hn : n ≤ 1 := by
+    by_contra hc; push_neg at hc
+    have : 4 ≤ 2 ^ n := le_trans (show 4 ≤ 2 ^ 2 by norm_num)
+      (Nat.pow_le_pow_right (by omega) hc)
+    omega
+  interval_cases n <;> simp_all
 
 /-- The Galois group of the cos(20°) minimal polynomial is NOT a 2-group. -/
 theorem cos20_gal_not_2group : ¬ IsPGroup 2 (8 * X ^ 3 - 6 * X - C 1 : ℚ[X]).Gal := by
@@ -218,14 +223,14 @@ theorem galois_2group_implies_degree_pow2 (α : ℝ) (hα : IsIntegral ℚ α)
   -- Step 2: |Gal| = finrank (minpoly is separable over ℚ, char 0)
   have hsep : (minpoly ℚ α).Separable := (minpoly.irreducible hα).separable
   have hcard := Polynomial.Gal.card_of_separable hsep
-  rw [hk, Nat.card_eq_fintype_card] at hcard
-  -- hcard : 2 ^ k = Module.finrank ℚ (minpoly ℚ α).SplittingField
+  -- hcard : Nat.card Gal = finrank ℚ SplittingField
   -- Step 3: natDegree divides finrank (tower law via InverseGaloisD4)
   have hdvd := InverseGaloisExtensions.irred_monic_degree_dvd_splitting_finrank
     (minpoly.irreducible hα) (minpoly.monic hα)
-  -- Step 4: Combine: natDegree | finrank = 2^k
-  rw [← hcard] at hdvd
-  exact ⟨k, hdvd⟩
+  -- Step 4: Combine: natDegree | finrank = Nat.card Gal = 2^k
+  have hfinrank : Module.finrank ℚ (minpoly ℚ α).SplittingField = 2 ^ k :=
+    hcard.symm.trans hk
+  exact ⟨k, hfinrank ▸ hdvd⟩
 
 /-- The Galois characterization implies the degree criterion:
     constructible → Gal is 2-group → degree divides 2^n. -/

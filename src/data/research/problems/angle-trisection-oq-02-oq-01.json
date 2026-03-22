@@ -29,10 +29,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 2 axioms from AngleTrisectionOQ02.lean by importing proved Galois group orders from InverseGalois and InverseGaloisD4. Axiom count: 6 → 4. Remaining: wantzel_galois_characterization, cos20_gal_order, x_sq_sub_2_gal_order, galois_2group_implies_degree_pow2.",
+    "progressSummary": "PROGRESS: Fixed 2 Mathlib API build errors in AngleTrisectionOQ02.lean. Docker build now passes. cos20_gal_order axiom requires discriminant theory not in Mathlib.",
     "builtItems": [
       "AngleTrisectionOQ02.lean: eliminated x_cube_sub_2_gal_order axiom (→ InverseGalois.lean)",
-      "AngleTrisectionOQ02.lean: eliminated x_4th_sub_2_gal_order axiom (→ InverseGaloisD4.lean)"
+      "AngleTrisectionOQ02.lean: eliminated x_4th_sub_2_gal_order axiom (→ InverseGaloisD4.lean)",
+      "Fixed interval_cases in not_pow_two_of_eq_three: added explicit upper bound via Nat.pow_le_pow_right",
+      "Fixed galois_2group_implies_degree_pow2: replaced rw with hcard.symm.trans hk for Mathlib v4.26.0 compatibility"
     ],
     "insights": [
       "All 9 existing AngleTrisection*.lean files have 0 sorries",
@@ -41,7 +43,9 @@
       "Key: connect constructibility (from existing files) to degree conditions via Mathlib",
       "x_cube_sub_2_gal_order proved by importing InverseGaloisProblem.x_cube_sub_2_gal_card from InverseGalois.lean",
       "x_4th_sub_2_gal_order proved by importing InverseGaloisExtensions.x4_sub_2_gal_card from InverseGaloisD4.lean",
-      "Axiom count reduced from 6 to 4 via cross-file imports"
+      "Axiom count reduced from 6 to 4 via cross-file imports",
+      "AngleTrisectionOQ02.lean had 2 Mathlib API breakages: interval_cases needs explicit upper bound, Gal.card_of_separable/rw pattern changed",
+      "cos20_gal_order axiom provable via discriminant (5184=72² is perfect square → Gal⊂A₃) but needs discriminant-alternating group API not in Mathlib"
     ],
     "mathlibGaps": [],
     "nextSteps": [
