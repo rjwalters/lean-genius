@@ -20,20 +20,6 @@
     "erdosNumber": 1097,
     "erdosUrl": "https://erdosproblems.com/1097",
     "erdosProblemStatus": "open",
-    "relatedProblems": [
-      {
-        "id": "szemeredi-theorem",
-        "relationship": "Szemerédi's theorem guarantees arithmetic progressions in dense sets; Erdős #1097 asks about the common differences that must appear"
-      },
-      {
-        "id": "erdos-3",
-        "relationship": "Erdős #3 (APs in primes, $5000 prize) concerns APs in a specific dense set; #1097 asks about APs in general n-element sets"
-      },
-      {
-        "id": "arithmetic-series",
-        "relationship": "Basic arithmetic series formulas underlie the counting of arithmetic progressions in intervals"
-      }
-    ],
     "axiomCount": 6,
     "assumptions": "6 axiom declarations: katz_tao_upper (O(n^{11/6}) upper bound), erdos_spencer_lower (Ω(n log n) lower bound), erdos_ruzsa_explicit (Ω(n^{4/3}) explicit lower bound), lemm_lower (Ω(n^{1.778}) best known lower bound), alphaevolve_improvement (Ω(n^{1.822}) DeepMind AlphaEvolve result), chan_equivalence (equivalence to Bourgain sums-differences problem). All are established results from the literature.",
     "lineCount": 374
@@ -57,56 +43,64 @@
       "title": "Core Definitions",
       "startLine": 36,
       "endLine": 54,
-      "summary": "Defines IsThreeAP (the predicate for a, a+d, a+2d all in A), commonDifferences (the set D(A)), and finite-set versions commonDiffFinset and numCommonDiff for cardinality computations."
+      "summary": "Defines IsThreeAP (the predicate for a, a+d, a+2d all in A), commonDifferences (the set D(A)), and finite-set versions commonDiffFinset and numCommonDiff for cardinality computations.",
+      "mathContext": "$\\text{IsThreeAP}(A, a, d) \\iff a, a+d, a+2d \\in A$. $D(A) = \\{d \\in \\mathbb{Z} : \\exists a,\\; \\text{IsThreeAP}(A,a,d)\\}$. $f(n) = \\max_{|A|=n} |D(A)|$."
     },
     {
       "id": "infrastructure",
       "title": "Proven Infrastructure Lemmas",
       "startLine": 56,
       "endLine": 179,
-      "summary": "Fourteen fully-proven structural results: D(A) ⊆ A-A, |D(A)| ≤ |A|², 0 ∈ D(A) for nonempty A, monotonicity, negation symmetry, exact computations for singletons and pairs, and the connection between finite and set-level membership."
+      "summary": "Fourteen fully-proven structural results: D(A) ⊆ A-A, |D(A)| ≤ |A|², 0 ∈ D(A) for nonempty A, monotonicity, negation symmetry, exact computations for singletons and pairs, and the connection between finite and set-level membership.",
+      "mathContext": "$D(A) \\subseteq A - A$ (difference set), $|D(A)| \\leq |A|^2$ (trivial), $0 \\in D(A)$ for $|A| \\geq 1$ (trivial AP). $D(\\{a\\}) = \\{0\\}$, $D(\\{a,b\\}) = \\{0, \\pm(b-a)\\}$."
     },
     {
       "id": "invariance",
       "title": "Structural Invariance Theorems",
       "startLine": 180,
       "endLine": 292,
-      "summary": "Translation invariance D(A+c) = D(A), dilation covariance (d ∈ D(A) implies cd ∈ D(cA)), negation closure as a set identity, symmetry iff, direct witness construction, and the concrete computation D({a,a+1,a+2}) = {-1,0,1}."
+      "summary": "Translation invariance D(A+c) = D(A), dilation covariance (d ∈ D(A) implies cd ∈ D(cA)), negation closure as a set identity, symmetry iff, direct witness construction, and the concrete computation D({a,a+1,a+2}) = {-1,0,1}.",
+      "mathContext": "$D(A + c) = D(A)$ (translation invariance). $d \\in D(A) \\implies cd \\in D(cA)$ (dilation). $D(A) = -D(A)$ (negation symmetry). $D(\\{a, a+1, a+2\\}) = \\{-1, 0, 1\\}$."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 293,
       "endLine": 301,
-      "summary": "States the O(n^{3/2}) conjecture: ∃C such that |D(A)| ≤ C·n^{3/2} for all n-element sets A ⊆ ℤ."
+      "summary": "States the O(n^{3/2}) conjecture: ∃C such that |D(A)| ≤ C·n^{3/2} for all n-element sets A ⊆ ℤ.",
+      "mathContext": "Conjecture: $\\exists C > 0,\\; \\forall A \\subseteq \\mathbb{Z},\\; |A| = n \\implies |D(A)| \\leq C \\cdot n^{3/2}$. Erdős conjectured the exponent $3/2$ is tight."
     },
     {
       "id": "upper-bound",
       "title": "Katz–Tao Upper Bound",
       "startLine": 302,
       "endLine": 308,
-      "summary": "Axiomatizes the best known upper bound: f(n) ≤ C·n^{11/6} (Katz–Tao, 1999), the exponent 11/6 ≈ 1.833."
+      "summary": "Axiomatizes the best known upper bound: f(n) ≤ C·n^{11/6} (Katz–Tao, 1999), the exponent 11/6 ≈ 1.833.",
+      "mathContext": "$f(n) \\leq C \\cdot n^{11/6}$ (Katz-Tao 1999). The exponent $11/6 \\approx 1.833$ uses incidence geometry connecting APs to line arrangements."
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
       "startLine": 310,
       "endLine": 336,
-      "summary": "Axiomatizes four lower bounds: Erdős-Spencer (n^{3/2} probabilistic), Erdős-Ruzsa (n^{1+c} explicit), Lemm (n^{1.778}), and AlphaEvolve (slight improvement on Lemm)."
+      "summary": "Axiomatizes four lower bounds: Erdős-Spencer (n^{3/2} probabilistic), Erdős-Ruzsa (n^{1+c} explicit), Lemm (n^{1.778}), and AlphaEvolve (slight improvement on Lemm).",
+      "mathContext": "Erdős-Spencer: $f(n) \\geq c n^{3/2}$ (probabilistic). Erdős-Ruzsa: $f(n) \\geq n^{4/3}$ (explicit). Lemm: $f(n) \\geq n^{1.778}$ (best known). AlphaEvolve: $f(n) \\geq n^{1.822}$ (marginal improvement)."
     },
     {
       "id": "bourgain",
       "title": "Bourgain's Sums-Differences Equivalence",
       "startLine": 338,
       "endLine": 364,
-      "summary": "Defines restrictedSum, restrictedDiff, and BourgainExponent, then states Chan's equivalence theorem connecting the 3-AP common differences exponent to the Bourgain sums-differences critical exponent."
+      "summary": "Defines restrictedSum, restrictedDiff, and BourgainExponent, then states Chan's equivalence theorem connecting the 3-AP common differences exponent to the Bourgain sums-differences critical exponent.",
+      "mathContext": "Bourgain: $\\text{RS}(A) = \\{a_1 + a_2 : a_1 \\neq a_2 \\in A\\}$, $\\text{RD}(A) = \\{a_1 - a_2 : a_1 \\neq a_2\\}$. Chan's equivalence: $\\sup\\{\\alpha : f(n) \\geq n^\\alpha\\} = \\sup\\{\\alpha : |\\text{RS}(A) \\cup \\text{RD}(A)| \\geq n^\\alpha\\}$."
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "startLine": 366,
       "endLine": 374,
-      "summary": "Proves current_bounds_summary: 1.778 < c* ≤ 11/6 by combining lemm_lower and katz_tao_upper axioms. This is the only non-infrastructure theorem that is fully proved."
+      "summary": "Proves current_bounds_summary: 1.778 < c* ≤ 11/6 by combining lemm_lower and katz_tao_upper axioms. This is the only non-infrastructure theorem that is fully proved.",
+      "mathContext": "$1.778 < c^* \\leq 11/6$ where $c^* = \\sup\\{\\alpha : f(n) \\geq n^\\alpha\\}$. Proved from `lemm_lower` and `katz_tao_upper` axioms."
     }
   ],
   "conclusion": {
@@ -119,5 +113,27 @@
       "Can the Erdős-Ruzsa explicit construction be improved to match the probabilistic n^{3/2} bound?",
       "What is the correct exponent for higher-length arithmetic progressions (k-APs for k ≥ 4)?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "szemeredi-theorem",
+      "relationship": "related",
+      "description": "Szemerédi's theorem guarantees APs in dense sets; Erdős #1097 asks about the common differences that must appear in 3-term APs"
+    },
+    {
+      "targetId": "erdos-3",
+      "relationship": "related",
+      "description": "Erdős #3 concerns APs in primes; #1097 asks about APs in general n-element integer sets"
+    },
+    {
+      "targetId": "arithmetic-series",
+      "relationship": "foundational",
+      "description": "Basic arithmetic series formulas underlie the counting of arithmetic progressions in intervals"
+    }
+  ],
+  "relatedProofs": [
+    "szemeredi-theorem",
+    "erdos-3",
+    "arithmetic-series"
+  ]
 }
