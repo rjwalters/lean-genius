@@ -40,6 +40,7 @@ open Finset BigOperators
 -- SECTION I: Grid Triangulation Definitions
 -- ============================================================
 
+@[ext]
 structure GridVertex (n : ℕ) where
   i : ℕ
   j : ℕ
@@ -240,7 +241,8 @@ private lemma gColor_bot {n : ℕ} (c : Coloring n) (i : ℕ) (hi : i ≤ n) :
 /-- Count of horizontal {0,1}-door transitions at row j -/
 def hTrans {n : ℕ} (c : Coloring n) (j : ℕ) : ℕ :=
   ((Finset.range (n - j)).filter (fun i =>
-    gColor c i j ≠ gColor c (i + 1) j)).card
+    (gColor c i j = 0 ∧ gColor c (i + 1) j = 1) ∨
+    (gColor c i j = 1 ∧ gColor c (i + 1) j = 0))).card
 
 theorem hTrans_top {n : ℕ} (c : Coloring n) : hTrans c n = 0 := by
   simp [hTrans, Nat.sub_self]
@@ -292,27 +294,41 @@ theorem fully_colored_one_door {n : ℕ} (c : Coloring n)
     · rfl
 
 -- Helper: No {0,1}-doors on left-boundary edges (colors ∈ {0,2})
--- TODO: Fix omega/Fin compatibility for Lean 4.26+
--- Proof strategy: case split on j+1 < n vs j+1 = n; use hleft or hv2 respectively
 private lemma no_door_left_boundary {n : ℕ} (hn : 0 < n) (c : Coloring n)
     (hc : IsSperner hn c) (j : ℕ) (hj : j > 0) (hj' : j < n) :
     ¬ IsDoor c ⟨0, j, by omega⟩ ⟨0, j + 1, by omega⟩ := by
-  -- Left boundary has colors ∈ {0, 2}, never color 1
-  sorry
+  obtain ⟨_, _, hv2, _, hleft, _⟩ := hc
+  have h1 : c ⟨0, j, by omega⟩ ≠ 1 := hleft ⟨0, j, by omega⟩ rfl hj hj'
+  have h2 : c ⟨0, j + 1, by omega⟩ ≠ 1 := by
+    by_cases hjn : j + 1 = n
+    · have heqv : (⟨0, j + 1, by omega⟩ : GridVertex n) = ⟨0, n, by omega⟩ := by
+        ext <;> dsimp <;> omega
+      rw [heqv, hv2]; decide
+    · have hgt : j + 1 > 0 := by omega
+      have hlt : j + 1 < n := by omega
+      exact hleft ⟨0, j + 1, by omega⟩ rfl hgt hlt
+  intro hdoor
+  rcases hdoor with ⟨_, h01⟩ | ⟨h10, _⟩
+  · exact h2 h01
+  · exact h1 h10
 
 -- Helper: No {0,1}-doors on hypotenuse edges (colors ∈ {1,2})
--- TODO: Fix omega/Fin compatibility for Lean 4.26+
--- Proof strategy: case split on i > 1 vs i = 1; use hhyp or hv2 respectively
 private lemma no_door_hypotenuse {n : ℕ} (hn : 0 < n) (c : Coloring n)
     (hc : IsSperner hn c) (i j : ℕ) (hi : i > 0) (hj : j > 0)
     (hsum1 : i + j = n) (hsum2 : (i - 1) + (j + 1) = n) :
     ¬ IsDoor c ⟨i, j, by omega⟩ ⟨i - 1, j + 1, by omega⟩ := by
-  obtain ⟨_, _, _, _, _, hhyp⟩ := hc
+  obtain ⟨_, _, hv2, _, _, hhyp⟩ := hc
   intro hdoor
   rcases hdoor with ⟨h0, _⟩ | ⟨_, h0⟩
   · exact hhyp ⟨i, j, by omega⟩ hsum1 hi hj h0
-  · -- Hypotenuse has colors ∈ {1, 2}, never color 0
-    sorry
+  · -- c(i-1, j+1) = 0 but hypotenuse has colors ≠ 0
+    by_cases hi1 : 1 ≤ i - 1
+    · have hgt : i - 1 > 0 := by omega
+      have hgt2 : j + 1 > 0 := by omega
+      exact hhyp ⟨i - 1, j + 1, by omega⟩ hsum2 hgt hgt2 h0
+    · have heqv : (⟨i - 1, j + 1, by omega⟩ : GridVertex n) = ⟨0, n, by omega⟩ := by
+        ext <;> dsimp <;> omega
+      rw [heqv, hv2] at h0; exact absurd h0 (by decide)
 
 -- ============================================================
 -- SECTION IV-b: Row-Sweep Parity Argument for Sperner's Lemma
@@ -342,12 +358,37 @@ theorem abstractDoorCount_parity (a b c : Fin 3) :
 -- 6. Therefore: #FC ≡ bottomTransitions ≡ 1 (mod 2), so #FC ≥ 1
 
 -- hTrans at row 0 equals bottomTransitions under Sperner condition
--- TODO: Fix Mathlib omega/simp compat for Lean 4.26+
--- Proof strategy: unfold hTrans and bottomTransitions at row 0, show gColor and botColor agree
 private lemma hTrans_zero_eq {n : ℕ} (hn : 0 < n) (c : Coloring n)
     (hc : IsSperner hn c) :
     hTrans c 0 = bottomTransitions c := by
-  sorry
+  obtain ⟨hv0, hv1, _, hbot, _, _⟩ := hc
+  simp only [hTrans, bottomTransitions, Nat.sub_zero]
+  congr 1; ext i; simp only [Finset.mem_filter, Finset.mem_range]
+  constructor
+  · -- {0,1}-door → different colors (trivial since 0 ≠ 1)
+    rintro ⟨hi, h⟩
+    rw [gColor_bot c i (by omega), gColor_bot c (i + 1) (by omega)] at h
+    exact ⟨hi, by rcases h with ⟨h0, h1⟩ | ⟨h1, h0⟩ <;> [rw [h0, h1]; rw [h0, h1]] <;> decide⟩
+  · -- different colors → {0,1}-door (on bottom edge, colors ∈ {0,1})
+    rintro ⟨hi, hne⟩
+    refine ⟨hi, ?_⟩
+    rw [gColor_bot c i (by omega), gColor_bot c (i + 1) (by omega)]
+    have hbc : ∀ k, k ≤ n → botColor c k = 0 ∨ botColor c k = 1 := by
+      intro k hk; simp only [botColor, dif_pos hk]
+      by_cases h0 : k = 0
+      · subst h0; left; exact hv0
+      · by_cases hn' : k = n
+        · subst hn'; right; exact hv1
+        · have hgt : k > 0 := by omega
+          have hlt : k < n := by omega
+          have := hbot ⟨k, 0, by omega⟩ rfl hgt hlt
+          have hval := (c ⟨k, 0, by omega⟩).isLt; omega
+    rcases hbc i (by omega) with h1 | h1 <;> rcases hbc (i + 1) (by omega) with h2 | h2 <;>
+      rw [h1, h2] at hne ⊢
+    · exact absurd rfl hne
+    · left; exact ⟨rfl, rfl⟩
+    · right; exact ⟨rfl, rfl⟩
+    · exact absurd rfl hne
 
 -- ============================================================
 -- Strip Parity: Double-Counting Proof Infrastructure
@@ -378,17 +419,48 @@ private lemma lower_door_sum_zero {n : ℕ} (c : Coloring n) (i j : ℕ)
   have hi : i + j ≤ n := by omega
   have hi1 : (i + 1) + j ≤ n := by omega
   have hj1 : i + (j + 1) ≤ n := by omega
-  set a := c ⟨i, j, hi⟩; set b := c ⟨i + 1, j, hi1⟩; set c₃ := c ⟨i, j + 1, hj1⟩
   simp only [doorZ, gColor_eq c i j hi, gColor_eq c (i+1) j hi1, gColor_eq c i (j+1) hj1]
-  -- Uses door_parity_of_not_fc after converting IsFullyColored ↔ Finset equality
-  sorry
+  apply door_parity_of_not_fc
+  intro heq; exact hno (by
+    show Finset.image (c ∘ (GridTriangle.mk i j .lower hv).vertices) Finset.univ = {0, 1, 2}
+    have himgeq : Finset.image (c ∘ (GridTriangle.mk i j .lower hv).vertices) Finset.univ =
+        {c ⟨i, j, hi⟩, c ⟨i + 1, j, hi1⟩, c ⟨i, j + 1, hj1⟩} := by
+      apply Finset.ext; intro x
+      simp only [Finset.mem_image, Finset.mem_univ, true_and, Finset.mem_insert,
+                  Finset.mem_singleton]
+      constructor
+      · rintro ⟨k, hk⟩
+        fin_cases k <;>
+          simp only [Function.comp, GridTriangle.vertices, lowerVertices] at hk <;>
+          simp [hk]
+      · rintro (hx | hx | hx) <;> subst hx
+        exacts [⟨0, rfl⟩, ⟨1, rfl⟩, ⟨2, rfl⟩]
+    rw [himgeq]; exact heq)
 
--- TODO: Fix Finset convert/fin_cases compat for current Mathlib
 private lemma upper_door_sum_zero {n : ℕ} (c : Coloring n) (i j : ℕ)
     (hv : i + 1 + (j + 1) ≤ n) (hno : ¬ IsFullyColored c ⟨i, j, .upper, hv⟩) :
     doorZ c (i+1) j i (j+1) + doorZ c (i+1) j (i+1) (j+1) +
     doorZ c i (j+1) (i+1) (j+1) = 0 := by
-  sorry
+  have h1 : (i + 1) + j ≤ n := by omega
+  have h2 : i + (j + 1) ≤ n := by omega
+  have h3 : (i + 1) + (j + 1) ≤ n := by omega
+  simp only [doorZ, gColor_eq c (i+1) j h1, gColor_eq c i (j+1) h2, gColor_eq c (i+1) (j+1) h3]
+  apply door_parity_of_not_fc
+  intro heq; exact hno (by
+    show Finset.image (c ∘ (GridTriangle.mk i j .upper hv).vertices) Finset.univ = {0, 1, 2}
+    have himgeq : Finset.image (c ∘ (GridTriangle.mk i j .upper hv).vertices) Finset.univ =
+        {c ⟨i + 1, j, h1⟩, c ⟨i, j + 1, h2⟩, c ⟨i + 1, j + 1, h3⟩} := by
+      apply Finset.ext; intro x
+      simp only [Finset.mem_image, Finset.mem_univ, true_and, Finset.mem_insert,
+                  Finset.mem_singleton]
+      constructor
+      · rintro ⟨k, hk⟩
+        fin_cases k <;>
+          simp only [Function.comp, GridTriangle.vertices, upperVertices] at hk <;>
+          simp [hk]
+      · rintro (hx | hx | hx) <;> subst hx
+        exacts [⟨0, rfl⟩, ⟨1, rfl⟩, ⟨2, rfl⟩]
+    rw [himgeq]; exact heq)
 
 -- ZMod 2 sum helpers for internal-edge cancellation
 private lemma finset_sum_range_succ' {α : Type*} [AddCommMonoid α] (k : ℕ) (f : ℕ → α) :
@@ -421,8 +493,6 @@ private lemma zmod2_sum_tail_cancel (m : ℕ) (hm : 0 < m) (f : ℕ → ZMod 2) 
     _ = 0 + f (m - 1) := by rw [hc]
     _ = f (m - 1) := by ring
 
--- TODO: Fix omega/decide compat for Lean 4.26+ (Fin comparison changes)
--- Proof: Left boundary colors ∈ {0,2} so no {0,1}-doors
 private lemma doorZ_left_boundary {n : ℕ} (hn : 0 < n) (c : Coloring n)
     (hc : IsSperner hn c) (j : ℕ) (hj : j + 1 ≤ n) :
     doorZ c 0 j 0 (j + 1) = 0 := by
@@ -432,28 +502,53 @@ private lemma doorZ_left_boundary {n : ℕ} (hn : 0 < n) (c : Coloring n)
   obtain ⟨hv0, _, hv2, _, hleft, _⟩ := hc
   have h1 : ¬(c ⟨0, j, by omega⟩ = (1 : Fin 3)) := by
     by_cases hj0 : j = 0
-    · have : (⟨0, j, by omega⟩ : GridVertex n) = ⟨0, 0, by omega⟩ := by ext <;> omega
-      rw [this, hv0]; decide
-    · exact hleft ⟨0, j, by omega⟩ rfl (by omega) (by omega)
+    · subst hj0; rw [hv0]; decide
+    · have hgt : j > 0 := by omega
+      have hlt : j < n := by omega
+      exact hleft ⟨0, j, by omega⟩ rfl hgt hlt
   have h2 : ¬(c ⟨0, j + 1, by omega⟩ = (1 : Fin 3)) := by
     by_cases hjn : j + 1 = n
-    · have : (⟨0, j + 1, by omega⟩ : GridVertex n) = ⟨0, n, by omega⟩ := by ext <;> omega
-      rw [this, hv2]; decide
-    · exact hleft ⟨0, j + 1, by omega⟩ rfl (by omega) (by omega)
+    · have heqv : (⟨0, j + 1, by omega⟩ : GridVertex n) = ⟨0, n, by omega⟩ := by
+        ext <;> dsimp <;> omega
+      rw [heqv, hv2]; decide
+    · have hgt : j + 1 > 0 := by omega
+      have hlt : j + 1 < n := by omega
+      exact hleft ⟨0, j + 1, by omega⟩ rfl hgt hlt
   simp only [h2, h1, and_false, false_and, or_self, ite_false]
 
--- TODO: Fix omega/decide compat for Lean 4.26+ (Fin comparison changes)
--- Proof: Hypotenuse colors ∈ {1,2} so no {0,1}-doors
 private lemma doorZ_hyp_boundary {n : ℕ} (hn : 0 < n) (c : Coloring n)
     (hc : IsSperner hn c) (j : ℕ) (hj : j + 1 ≤ n) :
-    doorZ c (n - j) j (n - j - 1) (j + 1) = 0 := by sorry
+    doorZ c (n - j) j (n - j - 1) (j + 1) = 0 := by
+  obtain ⟨_, hv1, hv2, _, _, hhyp⟩ := hc
+  simp only [doorZ]
+  rw [gColor_eq c (n - j) j (by omega), gColor_eq c (n - j - 1) (j + 1) (by omega)]
+  have h1 : c ⟨n - j, j, by omega⟩ ≠ 0 := by
+    by_cases hj0 : j = 0
+    · subst hj0; simp only [Nat.sub_zero]; rw [hv1]; decide
+    · have hsum : (n - j) + j = n := by omega
+      have hgt1 : n - j > 0 := by omega
+      have hgt2 : j > 0 := by omega
+      exact hhyp ⟨n - j, j, by omega⟩ hsum hgt1 hgt2
+  have h2 : c ⟨n - j - 1, j + 1, by omega⟩ ≠ 0 := by
+    by_cases hjn : j + 1 = n
+    · have heqv : (⟨n - j - 1, j + 1, by omega⟩ : GridVertex n) = ⟨0, n, by omega⟩ := by
+        ext <;> dsimp <;> omega
+      rw [heqv, hv2]; decide
+    · have hsum : (n - j - 1) + (j + 1) = n := by omega
+      have hgt1 : n - j - 1 > 0 := by omega
+      have hgt2 : j + 1 > 0 := by omega
+      exact hhyp ⟨n - j - 1, j + 1, by omega⟩ hsum hgt1 hgt2
+  rw [if_neg]
+  rintro (⟨ha, _⟩ | ⟨_, hb⟩)
+  · exact h1 ha
+  · exact h2 hb
 
 -- Convert hTrans (Nat card) to ZMod 2 sum of doorZ indicators
--- TODO: Fix induction/simp compat for current Mathlib
--- Proof: unfold hTrans/doorZ, show Finset.card ↑ ZMod 2 = sum of indicators
 private lemma hTrans_cast {n : ℕ} (c : Coloring n) (j : ℕ) :
     (hTrans c j : ZMod 2) =
-    (Finset.range (n - j)).sum (fun i => doorZ c i j (i + 1) j) := by sorry
+    (Finset.range (n - j)).sum (fun i => doorZ c i j (i + 1) j) := by
+  simp only [hTrans, doorZ]
+  exact (Finset.sum_boole _ _).symm
 
 -- ============================================================
 -- MAIN LEMMA: strip_parity via ZMod 2 double-counting

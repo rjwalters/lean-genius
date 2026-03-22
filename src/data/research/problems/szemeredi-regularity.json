@@ -21,7 +21,7 @@
     "iteration": 4,
     "focus": "regularity_lemma proved (vacuous), energy_increment_step remains the deep technical challenge",
     "blockers": [
-      "energy_increment_step requires constructing a refined partition and bounding energy gain \u2014 complex combinatorial bookkeeping"
+      "energy_increment_step requires constructing a refined partition and bounding energy gain — complex combinatorial bookkeeping"
     ],
     "nextAction": "Prove energy_increment_step by extracting irregular pair, constructing refinement, applying density_sq_convex",
     "attemptCounts": {
@@ -33,16 +33,16 @@
   "knowledge": {
     "progressSummary": "PROGRESS: Added 4 proved theorems supporting energy_increment_step. File: 342 lines, 13 theorems, 2 sorries (energy_increment_step, regularity_lemma_strong). The algebraic infrastructure for energy increment is now complete.",
     "builtItems": [
-      "edgeDensity_nonneg: 0 \u2264 edgeDensity G A B (proved)",
-      "edgeDensity_le_one: edgeDensity G A B \u2264 1 (proved)",
+      "edgeDensity_nonneg: 0 ≤ edgeDensity G A B (proved)",
+      "edgeDensity_le_one: edgeDensity G A B ≤ 1 (proved)",
       "partitionEnergy_le_one: proved",
       "density_sq_convex: Cauchy-Schwarz convexity for density splitting (proved)",
       "max_iterations: iteration bound framework (proved via Archimedean property)",
       "card_mul_edgeDensity: helper showing n*m*d = edge_count (proved)",
       "edge_count_union: helper showing edge counts add for disjoint vertex sets (proved)",
-      "exists_irregular_witness: extract witnesses from non-\u03b5-regular pair (proved)",
+      "exists_irregular_witness: extract witnesses from non-ε-regular pair (proved)",
       "regularity_lemma: proved (vacuous, one-part partition)",
-      "regularity_lemma_strong: proper statement with m\u2080 lower bound (sorry)",
+      "regularity_lemma_strong: proper statement with m₀ lower bound (sorry)",
       "exists_irregular_pair: extract irregular pair from non-regular partition (proved)",
       "split_energy_identity: algebraic Cauchy-Schwarz identity for energy splitting (proved)",
       "split_energy_excess_nonneg: non-negativity of energy excess (proved)",
@@ -50,30 +50,32 @@
     ],
     "insights": [
       "Seed file on main (115 lines) has good definitions: edgeDensity, IsEpsRegular, IsRegularPartition, partitionEnergy",
-      "Energy upper bound: partitionEnergy \u2264 1 because its a sum of d(A,B)\u00b2 * |A|*|B|/|V|\u00b2, and densities are in [0,1]",
-      "The regularity lemma proof strategy: iterate energy increment until regular (bounded by 1/\u03b5\u2075 steps since energy increases by \u03b5\u2075 each step)",
+      "Energy upper bound: partitionEnergy ≤ 1 because its a sum of d(A,B)² * |A|*|B|/|V|², and densities are in [0,1]",
+      "The regularity lemma proof strategy: iterate energy increment until regular (bounded by 1/ε⁵ steps since energy increases by ε⁵ each step)",
       "open Classical needed for DecidablePred on IsRegularPartition filter (IsEpsilonRegular has universal quantifiers)",
       "Finset.card_product uses SProd notation, not .product dot syntax; need exact with defeq not rw",
-      "Key Cauchy-Schwarz fact: splitting A into A1\u222aA2 gives |A1|*d(A1,B)\u00b2+|A2|*d(A2,B)\u00b2 \u2265 |A|*d(A,B)\u00b2",
-      "max_iterations: N=\u23081/eps^5\u2309+1 iterations suffice since energy\u2208[0,1] increases by eps^5 each step",
+      "Key Cauchy-Schwarz fact: splitting A into A1∪A2 gives |A1|*d(A1,B)²+|A2|*d(A2,B)² ≥ |A|*d(A,B)²",
+      "max_iterations: N=⌈1/eps^5⌉+1 iterations suffice since energy∈[0,1] increases by eps^5 each step",
       "Partition size bound: each step at most doubles parts exponentially, giving tower(2, N) bound on M",
       "density_sq_convex requires careful handling of set abbreviations vs edgeDensity - simp cannot see through set-bound variables without explicit unfold",
       "edge count additivity for disjoint unions requires proving product distributes over union (A1 U A2)xB = A1xB U A2xB via explicit ext proof",
       "field_simp + ring can verify the algebraic identity for Cauchy-Schwarz: difference = n1*n2*(d1-d2)^2/(n1+n2)",
       "CRITICAL INSIGHT: Current regularity_lemma statement is trivially satisfied by one-part partition {Finset.univ} because with only 1 part, there are no distinct pairs, so the irregularity count is vacuously 0. Standard formulations require parts.card >= m0 to prevent this.",
-      "regularity_lemma_strong adds the m\u2080 lower bound that forces non-trivial partitioning",
+      "regularity_lemma_strong adds the m₀ lower bound that forces non-trivial partitioning",
       "Remaining 2 sorries: energy_increment_step (finding irregular pairs, constructing refinement, bounding energy gain by eps^5) and regularity_lemma_strong (iteration argument using energy_increment_step)",
       "exists_irregular_pair PROVED: extract specific irregular pair from non-regular partition",
-      "split_energy_identity PROVED: algebraic identity n\u2081d\u2081\u00b2+n\u2082d\u2082\u00b2-(n\u2081+n\u2082)d\u00b2 = n\u2081n\u2082(d\u2081-d\u2082)\u00b2/(n\u2081+n\u2082)",
+      "split_energy_identity PROVED: algebraic identity n₁d₁²+n₂d₂²-(n₁+n₂)d² = n₁n₂(d₁-d₂)²/(n₁+n₂)",
       "split_energy_excess_nonneg PROVED: energy excess is non-negative (Cauchy-Schwarz)",
-      "split_energy_excess_bound PROVED: if |d\u2081-d\u2082| \u2265 \u03b4 then excess \u2265 n\u2081n\u2082\u03b4\u00b2/(n\u2081+n\u2082)",
+      "split_energy_excess_bound PROVED: if |d₁-d₂| ≥ δ then excess ≥ n₁n₂δ²/(n₁+n₂)",
       "The four new lemmas are the key building blocks for energy_increment_step",
-      "Positivity of parts.card*(parts.card-1) in \u211a needs case split on parts.card = 0 vs > 0"
+      "Positivity of parts.card*(parts.card-1) in ℚ needs case split on parts.card = 0 vs > 0",
+      "energy_increment_step is the sole remaining sorry but is NOT used by regularity_lemma_strong (which bridges to Mathlib). It is standalone.",
+      "The proof requires: (1) extract irregular pair from non-regular partition, (2) get witness subsets, (3) construct refined partition, (4) prove energy increment >= eps^5, (5) bound cardinality. Steps 1-2 have helper lemmas (exists_irregular_witness). Step 3-4 need careful Finset construction and application of split_energy_excess_bound."
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "energy_increment_step: find irregular pair in partition, extract witness subsets, split vertices, apply density_sq_convex, bound energy gain by eps^5",
-      "regularity_lemma_strong: construct initial m\u2080-equipartition, iterate energy_increment_step, use max_iterations + partitionEnergy_le_one for termination",
+      "regularity_lemma_strong: construct initial m₀-equipartition, iterate energy_increment_step, use max_iterations + partitionEnergy_le_one for termination",
       "Consider creating SzemerediRegularityAristotle.lean companion file for provable supporting lemmas"
     ]
   },
