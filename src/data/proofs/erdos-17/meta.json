@@ -54,7 +54,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "This problem was posed by Erdős and has remained open for decades. The concept of cluster primes captures when the primes up to p are 'dense enough' that their pairwise differences cover all small even numbers.\n\nThe prize of $97 cleverly matches the first non-cluster prime. Blecksmith, Erdős, and Selfridge (1999) established strong upper bounds showing cluster primes are very sparse, and Elsholtz (2003) further improved these bounds. Terence Tao has identified this problem as 'difficult'.",
+    "historicalContext": "Erdős posed this problem as a question about the collective distribution of primes: not just whether consecutive primes are close (as in the twin prime conjecture), but whether the set of ALL pairwise differences of primes $\\leq p$ covers every even number up to $p - 3$. The $97 prize cleverly matches the first non-cluster prime. Blecksmith, Erdős, and Selfridge (1999) proved the striking bound $\\pi_{\\text{cluster}}(x) \\ll x/(\\log x)^A$ for any $A > 0$, using sieve methods to show that the density condition on differences forces extreme constraints. Elsholtz (2003) pushed further to $\\pi_{\\text{cluster}}(x) \\ll x \\cdot \\exp(-c(\\log\\log x)^2)$ for $c < 1/8$, a double-logarithmic exponential decay making cluster primes among the rarest known subsets of primes. Despite this, neither bound rules out infinitude — compare with the prime $k$-tuples conjecture, where even sparser sets are expected to be infinite. Terence Tao has described the problem as 'difficult', noting it sits at the intersection of additive combinatorics and analytic number theory.",
     "problemStatement": "**Definition**: A prime p is a **cluster prime** if every even positive integer n with 2 ≤ n ≤ p-3 can be written as a difference of two primes q₁ - q₂ where q₁, q₂ ≤ p.\n\n**Question**: Are there infinitely many cluster primes?\n\n**Example**: 7 is a cluster prime because:\n- Primes ≤ 7: {2, 3, 5, 7}\n- Even numbers to cover: {2, 4}\n- 2 = 5 - 3 and 4 = 7 - 3\n\n**First failure**: 97 is the smallest non-cluster prime.",
     "proofStrategy": "The formalization defines cluster primes using Finset operations to construct the set of prime differences. Key results axiomatized:\n\n1. **Concrete Examples**: Verified that small primes (2, 3, 5, 7) are cluster primes\n2. **First Non-Cluster**: 97 is the minimal non-cluster prime\n3. **Upper Bounds**:\n   - Blecksmith-Erdős-Selfridge: count ≪ x/(log x)^A for all A > 0\n   - Elsholtz: count ≪ x·exp(-c(log log x)²) for c < 1/8\n4. **Density Results**: Cluster primes have density 0 among all primes",
     "keyInsights": [
@@ -70,49 +70,49 @@
     {
       "id": "definitions",
       "title": "Core Definitions",
-      "summary": "primesUpTo, primeDifferences, IsClusterPrime",
+      "summary": "Defines `primesUpTo n` (primes $\\leq n$ via `Finset.filter`), `primeDifferences p` (all $q_1 - q_2$ for primes $q_1, q_2 \\leq p$), and `IsClusterPrime p` (every even $n \\in [2, p-3]$ appears in `primeDifferences p`).",
       "startLine": 49,
       "endLine": 67
     },
     {
       "id": "small-primes",
       "title": "Small Examples",
-      "summary": "Verification that 2, 3, 5, 7 are cluster primes",
+      "summary": "Verifies 2, 3, 5 are cluster primes by vacuous truth ($p - 3 < 2$) via `omega`. Axiomatizes 7 as cluster: $\\{2,3,5,7\\}$ gives differences $5-3=2, 7-3=4$ covering $\\{2,4\\}$.",
       "startLine": 69,
       "endLine": 92
     },
     {
       "id": "first-non-cluster",
       "title": "First Non-Cluster Prime",
-      "summary": "97 is the minimal non-cluster prime",
+      "summary": "Axiomatizes that 97 is not a cluster prime (some even $n \\leq 94$ is not a difference of primes $\\leq 97$) and that all primes below 97 are cluster. Packages these into a `MinimalNonCluster` structure witnessing $97 = \\min\\{p : \\neg\\text{IsClusterPrime}(p)\\}$.",
       "startLine": 94,
       "endLine": 120
     },
     {
       "id": "main-question",
       "title": "The Main Question",
-      "summary": "InfinitelyManyClusterPrimes conjecture",
+      "summary": "Defines `InfinitelyManyClusterPrimes`: is $\\{p \\text{ prime} : \\text{IsClusterPrime}(p)\\}$ infinite? This is Erdős Problem #17 (\\$97 prize), still open despite strong density-zero bounds.",
       "startLine": 122,
       "endLine": 131
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
-      "summary": "Blecksmith-Erdős-Selfridge and Elsholtz bounds",
+      "summary": "Axiomatizes Blecksmith-Erdős-Selfridge (1999): $\\pi_{\\text{cluster}}(x) \\ll x/(\\log x)^A$ for all $A > 0$. Axiomatizes Elsholtz (2003): $\\pi_{\\text{cluster}}(x) \\ll x \\cdot \\exp(-c(\\log\\log x)^2)$ for $c < 1/8$. Both show extreme rarity without resolving finiteness.",
       "startLine": 133,
       "endLine": 158
     },
     {
       "id": "density",
       "title": "Density Results",
-      "summary": "Cluster primes have density 0 among primes",
+      "summary": "Proves cluster primes have density 0 among all primes: $\\pi_{\\text{cluster}}(x)/\\pi(x) \\to 0$. Shows cluster primes are rarer than primes in any fixed arithmetic progression (which have density $1/\\varphi(d)$ by Dirichlet).",
       "startLine": 160,
       "endLine": 176
     },
     {
       "id": "prime-gaps",
       "title": "Connection to Prime Gaps",
-      "summary": "Relationship between gaps and cluster property",
+      "summary": "Formalizes the connection: small maximum gap $\\max(q_{i+1} - q_i) \\leq \\log p$ would imply the cluster property. The Maynard-Tao bounded gaps result (gap $\\leq 246$) guarantees SOME small gaps exist but not the ALL-differences condition cluster primes require.",
       "startLine": 178,
       "endLine": 192
     }
