@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Found bug in displacementColoring tie-breaking. Current coloring violates Sperner on hypotenuse when f(p)=p. Needs face-aware tie-breaking fix.",
+    "progressSummary": "PROGRESS: Proved door_parity_of_not_fc (1 sorry eliminated). 9 sorries remain. Boundary doorZ proofs need GridVertex field access workaround.",
     "builtItems": [
       "BrouwerFixedPointOQ02OQ01.lean: 428 lines, 2 sorries (down from 5)",
       "sperner_2d: PROVED via row-sweep parity (modulo strip_parity)",
@@ -49,7 +49,8 @@
       "All 15 definitions and 22/23 theorems compile clean against Mathlib v4.26",
       "displacementColoring_isSperner: PROVED with hno_fix hypothesis (6 cases, ~90 lines)",
       "gridToReal_in_simplex: PROVED helper lemma for simplex membership",
-      "approximate_fixed_point_2d: restructured to handle boundary fixed points (1 sorry remains for uniform continuity)"
+      "approximate_fixed_point_2d: restructured to handle boundary fixed points (1 sorry remains for uniform continuity)",
+      "PROVED door_parity_of_not_fc (was sorry): 9 sorries remain (down from 10)"
     ],
     "insights": [
       "Row-sweep approach is cleaner than full double-counting: define hTrans(j) = horizontal {0,1}-doors at row j, show parity is constant across rows",
@@ -66,16 +67,18 @@
       "15+ omega failures in fully_colored_one_door and no_door_hypotenuse (Lean 4.26 / Fin comparison changes)",
       "sperner_2d proof structure (row-sweep via strip_parity) is mathematically complete but cannot compile due to missing upstream definitions",
       "Restored missing definitions (gColor, hTrans, hTrans_top, gColor_bot, abstractDoorCount) from git history",
-      "Fixed Mathlib v4.26 API drift: omega failures through GridVertex projections (use show/dsimp), deprecated renames (range_succ→range_add_one, notMem_range_self, natCast_eq_zero_iff), door_parity_of_not_fc decide→contradiction",
+      "Fixed Mathlib v4.26 API drift: omega failures through GridVertex projections (use show/dsimp), deprecated renames (range_succ\u2192range_add_one, notMem_range_self, natCast_eq_zero_iff), door_parity_of_not_fc decide\u2192contradiction",
       "Removed unused lemmas (fully_colored_one_door, no_door_left_boundary, no_door_hypotenuse) that had unfixable API drift - superseded by doorZ_* variants",
       "Fixed zmod2_sum_shift_cancel: added missing 0<m hypothesis (lemma was false for m=0)",
       "Added @[ext] to GridVertex for ext tactic compatibility",
       "File now builds clean with 1 sorry (approximate_fixed_point_2d only)",
-      "BUG FOUND: displacementColoring tie-breaking is wrong. When f(p)=p (d0=d1=d2=0), coloring gives 0 on hypotenuse, violating Sperner condition (needs color ≠ 0 there).",
+      "BUG FOUND: displacementColoring tie-breaking is wrong. When f(p)=p (d0=d1=d2=0), coloring gives 0 on hypotenuse, violating Sperner condition (needs color \u2260 0 there).",
       "Root cause: tie-breaking picks smallest index (color 0 first), but on hypotenuse need color 0 to have LOWEST priority.",
       "Fix: reverse tie-breaking priority OR use face-aware tie-breaking where vertex-opposite colors get low priority.",
-      "Standard fix from literature: argmin with tie-broken by largest index (so all-zeros → color 2, which is fine on hypotenuse).",
-      "On bottom edge (d2≥0): reversed priority would give color 2 when all zeros. Need face-aware tie-breaking for corners."
+      "Standard fix from literature: argmin with tie-broken by largest index (so all-zeros \u2192 color 2, which is fine on hypotenuse).",
+      "On bottom edge (d2\u22650): reversed priority would give color 2 when all zeros. Need face-aware tie-breaking for corners.",
+      "door_parity_of_not_fc PROVED: fin_cases + simp_all (config := {decide := true}) closes all 27 cases (Mathlib v4.26 compatible)",
+      "doorZ_left/hyp_boundary: proof strategy is correct (boundary colors \u2260 1/0) but GridVertex ext/rfl matching fails with current Lean - needs GridVertex field access workaround"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -83,7 +86,7 @@
       "One approach: color = max index k such that d_k is minimal among {d0,d1,d2}",
       "Alternative: separate handling for boundary vs interior vertices",
       "After fixing coloring, displacementColoring_isSperner should be provable by case analysis on boundary face + displacement sign",
-      "fully_colored_gives_approx: show all-3-colors triangle has diameter ≤ sqrt(2)/n and displacement is small"
+      "fully_colored_gives_approx: show all-3-colors triangle has diameter \u2264 sqrt(2)/n and displacement is small"
     ]
   },
   "tags": [
@@ -156,7 +159,7 @@
       "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 14,
-      "sorryCount": 10,
+      "sorryCount": 9,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02OQ01.lean"
     },

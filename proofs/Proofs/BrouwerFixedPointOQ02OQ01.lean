@@ -364,9 +364,7 @@ private lemma door_parity_of_not_fc (a b c₃ : Fin 3)
     (if (a = 0 ∧ b = 1) ∨ (a = 1 ∧ b = 0) then (1 : ZMod 2) else 0) +
     (if (a = 0 ∧ c₃ = 1) ∨ (a = 1 ∧ c₃ = 0) then 1 else 0) +
     (if (b = 0 ∧ c₃ = 1) ∨ (b = 1 ∧ c₃ = 0) then 1 else 0) = 0 := by
-  -- TODO: Fix Finset.pair_comm / decide compat for current Mathlib
-  -- Was: fin_cases a <;> fin_cases b <;> fin_cases c₃ <;> simp_all [Finset.pair_comm] <;> decide
-  sorry
+  fin_cases a <;> fin_cases b <;> fin_cases c₃ <;> simp_all (config := { decide := true })
 
 -- gColor equals actual color for valid vertices
 private lemma gColor_eq {n : ℕ} (c : Coloring n) (i j : ℕ) (h : i + j ≤ n) :
