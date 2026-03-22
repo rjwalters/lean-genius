@@ -138,6 +138,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header, Imports, and Problem Statement",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Imports Mathlib and four project-local files (InverseGalois, InverseGaloisD4, NthRootIrrationalOQ01, AngleTrisectionCos20Gal). Module docstring explains the upgrade from OQ-01's degree criterion to OQ-02's Galois 2-group biconditional.",
+      "mathContext": "The fundamental upgrade: $\\alpha$ constructible $\\iff$ $\\text{Gal}(\\text{minpoly}(\\mathbb{Q}, \\alpha))$ is a 2-group — not merely $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] \\mid 2^n$."
+    },
+    {
       "id": "2-groups",
       "title": "2-Groups: Basic Facts",
       "startLine": 46,
