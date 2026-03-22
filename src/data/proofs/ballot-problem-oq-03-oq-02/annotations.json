@@ -1,1 +1,106 @@
-[]
+[
+  {
+    "id": "ann-bpoq03oq02-1",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": { "startLine": 1, "endLine": 48 },
+    "type": "context",
+    "title": "The LGV Lemma: Lattice Paths Meet Linear Algebra",
+    "content": "The Lindström-Gessel-Viennot lemma is one of the deepest connections between combinatorics and linear algebra. Lindström proved the result for pairs of paths in 1973; Gessel and Viennot generalized to $r$-tuples in 1985. The proof strategy decomposes into two halves: (1) the algebraic bridge ($\\det M = \\sum_\\sigma \\text{sign}(\\sigma) \\prod M_{i,\\sigma(i)}$, interpreting the Leibniz formula combinatorially), and (2) the GV involution cancellation (pairing non-identity permutation tuples via tail-swapping to cancel signed contributions).",
+    "mathContext": "The LGV lemma: $|\\{\\text{NI r-tuples}\\}| = \\det[e(A_i, B_j)]_{i,j=1}^r$ where $e(A,B) = \\binom{m + (b-a)}{m}$ counts lattice paths from $A$ to $B$.",
+    "significance": "critical",
+    "relatedConcepts": ["Determinantal identities", "Sign-reversing involution", "Lattice path combinatorics", "Lindström-Gessel-Viennot lemma"],
+    "prerequisites": ["Matrix determinants", "Permutation signs", "Lattice paths", "Binomial coefficients"],
+    "tags": ["lgv-lemma", "overview", "algebraic-combinatorics"]
+  },
+  {
+    "id": "ann-bpoq03oq02-2",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": { "startLine": 53, "endLine": 82 },
+    "type": "definition",
+    "title": "Lattice Path Encoding and Counting",
+    "content": "Lattice paths are encoded as `List Bool` where `false` = East step (+x) and `true` = North step (+y). The subtype `PathMN m n` restricts to paths with exactly $m$ East and $n$ North steps. The `Fintype` instance constructs the bijection with Boolean vectors of length $m+n$ having exactly $m$ false entries.\n\n`pathCount m a b = C(m + (b-a), m)` gives the number of paths from $(0, a)$ to $(m, b)$.",
+    "mathContext": "A lattice path from $(0, a)$ to $(m, a+n)$ is a sequence of $m + n$ steps, choosing $m$ to be East. The count $\\binom{m+n}{m}$ is the number of ways to arrange $m$ East steps among $m+n$ total steps.",
+    "significance": "key",
+    "relatedConcepts": ["Binomial coefficients as path counts", "Boolean vector encoding", "Fintype construction"],
+    "prerequisites": ["List.Vector in Mathlib", "Fintype.ofEquiv", "Nat.choose"],
+    "tags": ["lattice-paths", "encoding", "counting"]
+  },
+  {
+    "id": "ann-bpoq03oq02-3",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": { "startLine": 114, "endLine": 136 },
+    "type": "definition",
+    "title": "LGVConfig: The Configuration Structure",
+    "content": "**`LGVConfig r`** bundles an $r \\times r$ LGV problem: grid width $m$, source array $a_1 < \\cdots < a_r$, target array $b_1 < \\cdots < b_r$, with $a_i \\le b_i$ for each $i$.\n\nThe strict monotonicity constraints (`StrictMono sources/targets`) are the key hypothesis: they ensure that paths corresponding to non-identity permutations must cross, enabling the GV involution.\n\n`PathTuple cfg` is the dependent product $(i : \\text{Fin}\\ r) \\to \\text{PathMN}(m, b_i - a_i)$: an $r$-tuple of paths, one per source-target pair.",
+    "mathContext": "Strict monotonicity $a_1 < \\cdots < a_r$ ensures that if $\\sigma(i) \\ne i$ and $i < \\sigma(i)$, then source $a_i < a_{\\sigma(i)}$ while target $b_{\\sigma(i)}$ may be below target $b_i$, forcing a crossing.",
+    "significance": "critical",
+    "relatedConcepts": ["Dependent product types", "StrictMono in Mathlib", "Crossing lemma hypothesis"],
+    "prerequisites": ["Structure definitions in Lean 4", "Fin type", "StrictMono typeclass"],
+    "tags": ["lgv-config", "strict-monotonicity", "infrastructure"]
+  },
+  {
+    "id": "ann-bpoq03oq02-4",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": { "startLine": 141, "endLine": 165 },
+    "type": "definition",
+    "title": "Path Matrix and Permutation Path Tuples",
+    "content": "**`pathMatrix`**: The $r \\times r$ integer matrix $M_{i,j} = \\binom{m + (b_j - a_i)}{m}$ counting paths from source $i$ to target $j$.\n\n**`PermPathTuple cfg σ`**: For permutation $\\sigma$, an $r$-tuple where path $i$ goes from source $i$ to target $\\sigma(i)$. The `signedPermCount` computes $\\text{sign}(\\sigma) \\cdot \\prod_i M_{i,\\sigma(i)}$.\n\nWhen $\\sigma = \\text{id}$, this is a standard path tuple; for $\\sigma \\ne \\text{id}$, paths may go to 'wrong' targets.",
+    "mathContext": "The Leibniz formula: $\\det M = \\sum_\\sigma \\text{sign}(\\sigma) \\prod_i M_{i,\\sigma(i)}$. Each product $\\prod_i M_{i,\\sigma(i)} = \\prod_i \\binom{m + (b_{\\sigma(i)} - a_i)}{m}$ counts $\\sigma$-path tuples by independence of paths.",
+    "significance": "critical",
+    "relatedConcepts": ["Leibniz formula for determinants", "Permutation decomposition", "Product counting"],
+    "prerequisites": ["Matrix.det in Mathlib", "Equiv.Perm (Fin r)", "Fintype.card_pi"],
+    "tags": ["path-matrix", "permutation-tuples", "leibniz-formula"]
+  },
+  {
+    "id": "ann-bpoq03oq02-5",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": { "startLine": 179, "endLine": 223 },
+    "type": "technique",
+    "title": "The GV Involution: Tail Swapping and Sign Reversal",
+    "content": "**`swapTailsAt l₁ l₂ k`**: Swaps the suffixes of paths $l_1$ and $l_2$ after position $k$. Length preservation is proved for paths of equal length.\n\n**`gessel_viennot_transposition_sign`**: The key sign identity: $\\text{sign}(\\text{swap}(i, \\sigma(i)) \\cdot \\sigma) = -\\text{sign}(\\sigma)$. This ensures the involution pairs $\\sigma$-tuples with $\\tau$-tuples of opposite sign, causing cancellation.\n\nThe proof uses `Equiv.Perm.sign_swap` (sign of a transposition is $-1$) and the multiplicativity of the sign homomorphism.",
+    "mathContext": "The tail-swap at the first crossing point is the heart of the GV involution. If paths $P_i$ and $P_{\\sigma(i)}$ cross at lattice point $p$, swapping their tails after $p$ produces valid paths of the same lengths but going to swapped targets, changing the permutation by a transposition.",
+    "significance": "critical",
+    "relatedConcepts": ["Sign-reversing involution", "Transposition sign", "Involution principle in combinatorics"],
+    "prerequisites": ["Equiv.Perm.sign_swap", "List.take/drop operations", "Involution theory"],
+    "tags": ["gv-involution", "tail-swap", "sign-reversal"]
+  },
+  {
+    "id": "ann-bpoq03oq02-6",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": { "startLine": 228, "endLine": 264 },
+    "type": "technique",
+    "title": "First Non-Fixed Point: Finding the Crossing Pair",
+    "content": "**`firstNonFixed σ hσ`**: For $\\sigma \\ne \\text{id}$, computes the smallest index $i$ with $\\sigma(i) \\ne i$, using `Finset.min'` over the filter of non-fixed points.\n\nFour properties proved:\n1. `firstNonFixed_spec`: $\\sigma(i) \\ne i$ (it's truly non-fixed)\n2. `firstNonFixed_minimal`: all $j < i$ are fixed by $\\sigma$\n3. `firstNonFixed_lt_image`: $i < \\sigma(i)$ (maps strictly upward)\n\nProperty (3) is key: since $\\sigma$ fixes all $j < i$, the image $\\sigma(i)$ cannot equal any $j < i$ (by injectivity) or $i$ itself, so $\\sigma(i) > i$.",
+    "mathContext": "Since $a_{\\text{firstNonFixed}} < a_{\\sigma(\\text{firstNonFixed})}$ (sources strictly monotone) and paths go to permuted targets, the crossing lemma guarantees paths $P_i$ and $P_{\\sigma(i)}$ share a lattice point.",
+    "significance": "key",
+    "relatedConcepts": ["Minimum of finite sets", "Permutation cycle structure", "Injectivity arguments"],
+    "prerequisites": ["Finset.min'", "Finset.filter", "Equiv.Perm injectivity"],
+    "tags": ["first-non-fixed", "permutation-analysis", "crossing-detection"]
+  },
+  {
+    "id": "ann-bpoq03oq02-7",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": { "startLine": 306, "endLine": 354 },
+    "type": "insight",
+    "title": "Algebraic Bridge and the Main LGV Theorem",
+    "content": "**`det_pathMatrix_eq_signed_sum`** (fully proved): The algebraic half — $\\det M = \\sum_\\sigma \\text{sign}(\\sigma) \\cdot |\\text{PermPathTuple}(\\sigma)|$ — uses the transposed Leibniz formula and `permPathTuple_card`.\n\n**`gv_involution_cancellation`** (axiom): The combinatorial half — the signed sum equals `niTupleCount`. This is the sole remaining axiom.\n\n**`lgv_lemma_rxr`** (proved): $\\text{niTupleCount} = \\det M$, combining both halves in two lines: rewrite via `det_pathMatrix_eq_signed_sum`, then apply `gv_involution_cancellation`.",
+    "mathContext": "The proof structure: $\\det M \\stackrel{\\text{algebraic}}{=} \\sum_\\sigma \\text{sign}(\\sigma) |\\text{PPT}(\\sigma)| \\stackrel{\\text{GV axiom}}{=} |\\text{NI tuples}|$. The algebraic step is fully verified; the combinatorial step is the axiomatized GV involution.",
+    "significance": "critical",
+    "relatedConcepts": ["Leibniz determinant formula", "Matrix.det_apply", "Involution cancellation principle"],
+    "prerequisites": ["Matrix.det_transpose", "Finset.sum_congr", "permPathTuple_card"],
+    "tags": ["main-theorem", "algebraic-bridge", "two-part-proof"]
+  },
+  {
+    "id": "ann-bpoq03oq02-8",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": { "startLine": 359, "endLine": 404 },
+    "type": "concept",
+    "title": "Corollaries and Applications of LGV",
+    "content": "**Corollaries**: $\\det M \\ge 0$ (since NI count is a natural number) and every 1-tuple is vacuously non-intersecting.\n\n**Applications**: The docstring on `lgv_universality` catalogs four major applications:\n1. **Schur polynomials** via the Jacobi-Trudi identity $s_\\lambda = \\det[h_{\\lambda_i - i + j}]$\n2. **Catalan numbers** as non-intersecting path pairs\n3. **Aztec diamond** tilings ($2^{n(n+1)/2}$) via NI determinant\n4. **Plane partitions** via MacMahon's box formula",
+    "mathContext": "The non-negativity $\\det M \\ge 0$ is remarkable: it is not obvious from the matrix entries alone that the determinant of a matrix of binomial coefficients is non-negative. The LGV lemma provides a combinatorial explanation.",
+    "significance": "key",
+    "relatedConcepts": ["Schur polynomials", "Jacobi-Trudi identity", "Catalan numbers", "Aztec diamond", "Plane partitions"],
+    "prerequisites": ["LGV lemma", "Symmetric function theory", "Tiling theory"],
+    "tags": ["corollaries", "applications", "algebraic-combinatorics"]
+  }
+]

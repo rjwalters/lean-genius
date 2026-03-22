@@ -2,234 +2,588 @@
   {
     "id": "ann-539-gcdquot",
     "proofId": "erdos-539",
-    "range": { "startLine": 39, "endLine": 40 },
+    "range": {
+      "startLine": 39,
+      "endLine": 40
+    },
     "type": "definition",
     "title": "gcdQuotient",
     "content": "The GCD-reduced quotient a / gcd(a, b).",
     "significance": "critical",
-    "tags": ["gcd", "quotient", "number-theory", "definition"]
+    "tags": [
+      "gcd",
+      "quotient",
+      "number-theory",
+      "definition"
+    ],
+    "prerequisites": [
+      "GCD and divisibility in $\\mathbb{N}$",
+      "Finset operations"
+    ],
+    "relatedConcepts": [
+      "GCD quotient sets",
+      "Coprime factorization",
+      "Divisibility structure"
+    ]
   },
   {
     "id": "ann-539-pos",
     "proofId": "erdos-539",
-    "range": { "startLine": 42, "endLine": 48 },
+    "range": {
+      "startLine": 42,
+      "endLine": 48
+    },
     "type": "theorem",
     "title": "gcdQuotient_pos",
     "content": "gcdQuotient is always positive for positive inputs.",
     "significance": "key",
-    "tags": ["positivity", "gcd", "natural-numbers"]
+    "tags": [
+      "positivity",
+      "gcd",
+      "natural-numbers"
+    ],
+    "prerequisites": [
+      "GCD and divisibility in $\\mathbb{N}$",
+      "Finset operations"
+    ],
+    "relatedConcepts": [
+      "GCD quotient sets",
+      "Coprime factorization",
+      "Divisibility structure"
+    ]
   },
   {
     "id": "ann-539-isnat",
     "proofId": "erdos-539",
-    "range": { "startLine": 50, "endLine": 54 },
+    "range": {
+      "startLine": 50,
+      "endLine": 54
+    },
     "type": "theorem",
     "title": "gcdQuotient_is_nat",
     "content": "gcdQuotient a b * gcd(a,b) = a.",
     "significance": "key",
-    "tags": ["divisibility", "gcd", "natural-numbers"]
+    "tags": [
+      "divisibility",
+      "gcd",
+      "natural-numbers"
+    ],
+    "prerequisites": [
+      "GCD and divisibility in $\\mathbb{N}$",
+      "Finset operations"
+    ],
+    "relatedConcepts": [
+      "GCD quotient sets",
+      "Coprime factorization",
+      "Divisibility structure"
+    ]
   },
   {
     "id": "ann-539-quotset",
     "proofId": "erdos-539",
-    "range": { "startLine": 56, "endLine": 58 },
+    "range": {
+      "startLine": 56,
+      "endLine": 58
+    },
     "type": "definition",
     "title": "gcdQuotientSet",
-    "content": "The set { a/gcd(a,b) : a,b ∈ A }.",
+    "content": "The set { a/gcd(a,b) : a,b \u2208 A }.",
     "significance": "critical",
-    "tags": ["finite-sets", "gcd", "quotient", "combinatorics"]
+    "tags": [
+      "finite-sets",
+      "gcd",
+      "quotient",
+      "combinatorics"
+    ],
+    "prerequisites": [
+      "GCD and divisibility in $\\mathbb{N}$",
+      "Finset operations"
+    ],
+    "relatedConcepts": [
+      "GCD quotient sets",
+      "Coprime factorization",
+      "Divisibility structure"
+    ]
   },
   {
     "id": "ann-539-size",
     "proofId": "erdos-539",
-    "range": { "startLine": 60, "endLine": 62 },
+    "range": {
+      "startLine": 60,
+      "endLine": 62
+    },
     "type": "definition",
     "title": "gcdQuotientSize",
     "content": "Cardinality of the quotient set.",
     "significance": "key",
-    "tags": ["cardinality", "finite-sets", "combinatorics"]
+    "tags": [
+      "cardinality",
+      "finite-sets",
+      "combinatorics"
+    ],
+    "prerequisites": [
+      "GCD and divisibility in $\\mathbb{N}$",
+      "Finset operations"
+    ],
+    "relatedConcepts": [
+      "Additive combinatorics",
+      "GCD structure",
+      "Extremal problems"
+    ]
   },
   {
     "id": "ann-539-h",
     "proofId": "erdos-539",
-    "range": { "startLine": 68, "endLine": 72 },
+    "range": {
+      "startLine": 68,
+      "endLine": 72
+    },
     "type": "definition",
     "title": "h",
     "content": "h(n) = minimum quotient set size over n-sets.",
     "significance": "critical",
-    "tags": ["extremal-function", "infimum", "combinatorics", "asymptotics"]
+    "tags": [
+      "extremal-function",
+      "infimum",
+      "combinatorics",
+      "asymptotics"
+    ],
+    "prerequisites": [
+      "GCD and divisibility in $\\mathbb{N}$",
+      "Finset operations"
+    ],
+    "relatedConcepts": [
+      "Additive combinatorics",
+      "GCD structure",
+      "Extremal problems"
+    ]
   },
   {
     "id": "ann-539-self",
     "proofId": "erdos-539",
-    "range": { "startLine": 83, "endLine": 86 },
+    "range": {
+      "startLine": 83,
+      "endLine": 86
+    },
     "type": "theorem",
     "title": "gcdQuotient_self",
     "content": "gcdQuotient a a = 1 for a > 0.",
     "significance": "key",
-    "tags": ["gcd", "identity", "natural-numbers"]
+    "tags": [
+      "gcd",
+      "identity",
+      "natural-numbers"
+    ],
+    "prerequisites": [
+      "GCD and divisibility in $\\mathbb{N}$",
+      "Finset operations"
+    ],
+    "relatedConcepts": [
+      "GCD quotient sets",
+      "Coprime factorization",
+      "Divisibility structure"
+    ]
   },
   {
     "id": "ann-539-one",
     "proofId": "erdos-539",
-    "range": { "startLine": 88, "endLine": 94 },
+    "range": {
+      "startLine": 88,
+      "endLine": 94
+    },
     "type": "theorem",
     "title": "one_in_quotient_set",
     "content": "1 is always in the quotient set.",
     "significance": "key",
-    "tags": ["membership", "quotient", "finite-sets"]
+    "tags": [
+      "membership",
+      "quotient",
+      "finite-sets"
+    ],
+    "prerequisites": [
+      "GCD and divisibility in $\\mathbb{N}$",
+      "Finset operations"
+    ],
+    "relatedConcepts": [
+      "Additive combinatorics",
+      "GCD structure",
+      "Extremal problems"
+    ]
   },
   {
     "id": "ann-539-eslower",
     "proofId": "erdos-539",
-    "range": { "startLine": 100, "endLine": 105 },
+    "range": {
+      "startLine": 100,
+      "endLine": 105
+    },
     "type": "theorem",
     "title": "erdos_szemeredi_lower",
-    "content": "Erdős-Szemerédi: h(n) ≥ c·n^{1/2}.",
+    "content": "Erd\u0151s-Szemer\u00e9di: h(n) \u2265 c\u00b7n^{1/2}.",
     "significance": "critical",
-    "tags": ["lower-bound", "erdos-szemeredi", "asymptotics", "combinatorics"]
+    "tags": [
+      "lower-bound",
+      "erdos-szemeredi",
+      "asymptotics",
+      "combinatorics"
+    ],
+    "prerequisites": [
+      "Asymptotic notation",
+      "Pigeonhole principle"
+    ],
+    "relatedConcepts": [
+      "Additive combinatorics",
+      "GCD structure",
+      "Extremal problems"
+    ]
   },
   {
     "id": "ann-539-esupper",
     "proofId": "erdos-539",
-    "range": { "startLine": 107, "endLine": 113 },
+    "range": {
+      "startLine": 107,
+      "endLine": 113
+    },
     "type": "theorem",
     "title": "erdos_szemeredi_upper",
-    "content": "Erdős-Szemerédi: h(n) ≤ n^{1-c}.",
+    "content": "Erd\u0151s-Szemer\u00e9di: h(n) \u2264 n^{1-c}.",
     "significance": "critical",
-    "tags": ["upper-bound", "erdos-szemeredi", "asymptotics", "combinatorics"]
+    "tags": [
+      "upper-bound",
+      "erdos-szemeredi",
+      "asymptotics",
+      "combinatorics"
+    ],
+    "prerequisites": [
+      "Asymptotic notation",
+      "Pigeonhole principle"
+    ],
+    "relatedConcepts": [
+      "Additive combinatorics",
+      "GCD structure",
+      "Extremal problems"
+    ]
   },
   {
     "id": "ann-539-esbounds",
     "proofId": "erdos-539",
-    "range": { "startLine": 115, "endLine": 118 },
+    "range": {
+      "startLine": 115,
+      "endLine": 118
+    },
     "type": "definition",
     "title": "ErdosSzemeredi_Bounds",
-    "content": "Combined: n^{1/2} ≪ h(n) ≪ n^{1-c}.",
+    "content": "Combined: n^{1/2} \u226a h(n) \u226a n^{1-c}.",
     "significance": "critical",
-    "tags": ["bounds", "erdos-szemeredi", "asymptotics"]
+    "tags": [
+      "bounds",
+      "erdos-szemeredi",
+      "asymptotics"
+    ],
+    "prerequisites": [
+      "Number theory basics",
+      "Combinatorics"
+    ],
+    "relatedConcepts": [
+      "Additive combinatorics",
+      "GCD structure",
+      "Extremal problems"
+    ]
   },
   {
     "id": "ann-539-fl",
     "proofId": "erdos-539",
-    "range": { "startLine": 124, "endLine": 130 },
+    "range": {
+      "startLine": 124,
+      "endLine": 130
+    },
     "type": "theorem",
     "title": "freiman_lev_upper",
-    "content": "Freiman-Lev: h(n) ≤ C·n^{2/3}.",
+    "content": "Freiman-Lev: h(n) \u2264 C\u00b7n^{2/3}.",
     "significance": "critical",
-    "tags": ["upper-bound", "freiman-lev", "asymptotics", "additive-combinatorics"]
+    "tags": [
+      "upper-bound",
+      "freiman-lev",
+      "asymptotics",
+      "additive-combinatorics"
+    ],
+    "prerequisites": [
+      "Number theory basics",
+      "Combinatorics"
+    ],
+    "relatedConcepts": [
+      "Additive combinatorics",
+      "GCD structure",
+      "Extremal problems"
+    ]
   },
   {
     "id": "ann-539-improved",
     "proofId": "erdos-539",
-    "range": { "startLine": 132, "endLine": 135 },
+    "range": {
+      "startLine": 132,
+      "endLine": 135
+    },
     "type": "definition",
     "title": "ImprovedBounds",
-    "content": "n^{1/2} ≪ h(n) ≪ n^{2/3}.",
+    "content": "n^{1/2} \u226a h(n) \u226a n^{2/3}.",
     "significance": "critical",
-    "tags": ["bounds", "freiman-lev", "erdos-szemeredi", "asymptotics"]
+    "tags": [
+      "bounds",
+      "freiman-lev",
+      "erdos-szemeredi",
+      "asymptotics"
+    ],
+    "prerequisites": [
+      "Number theory basics",
+      "Combinatorics"
+    ],
+    "relatedConcepts": [
+      "Additive combinatorics",
+      "GCD structure",
+      "Extremal problems"
+    ]
   },
   {
     "id": "ann-539-ap",
     "proofId": "erdos-539",
-    "range": { "startLine": 146, "endLine": 148 },
+    "range": {
+      "startLine": 146,
+      "endLine": 148
+    },
     "type": "definition",
     "title": "arithmeticProgression",
     "content": "AP: {a, 2a, ..., na}.",
     "significance": "supporting",
-    "tags": ["arithmetic-progression", "example", "number-theory"]
+    "tags": [
+      "arithmetic-progression",
+      "example",
+      "number-theory"
+    ],
+    "prerequisites": [
+      "Number theory basics",
+      "Combinatorics"
+    ],
+    "relatedConcepts": [
+      "Additive combinatorics",
+      "GCD structure",
+      "Extremal problems"
+    ]
   },
   {
     "id": "ann-539-gp",
     "proofId": "erdos-539",
-    "range": { "startLine": 155, "endLine": 157 },
+    "range": {
+      "startLine": 155,
+      "endLine": 157
+    },
     "type": "definition",
     "title": "geometricProgression",
-    "content": "GP: {1, a, a², ..., a^{n-1}}.",
+    "content": "GP: {1, a, a\u00b2, ..., a^{n-1}}.",
     "significance": "supporting",
-    "tags": ["geometric-progression", "example", "number-theory"]
+    "tags": [
+      "geometric-progression",
+      "example",
+      "number-theory"
+    ],
+    "prerequisites": [
+      "Number theory basics",
+      "Combinatorics"
+    ],
+    "relatedConcepts": [
+      "Additive combinatorics",
+      "GCD structure",
+      "Extremal problems"
+    ]
   },
   {
     "id": "ann-539-gcdmat",
     "proofId": "erdos-539",
-    "range": { "startLine": 165, "endLine": 178 },
+    "range": {
+      "startLine": 165,
+      "endLine": 178
+    },
     "type": "definition",
     "title": "GCD and Quotient Matrices",
     "content": "**Matrix formulations** of the GCD structure. The GCD matrix records gcd(i,j) for all pairs in A, while the quotient matrix records i/gcd(i,j). The quotient set is exactly the image of the quotient matrix.",
     "mathContext": "These matrix views connect the problem to linear algebra and matrix rank techniques used in additive combinatorics.",
     "significance": "supporting",
-    "tags": ["matrix", "gcd", "linear-algebra", "combinatorics"],
-    "relatedConcepts": ["matrix", "gcd", "combinatorics"]
+    "tags": [
+      "matrix",
+      "gcd",
+      "linear-algebra",
+      "combinatorics"
+    ],
+    "relatedConcepts": [
+      "matrix",
+      "gcd",
+      "combinatorics"
+    ],
+    "prerequisites": [
+      "GCD and divisibility in $\\mathbb{N}$",
+      "Finset operations"
+    ]
   },
   {
     "id": "ann-539-geometric",
     "proofId": "erdos-539",
-    "range": { "startLine": 180, "endLine": 193 },
+    "range": {
+      "startLine": 180,
+      "endLine": 193
+    },
     "type": "axiom",
     "title": "Granville-Roesler Geometric Reformulation",
-    "content": "**Geometric reformulation** by Granville and Roesler: the GCD-quotient problem can be studied through lattice point configurations in ℤ^d. The 'directed distance' δ(a,b) has i-th coordinate max(0, aᵢ - bᵢ). This reformulation yields dimension-dependent lower bounds.",
+    "content": "**Geometric reformulation** by Granville and Roesler: the GCD-quotient problem can be studied through lattice point configurations in \u2124^d. The 'directed distance' \u03b4(a,b) has i-th coordinate max(0, a\u1d62 - b\u1d62). This reformulation yields dimension-dependent lower bounds.",
     "mathContext": "The geometric view transforms a number-theoretic problem into combinatorial geometry, enabling techniques from lattice point counting and convex geometry.",
     "significance": "key",
-    "tags": ["lattice-points", "geometry", "combinatorial-geometry"],
-    "relatedConcepts": ["lattice-points", "geometry", "combinatorial-geometry"]
+    "tags": [
+      "lattice-points",
+      "geometry",
+      "combinatorial-geometry"
+    ],
+    "relatedConcepts": [
+      "lattice-points",
+      "geometry",
+      "combinatorial-geometry"
+    ],
+    "prerequisites": [
+      "GCD and divisibility in $\\mathbb{N}$",
+      "Finset operations"
+    ]
   },
   {
     "id": "ann-539-extremal",
     "proofId": "erdos-539",
-    "range": { "startLine": 195, "endLine": 213 },
+    "range": {
+      "startLine": 195,
+      "endLine": 213
+    },
     "type": "axiom",
     "title": "Extremal Sets and Structure",
-    "content": "**Extremal sets** that minimize the quotient set size have multiplicative structure — they share a common factor and are built from structured subsets. This reveals that the upper bound n^{2/3} is achieved by sets with arithmetic regularity.",
-    "mathContext": "The extremal structure theorem shows that sets achieving h(n) ~ n^{2/3} must be of the form {d·k : k ∈ S} for a common divisor d, connecting to smooth numbers and multiplicative number theory.",
+    "content": "**Extremal sets** that minimize the quotient set size have multiplicative structure \u2014 they share a common factor and are built from structured subsets. This reveals that the upper bound n^{2/3} is achieved by sets with arithmetic regularity.",
+    "mathContext": "The extremal structure theorem shows that sets achieving h(n) ~ n^{2/3} must be of the form {d\u00b7k : k \u2208 S} for a common divisor d, connecting to smooth numbers and multiplicative number theory.",
     "significance": "key",
-    "tags": ["extremal-sets", "multiplicative-structure", "smooth-numbers"],
-    "relatedConcepts": ["extremal-sets", "multiplicative-structure", "smooth-numbers"]
+    "tags": [
+      "extremal-sets",
+      "multiplicative-structure",
+      "smooth-numbers"
+    ],
+    "relatedConcepts": [
+      "extremal-sets",
+      "multiplicative-structure",
+      "smooth-numbers"
+    ],
+    "prerequisites": [
+      "GCD and divisibility in $\\mathbb{N}$",
+      "Finset operations"
+    ]
   },
   {
     "id": "ann-539-question",
     "proofId": "erdos-539",
-    "range": { "startLine": 215, "endLine": 233 },
+    "range": {
+      "startLine": 215,
+      "endLine": 233
+    },
     "type": "definition",
     "title": "The Main Open Questions",
-    "content": "**The central open question:** Does h(n) = Θ(n^α) for some specific exponent α between 1/2 and 2/3? A refined question asks whether the true exponent is closer to 2/3, as suggested by extremal constructions.",
-    "mathContext": "ErdosQuestion539 formalizes the existence of a power-law exponent α ∈ [1/2, 2/3] with matching upper and lower bounds. The openExponentQuestion asks whether almost-n^{2/3} lower bounds hold.",
+    "content": "**The central open question:** Does h(n) = \u0398(n^\u03b1) for some specific exponent \u03b1 between 1/2 and 2/3? A refined question asks whether the true exponent is closer to 2/3, as suggested by extremal constructions.",
+    "mathContext": "ErdosQuestion539 formalizes the existence of a power-law exponent \u03b1 \u2208 [1/2, 2/3] with matching upper and lower bounds. The openExponentQuestion asks whether almost-n^{2/3} lower bounds hold.",
     "significance": "critical",
-    "tags": ["open-problem", "exponent", "asymptotics", "erdos"],
-    "relatedConcepts": ["open-problem", "exponent", "asymptotics"]
+    "tags": [
+      "open-problem",
+      "exponent",
+      "asymptotics",
+      "erdos"
+    ],
+    "relatedConcepts": [
+      "open-problem",
+      "exponent",
+      "asymptotics"
+    ],
+    "prerequisites": [
+      "Number theory basics",
+      "Combinatorics"
+    ]
   },
   {
     "id": "ann-539-main",
     "proofId": "erdos-539",
-    "range": { "startLine": 250, "endLine": 253 },
+    "range": {
+      "startLine": 250,
+      "endLine": 253
+    },
     "type": "axiom",
-    "title": "erdos_539: Erdős-Szemerédi Bounds",
-    "content": "**Main result:** The Erdős-Szemerédi bounds n^{1/2} ≪ h(n) ≪ n^{1-c} hold. Axiomatized because proving that h(n) achieves its infimum requires measure-theoretic arguments beyond current Mathlib.",
+    "title": "erdos_539: Erd\u0151s-Szemer\u00e9di Bounds",
+    "content": "**Main result:** The Erd\u0151s-Szemer\u00e9di bounds n^{1/2} \u226a h(n) \u226a n^{1-c} hold. Axiomatized because proving that h(n) achieves its infimum requires measure-theoretic arguments beyond current Mathlib.",
     "mathContext": "The proof uses counting arguments for the lower bound and explicit constructions for the upper bound.",
     "significance": "critical",
-    "tags": ["erdos-szemeredi", "bounds", "asymptotics", "axiom"],
-    "relatedConcepts": ["erdos-szemeredi", "bounds"]
+    "tags": [
+      "erdos-szemeredi",
+      "bounds",
+      "asymptotics",
+      "axiom"
+    ],
+    "relatedConcepts": [
+      "erdos-szemeredi",
+      "bounds"
+    ],
+    "prerequisites": [
+      "Asymptotic notation",
+      "Pigeonhole principle"
+    ]
   },
   {
     "id": "ann-539-bounds",
     "proofId": "erdos-539",
-    "range": { "startLine": 255, "endLine": 261 },
+    "range": {
+      "startLine": 255,
+      "endLine": 261
+    },
     "type": "axiom",
     "title": "erdos_539_bounds: Improved Bounds",
-    "content": "**Improved bounds:** n^{1/2} ≪ h(n) ≪ n^{2/3}, combining Erdős-Szemerédi lower with Freiman-Lev upper. This tightens the exponent gap from [1/2, 1-c] to [1/2, 2/3].",
+    "content": "**Improved bounds:** n^{1/2} \u226a h(n) \u226a n^{2/3}, combining Erd\u0151s-Szemer\u00e9di lower with Freiman-Lev upper. This tightens the exponent gap from [1/2, 1-c] to [1/2, 2/3].",
     "mathContext": "The Freiman-Lev improvement uses structural properties of sets with small quotient sets.",
     "significance": "critical",
-    "tags": ["freiman-lev", "improved-bounds", "asymptotics", "axiom"],
-    "relatedConcepts": ["freiman-lev", "improved-bounds"]
+    "tags": [
+      "freiman-lev",
+      "improved-bounds",
+      "asymptotics",
+      "axiom"
+    ],
+    "relatedConcepts": [
+      "freiman-lev",
+      "improved-bounds"
+    ],
+    "prerequisites": [
+      "Asymptotic notation",
+      "Pigeonhole principle"
+    ]
   },
   {
     "id": "ann-539-open",
     "proofId": "erdos-539",
-    "range": { "startLine": 263, "endLine": 265 },
+    "range": {
+      "startLine": 263,
+      "endLine": 265
+    },
     "type": "axiom",
     "title": "erdos_539_open: Problem Remains Open",
-    "content": "**OPEN:** The exact exponent α with h(n) = Θ(n^α) is unknown. This axiom asserts that such an exponent exists in [1/2, 2/3], which is the core open question of Erdős Problem #539.",
+    "content": "**OPEN:** The exact exponent \u03b1 with h(n) = \u0398(n^\u03b1) is unknown. This axiom asserts that such an exponent exists in [1/2, 2/3], which is the core open question of Erd\u0151s Problem #539.",
     "significance": "critical",
-    "tags": ["open-problem", "erdos", "exponent", "axiom"],
-    "relatedConcepts": ["open-problem", "erdos"]
+    "tags": [
+      "open-problem",
+      "erdos",
+      "exponent",
+      "axiom"
+    ],
+    "relatedConcepts": [
+      "open-problem",
+      "erdos"
+    ],
+    "prerequisites": [
+      "Asymptotic notation",
+      "Pigeonhole principle"
+    ]
   }
 ]
