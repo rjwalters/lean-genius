@@ -147,5 +147,38 @@
       "Is there an effective version: for which p < N is p k-good?",
       "How does the density depend on k?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "note": "[ErGr80] where Problem 383 appears, related to Problem #382"
+    },
+    {
+      "authors": "de Bruijn, N. G.",
+      "title": "On the number of positive integers ≤ x and free of prime factors > y",
+      "year": "1951",
+      "venue": "Indag. Math. 13, pp. 50-60",
+      "note": "Foundational work on the Dickman function ρ(u) used in the heuristic analysis"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-382",
+      "relationship": "related",
+      "description": "Directly related: #382 concerns prime powers in factorial products, and a positive answer to #383 would resolve part of #382"
+    },
+    {
+      "targetId": "erdos-334",
+      "relationship": "related",
+      "description": "Both involve smooth numbers: #334 asks about sums of smooth numbers, #383 asks about smooth numbers near prime squares"
+    },
+    {
+      "targetId": "erdos-368",
+      "relationship": "related",
+      "description": "Both concern the largest prime factor of products of consecutive integers: #368 studies P(n(n+1)), #383 studies P(∏(p²+i))"
+    }
+  ]
 }
