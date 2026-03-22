@@ -7,7 +7,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #486** asks a fundamental question about integer sequences: if you forbid certain residue classes modulo each number n, must the remaining integers have a well-defined 'logarithmic density'?\n\nThis is an **open problem**—no one has proved or disproved it yet. The problem generalizes classical results about divisibility-defined sets.",
     "mathContext": "The problem statement: for each n, choose forbidden residues X_n ⊆ Z/nZ. Let B be integers avoiding all forbidden classes. Does lim_{x→∞} (1/log x) Σ_{m∈B, m<x} 1/m exist?",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["erdos", "density", "open-problem"]
   },
   {
@@ -29,7 +29,7 @@
     "title": "Logarithmic Sum",
     "content": "The **logarithmic sum** of a set A up to x is the sum of 1/n for all n in A with 1 ≤ n ≤ x. This differs from counting (which sums 1s) by weighting smaller integers more heavily.\n\nFor example, if A = {1,2,3,4}, the logarithmic sum up to 4 is 1/1 + 1/2 + 1/3 + 1/4 ≈ 2.08.",
     "mathContext": "logSum(A, x) = Σ_{n ∈ A, 0 < n ≤ x} 1/n. We filter the range [0,x] to elements in A with n > 0 (avoiding division by zero).",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["harmonic-series", "summation", "finset"]
   },
   {
@@ -40,7 +40,7 @@
     "title": "Logarithmic Density",
     "content": "A set A has **logarithmic density d** if the ratio of its logarithmic sum to log(x) approaches d as x→∞. Intuitively, if d = 1/2, then 'half' the harmonic weight belongs to A.\n\nLogarithmic density is **weaker** than natural density—more sets have logarithmic density than natural density.",
     "mathContext": "HasLogDensity(A, d) ⟺ lim_{x→∞} logSum(A,x)/log(x) = d. Uses Filter.Tendsto for the limit definition.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["limit", "filter", "natural-density"]
   },
   {
@@ -51,7 +51,7 @@
     "title": "Modular Avoidance Set",
     "content": "The **modular avoidance set** B consists of all natural numbers m that avoid every forbidden residue class. For each modulus n, we have a set X_n of 'forbidden' residues, and m is in B if m mod n is never in X_n.\n\nExample: If X_6 = {0,3}, then 1,2,4,5,7,8,10,11,... are in B (avoiding multiples of 3 and 6).",
     "mathContext": "avoidanceSet(X) = {m ∈ ℕ : ∀n, (m : ZMod n) ∉ X_n}. Uses Lean's coercion from ℕ to ZMod n for the modular reduction.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["modular-arithmetic", "zmod", "residue-class"]
   },
   {
@@ -62,7 +62,7 @@
     "title": "The Main Conjecture",
     "content": "**Erdős Problem #486** (OPEN): For ANY choice of forbidden residue sets X_n, the modular avoidance set B has a logarithmic density.\n\nThis is stated as an `axiom` because it's unproven. Using axiom makes the open status explicit in the Lean formalization—we're asserting without proof.",
     "mathContext": "∀X : (n:ℕ) → Set(ZMod n), ∃d:ℝ, HasLogDensity(avoidanceSet X, d). The conjecture quantifies over ALL possible choices of forbidden sets.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["erdos", "conjecture", "axiom"]
   },
   {
@@ -84,7 +84,7 @@
     "title": "Davenport-Erdős Theorem (1936)",
     "content": "**Davenport and Erdős proved** that zero-avoidance sets always have logarithmic density. This is the foundational result that Problem #486 seeks to generalize.\n\nThe theorem was proved in 1936 with an elementary re-proof in 1951. It establishes that avoiding divisibility by any set of integers yields a set with well-defined logarithmic density.",
     "mathContext": "∀A ⊆ ℕ, ∃d:ℝ, HasLogDensity(zeroAvoidanceSet A, d). Stated as axiom pending Mathlib formalization of the 1936 proof.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["davenport", "erdos", "divisibility"]
   },
   {
