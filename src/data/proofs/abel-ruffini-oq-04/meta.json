@@ -215,8 +215,8 @@
     {
       "id": "not-solvable",
       "title": "Sₙ Not Solvable for n ≥ 5",
-      "startLine": 42,
-      "endLine": 65,
+      "startLine": 41,
+      "endLine": 66,
       "summary": "Part II: Proves symmetric_not_solvable — Sₙ is not solvable for n ≥ 5. Converts natural number bound to cardinal bound via exact_mod_cast, then applies Mathlib's Equiv.Perm.not_solvable. Instantiates for S₅, S₆, S₇ using le_rfl and omega.",
       "mathContext": "$\\forall n \\geq 5,\\ \\neg\\text{IsSolvable}(S_n)$. Proof: $5 \\leq |\\text{Fin}\\, n|$ via `exact_mod_cast`, then `Equiv.Perm.not_solvable`."
     },
@@ -224,7 +224,7 @@
       "id": "small",
       "title": "Small Symmetric Groups Are Solvable",
       "startLine": 67,
-      "endLine": 75,
+      "endLine": 76,
       "summary": "Shows S₀ and S₁ are solvable via Lean's typeclass inference (inferInstance). These trivial cases contrast with the non-solvable S₅ and above.",
       "mathContext": "$S_0 \\cong S_1 \\cong \\{e\\}$ are trivially solvable. Full picture: $S_n$ solvable $\\iff n \\leq 4$."
     },
@@ -232,7 +232,7 @@
       "id": "threshold",
       "title": "The Solvability Threshold",
       "startLine": 77,
-      "endLine": 86,
+      "endLine": 87,
       "summary": "Packages the sharp dichotomy: S₁ solvable ∧ S₅ not solvable. Witnesses the exact transition point at n = 5 where radical solvability breaks.",
       "mathContext": "$\\text{IsSolvable}(S_1) \\wedge \\neg\\text{IsSolvable}(S_5)$: the transition is sharp at $n = 5$."
     },
@@ -240,7 +240,7 @@
       "id": "chain",
       "title": "The Complete Proof Chain (Documentation)",
       "startLine": 88,
-      "endLine": 152,
+      "endLine": 153,
       "summary": "Comprehensive documentation of the 5-step proof chain (A₅ simple → non-solvable → Sₙ not solvable → Galois bridge → generic quintic). Includes 'Why Exactly 5?' table (derived series for S₁ through S₅) and 'Crucial Asymmetry' table (degree-by-degree radical solvability with historical formula discoverers).",
       "mathContext": "$A_5$ simple $\\Rightarrow$ $[A_5, A_5] = A_5$ $\\Rightarrow$ $S_n$ not solvable $\\Rightarrow$ $\\text{Gal}(x^5 + \\cdots) \\cong S_5$ not solvable $\\Rightarrow$ no radical formula."
     },
