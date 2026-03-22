@@ -1015,3 +1015,48 @@ SZK_closed_complement
 - Docker build passes
 - All 124 remaining axioms have genuine proof usage
 
+
+---
+
+## Session 2026-03-22 (researcher-5) - Cross-Area Theorems + Master Summary Extension
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 347)
+**Problem**: p-vs-np
+**Prior Status**: Sound model at 6620 lines, 123 axioms, 0 sorries
+
+**Work done**:
+Extended `PNPBarriersSound.lean` from 6620 → 6764 lines (+144 lines) with cross-area derived theorems.
+
+### Documentation Fix
+- Header axiom count: 124 → 123 (SZK_closed_complement was removed in prior session but header not updated)
+- Zero-knowledge axiom count: 8 → 7 (matching actual code)
+
+### New Cross-Area Theorems (8 theorems)
+
+| Theorem | Type | Proof |
+|---------|------|-------|
+| `SETH_complete_landscape` | SETH → 7-part landscape | Composition of existing theorems |
+| `OWF_complete_landscape` | OWF → 7-part landscape | Composition of existing theorems |
+| `SZK_subset_PSPACE` | SZK ⊆ PSPACE | SZK ⊆ AM∩coAM → AM ⊆ PH ⊆ PSPACE |
+| `CZK_subset_PSPACE` | CZK ⊆ PSPACE | CZK ⊆ IP = PSPACE (Shamir) |
+| `GI_in_PSPACE` | GI ∈ PSPACE | GI ∈ SZK ⊆ PSPACE |
+| `BPP_subset_CZK` | BPP ⊆ CZK | BPP ⊆ SZK ⊆ CZK |
+| `zk_containment_chain` | Full ZK chain | Transitivity |
+| `circuit_to_space_chain` | 11-part chain | Circuit → space → time |
+
+### Master Summary Extension (15 → 21 components)
+- XVI: Barrington (NC¹ = BPWidth(5))
+- XVII: Circuit hierarchy (AC⁰ ⊆ ACC⁰ ⊆ TC⁰ ⊆ NC ⊆ P, NEXP ⊄ ACC⁰)
+- XVIII: Parameterized (FPT ⊆ W[1] ⊆ XP ⊆ paraNP)
+- XIX: Proof complexity (Cook-Reckhow: NP = coNP ↔ poly proof system)
+- XX: OWF landscape (OWF → P≠NP ∧ BPP=P ∧ NP⊆CZK)
+- XXI: SETH landscape (SETH → P≠NP ∧ BPP=P ∧ NP⊄P/poly)
+
+### Axiom Assessment
+All 123 axioms are genuinely used in proofs. No further unused or redundant axioms found.
+Prior sessions have thoroughly cleaned up:
+- PvsNP.lean: 21→7 axioms (14 removed as unused)
+- PNPBarriersSound.lean: 161→123 axioms (38 eliminated via proofs, removal, or consolidation)
+
+**Build**: Docker build passes, 0 errors, 0 sorries, 6764 lines, 123 axioms.
+**Outcome**: COMPLETED - 8 new derived theorems, master summary extended to 21 components.

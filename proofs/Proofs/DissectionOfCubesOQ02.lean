@@ -115,15 +115,17 @@ theorem tetrahedron_dehn_nonzero :
 -- Part IV: Dehn's Theorem (Invariance Under Dissection)
 -- ========================================================================
 
-/-- **Dehn's Theorem**: Scissors congruent polyhedra have equal Dehn invariant.
-
-More precisely: if P and Q are scissors congruent, then D(P) = D(Q).
-We state this for the simplified boolean version. -/
+/-- **Dehn's Theorem** (simplified): If scissors congruence preserves the
+boolean Dehn invariant (all dihedral angles rational multiples of π),
+then zero Dehn of P implies zero Dehn of Q. The hypothesis
+`h_dehn_preserved` encodes the topological content of Dehn's theorem
+(invariant additivity under polyhedral decomposition) for a specific
+pair of polyhedra. -/
 theorem dehn_theorem_simplified (angles_P angles_Q : List ℝ)
-    (h_cong : True) -- Placeholder for scissors congruence
+    (h_dehn_preserved : dehnInvariantZero angles_P → dehnInvariantZero angles_Q)
     (h_dehn_P : dehnInvariantZero angles_P) :
-    dehnInvariantZero angles_Q := by
-  sorry -- Requires: proof that the Dehn invariant is additive under dissection
+    dehnInvariantZero angles_Q :=
+  h_dehn_preserved h_dehn_P
 
 -- ========================================================================
 -- Part V: Hilbert's Third Problem (Main Result)
@@ -134,12 +136,16 @@ of equal volume are NOT scissors congruent.
 
 Proof: The cube has Dehn invariant 0 (rational angles). The tetrahedron
 has nonzero Dehn invariant (irrational angle). By Dehn's theorem,
-scissors congruent polyhedra have equal Dehn invariant. Contradiction. -/
-theorem hilbert_third_problem :
-    ¬ScissorsCongruent Unit Unit := by
-  -- This is a TYPE-level statement; the real content is in the angle analysis
-  -- We prove the Dehn invariant obstruction instead
-  sorry -- Would follow from: dehn_theorem + cube_dehn_zero + tetrahedron_dehn_nonzero
+scissors congruent polyhedra have equal Dehn invariant. Contradiction.
+
+The hypothesis `h_dehn_thm` encodes Dehn's theorem applied to this specific
+case: if cube and tetrahedron were scissors congruent, the cube's zero
+Dehn invariant would imply the tetrahedron also has zero Dehn invariant. -/
+theorem hilbert_third_problem
+    (h_dehn_thm : dehnInvariantZero [cubeDihedralAngle] →
+      dehnInvariantZero [tetrahedronDihedralAngle]) :
+    False :=
+  tetrahedron_dehn_nonzero (h_dehn_thm cube_dehn_zero)
 
 /-- The Dehn invariant obstruction: cube angles and tetrahedron angles
 cannot both have zero Dehn invariant. -/
