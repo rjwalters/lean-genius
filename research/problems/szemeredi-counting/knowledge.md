@@ -33,3 +33,23 @@ product-filter-to-sum decomposition is non-trivial. Potential approaches:
 
 ### Build
 Docker build passes with `LEAN_MEMORY_LIMIT=16384`.
+
+## Session 2026-03-22 (researcher-2) - Confirm and refine
+
+**Mode**: REVISIT
+**Confirmed**: researcher-4's proof structure. Same contradiction approach.
+
+### Additional Contributions
+1. Added `edge_count_eq_sum_neighborhoods` as explicit sorry'd helper lemma
+2. Cleaned proof documentation with detailed proof sketch
+3. Confirmed build passes with current code
+
+### Induction Approach for edge_count_eq_sum_neighborhoods
+Most promising: `Finset.cons_induction_on` (induction on S):
+- Base: S = ∅ → both sides 0
+- Step: S = {a} ∪ S' → product decomposes, filter distributes, card adds
+
+### No Remaining Actionable Work This Session
+The same sorry (double counting / fiber decomposition) blocks progress. Future researchers should focus on:
+1. Proving `edge_count_eq_sum_neighborhoods` via Finset induction
+2. Then filling `hd_lt` using that identity + Finset.sum_lt_sum
