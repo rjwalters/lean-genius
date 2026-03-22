@@ -232,7 +232,72 @@ theorem fully_colored_one_door {n : ℕ} (c : Coloring n)
     (t : GridTriangle n) (hfc : IsFullyColored c t) :
     ∃! (e : Fin 3 × Fin 3), e.1 < e.2 ∧
       IsDoor c (t.vertices e.1) (t.vertices e.2) := by
-  sorry
+  -- Step 1: The coloring restricted to this triangle is surjective (image = Fin 3)
+  have hsurj : Function.Surjective (c ∘ t.vertices) := by
+    intro y
+    have : y ∈ Finset.image (c ∘ t.vertices) Finset.univ := by
+      unfold IsFullyColored at hfc; rw [hfc]; fin_cases y <;> simp
+    simpa using this
+  -- Step 2: Surjective endomorphism on finite type is injective
+  have hinj : Function.Injective (c ∘ t.vertices) :=
+    Finite.injective_iff_surjective.mpr hsurj
+  -- Step 3: Find the vertices with colors 0 and 1
+  obtain ⟨i₀, hi₀⟩ := hsurj (0 : Fin 3)
+  obtain ⟨i₁, hi₁⟩ := hsurj (1 : Fin 3)
+  have hne : i₀ ≠ i₁ := by
+    intro h; subst h; exact absurd (hi₀.symm.trans hi₁) (by decide)
+  -- Step 4: Any door must connect the unique 0-vertex and 1-vertex
+  have unique : ∀ (a b : Fin 3), IsDoor c (t.vertices a) (t.vertices b) →
+      (a = i₀ ∧ b = i₁) ∨ (a = i₁ ∧ b = i₀) := by
+    intro a b hdoor
+    rcases hdoor with ⟨ha, hb⟩ | ⟨ha, hb⟩
+    · left; exact ⟨hinj (ha.trans hi₀.symm), hinj (hb.trans hi₁.symm)⟩
+    · right; exact ⟨hinj (ha.trans hi₁.symm), hinj (hb.trans hi₀.symm)⟩
+  -- Step 5: Construct the unique door edge (ordered)
+  rcases hne.lt_or_lt with h_lt | h_lt
+  · -- i₀ < i₁: door is (i₀, i₁)
+    refine ⟨(i₀, i₁), ⟨h_lt, Or.inl ⟨hi₀, hi₁⟩⟩, ?_⟩
+    rintro ⟨a, b⟩ ⟨hab, hdoor⟩
+    rcases unique a b hdoor with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+    · rfl
+    · exfalso; omega
+  · -- i₁ < i₀: door is (i₁, i₀)
+    refine ⟨(i₁, i₀), ⟨h_lt, Or.inr ⟨hi₁, hi₀⟩⟩, ?_⟩
+    rintro ⟨a, b⟩ ⟨hab, hdoor⟩
+    rcases unique a b hdoor with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+    · exfalso; omega
+    · rfl
+
+-- Helper: No {0,1}-doors on left-boundary edges (colors ∈ {0,2})
+private lemma no_door_left_boundary {n : ℕ} (hn : 0 < n) (c : Coloring n)
+    (hc : IsSperner hn c) (j : ℕ) (hj : j > 0) (hj' : j < n) :
+    ¬ IsDoor c ⟨0, j, by omega⟩ ⟨0, j + 1, by omega⟩ := by
+  obtain ⟨_, _, _, _, hleft, _⟩ := hc
+  intro hdoor
+  rcases hdoor with ⟨_, h1⟩ | ⟨_, h1⟩
+  · exact hleft ⟨0, j + 1, by omega⟩ rfl (by omega) (by omega) h1
+  · exact hleft ⟨0, j, by omega⟩ rfl (by omega) (by omega) h1
+
+-- Helper: No {0,1}-doors on hypotenuse edges (colors ∈ {1,2})
+private lemma no_door_hypotenuse {n : ℕ} (hn : 0 < n) (c : Coloring n)
+    (hc : IsSperner hn c) (i j : ℕ) (hi : i > 0) (hj : j > 0)
+    (hsum1 : i + j = n) (hsum2 : (i - 1) + (j + 1) = n) :
+    ¬ IsDoor c ⟨i, j, by omega⟩ ⟨i - 1, j + 1, by omega⟩ := by
+  obtain ⟨_, _, _, _, _, hhyp⟩ := hc
+  intro hdoor
+  rcases hdoor with ⟨h0, _⟩ | ⟨_, h0⟩
+  · exact hhyp ⟨i, j, by omega⟩ hsum1 hi hj h0
+  · exact hhyp ⟨i - 1, j + 1, by omega⟩ hsum2 (by omega) (by omega) h0
+
+-- Proof strategy for sperner_2d:
+-- 1. bottomTransitions c is odd (from bottom_transitions_odd)
+-- 2. Boundary {0,1}-doors appear ONLY on the bottom edge
+--    (left edge: colors ∈ {0,2}, no color 1 → no doors)
+--    (hypotenuse: colors ∈ {1,2}, no color 0 → no doors)
+-- 3. Double-counting: ∑_T doorCount(T) = 2·|interior doors| + |boundary doors|
+-- 4. Each fully-colored triangle has exactly 1 door (fully_colored_one_door)
+-- 5. Each non-fully-colored triangle has 0 or 2 doors (even)
+-- 6. Therefore: #FC ≡ bottomTransitions ≡ 1 (mod 2), so #FC ≥ 1
 
 theorem sperner_2d {n : ℕ} (hn : 0 < n) (c : Coloring n) (hc : IsSperner hn c) :
     ∃ t : GridTriangle n, IsFullyColored c t := by
