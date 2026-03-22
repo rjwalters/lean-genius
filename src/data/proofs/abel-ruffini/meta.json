@@ -5,6 +5,7 @@
   "description": "Galois's profound theorem that there is no general algebraic solution to polynomial equations of degree five or higher, connecting field theory to group theory through the unsolvability of the symmetric group S5.",
   "meta": {
     "author": "Niels Henrik Abel (1824), Evariste Galois (1832)",
+    "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/FieldTheory/AbelRuffini.html",
     "date": "1824",
     "status": "verified",
     "tags": [
@@ -49,6 +50,12 @@
     ],
     "wiedijkNumber": 16,
     "axiomCount": 0,
+    "relatedProblems": [
+      {
+        "id": "abel-ruffini-oq-04",
+        "relationship": "Sub-entry exposing the complete proof chain from A₅ simplicity through S₅ non-solvability to Abel-Ruffini"
+      }
+    ],
     "lineCount": 185,
     "leanFile": {
       "lineCount": 185,
@@ -204,6 +211,13 @@
       "year": "1799",
       "venue": "Bologna",
       "note": "First (incomplete) attempt to prove the quintic is unsolvable — anticipated Abel by 25 years but contained gaps"
+    },
+    {
+      "authors": "Galois, Évariste",
+      "title": "Mémoire sur les conditions de résolubilité des équations par radicaux",
+      "year": "1846",
+      "venue": "Journal de Mathématiques Pures et Appliquées (published posthumously by Liouville)",
+      "note": "The foundational paper of Galois theory, written in 1831 and published posthumously — established the criterion that a polynomial is solvable by radicals iff its Galois group is solvable"
     }
   ],
   "leanFile": {

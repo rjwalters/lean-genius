@@ -63,41 +63,76 @@
       "The AM-GM inequality sits at the center of a web of classical inequalities: it implies the Cauchy-Schwarz inequality (via $2ab \\leq a^2 + b^2$), is implied by Jensen's inequality, and specializes to the isoperimetric inequality in two dimensions."
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "generalizes",
+      "description": "AM-GM implies Cauchy-Schwarz via $2ab \\leq a^2 + b^2$; both are consequences of the non-negativity of squared differences."
+    },
+    {
+      "targetId": "isoperimetric-theorem",
+      "relationship": "supports",
+      "description": "The product-sum corollary $ab \\leq ((a+b)/2)^2$ proves that among rectangles with fixed perimeter, the square maximizes area — a special case of the isoperimetric principle."
+    },
+    {
+      "targetId": "amgm-inequality-oq-02",
+      "relationship": "parent",
+      "description": "Sub-entry exploring extensions or open questions arising from the AM-GM inequality."
+    },
+    {
+      "targetId": "amgm-inequality-oq-03",
+      "relationship": "parent",
+      "description": "Sub-entry exploring further generalizations or applications of AM-GM."
+    }
+  ],
+  "relatedProofs": [
+    "cauchy-schwarz",
+    "isoperimetric-theorem",
+    "amgm-inequality-oq-02",
+    "amgm-inequality-oq-03",
+    "amgm-inequality-oq-03-oq-01",
+    "amgm-inequality-oq-03-oq-02"
+  ],
   "sections": [
     {
       "id": "two-variable",
       "title": "Two-Variable Elementary Proof",
       "startLine": 53,
       "endLine": 87,
-      "summary": "The classical proof using $(\\sqrt{a} - \\sqrt{b})^2 \\geq 0$, plus the equivalent form $a + b \\geq 2\\sqrt{ab}$."
+      "summary": "The classical proof using $(\\sqrt{a} - \\sqrt{b})^2 \\geq 0$, plus the equivalent form $a + b \\geq 2\\sqrt{ab}$.",
+      "mathContext": "$(\\sqrt{a} - \\sqrt{b})^2 \\geq 0 \\implies a + b \\geq 2\\sqrt{ab} \\implies (a+b)/2 \\geq \\sqrt{ab}$"
     },
     {
       "id": "equality",
       "title": "Equality Characterization",
       "startLine": 89,
       "endLine": 132,
-      "summary": "Proof that equality $(a+b)/2 = \\sqrt{ab}$ holds if and only if $a = b$, using a calc chain to show the square difference vanishes."
+      "summary": "Proof that equality $(a+b)/2 = \\sqrt{ab}$ holds if and only if $a = b$, using a calc chain to show the square difference vanishes.",
+      "mathContext": "$(a+b)/2 = \\sqrt{ab} \\iff (\\sqrt{a} - \\sqrt{b})^2 = 0 \\iff a = b$"
     },
     {
       "id": "weighted",
       "title": "General Weighted AM-GM",
       "startLine": 134,
       "endLine": 160,
-      "summary": "The weighted form $\\prod z_i^{w_i} \\leq \\sum w_i z_i$ via Mathlib's `Real.geom_mean_le_arith_mean_weighted`, and its two-variable specialization."
+      "summary": "The weighted form $\\prod z_i^{w_i} \\leq \\sum w_i z_i$ via Mathlib's `Real.geom_mean_le_arith_mean_weighted`, and its two-variable specialization.",
+      "mathContext": "$\\prod_i z_i^{w_i} \\leq \\sum_i w_i z_i$ for $w_i \\geq 0$, $\\sum w_i = 1$, $z_i \\geq 0$"
     },
     {
       "id": "examples",
       "title": "Concrete Verification Examples",
       "startLine": 162,
       "endLine": 181,
-      "summary": "Three concrete examples: AM = GM for equal inputs, a strict inequality for $a=1, b=4$, and delegation to the main theorem for $a=2, b=8$."
+      "summary": "Three concrete examples: AM = GM for equal inputs, a strict inequality for $a=1, b=4$, and delegation to the main theorem for $a=2, b=8$.",
+      "mathContext": "$(1+4)/2 = 5/2 > \\sqrt{4} = 2$; $(2+8)/2 = 5 \\geq \\sqrt{16} = 4$"
     },
     {
       "id": "corollaries",
       "title": "Corollaries and Applications",
       "startLine": 182,
       "endLine": 218,
-      "summary": "Product-sum inequality $ab \\leq ((a+b)/2)^2$, alias `am_ge_gm`, and three-variable AM-GM via Mathlib's weighted form."
+      "summary": "Product-sum inequality $ab \\leq ((a+b)/2)^2$, alias `am_ge_gm`, and three-variable AM-GM via Mathlib's weighted form.",
+      "mathContext": "$ab \\leq ((a+b)/2)^2$ and $\\sqrt[3]{abc} \\leq (a+b+c)/3$"
     }
   ],
   "conclusion": {
@@ -116,6 +151,13 @@
       "year": "1821",
       "venue": "Paris: Debure",
       "note": "Contains Cauchy's proof of AM-GM by forward-backward induction — one of the most elegant proof techniques in mathematics"
+    },
+    {
+      "authors": "Maclaurin, Colin",
+      "title": "A Second Letter to Martin Folkes, Esq.; Concerning the Roots of Equations",
+      "year": "1729",
+      "venue": "Philosophical Transactions of the Royal Society",
+      "note": "Introduced the symmetric function inequalities (Maclaurin's inequalities) that strictly refine AM-GM for distinct values"
     }
   ],
   "leanFile": {

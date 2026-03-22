@@ -135,11 +135,43 @@
       "targetId": "riemann-hypothesis",
       "relationship": "related",
       "description": "The distribution of primes (how many up to N) is governed by the prime number theorem, and the precise error term depends on the Riemann Hypothesis"
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "extends",
+      "description": "Bertrand's postulate strengthens the infinitude: there is always a prime between n and 2n, guaranteeing primes are not just infinite but densely distributed"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "extends",
+      "description": "The PNT quantifies the infinitude: π(n) ~ n/ln(n), giving the asymptotic density of primes"
+    },
+    {
+      "targetId": "prime-reciprocal-divergence",
+      "relationship": "extends",
+      "description": "Euler's proof that Σ 1/p diverges gives an analytic proof of infinitely many primes and shows primes are 'denser' than perfect squares"
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "extends",
+      "description": "Dirichlet's theorem shows infinitely many primes in arithmetic progressions a, a+d, a+2d, ... when gcd(a,d)=1 — a vast generalization of Euclid's result"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient function φ(n) counts integers coprime to n; its relationship to primes via φ(p) = p-1 connects to the infinitude result"
     }
   ],
   "relatedProofs": [
     "fundamental-arithmetic",
-    "riemann-hypothesis"
+    "riemann-hypothesis",
+    "bertrands-postulate",
+    "prime-number-theorem",
+    "prime-reciprocal-divergence",
+    "dirichlets-theorem",
+    "euler-totient",
+    "bounded-prime-gaps",
+    "twin-primes-special"
   ],
   "leanFile": {
     "imports": [

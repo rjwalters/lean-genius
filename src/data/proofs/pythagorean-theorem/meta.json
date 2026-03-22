@@ -38,6 +38,16 @@
     ],
     "wiedijkNumber": 4,
     "axiomCount": 0,
+    "relatedProblems": [
+      {
+        "id": "pythagorean-theorem-oq-03",
+        "relationship": "Sub-entry exploring extensions or open questions about the Pythagorean theorem"
+      },
+      {
+        "id": "pythagorean-triples",
+        "relationship": "Companion entry on Pythagorean triples: the integer solutions a² + b² = c²"
+      }
+    ],
     "lineCount": 215
   },
   "overview": {
@@ -162,6 +172,24 @@
     "area-of-circle",
     "angle-trisection",
     "fermats-last-theorem",
-    "cauchy-schwarz"
-  ]
+    "cauchy-schwarz",
+    "pythagorean-theorem-oq-03",
+    "pythagorean-triples",
+    "pythagorean-triples-oq-01"
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "PythagoreanTheorem",
+    "lineCount": 215,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 2
+  }
 }

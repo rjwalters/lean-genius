@@ -140,7 +140,33 @@
     "sophie-germain",
     "infinitude-primes",
     "chinese-remainder-non-coprime",
-    "dirichlets-theorem"
+    "dirichlets-theorem",
+    "pythagorean-theorem",
+    "fundamental-theorem-algebra",
+    "fermat-two-squares"
+  ],
+  "references": [
+    {
+      "authors": "Wiles, Andrew",
+      "title": "Modular elliptic curves and Fermat's Last Theorem",
+      "year": "1995",
+      "venue": "Annals of Mathematics 141(3): 443-551",
+      "note": "The proof that every semistable elliptic curve over Q is modular, which combined with the Frey-Ribet strategy proves FLT"
+    },
+    {
+      "authors": "Taylor, Richard; Wiles, Andrew",
+      "title": "Ring-theoretic properties of certain Hecke algebras",
+      "year": "1995",
+      "venue": "Annals of Mathematics 141(3): 553-572",
+      "note": "Companion paper fixing a gap in Wiles's original proof, completing the modularity argument"
+    },
+    {
+      "authors": "Singh, Simon",
+      "title": "Fermat's Enigma: The Epic Quest to Solve the World's Greatest Mathematical Problem",
+      "year": "1997",
+      "venue": "Walker & Company",
+      "note": "Popular account of the 358-year history from Fermat's marginal note to Wiles's proof"
+    }
   ],
   "leanFile": {
     "imports": [

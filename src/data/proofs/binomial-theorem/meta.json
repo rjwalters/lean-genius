@@ -66,6 +66,24 @@
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 44,
     "axiomCount": 0,
+    "relatedProblems": [
+      {
+        "id": "binomial-theorem-oq-01",
+        "relationship": "Sub-entry exploring extensions of the binomial theorem"
+      },
+      {
+        "id": "binomial-theorem-oq-02",
+        "relationship": "Sub-entry on further generalizations or applications"
+      },
+      {
+        "id": "binomial-theorem-oq-03",
+        "relationship": "Sub-entry on additional binomial identities"
+      },
+      {
+        "id": "binomial-theorem-oq-04",
+        "relationship": "Sub-entry on advanced binomial coefficient properties"
+      }
+    ],
     "lineCount": 176
   },
   "overview": {
@@ -143,6 +161,60 @@
       "startLine": 150,
       "endLine": 177,
       "summary": "Six numerical examples verified with `native_decide`: $(1+1)^4 = 16$, explicit coefficient sum for $n = 4$, $\\binom{5}{2} = 10$, $\\binom{10}{5} = 252$, Pascal's identity for $\\binom{5}{3}$, and symmetry $\\binom{6}{2} = \\binom{6}{4}$. Ends with `#check` commands and namespace close."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "derangements",
+      "relationship": "related",
+      "description": "Derangements use inclusion-exclusion over permutations, closely paralleling the alternating sum identity for binomial coefficients."
+    },
+    {
+      "targetId": "pascals-hexagon",
+      "relationship": "extends",
+      "description": "Pascal's hexagon theorem explores deeper patterns within Pascal's triangle, building on the coefficient structure formalized here."
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's approximation for n! connects to binomial coefficients via $\\binom{n}{k} = n!/(k!(n-k)!)$; asymptotic analysis of central binomial coefficients uses Stirling."
+    },
+    {
+      "targetId": "binomial-theorem-oq-01",
+      "relationship": "parent",
+      "description": "Sub-entry extending the binomial theorem to further identities or applications."
+    },
+    {
+      "targetId": "binomial-theorem-oq-04",
+      "relationship": "parent",
+      "description": "Sub-entry on advanced binomial coefficient properties."
+    }
+  ],
+  "relatedProofs": [
+    "derangements",
+    "pascals-hexagon",
+    "stirling-formula",
+    "binomial-theorem-oq-01",
+    "binomial-theorem-oq-01-oq-01",
+    "binomial-theorem-oq-02",
+    "binomial-theorem-oq-03",
+    "binomial-theorem-oq-04",
+    "binomial-theorem-oq-04-oq-02"
+  ],
+  "references": [
+    {
+      "authors": "Pascal, Blaise",
+      "title": "Traité du triangle arithmétique",
+      "year": "1654",
+      "venue": "Paris",
+      "note": "Systematized the theory of binomial coefficients and their triangular arrangement, establishing Pascal's identity and connections to probability"
+    },
+    {
+      "authors": "Newton, Isaac",
+      "title": "De analysi per aequationes numero terminorum infinitas",
+      "year": "1669",
+      "venue": "London (circulated 1669, published 1711)",
+      "note": "Extended the binomial theorem to non-integer exponents, a key tool in the development of calculus and power series"
     }
   ],
   "conclusion": {
