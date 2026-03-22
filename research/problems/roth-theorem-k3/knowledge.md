@@ -122,3 +122,35 @@ The Parseval proof `∑_r ‖Â(r)‖² = |A|·N` requires:
 | triple_count_fourier | Hard | Similar structure to Parseval but triple product |
 | fourier_large_coefficient | Medium | Follows from Parseval + triple_count |
 | density_increment_lemma | Hard | Needs fourier_large_coefficient + pigeonhole on subprogressions |
+
+## Session 4 (2026-03-22, researcher-6)
+
+### What Was Done
+1. **Re-proved char_orthogonality** (Mathlib API regression fix)
+   - Original proof (session 3) removed by commit 02be6994b due to broken Mathlib API
+   - `ZMod.val_eq_zero.mp` → `rwa [← ZMod.val_eq_zero]` (projection changed)
+   - `conv_lhs => arg 2; ext r` → `simp_rw [...]` (conv ext removed in recent Lean)
+   - `Complex.exp_eq_exp_iff_exists_int` → `Complex.exp_eq_one_iff` (cleaner approach)
+   - Also removed dependency on psi_add, psi_zero, psi_ne_one (all were deleted)
+2. **Proved char_sum_int** (NEW — first-ever proof)
+   - ∑_{j=0}^{N-1} exp(2πij·m/N) = N if N|m, 0 otherwise
+   - Geometric series argument via root_unity_sum_zero
+   - ω^N = 1 via Complex.exp_eq_one_iff (exp(m·2πi) = 1)
+   - ω = 1 ↔ N|m via exp_eq_one_iff extraction
+   - mul_left_cancel₀ for clean equation extraction from 2πi·(m/N) = n·2πi
+3. Reduced sorry count from 7 → 4 (Docker build verified)
+
+### Key Technical Discoveries
+- `mul_left_cancel₀ hpi (hn.trans (mul_comm _ _))` is cleaner than congr_arg+rwa for cancelling 2πi
+- `field_simp` alone closes `N*(2πi*m/N) = m*2πi` — adding `ring` after causes "No goals" error
+- `push_cast` is unnecessary before `field_simp` in some contexts (linter warning)
+- dvd in ℤ uses `m = ↑N * n` order, need `mul_comm` to go from `m = n * N`
+
+### Remaining Sorry Dependency Chain
+```
+parseval_on_zmod (sorry) ──────────────────────────┐
+triple_count_fourier (sorry) ──────────────────────┤
+                                                    ├→ fourier_large_coefficient (sorry)
+                                                    │    └→ density_increment_lemma (sorry)
+                                                    │         └→ roth_density_bound (PROVED)
+```

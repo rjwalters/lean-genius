@@ -18,12 +18,12 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-21",
-    "iteration": 2,
-    "focus": "Proving remaining 4 Fourier-analytic sorries toward complete formalization",
+    "iteration": 4,
+    "focus": "char_orthogonality RE-PROVED, char_sum_int PROVED. 4 sorries remain: parseval_on_zmod, triple_count_fourier, fourier_large_coefficient, density_increment_lemma",
     "blockers": [
       "None. Independent problem, can start immediately."
     ],
-    "nextAction": "Prove parseval_on_zmod via orthogonality of ZMod characters",
+    "nextAction": "Prove parseval_on_zmod via char_orthogonality + conj(psi) = psi(-x) + sum manipulation",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,12 +31,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved fourierCoeff_norm_le (triangle inequality + |exp(iθ)|=1) and roth_density_bound (main theorem via density iteration to contradiction). Reduced from 6 to 4 sorries.",
+    "progressSummary": "PROGRESS: Re-proved char_orthogonality (fixed Mathlib API regression from commit 02be6994b). Proved NEW char_sum_int (geometric series identity for integer exponents). Reduced file from 7 sorries to 4.",
     "builtItems": [
       "Fixed apFree_singleton proof, Complex.abs -> norm, added apFree_subset, removed incorrect apFree_pair",
       "Build now succeeds: 0 axioms, 3 sorries",
-      "Proved fourierCoeff_norm_le: triangle inequality with |exp(iθ)|=1 via push_cast+ring",
-      "Proved roth_density_bound: iterate density_iteration, choose K>100/δ², density>1 contradicts card_le_nat"
+      "Proved fourierCoeff_norm_le: triangle inequality with |exp(i\u03b8)|=1 via push_cast+ring",
+      "Proved roth_density_bound: iterate density_iteration, choose K>100/\u03b4\u00b2, density>1 contradicts card_le_nat",
+      "Re-proved char_orthogonality: fixed ZMod.val_eq_zero API, replaced conv ext with simp_rw, used exp_eq_one_iff for omega \u2260 1",
+      "Proved char_sum_int: \u2211_{j=0}^{N-1} exp(2\u03c0ij\u00b7m/N) = N\u00b7\u03b4(N|m) via geometric series + root_unity_sum_zero + exp_eq_one_iff"
     ],
     "insights": [
       "RothTheorem.lean had 3 build errors: deprecated Finset.not_mem_empty, broken apFree_singleton, non-existent Complex.abs",
@@ -44,15 +46,19 @@
       "Complex.abs renamed in Mathlib v4.26.0 - use norm instead",
       "roth_density_bound could be proved from density_increment_lemma via iterated application",
       "field_simp handles div_mul_cancel cleanly when clearing denominators",
-      "push_cast normalizes ↑(k+1) to ↑k+1 for cast unification",
-      "Key lemma chain: density_iteration (proved) → roth_density_bound (now proved)"
+      "push_cast normalizes \u2191(k+1) to \u2191k+1 for cast unification",
+      "Key lemma chain: density_iteration (proved) \u2192 roth_density_bound (now proved)",
+      "ZMod.val_eq_zero still exists in Mathlib but .mp projection fails; use rwa [\u2190 ZMod.val_eq_zero] instead",
+      "conv ext tactic removed in recent Lean; use simp_rw with explicit function equality instead",
+      "mul_left_cancel\u2080 cleaner than congr_arg+mul_div_cancel for extracting equations from 2\u03c0i\u00b7x = 2\u03c0i\u00b7y",
+      "field_simp alone closes N*(2\u03c0i*m/N) = m*2\u03c0i without ring (ring causes No goals error)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove parseval_on_zmod via orthogonality of characters",
-      "Prove triple_count_fourier via expanding triple sum with orthogonality",
-      "Prove fourier_large_coefficient from Parseval + AP-freeness + cancellation",
-      "Prove density_increment_lemma from large Fourier coefficient + pigeonhole"
+      "Prove parseval_on_zmod: need conj(\u03c8(x)) = \u03c8(-x), re-prove psi_add, then expand and use char_orthogonality",
+      "Prove triple_count_fourier: expand tripleCount, use Fourier inversion",
+      "Prove fourier_large_coefficient: use parseval + triple_count + pigeonhole",
+      "Prove density_increment_lemma: use large Fourier coefficient + partition into APs"
     ]
   },
   "tags": [
