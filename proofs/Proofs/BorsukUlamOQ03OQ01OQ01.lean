@@ -1,4 +1,5 @@
 import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib.Combinatorics.SimpleGraph.DegreeSum
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Data.ZMod.Basic
 import Mathlib.Tactic
@@ -302,6 +303,121 @@ triangulation that respects the antipodal structure.
 -/
 
 -- ========================================================================
+-- Part IX: SimpleGraph Handshaking → Even Odd-Degree Count
+-- ========================================================================
+
+/-
+## Connecting to Mathlib: Graph Handshaking Eliminates a Hypothesis
+
+The `tucker_parity_principle` above requires three hypotheses:
+1. `h_interior_deg`: interior Tucker degree = complementary degree
+2. `h_handshaking`: the number of odd-degree triangles is even
+3. `h_boundary_odd`: boundary has odd number of odd-degree triangles
+
+Hypothesis (2) is redundant when the Tucker graph is a `SimpleGraph`:
+Mathlib's handshaking lemma (`sum_degrees_eq_twice_card_edges`) implies
+that any finite simple graph has an even number of odd-degree vertices.
+
+This reduces Tucker's lemma to just two hypotheses:
+- Interior degree correspondence (structural)
+- Boundary oddness (from 1D Tucker)
+-/
+
+/-- Sum of values mod 2 equals count mod 2 when all values satisfy `f i % 2 = 1`. -/
+private theorem sum_mod2_eq_card_mod2 {ι : Type*} [DecidableEq ι]
+    (s : Finset ι) (f : ι → ℕ)
+    (h : ∀ i ∈ s, f i % 2 = 1) :
+    (∑ i ∈ s, f i) % 2 = s.card % 2 := by
+  induction s using Finset.induction with
+  | empty => simp
+  | insert a s ha ih =>
+    rw [Finset.sum_insert ha, Finset.card_insert_of_notMem ha]
+    have := h _ (Finset.mem_insert_self _ _)
+    have := ih (fun i hi => h i (Finset.mem_insert_of_mem hi))
+    omega
+
+/-- Sum of values mod 2 is 0 when all values satisfy `f i % 2 = 0`. -/
+private theorem sum_mod2_eq_zero {ι : Type*} [DecidableEq ι]
+    (s : Finset ι) (f : ι → ℕ)
+    (h : ∀ i ∈ s, f i % 2 = 0) :
+    (∑ i ∈ s, f i) % 2 = 0 := by
+  induction s using Finset.induction with
+  | empty => simp
+  | insert a s ha ih =>
+    rw [Finset.sum_insert ha]
+    have := h _ (Finset.mem_insert_self _ _)
+    have := ih (fun i hi => h i (Finset.mem_insert_of_mem hi))
+    omega
+
+/-- The number of odd-degree vertices in any finite simple graph is even.
+
+By the handshaking lemma, `∑ v, G.degree v = 2|E|` (even).
+Splitting by degree parity: the even-degree sum is even, the odd-degree
+sum has the same parity as its count, so the count must be even. -/
+theorem even_card_odd_degree_vertices
+    [Fintype T] [DecidableEq T]
+    (G : SimpleGraph T) [DecidableRel G.Adj] :
+    Even (Finset.univ.filter (fun v : T => Odd (G.degree v))).card := by
+  -- Convert Odd to % 2 = 1 for decidability
+  simp_rw [Nat.odd_iff]
+  rw [Nat.even_iff]
+  -- Partition vertices into odd-degree (% 2 = 1) and even-degree (% 2 = 0)
+  set S₁ := Finset.univ.filter (fun v : T => G.degree v % 2 = 1) with hS₁_def
+  set S₀ := Finset.univ.filter (fun v : T => G.degree v % 2 = 0) with hS₀_def
+  -- S₁ and S₀ are disjoint and cover univ
+  have hdisjoint : Disjoint S₁ S₀ := by
+    rw [Finset.disjoint_filter]
+    exact fun v _ h1 h0 => by omega
+  have hunion : S₁ ∪ S₀ = Finset.univ := by
+    ext v; constructor
+    · intro _; exact Finset.mem_univ v
+    · intro _; simp only [hS₁_def, hS₀_def, Finset.mem_union, Finset.mem_filter,
+        Finset.mem_univ, true_and]; omega
+  -- Total degree sum is even (handshaking lemma)
+  have hsum := G.sum_degrees_eq_twice_card_edges
+  have htot : (∑ v : T, G.degree v) % 2 = 0 := by omega
+  -- Split sum into two parts
+  have hsplit : ∑ v : T, G.degree v =
+      (∑ v ∈ S₁, G.degree v) + (∑ v ∈ S₀, G.degree v) := by
+    rw [← Finset.sum_union hdisjoint, hunion]
+  -- Even-degree sum ≡ 0 (mod 2)
+  have heven : (∑ v ∈ S₀, G.degree v) % 2 = 0 :=
+    sum_mod2_eq_zero _ _ (fun v hv =>
+      (Finset.mem_filter.mp hv).2)
+  -- Odd-degree sum ≡ count (mod 2)
+  have hodd : (∑ v ∈ S₁, G.degree v) % 2 = S₁.card % 2 :=
+    sum_mod2_eq_card_mod2 _ _ (fun v hv =>
+      (Finset.mem_filter.mp hv).2)
+  omega
+
+-- ========================================================================
+-- Part X: Tucker Parity with Graph-Derived Handshaking
+-- ========================================================================
+
+/-- **Strengthened Tucker parity**: the handshaking hypothesis is derived
+from graph structure rather than assumed.
+
+Given a `SimpleGraph T` representing the Tucker graph (where edges connect
+triangles sharing a complementary edge), the handshaking lemma
+(`∑ degrees = 2|E|`) automatically implies the parity condition.
+
+This reduces Tucker's parity argument to just two hypotheses:
+1. Interior degree correspondence (G.degree = complementaryDegree)
+2. Boundary oddness (from 1D Tucker on the boundary) -/
+theorem tucker_parity_from_graph
+    [Fintype V] [Fintype T] [DecidableEq V] [DecidableEq T]
+    [HasBoundary T]
+    (K : TriangulatedComplex V T) (l : TuckerLabeling V)
+    (G : SimpleGraph T) [DecidableRel G.Adj]
+    (h_interior_deg : ∀ t, ¬HasBoundary.isBoundary t →
+      G.degree t = complementaryDegree K l t)
+    (h_boundary_odd : Odd (Finset.univ.filter (fun t =>
+      HasBoundary.isBoundary t ∧ Odd (G.degree t))).card) :
+    ∃ t : T, ¬HasBoundary.isBoundary t ∧ hasComplementaryEdge K l t :=
+  tucker_parity_principle K l (fun t => G.degree t) h_interior_deg
+    (even_card_odd_degree_vertices G) h_boundary_odd
+
+-- ========================================================================
 -- Verification
 -- ========================================================================
 
@@ -312,5 +428,7 @@ triangulation that respects the antipodal structure.
 #check hasComplementaryEdge_iff_complementaryDegree_pos
 #check tucker_parity_principle
 #check tucker_2d_from_parity
+#check even_card_odd_degree_vertices
+#check tucker_parity_from_graph
 
 end TuckerPathFollowing

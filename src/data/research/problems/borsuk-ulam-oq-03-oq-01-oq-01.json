@@ -16,7 +16,11 @@
       "The file compiles cleanly with 0 axioms, 1 sorry (the parity principle itself)",
       "tucker_parity_principle sorry requires edge-sharing data: TriangulatedComplex needs axiom that each non-boundary edge is shared by exactly 2 triangles. Without this, the double-counting argument cannot be formalized.",
       "Proved tucker_parity_principle: 1 sorry eliminated (0A, 0S now)",
-      "Key: original hypothesis (odd boundary triangle count) insufficient alone. Reformulated with Tucker graph degree function + handshaking + interior degree connection"
+      "Key: original hypothesis (odd boundary triangle count) insufficient alone. Reformulated with Tucker graph degree function + handshaking + interior degree connection",
+      "even_card_odd_degree_vertices: proved that any finite SimpleGraph has even count of odd-degree vertices, from Mathlib handshaking lemma",
+      "tucker_parity_from_graph: eliminates h_handshaking hypothesis by using SimpleGraph structure. Tucker parity now needs only 2 hypotheses (interior degree + boundary oddness) instead of 3",
+      "Proof uses Finset.induction + omega for modular arithmetic, partitioning vertices by degree % 2",
+      "Parent tucker_2d axiom in OQ01 is stated too broadly (arbitrary graphs) - Tucker lemma requires triangulation structure. Cannot be proved as stated."
     ],
     "builtItems": [
       "BorsukUlamOQ03OQ01OQ01.lean: Tucker path-following infrastructure (249 lines)",
@@ -28,20 +32,24 @@
       "tucker_2d_from_parity: combines parity with 1D Tucker",
       "complementaryDegree: Finset-based edge counting (no sorry)",
       "hasComplementaryEdge_iff_complementaryDegree_pos: complete iff proof",
-      "tucker_parity_principle: complete proof via Finset partition + parity"
+      "tucker_parity_principle: complete proof via Finset partition + parity",
+      "even_card_odd_degree_vertices: Even #{v | Odd (G.degree v)} for any SimpleGraph (434 lines total)",
+      "sum_mod2_eq_card_mod2: helper - sum of odd values mod 2 = count mod 2",
+      "sum_mod2_eq_zero: helper - sum of even values mod 2 = 0",
+      "tucker_parity_from_graph: 2-hypothesis Tucker parity (no handshaking assumption needed)"
     ],
     "openQuestions": [
-      "Could tuckerDeg hypotheses be derived from SimpleGraph + edge-sharing?",
-      "Can h_handshaking be proved from Mathlib SimpleGraph.even_card_odd_degree_vertices?"
+      "Parent tucker_2d axiom is false for arbitrary graphs - needs reformulation with triangulation hypotheses",
+      "OQ03OQ03 tucker_2d_grid axiom is the real bottleneck - can it be proved from this infrastructure?"
     ],
     "nextSteps": [
-      "Build Tucker SimpleGraph from TriangulatedComplex + edge-sharing",
-      "Derive h_handshaking from Mathlib handshaking lemma",
-      "Connect to BorsukUlamOQ03OQ01 tucker_2d axiom"
+      "Reformulate tucker_2d in OQ01 to use TriangulatedComplex + AntipodalTuckerLabeling",
+      "Build explicit Tucker SimpleGraph construction from TriangulatedComplex with edge-sharing",
+      "Connect tucker_parity_from_graph to OQ03OQ03 tucker_2d_grid"
     ],
-    "progressSummary": "COMPLETED: Eliminated sole sorry. File now 0A, 0S. Replaced broken EdgeSharingProperty with clean Tucker graph degree abstraction."
+    "progressSummary": "Proved even_card_odd_degree_vertices (general graph theory) and tucker_parity_from_graph (eliminates handshaking hypothesis). File now 434 lines, 10 theorems, 0A, 0S."
   },
-  "lastUpdate": "2026-03-22T06:20:52Z",
+  "lastUpdate": "2026-03-22T20:00:00Z",
   "leanFiles": [
     {
       "path": "Proofs/BorsukUlam.lean",
@@ -101,8 +109,8 @@
     {
       "path": "Proofs/BorsukUlamOQ03OQ01OQ01.lean",
       "filename": "BorsukUlamOQ03OQ01OQ01.lean",
-      "lineCount": 317,
-      "theoremCount": 6,
+      "lineCount": 434,
+      "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
