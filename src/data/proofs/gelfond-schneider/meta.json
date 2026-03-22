@@ -8,7 +8,7 @@
     "author": "Gelfond & Schneider (1934)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Gelfond%E2%80%93Schneider_theorem",
     "date": "1934",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/GelfondSchneider.lean",
     "tags": [
       "transcendence",
@@ -17,7 +17,7 @@
       "wiedijk-100",
       "intermediate"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2025-12-29",
     "hilbertNumber": 7,
@@ -156,5 +156,28 @@
   "relatedProofs": [
     "e-transcendental",
     "prime-number-theorem"
+  ],
+  "references": [
+    {
+      "authors": "Gel'fond, Aleksandr O.",
+      "title": "Sur le septième problème de Hilbert",
+      "year": "1934",
+      "venue": "Izvestiya Akademii Nauk SSSR, Seriya Matematicheskaya 7(4), 623–634",
+      "note": "Independent proof that a^b is transcendental when a is algebraic (≠0,1) and b is algebraic irrational"
+    },
+    {
+      "authors": "Schneider, Theodor",
+      "title": "Transzendenzuntersuchungen periodischer Funktionen",
+      "year": "1934",
+      "venue": "Journal für die reine und angewandte Mathematik 172, 65–69",
+      "note": "Independent proof via different methods, published the same year as Gel'fond's — both solved Hilbert's 7th problem"
+    },
+    {
+      "authors": "Baker, Alan",
+      "title": "Transcendental Number Theory",
+      "year": "1975",
+      "venue": "Cambridge University Press",
+      "note": "Contains the proof and its vast generalization to linear forms in logarithms, for which Baker won the Fields Medal"
+    }
   ]
 }

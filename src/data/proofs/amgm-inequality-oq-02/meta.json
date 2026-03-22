@@ -7,7 +7,7 @@
     "author": "Colin Maclaurin (1729); formalized here",
     "sourceUrl": "https://en.wikipedia.org/wiki/Maclaurin%27s_inequality",
     "date": "1729",
-    "status": "open-question",
+    "status": "formalized",
     "proofRepoPath": "Proofs/AmgmInequalityOQ02.lean",
     "tags": [
       "analysis",
@@ -213,8 +213,13 @@
     ]
   },
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Finset", "Real"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Real"
+    ],
     "namespace": null,
     "lineCount": 543,
     "axiomCount": 2,

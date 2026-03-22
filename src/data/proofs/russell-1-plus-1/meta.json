@@ -16,7 +16,7 @@
       "beginner"
     ],
     "proofRepoPath": "Proofs/OnePlusOne.lean",
-    "badge": "pedagogical",
+    "badge": "verified",
     "sorries": 0,
     "mathlibDependencies": [],
     "originalContributions": [
@@ -135,5 +135,14 @@
     "axiomCount": 0,
     "theoremCount": 12,
     "definitionCount": 5
-  }
+  },
+  "references": [
+    {
+      "authors": "Whitehead, Alfred North; Russell, Bertrand",
+      "title": "Principia Mathematica",
+      "year": "1910",
+      "venue": "Cambridge University Press, Vol. I",
+      "note": "The famous proof that 1+1=2 (Proposition *110.643) — several hundred pages of logical foundations to establish basic arithmetic"
+    }
+  ]
 }

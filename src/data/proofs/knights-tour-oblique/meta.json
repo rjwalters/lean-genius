@@ -9,7 +9,7 @@
     "sourceUrl": "https://online.stanford.edu/events/202412/donald-knuths-annual-christmas-lecture-2025",
     "dateAdded": "2025-12-25",
     "status": "axiomatized",
-    "badge": "original",
+    "badge": "axiom",
     "tags": [
       "combinatorics",
       "graph-theory",
@@ -112,5 +112,14 @@
   ],
   "relatedProofs": [
     "euler-polyhedral-formula"
+  ],
+  "references": [
+    {
+      "authors": "Euler, Leonhard",
+      "title": "Solution d'une question curieuse qui ne paroit soumise à aucune analyse",
+      "year": "1759",
+      "venue": "Mémoires de l'Académie Royale des Sciences et Belles Lettres de Berlin 15, 310–337",
+      "note": "Euler's analysis of the knight's tour problem — one of the earliest studies of Hamiltonian paths on graphs"
+    }
   ]
 }

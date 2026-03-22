@@ -162,5 +162,21 @@
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 2
-  }
+  },
+  "references": [
+    {
+      "authors": "Lagrange, Joseph-Louis",
+      "title": "Additions to Euler's Elements of Algebra",
+      "year": "1770",
+      "venue": "Lyon",
+      "note": "First complete proof that Pell's equation x² - Dy² = 1 always has nontrivial solutions for non-square D, using continued fractions"
+    },
+    {
+      "authors": "Lenstra, Hendrik W.",
+      "title": "Solving the Pell Equation",
+      "year": "2002",
+      "venue": "Notices of the AMS 49(2), 182–192",
+      "note": "Modern survey of algorithms for solving Pell's equation including connections to class field theory"
+    }
+  ]
 }

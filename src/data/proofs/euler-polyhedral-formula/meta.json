@@ -8,7 +8,7 @@
     "author": "Leonhard Euler (pedagogical formalization)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Euler_characteristic",
     "date": "1758",
-    "status": "partial",
+    "status": "formalized",
     "proofRepoPath": "Proofs/EulerPolyhedralFormula.lean",
     "tags": [
       "topology",
@@ -145,5 +145,21 @@
     "axiomCount": 1,
     "theoremCount": 65,
     "definitionCount": 27
-  }
+  },
+  "references": [
+    {
+      "authors": "Euler, Leonhard",
+      "title": "Elementa doctrinae solidorum",
+      "year": "1758",
+      "venue": "Novi Commentarii Academiae Scientiarum Petropolitanae 4, 109–140",
+      "note": "Original statement of V - E + F = 2 for convex polyhedra"
+    },
+    {
+      "authors": "Lakatos, Imre",
+      "title": "Proofs and Refutations",
+      "year": "1976",
+      "venue": "Cambridge University Press",
+      "note": "Famous philosophical analysis of the history and proof of Euler's formula, using it to illustrate the nature of mathematical discovery"
+    }
+  ]
 }

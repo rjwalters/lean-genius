@@ -136,5 +136,28 @@
     "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "Chebyshev, Pafnuty L.",
+      "title": "Mémoire sur les nombres premiers",
+      "year": "1852",
+      "venue": "Journal de Mathématiques Pures et Appliquées, Série 1, 17, 366–390",
+      "note": "First proof of Bertrand's postulate: for every n ≥ 1, there exists a prime p with n < p ≤ 2n"
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "Beweis eines Satzes von Tschebyschef",
+      "year": "1932",
+      "venue": "Acta Scientiarum Mathematicarum (Szeged) 5, 194–198",
+      "note": "Erdős's elegant elementary proof using binomial coefficients — his first published paper, written at age 19"
+    },
+    {
+      "authors": "Aigner, Martin; Ziegler, Günter M.",
+      "title": "Proofs from THE BOOK",
+      "year": "2018",
+      "venue": "Springer, 6th edition, Chapter 2",
+      "note": "Contains Erdős's proof as an exemplar of elegant mathematics"
+    }
+  ]
 }

@@ -8,7 +8,7 @@
     "author": "Joseph-Louis Lagrange (formalized via Mathlib)",
     "sourceUrl": "https://github.com/leanprover-community/mathlib4/blob/master/Mathlib/NumberTheory/SumFourSquares.lean",
     "date": "1770",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/LagrangeFourSquares.lean",
     "tags": [
       "number-theory",
@@ -17,7 +17,7 @@
       "wiedijk-100",
       "classic"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -138,5 +138,21 @@
     "axiomCount": 9,
     "theoremCount": 15,
     "definitionCount": 8
-  }
+  },
+  "references": [
+    {
+      "authors": "Lagrange, Joseph-Louis",
+      "title": "Démonstration d'un théorème d'arithmétique",
+      "year": "1770",
+      "venue": "Nouveaux Mémoires de l'Académie Royale des Sciences et Belles-Lettres de Berlin, 123–133",
+      "note": "First proof that every positive integer is a sum of four squares — completing a conjecture of Bachet (1621) and Fermat"
+    },
+    {
+      "authors": "Hardy, G.H.; Wright, E.M.",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "2008",
+      "venue": "Oxford University Press, 6th edition, Chapter 20",
+      "note": "Contains the classical proof using Euler's four-square identity and descent"
+    }
+  ]
 }

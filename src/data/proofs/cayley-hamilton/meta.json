@@ -133,5 +133,28 @@
     "axiomCount": 0,
     "theoremCount": 11,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "Cayley, Arthur",
+      "title": "A memoir on the theory of matrices",
+      "year": "1858",
+      "venue": "Philosophical Transactions of the Royal Society of London 148, 17–37",
+      "note": "Stated the theorem for 2×2 and 3×3 matrices; general proof came later"
+    },
+    {
+      "authors": "Hamilton, William Rowan",
+      "title": "Lectures on Quaternions",
+      "year": "1853",
+      "venue": "Hodges and Smith, Dublin",
+      "note": "Hamilton proved the analogous result for quaternions, anticipating the matrix case"
+    },
+    {
+      "authors": "Horn, Roger A.; Johnson, Charles R.",
+      "title": "Matrix Analysis",
+      "year": "2013",
+      "venue": "Cambridge University Press, 2nd edition",
+      "note": "Modern treatment with multiple proofs including via the adjugate matrix and minimal polynomial"
+    }
+  ]
 }

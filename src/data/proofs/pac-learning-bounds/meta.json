@@ -176,5 +176,21 @@
     "axiomCount": 0,
     "theoremCount": 5,
     "definitionCount": 1
-  }
+  },
+  "references": [
+    {
+      "authors": "Valiant, Leslie G.",
+      "title": "A theory of the learnable",
+      "year": "1984",
+      "venue": "Communications of the ACM 27(11), 1134–1142",
+      "note": "Introduced the PAC (Probably Approximately Correct) learning framework"
+    },
+    {
+      "authors": "Shalev-Shwartz, Shai; Ben-David, Shai",
+      "title": "Understanding Machine Learning: From Theory to Algorithms",
+      "year": "2014",
+      "venue": "Cambridge University Press",
+      "note": "Modern treatment of PAC learning, VC dimension, and sample complexity bounds"
+    }
+  ]
 }

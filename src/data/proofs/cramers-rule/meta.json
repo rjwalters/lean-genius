@@ -222,5 +222,21 @@
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "Cramer, Gabriel",
+      "title": "Introduction à l'analyse des lignes courbes algébriques",
+      "year": "1750",
+      "venue": "Geneva: Frères Cramer et Claude Philibert",
+      "note": "Original publication of Cramer's rule for solving systems of linear equations via determinants"
+    },
+    {
+      "authors": "Strang, Gilbert",
+      "title": "Linear Algebra and Its Applications",
+      "year": "2006",
+      "venue": "Thomson Brooks/Cole, 4th edition",
+      "note": "Modern treatment of Cramer's rule in the context of linear algebra, with discussion of computational efficiency"
+    }
+  ]
 }

@@ -8,7 +8,7 @@
     "author": "Karl Wilhelm Feuerbach (1822)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Feuerbach%27s_theorem",
     "date": "1822",
-    "status": "proved",
+    "status": "verified",
     "proofRepoPath": "Proofs/FeuerbachsTheorem.lean",
     "tags": [
       "geometry",
@@ -18,7 +18,7 @@
       "wiedijk-100",
       "classic"
     ],
-    "badge": "proved",
+    "badge": "verified",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -151,5 +151,21 @@
     "axiomCount": 0,
     "theoremCount": 11,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "Feuerbach, Karl Wilhelm",
+      "title": "Eigenschaften einiger merkwürdigen Punkte des geradlinigen Dreiecks und mehrerer durch sie bestimmten Linien und Figuren",
+      "year": "1822",
+      "venue": "Nürnberg",
+      "note": "Original proof that the nine-point circle is internally tangent to the incircle and externally tangent to the excircles"
+    },
+    {
+      "authors": "Johnson, Roger A.",
+      "title": "Advanced Euclidean Geometry",
+      "year": "1929",
+      "venue": "Houghton Mifflin (Dover reprint 2007)",
+      "note": "Classic reference containing multiple proofs and generalizations of Feuerbach's theorem"
+    }
+  ]
 }

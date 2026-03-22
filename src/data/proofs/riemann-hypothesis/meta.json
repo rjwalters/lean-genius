@@ -127,6 +127,36 @@
       "summary": "Four additional equivalent formulations of RH beyond K₁₀: Balazard-Saias-Yor vanishing integral, Riesz criterion (growth of entire function from ζ(2k)), Báez-Duarte criterion (coefficients from ζ values at even integers), Volchkov's integral criterion (single integral equals explicit constant). All proved pairwise equivalent via RH transitivity."
     }
   ],
+  "references": [
+    {
+      "authors": "Riemann, Bernhard",
+      "title": "Ueber die Anzahl der Primzahlen unter einer gegebenen Grösse",
+      "year": "1859",
+      "venue": "Monatsberichte der Berliner Akademie",
+      "note": "The 8-page paper where Riemann introduced the zeta function's analytic continuation, functional equation, and stated the hypothesis"
+    },
+    {
+      "authors": "Edwards, Harold M.",
+      "title": "Riemann's Zeta Function",
+      "year": "1974",
+      "venue": "Academic Press (Dover reprint 2001)",
+      "note": "Definitive historical and mathematical treatment of Riemann's original paper and subsequent developments"
+    },
+    {
+      "authors": "Titchmarsh, E.C.",
+      "title": "The Theory of the Riemann Zeta-Function",
+      "year": "1986",
+      "venue": "Oxford University Press, 2nd edition (revised by D.R. Heath-Brown)",
+      "note": "Standard reference for analytic properties, zero-free regions, and equivalent formulations of RH"
+    },
+    {
+      "authors": "Conrey, J. Brian",
+      "title": "More than two fifths of the zeros of the Riemann zeta function are on the critical line",
+      "year": "1989",
+      "venue": "Journal für die reine und angewandte Mathematik 399, 1–26",
+      "note": "Best known proportion (41.28%) of zeros proved to lie on the critical line"
+    }
+  ],
   "conclusion": {
     "summary": "The Riemann Hypothesis remains one of the deepest unsolved problems in mathematics. This formalization (8188 lines, 540 theorems, 42 axioms, 0 sorries) provides:\n\n1. A precise formal statement using Mathlib's riemannZeta function\n2. 14 equivalent formulations: K₁₀ network + BSY, Riesz, Báez-Duarte, Volchkov integral criteria\n3. GRH→RH proved from Mathlib's Dirichlet L-function infrastructure\n4. Counterexample structure: ¬RH forces 4 distinct off-line zeros\n5. Moment conjectures: Hardy-Littlewood, Ingham, CFKRS, growth rate determined\n6. Deep theory: Selberg class, de Bruijn-Newman constant, random matrix connections\n7. Arithmetic consequences: explicit prime bounds, GRH-conditional results\n8. Li's criterion, Connes' positivity, and Keiper's conjecture\n\nThe 'axiom' badge indicates this formalization assumes deep mathematical results as axioms.",
     "implications": "If RH is true, it would:\n- Give the best possible error term in the Prime Number Theorem\n- Provide tight bounds on prime gaps: p_{n+1} - p_n = O(sqrt(p_n) log^2 p_n)\n- Enable effective bounds in many number-theoretic problems\n- Have implications for the security analysis of cryptographic systems\n\nIf RH is false, it would be equally revolutionary, revealing unexpected structure in the distribution of primes.",

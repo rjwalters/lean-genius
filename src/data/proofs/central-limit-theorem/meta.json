@@ -124,6 +124,29 @@
       "summary": "Links to information geometry, stable distributions, and modern applied topology."
     }
   ],
+  "references": [
+    {
+      "authors": "Lyapunov, Aleksandr M.",
+      "title": "Nouvelle forme du théorème sur la limite de probabilité",
+      "year": "1901",
+      "venue": "Mémoires de l'Académie Impériale des Sciences de St.-Pétersbourg, VIII série, Classe physico-mathématique 12(5), 1–24",
+      "note": "First rigorous proof of the CLT under the Lyapunov condition using characteristic functions"
+    },
+    {
+      "authors": "Lindeberg, Jarl Waldemar",
+      "title": "Eine neue Herleitung des Exponentialgesetzes in der Wahrscheinlichkeitsrechnung",
+      "year": "1922",
+      "venue": "Mathematische Zeitschrift 15(1), 211–225",
+      "note": "Proved the CLT under the weaker Lindeberg condition — the definitive version for independent non-identically distributed variables"
+    },
+    {
+      "authors": "Feller, William",
+      "title": "An Introduction to Probability Theory and Its Applications, Vol. II",
+      "year": "1971",
+      "venue": "Wiley, 2nd edition",
+      "note": "Standard reference for the characteristic function proof and Berry-Esseen bounds"
+    }
+  ],
   "conclusion": {
     "summary": "The Central Limit Theorem reveals that the Gaussian distribution is not merely common but inevitable. The classical proof via characteristic functions shows *that* sums converge to the normal distribution; the topological interpretation explains *why*—the Gaussian is a fixed point attractor under the fundamental operation of averaging.\n\nThis dual perspective unifies analysis (characteristic functions, Fourier transforms) with geometry (the space of distributions, Wasserstein metrics) and dynamics (renormalization flows, fixed point theory). The result has profound implications: wherever we see averages of many independent effects, we expect Gaussian behavior.",
     "implications": "**Practical Impact**:\n- Statistical inference relies on CLT for confidence intervals and hypothesis tests\n- Measurement errors are approximately Gaussian (many small independent sources)\n- Financial models (Black-Scholes) assume log-normal returns via CLT\n- Quality control uses normal distributions for process variation\n\n**Mathematical Significance**:\n- Connects probability to topology and dynamical systems\n- Explains universality: why the same distribution appears across domains\n- Foundation for stable distribution theory and heavy-tailed analysis\n- Information geometry reveals Gaussian as Fisher-information minimizer\n\n**Computational Aspects**:\n- Monte Carlo methods exploit CLT for error estimation\n- Berry-Esseen bounds quantify convergence rates\n- Edgeworth expansions provide corrections for finite samples",

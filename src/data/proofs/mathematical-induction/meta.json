@@ -17,7 +17,7 @@
       "easy"
     ],
     "proofRepoPath": "Proofs/MathematicalInduction.lean",
-    "badge": "pedagogical",
+    "badge": "verified",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -132,5 +132,21 @@
     "axiomCount": 0,
     "theoremCount": 11,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "Peano, Giuseppe",
+      "title": "Arithmetices principia, nova methodo exposita",
+      "year": "1889",
+      "venue": "Turin: Fratres Bocca",
+      "note": "Formalized the principle of mathematical induction as the fifth Peano axiom"
+    },
+    {
+      "authors": "Dedekind, Richard",
+      "title": "Was sind und was sollen die Zahlen?",
+      "year": "1888",
+      "venue": "Braunschweig: Vieweg",
+      "note": "Independent axiomatization of the natural numbers with induction as a foundational principle"
+    }
+  ]
 }

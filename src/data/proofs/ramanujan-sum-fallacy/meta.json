@@ -4,7 +4,7 @@
   "slug": "ramanujan-sum-fallacy",
   "description": "A demonstration of how Lean catches the famous fallacious 'proof' that 1+2+3+... = -1/12, showing why mathematical rigor matters.",
   "meta": {
-    "status": "disputed",
+    "status": "formalized",
     "tags": [
       "fallacy",
       "divergent-series",
@@ -146,5 +146,21 @@
     "axiomCount": 2,
     "theoremCount": 13,
     "definitionCount": 3
-  }
+  },
+  "references": [
+    {
+      "authors": "Ramanujan, Srinivasa",
+      "title": "Notebooks of Srinivasa Ramanujan, Vol. I",
+      "year": "1957",
+      "venue": "Tata Institute of Fundamental Research, Bombay",
+      "note": "Contains Ramanujan's original claim that 1+2+3+... = -1/12, interpreted through analytic continuation of ζ(s)"
+    },
+    {
+      "authors": "Hardy, G.H.",
+      "title": "Divergent Series",
+      "year": "1949",
+      "venue": "Oxford University Press",
+      "note": "Rigorous treatment of summability methods that give meaning to divergent series like Ramanujan's"
+    }
+  ]
 }

@@ -7,14 +7,14 @@
     "proofRepoPath": "Proofs/Hilbert11_QuadraticForms.lean",
     "author": "Minkowski (1890), Hasse (1923)",
     "date": "1923",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "number-theory",
       "quadratic-forms",
       "hilbert-problems",
       "advanced"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -198,5 +198,21 @@
     "axiomCount": 6,
     "theoremCount": 7,
     "definitionCount": 17
-  }
+  },
+  "references": [
+    {
+      "authors": "Hasse, Helmut",
+      "title": "Über die Darstellbarkeit von Zahlen durch quadratische Formen im Körper der rationalen Zahlen",
+      "year": "1923",
+      "venue": "Journal für die reine und angewandte Mathematik 152, 129–148",
+      "note": "The Hasse-Minkowski theorem: a quadratic form over Q represents zero iff it does so over every Q_p and over R — the local-global principle"
+    },
+    {
+      "authors": "Serre, Jean-Pierre",
+      "title": "A Course in Arithmetic",
+      "year": "1973",
+      "venue": "Springer GTM 7",
+      "note": "Modern treatment of quadratic forms over Q and the Hasse-Minkowski theorem"
+    }
+  ]
 }

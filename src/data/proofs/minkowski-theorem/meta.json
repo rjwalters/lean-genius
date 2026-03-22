@@ -8,7 +8,7 @@
     "author": "Hermann Minkowski (1896)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Minkowski%27s_theorem",
     "date": "1896",
-    "status": "axiom-based",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/MinkowskiFundamentalTheorem.lean",
     "tags": [
       "number-theory",
@@ -18,7 +18,7 @@
       "wiedijk-100",
       "classic"
     ],
-    "badge": "from-axioms",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -166,5 +166,14 @@
     "axiomCount": 1,
     "theoremCount": 9,
     "definitionCount": 7
-  }
+  },
+  "references": [
+    {
+      "authors": "Minkowski, Hermann",
+      "title": "Geometrie der Zahlen",
+      "year": "1896",
+      "venue": "Leipzig: Teubner",
+      "note": "Founded the geometry of numbers — proved that a convex symmetric body of sufficient volume must contain a non-zero lattice point"
+    }
+  ]
 }

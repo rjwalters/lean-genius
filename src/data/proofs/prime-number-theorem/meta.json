@@ -8,7 +8,7 @@
     "author": "Hadamard & de la Vallee Poussin (1896)",
     "sourceUrl": "https://github.com/AlexKontorovich/PrimeNumberTheoremAnd",
     "date": "1896",
-    "status": "axiom-based",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/PrimeNumberTheorem.lean",
     "tags": [
       "number-theory",
@@ -18,7 +18,7 @@
       "wiedijk-100",
       "classic"
     ],
-    "badge": "from-axioms",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -206,5 +206,28 @@
     "axiomCount": 13,
     "theoremCount": 15,
     "definitionCount": 9
-  }
+  },
+  "references": [
+    {
+      "authors": "Hadamard, Jacques",
+      "title": "Sur la distribution des zéros de la fonction ζ(s) et ses conséquences arithmétiques",
+      "year": "1896",
+      "venue": "Bulletin de la Société Mathématique de France 24, 199–220",
+      "note": "Independent proof (with de la Vallée Poussin) of the Prime Number Theorem: π(x) ~ x/ln(x)"
+    },
+    {
+      "authors": "de la Vallée Poussin, Charles-Jean",
+      "title": "Recherches analytiques sur la théorie des nombres premiers",
+      "year": "1896",
+      "venue": "Annales de la Société Scientifique de Bruxelles 20, 183–256",
+      "note": "Independent proof of PNT in the same year as Hadamard, using non-vanishing of ζ(1+it)"
+    },
+    {
+      "authors": "Selberg, Atle",
+      "title": "An elementary proof of the prime-number theorem",
+      "year": "1949",
+      "venue": "Annals of Mathematics 50(2), 305–313",
+      "note": "Elementary proof avoiding complex analysis — alongside Erdős's independent elementary proof"
+    }
+  ]
 }

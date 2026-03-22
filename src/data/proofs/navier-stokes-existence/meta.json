@@ -244,5 +244,21 @@
     "axiomCount": 0,
     "theoremCount": 1009,
     "definitionCount": 104
-  }
+  },
+  "references": [
+    {
+      "authors": "Leray, Jean",
+      "title": "Sur le mouvement d'un liquide visqueux emplissant l'espace",
+      "year": "1934",
+      "venue": "Acta Mathematica 63, 193–248",
+      "note": "Proved existence of weak solutions (Leray solutions) to the Navier-Stokes equations — global existence in 3D with possible singularities"
+    },
+    {
+      "authors": "Temam, Roger",
+      "title": "Navier-Stokes Equations: Theory and Numerical Analysis",
+      "year": "2001",
+      "venue": "American Mathematical Society, Chelsea Publishing",
+      "note": "Standard reference for existence and uniqueness theory of Navier-Stokes equations"
+    }
+  ]
 }
