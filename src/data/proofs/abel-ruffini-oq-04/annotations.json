@@ -25,7 +25,7 @@
     "id": "ann-namespace-structure",
     "proofId": "abel-ruffini-oq-04",
     "range": {
-      "startLine": 30,
+      "startLine": 31,
       "endLine": 35
     },
     "type": "context",
@@ -211,10 +211,10 @@
     "id": "ann-verification",
     "proofId": "abel-ruffini-oq-04",
     "range": {
-      "startLine": 158,
+      "startLine": 154,
       "endLine": 163
     },
-    "type": "technique",
+    "type": "context",
     "title": "Verification via #check",
     "content": "The file ends by type-checking all four main theorems using Lean's `#check` command: `a5_is_simple`, `s5_not_solvable`, `symmetric_not_solvable`, and `five_is_the_threshold`. In Lean 4, `#check` prints the type of a term — if any theorem had a type error, unsatisfied universe constraint, or missing hypothesis, this would produce an error. These four theorems represent the complete proof chain: A₅ simplicity (Step 1), S₅ non-solvability (Steps 1-3 composed), the general theorem for all n ≥ 5 (Step 3 generalized), and the sharp threshold witness (combining Steps 3 and the solvable small cases).",
     "mathContext": "The four checked theorems: (1) `IsSimpleGroup(A_5)`, (2) $\\neg\\text{IsSolvable}(S_5)$, (3) $\\forall n \\geq 5,\\ \\neg\\text{IsSolvable}(S_n)$, (4) $\\text{IsSolvable}(S_1) \\wedge \\neg\\text{IsSolvable}(S_5)$.",
