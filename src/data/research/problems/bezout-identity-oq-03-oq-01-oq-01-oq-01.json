@@ -1,0 +1,32 @@
+{
+  "id": "bezout-identity-oq-03-oq-01-oq-01-oq-01",
+  "name": "Ideal-theoretic Chinese Remainder Theorem: R/⨅Iᵢ ≅ ∏ R/Iᵢ",
+  "status": "in-progress",
+  "phase": "ACT",
+  "knowledge": {
+    "insights": [
+      "Mathlib has Ideal.quotientInfRingEquivPiQuotient for the general k-fold CRT",
+      "Ideal.quotientInfEquivQuotientProd gives the 2-fold version",
+      "Ideal.isCoprime_iff_sup_eq connects IsCoprime to I ⊔ J = ⊤",
+      "The product = intersection lemma (I ⊓ J = I * J for coprime) needs the right Mathlib API",
+      "sup_inf_left gives the lattice distributive law for ideals but type mismatch with Ideal.isCoprime_iff_sup_eq",
+      "3 sorries remain: inf_eq_mul, crt_unique, coprime inheritance"
+    ],
+    "builtItems": [
+      "BezoutIdentityOQ03OQ01OQ01OQ01.lean: 146L, 12 theorems, 0 axioms, 3 sorries",
+      "crt_two: R/(I∩J) ≅ R/I × R/J (fully proved from Mathlib)",
+      "crt_general: R/⨅Iᵢ ≅ ∏ R/Iᵢ (fully proved from Mathlib)",
+      "crt_product: R/(I·J) ≅ R/I × R/J (depends on inf_eq_mul sorry)"
+    ],
+    "openQuestions": [
+      "What is the correct Mathlib name for I ⊓ J = I * J for coprime ideals?",
+      "How to properly use sup_inf_left with Ideal.isCoprime_iff_sup_eq?"
+    ],
+    "nextSteps": [
+      "Find and use correct Mathlib lemma for inf_eq_mul_of_coprime",
+      "Fix type mismatch in isCoprime_of_coprime_inf via proper lattice API",
+      "Prove crt_unique using quotient API"
+    ],
+    "progressSummary": "PROGRESS: Core CRT proved (2-fold and k-fold from Mathlib). 3 auxiliary sorries remain. 146L, 12 theorems."
+  }
+}
