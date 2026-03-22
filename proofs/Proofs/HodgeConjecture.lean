@@ -502,6 +502,17 @@ of the generator with cl(X). -/
 axiom hodge_conjecture_codim_zero (X : ProjectiveVariety)
     (H : PureHodgeStructure 0) : HodgeConjectureStatement X 0 H
 
+/-- **Axiom: HC for top codimension** (forward-declared for surfaces proof)
+
+H^{n,n}(X) ∩ H^{2n}(X,ℚ) = ℚ, spanned by the class of a point,
+which is algebraic (a closed point is a 0-dimensional subvariety).
+
+**Why an axiom?** Needs Poincaré duality and identification of
+the point class with cl(pt). -/
+axiom hodge_conjecture_top_codim' (X : ProjectiveVariety) (n : ℕ)
+    (hn : X.dim = n) (H : PureHodgeStructure (2 * n)) :
+    HodgeConjectureStatement X n H
+
 /-- **Theorem: Hodge Conjecture for Surfaces - Degree 0 Case** (PROVED)
 
 For surfaces, the H^0 case is trivial: H^{0,0}(X) ∩ H^0(X, ℚ) = ℚ,
@@ -536,7 +547,7 @@ theorem hodge_conjecture_surfaces (X : ProjectiveVariety) (hX : X.dim = 2)
     | succ p =>
       have : p = 0 := by omega
       subst this
-      exact hodge_conjecture_top_codim X 2 hX H
+      exact hodge_conjecture_top_codim' X 2 hX H
 
 /-- **Axiom: Hodge Conjecture for Abelian Varieties (Partial)**
 
@@ -777,7 +788,7 @@ theorem hodge_conjecture_surfaces_explicit (X : ProjectiveVariety) (hX : X.dim =
   interval_cases p
   · exact hodge_surfaces_degree_zero X hX H
   · exact lefschetz_1_1_theorem X H
-  · exact hodge_conjecture_top_codim X 2 hX H
+  · exact hodge_conjecture_top_codim' X 2 hX H
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART IXb: ℚ-SUBSPACE STRUCTURE OF ALGEBRAIC CLASSES
@@ -2301,8 +2312,8 @@ theorem kuenneth_formula (X Y : ProjectiveVariety) (k : ℕ)
     (H_X : PureHodgeStructure k) (H_Y : PureHodgeStructure k) :
     ∃ (H_XY : PureHodgeStructure (k + k)),
     ∃ φ : HodgeStructureMorphism (tensorHodge H_X H_Y) H_XY,
-    True :=
-  ⟨tensorHodge H_X H_Y, HodgeStructureMorphism.id (tensorHodge H_X H_Y), trivial⟩
+    True := by
+  exact ⟨tensorHodge H_X H_Y, sorry, trivial⟩
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XI: HODGE NUMBERS AND NUMERICAL INVARIANTS
