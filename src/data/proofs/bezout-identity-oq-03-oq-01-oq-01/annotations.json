@@ -36,6 +36,18 @@
     "prerequisites": ["2-fold CRT", "coprimality propagation", "List.Pairwise"]
   },
   {
+    "id": "ann-bezout-oq03-oq01-oq01-06-properties",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-01",
+    "range": { "startLine": 140, "endLine": 182 },
+    "type": "technique",
+    "title": "Algebraic Properties via RingEquiv API",
+    "content": "Seven theorems extracting properties from the k-fold CRT ring isomorphism: bijectivity, injectivity, surjectivity, multiplication preservation, addition preservation, and both round-trip identities. Each is a one-line proof delegating to the RingEquiv API (e.g., `.bijective`, `map_mul`, `.symm_apply_apply`). This demonstrates a key Lean/Mathlib pattern: once you construct an equivalence, its properties are essentially free — the algebraic structure does the bookkeeping.",
+    "mathContext": "A ring isomorphism $\\varphi: R \\xrightarrow{\\sim} S$ is automatically bijective, preserves $+$ and $\\times$, and satisfies $\\varphi^{-1}(\\varphi(x)) = x$ and $\\varphi(\\varphi^{-1}(y)) = y$. These are not theorems about the CRT specifically but about any `RingEquiv`.",
+    "significance": "technical",
+    "relatedConcepts": ["RingEquiv", "Function.Bijective", "map_mul", "symm_apply_apply"],
+    "prerequisites": ["ring isomorphism", "function properties"]
+  },
+  {
     "id": "ann-bezout-oq03-oq01-oq01-03",
     "proofId": "bezout-identity-oq-03-oq-01-oq-01",
     "range": { "startLine": 195, "endLine": 210 },
