@@ -16,7 +16,7 @@
       "multiplicative number theory"
     ],
     "badge": "formalized",
-    "sorries": 5,
+    "sorries": 4,
     "erdosNumber": 538,
     "erdosUrl": "https://erdosproblems.com/538",
     "erdosProblemStatus": "open",
@@ -83,7 +83,7 @@
       "title": "Harmonic Upper Bound",
       "startLine": 158,
       "endLine": 167,
-      "summary": "Theorem (sorry): without the constraint, Σ 1/n ≤ 1 + log N (harmonic sum bound)."
+      "summary": "Theorem (PROVED): Σ 1/n ≤ 1 + log N (harmonic sum bound) by induction using log(x) ≤ x - 1."
     },
     {
       "id": "double-counting",
@@ -123,13 +123,14 @@
       "Mathlib.Data.Nat.Prime.Basic",
       "Mathlib.Data.Finset.Basic",
       "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
       "Mathlib.Tactic"
     ],
-    "opens": [],
+    "opens": ["Classical"],
     "namespace": null,
-    "lineCount": 232,
+    "lineCount": 278,
     "axiomCount": 0,
-    "theoremCount": 16,
+    "theoremCount": 17,
     "definitionCount": 5
   }
 }
