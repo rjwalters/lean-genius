@@ -9,6 +9,8 @@
     "date": "2026",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1155OQ01.lean",
+    "leanFile": "proofs/Proofs/Erdos1155OQ01.lean",
+    "dateAdded": "2026-03-22",
     "tags": [
       "erdos",
       "triangle-removal",
@@ -106,10 +108,6 @@
       {
         "id": "ramseys-theorem",
         "relationship": "Both concern structural properties of graphs under random or extremal processes; Ramsey theory provides related combinatorial bounds"
-      },
-      {
-        "id": "triangle-inequality",
-        "relationship": "Shares triangle-related graph-theoretic concepts, though in a metric rather than extremal context"
       }
     ]
   },
@@ -191,7 +189,7 @@
       "title": "Tightness and Ratio Characterization",
       "summary": "Under the conjecture, the normalized ratio f(n)/n^{3/2} is eventually in [c₁, c₂]. Characterizes the conjecture as a compactness condition on the ratio sequence in (0, ∞).",
       "startLine": 447,
-      "endLine": 491,
+      "endLine": 489,
       "mathContext": "Conjecture $\\iff \\{f(n)/n^{3/2}\\}_{n \\geq N}$ is bounded in $(0, \\infty)$: a compactness condition on the ratio sequence."
     }
   ],
@@ -206,6 +204,19 @@
       "**Strict hierarchy** Conjecture $\\Longrightarrow$ BFL $\\Longrightarrow$ Grable: each weakening loses information about whether the multiplicative constant is fixed or grows with $n$",
       "**Mantel connection**: the naive bound $f(n) \\leq n^2/4$ from extremal graph theory is vastly improved by BFL's $n^{7/4}$, and the conjecture's $n^{3/2}$ is tighter still"
     ]
+  },
+  "crossReferences": [
+    {"proofId": "erdos-1155", "relationship": "parent", "description": "Parent formalization of Erdős Problem #1155; this file extends with exact asymptotic gap analysis"},
+    {"proofId": "ramseys-theorem", "relationship": "related", "description": "Ramsey theory provides related combinatorial bounds for structural properties of random graphs"}
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Filter", "SimpleGraph", "Finset"],
+    "namespace": null,
+    "lineCount": 489,
+    "axiomCount": 5,
+    "theoremCount": 20,
+    "definitionCount": 6
   },
   "conclusion": {
     "summary": "Complete formalization of the structural relationship between BFL's n^{3/2+o(1)} result and Erdős's Θ(n^{3/2}) conjecture. All theorems fully proved (0 sorries). Includes BFL sandwich, exact exponent characterization, conjecture decomposition, Mantel connection, hierarchy of bounds, and ratio tightness characterization.",
