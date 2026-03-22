@@ -22,6 +22,27 @@
     ]
   },
   {
+    "id": "ann-namespace-structure",
+    "proofId": "abel-ruffini-oq-04",
+    "range": {
+      "startLine": 30,
+      "endLine": 35
+    },
+    "type": "context",
+    "title": "Namespace and Proof Architecture",
+    "content": "The file is organized into a single namespace `AbelRuffiniOQ04` with five clearly separated parts, mirroring the logical structure of the Abel-Ruffini proof chain. Part I establishes the foundation (A₅ simplicity), Part II builds the main non-solvability theorem, Part III provides contrast cases, Part IV packages the threshold result, and Part V provides comprehensive documentation. This 'OQ-04' designation indicates the fourth original question/exploration branching from the base `abel-ruffini` gallery entry, focusing specifically on making the internal proof chain explicit.",
+    "mathContext": "The proof chain architecture: foundation ($A_5$ simple) $\\to$ propagation ($S_n$ not solvable) $\\to$ contrast ($S_{\\leq 4}$ solvable) $\\to$ threshold (exact dichotomy) $\\to$ documentation (full chain).",
+    "significance": "context",
+    "relatedConcepts": [
+      "proof architecture",
+      "modular formalization",
+      "pedagogical exposition"
+    ],
+    "prerequisites": [
+      "Lean 4 namespaces"
+    ]
+  },
+  {
     "id": "ann-a5-simple",
     "proofId": "abel-ruffini-oq-04",
     "range": {

@@ -59,6 +59,11 @@
         "type": "book"
       },
       {
+        "key": "Ru99",
+        "citation": "Ruffini, P., Teoria Generale delle Equazioni, in cui si dimostra impossibile la soluzione algebraica delle equazioni generali di grado superiore al quarto, Bologna (1799).",
+        "type": "book"
+      },
+      {
         "key": "Ro95",
         "citation": "Rotman, J.J., An Introduction to the Theory of Groups, 4th ed., Springer GTM 148 (1995), Chapter 8.",
         "type": "book"
@@ -84,6 +89,11 @@
         "id": "sylow-theorems",
         "relationship": "related",
         "description": "Sylow theorems provide structural information about A₅: its Sylow subgroups witness the 60 = 4·3·5 factorization and help prove simplicity"
+      },
+      {
+        "id": "solution-of-cubic",
+        "relationship": "complementary",
+        "description": "Cardano's formula (1545) gives radical solutions for cubics — the last degree where a general radical formula exists, before the solvability barrier at degree 5"
       }
     ],
     "prerequisites": [
@@ -129,10 +139,15 @@
       "targetId": "fundamental-arithmetic",
       "relationship": "related",
       "description": "Unique prime factorization underlies the Sylow-theoretic analysis of A₅: |A₅| = 60 = 2²·3·5 determines its Sylow subgroup structure, which is key to proving simplicity"
+    },
+    {
+      "targetId": "solution-of-cubic",
+      "relationship": "complementary",
+      "description": "Cardano's formula (1545) gives explicit radical solutions for cubics — the last degree where a general radical formula exists. This file proves why no such formula exists for degree ≥ 5"
     }
   ],
   "overview": {
-    "historicalContext": "The Abel-Ruffini theorem (1824) stands as one of the most profound results in the history of algebra, settling a question that had occupied mathematicians for centuries. After Cardano (1545) and Ferrari (1540) found radical solutions for cubics and quartics, the search for a quintic formula consumed generations of mathematicians including Euler, Lagrange, and Vandermonde. Paolo Ruffini gave an incomplete proof of impossibility in 1799; Niels Henrik Abel provided the first rigorous proof in 1824, at age 21. Évariste Galois, before his death in a duel at 20, went much further in 1832: he characterized exactly which polynomials are solvable by radicals in terms of their symmetry groups. The key group-theoretic insight is that A₅, the alternating group on 5 elements, is the smallest non-abelian simple group — with order 60, it has no proper non-trivial normal subgroups, causing the derived series to get stuck. This single fact propagates upward through the chain: A₅ not solvable → Sₙ (n ≥ 5) not solvable → generic quintic not solvable by radicals. The classification of finite simple groups (completed circa 2004) shows that A₅ is the first in the infinite family of simple alternating groups Aₙ (n ≥ 5).",
+    "historicalContext": "The Abel-Ruffini theorem (1824) stands as one of the most profound results in the history of algebra, settling a question that had occupied mathematicians for centuries. After Cardano (1545) and Ferrari (1540) found radical solutions for cubics and quartics, the search for a quintic formula consumed generations of mathematicians including Euler, Lagrange, and Vandermonde. Paolo Ruffini published the first attempted proof of impossibility in 1799 in his *Teoria Generale delle Equazioni*, running to over 500 pages. Ruffini's argument, based on permutation analysis, contained a gap: he assumed without proof that any radical expression for the roots must take a specific 'standard form,' and his treatment of the permutations was not fully rigorous. Despite submitting his work to leading mathematicians including Lagrange (who never responded) and Cauchy (who acknowledged its importance), Ruffini's proof was not widely accepted during his lifetime. Niels Henrik Abel, working independently in near-poverty in Norway, provided the first complete proof in 1824 at age 21 — a 6-page paper that succeeded precisely where Ruffini's argument was incomplete. Abel died of tuberculosis in 1829, just two days before a letter arrived offering him a professorship in Berlin. Évariste Galois, before his death in a duel at 20, went much further in 1832: he characterized exactly which polynomials are solvable by radicals in terms of their symmetry groups, founding what we now call Galois theory. The key group-theoretic insight is that A₅, the alternating group on 5 elements, is the smallest non-abelian simple group — with order 60, it has no proper non-trivial normal subgroups, causing the derived series to get stuck. This single fact propagates upward through the chain: A₅ not solvable → Sₙ (n ≥ 5) not solvable → generic quintic not solvable by radicals. The classification of finite simple groups (completed circa 2004) shows that A₅ is the first in the infinite family of simple alternating groups Aₙ (n ≥ 5).",
     "problemStatement": "Expose the full proof chain from $A_5$ simplicity to the Abel-Ruffini theorem with each step as a named, machine-verified theorem: $A_5$ simple $\\Rightarrow$ $S_n$ ($n \\geq 5$) not solvable $\\Rightarrow$ no radical formula for the general degree-$n$ polynomial ($n \\geq 5$).",
     "proofStrategy": "The file provides a pedagogical exposition rather than new mathematical content: it wraps Mathlib's existing theorems (alternatingGroup.isSimpleGroup_five and Equiv.Perm.not_solvable) in named theorems with comprehensive documentation. The key technical contribution is symmetric_not_solvable, which bridges from Mathlib's cardinal-level statement to a natural number inequality via exact_mod_cast. The proof chain is made explicit by naming each link and documenting the logical dependencies.",
     "keyInsights": [

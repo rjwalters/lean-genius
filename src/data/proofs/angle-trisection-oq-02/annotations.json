@@ -1,5 +1,28 @@
 [
   {
+    "id": "ann-header-imports",
+    "proofId": "angle-trisection-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 44
+    },
+    "type": "context",
+    "title": "Module Overview: From Degree Criterion to Galois Criterion",
+    "content": "The file imports Mathlib (for p-groups, Galois groups, field extensions, polynomials) plus four project-local files: `InverseGalois` (S₃ as Galois group of x³-2), `InverseGaloisD4` (D₄ as Galois group of x⁴-2), `NthRootIrrationalOQ01` (irreducibility of x^n-a), and `AngleTrisectionCos20Gal` (Galois group of the trisection polynomial). The module docstring explains the upgrade from OQ-01's necessary condition (degree divides 2^n) to OQ-02's exact biconditional (constructibility ↔ 2-group Galois). This is a fundamental shift: degree is a numerical shadow of the richer group-theoretic structure.",
+    "mathContext": "The upgrade: OQ-01 says $\\alpha$ constructible $\\Rightarrow [\\mathbb{Q}(\\alpha):\\mathbb{Q}] \\mid 2^n$ (necessary). OQ-02 says $\\alpha$ constructible $\\iff \\text{Gal}(\\text{minpoly}(\\mathbb{Q},\\alpha))$ is a 2-group (necessary AND sufficient).",
+    "significance": "context",
+    "relatedConcepts": [
+      "Galois correspondence",
+      "2-groups",
+      "constructibility",
+      "necessary vs sufficient conditions"
+    ],
+    "prerequisites": [
+      "Lean 4 module system",
+      "Galois theory fundamentals"
+    ]
+  },
+  {
     "id": "ann-2group-facts",
     "proofId": "angle-trisection-oq-02",
     "range": {
