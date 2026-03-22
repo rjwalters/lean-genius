@@ -155,5 +155,22 @@
     "cantor-diagonalization",
     "cantor-diagonalization-oq-02",
     "continuum-hypothesis"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.SetTheory.Cardinal.Cofinality",
+      "Mathlib.SetTheory.Ordinal.Arithmetic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Cardinal",
+      "Ordinal"
+    ],
+    "namespace": "CantorDiagonalizationOQ02OQ01",
+    "lineCount": 131,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 0
+  }
 }

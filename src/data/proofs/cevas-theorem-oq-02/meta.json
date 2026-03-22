@@ -131,5 +131,20 @@
       "Extension to higher dimensions: when do hypersurfaces bisect a simplex concurrently?",
       "Formal connection between the ratio conditions and holonomy in non-Euclidean spaces"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 502,
+    "axiomCount": 0,
+    "theoremCount": 22,
+    "definitionCount": 9
   }
 }

@@ -116,5 +116,25 @@
       "Can the sharp constant and equality conditions for eLpNorm Hölder be formalized?",
       "Can the Riesz representation theorem (Lp)* ≅ Lq be derived from the eLpNorm Hölder inequality?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Function.L2Space",
+      "Mathlib.MeasureTheory.Integral.Bochner.Basic",
+      "Mathlib.MeasureTheory.Integral.MeanInequalities",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.MeanInequalities",
+      "Mathlib.Analysis.MeanInequalitiesPow",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "ENNReal"
+    ],
+    "namespace": "HolderELpNorm",
+    "lineCount": 154,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0
   }
 }

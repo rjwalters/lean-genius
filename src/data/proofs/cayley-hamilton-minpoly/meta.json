@@ -185,5 +185,24 @@
       "Can we prove that $\\mu_M = \\chi_M$ iff $M$ is nonderogatory (has a cyclic vector)?",
       "Can the minpoly reduction be extended to elements of general $K$-algebras beyond matrix algebras?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly",
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic",
+      "Mathlib.Algebra.Polynomial.Div",
+      "Mathlib.RingTheory.Polynomial.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Matrix",
+      "Polynomial",
+      "BigOperators"
+    ],
+    "namespace": "CayleyHamiltonOQ01",
+    "lineCount": 448,
+    "axiomCount": 0,
+    "theoremCount": 30,
+    "definitionCount": 0
   }
 }

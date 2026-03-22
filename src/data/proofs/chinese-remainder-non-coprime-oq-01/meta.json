@@ -142,5 +142,22 @@
       "Formalize the full Garner algorithm (not just the mixed-radix decomposition) with runtime complexity bounds",
       "Connection to p-adic numbers: non-coprime CRT and the lcm tower are related to p-adic valuations"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Int.GCD",
+      "Mathlib.Data.Nat.ModEq",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Int"
+    ],
+    "namespace": "ChineseRemainderNonCoprimeOQ01",
+    "lineCount": 309,
+    "axiomCount": 0,
+    "theoremCount": 17,
+    "definitionCount": 0
   }
 }

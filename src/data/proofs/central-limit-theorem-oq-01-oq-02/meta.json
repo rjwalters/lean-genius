@@ -149,5 +149,20 @@
     "central-limit-theorem-oq-01",
     "central-limit-theorem-oq-01-oq-01",
     "central-limit-theorem-oq-03"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "Complex",
+      "MeasureTheory"
+    ],
+    "namespace": "CentralLimitTheoremOQ01OQ02",
+    "lineCount": 313,
+    "axiomCount": 0,
+    "theoremCount": 20,
+    "definitionCount": 13
+  }
 }

@@ -129,5 +129,20 @@
       "Does the polygon Menelaus condition have a natural interpretation in terms of geodesic transversals?",
       "Can the weight-balance framework be extended to simplicial complexes in higher dimensions?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "Real"
+    ],
+    "namespace": "CevasPolygon",
+    "lineCount": 321,
+    "axiomCount": 0,
+    "theoremCount": 17,
+    "definitionCount": 3
   }
 }

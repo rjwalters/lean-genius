@@ -165,5 +165,23 @@
       "id": "cayley-hamilton",
       "relationship": "This proof gives an alternative derivation of Cayley-Hamilton, explicitly as a corollary of the adjugate identity rather than as a standalone result."
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic",
+      "Mathlib.LinearAlgebra.Matrix.Adjugate",
+      "Mathlib.RingTheory.PolynomialAlgebra",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Matrix",
+      "Polynomial",
+      "BigOperators"
+    ],
+    "namespace": "CramersRuleOQ01",
+    "lineCount": 283,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 0
+  }
 }

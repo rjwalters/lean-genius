@@ -137,5 +137,24 @@
       "Can König's constraint be formalized in Lean4 without axioms? (Requires formalizing infinite product cardinal arithmetic)",
       "Is |𝒫(𝒫(ℝ))| = ℶ₃? (Yes — provable in ZFC, same pattern as ℶ₂)"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.SetTheory.Cardinal.Continuum",
+      "Mathlib.SetTheory.Cardinal.Cofinality",
+      "Mathlib.Order.SuccPred.Basic",
+      "Mathlib.Logic.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Cardinal"
+    ],
+    "namespace": "CantorsTheoremOQ01",
+    "lineCount": 273,
+    "axiomCount": 0,
+    "theoremCount": 17,
+    "definitionCount": 2
   }
 }

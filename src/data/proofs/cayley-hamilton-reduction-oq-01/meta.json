@@ -117,5 +117,25 @@
       "Can the minimal polynomial reduction (CayleyHamiltonOQ01) also be made efficient for sparse matrices?",
       "How does the Wiedemann algorithm's O(n²) complexity for sparse charpoly computation formalize in Lean?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic",
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff",
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly",
+      "Mathlib.LinearAlgebra.Matrix.Block",
+      "Mathlib.Algebra.Polynomial.Div",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Matrix",
+      "Polynomial",
+      "BigOperators"
+    ],
+    "namespace": "CayleyHamiltonReductionOQ01",
+    "lineCount": 305,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 0
   }
 }

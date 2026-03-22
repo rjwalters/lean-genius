@@ -183,5 +183,24 @@
       "id": "cantor-diagonalization",
       "relationship": "The base proof establishes ℵ₀ < 2^ℵ₀. This extension applies the diagonal idea to ordinals, showing the countable ordinals themselves are uncountable."
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.SetTheory.Cardinal.Cofinality",
+      "Mathlib.SetTheory.Ordinal.Basic",
+      "Mathlib.SetTheory.Ordinal.Arithmetic",
+      "Mathlib.Order.SuccPred.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Cardinal",
+      "Ordinal"
+    ],
+    "namespace": "CantorDiagonalizationOQ02",
+    "lineCount": 273,
+    "axiomCount": 0,
+    "theoremCount": 16,
+    "definitionCount": 2
+  }
 }

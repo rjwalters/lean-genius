@@ -196,5 +196,18 @@
       "Does the same characterization hold for complex inner product spaces with the appropriate proportionality condition?",
       "Can the reverse Minkowski inequality ‖f+g‖ ≥ |‖f‖ - ‖g‖| equality case also be characterized via CS?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "InnerProductSpace"
+    ],
+    "namespace": "StrictMinkowski",
+    "lineCount": 92,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0
   }
 }

@@ -98,5 +98,21 @@
       "What is the 'true' size of the continuum?",
       "Does the set-theoretic multiverse perspective resolve the question?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.Logic.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Cardinal"
+    ],
+    "namespace": "ContinuumHypothesis",
+    "lineCount": 367,
+    "axiomCount": 6,
+    "theoremCount": 7,
+    "definitionCount": 8
   }
 }

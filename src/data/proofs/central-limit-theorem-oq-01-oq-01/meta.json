@@ -203,5 +203,20 @@
       "Potter's bound and Karamata's integral theorem could be proved from measure-theoretic foundations in Mathlib",
       "Multivariate generalization to operator-stable distributions and matrix-valued regular variation"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "Topology",
+      "Real"
+    ],
+    "namespace": "DomainOfAttraction",
+    "lineCount": 1131,
+    "axiomCount": 3,
+    "theoremCount": 55,
+    "definitionCount": 7
   }
 }

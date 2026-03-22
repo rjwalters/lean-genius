@@ -130,5 +130,24 @@
       "How do stable distributions appear in free probability theory (non-commutative analog of CLT)?",
       "Can the Berry-Esseen rate-of-convergence theorem be generalized to α-stable limits?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Analysis.SpecialFunctions.Pow.NNReal",
+      "Mathlib.Analysis.SpecialFunctions.Complex.Circle",
+      "Mathlib.Tactic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
+    ],
+    "opens": [
+      "Real",
+      "Complex"
+    ],
+    "namespace": "CentralLimitTheoremOQ01",
+    "lineCount": 314,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 1
   }
 }
