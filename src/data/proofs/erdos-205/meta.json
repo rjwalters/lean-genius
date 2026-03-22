@@ -51,6 +51,29 @@
       "12 concrete Ω computations via native_decide",
       "Main disproof theorem erdos_205_disproved from axiomatized counterexample"
     ],
+    "references": [
+      {
+        "authors": "Romanoff, N. P.",
+        "title": "Über einige Sätze der additiven Zahlentheorie",
+        "year": "1934",
+        "venue": "Mathematische Annalen 109, pp. 668-678",
+        "note": "Proved a positive density of integers can be written as 2^k + p for prime p"
+      },
+      {
+        "authors": "Erdős, Paul",
+        "title": "On integers of the form 2^k + p and some related problems",
+        "year": "1950",
+        "venue": "Summa Brasiliensis Mathematicae 2, pp. 113-123",
+        "note": "Used covering systems to show a positive density of odd integers are NOT of the form 2^k + p"
+      },
+      {
+        "authors": "Hardy, G. H.; Ramanujan, S.",
+        "title": "The normal number of prime factors of a number n",
+        "year": "1917",
+        "venue": "Quarterly Journal of Mathematics 48, pp. 76-92",
+        "note": "Proved the average order of Ω(n) is log log n — the threshold in Erdős's conjecture"
+      }
+    ],
     "axiomCount": 6,
     "prerequisites": [
       "Prime factorization and the fundamental theorem of arithmetic",
