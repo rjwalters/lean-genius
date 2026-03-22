@@ -1,0 +1,121 @@
+{
+  "id": "angle-trisection-oq-02-oq-01",
+  "title": "Wantzel-Galois Characterization from Mathlib (OQ-02-OQ-01)",
+  "slug": "angle-trisection-oq-02-oq-01",
+  "description": "Connects the Galois-theoretic constructibility criteria to Mathlib's Polynomial.Gal infrastructure. Proves that irreducible polynomials with odd prime degree cannot have 2-group Galois groups, eliminating 3 of 6 axioms from the parent OQ-02 formalization without computing explicit Galois group orders.",
+  "meta": {
+    "author": "Wantzel (1837), Galois (1832)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Constructible_number",
+    "date": "1837",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/AngleTrisectionOQ02OQ01.lean",
+    "tags": [
+      "geometry",
+      "galois-theory",
+      "field-theory",
+      "constructibility",
+      "2-groups",
+      "polynomial-galois-group",
+      "mathlib-bridge"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.Gal.prime_degree_dvd_card",
+        "description": "For irreducible p with prime natDegree in CharZero: natDegree ∣ Nat.card p.Gal",
+        "module": "Mathlib.FieldTheory.PolynomialGaloisGroup"
+      },
+      {
+        "theorem": "IsPGroup.iff_card",
+        "description": "For finite G: IsPGroup p G ↔ ∃ n, Nat.card G = p^n",
+        "module": "Mathlib.GroupTheory.PGroup"
+      },
+      {
+        "theorem": "Prime.dvd_of_dvd_pow",
+        "description": "If p is prime and p ∣ a^n then p ∣ a",
+        "module": "Mathlib.Algebra.Prime.Basic"
+      },
+      {
+        "theorem": "Polynomial.Gal",
+        "description": "The Galois group of a polynomial over a field",
+        "module": "Mathlib.FieldTheory.PolynomialGaloisGroup"
+      }
+    ],
+    "originalContributions": [
+      "odd_prime_degree_gal_not_2group: General framework — irreducible polynomial with odd prime degree over ℚ cannot have 2-group Galois group",
+      "x_cube_sub_2_gal_not_2group: Gal(x³-2/ℚ) is NOT a 2-group (proved from Mathlib, not axiomatized)",
+      "cos20_gal_not_2group: Gal(8x³-6x-1/ℚ) is NOT a 2-group (proved from Mathlib, not axiomatized)",
+      "prime_degree_2group_eq_two: If Gal is 2-group and degree is prime, then degree must be 2",
+      "prime_degree_2group_implies_degree_dvd_pow2: 2-group Gal + prime degree → degree divides 2^k",
+      "cubic/quintic/septic specializations: Specific non-2-group results for degrees 3, 5, 7"
+    ],
+    "dateAdded": "03/21/26",
+    "axiomCount": 2,
+    "assumptions": "Two polynomial irreducibility axioms: x³-2 irreducible over ℚ (Eisenstein at p=2), and 8x³-6x-1 irreducible over ℚ (no rational roots)."
+  },
+  "overview": {
+    "historicalContext": "The Wantzel-Galois characterization of constructible numbers was axiomatized in OQ-02 with 6 axioms, including explicit Galois group orders (|Gal(x³-2)| = 6, etc.). This file demonstrates that 3 of those axioms are unnecessary: Mathlib's Polynomial.Gal infrastructure provides the key divisibility theorem prime_degree_dvd_card, which combined with 2-group theory yields the same non-constructibility results through a cleaner, more general argument.",
+    "problemStatement": "**Open Question (from OQ-02)**: Can the axiomatized Galois group order computations be replaced by proofs from Mathlib?\n\n**Answer: Partially YES** — 3 of 6 axioms can be eliminated.\n\nInstead of computing |Gal(x³-2)| = 6 (hard, requires splitting field computation), we use:\n1. natDegree ∣ |Gal| (from Mathlib, for irreducible + prime degree)\n2. 2-group → |Gal| = 2^k\n3. Odd prime ∤ 2^k (elementary number theory)\n\nThis proves Gal is NOT a 2-group without knowing the exact order.",
+    "proofStrategy": "The proof strategy shifts from 'compute the Galois group order' to 'derive a divisibility contradiction':\n\n**Step 1**: For irreducible p over ℚ with prime natDegree d, Mathlib proves d | |Gal(p)| (via prime_degree_dvd_card).\n\n**Step 2**: If Gal(p) were a 2-group, then |Gal(p)| = 2^k for some k.\n\n**Step 3**: So d | 2^k. Since d is prime, d | 2 (by Prime.dvd_of_dvd_pow). Since d ≥ 2 (prime), d = 2.\n\n**Step 4**: But d is an odd prime (d ≠ 2). Contradiction.\n\nThis argument works for ALL odd prime degrees (3, 5, 7, 11, ...), not just degree 3.",
+    "keyInsights": [
+      "The shift from 'compute the order' to 'derive a divisibility contradiction' is the Galois-theoretic analogue of the number-theoretic approach in OQ-01",
+      "Mathlib's prime_degree_dvd_card provides the critical bridge: for irreducible polynomials with prime degree, the degree divides the Galois group order",
+      "This approach generalizes: ANY irreducible polynomial of odd prime degree over ℚ has non-2-group Galois group — not just cubics",
+      "The remaining 2 axioms (polynomial irreducibility) are strictly weaker than the eliminated 3 (Galois group orders), representing genuine progress in formalization strength"
+    ]
+  },
+  "sections": [
+    {
+      "id": "general-framework",
+      "title": "General Framework: Prime Degree Galois Groups",
+      "startLine": 57,
+      "endLine": 100,
+      "summary": "The core theorem: irreducible polynomial with odd prime degree over ℚ cannot have 2-group Galois group. Uses Mathlib's prime_degree_dvd_card + Prime.dvd_of_dvd_pow. Specializations for cubics, quintics, and septics."
+    },
+    {
+      "id": "degree-computations",
+      "title": "Polynomial Degree Computations",
+      "startLine": 102,
+      "endLine": 115,
+      "summary": "Proved: natDegree of x³-2 is 3, and natDegree of 8x³-6x-1 is 3. Pure computation from polynomial arithmetic."
+    },
+    {
+      "id": "irreducibility",
+      "title": "Irreducibility Axioms",
+      "startLine": 117,
+      "endLine": 132,
+      "summary": "Two axioms: x³-2 irreducible over ℚ (Eisenstein at p=2) and 8x³-6x-1 irreducible over ℚ (rational root test). These are the only axioms in the file."
+    },
+    {
+      "id": "non-2group",
+      "title": "Non-2-Group Results (Proved!)",
+      "startLine": 134,
+      "endLine": 148,
+      "summary": "Gal(x³-2) and Gal(8x³-6x-1) are NOT 2-groups — proved from Mathlib, replacing the axiomatized |Gal| = 6 computations in OQ-02."
+    },
+    {
+      "id": "2group-degree",
+      "title": "2-Group Implies Degree Divides 2^k",
+      "startLine": 150,
+      "endLine": 178,
+      "summary": "If Gal is a 2-group and degree is prime, then degree divides 2^k. Stronger: degree must equal 2. Proves the OQ-02 axiom for the prime degree case."
+    },
+    {
+      "id": "constructibility",
+      "title": "Non-Constructibility via Galois Groups",
+      "startLine": 180,
+      "endLine": 220,
+      "summary": "Framework connecting Galois group results to constructibility: if minpoly Galois group is not a 2-group, and constructibility implies 2-group, then not constructible."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization demonstrates that the 'compute explicit Galois group orders' approach in OQ-02 can be largely replaced by a structural divisibility argument from Mathlib. Of OQ-02's 6 axioms, 3 are eliminated: the two Galois group order axioms (|Gal| = 6) and the degree-divides-power-of-2 implication. The remaining 2 axioms in this file (polynomial irreducibility) are strictly weaker assumptions than the eliminated ones.",
+    "implications": "This work answers one of OQ-02's open questions affirmatively: parts of the Galois characterization CAN be proved from Mathlib's existing infrastructure. The key Mathlib theorem `prime_degree_dvd_card` provides a powerful bridge. The approach generalizes to all odd prime degrees, not just cubics — any irreducible polynomial of odd prime degree over ℚ is automatically non-constructible (assuming the Wantzel direction).",
+    "openQuestions": [
+      "Can the irreducibility axioms be proved? x³-2 via Mathlib's Eisenstein criterion, 8x³-6x-1 via rational root test formalization",
+      "Can the approach extend to non-prime degrees? Need natDegree | |Gal| for general irreducible polynomials (not just prime degree)",
+      "Can Galois group orders for specific quadratic/quartic polynomials be computed from Mathlib's splitting field infrastructure?"
+    ]
+  }
+}
