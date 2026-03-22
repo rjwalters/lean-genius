@@ -323,10 +323,10 @@ theorem skolemNoether_one_inner
   - The n=1 case: every automorphism of M₁(K) is the identity (hence inner)
   - Every automorphism preserves minpoly (from minpoly.algEquiv_eq)
 
-  THEOREM (with helper sorries):
+  THEOREM (fully proved):
   - skolemNoether: every K-algebra automorphism of Mₙ(K) is inner
     (proved via elementary matrix units - no Artin-Wedderburn needed)
-    7 helper sorries remain (matrix unit arithmetic, linear independence, etc.)
+    All helper lemmas proved: 0 sorries, 0 axioms
 
   DERIVED (from skolemNoether):
   - exists_conjugating_matrix: extraction form of Skolem-Noether
