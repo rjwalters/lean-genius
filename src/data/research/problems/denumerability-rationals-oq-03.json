@@ -51,7 +51,7 @@
     "insights": [
       "State machine approach (la/lb, ra/rb) is more natural for formal verification than recursive tree type",
       "The single determinant invariant det = 1 drives coprimality, ordering, and will drive completeness",
-      "Coprimality proof requires careful \u2115\u2192\u2124 lifting: show gcd | 1 as integers, then cast back",
+      "Coprimality proof requires careful ℕ→ℤ lifting: show gcd | 1 as integers, then cast back",
       "Lean's omega tactic can't unfold structure field access - need explicit 'show' or 'simp' first",
       "No Mathlib Stern-Brocot module exists - this is fully original formalization",
       "eval_injective proof: use mediant ordering (mediant of left desc < mediant(s) < mediant of right desc)",
