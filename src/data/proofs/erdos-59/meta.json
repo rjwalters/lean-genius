@@ -51,63 +51,72 @@
       "title": "Problem Statement, History, and Imports",
       "summary": "Documentation with EFR 1986 for non-bipartite, Morris-Saxton 2016 counterexample for C_6, open question on weaker 2^{O(ex)} bound, Mathlib import",
       "startLine": 1,
-      "endLine": 30
+      "endLine": 30,
+      "mathContext": "How many graphs on $n$ vertices contain no copy of a fixed graph $G$? Erdos-Kleitman-Rothschild (1976) for triangle-free: $2^{n^2/4 + o(n^2)}$."
     },
     {
       "id": "definitions",
       "title": "Core Definitions: Subgraph Containment, H-Free, Bipartite",
       "summary": "ContainsSubgraph via injective adjacency-preserving map, IsFree as negation, IsBipartite via vertex partition with independent sets",
       "startLine": 32,
-      "endLine": 46
+      "endLine": 46,
+      "mathContext": "G-free graph: $H$ contains no subgraph isomorphic to $G$. $f_G(n) = |\\{H \\subseteq K_n : G \\not\\subseteq H\\}|$."
     },
     {
       "id": "constructions",
       "title": "Axiomatized Graph Constructions",
       "summary": "cycleGraph axiom with odd_cycle_not_bipartite and even_cycle_bipartite. C6 = cycleGraph 6, K3 = cycleGraph 3",
       "startLine": 48,
-      "endLine": 65
+      "endLine": 65,
+      "mathContext": "Lower bound: bipartite graphs on balanced partition give $2^{\\lfloor n^2/4 \\rfloor}$ triangle-free graphs."
     },
     {
       "id": "counting",
       "title": "Counting Functions: Turán Number and Free Graph Count",
       "summary": "turanNumber and countFreeGraphs axiomatized (extremal computation intractable to formalize directly)",
       "startLine": 67,
-      "endLine": 83
+      "endLine": 83,
+      "mathContext": "Counting function $f_G(n)$ for forbidden subgraph $G$. $\\log_2 f_G(n) \\sim (1 - 1/\\chi(G)) \\binom{n}{2}$ as $n \\to \\infty$."
     },
     {
       "id": "asymptotic",
       "title": "Asymptotic Bound Definitions",
       "summary": "HasOptimalBound (2^{(1+o(1))g}), ExceedsOptimalBound (2^{(1+c)g} infinitely often), HasPolynomialBound (2^{O(g)})",
       "startLine": 85,
-      "endLine": 100
+      "endLine": 100,
+      "mathContext": "Erdos-Frankl-Rodl (1986): $\\log_2 f_G(n) \\sim \\text{ex}(n, G)$ for non-bipartite $G$. Tight connection to Turan numbers."
     },
     {
       "id": "main-results",
       "title": "Main Results: EFR Theorem and Morris-Saxton Counterexample",
       "summary": "erdos_frankl_rodl_nonbipartite axiom: non-bipartite H satisfies HasOptimalBound. morris_saxton_c6_counterexample axiom: C_6 exceeds it. morris_saxton_conjecture: open 2^{O(ex)} bound",
       "startLine": 102,
-      "endLine": 131
+      "endLine": 131,
+      "mathContext": "Main: $\\log_2 f_{K_3}(n) \\sim n^2/4$. Almost all triangle-free graphs are bipartite (EKR structure theorem)."
     },
     {
       "id": "resolution",
       "title": "Problem Resolution: DISPROVED + Bipartiteness Results",
       "summary": "erdos_59_disproved (1 sorry): negation of universal optimal bound via k=6. c6_is_bipartite and k3_not_bipartite proved from cycle axioms",
       "startLine": 132,
-      "endLine": 172
+      "endLine": 172,
+      "mathContext": "SOLVED: EKR (1976) for triangles, Erdos-Frankl-Rodl (1986) for general non-bipartite $G$. Bipartite case still has open questions."
     },
     {
       "id": "turan-bounds",
       "title": "Classical Turán Bounds and Corollaries",
       "summary": "turan_theorem: ex(n;K_{r+1}) = (1-1/r)n²/2 + O(n). kovari_sos_turan: ex(n;C_{2k}) = O(n^{1+1/k}). Corollaries: non-bipartite and triangle-free satisfy conjecture",
       "startLine": 174,
-      "endLine": 200
+      "endLine": 200,
+      "mathContext": "Turan's theorem: $\\text{ex}(n, K_{r+1}) = (1 - 1/r)\\binom{n}{2}(1 + o(1))$. The extremal number determines the exponent of $f_G(n)$."
     },
     {
       "id": "summary",
       "title": "Summary and References",
       "summary": "Problem status DISPROVED. True for non-bipartite (EFR 1986), false for C_6 (Morris-Saxton 2016). Open: weaker 2^{O(ex)} bound. References",
       "startLine": 202,
-      "endLine": 223
+      "endLine": 223,
+      "mathContext": "Complete resolution: $\\log_2 f_G(n) \\sim \\text{ex}(n, G)$ for non-bipartite $G$. Connects counting to extremal graph theory."
     }
   ],
   "conclusion": {
@@ -119,5 +128,21 @@
       "What is the exact counting exponent for C_{2k}-free graphs for k > 3?",
       "Can the sorry in erdos_59_disproved be resolved via Set.Infinite.exists_gt or similar Mathlib lemma?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-57",
+      "relationship": "related",
+      "description": "Both study structural properties of graphs with forbidden subgraphs -- #57 via cycle lengths, #59 via counting"
+    },
+    {
+      "targetId": "erdos-65",
+      "relationship": "related",
+      "description": "Erdos #65 relates edge density to cycle variety; #59 counts graphs avoiding a fixed subgraph"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-57",
+    "erdos-65"
+  ]
 }
