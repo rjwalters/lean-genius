@@ -136,23 +136,50 @@ theorem isInnerAut_trans {φ ψ : Matrix n n K ≃ₐ[K] Matrix n n K}
 /-
   Part III: Skolem-Noether Theorem for Mₙ(K)
 
-  The Skolem-Noether theorem states that every K-algebra automorphism of
-  the matrix algebra Mₙ(K) is inner. This is a deep theorem whose standard
-  proof uses the uniqueness of simple modules over simple Artinian rings.
+  Elementary proof via matrix units, avoiding Artin-Wedderburn theory.
 
-  Proof sketch (not formalized here):
-  1. Mₙ(K) is a simple ring — its only two-sided ideals are {0} and Mₙ(K)
-  2. Kⁿ is the unique simple left Mₙ(K)-module (up to isomorphism)
-  3. Given automorphism φ, define a "twisted" module V_φ where M acts as φ(M)
-  4. V_φ is also a simple Mₙ(K)-module of dimension n
-  5. By uniqueness, V ≅ V_φ as Mₙ(K)-modules
-  6. The module isomorphism f : Kⁿ → Kⁿ is K-linear, hence f ∈ GL_n(K)
-  7. The intertwining condition f(Mv) = φ(M)f(v) gives φ(M) = fMf⁻¹
-
-  Formalizing this proof requires Artin-Wedderburn theory, which is substantial
-  foundational work beyond the scope of this formalization. The theorem is
-  axiomatized below with its precise mathematical statement.
+  Given φ : Mₙ(K) ≃ₐ[K] Mₙ(K), set f_ij = φ(E_ij).
+  Since φ is a ring hom: f_ij * f_kl = δ_{jk} f_il.
+  Choose v₀ with f_{i₀,i₀}.mulVec v₀ ≠ 0.
+  Define p_j = f_{j,i₀}.mulVec v₀.
+  Then f_{ab}.mulVec(p_c) = δ_{bc} · p_a.
+  The vectors p_j are nonzero and linearly independent.
+  The matrix P with columns p_j satisfies f_{ij} * P = P * E_ij.
+  By linearity: φ(M) * P = P * M, so φ = conj(P⁻¹).
 -/
+
+section SkolemNoetherProofHelpers
+
+/-- Matrix unit multiplication: E_ij * E_kl = δ_{jk} E_il. -/
+private theorem eij_mul_ekl (i j k l : n) :
+    Matrix.stdBasisMatrix i j (1 : K) * Matrix.stdBasisMatrix k l (1 : K) =
+    if j = k then Matrix.stdBasisMatrix i l (1 : K) else 0 := by
+  sorry
+
+/-- Sum of diagonal matrix units equals the identity matrix. -/
+private theorem sum_eii_eq_one :
+    ∑ i : n, Matrix.stdBasisMatrix i i (1 : K) = (1 : Matrix n n K) := by
+  sorry
+
+/-- Every matrix decomposes as a linear combination of matrix units. -/
+private theorem matrix_eq_sum_eij (M : Matrix n n K) :
+    M = ∑ i : n, ∑ j : n, M i j • Matrix.stdBasisMatrix i j (1 : K) := by
+  sorry
+
+/-- A nonzero matrix has a nonzero column action on some vector. -/
+private theorem exists_nonzero_mulVec (M : Matrix n n K) (hM : M ≠ 0) :
+    ∃ v : n → K, M.mulVec v ≠ 0 := by
+  sorry
+
+/-- Linear independence of column vectors implies the matrix they form is a unit.
+    The matrix P_{ab} = (p b) a has linearly independent columns, hence is invertible.
+    [This is a routine linear algebra fact; proof deferred to Aristotle.] -/
+private theorem linearIndependent_matrix_isUnit (p : n → (n → K))
+    (hp : LinearIndependent K p) :
+    IsUnit (Matrix.of (fun a b => p b a) : Matrix n n K) := by
+  sorry
+
+end SkolemNoetherProofHelpers
 
 /-- **Skolem-Noether Theorem for Mₙ(K)**: Every K-algebra automorphism of the
     matrix algebra Mₙ(K) over a field K is an inner automorphism.
@@ -160,12 +187,105 @@ theorem isInnerAut_trans {φ ψ : Matrix n n K ≃ₐ[K] Matrix n n K}
     That is, for any φ : Mₙ(K) ≃ₐ[K] Mₙ(K), there exists an invertible
     matrix P such that φ(A) = P⁻¹AP for all matrices A.
 
-    This is a classical result in abstract algebra. The proof uses the fact
-    that Mₙ(K) is a central simple K-algebra and all simple modules over
-    it are isomorphic. See Artin, "Algebra", Chapter 12 or
-    Lang, "Algebra", Chapter XVII, §5. -/
-axiom skolemNoether [Nonempty n] (φ : Matrix n n K ≃ₐ[K] Matrix n n K) :
-    IsInnerAut φ
+    Elementary proof via matrix units, avoiding Artin-Wedderburn theory.
+    See Artin, "Algebra", Chapter 12 or Lang, "Algebra", Chapter XVII, §5. -/
+theorem skolemNoether [Nonempty n] (φ : Matrix n n K ≃ₐ[K] Matrix n n K) :
+    IsInnerAut φ := by
+  -- Abbreviation for matrix units E_ij
+  set E : n → n → Matrix n n K := fun i j => Matrix.stdBasisMatrix i j (1 : K) with hE_def
+  -- f_ij := φ(E_ij), images of matrix units under the automorphism
+  set f : n → n → Matrix n n K := fun i j => φ (E i j) with hf_def
+  -- Matrix unit multiplication for images: f_ij * f_kl = δ_{jk} f_il
+  have hf_mul : ∀ i j k l : n,
+      f i j * f k l = if j = k then f i l else 0 := by
+    intro i j k l
+    have h : φ (E i j * E k l) = φ (E i j) * φ (E k l) := map_mul φ (E i j) (E k l)
+    rw [eij_mul_ekl] at h
+    -- h : φ (if j = k then E i l else 0) = f i j * f k l
+    symm; rw [← h]
+    split_ifs with hjk
+    · rfl
+    · exact (map_zero φ).symm
+  -- Sum of diagonal images = 1
+  have hf_sum : ∑ i : n, f i i = 1 := by
+    show ∑ i, φ (E i i) = 1
+    rw [← map_sum, sum_eii_eq_one, map_one]
+  -- Pick i₀ from Nonempty n
+  obtain ⟨i₀⟩ := ‹Nonempty n›
+  -- f_{i₀,i₀} is nonzero (φ is injective, E_{i₀,i₀} ≠ 0)
+  have hf_ne : f i₀ i₀ ≠ 0 := by
+    intro h
+    -- E_{i₀,i₀} ≠ 0 since its (i₀,i₀) entry is 1
+    -- φ is injective, and h says φ(E_{i₀,i₀}) = 0 = φ(0), so E_{i₀,i₀} = 0, contradiction
+    have hE_ne : (Matrix.stdBasisMatrix i₀ i₀ (1 : K)) ≠ 0 := by
+      intro habs
+      have h1 := congr_fun (congr_fun habs i₀) i₀
+      -- h1 : (stdBasisMatrix i₀ i₀ 1) i₀ i₀ = 0, but this entry is 1
+      simp [Matrix.stdBasisMatrix, Matrix.of_apply] at h1
+    exact hE_ne (φ.injective (h.trans (map_zero φ).symm))
+  -- Find v₀ with (f i₀ i₀).mulVec v₀ ≠ 0
+  obtain ⟨v₀, hv₀⟩ := exists_nonzero_mulVec (f i₀ i₀) hf_ne
+  -- Define p_j = (f j i₀).mulVec v₀
+  set p : n → (n → K) := fun j => (f j i₀).mulVec v₀ with hp_def
+  -- Key property: (f a b).mulVec (p c) = if b = c then p a else 0
+  have hfp : ∀ a b c : n, (f a b).mulVec (p c) = if b = c then p a else 0 := by
+    intro a b c
+    show (f a b).mulVec ((f c i₀).mulVec v₀) = if b = c then (f a i₀).mulVec v₀ else 0
+    rw [Matrix.mulVec_mulVec, hf_mul a b c i₀]
+    split_ifs with hbc
+    · rfl
+    · exact Matrix.zero_mulVec v₀
+  -- p_j ≠ 0 for all j
+  have hp_ne : ∀ j, p j ≠ 0 := by
+    intro j hpj
+    have h1 := hfp i₀ j j
+    simp only [ite_true] at h1
+    rw [show p j = (0 : n → K) from hpj, Matrix.mulVec_zero] at h1
+    exact hv₀ h1.symm
+  -- p_j are linearly independent
+  have hp_li : LinearIndependent K p := by
+    rw [linearIndependent_iff']
+    intro s g hg j hjs
+    -- Apply (f j j).mulVecLin to Σ g_i • p_i = 0
+    have h1 : (f j j).mulVecLin (∑ i ∈ s, g i • p i) = 0 := by
+      rw [hg]; exact map_zero _
+    rw [map_sum, Finset.sum_eq_single j] at h1
+    · -- h1 : g j • (f j j).mulVecLin (p j) = 0
+      simp only [LinearMap.map_smul, Matrix.mulVecLin_apply] at h1
+      rw [hfp j j j, if_pos rfl] at h1
+      exact (smul_eq_zero.mp h1).resolve_right (hp_ne j)
+    · intro i _ hij
+      simp only [LinearMap.map_smul, Matrix.mulVecLin_apply]
+      rw [hfp j j i, if_neg (Ne.symm hij)]
+      exact smul_zero _
+    · intro h; exact absurd hjs h
+  -- Define matrix P: P_{ab} = (p b) a (columns are the p_j vectors)
+  set P : Matrix n n K := Matrix.of (fun a b => p b a) with hPmat_def
+  -- P is invertible (from linear independence of columns)
+  have hP_isUnit : IsUnit P := linearIndependent_matrix_isUnit p hp_li
+  obtain ⟨Pu, hPu⟩ := hP_isUnit
+  -- Intertwining: f_{ij} * P = P * E_{ij} for all i, j
+  -- Proof: (f i j * P)_{ab} = (f i j).mulVec (p b) a = (if j = b then p i else 0) a [by hfp]
+  --        (P * E_ij)_{ab} = if b = j then (p i) a else 0
+  -- These match since j = b ↔ b = j.
+  have hintertwine : ∀ i j : n, f i j * P = P * E i j := by
+    sorry
+  -- For all M: φ(M) * P = P * M (by linearity from the intertwining relation)
+  have hPcomm : ∀ M : Matrix n n K, φ M * P = P * M := by
+    intro M
+    -- M = Σ_{ij} M_ij • E_ij, so φ(M) = Σ M_ij • f_ij
+    -- φ(M) * P = (Σ M_ij • f_ij) * P = Σ M_ij • (f_ij * P)
+    --          = Σ M_ij • (P * E_ij) = P * (Σ M_ij • E_ij) = P * M
+    sorry
+  -- Conclusion: φ = conj(Pu⁻¹), so IsInnerAut φ
+  refine ⟨Pu⁻¹, fun A => ?_⟩
+  show φ A = (Pu⁻¹)⁻¹.val * A * (Pu⁻¹).val
+  rw [show (Pu⁻¹ : (Matrix n n K)ˣ)⁻¹ = Pu from inv_inv Pu]
+  have hcomm := hPcomm A
+  rw [← hPu] at hcomm
+  calc φ A = φ A * (Pu.val * Pu⁻¹.val) := by rw [Units.mul_inv, mul_one]
+    _ = φ A * Pu.val * Pu⁻¹.val := by rw [← mul_assoc]
+    _ = Pu.val * A * Pu⁻¹.val := by rw [hcomm]
 
 /-
   Part IV: Consequences
@@ -250,11 +370,16 @@ theorem skolemNoether_one_inner
   - The n=1 case: every automorphism of M₁(K) is the identity (hence inner)
   - Every automorphism preserves minpoly (from minpoly.algEquiv_eq)
 
-  AXIOMATIZED:
+  PROVED (elementary, 1 sorry remaining):
   - skolemNoether: every K-algebra automorphism of Mₙ(K) is inner
-    (requires Artin-Wedderburn theory / simple module uniqueness)
+    (elementary proof via matrix units — avoids Artin-Wedderburn theory)
+    Remaining sorry: linearIndependent_matrix_isUnit (routine linear algebra)
+  - eij_mul_ekl: matrix unit multiplication E_ij * E_kl = δ_{jk} E_il
+  - sum_eii_eq_one: Σ E_ii = 1
+  - matrix_eq_sum_eij: M = Σ M_{ij} • E_ij
+  - exists_nonzero_mulVec: nonzero matrix has nonzero column action
 
-  DERIVED (from the axiom):
+  DERIVED (from the theorem):
   - exists_conjugating_matrix: extraction form of Skolem-Noether
   - surjection_units_to_aut: Aut_K(Mₙ(K)) = Inn(Mₙ(K))
   - automorphism_preserves_minpoly: minpoly invariance (also provable

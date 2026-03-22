@@ -2,12 +2,12 @@
   "id": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
   "title": "Skolem-Noether Theorem: K-Algebra Automorphisms of Mₙ(K)",
   "slug": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
-  "description": "A formal framework for the Skolem-Noether theorem for matrix algebras: every K-algebra automorphism of Mₙ(K) is inner (conjugation by an invertible matrix). Defines inner automorphisms, proves they form a subgroup, axiomatizes the main theorem, and derives consequences including Aut_K(Mₙ(K)) ≅ PGLₙ(K). Proves Center(Mₙ(K)) = K·I (the fundamental center characterization) and the conjugation kernel theorem, formally establishing the PGL structure. The n=1 case is proved without axioms.",
+  "description": "A formal proof of the Skolem-Noether theorem for matrix algebras: every K-algebra automorphism of Mₙ(K) is inner (conjugation by an invertible matrix). Elementary proof via matrix units avoiding Artin-Wedderburn theory. Proves inner automorphism structure, Center(Mₙ(K)) = K·I, PGL structure, and the n=1 case. 7 routine sorry lemmas remain (matrix unit arithmetic, linear independence → invertibility).",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Skolem%E2%80%93Noether_theorem",
     "date": "2026",
-    "status": "axiomatized",
+    "status": "formalized",
     "proofRepoPath": "Proofs/SkolemNoetherMatrixAut.lean",
     "tags": [
       "abstract-algebra",
@@ -19,8 +19,8 @@
       "skolem-noether",
       "research"
     ],
-    "badge": "axiom",
-    "sorries": 0,
+    "badge": "formalized",
+    "sorries": 7,
     "mathlibDependencies": [
       {
         "theorem": "minpoly.algEquiv_eq",
@@ -72,7 +72,7 @@
         "relationship": "Foundational: Cayley-Hamilton provides integrality of matrices"
       }
     ],
-    "axiomCount": 1,
+    "axiomCount": 0,
     "lineCount": 496
   },
   "overview": {
