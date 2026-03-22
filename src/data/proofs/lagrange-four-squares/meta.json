@@ -52,35 +52,40 @@
       "title": "Euler's Four-Square Identity",
       "startLine": 44,
       "endLine": 69,
-      "summary": "The key algebraic identity showing the product of two sums-of-four-squares is itself a sum of four squares. This is quaternion norm multiplicativity."
+      "summary": "The key algebraic identity showing the product of two sums-of-four-squares is itself a sum of four squares. This is quaternion norm multiplicativity.",
+      "mathContext": "$(a^2+b^2+c^2+d^2)(x^2+y^2+z^2+w^2) = A^2+B^2+C^2+D^2$ where $A,B,C,D$ are bilinear in $(a,b,c,d)$ and $(x,y,z,w)$. This is $|q_1 \\cdot q_2|^2 = |q_1|^2 |q_2|^2$ for quaternions."
     },
     {
       "id": "three-vs-four",
       "title": "Why Four Squares and Not Three?",
       "startLine": 71,
       "endLine": 78,
-      "summary": "Numbers of the form 4^k(8m+7) cannot be sums of three squares, but four always suffice."
+      "summary": "Numbers of the form 4^k(8m+7) cannot be sums of three squares, but four always suffice.",
+      "mathContext": "$n \\equiv 7 \\pmod{8}$ (e.g., $7, 15, 23$) cannot be written as $a^2 + b^2 + c^2$. Legendre's three-square theorem: $n = a^2+b^2+c^2 \\iff n \\neq 4^k(8m+7)$."
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem",
       "startLine": 80,
       "endLine": 102,
-      "summary": "Lagrange's theorem: every natural number is a sum of four squares. Uses Mathlib's Nat.sum_four_squares."
+      "summary": "Lagrange's theorem: every natural number is a sum of four squares. Uses Mathlib's Nat.sum_four_squares.",
+      "mathContext": "`Nat.sum_four_squares`: $\\forall n \\in \\mathbb{N},\\, \\exists a,b,c,d \\in \\mathbb{N}: n = a^2 + b^2 + c^2 + d^2$. Waring's problem for $k=2$, $g(2) = 4$."
     },
     {
       "id": "examples",
       "title": "Specific Examples",
       "startLine": 104,
       "endLine": 127,
-      "summary": "Concrete decompositions of small numbers, including the notorious 7 which needs all four squares."
+      "summary": "Concrete decompositions of small numbers, including the notorious 7 which needs all four squares.",
+      "mathContext": "$7 = 1^2 + 1^2 + 1^2 + 2^2$ (needs 4 squares). $6 = 1^2 + 1^2 + 2^2 + 0^2$ (3 suffice). $15 = 1^2 + 1^2 + 2^2 + 3^2$ (needs 4)."
     },
     {
       "id": "two-squares-connection",
       "title": "Connection to Two Squares Theorem",
       "startLine": 129,
       "endLine": 138,
-      "summary": "Cross-reference to Fermat's Two Squares Theorem showing the contrast between universal four squares and restrictive two squares."
+      "summary": "Cross-reference to Fermat's Two Squares Theorem showing the contrast between universal four squares and restrictive two squares.",
+      "mathContext": "Fermat: $n = a^2 + b^2 \\iff$ every prime $p \\equiv 3 \\pmod{4}$ divides $n$ to even power. Two squares is far more restrictive than four."
     }
   ],
   "conclusion": {
@@ -91,5 +96,15 @@
       "How do representations distribute among the possible orderings?",
       "What are the connections to the theory of modular forms and theta functions?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "contrasts",
+      "description": "Two squares vs four: Fermat's theorem restricts which numbers are sums of two squares, while Lagrange's theorem says all are sums of four"
+    }
+  ],
+  "relatedProofs": [
+    "fermat-two-squares"
+  ]
 }
