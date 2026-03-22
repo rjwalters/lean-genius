@@ -32,7 +32,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erdős and Burr conjectured that high average degree forces cycles from any arithmetic progression containing even numbers. Bollobás proved this in 1977. The even condition is necessary because bipartite graphs (with only even cycles) can have arbitrarily high average degree.",
+    "historicalContext": "Erdős and Burr conjectured that high average degree forces cycles from any arithmetic progression containing even numbers. Bollobás proved this in 1977. The even condition is necessary because bipartite graphs (with only even cycles) can have arbitrarily high average degree. This result fits within the broader Bondy-Simonovits framework (1974), which shows that any non-bipartite graph H appears as a subgraph of every graph with sufficiently many edges. For cycle lengths specifically, the question of which subsets of integers appear as cycle lengths in dense graphs was systematically studied by Gyárfás and others in the 1980s, with Bollobás's 1977 result being one of the earliest precise answers for arithmetic progressions.",
     "problemStatement": "Let P = {a, a+d, a+2d, ...} be an arithmetic progression containing even numbers. Does there exist c(P) > 0 such that every graph with average degree ≥ c contains a cycle whose length is in P? Answer: YES (Bollobás 1977).",
     "proofStrategy": "The formalization defines arithmetic progressions, the containsEven condition, cycle containment, and average degree. Two corollaries are verified: (1) high degree implies an even cycle, (2) high degree implies a cycle of length divisible by 4. The necessity of the even condition is shown via bipartite graphs.",
     "keyInsights": [
