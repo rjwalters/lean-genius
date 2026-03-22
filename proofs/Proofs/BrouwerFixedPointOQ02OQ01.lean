@@ -699,6 +699,22 @@ private lemma gridToReal_in_simplex {n : ℕ} (hn : 0 < n) (v : GridVertex n) :
   rw [this, div_le_one hn_pos]
   exact_mod_cast v.valid
 
+-- Helper: the face-aware condition for use in by_cases
+private def faceAwareCond (f : ℝ × ℝ → ℝ × ℝ) (n : ℕ) (v : GridVertex n) : Prop :=
+  -((f (gridToReal n v)).1 - (gridToReal n v).1 +
+    ((f (gridToReal n v)).2 - (gridToReal n v).2)) =
+    (f (gridToReal n v)).1 - (gridToReal n v).1 ∧
+  (f (gridToReal n v)).1 - (gridToReal n v).1 =
+    (f (gridToReal n v)).2 - (gridToReal n v).2
+
+-- Face-aware (d0=d1∧d1=d2) forces d1=d2=0
+private lemma faceAware_zero {f : ℝ × ℝ → ℝ × ℝ} {n : ℕ} {v : GridVertex n}
+    (h : faceAwareCond f n v) :
+    (f (gridToReal n v)).1 - (gridToReal n v).1 = 0 ∧
+    (f (gridToReal n v)).2 - (gridToReal n v).2 = 0 := by
+  unfold faceAwareCond at h
+  constructor <;> nlinarith [h.1, h.2]
+
 -- The displacement coloring satisfies Sperner conditions when f has no grid fixed point.
 -- When f(v) = v at some grid vertex, the coloring may assign incorrect labels at that vertex,
 -- but the caller handles this case separately (since v is already an exact fixed point).
@@ -709,15 +725,32 @@ private lemma displacementColoring_isSperner (n : ℕ) (hn : 0 < n)
     (hno_fix : ∀ v : GridVertex n, f (gridToReal n v) ≠ gridToReal n v) :
     IsSperner hn (displacementColoring n f) := by
   have hn' : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  -- Face-aware branch forces f(p)=p, contradicting hno_fix
+  have face_false : ∀ w : GridVertex n, ¬faceAwareCond f n w := by
+    intro w hfa
+    have hz := faceAware_zero hfa
+    exact hno_fix w (Prod.ext (sub_eq_zero.mp hz.1) (sub_eq_zero.mp hz.2))
+  -- Helper: derive contradiction from face-aware at a specific vertex
+  have face_contra : ∀ w : GridVertex n,
+      -((f (gridToReal n w)).1 - (gridToReal n w).1 +
+        ((f (gridToReal n w)).2 - (gridToReal n w).2)) =
+        (f (gridToReal n w)).1 - (gridToReal n w).1 ∧
+      (f (gridToReal n w)).1 - (gridToReal n w).1 =
+        (f (gridToReal n w)).2 - (gridToReal n w).2 → False := by
+    intro w h; exact face_false w h
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩
   -- (1) c(0,0) = 0: at origin, d1=f₁≥0, d2=f₂≥0, d0=-(f₁+f₂)≤0 is the minimum
   · simp only [displacementColoring, gridToReal, Nat.cast_zero, zero_div, sub_zero]
     obtain ⟨hf1, hf2, _⟩ := hrange (0, 0) le_rfl le_rfl (by norm_num)
-    rw [if_pos ⟨by linarith, by linarith⟩]
+    have := face_contra ⟨0, 0, by omega⟩
+    simp only [gridToReal, Nat.cast_zero, zero_div, sub_zero] at this
+    rw [if_neg this, if_pos ⟨by linarith, by linarith⟩]
   -- (2) c(n,0) = 1: d1=f₁-1≤0, d2=f₂≥0, so d1≤d2. d0≤d1 iff f=(1,0) (fixed point).
   · simp only [displacementColoring, gridToReal, Nat.cast_zero, zero_div, sub_zero, div_self hn']
     obtain ⟨hf1, hf2, hf12⟩ := hrange (1, 0) (by norm_num) le_rfl (by norm_num)
-    rw [if_neg, if_pos (show (f (1, 0)).1 - 1 ≤ (f (1, 0)).2 by linarith)]
+    have := face_contra ⟨n, 0, by omega⟩
+    simp only [gridToReal, Nat.cast_zero, zero_div, sub_zero, div_self hn'] at this
+    rw [if_neg this, if_neg, if_pos (show (f (1, 0)).1 - 1 ≤ (f (1, 0)).2 by linarith)]
     intro ⟨h_le, _⟩
     have hf1_eq : (f (1, 0)).1 = 1 := by nlinarith
     have hf2_eq : (f (1, 0)).2 = 0 := by linarith
@@ -727,7 +760,9 @@ private lemma displacementColoring_isSperner (n : ℕ) (hn : 0 < n)
   -- (3) c(0,n) = 2: d1=f₁≥0, d2=f₂-1≤0, d0=1-f₁-f₂≥0. Neither if-branch unless fixed pt.
   · simp only [displacementColoring, gridToReal, Nat.cast_zero, zero_div, sub_zero, div_self hn']
     obtain ⟨hf1, hf2, hf12⟩ := hrange (0, 1) le_rfl (by norm_num) (by norm_num)
-    rw [if_neg, if_neg]
+    have := face_contra ⟨0, n, by omega⟩
+    simp only [gridToReal, Nat.cast_zero, zero_div, sub_zero, div_self hn'] at this
+    rw [if_neg this, if_neg, if_neg]
     · -- ¬(d1 ≤ d2): f₁ > f₂-1, unless f=(0,1) (fixed point)
       intro h_le
       have hf2_eq : (f (0, 1)).2 = 1 := by nlinarith
@@ -747,6 +782,8 @@ private lemma displacementColoring_isSperner (n : ℕ) (hn : 0 < n)
   -- But d0>d1 or d0>d2 then gives f₂<0, contradicting hrange.
   · intro v hj hi0 hin heq
     simp only [displacementColoring] at heq
+    have hfa_neg := face_false v; unfold faceAwareCond at hfa_neg
+    rw [if_neg hfa_neg] at heq
     split_ifs at heq with h1 h2
     · exact absurd heq (by decide)
     · exact absurd heq (by decide)
@@ -764,6 +801,8 @@ private lemma displacementColoring_isSperner (n : ℕ) (hn : 0 < n)
   -- Symmetric to bottom edge: d1=f₁-0=f₁≥0, d1≤d2, d0>d1 or d0>d2 gives f₁<0.
   · intro v hi hj0 hjn heq
     simp only [displacementColoring] at heq
+    have hfa_neg := face_false v; unfold faceAwareCond at hfa_neg
+    rw [if_neg hfa_neg] at heq
     split_ifs at heq with h1 h2
     · exact absurd heq (by decide)
     · -- h1: ¬(d0 ≤ d1 ∧ d0 ≤ d2), h2: d1 ≤ d2 (TRUE from split_ifs)
@@ -780,6 +819,8 @@ private lemma displacementColoring_isSperner (n : ℕ) (hn : 0 < n)
   -- d0=1-f₁-f₂≥0. d0≤d1∧d0≤d2 forces f₁+f₂=1 and f₁=p₁, f₂=p₂, i.e. fixed point.
   · intro v hsum hi0 hj0 heq
     simp only [displacementColoring] at heq
+    have hfa_neg := face_false v; unfold faceAwareCond at hfa_neg
+    rw [if_neg hfa_neg] at heq
     split_ifs at heq with h1 h2
     · have hv := gridToReal_in_simplex hn v
       obtain ⟨hf1, hf2, hf12⟩ := hrange _ hv.1 hv.2.1 hv.2.2
@@ -800,21 +841,68 @@ private lemma displacementColoring_isSperner (n : ℕ) (hn : 0 < n)
 private lemma color_one_d1_nonpos {n : ℕ} {f : ℝ × ℝ → ℝ × ℝ} (v : GridVertex n)
     (hc : displacementColoring n f v = 1) :
     (f (gridToReal n v)).1 - (gridToReal n v).1 ≤ 0 := by
-  simp only [displacementColoring] at hc
-  split_ifs at hc with h1 h2
-  · exact absurd hc (by decide)
-  · by_contra hd; push_neg at hd; exact h1 ⟨by linarith, by linarith⟩
-  · exact absurd hc (by decide)
+  by_cases hfa : faceAwareCond f n v
+  · exact le_of_eq (faceAware_zero hfa).1
+  · unfold faceAwareCond at hfa
+    simp only [displacementColoring, if_neg hfa] at hc
+    split_ifs at hc with h1 h2
+    · exact absurd hc (by decide)
+    · by_contra hd; push_neg at hd; exact h1 ⟨by linarith, by linarith⟩
+    · exact absurd hc (by decide)
 
 -- Color 2 implies d₂ ≤ 0 (d₂ is the minimum displacement component)
 private lemma color_two_d2_nonpos {n : ℕ} {f : ℝ × ℝ → ℝ × ℝ} (v : GridVertex n)
     (hc : displacementColoring n f v = 2) :
     (f (gridToReal n v)).2 - (gridToReal n v).2 ≤ 0 := by
-  simp only [displacementColoring] at hc
-  split_ifs at hc with h1 h2
-  · exact absurd hc (by decide)
-  · exact absurd hc (by decide)
-  · by_contra hd; push_neg at hd h2; exact h1 ⟨by linarith, by linarith⟩
+  by_cases hfa : faceAwareCond f n v
+  · exact le_of_eq (faceAware_zero hfa).2
+  · unfold faceAwareCond at hfa
+    simp only [displacementColoring, if_neg hfa] at hc
+    split_ifs at hc with h1 h2
+    · exact absurd hc (by decide)
+    · exact absurd hc (by decide)
+    · by_contra hd; push_neg at hd h2; exact h1 ⟨by linarith, by linarith⟩
+
+-- Color 0 implies d₁ + d₂ ≥ 0 (d₀ = -(d₁+d₂) is the minimum, hence ≤ 0)
+private lemma color_zero_sum_nonneg {n : ℕ} {f : ℝ × ℝ → ℝ × ℝ} (v : GridVertex n)
+    (hc : displacementColoring n f v = 0) :
+    (f (gridToReal n v)).1 - (gridToReal n v).1 +
+    ((f (gridToReal n v)).2 - (gridToReal n v).2) ≥ 0 := by
+  by_cases hfa : faceAwareCond f n v
+  · have hz := faceAware_zero hfa; linarith [hz.1, hz.2]
+  · unfold faceAwareCond at hfa
+    simp only [displacementColoring, if_neg hfa] at hc
+    split_ifs at hc with h1 h2
+    · obtain ⟨hle, _⟩ := h1; linarith
+    · exact absurd hc (by decide)
+    · exact absurd hc (by decide)
+
+-- Grid vertex maps into the unit square Icc (0,0) (1,1)
+private lemma gridToReal_in_icc {n : ℕ} (hn : 0 < n) (v : GridVertex n) :
+    gridToReal n v ∈ Set.Icc ((0:ℝ), (0:ℝ)) ((1:ℝ), (1:ℝ)) := by
+  have h := gridToReal_in_simplex hn v
+  exact Set.mem_Icc.mpr ⟨⟨h.1, h.2.1⟩, ⟨by linarith [h.2.1, h.2.2], by linarith [h.1, h.2.2]⟩⟩
+
+-- Distance between any two vertices of the same grid triangle is ≤ 1/n
+private lemma grid_triangle_dist {n : ℕ} (hn : 0 < n) (t : GridTriangle n)
+    (a b : Fin 3) :
+    dist (gridToReal n (t.vertices a)) (gridToReal n (t.vertices b)) ≤ 1 / (n : ℝ) := by
+  have hn' : (0 : ℝ) < (n : ℝ) := Nat.cast_pos.mpr hn
+  rw [Prod.dist_eq, Real.dist_eq, Real.dist_eq]
+  simp only [gridToReal]
+  rw [max_le_iff]
+  constructor <;> {
+    rw [show ∀ (a b : ℕ), |(↑a / (↑n : ℝ) - ↑b / ↑n)| = |((a : ℝ) - b)| / ↑n from
+      fun a b => by rw [← sub_div, abs_div, abs_of_pos hn']]
+    apply div_le_div_of_nonneg_right _ hn'.le
+    cases t with
+    | mk ti tj ty h =>
+      cases ty <;> {
+        simp [GridTriangle.vertices, lowerVertices, upperVertices]
+        fin_cases a <;> fin_cases b <;> simp <;> (try norm_num) <;>
+          (try (rw [abs_le]; constructor <;> push_cast <;> linarith))
+      }
+  }
 
 -- Approximate Brouwer fixed point via Sperner's lemma + uniform continuity.
 theorem approximate_fixed_point_2d
@@ -833,7 +921,8 @@ theorem approximate_fixed_point_2d
   obtain ⟨δ, hδ_pos, hδ⟩ := huc (ε / 4) (by linarith)
   -- Step 3: Choose n so that grid mesh 1/n < min(δ, ε/4)
   obtain ⟨n, hn⟩ := exists_nat_gt (max (1 / δ) (4 / ε))
-  have hn_pos : 0 < n := by positivity
+  have hn_pos : 0 < n := by
+    by_contra h; push_neg at h; interval_cases n; simp at hn; linarith
   -- Step 4: Either grid fixed point (done) or Sperner coloring
   by_cases h : ∃ v : GridVertex n, f (gridToReal n v) = gridToReal n v
   · obtain ⟨v, hv⟩ := h
@@ -842,7 +931,11 @@ theorem approximate_fixed_point_2d
   · push_neg at h
     have hSperner := displacementColoring_isSperner n hn_pos f hrange h
     obtain ⟨t, ht⟩ := sperner_2d hn_pos (displacementColoring n f) hSperner
-    -- Step 5: Find vertices with colors 1 and 2 in the fully-colored triangle
+    -- Step 5: Find vertices with all three colors in the fully-colored triangle
+    have ⟨i₀, hi₀⟩ : ∃ i : Fin 3, displacementColoring n f (t.vertices i) = 0 := by
+      have : (0 : Fin 3) ∈ Finset.image ((displacementColoring n f) ∘ t.vertices) Finset.univ :=
+        by unfold IsFullyColored at ht; rw [ht]; simp
+      simpa using this
     have ⟨i₁, hi₁⟩ : ∃ i : Fin 3, displacementColoring n f (t.vertices i) = 1 := by
       have : (1 : Fin 3) ∈ Finset.image ((displacementColoring n f) ∘ t.vertices) Finset.univ :=
         by unfold IsFullyColored at ht; rw [ht]; simp
@@ -851,17 +944,78 @@ theorem approximate_fixed_point_2d
       have : (2 : Fin 3) ∈ Finset.image ((displacementColoring n f) ∘ t.vertices) Finset.univ :=
         by unfold IsFullyColored at ht; rw [ht]; simp
       simpa using this
-    -- Pick vertex 0 of the triangle as our approximate fixed point
-    set v₀ := t.vertices 0
+    -- Pick the COLOR-0 vertex as our approximate fixed point
+    set v₀ := t.vertices i₀
     have hv₀_in := gridToReal_in_simplex hn_pos v₀
     refine ⟨gridToReal n v₀, hv₀_in.1, hv₀_in.2.1, hv₀_in.2.2, ?_⟩
-    -- Step 6: Bound displacement using color analysis + uniform continuity
-    -- d₁(color-1 vertex) ≤ 0 and d₂(color-2 vertex) ≤ 0 (from color lemmas).
-    -- By uniform continuity across the triangle (diameter ≤ 1/n in max-norm),
-    -- d₁(v₀) < ε/2 and d₂(v₀) < ε/2. Color 0 structure at v₀ gives lower bounds.
-    -- Therefore dist = max(|d₁|, |d₂|) < ε/2 < ε in the max-norm on ℝ × ℝ.
-    have _hd1_neg := color_one_d1_nonpos (t.vertices i₁) hi₁
-    have _hd2_neg := color_two_d2_nonpos (t.vertices i₂) hi₂
-    sorry
+    -- Key facts from coloring
+    have hd_sum := color_zero_sum_nonneg v₀ hi₀
+    have hd1_neg := color_one_d1_nonpos (t.vertices i₁) hi₁
+    have hd2_neg := color_two_d2_nonpos (t.vertices i₂) hi₂
+    -- Mesh and proximity bounds
+    set p₀ := gridToReal n v₀
+    set p₁ := gridToReal n (t.vertices i₁)
+    set p₂ := gridToReal n (t.vertices i₂)
+    have hn' : (0 : ℝ) < (n : ℝ) := Nat.cast_pos.mpr hn_pos
+    have h_n_gt := show (n : ℝ) > max (1 / δ) (4 / ε) from hn
+    have h_mesh_lt_delta : 1 / (n : ℝ) < δ := by
+      have : 1 / δ < (n : ℝ) := lt_of_le_of_lt (le_max_left _ _) h_n_gt
+      calc 1 / (n : ℝ) < 1 / (1 / δ) :=
+            div_lt_div_of_pos_left one_pos (by positivity) this
+        _ = δ := by field_simp
+    have h_mesh_lt_eps4 : 1 / (n : ℝ) < ε / 4 := by
+      have : 4 / ε < (n : ℝ) := lt_of_le_of_lt (le_max_right _ _) h_n_gt
+      calc 1 / (n : ℝ) < 1 / (4 / ε) :=
+            div_lt_div_of_pos_left one_pos (by positivity) this
+        _ = ε / 4 := by field_simp
+    -- Vertices in Icc for uniform continuity
+    have hmem₀ : p₀ ∈ Set.Icc ((0:ℝ),(0:ℝ)) ((1:ℝ),(1:ℝ)) := gridToReal_in_icc hn_pos v₀
+    have hmem₁ : p₁ ∈ Set.Icc ((0:ℝ),(0:ℝ)) ((1:ℝ),(1:ℝ)) := gridToReal_in_icc hn_pos _
+    have hmem₂ : p₂ ∈ Set.Icc ((0:ℝ),(0:ℝ)) ((1:ℝ),(1:ℝ)) := gridToReal_in_icc hn_pos _
+    -- Triangle vertices are within 1/n of each other
+    have hdist₁ : dist p₀ p₁ < δ :=
+      lt_of_le_of_lt (grid_triangle_dist hn_pos t i₀ i₁) h_mesh_lt_delta
+    have hdist₂ : dist p₀ p₂ < δ :=
+      lt_of_le_of_lt (grid_triangle_dist hn_pos t i₀ i₂) h_mesh_lt_delta
+    have hpdist₁ : dist p₀ p₁ < ε / 4 :=
+      lt_of_le_of_lt (grid_triangle_dist hn_pos t i₀ i₁) h_mesh_lt_eps4
+    have hpdist₂ : dist p₀ p₂ < ε / 4 :=
+      lt_of_le_of_lt (grid_triangle_dist hn_pos t i₀ i₂) h_mesh_lt_eps4
+    -- By uniform continuity: f values at nearby points are close
+    have hf_close₁ : dist (f p₀) (f p₁) < ε / 4 :=
+      hδ p₀ hmem₀ p₁ hmem₁ hdist₁
+    have hf_close₂ : dist (f p₀) (f p₂) < ε / 4 :=
+      hδ p₀ hmem₀ p₂ hmem₂ hdist₂
+    -- d₁(v₀) < ε/2: d₁(v₁) ≤ 0, |d₁(v₀)-d₁(v₁)| ≤ dist(f(p₀),f(p₁)) + dist(p₀,p₁) < ε/2
+    have hd1_upper : (f p₀).1 - p₀.1 < ε / 2 := by
+      have h1 : (f p₀).1 - (f p₁).1 < ε / 4 := by
+        calc (f p₀).1 - (f p₁).1 ≤ |(f p₀).1 - (f p₁).1| := le_abs_self _
+          _ ≤ dist (f p₀) (f p₁) := by rw [Prod.dist_eq]; exact le_max_left _ _
+          _ < ε / 4 := hf_close₁
+      have h2 : p₁.1 - p₀.1 < ε / 4 := by
+        calc p₁.1 - p₀.1 ≤ |p₁.1 - p₀.1| := le_abs_self _
+          _ = |p₀.1 - p₁.1| := by rw [abs_sub_comm]
+          _ ≤ dist p₀ p₁ := by rw [Prod.dist_eq]; exact le_max_left _ _
+          _ < ε / 4 := hpdist₁
+      linarith
+    -- d₂(v₀) < ε/2: symmetric via color-2 vertex
+    have hd2_upper : (f p₀).2 - p₀.2 < ε / 2 := by
+      have h1 : (f p₀).2 - (f p₂).2 < ε / 4 := by
+        calc (f p₀).2 - (f p₂).2 ≤ |(f p₀).2 - (f p₂).2| := le_abs_self _
+          _ ≤ dist (f p₀) (f p₂) := by rw [Prod.dist_eq]; exact le_max_right _ _
+          _ < ε / 4 := hf_close₂
+      have h2 : p₂.2 - p₀.2 < ε / 4 := by
+        calc p₂.2 - p₀.2 ≤ |p₂.2 - p₀.2| := le_abs_self _
+          _ = |p₀.2 - p₂.2| := by rw [abs_sub_comm]
+          _ ≤ dist p₀ p₂ := by rw [Prod.dist_eq]; exact le_max_right _ _
+          _ < ε / 4 := hpdist₂
+      linarith
+    -- Lower bounds: d₁ + d₂ ≥ 0 at color-0 vertex v₀
+    -- So d₁ ≥ -d₂ > -ε/2 and d₂ ≥ -d₁ > -ε/2
+    have hd1_lower : (f p₀).1 - p₀.1 > -(ε / 2) := by linarith
+    have hd2_lower : (f p₀).2 - p₀.2 > -(ε / 2) := by linarith
+    -- Conclude: dist = max(|d₁|, |d₂|) < ε/2 < ε
+    rw [Prod.dist_eq, Real.dist_eq, Real.dist_eq]
+    apply max_lt <;> rw [abs_lt] <;> constructor <;> linarith
 
 end Sperner2D
