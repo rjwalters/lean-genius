@@ -78,6 +78,13 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Problem Statement and Imports",
+      "summary": "Module docstring presenting Erdős Problem #780 and the AFL theorem. Imports `SetFamily.Intersecting`, `SimpleGraph.Basic`, `Finset.Basic`, `Nat.Choose.Basic`, and `Tactic`. Opens the `Finset` namespace.",
+      "startLine": 1,
+      "endLine": 35
+    },
+    {
       "id": "definitions",
       "title": "Hypergraph Definitions",
       "summary": "Defines `UniformHypergraph`, `completeHypergraph`, `disjointEdges` via `Disjoint`, `PairwiseDisjoint` for $k$-matchings, `EdgeColoring` as $c : K_n^{(r)} \\to \\text{Fin}\\, t$, and `colorClass` $C_i = c^{-1}(i)$.",
