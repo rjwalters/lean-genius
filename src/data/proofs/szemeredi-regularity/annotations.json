@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-szem-edge-density",
+    "proofId": "szemeredi-regularity",
+    "range": { "startLine": 26, "endLine": 29 },
+    "type": "definition",
+    "title": "Edge Density",
+    "content": "Defines the edge density $d(A,B) = |E(A,B)|/(|A| \\cdot |B|)$ between two vertex subsets using `Finset.product` and `filter`. The density is computed over $\\mathbb{Q}$ (not $\\mathbb{R}$) to keep everything computable and avoid noncomputability issues with real division. The guard `if A.card * B.card = 0 then 0` handles empty sets gracefully.",
+    "mathContext": "$d(A,B) = \\frac{|\\{(a,b) \\in A \\times B : a \\sim b\\}|}{|A| \\cdot |B|}$",
+    "significance": "key",
+    "relatedConcepts": ["bipartite graphs", "edge counting", "graph density", "Turán density"],
+    "prerequisites": ["SimpleGraph.Adj", "Finset.product", "Finset.filter"]
+  },
+  {
+    "id": "ann-szem-eps-regular",
+    "proofId": "szemeredi-regularity",
+    "range": { "startLine": 34, "endLine": 40 },
+    "type": "definition",
+    "title": "Epsilon-Regular Pairs",
+    "content": "Defines $\\varepsilon$-regularity for a pair $(A, B)$: for every $A' \\subseteq A$, $B' \\subseteq B$ with $|A'| \\ge \\varepsilon|A|$ and $|B'| \\ge \\varepsilon|B|$, the density $d(A', B')$ is within $\\varepsilon$ of $d(A, B)$. This captures pseudo-randomness: regular pairs behave like Erdős-Rényi random bipartite graphs for the purpose of subgraph counting. The quantification over all large sub-pairs makes this a strong uniformity condition.",
+    "mathContext": "$\\forall A' \\subseteq A,\\, B' \\subseteq B : |A'| \\ge \\varepsilon|A|,\\, |B'| \\ge \\varepsilon|B| \\implies |d(A',B') - d(A,B)| \\le \\varepsilon$",
+    "significance": "key",
+    "relatedConcepts": ["pseudo-randomness", "quasirandomness", "Chung-Graham-Wilson", "Szemerédi regularity"],
+    "prerequisites": ["edgeDensity", "Finset.card", "absolute value"]
+  },
+  {
+    "id": "ann-szem-regular-partition",
+    "proofId": "szemeredi-regularity",
+    "range": { "startLine": 44, "endLine": 51 },
+    "type": "definition",
+    "title": "Regular Partition",
+    "content": "Defines an $\\varepsilon$-regular partition as an equipartition (all parts differ in size by at most 1) where at most $\\varepsilon \\binom{k}{2}$ pairs are not $\\varepsilon$-regular. The equitability condition prevents trivial partitions like one huge part and many singletons. The bound $\\varepsilon \\binom{k}{2}$ on irregular pairs allows a small fraction of irregularity while ensuring the partition is useful for applications like subgraph counting.",
+    "mathContext": "$|\\{(i,j) : (V_i, V_j) \\text{ not } \\varepsilon\\text{-regular}\\}| \\le \\varepsilon \\cdot k(k-1)$",
+    "significance": "key",
+    "relatedConcepts": ["equitable partitions", "Szemerédi partitions", "graph regularity"],
+    "prerequisites": ["IsEpsilonRegular", "Finset.product", "Finset.filter"]
+  },
+  {
+    "id": "ann-szem-energy",
+    "proofId": "szemeredi-regularity",
+    "range": { "startLine": 59, "endLine": 63 },
+    "type": "definition",
+    "title": "Partition Energy",
+    "content": "Defines the partition energy $E(\\mathcal{P}) = \\frac{1}{k^2} \\sum_{i,j} d(V_i, V_j)^2$, the mean squared density across all pairs. This is the potential function that drives the regularity proof: energy lies in $[0,1]$, increases under refinement, and the minimum energy increment per irregular step ($\\varepsilon^5$) bounds the number of iterations. By Cauchy-Schwarz, energy is maximized when all densities equal 0 or 1 (i.e., the partition perfectly separates edges from non-edges).",
+    "mathContext": "$E(\\mathcal{P}) = \\frac{1}{k^2} \\sum_{i,j} d(V_i, V_j)^2 \\in [0,1]$",
+    "significance": "key",
+    "relatedConcepts": ["mean index", "quadratic variation", "potential function", "Cauchy-Schwarz inequality"],
+    "prerequisites": ["edgeDensity", "sq", "Finset.sum"]
+  },
+  {
+    "id": "ann-szem-energy-nonneg",
+    "proofId": "szemeredi-regularity",
+    "range": { "startLine": 66, "endLine": 74 },
+    "type": "technique",
+    "title": "Energy Nonnegativity",
+    "content": "Proves $E(\\mathcal{P}) \\ge 0$ by observing that the energy is a product of nonneg terms: $1/k^2 \\ge 0$ and $\\sum d^2 \\ge 0$ (sum of squares). Uses `positivity` for $1/k^2$ and `Finset.sum_nonneg` with `sq_nonneg` for the sum. This is one half of the $E \\in [0,1]$ bound that ensures the energy increment argument terminates.",
+    "mathContext": "$E(\\mathcal{P}) = \\frac{1}{k^2} \\sum d_{ij}^2 \\ge 0$",
+    "significance": "supporting",
+    "relatedConcepts": ["sum of squares", "positivity tactic", "well-founded iteration"],
+    "prerequisites": ["mul_nonneg", "sq_nonneg", "Finset.sum_nonneg"]
+  },
+  {
+    "id": "ann-szem-energy-increment",
+    "proofId": "szemeredi-regularity",
+    "range": { "startLine": 79, "endLine": 85 },
+    "type": "insight",
+    "title": "Energy Increment Step",
+    "content": "States the key technical lemma: if a partition is not $\\varepsilon$-regular, there exists a refinement whose energy exceeds the original by at least $\\varepsilon^5$, with part count at most $k \\cdot 2^k$. This is the engine of the regularity proof. The $\\varepsilon^5$ increment comes from: each irregular pair contributes $\\ge \\varepsilon^4 / k^2$ to the energy gain (from the regularity violation), and there are $\\ge \\varepsilon k^2$ irregular pairs, giving total gain $\\ge \\varepsilon^5$. Contains the file's main sorry.",
+    "mathContext": "$\\neg\\text{Regular}(\\mathcal{P}) \\implies \\exists \\mathcal{P}' : E(\\mathcal{P}') \\ge E(\\mathcal{P}) + \\varepsilon^5,\\; |\\mathcal{P}'| \\le k \\cdot 2^k$",
+    "significance": "key",
+    "relatedConcepts": ["partition refinement", "defect version", "boosting", "tower function growth"],
+    "prerequisites": ["IsRegularPartition", "partitionEnergy"]
+  },
+  {
+    "id": "ann-szem-energy-upper",
+    "proofId": "szemeredi-regularity",
+    "range": { "startLine": 92, "endLine": 98 },
+    "type": "technique",
+    "title": "Energy Upper Bound",
+    "content": "States that partition energy is at most 1 for any valid partition (covering, disjoint). This follows because $d(V_i, V_j) \\le 1$ for all pairs, so $d_{ij}^2 \\le d_{ij} \\le 1$, and the average of values in $[0,1]$ is at most 1. Combined with nonnegativity, this gives $E \\in [0,1]$, which together with the $\\varepsilon^5$ increment bounds the number of refinement steps by $\\varepsilon^{-5}$.",
+    "mathContext": "$E(\\mathcal{P}) \\le 1$ for any partition covering all vertices with disjoint parts",
+    "significance": "supporting",
+    "relatedConcepts": ["density bounds", "convexity", "Jensen's inequality"],
+    "prerequisites": ["partitionEnergy", "edgeDensity", "Disjoint"]
+  },
+  {
+    "id": "ann-szem-main-lemma",
+    "proofId": "szemeredi-regularity",
+    "range": { "startLine": 107, "endLine": 113 },
+    "type": "insight",
+    "title": "Szemerédi Regularity Lemma",
+    "content": "States the main result: for every $\\varepsilon > 0$, there exists $M$ such that every graph on $\\ge M$ vertices admits an $\\varepsilon$-regular partition into $\\le M$ parts. The proof (sorry'd) would iterate: start with an arbitrary equipartition; if not regular, apply `energy_increment_step` to refine. Since $E \\in [0,1]$ and each step adds $\\ge \\varepsilon^5$, at most $\\lceil \\varepsilon^{-5} \\rceil$ refinements suffice. The part count grows as a tower of exponentials, giving the characteristic tower-type bound $M(\\varepsilon) = \\mathrm{tower}(\\varepsilon^{-5})$.",
+    "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists M : \\forall G \\text{ on } \\ge M \\text{ vertices},\\; \\exists \\mathcal{P} : \\text{Regular}(\\mathcal{P}),\\; |\\mathcal{P}| \\le M$",
+    "significance": "key",
+    "relatedConcepts": ["tower function", "Ackermann function", "Gowers lower bound", "compactness arguments"],
+    "prerequisites": ["IsRegularPartition", "energy_increment_step", "partitionEnergy_le_one"]
+  }
+]

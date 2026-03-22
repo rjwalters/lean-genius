@@ -59,35 +59,66 @@
   "sections": [
     {
       "id": "introduction",
-      "title": "Module Docstring and Imports",
+      "title": "Module Overview",
       "startLine": 1,
-      "endLine": 16,
-      "summary": "Overview of the Regularity Lemma formalization covering epsilon-regular pairs, partition energy, energy increment, and the main regularity existence result.",
-      "mathContext": "Every large graph admits an epsilon-regular partition into bounded many parts."
+      "endLine": 17,
+      "summary": "Module docstring and imports. States the regularity lemma and outlines the three-part structure: definitions, energy, main result."
     },
     {
-      "id": "definitions",
-      "title": "Part I: Epsilon-Regular Pairs and Partitions",
-      "startLine": 18,
-      "endLine": 55,
-      "summary": "Core definitions: edge density between vertex subsets, epsilon-regular pair condition, and regular partition (equitable partition with few irregular pairs).",
-      "mathContext": "$(V_i, V_j)$ is $\\varepsilon$-regular if all large sub-pairs have density close to $d(V_i, V_j)$"
+      "id": "edge-density",
+      "title": "Edge Density",
+      "startLine": 24,
+      "endLine": 29,
+      "summary": "Defines d(A,B) = |E(A,B)| / (|A|·|B|) as a rational number, with guard for empty sets.",
+      "mathContext": "$d(A,B) = \\frac{|E(A,B)|}{|A| \\cdot |B|}$"
+    },
+    {
+      "id": "eps-regular",
+      "title": "Epsilon-Regular Pairs",
+      "startLine": 31,
+      "endLine": 40,
+      "summary": "Defines ε-regularity: all large sub-pairs have density within ε of the overall density.",
+      "mathContext": "$(A,B)$ is $\\varepsilon$-regular iff $|d(A',B') - d(A,B)| \\le \\varepsilon$ for all large $A' \\subseteq A$, $B' \\subseteq B$"
+    },
+    {
+      "id": "regular-partition",
+      "title": "Regular Partition",
+      "startLine": 42,
+      "endLine": 51,
+      "summary": "Defines ε-regular partition: equitable partition where at most ε·k(k-1) pairs are irregular.",
+      "mathContext": "At most $\\varepsilon \\binom{k}{2}$ pairs are not $\\varepsilon$-regular"
     },
     {
       "id": "energy",
-      "title": "Part II: Partition Energy and Increment",
+      "title": "Partition Energy",
       "startLine": 57,
-      "endLine": 90,
-      "summary": "Partition energy function E(P) and the energy increment step: if too many irregular pairs, refinement increases energy by epsilon^5.",
-      "mathContext": "$E(\\mathcal{P}) = \\frac{1}{k^2}\\sum_{i,j} d(V_i,V_j)^2 \\in [0,1]$, refinement gives $E(\\mathcal{P}') \\geq E(\\mathcal{P}) + \\varepsilon^5$"
+      "endLine": 74,
+      "summary": "Defines E(P) = (1/k²) Σ d(Vᵢ,Vⱼ)² and proves E(P) ≥ 0. Energy is the potential function driving the proof.",
+      "mathContext": "$E(\\mathcal{P}) = \\frac{1}{k^2}\\sum_{i,j} d(V_i,V_j)^2 \\ge 0$"
     },
     {
-      "id": "regularity-lemma",
-      "title": "Part III: Regularity Lemma (Main Result)",
-      "startLine": 92,
-      "endLine": 115,
-      "summary": "The main Szemeredi Regularity Lemma: for every epsilon > 0, every large graph has an epsilon-regular partition. Proved by iterated energy increment.",
-      "mathContext": "For all $\\varepsilon > 0$, $\\exists M$: every graph on $\\geq M$ vertices has an $\\varepsilon$-regular partition into $\\leq M$ parts"
+      "id": "energy-increment",
+      "title": "Energy Increment Step",
+      "startLine": 76,
+      "endLine": 85,
+      "summary": "Key technical lemma: irregular partition can be refined with energy gain ≥ ε⁵ and part count ≤ k·2ᵏ. (sorry)",
+      "mathContext": "$E(\\mathcal{P}') \\ge E(\\mathcal{P}) + \\varepsilon^5$"
+    },
+    {
+      "id": "energy-upper",
+      "title": "Energy Upper Bound",
+      "startLine": 91,
+      "endLine": 98,
+      "summary": "States E(P) ≤ 1 for valid partitions (covering, disjoint). Combined with ε⁵ increment, bounds iterations. (sorry)",
+      "mathContext": "$E(\\mathcal{P}) \\le 1$"
+    },
+    {
+      "id": "main-lemma",
+      "title": "Regularity Lemma (Main Result)",
+      "startLine": 100,
+      "endLine": 113,
+      "summary": "The Szemerédi Regularity Lemma: ∀ε>0, ∃M such that every graph on ≥M vertices has an ε-regular partition into ≤M parts. (sorry)",
+      "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists M : \\text{every graph on } \\ge M \\text{ vertices has an } \\varepsilon\\text{-regular partition}$"
     }
   ],
   "crossReferences": [
