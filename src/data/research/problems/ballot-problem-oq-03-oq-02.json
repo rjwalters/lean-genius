@@ -18,7 +18,10 @@
       "permPathTuple_card proved: card of sigma-tuples = product of binomial coefficients (from pathMN_card)",
       "firstNonFixed infrastructure: smallest non-fixed point of perm, with spec/minimal/lt_image lemmas all proved",
       "GV cancellation isolated as sole axiom; lgv_lemma_rxr is now a theorem proved from algebraic bridge + GV axiom",
-      "Units.smul_def handles sign coercion (ℤˣ • ℤ = ↑ℤˣ * ℤ) in det formula connection"
+      "Units.smul_def handles sign coercion (ℤˣ • ℤ = ↑ℤˣ * ℤ) in det formula connection",
+      "File builds clean against Mathlib v4.26 (verified). 1 axiom (gv_involution_cancellation), 1 sorry (pathMN_card).",
+      "pathMN_card proof strategy: PathMN m n ≃ Finset.univ.powersetCard m via indicator bijection, then use Finset.card_powersetCard. Requires building explicit Equiv between List Bool positions and Finset (Fin (m+n)).",
+      "pathMN_card is a good Aristotle candidate - standard combinatorial identity C(m+n,m) = |{binary strings of length m+n with m zeros}|"
     ],
     "builtItems": [
       "BallotProblemOQ03OQ02.lean: r×r LGV infrastructure (204 lines)",
@@ -46,7 +49,7 @@
       "Build involution: swap tails at first intersection, prove involutivity and sign reversal",
       "Prove gv_involution_cancellation from the constructed involution"
     ],
-    "progressSummary": "PROGRESS: Proved lgv_lemma_rxr as theorem (was axiom). Added algebraic bridge connecting det to signed perm counts. Built firstNonFixed infrastructure (4 lemmas proved). Isolated GV involution cancellation as the sole remaining axiom. 1 axiom, 1 sorry (pathMN_card). ~370 lines."
+    "progressSummary": "PROGRESS: File builds clean. 1 axiom (GV involution cancellation - deep combinatorial result), 1 sorry (pathMN_card - routine identity). pathMN_card proof requires building Equiv between PathMN and Finset.powersetCard; good Aristotle candidate."
   },
   "lastUpdate": "2026-03-22T08:00:00Z"
 }
