@@ -15,6 +15,7 @@
       "algebraic-closure",
       "intermediate"
     ],
+    "proofRepoPath": "Proofs/FundamentalTheoremAlgebra.lean",
     "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
@@ -43,6 +44,7 @@
     "dateAdded": "2025-12-21",
     "wiedijkNumber": 2,
     "axiomCount": 0,
+    "lineCount": 214,
     "prerequisites": [
       "Complex numbers and polynomial evaluation (Polynomial.eval₂)",
       "Algebraic closure and splitting fields",
@@ -141,9 +143,35 @@
       "targetId": "fermats-last-theorem",
       "relationship": "related",
       "description": "FLT uses algebraic number theory over number fields — the FTA ensures these fields embed in C, providing the complex-analytic tools needed for the proof"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "complementary",
+      "description": "FTA guarantees roots exist in C; Abel-Ruffini shows they cannot always be expressed by radicals — existence does not imply explicit formulas"
+    },
+    {
+      "targetId": "quadratic-formula",
+      "relationship": "specializes",
+      "description": "The quadratic formula provides an explicit root for degree-2 polynomials; FTA guarantees existence for all degrees"
     }
   ],
   "relatedProofs": [
-    "fermats-last-theorem"
-  ]
+    "fermats-last-theorem",
+    "abel-ruffini",
+    "quadratic-formula"
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Complex.Polynomial.Basic",
+      "Mathlib.Algebra.Polynomial.Basic",
+      "Mathlib.Algebra.Polynomial.Degree.Definitions",
+      "Mathlib.FieldTheory.IsAlgClosed.Basic"
+    ],
+    "opens": [],
+    "namespace": "FundamentalTheoremAlgebra",
+    "lineCount": 214,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0
+  }
 }
