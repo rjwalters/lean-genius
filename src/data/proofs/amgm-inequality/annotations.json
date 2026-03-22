@@ -1,8 +1,20 @@
 [
   {
+    "id": "ann-imports",
+    "proofId": "amgm-inequality",
+    "range": {"startLine": 1, "endLine": 4},
+    "type": "concept",
+    "title": "Mathlib Imports for Mean Inequalities",
+    "content": "Four Mathlib imports supply the complete mathematical infrastructure:\n- `Analysis.MeanInequalities`: The weighted AM-GM theorem `Real.geom_mean_le_arith_mean_weighted` and its 2/3-variable specializations, proved in Mathlib via convexity of $-\\log$ (Jensen's inequality)\n- `Analysis.SpecialFunctions.Pow.Real`: Real-valued powers $x^r$ for $r \\in \\mathbb{R}$, including `Real.sqrt_mul` and `Real.sq_sqrt`\n- `Algebra.Order.Field.Basic`: Ordered field arithmetic, providing the linear arithmetic facts needed by `linarith`\n- `Mathlib.Tactic`: General-purpose tactics including `norm_num`, `ring`, `linarith`, and `nlinarith`",
+    "mathContext": "The key Mathlib result is `Real.geom_mean_le_arith_mean_weighted`: $\\prod_{i \\in s} z_i^{w_i} \\leq \\sum_{i \\in s} w_i z_i$ for $w_i \\geq 0$, $\\sum w_i = 1$, $z_i \\geq 0$. This is proved via Jensen's inequality applied to $f(x) = -\\log(x)$ (convex on $(0,\\infty)$).",
+    "significance": "supporting",
+    "relatedConcepts": ["Mathlib", "mean inequalities", "convexity", "Jensen's inequality"],
+    "prerequisites": ["Lean 4 import system", "Mathlib library structure"]
+  },
+  {
     "id": "ann-intro",
     "proofId": "amgm-inequality",
-    "range": {"startLine": 6, "endLine": 49},
+    "range": {"startLine": 6, "endLine": 52},
     "type": "concept",
     "title": "AM-GM Inequality: Wiedijk #38",
     "content": "**AM-GM Inequality**:\n\nFor non-negative real numbers:\n$$\\frac{a_1 + a_2 + \\cdots + a_n}{n} \\geq \\sqrt[n]{a_1 a_2 \\cdots a_n}$$\n\n**Two-variable case**:\n$$\\frac{a + b}{2} \\geq \\sqrt{ab}$$\n\n**Equality**: Holds iff all numbers are equal.\n\n**Historical**: Known since Euclid (geometric proof via altitude in semicircle); Cauchy gave the first general n-variable proof via forward-backward induction in 1821. This file is #38 on Wiedijk's landmark list of 100 mathematical theorems deemed important to formalize.",
@@ -94,5 +106,17 @@
     "significance": "supporting",
     "relatedConcepts": ["three variables", "cube root", "symmetric functions", "Maclaurin's inequality", "Real.geom_mean_le_arith_mean3_weighted"],
     "prerequisites": ["am_gm_weighted", "Finset-based mean inequalities", "real powers"]
+  },
+  {
+    "id": "ann-check-epilogue",
+    "proofId": "amgm-inequality",
+    "range": {"startLine": 220, "endLine": 226},
+    "type": "context",
+    "title": "Type-Check Verification and Namespace Close",
+    "content": "Four `#check` commands verify the signatures of the main theorems at the end of the file: `am_gm_two` (elementary two-variable), `am_gm_two_eq_iff` (equality characterization), `am_gm_weighted` (general Finset-based), and `am_gm_three` (three-variable specialization). This pattern serves as a quick-reference API summary.\n\nThe namespace `AMGMInequality` closes on line 225, scoping all definitions to prevent name collisions with Mathlib's own mean inequality lemmas.",
+    "mathContext": "The four theorems form a hierarchy: `am_gm_weighted` is the most general (arbitrary finite sets, arbitrary weights), `am_gm_three` and `am_gm_two_via_weighted` are specializations, and `am_gm_two` is an independent elementary proof. The equality condition `am_gm_two_eq_iff` applies only to the two-variable case.",
+    "significance": "supporting",
+    "relatedConcepts": ["#check command", "namespace scoping", "API design"],
+    "prerequisites": ["Lean 4 #check", "namespace management"]
   }
 ]
