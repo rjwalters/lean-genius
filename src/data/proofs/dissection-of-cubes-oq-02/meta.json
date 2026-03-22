@@ -1,0 +1,58 @@
+{
+  "id": "dissection-of-cubes-oq-02",
+  "title": "3D Shape Dissection: Dehn Invariant and Hilbert's Third Problem",
+  "slug": "dissection-of-cubes-oq-02",
+  "description": "Formalizes the Dehn invariant approach to Hilbert's Third Problem: proves the cube has zero Dehn invariant (rational angles) while the tetrahedron has nonzero invariant (irrational angle), showing they cannot be scissors congruent.",
+  "meta": {
+    "author": "Dehn (1900), Sydler (1965)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Hilbert%27s_third_problem",
+    "date": "1900",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/DissectionOfCubesOQ02.lean",
+    "leanFile": "proofs/Proofs/DissectionOfCubesOQ02.lean",
+    "tags": ["geometry", "scissors-congruence", "dehn-invariant", "hilbert-problems", "polyhedra", "wiedijk-100"],
+    "badge": "original",
+    "sorries": 3,
+    "axiomCount": 0,
+    "dateAdded": "2026-03-22",
+    "mathlibDependencies": [
+      {"theorem": "Real.arccos", "description": "Arccos function for dihedral angles", "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"},
+      {"theorem": "Real.arccos_pos", "description": "Positivity of arccos for angle bounds", "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"}
+    ],
+    "originalContributions": [
+      "Simplified Dehn invariant: dehnInvariantZero predicate via rational angle test",
+      "cube_dehn_zero: cube has zero Dehn invariant (π/2 = (1/2)π)",
+      "tetrahedron_dehn_nonzero: tetrahedron has nonzero Dehn invariant",
+      "dehn_obstruction: cube and tetrahedron have different Dehn invariants",
+      "polygon_dehn_zero: 2D Bolyai-Gerwien analog (all polygons have zero Dehn invariant)",
+      "Comprehensive documentation: Hilbert's 3rd problem, Dehn-Sydler theorem, dimension contrast"
+    ],
+    "references": [
+      {"key": "De00", "citation": "Dehn, M., Ueber den Rauminhalt, Mathematische Annalen 55 (1900), 465-478.", "type": "paper"},
+      {"key": "Sy65", "citation": "Sydler, J.-P., Conditions nécessaires et suffisantes pour l'équivalence des polyèdres de l'espace euclidien à trois dimensions, Comment. Math. Helv. 40 (1965), 43-80.", "type": "paper"}
+    ]
+  },
+  "sections": [
+    {"id": "scissors", "title": "Scissors Congruence", "startLine": 47, "endLine": 60, "summary": "Defines ScissorsCongruent and proves reflexivity and symmetry."},
+    {"id": "angles", "title": "Dihedral Angles", "startLine": 64, "endLine": 84, "summary": "Defines cube (π/2) and tetrahedron (arccos(1/3)) dihedral angles. Proves cube angle is rational multiple of π."},
+    {"id": "dehn", "title": "Dehn Invariant", "startLine": 88, "endLine": 115, "summary": "Defines dehnInvariantZero predicate. Proves cube has zero and tetrahedron has nonzero Dehn invariant."},
+    {"id": "hilbert", "title": "Hilbert's Third Problem", "startLine": 119, "endLine": 150, "summary": "States Hilbert's 3rd problem and dehn_obstruction theorem."},
+    {"id": "2d", "title": "2D Contrast (Bolyai-Gerwien)", "startLine": 154, "endLine": 175, "summary": "Proves polygon_dehn_zero: all 2D shapes have zero Dehn invariant."}
+  ],
+  "conclusion": {
+    "summary": "Formalizes the Dehn invariant approach to scissors congruence with 3 sorries, 0 axioms. Key proved: cube_dehn_zero, tetrahedron_dehn_nonzero (modulo angle irrationality), dehn_obstruction, polygon_dehn_zero.",
+    "openQuestions": [
+      "Prove tetrahedron_angle_irrational_pi (Niven's theorem: arccos(1/3)/π is irrational)",
+      "Formalize the full tensor product Dehn invariant in ℝ ⊗_ℤ (ℝ/πℤ)",
+      "Prove the Dehn-Sydler completeness theorem"
+    ]
+  },
+  "leanFile": {
+    "imports": ["Mathlib.Tactic", "Mathlib.Data.Real.Basic", "Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds", "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"],
+    "namespace": "DissectionOfCubesOQ02",
+    "lineCount": 222,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 5
+  }
+}
