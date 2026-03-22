@@ -9,7 +9,6 @@
     "type": "concept",
     "title": "The Fixed Point Theorem That Changed Mathematics",
     "content": "Brouwer's Fixed Point Theorem states: every continuous function from a closed ball to itself has a fixed point. Despite its simple statement, this 1911 result required the development of algebraic topology to prove.\n\nThe intuition is beautiful: imagine stirring coffee in a circular cup. No matter how you stir (continuously), at least one point of coffee ends up exactly where it started. You cannot continuously move every point!\n\nThis formalization presents the conceptual structure. The full proof requires homology theory or degree theory, which we axiomatize to focus on the logical flow.",
-    "mathContext": "Brouwer's Fixed Point Theorem: $\\forall f: B^n \\to B^n$ continuous, $\\exists x \\in B^n: f(x) = x$, where $B^n = \\{x \\in \\mathbb{R}^n : \\|x\\| \\leq 1\\}$.",
     "significance": "critical",
     "relatedConcepts": [
       "fixed point",
@@ -63,7 +62,6 @@
     "type": "definition",
     "title": "Retractions: Projecting to Subspaces",
     "content": "A **retraction** from space X onto subspace A is a continuous map $r: X \\to A$ that fixes A:\n$$r(a) = a \\text{ for all } a \\in A$$\n\nIntuitively: a retraction 'projects' X onto A without moving points already in A. Examples:\n- Projecting $\\mathbb{R}^2$ onto the x-axis: $(x, y) \\mapsto (x, 0)$ is a retraction\n- Projecting a square onto one of its edges: valid retraction\n\nBut some retractions are impossible! You cannot retract the ball onto its boundary sphere. This impossibility is the key to Brouwer's theorem.\n\nThe intuition: the ball is 'solid' (contractible), but the sphere is 'hollow' (has a hole). You can't continuously project solid onto hollow.",
-    "mathContext": "A retraction $r: X \\to A$ satisfies $r \\circ \\iota = \\text{id}_A$ where $\\iota: A \\hookrightarrow X$ is the inclusion. Equivalently, $r(a) = a$ for all $a \\in A$.",
     "significance": "critical",
     "relatedConcepts": [
       "projection",
@@ -103,7 +101,6 @@
     "type": "concept",
     "title": "The Brilliant Ray Construction",
     "content": "This is the proof's clever geometric construction. Given a fixed-point-free map $f$, we build a retraction:\n\n**Construction:** For each point $x$ in the ball:\n1. Compute $f(x)$ (which is different from $x$ by assumption)\n2. Draw a ray from $f(x)$ through $x$\n3. The ray must exit the ball at some point on the sphere\n4. Define $r(x)$ to be that exit point\n\n**Why this works:**\n- Since $f(x) \\neq x$, the ray direction is well-defined\n- The map $x \\mapsto r(x)$ is continuous (ray-casting varies smoothly)\n- If $x$ is on the sphere, the ray from $f(x)$ through $x$ exits at $x$ itself\n- Therefore $r$ fixes the boundary: it's a retraction!\n\nBut wait: we just proved no retraction exists! Contradiction. So our assumption was wrong: $f$ must have a fixed point.",
-    "mathContext": "The ray from $f(x)$ through $x$ is $\\{f(x) + t(x - f(x)) : t \\geq 0\\}$. The exit point $r(x) \\in S^{n-1}$ is the unique $t > 0$ solving $\\|f(x) + t(x-f(x))\\| = 1$. For $x \\in S^{n-1}$: $r(x) = x$ (retraction property).",
     "significance": "critical",
     "prerequisites": [
       "ann-no-retraction"
@@ -146,7 +143,6 @@
     "type": "insight",
     "title": "Dimension 1: The Intermediate Value Theorem",
     "content": "In dimension 1, Brouwer's theorem says: every continuous $f: [0,1] \\to [0,1]$ has a fixed point.\n\nThis can be proved directly using the Intermediate Value Theorem!\n\n**Proof:** Define $g(x) = f(x) - x$.\n- At $x = 0$: $g(0) = f(0) - 0 = f(0) \\geq 0$ (since $f(0) \\in [0,1]$)\n- At $x = 1$: $g(1) = f(1) - 1 \\leq 0$ (since $f(1) \\in [0,1]$)\n- By IVT, $g(c) = 0$ for some $c$, meaning $f(c) = c$\n\nThe 1D case is elementary; the theorem's power comes from higher dimensions where this argument fails and algebraic topology is needed.",
-    "mathContext": "1D Brouwer: $f: [0,1] \\to [0,1]$ continuous $\\Rightarrow \\exists c: f(c) = c$. Proof via IVT: $g(x) = f(x) - x$ satisfies $g(0) \\geq 0 \\geq g(1)$, so $g(c) = 0$ for some $c \\in [0,1]$.",
     "significance": "key",
     "relatedConcepts": [
       "intermediate value theorem",
@@ -164,7 +160,6 @@
     "type": "insight",
     "title": "Dimension 2: Stirring Coffee",
     "content": "The 2D case is the famous 'coffee cup theorem': when you stir coffee in a circular cup, at least one point of coffee returns to its starting position.\n\n**Why is this surprising?**\nYou might think: 'I'll just rotate everything!' But pure rotation has the center fixed. What about more complex stirring?\n\nNo matter how cleverly you stir:\n- If continuous (no tearing the liquid)\n- And the coffee stays in the cup (maps cup to itself)\n\n...some point must be fixed. You cannot continuously move every point of a disk!\n\nThis is genuinely counterintuitive. The theorem says it's impossible to avoid fixed points, even though we can't easily find them.",
-    "mathContext": "2D Brouwer: $f: D^2 \\to D^2$ continuous $\\Rightarrow \\exists p \\in D^2: f(p) = p$, where $D^2 = \\{(x,y) : x^2+y^2 \\leq 1\\}$. The proof requires topology beyond IVT — the fundamental group $\\pi_1(S^1) \\cong \\mathbb{Z}$ obstructs retracting $D^2$ onto $S^1$.",
     "significance": "key",
     "relatedConcepts": [
       "rotation",

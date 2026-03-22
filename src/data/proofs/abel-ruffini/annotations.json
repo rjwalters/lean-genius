@@ -87,31 +87,6 @@
     ]
   },
   {
-    "id": "ann-part-ii-intro",
-    "proofId": "abel-ruffini",
-    "range": {
-      "startLine": 51,
-      "endLine": 57
-    },
-    "type": "concept",
-    "title": "The Galois-Theoretic Bridge: Field Theory Meets Group Theory",
-    "content": "Part II introduces the central conceptual leap of the formalization: translating the algebraic question 'can we solve this polynomial by radicals?' into the group-theoretic question 'is the Galois group solvable?' This bridge is Galois's fundamental insight — the reason his theory revolutionized algebra.\n\nThe direction formalized here (solvable by radicals $\\Rightarrow$ solvable Galois group) is the 'easy' direction conceptually, though technically deep. The key idea: each radical adjunction $F \\subset F(\\sqrt[n]{a})$ creates a cyclic extension with cyclic (hence abelian) Galois group. A tower of radical extensions thus yields a tower of abelian extensions, which is precisely the definition of a solvable group.",
-    "mathContext": "The Galois correspondence: $\\text{Gal}(E/F) \\cong \\text{Aut}_F(E)$. For a radical tower $F = F_0 \\subset F_1 \\subset \\cdots \\subset F_n$ where $F_{i+1} = F_i(\\sqrt[n_i]{a_i})$, each $\\text{Gal}(F_{i+1}/F_i)$ is cyclic of order dividing $n_i$. The Galois group of the tower has a subnormal series with abelian factors $\\Rightarrow$ solvable.",
-    "significance": "key",
-    "prerequisites": [
-      "Galois correspondence",
-      "radical extensions",
-      "cyclic extensions"
-    ],
-    "relatedConcepts": [
-      "Galois group",
-      "solvable group",
-      "radical tower",
-      "cyclic extension",
-      "subnormal series"
-    ]
-  },
-  {
     "id": "ann-abel-ruffini-theorem",
     "proofId": "abel-ruffini",
     "range": {
@@ -216,7 +191,7 @@
     "type": "theorem",
     "title": "A₅ is Simple",
     "content": "A group is simple if its only normal subgroups are {1} and the whole group. The alternating group A₅ is simple - it's the smallest non-abelian simple group, with 60 elements.\n\nThe proof analyzes cycle types: identity (1), 3-cycles (20), 5-cycles (24), double transpositions (15). Any normal subgroup containing a non-identity element must contain a 3-cycle, and 3-cycles generate all of A₅.",
-    "mathContext": "$A_5 = \\ker(\\text{sgn} : S_5 \\to \\{\\pm 1\\})$, $|A_5| = 60 = 5!/2$. Its conjugacy classes have sizes $1 + 12 + 12 + 15 + 20 = 60$ (identity, two classes of 5-cycles, double transpositions, 3-cycles). A normal subgroup must be a union of conjugacy classes including $\\{e\\}$, with order dividing 60. No sub-sum $1 + S$ of $\\{12, 12, 15, 20\\}$ yields a divisor of 60 except $\\{\\}$ and the full set — proving $A_5$ is simple. This makes $A_5$ the smallest non-abelian simple group (the next being $\\text{PSL}(2,7)$ of order 168).",
+    "mathContext": "A₅ = {even permutations of 5 objects} = ker(sign : S₅ → {±1})\n\n|A₅| = 60 = 5!/2",
     "significance": "critical",
     "prerequisites": [
       "permutation groups",
