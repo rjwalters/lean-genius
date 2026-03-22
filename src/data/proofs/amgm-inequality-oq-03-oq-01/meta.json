@@ -129,6 +129,11 @@
       "The same technique extends to HM ≤ GM: the harmonic mean M_{-1} ≤ M₀ (geometric mean limit) follows the same duality pattern",
       "This fills a known Mathlib gap: the generalized mean inequality for negative exponents",
       "The explicit inversion proof (A ≤ B → B⁻¹ ≤ A⁻¹) avoids Mathlib's inv_le_inv_of_le by building the inequality from multiplicative primitives — a technique useful whenever the reciprocal lemma has inconvenient hypotheses"
+    ],
+    "prerequisites": [
+      "Positive power mean monotonicity: $M_r \\leq M_s$ for $0 < r \\leq s$ (from parent file, via Jensen)",
+      "Real power function identities: `inv_rpow` ($x^{-1})^r = (x^r)^{-1}$), `rpow_neg` ($x^{-r} = (x^r)^{-1}$), `rpow_mul` ($x^{ab} = (x^a)^b$)",
+      "Finset positivity: `single_le_sum` (a positive term bounds the sum from below), `sum_pos` and `rpow_pos_of_pos`"
     ]
   },
   "sections": [
