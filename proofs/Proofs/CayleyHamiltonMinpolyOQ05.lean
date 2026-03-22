@@ -215,9 +215,8 @@ theorem minpoly_natDegree_tower_le (x : A) (hx : IsIntegral K x) :
     _ = (minpoly K x).natDegree := hmap_deg
 
 -- Equality holds when the base-changed minpoly stays irreducible over L.
--- Proof sketch: minpoly L x divides an irreducible, so they're associated.
--- Both are monic, so the unit relating them must be 1.
--- TODO: Aristotle candidate - prove associated monic polys are equal.
+-- If p = map φ (minpoly K x) is irreducible over L, monic, and annihilates x,
+-- then p must BE the minimal polynomial of x over L (by uniqueness).
 theorem minpoly_eq_map_of_irreducible [IsDomain A] [NoZeroSMulDivisors L A]
     (x : A) (hx : IsIntegral K x)
     (hirr : Irreducible ((minpoly K x).map (algebraMap K L))) :
