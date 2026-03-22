@@ -60,39 +60,60 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Imports Mathlib.Algebra.GeomSum (finite sum formula), Mathlib.Analysis.SpecificLimits.Normed (infinite series convergence), and Mathlib.Tactic. Module docstring documents the finite formula ∑r^k = (1-r^n)/(1-r), infinite formula ∑r^k = 1/(1-r) for |r|<1, and the telescoping proof technique. Part of Wiedijk's 100 Theorems (#66).",
+      "mathContext": "Dependencies: `mul_neg_geom_sum` for $(1-r)\\sum_{k=0}^{n-1} r^k = 1-r^n$, `tsum_geometric_of_abs_lt_one` for $\\sum_{k=0}^\\infty r^k = (1-r)^{-1}$ when $|r|<1$."
+    },
+    {
       "id": "finite-sum",
       "title": "Finite Geometric Sum",
-      "startLine": 50,
-      "endLine": 70,
-      "summary": "The classic formula (1-r) * sum = 1 - r^(n+1) using Finset.geom_sum_eq."
+      "startLine": 52,
+      "endLine": 77,
+      "summary": "Three forms of the finite sum: `finite_geom_sum` gives (1-r)·∑r^k = 1-r^n (product form), `finite_geom_sum'` gives ∑r^k·(1-r) = 1-r^n (commuted form), and `finite_geom_sum_div` gives ∑r^k = (1-r^n)/(1-r) for r ≠ 1 (division form). All proved via Mathlib's `mul_neg_geom_sum` and `geom_sum_mul_neg`.",
+      "mathContext": "$(1-r)\\sum_{k=0}^{n-1} r^k = 1 - r^n$. Equivalently: $\\sum_{k=0}^{n-1} r^k = \\frac{1-r^n}{1-r}$ for $r \\neq 1$. Proof: $(1-r)(1 + r + r^2 + \\cdots + r^{n-1}) = 1 - r^n$ by telescoping."
     },
     {
       "id": "infinite-sum",
       "title": "Infinite Geometric Series",
-      "startLine": 72,
-      "endLine": 95,
-      "summary": "For |r| < 1, the series converges to 1/(1-r)."
+      "startLine": 79,
+      "endLine": 97,
+      "summary": "For |r| < 1, proves ∑r^k = (1-r)⁻¹ (`infinite_geom_sum`) and that the series is summable (`geom_series_summable`). Both are thin wrappers around Mathlib's `tsum_geometric_of_abs_lt_one` and `summable_geometric_of_abs_lt_one`.",
+      "mathContext": "$|r| < 1 \\implies \\sum_{k=0}^\\infty r^k = \\frac{1}{1-r}$. Summability: the partial sums form a Cauchy sequence since $|r^n| \\to 0$."
     },
     {
       "id": "general-form",
       "title": "General Form with First Term",
-      "startLine": 97,
-      "endLine": 110,
-      "summary": "The scaled version with first term a: sum = a/(1-r)."
+      "startLine": 99,
+      "endLine": 109,
+      "summary": "The scaled version with arbitrary first term a: ∑a·r^k = a·(1-r)⁻¹. Proved by factoring out a using `tsum_mul_left` and applying `infinite_geom_sum`.",
+      "mathContext": "$\\sum_{k=0}^\\infty a r^k = a \\cdot \\frac{1}{1-r} = \\frac{a}{1-r}$ for $|r| < 1$. Uses linearity: $\\sum a \\cdot c_k = a \\cdot \\sum c_k$."
     },
     {
       "id": "special-cases",
       "title": "Special Cases and Examples",
-      "startLine": 112,
-      "endLine": 145,
-      "summary": "Classic examples: sum of halves equals 1, thirds gives 3/2, alternating series."
+      "startLine": 111,
+      "endLine": 141,
+      "summary": "Three classic examples verified: (1) sum of halves ∑(1/2)^(k+1) = 1, proved by factoring out 1/2 and applying the formula; (2) r = 1/3 gives ∑(1/3)^k = 3/2; (3) alternating series r = -1/2 gives ∑(-1/2)^k = 2/3. All use `infinite_geom_sum` with norm_num for the bound |r| < 1.",
+      "mathContext": "$\\sum_{k=1}^\\infty (1/2)^k = 1$; $\\sum_{k=0}^\\infty (1/3)^k = 3/2$; $\\sum_{k=0}^\\infty (-1/2)^k = 2/3$."
     },
     {
       "id": "finite-to-infinite",
-      "title": "Connection to Finite Sums",
-      "startLine": 147,
-      "endLine": 165,
-      "summary": "Finite partial sums converge to the infinite sum as n → ∞."
+      "title": "Connection: Finite to Infinite",
+      "startLine": 143,
+      "endLine": 154,
+      "summary": "The bridge theorem: partial sums ∑_{k<n} r^k converge to (1-r)⁻¹ as n → ∞. Proved using `HasSum.tendsto_sum_nat` from the summability of the geometric series. This formalizes the intuition that the infinite sum is the limit of finite partial sums.",
+      "mathContext": "$\\lim_{n \\to \\infty} \\sum_{k=0}^{n-1} r^k = (1-r)^{-1}$ for $|r| < 1$. The filter `atTop` encodes $n \\to \\infty$; `nhds` encodes convergence to the limit."
+    },
+    {
+      "id": "verification",
+      "title": "Verification Examples",
+      "startLine": 156,
+      "endLine": 171,
+      "summary": "Three finite sum verifications by native_decide: 1+2+4+8+16 = 31 (r=2, n=5), 1+3+9+27 = 40 (r=3, n=4), 1+1/2+1/4+1/8 = 15/8 (r=1/2, n=4). Followed by #check of the three main theorems. Closes the GeometricSeries namespace.",
+      "mathContext": "$\\sum_{k=0}^4 2^k = 31 = \\frac{2^5 - 1}{2 - 1}$; $\\sum_{k=0}^3 3^k = 40 = \\frac{3^4 - 1}{3 - 1}$; $\\sum_{k=0}^3 (1/2)^k = 15/8 = \\frac{1 - (1/2)^4}{1 - 1/2}$."
     }
   ],
   "conclusion": {
@@ -124,23 +145,47 @@
     {
       "targetId": "harmonic-divergence",
       "relationship": "contrasts",
-      "description": "The geometric series ∑ rⁿ converges for |r| < 1, while the harmonic series ∑ 1/n diverges. Together they illustrate the boundary between convergent and divergent series."
+      "description": "The geometric series ∑ rⁿ converges for |r| < 1, while the harmonic series ∑ 1/n diverges. Together they illustrate the boundary between convergent and divergent series: geometric decay is fast enough, but 1/n decay is not."
     },
     {
       "targetId": "basel-problem",
       "relationship": "related",
-      "description": "The Basel series ∑ 1/n² is a generalization from geometric to power series. The geometric series formula 1/(1-r) is the simplest power series, while ∑ 1/n² requires Bernoulli polynomial machinery."
+      "description": "Basel ∑ 1/n² = π²/6 is a deeper series evaluation. The geometric series 1/(1-r) is the simplest power series, while Basel requires Fourier analysis or Bernoulli polynomial machinery."
     },
     {
       "targetId": "arithmetic-series",
       "relationship": "sibling",
-      "description": "Arithmetic and geometric series are the two fundamental finite summation formulas. Where arithmetic series sum with constant differences, geometric series sum with constant ratios."
+      "description": "Arithmetic and geometric series are the two fundamental finite summation formulas. Where arithmetic series sum with constant differences (∑k = n(n+1)/2), geometric series sum with constant ratios (∑r^k = (1-r^n)/(1-r))."
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "The binomial theorem (1+x)^n = ∑C(n,k)x^k generalizes to the binomial series for non-integer n, which includes the geometric series as the special case (1-r)^(-1) = ∑r^k."
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "related",
+      "description": "Both are foundational results in analysis. Stirling's approximation n! ~ √(2πn)(n/e)^n uses factorial growth rates, while the geometric series captures exponential growth/decay — the two canonical growth regimes in asymptotics."
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "The exponential series e^x = ∑x^k/k! generalizes the geometric series by adding factorial denominators. The geometric series converges only for |r|<1, while the exponential series converges for all x — the factorial denominators tame any polynomial growth."
+    },
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "technique",
+      "description": "The geometric series 1/(1-x) = ∑x^k can be derived by integrating both sides of d/dx[-log(1-x)] = 1/(1-x), connecting series summation to integration — a key technique in analysis."
     }
   ],
   "relatedProofs": [
     "harmonic-divergence",
     "basel-problem",
-    "arithmetic-series"
+    "arithmetic-series",
+    "binomial-theorem",
+    "stirling-formula",
+    "e-transcendental",
+    "fundamental-theorem-calculus"
   ],
   "leanFile": {
     "imports": [
