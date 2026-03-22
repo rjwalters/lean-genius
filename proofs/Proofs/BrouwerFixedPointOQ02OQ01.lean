@@ -673,10 +673,27 @@ private lemma displacementColoring_isSperner (n : ℕ) (hn : 0 < n)
     · exact absurd heq (by decide)
     · exact absurd heq (by decide)
 
--- Approximate Brouwer fixed point via Sperner's lemma.
--- Strategy: for any n, either f has a grid vertex fixed point (done, dist=0),
--- or the displacement coloring is a valid Sperner coloring yielding a fully-colored triangle.
--- The remaining step bounds the displacement using uniform continuity of f on the compact simplex.
+-- Color 1 implies d₁ ≤ 0 (d₁ is the minimum displacement component)
+private lemma color_one_d1_nonpos {n : ℕ} {f : ℝ × ℝ → ℝ × ℝ} (v : GridVertex n)
+    (hc : displacementColoring n f v = 1) :
+    (f (gridToReal n v)).1 - (gridToReal n v).1 ≤ 0 := by
+  simp only [displacementColoring] at hc
+  split_ifs at hc with h1 h2
+  · exact absurd hc (by decide)
+  · by_contra hd; push_neg at hd; exact h1 ⟨by linarith, by linarith⟩
+  · exact absurd hc (by decide)
+
+-- Color 2 implies d₂ ≤ 0 (d₂ is the minimum displacement component)
+private lemma color_two_d2_nonpos {n : ℕ} {f : ℝ × ℝ → ℝ × ℝ} (v : GridVertex n)
+    (hc : displacementColoring n f v = 2) :
+    (f (gridToReal n v)).2 - (gridToReal n v).2 ≤ 0 := by
+  simp only [displacementColoring] at hc
+  split_ifs at hc with h1 h2
+  · exact absurd hc (by decide)
+  · exact absurd hc (by decide)
+  · by_contra hd; push_neg at hd h2; exact h1 ⟨by linarith, by linarith⟩
+
+-- Approximate Brouwer fixed point via Sperner's lemma + uniform continuity.
 theorem approximate_fixed_point_2d
     {f : ℝ × ℝ → ℝ × ℝ}
     (hcont : Continuous f)
@@ -685,26 +702,43 @@ theorem approximate_fixed_point_2d
     (ε : ℝ) (hε : 0 < ε) :
     ∃ p : ℝ × ℝ, p.1 ≥ 0 ∧ p.2 ≥ 0 ∧ p.1 + p.2 ≤ 1 ∧
       dist p (f p) < ε := by
-  -- Choose n > 0 for the grid
-  obtain ⟨n, hn⟩ := exists_nat_gt (Real.sqrt 2 / ε)
-  have hn_pos : 0 < n := by
-    by_contra h; push_neg at h; interval_cases n
-    linarith [div_pos (Real.sqrt_pos_of_pos (by norm_num : (0:ℝ) < 2)) hε]
-  -- Either f has a grid vertex fixed point, or the displacement coloring is Sperner
+  -- Step 1: f is uniformly continuous on the compact unit square (contains the simplex)
+  have huc : UniformContinuousOn f (Set.Icc ((0:ℝ), (0:ℝ)) ((1:ℝ), (1:ℝ))) :=
+    isCompact_Icc.uniformContinuousOn_of_continuous hcont.continuousOn
+  rw [Metric.uniformContinuousOn_iff] at huc
+  -- Step 2: Get δ for tolerance ε/4
+  obtain ⟨δ, hδ_pos, hδ⟩ := huc (ε / 4) (by linarith)
+  -- Step 3: Choose n so that grid mesh 1/n < min(δ, ε/4)
+  obtain ⟨n, hn⟩ := exists_nat_gt (max (1 / δ) (4 / ε))
+  have hn_pos : 0 < n := by positivity
+  -- Step 4: Either grid fixed point (done) or Sperner coloring
   by_cases h : ∃ v : GridVertex n, f (gridToReal n v) = gridToReal n v
-  · -- Case 1: Grid vertex fixed point → exact fixed point, dist = 0 < ε
-    obtain ⟨v, hv⟩ := h
+  · obtain ⟨v, hv⟩ := h
     have hv_in := gridToReal_in_simplex hn_pos v
     exact ⟨gridToReal n v, hv_in.1, hv_in.2.1, hv_in.2.2, by rw [hv, dist_self]; exact hε⟩
-  · -- Case 2: No grid vertex fixed point → displacement coloring is Sperner
-    push_neg at h
+  · push_neg at h
     have hSperner := displacementColoring_isSperner n hn_pos f hrange h
     obtain ⟨t, ht⟩ := sperner_2d hn_pos (displacementColoring n f) hSperner
-    -- From the fully-colored triangle, we need uniform continuity of f on the compact
-    -- simplex to bound the displacement at triangle vertices. At vertex v₀ with color 0:
-    -- d0(v₀)≤0, and using uniform continuity across the triangle (diameter ≤ √2/n),
-    -- d1(v₀) < η+δ and d2(v₀) < η+δ where η is the continuity modulus.
-    -- This gives dist(v₀, f(v₀)) < ε for appropriate n.
+    -- Step 5: Find vertices with colors 1 and 2 in the fully-colored triangle
+    have ⟨i₁, hi₁⟩ : ∃ i : Fin 3, displacementColoring n f (t.vertices i) = 1 := by
+      have : (1 : Fin 3) ∈ Finset.image ((displacementColoring n f) ∘ t.vertices) Finset.univ :=
+        by unfold IsFullyColored at ht; rw [ht]; simp
+      simpa using this
+    have ⟨i₂, hi₂⟩ : ∃ i : Fin 3, displacementColoring n f (t.vertices i) = 2 := by
+      have : (2 : Fin 3) ∈ Finset.image ((displacementColoring n f) ∘ t.vertices) Finset.univ :=
+        by unfold IsFullyColored at ht; rw [ht]; simp
+      simpa using this
+    -- Pick vertex 0 of the triangle as our approximate fixed point
+    set v₀ := t.vertices 0
+    have hv₀_in := gridToReal_in_simplex hn_pos v₀
+    refine ⟨gridToReal n v₀, hv₀_in.1, hv₀_in.2.1, hv₀_in.2.2, ?_⟩
+    -- Step 6: Bound displacement using color analysis + uniform continuity
+    -- d₁(color-1 vertex) ≤ 0 and d₂(color-2 vertex) ≤ 0 (from color lemmas).
+    -- By uniform continuity across the triangle (diameter ≤ 1/n in max-norm),
+    -- d₁(v₀) < ε/2 and d₂(v₀) < ε/2. Color 0 structure at v₀ gives lower bounds.
+    -- Therefore dist = max(|d₁|, |d₂|) < ε/2 < ε in the max-norm on ℝ × ℝ.
+    have _hd1_neg := color_one_d1_nonpos (t.vertices i₁) hi₁
+    have _hd2_neg := color_two_d2_nonpos (t.vertices i₂) hi₂
     sorry
 
 end Sperner2D
