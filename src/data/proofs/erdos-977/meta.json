@@ -118,18 +118,9 @@
     ]
   },
   "relatedProofs": [
-    {
-      "id": "erdos-976",
-      "relationship": "Problem #976 studies the greatest prime factor of polynomial products $\\prod_{m=1}^n f(m)$ — the polynomial analogue of the exponential sequence $2^n - 1$. Both problems use sieve methods and transcendental number theory."
-    },
-    {
-      "id": "erdos-728-factorial-divisibility",
-      "relationship": "Erdős #728 on factorial divisibility connects via the $P(n!+1)$ open problem stated in this formalization; both explore prime factor behavior near factorials."
-    },
-    {
-      "id": "erdos-970",
-      "relationship": "Jacobsthal's function studies gaps between integers coprime to a given modulus — a different perspective on how primes interact with multiplicative structure, relevant to the coprimality analysis in Zsygmondy's theorem."
-    }
+    "erdos-976",
+    "erdos-728-factorial-divisibility",
+    "erdos-970"
   ],
   "leanFile": {
     "imports": [],

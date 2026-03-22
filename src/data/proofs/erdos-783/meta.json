@@ -109,14 +109,8 @@
     ]
   },
   "relatedProofs": [
-    {
-      "id": "ramseys-theorem",
-      "relationship": "Both problems involve extremal combinatorics where optimal configurations emerge from simple structures (primes for sieving, monochromatic cliques for Ramsey)."
-    },
-    {
-      "id": "erdos-szekeres",
-      "relationship": "The Erdős–Szekeres theorem and this sieve problem both ask for optimal configurations in a combinatorial setting with a resource constraint."
-    }
+    "ramseys-theorem",
+    "erdos-szekeres"
   ],
   "leanFile": {
     "imports": [

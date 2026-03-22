@@ -219,57 +219,11 @@
     ]
   },
   "relatedProofs": [
-    {
-      "id": "cauchy-schwarz-integral",
-      "relationship": "extends",
-      "description": "The integral form of Cauchy-Schwarz: (∫fg)² ≤ (∫f²)(∫g²) — a continuous analogue of the finite sum version"
-    },
-    {
-      "id": "triangle-inequality",
-      "relationship": "related",
-      "description": "The triangle inequality for inner product spaces follows directly from Cauchy-Schwarz: ||u+v|| ≤ ||u|| + ||v||"
-    },
-    {
-      "id": "amgm-inequality",
-      "relationship": "related",
-      "description": "AM-GM implies Cauchy-Schwarz via 2ab ≤ a² + b²; both are fundamental tools in analysis"
-    },
-    {
-      "id": "cauchy-schwarz-oq-01",
-      "relationship": "extends",
-      "description": "Extension exploring applications and generalizations of Cauchy-Schwarz"
-    }
+    "cauchy-schwarz-integral",
+    "triangle-inequality",
+    "amgm-inequality",
+    "cauchy-schwarz-oq-01"
   ],
-  "references": [
-    {
-      "authors": "Cauchy, Augustin-Louis",
-      "title": "Cours d'analyse de l'École Royale Polytechnique",
-      "year": "1821",
-      "venue": "Paris: Debure",
-      "note": "Contains the finite sum version: (∑aᵢbᵢ)² ≤ (∑aᵢ²)(∑bᵢ²)"
-    },
-    {
-      "authors": "Schwarz, Hermann Amandus",
-      "title": "Über ein die Flächen kleinsten Flächeninhalts betreffendes Problem der Variationsrechnung",
-      "year": "1885",
-      "venue": "Acta Societatis Scientiarum Fennicae 15, pp. 315-362",
-      "note": "Extended Cauchy's inequality to integrals: (∫fg)² ≤ (∫f²)(∫g²)"
-    }
-  ],
-  "leanFile": {
-    "imports": [
-      "Mathlib.Analysis.InnerProductSpace.Basic",
-      "Mathlib.Analysis.InnerProductSpace.PiL2",
-      "Mathlib.Algebra.BigOperators.Ring.Finset",
-      "Mathlib.Tactic"
-    ],
-    "opens": [],
-    "namespace": "CauchySchwarz",
-    "lineCount": 232,
-    "axiomCount": 0,
-    "theoremCount": 9,
-    "definitionCount": 0
-  },
   "references": [
     {
       "authors": "Cauchy, Augustin-Louis",
@@ -292,5 +246,19 @@
       "venue": "Cambridge University Press",
       "note": "Comprehensive treatment of the inequality and its applications across mathematics"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Algebra.BigOperators.Ring.Finset",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "CauchySchwarz",
+    "lineCount": 232,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0
+  }
 }
