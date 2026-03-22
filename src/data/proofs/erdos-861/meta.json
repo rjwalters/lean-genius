@@ -59,10 +59,11 @@
     "problemStatement": "Let f(N) be the size of the largest Sidon subset of {1,...,N} and A(N) the number of Sidon subsets. Question 1: Is A(N)/2^{f(N)} → ∞? Question 2: Is A(N) = 2^{(1+o(1))f(N)}?",
     "proofStrategy": "The formalization defines Sidon sets and the counting functions, then states the Cameron-Erdős questions and their answers as axioms. The current best bounds (Saxton-Thomason lower, KLRS upper) are included.",
     "keyInsights": [
-      "A Sidon set has all pairwise sums distinct (B₂ sequence)",
-      "f(N) ~ √N (Erdős-Turán)",
-      "Question 1: YES - A(N)/2^{f(N)} → ∞ (via lower bound)",
-      "Question 2: NO - the exponent is between 1.16 and 6.442, not 1+o(1)"
+      "A Sidon set (B₂ sequence) has all pairwise sums distinct: $a + b = c + d \\implies \\{a,b\\} = \\{c,d\\}$",
+      "The maximum Sidon subset of $\\{1,\\ldots,N\\}$ has size $f(N) \\sim \\sqrt{N}$ (Erdős-Turán 1941)",
+      "Question 1: YES — $A(N)/2^{f(N)} \\to \\infty$ (via Saxton-Thomason lower bound)",
+      "Question 2: NO — the exponent is between 1.16 and 6.442, not $1 + o(1)$",
+      "The hypergraph container method (Balogh-Morris-Samotij, Saxton-Thomason 2015) was the key breakthrough for counting sparse structures"
     ]
   },
   "sections": [
