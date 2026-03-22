@@ -61,7 +61,16 @@
       "limitConstant definition: Erdos's follow-up question"
     ],
     "axiomCount": 5,
-    "lineCount": 291
+    "lineCount": 291,
+    "theoremCount": 3,
+    "prerequisites": [
+      "Combinatorial geometry: point-line incidences",
+      "Szemerédi-Trotter incidence theorem",
+      "Counting arguments and exponential bounds",
+      "Grid constructions in discrete geometry"
+    ],
+    "crossReferences": [],
+    "relatedProofs": []
   },
   "overview": {
     "historicalContext": "**Erdos Problem #733**\n\nThis problem concerns the combinatorics of point-line incidences.\n\n**Key History:**\n- Erdos posed the problem about counting line-compatible sequences\n- He noted the lower bound exp(c*sqrt(n)) was 'easy' via grid constructions\n- Szemeredi-Trotter (1983) proved the matching upper bound\n\n**Related Problems:**\n- Problem #607: Similar problem without multiplicities\n- Problem #732: Related incidence problem\n\n**The Szemeredi-Trotter Theorem:**\nThe key tool is their incidence theorem: n points and m lines have O(n^{2/3}m^{2/3} + n + m) incidences.",
@@ -77,60 +86,76 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Problem Statement and Imports",
+      "summary": "Module docstring, imports for Finset, List.Sort, Real.log, Real.sqrt.",
+      "startLine": 1,
+      "endLine": 38,
+      "mathContext": "The problem counts 'line-compatible' sequences: sorted lists of point counts on lines that can be realized by some $n$-point configuration in $\\mathbb{R}^2$."
+    },
+    {
       "id": "point-configurations",
       "title": "Point Configurations",
-      "summary": "PointSet, lineThrough, pointsOnLine, richLines",
+      "summary": "PointSet (Finset (ℝ × ℝ)), lineThrough, pointsOnLine, richLines.",
       "startLine": 39,
-      "endLine": 72
+      "endLine": 72,
+      "mathContext": "A PointSet is a finite subset of $\\mathbb{R}^2$. A $k$-rich line has $\\geq k$ points from the set. The incidence structure between points and lines is the fundamental object."
     },
     {
       "id": "line-compatible",
       "title": "Line-Compatible Sequences",
-      "summary": "isLineCompatible, countLineCompatible",
+      "summary": "isLineCompatible: sorted sequences realizable by some point configuration. countLineCompatible: f(n).",
       "startLine": 74,
-      "endLine": 105
+      "endLine": 105,
+      "mathContext": "A sorted sequence $2 \\leq X_1 \\leq \\cdots \\leq X_m \\leq n$ is line-compatible if some $n$-point set has exactly these point counts on its lines. $f(n) = |\\{\\text{line-compatible sequences}\\}|$."
     },
     {
       "id": "szemeredi-trotter",
-      "title": "The Szemeredi-Trotter Theorem",
-      "summary": "szemeredi_trotter axiom, rich_lines_bound",
+      "title": "The Szemerédi-Trotter Theorem",
+      "summary": "Axiomatized incidence bound and k-rich lines corollary.",
       "startLine": 107,
-      "endLine": 132
+      "endLine": 132,
+      "mathContext": "$I(P, L) \\leq C(n^{2/3}m^{2/3} + n + m)$ for $n$ points and $m$ lines. Corollary: $\\leq O(n^2/k^3 + n/k)$ lines with $\\geq k$ points."
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound",
-      "summary": "lower_bound axiom, grid_gives_lower",
+      "summary": "f(n) ≥ exp(c√n) via grid construction.",
       "startLine": 134,
-      "endLine": 161
+      "endLine": 161,
+      "mathContext": "A $\\sqrt{n} \\times \\sqrt{n}$ integer grid has $\\Theta(n)$ lines. Choosing subsets gives $2^{\\Theta(\\sqrt{n})} = \\exp(\\Theta(\\sqrt{n}))$ distinct sequences."
     },
     {
       "id": "upper-bound",
       "title": "Upper Bound",
-      "summary": "upper_bound axiom, incidence_control",
+      "summary": "f(n) ≤ exp(C√n) via Szemerédi-Trotter.",
       "startLine": 163,
-      "endLine": 190
+      "endLine": 190,
+      "mathContext": "Szemerédi-Trotter limits the number of $k$-rich lines, which bounds the possible sequence patterns to $\\exp(O(\\sqrt{n}))$."
     },
     {
       "id": "main-result",
       "title": "The Main Result",
-      "summary": "tight_bounds, erdos_733",
+      "summary": "tight_bounds combining lower and upper, erdos_733 main theorem.",
       "startLine": 192,
-      "endLine": 227
+      "endLine": 227,
+      "mathContext": "$\\exp(c\\sqrt{n}) \\leq f(n) \\leq \\exp(C\\sqrt{n})$, i.e., $f(n) = \\exp(\\Theta(\\sqrt{n}))$."
     },
     {
       "id": "limit-question",
       "title": "The Limit Question",
-      "summary": "limitConstant, limit_bounds",
+      "summary": "limitConstant: does lim log(f(n))/√n exist? What is its value?",
       "startLine": 229,
-      "endLine": 253
+      "endLine": 253,
+      "mathContext": "$\\lim_{n \\to \\infty} \\frac{\\log f(n)}{\\sqrt{n}} \\in [c, C]$ if the limit exists. An interesting follow-up posed by Erdős."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_733_summary, erdos_733_answer",
+      "summary": "Complete solution summary and erdos_733_answer theorem.",
       "startLine": 255,
-      "endLine": 291
+      "endLine": 291,
+      "mathContext": "Erdős #733 fully resolved: $f(n) = \\exp(\\Theta(\\sqrt{n}))$ by Szemerédi-Trotter (1983)."
     }
   ],
   "conclusion": {
