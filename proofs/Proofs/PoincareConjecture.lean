@@ -2902,17 +2902,146 @@ private noncomputable def rp3HemiHomeomorphOrthComp (p : ↥Sphere3) :
   continuous_toFun := rp3GnomonicFwd_continuous p
   continuous_invFun := rp3GnomonicInv_continuous p
 
-/-- RP³ is locally Euclidean: every point has a neighborhood homeomorphic to ℝ³.
-    This follows from the covering space S³ → RP³ being a local homeomorphism
-    (the antipodal action is free).
+/-- The hemisphere H_p is open in S³ (preimage of (0,∞) under continuous inner product). -/
+private lemma isOpen_rp3Hemi (p : ↥Sphere3) : IsOpen (rp3Hemi p) :=
+  isOpen_lt continuous_const (continuous_const.inner continuous_subtype_val)
 
-    Infrastructure for elimination: rp3HemiHomeomorphOrthComp proves the gnomonic
-    homeomorphism H_p ≃ₜ p⊥ ≃ₜ ℝ³. The remaining step to eliminate this axiom is
-    showing the quotient map restricted to H_p is a homeomorphism onto its image
-    (requires proving IsOpenMap for the quotient restriction). -/
-axiom rp3_locallyEuclidean :
+/-- The quotient map restricted to H_p maps open subsets to sets that are open in RP³.
+    Key argument: for V ⊂ H_p open in S³, the saturation V ∪ (-V) is open in S³,
+    so q(V) is open in the quotient topology. -/
+private lemma rp3_quotient_open_on_hemi (p : ↥Sphere3)
+    (V : Set ↥Sphere3) (hV : IsOpen V) (hVsub : V ⊆ rp3Hemi p) :
+    @IsOpen RP3 instRP3Top (Quotient.mk' '' V) := by
+  rw [isOpen_quotient_iff]
+  -- Preimage of q(V) = V ∪ antipodalHomeomorph '' V
+  suffices h : Quotient.mk' ⁻¹' (Quotient.mk' '' V) =
+      V ∪ (antipodalHomeomorph 3) '' V by
+    rw [h]
+    exact hV.union ((antipodalHomeomorph 3).isOpenMap V hV)
+  ext v
+  simp only [Set.mem_preimage, Set.mem_image, Set.mem_union]
+  constructor
+  · rintro ⟨w, hw, hvw⟩
+    have := Quotient.exact hvw
+    cases this with
+    | inl heq => left; rwa [← Subtype.ext_iff.mp heq]
+    | inr hanti => right; exact ⟨w, hw, hanti.symm⟩
+  · rintro (hv | ⟨w, hw, haw⟩)
+    · exact ⟨v, hv, rfl⟩
+    · refine ⟨w, hw, ?_⟩
+      exact Quotient.sound (Or.inr haw)
+
+/-- RP³ is locally Euclidean: every point has a neighborhood homeomorphic to ℝ³.
+    PROVED by gnomonic projection on open hemispheres. Eliminates former axiom. -/
+theorem rp3_locallyEuclidean :
     ∀ x : RP3, ∃ U : Set RP3, @IsOpen RP3 instRP3Top U ∧ x ∈ U ∧
-      Nonempty (U ≃ₜ EuclideanSpace ℝ (Fin 3))
+      Nonempty (U ≃ₜ EuclideanSpace ℝ (Fin 3)) := by
+  intro x
+  obtain ⟨p, rfl⟩ := @Quotient.exists_rep _ antipodalSetoid x
+  refine ⟨Quotient.mk' '' rp3Hemi p, ?_, ?_, ?_⟩
+  · -- Open: use rp3_quotient_open_on_hemi
+    exact rp3_quotient_open_on_hemi p _ (isOpen_rp3Hemi p) Set.Subset.rfl
+  · -- [p] ∈ image
+    exact Set.mem_image_of_mem _ (mem_rp3Hemi_self p)
+  · -- Homeomorphism: build ℝ³ ≃ₜ q(H_p) via gnomonic, then take symm
+    have hp_norm : ‖(↑p : EuclideanSpace ℝ (Fin 4))‖ = 1 := mem_sphere_zero_iff_norm.mp p.2
+    have hne : (↑p : EuclideanSpace ℝ (Fin 4)) ≠ 0 := by
+      intro h; rw [h, norm_zero] at hp_norm; exact one_ne_zero hp_norm.symm
+    -- Build orthCompHomeomorph: p⊥ ≃ₜ ℝ³
+    have hdim : Module.finrank ℝ
+        ↥(Submodule.span ℝ ({(↑p : EuclideanSpace ℝ (Fin 4))} : Set _))ᗮ = 3 := by
+      have h1 : Module.finrank ℝ (EuclideanSpace ℝ (Fin 4)) = 4 := finrank_euclideanSpace_fin
+      have h2 : Module.finrank ℝ (Submodule.span ℝ
+          ({(↑p : EuclideanSpace ℝ (Fin 4))} : Set _)) = 1 := finrank_span_singleton hne
+      omega
+    let b := stdOrthonormalBasis ℝ
+      ↥(Submodule.span ℝ ({(↑p : EuclideanSpace ℝ (Fin 4))} : Set _))ᗮ
+    have hcard : Fintype.card
+        (Fin (Module.finrank ℝ ↥(Submodule.span ℝ
+          ({(↑p : EuclideanSpace ℝ (Fin 4))} : Set _))ᗮ)) = 3 := by simp [hdim]
+    let orthHomeo := (b.reindex (Fintype.equivFinOfCardEq hcard)).repr.toHomeomorph
+    let hemiHomeo := rp3HemiHomeomorphOrthComp p
+    -- The backward map: ℝ³ → q(H_p)
+    -- Chain: ℝ³ →_{orthHomeo⁻¹} p⊥ →_{hemiHomeo⁻¹} H_p →_q q(H_p)
+    let g : EuclideanSpace ℝ (Fin 3) → ↥(Quotient.mk' '' rp3Hemi p) :=
+      fun w =>
+        let v := rp3GnomonicInv p (orthHomeo.symm w)
+        ⟨Quotient.mk' (↑v : ↥Sphere3), Set.mem_image_of_mem _ v.2⟩
+    -- g is continuous
+    have g_cont : Continuous g :=
+      Continuous.subtype_mk
+        (continuous_quotient_mk'.comp
+          (continuous_subtype_val.comp
+            ((rp3GnomonicInv_continuous p).comp orthHomeo.symm.continuous))) _
+    -- g is injective
+    have g_inj : Function.Injective g := by
+      intro w₁ w₂ h
+      have hval := congr_arg Subtype.val h
+      have hq := Quotient.exact hval
+      cases hq with
+      | inl heq =>
+        have := (rp3HemiHomeomorphOrthComp p).symm.injective
+          (Subtype.ext (Subtype.ext (congr_arg Subtype.val (congr_arg Subtype.val heq))))
+        exact orthHomeo.symm.injective this
+      | inr hanti =>
+        exfalso
+        exact rp3Hemi_antipodal_disjoint p _ (rp3GnomonicInv p (orthHomeo.symm w₂)).2
+          (hanti ▸ (rp3GnomonicInv p (orthHomeo.symm w₁)).2)
+    -- g is surjective
+    have g_surj : Function.Surjective g := by
+      intro ⟨x, hx⟩
+      obtain ⟨w, hw, hwx⟩ := hx
+      use orthHomeo (rp3GnomonicFwd p ⟨w, hw⟩)
+      simp only [g]
+      ext
+      have h1 : orthHomeo.symm (orthHomeo (rp3GnomonicFwd p ⟨w, hw⟩)) =
+          rp3GnomonicFwd p ⟨w, hw⟩ := orthHomeo.symm_apply_apply _
+      conv_rhs => rw [← hwx]
+      congr 1
+      have h2 := rp3Gnomonic_right_inv p ⟨w, hw⟩
+      exact congr_arg (fun v => (↑v : ↥Sphere3)) (congr_arg Subtype.val (h1 ▸ h2))
+    -- g is an open map (key step for proving the inverse is continuous)
+    have g_open : IsOpenMap g := by
+      intro W hW
+      -- g '' W is open in ↥(q '' H_p) iff ∃ T open in RP3 with g '' W = val ⁻¹' T
+      rw [isOpen_induced_iff]
+      -- V = image of W under ℝ³ → p⊥ → H_p → S³ (all homeomorphisms)
+      let V := Subtype.val '' (hemiHomeo.symm '' (orthHomeo.symm '' W))
+      refine ⟨Quotient.mk' '' V, ?_, ?_⟩
+      · -- q(V) is open in RP3
+        apply rp3_quotient_open_on_hemi p V
+        · -- V is open in S³
+          exact (isOpen_rp3Hemi p).isOpenMap_subtype_val _
+            (hemiHomeo.symm.isOpenMap _ (orthHomeo.symm.isOpenMap _ hW))
+        · -- V ⊆ rp3Hemi p
+          intro v ⟨⟨w, hw⟩, _, rfl⟩
+          exact hw
+      · -- g '' W = val ⁻¹' (q '' V) in ↥(q '' H_p)
+        ext ⟨x, hx⟩
+        simp only [Set.mem_preimage, Set.mem_image, Subtype.exists, V, g]
+        constructor
+        · rintro ⟨w, hw, rfl⟩
+          exact ⟨_, (rp3GnomonicInv p (orthHomeo.symm w)).2,
+            ⟨⟨_, (hemiHomeo.symm (orthHomeo.symm w)).2⟩,
+              ⟨orthHomeo.symm w, ⟨w, hw, rfl⟩, rfl⟩, rfl⟩, rfl⟩
+        · rintro ⟨v, _, ⟨⟨u, hu⟩, ⟨y, ⟨w, hw, rfl⟩, rfl⟩, rfl⟩, hvx⟩
+          refine ⟨w, hw, ?_⟩
+          ext
+          exact hvx
+    -- Build the Homeomorph: q(H_p) ≃ₜ ℝ³ via e.symm
+    let e := Equiv.ofBijective g ⟨g_inj, g_surj⟩
+    exact ⟨{
+      toEquiv := e.symm
+      continuous_toFun := by
+        rw [continuous_def]
+        intro U hU
+        have : e.symm ⁻¹' U = g '' U := by
+          ext x; simp only [Set.mem_preimage, Set.mem_image, e]
+          exact ⟨fun hx => ⟨e.symm x, hx, Equiv.ofBijective_apply_symm_apply g _ x⟩,
+                 fun ⟨w, hw, he⟩ => he ▸ (Equiv.ofBijective_symm_apply_apply g _ w ▸ hw)⟩
+        rw [this]; exact g_open U hU
+      continuous_invFun := g_cont
+    }⟩
 
 /-- RP³ is a closed 3-manifold.
     Compact, connected, and nonempty are proved from quotient instances.
