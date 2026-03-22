@@ -111,10 +111,12 @@ theorem bad_vertices_small (G : SimpleGraph V) [DecidableRel G.Adj]
     have hA'B_pos : (0 : ℚ) < (A'.card : ℚ) * B.card := by positivity
     rw [dif_neg (ne_of_gt hA'B_pos)]
     rw [div_lt_iff₀ hA'B_pos]
-    -- Fiber decomposition: |(A' × B).filter G.Adj| = Σ_{a∈A'} |N_B(a)|
-    -- Each a ∈ A' contributes exactly |{b ∈ B : G.Adj a b}| edges.
-    -- Since these sets are disjoint (different first components), the total
-    -- is the sum. Standard Finset fiber lemma.
+    -- Step 1: Fiber decomposition: |(A' × B).filter G.Adj| = Σ_{a∈A'} |N_B(a)|
+    -- Step 2: Each a ∈ A' has |N_B(a)| < (d-ε)|B| (def of badVertices)
+    -- Step 3: Sum < |A'|(d-ε)|B|
+    -- The full formal proof of this fiber decomposition + summation bound
+    -- requires Finset.sum_card_fiberwise + Finset.sum_lt_sum + cast lemmas.
+    -- This is standard combinatorics but technically involved in Lean.
     sorry
   linarith
 
