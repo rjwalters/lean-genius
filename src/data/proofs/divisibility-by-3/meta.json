@@ -123,5 +123,30 @@
       "What's the most efficient algorithm for computing digital roots?",
       "Are there practical applications of the generalized divisibility theorem?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Hardy, G. H.; Wright, E. M.",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "2008",
+      "venue": "Oxford University Press, 6th edition",
+      "note": "Section 9.9 covers divisibility tests for 3, 9, and 11, including the general theory of casting out nines"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "divisibility-by-3-oq-01",
+      "relationship": "child",
+      "description": "Open question exploring extensions of the digit sum divisibility rule"
+    },
+    {
+      "targetId": "divisibility-by-3-oq-02",
+      "relationship": "child",
+      "description": "Further open question on divisibility by 3"
+    }
+  ],
+  "relatedProofs": [
+    "divisibility-by-3-oq-01",
+    "divisibility-by-3-oq-02"
+  ]
 }
