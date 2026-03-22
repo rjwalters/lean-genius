@@ -64,26 +64,11 @@
     "axiomCount": 0,
     "leanFile": "proofs/Proofs/PowerMeanLimitOQ.lean",
     "relatedProofs": [
-      {
-        "id": "amgm-inequality-oq-03",
-        "relationship": "extends",
-        "description": "Parent file with power mean definitions and same-sign monotonicity"
-      },
-      {
-        "id": "amgm-inequality-oq-03-oq-01",
-        "relationship": "related",
-        "description": "Negative exponent monotonicity — together with this limit, covers all same-sign cases"
-      },
-      {
-        "id": "amgm-inequality",
-        "relationship": "related",
-        "description": "Base AM-GM inequality, the M₁ ≥ M₀ case"
-      },
-      {
-        "id": "lhopital",
-        "relationship": "related",
-        "description": "Uses the same derivative-based limit approach as L'Hôpital's rule"
-      }
+      "amgm-inequality-oq-03",
+      "amgm-inequality-oq-03-oq-01",
+      "amgm-inequality",
+      "lhopital",
+      "shannon-entropy"
     ],
     "prerequisites": [
       "Derivatives in Mathlib (HasDerivAt, hasDerivAt_iff_tendsto_slope)",
@@ -91,7 +76,23 @@
       "Filter.Tendsto and nhdsWithin for limit formalization",
       "Weighted AM-GM inequality (Mathlib)"
     ],
-    "lineCount": 316
+    "lineCount": 316,
+    "references": [
+      {
+        "authors": "Hardy, G.H.; Littlewood, J.E.; Pólya, G.",
+        "title": "Inequalities",
+        "year": "1934",
+        "venue": "Cambridge University Press",
+        "note": "Section 2.9: the geometric mean as the limit of power means, proved via exp/log representation"
+      },
+      {
+        "authors": "Bullen, P.S.",
+        "title": "Handbook of Means and Their Inequalities",
+        "year": "2003",
+        "venue": "Kluwer Academic Publishers",
+        "note": "Section III.1: comprehensive treatment of power mean continuity and limit cases"
+      }
+    ]
   },
   "crossReferences": [
     {
@@ -113,6 +114,11 @@
       "targetId": "lhopital",
       "relationship": "related",
       "description": "The limit uses the same derivative-based approach as L'Hopital's rule: f(r)/r → f'(0) when f(0) = 0, formalized via hasDerivAt_iff_tendsto_slope"
+    },
+    {
+      "targetId": "shannon-entropy",
+      "relationship": "related",
+      "description": "The geometric mean GM = exp(∑ wᵢ log zᵢ) involves the same weighted log-sum as Shannon entropy H = -∑ pᵢ log pᵢ — both are exponentials of weighted logarithmic expectations, and Rényi entropy generalizes both via the power mean"
     }
   ],
   "overview": {

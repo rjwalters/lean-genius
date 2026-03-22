@@ -151,6 +151,30 @@
       "Weighted voting with non-uniform step sizes"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "ballot-problem",
+      "relationship": "extends",
+      "description": "Generalizes the classical ballot problem from 1-fold dominance (p>q always) to k-fold dominance (candidate A always has ≥k× candidate B's votes at every stage)"
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "foundational",
+      "description": "The counting formula for k-ballot sequences uses generalized binomial coefficients — the number of lattice paths with asymmetric step sizes"
+    },
+    {
+      "targetId": "erdos-szekeres",
+      "relationship": "related",
+      "description": "Both are combinatorial results on sequences: Erdős-Szekeres guarantees monotone subsequences, the generalized ballot problem counts sequences satisfying a dominance constraint"
+    }
+  ],
+  "relatedProofs": [
+    "ballot-problem",
+    "ballot-problem-oq-02",
+    "ballot-problem-oq-03",
+    "combinations-formula",
+    "erdos-szekeres"
+  ],
   "leanFile": {
     "imports": [
       "Archive.Wiedijk100Theorems.BallotProblem",

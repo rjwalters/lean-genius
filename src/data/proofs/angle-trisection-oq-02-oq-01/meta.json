@@ -201,6 +201,16 @@
       "targetId": "abel-ruffini",
       "relationship": "related",
       "description": "Both use Galois group structure to derive impossibility results: Abel-Ruffini shows non-solvable Galois groups block radical solutions, this file shows non-2-group Galois groups block constructibility"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "The tower law [L:F] = [L:K]·[K:F] — the multiplicativity of field extension degrees, a consequence of Lagrange's theorem — is the central proof technique: applied to F ⊂ F(α) ⊂ SplittingField(p) to derive natDegree | |Gal|"
+    },
+    {
+      "targetId": "sylow-theorems",
+      "relationship": "foundational",
+      "description": "Sylow theory underpins the p-group characterization: IsPGroup 2 G ↔ |G| = 2^n, which converts the 2-group hypothesis into a divisibility condition on |Gal|"
     }
   ],
   "relatedProofs": [
@@ -209,7 +219,9 @@
     "angle-trisection-oq-02-oq-03",
     "angle-trisection-oq-02-oq-03-oq-01",
     "inverse-galois",
-    "abel-ruffini"
+    "abel-ruffini",
+    "lagrange-theorem",
+    "sylow-theorems"
   ],
   "leanFile": {
     "imports": [
