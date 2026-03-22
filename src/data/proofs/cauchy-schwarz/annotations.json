@@ -22,6 +22,28 @@
     ]
   },
   {
+    "id": "cs-docstring-setup",
+    "proofId": "cauchy-schwarz",
+    "type": "context",
+    "range": {
+      "startLine": 6,
+      "endLine": 60
+    },
+    "title": "Module Docstring and Proof Architecture",
+    "content": "The module docstring surveys the Cauchy-Schwarz inequality in all its forms and outlines the formalization strategy. The file proceeds through a hierarchy:\n\n1. **Abstract inner product form** (Part I): $|\\langle u,v\\rangle| \\leq \\|u\\|\\|v\\|$ via Mathlib's `abs_real_inner_le_norm`\n2. **Two-variable algebraic form** (Part II): elementary proof via Lagrange identity\n3. **Finite sum form** (Part III): embedding into `EuclideanSpace` to get $(\\sum a_ib_i)^2 \\leq (\\sum a_i^2)(\\sum b_i^2)$\n4. **Equality characterization** (Part IV): linear dependence condition\n5. **Applications** (Part V–VI): triangle inequality and correlation bound\n\nThe architecture demonstrates how abstract Mathlib results can be specialized to concrete, familiar forms. Variables `F` (the inner product space) and `u, v` are declared universe-polymorphically.",
+    "mathContext": "The three forms are logically equivalent but represent different perspectives: the inner product form is most general (any real inner product space), the finite sum form is most computational (Cauchy's original 1821 formulation), and the two-variable form is most elementary (requires only $(a_1b_2-a_2b_1)^2 \\geq 0$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "proof architecture",
+      "inner product spaces",
+      "Mathlib API design"
+    ],
+    "prerequisites": [
+      "inner product space axioms",
+      "normed spaces"
+    ]
+  },
+  {
     "id": "cs-inner-product",
     "proofId": "cauchy-schwarz",
     "type": "theorem",
