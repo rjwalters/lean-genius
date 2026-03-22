@@ -59,13 +59,22 @@
     ],
     "axiomCount": 5,
     "prerequisites": [
-      "Metric spaces and distance functions in ℝ²",
+      "Metric spaces and distance functions in \u211d\u00b2",
       "Graph coloring and chromatic number basics",
       "Arithmetic progressions and van der Waerden's theorem",
       "Unit distance graphs in Euclidean geometry",
-      "Complex plane as a model of ℝ²",
+      "Complex plane as a model of \u211d\u00b2",
       "Independent sets in graphs",
       "Ramsey theory fundamentals"
+    ],
+    "references": [
+      {
+        "authors": "Erd\u0151s, Paul; Gallai, Tibor",
+        "title": "On maximal paths and circuits of graphs",
+        "year": "1959",
+        "venue": "Acta Mathematica Hungarica",
+        "note": "Foundational extremal graph theory results on paths and cycles"
+      }
     ]
   },
   "overview": {
@@ -148,5 +157,12 @@
       "What are explicit constructions achieving k near 6?",
       "Is there a polynomial-time algorithm to check if k is in s for small k?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "proofId": "erdos-180",
+      "relationship": "related",
+      "note": "Both are Erd\u0151s problems in extremal graph theory"
+    }
+  ]
 }
