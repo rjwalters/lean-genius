@@ -51,7 +51,8 @@
       "The partition of unity trick: bump functions phi_i(x) = max(0, eps - ||x - x_i||) provide a smooth way to weight contributions from nearby centers",
       "The weighted average is automatically a convex combination (nonneg weights summing to 1)",
       "The approximation bound follows because only centers within distance epsilon contribute (others have zero weight)",
-      "This lemma is the key step reducing infinite-dimensional fixed point problems to finite-dimensional ones"
+      "This lemma is the key step reducing infinite-dimensional fixed point problems to finite-dimensional ones",
+      "The proof is fully constructive: the projection map is explicitly defined (not merely shown to exist), making it amenable to computation and algorithmic extraction"
     ]
   },
   "sections": [
