@@ -9,9 +9,10 @@
       "Sections I-VI (modular reduction) are fully proved: 0 sorries, 0 axioms",
       "Section VII (algebra tower) adds 7 theorems, 6 fully proved, 1 sorry",
       "The sorry is in minpoly_eq_map_of_irreducible: need Associated.eq_of_monic or equivalent",
-      "Key Mathlib APIs: eval₂_map + IsScalarTower.algebraMap_eq for tower aeval commutativity",
+      "Key Mathlib APIs: eval\u2082_map + IsScalarTower.algebraMap_eq for tower aeval commutativity",
       "Polynomial.natDegree_map_eq_of_injective works for field-to-field algebraMap (injective)",
-      "Monic.natDegree_map preserves degree for monic polynomials under ring homs"
+      "Monic.natDegree_map preserves degree for monic polynomials under ring homs",
+      "Proved minpoly_eq_map_of_irreducible: used minpoly.eq_of_irreducible_of_monic from Mathlib (bypasses Associated/unit machinery)"
     ],
     "builtItems": [
       "isIntegral_tower_top: integrality transfers up towers (line 179)",
@@ -19,16 +20,11 @@
       "minpoly_map_monic_tower: base change preserves monicity (line 190)",
       "minpoly_dvd_map_of_tower: divisibility in towers (line 197)",
       "minpoly_natDegree_tower_le: degree bound in towers (line 202)",
-      "minpoly_eq_map_of_irreducible: equality condition (1 sorry, line 218)"
+      "minpoly_eq_map_of_irreducible: equality condition (1 sorry, line 218)",
+      "minpoly_eq_map_of_irreducible: clean 3-line proof via Mathlib minpoly uniqueness (was sorry)"
     ],
-    "openQuestions": [
-      "Complete sorry: show associated monic polynomials in L[X] are equal",
-      "Can we characterize minpoly_L in terms of irreducible factors of the mapped minpoly?"
-    ],
-    "nextSteps": [
-      "Submit minpoly_eq_map_of_irreducible sorry to Aristotle as companion file candidate",
-      "Consider creating CayleyHamiltonMinpolyOQ05Aristotle.lean with the sorry extracted"
-    ],
-    "progressSummary": "PROGRESS: Added 7 algebra tower theorems (6 proved, 1 sorry). File now 239 lines with comprehensive modular reduction + tower theory. Meta.json and annotations corrected to match actual content."
+    "openQuestions": [],
+    "nextSteps": [],
+    "progressSummary": "COMPLETED: All 7 algebra tower theorems proved (was 6/7). File now 0 axioms, 0 sorries."
   }
 }

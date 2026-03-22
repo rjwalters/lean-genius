@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Deleted 25 unused axioms from PNPBarriersSound.lean (149→124). All 124 remaining axioms are used in proofs.",
+    "progressSummary": "PROGRESS: Added 8 cross-area derived theorems (SZK/CZK in PSPACE, SETH/OWF complete landscapes), extended master summary 15→21 components. Header docs fixed (124→123 axioms).",
     "builtItems": [
       {
         "name": "P",
@@ -621,6 +621,36 @@
         "name": "axiom_cleanup_round2",
         "description": "Deleted 25 unused axioms from PNPBarriersSound.lean (149→124), including Sigma_monotone, NP_subset_PP, mignon_ressayre, comm_trivial_upper, D_ge_R, log_rank_lower, E_subset_EXP, yao_xor_lemma, and 17 others",
         "proven": true
+      },
+      {
+        "name": "SETH_complete_landscape",
+        "description": "SETH → 7 consequences (P≠NP, BPP=P, NP⊄P/poly, FPT≠W[1], fine-grained bounds)",
+        "proven": true
+      },
+      {
+        "name": "OWF_complete_landscape",
+        "description": "OWF → 7 consequences (P≠NP, BPP=P, NP⊆CZK, IP=CZK, ¬AvgP=DistNP, Kt hard, hardcore bits)",
+        "proven": true
+      },
+      {
+        "name": "SZK_subset_PSPACE",
+        "description": "SZK ⊆ PSPACE via AM chain",
+        "proven": true
+      },
+      {
+        "name": "CZK_subset_PSPACE",
+        "description": "CZK ⊆ PSPACE via Shamir",
+        "proven": true
+      },
+      {
+        "name": "GI_in_PSPACE",
+        "description": "Graph Isomorphism in PSPACE",
+        "proven": true
+      },
+      {
+        "name": "circuit_to_space_chain",
+        "description": "11-part AC⁰→ACC⁰→TC⁰→NC¹→NC→P→NP→PSPACE + space chain",
+        "proven": true
       }
     ],
     "insights": [
@@ -753,7 +783,12 @@
       "5 Reingold containment axioms (L⊆SL, L⊆RL, SL⊆NL, RL⊆NL, USTCON∈NL) are redundant given SL=L and RL=L — proved as theorems",
       "raghavendra_CSP_dichotomy (UGC → ∃ (p : Prop), p) is trivially provable — real content is in ugc_maxcut_optimal and ugc_vertex_cover_optimal",
       "14 out of 21 axioms in PvsNP.lean (67%) had exactly 1 reference (their own declaration) — never used in any proof",
-      "PNPBarriersSound.lean had 25 axioms with no proof usage (only referenced in comments, #check lines, or declarations). Deletion methodology: word-boundary grep to count true references, excluding header comments and #check diagnostics."
+      "PNPBarriersSound.lean had 25 axioms with no proof usage (only referenced in comments, #check lines, or declarations). Deletion methodology: word-boundary grep to count true references, excluding header comments and #check diagnostics.",
+      "All 123 axioms in PNPBarriersSound.lean are genuinely used in proofs - no more unused/redundant axioms to eliminate",
+      "SZK_closed_complement was removed in a prior session but header still listed it (fixed)",
+      "SZK ⊆ PSPACE provable via SZK ⊆ AM∩coAM → AM ⊆ PH ⊆ PSPACE",
+      "CZK ⊆ PSPACE provable via CZK ⊆ IP = PSPACE (Shamir)",
+      "Master summary extended to 21 components covering all areas of the formalization"
     ],
     "mathlibGaps": [
       "Turing machines",

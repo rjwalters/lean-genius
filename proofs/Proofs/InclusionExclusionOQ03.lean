@@ -31,11 +31,15 @@ the subset lattice evaluated at (∅, U).
 using the "fast subset convolution" / "SOS" (sum over subsets) technique, rather
 than the naive O(3ⁿ) approach.
 
-## Status (0 axioms, 0 sorries)
+## Status (0 axioms, 4 sorries — proof strategies documented)
 - [x] Zeta transform definition and properties
 - [x] Möbius transform definition
-- [x] Möbius inversion theorem (μ ∘ ζ = id)
+- [ ] signed_sum_subsets — key cancellation identity (see proof strategy below)
+- [ ] Möbius inversion (depends on signed_sum_subsets)
+- [ ] Möbius subset lattice (depends on signed_sum_subsets)
+- [ ] Odd-even subset balance (independent, involution argument)
 - [x] Connection to inclusion-exclusion
+- [x] Fast SOS DP step definition and properties
 
 ## References
 - Björklund, Husfeldt, Kaski, Koivisto (2007): "Fourier Meets Möbius"
@@ -102,9 +106,19 @@ theorem signed_sum_subsets (S : Finset α) :
       if S = ∅ then 1 else 0 := by
   split_ifs with h
   · subst h; simp [Finset.powerset_empty]
-  · -- S is nonempty: use the involution T ↦ T △ {a}
-    -- which changes |S \ T| parity, causing cancellation.
-    -- Proof via the alternating binomial identity ∑ (-1)^k C(n,k) = 0.
+  · -- PROOF STRATEGY (verified on paper):
+    -- Fix any a ∈ S. Use Finset.powerset_insert to write S = insert a s:
+    --   powerset(insert a s) = s.powerset ∪ s.powerset.image (insert a)
+    -- For T ∈ s.powerset (a ∉ T):
+    --   (insert a s) \ T = insert a (s \ T), card = (s\T).card + 1
+    --   contribution: (-1)^{(s\T).card + 1} = -(-1)^{(s\T).card}
+    -- For insert a T' ∈ image (a ∈ T):
+    --   (insert a s) \ (insert a T') = s \ T', card = (s\T').card
+    --   contribution: (-1)^{(s\T').card}
+    -- Sum = -∑ₜ (-1)^{|s\t|} + ∑ₜ (-1)^{|s\t|} = 0
+    -- Lean formalization needs: Finset.powerset_insert, sum_union,
+    --   sum_image (insert a is injective on s.powerset when a ∉ s),
+    --   insert_sdiff_of_not_mem, card_insert_of_not_mem
     sorry
 
 /-- **Möbius inversion theorem**: μ ∘ ζ = id on subset functions.

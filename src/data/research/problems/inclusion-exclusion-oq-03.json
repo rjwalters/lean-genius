@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created InclusionExclusionOQ03.lean (209 lines, 0 axioms, 4 sorries). Formalizes zeta/Möbius transforms on subset lattice, states Möbius inversion theorem, defines fast SOS DP step.",
+    "progressSummary": "PROGRESS: Documented proof strategies for all 4 sorries. signed_sum_subsets key identity needs powerset_insert decomposition. 4 sorries remain.",
     "builtItems": [
       "InclusionExclusionOQ03.lean: Zeta/Möbius transforms (209 lines, 0 axioms, 4 sorries)",
       "zetaTransform: (ζf)(S) = ∑_{T⊆S} f(T)",
@@ -42,7 +42,10 @@
     "insights": [
       "Möbius inversion on Boolean lattice reduces to signed_sum_subsets: ∑_{T⊆S} (-1)^|S\\T| = [S=∅]",
       "The involution T ↦ T △ {a} for fixed a∈S changes |S\\T| parity — this is the key cancellation",
-      "Fast SOS computes zetaTransform in O(n·2^n) by processing one element at a time (zetaStep)"
+      "Fast SOS computes zetaTransform in O(n·2^n) by processing one element at a time (zetaStep)",
+      "signed_sum_subsets proof strategy: use powerset_insert to split into halves that cancel",
+      "mobius_inverts_zeta depends on signed_sum_subsets via Fubini-type argument",
+      "odd_even_subset_balance is independent - involution T to T delta {a}"
     ],
     "mathlibGaps": [],
     "nextSteps": [

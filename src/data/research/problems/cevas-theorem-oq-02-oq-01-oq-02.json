@@ -1,25 +1,28 @@
 {
   "id": "cevas-theorem-oq-02-oq-01-oq-02",
   "name": "Spherical Ceva Generalization to Non-Euclidean Spaces",
-  "status": "surveyed",
-  "phase": "OBSERVE",
+  "status": "completed",
+  "phase": "COMPLETED",
   "knowledge": {
     "insights": [
-      "No OQ02OQ01OQ02 file exists yet",
-      "CevasTheoremNonEuclidean.lean exists — may cover spherical/hyperbolic case",
-      "Parent OQ02OQ01 exists — need to check its content and what sub-question remains",
-      "Spherical Ceva: sin-ratio product = 1 instead of length-ratio product = 1"
+      "The weight-parameter framework extends identically to hyperbolic geometry",
+      "sinh(d(B,D))/sinh(d(D,C)) = β/α — same cancellation as spherical sin case",
+      "The key identity: (α+βm)² - n² = β²(m²-1) for hyperbolic (m>1), vs β²(1-m²) for spherical (|m|<1)",
+      "The √(m²-1)/n or √(1-m²)/n factor always cancels in the ratio, giving β/α",
+      "The concurrency criterion αD·αE·αF = βD·βE·βF is universal — works for Euclidean, spherical, and hyperbolic",
+      "The criterion is purely algebraic: it depends only on the weight parameters, not the geometry"
     ],
-    "builtItems": [],
-    "openQuestions": [
-      "What does CevasTheoremNonEuclidean.lean already cover?",
-      "Is this asking for hyperbolic Ceva (sinh ratios) or projective generalization?"
+    "builtItems": [
+      {"name": "HyperbolicCevianConfig", "description": "Configuration for hyperbolic cevian point with m>1 and weight params", "proven": true},
+      {"name": "hyp_key_identity_BD", "description": "(α+βm)² - n² = β²(m²-1)", "proven": true},
+      {"name": "hyp_key_identity_DC", "description": "(αm+β)² - n² = α²(m²-1)", "proven": true},
+      {"name": "hyp_sinh_ratio", "description": "sinh(BD)/sinh(DC) = β/α", "proven": true},
+      {"name": "hyp_ceva_product_eq_weight_ratio", "description": "Triple sinh-product = weight-product ratio", "proven": true},
+      {"name": "hyp_ceva_iff_weight_balance", "description": "Concurrency iff αD·αE·αF = βD·βE·βF", "proven": true},
+      {"name": "universal_weight_balance", "description": "Weight balance criterion is geometry-independent", "proven": true}
     ],
-    "nextSteps": [
-      "Read CevasTheoremNonEuclidean.lean to understand existing coverage",
-      "Identify the specific non-Euclidean generalization needed",
-      "Formalize using Mathlib manifold/metric space infrastructure"
-    ],
-    "progressSummary": "SURVEY: No file exists. CevasTheoremNonEuclidean.lean may cover related content."
+    "openQuestions": [],
+    "nextSteps": [],
+    "progressSummary": "COMPLETED: Created CevasTheoremOQ02OQ01OQ02.lean (301 lines, 0 sorries, 0 axioms). Proves the weight-parameter framework extends to hyperbolic geometry with identical algebraic criterion."
   }
 }
