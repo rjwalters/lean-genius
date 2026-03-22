@@ -173,6 +173,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Preamble: Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "File docstring stating Erdős Problem #995: estimate ∑f({αn_k}) for lacunary sequences. Cites known bounds — lower (Erdős 1949): limsup reaches N(log log N)^{1/2-ε}; upper (Erdős): o(N(log N)^{1/2+ε}). Notes Erdős's 1964 belief that the lower bound is closer to truth. Imports Mathlib modules for logarithms, Lebesgue measure, L² spaces, and real/natural arithmetic. Opens MeasureTheory and Real namespaces."
+    },
+    {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "summary": "frac (fractional part), IsLacunary (gap condition with ratio q > 1), IsLacunarySeq (existential), lacunarySum (∑f({αn_k}))",
