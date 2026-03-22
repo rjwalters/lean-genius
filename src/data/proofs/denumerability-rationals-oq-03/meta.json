@@ -93,8 +93,13 @@
   "crossReferences": [
     {
       "targetId": "denumerability-rationals",
-      "relationship": "extends",
-      "description": "OQ-01 proved Q is denumerable via Cantor's diagonal/pairing method. This OQ-03 provides an alternative encoding via the Stern-Brocot tree with better structural properties."
+      "relationship": "parent",
+      "description": "The parent entry proving rationals are countable. This OQ-03 provides an alternative enumeration via the Stern-Brocot tree that lists each rational exactly once in lowest terms"
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "contrasts",
+      "description": "Cantor showed the reals are uncountable; this entry shows the rationals ARE countable, using a constructive tree enumeration rather than a bijection with ℕ"
     }
   ],
   "sections": [
@@ -172,7 +177,7 @@
     ],
     "opens": [],
     "namespace": "SternBrocot",
-    "lineCount": 584,
+    "lineCount": 618,
     "axiomCount": 0,
     "theoremCount": 30,
     "definitionCount": 12
@@ -198,18 +203,6 @@
       "year": "1994",
       "venue": "Addison-Wesley, 2nd edition",
       "note": "Section 4.5 gives a modern treatment of the Stern-Brocot tree, including the mediant operation and connection to continued fractions"
-    }
-  ],
-  "crossReferences": [
-    {
-      "targetId": "denumerability-rationals",
-      "relationship": "parent",
-      "description": "The parent entry proving rationals are countable. This OQ-03 provides an alternative enumeration via the Stern-Brocot tree that lists each rational exactly once in lowest terms"
-    },
-    {
-      "targetId": "cantor-diagonalization",
-      "relationship": "contrasts",
-      "description": "Cantor showed the reals are uncountable; this entry shows the rationals ARE countable, using a constructive tree enumeration rather than a bijection with ℕ"
     }
   ],
   "relatedProofs": [

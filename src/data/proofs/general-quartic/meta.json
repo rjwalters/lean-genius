@@ -155,25 +155,18 @@
   ],
   "references": [
     {
-      "authors": "Cardano, Girolamo",
-      "title": "Artis Magnae, Sive de Regulis Algebraicis Liber Unus (Ars Magna)",
+      "authors": "Ferrari, Lodovico (via Cardano)",
+      "title": "Ars Magna",
       "year": "1545",
-      "venue": "Johann Petreius, Nuremberg",
-      "note": "Chapter XXXIX presents Ferrari's quartic solution. The work also contains Cardano's cubic formula (Chapter XI), creating the tower: quadratic → cubic → quartic."
+      "venue": "Nürnberg: Petreius",
+      "note": "First publication of the quartic formula, discovered by Ferrari (Cardano's student) and published in Cardano's treatise"
     },
     {
-      "authors": "van der Waerden, Bartel Leendert",
-      "title": "A History of Algebra: From al-Khwārizmī to Emmy Noether",
+      "authors": "van der Waerden, B.L.",
+      "title": "A History of Algebra",
       "year": "1985",
       "venue": "Springer",
-      "note": "Comprehensive history of the cubic and quartic solutions, placing Ferrari's work in the context of Renaissance mathematics and the path to Galois theory"
-    },
-    {
-      "authors": "Euler, Leonhard",
-      "title": "De formis radicum aequationum cuiusque ordinis coniectatio",
-      "year": "1733",
-      "venue": "Commentarii academiae scientiarum Petropolitanae",
-      "note": "Euler's alternative approach to the quartic via symmetric functions, simplifying Ferrari's method and foreshadowing Lagrange's systematic treatment"
+      "note": "Historical treatment of the resolution of cubic and quartic equations in the Renaissance"
     }
   ],
   "leanFile": {
@@ -190,25 +183,9 @@
       "Complex"
     ],
     "namespace": "GeneralQuartic",
-    "lineCount": 345,
+    "lineCount": 344,
     "axiomCount": 9,
     "theoremCount": 6,
     "definitionCount": 5
-  },
-  "references": [
-    {
-      "authors": "Ferrari, Lodovico (via Cardano)",
-      "title": "Ars Magna",
-      "year": "1545",
-      "venue": "Nürnberg: Petreius",
-      "note": "First publication of the quartic formula, discovered by Ferrari (Cardano's student) and published in Cardano's treatise"
-    },
-    {
-      "authors": "van der Waerden, B.L.",
-      "title": "A History of Algebra",
-      "year": "1985",
-      "venue": "Springer",
-      "note": "Historical treatment of the resolution of cubic and quartic equations in the Renaissance"
-    }
-  ]
+  }
 }
