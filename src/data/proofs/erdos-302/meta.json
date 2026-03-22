@@ -116,73 +116,80 @@
   "sections": [
     {
       "id": "definitions",
-      "title": "Basic Definitions",
+      "title": "Part 1: Basic Definitions",
       "startLine": 33,
       "endLine": 52,
-      "summary": "Unit fraction equation and sum-free property."
+      "summary": "Defines UnitFractionSum (1/a = 1/b + 1/c), proves equivalence bc = a(b+c), and defines IsUnitFractionSumFree property."
     },
     {
       "id": "f-function",
-      "title": "The Function f(N)",
+      "title": "Part 2: The Function f(N)",
       "startLine": 54,
       "endLine": 65,
-      "summary": "Maximum size of unit-fraction-sum-free subset."
+      "summary": "Defines f(N) as max |A| over sum-free A ⊆ {1,...,N} using Finset.sup. Trivial upper bound f(N) ≤ N."
     },
     {
       "id": "lower-bounds",
-      "title": "Lower Bound Constructions",
+      "title": "Part 3: Lower Bound Constructions",
       "startLine": 67,
       "endLine": 109,
-      "summary": "Odd integers, upper half, Cambie's construction."
+      "summary": "Three constructions: oddIntegers (~N/2), upperHalf (~N/2), and Cambie's combined set (~5N/8). Axiom cambie_lower_bound: f(N) ≥ (5/8+o(1))N."
     },
     {
       "id": "upper-bound",
-      "title": "Upper Bound (van Doorn)",
+      "title": "Part 4: Upper Bound (van Doorn)",
       "startLine": 111,
-      "endLine": 124,
-      "summary": "f(N) ≤ (9/10+o(1))N."
+      "endLine": 120,
+      "summary": "Axiom van_doorn_upper_bound: f(N) ≤ (9/10+o(1))N. Verified theorem known_bounds_gap: 5/8 < 9/10."
     },
     {
       "id": "main-question",
-      "title": "The Main Question",
-      "startLine": 126,
-      "endLine": 148,
-      "summary": "Original question is FALSE."
+      "title": "Part 5: The Main Question",
+      "startLine": 122,
+      "endLine": 144,
+      "summary": "Original question f(N) = (1/2+o(1))N is FALSE (sorry, uses cambie_lower_bound). Refined density_question: ∃ c ∈ [5/8, 9/10] with f(N)/N → c."
     },
     {
       "id": "doubling",
-      "title": "Related Observation (Cambie)",
-      "startLine": 150,
-      "endLine": 174,
-      "summary": "Allowing b = c gives 2/3 threshold."
+      "title": "Part 6: Related Observation (Cambie)",
+      "startLine": 146,
+      "endLine": 165,
+      "summary": "HasDoubling (contains n and 2n). Axiom: |A| > 2N/3 forces doubling. Verified: 2/3 > 5/8 (equal case less restrictive than distinct)."
     },
     {
       "id": "coloring",
-      "title": "The Coloring Version",
-      "startLine": 176,
-      "endLine": 190,
-      "summary": "Brown-Rödl solved Problem #303."
+      "title": "Part 7: The Coloring Version (Problem #303)",
+      "startLine": 167,
+      "endLine": 181,
+      "summary": "Defines coloring_version (2-color avoiding monochromatic solutions). Axiom brown_rodl_coloring: always possible. Completely solved."
     },
     {
       "id": "algebra",
-      "title": "Algebraic Structure",
-      "startLine": 192,
-      "endLine": 209,
-      "summary": "Equivalent forms and solution constraints."
+      "title": "Part 8: Algebraic Structure",
+      "startLine": 183,
+      "endLine": 200,
+      "summary": "algebraic_form: UnitFractionSum ↔ bc = ab + ac. solution_constraints: if a < b < c, then c ≤ 2a."
     },
     {
       "id": "examples",
-      "title": "Examples of Solutions",
-      "startLine": 211,
-      "endLine": 230,
-      "summary": "Explicit solutions and standard pattern."
+      "title": "Part 9: Examples of Solutions",
+      "startLine": 202,
+      "endLine": 221,
+      "summary": "Explicit examples via norm_num (1/2=1/3+1/6, 1/3=1/4+1/12, etc.) and standard_pattern: 1/n = 1/(n+1) + 1/(n(n+1))."
+    },
+    {
+      "id": "hardness",
+      "title": "Part 10: Why the Problem is Hard",
+      "startLine": 223,
+      "endLine": 235,
+      "summary": "Each element forbids many pairs. Proved coloring_always_possible from Brown-Rödl. Verified lower_bound_improvement: 5/8 > 1/2."
     },
     {
       "id": "summary",
-      "title": "Main Results Summary",
-      "startLine": 250,
-      "endLine": 274,
-      "summary": "Combined theorem and open status."
+      "title": "Part 11: Main Results Summary",
+      "startLine": 237,
+      "endLine": 261,
+      "summary": "erdos_302: combines Cambie lower bound + van Doorn upper bound + original question false. erdos_302_summary packages bounds. Axiom erdos_302_density_open for exact density."
     }
   ],
   "conclusion": {
@@ -201,6 +208,21 @@
       "targetId": "erdos-23",
       "relationship": "related",
       "description": "Both are Erdős extremal combinatorics problems about maximum/minimum sizes of sets satisfying structural constraints"
+    },
+    {
+      "targetId": "erdos-285",
+      "relationship": "related",
+      "description": "Both concern Egyptian fraction / unit fraction structure: #285 studies asymptotics of Egyptian fraction representations, #302 studies maximum sets avoiding unit fraction equations"
+    },
+    {
+      "targetId": "erdos-288",
+      "relationship": "related",
+      "description": "Both concern unit fraction sums and finiteness: #288 asks about finitely many interval pairs with integer harmonic sums, #302 asks about maximum sets avoiding 1/a = 1/b + 1/c"
+    },
+    {
+      "targetId": "erdos-303",
+      "relationship": "related",
+      "description": "The coloring version of #302: can {1,...,N} be 2-colored with no monochromatic solution to 1/a = 1/b + 1/c? Solved by Brown-Rödl (1991)"
     }
   ]
 }
