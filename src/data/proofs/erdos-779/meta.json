@@ -62,7 +62,8 @@
       "**Primorial growth**: The primorial grows roughly as e^(n log n) by the Prime Number Theorem, much faster than 2^n.",
       "**Heuristic probability**: With 'probability' 1/log(P) that P + p is prime, and ~P primes to try, failure probability is exp(-n^(cn)) - vanishingly small.",
       "**Polynomial bound**: Erdős's stronger conjecture says the smallest valid prime is polynomial in n, not just that one exists.",
-      "**Computational verification**: Deaconescu checked n ≤ 1000, providing strong numerical evidence."
+      "**Computational verification**: Deaconescu checked n ≤ 1000, providing strong numerical evidence.",
+      "**Divisibility structure**: Since every prime p_i divides P = p₁···pₙ, P + p can only be divisible by primes > pₙ. This 'sieved' structure is why P + p has a higher-than-average chance of being prime, reinforcing the heuristic argument."
     ]
   },
   "sections": [
@@ -71,49 +72,56 @@
       "title": "Problem Statement",
       "startLine": 1,
       "endLine": 24,
-      "summary": "The Deaconescu conjecture on primorial plus prime"
+      "summary": "The Deaconescu conjecture on primorial plus prime",
+      "mathContext": "Conjecture: $\\forall n \\geq 2,\\, \\exists p$ prime with $p_n < p < P = p_1 \\cdots p_n$ such that $P + p$ is prime. **OPEN**, verified for $n \\leq 1000$."
     },
     {
       "id": "primorial",
       "title": "The Primorial Function",
       "startLine": 32,
       "endLine": 48,
-      "summary": "Definitions of nthPrime and primorial"
+      "summary": "Definitions of nthPrime and primorial",
+      "mathContext": "`nthPrime(k)` = $p_k$ (the $k$-th prime, 0-indexed). `primorial(n)` = $\\prod_{k=0}^{n-1} p_k = p_0 p_1 \\cdots p_{n-1}$. Growth: $\\text{primorial}(n) \\approx e^{n \\ln n}$ by PNT."
     },
     {
       "id": "properties",
       "title": "Basic Properties",
       "startLine": 50,
       "endLine": 69,
-      "summary": "Primorial positivity and divisibility properties"
+      "summary": "Primorial positivity and divisibility properties",
+      "mathContext": "`primorial_pos`: $\\text{primorial}(n) > 0$. `nthPrime_dvd_primorial`: $k < n \\implies p_k \\mid \\text{primorial}(n)$. These follow directly from the product structure."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture (OPEN)",
       "startLine": 71,
       "endLine": 96,
-      "summary": "Statement of the Deaconescu and Erdős conjectures"
+      "summary": "Statement of the Deaconescu and Erdős conjectures",
+      "mathContext": "`validPrimes(n) = \\{p \\text{ prime} : p_n < p < P,\\, P + p \\text{ prime}\\}$. Deaconescu: $|\\text{validPrimes}(n)| \\geq 1$ for $n \\geq 1$. Erdős: $\\min(\\text{validPrimes}(n)) \\leq n^{O(1)}$."
     },
     {
       "id": "verified-cases",
       "title": "Verified Small Cases",
       "startLine": 110,
       "endLine": 172,
-      "summary": "Explicit witness primes for n = 2, 3, 4, 5"
+      "summary": "Explicit witness primes for n = 2, 3, 4, 5",
+      "mathContext": "$n=2$: $6+5=11$. $n=3$: $30+7=37$. $n=4$: $210+13=223$. $n=5$: $2310+23=2333$. Each verified by providing an explicit witness prime."
     },
     {
       "id": "heuristic",
       "title": "Heuristic Analysis",
       "startLine": 174,
       "endLine": 189,
-      "summary": "Probabilistic argument for why the conjecture should be true"
+      "summary": "Probabilistic argument for why the conjecture should be true",
+      "mathContext": "Failure probability $\\approx (1 - 1/\\log P)^{\\pi(P) - n} \\approx \\exp(-P/\\log^2 P)$, which tends to 0 super-exponentially since $P \\approx e^{n \\log n}$."
     },
     {
       "id": "connections",
       "title": "Connection to Other Problems",
       "startLine": 191,
       "endLine": 228,
-      "summary": "Primorial primes, OEIS A005235, and computational verification"
+      "summary": "Primorial primes, OEIS A005235, and computational verification",
+      "mathContext": "OEIS A005235: smallest $p > p_n$ with $P + p$ prime. Values: $a(2)=5, a(3)=7, a(4)=13, a(5)=23, a(6)=17$. Deaconescu verified existence for all $n \\leq 1000$."
     }
   ],
   "conclusion": {
@@ -125,5 +133,21 @@
       "What is the distribution of the smallest valid prime as n → ∞?",
       "Can sieve methods prove the conjecture for sufficiently large n?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The infinitude of primes underpins the primorial construction and guarantees primes exist beyond pₙ"
+    },
+    {
+      "targetId": "erdos-3",
+      "relationship": "thematic",
+      "description": "Both are additive questions about primes — #3 asks about arithmetic progressions in dense sets, #779 about prime sums with primorials"
+    }
+  ],
+  "relatedProofs": [
+    "infinitude-primes",
+    "erdos-3"
+  ]
 }
