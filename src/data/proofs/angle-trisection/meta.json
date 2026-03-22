@@ -49,8 +49,31 @@
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 8,
     "axiomCount": 2,
+    "prerequisites": [
+      "Field extensions and algebraic degree",
+      "Polynomial rings and irreducibility over Q",
+      "Trigonometric identities (triple angle formula)",
+      "Basic Galois theory (constructibility criterion)"
+    ],
     "lineCount": 389
   },
+  "crossReferences": [
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Both are impossibility results via Galois theory: Abel-Ruffini shows quintics are unsolvable by radicals, angle trisection shows certain geometric constructions are impossible — same algebraic framework of field extension degrees"
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "FTA guarantees the polynomial 8x³-6x-1 has roots in C; the impossibility is about whether those roots lie in the constructible field (degree 2^n extensions of Q)"
+    },
+    {
+      "targetId": "inverse-galois",
+      "relationship": "related",
+      "description": "Constructibility is determined by the Galois group of the minimal polynomial — the constructible numbers have Galois groups that are 2-groups"
+    }
+  ],
   "overview": {
     "historicalContext": "The problem of trisecting an arbitrary angle using only compass and straightedge is one of the three famous classical Greek problems, along with doubling the cube and squaring the circle. For over 2000 years, mathematicians attempted to solve these problems without success.\n\nThe impossibility was not proven until the 19th century. Pierre Wantzel published his proof in 1837, showing that angle trisection and doubling the cube are impossible. His key insight was to translate the geometric problem into algebra: compass and straightedge constructions correspond to field extensions of degree 2, so constructible numbers have degree 2^n over the rationals.\n\nThe squaring of the circle was proven impossible by Lindemann in 1882, when he showed that π is transcendental (not the root of any polynomial with rational coefficients).",
     "problemStatement": "Given an arbitrary angle θ, can it be divided into three equal parts using only a compass and unmarked straightedge?\n\nThe answer is NO for a general angle. In particular, a 60° angle cannot be trisected.\n\nTo trisect 60°, we would need to construct a 20° angle, which is equivalent to constructing the number cos(20°). Using the triple angle formula:\n$$\\cos(60°) = 4\\cos^3(20°) - 3\\cos(20°)$$\n$$\\frac{1}{2} = 4x^3 - 3x$$\n$$8x^3 - 6x - 1 = 0$$\n\nSo cos(20°) satisfies an irreducible cubic polynomial over ℚ.",
@@ -70,42 +93,48 @@
       "title": "Setup and the Minimal Polynomial",
       "startLine": 1,
       "endLine": 80,
-      "summary": "Introduction, imports, and derivation of the polynomial 8x³ - 6x - 1 that cos(20°) satisfies."
+      "summary": "Introduction, imports, and derivation of the polynomial 8x³ - 6x - 1 that cos(20°) satisfies.",
+      "mathContext": "Trisecting $60°$ requires constructing $\\cos(20°)$, which satisfies $8x^3 - 6x - 1 = 0$ (from $\\cos(60°) = 4\\cos^3(20°) - 3\\cos(20°)$)."
     },
     {
       "id": "triple-angle",
       "title": "The Triple Angle Formula",
       "startLine": 82,
       "endLine": 110,
-      "summary": "Proof of the identity cos(3θ) = 4cos³(θ) - 3cos(θ) and its application to cos(20°)."
+      "summary": "Proof of the identity cos(3θ) = 4cos³(θ) - 3cos(θ) and its application to cos(20°).",
+      "mathContext": "$\\cos(3\\theta) = 4\\cos^3(\\theta) - 3\\cos(\\theta)$. With $\\theta = 20°$: $\\cos(60°) = 1/2 = 4\\cos^3(20°) - 3\\cos(20°)$."
     },
     {
       "id": "irreducibility",
       "title": "Irreducibility over ℚ",
       "startLine": 112,
       "endLine": 140,
-      "summary": "Verification that the cubic polynomial has no rational roots, hence is irreducible."
+      "summary": "Verification that the cubic polynomial has no rational roots, hence is irreducible.",
+      "mathContext": "By the rational root theorem, candidates are $\\pm 1, \\pm 1/2, \\pm 1/4, \\pm 1/8$. None satisfy $8x^3 - 6x - 1 = 0$, so the cubic is irreducible over $\\mathbb{Q}$."
     },
     {
       "id": "constructible",
       "title": "Constructible Numbers",
       "startLine": 142,
       "endLine": 195,
-      "summary": "The algebraic characterization: constructible numbers have degree 2^n over ℚ."
+      "summary": "The algebraic characterization: constructible numbers have degree 2^n over ℚ.",
+      "mathContext": "Wantzel's criterion: $\\alpha$ constructible $\\Rightarrow [\\mathbb{Q}(\\alpha) : \\mathbb{Q}] = 2^n$ for some $n$. Each compass-straightedge step solves at most a quadratic, extending the field by degree 2."
     },
     {
       "id": "main-theorem",
       "title": "The Impossibility Theorem",
       "startLine": 197,
       "endLine": 235,
-      "summary": "The main result: 60° cannot be trisected because cos(20°) has degree 3, not a power of 2."
+      "summary": "The main result: 60° cannot be trisected because cos(20°) has degree 3, not a power of 2.",
+      "mathContext": "$[\\mathbb{Q}(\\cos 20°) : \\mathbb{Q}] = 3$ (irreducible cubic). Since $3 \\neq 2^n$ for any $n$, $\\cos(20°)$ is not constructible."
     },
     {
       "id": "corollaries",
       "title": "Other Classical Impossibilities",
       "startLine": 237,
       "endLine": 290,
-      "summary": "Application to doubling the cube (∛2) and squaring the circle (√π)."
+      "summary": "Application to doubling the cube (∛2) and squaring the circle (√π).",
+      "mathContext": "Doubling the cube: $\\sqrt[3]{2}$ satisfies $x^3 - 2 = 0$ (irreducible, degree 3). Squaring the circle: $\\sqrt{\\pi}$ is transcendental (Lindemann, 1882), hence not algebraic and a fortiori not constructible."
     }
   ],
   "conclusion": {
