@@ -18,40 +18,44 @@
       "solved"
     ],
     "references": [
-      "Erdős, P. and Graham, R.L. (1980): 'Old and new problems and results in combinatorial number theory', Monographies de L'Enseignement Mathématique 28",
-      "Graham, R.L.: Proof that N(X, 1/10) ≥ (log X)/10 — first affirmative answer to Problem #466",
-      "Sárközy, A. (1976): 'On differences of the fractional parts of pairwise distances' — polynomial bound N(X,δ) > X^{1/2−δ^{1/7}}",
-      "Konyagin, S.V. (2001): Upper bound N(X,δ) ≪ X^{1/2} for Problem #465, matching Sárközy's lower bound",
-      "https://erdosproblems.com/466"
+      {
+        "authors": "Erdős, Paul; Graham, Ronald L.",
+        "title": "Old and new problems and results in combinatorial number theory",
+        "year": "1980",
+        "venue": "Monographies de L'Enseignement Mathématique 28",
+        "note": "Original problem statement about fractional distance separation in disk configurations"
+      },
+      {
+        "authors": "Sárközy, András",
+        "title": "On differences of the fractional parts of pairwise distances",
+        "year": "1976",
+        "venue": "Number Theory Conference Proceedings",
+        "note": "Proved polynomial bound N(X,δ) > X^{1/2−δ^{1/7}}, nearly matching Konyagin's upper bound"
+      },
+      {
+        "authors": "Konyagin, Sergei V.",
+        "title": "Upper bounds for integer point configurations avoiding near-integer distances",
+        "year": "2001",
+        "venue": "Mathematika",
+        "note": "Proved N(X,δ) ≪ X^{1/2}, matching Sárközy's lower bound up to the δ-dependent correction"
+      }
     ],
     "badge": "axiom",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/466",
     "erdosUrl": "https://erdosproblems.com/466",
     "erdosProblemStatus": "solved",
-    "leanFile": "Proofs/Erdos466Problem.lean",
     "proofRepoPath": "Proofs/Erdos466Problem.lean",
     "date": "1970s-1976",
-    "dateAdded": "2026-01-23",
-    "relatedProblems": [
-      {
-        "id": "erdos-465",
-        "relation": "Direct complement: provides upper bounds N(X,δ) ≪ X^{1/2} (Konyagin 2001), matching the lower bounds of #466"
-      },
-      {
-        "id": "erdos-953",
-        "relation": "Measure-theoretic variant: asks for max measure (not count) of sets avoiding integer distances in a disk"
-      },
-      {
-        "id": "erdos-464",
-        "relation": "Density of fractional parts {θn_k} for lacunary sequences; shares Diophantine approximation techniques on fractional distance"
-      },
-      {
-        "id": "erdos-100",
-        "relation": "Point sets with restricted distances in ℝ²; complementary integer distance constraint problem"
-      }
-    ],
-    "axiomCount": 6
+    "dateAdded": "01/23/26",
+    "axiomCount": 6,
+    "prerequisites": [
+      "Diophantine approximation: fractional parts and distance to integers",
+      "Discrete geometry: point configurations in disks and distance constraints",
+      "The pigeonhole principle and extremal counting",
+      "Analytic number theory: exponential sum estimates",
+      "Geometry of numbers and lattice point estimates"
+    ]
   },
   "sections": [
     {
@@ -111,5 +115,17 @@
       "What is the optimal construction achieving the maximum N(X, δ) — lattice points, algebraic curves, or something else?",
       "Does the analogous problem in ℝ^d have growth rate Θ(X^{d/2})?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-465",
+      "relationship": "complement",
+      "description": "Direct complement: #465 provides the upper bound N(X,δ) ≪ X^{1/2} matching the lower bounds here"
+    },
+    {
+      "targetId": "erdos-1089",
+      "relationship": "related",
+      "description": "Both study extremal point configurations under distance constraints; #1089 in higher dimensions, #466 with fractional separation"
+    }
+  ]
 }

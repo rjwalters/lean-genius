@@ -241,24 +241,24 @@
     "id": "ann-e267-summary",
     "proofId": "erdos-267",
     "range": {
-      "startLine": 1,
-      "endLine": 19
+      "startLine": 232,
+      "endLine": 233
     },
-    "type": "concept",
+    "type": "context",
     "title": "Summary and Status",
-    "content": "**Erdős Problem #267: PARTIALLY SOLVED**\n\n**Verified:**\n- Fibonacci values F₁ through F₁₂ ✓\n- goldenRatio_gt_one ✓\n- pow_two_series_first_terms ✓\n\n**Proved:**\n- Σ 1/F_{2^n} irrational (Good, Bicknell-Hoggatt)\n- Σ 1/F_n irrational (André-Jeannin)\n\n**OPEN:**\n- General c > 1 case\n- Superlinear growth variant",
-    "mathContext": "The paradox: the c=1 case (all terms) is proved, but intermediate cases c > 1 remain open.",
+    "content": "**Erdős Problem #267: PARTIALLY SOLVED**\n\n**Verified (5 theorems):**\n- Fibonacci values F₁ through F₁₂ via `rfl`\n- `goldenRatio_gt_one`: φ > 1\n- `pow_two_series_first_terms` via `native_decide`\n\n**Axiomatized (3 axioms):**\n- `fibonacci_reciprocal_summable`: Σ 1/F_n converges\n- `good_bicknell_hoggatt`: Σ 1/F_{2^n} irrational\n- `andre_jeannin`: Σ 1/F_n irrational\n\n**OPEN:** General c > 1 case and superlinear growth variant",
+    "mathContext": "The paradox: the $c=1$ case (all terms, weakest sparsity) is proved irrational, but intermediate cases $c > 1$ (sparser subsequences) remain open. This reversal of difficulty is a hallmark of transcendence-theoretic problems.",
     "significance": "key",
     "relatedConcepts": [
       "problem-status",
       "partially-solved",
-      "open"
+      "open-problem",
+      "axiom-audit"
     ],
     "prerequisites": [
-      "summary",
-      "partially-solved",
-      "open-problem",
-      "fibonacci"
+      "fibonacci-reciprocal-summable",
+      "good-bicknell-hoggatt",
+      "andre-jeannin"
     ]
   }
 ]

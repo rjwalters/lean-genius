@@ -5,7 +5,8 @@
   "description": "Is f(k) < c^k for some c, where f(k) is the Schur number (min N forcing monochromatic a+b=c in k-coloring)? S(1)=2 and S(2)=5 proved from SchursTheorem. S(k) defined via Nat.find with monotonicity. Open.",
   "meta": {
     "erdosNumber": 483,
-    "status": "formalized",
+    "status": "axiomatized",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "combinatorics",
@@ -23,7 +24,7 @@
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/483",
     "erdosUrl": "https://erdosproblems.com/483",
-    "axiomCount": 0,
+    "axiomCount": 6,
     "prerequisites": [
       "Schur's theorem (finiteness of Schur numbers)",
       "Ramsey theory fundamentals (colorings, monochromatic solutions)",
@@ -90,5 +91,22 @@
       "Can the factorial upper bound be improved?",
       "Is there a polynomial relationship between Schur numbers and Ramsey numbers?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Schur's theorem is a special case of Ramsey theory: S(k) relates to R(3,...,3) since a+b=c is a 3-element structure"
+    },
+    {
+      "targetId": "erdos-360",
+      "relationship": "related",
+      "description": "Both concern partition/coloring problems avoiding additive structure: #360 studies sum-free partition classes, #483 studies Schur numbers (avoiding a+b=c)"
+    },
+    {
+      "targetId": "erdos-302",
+      "relationship": "related",
+      "description": "Both are extremal problems about sets avoiding specific equations: #302 avoids 1/a=1/b+1/c, #483 avoids a+b=c in colorings"
+    }
+  ]
 }

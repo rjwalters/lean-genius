@@ -101,5 +101,21 @@
       "What is the density of the set of integers appearing in the sequence?",
       "How does this relate to the Ulam sequence (Problem #342)?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "note": "[ErGr80] original formulation of the problem"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-342",
+      "relationship": "related",
+      "description": "Both concern greedy/constructive integer sequences: #342 studies the Ulam sequence, #423 studies a sequence built from sums of consecutive terms"
+    }
+  ]
 }
