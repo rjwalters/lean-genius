@@ -29,6 +29,12 @@
       "Connection to Russell's Paradox"
     ],
     "dateAdded": "2025-12-21",
+    "prerequisites": [
+      "Functions and surjectivity (Function.Surjective)",
+      "Bool type and negation (!b)",
+      "Proof by contradiction (absurd)",
+      "Set theory and power sets (Set, Set.powerset)"
+    ],
     "wiedijkNumber": 22,
     "axiomCount": 0
   },
@@ -50,42 +56,48 @@
       "title": "Binary Sequences",
       "startLine": 23,
       "endLine": 27,
-      "summary": "Defines binary sequences as functions from Nat to Bool, representing infinite strings of 0s and 1s."
+      "summary": "Defines binary sequences as functions from Nat to Bool, representing infinite strings of 0s and 1s.",
+      "mathContext": "$\\text{BinarySeq} := \\mathbb{N} \\to \\{0, 1\\}$, the set of all infinite binary strings. In Lean: `def BinarySeq := ℕ → Bool`"
     },
     {
       "id": "diagonal",
       "title": "The Diagonal Construction",
       "startLine": 29,
       "endLine": 44,
-      "summary": "Defines the diagonal function that flips each bit along the diagonal, and proves it differs from every input sequence."
+      "summary": "Defines the diagonal function that flips each bit along the diagonal, and proves it differs from every input sequence.",
+      "mathContext": "Given $f: \\mathbb{N} \\to \\text{BinarySeq}$, define $d(n) = \\neg f(n)(n)$. Then $d \\neq f(n)$ for all $n$, since $d(n) \\neq f(n)(n)$"
     },
     {
       "id": "main-theorem",
       "title": "Cantor's Main Theorem",
       "startLine": 46,
       "endLine": 68,
-      "summary": "Proves that no function from Nat to BinarySeq can be surjective, establishing uncountability."
+      "summary": "Proves that no function from Nat to BinarySeq can be surjective, establishing uncountability.",
+      "mathContext": "$\\nexists f: \\mathbb{N} \\to \\{0,1\\}^{\\mathbb{N}}$ surjective. Proof: the diagonal $d$ is not in the range of any $f$, so $f$ is not surjective."
     },
     {
       "id": "corollary",
       "title": "The Reals Are Uncountable",
       "startLine": 70,
       "endLine": 89,
-      "summary": "States the theorem in its classic form: no surjection from naturals to binary sequences exists."
+      "summary": "States the theorem in its classic form: no surjection from naturals to binary sequences exists.",
+      "mathContext": "$|\\mathbb{N}| < |\\{0,1\\}^{\\mathbb{N}}| = |\\mathbb{R}|$. The reals are uncountable: no enumeration $r_1, r_2, r_3, \\ldots$ can list all real numbers."
     },
     {
       "id": "powerset",
       "title": "Power Set Generalization",
       "startLine": 91,
       "endLine": 115,
-      "summary": "Proves the general theorem that for any set S, there is no surjection from S to its power set P(S)."
+      "summary": "Proves the general theorem that for any set S, there is no surjection from S to its power set P(S).",
+      "mathContext": "Cantor's theorem: $\\nexists f: S \\twoheadrightarrow \\mathcal{P}(S)$ for any set $S$. Consider $D = \\{x \\in S : x \\notin f(x)\\}$; then $D \\neq f(y)$ for all $y$."
     },
     {
       "id": "russell",
       "title": "Connection to Russell's Paradox",
       "startLine": 117,
       "endLine": 133,
-      "summary": "Shows how the diagonal set construction relates to Russell's famous paradox about the set of all sets."
+      "summary": "Shows how the diagonal set construction relates to Russell's famous paradox about the set of all sets.",
+      "mathContext": "Russell's set $R = \\{x : x \\notin x\\}$ is the diagonal of the identity function on the 'set of all sets'. If $R \\in R$ then $R \\notin R$; if $R \\notin R$ then $R \\in R$."
     }
   ],
   "conclusion": {
