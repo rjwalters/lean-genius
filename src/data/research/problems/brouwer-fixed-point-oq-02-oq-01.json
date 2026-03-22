@@ -6,8 +6,8 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "For any Sperner coloring of a grid triangulation of the 2D simplex, there exists a fully-colored triangle.",
-    "plain": "2D Sperner's lemma: any valid coloring of a triangulated simplex must contain a rainbow triangle. Proved via row-sweep parity argument.",
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
     "whyMatters": []
   },
   "knownResults": {
@@ -17,42 +17,51 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-03-22T02:22:00Z",
-    "iteration": 3,
-    "focus": "sperner_2d proved modulo strip_parity, row-sweep infrastructure complete",
+    "since": "2026-03-21T17:07:38.705Z",
+    "iteration": 2,
+    "focus": "Proved fully_colored_one_door, added boundary lemmas. 2 sorries remain.",
     "blockers": [],
-    "nextAction": "Prove strip_parity (ZMod 2 door-counting in horizontal strips).",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: BrouwerFixedPointOQ02OQ01.lean now 428 lines with 2 sorries (strip_parity, approximate_fixed_point_2d). sperner_2d is PROVED from strip_parity + bottom_transitions_odd + hTrans_top via row-sweep induction. fully_colored_one_door proved. Next: prove strip_parity.",
+    "progressSummary": "PROGRESS: 2 sorries remain (down from 3). Proved fully_colored_one_door via bijection+case-analysis. Added boundary no-door lemmas for left edge and hypotenuse. Detailed proof strategy for sperner_2d documented.",
     "builtItems": [
-      "BrouwerFixedPointOQ02OQ01.lean: 428 lines, 2 sorries (down from 5)",
-      "sperner_2d: PROVED via row-sweep parity (modulo strip_parity)",
-      "fully_colored_one_door: PROVED (surjectivity -> injectivity on Fin 3)",
-      "bottom_transitions_odd: PROVED (1D Sperner parity via Bool transitions)",
-      "hTrans: horizontal {0,1}-door transition count at each row",
-      "hTrans_zero_eq: hTrans at row 0 = bottomTransitions (under Sperner)",
-      "hTrans_top: hTrans at row n = 0",
-      "gColor: extended coloring function (returns 0 outside grid)",
-      "no_door_left_boundary, no_door_hypotenuse: boundary constraints PROVED"
+      "BrouwerFixedPointOQ02OQ01.lean: 213 lines, grid triangulation + Sperner coloring + 2D lemma statement",
+      "GridVertex, GridTriangle, TriType: core triangulation types",
+      "IsSperner: Sperner boundary coloring condition",
+      "IsFullyColored, IsDoor: key predicates for door-counting proof",
+      "sperner_2d: main existence theorem (sorry, proof outlined)",
+      "approximate_fixed_point_2d: application to continuous maps (sorry)",
+      "fully_colored_one_door: proved via surjectivity\u2192injectivity\u2192uniqueness argument",
+      "no_door_left_boundary: left boundary has no {0,1}-doors (colors in {0,2})",
+      "no_door_hypotenuse: hypotenuse has no {0,1}-doors (colors in {1,2})"
     ],
     "insights": [
-      "Row-sweep approach is cleaner than full double-counting: define hTrans(j) = horizontal {0,1}-doors at row j, show parity is constant across rows",
-      "strip_parity reduces to: non-FC triangles have even door count + boundary edges (left, hypotenuse) have no {0,1}-doors",
-      "In each strip, internal edges are shared by 2 triangles (cancel mod 2), leaving boundary doors = hTrans(j) + hTrans(j+1)",
-      "Key algebraic identity: sum(p) + sum(q) + l_0 + d_{m-1} = 0 in ZMod 2, where l_0 = 0 (left boundary), d_{m-1} = 0 (hypotenuse)",
-      "Non-FC door count parity: case analysis on 27 color triples shows all 21 non-FC cases give even count"
+      "Mathlib has NO SimplicialComplex or Sperner infrastructure",
+      "Existing BrouwerFixedPointOQ02.lean has 1D Sperner (discrete IVT), PPAD structure \u2014 0 sorries",
+      "BrouwerFixedPointOQ02Ext.lean has contraction uniqueness, error bounds, 1D Sperner \u2014 0 sorries",
+      "Higher-dim Sperner requires: triangulation definition, coloring, boundary conditions, parity argument",
+      "2D Sperner is tractable but needs ~200-300 lines of new definitions",
+      "Standard proof uses path-following on dual graph of boundary edges",
+      "Grid triangulation approach: GridVertex(i,j) with i+j\u2264n, two triangle types (lower/upper) per grid cell",
+      "Sperner coloring: vertex conditions at corners + edge exclusion conditions",
+      "Door-counting proof structure: 01-doors on boundary (odd) + interior (pair up) \u2192 fully-colored triangles (odd)",
+      "transitions_parity_aux: telescoping in ZMod 2 \u2014 #transitions \u2261 f(n)+f(0) mod 2",
+      "Key proof technique: surjectivity of c\u2218t.vertices on Fin 3 (from image={0,1,2}=univ) implies injectivity via Finite.injective_iff_surjective",
+      "Uniqueness of door: any {0,1}-edge must connect the unique 0-colored and 1-colored vertices; ordering determines the edge",
+      "Boundary analysis complete: only bottom-edge doors exist (left: no color 1; hypotenuse: no color 0)",
+      "sperner_2d proof strategy: parity argument via double-counting. \u2211doorCount(T) = 2*interior + boundary. FC contributes 1, non-FC contributes 0 or 2. So #FC \u2261 bottomTransitions \u2261 1 mod 2."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove strip_parity: define door indicator functions, algebraic sum manipulation in ZMod 2",
-      "Prove approximate_fixed_point_2d: construct Sperner coloring from continuous f, apply sperner_2d",
-      "Alternative for strip_parity: prove non_fc_even_doors as helper, then use double-counting within each strip"
+      "Prove sperner_2d via ZMod 2 double-counting (key: enumerate triangles, classify edges as interior/boundary)",
+      "Alternative: row-sweep approach processing strips j\u2192j+1, telescoping htrans(0)+htrans(n) = 1+0 = 1",
+      "Prove approximate_fixed_point_2d from sperner_2d (construct Sperner coloring from continuous map)"
     ]
   },
   "tags": [
@@ -70,20 +79,64 @@
     "mathlib": []
   },
   "started": "2026-03-21T17:07:38.705Z",
-  "lastUpdate": "2026-03-22T02:22:00Z",
+  "lastUpdate": "2026-03-22T02:30:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
-      "path": "Proofs/BrouwerFixedPointOQ02OQ01.lean",
-      "filename": "BrouwerFixedPointOQ02OQ01.lean",
-      "lineCount": 428,
-      "theoremCount": 10,
-      "axiomCount": 0,
-      "defCount": 12,
-      "sorryCount": 2,
+      "path": "Proofs/BrouwerFixedPoint.lean",
+      "filename": "BrouwerFixedPoint.lean",
+      "lineCount": 250,
+      "theoremCount": 5,
+      "axiomCount": 2,
+      "defCount": 5,
+      "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02OQ01.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPoint.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ01.lean",
+      "filename": "BrouwerFixedPointOQ01.lean",
+      "lineCount": 403,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ02.lean",
+      "filename": "BrouwerFixedPointOQ02.lean",
+      "lineCount": 392,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ02Ext.lean",
+      "filename": "BrouwerFixedPointOQ02Ext.lean",
+      "lineCount": 204,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02Ext.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ02Stability.lean",
+      "filename": "BrouwerFixedPointOQ02Stability.lean",
+      "lineCount": 198,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02Stability.lean"
     }
   ]
 }
