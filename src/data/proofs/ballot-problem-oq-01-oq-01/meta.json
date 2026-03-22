@@ -96,6 +96,20 @@
       "endLine": 130,
       "summary": "Informal derivations: `cycle_lemma_lower_bound_via_ivt` sketches how ballot_discrete_ivt gives |goodRotations| ≥ l.sum; `rightmost_is_good_sketch` explains why the rightmost position at each level v ∈ [minPS, minPS+S) is a good rotation (splitting into non-wrapping and wrapping cases).",
       "mathContext": "For each level $v \\in [\\mu, \\mu + S)$ where $\\mu = \\min_i P(i)$ and $S = a - kb$, ballot_discrete_ivt produces a strict prefix $j_v < |l|$ with $P(j_v) = v$. The rightmost such $j_v$ at each level is a good rotation (all cyclic prefix sums positive). The map $v \\mapsto j_v$ is injective, giving $|\\text{goodRotations}| \\geq S = a - kb$."
+    },
+    {
+      "id": "rightmost-good",
+      "title": "Rightmost-Is-Good Argument",
+      "startLine": 110,
+      "endLine": 130,
+      "summary": "Formal sketch of why the rightmost position i with P(i)=v yields a good rotation. Non-wrapping case: rightmostness of i at level v forces P(i+offset) > v. Wrapping case: v < minPS + S gives positivity for wrap-around prefix sums. Connects to the sorry at BallotProblemOQ01.lean line 536."
+    },
+    {
+      "id": "placeholder-theorems",
+      "title": "Placeholder Theorems",
+      "startLine": 108,
+      "endLine": 109,
+      "summary": "cycle_lemma_lower_bound_via_ivt: placeholder theorem (1+1=2) documenting how ballot_discrete_ivt iteratively produces good rotations at each prefix sum level, yielding |goodRotations| ≥ a - kb. Combined with the upper bound from OQ-01, this gives the full cycle lemma equality."
     }
   ],
   "crossReferences": [
