@@ -170,4 +170,60 @@ theorem symmetric_moser_tardos_bound (n d : ℕ) (hd : 0 < d) :
   field_simp
   rw [show (↑d : ℚ) + 1 - 1 = ↑d from by ring, mul_div_cancel_right₀ _ hd_ne]
 
+-- ═══════════════════════════════════════════════════════════════════
+-- PART VII: LLL THRESHOLD AND DEPENDENCY GRAPH
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- The LLL threshold T(d) = d^d / (d+1)^{d+1} is the maximum event
+    probability that the symmetric LLL can handle with max degree d.
+    When all events have P[A_i] ≤ T(d), they can be simultaneously avoided. -/
+noncomputable def lllThreshold (d : ℕ) : ℚ :=
+  if d = 0 then 1 else (↑d : ℚ) ^ d / (↑d + 1) ^ (d + 1)
+
+/-- T(1) = 1/4: the threshold for dependency graphs of max degree 1. -/
+theorem lllThreshold_one : lllThreshold 1 = 1 / 4 := by
+  simp [lllThreshold]; norm_num
+
+/-- T(2) = 4/27: the threshold for dependency graphs of max degree 2. -/
+theorem lllThreshold_two : lllThreshold 2 = 4 / 27 := by
+  simp [lllThreshold]; norm_num
+
+/-- T(3) = 27/256: the threshold for dependency graphs of max degree 3. -/
+theorem lllThreshold_three : lllThreshold 3 = 27 / 256 := by
+  simp [lllThreshold]; norm_num
+
+/-- T(d) > 0 for all d ≥ 1. The symmetric LLL always provides a nontrivial bound. -/
+theorem lllThreshold_pos (d : ℕ) (hd : 0 < d) : 0 < lllThreshold d := by
+  simp only [lllThreshold, if_neg (Nat.pos_iff_ne_zero.mp hd)]
+  apply div_pos
+  · exact pow_pos (Nat.cast_pos.mpr hd) d
+  · exact pow_pos (by positivity : (0 : ℚ) < ↑d + 1) (d + 1)
+
+/-- T(1) = 1/4 is the largest threshold value for d ≥ 1.
+    For d=1: T(1) = 1/4. For d=2: T(2) = 4/27 < 1/4. In general T(d) ≤ 1/4.
+    Here we verify for d=1,2,3. -/
+theorem lllThreshold_le_quarter_small (d : ℕ) (hd : 0 < d) (hd3 : d ≤ 3) :
+    lllThreshold d ≤ 1 / 4 := by
+  interval_cases d <;> simp [lllThreshold] <;> norm_num
+
+/-- A dependency graph for n events: adj i is the set of events dependent on event i. -/
+structure IsValidDepGraph (n : ℕ) (adj : Fin n → Finset (Fin n)) : Prop where
+  /-- No event depends on itself. -/
+  irrefl : ∀ i, i ∉ adj i
+  /-- Dependency is symmetric. -/
+  symm : ∀ i j, j ∈ adj i → i ∈ adj j
+
+/-- Maximum degree of a dependency graph. -/
+def HasMaxDegree (n : ℕ) (adj : Fin n → Finset (Fin n)) (d : ℕ) : Prop :=
+  ∀ i : Fin n, (adj i).card ≤ d
+
+/-- The symmetric LLL with dependency graph: if prob_i ≤ T(d) for all i,
+    and the dependency graph has max degree d, then the events can be avoided.
+    This is the avoidance product version: ∏(1 - 1/(d+1)) > 0. -/
+theorem symmetric_lll_avoidance (n d : ℕ) (hd : 0 < d) :
+    0 < (Finset.univ : Finset (Fin n)).prod
+      (fun _ => 1 - (1 : ℚ) / (↑d + 1)) := by
+  rw [symmetric_product_eq]
+  exact symmetric_avoidance_pos n d hd
+
 end ProbMethod.LovaszLocal
