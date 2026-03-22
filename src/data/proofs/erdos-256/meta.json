@@ -66,34 +66,13 @@
       "bounds_summary axiom"
     ],
     "references": [
-      {
-        "authors": "Erdős, Paul; Szekeres, George",
-        "title": "On the product ∏(1-z^{aᵢ})",
-        "year": "1959",
-        "venue": "Acad. Serbe Sci. Publ. Inst. Math.",
-        "note": "Initiated the study of f(n); proved the lower bound f(n) > √(2n)"
-      },
-      {
-        "authors": "Atkinson, F. V.",
-        "title": "On a problem of Erdős and Szekeres",
-        "year": "1961",
-        "venue": "Acta Sci. Math. (Szeged)",
-        "note": "Improved the upper bound to log f(n) ≪ n^{1/2} log n"
-      },
-      {
-        "authors": "Belov, Alexander S.; Konyagin, Sergei V.",
-        "title": "On an Erdős-Szekeres problem",
-        "year": "1996",
-        "venue": "arXiv/journal preprint",
-        "note": "Definitive answer: log f(n) ≪ (log n)⁴, showing f(n) grows only polylogarithmically"
-      },
-      {
-        "authors": "Bourgain, Jean; Chang, Mei-Chu",
-        "title": "On a multilinear character sum of Burgess",
-        "year": "2018",
-        "venue": "Comptes Rendus Mathématique",
-        "note": "Bounds for the distinct exponents case f*(n)"
-      }
+      {"key": "ES59", "citation": "Erdős, P. and Szekeres, G., On the product ∏(1-z^{aᵢ}), Acad. Serbe Sci. Publ. Inst. Math. (1959). Initiated the study; proved f(n) > √(2n).", "type": "paper"},
+      {"key": "At61", "citation": "Atkinson, F.V., On a problem of Erdős and Szekeres, Acta Sci. Math. (Szeged) (1961). Upper bound: log f(n) ≪ n^{1/2} log n.", "type": "paper"},
+      {"key": "BK96", "citation": "Belov, A.S. and Konyagin, S.V., On an Erdős-Szekeres problem (1996). Definitive answer: log f(n) ≪ (log n)⁴.", "type": "paper"},
+      {"key": "BC18", "citation": "Bourgain, J. and Chang, M.-C., On a multilinear character sum of Burgess, Comptes Rendus Mathématique (2018). Bounds for distinct exponents case.", "type": "paper"}
+    ],
+    "relatedProofs": [
+      {"id": "erdos-150", "relationship": "related", "description": "Both are solved Erdős problems involving analytic bounds on extremal quantities"}
     ],
     "axiomCount": 10,
     "prerequisites": [
@@ -192,20 +171,12 @@
       "Does the distinct exponents case $f^*(n)$ have the same growth rate as $f(n)$?"
     ]
   },
-  "crossReferences": [
-    {
-      "targetId": "erdos-150",
-      "relationship": "related",
-      "description": "Both are solved Erdős problems involving analytic/combinatorial bounds on extremal quantities"
-    },
-    {
-      "targetId": "basel-problem",
-      "relationship": "related",
-      "description": "Both involve evaluating or bounding special functions on the complex plane; Basel problem concerns ζ(2) while #256 concerns products on |z|=1"
-    }
-  ],
-  "relatedProofs": [
-    "erdos-150",
-    "basel-problem"
-  ]
+  "leanFile": {
+    "imports": ["Mathlib.Data.Complex.Basic", "Mathlib.Analysis.SpecialFunctions.Log.Basic", "Mathlib.Analysis.SpecialFunctions.Pow.Real", "Mathlib.Data.Finset.Basic", "Mathlib.Tactic"],
+    "namespace": "Erdos256",
+    "lineCount": 262,
+    "axiomCount": 10,
+    "theoremCount": 3,
+    "definitionCount": 7
+  }
 }

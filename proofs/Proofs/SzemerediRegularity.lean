@@ -15,6 +15,8 @@ import Mathlib
 
 namespace Szemeredi.Regularity
 
+open Classical
+
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
 -- ═══════════════════════════════════════════════════════════════════
@@ -49,6 +51,30 @@ def IsRegularPartition (G : SimpleGraph V) [DecidableRel G.Adj]
   ((parts.product parts).filter (fun pq =>
     pq.1 ≠ pq.2 ∧ ¬IsEpsilonRegular G eps pq.1 pq.2)).card ≤
     eps * (parts.card * (parts.card - 1))
+
+/-- Edge density is non-negative. -/
+theorem edgeDensity_nonneg (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A B : Finset V) : 0 ≤ edgeDensity G A B := by
+  unfold edgeDensity
+  split_ifs
+  · exact le_refl 0
+  · positivity
+
+/-- Edge density is at most 1. -/
+theorem edgeDensity_le_one (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A B : Finset V) : edgeDensity G A B ≤ 1 := by
+  unfold edgeDensity
+  split_ifs with h
+  · exact zero_le_one
+  · have hne : (A.card : ℚ) * B.card ≠ 0 := h
+    have hpos : (0 : ℚ) < (A.card : ℚ) * B.card :=
+      lt_of_le_of_ne (by positivity) hne.symm
+    rw [div_le_one hpos]
+    have h1 : {p ∈ A.product B | G.Adj p.1 p.2}.card ≤ A.card * B.card := by
+      calc {p ∈ A.product B | G.Adj p.1 p.2}.card
+          ≤ (A.product B).card := Finset.card_filter_le _ _
+        _ = A.card * B.card := Finset.card_product A B
+    exact_mod_cast h1
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART II: PARTITION ENERGY AND ENERGY INCREMENT
@@ -95,7 +121,33 @@ theorem partitionEnergy_le_one (G : SimpleGraph V) [DecidableRel G.Adj]
     (hdisjoint : ∀ P Q : Finset V, P ∈ parts → Q ∈ parts → P ≠ Q →
       Disjoint P Q) :
     partitionEnergy G parts ≤ 1 := by
-  sorry
+  unfold partitionEnergy
+  split_ifs with h
+  · exact zero_le_one
+  · -- Each d(P,Q)² ≤ 1, and there are k² terms, so Σ d² ≤ k²
+    -- Therefore (1/k²) * Σ d² ≤ (1/k²) * k² = 1
+    have hk2_ne : (↑(parts.card ^ 2) : ℚ) ≠ 0 :=
+      Nat.cast_ne_zero.mpr (pow_ne_zero 2 h)
+    have hsum : (parts.product parts).sum (fun pq => (edgeDensity G pq.1 pq.2) ^ 2)
+        ≤ ↑(parts.card ^ 2) := by
+      calc (parts.product parts).sum (fun pq => (edgeDensity G pq.1 pq.2) ^ 2)
+          ≤ (parts.product parts).sum (fun _ => (1 : ℚ)) := by
+            apply Finset.sum_le_sum; intro x _
+            have h1 := edgeDensity_nonneg G x.1 x.2
+            have h2 := edgeDensity_le_one G x.1 x.2
+            have : (edgeDensity G x.1 x.2) ^ 2 ≤ edgeDensity G x.1 x.2 := by
+              rw [sq]; exact mul_le_of_le_one_right h1 h2
+            linarith
+        _ = ↑(parts.product parts).card := by
+            simp [Finset.sum_const, nsmul_eq_mul]
+        _ = ↑(parts.card ^ 2) := by
+            congr 1
+            exact (Finset.card_product parts parts).trans (by ring)
+    calc (1 : ℚ) / ↑(parts.card ^ 2) *
+          (parts.product parts).sum (fun pq => (edgeDensity G pq.1 pq.2) ^ 2)
+        ≤ 1 / ↑(parts.card ^ 2) * ↑(parts.card ^ 2) :=
+          mul_le_mul_of_nonneg_left hsum (by positivity)
+      _ = 1 := by field_simp
 
 /-- **Szemeredi Regularity Lemma**: For every epsilon > 0, every
     sufficiently large graph admits an epsilon-regular partition into

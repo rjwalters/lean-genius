@@ -17,7 +17,7 @@
       "marquee-phase-3"
     ],
     "badge": "formalized",
-    "sorries": 3,
+    "sorries": 2,
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -39,10 +39,22 @@
       "Epsilon-regular pair definition for SimpleGraph bipartite subgraphs",
       "Regular partition definition with equitable partition and bounded irregularity",
       "Partition energy function and energy increment step",
+      "Edge density bounds: edgeDensity_nonneg and edgeDensity_le_one (proved)",
+      "Partition energy upper bound: partitionEnergy_le_one (proved)",
       "Regularity lemma via iterated energy refinement"
     ],
-    "dateAdded": "03/21/26",
-    "axiomCount": 0
+    "dateAdded": "2026-03-21",
+    "axiomCount": 0,
+    "references": [
+      {"key": "Sz75", "citation": "Szemerédi, E., On sets of integers containing no k elements in arithmetic progression, Acta Arith. 27 (1975), 199-245.", "type": "paper"},
+      {"key": "KS96", "citation": "Komlós, J. and Simonovits, M., Szemerédi's regularity lemma and its applications in graph theory, Combinatorics, Paul Erdős is Eighty, Vol. 2 (1996), 295-352.", "type": "paper"},
+      {"key": "Go97", "citation": "Gowers, W.T., Lower bounds of tower type for Szemerédi's uniformity lemma, GAFA 7 (1997), 322-337.", "type": "paper"},
+      {"key": "FK99", "citation": "Frieze, A. and Kannan, R., Quick approximation to matrices and applications, Combinatorica 19 (1999), 175-220.", "type": "paper"}
+    ],
+    "relatedProofs": [
+      {"id": "szemeredi-full", "relationship": "used-by", "description": "The full Szemerédi theorem uses regularity + counting to find arithmetic progressions"},
+      {"id": "roth-theorem-k3", "relationship": "related", "description": "Roth's theorem can be proved via regularity + triangle removal"}
+    ]
   },
   "overview": {
     "historicalContext": "The Szemeredi Regularity Lemma, proved by Endre Szemeredi in 1975 as a key tool in his proof of Szemeredi's theorem, has become one of the most important and widely-used results in combinatorics. It provides a universal structural decomposition for graphs: any sufficiently large graph can be partitioned into a bounded number of parts such that the edges between almost all pairs of parts behave pseudo-randomly.\n\nThe lemma's power lies in reducing arbitrary graph problems to problems about dense random-like bipartite graphs. This 'structure vs randomness' paradigm has transformed graph theory, additive combinatorics, and theoretical computer science.\n\nGowers (1997) showed that the tower-type bound on the number of parts is unavoidable: the partition size must grow as a tower of exponentials in 1/epsilon. Despite this, the lemma's qualitative power is undiminished, and it remains the primary tool for transferring results from random graphs to arbitrary graphs.\n\nThe regularity lemma has inspired numerous variants: the strong regularity lemma (Alon-Fischer-Krivelevich-Szegedy), weak regularity (Frieze-Kannan), arithmetic regularity (Green), and hypergraph regularity (Gowers, Rodl-Skokan).",
@@ -90,28 +102,6 @@
       "mathContext": "For all $\\varepsilon > 0$, $\\exists M$: every graph on $\\geq M$ vertices has an $\\varepsilon$-regular partition into $\\leq M$ parts"
     }
   ],
-  "crossReferences": [
-    {
-      "targetId": "szemeredi-counting",
-      "relationship": "used-by",
-      "description": "The counting lemma applies regularity to count subgraphs in regular partitions"
-    },
-    {
-      "targetId": "szemeredi-full",
-      "relationship": "used-by",
-      "description": "The full Szemeredi theorem uses regularity + counting to find arithmetic progressions"
-    },
-    {
-      "targetId": "roth-theorem-k3",
-      "relationship": "related",
-      "description": "Roth's theorem can be proved via regularity + triangle removal, connecting graph-theoretic and Fourier approaches"
-    },
-    {
-      "targetId": "prob-method-lovasz-local",
-      "relationship": "related",
-      "description": "Both regularity and the LLL provide structural decompositions that tame complexity in combinatorial objects"
-    }
-  ],
   "conclusion": {
     "summary": "The Szemeredi Regularity Lemma provides a universal structural decomposition of graphs into pseudo-random pieces. The formalization via energy increment establishes the foundational tool for the entire Szemeredi program.",
     "implications": "This formalization provides:\n\n**1. Fundamental Graph Structure Theorem**\nThe Regularity Lemma is the most important structural result in graph theory, and this formalization makes its subtle conditions machine-checkable.\n\n**2. Foundation for Counting and Removal**\nRegularity is prerequisite for the counting lemma and triangle removal lemma, which in turn yield Szemeredi's theorem.\n\n**3. Structure vs Randomness Paradigm**\nThe regularity decomposition exemplifies the modern 'structure vs randomness' paradigm that has transformed combinatorics.\n\n**4. Reusable Infrastructure**\nEpsilon-regularity definitions, partition energy, and refinement tools are reusable across graph theory problems.\n\n**5. Path to Variants**\nThe formalization provides a template for strong regularity, arithmetic regularity, and hypergraph regularity variants.",
@@ -122,10 +112,12 @@
       "What is the optimal energy increment constant, and can we formalize tight bounds?"
     ]
   },
-  "relatedProofs": [
-    "szemeredi-counting",
-    "szemeredi-full",
-    "roth-theorem-k3",
-    "prob-method-lovasz-local"
-  ]
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "namespace": "Szemeredi.Regularity",
+    "lineCount": 115,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 4
+  }
 }

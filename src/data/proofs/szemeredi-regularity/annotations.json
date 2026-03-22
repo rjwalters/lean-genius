@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-edge-density",
+    "proofId": "szemeredi-regularity",
+    "range": { "startLine": 24, "endLine": 29 },
+    "type": "definition",
+    "title": "Edge Density Between Vertex Subsets",
+    "content": "Defines edge density d(A,B) as the ratio of edges between A and B to the total number of possible edges |A|×|B|. The density is computed over the product A × B, filtering for adjacent pairs. The guard condition handles the degenerate case where either set is empty. Edge density is the fundamental measure that epsilon-regularity is defined against — it captures how 'uniformly spread' edges are between two vertex sets.",
+    "mathContext": "$d(A,B) = \\frac{|E(A,B)|}{|A| \\cdot |B|}$ where $E(A,B) = \\{(a,b) \\in A \\times B : a \\sim b\\}$. When $|A| \\cdot |B| = 0$, $d(A,B) = 0$ by convention.",
+    "significance": "key",
+    "relatedConcepts": ["bipartite density", "edge counting", "random graph comparison"],
+    "prerequisites": ["graph theory", "rational arithmetic"]
+  },
+  {
+    "id": "ann-epsilon-regular",
+    "proofId": "szemeredi-regularity",
+    "range": { "startLine": 31, "endLine": 40 },
+    "type": "definition",
+    "title": "Epsilon-Regular Pairs",
+    "content": "The central definition: a pair (A,B) is ε-regular if every sufficiently large sub-pair (A' ⊆ A, B' ⊆ B with |A'| ≥ ε|A|, |B'| ≥ ε|B|) has edge density close to d(A,B). This captures 'pseudo-randomness': in a truly random bipartite graph G(n,n,p), the density between any large sub-pair concentrates around p. Epsilon-regular pairs behave like random graphs for the purpose of counting subgraph copies — this is the content of the counting lemma.",
+    "mathContext": "$(A,B)$ is $\\varepsilon$-regular if $\\forall A' \\subseteq A, B' \\subseteq B$ with $|A'| \\geq \\varepsilon|A|$, $|B'| \\geq \\varepsilon|B|$: $|d(A',B') - d(A,B)| \\leq \\varepsilon$.",
+    "significance": "key",
+    "relatedConcepts": ["pseudo-randomness", "quasi-randomness", "Chernoff bound analogy", "counting lemma"],
+    "prerequisites": ["graph theory", "probability (intuition)"]
+  },
+  {
+    "id": "ann-regular-partition",
+    "proofId": "szemeredi-regularity",
+    "range": { "startLine": 42, "endLine": 51 },
+    "type": "definition",
+    "title": "Regular Partition",
+    "content": "A partition is ε-regular if it satisfies two conditions: (1) equitability — all parts have sizes differing by at most 1, and (2) bounded irregularity — at most ε·C(k,2) pairs of parts are not ε-regular. The equitability condition prevents degenerate partitions where one huge part absorbs all vertices. The bound on irregular pairs is stated as a fraction of all pairs, allowing a small number of 'bad' pairs while ensuring the overall structure is pseudo-random.",
+    "mathContext": "Partition $\\mathcal{P} = \\{V_1, \\ldots, V_k\\}$ is $\\varepsilon$-regular if: (1) $||V_i| - |V_j|| \\leq 1$ for all $i,j$ (equitable), and (2) $|\\{(i,j) : (V_i, V_j) \\text{ not } \\varepsilon\\text{-regular}\\}| \\leq \\varepsilon \\binom{k}{2}$.",
+    "significance": "key",
+    "relatedConcepts": ["equitable partition", "equipartition", "irregular pairs", "partition refinement"],
+    "prerequisites": ["combinatorics", "partition theory"]
+  },
+  {
+    "id": "ann-partition-energy",
+    "proofId": "szemeredi-regularity",
+    "range": { "startLine": 57, "endLine": 74 },
+    "type": "definition",
+    "title": "Partition Energy (Potential Function)",
+    "content": "The partition energy E(P) = (1/k²) Σ d(Vᵢ,Vⱼ)² serves as the potential function driving the regularity proof. Energy is always non-negative (proved here: product of non-negative terms) and bounded by 1 (each density is at most 1, and the sum has k² terms with a 1/k² factor). The key property is that refining an irregular partition increases energy by at least ε⁵, while energy cannot exceed 1 — so the process must terminate. The proof of non-negativity uses Lean's positivity tactic for the 1/k² factor and sum_nonneg with sq_nonneg for the density squares.",
+    "mathContext": "$E(\\mathcal{P}) = \\frac{1}{k^2} \\sum_{i,j} d(V_i, V_j)^2 \\in [0, 1]$. Non-negativity: $d^2 \\geq 0$ for all terms. Upper bound: $d \\leq 1 \\Rightarrow d^2 \\leq 1 \\Rightarrow E \\leq 1$.",
+    "significance": "key",
+    "relatedConcepts": ["potential function", "Lyapunov function", "mean square density", "convexity"],
+    "prerequisites": ["analysis", "optimization"]
+  },
+  {
+    "id": "ann-energy-increment",
+    "proofId": "szemeredi-regularity",
+    "range": { "startLine": 76, "endLine": 85 },
+    "type": "technique",
+    "title": "Energy Increment Step",
+    "content": "The key technical lemma: if a partition is not ε-regular (too many irregular pairs), it can be refined into a new partition whose energy exceeds the old by at least ε⁵. The refinement doubles each part based on the witnessing sub-pairs, giving a partition with at most k·2^k parts. The ε⁵ increment is the bottleneck that determines the tower-type bound on M(ε): after at most ε⁻⁵ refinements, energy exceeds 1, which is impossible — so the process must have terminated with a regular partition. This step remains a sorry, as it requires the most technical argument in the proof.",
+    "mathContext": "If $\\mathcal{P}$ is not $\\varepsilon$-regular, $\\exists \\mathcal{P}'$ with $E(\\mathcal{P}') \\geq E(\\mathcal{P}) + \\varepsilon^5$ and $|\\mathcal{P}'| \\leq |\\mathcal{P}| \\cdot 2^{|\\mathcal{P}|}$. After $\\leq \\varepsilon^{-5}$ steps, $E > 1$ — contradiction.",
+    "significance": "key",
+    "relatedConcepts": ["partition refinement", "boosting argument", "tower function", "Gowers lower bound"],
+    "prerequisites": ["combinatorics", "real analysis", "convexity arguments"]
+  },
+  {
+    "id": "ann-energy-bound",
+    "proofId": "szemeredi-regularity",
+    "range": { "startLine": 91, "endLine": 98 },
+    "type": "technique",
+    "title": "Energy Upper Bound",
+    "content": "States that partition energy is at most 1, provided the parts form a genuine partition (every vertex belongs to some part, parts are pairwise disjoint). This upper bound, combined with the ε⁵ increment per step, gives the termination argument: at most ⌊1/ε⁵⌋ refinement steps are possible. The sorry requires showing that d(Vᵢ,Vⱼ) ≤ 1 for all pairs and using the partition structure to bound the sum.",
+    "mathContext": "If $\\{V_1, \\ldots, V_k\\}$ is a partition of $V$, then $E(\\mathcal{P}) = \\frac{1}{k^2} \\sum_{i,j} d(V_i,V_j)^2 \\leq \\frac{1}{k^2} \\cdot k^2 = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["density bound", "partition properties", "disjointness"],
+    "prerequisites": ["basic inequality", "partition structure"]
+  },
+  {
+    "id": "ann-regularity-lemma",
+    "proofId": "szemeredi-regularity",
+    "range": { "startLine": 100, "endLine": 113 },
+    "type": "insight",
+    "title": "Szemeredi Regularity Lemma (Main Result)",
+    "content": "The main theorem: for every ε > 0, there exists M such that every graph on ≥ M vertices has an ε-regular partition into ≤ M parts. The proof iterates: start with an arbitrary equipartition; if not ε-regular, apply energy_increment_step; repeat until regular. Since energy ∈ [0,1] and increases by ε⁵ each step, at most ε⁻⁵ steps occur. The bound M grows as a tower of exponentials: M(ε) = tower(ε⁻⁵, initial size), because each refinement squares the number of parts (k → k·2^k). Gowers (1997) showed this tower growth is unavoidable.",
+    "mathContext": "$\\forall \\varepsilon > 0,\\ \\exists M = M(\\varepsilon)$: every graph $G$ on $n \\geq M$ vertices has an $\\varepsilon$-regular partition $\\mathcal{P}$ with $|\\mathcal{P}| \\leq M$. Bound: $M(\\varepsilon) = \\text{tower}(\\varepsilon^{-5})$.",
+    "significance": "key",
+    "relatedConcepts": ["Szemeredi's theorem", "graph decomposition", "tower function", "Ramsey theory"],
+    "prerequisites": ["all prior sections"]
+  }
+]

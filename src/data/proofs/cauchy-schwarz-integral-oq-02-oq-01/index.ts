@@ -1,7 +1,7 @@
 import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
-import sourceRaw from '../../../../proofs/Proofs/BallotProblemOQ03OQ02.lean?raw'
+import sourceRaw from '../../../../proofs/Proofs/CauchySchwarzIntegralOQ02OQ01.lean?raw'
 
 const meta = metaJson as unknown as {
   id: string
@@ -14,7 +14,7 @@ const meta = metaJson as unknown as {
   conclusion?: ProofConclusion
 }
 
-export const ballotProblemOq03Oq02Proof: Proof = {
+export const cauchySchwarzIntegralOQ02OQ01Proof: Proof = {
   id: meta.id,
   title: meta.title,
   slug: meta.slug,
@@ -26,11 +26,11 @@ export const ballotProblemOq03Oq02Proof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const ballotProblemOq03Oq02Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
+export const cauchySchwarzIntegralOQ02OQ01Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
-export const ballotProblemOq03Oq02Data: ProofData = {
-  proof: ballotProblemOq03Oq02Proof,
-  annotations: ballotProblemOq03Oq02Annotations,
+export const cauchySchwarzIntegralOQ02OQ01Data: ProofData = {
+  proof: cauchySchwarzIntegralOQ02OQ01Proof,
+  annotations: cauchySchwarzIntegralOQ02OQ01Annotations,
 }
 
-export default ballotProblemOq03Oq02Data
+export default cauchySchwarzIntegralOQ02OQ01Data
