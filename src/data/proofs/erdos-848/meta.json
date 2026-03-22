@@ -136,12 +136,20 @@
       "mathContext": "The bound $|A|/N \\leq 2\\sum_{p \\equiv 1(4)} 1/p^2 \\approx 0.108$ arises from inclusion-exclusion: each prime $p \\equiv 1 \\pmod{4}$ contributes exactly 2 residue classes mod $p^2$ where $a^2 + 1 \\equiv 0$, while primes $p \\equiv 3 \\pmod{4}$ contribute none."
     },
     {
-      "id": "solution",
-      "title": "Sawhney's Exact Solution",
+      "id": "exact-solution",
+      "title": "Sawhney's Exact Answer",
       "startLine": 57,
+      "endLine": 63,
+      "summary": "sawhney_solution: for sufficiently large N, maxNonSqfreeSet(N) = ⌊N/25⌋ exactly, closing the gap between the N/25 lower bound and the 0.108N upper bound.",
+      "mathContext": "$\\exists N_0,\\ \\forall N \\geq N_0: \\max|A| = \\lfloor N/25 \\rfloor$. This shows the simple mod-25 construction is optimal, a dramatic improvement over Van Doorn's $0.108N$ bound."
+    },
+    {
+      "id": "structural-characterization",
+      "title": "Uniqueness of Extremal Sets",
+      "startLine": 65,
       "endLine": 71,
-      "summary": "sawhney_solution: max = N/25 for large N. sawhney_structure: extremal sets are exactly {n ≡ 7 (mod 25)} or {n ≡ 18 (mod 25)}.",
-      "mathContext": "$\\exists N_0,\\ \\forall N \\geq N_0: \\max|A| = \\lfloor N/25 \\rfloor$. Uniqueness: any extremal $A$ satisfies $A \\subseteq \\{n \\equiv 7\\}$ or $A \\subseteq \\{n \\equiv 18\\} \\pmod{25}$."
+      "summary": "sawhney_structure: any extremal set of size ⌊N/25⌋ for large N must consist entirely of elements ≡ 7 (mod 25) or entirely of elements ≡ 18 (mod 25). A rigidity result paralleling Turán-type stability in extremal graph theory.",
+      "mathContext": "Any extremal $A$ satisfies $A \\subseteq \\{n \\equiv 7\\}$ or $A \\subseteq \\{n \\equiv 18\\} \\pmod{25}$. The two classes correspond to the two roots of $x^2 \\equiv -1 \\pmod{25}$, reflecting a $\\mathbb{Z}/2\\mathbb{Z}$ symmetry."
     }
   ],
   "conclusion": {
