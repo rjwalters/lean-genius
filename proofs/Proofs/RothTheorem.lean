@@ -203,7 +203,7 @@ private lemma psi_add {N : ℕ} [NeZero N] (a b : ZMod N) :
   rw [show 2 * ↑Real.pi * Complex.I * (↑(ZMod.val a) / ↑N) +
         2 * ↑Real.pi * Complex.I * (↑(ZMod.val b) / ↑N) =
         2 * ↑Real.pi * Complex.I * ((↑(ZMod.val a) + ↑(ZMod.val b)) / ↑N) from by ring,
-    show (↑(ZMod.val a) : ℂ) + ↑(ZMod.val b) = ↑k from by simp [hk_def]; push_cast; ring]
+    show (↑(ZMod.val a) : ℂ) + ↑(ZMod.val b) = ↑k from by simp [hk_def]]
   -- Now: exp(2πi·(k%N)/N) = exp(2πi·k/N). Decompose k = N·⌊k/N⌋ + k%N.
   have hdiv : (↑k : ℂ) = ↑N * ↑(k / N) + ↑(k % N) := by
     exact_mod_cast (Nat.div_add_mod k N).symm
@@ -231,7 +231,7 @@ private lemma conj_psi {N : ℕ} [NeZero N] (x : ZMod N) :
       ring
     rw [this, Real.exp_zero]
   have h2 : ψ x * starRingEnd ℂ (ψ x) = 1 := by
-    rw [Complex.mul_conj, ← Complex.ofReal_pow, h_norm, one_pow, Complex.ofReal_one]
+    rw [Complex.mul_conj]; simp [h_norm]
   exact mul_left_cancel₀ hne (h2.trans h1.symm)
 
 /-- ψ(c) ≠ 1 when c ≠ 0: a nontrivial character is not the identity.
@@ -252,6 +252,7 @@ private lemma psi_ne_one {N : ℕ} [NeZero N] (c : ZMod N) (hc : c ≠ 0) :
   have hval_eq : (ZMod.val c : ℤ) = n * N := by
     have : (↑(ZMod.val c) : ℂ) = ↑n * ↑N := by rwa [div_eq_iff hNc] at heq
     exact_mod_cast this
+  have hval_lt := ZMod.val_lt c
   have : ZMod.val c = 0 := by omega
   rwa [← ZMod.val_eq_zero]
 
