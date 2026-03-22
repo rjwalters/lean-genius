@@ -130,6 +130,18 @@
       "summary": "Axiomatizes $\\liminf \\varphi(n)/n = 0$ (via primorials and Mertens' theorem) and $\\varphi(n)/n < 1$ for $n > 1$ (from existence of a prime factor)."
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "euler-totient",
+      "relationship": "uses",
+      "description": "Schoenberg's distribution function is built from the totient ratio φ(n)/n, directly using Euler's totient function"
+    },
+    {
+      "targetId": "erdos-409",
+      "relationship": "related",
+      "description": "Both study iteration/distribution properties of Euler's totient function: #409 studies φ iteration dynamics, #50 studies the statistical distribution of φ(n)/n"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #50 asks whether Schoenberg's distribution function f—the natural density of {n : φ(n)/n < c}—has the property that f'(x) > 0 for no x at all. Erdős proved f is purely singular (f' = 0 a.e.), but the pointwise strengthening remains open with a $250 prize. The formalization axiomatizes Schoenberg's density theorem, all properties of f, Erdős's singularity result, and the prize conjecture.",
     "implications": "A positive answer would establish that Schoenberg's function is 'maximally singular'—differentiable nowhere with positive derivative. This would reveal deep structure in the distribution of φ(n)/n and connect to broader questions about singular measures arising from number-theoretic data.",
