@@ -103,5 +103,37 @@
       "Waring's Problem: For each k, what is the smallest s such that every positive integer is a sum of s k-th powers?",
       "Which integers (not just primes) are sums of two squares? Answer: n = 2^a * p_1^{b_1} * ... * q_1^{c_1} * ... where each q_i is 3 mod 4 and each c_i is even"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Zagier, Don",
+      "title": "A One-Sentence Proof That Every Prime p ≡ 1 (mod 4) Is a Sum of Two Squares",
+      "year": "1990",
+      "venue": "The American Mathematical Monthly, 97(2), p. 144",
+      "note": "The famous one-sentence proof using an involution on the set S = {(x,y,z) : x²+4yz = p}; the unique fixed point of the involution gives the representation"
+    },
+    {
+      "authors": "Hardy, G. H.; Wright, E. M.",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "2008",
+      "venue": "Oxford University Press, 6th edition",
+      "note": "Chapter 20 covers representation by sums of squares, including Fermat's theorem and the Gaussian integer approach"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "bezout-identity",
+      "relationship": "uses",
+      "description": "The proof via Gaussian integers uses Bézout's identity in Z[i] to factor primes of the form 4k+1"
+    },
+    {
+      "targetId": "quadratic-residues",
+      "relationship": "related",
+      "description": "Whether -1 is a quadratic residue mod p (i.e., p ≡ 1 mod 4) is equivalent to whether p is a sum of two squares — connecting this result to quadratic reciprocity"
+    }
+  ],
+  "relatedProofs": [
+    "bezout-identity",
+    "quadratic-residues"
+  ]
 }
