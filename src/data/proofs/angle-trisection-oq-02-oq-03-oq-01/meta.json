@@ -65,7 +65,13 @@
       }
     ],
     "axiomCount": 0,
-    "lineCount": 740
+    "lineCount": 740,
+    "prerequisites": [
+      "Cyclotomic polynomials and their properties",
+      "Unit group of ZMod n and its structure",
+      "Chebyshev polynomials and cos(2pi/n)",
+      "Galois theory of cyclotomic extensions"
+    ]
   },
   "overview": {
     "historicalContext": "**Gauss-Wantzel Theorem and Cyclotomic Fields**\n\nThe Gauss-Wantzel theorem (Gauss 1796, Wantzel 1837) characterizes which regular polygons are constructible: a regular n-gon is constructible iff n is a product of a power of 2 and distinct Fermat primes. The key algebraic fact is that cos(2π/n) is constructible iff its minimal polynomial has degree a power of 2, and this degree equals φ(n)/2.\n\nThis file bridges the axiomized Gauss-Wantzel theorem to Mathlib's cyclotomic field infrastructure, proving the connection between exp(2πi/n), cyclotomic polynomials, and cos(2π/n).",
@@ -85,42 +91,48 @@
       "title": "Primitive Roots of Unity and Euler's Formula",
       "summary": "Defines ζₙ = exp(2πi/n), proves it equals cos + i·sin, extracts real/imaginary parts, proves conj(ζₙ) = ζₙ⁻¹, and establishes the key bridge ζₙ + ζₙ⁻¹ = 2cos(2π/n).",
       "startLine": 30,
-      "endLine": 78
+      "endLine": 78,
+      "mathContext": "$\\zeta_n = e^{2\\pi i/n}$. The $n$-th roots of unity form the cyclic group $\\mu_n \\cong \\mathbb{Z}/n\\mathbb{Z}$."
     },
     {
       "id": "unit-circle",
       "title": "Powers and Unit Circle",
       "summary": "Proves |ζₙ| = 1, ζₙ ≠ 0, and ζₙⁿ = 1 (the defining property). Shows ζₙ belongs to rootsOfUnity.",
       "startLine": 79,
-      "endLine": 111
+      "endLine": 111,
+      "mathContext": "Regular $n$-gon has vertices at $e^{2\\pi ik/n}$ for $k = 0, \\ldots, n-1$. Constructibility of the $n$-gon $\\iff$ constructibility of $\\cos(2\\pi/n)$."
     },
     {
       "id": "chebyshev",
       "title": "Chebyshev Polynomials",
       "summary": "Proves existence and degree of Chebyshev polynomials satisfying Tₙ(cos θ) = cos(nθ), connecting polynomial algebra to trigonometry.",
       "startLine": 154,
-      "endLine": 186
+      "endLine": 186,
+      "mathContext": "Chebyshev polynomials: $T_n(\\cos\\theta) = \\cos(n\\theta)$. Connect $\\cos(2\\pi/n)$ to polynomial roots and algebraic degree computations."
     },
     {
       "id": "cyclotomic-degree",
       "title": "Cyclotomic Extension Degree",
       "summary": "Wraps Mathlib results: deg(Φₙ) = φ(n) and Φₙ is irreducible over ℚ.",
       "startLine": 187,
-      "endLine": 204
+      "endLine": 204,
+      "mathContext": "$[\\mathbb{Q}(\\zeta_n) : \\mathbb{Q}] = \\varphi(n)$. The cyclotomic polynomial $\\Phi_n$ is irreducible over $\\mathbb{Q}$ with degree $\\varphi(n)$."
     },
     {
       "id": "galois-conjugation",
       "title": "Complex Conjugation as Order-2 Automorphism",
       "summary": "The main proved result: via galCyclotomicEquivUnitsZMod, -1 ∈ (ℤ/nℤ)* gives σ ≠ id with σ² = id. Uses n ≥ 3 to show -1 ≠ 1 (since n ∤ 2).",
       "startLine": 206,
-      "endLine": 261
+      "endLine": 261,
+      "mathContext": "$\\text{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^*$, acting by $\\sigma_k(\\zeta_n) = \\zeta_n^k$ for $\\gcd(k,n) = 1$."
     },
     {
       "id": "axiom-bridge",
       "title": "Bridge to Gauss-Wantzel Axioms",
       "summary": "Three axioms connecting cyclotomic theory to constructibility: maximal real subfield degree, minimal polynomial degree, and Galois extension property. Derives cos(2π/n) algebraicity.",
       "startLine": 262,
-      "endLine": 371
+      "endLine": 371,
+      "mathContext": "Bridge: $(\\mathbb{Z}/n\\mathbb{Z})^*$ is a 2-group $\\iff \\varphi(n) = 2^k \\iff$ regular $n$-gon is constructible (Gauss-Wantzel)."
     }
   ],
   "conclusion": {
@@ -131,5 +143,22 @@
       "Can the explicit minimal polynomial of cos(2π/n) be computed via the Chebyshev substitution in Φₙ?",
       "Can the full Gauss-Wantzel theorem be connected directly to Mathlib's cyclotomic infrastructure without intermediate axioms?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "angle-trisection-oq-02-oq-03",
+      "relationship": "extends",
+      "description": "Parent file proving Gauss-Wantzel with totient computations — this file bridges to Mathlib's cyclotomic infrastructure"
+    },
+    {
+      "targetId": "angle-trisection-oq-02",
+      "relationship": "related",
+      "description": "The Galois-theoretic constructibility criterion — this file connects it to cyclotomic Galois groups"
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "ancestor",
+      "description": "Base impossibility proof — this file extends the constructibility theory to regular polygon characterization"
+    }
+  ]
 }

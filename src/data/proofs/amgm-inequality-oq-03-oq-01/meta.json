@@ -61,30 +61,32 @@
         "note": "Comprehensive treatment of power means including the duality M_r(z) = M_{-r}(z⁻¹)⁻¹"
       }
     ],
+    "prerequisites": [
+      "Power mean definitions and positive monotonicity (from parent file)",
+      "Real power function (rpow) arithmetic: inv_rpow, rpow_neg, rpow_mul",
+      "Finset positivity (single_le_sum, sum_pos)",
+      "Jensen's inequality for convex functions"
+    ],
     "crossReferences": [
       {
-        "proofId": "amgm-inequality-oq-03",
-        "title": "Power Mean Interpolation: How Do Weighted Power Means Relate to AM and GM?",
-        "relationship": "parent",
-        "note": "Contains the positive-exponent monotonicity theorem power_mean_monotone_pos used by this proof's duality reduction"
+        "targetId": "amgm-inequality-oq-03",
+        "relationship": "extends",
+        "description": "Contains the positive-exponent monotonicity theorem power_mean_monotone_pos used by this proof's duality reduction"
       },
       {
-        "proofId": "amgm-inequality-oq-03-oq-02",
-        "title": "Power Mean Limit: lim_{r→0} M_r = GM",
-        "relationship": "sibling",
-        "note": "Together with this negative case, only the mixed-sign crossing (r < 0 < s) remains to complete the full power mean chain"
-      },
-      {
-        "proofId": "amgm-inequality",
-        "title": "Arithmetic Mean - Geometric Mean Inequality",
+        "targetId": "amgm-inequality-oq-03-oq-02",
         "relationship": "related",
-        "note": "The AM-GM inequality is the r=1, s=0 case of the general power mean monotonicity chain"
+        "description": "Together with this negative case, only the mixed-sign crossing (r < 0 < s) remains to complete the full power mean chain"
       },
       {
-        "proofId": "cauchy-schwarz",
-        "title": "Cauchy-Schwarz Inequality",
+        "targetId": "amgm-inequality",
         "relationship": "related",
-        "note": "Both are fundamental inequalities in analysis; Cauchy-Schwarz can be derived from the r=2 power mean"
+        "description": "The AM-GM inequality is the r=1, s=0 case of the general power mean monotonicity chain"
+      },
+      {
+        "targetId": "cauchy-schwarz",
+        "relationship": "related",
+        "description": "Both are fundamental inequalities in analysis; Cauchy-Schwarz can be derived from the r=2 power mean"
       }
     ],
     "dateAdded": "2026-03-21",
@@ -109,35 +111,40 @@
       "title": "Algebraic Duality: M_r(z) = M_{-r}(z⁻¹)⁻¹",
       "startLine": 220,
       "endLine": 250,
-      "summary": "power_mean_neg_inv proves the key identity by showing (zᵢ⁻¹)^(-r) = zᵢ^r (via inv_rpow + rpow_neg + inv_inv) and A^(1/r) = (A^(1/(-r)))⁻¹ (via rpow_neg)."
+      "summary": "power_mean_neg_inv proves the key identity by showing (zᵢ⁻¹)^(-r) = zᵢ^r (via inv_rpow + rpow_neg + inv_inv) and A^(1/r) = (A^(1/(-r)))⁻¹ (via rpow_neg).",
+      "mathContext": "$M_r(z) = (\\sum w_i z_i^r)^{1/r} = ((\\sum w_i (z_i^{-1})^{-r})^{1/(-r)})^{-1} = M_{-r}(z^{-1})^{-1}$."
     },
     {
       "id": "positivity-helpers",
       "title": "Positivity Helpers",
       "startLine": 252,
       "endLine": 279,
-      "summary": "weighted_sum_pos and weightedPowerMean_pos establish that ∑ wᵢzᵢ^p > 0 and M_p > 0 when ∑ wᵢ = 1 and all zᵢ > 0. Uses Finset.single_le_sum to find a positive term."
+      "summary": "weighted_sum_pos and weightedPowerMean_pos establish that ∑ wᵢzᵢ^p > 0 and M_p > 0 when ∑ wᵢ = 1 and all zᵢ > 0. Uses Finset.single_le_sum to find a positive term.",
+      "mathContext": "$\\sum w_i = 1 > 0$ and $w_i \\geq 0 \\Rightarrow \\exists i_0, w_{i_0} > 0$. Then $\\sum w_i z_i^p \\geq w_{i_0} z_{i_0}^p > 0$."
     },
     {
       "id": "main-theorem",
       "title": "Negative Power Mean Monotonicity",
       "startLine": 281,
       "endLine": 343,
-      "summary": "power_mean_monotone_neg: the main theorem. Negates exponents (0 < -t ≤ -r), applies power_mean_monotone_pos to z⁻¹, then inverts using explicit multiplicative calc blocks. The inversion avoids inv_le_inv_of_le by building from mul_inv_cancel₀ + mul_le_mul_of_nonneg_right."
+      "summary": "power_mean_monotone_neg: the main theorem. Negates exponents (0 < -t ≤ -r), applies power_mean_monotone_pos to z⁻¹, then inverts using explicit multiplicative calc blocks.",
+      "mathContext": "$r \\leq t < 0 \\Rightarrow 0 < -t \\leq -r$. By positive case: $M_{-t}(z^{-1}) \\leq M_{-r}(z^{-1})$. Invert: $M_r(z) = M_{-r}(z^{-1})^{-1} \\leq M_{-t}(z^{-1})^{-1} = M_t(z)$."
     },
     {
       "id": "hm-gm-corollary",
       "title": "HM ≤ GM as Power Mean Corollary",
       "startLine": 345,
       "endLine": 355,
-      "summary": "The harmonic-geometric mean inequality as the r = -1 specialization. Proved via harmonic_mean_le_geom_mean_direct, with the _hHM hypothesis documenting that M_{-1} equals the weighted harmonic mean."
+      "summary": "The harmonic-geometric mean inequality as the r = -1 specialization. Proved via harmonic_mean_le_geom_mean_direct, with the _hHM hypothesis documenting that M_{-1} equals the weighted harmonic mean.",
+      "mathContext": "$\\text{HM} = M_{-1} = (\\sum w_i z_i^{-1})^{-1} \\leq M_0 = \\text{GM} = \\prod z_i^{w_i}$."
     },
     {
       "id": "interpolation-summary",
       "title": "Power Mean Interpolation Chain Summary",
       "startLine": 357,
       "endLine": 372,
-      "summary": "Status summary of the full power mean chain min(z) ≤ ... ≤ HM ≤ GM ≤ AM ≤ ... ≤ max(z). Seven links are proved (✓), one remains: the mixed-sign crossing r < 0 < s."
+      "summary": "Status summary of the full power mean chain min(z) ≤ ... ≤ HM ≤ GM ≤ AM ≤ ... ≤ max(z). Seven links are proved, one remains: the mixed-sign crossing r < 0 < s.",
+      "mathContext": "$\\min(z) \\leq M_{-\\infty} \\leq \\cdots \\leq M_{-1} \\leq M_0 \\leq M_1 \\leq M_2 \\leq \\cdots \\leq M_{\\infty} \\leq \\max(z)$. All same-sign cases proved."
     }
   ],
   "conclusion": {
