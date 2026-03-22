@@ -1,0 +1,26 @@
+{
+  "id": "cayley-hamilton-minpoly-oq-05",
+  "name": "Minimal Polynomial Reduction in General K-Algebras",
+  "status": "surveyed",
+  "phase": "OBSERVE",
+  "knowledge": {
+    "insights": [
+      "No OQ05 file exists yet - fresh formalization needed",
+      "OQ04 (316 lines) and OQ04Backward (480 lines) cover minimal polynomial computation",
+      "OQ02+OQ02OQ01 cover K-algebra generalization with AlgEquiv/AlgHom invariance",
+      "Mathlib has minpoly.algEquiv_eq for invariance under K-algebra isomorphisms",
+      "General K-algebras: minpoly theory well-supported in Mathlib for integral elements"
+    ],
+    "builtItems": [],
+    "openQuestions": [
+      "What specific 'reduction' is targeted? Likely: compute minpoly via reduction to simpler structures",
+      "Does this connect to Jordan normal form or primary decomposition?"
+    ],
+    "nextSteps": [
+      "Clarify scope: is this about computing minpoly via structure theory or proving properties?",
+      "Check Mathlib for minpoly computation tools in general K-algebras",
+      "Create OQ05 file with relevant theorems using Mathlib infrastructure"
+    ],
+    "progressSummary": "SURVEY: Fresh problem, no existing file. K-algebra minpoly well-supported in Mathlib. Need to clarify exact scope."
+  }
+}
