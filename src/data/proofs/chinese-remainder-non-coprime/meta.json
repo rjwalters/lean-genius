@@ -186,5 +186,37 @@
       "For three non-coprime moduli, when are pairwise gcd conditions sufficient (not just necessary)?",
       "What are the implications for simultaneous Diophantine approximation?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Sunzi (Sun Tzu)",
+      "title": "Sunzi Suanjing (The Mathematical Classic of Sun Zi)",
+      "year": "c. 300 CE",
+      "venue": "Chinese mathematical text",
+      "note": "Contains the earliest known statement of the CRT: 'When dividing by 3 remainder 2, by 5 remainder 3, by 7 remainder 2, what is the number?' — the classical coprime case"
+    },
+    {
+      "authors": "Ireland, Kenneth; Rosen, Michael",
+      "title": "A Classical Introduction to Modern Number Theory",
+      "year": "1990",
+      "venue": "Springer Graduate Texts in Mathematics 84, 2nd edition",
+      "note": "Chapter 3 covers the CRT including the non-coprime generalization with the gcd solvability condition and lcm uniqueness"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "chinese-remainder-theorem",
+      "relationship": "generalizes",
+      "description": "This entry generalizes the classical CRT (coprime moduli) to arbitrary moduli, adding the gcd solvability condition and replacing product with lcm for uniqueness"
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "uses",
+      "description": "The sufficiency proof uses Bézout coefficients from the extended Euclidean algorithm to construct the solution explicitly"
+    }
+  ],
+  "relatedProofs": [
+    "chinese-remainder-theorem",
+    "bezout-identity"
+  ]
 }
