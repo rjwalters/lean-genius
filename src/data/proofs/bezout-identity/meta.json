@@ -188,6 +188,36 @@
     "theoremCount": 8,
     "definitionCount": 0
   },
+  "crossReferences": [
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Bézout's identity is a key ingredient in proving unique prime factorization: from gcd(a,b) = ax + by, one derives Euclid's lemma (p|ab → p|a or p|b), which gives uniqueness"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "related",
+      "description": "Euclid's proof of infinite primes uses coprimality — Bézout provides the algebraic characterization gcd = 1 ⟺ ax + by = 1 that underpins coprimality arguments"
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "extended-by",
+      "description": "The Chinese Remainder Theorem uses Bézout coefficients to construct simultaneous solutions: from gcd(m,n) = 1 and mx + ny = 1, the CRT solution is built by scaling"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "related",
+      "description": "Both are foundational to group/number theory: Lagrange's theorem constrains subgroup orders, while Bézout characterizes when elements generate the full group ℤ/nℤ"
+    }
+  ],
+  "relatedProofs": [
+    "fundamental-arithmetic",
+    "infinitude-primes",
+    "chinese-remainder-constructive",
+    "lagrange-theorem",
+    "bezout-identity-oq-02",
+    "bezout-identity-oq-03"
+  ],
   "references": [
     {
       "authors": "Bézout, Étienne",
