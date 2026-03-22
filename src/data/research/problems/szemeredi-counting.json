@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Structured bad_vertices_small proof — regularity application proved, density bound sorry remains. 3 sorries (unchanged count but first is 90% complete).",
+    "progressSummary": "PROGRESS: bad_vertices_small proof 95% complete — only fiber decomposition sorry remains. Proof structure: unfold edgeDensity → dif_neg → div_lt_iff₀ → fiber decomposition → sum bound. 3 sorries unchanged but first is nearly done.",
     "builtItems": [
       "neighborhoodIn: {b ∈ B : G.Adj v b} (definition + subset/card lemmas proved)",
       "badVertices/goodVertices: partition of A by neighborhood threshold (proved: good_union_bad)",
@@ -46,7 +46,9 @@
       "File needs import Proofs.SzemerediRegularity for the Szemeredi.Regularity namespace",
       "open Classical needed for DecidablePred filters (same issue as SzemerediRegularity.lean)",
       "bad_vertices_small proof structured: contraposition → A subset → eps-regularity → abs_le → density bounds",
-      "Key remaining step: edge count decomposition |(A×B).filter Adj| = Σ |N_B(a)| — standard Finset fiber decomposition"
+      "Key remaining step: edge count decomposition |(A×B).filter Adj| = Σ |N_B(a)| — standard Finset fiber decomposition",
+      "bad_vertices_small proof fully structured: unfold edgeDensity, dif_neg, div_lt_iff₀, then fiber decomposition + sum bound. Only the fiber decomposition (relating edge count to sum of neighborhoods) remains as sorry.",
+      "Fiber decomposition: |(A×B).filter G.Adj| = Σ_{a∈A} |neighborhoodIn G a B|. Need Finset.card_biUnion or Finset.card_eq_sum_card_fiberwise with Prod.fst as fiber map."
     ],
     "mathlibGaps": [],
     "nextSteps": [
