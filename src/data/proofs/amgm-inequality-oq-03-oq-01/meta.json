@@ -45,6 +45,48 @@
       "power_mean_monotone_neg: Full proof of M_r ≤ M_s for r ≤ s < 0 via dual argument reducing to the positive case",
       "Inversion technique: from A ≤ B with 0 < A, derives B⁻¹ ≤ A⁻¹ using explicit calc blocks (avoids inv_le_inv_of_le)"
     ],
+    "references": [
+      {
+        "authors": "Hardy, G.H.; Littlewood, J.E.; Pólya, G.",
+        "title": "Inequalities",
+        "year": "1934",
+        "venue": "Cambridge University Press",
+        "note": "Chapter 2: the power mean inequality and its proof via convexity and duality arguments"
+      },
+      {
+        "authors": "Bullen, P.S.",
+        "title": "Handbook of Means and Their Inequalities",
+        "year": "2003",
+        "venue": "Kluwer Academic Publishers",
+        "note": "Comprehensive treatment of power means including the duality M_r(z) = M_{-r}(z⁻¹)⁻¹"
+      }
+    ],
+    "crossReferences": [
+      {
+        "proofId": "amgm-inequality-oq-03",
+        "title": "Power Mean Interpolation: How Do Weighted Power Means Relate to AM and GM?",
+        "relationship": "parent",
+        "note": "Contains the positive-exponent monotonicity theorem power_mean_monotone_pos used by this proof's duality reduction"
+      },
+      {
+        "proofId": "amgm-inequality-oq-03-oq-02",
+        "title": "Power Mean Limit: lim_{r→0} M_r = GM",
+        "relationship": "sibling",
+        "note": "Together with this negative case, only the mixed-sign crossing (r < 0 < s) remains to complete the full power mean chain"
+      },
+      {
+        "proofId": "amgm-inequality",
+        "title": "Arithmetic Mean - Geometric Mean Inequality",
+        "relationship": "related",
+        "note": "The AM-GM inequality is the r=1, s=0 case of the general power mean monotonicity chain"
+      },
+      {
+        "proofId": "cauchy-schwarz",
+        "title": "Cauchy-Schwarz Inequality",
+        "relationship": "related",
+        "note": "Both are fundamental inequalities in analysis; Cauchy-Schwarz can be derived from the r=2 power mean"
+      }
+    ],
     "dateAdded": "03/21/26",
     "axiomCount": 0
   },
@@ -56,7 +98,8 @@
       "The duality M_r(z) = M_{-r}(z⁻¹)⁻¹ converts negative exponents to positive ones, reducing the negative case entirely to the positive case",
       "The inversion step (from A ≤ B to B⁻¹ ≤ A⁻¹) avoids inv_le_inv_of_le by using explicit multiplicative algebra: from A*A⁻¹ = 1 ≤ B*A⁻¹, multiply by B⁻¹",
       "The same technique extends to HM ≤ GM: the harmonic mean M_{-1} ≤ M₀ (geometric mean limit) follows the same duality pattern",
-      "This fills a known Mathlib gap: the generalized mean inequality for negative exponents"
+      "This fills a known Mathlib gap: the generalized mean inequality for negative exponents",
+      "The explicit inversion proof (A ≤ B → B⁻¹ ≤ A⁻¹) avoids Mathlib's inv_le_inv_of_le by building the inequality from multiplicative primitives — a technique useful whenever the reciprocal lemma has inconvenient hypotheses"
     ]
   },
   "sections": [
@@ -86,8 +129,9 @@
     "summary": "This formalization proves M_r ≤ M_s for r ≤ s < 0 with 0 axioms and 0 sorries. The proof elegantly reduces the negative case to the positive case via the duality identity M_r(z) = M_{-r}(z⁻¹)⁻¹. Combined with the positive case (power_mean_monotone_pos) and the r=0 limit (PowerMeanLimitOQ.lean), this gives the complete power mean chain for all exponents of the same sign.",
     "implications": "**For the power mean chain**: Completes the negative side of the monotonicity chain. Together with the positive case and the r=0 limit, only the mixed-sign case (r < 0 < s, crossing the geometric mean) remains.\n\n**For Mathlib**: This fills part of the known TODO in Mathlib.Analysis.MeanInequalitiesPow for negative exponents.\n\n**Technique**: The duality/inversion approach is reusable for other mean inequality problems involving negative parameters.",
     "openQuestions": [
-      "Prove M_r ≤ M_s for r < 0 < s (mixed-sign case, crossing the geometric mean limit)",
-      "Contribute the negative power mean monotonicity to Mathlib upstream"
+      "Prove M_r ≤ M_s for r < 0 < s (mixed-sign case, crossing the geometric mean limit) — likely requires the r→0 limit from the sibling formalization",
+      "Contribute the negative power mean monotonicity to Mathlib upstream, filling the explicit TODO in Mathlib.Analysis.MeanInequalitiesPow",
+      "Can the duality argument be generalized to Rényi entropy? The power mean at order r is related to exp((1/(r-1)) · D_r(p||u))"
     ]
   }
 }
