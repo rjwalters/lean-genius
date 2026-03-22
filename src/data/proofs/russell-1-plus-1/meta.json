@@ -36,7 +36,8 @@
       "Modern type theory makes foundational proofs trivial by building natural numbers as primitive inductive types rather than set-theoretic constructions",
       "The 'rfl' proof works because type theory has computation built into its equality—if two terms compute to the same value, they are equal by definition",
       "Russell's approach defined 1 as 'the set of all singleton sets' and 2 as 'the set of all two-element sets'—far more complex than Peano's successor-based definition",
-      "This proof demonstrates why mathematicians moved away from set-theoretic foundations toward type-theoretic ones for formalization"
+      "This proof demonstrates why mathematicians moved away from set-theoretic foundations toward type-theoretic ones for formalization",
+      "The file builds arithmetic properties (commutativity, associativity) from scratch, showing that the Peano axioms yield a complete number system without importing any library"
     ]
   },
   "sections": [
