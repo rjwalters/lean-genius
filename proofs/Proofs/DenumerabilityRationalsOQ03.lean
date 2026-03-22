@@ -286,10 +286,89 @@ theorem rb_ge_after_left (s : State) (p : Path) :
   have h2 := rb_ge_eval s.left p
   omega
 
-/-- Different paths from the root yield different (num, den) pairs. -/
+/-- la is non-decreasing along any path from a state. -/
+theorem la_ge_eval (s : State) (p : Path) :
+    s.la ≤ (eval s p).la := by
+  induction p generalizing s with
+  | nil => simp [eval]
+  | cons d rest ih =>
+    cases d with
+    | L => simp [eval]; exact le_trans (Nat.le_refl _) (ih s.left)
+    | R => simp [eval]; exact le_trans (Nat.le_add_right _ _) (ih s.right)
+
+/-- After going right, lb ≥ lb + rb (the parent's denominator sum). -/
+theorem lb_ge_after_right (s : State) (p : Path) :
+    (eval s.right p).lb ≥ s.lb + s.rb := by
+  have h1 : s.right.lb = s.lb + s.rb := rfl
+  have h2 := lb_ge_eval s.right p
+  omega
+
+/-- Key BST invariant: if det = 1 and the numerator sum < denominator sum,
+    this inequality is preserved through all navigation steps.
+    (Subtrees with value < 1 relative to parent stay that way.) -/
+theorem num_lt_den_preserved (s : State) (p : Path) (hdet : s.det = 1)
+    (hlt : s.la + s.ra < s.lb + s.rb) :
+    (eval s p).la + (eval s p).ra < (eval s p).lb + (eval s p).rb := by
+  induction p generalizing s with
+  | nil => simpa [eval]
+  | cons d rest ih =>
+    cases d with
+    | L =>
+      have hdet' := det_left s hdet
+      have hlt' : s.left.la + s.left.ra < s.left.lb + s.left.rb := by
+        simp only [State.left, State.det] at *
+        -- identity: lb*(la+ra) - la*(lb+rb) = det = 1
+        have := mul_comm (s.ra : ℤ) ↑s.lb
+        zify at hlt ⊢; nlinarith
+      exact ih s.left hdet' hlt'
+    | R =>
+      have hdet' := det_right s hdet
+      have hlt' : s.right.la + s.right.ra < s.right.lb + s.right.rb := by
+        simp only [State.right, State.det] at *
+        -- identity: ra*(lb+rb) - rb*(la+ra) = det = 1
+        have := mul_comm (s.ra : ℤ) (↑s.lb + ↑s.rb)
+        have := mul_comm (s.rb : ℤ) (↑s.la + ↑s.ra)
+        zify at hlt ⊢; nlinarith
+      exact ih s.right hdet' hlt'
+
+/-- Symmetric BST invariant: if det = 1 and numerator sum > denominator sum,
+    this is preserved through all navigation. -/
+theorem num_gt_den_preserved (s : State) (p : Path) (hdet : s.det = 1)
+    (hgt : s.la + s.ra > s.lb + s.rb) :
+    (eval s p).la + (eval s p).ra > (eval s p).lb + (eval s p).rb := by
+  induction p generalizing s with
+  | nil => simpa [eval]
+  | cons d rest ih =>
+    cases d with
+    | L =>
+      have hdet' := det_left s hdet
+      have hgt' : s.left.la + s.left.ra > s.left.lb + s.left.rb := by
+        simp only [State.left, State.det] at *
+        have := mul_comm (s.ra : ℤ) ↑s.lb
+        zify at hgt ⊢; nlinarith
+      exact ih s.left hdet' hgt'
+    | R =>
+      have hdet' := det_right s hdet
+      have hgt' : s.right.la + s.right.ra > s.right.lb + s.right.rb := by
+        simp only [State.right, State.det] at *
+        have := mul_comm (s.ra : ℤ) (↑s.lb + ↑s.rb)
+        have := mul_comm (s.rb : ℤ) (↑s.la + ↑s.ra)
+        zify at hgt ⊢; nlinarith
+      exact ih s.right hdet' hgt'
+
+/-- Different paths from the root yield different (num, den) pairs.
+
+    Proof strategy (not yet fully formalized):
+    1. Empty vs non-empty: after any step from a det=1 state, at least one
+       component strictly increases (la increases after R, rb increases after L).
+    2. L vs R from same state: the cross-product interval approach shows
+       left descendants have value < parent mediant and right descendants
+       have value > parent mediant. Requires proving the upper bound invariant
+       (ra*(parent.lb+rb) ≤ (parent.la+ra)*rb for left descendants) and using
+       mediant_strictly_between to chain the inequalities. -/
 theorem eval_injective (p1 p2 : Path) (h : evalPath p1 = evalPath p2) :
     p1 = p2 := by
-  sorry -- Requires BST property: left descendants < current < right descendants
+  sorry
 
 -- ========================================================================
 -- Part VIII: Concrete Examples
