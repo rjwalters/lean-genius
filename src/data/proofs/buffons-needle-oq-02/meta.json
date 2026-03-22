@@ -136,5 +136,20 @@
       "Cauchy-Crofton formula for arbitrary measures on hyperplanes in ℝⁿ",
       "Connection to integral geometry and kinematic formula"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "intervalIntegral",
+      "MeasureTheory"
+    ],
+    "namespace": "BuffonsNeedleOQ02",
+    "lineCount": 263,
+    "axiomCount": 0,
+    "theoremCount": 16,
+    "definitionCount": 1
   }
 }

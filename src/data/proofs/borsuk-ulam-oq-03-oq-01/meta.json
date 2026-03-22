@@ -179,5 +179,21 @@
       "id": "borsuk-ulam",
       "relationship": "Base Borsuk-Ulam formalization"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Real",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "BorsukUlamOQ03OQ01",
+    "lineCount": 1163,
+    "axiomCount": 1,
+    "theoremCount": 47,
+    "definitionCount": 4
+  }
 }

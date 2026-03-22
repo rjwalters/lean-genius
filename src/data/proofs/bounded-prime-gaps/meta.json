@@ -148,5 +148,43 @@
       "Can the Elliott-Halberstam conjecture be formalized as an axiom-free statement (as it's a conjecture, not a theorem)?",
       "Can the exact 246 bound be verified constructively by finding the optimal 50-admissible-tuple and verifying Maynard's sieve applies?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Prime.Nth",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.NumberTheory.PrimeCounting",
+      "Mathlib.NumberTheory.Bertrand",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Tactic",
+      "Proofs.PrimeGapBounds"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Filter",
+      "Real",
+      "in",
+      "Real",
+      "in",
+      "Real",
+      "in",
+      "Real",
+      "in",
+      "Real",
+      "in",
+      "Real",
+      "in"
+    ],
+    "namespace": "BoundedPrimeGaps",
+    "lineCount": 2018,
+    "axiomCount": 3,
+    "theoremCount": 128,
+    "definitionCount": 17
   }
 }

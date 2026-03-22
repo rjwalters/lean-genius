@@ -175,8 +175,7 @@
     "sylow-theorems",
     "abel-ruffini-oq-04",
     "fundamental-arithmetic"
-  ]
-,
+  ],
   "references": [
     {
       "authors": "Abel, Niels Henrik",
@@ -192,5 +191,19 @@
       "venue": "Bologna",
       "note": "First (incomplete) attempt to prove the quintic is unsolvable — anticipated Abel by 25 years but contained gaps"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.FieldTheory.AbelRuffini",
+      "Mathlib.GroupTheory.Solvable",
+      "Mathlib.GroupTheory.SpecificGroups.Alternating",
+      "Mathlib.FieldTheory.Galois.Basic"
+    ],
+    "opens": [],
+    "namespace": "AbelRuffini",
+    "lineCount": 186,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0
+  }
 }

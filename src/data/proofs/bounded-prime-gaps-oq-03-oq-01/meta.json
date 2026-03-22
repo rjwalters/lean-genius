@@ -123,5 +123,21 @@
     "prime-number-theorem",
     "infinitude-primes",
     "twin-primes-special"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.BoundedPrimeGaps"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "BoundedPrimeGaps"
+    ],
+    "namespace": "BoundedPrimeGapsOQ03OQ01",
+    "lineCount": 163,
+    "axiomCount": 4,
+    "theoremCount": 13,
+    "definitionCount": 3
+  }
 }

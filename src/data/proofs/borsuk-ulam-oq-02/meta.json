@@ -167,5 +167,25 @@
       "Can Dold's theorem be fully formalized in Lean/Mathlib? (Requires equivariant cohomology — roughly 500-1000 additional lines of algebraic topology.)",
       "For non-free ℤ/p actions: does the equivariant index still control vanishing, or do fixed-point sets create exceptions?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Topology.Basic",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.GroupTheory.OrderOfElement",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Set",
+      "Metric"
+    ],
+    "namespace": "BorsukUlamOQ02",
+    "lineCount": 390,
+    "axiomCount": 1,
+    "theoremCount": 18,
+    "definitionCount": 5
   }
 }
