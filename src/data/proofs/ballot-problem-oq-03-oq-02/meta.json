@@ -1,0 +1,68 @@
+{
+  "id": "ballot-problem-oq-03-oq-02",
+  "title": "General r×r Lindström-Gessel-Viennot Determinant",
+  "slug": "ballot-problem-oq-03-oq-02",
+  "description": "Infrastructure for the general r×r LGV lemma: defines path weight matrices, permutation-signed path counts, and states the determinantal formula. Verifies 2×2 and 3×3 determinant specializations.",
+  "meta": {
+    "author": "Lindström (1973), Gessel-Viennot (1985)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Lindstr%C3%B6m%E2%80%93Gessel%E2%80%93Viennot_lemma",
+    "date": "1985",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/BallotProblemOQ03OQ02.lean",
+    "leanFile": "proofs/Proofs/BallotProblemOQ03OQ02.lean",
+    "tags": ["combinatorics", "linear-algebra", "lattice-paths", "lgv-lemma", "determinants", "permutation-sign"],
+    "badge": "original",
+    "sorries": 5,
+    "axiomCount": 0,
+    "dateAdded": "2026-03-22",
+    "mathlibDependencies": [
+      {"theorem": "Matrix.det_fin_two", "description": "2×2 determinant formula", "module": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic"},
+      {"theorem": "Matrix.det_fin_three", "description": "3×3 determinant formula", "module": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic"},
+      {"theorem": "Perm.sign", "description": "Permutation sign for the Leibniz formula", "module": "Mathlib.GroupTheory.Perm.Sign"}
+    ],
+    "originalContributions": [
+      "pathMatrix / latticePathMatrix: path weight matrix definitions",
+      "permPathCount / signedPermPathCount: signed permutation path counting",
+      "lgv_lemma_general: statement of general r×r LGV from involution hypothesis",
+      "lgv_2x2_det / lgv_2x2_identity: verified 2×2 specialization",
+      "lgv_3x3_det: verified 3×3 determinant expansion"
+    ],
+    "references": [
+      {"key": "Li73", "citation": "Lindström, B., On the vector representations of induced matroids, Bull. London Math. Soc. 5 (1973), 85-90.", "type": "paper"},
+      {"key": "GV85", "citation": "Gessel, I., Viennot, G., Binomial determinants, paths, and hook length formulae, Adv. Math. 58 (1985), 300-321.", "type": "paper"}
+    ]
+  },
+  "overview": {
+    "historicalContext": "The LGV lemma was proved by Lindström (1973) for matroids and independently discovered by Gessel and Viennot (1985) for lattice paths. It expresses the number of non-intersecting path r-tuples as a determinant, connecting combinatorics to linear algebra.",
+    "problemStatement": "Generalize the 2×2 LGV lemma (proved in parent) to the r×r case using the sign-reversing involution (Gessel-Viennot bijection).",
+    "proofStrategy": "Define the path weight matrix, express the determinant via the Leibniz formula as a sum over permutations, then show that intersecting tuples cancel via the GV involution.",
+    "keyInsights": [
+      "The Leibniz formula det[M] = Σ_σ sign(σ) Π M(i,σ(i)) naturally decomposes into path counting by permutation",
+      "The GV involution pairs intersecting tuples with opposite-sign partners, canceling all non-identity permutation contributions",
+      "The 2×2 and 3×3 determinant specializations verify the framework against known formulas"
+    ]
+  },
+  "sections": [
+    {"id": "matrix", "title": "Path Weight Matrix", "startLine": 45, "endLine": 60, "summary": "Defines pathMatrix and latticePathMatrix."},
+    {"id": "counting", "title": "Permutation Path Counting", "startLine": 64, "endLine": 83, "summary": "Defines permPathCount, signedPermPathCount, and Leibniz bridge."},
+    {"id": "general", "title": "General LGV Statement", "startLine": 125, "endLine": 150, "summary": "States lgv_lemma_general with involution hypothesis."},
+    {"id": "specializations", "title": "2×2 and 3×3 Cases", "startLine": 155, "endLine": 180, "summary": "Verifies determinant expansions for small cases."}
+  ],
+  "conclusion": {
+    "summary": "Infrastructure for the general r×r LGV lemma: 204 lines, 13 defs/theorems, 5 sorries, 0 axioms. Verified 2×2 and 3×3 determinant specializations. The GV involution cancellation is the main remaining sorry.",
+    "openQuestions": [
+      "Prove the Leibniz formula bridge (det_eq_signed_sum)",
+      "Implement the GV involution and prove cancellation",
+      "Connect to the parent's 2×2 proof infrastructure"
+    ]
+  },
+  "leanFile": {
+    "imports": ["Mathlib.LinearAlgebra.Matrix.Determinant.Basic", "Mathlib.GroupTheory.Perm.Sign", "Mathlib.Data.Fintype.BigOperators", "Mathlib.Tactic"],
+    "opens": ["Matrix", "Equiv", "Finset", "BigOperators"],
+    "namespace": "LGV",
+    "lineCount": 204,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 3
+  }
+}

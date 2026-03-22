@@ -1,26 +1,40 @@
 {
   "id": "ballot-problem-oq-03-oq-02",
-  "name": "General LGV Lemma: r×r Lindström-Gessel-Viennot Determinant",
+  "name": "General LGV Lemma: r\u00d7r Lindstr\u00f6m-Gessel-Viennot Determinant",
   "status": "surveyed",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "knowledge": {
     "insights": [
-      "Parent OQ03 (2878 lines, 0 axioms, 0 sorries) proves the 2×2 LGV lemma completely",
-      "2×2 LGV: non-intersecting path pairs = e(A1,B1)e(A2,B2) - e(A1,B2)e(A2,B1) = det[[e(Ai,Bj)]]",
-      "General r×r LGV: non-intersecting r-tuples = det[[e(Ai,Bj)]] for i,j = 1..r",
-      "Proof for r×r requires sign-reversing involution on r-tuples of paths",
-      "Mathlib has Matrix.det and Equiv.Perm infrastructure for the sign arguments"
+      "Parent OQ03 (2878 lines, 0 axioms, 0 sorries) proves the 2\u00d72 LGV lemma completely",
+      "2\u00d72 LGV: non-intersecting path pairs = e(A1,B1)e(A2,B2) - e(A1,B2)e(A2,B1) = det[[e(Ai,Bj)]]",
+      "General r\u00d7r LGV: non-intersecting r-tuples = det[[e(Ai,Bj)]] for i,j = 1..r",
+      "Proof for r\u00d7r requires sign-reversing involution on r-tuples of paths",
+      "Mathlib has Matrix.det and Equiv.Perm infrastructure for the sign arguments",
+      "Matrix.det_fin_two and Matrix.det_fin_three from Mathlib verify small cases automatically",
+      "The Leibniz formula bridge (det = \u03a3 sign(\u03c3)\u00b7\u03a0) needs careful cast handling between Perm.sign (Units \u2124) and \u2124",
+      "The GV involution is the key sorry: needs definition of 'first intersection point' and proof of sign reversal",
+      "Separating the involution hypothesis from the algebraic machinery makes the proof modular"
     ],
-    "builtItems": [],
+    "builtItems": [
+      "BallotProblemOQ03OQ02.lean: r\u00d7r LGV infrastructure (204 lines)",
+      "pathMatrix / latticePathMatrix: path weight matrix over Fin r",
+      "permPathCount / signedPermPathCount: signed permutation path counting",
+      "lgv_lemma_general: general r\u00d7r LGV statement from involution hypothesis",
+      "lgv_2x2_det: verified 2\u00d72 determinant specialization",
+      "lgv_3x3_det: verified 3\u00d73 determinant expansion (6 terms)",
+      "GV involution algorithm documented in detail (swap tails at first intersection)"
+    ],
     "openQuestions": [
-      "Can the 2×2 proof structure generalize cleanly to r×r?",
+      "Can the 2\u00d72 proof structure generalize cleanly to r\u00d7r?",
       "Does Mathlib have alternating sum / inclusion-exclusion tools for this?"
     ],
     "nextSteps": [
-      "Define r-tuple of lattice paths and non-intersecting condition",
-      "State the r×r determinant formula using Matrix.det",
-      "Prove via sign-reversing involution (Gessel-Viennot bijection)"
+      "Prove det_eq_signed_sum (Leibniz bridge) - mainly type coercion work",
+      "Implement GV involution: find first intersection, swap tails, prove involutivity",
+      "Prove gv_involution_cancellation: sign reversal implies cancellation",
+      "Connect to parent's PathMN type for concrete lattice path instantiation"
     ],
-    "progressSummary": "SURVEY: Parent proves 2×2 LGV completely. General r×r needs sign-reversing involution on path r-tuples."
-  }
+    "progressSummary": "PROGRESS: Built r\u00d7r LGV infrastructure. Defined path weight matrices, signed permutation counting. Verified 2\u00d72 and 3\u00d73 det formulas. Stated general LGV from involution hypothesis. 204 lines, 13 defs/theorems, 5 sorries."
+  },
+  "lastUpdate": "2026-03-22T06:19:21Z"
 }

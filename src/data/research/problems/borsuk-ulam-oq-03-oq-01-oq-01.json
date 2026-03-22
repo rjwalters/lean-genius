@@ -13,7 +13,8 @@
       "The parity argument is the true combinatorial core - it separates into 1D Tucker (proved) + double-counting (this file) + triangulation (topology)",
       "Tucker degree of a triangle = # complementary edges. For {\u00b11,\u00b12} labels, only (1,-1) and (2,-2) pairs. A triangle has at most 3 edges, so degree \u2264 3.",
       "Path-following is constructive: walk through triangles via shared complementary edges until stuck at interior dead-end. Works because max degree = 2.",
-      "The file compiles cleanly with 0 axioms, 1 sorry (the parity principle itself)"
+      "The file compiles cleanly with 0 axioms, 1 sorry (the parity principle itself)",
+      "tucker_parity_principle sorry requires edge-sharing data: TriangulatedComplex needs axiom that each non-boundary edge is shared by exactly 2 triangles. Without this, the double-counting argument cannot be formalized."
     ],
     "builtItems": [
       "BorsukUlamOQ03OQ01OQ01.lean: Tucker path-following infrastructure (249 lines)",
@@ -29,12 +30,11 @@
       "What specific graph-theoretic aspect is needed beyond existing work?"
     ],
     "nextSteps": [
-      "Prove tucker_parity_principle: needs double-counting via handshaking lemma on the Tucker graph",
-      "Formalize the degree bounds: interior triangles have degree 0 or 2, boundary triangles have degree 0, 1, or 2",
-      "Implement path-following as a constructive algorithm",
-      "Connect to parent tucker_2d axiom to eliminate it"
+      "Add EdgeSharing structure to TriangulatedComplex: each interior edge shared by exactly 2 triangles, boundary edges by exactly 1",
+      "Define Tucker degree per triangle and prove degree_sum = 2*interior_compl + boundary_compl",
+      "Then prove parity principle from handshaking: odd boundary \u2192 odd total \u2192 \u2203 odd-degree interior triangle"
     ],
     "progressSummary": "PROGRESS: Built combinatorial infrastructure for Tucker 2D path-following. Defined Tucker labelings, antipodal labelings, triangulated complexes, complementary edges. Proved complementary pair classification and antipodal complementarity. Stated parity principle (1 sorry). 249 lines, 13 defs/theorems."
   },
-  "lastUpdate": "2026-03-22T06:06:36Z"
+  "lastUpdate": "2026-03-22T06:20:52Z"
 }
