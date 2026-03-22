@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Formalized Stern-Brocot tree as state-machine navigation. Proved determinant invariant (ra*lb - la*rb = 1), coprimality of all nodes, positivity, mediant ordering. 349 lines, 29 defs/theorems, 1 sorry (injectivity). Gallery entry created.",
+    "progressSummary": "SURVEY: eval_injective sole sorry analyzed. BST property proof approach identified but ~60 lines needed. 0A, 1S.",
     "builtItems": [
       "DenumerabilityRationalsOQ03.lean: State-based Stern-Brocot tree (349 lines)",
       "det_path: Determinant invariant preserved through all navigation",
@@ -46,13 +46,17 @@
     "insights": [
       "State machine approach (la/lb, ra/rb) is more natural for formal verification than recursive tree type",
       "The single determinant invariant det = 1 drives coprimality, ordering, and will drive completeness",
-      "Coprimality proof requires careful ℕ→ℤ lifting: show gcd | 1 as integers, then cast back",
+      "Coprimality proof requires careful \u2115\u2192\u2124 lifting: show gcd | 1 as integers, then cast back",
       "Lean's omega tactic can't unfold structure field access - need explicit 'show' or 'simp' first",
       "No Mathlib Stern-Brocot module exists - this is fully original formalization",
       "eval_injective proof: use mediant ordering (mediant of left desc < mediant(s) < mediant of right desc)",
       "mediant_lt_right: induction on path, L case needs cross-mult transitivity, R case direct since right ancestor unchanged",
-      "L vs R case in injectivity: mediant(eval s.left rest1) < mediant(s) from mediant_lt_right of s.left, and mediant(s) < mediant(eval s.right rest2) from mediant_gt_left of s.right — contradiction since same state",
-      "nil vs cons: use rb_increase_left (rb strictly increases after L) and la_increase_right (la strictly increases after R)"
+      "L vs R case in injectivity: mediant(eval s.left rest1) < mediant(s) from mediant_lt_right of s.left, and mediant(s) < mediant(eval s.right rest2) from mediant_gt_left of s.right \u2014 contradiction since same state",
+      "nil vs cons: use rb_increase_left (rb strictly increases after L) and la_increase_right (la strictly increases after R)",
+      "eval_injective requires BST property: left subtree mediants < current < right subtree mediants",
+      "mediant_strictly_between provides cross-mult ordering but needs lb>0 and rb>0 (fails for init)",
+      "Proof approach: prove by induction with BST invariant via cross-multiplication, handle init boundary cases separately",
+      "nil-vs-cons case solvable via rb/la monotonicity, L-vs-R case needs full BST"
     ],
     "mathlibGaps": [
       "No Stern-Brocot tree or Calkin-Wilf tree in Mathlib",
@@ -60,7 +64,9 @@
       "Would benefit from: nat_coprime_of_int_bezout or similar bridge lemma"
     ],
     "nextSteps": [
-      "Fix build: rfl.le base cases → le_refl or simp [eval], nlinarith transitivity needs mul_pos hint, lt_irrefl matching"
+      "Prove BST property: eval mediants lie in (la/lb, ra/rb) interval",
+      "Handle init boundary case (rb=0) separately",
+      "Use BST to distinguish L-vs-R subtrees in eval_injective"
     ],
     "markdown": "# Knowledge Base: denumerability-rationals-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
