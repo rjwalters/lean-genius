@@ -120,38 +120,100 @@ def IsFullyColored {n : ℕ} (c : Coloring n) (t : GridTriangle n) : Prop :=
 def botVertex (n : ℕ) (i : Fin (n + 1)) : GridVertex n :=
   ⟨i.val, 0, by omega⟩
 
+/-- Color of the i-th vertex on the bottom edge, with bounds check. -/
+private def botColor {n : ℕ} (c : Coloring n) (i : ℕ) : Fin 3 :=
+  if h : i ≤ n then c ⟨i, 0, by omega⟩ else 0
+
 /-- The number of color transitions along the bottom edge.
     A "transition" at position i means the color at (i,0) differs from (i+1,0). -/
 def bottomTransitions {n : ℕ} (c : Coloring n) : ℕ :=
-  Finset.card (Finset.filter
-    (fun i : Fin n => c (botVertex n ⟨i.val, by omega⟩) ≠ c (botVertex n ⟨i.val + 1, by omega⟩))
-    Finset.univ)
+  ((Finset.range n).filter (fun i => botColor c i ≠ botColor c (i + 1))).card
 
-/-- The number of transitions in a sequence modulo 2 equals
-    the XOR of first and last values (telescoping in ZMod 2).
-    If f(0) = 0 and f(n) = 1 (as ZMod 2 values), transitions are odd. -/
-private theorem transitions_parity_aux :
-    ∀ (n : ℕ) (f : Fin (n + 1) → ZMod 2),
-    (Finset.card (Finset.filter (fun i : Fin n => f ⟨i.val, by omega⟩ ≠ f ⟨i.val + 1, by omega⟩)
-      Finset.univ) : ZMod 2) = f ⟨n, by omega⟩ + f ⟨0, by omega⟩ := by
-  -- Proof by induction on n.
-  -- Base (n=0): Fin 0 = ∅, card = 0, RHS = f(0)+f(0) = 0 in ZMod 2.
-  -- Step (n=m+1): Split filter into first m transitions + last transition.
-  --   By IH: first m transitions ≡ f(m)+f(0) mod 2.
-  --   Last: +1 if f(m)≠f(m+1), +0 otherwise.
-  --   Total: f(m)+f(0) + (f(m)+f(m+1)) = f(m+1)+f(0) in ZMod 2 (f(m) cancels).
-  sorry
+-- ----------------------------------------------------------
+-- Parity lemma: transition count for a binary sequence
+-- ----------------------------------------------------------
+
+/-- For a binary (Bool) sequence, the number of transitions mod 2
+    equals 0 if endpoints match, 1 if they differ. -/
+private theorem transitions_parity_bool (n : ℕ) (f : ℕ → Bool) :
+    ((Finset.range n).filter (fun i => f i ≠ f (i + 1))).card % 2 =
+    if f 0 = f n then 0 else 1 := by
+  induction n with
+  | zero => simp
+  | succ m ih =>
+    rw [Finset.range_succ, Finset.filter_insert]
+    by_cases hm : f m ≠ f (m + 1)
+    · -- f m ≠ f (m + 1): the filter includes m
+      rw [if_pos hm]
+      have hmem : m ∉ (Finset.range m).filter (fun i => f i ≠ f (i + 1)) := by
+        simp [Finset.mem_filter, Finset.mem_range]
+      rw [Finset.card_insert_of_not_mem hmem]
+      -- Use ih to relate old card to f 0 vs f m
+      set k := ((Finset.range m).filter (fun i => f i ≠ f (i + 1))).card with hk_def
+      have hk := ih
+      -- For Bool, f m ≠ f (m+1) flips the endpoint comparison
+      cases hf0 : f 0 <;> cases hfm : f m <;> cases hfm1 : f (m + 1) <;> simp_all <;> omega
+    · -- f m = f (m + 1): filter unchanged
+      rw [if_neg hm]
+      rw [ih]
+      push_neg at hm
+      rw [hm]
 
 /-- On the bottom edge (j=0), a Sperner coloring has an odd
     number of transitions (adjacent pairs with different colors).
-    This is the 1D parity lemma applied to the bottom edge. -/
+
+    Proof: The Sperner condition restricts bottom edge colors to {0, 1},
+    with c(0,0) = 0 and c(n,0) = 1. Project to Bool and apply parity lemma. -/
 theorem bottom_transitions_odd {n : ℕ} (hn : 0 < n) (c : Coloring n)
     (hc : IsSperner hn c) : Odd (bottomTransitions c) := by
   obtain ⟨hv0, hv1, _, hbot, _, _⟩ := hc
-  -- The bottom edge uses only colors 0 and 1 (Sperner condition).
-  -- Going from color 0 to color 1 requires an odd number of transitions.
-  -- We reduce to transitions_parity_aux via a ZMod 2 projection.
-  sorry
+  -- Bottom edge colors are in {0, 1} (Sperner: no color 2 on bottom)
+  have hbot_colors : ∀ i, i ≤ n → botColor c i = 0 ∨ botColor c i = 1 := by
+    intro i hi
+    simp only [botColor, dif_pos hi]
+    by_cases h0 : i = 0
+    · subst h0; left; exact hv0
+    · by_cases hn' : i = n
+      · subst hn'; right; exact hv1
+      · have hlt : i < n := by omega
+        have hgt : i > 0 := by omega
+        have h2 := hbot ⟨i, 0, by omega⟩ rfl hgt hlt
+        -- c v ≠ 2 means c v = 0 or c v = 1 (since Fin 3 = {0, 1, 2})
+        have hval := (c ⟨i, 0, by omega⟩).isLt
+        omega
+  -- Project to Bool: 0 ↦ false, 1 ↦ true
+  let fb : ℕ → Bool := fun i => botColor c i = 1
+  -- Transitions of c match transitions of fb (since colors are binary)
+  have htrans : bottomTransitions c =
+      ((Finset.range n).filter (fun i => fb i ≠ fb (i + 1))).card := by
+    unfold bottomTransitions
+    congr 1
+    ext i
+    simp only [Finset.mem_filter, Finset.mem_range]
+    constructor
+    · rintro ⟨hi, hne⟩
+      refine ⟨hi, ?_⟩
+      simp only [fb]
+      intro h
+      apply hne
+      have h1 := hbot_colors i (by omega)
+      have h2 := hbot_colors (i + 1) (by omega)
+      -- If both are in {0,1} and (bc i = 1) = (bc (i+1) = 1), then bc i = bc (i+1)
+      rcases h1 with h1 | h1 <;> rcases h2 with h2 | h2 <;> simp_all
+    · rintro ⟨hi, hne⟩
+      refine ⟨hi, ?_⟩
+      intro h
+      apply hne
+      simp only [fb, h]
+  rw [htrans, Nat.odd_iff, transitions_parity_bool]
+  -- fb 0 = false (c(0,0) = 0 ≠ 1) and fb n = true (c(n,0) = 1)
+  have hfb0 : fb 0 = false := by
+    simp only [fb, botColor, dif_pos (Nat.zero_le n), Bool.eq_false_iff, decide_eq_true_eq]
+    rw [hv0]; simp
+  have hfbn : fb n = true := by
+    simp only [fb, botColor, dif_pos (le_refl n), decide_eq_true_eq]
+    exact hv1
+  simp [hfb0, hfbn]
 
 -- ============================================================
 -- SECTION IV: Door-Counting Argument
