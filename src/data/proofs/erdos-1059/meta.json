@@ -9,6 +9,7 @@
     "date": "1980",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1059Problem.lean",
+    "leanFile": "proofs/Proofs/Erdos1059Problem.lean",
     "tags": [
       "erdos",
       "number-theory",
@@ -56,22 +57,22 @@
     ],
     "crossReferences": [
       {
-        "id": "infinitude-primes",
+        "proofId": "infinitude-primes",
         "relationship": "related",
         "description": "Both prove or conjecture infinitude of a special set of primes; the main conjecture asserts Set.Infinite for factorial-avoiding primes"
       },
       {
-        "id": "wilsons-theorem",
+        "proofId": "wilsons-theorem",
         "relationship": "related",
         "description": "Wilson's theorem connects primes to factorials: $(p-1)! \\equiv -1 \\pmod{p}$. Here we subtract factorials from primes instead"
       },
       {
-        "id": "bertrands-postulate",
+        "proofId": "bertrands-postulate",
         "relationship": "related",
         "description": "Both concern prime distribution and gaps; Bertrand guarantees primes in intervals while this problem asks about factorial-prime interactions"
       },
       {
-        "id": "erdos-1057",
+        "proofId": "erdos-1057",
         "relationship": "related",
         "description": "Sister Erdős problem about prime-related counting; both use Set.Infinite for open conjectures about infinite sets of special integers"
       }
@@ -149,6 +150,15 @@
     }
   ],
   "relatedProofs": ["infinitude-primes", "wilsons-theorem", "bertrands-postulate", "erdos-1057"],
+  "leanFile": {
+    "imports": ["Mathlib.Data.Nat.Prime.Basic", "Mathlib.Data.Nat.Factorial.Basic", "Mathlib.Data.Set.Basic", "Mathlib.Data.Finset.Basic", "Mathlib.Tactic"],
+    "opens": [],
+    "namespace": "Erdos1059",
+    "lineCount": 143,
+    "axiomCount": 3,
+    "theoremCount": 6,
+    "definitionCount": 1
+  },
   "conclusion": {
     "summary": "Erdős Problem #1059 remains open. The formalization verifies two concrete witnesses ($p = 101, 211$) and one counterexample ($p = 89$) using Lean's `decide` tactic, demonstrates the sparsity of factorials below $n$, and axiomatizes both the main conjecture and Erdős's potentially more tractable smooth-number variant.",
     "implications": "A resolution would illuminate the relationship between prime distribution and factorial arithmetic. The probabilistic heuristic strongly suggests the answer is yes, but converting such arguments into proofs remains a central challenge in analytic number theory. Erdős's smooth-number alternative connects to sieve theory and the distribution of numbers with restricted prime factors.",
