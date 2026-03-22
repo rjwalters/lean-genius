@@ -79,7 +79,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erdős and Newman (1977) proved that squares can be represented as B+B with exceptionally sparse B. Their Theorem 2 actually implies that NOT all zero-density sets admit such sparse representations, though this connection to Problem #333 was apparently overlooked by Erdős and Graham when stating the problem.",
+    "historicalContext": "This problem belongs to the broader study of additive bases in combinatorial number theory, going back to Waring's problem (1770) and Schnirelmann's theorem (1933) on sumset density. Erdős and Newman (1977) studied the fundamental question: given a set $A \\subseteq \\mathbb{N}$, how sparse can $B$ be while still ensuring $A \\subseteq B + B$?\n\nThey proved two key results: (1) perfect squares can be represented as $B + B$ with $|B \\cap [1,N]| = o(\\sqrt{N})$, and (2) there exist zero-density sets $A$ where any covering $B$ must satisfy $|B \\cap [1,N]| \\geq c\\sqrt{N}$ infinitely often. Theorem 2 actually implies a negative answer to Problem #333, but this connection was apparently overlooked when Erdős and Graham stated the problem in [ErGr80]. The problem is related to Sidon sets ($B_2$ sequences), where $|B \\cap [1,N]| \\sim \\sqrt{N}$ is optimal.",
     "problemStatement": "**Question:** Let A ⊆ ℕ have density zero. Does there exist B such that A ⊆ B+B and |B ∩ {1,...,N}| = o(N^{1/2})?\n\n**Answer: NO** (Erdős-Newman 1977, Theorem 2)\n\nSome zero-density sets require any covering B to have |B| ≈ √N.",
     "proofStrategy": "We formalize:\n\n1. **Counting functions and density:** countingFunction, hasZeroDensity\n2. **Sumsets:** sumset B + B, isCoveredBySumset\n3. **Sparsity conditions:** hasSubsqrtGrowth for o(√N) growth\n4. **The conjecture:** ErdosConjecture333\n5. **Positive case:** Squares (erdos_newman_squares)\n6. **Negative case:** existence_of_counterexample, erdos_333_false",
     "keyInsights": [
@@ -170,6 +170,11 @@
       "targetId": "erdos-302",
       "relationship": "related",
       "description": "Both are Erdős combinatorial density problems about extremal sizes of structured subsets of integers"
+    },
+    {
+      "targetId": "erdos-806",
+      "relationship": "related",
+      "description": "Directly related: #806 asks about small bases for sumsets (B+B covering). Both explore the minimum size of B needed so that A ⊆ B+B"
     }
   ]
 }
