@@ -164,5 +164,26 @@
       "What is the precise count of triangles with degree sum ≥ (3/2)n in dense graphs (quantitative supersaturation)?",
       "Does a stability version hold: if the best triangle has degree sum close to (3/2)n, is the graph close to a specific structure?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Finite",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos904",
+    "lineCount": 199,
+    "axiomCount": 6,
+    "theoremCount": 2,
+    "definitionCount": 8
   }
 }

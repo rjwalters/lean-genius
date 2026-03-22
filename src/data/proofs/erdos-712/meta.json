@@ -162,5 +162,23 @@
       "Can flag algebras determine exact densities?",
       "Is there a pattern relating densities for different k and r?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Topology.Instances.Real"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos712",
+    "lineCount": 274,
+    "axiomCount": 20,
+    "theoremCount": 2,
+    "definitionCount": 10
   }
 }

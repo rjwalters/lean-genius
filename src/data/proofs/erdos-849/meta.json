@@ -137,5 +137,21 @@
       "If the bound exists, is it 8 as conjectured?",
       "What is the asymptotic growth of the smallest a with multiplicity ≥ t?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Set",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos849",
+    "lineCount": 215,
+    "axiomCount": 13,
+    "theoremCount": 15,
+    "definitionCount": 4
   }
 }

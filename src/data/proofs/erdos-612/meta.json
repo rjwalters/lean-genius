@@ -172,5 +172,20 @@
       "How does the diameter bound depend on graph structure beyond clique number?",
       "Can the counterexample technique be generalized?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Function",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos612",
+    "lineCount": 269,
+    "axiomCount": 6,
+    "theoremCount": 12,
+    "definitionCount": 13
   }
 }

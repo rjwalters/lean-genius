@@ -103,5 +103,19 @@
       "What is the computational complexity of recognizing magic configurations (polynomial time via linear programming)?",
       "Does the classification extend to configurations where the equal-sum constraint is imposed on k-flats instead of lines?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.LinearAlgebra.AffineSpace.AffineSubspace",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Erdos735",
+    "lineCount": 240,
+    "axiomCount": 13,
+    "theoremCount": 3,
+    "definitionCount": 17
   }
 }

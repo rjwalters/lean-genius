@@ -143,5 +143,21 @@
       "Close the gap between 5/8 and 2/3 - ε",
       "What is the exact value of ε_3 in the CES bound?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Rat.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "Erdos865",
+    "lineCount": 214,
+    "axiomCount": 15,
+    "theoremCount": 2,
+    "definitionCount": 7
   }
 }

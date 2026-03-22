@@ -209,5 +209,23 @@
       "Can the Moser–Tardos constructive LLL (2010) be formalized in Lean to give an algorithmic proof of the contrapositive: explicitly construct a 2-coloring when all degrees are below the threshold?",
       "Is there a tight upper bound matching the Erdős–Lovász lower bound? What is the growth rate of $\\min_{H \\in \\mathcal{H}_{r,3}} \\Delta(H)$ — is it $(\\sqrt{2})^r / \\text{poly}(r)$, or closer to $2^{r-1}$?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos833",
+    "lineCount": 266,
+    "axiomCount": 11,
+    "theoremCount": 2,
+    "definitionCount": 10
   }
 }

@@ -90,5 +90,20 @@
       "What is the best independence ratio achievable in known constructions with χ ≥ ℵ₁?",
       "Does the Erdős-Hajnal conjecture have implications for this problem?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 93,
+    "axiomCount": 10,
+    "theoremCount": 0,
+    "definitionCount": 3
   }
 }

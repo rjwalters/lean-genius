@@ -215,5 +215,23 @@
       "Is the single-color conjecture true — does some c > 1/24 work for max single-color packing ≥ cn²?",
       "Can the regularity-based proof be made constructive (algorithmic triangle packing)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos76",
+    "lineCount": 246,
+    "axiomCount": 3,
+    "theoremCount": 4,
+    "definitionCount": 15
   }
 }

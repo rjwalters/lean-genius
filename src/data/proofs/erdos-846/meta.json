@@ -118,5 +118,22 @@
       "Does an analogous result hold in higher dimensions (no d+1 points on a hyperplane)?",
       "Can the contrapositive be leveraged: if A is not weakly non-trilinear, can one construct finite subsets with few points in general position?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Set",
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 200,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 4
   }
 }

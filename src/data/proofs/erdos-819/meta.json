@@ -145,5 +145,22 @@
       "Can the upper bound 1/2 be improved using finer counting?",
       "What structural properties do extremal sets have?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos819",
+    "lineCount": 290,
+    "axiomCount": 9,
+    "theoremCount": 4,
+    "definitionCount": 10
   }
 }

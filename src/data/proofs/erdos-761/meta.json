@@ -130,5 +130,21 @@
       "What is the exact dichromatic number of Kneser graphs K(n,k)?",
       "Does the Burr-Erdős conjecture for oriented Ramsey numbers follow from a positive answer to Question 1?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Coloring",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": null,
+    "lineCount": 149,
+    "axiomCount": 8,
+    "theoremCount": 1,
+    "definitionCount": 5
   }
 }

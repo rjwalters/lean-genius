@@ -151,5 +151,22 @@
       "Study analogous problems for directed graphs",
       "Explore algorithmic aspects: efficiently finding such pairs"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph",
+      "Mathlib.Combinatorics.SimpleGraph.DegreeSum",
+      "Mathlib.Data.Fintype.Card"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos816",
+    "lineCount": 229,
+    "axiomCount": 5,
+    "theoremCount": 2,
+    "definitionCount": 9
   }
 }

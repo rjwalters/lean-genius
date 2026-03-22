@@ -159,5 +159,24 @@
   ],
   "relatedProofs": [
     "erdos-882"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "Erdos883",
+    "lineCount": 246,
+    "axiomCount": 8,
+    "theoremCount": 4,
+    "definitionCount": 6
+  }
 }

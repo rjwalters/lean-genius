@@ -182,5 +182,20 @@
       "Are there amicable pairs where both numbers are odd?",
       "What is the true growth rate of A(x)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "Real",
+      "Classical"
+    ],
+    "namespace": "Erdos830",
+    "lineCount": 159,
+    "axiomCount": 5,
+    "theoremCount": 9,
+    "definitionCount": 1
   }
 }

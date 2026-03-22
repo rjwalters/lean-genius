@@ -149,5 +149,23 @@
       "What is the density of arithmetic progressions whose product is 'close' to a perfect power?",
       "Can the heuristic argument be made rigorous?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Data.Nat.Prime.Defs"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos672",
+    "lineCount": 246,
+    "axiomCount": 14,
+    "theoremCount": 4,
+    "definitionCount": 7
   }
 }

@@ -123,5 +123,19 @@
       "What is the relationship between Questions 1 and 2?",
       "Can similar phenomena occur at other cardinals?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Ordinal"
+    ],
+    "opens": [
+      "Cardinal"
+    ],
+    "namespace": "Erdos918",
+    "lineCount": 149,
+    "axiomCount": 7,
+    "theoremCount": 1,
+    "definitionCount": 0
   }
 }

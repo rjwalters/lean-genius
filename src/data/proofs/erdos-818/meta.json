@@ -167,5 +167,22 @@
   ],
   "relatedProofs": [
     "erdos-801"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos818",
+    "lineCount": 326,
+    "axiomCount": 10,
+    "theoremCount": 5,
+    "definitionCount": 7
+  }
 }

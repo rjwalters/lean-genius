@@ -114,5 +114,24 @@
       "Can the Four Color Theorem (Gonthier 2005 Coq proof) be re-formalized in Lean 4?",
       "Can Kempe chains be used to prove list coloring variants of the Five Color Theorem?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Finite",
+      "Mathlib.Combinatorics.SimpleGraph.DegreeSum",
+      "Mathlib.Combinatorics.SimpleGraph.Coloring",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "FiveColorTheorem",
+    "lineCount": 508,
+    "axiomCount": 4,
+    "theoremCount": 25,
+    "definitionCount": 2
   }
 }

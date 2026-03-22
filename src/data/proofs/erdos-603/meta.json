@@ -186,5 +186,19 @@
       "relationship": "related",
       "description": "Ramsey theory — foundational coloring/partition result; #603 extends this paradigm to hypergraph vertex coloring with intersection constraints"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Cardinal"
+    ],
+    "namespace": "Erdos603",
+    "lineCount": 213,
+    "axiomCount": 2,
+    "theoremCount": 4,
+    "definitionCount": 18
+  }
 }

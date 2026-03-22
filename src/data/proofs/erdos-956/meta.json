@@ -207,5 +207,20 @@
       "Can the Szemerédi-Trotter-based upper bound n^(4/3) be improved using the additional structure of convex translates?",
       "What happens in higher dimensions? For disjoint convex translates in ℝ^d, how does h_d(n) behave?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Metric",
+      "Finset"
+    ],
+    "namespace": "Erdos956",
+    "lineCount": 311,
+    "axiomCount": 9,
+    "theoremCount": 14,
+    "definitionCount": 13
   }
 }

@@ -146,5 +146,23 @@
       "How does the problem generalize to k-th power free numbers?",
       "What is the computational complexity of finding the optimal set?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Squarefree",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos844",
+    "lineCount": 247,
+    "axiomCount": 16,
+    "theoremCount": 4,
+    "definitionCount": 9
   }
 }

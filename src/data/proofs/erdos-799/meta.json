@@ -163,5 +163,23 @@
       "Does the list coloring conjecture ($\\chi_L(G) = \\chi'(G)$ for line graphs) hold for random regular graphs?",
       "Can the Lovász Local Lemma proof or the semi-random method be formalized in Lean with Mathlib's current capabilities?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Coloring",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Order.Basic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos799",
+    "lineCount": 202,
+    "axiomCount": 8,
+    "theoremCount": 1,
+    "definitionCount": 4
   }
 }

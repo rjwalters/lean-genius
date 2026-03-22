@@ -123,5 +123,27 @@
       "Can the Rödl construction be made explicit?",
       "What happens for chromatic number exactly ℵ₀?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "Topology",
+      "for",
+      "countable",
+      "infinite",
+      "chromatic",
+      "number",
+      "suggests",
+      "delicate",
+      "set-theoretic"
+    ],
+    "namespace": "Erdos74",
+    "lineCount": 292,
+    "axiomCount": 3,
+    "theoremCount": 3,
+    "definitionCount": 6
   }
 }

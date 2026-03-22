@@ -177,5 +177,20 @@
       "Is there an efficient algorithm to find a coloring maximizing the number of edges not in monochromatic triangles, or is this computationally hard?",
       "What is the analogous threshold for hypergraphs: in a 2-coloring of the complete 3-uniform hypergraph, how many hyperedges can avoid monochromatic tetrahedra?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Function",
+      "Classical"
+    ],
+    "namespace": "Erdos639",
+    "lineCount": 236,
+    "axiomCount": 10,
+    "theoremCount": 3,
+    "definitionCount": 15
   }
 }

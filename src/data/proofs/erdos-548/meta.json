@@ -118,5 +118,24 @@
       "Is there a probabilistic proof strategy (random embedding) that could work for all tree shapes?",
       "What is the computational complexity of finding optimal tree embeddings in dense graphs?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph",
+      "Mathlib.Combinatorics.SimpleGraph.Maps",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos548",
+    "lineCount": 320,
+    "axiomCount": 9,
+    "theoremCount": 6,
+    "definitionCount": 16
   }
 }

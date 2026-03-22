@@ -162,5 +162,23 @@
   ],
   "relatedProofs": [
     "ramseys-theorem"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos637",
+    "lineCount": 254,
+    "axiomCount": 0,
+    "theoremCount": 18,
+    "definitionCount": 16
+  }
 }

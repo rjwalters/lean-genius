@@ -156,5 +156,24 @@
       "Is c = √(2π) as Tao's heuristic suggests?",
       "What are the precise values of c₁ and c₂ in the Erdős-Selfridge bounds?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.NumberTheory.Padics.PadicVal"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos912",
+    "lineCount": 249,
+    "axiomCount": 9,
+    "theoremCount": 3,
+    "definitionCount": 8
   }
 }

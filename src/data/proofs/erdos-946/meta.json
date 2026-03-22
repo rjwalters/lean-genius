@@ -105,5 +105,19 @@
       "How long can runs of consecutive n with equal τ(n) be?",
       "What about τ(n) = τ(n+2) or other gaps?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Filter"
+    ],
+    "namespace": "Erdos946",
+    "lineCount": 128,
+    "axiomCount": 2,
+    "theoremCount": 1,
+    "definitionCount": 2
   }
 }

@@ -150,5 +150,26 @@
       "How does the extremal function f(N, t) depend on t for fixed large N?",
       "Are there connections to the distribution of divisors or smooth numbers?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Interval",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Topology.Order.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos635",
+    "lineCount": 266,
+    "axiomCount": 8,
+    "theoremCount": 5,
+    "definitionCount": 5
   }
 }

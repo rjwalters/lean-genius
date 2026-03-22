@@ -156,5 +156,20 @@
       "Can the error distribution be characterized more precisely (beyond oscillation)?",
       "Does the Montgomery-Vaughan refinement (removing log factor) extend to h-fold for h >= 3?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos764",
+    "lineCount": 209,
+    "axiomCount": 9,
+    "theoremCount": 2,
+    "definitionCount": 10
   }
 }

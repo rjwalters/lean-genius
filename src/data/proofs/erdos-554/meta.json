@@ -127,5 +127,19 @@
       "Is there a graph G with χ(G) = 3 for which R(G; k) / R(K_3; k) does not tend to 0?",
       "What is the precise exponential base for R(K_3; k)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Order.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Erdos554",
+    "lineCount": 178,
+    "axiomCount": 11,
+    "theoremCount": 2,
+    "definitionCount": 5
   }
 }

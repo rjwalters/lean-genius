@@ -157,5 +157,24 @@
       "What is the connection to Egyptian fractions (Problem #144)?",
       "Can Tao's suggested approach yield a proof?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Divisors",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.List.Sort"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos884",
+    "lineCount": 156,
+    "axiomCount": 12,
+    "theoremCount": 2,
+    "definitionCount": 9
   }
 }

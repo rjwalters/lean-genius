@@ -110,5 +110,22 @@
       "Can the Faudree-McKay construction be extended to produce counterexamples with larger chromatic number?",
       "How does the Campos et al. breakthrough on R(k) ≤ (4-ε)^k affect the conjecture?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Fin.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 90,
+    "axiomCount": 10,
+    "theoremCount": 0,
+    "definitionCount": 2
   }
 }

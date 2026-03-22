@@ -96,5 +96,21 @@
       "Can the characterization be extended to r-uniform hypergraphs for r ≥ 4?",
       "What is the role of set-theoretic axioms (e.g., large cardinals, forcing) in the answer?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Set.Finite",
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 128,
+    "axiomCount": 4,
+    "theoremCount": 0,
+    "definitionCount": 7
   }
 }

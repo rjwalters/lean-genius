@@ -104,5 +104,21 @@
       "Can the gap between Ω(N^{1/3}) and O(N^{1/3}·(log N)^{O(1)}) be closed?",
       "What about higher powers instead of squares?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Order.Filter.AtTopBot.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.NNReal"
+    ],
+    "opens": [],
+    "namespace": "Erdos587",
+    "lineCount": 161,
+    "axiomCount": 2,
+    "theoremCount": 6,
+    "definitionCount": 2
   }
 }

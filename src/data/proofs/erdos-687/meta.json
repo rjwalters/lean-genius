@@ -110,5 +110,21 @@
       "Can the FGKMT lower bound be improved further, perhaps to x · (log x)^{2-o(1)}?",
       "What is g(n) for n with many small prime factors beyond primorials?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "Filter"
+    ],
+    "namespace": null,
+    "lineCount": 149,
+    "axiomCount": 7,
+    "theoremCount": 3,
+    "definitionCount": 5
   }
 }

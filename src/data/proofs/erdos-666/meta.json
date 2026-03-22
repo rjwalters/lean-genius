@@ -145,5 +145,21 @@
       "For C_{2k}, what density threshold forces the cycle?",
       "Does aₖ → 0 as k → ∞ in the generalized conjecture?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Fin.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos666",
+    "lineCount": 307,
+    "axiomCount": 5,
+    "theoremCount": 4,
+    "definitionCount": 10
   }
 }

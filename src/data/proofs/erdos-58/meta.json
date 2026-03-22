@@ -105,5 +105,19 @@
       "Connection to Problem #57: does the Gyárfás bound give quantitative information about the rate of divergence of ∑ 1/aᵢ?",
       "Can the chromaticNumber axioms be replaced by Mathlib's SimpleGraph.chromaticNumber once it stabilizes?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos58",
+    "lineCount": 166,
+    "axiomCount": 6,
+    "theoremCount": 4,
+    "definitionCount": 6
   }
 }

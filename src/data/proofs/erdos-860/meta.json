@@ -147,5 +147,22 @@
   "relatedProofs": [
     "erdos-375",
     "erdos-533"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.PrimeCounting",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Analysis.Asymptotics.Asymptotics"
+    ],
+    "opens": [
+      "Nat",
+      "Filter",
+      "Asymptotics"
+    ],
+    "namespace": "Erdos860",
+    "lineCount": 206,
+    "axiomCount": 5,
+    "theoremCount": 3,
+    "definitionCount": 6
+  }
 }

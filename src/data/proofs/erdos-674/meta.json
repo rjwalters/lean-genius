@@ -137,5 +137,22 @@
       "What is the density of n for which koFamily(n) produces solutions, and what role do Mersenne-like numbers 2^n - 1 play?",
       "Can the p-adic methods of Dem'janenko be extended to the more general equation x^a · y^b = z^c?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Algebra.Order.Ring.Lemmas",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "Erdos674",
+    "lineCount": 284,
+    "axiomCount": 0,
+    "theoremCount": 25,
+    "definitionCount": 12
   }
 }

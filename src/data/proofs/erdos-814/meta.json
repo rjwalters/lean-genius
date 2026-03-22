@@ -136,5 +136,25 @@
       "Generalizations with other degree constraints",
       "Connections to graph coloring and chromatic number"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Combinatorics.SimpleGraph.Finite",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos814",
+    "lineCount": 320,
+    "axiomCount": 6,
+    "theoremCount": 7,
+    "definitionCount": 3
   }
 }

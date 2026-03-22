@@ -155,5 +155,23 @@
       "Are there constructions better than norm graphs for lower bounds below the factorial threshold?",
       "Does the bipartite Ramsey theory extend to hypergraph analogs with similar polynomial growth?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos558",
+    "lineCount": 262,
+    "axiomCount": 19,
+    "theoremCount": 2,
+    "definitionCount": 9
   }
 }

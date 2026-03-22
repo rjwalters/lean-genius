@@ -153,5 +153,23 @@
       "Unconditional proof or disproof of Weisenberg's counterexample",
       "Strengthen Schinzel's result to approach the original primorial"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Data.Set.Finite.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "BigOperators",
+      "Finset"
+    ],
+    "namespace": "Erdos891",
+    "lineCount": 345,
+    "axiomCount": 4,
+    "theoremCount": 26,
+    "definitionCount": 6
   }
 }

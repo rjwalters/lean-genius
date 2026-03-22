@@ -182,5 +182,23 @@
       "Do the NPS counterexamples have any special structural properties (e.g., bounded treewidth, excluded minors) that explain the C₂₃ avoidance?",
       "For which sets S ⊆ {3, 4, 5, ...} must degree 3 critical graphs contain C_k for all k ∈ S? Is {3, 4, 5} the maximal such set?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos815",
+    "lineCount": 253,
+    "axiomCount": 4,
+    "theoremCount": 3,
+    "definitionCount": 8
   }
 }

@@ -131,5 +131,22 @@
       "What is the correct exponent in the sparse regime δ = n^{-c}?",
       "Are there constructions matching the conjectured lower bounds?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Real"
+    ],
+    "namespace": "Erdos584",
+    "lineCount": 206,
+    "axiomCount": 3,
+    "theoremCount": 1,
+    "definitionCount": 18
   }
 }

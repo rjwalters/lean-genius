@@ -104,5 +104,23 @@
       "What is the true growth rate of h(n)?",
       "Can Cramér's conjecture on prime gaps be proved, giving h(n) = O((log n)²)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos665",
+    "lineCount": 196,
+    "axiomCount": 10,
+    "theoremCount": 1,
+    "definitionCount": 5
   }
 }

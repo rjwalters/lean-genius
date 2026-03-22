@@ -203,5 +203,16 @@
       "What is the minimum number of vertices needed for a 4-regular graph to contain a 3-regular subgraph?",
       "How does this extend to multigraphs and directed graphs?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "Erdos715",
+    "lineCount": 210,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 10
   }
 }

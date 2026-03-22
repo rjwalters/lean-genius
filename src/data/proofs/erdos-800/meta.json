@@ -155,5 +155,23 @@
       "Can Alon's probabilistic embedding technique be extended to 3-uniform hypergraphs or to multicolor Ramsey settings?",
       "Can the full proof of $R(G) \\leq 12n$ be formalized in Lean, given the probabilistic method and counting arguments involved?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Combinatorics.SimpleGraph.Coloring",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos800",
+    "lineCount": 268,
+    "axiomCount": 5,
+    "theoremCount": 5,
+    "definitionCount": 12
   }
 }

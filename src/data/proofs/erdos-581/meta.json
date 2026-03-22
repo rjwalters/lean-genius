@@ -139,5 +139,24 @@
       "What is f(m) for graphs with other forbidden subgraphs?",
       "Can the constants be computed algorithmically?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Algebra.Order.Ring.Lemmas",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Real"
+    ],
+    "namespace": "Erdos581",
+    "lineCount": 282,
+    "axiomCount": 8,
+    "theoremCount": 5,
+    "definitionCount": 7
   }
 }

@@ -134,5 +134,21 @@
       "For which n, k is the extremal graph unique?",
       "What structural properties do extremal graphs have?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos614",
+    "lineCount": 178,
+    "axiomCount": 6,
+    "theoremCount": 1,
+    "definitionCount": 7
   }
 }

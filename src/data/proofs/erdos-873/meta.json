@@ -148,5 +148,18 @@
       "What is the optimal exponent for k=4, k=5, etc.?",
       "Are there sequences that are 'maximally multiplicatively dependent' in some sense?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set"
+    ],
+    "namespace": "Erdos873",
+    "lineCount": 156,
+    "axiomCount": 2,
+    "theoremCount": 4,
+    "definitionCount": 3
   }
 }

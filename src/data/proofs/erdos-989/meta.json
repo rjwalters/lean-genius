@@ -182,5 +182,25 @@
       "Are there natural sequences (lattice-based, number-theoretic) achieving near-optimal circle discrepancy without randomization?",
       "What about discrepancy for other families of curved sets (ellipses, convex sets of bounded curvature)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Set",
+      "Real",
+      "MeasureTheory"
+    ],
+    "namespace": "Erdos989",
+    "lineCount": 366,
+    "axiomCount": 6,
+    "theoremCount": 3,
+    "definitionCount": 13
   }
 }

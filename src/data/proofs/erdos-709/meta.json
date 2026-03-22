@@ -175,5 +175,23 @@
       "Can probabilistic methods or Fourier-analytic techniques improve the bounds?",
       "What is the exact relationship between f(n) and g(n) from Problem 708?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Log",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos709",
+    "lineCount": 289,
+    "axiomCount": 18,
+    "theoremCount": 2,
+    "definitionCount": 6
   }
 }

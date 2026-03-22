@@ -139,5 +139,28 @@
       "Can the Heawood conjecture (chromatic number = Heawood number for genus ≥ 1) be formalized for all genera?",
       "Can Kuratowski's theorem (planar iff no K₅ or K₃,₃ minor) be formalized using Mathlib's SimpleGraph API?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Finite",
+      "Mathlib.Combinatorics.SimpleGraph.DegreeSum",
+      "Mathlib.Combinatorics.SimpleGraph.Coloring",
+      "Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset",
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "EulerOQ01",
+    "lineCount": 904,
+    "axiomCount": 0,
+    "theoremCount": 60,
+    "definitionCount": 12
   }
 }

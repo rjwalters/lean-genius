@@ -124,5 +124,18 @@
       "What is the relationship to the abc conjecture?",
       "Can the methods of Nitaj and Cohn for 3-powerful triples be generalized?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Classical"
+    ],
+    "namespace": "Erdos939",
+    "lineCount": 224,
+    "axiomCount": 6,
+    "theoremCount": 7,
+    "definitionCount": 8
   }
 }

@@ -168,5 +168,22 @@
       "Higher-dimensional generalizations?",
       "Connections to algebraic geometry methods?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.List.Sort",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos733",
+    "lineCount": 292,
+    "axiomCount": 5,
+    "theoremCount": 6,
+    "definitionCount": 6
   }
 }

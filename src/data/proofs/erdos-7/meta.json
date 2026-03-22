@@ -166,5 +166,19 @@
       "What is the structure of the smallest odd covering (if any)?",
       "Can computational searches help resolve this problem?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Finset"
+    ],
+    "namespace": "Erdos7",
+    "lineCount": 275,
+    "axiomCount": 3,
+    "theoremCount": 6,
+    "definitionCount": 18
   }
 }

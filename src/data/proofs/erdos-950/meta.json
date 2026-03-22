@@ -122,5 +122,27 @@
   ],
   "relatedProofs": [
     "erdos-951"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Topology.Order.Basic",
+      "Mathlib.Topology.Algebra.Order.LiminfLimsup",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Filter",
+      "Real"
+    ],
+    "namespace": "Erdos950",
+    "lineCount": 209,
+    "axiomCount": 12,
+    "theoremCount": 4,
+    "definitionCount": 10
+  }
 }

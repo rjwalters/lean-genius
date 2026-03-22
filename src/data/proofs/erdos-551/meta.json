@@ -138,5 +138,23 @@
       "What is the minimum of R(C_k, K_n) over k ≥ n for fixed n — does it occur near k = n or at a larger value?",
       "Can the regularity-free approach (used by AKS for bipartite graphs in Problem #546) be adapted to the cycle-vs-clique setting?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Combinatorics.SimpleGraph.Coloring",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos551",
+    "lineCount": 604,
+    "axiomCount": 0,
+    "theoremCount": 26,
+    "definitionCount": 14
   }
 }

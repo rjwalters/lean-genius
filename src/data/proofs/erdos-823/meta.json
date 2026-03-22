@@ -215,5 +215,24 @@
       "What is the precise density of the set $\\{m : |\\sigma^{-1}(m)| \\geq 2\\}$? Is it $c + o(1)$ for an explicit $c$?",
       "Can the Lean formalization be extended to prove some of the axiomatized results (e.g., $\\sigma(14) = 24$ directly from the Mathlib definition)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.NumberTheory.ArithmeticFunction",
+      "Mathlib.Topology.Basic",
+      "Mathlib.Topology.Instances.Real"
+    ],
+    "opens": [
+      "ArithmeticFunction",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "Erdos823",
+    "lineCount": 271,
+    "axiomCount": 21,
+    "theoremCount": 2,
+    "definitionCount": 6
   }
 }

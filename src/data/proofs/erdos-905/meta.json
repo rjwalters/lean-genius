@@ -120,5 +120,23 @@
   ],
   "relatedProofs": [
     "erdos-904"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Order.Filter.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos905",
+    "lineCount": 216,
+    "axiomCount": 7,
+    "theoremCount": 1,
+    "definitionCount": 9
+  }
 }

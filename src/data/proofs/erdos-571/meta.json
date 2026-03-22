@@ -137,5 +137,16 @@
       "Can the Bukh-Conlon family construction be 'derandomized' to produce single-graph witnesses?",
       "Are there Turan exponents that require graphs with specific structural properties (high girth, specific chromatic number, etc.)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "Erdos571",
+    "lineCount": 210,
+    "axiomCount": 10,
+    "theoremCount": 1,
+    "definitionCount": 8
   }
 }

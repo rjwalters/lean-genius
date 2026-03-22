@@ -126,5 +126,20 @@
       "Are there natural density conditions that DO imply covering moduli existence?",
       "How does the minimum modulus bound affect other covering system properties?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Finset",
+      "Function"
+    ],
+    "namespace": "Erdos8",
+    "lineCount": 238,
+    "axiomCount": 5,
+    "theoremCount": 2,
+    "definitionCount": 15
   }
 }

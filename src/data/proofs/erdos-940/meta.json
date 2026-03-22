@@ -174,5 +174,24 @@
       "What is the exact threshold N₀ beyond which Heath-Brown's theorem holds for squarefull triples?",
       "Can the Baker-Brüdern argument be extended to the r = 3 diagonal case using the circle method?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.NumberTheory.Squarefree",
+      "Mathlib.Data.Multiset.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Filter",
+      "Finset"
+    ],
+    "namespace": "Erdos940",
+    "lineCount": 340,
+    "axiomCount": 2,
+    "theoremCount": 10,
+    "definitionCount": 15
   }
 }

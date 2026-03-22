@@ -191,5 +191,24 @@
       "Is there a polynomial-time algorithm to find the minimum odd cycle transversal for graphs satisfying the $k$-independence condition?",
       "Complete the 5 remaining sorries: trivial_case, bipartite_deficiency_zero, strict_implies_bipartite, K3_violates_strict, K3_almost_bipartite"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos73",
+    "lineCount": 245,
+    "axiomCount": 8,
+    "theoremCount": 9,
+    "definitionCount": 10
   }
 }

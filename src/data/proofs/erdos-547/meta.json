@@ -183,5 +183,22 @@
     "ramseys-theorem",
     "erdos-548",
     "erdos-549"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Finite",
+      "Mathlib.Data.Sym.Sym2",
+      "Mathlib.Data.Fintype.Card"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos547",
+    "lineCount": 139,
+    "axiomCount": 6,
+    "theoremCount": 1,
+    "definitionCount": 2
+  }
 }

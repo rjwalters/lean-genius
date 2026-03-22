@@ -142,5 +142,22 @@
       "What is the exact threshold growth rate, if one exists?",
       "Are there intermediate behaviors between constant and logarithmic growth?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Filter",
+      "Set",
+      "BigOperators",
+      "Pointwise"
+    ],
+    "namespace": "Erdos868",
+    "lineCount": 257,
+    "axiomCount": 7,
+    "theoremCount": 5,
+    "definitionCount": 4
   }
 }

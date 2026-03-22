@@ -186,5 +186,21 @@
       "What is the exact value of d_{C_4}(n)? The Erdős-Tuza bounds leave a gap between n/6 and (1/4 - c)n.",
       "Can the characterization be expressed in terms of standard graph parameters (degeneracy, treewidth, maximum degree, chromatic number)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos811",
+    "lineCount": 194,
+    "axiomCount": 9,
+    "theoremCount": 1,
+    "definitionCount": 8
   }
 }

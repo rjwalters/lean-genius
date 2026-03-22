@@ -158,5 +158,22 @@
   ],
   "relatedProofs": [
     "erdos-604"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos754",
+    "lineCount": 153,
+    "axiomCount": 5,
+    "theoremCount": 3,
+    "definitionCount": 9
+  }
 }

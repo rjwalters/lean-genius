@@ -124,5 +124,29 @@
       "How does this relate to the (different) Erdős-Hajnal conjecture on forbidden induced subgraphs?",
       "What are the algorithmic implications for finding independent sets?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Finite",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Order.Filter.AtTopBot"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Set",
+      "Filter",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos804",
+    "lineCount": 245,
+    "axiomCount": 5,
+    "theoremCount": 3,
+    "definitionCount": 3
   }
 }

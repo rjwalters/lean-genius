@@ -150,5 +150,22 @@
       "Can probabilistic or algebraic methods construct high-girth 4-chromatic UDGs?",
       "Is the analogous question for higher dimensions (ℝ³, etc.) also open?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Coloring",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "Erdos705",
+    "lineCount": 312,
+    "axiomCount": 8,
+    "theoremCount": 4,
+    "definitionCount": 8
   }
 }

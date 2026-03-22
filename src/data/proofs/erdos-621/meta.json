@@ -131,5 +131,23 @@
       "What is the computational complexity of $\\alpha_1$ and $\\tau_1$? The analogous vertex problems (independent set, vertex cover) are NP-hard; does the triangle structure make these easier or harder?",
       "Can the Norin-Sun approach be generalized to $K_r$-covers for $r \\ge 4$, yielding analogues of the EGT conjecture for larger cliques with Turán-type bounds?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset",
+      "Classical"
+    ],
+    "namespace": "Erdos621",
+    "lineCount": 336,
+    "axiomCount": 6,
+    "theoremCount": 15,
+    "definitionCount": 10
   }
 }

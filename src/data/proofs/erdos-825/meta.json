@@ -101,5 +101,20 @@
       "Is C = 3 the correct threshold?",
       "Do odd weird numbers exist?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 95,
+    "axiomCount": 5,
+    "theoremCount": 0,
+    "definitionCount": 8
   }
 }

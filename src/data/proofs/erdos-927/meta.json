@@ -124,5 +124,19 @@
     "erdos-775",
     "erdos-166",
     "erdos-79"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Nat.Log",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos927",
+    "lineCount": 276,
+    "axiomCount": 9,
+    "theoremCount": 2,
+    "definitionCount": 7
+  }
 }

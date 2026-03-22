@@ -153,5 +153,24 @@
       "Analogues for other symmetric functions?",
       "Algorithmic aspects: efficiently testing the zero-tuple condition?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Complex.Basic",
+      "Mathlib.Analysis.Complex.RootsOfUnity",
+      "Mathlib.Data.Complex.Exponential",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Complex",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos974",
+    "lineCount": 214,
+    "axiomCount": 6,
+    "theoremCount": 4,
+    "definitionCount": 10
   }
 }

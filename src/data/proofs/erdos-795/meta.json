@@ -157,5 +157,16 @@
       "What are the analogues for distinct subset sums vs. products? Erdős Problem #1 addresses the additive case, but the relationship between optimal additive and multiplicative constructions is not well understood.",
       "How does $g(n)$ behave for restricted sets, such as subsets of arithmetic progressions $\\{a, a+d, \\ldots, a+kd\\}$?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "Erdos795",
+    "lineCount": 519,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 7
   }
 }

@@ -158,5 +158,26 @@
       "Computational complexity of counting comparable pairs",
       "Generalizations to infinite families"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Data.Set.Function",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Order.Lattice",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "Set"
+    ],
+    "namespace": "Erdos777",
+    "lineCount": 385,
+    "axiomCount": 10,
+    "theoremCount": 8,
+    "definitionCount": 9
   }
 }

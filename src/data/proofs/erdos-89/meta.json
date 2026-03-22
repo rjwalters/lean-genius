@@ -130,5 +130,21 @@
       "What are the optimal bounds in higher dimensions?",
       "Can the grid construction be improved?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "Set",
+      "Finset",
+      "Topology"
+    ],
+    "namespace": "Erdos89",
+    "lineCount": 235,
+    "axiomCount": 6,
+    "theoremCount": 2,
+    "definitionCount": 6
   }
 }

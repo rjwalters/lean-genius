@@ -125,5 +125,27 @@
     "erdos-933",
     "erdos-931",
     "erdos-928"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Nat.PrimeNormNum",
+      "Mathlib.Data.Finsupp.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos913",
+    "lineCount": 135,
+    "axiomCount": 6,
+    "theoremCount": 0,
+    "definitionCount": 5
+  }
 }

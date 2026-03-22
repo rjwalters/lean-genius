@@ -172,5 +172,23 @@
       "For which pairs (k,l) is f(n;k,l) achieved by a unique graph (up to isomorphism)?",
       "How does f behave for specific graph families (trees, cycles, complete multipartite)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Finite",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "Erdos766",
+    "lineCount": 246,
+    "axiomCount": 15,
+    "theoremCount": 2,
+    "definitionCount": 11
   }
 }

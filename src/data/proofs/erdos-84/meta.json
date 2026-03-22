@@ -161,5 +161,24 @@
   "relatedProofs": [
     "erdos-85",
     "erdos-86"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Set"
+    ],
+    "namespace": "Erdos84",
+    "lineCount": 280,
+    "axiomCount": 10,
+    "theoremCount": 4,
+    "definitionCount": 6
+  }
 }

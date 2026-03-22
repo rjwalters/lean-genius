@@ -126,5 +126,26 @@
     "erdos-347",
     "erdos-182",
     "erdos-321"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Nat",
+      "Real",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos856",
+    "lineCount": 308,
+    "axiomCount": 9,
+    "theoremCount": 4,
+    "definitionCount": 10
+  }
 }

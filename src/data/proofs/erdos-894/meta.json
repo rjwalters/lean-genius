@@ -150,5 +150,24 @@
       "Can the construction be made explicit for specific sequences?",
       "What is the chromatic number for powers of 2?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.Order.Floor.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Real"
+    ],
+    "namespace": "Erdos894",
+    "lineCount": 234,
+    "axiomCount": 5,
+    "theoremCount": 8,
+    "definitionCount": 11
   }
 }

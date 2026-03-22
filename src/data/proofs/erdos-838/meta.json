@@ -142,5 +142,21 @@
       "What are the optimal constants c₁ and c₂ in Erdős's bounds?",
       "What point configuration minimizes the number of convex subsets?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "Erdos838",
+    "lineCount": 184,
+    "axiomCount": 13,
+    "theoremCount": 2,
+    "definitionCount": 5
   }
 }

@@ -172,5 +172,23 @@
   "relatedProofs": [
     "friendship-theorem",
     "erdos-1036"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Analysis.Asymptotics.Asymptotics",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos622",
+    "lineCount": 239,
+    "axiomCount": 14,
+    "theoremCount": 0,
+    "definitionCount": 13
+  }
 }

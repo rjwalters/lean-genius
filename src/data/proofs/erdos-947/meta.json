@@ -153,5 +153,24 @@
       "What are the optimal density-sum bounds for distinct-moduli covering systems?",
       "Is there an effective bound on the size of the smallest covering system with distinct moduli all greater than a given bound?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos947",
+    "lineCount": 209,
+    "axiomCount": 6,
+    "theoremCount": 2,
+    "definitionCount": 6
   }
 }

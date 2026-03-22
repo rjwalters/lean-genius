@@ -144,5 +144,19 @@
   "relatedProofs": [
     "erdos-57",
     "erdos-65"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos59",
+    "lineCount": 223,
+    "axiomCount": 9,
+    "theoremCount": 5,
+    "definitionCount": 9
+  }
 }

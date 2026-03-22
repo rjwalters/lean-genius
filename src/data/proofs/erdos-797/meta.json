@@ -134,5 +134,24 @@
       "Extend results to list-acyclic or star-acyclic chromatic numbers",
       "Characterize extremal graphs achieving f(d)"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Coloring",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Real"
+    ],
+    "namespace": "Erdos797",
+    "lineCount": 176,
+    "axiomCount": 8,
+    "theoremCount": 1,
+    "definitionCount": 6
   }
 }

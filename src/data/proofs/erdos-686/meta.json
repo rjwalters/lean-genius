@@ -142,5 +142,25 @@
       "relationship": "related",
       "description": "Problem #678 studies LCM of consecutive integers — complementary to #686's ratio of products formulation"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Data.Rat.Defs",
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "Nat"
+    ],
+    "namespace": "Erdos686",
+    "lineCount": 175,
+    "axiomCount": 2,
+    "theoremCount": 10,
+    "definitionCount": 7
+  }
 }

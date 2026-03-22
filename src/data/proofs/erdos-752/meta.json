@@ -153,5 +153,20 @@
       "What happens for directed graphs?",
       "Can the proof be made constructive to find cycles efficiently?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Order.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos752",
+    "lineCount": 247,
+    "axiomCount": 14,
+    "theoremCount": 5,
+    "definitionCount": 10
   }
 }

@@ -129,5 +129,18 @@
       "What is the complete list of exceptions to the strict form?",
       "Can we characterize when gcd(C(n,i), C(n,j)) has only small prime factors?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "Erdos699",
+    "lineCount": 220,
+    "axiomCount": 1,
+    "theoremCount": 17,
+    "definitionCount": 4
   }
 }

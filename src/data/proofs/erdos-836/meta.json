@@ -139,5 +139,20 @@
       "Are there other examples besides Fano where no two edges share r-1 vertices?",
       "What is the exact growth rate of maximum vertex count as a function of r?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SetFamily.Intersecting",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos836",
+    "lineCount": 280,
+    "axiomCount": 4,
+    "theoremCount": 1,
+    "definitionCount": 12
   }
 }

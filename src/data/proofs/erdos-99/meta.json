@@ -138,5 +138,25 @@
       "Prove that (1-o(1))n points lie on the triangular lattice (stronger conjecture)",
       "Characterize all optimal configurations for each n"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Set.Finite"
+    ],
+    "opens": [
+      "Real",
+      "Set",
+      "Finset"
+    ],
+    "namespace": "Erdos99",
+    "lineCount": 201,
+    "axiomCount": 5,
+    "theoremCount": 1,
+    "definitionCount": 13
   }
 }

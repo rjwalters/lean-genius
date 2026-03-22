@@ -128,5 +128,25 @@
       "Can similar results be proved for diameter 3 or higher?",
       "What about K₄-free or general Kr-free graphs?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Connectivity.Metric",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Topology.Instances.Real"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Asymptotics",
+      "Filter"
+    ],
+    "namespace": "Erdos618",
+    "lineCount": 277,
+    "axiomCount": 7,
+    "theoremCount": 2,
+    "definitionCount": 10
   }
 }

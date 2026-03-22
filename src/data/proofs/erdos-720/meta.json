@@ -222,5 +222,23 @@
       "Improve the lower bound beyond $3.75n$ — this would require new coloring constructions of sparse graphs",
       "Determine the size Ramsey number of the hypercube $Q_n$ — conjectured linear but known only to be polynomial"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [
+      "Real",
+      "Filter"
+    ],
+    "namespace": "Erdos720",
+    "lineCount": 270,
+    "axiomCount": 12,
+    "theoremCount": 3,
+    "definitionCount": 20
   }
 }

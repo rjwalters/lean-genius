@@ -88,5 +88,20 @@
       "How does the threshold behave for $r$-colorings with $r \\geq 3$?",
       "What is the relationship between $c_\\alpha$ and the diagonal Ramsey constant as $\\alpha \\to 0$?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 115,
+    "axiomCount": 8,
+    "theoremCount": 0,
+    "definitionCount": 6
   }
 }

@@ -158,5 +158,23 @@
       "id": "erdos-620",
       "relationship": "Both address threshold phenomena in infinite combinatorics—erdos-620 concerns Ramsey-type bounds while erdos-623 concerns independence at singular cardinals"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.SetTheory.Cardinal.Cofinality",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Set.Finite",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Cardinal",
+      "Set"
+    ],
+    "namespace": "Erdos623",
+    "lineCount": 269,
+    "axiomCount": 1,
+    "theoremCount": 13,
+    "definitionCount": 10
+  }
 }

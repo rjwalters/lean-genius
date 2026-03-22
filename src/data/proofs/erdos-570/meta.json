@@ -180,5 +180,20 @@
       "Can the constant factors be improved for particular families of graphs?",
       "What are the extremal graphs achieving the bound?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "Erdos570",
+    "lineCount": 179,
+    "axiomCount": 5,
+    "theoremCount": 2,
+    "definitionCount": 7
   }
 }

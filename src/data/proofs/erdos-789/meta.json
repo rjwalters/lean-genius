@@ -151,5 +151,23 @@
       "Can the probabilistic construction be improved?",
       "What is the connection to other sum problems?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos789",
+    "lineCount": 267,
+    "axiomCount": 10,
+    "theoremCount": 4,
+    "definitionCount": 6
   }
 }

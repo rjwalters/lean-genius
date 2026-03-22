@@ -156,5 +156,20 @@
       "Does the Bombieri-Lang conjecture hold?",
       "Is there an unconditional proof that Q2 is negative?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos782",
+    "lineCount": 272,
+    "axiomCount": 5,
+    "theoremCount": 6,
+    "definitionCount": 19
   }
 }

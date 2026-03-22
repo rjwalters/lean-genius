@@ -148,5 +148,25 @@
       "What about $k$-color induced Ramsey numbers? Does $R^*_k(G) \\le 2^{O_k(n)}$ hold for $k \\ge 3$ colors?",
       "Can the Aragão et al. proof be made constructive, yielding an explicit polynomial-time algorithm to construct the host graph $H$?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Nat",
+      "Real",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos565",
+    "lineCount": 308,
+    "axiomCount": 7,
+    "theoremCount": 5,
+    "definitionCount": 8
   }
 }

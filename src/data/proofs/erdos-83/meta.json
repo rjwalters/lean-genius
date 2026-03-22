@@ -205,5 +205,23 @@
       "Extension to cross-intersecting families (F₁ and F₂ with |A ∩ B| ≥ t for A ∈ F₁, B ∈ F₂)",
       "Stability results: how close to optimal must a large t-intersecting family be to the AK family?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Combinatorics.SetFamily.Intersecting",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "Erdos83",
+    "lineCount": 290,
+    "axiomCount": 9,
+    "theoremCount": 3,
+    "definitionCount": 12
   }
 }

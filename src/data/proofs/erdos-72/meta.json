@@ -165,5 +165,26 @@
       "What happens for directed graphs or hypergraphs?",
       "Full Lean formalization of the Liu-Montgomery argument"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Analysis.Asymptotics.Asymptotics",
+      "Mathlib.Topology.Instances.Real",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset",
+      "Filter"
+    ],
+    "namespace": "Erdos72",
+    "lineCount": 234,
+    "axiomCount": 5,
+    "theoremCount": 6,
+    "definitionCount": 17
   }
 }

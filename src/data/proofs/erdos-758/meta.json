@@ -152,5 +152,24 @@
       "Can Mehta's computational approach be extended to n = 20?",
       "What are the precise constants in Gimbel's asymptotic z(n) ~ n/log n?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos758",
+    "lineCount": 129,
+    "axiomCount": 3,
+    "theoremCount": 2,
+    "definitionCount": 3
   }
 }

@@ -138,5 +138,23 @@
       "Power-free values of 2ⁿ ± 1 and n! ± 1",
       "Extension of Browning's result to lower degrees"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Polynomial.Basic",
+      "Mathlib.Data.Nat.Prime.Defs",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Polynomial"
+    ],
+    "namespace": "Erdos978",
+    "lineCount": 296,
+    "axiomCount": 8,
+    "theoremCount": 6,
+    "definitionCount": 7
   }
 }

@@ -141,5 +141,24 @@
       "Are there infinitely many counterexamples to the stronger conjecture ($n_2 \\leq 2(n_1+k_1)$), or is the AlphaProof example essentially isolated?",
       "How does the problem change if we require not just the same prime factor set but the same prime factorization signature (same multiset of exponents)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Interval",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos931",
+    "lineCount": 200,
+    "axiomCount": 2,
+    "theoremCount": 21,
+    "definitionCount": 6
   }
 }

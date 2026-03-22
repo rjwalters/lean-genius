@@ -149,5 +149,25 @@
       "Can the Hardy-Littlewood method prove the general case, or is a new technique needed?",
       "What is the connection to the Goldbach conjecture for sums of prime powers?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Defs",
+      "Mathlib.Data.Multiset.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.BigOperators.Ring.Finset",
+      "Mathlib.Order.Filter.AtTopBot.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Multiset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos979",
+    "lineCount": 167,
+    "axiomCount": 11,
+    "theoremCount": 4,
+    "definitionCount": 2
   }
 }

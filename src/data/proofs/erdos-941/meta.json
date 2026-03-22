@@ -166,5 +166,21 @@
       "For $r$-powerful numbers with $r \\ge 3$, what is the minimal basis order $k(r)$ such that all large integers are sums of $\\le k(r)$ $r$-powerful numbers?",
       "Does the Baker-Brüdern density-0 result for 2 squarefull summands extend to 2 cubefull summands (the $r = 3, k = 2$ case)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "Erdos941",
+    "lineCount": 327,
+    "axiomCount": 4,
+    "theoremCount": 11,
+    "definitionCount": 13
   }
 }

@@ -136,5 +136,20 @@
       "What is the leading constant in R(3,n) ~ cn²/log n? Conjectured to be c = 1/4 (matching Turán density).",
       "Can algebraic constructions (norm graphs) be replaced by explicit combinatorial ones for the R(3,3,n) lower bound?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Function",
+      "Set"
+    ],
+    "namespace": null,
+    "lineCount": 211,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 14
   }
 }

@@ -155,5 +155,23 @@
       "How do other hypergraph properties (chromatic number, independence number) relate?",
       "What happens for non-uniform hypergraphs?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Order.BoundedOrder.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Data.Nat.Log"
+    ],
+    "opens": [
+      "Finset",
+      "Set"
+    ],
+    "namespace": "Erdos775",
+    "lineCount": 291,
+    "axiomCount": 5,
+    "theoremCount": 4,
+    "definitionCount": 7
   }
 }

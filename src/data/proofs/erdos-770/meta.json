@@ -148,5 +148,22 @@
     "fermat-little-theorem",
     "cyclotomic-polynomials",
     "mersenne-numbers"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 228,
+    "axiomCount": 3,
+    "theoremCount": 57,
+    "definitionCount": 1
+  }
 }

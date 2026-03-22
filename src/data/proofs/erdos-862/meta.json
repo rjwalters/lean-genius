@@ -160,5 +160,25 @@
       "Determine the structure of typical maximal Sidon sets: do most maximal Sidon sets in $[N]$ have size close to $\\sqrt{N}$, or is there significant variation?",
       "Extend the container method to non-uniform Sidon-type conditions, such as sets where all pairwise products (multiplicative Sidon sets) are distinct"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Real",
+      "Set",
+      "Finset"
+    ],
+    "namespace": "Erdos862",
+    "lineCount": 172,
+    "axiomCount": 11,
+    "theoremCount": 1,
+    "definitionCount": 10
   }
 }

@@ -152,5 +152,28 @@
   ],
   "relatedProofs": [
     "erdos-483"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Mathlib"
+    ],
+    "opens": [
+      "Lean",
+      "Meta",
+      "Elab",
+      "Tactic",
+      "in",
+      "Lean.Elab.Tactic",
+      "in",
+      "Finset",
+      "Real",
+      "Set"
+    ],
+    "namespace": null,
+    "lineCount": 228,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 11
+  }
 }

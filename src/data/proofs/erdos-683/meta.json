@@ -212,5 +212,23 @@
       "Determine whether the Cramér heuristic $P > e^{c\\sqrt{k}}$ can be made rigorous under GRH or other conjectures",
       "Prove or disprove Erdős's belief that exceptions to $P > k^{1+c}$ are finite for every $c > 0$"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Nat",
+      "Real"
+    ],
+    "namespace": "Erdos683",
+    "lineCount": 262,
+    "axiomCount": 14,
+    "theoremCount": 3,
+    "definitionCount": 4
   }
 }

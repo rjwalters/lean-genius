@@ -192,5 +192,19 @@
       "What is the asymptotic density of dissectable numbers? The known families $k^2, 2k^2, 3k^2, k^2 + m^2$ have density zero individually, but their union may cover a positive fraction of integers",
       "Can Beeson's computer-assisted methods scale to $n = 19$, or does a fundamentally new approach (perhaps algebraic or topological) need to be developed?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Function"
+    ],
+    "namespace": "Erdos634",
+    "lineCount": 314,
+    "axiomCount": 8,
+    "theoremCount": 16,
+    "definitionCount": 15
   }
 }

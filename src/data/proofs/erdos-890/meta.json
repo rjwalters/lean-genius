@@ -103,5 +103,26 @@
     "erdos-867",
     "erdos-533",
     "erdos-347"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.ArithmeticFunction.Defs",
+      "Mathlib.NumberTheory.PrimeCounting",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Filter",
+      "ArithmeticFunction.omega"
+    ],
+    "namespace": "Erdos890",
+    "lineCount": 173,
+    "axiomCount": 2,
+    "theoremCount": 4,
+    "definitionCount": 6
+  }
 }

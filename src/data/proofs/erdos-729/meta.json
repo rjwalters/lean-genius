@@ -162,5 +162,23 @@
     "kummer-theorem",
     "erdos-731",
     "prime-number-theorem"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.NumberTheory.Padics.PadicVal",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Real"
+    ],
+    "namespace": "Erdos729",
+    "lineCount": 208,
+    "axiomCount": 7,
+    "theoremCount": 5,
+    "definitionCount": 8
+  }
 }

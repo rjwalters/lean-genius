@@ -159,5 +159,22 @@
       "What is the structure of Yip's counterexample sequences?",
       "Are there 'universal' counterexamples that work for multiple values of t?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Complex.Log",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Complex",
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Topology.Instances.Complex"
+    ],
+    "opens": [
+      "Complex"
+    ],
+    "namespace": "Erdos967",
+    "lineCount": 255,
+    "axiomCount": 3,
+    "theoremCount": 5,
+    "definitionCount": 10
   }
 }

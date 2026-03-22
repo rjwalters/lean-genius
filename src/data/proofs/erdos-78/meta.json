@@ -122,5 +122,19 @@
       "Can algebraic or number-theoretic constructions (beyond Paley graphs) close the gap?",
       "Does P = BPP imply constructive Ramsey bounds, or are they independent?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 108,
+    "axiomCount": 9,
+    "theoremCount": 0,
+    "definitionCount": 3
   }
 }

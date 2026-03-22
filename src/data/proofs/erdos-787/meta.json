@@ -141,5 +141,23 @@
       "Can the Beker exponent 1+1/68 be improved?",
       "Is g(n) closer to the polylog lower bound or the subpolynomial upper bound?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos787",
+    "lineCount": 150,
+    "axiomCount": 7,
+    "theoremCount": 3,
+    "definitionCount": 5
   }
 }

@@ -117,5 +117,27 @@
       "What is the optimal exponent under the Riemann Hypothesis?",
       "Can zero-density estimates for ζ(s) give better E(x) bounds?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.NumberTheory.ArithmeticFunction",
+      "Mathlib.Data.Nat.Squarefree",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Pi.Bounds",
+      "Mathlib.Analysis.Asymptotics.Asymptotics",
+      "Mathlib.Order.Filter.AtTopBot",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Filter"
+    ],
+    "namespace": "Erdos969",
+    "lineCount": 252,
+    "axiomCount": 9,
+    "theoremCount": 11,
+    "definitionCount": 7
   }
 }

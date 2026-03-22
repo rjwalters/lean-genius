@@ -103,5 +103,19 @@
       "What is the exact growth rate of the minimal translation for squarefree numbers?",
       "Does the translation property hold for k-free numbers (B = {p^k}) for all k ≥ 2?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 106,
+    "axiomCount": 5,
+    "theoremCount": 0,
+    "definitionCount": 9
   }
 }

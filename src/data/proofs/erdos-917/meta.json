@@ -133,5 +133,22 @@
       "Close the gap between current upper and lower bounds",
       "Characterize which graphs achieve f_k(n)"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Coloring",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Basic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos917",
+    "lineCount": 206,
+    "axiomCount": 9,
+    "theoremCount": 2,
+    "definitionCount": 7
   }
 }

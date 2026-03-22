@@ -138,5 +138,25 @@
       "Higher consecutive ratios: τ(n+k)/τ(n)?",
       "Analogues for other arithmetic functions"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Divisors",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Topology.Basic",
+      "Mathlib.Topology.Instances.Real",
+      "Mathlib.Topology.Order.Basic"
+    ],
+    "opens": [
+      "Set",
+      "Real",
+      "Topology"
+    ],
+    "namespace": "Erdos964",
+    "lineCount": 313,
+    "axiomCount": 7,
+    "theoremCount": 10,
+    "definitionCount": 8
   }
 }

@@ -126,5 +126,23 @@
       "Prove Szemerédi's variant for non-collinear points (Problem #1082)",
       "Characterize all configurations achieving exactly ⌊n/2⌋ distances"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Topology.MetricSpace.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos93",
+    "lineCount": 156,
+    "axiomCount": 4,
+    "theoremCount": 1,
+    "definitionCount": 7
   }
 }

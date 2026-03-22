@@ -175,5 +175,26 @@
       "proofId": "erdos-1",
       "relationship": "Erdős Problem #1 concerns Ramsey-type phenomena that underlie the chromatic-girth trade-off"
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Function",
+      "SimpleGraph",
+      "Nat"
+    ],
+    "namespace": "Erdos626",
+    "lineCount": 257,
+    "axiomCount": 7,
+    "theoremCount": 13,
+    "definitionCount": 12
+  },
+  "relatedProofs": [
+    "",
+    "",
+    ""
   ]
 }

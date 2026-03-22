@@ -151,5 +151,23 @@
       "Connection to sum-free sets and related structures",
       "Effective bounds for the threshold N in H_k(n) > n^{2/3-ε}"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Nat",
+      "Real",
+      "Finset"
+    ],
+    "namespace": "Erdos772",
+    "lineCount": 283,
+    "axiomCount": 10,
+    "theoremCount": 2,
+    "definitionCount": 7
   }
 }

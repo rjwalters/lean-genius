@@ -137,5 +137,21 @@
       "Are there better constructions than Fibonacci numbers for the upper bound?",
       "What happens for analogous conditions on k-element subsets for k ≠ 4?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Pointwise",
+      "Filter",
+      "Set",
+      "Finset"
+    ],
+    "namespace": "Erdos757",
+    "lineCount": 227,
+    "axiomCount": 11,
+    "theoremCount": 8,
+    "definitionCount": 5
   }
 }

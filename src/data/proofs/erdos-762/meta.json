@@ -154,5 +154,20 @@
   ],
   "relatedProofs": [
     "erdos-760"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Fintype.Basic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos762",
+    "lineCount": 250,
+    "axiomCount": 8,
+    "theoremCount": 4,
+    "definitionCount": 4
+  }
 }

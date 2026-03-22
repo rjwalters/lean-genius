@@ -168,5 +168,24 @@
       "Can the additive component φ be characterized more explicitly in terms of f's behavior (e.g., via limits or averages)?",
       "What is the precise relationship between de Bruijn's theorem and Steinhaus-type automatic continuity results?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Topology.Basic",
+      "Mathlib.Topology.ContinuousFunction.Basic",
+      "Mathlib.Topology.Order.Basic",
+      "Mathlib.Algebra.Group.Defs",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Topology.MetricSpace.Basic"
+    ],
+    "opens": [
+      "Topology"
+    ],
+    "namespace": "Erdos907",
+    "lineCount": 273,
+    "axiomCount": 10,
+    "theoremCount": 12,
+    "definitionCount": 5
   }
 }

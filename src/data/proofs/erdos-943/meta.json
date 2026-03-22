@@ -132,5 +132,19 @@
       "Does the $a^2 b^3$ parametrization yield useful exponential sum estimates via the circle method for the binary powerful number problem?",
       "What is the relationship between $r(n)$ and the arithmetic of $n$? For example, do numbers with many small prime factors have more representations?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 88,
+    "axiomCount": 4,
+    "theoremCount": 0,
+    "definitionCount": 3
   }
 }

@@ -154,5 +154,25 @@
     "erdos-347",
     "erdos-28",
     "erdos-106"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Finset.Interval",
+      "Mathlib.Data.Nat.Interval",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Order.Interval.Finset.Nat",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos867",
+    "lineCount": 323,
+    "axiomCount": 9,
+    "theoremCount": 5,
+    "definitionCount": 5
+  }
 }

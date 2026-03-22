@@ -116,5 +116,19 @@
       "What is the exact behavior for small r and k?",
       "How does the threshold relate to Sylvester-Gallai type results?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Erdos960",
+    "lineCount": 149,
+    "axiomCount": 1,
+    "theoremCount": 8,
+    "definitionCount": 7
   }
 }

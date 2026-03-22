@@ -161,5 +161,21 @@
     "prime-number-theorem",
     "erdos-795",
     "erdos-892"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Order.ConditionallyCompleteLattice.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 117,
+    "axiomCount": 6,
+    "theoremCount": 0,
+    "definitionCount": 7
+  }
 }

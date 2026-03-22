@@ -127,5 +127,21 @@
     "ballot-problem",
     "law-of-large-numbers",
     "infinitude-primes"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Probability.Martingale.OptionalStopping",
+      "Mathlib.Probability.Martingale.Basic",
+      "Mathlib.Probability.Process.HittingTime",
+      "Mathlib.Probability.Notation",
+      "Mathlib.MeasureTheory.Function.ConditionalExpectation.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "FairGamesTheorem",
+    "lineCount": 477,
+    "axiomCount": 1,
+    "theoremCount": 11,
+    "definitionCount": 4
+  }
 }

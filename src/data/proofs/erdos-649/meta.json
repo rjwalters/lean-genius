@@ -134,5 +134,23 @@
       "Connection to Cunningham numbers (2^k ± 1)",
       "Generalization to P(n) = p, P(n+d) = q for fixed d"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.FieldTheory.Finite.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "BigOperators",
+      "Finset"
+    ],
+    "namespace": "Erdos649",
+    "lineCount": 329,
+    "axiomCount": 17,
+    "theoremCount": 8,
+    "definitionCount": 1
   }
 }

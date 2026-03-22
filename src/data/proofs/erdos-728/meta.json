@@ -141,5 +141,25 @@
       "How does the problem generalize to multinomials?",
       "What is the computational complexity of finding solutions?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Topology.Order.Basic"
+    ],
+    "opens": [
+      "Real",
+      "Filter",
+      "Nat",
+      "Nat",
+      "Topology"
+    ],
+    "namespace": "Erdos728",
+    "lineCount": 259,
+    "axiomCount": 5,
+    "theoremCount": 5,
+    "definitionCount": 6
   }
 }

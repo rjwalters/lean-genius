@@ -121,5 +121,19 @@
       "What is the exact value of c_r = lim m(r,k)/k^r?",
       "Can the Akolzin-Shabanov bounds gap be closed?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Coloring",
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos832",
+    "lineCount": 156,
+    "axiomCount": 6,
+    "theoremCount": 1,
+    "definitionCount": 5
   }
 }

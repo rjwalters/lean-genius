@@ -147,5 +147,22 @@
       "Is there a connection to p-adic valuations of central binomial coefficients?",
       "What techniques from Balakran's proof fail for k ≥ 2?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Data.Nat.Choose.Central",
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Set"
+    ],
+    "namespace": "Erdos727",
+    "lineCount": 279,
+    "axiomCount": 5,
+    "theoremCount": 5,
+    "definitionCount": 9
   }
 }

@@ -176,5 +176,20 @@
       "What is the relationship between F(n) and the number of distinct line COUNTS (Problem #606)?",
       "Can the partition-theoretic lower bound be strengthened using algebraic geometry (e.g., point-line configurations from algebraic curves)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Function",
+      "Set"
+    ],
+    "namespace": null,
+    "lineCount": 204,
+    "axiomCount": 1,
+    "theoremCount": 13,
+    "definitionCount": 13
   }
 }

@@ -169,5 +169,24 @@
       "Study the Bollobás-Erdős question for directed graphs",
       "Investigate the gap between k_m and ℓ_m quantitatively for large m"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Choose.Basic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "Erdos915",
+    "lineCount": 293,
+    "axiomCount": 24,
+    "theoremCount": 3,
+    "definitionCount": 8
   }
 }

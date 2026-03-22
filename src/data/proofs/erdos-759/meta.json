@@ -209,5 +209,22 @@
       "relationship": "related",
       "description": "Consecutive Erdős problem in the surface graph theory family"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Nat.Log",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos759",
+    "lineCount": 312,
+    "axiomCount": 17,
+    "theoremCount": 3,
+    "definitionCount": 9
+  }
 }

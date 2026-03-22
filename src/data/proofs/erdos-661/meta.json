@@ -108,5 +108,19 @@
       "Does the Lenz phenomenon partially extend to ℝ³ — can F(2n) in ℝ³ be O(1)?",
       "Can techniques from the polynomial method (used for Guth–Katz) be adapted to the bipartite setting?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 85,
+    "axiomCount": 3,
+    "theoremCount": 0,
+    "definitionCount": 5
   }
 }

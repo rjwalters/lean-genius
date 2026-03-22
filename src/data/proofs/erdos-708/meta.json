@@ -139,5 +139,23 @@
       "Can the lower bound construction be improved?",
       "What are the exact constants in the o(1) terms?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Data.Nat.Prime.Basic"
+    ],
+    "opens": [
+      "BigOperators",
+      "Finset"
+    ],
+    "namespace": "Erdos708",
+    "lineCount": 191,
+    "axiomCount": 8,
+    "theoremCount": 3,
+    "definitionCount": 7
   }
 }

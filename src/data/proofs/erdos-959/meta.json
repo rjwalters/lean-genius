@@ -117,5 +117,22 @@
       "What is the exact growth rate of max(f(d_r) - f(d_{r+1})) for general r?",
       "Can the frequency gap bounds be extended to point sets in higher dimensions?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 143,
+    "axiomCount": 2,
+    "theoremCount": 5,
+    "definitionCount": 8
   }
 }

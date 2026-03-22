@@ -114,5 +114,23 @@
       "What is the error term in the asymptotic formula?",
       "How does the distribution of prime factors of C(n,k) compare to that of a 'random' integer of similar size?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Nat"
+    ],
+    "namespace": null,
+    "lineCount": 73,
+    "axiomCount": 3,
+    "theoremCount": 3,
+    "definitionCount": 3
   }
 }

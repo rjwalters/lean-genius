@@ -110,5 +110,26 @@
     "erdos-347",
     "erdos-28",
     "erdos-106"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Analysis.Asymptotics.Defs",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Filter",
+      "Asymptotics",
+      "Real"
+    ],
+    "namespace": null,
+    "lineCount": 171,
+    "axiomCount": 12,
+    "theoremCount": 13,
+    "definitionCount": 2
+  }
 }

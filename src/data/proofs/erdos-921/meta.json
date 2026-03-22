@@ -115,5 +115,18 @@
       "Can the result be extended to weighted or directed graphs?",
       "What about other cycle parity conditions?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos921",
+    "lineCount": 185,
+    "axiomCount": 9,
+    "theoremCount": 2,
+    "definitionCount": 1
   }
 }

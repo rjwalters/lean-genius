@@ -164,5 +164,21 @@
       "Extensions to non-uniform hypergraphs?",
       "Algorithmic aspects: efficiently finding matchings?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "Erdos747",
+    "lineCount": 331,
+    "axiomCount": 8,
+    "theoremCount": 2,
+    "definitionCount": 10
   }
 }

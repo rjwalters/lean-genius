@@ -142,5 +142,25 @@
       "Can Ruzsa's proof be reconstructed and published?",
       "What about products with repetitions (multisets instead of sets)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Order.Filter.AtTopBot.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "Filter",
+      "BigOperators",
+      "Topology"
+    ],
+    "namespace": "Erdos786",
+    "lineCount": 176,
+    "axiomCount": 4,
+    "theoremCount": 1,
+    "definitionCount": 5
   }
 }

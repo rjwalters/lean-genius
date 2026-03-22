@@ -142,5 +142,21 @@
       "Does the k-AP version hold: for any k ≥ 3, is there a monochromatic k-AP with d > x?",
       "What is the density of valid progressions in any 2-coloring?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Bool.Basic",
+      "Mathlib.Logic.Basic",
+      "Mathlib.Tactic.Common"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "Erdos645",
+    "lineCount": 262,
+    "axiomCount": 6,
+    "theoremCount": 3,
+    "definitionCount": 12
   }
 }

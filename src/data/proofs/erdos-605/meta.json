@@ -170,5 +170,25 @@
       "What is the exact threshold radius where the behavior transitions?",
       "Are there better constructions than polyhedra-based ones for general spheres?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Order.Filter.AtTopBot"
+    ],
+    "opens": [
+      "Real",
+      "Finset"
+    ],
+    "namespace": "Erdos605",
+    "lineCount": 299,
+    "axiomCount": 14,
+    "theoremCount": 1,
+    "definitionCount": 13
   }
 }
