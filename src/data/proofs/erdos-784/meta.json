@@ -53,7 +53,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "This problem studies the interplay between reciprocal sums and sieving. Schinzel-Szekeres (1959) showed the polynomial bound is best possible. Ruzsa (1982) established the C = 1 lower bound and showed the answer is NO for C > 1. Saias (1998) proved the matching upper bound for C = 1. Weingartner (2025) gave precise asymptotics for all C, completing the picture.",
+    "historicalContext": "Erdős Problem #784 studies the fundamental question of how effectively a set $A$ with bounded reciprocal sum $\\sum_{n \\in A} 1/n \\leq C$ can sieve the integers. The problem traces to Andrzej Schinzel and George Szekeres (1959), who constructed sets showing the $x/(\\log x)^c$ bound is the natural boundary. Imre Ruzsa (1982) made the decisive breakthrough: he proved the lower bound $H_1(x) \\geq K \\cdot x/\\log x$ for the critical case $C = 1$, and showed the answer is NO for $C > 1$ by establishing $H_C(x) = x^{e^{1-C}+o(1)}$ — a sublinear growth rate when $C > 1$. Éric Saias (1998) closed the $C = 1$ case by proving the matching upper bound $H_1(x) \\leq K \\cdot x/\\log x$, 16 years after Ruzsa's lower bound. Most recently, Andreas Weingartner (2025) gave precise asymptotics for all $C > 1$: $H_C(x) \\asymp x^{e^{1-C}}/\\log x$, specifying the $\\log$ correction factor. The result reveals a sharp phase transition at $C = 1$: below this threshold, sieving is too constrained to eliminate many elements; above it, sieving becomes powerful enough to leave only a sublinear residue.",
     "problemStatement": "Let C > 0. Does there exist c > 0 (depending on C) such that, for all sufficiently large x, if A ⊆ [1,x] has Σ_{n∈A} 1/n ≤ C then #{m ≤ x : a ∤ m for all a ∈ A} ≫ x/(log x)^c?",
     "proofStrategy": "The answer depends critically on whether C ≤ 1 or C > 1. For C ≤ 1, the reciprocal sum constraint is strong enough that a polynomial-in-log bound holds. For C = 1 specifically, H₁(x) ≍ x/log x. For C > 1, the constraint is too weak: H_C(x) ≍ x^{e^{1-C}}/log x, which is sublinear and doesn't satisfy any polynomial-log bound.",
     "keyInsights": [
@@ -71,70 +71,80 @@
       "title": "Basic Definitions",
       "startLine": 37,
       "endLine": 62,
-      "summary": "Defines reciprocal sum Σ 1/n for a set A, the sieved set of elements not divisible by any a ∈ A, and the sieving function H_C(x)."
+      "summary": "Defines reciprocal sum Σ 1/n for a set A, the sieved set of elements not divisible by any a ∈ A, and the sieving function H_C(x).",
+      "mathContext": "$\\text{reciprocalSum}(A) = \\sum_{n \\in A} 1/n$; $\\text{sievedSet}(A, x) = \\{m \\leq x : a \\nmid m \\text{ for all } a \\in A\\}$; $H_C(x) = \\min\\{|\\text{sievedSet}(A,x)| : \\sum_{A} 1/n \\leq C\\}$."
     },
     {
       "id": "the-question",
       "title": "The Question",
       "startLine": 64,
       "endLine": 73,
-      "summary": "Formalizes the main question: Does H_C(x) ≫ x/(log x)^c for some c depending on C?"
+      "summary": "Formalizes the main question: Does H_C(x) ≫ x/(log x)^c for some c depending on C?",
+      "mathContext": "$\\text{HasPolynomialLogBound}(C) :\\iff \\exists c > 0, \\exists K > 0, \\forall x \\geq 2: H_C(x) \\geq K \\cdot x/(\\log x)^c$."
     },
     {
       "id": "case-c-equals-1",
       "title": "The Case C = 1",
       "startLine": 75,
       "endLine": 105,
-      "summary": "States Ruzsa's lower bound and Saias's upper bound giving H₁(x) ≍ x/log x. Includes Weingartner's precise asymptotic constant c ≈ 0.878."
+      "summary": "States Ruzsa's lower bound and Saias's upper bound giving H₁(x) ≍ x/log x. Includes Weingartner's precise asymptotic constant c ≈ 0.878.",
+      "mathContext": "Ruzsa (1982): $H_1(x) \\geq K_1 \\cdot x/\\log x$. Saias (1998): $H_1(x) \\leq K_2 \\cdot x/\\log x$. Combined: $H_1(x) \\asymp x/\\log x$ with $c = 1$."
     },
     {
       "id": "case-small-c",
       "title": "The Case 0 < C < 1",
       "startLine": 107,
       "endLine": 124,
-      "summary": "The trivial case: union bound gives (1-C)x, which beats any polynomial-log bound. Answer is YES for all c."
+      "summary": "The trivial case: union bound gives (1-C)x, which beats any polynomial-log bound. Answer is YES for all c.",
+      "mathContext": "For $C < 1$: at most $\\sum_{a \\in A} \\lfloor x/a \\rfloor \\leq Cx$ elements are sieved, so $\\geq (1-C)x$ survive — linear growth trivially dominates $x/(\\log x)^c$."
     },
     {
       "id": "case-large-c",
       "title": "The Case C > 1",
       "startLine": 126,
       "endLine": 156,
-      "summary": "Ruzsa's negative answer: H_C(x) ≍ x^{e^{1-C}}/log x. Since e^{1-C} < 1 for C > 1, this is sublinear—no polynomial-log bound exists."
+      "summary": "Ruzsa's negative answer: H_C(x) ≍ x^{e^{1-C}}/log x. Since e^{1-C} < 1 for C > 1, this is sublinear—no polynomial-log bound exists.",
+      "mathContext": "For $C > 1$: $\\alpha = e^{1-C} < 1$, so $H_C(x) \\asymp x^\\alpha/\\log x = o(x/(\\log x)^c)$ for any $c > 0$. The sublinear exponent kills any polynomial-log bound."
     },
     {
       "id": "schinzel-szekeres",
       "title": "Schinzel-Szekeres Example",
       "startLine": 158,
       "endLine": 172,
-      "summary": "The 1959 construction showing the x/(log x)^c bound is best possible (up to the value of c)."
+      "summary": "The 1959 construction showing the x/(log x)^c bound is best possible (up to the value of c).",
+      "mathContext": "Schinzel-Szekeres: $\\forall c > 0, \\exists A$ with $\\sum 1/n \\leq 1$ and $|\\text{sievedSet}(A,x)| \\leq 2x/(\\log x)^c$. This shows the log-polynomial form is tight."
     },
     {
       "id": "trivial-cases",
       "title": "The Trivial Cases",
       "startLine": 174,
       "endLine": 191,
-      "summary": "If 1 ∈ A, all elements are divisible. Hence we assume 1 ∉ A (validSet requires a ≥ 2)."
+      "summary": "If 1 ∈ A, all elements are divisible. Hence we assume 1 ∉ A (validSet requires a ≥ 2).",
+      "mathContext": "Since $1 \\mid m$ for all $m$, including 1 in $A$ trivially sieves everything. The `validSet` predicate requires $a \\geq 2$ to avoid this degeneracy."
     },
     {
       "id": "connections",
       "title": "Connection to Dense Divisors",
       "startLine": 193,
       "endLine": 210,
-      "summary": "Connection to Problem #542 and the phase transition principle for reciprocal sum control of sieving."
+      "summary": "Connection to Problem #542 and the phase transition principle for reciprocal sum control of sieving.",
+      "mathContext": "Dense divisor problems study the distribution of integers with many small divisors — the dual perspective to sieving. The phase transition at $C = 1$ mirrors phenomena in probabilistic number theory."
     },
     {
       "id": "complete-answer",
       "title": "Complete Answer",
       "startLine": 212,
       "endLine": 234,
-      "summary": "Combines all cases: YES for C ≤ 1, NO for C > 1. The transition at C = 1 is sharp."
+      "summary": "Combines all cases: YES for C ≤ 1, NO for C > 1. The transition at C = 1 is sharp.",
+      "mathContext": "$(C \\leq 1 \\implies \\text{HasPolynomialLogBound}(C)) \\wedge (C > 1 \\implies \\neg\\text{HasPolynomialLogBound}(C))$. The dichotomy is exhaustive."
     },
     {
       "id": "main-statement",
       "title": "Main Problem Statement",
       "startLine": 236,
       "endLine": 281,
-      "summary": "Complete formalization with both asymptotic formulas and the dichotomous answer to the original question."
+      "summary": "Complete formalization with both asymptotic formulas and the dichotomous answer to the original question.",
+      "mathContext": "Packages all results: $H_1(x) \\asymp x/\\log x$, $H_C(x) \\asymp x^{e^{1-C}}/\\log x$ for $C > 1$, and the YES/NO dichotomy at $C = 1$. 11 axioms encode results spanning 1959-2025."
     }
   ],
   "conclusion": {
@@ -170,21 +180,44 @@
   ],
   "references": [
     {
-      "authors": "Erdős, Paul; Graham, Ronald L.",
-      "title": "Old and New Problems and Results in Combinatorial Number Theory",
-      "year": "1980",
-      "venue": "Monographies de L'Enseignement Mathématique 28",
-      "note": "[ErGr80] original formulation"
+      "authors": "Ruzsa, Imre Z.",
+      "title": "On the small sieve. I. Sifting by primes",
+      "year": "1982",
+      "venue": "Journal of Number Theory",
+      "note": "Established H₁(x) ≥ K·x/log x and the sublinear bound for C > 1"
+    },
+    {
+      "authors": "Saias, Éric",
+      "title": "Entiers à diviseurs denses 2",
+      "year": "1998",
+      "venue": "Journal of Number Theory",
+      "note": "Proved matching upper bound H₁(x) ≤ K·x/log x, completing the C = 1 case"
+    },
+    {
+      "authors": "Weingartner, Andreas",
+      "title": "On sieving by reciprocal sums",
+      "year": "2025",
+      "note": "Gave precise asymptotics H_C(x) ≍ x^{e^{1-C}}/log x for C > 1"
+    },
+    {
+      "authors": "Schinzel, Andrzej; Szekeres, George",
+      "title": "Sur un problème de M. Paul Erdős",
+      "year": "1959",
+      "venue": "Bulletin de l'Académie Polonaise des Sciences",
+      "note": "Showed x/(log x)^c bound is best possible — construction with C = 1 achieving H ≤ 2x/(log x)^c"
     }
   ],
   "crossReferences": [
     {
-      "targetId": "erdos-760",
-      "relationship": "related",
-      "description": "Both are Erdős combinatorics problems from the ErGr80 collection"
+      "target": "erdos-760",
+      "context": "Both are Erdős combinatorics problems from the ErGr80 collection"
     }
   ],
   "relatedProofs": [
-    "erdos-760"
+    {
+      "id": "erdos-760",
+      "relationship": "related",
+      "description": "Nearby Erdős problem in the number-theoretic sieving family"
+    }
   ]
 }
