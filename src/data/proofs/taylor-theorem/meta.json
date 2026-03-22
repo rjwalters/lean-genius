@@ -137,6 +137,40 @@
       "Can the Cauchy remainder form be used to formalize the proof that the Taylor series of $e^x$ converges everywhere, providing a fully verified computation of $e$?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "mean-value-theorem",
+      "relationship": "foundational",
+      "description": "The Mean Value Theorem is the $n=0$ case of Taylor's theorem (Lagrange remainder). Taylor's theorem generalizes MVT from linear to polynomial approximation: MVT gives $f(b) = f(a) + f'(c)(b-a)$, Taylor gives $f(b) = \\sum f^{(k)}(a)(b-a)^k/k! + R_n$."
+    },
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "FTC provides the integral form of the Taylor remainder: $R_n = \\frac{1}{n!}\\int_a^x (x-t)^n f^{(n+1)}(t)\\,dt$. Repeated integration by parts of FTC yields the Taylor expansion."
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "Newton's generalized binomial theorem $(1+x)^\\alpha = \\sum \\binom{\\alpha}{k} x^k$ is the Taylor series of $(1+x)^\\alpha$ at $x=0$ — the case where Taylor's theorem provides an exact infinite series for non-integer exponents."
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "The Taylor series $e^x = \\sum x^n/n!$ converging everywhere is a key application of Taylor's theorem. Hermite's proof that $e$ is transcendental uses the rapid convergence of this series."
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "Euler's evaluation $\\zeta(2) = \\pi^2/6$ can be proved via the Taylor series $\\sin(x)/x = \\prod(1 - x^2/(n\\pi)^2)$ — comparing Taylor coefficients yields the Basel sum."
+    }
+  ],
+  "relatedProofs": [
+    "mean-value-theorem",
+    "fundamental-theorem-calculus",
+    "binomial-theorem",
+    "e-transcendental",
+    "basel-problem"
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.Calculus.Taylor",
