@@ -5,7 +5,7 @@
   "description": "Study f(n) = min_{1<k≤n/2} gcd(n, C(n,k)). When does f(n) = n/P(n)? Are there ∞ many n with f(n) > √n? Is f(n) ≪ n/(log n)^A? Known: f(pq) = p, f(p²) ≥ p. Open.",
   "meta": {
     "erdosNumber": 700,
-    "status": "formalized",
+    "status": "axiomatized",
     "tags": [
       "erdos",
       "number-theory",
@@ -22,7 +22,7 @@
     "leanFile": "Proofs/Erdos700Problem.lean",
     "proofRepoPath": "Proofs/Erdos700Problem.lean",
     "sorries": 0,
-    "badge": "formalized",
+    "badge": "axiom",
     "sourceUrl": "https://erdosproblems.com/700",
     "erdosUrl": "https://erdosproblems.com/700",
     "erdosProblemStatus": "open",
