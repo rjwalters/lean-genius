@@ -5,7 +5,7 @@
   "description": "Does every positive integer eventually reach 1 under f(n) = n/2 (even) or (3n+1)/2 (odd)? Verified up to 2^68. Tao: almost all orbits attain small values. Open. $500.",
   "meta": {
     "erdosNumber": 1135,
-    "status": "formalized",
+    "status": "verified",
     "tags": [
       "erdos",
       "number-theory",
@@ -32,7 +32,8 @@
         "relationship": "Verifies Collatz convergence for structured values (powers of 2, small cases up to 27)"
       }
     ],
-    "axiomCount": 0
+    "axiomCount": 0,
+    "badge": "verified"
   },
   "sections": [
     {

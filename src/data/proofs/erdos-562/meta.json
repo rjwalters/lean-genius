@@ -5,7 +5,7 @@
   "description": "For r ≥ 3, prove that log_{r-1} R_r(n) ≍ n, where R_r(n) is the r-uniform hypergraph Ramsey number. Upper bound: twr_{r-1}(O(n²)) from Erdős–Rado. Lower: twr_{r-1}(Ω(n)). Status: OPEN.",
   "meta": {
     "erdosNumber": 562,
-    "status": "formalized",
+    "status": "verified",
     "tags": [
       "erdos",
       "graph-theory",
@@ -24,7 +24,8 @@
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/562",
     "erdosUrl": "https://erdosproblems.com/562",
-    "axiomCount": 0
+    "axiomCount": 0,
+    "badge": "verified"
   },
   "sections": [
     {

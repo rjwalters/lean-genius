@@ -5,7 +5,7 @@
   "description": "Let R(N) be the max size of A ⊆ {1,...,N} with all reciprocal subset sums distinct. Bleicher–Erdős: R(N) = Θ(N/log N) up to iterated log factors. The precise correction is open.",
   "meta": {
     "erdosNumber": 321,
-    "status": "formalized",
+    "status": "verified",
     "tags": [
       "erdos",
       "number-theory",
@@ -24,7 +24,8 @@
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/321",
     "erdosUrl": "https://erdosproblems.com/321",
-    "axiomCount": 0
+    "axiomCount": 0,
+    "badge": "verified"
   },
   "sections": [
     {

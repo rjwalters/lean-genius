@@ -66,7 +66,6 @@
       "Field extensions and degree computations",
       "Compass-and-straightedge constructibility (from OQ-01)"
     ],
-    "lineCount": 298,
     "references": [
       {
         "key": "Wa37",
@@ -197,6 +196,22 @@
       "endLine": 236,
       "summary": "PROVED: galois_2group_implies_degree_pow2 via tower law (natDegree | finrank(SplittingField) = |Gal| = 2^k). Former axiom eliminated.",
       "mathContext": "$\\deg(\\text{minpoly}) \\mid [\\text{SplittingField} : \\mathbb{Q}] = |\\text{Gal}| = 2^k$, so $\\deg(\\text{minpoly}) = 2^j$ for some $j \\leq k$."
+    },
+    {
+      "id": "contrapositives",
+      "title": "Contrapositive Non-Constructibility Results",
+      "startLine": 236,
+      "endLine": 261,
+      "summary": "Two contrapositive theorems: constructible_implies_degree_dvd_pow2 (Galois criterion → degree criterion), not_constructible_of_not_2group (¬2-group → ¬constructible), not_constructible_of_degree (degree ∤ 2^n → ¬constructible).",
+      "mathContext": "Contrapositives: $\\text{Gal} \\not\\cong 2\\text{-group} \\Rightarrow \\alpha$ not constructible, and $\\deg(\\text{minpoly}) \\nmid 2^n$ for all $n \\Rightarrow \\alpha$ not constructible."
+    },
+    {
+      "id": "summary-and-verification",
+      "title": "Summary and Verification",
+      "startLine": 263,
+      "endLine": 298,
+      "summary": "Comprehensive summary of 13 proved theorems and 1 axiom. Six #check commands verify key theorems typecheck: isPGroup_iff_card_pow_two, x_cube_sub_2_gal_not_2group, cos20_gal_not_2group, x_sq_sub_2_gal_is_2group, x_4th_sub_2_gal_is_2group, constructible_implies_degree_dvd_pow2.",
+      "mathContext": "All results verified. 13 fully proved theorems (no sorry), 3 imported results, 1 axiom (wantzel_galois_characterization)."
     }
   ],
   "conclusion": {

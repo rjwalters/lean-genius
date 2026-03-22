@@ -5,7 +5,7 @@
   "description": "Given n points in the plane with no four on a circle, must some point determine (1-o(1))n distinct distances? Known: each point has ≥ (n-1)/3 distinct distances. Status: OPEN.",
   "meta": {
     "erdosNumber": 654,
-    "status": "formalized",
+    "status": "verified",
     "tags": [
       "erdos",
       "geometry",
@@ -31,7 +31,8 @@
       "erdos-662",
       "erdos-655"
     ],
-    "axiomCount": 0
+    "axiomCount": 0,
+    "badge": "verified"
   },
   "sections": [
     {
