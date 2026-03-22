@@ -166,6 +166,12 @@
       "The triple angle formula cos(3θ) = 4cos³(θ) - 3cos(θ) is the key algebraic tool",
       "The same technique proves doubling the cube is impossible: ∛2 satisfies x³ - 2 = 0, giving degree 3",
       "Some angles CAN be trisected (like 90° → 30°, since cos(30°) = √3/2 is constructible)"
+    ],
+    "prerequisites": [
+      "Field extensions and the tower law: $[L:K] = [L:F][F:K]$ for $K \\subseteq F \\subseteq L$",
+      "Polynomial irreducibility: rational root theorem and its application to cubics over $\\mathbb{Q}$",
+      "Trigonometric identities: the triple angle formula $\\cos(3\\theta) = 4\\cos^3(\\theta) - 3\\cos(\\theta)$",
+      "Constructibility criterion (Wantzel 1837): constructible numbers have degree $2^n$ over $\\mathbb{Q}$"
     ]
   },
   "sections": [
