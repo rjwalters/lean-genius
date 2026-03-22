@@ -823,41 +823,19 @@ topology (quotient maps, homotopy, etc.) not yet in Mathlib.
 /-- **Closed unit ball** in (n+1)-dimensional Euclidean space. -/
 noncomputable def ClosedBall (n : ℕ) := {x : Fin (n+1) → ℝ | ∑ i, x i ^ 2 ≤ 1}
 
-/-- **No-Retraction Theorem**: There is no continuous retraction
-    from B^(n+1) to S^n that fixes the boundary.
+/- **No-Retraction Theorem** and **Brouwer Fixed Point Theorem**:
+    Both are PROVED later in the file:
+    - `bu_implies_no_retraction` (Section LXVII): BU_general → no retraction
+    - `no_retraction_implies_brouwer_fp` (Section LXV, moved after LXVII): → Brouwer FP
+    - `no_retraction` and `brouwer_fixed_point` are defined as theorems
+      (not axioms!) after Section LXVII.
 
-    This follows from BU via the no-odd-map theorem:
-    If r: B^(n+1) → S^n is a retraction, compose with the inclusion
-    S^n ↪ B^(n+1) to get an odd self-map of S^n of degree 0,
-    contradicting the odd-degree constraint.
-
-    Axiomized because the proof requires the relationship between
-    the ball and its boundary sphere (boundary inclusion, etc.). -/
-axiom no_retraction (n : ℕ) (hn : 1 ≤ n)
-    (r : (Fin (n+1) → ℝ) → (Fin (n+1) → ℝ))
-    (hr : Continuous r)
-    (hr_image : ∀ x, ∑ i, r x i ^ 2 = 1)
-    (hr_fixes : ∀ x : NSphere n, r x.1 = x.1) : False
-
-/-- **Brouwer Fixed Point Theorem** (general, from no-retraction):
-
-    Every continuous map f: B^(n+1) → B^(n+1) has a fixed point.
-
-    Standard proof: Suppose f has no fixed point. Define r(x) as
-    the point on S^n obtained by extending the ray from f(x) through x.
-    Then r is a retraction B^(n+1) → S^n, contradicting no-retraction.
-
-    We state this as a theorem that follows from the no-retraction axiom,
-    but axiomize the construction since it requires ray-sphere intersection. -/
-axiom brouwer_fixed_point (n : ℕ)
-    (f : (Fin (n+1) → ℝ) → (Fin (n+1) → ℝ))
-    (hf : Continuous f)
-    (hf_image : ∀ x, ∑ i, x i ^ 2 ≤ 1 → ∑ i, f x i ^ 2 ≤ 1) :
-    ∃ x : Fin (n+1) → ℝ, ∑ i, x i ^ 2 ≤ 1 ∧ f x = x
+    **Previously these were axioms**. Eliminated 2026-03-22 by leveraging
+    the proofs from Sections LXV and LXVII, which were developed in earlier
+    sessions but couldn't be used due to forward reference constraints. -/
 
 /-- **1D Brouwer FP is a theorem, not an axiom**: We proved the 1D case
-    constructively in Section XI via IVT. The axiom above is only needed
-    for n ≥ 2. This demonstrates the constructive/classical divide:
+    constructively in Section XI via IVT.
     - 1D: Constructive (IVT)
     - nD: Classical (requires BU → no retraction → FP chain) -/
 theorem brouwer_1d_is_constructive : (1 : ℕ) + 1 = 2 := rfl
@@ -3668,120 +3646,11 @@ where p = ballProj and t is the raySphereT formula.
     map f: B^{n+1} → B^{n+1} has a fixed point.
 
     This eliminates brouwer_fixed_point as an independent axiom.
-    Combined with the LS reduction (Section LX-LXII), the independent
-    axiom count reduces to **2**: {borsuk_ulam_general, no_retraction}. -/
-theorem no_retraction_implies_brouwer_fp (n : ℕ) (hn : 1 ≤ n)
-    (f : (Fin (n+1) → ℝ) → (Fin (n+1) → ℝ))
-    (hf : Continuous f)
-    (hf_ball : ∀ x, ∑ i, x i ^ 2 ≤ 1 → ∑ i, f x i ^ 2 ≤ 1) :
-    ∃ x : Fin (n+1) → ℝ, ∑ i, x i ^ 2 ≤ 1 ∧ f x = x := by
-  by_contra hno_fp
-  push_neg at hno_fp
-  -- Ball projection: maps everything to B^{n+1}
-  let k := n + 1
-  set p := ballProj k with hp_def
-  have hp_cont : Continuous p := continuous_ballProj k
-  have hp_ball : ∀ x, nsq k (p x) ≤ 1 := ballProj_in_ball k
-  have hp_fix : ∀ x, nsq k x ≤ 1 → p x = x := ballProj_fix_ball k
-  -- f(p(x)) is in the ball
-  have hfp_ball : ∀ x, nsq k (f (p x)) ≤ 1 := by
-    intro x; exact hf_ball (p x) (hp_ball x)
-  -- f has no fixed point in the ball
-  have hno_fix : ∀ y, nsq k y ≤ 1 → f y ≠ y := by
-    intro y hy heq; exact hno_fp y hy heq
-  -- p(x) ≠ f(p(x)) for all x (since p(x) ∈ ball and f has no fixed point)
-  have hd_ne : ∀ x, (fun i => p x i - f (p x) i) ≠ 0 := by
-    intro x heq
-    have : p x = f (p x) := by ext i; have h := congr_fun heq i; simp at h; linarith
-    exact hno_fix (p x) (hp_ball x) this.symm
-  -- A(x) = nsq(p(x) - f(p(x))) > 0 everywhere
-  have hA_pos : ∀ x, 0 < nsq k (fun i => p x i - f (p x) i) := by
-    intro x
-    rw [lt_iff_le_and_ne]
-    exact ⟨nsq_nonneg _ _, fun h => hd_ne x ((nsq_eq_zero_iff _ _).mp h.symm)⟩
-  have hA_ne : ∀ x, nsq k (fun i => p x i - f (p x) i) ≠ 0 :=
-    fun x => ne_of_gt (hA_pos x)
-  -- Define the retraction using EXPLICIT FORMULA (no proof arguments, no piecewise)
-  -- r_j(x) = f(p(x))_j + t(x) · (p(x)_j - f(p(x))_j)
-  -- where t = (-B + √(B² + A·(1-C))) / A
-  -- with A = nsq(d), B = ip(f(p(x)), d), C = nsq(f(p(x))), d = p(x) - f(p(x))
-  let r : (Fin k → ℝ) → (Fin k → ℝ) := fun x =>
-    let a := f (p x)
-    let d := fun i => p x i - a i
-    let A := nsq k d
-    let B := ip k a d
-    let disc := B ^ 2 + A * (1 - nsq k a)
-    fun j => a j + ((-B + Real.sqrt disc) / A) * d j
-  -- r maps to S^n: nsq(r(x)) = 1
-  have hr_sphere : ∀ x, ∑ i, r x i ^ 2 = 1 := by
-    intro x
-    have key := raySphereT_on_sphere k (f (p x))
-      (fun i => p x i - f (p x) i) (hfp_ball x) (hA_pos x)
-    exact key
-  -- r fixes S^n: for x₀ ∈ S^n, r(x₀) = x₀
-  have hr_fixes : ∀ x₀ : NSphere n, r x₀.1 = x₀.1 := by
-    intro ⟨x₀, hx₀⟩
-    have hx₀_ball : nsq k x₀ ≤ 1 := le_of_eq (show ∑ i, x₀ i ^ 2 = 1 from hx₀)
-    have hp_x₀ : p x₀ = x₀ := hp_fix x₀ hx₀_ball
-    ext j; show r x₀ j = x₀ j; simp only [r, hp_x₀]
-    -- Need t(x₀) = 1, then f(x₀)_j + 1 · (x₀ j - f(x₀) j) = x₀ j
-    have ht : (-(ip k (f x₀) (fun i => x₀ i - f x₀ i)) +
-      Real.sqrt ((ip k (f x₀) (fun i => x₀ i - f x₀ i)) ^ 2 +
-      nsq k (fun i => x₀ i - f x₀ i) * (1 - nsq k (f x₀)))) /
-      nsq k (fun i => x₀ i - f x₀ i) = 1 := by
-      have h1 := retractT_eq_one_on_sphere k x₀ (f x₀)
-        (by show nsq k x₀ = 1; exact hx₀)
-        (by show nsq k (f x₀) ≤ 1; rw [← hp_x₀]; exact hfp_ball x₀)
-        (by rw [← hp_x₀]; exact hA_pos x₀)
-      have h2 := retractT_eq_raySphereT k (f x₀) (fun i => x₀ i - f x₀ i)
-        (by rw [← hp_x₀]; exact hfp_ball x₀) (by rw [← hp_x₀]; exact hA_pos x₀)
-      rw [h2] at h1; exact h1
-    rw [ht]; ring
-  -- r is continuous: composition of continuous functions with A > 0 everywhere
-  have hr_cont : Continuous r := by
-    apply continuous_pi; intro j
-    have h_fp : Continuous (fun x => f (p x)) := hf.comp hp_cont
-    have h_d : Continuous (fun x : Fin k → ℝ => fun i => p x i - f (p x) i) :=
-      continuous_pi fun i =>
-        ((continuous_apply i).comp hp_cont).sub ((continuous_apply i).comp h_fp)
-    have h_A : Continuous (fun x => nsq k (fun i => p x i - f (p x) i)) :=
-      (continuous_nsq' k).comp h_d
-    have h_B : Continuous (fun x =>
-        ip k (f (p x)) (fun i => p x i - f (p x) i)) := by
-      unfold ip; exact continuous_finset_sum _ fun i _ =>
-        ((continuous_apply i).comp h_fp).mul
-          (((continuous_apply i).comp hp_cont).sub ((continuous_apply i).comp h_fp))
-    have h_C : Continuous (fun x => nsq k (f (p x))) :=
-      (continuous_nsq' k).comp h_fp
-    have h_disc : Continuous (fun x =>
-        (ip k (f (p x)) (fun i => p x i - f (p x) i)) ^ 2 +
-        nsq k (fun i => p x i - f (p x) i) * (1 - nsq k (f (p x)))) :=
-      (h_B.pow 2).add (h_A.mul (continuous_const.sub h_C))
-    have h_t : Continuous (fun x =>
-        (-(ip k (f (p x)) (fun i => p x i - f (p x) i)) +
-         Real.sqrt ((ip k (f (p x)) (fun i => p x i - f (p x) i)) ^ 2 +
-           nsq k (fun i => p x i - f (p x) i) * (1 - nsq k (f (p x))))) /
-        nsq k (fun i => p x i - f (p x) i)) :=
-      (h_B.neg.add (Real.continuous_sqrt.comp h_disc)).div h_A hA_ne
-    exact ((continuous_apply j).comp h_fp).add
-      (h_t.mul (((continuous_apply j).comp hp_cont).sub
-        ((continuous_apply j).comp h_fp)))
-  -- Apply no_retraction axiom to derive contradiction
-  exact no_retraction n hn r hr_cont hr_sphere hr_fixes
+    Combined with the LS reduction (Section LX-LXII), all three former axioms
+    reduce to just borsuk_ulam_general.
 
-/-- The brouwer_fixed_point axiom is now fully redundant given no_retraction.
-    `no_retraction_implies_brouwer_fp` proves the same statement as the axiom,
-    using only the no_retraction axiom. **0 sorries**.
-
-    **Updated axiom inventory**:
-    - `borsuk_ulam_general`: INDEPENDENT (requires algebraic topology)
-    - `no_retraction`: INDEPENDENT (requires degree theory from BU)
-    - `brouwer_fixed_point`: REDUNDANT via `no_retraction_implies_brouwer_fp`
-    - `lusternik_schnirelmann`: REDUNDANT via `ls_covering_general_open`
-
-    **Effective independent axiom count**: 2 (BU_general + no_retraction)
-    The full chain is: BU → no_retraction → Brouwer FP, and BU → LS. -/
-theorem brouwer_axiom_reduction : True := trivial
+    NOTE: `no_retraction_implies_brouwer_fp` is defined after `bu_implies_no_retraction`
+    (Section LXVII) to avoid forward references. See Section LXVIII-B below. -/
 
 /-
 ## Section LXVI: Summary (Session 6 - Deduplication + Axiom Reduction)
@@ -4337,21 +4206,135 @@ theorem bu_implies_no_retraction (n : ℕ) (hn : 1 ≤ n)
     Finset.sum_eq_zero (fun j _ => by rw [hzero j]; norm_num)
   linarith
 
-/-- The no_retraction axiom is now a theorem: it follows from
-    borsuk_ulam_general. This witnesses the axiom's redundancy.
+/- Section LXVIII-A: Axiom Elimination (2026-03-22)
+
+    The no_retraction and brouwer_fixed_point axioms are now theorems.
+    They follow from borsuk_ulam_general via the hemisphere folding proof.
 
     **Updated axiom inventory**:
     - `borsuk_ulam_general`: INDEPENDENT (the single remaining axiom)
-    - `no_retraction`: REDUNDANT via `bu_implies_no_retraction`
-    - `brouwer_fixed_point`: REDUNDANT via `no_retraction_implies_brouwer_fp`
-    - `lusternik_schnirelmann`: REDUNDANT via `ls_covering_general_open`
+    - `no_retraction`: PROVED via `bu_implies_no_retraction`
+    - `brouwer_fixed_point`: PROVED via `no_retraction_implies_brouwer_fp`
+    - `lusternik_schnirelmann`: PROVED via `ls_covering_general_open`
 
-    **Effective independent axiom count**: **1** (borsuk_ulam_general only) -/
-theorem no_retraction_axiom_redundant :
-    ∀ (n : ℕ) (hn : 1 ≤ n) (r : (Fin (n+1) → ℝ) → (Fin (n+1) → ℝ))
-      (hr : Continuous r) (hr_image : ∀ x, ∑ i, r x i ^ 2 = 1)
-      (hr_fixes : ∀ x : NSphere n, r x.1 = x.1), False :=
-  bu_implies_no_retraction
+    **Effective axiom count**: **1** (borsuk_ulam_general only)
+
+   Now that `bu_implies_no_retraction` is proved, we can define `no_retraction`
+   and `brouwer_fixed_point` as THEOREMS (not axioms). Previously these were
+   forward-declared as axioms because the proofs hadn't been developed yet.
+
+   The full reduction chain (all 0 sorries):
+     borsuk_ulam_general → no_retraction → brouwer_fixed_point
+     borsuk_ulam_general → lusternik_schnirelmann
+
+   **Effective axiom count: 1** (borsuk_ulam_general only) -/
+
+/-- **No-Retraction Theorem** (PROVED from BU via hemisphere folding):
+    There is no continuous retraction from B^(n+1) to S^n fixing the boundary. -/
+theorem no_retraction (n : ℕ) (hn : 1 ≤ n)
+    (r : (Fin (n+1) → ℝ) → (Fin (n+1) → ℝ))
+    (hr : Continuous r)
+    (hr_image : ∀ x, ∑ i, r x i ^ 2 = 1)
+    (hr_fixes : ∀ x : NSphere n, r x.1 = x.1) : False :=
+  bu_implies_no_retraction n hn r hr hr_image hr_fixes
+
+/-- **No-retraction implies Brouwer Fixed Point** (PROVED):
+    Every continuous f: B^(n+1) → B^(n+1) has a fixed point.
+    Proof: if no fixed point, construct retraction via ray-sphere intersection. -/
+theorem no_retraction_implies_brouwer_fp (n : ℕ) (hn : 1 ≤ n)
+    (f : (Fin (n+1) → ℝ) → (Fin (n+1) → ℝ))
+    (hf : Continuous f)
+    (hf_ball : ∀ x, ∑ i, x i ^ 2 ≤ 1 → ∑ i, f x i ^ 2 ≤ 1) :
+    ∃ x : Fin (n+1) → ℝ, ∑ i, x i ^ 2 ≤ 1 ∧ f x = x := by
+  by_contra hno_fp
+  push_neg at hno_fp
+  let k := n + 1
+  set p := ballProj k with hp_def
+  have hp_cont : Continuous p := continuous_ballProj k
+  have hp_ball : ∀ x, nsq k (p x) ≤ 1 := ballProj_in_ball k
+  have hp_fix : ∀ x, nsq k x ≤ 1 → p x = x := ballProj_fix_ball k
+  have hfp_ball : ∀ x, nsq k (f (p x)) ≤ 1 := by
+    intro x; exact hf_ball (p x) (hp_ball x)
+  have hno_fix : ∀ y, nsq k y ≤ 1 → f y ≠ y := by
+    intro y hy heq; exact hno_fp y hy heq
+  have hd_ne : ∀ x, (fun i => p x i - f (p x) i) ≠ 0 := by
+    intro x heq
+    have : p x = f (p x) := by ext i; have h := congr_fun heq i; simp at h; linarith
+    exact hno_fix (p x) (hp_ball x) this.symm
+  have hA_pos : ∀ x, 0 < nsq k (fun i => p x i - f (p x) i) := by
+    intro x
+    rw [lt_iff_le_and_ne]
+    exact ⟨nsq_nonneg _ _, fun h => hd_ne x ((nsq_eq_zero_iff _ _).mp h.symm)⟩
+  have hA_ne : ∀ x, nsq k (fun i => p x i - f (p x) i) ≠ 0 :=
+    fun x => ne_of_gt (hA_pos x)
+  let r : (Fin k → ℝ) → (Fin k → ℝ) := fun x =>
+    let a := f (p x)
+    let d := fun i => p x i - a i
+    let A := nsq k d
+    let B := ip k a d
+    let disc := B ^ 2 + A * (1 - nsq k a)
+    fun j => a j + ((-B + Real.sqrt disc) / A) * d j
+  have hr_sphere : ∀ x, ∑ i, r x i ^ 2 = 1 := by
+    intro x
+    have key := raySphereT_on_sphere k (f (p x))
+      (fun i => p x i - f (p x) i) (hfp_ball x) (hA_pos x)
+    exact key
+  have hr_fixes : ∀ x₀ : NSphere n, r x₀.1 = x₀.1 := by
+    intro ⟨x₀, hx₀⟩
+    have hx₀_ball : nsq k x₀ ≤ 1 := le_of_eq (show ∑ i, x₀ i ^ 2 = 1 from hx₀)
+    have hp_x₀ : p x₀ = x₀ := hp_fix x₀ hx₀_ball
+    ext j; show r x₀ j = x₀ j; simp only [r, hp_x₀]
+    have ht : (-(ip k (f x₀) (fun i => x₀ i - f x₀ i)) +
+      Real.sqrt ((ip k (f x₀) (fun i => x₀ i - f x₀ i)) ^ 2 +
+      nsq k (fun i => x₀ i - f x₀ i) * (1 - nsq k (f x₀)))) /
+      nsq k (fun i => x₀ i - f x₀ i) = 1 := by
+      have h1 := retractT_eq_one_on_sphere k x₀ (f x₀)
+        (by show nsq k x₀ = 1; exact hx₀)
+        (by show nsq k (f x₀) ≤ 1; rw [← hp_x₀]; exact hfp_ball x₀)
+        (by rw [← hp_x₀]; exact hA_pos x₀)
+      have h2 := retractT_eq_raySphereT k (f x₀) (fun i => x₀ i - f x₀ i)
+        (by rw [← hp_x₀]; exact hfp_ball x₀) (by rw [← hp_x₀]; exact hA_pos x₀)
+      rw [h2] at h1; exact h1
+    rw [ht]; ring
+  have hr_cont : Continuous r := by
+    apply continuous_pi; intro j
+    have h_fp : Continuous (fun x => f (p x)) := hf.comp hp_cont
+    have h_d : Continuous (fun x : Fin k → ℝ => fun i => p x i - f (p x) i) :=
+      continuous_pi fun i =>
+        ((continuous_apply i).comp hp_cont).sub ((continuous_apply i).comp h_fp)
+    have h_A : Continuous (fun x => nsq k (fun i => p x i - f (p x) i)) :=
+      (continuous_nsq' k).comp h_d
+    have h_B : Continuous (fun x =>
+        ip k (f (p x)) (fun i => p x i - f (p x) i)) := by
+      unfold ip; exact continuous_finset_sum _ fun i _ =>
+        ((continuous_apply i).comp h_fp).mul
+          (((continuous_apply i).comp hp_cont).sub ((continuous_apply i).comp h_fp))
+    have h_C : Continuous (fun x => nsq k (f (p x))) :=
+      (continuous_nsq' k).comp h_fp
+    have h_disc : Continuous (fun x =>
+        (ip k (f (p x)) (fun i => p x i - f (p x) i)) ^ 2 +
+        nsq k (fun i => p x i - f (p x) i) * (1 - nsq k (f (p x)))) :=
+      (h_B.pow 2).add (h_A.mul (continuous_const.sub h_C))
+    have h_t : Continuous (fun x =>
+        (-(ip k (f (p x)) (fun i => p x i - f (p x) i)) +
+         Real.sqrt ((ip k (f (p x)) (fun i => p x i - f (p x) i)) ^ 2 +
+           nsq k (fun i => p x i - f (p x) i) * (1 - nsq k (f (p x))))) /
+        nsq k (fun i => p x i - f (p x) i)) :=
+      (h_B.neg.add (Real.continuous_sqrt.comp h_disc)).div h_A hA_ne
+    exact ((continuous_apply j).comp h_fp).add
+      (h_t.mul (((continuous_apply j).comp hp_cont).sub
+        ((continuous_apply j).comp h_fp)))
+  exact no_retraction n hn r hr_cont hr_sphere hr_fixes
+
+/-- **Brouwer Fixed Point Theorem** (PROVED from BU via no-retraction):
+    Every continuous map f: B^(n+1) → B^(n+1) has a fixed point (n ≥ 1).
+    The n = 0 case (1D) is proved constructively in Section XI via IVT. -/
+theorem brouwer_fixed_point (n : ℕ) (hn : 1 ≤ n)
+    (f : (Fin (n+1) → ℝ) → (Fin (n+1) → ℝ))
+    (hf : Continuous f)
+    (hf_image : ∀ x, ∑ i, x i ^ 2 ≤ 1 → ∑ i, f x i ^ 2 ≤ 1) :
+    ∃ x : Fin (n+1) → ℝ, ∑ i, x i ^ 2 ≤ 1 ∧ f x = x :=
+  no_retraction_implies_brouwer_fp n hn f hf hf_image
 
 /-
 ## Section LXVIII: Summary (Session 7 - BU → No Retraction)
