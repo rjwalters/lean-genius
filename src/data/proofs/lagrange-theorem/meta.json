@@ -117,24 +117,35 @@
       "targetId": "sylow-theorems",
       "relationship": "foundational",
       "description": "Lagrange's theorem is a prerequisite for the Sylow theorems: Sylow's first theorem provides a partial converse, showing subgroups of prime-power order exist for every prime power dividing |G|"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem underpins the Abel-Ruffini analysis: |A₅| = 60 = 5!/2 (index 2 in S₅), and the derived series quotient orders determine solvability. Lagrange's original 1771 paper on permutations of polynomial roots was the precursor to Galois theory"
+    },
+    {
+      "targetId": "fermats-last-theorem",
+      "relationship": "foundational",
+      "description": "Fermat's Little Theorem ($a^p \\equiv a \\pmod{p}$) is a corollary of Lagrange's theorem applied to the multiplicative group $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ of order $p-1$. This underpins modular arithmetic used throughout FLT"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "related",
+      "description": "The Chinese Remainder Theorem and unique factorization in Z connect to Lagrange via the structure of cyclic groups: Z/nZ decomposes as a product of Z/p^k Z (one for each prime power in the factorization of n)"
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "related",
+      "description": "Both are foundational results about algebraic structures: Lagrange constrains subgroup orders in groups, Cayley-Hamilton constrains the minimal polynomial of a matrix. Cayley's theorem (every group embeds in a symmetric group) directly uses Lagrange's coset partition"
     }
   ],
   "relatedProofs": [
-    {
-      "id": "sylow-theorems",
-      "relationship": "extends",
-      "description": "Sylow's first theorem is a partial converse of Lagrange: for prime powers dividing |G|, subgroups of that order exist"
-    },
-    {
-      "id": "abel-ruffini-oq-04",
-      "relationship": "related",
-      "description": "Lagrange's theorem is used throughout the Abel-Ruffini chain: |Aₙ| = n!/2, derived series quotients have predictable orders"
-    },
-    {
-      "id": "wilsons-theorem",
-      "relationship": "related",
-      "description": "Wilson's theorem (p-1)! ≡ -1 (mod p) can be proved using Lagrange's theorem on the units group (ℤ/pℤ)×"
-    }
+    "sylow-theorems",
+    "abel-ruffini",
+    "abel-ruffini-oq-04",
+    "fermats-last-theorem",
+    "fundamental-arithmetic",
+    "cayley-hamilton"
   ],
   "references": [
     {
