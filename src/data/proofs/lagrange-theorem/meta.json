@@ -120,7 +120,21 @@
     }
   ],
   "relatedProofs": [
-    "sylow-theorems"
+    {
+      "id": "sylow-theorems",
+      "relationship": "extends",
+      "description": "Sylow's first theorem is a partial converse of Lagrange: for prime powers dividing |G|, subgroups of that order exist"
+    },
+    {
+      "id": "abel-ruffini-oq-04",
+      "relationship": "related",
+      "description": "Lagrange's theorem is used throughout the Abel-Ruffini chain: |Aₙ| = n!/2, derived series quotients have predictable orders"
+    },
+    {
+      "id": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem (p-1)! ≡ -1 (mod p) can be proved using Lagrange's theorem on the units group (ℤ/pℤ)×"
+    }
   ],
   "references": [
     {

@@ -152,5 +152,22 @@
       "venue": "Archiv der Mathematik, Vol. 10",
       "note": "Elegant combinatorial proof of Sylow's first theorem using group actions on subsets"
     }
+  ],
+  "relatedProofs": [
+    {
+      "id": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem (|H| divides |G|) is a prerequisite; Sylow I provides a partial converse for prime power divisors"
+    },
+    {
+      "id": "abel-ruffini-oq-04",
+      "relationship": "related",
+      "description": "Sylow theory provides structural information about A₅: its Sylow subgroups witness |A₅| = 60 = 2²·3·5 and help prove simplicity"
+    },
+    {
+      "id": "angle-trisection-oq-02",
+      "relationship": "related",
+      "description": "Sylow theory for 2-groups underlies the constructibility characterization — constructible numbers have 2-group Galois groups"
+    }
   ]
 }

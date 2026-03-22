@@ -142,9 +142,42 @@
     }
   ],
   "relatedProofs": [
-    "infinitude-primes",
-    "riemann-hypothesis",
-    "basel-problem"
+    {
+      "id": "infinitude-primes",
+      "relationship": "extends",
+      "description": "Euclid proved infinitely many primes exist; PNT quantifies their asymptotic density as π(x) ~ x/ln(x)"
+    },
+    {
+      "id": "riemann-hypothesis",
+      "relationship": "related",
+      "description": "RH would give the best possible error term in PNT: π(x) = Li(x) + O(√x·log x)"
+    },
+    {
+      "id": "basel-problem",
+      "relationship": "related",
+      "description": "Both involve the Riemann zeta function — Basel gives ζ(2) = π²/6, PNT uses the non-vanishing of ζ on Re(s)=1"
+    },
+    {
+      "id": "prime-reciprocal-divergence",
+      "relationship": "related",
+      "description": "∑1/p diverges — a consequence of PNT since primes have density ~1/ln(n)"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Hadamard, Jacques",
+      "title": "Sur la distribution des zéros de la fonction ζ(s) et ses conséquences arithmétiques",
+      "year": "1896",
+      "venue": "Bulletin de la Société Mathématique de France 24, pp. 199-220",
+      "note": "One of the two independent proofs of PNT in 1896, using the non-vanishing of ζ(s) on the line Re(s)=1"
+    },
+    {
+      "authors": "de la Vallée Poussin, Charles-Jean",
+      "title": "Recherches analytiques sur la théorie des nombres premiers",
+      "year": "1896",
+      "venue": "Annales de la Société scientifique de Bruxelles 20, pp. 183-256",
+      "note": "The other independent proof of PNT in 1896, also using complex analysis and ζ(s)"
+    }
   ],
   "leanFile": {
     "imports": [
