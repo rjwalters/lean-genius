@@ -168,10 +168,40 @@
       "targetId": "birthday-problem-oq-03",
       "relationship": "extended-by",
       "description": "Extended with more sophisticated probability bounds and approximations."
+    },
+    {
+      "targetId": "ballot-problem",
+      "relationship": "related",
+      "description": "Fellow combinatorial probability problem: both use counting arguments over structured finite sample spaces — the ballot problem counts lattice paths, the birthday problem counts injective functions"
+    },
+    {
+      "targetId": "buffons-needle",
+      "relationship": "related",
+      "description": "Fellow classic probability problem: Buffon's needle involves geometric probability with π, while the birthday problem uses discrete counting and produces the surprising 23-person threshold"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "uses",
+      "description": "Binomial coefficients C(n,2) = n(n-1)/2 count the number of pairs, which is why 23 people have 253 pairs — the quadratic growth of pairs is the key to the birthday 'paradox'"
+    },
+    {
+      "targetId": "arithmetic-series",
+      "relationship": "related",
+      "description": "The number of pairs C(n,2) = n(n-1)/2 is a triangular number — the same formula as the arithmetic series sum, connecting the birthday problem to elementary number theory"
+    },
+    {
+      "targetId": "birthday-problem-oq-02",
+      "relationship": "extended-by",
+      "description": "Sub-entry exploring further birthday problem variants and generalizations"
     }
   ],
   "relatedProofs": [
-    "birthday-problem-oq-03"
+    "birthday-problem-oq-03",
+    "birthday-problem-oq-02",
+    "ballot-problem",
+    "buffons-needle",
+    "binomial-theorem",
+    "arithmetic-series"
   ],
   "leanFile": {
     "imports": [
