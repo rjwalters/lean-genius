@@ -143,5 +143,28 @@
       "What are the precise constants in the normal distribution?",
       "How does this generalize to other structured subgraphs?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Riordan, Oliver",
+      "title": "Spanning subgraphs of random graphs",
+      "year": "2000",
+      "venue": "Combinatorics, Probability and Computing 9(2), pp. 125-148",
+      "note": "Proved G(2^d, p) contains Q_d a.s. for p > 1/4, settling the Erdős-Bollobás conjecture"
+    },
+    {
+      "authors": "Bollobás, Béla",
+      "title": "Random Graphs",
+      "year": "2001",
+      "venue": "Cambridge University Press, 2nd edition",
+      "note": "Background on G(n,p) random graph model and threshold phenomena"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both concern guaranteed substructures: Ramsey theory guarantees monochromatic complete graphs, #578 guarantees hypercube subgraphs in random graphs"
+    }
+  ]
 }

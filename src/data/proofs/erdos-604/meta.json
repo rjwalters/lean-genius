@@ -125,5 +125,28 @@
       "Improve Katz-Tardos beyond exponent 0.864",
       "Determine if the prize requires one point or many points with high count"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Guth, Larry; Katz, Nets Hawk",
+      "title": "On the Erdős distinct distances problem in the plane",
+      "year": "2015",
+      "venue": "Annals of Mathematics 181(1), pp. 155-190",
+      "note": "Solved the 'unpinned' distinct distances problem; techniques relevant to the pinned version"
+    },
+    {
+      "authors": "Katz, Nets Hawk; Tardos, Gábor",
+      "title": "A new entropy inequality for the Erdős distance problem",
+      "year": "2004",
+      "venue": "Contemporary Mathematics 342, pp. 119-126",
+      "note": "Best known bound for the pinned version: exponent 0.864"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-483",
+      "relationship": "related",
+      "description": "Both are Erdős problems with prize money: #483 concerns Schur numbers ($250), #604 concerns pinned distances ($500)"
+    }
+  ]
 }

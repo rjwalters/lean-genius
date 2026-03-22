@@ -1,0 +1,171 @@
+{
+  "id": "denumerability-rationals-oq-03",
+  "title": "Stern-Brocot Tree Encoding of Rationals",
+  "slug": "denumerability-rationals-oq-03",
+  "description": "Formalizes the Stern-Brocot tree, an alternative to Cantor's diagonal enumeration that lists every positive rational exactly once in lowest terms. Proves the determinant invariant, automatic coprimality of all tree nodes, positivity, and the mediant ordering property.",
+  "meta": {
+    "author": "Stern (1858), Brocot (1861)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Stern%E2%80%93Brocot_tree",
+    "date": "1858",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/DenumerabilityRationalsOQ03.lean",
+    "leanFile": "proofs/Proofs/DenumerabilityRationalsOQ03.lean",
+    "tags": [
+      "set-theory",
+      "number-theory",
+      "combinatorics",
+      "stern-brocot",
+      "continued-fractions",
+      "mediants",
+      "coprimality",
+      "wiedijk-100"
+    ],
+    "badge": "original",
+    "sorries": 1,
+    "axiomCount": 0,
+    "dateAdded": "2026-03-22",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Coprime / Nat.gcd",
+        "description": "GCD infrastructure for coprimality proofs",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Int.natCast_dvd_natCast",
+        "description": "Bridge between ℕ and ℤ divisibility for the Bezout-style argument",
+        "module": "Mathlib.Data.Int.Lemmas"
+      },
+      {
+        "theorem": "Int.le_of_dvd",
+        "description": "Used to conclude gcd = 1 from gcd | 1",
+        "module": "Mathlib.Data.Int.Order"
+      }
+    ],
+    "originalContributions": [
+      "State-based Stern-Brocot tree formalization via (left_ancestor, right_ancestor) navigation",
+      "det_path: determinant invariant ra*lb - la*rb = 1 preserved through all navigation",
+      "coprime_of_det_one: automatic coprimality from the determinant invariant via Bezout identity",
+      "num_pos_path / den_pos_path: positivity of all tree nodes by structural induction",
+      "mediant_strictly_between: ordering proof la/lb < mediant < ra/rb",
+      "toRat_pos: every tree node represents a positive rational",
+      "7 concrete verification examples for first 3 tree levels"
+    ],
+    "references": [
+      {
+        "key": "St58",
+        "citation": "Stern, M.A., Ueber eine zahlentheoretische Funktion, Journal fur die reine und angewandte Mathematik 55 (1858), 193-220.",
+        "type": "paper"
+      },
+      {
+        "key": "Br61",
+        "citation": "Brocot, A., Calcul des rouages par approximation, nouvelle methode, Revue chronometrique 3 (1861), 186-194.",
+        "type": "paper"
+      },
+      {
+        "key": "GKP94",
+        "citation": "Graham, R.L., Knuth, D.E., Patashnik, O., Concrete Mathematics, 2nd edition, Addison-Wesley (1994), Section 4.5.",
+        "type": "book"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Stern-Brocot tree was independently discovered by Moritz Abraham Stern in 1858 and Achille Brocot in 1861. Stern was a German mathematician studying number-theoretic functions; Brocot was a French clockmaker seeking optimal gear ratios for mechanical clocks. Both arrived at the same elegant structure: a binary tree containing every positive rational number exactly once, already in lowest terms.\n\nThe tree is built using the mediant operation: given fractions a/b and c/d, their mediant is (a+c)/(b+d). Starting with the 'sentinels' 0/1 and 1/0, the root is their mediant 1/1. Each node's left child is the mediant of the node with its left ancestor, and likewise for the right.\n\nThe Stern-Brocot tree has deep connections to continued fractions (the path to any rational encodes its continued fraction expansion), the Euclidean algorithm (the search path mimics gcd computation), Farey sequences (each level of the tree corresponds to a Farey-like refinement), and the Calkin-Wilf tree (a closely related structure with the same enumeration but different tree shape).\n\nGraham, Knuth, and Patashnik's 'Concrete Mathematics' (1994) popularized the tree in computer science, using it to derive properties of continued fractions and to prove the density of rationals in the reals constructively.",
+    "problemStatement": "**Stern-Brocot Tree Encoding (OQ-03)**\n\nFormalize the Stern-Brocot tree as an alternative encoding of the positive rationals, proving:\n\n1. Every node is in lowest terms (coprimality)\n2. Every node represents a positive rational\n3. The tree is strictly ordered (left < root < right)\n4. The encoding is injective (different paths give different rationals)",
+    "proofStrategy": "**Formalization Approach**\n\nThe Lean file provides 349 lines with 29 definitions/theorems and 1 sorry:\n\n1. **State Machine (lines 56-95):** Define navigation as a state `(la/lb, ra/rb)` where `la/lb` is the left ancestor and `ra/rb` is the right ancestor. The current node is the mediant `(la+ra)/(lb+rb)`. Going left makes the current node the new right ancestor; going right makes it the new left ancestor.\n\n2. **Determinant Invariant (lines 99-147):** Prove `det(s) = ra*lb - la*rb = 1` is preserved by both left and right steps, and holds initially. This is the key structural invariant.\n\n3. **Coprimality (lines 151-165):** From `ra*lb - la*rb = 1`, derive `ra*(lb+rb) - rb*(la+ra) = 1`. Any common divisor of `(la+ra)` and `(lb+rb)` must divide this linear combination, hence divide 1.\n\n4. **Positivity (lines 169-195):** By structural induction, show that `la + ra > 0` and `lb + rb > 0` at every reachable state.\n\n5. **Ordering (lines 217-227):** Cross-multiply the mediant inequality using `nlinarith` and the determinant identity.",
+    "keyInsights": [
+      "**The Determinant Invariant**: The single identity ra*lb - la*rb = 1 drives everything. From it we get coprimality (via the Bezout-like identity), ordering (via positivity of the cross-product), and ultimately completeness. This is more elegant than Cantor's pairing, which requires separate reduction to lowest terms.",
+      "**State Machine vs Tree**: Representing the Stern-Brocot tree as a state machine navigated by L/R directions is more natural for formal verification than an explicit recursive tree type. The state carries exactly the information needed for proofs: the bounding ancestors.",
+      "**Automatic Lowest Terms**: In Cantor's diagonal enumeration, one must skip non-reduced fractions (like 2/4, 3/6, etc.) or reduce them. The Stern-Brocot tree produces every fraction already in lowest terms, with coprimality following algebraically from the determinant invariant rather than from explicit gcd computation.",
+      "**Euclidean Algorithm Connection**: Finding a rational p/q in the tree exactly mimics the Euclidean algorithm. Comparing p/q with the mediant and choosing L or R is equivalent to subtracting the smaller from the larger. The path length equals the sum of the continued fraction coefficients.",
+      "**Continued Fraction Encoding**: The run-length encoding of a Stern-Brocot path gives the continued fraction expansion. Path [R,R,L,L,L,R] = R^2 L^3 R^1 encodes [2; 3, 1]. This means the tree simultaneously provides a canonical enumeration of rationals AND their continued fraction representations."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "denumerability-rationals",
+      "relationship": "extends",
+      "description": "OQ-01 proved Q is denumerable via Cantor's diagonal/pairing method. This OQ-03 provides an alternative encoding via the Stern-Brocot tree with better structural properties."
+    }
+  ],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 38,
+      "endLine": 95,
+      "summary": "Defines Dir (L/R directions), Path (list of directions), State (navigation state with four ℕ components), and the eval/evalPath navigation functions.",
+      "mathContext": "State = $(\\frac{la}{lb}, \\frac{ra}{rb})$, current node = mediant $\\frac{la+ra}{lb+rb}$. Left: $ra \\gets la+ra, rb \\gets lb+rb$. Right: $la \\gets la+ra, lb \\gets lb+rb$."
+    },
+    {
+      "id": "determinant",
+      "title": "The Determinant Invariant",
+      "startLine": 99,
+      "endLine": 147,
+      "summary": "Defines State.det = ra*lb - la*rb and proves det_init, det_left, det_right, and det_eval/det_path showing the determinant is always 1.",
+      "mathContext": "$\\det(s) = ra \\cdot lb - la \\cdot rb = 1$ is preserved by both $L$ and $R$ steps. Base: $\\det(0/1, 1/0) = 1 \\cdot 1 - 0 \\cdot 0 = 1$."
+    },
+    {
+      "id": "coprimality",
+      "title": "Coprimality of All Nodes",
+      "startLine": 151,
+      "endLine": 165,
+      "summary": "Proves coprime_of_det_one and coprime_path: every node in the tree is in lowest terms. Uses Bezout-like identity ra*(lb+rb) - rb*(la+ra) = 1.",
+      "mathContext": "$\\gcd(la+ra, lb+rb) \\mid ra(lb+rb) - rb(la+ra) = 1$, so $\\gcd = 1$."
+    },
+    {
+      "id": "positivity",
+      "title": "Positivity of All Nodes",
+      "startLine": 169,
+      "endLine": 195,
+      "summary": "Proves num_pos_path and den_pos_path: every node has positive numerator and denominator, by structural induction tracking component bounds.",
+      "mathContext": "By induction: $la + ra > 0$ and $lb + rb > 0$ at every reachable state from $(0/1, 1/0)$."
+    },
+    {
+      "id": "rational-value",
+      "title": "The Rational Value Function",
+      "startLine": 199,
+      "endLine": 213,
+      "summary": "Defines toRat converting paths to positive rationals. Proves toRat_root = 1 and toRat_pos > 0.",
+      "mathContext": "$\\text{toRat}(p) = \\frac{\\text{pathNum}(p)}{\\text{pathDen}(p)} > 0$."
+    },
+    {
+      "id": "ordering",
+      "title": "Ordering — The Tree is Sorted",
+      "startLine": 217,
+      "endLine": 227,
+      "summary": "Proves mediant_strictly_between: the mediant lies strictly between the left and right ancestors, in cross-multiplication form.",
+      "mathContext": "$la \\cdot (lb+rb) < (la+ra) \\cdot lb$ and $(la+ra) \\cdot rb < ra \\cdot (lb+rb)$, i.e., $\\frac{la}{lb} < \\frac{la+ra}{lb+rb} < \\frac{ra}{rb}$."
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Examples",
+      "startLine": 243,
+      "endLine": 295,
+      "summary": "Seven verified examples confirming the first 3 levels: [] → 1/1, [L] → 1/2, [R] → 2/1, [L,L] → 1/3, [L,R] → 2/3, [R,L] → 3/2, [R,R] → 3/1.",
+      "mathContext": "Level 0: $1/1$. Level 1: $1/2, 2/1$. Level 2: $1/3, 2/3, 3/2, 3/1$. All verified by computation."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Stern-Brocot tree is formalized as a state-machine navigation system with 29 definitions and theorems in 349 lines, with 1 sorry remaining (injectivity). Key proved results: the determinant invariant (ra*lb - la*rb = 1 at all nodes), automatic coprimality, positivity, ordering, and 7 concrete verification examples spanning 3 tree levels. The formalization demonstrates that the Stern-Brocot encoding provides a mathematically richer alternative to Cantor's pairing function for enumerating the rationals.",
+    "implications": "The Stern-Brocot tree connects multiple areas: number theory (continued fractions, Farey sequences), algorithms (the Euclidean algorithm), and set theory (enumerations of Q). The formalization opens paths to proving completeness (surjectivity) via the Euclidean algorithm connection, and to formalizing the relationship between tree paths and continued fraction expansions.",
+    "openQuestions": [
+      "Prove eval_injective (injectivity): different paths give different rationals. This should follow from the ordering property by induction.",
+      "Prove surjectivity: every positive rational appears somewhere in the tree, via the Euclidean algorithm connection.",
+      "Formalize the continued fraction correspondence: run-length encoding of Stern-Brocot paths equals continued fraction coefficients.",
+      "Establish the full bijection between binary words (or ℕ via BFS ordering) and ℚ⁺."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Rat.Defs",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "SternBrocot",
+    "lineCount": 349,
+    "axiomCount": 0,
+    "theoremCount": 22,
+    "definitionCount": 7
+  }
+}

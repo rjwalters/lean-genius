@@ -125,5 +125,21 @@
       "What about weighted or directed versions?",
       "How does the constant change for specific families of graphs?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Verstraëte, Jacques",
+      "title": "Extremal problems for cycles in graphs",
+      "year": "2016",
+      "venue": "Recent Trends in Combinatorics, IMA Vol.",
+      "note": "Survey including cycle length problems in dense graphs"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-219",
+      "relationship": "related",
+      "description": "Both concern arithmetic progressions in combinatorial structures: #219 studies APs of primes, #71 studies cycle lengths from APs"
+    }
+  ]
 }

@@ -161,5 +161,21 @@
       "Does Erdős's transcendence conjecture hold for all integer t?",
       "What techniques could handle perturbed factorial sums?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "Problems and results on number theoretic properties of consecutive integers and related questions",
+      "year": "1976",
+      "venue": "Congressus Numerantium XVI, pp. 25-44",
+      "note": "Contains the original conjecture about irrationality of Σ 1/(n!-1)"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-267",
+      "relationship": "related",
+      "description": "Both are Erdős irrationality problems about natural arithmetic series: #267 concerns Fibonacci reciprocal sums, #68 concerns factorial reciprocal sums with perturbation"
+    }
+  ]
 }

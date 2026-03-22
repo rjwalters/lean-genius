@@ -130,5 +130,21 @@
       "Determine the density of such triples among all valid configurations",
       "Extend to other arithmetic functions (radical, totient)"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Cambie, Stijn",
+      "title": "On a problem of Erdős about the LCM of consecutive integers",
+      "year": "2024",
+      "venue": "arXiv preprint",
+      "note": "Proved infinitely many examples exist where shorter intervals have larger LCM"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-367",
+      "relationship": "related",
+      "description": "Both concern multiplicative structure of consecutive integers: #367 studies products of powerful parts, #678 studies LCM of consecutive intervals"
+    }
+  ]
 }

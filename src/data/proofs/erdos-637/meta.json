@@ -135,5 +135,28 @@
       "What is the exact constant in the JKLY bound?",
       "Can the result be extended to hypergraphs?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Bukh, Boris; Sudakov, Benny",
+      "title": "Induced subgraphs of Ramsey graphs with many distinct degrees",
+      "year": "2007",
+      "venue": "J. Combin. Theory Ser. B 97(4), pp. 612-619",
+      "note": "Proved ≫ √n distinct degrees in induced subgraphs of Ramsey graphs"
+    },
+    {
+      "authors": "Jenssen, Matthew; Keevash, Peter; Long, Eoin; Yepremyan, Liana",
+      "title": "Distinct degrees in induced subgraphs",
+      "year": "2020",
+      "venue": "Proc. Amer. Math. Soc. 148, pp. 3835-3846",
+      "note": "Strengthened to ≫ n^{2/3} degrees, nearly matching the conjectured optimum"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "uses",
+      "description": "The problem concerns graphs with no large cliques or independent sets — precisely the regime where Ramsey theory applies"
+    }
+  ]
 }

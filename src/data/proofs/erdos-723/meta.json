@@ -137,5 +137,21 @@
       "Can Bruck-Ryser be strengthened?",
       "What is the next non-existence result after Lam?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Lam, C. W. H.; Thiel, L.; Swiercz, S.",
+      "title": "The nonexistence of finite projective planes of order 10",
+      "year": "1989",
+      "venue": "Canad. J. Math. 41, pp. 1117-1123",
+      "note": "Computer-assisted proof that no projective plane of order 10 exists"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-483",
+      "relationship": "related",
+      "description": "Both are fundamental combinatorics problems with long history: #483 studies Schur numbers, #723 asks about projective plane orders"
+    }
+  ]
 }

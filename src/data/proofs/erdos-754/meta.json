@@ -138,5 +138,21 @@
       "Analogous problems for other distance constraints?",
       "Lower dimensional cases (d ≤ 3) have different answers - what are they exactly?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Pach, János; Pollack, Richard; Tuza, Zsolt",
+      "title": "How many unit distances can a graph have?",
+      "year": "1990",
+      "venue": "Graphs and Combinatorics 6, pp. 357-365",
+      "note": "Related work on unit distance problems in higher dimensions"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-604",
+      "relationship": "related",
+      "description": "Both concern distance geometry: #604 studies pinned distances in the plane, #754 studies equidistant neighbors in 4D"
+    }
+  ]
 }
