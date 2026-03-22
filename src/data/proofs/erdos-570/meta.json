@@ -72,7 +72,27 @@
       }
     ],
     "axiomCount": 5,
-    "lineCount": 178
+    "lineCount": 178,
+    "theoremCount": 2,
+    "prerequisites": [
+      "Ramsey theory: existence of Ramsey numbers and basic bounds",
+      "Graph theory: cycles, complete graphs, edge colorings",
+      "Extremal graph theory: Turán-type results",
+      "Natural number arithmetic: ceiling function, divisibility"
+    ],
+    "relatedProofs": [
+      {
+        "id": "erdos-424",
+        "relationship": "sibling",
+        "description": "Another Erdős problem in graph theory/Ramsey theory"
+      }
+    ],
+    "crossReferences": [
+      {
+        "target": "erdos-424",
+        "context": "Both are Erdős problems involving graph-theoretic Ramsey-type questions"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "**Erdős Problem #570** asks for an upper bound on the Ramsey number R(C_k, H), where C_k is a k-cycle and H is an arbitrary graph without isolated vertices. The conjectured bound R(C_k, H) ≤ 2m + ⌈(k-1)/2⌉, where m = |E(H)|, was first proposed in the context of 'Ramsey size linear graphs' by Erdős, Faudree, Rousseau, and Schelp.\n\nThe resolution spanned over three decades. EFRS themselves proved the even k case in 1993. That same year, Sidorenko handled k = 3 (triangles). Jayawardene extended the result to k = 5 in 1999. The remaining cases - all odd k ≥ 7 - were finally resolved by Cambie, Freschi, Morawski, Petrova, and Pokrovskiy in 2024.\n\nThe problem is notable for requiring fundamentally different techniques for even and odd cycles, and for the 25-year gap between the k = 5 result and the final resolution.",
@@ -88,53 +108,68 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Problem Statement and Setup",
+      "summary": "Module docstring, imports, variable declarations for finite types and decidable equality.",
+      "startLine": 1,
+      "endLine": 34,
+      "mathContext": "The problem concerns $R(C_k, H)$ — the minimum $n$ such that any red/blue coloring of $K_n$ contains either a red $C_k$ or a blue copy of $H$."
+    },
+    {
       "id": "graphs",
       "title": "Graph Definitions",
-      "summary": "CycleGraph (constructive), edgeCount, NoIsolatedVertices",
+      "summary": "CycleGraph (constructive with proved symmetry and irreflexivity), edgeCount, NoIsolatedVertices.",
       "startLine": 35,
-      "endLine": 72
+      "endLine": 72,
+      "mathContext": "$C_k$ has vertex set $\\{0,\\ldots,k-1\\}$ with adjacency $i \\sim j \\iff j \\equiv i+1 \\pmod{k}$ or $i \\equiv j+1 \\pmod{k}$. Edge count $m = |E(H)|$. No isolated vertices: $\\forall v, \\deg(v) \\geq 1$."
     },
     {
       "id": "ramsey",
       "title": "Ramsey Numbers",
-      "summary": "RamseyNumber, CycleRamseyNumber",
+      "summary": "RamseyNumber, CycleRamseyNumber — formal Ramsey number definitions via infimum over valid colorings.",
       "startLine": 74,
-      "endLine": 88
+      "endLine": 88,
+      "mathContext": "$R(G, H) = \\min\\{n : \\text{every 2-coloring of } K_n \\text{ contains red } G \\text{ or blue } H\\}$. By Ramsey's theorem (1930), $R(G, H) < \\infty$ for all finite $G, H$."
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
-      "summary": "UpperBound, Erdos570Conjecture",
+      "summary": "UpperBound function computing 2m + ⌈(k-1)/2⌉ and Erdos570Conjecture formal statement.",
       "startLine": 90,
-      "endLine": 104
+      "endLine": 104,
+      "mathContext": "$R(C_k, H) \\leq 2m + \\lceil(k-1)/2\\rceil$ where $m = |E(H)|$. The bound is linear in $m$ with additive correction $\\lceil(k-1)/2\\rceil = \\lfloor k/2 \\rfloor$."
     },
     {
       "id": "cases",
       "title": "Proven Cases",
-      "summary": "EFRS (even), Sidorenko (k=3), Jayawardene (k=5), CFMPP (odd k≥7)",
+      "summary": "Four axioms for each historical contribution: EFRS (even k), Sidorenko (k=3), Jayawardene (k=5), CFMPP (odd k≥7).",
       "startLine": 106,
-      "endLine": 141
+      "endLine": 141,
+      "mathContext": "Even $k$: proved by regularity method. $k=3$: uses the Turán-type density argument for triangle-free graphs. $k=5$: pentagon-specific embedding. Odd $k \\geq 7$: connected covers technique (2024)."
     },
     {
       "id": "resolution",
       "title": "Complete Resolution",
-      "summary": "erdos_570_resolved axiom",
+      "summary": "The full conjecture axiomatized as resolved, combining all cases to cover all k ≥ 3.",
       "startLine": 143,
-      "endLine": 156
+      "endLine": 156,
+      "mathContext": "Cases: $k$ even (EFRS) $\\cup$ $k=3$ (Sidorenko) $\\cup$ $k=5$ (Jayawardene) $\\cup$ $k \\geq 7$ odd (CFMPP) = all $k \\geq 3$."
     },
     {
       "id": "ceiling",
       "title": "The Ceiling Formula",
-      "summary": "ceiling_formula theorem (proved)",
+      "summary": "Proved theorem: ⌈(k-1)/2⌉ = k/2 for even k and (k+1)/2 for odd k, using natural number arithmetic.",
       "startLine": 158,
-      "endLine": 164
+      "endLine": 164,
+      "mathContext": "$\\lceil(k-1)/2\\rceil = \\begin{cases} k/2 & k \\text{ even} \\\\ (k-1)/2 + 1 & k \\text{ odd} \\end{cases}$. One of the two fully proved (non-axiom) results in the file."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_570_summary theorem (proved)",
+      "summary": "Summary theorem confirming full resolution, with timeline comments.",
       "startLine": 166,
-      "endLine": 178
+      "endLine": 178,
+      "mathContext": "Timeline: 1993 (even $k$, $k=3$) → 1999 ($k=5$) → 2024 (odd $k \\geq 7$). Total: 31 years from problem to resolution."
     }
   ],
   "conclusion": {
