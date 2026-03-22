@@ -9,7 +9,7 @@
       "Sections I-VI (modular reduction) are fully proved: 0 sorries, 0 axioms",
       "Section VII (algebra tower) adds 7 theorems, 6 fully proved, 1 sorry",
       "The sorry is in minpoly_eq_map_of_irreducible: need Associated.eq_of_monic or equivalent",
-      "Key Mathlib APIs: eval\u2082_map + IsScalarTower.algebraMap_eq for tower aeval commutativity",
+      "Key Mathlib APIs: eval₂_map + IsScalarTower.algebraMap_eq for tower aeval commutativity",
       "Polynomial.natDegree_map_eq_of_injective works for field-to-field algebraMap (injective)",
       "Monic.natDegree_map preserves degree for monic polynomials under ring homs",
       "PROVED minpoly_eq_map_of_irreducible using minpoly.eq_of_irreducible_of_monic (direct Mathlib API). Previous approach via associated_of_dvd was overengineered.",
