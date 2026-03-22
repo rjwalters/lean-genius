@@ -60,7 +60,8 @@
       "**Lacunary series**: Power series with gaps in exponents have special properties. The 'density' of gaps determines value distribution behavior.",
       "**Gap hierarchy**: Fejér gaps (∑1/nₖ < ∞) ⊂ Fabry gaps (nₖ/k → ∞). The former is easier to analyze but more restrictive.",
       "**Value distribution**: Picard's theorem says entire functions miss at most one value. Gap conditions can force every value to be assumed infinitely often.",
-      "**The gap**: Despite 100+ years of study, we don't know if the weaker Fabry condition suffices for infinite value coverage."
+      "**The gap**: Despite 100+ years of study, we don't know if the weaker Fabry condition suffices for infinite value coverage.",
+      "**Natural boundary**: Fabry's gap theorem (1896) shows that nₖ/k → ∞ forces the unit circle to be a natural boundary — the function cannot be analytically continued past |z|=1 — yet this topological obstruction does not directly control value distribution, which is why the conjecture remains open"
     ]
   },
   "sections": [
