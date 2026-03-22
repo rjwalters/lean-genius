@@ -61,32 +61,44 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "Module docstring stating Erdős Problem #776 on multiplicity-constrained antichains, key results summary (r=1: max n−2, r>1: max n−3), references to Erdős-Trotter and Griggs, and imports from Mathlib for Finset, Powerset, Order.Antichain, and general tactics.",
+      "mathContext": "Given $r \\geq 2$ and an antichain $\\mathcal{F} \\subseteq 2^{[n]}$ where every occurring set size appears $\\geq r$ times, what is the maximum number of distinct set sizes? Answer: $n - 3$ for large $n$, but the threshold $N(r)$ is **OPEN**."
+    },
+    {
       "id": "definitions",
       "title": "Core Definitions",
-      "startLine": 22,
+      "startLine": 29,
       "endLine": 53,
-      "summary": "Defines `SubsetFamily n` as `Finset (Finset (Fin n))`, `IsAntichain` via pairwise non-containment, `distinctSizes` via `Finset.image Finset.card`, `HasMultiplicity F r` requiring each size to appear $\\geq r$ times, and `maxDistinctSizes n r` as the supremum over all valid families."
+      "summary": "Defines `SubsetFamily n` as `Finset (Finset (Fin n))`, `IsAntichain` via pairwise non-containment, `distinctSizes` via `Finset.image Finset.card`, `HasMultiplicity F r` requiring each size to appear $\\geq r$ times, and `maxDistinctSizes n r` as the supremum over all valid families.",
+      "mathContext": "Key definitions: $\\mathcal{F} \\subseteq 2^{[n]}$ (SubsetFamily), antichain ($A \\neq B \\implies A \\not\\subseteq B$), $d(\\mathcal{F}) = |\\{|A| : A \\in \\mathcal{F}\\}|$ (distinctSizes), multiplicity-$r$ ($\\forall s,\\, |\\{A : |A| = s\\}| \\geq r$), $\\text{maxDistinctSizes}(n,r) = \\sup d(\\mathcal{F})$."
     },
     {
       "id": "results",
       "title": "Erdős-Trotter Results",
       "startLine": 55,
       "endLine": 81,
-      "summary": "Axiomatizes `erdos_trotter_r1` ($r = 1$: max is $n - 2$ for $n > 3$), `erdos_trotter_upper` ($r > 1$: max $\\leq n - 3$ for large $n$), and `erdos_trotter_achievable` ($r > 1$: max $\\geq n - 3$ for large $n$). Proves `erdos_trotter_exact` combining the bounds via `omega`."
+      "summary": "Axiomatizes `erdos_trotter_r1` ($r = 1$: max is $n - 2$ for $n > 3$), `erdos_trotter_upper` ($r > 1$: max $\\leq n - 3$ for large $n$), and `erdos_trotter_achievable` ($r > 1$: max $\\geq n - 3$ for large $n$). Proves `erdos_trotter_exact` combining the bounds via `omega`.",
+      "mathContext": "Axioms: $\\text{maxDistinctSizes}(n,1) = n-2$ for $n > 3$. For $r > 1$: $\\exists N_1,\\, n \\geq N_1 \\implies \\text{max} \\leq n-3$ and $\\exists N_2,\\, n \\geq N_2 \\implies \\text{max} \\geq n-3$. Proved: $\\text{max} = n-3$ for $n \\geq \\max(N_1, N_2)$."
     },
     {
       "id": "conjecture",
       "title": "Threshold Conjecture",
       "startLine": 83,
       "endLine": 93,
-      "summary": "Axiomatizes `erdos_776_threshold`: for each $r \\geq 2$, there exists a smallest $N(r)$ such that `maxDistinctSizes n r = n - 3` for all $n \\geq N(r)$. The minimality clause ensures $N$ is optimal."
+      "summary": "Axiomatizes `erdos_776_threshold`: for each $r \\geq 2$, there exists a smallest $N(r)$ such that `maxDistinctSizes n r = n - 3` for all $n \\geq N(r)$. The minimality clause ensures $N$ is optimal.",
+      "mathContext": "$\\forall r \\geq 2,\\, \\exists N(r)$ (minimal): $\\forall n \\geq N(r),\\, \\text{maxDistinctSizes}(n,r) = n - 3$. Determining $N(r)$ explicitly is the **OPEN** problem."
     },
     {
       "id": "structural",
       "title": "Structural Observations",
       "startLine": 94,
       "endLine": 119,
-      "summary": "Axiomatizes Sperner's theorem ($|\\mathcal{F}| \\leq \\binom{n}{\\lfloor n/2 \\rfloor}$), the middle layer antichain (one size, maximum cardinality), the size-variety tradeoff ($|\\mathcal{F}| \\geq r \\cdot d$), and the size availability condition ($\\binom{n}{k} \\geq r$ needed for layer $k$)."
+      "summary": "Axiomatizes Sperner's theorem ($|\\mathcal{F}| \\leq \\binom{n}{\\lfloor n/2 \\rfloor}$), the middle layer antichain (one size, maximum cardinality), the size-variety tradeoff ($|\\mathcal{F}| \\geq r \\cdot d$), and the size availability condition ($\\binom{n}{k} \\geq r$ needed for layer $k$).",
+      "mathContext": "Sperner: $|\\mathcal{F}| \\leq \\binom{n}{\\lfloor n/2 \\rfloor}$. Tradeoff: $|\\mathcal{F}| \\geq r \\cdot d(\\mathcal{F})$. Combined: $d \\leq \\binom{n}{\\lfloor n/2 \\rfloor}/r$. Availability: layer $k$ usable iff $\\binom{n}{k} \\geq r$."
     }
   ],
   "conclusion": {

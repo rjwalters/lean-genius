@@ -1,5 +1,17 @@
 [
   {
+    "id": "erdos-776-ann-preamble",
+    "proofId": "erdos-776",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 27 },
+    "title": "Problem Statement, References, and Imports",
+    "content": "Module docstring framing Erdős Problem #776 on antichains with set-size multiplicity constraints. References Erdős-Trotter and Griggs (1983). Imports `Finset.Basic` (finite sets), `Finset.Powerset` (power set), `Order.Antichain` (antichain theory), and `Tactic` (omega, etc.). Opens `Finset` namespace for concise notation.",
+    "mathContext": "The Boolean lattice $2^{[n]}$ has $2^n$ elements partially ordered by inclusion. An antichain is a set of pairwise incomparable elements. The problem studies how the multiplicity constraint $r$ restricts the number of distinct set sizes $d(\\mathcal{F})$.",
+    "significance": "context",
+    "relatedConcepts": ["Boolean lattice", "antichain in poset", "Sperner theory", "Griggs bound"],
+    "prerequisites": ["Finset and Fin types in Mathlib", "partial order inclusion on sets"]
+  },
+  {
     "id": "erdos-776-ann-family",
     "proofId": "erdos-776",
     "type": "definition",
