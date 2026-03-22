@@ -1,5 +1,28 @@
 # borsuk-ulam-oq-03: Constructive (Intuitionistic) Borsuk-Ulam
 
+## Session 2026-03-22 (researcher-1) - Axiom Elimination: 3 → 1
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 76)
+**Outcome**: progress — eliminated 2 axioms, file now has exactly 1 axiom
+
+### What Was Done
+
+Converted `no_retraction` and `brouwer_fixed_point` from axioms to theorems.
+These were previously axioms due to forward reference constraints (proofs were
+defined much later in the file), but the proofs were already complete with 0 sorries.
+
+**Restructuring**: Moved `no_retraction_implies_brouwer_fp` to after `bu_implies_no_retraction`
+to resolve the forward reference, then defined:
+- `theorem no_retraction := bu_implies_no_retraction`
+- `theorem brouwer_fixed_point := no_retraction_implies_brouwer_fp`
+
+### Stats After Changes
+- 5169 lines, 1 axiom (was 3), 0 sorries, Docker build passes
+- The single remaining axiom is `borsuk_ulam_general` (general BU for n ≥ 1)
+- Everything else (no-retraction, Brouwer FP, Lusternik-Schnirelmann) is proved
+
+---
+
 ## Problem Summary
 
 **Open Question**: Can the 1D Borsuk-Ulam theorem be proved constructively
