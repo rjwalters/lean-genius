@@ -248,6 +248,11 @@
       "targetId": "quadratic-reciprocity",
       "relationship": "related",
       "description": "Gauss's quadratic reciprocity law (1801) is a deep result about the structure of Z/pZ that foreshadowed Galois theory — both concern how algebraic objects (quadratic residues, polynomial roots) behave under symmetry. The Artin reciprocity law of class field theory generalizes both: it connects abelian Galois groups of number fields to ideal class groups, unifying quadratic reciprocity with the abelian case of Galois's solvability criterion"
+    },
+    {
+      "targetId": "fermats-last-theorem",
+      "relationship": "extends",
+      "description": "Wiles's proof of FLT (1995) is the supreme application of Galois theory: it shows every semistable elliptic curve over Q is modular by analyzing 2-dimensional Galois representations ρ: Gal(Q̄/Q) → GL₂(Zₚ). Where Abel-Ruffini uses the non-solvability of S₅ to block radical solutions, Wiles uses the modularity of Galois representations to force Diophantine constraints — both exploit the deep connection between symmetry groups and algebraic equations that Galois discovered"
     }
   ],
   "relatedProofs": [
@@ -270,7 +275,8 @@
     "godel-incompleteness",
     "halting-problem",
     "cantor-diagonalization",
-    "quadratic-reciprocity"
+    "quadratic-reciprocity",
+    "fermats-last-theorem"
   ],
   "references": [
     {
@@ -321,6 +327,20 @@
       "year": "1942",
       "venue": "Notre Dame Mathematical Lectures No. 2",
       "note": "Influential lecture notes that reformulated Galois theory in modern algebraic terms, establishing the field extension / automorphism group framework used in this formalization"
+    },
+    {
+      "authors": "Lagrange, Joseph-Louis",
+      "title": "Réflexions sur la résolution algébrique des équations",
+      "year": "1770",
+      "venue": "Nouveaux Mémoires de l'Académie royale des Sciences et Belles-Lettres de Berlin",
+      "note": "The crucial precursor: Lagrange analyzed why classical formulas worked for degrees 2-4 by studying permutations of roots ('resolvents'), and discovered his method broke down for degree 5 — the resolvent of a quintic had degree 6, not lower"
+    },
+    {
+      "authors": "Jordan, Camille",
+      "title": "Traité des substitutions et des équations algébriques",
+      "year": "1870",
+      "venue": "Gauthier-Villars, Paris",
+      "note": "The first systematic treatise on group theory and its application to polynomial equations — made Galois's posthumous manuscripts accessible to a wider audience and established the modern framework for studying permutation groups and solvability"
     }
   ],
   "leanFile": {
