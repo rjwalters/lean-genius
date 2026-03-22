@@ -32,11 +32,11 @@
     "problemStatement": "Gödel's First Incompleteness Theorem: If $F$ is a consistent formal system capable of expressing basic arithmetic, then there exists a sentence $G$ such that:\n\n1. $G$ is true (in the standard model of arithmetic)\n2. $G$ is not provable in $F$\n3. $\\neg G$ is not provable in $F$ (assuming $\\omega$-consistency)\n\nIn other words: $F$ is incomplete—there are truths it cannot reach.",
     "proofStrategy": "The proof proceeds through a remarkable self-referential construction:\n\n1. Gödel Numbering: Encode every formula as a natural number, allowing the system to \"talk about\" its own formulas\n2. Representability: Show that the provability relation can be expressed within the system via a formula $\\text{Prov}(x)$\n3. Diagonal Lemma: Construct a sentence $G$ that says \"$G$ is not provable\"—formal self-reference\n4. The Contradiction: If $G$ were provable, the system would prove both $\\text{Prov}(\\ulcorner G \\urcorner)$ and $\\neg\\text{Prov}(\\ulcorner G \\urcorner)$, violating consistency\n5. Conclusion: $G$ must be true but unprovable",
     "keyInsights": [
-      "Gödel's key innovation was arithmetizing metamathematics—proofs become numbers, derivations become calculations",
-      "The Diagonal Lemma transforms the ancient Liar's Paradox ('This sentence is false') into rigorous mathematics by replacing 'false' with 'unprovable'",
-      "Any formal system powerful enough to express arithmetic can encode statements about its own provability, enabling self-reference",
-      "The theorem applies to any consistent, sufficiently strong system—not just Peano Arithmetic but ZFC set theory and beyond",
-      "This proof foreshadows the Halting Problem: the same diagonalization technique shows computers have inherent limitations"
+      "**Arithmetization of Metamathematics:** Gödel numbering assigns each formula $\\varphi$ a code $\\ulcorner \\varphi \\urcorner \\in \\mathbb{N}$. Proofs, derivations, and provability become arithmetic predicates — the system can reason about itself via ordinary number theory.",
+      "**The Diagonal Lemma:** Constructs $G$ satisfying $G \\leftrightarrow \\neg\\text{Prov}(\\ulcorner G \\urcorner)$ — '$G$ says: I am not provable.' This is the Liar Paradox made rigorous: replacing 'false' with 'unprovable' avoids contradiction while creating undecidability.",
+      "**Self-Reference Requires Strength:** The system must be 'sufficiently strong' (represent all computable functions) to encode $\\text{Prov}(x)$. Robinson arithmetic $Q$ suffices — even weak systems can talk about their own provability.",
+      "**Universal Scope:** The theorem applies to ANY consistent, recursively axiomatizable extension of $Q$: Peano Arithmetic, ZFC, ZFC + large cardinals — no matter how many axioms you add, new unprovable truths emerge. Incompleteness is inescapable.",
+      "**Diagonalization Family:** The same technique underlies Cantor's uncountability ($|\\mathbb{R}| > |\\mathbb{N}|$), Turing's halting problem, and Tarski's undefinability of truth. All use self-reference + negation to establish impossibility."
     ]
   },
   "sections": [
