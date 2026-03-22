@@ -189,6 +189,26 @@
       "targetId": "binomial-theorem-oq-04",
       "relationship": "parent",
       "description": "Sub-entry on advanced binomial coefficient properties."
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "foundational",
+      "description": "The binomial coefficient $\\binom{n}{k} = \\frac{n!}{k!(n-k)!}$ is precisely the combinations formula. The binomial theorem gives the algebraic identity that these coefficients satisfy."
+    },
+    {
+      "targetId": "arithmetic-series",
+      "relationship": "related",
+      "description": "The arithmetic series formula $\\sum_{k=0}^n k = \\binom{n+1}{2}$ expresses the sum of the first $n$ natural numbers as a binomial coefficient. More generally, $\\sum \\binom{k}{m}$ yields $\\binom{n+1}{m+1}$ (the hockey stick identity)."
+    },
+    {
+      "targetId": "inclusion-exclusion",
+      "relationship": "related",
+      "description": "The alternating sum identity $\\sum (-1)^k \\binom{n}{k} = 0$ for $n \\geq 1$, proved here as a corollary of the binomial theorem, is the simplest instance of inclusion-exclusion. Both use the same signed summation machinery."
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "extends",
+      "description": "The binomial distribution $P(X = k) = \\binom{n}{k} p^k (1-p)^{n-k}$ arises directly from the binomial theorem. The Central Limit Theorem shows this distribution converges to a Gaussian as $n \\to \\infty$."
     }
   ],
   "relatedProofs": [
@@ -196,7 +216,10 @@
     "combinations-formula",
     "pascals-hexagon",
     "stirling-formula",
-    "binomial-theorem-oq-01"
+    "binomial-theorem-oq-01",
+    "arithmetic-series",
+    "inclusion-exclusion",
+    "central-limit-theorem"
   ],
   "references": [
     {
@@ -212,6 +235,13 @@
       "year": "1669",
       "venue": "London (circulated 1669, published 1711)",
       "note": "Extended the binomial theorem to non-integer exponents, a key tool in the development of calculus and power series"
+    },
+    {
+      "authors": "Rashed, Roshdi",
+      "title": "The Development of Arabic Mathematics: Between Arithmetic and Algebra",
+      "year": "1994",
+      "venue": "Kluwer Academic Publishers",
+      "note": "Documents al-Karaji's (c. 1000) and al-Samawal's (c. 1150) work on the binomial theorem and Pascal's triangle, predating both Yang Hui (1261) and Pascal (1654) by centuries"
     }
   ],
   "conclusion": {
