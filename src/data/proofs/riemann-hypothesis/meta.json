@@ -137,5 +137,67 @@
       "Are there connections to random matrix theory that could prove RH?",
       "Can we prove RH for specific L-functions (like Dirichlet L-functions)?"
     ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "extends",
+      "description": "RH quantifies the distribution of primes beyond mere infinitude — it gives the optimal error term π(x) = Li(x) + O(√x log x), the sharpest form of the Prime Number Theorem"
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "foundational",
+      "description": "The Basel identity ζ(2) = π²/6 is the first non-trivial value of the Riemann zeta function whose zeros are the subject of RH"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "extends",
+      "description": "RH implies the strongest form of PNT: π(x) = Li(x) + O(√x log x). PNT is equivalent to ζ(s) ≠ 0 on Re(s) = 1, while RH is the much stronger ζ(s) ≠ 0 for Re(s) > 1/2"
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "related",
+      "description": "Euler's identity connects e, i, π — the same constants that appear in the functional equation ξ(s) = ξ(1-s) of the completed zeta function"
+    }
+  ],
+  "relatedProofs": [
+    "infinitude-primes",
+    "basel-problem",
+    "prime-number-theorem",
+    "euler-identity",
+    "prime-reciprocal-divergence"
+  ],
+  "references": [
+    {
+      "authors": "Riemann, Bernhard",
+      "title": "Ueber die Anzahl der Primzahlen unter einer gegebenen Grösse",
+      "year": "1859",
+      "venue": "Monatsberichte der Berliner Akademie",
+      "note": "The 8-page paper where Riemann introduced the zeta function, its analytic continuation, and conjectured that all non-trivial zeros have real part 1/2"
+    },
+    {
+      "authors": "Conrey, J. Brian",
+      "title": "More than two fifths of the zeros of the Riemann zeta function are on the critical line",
+      "year": "2003",
+      "venue": "Journal für die reine und angewandte Mathematik",
+      "note": "Current best result: at least 2/5 of non-trivial zeros lie on Re(s) = 1/2"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.LSeries.RiemannZeta",
+      "Mathlib.NumberTheory.LSeries.Basic",
+      "Mathlib.NumberTheory.LSeries.Nonvanishing",
+      "Mathlib.NumberTheory.LSeries.Dirichlet",
+      "Mathlib.NumberTheory.LSeries.DirichletContinuation",
+      "Mathlib.NumberTheory.ArithmeticFunction",
+      "Mathlib.NumberTheory.PrimeCounting"
+    ],
+    "opens": [],
+    "namespace": "RiemannHypothesis",
+    "lineCount": 6594,
+    "axiomCount": 32,
+    "theoremCount": 358,
+    "definitionCount": 38
   }
 }
