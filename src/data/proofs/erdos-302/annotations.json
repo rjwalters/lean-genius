@@ -6,7 +6,7 @@
     "range": { "startLine": 1, "endLine": 24 },
     "title": "Problem Introduction",
     "content": "**Erdős Problem #302: Unit Fraction Sum-Free Sets**\n\nFind the largest A ⊆ {1,...,N} with no solution to 1/a = 1/b + 1/c.\n\n**Original Question:** Is f(N) = (1/2+o(1))N?\n\n**Answer:** NO - Cambie showed f(N) ≥ (5/8+o(1))N.\n\n**Current Bounds:**\n- Lower: f(N) ≥ (5/8+o(1))N (Cambie)\n- Upper: f(N) ≤ (9/10+o(1))N (van Doorn)\n\nStatus: OPEN - exact density unknown.",
-    "mathContext": "This is a density problem: how dense can a set be while avoiding a specific equation?",
+    "mathContext": "A density problem in the spirit of Szemerédi and Roth: determine the maximum density $\\lim f(N)/N$ of a subset of $\\{1,\\ldots,N\\}$ avoiding the equation $\\frac{1}{a} = \\frac{1}{b} + \\frac{1}{c}$. Unlike additive equations, this multiplicative structure creates local rather than global constraints.",
     "significance": "key",
     "relatedConcepts": ["Unit fractions", "Sum-free sets", "Density problems"],
     "prerequisites": ["unit-fractions", "extremal-combinatorics", "density-problems", "open-problem"]
@@ -18,7 +18,7 @@
     "range": { "startLine": 39, "endLine": 41 },
     "title": "Unit Fraction Sum",
     "content": "**UnitFractionSum a b c:**\n\nThe equation 1/a = 1/b + 1/c with a, b, c > 0.\n\n**Equivalent Form:** bc = a(b + c)\n\nThis is the forbidden pattern we want to avoid in our set A.",
-    "mathContext": "Unit fractions (1/n) are fundamental in Egyptian mathematics and number theory.",
+    "mathContext": "The equation $\\frac{1}{a} = \\frac{1}{b} + \\frac{1}{c}$ with $a, b, c > 0$ defines a Diophantine surface in $\\mathbb{N}^3$. Clearing denominators yields $bc = a(b+c)$, a degree-2 polynomial constraint. The positivity conditions ensure all terms are well-defined rational numbers.",
     "significance": "key",
     "relatedConcepts": ["Egyptian fractions", "Diophantine equations", "Unit fractions"],
     "prerequisites": ["egyptian-fractions", "diophantine-equations", "unit-fractions"]
@@ -30,7 +30,7 @@
     "range": { "startLine": 43, "endLine": 46 },
     "title": "Equivalent Form",
     "content": "**unit_fraction_equiv:**\n\n1/a = 1/b + 1/c is equivalent to bc = a(b + c).\n\n**Proof idea:** Clear denominators: bc/(abc) = ac/(abc) + ab/(abc), giving bc = ac + ab = a(b+c).\n\nThis algebraic form is often easier to work with.",
-    "mathContext": "Converting between fraction and polynomial form reveals structural properties.",
+    "mathContext": "Clearing denominators: $\\frac{1}{a} = \\frac{1}{b} + \\frac{1}{c} \\iff \\frac{bc}{abc} = \\frac{ac + ab}{abc} \\iff bc = a(b+c)$. This integer polynomial form is essential for parity arguments (odd integers construction) and divisibility analysis.",
     "significance": "key",
     "relatedConcepts": ["Clearing denominators", "Polynomial equations"],
     "prerequisites": ["algebraic-manipulation", "clearing-denominators", "equivalence"]
@@ -42,7 +42,7 @@
     "range": { "startLine": 48, "endLine": 52 },
     "title": "Unit-Fraction-Sum-Free Sets",
     "content": "**IsUnitFractionSumFree A:**\n\nA set A is unit-fraction-sum-free if no three distinct elements a, b, c ∈ A satisfy 1/a = 1/b + 1/c.\n\n**Key:** Elements must be DISTINCT - we don't count solutions like 1/2 = 1/4 + 1/4 where b = c.",
-    "mathContext": "This is analogous to classical sum-free sets that avoid a = b + c.",
+    "mathContext": "Analogous to classical sum-free sets $A$ with no $a + b = c$, but for the multiplicative equation $\\frac{1}{a} = \\frac{1}{b} + \\frac{1}{c}$. The distinctness requirement $a \\neq b \\neq c \\neq a$ excludes trivial solutions like $\\frac{1}{4} = \\frac{1}{8} + \\frac{1}{8}$.",
     "significance": "key",
     "relatedConcepts": ["Sum-free sets", "Forbidden configurations", "Extremal combinatorics"],
     "prerequisites": ["sum-free-sets", "forbidden-configurations", "extremal-combinatorics"]
@@ -54,7 +54,7 @@
     "range": { "startLine": 58, "endLine": 61 },
     "title": "The Function f(N)",
     "content": "**f(N):**\n\nThe maximum size of a unit-fraction-sum-free subset of {1,...,N}.\n\n**Formula:** max{|A| : A ⊆ {1,...,N} is sum-free}\n\nThis is the central quantity we want to estimate.",
-    "mathContext": "Extremal functions like f(N) measure the maximum size of sets with forbidden patterns.",
+    "mathContext": "The extremal function $f(N) = \\max\\{|A| : A \\subseteq \\{1,\\ldots,N\\},\\; A \\text{ is unit-fraction-sum-free}\\}$ is computed as $\\sup$ over the powerset of $\\{1,\\ldots,N\\}$, filtering for the sum-free property. The key question is the asymptotic ratio $f(N)/N$.",
     "significance": "key",
     "relatedConcepts": ["Extremal functions", "Maximum density", "Forbidden substructures"],
     "prerequisites": ["extremal-functions", "maximum-density", "forbidden-substructures"]
@@ -66,7 +66,7 @@
     "range": { "startLine": 71, "endLine": 79 },
     "title": "Odd Integers Construction",
     "content": "**oddIntegers N:**\n\nThe set of odd integers in [1, N]: {1, 3, 5, 7, ...}\n\n**Size:** About N/2 elements.\n\n**Why it works:** If a, b, c are odd, then bc is odd but a(b+c) is even (sum of two odds). So bc ≠ a(b+c), meaning no solutions exist!",
-    "mathContext": "Parity arguments often give clean constructions in extremal combinatorics.",
+    "mathContext": "If $a, b, c$ are all odd, then $bc$ is odd but $a(b+c)$ is even (since $b+c$ is even). Thus $bc \\neq a(b+c)$, and no solution exists among odd integers. The set $\\{1, 3, 5, \\ldots\\} \\cap [1, N]$ has $\\lfloor N/2 \\rfloor$ elements.",
     "significance": "key",
     "relatedConcepts": ["Parity arguments", "Modular arithmetic", "Basic constructions"],
     "prerequisites": ["parity-arguments", "modular-arithmetic", "lower-bounds"]
@@ -78,7 +78,7 @@
     "range": { "startLine": 81, "endLine": 89 },
     "title": "Upper Half Construction",
     "content": "**upperHalf N:**\n\nThe integers in [N/2, N].\n\n**Size:** About N/2 elements.\n\n**Why it works:** If a, b, c ≥ N/2, then:\n- 1/a ≤ 2/N\n- 1/b + 1/c ≥ 4/N\n\nBut 2/N < 4/N, so 1/a ≠ 1/b + 1/c!",
-    "mathContext": "Size constraints on elements can force equations to be unsolvable.",
+    "mathContext": "For $a, b, c \\in [N/2, N]$ with $a < b < c$: $\\frac{1}{a} \\leq \\frac{2}{N}$ but $\\frac{1}{b} + \\frac{1}{c} \\geq \\frac{2}{N} + \\frac{1}{N}$ since $b, c \\leq N$ and $b \\neq c$. The arithmetic forces $\\frac{1}{b} + \\frac{1}{c} > \\frac{1}{a}$ for $N \\geq 4$.",
     "significance": "key",
     "relatedConcepts": ["Size arguments", "Interval constructions", "Lower bounds"],
     "prerequisites": ["interval-constructions", "size-arguments", "lower-bounds"]
@@ -90,7 +90,7 @@
     "range": { "startLine": 95, "endLine": 101 },
     "title": "Cambie's Construction",
     "content": "**cambie_set N:**\n\nOdd integers ≤ N/4 PLUS all integers in [N/2, N].\n\n**Size:** About N/8 + N/2 = 5N/8 elements.\n\n**Why it works:** The odd integers in [1, N/4] don't interact with [N/2, N] because if a ≤ N/4 and b, c ≥ N/2, size constraints prevent 1/a = 1/b + 1/c.",
-    "mathContext": "Cambie's clever combination of the two basic constructions improves the lower bound.",
+    "mathContext": "Cambie's key insight: odd integers in $[1, N/4]$ and all integers in $[N/2, N]$ don't interact. If $a \\leq N/4$ (odd) and $b, c \\geq N/2$, then $\\frac{1}{a} \\geq \\frac{4}{N}$ but $\\frac{1}{b} + \\frac{1}{c} \\leq \\frac{4}{N}$, with equality impossible for distinct elements. This gives $|A| \\approx \\frac{N}{8} + \\frac{N}{2} = \\frac{5N}{8}$.",
     "significance": "key",
     "relatedConcepts": ["Combined constructions", "Non-overlapping ranges", "5/8 bound"],
     "prerequisites": ["combined-constructions", "lower-bounds", "density-bounds", "cambie"]
@@ -102,7 +102,7 @@
     "range": { "startLine": 115, "endLine": 117 },
     "title": "van Doorn's Upper Bound",
     "content": "**van_doorn_upper_bound:**\n\nf(N) ≤ (9/10+o(1))N.\n\nThis shows we cannot have more than 90% of {1,...,N} in any sum-free set.\n\nThe proof uses structural arguments about which solutions must exist in large sets.",
-    "mathContext": "Upper bounds are typically harder than lower bounds - we must show NO construction works.",
+    "mathContext": "Van Doorn's bound $f(N) \\leq (\\frac{9}{10}+o(1))N$ means any set $A \\subseteq \\{1,\\ldots,N\\}$ with $|A| > 0.9N$ must contain a solution to $\\frac{1}{a} = \\frac{1}{b} + \\frac{1}{c}$. The proof analyzes which solutions are forced in dense subsets using structural counting.",
     "significance": "key",
     "relatedConcepts": ["Upper bounds", "Density limitations", "Structural arguments"],
     "prerequisites": ["upper-bounds", "density-limitations", "structural-arguments"]
@@ -142,6 +142,30 @@
     "significance": "key",
     "relatedConcepts": ["Ramsey theory", "2-colorings", "Monochromatic structures"],
     "prerequisites": ["ramsey-theory", "graph-coloring", "monochromatic-structures"]
+  },
+  {
+    "id": "erdos-302-algebraic-form",
+    "proofId": "erdos-302",
+    "type": "theorem",
+    "range": { "startLine": 187, "endLine": 190 },
+    "title": "Algebraic Form of the Equation",
+    "content": "**algebraic_form:**\n\nThe unit fraction equation $\\frac{1}{a} = \\frac{1}{b} + \\frac{1}{c}$ is equivalent to the polynomial identity $bc = ab + ac$.\n\n**Proof:** Multiply both sides by $abc$: $bc = ac + ab$, which factors as $bc = a(b+c)$.\n\nThis reformulation replaces rational arithmetic with integer polynomial algebra, making it amenable to divisibility arguments and modular arithmetic.",
+    "mathContext": "The transformation $\\frac{1}{a} = \\frac{1}{b} + \\frac{1}{c} \\iff bc = a(b+c)$ converts a rational equation into an integer polynomial, enabling arguments via parity, divisibility, and congruences.",
+    "significance": "supporting",
+    "relatedConcepts": ["Clearing denominators", "Diophantine equations", "Polynomial identity"],
+    "prerequisites": ["rational-arithmetic", "algebraic-manipulation", "clearing-denominators"]
+  },
+  {
+    "id": "erdos-302-solution-constraints",
+    "proofId": "erdos-302",
+    "type": "theorem",
+    "range": { "startLine": 192, "endLine": 200 },
+    "title": "Solution Constraints: c ≤ 2a",
+    "content": "**solution_constraints:**\n\nIf $a < b < c$ and $\\frac{1}{a} = \\frac{1}{b} + \\frac{1}{c}$, then $c \\leq 2a$.\n\n**Proof sketch:** From $\\frac{1}{c} = \\frac{1}{a} - \\frac{1}{b}$ and $a < b$, we get $\\frac{1}{c} > 0$. Since $b \\geq a + 1$, we have $\\frac{1}{c} = \\frac{1}{a} - \\frac{1}{b} \\leq \\frac{1}{a} - \\frac{1}{a+1} = \\frac{1}{a(a+1)} < \\frac{1}{a^2}$. More precisely, $\\frac{1}{c} \\geq \\frac{1}{2a}$, giving $c \\leq 2a$.\n\nThis bounded-ratio constraint means each element $a$ only interacts with elements in the interval $(a, 2a]$.",
+    "mathContext": "The constraint $c \\leq 2a$ for ordered solutions $(a < b < c)$ means the forbidden triples have bounded ratio: all three elements lie in a window of factor 2. This is what makes the problem tractable compared to equations with unbounded ratios.",
+    "significance": "key",
+    "relatedConcepts": ["Bounded ratio", "Local constraints", "Interval analysis"],
+    "prerequisites": ["ordered-solutions", "inequality-analysis", "bounded-interactions"]
   },
   {
     "id": "erdos-302-pattern",
