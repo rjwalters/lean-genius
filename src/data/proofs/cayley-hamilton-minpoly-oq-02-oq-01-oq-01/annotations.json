@@ -1,0 +1,77 @@
+[
+  {
+    "id": "ann-inner-aut-def",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 93,
+      "endLine": 95
+    },
+    "type": "definition",
+    "title": "Inner Automorphism Predicate",
+    "content": "IsInnerAut φ holds when φ equals conjugation by some invertible matrix P: φ(A) = P⁻¹AP for all A. This is an existential predicate — it asserts the existence of a conjugating unit without specifying it uniquely (since P and cP give the same automorphism for any nonzero scalar c).",
+    "mathContext": "$\\varphi \\text{ is inner} \\iff \\exists P \\in \\text{GL}_n(K), \\; \\varphi(A) = P^{-1}AP \\; \\forall A$",
+    "significance": "key",
+    "relatedConcepts": ["inner automorphism", "conjugation", "invertible matrix", "PGL"],
+    "prerequisites": ["algebra automorphism", "units group"]
+  },
+  {
+    "id": "ann-inner-group",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 97,
+      "endLine": 135
+    },
+    "type": "theorem",
+    "title": "Inner Automorphisms Form a Group",
+    "content": "Three theorems establish the group structure of inner automorphisms: (1) isInnerAut_id shows the identity is inner (conjugation by 1), (2) isInnerAut_symm shows if φ is inner via P then φ⁻¹ is inner via P⁻¹, and (3) isInnerAut_trans shows if φ = conj(P) and ψ = conj(Q) then ψ ∘ φ = conj(PQ). The composition formula uses (PQ)⁻¹ = Q⁻¹P⁻¹ (reversal of order under inversion).",
+    "mathContext": "$\\text{Inn}(M_n(K))$ is a subgroup of $\\text{Aut}_K(M_n(K))$",
+    "significance": "key",
+    "relatedConcepts": ["group structure", "subgroup", "composition of automorphisms"],
+    "prerequisites": ["AlgEquiv.refl", "AlgEquiv.symm", "AlgEquiv.trans", "mul_inv_rev"]
+  },
+  {
+    "id": "ann-skolem-noether-axiom",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 157,
+      "endLine": 166
+    },
+    "type": "axiom",
+    "title": "Skolem-Noether Theorem (Axiomatized)",
+    "content": "The main theorem is stated as an axiom: every K-algebra automorphism of Mₙ(K) is inner. The proof requires Artin-Wedderburn theory — specifically, that Kⁿ is the unique simple Mₙ(K)-module up to isomorphism. Given an automorphism φ, one constructs a 'twisted' module where M acts as φ(M); by uniqueness, the original and twisted modules are isomorphic via some P ∈ GL_n(K), giving φ(A) = P⁻¹AP.",
+    "mathContext": "$\\forall \\varphi \\in \\text{Aut}_K(M_n(K)), \\; \\exists P \\in \\text{GL}_n(K), \\; \\varphi(A) = P^{-1}AP$",
+    "significance": "key",
+    "relatedConcepts": ["central simple algebra", "Artin-Wedderburn", "simple modules", "Skolem-Noether"],
+    "prerequisites": ["simple module theory", "Artin-Wedderburn theorem"]
+  },
+  {
+    "id": "ann-surjection",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 195,
+      "endLine": 199
+    },
+    "type": "theorem",
+    "title": "Units Surject onto Automorphisms",
+    "content": "The theorem surjection_units_to_aut extracts from Skolem-Noether the equality φ = conjAlgEquiv P as an AlgEquiv equation (not just pointwise). This uses AlgEquiv.ext to promote the pointwise equality from skolemNoether to a full AlgEquiv identity. Combined with the kernel characterization (center = scalars), this yields the isomorphism Aut_K(Mₙ(K)) ≅ PGLₙ(K) = GLₙ(K)/K*.",
+    "mathContext": "The map $P \\mapsto \\text{conjAlgEquiv}(P)$ is surjective onto $\\text{Aut}_K(M_n(K))$",
+    "significance": "key",
+    "relatedConcepts": ["surjection", "PGL", "projective general linear group", "quotient group"],
+    "prerequisites": ["skolemNoether axiom", "AlgEquiv.ext"]
+  },
+  {
+    "id": "ann-trivial-case",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 218,
+      "endLine": 237
+    },
+    "type": "theorem",
+    "title": "The n=1 Case: Proved Without Axioms",
+    "content": "For 1×1 matrices, every K-algebra automorphism is the identity. The proof shows that every A ∈ M₁(K) is a scalar matrix (A = A₀₀ · I), and automorphisms fix scalars by the commutes' property of AlgEquiv. Since M₁(K) ≅ K and K has no nontrivial K-algebra automorphisms, this is the trivial case of Skolem-Noether. The inner automorphism is then conjugation by 1 (the identity).",
+    "mathContext": "Every $K$-algebra automorphism of $M_1(K) \\cong K$ is the identity",
+    "significance": "supporting",
+    "relatedConcepts": ["1×1 matrices", "scalar matrices", "trivial automorphism"],
+    "prerequisites": ["Fin 1", "fin_cases", "AlgEquiv.commutes"]
+  }
+]
