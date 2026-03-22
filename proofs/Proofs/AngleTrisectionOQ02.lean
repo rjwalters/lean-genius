@@ -36,6 +36,8 @@
 -/
 
 import Mathlib
+import Proofs.InverseGalois
+import Proofs.InverseGaloisD4
 
 open Polynomial IntermediateField FiniteDimensional
 
@@ -101,9 +103,11 @@ private lemma not_pow_two_of_eq_six {n : ℕ} (h : 6 = 2 ^ n) : False := by
   have h3dvd : (3 : ℕ) ∣ 2 ^ n := h ▸ (by norm_num)
   exact absurd (hcop ▸ Nat.dvd_gcd (dvd_refl 3) h3dvd) (by norm_num)
 
-/-- The Galois group of x³ - 2 over ℚ has order 6 (≅ S₃). -/
-axiom x_cube_sub_2_gal_order :
-    Fintype.card (X ^ 3 - C 2 : ℚ[X]).Gal = 6
+/-- The Galois group of x³ - 2 over ℚ has order 6 (≅ S₃).
+    Proved in InverseGalois.lean. -/
+theorem x_cube_sub_2_gal_order :
+    Fintype.card (X ^ 3 - C 2 : ℚ[X]).Gal = 6 :=
+  InverseGaloisProblem.x_cube_sub_2_gal_card
 
 /-- S₃ (order 6) is NOT a 2-group. -/
 theorem x_cube_sub_2_gal_not_2group : ¬ IsPGroup 2 (X ^ 3 - C 2 : ℚ[X]).Gal := by
@@ -136,9 +140,11 @@ theorem x_sq_sub_2_gal_is_2group : IsPGroup 2 (X ^ 2 - C 2 : ℚ[X]).Gal :=
   IsPGroup.of_card (show Nat.card (X ^ 2 - C 2 : ℚ[X]).Gal = 2 ^ 1 from by
     simp [Nat.card_eq_fintype_card, x_sq_sub_2_gal_order])
 
-/-- The Galois group of x⁴ - 2 over ℚ has order 8 (≅ D₄, the dihedral group). -/
-axiom x_4th_sub_2_gal_order :
-    Fintype.card (X ^ 4 - C 2 : ℚ[X]).Gal = 8
+/-- The Galois group of x⁴ - 2 over ℚ has order 8 (≅ D₄, the dihedral group).
+    Proved in InverseGaloisD4.lean. -/
+theorem x_4th_sub_2_gal_order :
+    Fintype.card (X ^ 4 - C 2 : ℚ[X]).Gal = 8 :=
+  InverseGaloisExtensions.x4_sub_2_gal_card
 
 /-- Gal(x⁴-2/ℚ) is a 2-group (order 8 = 2³). -/
 theorem x_4th_sub_2_gal_is_2group : IsPGroup 2 (X ^ 4 - C 2 : ℚ[X]).Gal :=
@@ -181,7 +187,7 @@ theorem not_constructible_of_not_2group (α : ℝ) (hα : IsIntegral ℚ α)
 theorem not_constructible_of_degree (α : ℝ) (hα : IsIntegral ℚ α)
     (h : ∀ n : ℕ, ¬ (minpoly ℚ α).natDegree ∣ 2 ^ n) :
     ¬ IsConstructibleFromQ α :=
-  fun hc => h _ (constructible_implies_degree_dvd_pow2 α hα hc)
+  fun hc => let ⟨n, hn⟩ := constructible_implies_degree_dvd_pow2 α hα hc; h n hn
 
 /-
 ## Summary
@@ -202,13 +208,15 @@ An algebraic number α is constructible from ℚ iff Gal(minpoly(ℚ,α)) is a 2
 10. `not_constructible_of_not_2group` - NOT 2-group Galois → not constructible
 11. `not_constructible_of_degree` - degree not ∣ any 2^n → not constructible
 
-### Axiomatized (deep results):
+### Proved (imported from other files):
+12. `x_cube_sub_2_gal_order` - |Gal(x³-2/ℚ)| = 6 (from InverseGalois.lean)
+13. `x_4th_sub_2_gal_order` - |Gal(x⁴-2/ℚ)| = 8 (from InverseGaloisD4.lean)
+
+### Axiomatized (deep results, 4 remaining):
 1. `wantzel_galois_characterization` - main constructibility ↔ 2-group theorem
-2. `x_cube_sub_2_gal_order` - |Gal(x³-2/ℚ)| = 6
-3. `cos20_gal_order` - |Gal(8x³-6x-1/ℚ)| = 6
-4. `x_sq_sub_2_gal_order` - |Gal(x²-2/ℚ)| = 2
-5. `x_4th_sub_2_gal_order` - |Gal(x⁴-2/ℚ)| = 8
-6. `galois_2group_implies_degree_pow2` - 2-group Galois implies degree divides 2^n
+2. `cos20_gal_order` - |Gal(8x³-6x-1/ℚ)| = 6
+3. `x_sq_sub_2_gal_order` - |Gal(x²-2/ℚ)| = 2
+4. `galois_2group_implies_degree_pow2` - 2-group Galois implies degree divides 2^n
 -/
 
 #check isPGroup_iff_card_pow_two
