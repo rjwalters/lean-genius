@@ -253,6 +253,16 @@
       "targetId": "fermats-last-theorem",
       "relationship": "extends",
       "description": "Wiles's proof of FLT (1995) is the supreme application of Galois theory: it shows every semistable elliptic curve over Q is modular by analyzing 2-dimensional Galois representations ρ: Gal(Q̄/Q) → GL₂(Zₚ). Where Abel-Ruffini uses the non-solvability of S₅ to block radical solutions, Wiles uses the modularity of Galois representations to force Diophantine constraints — both exploit the deep connection between symmetry groups and algebraic equations that Galois discovered"
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "related",
+      "description": "The Cayley-Hamilton theorem (every matrix satisfies its characteristic polynomial) and Abel-Ruffini both concern polynomials and their algebraic structure. The minimal polynomial, central to Galois theory and the galois_bridge theorem, is closely related to the characteristic polynomial via the Cayley-Hamilton framework"
+    },
+    {
+      "targetId": "liouville-theorem",
+      "relationship": "related",
+      "description": "Liouville's construction of transcendental numbers (1844) extends the impossibility hierarchy: Abel-Ruffini shows certain roots aren't expressible by radicals, while Liouville shows certain numbers aren't even algebraic. Liouville's approximation theorem provides the first explicit examples of numbers beyond the reach of all polynomial equations"
     }
   ],
   "relatedProofs": [
@@ -276,7 +286,9 @@
     "halting-problem",
     "cantor-diagonalization",
     "quadratic-reciprocity",
-    "fermats-last-theorem"
+    "fermats-last-theorem",
+    "cayley-hamilton",
+    "liouville-theorem"
   ],
   "references": [
     {
