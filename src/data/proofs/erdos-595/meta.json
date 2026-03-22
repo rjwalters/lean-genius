@@ -81,49 +81,56 @@
       "title": "Basic Definitions",
       "startLine": 43,
       "endLine": 74,
-      "summary": "hasCliqueInfinite, isKFreeInfinite, isK4Free, isTriangleFree"
+      "summary": "hasCliqueInfinite, isKFreeInfinite, isK4Free, isTriangleFree",
+      "mathContext": "Infinite graph cliques: $\\text{hasCliqueInfinite}(G, k)$ means $G$ contains $K_k$ as a subgraph. $\\text{isKFreeInfinite}(G, k) \\iff \\neg\\text{hasCliqueInfinite}(G, k)$."
     },
     {
       "id": "coverings",
       "title": "Graph Coverings and Unions",
       "startLine": 76,
       "endLine": 101,
-      "summary": "IsSubgraph, isCountableUnionOf, hasCountableTriangleFreeCover"
+      "summary": "IsSubgraph, isCountableUnionOf, hasCountableTriangleFreeCover",
+      "mathContext": "$\\text{hasCountableTriangleFreeCover}(G)$: $\\exists$ countable family $\\{G_i\\}_{i \\in \\mathbb{N}}$ of triangle-free subgraphs with $G = \\bigcup_i G_i$."
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
       "startLine": 103,
       "endLine": 120,
-      "summary": "erdos595_conjecture: formal statement of the open problem"
+      "summary": "erdos595_conjecture: formal statement of the open problem",
+      "mathContext": "Conjecture: every $K_4$-free graph has a countable triangle-free cover. Formally: $\\text{isK4Free}(G) \\implies \\text{hasCountableTriangleFreeCover}(G)$."
     },
     {
       "id": "finite-case",
       "title": "Finite Analogues",
       "startLine": 122,
       "endLine": 154,
-      "summary": "hasFiniteTriangleFreeCover, folkman_finite_resistance, nesetril_rodl_finite_resistance"
+      "summary": "hasFiniteTriangleFreeCover, folkman_finite_resistance, nesetril_rodl_finite_resistance",
+      "mathContext": "Finite case: every $K_4$-free graph on finitely many vertices has a finite triangle-free cover (Folkman 1970, Nešetřil-Rödl). Proved via Ramsey-type partition."
     },
     {
       "id": "infinite-gap",
       "title": "The Infinite Case",
       "startLine": 156,
       "endLine": 177,
-      "summary": "Discussion of finite-to-countable gap, problem595_reformulated"
+      "summary": "Discussion of finite-to-countable gap, problem595_reformulated",
+      "mathContext": "The finite-to-countable gap: finite covers exist for finite graphs, but extending to countable covers of infinite $K_4$-free graphs is the open problem."
     },
     {
       "id": "related-results",
       "title": "Related Results",
       "startLine": 179,
       "endLine": 192,
-      "summary": "c4_free_countable_trees axiom: C₄-free graphs are countably coverable"
+      "summary": "c4_free_countable_trees axiom: C₄-free graphs are countably coverable",
+      "mathContext": "Related: $C_4$-free graphs (no 4-cycles) have countable covers by trees (axiomatized). Trees are triangle-free, so this is a stronger structural result for a different forbidden subgraph."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 194,
       "endLine": 229,
-      "summary": "finite_case_complete theorem, erdos_595_summary theorem"
+      "summary": "finite_case_complete theorem, erdos_595_summary theorem",
+      "mathContext": "Summary theorems: $\\text{finite_case_complete}$ packages the solved finite case. $\\text{erdos_595_summary}$ records that the infinite case remains open."
     }
   ],
   "conclusion": {
@@ -135,5 +142,21 @@
       "What set-theoretic methods might be applicable?",
       "What is the relationship to the general (G₁, G₂) question (Problem 596)?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "Ramsey theory underpins the finite case: K₄-free finite graphs have finite triangle-free covers via Ramsey-type partition arguments"
+    },
+    {
+      "targetId": "erdos-1155",
+      "relationship": "related",
+      "description": "Both concern triangle-related structural problems in graph theory; #1155 studies triangle removal while #595 asks about triangle-free decomposition"
+    }
+  ],
+  "relatedProofs": [
+    "ramseys-theorem",
+    "erdos-1155"
+  ]
 }

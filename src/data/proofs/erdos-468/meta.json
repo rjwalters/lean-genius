@@ -88,35 +88,40 @@
       "title": "Imports and Setup",
       "startLine": 17,
       "endLine": 21,
-      "summary": "Imports `Nat.Divisors`, `Finset.Card`, `Finset.Sort`, `Nat.Basic`, and `Tactic`."
+      "summary": "Imports `Nat.Divisors`, `Finset.Card`, `Finset.Sort`, `Nat.Basic`, and `Tactic`.",
+      "mathContext": "Imports Mathlib divisor enumeration (`Nat.divisors`) and finite set operations (`Finset.card`, `Finset.sort`) for computing partial sums of sorted divisor lists."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 23,
       "endLine": 42,
-      "summary": "Defines `properDivisorsSorted`, `partialDivisorSums` ($D_n$), `previousPartialSums` ($\\bigcup_{m<n} D_m$), and `newElements` ($D_n \\setminus \\bigcup_{m<n} D_m$)."
+      "summary": "Defines `properDivisorsSorted`, `partialDivisorSums` ($D_n$), `previousPartialSums` ($\\bigcup_{m<n} D_m$), and `newElements` ($D_n \\setminus \\bigcup_{m<n} D_m$).",
+      "mathContext": "$D_n = \\{d_1 + d_2 + \\cdots + d_k : 1 \\leq k \\leq \\tau(n)-1\\}$ where $1 < d_1 < d_2 < \\cdots$ are the proper divisors of $n$ in order. $f(N) = \\inf\\{n : N \\in D_n\\}$."
     },
     {
       "id": "question-1",
       "title": "Question 1: New Elements",
       "startLine": 44,
       "endLine": 55,
-      "summary": "Axiomatizes $D_n \\setminus \\bigcup_{m<n} D_m \\neq \\emptyset$ for $n \\geq 2$ and conjectures $|D_n| \\to \\infty$."
+      "summary": "Axiomatizes $D_n \\setminus \\bigcup_{m<n} D_m \\neq \\emptyset$ for $n \\geq 2$ and conjectures $|D_n| \\to \\infty$.",
+      "mathContext": "Question 1: $\\forall n \\geq 2, D_n \\setminus \\bigcup_{m<n} D_m \\neq \\emptyset$ (each $D_n$ has a new element). Axiomatized as an open conjecture."
     },
     {
       "id": "question-2",
       "title": "Question 2: First Appearance $f(N)$",
       "startLine": 57,
       "endLine": 73,
-      "summary": "Defines $f(N) = \\inf\\{n : N \\in D_n\\}$ via `sInf`. States strong conjecture $f(N) = o(N)$ and weak form (for density-1 set of $N$)."
+      "summary": "Defines $f(N) = \\inf\\{n : N \\in D_n\\}$ via `sInf`. States strong conjecture $f(N) = o(N)$ and weak form (for density-1 set of $N$).",
+      "mathContext": "Question 2: $f(N) = \\inf\\{n : N \\in D_n\\}$. Strong conjecture: $f(N) \\to \\infty$ as $N \\to \\infty$. Weak version: $f$ is unbounded."
     },
     {
       "id": "examples",
       "title": "Examples and Boundary Elements",
       "startLine": 75,
       "endLine": 95,
-      "summary": "$D_6 = \\{2, 5, 11\\}$, $D_{12} = \\{2, 5, 9, 15, 27\\}$. Boundary: $\\min(D_n) = p_1(n)$, $\\max(D_n) = \\sigma(n) - 1$."
+      "summary": "$D_6 = \\{2, 5, 11\\}$, $D_{12} = \\{2, 5, 9, 15, 27\\}$. Boundary: $\\min(D_n) = p_1(n)$, $\\max(D_n) = \\sigma(n) - 1$.",
+      "mathContext": "$D_6 = \\{2, 5, 11\\}$ from divisors $\\{2, 3, 6\\}$. $D_{12} = \\{2, 5, 9, 15, 27\\}$ from $\\{2, 3, 4, 6, 12\\}$. Boundary: $\\min(D_n) = p_1(n)$ (smallest prime factor)."
     }
   ],
   "conclusion": {
@@ -129,5 +134,21 @@
       "What is $\\max(D_n) - \\min(D_n) = \\sigma(n) - 1 - p_1(n)$, and how does the internal structure of $D_n$ relate to the factorization of $n$?",
       "Can the problem be generalized to other orderings of divisors, or to $k$-th smallest divisors?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-66",
+      "relationship": "related",
+      "description": "Both study representation functions of divisor-related sets; #66 concerns sums r_A(n) while #468 concerns partial sums of divisors"
+    },
+    {
+      "targetId": "erdos-444",
+      "relationship": "related",
+      "description": "Both formalize properties of the divisor function τ(n); #444 studies τ-iteration while #468 studies partial sums of ordered divisors"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-66",
+    "erdos-444"
+  ]
 }

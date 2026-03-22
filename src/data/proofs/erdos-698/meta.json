@@ -95,63 +95,72 @@
       "title": "Basic Definitions",
       "summary": "binom, binomGcd definitions",
       "startLine": 40,
-      "endLine": 55
+      "endLine": 55,
+      "mathContext": "Defines $\\binom{n}{k} = n!/(k!(n-k)!)$ via Mathlib's `Nat.choose` and $g(n,i,j) = \\gcd(\\binom{n}{i}, \\binom{n}{j})$ for the pairwise GCD study."
     },
     {
       "id": "erdos-szekeres",
       "title": "Erdős-Szekeres Observation",
       "summary": "isValidPair, erdos_szekeres_bound, exponential bound, gcd_always_gt_one",
       "startLine": 57,
-      "endLine": 96
+      "endLine": 96,
+      "mathContext": "Erdős-Szekeres: $\\forall 2 \\leq i < j \\leq n/2: g(n,i,j) > 1$. The GCD is never 1 for central binomial coefficients. Proved via shared prime divisors from Kummer's theorem."
     },
     {
       "id": "sharpness",
       "title": "Sharpness of Bound",
       "summary": "sharpness_example axiom",
       "startLine": 98,
-      "endLine": 110
+      "endLine": 110,
+      "mathContext": "Sharpness: $\\exists$ pairs with $g(n,i,j)$ as small as 2 (when $n = 2^k$, Kummer's theorem gives $\\gcd = 2$ for certain $i,j$)."
     },
     {
       "id": "main-question",
       "title": "The Main Question",
       "summary": "tendsToInfinity, erdos698Question",
       "startLine": 112,
-      "endLine": 132
+      "endLine": 132,
+      "mathContext": "$h(n) = \\min_{2 \\leq i < j \\leq n/2} \\gcd(\\binom{n}{i}, \\binom{n}{j})$. Question: does $h(n) \\to \\infty$?"
     },
     {
       "id": "bergman-theorem",
       "title": "Bergman's Theorem (2011)",
       "summary": "bergman_bound_exists, bergman_theorem, min_gcd_growth",
       "startLine": 134,
-      "endLine": 162
+      "endLine": 162,
+      "mathContext": "Bergman (2007): $h(n) \\to \\infty$. Specifically, $h(n) \\geq c \\cdot n^\\delta$ for some $\\delta > 0$. Resolves the problem affirmatively."
     },
     {
       "id": "resolution",
       "title": "Resolution of the Problem",
       "summary": "bergmanH, bergmanH_unbounded, erdos698_answer",
       "startLine": 164,
-      "endLine": 195
+      "endLine": 195,
+      "mathContext": "Resolution: the answer is YES. The Bergman function $H(n)$ gives explicit growth rate. $H(n) \\to \\infty$ implies $h(n) \\to \\infty$."
     },
     {
       "id": "implications",
       "title": "Implications and Generalizations",
       "summary": "divisibility_structure, pascal_primes, multinomial_generalization",
       "startLine": 197,
-      "endLine": 231
+      "endLine": 231,
+      "mathContext": "Implications: divisibility structure of Pascal's triangle, prime factors shared by central binomial coefficients, and multinomial generalizations $\\gcd(\\binom{n}{\\mathbf{k}})$."
     },
     {
       "id": "kummer-lucas",
       "title": "Kummer and Lucas Theorems",
       "summary": "kummer_theorem, lucas_theorem",
       "startLine": 233,
-      "endLine": 252
+      "endLine": 252,
+      "mathContext": "Kummer (1852): $v_p(\\binom{m+n}{m}) = $ number of carries in base-$p$ addition $m + n$. Lucas: $\\binom{n}{k} \\equiv \\prod \\binom{n_i}{k_i} \\pmod{p}$ where $n = \\sum n_i p^i$."
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_698_summary, erdos_698 main theorem",
       "startLine": 254,
-      "endLine": 287
+      "endLine": 287,
+      "mathContext": "Summary: Problem #698 is RESOLVED. $h(n) \\to \\infty$ (Bergman 2007). The min GCD of central binomial coefficient pairs grows without bound."
     }
   ],
   "conclusion": {
