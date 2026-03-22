@@ -126,9 +126,29 @@
       "mathContext": "The paradigm: from \"trust the computation\" (Appel-Haken) to \"trust the proof checker\" (Gonthier). Coq's kernel is small enough for human audit."
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "euler-polyhedral-formula",
+      "relationship": "essential-dependency",
+      "description": "Euler's formula V - E + F = 2 is the structural backbone of the four color proof: it forces every planar graph to contain a vertex of degree at most 5, enabling the inductive reducibility argument."
+    },
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "topological-connection",
+      "description": "Both theorems rely on topological properties of planar/spherical objects. Brouwer's fixed point theorem and the four color theorem both exploit the topology of the 2-sphere, where map coloring is equivalent to graph coloring on the sphere."
+    },
+    {
+      "targetId": "borsuk-ulam",
+      "relationship": "topological-connection",
+      "description": "The Borsuk-Ulam theorem constrains continuous maps from spheres, and like the four color theorem, reveals how topological structure imposes combinatorial constraints on planar and spherical configurations."
+    }
+  ],
   "relatedProofs": [
     "ramseys-theorem",
-    "erdos-807"
+    "erdos-807",
+    "euler-polyhedral-formula",
+    "brouwer-fixed-point",
+    "borsuk-ulam"
   ],
   "references": [
     {

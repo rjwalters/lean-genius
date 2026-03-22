@@ -118,6 +118,46 @@
       "summary": "A concise summary of the proof strategy: encoding, representability, self-reference, the truth of G, and the final conclusion."
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "halting-problem",
+      "relationship": "foundational-parallel",
+      "description": "Gödel's diagonalization directly inspired Turing's proof that the halting problem is undecidable. Both use self-referential constructions to establish fundamental limits of formal systems."
+    },
+    {
+      "targetId": "cantors-theorem",
+      "relationship": "technique-ancestor",
+      "description": "Cantor's theorem that no set surjects onto its power set employs the same diagonal argument that Gödel adapted to construct self-referential sentences in arithmetic."
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "shared-technique",
+      "description": "Cantor's diagonalization of the reals and Gödel's diagonal lemma share the core technique of constructing an object that differs from every element in an enumeration."
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "impossibility-result",
+      "description": "Both are landmark impossibility theorems: Abel-Ruffini shows no general algebraic formula exists for degree 5+ polynomials, while Gödel shows no consistent formal system can prove all arithmetic truths."
+    },
+    {
+      "targetId": "hilbert-10",
+      "relationship": "direct-consequence",
+      "description": "Hilbert's Tenth Problem (undecidability of Diophantine equations) was resolved using ideas flowing from Gödel's incompleteness, linking undecidability in logic to undecidability in number theory."
+    },
+    {
+      "targetId": "continuum-hypothesis",
+      "relationship": "independence-phenomenon",
+      "description": "The continuum hypothesis is independent of ZFC (Gödel 1940, Cohen 1963), exemplifying the incompleteness phenomenon Gödel discovered: a natural mathematical statement that standard axioms can neither prove nor refute."
+    }
+  ],
+  "relatedProofs": [
+    "halting-problem",
+    "cantors-theorem",
+    "cantor-diagonalization",
+    "hilbert-10",
+    "continuum-hypothesis",
+    "abel-ruffini"
+  ],
   "conclusion": {
     "summary": "Gödel's First Incompleteness Theorem demonstrates that mathematical truth forever exceeds formal provability. Any consistent system powerful enough to express arithmetic contains true statements it cannot prove. This isn't a flaw in specific systems—it's a fundamental feature of formal reasoning itself.",
     "implications": "The incompleteness theorems transformed our understanding of foundations. Hilbert's vision of a complete, mechanizable mathematics was shown to be impossible. In computer science, the same techniques yield the undecidability of the Halting Problem. Philosophically, the theorems raise profound questions: Does human mathematical insight transcend algorithmic computation? Is there a limit to what we can know through formal methods? Gödel's work suggests that creativity and intuition in mathematics cannot be fully captured by any fixed set of rules.",

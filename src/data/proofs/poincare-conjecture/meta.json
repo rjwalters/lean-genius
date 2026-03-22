@@ -239,8 +239,39 @@
   ],
   "crossReferences": [
     {
-      "proofId": "hurwitz-theorem",
-      "relationship": "Both establish classification theorems: Hurwitz classifies normed division algebras ($n \\in \\{1,2,4,8\\}$), Poincaré classifies simply connected closed 3-manifolds (only $S^3$). Both use biconditional characterizations."
+      "targetId": "hurwitz-theorem",
+      "relationship": "classification-parallel",
+      "description": "Both establish classification theorems: Hurwitz classifies normed division algebras ($n \\in \\{1,2,4,8\\}$), Poincaré classifies simply connected closed 3-manifolds (only $S^3$). Both use biconditional characterizations."
+    },
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "topological-foundation",
+      "description": "Brouwer's fixed point theorem is a cornerstone of algebraic topology that shares the same homotopy-theoretic foundations used in the Poincaré conjecture, particularly the role of the fundamental group and simple connectivity."
+    },
+    {
+      "targetId": "borsuk-ulam",
+      "relationship": "sphere-topology",
+      "description": "The Borsuk-Ulam theorem constrains continuous maps on spheres and relies on the same topological invariants (fundamental group, homology) that distinguish S^3 from other closed 3-manifolds in the Poincaré conjecture."
+    },
+    {
+      "targetId": "euler-polyhedral-formula",
+      "relationship": "topological-invariant",
+      "description": "Euler's formula defines the Euler characteristic, a topological invariant closely related to the homology groups that Poincaré originally used to study 3-manifolds before discovering that simple connectivity is the key distinguishing property."
+    },
+    {
+      "targetId": "riemann-hypothesis",
+      "relationship": "millennium-prize",
+      "description": "Both are Millennium Prize Problems. The Poincaré conjecture (solved by Perelman, 2003) was the first to fall; the Riemann hypothesis remains open, and both problems connect deep structure in their respective domains."
+    },
+    {
+      "targetId": "yang-mills-mass-gap",
+      "relationship": "millennium-prize",
+      "description": "Both are Millennium Prize Problems involving geometric analysis. Yang-Mills theory uses gauge connections on fiber bundles over manifolds, and Perelman's Ricci flow techniques have inspired geometric approaches to gauge-theoretic problems."
+    },
+    {
+      "targetId": "navier-stokes",
+      "relationship": "millennium-prize-pde",
+      "description": "Both are Millennium Prize Problems whose solutions involve deep PDE analysis. Perelman's proof uses Ricci flow (a geometric PDE), while Navier-Stokes concerns fluid dynamics PDEs; both require controlling singularity formation."
     }
   ],
   "conclusion": {
@@ -289,7 +320,13 @@
     "definitionCount": 369
   },
   "relatedProofs": [
-    ""
+    "hurwitz-theorem",
+    "brouwer-fixed-point",
+    "borsuk-ulam",
+    "euler-polyhedral-formula",
+    "riemann-hypothesis",
+    "yang-mills-mass-gap",
+    "navier-stokes"
   ],
   "references": [
     {
