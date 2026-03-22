@@ -226,15 +226,70 @@ theorem mediant_strictly_between (s : State) (h : s.det = 1)
   constructor <;> nlinarith
 
 -- ========================================================================
--- Part VII: Injectivity (stated)
+-- Part VII: Injectivity Infrastructure
 -- ========================================================================
 
-/-- Different paths from the root yield different (num, den) pairs.
-This follows from the ordering property: left descendants have smaller
-rational values than the current node, right descendants have larger ones. -/
+/-- Key bound: ra is non-decreasing along any path from a state.
+Going left: ra → la + ra (increases). Going right: ra stays. -/
+theorem ra_ge_eval (s : State) (p : Path) :
+    s.ra ≤ (eval s p).ra := by
+  induction p generalizing s with
+  | nil => simp [eval]
+  | cons d rest ih =>
+    cases d with
+    | L =>
+      have h1 : s.left.ra = s.la + s.ra := rfl
+      have h2 := ih s.left
+      simp [eval]; omega
+    | R =>
+      have h1 : s.right.ra = s.ra := rfl
+      have h2 := ih s.right
+      simp [eval]; omega
+
+/-- Key bound: lb is non-decreasing along any path from a state.
+Going left: lb stays. Going right: lb → lb + rb (increases). -/
+theorem lb_ge_eval (s : State) (p : Path) :
+    s.lb ≤ (eval s p).lb := by
+  induction p generalizing s with
+  | nil => simp [eval]
+  | cons d rest ih =>
+    cases d with
+    | L =>
+      have h1 : s.left.lb = s.lb := rfl
+      have h2 := ih s.left
+      simp [eval]; omega
+    | R =>
+      have h1 : s.right.lb = s.lb + s.rb := rfl
+      have h2 := ih s.right
+      simp [eval]; omega
+
+/-- rb is non-decreasing along any path. -/
+theorem rb_ge_eval (s : State) (p : Path) :
+    s.rb ≤ (eval s p).rb := by
+  induction p generalizing s with
+  | nil => simp [eval]
+  | cons d rest ih =>
+    cases d with
+    | L =>
+      have h1 : s.left.rb = s.lb + s.rb := rfl
+      have h2 := ih s.left
+      simp [eval]; omega
+    | R =>
+      have h1 : s.right.rb = s.rb := rfl
+      have h2 := ih s.right
+      simp [eval]; omega
+
+/-- After going left, rb is at least lb + rb (initial right ancestor's denominator). -/
+theorem rb_ge_after_left (s : State) (p : Path) :
+    (eval s.left p).rb ≥ s.lb + s.rb := by
+  have h1 : s.left.rb = s.lb + s.rb := rfl
+  have h2 := rb_ge_eval s.left p
+  omega
+
+/-- Different paths from the root yield different (num, den) pairs. -/
 theorem eval_injective (p1 p2 : Path) (h : evalPath p1 = evalPath p2) :
     p1 = p2 := by
-  sorry
+  sorry -- Requires BST property: left descendants < current < right descendants
 
 -- ========================================================================
 -- Part VIII: Concrete Examples
