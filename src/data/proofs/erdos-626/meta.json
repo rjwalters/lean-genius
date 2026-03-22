@@ -63,6 +63,10 @@
       "**Gap factor approaches 8:** As $k \\to \\infty$, the ratio $8\\log k/\\log(k-2) \\to 8$. This constant-factor uncertainty persists even for very large chromatic numbers, suggesting a fundamental limitation in current techniques.",
       "**The probabilistic method gives existence but not precision:** Erdős's 1959 construction proves graphs exist but doesn't characterize extremal ones. The limit question requires understanding the fine structure of optimal graphs.",
       "**Dual problem $h^{(m)}(n)$:** Maximizing $\\chi$ for fixed girth gives polynomial bounds $\\Theta(n^{1/(m-1)})$ (with log corrections), connecting to the cage problem and Moore graphs in algebraic graph theory."
+    ],
+    "prerequisites": [
+      "Graph theory fundamentals",
+      "Probabilistic method in combinatorics"
     ]
   },
   "sections": [

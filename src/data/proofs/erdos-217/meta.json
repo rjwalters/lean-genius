@@ -108,6 +108,10 @@
       "**The overdetermination heuristic:** For large $n$, the triangular multiplicity property imposes $O(n)$ independent constraints (one multiplicity per distance value) on the $2n$ coordinates of the points. As $n$ grows, the ratio constraints/degrees-of-freedom increases, suggesting eventual impossibility — but this heuristic has resisted formalization.",
       "**Connection to Guth-Katz and distinct distances:** The celebrated Guth-Katz theorem (2015) shows $n$ points determine $\\Omega(n / \\log n)$ distinct distances. Problem #217 asks for configurations with exactly $n - 1$ distinct distances — well below the Guth-Katz lower bound for general configurations, placing them in a very special (and potentially empty for large $n$) class.",
       "**Squared distances simplify formalization:** Using $\\|p - q\\|^2$ instead of $\\|p - q\\|$ keeps computations in $\\mathbb{R}$ without square roots, at no mathematical cost since the ordering of distances is preserved."
+    ],
+    "prerequisites": [
+      "Discrete and combinatorial geometry",
+      "Mathematical maturity and proof techniques"
     ]
   },
   "sections": [

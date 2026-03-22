@@ -86,6 +86,10 @@
       "**Phase transition at $n = 5$:** The conjecture holds for $n \\in \\{3, 4\\}$ but fails at $n = 5$ with 44 edges. This sharp transition illustrates how extremal thresholds can shift abruptly in combinatorics.",
       "**Vertex count as hidden parameter:** Faudree's result shows that restricting to $|V| = 2n+1$ vertices restores the conjecture — counterexamples require 'sparse' graphs on many vertices, where edge density drops below the decomposition threshold.",
       "**Error magnitude $\\Theta(n^{3/2})$:** The true $\\hat{r}$ exceeds the conjecture by $\\Theta(n^{3/2})$, a non-trivial correction arising from probabilistic constructions. The exact coefficient between $1/\\sqrt{3}$ and $\\sqrt{2}$ remains open."
+    ],
+    "prerequisites": [
+      "Graph theory fundamentals",
+      "Mathematical maturity and proof techniques"
     ]
   },
   "sections": [
