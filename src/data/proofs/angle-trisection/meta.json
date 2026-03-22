@@ -126,6 +126,11 @@
       "targetId": "sqrt2-irrational",
       "relationship": "complementary",
       "description": "√2 IS constructible (as the diagonal of a unit square, a basic compass-and-straightedge construction) because its minimal polynomial x²-2 has degree 2 = 2¹ — contrasting with cos(20°) whose degree 3 ≠ 2ⁿ blocks constructibility"
+    },
+    {
+      "targetId": "hermite-lindemann",
+      "relationship": "uses",
+      "description": "This formalization directly imports the Hermite-Lindemann result (π transcendental) to prove squaring the circle impossible — Lindemann's 1882 theorem provides a strictly stronger impossibility than the degree argument used for trisection and cube doubling"
     }
   ],
   "overview": {
@@ -220,7 +225,8 @@
     "quadratic-reciprocity",
     "lagrange-theorem",
     "e-transcendental",
-    "sqrt2-irrational"
+    "sqrt2-irrational",
+    "hermite-lindemann"
   ],
   "references": [
     {
@@ -243,6 +249,13 @@
       "year": "1998",
       "venue": "Springer Undergraduate Texts in Mathematics",
       "note": "Modern textbook covering constructibility theory, field extension characterization, and all three classical impossibilities with full algebraic proofs"
+    },
+    {
+      "authors": "Gauss, Carl Friedrich",
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Leipzig",
+      "note": "Section VII proves the constructibility of the regular 17-gon and establishes that a regular n-gon is constructible iff n is a product of a power of 2 and distinct Fermat primes — the foundational result connecting number theory to constructibility"
     }
   ]
 }
