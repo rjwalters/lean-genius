@@ -1,0 +1,25 @@
+{
+  "id": "cevas-theorem-oq-02-oq-01-oq-02",
+  "name": "Spherical Ceva Generalization to Non-Euclidean Spaces",
+  "status": "surveyed",
+  "phase": "OBSERVE",
+  "knowledge": {
+    "insights": [
+      "No OQ02OQ01OQ02 file exists yet",
+      "CevasTheoremNonEuclidean.lean exists — may cover spherical/hyperbolic case",
+      "Parent OQ02OQ01 exists — need to check its content and what sub-question remains",
+      "Spherical Ceva: sin-ratio product = 1 instead of length-ratio product = 1"
+    ],
+    "builtItems": [],
+    "openQuestions": [
+      "What does CevasTheoremNonEuclidean.lean already cover?",
+      "Is this asking for hyperbolic Ceva (sinh ratios) or projective generalization?"
+    ],
+    "nextSteps": [
+      "Read CevasTheoremNonEuclidean.lean to understand existing coverage",
+      "Identify the specific non-Euclidean generalization needed",
+      "Formalize using Mathlib manifold/metric space infrastructure"
+    ],
+    "progressSummary": "SURVEY: No file exists. CevasTheoremNonEuclidean.lean may cover related content."
+  }
+}
