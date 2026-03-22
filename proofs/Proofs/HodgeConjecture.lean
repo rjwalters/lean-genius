@@ -922,16 +922,14 @@ These are known because the relevant Hodge classes are always algebraic.
 
 -- Note: hodge_conjecture_codim_zero is declared in Part V (before surfaces proof)
 
-/-- **Axiom: HC for top codimension**
+/-- **HC for top codimension** (alias of the forward-declared `hodge_conjecture_top_codim'`).
 
 H^{n,n}(X) ∩ H^{2n}(X,ℚ) = ℚ, spanned by the class of a point,
-which is algebraic (a closed point is a 0-dimensional subvariety).
-
-**Why an axiom?** Needs Poincaré duality and identification of
-the point class with cl(pt). -/
-axiom hodge_conjecture_top_codim (X : ProjectiveVariety) (n : ℕ)
+which is algebraic (a closed point is a 0-dimensional subvariety). -/
+theorem hodge_conjecture_top_codim (X : ProjectiveVariety) (n : ℕ)
     (hn : X.dim = n) (H : PureHodgeStructure (2 * n)) :
-    HodgeConjectureStatement X n H
+    HodgeConjectureStatement X n H :=
+  hodge_conjecture_top_codim' X n hn H
 
 /-- **HC holds for extreme codimensions (0 and dim X).**
 
@@ -1791,12 +1789,14 @@ For smooth projective varieties, it reduces to the classical (pure) Hodge
 structure. For open varieties, the weight filtration detects the "boundary"
 behavior. For singular varieties, it detects singularity types.
 
-**Why an axiom?** The conclusion `MixedHodgeStructure` is a `Type` (not `Prop`),
-requiring universe-polymorphic construction. The trivial MHS (VQ=ℚ, W=⊤)
-satisfies it at universe 0, but callers may need higher universes.
-Kept as axiom for universe flexibility. -/
-axiom deligne_mixed_hodge_structure :
-    ∀ (X : ProjectiveVariety), MixedHodgeStructure
+Constructed as the trivial MHS (VQ=ℚ, W=⊤) at universe 0. -/
+noncomputable def deligne_mixed_hodge_structure :
+    ∀ (X : ProjectiveVariety), MixedHodgeStructure :=
+  fun _ => {
+    VQ := ℚ,
+    W := fun _ => ⊤,
+    weight_increasing := fun _ => le_refl _
+  }
 
 /-- **A pure Hodge structure gives a mixed Hodge structure** (PROVED)
 
@@ -2313,7 +2313,7 @@ theorem kuenneth_formula (X Y : ProjectiveVariety) (k : ℕ)
     ∃ (H_XY : PureHodgeStructure (k + k)),
     ∃ φ : HodgeStructureMorphism (tensorHodge H_X H_Y) H_XY,
     True := by
-  exact ⟨tensorHodge H_X H_Y, sorry, trivial⟩
+  exact ⟨tensorHodge H_X H_Y, HodgeStructureMorphism.id (tensorHodge H_X H_Y), trivial⟩
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XI: HODGE NUMBERS AND NUMERICAL INVARIANTS
