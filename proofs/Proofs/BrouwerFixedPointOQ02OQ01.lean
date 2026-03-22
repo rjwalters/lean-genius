@@ -364,7 +364,7 @@ private lemma door_parity_of_not_fc (a b c₃ : Fin 3)
     (if (a = 0 ∧ b = 1) ∨ (a = 1 ∧ b = 0) then (1 : ZMod 2) else 0) +
     (if (a = 0 ∧ c₃ = 1) ∨ (a = 1 ∧ c₃ = 0) then 1 else 0) +
     (if (b = 0 ∧ c₃ = 1) ∨ (b = 1 ∧ c₃ = 0) then 1 else 0) = 0 := by
-  fin_cases a <;> fin_cases b <;> fin_cases c₃ <;> simp_all (config := { decide := true })
+  fin_cases a <;> fin_cases b <;> fin_cases c₃ <;> simp_all (config := { decide := true }) <;> decide
 
 -- gColor equals actual color for valid vertices
 private lemma gColor_eq {n : ℕ} (c : Coloring n) (i j : ℕ) (h : i + j ≤ n) :
@@ -425,7 +425,22 @@ private lemma zmod2_sum_tail_cancel (m : ℕ) (hm : 0 < m) (f : ℕ → ZMod 2) 
 -- Proof: Left boundary colors ∈ {0,2} so no {0,1}-doors
 private lemma doorZ_left_boundary {n : ℕ} (hn : 0 < n) (c : Coloring n)
     (hc : IsSperner hn c) (j : ℕ) (hj : j + 1 ≤ n) :
-    doorZ c 0 j 0 (j + 1) = 0 := by sorry
+    doorZ c 0 j 0 (j + 1) = 0 := by
+  unfold doorZ
+  rw [gColor_eq c 0 j (by omega : 0 + j ≤ n),
+      gColor_eq c 0 (j + 1) (by omega : 0 + (j + 1) ≤ n)]
+  obtain ⟨hv0, _, hv2, _, hleft, _⟩ := hc
+  have h1 : ¬(c ⟨0, j, by omega⟩ = (1 : Fin 3)) := by
+    by_cases hj0 : j = 0
+    · have : (⟨0, j, by omega⟩ : GridVertex n) = ⟨0, 0, by omega⟩ := by ext <;> omega
+      rw [this, hv0]; decide
+    · exact hleft ⟨0, j, by omega⟩ rfl (by omega) (by omega)
+  have h2 : ¬(c ⟨0, j + 1, by omega⟩ = (1 : Fin 3)) := by
+    by_cases hjn : j + 1 = n
+    · have : (⟨0, j + 1, by omega⟩ : GridVertex n) = ⟨0, n, by omega⟩ := by ext <;> omega
+      rw [this, hv2]; decide
+    · exact hleft ⟨0, j + 1, by omega⟩ rfl (by omega) (by omega)
+  simp only [h2, h1, and_false, false_and, or_self, ite_false]
 
 -- TODO: Fix omega/decide compat for Lean 4.26+ (Fin comparison changes)
 -- Proof: Hypotenuse colors ∈ {1,2} so no {0,1}-doors

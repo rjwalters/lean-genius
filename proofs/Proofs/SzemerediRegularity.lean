@@ -146,15 +146,63 @@ theorem density_sq_convex (G : SimpleGraph V) [DecidableRel G.Adj]
     rw [key]
     exact div_nonneg (mul_nonneg (mul_nonneg hn₁ hn₂) (sq_nonneg _)) (le_of_lt hnn_pos)
 
-/-- Energy increment step: if a partition has too many irregular pairs,
-    refinement increases energy by at least eps^5. This is the key
-    technical lemma driving the regularity proof. -/
+/-- For a non-ε-regular pair, extract witness subsets demonstrating
+    density deviation. This is the negation of the universal quantifier
+    in IsEpsilonRegular. -/
+private theorem irregular_pair_witnesses {G : SimpleGraph V} [DecidableRel G.Adj]
+    {eps : ℚ} {A B : Finset V} (h : ¬IsEpsilonRegular G eps A B) :
+    ∃ A' B' : Finset V, A' ⊆ A ∧ B' ⊆ B ∧
+      (A'.card : ℚ) ≥ eps * A.card ∧
+      (B'.card : ℚ) ≥ eps * B.card ∧
+      |edgeDensity G A' B' - edgeDensity G A B| > eps := by
+  unfold IsEpsilonRegular at h
+  push_neg at h
+  exact h
+
+/-- From equitability + non-regularity, the failure must be due to
+    having too many irregular pairs (not equitability failure). -/
+private theorem many_irregular_pairs {G : SimpleGraph V} [DecidableRel G.Adj]
+    {eps : ℚ} {parts : Finset (Finset V)}
+    (hequi : ∀ P Q : Finset V, P ∈ parts → Q ∈ parts →
+      (P.card : ℤ) - Q.card ≤ 1)
+    (hirr : ¬IsRegularPartition G eps parts) :
+    ¬((parts.product parts).filter (fun pq =>
+      pq.1 ≠ pq.2 ∧ ¬IsEpsilonRegular G eps pq.1 pq.2)).card ≤
+      eps * (parts.card * (parts.card - 1)) := by
+  intro h
+  exact hirr ⟨hequi, h⟩
+
+/-- Energy increment step: if an equitable partition is not ε-regular,
+    refinement increases energy by at least ε⁵. This is the key
+    technical lemma driving the regularity proof.
+
+    The equitability hypothesis is essential: without it, the partition
+    could be non-regular purely due to unbalanced part sizes, and
+    no refinement of an edgeless graph can increase its zero energy.
+
+    Proof sketch (standard, see Komlós-Simonovits 1996):
+    1. Extract many irregular pairs (many_irregular_pairs)
+    2. For each, extract witness subsets (irregular_pair_witnesses)
+    3. Construct refined partition by splitting parts along witnesses
+    4. Apply density_sq_convex to bound energy increase per pair
+    5. Sum over irregular pairs to get total increase ≥ ε⁵
+
+    The complete formalization is in Mathlib:
+    SzemerediRegularity.energy_increment (with ε⁵/4 bound). -/
 theorem energy_increment_step (G : SimpleGraph V) [DecidableRel G.Adj]
     (eps : ℚ) (heps : 0 < eps) (parts : Finset (Finset V))
+    (hequi : ∀ P Q : Finset V, P ∈ parts → Q ∈ parts →
+      (P.card : ℤ) - Q.card ≤ 1)
     (hirr : ¬IsRegularPartition G eps parts) :
     ∃ parts' : Finset (Finset V),
       partitionEnergy G parts' ≥ partitionEnergy G parts + eps ^ 5 ∧
       parts'.card ≤ parts.card * 2 ^ parts.card := by
+  -- From equitability + non-regularity, extract many irregular pairs
+  have hmany := many_irregular_pairs hequi hirr
+  -- For each irregular pair, witnesses exist (irregular_pair_witnesses).
+  -- The construction of the refined partition and energy bound analysis
+  -- requires building the partition refinement and applying density_sq_convex.
+  -- See Mathlib's SzemerediRegularity.increment for the complete proof.
   sorry
 
 -- ═══════════════════════════════════════════════════════════════════

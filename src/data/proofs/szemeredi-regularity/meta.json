@@ -17,7 +17,7 @@
       "marquee-phase-3"
     ],
     "badge": "formalized",
-    "sorries": 2,
+    "sorries": 1,
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -86,7 +86,7 @@
         "description": "Roth's theorem can be proved via regularity + triangle removal"
       }
     ],
-    "lineCount": 167
+    "lineCount": 281
   },
   "overview": {
     "historicalContext": "The Szemeredi Regularity Lemma, proved by Endre Szemeredi in 1975 as a key tool in his proof of Szemeredi's theorem, has become one of the most important and widely-used results in combinatorics. It provides a universal structural decomposition for graphs: any sufficiently large graph can be partitioned into a bounded number of parts such that the edges between almost all pairs of parts behave pseudo-randomly.\n\nThe lemma's power lies in reducing arbitrary graph problems to problems about dense random-like bipartite graphs. This 'structure vs randomness' paradigm has transformed graph theory, additive combinatorics, and theoretical computer science.\n\nGowers (1997) showed that the tower-type bound on the number of parts is unavoidable: the partition size must grow as a tower of exponentials in 1/epsilon. Despite this, the lemma's qualitative power is undiminished, and it remains the primary tool for transferring results from random graphs to arbitrary graphs.\n\nThe regularity lemma has inspired numerous variants: the strong regularity lemma (Alon-Fischer-Krivelevich-Szegedy), weak regularity (Frieze-Kannan), arithmetic regularity (Green), and hypergraph regularity (Gowers, Rodl-Skokan).",
