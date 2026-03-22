@@ -14,7 +14,8 @@
       "group-theory",
       "field-theory",
       "classic",
-      "intermediate"
+      "intermediate",
+      "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/AbelRuffini.lean",
     "badge": "mathlib",
@@ -26,9 +27,9 @@
         "module": "Mathlib.FieldTheory.AbelRuffini"
       },
       {
-        "theorem": "alternatingGroup.isSimple_five",
+        "theorem": "alternatingGroup.isSimpleGroup_five",
         "description": "A5 is a simple group",
-        "module": "Mathlib.GroupTheory.Perm.Cycle.Concrete"
+        "module": "Mathlib.GroupTheory.SpecificGroups.Alternating"
       },
       {
         "theorem": "Equiv.Perm.not_solvable",
@@ -136,7 +137,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization demonstrates one of mathematics' most beautiful connections: the solution of polynomial equations reduces to group theory. Galois's insight that symmetry groups control solvability unified algebra in a profound way.\n\nThe key results: Mathlib's solvableByRad.isSolvable' proves that solvability by radicals implies a solvable Galois group. The simplicity of A5 (alternatingGroup.isSimple_five) implies S5 is not solvable. Together, these show the general quintic is unsolvable.",
+    "summary": "This formalization demonstrates one of mathematics' most beautiful connections: the solution of polynomial equations reduces to group theory. Galois's insight that symmetry groups control solvability unified algebra in a profound way.\n\nThe key results: Mathlib's solvableByRad.isSolvable' proves that solvability by radicals implies a solvable Galois group. The simplicity of A5 (alternatingGroup.isSimpleGroup_five) implies S5 is not solvable. Together, these show the general quintic is unsolvable.",
     "implications": "Galois theory has far-reaching consequences:\n\n1. CONSTRUCTIBILITY: Similar techniques prove that angle trisection and cube doubling are impossible with compass and straightedge.\n\n2. INVERSE GALOIS PROBLEM: Which groups appear as Galois groups over Q? This remains open for many groups.\n\n3. ALGEBRAIC NUMBER THEORY: Galois groups of field extensions are central to understanding number fields and their arithmetic.\n\n4. MODERN ALGEBRA: Galois's ideas pioneered the abstract study of groups, fields, and their relationships - the foundation of modern algebra.\n\n5. SPECIFIC SOLUTIONS: While the general quintic is unsolvable, specific quintics may be solvable. Galois theory tells us exactly which ones.\n\n6. IMPOSSIBILITY PARADIGM: Abel-Ruffini inaugurated a tradition of impossibility proofs that extends through Lindemann's transcendence of $e$ and $\\pi$ (1882), Gödel's incompleteness (1931), Turing's halting problem (1936), and Matiyasevich's negative resolution of Hilbert's tenth problem (1970). Each shows that some natural class of problems admits no universal solution within a given formal framework.\n\n7. TRANSCENDENCE HIERARCHY: Abel-Ruffini's impossibility (roots not expressible by radicals) sits between irrationality ($\\sqrt{2} \\notin \\mathbb{Q}$, c. 500 BCE) and transcendence ($e, \\pi \\notin \\overline{\\mathbb{Q}}$, 1882) in a hierarchy of expressibility barriers.",
     "openQuestions": [
       "Can we formalize a *specific* unsolvable quintic in Lean — e.g., $x^5 - x - 1$ over $\\mathbb{Q}$ has Galois group exactly $S_5$? This requires formalizing the Galois group computation, not just citing Mathlib's general result.",
@@ -305,6 +306,13 @@
       "year": "2015",
       "venue": "Chapman & Hall/CRC, 4th edition",
       "note": "Accessible modern textbook covering the Abel-Ruffini theorem with both historical context and modern algebraic formulation via composition series"
+    },
+    {
+      "authors": "Artin, Emil",
+      "title": "Galois Theory",
+      "year": "1942",
+      "venue": "Notre Dame Mathematical Lectures No. 2",
+      "note": "Influential lecture notes that reformulated Galois theory in modern algebraic terms, establishing the field extension / automorphism group framework used in this formalization"
     }
   ],
   "leanFile": {
