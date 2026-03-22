@@ -58,7 +58,35 @@
       "Connection to Szemerédi's theorem"
     ],
     "axiomCount": 2,
-    "lineCount": 239
+    "lineCount": 239,
+    "assumptions": [
+      "erdosSarkozy_partial: The Erdős-Sárközy partial result g₃(n) ≫ 3ⁿ/n^{O(1)} — established exponential growth up to polynomial factors",
+      "szemeredi_theorem: Szemerédi's theorem on arithmetic progressions in dense sets — axiomatized since the full proof is beyond Mathlib's current scope"
+    ],
+    "references": [
+      {
+        "authors": "Erdős, Paul; Sárközy, András",
+        "title": "On sets of natural numbers whose every element is the sum of a set of fixed type",
+        "year": "1991",
+        "venue": "Studia Scientiarum Mathematicarum Hungarica",
+        "note": "Established g₃(n) ≫ 3ⁿ/n^{O(1)}, the best known lower bound"
+      },
+      {
+        "authors": "Roth, Klaus F.",
+        "title": "On certain sets of integers",
+        "year": "1953",
+        "venue": "Journal of the London Mathematical Society, 28, pp. 104-109",
+        "note": "Proved that dense subsets of integers contain 3-term APs, the foundational density result used in the heuristic argument"
+      },
+      {
+        "authors": "Szemerédi, Endre",
+        "title": "On sets of integers containing no k elements in arithmetic progression",
+        "year": "1975",
+        "venue": "Acta Arithmetica, 27, pp. 199-245",
+        "note": "Generalized Roth's theorem to k-term APs; the connection to subset sum density is the key link in this problem"
+      }
+    ],
+    "dateAdded": "2025-12-22"
   },
   "overview": {
     "historicalContext": "This problem combines two fundamental concepts in additive combinatorics: subset sums and arithmetic progression avoidance. The subset sum set ⟨A⟩ of a finite set A is the collection of all possible sums formed by selecting subsets of A. This structure appears throughout number theory and combinatorics.\n\nErdős and Sárközy studied the function g_k(n): the minimal N such that {1,...,N} contains some n-element set A whose subset sums avoid non-trivial k-term arithmetic progressions. They proved that g₃(n) ≫ 3ⁿ/n^{O(1)}, establishing exponential growth up to polynomial factors.\n\nThe main conjecture asks whether the polynomial factor is necessary: is g₃(n) truly ≫ 3ⁿ? This remains open and connects to deep questions about the structure of subset sum sets and Szemerédi-type theorems.",
@@ -68,7 +96,8 @@
       "**Subset sum structure**: The set ⟨A⟩ has at most 2^n elements (one per subset). Its structure depends heavily on the choice of A.",
       "**Exponential barrier**: The set {1, 3, 9, ..., 3^(n-1)} has ⟨A⟩ = {numbers in base 3 with digits 0,1}, which is 3-AP-free. This gives g₃(n) ≤ 3^n.",
       "**Density argument**: By Szemerédi/Roth, dense subsets of {1,...,M} contain 3-APs. If ⟨A⟩ ⊆ {0,...,nN}, avoiding 3-APs requires 2^n/(nN) to be small.",
-      "**Polynomial gap**: The Erdős-Sárközy bound loses a polynomial factor. Closing this gap is the main challenge."
+      "**Polynomial gap**: The Erdős-Sárközy bound loses a polynomial factor. Closing this gap is the main challenge.",
+      "**Connection to Szemerédi's theorem**: The density constraint follows from Szemerédi/Roth: if ⟨A⟩ has density δ in {0,...,nN}, it must contain 3-APs for sufficiently large nN. This forces δ → 0, requiring N to grow exponentially to keep |⟨A⟩| = 2^n while maintaining low density."
     ]
   },
   "sections": [
@@ -76,71 +105,81 @@
       "id": "header",
       "title": "Problem Statement",
       "startLine": 1,
-      "endLine": 26,
-      "summary": "Introduction to the subset sum AP-avoidance problem"
+      "endLine": 32,
+      "summary": "Module docstring introducing the subset sum AP-avoidance problem, the extremal function g_k(n), and the Erdős-Sárközy partial result. Imports Mathlib.",
+      "mathContext": "Define $g_k(n) = \\min\\{N : \\exists A \\subseteq [N],\\; |A|=n,\\; \\langle A \\rangle \\text{ is } k\\text{-AP-free}\\}$. Question: is $g_3(n) \\gg 3^n$?"
     },
     {
       "id": "ap-free",
       "title": "Arithmetic Progressions",
       "startLine": 34,
       "endLine": 63,
-      "summary": "Definition of k-AP-free sets with two equivalent formulations"
+      "summary": "Defines `IsAPFreeOfLength k S`: no non-trivial k-term AP with positive common difference lies entirely in S. Proves equivalence with negation formulation.",
+      "mathContext": "$S$ is $k$-AP-free $\\iff$ $\\forall a, d > 0$, $\\exists i < k$ such that $a + id \\notin S$."
     },
     {
       "id": "subset-sums",
       "title": "Subset Sums",
       "startLine": 65,
       "endLine": 102,
-      "summary": "Definition of subset sum set and basic properties"
+      "summary": "Defines `subsetSums A = {∑ B : B ⊆ A}` via powerset image. Proves: 0 ∈ ⟨A⟩, total sum ∈ ⟨A⟩, each a ∈ A is in ⟨A⟩, and |⟨A⟩| ≤ 2^|A|.",
+      "mathContext": "$\\langle A \\rangle = \\{\\sum_{a \\in B} a : B \\subseteq A\\}$. $|\\langle A \\rangle| \\leq 2^{|A|}$ with equality when all subset sums are distinct."
     },
     {
       "id": "g-function",
       "title": "The Function g_k(n)",
       "startLine": 104,
       "endLine": 128,
-      "summary": "Definition of the extremal function via infimum"
+      "summary": "Defines `ValidSet k n N` (existence of witness set), `ValidNs k n` (set of valid N values), and `g k n = Inf(ValidNs k n)`. Proves upward closure: if N works, so does M ≥ N.",
+      "mathContext": "$g_k(n) = \\inf\\{N : \\exists A \\subseteq [N],\\; |A|=n,\\; \\langle A \\rangle \\text{ is } k\\text{-AP-free}\\}$. ValidNs is upward-closed since $A \\subseteq [N] \\subseteq [M]$."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture (OPEN)",
       "startLine": 130,
       "endLine": 149,
-      "summary": "Statement of the open problem g₃(n) ≫ 3ⁿ"
+      "summary": "States `erdos817Conjecture`: $3^n = O(g(3,n))$, meaning g₃(n) grows at least as fast as 3ⁿ. Includes an alternative formulation via Filter.Eventually.",
+      "mathContext": "$\\exists C > 0$ such that $g_3(n) \\geq C \\cdot 3^n$ for all sufficiently large $n$."
     },
     {
       "id": "partial",
       "title": "Erdős-Sárközy Partial Result",
       "startLine": 151,
       "endLine": 163,
-      "summary": "The known bound g₃(n) ≫ 3ⁿ/n^{O(1)}"
+      "summary": "Axiomatizes the Erdős-Sárközy bound: g₃(n) ≫ 3ⁿ/n^{O(1)} — exponential growth up to a polynomial correction factor.",
+      "mathContext": "$\\exists c > 0$ such that $3^n / n^c = O(g_3(n))$. The polynomial gap is the main open question."
     },
     {
       "id": "properties",
       "title": "Basic Properties",
       "startLine": 165,
       "endLine": 179,
-      "summary": "Trivial bounds on g_k(n)"
+      "summary": "Proves `g_ge_n`: g_k(n) ≥ n (need n distinct elements), and `g3_le_exp`: g₃(n) ≤ 3ⁿ (geometric progression {1,3,9,...} works).",
+      "mathContext": "$n \\leq g_3(n) \\leq 3^n$. The upper bound uses $A = \\{1, 3, 9, \\ldots, 3^{n-1}\\}$ whose subset sums have unique base-3 representations."
     },
     {
       "id": "examples",
       "title": "Small Cases",
       "startLine": 181,
       "endLine": 196,
-      "summary": "Values of g₃(1) and g₃(2)"
+      "summary": "Computes g₃(1) = 1 (trivially AP-free) and g₃(2) = 2 ({1,3} works but {1,2} doesn't since {0,1,2,3} contains a 3-AP).",
+      "mathContext": "$g_3(1) = 1$, $g_3(2) = 2$. For $n=2$: $\\langle\\{1,2\\}\\rangle = \\{0,1,2,3\\} \\ni (0,1,2)$, but $\\langle\\{1,3\\}\\rangle = \\{0,1,3,4\\}$ is 3-AP-free."
     },
     {
       "id": "heuristic",
       "title": "Heuristic Analysis",
       "startLine": 198,
       "endLine": 224,
-      "summary": "Why exponential growth is expected"
+      "summary": "Explains why exponential growth is expected: density of ⟨A⟩ in {0,...,nN} is 2ⁿ/(nN), and Roth's theorem forces this density below a threshold, requiring N to grow exponentially.",
+      "mathContext": "By Roth's theorem, $|\\langle A \\rangle|/|[0, nN]| < c/\\log\\log(nN)$ forces $2^n/(nN) \\to 0$, hence $N \\gg 2^n/n$. The base-3 argument gives the tighter bound $3^n$."
     },
     {
       "id": "szemeredi",
       "title": "Connection to Szemerédi",
       "startLine": 226,
       "endLine": 239,
-      "summary": "Relation to density-based AP results"
+      "summary": "Axiomatizes Szemerédi's theorem: for k ≥ 3 and δ > 0, sufficiently large N forces any δ-dense subset of [N] to contain a k-AP. This provides the density tool underlying the problem.",
+      "mathContext": "Szemerédi (1975): $\\forall k \\geq 3$, $\\forall \\delta > 0$, $\\exists N_0$ such that $N \\geq N_0 \\implies$ any $S \\subseteq [N]$ with $|S| \\geq \\delta N$ contains a $k$-AP."
     }
   ],
   "conclusion": {
@@ -152,5 +191,27 @@
       "Can probabilistic methods improve the Erdős-Sárközy bound?",
       "What is the exact value of g₃(n) for small n?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "szemeredi-theorem",
+      "relationship": "foundational",
+      "description": "Szemerédi's theorem on AP density provides the key tool: dense subsets must contain APs, forcing subset sum sets to be sparse and N to be large"
+    },
+    {
+      "targetId": "roth-theorem-k3",
+      "relationship": "foundational",
+      "description": "Roth's theorem (the k=3 case of Szemerédi) gives the density bound used in the heuristic argument for exponential growth of g₃(n)"
+    },
+    {
+      "targetId": "subset-count",
+      "relationship": "related",
+      "description": "Both formalize properties of subsets of finite sets; subset counting provides the 2^n upper bound on |⟨A⟩|"
+    }
+  ],
+  "relatedProofs": [
+    "szemeredi-theorem",
+    "roth-theorem-k3",
+    "subset-count"
+  ]
 }
