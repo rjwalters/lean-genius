@@ -137,6 +137,12 @@
       "GM = exp(∑ wᵢ log zᵢ) proved via Real.log_prod (on positive terms) + Real.log_rpow",
       "The rpow_def_of_pos identity rewrites both M_r and the limit target to the exp form, making congr' close the goal",
       "Once limit is established, HM ≤ GM ≤ AM follows from AM-GM on inverse values"
+    ],
+    "prerequisites": [
+      "Derivatives in Mathlib: `HasDerivAt`, `HasStrictDerivAt`, and the slope-limit bridge `hasDerivAt_iff_tendsto_slope`",
+      "Real exp/log/rpow identities: `rpow_def_of_pos` ($x^r = e^{r \\log x}$ for $x > 0$), `log_prod`, `log_rpow`, `exp_log`",
+      "Filter theory: `Filter.Tendsto`, `nhdsWithin`, and continuity of `exp` for composing limits",
+      "Weighted AM-GM inequality (from Mathlib) for the HM ≤ GM ≤ AM chain"
     ]
   },
   "sections": [
