@@ -108,7 +108,13 @@ theorem lipschitz_implies_ac {F : ℝ → ℝ} {K : ℝ} (hK : K ≥ 0)
     _ = K * ∑ k, (bs k - as k) := (Finset.mul_sum ..).symm
     _ ≤ K * (ε / (K + 1)) := by
         apply mul_le_mul_of_nonneg_left (le_of_lt htotal) hK
-    _ < ε := by rw [mul_div_assoc]; exact div_lt_self hε (by linarith)
+    _ < ε := by
+        have hKp : (0 : ℝ) < K + 1 := by linarith
+        calc K * (ε / (K + 1)) = K / (K + 1) * ε := by ring
+          _ < 1 * ε := by
+            apply mul_lt_mul_of_pos_right _ hε
+            rw [div_lt_one hKp]; linarith
+          _ = ε := one_mul ε
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART III: AC ⟹ Uniformly Continuous (PROVED)
