@@ -65,7 +65,7 @@
       "hintertwine: decompose A = ∑ A_{ij} E_{ij}, use phi linearity + existing E_ij intertwining",
       "Possibly use basisOfLinearIndependentOfCardEqFinrank for IsUnit proof"
     ],
-    "progressSummary": "PROGRESS: Eliminated p_linearIndependent sorry (the mathematical core). Down from 3 to 2 sorries, 0 axioms. Remaining: IsUnit Pmat, hintertwine (Lean API plumbing)."
+    "progressSummary": "COMPLETED: All sorries eliminated! 0 sorries, 0 axioms. Proved IsUnit Pmat (linearIndependent → injective mulVec → bijective → IsUnit) and hintertwine (decompose A = ∑ A_ij • E_ij, extend by K-linearity). Full Skolem-Noether theorem verified."
   },
   "leanFiles": [
     {
@@ -154,5 +154,5 @@
     "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
     "cayley-hamilton-minpoly-oq-05"
   ],
-  "lastUpdate": "2026-03-22T21:00:00Z"
+  "lastUpdate": "2026-03-22T22:15:00Z"
 }
