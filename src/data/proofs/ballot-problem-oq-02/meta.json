@@ -40,7 +40,7 @@
       "Lévy Arcsine Law axiom: fraction of positive time has arcsine distribution",
       "Main continuous ballot theorem combining all components (0 sorries)"
     ],
-    "dateAdded": "02/24/26",
+    "dateAdded": "2026-02-24",
     "axiomCount": 3
   },
   "overview": {
@@ -112,6 +112,22 @@
       "mathContext": "$P(\\text{A leads throughout}) = (p-q)/(p+q) \\in [0, 1]$ for $p > q$ (Bertrand 1887)"
     }
   ],
+  "references": [
+    {
+      "authors": "Lévy, Paul",
+      "title": "Processus stochastiques et mouvement brownien",
+      "year": "1948",
+      "venue": "Gauthier-Villars, Paris",
+      "note": "Definitive treatment of Brownian motion including reflection principle and arcsine laws"
+    },
+    {
+      "authors": "Feller, William",
+      "title": "An Introduction to Probability Theory and Its Applications, Vol. II",
+      "year": "1971",
+      "venue": "Wiley, 2nd ed.",
+      "note": "Chapter on Brownian motion: ballot problem connections, first passage times, and arcsine distributions"
+    }
+  ],
   "conclusion": {
     "summary": "This formalization provides a complete axiomatic framework for the continuous-time ballot problem via Brownian motion. The key results — reflection principle, first passage distributions, and arcsine law — are stated as axioms since Mathlib 4.26.0 lacks full BM formalization. All theorems now build without sorry: the firstPassageTime_eq_maxEvent axiom captures the path-continuity argument cleanly, and path_continuous was added as a BrownianMotion structure field.",
     "implications": "**Applications:**\n\n1. **Mathematical finance**: Barrier option pricing via first passage distributions\n2. **Physics**: 1D diffusion hitting times\n3. **Statistics**: Sequential analysis and stopping times\n4. **Probability**: Foundation for stochastic calculus and Itô's formula",
@@ -121,5 +137,44 @@
       "Formal proof of the Arcsine Law via BM local times",
       "Formal proof of Donsker's functional CLT connecting discrete and continuous ballot"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Bertrand, Joseph",
+      "title": "Solution d'un problème",
+      "year": "1887",
+      "venue": "Comptes Rendus de l'Académie des Sciences, 105, p. 369",
+      "note": "Original statement of the ballot problem: probability A leads throughout is (p-q)/(p+q)"
+    },
+    {
+      "authors": "Lévy, Paul",
+      "title": "Sur certains processus stochastiques homogènes",
+      "year": "1939",
+      "venue": "Compositio Mathematica, 7, pp. 283-339",
+      "note": "Proved the reflection principle for Brownian motion and discovered the arcsine law for positive occupation time"
+    },
+    {
+      "authors": "Karatzas, Ioannis; Shreve, Steven",
+      "title": "Brownian Motion and Stochastic Calculus",
+      "year": "1991",
+      "venue": "Springer Graduate Texts in Mathematics 113",
+      "note": "Standard reference for the reflection principle (§2.8) and first passage time distributions"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "ballot-problem-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling open question addressing the ballot problem from a different angle — both extend the base ballot problem formalization in complementary directions"
+    },
+    {
+      "targetId": "birthday-problem",
+      "relationship": "related",
+      "description": "Both are classic probability results with elegant formulas. The ballot problem's (p-q)/(p+q) and the birthday paradox's threshold at √(365) both demonstrate how probability defies naive intuition."
+    }
+  ],
+  "relatedProofs": [
+    "ballot-problem-oq-01-oq-01",
+    "birthday-problem"
+  ]
 }

@@ -58,6 +58,8 @@
     "dateAdded": "2026-03-22",
     "mathlib_version": "4.26.0",
     "axiomCount": 1,
+    "lineCount": 404,
+    "theoremCount": 15,
     "prerequisites": [
       "Matrix determinants and permutation signs (Mathlib)",
       "Binomial coefficients (Mathlib)",
@@ -69,7 +71,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The Lindström-Gessel-Viennot (LGV) lemma is one of the most versatile tools in enumerative combinatorics. Bernt Lindström proved the result for pairs of paths in 1973; Ira Gessel and Gérard Viennot generalized it to r-tuples in 1985. The lemma states that the number of r-tuples of pairwise non-intersecting lattice paths from sources A₁,...,Aᵣ to targets B₁,...,Bᵣ equals the determinant of the r×r matrix of individual path counts.\n\nThe proof uses a sign-reversing involution on path tuples indexed by permutations: expanding det as Σ_σ sign(σ)∏e(Aᵢ,B_{σ(i)}), the non-identity permutation terms cancel pairwise, leaving only the non-intersecting identity tuples.",
+    "historicalContext": "The Lindström-Gessel-Viennot (LGV) lemma is one of the most versatile tools in enumerative combinatorics. Bernt Lindström proved a general version for vector matroids in 1973, building on ideas from Karlin and McGregor's 1959 work on coincidence probabilities of Markov chains. Ira Gessel and Gérard Viennot independently rediscovered and popularized the result in their influential 1985 paper, providing the elegant sign-reversing involution proof that has become the standard approach. The lemma connects non-intersecting lattice paths to determinants: the number of $r$-tuples of pairwise non-intersecting paths equals $\\det[e(A_i, B_j)]_{i,j}$. This determinantal structure has profound consequences—it underlies the Jacobi-Trudi identity for Schur polynomials, the Cauchy-Binet identity in linear algebra, and the Kasteleyn method for perfect matchings. The GV involution is a paradigmatic example of the 'cancellation via involution' technique that pervades algebraic combinatorics.",
     "problemStatement": "**The r×r LGV Lemma**: Given strictly increasing source points A₁,...,Aᵣ and target points B₁,...,Bᵣ on a lattice grid of width m, the number of r-tuples of pairwise non-intersecting lattice paths (Pᵢ: Aᵢ→Bᵢ) equals\n\n  det[ e(Aᵢ, Bⱼ) ]_{i,j=1}^r\n\nwhere e(A,B) = C(m + (bⱼ - aᵢ), m) is the number of monotone lattice paths from A to B.",
     "proofStrategy": "**Gessel-Viennot Involution**:\n1. Expand det M = Σ_σ sign(σ) ∏ᵢ M_{i,σ(i)} where M_{i,j} = e(Aᵢ, Bⱼ)\n2. Each term ∏ M_{i,σ(i)} counts σ-path tuples (Pᵢ: Aᵢ→B_{σ(i)})\n3. For σ ≠ id: find smallest i with σ(i) ≠ i; paths Pᵢ and P_{σ(i)} must cross\n4. Swap tails at first crossing point → maps σ-tuple to (swap(i,σ(i))∘σ)-tuple\n5. sign changes (transposition): terms cancel pairwise\n6. Only σ = id survives; non-NI id-tuples also cancel → niTupleCount = det M",
     "keyInsights": [
@@ -77,65 +79,84 @@
       "Strict monotonicity of sources is essential: if i < σ(i), then aᵢ < a_{σ(i)}, forcing the path from lower source to higher target to cross the path from higher source",
       "The 2×2 case is the base case; the r×r generalization uses the SAME involution mechanism but on r-tuples indexed by Equiv.Perm (Fin r)",
       "pathMatrix determinant non-negativity follows immediately from the LGV lemma since niTupleCount is a natural number",
-      "The LGV lemma connects combinatorics to linear algebra: non-intersecting lattice paths encode determinantal identities"
+      "The LGV lemma connects combinatorics to linear algebra: non-intersecting lattice paths encode determinantal identities",
+      "The sole remaining axiom (gv_involution_cancellation) isolates the hardest part: showing the involution is well-defined, is its own inverse, and has exactly the NI identity tuples as fixed points"
     ]
   },
   "sections": [
     {
       "id": "lattice-path-foundations",
-      "title": "Lattice Path Foundations",
-      "startLine": 46,
-      "endLine": 78,
-      "summary": "LPath, PathMN subtype with Fintype instance, pathCount function."
+      "title": "Part 1: Lattice Path Foundations",
+      "startLine": 49,
+      "endLine": 81,
+      "summary": "LPath (List Bool), PathMN subtype with Fintype instance (via Vector equivalence), pathCount as binomial coefficient.",
+      "mathContext": "$\\mathrm{PathMN}(m,n) \\cong \\{S \\subseteq \\mathrm{Fin}(m+n) : |S|=m\\}$, so $|\\mathrm{PathMN}(m,n)| = \\binom{m+n}{m}$"
     },
     {
       "id": "non-intersection",
-      "title": "Column Entry and Non-Intersection",
-      "startLine": 80,
-      "endLine": 112,
-      "summary": "northBeforeEast, colEntry, colYRange, NonIntersecting predicate."
+      "title": "Part 2: Column Entry and Non-Intersection",
+      "startLine": 83,
+      "endLine": 108,
+      "summary": "northBeforeEast (recursive y-tracking), colEntry, colYRange, and NonIntersecting predicate via column-disjointness."
     },
     {
       "id": "r-tuple-infrastructure",
-      "title": "r-Tuple Infrastructure",
-      "startLine": 114,
-      "endLine": 134,
-      "summary": "LGVConfig structure, PathTuple, IsNonIntersecting."
+      "title": "Part 3: r-Tuple Infrastructure",
+      "startLine": 110,
+      "endLine": 135,
+      "summary": "LGVConfig structure (sources/targets strictly monotone), PathTuple (dependent r-tuple), IsNonIntersecting (pairwise non-intersection)."
     },
     {
       "id": "path-weight-matrix",
-      "title": "Path Weight Matrix",
-      "startLine": 136,
+      "title": "Part 4: Path Weight Matrix",
+      "startLine": 137,
       "endLine": 145,
-      "summary": "pathMatrix: r×r matrix with M_{i,j} = C(m+(bⱼ-aᵢ), m)."
+      "summary": "pathMatrix: r×r integer matrix M_{i,j} = C(m+(b_j-a_i), m) counting paths from source i to target j."
     },
     {
       "id": "permutation-path-tuples",
-      "title": "Permutation Path Tuples",
+      "title": "Part 5: Permutation Path Tuples",
       "startLine": 147,
-      "endLine": 170,
-      "summary": "PermPathTuple, signedPermCount, Fintype instances."
+      "endLine": 164,
+      "summary": "PermPathTuple (σ-indexed path tuples), signedPermCount (sign(σ) × product of binomial coefficients)."
+    },
+    {
+      "id": "ni-tuple-count",
+      "title": "Part 6: Non-Intersecting Tuple Count",
+      "startLine": 166,
+      "endLine": 173,
+      "summary": "niTupleCount: cardinality of non-intersecting identity path tuples, the left-hand side of the LGV lemma."
     },
     {
       "id": "gv-involution",
-      "title": "Gessel-Viennot Involution Infrastructure",
+      "title": "Part 7: Gessel-Viennot Involution Infrastructure",
       "startLine": 175,
-      "endLine": 226,
-      "summary": "swapTailsAt operation, length preservation, transposition sign theorem."
+      "endLine": 263,
+      "summary": "swapTailsAt operation with length preservation, transposition sign theorem, firstNonFixed (smallest non-fixed point with minimality and upward-mapping proofs).",
+      "mathContext": "$\\mathrm{sgn}((i\\;\\sigma(i)) \\cdot \\sigma) = -\\mathrm{sgn}(\\sigma)$; for $\\sigma \\neq \\mathrm{id}$, $\\mathrm{firstNonFixed}(\\sigma) < \\sigma(\\mathrm{firstNonFixed}(\\sigma))$"
+    },
+    {
+      "id": "algebraic-bridge",
+      "title": "Parts 7b–7c: PathMN Cardinality and Algebraic Bridge",
+      "startLine": 265,
+      "endLine": 316,
+      "summary": "pathMN_card (sorry: C(m+n,m)), permPathTuple_card (product factorization), det_pathMatrix_eq_signed_sum (det = Σ sign(σ)·|PermPathTuple(σ)|).",
+      "mathContext": "$\\det M = \\sum_{\\sigma} \\mathrm{sgn}(\\sigma) \\prod_{i} \\binom{m+(b_{\\sigma(i)}-a_i)}{m}$"
     },
     {
       "id": "lgv-lemma",
-      "title": "The r×r LGV Lemma",
-      "startLine": 228,
-      "endLine": 244,
-      "summary": "Main theorem (axiomatized): niTupleCount = det(pathMatrix)."
+      "title": "Part 8: The r×r LGV Lemma",
+      "startLine": 318,
+      "endLine": 353,
+      "summary": "gv_involution_cancellation (axiom: signed sum = NI count) and lgv_lemma_rxr (theorem: niTupleCount = det pathMatrix, proved in 2 lines from algebraic bridge + GV cancellation).",
+      "mathContext": "$|\\{\\text{NI tuples}\\}| = \\det[\\binom{m+(b_j-a_i)}{m}]_{i,j=1}^r$"
     },
     {
       "id": "corollaries",
-      "title": "Corollaries",
-      "startLine": 246,
-      "endLine": 284,
-      "summary": "Non-negativity, r=1 special case (vacuously NI), applications overview."
+      "title": "Parts 9–10: Corollaries and Applications",
+      "startLine": 355,
+      "endLine": 403,
+      "summary": "Non-negativity of det, r=1 vacuous NI, and lgv_universality. Applications survey: Schur polynomials (Jacobi-Trudi), Catalan numbers, Aztec diamond tilings, plane partitions."
     }
   ],
   "conclusion": {

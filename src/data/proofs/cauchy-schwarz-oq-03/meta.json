@@ -84,7 +84,8 @@
       "**Conjugate condition is not arbitrary**: The condition $1/p + 1/q = 1$ appears naturally in the Young normalization — it is the condition that makes $1/p \\cdot 1 + 1/q \\cdot 1 = 1$ after substituting unit-norm inputs.",
       "**NNReal as the natural domain**: Hölder's inequality for non-negative reals (NNReal) is fundamental. The signed real case follows by applying it to $|f_i|$ and $|g_i|$, using the triangle inequality $|\\sum f_i g_i| \\leq \\sum |f_i| |g_i|$.",
       "**Two independent proofs of CS**: Cauchy-Schwarz can be proved both via Hölder (set $p=q=2$) and via Lagrange's identity. Both proofs are formalized here, with the bridge theorem `cauchy_schwarz_holder_bridge` connecting them.",
-      "**HolderConjugate 2 2 by norm_num**: The verification that $p = q = 2$ are Hölder conjugates reduces to $1/2 + 1/2 = 1$, proved by `norm_num`. This makes the bridge completely automatic."
+      "**HolderConjugate 2 2 by norm_num**: The verification that $p = q = 2$ are Hölder conjugates reduces to $1/2 + 1/2 = 1$, proved by `norm_num`. This makes the bridge completely automatic.",
+      "**Three levels of abstraction**: The formalization progresses from concrete (finite sums over NNReal) through intermediate (signed reals, abstract inner product spaces) to abstract (Lebesgue integrals on measure spaces), demonstrating how the same algebraic idea — Young's pointwise bound summed over a domain — scales across mathematical frameworks"
     ]
   },
   "sections": [

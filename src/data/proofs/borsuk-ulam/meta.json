@@ -163,6 +163,29 @@
       "mathContext": "Borsuk-Ulam bridges topology and combinatorics. Its proof techniques (covering spaces, fundamental groups, equivariant maps) are foundational in algebraic topology. Applications span fair division, graph coloring, computational complexity."
     }
   ],
+  "references": [
+    {
+      "authors": "Borsuk, Karol",
+      "title": "Drei Sätze über die n-dimensionale euklidische Sphäre",
+      "year": "1933",
+      "venue": "Fundamenta Mathematicae 20, pp. 177-190",
+      "note": "Original proof of the Borsuk-Ulam theorem using covering space theory and fundamental groups"
+    },
+    {
+      "authors": "Lovász, László",
+      "title": "Kneser's conjecture, chromatic number, and homotopy",
+      "year": "1978",
+      "venue": "Journal of Combinatorial Theory, Series A, 25, pp. 319-324",
+      "note": "Used Borsuk-Ulam to prove Kneser's conjecture, founding the field of topological combinatorics"
+    },
+    {
+      "authors": "Matoušek, Jiří",
+      "title": "Using the Borsuk-Ulam Theorem",
+      "year": "2003",
+      "venue": "Springer Universitext",
+      "note": "Comprehensive treatment of Borsuk-Ulam applications in combinatorics, geometry, and computer science"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "brouwer-fixed-point",

@@ -12,10 +12,11 @@
     "mathContext": "This connects graph density to cycle structure. The Erdős-Burr conjecture was resolved by Bollobás in 1977.",
     "significance": "critical",
     "relatedConcepts": [
-      "cycle-lengths",
-      "average-degree",
-      "bollobas-1977"
+      "Extremal graph theory",
+      "Average degree and graph density",
+      "Bollobás 1977 theorem"
     ],
+    "prerequisites": ["SimpleGraph", "Fintype", "Arithmetic progressions", "Graph cycles"],
     "tags": [
       "extremal-graph-theory",
       "cycle-structure",
@@ -36,10 +37,11 @@
     "mathContext": "The even condition is necessary because complete bipartite graphs K_{n,n} have arbitrarily high average degree but only even cycles.",
     "significance": "key",
     "relatedConcepts": [
-      "bipartite",
-      "parity",
-      "bondy-simonovits"
+      "Bipartite graphs and parity",
+      "Bondy-Simonovits theorem",
+      "Complete bipartite graphs $K_{n,n}$"
     ],
+    "prerequisites": ["Bipartite graph definition", "Even/Odd parity", "Cycle structure"],
     "tags": [
       "bipartite-graphs",
       "parity-conditions",
@@ -60,10 +62,11 @@
     "mathContext": "The containsEven condition captures when the progression intersects even numbers. If both a is odd and d is even, all terms are odd.",
     "significance": "key",
     "relatedConcepts": [
-      "arithmetic-progression",
-      "parity",
-      "infinite"
+      "Arithmetic progression membership",
+      "Even/Odd parity characterization",
+      "Set.Infinite for unbounded progressions"
     ],
+    "prerequisites": ["Even", "Odd", "Set.Infinite", "Modular arithmetic"],
     "tags": [
       "arithmetic-progressions",
       "number-theory",
@@ -83,10 +86,11 @@
     "mathContext": "The cycle definition requires an injective vertex sequence where consecutive vertices are adjacent, with wraparound.",
     "significance": "critical",
     "relatedConcepts": [
-      "cycle",
-      "average-degree",
-      "edge-count"
+      "Cycle detection via injective vertex sequences",
+      "Average degree $2|E|/|V|$",
+      "Fin.succMod for cyclic indexing"
     ],
+    "prerequisites": ["SimpleGraph.Adj", "Function.Injective", "Fintype.card", "Fin", "SimpleGraph.edgeFinset"],
     "tags": [
       "graph-definitions",
       "cycle-structure",
@@ -107,10 +111,11 @@
     "mathContext": "The constant c depends on a and d, but its optimal form is unknown. This is the main theorem.",
     "significance": "critical",
     "relatedConcepts": [
-      "bollobas",
-      "erdos-burr",
-      "main-theorem"
+      "Bollobás's cycle-forcing theorem",
+      "Erdős-Burr conjecture resolution",
+      "Existential threshold constant $c(P)$"
     ],
+    "prerequisites": ["ArithProg", "containsEven", "avgDegree", "ContainsCycleLength"],
     "tags": [
       "extremal-graph-theory",
       "bollobas-theorem",
@@ -131,10 +136,11 @@
     "mathContext": "This is a direct application of the main theorem to the simplest progression of even numbers.",
     "significance": "key",
     "relatedConcepts": [
-      "verified",
-      "corollary",
-      "even-cycles"
+      "Verified Lean proof",
+      "Instantiation of Bollobás's theorem",
+      "Even cycle forcing"
     ],
+    "prerequisites": ["bollobas_theorem", "ArithProg", "Even", "norm_num"],
     "tags": [
       "verified-theorem",
       "corollary",
@@ -155,10 +161,11 @@
     "mathContext": "The existence of c(P) is proven, but finding the optimal dependence on the progression parameters remains open.",
     "significance": "key",
     "relatedConcepts": [
-      "optimal",
-      "open-question",
-      "bounds"
+      "Optimal constants in extremal graph theory",
+      "Quantitative Turán-type problems",
+      "Constructive vs existential bounds"
     ],
+    "prerequisites": ["bollobas_theorem", "avgDegree", "ArithProg"],
     "tags": [
       "open-problem",
       "optimal-constants",
@@ -178,10 +185,11 @@
     "mathContext": "Bondy-Simonovits is a key tool. The average-to-minimum reduction lets us apply minimum degree results.",
     "significance": "key",
     "relatedConcepts": [
-      "bondy-simonovits",
-      "minimum-degree",
-      "subgraph"
+      "Bondy-Simonovits even cycle theorem",
+      "Minimum degree vs average degree",
+      "Subgraph extraction lemma"
     ],
+    "prerequisites": ["SimpleGraph.neighborFinset", "Finset.filter", "ContainsCycleLength"],
     "tags": [
       "bondy-simonovits",
       "minimum-degree",
@@ -202,10 +210,11 @@
     "mathContext": "This explains WHY the theorem requires P to contain even numbers. Bipartite graphs are the counterexample.",
     "significance": "critical",
     "relatedConcepts": [
-      "bipartite",
-      "odd-cycles",
-      "necessary-condition"
+      "Bipartite graphs and 2-coloring",
+      "Odd cycle obstruction",
+      "Necessity proofs via counterexamples"
     ],
+    "prerequisites": ["SimpleGraph.IsBipartite", "Odd", "ContainsCycleLength", "Complete bipartite graphs"],
     "tags": [
       "bipartite-graphs",
       "necessity-proof",
@@ -226,10 +235,11 @@
     "mathContext": "Another application showing the theorem works for sparser progressions (every 4th even number).",
     "significance": "supporting",
     "relatedConcepts": [
-      "verified",
-      "multiples-of-4",
-      "application"
+      "Verified corollary proof",
+      "Divisibility by 4",
+      "Sparser arithmetic progressions"
     ],
+    "prerequisites": ["bollobas_theorem", "Dvd", "ArithProg"],
     "tags": [
       "verified-theorem",
       "divisibility",
@@ -249,10 +259,11 @@
     "mathContext": "The problem is resolved but the quantitative question (optimal constants) remains open.",
     "significance": "critical",
     "relatedConcepts": [
-      "problem-status",
-      "solved",
-      "open-question"
+      "Solved vs quantitatively open",
+      "Extremal graph theory milestones",
+      "Erdős-Burr program"
     ],
+    "prerequisites": ["Full formalization context"],
     "tags": [
       "problem-summary",
       "solved-problem",

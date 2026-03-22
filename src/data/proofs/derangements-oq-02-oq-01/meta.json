@@ -96,6 +96,13 @@
   },
   "sections": [
     {
+      "id": "header-setup",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 20,
+      "summary": "Documents the open question (generalizing S(n,k) = C(n,k)·D(n-k) from Fin n to arbitrary Fintype α) and imports DerangementsOQ02 for the Fin n result. Opens Finset, Fintype, Nat, and Equiv.Perm namespaces and declares the type variable α with DecidableEq and Fintype instances."
+    },
+    {
       "id": "section-i",
       "title": "Fixed-Point Count Preservation",
       "startLine": 23,

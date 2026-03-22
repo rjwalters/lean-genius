@@ -109,6 +109,25 @@
         "id": "ramseys-theorem",
         "relationship": "Both concern structural properties of graphs under random or extremal processes; Ramsey theory provides related combinatorial bounds"
       }
+    ],
+    "relatedProofs": [
+      {
+        "id": "erdos-1155",
+        "relationship": "parent",
+        "description": "Parent formalization of Erdős Problem #1155; this file extends with exact asymptotic gap analysis between BFL and the conjecture"
+      },
+      {
+        "id": "ramseys-theorem",
+        "relationship": "thematic",
+        "description": "Ramsey theory provides related combinatorial bounds for structural properties of random graphs"
+      }
+    ],
+    "prerequisites": [
+      "Filter-based asymptotics (Filter.Eventually, atTop)",
+      "Real powers (Real.rpow) and their monotonicity properties",
+      "Simple graph theory (SimpleGraph, CliqueFree)",
+      "Topological convergence (Filter.Tendsto, nhds)",
+      "Asymptotic notation (Θ, O, Ω)"
     ]
   },
   "sections": [

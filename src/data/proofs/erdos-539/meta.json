@@ -64,7 +64,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #539 (GCD-Reduced Quotients)**\n\n**Origin:**\nErdős posed this problem in [Er73] (1973), asking about the minimum size of the set { a/gcd(a,b) : a,b ∈ A } over all n-element sets A ⊆ ℕ.\n\n**Key Results:**\n- Erdős-Szemerédi established: n^{1/2} ≪ h(n) ≪ n^{1-c}\n- Freiman-Lev improved the upper bound to n^{2/3}\n- Granville-Roesler provided a geometric reformulation\n\n**Current Status:**\nThe exact behavior of h(n) remains unknown. The true exponent lies between 1/2 and 2/3.",
+    "historicalContext": "Erdős posed Problem #539 in [Er73] (1973), asking about the minimum size of {a/gcd(a,b) : a,b ∈ A} over all n-element sets A ⊆ N. Erdős-Szemerédi established n^{1/2} ≪ h(n) ≪ n^{1-c}, Freiman-Lev improved the upper bound to n^{2/3}, and Granville-Roesler provided a geometric reformulation. The exact behavior of h(n) remains unknown, with the true exponent between 1/2 and 2/3. The study of GCD-reduced quotients connects to the multiplicative structure of integer sets and to Freiman-type theorems in additive combinatorics, which characterize sets with small sumsets as approximate arithmetic progressions. The geometric reformulation by Granville and Roesler relates the problem to lattice point distributions and convex geometry.",
     "problemStatement": "**Problem Statement (Open)**\n\nLet h(n) be such that for any set A ⊆ ℕ of size n, the set\n{ a / gcd(a,b) : a, b ∈ A }\nhas size at least h(n). Estimate h(n).\n\n**Known Bounds:**\n- Lower: h(n) ≫ n^{1/2} (Erdős-Szemerédi)\n- Upper: h(n) ≪ n^{2/3} (Freiman-Lev)\n\nThe gap between 1/2 and 2/3 remains open.",
     "proofStrategy": "**Formalization Approach**\n\n1. **GCD Quotient:** gcdQuotient a b = a / gcd(a,b)\n\n2. **Quotient Set:** gcdQuotientSet A = { gcdQuotient a b : a,b ∈ A }\n\n3. **The Function:** h(n) = infimum of quotient set sizes\n\n4. **Lower Bound:** erdos_szemeredi_lower (n^{1/2})\n\n5. **Upper Bounds:** erdos_szemeredi_upper (n^{1-c}), freiman_lev_upper (n^{2/3})\n\n6. **Examples:** APs and GPs have specific quotient set sizes\n\n7. **Geometric View:** Granville-Roesler reformulation",
     "keyInsights": [
@@ -81,42 +81,48 @@
       "title": "Problem Overview and Imports",
       "startLine": 1,
       "endLine": 33,
-      "summary": "Documentation header describing the problem, imports from Mathlib"
+      "summary": "Documentation header describing the problem, imports from Mathlib",
+      "mathContext": "For $A \\subseteq \\mathbb{N}$ with $|A| = n$, define $Q(A) = \\{a/\\gcd(a,b) : a, b \\in A\\}$. The function $h(n) = \\min_{|A|=n} |Q(A)|$ measures the minimum quotient set size."
     },
     {
       "id": "definitions",
       "title": "GCD Quotient Definitions",
       "startLine": 35,
       "endLine": 95,
-      "summary": "Core definitions: gcdQuotient, gcdQuotientSet, gcdQuotientSize, h(n), and basic properties"
+      "summary": "Core definitions: gcdQuotient, gcdQuotientSet, gcdQuotientSize, h(n), and basic properties",
+      "mathContext": "$\\text{gcdQuotient}(a, b) = a / \\gcd(a, b)$ extracts the coprime part of $a$ relative to $b$. The quotient set $Q(A) = \\{a/\\gcd(a,b) : a, b \\in A\\}$ always contains 1 (since $a/\\gcd(a,a) = 1$)."
     },
     {
       "id": "bounds",
       "title": "Erdős-Szemerédi and Freiman-Lev Bounds",
       "startLine": 96,
       "endLine": 135,
-      "summary": "The main asymptotic bounds: n^{1/2} ≪ h(n) ≪ n^{2/3}"
+      "summary": "The main asymptotic bounds: $n^{1/2} \\ll h(n) \\ll n^{2/3}$",
+      "mathContext": "Erdős-Szemerédi: $\\exists c_1, c_2 > 0$ such that $c_1 n^{1/2} \\le h(n) \\le c_2 n^{1-c}$ for some $c > 0$. Freiman-Lev improved the upper bound: $h(n) \\ll n^{2/3}$."
     },
     {
       "id": "examples",
       "title": "Examples: APs and GPs",
       "startLine": 137,
       "endLine": 159,
-      "summary": "Quotient set sizes for arithmetic and geometric progressions"
+      "summary": "Quotient set sizes for arithmetic and geometric progressions",
+      "mathContext": "For an AP $\\{a, a+d, \\ldots, a+(n-1)d\\}$: $|Q(A)| \\sim n$. For a GP $\\{1, p, p^2, \\ldots\\}$ with prime $p$: $|Q(A)| = 2n-1$ (all powers $p^j$ for $|j| < n$)."
     },
     {
       "id": "structure",
       "title": "Matrix and Geometric Views",
       "startLine": 161,
       "endLine": 213,
-      "summary": "GCD/quotient matrices, Granville-Roesler reformulation, extremal structure"
+      "summary": "GCD/quotient matrices, Granville-Roesler reformulation, extremal structure",
+      "mathContext": "The GCD matrix $G_{ij} = \\gcd(a_i, a_j)$ and quotient matrix $Q_{ij} = a_i/\\gcd(a_i, a_j)$ encode the divisibility structure. Granville-Roesler reformulate via lattice points in dilated simplices."
     },
     {
       "id": "open",
       "title": "Open Questions and Summary",
       "startLine": 215,
       "endLine": 267,
-      "summary": "The main open question about the true exponent and summary results"
+      "summary": "The main open question about the true exponent $\\alpha$ in $h(n) = \\Theta(n^\\alpha)$ and summary of all results",
+      "mathContext": "The central open question: is $h(n) = \\Theta(n^\\alpha)$ for some $\\alpha \\in [1/2, 2/3]$? If so, what is $\\alpha$?"
     }
   ],
   "conclusion": {
