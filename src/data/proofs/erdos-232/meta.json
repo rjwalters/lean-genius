@@ -179,5 +179,24 @@
       "What are the analogous optimal densities $m_d$ in dimensions $d \\geq 3$?",
       "Does the relationship $m_1 = 1/\\chi(\\mathbb{R}^2)$ hold exactly, or is there a strict gap?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.EuclideanDist",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.MeasureTheory.Measure.MeasureSpace",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Analysis.Normed.Group.Basic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Set",
+      "Metric"
+    ],
+    "namespace": "Erdos232",
+    "lineCount": 334,
+    "axiomCount": 9,
+    "theoremCount": 11,
+    "definitionCount": 8
   }
 }

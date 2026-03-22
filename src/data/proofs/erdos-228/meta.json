@@ -129,5 +129,20 @@
       "What is the rate of convergence to the asymptotic bounds?",
       "Are there generalizations to polynomials with other coefficient sets?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Complex",
+      "Polynomial",
+      "Filter"
+    ],
+    "namespace": "Erdos228",
+    "lineCount": 162,
+    "axiomCount": 4,
+    "theoremCount": 3,
+    "definitionCount": 4
   }
 }

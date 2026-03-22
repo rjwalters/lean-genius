@@ -136,5 +136,20 @@
         "relationship": "Related Erdős problem on polynomials with restricted coefficient sets."
       }
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Complex",
+      "Polynomial",
+      "Filter"
+    ],
+    "namespace": "Erdos1150",
+    "lineCount": 208,
+    "axiomCount": 5,
+    "theoremCount": 4,
+    "definitionCount": 4
   }
 }

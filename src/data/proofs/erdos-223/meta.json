@@ -154,5 +154,23 @@
       "Analogues for other distance problems (unit distance, minimum distance)?",
       "Algorithmic complexity of computing f_d(n)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Analysis.NormedSpace.Basic",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Algebra.Order.Floor.Div"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos223",
+    "lineCount": 278,
+    "axiomCount": 14,
+    "theoremCount": 4,
+    "definitionCount": 14
   }
 }

@@ -114,5 +114,21 @@
       "What happens at the critical threshold β = log 3 - 1 exactly?",
       "Can the techniques extend to other divisor proximity measures?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Divisors",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.Asymptotics.Asymptotics",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Erdos144",
+    "lineCount": 189,
+    "axiomCount": 5,
+    "theoremCount": 2,
+    "definitionCount": 10
   }
 }

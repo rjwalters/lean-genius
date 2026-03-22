@@ -142,5 +142,22 @@
       "What are the exact values of R(3,k) for small k beyond k=9?",
       "Complete the sorry-marked proof in R3_asymptotic_order"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "Erdos165",
+    "lineCount": 188,
+    "axiomCount": 4,
+    "theoremCount": 2,
+    "definitionCount": 3
   }
 }

@@ -147,5 +147,20 @@
       "Fill in the three sorry placeholders: rademacher_values_pm1 (induction on prime factorization), atherfold_implies_subpolynomial (asymptotic analysis), partialSum_trivial_bound (triangle inequality with Finset.sum_abs)",
       "Construct the full product probability space over prime choices to state the probabilistic version precisely"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Nat.Prime.Basic"
+    ],
+    "opens": [
+      "Filter",
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 186,
+    "axiomCount": 1,
+    "theoremCount": 8,
+    "definitionCount": 5
   }
 }

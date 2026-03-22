@@ -103,5 +103,22 @@
       "Can the Kelley–Meka exponent $1/9$ (or the original $1/12$) be improved for this specific problem?",
       "How does $h(N)$ compare to the analogous function for 5-APs or general $k$-APs with $\\ge (k-1)$ color diversity?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos160",
+    "lineCount": 226,
+    "axiomCount": 7,
+    "theoremCount": 12,
+    "definitionCount": 5
   }
 }

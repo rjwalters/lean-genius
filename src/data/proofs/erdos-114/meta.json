@@ -126,5 +126,19 @@
       "What is the second-largest lemniscate length? Are there near-maximizers with different symmetry groups?",
       "Can any of the axiomatized results (lemniscate length positivity, Danchenko bound, Gamma-function formula) be verified in Lean using Mathlib's complex analysis library?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Complex.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Polynomial.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 114,
+    "axiomCount": 14,
+    "theoremCount": 0,
+    "definitionCount": 1
   }
 }

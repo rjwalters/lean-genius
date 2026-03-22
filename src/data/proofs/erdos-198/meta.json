@@ -107,5 +107,20 @@
       "Can similar results be proved for higher-order sum-free sets?",
       "What about finite APs of length k? Must Sidon sets miss some k-AP?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Function",
+      "ENNReal"
+    ],
+    "namespace": "Erdos198",
+    "lineCount": 159,
+    "axiomCount": 5,
+    "theoremCount": 2,
+    "definitionCount": 7
   }
 }

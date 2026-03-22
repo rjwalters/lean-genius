@@ -109,5 +109,24 @@
       "Can the Kreisel-Kurz construction be extended?",
       "What is the optimal exponent in the sparsity bound O((log N)^C)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.EuclideanDist",
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Data.Set.Pairwise.Basic",
+      "Mathlib.Analysis.Normed.Group.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Set",
+      "Function",
+      "EuclideanSpace"
+    ],
+    "namespace": "Erdos213",
+    "lineCount": 158,
+    "axiomCount": 7,
+    "theoremCount": 4,
+    "definitionCount": 9
   }
 }

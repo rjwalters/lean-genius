@@ -123,5 +123,22 @@
       "Can the flag algebras proof be simplified or made fully constructive?",
       "What about weighted versions of the problem?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Fintype.Card"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos24",
+    "lineCount": 262,
+    "axiomCount": 6,
+    "theoremCount": 4,
+    "definitionCount": 6
   }
 }

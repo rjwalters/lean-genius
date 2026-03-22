@@ -150,5 +150,25 @@
       "Generalization to multivariate interpolation",
       "Optimal rational interpolation nodes"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Polynomials.Chebyshev",
+      "Mathlib.Topology.ContinuousFunction.Compact",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Analysis.NormedSpace.Basic",
+      "Mathlib.Order.Bounds.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "Real"
+    ],
+    "namespace": "Erdos1129",
+    "lineCount": 375,
+    "axiomCount": 9,
+    "theoremCount": 6,
+    "definitionCount": 10
   }
 }

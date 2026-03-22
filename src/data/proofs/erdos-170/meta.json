@@ -116,5 +116,21 @@
       "What is the best unrestricted ruler asymptotically?",
       "Can Wichmann's construction be improved?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Nat",
+      "Filter",
+      "Finset"
+    ],
+    "namespace": "Erdos170",
+    "lineCount": 162,
+    "axiomCount": 9,
+    "theoremCount": 4,
+    "definitionCount": 7
   }
 }

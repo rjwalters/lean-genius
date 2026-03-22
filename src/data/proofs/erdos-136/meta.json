@@ -130,5 +130,21 @@
       "What are the asymptotics for general f(n,p,q)?",
       "Can the hypergraph matching technique extend to other Ramsey problems?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos136",
+    "lineCount": 206,
+    "axiomCount": 8,
+    "theoremCount": 3,
+    "definitionCount": 6
   }
 }

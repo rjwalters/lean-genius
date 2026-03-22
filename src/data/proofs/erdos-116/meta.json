@@ -101,5 +101,20 @@
       "Do analogous results hold for polynomials with roots constrained to the unit circle $|z_i| = 1$ rather than the closed disk?",
       "Can the measure lower bound be strengthened if additional constraints are placed on the root distribution, such as requiring roots to be real or equally spaced?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Complex.Circle",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 99,
+    "axiomCount": 6,
+    "theoremCount": 0,
+    "definitionCount": 3
   }
 }

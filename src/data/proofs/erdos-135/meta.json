@@ -109,5 +109,21 @@
       "Can the construction be made deterministic?",
       "What about higher dimensions or different forbidden patterns?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Finset",
+      "Metric",
+      "Real"
+    ],
+    "namespace": "Erdos135",
+    "lineCount": 392,
+    "axiomCount": 5,
+    "theoremCount": 5,
+    "definitionCount": 11
   }
 }

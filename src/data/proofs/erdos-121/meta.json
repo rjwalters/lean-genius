@@ -80,5 +80,19 @@
       "What is the exact asymptotic of F_5(N)?",
       "Is F_k(N)/N monotone in k for k ≥ 4?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 97,
+    "axiomCount": 7,
+    "theoremCount": 0,
+    "definitionCount": 4
   }
 }

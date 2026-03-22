@@ -120,5 +120,21 @@
       "Does Σ(-1)^n/(n · g_n) converge? (Erdős's open gap conjecture)",
       "Is there a connection to the Riemann Hypothesis or other zeta-function conjectures?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "BigOperators",
+      "Nat",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "Erdos15",
+    "lineCount": 272,
+    "axiomCount": 11,
+    "theoremCount": 0,
+    "definitionCount": 8
   }
 }

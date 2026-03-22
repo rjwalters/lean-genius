@@ -163,5 +163,19 @@
       "What are the optimal colorings for small values of $d$ (e.g., $d = 2, 3, 4$)?",
       "Can Tao's entropy decrement argument for the homogeneous case yield improved bounds here?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [],
+    "namespace": "Erdos177",
+    "lineCount": 171,
+    "axiomCount": 3,
+    "theoremCount": 9,
+    "definitionCount": 6
   }
 }

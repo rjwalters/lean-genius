@@ -140,5 +140,22 @@
       "Connection to related Erdős Problem #789?",
       "Algorithmic aspects of finding large non-averaging sets?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "Erdos186",
+    "lineCount": 277,
+    "axiomCount": 9,
+    "theoremCount": 6,
+    "definitionCount": 3
   }
 }

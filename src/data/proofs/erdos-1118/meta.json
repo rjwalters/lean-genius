@@ -187,5 +187,25 @@
       "Can the growth integral criterion be refined to give quantitative bounds on $\\lambda(E(c))$ as a function of $c$?",
       "What is the Hausdorff dimension of the boundary $\\partial E(c)$ for typical entire functions?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.Complex.Basic",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Complex",
+      "Real",
+      "MeasureTheory",
+      "Set"
+    ],
+    "namespace": "Erdos1118",
+    "lineCount": 277,
+    "axiomCount": 12,
+    "theoremCount": 7,
+    "definitionCount": 13
   }
 }

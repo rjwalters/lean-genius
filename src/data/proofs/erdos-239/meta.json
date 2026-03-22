@@ -163,5 +163,24 @@
       "Computational aspects of mean values",
       "Higher moment behavior"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Nat",
+      "Real",
+      "BigOperators",
+      "Finset"
+    ],
+    "namespace": "Erdos239",
+    "lineCount": 296,
+    "axiomCount": 11,
+    "theoremCount": 10,
+    "definitionCount": 13
   }
 }

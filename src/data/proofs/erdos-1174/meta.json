@@ -134,5 +134,21 @@
       "Is the answer to part (a) or (b) independent of ZFC, or can a constructive example be given?",
       "What is the relationship between the finite-color partition strength of K₄-free graphs and the countable-color question?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Ordinal"
+    ],
+    "opens": [
+      "Cardinal",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos1174",
+    "lineCount": 243,
+    "axiomCount": 2,
+    "theoremCount": 1,
+    "definitionCount": 10
   }
 }

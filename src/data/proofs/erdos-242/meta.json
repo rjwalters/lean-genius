@@ -129,5 +129,19 @@
       "Does Schinzel's generalization hold for all a ≥ 1?",
       "What is the growth rate of the smallest required z as a function of n?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Filter"
+    ],
+    "namespace": "Erdos242",
+    "lineCount": 187,
+    "axiomCount": 6,
+    "theoremCount": 5,
+    "definitionCount": 3
   }
 }

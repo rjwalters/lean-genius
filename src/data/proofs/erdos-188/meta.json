@@ -197,5 +197,24 @@
       "relationship": "foundational",
       "note": "Ramsey's theorem is the combinatorial foundation underlying Euclidean Ramsey theory; van der Waerden's theorem (axiomatized here) is its arithmetic analogue"
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Metric"
+    ],
+    "namespace": "Erdos188",
+    "lineCount": 202,
+    "axiomCount": 5,
+    "theoremCount": 5,
+    "definitionCount": 13
+  },
+  "relatedProofs": [
+    "",
+    "",
+    ""
   ]
 }

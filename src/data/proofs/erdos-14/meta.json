@@ -102,5 +102,22 @@
       "What is the true exponent in the lower bound? The gap between the ESS bounds ($1/3$ from below, $1/2$ from above) leaves room for the answer to lie anywhere in $(1/3, 1/2]$.",
       "Is the Erdős-Freud constant $2^{3/2}$ optimal for the finite analogue? What is the extremal set achieving this bound?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Asymptotics.Asymptotics",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Filter",
+      "Asymptotics"
+    ],
+    "namespace": null,
+    "lineCount": 104,
+    "axiomCount": 7,
+    "theoremCount": 0,
+    "definitionCount": 4
   }
 }

@@ -145,5 +145,24 @@
       "Study f_k(n) for k ≥ 2",
       "Algorithmic aspects: efficiently construct optimal families?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SetFamily.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "Set"
+    ],
+    "namespace": "Erdos21",
+    "lineCount": 320,
+    "axiomCount": 22,
+    "theoremCount": 2,
+    "definitionCount": 8
   }
 }

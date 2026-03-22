@@ -145,5 +145,21 @@
   "relatedProofs": [
     "erdos-1094",
     "erdos-112"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Cardinal",
+      "Ordinal"
+    ],
+    "namespace": "Erdos1173",
+    "lineCount": 168,
+    "axiomCount": 4,
+    "theoremCount": 0,
+    "definitionCount": 11
+  }
 }

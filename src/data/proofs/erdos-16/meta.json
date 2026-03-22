@@ -183,5 +183,19 @@
     "erdos-205",
     "infinitude-primes",
     "prime-number-theorem"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos16",
+    "lineCount": 278,
+    "axiomCount": 14,
+    "theoremCount": 0,
+    "definitionCount": 10
+  }
 }

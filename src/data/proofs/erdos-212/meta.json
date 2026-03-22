@@ -107,5 +107,18 @@
       "Are there infinite rational distance sets on specific algebraic curves?",
       "What happens in higher dimensions (rational distances in ℝ³, ℝ⁴, etc.)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set"
+    ],
+    "namespace": "Erdos212",
+    "lineCount": 140,
+    "axiomCount": 4,
+    "theoremCount": 2,
+    "definitionCount": 3
   }
 }

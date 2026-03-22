@@ -109,5 +109,20 @@
       "What is the minimum $N$ such that every permutation of $\\{1, \\ldots, N\\}$ contains a monotone 4-AP?",
       "Does the non-extendability constraint eventually lead to a density contradiction?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Logic.Equiv.Basic",
+      "Mathlib.Order.Monotone.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Function"
+    ],
+    "namespace": null,
+    "lineCount": 146,
+    "axiomCount": 7,
+    "theoremCount": 2,
+    "definitionCount": 8
   }
 }

@@ -111,5 +111,19 @@
       "Are there exactly 7 all-prime numbers?",
       "What is the precise asymptotic behavior of f(n) on average?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Asymptotics",
+      "Filter"
+    ],
+    "namespace": "Erdos236",
+    "lineCount": 177,
+    "axiomCount": 7,
+    "theoremCount": 8,
+    "definitionCount": 4
   }
 }

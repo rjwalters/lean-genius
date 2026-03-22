@@ -146,5 +146,24 @@
       "What is the exact growth rate of N(k, 2)?",
       "Can probabilistic methods improve upper bounds?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Data.Nat.Prime.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos176",
+    "lineCount": 312,
+    "axiomCount": 8,
+    "theoremCount": 6,
+    "definitionCount": 12
   }
 }

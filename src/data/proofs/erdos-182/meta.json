@@ -141,5 +141,20 @@
       "Algorithmic aspects: efficiently finding k-regular subgraphs in dense graphs",
       "Extensions to hypergraphs or directed graphs"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos182",
+    "lineCount": 225,
+    "axiomCount": 14,
+    "theoremCount": 0,
+    "definitionCount": 6
   }
 }

@@ -130,5 +130,18 @@
       "Can Adenwalla's construction be improved to avoid 4-term MAPs?",
       "What is the answer for other groups (e.g., ℤ²)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos195",
+    "lineCount": 135,
+    "axiomCount": 3,
+    "theoremCount": 4,
+    "definitionCount": 9
   }
 }

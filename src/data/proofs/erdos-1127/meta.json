@@ -134,5 +134,23 @@
       "Are there weaker set-theoretic hypotheses that suffice?",
       "What is the relationship to other distance problems (unit distance, distinct distances)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Data.Set.Countable",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.SetTheory.Cardinal.Basic"
+    ],
+    "opens": [
+      "Set",
+      "Cardinal"
+    ],
+    "namespace": "Erdos1127",
+    "lineCount": 310,
+    "axiomCount": 10,
+    "theoremCount": 3,
+    "definitionCount": 8
   }
 }

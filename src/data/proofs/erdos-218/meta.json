@@ -134,5 +134,25 @@
       "Can sieve methods or the Green-Tao machinery be adapted to consecutive primes?",
       "What is the distribution of $d_{n+1}/d_n$? Is it concentrated near 1 (as Cramér predicts)?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Order.Filter.AtTopBot",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Topology.Algebra.Order.LiminfLimsup",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Set",
+      "Filter"
+    ],
+    "namespace": "Erdos218",
+    "lineCount": 341,
+    "axiomCount": 22,
+    "theoremCount": 5,
+    "definitionCount": 12
   }
 }

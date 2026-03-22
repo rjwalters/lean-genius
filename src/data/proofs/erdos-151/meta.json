@@ -118,5 +118,19 @@
       "Does the conjecture hold for K₄-free graphs?",
       "Is the conjecture 'completely wrongheaded' as Erdős suggested?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Erdos151",
+    "lineCount": 195,
+    "axiomCount": 18,
+    "theoremCount": 6,
+    "definitionCount": 2
   }
 }

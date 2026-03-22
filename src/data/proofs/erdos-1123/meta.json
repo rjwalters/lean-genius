@@ -120,5 +120,20 @@
       "Classification of P(ω)/I for other natural ideals",
       "Connections to forcing and cardinal characteristics"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Order.BooleanAlgebra",
+      "Mathlib.Topology.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos1123",
+    "lineCount": 127,
+    "axiomCount": 6,
+    "theoremCount": 1,
+    "definitionCount": 5
   }
 }

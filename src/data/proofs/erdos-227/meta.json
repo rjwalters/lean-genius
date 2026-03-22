@@ -160,5 +160,25 @@
     ]
   },
   "crossReferences": [],
-  "relatedProofs": []
+  "relatedProofs": [],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Complex.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Complex",
+      "Mathlib.Analysis.Normed.Field.Basic",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Order.Filter.Basic"
+    ],
+    "opens": [
+      "Complex",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "Erdos227",
+    "lineCount": 241,
+    "axiomCount": 8,
+    "theoremCount": 5,
+    "definitionCount": 9
+  }
 }

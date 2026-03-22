@@ -93,5 +93,20 @@
       "What is the correct interpretation of the problem given Girão's ambiguity observation?",
       "Can the five axiomatized properties be proved from Mathlib once embedding lemmas are available?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Fin.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 98,
+    "axiomCount": 6,
+    "theoremCount": 0,
+    "definitionCount": 6
   }
 }

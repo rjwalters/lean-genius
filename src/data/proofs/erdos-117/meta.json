@@ -139,5 +139,19 @@
       "What is the relationship between h(n) and the breadth or nilpotency class of groups with the n-commuting property?",
       "Does h(n) have a natural generating function or satisfy a recurrence relation?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.Subgroup.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 80,
+    "axiomCount": 4,
+    "theoremCount": 0,
+    "definitionCount": 3
   }
 }

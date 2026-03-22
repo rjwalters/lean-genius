@@ -173,5 +173,26 @@
   "relatedProofs": [
     "erdos-140",
     "erdos-180"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Fintype.Card",
+      "Mathlib.Data.Fin.Basic",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Data.Fin.VecNotation",
+      "Mathlib.Analysis.Asymptotics.Defs",
+      "Mathlib.Analysis.Asymptotics.Lemmas",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Topology.Algebra.Order.LiminfLimsup"
+    ],
+    "opens": [
+      "Asymptotics",
+      "Filter"
+    ],
+    "namespace": "Erdos185",
+    "lineCount": 1113,
+    "axiomCount": 5,
+    "theoremCount": 73,
+    "definitionCount": 29
+  }
 }

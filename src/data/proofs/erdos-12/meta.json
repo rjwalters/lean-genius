@@ -175,5 +175,21 @@
       "What is the optimal bound for non-coprime divisibility-free sets? Is the truth closer to √N or to N^{2/3}?",
       "Can the quadratic residue construction be extended? What about cubes of primes ≡ 5 (mod 8), or higher prime powers with specific residue conditions?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Set",
+      "Filter"
+    ],
+    "namespace": null,
+    "lineCount": 296,
+    "axiomCount": 6,
+    "theoremCount": 7,
+    "definitionCount": 13
   }
 }

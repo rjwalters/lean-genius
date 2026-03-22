@@ -232,5 +232,23 @@
     "erdos-205",
     "erdos-4",
     "bertrands-postulate"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Set"
+    ],
+    "namespace": "Erdos240",
+    "lineCount": 289,
+    "axiomCount": 11,
+    "theoremCount": 5,
+    "definitionCount": 5
+  }
 }

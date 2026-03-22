@@ -166,5 +166,21 @@
       "Extensions to k-wise intersections (Erdős-Füredi generalization)",
       "Algorithmic aspects: finding optimal colorings efficiently"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Function",
+      "Set",
+      "BigOperators"
+    ],
+    "namespace": "Erdos19",
+    "lineCount": 302,
+    "axiomCount": 16,
+    "theoremCount": 2,
+    "definitionCount": 6
   }
 }

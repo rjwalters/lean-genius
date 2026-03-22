@@ -151,5 +151,19 @@
       "id": "erdos-1138",
       "relationship": "Parent formalization that this OQ-03 extends by resolving sorries and axioms"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Set"
+    ],
+    "namespace": "Erdos1138OQ03",
+    "lineCount": 229,
+    "axiomCount": 1,
+    "theoremCount": 12,
+    "definitionCount": 2
+  }
 }

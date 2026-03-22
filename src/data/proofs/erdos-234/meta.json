@@ -131,5 +131,34 @@
     "prime-number-theorem",
     "bertrands-postulate",
     "twin-primes-special"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Nth",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
+      "Mathlib.Topology.Order.Basic",
+      "Mathlib.Topology.Algebra.Order.LiminfLimsup",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Order.Filter.AtTopBot",
+      "Mathlib.Tactic",
+      "Proofs.RiemannHypothesis"
+    ],
+    "opens": [
+      "Nat",
+      "Filter",
+      "Real",
+      "Set"
+    ],
+    "namespace": null,
+    "lineCount": 248,
+    "axiomCount": 5,
+    "theoremCount": 16,
+    "definitionCount": 8
+  }
 }

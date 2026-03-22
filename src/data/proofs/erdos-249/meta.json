@@ -185,5 +185,21 @@
     "infinitude-primes",
     "erdos-23",
     "basel-problem"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.NumberTheory.Real.Irrational",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+      "Mathlib.Topology.Algebra.InfiniteSum.Order",
+      "Mathlib.Analysis.SpecificLimits.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Erdos249",
+    "lineCount": 193,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 4
+  }
 }

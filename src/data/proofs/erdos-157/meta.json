@@ -118,5 +118,20 @@
       "What is the smallest order k such that every infinite Sidon set is NOT an order-k basis?",
       "Are there natural number-theoretic Sidon sets (like primes of special form) that are order-3 bases?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos157",
+    "lineCount": 180,
+    "axiomCount": 2,
+    "theoremCount": 5,
+    "definitionCount": 7
   }
 }

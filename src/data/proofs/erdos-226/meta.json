@@ -194,5 +194,23 @@
   "relatedProofs": [
     "dirichlets-theorem",
     "abel-ruffini"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Complex.Basic",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Data.Set.Countable",
+      "Mathlib.Topology.Order.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Complex",
+      "Set"
+    ],
+    "namespace": "Erdos226",
+    "lineCount": 290,
+    "axiomCount": 4,
+    "theoremCount": 6,
+    "definitionCount": 8
+  }
 }

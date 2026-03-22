@@ -102,5 +102,18 @@
       "Does the result extend to $\\mathbb{Z}^d$ for all $d \\geq 3$, or is there a dimension threshold?",
       "Can the Gerver–Ramsey pigeonhole argument be generalized using higher-dimensional direction counting?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 81,
+    "axiomCount": 2,
+    "theoremCount": 2,
+    "definitionCount": 5
   }
 }

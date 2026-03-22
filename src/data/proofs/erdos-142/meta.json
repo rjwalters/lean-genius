@@ -136,5 +136,19 @@
       "Is there a Behrend-type construction for k ≥ 4 giving r_k(N) ≥ N · exp(-C_k (log N)^{1/(k-1)})?",
       "Does the inverse theorem for Gowers U^{k-1} norms yield effective quantitative bounds for general k?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Order.Filter.Basic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 103,
+    "axiomCount": 8,
+    "theoremCount": 0,
+    "definitionCount": 3
   }
 }

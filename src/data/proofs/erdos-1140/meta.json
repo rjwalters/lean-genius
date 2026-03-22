@@ -131,5 +131,16 @@
       "Is AllShiftsArePrime decidable for individual n? (Yes: finite check. But is the finiteness of the full set decidable without Epure-Gica?)",
       "What is the connection to Bunyakovsky's conjecture? If n - 2x² represents infinitely many primes for fixed n, what is the density of primes represented?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "Erdos1140",
+    "lineCount": 201,
+    "axiomCount": 3,
+    "theoremCount": 18,
+    "definitionCount": 2
   }
 }
