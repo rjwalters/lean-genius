@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-roth-apfree-def",
+    "proofId": "roth-theorem-k3",
+    "range": { "startLine": 25, "endLine": 26 },
+    "type": "definition",
+    "title": "AP-Free Sets",
+    "content": "Defines `APFree A` for $A \\subseteq \\mathbb{Z}/N\\mathbb{Z}$: no three elements $a, a+d, a+2d$ with $d \\ne 0$ all belong to $A$. Working in $\\mathbb{Z}/N\\mathbb{Z}$ (cyclic group) rather than $[N]$ simplifies the Fourier analysis since the Pontryagin dual is $\\mathbb{Z}/N\\mathbb{Z}$ itself. The condition $d \\ne 0$ excludes degenerate constant progressions.",
+    "mathContext": "$A \\text{ is AP-free} \\iff \\forall a, d \\in \\mathbb{Z}/N\\mathbb{Z},\\; d \\ne 0 \\implies \\neg(a \\in A \\land a+d \\in A \\land a+2d \\in A)$",
+    "significance": "key",
+    "relatedConcepts": ["arithmetic progressions", "cap sets", "Salem-Spencer sets", "Behrend construction"],
+    "prerequisites": ["ZMod", "Finset"]
+  },
+  {
+    "id": "ann-roth-apfree-basic",
+    "proofId": "roth-theorem-k3",
+    "range": { "startLine": 29, "endLine": 39 },
+    "type": "context",
+    "title": "Base Cases: Empty and Singleton",
+    "content": "Proves that the empty set and singletons are AP-free. For the empty set, no element belongs to $\\emptyset$. For singletons $\\{x\\}$, if $a = x$ and $a + d = x$, then $d = 0$, contradicting $d \\ne 0$. These base cases anchor the inductive density argument: the iteration must terminate because density cannot exceed 1 on any subprogression.",
+    "mathContext": "$\\emptyset$ and $\\{x\\}$ are AP-free",
+    "significance": "supporting",
+    "relatedConcepts": ["base cases", "vacuous truth", "trivial sets"],
+    "prerequisites": ["Finset.not_mem_empty", "Finset.mem_singleton"]
+  },
+  {
+    "id": "ann-roth-fourier-coeff",
+    "proofId": "roth-theorem-k3",
+    "range": { "startLine": 49, "endLine": 50 },
+    "type": "definition",
+    "title": "Fourier Coefficients",
+    "content": "Defines the Fourier coefficient $\\hat{1}_A(r) = \\sum_{x \\in A} e^{2\\pi i r x / N}$ using complex exponentials. This is the discrete Fourier transform of the characteristic function $1_A$ on $\\mathbb{Z}/N\\mathbb{Z}$. The key property (proved in `fourier_large_coefficient`) is that AP-free sets must have a large non-trivial Fourier coefficient, revealing hidden additive structure.",
+    "mathContext": "$\\hat{1}_A(r) = \\sum_{x \\in A} \\omega^{rx}, \\quad \\omega = e^{2\\pi i/N}$",
+    "significance": "key",
+    "relatedConcepts": ["discrete Fourier transform", "characters of finite abelian groups", "Pontryagin duality", "Parseval's identity"],
+    "prerequisites": ["Complex.exp", "ZMod.val", "Finset.sum"]
+  },
+  {
+    "id": "ann-roth-large-coeff",
+    "proofId": "roth-theorem-k3",
+    "range": { "startLine": 54, "endLine": 58 },
+    "type": "insight",
+    "title": "Large Fourier Coefficient from AP-Free Density",
+    "content": "States the key analytic step: if $A$ has density $\\delta$ and no 3-AP, then there exists a non-trivial frequency $r \\ne 0$ with $|\\hat{1}_A(r)| \\ge \\delta^2 N / 2$. The proof would use the 3-AP counting formula $\\Lambda_3(A) = N^{-1} \\sum_r |\\hat{1}_A(r)|^2 \\hat{1}_A(-2r)$. If $\\Lambda_3 = 0$ (no 3-APs) and $|\\hat{1}_A(0)| = |A| = \\delta N$, then by Parseval some non-trivial coefficient must be large to absorb the $\\delta^3 N^2$ contribution from $r = 0$.",
+    "mathContext": "$\\text{APFree}(A),\\; |A| \\ge \\delta N \\implies \\exists r \\ne 0 : |\\hat{1}_A(r)| \\ge \\frac{\\delta^2 N}{2}$",
+    "significance": "key",
+    "relatedConcepts": ["Parseval's identity", "3-AP counting formula", "uniformity norms", "Gowers norms"],
+    "prerequisites": ["fourierCoeff", "APFree", "Complex.abs"]
+  },
+  {
+    "id": "ann-roth-density-increment",
+    "proofId": "roth-theorem-k3",
+    "range": { "startLine": 67, "endLine": 73 },
+    "type": "insight",
+    "title": "Density Increment Lemma",
+    "content": "States the core inductive step: if $A$ has density $\\delta$ and no 3-AP in $\\mathbb{Z}/N\\mathbb{Z}$, then there exists a subprogression of length $\\ge \\sqrt{N}$ where $A$ has density $\\ge \\delta + \\delta^2/100$. The proof would convert a large Fourier coefficient into a density increment on an arithmetic subprogression using a standard argument: the large coefficient witnesses correlation with a character, which localizes density to a coset. The increment $\\delta^2/100$ ensures termination after $O(1/\\delta)$ steps.",
+    "mathContext": "$\\text{APFree}(A),\\; |A| \\ge \\delta N \\implies \\exists M \\ge \\sqrt{N},\\; B \\subseteq \\mathbb{Z}/M\\mathbb{Z} : |B| \\ge (\\delta + \\delta^2/100) M$",
+    "significance": "key",
+    "relatedConcepts": ["density increment", "Bogolyubov's method", "Freiman's theorem", "energy increment"],
+    "prerequisites": ["fourier_large_coefficient", "APFree", "Nat.sqrt"]
+  },
+  {
+    "id": "ann-roth-main-theorem",
+    "proofId": "roth-theorem-k3",
+    "range": { "startLine": 87, "endLine": 90 },
+    "type": "insight",
+    "title": "Roth's Theorem: r₃(N) = o(N)",
+    "content": "States the main result: for every $\\delta > 0$, every sufficiently large AP-free subset of $\\mathbb{Z}/N\\mathbb{Z}$ has density less than $\\delta$. The proof would iterate `density_increment_lemma`: starting with density $\\delta$, each step increases density by $\\delta^2/100$ on a subprogression of length $\\ge \\sqrt{N}$. After $\\lceil 100/\\delta \\rceil$ steps, the density exceeds 1, which is impossible, so the set cannot be AP-free. The subprogression length decreases by square roots, requiring $N$ to be at least a tower of exponentials in $1/\\delta$.",
+    "mathContext": "$\\forall \\delta > 0,\\; \\exists N_0 : N \\ge N_0 \\implies |A| \\ge \\delta N \\implies A \\text{ contains a 3-AP}$",
+    "significance": "key",
+    "relatedConcepts": ["Szemerédi's theorem", "van der Waerden's theorem", "Hales-Jewett theorem", "Kelley-Meka bound"],
+    "prerequisites": ["density_increment_lemma", "APFree"]
+  }
+]

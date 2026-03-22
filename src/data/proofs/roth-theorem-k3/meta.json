@@ -59,43 +59,57 @@
   "sections": [
     {
       "id": "introduction",
-      "title": "Module Docstring and Imports",
+      "title": "Module Overview",
       "startLine": 1,
-      "endLine": 16,
-      "summary": "Overview of Roth's theorem formalization covering AP-free set definitions, Fourier analysis framework, density increment lemma, and the main r_3(N) = o(N) result.",
-      "mathContext": "Every dense subset of [N] contains a 3-term arithmetic progression."
+      "endLine": 17,
+      "summary": "Module docstring and imports. Overview of Roth's theorem via Fourier analysis and density increment."
     },
     {
-      "id": "ap-free-sets",
-      "title": "Part I: AP-Free Set Definitions",
-      "startLine": 18,
-      "endLine": 40,
-      "summary": "Definition of AP-free subsets of Fin N and basic properties. A set is AP-free if it contains no a, a+d, a+2d with d > 0.",
-      "mathContext": "$A$ is AP-free if $\\forall a, d > 0: \\{a, a+d, a+2d\\} \\not\\subseteq A$"
+      "id": "ap-free-def",
+      "title": "AP-Free Set Definition",
+      "startLine": 19,
+      "endLine": 26,
+      "summary": "Defines APFree A: no 3-term AP {a, a+d, a+2d} with d ≠ 0 in A ⊆ Z/NZ.",
+      "mathContext": "$A$ is AP-free $\\iff$ $\\forall a, d \\ne 0 : \\{a, a+d, a+2d\\} \\not\\subseteq A$"
     },
     {
-      "id": "fourier-coefficient",
-      "title": "Part II: Fourier Analysis on Z/NZ",
-      "startLine": 42,
-      "endLine": 65,
-      "summary": "Fourier coefficient of a set and the key identity connecting large Fourier coefficients to arithmetic structure.",
-      "mathContext": "$\\hat{1_A}(r) = \\sum_{x \\in A} e^{2\\pi i r x / N}$"
+      "id": "ap-free-basic",
+      "title": "Base Cases",
+      "startLine": 28,
+      "endLine": 39,
+      "summary": "Proves the empty set and singletons are AP-free — base cases for the density argument."
+    },
+    {
+      "id": "fourier-coeff",
+      "title": "Fourier Coefficients",
+      "startLine": 41,
+      "endLine": 50,
+      "summary": "Defines fourierCoeff via discrete Fourier transform: hat{1_A}(r) = Σ_{x∈A} ω^{rx}.",
+      "mathContext": "$\\hat{1}_A(r) = \\sum_{x \\in A} e^{2\\pi i rx/N}$"
+    },
+    {
+      "id": "large-coeff",
+      "title": "Large Fourier Coefficient",
+      "startLine": 52,
+      "endLine": 58,
+      "summary": "Key analytic step: AP-free + dense implies ∃ r≠0 with |hat{1_A}(r)| ≥ δ²N/2. (sorry)",
+      "mathContext": "$\\text{APFree}(A),\\; |A| \\ge \\delta N \\implies \\exists r \\ne 0 : |\\hat{1}_A(r)| \\ge \\delta^2 N/2$"
     },
     {
       "id": "density-increment",
-      "title": "Part III: Density Increment Lemma",
-      "startLine": 67,
-      "endLine": 90,
-      "summary": "If a dense set has no 3-AP, it has increased density on a long subprogression. The key inductive step of Roth's proof.",
-      "mathContext": "No 3-AP + density $\\delta$ implies density $\\delta + \\Omega(\\delta^2)$ on a subprogression"
+      "title": "Density Increment Lemma",
+      "startLine": 60,
+      "endLine": 73,
+      "summary": "Core inductive step: AP-free + dense implies density increment δ + δ²/100 on a subprogression of length ≥ √N. (sorry)",
+      "mathContext": "$\\exists M \\ge \\sqrt{N},\\; |B| \\ge (\\delta + \\delta^2/100) M$"
     },
     {
       "id": "main-theorem",
-      "title": "Part IV: Roth's Theorem (Main Result)",
-      "startLine": 92,
-      "endLine": 110,
-      "summary": "The main theorem: r_3(N) = o(N). Proved by iterating the density increment until density exceeds 1.",
-      "mathContext": "$r_3(N) = o(N)$: AP-free subsets of $[N]$ have vanishing density"
+      "title": "Roth's Theorem",
+      "startLine": 75,
+      "endLine": 91,
+      "summary": "Main result: r₃(N) = o(N). Every sufficiently large dense subset of Z/NZ contains a 3-AP. (sorry)",
+      "mathContext": "$r_3(N) = o(N)$"
     }
   ],
   "crossReferences": [
