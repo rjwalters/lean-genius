@@ -146,10 +146,28 @@ theorem qSimplicial_succ_recurrence {R : Type*} [CommRing R] (q : R) (k n : ℕ)
 -- ============================================================
 
 /-- **q-Hockey Stick Identity**: The q-analog of the hockey stick identity.
-    ∑_{j=0}^{N} q^{j(k+1)} · [j+k choose k]_q = [N+k+1 choose k+1]_q
+    ∑_{j=0}^{N} q^{(N-j)(k+1)} · [j+k choose k]_q = [N+k+1 choose k+1]_q
     When q = 1, reduces to: ∑_{j=0}^N C(j+k, k) = C(N+k+1, k+1). -/
 theorem qHockeyStick {R : Type*} [CommRing R] (q : R) (k N : ℕ) :
-    ∑ j ∈ range (N + 1), q ^ (j * (k + 1)) * qSimplicial q k j =
-    qSimplicial q (k + 1) N := by sorry
+    ∑ j ∈ range (N + 1), q ^ ((N - j) * (k + 1)) * qSimplicial q k j =
+    qSimplicial q (k + 1) N := by
+  induction N with
+  | zero => simp
+  | succ N ih =>
+    rw [Finset.sum_range_succ]
+    -- Last term: j = N+1, so (N+1 - (N+1)) * (k+1) = 0
+    simp only [Nat.sub_self, zero_mul, pow_zero, one_mul]
+    -- Remaining sum: ∑_{j=0}^{N} q^{(N+1-j)(k+1)} * qS(k, j)
+    -- Factor out q^{k+1}: each exponent (N+1-j)(k+1) = (N-j)(k+1) + (k+1)
+    have hfactor : ∀ j ∈ Finset.range (N + 1),
+        q ^ ((N + 1 - j) * (k + 1)) * qSimplicial q k j =
+        q ^ (k + 1) * (q ^ ((N - j) * (k + 1)) * qSimplicial q k j) := by
+      intro j hj
+      simp only [Finset.mem_range] at hj
+      have hsub : N + 1 - j = (N - j) + 1 := by omega
+      rw [hsub, add_mul, one_mul, pow_add]
+      ring
+    rw [Finset.sum_congr rfl hfactor, ← Finset.mul_sum, ih]
+    rw [qSimplicial_succ_recurrence]
 
 end GaussianBinomial
