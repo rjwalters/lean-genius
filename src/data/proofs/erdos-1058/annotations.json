@@ -96,7 +96,7 @@
       "startLine": 94,
       "endLine": 102
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős-Stewart Conjecture (Proved)",
     "content": "**erdos_stewart_conjecture:** There are only finitely many n satisfying the condition.\n\n**erdos_stewart_conjecture_true:** Luca proved this in 2001.\n\nAppears as Problem A2 in Guy's 'Unsolved Problems in Number Theory'.",
     "significance": "key",
@@ -118,7 +118,7 @@
       "startLine": 108,
       "endLine": 113
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Luca's Complete Classification",
     "content": "**luca_theorem:** The only n satisfying the Erdős-Stewart condition are n = 1, 2, 3, 4, 5.\n\nThis completely classifies all solutions. Luca's proof uses factorial growth bounds and diophantine equation techniques to eliminate all n ≥ 6.",
     "mathContext": "Published in Mathematics of Computation (2001).",
@@ -162,7 +162,7 @@
       "startLine": 165,
       "endLine": 175
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Final Status: SOLVED",
     "content": "**erdos_1058_status:** Combines both results:\n1. Finiteness (erdos_stewart_conjecture_true)\n2. Complete list: {1, 2, 3, 4, 5} (luca_theorem)\n\n**erdos_1058_solved:** Direct assertion of finiteness.\n\nA beautiful result showing factorial growth eventually overwhelms restricted prime factorization.",
     "significance": "key",

@@ -121,17 +121,17 @@
     },
     "crossReferences": [
       {
-        "targetId": "subset-count",
+        "id": "subset-count",
         "relationship": "uses similar technique",
         "description": "Foundational counting technique; both use Finset.filter for cardinality arguments"
       },
       {
-        "targetId": "fermats-little-theorem",
+        "id": "fermats-little-theorem",
         "relationship": "foundational result",
         "description": "Fermat's little theorem is the basis: Carmichael numbers are composites that satisfy a^n ≡ a (mod n) for all a, the same congruence primes satisfy by Fermat's theorem"
       },
       {
-        "targetId": "erdos-1166",
+        "id": "erdos-1166",
         "relationship": "related Erdős problem",
         "description": "Erdős #1166 on pseudoprime counting also studies composites that mimic primes under modular exponentiation tests"
       }

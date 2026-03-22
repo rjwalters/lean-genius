@@ -56,22 +56,22 @@
     ],
     "crossReferences": [
       {
-        "targetId": "infinitude-primes",
+        "id": "infinitude-primes",
         "relationship": "related",
         "description": "Both prove or conjecture infinitude of a special set of primes; the main conjecture asserts Set.Infinite for factorial-avoiding primes"
       },
       {
-        "targetId": "wilsons-theorem",
+        "id": "wilsons-theorem",
         "relationship": "related",
         "description": "Wilson's theorem connects primes to factorials: $(p-1)! \\equiv -1 \\pmod{p}$. Here we subtract factorials from primes instead"
       },
       {
-        "targetId": "bertrands-postulate",
+        "id": "bertrands-postulate",
         "relationship": "related",
         "description": "Both concern prime distribution and gaps; Bertrand guarantees primes in intervals while this problem asks about factorial-prime interactions"
       },
       {
-        "targetId": "erdos-1057",
+        "id": "erdos-1057",
         "relationship": "related",
         "description": "Sister Erdős problem about prime-related counting; both use Set.Infinite for open conjectures about infinite sets of special integers"
       }
