@@ -1,0 +1,108 @@
+{
+  "slug": "denumerability-rationals-oq-03",
+  "title": "Stern-Brocot Tree Encoding of Rationals",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-22T05:54:35Z",
+    "iteration": 1,
+    "focus": "Formalized Stern-Brocot tree with coprimality and ordering proofs",
+    "blockers": [],
+    "nextAction": "Prove injectivity (eval_injective) and surjectivity",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Formalized Stern-Brocot tree as state-machine navigation. Proved determinant invariant (ra*lb - la*rb = 1), coprimality of all nodes, positivity, mediant ordering. 349 lines, 29 defs/theorems, 1 sorry (injectivity). Gallery entry created.",
+    "builtItems": [
+      "DenumerabilityRationalsOQ03.lean: State-based Stern-Brocot tree (349 lines)",
+      "det_path: Determinant invariant preserved through all navigation",
+      "coprime_of_det_one: Automatic coprimality via Bezout identity",
+      "num_pos_path / den_pos_path: Positivity by structural induction",
+      "mediant_strictly_between: Ordering proof for mediant",
+      "toRat / toRat_pos: Rational value function with positivity",
+      "7 concrete verification examples (levels 0-2)"
+    ],
+    "insights": [
+      "State machine approach (la/lb, ra/rb) is more natural for formal verification than recursive tree type",
+      "The single determinant invariant det = 1 drives coprimality, ordering, and will drive completeness",
+      "Coprimality proof requires careful \u2115\u2192\u2124 lifting: show gcd | 1 as integers, then cast back",
+      "Lean's omega tactic can't unfold structure field access - need explicit 'show' or 'simp' first",
+      "No Mathlib Stern-Brocot module exists - this is fully original formalization"
+    ],
+    "mathlibGaps": [
+      "No Stern-Brocot tree or Calkin-Wilf tree in Mathlib",
+      "No mediant operation formalized in Mathlib",
+      "Would benefit from: nat_coprime_of_int_bezout or similar bridge lemma"
+    ],
+    "nextSteps": [
+      "Prove eval_injective: different paths give different rationals (via ordering induction)",
+      "Prove surjectivity: every \u211a\u207a appears via Euclidean algorithm search",
+      "Formalize continued fraction correspondence (run-length encoding = CF coefficients)",
+      "Establish full bijection \u2115 \u2192 \u211a\u207a via BFS tree enumeration"
+    ],
+    "markdown": "# Knowledge Base: denumerability-rationals-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "denumerability-rationals"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-22T04:19:59.477Z",
+  "lastUpdate": "2026-03-22T05:54:35Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/DenumerabilityRationals.lean",
+      "filename": "DenumerabilityRationals.lean",
+      "lineCount": 192,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DenumerabilityRationals.lean"
+    },
+    {
+      "path": "Proofs/DenumerabilityRationalsOQ02.lean",
+      "filename": "DenumerabilityRationalsOQ02.lean",
+      "lineCount": 238,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DenumerabilityRationalsOQ02.lean"
+    },
+    {
+      "path": "Proofs/DenumerabilityRationalsOQ03.lean",
+      "filename": "DenumerabilityRationalsOQ03.lean",
+      "lineCount": 349,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DenumerabilityRationalsOQ03.lean"
+    }
+  ]
+}
