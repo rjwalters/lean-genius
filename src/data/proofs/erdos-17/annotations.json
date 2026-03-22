@@ -168,6 +168,42 @@
     "prerequisites": ["prime gaps", "bounded gaps between primes"]
   },
   {
+    "id": "ann-e17-cluster-count",
+    "proofId": "erdos-17",
+    "range": { "startLine": 139, "endLine": 141 },
+    "type": "definition",
+    "title": "Cluster Prime Counting Function",
+    "content": "`clusterPrimeCount x` counts cluster primes up to x by filtering primesUpTo x with a classical decidability instance. This is noncomputable since it uses Classical.dec for the cluster predicate, which involves quantifying over all even numbers and all prime pairs.",
+    "mathContext": "$\\pi_{\\text{cluster}}(x) = |\\{p \\le x : p \\text{ is a cluster prime}\\}|$. The bounds of Blecksmith-Erdős-Selfridge and Elsholtz bound this counting function from above.",
+    "significance": "supporting",
+    "relatedConcepts": ["prime counting function", "Classical.dec", "Finset.filter"],
+    "prerequisites": ["IsClusterPrime", "classical decidability"]
+  },
+  {
+    "id": "ann-e17-tao-difficult",
+    "proofId": "erdos-17",
+    "range": { "startLine": 220, "endLine": 223 },
+    "type": "insight",
+    "title": "Tao's Assessment and Unboundedness",
+    "content": "Axiomatizes that for any bound $A > 0$, there exists a cluster prime $p > A$. This is equivalent to the set of cluster primes being unbounded (and hence infinite). Note: this is the main conjecture restated — it axiomatizes the positive answer to Erdős's question.",
+    "mathContext": "$\\forall A > 0, \\exists p$ cluster prime with $p > A$. Equivalently, $\\sup\\{p : p \\text{ cluster}\\} = +\\infty$.",
+    "significance": "key",
+    "relatedConcepts": ["unbounded sets", "Terence Tao", "Set.Infinite"],
+    "prerequisites": ["IsClusterPrime", "real bounds"]
+  },
+  {
+    "id": "ann-e17-heuristic",
+    "proofId": "erdos-17",
+    "range": { "startLine": 232, "endLine": 236 },
+    "type": "context",
+    "title": "Probabilistic Heuristic for Infinitely Many",
+    "content": "If primes were randomly distributed with density $1/\\log n$, the expected number of cluster primes up to $x$ would grow like $\\log x$ — slowly but unboundedly. The axiom states this heuristic prediction: there exists a function $f(x) > 0$ with $f(x)/\\log x \\to 1$. This is NOT a proof — just a formalization of the heuristic argument supporting infinitude.",
+    "mathContext": "Heuristic: $\\mathbb{E}[\\pi_{\\text{cluster}}(x)] \\sim \\log x$ under the random prime model. If correct, this would mean cluster primes are sparser than primes in any AP (density $\\sim 1/\\varphi(d) \\cdot x/\\log x$) but still infinite.",
+    "significance": "context",
+    "relatedConcepts": ["Cramér model", "random primes", "heuristic arguments"],
+    "prerequisites": ["cluster prime counting", "prime density"]
+  },
+  {
     "id": "ann-e17-oeis",
     "proofId": "erdos-17",
     "range": { "startLine": 203, "endLine": 205 },
