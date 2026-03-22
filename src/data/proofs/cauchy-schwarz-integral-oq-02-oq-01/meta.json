@@ -21,7 +21,7 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 80,
+    "lineCount": 91,
     "theoremCount": 3,
     "mathlibDependencies": [
       {
@@ -60,120 +60,58 @@
       "Theorem proportional_of_inner_eq: ⟪f,g⟫ = ‖f‖·‖g‖ → ‖f‖•g = ‖g‖•f (CS equality implies proportionality via norm expansion)",
       "Theorem norm_add_eq_iff_proportional: ‖f+g‖ = ‖f‖+‖g‖ ↔ ‖f‖•g = ‖g‖•f (strict Minkowski, main result)"
     ],
-    "dateAdded": "03/22/26",
-    "references": [
+    "crossReferences": [
       {
-        "title": "Geometrie der Zahlen",
-        "authors": "H. Minkowski",
-        "year": 1896,
-        "note": "Origin of the Minkowski inequality for Lp spaces"
+        "proofId": "cauchy-schwarz-integral-oq-02",
+        "relationship": "parent",
+        "description": "Parent open question: characterizing Cauchy–Schwarz equality via proportionality"
       },
       {
-        "title": "Cours d'Analyse",
-        "authors": "A.-L. Cauchy",
-        "year": 1821,
-        "note": "First proof of the discrete Cauchy inequality"
+        "proofId": "cauchy-schwarz-integral",
+        "relationship": "ancestor",
+        "description": "Root proof: Cauchy–Schwarz inequality for integrals/inner product spaces"
       },
       {
-        "title": "Uniformly convex spaces",
-        "authors": "J. A. Clarkson",
-        "year": 1936,
-        "note": "Introduced uniform convexity, which governs equality in the general Lp Minkowski inequality for p > 1"
-      },
-      {
-        "title": "Sur quelques inégalités concernant les intégrales ordinaires et les intégrales de Stieltjes",
-        "authors": "V. Bunyakovsky",
-        "year": 1859,
-        "note": "Independent proof of the integral Cauchy-Schwarz inequality, predating Schwarz by 26 years"
+        "proofId": "cauchy-schwarz",
+        "relationship": "related",
+        "description": "Finite-dimensional Cauchy–Schwarz inequality (sum form)"
       }
     ],
     "relatedProofs": [
-      {
-        "id": "cauchy-schwarz-integral-oq-02",
-        "relationship": "parent",
-        "description": "Parent proof: the equality case of Cauchy-Schwarz that this file extends to Minkowski"
-      },
-      {
-        "id": "cauchy-schwarz-integral",
-        "relationship": "grandparent",
-        "description": "The Cauchy-Schwarz inequality for integrals — foundational result that this equality case characterizes"
-      },
-      {
-        "id": "cauchy-schwarz",
-        "relationship": "foundational",
-        "description": "The discrete Cauchy-Schwarz inequality"
-      },
-      {
-        "id": "cauchy-schwarz-integral-oq-01",
-        "relationship": "sibling",
-        "description": "Hölder's inequality as a generalization of Cauchy-Schwarz — the Lp generalization where this proof specializes to p=2"
-      },
-      {
-        "id": "cauchy-schwarz-integral-oq-03",
-        "relationship": "sibling",
-        "description": "Complex L2 Cauchy-Schwarz — the complex-valued analog where proportionality requires a phase factor"
-      },
-      {
-        "id": "amgm-inequality",
-        "relationship": "thematic",
-        "description": "AM-GM inequality — another classical inequality whose equality case (all terms equal) parallels the proportionality characterization here"
-      }
+      "cauchy-schwarz-integral-oq-02",
+      "cauchy-schwarz-integral",
+      "cauchy-schwarz"
     ],
-    "crossReferences": [
-      {
-        "target": "cauchy-schwarz-integral-oq-02",
-        "context": "This file answers the open question from the parent: Minkowski equality can be derived from CS equality"
-      },
-      {
-        "target": "cauchy-schwarz-integral",
-        "context": "The integral Cauchy-Schwarz inequality provides the inner product framework used throughout this proof"
-      },
-      {
-        "target": "cauchy-schwarz-integral-oq-01",
-        "context": "Hölder's inequality generalizes Minkowski to Lp for p ≠ 2; the equality case there requires strict convexity rather than the CS equality used here"
-      },
-      {
-        "target": "cauchy-schwarz-integral-oq-03",
-        "context": "The complex L2 case requires proportionality up to a phase factor (g = e^{iθ}·λ·f), contrasting with the simpler real proportionality ‖f‖g = ‖g‖f proved here"
-      }
-    ]
+    "dateAdded": "03/22/26"
   },
   "overview": {
-    "historicalContext": "Hermann Minkowski introduced his inequality in 'Geometrie der Zahlen' (1896), establishing $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$ for $L^p$ spaces. For general $p$, the equality characterization requires strict convexity of the unit ball (Clarkson, 1936), but the $p = 2$ case — inner product spaces — admits a particularly elegant proof via the Cauchy-Schwarz equality case. Cauchy proved the discrete inequality in 1821 ('Cours d'Analyse'), Bunyakovsky independently established the integral form in 1859 (predating Schwarz by 26 years, though the Western literature long credited Schwarz's 1885 proof), and the combined 'Cauchy-Bunyakovsky-Schwarz' inequality became the cornerstone of Hilbert space theory. The equality case $\\langle f,g \\rangle = \\|f\\|\\|g\\|$ iff $f, g$ are proportional is the foundational characterization. This proof answers an open question from the parent formalization: the strict Minkowski equality case follows as a corollary through the chain triangle equality $\\leftrightarrow$ CS equality $\\leftrightarrow$ non-negative proportionality, unifying two classical characterizations in a single iff theorem.",
+    "historicalContext": "Hermann Minkowski introduced his eponymous inequality in *Geometrie der Zahlen* (1896) as a fundamental tool for the geometry of numbers, establishing the triangle inequality for $L^p$ norms. The equality case—characterizing when $\\|f+g\\| = \\|f\\| + \\|g\\|$—was studied shortly after and is intimately connected to the equality conditions in the Cauchy–Schwarz inequality (Cauchy 1821, Schwarz 1885, Bunyakovsky 1859). In a real inner product space, equality in the triangle inequality forces the vectors to be non-negatively proportional ($\\|f\\|g = \\|g\\|f$), i.e., to point in the same direction. This characterization generalizes the elementary real-number fact that $|a+b| = |a| + |b|$ iff $a$ and $b$ have the same sign. The reduction from Minkowski equality to Cauchy–Schwarz equality via squaring is a classical textbook technique appearing in works by Halmos, Rudin, and Kreyszig.",
     "problemStatement": "**Open Question (cauchy-schwarz-integral-oq-02-oq-01)**: Can the strict form of Minkowski (equality iff f and g are proportional) be derived as a corollary of the equality case of CS?\n\n**Answer: YES** — The proof has two directions:\n\n**Forward (‖f+g‖ = ‖f‖+‖g‖ → proportional)**:\nSquaring both sides and using ‖f+g‖² = ‖f‖² + 2⟪f,g⟫ + ‖g‖² gives ⟪f,g⟫ = ‖f‖·‖g‖.\nThen ‖‖f‖•g - ‖g‖•f‖² = 2‖f‖²‖g‖² - 2‖f‖·‖g‖·⟪f,g⟫ = 0.\n\n**Backward (proportional → ‖f+g‖ = ‖f‖+‖g‖)**:\n‖f‖•g = ‖g‖•f implies ⟪f,g⟫ = ‖f‖·‖g‖ (by taking ⟪f,·⟫ of both sides).\nThen ‖f+g‖² = (‖f‖+‖g‖)² and both sides are non-negative.",
     "proofStrategy": "The key reduction is: Minkowski equality ↔ CS equality ↔ proportionality.\n\n1. **Minkowski → CS**: Squaring ‖f+g‖ = ‖f‖+‖g‖ and expanding via norm_add_sq_real yields ⟪f,g⟫ = ‖f‖·‖g‖.\n2. **CS → Proportional**: Compute ‖‖f‖•g - ‖g‖•f‖² = 0 using inner product bilinearity.\n3. **Proportional → CS**: Take ⟪f,·⟫ of ‖f‖•g = ‖g‖•f, use ⟪f,f⟫ = ‖f‖² and field_simp.\n4. **CS → Minkowski**: Substitute CS equality into norm_add_sq_real, factor (a-b)(a+b)=0.",
     "keyInsights": [
-      "**Squaring reduction:** The forward direction squares $\\|f+g\\| = \\|f\\| + \\|g\\|$ and uses `norm_add_sq_real` to reduce to $\\langle f,g \\rangle = \\|f\\|\\|g\\|$ (CS equality) — a standard analytic technique",
-      "**Norm expansion trick:** The backward direction constructs the 'proportionality test vector' $\\|f\\|g - \\|g\\|f$ and shows its norm is zero, using $\\|a-b\\|^2 = \\|a\\|^2 + \\|b\\|^2 - 2\\langle a,b\\rangle$",
-      "**Division-free proportionality:** The condition $\\|f\\|g = \\|g\\|f$ elegantly avoids division by zero — it works even when $f = 0$ or $g = 0$, unlike the naive formulation $g = \\lambda f$",
-      "**Real simplification:** Over $\\mathbb{R}$, `inner_smul_right` has no star/conjugate complications since $\\overline{c} = c$ for $c \\in \\mathbb{R}$, making the algebraic manipulations cleaner",
-      "**Square root avoidance:** The factoring $(a-b)(a+b)=0$ with $a,b \\geq 0$ avoids computing square roots — `nlinarith` handles the non-negativity arithmetic"
+      "The forward direction reduces to squaring: ‖f+g‖² = (‖f‖+‖g‖)² iff ⟪f,g⟫ = ‖f‖·‖g‖ (CS equality)",
+      "The backward direction uses the norm expansion ‖‖f‖•g - ‖g‖•f‖² = 2‖f‖²‖g‖² - 2‖f‖·‖g‖·⟪g,f⟫ = 0",
+      "In Lean 4, inner_smul_right for ℝ does not introduce star/conj complications since star is trivial on ℝ",
+      "The factoring step (a-b)(a+b)=0 with a,b ≥ 0 forces a=b; nlinarith handles this",
+      "The proof is fully generic over any real inner product space E, so it simultaneously covers ℝⁿ, L², and infinite-dimensional Hilbert spaces"
     ]
   },
   "sections": [
-    {
-      "id": "setup",
-      "title": "Setup: Namespace and Inner Product Space Variables",
-      "startLine": 13,
-      "endLine": 17,
-      "summary": "Opens the StrictMinkowski namespace and declares the proof's type-class context: an arbitrary type E with NormedAddCommGroup and InnerProductSpace ℝ instances. This ensures all three theorems apply to any real inner product space.",
-      "mathContext": "The abstract setting $E$ with $\\langle \\cdot, \\cdot \\rangle_\\mathbb{R}$ and $\\|\\cdot\\|$ encompasses $\\mathbb{R}^n$, $L^2$ spaces, and infinite-dimensional Hilbert spaces."
-    },
     {
       "id": "algebraic-facts",
       "title": "Section I: Key Algebraic Facts",
       "startLine": 19,
       "endLine": 56,
-      "summary": "Two lemmas establishing CS equality ↔ proportionality. inner_eq_of_proportional: proportionality → CS equality via applying ⟪f,·⟫ and canceling ‖f‖. proportional_of_inner_eq: CS equality → proportionality via showing ‖‖f‖g - ‖g‖f‖² = 0.",
-      "mathContext": "Establishes $\\langle f,g \\rangle = \\|f\\|\\|g\\| \\iff \\|f\\|g = \\|g\\|f$. Forward: apply $\\langle f, \\cdot \\rangle$ to get $\\|f\\|\\langle f,g\\rangle = \\|g\\|\\|f\\|^2$. Backward: expand $\\|\\|f\\|g - \\|g\\|f\\|^2 = 2\\|f\\|^2\\|g\\|^2 - 2\\|f\\|\\|g\\|\\langle f,g\\rangle = 0$."
+      "summary": "Two lemmas establishing the CS equality ↔ proportionality equivalence. inner_eq_of_proportional (lines 24–37): takes ⟪f,·⟫ of the proportionality equation, cancels ‖f‖ ≠ 0, and uses nlinarith. proportional_of_inner_eq (lines 41–56): expands ‖‖f‖•g - ‖g‖•f‖² via norm_sub_sq_real, simplifies with inner product bilinearity, and shows it equals 0 by ring.",
+      "mathContext": "$\\|f\\| g = \\|g\\| f \\iff \\langle f, g \\rangle = \\|f\\|\\|g\\|$ (Cauchy–Schwarz equality characterization)"
     },
     {
       "id": "main-result",
       "title": "Section II: Strict Minkowski Inequality (Main Result)",
       "startLine": 58,
       "endLine": 91,
-      "summary": "norm_add_eq_iff_proportional: the main iff theorem. Forward: squaring + norm_add_sq_real gives CS equality, then proportional_of_inner_eq. Backward: inner_eq_of_proportional gives CS equality, substitute into norm expansion, factor (a-b)(a+b)=0.",
-      "mathContext": "$\\|f+g\\| = \\|f\\| + \\|g\\| \\iff \\|f\\|g = \\|g\\|f$. The proof chains: Minkowski equality $\\xrightarrow{\\text{square}}$ CS equality $\\xrightarrow{\\text{norm expansion}}$ proportionality, and vice versa."
+      "summary": "norm_add_eq_iff_proportional (lines 68–89): the main iff theorem. Forward: squaring ‖f+g‖ = ‖f‖+‖g‖ via norm_add_sq_real yields ⟪f,g⟫ = ‖f‖‖g‖ by linarith, then proportional_of_inner_eq finishes. Backward: inner_eq_of_proportional gives CS equality, then (a−b)(a+b) = 0 factoring with nlinarith extracts the norm equality.",
+      "mathContext": "$\\|f+g\\| = \\|f\\| + \\|g\\| \\iff \\|f\\| \\cdot g = \\|g\\| \\cdot f$ (strict Minkowski inequality)"
     }
   ],
   "conclusion": {
