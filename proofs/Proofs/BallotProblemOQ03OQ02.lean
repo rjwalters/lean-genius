@@ -23,16 +23,22 @@ where e(A,B) = C(dx + dy, dx) is the number of lattice paths from A to B.
 The identity permutation contributes ∏ e(Aᵢ,Bᵢ). Non-identity permutations
 cancel via a sign-reversing involution (Gessel-Viennot involution).
 
-## Status (1 axiom [GV cancellation], 0 sorries)
+## Status (0 axioms, 2 sorries)
 - [x] Path tuple and non-intersecting definitions
 - [x] Path weight matrix using Matrix.det
 - [x] Permutation path tuples and signed counts
 - [x] Gessel-Viennot involution infrastructure (swapTailsAt, firstNonFixed)
 - [x] Algebraic bridge: det = signed sum of perm path tuple counts (proved)
-- [x] r×r LGV lemma (proved from GV cancellation axiom)
+- [x] r×r LGV lemma (proved from GV cancellation + wellFormed hypothesis)
 - [x] Corollaries: non-negativity, r=0, r=1 special cases
-- [ ] GV involution cancellation (1 axiom: the combinatorial heart)
 - [x] PathMN cardinality C(m+n,m) (proved via double induction + Pascal)
+- [x] Tagged sigma type (TaggedPathTuple) for involution domain
+- [x] Sum decomposition: signed perm sum = sum over tagged tuples (proved)
+- [x] Non-identity permutations have inversions (proved)
+- [x] Non-identity σ-tuples always cross (proved from crossing lemma)
+- [x] Well-formedness condition (∀ i j, sources i ≤ targets j)
+- [ ] Crossing lemma: discrete IVT for lattice paths (1 sorry)
+- [ ] GV involution cancellation (1 sorry: involution bookkeeping)
 
 ## References
 - Lindström (1973): "On the Vector Representations of Induced Matroids"
@@ -486,24 +492,208 @@ theorem gv_cancellation_r_one (cfg : LGVConfig 1) :
 -- PART 8: The r×r LGV Lemma
 -- ============================================================
 
-/-- **Gessel-Viennot involution cancellation** (the combinatorial heart):
+-- ============================================================
+-- PART 7d: Tagged Path Tuples (Sigma Type)
+-- ============================================================
+
+/-- A tagged path tuple: a permutation σ together with a σ-path tuple.
+    This is the disjoint union ⨆_σ PermPathTuple(cfg, σ) on which the
+    GV involution operates. -/
+def TaggedPathTuple {r : ℕ} (cfg : LGVConfig r) : Type :=
+  Σ σ : Equiv.Perm (Fin r), PermPathTuple cfg σ
+
+noncomputable instance TaggedPathTuple.instFintype {r : ℕ} (cfg : LGVConfig r) :
+    Fintype (TaggedPathTuple cfg) :=
+  Sigma.instFintype
+
+/-- The signed weight of a tagged path tuple. -/
+def taggedWeight {r : ℕ} {cfg : LGVConfig r} (t : TaggedPathTuple cfg) : ℤ :=
+  (Equiv.Perm.sign t.1 : ℤ)
+
+/-- The sum over tagged tuples equals the sum over permutations of
+    signed cardinalities. This is the key reformulation that allows
+    us to work at the element level. -/
+theorem sum_tagged_eq_sum_perm {r : ℕ} (cfg : LGVConfig r) :
+    ∑ t : TaggedPathTuple cfg, taggedWeight t =
+      ∑ σ : Equiv.Perm (Fin r),
+        (↑(Equiv.Perm.sign σ) : ℤ) * ↑(Fintype.card (PermPathTuple cfg σ)) := by
+  change ∑ t : (Σ σ : Equiv.Perm (Fin r), PermPathTuple cfg σ),
+      (↑(Equiv.Perm.sign t.1) : ℤ) = _
+  rw [Fintype.sum_sigma]
+  congr 1; ext σ
+  have : ∀ (x : PermPathTuple cfg σ),
+      (↑(Equiv.Perm.sign (⟨σ, x⟩ : Σ _, PermPathTuple cfg _).1) : ℤ) =
+        (↑(Equiv.Perm.sign σ) : ℤ) := fun _ => rfl
+  simp only [this, Finset.sum_const, nsmul_eq_mul, mul_comm, Fintype.card]
+
+/-- Coerce a σ-path tuple to an identity-path tuple when σ = 1. -/
+def PermPathTuple.toPathTuple {r : ℕ} {cfg : LGVConfig r}
+    {σ : Equiv.Perm (Fin r)} (h : σ = 1) (p : PermPathTuple cfg σ) :
+    PathTuple cfg :=
+  fun i => cast (by rw [PermPathTuple] at *; congr 1; simp [h]) (p i)
+
+/-- A tagged path tuple is a "fixed point" of the GV involution iff
+    it is an identity-permutation tuple that is non-intersecting. -/
+def IsGVFixedPoint {r : ℕ} {cfg : LGVConfig r} (t : TaggedPathTuple cfg) : Prop :=
+  ∃ (h : t.1 = 1), IsNonIntersecting cfg (t.2.toPathTuple h)
+
+-- ============================================================
+-- PART 7e: Crossing Lemma
+-- ============================================================
+
+/-- **Lattice path y-coordinate at column boundary.**
+    The y-coordinate of a path starting at y₀ when entering column x. -/
+def yAtCol (l : LPath) (y₀ : ℕ) (x : ℕ) : ℕ := y₀ + colEntry l x
+
+/-- At column 0, the y-coordinate is the starting position. -/
+theorem yAtCol_zero (l : LPath) (y₀ : ℕ) : yAtCol l y₀ 0 = y₀ := by
+  simp [yAtCol, colEntry]
+
+/-- **Crossing lemma for lattice paths (discrete IVT).**
+    If path P starts strictly below path Q (y₁ < y₂) but P ends at
+    or above Q at column m, then their column y-ranges overlap at some
+    column — i.e., the paths share a lattice point.
+
+    This is the combinatorial engine of the GV involution: it ensures
+    that non-identity permutation path tuples always have crossings,
+    so the involution is total on non-fixed-point tuples. -/
+theorem lattice_paths_must_cross {m : ℕ} {n₁ n₂ : ℕ} {y₁ y₂ : ℕ}
+    (P : PathMN m n₁) (Q : PathMN m n₂)
+    (hstart : y₁ < y₂)
+    (hend : y₂ + n₂ ≤ y₁ + n₁) :
+    ¬NonIntersecting P.val Q.val m y₁ y₂ := by
+  intro ⟨hdisjoint, hfinal⟩
+  -- The y-ranges are nested intervals at each column.
+  -- Since P starts below Q but ends at or above Q,
+  -- by a discrete intermediate value argument on the
+  -- difference of y-coordinates, the ranges must overlap.
+  sorry
+
+-- ============================================================
+-- PART 7f: GV Involution Construction
+-- ============================================================
+
+/-- **Well-formedness**: every source-target pair is reachable by lattice paths.
+    This is stronger than `source_le_target` (which only covers identity pairing).
+    Required because Nat subtraction makes `PathMN m 0` represent horizontal paths
+    even when the target is below the source, giving wrong path counts.
+    Equivalent to `sources (Fin.last) ≤ targets 0` when both are strictly mono. -/
+def LGVConfig.wellFormed {r : ℕ} (cfg : LGVConfig r) : Prop :=
+  ∀ i j : Fin r, cfg.sources i ≤ cfg.targets j
+
+theorem LGVConfig.wellFormed_iff_max_le_min {r : ℕ} (cfg : LGVConfig r) (hr : 0 < r) :
+    cfg.wellFormed ↔ cfg.sources ⟨r - 1, by omega⟩ ≤ cfg.targets ⟨0, hr⟩ := by
+  constructor
+  · intro h; exact h _ _
+  · intro h i j
+    calc cfg.sources i ≤ cfg.sources ⟨r - 1, by omega⟩ :=
+          cfg.sources_strictMono.monotone (by omega : i.val ≤ r - 1)
+      _ ≤ cfg.targets ⟨0, hr⟩ := h
+      _ ≤ cfg.targets j := cfg.targets_strictMono.monotone (Nat.zero_le j.val)
+
+/-- **Non-identity permutations have inversions when domain is strictly ordered.**
+    If σ ≠ 1 and f is strictly monotone, then there exist i < j with
+    f(σ(i)) > f(σ(j)). In other words, σ is not order-preserving. -/
+theorem perm_ne_one_has_inversion {r : ℕ} (σ : Equiv.Perm (Fin r)) (hσ : σ ≠ 1)
+    {f : Fin r → ℕ} (hf : StrictMono f) :
+    ∃ i j : Fin r, i < j ∧ f (σ j) < f (σ i) := by
+  -- Since σ ≠ 1, it has a non-fixed point. By firstNonFixed_lt_image,
+  -- i < σ(i). Take j = σ(i), so σ(j) ≠ j (σ is not identity on j's orbit).
+  -- The strict monotonicity of f turns the permutation disorder into
+  -- a numeric inversion.
+  have hi := firstNonFixed_spec σ hσ
+  have hlt := firstNonFixed_lt_image σ hσ
+  -- Let i₀ = firstNonFixed, then i₀ < σ(i₀)
+  -- Since σ fixes all j < i₀, and σ(i₀) ≠ i₀, there's a cycle.
+  -- In that cycle, some pair must be inverted w.r.t. the natural order.
+  -- Specifically, take the first non-fixed point i₀. Then i₀ < σ(i₀).
+  -- Consider σ⁻¹(i₀). If σ⁻¹(i₀) > i₀, then we have j = σ⁻¹(i₀) > i₀
+  -- with σ(j) = i₀ < σ(i₀), giving an inversion at (i₀, j).
+  -- If σ⁻¹(i₀) < i₀, that contradicts minimality (σ fixes all below i₀,
+  -- so σ(σ⁻¹(i₀)) = i₀ means σ⁻¹(i₀) is not fixed, but it's below i₀).
+  -- If σ⁻¹(i₀) = i₀, then σ(i₀) = i₀, contradiction.
+  set i₀ := firstNonFixed σ hσ with hi₀_def
+  have hinv_ne : σ⁻¹ i₀ ≠ i₀ := by
+    intro h
+    have : σ (σ⁻¹ i₀) = σ i₀ := by rw [h]
+    simp at this
+    exact hi this.symm
+  have hinv_ge : σ⁻¹ i₀ ≥ i₀ := by
+    by_contra hlt'
+    push_neg at hlt'
+    have hfixed := firstNonFixed_minimal σ hσ (σ⁻¹ i₀) hlt'
+    have : σ (σ⁻¹ i₀) = σ⁻¹ i₀ := hfixed
+    simp at this
+    exact hinv_ne this.symm
+  have hinv_gt : i₀ < σ⁻¹ i₀ := lt_of_le_of_ne hinv_ge (Ne.symm hinv_ne)
+  refine ⟨i₀, σ⁻¹ i₀, hinv_gt, ?_⟩
+  simp
+  exact hf hlt
+
+/-- **Non-identity σ-path tuples always have crossing paths.**
+    For a non-identity permutation σ with strictly ordered sources and targets,
+    any σ-path tuple must contain a pair of intersecting paths. This ensures
+    the GV involution is defined on all non-fixed-point tuples. -/
+theorem nonid_perm_paths_cross {r : ℕ} (cfg : LGVConfig r)
+    (hwf : cfg.wellFormed)
+    (σ : Equiv.Perm (Fin r)) (hσ : σ ≠ 1)
+    (paths : PermPathTuple cfg σ) :
+    ∃ i j : Fin r, i < j ∧
+      ¬NonIntersecting (paths i).val (paths j).val cfg.m
+        (cfg.sources i) (cfg.sources j) := by
+  -- By perm_ne_one_has_inversion, ∃ i < j with targets(σ j) < targets(σ i).
+  obtain ⟨i, j, hij, hinv⟩ := perm_ne_one_has_inversion σ hσ cfg.targets_strictMono
+  refine ⟨i, j, hij, ?_⟩
+  -- Path i starts at sources(i), ends at targets(σ i)
+  -- Path j starts at sources(j), ends at targets(σ j)
+  -- sources(i) < sources(j) and targets(σ j) < targets(σ i)
+  -- So path i starts lower and ends higher → must cross
+  have hsrc := cfg.sources_strictMono hij
+  -- With well-formedness, Nat subtraction gives correct values:
+  -- sources(k) + (targets(σ k) - sources(k)) = targets(σ k)
+  have hwf_i := hwf i (σ i)
+  have hwf_j := hwf j (σ j)
+  apply lattice_paths_must_cross (paths i) (paths j) hsrc
+  -- Need: sources(j) + (targets(σ j) - sources(j)) ≤ sources(i) + (targets(σ i) - sources(i))
+  -- i.e., targets(σ j) ≤ targets(σ i)
+  omega
+
+-- ============================================================
+-- PART 7g: GV Involution Cancellation (Structured Proof)
+-- ============================================================
+
+/-- **Gessel-Viennot involution cancellation** (the combinatorial heart).
 
     The signed sum of permutation path tuple cardinalities equals
     the number of non-intersecting identity path tuples.
 
-    This follows from a sign-reversing involution on the disjoint
-    union ⨆_σ PermPathTuple(cfg, σ), where fixed points are exactly
-    the non-intersecting identity tuples.
+    **Proof structure** (3 components):
+    1. `sum_tagged_eq_sum_perm`: reformulate as sum over tagged sigma type
+    2. `nonid_perm_paths_cross`: non-identity tuples always have crossings
+    3. Sign-reversing involution on tagged tuples (tail-swap at first crossing)
 
-    The involution: for a non-identity σ-tuple (or intersecting
-    id-tuple), find the smallest non-fixed index i of σ, swap
-    tails of paths Pᵢ and P_{σ⁻¹(i)} at their first shared
-    lattice point. This maps σ-tuples to ((i σ⁻¹i)·σ)-tuples
-    with opposite sign. -/
-axiom gv_involution_cancellation {r : ℕ} (cfg : LGVConfig r) :
+    The involution maps (σ, P) ↦ (σ ∘ (i j), P') where (i,j) is the
+    first crossing pair and P' is the tail-swapped tuple. Fixed points
+    are exactly non-intersecting identity tuples.
+
+    Components 1-2 are proved above. Component 3 (the involution
+    bookkeeping) requires defining "first crossing point" and proving
+    the tail-swap preserves path validity. -/
+theorem gv_involution_cancellation {r : ℕ} (cfg : LGVConfig r)
+    (hwf : cfg.wellFormed) :
     ∑ σ : Equiv.Perm (Fin r),
       (↑(Equiv.Perm.sign σ) : ℤ) * ↑(Fintype.card (PermPathTuple cfg σ)) =
-    ↑(niTupleCount cfg)
+    ↑(niTupleCount cfg) := by
+  -- Reformulate as sum over tagged tuples
+  rw [← sum_tagged_eq_sum_perm]
+  -- The proof now requires building the sign-reversing involution
+  -- on TaggedPathTuple and showing its fixed points are exactly
+  -- the NI identity tuples.
+  -- Key ingredients:
+  -- 1. nonid_perm_paths_cross hwf: non-id tuples always have crossings
+  -- 2. Tail-swap involution at first crossing point (to be constructed)
+  -- 3. Fixed points = NI identity tuples
+  sorry
 
 /-- **The r×r LGV Lemma** (Lindström 1973, Gessel-Viennot 1985):
 
@@ -514,10 +704,10 @@ axiom gv_involution_cancellation {r : ℕ} (cfg : LGVConfig r) :
     Proved by combining the algebraic bridge (det = signed perm sum)
     with the GV involution cancellation (signed sum = NI count).
     This generalizes the 2×2 case proved in BallotProblemOQ03.lean. -/
-theorem lgv_lemma_rxr {r : ℕ} (cfg : LGVConfig r) :
+theorem lgv_lemma_rxr {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed) :
     (niTupleCount cfg : ℤ) = (pathMatrix cfg).det := by
   rw [det_pathMatrix_eq_signed_sum]
-  exact (gv_involution_cancellation cfg).symm
+  exact (gv_involution_cancellation cfg hwf).symm
 
 -- ============================================================
 -- PART 9: Corollaries
@@ -528,10 +718,10 @@ theorem niTupleCount_nonneg {r : ℕ} (cfg : LGVConfig r) :
     0 ≤ (niTupleCount cfg : ℤ) :=
   Int.natCast_nonneg _
 
-/-- The path matrix determinant is non-negative. -/
-theorem pathMatrix_det_nonneg {r : ℕ} (cfg : LGVConfig r) :
+/-- The path matrix determinant is non-negative (for well-formed configs). -/
+theorem pathMatrix_det_nonneg {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed) :
     0 ≤ (pathMatrix cfg).det := by
-  rw [← lgv_lemma_rxr cfg]
+  rw [← lgv_lemma_rxr cfg hwf]
   exact niTupleCount_nonneg cfg
 
 /-- For r = 1, every path tuple is vacuously non-intersecting
@@ -564,8 +754,8 @@ theorem isNonIntersecting_of_r_one (cfg : LGVConfig 1) (paths : PathTuple cfg) :
        plane partitions in a box can be proved using the LGV lemma
        with appropriate source/target configurations. -/
 theorem lgv_universality :
-    ∀ (r : ℕ) (cfg : LGVConfig r),
+    ∀ (r : ℕ) (cfg : LGVConfig r) (hwf : cfg.wellFormed),
       (niTupleCount cfg : ℤ) = (pathMatrix cfg).det :=
-  fun _ cfg => lgv_lemma_rxr cfg
+  fun _ cfg hwf => lgv_lemma_rxr cfg hwf
 
 end LGV
