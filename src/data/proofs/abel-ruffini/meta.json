@@ -190,6 +190,11 @@
       "targetId": "solution-of-cubic",
       "relationship": "complementary",
       "description": "Cardano's cubic formula (1545) is the degree-3 case where radicals succeed — Abel-Ruffini proves this pattern breaks at degree 5, making the cubic formula the second-to-last general radical solution"
+    },
+    {
+      "targetId": "general-quartic",
+      "relationship": "complementary",
+      "description": "Ferrari's quartic formula (1545) is the last degree where radicals succeed — S₄ is solvable (derived series S₄ ▷ A₄ ▷ V₄ ▷ Z/2 ▷ {e}), so the degree-4 boundary is the immediate predecessor to Abel-Ruffini's impossibility at degree 5"
     }
   ],
   "relatedProofs": [
@@ -201,7 +206,8 @@
     "sylow-theorems",
     "abel-ruffini-oq-04",
     "fundamental-arithmetic",
-    "solution-of-cubic"
+    "solution-of-cubic",
+    "general-quartic"
   ],
   "references": [
     {
@@ -231,6 +237,20 @@
       "year": "1984",
       "venue": "Springer GTM 101",
       "note": "Standard modern reference tracing the historical development from Lagrange through Abel and Galois, with complete proofs of the Abel-Ruffini theorem and Galois's criterion"
+    },
+    {
+      "authors": "Tignol, Jean-Pierre",
+      "title": "Galois' Theory of Algebraic Equations",
+      "year": "2001",
+      "venue": "World Scientific",
+      "note": "Comprehensive historical treatment from the origins of polynomial solving through Galois theory, with detailed analysis of Ruffini's incomplete proof and Abel's rigorous argument"
+    },
+    {
+      "authors": "Stewart, Ian",
+      "title": "Galois Theory",
+      "year": "2015",
+      "venue": "Chapman & Hall/CRC, 4th edition",
+      "note": "Accessible modern textbook covering the Abel-Ruffini theorem with both historical context and modern algebraic formulation via composition series"
     }
   ],
   "leanFile": {
