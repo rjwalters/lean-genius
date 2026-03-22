@@ -111,16 +111,10 @@
       }
     ],
     "relatedProofs": [
-      {
-        "id": "erdos-1155",
-        "relationship": "parent",
-        "description": "Parent formalization of Erdős Problem #1155; this file extends with exact asymptotic gap analysis between BFL and the conjecture"
-      },
-      {
-        "id": "ramseys-theorem",
-        "relationship": "thematic",
-        "description": "Ramsey theory provides related combinatorial bounds for structural properties of random graphs"
-      }
+      "erdos-1155",
+      "ramseys-theorem",
+      "szemeredi-regularity",
+      "randomized-maxcut"
     ],
     "prerequisites": [
       "Filter-based asymptotics (Filter.Eventually, atTop)",
@@ -222,19 +216,30 @@
       "**Conjecture decomposition**: $f(n) = \\Theta(n^{3/2})$ splits into independent $O(n^{3/2})$ and $\\Omega(n^{3/2})$ bounds, with the non-trivial combination requiring $c_1 \\leq c_2$ by a monotonicity argument",
       "**Ratio convergence** $f(n)/n^{3/2} \\to L > 0$ is strictly stronger than the conjecture (which only needs boundedness) but provides explicit constants $c_1 = L/2$, $c_2 = 3L/2$",
       "**Strict hierarchy** Conjecture $\\Longrightarrow$ BFL $\\Longrightarrow$ Grable: each weakening loses information about whether the multiplicative constant is fixed or grows with $n$",
-      "**Mantel connection**: the naive bound $f(n) \\leq n^2/4$ from extremal graph theory is vastly improved by BFL's $n^{7/4}$, and the conjecture's $n^{3/2}$ is tighter still"
+      "**Mantel connection**: the naive bound $f(n) \\leq n^2/4$ from extremal graph theory is vastly improved by BFL's $n^{7/4}$, and the conjecture's $n^{3/2}$ is tighter still",
+      "**Axiomatization strategy**: The 5 axioms encode externally established results ($f(n)$ definition, BFL bounds, Mantel's theorem) while all *structural* theorems (decomposition, hierarchy, tightness) are fully proved from these axioms with 0 sorries — cleanly separating the hard analysis from the combinatorial-logical structure"
     ]
   },
   "crossReferences": [
     {
-      "proofId": "erdos-1155",
+      "targetId": "erdos-1155",
       "relationship": "parent",
-      "description": "Parent formalization of Erdős Problem #1155; this file extends with exact asymptotic gap analysis"
+      "description": "Parent formalization of Erdős Problem #1155; this file extends with exact asymptotic gap analysis between BFL and the conjecture"
     },
     {
-      "proofId": "ramseys-theorem",
+      "targetId": "ramseys-theorem",
       "relationship": "related",
-      "description": "Ramsey theory provides related combinatorial bounds for structural properties of random graphs"
+      "description": "Ramsey theory provides related combinatorial bounds for structural properties of random graphs; both use probabilistic arguments"
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "The Szemerédi regularity lemma is the foundation of the triangle removal lemma (distinct from the triangle removal *process*). Both concern triangle counting in graphs, but via different mechanisms: regularity via deterministic decomposition, the process via random greedy algorithms"
+    },
+    {
+      "targetId": "randomized-maxcut",
+      "relationship": "thematic",
+      "description": "Both formalize random graph algorithms with asymptotic performance guarantees. The MaxCut randomization achieves a 1/2-approximation; the triangle removal process removes edges until triangle-freeness"
     }
   ],
   "leanFile": {
