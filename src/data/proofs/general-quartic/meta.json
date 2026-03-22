@@ -143,11 +143,17 @@
       "targetId": "sylow-theorems",
       "relationship": "related",
       "description": "Sylow theory reveals the subgroup structure of S₄ (Sylow 2-subgroups of order 8, Sylow 3-subgroups of order 3) that enables the composition series making S₄ solvable"
+    },
+    {
+      "targetId": "abel-ruffini-oq-04",
+      "relationship": "complementary",
+      "description": "The A₅ simplicity proof chain exposes each step from A₅ simple to 'no quintic formula' — this quartic file is the complementary 'last solvable case' showing S₄ solvable (derived series S₄ ▷ A₄ ▷ V₄ ▷ {e}) while S₅ is not"
     }
   ],
   "relatedProofs": [
     "solution-of-cubic",
     "abel-ruffini",
+    "abel-ruffini-oq-04",
     "fundamental-theorem-algebra",
     "angle-trisection",
     "lagrange-theorem",
