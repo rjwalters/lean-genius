@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #541** asks about the structure of sequences with uniform zero-sum behavior.\n\nGiven p residues modulo a prime p, suppose every nonempty zero-sum subset has the SAME cardinality r. Graham conjectured this forces at most 2 distinct residues in the sequence.\n\nThis was proved for large primes by Erdős-Szemerédi (1976) and for all moduli by Gao-Hamidoune-Wang (2010).",
     "mathContext": "If ∀S⊆[p], S≠∅, Σᵢ∈S aᵢ≡0 (mod p) ⟹ |S|=r, then |{a₁,...,aₚ}| ≤ 2.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "erdos",
       "zero-sum",
@@ -46,7 +46,7 @@
     "title": "HasUniqueZeroSumLength",
     "content": "**HasUniqueZeroSumLength(p, a, r)** captures the key constraint: every nonempty subset S with Σᵢ∈S aᵢ = 0 has exactly |S| = r elements.\n\nThis is a very strong uniformity condition. Most sequences have zero-sum subsets of varying sizes; having them all be the same size r is highly restrictive.",
     "mathContext": "∀S : Finset(Fin p), S ≠ ∅ → (Σᵢ∈S aᵢ = 0) → S.card = r",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "zero-sum",
       "cardinality",
@@ -81,7 +81,7 @@
     "title": "Distinct Count",
     "content": "**distinctCount(p, a)** counts how many distinct residues appear in the sequence.\n\nWe use `Set.range a` to get all values taken by a, then `ncard` for the cardinality. This is noncomputable since it involves supremum over potentially infinite sets (though here the range is finite).",
     "mathContext": "distinctCount(p, a) = |{a(i) : i ∈ Fin p}| = (Set.range a).ncard",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Set.range",
       "ncard",
@@ -99,7 +99,7 @@
     "title": "Graham's Conjecture",
     "content": "**The Main Result**: If all nonempty zero-sum subsets have the same cardinality, then at most 2 distinct residues appear in the sequence.\n\nIntuitively: the uniformity constraint is so strong that it forces the sequence to be 'almost constant'. With 3+ distinct values, one could construct zero-sum subsets of different sizes.\n\nMarked with `sorry` as the full proof is complex.",
     "mathContext": "HasSomeUniqueZeroSumLength(p, a) → distinctCount(p, a) ≤ 2",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "graham",
       "main-theorem",
@@ -117,7 +117,7 @@
     "title": "Erdős-Szemerédi (1976)",
     "content": "**For sufficiently large primes p**, Graham's conjecture holds.\n\nErdős and Szemerédi proved this using combinatorial arguments that work when p exceeds some threshold. The exact threshold depends on the proof technique.",
     "mathContext": "∀ᶠ p in atTop, p.Prime → (HasSomeUniqueZeroSumLength p a → distinctCount p a ≤ 2)",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "erdos-szemeredi",
       "1976",
@@ -135,7 +135,7 @@
     "title": "Gao-Hamidoune-Wang (2010)",
     "content": "**The Full Result**: Graham's conjecture holds for ALL moduli n, not just primes!\n\nThis 2010 result generalized beyond the prime case, showing the phenomenon is arithmetic rather than purely prime-specific. The proof uses deep techniques from additive combinatorics.",
     "mathContext": "∀n, HasSomeUniqueZeroSumLength(n, a) → distinctCount(n, a) ≤ 2",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "gao-hamidoune-wang",
       "2010",
@@ -189,7 +189,7 @@
     "title": "Why 3+ Values Fail",
     "content": "**The Key Insight**: With 3 or more distinct values {a, b, c}, one can construct zero-sum subsets of DIFFERENT cardinalities.\n\nThe argument involves:\n1. Using copies of a alone (if a·k ≡ 0)\n2. Mixing a's and b's in different proportions\n3. Introducing c's to create new combinations\n\nThese lead to zero-sums of varying sizes, contradicting the uniformity hypothesis.",
     "mathContext": "3+ distinct values → ∃S,T with Σᵢ∈S aᵢ = Σᵢ∈T aᵢ = 0 but |S| ≠ |T|",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "combinatorics",
       "contradiction",
@@ -243,7 +243,7 @@
     "title": "Erdős-Ginzburg-Ziv Theorem",
     "content": "**The EGZ Theorem (1961)**: Among any 2n-1 integers, some n of them have sum divisible by n.\n\nThis is a foundational result in zero-sum theory. It's tight: 2n-2 integers may avoid having n sum to 0 mod n (e.g., n-1 copies of 0 and n-1 copies of 1).\n\nStated as an axiom since the proof is nontrivial.",
     "mathContext": "∀a : Fin(2n-1) → ZMod(n), ∃S with |S|=n and Σᵢ∈S aᵢ = 0",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "egz",
       "1961",
