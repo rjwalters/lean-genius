@@ -283,5 +283,33 @@
       "venue": "Sitzungsberichte der Königlich Preußischen Akademie der Wissenschaften",
       "note": "Generalized Lindemann's result to the full Lindemann-Weierstrass theorem on algebraic independence"
     }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.RingTheory.Algebraic.Basic",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
+      "Mathlib.Analysis.SpecialFunctions.Complex.Analytic",
+      "Mathlib.Data.Real.Pi.Bounds",
+      "Mathlib.Data.Complex.Exponential",
+      "Mathlib.LinearAlgebra.LinearIndependent.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Complex",
+      "Polynomial",
+      "ComplexConjugate"
+    ],
+    "namespace": "HermiteLindemann",
+    "lineCount": 375,
+    "axiomCount": 4,
+    "theoremCount": 1,
+    "definitionCount": 1
+  },
+  "relatedProofs": [
+    "",
+    "",
+    "",
+    "",
+    ""
   ]
 }
