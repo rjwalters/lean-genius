@@ -1,0 +1,26 @@
+{
+  "id": "ballot-problem-oq-03-oq-01",
+  "name": "LGV Lemma 2x2: Lindström Involution Bijection",
+  "status": "surveyed",
+  "phase": "OBSERVE",
+  "knowledge": {
+    "insights": [
+      "BallotProblemOQ03.lean (2878L, 0A, 0S) already proves the 2x2 LGV lemma completely",
+      "The Lindström involution bijection is the core proof technique used in OQ03",
+      "OQ03 uses crossing lemma + sign-reversing involution for the bijective proof",
+      "This sub-question may target exposing the involution itself as a standalone result",
+      "Mathlib has Equiv and InvolutiveNeg for involution infrastructure"
+    ],
+    "builtItems": [],
+    "openQuestions": [
+      "Does OQ03 already expose the involution explicitly?",
+      "Is the goal to extract the bijection as a reusable Equiv?"
+    ],
+    "nextSteps": [
+      "Read OQ03 crossing lemma to understand involution formalization",
+      "Extract the Lindström involution as a standalone Equiv",
+      "Show it is sign-reversing (swaps paths at first crossing point)"
+    ],
+    "progressSummary": "SURVEY: OQ03 proves full 2x2 LGV. May need involution extracted as standalone result."
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "id": "ballot-problem-oq-03-oq-02",
+  "name": "General LGV Lemma: r×r Lindström-Gessel-Viennot Determinant",
+  "status": "surveyed",
+  "phase": "OBSERVE",
+  "knowledge": {
+    "insights": [
+      "Parent OQ03 (2878 lines, 0 axioms, 0 sorries) proves the 2×2 LGV lemma completely",
+      "2×2 LGV: non-intersecting path pairs = e(A1,B1)e(A2,B2) - e(A1,B2)e(A2,B1) = det[[e(Ai,Bj)]]",
+      "General r×r LGV: non-intersecting r-tuples = det[[e(Ai,Bj)]] for i,j = 1..r",
+      "Proof for r×r requires sign-reversing involution on r-tuples of paths",
+      "Mathlib has Matrix.det and Equiv.Perm infrastructure for the sign arguments"
+    ],
+    "builtItems": [],
+    "openQuestions": [
+      "Can the 2×2 proof structure generalize cleanly to r×r?",
+      "Does Mathlib have alternating sum / inclusion-exclusion tools for this?"
+    ],
+    "nextSteps": [
+      "Define r-tuple of lattice paths and non-intersecting condition",
+      "State the r×r determinant formula using Matrix.det",
+      "Prove via sign-reversing involution (Gessel-Viennot bijection)"
+    ],
+    "progressSummary": "SURVEY: Parent proves 2×2 LGV completely. General r×r needs sign-reversing involution on path r-tuples."
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "id": "fundamental-theorem-calculus-oq-01",
+  "name": "FTC Generalization to Lebesgue Integral",
+  "status": "surveyed",
+  "phase": "OBSERVE",
+  "knowledge": {
+    "insights": [
+      "Parent FundamentalTheoremCalculus.lean complete (165 lines, 0 axioms, 0 sorries)",
+      "Parent proves FTC Parts 1 and 2 using Mathlib interval integral",
+      "Lebesgue FTC: if f is absolutely continuous, f' exists a.e. and ∫[a,b] f' = f(b)-f(a)",
+      "Mathlib has MeasureTheory.Integral.Bochner.FundThmCalculus with Lebesgue integral support",
+      "Key Mathlib theorems: integral_hasDerivAt_right, integral_eq_sub_of_hasDerivAt already use measure theory"
+    ],
+    "builtItems": [],
+    "openQuestions": [
+      "What specific Lebesgue generalization is needed beyond what Mathlib already provides?",
+      "Does Mathlib have the Lebesgue differentiation theorem for absolutely continuous functions?"
+    ],
+    "nextSteps": [
+      "Check Mathlib for absolutely continuous functions and their FTC",
+      "Formalize: AC function → derivative exists a.e. → integral of derivative equals function",
+      "Connect to Vitali covering lemma and Lebesgue density theorem if available"
+    ],
+    "progressSummary": "SURVEY: Parent complete. Mathlib has Lebesgue integral FTC infrastructure. Need specific Lebesgue generalization scope."
+  }
+}

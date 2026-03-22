@@ -1,0 +1,26 @@
+{
+  "id": "dissection-of-cubes-oq-02",
+  "name": "3D Shape Dissection Generalizations",
+  "status": "surveyed",
+  "phase": "OBSERVE",
+  "knowledge": {
+    "insights": [
+      "DissectionOfCubes.lean (366L, 2A, 0S) is the base formalization",
+      "OQ01 (279L, 0A, 0S) is complete, OQ03 (501L, 0A, 8S) has 8 sorries",
+      "No OQ02 file exists - fresh formalization for 3D generalizations",
+      "Dehn's theorem: tetrahedra cannot be dissected into cubes without Dehn invariant matching",
+      "3D dissection is richer than 2D: Hilbert's third problem was solved by Dehn (1900)"
+    ],
+    "builtItems": [],
+    "openQuestions": [
+      "What specific 3D generalization is targeted?",
+      "Does Mathlib have volume-preserving or Dehn invariant infrastructure?"
+    ],
+    "nextSteps": [
+      "Read base file to understand existing dissection formalization",
+      "Formalize 3D dissection concepts: polyhedra, scissors congruence",
+      "State Dehn invariant or 3D equidecomposition results"
+    ],
+    "progressSummary": "SURVEY: Base and OQ01 complete. Need 3D generalization formalization. OQ03 has 8 sorries."
+  }
+}

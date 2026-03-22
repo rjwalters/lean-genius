@@ -1,0 +1,26 @@
+{
+  "id": "chinese-remainder-non-coprime-oq-03",
+  "name": "Pairwise GCD Sufficiency for Three Non-Coprime Moduli",
+  "status": "surveyed",
+  "phase": "OBSERVE",
+  "knowledge": {
+    "insights": [
+      "Parent files complete (0 axioms, 0 sorries): main CRT, OQ01, OQ02 (Euclidean domain extension)",
+      "OQ02 proves non-coprime CRT for 2 moduli: existence, uniqueness mod lcm, ideal bridge",
+      "For 3 moduli m1,m2,m3: pairwise conditions gcd(mi,mj) | (ai-aj) suffice iff they're mutually consistent",
+      "Proof approach: solve first pair x≡a1 (m1), x≡a2 (m2), get x0 mod lcm(m1,m2), then solve x0≡a3 (m3)",
+      "Key subtlety: need gcd(lcm(m1,m2), m3) | (x0-a3), which follows from pairwise conditions"
+    ],
+    "builtItems": [],
+    "openQuestions": [
+      "Is the pairwise condition sufficient for N>3 moduli? (Yes, by induction on N)",
+      "Does Mathlib have ZMod.chineseRemainder for the coprime case?"
+    ],
+    "nextSteps": [
+      "Create ChineseRemainderNonCoprimeOQ03.lean with 3-moduli CRT",
+      "Prove pairwise GCD sufficiency by reducing to 2-moduli case + induction",
+      "Use Mathlib Int.emod_emod_of_dvd for GCD divisibility"
+    ],
+    "progressSummary": "SURVEY: 3-moduli pairwise GCD sufficiency. Tractable via 2-moduli reduction. Parent files complete."
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "id": "cauchy-schwarz-integral-oq-02-oq-01",
+  "name": "Strict Minkowski Inequality: Equality iff Proportional",
+  "status": "surveyed",
+  "phase": "OBSERVE",
+  "knowledge": {
+    "insights": [
+      "OQ02 (263L, 0A, 0S) is complete - Minkowski inequality base formalization",
+      "No OQ02OQ01 file exists - need strict equality characterization",
+      "Strict Minkowski: equality in ∥f+g∥_p ≤ ∥f∥_p + ∥g∥_p iff f = λg a.e.",
+      "Mathlib has MeasureTheory.Lp and NNNorm infrastructure",
+      "Equality case requires strict convexity of x^p for p > 1"
+    ],
+    "builtItems": [],
+    "openQuestions": [
+      "Does Mathlib have strict Minkowski or strict Hölder?",
+      "Does Mathlib have a.e. proportionality characterization?"
+    ],
+    "nextSteps": [
+      "Search Mathlib for strict Lp inequality characterization",
+      "Formalize: equality in Minkowski iff f = λg a.e. (using strict convexity)",
+      "Use inner_mul_le_norm_mul_iff or similar from Mathlib"
+    ],
+    "progressSummary": "SURVEY: OQ02 complete. Need equality characterization for Minkowski (f = λg a.e.)."
+  }
+}
