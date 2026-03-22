@@ -1,0 +1,26 @@
+{
+  "id": "abel-ruffini-oq-04",
+  "name": "Expose A5 Simplicity Proof Chain in Abel-Ruffini",
+  "status": "surveyed",
+  "phase": "OBSERVE",
+  "knowledge": {
+    "insights": [
+      "AbelRuffini.lean (185L, 0A, 0S) and AbelRuffiniGaloisExtensions.lean (534L, 0A, 0S) both complete",
+      "No OQ04 file exists — fresh formalization needed",
+      "A₅ simplicity is key ingredient: A₅ is the smallest non-abelian simple group",
+      "Mathlib has Alternating.isSimple (or similar) for A₅ simplicity",
+      "Proof chain: A₅ simple → S₅ not solvable → degree ≥ 5 not solvable by radicals"
+    ],
+    "builtItems": [],
+    "openQuestions": [
+      "Does Mathlib have A₅ simplicity proved?",
+      "How does the existing file use solvability?"
+    ],
+    "nextSteps": [
+      "Check Mathlib for Alternating group simplicity",
+      "State the proof chain: A₅ simple → not solvable → Abel-Ruffini",
+      "Create OQ04 file exposing this chain using Mathlib group theory"
+    ],
+    "progressSummary": "SURVEY: Parents complete. Need fresh OQ04 exposing A₅ simplicity proof chain."
+  }
+}
