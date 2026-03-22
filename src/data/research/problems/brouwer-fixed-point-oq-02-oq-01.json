@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed all build errors from Mathlib v4.26 API drift. Restored 5 missing definitions (gColor, hTrans, hTrans_top, gColor_bot, abstractDoorCount). Fixed omega/projection issues, deprecated API renames, door_parity proof strategy. Removed 3 unused broken lemmas. File now builds clean: 627 lines, 23 theorems, 1 sorry (approximate_fixed_point_2d only). sperner_2d is FULLY PROVED.",
+    "progressSummary": "PROGRESS: Found bug in displacementColoring tie-breaking. Current coloring violates Sperner on hypotenuse when f(p)=p. Needs face-aware tie-breaking fix.",
     "builtItems": [
       "BrouwerFixedPointOQ02OQ01.lean: 428 lines, 2 sorries (down from 5)",
       "sperner_2d: PROVED via row-sweep parity (modulo strip_parity)",
@@ -63,18 +63,24 @@
       "15+ omega failures in fully_colored_one_door and no_door_hypotenuse (Lean 4.26 / Fin comparison changes)",
       "sperner_2d proof structure (row-sweep via strip_parity) is mathematically complete but cannot compile due to missing upstream definitions",
       "Restored missing definitions (gColor, hTrans, hTrans_top, gColor_bot, abstractDoorCount) from git history",
-      "Fixed Mathlib v4.26 API drift: omega failures through GridVertex projections (use show/dsimp), deprecated renames (range_succ→range_add_one, notMem_range_self, natCast_eq_zero_iff), door_parity_of_not_fc decide→contradiction",
+      "Fixed Mathlib v4.26 API drift: omega failures through GridVertex projections (use show/dsimp), deprecated renames (range_succ\u2192range_add_one, notMem_range_self, natCast_eq_zero_iff), door_parity_of_not_fc decide\u2192contradiction",
       "Removed unused lemmas (fully_colored_one_door, no_door_left_boundary, no_door_hypotenuse) that had unfixable API drift - superseded by doorZ_* variants",
       "Fixed zmod2_sum_shift_cancel: added missing 0<m hypothesis (lemma was false for m=0)",
       "Added @[ext] to GridVertex for ext tactic compatibility",
-      "File now builds clean with 1 sorry (approximate_fixed_point_2d only)"
+      "File now builds clean with 1 sorry (approximate_fixed_point_2d only)",
+      "BUG FOUND: displacementColoring tie-breaking is wrong. When f(p)=p (d0=d1=d2=0), coloring gives 0 on hypotenuse, violating Sperner condition (needs color \u2260 0 there).",
+      "Root cause: tie-breaking picks smallest index (color 0 first), but on hypotenuse need color 0 to have LOWEST priority.",
+      "Fix: reverse tie-breaking priority OR use face-aware tie-breaking where vertex-opposite colors get low priority.",
+      "Standard fix from literature: argmin with tie-broken by largest index (so all-zeros \u2192 color 2, which is fine on hypotenuse).",
+      "On bottom edge (d2\u22650): reversed priority would give color 2 when all zeros. Need face-aware tie-breaking for corners."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "CRITICAL: Add missing definitions for gColor, hTrans, abstractDoorCount (restore from git history or rewrite)",
-      "Fix omega failures (replace with decide/explicit proofs for Fin comparisons)",
-      "Then verify sperner_2d compiles end-to-end",
-      "Finally prove approximate_fixed_point_2d (construct Sperner coloring from continuous map)"
+      "FIX displacementColoring: use face-aware tie-breaking that ensures Sperner conditions",
+      "One approach: color = max index k such that d_k is minimal among {d0,d1,d2}",
+      "Alternative: separate handling for boundary vs interior vertices",
+      "After fixing coloring, displacementColoring_isSperner should be provable by case analysis on boundary face + displacement sign",
+      "fully_colored_gives_approx: show all-3-colors triangle has diameter \u2264 sqrt(2)/n and displacement is small"
     ]
   },
   "tags": [
