@@ -154,22 +154,50 @@ section SkolemNoetherProofHelpers
 private theorem eij_mul_ekl (i j k l : n) :
     Matrix.stdBasisMatrix i j (1 : K) * Matrix.stdBasisMatrix k l (1 : K) =
     if j = k then Matrix.stdBasisMatrix i l (1 : K) else 0 := by
-  sorry
+  by_cases hjk : j = k
+  · subst hjk; ext a b; simp only [Matrix.mul_apply, if_pos rfl]
+    rw [Finset.sum_eq_single j]
+    · simp only [Matrix.stdBasisMatrix, Matrix.of_apply]; split_ifs <;> simp_all
+    · intro m _ hm; simp only [Matrix.stdBasisMatrix, Matrix.of_apply]; split_ifs <;> simp_all
+    · intro h; exact absurd (Finset.mem_univ j) h
+  · ext a b; simp only [Matrix.mul_apply, if_neg hjk, Pi.zero_apply]
+    apply Finset.sum_eq_zero; intro m _
+    simp only [Matrix.stdBasisMatrix, Matrix.of_apply]; split_ifs <;> simp_all
 
 /-- Sum of diagonal matrix units equals the identity matrix. -/
 private theorem sum_eii_eq_one :
     ∑ i : n, Matrix.stdBasisMatrix i i (1 : K) = (1 : Matrix n n K) := by
-  sorry
+  ext a b; simp only [Finset.sum_apply, Matrix.one_apply]
+  rw [Finset.sum_eq_single a]
+  · simp only [Matrix.stdBasisMatrix, Matrix.of_apply]; split_ifs <;> simp_all
+  · intro m _ hm; simp only [Matrix.stdBasisMatrix, Matrix.of_apply]; split_ifs <;> simp_all
+  · intro h; exact absurd (Finset.mem_univ a) h
 
 /-- Every matrix decomposes as a linear combination of matrix units. -/
 private theorem matrix_eq_sum_eij (M : Matrix n n K) :
     M = ∑ i : n, ∑ j : n, M i j • Matrix.stdBasisMatrix i j (1 : K) := by
-  sorry
+  ext a b; simp only [Finset.sum_apply, Matrix.smul_apply, smul_eq_mul]
+  rw [Finset.sum_eq_single a]
+  · rw [Finset.sum_eq_single b]
+    · simp only [Matrix.stdBasisMatrix, Matrix.of_apply]; split_ifs <;> simp_all
+    · intro m _ hm; simp only [Matrix.stdBasisMatrix, Matrix.of_apply]; split_ifs <;> simp_all
+    · intro h; exact absurd (Finset.mem_univ b) h
+  · intro m _ hm; apply Finset.sum_eq_zero; intro j _
+    simp only [Matrix.stdBasisMatrix, Matrix.of_apply]; split_ifs <;> simp_all
+  · intro h; exact absurd (Finset.mem_univ a) h
 
 /-- A nonzero matrix has a nonzero column action on some vector. -/
 private theorem exists_nonzero_mulVec (M : Matrix n n K) (hM : M ≠ 0) :
     ∃ v : n → K, M.mulVec v ≠ 0 := by
-  sorry
+  have ⟨i, j, hij⟩ : ∃ i j, M i j ≠ 0 := by
+    by_contra h; push_neg at h
+    exact hM (Matrix.ext fun a b => h a b)
+  refine ⟨Pi.single j 1, fun hv => hij ?_⟩
+  have h := congr_fun hv i
+  simp only [Pi.zero_apply, Matrix.mulVec, dotProduct] at h
+  simp only [Pi.single_apply, mul_ite, mul_one, mul_zero,
+    Finset.sum_ite_eq, Finset.mem_univ, ite_true] at h
+  exact h
 
 /-- Linear independence of column vectors implies the matrix they form is a unit.
     The matrix P_{ab} = (p b) a has linearly independent columns, hence is invertible.
