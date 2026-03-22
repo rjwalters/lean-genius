@@ -207,5 +207,19 @@
     "amgm-inequality",
     "hurwitz-theorem",
     "yang-mills"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Algebra.BigOperators.Ring.Finset",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "CauchySchwarz",
+    "lineCount": 232,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0
+  }
 }

@@ -116,5 +116,22 @@
       "How can Cayley-Hamilton be used to efficiently compute matrix exponentials e^(At)?",
       "What is the analog of Cayley-Hamilton for infinite-dimensional operators?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic",
+      "Mathlib.Data.Matrix.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Matrix",
+      "Polynomial",
+      "BigOperators"
+    ],
+    "namespace": "CayleyHamilton",
+    "lineCount": 251,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0
   }
 }

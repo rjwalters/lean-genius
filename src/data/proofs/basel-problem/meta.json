@@ -178,5 +178,19 @@
     "riemann-hypothesis",
     "fourier-series",
     "euler-identity"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.ZetaValues",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+      "Mathlib.Analysis.PSeries",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["Finset", "BigOperators", "Filter", "Topology", "Real"],
+    "namespace": "BaselProblem",
+    "lineCount": 164,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0
+  }
 }

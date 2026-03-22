@@ -154,5 +154,20 @@
     "area-of-circle",
     "isoperimetric-theorem",
     "pi-transcendental"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Calculus.Deriv.Basic",
+      "Mathlib.Analysis.Calculus.Deriv.Pow",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "CircumferenceFromArea",
+    "lineCount": 163,
+    "axiomCount": 0,
+    "theoremCount": 20,
+    "definitionCount": 0
+  }
 }

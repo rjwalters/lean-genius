@@ -124,5 +124,17 @@
     "infinitude-primes",
     "bounded-prime-gaps",
     "binomial-theorem"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Bertrand",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "BertrandsPostulate",
+    "lineCount": 165,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0
+  }
 }

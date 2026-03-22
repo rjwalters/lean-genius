@@ -154,5 +154,22 @@
       "Can the binomial theorem be used to derive the binomial distribution and its properties in a probability formalization?",
       "Is there a clean proof of the Vandermonde identity $\\binom{m+n}{r} = \\sum \\binom{m}{k}\\binom{n}{r-k}$ using this infrastructure?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.BigOperators.Ring.Finset",
+      "Mathlib.Data.Nat.Choose.Sum",
+      "Mathlib.Algebra.Ring.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "BinomialTheorem",
+    "lineCount": 176,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0
   }
 }

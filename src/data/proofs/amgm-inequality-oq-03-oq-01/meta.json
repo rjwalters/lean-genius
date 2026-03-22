@@ -91,7 +91,25 @@
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
-    "lineCount": 372
+    "lineCount": 372,
+    "leanFile": "proofs/Proofs/AmgmInequalityOQ03.lean",
+    "relatedProofs": [
+      {
+        "id": "amgm-inequality-oq-03",
+        "relationship": "extends",
+        "description": "Parent file containing definitions and positive monotonicity used by this result"
+      },
+      {
+        "id": "amgm-inequality",
+        "relationship": "related",
+        "description": "Base AM-GM inequality, the r=1 to r=0 case of the power mean chain"
+      },
+      {
+        "id": "amgm-inequality-oq-03-oq-02",
+        "relationship": "related",
+        "description": "Mixed-sign crossing case, the remaining gap in the full chain"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "The Power Mean Inequality states that M_r ≤ M_s whenever r ≤ s. While the positive-exponent case (0 < r ≤ s) follows directly from Jensen's inequality, the negative-exponent case requires a different approach. The classical trick, due to Hardy, Littlewood, and Pólya (1934), exploits the algebraic duality between positive and negative power means via value inversion.\n\nAs of early 2026, Mathlib4 had an explicit TODO noting the gap for 'generalized mean inequality with any p ≤ q, including negative numbers'. This formalization fills that gap for the r ≤ s < 0 case, complementing the positive case proved in the parent file AmgmInequalityOQ03.lean.",
@@ -155,5 +173,19 @@
       "Contribute the negative power mean monotonicity to Mathlib upstream, filling the explicit TODO in Mathlib.Analysis.MeanInequalitiesPow",
       "Can the duality argument be generalized to Rényi entropy? The power mean at order r is related to exp((1/(r-1)) · D_r(p||u))"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.MeanInequalities",
+      "Mathlib.Analysis.MeanInequalitiesPow",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 372,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 3
   }
 }
