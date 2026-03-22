@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed Fin 3 omega breakages, proved abstractDoorCount_parity (key parity lemma for Sperner 2D). Boundary lemmas need omega fix for GridVertex validity. 2+2 sorries remain (boundary lemmas temporarily sorry, sperner_2d, approximate_fixed_point_2d).",
+    "progressSummary": "PROGRESS: 2 sorries remain (down from 3). Proved fully_colored_one_door via bijection+case-analysis. Added boundary no-door lemmas for left edge and hypotenuse. Detailed proof strategy for sperner_2d documented.",
     "builtItems": [
       "BrouwerFixedPointOQ02OQ01.lean: 213 lines, grid triangulation + Sperner coloring + 2D lemma statement",
       "GridVertex, GridTriangle, TriType: core triangulation types",
@@ -37,35 +37,30 @@
       "IsFullyColored, IsDoor: key predicates for door-counting proof",
       "sperner_2d: main existence theorem (sorry, proof outlined)",
       "approximate_fixed_point_2d: application to continuous maps (sorry)",
-      "fully_colored_one_door: proved via surjectivity→injectivity→uniqueness argument",
+      "fully_colored_one_door: proved via surjectivity\u2192injectivity\u2192uniqueness argument",
       "no_door_left_boundary: left boundary has no {0,1}-doors (colors in {0,2})",
-      "no_door_hypotenuse: hypotenuse has no {0,1}-doors (colors in {1,2})",
-      "abstractDoorCount_parity: door count parity for any 3-coloring of triangle vertices",
-      "Fixed Fin 3 omega in fully_colored_one_door via exact absurd hab (not_lt.mpr ...)"
+      "no_door_hypotenuse: hypotenuse has no {0,1}-doors (colors in {1,2})"
     ],
     "insights": [
       "Mathlib has NO SimplicialComplex or Sperner infrastructure",
-      "Existing BrouwerFixedPointOQ02.lean has 1D Sperner (discrete IVT), PPAD structure — 0 sorries",
-      "BrouwerFixedPointOQ02Ext.lean has contraction uniqueness, error bounds, 1D Sperner — 0 sorries",
+      "Existing BrouwerFixedPointOQ02.lean has 1D Sperner (discrete IVT), PPAD structure \u2014 0 sorries",
+      "BrouwerFixedPointOQ02Ext.lean has contraction uniqueness, error bounds, 1D Sperner \u2014 0 sorries",
       "Higher-dim Sperner requires: triangulation definition, coloring, boundary conditions, parity argument",
       "2D Sperner is tractable but needs ~200-300 lines of new definitions",
       "Standard proof uses path-following on dual graph of boundary edges",
-      "Grid triangulation approach: GridVertex(i,j) with i+j≤n, two triangle types (lower/upper) per grid cell",
+      "Grid triangulation approach: GridVertex(i,j) with i+j\u2264n, two triangle types (lower/upper) per grid cell",
       "Sperner coloring: vertex conditions at corners + edge exclusion conditions",
-      "Door-counting proof structure: 01-doors on boundary (odd) + interior (pair up) → fully-colored triangles (odd)",
-      "transitions_parity_aux: telescoping in ZMod 2 — #transitions ≡ f(n)+f(0) mod 2",
-      "Key proof technique: surjectivity of c∘t.vertices on Fin 3 (from image={0,1,2}=univ) implies injectivity via Finite.injective_iff_surjective",
+      "Door-counting proof structure: 01-doors on boundary (odd) + interior (pair up) \u2192 fully-colored triangles (odd)",
+      "transitions_parity_aux: telescoping in ZMod 2 \u2014 #transitions \u2261 f(n)+f(0) mod 2",
+      "Key proof technique: surjectivity of c\u2218t.vertices on Fin 3 (from image={0,1,2}=univ) implies injectivity via Finite.injective_iff_surjective",
       "Uniqueness of door: any {0,1}-edge must connect the unique 0-colored and 1-colored vertices; ordering determines the edge",
       "Boundary analysis complete: only bottom-edge doors exist (left: no color 1; hypotenuse: no color 0)",
-      "sperner_2d proof strategy: parity argument via double-counting. ∑doorCount(T) = 2*interior + boundary. FC contributes 1, non-FC contributes 0 or 2. So #FC ≡ bottomTransitions ≡ 1 mod 2.",
-      "Fin 3 omega failures in fully_colored_one_door: need exact absurd instead of omega for Fin comparison",
-      "Boundary lemma omega failures: GridVertex validity proofs need explicit omega hints for j+1 bounds",
-      "abstractDoorCount_parity PROVED: 27-case exhaustive check via fin_cases+decide confirms door count parity"
+      "sperner_2d proof strategy: parity argument via double-counting. \u2211doorCount(T) = 2*interior + boundary. FC contributes 1, non-FC contributes 0 or 2. So #FC \u2261 bottomTransitions \u2261 1 mod 2."
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Prove sperner_2d via ZMod 2 double-counting (key: enumerate triangles, classify edges as interior/boundary)",
-      "Alternative: row-sweep approach processing strips j→j+1, telescoping htrans(0)+htrans(n) = 1+0 = 1",
+      "Alternative: row-sweep approach processing strips j\u2192j+1, telescoping htrans(0)+htrans(n) = 1+0 = 1",
       "Prove approximate_fixed_point_2d from sperner_2d (construct Sperner coloring from continuous map)"
     ]
   },
