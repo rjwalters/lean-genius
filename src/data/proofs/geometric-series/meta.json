@@ -54,7 +54,8 @@
       "The finite formula works for any r ≠ 1, but the infinite sum requires |r| < 1 for convergence",
       "The key trick is multiplying by r and subtracting to telescope the sum",
       "The condition |r| < 1 ensures r^n → 0, allowing the limit to exist",
-      "For |r| ≥ 1, the series diverges because r^n doesn't approach zero"
+      "For |r| ≥ 1, the series diverges because r^n doesn't approach zero",
+      "The geometric series formula 1/(1-r) is the simplest example of a generating function — encoding an infinite sequence as a closed-form rational expression, a technique fundamental to combinatorics and analysis"
     ]
   },
   "sections": [

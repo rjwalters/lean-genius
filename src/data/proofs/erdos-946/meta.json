@@ -56,7 +56,8 @@
       "**Divisor function:** τ(n) = |{d : d|n}|. For n = p₁^a₁...pₖ^aₖ, we have τ(n) = (a₁+1)...(aₖ+1).",
       "**5040 = 7!:** Spiro used this highly composite number because its many divisors create opportunities for coincidence.",
       "**Asymptotic bounds:** The count lies between x/(log log x)³ and x/√(log log x).",
-      "**Related problem:** Problem 1003 asks the same for Euler's totient φ(n)."
+      "**Related problem:** Problem 1003 asks the same for Euler's totient φ(n).",
+      "**Multiplicative structure**: Since τ(n) is multiplicative and consecutive integers n, n+1 are coprime, their divisor counts are determined independently — making equal values a genuinely 'random' coincidence whose frequency reflects deep distributional properties of τ."
     ]
   },
   "sections": [
