@@ -48,11 +48,11 @@
     "problemStatement": "**Theorem (Gauss, ~1785)**: The sum of the first n natural numbers:\n\n$$\\sum_{k=1}^{n} k = \\frac{n(n+1)}{2}$$\n\nMore generally, for an arithmetic series with first term a and common difference d:\n\n$$\\sum_{k=0}^{n-1} (a + kd) = na + \\frac{dn(n-1)}{2}$$\n\nThis is Wiedijk's 100 Theorems #68.",
     "proofStrategy": "**The Pairing Argument (Gauss's Method):**\n\nWrite the sum S twice, forwards and backwards:\n\n```\n  S = 1   +   2   +   3   + ... + (n-1) +   n\n  S = n   + (n-1) + (n-2) + ... +   2   +   1\n ─────────────────────────────────────────────\n 2S = (n+1) + (n+1) + (n+1) + ... + (n+1) + (n+1)\n    = n x (n+1)\n```\n\nTherefore S = n(n+1)/2.\n\nThe formalization uses Mathlib's `Finset.sum_range_id` and derives the classical formula by adjusting indices.",
     "keyInsights": [
-      "The pairing argument: terms from opposite ends of the sequence sum to a constant",
-      "Sum 0 + 1 + ... + n = n(n+1)/2 (Mathlib uses 0-indexed convention)",
-      "The sum of the first n odd numbers equals n squared",
-      "Triangular numbers T(n) = n(n+1)/2 satisfy T(n+1) = T(n) + (n+1)",
-      "Gauss's original problem: sum of 1 to 100 = 5050"
+      "**Gauss's Pairing Trick:** Writing $S = 0 + 1 + \\cdots + n$ and $S = n + (n-1) + \\cdots + 0$, each column sums to $n$, giving $2S = n \\cdot (n+1)$, hence $S = n(n+1)/2$. Mathlib proves this as `Finset.sum_range_id_eq_sum_range_succ`.",
+      "**Odd Numbers Sum to Squares:** $\\sum_{k=0}^{n-1}(2k+1) = n^2$. Geometrically, each odd number $(2k+1)$ is an L-shaped gnomon that extends a $k \\times k$ square to $(k+1) \\times (k+1)$.",
+      "**Triangular Number Recurrence:** $T_n = \\frac{n(n+1)}{2}$ satisfies $T_{n+1} = T_n + (n+1)$ — the inductive structure that Lean proofs exploit. Triangular numbers count pairs: $T_n = \\binom{n+1}{2}$.",
+      "**General Arithmetic Series:** $\\sum_{k=0}^{n-1}(a + kd) = na + d\\frac{n(n-1)}{2}$. The formalization derives this from the base case ($d = 1$, $a = 0$) by linearity of summation — Mathlib's `Finset.sum_add_const` and `Finset.sum_mul`.",
+      "**Gauss's Original Problem:** $\\sum_{k=1}^{100} k = 100 \\cdot 101/2 = 5050$. The legend of 10-year-old Gauss solving this instantly demonstrates that algebraic insight (pairing) beats brute-force computation — the same principle Lean's `omega` and `ring` tactics mechanize."
     ]
   },
   "sections": [
