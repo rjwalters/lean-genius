@@ -290,24 +290,28 @@ private lemma no_door_hypotenuse {n : ℕ} (hn : 0 < n) (c : Coloring n)
 -- SECTION IV-b: Row-Sweep Parity Argument for Sperner's Lemma
 -- ============================================================
 
--- Extended coloring: returns 0 for coordinates outside the grid
-private def gColor {n : ℕ} (c : Coloring n) (i j : ℕ) : Fin 3 :=
-  if h : i + j ≤ n then c ⟨i, j, h⟩ else 0
+/-- Helper: is this triple a permutation of {0,1,2}? -/
+private def isFC (a b c : Fin 3) : Bool :=
+  ({a, b, c} : Finset (Fin 3)) = {0, 1, 2}
 
--- Number of horizontal {0,1}-door transitions at row j
-private def hTrans {n : ℕ} (c : Coloring n) (j : ℕ) : ℕ :=
-  ((Finset.range (n - j)).filter (fun i =>
-    (gColor c i j = 0 ∧ gColor c (i + 1) j = 1) ∨
-    (gColor c i j = 1 ∧ gColor c (i + 1) j = 0))).card
+/-- Key parity lemma: for any 3 colors from Fin 3, the number of {0,1}-doors
+    among the 3 edges has the same parity as whether the triple is a
+    permutation of {0,1,2} (fully colored).
 
--- hTrans at row n is 0 (no edges at the apex)
-private lemma hTrans_top {n : ℕ} (c : Coloring n) : hTrans c n = 0 := by
-  simp [hTrans, Nat.sub_self]
+    PROVED by exhaustive case analysis on 27 cases. -/
+theorem abstractDoorCount_parity (a b c : Fin 3) :
+    abstractDoorCount a b c % 2 = if isFC a b c then 1 else 0 := by
+  fin_cases a <;> fin_cases b <;> fin_cases c <;> decide
 
--- gColor matches botColor for valid bottom-row points
-private lemma gColor_bot {n : ℕ} (c : Coloring n) (i : ℕ) (hi : i ≤ n) :
-    gColor c i 0 = botColor c i := by
-  simp only [gColor, botColor, dif_pos (show i + 0 ≤ n by omega), dif_pos hi]
+-- Proof strategy for sperner_2d:
+-- 1. bottomTransitions c is odd (from bottom_transitions_odd)
+-- 2. Boundary {0,1}-doors appear ONLY on the bottom edge
+--    (left edge: colors ∈ {0,2}, no color 1 → no doors)
+--    (hypotenuse: colors ∈ {1,2}, no color 0 → no doors)
+-- 3. Double-counting: ∑_T doorCount(T) = 2·|interior doors| + |boundary doors|
+-- 4. Each fully-colored triangle has exactly 1 door (fully_colored_one_door)
+-- 5. Each non-fully-colored triangle has 0 or 2 doors (even)
+-- 6. Therefore: #FC ≡ bottomTransitions ≡ 1 (mod 2), so #FC ≥ 1
 
 -- hTrans at row 0 equals bottomTransitions under Sperner condition
 private lemma hTrans_zero_eq {n : ℕ} (hn : 0 < n) (c : Coloring n)
