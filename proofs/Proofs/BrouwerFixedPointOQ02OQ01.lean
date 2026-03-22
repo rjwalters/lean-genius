@@ -602,6 +602,14 @@ theorem sperner_2d {n : ℕ} (hn : 0 < n) (c : Coloring n) (hc : IsSperner hn c)
 -- SECTION V: Existence of Approximate Fixed Points (Application)
 -- ============================================================
 
+-- Construct a Sperner coloring from a continuous map f on the simplex.
+-- The key idea: at each grid vertex, assign the color of the direction
+-- in which f moves the point the most (relative to barycentric coords).
+-- On boundary vertices, this automatically satisfies the Sperner condition.
+-- The proof that this yields an approximate fixed point uses compactness
+-- and the continuity of f to bound the displacement.
+-- TODO: Full formalization requires careful barycentric coordinate handling.
+-- For now, we provide the statement and leave it as an Aristotle candidate.
 theorem approximate_fixed_point_2d
     {f : ℝ × ℝ → ℝ × ℝ}
     (hcont : Continuous f)
