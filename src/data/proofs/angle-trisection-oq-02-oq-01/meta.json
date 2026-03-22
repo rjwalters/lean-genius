@@ -112,6 +112,22 @@
       "Can Galois group orders for specific low-degree polynomials be computed from Mathlib's splitting field infrastructure, enabling full verification of OQ-02?"
     ]
   },
+  "references": [
+    {
+      "authors": "Wantzel, Pierre-Laurent",
+      "title": "Recherches sur les moyens de reconnaître si un Problème de Géométrie peut se résoudre avec la règle et le compas",
+      "year": "1837",
+      "venue": "Journal de Mathématiques Pures et Appliquées, 2, pp. 366-372",
+      "note": "First rigorous proof that angle trisection and cube duplication are impossible with compass and straightedge — established the degree-power-of-2 criterion for constructibility"
+    },
+    {
+      "authors": "Galois, Évariste",
+      "title": "Mémoire sur les conditions de résolubilité des équations par radicaux",
+      "year": "1846",
+      "venue": "Journal de Mathématiques Pures et Appliquées, 11, pp. 417-433",
+      "note": "Posthumous publication establishing group theory foundations; the Galois group characterization of constructibility follows from this framework"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "angle-trisection",

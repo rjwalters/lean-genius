@@ -8,13 +8,19 @@
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #723**: Prime Power Conjecture for Projective Planes\n\n**Question**: If there is a finite projective plane of order n, must n be a prime power?\n\n**Status**: OPEN (general conjecture)\n\n**Partial Results**:\n- Planes exist for all prime powers (classical)\n- Verified for n ≤ 11\n- n = 10 ruled out by computer search (Lam 1997)\n- Bruck-Ryser rules out n ≡ 1,2 (mod 4) when n ≠ sum of two squares\n- Order 12 remains OPEN",
-    "mathContext": "One of the most famous open problems in combinatorics. Despite decades of effort, neither proof nor counterexample exists.",
+    "content": "**Erdős Problem #723**: Prime Power Conjecture for Projective Planes\n\n**Question**: If there is a finite projective plane of order n, must n be a prime power?\n\n**Status**: OPEN (general conjecture)\n\n**Partial Results**:\n- Planes exist for all prime powers (classical PG(2,q) construction)\n- Verified for n ≤ 11\n- n = 10 ruled out by Lam, Thiel, Swiercz (1989) computer search\n- Bruck-Ryser (1949) rules out n ≡ 1,2 (mod 4) when n ≠ sum of two squares\n- Order 12 remains OPEN (smallest unknown case)",
+    "mathContext": "One of the most famous open problems in combinatorics, connecting finite geometry to number theory. A projective plane of order $n$ is equivalent to a complete set of $n-1$ mutually orthogonal Latin squares (MOLS) of order $n$, linking this problem to Euler's 1782 conjecture on orthogonal Latin squares.",
     "significance": "critical",
     "relatedConcepts": [
       "projective-plane",
       "prime-power",
-      "bruck-ryser"
+      "bruck-ryser",
+      "mutually-orthogonal-latin-squares"
+    ],
+    "prerequisites": [
+      "projective geometry",
+      "combinatorial design theory",
+      "number theory"
     ],
     "tags": [
       "open-problem",
@@ -32,13 +38,19 @@
     },
     "type": "concept",
     "title": "Projective Plane Background",
-    "content": "**Finite Projective Plane of Order n**:\n- n² + n + 1 points\n- n² + n + 1 lines\n- Each line contains n + 1 points\n- Each point lies on n + 1 lines\n- Any two distinct points → unique line\n- Any two distinct lines → unique point\n\nMathlib type: `Configuration.ProjectivePlane P L`",
-    "mathContext": "The axioms ensure a highly symmetric structure. The Fano plane (order 2) is the smallest example with 7 points and 7 lines.",
+    "content": "**Finite Projective Plane of Order n**:\n- $n^2 + n + 1$ points\n- $n^2 + n + 1$ lines\n- Each line contains $n + 1$ points\n- Each point lies on $n + 1$ lines\n- Any two distinct points determine a unique line\n- Any two distinct lines meet in a unique point\n\nMathlib type: `Configuration.ProjectivePlane P L`",
+    "mathContext": "The axioms ensure a highly symmetric incidence structure satisfying projective duality: interchanging 'point' and 'line' preserves all axioms. The Fano plane (order 2) is the smallest example with 7 points and 7 lines. Unlike affine planes, projective planes have no parallel lines—every pair of lines meets.",
     "significance": "key",
     "relatedConcepts": [
       "projective-geometry",
       "incidence-structure",
-      "fano-plane"
+      "fano-plane",
+      "projective-duality"
+    ],
+    "prerequisites": [
+      "incidence geometry",
+      "finite structures",
+      "Mathlib Configuration namespace"
     ],
     "tags": [
       "projective-geometry",
@@ -56,13 +68,19 @@
     },
     "type": "definition",
     "title": "The Prime Power Conjecture",
-    "content": "**PrimePowerConjecture**:\nFor every finite projective plane, the order is a prime power.\n\n∀ projective plane pp, IsPrimePow pp.order\n\n**axiom erdos_723_open**: True\n(Indicates the general conjecture remains open)\n\nThis is one of the most famous open problems in combinatorics.",
-    "mathContext": "The conjecture has been verified for all orders ≤ 11, but no general proof exists. The smallest open case is order 12.",
+    "content": "**PrimePowerConjecture** is defined as a `Prop`:\n$$\\forall \\text{ projective plane } pp, \\; \\text{IsPrimePow}(pp.\\text{order})$$\n\nThis is stated as a definition (not an axiom), correctly reflecting that the conjecture is open—we do not assume it is true.\n\nThe separate `axiom erdos_723_open : True` records that the problem remains unsolved.",
+    "mathContext": "The choice to encode this as `def PrimePowerConjecture : Prop` rather than `axiom` is semantically important in Lean: a `def` introduces a proposition without asserting it, while an `axiom` would add it to the trusted kernel. This distinction mirrors the mathematical reality that the conjecture is unproven.",
     "significance": "critical",
     "relatedConcepts": [
       "open-problem",
       "prime-power",
-      "order"
+      "IsPrimePow",
+      "Lean-Prop"
+    ],
+    "prerequisites": [
+      "Lean type theory (Prop vs axiom)",
+      "IsPrimePow predicate in Mathlib",
+      "universal quantification over types"
     ],
     "tags": [
       "conjecture",
@@ -80,13 +98,19 @@
     },
     "type": "axiom",
     "title": "Existence for Prime Powers",
-    "content": "**axiom prime_power_planes_exist**:\nFor every prime power q = p^k, a projective plane of order q exists.\n\n**Construction**: PG(2, q) from finite field GF(q)\n- Points = 1-dimensional subspaces of GF(q)³\n- Lines = 2-dimensional subspaces of GF(q)³\n\nThis gives planes of order 2, 3, 4, 5, 7, 8, 9, 11, 13, 16, ...",
-    "mathContext": "The construction uses the projective space over a finite field. This is the only known infinite family of projective planes.",
+    "content": "**axiom prime_power_planes_exist**:\nFor every prime power $q = p^k$, a projective plane of order $q$ exists.\n\n**Construction**: PG(2, q) from finite field GF(q)\n- Points = 1-dimensional subspaces of $\\text{GF}(q)^3$\n- Lines = 2-dimensional subspaces of $\\text{GF}(q)^3$\n\nThis gives planes of order 2, 3, 4, 5, 7, 8, 9, 11, 13, 16, ...",
+    "mathContext": "The construction uses the projective space $\\mathbb{P}^2(\\mathbb{F}_q)$ over a finite field. This is the only known infinite family of projective planes. All planes constructed this way are Desarguesian, meaning Desargues' theorem holds in them—a consequence of coordinatization by a (necessarily associative) field.",
     "significance": "key",
     "relatedConcepts": [
       "finite-field",
       "PG(2,q)",
-      "construction"
+      "Desarguesian-plane",
+      "projective-space"
+    ],
+    "prerequisites": [
+      "finite fields and Galois theory",
+      "projective space construction",
+      "linear algebra over finite fields"
     ],
     "tags": [
       "finite-fields",
@@ -104,13 +128,18 @@
     },
     "type": "axiom",
     "title": "Verified for n ≤ 11",
-    "content": "**axiom verified_up_to_11**:\nFor all projective planes with order ≤ 11, the order is a prime power.\n\n**Breakdown**:\n- n = 1,2,3,4,5,7,8,9,11: prime powers, planes exist\n- n = 6: ruled out by Bruck-Ryser\n- n = 10: ruled out by Lam's computer search\n\nThe conjecture holds through order 11!",
-    "mathContext": "Each case required different techniques. The n=10 case alone took over a decade of computation.",
+    "content": "**axiom verified_up_to_11**:\nFor all projective planes with order ≤ 11, the order is a prime power.\n\n**Breakdown**:\n- n = 1,2,3,4,5,7,8,9,11: prime powers, planes exist via PG(2,q)\n- n = 6: ruled out by Bruck-Ryser (verified in this file)\n- n = 10: ruled out by Lam's computer search (1989)\n\nThe conjecture holds through order 11.",
+    "mathContext": "Each case beyond prime powers required different techniques. Orders 6, 14, 21, 22 fall to Bruck-Ryser's algebraic obstruction. Order 10 required exhaustive computation because $10 = 1^2 + 3^2$ passes the Bruck-Ryser test. The progression from theoretical to computational methods reflects a general pattern in combinatorics.",
     "significance": "key",
     "relatedConcepts": [
-      "verified",
       "small-cases",
-      "exhaustive"
+      "exhaustive-verification",
+      "case-analysis"
+    ],
+    "prerequisites": [
+      "Bruck-Ryser theorem",
+      "computational combinatorics",
+      "prime power classification"
     ],
     "tags": [
       "verification",
@@ -128,13 +157,20 @@
     },
     "type": "axiom",
     "title": "Bruck-Ryser Theorem",
-    "content": "**axiom bruck_ryser** (1949):\nIf a projective plane of order n exists and n ≡ 1,2 (mod 4),\nthen n must be the sum of two squares.\n\n**Rules out**:\n- n = 6: 6 ≡ 2 (mod 4), 6 ≠ a² + b²\n- n = 14: 14 ≡ 2 (mod 4), 14 ≠ a² + b²\n- n = 21: 21 ≡ 1 (mod 4), 21 ≠ a² + b²\n- n = 22: 22 ≡ 2 (mod 4), 22 ≠ a² + b²\n\nDoes NOT apply to n ≡ 0,3 (mod 4).",
-    "mathContext": "Bruck-Ryser uses algebraic number theory. It gives a necessary but not sufficient condition for existence.",
+    "content": "**axiom bruck_ryser** (1949):\nIf a projective plane of order $n$ exists and $n \\equiv 1,2 \\pmod{4}$, then $n$ must be the sum of two integer squares.\n\n**Rules out**:\n- $n = 6$: $6 \\equiv 2 \\pmod{4}$, but $6 \\ne a^2 + b^2$\n- $n = 14$: $14 \\equiv 2 \\pmod{4}$, but $14 \\ne a^2 + b^2$\n- $n = 21$: $21 \\equiv 1 \\pmod{4}$, but $21 \\ne a^2 + b^2$\n- $n = 22$: $22 \\equiv 2 \\pmod{4}$, but $22 \\ne a^2 + b^2$\n\nDoes NOT apply to $n \\equiv 0,3 \\pmod{4}$ (e.g., orders 12, 15, 20).",
+    "mathContext": "Bruck and Ryser's proof uses the theory of rational quadratic forms. The key step shows that the incidence matrix $A$ of a projective plane satisfies $AA^T = nI + J$, and this matrix equation imposes number-theoretic constraints on $n$. The result was later generalized by Chowla and Ryser (1950) to arbitrary symmetric $(v, k, \\lambda)$-designs.",
     "significance": "critical",
     "relatedConcepts": [
-      "bruck-ryser-1949",
       "sum-of-squares",
-      "necessary-condition"
+      "quadratic-forms",
+      "Bruck-Ryser-Chowla",
+      "incidence-matrix"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "sum of two squares characterization",
+      "algebraic number theory",
+      "rational quadratic forms"
     ],
     "tags": [
       "bruck-ryser",
@@ -152,13 +188,19 @@
     },
     "type": "axiom",
     "title": "Lam's Theorem (Order 10)",
-    "content": "**axiom lam_order_10** (1997):\nThere is no projective plane of order 10.\n\n¬∃ projective plane pp, pp.order = 10\n\n**Significance**:\n- Bruck-Ryser does NOT rule out 10 (10 = 1² + 3²)\n- Required massive computer search (decade of computation)\n- One of the largest computational proofs ever\n\nShows the conjecture holds for n = 10 despite no theoretical obstruction.",
-    "mathContext": "The search checked all possible incidence structures. No order-10 plane exists despite passing Bruck-Ryser.",
+    "content": "**axiom lam_order_10** (Lam, Thiel, Swiercz, 1989):\nThere is no projective plane of order 10.\n\n$$\\neg\\exists \\text{ projective plane } pp, \\; pp.\\text{order} = 10$$\n\n**Significance**:\n- Bruck-Ryser does NOT rule out 10 (since $10 = 1^2 + 3^2$)\n- Required thousands of hours on Cray supercomputers over nearly a decade\n- One of the largest computational proofs in mathematics at the time\n\nShows the conjecture holds for $n = 10$ despite no theoretical obstruction.",
+    "mathContext": "The search systematically eliminated all possible incidence structures on 111 points and 111 lines. An independent verification by McKay and others confirmed the result. The computation exploited symmetry-breaking and constraint propagation but fundamentally required exhaustive enumeration of a vast search tree.",
     "significance": "critical",
     "relatedConcepts": [
-      "lam-1997",
-      "computer-search",
-      "non-existence"
+      "computational-proof",
+      "exhaustive-search",
+      "constraint-satisfaction",
+      "four-color-theorem"
+    ],
+    "prerequisites": [
+      "combinatorial search algorithms",
+      "incidence matrix theory",
+      "constraint satisfaction"
     ],
     "tags": [
       "computational-proof",
@@ -176,13 +218,17 @@
     },
     "type": "axiom",
     "title": "Order 12 (OPEN)",
-    "content": "**axiom order_12_open**: True\n\nExistence of a projective plane of order 12 is OPEN.\n\n**Why it's hard**:\n- 12 ≡ 0 (mod 4), so Bruck-Ryser doesn't apply\n- 12 is NOT a prime power\n- Computer search is infeasible (too many configurations)\n- No theoretical obstruction known\n\nThis is the smallest open case!",
-    "mathContext": "Order 12 would have 157 points and 157 lines. The search space is astronomically larger than order 10.",
+    "content": "Existence of a projective plane of order 12 is OPEN.\n\n**Why it's hard**:\n- $12 \\equiv 0 \\pmod{4}$, so Bruck-Ryser doesn't apply\n- 12 is NOT a prime power (not Desarguesian)\n- An order-12 plane would have 157 points and 157 lines\n- The search space is astronomically larger than order 10\n- No theoretical obstruction is known\n\nThis is the smallest open case of the Prime Power Conjecture.",
+    "mathContext": "An order-12 plane would have $12^2 + 12 + 1 = 157$ points. The number of possible incidence matrices grows super-exponentially with $n$, making exhaustive search for order 12 far beyond current computational capabilities. Some partial results constrain the automorphism group of a hypothetical order-12 plane.",
     "significance": "key",
     "relatedConcepts": [
-      "open",
-      "order-12",
-      "smallest-unknown"
+      "open-problem",
+      "computational-intractability",
+      "automorphism-group"
+    ],
+    "prerequisites": [
+      "combinatorial complexity",
+      "automorphism groups of designs"
     ],
     "tags": [
       "open-problem",
@@ -200,13 +246,17 @@
     },
     "type": "theorem",
     "title": "Basic Properties (Verified)",
-    "content": "**theorem plane_points** ✓:\n  |P| = n² + n + 1\n\n**theorem plane_lines** ✓:\n  |L| = n² + n + 1\n\nBoth follow from Mathlib's `ProjectivePlane` API:\n- pp.card_points\n- pp.card_lines",
-    "mathContext": "The formula n² + n + 1 is symmetric in points and lines, reflecting the duality principle of projective geometry.",
+    "content": "**theorem plane_points** ✓:\n$$|P| = n^2 + n + 1$$\n\n**theorem plane_lines** ✓:\n$$|L| = n^2 + n + 1$$\n\nBoth extracted directly from Mathlib's `ProjectivePlane` API via `pp.card_points` and `pp.card_lines`. These are one-line proofs demonstrating that Mathlib already encodes the fundamental counting results.",
+    "mathContext": "The formula $n^2 + n + 1$ is symmetric in points and lines, reflecting projective duality. This number is also the number of 1-dimensional subspaces of $\\mathbb{F}_q^3$ when $n = q$ is a prime power, connecting the combinatorial formula to the algebraic construction.",
     "significance": "supporting",
     "relatedConcepts": [
-      "verified",
-      "counting",
-      "duality"
+      "projective-duality",
+      "counting-formula",
+      "Mathlib-API"
+    ],
+    "prerequisites": [
+      "Mathlib Configuration.ProjectivePlane",
+      "Fintype.card"
     ],
     "tags": [
       "verified-theorem",
@@ -218,18 +268,24 @@
     "id": "ann-e723-small-orders",
     "proofId": "erdos-723",
     "range": {
-      "startLine": 145,
-      "endLine": 169
+      "startLine": 143,
+      "endLine": 168
     },
     "type": "theorem",
     "title": "Small Orders (Verified)",
-    "content": "**Verified by decide**:\n- order_1_is_prime_power ✓ (trivial plane)\n- order_2_is_prime_power ✓ (Fano plane: 7 pts)\n- order_3_is_prime_power ✓ (13 pts)\n- order_4_is_prime_power ✓ (2² = 4, 21 pts)\n- order_5_is_prime_power ✓ (31 pts)\n\n**Non-prime-powers (verified)**:\n- order_6_not_prime_power ✓\n- order_10_not_prime_power ✓\n- order_12_not_prime_power ✓",
-    "mathContext": "The `decide` tactic computes IsPrimePow directly. Order 4 requires showing 4 = 2², which uses IsPrimePow.pow.",
+    "content": "**Verified by `decide`**:\n- `order_1_is_prime_power` ✓ (trivial plane: 3 points)\n- `order_2_is_prime_power` ✓ (Fano plane: 7 points)\n- `order_3_is_prime_power` ✓ (PG(2,3): 13 points)\n- `order_4_is_prime_power` ✓ ($2^2 = 4$: 21 points)\n- `order_5_is_prime_power` ✓ (PG(2,5): 31 points)\n\n**Non-prime-powers (verified)**:\n- `order_6_not_prime_power` ✓\n- `order_10_not_prime_power` ✓\n- `order_12_not_prime_power` ✓\n\nOrder 4 requires special handling: `decide` alone times out, so the proof rewrites $4 = 2^2$ and applies `IsPrimePow.pow`.",
+    "mathContext": "The `decide` tactic reduces `IsPrimePow n` to a finite computation. For $n = 4 = 2^2$, the composite prime power case requires explicitly exhibiting the factorization, since `decide` on `IsPrimePow 4` involves checking divisibility patterns that exceed the default timeout. This illustrates a general pattern: composite prime powers are harder for automated methods than primes.",
     "significance": "key",
     "relatedConcepts": [
-      "verified",
-      "decide",
-      "small-cases"
+      "decide-tactic",
+      "IsPrimePow",
+      "composite-prime-power",
+      "norm_num"
+    ],
+    "prerequisites": [
+      "Lean decide tactic",
+      "IsPrimePow and Nat.prime in Mathlib",
+      "norm_num tactic"
     ],
     "tags": [
       "verified-theorem",
@@ -242,48 +298,32 @@
     "id": "ann-e723-bruck-ryser-app",
     "proofId": "erdos-723",
     "range": {
-      "startLine": 173,
+      "startLine": 171,
       "endLine": 187
     },
     "type": "theorem",
-    "title": "Bruck-Ryser Application (Verified)",
-    "content": "**theorem six_mod_4** ✓: 6 % 4 = 2\n\n**theorem six_not_sum_squares** ✓:\n  ¬∃ a b, 6 = a² + b²\n\nProved by interval_cases: check all (a,b) with a² + b² ≤ 6.\n\n**theorem no_plane_order_6** ✓:\n  No projective plane of order 6 exists!\n\n**Proof**: Apply Bruck-Ryser (6 ≡ 2 mod 4) + six_not_sum_squares.",
-    "mathContext": "This is a complete proof ruling out order 6 using only Bruck-Ryser. The verified theorem chain shows formal verification in action.",
+    "title": "Bruck-Ryser Application: No Order-6 Plane (Verified)",
+    "content": "**theorem six_mod_4** ✓: $6 \\bmod 4 = 2$\n\n**theorem six_not_sum_squares** ✓:\n$$\\neg\\exists\\, a\\, b \\in \\mathbb{N},\\; 6 = a^2 + b^2$$\nProved by `interval_cases`: exhaustively checks all $(a,b)$ with $a^2 + b^2 \\le 6$.\n\n**theorem no_plane_order_6** ✓:\nNo projective plane of order 6 exists.\n\n**Proof chain**: Since $6 \\equiv 2 \\pmod{4}$, Bruck-Ryser requires $6 = a^2 + b^2$. But `six_not_sum_squares` shows this is impossible. Therefore no order-6 plane exists. This is the file's crown jewel: a complete, machine-verified non-existence proof using the Bruck-Ryser method.",
+    "mathContext": "The `interval_cases` tactic generates cases for all natural numbers $a$ with $a^2 \\le 6$ (i.e., $a \\in \\{0, 1, 2\\}$) and similarly for $b$, then `simp_all` discharges each case. This verified proof mirrors the pencil-and-paper argument: check $0^2+0^2=0$, $0^2+1^2=1$, $0^2+2^2=4$, $1^2+1^2=2$, $1^2+2^2=5$, $2^2+2^2=8$—none equal 6. The connection to Fermat's two-square theorem is natural: 6 has a prime factor $3 \\equiv 3 \\pmod{4}$ appearing to an odd power, which obstructs the sum-of-squares representation.",
     "significance": "critical",
     "relatedConcepts": [
-      "verified",
-      "bruck-ryser-application",
-      "non-existence"
+      "Bruck-Ryser-application",
+      "interval_cases-tactic",
+      "sum-of-two-squares",
+      "Fermat-two-square-theorem"
+    ],
+    "prerequisites": [
+      "Bruck-Ryser theorem (axiom in this file)",
+      "interval_cases and simp_all tactics",
+      "modular arithmetic",
+      "sum of two squares theory"
     ],
     "tags": [
       "verified-theorem",
       "bruck-ryser-application",
       "non-existence",
-      "interval-cases"
-    ]
-  },
-  {
-    "id": "ann-e723-summary",
-    "proofId": "erdos-723",
-    "range": {
-      "startLine": 1,
-      "endLine": 17
-    },
-    "type": "concept",
-    "title": "Summary and Status",
-    "content": "**Erdős Problem #723: OPEN**\n\n**Verified Theorems**:\n- plane_points, plane_lines ✓\n- order_1/2/3/4/5_is_prime_power ✓\n- order_6/10/12_not_prime_power ✓\n- six_mod_4, six_not_sum_squares ✓\n- no_plane_order_6 ✓ (Bruck-Ryser application!)\n\n**Status by Order**:\n- 1-5,7-9,11: prime powers, planes exist\n- 6: ruled out (Bruck-Ryser, verified)\n- 10: ruled out (Lam computer search)\n- 12: OPEN (smallest unknown)",
-    "mathContext": "The formalization includes a complete verified proof that no order-6 plane exists, showcasing Bruck-Ryser in Lean.",
-    "significance": "critical",
-    "relatedConcepts": [
-      "problem-status",
-      "open",
-      "verified-chain"
-    ],
-    "tags": [
-      "summary",
-      "open-problem",
-      "verification-status",
-      "erdos-problem"
+      "interval-cases",
+      "crown-jewel"
     ]
   }
 ]

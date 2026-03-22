@@ -101,5 +101,43 @@
       "How does the geometric series generalize to matrices and operators?",
       "What is the relationship to the Riemann zeta function ζ(s)?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Euclid",
+      "title": "Elements, Book IX, Proposition 35",
+      "year": "c. 300 BCE",
+      "venue": "Classical Geometry",
+      "note": "First known result on geometric progressions: the formula for the sum of a geometric sequence"
+    },
+    {
+      "authors": "Euler, Leonhard",
+      "title": "Introductio in analysin infinitorum",
+      "year": "1748",
+      "venue": "Lausanne",
+      "note": "Systematic treatment of infinite series including the geometric series as the foundation of power series analysis"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "contrasts",
+      "description": "The geometric series ∑ rⁿ converges for |r| < 1, while the harmonic series ∑ 1/n diverges. Together they illustrate the boundary between convergent and divergent series."
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "The Basel series ∑ 1/n² is a generalization from geometric to power series. The geometric series formula 1/(1-r) is the simplest power series, while ∑ 1/n² requires Bernoulli polynomial machinery."
+    },
+    {
+      "targetId": "arithmetic-series",
+      "relationship": "sibling",
+      "description": "Arithmetic and geometric series are the two fundamental finite summation formulas. Where arithmetic series sum with constant differences, geometric series sum with constant ratios."
+    }
+  ],
+  "relatedProofs": [
+    "harmonic-divergence",
+    "basel-problem",
+    "arithmetic-series"
+  ]
 }

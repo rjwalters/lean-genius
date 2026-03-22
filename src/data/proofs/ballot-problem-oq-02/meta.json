@@ -121,5 +121,44 @@
       "Formal proof of the Arcsine Law via BM local times",
       "Formal proof of Donsker's functional CLT connecting discrete and continuous ballot"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Bertrand, Joseph",
+      "title": "Solution d'un problème",
+      "year": "1887",
+      "venue": "Comptes Rendus de l'Académie des Sciences, 105, p. 369",
+      "note": "Original statement of the ballot problem: probability A leads throughout is (p-q)/(p+q)"
+    },
+    {
+      "authors": "Lévy, Paul",
+      "title": "Sur certains processus stochastiques homogènes",
+      "year": "1939",
+      "venue": "Compositio Mathematica, 7, pp. 283-339",
+      "note": "Proved the reflection principle for Brownian motion and discovered the arcsine law for positive occupation time"
+    },
+    {
+      "authors": "Karatzas, Ioannis; Shreve, Steven",
+      "title": "Brownian Motion and Stochastic Calculus",
+      "year": "1991",
+      "venue": "Springer Graduate Texts in Mathematics 113",
+      "note": "Standard reference for the reflection principle (§2.8) and first passage time distributions"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "ballot-problem-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling open question addressing the ballot problem from a different angle — both extend the base ballot problem formalization in complementary directions"
+    },
+    {
+      "targetId": "birthday-problem",
+      "relationship": "related",
+      "description": "Both are classic probability results with elegant formulas. The ballot problem's (p-q)/(p+q) and the birthday paradox's threshold at √(365) both demonstrate how probability defies naive intuition."
+    }
+  ],
+  "relatedProofs": [
+    "ballot-problem-oq-01-oq-01",
+    "birthday-problem"
+  ]
 }

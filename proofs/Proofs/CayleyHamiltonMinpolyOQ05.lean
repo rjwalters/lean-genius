@@ -225,14 +225,24 @@ theorem minpoly_eq_map_of_irreducible [IsDomain A] [NoZeroSMulDivisors L A]
   have hxL : IsIntegral L x := hx.tower_top
   have hdvd := minpoly_dvd_map_of_tower (L := L) x hx
   have hirr_L := minpoly.irreducible hxL
-  -- Two irreducibles where one divides the other are associated
+  -- Both irreducible: associated. Both monic: the unit is 1, so they're equal.
+  have hm1 := minpoly.monic hxL
+  have hm2 := (minpoly.monic hx).map (algebraMap K L)
   have hassoc := hirr_L.associated_of_dvd hirr hdvd
-  -- Both are monic; extract the unit and show it must be 1
   obtain ⟨u, hu⟩ := hassoc
   -- hu : minpoly L x * ↑u = map (algebraMap K L) (minpoly K x)
-  -- Since both sides are monic and units in L[X] are nonzero constants,
-  -- u must be C(1) = 1, giving us the equality.
-  sorry
+  -- Show ↑u is monic (leadingCoeff = 1) from the product being monic
+  have hu_ne : (↑u : Polynomial L) ≠ 0 := Units.ne_zero u
+  have hu_lc : (↑u : Polynomial L).leadingCoeff = 1 := by
+    have h := congr_arg Polynomial.leadingCoeff hu
+    simp only [Polynomial.leadingCoeff_mul, hm1.leadingCoeff, one_mul,
+      hm2.leadingCoeff] at h
+    exact h
+  -- A monic unit polynomial must be 1
+  have : (↑u : Polynomial L) = 1 :=
+    Polynomial.Monic.eq_one_of_isUnit hu_lc ⟨u, rfl⟩
+  rw [this, mul_one] at hu
+  exact hu
 
 end AlgebraTower
 
