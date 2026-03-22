@@ -13,21 +13,33 @@
       "Axiom gcd_lcm_distrib eliminated - replaced with theorem + sorry",
       "Build succeeds with 0 axioms, 1 sorry (gcd_lcm_dvd_lcm_gcd)",
       "Proof strategy for sorry: coprime decomposition using Bezout + Euclid lemma",
-      "Nat.factorization_gcd and Nat.factorization_lcm exist in Mathlib but for Nat only, not general EuclideanDomain"
+      "Nat.factorization_gcd and Nat.factorization_lcm exist in Mathlib but for Nat only, not general EuclideanDomain",
+      "GCDMonoid R is NOT auto-synthesized from [EuclideanDomain R] [DecidableEq R] in Lean 4 Mathlib v4.26",
+      "IsCoprime.dvd_of_dvd_mul_left, .dvd_of_dvd_mul_right, .mul_dvd ARE available in CommSemiring context",
+      "mul_left_cancel₀ available for cancellation in integral domains",
+      "Bézout: EuclideanDomain.gcd_eq_gcd_ab gives gcd a b = a * gcdA a b + b * gcdB a b",
+      "Full proof plan verified mathematically: factor d=dg*dα*dβ via 3-level coprime decomposition, then IsCoprime dα dβ gives d | lcm(ga,gb) via IsCoprime.mul_dvd",
+      "The GCD-LCM distributive law is NOT directly in Mathlib4 (searched GCDMonoid.Basic, Associates, Lattice)",
+      "Associates type has Lattice instance for GCDMonoid but DistribLattice instance was not found",
+      "Aristotle companion file created: ChineseRemainderNonCoprimeOQ03Aristotle.lean with 7 helper sorries"
     ],
     "builtItems": [
       "Eliminated axiom gcd_lcm_distrib from ChineseRemainderNonCoprimeOQ03.lean",
-      "Added set_option linter.unusedSectionVars false for compatibility"
+      "Added set_option linter.unusedSectionVars false for compatibility",
+      "Created ChineseRemainderNonCoprimeOQ03Aristotle.lean: 7 helper lemma sorries for Aristotle proof search"
     ],
     "openQuestions": [
       "Can gcd_lcm_dvd_lcm_gcd be proved via coprime decomposition for general EuclideanDomains?",
-      "Alternative: specialize to Int and use Nat.factorization_gcd/lcm + distributive lattice on Finsupp"
+      "Alternative: specialize to Int and use Nat.factorization_gcd/lcm + distributive lattice on Finsupp",
+      "Does Lean 4 Mathlib have Associates as DistribLattice for UFDs? Could not find this instance."
     ],
     "nextSteps": [
-      "Prove gcd_lcm_dvd_lcm_gcd using coprime decomposition: factor a=g*alpha, b=g*beta with IsCoprime alpha beta",
-      "Key helper needed: IsCoprime a b -> d | a*b -> d | gcd(d,a)*gcd(d,b)",
-      "Alternative: prove for Nat using factorization_gcd/lcm + inf_sup_left on Finsupp, then lift"
+      "Wait for Aristotle to attempt the 7 helper lemmas in the companion file",
+      "If Aristotle proves bezout_coprime_factors and isCoprime_of_gcd_factoring, the main proof becomes feasible",
+      "Key helper: isCoprime_quotients_of_gcd enables the 3-level factorization pattern",
+      "coprime_dvd_factor is the heart of the coprime product decomposition",
+      "Alternative: try specializing the whole file to Int for a computable proof path"
     ],
-    "progressSummary": "PROGRESS: Eliminated 1 axiom (gcd_lcm_distrib), replaced with sorry. File now has 0 axioms, 1 sorry. Key mathematical approach identified: coprime decomposition via Bezout."
+    "progressSummary": "PROGRESS: Created Aristotle companion file with 7 helper lemma sorries. Full proof strategy documented: 3-level coprime decomposition using Bézout identity and IsCoprime.mul_dvd. GCD-LCM distributive law confirmed not in Mathlib4. Waiting for Aristotle to prove helper lemmas."
   }
 }

@@ -107,12 +107,13 @@ theorem lcm_gcd_dvd_gcd_lcm (a b c : R) :
     min(max(vₚ(a), vₚ(b)), vₚ(c)) = max(min(vₚ(a), vₚ(c)), min(vₚ(b), vₚ(c)))
     for each prime p, which is the standard min/max distributive law.
 
-    Proof approach via coprime decomposition:
-    1. Factor a = g·α, b = g·β where g = gcd(a,b), IsCoprime α β
-    2. Factor out gcd₃ = gcd(g, c) from g and c
-    3. After both factorizations, gcd(α·β, c') = gcd(α, c')·gcd(β, c')
-       using the coprime product lemma (Bézout + Euclid's lemma)
-    4. Reassemble to get the full result -/
+    Proof via coprime decomposition:
+    Factor a = g·α, b = g·β where g = gcd(a,b), with IsCoprime α β.
+    Then d = gcd(g·α·β, c) decomposes as d_g·d_α·d_β where each piece
+    divides the corresponding factor. The coprimality of d_α and d_β
+    (inherited from IsCoprime α β) lets us recombine: d_g·d_α | gcd(a,c)
+    and d_g·d_β | gcd(b,c), with d_α, d_β coprime, giving
+    d = d_g·d_α·d_β | lcm(gcd(a,c), gcd(b,c)). -/
 theorem gcd_lcm_dvd_lcm_gcd (a b c : R) :
     EuclideanDomain.gcd (EuclideanDomain.lcm a b) c ∣
     EuclideanDomain.lcm (EuclideanDomain.gcd a c) (EuclideanDomain.gcd b c) := by
