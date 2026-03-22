@@ -17,6 +17,7 @@
     "type": "definition",
     "title": "Hypergraph Definitions",
     "content": "**Hypergraph(V):** A set of edges, each a Finset of vertices.\n\n**IsUniform(H, r):** Every edge has exactly r vertices.\n\n**IsProperColouring(H, c):** Assignment c : V → Fin k where no edge is monochromatic (every edge has at least two distinctly-colored vertices).\n\n**hasChromaticNumberAtLeast(H, k):** No proper (k-1)-colouring exists.",
+    "mathContext": "An $r$-uniform hypergraph $\\mathcal{H} = (V, E)$ has $E \\subseteq \\binom{V}{r}$. A proper $k$-coloring $c: V \\to [k]$ satisfies $|c(e)| \\geq 2$ for every $e \\in E$.",
     "significance": "critical",
     "relatedConcepts": ["Uniform hypergraphs", "Chromatic number", "Graph coloring"]
   },

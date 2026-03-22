@@ -86,6 +86,13 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "Module docstring describing the Erdős problem, its open status, and known partial results. Imports Mathlib for number theory and combinatorics infrastructure."
+    },
+    {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 26,
