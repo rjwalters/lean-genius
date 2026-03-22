@@ -10,13 +10,13 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #267**: Irrationality of Fibonacci Reciprocal Sums\n\n**Question**: If n₁ < n₂ < ... with n_{k+1}/n_k ≥ c > 1, must Σ 1/F_{n_k} be irrational?\n\n**Status**: PARTIALLY SOLVED\n- Main conjecture: OPEN\n- Σ 1/F_{2^n} irrational: PROVED (Good 1974, Bicknell-Hoggatt 1976)\n- Σ 1/F_n irrational: PROVED (André-Jeannin 1989)\n\nThe general case for arbitrary c > 1 remains open.",
     "mathContext": "Fibonacci numbers grow exponentially with ratio φ ≈ 1.618, so Σ 1/F_n converges. The question is about irrationality.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "fibonacci",
       "irrationality",
       "reciprocal-sums"
     ],
-    "tags": [
+    "prerequisites": [
       "number-theory",
       "open-problem",
       "fibonacci",
@@ -40,7 +40,7 @@
       "golden-ratio",
       "binet-formula"
     ],
-    "tags": [
+    "prerequisites": [
       "fibonacci",
       "golden-ratio",
       "exponential-growth"
@@ -63,7 +63,7 @@
       "fibonacci-values",
       "rfl"
     ],
-    "tags": [
+    "prerequisites": [
       "verified",
       "computation",
       "fibonacci",
@@ -87,7 +87,7 @@
       "verified",
       "convergence"
     ],
-    "tags": [
+    "prerequisites": [
       "golden-ratio",
       "verified",
       "algebraic-numbers",
@@ -111,7 +111,7 @@
       "convergence",
       "geometric-series"
     ],
-    "tags": [
+    "prerequisites": [
       "analysis",
       "convergence",
       "series",
@@ -129,13 +129,13 @@
     "title": "Solved Cases",
     "content": "**axiom good_bicknell_hoggatt** (1974/1976):\n  Irrational (Σ 1/F_{2^n})\n\nThe first special case proved. Indices 2^n are very sparse.\n\n**axiom andre_jeannin** (1989):\n  Irrational (Σ 1/F_n)\n\nThe full reciprocal sum is irrational!\n\nUses transcendence theory and continued fractions.",
     "mathContext": "André-Jeannin's result is stronger than what Erdős asked. It shows even c = 1 (all indices) gives irrationality.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "good-1974",
       "bicknell-hoggatt-1976",
       "andre-jeannin-1989"
     ],
-    "tags": [
+    "prerequisites": [
       "irrationality",
       "transcendence-theory",
       "continued-fractions",
@@ -153,13 +153,13 @@
     "title": "Main Conjecture (OPEN)",
     "content": "**HasRatioBoundedBelow n c**: n_{k+1}/n_k ≥ c for all k\n\n**Erdos267Conjecture**:\nFor all strictly increasing n : ℕ → ℕ with ratio ≥ c > 1:\n  Irrational (Σ 1/F_{n_k})\n\n**Known cases**:\n- c = 2 (indices 2^n): PROVED\n- c = 1 (all indices): PROVED (stronger!)\n- General c > 1: OPEN\n\n**theorem erdos_267_open**: Conjecture ∨ ¬Conjecture",
     "mathContext": "The conjecture asks: is geometric growth of indices sufficient to guarantee irrationality? Paradoxically, the c=1 case (weakest growth) is proved.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "open-conjecture",
       "ratio-bound",
       "geometric-growth"
     ],
-    "tags": [
+    "prerequisites": [
       "open-problem",
       "conjecture",
       "fibonacci",
@@ -183,7 +183,7 @@
       "weaker-variant",
       "open"
     ],
-    "tags": [
+    "prerequisites": [
       "open-problem",
       "growth-rate",
       "irrationality"
@@ -206,7 +206,7 @@
       "numerical",
       "native_decide"
     ],
-    "tags": [
+    "prerequisites": [
       "verified",
       "computation",
       "fibonacci",
@@ -230,7 +230,7 @@
       "erdos-259",
       "irrationality"
     ],
-    "tags": [
+    "prerequisites": [
       "cross-reference",
       "number-theory",
       "irrationality",
@@ -248,13 +248,13 @@
     "title": "Summary and Status",
     "content": "**Erdős Problem #267: PARTIALLY SOLVED**\n\n**Verified:**\n- Fibonacci values F₁ through F₁₂ ✓\n- goldenRatio_gt_one ✓\n- pow_two_series_first_terms ✓\n\n**Proved:**\n- Σ 1/F_{2^n} irrational (Good, Bicknell-Hoggatt)\n- Σ 1/F_n irrational (André-Jeannin)\n\n**OPEN:**\n- General c > 1 case\n- Superlinear growth variant",
     "mathContext": "The paradox: the c=1 case (all terms) is proved, but intermediate cases c > 1 remain open.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "problem-status",
       "partially-solved",
       "open"
     ],
-    "tags": [
+    "prerequisites": [
       "summary",
       "partially-solved",
       "open-problem",

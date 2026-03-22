@@ -7,9 +7,9 @@
     "title": "Problem Introduction",
     "content": "**Erdős Problem #302: Unit Fraction Sum-Free Sets**\n\nFind the largest A ⊆ {1,...,N} with no solution to 1/a = 1/b + 1/c.\n\n**Original Question:** Is f(N) = (1/2+o(1))N?\n\n**Answer:** NO - Cambie showed f(N) ≥ (5/8+o(1))N.\n\n**Current Bounds:**\n- Lower: f(N) ≥ (5/8+o(1))N (Cambie)\n- Upper: f(N) ≤ (9/10+o(1))N (van Doorn)\n\nStatus: OPEN - exact density unknown.",
     "mathContext": "This is a density problem: how dense can a set be while avoiding a specific equation?",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Unit fractions", "Sum-free sets", "Density problems"],
-    "tags": ["unit-fractions", "extremal-combinatorics", "density-problems", "open-problem"]
+    "prerequisites": ["unit-fractions", "extremal-combinatorics", "density-problems", "open-problem"]
   },
   {
     "id": "erdos-302-unit-fraction",
@@ -19,9 +19,9 @@
     "title": "Unit Fraction Sum",
     "content": "**UnitFractionSum a b c:**\n\nThe equation 1/a = 1/b + 1/c with a, b, c > 0.\n\n**Equivalent Form:** bc = a(b + c)\n\nThis is the forbidden pattern we want to avoid in our set A.",
     "mathContext": "Unit fractions (1/n) are fundamental in Egyptian mathematics and number theory.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Egyptian fractions", "Diophantine equations", "Unit fractions"],
-    "tags": ["egyptian-fractions", "diophantine-equations", "unit-fractions"]
+    "prerequisites": ["egyptian-fractions", "diophantine-equations", "unit-fractions"]
   },
   {
     "id": "erdos-302-equiv",
@@ -33,7 +33,7 @@
     "mathContext": "Converting between fraction and polynomial form reveals structural properties.",
     "significance": "key",
     "relatedConcepts": ["Clearing denominators", "Polynomial equations"],
-    "tags": ["algebraic-manipulation", "clearing-denominators", "equivalence"]
+    "prerequisites": ["algebraic-manipulation", "clearing-denominators", "equivalence"]
   },
   {
     "id": "erdos-302-sum-free",
@@ -43,9 +43,9 @@
     "title": "Unit-Fraction-Sum-Free Sets",
     "content": "**IsUnitFractionSumFree A:**\n\nA set A is unit-fraction-sum-free if no three distinct elements a, b, c ∈ A satisfy 1/a = 1/b + 1/c.\n\n**Key:** Elements must be DISTINCT - we don't count solutions like 1/2 = 1/4 + 1/4 where b = c.",
     "mathContext": "This is analogous to classical sum-free sets that avoid a = b + c.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Sum-free sets", "Forbidden configurations", "Extremal combinatorics"],
-    "tags": ["sum-free-sets", "forbidden-configurations", "extremal-combinatorics"]
+    "prerequisites": ["sum-free-sets", "forbidden-configurations", "extremal-combinatorics"]
   },
   {
     "id": "erdos-302-f-function",
@@ -55,9 +55,9 @@
     "title": "The Function f(N)",
     "content": "**f(N):**\n\nThe maximum size of a unit-fraction-sum-free subset of {1,...,N}.\n\n**Formula:** max{|A| : A ⊆ {1,...,N} is sum-free}\n\nThis is the central quantity we want to estimate.",
     "mathContext": "Extremal functions like f(N) measure the maximum size of sets with forbidden patterns.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Extremal functions", "Maximum density", "Forbidden substructures"],
-    "tags": ["extremal-functions", "maximum-density", "forbidden-substructures"]
+    "prerequisites": ["extremal-functions", "maximum-density", "forbidden-substructures"]
   },
   {
     "id": "erdos-302-odd-integers",
@@ -69,7 +69,7 @@
     "mathContext": "Parity arguments often give clean constructions in extremal combinatorics.",
     "significance": "key",
     "relatedConcepts": ["Parity arguments", "Modular arithmetic", "Basic constructions"],
-    "tags": ["parity-arguments", "modular-arithmetic", "lower-bounds"]
+    "prerequisites": ["parity-arguments", "modular-arithmetic", "lower-bounds"]
   },
   {
     "id": "erdos-302-upper-half",
@@ -81,7 +81,7 @@
     "mathContext": "Size constraints on elements can force equations to be unsolvable.",
     "significance": "key",
     "relatedConcepts": ["Size arguments", "Interval constructions", "Lower bounds"],
-    "tags": ["interval-constructions", "size-arguments", "lower-bounds"]
+    "prerequisites": ["interval-constructions", "size-arguments", "lower-bounds"]
   },
   {
     "id": "erdos-302-cambie",
@@ -91,9 +91,9 @@
     "title": "Cambie's Construction",
     "content": "**cambie_set N:**\n\nOdd integers ≤ N/4 PLUS all integers in [N/2, N].\n\n**Size:** About N/8 + N/2 = 5N/8 elements.\n\n**Why it works:** The odd integers in [1, N/4] don't interact with [N/2, N] because if a ≤ N/4 and b, c ≥ N/2, size constraints prevent 1/a = 1/b + 1/c.",
     "mathContext": "Cambie's clever combination of the two basic constructions improves the lower bound.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Combined constructions", "Non-overlapping ranges", "5/8 bound"],
-    "tags": ["combined-constructions", "lower-bounds", "density-bounds", "cambie"]
+    "prerequisites": ["combined-constructions", "lower-bounds", "density-bounds", "cambie"]
   },
   {
     "id": "erdos-302-van-doorn",
@@ -103,9 +103,9 @@
     "title": "van Doorn's Upper Bound",
     "content": "**van_doorn_upper_bound:**\n\nf(N) ≤ (9/10+o(1))N.\n\nThis shows we cannot have more than 90% of {1,...,N} in any sum-free set.\n\nThe proof uses structural arguments about which solutions must exist in large sets.",
     "mathContext": "Upper bounds are typically harder than lower bounds - we must show NO construction works.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Upper bounds", "Density limitations", "Structural arguments"],
-    "tags": ["upper-bounds", "density-limitations", "structural-arguments"]
+    "prerequisites": ["upper-bounds", "density-limitations", "structural-arguments"]
   },
   {
     "id": "erdos-302-original-question",
@@ -115,9 +115,9 @@
     "title": "The Original Question",
     "content": "**original_question:**\n\nIs f(N) = (1/2+o(1))N?\n\n**Answer:** NO!\n\nCambie showed f(N) ≥ (5/8+o(1))N, and 5/8 > 1/2.\n\nSo the original conjecture underestimated how large sum-free sets can be.",
     "mathContext": "The original 1/2 guess came from the basic constructions (odd integers or upper half).",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Disproved conjectures", "Original estimates"],
-    "tags": ["disproved-conjectures", "density-bounds", "original-question"]
+    "prerequisites": ["disproved-conjectures", "density-bounds", "original-question"]
   },
   {
     "id": "erdos-302-doubling",
@@ -129,7 +129,7 @@
     "mathContext": "The b = c case is structurally simpler but gives a different density bound.",
     "significance": "key",
     "relatedConcepts": ["Pigeonhole principle", "Density thresholds", "Special cases"],
-    "tags": ["pigeonhole-principle", "density-thresholds", "doubling-property"]
+    "prerequisites": ["pigeonhole-principle", "density-thresholds", "doubling-property"]
   },
   {
     "id": "erdos-302-coloring",
@@ -141,7 +141,7 @@
     "mathContext": "Coloring versions of density problems are related but distinct questions.",
     "significance": "key",
     "relatedConcepts": ["Ramsey theory", "2-colorings", "Monochromatic structures"],
-    "tags": ["ramsey-theory", "graph-coloring", "monochromatic-structures"]
+    "prerequisites": ["ramsey-theory", "graph-coloring", "monochromatic-structures"]
   },
   {
     "id": "erdos-302-pattern",
@@ -153,7 +153,7 @@
     "mathContext": "This pattern generalizes 1/2 = 1/3 + 1/6, 1/3 = 1/4 + 1/12, etc.",
     "significance": "key",
     "relatedConcepts": ["Solution families", "Telescoping", "Egyptian fractions"],
-    "tags": ["solution-families", "telescoping", "egyptian-fractions"]
+    "prerequisites": ["solution-families", "telescoping", "egyptian-fractions"]
   },
   {
     "id": "erdos-302-examples",
@@ -165,7 +165,7 @@
     "mathContext": "Understanding the solution set helps design constructions that avoid them.",
     "significance": "supporting",
     "relatedConcepts": ["Small examples", "Solution enumeration"],
-    "tags": ["concrete-examples", "solution-enumeration", "unit-fractions"]
+    "prerequisites": ["concrete-examples", "solution-enumeration", "unit-fractions"]
   },
   {
     "id": "erdos-302-main-theorem",
@@ -175,9 +175,9 @@
     "title": "Main Theorem",
     "content": "**erdos_302:**\n\nComplete status of Problem #302:\n\n1. f(N) ≥ (5/8+o(1))N (Cambie)\n2. f(N) ≤ (9/10+o(1))N (van Doorn)\n3. Original conjecture f(N) = (1/2+o(1))N is FALSE\n\nThe exact limiting density remains OPEN, known to be in [5/8, 9/10].",
     "mathContext": "The problem is partially resolved - we know the answer is NOT 1/2, but the exact value is unknown.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Partial resolution", "Density bounds", "Open problem"],
-    "tags": ["partial-resolution", "density-bounds", "open-problem", "main-theorem"]
+    "prerequisites": ["partial-resolution", "density-bounds", "open-problem", "main-theorem"]
   },
   {
     "id": "erdos-302-summary",
@@ -187,8 +187,8 @@
     "title": "Summary",
     "content": "**erdos_302_summary:**\n\n**Erdős Problem #302: OPEN**\n\n**Question:** Estimate f(N), is f(N) = (1/2+o(1))N?\n\n**Answer:** NO, the limit is in [5/8, 9/10].\n\nThe gap between 0.625 and 0.9 remains to be closed.",
     "mathContext": "The problem demonstrates how initial guesses can be wrong, and significant gaps can remain open.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Final status", "Open problems", "Remaining gaps"],
-    "tags": ["summary", "open-problem", "density-gap"]
+    "prerequisites": ["summary", "open-problem", "density-gap"]
   }
 ]
