@@ -18,7 +18,7 @@
     "title": "Unit Segment Structure",
     "content": "A unit segment is represented by its two endpoints in $\\mathbb{Q} \\times \\mathbb{Q}$, with a `unit_length` field abstracting the constraint that endpoints are at Euclidean distance 1. The field is typed as `True` — a deliberate simplification that focuses the formalization on the combinatorial packing structure rather than metric geometry. In a fully rigorous treatment, one would require $\\|x_1 - x_2\\| = 1$ using the Euclidean norm on $\\mathbb{R}^2$.",
     "mathContext": "A unit segment $s = [p, q]$ with $p, q \\in \\mathbb{Q}^2$ and $\\|p - q\\|_2 = 1$ (abstracted). The segment is the convex hull $\\{(1-t)p + tq : 0 \\leq t \\leq 1\\}$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["convex hull", "line segments", "Euclidean distance", "geometric abstraction"],
     "prerequisites": ["structure types in Lean", "rational numbers"],
     "range": { "startLine": 26, "endLine": 31 }
@@ -66,7 +66,7 @@
     "title": "Maximal Packing",
     "content": "A packing $S$ is **maximal** if no additional unit segment can be added while preserving the packing property. Formally: for every unit segment $s$ in the unit square that is not already in $S$, there exists some $t \\in S$ that intersects $s$. This is the geometric analogue of a **maximal independent set** in graph theory — if we build a graph where vertices are unit segments and edges connect intersecting pairs, a maximal packing is a maximal independent set. The challenge is that the 'graph' has uncountably many vertices (all possible unit segments).",
     "mathContext": "$S$ is maximal iff $S$ is a packing and $\\forall s \\notin S$ with $s \\subset [0,1]^2$, $\\exists t \\in S$ with $\\text{relint}(s) \\cap \\text{relint}(t) \\neq \\emptyset$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["maximal independent set", "saturation", "blocking configuration", "Zorn's lemma"],
     "prerequisites": ["IsPacking", "SegmentInSquare"],
     "range": { "startLine": 54, "endLine": 58 }
@@ -86,11 +86,11 @@
   {
     "id": "danzer-result",
     "proofId": "erdos-1071",
-    "type": "theorem",
+    "type": "technique",
     "title": "Danzer's Finite Maximal Packing (Part a — SOLVED)",
     "content": "Ludwig Danzer proved that a finite maximal packing of unit segments exists in $[0,1]^2$. The construction is non-trivial: one must place finitely many non-intersecting unit segments so that every possible unit-segment placement in the square intersects at least one existing segment. This means blocking all orientations $\\theta \\in [0, \\pi)$ and all positions simultaneously. Danzer's construction uses segments at carefully chosen angles and positions. Erdős paid him \\$10 for the solution — the prize reflects the difficulty of the construction, which requires a deep understanding of how segment orientations interact in the confined geometry of the unit square.",
     "mathContext": "$\\exists S \\subset \\{\\text{unit segments in } [0,1]^2\\}$ with $|S| < \\infty$, $S$ pairwise disjoint, and $\\forall s'$ (unit segment in $[0,1]^2$), $s' \\notin S \\Rightarrow \\exists t \\in S,\\; s' \\cap t \\neq \\emptyset$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Danzer's construction", "blocking all orientations", "finite covering", "Erdős prizes"],
     "prerequisites": ["IsFinitePacking", "IsMaximalPacking"],
     "range": { "startLine": 70, "endLine": 73 }
@@ -114,7 +114,7 @@
     "title": "Open Problem: Countably Infinite Maximal Packing (Part b)",
     "content": "This axiom captures the open part of Erdős Problem 1071: does there exist a region $R$ and a countably infinite set $S$ of unit segments forming a maximal packing in $R$? The axiom asserts this positively, but the problem is **open** — it is not known whether such a configuration exists. The difficulty lies in simultaneously achieving: (1) infinitely many disjoint unit segments, (2) blocking every possible additional segment, and (3) the blocking being achieved by the existing segments alone (not by the region boundary). An unbounded region like a strip or half-plane might work, but the blocking condition is hard to verify.",
     "mathContext": "$\\exists R \\subseteq \\mathbb{Q}^2,\\; \\exists S$ with $|S| = \\aleph_0$, $S$ a maximal packing in $R$. Status: **OPEN**.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Erdős open problems", "infinite packings", "countable combinatorics"],
     "prerequisites": ["IsMaximalRegionPacking", "Set.Countable", "Set.Infinite"],
     "range": { "startLine": 91, "endLine": 95 }
