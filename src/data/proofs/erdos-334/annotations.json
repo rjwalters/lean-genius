@@ -7,10 +7,10 @@
     "title": "Smooth Number Definition",
     "content": "**isSmooth n y:**\n\nA natural number n is y-smooth if every prime factor p of n satisfies p ≤ y.\n\n**Definition:**\n```lean\ndef isSmooth (n : ℕ) (y : ℕ) : Prop :=\n  ∀ p : ℕ, p.Prime → p ∣ n → p ≤ y\n```\n\nSmooth numbers are fundamental in number theory and cryptography.",
     "mathContext": "$n$ is $y$-smooth iff $\\forall p \\text{ prime}, p \\mid n \\Rightarrow p \\le y$. Equivalently, all prime factors of $n$ are $\\le y$. Smooth numbers appear in the quadratic sieve, Pollard's rho, and index calculus algorithms for discrete logarithms. The Dickman function $\\rho(u)$ gives the density of $x^{1/u}$-smooth numbers up to $x$.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": ["Nat.Prime in Lean", "dvd notation p ∣ n", "∀ universal quantifier over primes", "prime factorization existence"],
     "relatedConcepts": ["Prime factorization", "Dickman function ρ(u)", "Cryptography", "Quadratic sieve", "Index calculus"],
-    "tags": ["smooth-numbers", "number-theory", "prime-factorization", "cryptography"]
+    "prerequisites": ["smooth-numbers", "number-theory", "prime-factorization", "cryptography"]
   },
   {
     "id": "ann-e334-one-smooth",
@@ -23,7 +23,7 @@
     "significance": "supporting",
     "prerequisites": ["Nat.Prime.not_dvd_one (no prime divides 1)", "vacuous truth in ∀ quantifiers", "isSmooth definition"],
     "relatedConcepts": ["Vacuous truth", "Base case in smoothness proofs", "Prime divisibility"],
-    "tags": ["smooth-numbers", "vacuous-truth", "base-case"]
+    "prerequisites": ["smooth-numbers", "vacuous-truth", "base-case"]
   },
   {
     "id": "ann-e334-prime-power",
@@ -36,7 +36,7 @@
     "significance": "key",
     "prerequisites": ["Nat.Prime.dvd_prime_pow", "prime uniqueness in prime power factors", "isSmooth definition"],
     "relatedConcepts": ["Prime powers", "Hamming numbers (5-smooth)", "Regular numbers", "2-smooth = powers of 2"],
-    "tags": ["prime-powers", "smooth-numbers", "number-theory"]
+    "prerequisites": ["prime-powers", "smooth-numbers", "number-theory"]
   },
   {
     "id": "ann-e334-smooth-mul",
@@ -49,7 +49,7 @@
     "significance": "key",
     "prerequisites": ["Nat.Prime.dvd_mul (Euclid's lemma)", "isSmooth definition", "Or.elim for case analysis"],
     "relatedConcepts": ["Multiplicative semigroup", "Euclid's lemma", "Closure under products", "Smooth number arithmetic"],
-    "tags": ["smooth-numbers", "multiplicative-closure", "euclids-lemma"]
+    "prerequisites": ["smooth-numbers", "multiplicative-closure", "euclids-lemma"]
   },
   {
     "id": "ann-e334-pair-repr",
@@ -59,10 +59,10 @@
     "title": "Smooth Pair Representation",
     "content": "**hasSmootPairRepr n y:**\n\nA number n has a y-smooth pair representation if n = a + b where both a and b are y-smooth.\n\n**Definition:**\n```lean\ndef hasSmootPairRepr (n : ℕ) (y : ℕ) : Prop :=\n  ∃ a b : ℕ, a + b = n ∧ isSmooth a y ∧ isSmooth b y\n```\n\nThe central question: how small can y be as a function of n?",
     "mathContext": "$\\text{hasSmootPairRepr}(n, y) \\iff \\exists a, b \\in \\mathbb{N} : a + b = n,\\, \\text{isSmooth}(a,y),\\, \\text{isSmooth}(b,y)$. The function $f(n) = \\min\\{y : \\text{hasSmootPairRepr}(n,y)\\}$ is what Problem #334 asks about. Key: n = a + 0 with a = n gives trivial n-smooth representation.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": ["isSmooth definition", "∃ a b : ℕ existential in Lean", "addition a + b = n", "And.intro for ∧"],
     "relatedConcepts": ["Smooth pair sum", "Additive representation", "Sumset A + A", "Waring's problem analogue"],
-    "tags": ["additive-representation", "smooth-numbers", "existential-quantifier", "combinatorics"]
+    "prerequisites": ["additive-representation", "smooth-numbers", "existential-quantifier", "combinatorics"]
   },
   {
     "id": "ann-e334-min-smooth",
@@ -72,10 +72,10 @@
     "title": "Minimal Smoothness Function f(n)",
     "content": "**minSmoothness n:**\n\nThe function f(n) is the smallest y such that n has a y-smooth pair representation.\n\nDetermining the growth rate of f(n) is the core of Erdős Problem #334.",
     "mathContext": "$f(n) = \\min\\{y \\ge 0 : \\text{hasSmootPairRepr}(n, y)\\}$. Trivially $f(n) \\le n$ (take $a=n, b=0$, giving $n$-smooth). Erdős asks: what is the true order of $f(n)$? Conjectured: $f(n) \\le e^{O(\\sqrt{\\log n})}$. Known: $f(n) \\le n^{4/(9\\sqrt{e})+\\varepsilon}$ (Balog 1989).",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": ["hasSmootPairRepr definition", "natural number minimum", "axiom for noncomputable min", "Nat.find or similar in Lean"],
     "relatedConcepts": ["Minimal smoothness bound", "Growth rate of f(n)", "Erdős #334 open question", "Balog's theorem"],
-    "tags": ["optimization", "smooth-numbers", "growth-rate", "erdos-problem"]
+    "prerequisites": ["optimization", "smooth-numbers", "growth-rate", "erdos-problem"]
   },
   {
     "id": "ann-e334-exists",
@@ -88,7 +88,7 @@
     "significance": "key",
     "prerequisites": ["minSmoothness definition", "hasSmootPairRepr with b=0 (trivial case)", "n ≥ 1 hypothesis"],
     "relatedConcepts": ["Trivial upper bound f(n) ≤ n", "Existential smoothness", "Non-trivial smooth representations"],
-    "tags": ["existence-proof", "smooth-numbers", "upper-bound"]
+    "prerequisites": ["existence-proof", "smooth-numbers", "upper-bound"]
   },
   {
     "id": "ann-e334-cube-root",
@@ -101,7 +101,7 @@
     "significance": "key",
     "prerequisites": ["Real.rpow for n^{1/3}", "n ≥ 2 (or large enough)", "hasSmootPairRepr with y = n^{1/3}"],
     "relatedConcepts": ["Cube root threshold", "Balog's improvement", "Smooth number heuristics", "Dickman function at u=3"],
-    "tags": ["erdos-problem", "cube-root-bound", "analytic-number-theory", "smooth-numbers"]
+    "prerequisites": ["erdos-problem", "cube-root-bound", "analytic-number-theory", "smooth-numbers"]
   },
   {
     "id": "ann-e334-balog-exp",
@@ -111,10 +111,10 @@
     "title": "Balog's Exponent 4/(9√e)",
     "content": "**balogExponent:**\n\n```lean\nnoncomputable def balogExponent : ℝ := 4 / (9 * Real.sqrt Real.exp 1)\n```\n\n**Value:** 4/(9√e) ≈ 4/(9 × 1.6487) ≈ 0.2695\n\nThis significantly improves Erdős's n^{1/3} ≈ n^{0.333}.",
     "mathContext": "$\\beta = \\frac{4}{9\\sqrt{e}} \\approx 0.2695$. Balog proved $f(n) \\le n^{\\beta+\\varepsilon}$ for any $\\varepsilon > 0$. The constant $4/(9\\sqrt{e})$ arises from optimizing saddle-point estimates in the Selberg-Delange method for counting smooth numbers in arithmetic progressions.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": ["Real.sqrt in Lean", "Real.exp 1 = e", "noncomputable def for transcendental constants", "Real.div"],
     "relatedConcepts": ["Balog's theorem (1989)", "Selberg-Delange method", "Saddle-point method", "Smooth number counting"],
-    "tags": ["analytic-number-theory", "balog-theorem", "smooth-numbers", "constants"]
+    "prerequisites": ["analytic-number-theory", "balog-theorem", "smooth-numbers", "constants"]
   },
   {
     "id": "ann-e334-balog-bound",
@@ -124,10 +124,10 @@
     "title": "Balog's 1989 Theorem",
     "content": "**balog_bound:**\n\nFor every ε > 0, there exists a constant C such that every n ≥ 2 can be written as a + b with both summands being n^{0.2695+ε}-smooth.\n\n**Reference:** Balog [Ba89]: \"On additive representation of integers\", Acta Math. Hungar. (1989).\n\nThis is the current state of the art.",
     "mathContext": "$\\forall \\varepsilon > 0,\\, \\exists C,\\, \\forall n \\ge 2 : n = a + b$ with $a, b$ both $n^{\\beta+\\varepsilon}$-smooth where $\\beta = 4/(9\\sqrt{e})$. Axiomatized since the proof requires deep analytic number theory: Dickman's function estimates, Selberg-Delange method, and exponential sum bounds.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": ["balogExponent definition", "hasSmootPairRepr definition", "Real.rpow for n^{β+ε}", "Dickman function background"],
     "relatedConcepts": ["Dickman function", "Selberg-Delange method", "Smooth numbers in arithmetic progressions", "Current best bound"],
-    "tags": ["balog-theorem", "analytic-number-theory", "smooth-numbers", "state-of-the-art"]
+    "prerequisites": ["balog-theorem", "analytic-number-theory", "smooth-numbers", "state-of-the-art"]
   },
   {
     "id": "ann-e334-weak-conj",
@@ -140,7 +140,7 @@
     "significance": "key",
     "prerequisites": ["minSmoothness definition", "Real.rpow for n^ε", "subpolynomial growth / o(1) notation", "Filter.atTop in Lean (for ∀ large n)"],
     "relatedConcepts": ["Subpolynomial growth", "n^{o(1)} notation", "Strong conjecture e^{O(√log n)}", "Gap from Balog to conjecture"],
-    "tags": ["open-conjecture", "asymptotic-analysis", "smooth-numbers", "subpolynomial-growth"]
+    "prerequisites": ["open-conjecture", "asymptotic-analysis", "smooth-numbers", "subpolynomial-growth"]
   },
   {
     "id": "ann-e334-strong-conj",
@@ -153,7 +153,7 @@
     "significance": "key",
     "prerequisites": ["Real.log", "Real.sqrt (log n)", "Real.exp", "e^{O(√log n)} growth rate", "comparison to number field sieve complexity"],
     "relatedConcepts": ["Number field sieve", "Subexponential complexity", "L-notation", "Smooth number sieving bounds"],
-    "tags": ["open-conjecture", "subexponential-growth", "number-field-sieve", "smooth-numbers"]
+    "prerequisites": ["open-conjecture", "subexponential-growth", "number-field-sieve", "smooth-numbers"]
   },
   {
     "id": "ann-e334-example-10",
@@ -166,7 +166,7 @@
     "significance": "key",
     "prerequisites": ["hasSmootPairRepr definition", "Nat.Prime.dvd_prime_pow", "decide or norm_num for decidable propositions", "2-smooth = powers of 2"],
     "relatedConcepts": ["Concrete smooth examples", "Powers of 2 as 2-smooth", "f(10) = 2 computation", "Verification by cases"],
-    "tags": ["concrete-example", "smooth-numbers", "powers-of-two", "verification"]
+    "prerequisites": ["concrete-example", "smooth-numbers", "powers-of-two", "verification"]
   },
   {
     "id": "ann-e334-example-100",
@@ -179,7 +179,7 @@
     "significance": "key",
     "prerequisites": ["hasSmootPairRepr for 3-smooth", "Nat.Prime.dvd_mul", "case analysis Or.elim", "2 ≤ 3 and 3 ≤ 3"],
     "relatedConcepts": ["3-smooth numbers (Hamming numbers)", "f(100) ≤ 3", "Concrete computation", "dvd_mul case analysis"],
-    "tags": ["concrete-example", "smooth-numbers", "hamming-numbers", "case-analysis"]
+    "prerequisites": ["concrete-example", "smooth-numbers", "hamming-numbers", "case-analysis"]
   },
   {
     "id": "ann-e334-dickman",
@@ -192,7 +192,7 @@
     "significance": "key",
     "prerequisites": ["Dickman function ρ(u) definition (delay differential equation)", "ψ(x,y) counting function", "Real.log", "asymptotic density of smooth numbers"],
     "relatedConcepts": ["Dickman function", "Smooth number counting ψ(x,y)", "Analytic number theory", "de Bruijn's estimate", "Selberg-Delange method"],
-    "tags": ["dickman-function", "analytic-number-theory", "asymptotic-analysis", "smooth-numbers"]
+    "prerequisites": ["dickman-function", "analytic-number-theory", "asymptotic-analysis", "smooth-numbers"]
   },
   {
     "id": "ann-e334-summary",
@@ -205,7 +205,7 @@
     "significance": "key",
     "prerequisites": ["erdos_cube_root_bound axiom", "balog_bound axiom", "weakConjecture / strongConjecture definitions", "And.intro for conjunction"],
     "relatedConcepts": ["State of knowledge summary", "Open vs proved bounds", "Erdős #334 current status", "Path from n^{1/3} to n^{o(1)}"],
-    "tags": ["summary", "erdos-problem", "smooth-numbers", "state-of-the-art"]
+    "prerequisites": ["summary", "erdos-problem", "smooth-numbers", "state-of-the-art"]
   },
   {
     "id": "ann-e334-main",
@@ -215,10 +215,10 @@
     "title": "Main Theorem: n^{0.27+ε}-Smooth",
     "content": "**erdos_334:**\n\nFor any ε > 0, there exists N such that every n ≥ N can be written as a + b with both summands being n^{0.27+ε}-smooth.\n\n**Derivation:** 0.27 > 4/(9√e) ≈ 0.2695, so this follows from Balog's bound.\n\nThis is the main formalized result.",
     "mathContext": "$\\forall \\varepsilon > 0,\\, \\exists N,\\, \\forall n \\ge N : n = a + b$ with $a, b$ being $n^{0.27+\\varepsilon}$-smooth. Since $0.27 > 4/(9\\sqrt{e}) \\approx 0.2695$, this is a slight weakening of Balog's bound (more conservative exponent). Proved by: $0.27 > \\beta \\Rightarrow$ apply balog_bound with $\\varepsilon' = 0.27 - \\beta + \\varepsilon$.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": ["balog_bound axiom", "balogExponent ≈ 0.2695", "0.27 > balogExponent (arithmetic)", "Real.rpow monotonicity"],
     "relatedConcepts": ["Balog's theorem application", "Conservative exponent 0.27", "Main result formalization", "Real arithmetic for exponent comparison"],
-    "tags": ["main-theorem", "balog-theorem", "smooth-numbers", "analytic-number-theory"]
+    "prerequisites": ["main-theorem", "balog-theorem", "smooth-numbers", "analytic-number-theory"]
   },
   {
     "id": "ann-e334-open",
@@ -228,9 +228,9 @@
     "title": "The Open Question",
     "content": "**openQuestion:**\n\nWhat is the true growth rate of f(n)?\n\n**Current gap:**\n- Upper bound: n^{0.2695} (Balog)\n- Conjectured: n^{o(1)} or even e^{O(√log n)}\n\nClosing this gap is Erdős Problem #334.",
     "mathContext": "The open question: $\\text{weakConjecture} \\vee \\text{strongConjecture}$? Currently $f(n) \\le n^{0.2695+\\varepsilon}$ (Balog). The conjecture $f(n) \\le e^{O(\\sqrt{\\log n})}$ would give a subexponential (but superpolylogarithmic) bound. Closing this gap requires new tools combining smooth number theory with additive combinatorics.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": ["weakConjecture definition", "strongConjecture definition", "balog_bound (current best)", "gap between polynomial and subexponential bounds"],
     "relatedConcepts": ["Open problem status", "Smooth number conjecture", "Green's Open Problems List #59", "Erdős-Graham 1980"],
-    "tags": ["open-problem", "erdos-problem", "smooth-numbers", "additive-combinatorics"]
+    "prerequisites": ["open-problem", "erdos-problem", "smooth-numbers", "additive-combinatorics"]
   }
 ]
