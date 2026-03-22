@@ -47,6 +47,13 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Module Header and Problem Statement",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "Documents the open question origin (from bezout-identity-oq-02-oq-02-oq-01: 'Can the noncomputable annotation be removed?') and the affirmative answer: replacing hdvd.choose with computable integer division (b*c)/a. Imports Mathlib's natural number GCD, integer GCD, and general tactic libraries. Opens the BezoutConstructive namespace for the formalization."
+    },
+    {
       "id": "ext-gcd",
       "title": "Extended Euclidean Algorithm",
       "startLine": 29,

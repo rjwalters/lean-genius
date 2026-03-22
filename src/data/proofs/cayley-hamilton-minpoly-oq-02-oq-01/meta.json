@@ -89,6 +89,13 @@
   },
   "sections": [
     {
+      "id": "header-setup",
+      "title": "Module Header and Variable Declarations",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "Documents the open question origin (generalizing minimal polynomial theory from matrices to abstract K-algebras) and the affirmative answer via Mathlib's minpoly.algEquiv_eq. Imports Mathlib and declares the field variable K used throughout the formalization."
+    },
+    {
       "id": "abstract-theory",
       "title": "Abstract Theory from Mathlib",
       "startLine": 28,
