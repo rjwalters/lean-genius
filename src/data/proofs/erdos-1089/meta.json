@@ -55,7 +55,36 @@
     ],
     "dateAdded": "12/29/25",
     "axiomCount": 13,
-    "assumptions": "13 axiom declarations: g_well_defined (g_d(n) achieves the minimum), 4 specific values (g(1,3)=4, g(2,3)=6, g(3,3)=7, g(d,2)=3), cube infrastructure (cubeVertices, cube_card, cube_distances), erdos_lower_bound and erdos_straus_upper_bound (the main asymptotic bounds), monotonicity axioms (g_mono_n, g_mono_d), and g_f_relationship linking to the classical 2D distinct distances function. The specific values and cube properties are provable in principle; the bounds and main conjecture are open."
+    "references": [
+      {
+        "authors": "Erdős, Paul",
+        "title": "On some problems of elementary and combinatorial geometry",
+        "year": "1975",
+        "venue": "Annali di Matematica Pura ed Applicata 103, pp. 99-108",
+        "note": "Introduced the threshold function g_d(n) and proved the lower bound g_d(n) ≫ d^{n-1}"
+      },
+      {
+        "authors": "Guth, Larry; Katz, Nets Hawk",
+        "title": "On the Erdős distinct distances problem in the plane",
+        "year": "2015",
+        "venue": "Annals of Mathematics 181, pp. 155-190",
+        "note": "Resolved the 2D distinct distances conjecture (f_2(n) ≥ cn/√log n); the higher-dimensional analog motivates this problem"
+      },
+      {
+        "authors": "Croft, Hallard T.",
+        "title": "6-point and 7-point configurations in 3-space",
+        "year": "1962",
+        "venue": "Proceedings of the London Mathematical Society 12, pp. 400-424",
+        "note": "Computed g_3(3) = 7 — the largest known exact value of the threshold function"
+      }
+    ],
+    "prerequisites": [
+      "Discrete and combinatorial geometry: point configurations and distances",
+      "Euclidean space ℝ^d and the distance function",
+      "The distinct distances problem (Erdős 1946) and its higher-dimensional variants",
+      "Threshold functions and extremal combinatorics",
+      "Filter-based limits in Lean (Filter.Tendsto)"
+    ]
   },
   "sections": [
     {
@@ -130,12 +159,11 @@
   },
   "crossReferences": [
     {
-      "id": "erdos-1083",
-      "relationship": "Inverse problem",
-      "description": "Problem #1083 studies f_d(n) = max distinct distances from n points; g_d(n) = min{m : f_d(m) ≥ n} is the inverse perspective."
+      "targetId": "erdos-1083",
+      "relationship": "related",
+      "description": "Problem #1083 studies f_d(n) = max distinct distances from n points; g_d(n) = min{m : f_d(m) ≥ n} is the inverse"
     }
   ],
-  "relatedProofs": ["erdos-1083"],
   "conclusion": {
     "summary": "The threshold function g_d(n) captures how many points in ℝ^d guarantee n distinct distances. The cube construction shows g_d(d+1) > 2^d, while Erdős proved g_d(n) ≫ d^{n-1}. The Erdős-Straus upper bound g_d(n) ≤ c^{d^{1-b_n}} leaves a vast gap between polynomial and stretched-exponential growth. Whether g_d(n)/d^{n-1} converges as d → ∞ remains the central open question.",
     "implications": "This connects to the famous distinct distances problem in the plane (Guth-Katz 2015) and understanding how distance structure changes with dimension. The focus on fixed n as d → ∞ differs from typical questions about n points in fixed dimension, probing the fundamental geometry of high-dimensional Euclidean space.",
