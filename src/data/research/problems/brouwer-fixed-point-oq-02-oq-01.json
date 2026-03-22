@@ -46,7 +46,12 @@
       "strip_parity reduces to: non-FC triangles have even door count + boundary edges (left, hypotenuse) have no {0,1}-doors",
       "In each strip, internal edges are shared by 2 triangles (cancel mod 2), leaving boundary doors = hTrans(j) + hTrans(j+1)",
       "Key algebraic identity: sum(p) + sum(q) + l_0 + d_{m-1} = 0 in ZMod 2, where l_0 = 0 (left boundary), d_{m-1} = 0 (hypotenuse)",
-      "Non-FC door count parity: case analysis on 27 color triples shows all 21 non-FC cases give even count"
+      "Non-FC door count parity: case analysis on 27 color triples shows all 21 non-FC cases give even count",
+      "File has Mathlib compat errors in fully_colored_one_door (omega on Fin lt) and no_door_hypotenuse (omega range issues) - need fix for Lean 4.26/current Mathlib",
+      "Row-sweep proof structure is complete: sperner_2d proved FROM strip_parity",
+      "strip_parity is the SOLE remaining sorry for Sperner. Proof strategy documented in comments (lines 361-384)",
+      "door_parity_of_not_fc has decide errors (Finset.pair_comm issue) - needs simp_all update",
+      "hTrans_zero_eq has unsolved goals at line 336 (congr mismatch) and omega failures (j+1 bounds)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
