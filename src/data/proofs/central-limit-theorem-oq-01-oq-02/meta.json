@@ -1,0 +1,66 @@
+{
+  "id": "central-limit-theorem-oq-01-oq-02",
+  "title": "Lévy-Khintchine Representation: Triplets, Decomposition, and Classification",
+  "slug": "central-limit-theorem-oq-01-oq-02",
+  "description": "Formalizes the Lévy-Khintchine representation framework for infinitely divisible distributions. Defines Lévy triplets (γ, σ², ν), proves Gaussian and Poisson distributions are infinitely divisible with explicit triplets, establishes componentwise addition of triplets under independent sums, defines the Lévy-Itô decomposition, and proves classification theorems (no jumps → Gaussian, no Gaussian → compound Poisson). Connects to α-stable characteristic functions from OQ01.",
+  "meta": {
+    "author": "Lévy (1934), Khintchine (1937); formalized 2026",
+    "sourceUrl": "https://en.wikipedia.org/wiki/L%C3%A9vy%E2%80%93Khintchine_representation",
+    "date": "1937",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/CentralLimitTheoremOQ01OQ02.lean",
+    "tags": [
+      "probability",
+      "characteristic-functions",
+      "levy-process",
+      "infinite-divisibility",
+      "levy-khintchine",
+      "poisson-process",
+      "gaussian",
+      "stable-distributions"
+    ],
+    "badge": "formalized",
+    "sorries": 3,
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.continuous_ofReal",
+        "description": "ℝ → ℂ coercion is continuous",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
+      }
+    ],
+    "originalContributions": [
+      "LevyTriplet: structure capturing drift, Gaussian variance, and Lévy measure integral",
+      "InfDivisible: structure for infinitely divisible distributions with characteristic exponent",
+      "gaussianExponent/poissonExponent: explicit Lévy-Khintchine exponents",
+      "gaussianTriplet/poissonTriplet: explicit triplets for fundamental distributions",
+      "LevyTriplet.add: componentwise addition under independent sums",
+      "LevyItoDecomposition: Gaussian + small jumps + large jumps structure",
+      "variance_additive: variance is additive under independent sum (triplet addition)",
+      "stableExponent: α-stable characteristic exponent with n-fold scaling property"
+    ],
+    "dateAdded": "03/21/26",
+    "axiomCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Lévy-Khintchine formula (Lévy 1934, Khintchine 1937) is the fundamental representation theorem for infinitely divisible distributions. Every infinitely divisible distribution has a characteristic function of the form exp(ψ(t)) where ψ is determined by a unique triplet (γ, σ², ν). This generalizes both the Gaussian (ν = 0) and Poisson (σ² = 0) as special cases.",
+    "problemStatement": "Formalize the Lévy-Khintchine framework: define Lévy triplets, prove Gaussian and Poisson are infinitely divisible, establish the additive structure under independent sums, and classify distributions by their triplet components.",
+    "proofStrategy": "Define structures for Lévy triplets and infinitely divisible distributions. Construct explicit instances for Gaussian (triplet (μ, σ², 0)) and Poisson (triplet (0, 0, rate)). Prove algebraic properties: triplet addition for independent sums, variance additivity, classification by zero components. The α-stable exponent connects to OQ01's characteristic functions.",
+    "keyInsights": [
+      "The Lévy triplet uniquely determines an infinitely divisible distribution",
+      "Gaussian and Poisson are the two fundamental building blocks (continuous and jump components)",
+      "Triplets add componentwise under independent sums, giving a clean algebraic structure",
+      "Classification reduces to checking which triplet components vanish"
+    ]
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "The Lévy-Khintchine framework is formalized with 19 theorems, 3 sorries, and 0 axioms. The framework provides the algebraic foundation for infinitely divisible distributions, with explicit constructions for Gaussian and Poisson distributions and their triplet arithmetic.",
+    "implications": "This framework provides the foundation for formalizing Lévy processes, jump-diffusion models, and the full Lévy-Khintchine representation theorem.",
+    "openQuestions": [
+      "Prove gaussianExponent_zero directly (Complex.ofReal arithmetic)",
+      "Prove stable_scaling (rpow arithmetic for n-fold convolution)",
+      "Prove gaussian_variance_from_exponent (limit characterization)",
+      "Formalize the full Lévy-Khintchine representation theorem (existence + uniqueness)"
+    ]
+  }
+}
