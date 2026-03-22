@@ -71,11 +71,11 @@
     "problemStatement": "The Fundamental Theorem of Algebra: If $p(z) = a_n z^n + a_{n-1} z^{n-1} + \\cdots + a_1 z + a_0$ is a polynomial with complex coefficients and $n \\geq 1$ (i.e., the polynomial is non-constant), then there exists at least one complex number $z_0$ such that $p(z_0) = 0$.\n\nEquivalently: The field of complex numbers $\\mathbb{C}$ is algebraically closed - every polynomial over $\\mathbb{C}$ splits completely into linear factors.",
     "proofStrategy": "The Mathlib proof proceeds via complex analysis:\n\n1. Assume the contrary: Suppose $p(z) \\neq 0$ for all $z \\in \\mathbb{C}$\n2. Define the reciprocal: Consider $f(z) = 1/p(z)$, which would be entire (holomorphic everywhere)\n3. Show boundedness: Since $|p(z)| \\to \\infty$ as $|z| \\to \\infty$, the function $f$ is bounded\n4. Apply Liouville's theorem: A bounded entire function must be constant\n5. Reach contradiction: If $f$ is constant, then $p$ is constant, contradicting our assumption that $\\deg p \\geq 1$\n\nTherefore, $p$ must have at least one root in $\\mathbb{C}$.",
     "keyInsights": [
-      "Despite its algebraic statement, every proof requires analysis - there is no purely algebraic proof",
-      "The theorem immediately implies that every degree-n polynomial has exactly n roots (counted with multiplicity)",
-      "This makes complex numbers 'complete' for algebra: you never need to extend further to solve polynomials",
-      "The proof uses that polynomials grow unboundedly - a topological fact about continuous functions",
-      "Liouville's theorem is the key analytical ingredient: bounded + entire implies constant"
+      "**Algebra Needs Analysis:** Despite stating that $p(z) \\in \\mathbb{C}[z]$ has a root, every proof requires completeness of $\\mathbb{R}$ — whether via Liouville's theorem, winding numbers, or the intermediate value theorem. There is no purely algebraic proof.",
+      "**Complete Factorization:** FTA implies $p(z) = a_n(z - z_1)(z - z_2)\\cdots(z - z_n)$ for degree-$n$ polynomials. Every polynomial over $\\mathbb{C}$ splits into linear factors — $\\mathbb{C}$ is algebraically closed.",
+      "**Liouville's Key Role:** If $p(z) \\neq 0$ everywhere, then $f(z) = 1/p(z)$ is entire. Since $|p(z)| \\to \\infty$ as $|z| \\to \\infty$, $f$ is bounded. Liouville's theorem (bounded + entire $\\Rightarrow$ constant) forces $p$ to be constant — contradiction.",
+      "**No Further Extension Needed:** $\\mathbb{C}$ is the algebraic closure of $\\mathbb{R}$: solving $x^2 + 1 = 0$ creates $\\mathbb{C} = \\mathbb{R}[i]$, and this single extension suffices for ALL polynomial equations. Compare: extending $\\mathbb{Q}$ by $\\sqrt{2}$ doesn't close it.",
+      "**Gauss's Four Proofs:** Gauss gave four proofs (1799, 1816, 1816, 1849), each using different techniques. The Mathlib proof via Liouville's theorem is closest to the complex-analytic approach, leveraging Mathlib's infrastructure for holomorphic functions."
     ]
   },
   "sections": [
