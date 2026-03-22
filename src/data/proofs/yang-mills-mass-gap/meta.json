@@ -66,6 +66,28 @@
       "Transfer matrix formalism and finite-volume mass gap"
     ],
     "dateAdded": "03/14/26",
+    "crossReferences": [
+      {
+        "proofId": "yang-mills",
+        "relationship": "extends",
+        "description": "Base classical Yang-Mills formalization providing gauge theory foundations"
+      },
+      {
+        "proofId": "navier-stokes-existence",
+        "relationship": "related",
+        "description": "Fellow Millennium Prize Problem involving existence/regularity of nonlinear PDE solutions"
+      },
+      {
+        "proofId": "riemann-hypothesis",
+        "relationship": "related",
+        "description": "Fellow Millennium Prize Problem; Riemann zeta appears in number-theoretic aspects of gauge theory"
+      },
+      {
+        "proofId": "poincare-conjecture",
+        "relationship": "related",
+        "description": "Solved Millennium Prize Problem; Ricci flow is a geometric analogue of Yang-Mills gradient flow"
+      }
+    ],
     "relatedProblems": [
       {
         "id": "navier-stokes-existence",
