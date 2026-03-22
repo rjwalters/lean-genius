@@ -1,8 +1,8 @@
 {
   "slug": "brouwer-fixed-point-oq-02-oq-01",
   "title": "PPAD Formalization: Higher-Dimensional Sperner Extension",
-  "phase": "OBSERVE",
-  "status": "surveyed",
+  "phase": "ACT",
+  "status": "in-progress",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-03-21T17:07:38.705Z",
     "iteration": 1,
-    "focus": "Higher-dim Sperner needs infrastructure from scratch",
+    "focus": "2D Sperner infrastructure built, proofs outlined",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,22 +29,34 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: No Mathlib SimplicialComplex infrastructure. Existing OQ02 files cover 1D case (0 sorries). Higher-dim Sperner needs definitions from scratch.",
-    "builtItems": [],
+    "progressSummary": "PROGRESS: Created BrouwerFixedPointOQ02OQ01.lean (213 lines). Grid triangulation, Sperner coloring, door-counting proof architecture. 5 sorries (all with proof outlines). Next: prove transitions_parity_aux, then bottom_transitions_odd, then sperner_2d.",
+    "builtItems": [
+      "BrouwerFixedPointOQ02OQ01.lean: 213 lines, grid triangulation + Sperner coloring + 2D lemma statement",
+      "GridVertex, GridTriangle, TriType: core triangulation types",
+      "IsSperner: Sperner boundary coloring condition",
+      "IsFullyColored, IsDoor: key predicates for door-counting proof",
+      "sperner_2d: main existence theorem (sorry, proof outlined)",
+      "approximate_fixed_point_2d: application to continuous maps (sorry)"
+    ],
     "insights": [
       "Mathlib has NO SimplicialComplex or Sperner infrastructure",
       "Existing BrouwerFixedPointOQ02.lean has 1D Sperner (discrete IVT), PPAD structure — 0 sorries",
       "BrouwerFixedPointOQ02Ext.lean has contraction uniqueness, error bounds, 1D Sperner — 0 sorries",
       "Higher-dim Sperner requires: triangulation definition, coloring, boundary conditions, parity argument",
       "2D Sperner is tractable but needs ~200-300 lines of new definitions",
-      "Standard proof uses path-following on dual graph of boundary edges"
+      "Standard proof uses path-following on dual graph of boundary edges",
+      "Grid triangulation approach: GridVertex(i,j) with i+j≤n, two triangle types (lower/upper) per grid cell",
+      "Sperner coloring: vertex conditions at corners + edge exclusion conditions",
+      "Door-counting proof structure: 01-doors on boundary (odd) + interior (pair up) → fully-colored triangles (odd)",
+      "transitions_parity_aux: telescoping in ZMod 2 — #transitions ≡ f(n)+f(0) mod 2"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Create BrouwerFixedPointOQ02OQ01.lean with 2D Sperner skeleton",
-      "Define triangulation of triangle (grid-based is simplest)",
-      "Define Sperner coloring condition",
-      "Prove parity lemma: odd number of fully-colored triangles"
+      "Prove transitions_parity_aux (ZMod 2 telescoping by induction)",
+      "Prove bottom_transitions_odd using transitions_parity_aux",
+      "Prove fully_colored_one_door (counting argument on Fin 3 colors)",
+      "Prove sperner_2d via door-counting + parity",
+      "Prove approximate_fixed_point_2d using sperner_2d + continuity"
     ]
   },
   "tags": [
