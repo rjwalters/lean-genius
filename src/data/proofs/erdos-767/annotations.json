@@ -18,7 +18,8 @@
     "title": "Graph and Edge Count",
     "content": "**Graph** and **edgeCount:**\n\nWe model graphs using Mathlib's SimpleGraph on the finite vertex set Fin n. The edge count is computed via edgeFinset.card, which counts unordered pairs {u, v} with u adj v.\n\nSimpleGraph ensures no self-loops and no multi-edges, matching the standard definition of simple graphs in extremal graph theory.",
     "mathContext": "SimpleGraph (Fin n) provides a decidable adjacency relation on a finite vertex set, enabling both theoretical proofs and computational verification.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "relatedConcepts": ["simple graph", "edge count", "extremal graph theory", "Turán-type problems"]
   },
   {
     "id": "ann-767-cycle",

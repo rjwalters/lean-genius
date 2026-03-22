@@ -17,6 +17,7 @@
     "type": "definition",
     "title": "Equilateral Triangle Definitions",
     "content": "**IsEquilateralTriangle:**\n\nThree points p₁, p₂, p₃ form an equilateral triangle if all pairwise distances are equal and positive.\n\n**IsUnitEquilateralTriangle:**\n\nAn equilateral triangle where all sides have length exactly 1.\n\nThe Euclidean distance uses:\n```lean\ndist(x, y) = √(Σᵢ (xᵢ - yᵢ)²)\n```",
+    "mathContext": "$\\triangle p_1 p_2 p_3$ is equilateral if $d(p_1,p_2) = d(p_2,p_3) = d(p_3,p_1) > 0$. Unit equilateral: all sides have $d = 1$.",
     "significance": "critical",
     "relatedConcepts": ["Euclidean distance", "Regular polygons"]
   },

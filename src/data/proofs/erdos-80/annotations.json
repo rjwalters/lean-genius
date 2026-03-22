@@ -28,7 +28,8 @@
     "title": "Triangle-Saturated Graph",
     "content": "**isTriangleSaturated:** A graph where every edge is contained in at least one triangle.\n\n**Key insight:** Without this condition, star graphs have no books at all! This condition is essential for the problem to be non-trivial.",
     "mathContext": "Triangle saturation ensures every edge participates in local structure.",
-    "significance": "critical"
+    "significance": "critical",
+    "relatedConcepts": ["triangle-free graphs", "graph saturation", "book graph", "Kruskal-Katona theorem"]
   },
   {
     "id": "ann-e80-book-size",
