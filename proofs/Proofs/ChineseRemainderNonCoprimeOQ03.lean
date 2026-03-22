@@ -133,25 +133,182 @@ private theorem gcd_lcm_dvd_prod_gcd (a b c : R) :
   rw [EuclideanDomain.gcd_eq_gcd_ab a c, EuclideanDomain.gcd_eq_gcd_ab b c]
   ring
 
+/-
+## Helpers for the hard direction
+-/
+
+/-- If g ≠ 0, a = g*α, b = g*β, and gcd(a,b) = g, then IsCoprime α β. -/
+private theorem coprime_of_gcd {a b g α β : R} (hg : g ≠ 0)
+    (hα : a = g * α) (hβ : b = g * β)
+    (hgcd : EuclideanDomain.gcd a b = g) :
+    IsCoprime α β := by
+  have hbez := EuclideanDomain.gcd_eq_gcd_ab a b
+  refine ⟨EuclideanDomain.gcdA a b, EuclideanDomain.gcdB a b, ?_⟩
+  apply mul_left_cancel₀ hg
+  rw [mul_one]
+  calc g = EuclideanDomain.gcd a b := hgcd.symm
+    _ = a * EuclideanDomain.gcdA a b + b * EuclideanDomain.gcdB a b := hbez
+    _ = g * (α * EuclideanDomain.gcdA a b) + g * (β * EuclideanDomain.gcdB a b) := by
+        rw [hα, hβ]; ring
+    _ = g * (α * EuclideanDomain.gcdA a b + β * EuclideanDomain.gcdB a b) := by ring
+
+/-- IsCoprime α β implies IsCoprime (gcd α c) (gcd β c). -/
+private theorem isCoprime_gcd_right {α β c : R} (hcop : IsCoprime α β) :
+    IsCoprime (EuclideanDomain.gcd α c) (EuclideanDomain.gcd β c) := by
+  obtain ⟨u, v, huv⟩ := hcop
+  obtain ⟨α', hα'⟩ := EuclideanDomain.gcd_dvd_left α c
+  obtain ⟨β', hβ'⟩ := EuclideanDomain.gcd_dvd_left β c
+  exact ⟨u * α', v * β', by
+    calc (u * α') * EuclideanDomain.gcd α c + (v * β') * EuclideanDomain.gcd β c
+        = u * (EuclideanDomain.gcd α c * α') + v * (EuclideanDomain.gcd β c * β') := by ring
+      _ = u * α + v * β := by rw [← hα', ← hβ']
+      _ = 1 := huv⟩
+
+/-- IsCoprime k n → gcd(k*m, n) | gcd(m, n): coprime factor cancels from gcd. -/
+private theorem gcd_coprime_cancel {k m n : R} (hcop : IsCoprime k n) :
+    EuclideanDomain.gcd (k * m) n ∣ EuclideanDomain.gcd m n := by
+  have h1 : EuclideanDomain.gcd (k * m) n ∣ (k * m) := EuclideanDomain.gcd_dvd_left _ _
+  have h2 : EuclideanDomain.gcd (k * m) n ∣ n := EuclideanDomain.gcd_dvd_right _ _
+  have hcop2 : IsCoprime k (EuclideanDomain.gcd (k * m) n) :=
+    hcop.coprime_dvd_right h2
+  have h3 : EuclideanDomain.gcd (k * m) n ∣ m := hcop2.symm.dvd_of_dvd_mul_left h1
+  exact EuclideanDomain.dvd_gcd h3 h2
+
+/-- gcd(k*a, k*b) | k * gcd(a, b), via Bézout's identity. -/
+private theorem gcd_mul_dvd {k a b : R} :
+    EuclideanDomain.gcd (k * a) (k * b) ∣ k * EuclideanDomain.gcd a b := by
+  have hbez := EuclideanDomain.gcd_eq_gcd_ab a b
+  have : k * EuclideanDomain.gcd a b =
+      k * a * EuclideanDomain.gcdA a b + k * b * EuclideanDomain.gcdB a b := by
+    rw [hbez]; ring
+  rw [this]
+  exact dvd_add
+    ((EuclideanDomain.gcd_dvd_left _ _).mul_right _)
+    ((EuclideanDomain.gcd_dvd_right _ _).mul_right _)
+
+/-- Monotonicity: if a | b, then gcd(a, c) | gcd(b, c). -/
+private theorem gcd_dvd_gcd_of_dvd_left {a b c : R} (h : a ∣ b) :
+    EuclideanDomain.gcd a c ∣ EuclideanDomain.gcd b c :=
+  EuclideanDomain.dvd_gcd
+    (dvd_trans (EuclideanDomain.gcd_dvd_left a c) h)
+    (EuclideanDomain.gcd_dvd_right a c)
+
 /-- Hard direction of the GCD-LCM distributive law:
     gcd(lcm(a,b), c) divides lcm(gcd(a,c), gcd(b,c)).
 
-    Proof: Let d = gcd(lcm(a,b), c), p = gcd(a,c), q = gcd(b,c),
-    G = gcd(p, q), M = lcm(p, q).
-    (1) M | d (easy direction, proved above as lcm_gcd_dvd_gcd_lcm)
-    (2) d | p*q (proved above as gcd_lcm_dvd_prod_gcd)
-    (3) G | d (since G | a, G | b, G | c, so G | lcm(a,b) and G | c)
-    From (3): d = G*d₁. From (2): G*d₁ | G*M, so d₁ | M.
-    From (1): M | G*d₁.
-    Since M = d₁*e₁, M | G*d₁ gives e₁ | G.
-    Since G*d₁ = d = M*r (from (1)), M*r = G*d₁ gives e₁*r = G.
-    So G = e₁*r with e₁ | G and r | G.
-    The proof d | M requires r | 1 (a unit), which follows from the
-    distributivity of the divisibility lattice in any UFD. -/
+    Proof strategy: Factor a = g*α, b = g*β (coprime) where g = gcd(a,b),
+    and g = δ*γ, c = δ*ε (coprime) where δ = gcd(g,c).
+    Then d = gcd(lcm(a,b), c) divides δ*gcd(α,ε)*gcd(β,ε) (Part 1),
+    and δ*gcd(α,ε)*gcd(β,ε) divides M = lcm(gcd(a,c), gcd(b,c)) (Part 2).
+    Part 2 uses IsCoprime(gcd(α,ε), gcd(β,ε)) to cancel within the lcm. -/
 theorem gcd_lcm_dvd_lcm_gcd (a b c : R) :
     EuclideanDomain.gcd (EuclideanDomain.lcm a b) c ∣
     EuclideanDomain.lcm (EuclideanDomain.gcd a c) (EuclideanDomain.gcd b c) := by
-  sorry
+  -- Zero cases
+  by_cases ha : a = 0
+  · -- gcd(lcm(0,b), c) | lcm(gcd(0,c), gcd(b,c))
+    -- gcd(...) | c by gcd_dvd_right; gcd(0,c) = c; c | lcm(c, ...) by dvd_lcm_left
+    subst ha; rw [EuclideanDomain.gcd_zero_left]
+    exact dvd_trans (EuclideanDomain.gcd_dvd_right _ _) (EuclideanDomain.dvd_lcm_left _ _)
+  by_cases hb : b = 0
+  · subst hb; rw [EuclideanDomain.gcd_zero_right]
+    exact dvd_trans (EuclideanDomain.gcd_dvd_right _ _) (EuclideanDomain.dvd_lcm_right _ _)
+  by_cases hc : c = 0
+  · subst hc; simp only [EuclideanDomain.gcd_zero_right]
+  -- Nonzero case: factor through gcd(a,b) = g
+  -- g | a and g | b with a = g*α, b = g*β, IsCoprime α β
+  have hg_ne : EuclideanDomain.gcd a b ≠ 0 := by
+    intro h; exact ha (zero_dvd_iff.mp (h ▸ EuclideanDomain.gcd_dvd_left a b))
+  obtain ⟨α, hα⟩ := EuclideanDomain.gcd_dvd_left a b
+  obtain ⟨β, hβ⟩ := EuclideanDomain.gcd_dvd_right a b
+  have hcop_αβ : IsCoprime α β := coprime_of_gcd hg_ne hα hβ rfl
+  -- Factor gcd(a,b) and c through δ = gcd(gcd(a,b), c)
+  -- gcd(a,b) = δ*γ, c = δ*ε, IsCoprime γ ε
+  have hδ_ne : EuclideanDomain.gcd (EuclideanDomain.gcd a b) c ≠ 0 := by
+    intro h
+    exact hg_ne (zero_dvd_iff.mp (h ▸ EuclideanDomain.gcd_dvd_left _ c))
+  obtain ⟨γ, hγ⟩ := EuclideanDomain.gcd_dvd_left (EuclideanDomain.gcd a b) c
+  obtain ⟨ε, hε⟩ := EuclideanDomain.gcd_dvd_right (EuclideanDomain.gcd a b) c
+  have hcop_γε : IsCoprime γ ε := coprime_of_gcd hδ_ne hγ hε rfl
+  -- Abbreviations (let, not set, to avoid syntactic issues)
+  let δ := EuclideanDomain.gcd (EuclideanDomain.gcd a b) c
+  let X := EuclideanDomain.gcd α ε
+  let Y := EuclideanDomain.gcd β ε
+  -- Key identity: a = δ*γ*α (from hα and hγ)
+  have ha_eq : a = δ * γ * α := by rw [hα, hγ]; ring
+  have hb_eq : b = δ * γ * β := by rw [hβ, hγ]; ring
+  have hc_eq : c = δ * ε := hε
+  -- Part 1: gcd(lcm(a,b), c) | δ * (X * Y)
+  -- Step 1a: g*α*β = δ*γ*α*β is a common multiple of a and b
+  have ha_dvd : a ∣ δ * γ * α * β := ⟨β, by rw [ha_eq]; ring⟩
+  have hb_dvd : b ∣ δ * γ * α * β := ⟨α, by rw [hb_eq]; ring⟩
+  have hlcm_dvd : EuclideanDomain.lcm a b ∣ δ * γ * (α * β) :=
+    EuclideanDomain.lcm_dvd (by rwa [show δ * γ * (α * β) = δ * γ * α * β from by ring])
+      (by rwa [show δ * γ * (α * β) = δ * γ * α * β from by ring])
+  -- Step 1b: d | gcd(δ*(γ*α*β), δ*ε)
+  have hd_dvd_gcd1 :
+      EuclideanDomain.gcd (EuclideanDomain.lcm a b) c ∣
+      EuclideanDomain.gcd (δ * (γ * (α * β))) (δ * ε) := by
+    apply EuclideanDomain.dvd_gcd
+    · exact dvd_trans (EuclideanDomain.gcd_dvd_left _ _)
+        (by rwa [show δ * (γ * (α * β)) = δ * γ * (α * β) from by ring])
+    · rw [show δ * ε = c from hc_eq.symm]; exact EuclideanDomain.gcd_dvd_right _ _
+  -- Step 1c: pull out δ, cancel γ, use coprime product
+  have part1 : EuclideanDomain.gcd (EuclideanDomain.lcm a b) c ∣ δ * (X * Y) :=
+    calc EuclideanDomain.gcd (EuclideanDomain.lcm a b) c
+        ∣ EuclideanDomain.gcd (δ * (γ * (α * β))) (δ * ε) := hd_dvd_gcd1
+      _ ∣ δ * EuclideanDomain.gcd (γ * (α * β)) ε := gcd_mul_dvd
+      _ ∣ δ * EuclideanDomain.gcd (α * β) ε :=
+          mul_dvd_mul_left δ (gcd_coprime_cancel hcop_γε)
+      _ ∣ δ * EuclideanDomain.gcd (EuclideanDomain.lcm α β) ε :=
+          mul_dvd_mul_left δ (gcd_dvd_gcd_of_dvd_left
+            (hcop_αβ.mul_dvd (EuclideanDomain.dvd_lcm_left α β)
+              (EuclideanDomain.dvd_lcm_right α β)))
+      _ ∣ δ * (EuclideanDomain.gcd α ε * EuclideanDomain.gcd β ε) :=
+          mul_dvd_mul_left δ (gcd_lcm_dvd_prod_gcd α β ε)
+  -- Part 2: δ * (X * Y) | lcm(gcd(a,c), gcd(b,c))
+  -- Step 2a: δ*X | a and δ*X | c, hence δ*X | gcd(a,c)
+  have hδX_dvd_a : δ * X ∣ a := by
+    rw [ha_eq]; show δ * EuclideanDomain.gcd α ε ∣ δ * γ * α
+    calc δ * EuclideanDomain.gcd α ε
+        ∣ δ * α := mul_dvd_mul_left δ (EuclideanDomain.gcd_dvd_left α ε)
+      _ ∣ δ * γ * α := by rw [mul_assoc]; exact dvd_mul_of_dvd_right (dvd_refl _) γ
+  have hδX_dvd_c : δ * X ∣ c := by
+    rw [hc_eq]; exact mul_dvd_mul_left δ (EuclideanDomain.gcd_dvd_right α ε)
+  have hδX_dvd_p : δ * X ∣ EuclideanDomain.gcd a c :=
+    EuclideanDomain.dvd_gcd hδX_dvd_a hδX_dvd_c
+  -- Step 2b: δ*Y | b and δ*Y | c, hence δ*Y | gcd(b,c)
+  have hδY_dvd_b : δ * Y ∣ b := by
+    rw [hb_eq]; show δ * EuclideanDomain.gcd β ε ∣ δ * γ * β
+    calc δ * EuclideanDomain.gcd β ε
+        ∣ δ * β := mul_dvd_mul_left δ (EuclideanDomain.gcd_dvd_left β ε)
+      _ ∣ δ * γ * β := by rw [mul_assoc]; exact dvd_mul_of_dvd_right (dvd_refl _) γ
+  have hδY_dvd_c : δ * Y ∣ c := by
+    rw [hc_eq]; exact mul_dvd_mul_left δ (EuclideanDomain.gcd_dvd_right β ε)
+  have hδY_dvd_q : δ * Y ∣ EuclideanDomain.gcd b c :=
+    EuclideanDomain.dvd_gcd hδY_dvd_b hδY_dvd_c
+  -- Step 2c: δ*X and δ*Y divide M = lcm(gcd(a,c), gcd(b,c))
+  have hδX_dvd_M : δ * X ∣ EuclideanDomain.lcm (EuclideanDomain.gcd a c) (EuclideanDomain.gcd b c) :=
+    dvd_trans hδX_dvd_p (EuclideanDomain.dvd_lcm_left _ _)
+  have hδY_dvd_M : δ * Y ∣ EuclideanDomain.lcm (EuclideanDomain.gcd a c) (EuclideanDomain.gcd b c) :=
+    dvd_trans hδY_dvd_q (EuclideanDomain.dvd_lcm_right _ _)
+  -- Step 2d: M = (δ*X)*m₁ for some m₁
+  obtain ⟨m₁, hm₁⟩ := hδX_dvd_M
+  -- Step 2e: Y | X*m₁ (cancel δ from δ*Y | δ*X*m₁)
+  have hY_dvd_Xm : Y ∣ X * m₁ := by
+    have h : δ * Y ∣ δ * (X * m₁) := by
+      rw [show δ * (X * m₁) = δ * X * m₁ from by ring]; rw [← hm₁]; exact hδY_dvd_M
+    exact (mul_dvd_mul_iff_left hδ_ne).mp h
+  -- Step 2f: IsCoprime X Y, so Y | m₁ (Euclid's lemma)
+  have hcop_XY : IsCoprime X Y := isCoprime_gcd_right hcop_αβ
+  have hY_dvd_m₁ : Y ∣ m₁ := by
+    exact hcop_XY.symm.dvd_of_dvd_mul_right hY_dvd_Xm
+  -- Step 2g: δ*(X*Y) | M
+  obtain ⟨m₂, hm₂⟩ := hY_dvd_m₁
+  have part2 : δ * (X * Y) ∣ EuclideanDomain.lcm (EuclideanDomain.gcd a c) (EuclideanDomain.gcd b c) := by
+    refine ⟨m₂, ?_⟩; rw [hm₁, hm₂]; ring
+  -- Conclusion: chain Part 1 and Part 2
+  exact dvd_trans part1 part2
 
 /-
 ## Part III: Three-Moduli CRT Sufficiency
@@ -208,20 +365,18 @@ theorem ed_crt_three_unique {m₁ m₂ m₃ a₁ a₂ a₃ x y : R}
 /-
 ## Summary
 
-### Theorems proved (0 axioms):
+### Theorems proved (0 axioms, 0 sorries — FULLY VERIFIED):
 1. `gcd_dvd_of_dvd_sub` — gcd divisibility from full divisibility
 2. `gcd_dvd_sub_of_congr` — pairwise condition transfers through solution
 3. `lcm_gcd_dvd_gcd_lcm` — easy direction of distributive law
-4. `gcd_lcm_dvd_lcm_gcd` — hard direction (1 sorry: needs coprime decomposition)
+4. `gcd_lcm_dvd_lcm_gcd` — hard direction (GCD-LCM distributive law)
 5. `ed_crt_three_sufficient` — 3-moduli CRT sufficiency
 6. `ed_crt_three_iff` — full iff for 3 moduli
 7. `ed_crt_three_unique` — uniqueness for 3 moduli
 
-### Previous: 0 sorries, 1 axiom (gcd_lcm_distrib)
-### Current: 1 sorry (gcd_lcm_dvd_lcm_gcd), 0 axioms
-### Status: Axiom eliminated, sorry needs UFD factorization to formalize
-### Proof strategy: Reduce to IsCoprime V W where V=lcm(a,b)/M, W=c/M
-### Helper lemmas: See ChineseRemainderNonCoprimeOQ03Aristotle.lean (coprime_gcd_dvd_lcm_gcd etc.)
+### History: 0 sorries, 1 axiom → 1 sorry, 0 axioms → 0 sorries, 0 axioms
+### Status: FULLY VERIFIED — all theorems proved, no axioms, no sorries
+### Proof of distributive law: coprime factoring + Euclid's lemma (no UFD needed)
 -/
 
 end ChineseRemainderNonCoprimeOQ03

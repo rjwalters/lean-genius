@@ -1,22 +1,22 @@
 {
   "id": "chinese-remainder-non-coprime-oq-03",
   "name": "Pairwise GCD Sufficiency for Three Non-Coprime Moduli",
-  "status": "in-progress",
-  "phase": "ACT",
+  "status": "completed",
+  "phase": "COMPLETED",
   "knowledge": {
     "insights": [
       "Parent files complete (0 axioms, 0 sorries): main CRT, OQ01, OQ02 (Euclidean domain extension)",
       "OQ02 proves non-coprime CRT for 2 moduli: existence, uniqueness mod lcm, ideal bridge",
       "For 3 moduli m1,m2,m3: pairwise conditions gcd(mi,mj) | (ai-aj) suffice iff they're mutually consistent",
-      "Proof approach: solve first pair x≡a1 (m1), x≡a2 (m2), get x0 mod lcm(m1,m2), then solve x0≡a3 (m3)",
+      "Proof approach: solve first pair x\u2261a1 (m1), x\u2261a2 (m2), get x0 mod lcm(m1,m2), then solve x0\u2261a3 (m3)",
       "Key subtlety: need gcd(lcm(m1,m2), m3) | (x0-a3), which follows from pairwise conditions",
       "Axiom gcd_lcm_distrib eliminated - replaced with theorem + sorry",
       "Build succeeds with 0 axioms, 1 sorry (gcd_lcm_dvd_lcm_gcd)",
       "Proof strategy for sorry: coprime decomposition using Bezout + Euclid lemma",
       "Nat.factorization_gcd and Nat.factorization_lcm exist in Mathlib but for Nat only, not general EuclideanDomain",
-      "gcd_lcm_dvd_lcm_gcd proof via coprime product lemma: (1) Show IsCoprime(gcd(d,α), gcd(d,β)) from IsCoprime(α,β), (2) By IsCoprime.mul_dvd: gcd(d,α)*gcd(d,β) ∣ d, (3) Show d ∣ gcd(d,α)*gcd(d,β) via: d = gcd(d,α)*q, show q ∣ gcd(d,β) using q ∣ r*β + IsCoprime(q,r) + Euclid, (4) Then d ∣ gcd(d,α)*gcd(d,β) ∣ g1*g2 by transitivity. Main obstacle: connecting lcm(a,b) = a*b/gcd(a,b) with the product structure for the coprime decomposition",
+      "gcd_lcm_dvd_lcm_gcd proof via coprime product lemma: (1) Show IsCoprime(gcd(d,\u03b1), gcd(d,\u03b2)) from IsCoprime(\u03b1,\u03b2), (2) By IsCoprime.mul_dvd: gcd(d,\u03b1)*gcd(d,\u03b2) \u2223 d, (3) Show d \u2223 gcd(d,\u03b1)*gcd(d,\u03b2) via: d = gcd(d,\u03b1)*q, show q \u2223 gcd(d,\u03b2) using q \u2223 r*\u03b2 + IsCoprime(q,r) + Euclid, (4) Then d \u2223 gcd(d,\u03b1)*gcd(d,\u03b2) \u2223 g1*g2 by transitivity. Main obstacle: connecting lcm(a,b) = a*b/gcd(a,b) with the product structure for the coprime decomposition",
       "The hard direction gcd_lcm_dvd_lcm_gcd requires: for coprime a,b: gcd(a*b,c) ~ gcd(a,c)*gcd(b,c)",
-      "Coprime gcd decomposition proof: d|a*b coprime → d = gcd(d,a)*gcd(d,b) via IsCoprime.dvd_of_dvd_mul",
+      "Coprime gcd decomposition proof: d|a*b coprime \u2192 d = gcd(d,a)*gcd(d,b) via IsCoprime.dvd_of_dvd_mul",
       "gcd(a, gcd(a*b,c)) = gcd(a,c) since gcd(a*b,c)|c gives one direction, gcd(a,c)|a*b and gcd(a,c)|c gives other",
       "Full proof needs 3 nested coprime decompositions: factor gcd(a,b), factor gcd(gcd(a,b),c), then apply coprime product gcd lemma",
       "Estimated 60-80 lines for complete proof. Key Mathlib tools: IsCoprime.mul_dvd, IsCoprime.dvd_of_dvd_mul_left, dvd_gcd",
@@ -26,7 +26,9 @@
       "Mathlib has Associates.instLattice (GCDMonoid -> lattice on Associates) but NOT DistribLattice",
       "No gcd-lcm distributive law in Mathlib v4.26. Pure algebraic proof requires UFD factorization machinery",
       "All algebraic approaches (Bezout, coprime decomposition, ideal theory) reduce to showing IsCoprime(lcm(a,b)/M, c/M) where M=lcm(gcd(a,c),gcd(b,c)), which is EQUIVALENT to the theorem",
-      "Fixed Aristotle companion file: 0 sorries now (was 2). Fixed Mathlib v4.26 mul commutativity in IsCoprime. Added gcd_gcd_dvd_gcd_lcm helper"
+      "Fixed Aristotle companion file: 0 sorries now (was 2). Fixed Mathlib v4.26 mul commutativity in IsCoprime. Added gcd_gcd_dvd_gcd_lcm helper",
+      "PROVED gcd_lcm_dvd_lcm_gcd via coprime factoring + Euclid lemma - no UFD/normalizedFactors needed",
+      "Key technique: factor a=g*\u03b1, b=g*\u03b2 (coprime), g=\u03b4*\u03b3, c=\u03b4*\u03b5 (coprime), then chain d|\u03b4*X*Y|M using IsCoprime cancellation"
     ],
     "builtItems": [
       "Eliminated axiom gcd_lcm_distrib from ChineseRemainderNonCoprimeOQ03.lean",
@@ -37,7 +39,9 @@
       "Fixed bezout_coprime_factors: avoid rw inside gcdA/gcdB args in Aristotle.lean",
       "Fixed isCoprime_of_gcd_factoring: handle mul_comm for IsCoprime definition in Aristotle.lean",
       "Fixed isCoprime_gcd_of_isCoprime: handle mul_comm in calc chain in Aristotle.lean",
-      "Added gcd_gcd_dvd_gcd_lcm and dvd_div_of_dvd_mul helpers in Aristotle.lean"
+      "Added gcd_gcd_dvd_gcd_lcm and dvd_div_of_dvd_mul helpers in Aristotle.lean",
+      "Proved gcd_lcm_dvd_lcm_gcd: 0 sorries remain in ChineseRemainderNonCoprimeOQ03.lean",
+      "Added helpers: coprime_of_gcd, isCoprime_gcd_right, gcd_coprime_cancel, gcd_mul_dvd, gcd_dvd_gcd_of_dvd_left"
     ],
     "openQuestions": [
       "Can the distributive law gcd(lcm(a,b),c) | lcm(gcd(a,c),gcd(b,c)) be proved without UFD factorization?",
@@ -50,7 +54,7 @@
       "Alternative: prove ideal lattice distributivity for PIDs via Submodule API",
       "Consider specializing theorem to Int where factorization_gcd/lcm exist"
     ],
-    "progressSummary": "PROGRESS: Added 3 new lemmas including key Bezout result gcd(lcm,c)|gcd(a,c)*gcd(b,c). Fixed Aristotle companion (0 sorries, was 2). Remaining: 1 sorry (distributive law) requires UFD machinery not in Mathlib."
+    "progressSummary": "COMPLETED: All sorries eliminated. File is fully verified (0 axioms, 0 sorries). GCD-LCM distributive law proved via coprime factoring."
   },
   "leanFiles": [
     {
@@ -93,7 +97,7 @@
       "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 4,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderNonCoprimeOQ03.lean"
     },
