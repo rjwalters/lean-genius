@@ -64,12 +64,20 @@
   },
   "sections": [
     {
-      "id": "preamble",
-      "title": "Module Header and Imports",
+      "id": "module-documentation",
+      "title": "Module Documentation",
       "startLine": 1,
+      "endLine": 13,
+      "summary": "Documentation header describing the alteration/deletion method and its three key results: the alteration principle, the independent set bound $\\alpha(G) \\geq n/(2d)$ for $d$-regular graphs, and Property B of hypergraphs.",
+      "mathContext": "The alteration method is a two-phase refinement of the probabilistic method: (1) construct a random object, (2) deterministically remove violations to obtain a valid structure."
+    },
+    {
+      "id": "imports-namespace",
+      "title": "Imports and Namespace Setup",
+      "startLine": 14,
       "endLine": 19,
-      "summary": "Documentation header describing the alteration/deletion method and its key results (alteration principle, independent set bound, Property B). Imports Mathlib, opens `ProbMethod.Alteration` namespace and `Finset BigOperators`.",
-      "mathContext": "The alteration method is a refinement of the probabilistic method: construct a random object, then deterministically remove violations to obtain a valid structure."
+      "summary": "Imports Mathlib for access to `Finset`, `SimpleGraph`, and integer arithmetic. Opens the `ProbMethod.Alteration` namespace and brings `Finset` and `BigOperators` into scope for summation notation.",
+      "mathContext": "The `BigOperators` opening enables $\\sum_{a \\in S} f(a)$ notation (`Finset.sum`), essential for expressing expected value arguments in the probabilistic method."
     },
     {
       "id": "alteration-principle",

@@ -2,38 +2,63 @@
   {
     "id": "ann-e1061-header",
     "proofId": "erdos-1061",
-    "range": { "startLine": 1, "endLine": 30 },
+    "range": {
+      "startLine": 1,
+      "endLine": 30
+    },
     "type": "concept",
     "title": "Problem Overview",
     "content": "**Erdos Problem #1061: Additive Divisor Equation**\n\nThis problem asks: How many ordered pairs (a, b) satisfy sigma(a) + sigma(b) = sigma(a + b) with a + b <= x?\n\nMore importantly: Is this count asymptotic to c * x for some c > 0?\n\n**Source:** Problem B15 in Guy's \"Unsolved Problems in Number Theory\"\n**Status:** OPEN\n**Related:** OEIS A110177",
     "mathContext": "The sum of divisors function sigma(n) is multiplicative but not additive. This problem explores rare cases where additivity-like behavior occurs.",
     "significance": "key",
-    "relatedConcepts": ["Sum of divisors", "Arithmetic functions", "Asymptotic analysis"]
+    "relatedConcepts": [
+      "Sum of divisors",
+      "Arithmetic functions",
+      "Asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e1061-sigma-def",
     "proofId": "erdos-1061",
-    "range": { "startLine": 36, "endLine": 53 },
+    "range": {
+      "startLine": 36,
+      "endLine": 53
+    },
     "type": "definition",
     "title": "Sum of Divisors Function",
     "content": "**sigma(n):**\n\nThe sum of all positive divisors of n.\n\n```lean\ndef sigma (n : N) : N := (n.divisors).sum id\n```\n\n**Examples:**\n- sigma(1) = 1\n- sigma(2) = 3\n- sigma(6) = 1 + 2 + 3 + 6 = 12\n- sigma(p) = 1 + p for prime p",
     "mathContext": "One of the most fundamental arithmetic functions, studied since ancient times in connection with perfect numbers (sigma(n) = 2n).",
     "significance": "key",
-    "relatedConcepts": ["Divisors", "Perfect numbers", "Multiplicative functions"]
+    "relatedConcepts": [
+      "Divisors",
+      "Perfect numbers",
+      "Multiplicative functions"
+    ]
   },
   {
     "id": "ann-e1061-sigma-values",
     "proofId": "erdos-1061",
-    "range": { "startLine": 55, "endLine": 66 },
+    "range": {
+      "startLine": 55,
+      "endLine": 66
+    },
     "type": "technique",
     "title": "Basic sigma Values",
     "content": "**Computed values of sigma:**\n\n- sigma(1) = 1\n- sigma(2) = 3\n- sigma(3) = 4\n- sigma(4) = 7\n- sigma(5) = 6\n- sigma(6) = 12\n\nAll verified by native_decide.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Erdős problems",
+      "combinatorics",
+      "extremal problems"
+    ]
   },
   {
     "id": "ann-e1061-pair-def",
     "proofId": "erdos-1061",
-    "range": { "startLine": 72, "endLine": 87 },
+    "range": {
+      "startLine": 72,
+      "endLine": 87
+    },
     "type": "definition",
     "title": "Additive Divisor Pairs",
     "content": "**isAdditiveDivisorPair a b:**\n\nA pair (a, b) is an additive divisor pair if:\n1. a >= 1 and b >= 1\n2. sigma(a) + sigma(b) = sigma(a + b)\n\n```lean\ndef isAdditiveDivisorPair (a b : N) : Prop :=\n  a >= 1 and b >= 1 and sigma a + sigma b = sigma (a + b)\n```\n\nThe set additiveDivisorPairs collects all such pairs.",
@@ -43,7 +68,10 @@
   {
     "id": "ann-e1061-counting",
     "proofId": "erdos-1061",
-    "range": { "startLine": 93, "endLine": 106 },
+    "range": {
+      "startLine": 93,
+      "endLine": 106
+    },
     "type": "definition",
     "title": "The Counting Function S(x)",
     "content": "**S(x):**\n\nCounts ordered pairs (a, b) with:\n- a, b >= 1\n- a + b <= x\n- sigma(a) + sigma(b) = sigma(a + b)\n\n```lean\nnoncomputable def S (x : N) : N :=\n  ((Finset.Icc 1 x xs Finset.Icc 1 x).filter ...).card\n```\n\nThe main question asks: Is S(x) ~ c * x?",
@@ -53,7 +81,10 @@
   {
     "id": "ann-e1061-s-base",
     "proofId": "erdos-1061",
-    "range": { "startLine": 108, "endLine": 113 },
+    "range": {
+      "startLine": 108,
+      "endLine": 113
+    },
     "type": "technique",
     "title": "Base Cases for S",
     "content": "**Base cases:**\n\n- S(0) = 0: No positive pairs sum to at most 0\n- S(1) = 0: Minimal sum 1+1=2 > 1\n\nBoth proved directly.",
@@ -62,7 +93,10 @@
   {
     "id": "ann-e1061-solution-1-2",
     "proofId": "erdos-1061",
-    "range": { "startLine": 121, "endLine": 145 },
+    "range": {
+      "startLine": 121,
+      "endLine": 145
+    },
     "type": "technique",
     "title": "Solution (1, 2)",
     "content": "**solution_1_2:**\n\n(1, 2) satisfies sigma(1) + sigma(2) = sigma(3).\n\n**Verification:**\n- sigma(1) = 1\n- sigma(2) = 3\n- sigma(1) + sigma(2) = 4\n- sigma(3) = 4\n\nThis is one of the simplest known solutions!",
@@ -72,7 +106,10 @@
   {
     "id": "ann-e1061-non-solutions",
     "proofId": "erdos-1061",
-    "range": { "startLine": 147, "endLine": 175 },
+    "range": {
+      "startLine": 147,
+      "endLine": 175
+    },
     "type": "technique",
     "title": "Non-Solutions",
     "content": "**Verified non-solutions:**\n\n- (1, 1): sigma(1)+sigma(1)=2 but sigma(2)=3\n- (2, 2): sigma(2)+sigma(2)=6 but sigma(4)=7\n- (1, 4): sigma(1)+sigma(4)=8 but sigma(5)=6\n- (1, 5): sigma(1)+sigma(5)=7 but sigma(6)=12\n- (2, 4): sigma(2)+sigma(4)=10 but sigma(6)=12\n- (3, 3): sigma(3)+sigma(3)=8 but sigma(6)=12\n\nMost pairs do NOT satisfy the equation.",
@@ -81,7 +118,10 @@
   {
     "id": "ann-e1061-structure",
     "proofId": "erdos-1061",
-    "range": { "startLine": 181, "endLine": 200 },
+    "range": {
+      "startLine": 181,
+      "endLine": 200
+    },
     "type": "context",
     "title": "Structure of sigma",
     "content": "**Non-subadditivity and non-superadditivity:**\n\nsigma is neither subadditive nor superadditive:\n- Some pairs have sigma(a+b) < sigma(a) + sigma(b)\n- Some pairs have sigma(a+b) > sigma(a) + sigma(b)\n\nThe equation sigma(a)+sigma(b) = sigma(a+b) is a special balance point.",
@@ -91,7 +131,10 @@
   {
     "id": "ann-e1061-asymptotic",
     "proofId": "erdos-1061",
-    "range": { "startLine": 206, "endLine": 226 },
+    "range": {
+      "startLine": 206,
+      "endLine": 226
+    },
     "type": "definition",
     "title": "Asymptotic Formulation",
     "content": "**hasLinearGrowth:**\n\nThe central question formalized: Does S(x)/x converge to some c > 0?\n\n```lean\ndef hasLinearGrowth : Prop :=\n  exists c : R, c > 0 and\n    Tendsto (fun x => (S x : R) / x) atTop (nhds c)\n```\n\n**Alternative:** isAsymptoticToLinear c asks if S(x)/(c*x) -> 1.",
@@ -101,7 +144,10 @@
   {
     "id": "ann-e1061-bounds",
     "proofId": "erdos-1061",
-    "range": { "startLine": 232, "endLine": 250 },
+    "range": {
+      "startLine": 232,
+      "endLine": 250
+    },
     "type": "context",
     "title": "Bounds on S(x)",
     "content": "**Known bounds:**\n\n1. **Lower:** S(x) >= 2 for x >= 3 (from solutions (1,2) and (2,1))\n\n2. **Upper:** S(x) <= x^2/4 (trivial: at most (x/2)^2 pairs)\n\n3. **Monotonicity:** S is increasing\n\nThe gap between lower and upper bounds is huge, leaving the true growth rate unknown.",
@@ -110,7 +156,10 @@
   {
     "id": "ann-e1061-open",
     "proofId": "erdos-1061",
-    "range": { "startLine": 258, "endLine": 278 },
+    "range": {
+      "startLine": 258,
+      "endLine": 278
+    },
     "type": "context",
     "title": "The Open Problem",
     "content": "**erdos_1061_open:**\n\nThis problem remains OPEN.\n\nThe formal-conjectures project states:\n```lean\ntheorem erdos_1061 : answer(sorry) <->\n  exists c : R, 0 < c and S ~[atTop] (fun x => c * x)\n```\n\nWe mark this as a placeholder axiom until the problem is resolved.",
@@ -120,18 +169,27 @@
   {
     "id": "ann-e1061-oeis",
     "proofId": "erdos-1061",
-    "range": { "startLine": 284, "endLine": 304 },
+    "range": {
+      "startLine": 284,
+      "endLine": 304
+    },
     "type": "definition",
     "title": "OEIS A110177",
     "content": "**A110177:**\n\nThe set of n such that n = a + b for some solution pair.\n\n```lean\ndef A110177 : Set N :=\n  {n | exists a b >= 1, a + b = n and sigma(a) + sigma(b) = sigma(n)}\n```\n\n**Example:** 3 is in A110177 since sigma(1) + sigma(2) = sigma(3).\n\nThis connects our formalization to the OEIS database.",
     "mathContext": "OEIS A110177 catalogs these special sums, providing computational data for the problem.",
     "significance": "key",
-    "relatedConcepts": ["OEIS", "Integer sequences"]
+    "relatedConcepts": [
+      "OEIS",
+      "Integer sequences"
+    ]
   },
   {
     "id": "ann-e1061-summary",
     "proofId": "erdos-1061",
-    "range": { "startLine": 310, "endLine": 330 },
+    "range": {
+      "startLine": 310,
+      "endLine": 330
+    },
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_1061_summary:**\n\nCombines the verified facts:\n1. (1, 2) is in additiveDivisorPairs\n2. (2, 1) is in additiveDivisorPairs\n3. 3 is in A110177\n\n```lean\ntheorem erdos_1061_summary :\n    (1, 2) in additiveDivisorPairs and\n    (2, 1) in additiveDivisorPairs and\n    3 in A110177\n```",
