@@ -57,7 +57,19 @@
       "Real power function (rpow) arithmetic and monotonicity",
       "Finset product and sum operations"
     ],
-    "lineCount": 372
+    "lineCount": 372,
+    "references": [
+      {
+        "key": "HLP34",
+        "citation": "Hardy, G.H., Littlewood, J.E., and Pólya, G., Inequalities, Cambridge University Press (1934), Chapter II.",
+        "type": "book"
+      },
+      {
+        "key": "BB65",
+        "citation": "Beckenbach, E.F. and Bellman, R., Inequalities, Springer (1965), Chapter 2.",
+        "type": "book"
+      }
+    ]
   },
   "crossReferences": [
     {
@@ -154,5 +166,24 @@
       "Prove M_r ≤ M_s for r < 0 < s (crossing zero) — the most subtle case, requires combining with the r=0 limit",
       "Add this to Mathlib as a proper contribution filling the existing TODO"
     ]
-  }
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.MeanInequalities",
+      "Mathlib.Analysis.MeanInequalitiesPow",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 372,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 3
+  },
+  "relatedProofs": [
+    "amgm-inequality",
+    "amgm-inequality-oq-02",
+    "cauchy-schwarz"
+  ]
 }
