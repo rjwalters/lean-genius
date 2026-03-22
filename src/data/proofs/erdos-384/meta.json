@@ -32,7 +32,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #384 concerns prime divisors of binomial coefficients. Conjectured by Erdős and Selfridge in the 1960s, proved by Ecklund in 1969. The unique exception C(7,3) = 35 = 5 × 7 is the only case where all prime factors are ≥ n/2. Stronger conjectures about n/k bounds remain partially open.",
+    "historicalContext": "Paul Erdős and John Selfridge conjectured in the 1960s that every binomial coefficient C(n,k) with 1 < k < n−1 must have a prime divisor less than n/2. Earl Ecklund proved this in 1969 in the Pacific Journal of Mathematics, identifying C(7,3) = 35 = 5 × 7 as the unique exception — the only case where both prime factors exceed n/2. The proof relies on careful case analysis: for most n and k, Bertrand's postulate guarantees a prime in (n/2, n] dividing C(n,k), while small cases require individual verification. Kummer's 1852 theorem — that the p-adic valuation of C(n,k) equals the number of carries when adding k and n−k in base p — provides the key structural insight. Erdős and Selfridge later proposed stronger conjectures: that C(n,k) should have a prime divisor less than n/k when n > k², and Selfridge conjectured a threshold of 17.125k beyond which C(n,k) always has a prime ≤ n/k. These sharper bounds remain only partially resolved.",
     "problemStatement": "Let 1 < k < n−1. Is C(n,k) divisible by a prime p < n/2? Answer: YES, with exactly one exception: C(7,3) = 35 = 5 × 7. Status: SOLVED by Ecklund (1969).",
     "proofStrategy": "The formalization defines hasSmallPrimeDivisor and isException predicates. The main theorem (ecklund_1969) is an axiom. The exception C(7,3) is formally verified: choose_7_3 = 35 (native_decide), choose_7_3_no_small_prime (interval_cases). Edge cases k=1, k=n−1 are proved. Small cases C(5,2), C(6,2), C(6,3) are verified with concrete examples. Stronger conjectures (Ecklund, Selfridge) are defined.",
     "keyInsights": [
@@ -63,7 +63,7 @@
       "title": "Part 3: The Main Theorem (Ecklund 1969)",
       "startLine": 91,
       "endLine": 109,
-      "summary": "ecklund_1969 axiom. ecklund_no_exception proved by cases."
+      "summary": "Axiomatizes `ecklund_1969`: for 1 < k < n−1, either C(n,k) has a prime divisor < n/2+1 or (n,k) is the exception (7,3)/(7,4). Proves `ecklund_no_exception` by case analysis on the disjunction."
     },
     {
       "id": "stronger-conjectures",
@@ -105,7 +105,7 @@
       "title": "Part 9: Asymptotic Behavior",
       "startLine": 228,
       "endLine": 240,
-      "summary": "Placeholder axioms for asymptotic and intersection properties."
+      "summary": "Axiomatizes asymptotic properties: for large n, the smallest prime divisor of C(n,k) is O(n/k), and intersection properties relating prime factorizations of overlapping binomial coefficients."
     },
     {
       "id": "related",
@@ -167,7 +167,7 @@
     }
   ],
   "relatedProofs": [
-    "erdos-382",
-    "erdos-383"
+    {"id": "erdos-382", "relationship": "related", "description": "Both concern prime factorization of combinatorial/factorial products: #382 studies prime powers in factorial products, #384 studies small prime divisors of binomial coefficients"},
+    {"id": "erdos-383", "relationship": "related", "description": "Both concern largest prime divisors of number-theoretic products: #383 studies P(∏(p²+i)), #384 studies primes dividing C(n,k)"}
   ]
 }
