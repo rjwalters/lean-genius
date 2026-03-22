@@ -108,4 +108,14 @@
       "How do weighted power means $M_p = (\\sum w_i z_i^p)^{1/p}$ interpolate between GM ($p \\to 0$) and AM ($p=1$), and can Lean verify the full monotonicity of $p \\mapsto M_p$?"
     ]
   }
+,
+  "references": [
+    {
+      "authors": "Cauchy, Augustin-Louis",
+      "title": "Cours d'analyse de l'École Royale Polytechnique",
+      "year": "1821",
+      "venue": "Paris: Debure",
+      "note": "Contains Cauchy's proof of AM-GM by forward-backward induction — one of the most elegant proof techniques in mathematics"
+    }
+  ]
 }
