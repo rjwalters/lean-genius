@@ -7,7 +7,7 @@
     "author": "Belov-Konyagin (1996)",
     "sourceUrl": "https://erdosproblems.com/256",
     "date": "1996",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos256Problem.lean",
     "tags": [
       "erdos",
@@ -194,9 +194,14 @@
   },
   "crossReferences": [
     {
-      "proofId": "erdos-szekeres",
-      "relationship": "foundational",
-      "note": "Erdős and Szekeres initiated the study of $f(n)$, proving the lower bound $f(n) > \\sqrt{2n}$"
+      "targetId": "erdos-150",
+      "relationship": "related",
+      "description": "Both are solved Erdős problems involving analytic/combinatorial bounds on extremal quantities"
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "Both involve evaluating or bounding special functions on the complex plane; Basel problem concerns ζ(2) while #256 concerns products on |z|=1"
     }
   ]
 }
