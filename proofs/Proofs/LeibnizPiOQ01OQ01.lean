@@ -128,6 +128,7 @@ theorem rate_sharp (n : ℕ) :
 
 theorem machin_formula :
     4 * arctan (1 / 5 : ℝ) - arctan (1 / 239 : ℝ) = π / 4 := by
-  sorry
+  simp only [one_div]
+  exact four_mul_arctan_inv_5_sub_arctan_inv_239
 
 end LeibnizPiOQ01
