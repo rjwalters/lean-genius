@@ -63,14 +63,6 @@
     "dateAdded": "2026-02-24",
     "axiomCount": 0,
     "leanFile": "proofs/Proofs/PowerMeanLimitOQ.lean",
-    "relatedProofs": [
-      "amgm-inequality-oq-03",
-      "amgm-inequality-oq-03-oq-01",
-      "amgm-inequality",
-      "amgm-inequality-oq-02",
-      "lhopital",
-      "shannon-entropy"
-    ],
     "prerequisites": [
       "Derivatives in Mathlib (HasDerivAt, hasDerivAt_iff_tendsto_slope)",
       "Real exp/log/rpow identities and derivatives",
@@ -125,6 +117,16 @@
       "targetId": "amgm-inequality-oq-02",
       "relationship": "related",
       "description": "Maclaurin's inequalities via elementary symmetric polynomials give an alternative chain between AM and GM — this limit result shows M₀ = GM, the same GM that Maclaurin's chain bounds from a different direction"
+    },
+    {
+      "targetId": "mean-value-theorem",
+      "relationship": "foundational",
+      "description": "MVT underpins the derivative machinery used here: hasDerivAt_iff_tendsto_slope depends on the mean value theorem for the slope-to-derivative bridge that proves f(r)/r → f'(0)"
+    },
+    {
+      "targetId": "triangle-inequality",
+      "relationship": "related",
+      "description": "Power mean monotonicity (completed by this limit bridge) implies Minkowski's inequality (the L^p triangle inequality) for p ≥ 1 — connecting the power mean family to normed space geometry"
     }
   ],
   "overview": {
@@ -218,5 +220,15 @@
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 0
-  }
+  },
+  "relatedProofs": [
+    "amgm-inequality-oq-03",
+    "amgm-inequality-oq-03-oq-01",
+    "amgm-inequality",
+    "amgm-inequality-oq-02",
+    "lhopital",
+    "shannon-entropy",
+    "mean-value-theorem",
+    "triangle-inequality"
+  ]
 }
