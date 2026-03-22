@@ -305,4 +305,60 @@ theorem symmetric_from_general (n d : ℕ) (hd : 0 < d) :
       (fun _ => 1 - (1 : ℚ) / (↑d + 1)) :=
   general_lll (fun _ => symmetric_x_in_range d hd)
 
+-- ═══════════════════════════════════════════════════════════════════
+-- PART X: THRESHOLD-TO-LLL BRIDGE
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- The LLL threshold factors as T(d) = (1/(d+1)) · (d/(d+1))^d,
+    corresponding to the symmetric x_i = 1/(d+1) assignment.
+    This connects the threshold to the avoidance product structure. -/
+theorem lllThreshold_eq_product (d : ℕ) (hd : 0 < d) :
+    lllThreshold d = (1 : ℚ) / (↑d + 1) * (↑d / (↑d + 1)) ^ d := by
+  simp only [lllThreshold, if_neg (by omega : d ≠ 0)]
+  rw [div_pow, div_mul_div_comm, one_mul]
+  congr 1
+  rw [pow_succ, mul_comm]
+
+/-- If event probabilities are bounded by T(d) and the dependency graph has max
+    degree d, the symmetric assignment x_i = 1/(d+1) satisfies the general LLL
+    condition: prob_i ≤ x_i · ∏_{j ∈ Γ(i)} (1 - x_j).
+    This bridges the symmetric threshold to the general LLL framework. -/
+theorem threshold_satisfies_lll (n d : ℕ) (hd : 0 < d)
+    (prob : Fin n → ℚ)
+    (adj : Fin n → Finset (Fin n))
+    (hdeg : HasMaxDegree n adj d)
+    (hprob : ∀ i, prob i ≤ lllThreshold d) :
+    ∀ i, prob i ≤ (1 : ℚ) / (↑d + 1) *
+      (adj i).prod (fun _ => 1 - (1 : ℚ) / (↑d + 1)) := by
+  intro i
+  have hd1_pos : (0 : ℚ) < ↑d + 1 := by positivity
+  have hconv : (↑d : ℚ) / (↑d + 1) = 1 - 1 / (↑d + 1) := by field_simp; ring
+  rw [Finset.prod_const]
+  calc prob i
+      ≤ lllThreshold d := hprob i
+    _ = (1 : ℚ) / (↑d + 1) * (↑d / (↑d + 1)) ^ d :=
+        lllThreshold_eq_product d hd
+    _ ≤ (1 : ℚ) / (↑d + 1) * (↑d / (↑d + 1)) ^ (adj i).card := by
+        apply mul_le_mul_of_nonneg_left
+        · exact pow_le_pow_of_le_one (by positivity)
+            (by rw [div_le_one hd1_pos]; linarith) (hdeg i)
+        · positivity
+    _ = (1 : ℚ) / (↑d + 1) * (1 - 1 / (↑d + 1)) ^ (adj i).card := by
+        rw [hconv]
+
+/-- Complete Symmetric LLL: given event probabilities ≤ T(d) and dependency
+    degree ≤ d, both the LLL condition and avoidance positivity hold.
+    In the full probabilistic setting, this gives P[∩ Āᵢ] ≥ (d/(d+1))^n > 0. -/
+theorem symmetric_lll_complete (n d : ℕ) (hd : 0 < d)
+    (prob : Fin n → ℚ)
+    (adj : Fin n → Finset (Fin n))
+    (hdeg : HasMaxDegree n adj d)
+    (hprob : ∀ i, prob i ≤ lllThreshold d) :
+    (∀ i, prob i ≤ (1 : ℚ) / (↑d + 1) *
+      (adj i).prod (fun _ => 1 - (1 : ℚ) / (↑d + 1))) ∧
+    0 < (Finset.univ : Finset (Fin n)).prod
+      (fun _ => 1 - (1 : ℚ) / (↑d + 1)) :=
+  ⟨threshold_satisfies_lll n d hd prob adj hdeg hprob,
+   symmetric_lll_avoidance n d hd⟩
+
 end ProbMethod.LovaszLocal
