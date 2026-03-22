@@ -972,3 +972,65 @@ To eliminate `rp3_locallyEuclidean`, the remaining step is:
 1. Complete rp3_locallyEuclidean elimination: prove IsOpenMap for q|_{H_p}
 2. Try sphere_n_simply_connected if Seifert-van Kampen appears in Mathlib
 3. Try sphere3_not_contractible if Brouwer FPT or homology appears in Mathlib
+
+---
+
+## Session 2026-03-22 (researcher-5) - Fix Build Errors in Gnomonic Projection
+
+**Mode**: REVISIT (RICH knowledge, score 392)
+**Problem**: poincare-conjecture
+**Prior Status**: 17663 lines, 35 axioms, 0 sorries, ~20 BUILD ERRORS from Mathlib API changes
+
+### Pre-Work Assessment
+- **Axiom Question**: 35 axioms. Previous researcher assessed ALL as deep mathematical results, no Mathlib-provable targets.
+- **Value Question**: Restoring build is critical - broken file blocks all future work.
+- **Decision**: BUILD - Fix all API compatibility errors in gnomonic projection section (lines 2700-3050).
+
+### What I Did
+
+#### Mathlib API Fixes (20+ errors → 0 errors, 2 sorries)
+
+1. **`Homeomorph.homeomorphOfContinuous_apply` removed**: Replaced with `show ... .val; rfl` pattern using `antipodalHomeomorph_val` helper
+2. **`norm_add_sq_eq_norm_sq_add_norm_sq` removed**: Replaced with `inner_add_right + real_inner_self_eq_norm_sq + hp` chain via `add_ne_zero_of_orthogonal` helper
+3. **`isOpen_quotient_iff` renamed**: Changed to `isOpen_coinduced`
+4. **`p.1.2` invalid projection**: Fixed all 4 occurrences to `p.2`
+5. **`Submodule.mem_orthogonal.mp` inaccessible**: Created `inner_zero_of_mem_orthogonal` helper using `rw` + `exact` pattern
+6. **`inner_self_eq_norm_sq_to_K` usage**: Replaced with `real_inner_self_eq_norm_sq` in gnomonic forward map
+7. **`ext; ext` no extensionality theorem**: Changed to `apply Subtype.ext; apply Subtype.ext`
+8. **`Continuous.subtype_mk ∘ Continuous.subtype_mk` composition**: Split into two separate `apply` calls
+9. **`Continuous.inv₀` argument pattern**: Split into explicit `apply` + `intro` + `exact`
+10. **Quotient.exact pattern matching**: Changed from `cases this with` to `rcases ... with heq | hanti` and `subst` pattern
+11. **Quotient.sound direction**: Fixed from `Or.inr rfl` to `antipodalRel_symm (Or.inr rfl)`
+12. **Subtype.ext_iff.mp pattern**: Replaced with `heq ▸ hw` substitution
+
+#### Helper Lemmas Added (4 new)
+- `antipodalHomeomorph_val`: `((antipodalHomeomorph 3) v).val = -(v.val)` via `rfl`
+- `inner_antipodal_neg`: `⟪p, anti(v)⟫ = -⟪p, v⟫` via `show`+`rw` pattern
+- `inner_zero_of_mem_orthogonal`: `u ∈ (span {p})ᗮ → ⟪p, u⟫ = 0`
+- `add_ne_zero_of_orthogonal`: `p ∈ S³, u ∈ p⊥ → p + u ≠ 0`
+
+#### Remaining Sorries (2)
+1. **`rp3Gnomonic_right_inv`**: `unfold rp3GnomonicFwd rp3GnomonicInv` doesn't produce form matching `add_sub_cancel_left`. Needs alternative unfolding strategy.
+2. **`rp3_locallyEuclidean`**: Multiple issues: `omega` needs `Submodule.finrank_add_finrank_orthogonal`, `Equiv.ofBijective` API changed, `subst` on quotient equalities.
+
+### Key Insight: Lean4/Mathlib Coercion Matching
+
+The fundamental challenge was that `rw` and `linarith` couldn't match terms across coercion boundaries. The solution pattern:
+```lean
+-- Instead of: rw [inner_antipodal_neg] (fails - coercion mismatch)
+-- Use: show @inner ℝ _ _ p.val (anti v).val ... ; rw [antipodalHomeomorph_val, inner_neg_right]
+```
+
+The `show` tactic normalizes coercions to `.val` form where `rfl` and `rw` work reliably.
+
+### Outcome
+- **Lines**: 17663 → 17700 (+37 net, helpers added, old proof commented out)
+- **Axioms**: 35 (unchanged)
+- **Sorries**: 0 → 2 (gnomonic section, previously 0 but file had build errors)
+- **Build**: BROKEN (20+ errors) → CLEAN (warnings only)
+- **Status**: PROGRESS
+
+### Files Modified
+- `proofs/Proofs/PoincareConjecture.lean`: Fixed 20+ Mathlib API errors, added 4 helper lemmas
+- `src/data/research/problems/poincare-conjecture.json`: Updated knowledge
+- `research/problems/poincare-conjecture/knowledge.md`: This session log
