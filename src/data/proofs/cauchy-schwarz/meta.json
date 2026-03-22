@@ -164,14 +164,16 @@
       "title": "Verified Examples",
       "summary": "Numerical verifications: strict inequality $(196 < 200)$ for non-proportional vectors, equality $(100 = 100)$ for proportional vectors $(1,2)$ and $(2,4)$, and $\\mathbb{R}^2$ specialization.",
       "startLine": 181,
-      "endLine": 196
+      "endLine": 196,
+      "mathContext": "Strict: $(1 \\cdot 2 + 3 \\cdot 4)^2 = 196 < 200 = (1^2+3^2)(2^2+4^2)$. Equality: $(1 \\cdot 2 + 2 \\cdot 4)^2 = 100 = (1^2+2^2)(2^2+4^2)$ because $(2,4) = 2(1,2)$."
     },
     {
       "id": "triangle",
       "title": "Application: Triangle Inequality",
       "summary": "Derives $\\|u+v\\|^2 \\leq (\\|u\\|+\\|v\\|)^2$ from Cauchy-Schwarz via `norm_add_sq_real` expansion and $\\langle u,v\\rangle \\leq |\\langle u,v\\rangle| \\leq \\|u\\|\\|v\\|$.",
       "startLine": 198,
-      "endLine": 212
+      "endLine": 212,
+      "mathContext": "$\\|u+v\\|^2 = \\|u\\|^2 + 2\\langle u,v\\rangle + \\|v\\|^2 \\leq \\|u\\|^2 + 2\\|u\\|\\|v\\| + \\|v\\|^2 = (\\|u\\|+\\|v\\|)^2$"
     },
     {
       "id": "correlation",
@@ -222,7 +224,11 @@
     "cauchy-schwarz-integral",
     "triangle-inequality",
     "amgm-inequality",
-    "cauchy-schwarz-oq-01"
+    "cauchy-schwarz-oq-01",
+    "cauchy-schwarz-oq-03",
+    "cauchy-schwarz-oq-04",
+    "hurwitz-theorem",
+    "yang-mills"
   ],
   "references": [
     {
@@ -256,7 +262,7 @@
     ],
     "opens": [],
     "namespace": "CauchySchwarz",
-    "lineCount": 232,
+    "lineCount": 231,
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 0
