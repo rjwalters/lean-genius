@@ -154,6 +154,16 @@
       "targetId": "sylow-theorems",
       "relationship": "related",
       "description": "Sylow theorems provide structural information about finite groups that complements the solvability analysis — Sylow subgroups help determine composition factors of S_n"
+    },
+    {
+      "targetId": "abel-ruffini-oq-04",
+      "relationship": "extended-by",
+      "description": "OQ-04 exposes the internal proof chain from A₅ simplicity to Abel-Ruffini as individually named theorems with pedagogical documentation"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "related",
+      "description": "Unique prime factorization underlies the analysis of A₅: |A₅| = 60 = 2²·3·5 determines its conjugacy class structure, which is key to proving simplicity"
     }
   ],
   "relatedProofs": [
@@ -162,7 +172,9 @@
     "fundamental-theorem-algebra",
     "inverse-galois",
     "lagrange-theorem",
-    "sylow-theorems"
+    "sylow-theorems",
+    "abel-ruffini-oq-04",
+    "fundamental-arithmetic"
   ]
 ,
   "references": [

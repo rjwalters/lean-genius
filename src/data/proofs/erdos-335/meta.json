@@ -106,35 +106,40 @@
       "title": "Density Definitions",
       "startLine": 20,
       "endLine": 43,
-      "summary": "Defines **countingFn** ($|A \\cap \\{1, \\ldots, N\\}|$), **asympDensity** ($\\lim_{N \\to \\infty} |A \\cap [1,N]|/N$), **DensityExists** (the limit converges), and **HasPositiveDensity** ($d(A) > 0$). All built on Mathlib's **Filter.limUnder** and **Set.ncard**."
+      "summary": "Defines **countingFn** ($|A \\cap \\{1, \\ldots, N\\}|$), **asympDensity** ($\\lim_{N \\to \\infty} |A \\cap [1,N]|/N$), **DensityExists** (the limit converges), and **HasPositiveDensity** ($d(A) > 0$). All built on Mathlib's **Filter.limUnder** and **Set.ncard**.",
+      "mathContext": "$d(A) = \\lim_{N \\to \\infty} |A \\cap [1,N]| / N$ (asymptotic density). Uses `Filter.Tendsto` for the limit formulation."
     },
     {
       "id": "sumset",
       "title": "Sumset and Density Additivity",
       "startLine": 45,
       "endLine": 56,
-      "summary": "Defines **Sumset** ($A + B = \\{a + b : a \\in A, b \\in B\\}$) and **DensityAdditive**, the four-part conjunction requiring density existence for $A$, $B$, and $A+B$, plus the exact equality $d(A+B) = d(A) + d(B)$."
+      "summary": "Defines **Sumset** ($A + B = \\{a + b : a \\in A, b \\in B\\}$) and **DensityAdditive**, the four-part conjunction requiring density existence for $A$, $B$, and $A+B$, plus the exact equality $d(A+B) = d(A) + d(B)$.",
+      "mathContext": "$A + B = \\{a + b : a \\in A, b \\in B\\}$. Density additivity: $d(A + B) = d(A) + d(B)$ (equality, not just inequality)."
     },
     {
       "id": "construction",
       "title": "Fractional Part Construction",
       "startLine": 58,
       "endLine": 78,
-      "summary": "Defines **frac** ($x - \\lfloor x \\rfloor$) and **FractionalPartSet** ($\\{n > 0 : \\{n\\theta\\} \\in X\\}$). Axiomatizes **weyl_equidistribution** (density exists for these sets) and **fractional_part_density_additive** (the known construction achieving exact additivity)."
+      "summary": "Defines **frac** ($x - \\lfloor x \\rfloor$) and **FractionalPartSet** ($\\{n > 0 : \\{n\\theta\\} \\in X\\}$). Axiomatizes **weyl_equidistribution** (density exists for these sets) and **fractional_part_density_additive** (the known construction achieving exact additivity).",
+      "mathContext": "Construction: $A_\\alpha = \\{n : \\{n\\alpha\\} < d\\}$ for irrational $\\alpha$ gives $d(A_\\alpha) = d$. Conjecture: all density-additive pairs arise from such fractional part sets."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
       "startLine": 80,
       "endLine": 96,
-      "summary": "States **erdos_335_conjecture** (OPEN): all density-additive pairs arise from group rotation constructions. Formally: if $d(A+B) = d(A) + d(B)$ with positive densities, then $A$ and $B$ are fractional part sets for some irrational $\\theta$."
+      "summary": "States **erdos_335_conjecture** (OPEN): all density-additive pairs arise from group rotation constructions. Formally: if $d(A+B) = d(A) + d(B)$ with positive densities, then $A$ and $B$ are fractional part sets for some irrational $\\theta$.",
+      "mathContext": "Conjecture (OPEN): if $d(A+B) = d(A) + d(B)$ with $d(A), d(B) > 0$, then $\\exists \\alpha \\in \\mathbb{R} \\setminus \\mathbb{Q}$ with $A, B$ related to $\\{\\{n\\alpha\\}\\}$."
     },
     {
       "id": "properties",
       "title": "Basic Properties and Tightness",
       "startLine": 97,
       "endLine": 123,
-      "summary": "States **density_nonneg** ($d(A) \\geq 0$), **density_le_one** ($d(A) \\leq 1$), **additive_sum_le_one** ($d(A) + d(B) \\leq 1$), and **plunnecke_ruzsa_lower** ($d(A+B) \\geq \\min(d(A)+d(B), 1)$). PROVES **additive_implies_tight**: density additivity makes the Plünnecke–Ruzsa bound an equality."
+      "summary": "States **density_nonneg** ($d(A) \\geq 0$), **density_le_one** ($d(A) \\leq 1$), **additive_sum_le_one** ($d(A) + d(B) \\leq 1$), and **plunnecke_ruzsa_lower** ($d(A+B) \\geq \\min(d(A)+d(B), 1)$). PROVES **additive_implies_tight**: density additivity makes the Plünnecke–Ruzsa bound an equality.",
+      "mathContext": "$d(A) \\in [0,1]$ always. $d(A+B) \\geq d(A) + d(B) - 1$ (Kneser). $d(A+B) \\leq 1$ trivially."
     }
   ],
   "overview": {
@@ -159,5 +164,15 @@
       "**Near-additivity:** What can be said about pairs with $d(A+B) \\approx d(A) + d(B)$ (approximate additivity)? Is there a stability result showing they must be close to group rotation constructions?",
       "**Effective bounds:** For the known fractional part examples, what are the effective error terms in $|A \\cap [1,N]|/N \\to \\mu(X_A)$?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-36",
+      "relationship": "related",
+      "description": "Both study density/overlap in partition and sumset problems; #36 concerns overlap in partitions while #335 characterizes density-additive sumsets"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-36"
+  ]
 }
