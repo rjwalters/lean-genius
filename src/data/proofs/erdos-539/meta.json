@@ -81,42 +81,48 @@
       "title": "Problem Overview and Imports",
       "startLine": 1,
       "endLine": 33,
-      "summary": "Documentation header describing the problem, imports from Mathlib"
+      "summary": "Documentation header describing the problem, imports from Mathlib",
+      "mathContext": "For $A \\subseteq \\mathbb{N}$ with $|A| = n$, define $Q(A) = \\{a/\\gcd(a,b) : a, b \\in A\\}$. The function $h(n) = \\min_{|A|=n} |Q(A)|$ measures the minimum quotient set size."
     },
     {
       "id": "definitions",
       "title": "GCD Quotient Definitions",
       "startLine": 35,
       "endLine": 95,
-      "summary": "Core definitions: gcdQuotient, gcdQuotientSet, gcdQuotientSize, h(n), and basic properties"
+      "summary": "Core definitions: gcdQuotient, gcdQuotientSet, gcdQuotientSize, h(n), and basic properties",
+      "mathContext": "$\\text{gcdQuotient}(a, b) = a / \\gcd(a, b)$ extracts the coprime part of $a$ relative to $b$. The quotient set $Q(A) = \\{a/\\gcd(a,b) : a, b \\in A\\}$ always contains 1 (since $a/\\gcd(a,a) = 1$)."
     },
     {
       "id": "bounds",
       "title": "Erdős-Szemerédi and Freiman-Lev Bounds",
       "startLine": 96,
       "endLine": 135,
-      "summary": "The main asymptotic bounds: n^{1/2} ≪ h(n) ≪ n^{2/3}"
+      "summary": "The main asymptotic bounds: $n^{1/2} \\ll h(n) \\ll n^{2/3}$",
+      "mathContext": "Erdős-Szemerédi: $\\exists c_1, c_2 > 0$ such that $c_1 n^{1/2} \\le h(n) \\le c_2 n^{1-c}$ for some $c > 0$. Freiman-Lev improved the upper bound: $h(n) \\ll n^{2/3}$."
     },
     {
       "id": "examples",
       "title": "Examples: APs and GPs",
       "startLine": 137,
       "endLine": 159,
-      "summary": "Quotient set sizes for arithmetic and geometric progressions"
+      "summary": "Quotient set sizes for arithmetic and geometric progressions",
+      "mathContext": "For an AP $\\{a, a+d, \\ldots, a+(n-1)d\\}$: $|Q(A)| \\sim n$. For a GP $\\{1, p, p^2, \\ldots\\}$ with prime $p$: $|Q(A)| = 2n-1$ (all powers $p^j$ for $|j| < n$)."
     },
     {
       "id": "structure",
       "title": "Matrix and Geometric Views",
       "startLine": 161,
       "endLine": 213,
-      "summary": "GCD/quotient matrices, Granville-Roesler reformulation, extremal structure"
+      "summary": "GCD/quotient matrices, Granville-Roesler reformulation, extremal structure",
+      "mathContext": "The GCD matrix $G_{ij} = \\gcd(a_i, a_j)$ and quotient matrix $Q_{ij} = a_i/\\gcd(a_i, a_j)$ encode the divisibility structure. Granville-Roesler reformulate via lattice points in dilated simplices."
     },
     {
       "id": "open",
       "title": "Open Questions and Summary",
       "startLine": 215,
       "endLine": 267,
-      "summary": "The main open question about the true exponent and summary results"
+      "summary": "The main open question about the true exponent $\\alpha$ in $h(n) = \\Theta(n^\\alpha)$ and summary of all results",
+      "mathContext": "The central open question: is $h(n) = \\Theta(n^\\alpha)$ for some $\\alpha \\in [1/2, 2/3]$? If so, what is $\\alpha$?"
     }
   ],
   "conclusion": {

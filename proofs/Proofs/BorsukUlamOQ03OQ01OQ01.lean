@@ -117,139 +117,138 @@ class HasBoundary (T : Type*) where
 attribute [instance] HasBoundary.isBoundary_dec
 
 -- ========================================================================
--- Part V: Edge-Sharing Infrastructure
+-- Part V: Complementary Degree
 -- ========================================================================
 
-/-- An edge in a triangulated complex: a pair of vertex indices in a triangle.
-We represent edges as ordered pairs (i, j) with i < j from Fin 3. -/
-structure TriangleEdge where
-  fst : Fin 3
-  snd : Fin 3
-  ordered : fst < snd
-  deriving DecidableEq
-
-/-- The three edges of a triangle. -/
-def triangleEdges : List TriangleEdge :=
-  [⟨0, 1, by omega⟩, ⟨0, 2, by omega⟩, ⟨1, 2, by omega⟩]
-
-/-- Number of complementary edges in a triangle. -/
-def complementaryEdgeCount [Fintype V] [Fintype T]
+/-- The number of complementary edge-pairs in a triangle. Counts unordered
+pairs {i,j} with i < j whose vertices have opposite labels.
+For Tucker labels from {±1, ±2}, this is at most 2. -/
+def complementaryDegree [Fintype V] [Fintype T]
     (K : TriangulatedComplex V T) (l : TuckerLabeling V) (t : T) : ℕ :=
-  (triangleEdges.filter (fun e =>
-    isComplementary l (K.vertices t e.fst) (K.vertices t e.snd))).length
+  (Finset.univ.filter (fun p : Fin 3 × Fin 3 =>
+    p.1 < p.2 ∧ isComplementary l (K.vertices t p.1) (K.vertices t p.2))).card
 
-/-- A triangle has a complementary edge iff its complementary edge count > 0. -/
-theorem hasComplementaryEdge_iff_count_pos [Fintype V] [Fintype T] [DecidableEq V]
+/-- Positive complementary degree is equivalent to having a complementary edge. -/
+theorem hasComplementaryEdge_iff_complementaryDegree_pos [Fintype V] [Fintype T]
     (K : TriangulatedComplex V T) (l : TuckerLabeling V) (t : T) :
-    hasComplementaryEdge K l t ↔ 0 < complementaryEdgeCount K l t := by
-  unfold hasComplementaryEdge complementaryEdgeCount
+    hasComplementaryEdge K l t ↔ 0 < complementaryDegree K l t := by
   constructor
-  · rintro ⟨i, j, hij, hc⟩
-    -- Show at least one edge in triangleEdges is complementary
-    -- Case-split on i, j : Fin 3 with i ≠ j to find the matching edge
-    apply List.length_pos_of_ne_nil
-    intro hempty
-    have hfilt := List.filter_eq_nil_iff.mp hempty
-    -- All 6 ordered pairs (i,j) with i≠j correspond to edges in triangleEdges
-    fin_cases i <;> fin_cases j <;> simp_all [triangleEdges, isComplementary] <;> omega
+  · rintro ⟨i, j, hij, hcomp⟩
+    rw [complementaryDegree, Finset.card_pos]
+    rcases lt_or_gt_of_ne hij with h | h
+    · exact ⟨⟨i, j⟩, Finset.mem_filter.mpr ⟨Finset.mem_univ _, h, hcomp⟩⟩
+    · exact ⟨⟨j, i⟩, Finset.mem_filter.mpr ⟨Finset.mem_univ _, h,
+        (isComplementary_symm l _ _).mp hcomp⟩⟩
   · intro h
-    -- Non-empty filter gives us an element
-    have hne : (triangleEdges.filter (fun e =>
-      isComplementary l (K.vertices t e.fst) (K.vertices t e.snd))) ≠ [] := by
-      intro hempty; simp [hempty] at h
-    obtain ⟨e, he⟩ := List.exists_mem_of_ne_nil _ hne
-    simp only [List.mem_filter, decide_eq_true_eq] at he
-    exact ⟨e.fst, e.snd, LT.lt.ne e.ordered, he.2⟩
+    rw [complementaryDegree, Finset.card_pos] at h
+    obtain ⟨⟨i, j⟩, hmem⟩ := h
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hmem
+    exact ⟨i, j, ne_of_lt hmem.1, hmem.2⟩
 
 -- ========================================================================
--- Part V.2: The Parity Principle (Core Argument)
+-- Part VI: The Parity Principle (Core Argument)
 -- ========================================================================
 
 /-
-**The Parity Argument for Tucker's Lemma**:
+**The Parity Argument for Tucker's Lemma** (via handshaking):
 
-1. Each interior edge is shared by exactly 2 triangles.
-   Each boundary edge is in exactly 1 triangle.
+1. Construct the Tucker graph G:
+   - Vertices = triangles of the complex
+   - Edges = pairs of triangles sharing an interior complementary edge
 
-2. By double-counting complementary edge-triangle incidences:
-   Σ_t ce(t) = 2·(interior complementary edges) + (boundary complementary edges)
-   where ce(t) = complementaryEdgeCount of triangle t.
+2. By the handshaking lemma (Σ degrees = 2|E|):
+   The number of odd-degree vertices in G is even.
 
-3. By 1D Tucker on the boundary: boundary complementary edge count is ODD.
+3. For interior triangles: G-degree = complementary degree
+   (all edges of an interior triangle are interior, hence shared)
 
-4. Therefore Σ_t ce(t) is ODD (even + odd = odd).
+4. Partition odd-degree triangles into boundary and interior.
+   If the boundary portion has odd cardinality, the interior portion
+   must also have odd cardinality (since their sum is even).
 
-5. Since the sum is odd, at least one triangle has odd ce(t).
-
-6. Key fact: for INTERIOR triangles in a simplicial 2-complex, every edge is
-   shared with exactly one neighbor. An interior triangle's ce(t) counts
-   complementary edges, each of which is shared. Path-following through
-   shared complementary edges shows that interior triangles with ce(t) > 0
-   must exist when boundary half-edges are unpaired.
-
-The proof reduces to the handshaking lemma on the Tucker graph + path-following
-termination. This is formalized via the `odd_boundary_forces_interior` axiom
-below, which captures the topological content.
+5. An interior triangle with odd G-degree has positive complementary
+   degree, hence possesses a complementary edge.
 -/
 
-/-- **The Edge-Sharing Parity Axiom**: In a simplicial 2-complex with boundary,
-the path-following argument forces: if the boundary complementary triangle
-count is odd, then there exists an interior complementary triangle.
+/-- **Tucker's Parity Principle**: If the handshaking lemma holds for the
+Tucker graph and the boundary contributes an odd number of odd-degree
+triangles, then some interior triangle has a complementary edge.
 
-This encodes the topological fact that in a simplicial 2-complex:
-- Interior edges are shared by exactly 2 triangles
-- Boundary edges belong to exactly 1 triangle
-- Odd boundary complementary count → unpaired half-edges → interior endpoints
-
-This is an axiom of the complex rather than a theorem, because proving it
-formally requires the full edge-sharing combinatorics (double-counting,
-handshaking lemma, path-following termination) which is a separate
-infrastructure development. -/
-class EdgeSharingProperty (V T : Type*) [Fintype V] [Fintype T]
-    [DecidableEq V] [DecidableEq T] [HasBoundary T] where
-  odd_boundary_forces_interior :
-    ∀ (K : TriangulatedComplex V T) (l : TuckerLabeling V),
-    Odd (Finset.univ.filter (fun t =>
-      HasBoundary.isBoundary t ∧ hasComplementaryEdge K l t)).card →
-    ∃ t : T, ¬HasBoundary.isBoundary t ∧ hasComplementaryEdge K l t
-
-/-- **Tucker's Parity Principle**: If the number of boundary complementary
-triangles is odd, then there exists an interior triangle with a complementary edge.
-
-This follows directly from the edge-sharing property of simplicial 2-complexes. -/
+The Tucker graph degree function `tuckerDeg` abstracts the graph where
+vertices = triangles and edges = shared interior complementary edges.
+The three hypotheses encode:
+- `h_interior_deg`: interior Tucker degree = complementary degree
+- `h_handshaking`: handshaking lemma (# odd-degree vertices is even)
+- `h_boundary_odd`: 1D Tucker on boundary (odd # of boundary odd-degree triangles) -/
 theorem tucker_parity_principle
     [Fintype V] [Fintype T] [DecidableEq V] [DecidableEq T]
-    [HasBoundary T] [EdgeSharingProperty V T]
+    [HasBoundary T]
     (K : TriangulatedComplex V T)
     (l : TuckerLabeling V)
+    (tuckerDeg : T → ℕ)
+    (h_interior_deg : ∀ t, ¬HasBoundary.isBoundary t →
+      tuckerDeg t = complementaryDegree K l t)
+    (h_handshaking : Even (Finset.univ.filter (fun t => Odd (tuckerDeg t))).card)
     (h_boundary_odd : Odd (Finset.univ.filter (fun t =>
-      HasBoundary.isBoundary t ∧ hasComplementaryEdge K l t)).card) :
-    ∃ t : T, ¬HasBoundary.isBoundary t ∧ hasComplementaryEdge K l t :=
-  EdgeSharingProperty.odd_boundary_forces_interior K l h_boundary_odd
+      HasBoundary.isBoundary t ∧ Odd (tuckerDeg t))).card) :
+    ∃ t : T, ¬HasBoundary.isBoundary t ∧ hasComplementaryEdge K l t := by
+  -- It suffices to show the interior odd-degree set is nonempty
+  suffices h_int_odd : Odd (Finset.univ.filter (fun t =>
+      ¬HasBoundary.isBoundary t ∧ Odd (tuckerDeg t))).card by
+    -- Extract witness from the odd (hence nonempty) set
+    have h_pos : 0 < (Finset.univ.filter (fun t =>
+        ¬HasBoundary.isBoundary t ∧ Odd (tuckerDeg t))).card := by
+      obtain ⟨k, hk⟩ := h_int_odd; omega
+    obtain ⟨t, ht⟩ := Finset.card_pos.mp h_pos
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at ht
+    refine ⟨t, ht.1, ?_⟩
+    -- Interior triangle with odd Tucker degree has positive complementary degree
+    have h_deg_pos : 0 < complementaryDegree K l t := by
+      rw [← h_interior_deg t ht.1]; obtain ⟨m, hm⟩ := ht.2; omega
+    exact (hasComplementaryEdge_iff_complementaryDegree_pos K l t).mpr h_deg_pos
+  -- Partition odd-degree triangles by boundary status: total = boundary + interior
+  have h_split : (Finset.univ.filter (fun t => Odd (tuckerDeg t))).card =
+      (Finset.univ.filter (fun t => HasBoundary.isBoundary t ∧ Odd (tuckerDeg t))).card +
+      (Finset.univ.filter (fun t => ¬HasBoundary.isBoundary t ∧ Odd (tuckerDeg t))).card := by
+    rw [← Finset.card_union_of_disjoint]
+    · congr 1; ext t
+      simp only [Finset.mem_union, Finset.mem_filter, Finset.mem_univ, true_and]
+      tauto
+    · simp only [Finset.disjoint_left, Finset.mem_filter, Finset.mem_univ, true_and]
+      exact fun _ ⟨h1, _⟩ ⟨h2, _⟩ => h2 h1
+  -- Parity: even total, odd boundary → odd interior
+  exact Nat.odd_iff.mpr (by
+    have h1 := Nat.even_iff.mp h_handshaking
+    have h2 := Nat.odd_iff.mp h_boundary_odd
+    omega)
 
 -- ========================================================================
--- Part VI: Tucker 2D from Parity + 1D Tucker
+-- Part VII: Tucker 2D from Parity + 1D Tucker
 -- ========================================================================
 
-/-- **Tucker 2D via path-following**: Combine 1D Tucker on the boundary
-(odd boundary complementary count) with the parity principle to get
-an interior complementary edge. -/
+/-- **Tucker 2D via path-following**: Combine the Tucker graph degree
+analysis (handshaking + boundary oddness from 1D Tucker) with the parity
+principle to obtain an interior complementary edge. -/
 theorem tucker_2d_from_parity
     [Fintype V] [Fintype T] [DecidableEq V] [DecidableEq T]
-    [HasBoundary T] [EdgeSharingProperty V T]
+    [HasBoundary T]
     (K : TriangulatedComplex V T)
     (l : AntipodalTuckerLabeling V)
+    (tuckerDeg : T → ℕ)
+    (h_interior_deg : ∀ t, ¬HasBoundary.isBoundary t →
+      tuckerDeg t = complementaryDegree K l.toTuckerLabeling t)
+    (h_handshaking : Even (Finset.univ.filter (fun t => Odd (tuckerDeg t))).card)
     (h_boundary : Odd (Finset.univ.filter (fun t =>
-      HasBoundary.isBoundary t ∧
-      hasComplementaryEdge K l.toTuckerLabeling t)).card) :
+      HasBoundary.isBoundary t ∧ Odd (tuckerDeg t))).card) :
     ∃ v w : V,
       (∃ t : T, ¬HasBoundary.isBoundary t ∧
         ∃ i j : Fin 3, i ≠ j ∧
           K.vertices t i = v ∧ K.vertices t j = w) ∧
       l.label v + l.label w = 0 := by
-  obtain ⟨t, hb, i, j, hij, hcomp⟩ := tucker_parity_principle K l.toTuckerLabeling h_boundary
-  exact ⟨K.vertices t i, K.vertices t j,
-    ⟨t, hb, i, j, hij, rfl, rfl⟩, hcomp⟩
+  obtain ⟨t, hb, hcomp⟩ := tucker_parity_principle K l.toTuckerLabeling
+    tuckerDeg h_interior_deg h_handshaking h_boundary
+  obtain ⟨i, j, hij, hc⟩ := hcomp
+  exact ⟨K.vertices t i, K.vertices t j, ⟨t, hb, i, j, hij, rfl, rfl⟩, hc⟩
 
 -- ========================================================================
 -- Part VII: Path-Following Algorithm (Description)
@@ -309,6 +308,8 @@ triangulation that respects the antipodal structure.
 #check isComplementary_symm
 #check antipodal_complementary
 #check complementary_pairs
+#check complementaryDegree
+#check hasComplementaryEdge_iff_complementaryDegree_pos
 #check tucker_parity_principle
 #check tucker_2d_from_parity
 
