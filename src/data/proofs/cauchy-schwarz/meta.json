@@ -249,25 +249,32 @@
   ],
   "references": [
     {
-      "authors": "Cauchy, Augustin-Louis",
-      "title": "Cours d'analyse de l'École Royale Polytechnique",
+      "authors": "A.-L. Cauchy",
+      "title": "Cours d'Analyse de l'École Royale Polytechnique",
       "year": "1821",
-      "venue": "Paris: Debure",
-      "note": "Contains the first statement of the inequality for finite sums"
+      "venue": "Paris",
+      "note": "First proof of the discrete (finite sum) version of the inequality"
     },
     {
-      "authors": "Schwarz, Hermann Amandus",
+      "authors": "V. Y. Bunyakovsky",
+      "title": "Sur quelques inégalités concernant les intégrales ordinaires et les intégrales aux différences finies",
+      "year": "1859",
+      "venue": "Mémoires de l'Académie Impériale des Sciences de St.-Pétersbourg",
+      "note": "Extension to integrals"
+    },
+    {
+      "authors": "H. A. Schwarz",
       "title": "Über ein die Flächen kleinsten Flächeninhalts betreffendes Problem der Variationsrechnung",
       "year": "1885",
-      "venue": "Acta Societatis Scientiarum Fennicae 15, 315–362",
-      "note": "Extended the inequality to integrals and inner product spaces"
+      "venue": "Acta Societatis Scientiarum Fennicae",
+      "note": "Independent proof of the integral version"
     },
     {
-      "authors": "Steele, J. Michael",
+      "authors": "J. M. Steele",
       "title": "The Cauchy-Schwarz Master Class",
       "year": "2004",
       "venue": "Cambridge University Press",
-      "note": "Comprehensive treatment of the inequality and its applications across mathematics"
+      "note": "Comprehensive treatment of Cauchy-Schwarz and related inequalities"
     }
   ],
   "leanFile": {
@@ -283,28 +290,5 @@
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 0
-  },
-  "references": [
-    {
-      "authors": "Cauchy, Augustin-Louis",
-      "title": "Cours d'analyse de l'École Royale Polytechnique",
-      "year": "1821",
-      "venue": "Paris: Debure",
-      "note": "Contains the first statement of the inequality for finite sums"
-    },
-    {
-      "authors": "Schwarz, Hermann Amandus",
-      "title": "Über ein die Flächen kleinsten Flächeninhalts betreffendes Problem der Variationsrechnung",
-      "year": "1885",
-      "venue": "Acta Societatis Scientiarum Fennicae 15, 315–362",
-      "note": "Extended the inequality to integrals and inner product spaces"
-    },
-    {
-      "authors": "Steele, J. Michael",
-      "title": "The Cauchy-Schwarz Master Class",
-      "year": "2004",
-      "venue": "Cambridge University Press",
-      "note": "Comprehensive treatment of the inequality and its applications across mathematics"
-    }
-  ]
+  }
 }

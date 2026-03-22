@@ -157,18 +157,25 @@
   },
   "references": [
     {
-      "authors": "Wantzel, Pierre-Laurent",
+      "authors": "P. L. Wantzel",
       "title": "Recherches sur les moyens de reconnaître si un Problème de Géométrie peut se résoudre avec la règle et le compas",
       "year": "1837",
-      "venue": "Journal de Mathématiques Pures et Appliquées, 2, pp. 366-372",
-      "note": "First rigorous proof that angle trisection and cube duplication are impossible with compass and straightedge — established the degree-power-of-2 criterion for constructibility"
+      "venue": "Journal de Mathématiques Pures et Appliquées",
+      "note": "First rigorous proof that trisection, doubling the cube, and constructing regular n-gons are impossible for most cases — established the degree criterion"
     },
     {
-      "authors": "Galois, Évariste",
+      "authors": "É. Galois (posthumous, edited by J. Liouville)",
       "title": "Mémoire sur les conditions de résolubilité des équations par radicaux",
       "year": "1846",
-      "venue": "Journal de Mathématiques Pures et Appliquées, 11, pp. 417-433",
-      "note": "Posthumous publication establishing group theory foundations; the Galois group characterization of constructibility follows from this framework"
+      "venue": "Journal de Mathématiques Pures et Appliquées",
+      "note": "Foundational work introducing group theory and the Galois group, providing the deeper characterization of constructibility via 2-groups"
+    },
+    {
+      "authors": "I. Stewart",
+      "title": "Galois Theory",
+      "year": "2015",
+      "venue": "Chapman and Hall/CRC (4th edition)",
+      "note": "Modern treatment of the Wantzel-Galois constructibility criterion using the tower law, paralleling this formalization's approach"
     }
   ],
   "crossReferences": [
@@ -228,7 +235,9 @@
       "Mathlib",
       "Proofs.AngleTrisectionOQ01"
     ],
-    "opens": ["Polynomial"],
+    "opens": [
+      "Polynomial"
+    ],
     "namespace": "AngleTrisectionOQ02OQ01",
     "lineCount": 115,
     "axiomCount": 0,
