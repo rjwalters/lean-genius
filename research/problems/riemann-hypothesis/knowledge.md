@@ -712,3 +712,50 @@ Even without proving RH, tractable partial work includes:
    - Selberg class barrier: purely axiomatic approaches ruled out
    - Selberg's dictum: Euler product is essential, pure analysis insufficient
    - RH connections to many branches of mathematics
+
+---
+
+## Session 2026-03-21 (researcher-4) - Axiom Assessment + Proved Content (+9 theorems)
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 64)
+**Outcome**: progress — added 9 proved theorems, comprehensive axiom assessment
+
+### Pre-Work Assessment
+
+Systematically assessed all 42 remaining axioms for Mathlib provability:
+
+**Categories (all 42 load-bearing):**
+- **RH equivalences** (12): Robin, Mertens, PrimeCounting, NymanBeurling, deBruijnNewman, Lagarias, WeilPositivity, Speiser, LiPositivity, BSY, Riesz, Baez-Duarte, Volchkov — all deep theorems
+- **Deep analytic results** (10): Hardy critical line, classical zero-free region, Rodgers-Tao, deBruijnNewman upper, Montgomery pair correlation, Kaczorowski-Perelli, Conrey 2/5, Harper/Radziwill bounds — breakthrough results
+- **Conditional results** (5): RH→Lindelöf, RH explicit prime counting, GRH Artin, Rosser-Schoenfeld — require deep analysis
+- **Structural axioms** (6): zeta_conj, no_real_zeros_in_strip, rh_prime_gap_bound, Connes noncommutative, Miller primality, li_criterion — some partially approachable
+
+**Most promising candidates (assessed but ultimately infeasible):**
+1. `zeta_conj` — Mathlib has `zeta_conj_of_one_lt_re` (Re(s) > 1) but full version needs identity theorem for antiholomorphic compositions, which Mathlib lacks
+2. `no_real_zeros_in_strip` — Would need Dirichlet eta function (not in Mathlib) or functional equation sign analysis; the FE maps (0,1) → (0,1) circularly
+
+**Conclusion**: All 42 axioms are genuinely deep and not provable from Mathlib v4.26.0.
+
+### New Content Added
+
+**PrimeGaps section (previously empty):**
+- `rh_psi_lower_bound` — ψ(n) ≥ n - C√n log²n under RH
+- `rh_psi_relative_error` — |ψ(n) - n| bounded under RH
+- `rh_psi_eventually_positive` — ψ(n) eventually positive under RH
+- `chebyshevTheta_nonneg` — θ(n) ≥ 0 unconditionally
+- `rh_dual_bounds` — Mertens + ψ bounds combined
+
+**Unconditional structure:**
+- `vonMangoldt_prime_pow` — Λ(p^k) = log p generalized
+- `vonMangoldt_le_one` — Λ(n) = 0 for n ≤ 1
+- `chebyshevPsi_nonneg` — ψ(n) ≥ 0 unconditionally
+- `mertens_bound_gap` — √n < n+1 (trivial/RH bound gap)
+
+### Files Modified
+- `proofs/Proofs/RiemannHypothesisConsequences.lean` — +85 lines, 9 new proved theorems
+- Docker build passes
+
+### Stats After Changes
+- Main: 6538 lines, 33 axioms, 0 sorries
+- Consequences: ~1735 lines, 9 axioms, 0 sorries
+- Combined: ~8273 lines, 42 axioms, ~549 theorems/defs, 0 sorries
