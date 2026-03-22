@@ -193,22 +193,25 @@ private lemma psi_eq_pow {N : ℕ} [NeZero N] (r x : ZMod N) :
     Follows from val(a+b) ≡ val(a)+val(b) (mod N) and exp periodicity. -/
 private lemma psi_add {N : ℕ} [NeZero N] (a b : ZMod N) :
     ψ (a + b) = ψ a * ψ b := by
-  simp only [ψ, ← Complex.exp_add]
-  congr 1
-  -- Reduce to val(a+b) ≡ val(a) + val(b) mod N
-  rw [ZMod.val_add]
-  set k := ZMod.val a + ZMod.val b
+  simp only [ψ]
+  rw [← Complex.exp_add, ZMod.val_add]
+  -- Goal: exp(2πi·((val a + val b)%N)/N) = exp(2πi·val(a)/N + 2πi·val(b)/N)
+  -- Exponents differ by ⌊k/N⌋ · 2πi, which exp absorbs.
+  set k := ZMod.val a + ZMod.val b with hk_def
   have hN : (N : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (NeZero.ne N)
+  -- Combine RHS fractions: 2πi·val(a)/N + 2πi·val(b)/N = 2πi·k/N
+  rw [show 2 * ↑Real.pi * Complex.I * (↑(ZMod.val a) / ↑N) +
+        2 * ↑Real.pi * Complex.I * (↑(ZMod.val b) / ↑N) =
+        2 * ↑Real.pi * Complex.I * ((↑(ZMod.val a) + ↑(ZMod.val b)) / ↑N) from by ring,
+    show (↑(ZMod.val a) : ℂ) + ↑(ZMod.val b) = ↑k from by subst hk_def; push_cast; ring]
+  -- Now: exp(2πi·(k%N)/N) = exp(2πi·k/N). Decompose k = N·⌊k/N⌋ + k%N.
   have hdiv : (↑k : ℂ) = ↑N * ↑(k / N) + ↑(k % N) := by
     exact_mod_cast (Nat.div_add_mod k N).symm
-  rw [show (↑k : ℂ) / ↑N = ↑(k / N) + ↑(k % N) / ↑N from by rw [hdiv]; field_simp]
-  rw [show 2 * ↑Real.pi * Complex.I * (↑(k / N) + ↑(k % N) / ↑N) =
-      ↑(k / N) * (2 * ↑Real.pi * Complex.I) +
-      2 * ↑Real.pi * Complex.I * (↑(k % N) / ↑N) from by ring]
-  rw [Complex.exp_add, Complex.exp_nat_mul, Complex.exp_two_pi_mul_I, one_pow, one_mul]
-  -- Now need: 2πi * ((val a + val b) % N) / N = 2πi * val a / N + 2πi * val b / N
-  -- which is: (k % N) / N = val a / N + val b / N up to the integer part already handled
-  ring
+  rw [show (↑k : ℂ) / ↑N = ↑(k / N) + ↑(k % N) / ↑N from by rw [hdiv]; field_simp,
+    show 2 * ↑Real.pi * Complex.I * (↑(k / N) + ↑(k % N) / ↑N) =
+        ↑(k / N) * (2 * ↑Real.pi * Complex.I) +
+        2 * ↑Real.pi * Complex.I * (↑(k % N) / ↑N) from by ring,
+    Complex.exp_add, Complex.exp_nat_mul, Complex.exp_two_pi_mul_I, one_pow, one_mul]
 
 /-- ψ(0) = 1 (the character evaluated at zero). -/
 private lemma psi_zero {N : ℕ} [NeZero N] : ψ (0 : ZMod N) = 1 := by
