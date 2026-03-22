@@ -168,5 +168,24 @@
   },
   "relatedProofs": [
     "brouwer-fixed-point"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Topology.Basic",
+      "Mathlib.Topology.Compactness.Compact",
+      "Mathlib.Topology.Connected.PathConnected",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Topology.MetricSpace.Basic"
+    ],
+    "opens": [
+      "Set",
+      "Metric"
+    ],
+    "namespace": "BorsukUlam",
+    "lineCount": 265,
+    "axiomCount": 1,
+    "theoremCount": 14,
+    "definitionCount": 0
+  }
 }

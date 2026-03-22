@@ -149,5 +149,27 @@
     "birthday-problem",
     "pi-transcendental",
     "stirling-formula"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Probability.ProbabilityMassFunction.Basic",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Integrals.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Real",
+      "Set",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "BuffonsNeedle",
+    "lineCount": 266,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 0
+  }
 }
