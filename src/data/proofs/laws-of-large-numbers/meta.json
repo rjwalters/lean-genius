@@ -129,6 +129,28 @@
       "Can we get uniform convergence over families of distributions? This leads to Glivenko-Cantelli and empirical process theory."
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "extends",
+      "description": "LLN says the sample mean converges to the true mean; CLT quantifies the fluctuations: $\\sqrt{n}(\\bar{X}_n - \\mu) \\to N(0, \\sigma^2)$. LLN is the first-order result, CLT is the second-order refinement."
+    },
+    {
+      "targetId": "fair-games-theorem",
+      "relationship": "related",
+      "description": "The fair games theorem (martingale convergence) generalizes LLN from i.i.d. sums to martingales. LLN is the special case where increments are i.i.d. with zero mean."
+    },
+    {
+      "targetId": "birthday-problem",
+      "relationship": "related",
+      "description": "Both are fundamental probability results. The birthday problem concerns the probability of coincidences in finite samples, while LLN describes the asymptotic behavior of averages — complementary perspectives on probability and combinatorics."
+    }
+  ],
+  "relatedProofs": [
+    "central-limit-theorem",
+    "fair-games-theorem",
+    "birthday-problem"
+  ],
   "references": [
     {
       "authors": "Bernoulli, Jacob",

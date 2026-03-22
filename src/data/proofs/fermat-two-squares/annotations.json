@@ -15,6 +15,10 @@
       "Mathlib",
       "sum of squares",
       "prime characterization"
+    ],
+    "prerequisites": [
+      "Mathlib imports",
+      "Lean 4 module system"
     ]
   },
   {
@@ -22,7 +26,7 @@
     "proofId": "fermat-two-squares",
     "range": {
       "startLine": 4,
-      "endLine": 49
+      "endLine": 20
     },
     "type": "insight",
     "title": "A Century-Long Mathematical Mystery",
@@ -34,14 +38,18 @@
       "Fermat",
       "Euler",
       "Lagrange"
+    ],
+    "prerequisites": [
+      "number theory history",
+      "Fermat's contributions"
     ]
   },
   {
     "id": "ann-zagier",
     "proofId": "fermat-two-squares",
     "range": {
-      "startLine": 4,
-      "endLine": 49
+      "startLine": 21,
+      "endLine": 35
     },
     "type": "insight",
     "title": "Zagier's One-Sentence Proof",
@@ -52,14 +60,18 @@
       "involutions",
       "combinatorial proof",
       "Zagier"
+    ],
+    "prerequisites": [
+      "involution proof technique",
+      "fixed points"
     ]
   },
   {
     "id": "ann-main-theorem",
     "proofId": "fermat-two-squares",
     "range": {
-      "startLine": 4,
-      "endLine": 49
+      "startLine": 36,
+      "endLine": 53
     },
     "type": "theorem",
     "title": "The Complete Characterization",
@@ -69,6 +81,11 @@
     "relatedConcepts": [
       "modular arithmetic",
       "characterization theorem"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "sum of two squares",
+      "quadratic forms"
     ]
   },
   {
@@ -76,7 +93,7 @@
     "proofId": "fermat-two-squares",
     "range": {
       "startLine": 55,
-      "endLine": 87
+      "endLine": 75
     },
     "type": "theorem",
     "title": "The Classic Statement: p ≡ 1 (mod 4)",
@@ -86,13 +103,17 @@
     "relatedConcepts": [
       "Fermat's original statement",
       "prime classification"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "quadratic residues"
     ]
   },
   {
     "id": "ann-two-special",
     "proofId": "fermat-two-squares",
     "range": {
-      "startLine": 55,
+      "startLine": 76,
       "endLine": 87
     },
     "type": "lemma",
@@ -103,6 +124,10 @@
     "relatedConcepts": [
       "special cases",
       "edge cases"
+    ],
+    "prerequisites": [
+      "even prime",
+      "special cases"
     ]
   },
   {
@@ -120,6 +145,10 @@
     "relatedConcepts": [
       "impossibility proof",
       "modular arithmetic"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "proof by contradiction"
     ]
   },
   {
@@ -137,13 +166,16 @@
     "relatedConcepts": [
       "examples",
       "verification"
+    ],
+    "prerequisites": [
+      "small prime computations"
     ]
   },
   {
     "id": "ann-classification",
     "proofId": "fermat-two-squares",
     "range": {
-      "startLine": 105,
+      "startLine": 117,
       "endLine": 134
     },
     "type": "theorem",
@@ -154,13 +186,17 @@
     "relatedConcepts": [
       "prime classification",
       "complete characterization"
+    ],
+    "prerequisites": [
+      "complete classification",
+      "prime factorization"
     ]
   },
   {
     "id": "ann-gaussian",
     "proofId": "fermat-two-squares",
     "range": {
-      "startLine": 4,
+      "startLine": 40,
       "endLine": 49
     },
     "type": "insight",
@@ -172,6 +208,10 @@
       "Gaussian integers",
       "algebraic number theory",
       "quadratic reciprocity"
+    ],
+    "prerequisites": [
+      "Gaussian integers",
+      "complex number norm"
     ]
   }
 ]

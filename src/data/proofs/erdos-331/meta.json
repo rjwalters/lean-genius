@@ -70,6 +70,10 @@
       "**The √N Threshold Is Sharp:** For density > N^α with α > 1/2, common differences are unavoidable because both A − A and B − B have density > 1 in the integers, forcing intersection. At exactly α = 1/2, the difference sets A − A and B − B can each have density only ~√N (Sidon-like), and two sets of density √N in {−N,...,N} can easily be disjoint. The threshold is a phase transition between forced structure and freedom",
       "**B = 2A: Scaling Preserves Orthogonality:** The relationship B = 2A (multiplying by 2 shifts all binary digits left by one position, converting even to odd positions) reveals that A and B are essentially the same set viewed at different scales. This self-similar structure is characteristic of constructions in additive combinatorics that achieve extremal behavior",
       "**Ruzsa's Open Variant Remains Subtle:** Even though Ruzsa's own sets have exact √N density, it is unknown whether ALL sets with exact density ~c√N must share common differences. The exact asymptotic condition (convergence of A(N)/√N) imposes regularity that might prevent the extreme sparseness needed to avoid common differences. This is one of the few cases where strengthening 'big-O' to 'asymptotic' might change the answer"
+    ],
+    "prerequisites": [
+      "Combinatorics: counting arguments and extremal methods",
+      "Mathematical maturity and proof techniques"
     ]
   },
   "sections": [

@@ -11,7 +11,13 @@
       "Mathlib has MeasureTheory.Integral.Bochner.FundThmCalculus with Lebesgue integral support",
       "Key Mathlib theorems: integral_hasDerivAt_right, integral_eq_sub_of_hasDerivAt already use measure theory",
       "Lipschitz→AC arithmetic: K*Σ(bk-ak) ≤ K*(ε/(K+1)) < ε by div_lt_self when K+1>1",
-      "AC→uniform continuity: instantiate with n=1, disjointness vacuous via Subsingleton.elim, use abs_sub_comm for direction"
+      "AC→uniform continuity: instantiate with n=1, disjointness vacuous via Subsingleton.elim, use abs_sub_comm for direction",
+      "BLOCKED: Jordan decomposition (BV → difference of monotone) NOT in Mathlib - key missing piece for axiom elimination",
+      "BLOCKED: AbsolutelyContinuousOn is custom-defined (not in Mathlib) - no Mathlib AC→BV path exists",
+      "Cantor function sorry requires full construction (~200+ lines): define via ternary expansion, prove continuous, monotone, not AC",
+      "Path to lebesgue_ftc_differentiable: AC→BV (provable) → Jordan decomp (MISSING) → Monotone.ae_differentiableAt (exists)",
+      "BoundedVariationOn and eVariationOn exist in Mathlib.Analysis.BoundedVariation",
+      "Monotone.ae_differentiableAt confirmed working in Mathlib (used in line 236)"
     ],
     "builtItems": [
       "lipschitz_implies_ac: proved via Finset.sum_le_sum + mul_le_mul_of_nonneg_left + div_lt_self chain",
@@ -22,11 +28,12 @@
       "Does Mathlib have the Lebesgue differentiation theorem for absolutely continuous functions?"
     ],
     "nextSteps": [
-      "Check Mathlib for absolutely continuous functions and their FTC",
-      "Formalize: AC function → derivative exists a.e. → integral of derivative equals function",
-      "Connect to Vitali covering lemma and Lebesgue density theorem if available"
+      "PREREQUISITE: Formalize Jordan decomposition for BV functions (BV → monotone₁ - monotone₂)",
+      "PREREQUISITE: Prove AC → BV using AC definition + partition argument",
+      "THEN: Combine to prove lebesgue_ftc_differentiable without axiom",
+      "SEPARATE: Construct Cantor function for counterexample sorry (non-blocking)"
     ],
-    "progressSummary": "PROGRESS: Eliminated 2 sorries (lipschitz_implies_ac arithmetic, ac_implies_uniformly_continuous Fin 1 instantiation). 1 sorry remains (Cantor function), 2 axioms (Lebesgue FTC)."
+    "progressSummary": "SURVEYED: Both axioms blocked on missing Jordan decomposition in Mathlib. Cantor function sorry needs ~200L construction. Infrastructure assessment complete."
   },
   "leanFiles": [
     {
@@ -43,7 +50,7 @@
     {
       "path": "Proofs/FundamentalTheoremCalculusLebesgue.lean",
       "filename": "FundamentalTheoremCalculusLebesgue.lean",
-      "lineCount": 271,
+      "lineCount": 277,
       "theoremCount": 7,
       "axiomCount": 2,
       "defCount": 1,
@@ -55,5 +62,6 @@
   "relatedProofs": [
     "fundamental-theorem-calculus",
     "fundamental-theorem-calculus-oq-01"
-  ]
+  ],
+  "tags": []
 }

@@ -76,15 +76,13 @@ lemma modParabola_subset_Icc {p k : ℕ} (hp : 1 ≤ p) (hk : k ≤ p) :
 
 /-- **The modular parabola is Sidon** (for prime p).
 
-    Proof sketch (fully verified mathematically, key steps use sorry in Lean):
-    1. From f(a)+f(b)=f(c)+f(d), the 2p factor forces a+b=c+d (no carry)
-    2. The remainders match: a²%p+b²%p = c²%p+d²%p
-    3. Hence a²+b² ≡ c²+d² and then ab ≡ cd (mod p)
-    4. (a-c)(a-d) ≡ -(ab-cd) ≡ 0 (mod p), so p | (a-c) or p | (a-d)
-    5. Since |a-c|, |a-d| < p: a=c or a=d, giving {a,b}={c,d}
-
-    The proof is mathematically complete. The sorry is for the modular arithmetic
-    formalization in Lean (Int casting, ZMod divisibility). -/
+    Proof: From f(a)+f(b)=f(c)+f(d) where f(x) = 2xp + x²%p:
+    1. The 2p factor forces a+b=c+d (no carry: remainders < 2p)
+    2. Remainders match: a²%p+b²%p = c²%p+d²%p, giving a²+b² ≡ c²+d² (mod p)
+    3. Algebraic identity: when x+y=u+v, x²+y²-u²-v² = 2(x-u)(x-v)
+    4. So 2(a-c)(a-d) ≡ 0 (mod p); for odd prime p, (a-c)(a-d) ≡ 0
+    5. Since p is prime (ZMod p is a field): p | (a-c) or p | (a-d)
+    6. Since 0 ≤ a,c,d < p: a=c (then b=d) or a=d (then a=b=c=d) -/
 theorem modParabola_isSidon (p : ℕ) (hp : Nat.Prime p) :
     IsSidon ((range p).image (modParabolaFn p)) := by
   intro x y u v hx hy hu hv hxy huv heq
@@ -94,22 +92,112 @@ theorem modParabola_isSidon (p : ℕ) (hp : Nat.Prime p) :
   obtain ⟨c, hc, rfl⟩ := hu
   obtain ⟨d, hd, rfl⟩ := hv
   rw [mem_range] at ha hb hc hd
-  -- Ordering: f is strictly monotone, so f(a) ≤ f(b) iff a ≤ b
   have hab : a ≤ b := by
     by_contra h; push_neg at h
     exact absurd ((modParabolaFn_strictMono hp.one_le).lt_iff_lt.mpr h) (by omega)
   have hcd : c ≤ d := by
     by_contra h; push_neg at h
     exact absurd ((modParabolaFn_strictMono hp.one_le).lt_iff_lt.mpr h) (by omega)
-  -- The core modular arithmetic argument:
-  -- From f(a)+f(b) = f(c)+f(d), the 2p factor kills any carry,
-  -- forcing a+b = c+d. Then a²+b² ≡ c²+d² (mod p), giving
-  -- (a-c)(a-d) ≡ 0 (mod p), so a=c (and b=d) or a=d (and b=c).
-  -- With a≤b, c≤d, the second case gives a=b=c=d.
   suffices h : a = c ∧ b = d by
     exact ⟨congr_arg (modParabolaFn p) h.1, congr_arg (modParabolaFn p) h.2⟩
-  -- Key modular arithmetic steps (mathematically verified, see proof sketch above)
-  sorry
+  -- Step 1: "No carry" — extract sum and remainder equalities
+  unfold modParabolaFn at heq
+  set ra := a ^ 2 % p with hra_def
+  set rb := b ^ 2 % p with hrb_def
+  set rc := c ^ 2 % p with hrc_def
+  set rd := d ^ 2 % p with hrd_def
+  have hra : ra < p := Nat.mod_lt _ hp.pos
+  have hrb : rb < p := Nat.mod_lt _ hp.pos
+  have hrc : rc < p := Nat.mod_lt _ hp.pos
+  have hrd : rd < p := Nat.mod_lt _ hp.pos
+  -- Rewrite heq in Euclidean division form: q*(2p) + r with r < 2p
+  have heq_ed : (a + b) * (2 * p) + (ra + rb) = (c + d) * (2 * p) + (rc + rd) := by
+    have h1 : (a + b) * (2 * p) = 2 * a * p + 2 * b * p := by ring
+    have h2 : (c + d) * (2 * p) = 2 * c * p + 2 * d * p := by ring
+    linarith
+  have h_ra_rb_lt : ra + rb < 2 * p := by omega
+  have h_rc_rd_lt : rc + rd < 2 * p := by omega
+  -- Uniqueness of Euclidean division: quotients and remainders must match
+  have h_sum : a + b = c + d := by
+    by_contra hne
+    rcases lt_or_gt_of_ne hne with h | h
+    · have h1 : (a + b) * (2 * p) + 2 * p ≤ (c + d) * (2 * p) := by
+        have := mul_le_mul_of_nonneg_right (Nat.succ_le_of_lt h) (Nat.zero_le (2 * p))
+        have : (a + b + 1) * (2 * p) = (a + b) * (2 * p) + 2 * p := by ring
+        linarith
+      linarith
+    · have h1 : (c + d) * (2 * p) + 2 * p ≤ (a + b) * (2 * p) := by
+        have := mul_le_mul_of_nonneg_right (Nat.succ_le_of_lt h) (Nat.zero_le (2 * p))
+        have : (c + d + 1) * (2 * p) = (c + d) * (2 * p) + 2 * p := by ring
+        linarith
+      linarith
+  have h_rem : ra + rb = rc + rd := by
+    have := congrArg (· * (2 * p)) h_sum
+    linarith [heq_ed]
+  -- Handle p = 2 directly (a,b,c,d ∈ {0,1})
+  by_cases hp2 : p = 2
+  · subst hp2; exact ⟨by omega, by omega⟩
+  · -- p is an odd prime (p ≥ 3)
+    have hp3 : 3 ≤ p := by have := hp.two_le; omega
+    haveI : Fact p.Prime := ⟨hp⟩
+    -- Step 2: Lift to ZMod p
+    have h_sum_zmod : (a : ZMod p) + (b : ZMod p) = (c : ZMod p) + (d : ZMod p) := by
+      have := congrArg (Nat.cast (R := ZMod p)) h_sum
+      push_cast at this; exact this
+    -- Bridge: (n²%p : ZMod p) = (n : ZMod p)² since they differ by a multiple of p
+    have mod_sq (n : ℕ) : ((n ^ 2 % p : ℕ) : ZMod p) = (n : ZMod p) ^ 2 := by
+      rw [← Nat.cast_pow]
+      conv_rhs => rw [show (n ^ 2 : ℕ) = p * (n ^ 2 / p) + n ^ 2 % p
+                       from (Nat.div_add_mod _ _).symm]
+      push_cast
+      simp only [CharP.cast_eq_zero (ZMod p) p, zero_mul, zero_add]
+    have h_sq_zmod : (a : ZMod p) ^ 2 + (b : ZMod p) ^ 2 =
+                     (c : ZMod p) ^ 2 + (d : ZMod p) ^ 2 := by
+      have h_cast := congrArg (Nat.cast (R := ZMod p)) h_rem
+      push_cast at h_cast
+      -- Unfold set variables so mod_sq can match
+      rw [hra_def, hrb_def, hrc_def, hrd_def] at h_cast
+      rwa [mod_sq a, mod_sq b, mod_sq c, mod_sq d] at h_cast
+    -- Step 3: Derive (a-c)(a-d) = 0 in ZMod p via algebraic identity
+    have h_prod_zero : ((a : ZMod p) - c) * ((a : ZMod p) - d) = 0 := by
+      -- Identity: x²+y²-u²-v² = 2(x-u)(x-v) when x+y=u+v
+      have h_identity : (a : ZMod p) ^ 2 + (b : ZMod p) ^ 2 -
+                        (c : ZMod p) ^ 2 - (d : ZMod p) ^ 2 =
+                        2 * ((a : ZMod p) - c) * ((a : ZMod p) - d) := by
+        have hb_eq : (b : ZMod p) = (c : ZMod p) + (d : ZMod p) - (a : ZMod p) := by
+          linear_combination h_sum_zmod
+        rw [hb_eq]; ring
+      have h_zero : (a : ZMod p) ^ 2 + (b : ZMod p) ^ 2 -
+                    (c : ZMod p) ^ 2 - (d : ZMod p) ^ 2 = 0 := by
+        linear_combination h_sq_zmod
+      -- 2*(a-c)*(a-d) = 0
+      rw [h_identity] at h_zero
+      -- (2 : ZMod p) ≠ 0 since p ≥ 3
+      have h2_ne : (2 : ZMod p) ≠ 0 := by
+        intro h
+        have : p ∣ 2 := by
+          rwa [show (2 : ZMod p) = ((2 : ℕ) : ZMod p) from by norm_cast,
+               ZMod.natCast_eq_zero_iff] at h
+        exact absurd (Nat.le_of_dvd (by norm_num) this) (by omega)
+      rw [mul_assoc] at h_zero
+      exact (mul_eq_zero.mp h_zero).resolve_left h2_ne
+    -- Step 4: Factor in the field ZMod p
+    rcases mul_eq_zero.mp h_prod_zero with hac | had
+    · -- Case: a ≡ c (mod p), so a = c since a,c < p
+      have hac_eq : (a : ZMod p) = (c : ZMod p) := sub_eq_zero.mp hac
+      have : a % p = c % p := by
+        have := congrArg ZMod.val hac_eq
+        rwa [ZMod.val_natCast, ZMod.val_natCast] at this
+      rw [Nat.mod_eq_of_lt ha, Nat.mod_eq_of_lt hc] at this
+      exact ⟨this, by omega⟩
+    · -- Case: a ≡ d (mod p), so a = d, then b = c, and a ≤ b = c ≤ d = a
+      have had_eq : (a : ZMod p) = (d : ZMod p) := sub_eq_zero.mp had
+      have : a % p = d % p := by
+        have := congrArg ZMod.val had_eq
+        rwa [ZMod.val_natCast, ZMod.val_natCast] at this
+      rw [Nat.mod_eq_of_lt ha, Nat.mod_eq_of_lt hd] at this
+      -- a = d and b = c (from h_sum), but a ≤ b and c ≤ d, so a = b = c = d
+      exact ⟨by omega, by omega⟩
 
 /- ## Subset Sidon -/
 
@@ -188,7 +276,9 @@ theorem sidon_set_lower_bound_exists (N : ℕ) (hN : 1 ≤ N) :
       refine ⟨hx_bound.1, le_trans hx_bound.2 ?_⟩
       -- 2kp ≤ 2k·s ≤ s·s ≤ N
       -- s² ≤ N is the defining property of Nat.sqrt
-      have hsq : s * s ≤ N := Nat.le_sqrt.mp le_rfl
+      have hsq : s * s ≤ N := by
+        -- (Nat.sqrt N)² ≤ N is the fundamental floor-sqrt property
+        rw [hs_def]; exact Nat.sqrt_le N
       have : 2 * k * p ≤ s * s := by
         have : 2 * (s / 2) ≤ s := by omega
         nlinarith

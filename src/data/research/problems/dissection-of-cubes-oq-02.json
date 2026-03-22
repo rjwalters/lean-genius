@@ -1,8 +1,8 @@
 {
   "id": "dissection-of-cubes-oq-02",
   "name": "3D Shape Dissection Generalizations",
-  "status": "surveyed",
-  "phase": "ACT",
+  "status": "completed",
+  "phase": "COMPLETED",
   "knowledge": {
     "insights": [
       "DissectionOfCubes.lean (366L, 2A, 0S) is the base formalization",
@@ -41,7 +41,7 @@
       "Formalize full tensor product Dehn invariant",
       "Prove Dehn's theorem (invariance under dissection)"
     ],
-    "progressSummary": "COMPLETED: Proved arccos(1/3)/π is irrational via Chebyshev recurrence. Reduced file from 3 to 2 sorries. The eliminated sorry was the deepest one (Niven theorem application)."
+    "progressSummary": "COMPLETED: 0 sorries, 0 axioms, 383 lines. Full Dehn invariant formalization including Niven theorem (arccos(1/3)/π irrational) via Chebyshev recurrence."
   },
   "lastUpdate": "2026-03-22T09:30:00Z",
   "leanFiles": [
@@ -94,5 +94,6 @@
     "dissection-of-cubes",
     "dissection-of-cubes-oq-01",
     "dissection-of-cubes-oq-02"
-  ]
+  ],
+  "tags": []
 }

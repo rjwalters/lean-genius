@@ -66,6 +66,10 @@
       "**Logarithmic correction is the real question:** Since both bounds have base $\\sqrt{n}$, the problem reduces to determining the logarithmic correction: is it $\\log n$ (upper) or $\\sqrt{\\log n}/\\log\\log n$ (lower)?",
       "**Kim's $R(3,k) = \\Theta(k^2/\\log k)$ connection:** The Ramsey number for triangles vs independent sets directly controls the lower bound, since independent sets in triangle-free induced subgraphs provide witnesses.",
       "**Mubayi-Verstraëte breakthrough:** Avoiding the Szemerédi regularity lemma (which introduces tower-type losses) was key to reducing $(\\log n)^{120}$ to $\\log n$. Their graph blowup technique may have further applications."
+    ],
+    "prerequisites": [
+      "Graph theory fundamentals",
+      "Mathematical maturity and proof techniques"
     ]
   },
   "sections": [

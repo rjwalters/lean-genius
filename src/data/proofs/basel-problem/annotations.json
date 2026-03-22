@@ -7,27 +7,45 @@
       "endLine": 4
     },
     "type": "concept",
-    "title": "Mathlib Imports for Zeta Values and Series",
-    "content": "Four Mathlib imports provide the complete mathematical infrastructure:\n- `NumberTheory.ZetaValues`: Contains `hasSum_zeta_two` (the Basel identity), `hasSum_zeta_four` ($\\zeta(4) = \\pi^4/90$), and `hasSum_zeta_nat` (general Euler formula for $\\zeta(2k)$), all proved via Bernoulli polynomial theory\n- `Topology.Algebra.InfiniteSum.Basic`: The `HasSum` predicate (a series converges to a given value) and `tsum` (the topological sum operator), foundational for working with infinite series in Lean\n- `Analysis.PSeries`: `Real.summable_nat_rpow_inv` proving p-series $\\sum n^{-p}$ converges iff $p > 1$\n- `Mathlib.Tactic`: General tactics including `positivity`, `norm_num`, `simp`",
-    "mathContext": "The key Mathlib theorem is `hasSum_zeta_two`: $\\text{HasSum}\\,(n \\mapsto 1/n^2)\\,(\\pi^2/6)$, proved internally via the Fourier expansion of Bernoulli polynomials $B_2(x)$ evaluated at $x = 0$.",
+    "title": "Mathlib Imports",
+    "content": "We import `Mathlib.NumberTheory.ZetaValues` which contains `hasSum_zeta_two` (the main Basel identity theorem) and `hasSum_zeta_four` (for ζ(4)), plus `Mathlib.Analysis.PSeries` for p-series convergence and `Mathlib.Topology.Algebra.InfiniteSum.Basic` for the `HasSum` and `Summable` predicates. The `ZetaValues` module builds on Bernoulli polynomial theory and Fourier analysis — the one-line proof `hasSum_zeta_two` conceals hundreds of supporting lemmas.",
+    "mathContext": "The four imports form the foundation: `ZetaValues` provides $\\zeta(2k) = (-1)^{k+1} 2^{2k-1} \\pi^{2k} B_{2k}/(2k)!$; `PSeries` provides $\\sum n^{-p} < \\infty \\iff p > 1$; `InfiniteSum` provides the `HasSum` predicate and `tsum` notation.",
     "significance": "supporting",
-    "relatedConcepts": ["Mathlib", "zeta values", "infinite sums", "Bernoulli polynomials"],
-    "prerequisites": ["Lean 4 import system", "Mathlib library structure"]
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib library structure",
+      "HasSum/Summable API"
+    ],
+    "relatedConcepts": [
+      "Mathlib",
+      "zeta values",
+      "infinite sums",
+      "Bernoulli polynomials"
+    ]
   },
   {
-    "id": "ann-docstring",
+    "id": "ann-module-docstring",
     "proofId": "basel-problem",
     "range": {
       "startLine": 6,
-      "endLine": 56
+      "endLine": 52
     },
     "type": "context",
-    "title": "Module Docstring, Namespace, and Open Declarations",
-    "content": "The module docstring establishes the Basel Problem's historical context (Mengoli 1650, Euler 1734, Wiedijk #14) and documents the proof approach via Mathlib's Bernoulli polynomial machinery. The namespace `BaselProblem` scopes all definitions, and five `open` declarations bring `Finset`, `BigOperators` ($\\sum$ notation), `Filter`, `Topology` (for `HasSum`/`tsum`), and `Real` (for $\\pi$) into scope.\n\nThe `open` declarations are essential for readability: without `open BigOperators`, one would need `@Finset.sum` with explicit type arguments instead of the $\\sum$ notation.",
-    "mathContext": "The docstring gives both the classical statement $\\sum_{n=1}^{\\infty} 1/n^2 = \\pi^2/6$ and notes the three proof approaches: Bernoulli polynomials (Mathlib's method), Fourier analysis (Parseval's theorem), and Euler's original infinite product factorization of $\\sin(x)/x$.",
-    "significance": "context",
-    "relatedConcepts": ["namespace scoping", "open declarations", "BigOperators notation"],
-    "prerequisites": ["Lean 4 namespaces", "Mathlib conventions"]
+    "title": "Module Overview: The Basel Problem",
+    "content": "The module docstring introduces the Basel Problem — one of the most famous results in analysis. Named after the Bernoulli family's home city of Basel, Switzerland, the problem was posed by Pietro Mengoli in 1650: find the exact sum of $\\sum 1/n^2$. Jakob Bernoulli (1689) had bounded the sum between 1 and 2, noting it converges more slowly than the geometric series, but could not find the exact value.\n\nEuler solved it in 1734 at age 27, and this breakthrough launched his career. The approach documented here uses Mathlib's `hasSum_zeta_two`, which proves the result via Bernoulli polynomial theory and Fourier analysis — a modern rigorous approach that avoids the subtlety of Euler's original $\\sin(x)/x$ factorization (which required the Weierstrass factorization theorem, not available until 1876).",
+    "mathContext": "The Basel Problem: $\\zeta(2) = \\sum_{n=1}^{\\infty} \\frac{1}{n^2} = \\frac{\\pi^2}{6} \\approx 1.6449$. The appearance of $\\pi$ in a sum over integers was shocking to Euler's contemporaries — it revealed a deep connection between number theory and analysis that would later be formalized through the Riemann zeta function $\\zeta(s) = \\sum n^{-s}$.",
+    "significance": "key",
+    "prerequisites": [
+      "real analysis",
+      "infinite series",
+      "convergence tests"
+    ],
+    "relatedConcepts": [
+      "Riemann zeta function",
+      "Bernoulli numbers",
+      "Fourier analysis",
+      "Weierstrass factorization"
+    ]
   },
   {
     "id": "ann-basel-main",
@@ -37,12 +55,20 @@
       "endLine": 70
     },
     "type": "theorem",
-    "title": "The Basel Identity: ∑ 1/n² = π²/6",
-    "content": "**The Main Result**: $\\sum_{n=1}^{\\infty} \\frac{1}{n^2} = \\frac{\\pi^2}{6}$. This is Euler's celebrated 1734 solution to the Basel Problem.\n\nThe proof is a single line: `exact hasSum_zeta_two`. This brevity conceals hundreds of Mathlib lemmas: Bernoulli polynomial definitions, their Fourier expansions, convergence of the Fourier series, and evaluation at $x = 0$ to extract $\\zeta(2)$. The `HasSum` predicate asserts that the partial sums $\\sum_{n=0}^{N} 1/n^2$ converge to $\\pi^2/6$ in the topology of $\\mathbb{R}$.",
-    "mathContext": "$$\\text{HasSum}\\,(n \\mapsto 1/n^2)\\,(\\pi^2/6) \\;\\iff\\; \\lim_{N \\to \\infty} \\sum_{n=0}^{N} \\frac{1}{n^2} = \\frac{\\pi^2}{6}$$",
-    "significance": "key",
-    "relatedConcepts": ["HasSum", "convergence", "Basel problem", "hasSum_zeta_two"],
-    "prerequisites": ["real analysis", "infinite series", "Bernoulli polynomials"]
+    "title": "The Basel Identity",
+    "content": "**The Main Result**: $\\sum_{n=1}^{\\infty} \\frac{1}{n^2} = \\frac{\\pi^2}{6}$. This is Euler's celebrated 1734 solution to the Basel Problem.",
+    "mathContext": "In Lean, `HasSum f s` means the series $\\sum f(n)$ converges to $s$. We prove `HasSum (fun n => 1 / n^2) (π^2 / 6)` using Mathlib's `hasSum_zeta_two`.",
+    "significance": "critical",
+    "prerequisites": [
+      "hasSum_zeta_two",
+      "HasSum predicate",
+      "real division"
+    ],
+    "relatedConcepts": [
+      "HasSum",
+      "convergence",
+      "Basel problem"
+    ]
   },
   {
     "id": "ann-basel-tsum",
@@ -51,43 +77,90 @@
       "startLine": 72,
       "endLine": 74
     },
-    "type": "technique",
-    "title": "The tsum Version: Notation Equivalence",
-    "content": "The `tsum` (topological sum) version: `∑' n, 1/n² = π²/6`. While `HasSum f s` is a proposition asserting convergence to $s$, `tsum f` is a *function* returning the sum (or 0 if the series diverges). The conversion uses `HasSum.tsum_eq`, which extracts the value from a `HasSum` proof.\n\nIn practice, `tsum` is more convenient for algebraic manipulations (it can be substituted into equations), while `HasSum` is the fundamental convergence statement.",
-    "mathContext": "`tsum f = s` is equivalent to `HasSum f s` when the series is summable. `tsum` is defined as the limit of the net of finite partial sums when it exists, and 0 otherwise.",
+    "type": "theorem",
+    "title": "The tsum Version",
+    "content": "The `tsum` (topological sum) version: `∑' n, 1/n² = π²/6`. This is the form using Lean's notation for infinite sums.",
+    "mathContext": "`tsum` is defined as the limit of partial sums when the series is summable, and 0 otherwise. For summable series, `HasSum.tsum_eq` converts between the two forms.",
     "significance": "supporting",
-    "relatedConcepts": ["tsum", "HasSum.tsum_eq", "topological sum"],
-    "prerequisites": ["HasSum predicate", "tsum definition"]
+    "prerequisites": [
+      "HasSum.tsum_eq",
+      "ann-basel-main"
+    ],
+    "relatedConcepts": [
+      "tsum",
+      "notation",
+      "equivalence"
+    ]
   },
   {
     "id": "ann-convergence",
     "proofId": "basel-problem",
     "range": {
+      "startLine": 76,
+      "endLine": 78
+    },
+    "type": "theorem",
+    "title": "Series Convergence",
+    "content": "The series $\\sum 1/n^2$ converges because it's a p-series with $p = 2 > 1$. This is a fundamental result in analysis.",
+    "mathContext": "We use `Real.summable_nat_rpow_inv` which proves that $\\sum n^{-p}$ converges for $p > 1$. The harmonic series ($p = 1$) is the boundary case that diverges.",
+    "significance": "key",
+    "prerequisites": [
+      "Real.summable_nat_rpow_inv",
+      "rpow_natCast",
+      "Summable predicate"
+    ],
+    "relatedConcepts": [
+      "p-series",
+      "Summable",
+      "comparison test"
+    ]
+  },
+  {
+    "id": "ann-summable-proofs",
+    "proofId": "basel-problem",
+    "range": {
       "startLine": 80,
       "endLine": 91
     },
-    "type": "technique",
-    "title": "Series Convergence via p-Series Test",
-    "content": "Two equivalent formulations of convergence for $\\sum 1/n^2$:\n\n1. `summable_one_div_sq`: Uses `Real.summable_nat_rpow_inv` (p-series test: $\\sum n^{-p}$ converges iff $p > 1$) with $p = 2$. The proof requires `convert` because Mathlib's p-series uses real powers `rpow` while our series uses natural powers, so `rpow_natCast` bridges the gap.\n\n2. `summable_nat_sq_inv`: Reformulates using $n^{-2}$ instead of $1/n^2$, converting via `div_eq_mul_inv`. This form is sometimes more convenient in algebraic manipulations.\n\nThe p-series test itself is proved in Mathlib via the integral test: $\\sum n^{-p}$ converges iff $\\int_1^{\\infty} x^{-p}\\,dx < \\infty$, which holds for $p > 1$.",
-    "mathContext": "$$\\sum_{n=1}^{\\infty} \\frac{1}{n^p} < \\infty \\iff p > 1$$\n\nThe boundary case $p = 1$ is the harmonic series, which diverges logarithmically: $\\sum_{n=1}^{N} 1/n \\approx \\ln N + \\gamma$ where $\\gamma \\approx 0.5772$ is the Euler-Mascheroni constant.",
+    "type": "theorem",
+    "title": "Convergence Proofs: p-Series with p = 2",
+    "content": "`summable_one_div_sq` and `summable_nat_sq_inv` prove that $\\sum 1/n^2$ is summable (convergent) using two equivalent formulations. The proofs convert to `Real.summable_nat_rpow_inv` with $p = 2 > 1$, using `rpow_natCast` to bridge between the natural number exponent $n^2$ and the real-valued power $n^{2.0}$.\n\nThe p-series test ($\\sum n^{-p}$ converges $\\iff p > 1$) is the standard convergence criterion. The boundary case $p = 1$ (harmonic series $\\sum 1/n$) diverges — proved by the integral test or Cauchy condensation.",
+    "mathContext": "The p-series test: $\\sum_{n=1}^{\\infty} n^{-p} < \\infty \\iff p > 1$. For $p = 2$: convergence follows from comparison with the telescoping series $\\sum (1/n - 1/(n+1)) = 1$, since $1/n^2 < 1/(n(n-1))$ for $n \\geq 2$. The proof converts between `1/n^2` (natural number power) and `n^{(-2:ℝ)}` (real-valued power) via `rpow_natCast` and `div_eq_mul_inv`.",
     "significance": "key",
-    "relatedConcepts": ["p-series test", "Summable", "rpow_natCast", "integral test", "harmonic series"],
-    "prerequisites": ["real analysis", "convergence tests", "Real.summable_nat_rpow_inv"]
+    "prerequisites": [
+      "Real.summable_nat_rpow_inv",
+      "rpow coercion",
+      "norm_num"
+    ],
+    "relatedConcepts": [
+      "p-series test",
+      "Summable",
+      "integral test",
+      "rpow_natCast"
+    ]
   },
   {
-    "id": "ann-basic-props",
+    "id": "ann-basic-properties",
     "proofId": "basel-problem",
     "range": {
       "startLine": 93,
-      "endLine": 106
+      "endLine": 101
     },
-    "type": "technique",
-    "title": "Basic Properties via Positivity Tactic",
-    "content": "Three simple facts established entirely by Lean's `positivity` tactic:\n\n1. `one_div_sq_pos`: Each term $1/n^2 > 0$ for $n \\neq 0$ — since $n^2 > 0$ for $n \\geq 1$ and $1 > 0$\n2. `one_div_sq_nonneg`: Each term $1/n^2 \\geq 0$ — weaker but universally true (including $n = 0$ where $1/0^2 = 0$ in Lean)\n3. `basel_value_pos`: The sum $\\pi^2/6 > 0$ — since $\\pi > 0$ implies $\\pi^2 > 0$\n\nThe `positivity` tactic is a decision procedure for goals of the form `0 < e` or `0 ≤ e` over ordered fields. It decomposes the expression into factors and checks each is positive/nonneg.",
-    "mathContext": "$$\\frac{1}{n^2} \\geq 0 \\;\\forall n, \\quad \\frac{1}{n^2} > 0 \\;\\forall n \\geq 1, \\quad \\frac{\\pi^2}{6} > 0$$",
+    "type": "theorem",
+    "title": "Positivity and Basic Properties",
+    "content": "Three positivity lemmas: `one_div_sq_pos` ($1/n^2 > 0$ for $n > 0$), `one_div_sq_nonneg` ($1/n^2 \\geq 0$ for all $n$), and `basel_value_pos` ($\\pi^2/6 > 0$). All proved by Lean's `positivity` tactic, which chains positivity/nonnegativity facts automatically.\n\nThese lemmas are supporting infrastructure: positivity of terms ensures the partial sums are increasing (important for monotone convergence), and positivity of the limit confirms the sum is meaningful.",
+    "mathContext": "For $n \\geq 1$: $1/n^2 > 0$ since $n^2 > 0$. For $n = 0$: $1/0^2 = 0 \\geq 0$ (Lean's convention). The value $\\pi^2/6 > 0$ since $\\pi > 0$ implies $\\pi^2 > 0$. The `positivity` tactic automatically chains `sq_nonneg`, `div_pos`, and `pi_pos` to close these goals.",
     "significance": "supporting",
-    "relatedConcepts": ["positivity tactic", "non-negative terms", "monotone series"],
-    "prerequisites": ["ordered field arithmetic", "positivity tactic"]
+    "prerequisites": [
+      "positivity tactic",
+      "sq_nonneg",
+      "pi_pos"
+    ],
+    "relatedConcepts": [
+      "positivity tactic",
+      "monotone convergence",
+      "nonnegative terms"
+    ]
   },
   {
     "id": "ann-euler-history",
@@ -97,41 +170,87 @@
       "endLine": 123
     },
     "type": "insight",
-    "title": "Euler's Original Proof: The sin(x)/x Factorization",
-    "content": "Euler's 1734 proof used a bold analogy with finite polynomials. A polynomial with roots $r_1, \\ldots, r_n$ factors as $c(x - r_1)\\cdots(x - r_n)$. Euler applied this to $\\sin(x)/x$, whose zeros are $\\pm\\pi, \\pm 2\\pi, \\ldots$:\n\n$$\\frac{\\sin x}{x} = \\left(1 - \\frac{x^2}{\\pi^2}\\right)\\left(1 - \\frac{x^2}{4\\pi^2}\\right)\\left(1 - \\frac{x^2}{9\\pi^2}\\right)\\cdots$$\n\nExpanding the product, the $x^2$ coefficient is $-\\sum 1/(n^2\\pi^2)$. From the Taylor series $\\sin(x)/x = 1 - x^2/6 + \\cdots$, the $x^2$ coefficient is $-1/6$. Equating: $\\sum 1/n^2 = \\pi^2/6$.\n\nThis reasoning was not rigorous (the Weierstrass factorization theorem justifying infinite products was proved only in 1876), but Euler's intuition was correct. The modern Mathlib proof instead uses Fourier analysis via Bernoulli polynomials.",
-    "mathContext": "Euler's coefficient comparison: $-\\frac{1}{\\pi^2}\\sum_{n=1}^{\\infty} \\frac{1}{n^2} = -\\frac{1}{6}$, hence $\\sum \\frac{1}{n^2} = \\frac{\\pi^2}{6}$.",
+    "title": "Euler's Original Proof",
+    "content": "Euler's 1734 proof used the Weierstrass factorization of $\\sin(x)/x$. By comparing the $x^2$ coefficient in the infinite product with the Taylor series, he derived the Basel identity.",
+    "mathContext": "Euler wrote $\\sin(x)/x = \\prod_{n=1}^{\\infty}(1 - x^2/(n\\pi)^2)$. Expanding and comparing with $1 - x^2/6 + \\ldots$ gives $1/6 = \\sum 1/(n\\pi)^2$, hence $\\sum 1/n^2 = \\pi^2/6$.",
     "significance": "key",
-    "relatedConcepts": ["Weierstrass factorization", "Taylor series", "infinite products", "coefficient comparison"],
-    "prerequisites": ["Taylor series of sin(x)", "infinite product representation", "Weierstrass factorization theorem"]
+    "prerequisites": [
+      "Weierstrass factorization theorem",
+      "Taylor series of sin(x)"
+    ],
+    "relatedConcepts": [
+      "Weierstrass factorization",
+      "Taylor series",
+      "infinite products"
+    ]
   },
   {
-    "id": "ann-zeta-values",
+    "id": "ann-zeta-four",
     "proofId": "basel-problem",
     "range": {
-      "startLine": 125,
+      "startLine": 130,
+      "endLine": 132
+    },
+    "type": "theorem",
+    "title": "Higher Zeta Values",
+    "content": "Euler generalized the Basel identity: $\\zeta(4) = \\pi^4/90$, $\\zeta(6) = \\pi^6/945$, and in general $\\zeta(2k)$ is a rational multiple of $\\pi^{2k}$ involving Bernoulli numbers.",
+    "mathContext": "The general formula is $\\zeta(2k) = (-1)^{k+1} \\cdot 2^{2k-1} \\cdot \\pi^{2k} \\cdot B_{2k} / (2k)!$ where $B_{2k}$ is the $(2k)$-th Bernoulli number.",
+    "significance": "key",
+    "prerequisites": [
+      "hasSum_zeta_four",
+      "hasSum_zeta_nat",
+      "Bernoulli number theory"
+    ],
+    "relatedConcepts": [
+      "Bernoulli numbers",
+      "zeta values",
+      "special functions"
+    ]
+  },
+  {
+    "id": "ann-zeta-general",
+    "proofId": "basel-problem",
+    "range": {
+      "startLine": 134,
       "endLine": 143
     },
-    "type": "concept",
-    "title": "Higher Zeta Values and the General Euler Formula",
-    "content": "Two theorems extending the Basel identity to all even zeta values:\n\n1. `zeta_four_hasSum`: $\\zeta(4) = \\pi^4/90$ via `hasSum_zeta_four` — the next case after Basel\n2. `zeta_general`: The full Euler formula $\\zeta(2k) = (-1)^{k+1} 2^{2k-1} \\pi^{2k} B_{2k} / (2k)!$ for all $k \\geq 1$, via `hasSum_zeta_nat`\n\nThe Bernoulli numbers $B_n$ are defined by $x/(e^x - 1) = \\sum B_n x^n / n!$. The first few even values: $B_2 = 1/6$, $B_4 = -1/30$, $B_6 = 1/42$, $B_8 = -1/30$. These yield:\n- $\\zeta(2) = \\pi^2/6$ (Basel)\n- $\\zeta(4) = \\pi^4/90$\n- $\\zeta(6) = \\pi^6/945$\n- $\\zeta(8) = \\pi^8/9450$\n\nIn contrast, odd zeta values $\\zeta(3), \\zeta(5), \\ldots$ have no known closed-form expressions in terms of $\\pi$.",
-    "mathContext": "$$\\zeta(2k) = \\frac{(-1)^{k+1} 2^{2k-1} \\pi^{2k} B_{2k}}{(2k)!}, \\quad B_{2k} \\text{ the } 2k\\text{-th Bernoulli number}$$",
+    "type": "theorem",
+    "title": "The General Zeta Value Formula",
+    "content": "`zeta_general` proves the general formula for even zeta values: $\\zeta(2k) = (-1)^{k+1} \\cdot 2^{2k-1} \\cdot \\pi^{2k} \\cdot B_{2k} / (2k)!$, where $B_{2k}$ is the $(2k)$-th Bernoulli number. This is Euler's generalization of the Basel Problem to all even positive integers.\n\nThe first few values: $B_2 = 1/6$ gives $\\zeta(2) = \\pi^2/6$, $B_4 = -1/30$ gives $\\zeta(4) = \\pi^4/90$, $B_6 = 1/42$ gives $\\zeta(6) = \\pi^6/945$. The odd zeta values $\\zeta(3), \\zeta(5), \\ldots$ remain mysterious — Apéry (1978) proved $\\zeta(3)$ is irrational, but no closed form in terms of $\\pi$ is known.",
+    "mathContext": "$\\zeta(2k) = \\frac{(-1)^{k+1} 2^{2k-1} \\pi^{2k} B_{2k}}{(2k)!}$ for $k \\geq 1$. The Bernoulli numbers satisfy $B_0 = 1$, $B_1 = -1/2$, $B_{2k+1} = 0$ for $k \\geq 1$ (odd Bernoulli numbers vanish). The generating function is $t/(e^t - 1) = \\sum B_n t^n/n!$.",
     "significance": "key",
-    "relatedConcepts": ["Bernoulli numbers", "zeta function", "even zeta values", "hasSum_zeta_nat"],
-    "prerequisites": ["Bernoulli number generating function", "factorial", "Riemann zeta function"]
+    "prerequisites": [
+      "hasSum_zeta_nat",
+      "Bernoulli number theory",
+      "factorial"
+    ],
+    "relatedConcepts": [
+      "Bernoulli numbers",
+      "Euler's formula for ζ(2k)",
+      "Apéry's theorem",
+      "odd zeta values"
+    ]
   },
   {
     "id": "ann-numerical",
     "proofId": "basel-problem",
     "range": {
       "startLine": 145,
-      "endLine": 164
+      "endLine": 161
     },
     "type": "context",
-    "title": "Numerical Verification and Convergence Rate",
-    "content": "Four concrete examples verify the series behavior:\n\n1. The $n = 0$ term is 0 (since $1/0^2 = 0$ in Lean's convention for division by zero)\n2. The $n = 1$ term is 1\n3. The $n = 2$ term is $1/4$\n4. Partial sum: $\\sum_{n=0}^{1} 1/n^2 = 0 + 1 = 1$\n\nThe documentation notes slow convergence: after $N$ terms, the error is approximately $1/N$ (from the integral estimate $\\int_N^{\\infty} x^{-2}\\,dx = 1/N$). This means achieving 6 digits of accuracy requires $N \\approx 10^6$ terms — making the closed form $\\pi^2/6$ vastly more practical than numerical summation.\n\nThe `simp` and `norm_num` tactics handle the concrete computations, with `Finset.sum_range_succ` unfolding the partial sum into individual terms.",
-    "mathContext": "$$\\left|\\frac{\\pi^2}{6} - \\sum_{n=1}^{N} \\frac{1}{n^2}\\right| \\approx \\frac{1}{N} \\quad \\text{(from } \\int_N^{\\infty} x^{-2}\\,dx = 1/N\\text{)}$$",
+    "title": "Numerical Approximation and Convergence Rate",
+    "content": "The closing section provides numerical context. The partial sums $S_N = \\sum_{n=1}^{N} 1/n^2$ converge to $\\pi^2/6 \\approx 1.6449$ relatively slowly: $S_{10} \\approx 1.5498$ (6% error), $S_{100} \\approx 1.6350$ (0.6% error), $S_{1000} \\approx 1.6439$ (0.06% error). The error decays as $O(1/N)$ since $\\sum_{n>N} 1/n^2 \\approx \\int_N^{\\infty} x^{-2}\\,dx = 1/N$.\n\nThe `example` declarations computationally verify individual terms: $f(0) = 0$ (the $n = 0$ convention), $f(1) = 1$, $f(2) = 1/4$. These are discharged by `simp` and `norm_num`.",
+    "mathContext": "$\\pi^2/6 \\approx 1.6449340668$. The error in the $N$-th partial sum: $\\pi^2/6 - S_N = \\sum_{n>N} 1/n^2 \\sim 1/N$ as $N \\to \\infty$. For faster convergence, Euler used the Euler-Maclaurin formula to accelerate the series.",
     "significance": "supporting",
-    "relatedConcepts": ["convergence rate", "Finset.sum_range_succ", "norm_num tactic", "division by zero convention"],
-    "prerequisites": ["Finset.range", "norm_num", "simp tactic"]
+    "prerequisites": [
+      "numerical computation",
+      "norm_num tactic"
+    ],
+    "relatedConcepts": [
+      "partial sums",
+      "rate of convergence",
+      "Euler-Maclaurin formula"
+    ]
   }
 ]

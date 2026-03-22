@@ -209,16 +209,109 @@ theorem split_energy_excess_bound (n₁ n₂ d₁ d₂ δ : ℚ)
     (mul_le_mul_of_nonneg_left hsq (mul_nonneg (le_of_lt hn₁) (le_of_lt hn₂)))
     (le_of_lt hnn_pos)
 
+/-- Unweighted squared-density convexity: splitting a vertex set into two
+    disjoint pieces never decreases the unweighted sum of squared densities.
+    d(A₁,B)² + d(A₂,B)² ≥ d(A₁∪A₂,B)², without size weighting.
+
+    This follows from the algebraic identity:
+      x² + y² ≥ (n₁x + n₂y)²/(n₁+n₂)²
+    where x = e₁/n₁, y = e₂/n₂ are edge-count-to-size ratios.
+    The difference equals (xn₂ - yn₁)²/(n₁+n₂)² + 2n₁n₂(x²+y²-xy)/(n₁+n₂)² ≥ 0. -/
+private theorem unweighted_density_sq_split (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A₁ A₂ B : Finset V) (hA : Disjoint A₁ A₂) :
+    (edgeDensity G A₁ B) ^ 2 + (edgeDensity G A₂ B) ^ 2 ≥
+    (edgeDensity G (A₁ ∪ A₂) B) ^ 2 := by
+  -- When both A₁ and A₂ are nonempty, use density_sq_convex and drop coefficients
+  by_cases h₁ : A₁.card = 0
+  · have hA₁ : A₁ = ∅ := Finset.card_eq_zero.mp h₁
+    simp only [hA₁, Finset.empty_union]
+    linarith [sq_nonneg (edgeDensity G ∅ B)]
+  by_cases h₂ : A₂.card = 0
+  · have hA₂ : A₂ = ∅ := Finset.card_eq_zero.mp h₂
+    simp only [hA₂, Finset.union_empty]
+    linarith [sq_nonneg (edgeDensity G ∅ B)]
+  -- Both nonempty: use weighted convexity and the fact that n₁, n₂ ≥ 1
+  have hn₁ : (0 : ℚ) < A₁.card := Nat.cast_pos.mpr (Nat.pos_of_ne_zero h₁)
+  have hn₂ : (0 : ℚ) < A₂.card := Nat.cast_pos.mpr (Nat.pos_of_ne_zero h₂)
+  have hconv := density_sq_convex G A₁ A₂ B hA
+  -- From n₁ * d₁² + n₂ * d₂² ≥ (n₁ + n₂) * d², derive d₁² + d₂² ≥ d²
+  -- since n₁ * d₁² ≤ n₁ * d₁² and 1 ≤ n₁ (as natural), we get d₁² ≤ n₁ * d₁²
+  -- So d₁² + d₂² ≤ n₁ * d₁² + n₂ * d₂² ≥ (n₁+n₂) * d² ≥ d²
+  calc (edgeDensity G A₁ B) ^ 2 + (edgeDensity G A₂ B) ^ 2
+      ≤ ↑A₁.card * (edgeDensity G A₁ B) ^ 2 +
+        ↑A₂.card * (edgeDensity G A₂ B) ^ 2 := by
+        have h1 : (edgeDensity G A₁ B) ^ 2 ≤
+            ↑A₁.card * (edgeDensity G A₁ B) ^ 2 :=
+          le_mul_of_one_le_left (sq_nonneg _) (by linarith)
+        have h2 : (edgeDensity G A₂ B) ^ 2 ≤
+            ↑A₂.card * (edgeDensity G A₂ B) ^ 2 :=
+          le_mul_of_one_le_left (sq_nonneg _) (by linarith)
+        linarith
+    _ ≥ (↑A₁.card + ↑A₂.card) * (edgeDensity G (A₁ ∪ A₂) B) ^ 2 := hconv
+    _ ≥ 1 * (edgeDensity G (A₁ ∪ A₂) B) ^ 2 := by
+        apply mul_le_mul_of_nonneg_right _ (sq_nonneg _)
+        linarith
+    _ = (edgeDensity G (A₁ ∪ A₂) B) ^ 2 := one_mul _
+
+/-- Cardinality bound for single-part split: splitting one part in a k-part
+    collection gives at most k+1 parts, which is ≤ k * 2^k for k ≥ 2. -/
+private theorem card_split_le_bound (k : ℕ) (hk : 2 ≤ k) :
+    k + 1 ≤ k * 2 ^ k := by
+  calc k + 1 ≤ k + k := by omega
+    _ = 2 * k := by ring
+    _ ≤ 2 ^ k * k := by
+        apply Nat.mul_le_mul_right
+        exact Nat.one_le_two_pow.trans (Nat.pow_le_pow_right (by omega) hk)
+    _ = k * 2 ^ k := by ring
+
 /-- Energy increment step: if a partition has too many irregular pairs,
     refinement increases energy by at least eps^5. This is the key
-    technical lemma driving the regularity proof. -/
+    technical lemma driving the regularity proof.
+
+    PROOF STATUS: Decomposed into cases. The core difficulty is that our
+    energy definition normalizes by 1/k² (unweighted), while the standard
+    Komlos-Simonovits argument uses size-weighted energy Σ(nᵢnⱼ/n²)d²ᵢⱼ.
+    For equitable partitions these agree, but the refinement step produces
+    non-equitable parts, requiring careful accounting of the normalization
+    change vs. density-squared gain. -/
 theorem energy_increment_step (G : SimpleGraph V) [DecidableRel G.Adj]
     (eps : ℚ) (heps : 0 < eps) (parts : Finset (Finset V))
     (hirr : ¬IsRegularPartition G eps parts) :
     ∃ parts' : Finset (Finset V),
       partitionEnergy G parts' ≥ partitionEnergy G parts + eps ^ 5 ∧
       parts'.card ≤ parts.card * 2 ^ parts.card := by
-  sorry
+  -- Case split: is the partition equitable?
+  by_cases h_equit : ∀ P Q : Finset V, P ∈ parts → Q ∈ parts →
+      (P.card : ℤ) - Q.card ≤ 1
+  · -- CASE A: Equitable but not regular → irregularity bound fails.
+    -- Since the partition satisfies equitability but ¬IsRegularPartition,
+    -- the irregularity count must exceed eps * k*(k-1).
+    have h_irreg : ¬(((parts.product parts).filter (fun pq =>
+        pq.1 ≠ pq.2 ∧ ¬IsEpsilonRegular G eps pq.1 pq.2)).card ≤
+        eps * (↑parts.card * (↑parts.card - 1))) := fun h => hirr ⟨h_equit, h⟩
+    rw [not_le] at h_irreg
+    -- Extract an irregular pair and its witnesses
+    obtain ⟨P, Q, hP, hQ, hne, hirr_pair⟩ :=
+      exists_irregular_pair G eps heps parts h_irreg
+    obtain ⟨A', B', hA'P, hB'Q, hcA', hcB', hdev⟩ :=
+      exists_irregular_witness G eps P Q hirr_pair
+    -- CONSTRUCTION: split P into {A', P \ A'}, keep other parts.
+    -- The irregular witnesses ensure density deviation > eps,
+    -- which drives the energy increase via split_energy_excess_bound.
+    --
+    -- KEY TECHNICAL CHALLENGE: Our partitionEnergy normalizes by 1/k².
+    -- Splitting P into 2 pieces changes k to k+1, diluting the
+    -- normalization. The proof must show the density-squared gain
+    -- from the irregular pair outweighs this dilution.
+    -- For equitable partitions with the standard size-weighted energy,
+    -- the eps^5 bound follows directly. With our 1/k² normalization,
+    -- the argument requires that eps * k(k-1) irregular pairs each
+    -- contribute enough gain to compensate for the (k+1)²/k² factor.
+    sorry
+  · -- CASE B: Not equitable.
+    -- There exist parts P, Q with |P| - |Q| > 1.
+    -- Splitting the larger part or re-balancing increases energy.
+    sorry
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART III: REGULARITY LEMMA (MAIN RESULT)
@@ -327,7 +420,7 @@ theorem regularity_lemma (eps : ℚ) (heps : 0 < eps) :
 -- ═══════════════════════════════════════════════════════════════════
 
 /-- Our edge density agrees with Mathlib's SimpleGraph.edgeDensity. -/
-private theorem edgeDensity_eq_mathlib (G : SimpleGraph V) [DecidableRel G.Adj]
+theorem edgeDensity_eq_mathlib (G : SimpleGraph V) [DecidableRel G.Adj]
     (A B : Finset V) :
     edgeDensity G A B = G.edgeDensity A B := by
   unfold edgeDensity
@@ -343,7 +436,7 @@ private theorem edgeDensity_eq_mathlib (G : SimpleGraph V) [DecidableRel G.Adj]
     rfl
 
 /-- Mathlib's pairwise uniformity (strict <) implies our ε-regularity (≤). -/
-private theorem mathlib_uniform_imp_regular (G : SimpleGraph V) [DecidableRel G.Adj]
+theorem mathlib_uniform_imp_regular (G : SimpleGraph V) [DecidableRel G.Adj]
     (eps : ℚ) (A B : Finset V)
     (h : G.IsUniform (↑eps : ℝ) A B) :
     IsEpsilonRegular G eps A B := by
@@ -365,7 +458,7 @@ private theorem mathlib_uniform_imp_regular (G : SimpleGraph V) [DecidableRel G.
 
 /-- Equipartition in Mathlib's sense implies our equitability condition:
     all parts differ in size by at most 1. -/
-private theorem equipartition_imp_equitable
+theorem equipartition_imp_equitable
     (P : Finpartition (Finset.univ : Finset V))
     (hequi : P.IsEquipartition) :
     ∀ A B : Finset V, A ∈ P.parts → B ∈ P.parts →
@@ -379,7 +472,7 @@ private theorem equipartition_imp_equitable
 
 /-- The set of our irregular pairs is a subset of Mathlib's non-uniform pairs.
     This is because Mathlib uses strict < while we use ≤. -/
-private theorem irregular_subset_nonuniform (G : SimpleGraph V) [DecidableRel G.Adj]
+theorem irregular_subset_nonuniform (G : SimpleGraph V) [DecidableRel G.Adj]
     (eps : ℚ) (P : Finpartition (Finset.univ : Finset V)) :
     ((P.parts.product P.parts).filter (fun pq =>
       pq.1 ≠ pq.2 ∧ ¬IsEpsilonRegular G eps pq.1 pq.2)).card ≤
@@ -449,5 +542,55 @@ theorem regularity_lemma_strong (eps : ℚ) (heps : 0 < eps) (m₀ : ℕ) (hm₀
       rw [Nat.cast_mul, Nat.cast_sub h_k1]; simp
     rw [h_cast_kk] at h_unif
     linarith
+
+/-- **Szemeredi Regularity Lemma (Full Form)**: Like regularity_lemma_strong,
+    but also exposes partition structure: every vertex belongs to exactly one part.
+    This is needed for applications like the triangle removal lemma where
+    we must assign vertices to partition classes. -/
+theorem regularity_lemma_full (eps : ℚ) (heps : 0 < eps) (m₀ : ℕ) (hm₀ : 1 ≤ m₀) :
+    ∃ M : ℕ, m₀ ≤ M ∧
+      ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V)
+        [DecidableRel G.Adj],
+        Fintype.card V ≥ M →
+        ∃ parts : Finset (Finset V),
+          IsRegularPartition G eps parts ∧
+          m₀ ≤ parts.card ∧ parts.card ≤ M ∧
+          -- Partition structure: covers V and parts are pairwise disjoint
+          (∀ v : V, ∃ P ∈ parts, v ∈ P) ∧
+          (∀ P Q : Finset V, P ∈ parts → Q ∈ parts → P ≠ Q → Disjoint P Q) := by
+  set M := max m₀ (SzemerediRegularity.bound (↑eps : ℝ) m₀) with hM_def
+  refine ⟨M, le_max_left _ _, fun V _ _ G _ hV => ?_⟩
+  have heps_real : (0 : ℝ) < (↑eps : ℝ) := by exact_mod_cast heps
+  have hl : m₀ ≤ Fintype.card V := le_trans (le_max_left _ _) hV
+  obtain ⟨P, hequi, hle, hbound, hunif⟩ := szemeredi_regularity G heps_real hl
+  refine ⟨P.parts, ⟨?_, ?_⟩, hle, le_trans hbound (le_max_right _ _), ?_, ?_⟩
+  · -- Equitability
+    exact equipartition_imp_equitable P hequi
+  · -- Irregularity count (same proof as regularity_lemma_strong)
+    have h_sub := irregular_subset_nonuniform G eps P
+    have h_unif : (↑(P.nonUniforms G (↑eps : ℝ)).card : ℝ) ≤
+        ↑(P.parts.card * (P.parts.card - 1)) * ↑eps := hunif
+    suffices h_real :
+        (↑((P.parts.product P.parts).filter (fun pq =>
+          pq.1 ≠ pq.2 ∧ ¬IsEpsilonRegular G eps pq.1 pq.2)).card : ℝ) ≤
+        (↑eps : ℝ) * ((↑P.parts.card : ℝ) * ((↑P.parts.card : ℝ) - 1)) by
+      exact_mod_cast h_real
+    have h_sub_real : (↑((P.parts.product P.parts).filter (fun pq =>
+          pq.1 ≠ pq.2 ∧ ¬IsEpsilonRegular G eps pq.1 pq.2)).card : ℝ) ≤
+        (↑(P.nonUniforms G (↑eps : ℝ)).card : ℝ) := by exact_mod_cast h_sub
+    have h_k1 : 1 ≤ P.parts.card := le_trans hm₀ hle
+    have h_cast_kk : (↑(P.parts.card * (P.parts.card - 1)) : ℝ) =
+        (↑P.parts.card : ℝ) * ((↑P.parts.card : ℝ) - 1) := by
+      rw [Nat.cast_mul, Nat.cast_sub h_k1]; simp
+    rw [h_cast_kk] at h_unif
+    linarith
+  · -- Coverage: every vertex belongs to some part
+    intro v
+    have hv : v ∈ (Finset.univ : Finset V) := Finset.mem_univ v
+    rw [← P.supParts] at hv
+    exact Finset.mem_sup.mp hv
+  · -- Disjointness: distinct parts are disjoint
+    intro A B hA hB hne
+    exact P.disjoint (Finset.mem_coe.mpr hA) (Finset.mem_coe.mpr hB) hne
 
 end Szemeredi.Regularity

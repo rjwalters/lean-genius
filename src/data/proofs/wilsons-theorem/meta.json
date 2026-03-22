@@ -112,6 +112,34 @@
       "Can Wilson's theorem be used to generate prime numbers efficiently?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ and Euler's generalization $a^{\\phi(n)} \\equiv 1 \\pmod{n}$ both describe the multiplicative group $(\\mathbb{Z}/p\\mathbb{Z})^*$. Wilson characterizes primes via factorials; Euler via the group order."
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Both concern the structure of $(\\mathbb{Z}/p\\mathbb{Z})^*$. Wilson's theorem shows $(p-1)! \\equiv -1$; quadratic reciprocity uses Euler's criterion $a^{(p-1)/2} \\equiv (a/p)$. Gauss's proofs of QR use properties of factorial-like products."
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem (subgroup order divides group order) applies to $(\\mathbb{Z}/p\\mathbb{Z})^*$ of order $p-1$. Wilson's theorem can be derived from the fact that every element is paired with its inverse, except self-inverses ($\\pm 1$)."
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "related",
+      "description": "Wilson's theorem gives a characterization of primes: $n$ is prime iff $(n-1)! \\equiv -1 \\pmod{n}$. While this is a primality test in principle, computing $(n-1)!$ is far more expensive than other methods."
+    }
+  ],
+  "relatedProofs": [
+    "euler-totient",
+    "quadratic-reciprocity",
+    "lagrange-theorem",
+    "infinitude-primes"
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.NumberTheory.Wilson",

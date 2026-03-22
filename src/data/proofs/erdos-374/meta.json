@@ -4,8 +4,11 @@
   "slug": "erdos-374",
   "description": "For F(m) = min k with a₁!···aₖ! a square (a₁<···<aₖ=m), study |Dₖ∩{1,...,n}| for Dₖ = {m: F(m)=k}. D₂ = squares. Dₖ = ∅ for k>6. Min D₆ = 527. Open for 3≤k≤6.",
   "meta": {
-    "erdosNumber": 374,
-    "status": "formalized",
+    "author": "Erdős, Graham (1976)",
+    "sourceUrl": "https://erdosproblems.com/374",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos374Problem.lean",
+    "leanFile": "proofs/Proofs/Erdos374Problem.lean",
     "tags": [
       "erdos",
       "number-theory",
@@ -13,75 +16,137 @@
       "perfect-squares",
       "open"
     ],
-    "references": [
-      "Erdős–Graham (1976): original study",
-      "Dₖ = ∅ for k > 6",
-      "D₆ smallest element 527",
-      "https://erdosproblems.com/374"
-    ],
-    "leanFile": "Proofs/Erdos374Problem.lean",
+    "badge": "axiom",
     "sorries": 0,
-    "sourceUrl": "https://erdosproblems.com/374",
+    "erdosNumber": 374,
     "erdosUrl": "https://erdosproblems.com/374",
-    "axiomCount": 0
+    "erdosProblemStatus": "open",
+    "axiomCount": 7,
+    "lineCount": 79,
+    "dateAdded": "2026-02-10",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.factorial",
+        "description": "Factorial function used in factorialProduct definition",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsPerfectSquare: constructive definition via ∃ k, n = k * k",
+      "factorialProduct: product of factorials of elements in a list",
+      "HasSquareFactorialProduct: formal condition for factorial products being perfect squares",
+      "bigF: axiomatized F(m), the minimum k for factorial square products",
+      "inDk: membership predicate for the sets Dₖ"
+    ],
+    "references": [
+      {
+        "key": "EG76",
+        "citation": "Erdős, P. and Graham, R.L., On products of factorials, Bulletin of the AMS 82 (1976), 151–153. Original study of factorial products as perfect squares.",
+        "type": "paper"
+      }
+    ],
+    "prerequisites": [
+      "Number theory: factorials, perfect squares, p-adic valuations",
+      "Legendre's formula: v_p(n!) = ∑_{i≥1} ⌊n/pⁱ⌋ for prime p",
+      "Combinatorics: partitions and set counting"
+    ],
+    "relatedProofs": [
+      "infinitude-primes",
+      "fundamental-arithmetic"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The structure of Dₖ depends on prime factorizations of factorials. Legendre's formula v_p(n!) = ∑⌊n/pⁱ⌋ determines which factorial products can be perfect squares"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization is the foundation for analyzing when a product a₁!···aₖ! is a perfect square: each prime's total exponent must be even"
+    }
+  ],
+  "overview": {
+    "historicalContext": "**Erdős Problem #374** originated in Erdős and Graham's 1976 work on factorial arithmetic. For an integer $m$, define $F(m)$ as the minimal $k \\geq 2$ such that there exist integers $a_1 < a_2 < \\cdots < a_k = m$ with the product $a_1! \\cdot a_2! \\cdots a_k!$ being a **perfect square**. The classes $D_k = \\{m : F(m) = k\\}$ partition the integers with well-defined $F$.\n\nThe structural results are striking: $D_2$ consists exactly of perfect squares greater than 1 (since $m! \\cdot a!$ is a square iff $m!/a!$ is a square, which for $a < m$ reduces to $m$ being a perfect square when $k=2$). No prime belongs to any $D_k$: if $p$ is prime, then $v_p(p!) = 1$, making it impossible to achieve even $p$-adic valuation in any product $a_1! \\cdots a_k!$ with $a_k = p$.\n\nThe most remarkable structural result is $D_k = \\emptyset$ for $k > 6$, proved by analyzing the parity constraints on $v_p(a_1! \\cdots a_k!)$ via Legendre's formula. The smallest element of $D_6$ is $527$, discovered by computational search. The **growth rates** of $|D_k \\cap \\{1, \\ldots, n\\}|$ for $3 \\leq k \\leq 6$ remain unknown as of 2026, with the interplay between Legendre's formula and parity constraints being the key obstacle.",
+    "problemStatement": "Determine the growth rate of $|D_k \\cap \\{1,\\ldots,n\\}|$ for $3 \\leq k \\leq 6$, where $D_k = \\{m : F(m) = k\\}$ and $F(m) = \\min\\{k \\geq 2 : \\exists a_1 < \\cdots < a_k = m,\\ a_1! \\cdots a_k! \\text{ is a perfect square}\\}$.",
+    "proofStrategy": "The formalization defines `IsPerfectSquare`, `factorialProduct`, and `HasSquareFactorialProduct` constructively, axiomatizes $F(m)$ as `bigF`, and records known structural results about the sets $D_k$. Seven axioms encode: $F$ is well-defined (minimality), $D_2 = $ squares, primes are excluded, $D_k = \\emptyset$ for $k > 6$, the minimum of $D_6$ is $527$, and the main open question about growth rates.",
+    "keyInsights": [
+      "D₂ = perfect squares > 1, giving |D₂ ∩ {1,...,n}| = √n + O(1)",
+      "No prime belongs to any Dₖ: v_p(p!) = 1 is odd, so the p-adic valuation of any factorial product including p! has odd p-contribution, preventing a perfect square",
+      "Dₖ = ∅ for k > 6, so only finitely many classes D₂,...,D₆ partition the relevant integers. This follows from tight constraints on how many factorials can be multiplied while maintaining parity",
+      "The smallest element of D₆ is 527, showing D₆ is sparse — the computation requires checking all m ≤ 527 and verifying F(527) = 6",
+      "D₃ grows slower than D₄, indicating non-monotone behavior in k — the growth rate is controlled by the density of integers whose factorial's prime factorization has specific parity patterns",
+      "The key obstacle is understanding how Legendre's formula v_p(n!) = ∑⌊n/pⁱ⌋ interacts with parity constraints across multiple factorials — the carrying structure in base-p representations of the aᵢ determines which products can be squares"
+    ],
+    "prerequisites": [
+      "Number theory: factorials $n!$, perfect squares, and $p$-adic valuations $v_p$",
+      "Legendre's formula: $v_p(n!) = \\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor$ — determines prime factorizations of factorials",
+      "Combinatorics: counting integers satisfying arithmetic parity constraints"
+    ]
   },
   "sections": [
     {
       "id": "imports",
-      "title": "Imports and Overview",
+      "title": "Imports and Problem Overview",
       "startLine": 1,
       "endLine": 24,
-      "summary": "Module imports and problem overview: factorial products as perfect squares."
+      "summary": "Problem statement, references to Erdős-Graham (1976), and Mathlib imports.",
+      "mathContext": "Define $F(m) = \\min\\{k \\geq 2 : \\exists a_1 < \\cdots < a_k = m,\\ a_1! \\cdots a_k! \\in \\text{squares}\\}$ and study $D_k = F^{-1}(k)$."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 25,
       "endLine": 52,
-      "summary": "IsPerfectSquare, factorialProduct, HasSquareFactorialProduct, bigF (F(m)), inDk."
+      "summary": "IsPerfectSquare (∃ k, n = k*k), factorialProduct (∏ aᵢ!), HasSquareFactorialProduct (the square product condition), bigF (axiomatized F(m)), inDk (membership in Dₖ).",
+      "mathContext": "$\\text{IsPerfectSquare}(n) :\\Leftrightarrow \\exists k, n = k^2$. $F(m) = \\min k$ with $\\exists a_1 < \\cdots < a_k = m$, $\\prod a_i!$ a square."
     },
     {
       "id": "d2-primes",
       "title": "D₂ and Prime Exclusion",
       "startLine": 54,
       "endLine": 62,
-      "summary": "D₂ = perfect squares > 1; no prime belongs to any Dₖ."
+      "summary": "D₂ = perfect squares > 1; no prime belongs to any Dₖ (since v_p(p!) is odd).",
+      "mathContext": "$D_2 = \\{m^2 : m \\geq 2\\}$ (for $k=2$, need $a! \\cdot m!$ a square with $a < m$). Primes excluded: $v_p(p!) = 1$ forces odd total valuation."
     },
     {
       "id": "d6-finiteness",
       "title": "Finiteness and D₆ Structure",
       "startLine": 63,
       "endLine": 69,
-      "summary": "Dₖ = ∅ for k > 6; smallest element of D₆ is 527."
+      "summary": "Dₖ = ∅ for k > 6; smallest element of D₆ is 527.",
+      "mathContext": "$D_k = \\emptyset$ for $k > 6$: at most 6 factorials needed. $\\min D_6 = 527$: verified by exhaustive computation."
     },
     {
       "id": "open-question",
       "title": "The Open Question",
       "startLine": 71,
       "endLine": 79,
-      "summary": "Growth rate of |Dₖ ∩ {1,...,n}| for 3 ≤ k ≤ 6 — open problem."
+      "summary": "Growth rate of |Dₖ ∩ {1,...,n}| for 3 ≤ k ≤ 6 — the main open problem.",
+      "mathContext": "For $3 \\leq k \\leq 6$: $|D_k \\cap \\{1,\\ldots,n\\}| = ?$ asymptotically. Known: $|D_2| \\sim \\sqrt{n}$. Unknown: growth rates for $D_3, D_4, D_5, D_6$."
     }
   ],
-  "overview": {
-    "historicalContext": "**Erdős Problem #374** originated in Erdős and Graham's 1976 work on factorial arithmetic. For an integer $m$, define $F(m)$ as the minimal $k \\geq 2$ such that there exist integers $a_1 < a_2 < \\cdots < a_k = m$ with the product $a_1! \\cdot a_2! \\cdots a_k!$ being a **perfect square**. The classes $D_k = \\{m : F(m) = k\\}$ partition the integers with well-defined $F$.\n\nThe structural results are striking: $D_2$ consists exactly of perfect squares, no prime belongs to any $D_k$, and $D_k = \\emptyset$ for $k > 6$. The smallest element of $D_6$ is $527$, discovered by computational search. The **growth rates** of $|D_k \\cap \\{1, \\ldots, n\\}|$ for $3 \\leq k \\leq 6$ remain unknown as of 2025, with the interplay between Legendre's formula for $v_p(n!)$ and parity constraints on prime multiplicities being the key obstacle.",
-    "problemStatement": "Determine the growth rate of |Dₖ ∩ {1,...,n}| for 3 ≤ k ≤ 6, where Dₖ = {m : F(m) = k}.",
-    "proofStrategy": "We define IsPerfectSquare, factorialProduct, and HasSquareFactorialProduct constructively, axiomatize F(m) as bigF, and record known structural results about the sets Dₖ.",
-    "keyInsights": [
-      "D₂ = perfect squares > 1, giving |D₂ ∩ {1,...,n}| = √n + O(1)",
-      "No prime belongs to any Dₖ, since a single factorial p! cannot be part of a square product",
-      "Dₖ = ∅ for k > 6, so only finitely many classes D₂,...,D₆ partition the relevant integers",
-      "The smallest element of D₆ is 527, showing D₆ is sparse",
-      "D₃ grows slower than D₄, indicating non-monotone behavior in k"
+  "conclusion": {
+    "summary": "Erdős Problem #374 is formalized in 79 lines with 7 axioms encoding the structural results about factorial square products. The partition D₂ through D₆ is established, with D₂ = squares and Dₖ = ∅ for k > 6. The growth rates of D₃ through D₆ remain open.",
+    "implications": "Resolution would connect factorial arithmetic to the distribution of square-free parts and p-adic valuations, with links to Legendre's formula, base-p representations, and the theory of multiplicative functions.",
+    "openQuestions": [
+      "What is |D₃ ∩ {1,...,n}| asymptotically? Is D₃ infinite?",
+      "What is |D₄ ∩ {1,...,n}| asymptotically?",
+      "Is D₅ finite or infinite? It is conjectured to be infinite but sparse",
+      "What is the density of D₃ ∪ D₄ ∪ D₅ ∪ D₆ relative to the set of all non-prime, non-square integers?"
     ]
   },
-  "conclusion": {
-    "summary": "Erdős Problem #374 asks for the growth rate of Dₖ (integers requiring exactly k factorials for a square product) for 3 ≤ k ≤ 6. The structure is known — only D₂ through D₆ are nonempty — but growth rates remain open.",
-    "implications": "Resolution would connect factorial arithmetic to the distribution of square-free parts and p-adic valuations, with links to Stirling's approximation and multiplicative number theory.",
-    "openQuestions": [
-      "What is |D₃ ∩ {1,...,n}| asymptotically?",
-      "What is |D₄ ∩ {1,...,n}| asymptotically?",
-      "Is D₅ finite or infinite?",
-      "What is the density of D₃ ∪ D₄ ∪ D₅ ∪ D₆?"
-    ]
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Nat.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos374",
+    "lineCount": 79,
+    "axiomCount": 7,
+    "theoremCount": 0,
+    "definitionCount": 5
   }
 }

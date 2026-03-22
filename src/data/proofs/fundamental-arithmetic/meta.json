@@ -150,17 +150,30 @@
   "references": [
     {
       "authors": "Euclid",
-      "title": "Elements, Book VII, Proposition 30",
+      "title": "Elements, Books VII and IX",
       "year": "c. 300 BCE",
-      "venue": "Classical geometry",
-      "note": "Euclid's lemma: if a prime divides a product, it divides one of the factors — the key lemma for uniqueness of prime factorization"
+      "note": "VII.31: existence of prime factors; VII.32, IX.14: foundations of uniqueness"
     },
     {
-      "authors": "Gauss, Carl Friedrich",
+      "authors": "C. F. Gauss",
       "title": "Disquisitiones Arithmeticae",
       "year": "1801",
-      "venue": "Leipzig: Fleischer",
-      "note": "First rigorous proof of the Fundamental Theorem of Arithmetic (Article 16), establishing unique prime factorization as a foundation for number theory"
+      "venue": "Leipzig",
+      "note": "First explicit statement and proof of the Fundamental Theorem of Arithmetic (§16)"
+    },
+    {
+      "authors": "G. H. Hardy, E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "1938",
+      "venue": "Oxford University Press",
+      "note": "Standard modern treatment of unique factorization and its consequences"
+    },
+    {
+      "authors": "E. Zermelo",
+      "title": "Elementare Betrachtungen zur Theorie der Primzahlen",
+      "year": "1934",
+      "venue": "Nachrichten der Gesellschaft der Wissenschaften zu Göttingen",
+      "note": "Simplified proof of unique factorization using well-ordering"
     }
   ],
   "crossReferences": [

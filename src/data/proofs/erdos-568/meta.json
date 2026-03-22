@@ -5,7 +5,7 @@
   "description": "If R(G, Tₙ) ≪ n for all trees and R(G, Kₙ) ≪ n² for all complete graphs, must G be Ramsey size linear? Posed by EFRS (1993). Open.",
   "meta": {
     "erdosNumber": 568,
-    "status": "formalized",
+    "status": "axiomatized",
     "tags": [
       "erdos",
       "combinatorics",
@@ -28,7 +28,8 @@
       "erdos-566",
       "erdos-567"
     ],
-    "axiomCount": 0
+    "axiomCount": 3,
+    "badge": "axiom"
   },
   "sections": [
     {

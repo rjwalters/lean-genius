@@ -51,11 +51,11 @@
     "problemStatement": "**The Law of Quadratic Reciprocity**:\n\nFor distinct odd primes $p$ and $q$:\n\n$$\\left(\\frac{p}{q}\\right)\\left(\\frac{q}{p}\\right) = (-1)^{\\frac{p-1}{2}\\cdot\\frac{q-1}{2}}$$\n\nwhere $(p/q)$ is the Legendre symbol:\n- $1$ if $p$ is a quadratic residue mod $q$\n- $-1$ if $p$ is a quadratic nonresidue mod $q$\n\n**Restated**: The symbols $(p/q)$ and $(q/p)$ are equal unless both $p \\equiv 3$ and $q \\equiv 3$ (mod 4), in which case they are negatives.",
     "proofStrategy": "The proof uses properties of the multiplicative group $(\\mathbb{Z}/p\\mathbb{Z})^*$:\n\n1. **Legendre symbol definition**: $(a/p) = a^{(p-1)/2} \\mod p$ by Euler's criterion\n\n2. **Counting lattice points**: Gauss's original proof counts lattice points in specific regions\n\n3. **Modern approach**: Uses the structure of finite fields and character theory\n\n4. **Supplementary laws**:\n   - First: $-1$ is a QR mod $p$ iff $p \\equiv 1 \\pmod{4}$\n   - Second: $2$ is a QR mod $p$ iff $p \\equiv \\pm 1 \\pmod{8}$",
     "keyInsights": [
-      "The sign depends only on whether both primes are 3 mod 4",
-      "Gauss considered this the most beautiful theorem in number theory",
-      "The theorem extends to higher reciprocity laws in algebraic number theory",
-      "Euler's criterion gives a computational method for the Legendre symbol",
-      "The multiplicativity of the Legendre symbol simplifies many calculations"
+      "**The Reciprocity Law:** For odd primes $p \\neq q$: $\\left(\\frac{p}{q}\\right)\\left(\\frac{q}{p}\\right) = (-1)^{\\frac{p-1}{2} \\cdot \\frac{q-1}{2}}$. The sign flips only when BOTH $p \\equiv q \\equiv 3 \\pmod{4}$.",
+      "**Gauss's *Theorema Aureum*:** Gauss called this the 'golden theorem' and gave six proofs. The law reveals that quadratic residuosity mod $p$ and mod $q$ are not independent — they are linked by the parities of $(p-1)/2$ and $(q-1)/2$.",
+      "**Euler's Criterion:** $\\left(\\frac{a}{p}\\right) \\equiv a^{(p-1)/2} \\pmod{p}$. This converts the Legendre symbol from a quadratic solvability question into a simple exponentiation — computable in $O(\\log p)$ multiplications by fast exponentiation.",
+      "**Multiplicativity:** $\\left(\\frac{ab}{p}\\right) = \\left(\\frac{a}{p}\\right)\\left(\\frac{b}{p}\\right)$. Combined with reciprocity and the supplements $\\left(\\frac{-1}{p}\\right) = (-1)^{(p-1)/2}$ and $\\left(\\frac{2}{p}\\right) = (-1)^{(p^2-1)/8}$, this determines $\\left(\\frac{a}{p}\\right)$ for any $a$.",
+      "**Higher Reciprocity:** Quadratic reciprocity generalizes to cubic ($\\mathbb{Z}[\\omega]$), quartic ($\\mathbb{Z}[i]$), and arbitrary $n$th-power reciprocity laws via class field theory — the deepest strand in algebraic number theory, from Gauss through Artin to Langlands."
     ]
   },
   "sections": [
@@ -112,6 +112,40 @@
       "Can reciprocity laws be used for faster primality tests?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "elementary-quadratic-reciprocity",
+      "relationship": "related",
+      "description": "An alternative formalization of quadratic reciprocity using elementary methods. Both establish the same law relating $(p/q)$ and $(q/p)$, but with different proof techniques and Mathlib dependencies."
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "foundational",
+      "description": "Euler's totient function $\\phi(n)$ counts units in $\\mathbb{Z}/n\\mathbb{Z}$. The Legendre symbol $(a/p) = a^{(p-1)/2} \\bmod p$ uses $\\phi(p) = p - 1$, and Euler's criterion connecting quadratic residues to this exponent is the starting point for reciprocity."
+    },
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ is closely related: both concern the multiplicative structure of $\\mathbb{Z}/p\\mathbb{Z}$. Gauss's first proof of quadratic reciprocity used Gauss sums, which generalize factorials in $\\mathbb{Z}/p\\mathbb{Z}$."
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "extends",
+      "description": "Quadratic reciprocity implies Dirichlet-style results on primes in arithmetic progressions: primes $p \\equiv 1 \\pmod{4}$ vs $p \\equiv 3 \\pmod{4}$ behave differently as quadratic residues, connecting to Dirichlet's theorem on primes in progressions."
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Both are landmarks of 19th-century algebra: Abel-Ruffini uses Galois groups to prove quintic unsolvability, while quadratic reciprocity reveals deep structure in $\\mathbb{Z}/p\\mathbb{Z}$. Artin reciprocity law unifies both into class field theory."
+    }
+  ],
+  "relatedProofs": [
+    "elementary-quadratic-reciprocity",
+    "euler-totient",
+    "wilsons-theorem",
+    "infinitude-primes",
+    "abel-ruffini"
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity",

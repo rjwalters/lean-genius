@@ -179,61 +179,6 @@
       "ComplexConjugate"
     ],
     "namespace": "HermiteLindemann",
-    "lineCount": 374,
-    "axiomCount": 4,
-    "theoremCount": 1,
-    "definitionCount": 1
-  },
-  "relatedProofs": [
-    "e-transcendental",
-    "pi-transcendental",
-    "angle-trisection",
-    "gelfond-schneider",
-    "euler-identity",
-    "liouville-theorem",
-    "abel-ruffini",
-    "sqrt2-irrational",
-    "fundamental-theorem-algebra"
-  ],
-  "references": [
-    {
-      "authors": "Hermite, Charles",
-      "title": "Sur la fonction exponentielle",
-      "year": "1873",
-      "venue": "Comptes rendus de l'Académie des Sciences 77",
-      "note": "Proved e is transcendental — the first of the Hermite-Lindemann results"
-    },
-    {
-      "authors": "Lindemann, Ferdinand von",
-      "title": "Über die Zahl π",
-      "year": "1882",
-      "venue": "Mathematische Annalen 20, pp. 213-225",
-      "note": "Extended Hermite's method to prove π transcendental, settling the ancient problem of squaring the circle"
-    },
-    {
-      "authors": "Weierstrass, Karl",
-      "title": "Zu Lindemann's Abhandlung: Über die Ludolph'sche Zahl",
-      "year": "1885",
-      "venue": "Sitzungsberichte der Königlich Preußischen Akademie der Wissenschaften",
-      "note": "Generalized Lindemann's result to the full Lindemann-Weierstrass theorem on algebraic independence"
-    }
-  ],
-  "leanFile": {
-    "imports": [
-      "Mathlib.RingTheory.Algebraic.Basic",
-      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
-      "Mathlib.Analysis.SpecialFunctions.Complex.Analytic",
-      "Mathlib.Data.Real.Pi.Bounds",
-      "Mathlib.Data.Complex.Exponential",
-      "Mathlib.LinearAlgebra.LinearIndependent.Basic",
-      "Mathlib.Tactic"
-    ],
-    "opens": [
-      "Complex",
-      "Polynomial",
-      "ComplexConjugate"
-    ],
-    "namespace": "HermiteLindemann",
     "lineCount": 375,
     "axiomCount": 4,
     "theoremCount": 1,

@@ -120,9 +120,21 @@
     "prerequisites": ["factorial intervals", "smooth number theory"]
   },
   {
+    "id": "ann-1059-primality",
+    "proofId": "erdos-1059",
+    "range": { "startLine": 121, "endLine": 137 },
+    "type": "technique",
+    "title": "Primality Verification via decide",
+    "content": "Proves `prime_101` and `prime_211` using Lean's `decide` tactic, which compiles the primality test to native code and evaluates it at kernel level. This produces a proof term — stronger than `#eval` — confirming the computation is correct. These primality proofs are prerequisites for the summary theorem.",
+    "mathContext": "$101$ and $211$ are prime. Lean's `decide` performs trial division up to $\\sqrt{n}$ at compile time, producing a certified proof.",
+    "significance": "supporting",
+    "relatedConcepts": ["decide-tactic", "certified-computation", "primality-testing"],
+    "prerequisites": ["nat-prime", "decidable-prime"]
+  },
+  {
     "id": "ann-1059-witnesses",
     "proofId": "erdos-1059",
-    "range": { "startLine": 140, "endLine": 143 },
+    "range": { "startLine": 139, "endLine": 143 },
     "type": "insight",
     "title": "Two Witnesses Summary",
     "content": "Summary theorem packaging both verified witnesses: $101$ and $211$ are both prime and satisfy `AllFactorialSubtractionsComposite`. Constructed via `exact ⟨prime_101, example_101, prime_211, example_211⟩`. These are the first two entries in OEIS A064152.",

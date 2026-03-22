@@ -3,11 +3,11 @@
     "id": "ann-header",
     "proofId": "abel-ruffini",
     "range": {
-      "startLine": 1,
-      "endLine": 4
+      "startLine": 6,
+      "endLine": 32
     },
     "type": "concept",
-    "title": "Historical Introduction",
+    "title": "Module Documentation",
     "content": "The Abel-Ruffini theorem, proven by Niels Henrik Abel in 1824 and later illuminated by Galois's theory, answers a 300-year-old question: why is there no 'quintic formula' like the quadratic formula?\n\nGalois discovered that solvability by radicals is equivalent to having a solvable Galois group, revealing a profound connection between field theory and group theory.",
     "mathContext": "The question: Given $ax^5 + bx^4 + cx^3 + dx^2 + ex + f = 0$, is there a formula for $x$ using only $+, -, \\times, \\div,$ and $\\sqrt[n]{\\phantom{x}}$?",
     "significance": "supporting",
@@ -25,8 +25,8 @@
     "id": "ann-imports",
     "proofId": "abel-ruffini",
     "range": {
-      "startLine": 6,
-      "endLine": 32
+      "startLine": 1,
+      "endLine": 4
     },
     "type": "concept",
     "title": "Mathlib Imports",
@@ -44,14 +44,34 @@
     ]
   },
   {
+    "id": "ann-namespace",
+    "proofId": "abel-ruffini",
+    "range": {
+      "startLine": 34,
+      "endLine": 35
+    },
+    "type": "context",
+    "title": "Namespace Declaration",
+    "content": "The `AbelRuffini` namespace scopes all theorems in the file. All theorem names are prefixed with `AbelRuffini.` when referenced externally (e.g., `AbelRuffini.galois_bridge`). The namespace is closed at line 185 with `end AbelRuffini`.",
+    "mathContext": "Lean 4 namespaces organize declarations hierarchically. The `AbelRuffini` namespace groups `galois_bridge`, `symmetric_group_not_solvable`, `not_solvable_by_rad_of_not_solvable_gal`, etc. under a common prefix.",
+    "significance": "context",
+    "prerequisites": [
+      "Lean 4 namespace system"
+    ],
+    "relatedConcepts": [
+      "Lean 4 namespaces",
+      "module organization"
+    ]
+  },
+  {
     "id": "ann-solvable-by-rad",
     "proofId": "abel-ruffini",
     "range": {
       "startLine": 36,
-      "endLine": 46
+      "endLine": 49
     },
     "type": "definition",
-    "title": "Solvable by Radicals",
+    "title": "Solvable by Radicals and Field Variables",
     "content": "An element α is 'solvable by radicals' if it can be built from the base field using field operations and nth roots. The quadratic formula is an example: $x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}$\n\nMathlib defines this inductively via `IsSolvableByRad`, with constructors for: base field elements, arithmetic operations, and radical extraction.",
     "mathContext": "`solvableByRad F E` is the intermediate field of all elements solvable by radicals over F.\n\nExample: $\\sqrt{1 + \\sqrt{2}}$ is built by: 2 ∈ ℚ, then √2, then 1+√2, then √(1+√2).",
     "significance": "critical",
@@ -74,7 +94,7 @@
       "endLine": 67
     },
     "type": "theorem",
-    "title": "Abel-Ruffini Theorem (One Direction)",
+    "title": "The Galois Bridge Theorem",
     "content": "**Theorem**: If α is expressible using radicals, then the Galois group of its minimal polynomial is solvable.\n\nThis is the key bridge: radical solvability (field theory) → group solvability (group theory).\n\nThe proof proceeds by induction on `IsSolvableByRad`. The key case: if α^n is solvable, then adjoining α creates a cyclic extension, and cyclic groups are abelian (hence solvable).",
     "mathContext": "$\\alpha$ solvable by radicals $\\Rightarrow$ Gal(minpoly(α)) is solvable\n\nContrapositive: If Galois group is NOT solvable, roots are NOT expressible by radicals.",
     "significance": "critical",
@@ -142,7 +162,7 @@
     "proofId": "abel-ruffini",
     "range": {
       "startLine": 86,
-      "endLine": 100
+      "endLine": 93
     },
     "type": "technique",
     "title": "Instantiating Non-Solvability for S₅ and S₆",
@@ -190,7 +210,7 @@
     "proofId": "abel-ruffini",
     "range": {
       "startLine": 100,
-      "endLine": 112
+      "endLine": 118
     },
     "type": "insight",
     "title": "Solvable Small Symmetric Groups: The Other Side of the Threshold",
@@ -207,6 +227,30 @@
       "abelian group",
       "typeclass inference",
       "quadratic formula"
+    ]
+  },
+  {
+    "id": "ann-part-v-synthesis",
+    "proofId": "abel-ruffini",
+    "range": {
+      "startLine": 120,
+      "endLine": 129
+    },
+    "type": "insight",
+    "title": "Synthesis: Combining the Bridge with Non-Solvability",
+    "content": "Part V is the climax of the formalization. The docstring frames the logical synthesis: Parts II and III are independent ingredients — the Galois bridge (solvable by radicals ⟹ solvable Galois group) and the group-theoretic fact ($S_5$ is not solvable). Their combination via contrapositive yields Abel-Ruffini.\n\nThis two-step structure mirrors the historical development: Abel proved the impossibility (1824) by analyzing the structure of radical expressions, while Galois (1832) provided the group-theoretic framework that made the argument conceptually transparent. The separation of field-theoretic and group-theoretic ingredients reflects how modern algebra organizes the proof.",
+    "mathContext": "The logical chain: $\\text{IsSolvableByRad}\\,F\\,\\alpha \\Rightarrow \\text{IsSolvable}(q.\\text{Gal})$ (Part II) combined with $\\neg\\,\\text{IsSolvable}(S_5)$ (Part III) gives $\\text{Gal}(q) \\cong S_5 \\Rightarrow \\neg\\,\\text{IsSolvableByRad}\\,F\\,\\alpha$ (Part V). This is a textbook instance of $(P \\Rightarrow Q) \\land \\neg Q \\Rightarrow \\neg P$ (modus tollens).",
+    "significance": "key",
+    "prerequisites": [
+      "galois_bridge (Part II)",
+      "symmetric_group_not_solvable (Part III)",
+      "contrapositive reasoning"
+    ],
+    "relatedConcepts": [
+      "logical synthesis",
+      "modus tollens",
+      "contrapositive",
+      "proof architecture"
     ]
   },
   {

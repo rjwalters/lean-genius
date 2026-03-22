@@ -148,6 +148,34 @@
     "theoremCount": 11,
     "definitionCount": 0
   },
+  "crossReferences": [
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "The main quadratic reciprocity entry — this file provides an alternative elementary proof via Eisenstein's method, complementing the standard Gauss-sum approach"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "related",
+      "description": "Euler's proof of infinitely many primes uses the divergence of ∑1/p; Dirichlet extended this using quadratic characters (from QR) to prove infinitely many primes in arithmetic progressions"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem (subgroup order divides group order) underpins the structure of (ℤ/pℤ)× — the multiplicative group whose quadratic residue structure QR describes"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "thematic",
+      "description": "Both concern the algebraic structure of number-theoretic objects: QR describes the splitting behavior of primes in quadratic extensions, while Abel-Ruffini concerns solvability of polynomial equations. The Artin reciprocity law unifies both"
+    }
+  ],
+  "relatedProofs": [
+    "quadratic-reciprocity",
+    "infinitude-primes",
+    "lagrange-theorem",
+    "abel-ruffini"
+  ],
   "references": [
     {
       "authors": "Gauss, Carl Friedrich",

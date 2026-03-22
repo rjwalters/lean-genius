@@ -190,18 +190,32 @@
   },
   "references": [
     {
-      "authors": "Sunzi (Sun Tzu)",
-      "title": "Sunzi Suanjing (The Mathematical Classic of Sun Zi)",
-      "year": "c. 300 CE",
-      "venue": "Chinese mathematical text",
-      "note": "Contains the earliest known statement of the CRT: 'When dividing by 3 remainder 2, by 5 remainder 3, by 7 remainder 2, what is the number?' — the classical coprime case"
+      "authors": "O. Ore",
+      "title": "The general Chinese remainder theorem",
+      "year": "1952",
+      "venue": "Amer. Math. Monthly, 59(6), 365-370",
+      "note": "Systematic treatment of CRT for non-coprime moduli with the gcd divisibility criterion"
     },
     {
-      "authors": "Ireland, Kenneth; Rosen, Michael",
+      "authors": "C. F. Gauss",
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Leipzig: Gerh. Fleischer",
+      "note": "Sections 32-36: CRT for coprime moduli; the non-coprime case is implicit in the theory of simultaneous congruences"
+    },
+    {
+      "authors": "K. Ireland, M. Rosen",
       "title": "A Classical Introduction to Modern Number Theory",
       "year": "1990",
-      "venue": "Springer Graduate Texts in Mathematics 84, 2nd edition",
-      "note": "Chapter 3 covers the CRT including the non-coprime generalization with the gcd solvability condition and lcm uniqueness"
+      "venue": "Springer GTM 84, Chapter 3",
+      "note": "Presents both coprime and non-coprime CRT with ring-theoretic perspective"
+    },
+    {
+      "authors": "G. H. Hardy, E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "1979",
+      "venue": "Oxford University Press, 5th ed., Chapter 5",
+      "note": "Classical treatment of simultaneous congruences including the non-coprime case"
     }
   ],
   "crossReferences": [

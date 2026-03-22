@@ -2,12 +2,12 @@
   {
     "id": "ann-intro",
     "proofId": "area-of-circle",
-    "range": {"startLine": 1, "endLine": 50},
+    "range": {"startLine": 1, "endLine": 51},
     "type": "concept",
     "title": "Introduction: Area of a Circle (Wiedijk #9)",
     "content": "The file opens with imports of `Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls` (providing `Complex.volume_ball`) and `Mathlib.Tactic`. The extensive doc comment establishes this as Wiedijk #9 — one of the 100 most famous theorems. It explains the measure-theoretic approach: area is formalized as Lebesgue measure in $\\mathbb{R}^2$, modeled via $\\mathbb{C}$. The historical note credits Archimedes (c. 287–212 BCE) with the first rigorous proof using the method of exhaustion, where he showed the area equals that of a right triangle with base = circumference and height = radius.",
     "mathContext": "The method of exhaustion, formalized by Eudoxus of Cnidus and perfected by Archimedes, proves equalities by showing that the difference between two quantities can be made smaller than any given positive value — essentially the $\\varepsilon$-$\\delta$ definition of a limit. Archimedes inscribed $n$-gons with area $\\frac{n}{2}r^2 \\sin(2\\pi/n) \\to \\pi r^2$ as $n \\to \\infty$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Lebesgue measure", "Archimedes", "Wiedijk 100 theorems", "method of exhaustion"],
     "prerequisites": ["measure theory basics", "complex plane as ℝ²", "Mathlib library structure"]
   },
@@ -17,9 +17,9 @@
     "range": {"startLine": 52, "endLine": 84},
     "type": "theorem",
     "title": "Main Theorems: Open and Closed Disk Area = πr²",
-    "content": "The core results. `area_of_circle` proves that the Lebesgue measure of an open ball in $\\mathbb{C}$ with center $c$ and radius $r$ equals $r^2 \\cdot \\pi$, expressed as `ENNReal.ofReal r ^ 2 * ↑NNReal.pi`. The proof is a single line: `Complex.volume_ball center r`. Similarly, `area_of_closed_disk` proves the same for closed balls via `Complex.volume_closedBall`. The equality of open and closed disk areas reflects the measure-theoretic fact that the boundary circle (a 1-dimensional manifold) has 2-dimensional Lebesgue measure zero.",
+    "content": "The core results. `area_of_circle` proves that the Lebesgue measure of an open ball in $\\mathbb{C}$ with center $c$ and radius $r$ equals $r^2 \\cdot \\pi$, expressed as `ENNReal.ofReal r ^ 2 * ↑NNReal.pi`. The proof is a single line: `Complex.volume_ball center r`. Similarly, `area_of_closed_disk` proves the same for closed balls via `Complex.volume_closedBall`. The equality of open and closed disk areas reflects the measure-theoretic fact that the boundary circle (a 1-dimensional manifold) has 2-dimensional Lebesgue measure zero. Internally, `Complex.volume_ball` uses the general $n$-dimensional ball volume formula $V_n(r) = \\pi^{n/2} r^n / \\Gamma(n/2+1)$ specialized to $n=2$, where $\\Gamma(2) = 1! = 1$.",
     "mathContext": "The result is stated using `ENNReal` (extended non-negative reals $[0, \\infty]$) because Lebesgue measure takes values in $\\overline{\\mathbb{R}_{\\geq 0}}$. The `ENNReal.ofReal r` coercion maps negative $r$ to 0, handling the edge case of negative radius. `NNReal.pi` is $\\pi$ as a non-negative real. The `open MeasureTheory Metric` command brings `volume` and `ball`/`closedBall` into scope.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Complex.volume_ball", "Complex.volume_closedBall", "ENNReal", "NNReal.pi", "MeasureTheory.volume"],
     "prerequisites": ["Lebesgue measure", "metric balls in ℂ", "ENNReal coercions"]
   },

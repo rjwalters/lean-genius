@@ -110,6 +110,11 @@
       "**Sárközy's polynomial leap**: the improvement from O(log X) to X^{1/2−ε} shows the problem has algebraic, not logarithmic, character — carefully chosen point sets can exploit arithmetic structure",
       "**The 465-466 duality**: matching upper (Konyagin) and lower (Sárközy) bounds at X^{1/2} reveal the natural scale, with the remaining gap only in the δ-dependence",
       "**Threshold exponent 1/2**: heuristically, area πX² of the disk gives √(area) ≈ X independent distance classes modulo integers, suggesting X^{1/2} as the natural extremal count"
+    ],
+    "prerequisites": [
+      "Number theory: prime factorization and smooth numbers",
+      "Sieve methods and prime distribution",
+      "Analytic number theory: Mertens' theorems"
     ]
   },
   "conclusion": {

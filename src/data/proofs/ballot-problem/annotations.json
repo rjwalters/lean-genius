@@ -13,6 +13,18 @@
     "prerequisites": ["probability theory", "combinatorics", "integer sequences"]
   },
   {
+    "id": "ann-namespace-setup",
+    "proofId": "ballot-problem",
+    "range": {"startLine": 80, "endLine": 92},
+    "type": "technique",
+    "title": "Namespace and MeasurableSpace Setup",
+    "content": "Opens the `BallotProblem` namespace and `Ballot`, `Set`, `ProbabilityTheory`, `MeasureTheory` namespaces for access to Mathlib's probability infrastructure.\n\nThe two `private` instances (lines 86-91) are critical Lean boilerplate: Mathlib's `Ballot` module defines `MeasurableSpace (List ℤ)` locally (with `local instance`), so it is not available outside that file. To use `condCount` (conditional counting measure) here, we must recreate the instance as the discrete σ-algebra (`⊤`) and prove `MeasurableSingletonClass` (every singleton is measurable). Without these, `condCount` would fail to find its typeclass instances.",
+    "mathContext": "The discrete σ-algebra $\\Sigma = \\mathcal{P}(\\text{List}\\,\\mathbb{Z})$ makes every subset measurable. `condCount` then computes $\\Pr[A \\mid B] = |A \\cap B| / |B|$ for finite sets.",
+    "significance": "supporting",
+    "relatedConcepts": ["MeasurableSpace", "condCount", "discrete σ-algebra", "typeclass instance"],
+    "prerequisites": ["measure theory basics", "Lean 4 typeclass system"]
+  },
+  {
     "id": "ann-model",
     "proofId": "ballot-problem",
     "range": {"startLine": 93, "endLine": 131},

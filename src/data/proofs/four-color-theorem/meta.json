@@ -37,11 +37,11 @@
     "problemStatement": "The Four Color Theorem: Every planar graph $G$ is 4-colorable. Equivalently, every map on a plane or sphere can be colored with at most 4 colors such that no two adjacent regions share the same color.\n\nFormally: $\\chi(G) \\leq 4$ for every planar graph $G$, where $\\chi(G)$ is the chromatic number (minimum colors needed).",
     "proofStrategy": "The proof combines two key ideas:\n\n1. Reducibility: Show that certain configurations cannot appear in a minimal counterexample. If a graph contains a reducible configuration, it can be simplified while preserving its 4-colorability status.\n\n2. Unavoidability: Prove that every planar graph must contain at least one configuration from a finite set of reducible configurations.\n\nTogether, these imply no minimal counterexample exists—thus all planar graphs are 4-colorable.\n\nThe challenge: the unavoidable set required checking 1,936 configurations, each requiring computer verification of reducibility. Gonthier's Coq formalization verified this exhaustively.",
     "keyInsights": [
-      "The theorem is equivalent to showing every planar graph has chromatic number at most 4—graph coloring and map coloring are dual problems",
-      "Euler's formula (V - E + F = 2) constrains planar graph structure, guaranteeing vertices of low degree exist",
-      "The Kempe chain argument (swapping colors along alternating paths) is the key technique, though Kempe's original proof misapplied it",
-      "Reducibility proofs use discharging: redistributing a 'charge' among vertices to derive contradictions",
-      "Computer-assisted proofs raised foundational questions: What makes a proof 'acceptable' to the mathematical community?"
+      "**Graph-Map Duality:** $\\chi(G) \\leq 4$ for every planar graph $G$ $\\iff$ every map on the plane can be 4-colored. The dual graph of a map (countries $\\to$ vertices, borders $\\to$ edges) converts geography to combinatorics.",
+      "**Euler's Constraint:** $V - E + F = 2$ for planar graphs implies $E \\leq 3V - 6$, so some vertex has degree $\\leq 5$. This structural bound is the entry point for the reducibility argument — high-degree vertices alone cannot tile the plane.",
+      "**Kempe Chains:** Given a 4-coloring except at vertex $v$, swap colors along maximal bichromatic paths (Kempe chains) to free a color for $v$. Kempe's 1879 proof failed because chains can merge; the correct argument requires checking 633 unavoidable configurations.",
+      "**Discharging Method:** Assign charge $6 - \\deg(v)$ to each vertex ($\\sum = 12$ by Euler). Redistribute via local rules. If every vertex ends positive, contradiction — so some 'reducible configuration' must appear, enabling induction.",
+      "**Computer-Assisted Proof:** Appel-Haken (1976) checked 1,936 reducible configurations by computer. Robertson et al. (1997) reduced to 633. The proof raised philosophical questions: is a theorem proved if no human can verify every case? Formal verification (Gonthier 2005 in Coq) resolved this."
     ]
   },
   "sections": [
@@ -126,9 +126,39 @@
       "mathContext": "The paradigm: from \"trust the computation\" (Appel-Haken) to \"trust the proof checker\" (Gonthier). Coq's kernel is small enough for human audit."
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "euler-polyhedral-formula",
+      "relationship": "foundational",
+      "description": "Euler's formula $V - E + F = 2$ for connected planar graphs is the starting point for the discharging method: assigning charge $6 - \\deg(v)$ to each vertex gives total charge $6V - 2E = 6(E - F + 2) - 2E = 12$ (using $2E \\geq 3F$). This positive total forces low-degree vertices to exist."
+    },
+    {
+      "targetId": "konigsberg",
+      "relationship": "foundational",
+      "description": "Euler's Königsberg bridge problem (1736) founded graph theory — the mathematical framework in which the Four Color Theorem is stated. Both concern properties of planar graphs: Euler paths in Königsberg, vertex coloring here."
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both are results about graph coloring: Ramsey theory guarantees monochromatic substructures in edge-colored complete graphs, while 4CT guarantees proper vertex colorings of planar graphs. The chromatic number of planar graphs (4) connects to Ramsey-type bounds."
+    },
+    {
+      "targetId": "erdos-szekeres",
+      "relationship": "related",
+      "description": "The Erdős-Szekeres theorem on monotone subsequences is another combinatorial result where the proof structure — showing a finite set of configurations is unavoidable — parallels the Four Color Theorem's unavoidable set approach."
+    },
+    {
+      "targetId": "erdos-807",
+      "relationship": "related",
+      "description": "Erdős Problem #807 concerns graph coloring bounds, directly connecting to the chromatic theory that the Four Color Theorem resolves for planar graphs."
+    }
+  ],
   "relatedProofs": [
     "ramseys-theorem",
-    "erdos-807"
+    "erdos-807",
+    "euler-polyhedral-formula",
+    "konigsberg",
+    "erdos-szekeres"
   ],
   "references": [
     {

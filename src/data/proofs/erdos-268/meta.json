@@ -69,6 +69,10 @@
       "**Coordinate Coupling via Shifts:** The shifted sums Σ 1/(n+k) for k = 0, ..., d-1 create a non-trivial coupling between coordinates. Two sets A, B with identical first coordinates can differ in higher coordinates because shifting by k changes the relative weights of small vs large elements. This coupling is what makes the higher-dimensional problem fundamentally harder than the 1D case",
       "**Constructive vs Existential:** Kovač's d=3 proof is constructive — he computes an explicit ball center and radius. The Kovač-Tao general proof is existential, using compactness and density arguments from Ahmes series theory. The contrast highlights that quantitative bounds on the interior become harder as dimension increases",
       "**Geometric Constraints on X:** Despite having interior, X is geometrically constrained: all coordinates are positive, strictly decreasing (x₀ > x₁ > ··· > x_{d-1} > 0), and projecting to fewer coordinates preserves the set. X lives in a narrow cone, yet still contains balls"
+    ],
+    "prerequisites": [
+      "Elementary number theory: primes, divisibility, factorization",
+      "Topology: continuity, compactness, connectedness"
     ]
   },
   "sections": [

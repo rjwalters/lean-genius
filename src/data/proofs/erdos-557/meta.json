@@ -5,7 +5,7 @@
   "description": "Is R(T; k) ≤ k·n + O(1) for any tree T on n vertices and k colors? The star lower bound R(S_n; k) ≥ k(n-1)+1 shows this would be tight. Status: OPEN.",
   "meta": {
     "erdosNumber": 557,
-    "status": "formalized",
+    "status": "axiomatized",
     "tags": [
       "erdos",
       "graph-theory",
@@ -25,7 +25,8 @@
     "sourceUrl": "https://erdosproblems.com/557",
     "erdosUrl": "https://erdosproblems.com/557",
     "erdosProblemStatus": "open",
-    "axiomCount": 0
+    "axiomCount": 10,
+    "badge": "axiom"
   },
   "sections": [
     {

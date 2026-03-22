@@ -17,7 +17,7 @@
       "marquee-phase-3"
     ],
     "badge": "formalized",
-    "sorries": 3,
+    "sorries": 4,
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -38,6 +38,7 @@
     "originalContributions": [
       "Counting lemma for triangles in epsilon-regular triples",
       "Triangle removal lemma from regularity + counting",
+      "Quantitative triangle removal with explicit gamma and proper R construction",
       "General graph removal lemma framework",
       "Connection between triangle removal and Roth's theorem"
     ],
@@ -68,7 +69,7 @@
       "Triangle counting and subgraph enumeration",
       "Roth's theorem on 3-term arithmetic progressions"
     ],
-    "lineCount": 168
+    "lineCount": 735
   },
   "overview": {
     "historicalContext": "The counting lemma and triangle removal lemma are the key applications of the Szemeredi Regularity Lemma. The counting lemma, implicit in Szemeredi's 1975 work, states that epsilon-regular triples contain approximately the expected number of triangles (as if edges were random). The triangle removal lemma, proved by Ruzsa and Szemeredi in 1978, says that a graph with few triangles can be made triangle-free by removing few edges.\n\nThe profound connection between the triangle removal lemma and additive combinatorics was recognized by Ruzsa and Szemeredi: encoding a 3-AP-free set as a tripartite graph, the removal lemma implies Roth's theorem. This connection was later generalized by Solymosi and by Fox to give new proofs of Szemeredi's theorem via hypergraph removal.\n\nFox (2011) proved the best known quantitative bounds for the triangle removal lemma, showing that the dependence of gamma on delta can be made a tower of bounded height (rather than the tower of height polynomial in 1/delta coming from a direct application of regularity). The optimal bounds remain an important open problem.",
@@ -165,18 +166,9 @@
       "Classical"
     ],
     "namespace": "Szemeredi.Counting",
-    "lineCount": 244,
+    "lineCount": 735,
     "axiomCount": 0,
-    "theoremCount": 8,
-    "definitionCount": 6
-  },
-  "references": [
-    {
-      "authors": "Szemerédi, Endre",
-      "title": "On sets of integers containing no k elements in arithmetic progression",
-      "year": "1975",
-      "venue": "Acta Arithmetica 27, 199–245",
-      "note": "Proved that any set of integers with positive upper density contains arbitrarily long arithmetic progressions — won the Abel Prize in 2012"
-    }
-  ]
+    "theoremCount": 13,
+    "definitionCount": 7
+  }
 }

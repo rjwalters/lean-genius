@@ -134,6 +134,11 @@
       "**Three levels of difficulty**: Infinitely many (proved, Balog-Wooley 1998) < positive lower density (open) < all sufficiently large $n$ (open, the full conjecture)",
       "**Sieve method limitations**: The Balog-Wooley proof uses Selberg sieve + exponential sums; these detect infinitely many but cannot show the gaps are $o(n)$",
       "**abc connection**: Effective forms of the abc conjecture would constrain how simultaneously smooth $n$ and $n+1$ can be, potentially providing alternative approaches"
+    ],
+    "prerequisites": [
+      "Analytic number theory: prime distribution",
+      "Additive combinatorics: sumsets and representation functions",
+      "Asymptotic density of integer sequences"
     ]
   },
   "conclusion": {

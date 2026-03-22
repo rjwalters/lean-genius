@@ -13,6 +13,7 @@
       "complex-analysis",
       "polynomials",
       "algebraic-closure",
+      "wiedijk-100",
       "intermediate"
     ],
     "proofRepoPath": "Proofs/FundamentalTheoremAlgebra.lean",
@@ -67,15 +68,15 @@
     ]
   },
   "overview": {
-    "historicalContext": "The Fundamental Theorem of Algebra has a fascinating history spanning centuries. First conjectured by Albert Girard in 1629, it was attempted by many great mathematicians including d'Alembert, Euler, and Lagrange. Carl Friedrich Gauss provided the first rigorous proof in his 1799 doctoral dissertation, though he would go on to publish three more proofs throughout his career.\n\nDespite its name, the theorem is fundamentally analytic rather than algebraic. Every known proof relies on some completeness property of the real numbers - whether through analysis, topology, or complex function theory. The proof in Mathlib uses Liouville's theorem from complex analysis: a bounded entire function must be constant.",
+    "historicalContext": "The Fundamental Theorem of Algebra has roots stretching back to the 16th century. Peter Rothe stated a version for real roots in 1608, and Albert Girard first conjectured the full result in his 1629 *Invention nouvelle en l'algèbre*: every polynomial of degree $n$ has $n$ roots (counting multiplicities, allowing 'impossible' — i.e., complex — solutions). The first serious proof attempt came from Jean le Rond d'Alembert in 1746, whose argument contained gaps that would take over a century to fill.\n\nLeonhard Euler (1749) gave an algebraic argument reducing the problem to showing that real polynomials of even degree factor over $\\mathbb{R}$, but his proof also had gaps for polynomials of degree $2^k$ with $k \\geq 3$. Joseph-Louis Lagrange (1772) and Pierre-Simon Laplace (1795) also attempted proofs with varying degrees of completeness.\n\nCarl Friedrich Gauss provided the first substantially correct proof in his 1799 doctoral dissertation *Demonstratio nova theorematis omnem functionem algebraicam rationalem integram unius variabilis in factores reales primi vel secundi gradus resolvi posse*. Gauss criticized d'Alembert's approach and used a topological argument about the winding number of a curve. He went on to publish three more proofs (1816, 1816, 1849), each using different techniques — the fourth was purely algebraic modulo the intermediate value theorem.\n\nDespite its name, the theorem is fundamentally analytic rather than algebraic. Every known proof requires the completeness of $\\mathbb{R}$ in some form — whether through complex analysis (Liouville's theorem), topology (winding numbers), or the intermediate value theorem. The Mathlib proof uses Liouville's theorem: if $p(z) \\neq 0$ everywhere, then $1/p(z)$ is a bounded entire function, hence constant by Liouville, contradicting $\\deg p \\geq 1$.\n\nThe theorem is #2 on Wiedijk's list of 100 theorems, reflecting its foundational importance. It underpins the algebraic closure of $\\mathbb{C}$, the spectral theorem in linear algebra, and the decomposition of rational functions into partial fractions.",
     "problemStatement": "The Fundamental Theorem of Algebra: If $p(z) = a_n z^n + a_{n-1} z^{n-1} + \\cdots + a_1 z + a_0$ is a polynomial with complex coefficients and $n \\geq 1$ (i.e., the polynomial is non-constant), then there exists at least one complex number $z_0$ such that $p(z_0) = 0$.\n\nEquivalently: The field of complex numbers $\\mathbb{C}$ is algebraically closed - every polynomial over $\\mathbb{C}$ splits completely into linear factors.",
     "proofStrategy": "The Mathlib proof proceeds via complex analysis:\n\n1. Assume the contrary: Suppose $p(z) \\neq 0$ for all $z \\in \\mathbb{C}$\n2. Define the reciprocal: Consider $f(z) = 1/p(z)$, which would be entire (holomorphic everywhere)\n3. Show boundedness: Since $|p(z)| \\to \\infty$ as $|z| \\to \\infty$, the function $f$ is bounded\n4. Apply Liouville's theorem: A bounded entire function must be constant\n5. Reach contradiction: If $f$ is constant, then $p$ is constant, contradicting our assumption that $\\deg p \\geq 1$\n\nTherefore, $p$ must have at least one root in $\\mathbb{C}$.",
     "keyInsights": [
-      "Despite its algebraic statement, every proof requires analysis - there is no purely algebraic proof",
-      "The theorem immediately implies that every degree-n polynomial has exactly n roots (counted with multiplicity)",
-      "This makes complex numbers 'complete' for algebra: you never need to extend further to solve polynomials",
-      "The proof uses that polynomials grow unboundedly - a topological fact about continuous functions",
-      "Liouville's theorem is the key analytical ingredient: bounded + entire implies constant"
+      "**Algebra Needs Analysis:** Despite stating that $p(z) \\in \\mathbb{C}[z]$ has a root, every proof requires completeness of $\\mathbb{R}$ — whether via Liouville's theorem, winding numbers, or the intermediate value theorem. There is no purely algebraic proof.",
+      "**Complete Factorization:** FTA implies $p(z) = a_n(z - z_1)(z - z_2)\\cdots(z - z_n)$ for degree-$n$ polynomials. Every polynomial over $\\mathbb{C}$ splits into linear factors — $\\mathbb{C}$ is algebraically closed.",
+      "**Liouville's Key Role:** If $p(z) \\neq 0$ everywhere, then $f(z) = 1/p(z)$ is entire. Since $|p(z)| \\to \\infty$ as $|z| \\to \\infty$, $f$ is bounded. Liouville's theorem (bounded + entire $\\Rightarrow$ constant) forces $p$ to be constant — contradiction.",
+      "**No Further Extension Needed:** $\\mathbb{C}$ is the algebraic closure of $\\mathbb{R}$: solving $x^2 + 1 = 0$ creates $\\mathbb{C} = \\mathbb{R}[i]$, and this single extension suffices for ALL polynomial equations. Compare: extending $\\mathbb{Q}$ by $\\sqrt{2}$ doesn't close it.",
+      "**Gauss's Four Proofs:** Gauss gave four proofs (1799, 1816, 1816, 1849), each using different techniques. The Mathlib proof via Liouville's theorem is closest to the complex-analytic approach, leveraging Mathlib's infrastructure for holomorphic functions."
     ]
   },
   "sections": [
@@ -189,6 +190,16 @@
       "targetId": "hermite-lindemann",
       "relationship": "related",
       "description": "Hermite-Lindemann proves e^α is transcendental for algebraic α ≠ 0. FTA concerns algebraic numbers (roots of polynomials); transcendental numbers like e and π lie permanently outside the algebraic closure of Q but inside C"
+    },
+    {
+      "targetId": "general-quartic",
+      "relationship": "specializes",
+      "description": "Ferrari's quartic formula provides explicit complex roots for degree-4 polynomials; FTA guarantees such roots exist for any degree, subsuming all explicit formula results"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem on subgroup orders underpins the group-theoretic proof of FTA via Sylow theory: the non-existence of degree-2 extensions of C follows from the fact that [C:R] = 2 and every odd-degree polynomial over R has a real root"
     }
   ],
   "relatedProofs": [

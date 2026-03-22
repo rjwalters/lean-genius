@@ -189,9 +189,70 @@ private lemma psi_eq_pow {N : ℕ} [NeZero N] (r x : ZMod N) :
       ↑(ZMod.val r) * (2 * ↑Real.pi * Complex.I * (↑(ZMod.val x) / ↑N)) by ring]
   rw [Complex.exp_nat_mul]
 
+/-- ψ is an additive character: ψ(a + b) = ψ(a) · ψ(b).
+    Follows from val(a+b) ≡ val(a)+val(b) (mod N) and exp periodicity. -/
+private lemma psi_add {N : ℕ} [NeZero N] (a b : ZMod N) :
+    ψ (a + b) = ψ a * ψ b := by
+  simp only [ψ, ← Complex.exp_add]
+  congr 1
+  -- Reduce to val(a+b) ≡ val(a) + val(b) mod N
+  rw [ZMod.val_add]
+  set k := ZMod.val a + ZMod.val b
+  have hN : (N : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (NeZero.ne N)
+  have hdiv : (↑k : ℂ) = ↑N * ↑(k / N) + ↑(k % N) := by
+    exact_mod_cast (Nat.div_add_mod k N).symm
+  rw [show (↑k : ℂ) / ↑N = ↑(k / N) + ↑(k % N) / ↑N from by rw [hdiv]; field_simp]
+  rw [show 2 * ↑Real.pi * Complex.I * (↑(k / N) + ↑(k % N) / ↑N) =
+      ↑(k / N) * (2 * ↑Real.pi * Complex.I) +
+      2 * ↑Real.pi * Complex.I * (↑(k % N) / ↑N) from by ring]
+  rw [Complex.exp_add, Complex.exp_nat_mul, Complex.exp_two_pi_mul_I, one_pow, one_mul]
+  -- Now need: 2πi * ((val a + val b) % N) / N = 2πi * val a / N + 2πi * val b / N
+  -- which is: (k % N) / N = val a / N + val b / N up to the integer part already handled
+  ring
+
+/-- ψ(0) = 1 (the character evaluated at zero). -/
+private lemma psi_zero {N : ℕ} [NeZero N] : ψ (0 : ZMod N) = 1 := by
+  simp [ψ, ZMod.val_zero]
+
+/-- ψ(c) ≠ 1 when c ≠ 0: a nontrivial character is not the identity.
+    Since val(c) ∈ {1,...,N-1}, we have 2πi·val(c)/N ∉ 2πiℤ. -/
+private lemma psi_ne_one {N : ℕ} [NeZero N] (c : ZMod N) (hc : c ≠ 0) :
+    ψ c ≠ 1 := by
+  simp only [ψ]
+  -- val(c) ∈ {1,...,N-1} when c ≠ 0
+  have hval_pos : 0 < ZMod.val c := by
+    rw [Nat.pos_iff_ne_zero]
+    intro h
+    exact hc (ZMod.val_eq_zero.mp h)
+  have hval_lt : ZMod.val c < N := ZMod.val_lt c
+  -- exp(2πi·val(c)/N) = 1 iff val(c)/N ∈ ℤ, but 0 < val(c)/N < 1
+  intro h
+  rw [Complex.exp_eq_one_iff] at h
+  obtain ⟨n, hn⟩ := h
+  -- hn : 2πi * val(c)/N = 2πi * n
+  have hpi : (2 : ℂ) * ↑Real.pi * Complex.I ≠ 0 := by
+    apply mul_ne_zero (mul_ne_zero _ _) Complex.I_ne_zero
+    · exact two_ne_zero
+    · exact_mod_cast Real.pi_ne_zero
+  have hN : (N : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (NeZero.ne N)
+  -- From hn: val(c)/N = n (as complex numbers)
+  have heq : (↑(ZMod.val c) : ℂ) / ↑N = ↑n := by
+    have h1 := congr_arg (· / (2 * ↑Real.pi * Complex.I)) hn
+    simp only [mul_div_cancel_left₀ _ hpi] at h1
+    linarith
+  -- val(c) = n * N
+  have heq_nat : (ZMod.val c : ℤ) = n * N := by
+    have : (↑(ZMod.val c) : ℂ) = ↑n * ↑N := by
+      rw [eq_comm, mul_div_eq_iff₀ hN] at heq; linarith
+    exact_mod_cast this
+  -- But 0 < val(c) < N, so n must be 0 (giving val(c) = 0, contradiction)
+  -- or n ≥ 1 (giving val(c) ≥ N, contradiction)
+  omega
+
 /-- Character orthogonality: ∑_{r : ZMod N} ψ(r·c) = N if c = 0, 0 if c ≠ 0.
     When c = 0, every term is 1. When c ≠ 0, the sum is a geometric series
-    with ratio ω = exp(2πi·val(c)/N), a nontrivial N-th root of unity. -/
+    with ratio ω = exp(2πi·val(c)/N), a nontrivial N-th root of unity.
+    Proof via shift argument: r ↦ r+1 is a bijection on ZMod N. -/
 private theorem char_orthogonality {N : ℕ} [NeZero N] (c : ZMod N) :
     (Finset.univ.sum fun r : ZMod N => ψ (r * c)) =
     if c = 0 then ↑N else 0 := by

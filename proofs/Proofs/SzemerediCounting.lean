@@ -280,19 +280,20 @@ theorem counting_lemma (G : SimpleGraph V) [DecidableRel G.Adj]
   -- Good neighborhoods are ε-fractions (since d ≥ 2ε means d-ε ≥ ε)
   have hgood_NB_eps : ∀ a ∈ good,
       ((neighborhoodIn G a B).card : ℚ) ≥ eps * B.card :=
-    fun a ha => le_trans (by nlinarith [Nat.cast_nonneg B.card]) (hgood_NB a ha)
+    fun a ha => le_trans (by
+      have := Nat.cast_nonneg (α := ℚ) B.card
+      nlinarith) (hgood_NB a ha)
   have hgood_NC_eps : ∀ a ∈ good,
       ((neighborhoodIn G a C).card : ℚ) ≥ eps * C.card :=
-    fun a ha => le_trans (by nlinarith [Nat.cast_nonneg C.card]) (hgood_NC a ha)
+    fun a ha => le_trans (by
+      have := Nat.cast_nonneg (α := ℚ) C.card
+      nlinarith) (hgood_NC a ha)
   -- Step 3: Good vertex count > (1-2ε)|A|
   have hgood_card : (good.card : ℚ) > (1 - 2 * eps) * A.card := by
     -- |A \ good| ≤ |badB ∪ badC| ≤ |badB| + |badC| < 2ε|A|
     suffices h : (A.card : ℚ) - good.card < 2 * eps * A.card by linarith
     have h_compl_card : (A \ good).card + good.card = A.card :=
-      Finset.sdiff_union_self_eq_union ▸
-        (Finset.card_union_of_disjoint Finset.sdiff_disjoint).symm ▸
-        congrArg Finset.card (Finset.sdiff_union_self_eq_union.trans
-          (Finset.union_eq_left.mpr hgood_sub))
+      Finset.card_sdiff_add_card_eq_card hgood_sub
     have h_sub : A \ good ⊆ badB ∪ badC := by
       intro a ha
       have haA := (Finset.mem_sdiff.mp ha).1
@@ -300,10 +301,12 @@ theorem counting_lemma (G : SimpleGraph V) [DecidableRel G.Adj]
       by_contra h_not
       rw [Finset.mem_union, not_or] at h_not
       exact ha_ng (Finset.mem_filter.mpr ⟨haA, h_not.1, h_not.2⟩)
-    have h_compl_le : ((A \ good).card : ℚ) ≤ badB.card + badC.card :=
-      Nat.cast_le.mpr (le_trans (Finset.card_le_card h_sub) (Finset.card_union_le badB badC))
+    have h_compl_le : ((A \ good).card : ℚ) ≤ badB.card + badC.card := by
+      push_cast
+      exact_mod_cast le_trans (Finset.card_le_card h_sub) (Finset.card_union_le badB badC)
     have : (A.card : ℚ) - good.card = (A \ good).card := by
-      push_cast; linarith [h_compl_card]
+      have hcc : ((A \ good).card : ℚ) + good.card = A.card := by exact_mod_cast h_compl_card
+      linarith
     linarith
   -- Step 4: Fiber decomposition — triangleCount ≥ Σ_{good} perVertexTriangles
   have h_tri_sum : (triangleCount G A B C : ℚ) ≥
@@ -406,7 +409,48 @@ theorem counting_lemma (G : SimpleGraph V) [DecidableRel G.Adj]
     _ ≥ ((1 - 2 * eps) * ↑A.card) * K := by
         exact mul_le_mul_of_nonneg_right (le_of_lt hgood_card) hK_nn
     _ = (1 - 2 * eps) * (dAB - eps) * (dAC - eps) * (dBC - eps) *
-        ↑A.card * ↑B.card * ↑C.card := by unfold_let K; ring
+        ↑A.card * ↑B.card * ↑C.card := by simp only [K]; ring
+
+/-- **Counting Lemma Lower Bound**: When all three pair densities are ≥ 2ε
+    in an ε-regular triple, the triangle count is at least
+    (1-2ε)ε³|A||B||C|. This is the quantitative core used in
+    the triangle removal lemma to derive a contradiction. -/
+theorem counting_lemma_lower_bound (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (heps : 0 < eps) (heps_half : eps ≤ 1 / 2)
+    (A B C : Finset V)
+    (hA : (0 : ℚ) < A.card) (hB : (0 : ℚ) < B.card) (hC : (0 : ℚ) < C.card)
+    (hAB : Szemeredi.Regularity.IsEpsilonRegular G eps A B)
+    (hAC : Szemeredi.Regularity.IsEpsilonRegular G eps A C)
+    (hBC : Szemeredi.Regularity.IsEpsilonRegular G eps B C)
+    (hdAB : Szemeredi.Regularity.edgeDensity G A B ≥ 2 * eps)
+    (hdAC : Szemeredi.Regularity.edgeDensity G A C ≥ 2 * eps)
+    (hdBC : Szemeredi.Regularity.edgeDensity G B C ≥ 2 * eps) :
+    (triangleCount G A B C : ℚ) ≥
+      (1 - 2 * eps) * eps ^ 3 * A.card * B.card * C.card := by
+  set dAB := Szemeredi.Regularity.edgeDensity G A B
+  set dAC := Szemeredi.Regularity.edgeDensity G A C
+  set dBC := Szemeredi.Regularity.edgeDensity G B C
+  have h := counting_lemma G eps heps heps_half A B C hA hB hC hAB hAC hBC hdAB hdAC
+    (by linarith : dBC ≥ eps)
+  -- Factor-wise: (d-ε) ≥ ε for each pair since d ≥ 2ε
+  have h1 : dAB - eps ≥ eps := by linarith
+  have h2 : dAC - eps ≥ eps := by linarith
+  have h3 : dBC - eps ≥ eps := by linarith
+  have h4 : (0 : ℚ) ≤ 1 - 2 * eps := by linarith
+  -- Product bound: (dAB-ε)(dAC-ε)(dBC-ε) ≥ ε³
+  have hab : eps * eps ≤ (dAB - eps) * (dAC - eps) :=
+    mul_le_mul h1 h2 (le_of_lt heps) (by linarith)
+  have habc : eps * eps * eps ≤ (dAB - eps) * (dAC - eps) * (dBC - eps) :=
+    mul_le_mul hab h3 (le_of_lt heps) (by positivity)
+  -- Combine: (1-2ε)(dAB-ε)(dAC-ε)(dBC-ε) ≥ (1-2ε)ε³
+  have hprod : (1 - 2 * eps) * eps ^ 3 ≤
+      (1 - 2 * eps) * (dAB - eps) * (dAC - eps) * (dBC - eps) := by
+    have : eps ^ 3 = eps * eps * eps := by ring
+    rw [this]
+    nlinarith
+  -- Scale by |A|·|B|·|C|
+  have hABC : (0 : ℚ) ≤ ↑A.card * ↑B.card * ↑C.card := by positivity
+  nlinarith
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART II: TRIANGLE REMOVAL LEMMA
@@ -463,5 +507,400 @@ theorem triangle_removal_lemma (delta : ℚ) (hdelta : 0 < delta) :
 theorem graph_removal_lemma (h : ℕ) (hh : 3 ≤ h) (delta : ℚ) (hdelta : 0 < delta) :
     ∃ gamma : ℚ, gamma > 0 := by
   exact ⟨1, by norm_num⟩
+
+-- ═══════════════════════════════════════════════════════════════════
+-- TRIANGLE COUNT MONOTONICITY
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Triangle count is monotone in all three vertex sets. -/
+theorem triangleCount_mono (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A₁ A₂ B₁ B₂ C₁ C₂ : Finset V)
+    (hA : A₁ ⊆ A₂) (hB : B₁ ⊆ B₂) (hC : C₁ ⊆ C₂) :
+    triangleCount G A₁ B₁ C₁ ≤ triangleCount G A₂ B₂ C₂ := by
+  unfold triangleCount
+  apply Finset.card_le_card
+  intro x hmem
+  have hf := Finset.mem_filter.mp hmem
+  have hp := Finset.mem_product.mp hf.1
+  have hbc := Finset.mem_product.mp hp.2
+  exact Finset.mem_filter.mpr
+    ⟨Finset.mem_product.mpr ⟨hA hp.1, Finset.mem_product.mpr ⟨hB hbc.1, hC hbc.2⟩⟩, hf.2⟩
+
+/-- Triangle count of subsets ≤ total triangle count. -/
+theorem triangleCount_le_total (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A B C : Finset V) :
+    triangleCount G A B C ≤
+      triangleCount G Finset.univ Finset.univ Finset.univ :=
+  triangleCount_mono G A Finset.univ B Finset.univ C Finset.univ
+    (Finset.subset_univ _) (Finset.subset_univ _) (Finset.subset_univ _)
+
+-- ═══════════════════════════════════════════════════════════════════
+-- PART IV: QUANTITATIVE TRIANGLE REMOVAL LEMMA
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Regularity lemma preserving the Finpartition structure from Mathlib.
+    Returns a Finpartition (not just its parts), so we have coverage and
+    disjointness of the partition available for the triangle removal proof. -/
+private theorem regularity_with_finpartition (eps : ℚ) (heps : 0 < eps)
+    (m₀ : ℕ) (hm₀ : 1 ≤ m₀) :
+    ∃ M : ℕ, m₀ ≤ M ∧
+      ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V)
+        [DecidableRel G.Adj],
+        Fintype.card V ≥ M →
+        ∃ (P : Finpartition (Finset.univ : Finset V)),
+          P.IsEquipartition ∧
+          IsRegularPartition G eps P.parts ∧
+          m₀ ≤ P.parts.card ∧ P.parts.card ≤ M := by
+  set M := max m₀ (SzemerediRegularity.bound (↑eps : ℝ) m₀) with hM_def
+  refine ⟨M, le_max_left _ _, fun V _ _ G _ hV => ?_⟩
+  have heps_real : (0 : ℝ) < (↑eps : ℝ) := by exact_mod_cast heps
+  have hl : m₀ ≤ Fintype.card V := le_trans (le_max_left _ _) hV
+  obtain ⟨P, hequi, hle, hbound, hunif⟩ := szemeredi_regularity G heps_real hl
+  refine ⟨P, hequi, ⟨?_, ?_⟩, hle, le_trans hbound (le_max_right _ _)⟩
+  · exact Szemeredi.Regularity.equipartition_imp_equitable P hequi
+  · -- Irregularity bound: bridge from Mathlib's nonUniforms to our definition
+    have h_sub := Szemeredi.Regularity.irregular_subset_nonuniform G eps P
+    have h_k1 : 1 ≤ P.parts.card := le_trans hm₀ hle
+    suffices h_real :
+        (↑((P.parts.product P.parts).filter (fun pq =>
+          pq.1 ≠ pq.2 ∧ ¬IsEpsilonRegular G eps pq.1 pq.2)).card : ℝ) ≤
+        (↑eps : ℝ) * ((↑P.parts.card : ℝ) * ((↑P.parts.card : ℝ) - 1)) by
+      exact_mod_cast h_real
+    have h_sub_real :
+        (↑((P.parts.product P.parts).filter (fun pq =>
+          pq.1 ≠ pq.2 ∧ ¬IsEpsilonRegular G eps pq.1 pq.2)).card : ℝ) ≤
+        (↑(P.nonUniforms G (↑eps : ℝ)).card : ℝ) := by exact_mod_cast h_sub
+    have h_cast_kk : (↑(P.parts.card * (P.parts.card - 1)) : ℝ) =
+        (↑P.parts.card : ℝ) * ((↑P.parts.card : ℝ) - 1) := by
+      rw [Nat.cast_mul, Nat.cast_sub h_k1]; simp
+    rw [h_cast_kk] at hunif
+    linarith
+
+/-- **Quantitative Triangle Removal Lemma**: For every δ > 0, there exists
+    γ > 0 such that every n-vertex graph with at most γn³ triangles can
+    be made triangle-free by removing at most δn² edges.
+
+    This is the key consequence of the Szemeredi Regularity Lemma combined
+    with the Counting Lemma. The proof constructs the removal set R by:
+    (1) Applying regularity to get an ε-regular partition
+    (2) Removing edges from within-part, irregular, and sparse pairs
+    (3) Showing any surviving triangle contradicts the few-triangles hypothesis
+        via the counting lemma.
+
+    The triangle-freeness argument (step 3) is fully proved. The edge count
+    bound (|R| ≤ δn²) is structured into three sub-bounds (within-part,
+    irregular, sparse) with the key m₀ ≥ ⌈8/δ⌉ partition size lower bound
+    ensuring within-part pairs are bounded. Three sub-lemma sorries remain. -/
+theorem triangle_removal_quantitative (delta : ℚ) (hdelta : 0 < delta) :
+    ∃ gamma : ℚ, gamma > 0 ∧
+      ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V)
+        [DecidableRel G.Adj],
+        (triangleCount G Finset.univ Finset.univ Finset.univ : ℚ) ≤
+          gamma * (Fintype.card V) ^ 3 →
+        ∃ R : Finset (V × V),
+          (R.card : ℚ) ≤ delta * (Fintype.card V) ^ 2 ∧
+          ∀ a b c : V, ¬((removeEdges G (↑R : Set (V × V))).Adj a b ∧
+            (removeEdges G (↑R : Set (V × V))).Adj b c ∧
+            (removeEdges G (↑R : Set (V × V))).Adj a c) := by
+  -- Step 1: Choose epsilon and get regularity bound M
+  set eps := min (delta / 8) (1 / 4) with heps_def
+  have heps : 0 < eps := lt_min (by positivity) (by positivity)
+  have heps_half : eps ≤ 1 / 2 := le_trans (min_le_right _ _) (by norm_num)
+  have heps_quarter : eps ≤ 1 / 4 := min_le_right _ _
+  have heps_le_delta8 : eps ≤ delta / 8 := min_le_left _ _
+  -- Choose minimum partition size: k ≥ m₀ ≥ ⌈8/δ⌉ ensures within-part ≤ (δ/4)n²
+  set m₀ := max 1 ⌈(8 : ℚ) / delta⌉₊ with hm₀_def
+  have hm₀_pos : 1 ≤ m₀ := le_max_left _ _
+  have hm₀_ge : (8 : ℚ) / delta ≤ ↑m₀ := le_trans (Nat.le_ceil _) (by
+    exact_mod_cast le_max_right 1 ⌈(8 : ℚ) / delta⌉₊)
+  obtain ⟨M, hM1, hRL⟩ := regularity_with_finpartition eps heps m₀ hm₀_pos
+  -- Step 2: Choose gamma (small enough for the counting lemma contradiction)
+  -- gamma = (1 - 2ε)·ε³ / (16·M³) ensures the counting lemma lower bound
+  -- exceeds gamma·n³ for large n. For small n (< M), gamma·n³ < 1 by choice.
+  have hM_ge1 : 1 ≤ M := le_trans hm₀_pos hM1
+  have hM_pos : (0 : ℚ) < (M : ℚ) := by exact_mod_cast (show 0 < M by omega)
+  set gamma := (1 - 2 * eps) * eps ^ 3 / (16 * (M : ℚ) ^ 3) with hgamma_def
+  have h12eps : 0 < 1 - 2 * eps := by nlinarith
+  have hgamma_pos : gamma > 0 := by positivity
+  refine ⟨gamma, hgamma_pos, fun V inst1 inst2 G inst3 htri => ?_⟩
+  set n := Fintype.card V with hn_def
+  -- Step 3: Case split on graph size
+  by_cases hn_small : n < M
+  · -- Small graph: gamma·n³ < 1, so the graph has 0 triangles
+    -- With 0 triangles, R = ∅ makes it triangle-free
+    have hgn_lt_1 : gamma * (n : ℚ) ^ 3 < 1 := by
+      -- gamma·n³ ≤ gamma·(M-1)³ < (1-2ε)·ε³·M³/(16·M³) = (1-2ε)·ε³/16 < 1
+      -- gamma·n³ < gamma·M³ = (1-2ε)ε³/16 ≤ (1/4)³/16 = 1/1024 < 1
+      have hn_lt_M : (n : ℚ) < (M : ℚ) := by exact_mod_cast hn_small
+      have hgn_lt_gM : gamma * (n : ℚ) ^ 3 < gamma * (M : ℚ) ^ 3 := by
+        rcases Nat.eq_zero_or_pos n with hn0 | hn_pos
+        · simp [hn0]; positivity
+        · apply mul_lt_mul_of_pos_left _ hgamma_pos
+          exact pow_lt_pow_left hn_lt_M (Nat.cast_nonneg _) (by norm_num)
+      have hgM_eq : gamma * (M : ℚ) ^ 3 = (1 - 2 * eps) * eps ^ 3 / 16 := by
+        rw [hgamma_def]; field_simp; ring
+      have hfrac_lt : (1 - 2 * eps) * eps ^ 3 / 16 < 1 := by
+        have : eps ^ 3 ≤ (1 / 4) ^ 3 :=
+          pow_le_pow_left (le_of_lt heps) heps_quarter 3
+        nlinarith
+      linarith
+    have hzero : triangleCount G Finset.univ Finset.univ Finset.univ = 0 := by
+      by_contra h
+      have hge1 : 1 ≤ triangleCount G Finset.univ Finset.univ Finset.univ :=
+        Nat.one_le_iff_ne_zero.mpr h
+      have : (1 : ℚ) ≤ ↑(triangleCount G Finset.univ Finset.univ Finset.univ) :=
+        by exact_mod_cast hge1
+      linarith [lt_of_le_of_lt htri hgn_lt_1]
+    refine ⟨∅, by simp; positivity, fun a b c ⟨hab, hbc, hac⟩ => ?_⟩
+    -- Any triangle (a,b,c) in removeEdges G ∅ is a triangle in G
+    have : triangleCount G Finset.univ Finset.univ Finset.univ ≥ 1 := by
+      unfold triangleCount
+      apply Nat.one_le_iff_ne_zero.mpr
+      rw [Finset.card_ne_zero]
+      exact ⟨(a, (b, c)), Finset.mem_filter.mpr
+        ⟨Finset.mem_product.mpr ⟨Finset.mem_univ _, Finset.mem_product.mpr
+          ⟨Finset.mem_univ _, Finset.mem_univ _⟩⟩,
+         hab.1, hac.1, hbc.1⟩⟩
+    omega
+  · -- Large graph (n ≥ M): apply regularity and construct proper removal set
+    push_neg at hn_small
+    obtain ⟨P, hequi, hreg, hk_m₀, hkM⟩ := hRL V G hn_small
+    set k := P.parts.card with hk_def
+    have hk1 : 1 ≤ k := le_trans hm₀_pos hk_m₀
+    -- Key bound: k ≥ m₀ ≥ 8/δ, so n²/k ≤ (δ/8)n²
+    have hk_ge_inv_delta : (8 : ℚ) / delta ≤ ↑k :=
+      le_trans hm₀_ge (Nat.cast_le.mpr hk_m₀)
+    -- Also n ≥ M ≥ m₀ ≥ 8/δ
+    have hn_ge_inv_delta : (8 : ℚ) / delta ≤ ↑n :=
+      le_trans hm₀_ge (Nat.cast_le.mpr (le_trans hk_m₀ (le_trans hkM hn_small)))
+    -- Construct the removal set R: remove edges from within-part, irregular,
+    -- and sparse (density < 2ε) pairs
+    set R : Finset (V × V) := (Finset.univ ×ˢ Finset.univ).filter (fun p =>
+      -- Within same part
+      (∃ part ∈ P.parts, p.1 ∈ part ∧ p.2 ∈ part) ∨
+      -- In an irregular pair
+      (∃ Pa ∈ P.parts, ∃ Pb ∈ P.parts, Pa ≠ Pb ∧ p.1 ∈ Pa ∧ p.2 ∈ Pb ∧
+        ¬IsEpsilonRegular G eps Pa Pb) ∨
+      -- In a sparse pair (density < 2ε) — restricted to edges for bounded |R|
+      (G.Adj p.1 p.2 ∧ ∃ Pa ∈ P.parts, ∃ Pb ∈ P.parts, Pa ≠ Pb ∧ p.1 ∈ Pa ∧ p.2 ∈ Pb ∧
+        edgeDensity G Pa Pb < 2 * eps))
+    refine ⟨R, ?edge_bound, ?triangle_free⟩
+    case edge_bound =>
+      -- Edge bound: |R| ≤ δ·n²
+      -- Strategy: decompose R into three categories via union bound,
+      -- bound each category, then combine.
+      --
+      -- With k ≥ m₀ ≥ ⌈8/δ⌉ and n ≥ M ≥ m₀ ≥ 8/δ:
+      --   Within-part pairs: Σ|Vi|² ≤ (n/k+1)·n ≤ (δ/4)n²
+      --   Irregular cross-part pairs: ≤ ε·k²·(n/k+1)² ≤ 4εn² ≤ (δ/2)n²
+      --   Sparse cross-part edges: < 2ε·n² ≤ (δ/4)n²
+      --   Total ≤ δn²
+      --
+      -- Define the three sub-filters
+      set R_wp := (Finset.univ ×ˢ Finset.univ).filter (fun p : V × V =>
+        ∃ part ∈ P.parts, p.1 ∈ part ∧ p.2 ∈ part)
+      set R_irreg := (Finset.univ ×ˢ Finset.univ).filter (fun p : V × V =>
+        ∃ Pa ∈ P.parts, ∃ Pb ∈ P.parts, Pa ≠ Pb ∧ p.1 ∈ Pa ∧ p.2 ∈ Pb ∧
+          ¬IsEpsilonRegular G eps Pa Pb)
+      set R_sparse := (Finset.univ ×ˢ Finset.univ).filter (fun p : V × V =>
+        G.Adj p.1 p.2 ∧ ∃ Pa ∈ P.parts, ∃ Pb ∈ P.parts, Pa ≠ Pb ∧ p.1 ∈ Pa ∧ p.2 ∈ Pb ∧
+          edgeDensity G Pa Pb < 2 * eps)
+      -- Step 1: R ⊆ R_wp ∪ R_irreg ∪ R_sparse (union bound)
+      have hR_sub : R ⊆ R_wp ∪ R_irreg ∪ R_sparse := by
+        intro x hx
+        simp only [R, Finset.mem_filter, Finset.mem_product, Finset.mem_univ,
+          true_and] at hx
+        have hxu : x ∈ Finset.univ ×ˢ Finset.univ :=
+          Finset.mem_product.mpr ⟨Finset.mem_univ _, Finset.mem_univ _⟩
+        rcases hx with h1 | h2 | h3
+        · exact Finset.mem_union.mpr (Or.inl (Finset.mem_union.mpr
+            (Or.inl (Finset.mem_filter.mpr ⟨hxu, h1⟩))))
+        · exact Finset.mem_union.mpr (Or.inl (Finset.mem_union.mpr
+            (Or.inr (Finset.mem_filter.mpr ⟨hxu, h2⟩))))
+        · exact Finset.mem_union.mpr (Or.inr (Finset.mem_filter.mpr ⟨hxu, h3⟩))
+      -- |R| ≤ |R_wp| + |R_irreg| + |R_sparse|
+      have hR_card : (R.card : ℚ) ≤ ↑R_wp.card + ↑R_irreg.card + ↑R_sparse.card := by
+        have h1 := Finset.card_le_card hR_sub
+        have h2 := Finset.card_union_le (R_wp ∪ R_irreg) R_sparse
+        have h3 := Finset.card_union_le R_wp R_irreg
+        push_cast; linarith
+      -- Step 2: Bound within-part pairs ≤ (δ/4)n²
+      -- |R_wp| = Σ_{S ∈ P.parts} |S|² ≤ max_size · n ≤ (n/k+1)·n = n²/k + n
+      -- With k ≥ 8/δ: n²/k ≤ (δ/8)n². With n ≥ 8/δ: n ≤ (δ/8)n².
+      -- Total: n²/k + n ≤ (δ/4)n².
+      have h_wp : (R_wp.card : ℚ) ≤ (delta / 4) * ↑n ^ 2 := by sorry
+      -- Step 3: Bound irregular cross-part pairs ≤ (δ/2)n²
+      -- #irregular ordered pairs ≤ ε·k·(k-1), each contributes ≤ (n/k+1)² pairs.
+      -- Total ≤ ε·k²·(n/k+1)² ≤ 4ε·n² ≤ (δ/2)·n² (since ε ≤ δ/8).
+      have h_irreg : (R_irreg.card : ℚ) ≤ (delta / 2) * ↑n ^ 2 := by sorry
+      -- Step 4: Bound sparse cross-part edges ≤ (δ/4)n²
+      -- Each sparse pair has density < 2ε, so edge count < 2ε·|Vi|·|Vj|.
+      -- Total sparse edges < 2ε · Σ|Vi|·|Vj| ≤ 2ε·n² ≤ (δ/4)·n².
+      have h_sparse : (R_sparse.card : ℚ) ≤ (delta / 4) * ↑n ^ 2 := by sorry
+      -- Step 5: Combine the three bounds
+      calc (R.card : ℚ) ≤ ↑R_wp.card + ↑R_irreg.card + ↑R_sparse.card := hR_card
+        _ ≤ (delta / 4) * ↑n ^ 2 + (delta / 2) * ↑n ^ 2 +
+            (delta / 4) * ↑n ^ 2 := by linarith
+        _ = delta * ↑n ^ 2 := by ring
+    case triangle_free =>
+      -- Main argument: any triangle in the cleaned graph contradicts
+      -- the few-triangles hypothesis via the counting lemma.
+      intro a b c ⟨hab, hbc, hac⟩
+      -- Extract: each edge gives G.Adj and ∉ R (both directions)
+      -- For (a,b) ∉ ↑R in the Set sense, convert to Finset membership
+      have hab_nR : (a, b) ∉ R := fun h => hab.2.1 (Finset.mem_coe.mpr h)
+      have hba_nR : (b, a) ∉ R := fun h => hab.2.2 (Finset.mem_coe.mpr h)
+      have hbc_nR : (b, c) ∉ R := fun h => hbc.2.1 (Finset.mem_coe.mpr h)
+      have hac_nR : (a, c) ∉ R := fun h => hac.2.1 (Finset.mem_coe.mpr h)
+      -- Helper: if G.Adj u v and (u,v) ∉ R, extract the three negative conditions.
+      -- Proved by contradiction: if any condition held, (u,v) ∈ R.
+      have not_in_R : ∀ u v : V, G.Adj u v → (u, v) ∉ R →
+          (∀ part ∈ P.parts, ¬(u ∈ part ∧ v ∈ part)) ∧
+          (∀ Pa ∈ P.parts, ∀ Pb ∈ P.parts, Pa ≠ Pb → u ∈ Pa → v ∈ Pb →
+            IsEpsilonRegular G eps Pa Pb) ∧
+          (∀ Pa ∈ P.parts, ∀ Pb ∈ P.parts, Pa ≠ Pb → u ∈ Pa → v ∈ Pb →
+            edgeDensity G Pa Pb ≥ 2 * eps) := by
+        intro u v hadj hnR
+        have huv_univ : (u, v) ∈ Finset.univ ×ˢ Finset.univ :=
+          Finset.mem_product.mpr ⟨Finset.mem_univ _, Finset.mem_univ _⟩
+        exact ⟨
+          fun part hp huv => hnR (Finset.mem_filter.mpr
+            ⟨huv_univ, Or.inl ⟨part, hp, huv⟩⟩),
+          fun Pa hPa Pb hPb hne hu hv => by_contra fun h =>
+            hnR (Finset.mem_filter.mpr
+              ⟨huv_univ, Or.inr (Or.inl ⟨Pa, hPa, Pb, hPb, hne, hu, hv, h⟩)⟩),
+          fun Pa hPa Pb hPb hne hu hv => le_of_not_lt fun h =>
+            hnR (Finset.mem_filter.mpr
+              ⟨huv_univ, Or.inr (Or.inr ⟨hadj, Pa, hPa, Pb, hPb, hne, hu, hv, h⟩)⟩)⟩
+      -- Extract properties for each edge
+      obtain ⟨hab_wp, hab_reg, hab_dense⟩ := not_in_R a b hab.1 hab_nR
+      obtain ⟨hac_wp, hac_reg, hac_dense⟩ := not_in_R a c hac.1 hac_nR
+      obtain ⟨hbc_wp, hbc_reg, hbc_dense⟩ := not_in_R b c hbc.1 hbc_nR
+      -- Find parts for each vertex from the Finpartition
+      obtain ⟨Pa, hPa, ha_Pa⟩ := P.exists_mem (Finset.mem_univ a)
+      obtain ⟨Pb, hPb, hb_Pb⟩ := P.exists_mem (Finset.mem_univ b)
+      obtain ⟨Pc, hPc, hc_Pc⟩ := P.exists_mem (Finset.mem_univ c)
+      -- Vertices are in DIFFERENT parts (within-part edges are in R)
+      have hab_diff : Pa ≠ Pb := by
+        intro heq; exact absurd ⟨ha_Pa, heq ▸ hb_Pb⟩ (hab_wp Pa hPa)
+      have hac_diff : Pa ≠ Pc := by
+        intro heq; exact absurd ⟨ha_Pa, heq ▸ hc_Pc⟩ (hac_wp Pa hPa)
+      have hbc_diff : Pb ≠ Pc := by
+        intro heq; exact absurd ⟨hb_Pb, heq ▸ hc_Pc⟩ (hbc_wp Pb hPb)
+      -- All three pairs are ε-regular (irregular pair edges are in R)
+      have hAB_reg : IsEpsilonRegular G eps Pa Pb :=
+        hab_reg Pa hPa Pb hPb hab_diff ha_Pa hb_Pb
+      have hAC_reg : IsEpsilonRegular G eps Pa Pc :=
+        hac_reg Pa hPa Pc hPc hac_diff ha_Pa hc_Pc
+      have hBC_reg : IsEpsilonRegular G eps Pb Pc :=
+        hbc_reg Pb hPb Pc hPc hbc_diff hb_Pb hc_Pc
+      -- All three pairs have density ≥ 2ε (sparse pair edges are in R)
+      have hAB_dense : edgeDensity G Pa Pb ≥ 2 * eps :=
+        hab_dense Pa hPa Pb hPb hab_diff ha_Pa hb_Pb
+      have hAC_dense : edgeDensity G Pa Pc ≥ 2 * eps :=
+        hac_dense Pa hPa Pc hPc hac_diff ha_Pa hc_Pc
+      have hBC_dense : edgeDensity G Pb Pc ≥ 2 * eps :=
+        hbc_dense Pb hPb Pc hPc hbc_diff hb_Pb hc_Pc
+      -- Parts are non-empty (Finpartition guarantees no empty parts)
+      have hPa_ne : Pa.Nonempty := by
+        rw [Finset.nonempty_iff_ne_empty]
+        intro h; exact absurd (h ▸ hPa) P.not_bot_mem
+      have hPb_ne : Pb.Nonempty := by
+        rw [Finset.nonempty_iff_ne_empty]
+        intro h; exact absurd (h ▸ hPb) P.not_bot_mem
+      have hPc_ne : Pc.Nonempty := by
+        rw [Finset.nonempty_iff_ne_empty]
+        intro h; exact absurd (h ▸ hPc) P.not_bot_mem
+      have hPa_pos : (0 : ℚ) < Pa.card :=
+        Nat.cast_pos.mpr (Finset.card_pos.mpr hPa_ne)
+      have hPb_pos : (0 : ℚ) < Pb.card :=
+        Nat.cast_pos.mpr (Finset.card_pos.mpr hPb_ne)
+      have hPc_pos : (0 : ℚ) < Pc.card :=
+        Nat.cast_pos.mpr (Finset.card_pos.mpr hPc_ne)
+      -- Apply counting lemma: many triangles in (Pa, Pb, Pc) of G
+      have hcount := counting_lemma G eps heps heps_half Pa Pb Pc
+        hPa_pos hPb_pos hPc_pos hAB_reg hAC_reg hBC_reg
+        hAB_dense hAC_dense (le_trans (by linarith : eps ≤ 2 * eps) hBC_dense)
+      -- Monotonicity: total triangles ≥ triangles in (Pa, Pb, Pc)
+      have htotal_ge : (triangleCount G Pa Pb Pc : ℚ) ≤
+          triangleCount G Finset.univ Finset.univ Finset.univ := by
+        exact_mod_cast triangleCount_le_total G Pa Pb Pc
+      -- Part size lower bound (from equitable partition into k ≤ M parts)
+      -- Each part has ≥ ⌊n/k⌋ ≥ n/(2M) elements for n ≥ M
+      have hpart_size : ∀ S ∈ P.parts, (S.card : ℚ) ≥ (n : ℚ) / (2 * ↑M) := by
+        intro S hS
+        have hS_pos : 0 < S.card := Finset.card_pos.mpr (by
+          rw [Finset.nonempty_iff_ne_empty]
+          intro h; exact absurd (h ▸ hS) P.not_bot_mem)
+        have hk_pos : 0 < k := by omega
+        have hkQ : (0 : ℚ) < (k : ℚ) := Nat.cast_pos.mpr hk_pos
+        have hkM_q : (k : ℚ) ≤ (M : ℚ) := Nat.cast_le.mpr hkM
+        -- Equitability: every part size ≤ S.card + 1
+        have hbound : ∀ T ∈ P.parts, T.card ≤ S.card + 1 :=
+          fun T hT => hequi (Finset.mem_coe.mpr hT) (Finset.mem_coe.mpr hS)
+        -- n ≤ k * (S.card + 1): sum of parts = n, each ≤ S.card + 1
+        have hn_le : n ≤ k * (S.card + 1) := by
+          -- Sum of part sizes = n (from Finpartition structure)
+          have hsum : P.parts.sum Finset.card = n := by
+            rw [hn_def, Fintype.card, ← P.sup_parts]
+            exact (Finset.card_biUnion fun a ha b hb hab =>
+              Finset.disjoint_coe.mp <| P.supIndep.pairwiseDisjoint ha hb hab).symm
+          calc n = P.parts.sum Finset.card := hsum.symm
+            _ ≤ P.parts.sum (fun _ => S.card + 1) :=
+                Finset.sum_le_sum fun T hT => hbound T hT
+            _ = k * (S.card + 1) := by
+                simp [Finset.sum_const, hk_def]
+        -- S.card ≥ n/k - 1 (in ℚ)
+        have hS_ge : (S.card : ℚ) ≥ (n : ℚ) / k - 1 := by
+          rw [ge_iff_le, sub_le_iff_le_add, div_le_iff₀ hkQ]
+          have : (n : ℚ) ≤ (k : ℚ) * ((S.card : ℚ) + 1) := by exact_mod_cast hn_le
+          linarith
+        -- n/k ≥ n/M (since k ≤ M)
+        have hk_div : (n : ℚ) / k ≥ (n : ℚ) / M := by
+          exact div_le_div_of_nonneg_left (by linarith : (0 : ℚ) < n) hkQ hkM_q
+        -- Case split on graph size relative to 2M
+        by_cases hn2M : n < 2 * M
+        · -- n < 2M: S.card ≥ 1 > n/(2M) since n/(2M) < 1
+          have : (n : ℚ) / (2 * ↑M) < 1 := by
+            rw [div_lt_one (by positivity : (0:ℚ) < 2 * ↑M)]
+            exact_mod_cast hn2M
+          linarith [show (1 : ℚ) ≤ ↑S.card from Nat.cast_le.mpr hS_pos]
+        · -- n ≥ 2M: n/M ≥ 2 so n/M - 1 ≥ n/(2M)
+          push_neg at hn2M
+          have hnM_ge2 : (n : ℚ) / ↑M ≥ 2 := by
+            rw [le_div_iff₀ hM_pos]; exact_mod_cast hn2M
+          have : (n : ℚ) / ↑M - 1 ≥ (n : ℚ) / (2 * ↑M) := by nlinarith
+          linarith
+      have hPa_size := hpart_size Pa hPa
+      have hPb_size := hpart_size Pb hPb
+      have hPc_size := hpart_size Pc hPc
+      -- The counting lemma gives: total ≥ count(Pa,Pb,Pc) ≥ K
+      -- where K > gamma·n³ by construction of gamma
+      -- This contradicts the hypothesis total ≤ gamma·n³
+      have hK : (triangleCount G Finset.univ Finset.univ Finset.univ : ℚ) ≥
+          (1 - 2 * eps) * eps ^ 3 * ((n : ℚ) / (2 * M)) ^ 3 := by
+        calc (triangleCount G Finset.univ Finset.univ Finset.univ : ℚ)
+            ≥ triangleCount G Pa Pb Pc := htotal_ge
+          _ ≥ (1 - 2 * eps) *
+              (edgeDensity G Pa Pb - eps) *
+              (edgeDensity G Pa Pc - eps) *
+              (edgeDensity G Pb Pc - eps) *
+              Pa.card * Pb.card * Pc.card := hcount
+          _ ≥ (1 - 2 * eps) * eps * eps * eps *
+              Pa.card * Pb.card * Pc.card := by nlinarith
+          _ ≥ (1 - 2 * eps) * eps ^ 3 *
+              ((n : ℚ) / (2 * M)) ^ 3 := by nlinarith
+      -- The lower bound exceeds gamma·n³
+      have hgamma_bound :
+          (1 - 2 * eps) * eps ^ 3 * ((n : ℚ) / (2 * M)) ^ 3 >
+          gamma * (n : ℚ) ^ 3 := by
+        -- LHS = (1-2ε)ε³n³/(8M³) = 2·gamma·n³ > gamma·n³
+        have hn_pos : (0 : ℚ) < (n : ℚ) := by
+          exact_mod_cast (show 0 < n by omega)
+        have h_eq : (1 - 2 * eps) * eps ^ 3 * ((n : ℚ) / (2 * ↑M)) ^ 3 =
+            2 * (gamma * (n : ℚ) ^ 3) := by
+          rw [hgamma_def]; field_simp; ring
+        linarith [mul_pos hgamma_pos (pow_pos hn_pos 3)]
+      linarith
 
 end Szemeredi.Counting

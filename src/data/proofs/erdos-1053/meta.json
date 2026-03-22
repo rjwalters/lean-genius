@@ -5,7 +5,7 @@
   "description": "If σ(n) = k·n (n is k-perfect), must k = o(log log n)? Known: k ≤ 11 exists. Gronwall: σ(n)/n = O(log log n). Robin's inequality gives k = O(log log n) conditionally on RH. Status: OPEN.",
   "meta": {
     "erdosNumber": 1053,
-    "status": "formalized",
+    "status": "axiomatized",
     "tags": [
       "erdos",
       "number-theory",
@@ -46,7 +46,8 @@
       }
     ],
     "dateAdded": "2025-01-15",
-    "axiomCount": 0
+    "axiomCount": 12,
+    "badge": "axiom"
   },
   "sections": [
     {

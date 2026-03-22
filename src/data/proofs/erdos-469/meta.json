@@ -5,7 +5,7 @@
   "description": "A primitive pseudoperfect number is a sum of distinct proper divisors, with no proper divisor having this property. Does Σ_{n ∈ A} 1/n converge? OEIS A006036. Open.",
   "meta": {
     "erdosNumber": 469,
-    "status": "formalized",
+    "status": "axiomatized",
     "tags": [
       "erdos",
       "number-theory",
@@ -25,7 +25,9 @@
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/469",
     "erdosUrl": "https://erdosproblems.com/469",
-    "axiomCount": 0
+    "axiomCount": 2,
+    "badge": "axiom",
+    "lineCount": 227
   },
   "sections": [
     {

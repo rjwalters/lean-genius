@@ -5,7 +5,7 @@
   "description": "For n → ∞, is Σ_{p≤n, n mod p ∈ (p/2,p)} 1/p ~ (log log n)/2? The upper half residues should contribute exactly half of Mertens' sum. Erdős–Graham–Ruzsa–Straus (1975). Status: OPEN.",
   "meta": {
     "erdosNumber": 726,
-    "status": "formalized",
+    "status": "axiomatized",
     "tags": [
       "erdos",
       "number-theory",
@@ -30,7 +30,8 @@
       "erdos-725",
       "erdos-727"
     ],
-    "axiomCount": 0
+    "axiomCount": 6,
+    "badge": "axiom"
   },
   "sections": [
     {

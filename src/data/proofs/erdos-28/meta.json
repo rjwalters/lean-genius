@@ -5,7 +5,7 @@
   "description": "If A ⊆ ℕ is an additive basis of order 2 (A+A covers all but finitely many integers), must the representation function r(n) be unbounded? $500 bounty. Status: OPEN.",
   "meta": {
     "erdosNumber": 28,
-    "status": "formalized",
+    "status": "axiomatized",
     "tags": [
       "erdos",
       "number-theory",
@@ -28,7 +28,8 @@
     "relatedProofs": [
       "erdos-40"
     ],
-    "axiomCount": 0
+    "axiomCount": 8,
+    "badge": "axiom"
   },
   "sections": [
     {

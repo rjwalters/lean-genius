@@ -5,7 +5,7 @@
   "description": "Determine k(n,m): the minimum vertices guaranteeing an independent set of size n or a transitive tournament of size m in any directed graph. Known: R(n,m) ≤ k(n,m) ≤ R(n,m,m). Open.",
   "meta": {
     "erdosNumber": 112,
-    "status": "formalized",
+    "status": "axiomatized",
     "tags": [
       "erdos",
       "graph-theory",
@@ -23,7 +23,8 @@
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/112",
     "erdosUrl": "https://erdosproblems.com/112",
-    "axiomCount": 0
+    "axiomCount": 7,
+    "badge": "axiom"
   },
   "sections": [
     {

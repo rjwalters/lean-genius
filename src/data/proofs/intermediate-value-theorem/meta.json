@@ -51,11 +51,11 @@
     "problemStatement": "The Intermediate Value Theorem states:\n\nIf $f : \\mathbb{R} \\to \\mathbb{R}$ is continuous on the closed interval $[a, b]$, then for every value $c$ between $f(a)$ and $f(b)$, there exists some $x \\in [a, b]$ such that $f(x) = c$.\n\nMore precisely:\n$$\\forall c \\in [\\min(f(a), f(b)), \\max(f(a), f(b))], \\exists x \\in [a, b], f(x) = c$$\n\nAn important special case (Bolzano's theorem): If $f(a) < 0 < f(b)$, then there exists $x \\in (a, b)$ with $f(x) = 0$.",
     "proofStrategy": "The modern proof relies on the topological characterization of the reals:\n\n1. **Connectedness of Intervals**: Closed intervals $[a, b]$ in $\\mathbb{R}$ are connected sets. This follows from the completeness of $\\mathbb{R}$ - any attempt to partition an interval into two non-empty separated sets fails because the supremum of one part must be in the closure of both.\n\n2. **Continuous Images Preserve Connectedness**: If $f$ is continuous and $S$ is connected, then $f(S)$ is connected. This is because the preimage of any separation would give a separation of $S$.\n\n3. **Connected Subsets of ℝ are Intervals**: Any connected subset of $\\mathbb{R}$ must be an interval. If $a$ and $b$ are in a connected set and $a < c < b$, then $c$ must also be in the set.\n\n4. **Conclusion**: Since $[a, b]$ is connected, $f([a, b])$ is connected, hence an interval containing $f(a)$ and $f(b)$. Therefore it contains all values between them.",
     "keyInsights": [
-      "IVT is fundamentally about connectedness: continuous functions cannot 'jump' over intermediate values",
-      "The theorem requires completeness of ℝ - it fails for rational-valued functions on ℚ",
-      "IVT provides existence but not uniqueness - there may be multiple x with f(x) = c",
-      "Bolzano's theorem (root-finding) is the key computational application",
-      "The theorem generalizes to any continuous function from a connected space to an ordered space"
+      "**Connectedness = No Jumping:** IVT says continuous images of connected sets are connected. Since $[a,b] \\subset \\mathbb{R}$ is connected and connected subsets of $\\mathbb{R}$ are intervals, $f([a,b])$ is an interval containing $f(a)$ and $f(b)$ — hence all values between them.",
+      "**Completeness is Essential:** IVT fails over $\\mathbb{Q}$: $f(x) = x^2 - 2$ on $[0, 2] \\cap \\mathbb{Q}$ has $f(0) < 0 < f(2)$, but $\\sqrt{2} \\notin \\mathbb{Q}$. The theorem requires the least upper bound property of $\\mathbb{R}$.",
+      "**Existence Without Uniqueness:** $f(x) = c$ may have many solutions in $[a,b]$. The bisection method finds ONE root in $O(\\log(1/\\epsilon))$ steps by repeatedly halving the interval — the most robust root-finding algorithm.",
+      "**Bolzano's Theorem:** The special case $f(a) < 0 < f(b) \\Rightarrow \\exists x \\in (a,b),\\; f(x) = 0$ — the root-finding version. This is the foundation of numerical analysis: bisection, Newton's method, and Brent's method all exploit this existence guarantee.",
+      "**Topological Generalization:** IVT holds for any continuous $f: X \\to Y$ where $X$ is connected and $Y$ is ordered. In Mathlib, `IsPreconnected.intermediate_value` captures this at full generality."
     ]
   },
   "sections": [
@@ -135,6 +135,40 @@
     "theoremCount": 12,
     "definitionCount": 0
   },
+  "crossReferences": [
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "extends",
+      "description": "The fixed point theorem for continuous self-maps of $[a,b]$ (proved here as a corollary of IVT) is the 1-dimensional case of Brouwer's fixed point theorem, which generalizes to continuous self-maps of $[0,1]^n$"
+    },
+    {
+      "targetId": "borsuk-ulam",
+      "relationship": "related",
+      "description": "The $n=1$ case of Borsuk-Ulam — every continuous $f: S^1 \\to \\mathbb{R}$ has $f(x) = f(-x)$ — is equivalent to IVT applied to $g(\\theta) = f(\\theta) - f(\\theta + \\pi)$ on the circle. Borsuk-Ulam is the higher-dimensional generalization"
+    },
+    {
+      "targetId": "mean-value-theorem",
+      "relationship": "related",
+      "description": "Both are consequences of the completeness of $\\mathbb{R}$: IVT uses connectedness of intervals, MVT uses compactness (via the extreme value theorem). MVT extends IVT to derivatives: the mean value $\\frac{f(b)-f(a)}{b-a}$ is achieved by $f'$ at some interior point"
+    },
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "extends",
+      "description": "The Fundamental Theorem of Calculus uses continuity of the integrand and the IVT-style reasoning that continuous functions on intervals attain all intermediate values, connecting antiderivatives to definite integrals"
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "related",
+      "description": "The failure of IVT over $\\mathbb{Q}$ is witnessed by $f(x) = x^2 - 2$: $f(1) < 0 < f(2)$ but $\\sqrt{2} \\notin \\mathbb{Q}$. The irrationality of $\\sqrt{2}$ thus demonstrates why completeness is essential for IVT"
+    }
+  ],
+  "relatedProofs": [
+    "brouwer-fixed-point",
+    "borsuk-ulam",
+    "mean-value-theorem",
+    "fundamental-theorem-calculus",
+    "sqrt2-irrational"
+  ],
   "references": [
     {
       "authors": "Bolzano, Bernard",

@@ -15,5 +15,36 @@
     "openQuestions": [],
     "nextSteps": [],
     "progressSummary": "COMPLETED: File fully verified (0 sorries, 0 axioms). Gallery meta.json updated to reflect verified status."
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/CayleyHamiltonReductionOQ01.lean",
+      "filename": "CayleyHamiltonReductionOQ01.lean",
+      "lineCount": 305,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonReductionOQ01.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonReductionOQ02.lean",
+      "filename": "CayleyHamiltonReductionOQ02.lean",
+      "lineCount": 161,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonReductionOQ02.lean"
+    }
+  ],
+  "relatedProofs": [
+    "cayley-hamilton",
+    "cayley-hamilton-reduction",
+    "cayley-hamilton-reduction-oq-01",
+    "cayley-hamilton-reduction-oq-02"
+  ],
+  "tags": []
 }

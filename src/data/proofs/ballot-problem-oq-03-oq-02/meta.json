@@ -7,7 +7,7 @@
     "author": "Lindström (1973), Gessel-Viennot (1985)",
     "sourceUrl": "",
     "date": "1985",
-    "status": "axiomatized",
+    "status": "formalized",
     "proofRepoPath": "Proofs/BallotProblemOQ03OQ02.lean",
     "tags": [
       "combinatorics",
@@ -17,9 +17,9 @@
       "permutations",
       "research"
     ],
-    "badge": "axiom",
-    "sorries": 0,
-    "axioms": 1,
+    "badge": "verified",
+    "sorries": 1,
+    "axioms": 0,
     "mathlibDependencies": [
       {
         "theorem": "Matrix.det_apply",
@@ -53,13 +53,18 @@
       "firstNonFixed: smallest non-fixed point of non-identity perm (4 lemmas proved)",
       "permPathTuple_card: cardinality factorization for σ-path tuples (proved)",
       "det_pathMatrix_eq_signed_sum: algebraic bridge det = signed perm sum (proved)",
-      "gv_involution_cancellation: GV cancellation (sole remaining axiom)"
+      "gv_involution_cancellation: GV cancellation (theorem with 1 sorry)",
+      "northBeforeEast_mono: northBeforeEast non-decreasing (proved)",
+      "colEntry_mono: colEntry non-decreasing (proved)",
+      "colEntry_le_north: colEntry ≤ n for PathMN m n (proved)",
+      "crossing_column_exists: discrete IVT via Finset.max' (proved)",
+      "lattice_paths_must_cross: crossing lemma for lattice paths (PROVED)"
     ],
     "dateAdded": "2026-03-22",
     "mathlib_version": "4.26.0",
-    "axiomCount": 1,
-    "lineCount": 509,
-    "theoremCount": 22,
+    "axiomCount": 0,
+    "lineCount": 896,
+    "theoremCount": 28,
     "prerequisites": [
       "Matrix determinants and permutation signs (Mathlib)",
       "Binomial coefficients (Mathlib)",
@@ -67,7 +72,7 @@
       "Gessel-Viennot involution theory"
     ],
     "assumptions": [
-      "gv_involution_cancellation: the GV sign-reversing involution cancellation (the combinatorial heart, isolated from the algebraic machinery)"
+      "gv_involution_cancellation: the GV sign-reversing involution cancellation (1 sorry remaining: involution bookkeeping)"
     ]
   },
   "overview": {
@@ -193,9 +198,9 @@
       "Finset"
     ],
     "namespace": "LGV",
-    "lineCount": 761,
-    "axiomCount": 1,
-    "theoremCount": 17,
+    "lineCount": 896,
+    "axiomCount": 0,
+    "theoremCount": 28,
     "definitionCount": 16
   },
   "relatedProofs": [
