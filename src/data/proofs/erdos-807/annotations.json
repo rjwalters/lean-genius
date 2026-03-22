@@ -17,6 +17,7 @@
     "type": "definition",
     "title": "Independence Number",
     "content": "**independenceNumber** alpha(G):\n\nThe size of the largest independent set in G. An independent set is a set of vertices with no edges between them.\n\n**Definition:**\n```lean\ndef independenceNumber (G : SimpleGraph V) : N :=\n  Finset.univ.sup fun S => if G.IsClique S^c then S.card else 0\n```\n\n**Note:** For random graphs G(n, 1/2), alpha(G) is typically around 2 log_2(n).",
+    "mathContext": "$\\alpha(G) = \\max\\{|S| : S \\subseteq V(G),\\, \\forall u,v \\in S,\\, uv \\notin E(G)\\}$. For $G(n,1/2)$: $\\alpha \\approx 2\\log_2 n$.",
     "significance": "critical",
     "relatedConcepts": ["Independent set", "Clique", "Graph coloring"]
   },
