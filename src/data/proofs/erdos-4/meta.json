@@ -6,7 +6,7 @@
   "meta": {
     "author": "Ford-Green-Konyagin-Maynard-Tao",
     "erdosNumber": 4,
-    "status": "enhanced",
+    "status": "axiomatized",
     "tags": [
       "erdos",
       "prime-gaps",
@@ -24,8 +24,7 @@
     "erdosPrizeValue": "$10000",
     "proofRepoPath": "Proofs/Erdos4Problem.lean",
     "date": "2016-2018",
-    "dateAdded": "2026-01-23",
-    "mathlib_version": "4.24.0",
+    "dateAdded": "01/23/26",
     "mathlibDependencies": [
       {
         "theorem": "Nat.nth",
@@ -63,48 +62,57 @@
       "Proved erdos_4_solved via maynard_theorem"
     ],
     "references": [
-      "Rankin, R.A. (1938): 'The difference between consecutive prime numbers', J. London Math. Soc. 13, 242–247",
-      "Maynard, J. (2016): 'Large gaps between primes', Annals of Mathematics 183, 915–933",
-      "Ford, K., Green, B., Konyagin, S., Tao, T. (2016): 'Large gaps between consecutive prime numbers', Annals of Mathematics 183, 935–974",
-      "Ford, K., Green, B., Konyagin, S., Maynard, J., Tao, T. (2018): 'Long gaps between primes', J. Amer. Math. Soc. 31, 65–105",
-      "Baker, R.C., Harman, G., Pintz, J. (2001): 'The difference between consecutive primes, II', Proc. London Math. Soc. 83, 532–562",
-      "Cramér, H. (1936): 'On the order of magnitude of the difference between consecutive prime numbers', Acta Arithmetica 2, 23–46",
-      "Granville, A. (1995): 'Harald Cramér and the distribution of prime numbers', Scandinavian Actuarial Journal 1, 12–28",
-      "https://erdosproblems.com/4"
+      {
+        "authors": "Rankin, Robert A.",
+        "title": "The difference between consecutive prime numbers",
+        "year": "1938",
+        "venue": "Journal of the London Mathematical Society 13, pp. 242-247",
+        "note": "Original lower bound with constant C = e^γ/3, unimproved for 75 years"
+      },
+      {
+        "authors": "Maynard, James",
+        "title": "Large gaps between primes",
+        "year": "2016",
+        "venue": "Annals of Mathematics 183, pp. 915-933",
+        "note": "Proved the full Erdős conjecture (∀ C > 0) using multidimensional sieve weights"
+      },
+      {
+        "authors": "Ford, Kevin; Green, Ben; Konyagin, Sergei; Tao, Terence",
+        "title": "Large gaps between consecutive prime numbers",
+        "year": "2016",
+        "venue": "Annals of Mathematics 183, pp. 935-974",
+        "note": "Independent proof of the Erdős conjecture using probabilistic methods and hypergraph covering"
+      },
+      {
+        "authors": "Ford, Kevin; Green, Ben; Konyagin, Sergei; Maynard, James; Tao, Terence",
+        "title": "Long gaps between primes",
+        "year": "2018",
+        "venue": "Journal of the American Mathematical Society 31, pp. 65-105",
+        "note": "Improved bound replacing (log log log n)² with log log log n, combining both teams' techniques"
+      },
+      {
+        "authors": "Baker, Roger C.; Harman, Glyn; Pintz, János",
+        "title": "The difference between consecutive primes, II",
+        "year": "2001",
+        "venue": "Proceedings of the London Mathematical Society 83, pp. 532-562",
+        "note": "Best unconditional upper bound on prime gaps: g_n ≤ n^0.525"
+      },
+      {
+        "authors": "Cramér, Harald",
+        "title": "On the order of magnitude of the difference between consecutive prime numbers",
+        "year": "1936",
+        "venue": "Acta Arithmetica 2, pp. 23-46",
+        "note": "Conjectured g_n = O((log p_n)²) based on a probabilistic model of primes"
+      }
     ],
-    "axiomCount": 9
-  },
-  "leanFile": {
-    "path": "Proofs/Erdos4Problem.lean",
-    "lineCount": 243,
-    "namespace": "Erdos4",
-    "imports": [
-      "Mathlib"
-    ],
-    "mainTheorems": [
-      "erdos_4_solved",
-      "improved_stronger"
-    ],
-    "mainDefinitions": [
-      "nthPrime",
-      "primeGap",
-      "lg",
-      "lg2",
-      "lg3",
-      "lg4",
-      "erdosFunction",
-      "rankinFunction",
-      "erdos_4_conjecture",
-      "improvedErdosFunction",
-      "bhp_exponent",
-      "cramer_conjecture",
-      "cramer_granville_constant",
-      "erdos_stronger_conjecture",
-      "firoozbakht_conjecture"
-    ],
-    "axiomCount": 8,
-    "theoremCount": 2,
-    "sorryCount": 1
+    "axiomCount": 9,
+    "prerequisites": [
+      "Analytic number theory: the Prime Number Theorem and its consequences",
+      "Sieve methods: Selberg sieve, multidimensional sieve weights",
+      "Iterated logarithms and their asymptotic behavior",
+      "Probabilistic methods in combinatorics and number theory",
+      "Filter-based asymptotics in Lean (Filter.atTop, Filter.Tendsto)"
+    ]
   },
   "sections": [
     {
