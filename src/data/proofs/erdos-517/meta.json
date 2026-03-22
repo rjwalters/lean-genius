@@ -52,6 +52,13 @@
     ],
     "dateAdded": "2025-12-22",
     "lineCount": 176,
+    "prerequisites": [
+      "Complex analysis: entire functions, power series",
+      "Lacunary (gap) series and Fabry/Fejér gap conditions",
+      "Summability conditions (∑1/nₖ convergence)",
+      "Value distribution theory (Picard/Borel)",
+      "Basic series convergence from Mathlib"
+    ],
     "axiomCount": 1,
     "assumptions": [
       "biernacki_theorem: Under Fejér gaps (∑1/nₖ < ∞), entire functions assume every value infinitely often. Deep complex analysis result beyond Mathlib."

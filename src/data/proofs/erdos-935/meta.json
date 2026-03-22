@@ -49,7 +49,37 @@
       "Combined all three parts in ErdosProblem935"
     ],
     "axiomCount": 6,
-    "lineCount": 92
+    "lineCount": 92,
+    "dateAdded": "2025-12-22",
+    "prerequisites": [
+      "Prime factorization and powerful numbers",
+      "Finset.range and Finset.prod for consecutive products",
+      "Asymptotic analysis (lim sup, little-o notation)",
+      "Multiplicative functions and coprimality",
+      "Rational number arithmetic for bounds"
+    ],
+    "assumptions": [
+      "powerfulPart_one: Q₂(1) = 1",
+      "powerfulPart_dvd: Q₂(n) divides n for all n",
+      "powerfulPart_powerful: Q₂(n) is powerful (all prime powers ≥ 2)",
+      "mahler_lower_bound: lim sup Q₂(n···(n+ℓ))/n² ≥ 1 (Mahler)",
+      "erdos935_part1: Q₂(n···(n+ℓ)) < n^{2+ε} for large n (conjecture)",
+      "erdos935_part2_and_3: lim sup Q₂/n² = ∞ for ℓ≥2; Q₂/n^{ℓ+1} → 0 (conjecture)"
+    ],
+    "references": [
+      {
+        "title": "Some problems and results on consecutive integers",
+        "author": "Erdős, P.",
+        "year": 1975,
+        "citation": "Erdős, P. (1975). Problems and results on consecutive integers. Publicationes Mathematicae Debrecen."
+      },
+      {
+        "title": "On the greatest prime factor of a product of consecutive integers",
+        "author": "Mahler, K.",
+        "year": 1935,
+        "citation": "Mahler, K. (1935). On the greatest prime factor of consecutive integers. Mathematika."
+      }
+    ]
   },
   "overview": {
     "historicalContext": "Erdős studied the powerful part of integers — the product of all prime power factors p^k with k ≥ 2 — as a measure of how 'square-full' a number is. For a single integer n, Q₂(n) captures the contribution of repeated prime factors. When applied to products of consecutive integers n(n+1)···(n+ℓ), the powerful part reflects the distribution of large prime powers across nearby integers.\n\nMahler proved the fundamental lower bound: for every ℓ ≥ 1, there are infinitely many n with Q₂(n(n+1)···(n+ℓ)) ≥ n². This shows that the powerful part can be as large as n², at least infinitely often. Erdős then asked three progressively finer questions about the growth rate.\n\nErdős remarked that the problems 'seem very difficult to prove,' placing them among his harder conjectures in multiplicative number theory. The interplay between consecutive integers and prime factorization is subtle: while consecutive integers are coprime in pairs, products of several consecutive integers can accumulate large prime powers through coincidences in the prime factorization structure.",
