@@ -349,25 +349,21 @@ theorem parseval_on_zmod {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
   -- Lift to ℂ: suffices ↑(∑ ‖Â(r)‖²) = ↑(|A|·N)
   suffices h : (↑(Finset.univ.sum fun r => ‖fourierCoeff A r‖ ^ 2) : ℂ) =
       ↑((A.card : ℕ) * N) by exact_mod_cast h
-  -- ∑_r ↑(‖Â(r)‖²) = ∑_r Â(r) · conj(Â(r)) [using ‖z‖² = z · conj(z) as ℂ]
-  simp_rw [Complex.ofReal_sum, Complex.ofReal_pow, Complex.ofReal_norm_eq_coe_abs,
-    Complex.sq_abs]
+  -- ∑_r ↑(‖Â(r)‖²) = ∑_r Â(r) · conj(Â(r)) [using ↑(‖z‖²) = z · conj(z)]
+  push_cast
+  simp_rw [Complex.ofReal_pow, Complex.sq_abs]
   -- Expand Â(r) = ∑_{x∈A} ψ(rx), distribute product
   simp_rw [fourierCoeff_eq_sum_psi, map_sum, Finset.sum_mul, Finset.mul_sum]
-  -- Swap: ∑_r ∑_{x∈A} ∑_{y∈A} ψ(rx) · conj(ψ(ry)) = ∑_x ∑_y ∑_r ψ(rx)·conj(ψ(ry))
-  rw [Finset.sum_comm]
-  simp_rw [← Finset.sum_comm (s := A)]
-  -- Use conj(ψ(ry)) = ψ(r·(-y)) and ψ(rx)·ψ(r·(-y)) = ψ(r·(x-y))
+  -- ψ(rx) · conj(ψ(ry)) = ψ(rx) · ψ(r·(-y)) = ψ(r·(x-y))
   simp_rw [conj_psi, ← psi_add, show ∀ (r x y : ZMod N), r * x + r * (-y) = r * (x - y)
     from fun r x y => by ring]
+  -- Swap sums: ∑_r ∑_x ∑_y ψ(r·(x-y)) = ∑_x ∑_y ∑_r ψ(r·(x-y))
+  rw [Finset.sum_comm]
+  simp_rw [Finset.sum_comm (s := Finset.univ)]
   -- Inner sum is char_orthogonality at c = x - y
   simp_rw [char_orthogonality]
-  -- ∑_x ∑_y (if x - y = 0 then ↑N else 0) = ∑_x ↑N = |A| · ↑N
+  -- ∑_x ∑_y (if x - y = 0 then ↑N else 0) = |A| · ↑N
   simp only [sub_eq_zero]
-  simp_rw [Finset.sum_ite_eq' A]
-  simp only [Finset.mem_coe]
-  simp_rw [if_pos]
-  simp [Finset.sum_const, Finset.card_coe, smul_eq_mul, mul_comm]
   sorry
 
 /-- The Fourier identity for AP counting:
