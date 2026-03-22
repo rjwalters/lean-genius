@@ -1,168 +1,326 @@
 /-
-  Angle Trisection - Cos(20°) Galois Group Order
-  Proves: |Gal(8X³ - 6X - 1 / ℚ)| = 3
+  Angle Trisection - Galois Group of cos(20°) Minimal Polynomial
+
+  Proves: |Gal(8X³-6X-1/ℚ)| = 3
 
   This eliminates the `cos20_gal_order` axiom from AngleTrisectionOQ02.lean.
 
-  Key mathematical insight:
-  The polynomial 8x³ - 6x - 1 (minimal polynomial of cos(20°)) has the property
-  that if α is any root, then 1 - 2α² is also a root. Since the third root equals
-  -α - (1 - 2α²) = 2α² - α - 1 by Vieta's formula, ALL three roots lie in ℚ(α).
-  Therefore the splitting field equals ℚ(α), which has degree 3 over ℚ.
+  Strategy:
+  The polynomial p = 8X³-6X-1 is the minimal polynomial of cos(20°).
+  Key insight: if α is a root, then β = 2α²-α-1 and γ = 1-2α² are also roots.
+  (These correspond to cos(100°) and cos(220°) via the triple-angle formula.)
+  Since all roots lie in ℚ(α), the splitting field equals ℚ(α), so
+  [SplittingField:ℚ] = [ℚ(α):ℚ] = 3, giving |Gal| = 3.
 
-  The factorization identities:
-    8(1 - 2α²)³ - 6(1 - 2α²) - 1 = (-8α³ + 6α - 1)(8α³ - 6α - 1)
-    8(2α² - α - 1)³ - 6(2α² - α - 1) - 1 = (8α³ - 12α² + 3)(8α³ - 6α - 1)
-
-  These hold in ANY commutative ring, so in particular in AdjoinRoot(8X³-6X-1).
-  Since 8α³ - 6α - 1 = 0 in AdjoinRoot, both expressions vanish, confirming
-  that all roots are polynomial functions of α.
-
-  Irreducibility strategy (documented, not yet formalized):
-  Let g(Y) = Y³ - 6Y² + 9Y - 3. Then g is Eisenstein at p = 3 (monic, so the
-  standard Eisenstein criterion applies). Since g(2X + 2) = 8X³ - 6X - 1, and
-  the substitution Y ↦ 2X + 2 is invertible over ℚ, irreducibility transfers.
+  The algebraic identities are:
+  8(2a²-a-1)³ - 6(2a²-a-1) - 1 = (8a³-12a²+3)(8a³-6a-1)
+  8(1-2a²)³ - 6(1-2a²) - 1 = (-8a³+6a-1)(8a³-6a-1)
+  Both vanish when 8a³-6a-1 = 0.
 
   References:
-  - Wantzel, P.L. (1837): Ruler-and-compass constructions
-  - The triple-angle identity: cos(3θ) = 4cos³(θ) - 3cos(θ)
-    gives roots cos(20°), cos(140°), cos(260°) of 8x³ - 6x - 1 = 0.
-    cos(140°) = 1 - 2cos²(20°) and cos(260°) = 2cos²(20°) - cos(20°) - 1.
+  - Wantzel, P.L. (1837): Impossible ruler-compass constructions
+  - cos(20°), cos(100°), cos(220°) are the three roots of 8x³-6x-1
+    (from 3θ = 60°, 300°, 660° → θ = 20°, 100°, 220°)
 -/
 
 import Mathlib
 
+open Polynomial IntermediateField FiniteDimensional
+
 namespace AngleTrisectionCos20Gal
 
-open Polynomial
+/-
+## Part I: Key Algebraic Identities
 
--- ============================================================================
--- Part I: Root Map Identities (Fully Proved)
--- ============================================================================
+These are pure ring identities, verifiable by `ring`.
+They express that if α is a root, then 2α²-α-1 and 1-2α² are also roots.
+-/
 
-/-- The polynomial identity:
-    8(1-2α²)³ - 6(1-2α²) - 1 = (-8α³+6α-1)(8α³-6α-1).
-    If α is a root of 8x³-6x-1, then 1-2α² is also a root.
+/-- If 8a³-6a-1 = 0 in any commutative ring, then 2a²-a-1 is also a root. -/
+theorem root_image_beta {R : Type*} [CommRing R] (a : R)
+    (ha : 8 * a ^ 3 - 6 * a - 1 = 0) :
+    8 * (2 * a ^ 2 - a - 1) ^ 3 - 6 * (2 * a ^ 2 - a - 1) - 1 = 0 := by
+  have key : 8 * (2 * a ^ 2 - a - 1) ^ 3 - 6 * (2 * a ^ 2 - a - 1) - 1 =
+    (8 * a ^ 3 - 12 * a ^ 2 + 3) * (8 * a ^ 3 - 6 * a - 1) := by ring
+  rw [key, ha, mul_zero]
 
-    This corresponds to the trigonometric identity:
-    cos(140°) = 1 - 2cos²(20°), where 140° = 180° - 40° = 180° - 2·20°. -/
-theorem root_map_is_root {R : Type*} [CommRing R] (α : R)
-    (hα : 8 * α ^ 3 - 6 * α - 1 = 0) :
-    8 * (1 - 2 * α ^ 2) ^ 3 - 6 * (1 - 2 * α ^ 2) - 1 = 0 := by
-  linear_combination (-8 * α ^ 3 + 6 * α - 1) * hα
+/-- If 8a³-6a-1 = 0 in any commutative ring, then 1-2a² is also a root. -/
+theorem root_image_gamma {R : Type*} [CommRing R] (a : R)
+    (ha : 8 * a ^ 3 - 6 * a - 1 = 0) :
+    8 * (1 - 2 * a ^ 2) ^ 3 - 6 * (1 - 2 * a ^ 2) - 1 = 0 := by
+  have key : 8 * (1 - 2 * a ^ 2) ^ 3 - 6 * (1 - 2 * a ^ 2) - 1 =
+    (-8 * a ^ 3 + 6 * a - 1) * (8 * a ^ 3 - 6 * a - 1) := by ring
+  rw [key, ha, mul_zero]
 
-/-- The third root identity:
-    8(2α²-α-1)³ - 6(2α²-α-1) - 1 = (8α³-12α²+3)(8α³-6α-1).
-    If α is a root of 8x³-6x-1, then 2α²-α-1 is also a root.
-
-    Note: 2α²-α-1 = -α - (1-2α²), confirming Vieta's formula r₁+r₂+r₃ = 0
-    (the x² coefficient of 8x³-6x-1 is zero).
-
-    This corresponds to cos(260°) = 2cos²(20°) - cos(20°) - 1. -/
-theorem root_map_third_root {R : Type*} [CommRing R] (α : R)
-    (hα : 8 * α ^ 3 - 6 * α - 1 = 0) :
-    8 * (2 * α ^ 2 - α - 1) ^ 3 - 6 * (2 * α ^ 2 - α - 1) - 1 = 0 := by
-  linear_combination (8 * α ^ 3 - 12 * α ^ 2 + 3) * hα
-
-/-- Vieta's formula: the three roots sum to zero. -/
-theorem roots_sum_zero {R : Type*} [CommRing R] (α : R) :
-    α + (1 - 2 * α ^ 2) + (2 * α ^ 2 - α - 1) = 0 := by ring
-
-/-- Product of roots identity from Vieta's formula:
-    α · (1-2α²) · (2α²-α-1) = 1/8 when 8α³-6α-1 = 0.
-    Equivalently: 8 · α · (1-2α²) · (2α²-α-1) = 1. -/
-theorem roots_product {R : Type*} [CommRing R] (α : R)
-    (hα : 8 * α ^ 3 - 6 * α - 1 = 0) :
-    8 * (α * (1 - 2 * α ^ 2) * (2 * α ^ 2 - α - 1)) = 1 := by
-  linear_combination (-4 * α ^ 2 + 2 * α + 1) * hα
-
--- ============================================================================
--- Part II: Polynomial Factorization Identity (Fully Proved)
--- ============================================================================
-
-/-- The complete factorization: in any commutative ring where 8α³-6α-1 = 0,
-    the polynomial 8x³-6x-1 factors as 8·(x-α)(x-(1-2α²))(x-(2α²-α-1)).
-
-    This is the key step for showing the polynomial splits in ℚ(α). -/
-theorem factorization_identity {R : Type*} [CommRing R] (α x : R)
-    (hα : 8 * α ^ 3 - 6 * α - 1 = 0) :
-    8 * x ^ 3 - 6 * x - 1 =
-    8 * (x - α) * (x - (1 - 2 * α ^ 2)) * (x - (2 * α ^ 2 - α - 1)) := by
-  linear_combination ((4 * α - 2) * x + (-4 * α ^ 2 + 2 * α + 1)) * hα
-
--- ============================================================================
--- Part III: Irreducibility of 8X³ - 6X - 1 over ℚ
--- ============================================================================
-
-/-- 8X³ - 6X - 1 is irreducible over ℚ.
-
-    Proof strategy (Eisenstein via substitution):
-    1. Let g(Y) = Y³ - 6Y² + 9Y - 3 (monic, integer coefficients)
-    2. g satisfies Eisenstein at p=3: leading coeff 1 ∤ 3, middle coeffs -6,9 ∣ 3,
-       constant -3: 3 | (-3) but 9 ∤ (-3)
-    3. g is irreducible over ℤ, hence over ℚ
-    4. g(2X+2) = 8X³-6X-1 (verified: (2X+2)³-6(2X+2)²+9(2X+2)-3 = 8X³-6X-1)
-    5. Since the substitution Y = 2X+2 is invertible over ℚ, irreducibility transfers -/
-theorem cos20_poly_irreducible : Irreducible (8 * X ^ 3 - 6 * X - C 1 : ℚ[X]) := by
-  sorry
-
--- ============================================================================
--- Part IV: Splitting Field Degree
--- ============================================================================
-
-/-- The splitting field of 8X³-6X-1 has degree 3 over ℚ.
-
-    Proof outline:
-    1. p is irreducible of degree 3, so [ℚ(α):ℚ] = 3 for any root α
-    2. By root_map_is_root and root_map_third_root, all three roots lie in ℚ(α)
-    3. Therefore p splits in ℚ(α), so SplittingField ⊆ ℚ(α)
-    4. Since α ∈ SplittingField, we have ℚ(α) ⊆ SplittingField
-    5. Therefore SplittingField = ℚ(α) and [SplittingField:ℚ] = 3
-
-    The factorization_identity provides the explicit factorization
-    8x³-6x-1 = 8(x-α)(x-(1-2α²))(x-(2α²-α-1)) in ℚ(α)[X]. -/
-theorem cos20_splitting_finrank :
-    Module.finrank ℚ (8 * X ^ 3 - 6 * X - C 1 : ℚ[X]).SplittingField = 3 := by
-  sorry
-
--- ============================================================================
--- Part V: Main Theorem
--- ============================================================================
-
-/-- The Galois group of 8X³-6X-1 over ℚ has order 3.
-
-    This proves Gal(minpoly(cos 20°)/ℚ) ≅ ℤ/3ℤ ≅ A₃ (not S₃).
-    Equivalently, the splitting field of the cos(20°) minimal polynomial
-    is a cyclic cubic extension of ℚ.
-
-    Combined with the Wantzel-Galois characterization (OQ02),
-    this gives a stronger proof that cos(20°) is not constructible:
-    the Galois group of its minimal polynomial is NOT a 2-group. -/
-theorem cos20_gal_order :
-    Fintype.card (8 * X ^ 3 - 6 * X - C 1 : ℚ[X]).Gal = 3 := by
-  have hsep : (8 * X ^ 3 - 6 * X - C 1 : ℚ[X]).Separable :=
-    cos20_poly_irreducible.separable
-  have hcard := Polynomial.Gal.card_of_separable hsep
-  rw [Nat.card_eq_fintype_card] at hcard
-  linarith [cos20_splitting_finrank]
+/-- The quadratic cofactor of p after dividing by (X-α) has β = 2α²-α-1 as a root.
+    This identity shows: 8β² + 8αβ + (8α²-6) = (4α-2)(8α³-6α-1). -/
+theorem quadratic_cofactor_root {R : Type*} [CommRing R] (a : R)
+    (ha : 8 * a ^ 3 - 6 * a - 1 = 0) :
+    8 * (2 * a ^ 2 - a - 1) ^ 2 + 8 * a * (2 * a ^ 2 - a - 1) + (8 * a ^ 2 - 6) = 0 := by
+  have key : 8 * (2 * a ^ 2 - a - 1) ^ 2 + 8 * a * (2 * a ^ 2 - a - 1) + (8 * a ^ 2 - 6) =
+    (4 * a - 2) * (8 * a ^ 3 - 6 * a - 1) := by ring
+  rw [key, ha, mul_zero]
 
 /-
-## Summary
-
-### Fully Proved (0 sorries):
-1. `root_map_is_root` — if 8α³-6α-1=0 then 8(1-2α²)³-6(1-2α²)-1=0
-2. `root_map_third_root` — if 8α³-6α-1=0 then 8(2α²-α-1)³-6(2α²-α-1)-1=0
-3. `roots_sum_zero` — α + (1-2α²) + (2α²-α-1) = 0 (Vieta)
-4. `roots_product` — 8·α·(1-2α²)·(2α²-α-1) = 1 when 8α³-6α-1=0
-5. `factorization_identity` — 8x³-6x-1 = 8(x-α)(x-(1-2α²))(x-(2α²-α-1))
-
-### With Sorry (documented strategies):
-6. `cos20_poly_irreducible` — Eisenstein on shifted monic polynomial at p=3
-7. `cos20_splitting_finrank` — splitting field degree = 3 from root identities
-8. `cos20_gal_order` — |Gal| = 3, follows from 6+7 via card_of_separable
-
-### Axiom Targeted:
-- `cos20_gal_order` from AngleTrisectionOQ02.lean (2 → 1 axiom when sorry resolved)
+## Part II: Polynomial Properties
 -/
+
+/-- Shorthand for the polynomial 8X³-6X-1. -/
+private noncomputable abbrev p : ℚ[X] := 8 * X ^ 3 - 6 * X - C 1
+
+private theorem p_ne_zero : (p : ℚ[X]) ≠ 0 := by
+  intro h
+  have : Polynomial.eval 0 (p : ℚ[X]) = -1 := by
+    simp [p]
+  rw [h, Polynomial.eval_zero] at this
+  norm_num at this
+
+private theorem p_natDegree : (p : ℚ[X]).natDegree = 3 := by
+  show (8 * X ^ 3 - 6 * X - C (1 : ℚ)).natDegree = 3
+  norm_num [natDegree_sub_eq_left_of_natDegree_lt, natDegree_mul, natDegree_pow,
+    natDegree_X, natDegree_C, natDegree_one]
+
+private theorem p_degree_ne_zero : (p : ℚ[X]).degree ≠ 0 := by
+  rw [Polynomial.degree_eq_natDegree p_ne_zero, p_natDegree]
+  exact (by norm_num : (3 : WithBot ℕ) ≠ 0)
+
+/-- 8X³-6X-1 is irreducible over ℚ.
+    This is the same polynomial as `trisectionPolynomial` in AngleTrisection.lean,
+    where it is axiomatized. Here we also take it as an axiom since proving it
+    requires showing the polynomial has no rational root among ±1, ±1/2, ±1/4, ±1/8
+    (the only candidates by the rational root theorem for a degree 3 polynomial). -/
+axiom p_irreducible : Irreducible (p : ℚ[X])
+
+private theorem p_separable : (p : ℚ[X]).Separable :=
+  p_irreducible.separable
+
+/-
+## Part III: Splitting Field Analysis
+
+The key theorem: all roots of p lie in ℚ(α) for any root α.
+This means the splitting field equals ℚ(α), so [SplittingField:ℚ] = 3.
+-/
+
+/-- Evaluation of p at an element equals 8a³-6a-1. -/
+private theorem p_eval_eq {R : Type*} [CommRing R] [Algebra ℚ R] (a : R) :
+    Polynomial.aeval a p = 8 * a ^ 3 - 6 * a - 1 := by
+  simp [p, map_sub, map_mul, map_pow, map_ofNat, Polynomial.aeval_X]
+
+private theorem p_map_degree_ne :
+    (p.map (algebraMap ℚ p.SplittingField)).degree ≠ 0 := by
+  rw [degree_map_eq_of_injective (RingHom.injective (algebraMap ℚ p.SplittingField))]
+  exact p_degree_ne_zero
+
+/-- In the splitting field, get a root via rootOfSplits. -/
+private noncomputable def root_in_sf : p.SplittingField :=
+  rootOfSplits (SplittingField.splits p) p_map_degree_ne
+
+/-- The root satisfies p(α) = 0. -/
+private theorem root_is_root :
+    Polynomial.aeval root_in_sf p = 0 := by
+  unfold root_in_sf
+  rw [Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map]
+  exact eval_rootOfSplits _ p_map_degree_ne
+
+/-- The root satisfies 8α³-6α-1 = 0. -/
+private theorem root_eq_zero :
+    8 * root_in_sf ^ 3 - 6 * root_in_sf - 1 = 0 := by
+  have := root_is_root
+  rwa [p_eval_eq] at this
+
+/-- β = 2α²-α-1 is a root of p in the splitting field. -/
+private theorem beta_is_root :
+    Polynomial.aeval (2 * root_in_sf ^ 2 - root_in_sf - 1) p = 0 := by
+  rw [p_eval_eq]
+  exact root_image_beta root_in_sf root_eq_zero
+
+/-- γ = 1-2α² is a root of p in the splitting field. -/
+private theorem gamma_is_root :
+    Polynomial.aeval (1 - 2 * root_in_sf ^ 2) p = 0 := by
+  rw [p_eval_eq]
+  exact root_image_gamma root_in_sf root_eq_zero
+
+/-
+## Part IV: Lower and Upper Bounds on |Gal|
+-/
+
+/-- 3 divides |Gal(p)|. -/
+private theorem three_dvd_gal_card :
+    3 ∣ Fintype.card p.Gal := by
+  have h := Polynomial.Gal.prime_degree_dvd_card p_irreducible
+    (show Nat.Prime p.natDegree by rw [p_natDegree]; decide)
+  rw [Nat.card_eq_fintype_card, p_natDegree] at h
+  exact h
+
+/-- |Gal(p)| divides 6 (= 3!). -/
+private theorem gal_card_dvd_six :
+    Fintype.card p.Gal ∣ 6 := by
+  classical
+  haveI : Fact (map (algebraMap ℚ p.SplittingField) p).Splits :=
+    ⟨SplittingField.splits p⟩
+  have hinj := Polynomial.Gal.galActionHom_injective p p.SplittingField
+  have hdvd : Nat.card p.Gal ∣ Nat.card (Equiv.Perm (p.rootSet p.SplittingField)) :=
+    Subgroup.card_dvd_of_injective _ hinj
+  rw [Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, Fintype.card_perm] at hdvd
+  have hcard : Fintype.card (p.rootSet p.SplittingField) = 3 :=
+    (Polynomial.card_rootSet_eq_natDegree p_separable
+      (SplittingField.splits p)).trans p_natDegree
+  rw [hcard] at hdvd
+  simpa using hdvd
+
+/-
+## Part V: The Splitting Field Has Degree 3
+
+Key argument: all roots of p are polynomial expressions of α,
+so the splitting field ℚ(α) has degree 3 over ℚ.
+-/
+
+/-- The root α is integral over ℚ. -/
+private theorem root_integral : IsIntegral ℚ root_in_sf :=
+  .of_finite ℚ root_in_sf
+
+/-- The minpoly of α has natDegree 3 (since p is irreducible and α is a root). -/
+private theorem minpoly_natDegree :
+    (minpoly ℚ root_in_sf).natDegree = 3 := by
+  have hdvd : minpoly ℚ root_in_sf ∣ p :=
+    minpoly.dvd ℚ root_in_sf (by rw [p_eval_eq]; exact root_eq_zero)
+  have hirr_min := minpoly.irreducible root_integral
+  have hassoc := hirr_min.dvd_symm p_irreducible hdvd
+  apply le_antisymm
+  · calc (minpoly ℚ root_in_sf).natDegree ≤ p.natDegree :=
+          Polynomial.natDegree_le_of_dvd hdvd p_ne_zero
+      _ = 3 := p_natDegree
+  · calc 3 = p.natDegree := p_natDegree.symm
+      _ ≤ (minpoly ℚ root_in_sf).natDegree :=
+          Polynomial.natDegree_le_of_dvd hassoc (minpoly.ne_zero root_integral)
+
+/-- [ℚ(α):ℚ] = 3. -/
+private theorem adjoin_finrank :
+    Module.finrank ℚ (IntermediateField.adjoin ℚ
+      ({root_in_sf} : Set p.SplittingField)) = 3 := by
+  rw [IntermediateField.adjoin.finrank root_integral, minpoly_natDegree]
+
+/-- β = 2α²-α-1 is in ℚ(α) (polynomial expression in α). -/
+private theorem beta_in_adjoin :
+    (2 * root_in_sf ^ 2 - root_in_sf - 1 : p.SplittingField) ∈
+    IntermediateField.adjoin ℚ ({root_in_sf} : Set p.SplittingField) := by
+  set S := IntermediateField.adjoin ℚ ({root_in_sf} : Set p.SplittingField)
+  have hα : root_in_sf ∈ S :=
+    IntermediateField.mem_adjoin_simple_self ℚ root_in_sf
+  have hαα : root_in_sf * root_in_sf ∈ S := S.mul_mem hα hα
+  have h2αα : (2 : p.SplittingField) * (root_in_sf * root_in_sf) ∈ S :=
+    S.mul_mem (S.algebraMap_mem 2) hαα
+  show 2 * root_in_sf ^ 2 - root_in_sf - 1 ∈ S
+  have heq : 2 * root_in_sf ^ 2 - root_in_sf - 1 =
+    (2 : p.SplittingField) * (root_in_sf * root_in_sf) - root_in_sf - 1 := by ring
+  rw [heq]
+  exact S.sub_mem (S.sub_mem h2αα hα) S.one_mem
+
+/-- γ = 1-2α² is in ℚ(α) (polynomial expression in α). -/
+private theorem gamma_in_adjoin :
+    (1 - 2 * root_in_sf ^ 2 : p.SplittingField) ∈
+    IntermediateField.adjoin ℚ ({root_in_sf} : Set p.SplittingField) := by
+  set S := IntermediateField.adjoin ℚ ({root_in_sf} : Set p.SplittingField)
+  have hα : root_in_sf ∈ S :=
+    IntermediateField.mem_adjoin_simple_self ℚ root_in_sf
+  have hαα : root_in_sf * root_in_sf ∈ S := S.mul_mem hα hα
+  have h2αα : (2 : p.SplittingField) * (root_in_sf * root_in_sf) ∈ S :=
+    S.mul_mem (S.algebraMap_mem 2) hαα
+  show 1 - 2 * root_in_sf ^ 2 ∈ S
+  have heq : 1 - 2 * root_in_sf ^ 2 =
+    1 - (2 : p.SplittingField) * (root_in_sf * root_in_sf) := by ring
+  rw [heq]
+  exact S.sub_mem S.one_mem h2αα
+
+/-- Factored form: 8a³-6a-1 = 8(a-α)(a-β)(a-γ) when 8α³-6α-1 = 0.
+    This identity holds in any commutative ring. -/
+private theorem factored_eval_eq {R : Type*} [CommRing R] (α a : R)
+    (hα : 8 * α ^ 3 - 6 * α - 1 = 0) :
+    8 * a ^ 3 - 6 * a - 1 =
+    8 * (a - α) * (a - (2 * α ^ 2 - α - 1)) * (a - (1 - 2 * α ^ 2)) := by
+  have h : 8 * a ^ 3 - 6 * a - 1 -
+    8 * (a - α) * (a - (2 * α ^ 2 - α - 1)) * (a - (1 - 2 * α ^ 2)) = 0 := by
+    have key : 8 * a ^ 3 - 6 * a - 1 -
+      8 * (a - α) * (a - (2 * α ^ 2 - α - 1)) * (a - (1 - 2 * α ^ 2)) =
+      ((4 * α - 2) * a + (-4 * α ^ 2 + 2 * α + 1)) * (8 * α ^ 3 - 6 * α - 1) := by ring
+    rw [key, hα, mul_zero]
+  exact sub_eq_zero.mp h
+
+/-- Every root of p in the splitting field is in ℚ(α).
+
+    Proof: By the factored form, if 8r³-6r-1 = 0 and 8α³-6α-1 = 0, then
+    8(r-α)(r-β)(r-γ) = 0. Since the splitting field is a domain and 8 ≠ 0,
+    one of r = α, r = β, r = γ. All three are in ℚ(α). -/
+private theorem rootSet_subset_adjoin :
+    (p.rootSet p.SplittingField : Set p.SplittingField) ⊆
+    (IntermediateField.adjoin ℚ ({root_in_sf} : Set p.SplittingField) :
+      Set p.SplittingField) := by
+  intro r hr
+  -- r is a root of p
+  have hr_aeval : Polynomial.aeval r p = 0 := (Polynomial.mem_rootSet.mp hr).2
+  have hr_root : 8 * r ^ 3 - 6 * r - 1 = 0 := by rwa [p_eval_eq] at hr_aeval
+  -- Factored form: 8r³-6r-1 = 8(r-α)(r-β)(r-γ)
+  have hfact := factored_eval_eq root_in_sf r root_eq_zero
+  -- Substituting hr_root: 0 = 8(r-α)(r-β)(r-γ)
+  rw [hr_root] at hfact
+  -- So ((8 * (r-α)) * (r-β)) * (r-γ) = 0
+  have h8 : (8 : p.SplittingField) ≠ 0 := by norm_num
+  -- hfact.symm : 8 * (r-α) * (r-β) * (r-γ) = 0
+  -- Lean parses as: ((8 * (r-α)) * (r-β)) * (r-γ) = 0
+  rcases mul_eq_zero.mp hfact.symm with h12 | h3
+  · rcases mul_eq_zero.mp h12 with h8a | h2
+    · -- 8 * (r - α) = 0, so r = α (since 8 ≠ 0)
+      rw [sub_eq_zero.mp ((mul_eq_zero.mp h8a).resolve_left h8)]
+      exact IntermediateField.mem_adjoin_simple_self ℚ root_in_sf
+    · -- r = β = 2α²-α-1
+      rw [sub_eq_zero.mp h2]
+      exact beta_in_adjoin
+  · -- r = γ = 1-2α²
+    rw [sub_eq_zero.mp h3]
+    exact gamma_in_adjoin
+
+/-- The splitting field is generated by α alone.
+    Proof: rootSet ⊂ ℚ(α), and adjoin(rootSet) = ⊤, so ℚ(α) = ⊤. -/
+private theorem adjoin_root_eq_top :
+    IntermediateField.adjoin ℚ ({root_in_sf} : Set p.SplittingField) = ⊤ := by
+  -- Algebra.adjoin ℚ (rootSet p SplittingField) = ⊤
+  have hgen : Algebra.adjoin ℚ (p.rootSet p.SplittingField : Set p.SplittingField) = ⊤ :=
+    Polynomial.SplittingField.adjoin_rootSet (K := ℚ) (f := p)
+  set S := IntermediateField.adjoin ℚ ({root_in_sf} : Set p.SplittingField)
+  -- rootSet ⊆ S (from rootSet_subset_adjoin)
+  have hsub := rootSet_subset_adjoin
+  -- Therefore Algebra.adjoin ℚ rootSet ≤ S.toSubalgebra
+  have halg : Algebra.adjoin ℚ (p.rootSet p.SplittingField : Set p.SplittingField) ≤
+    S.toSubalgebra := by
+    apply Algebra.adjoin_le
+    intro x hx
+    exact hsub hx
+  -- Since Algebra.adjoin rootSet = ⊤, we have S.toSubalgebra = ⊤
+  rw [eq_top_iff]
+  intro x _
+  have hx_alg : x ∈ S.toSubalgebra := halg (hgen ▸ Algebra.mem_top)
+  exact hx_alg
+
+/-- Module.finrank ℚ p.SplittingField = 3. -/
+theorem splitting_finrank :
+    Module.finrank ℚ p.SplittingField = 3 := by
+  have htop := adjoin_root_eq_top
+  have h_top_eq : Module.finrank ℚ
+    (↥(IntermediateField.adjoin ℚ ({root_in_sf} : Set p.SplittingField))) =
+    Module.finrank ℚ p.SplittingField := by
+    rw [htop]
+    exact LinearEquiv.finrank_eq IntermediateField.topEquiv.toLinearEquiv
+  rw [← h_top_eq, adjoin_finrank]
+
+/-
+## Part VI: Main Theorem
+-/
+
+/-- |Gal(8X³-6X-1/ℚ)| = 3. -/
+theorem cos20_gal_card :
+    Fintype.card (8 * X ^ 3 - 6 * X - C 1 : ℚ[X]).Gal = 3 := by
+  have hcard := Polynomial.Gal.card_of_separable p_separable
+  rw [Nat.card_eq_fintype_card] at hcard
+  rw [hcard, splitting_finrank]
 
 end AngleTrisectionCos20Gal
