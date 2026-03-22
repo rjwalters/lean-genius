@@ -78,11 +78,11 @@
     "problemStatement": "**De Moivre's Theorem**:\n\n$$(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta)$$\n\nfor any real θ and natural number n.",
     "proofStrategy": "Using Euler's formula e^(iθ) = cos θ + i sin θ, raising both sides to the n-th power gives e^(inθ) = cos(nθ) + i sin(nθ). The key Mathlib lemmas are Complex.exp_mul_I (Euler's formula) and Complex.exp_nat_mul (power rule for exp).",
     "keyInsights": [
-      "The exponential form makes the proof trivial — exponentiation becomes multiplication in the exponent, so (e^{iθ})^n = e^{inθ} is just the power rule for exp",
-      "Extension to integer exponents via Complex.exp_int_mul allows negative powers, giving (cos θ + i sin θ)^{-1} = cos θ - i sin θ (the complex conjugate on the unit circle)",
-      "Setting n = 2, 3 and expanding recovers all classical multiple-angle formulas (double and triple angle) as corollaries of a single algebraic identity",
-      "The nth roots of unity ω_k = e^{2πik/n} satisfy ω_k^n = 1 by De Moivre, revealing the cyclic group structure of the unit circle",
-      "De Moivre's theorem is the bridge between algebra (polynomial roots) and geometry (rotations): powers of complex numbers correspond to iterated rotations by angle θ"
+      "**Exponential Triviality:** Via Euler's formula, $(e^{i\\theta})^n = e^{in\\theta}$ is just the power rule for $\\exp$. The 'deep' trigonometric identity becomes trivial algebra in the exponential form.",
+      "**Integer Extension:** `Complex.exp_int_mul` extends to negative powers: $(\\cos\\theta + i\\sin\\theta)^{-1} = \\cos\\theta - i\\sin\\theta$ (complex conjugation on the unit circle). This gives $e^{-i\\theta} = \\overline{e^{i\\theta}}$.",
+      "**Multiple-Angle Factory:** Setting $n = 2$: $\\cos 2\\theta = \\cos^2\\theta - \\sin^2\\theta$. Setting $n = 3$: $\\cos 3\\theta = 4\\cos^3\\theta - 3\\cos\\theta$ (the triple angle formula used in Abel-Ruffini). All multiple-angle formulas are corollaries.",
+      "**Roots of Unity:** The $n$th roots of unity $\\omega_k = e^{2\\pi ik/n}$ satisfy $\\omega_k^n = 1$ by De Moivre. They form the cyclic group $\\mathbb{Z}/n\\mathbb{Z}$ under multiplication, evenly spaced on the unit circle.",
+      "**Algebra-Geometry Bridge:** Powers of complex numbers correspond to iterated rotations: $z^n$ rotates by $n\\theta$ and scales by $|z|^n$. De Moivre connects polynomial root-finding (algebra) to angular motion (geometry)."
     ]
   },
   "sections": [

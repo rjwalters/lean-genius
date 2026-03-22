@@ -51,11 +51,11 @@
     "problemStatement": "**The Law of Quadratic Reciprocity**:\n\nFor distinct odd primes $p$ and $q$:\n\n$$\\left(\\frac{p}{q}\\right)\\left(\\frac{q}{p}\\right) = (-1)^{\\frac{p-1}{2}\\cdot\\frac{q-1}{2}}$$\n\nwhere $(p/q)$ is the Legendre symbol:\n- $1$ if $p$ is a quadratic residue mod $q$\n- $-1$ if $p$ is a quadratic nonresidue mod $q$\n\n**Restated**: The symbols $(p/q)$ and $(q/p)$ are equal unless both $p \\equiv 3$ and $q \\equiv 3$ (mod 4), in which case they are negatives.",
     "proofStrategy": "The proof uses properties of the multiplicative group $(\\mathbb{Z}/p\\mathbb{Z})^*$:\n\n1. **Legendre symbol definition**: $(a/p) = a^{(p-1)/2} \\mod p$ by Euler's criterion\n\n2. **Counting lattice points**: Gauss's original proof counts lattice points in specific regions\n\n3. **Modern approach**: Uses the structure of finite fields and character theory\n\n4. **Supplementary laws**:\n   - First: $-1$ is a QR mod $p$ iff $p \\equiv 1 \\pmod{4}$\n   - Second: $2$ is a QR mod $p$ iff $p \\equiv \\pm 1 \\pmod{8}$",
     "keyInsights": [
-      "The sign depends only on whether both primes are 3 mod 4",
-      "Gauss considered this the most beautiful theorem in number theory",
-      "The theorem extends to higher reciprocity laws in algebraic number theory",
-      "Euler's criterion gives a computational method for the Legendre symbol",
-      "The multiplicativity of the Legendre symbol simplifies many calculations"
+      "**The Reciprocity Law:** For odd primes $p \\neq q$: $\\left(\\frac{p}{q}\\right)\\left(\\frac{q}{p}\\right) = (-1)^{\\frac{p-1}{2} \\cdot \\frac{q-1}{2}}$. The sign flips only when BOTH $p \\equiv q \\equiv 3 \\pmod{4}$.",
+      "**Gauss's *Theorema Aureum*:** Gauss called this the 'golden theorem' and gave six proofs. The law reveals that quadratic residuosity mod $p$ and mod $q$ are not independent — they are linked by the parities of $(p-1)/2$ and $(q-1)/2$.",
+      "**Euler's Criterion:** $\\left(\\frac{a}{p}\\right) \\equiv a^{(p-1)/2} \\pmod{p}$. This converts the Legendre symbol from a quadratic solvability question into a simple exponentiation — computable in $O(\\log p)$ multiplications by fast exponentiation.",
+      "**Multiplicativity:** $\\left(\\frac{ab}{p}\\right) = \\left(\\frac{a}{p}\\right)\\left(\\frac{b}{p}\\right)$. Combined with reciprocity and the supplements $\\left(\\frac{-1}{p}\\right) = (-1)^{(p-1)/2}$ and $\\left(\\frac{2}{p}\\right) = (-1)^{(p^2-1)/8}$, this determines $\\left(\\frac{a}{p}\\right)$ for any $a$.",
+      "**Higher Reciprocity:** Quadratic reciprocity generalizes to cubic ($\\mathbb{Z}[\\omega]$), quartic ($\\mathbb{Z}[i]$), and arbitrary $n$th-power reciprocity laws via class field theory — the deepest strand in algebraic number theory, from Gauss through Artin to Langlands."
     ]
   },
   "sections": [

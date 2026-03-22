@@ -57,11 +57,11 @@
     "problemStatement": "**Divisibility by 3 Rule (Wiedijk #85):**\n\nA natural number $n$ is divisible by 3 if and only if the sum of its decimal digits is divisible by 3.\n\n$$3 | n \\iff 3 | (d_0 + d_1 + d_2 + \\cdots)$$\n\nwhere $n = d_0 + d_1 \\cdot 10 + d_2 \\cdot 10^2 + \\cdots$ is the decimal representation.\n\n**Stronger Form (Congruence):**\n\n$$n \\equiv (d_0 + d_1 + d_2 + \\cdots) \\pmod 3$$\n\n**Corollary (Divisibility by 9):**\n\n$$9 | n \\iff 9 | (d_0 + d_1 + d_2 + \\cdots)$$",
     "proofStrategy": "The proof relies on the key observation that 10 ≡ 1 (mod 3).\n\n1. **Base Representation**: Any natural number n can be written as:\n   $$n = d_0 + d_1 \\cdot 10 + d_2 \\cdot 10^2 + d_3 \\cdot 10^3 + \\cdots$$\n\n2. **Modular Reduction**: Since $10 \\equiv 1 \\pmod 3$, we have:\n   $$10^k \\equiv 1^k = 1 \\pmod 3$$ for all $k \\geq 0$.\n\n3. **Apply to Each Term**: Taking the equation modulo 3:\n   $$n \\equiv d_0 \\cdot 1 + d_1 \\cdot 1 + d_2 \\cdot 1 + \\cdots \\pmod 3$$\n   $$n \\equiv d_0 + d_1 + d_2 + \\cdots \\pmod 3$$\n\n4. **Conclude**: Therefore $3 | n$ if and only if $3 | (d_0 + d_1 + d_2 + \\cdots)$.\n\nThe same argument works for 9 since $10 \\equiv 1 \\pmod 9$ as well.",
     "keyInsights": [
-      "10 ≡ 1 (mod 3) is the fundamental reason the rule works",
-      "The same principle gives divisibility by 9 (casting out nines)",
-      "The rule generalizes: for base b and divisor d with b ≡ 1 (mod d)",
-      "Iteratively summing digits gives the 'digital root'",
-      "This is one of the most practical mental arithmetic techniques"
+      "**The Core Congruence:** $10 \\equiv 1 \\pmod{3}$, so $10^k \\equiv 1$ for all $k$. Thus $n = \\sum d_i \\cdot 10^i \\equiv \\sum d_i \\pmod{3}$.",
+      "**Casting Out Nines:** Since $10 \\equiv 1 \\pmod{9}$ too, the same argument gives divisibility by 9 — the classical 'casting out nines' technique for checking arithmetic.",
+      "**Base Generalization:** For base $b$ and divisor $d$ with $b \\equiv 1 \\pmod{d}$: a number is divisible by $d$ iff its digit sum is. Works for any $(b,d)$ pair satisfying $b \\equiv 1 \\pmod{d}$.",
+      "**Digital Root:** Iterating the digit sum gives the digital root $\\text{dr}(n) \\equiv n \\pmod{9}$, and $\\text{dr}(n) \\in \\{1,\\ldots,9\\}$ for $n > 0$. The Lean formalization captures this as `digitSumCongruence`.",
+      "**Lean Proof Technique:** The proof works over `Nat.digits 10 n` (Mathlib's digit decomposition) and uses `Finset.sum_congr` with the congruence $10^k \\equiv 1$, reducing the problem to summing digits modulo 3."
     ]
   },
   "sections": [

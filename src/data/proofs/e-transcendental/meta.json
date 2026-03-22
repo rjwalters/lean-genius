@@ -46,11 +46,11 @@
     "problemStatement": "**Theorem**: e is transcendental, i.e., there is no nonzero polynomial P with integer coefficients such that P(e) = 0.\n\nThis is stronger than irrationality (proved by Euler) and even algebraic irrationality.",
     "proofStrategy": "Hermite's proof uses contour integration. Assume e is algebraic with minimal polynomial P. Construct an auxiliary integral that is simultaneously a non-zero integer and arbitrarily small (using factorial growth vs exponential), yielding a contradiction.",
     "keyInsights": [
-      "The key is the interplay between factorial and exponential growth",
-      "Hermite's method was generalized by Lindemann to e^alpha",
-      "Transcendence is much stronger than irrationality",
-      "e was the first 'famous' number proved transcendental",
-      "The **auxiliary polynomial method** introduced by Hermite—constructing a function with carefully controlled divisibility at integer points—became the template for all subsequent transcendence proofs, including Baker's theorem on linear forms in logarithms (1966)"
+      "**Factorial vs. Exponential:** Hermite's proof exploits $\\int_0^n f(t)e^{-t}dt$ where $f$ has $(p{-}1)!$ in the denominator. For large prime $p$, the integral is a nonzero integer (by divisibility) yet arbitrarily small (since $p! \\gg e^n$) — contradiction.",
+      "**Hermite $\\to$ Lindemann $\\to$ Lindemann-Weierstrass:** Hermite's 1873 method ($e$ transcendental) was extended by Lindemann (1882, $\\pi$ transcendental) and then to the full theorem: if $\\alpha_1,\\ldots,\\alpha_n$ are distinct algebraic numbers, then $e^{\\alpha_1},\\ldots,e^{\\alpha_n}$ are $\\mathbb{Q}$-linearly independent.",
+      "**Transcendence Hierarchy:** Irrational ($e \\notin \\mathbb{Q}$, Euler 1737) $\\subsetneq$ algebraically irrational ($e$ not quadratic, etc.) $\\subsetneq$ transcendental ($e \\notin \\overline{\\mathbb{Q}}$, Hermite 1873). Transcendence says $e$ satisfies NO polynomial over $\\mathbb{Q}$.",
+      "**First 'Famous' Transcendental:** Liouville (1844) constructed artificial transcendentals; Hermite's proof was the first for a 'naturally occurring' constant, opening the door to $\\pi$'s transcendence and the resolution of squaring the circle.",
+      "**Auxiliary Polynomial Template:** Hermite's construction $f(x) = x^{p-1}(x{-}1)^p \\cdots (x{-}n)^p / (p{-}1)!$ — controlling divisibility at integer points while maintaining integrality — became the blueprint for Baker's theorem (1966) on linear forms in logarithms."
     ]
   },
   "crossReferences": [

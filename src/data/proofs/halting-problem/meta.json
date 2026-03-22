@@ -36,11 +36,11 @@
     "problemStatement": "Theorem (Turing, 1936): The halting problem is undecidable.\n\nMore precisely: there is no algorithm $H$ that, given the description of a program $P$ and input $I$, correctly determines whether $P$ halts on $I$:\n\n$$\\nexists H : \\text{Program} \\times \\text{Input} \\to \\{\\text{halts}, \\text{loops}\\}$$\n\nsuch that $H(P, I) = \\text{halts}$ if and only if $P(I)$ terminates.",
     "proofStrategy": "The proof uses diagonalization, similar to Cantor's proof of uncountability:\n\n1. Assume we have a halting oracle $H(p, i)$ that correctly decides if program $p$ halts on input $i$\n2. Construct a diagonal program $D$ that:\n   - Takes a program code $n$ as input\n   - Runs $H(n, n)$ to check if program $n$ halts on itself\n   - Does the opposite: loops if $H$ says halt, halts if $H$ says loop\n3. Apply $D$ to its own code: what does $H(D, D)$ return?\n   - If $H(D, D) = \\text{halts}$: then $D(D)$ loops (by construction)\n   - If $H(D, D) = \\text{loops}$: then $D(D)$ halts (by construction)\n4. Contradiction: $H$ cannot correctly predict $D$'s behavior on itself\n\nThe key insight is self-reference: any decision procedure can be turned against itself.",
     "keyInsights": [
-      "Self-reference plus negation creates undecidability",
-      "The diagonal program 'does the opposite' of what the oracle predicts",
-      "This is the same technique used in Cantor's uncountability proof and Godel's incompleteness",
-      "No amount of computational power can solve this - it's a logical impossibility",
-      "The halting problem establishes a hierarchy of undecidable problems via Turing reductions — any question about program behavior that is at least as hard as halting (e.g., Rice's theorem for non-trivial semantic properties) is also undecidable"
+      "**Self-Reference + Negation:** Define $D(n) = \\neg H(n, n)$. Applying $D$ to its own code: $D(D) = \\neg H(D, D)$. If $H$ is correct, $H(D,D) = \\text{halts} \\iff D(D)$ halts $\\iff D(D)$ loops — contradiction.",
+      "**The Diagonal Trick:** $D$ 'does the opposite' of the oracle's prediction on self-application. This is identical in structure to Cantor's proof that $|\\mathbb{R}| > |\\mathbb{N}|$ and Gödel's construction of unprovable sentences.",
+      "**Logical, Not Computational:** No amount of computational power, time, or cleverness can solve the halting problem. The impossibility is logical (self-referential contradiction), not resource-limited. A quantum computer, a faster algorithm, or infinite memory cannot help.",
+      "**Rice's Theorem Generalization:** ANY non-trivial semantic property of programs is undecidable. If $P$ is a property such that some programs have $P$ and some don't, then $\\{n : \\text{program } n \\text{ has } P\\}$ is undecidable. The halting problem is just the simplest case ($P$ = 'halts on all inputs').",
+      "**Practical Impact:** No static analyzer can detect all infinite loops. No compiler can optimize away all non-terminating code. No verification system can prove termination for all programs. These are provable limitations, not engineering shortcomings."
     ]
   },
   "sections": [
