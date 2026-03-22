@@ -2,121 +2,170 @@
   {
     "id": "ann-intro",
     "proofId": "product-of-segments-of-chords",
-    "range": { "startLine": 1, "endLine": 6 },
+    "range": {
+      "startLine": 1,
+      "endLine": 6
+    },
     "type": "concept",
     "title": "Intersecting Chords",
     "content": "The **Product of Segments of Chords** theorem states that when two chords of a circle intersect at a point P:\n\n$$PA \\cdot PB = PC \\cdot PD$$\n\nThis elegant result says that the product of the segments is the same for *any* chord through P. The product depends only on P's position relative to the circle, not on which direction the chord goes.",
-    "mathContext": "$PA \\cdot PB = PC \\cdot PD$ for any two chords $AB$, $CD$ intersecting at $P$. Equivalently, both products equal $|d^2 - r^2|$ where $d = |PO|$.",
+    "mathContext": "$PA \\cdot PB = PC \\cdot PD$ for any two chords $AB$, $CD$ intersecting at $P$. Equivalently, the power $\\text{pow}(P) = |PO|^2 - r^2$ is a chord-independent invariant.",
     "significance": "key",
-    "relatedConcepts": ["circle geometry", "power of a point", "Euclid's Elements"],
-    "prerequisites": ["Euclidean geometry", "circle definitions"]
-  },
-  {
-    "id": "ann-circle-def",
-    "proofId": "product-of-segments-of-chords",
-    "range": { "startLine": 61, "endLine": 69 },
-    "type": "definition",
-    "title": "Circle and On-Circle Definitions",
-    "content": "Defines a circle as a Lean structure with center (a point in $\\mathbb{R}^2$), radius (a positive real number), and a positivity proof. A point P lies on the circle iff $\\|P - O\\| = r$. Using Mathlib's `EuclideanSpace ℝ (Fin 2)` provides the full inner product space infrastructure needed for the algebraic proof.",
-    "mathContext": "A circle $C(O, r)$ with center $O \\in \\mathbb{R}^2$ and $r > 0$. $P \\in C \\iff \\|P - O\\| = r$.",
-    "significance": "supporting",
-    "relatedConcepts": ["metric space", "norm", "Euclidean space"],
-    "prerequisites": ["inner product spaces", "Euclidean geometry"]
+    "prerequisites": [
+      "Euclidean geometry",
+      "circle definitions",
+      "inner product spaces"
+    ],
+    "relatedConcepts": [
+      "circle geometry",
+      "power of a point",
+      "Euclid's Elements"
+    ]
   },
   {
     "id": "ann-power",
     "proofId": "product-of-segments-of-chords",
-    "range": { "startLine": 75, "endLine": 99 },
+    "range": {
+      "startLine": 75,
+      "endLine": 81
+    },
     "type": "definition",
     "title": "Power of a Point",
-    "content": "The **power of a point** P with respect to a circle is:\n\n$$\\text{pow}(P) = |PO|^2 - r^2$$\n\nwhere O is the center and r is the radius.\n\n- **P outside circle**: pow(P) > 0\n- **P on circle**: pow(P) = 0\n- **P inside circle**: pow(P) < 0\n\nFor any chord through P, the product of signed distances equals the power. For an interior point, $PA \\cdot PB = |\\text{pow}(P)| = r^2 - |PO|^2$. The proof that power is negative for interior points uses `sq_lt_sq'` and the triangle inequality.",
-    "mathContext": "$\\text{pow}(P) = \\|P - O\\|^2 - r^2$. For $P$ inside the circle, $|\\text{pow}(P)| = r^2 - \\|P - O\\|^2$.",
+    "content": "The **power of a point** P with respect to a circle is:\n\n$$\\text{pow}(P) = |PO|^2 - r^2$$\n\nwhere O is the center and r is the radius.\n\n- **P outside circle**: pow(P) > 0\n- **P on circle**: pow(P) = 0\n- **P inside circle**: pow(P) < 0\n\nFor any chord through P, the product of signed distances equals the power. For an interior point, $PA \\cdot PB = |\\text{pow}(P)| = r^2 - |PO|^2$.",
+    "mathContext": "$\\text{pow}(P) = |PO|^2 - r^2 = \\|P - O\\|^2 - r^2$. For $P$ inside the circle, $\\text{pow}(P) < 0$ and $PA \\cdot PB = r^2 - \\|P - O\\|^2$.",
     "significance": "key",
-    "relatedConcepts": ["radical axis", "inversive geometry", "circle invariants"],
-    "prerequisites": ["norm and inner product", "absolute value", "squared inequalities"]
-  },
-  {
-    "id": "ann-chord-quadratic",
-    "proofId": "product-of-segments-of-chords",
-    "range": { "startLine": 105, "endLine": 130 },
-    "type": "technique",
-    "title": "Chord–Circle Intersection as Quadratic Equation",
-    "content": "The key algebraic lemma: parametrize a chord through P in direction $\\vec{d}$ (unit vector) as $Q(t) = P + t \\vec{d}$. The circle equation $\\|Q(t)\\| = r$ yields the quadratic $t^2 + 2t \\langle P, \\vec{d} \\rangle + (\\|P\\|^2 - r^2) = 0$. The proof expands the inner product $\\langle P + t\\vec{d}, P + t\\vec{d} \\rangle$ using bilinearity (`inner_add_left`, `inner_smul_left`) and the normalization $\\langle \\vec{d}, \\vec{d} \\rangle = 1$.",
-    "mathContext": "$t^2 + 2t \\langle P, \\vec{d} \\rangle + (\\|P\\|^2 - r^2) = 0$ for $\\|\\vec{d}\\| = 1$ and $\\|P + t\\vec{d}\\| = r$.",
-    "significance": "key",
-    "relatedConcepts": ["quadratic equations", "parametric lines", "inner product bilinearity"],
-    "prerequisites": ["inner product spaces", "quadratic formula", "norm-inner product identity"]
-  },
-  {
-    "id": "ann-vieta",
-    "proofId": "product-of-segments-of-chords",
-    "range": { "startLine": 132, "endLine": 219 },
-    "type": "technique",
-    "title": "Vieta's Formulas for Chord Roots",
-    "content": "**Vieta's Formulas Approach**: The two intersection parameters $t_1, t_2$ are roots of the chord quadratic. By Vieta's formulas, their product equals the constant term: $t_1 t_2 = \\|P\\|^2 - r^2$. The proof derives this by subtracting the two quadratic equations, factoring $(t_1 - t_2)(t_1 + t_2 + 2\\langle P, \\vec{d} \\rangle) = 0$, and using $t_1 \\ne t_2$ to get the sum $t_1 + t_2 = -2\\langle P, \\vec{d} \\rangle$. Then substituting back yields the product. Since $\\|P\\| < r$ for interior points, $t_1 t_2 < 0$ (opposite signs), so $|t_1| \\cdot |t_2| = r^2 - \\|P\\|^2$.",
-    "mathContext": "$t_1 \\cdot t_2 = \\|P\\|^2 - r^2$ (Vieta's formula for the constant term). For interior points, $|t_1| \\cdot |t_2| = r^2 - \\|P\\|^2$.",
-    "significance": "key",
-    "relatedConcepts": ["Vieta's formulas", "quadratic roots", "signed distances"],
-    "prerequisites": ["polynomial root theory", "absolute value properties"]
+    "prerequisites": [
+      "norm/distance in inner product spaces",
+      "circle equation"
+    ],
+    "relatedConcepts": [
+      "radical axis",
+      "inversive geometry",
+      "circle invariants"
+    ]
   },
   {
     "id": "ann-main",
     "proofId": "product-of-segments-of-chords",
-    "range": { "startLine": 225, "endLine": 437 },
-    "type": "insight",
-    "title": "The Main Theorem: Power of a Point Product",
-    "content": "**Theorem (Euclid III.35, Wiedijk #55)**:\n\nIf two chords AB and CD of a circle intersect at point P, then:\n$$PA \\cdot PB = PC \\cdot PD$$\n\nThe proof has two layers: (1) `product_of_segments_of_chords_origin` for circles centered at the origin, which directly applies `chord_product_algebraic` to both chords, and (2) `product_of_segments_of_chords` for general circles, which translates to the origin via $P' = P - O$. The `power_of_point_product` theorem bridges the gap by showing $\\|P - A\\| \\cdot \\|P - B\\| = |\\text{pow}(P)|$ through a careful parametric argument with direction vectors.",
-    "mathContext": "$PA \\cdot PB = |\\text{pow}(P)| = PC \\cdot PD$, where $\\text{pow}(P) = \\|P - O\\|^2 - r^2$.",
+    "range": {
+      "startLine": 419,
+      "endLine": 437
+    },
+    "type": "theorem",
+    "title": "The Main Theorem",
+    "content": "**Theorem (Euclid III.35)**:\n\nIf two chords AB and CD of a circle intersect at point P, then:\n$$PA \\cdot PB = PC \\cdot PD$$\n\n**Proof idea**: Both products equal the absolute value of the power of P:\n1. $PA \\cdot PB = |\\text{pow}(P)|$\n2. $PC \\cdot PD = |\\text{pow}(P)|$\n3. Therefore $PA \\cdot PB = PC \\cdot PD$\n\nThe power is an invariant of the point's position relative to the circle.",
+    "mathContext": "$PA \\cdot PB = PC \\cdot PD = |\\,\\|P - O\\|^2 - r^2\\,|$ for any chords $AB$, $CD$ through $P$.",
     "significance": "key",
-    "relatedConcepts": ["chord properties", "circle invariants", "Euclid's Elements Book III"],
-    "prerequisites": ["Vieta's formulas", "inner product geometry", "translation invariance"]
+    "prerequisites": [
+      "power of a point definition",
+      "chord-circle intersection"
+    ],
+    "relatedConcepts": [
+      "chord properties",
+      "circle invariants",
+      "Euclid's Elements Book III"
+    ]
+  },
+  {
+    "id": "ann-algebraic",
+    "proofId": "product-of-segments-of-chords",
+    "range": {
+      "startLine": 197,
+      "endLine": 219
+    },
+    "type": "proof",
+    "title": "Algebraic Approach",
+    "content": "**Vieta's Formulas Approach**:\n\nParameterize points on a chord through P in direction $\\vec{d}$:\n$$Q(t) = P + t\\vec{d}$$\n\nA point is on the circle of radius r centered at origin iff:\n$$|P + t\\vec{d}|^2 = r^2$$\n\nExpanding (with $|\\vec{d}| = 1$):\n$$t^2 + 2t\\langle P, \\vec{d}\\rangle + |P|^2 - r^2 = 0$$\n\nBy **Vieta's formulas**, the product of roots is:\n$$t_1 \\cdot t_2 = |P|^2 - r^2$$\n\nSince distances are $|t_1|$ and $|t_2|$, we get $|t_1| \\cdot |t_2| = r^2 - |P|^2$ for interior points.",
+    "mathContext": "Parametrize the chord as $Q(t) = P + t\\vec{d}$. Circle equation gives $t^2 + 2t\\langle P, \\vec{d}\\rangle + (\\|P\\|^2 - r^2) = 0$. By Vieta: $t_1 t_2 = \\|P\\|^2 - r^2 = \\text{pow}(P)$.",
+    "significance": "key",
+    "prerequisites": [
+      "inner product expansion",
+      "quadratic formula",
+      "Vieta's formulas"
+    ],
+    "relatedConcepts": [
+      "Vieta's formulas",
+      "quadratic equations",
+      "parametric lines"
+    ]
   },
   {
     "id": "ann-center",
     "proofId": "product-of-segments-of-chords",
-    "range": { "startLine": 443, "endLine": 455 },
-    "type": "concept",
+    "range": {
+      "startLine": 443,
+      "endLine": 455
+    },
+    "type": "example",
     "title": "Special Case: Center",
-    "content": "When P is at the **center** of the circle, every chord through P is a diameter with both segments equal to r. The product is $r \\cdot r = r^2$. The proof uses the diameter condition $A + B = 2O$ and the on-circle conditions $\\|A - O\\| = r$, $\\|B - O\\| = r$ directly, without the quadratic machinery.",
-    "mathContext": "If $P = O$, then $PA \\cdot PB = r \\cdot r = r^2 = |\\text{pow}(O)| = |0 - r^2| = r^2$.",
+    "content": "When P is at the **center** of the circle:\n\n- Every chord through P is a diameter\n- Both segments have length r (the radius)\n- The product is $r \\cdot r = r^2$\n\nThis confirms our formula since pow(center) = $0^2 - r^2 = -r^2$, and $|\\text{pow}| = r^2$.\n\nThis is the *maximum* value of PA * PB for any interior point.",
+    "mathContext": "When $P = O$: $\\text{pow}(O) = -r^2$, so $PA \\cdot PB = r^2$ for every chord (which is a diameter). This is maximal since $r^2 - \\|P-O\\|^2 \\leq r^2$.",
     "significance": "supporting",
-    "relatedConcepts": ["diameter", "maximum product", "symmetry"],
-    "prerequisites": ["circle definitions", "norm properties"]
+    "prerequisites": [
+      "power of a point at center"
+    ],
+    "relatedConcepts": [
+      "diameter",
+      "maximum product"
+    ]
   },
   {
     "id": "ann-converse",
     "proofId": "product-of-segments-of-chords",
-    "range": { "startLine": 457, "endLine": 490 },
-    "type": "insight",
-    "title": "The Converse: Concyclicity Criterion",
-    "content": "**Converse Theorem**: If lines AB and CD intersect at P with $PA \\cdot PB = PC \\cdot PD$, then A, B, C, D are concyclic. This is axiomatized because the proof requires constructing the circumcircle of three points (A, B, C) and showing D lies on it via equal power — a construction not yet available in Mathlib. The converse is a powerful criterion for proving four points lie on a circle.",
-    "mathContext": "$PA \\cdot PB = PC \\cdot PD \\Rightarrow A, B, C, D$ lie on a common circle. The proof uses the uniqueness of the power function: if $\\text{pow}_1(P) = \\text{pow}_2(P)$ for two circles through $A, B$ resp. $C, D$, the circles coincide.",
+    "range": {
+      "startLine": 477,
+      "endLine": 490
+    },
+    "type": "theorem",
+    "title": "The Converse",
+    "content": "**Converse Theorem**:\n\nIf lines AB and CD intersect at P, and:\n$$PA \\cdot PB = PC \\cdot PD$$\n\nthen A, B, C, D all lie on a common circle (they are **concyclic**).\n\nThis is a powerful criterion for proving four points lie on a circle. The converse follows because equal products imply equal power, which determines a unique circle.",
+    "mathContext": "$PA \\cdot PB = PC \\cdot PD \\Rightarrow A, B, C, D$ are concyclic. Equal products imply equal power with respect to some circle, uniquely determining the circumcircle.",
     "significance": "key",
-    "relatedConcepts": ["concyclic points", "circumcircle", "cyclic quadrilaterals", "radical axis"],
-    "prerequisites": ["circumcircle construction", "power of a point uniqueness"]
+    "prerequisites": [
+      "power of a point uniqueness",
+      "circumcircle existence"
+    ],
+    "relatedConcepts": [
+      "concyclic points",
+      "circumcircle",
+      "cyclic quadrilaterals"
+    ]
   },
   {
     "id": "ann-examples",
     "proofId": "product-of-segments-of-chords",
-    "range": { "startLine": 496, "endLine": 507 },
-    "type": "concept",
-    "title": "Numerical Verification Examples",
-    "content": "Three concrete numerical examples verified by `norm_num`: (1) Circle of radius 5, P at distance 3: power = $5^2 - 3^2 = 16$. (2) Segments 2 and 8 on one chord give $2 \\times 8 = 16 = 4 \\times 4$ on the perpendicular chord. (3) Segments 1 and 12 give $1 \\times 12 = 12 = 2 \\times 6$. These examples illustrate the theorem concretely and are fully machine-checked.",
-    "mathContext": "$5^2 - 3^2 = 16$; $2 \\times 8 = 4 \\times 4 = 16$; $1 \\times 12 = 2 \\times 6 = 12$.",
+    "range": {
+      "startLine": 496,
+      "endLine": 497
+    },
+    "type": "example",
+    "title": "Worked Examples",
+    "content": "**Example 1**: Circle of radius 5, point P at distance 3 from center.\n- Power = $5^2 - 3^2 = 16$\n- For any chord: $PA \\cdot PB = 16$\n- If PA = 2, then PB = 8\n\n**Example 2**: If one chord gives segments 2 and 8:\n- Product = 16\n- Other chord: if PC = 4, then PD = 4\n- (The chord is bisected at P!)\n\n**Example 3**: Segments 1 and 12:\n- Product = 12\n- Other chord: segments could be 2 and 6, or 3 and 4",
     "significance": "supporting",
-    "relatedConcepts": ["numerical verification", "norm_num tactic"],
-    "prerequisites": ["basic arithmetic"]
+    "relatedConcepts": [
+      "numerical verification",
+      "chord bisection"
+    ]
   },
   {
     "id": "ann-historical",
     "proofId": "product-of-segments-of-chords",
-    "range": { "startLine": 8, "endLine": 44 },
-    "type": "context",
-    "title": "From Euclid to Steiner: Historical Context",
-    "content": "**Euclid (c. 300 BCE)**: The theorem appears as Proposition 35 in Book III of the *Elements*. Euclid proved it using similar triangles: triangles PAC and PDB are similar by the inscribed angle theorem, giving $PA/PD = PC/PB$.\n\n**Jakob Steiner (1826)**: Systematized the power of a point in *Einige geometrische Betrachtungen*, unifying four cases — intersecting chords, two secants, secant-tangent, and two tangents — as manifestations of the same invariant $d^2 - r^2$. The radical axis (locus of equal power for two circles) became a foundational tool in projective geometry.",
-    "mathContext": "Euclid's proof: $\\triangle PAC \\sim \\triangle PDB \\Rightarrow PA/PD = PC/PB \\Rightarrow PA \\cdot PB = PC \\cdot PD$. Steiner's invariant: $\\text{pow}(P) = d^2 - r^2$.",
+    "range": {
+      "startLine": 8,
+      "endLine": 44
+    },
+    "type": "insight",
+    "title": "From Euclid to Steiner",
+    "content": "**Euclid (300 BCE)**: The theorem appears as Proposition 35 in Book III of the Elements. Euclid proved it using similar triangles formed by the chords.\n\n**Jakob Steiner (1826)**: Systematized the \"power of a point\" concept, unifying:\n- Intersecting chords (interior point)\n- Two secants (exterior point)\n- Secant and tangent\n- Two tangents\n\nAll are manifestations of the same invariant!",
     "significance": "supporting",
-    "relatedConcepts": ["Euclid's Elements", "Jakob Steiner", "similar triangles", "inscribed angle theorem", "radical axis"],
-    "prerequisites": ["history of mathematics", "similar triangles"]
+    "prerequisites": [
+      "similar triangles",
+      "inscribed angle theorem"
+    ],
+    "relatedConcepts": [
+      "history of mathematics",
+      "Euclid's Elements",
+      "Jakob Steiner"
+    ]
   }
 ]

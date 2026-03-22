@@ -8,12 +8,14 @@
     "type": "concept",
     "title": "Intersecting Chords",
     "content": "The **Product of Segments of Chords** theorem states that when two chords of a circle intersect at a point P:\n\n$$PA \\cdot PB = PC \\cdot PD$$\n\nThis elegant result says that the product of the segments is the same for *any* chord through P. The product depends only on P's position relative to the circle, not on which direction the chord goes.",
-    "significance": "critical",
+    "mathContext": "$PA \\cdot PB = PC \\cdot PD$ for any two chords $AB$, $CD$ intersecting at $P$. Equivalently, the power $\\text{pow}(P) = |PO|^2 - r^2$ is a chord-independent invariant.",
+    "significance": "key",
     "relatedConcepts": [
       "circle geometry",
       "power of a point",
       "Euclid's Elements"
-    ]
+    ],
+    "prerequisites": ["Euclidean geometry", "circle definitions", "inner product spaces"]
   },
   {
     "id": "ann-power",
@@ -26,13 +28,14 @@
     "type": "definition",
     "title": "Power of a Point",
     "content": "The **power of a point** P with respect to a circle is:\n\n$$\\text{pow}(P) = |PO|^2 - r^2$$\n\nwhere O is the center and r is the radius.\n\n- **P outside circle**: pow(P) > 0\n- **P on circle**: pow(P) = 0\n- **P inside circle**: pow(P) < 0\n\nFor any chord through P, the product of signed distances equals the power. For an interior point, $PA \\cdot PB = |\\text{pow}(P)| = r^2 - |PO|^2$.",
-    "mathContext": "$\\text{pow}(P) = |PO|^2 - r^2$",
-    "significance": "critical",
+    "mathContext": "$\\text{pow}(P) = |PO|^2 - r^2 = \\|P - O\\|^2 - r^2$. For $P$ inside the circle, $\\text{pow}(P) < 0$ and $PA \\cdot PB = r^2 - \\|P - O\\|^2$.",
+    "significance": "key",
     "relatedConcepts": [
       "radical axis",
       "inversive geometry",
       "circle invariants"
-    ]
+    ],
+    "prerequisites": ["norm/distance in inner product spaces", "circle equation"]
   },
   {
     "id": "ann-main",
@@ -45,13 +48,14 @@
     "type": "theorem",
     "title": "The Main Theorem",
     "content": "**Theorem (Euclid III.35)**:\n\nIf two chords AB and CD of a circle intersect at point P, then:\n$$PA \\cdot PB = PC \\cdot PD$$\n\n**Proof idea**: Both products equal the absolute value of the power of P:\n1. $PA \\cdot PB = |\\text{pow}(P)|$\n2. $PC \\cdot PD = |\\text{pow}(P)|$\n3. Therefore $PA \\cdot PB = PC \\cdot PD$\n\nThe power is an invariant of the point's position relative to the circle.",
-    "mathContext": "$PA \\cdot PB = PC \\cdot PD$",
-    "significance": "critical",
+    "mathContext": "$PA \\cdot PB = PC \\cdot PD = |\\,\\|P - O\\|^2 - r^2\\,|$ for any chords $AB$, $CD$ through $P$.",
+    "significance": "key",
     "relatedConcepts": [
       "chord properties",
       "circle invariants",
       "Euclid's Elements Book III"
-    ]
+    ],
+    "prerequisites": ["power of a point definition", "chord-circle intersection"]
   },
   {
     "id": "ann-algebraic",
@@ -64,12 +68,14 @@
     "type": "proof",
     "title": "Algebraic Approach",
     "content": "**Vieta's Formulas Approach**:\n\nParameterize points on a chord through P in direction $\\vec{d}$:\n$$Q(t) = P + t\\vec{d}$$\n\nA point is on the circle of radius r centered at origin iff:\n$$|P + t\\vec{d}|^2 = r^2$$\n\nExpanding (with $|\\vec{d}| = 1$):\n$$t^2 + 2t\\langle P, \\vec{d}\\rangle + |P|^2 - r^2 = 0$$\n\nBy **Vieta's formulas**, the product of roots is:\n$$t_1 \\cdot t_2 = |P|^2 - r^2$$\n\nSince distances are $|t_1|$ and $|t_2|$, we get $|t_1| \\cdot |t_2| = r^2 - |P|^2$ for interior points.",
+    "mathContext": "Parametrize the chord as $Q(t) = P + t\\vec{d}$. Circle equation gives $t^2 + 2t\\langle P, \\vec{d}\\rangle + (\\|P\\|^2 - r^2) = 0$. By Vieta: $t_1 t_2 = \\|P\\|^2 - r^2 = \\text{pow}(P)$.",
     "significance": "key",
     "relatedConcepts": [
       "Vieta's formulas",
       "quadratic equations",
       "parametric lines"
-    ]
+    ],
+    "prerequisites": ["inner product expansion", "quadratic formula", "Vieta's formulas"]
   },
   {
     "id": "ann-center",
@@ -82,11 +88,13 @@
     "type": "example",
     "title": "Special Case: Center",
     "content": "When P is at the **center** of the circle:\n\n- Every chord through P is a diameter\n- Both segments have length r (the radius)\n- The product is $r \\cdot r = r^2$\n\nThis confirms our formula since pow(center) = $0^2 - r^2 = -r^2$, and $|\\text{pow}| = r^2$.\n\nThis is the *maximum* value of PA * PB for any interior point.",
+    "mathContext": "When $P = O$: $\\text{pow}(O) = -r^2$, so $PA \\cdot PB = r^2$ for every chord (which is a diameter). This is maximal since $r^2 - \\|P-O\\|^2 \\leq r^2$.",
     "significance": "supporting",
     "relatedConcepts": [
       "diameter",
       "maximum product"
-    ]
+    ],
+    "prerequisites": ["power of a point at center"]
   },
   {
     "id": "ann-converse",
@@ -99,12 +107,14 @@
     "type": "theorem",
     "title": "The Converse",
     "content": "**Converse Theorem**:\n\nIf lines AB and CD intersect at P, and:\n$$PA \\cdot PB = PC \\cdot PD$$\n\nthen A, B, C, D all lie on a common circle (they are **concyclic**).\n\nThis is a powerful criterion for proving four points lie on a circle. The converse follows because equal products imply equal power, which determines a unique circle.",
+    "mathContext": "$PA \\cdot PB = PC \\cdot PD \\Rightarrow A, B, C, D$ are concyclic. Equal products imply equal power with respect to some circle, uniquely determining the circumcircle.",
     "significance": "key",
     "relatedConcepts": [
       "concyclic points",
       "circumcircle",
       "cyclic quadrilaterals"
-    ]
+    ],
+    "prerequisites": ["power of a point uniqueness", "circumcircle existence"]
   },
   {
     "id": "ann-examples",
@@ -137,6 +147,7 @@
       "history of mathematics",
       "Euclid's Elements",
       "Jakob Steiner"
-    ]
+    ],
+    "prerequisites": ["similar triangles", "inscribed angle theorem"]
   }
 ]
