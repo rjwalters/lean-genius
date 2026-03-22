@@ -146,8 +146,8 @@
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_240_summary, erdos_240 main theorem",
-      "startLine": 257,
-      "endLine": 291
+      "startLine": 255,
+      "endLine": 288
     }
   ],
   "conclusion": {
@@ -160,5 +160,40 @@
       "Connection to the ABC conjecture",
       "Higher-dimensional generalizations"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Tijdeman, Robert",
+      "title": "On integers with many small prime factors",
+      "year": "1973",
+      "venue": "Compositio Mathematica 26, pp. 319-330",
+      "note": "Resolved Problem #240: for any ε > 0, exists infinite P with gaps ≫ aᵢ^{1-ε}"
+    },
+    {
+      "authors": "Pólya, George",
+      "title": "Zur arithmetischen Untersuchung der Polynome",
+      "year": "1918",
+      "venue": "Mathematische Zeitschrift 1, pp. 143-148",
+      "note": "Proved prime factors of irreducible quadratics grow unboundedly — foundation for the finite P case"
+    },
+    {
+      "authors": "Størmer, Carl",
+      "title": "Quelques théorèmes sur l'équation de Pell x² - Dy² = ±1",
+      "year": "1897",
+      "venue": "Videnskabs-Selskabets Skrifter, I. Math.-Naturv. Klasse",
+      "note": "Proved finitely many consecutive P-smooth pairs for any finite P"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "uses",
+      "description": "The infinitude of primes is the foundation — the question asks whether an infinite SUBSET of primes can still force smooth number gaps to diverge"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "PNT governs prime density, which affects how many P-smooth numbers exist in intervals. The density of smooth numbers is studied via analytic methods building on PNT"
+    }
+  ]
 }
