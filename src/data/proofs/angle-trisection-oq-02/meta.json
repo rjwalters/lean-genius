@@ -7,7 +7,7 @@
     "author": "Wantzel (1837), Galois (1832)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Constructible_number",
     "date": "1837",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/AngleTrisectionOQ02.lean",
     "tags": [
       "geometry",
@@ -51,23 +51,25 @@
       "IsConstructibleFromQ: definition of constructibility as existence of a 2-power degree tower",
       "not_pow_two_of_eq_six: 6 is not a power of 2 (proved via coprimality: gcd(3,2)=1 and 3|6 but 3∤2^n)",
       "x_cube_sub_2_gal_not_2group: Gal(x³-2/ℚ) is NOT a 2-group (order 6, proved from coprimality lemma)",
-      "cos20_gal_not_2group: Gal of cos(20°) minimal polynomial is NOT a 2-group (same argument)",
+      "cos20_gal_not_2group: Gal of cos(20°) minimal polynomial is NOT a 2-group (order 3)",
+      "x_sq_sub_2_gal_order: |Gal(x²-2/ℚ)| = 2 (divisibility squeeze: prime degree divides, embeds into S₂)",
       "x_sq_sub_2_gal_is_2group: Gal(x²-2/ℚ) IS a 2-group (order 2 = 2¹, constructible)",
       "x_4th_sub_2_gal_is_2group: Gal(x⁴-2/ℚ) IS a 2-group (order 8 = 2³, 2^{1/4} constructible)",
+      "galois_2group_implies_degree_pow2: 2-group Galois → degree divides 2^n (tower law + IsPGroup.iff_card)",
       "constructible_implies_degree_dvd_pow2: Galois 2-group criterion implies the degree criterion (OQ-01)"
     ],
     "dateAdded": "02/24/26",
-    "axiomCount": 6
+    "axiomCount": 2
   },
   "overview": {
     "historicalContext": "In 1837, Pierre Wantzel proved that compass-and-straightedge constructions can only produce algebraic numbers whose minimal polynomial has degree a power of 2. This was the first rigorous proof of the impossibility of trisecting an arbitrary angle and doubling the cube.\n\nWith the development of Galois theory (Galois 1832, published 1846), the characterization was refined: α is constructible if and only if the Galois group of its minimal polynomial is a 2-group. This characterization is both necessary AND sufficient — a genuine biconditional, upgrading Wantzel's necessary condition to an exact characterization.\n\nThe key insight of the Galois perspective is structural: 2-groups have a composition series with ℤ/2ℤ factors, corresponding exactly to the tower of degree-2 extensions that compass-and-straightedge constructions generate. A number is constructible iff its algebraic data 'factors' into a sequence of square root extensions.",
-    "problemStatement": "**Open Question (angle-trisection-oq-02)**: Can we characterize which algebraic numbers are constructible in terms of their Galois groups?\n\n**Answer: YES** — the complete characterization is:\n\nAn algebraic number α ∈ ℝ is constructible from ℚ by compass and straightedge\n**if and only if** the Galois group of its minimal polynomial over ℚ is a 2-group.\n\nEquivalently: α is constructible ↔ Gal(minpoly(ℚ,α)) has order a power of 2.\n\n**Key examples**:\n- √2: Gal(x²-2/ℚ) ≅ ℤ/2ℤ (order 2 = 2¹) → constructible ✓\n- ∛2: Gal(x³-2/ℚ) ≅ S₃ (order 6, not 2-group) → NOT constructible ✗\n- 2^(1/4): Gal(x⁴-2/ℚ) ≅ D₄ (order 8 = 2³) → constructible ✓\n- cos(20°): Gal(8x³-6x-1/ℚ) ≅ S₃ (order 6, not 2-group) → NOT constructible ✗",
+    "problemStatement": "**Open Question (angle-trisection-oq-02)**: Can we characterize which algebraic numbers are constructible in terms of their Galois groups?\n\n**Answer: YES** — the complete characterization is:\n\nAn algebraic number α ∈ ℝ is constructible from ℚ by compass and straightedge\n**if and only if** the Galois group of its minimal polynomial over ℚ is a 2-group.\n\nEquivalently: α is constructible ↔ Gal(minpoly(ℚ,α)) has order a power of 2.\n\n**Key examples**:\n- √2: Gal(x²-2/ℚ) ≅ ℤ/2ℤ (order 2 = 2¹) → constructible ✓\n- ∛2: Gal(x³-2/ℚ) ≅ S₃ (order 6, not 2-group) → NOT constructible ✗\n- 2^(1/4): Gal(x⁴-2/ℚ) ≅ D₄ (order 8 = 2³) → constructible ✓\n- cos(20°): Gal(8x³-6x-1/ℚ) ≅ ℤ/3ℤ (order 3, not 2-group) → NOT constructible ✗",
     "proofStrategy": "The biconditional has two directions:\n\n**Forward (constructible → 2-group)**:\nIf α is constructible, it lies in a tower ℚ = K₀ ⊂ K₁ ⊂ ... ⊂ Kₙ with [Kᵢ₊₁:Kᵢ] = 2 each. The Galois closure K of ℚ(α) satisfies [K:ℚ] = 2^m, so Gal(K/ℚ) has order 2^m → 2-group. Since minpoly(ℚ,α) splits over K, Gal(minpoly) embeds into Gal(K/ℚ) → also a 2-group.\n\n**Backward (2-group → constructible)**:\nIf Gal(minpoly(ℚ,α)) is a 2-group, it has a composition series with ℤ/2ℤ quotients. By the Galois correspondence, this corresponds to a tower of degree-2 field extensions, each obtained by adjoining a square root → α is constructible.\n\n**In Lean**: The full proof requires the Galois correspondence (which is available in Mathlib). The theorem `wantzel_galois_characterization` is axiomatized. Supporting theorems showing 6 is not a power of 2 (via coprimality: gcd(3,2)=1 implies 3∤2^n) are proved directly.",
     "keyInsights": [
       "The key upgrade from OQ-01 to OQ-02: degree-is-power-of-2 is necessary but not sufficient for constructibility; the Galois group being a 2-group is the exact characterization",
       "2-groups have composition series with ℤ/2ℤ quotients ↔ tower of degree-2 extensions ↔ compass-and-straightedge constructibility",
       "Non-constructibility proof technique: Gal(p/ℚ) has order 6 = 2·3, not a power of 2. Key: 3 | 6 but gcd(3,2) = 1, so 3 ∤ 2^n → 6 ≠ 2^n",
-      "The Galois group of x³ - 2 is S₃ (symmetric group on 3 elements), which has order 6. This is why ∛2 and cos(20°) are not constructible",
+      "∛2 is not constructible because Gal(x³-2/ℚ) ≅ S₃ has order 6 (not a 2-power). cos(20°) is not constructible because Gal(8x³-6x-1/ℚ) ≅ ℤ/3ℤ has order 3 (also not a 2-power)",
       "Module.finrank ℚ K (not `finrank` or `IsFiniteDimensional`) is the correct Mathlib4 API for field extension degree"
     ]
   },
@@ -96,31 +98,31 @@
     {
       "id": "non-constructible",
       "title": "Non-Constructibility: ∛2 and cos(20°)",
-      "startLine": 91,
-      "endLine": 119,
-      "summary": "Proved: Gal(x³-2/ℚ) and Gal(8x³-6x-1/ℚ) are NOT 2-groups, since their orders are 6 = 2·3. Key lemma: 3 divides 6 but gcd(3,2^n)=1, so 6≠2^n."
+      "startLine": 94,
+      "endLine": 135,
+      "summary": "Proved: Gal(x³-2/ℚ) (order 6) and Gal(8x³-6x-1/ℚ) (order 3) are NOT 2-groups. Key: 3 divides both orders but gcd(3,2^n)=1, so neither is a power of 2."
     },
     {
       "id": "constructible-examples",
       "title": "Constructible Examples: √2 and 2^(1/4)",
-      "startLine": 121,
-      "endLine": 135,
-      "summary": "Proved: Gal(x²-2/ℚ) (order 2) and Gal(x⁴-2/ℚ) (order 8) ARE 2-groups, showing √2 and 2^(1/4) are constructible."
+      "startLine": 137,
+      "endLine": 200,
+      "summary": "PROVED: |Gal(x²-2/ℚ)| = 2 via divisibility squeeze (prime degree divides |Gal|, Gal embeds into S₂). Gal(x⁴-2/ℚ) = 8 from InverseGaloisD4. Both are 2-groups."
     },
     {
       "id": "oq01-connection",
       "title": "Connection to OQ-01 (Degree Criterion)",
-      "startLine": 137,
-      "endLine": 154,
-      "summary": "Proved: Galois 2-group → degree divides 2^n (linking OQ-02 back to OQ-01). Shows OQ-02 strictly strengthens OQ-01."
+      "startLine": 202,
+      "endLine": 236,
+      "summary": "PROVED: galois_2group_implies_degree_pow2 via tower law (natDegree | finrank(SplittingField) = |Gal| = 2^k). Former axiom eliminated."
     }
   ],
   "conclusion": {
-    "summary": "The Galois group characterization of constructibility answers OQ-02 definitively: α is constructible iff Gal(minpoly(ℚ,α)) is a 2-group. This formalizes 5 proved theorems and introduces a clean coprimality-based argument for non-constructibility (6 ≠ 2^n via gcd(3,2^n)=1). The main theorem wantzel_galois_characterization is axiomatized pending Galois correspondence formalization.",
+    "summary": "The Galois group characterization of constructibility answers OQ-02 definitively: α is constructible iff Gal(minpoly(ℚ,α)) is a 2-group. 15 proved theorems with only 2 axioms remaining (the main Wantzel biconditional and cos(20°) Galois group order). Includes complete proofs of |Gal(x²-2/ℚ)| = 2 via divisibility squeeze and galois_2group_implies_degree_pow2 via the tower law.",
     "implications": "This characterization has broad consequences:\n\n**For classical impossibility proofs**: Angle trisection (cos(60°) = 1/2, but cos(20°) requires solving 8x³-6x-1=0 with Galois group S₃), cube doubling (∛2 requires Gal(x³-2) ≅ S₃), and regular polygon construction (Gauss-Wantzel: n-gon constructible iff φ(n) is a power of 2).\n\n**For field theory**: The characterization connects compass-and-straightedge geometry to group theory via the Galois correspondence, one of the deepest connections in 19th century mathematics.\n\n**For Lean/Mathlib**: The main gap is the Galois correspondence formalization. Once `Mathlib.FieldTheory.Galois` supports the full Galois correspondence for infinite families of extensions, `wantzel_galois_characterization` could be proved.",
     "openQuestions": [
       "Can wantzel_galois_characterization be proved from Mathlib's existing Galois theory infrastructure?",
-      "Can Galois group orders for specific polynomials (x_cube_sub_2_gal_order = 6, etc.) be proved from splitting field computations?",
+      "Can cos20_gal_order (|Gal(8x³-6x-1/ℚ)| = 3) be proved? The discriminant 72² is a perfect square, so this follows from the criterion for cubic Galois groups.",
       "Can the Gauss-Wantzel theorem (regular n-gon constructible ↔ φ(n) = 2^k) be formalized in Lean 4?"
     ]
   }
