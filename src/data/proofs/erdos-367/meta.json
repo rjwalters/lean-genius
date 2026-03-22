@@ -31,15 +31,15 @@
     "references": [
       {
         "key": "ErGr80",
-        "citation": "P. Erd\u0151s and R. L. Graham, Old and New Problems and Results in Combinatorial Number Theory, Monographies de L'Enseignement Math\u00e9matique 28, Geneva, 1980."
+        "citation": "P. Erdős and R. L. Graham, Old and New Problems and Results in Combinatorial Number Theory, Monographies de L'Enseignement Mathématique 28, Geneva, 1980."
       },
       {
         "key": "vD23",
-        "citation": "W. van Doorn, On products of squareful parts, 2023. Disproved the strong bound for k \u2265 3."
+        "citation": "W. van Doorn, On products of squareful parts, 2023. Disproved the strong bound for k ≥ 3."
       },
       {
         "key": "Gol69",
-        "citation": "S. W. Golomb, Powerful numbers, Amer. Math. Monthly 77 (1970), 848\u2013855."
+        "citation": "S. W. Golomb, Powerful numbers, Amer. Math. Monthly 77 (1970), 848–855."
       }
     ]
   },
@@ -169,5 +169,10 @@
       "relationship": "related",
       "description": "Both study prime factor structure of consecutive integers: #368 asks about the largest prime factor of n(n+1), while #367 concerns the 2-full part"
     }
+  ],
+  "relatedProofs": [
+    "erdos-366",
+    "erdos-369",
+    "erdos-368"
   ]
 }

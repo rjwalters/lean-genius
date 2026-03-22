@@ -123,5 +123,12 @@
       "Can the independent set bound $\\alpha(G) \\geq n^2/(2m+n)$ be improved for triangle-free graphs? Shearer (1983) showed $\\alpha(G) \\geq \\Omega(n \\sqrt{\\log d}/d)$ for triangle-free $d$-regular graphs, but the optimal constant remains open.",
       "What is the minimum number of edges in a $k$-uniform hypergraph without Property B? Erdős conjectured the threshold is $\\Theta(k^2 \\cdot 2^k)$, which was resolved by Radhakrishnan and Srinivasan (2000) up to logarithmic factors, but the exact constant is still unknown."
     ]
-  }
+  },
+  "relatedProofs": [
+    "prob-method-expectation",
+    "prob-method-lovasz-local",
+    "prob-method-applications",
+    "prob-method-second-moment",
+    "ramseys-theorem"
+  ]
 }

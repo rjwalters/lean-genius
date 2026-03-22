@@ -196,5 +196,10 @@
       "Can explicit compass-and-straightedge constructions for the 17-gon (Gauss's Gaussian periods method) or 257-gon (Richelot's method) be formalized in Lean 4 as sequences of geometric operations?",
       "The connection between constructible polygons and the discrete Fourier transform (DFT): the $n$-th roots of unity form a group under multiplication, and the FFT algorithm exploits the 2-power structure. Can this connection be formalized?"
     ]
-  }
+  },
+  "relatedProofs": [
+    "angle-trisection",
+    "angle-trisection-oq-02",
+    "combinations-formula"
+  ]
 }

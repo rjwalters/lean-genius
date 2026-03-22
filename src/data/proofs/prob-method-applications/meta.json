@@ -160,5 +160,11 @@
       "Can the crossing number inequality be strengthened to the Szemerédi-Trotter form cr(G) >= e³/(29n²)?",
       "Formalize the full high-girth-high-chromatic result (Erdős 1959) using Mathlib's SimpleGraph API"
     ]
-  }
+  },
+  "relatedProofs": [
+    "prob-method-expectation",
+    "prob-method-alteration",
+    "prob-method-second-moment",
+    "prob-method-lovasz-local"
+  ]
 }

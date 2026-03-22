@@ -213,5 +213,12 @@
       "Can the Cantor pairing function be replaced by a more efficient encoding (e.g., the Stern-Brocot tree) while maintaining the same formal properties in Lean's type system?",
       "Is there a constructive proof of the denumerability of the algebraic numbers $\\overline{\\mathbb{Q}}$ that avoids the axiom of choice, and can it be formalized using Lean's `Denumerable` typeclass?"
     ]
-  }
+  },
+  "relatedProofs": [
+    "cantor-diagonalization",
+    "cantors-theorem",
+    "schroeder-bernstein",
+    "continuum-hypothesis",
+    "sqrt2-irrational"
+  ]
 }

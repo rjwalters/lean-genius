@@ -8,17 +8,43 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality",
     "date": "1821",
     "status": "verified",
-    "tags": ["analysis", "inner-product-spaces", "cauchy-schwarz", "extension", "research"],
+    "tags": [
+      "analysis",
+      "inner-product-spaces",
+      "cauchy-schwarz",
+      "extension",
+      "research"
+    ],
     "proofRepoPath": "Proofs/CauchySchwarzOQ04.lean",
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
     "mathlibDependencies": [
-      { "theorem": "abs_real_inner_le_norm", "description": "Cauchy-Schwarz for real inner products", "module": "Mathlib.Analysis.InnerProductSpace.Basic" },
-      { "theorem": "real_inner_self_eq_norm_sq", "description": "Inner product of v with itself equals norm squared", "module": "Mathlib.Analysis.InnerProductSpace.Basic" },
-      { "theorem": "norm_add_sq_real", "description": "Norm squared expansion for sum of vectors", "module": "Mathlib.Analysis.InnerProductSpace.Basic" },
-      { "theorem": "div_mul_cancel₀", "description": "Division-multiplication cancellation for nonzero divisor", "module": "Mathlib.Algebra.Order.Field.Basic" },
-      { "theorem": "sum_eq_zero_iff_of_nonneg", "description": "Sum of nonneg terms is zero iff all terms are zero", "module": "Mathlib.Algebra.BigOperators.Group.Finset" }
+      {
+        "theorem": "abs_real_inner_le_norm",
+        "description": "Cauchy-Schwarz for real inner products",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "real_inner_self_eq_norm_sq",
+        "description": "Inner product of v with itself equals norm squared",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "norm_add_sq_real",
+        "description": "Norm squared expansion for sum of vectors",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "div_mul_cancel₀",
+        "description": "Division-multiplication cancellation for nonzero divisor",
+        "module": "Mathlib.Algebra.Order.Field.Basic"
+      },
+      {
+        "theorem": "sum_eq_zero_iff_of_nonneg",
+        "description": "Sum of nonneg terms is zero iff all terms are zero",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      }
     ],
     "originalContributions": [
       "projCoeff: orthogonal projection coefficient u onto v = inner u v / norm v^2",
@@ -32,8 +58,20 @@
       "existential_constant_is_projCoeff: bridge to base CauchySchwarz.lean existential result"
     ],
     "references": [
-      {"authors": "A.-L. Cauchy", "title": "Cours d'Analyse de l'École Royale Polytechnique", "year": "1821", "venue": "Paris", "note": "Original discrete inequality with equality case noted"},
-      {"authors": "J. M. Steele", "title": "The Cauchy-Schwarz Master Class", "year": "2004", "venue": "Cambridge University Press", "note": "Chapter 2: detailed treatment of equality conditions"}
+      {
+        "authors": "A.-L. Cauchy",
+        "title": "Cours d'Analyse de l'École Royale Polytechnique",
+        "year": "1821",
+        "venue": "Paris",
+        "note": "Original discrete inequality with equality case noted"
+      },
+      {
+        "authors": "J. M. Steele",
+        "title": "The Cauchy-Schwarz Master Class",
+        "year": "2004",
+        "venue": "Cambridge University Press",
+        "note": "Chapter 2: detailed treatment of equality conditions"
+      }
     ],
     "dateAdded": "03/19/26"
   },
@@ -125,5 +163,9 @@
       "Can the finite sum version be extended to weighted inner products sum(w_i * a_i * b_i)?",
       "Can the projection coefficient be connected to Mathlib's orthogonalProjection for Hilbert subspaces?"
     ]
-  }
+  },
+  "relatedProofs": [
+    "cauchy-schwarz",
+    "cauchy-schwarz-oq-03"
+  ]
 }

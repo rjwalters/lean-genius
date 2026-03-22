@@ -8,14 +8,28 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Lagrange%27s_four-square_theorem",
     "date": "1770",
     "status": "verified",
-    "tags": ["number-theory", "sum-of-squares", "quaternions", "extension", "research"],
+    "tags": [
+      "number-theory",
+      "sum-of-squares",
+      "quaternions",
+      "extension",
+      "research"
+    ],
     "proofRepoPath": "Proofs/FermatTwoSquaresOQ01.lean",
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
     "mathlibDependencies": [
-      { "theorem": "Nat.sum_four_squares", "description": "Every natural number is a sum of four squares", "module": "Mathlib.NumberTheory.SumFourSquares" },
-      { "theorem": "Nat.Prime.sq_add_sq", "description": "Two-squares characterization for primes", "module": "Mathlib.NumberTheory.SumTwoSquares" }
+      {
+        "theorem": "Nat.sum_four_squares",
+        "description": "Every natural number is a sum of four squares",
+        "module": "Mathlib.NumberTheory.SumFourSquares"
+      },
+      {
+        "theorem": "Nat.Prime.sq_add_sq",
+        "description": "Two-squares characterization for primes",
+        "module": "Mathlib.NumberTheory.SumTwoSquares"
+      }
     ],
     "originalContributions": [
       "Euler's four-square identity proved via ring tactic over arbitrary CommRing",
@@ -28,10 +42,34 @@
       "Connection between Fermat two-squares (conditional) and Lagrange four-squares (universal)"
     ],
     "references": [
-      {"authors": "J.-L. Lagrange", "title": "Démonstration d'un théorème d'arithmétique", "year": "1770", "venue": "Nouveaux Mémoires de l'Académie Royale", "note": "Original proof of the four-squares theorem"},
-      {"authors": "L. Euler", "title": "Demonstratio theorematis Fermatiani", "year": "1748", "venue": "Commentarii Academiae Scientiarum Petropolitanae", "note": "Four-square identity (quaternion norm multiplicativity)"},
-      {"authors": "A.-M. Legendre", "title": "Essai sur la theorie des nombres", "year": "1798", "venue": "", "note": "Three-square theorem: n is a sum of three squares iff n is not of the form 4^a(8b+7)"},
-      {"authors": "A. Hurwitz", "title": "Uber die Composition der quadratischen Formen von beliebig vielen Variablen", "year": "1898", "venue": "Nachrichten von der Gesellschaft der Wissenschaften zu Gottingen", "note": "Composition algebras exist only in dimensions 1, 2, 4, 8"}
+      {
+        "authors": "J.-L. Lagrange",
+        "title": "Démonstration d'un théorème d'arithmétique",
+        "year": "1770",
+        "venue": "Nouveaux Mémoires de l'Académie Royale",
+        "note": "Original proof of the four-squares theorem"
+      },
+      {
+        "authors": "L. Euler",
+        "title": "Demonstratio theorematis Fermatiani",
+        "year": "1748",
+        "venue": "Commentarii Academiae Scientiarum Petropolitanae",
+        "note": "Four-square identity (quaternion norm multiplicativity)"
+      },
+      {
+        "authors": "A.-M. Legendre",
+        "title": "Essai sur la theorie des nombres",
+        "year": "1798",
+        "venue": "",
+        "note": "Three-square theorem: n is a sum of three squares iff n is not of the form 4^a(8b+7)"
+      },
+      {
+        "authors": "A. Hurwitz",
+        "title": "Uber die Composition der quadratischen Formen von beliebig vielen Variablen",
+        "year": "1898",
+        "venue": "Nachrichten von der Gesellschaft der Wissenschaften zu Gottingen",
+        "note": "Composition algebras exist only in dimensions 1, 2, 4, 8"
+      }
     ],
     "dateAdded": "03/19/26"
   },
@@ -119,5 +157,9 @@
       "Can Hurwitz quaternions (with half-integer coordinates like $\\frac{1}{2}(1+i+j+k)$) be formalized to give a Euclidean domain proof, avoiding the descent?",
       "What is the formal relationship between the Cayley-Dickson construction (reals $\\to$ complex $\\to$ quaternions $\\to$ octonions) and the existence of $n$-square identities?"
     ]
-  }
+  },
+  "relatedProofs": [
+    "fermat-two-squares",
+    "lagrange-four-squares"
+  ]
 }
