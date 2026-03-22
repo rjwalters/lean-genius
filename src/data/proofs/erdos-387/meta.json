@@ -86,7 +86,14 @@
       "title": "The Main Open Problem",
       "startLine": 78,
       "endLine": 109,
-      "summary": "Statement of the open conjecture as an axiom, with discussion of related conjectures by Schinzel and Erdős."
+      "summary": "Statement of the main open conjecture as an axiom: ∃ c > 0 such that C(n,k) always has a divisor in (cn, n] for all 1 ≤ k < n."
+    },
+    {
+      "id": "related-conjectures",
+      "title": "Related Conjectures",
+      "startLine": 91,
+      "endLine": 103,
+      "summary": "Documents two related open problems: Schinzel's conjecture (for large non-prime-power k, some n has no divisor in (n-k, n]) and Erdős's variant (for any c < 1, the divisor exists for sufficiently large n). Both remain open."
     }
   ],
   "conclusion": {
