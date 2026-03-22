@@ -679,11 +679,11 @@ Groups NOT YET realized in our formalization:
 13. gal_injects_into_perm: Gal ↪ Perm(rootSet)
 14. a5_card: |A₅| = 60 (native_decide)
 
-### Axioms (2, reduced from original 4):
-1. vandermondeProduct_sq_eq: Δ² = disc(q) in splitting field (transparent, Part XIV)
-2. three_dvd_gal_card: 3 | |Gal(q)| (Dedekind's theorem, not in Mathlib)
+### Axioms (1, reduced from original 5):
+1. three_dvd_gal_card: 3 | |Gal(q)| (Dedekind's theorem, not in Mathlib)
 
 ### ELIMINATED axioms:
+2. ~~vandermondeProduct_sq_eq~~: NOW PROVED as vandermondeProduct_sq_eq_proved (Part XV)
 3. ~~gal_card_dvd_60~~: NOW PROVED as gal_card_dvd_60_proved via Vandermonde chain (Part XIV)
 4. ~~two_dvd_gal_card~~: replaced by no_subgroup_order_15 (Sylow)
 5. ~~four_dvd_gal_card~~: replaced by no_subgroup_order_30 (A₅ simple)
@@ -694,14 +694,14 @@ Groups NOT YET realized in our formalization:
 17. gal_card_ne_15: |Gal| ≠ 15 (via embedding + #15)
 18. gal_card_ne_30: |Gal| ≠ 30 (via embedding + #16)
 
-### PROVED from 2 axioms + structural lemmas:
+### PROVED from 1 axiom + structural lemmas:
 19. q_gal_card: |Gal(q)| = 60
 20. q_gal_iso_a5: Gal(q) ≃* A₅
 
 ### Proof Architecture
 ```
-vandermondeProduct_sq_eq ──→ all_gal_signs_positive ──→ gal_card_dvd_60_proved ─┐
-three_dvd_gal_card ────────────────────────────────────────────────────────────┤
+vandermondeProduct_sq_eq_proved ─→ all_gal_signs_positive ─→ gal_card_dvd_60_proved ─┐
+three_dvd_gal_card (AXIOM) ─────────────────────────────────────────────────────────┤
 five_dvd_gal_card ─────────────────────────────────────────────────────────────┼─→ q_gal_card
 no_subgroup_order_15 ──────────────────────────────────────────────────────────┤   (≠15: Sylow)
 no_subgroup_order_30 ──────────────────────────────────────────────────────────┘   (≠30: A₅ simple)
