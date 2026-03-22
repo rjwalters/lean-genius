@@ -38,6 +38,7 @@
 import Mathlib
 import Proofs.InverseGalois
 import Proofs.InverseGaloisD4
+import Proofs.NthRootIrrationalOQ01
 
 open Polynomial IntermediateField FiniteDimensional
 
@@ -131,9 +132,26 @@ theorem cos20_gal_not_2group : ¬ IsPGroup 2 (8 * X ^ 3 - 6 * X - C 1 : ℚ[X]).
 ## Part V: Constructibility Examples
 -/
 
-/-- The Galois group of x² - 2 over ℚ has order 2 (≅ ℤ/2ℤ). -/
-axiom x_sq_sub_2_gal_order :
-    Fintype.card (X ^ 2 - C 2 : ℚ[X]).Gal = 2
+/-- x² - 2 is irreducible over ℚ (Eisenstein at 2). -/
+private theorem x_sq_sub_2_irreducible : Irreducible (X ^ 2 - C (2 : ℚ)) :=
+  NthRootIrrationalOQ01.eisenstein_X_pow_sub_prime 2 2 (by omega) (by decide)
+
+/-- x² - 2 is separable over ℚ (irreducible in char 0). -/
+private theorem x_sq_sub_2_separable : (X ^ 2 - C (2 : ℚ)).Separable :=
+  x_sq_sub_2_irreducible.separable
+
+/-- The Galois group of x² - 2 over ℚ has order 2.
+    Proof: |Gal| = [SplittingField : ℚ]; for irreducible degree-2 polynomial,
+    2 | |Gal| (prime degree) and |Gal| | 2! = 2 (embeds into S₂). -/
+theorem x_sq_sub_2_gal_order :
+    Fintype.card (X ^ 2 - C 2 : ℚ[X]).Gal = 2 := by
+  -- Strategy: show |Gal| = finrank, then 2 ≤ finrank ≤ 2
+  have hcard := Polynomial.Gal.card_of_separable x_sq_sub_2_separable
+  rw [Nat.card_eq_fintype_card] at hcard; rw [hcard]
+  -- Needs: finrank of splitting field = 2 for irreducible quadratic
+  -- This follows from: (1) natDegree | finrank and (2) finrank | natDegree!
+  -- For natDegree = 2: 2 | finrank | 2, so finrank = 2
+  sorry
 
 /-- Gal(x²-2/ℚ) is a 2-group (order 2 = 2¹). -/
 theorem x_sq_sub_2_gal_is_2group : IsPGroup 2 (X ^ 2 - C 2 : ℚ[X]).Gal :=
