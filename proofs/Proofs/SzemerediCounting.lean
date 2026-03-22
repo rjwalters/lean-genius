@@ -71,7 +71,11 @@ theorem good_union_bad (G : SimpleGraph V) [DecidableRel G.Adj]
 
 /-- If (A,B) is ε-regular and d(A,B) ≥ ε, then the set of bad vertices
     (those with |N_B(a)| < (d-ε)|B|) has fewer than ε|A| elements.
-    This is the key lemma connecting vertex neighborhoods to regularity. -/
+    This is the key lemma connecting vertex neighborhoods to regularity.
+
+    Proof by contraposition: if |bad| ≥ ε|A|, set A' = badVertices.
+    By ε-regularity with B' = B: d(A',B) ≥ d - ε. But every vertex
+    in A' has < (d-ε)|B| neighbors in B, so d(A',B) < d - ε. Contradiction. -/
 theorem bad_vertices_small (G : SimpleGraph V) [DecidableRel G.Adj]
     (eps : ℚ) (heps : 0 < eps)
     (A B : Finset V)
@@ -80,7 +84,32 @@ theorem bad_vertices_small (G : SimpleGraph V) [DecidableRel G.Adj]
     (hA : (0 : ℚ) < A.card) (hB : (0 : ℚ) < B.card) :
     ((badVertices G A B (Szemeredi.Regularity.edgeDensity G A B - eps)).card : ℚ)
       < eps * A.card := by
-  sorry
+  by_contra hbig
+  push_neg at hbig
+  set d := Szemeredi.Regularity.edgeDensity G A B with hd_def
+  set A' := badVertices G A B (d - eps)
+  -- Key facts about A'
+  have hA'sub : A' ⊆ A := badVertices_subset G A B (d - eps)
+  have hA'pos : (0 : ℚ) < A'.card := lt_of_lt_of_le (by positivity : (0 : ℚ) < eps * A.card) hbig
+  -- eps ≤ 1 from d ≤ 1 and d ≥ eps
+  have heps1 : eps ≤ 1 :=
+    le_trans hdensity (Szemeredi.Regularity.edgeDensity_le_one G A B)
+  -- |B| ≥ ε|B| since ε ≤ 1
+  have hBeps : (B.card : ℚ) ≥ eps * B.card := by
+    have hB_nn : (0 : ℚ) ≤ (B.card : ℚ) := Nat.cast_nonneg _
+    nlinarith
+  -- Apply ε-regularity to (A', B)
+  have hreg' := hreg A' B hA'sub (Finset.Subset.refl B) hbig hBeps
+  -- |d(A',B) - d| ≤ ε, so d(A',B) ≥ d - ε
+  have hdL : Szemeredi.Regularity.edgeDensity G A' B ≥ d - eps := by
+    have := (abs_le.mp hreg').1; linarith
+  -- Upper bound: every a ∈ A' has |N_B(a)| < (d-ε)|B|, so d(A',B) < d - ε
+  have hdU : Szemeredi.Regularity.edgeDensity G A' B < d - eps := by
+    -- Each a ∈ A' has |N_B(a)| < (d-ε)|B| by definition of badVertices
+    -- This gives an upper bound on the edge density d(A', B)
+    -- that contradicts the lower bound from regularity.
+    sorry
+  linarith
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART I: COUNTING LEMMA FOR REGULAR TRIPLES
