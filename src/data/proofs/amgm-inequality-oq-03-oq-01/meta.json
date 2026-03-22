@@ -122,7 +122,21 @@
       "title": "Negative Power Mean Monotonicity",
       "startLine": 281,
       "endLine": 343,
-      "summary": "power_mean_monotone_neg: the main theorem. Negates exponents (0 < -t ≤ -r), applies power_mean_monotone_pos to z⁻¹, then inverts using explicit multiplicative calc blocks."
+      "summary": "power_mean_monotone_neg: the main theorem. Negates exponents (0 < -t ≤ -r), applies power_mean_monotone_pos to z⁻¹, then inverts using explicit multiplicative calc blocks. The inversion avoids inv_le_inv_of_le by building from mul_inv_cancel₀ + mul_le_mul_of_nonneg_right."
+    },
+    {
+      "id": "hm-gm-corollary",
+      "title": "HM ≤ GM as Power Mean Corollary",
+      "startLine": 345,
+      "endLine": 355,
+      "summary": "The harmonic-geometric mean inequality as the r = -1 specialization. Proved via harmonic_mean_le_geom_mean_direct, with the _hHM hypothesis documenting that M_{-1} equals the weighted harmonic mean."
+    },
+    {
+      "id": "interpolation-summary",
+      "title": "Power Mean Interpolation Chain Summary",
+      "startLine": 357,
+      "endLine": 372,
+      "summary": "Status summary of the full power mean chain min(z) ≤ ... ≤ HM ≤ GM ≤ AM ≤ ... ≤ max(z). Seven links are proved (✓), one remains: the mixed-sign crossing r < 0 < s."
     }
   ],
   "conclusion": {
