@@ -1,0 +1,39 @@
+import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, TacticState } from '@/types/proof'
+import metaJson from './meta.json'
+import annotationsJson from './annotations.json'
+import tacticStatesJson from './tacticStates.json'
+import sourceRaw from '../../../../proofs/Proofs/ArithmeticSeriesOQ02OQ02.lean?raw'
+
+const meta = metaJson as unknown as {
+  id: string
+  title: string
+  slug: string
+  description: string
+  meta: ProofMeta
+  sections: ProofSection[]
+  overview?: ProofOverview
+  conclusion?: ProofConclusion
+}
+
+export const arithmeticSeriesOQ02OQ02Proof: Proof = {
+  id: meta.id,
+  title: meta.title,
+  slug: meta.slug,
+  description: meta.description,
+  meta: meta.meta,
+  sections: meta.sections,
+  source: sourceRaw,
+  overview: meta.overview,
+  conclusion: meta.conclusion,
+}
+
+export const arithmeticSeriesOQ02OQ02Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
+export const arithmeticSeriesOQ02OQ02TacticStates: TacticState[] = tacticStatesJson as TacticState[]
+
+export const arithmeticSeriesOQ02OQ02Data: ProofData = {
+  proof: arithmeticSeriesOQ02OQ02Proof,
+  annotations: arithmeticSeriesOQ02OQ02Annotations,
+  tacticStates: arithmeticSeriesOQ02OQ02TacticStates,
+}
+
+export default arithmeticSeriesOQ02OQ02Data
