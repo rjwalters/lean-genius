@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-03-21T21:14:00-07:00",
     "iteration": 2,
-    "focus": "Proved main M\u00f6bius inversion structure via Finset.sum_comm' exchange",
+    "focus": "All sorries filled. mobius_inverts_zeta fully proved.",
     "blockers": [],
-    "nextAction": "Fill 3 remaining sorries in inner_sum_eq: bijection injectivity and sdiff_eq_empty matching",
+    "nextAction": "None - problem completed",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved main structure of mobius_inverts_zeta using Finset.sum_comm' for Fubini exchange. Factored into inner_sum_eq helper. 3 small sorries remain in bijection details.",
+    "progressSummary": "COMPLETED: InclusionExclusionOQ03.lean now has 0 sorries, 0 axioms. Proved mobius_inverts_zeta (M\u00f6bius inversion) via Finset.sum_comm' exchange + sum_nbij bijection + signed_sum_subsets.",
     "builtItems": [
       "InclusionExclusionOQ03.lean: Zeta/M\u00f6bius transforms (209 lines, 0 axioms, 4 sorries)",
       "zetaTransform: (\u03b6f)(S) = \u2211_{T\u2286S} f(T)",
@@ -42,9 +42,14 @@
       "mobius_subset_lattice: proved via Finset.sum_eq_single isolating T=\u2205",
       "odd_even_subset_balance: proved via Finset.card_bij with parity-flipping involution",
       {
-        "name": "mobius_inverts_zeta (structure)",
-        "description": "Main proof structure complete: distribute \u2192 sum_comm' \u2192 factor \u2192 inner_sum_eq \u2192 sum_ite_eq'",
-        "proven": false
+        "name": "mobius_inverts_zeta",
+        "description": "\u03bc \u2218 \u03b6 = id (M\u00f6bius inversion on subset lattice) - fully proved",
+        "proven": true
+      },
+      {
+        "name": "inner_sum_eq",
+        "description": "Sum exchange bijection: {T:U\u2286T\u2286S} \u2194 (S\\U).powerset, reduces to signed_sum_subsets",
+        "proven": true
       }
     ],
     "insights": [
@@ -57,13 +62,11 @@
       "Finset.prod_add gives the multilinear expansion \u220f(f+g) = \u03a3 (\u220ff)(\u220fg), perfect for signed sums",
       "The involution T\u21a6(erase/insert a) is cleaner to formalize than symmDiff for bijection proofs",
       "mobius_inverts_zeta requires Fubini-type sum exchange (sum_comm with dependent indices) - nontrivial in Lean",
-      "Finset.sum_comm' handles the dependent-index Fubini exchange for \u2211_{T\u2286S} \u2211_{U\u2286T} \u2192 \u2211_{U\u2286S} \u2211_{T: U\u2286T\u2286S}"
+      "Finset.sum_comm' handles the dependent-index Fubini exchange for \u2211_{T\u2286S} \u2211_{U\u2286T} \u2192 \u2211_{U\u2286S} \u2211_{T: U\u2286T\u2286S}",
+      "Finset.sum_nbij handles the bijection proof with explicit injection/surjection on Finset subtraction"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Fill inner_sum_eq bijection injectivity: T\u2081 \\ U = T\u2082 \\ U and U \u2286 T\u2081, U \u2286 T\u2082 \u2192 T\u2081 = T\u2082",
-      "Fill sdiff_eq_empty \u2194 subset matching in the if-then-else"
-    ],
+    "nextSteps": [],
     "markdown": "# Knowledge Base: inclusion-exclusion-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],
@@ -76,7 +79,7 @@
     "mathlib": []
   },
   "started": "2026-03-22T04:19:59.477Z",
-  "lastUpdate": "2026-03-22T16:00:00.000Z",
+  "lastUpdate": "2026-03-22T16:30:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/InclusionExclusion.lean",
