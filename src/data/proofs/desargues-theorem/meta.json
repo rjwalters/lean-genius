@@ -49,11 +49,11 @@
     "problemStatement": "**Theorem (Desargues):** If two triangles ABC and A'B'C' are in **perspective from a point** (i.e., the lines AA', BB', CC' are concurrent at a point O), then they are in **perspective from a line** (i.e., the intersections P = AB ∩ A'B', Q = BC ∩ B'C', R = CA ∩ C'A' are collinear).\n\n**Converse:** If two triangles are in perspective from a line, then they are in perspective from a point.\n\nA projective plane where this theorem holds is called a **Desarguesian plane**.",
     "proofStrategy": "Our proof uses homogeneous coordinates in the projective plane:\n\n1. **Projective Points:** Represented as nonzero vectors in R^3, where scalar multiples represent the same point\n\n2. **Lines:** The line through points p, q is represented by their cross product p × q\n\n3. **Collinearity:** Three points are collinear iff the determinant of their coordinate matrix is zero\n\n4. **Concurrence:** Three lines are concurrent iff the determinant of their coefficient matrix is zero\n\n5. **Key Insight:** The perspective conditions translate to determinant equations that are related through the algebraic properties of cross products and determinants",
     "keyInsights": [
-      "Desargues's theorem is self-dual: swapping points↔lines gives the same theorem",
-      "The theorem characterizes Desarguesian planes, which are coordinatizable by division rings",
-      "Cross products naturally encode line-through-points and point-of-intersection operations",
-      "The determinant condition for collinearity/concurrence unifies both perspectives",
-      "Non-Desarguesian planes exist (e.g., Moulton plane), making this a non-trivial axiom in some contexts"
+      "**Projective Self-Duality:** Swapping 'point' $\\leftrightarrow$ 'line' and 'concurrent' $\\leftrightarrow$ 'collinear' transforms Desargues's theorem into its own converse. This duality reflects the symmetric role of points and hyperplanes in projective space.",
+      "**Algebraic Characterization:** A projective plane is Desarguesian $\\iff$ it is coordinatizable by a division ring. The Moulton plane (non-Desarguesian) shows this is a non-trivial structural property, not an automatic consequence of the incidence axioms.",
+      "**Cross Product Encoding:** In $\\mathbb{R}^3$ homogeneous coordinates, the line through $p, q$ is $p \\times q$, and the intersection of lines $\\ell, m$ is $\\ell \\times m$. This makes the proof purely algebraic: concurrence and collinearity reduce to determinant conditions.",
+      "**Determinant Unification:** Three points $p, q, r$ are collinear $\\iff \\det(p, q, r) = 0$. Three lines $\\ell, m, n$ are concurrent $\\iff \\det(\\ell, m, n) = 0$. The proof reduces both perspective conditions to related determinant equations.",
+      "**Non-Desarguesian Planes Exist:** The Moulton plane (modify the intersection rule for lines of certain slopes) satisfies all projective plane axioms but violates Desargues's theorem. This shows the theorem is independent of the basic incidence axioms — it is a genuine structural condition."
     ]
   },
   "sections": [

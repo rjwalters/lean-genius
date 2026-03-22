@@ -55,11 +55,11 @@
     "problemStatement": "Euler's Identity:\n\n$$e^{i\\pi} + 1 = 0$$\n\nEquivalently: $e^{i\\pi} = -1$\n\nThis follows from Euler's Formula: For any real number $x$,\n\n$$e^{ix} = \\cos(x) + i\\sin(x)$$\n\nSubstituting $x = \\pi$ and using $\\cos(\\pi) = -1$, $\\sin(\\pi) = 0$, we get $e^{i\\pi} = -1$.",
     "proofStrategy": "This proof uses Mathlib's complete formalization of complex analysis:\n\n1. Import Mathlib's Complex Numbers: We use Complex, Complex.I, and Complex.exp from Mathlib, which provides all arithmetic properties.\n\n2. Apply Euler's Formula (Complex.exp_mul_I): This Mathlib theorem states $e^{ix} = \\cos(x) + i\\sin(x)$.\n\n3. Use Trigonometric Values: Mathlib provides Real.cos_pi = -1 and Real.sin_pi = 0.\n\n4. Combine: Substituting $x = \\pi$ gives $e^{i\\pi} = -1 + 0i = -1$, so $e^{i\\pi} + 1 = 0$.\n\nThe entire proof is two lines using Lean tactics.",
     "keyInsights": [
-      "Euler's Formula e^(ix) = cos(x) + i·sin(x) is the real star—the identity is a special case at x = π",
-      "Complex exponentials represent rotations: e^(iθ) traces the unit circle as θ varies",
-      "The Taylor series of e^x, cos(x), and sin(x) combine perfectly when x is replaced by ix",
-      "The identity shows that the five 'fundamental constants' are not independent—they're secretly related",
-      "In physics, e^(iωt) appears everywhere oscillations or waves occur, from quantum mechanics to signal processing"
+      "**Euler's Formula is the Real Theorem:** $e^{ix} = \\cos(x) + i\\sin(x)$ for all $x \\in \\mathbb{R}$. The 'identity' $e^{i\\pi} + 1 = 0$ is just the special case $x = \\pi$ with $\\cos(\\pi) = -1$, $\\sin(\\pi) = 0$.",
+      "**Rotation Interpretation:** $e^{i\\theta}$ traces the unit circle: multiplication by $e^{i\\theta}$ rotates the complex plane by angle $\\theta$. The identity says: a half-turn ($\\theta = \\pi$) maps $1$ to $-1$.",
+      "**Taylor Series Miracle:** Replacing $x$ by $ix$ in $e^x = \\sum x^n/n!$: the powers $i^n$ cycle through $1, i, -1, -i$, perfectly separating real parts ($\\cos$) from imaginary parts ($\\sin$). This is why $e^{ix} = \\cos(x) + i\\sin(x)$.",
+      "**Five Constants, One Equation:** $e^{i\\pi} + 1 = 0$ connects $e$ (analysis), $i$ (algebra), $\\pi$ (geometry), $1$ (multiplicative identity), and $0$ (additive identity). These are not independent — they are bound by the structure of $\\mathbb{C}$.",
+      "**Physical Ubiquity:** $e^{i\\omega t}$ describes oscillations: AC circuits ($V = V_0 e^{i\\omega t}$), quantum mechanics ($\\psi = Ae^{i(kx - \\omega t)}$), Fourier analysis ($\\hat{f}(\\xi) = \\int f(x)e^{-2\\pi i \\xi x}dx$). Euler's formula is the reason complex exponentials appear everywhere in physics."
     ]
   },
   "sections": [

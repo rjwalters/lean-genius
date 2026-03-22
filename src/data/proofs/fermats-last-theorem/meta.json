@@ -46,12 +46,12 @@
     "problemStatement": "For any integer $n > 2$, there are no three positive integers $a$, $b$, $c$ such that:\n\n$$a^n + b^n = c^n$$\n\nEquivalently: the only integer solutions to $x^n + y^n = z^n$ for $n > 2$ are the trivial ones where $xyz = 0$.\n\nNote that $n = 2$ has infinitely many solutions (Pythagorean triples like $3^2 + 4^2 = 5^2$), but something fundamentally changes at $n = 3$.",
     "proofStrategy": "Wiles' proof proceeds by contradiction through a remarkable chain of ideas:\n\n1. **ASSUME** a counterexample exists: $a^n + b^n = c^n$ with $n > 2$ and $a, b, c$ positive integers.\n\n2. **CONSTRUCT** the Frey curve: From this hypothetical solution, build the elliptic curve\n   $$E: y^2 = x(x - a^n)(x + b^n)$$\n   This curve has unusual properties: it is semi-stable with discriminant divisible by enormous prime powers.\n\n3. **APPLY RIBET'S THEOREM** (1986): The Frey curve, if it existed, would be modular but have a conductor too small to match any modular form. This is impossible.\n\n4. **PROVE MODULARITY**: Wiles proves that all semistable elliptic curves over $\\mathbb{Q}$ are modular (the Taniyama-Shimura-Weil conjecture for semistable curves).\n\n5. **CONTRADICTION**: The Frey curve must be modular (by step 4), but cannot be modular (by step 3). Therefore, no counterexample exists.\n\nThe bulk of Wiles' 100+ page proof establishes the modularity theorem. The Taylor-Wiles patching method, developed to fix the gap, has become a fundamental tool in modern number theory.",
     "keyInsights": [
-      "The Frey curve y^2 = x(x - a^n)(x + b^n) encodes a hypothetical counterexample as geometry",
-      "Modularity means every elliptic curve over Q corresponds to a modular form - arithmetic and analysis connected",
-      "Ribet's theorem (epsilon conjecture) shows Frey curves cannot match any modular form's conductor",
-      "Galois representations carry arithmetic information about elliptic curves and modular forms",
-      "The proof uses the deformation theory of Galois representations and commutative algebra",
-      "Taylor-Wiles patching: construct an infinite family of auxiliary problems to control the main one"
+      "**Frey Curve:** A counterexample $a^n + b^n = c^n$ yields the elliptic curve $E: y^2 = x(x - a^n)(x + b^n)$ with discriminant $\\Delta \\sim (abc)^{2n}$ — a curve with 'impossibly' large conductor for its simple equation.",
+      "**Modularity = Arithmetic-Analysis Bridge:** Every elliptic curve $E/\\mathbb{Q}$ is modular: its $L$-function equals that of a weight-2 newform $f$. This connects Diophantine equations (arithmetic) to automorphic forms (analysis).",
+      "**Ribet's Theorem:** If $a^n + b^n = c^n$, the Frey curve's Galois representation $\\bar{\\rho}_{E,p}$ would arise from a weight-2 form of level 2 — but no such form exists (the space $S_2(\\Gamma_0(2))$ is zero-dimensional). Contradiction.",
+      "**Galois Representations:** The $p$-torsion $E[p]$ gives a 2-dimensional $\\text{Gal}(\\overline{\\mathbb{Q}}/\\mathbb{Q})$-representation. Modularity means this representation 'comes from' a modular form — the bridge between geometry and number theory.",
+      "**Taylor-Wiles Patching:** Wiles' proof of modularity uses deformation theory: parameterize all Galois representations with fixed residual $\\bar{\\rho}$ and show the deformation ring $R$ equals the Hecke algebra $\\mathbb{T}$ ($R = \\mathbb{T}$ theorem). Patching constructs auxiliary primes to control Selmer groups.",
+      "**Scope of Modularity:** Wiles proved modularity for semistable curves. The full modularity theorem (Breuil-Conrad-Diamond-Taylor, 2001) extends to ALL elliptic curves over $\\mathbb{Q}$."
     ]
   },
   "sections": [
