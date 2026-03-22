@@ -28,6 +28,7 @@
     "type": "theorem",
     "title": "1 is Powerful",
     "content": "**one_powerful:** The number 1 is powerful.\n\nThis is vacuously true: 1 has no prime divisors, so the condition \"for every prime p dividing 1, p² divides 1\" is satisfied with no primes to check.\n\nThis is a boundary case that makes 2^1 - 1 = 1 technically powerful.",
+    "mathContext": "$1$ is powerful vacuously: $\\forall p$ prime, $p \\mid 1 \\Rightarrow p^2 \\mid 1$ is vacuously true since no prime divides $1$.",
     "significance": "supporting"
   },
   {
