@@ -1,0 +1,37 @@
+{
+  "id": "elementary-quadratic-reciprocity-oq-03",
+  "title": "Jacobi Symbol and QR for Composite Moduli",
+  "description": "Extends quadratic reciprocity from the Legendre symbol (prime moduli) to the Jacobi symbol (composite odd moduli), formalizing the generalized reciprocity law J(m,n)·J(n,m) = (-1)^((m-1)/2·(n-1)/2) for coprime odd m,n.",
+  "category": "number-theory",
+  "status": "formalized",
+  "badge": "formalized",
+  "difficulty": "intermediate",
+  "leanFile": "Proofs/ElementaryQuadraticReciprocityOQ03.lean",
+  "lineCount": 116,
+  "theoremCount": 7,
+  "axiomCount": 0,
+  "sorryCount": 4,
+  "assumptions": [],
+  "keyInsights": [
+    {
+      "title": "Jacobi Symbol Extends Legendre",
+      "description": "The Jacobi symbol J(a,n) = ∏(a/pᵢ)^eᵢ generalizes the Legendre symbol to composite odd moduli, preserving multiplicativity but losing the 'QR iff symbol = 1' equivalence."
+    },
+    {
+      "title": "Reciprocity Generalizes",
+      "description": "Quadratic reciprocity J(m,n)·J(n,m) = (-1)^((m-1)/2·(n-1)/2) holds for all coprime odd m,n > 1, not just primes. The proof reduces to the prime case via multiplicativity."
+    },
+    {
+      "title": "One-Way Detection",
+      "description": "J(a,n) = -1 guarantees a is a non-residue mod n, but J(a,n) = 1 for composite n does NOT guarantee a is a QR. This asymmetry is why primality testing via Jacobi symbols needs care."
+    }
+  ],
+  "crossRefs": [
+    "elementary-quadratic-reciprocity",
+    "elementary-quadratic-reciprocity-oq-01",
+    "quadratic-reciprocity"
+  ],
+  "parentProof": "elementary-quadratic-reciprocity",
+  "openQuestion": "Can we formalize alternative QR proof approaches, including extensions to composite moduli?",
+  "tags": ["number-theory", "quadratic-reciprocity", "jacobi-symbol"]
+}
