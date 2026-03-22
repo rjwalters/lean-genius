@@ -110,5 +110,37 @@
       "Can the orbit-stabilizer theorem be formalized as a generalization of Lagrange's theorem, with Lagrange recovered as the special case of the action of G on cosets of H?",
       "Can Hall's theorem be formalized: for solvable groups, the full converse of Lagrange holds — subgroups of order n exist for every n dividing |G|?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "sylow-theorems",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem is a prerequisite for the Sylow theorems: Sylow's first theorem provides a partial converse, showing subgroups of prime-power order exist for every prime power dividing |G|"
+    }
+  ],
+  "relatedProofs": [
+    "sylow-theorems"
+  ],
+  "references": [
+    {
+      "authors": "Lagrange, Joseph-Louis",
+      "title": "Réflexions sur la résolution algébrique des équations",
+      "year": "1771",
+      "venue": "Nouveaux Mémoires de l'Académie Royale des Sciences et Belles-Lettres de Berlin",
+      "note": "Original observation that the order of a permutation divides n! — precursor to the modern group-theoretic statement"
+    },
+    {
+      "authors": "Wiedijk, Freek",
+      "title": "Formalizing 100 Theorems",
+      "year": "2008",
+      "venue": "https://www.cs.ru.nl/~freek/100/",
+      "note": "Lagrange's theorem is #71 on the list of 100 greatest theorems formalized"
+    }
+  ],
+  "prerequisites": [
+    "Group theory: finite groups, subgroups, cosets",
+    "Set theory: partitions, cardinality, Finset operations",
+    "Modular arithmetic: ZMod, units of Z/pZ",
+    "Number theory: Nat.totient, Fermat's little theorem"
+  ]
 }
