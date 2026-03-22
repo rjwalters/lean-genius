@@ -59,6 +59,13 @@
         "year": "2003",
         "venue": "Kluwer Academic Publishers",
         "note": "Comprehensive treatment of power means including the duality M_r(z) = M_{-r}(z⁻¹)⁻¹"
+      },
+      {
+        "authors": "Steele, J. Michael",
+        "title": "The Cauchy-Schwarz Master Class: An Introduction to the Art of Mathematical Inequalities",
+        "year": "2004",
+        "venue": "Cambridge University Press",
+        "note": "Chapter 4 develops the power mean inequality with detailed proofs of the duality and inversion techniques used here"
       }
     ],
     "prerequisites": [
@@ -87,6 +94,11 @@
         "targetId": "cauchy-schwarz",
         "relationship": "related",
         "description": "Both are fundamental inequalities in analysis; Cauchy-Schwarz can be derived from the r=2 power mean"
+      },
+      {
+        "targetId": "cauchy-schwarz-integral",
+        "relationship": "related",
+        "description": "The Bunyakovsky-Schwarz integral inequality is the continuous/L² analog of the discrete M₁ ≤ M₂ power mean inequality"
       }
     ],
     "dateAdded": "2026-03-21",
@@ -94,21 +106,11 @@
     "lineCount": 372,
     "leanFile": "proofs/Proofs/AmgmInequalityOQ03.lean",
     "relatedProofs": [
-      {
-        "id": "amgm-inequality-oq-03",
-        "relationship": "extends",
-        "description": "Parent file containing definitions and positive monotonicity used by this result"
-      },
-      {
-        "id": "amgm-inequality",
-        "relationship": "related",
-        "description": "Base AM-GM inequality, the r=1 to r=0 case of the power mean chain"
-      },
-      {
-        "id": "amgm-inequality-oq-03-oq-02",
-        "relationship": "related",
-        "description": "Mixed-sign crossing case, the remaining gap in the full chain"
-      }
+      "amgm-inequality-oq-03",
+      "amgm-inequality",
+      "amgm-inequality-oq-03-oq-02",
+      "cauchy-schwarz",
+      "cauchy-schwarz-integral"
     ]
   },
   "overview": {
