@@ -105,33 +105,41 @@
       "id": "preamble",
       "title": "Preamble",
       "startLine": 1,
-      "endLine": 22,
-      "summary": "Module documentation, Mathlib imports, namespace Szemeredi.Regularity, and variable declarations for finite vertex type V",
-      "mathContext": "Imports `SimpleGraph`, `Finpartition`, `Finset.card` from Mathlib. Sets up namespace `Szemeredi.Regularity` with variables `{V : Type*} [Fintype V] [DecidableEq V]`."
+      "endLine": 20,
+      "summary": "Module docstring listing Parts I–III, references to Szemerédi (1975) and Komlós-Simonovits (1996). Imports Mathlib, opens `Classical`, declares finite vertex type variables.",
+      "mathContext": "Setting: $G = (V, E)$ simple graph with $V$ finite. Namespace `Szemeredi.Regularity` encapsulates all definitions."
     },
     {
       "id": "definitions",
       "title": "Part I: Epsilon-Regular Pairs and Partitions",
-      "startLine": 18,
-      "endLine": 55,
-      "summary": "Core definitions: edge density between vertex subsets, epsilon-regular pair condition, and regular partition (equitable partition with few irregular pairs).",
-      "mathContext": "$(V_i, V_j)$ is $\\varepsilon$-regular if all large sub-pairs have density close to $d(V_i, V_j)$"
+      "startLine": 22,
+      "endLine": 53,
+      "summary": "Defines `edgeDensity G A B` as $|E(A,B)|/(|A||B|)$, `IsEpsilonRegular G eps A B` (all large sub-pairs have density within $\\varepsilon$ of the pair density), and `IsRegularPartition G eps parts` (at most $\\varepsilon \\binom{k}{2}$ irregular pairs).",
+      "mathContext": "$d(A,B) = \\frac{e(A,B)}{|A||B|}$. $(A,B)$ is $\\varepsilon$-regular if $\\forall A' \\subseteq A, B' \\subseteq B$ with $|A'| \\geq \\varepsilon|A|, |B'| \\geq \\varepsilon|B|$: $|d(A',B') - d(A,B)| \\leq \\varepsilon$."
+    },
+    {
+      "id": "density-properties",
+      "title": "Density Properties",
+      "startLine": 55,
+      "endLine": 78,
+      "summary": "**Proved.** Two key density bounds: `edgeDensity_nonneg` ($d(A,B) \\geq 0$) and `edgeDensity_le_one` ($d(A,B) \\leq 1$). Both follow from the definition via `positivity` and `div_le_one`.",
+      "mathContext": "$0 \\leq d(A,B) \\leq 1$ for all $A, B$. The upper bound uses $|\\{(a,b) \\in A \\times B : ab \\in E\\}| \\leq |A||B|$."
     },
     {
       "id": "energy",
       "title": "Part II: Partition Energy and Increment",
-      "startLine": 57,
-      "endLine": 90,
-      "summary": "Partition energy function E(P) and the energy increment step: if too many irregular pairs, refinement increases energy by epsilon^5.",
-      "mathContext": "$E(\\mathcal{P}) = \\frac{1}{k^2}\\sum_{i,j} d(V_i,V_j)^2 \\in [0,1]$, refinement gives $E(\\mathcal{P}') \\geq E(\\mathcal{P}) + \\varepsilon^5$"
+      "startLine": 79,
+      "endLine": 121,
+      "summary": "Defines `partitionEnergy` $E(\\mathcal{P}) = \\frac{1}{k^2}\\sum d(V_i,V_j)^2$. **Proves** non-negativity. States `density_sq_convex` (Cauchy-Schwarz ingredient) and `energy_increment_step` (refinement adds $\\varepsilon^5$). Both sorry'd.",
+      "mathContext": "$E(\\mathcal{P}) = \\frac{1}{k^2}\\sum_{i,j} d(V_i,V_j)^2$. Increment: not $\\varepsilon$-regular $\\Rightarrow \\exists \\mathcal{P}'$ with $E(\\mathcal{P}') \\geq E(\\mathcal{P}) + \\varepsilon^5$ and $|\\mathcal{P}'| \\leq k \\cdot 2^k$."
     },
     {
       "id": "regularity-lemma",
       "title": "Part III: Regularity Lemma (Main Result)",
-      "startLine": 92,
-      "endLine": 115,
-      "summary": "The main Szemeredi Regularity Lemma: for every epsilon > 0, every large graph has an epsilon-regular partition. Proved by iterated energy increment.",
-      "mathContext": "For all $\\varepsilon > 0$, $\\exists M$: every graph on $\\geq M$ vertices has an $\\varepsilon$-regular partition into $\\leq M$ parts"
+      "startLine": 123,
+      "endLine": 186,
+      "summary": "**Proves** `partitionEnergy_le_one` ($E(\\mathcal{P}) \\leq 1$ for valid partitions). States `max_iterations` (termination bound $\\lceil 1/\\varepsilon^5 \\rceil$) and the main `regularity_lemma`: $\\forall \\varepsilon > 0, \\exists M$ such that every graph on $\\geq M$ vertices has an $\\varepsilon$-regular partition into $\\leq M$ parts. Both sorry'd.",
+      "mathContext": "$E \\leq 1$ (proved). Main: $\\forall \\varepsilon > 0, \\exists M(\\varepsilon): n \\geq M \\Rightarrow$ graph has $\\varepsilon$-regular partition into $\\leq M$ parts. Terminates in $\\leq \\lceil \\varepsilon^{-5} \\rceil$ refinement steps."
     }
   ],
   "conclusion": {
