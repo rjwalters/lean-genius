@@ -156,9 +156,42 @@
     }
   ],
   "relatedProofs": [
-    "fermats-last-theorem",
-    "abel-ruffini",
-    "quadratic-formula"
+    {
+      "id": "abel-ruffini",
+      "relationship": "complementary",
+      "description": "FTA guarantees every polynomial has complex roots; Abel-Ruffini shows those roots cannot always be expressed by radicals for degree ≥ 5"
+    },
+    {
+      "id": "angle-trisection",
+      "relationship": "related",
+      "description": "FTA guarantees the trisection polynomial 8x³-6x-1 has roots; the impossibility is about constructibility, not existence"
+    },
+    {
+      "id": "inverse-galois",
+      "relationship": "related",
+      "description": "FTA implies every finite group occurs as a quotient of the absolute Galois group of ℚ — the starting point of the inverse Galois problem"
+    },
+    {
+      "id": "solution-of-cubic",
+      "relationship": "related",
+      "description": "Cardano's formula gives explicit roots for cubics; FTA guarantees their existence without constructive extraction"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Gauss, Carl Friedrich",
+      "title": "Demonstratio nova theorematis omnem functionem algebraicam rationalem integram unius variabilis in factores reales primi vel secundi gradus resolvi posse",
+      "year": "1799",
+      "venue": "Doctoral dissertation, University of Helmstedt",
+      "note": "Gauss's first proof of FTA — he gave four proofs total throughout his career"
+    },
+    {
+      "authors": "Fine, Benjamin; Rosenberger, Gerhard",
+      "title": "The Fundamental Theorem of Algebra",
+      "year": "1997",
+      "venue": "Springer Undergraduate Texts in Mathematics",
+      "note": "Modern exposition covering algebraic, analytic, and topological proofs of FTA"
+    }
   ],
   "leanFile": {
     "imports": [
