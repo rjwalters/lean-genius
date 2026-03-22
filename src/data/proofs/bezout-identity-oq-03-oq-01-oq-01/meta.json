@@ -75,7 +75,7 @@
     "axiomCount": 0
   },
   "overview": {
-    "historicalContext": "The Chinese Remainder Theorem has ancient roots (Sunzi Suanjing, ~3rd century) and was generalized by Euler and Gauss. The 2-fold case (m coprime to n implies unique solution mod mn) extends to k-fold: for pairwise coprime n₁, ..., nₖ, the system x ≡ aᵢ (mod nᵢ) has a unique solution mod n₁···nₖ. The ring-theoretic formulation as an isomorphism ℤ/(∏nᵢ)ℤ ≅ ∏ᵢ ℤ/nᵢℤ captures both existence and uniqueness, plus the multiplicative structure.",
+    "historicalContext": "The Chinese Remainder Theorem originates in Sunzi Suanjing (~3rd century CE), which posed: 'find a number giving remainders 2, 3, 2 when divided by 3, 5, 7.' The first general algorithm for arbitrary moduli was given by Qin Jiushao in his 1247 Shushu Jiuzhang (Mathematical Treatise in Nine Sections), predating European treatments by centuries. Euler stated the k-fold version for pairwise coprime moduli, and Gauss gave it systematic treatment in Disquisitiones Arithmeticae (1801, Articles 32-36). The modern ring-theoretic formulation as an isomorphism $\\mathbb{Z}/(\\prod n_i)\\mathbb{Z} \\cong \\prod_i \\mathbb{Z}/n_i\\mathbb{Z}$ captures both existence and uniqueness of solutions plus the full multiplicative structure. This k-fold generalization is foundational in modern cryptography: RSA key generation relies on the CRT decomposition $\\mathbb{Z}/pq\\mathbb{Z} \\cong \\mathbb{Z}/p\\mathbb{Z} \\times \\mathbb{Z}/q\\mathbb{Z}$ for efficient decryption, and multi-prime RSA uses the k-fold version directly.",
     "problemStatement": "**Theorem (crtKFold)**: For a list ns of pairwise coprime natural numbers,\n  ZMod ns.prod ≃+* CRTProd ns\nwhere CRTProd ns is the right-associated product ∏ᵢ ZMod (ns.get i).\n\n**Key lemma (coprime_prod_of_coprime_all)**: If n is coprime to every element of ns, then n is coprime to ns.prod.",
     "proofStrategy": "**Induction on the list of moduli**:\n\n**Base**: Empty list — ZMod 1 ≅ PUnit (the trivial ring).\n\n**Step**: Given n :: ns with pairwise coprimality:\n1. By coprime_prod_of_coprime_all, n is coprime to ns.prod\n2. Apply ZMod.chineseRemainder: ZMod (n * ns.prod) ≅ ZMod n × ZMod ns.prod\n3. Apply IH: ZMod ns.prod ≅ CRTProd ns\n4. Compose via RingEquiv.prodCongr\n\n**Explicit specializations**: crt3 and crt4 construct 3-fold and 4-fold CRTs directly using associativity and mul_right, avoiding the CRTProd type.",
     "keyInsights": [
@@ -91,37 +91,51 @@
     {
       "id": "coprimality",
       "title": "Key Coprimality Lemma",
-      "startLine": 33,
-      "endLine": 60,
-      "summary": "coprime_prod_of_coprime_all and head_coprime_tail_prod: if n is coprime to each element, it's coprime to the product. Proved by induction using Nat.Coprime.mul_right."
+      "startLine": 31,
+      "endLine": 59,
+      "summary": "coprime_prod_of_coprime_all and head_coprime_tail_prod: if n is coprime to each element, it's coprime to the product. Proved by induction using Nat.Coprime.mul_right. Also pairwise_tail: extracting pairwise coprimality of the tail from the cons case."
     },
     {
       "id": "explicit-crt",
       "title": "Explicit 3-fold and 4-fold CRT",
-      "startLine": 62,
-      "endLine": 108,
-      "summary": "crt3 and crt4: direct constructions of ℤ/(abc)ℤ ≅ ℤ/aℤ × ℤ/bℤ × ℤ/cℤ and 4-fold analog. Uses ring for ℕ associativity and Nat.Coprime.mul_right for coprimality."
+      "startLine": 61,
+      "endLine": 99,
+      "summary": "crt3 and crt4: direct constructions of ℤ/(abc)ℤ ≅ ℤ/aℤ × (ℤ/bℤ × ℤ/cℤ) and 4-fold analog. Uses ring for ℕ associativity, Nat.Coprime.mul_right for coprimality propagation, and RingEquiv.prodCongr for lifting isomorphisms into products."
     },
     {
       "id": "general-kfold",
       "title": "General k-fold CRT Isomorphism",
-      "startLine": 110,
-      "endLine": 150,
-      "summary": "CRTProd recursive type and crtKFold: the main inductive construction. Base case via zmod_one_equiv_punit, step via chineseRemainder + prodCongr."
+      "startLine": 100,
+      "endLine": 138,
+      "summary": "CRTProd recursive type definition, CommRing instances, zmod_one_equiv_punit base case, and crtKFold: the main inductive construction composing chineseRemainder with prodCongr at each step."
     },
     {
       "id": "properties",
-      "title": "Properties and Totient Multiplicativity",
-      "startLine": 152,
-      "endLine": 210,
-      "summary": "Bijection, injectivity, surjectivity, ring hom properties, round-trips. Plus totient_prod_pairwise_coprime: φ(∏nᵢ) = ∏φ(nᵢ)."
+      "title": "Properties of the k-fold CRT",
+      "startLine": 140,
+      "endLine": 182,
+      "summary": "Algebraic properties derived from the ring isomorphism: bijective, injective, surjective, preserves multiplication and addition, round-trip identity in both directions. Each follows directly from RingEquiv API."
+    },
+    {
+      "id": "totient",
+      "title": "Euler Totient Multiplicativity",
+      "startLine": 184,
+      "endLine": 200,
+      "summary": "totient_prod_pairwise_coprime: φ(∏ nᵢ) = ∏ φ(nᵢ) for pairwise coprime lists. Proved by induction using Nat.totient_mul at each step, mirroring the CRT induction structure."
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
-      "startLine": 212,
-      "endLine": 230,
-      "summary": "Concrete instances: ℤ/30ℤ ≅ ℤ/2ℤ × ℤ/3ℤ × ℤ/5ℤ and ℤ/210ℤ ≅ ℤ/2ℤ × ℤ/3ℤ × ℤ/5ℤ × ℤ/7ℤ. Totient example: φ(30) = φ(2)·φ(3)·φ(5)."
+      "startLine": 202,
+      "endLine": 225,
+      "summary": "Concrete instances: ℤ/30ℤ ≅ ℤ/2ℤ × ℤ/3ℤ × ℤ/5ℤ (both via k-fold and explicit crt3), ℤ/210ℤ ≅ ℤ/2ℤ × ℤ/3ℤ × ℤ/5ℤ × ℤ/7ℤ (explicit crt4). Totient example: φ(30) = φ(2)·φ(3)·φ(5) = 8."
+    },
+    {
+      "id": "verification",
+      "title": "Type Verification",
+      "startLine": 227,
+      "endLine": 249,
+      "summary": "#check commands verifying all 15 exported definitions and theorems typecheck correctly: coprimality lemmas, explicit CRT constructions, general k-fold isomorphism with properties, and concrete examples."
     }
   ],
   "crossReferences": [
@@ -149,6 +163,11 @@
       "targetId": "primitive-roots",
       "relationship": "related",
       "description": "Primitive roots modulo primes: $(\\mathbb{Z}/p\\mathbb{Z})^*$ is cyclic. The CRT decomposes $(\\mathbb{Z}/n\\mathbb{Z})^* \\cong \\prod (\\mathbb{Z}/p_i^{a_i}\\mathbb{Z})^*$, reducing unit group structure to prime power components."
+    },
+    {
+      "targetId": "chinese-remainder-non-coprime",
+      "relationship": "related",
+      "description": "Generalizes the CRT to non-coprime moduli: when $\\gcd(m,n) > 1$, the system $x \\equiv a \\pmod{m}$, $x \\equiv b \\pmod{n}$ has a solution iff $a \\equiv b \\pmod{\\gcd(m,n)}$. The coprime k-fold CRT here is the clean isomorphism case; the non-coprime version shows what happens when the coprimality hypothesis is dropped."
     }
   ],
   "conclusion": {
