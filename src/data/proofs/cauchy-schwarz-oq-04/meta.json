@@ -83,7 +83,8 @@
       "**Residual norm decomposition**: The Pythagorean identity norm(u)^2 = projCoeff^2 * norm(v)^2 + norm(u - proj)^2 shows that CS equality forces the residual to vanish, giving the exact constant.",
       "**Projection coefficient is canonical**: Any scalar c satisfying u = cv must equal projCoeff(u,v). This is proved by showing projCoeff(cv, v) = c for all scalars c.",
       "**Sign determines direction**: projCoeff > 0 when inner(u,v) > 0 (same direction), projCoeff < 0 when inner(u,v) < 0 (opposite direction). This geometric interpretation follows from the sign of the inner product divided by the positive quantity norm(v)^2.",
-      "**Lagrange identity for finite sums**: The cross-term vanishing condition a_i*b_j = a_j*b_i is extracted from the identity sum_ij (a_i*b_j - a_j*b_i)^2 = 2*(sum a_i^2 * sum b_i^2 - (sum a_i*b_i)^2), giving the exact ratio a_i/b_i = sum(a*b)/sum(b^2) for all i."
+      "**Lagrange identity for finite sums**: The cross-term vanishing condition a_i*b_j = a_j*b_i is extracted from the identity sum_ij (a_i*b_j - a_j*b_i)^2 = 2*(sum a_i^2 * sum b_i^2 - (sum a_i*b_i)^2), giving the exact ratio a_i/b_i = sum(a*b)/sum(b^2) for all i.",
+      "**Bridge to OQ-03 (Hölder)**: The equality condition for Cauchy-Schwarz (p=q=2) is a special case of Hölder equality — the general case requires $f_i^p/g_i^q$ constant. At p=q=2 this reduces to proportionality $f_i/g_i = c$, unifying the geometric (projection) and analytic (Hölder) perspectives"
     ]
   },
   "sections": [
