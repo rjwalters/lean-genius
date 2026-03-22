@@ -37,7 +37,7 @@ theorem inner_eq_of_proportional (f g : E) (h : ‖f‖ • g = ‖g‖ • f) :
     linarith
 
 /-- Cauchy-Schwarz equality implies proportionality:
-    ⟪f,g⟫ = ‖f‖·‖g‖ → ‖‖f‖•g - ‖g‖•f‖² = 2‖f‖²‖g‖² - 2‖f‖‖g‖⟪f,g⟫ = 0. -/
+    ⟪f,g⟫ = ‖f‖·‖g‖ → ‖‖f‖•g - ‖g‖•f‖² = 0. -/
 theorem proportional_of_inner_eq (f g : E) (h : ⟪f, g⟫_ℝ = ‖f‖ * ‖g‖) :
     ‖f‖ • g = ‖g‖ • f := by
   -- Show ‖‖f‖•g - ‖g‖•f‖ = 0
