@@ -37,6 +37,27 @@
     "prerequisites": ["Lean 4 import system", "Mathlib library structure"]
   },
   {
+    "id": "ann-namespace-variables",
+    "proofId": "abel-ruffini",
+    "anchor": {
+      "type": "namespace",
+      "name": "AbelRuffini",
+      "extendAfter": 15
+    },
+    "type": "context",
+    "title": "Namespace and Universe-Polymorphic Field Variables",
+    "content": "The `AbelRuffini` namespace scopes all theorems. The universe-polymorphic variables `F` and `E` set up the proof's field-extension context: `F` is an arbitrary field (the 'base'), `E` is an extension field with an `Algebra F E` instance encoding the inclusion $F \\hookrightarrow E$.\n\nThis polymorphism means the theorems apply to any field extension — $\\mathbb{Q} \\hookrightarrow \\mathbb{R}$, $\\mathbb{Q} \\hookrightarrow \\mathbb{C}$, $\\mathbb{F}_p \\hookrightarrow \\overline{\\mathbb{F}_p}$, etc. The `{F : Type*}` syntax uses auto-bound implicit universes, allowing Lean to infer the universe level.",
+    "mathContext": "The `Algebra F E` instance encodes a ring homomorphism $\\phi: F \\to E$ making $E$ an $F$-algebra. For field extensions, this is the inclusion map. Universe polymorphism means theorems hold at any universe level, not just `Type 0` (= `Type`).",
+    "significance": "context",
+    "relatedConcepts": [
+      "universe polymorphism",
+      "Algebra F E",
+      "field extension",
+      "auto-bound implicit"
+    ],
+    "prerequisites": ["Lean 4 universe polymorphism", "Algebra typeclass", "field extensions"]
+  },
+  {
     "id": "ann-solvable-by-rad",
     "proofId": "abel-ruffini",
     "anchor": {
@@ -178,6 +199,26 @@
       "quadratic formula"
     ],
     "prerequisites": ["IsSolvable typeclass", "inferInstance", "Equiv.Perm (Fin n)"]
+  },
+  {
+    "id": "ann-part-v-synthesis",
+    "proofId": "abel-ruffini",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "Part V: The Abel-Ruffini Theorem"
+    },
+    "type": "insight",
+    "title": "Synthesis: Combining the Bridge with Non-Solvability",
+    "content": "Part V is the climax of the formalization. The docstring frames the logical synthesis: Parts II and III are independent ingredients — the Galois bridge (solvable by radicals ⟹ solvable Galois group) and the group-theoretic fact ($S_5$ is not solvable). Their combination via contrapositive yields Abel-Ruffini.\n\nThis two-step structure mirrors the historical development: Abel proved the impossibility (1824) by analyzing the structure of radical expressions, while Galois (1832) provided the group-theoretic framework that made the argument conceptually transparent. The separation of field-theoretic and group-theoretic ingredients reflects how modern algebra organizes the proof.",
+    "mathContext": "The logical chain: $\\text{IsSolvableByRad}\\,F\\,\\alpha \\Rightarrow \\text{IsSolvable}(q.\\text{Gal})$ (Part II) combined with $\\neg\\,\\text{IsSolvable}(S_5)$ (Part III) gives $\\text{Gal}(q) \\cong S_5 \\Rightarrow \\neg\\,\\text{IsSolvableByRad}\\,F\\,\\alpha$ (Part V). This is a textbook instance of $(P \\Rightarrow Q) \\land \\neg Q \\Rightarrow \\neg P$ (modus tollens).",
+    "significance": "key",
+    "relatedConcepts": [
+      "logical synthesis",
+      "modus tollens",
+      "contrapositive",
+      "proof architecture"
+    ],
+    "prerequisites": ["galois_bridge (Part II)", "symmetric_group_not_solvable (Part III)", "contrapositive reasoning"]
   },
   {
     "id": "ann-exists-quintic",
