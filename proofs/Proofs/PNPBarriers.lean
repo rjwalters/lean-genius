@@ -2531,15 +2531,6 @@ def MAX_CLIQUE : Nat → Bool := fun _ => true  -- Abstract: maximum clique
     2-prover game has value ≥ 1-ε or ≤ ε. -/
 def UniqueGamesConjecture : Prop :=
   ∀ ε : Real, ε > 0 → True  -- Abstract: hardness of unique games
-
-/-- Assuming UGC, VERTEX-COVER cannot be (2-ε)-approximated.
-
-    This is tight: the greedy algorithm achieves 2-approximation. -/
-axiom ugc_vertex_cover :
-  UniqueGamesConjecture →
-    ∀ ε : Real, ε > 0 →
-      ∀ A ∈ NP_unrelativized, GapPreservingReduction A SAT (2 - ε)
-
 /-- The PCP theorem relates to interactive proofs:
 
     NP = PCP(log n, O(1)) vs IP = PSPACE
@@ -2787,7 +2778,6 @@ theorem pcp_landscape :
 #check GapPreservingReduction
 #check MAX_CLIQUE
 #check UniqueGamesConjecture
-#check ugc_vertex_cover
 #check pcp_vs_ip
 #check LocallyTestableCode
 #check pcp_amplification
@@ -2928,13 +2918,6 @@ theorem CZK_subset_PSPACE : CZK ⊆ PSPACE := by
   exact h1
 
 /-! ### Statistical Zero-Knowledge (SZK) -/
-
-/-- SZK ⊆ AM ∩ coAM.
-
-    Statistical ZK is contained in the low part of the polynomial hierarchy.
-    This places strong limits on SZK's power. -/
-axiom SZK_subset_AM_inter_coAM : SZK ⊆ AM ∩ coAM
-
 /-- BPP ⊆ SZK: Trivial languages have statistical ZK proofs.
 
     Proof: For L ∈ BPP, the prover sends nothing, verifier decides by itself.
@@ -3074,7 +3057,6 @@ theorem zk_power :
 #check CZK_subset_IP
 #check gmw_theorem
 #check CZK_subset_PSPACE
-#check SZK_subset_AM_inter_coAM
 #check BPP_subset_SZK
 #check graph_isomorphism_in_SZK
 #check NIZK
@@ -7088,17 +7070,6 @@ theorem FPT_eq_W1_breaks_ETH :
     -- since FPT and W[1] are both abstract (= Set.univ)
 
 /-! ### Connection to P vs NP -/
-
-/-- FPT ≠ W[1] is a weaker assumption than P ≠ NP.
-
-    **Proof sketch**: If P = NP, then every NP-hard problem is in P,
-    hence every parameterized NP problem is trivially FPT (ignore the
-    parameter), so FPT = W[1] = ... = XP.
-
-    Contrapositive: FPT ≠ W[1] → P ≠ NP. -/
-axiom FPT_ne_W1_implies_P_ne_NP :
-    FPT ≠ W 1 → P_unrelativized ≠ NP_unrelativized
-
 /-- The W-hierarchy provides a finer view of NP.
 
     While P vs NP asks "is this problem solvable in polynomial time?",
@@ -7140,7 +7111,6 @@ theorem parameterized_landscape :
 #check hasPolyKernel
 #check FPT_iff_kernelizable
 #check FPT_eq_W1_breaks_ETH
-#check FPT_ne_W1_implies_P_ne_NP
 #check parameterized_landscape
 
 -- ============================================================
@@ -7370,30 +7340,6 @@ axiom abiteboul_vianu_PSPACE :
       (L ∈ PSPACE ↔ PFP_definable σ prop)
 
 /-! ### The Immerman-Szelepcsényi Theorem -/
-
-/-- **Immerman-Szelepcsényi Theorem** (1987): NL = coNL.
-
-    Nondeterministic logspace is closed under complementation.
-    This was a breakthrough result that resolved a major open question.
-
-    **Proof sketch** (Inductive counting):
-    To decide non-reachability in logspace, count reachable nodes at
-    each distance. Using the count from distance d, enumerate ALL
-    reachable-at-distance-d nodes to verify the count at distance d+1.
-    This "inductive counting" technique works in nondeterministic logspace.
-
-    **Significance**: This generalizes to NSPACE(s) = coNSPACE(s)
-    for s(n) ≥ log n. In descriptive complexity terms: FO + TC on
-    ordered structures is closed under complementation.
-
-    Note: Our full NL definition requires a space-bounded model. We state
-    this as a property relating to the TC logic characterization. -/
-axiom immerman_szelepcsenyi :
-    -- NL = coNL: nondeterministic logspace is closed under complementation.
-    -- In logic terms: FO + TC is closed under negation on ordered structures.
-    ∀ (σ : Vocabulary) (prop : StructureProperty σ),
-      TC_definable σ prop → TC_definable σ (fun A => ¬ prop A)
-
 /-! ### coNP and Universal Second-Order Logic -/
 
 /-! ### SO and the Polynomial Hierarchy -/
@@ -7512,7 +7458,6 @@ theorem descriptive_complexity_landscape :
 #check fagin_theorem
 #check immerman_vardi
 #check abiteboul_vianu_PSPACE
-#check immerman_szelepcsenyi
 #check P_eq_NP_descriptive
 #check gurevich_conjecture
 #check CPT_definable
@@ -8356,10 +8301,6 @@ def TC0 : Set Language :=
     (∀ n, (C n).size ≤ (n + 1)^p) ∧
     (∀ n, (C n).depth ≤ p) ∧
     (∀ n, L n = (C n).compute n) }
-
-/-- AC⁰ ⊊ TC⁰: MAJORITY separates them. -/
-axiom AC0_strict_subset_TC0 : AC0 ⊂ TC0
-
 /-- Whether TC⁰ = NC¹ is a major open problem.
     Separating them would be a breakthrough in circuit complexity. -/
 theorem TC0_vs_NC1_open : (1 : ℕ) + 1 = 2 := rfl
@@ -8390,13 +8331,6 @@ def ACC0 (m : Nat) : Set Language :=
 
 /-- ACC⁰ with any modulus: union over all m ≥ 2. -/
 def ACC0_all : Set Language := ⋃ m : { n : Nat // n ≥ 2 }, ACC0 m
-
-/-- AC⁰ ⊆ ACC⁰ for any modulus (AND/OR are special cases of counting). -/
-axiom AC0_subset_ACC0 : ∀ m ≥ 2, AC0 ⊆ ACC0 m
-
-/-- ACC⁰ ⊆ TC⁰ (modular counting reduces to threshold). -/
-axiom ACC0_subset_TC0 : ACC0_all ⊆ TC0
-
 /-! ### The Williams Breakthrough: NEXP ⊄ ACC⁰ -/
 
 /-- **Ryan Williams' Theorem (2014)**: NEXP ⊄ ACC⁰.
@@ -8617,14 +8551,11 @@ theorem circuit_bounds_connect_all :
 #check tardos_monotone_gap
 #check monotone_bounds_insufficient_for_PNP
 #check TC0
-#check AC0_strict_subset_TC0
 #check TC0_vs_NC1_open
 #check multiplication_in_TC0
 #check division_in_TC0
 #check ACC0
 #check ACC0_all
-#check AC0_subset_ACC0
-#check ACC0_subset_TC0
 #check williams_nexp_not_in_acc0
 #check AlgorithmicMethod
 #check williams_acc0_sat_algorithm
@@ -9220,26 +9151,6 @@ def WorstCaseHard (f : Nat → Bool) (s : Nat) : Prop :=
     XOR of independent copies amplifies hardness. -/
 def XORCopies (_f : Nat → Bool) (_k : Nat) : Nat → Bool :=
   fun _x => false  -- Abstract: XOR of k independent evaluations
-
-/-- **Yao's XOR Lemma (1982)**: Mild hardness amplifies under XOR.
-
-    If f : {0,1}ⁿ → {0,1} is (s, δ)-hard (no size-s circuit computes f
-    correctly on > (1-δ) fraction), then the XOR of O(1/δ) independent
-    copies of f is (s', 1/2 - 2^{-Ω(1/δ)})-average-case hard for
-    circuits of size s' = s · poly(δ).
-
-    In other words: if f is slightly hard, f⊕...⊕f is exponentially hard
-    (close to random).
-
-    This is foundational for:
-    - PRG construction (Nisan-Wigderson generator, Part 25)
-    - Cryptographic hardness amplification
-    - Worst-case to average-case reductions -/
-axiom yao_xor_lemma :
-  ∀ f : Nat → Bool, ∀ s δ : Nat,
-    MildlyHard f s δ →
-    AverageCaseHard (XORCopies f (δ + 1)) (s / 2) 1
-
 /-- Goldreich-Nisan-Wigderson (1993) gave a simpler proof of Yao's XOR
     Lemma using a hybrid argument.
 
@@ -9648,7 +9559,6 @@ theorem hardness_amplification_connects :
 #check AverageCaseHard
 #check WorstCaseHard
 #check XORCopies
-#check yao_xor_lemma
 #check gnw_xor_lemma_proof
 #check HardcoreBit
 #check InnerProductBit
@@ -10136,34 +10046,6 @@ theorem NL_subset_DSPACE_log_sq : (1 : ℕ) + 1 = 2 := rfl
   -- Abstract: follows from savitch_theorem applied to s = log n
 
 -- ### Immerman-Szelepcsényi Theorem (1987/1988)
-
-/-- **Immerman-Szelepcsényi Theorem (1987/1988)**:
-    NSPACE(s(n)) = coNSPACE(s(n)) for all s(n) ≥ log n.
-
-    **Proof idea (inductive counting)**:
-    To decide if a configuration is NOT reachable (the complement problem):
-    1. Count the exact number c_k of configurations reachable in ≤ k steps
-    2. Use c_k to verify that a configuration is NOT reachable in k+1 steps:
-       enumerate all reachable configs (verifying count = c_k), checking
-       that the target is not among them
-
-    The key insight: counting the reachable configurations can be done
-    nondeterministically in the same space, by incrementally building
-    the count c_1, c_2, ..., c_T where T = 2^O(s(n)).
-
-    **Why this doesn't work for time**:
-    The counting approach requires examining all 2^O(s(n)) configurations,
-    which takes exponential TIME even though it uses only polynomial SPACE.
-    For NP vs coNP, we can't afford to enumerate all witnesses.
-
-    **Significance**: This is one of the deepest results separating space
-    and time complexity. It shows nondeterministic space is fundamentally
-    better behaved than nondeterministic time. -/
-axiom immerman_szelepcsényi :
-  ∀ (s : Nat → Nat),
-    (∀ n, s n ≥ n.log2 + 1) →  -- s(n) ≥ log n
-    NSPACE s = coNSPACE s
-
 /-- The NL = coNL case is the most important special case.
     This is already stated as `NL_eq_coNL` in Part 21, but here
     we note it follows from the general Immerman-Szelepcsényi theorem. -/
@@ -10418,7 +10300,7 @@ theorem space_complexity_landscape :
 #check coNSPACE
 #check savitch_theorem
 #check NPSPACE_eq_PSPACE
-#check immerman_szelepcsényi
+
 #check STCONN
 #check STCONN_in_NL
 #check STCONN_NL_complete
@@ -12328,24 +12210,6 @@ polynomial-size circuits).
 This is astounding: a BARELY super-linear lower bound for one specific
 problem would resolve P vs NP relative to non-uniform computation!
 -/
-
-/-- **Hardness magnification for MCSP** (Oliveira-Santhanam 2018):
-
-    If MCSP[2^{√n}] requires circuits of size n^{1+ε} for any ε > 0,
-    then NP ⊄ P/poly.
-
-    The "magnification" is the gap between the hypothesis (n^{1+ε}, barely
-    super-linear) and the conclusion (super-polynomial for all of NP).
-
-    Proof sketch: Uses the connection between MCSP hardness and
-    pseudorandom generators. If MCSP is easy, one can distinguish
-    random strings from structured ones, breaking any PRG. -/
-axiom mcsp_magnification :
-    -- If MCSP requires slightly super-linear circuits...
-    (∃ ε : ℝ, ε > 0 ∧ True) →  -- MCSP[2^{√n}] ∉ SIZE(n^{1+ε})
-    -- ...then NP has no polynomial-size circuits
-    True  -- NP ⊄ P/poly
-
 /-- The magnification phenomenon extends to other computational models:
 
     | Problem | Lower Bound Needed | Conclusion |
@@ -12570,7 +12434,6 @@ end HardnessMagnification
 -- Part 50 exports
 #check MKtP
 #check MKtP_in_NP
-#check mcsp_magnification
 #check magnification_landscape
 #check barrier_trinity
 #check mcsp_intermediate_candidate
@@ -12664,24 +12527,6 @@ def sensitivity (f : Nat → Bool) (x : Nat) : Nat :=
     Nisan (1991): D(f) ≤ bs(f)² for total functions. -/
 def blockSensitivity (f : Nat → Bool) : Nat :=
   0  -- Placeholder
-
-/-- **Sensitivity Conjecture** (Huang 2019, proved):
-
-    For every Boolean function f on n variables:
-    s(f) ≥ √(bs(f))
-
-    Equivalently: sensitivity polynomially relates to all other
-    query complexity measures.
-
-    The proof uses a beautiful spectral argument on the Boolean
-    hypercube graph: the adjacency matrix of the n-dimensional
-    hypercube restricted to any > 2^{n-1} vertices has max
-    eigenvalue ≥ √n. -/
-axiom sensitivity_conjecture :
-    -- s(f)² ≥ bs(f) for all total Boolean functions
-    -- (abstracted: all query measures polynomially related)
-    True
-
 /-
 ### Karchmer-Wigderson Relations
 
@@ -12704,42 +12549,6 @@ structure KWRelation where
   f : Nat → Bool
   /-- The search protocol output: a differing coordinate -/
   findDifference : (x : Nat) → (y : Nat) → Nat
-
-/-- **Karchmer-Wigderson Theorem** (1990):
-
-    For any Boolean function f : {0,1}^n → {0,1}:
-    depth(f) = CC(KW_f)
-
-    where depth(f) is the minimum circuit depth computing f, and
-    CC(KW_f) is the communication complexity of the KW relation.
-
-    **Proof sketch:**
-    - Circuit → Protocol: Traverse the circuit top-down. At each gate,
-      one player can determine which child to recurse into.
-    - Protocol → Circuit: Each protocol transcript defines a rectangle
-      in the input space; these rectangles form a depth-CC(f) formula.
-
-    This theorem transformed circuit complexity into communication
-    complexity, providing new tools for lower bounds. -/
-axiom karchmer_wigderson_depth :
-    -- depth(f) = CC(KW_f)
-    -- Circuit depth equals communication complexity of KW relation
-    True
-
-/-- Monotone Karchmer-Wigderson:
-
-    For monotone f, restrict Alice to inputs in f^{-1}(1) and Bob to
-    inputs in f^{-1}(0), and require the output coordinate i to satisfy
-    x_i = 1, y_i = 0 (not just x_i ≠ y_i).
-
-    Then: monotone_depth(f) = CC(mono_KW_f)
-
-    This version connects to MONOTONE circuit depth, which is more
-    tractable for lower bounds (Razborov's method, Part 40). -/
-axiom monotone_kw :
-    -- monotone_depth(f) = CC(mono_KW_f)
-    True
-
 /-
 ### The Composition Framework
 
@@ -12790,51 +12599,6 @@ def composedFunction (f : Nat → Bool) (g : Gadget) (n : Nat) : TwoPartyFunctio
 /-
 ### Main Lifting Theorems
 -/
-
-/-- **Raz-McKenzie Lifting Theorem** (1999):
-
-    For the monotone KW relation and the index gadget g_m with m large enough:
-
-    CC(mono_KW_f ∘ g_m^n) ≥ Ω(D_mono(f))
-
-    where D_mono(f) is the monotone decision tree depth of f.
-
-    This was the FIRST lifting theorem, proving that composition with
-    the index gadget amplifies query complexity to communication complexity.
-
-    **Key application:** Proves exponential monotone circuit depth lower bounds
-    for the GEN function (generation of st-connectivity). -/
-axiom raz_mckenzie_simulation :
-    -- CC(KW_f ∘ g_m^n) ≥ Ω(D(f)) for monotone f with m = n^{O(1)}
-    -- The first simulation theorem
-    True
-
-/-- **Göös-Pitassi-Watson Lifting** (2017):
-
-    For ANY function f and the index gadget g_m with m ≥ n^4:
-
-    CC(f ∘ g_m^n) ≥ Ω(D(f) · log m)
-
-    This is a DETERMINISTIC lifting theorem that works for ALL functions,
-    not just monotone ones.
-
-    **Significance:** This opened the floodgates for lifting-based lower bounds
-    because D(f) is often much easier to analyze than CC(f ∘ g^n) directly. -/
-axiom gpw_deterministic_lifting :
-    -- CC(f ∘ g_m^n) ≥ Ω(D(f) · log m) for ANY f, with m ≥ n^4
-    True
-
-/-- **Chattopadhyay-Filmus-Koroth-Meir-Pitassi** (2019):
-
-    Lifting extends to RANDOMIZED query complexity:
-    R(f ∘ g^n) ≥ Ω(R(f) · CC(g))
-
-    This is the strongest form of lifting, connecting randomized query
-    and randomized communication complexity. -/
-axiom randomized_lifting :
-    -- R(f ∘ g^n) ≥ Ω(R(f) · CC(g))
-    True
-
 /-
 ### Applications of Lifting
 -/
@@ -12889,31 +12653,6 @@ theorem dag_communication_lower_bounds :
 theorem proof_complexity_via_lifting :
     -- Cutting planes, Nullstellensatz, resolution bounds via lifting
     (1 : ℕ) + 1 = 2 := rfl
-
-/-- **Application 4: The KRW Conjecture**
-
-    **Karchmer-Raz-Wigderson Conjecture** (1995):
-    For any two functions f and g:
-    depth(f ∘ g) ≈ depth(f) + depth(g)
-
-    If true, this would give P ≠ NC¹ !
-
-    **Proof sketch of implication:**
-    - Start with any P-complete function f (e.g., CVP)
-    - Consider f ∘ f ∘ ... ∘ f (t times)
-    - If KRW holds: depth(f^(t)) ≈ t · depth(f)
-    - But f^(t) is still in P (closure under composition)
-    - So P contains functions of depth t · depth(f) for any t
-    - P functions have at most polynomial depth
-    - This forces P ≠ NC¹ (since NC¹ = O(log n) depth)
-
-    Current status: NOT proved. Best results show
-    depth(f ∘ g) ≥ depth(f) + depth(g) - O(1) in some special cases. -/
-axiom krw_conjecture_statement :
-    -- depth(f ∘ g) ≥ depth(f) + depth(g) - O(1)
-    -- If true in full generality: P ≠ NC¹
-    True
-
 /-- The KRW conjecture would separate P from NC¹.
 
     This is remarkable because:
@@ -13074,20 +12813,13 @@ end LiftingTheorems
 #check certificateComplexity
 #check sensitivity
 #check blockSensitivity
-#check sensitivity_conjecture
 #check KWRelation
-#check karchmer_wigderson_depth
-#check monotone_kw
 #check Gadget
 #check indexGadget
 #check composedFunction
-#check raz_mckenzie_simulation
-#check gpw_deterministic_lifting
-#check randomized_lifting
 #check monotone_depth_via_lifting
 #check dag_communication_lower_bounds
 #check proof_complexity_via_lifting
-#check krw_conjecture_statement
 #check krw_implies_P_ne_NC1
 #check lifting_landscape
 #check lifting_limitations
@@ -13201,38 +12933,6 @@ def s_query (f : Fin n → Bool → Bool) : ℕ := n  -- Upper bound
 Before Huang's proof, all measures EXCEPT sensitivity were known to be
 polynomially related:
 -/
-
-/-- **Nisan's Theorem** (1991):
-
-    D(f) ≤ bs(f)³ · 2^{O(bs(f))}
-
-    Later improved to D(f) ≤ bs(f)² (Midrijānis 2004). -/
-axiom nisan_D_bs :
-    -- D(f) ≤ bs(f)² for all total Boolean functions f
-    True
-
-/-- **Nisan-Szegedy** (1992):
-
-    bs(f) ≤ deg(f)² and C(f) ≤ deg(f)²
-
-    This shows block sensitivity and certificate complexity are
-    polynomially bounded by real degree. -/
-axiom nisan_szegedy_bs_deg :
-    -- bs(f) ≤ deg(f)² for all total Boolean functions f
-    True
-
-/-- **Beals-Buhrman-Cleve-Mosca-de Wolf** (2001):
-
-    D(f) ≤ deg(f)²
-
-    Moreover, the QUANTUM query complexity Q(f) satisfies:
-    Q(f) = Θ(d̃eg(f))
-
-    So quantum query complexity is also polynomially related to the rest. -/
-axiom bbcmw_D_deg :
-    -- D(f) ≤ deg(f)² for all total Boolean functions f
-    True
-
 /-- **Pre-Huang Summary**: The "polynomial equivalence chain" (without s):
 
     D(f) ≤ bs(f)² ≤ deg(f)⁴
@@ -13251,40 +12951,6 @@ theorem pre_huang_polynomial_chain :
 /-
 ### Huang's Proof of the Sensitivity Conjecture
 -/
-
-/-- **The Gotsman-Linial Conjecture** (equivalent to Sensitivity Conjecture):
-
-    Every induced subgraph of the Boolean hypercube Q_n on more than
-    2^{n-1} vertices has maximum degree ≥ √n.
-
-    The Boolean hypercube Q_n has 2^n vertices (binary strings of length n)
-    where two vertices are connected iff they differ in exactly one bit.
-    The degree of every vertex is n. -/
-axiom gotsman_linial :
-    -- Every induced subgraph of Q_n on > 2^{n-1} vertices has max degree ≥ √n
-    -- (Equivalent to the Sensitivity Conjecture)
-    True
-
-/-- **Huang's Key Lemma** (2019):
-
-    Let A_n be the adjacency matrix of Q_n (2^n × 2^n matrix).
-    Define a signed version Ã_n by flipping the sign of certain edges.
-
-    Specifically, Ã_n is defined recursively:
-      Ã_1 = [[0, 1], [1, 0]]
-      Ã_{n+1} = [[Ã_n, I], [I, -Ã_n]]
-
-    Then Ã_n has eigenvalues exactly {√n, -√n}, each with
-    multiplicity 2^{n-1}.
-
-    **Why this works:**
-    Ã_n² = nI (can be verified by induction on n).
-    Therefore all eigenvalues satisfy λ² = n, giving λ = ±√n. -/
-axiom huang_signed_adjacency :
-    -- Ã_n has eigenvalues ±√n, each with multiplicity 2^{n-1}
-    -- where Ã_n² = nI (proved by induction)
-    True
-
 /-- **The matrix identity Ã_n² = nI is the heart of the proof.**
 
     Verify by induction:
@@ -13299,22 +12965,6 @@ theorem huang_matrix_squared :
     -- Base: Ã_1² = 1 · I_2
     -- Inductive: Ã_{n+1}² = (n+1) · I_{2^{n+1}}
     (1 : ℕ) + 1 = 2 := rfl
-
-/-- **Cauchy Interlacing Theorem** (key tool in Huang's proof):
-
-    If M is a real symmetric n×n matrix with eigenvalues
-    λ₁ ≥ λ₂ ≥ ... ≥ λₙ, and M' is a principal (n-k)×(n-k)
-    submatrix, with eigenvalues μ₁ ≥ μ₂ ≥ ... ≥ μ_{n-k}, then:
-
-    λᵢ ≥ μᵢ ≥ λ_{i+k}  for all i.
-
-    In particular, if M has ≥ (n-k+1) eigenvalues ≥ c,
-    then M' has at least 1 eigenvalue ≥ c. -/
-axiom cauchy_interlacing (n k : ℕ) (hk : k ≤ n) :
-    -- For any n×n symmetric matrix with (n-k+1) eigenvalues ≥ c,
-    -- any principal (n-k)×(n-k) submatrix has max eigenvalue ≥ c
-    True
-
 /-- **Huang's Proof** (the full argument):
 
     **Goal**: Every induced subgraph H of Q_n on > 2^{n-1} vertices
@@ -13341,25 +12991,6 @@ theorem huang_proof :
     -- has max degree ≥ √n
     -- Proof: Cauchy interlacing on signed adjacency matrix Ã_n
     (1 : ℕ) + 1 = 2 := rfl
-
-/-- **The Sensitivity Theorem** (Huang 2019):
-
-    For all total Boolean functions f : {0,1}^n → {0,1}:
-    s(f) ≥ √(bs(f))
-
-    Equivalently: bs(f) ≤ s(f)²
-
-    **Consequences:**
-    - s(f) is now polynomially related to ALL other query measures
-    - D(f) ≤ s(f)⁴ (via D ≤ bs² ≤ s⁴)
-    - deg(f) ≤ s(f)² (via deg ≤ bs ≤ s²)
-    - C(f) ≤ s(f)⁴ (via C ≤ D ≤ s⁴)
-    - Q(f) ≤ s(f)² (via Q = Θ(d̃eg) ≤ deg ≤ s²) -/
-axiom huang_sensitivity_theorem :
-    -- bs(f) ≤ s(f)² for all total Boolean functions f
-    -- Equivalently: s(f) ≥ √bs(f)
-    True
-
 /-
 ### The Complete Query Complexity Landscape
 -/
@@ -13416,36 +13047,6 @@ theorem rubinstein_tightness :
 
     Note: s(f) ≤ I(f) ≤ n (sensitivity ≤ total influence). -/
 def fourierCoefficient (f : Fin n → Bool → Bool) (S : Finset (Fin n)) : ℝ := 0
-
-/-- **KKL Theorem** (Kahn-Kalai-Linial, 1988):
-
-    For any balanced Boolean function f : {0,1}^n → {0,1}:
-    max_i Inf_i(f) ≥ Ω(log n / n)
-
-    where Inf_i(f) = Pr[f(x) ≠ f(x ⊕ eᵢ)] is the influence of bit i.
-
-    **Implication**: Every balanced Boolean function has at least one
-    "influential" bit — no function can spread its dependence too evenly.
-
-    **Connection to sensitivity**: Sensitivity counts the number of
-    influential bits at the worst-case input, while KKL gives a lower
-    bound on the maximum individual influence across all bits. -/
-axiom kkl_theorem :
-    -- max_i Inf_i(f) ≥ Ω(log n / n) for balanced f
-    True
-
-/-- **Friedgut's Junta Theorem** (1998):
-
-    If I(f) ≤ k (total influence at most k), then f is ε-close
-    to a k-junta (a function depending on at most 2^{O(k/ε)} variables).
-
-    **Significance**: Functions with low total influence are essentially
-    "simple" — they depend on few variables. Since sensitivity ≤ total
-    influence, low-sensitivity functions are close to juntas. -/
-axiom friedgut_junta :
-    -- Low total influence → function is close to a junta
-    True
-
 /-
 ### Connection to Circuit Complexity and Barriers
 -/
@@ -13527,21 +13128,12 @@ end SensitivityConjecture
 #check real_degree
 #check approx_degree
 #check s_query
-#check nisan_D_bs
-#check nisan_szegedy_bs_deg
-#check bbcmw_D_deg
 #check pre_huang_polynomial_chain
-#check gotsman_linial
-#check huang_signed_adjacency
 #check huang_matrix_squared
-#check cauchy_interlacing
 #check huang_proof
-#check huang_sensitivity_theorem
 #check query_complexity_polynomial_equivalence
 #check rubinstein_tightness
 #check fourierCoefficient
-#check kkl_theorem
-#check friedgut_junta
 #check sensitivity_to_depth
 #check sensitivity_significance
 #check aaronson_ambainis_conjecture
@@ -13594,26 +13186,6 @@ structure RandomRestriction where
   starProb : ℚ
   /-- Number of variables kept free (expected: starProb * numVars) -/
   freeVars : Nat
-
-/-- **Håstad's Switching Lemma** (1986):
-
-    Let f be computed by a depth-d, size-s circuit over AND, OR, NOT gates.
-    Let ρ be a random restriction keeping each variable free with probability p.
-
-    Then: Pr[f|_ρ cannot be computed by a decision tree of depth t]
-          ≤ (5ps)^t
-
-    **Key consequence:** If p = 1/(10s), then with high probability, f|_ρ
-    becomes a decision tree of depth O(log s). This means ONE layer of
-    AND/OR gates is "killed" by the restriction.
-
-    Apply d times: After d rounds of restrictions with appropriate p,
-    a depth-d circuit collapses to a constant with high probability. -/
-axiom hastad_switching_lemma (s t : ℕ) (p : ℚ) :
-    -- Pr[f|_ρ needs decision tree depth > t] ≤ (5ps)^t
-    -- for any DNF/CNF of size s, with restriction keeping prob p
-    True
-
 /-- **Immediate corollary**: PARITY ∉ AC⁰.
 
     Proof via switching lemma:
@@ -13629,69 +13201,9 @@ theorem parity_not_AC0_via_switching :
     -- PARITY ∉ AC⁰ follows from the switching lemma
     -- This reproves the Furst-Saxe-Sipser / Ajtai result with tight bounds
     (1 : ℕ) + 1 = 2 := rfl
-
-/-- **Tight AC⁰ bounds** (Håstad 1989):
-
-    For PARITY on n bits:
-    - Depth d circuits require size 2^{Ω(n^{1/(d-1)})}
-    - This is TIGHT: PARITY has depth-d circuits of size 2^{O(n^{1/(d-1)})}
-
-    For k-CLIQUE on n-vertex graphs:
-    - Depth d circuits require size 2^{Ω(n^{1/4(d-1)})} (Rossman 2008)
-
-    These are the strongest known circuit lower bounds of ANY kind! -/
-axiom hastad_tight_AC0 :
-    -- PARITY requires size 2^{Ω(n^{1/(d-1)})} for depth d
-    -- This is tight
-    True
-
 /-
 ### The Polynomial Method Proper: Razborov-Smolensky
 -/
-
-/-- **Polynomial approximation of circuits over F_p**
-
-    Key idea: Every AC⁰[p] circuit of depth d and size s can be
-    approximated by a polynomial over F_p of degree O((log s)^{d-1}).
-
-    Specifically, for each gate:
-    - OR(x₁,...,xₖ) ≈ 1 - (1-x₁)(1-x₂)...(1-xₖ) (degree k)
-    - AND(x₁,...,xₖ) ≈ x₁·x₂·...·xₖ (degree k)
-    - MOD_p(x₁,...,xₖ) ≈ 1 - (x₁+...+xₖ)^{p-1} (by Fermat, degree p-1)
-    - NOT(x) = 1 - x (degree 1)
-
-    The composition of d layers gives degree ≤ p^d · (log s)^{O(1)}.
-
-    But we need PROBABILISTIC approximation: each gate is correct with
-    high probability, and union bound over all gates. -/
-axiom razborov_smolensky_approximation (d s : ℕ) (p : ℕ) (hp : Nat.Prime p) :
-    -- AC⁰[p] circuits of depth d, size s
-    -- can be ε-approximated by polynomials over F_p
-    -- of degree O(p^d · (log s)^{d-1})
-    True
-
-/-- **Razborov-Smolensky Theorem** (1987/1993):
-
-    MOD_q ∉ AC⁰[p] for primes p, q with p ≠ q.
-
-    In particular: PARITY (= MOD_2) ∉ AC⁰[p] for any odd prime p.
-
-    **Proof sketch:**
-    1. Suppose MOD_q has AC⁰[p] circuits of depth d, poly size s = n^c.
-    2. By Razborov-Smolensky, approximate by F_p polynomial of degree
-       D = O(p^d · (c log n)^{d-1}).
-    3. But MOD_q restricted to the hyperplane Σxᵢ = kq (for any k)
-       outputs 1, while on Σxᵢ = kq+1 it outputs 0.
-    4. Any F_p polynomial agreeing with MOD_q on {0,1}^n must have
-       degree ≥ n (by the Chevalley-Warning theorem / Lucas' theorem).
-    5. For n large enough, D < n: contradiction!
-
-    The key algebraic fact: MOD_q and MOD_p are "orthogonal" over F_p. -/
-axiom razborov_smolensky_separation (p q : ℕ) (hp : Nat.Prime p) (hq : Nat.Prime q)
-    (hpq : p ≠ q) :
-    -- MOD_q ∉ AC⁰[p]
-    True
-
 /-- **Concrete instance**: PARITY ∉ AC⁰[3].
 
     PARITY = MOD_2, and 2 ≠ 3, so Razborov-Smolensky applies.
@@ -13763,48 +13275,6 @@ theorem tc0_barrier :
 /-
 ### Degree Lower Bounds
 -/
-
-/-- **Razborov's degree lower bound** (1987):
-
-    MAJORITY requires degree Ω(√n) over F_2.
-
-    Proof: Uses the "method of approximations" (a precursor to the
-    polynomial method). The key idea: low-degree F_2 polynomials cannot
-    approximate MAJORITY because MAJORITY has too many "sign changes." -/
-axiom razborov_majority_degree :
-    -- deg_{F_2}(MAJORITY) ≥ Ω(√n)
-    True
-
-/-- **Minsky-Papert Theorem** (1969):
-
-    The AND of all pairs (conjunction) requires degree n to
-    approximate by a polynomial threshold function.
-
-    More precisely: for the function AND(x₁,...,xₙ):
-    any polynomial p(x) that sign-represents AND on {0,1}^n
-    (i.e., AND(x) = sgn(p(x))) must have degree n.
-
-    This was the original "polynomial method" result, predating
-    the AC⁰ applications by 15 years! -/
-axiom minsky_papert :
-    -- Polynomial threshold degree of AND is n
-    True
-
-/-- **Chevalley-Warning Theorem** (algebraic foundation):
-
-    Let F be a finite field of characteristic p. If f₁,...,fₖ ∈ F[x₁,...,xₙ]
-    with Σ deg(fᵢ) < n, then:
-    |{x ∈ Fⁿ : f₁(x) = ... = fₖ(x) = 0}| ≡ 0 (mod p)
-
-    This is the algebraic core of why the polynomial method works:
-    low-degree polynomials over finite fields have "nice" zero-set structure,
-    and Boolean functions that violate this structure (like MOD_q for q ≠ p)
-    cannot be low-degree. -/
-axiom chevalley_warning :
-    -- |V(f₁,...,fₖ) ∩ F^n| ≡ 0 (mod p) when Σdeg(fᵢ) < n
-    -- For finite field F of characteristic p
-    True
-
 /-
 ### Modern Extensions
 -/
@@ -13903,18 +13373,11 @@ end PolynomialMethod
 
 -- Part 53 exports
 #check RandomRestriction
-#check hastad_switching_lemma
 #check parity_not_AC0_via_switching
-#check hastad_tight_AC0
-#check razborov_smolensky_approximation
-#check razborov_smolensky_separation
 #check parity_not_AC0_mod3
 #check mod3_not_AC0_mod2
 #check polynomial_method_fails_for_ACC0
 #check tc0_barrier
-#check razborov_majority_degree
-#check minsky_papert
-#check chevalley_warning
 #check polynomial_method_combinatorics
 #check smolensky_open_problem
 #check polynomial_method_and_natural_proofs
@@ -13971,24 +13434,6 @@ def matrixRigidity (n r : ℕ) : ℕ :=
     The interesting regime is r = εn for small ε. -/
 theorem rigidity_trivial_bounds (n r : ℕ) (hr : r ≤ n) :
     matrixRigidity n r ≤ (n - r) * (n - r) := Nat.le_refl _
-
-/-- **Valiant's Rigidity Theorem** (1977):
-
-    If an n×n matrix M satisfies R_M(εn) ≥ n^{1+δ} for constants ε, δ > 0,
-    then computing x ↦ Mx requires:
-    - Ω(n log n) wires in a linear circuit, OR
-    - Depth Ω(log n · log log n) in a bounded fan-in circuit
-
-    In either case: super-linear size OR super-logarithmic depth.
-
-    **Significance**: This would give lower bounds for LOG-DEPTH LINEAR
-    circuits, which corresponds to a separation between L and P
-    (since log-depth linear circuits capture some aspect of log-space). -/
-axiom valiant_rigidity_theorem :
-    -- R_M(εn) ≥ n^{1+δ} → computing Mx requires Ω(n log n) wires
-    -- or super-logarithmic depth
-    True
-
 /-- **What rigidity would give us** (if we found a rigid explicit matrix):
 
     1. **Super-linear circuit lower bound**: First explicit function
@@ -14055,47 +13500,6 @@ theorem random_matrices_are_rigid :
 /-
 ### The Rigidity Barrier: Failure of Candidates
 -/
-
-/-- **Alman-Williams (2017)**:
-
-    The Walsh-Hadamard matrix over F_2 is NOT rigid:
-    R_{WH}(εn) ≤ O(n^{2-δ}) for some δ > 0.
-
-    This means: you can change a subquadratic number of entries of the
-    Walsh-Hadamard matrix to drop its rank to εn.
-
-    **Method**: Uses a clever algebraic decomposition based on the
-    recursive structure of the Walsh-Hadamard matrix (Kronecker product).
-
-    **Impact**: Destroyed the primary candidate for Valiant's program.
-    The DFT matrix, which was Valiant's original suggestion, turns out
-    to be insufficiently rigid. -/
-axiom alman_williams_non_rigidity :
-    -- Walsh-Hadamard / DFT matrix over F_2 has
-    -- R(εn) ≤ O(n^{2-δ}) for some δ > 0
-    -- This is BELOW the n^{1+δ} threshold needed
-    True
-
-/-- **Dvir-Liu (2019)**:
-
-    Extended the non-rigidity result to a wide class of matrices:
-    Any matrix M that has an "efficient" algebraic description
-    (e.g., polynomial evaluation matrices, Toeplitz matrices)
-    satisfies R_M(εn) ≤ O(n^{2-δ}).
-
-    This means: essentially ALL "natural" algebraic matrices are non-rigid!
-
-    **Implication**: To use Valiant's approach, we need matrices that are:
-    1. Explicit (efficiently computable)
-    2. Rigid (R(εn) ≥ n^{1+δ})
-    3. NOT given by simple algebraic formulas
-
-    This is a severe constraint — the most natural candidates fail. -/
-axiom dvir_liu_non_rigidity :
-    -- A wide class of algebraically defined matrices are non-rigid
-    -- Including polynomial evaluation, Toeplitz, Vandermonde-like
-    True
-
 /-- **The current state of matrix rigidity** (post-2017):
 
     1. NO known explicit matrix with R(εn) ≥ n^{1+δ}
@@ -14203,13 +13607,10 @@ end MatrixRigidity
 -- Part 54 exports
 #check matrixRigidity
 #check rigidity_trivial_bounds
-#check valiant_rigidity_theorem
 #check rigidity_consequences
 #check DFTMatrix
 #check HadamardMatrix
 #check random_matrices_are_rigid
-#check alman_williams_non_rigidity
-#check dvir_liu_non_rigidity
 #check rigidity_current_state
 #check rigidity_and_natural_proofs
 #check rigidity_and_algebraic_complexity
@@ -14959,7 +14360,6 @@ theorem meta_complexity_unifies_barriers :
 #check TimeBoundedKolmogorov             -- PROVED: K^t(x) definition
 #check liu_pass_owf_kolmogorov           -- Liu-Pass: OWFs ↔ K^t hard
 #check natural_proofs_iff_kt_hard        -- PROVED: NP barrier ↔ K^t hard
-#check mcsp_magnification                -- Magnification phenomenon
 #check meta_complexity_bypasses_barriers -- PROVED: bypasses all 3 barriers
 #check MKTP                              -- PROVED: Min K^t problem
 #check mcsp_reduces_to_mktp              -- PROVED: MCSP_class ≤ MKTP
@@ -16892,44 +16292,6 @@ theorem bell_theorem_operational :
     -- Entanglement is a computational resource
     (1 : ℕ) + 1 = 2 := rfl
 
-/-- Classical MIP = NEXP (Babai-Fortnow-Lund 1991).
-
-    Multi-prover interactive proofs with classical (unentangled) provers
-    characterize nondeterministic exponential time.
-
-    Key ideas:
-    - Two provers can be "cross-examined" (checked for consistency)
-    - The verifier can embed exponential computation into
-      polynomial-size questions by leveraging prover isolation
-    - Sum-check protocol adapted for multi-prover setting
-
-    Already formalized in Part 16. Restated here for comparison. -/
-axiom classical_MIP_eq_NEXP : MIP = NEXP
-
-/-- MIP* = RE (Ji-Natarajan-Vidick-Wright-Yuen 2020).
-
-    Multi-prover interactive proofs where provers share quantum
-    entanglement can decide EXACTLY the recursively enumerable languages.
-
-    RE contains undecidable problems (like the halting problem)!
-    So entangled provers can convince a polynomial-time verifier of
-    statements that no algorithm can decide.
-
-    The proof has three key components:
-    1. **Quantum low-degree testing**: Tests that prover measurements
-       correspond to evaluations of a low-degree polynomial
-    2. **Compression theorem**: Reduces the number of rounds while
-       preserving soundness (using self-testing)
-    3. **Recursive compression**: Iterates compression to get from
-       NEEXP to RE (the key innovation)
-
-    Implications:
-    - RE ⊋ NEXP, so MIP* ⊋ MIP (entanglement adds infinite power)
-    - The halting problem has an MIP* protocol!
-    - Connes Embedding Problem is false
-    - Tsirelson's problem has negative answer -/
-axiom MIP_star_eq_RE : Prop  -- MIP* = RE
-
 /-- MIP* ⊋ MIP: entanglement strictly increases the power of
     multi-prover interactive proofs.
 
@@ -16949,49 +16311,6 @@ theorem entanglement_strictly_increases_MIP :
     -- but RE ⊋ NEXP (RE contains undecidable problems)
     -- So MIP* ⊋ MIP: the largest known quantum advantage
     (1 : ℕ) + 1 = 2 := rfl
-
-/-- The Connes Embedding Problem (1976).
-
-    Connes asked: Is every separable II₁ factor embeddable into an
-    ultrapower of the hyperfinite II₁ factor R?
-
-    Equivalently: Can every tracial von Neumann algebra be approximated
-    by matrix algebras?
-
-    The MIP* = RE theorem implies the answer is NO.
-
-    The connection (Kirchberg, Ozawa):
-    - Connes Embedding ⟺ certain quantum correlations can be
-      approximated by finite-dimensional quantum systems
-    - If Connes Embedding were true: ω*(G) = ω^{co}(G) for all games
-    - But MIP* = RE implies ω*(G) ≠ ω^{co}(G) for some games
-    - Therefore Connes Embedding is FALSE
-
-    This resolved a 44-year-old open problem in operator algebra
-    using computational complexity! -/
-axiom connes_embedding_false : Prop  -- ¬ Connes Embedding Conjecture
-
-/-- Tsirelson's problem (1993).
-
-    Tsirelson asked: For nonlocal games, does the quantum value
-    (tensor product model) equal the commuting operator value?
-
-    ω*(G) =? ω^{co}(G) for all games G
-
-    The answer is NO (consequence of MIP* = RE).
-
-    Proof sketch:
-    - If ω* = ω^{co} always, then the set of quantum correlations
-      is closed (it equals the commuting operator correlations, which
-      form a closed set)
-    - But MIP* = RE implies the set of quantum correlations achieving
-      perfect value is not recursively enumerable from above
-    - This contradicts closure, so ω* ≠ ω^{co} for some game
-
-    Connection to Connes: Tsirelson's problem is equivalent to
-    the Connes Embedding Problem (Kirchberg 1993, Ozawa 2004). -/
-axiom tsirelson_negative : Prop  -- ∃ G, ω*(G) ≠ ω^{co}(G)
-
 /-- The quantum value is uncomputable.
 
     A direct consequence of MIP* = RE:
@@ -17032,28 +16351,6 @@ theorem self_testing_technique :
     -- Pauli braiding test self-tests n EPR pairs
     -- Key ingredient in MIP* = RE proof
     (1 : ℕ) + 1 = 2 := rfl
-
-/-- Quantum PCP conjecture.
-
-    Classical PCP theorem (Part 18): NP = PCP(log n, O(1))
-    — NP proofs can be verified by reading O(1) random bits.
-
-    Quantum PCP conjecture: QMA proofs can be verified by checking
-    O(1) local terms of a Hamiltonian.
-
-    Equivalently: approximating the ground state energy of a local
-    Hamiltonian is QMA-hard even with inverse polynomial precision.
-
-    Status: OPEN. Major open problem in quantum complexity.
-
-    Connections:
-    - MIP* = RE uses quantum PCP-like techniques (low-degree testing)
-    - A quantum PCP theorem would have implications for quantum error
-      correction and topological order
-    - Quantum PCP is harder than classical PCP because quantum proofs
-      are fragile (measurement disturbs the state) -/
-axiom quantum_pcp_conjecture : Prop  -- QPCP: QMA-hard to approximate local Hamiltonians
-
 /-- QMA: Quantum Merlin-Arthur (the quantum analogue of NP).
 
     A language L is in QMA if there exists a polynomial-time quantum
@@ -17070,22 +16367,6 @@ axiom quantum_pcp_conjecture : Prop  -- QPCP: QMA-hard to approximate local Hami
     the quantum analogue of the fundamental complexity question. -/
 def QMA : Set Language :=
   { L | True }  -- Abstract: languages with efficient quantum verification
-
-/-- QMA-completeness of Local Hamiltonian (Kitaev 1999).
-
-    The Local Hamiltonian problem: Given a k-local Hamiltonian H
-    on n qubits and thresholds a < b, decide if the ground state
-    energy is ≤ a (YES) or ≥ b (NO).
-
-    This is the quantum analogue of Cook-Levin theorem:
-    - Cook-Levin: SAT is NP-complete
-    - Kitaev: Local Hamiltonian is QMA-complete
-
-    The proof uses the quantum Cook-Levin construction:
-    encode the history of a quantum computation as a ground state
-    of a local Hamiltonian (Feynman's clock construction). -/
-axiom local_hamiltonian_QMA_complete : Prop  -- k-LH is QMA-complete for k ≥ 2
-
 /-- The class RE (recursively enumerable languages).
 
     RE = { L | ∃ Turing machine M, ∀ x, x ∈ L ⟺ M halts on x }
@@ -17295,10 +16576,6 @@ end MIPStar
 #check MIPStar.NonlocalGame
 #check MIPStar.CHSH
 #check MIPStar.bell_theorem_operational
-#check MIPStar.classical_MIP_eq_NEXP
-#check MIPStar.MIP_star_eq_RE
-#check MIPStar.connes_embedding_false
-#check MIPStar.tsirelson_negative
 #check MIPStar.quantum_value_uncomputable
 #check MIPStar.interactive_proof_landscape
 #check MIPStar.mip_star_and_barriers
@@ -17380,50 +16657,6 @@ structure SNARG where
   proofSize : Nat → Nat
   /-- Verification time -/
   verificationTime : Nat → Nat
-
-/-- SNARGs for NP from standard assumptions.
-
-    Under the Learning with Errors (LWE) assumption:
-    - SNARGs for NP exist with proof size poly(λ, log |C|)
-      where λ is security parameter and |C| is circuit size
-    - Verification time is poly(λ, |x|, log |C|)
-
-    The Micali construction (1994) gives SNARGs from random oracles.
-    Post-quantum SNARGs require lattice-based assumptions.
-
-    Connection to P vs NP:
-    - SNARGs compress NP witnesses: if P = NP, proofs would be trivial
-    - The existence of SNARGs is evidence that NP ≠ P (why compress
-      if you could just recompute?)
-    - But formally, SNARGs exist even if P = NP (they'd just be less useful) -/
-axiom snargs_for_NP_from_LWE : Prop  -- SNARGs for NP under LWE
-
-/-- SNARGs for P from LWE (Kalai-Lombardi-Vaikuntanathan 2023).
-
-    A breakthrough: succinct delegation of polynomial-time computation!
-
-    Given a deterministic computation T(x) running in time t:
-    - Prover produces proof π of size poly(λ, log t)
-    - Verifier checks in time poly(λ, |x|, log t)
-
-    This is remarkable: the verifier runs in time poly-logarithmic
-    in the computation time! It can verify a computation without
-    re-running it.
-
-    Implication: a weak device can verify computations of a powerful
-    server, with cryptographic guarantees.
-
-    The construction uses:
-    1. Somewhere-extractable hash functions
-    2. Batch arguments for NP (BARGs)
-    3. Recursive composition
-
-    Connection to P vs NP:
-    - This gives "proof of work" for P-time computations
-    - The verifier-prover gap mirrors the NP structure (easy to verify,
-      hard to compute) but now within P itself! -/
-axiom snargsForP_from_LWE : Prop  -- Delegating P-time computation
-
 /-- The Fiat-Shamir heuristic and its analysis.
 
     The Fiat-Shamir transform converts interactive proofs to
@@ -17563,8 +16796,6 @@ end VerifiableComputation
 -- Part 64 exports (Verifiable Computation)
 #check VerifiableComputation.IOP
 #check VerifiableComputation.SNARG
-#check VerifiableComputation.snargs_for_NP_from_LWE
-#check VerifiableComputation.snargsForP_from_LWE
 #check VerifiableComputation.fiat_shamir_and_barriers
 #check VerifiableComputation.sumcheck_foundation
 #check VerifiableComputation.proof_compression_hierarchy
@@ -17626,32 +16857,6 @@ namespace QuantumSupremacy
     though factoring might be in BPP (unlikely but not disproven). -/
 def ExtendedChurchTuring : Prop :=
   BQP ⊆ BPP  -- BQP ⊆ BPP would mean quantum gives no speedup
-
-/-- Boson Sampling (Aaronson-Arkhipov 2011).
-
-    Problem: Sample from the output distribution of n identical
-    photons passing through an m-mode linear optical network
-    (described by an m×m unitary matrix U).
-
-    The output probabilities involve |Perm(A)|² where A is an
-    n×n submatrix of U. Since computing the permanent is #P-hard
-    (Valiant 1979), exactly simulating this classically is hard.
-
-    Theorem (Aaronson-Arkhipov):
-    If a classical computer can sample from the Boson Sampling
-    distribution in polynomial time, then PH collapses to the
-    third level (Σ₃).
-
-    This is the strongest known evidence for quantum supremacy
-    in a restricted model, because:
-    - Boson sampling is a natural physical process
-    - The hardness reduction goes through the permanent
-    - PH collapse is considered very unlikely -/
-axiom boson_sampling_hardness :
-    -- Classical simulation of Boson Sampling → PH collapses to Σ₃
-    -- Connects to #P-hardness of permanent (Valiant)
-    Prop
-
 /-- The permanent and quantum sampling.
 
     The permanent connects three areas:
@@ -17704,30 +16909,6 @@ theorem random_circuit_sampling :
     -- Classical algorithms have improved but asymptotic argument holds
     -- Hardness based on #P-hardness of output probabilities
     (1 : ℕ) + 1 = 2 := rfl
-
-/-- IQP circuits and collapse of PH.
-
-    IQP (Instantaneous Quantum Polytime):
-    - Apply diagonal gates (commuting) then measure all qubits
-    - Strictly weaker than BQP (no adaptive measurements)
-
-    Theorem (Bremner-Jozsa-Shepherd 2011):
-    If the output distribution of IQP circuits can be sampled
-    classically in polynomial time (even approximately), then
-    the polynomial hierarchy collapses to the third level.
-
-    Significance: even a very restricted model of quantum
-    computation (commuting gates only!) is classically hard to
-    simulate, under PH non-collapse assumptions.
-
-    This strengthens the case against the Extended Church-Turing
-    Thesis: you don't even need "full" quantum computing. -/
-axiom iqp_hardness :
-    -- IQP simulation → PH collapse to Σ₃
-    -- IQP: commuting gates only (weaker than BQP)
-    -- Even restricted quantum models are hard to simulate
-    Prop
-
 /-- Quantum advantage vs quantum supremacy.
 
     | Term | Meaning | Status |
@@ -17748,53 +16929,6 @@ theorem quantum_supremacy_vs_pvsnp :
     -- Shor: factoring ∈ BQP (may or may not be in P)
     -- Quantum doesn't solve NP in general (NP ⊄ BQP believed)
     (1 : ℕ) + 1 = 2 := rfl
-
-/-- BQP and the polynomial hierarchy.
-
-    Key structural results about BQP:
-
-    1. BQP ⊆ PP (Adleman-DeMarrais-Huang 1997)
-       - Quantum can be simulated by counting
-    2. BQP ⊆ AWPP (Fortnow-Rogers 1999)
-       - AWPP: Almost-Wide PP
-    3. BQP is not contained in PH relative to an oracle (Raz-Tal 2019)
-       - There exists an oracle O: BQP^O ⊄ PH^O
-       - This is evidence that BQP is "incomparable" with PH
-
-    The Raz-Tal result (2019) is significant for barriers:
-    - Relative to oracle O, BQP is not in PH
-    - This shows quantum power is "orthogonal" to PH structure
-    - Relates to the forrelation problem: quantum can solve it
-      but PH cannot (relative to an oracle) -/
-axiom raz_tal_oracle_separation :
-    -- ∃ oracle O: BQP^O ⊄ PH^O (Raz-Tal 2019)
-    -- Forrelation: BQP can solve, PH^O cannot
-    -- BQP is "orthogonal" to PH structure
-    Prop
-
-/-- Quantum error correction and fault tolerance.
-
-    The threshold theorem (Aharonov-Ben-Or, Knill-Laflamme-Zurek):
-    If physical error rate per gate is below a threshold p* > 0,
-    then any quantum computation can be made fault-tolerant with
-    only polylogarithmic overhead.
-
-    Implications for complexity:
-    - Fault-tolerant BQP = BQP (error correction doesn't change the class)
-    - But it's essential for practical quantum supremacy
-    - Without fault tolerance, noise drowns out quantum advantage
-
-    Connection to barriers:
-    - The threshold theorem is NON-relativizing (uses specific
-      structure of quantum error correcting codes)
-    - It shows that quantum advantage is robust, not fragile
-    - This strengthens the case against ECT -/
-axiom fault_tolerance_threshold :
-    -- Threshold theorem: ∃ p* > 0, error rate < p* → fault-tolerant QC
-    -- Fault-tolerant BQP = BQP (class is robust)
-    -- Non-relativizing proof (uses code structure)
-    Prop
-
 /-- Summary of Part 65: Key results formalized
 
     New axioms (4):
@@ -17817,13 +16951,9 @@ end QuantumSupremacy
 
 -- Part 65 exports (Quantum Supremacy)
 #check QuantumSupremacy.ExtendedChurchTuring
-#check QuantumSupremacy.boson_sampling_hardness
 #check QuantumSupremacy.permanent_nexus
 #check QuantumSupremacy.random_circuit_sampling
-#check QuantumSupremacy.iqp_hardness
 #check QuantumSupremacy.quantum_supremacy_vs_pvsnp
-#check QuantumSupremacy.raz_tal_oracle_separation
-#check QuantumSupremacy.fault_tolerance_threshold
 
 -- ============================================================
 /-
@@ -17885,57 +17015,6 @@ structure SoSRelaxation where
   degree : Nat
   /-- Number of optimization variables -/
   numVars : Nat
-
-/-- SoS captures known algorithms for planted clique.
-
-    The planted clique problem: In G(n, 1/2) with a planted
-    k-clique, find the clique.
-
-    | Algorithm | Clique size k | Time |
-    |-----------|--------------|------|
-    | Spectral | k ≥ √n | poly(n) |
-    | SoS deg d | k ≥ n^{1/2 - δ(d)} | n^{O(d)} |
-    | Best known | k ≥ √n | poly(n) |
-
-    The √n barrier for planted clique is one of the most important
-    open problems in average-case complexity:
-    - No polynomial-time algorithm finds k-cliques for k = o(√n)
-    - SoS lower bound: degree Ω(log n) SoS fails for k = O(n^{1/2-ε})
-    - This gives evidence that √n is a genuine barrier
-
-    Planted clique hardness is assumed in:
-    - Financial mathematics (detecting correlations in markets)
-    - Cryptography (lattice-based constructions)
-    - Statistics (testing vs detection gaps) -/
-axiom sos_planted_clique_lb :
-    -- SoS degree O(log n) fails for planted clique k = O(n^{1/2-ε})
-    -- Evidence for √n barrier
-    Prop
-
-/-- SoS and constraint satisfaction (CSPs).
-
-    For random k-CSPs on n variables with m clauses:
-
-    Theorem (Schoenebeck 2008): Degree Ω(n) SoS cannot refute
-    random 3-XOR with m = O(n) clauses (even though m = O(n^{3/2})
-    clauses suffice for spectral refutation).
-
-    This is a LINEAR SoS lower bound — the strongest possible!
-
-    Implications:
-    - No polynomial-time algorithm (captured by SoS) can refute
-      random 3-XOR with linear clauses
-    - Evidence for the "dense vs sparse" gap in CSP hardness
-    - Connects to the unique games conjecture via SoS rounding
-
-    For MAX-CUT: SoS degree 2 achieves the Goemans-Williamson
-    ratio 0.878... Improving this would refute the Unique Games
-    Conjecture (Raghavendra 2008). -/
-axiom sos_csp_lower_bounds :
-    -- Degree Ω(n) SoS fails for random 3-XOR with m = O(n) clauses
-    -- Linear SoS lower bound (strongest possible)
-    Prop
-
 /-- SoS and proof complexity.
 
     Deep connection between SoS and propositional proof systems:
@@ -17962,52 +17041,6 @@ theorem sos_and_proof_complexity :
     -- SoS lower bounds → proof complexity lower bounds
     -- SA ⊆ LS+ ⊆ SoS (strict hierarchy)
     (1 : ℕ) + 1 = 2 := rfl
-
-/-- The Unique Games Conjecture (UGC) and SoS.
-
-    Khot (2002): The Unique Games Problem is NP-hard to approximate
-    within any constant factor.
-
-    The UGC has been called the "PCP theorem version 2.0":
-    - PCP theorem: NP-hardness of approximation for MAX-3SAT
-    - UGC: optimal inapproximability for many problems
-      (Vertex Cover, MAX-CUT, Sparsest Cut, ...)
-
-    SoS and UGC:
-    - Raghavendra (2008): for any CSP, SoS achieves the optimal
-      approximation ratio (matching the UGC prediction)
-    - If UGC is true: SoS is OPTIMAL for all CSPs
-    - If UGC is false: there exist better algorithms than SoS
-
-    Recent progress:
-    - Khot-Minzer-Safra (2018): UGC holds for 2-to-2 games
-    - Full UGC remains open -/
-axiom unique_games_conjecture :
-    -- UGC: Unique Games is NP-hard to approximate
-    -- Implies optimal inapproximability for many problems
-    Prop
-
-/-- Raghavendra's theorem: SoS is optimal for CSPs (assuming UGC).
-
-    Theorem (Raghavendra 2008): Assuming the UGC, for every
-    constraint satisfaction problem Π:
-
-    sup_{SoS alg} {ratio(SoS)} = inf_{NP-hard instances} {opt/approx}
-
-    In words: the best SoS algorithm achieves exactly the hardness
-    threshold predicted by the UGC. No polynomial-time algorithm
-    can do better (under UGC), and SoS matches this limit.
-
-    This is remarkable: a SINGLE algorithmic paradigm (SoS) is
-    optimal for ALL CSPs. It means:
-    - SoS captures the "right" relaxation for optimization
-    - To beat SoS, you need to refute the UGC
-    - SoS is the "canonical" polynomial-time algorithm -/
-axiom raghavendra_theorem :
-    -- UGC → SoS optimal for all CSPs
-    -- SoS ratio = NP-hardness threshold
-    Prop
-
 /-- SoS and barriers to P vs NP.
 
     Why SoS matters for the P vs NP question:
@@ -18060,11 +17093,7 @@ end SumOfSquares
 
 -- Part 66 exports (Sum-of-Squares)
 #check SumOfSquares.SoSRelaxation
-#check SumOfSquares.sos_planted_clique_lb
-#check SumOfSquares.sos_csp_lower_bounds
 #check SumOfSquares.sos_and_proof_complexity
-#check SumOfSquares.unique_games_conjecture
-#check SumOfSquares.raghavendra_theorem
 #check SumOfSquares.sos_and_pvsnp_barriers
 
 -- ============================================================
@@ -18322,21 +17351,6 @@ theorem CLS_subset_PLS : CLS ⊆ PLS := by
   simp only [CLS, Set.mem_setOf_eq] at hS
   simp only [PLS, Set.mem_setOf_eq]
   exact hS
-
-/-- CLS = EOPL = PPAD ∩ PLS (Fearnley-Goldberg-Hollender-Savani 2021).
-
-    This resolved the TFNP structure question:
-    - CLS was defined via continuous Brouwer + potential functions
-    - EOPL was defined as the formal intersection PPAD ∩ PLS
-    - They proved CLS = EOPL, showing the continuous definition
-      exactly captures the intersection of parity + potential
-
-    The proof introduces the "unique end of potential line" problem
-    and shows it characterizes both CLS and PPAD ∩ PLS.
-
-    This is one of the most important structural results in TFNP. -/
-axiom cls_eq_eopl : CLS = EOPL
-
 /-- TFNP subclass hierarchy.
 
     The full picture:
@@ -18381,135 +17395,9 @@ structure NashEquilibriumProblem where
   numPlayers : Nat
   /-- Number of strategies per player -/
   numStrategies : Nat
-
-/-- Nash's theorem: every finite game has a mixed Nash equilibrium.
-
-    The original proof uses Brouwer's fixed point theorem:
-    - Define a continuous map on the space of mixed strategy profiles
-    - The map adjusts strategies toward better responses
-    - By Brouwer, this map has a fixed point
-    - A fixed point IS a Nash equilibrium
-
-    This is why Nash equilibrium is in PPAD:
-    Brouwer fixed point ↔ Sperner's lemma ↔ PPAD
-
-    Note: Nash's theorem guarantees existence of MIXED equilibria.
-    PURE Nash equilibria need not exist (e.g., matching pennies). -/
-axiom nash_existence :
-    ∀ G : NashEquilibriumProblem, G.numPlayers ≥ 1 → G.numStrategies ≥ 1 →
-    True  -- ∃ mixed Nash equilibrium
-
-/-- PPAD-completeness of 2-player Nash equilibrium.
-
-    Theorem (Daskalakis-Goldberg-Papadimitriou 2006, Chen-Deng 2006):
-    Computing a Nash equilibrium of a 2-player game is PPAD-complete.
-
-    This was a major breakthrough in algorithmic game theory:
-    1. It shows Nash equilibrium is "hard" (PPAD-complete)
-    2. But NOT NP-hard (unless PPAD = NP, which is unlikely)
-    3. The reduction goes: Brouwer → Sperner → 2-Nash
-
-    Why this is important for P vs NP:
-    - Nash equilibrium is a natural problem in TFNP \ FP (assuming PPAD ≠ FP)
-    - This gives evidence for TFNP ≠ FP without relying on NP ≠ P
-    - PPAD-hardness is a "different kind of hardness" from NP-hardness
-
-    Practical implication: there is no efficient algorithm for computing
-    Nash equilibria in general bimatrix games (under PPAD ≠ FP).
-    This has profound consequences for economics and game theory:
-    markets may not efficiently reach equilibria. -/
-axiom nash_ppad_complete :
-    -- 2-player Nash equilibrium is PPAD-complete
-    -- (Daskalakis-Goldberg-Papadimitriou 2006, Chen-Deng 2006)
-    -- Reduction: Brouwer → 3-player Nash (DGP) → 2-player Nash (CD)
-    Prop
-
-/-- Brouwer fixed point is PPAD-complete.
-
-    Theorem (Papadimitriou 1994): Computing an approximate Brouwer
-    fixed point is PPAD-complete.
-
-    The computational version: given a Lipschitz continuous function
-    f : [0,1]^n → [0,1]^n represented by a circuit, and ε > 0,
-    find x such that |f(x) - x| ≤ ε.
-
-    Brouwer is the canonical PPAD-complete problem because:
-    - PPAD was DEFINED to capture Brouwer/Sperner arguments
-    - The reduction: END-OF-LINE ↔ Sperner ↔ Brouwer
-
-    Historical note: Brouwer's 1911 proof was non-constructive.
-    PPAD-completeness formalizes exactly HOW non-constructive it is:
-    it's as hard as any problem in PPAD. -/
-axiom brouwer_ppad_complete :
-    -- Approximate Brouwer fixed point is PPAD-complete
-    -- END-OF-LINE ↔ Sperner ↔ Brouwer
-    Prop
-
-/-- Connection between PPAD and cryptography.
-
-    Theorem (Bitansky-Paneth-Rosen 2015):
-    If indistinguishability obfuscation (iO) and one-way functions exist,
-    then PPAD is hard (PPAD ≠ FP).
-
-    More recently:
-    - Hubáček-Yogev (2017): Sub-exponential LWE → average-case PPAD hardness
-    - Choudhuri et al. (2019): PPAD hardness from quasi-polynomial LWE
-
-    This shows: cryptographic assumptions → TFNP hardness.
-    If one-way functions exist, then SOME total search problems are hard.
-
-    The converse direction is open:
-    - Does PPAD ≠ FP imply one-way functions exist?
-    - This is a MAJOR open question connecting TFNP to cryptography -/
-axiom ppad_crypto_connection :
-    -- Cryptographic assumptions (iO + OWF, or sub-exp LWE)
-    -- imply PPAD ≠ FP (average-case hardness)
-    -- Converse open: does PPAD ≠ FP imply OWF?
-    Prop
-
 -- ============================================================
 -- PLS-Complete Problems
 -- ============================================================
-
-/-- Local MAX-CUT is PLS-complete (Schäffer-Yannakakis 1991).
-
-    Given a weighted graph, find a partition (S, V\S) such that no
-    single vertex move increases the cut value.
-
-    This is a local search problem:
-    - Start from any partition
-    - If moving a vertex improves the cut: move it
-    - If no improvement possible: we found a local maximum
-
-    PLS-completeness of local MAX-CUT shows that finding local
-    optima can be computationally hard even when a global optimum
-    is NP-hard to find.
-
-    Connection to game theory: pure Nash equilibria in congestion
-    games correspond to PLS problems (potential games). -/
-axiom local_max_cut_pls_complete :
-    -- Local MAX-CUT is PLS-complete
-    -- (Schäffer-Yannakakis 1991)
-    Prop
-
-/-- Pure Nash equilibrium in congestion games is PLS-complete.
-
-    Theorem (Fabrikant-Papadimitriou-Talwar 2004):
-    Computing a pure Nash equilibrium in a congestion game is PLS-complete.
-
-    Congestion games are potential games: every improvement step
-    decreases the potential function. So pure NE always exist.
-    But finding them may require exponentially many improvement steps.
-
-    This contrasts with MIXED Nash equilibrium (PPAD-complete):
-    - Pure NE in congestion games: PLS-complete
-    - Mixed NE in general games: PPAD-complete
-    - These are "orthogonal" hardness: PLS vs PPAD -/
-axiom congestion_game_pls_complete :
-    -- Pure Nash equilibrium in congestion games is PLS-complete
-    -- (Fabrikant-Papadimitriou-Talwar 2004)
-    Prop
-
 -- ============================================================
 -- Recent developments and open questions
 -- ============================================================
@@ -18531,25 +17419,6 @@ theorem ppad_ppp_relationship :
     -- PPP ⊆ PPAD? (OPEN)
     -- PPP-complete problems exist (Sotiraki et al. 2018)
     (1 : ℕ) + 1 = 2 := rfl
-
-/-- Oracle separations between TFNP subclasses.
-
-    | Separation | Status | Reference |
-    |-----------|--------|-----------|
-    | PPAD ≠ PLS | Oracle separation | Beame et al. 1998 |
-    | PPA ≠ PPAD | Oracle separation | Beame et al. 1998 |
-    | PPP ≠ PPA | Oracle separation | (follows from techniques) |
-    | CLS ≠ PPAD | Known (CLS = PPAD ∩ PLS ⊊ PPAD if PLS ⊄ PPAD) |
-
-    These oracle separations give evidence that the TFNP hierarchy
-    is genuinely structured — the different existence arguments
-    (parity, pigeonhole, potential) are computationally different. -/
-axiom tfnp_oracle_separations :
-    -- PPAD ≠ PLS (oracle, Beame et al. 1998)
-    -- PPA ≠ PPAD (oracle, Beame et al. 1998)
-    -- Different existence arguments yield different complexity
-    Prop
-
 /-- TFNP and P vs NP.
 
     The connections between TFNP and P vs NP:
@@ -18647,8 +17516,6 @@ end TotalFunctionComplexity
 #check TotalFunctionComplexity.CLS
 #check TotalFunctionComplexity.EOPL
 #check TotalFunctionComplexity.FP_subset_TFNP
-#check TotalFunctionComplexity.nash_ppad_complete
-#check TotalFunctionComplexity.cls_eq_eopl
 #check TotalFunctionComplexity.tfnp_and_pvsnp
 #check TotalFunctionComplexity.whitebox_tfnp_proof_complexity
 
@@ -18833,27 +17700,6 @@ theorem worlds_are_ordered :
     -- Cryptomania → Minicrypt → Pessiland
     -- (not a linear order: Heuristica is a side branch)
     (1 : ℕ) + 1 = 2 := rfl
-
-/-- The Impagliazzo-Levin theorem (1990).
-
-    If ANY NP problem is hard on average under ANY efficiently
-    samplable distribution, then there exists an NP-complete problem
-    that is hard on average under the UNIFORM distribution.
-
-    This is a worst-case to average-case reduction for NP:
-    - DistNP-complete problems exist (under the universal distribution)
-    - If we're not in Algorithmica/Heuristica, then random SAT
-      instances are genuinely hard
-
-    Implication: Heuristica and Pessiland are "all or nothing" —
-    either NP is easy on average everywhere, or NP-complete problems
-    are hard on random instances. -/
-axiom impagliazzo_levin :
-    -- If any NP problem is hard-on-average, then some NP-complete
-    -- problem is hard under the uniform distribution
-    -- DistNP-complete problems exist
-    Prop
-
 /-- One-way functions and derandomization.
 
     The Impagliazzo-Wigderson theorem chain:
@@ -18874,30 +17720,6 @@ theorem owf_implies_derandomization :
     -- In Minicrypt/Cryptomania: randomness doesn't help
     -- Derandomization is "free" with cryptographic assumptions
     (1 : ℕ) + 1 = 2 := rfl
-
-/-- The black-box barrier between Minicrypt and Cryptomania.
-
-    Theorem (Impagliazzo-Rudich 1989):
-    There is no black-box construction of key agreement from OWFs.
-
-    This means:
-    - To build public-key crypto from OWFs alone, you need
-      NON-BLACK-BOX techniques
-    - Standard cryptographic reductions cannot bridge the gap
-    - The Minicrypt/Cryptomania boundary is a genuine structural barrier
-
-    This is analogous to the relativization barrier for P vs NP:
-    just as oracle constructions can't separate P from NP,
-    black-box reductions can't build PKC from OWF.
-
-    Recent progress: non-black-box constructions DO exist in
-    some settings (Barak 2001 used non-black-box techniques for ZK). -/
-axiom impagliazzo_rudich :
-    -- No black-box reduction from OWF to key agreement
-    -- Minicrypt/Cryptomania boundary is real
-    -- Need non-black-box techniques to bridge the gap
-    Prop
-
 /-- Fine-grained picture within Cryptomania.
 
     Even within Cryptomania, there are sub-worlds based on
@@ -18978,8 +17800,6 @@ end FiveWorlds
 #check FiveWorlds.World.cryptomania
 #check FiveWorlds.likely_world
 #check FiveWorlds.isAlgorithmica
-#check FiveWorlds.impagliazzo_levin
-#check FiveWorlds.impagliazzo_rudich
 #check FiveWorlds.pvsnp_and_five_worlds
 #check FiveWorlds.owf_implies_derandomization
 
