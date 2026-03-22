@@ -1,6 +1,7 @@
 {
   "id": "elementary-quadratic-reciprocity-oq-03",
   "title": "Jacobi Symbol and QR for Composite Moduli",
+  "slug": "elementary-quadratic-reciprocity-oq-03",
   "description": "Extends quadratic reciprocity from the Legendre symbol (prime moduli) to the Jacobi symbol (composite odd moduli), formalizing the generalized reciprocity law J(m,n)·J(n,m) = (-1)^((m-1)/2·(n-1)/2) for coprime odd m,n.",
   "category": "number-theory",
   "status": "formalized",
@@ -12,18 +13,103 @@
   "axiomCount": 0,
   "sorryCount": 4,
   "assumptions": [],
-  "keyInsights": [
+  "meta": {
+    "author": "Jacobi / Eisenstein (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Jacobi_symbol",
+    "date": "1837",
+    "status": "formalized",
+    "tags": [
+      "number-theory",
+      "quadratic-reciprocity",
+      "jacobi-symbol",
+      "modular-arithmetic",
+      "intermediate"
+    ],
+    "proofRepoPath": "Proofs/ElementaryQuadraticReciprocityOQ03.lean",
+    "badge": "formalized",
+    "sorries": 4,
+    "mathlibDependencies": [
+      {
+        "theorem": "jacobiSym",
+        "description": "The Jacobi symbol J(a, n) for integers a and natural numbers n",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
+      },
+      {
+        "theorem": "legendreSym",
+        "description": "The Legendre symbol (a/p) for primes p",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity"
+      },
+      {
+        "theorem": "jacobiSym.prime_eq_legendreSym",
+        "description": "Jacobi symbol agrees with Legendre symbol for prime moduli",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
+      },
+      {
+        "theorem": "jacobiSym.sq_eq_one_of_isSquare",
+        "description": "Jacobi symbol of a square is 1",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
+      }
+    ],
+    "originalContributions": [
+      "Jacobi-Legendre agreement theorem for prime moduli",
+      "Multiplicativity of Jacobi symbol in the bottom argument (partial)",
+      "First supplement J(-1,n) = (-1)^((n-1)/2) for odd n (statement)",
+      "Second supplement J(2,n) = (-1)^((n²-1)/8) for odd n (statement)",
+      "Generalized QR for Jacobi symbol (statement)",
+      "Non-residue detection: J(a,n) = -1 implies non-residuacity (proved)",
+      "Residuacity for primes: J(a,p) = 1 implies QR for prime p (proved)"
+    ],
+    "dateAdded": "2026-03-22",
+    "axiomCount": 0,
+    "lineCount": 116
+  },
+  "overview": {
+    "historicalContext": "Carl Gustav Jacob Jacobi introduced the Jacobi symbol in 1837 as a natural extension of the Legendre symbol to composite odd moduli. Where the Legendre symbol $(a/p)$ is defined only for prime $p$, the Jacobi symbol $J(a,n) = \\prod_i (a/p_i)^{e_i}$ extends the definition to any odd $n = \\prod p_i^{e_i}$. This generalization proved essential for computational number theory: the Jacobi symbol can be computed efficiently via a generalized Euclidean algorithm without knowing the factorization of $n$, making it central to primality testing algorithms like Solovay-Strassen (1977) and the Miller-Rabin test.\n\nThe key theoretical result is that quadratic reciprocity extends: for coprime odd integers $m, n > 1$, we have $J(m,n) \\cdot J(n,m) = (-1)^{(m-1)/2 \\cdot (n-1)/2}$. The proof reduces to the prime case via the multiplicative structure of the Jacobi symbol. This generalization was implicit in Jacobi's work and made explicit by Eisenstein and later Kronecker.",
+    "problemStatement": "**Quadratic Reciprocity for the Jacobi Symbol**:\n\nFor coprime odd integers $m, n > 1$:\n\n$$J(m, n) \\cdot J(n, m) = (-1)^{\\frac{m-1}{2} \\cdot \\frac{n-1}{2}}$$\n\nwhere $J(a, n) = \\prod_{i} \\left(\\frac{a}{p_i}\\right)^{e_i}$ for $n = \\prod p_i^{e_i}$.\n\n**Supplements**:\n- First: $J(-1, n) = (-1)^{(n-1)/2}$ for odd $n > 1$\n- Second: $J(2, n) = (-1)^{(n^2-1)/8}$ for odd $n > 1$\n\n**Residuacity criterion**: $J(a,n) = -1$ guarantees $a$ is a non-residue mod $n$, but $J(a,n) = 1$ for composite $n$ does NOT guarantee $a$ is a quadratic residue.",
+    "proofStrategy": "The formalization proceeds in three parts:\n\n1. **Basic Properties** (Part I): Establish that the Jacobi symbol agrees with the Legendre symbol for prime moduli via `jacobiSym.prime_eq_legendreSym`. Prove multiplicativity in the bottom argument: $J(a, mn) = J(a,m) \\cdot J(a,n)$ for odd $m, n$. State the first and second supplements.\n\n2. **Generalized QR** (Part II): State the main reciprocity law $J(m,n) \\cdot J(n,m) = (-1)^{(m-1)/2 \\cdot (n-1)/2}$ for coprime odd $m, n > 1$. The proof strategy is reduction to the prime case: factor $m$ and $n$ into primes, apply multiplicativity of the Jacobi symbol, then invoke classical QR for each prime pair.\n\n3. **Applications** (Part III): Derive residuacity criteria. Prove that $J(a,n) = -1$ implies $a$ is a non-residue (via `jacobiSym.sq_eq_one_of_isSquare` showing squares map to 1). For primes, prove the converse: $J(a,p) = 1$ with $a \\not\\equiv 0$ implies $a$ is a QR, using the Legendre symbol equivalence.",
+    "keyInsights": [
+      "The Jacobi symbol J(a,n) = ∏(a/pᵢ)^eᵢ generalizes the Legendre symbol to composite odd moduli, preserving multiplicativity but losing the 'QR iff symbol = 1' equivalence.",
+      "Quadratic reciprocity J(m,n)·J(n,m) = (-1)^((m-1)/2·(n-1)/2) holds for all coprime odd m,n > 1, not just primes — the proof reduces to the prime case via multiplicativity.",
+      "J(a,n) = -1 guarantees a is a non-residue mod n, but J(a,n) = 1 for composite n does NOT guarantee a is a QR — this asymmetry is critical for primality testing algorithms.",
+      "The Jacobi symbol can be computed in O(log² n) time via a generalized Euclidean algorithm, without factoring n — making it the computational backbone of Solovay-Strassen primality testing.",
+      "The supplements J(-1,n) and J(2,n) follow from their Legendre symbol analogues via multiplicativity over the prime factorization of n."
+    ]
+  },
+  "sections": [
     {
-      "title": "Jacobi Symbol Extends Legendre",
-      "description": "The Jacobi symbol J(a,n) = ∏(a/pᵢ)^eᵢ generalizes the Legendre symbol to composite odd moduli, preserving multiplicativity but losing the 'QR iff symbol = 1' equivalence."
+      "id": "header",
+      "title": "Introduction and Imports",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "File header describing the Jacobi symbol extension of QR to composite moduli. Lists the five key results to be formalized and imports Mathlib's JacobiSymbol and QuadraticReciprocity modules."
     },
     {
-      "title": "Reciprocity Generalizes",
-      "description": "Quadratic reciprocity J(m,n)·J(n,m) = (-1)^((m-1)/2·(n-1)/2) holds for all coprime odd m,n > 1, not just primes. The proof reduces to the prime case via multiplicativity."
+      "id": "basic-properties",
+      "title": "Part I: Basic Properties of the Jacobi Symbol",
+      "startLine": 30,
+      "endLine": 52,
+      "summary": "Establishes foundational properties: Jacobi-Legendre agreement for primes (proved via `jacobiSym.prime_eq_legendreSym`), multiplicativity in the bottom argument (partial, 1 sorry), first supplement J(-1,n) (1 sorry), and second supplement J(2,n) (1 sorry)."
     },
     {
-      "title": "One-Way Detection",
-      "description": "J(a,n) = -1 guarantees a is a non-residue mod n, but J(a,n) = 1 for composite n does NOT guarantee a is a QR. This asymmetry is why primality testing via Jacobi symbols needs care."
+      "id": "reciprocity",
+      "title": "Part II: Quadratic Reciprocity for the Jacobi Symbol",
+      "startLine": 54,
+      "endLine": 68,
+      "summary": "States and formalizes the generalized reciprocity law: J(m,n)·J(n,m) = (-1)^((m-1)/2·(n-1)/2) for coprime odd m, n > 1. The proof requires reduction to the prime case (1 sorry)."
+    },
+    {
+      "id": "applications",
+      "title": "Part III: Applications — Quadratic Residuacity Criteria",
+      "startLine": 70,
+      "endLine": 89,
+      "summary": "Derives two key residuacity results: (1) J(a,n) = -1 implies non-residuacity (fully proved via contradiction with `sq_eq_one_of_isSquare`), and (2) for primes, J(a,p) = 1 with a ≠ 0 implies QR (proved by reducing to the Legendre symbol)."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 91,
+      "endLine": 109,
+      "summary": "Catalogs the 7 theorems: 3 fully proved (Jacobi-Legendre agreement, non-residue detection, prime residuacity) and 4 with sorries (multiplicativity, first supplement, second supplement, main reciprocity). Notes all sorries correspond to known Mathlib API results."
     }
   ],
   "crossRefs": [
@@ -33,5 +119,14 @@
   ],
   "parentProof": "elementary-quadratic-reciprocity",
   "openQuestion": "Can we formalize alternative QR proof approaches, including extensions to composite moduli?",
-  "tags": ["number-theory", "quadratic-reciprocity", "jacobi-symbol"]
+  "tags": ["number-theory", "quadratic-reciprocity", "jacobi-symbol"],
+  "conclusion": {
+    "summary": "This file extends quadratic reciprocity from primes (Legendre symbol) to composite odd moduli (Jacobi symbol) in Lean 4. Of the 7 theorems formalized, 3 are fully proved: Jacobi-Legendre agreement for primes, non-residue detection from J(a,n) = -1, and full residuacity for prime moduli. The 4 remaining sorries (multiplicativity, two supplements, main reciprocity) correspond to known results accessible through Mathlib's Jacobi symbol API.",
+    "implications": "1. **Computational number theory**: The Jacobi symbol's efficient computability (without factoring) makes this generalization practically essential for algorithms like Solovay-Strassen primality testing.\n2. **Proof architecture**: Demonstrates how composite-modulus results reduce to the prime case via multiplicativity — a pattern that recurs throughout algebraic number theory.\n3. **Formalization pathway**: The 4 sorries are routine Mathlib API calls, making this file a strong candidate for Aristotle automated proof search.\n4. **QR proof family**: Together with the Eisenstein (lattice point) and Zolotarev (permutation) proofs in the gallery, this provides a third perspective on quadratic reciprocity — the multiplicative extension to composite moduli.",
+    "openQuestions": [
+      "Can the Jacobi symbol reciprocity proof be completed by finding the right Mathlib API calls for multiplicativity reduction?",
+      "Can the Kronecker symbol (extending Jacobi to even moduli and arbitrary integers) be formalized as a further generalization?",
+      "How does the Jacobi symbol connect to Hilbert symbols and local-global principles in class field theory?"
+    ]
+  }
 }
