@@ -30,9 +30,9 @@
     ]
   },
   "overview": {
-    "historicalContext": "Tuza conjectured in 1981 that τ(G) ≤ 2ν(G) where τ is the minimum triangle cover and ν is the maximum triangle packing. The trivial bound is 3ν; Haxell-Kohayakawa (1998) improved this to 2.87ν. The conjecture is proven for K₄-free graphs, planar graphs, and random graphs.",
-    "problemStatement": "Let ν(G) be the maximum number of edge-disjoint triangles in G, and τ(G) the minimum number of edges to remove to make G triangle-free. Tuza's Conjecture: τ(G) ≤ 2·ν(G). K₄ and K₅ show 2 is best possible.",
-    "proofStrategy": "The formalization defines triangles, edge-disjoint packings, and triangle covers. Aristotle verified three key theorems: (1) trivial_bound: τ ≤ 3ν via constructing a cover from a maximum packing, (2) k4_tight and k5_tight: K₄ and K₅ achieve τ = 2ν exactly, verified by native_decide.",
+    "historicalContext": "Zsolt Tuza conjectured in 1981 that $\\tau(G) \\leq 2\\nu(G)$ for every graph $G$, where $\\tau(G)$ is the minimum number of edges whose removal destroys all triangles and $\\nu(G)$ is the maximum number of edge-disjoint triangles. The trivial bound $\\tau \\leq 3\\nu$ follows from removing all three edges of each triangle in a maximum packing. Penny Haxell and Yoshiharu Kohayakawa (1998) proved $\\tau \\leq (3 - 3/23)\\nu \\approx 2.87\\nu$ using probabilistic and structural methods. Haxell (1999) verified the conjecture for $K_4$-free graphs. The conjecture also holds for planar graphs (Tuza 1994, Krivelevich 1995) and Erdős-Rényi random graphs $G(n,p)$ for most $p$. The fractional relaxation $\\tau^*(G) \\leq 2\\nu^*(G)$ was proved by Krivelevich via LP duality. Despite four decades of work, the integral conjecture remains open, and the gap between the best general bound 2.87 and the conjectured 2 has resisted improvement.",
+    "problemStatement": "Let $\\nu(G)$ be the maximum number of edge-disjoint triangles in $G$, and $\\tau(G)$ the minimum number of edges whose removal makes $G$ triangle-free. **Tuza's Conjecture**: $\\tau(G) \\leq 2\\nu(G)$ for all graphs $G$. Complete graphs $K_4$ and $K_5$ show the factor 2 is best possible.",
+    "proofStrategy": "The formalization builds from first principles: triangles as 3-element vertex subsets, edge-disjoint packings as sets of non-overlapping triangles, and triangle covers as edge sets whose removal eliminates all triangles. Aristotle verified three key theorems: (1) `trivial_bound`: $\\tau \\leq 3\\nu$ via constructing a cover by taking all edges from a maximum packing, using `Finset.biUnion` and `offDiag` to enumerate edges; (2) `k4_tight`: $\\nu(K_4)=1, \\tau(K_4)=2$ by exhaustive search over `Fin 4`; (3) `k5_tight`: $\\nu(K_5)=2, \\tau(K_5)=4$ using `native_decide` for finite verification. The remaining axioms capture deep results (Haxell-Kohayakawa bound, special graph classes, fractional version) whose proofs rely on probabilistic and LP duality methods beyond the current formalization scope.",
     "keyInsights": [
       "Trivial bound: remove one edge per triangle in maximum packing → τ ≤ 3ν",
       "K₄ achieves equality in Tuza: ν(K₄) = 1, τ(K₄) = 2",
@@ -95,12 +95,13 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #167 (Tuza's Conjecture) is PARTIALLY SOLVED. This formalization includes three Aristotle-verified theorems: the trivial 3ν bound and tightness examples K₄ and K₅. The conjecture τ ≤ 2ν remains open for general graphs.",
-    "implications": "Tuza's conjecture connects triangle packing (combinatorial optimization) with covering (vertex/edge cover theory). The fractional version being true suggests the integral conjecture may hold with better rounding techniques.",
+    "implications": "Tuza's conjecture sits at the intersection of extremal graph theory, combinatorial optimization, and polyhedral combinatorics. The fractional version $\\tau^* = 2\\nu^*$ (proved via LP duality) shows the conjecture holds 'on average' — the obstruction is purely an integrality gap question. If the conjecture holds, it would give a tight characterization of the packing-covering tradeoff for triangles, analogous to König's theorem for bipartite matchings.",
     "openQuestions": [
-      "Does τ(G) ≤ 2ν(G) hold for all graphs?",
-      "Can the Haxell-Kohayakawa bound 2.87 be improved?",
-      "What graph families beyond K₄-free and planar satisfy Tuza?",
-      "Is there a polynomial-time algorithm for τ(G) when Tuza holds?"
+      "Does $\\tau(G) \\leq 2\\nu(G)$ hold for all graphs? (The main conjecture, open since 1981)",
+      "Can the Haxell-Kohayakawa bound $\\tau \\leq 2.87\\nu$ be improved below $2.5\\nu$?",
+      "What graph families beyond $K_4$-free and planar satisfy Tuza? Does it hold for all triangle-dense graphs?",
+      "Is the integrality gap of the triangle cover LP always at most 2?",
+      "Is there a polynomial-time algorithm for $\\tau(G)$ when Tuza's conjecture holds?"
     ]
   },
   "crossReferences": [
