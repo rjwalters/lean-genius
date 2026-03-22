@@ -46,9 +46,10 @@
       "Proof that 3 does not divide any power of 2",
       "Application to doubling the cube and squaring the circle"
     ],
-    "dateAdded": "12/26/25",
+    "dateAdded": "2025-12-26",
     "wiedijkNumber": 8,
-    "axiomCount": 2
+    "axiomCount": 2,
+    "lineCount": 389
   },
   "overview": {
     "historicalContext": "The problem of trisecting an arbitrary angle using only compass and straightedge is one of the three famous classical Greek problems, along with doubling the cube and squaring the circle. For over 2000 years, mathematicians attempted to solve these problems without success.\n\nThe impossibility was not proven until the 19th century. Pierre Wantzel published his proof in 1837, showing that angle trisection and doubling the cube are impossible. His key insight was to translate the geometric problem into algebra: compass and straightedge constructions correspond to field extensions of degree 2, so constructible numbers have degree 2^n over the rationals.\n\nThe squaring of the circle was proven impossible by Lindemann in 1882, when he showed that π is transcendental (not the root of any polynomial with rational coefficients).",

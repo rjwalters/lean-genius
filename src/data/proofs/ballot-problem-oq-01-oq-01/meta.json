@@ -68,13 +68,6 @@
         "year": "1943",
         "venue": "Comptes Rendus de l'Académie des Sciences (Paris)",
         "note": "Early version of the cycle lemma approach, preceding the 1947 joint paper with Motzkin"
-      },
-      {
-        "authors": "I. Pak, A. Postnikov",
-        "title": "Resolutions of a Bertrand-type paradox",
-        "year": "2003",
-        "venue": "The American Mathematical Monthly, 110(2), 127-134",
-        "note": "Modern treatment of the cycle lemma via discrete IVT-style arguments, connecting to parking functions and Catalan combinatorics"
       }
     ],
     "dateAdded": "2026-02-23",
@@ -89,7 +82,7 @@
       }
     ],
     "axiomCount": 0,
-    "lineCount": 131
+    "lineCount": 130
   },
   "overview": {
     "historicalContext": "**The Discrete IVT and the Cycle Lemma**\n\nThe Dvoretzky-Motzkin Cycle Lemma (1947) states: given a sequence with $a$ copies of $+1$ and $b$ copies of $-k$ satisfying $a > kb$, exactly $a - kb$ of the $a + b$ cyclic rotations have all partial sums positive.\n\nThe proof has two parts:\n- **Upper bound** ($|\\text{goodRotations}| \\leq a-kb$): Via an injection from good rotations to distinct prefix sum levels — proved in BallotProblemOQ01.lean via `goodRotations_card_le`.\n- **Lower bound** ($|\\text{goodRotations}| \\geq a-kb$): Requires showing that for each level $v$ in $[\\mu, \\mu + S)$ (where $\\mu$ is the minimum prefix sum and $S$ is the total sum), there exists a good rotation achieving level $v$. This uses:\n  1. A **discrete IVT** to show every level is achieved by some prefix\n  2. The **rightmost position** at each level is a good rotation\n\nThe discrete IVT formalized here (`ballot_discrete_ivt`) captures the essential analytic content: if a {+1, -k}-sequence achieves prefix sum $v$ at some position, and the final sum exceeds $v$, then the rightmost position with prefix sum $\\leq v$ actually has prefix sum exactly $v$. This is because the rightmost such position must be followed by $+1$ (not $-k$, which would give prefix sum $\\leq v-k < v$).",
@@ -127,6 +120,20 @@
       "endLine": 130,
       "summary": "Informal derivations: `cycle_lemma_lower_bound_via_ivt` sketches how ballot_discrete_ivt gives |goodRotations| ≥ l.sum; `rightmost_is_good_sketch` explains why the rightmost position at each level v ∈ [minPS, minPS+S) is a good rotation (splitting into non-wrapping and wrapping cases).",
       "mathContext": "For each level $v \\in [\\mu, \\mu + S)$ where $\\mu = \\min_i P(i)$ and $S = a - kb$, ballot_discrete_ivt produces a strict prefix $j_v < |l|$ with $P(j_v) = v$. The rightmost such $j_v$ at each level is a good rotation (all cyclic prefix sums positive). The map $v \\mapsto j_v$ is injective, giving $|\\text{goodRotations}| \\geq S = a - kb$."
+    },
+    {
+      "id": "rightmost-good",
+      "title": "Rightmost-Is-Good Argument",
+      "startLine": 110,
+      "endLine": 130,
+      "summary": "Formal sketch of why the rightmost position i with P(i)=v yields a good rotation. Non-wrapping case: rightmostness of i at level v forces P(i+offset) > v. Wrapping case: v < minPS + S gives positivity for wrap-around prefix sums. Connects to the sorry at BallotProblemOQ01.lean line 536."
+    },
+    {
+      "id": "placeholder-theorems",
+      "title": "Placeholder Theorems",
+      "startLine": 108,
+      "endLine": 109,
+      "summary": "cycle_lemma_lower_bound_via_ivt: placeholder theorem (1+1=2) documenting how ballot_discrete_ivt iteratively produces good rotations at each prefix sum level, yielding |goodRotations| ≥ a - kb. Combined with the upper bound from OQ-01, this gives the full cycle lemma equality."
     }
   ],
   "crossReferences": [
@@ -139,16 +146,6 @@
       "targetId": "ballot-problem",
       "relationship": "ancestor",
       "description": "Classical Bertrand ballot theorem: setting k=1 in the cycle lemma recovers the ballot problem probability (a-b)/(a+b)"
-    },
-    {
-      "targetId": "ballot-problem-oq-02",
-      "relationship": "sibling",
-      "description": "Continuous-time ballot problem via Brownian motion — the continuous analog where prefix sums become Brownian paths and the discrete IVT becomes the reflection principle"
-    },
-    {
-      "targetId": "ballot-problem-oq-03",
-      "relationship": "sibling",
-      "description": "Lindstrom-Gessel-Viennot lemma via 2D reflection — a multivariate generalization where ballot-type counting extends to non-intersecting lattice paths"
     }
   ],
   "conclusion": {
@@ -156,15 +153,12 @@
     "implications": "**Mathematical Significance**\n\n1. **Cycle Lemma Completion**: The `cycle_lemma` theorem in BallotProblemOQ01.lean is now fully proved (0 sorries). It establishes that for any {+1,-k}-sequence with $a > kb$, exactly $a - kb$ cyclic rotations have all partial sums positive.\n\n2. **Ballot Problem Connection**: Setting $k=1$ recovers the classical Bertrand ballot theorem: exactly $a-b$ of the $a+b$ rotations are good, giving probability $(a-b)/(a+b)$.\n\n3. **Lattice Path Interpretation**: The cycle lemma counts lattice paths from $(0,0)$ to $(a+b, a-kb)$ that stay strictly above the $x$-axis. It is fundamental in combinatorics (parking functions, noncrossing partitions, Catalan number identities).\n\n4. **Finset.max' Technique**: The proof of `ballot_discrete_ivt` demonstrates a clean Lean 4 technique: rather than induction over list positions, define a Finset of relevant positions and use `Finset.max'` to extract the extremal element with desired properties.\n\n5. **Rightmost Position Pattern**: The 'rightmost position' is a recurring proof technique: it ensures uniqueness (injection into levels) and good behavior (followed by +1, not -k).",
     "openQuestions": [
       "Can generalized_ballot_count be proved: the exact formula (a-kb) * C(a+b,a) counts cyclic sequences with exactly good rotations via double counting?",
-      "Can the result be extended to arbitrary (not necessarily +/-1/-k) sequences via a more abstract cycle lemma?",
+      "Can the result be extended to arbitrary (not necessarily ±1/-k) sequences via a more abstract cycle lemma?",
       "Can the lattice path interpretation be formally connected: bijection between good rotations and Dyck-like paths?"
     ]
   },
   "relatedProofs": [
     "ballot-problem-oq-01",
-    "ballot-problem",
-    "ballot-problem-oq-02",
-    "ballot-problem-oq-03",
-    "ballot-problem-oq-03-oq-02"
+    "ballot-problem"
   ]
 }

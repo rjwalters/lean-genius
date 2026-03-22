@@ -2,7 +2,7 @@
   "id": "angle-trisection-oq-02-oq-01",
   "title": "Wantzel-Galois Characterization from Mathlib (OQ-02-OQ-01)",
   "slug": "angle-trisection-oq-02-oq-01",
-  "description": "Connects the Galois-theoretic constructibility criterion to Mathlib's Polynomial.Gal infrastructure. Proves natDegree divides |Gal| for all irreducible polynomials (generalizing Mathlib's prime-degree-only result), then derives that 2-group Galois groups force degree to be a power of 2 -- eliminating 1 of 6 axioms from the parent OQ-02 formalization.",
+  "description": "Connects the Galois-theoretic constructibility criterion to Mathlib's Polynomial.Gal infrastructure. Proves natDegree divides |Gal| for all irreducible polynomials (generalizing Mathlib's prime-degree-only result), then derives that 2-group Galois groups force degree to be a power of 2 — eliminating 1 of 6 axioms from the parent OQ-02 formalization.",
   "meta": {
     "author": "Wantzel (1837), Galois (1832)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Constructible_number",
@@ -28,17 +28,17 @@
       },
       {
         "theorem": "IsPGroup.iff_card",
-        "description": "For finite G: IsPGroup p G <-> exists n, Nat.card G = p^n",
+        "description": "For finite G: IsPGroup p G ↔ ∃ n, Nat.card G = p^n",
         "module": "Mathlib.GroupTheory.PGroup"
       },
       {
         "theorem": "IntermediateField.adjoin.finrank",
-        "description": "[F(alpha):F] = natDegree(minpoly(F,alpha)) for integral alpha",
+        "description": "[F⟮α⟯:F] = natDegree(minpoly(F,α)) for integral α",
         "module": "Mathlib.FieldTheory.Adjoin"
       },
       {
         "theorem": "Module.finrank_mul_finrank",
-        "description": "[L:F] = [L:K]*[K:F] -- the tower law for field extensions",
+        "description": "[L:F] = [L:K]·[K:F] — the tower law for field extensions",
         "module": "Mathlib.LinearAlgebra.Dimension"
       },
       {
@@ -48,29 +48,29 @@
       },
       {
         "theorem": "minpoly.dvd",
-        "description": "minpoly(F,alpha) divides any polynomial vanishing at alpha",
+        "description": "minpoly(F,α) divides any polynomial vanishing at α",
         "module": "Mathlib.FieldTheory.Minpoly.Basic"
       }
     ],
     "originalContributions": [
-      "natDegree_dvd_card_gal: natDegree divides |Gal| for ALL irreducible polynomials over CharZero fields -- generalizes Mathlib's prime-degree-only result via the tower law",
-      "galois_2group_implies_degree_pow2: 2-group Galois group implies natDegree divides 2^n -- eliminates axiom from OQ-02",
-      "galois_2group_implies_degree_is_pow2: Stronger -- natDegree IS a power of 2, using OQ-01's dvd_pow_two_is_pow_two",
+      "natDegree_dvd_card_gal: natDegree divides |Gal| for ALL irreducible polynomials over CharZero fields — generalizes Mathlib's prime-degree-only result via the tower law",
+      "galois_2group_implies_degree_pow2: 2-group Galois group implies natDegree divides 2^n — eliminates axiom from OQ-02",
+      "galois_2group_implies_degree_is_pow2: Stronger — natDegree IS a power of 2, using OQ-01's dvd_pow_two_is_pow_two",
       "galois_criterion_implies_degree_criterion: Bridges the Galois criterion (2-group Gal) to the degree criterion (degree = 2^k)"
     ],
     "references": [
       {
         "authors": "P. L. Wantzel",
-        "title": "Recherches sur les moyens de reconnaitre si un Probleme de Geometrie peut se resoudre avec la regle et le compas",
+        "title": "Recherches sur les moyens de reconnaître si un Problème de Géométrie peut se résoudre avec la règle et le compas",
         "year": "1837",
-        "venue": "Journal de Mathematiques Pures et Appliquees",
-        "note": "First rigorous proof that trisection, doubling the cube, and constructing regular n-gons are impossible for most cases -- established the degree criterion"
+        "venue": "Journal de Mathématiques Pures et Appliquées",
+        "note": "First rigorous proof that trisection, doubling the cube, and constructing regular n-gons are impossible for most cases — established the degree criterion"
       },
       {
-        "authors": "E. Galois (posthumous, edited by J. Liouville)",
-        "title": "Memoire sur les conditions de resolubilite des equations par radicaux",
+        "authors": "É. Galois (posthumous, edited by J. Liouville)",
+        "title": "Mémoire sur les conditions de résolubilité des équations par radicaux",
         "year": "1846",
-        "venue": "Journal de Mathematiques Pures et Appliquees",
+        "venue": "Journal de Mathématiques Pures et Appliquées",
         "note": "Foundational work introducing group theory and the Galois group, providing the deeper characterization of constructibility via 2-groups"
       },
       {
@@ -79,35 +79,22 @@
         "year": "2015",
         "venue": "Chapman and Hall/CRC (4th edition)",
         "note": "Modern treatment of the Wantzel-Galois constructibility criterion using the tower law, paralleling this formalization's approach"
-      },
-      {
-        "authors": "D. Cox",
-        "title": "Galois Theory",
-        "year": "2012",
-        "venue": "Wiley, 2nd edition",
-        "note": "Chapters 10-11 develop the constructibility theory via field extensions and 2-groups, with explicit Galois group computations for classical impossibility results"
       }
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
-    "lineCount": 115,
-    "prerequisites": [
-      "Galois theory (splitting fields, Galois groups)",
-      "Group theory (p-groups, Sylow theory)",
-      "Field extension tower law",
-      "Polynomial irreducibility over Q"
-    ]
+    "lineCount": 115
   },
   "overview": {
-    "historicalContext": "Pierre Wantzel proved in 1837 that an algebraic number is constructible by compass and straightedge only if its minimal polynomial over $\\mathbb{Q}$ has degree a power of 2. Evariste Galois, whose posthumous 1846 publication established the foundations of group theory, provided the deeper characterization: constructibility is equivalent to the Galois group being a 2-group. This refinement transforms a degree computation into a group-theoretic question. The parent formalization OQ-02 axiomatized this Galois criterion with 6 axioms, including explicit Galois group order computations ($|\\text{Gal}(x^3-2)| = 6$). This file demonstrates that the axiom `galois_2group_implies_degree_pow2` is provable from Mathlib's `Polynomial.Gal` infrastructure using the tower law on $F \\subset F(\\alpha) \\subset \\text{SplittingField}(p)$, reducing the axiom count from 6 to 5. The key insight -- that the divisibility $\\deg(p) \\mid |\\text{Gal}(p)|$ suffices without computing the exact order -- reflects a broader trend in modern algebra: structural arguments replacing explicit computation.",
-    "problemStatement": "**Open Question (from OQ-02)**: Can the axiom `galois_2group_implies_degree_pow2` -- which asserts that a 2-group Galois group forces the minimal polynomial degree to divide a power of 2 -- be proved from Mathlib?\n\n**Answer: YES.** The proof uses the tower law:\n1. $\\text{natDegree}(p) \\mid |\\text{Gal}(p)|$ for irreducible $p$ (proved via $F \\subset F(\\alpha) \\subset \\text{SplittingField}(p)$)\n2. 2-group $\\Rightarrow |\\text{Gal}| = 2^k$ (from `IsPGroup.iff_card`)\n3. $d \\mid 2^k \\wedge d > 0 \\Rightarrow d = 2^j$ (from OQ-01's `dvd_pow_two_is_pow_two`)\n\nThis eliminates 1 of OQ-02's 6 axioms with a fully verified proof.",
-    "proofStrategy": "The core technique is the **tower law decomposition** on the chain $F \\subset F(\\alpha) \\subset \\text{SplittingField}(p)$:\n\n**Step 1 (Tower Law)**: Construct root $\\alpha$ of $p$ in $\\text{SplittingField}(p)$ via `rootOfSplits`. Show $\\text{minpoly}(F,\\alpha) \\sim p$ (associates) by mutual divisibility of irreducibles. Then $[\\text{SplittingField}:F] = [\\text{SplittingField}:F(\\alpha)] \\cdot [F(\\alpha):F]$ gives $\\deg(p) \\mid |\\text{Gal}(p)|$.\n\n**Step 2 (2-Group Characterization)**: If $\\text{Gal}(p)$ is a 2-group, then $|\\text{Gal}(p)| = 2^n$ by `IsPGroup.iff_card`. Transitivity gives $\\deg(p) \\mid 2^n$.\n\n**Step 3 (Number Theory)**: Since $\\deg(p) > 0$ (irreducible) and $\\deg(p) \\mid 2^n$, apply OQ-01's `dvd_pow_two_is_pow_two` to conclude $\\deg(p) = 2^k$.\n\nThis three-step argument uses Galois theory, group theory, and number theory -- each contributing exactly one key fact.",
+    "historicalContext": "Pierre Wantzel proved in 1837 that an algebraic number is constructible by compass and straightedge only if its minimal polynomial over $\\mathbb{Q}$ has degree a power of 2. Évariste Galois, whose posthumous 1846 publication established the foundations of group theory, provided the deeper characterization: constructibility is equivalent to the Galois group being a 2-group. This refinement transforms a degree computation into a group-theoretic question. The parent formalization OQ-02 axiomatized this Galois criterion with 6 axioms, including explicit Galois group order computations ($|\\text{Gal}(x^3-2)| = 6$). This file demonstrates that the axiom `galois_2group_implies_degree_pow2` is provable from Mathlib's `Polynomial.Gal` infrastructure using the tower law on $F \\subset F(\\alpha) \\subset \\text{SplittingField}(p)$, reducing the axiom count from 6 to 5. The key insight — that the divisibility $\\deg(p) \\mid |\\text{Gal}(p)|$ suffices without computing the exact order — reflects a broader trend in modern algebra: structural arguments replacing explicit computation.",
+    "problemStatement": "**Open Question (from OQ-02)**: Can the axiom `galois_2group_implies_degree_pow2` — which asserts that a 2-group Galois group forces the minimal polynomial degree to divide a power of 2 — be proved from Mathlib?\n\n**Answer: YES.** The proof uses the tower law:\n1. $\\text{natDegree}(p) \\mid |\\text{Gal}(p)|$ for irreducible $p$ (proved via $F \\subset F(\\alpha) \\subset \\text{SplittingField}(p)$)\n2. 2-group $\\Rightarrow |\\text{Gal}| = 2^k$ (from `IsPGroup.iff_card`)\n3. $d \\mid 2^k \\wedge d > 0 \\Rightarrow d = 2^j$ (from OQ-01's `dvd_pow_two_is_pow_two`)\n\nThis eliminates 1 of OQ-02's 6 axioms with a fully verified proof.",
+    "proofStrategy": "The core technique is the **tower law decomposition** on the chain $F \\subset F(\\alpha) \\subset \\text{SplittingField}(p)$:\n\n**Step 1 (Tower Law)**: Construct root $\\alpha$ of $p$ in $\\text{SplittingField}(p)$ via `rootOfSplits`. Show $\\text{minpoly}(F,\\alpha) \\sim p$ (associates) by mutual divisibility of irreducibles. Then $[\\text{SplittingField}:F] = [\\text{SplittingField}:F(\\alpha)] \\cdot [F(\\alpha):F]$ gives $\\deg(p) \\mid |\\text{Gal}(p)|$.\n\n**Step 2 (2-Group Characterization)**: If $\\text{Gal}(p)$ is a 2-group, then $|\\text{Gal}(p)| = 2^n$ by `IsPGroup.iff_card`. Transitivity gives $\\deg(p) \\mid 2^n$.\n\n**Step 3 (Number Theory)**: Since $\\deg(p) > 0$ (irreducible) and $\\deg(p) \\mid 2^n$, apply OQ-01's `dvd_pow_two_is_pow_two` to conclude $\\deg(p) = 2^k$.\n\nThis three-step argument uses Galois theory, group theory, and number theory — each contributing exactly one key fact.",
     "keyInsights": [
-      "The tower law argument ($F \\subset F(\\alpha) \\subset \\text{SplittingField}(p)$) generalizes Mathlib's `prime_degree_dvd_card` from prime-degree polynomials to ALL irreducible polynomials -- a strictly stronger result suitable for upstream contribution",
+      "The tower law argument ($F \\subset F(\\alpha) \\subset \\text{SplittingField}(p)$) generalizes Mathlib's `prime_degree_dvd_card` from prime-degree polynomials to ALL irreducible polynomials — a strictly stronger result suitable for upstream contribution",
       "The proof that $\\text{minpoly}(F,\\alpha) = p$ (up to associates) is the crux: mutual divisibility between two irreducible polynomials in the UFD $F[X]$ forces them to be associates with equal degrees",
       "Shifting from 'compute the Galois group order' to 'derive a divisibility contradiction' parallels the number-theoretic approach in OQ-01 and exemplifies a broader algebraic strategy: structural arguments replacing explicit computation",
-      "The chain natDegree | |Gal| -> natDegree | 2^n -> natDegree = 2^k requires three separate mathematical ingredients: Galois theory (tower law), group theory (2-group characterization), and number theory (prime factorization of powers of 2)",
-      "This file is fully verified (0 axioms, 0 sorries) despite addressing constructibility -- possible because it proves the structural implication (2-group Gal => degree is 2^k) without needing to assert any specific polynomial is irreducible"
+      "The chain natDegree | |Gal| → natDegree | 2^n → natDegree = 2^k requires three separate mathematical ingredients: Galois theory (tower law), group theory (2-group characterization), and number theory (prime factorization of powers of 2)",
+      "This file is fully verified (0 axioms, 0 sorries) despite addressing constructibility — possible because it proves the structural implication (2-group Gal ⇒ degree is 2^k) without needing to assert any specific polynomial is irreducible"
     ]
   },
   "sections": [
@@ -116,24 +103,21 @@
       "title": "Part I: natDegree Divides |Gal| for Irreducible Polynomials",
       "startLine": 22,
       "endLine": 58,
-      "summary": "The central generalization: for any irreducible polynomial p over a CharZero field F, natDegree(p) divides |Gal(p)|. Proved via the tower law on F subset F(alpha) subset SplittingField(p), using rootOfSplits to construct a root alpha, then showing minpoly(F,alpha) and p are associates (both irreducible, one divides the other). Generalizes Mathlib's prime_degree_dvd_card to all degrees.",
-      "mathContext": "Tower law: $|\\text{Gal}(p)| = [\\text{SplittingField}(p):F] = [\\text{SplittingField}(p):F(\\alpha)] \\cdot [F(\\alpha):F]$. Since $[F(\\alpha):F] = \\deg(\\text{minpoly}(F,\\alpha)) = \\deg(p)$ (associates), we get $\\deg(p) \\mid |\\text{Gal}(p)|$."
+      "summary": "The central generalization: for any irreducible polynomial p over a CharZero field F, natDegree(p) divides |Gal(p)|. Proved via the tower law on F ⊂ F(α) ⊂ SplittingField(p), using rootOfSplits to construct a root α, then showing minpoly(F,α) and p are associates (both irreducible, one divides the other). Generalizes Mathlib's prime_degree_dvd_card to all degrees."
     },
     {
       "id": "2group-degree-divisibility",
-      "title": "Part II: 2-Group Galois -> Degree Divides 2^n",
+      "title": "Part II: 2-Group Galois → Degree Divides 2^n",
       "startLine": 60,
       "endLine": 82,
-      "summary": "Two theorems chaining the Part I result with 2-group theory: (1) galois_2group_implies_degree_pow2 -- if Gal(minpoly(Q,alpha)) is a 2-group then natDegree divides 2^n, and (2) galois_2group_implies_degree_is_pow2 -- the stronger result that natDegree IS a power of 2, using OQ-01's dvd_pow_two_is_pow_two. Together these eliminate the axiom galois_2group_implies_degree_pow2 from OQ-02.",
-      "mathContext": "$\\text{Gal}(\\text{minpoly}(\\mathbb{Q},\\alpha))$ is a 2-group $\\Rightarrow |\\text{Gal}| = 2^n$ $\\Rightarrow \\deg(\\text{minpoly}) \\mid 2^n$ $\\Rightarrow \\deg(\\text{minpoly}) = 2^k$ for some $k$."
+      "summary": "Two theorems chaining the Part I result with 2-group theory: (1) galois_2group_implies_degree_pow2 — if Gal(minpoly(ℚ,α)) is a 2-group then natDegree divides 2^n, and (2) galois_2group_implies_degree_is_pow2 — the stronger result that natDegree IS a power of 2, using OQ-01's dvd_pow_two_is_pow_two. Together these eliminate the axiom galois_2group_implies_degree_pow2 from OQ-02."
     },
     {
       "id": "oq02-to-oq01-bridge",
       "title": "Part III: Connecting OQ-02 to OQ-01",
       "startLine": 84,
       "endLine": 100,
-      "summary": "Defines IsConstructibleFromQ (reproduced from OQ-02 for self-containedness) and proves galois_criterion_implies_degree_criterion: the Galois criterion (2-group Gal) implies the degree criterion (degree = 2^k). This bridges the two characterizations of constructibility.",
-      "mathContext": "Two constructibility criteria: (1) Degree criterion (Wantzel): $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = 2^k$. (2) Galois criterion: $\\text{Gal}(\\text{minpoly}(\\mathbb{Q},\\alpha))$ is a 2-group. This section proves (2) $\\Rightarrow$ (1)."
+      "summary": "Defines IsConstructibleFromQ (reproduced from OQ-02 for self-containedness) and proves galois_criterion_implies_degree_criterion: the Galois criterion (2-group Gal) implies the degree criterion (degree = 2^k). This bridges the two characterizations of constructibility."
     },
     {
       "id": "summary",
@@ -155,16 +139,16 @@
   "references": [
     {
       "authors": "Wantzel, Pierre-Laurent",
-      "title": "Recherches sur les moyens de reconnaitre si un Probleme de Geometrie peut se resoudre avec la regle et le compas",
+      "title": "Recherches sur les moyens de reconnaître si un Problème de Géométrie peut se résoudre avec la règle et le compas",
       "year": "1837",
-      "venue": "Journal de Mathematiques Pures et Appliquees, 2, pp. 366-372",
-      "note": "First rigorous proof that angle trisection and cube duplication are impossible with compass and straightedge -- established the degree-power-of-2 criterion for constructibility"
+      "venue": "Journal de Mathématiques Pures et Appliquées, 2, pp. 366-372",
+      "note": "First rigorous proof that angle trisection and cube duplication are impossible with compass and straightedge — established the degree-power-of-2 criterion for constructibility"
     },
     {
-      "authors": "Galois, Evariste",
-      "title": "Memoire sur les conditions de resolubilite des equations par radicaux",
+      "authors": "Galois, Évariste",
+      "title": "Mémoire sur les conditions de résolubilité des équations par radicaux",
       "year": "1846",
-      "venue": "Journal de Mathematiques Pures et Appliquees, 11, pp. 417-433",
+      "venue": "Journal de Mathématiques Pures et Appliquées, 11, pp. 417-433",
       "note": "Posthumous publication establishing group theory foundations; the Galois group characterization of constructibility follows from this framework"
     }
   ],
@@ -182,7 +166,7 @@
     {
       "targetId": "angle-trisection-oq-02-oq-03",
       "relationship": "sibling",
-      "description": "Sibling open question on the Gauss-Wantzel theorem for regular polygon constructibility -- also addresses axiom elimination from OQ-02 but via cyclotomic theory"
+      "description": "Sibling open question on the Gauss-Wantzel theorem for regular polygon constructibility — also addresses axiom elimination from OQ-02 but via cyclotomic theory"
     },
     {
       "targetId": "angle-trisection-oq-02-oq-03-oq-01",
@@ -192,7 +176,7 @@
     {
       "targetId": "inverse-galois",
       "relationship": "related",
-      "description": "Comprehensive Galois group realizations -- the inverse direction of the Galois correspondence. Where this file asks 'what constraints does the Galois group impose?', inverse Galois asks 'which groups arise as Galois groups?'"
+      "description": "Comprehensive Galois group realizations (S₃, A₅, D₄, etc.) — the inverse direction of the Galois correspondence. Where this file asks 'what constraints does the Galois group impose?', inverse Galois asks 'which groups arise as Galois groups?'"
     },
     {
       "targetId": "abel-ruffini",

@@ -58,8 +58,9 @@
       "galois_2group_implies_degree_pow2: 2-group Galois → degree divides 2^n (tower law + IsPGroup.iff_card)",
       "constructible_implies_degree_dvd_pow2: Galois 2-group criterion implies the degree criterion (OQ-01)"
     ],
-    "dateAdded": "02/24/26",
-    "axiomCount": 2
+    "dateAdded": "2026-02-24",
+    "axiomCount": 2,
+    "lineCount": 298
   },
   "overview": {
     "historicalContext": "In 1837, Pierre Wantzel proved that compass-and-straightedge constructions can only produce algebraic numbers whose minimal polynomial has degree a power of 2. This was the first rigorous proof of the impossibility of trisecting an arbitrary angle and doubling the cube.\n\nWith the development of Galois theory (Galois 1832, published 1846), the characterization was refined: α is constructible if and only if the Galois group of its minimal polynomial is a 2-group. This characterization is both necessary AND sufficient — a genuine biconditional, upgrading Wantzel's necessary condition to an exact characterization.\n\nThe key insight of the Galois perspective is structural: 2-groups have a composition series with ℤ/2ℤ factors, corresponding exactly to the tower of degree-2 extensions that compass-and-straightedge constructions generate. A number is constructible iff its algebraic data 'factors' into a sequence of square root extensions.",

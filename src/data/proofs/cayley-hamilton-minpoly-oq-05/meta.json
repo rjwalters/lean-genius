@@ -9,19 +9,62 @@
     "date": "2026",
     "status": "formalized",
     "proofRepoPath": "Proofs/CayleyHamiltonMinpolyOQ05.lean",
-    "tags": ["linear-algebra", "abstract-algebra", "minimal-polynomial", "field-extensions", "scalar-tower", "research"],
+    "tags": [
+      "linear-algebra",
+      "abstract-algebra",
+      "minimal-polynomial",
+      "field-extensions",
+      "scalar-tower",
+      "research"
+    ],
     "badge": "formalized",
     "sorries": 1,
     "mathlibDependencies": [
-      {"theorem": "minpoly.monic", "description": "Minimal polynomial of an integral element is monic", "module": "Mathlib.FieldTheory.Minpoly.Basic"},
-      {"theorem": "minpoly.aeval", "description": "Minimal polynomial annihilates its element", "module": "Mathlib.FieldTheory.Minpoly.Basic"},
-      {"theorem": "minpoly.dvd", "description": "Minpoly divides any annihilating polynomial", "module": "Mathlib.FieldTheory.Minpoly.Basic"},
-      {"theorem": "minpoly.irreducible", "description": "Minimal polynomial is irreducible over the base field", "module": "Mathlib.FieldTheory.Minpoly.Basic"},
-      {"theorem": "Polynomial.modByMonic_add_div", "description": "Division algorithm: f = (f mod m) + m * (f div m)", "module": "Mathlib.Algebra.Polynomial.Div"},
-      {"theorem": "Polynomial.eval₂_map", "description": "eval₂ commutes with polynomial map", "module": "Mathlib.Algebra.Polynomial.Eval.Ring"},
-      {"theorem": "IsScalarTower.algebraMap_eq", "description": "algebraMap factors through scalar towers", "module": "Mathlib.Algebra.Algebra.Tower"},
-      {"theorem": "IsIntegral.tower_top", "description": "Integrality transfers up algebra towers", "module": "Mathlib.RingTheory.IntegralClosure.IsIntegral.Basic"},
-      {"theorem": "Polynomial.natDegree_le_of_dvd", "description": "Degree of divisor bounded by degree of dividend", "module": "Mathlib.Algebra.Polynomial.Degree.Operations"}
+      {
+        "theorem": "minpoly.monic",
+        "description": "Minimal polynomial of an integral element is monic",
+        "module": "Mathlib.FieldTheory.Minpoly.Basic"
+      },
+      {
+        "theorem": "minpoly.aeval",
+        "description": "Minimal polynomial annihilates its element",
+        "module": "Mathlib.FieldTheory.Minpoly.Basic"
+      },
+      {
+        "theorem": "minpoly.dvd",
+        "description": "Minpoly divides any annihilating polynomial",
+        "module": "Mathlib.FieldTheory.Minpoly.Basic"
+      },
+      {
+        "theorem": "minpoly.irreducible",
+        "description": "Minimal polynomial is irreducible over the base field",
+        "module": "Mathlib.FieldTheory.Minpoly.Basic"
+      },
+      {
+        "theorem": "Polynomial.modByMonic_add_div",
+        "description": "Division algorithm: f = (f mod m) + m * (f div m)",
+        "module": "Mathlib.Algebra.Polynomial.Div"
+      },
+      {
+        "theorem": "Polynomial.eval₂_map",
+        "description": "eval₂ commutes with polynomial map",
+        "module": "Mathlib.Algebra.Polynomial.Eval.Ring"
+      },
+      {
+        "theorem": "IsScalarTower.algebraMap_eq",
+        "description": "algebraMap factors through scalar towers",
+        "module": "Mathlib.Algebra.Algebra.Tower"
+      },
+      {
+        "theorem": "IsIntegral.tower_top",
+        "description": "Integrality transfers up algebra towers",
+        "module": "Mathlib.RingTheory.IntegralClosure.IsIntegral.Basic"
+      },
+      {
+        "theorem": "Polynomial.natDegree_le_of_dvd",
+        "description": "Degree of divisor bounded by degree of dividend",
+        "module": "Mathlib.Algebra.Polynomial.Degree.Operations"
+      }
     ],
     "originalContributions": [
       "minpoly_reduction: aeval x f = aeval x (f mod minpoly) for any integral x in a K-algebra",
@@ -33,12 +76,19 @@
       "minpoly_natDegree_tower_le: degree over L ≤ degree over K",
       "minpoly_eq_map_of_irreducible: equality when base-changed minpoly stays irreducible (1 sorry)"
     ],
-    "dateAdded": "03/21/26",
+    "dateAdded": "2026-03-21",
     "relatedProblems": [
-      {"id": "cayley-hamilton-minpoly-oq-02-oq-01", "relationship": "Parent: K-algebra invariance of minpoly under AlgEquiv/AlgHom"},
-      {"id": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01", "relationship": "Sibling: Skolem-Noether theorem for matrix automorphisms"}
+      {
+        "id": "cayley-hamilton-minpoly-oq-02-oq-01",
+        "relationship": "Parent: K-algebra invariance of minpoly under AlgEquiv/AlgHom"
+      },
+      {
+        "id": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
+        "relationship": "Sibling: Skolem-Noether theorem for matrix automorphisms"
+      }
     ],
-    "axiomCount": 0
+    "axiomCount": 0,
+    "lineCount": 249
   },
   "overview": {
     "historicalContext": "The minimal polynomial of an algebraic element x in a K-algebra A generates the kernel of the evaluation map K[X] → A. Polynomial arithmetic modulo the minimal polynomial captures all algebraic relations satisfied by x. In a tower K ⊂ L ⊂ A, the minimal polynomial over L divides the base change of the one over K, so the degree can only decrease with larger base fields. The theory of minimal polynomials was central to Cayley and Hamilton's work on matrices in the 1850s-1860s; the Cayley-Hamilton theorem states that a matrix satisfies its own characteristic polynomial, and the minimal polynomial divides it. These results were generalized to abstract algebras by Noether and Artin in the 1920s-1930s, and the universal characterization via the kernel of the evaluation map is fundamental to modern commutative algebra.",

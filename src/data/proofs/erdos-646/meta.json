@@ -67,7 +67,8 @@
         "relationship": "Euler's totient function relates to coprime residues, relevant to density arguments for p-adic valuations"
       }
     ],
-    "axiomCount": 15
+    "axiomCount": 15,
+    "lineCount": 386
   },
   "overview": {
     "historicalContext": "**Erdős Problem #646**\n\nThis problem asks about the parity of prime exponents in factorial factorizations.\n\n**Key History:**\n- Erdős & Graham (1980, p. 77, *Old and New Problems and Results in Combinatorial Number Theory*): Original problem statement\n- Berend (1997): Proved the affirmative answer with a stronger bounded-gaps result\n\n**Mathematical Setting:**\nThe p-adic valuation $v_p(n!)$ counts how many times prime $p$ divides $n!$. Legendre's formula gives $v_p(n!) = \\sum_{j \\geq 1} \\lfloor n/p^j \\rfloor$. The beautiful digit-sum identity $v_p(n!) = (n - s_p(n))/(p-1)$ (where $s_p(n)$ is the base-$p$ digit sum) reduces the parity question to properties of digit representations. For a single prime, the parity of $v_p(n!)$ is quasi-periodic with density $\\approx 1/2$. The challenge for multiple primes is showing these quasi-periodic patterns are not anti-correlated — that simultaneous even valuations occur infinitely often. Berend's proof uses the Chinese Remainder Theorem to decompose the multi-prime problem into independent single-prime problems, leveraging the digit-sum formula and equidistribution of digit patterns.",
@@ -166,7 +167,10 @@
       "description": "Related Erdős problem involving factorials and prime decomposition."
     }
   ],
-  "relatedProofs": ["erdos-728-factorial-divisibility", "erdos-728"],
+  "relatedProofs": [
+    "erdos-728-factorial-divisibility",
+    "erdos-728"
+  ],
   "conclusion": {
     "summary": "Erdős Problem #646 asked whether for any finite set of primes, infinitely many n exist where n! is divisible by an even power of each prime. The answer is YES, proved by Berend (1997). The sequence of such n has bounded gaps, implying positive density. For example, n=31 satisfies this for primes 2 and 3.",
     "implications": "**Number-Theoretic Connections**\n\n1. **Legendre's Formula:** Central to understanding factorial prime powers\n\n2. **Digit Sums:** vₚ(n!) = (n - sₚ(n))/(p-1) connects to base-p representations\n\n3. **Kummer's Theorem:** Carries in base-p addition count vₚ(C(m+n,n))\n\n4. **Bounded Gaps:** Stronger than mere infinitude\n\n5. **Arbitrary Parities:** Any assignment of even/odd to primes works",
