@@ -1,0 +1,111 @@
+{
+  "id": "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
+  "title": "Finite-Dimensional Cauchy-Schwarz, AM-GM, Nesbitt, and Titu's Lemma",
+  "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
+  "description": "Concrete applications of Cauchy-Schwarz and AM-GM in finite dimensions. Proves CS for ℝ² and ℝ³ via Lagrange identity, Young's inequality, AM-GM via square root, QM-AM, Titu's lemma (Engel form), and Nesbitt's inequality. All proved from first principles using nlinarith and sum-of-squares decompositions.",
+  "meta": {
+    "author": "Various (Cauchy 1821, Schwarz 1885, Young 1912, Titu Andreescu)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality",
+    "date": "1821",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ01.lean",
+    "tags": [
+      "inequality",
+      "cauchy-schwarz",
+      "am-gm",
+      "young-inequality",
+      "nesbitt",
+      "titu-lemma",
+      "competition-mathematics",
+      "nlinarith"
+    ],
+    "badge": "formalized",
+    "sorries": 2,
+    "dateAdded": "03/21/26",
+    "axiomCount": 0,
+    "originalContributions": [
+      "cs_sq_R2: Cauchy-Schwarz for ℝ² via Lagrange identity",
+      "cs_sq_R3: Cauchy-Schwarz for ℝ³ via three cross-term squares",
+      "young_two: Young's inequality ab ≤ a²/2 + b²/2",
+      "amgm_two: AM-GM √(ab) ≤ (a+b)/2 via sqrt monotonicity",
+      "amgm_sq: ab ≤ ((a+b)/2)² quadratic AM-GM",
+      "qm_am: Quadratic-Arithmetic mean inequality",
+      "titu_two: Titu's lemma (Engel form of CS) for 2 terms",
+      "nesbitt: Nesbitt's inequality a/(b+c)+b/(a+c)+c/(a+b) ≥ 3/2"
+    ],
+    "crossReferences": [
+      {
+        "proofId": "cauchy-schwarz-integral-oq-01-oq-01",
+        "relationship": "extends",
+        "description": "Extends the measure-theoretic Hölder hierarchy with concrete finite-dimensional applications"
+      },
+      {
+        "proofId": "cauchy-schwarz-integral",
+        "relationship": "related",
+        "description": "The original integral Cauchy-Schwarz inequality"
+      },
+      {
+        "proofId": "amgm-inequality",
+        "relationship": "related",
+        "description": "The general AM-GM inequality"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "These inequalities form the core toolkit of mathematical olympiad problem-solving and analysis. Cauchy-Schwarz (1821/1885) is the most frequently used inequality in competition mathematics. Titu's lemma, named after Titu Andreescu, is the Engel form of CS widely used in inequality proofs. Nesbitt's inequality (1903) is a classic symmetric inequality challenge.",
+    "problemStatement": "Prove fundamental inequalities in finite dimensions from first principles using algebraic identities and sum-of-squares decompositions.",
+    "proofStrategy": "All proofs use nlinarith with explicit sum-of-squares witnesses. The key insight is the Lagrange identity: (Σaᵢbᵢ)² = (Σaᵢ²)(Σbᵢ²) - Σᵢ<ⱼ(aᵢbⱼ-aⱼbᵢ)², making CS a consequence of squares being nonneg.",
+    "keyInsights": [
+      "Cauchy-Schwarz in coordinates reduces to the Lagrange identity",
+      "AM-GM follows from CS via √(ab) ≤ ((a+b)/2)² = a²+b²+2ab ≥ 4ab",
+      "Titu's lemma is proved by clearing denominators and applying CS",
+      "Nesbitt's inequality uses field_simp to clear fractions then SOS"
+    ]
+  },
+  "sections": [
+    {
+      "id": "part-i-cs",
+      "title": "Part I: Cauchy-Schwarz in Coordinates",
+      "startLine": 24,
+      "endLine": 41,
+      "summary": "Proves CS for ℝ² and ℝ³ using nlinarith with Lagrange identity cross-terms."
+    },
+    {
+      "id": "part-ii-young",
+      "title": "Part II: Young's Inequality",
+      "startLine": 43,
+      "endLine": 60,
+      "summary": "Proves Young ab ≤ a²/2+b²/2 from (a-b)²≥0. Young-ε version is sorry."
+    },
+    {
+      "id": "part-iii-amgm",
+      "title": "Part III: AM-GM Inequalities",
+      "startLine": 62,
+      "endLine": 88,
+      "summary": "AM-GM, quadratic AM-GM, and QM-AM, all from SOS decompositions."
+    },
+    {
+      "id": "part-iv-titu",
+      "title": "Part IV: Titu's Lemma",
+      "startLine": 90,
+      "endLine": 103,
+      "summary": "Titu's lemma (Engel form CS) for 2 terms via denominator clearing."
+    },
+    {
+      "id": "part-v-nesbitt",
+      "title": "Part V: Nesbitt's Inequality",
+      "startLine": 105,
+      "endLine": 124,
+      "summary": "Nesbitt's a/(b+c)+b/(a+c)+c/(a+b)≥3/2 via field_simp and SOS."
+    }
+  ],
+  "conclusion": {
+    "summary": "A collection of fundamental inequalities proved from first principles. 8 theorems proved, 2 sorries (Young-ε and Schur). All proofs use algebraic identities and nlinarith.",
+    "openQuestions": [
+      "Prove Young with epsilon via sqrt substitution",
+      "Prove Schur's inequality via SOS decomposition",
+      "Extend to n-variable Cauchy-Schwarz (Finset.sum version)",
+      "Power mean inequality chain: min ≤ HM ≤ GM ≤ AM ≤ QM ≤ max"
+    ]
+  }
+}
