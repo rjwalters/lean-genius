@@ -101,8 +101,8 @@
     "range": { "startLine": 235, "endLine": 246 },
     "type": "concept",
     "title": "Romanoff's Theorem (1934)",
-    "content": "`romanoff_positive_density` (axiom): A positive proportion $\\delta > 0$ of integers can be written as $2^k + p$ for prime $p$.\n\nThis is a POSITIVE result: asking for $\\Omega(m) = 1$ (i.e., $m$ prime) works for many $n$. But not all — and the disproof shows even the far weaker $\\Omega(m) < \\log \\log m$ doesn't suffice universally.",
-    "mathContext": "Romanoff proved $\\delta = \\lim_{N \\to \\infty} \\frac{|\\{n \\le N : n = 2^k + p\\}|}{N} > 0$. The exact value $\\delta \\approx 0.434$ involves a product over primes and the density of powers of 2.",
+    "content": "`romanoff_positive_density` (axiom): A positive proportion $\\delta > 0$ of integers can be written as $2^k + p$ for prime $p$.\n\nThis is a POSITIVE result: asking for $\\Omega(m) = 1$ (i.e., $m$ prime) works for many $n$. But not all — and the disproof shows even the far weaker $\\Omega(m) < \\log \\log m$ doesn't suffice universally. Romanoff's original proof uses a counting argument over primes $p \\le N$ and exponents $k \\le \\log_2 N$, bounding collisions via the PNT.",
+    "mathContext": "Romanoff proved $\\delta = \\lim_{N \\to \\infty} \\frac{|\\{n \\le N : n = 2^k + p\\}|}{N} > 0$. The exact value is $\\delta = \\sum_{k=1}^{\\infty} \\frac{1}{2^k \\log 2^k} \\cdot (1 - \\text{collision correction})$. Numerical estimates give $\\delta \\approx 0.434$. The proof uses inclusion-exclusion on the sets $A_k = \\{2^k + p : p \\le N - 2^k\\}$.",
     "significance": "key",
     "relatedConcepts": ["positive density", "Goldbach-type representation", "IsPowerPlusePrime"],
     "prerequisites": ["analytic number theory", "density of sums"]
@@ -149,8 +149,8 @@
     "range": { "startLine": 390, "endLine": 404 },
     "type": "concept",
     "title": "Hardy-Ramanujan Average and Erdős-Kac Concentration",
-    "content": "Two axiomatized analytic results providing context for why $\\log \\log$ is the natural threshold:\n\n`average_omega_asymptotic` (Hardy-Ramanujan 1917): $\\frac{1}{N} \\sum_{n=1}^{N} \\Omega(n) / \\log \\log N \\to 1$.\n\n`omega_concentration` (Erdős-Kac 1940): The fraction of $n \\le N$ with $|\\Omega(n) - \\log \\log n| > \\varepsilon \\sqrt{\\log \\log n}$ tends to 0. In full strength, $(\\Omega(n) - \\log \\log n) / \\sqrt{\\log \\log n} \\to N(0,1)$ in distribution.",
-    "mathContext": "The Erdős-Kac theorem is remarkable: $\\Omega(n)$ is asymptotically Gaussian despite being a deterministic arithmetic function. This makes $\\log \\log n$ the 'typical' value and explains why Erdős expected the conjecture to be true.",
+    "content": "Two axiomatized analytic results providing context for why $\\log \\log$ is the natural threshold:\n\n`average_omega_asymptotic` (Hardy-Ramanujan 1917): $\\frac{1}{N} \\sum_{n=1}^{N} \\Omega(n) / \\log \\log N \\to 1$. Turán (1934) gave a dramatically simpler proof using only the second moment method.\n\n`omega_concentration` (Erdős-Kac 1940): The fraction of $n \\le N$ with $|\\Omega(n) - \\log \\log n| > \\varepsilon \\sqrt{\\log \\log n}$ tends to 0. In full strength, $(\\Omega(n) - \\log \\log n) / \\sqrt{\\log \\log n} \\to N(0,1)$ in distribution. This was the first 'probabilistic number theory' result and launched the Erdős-Kac paradigm.",
+    "mathContext": "The Erdős-Kac theorem is remarkable: $\\Omega(n)$ is asymptotically Gaussian despite being a deterministic arithmetic function, because the contributions of different primes $p \\mid n$ behave like approximately independent Bernoulli random variables with parameter $1/p$. The variance $\\sum_{p \\le n} 1/p \\approx \\log \\log n$ explains the normalization. This makes $\\log \\log n$ the 'typical' value and explains why Erdős expected the conjecture to be true.",
     "significance": "supporting",
     "relatedConcepts": ["Hardy-Ramanujan theorem", "Erdős-Kac theorem", "normal distribution", "Filter.Tendsto"],
     "prerequisites": ["prime number theorem", "central limit theorem"]
