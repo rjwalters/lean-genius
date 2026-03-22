@@ -17,7 +17,8 @@
     "type": "definition",
     "title": "Distinct Distances Property",
     "content": "**HasDistinctDistances S:**\n\nA set S has the distinct distances property if every two distinct pairs of points have different distances.\n\nFormally: If {p₁, p₂} ≠ {p₃, p₄} are pairs in S, then dist(p₁, p₂) ≠ dist(p₃, p₄).",
-    "significance": "critical"
+    "significance": "critical",
+    "relatedConcepts": ["distinct distances problem", "Erdős distance conjecture", "point configurations", "metric geometry"]
   },
   {
     "id": "ann-1127-3",
