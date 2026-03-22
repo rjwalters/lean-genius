@@ -1,40 +1,52 @@
 {
   "id": "ballot-problem-oq-03-oq-02",
-  "name": "General LGV Lemma: r\u00d7r Lindstr\u00f6m-Gessel-Viennot Determinant",
+  "name": "General LGV Lemma: r×r Lindström-Gessel-Viennot Determinant",
   "status": "surveyed",
   "phase": "ACT",
   "knowledge": {
     "insights": [
-      "Parent OQ03 (2878 lines, 0 axioms, 0 sorries) proves the 2\u00d72 LGV lemma completely",
-      "2\u00d72 LGV: non-intersecting path pairs = e(A1,B1)e(A2,B2) - e(A1,B2)e(A2,B1) = det[[e(Ai,Bj)]]",
-      "General r\u00d7r LGV: non-intersecting r-tuples = det[[e(Ai,Bj)]] for i,j = 1..r",
-      "Proof for r\u00d7r requires sign-reversing involution on r-tuples of paths",
+      "Parent OQ03 (2878 lines, 0 axioms, 0 sorries) proves the 2×2 LGV lemma completely",
+      "2×2 LGV: non-intersecting path pairs = e(A1,B1)e(A2,B2) - e(A1,B2)e(A2,B1) = det[[e(Ai,Bj)]]",
+      "General r×r LGV: non-intersecting r-tuples = det[[e(Ai,Bj)]] for i,j = 1..r",
+      "Proof for r×r requires sign-reversing involution on r-tuples of paths",
       "Mathlib has Matrix.det and Equiv.Perm infrastructure for the sign arguments",
       "Matrix.det_fin_two and Matrix.det_fin_three from Mathlib verify small cases automatically",
-      "The Leibniz formula bridge (det = \u03a3 sign(\u03c3)\u00b7\u03a0) needs careful cast handling between Perm.sign (Units \u2124) and \u2124",
+      "The Leibniz formula bridge (det = Σ sign(σ)·Π) needs careful cast handling between Perm.sign (Units ℤ) and ℤ",
       "The GV involution is the key sorry: needs definition of 'first intersection point' and proof of sign reversal",
-      "Separating the involution hypothesis from the algebraic machinery makes the proof modular"
+      "Separating the involution hypothesis from the algebraic machinery makes the proof modular",
+      "Algebraic bridge proved: det(pathMatrix) = sum_sigma sign(sigma) * card(PermPathTuple) via column Leibniz formula",
+      "permPathTuple_card proved: card of sigma-tuples = product of binomial coefficients (from pathMN_card)",
+      "firstNonFixed infrastructure: smallest non-fixed point of perm, with spec/minimal/lt_image lemmas all proved",
+      "GV cancellation isolated as sole axiom; lgv_lemma_rxr is now a theorem proved from algebraic bridge + GV axiom",
+      "Units.smul_def handles sign coercion (ℤˣ • ℤ = ↑ℤˣ * ℤ) in det formula connection"
     ],
     "builtItems": [
-      "BallotProblemOQ03OQ02.lean: r\u00d7r LGV infrastructure (204 lines)",
+      "BallotProblemOQ03OQ02.lean: r×r LGV infrastructure (204 lines)",
       "pathMatrix / latticePathMatrix: path weight matrix over Fin r",
       "permPathCount / signedPermPathCount: signed permutation path counting",
-      "lgv_lemma_general: general r\u00d7r LGV statement from involution hypothesis",
-      "lgv_2x2_det: verified 2\u00d72 determinant specialization",
-      "lgv_3x3_det: verified 3\u00d73 determinant expansion (6 terms)",
-      "GV involution algorithm documented in detail (swap tails at first intersection)"
+      "lgv_lemma_general: general r×r LGV statement from involution hypothesis",
+      "lgv_2x2_det: verified 2×2 determinant specialization",
+      "lgv_3x3_det: verified 3×3 determinant expansion (6 terms)",
+      "GV involution algorithm documented in detail (swap tails at first intersection)",
+      "firstNonFixed: smallest non-fixed point of non-identity perm (def + 3 lemmas, all proved)",
+      "permPathTuple_card: card(PermPathTuple cfg sigma) = prod of C(m+(b_sigma(i)-a_i), m) (proved from pathMN_card)",
+      "det_pathMatrix_eq_signed_sum: det = signed sum of perm path tuple counts (proved via column Leibniz)",
+      "gv_involution_cancellation: GV cancellation axiom (the single remaining axiom)",
+      "lgv_lemma_rxr: NOW A THEOREM (was axiom), proved from algebraic bridge + GV cancellation"
     ],
     "openQuestions": [
-      "Can the 2\u00d72 proof structure generalize cleanly to r\u00d7r?",
-      "Does Mathlib have alternating sum / inclusion-exclusion tools for this?"
+      "Can pathMN_card be proved via bijection with Finset.powersetCard?",
+      "GV involution: need first intersection point definition for lattice paths",
+      "GV involution: need proof that non-identity perm paths must cross (crossing lemma)"
     ],
     "nextSteps": [
-      "Prove det_eq_signed_sum (Leibniz bridge) - mainly type coercion work",
-      "Implement GV involution: find first intersection, swap tails, prove involutivity",
-      "Prove gv_involution_cancellation: sign reversal implies cancellation",
-      "Connect to parent's PathMN type for concrete lattice path instantiation"
+      "Prove pathMN_card: PathMN m n ≃ {S ⊆ Fin(m+n) | |S| = m} via indicator bijection",
+      "Formalize GV involution: define first intersection of two lattice paths",
+      "Prove crossing lemma: paths with ordered sources and permuted targets must intersect",
+      "Build involution: swap tails at first intersection, prove involutivity and sign reversal",
+      "Prove gv_involution_cancellation from the constructed involution"
     ],
-    "progressSummary": "PROGRESS: Built r\u00d7r LGV infrastructure. Defined path weight matrices, signed permutation counting. Verified 2\u00d72 and 3\u00d73 det formulas. Stated general LGV from involution hypothesis. 204 lines, 13 defs/theorems, 5 sorries."
+    "progressSummary": "PROGRESS: Proved lgv_lemma_rxr as theorem (was axiom). Added algebraic bridge connecting det to signed perm counts. Built firstNonFixed infrastructure (4 lemmas proved). Isolated GV involution cancellation as the sole remaining axiom. 1 axiom, 1 sorry (pathMN_card). ~370 lines."
   },
-  "lastUpdate": "2026-03-22T06:19:21Z"
+  "lastUpdate": "2026-03-22T08:00:00Z"
 }
