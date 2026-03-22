@@ -4,16 +4,17 @@
   "slug": "erdos-667",
   "description": "Is c(p,q) = lim inf log H(n;p,q)/log n strictly increasing in q, where H(n;p,q) is the largest clique guaranteed when every p-set spans ≥ q edges?",
   "meta": {
-    "author": "Erdős",
+    "author": "Erdős, Faudree, Rousseau, Schelp",
     "sourceUrl": "https://erdosproblems.com/667",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos667Problem.lean",
+    "leanFile": "proofs/Proofs/Erdos667Problem.lean",
     "tags": [
       "erdos",
-      "graph theory",
-      "Ramsey theory",
-      "extremal graph theory",
-      "clique numbers"
+      "graph-theory",
+      "ramsey-theory",
+      "extremal-graph-theory",
+      "clique-numbers"
     ],
     "badge": "axiom",
     "sorries": 0,
@@ -21,64 +22,161 @@
     "erdosUrl": "https://erdosproblems.com/667",
     "erdosProblemStatus": "open",
     "axiomCount": 15,
-    "lineCount": 255
+    "lineCount": 255,
+    "dateAdded": "2026-02-10",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph.Clique",
+        "description": "Definition of cliques in simple graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients C(n,k) for defining q_max = C(p-1,2)+1",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
+    ],
+    "originalContributions": [
+      "edgeCount: definition of induced edge count via filtered ordered pairs",
+      "HasDensity: formal (p,q)-density condition on simple graphs",
+      "cpq_strict_at_top: strict increase at last step via EFRS bound + boundary value",
+      "cpq_pos_at_one: positivity c(p,1) > 0 via Ramsey lower bound for p ≥ 3",
+      "cpq_mono_q_general: extended weak monotonicity by induction on Nat.le",
+      "p3_strict: complete resolution of the p=3 case (c(3,1) < c(3,2)=1)",
+      "erdos667_weak_evidence: c(p,1) < 1 = c(p,q_max) from Ramsey upper bound",
+      "erdos667_summary: packaging of all known structural results"
+    ],
+    "references": [
+      {
+        "key": "EFRS93",
+        "citation": "Erdős, P., Faudree, R.J., Rousseau, C.C., and Schelp, R.H., Subgraphs of minimal degree k, Discrete Mathematics 115 (1993), 83–94.",
+        "type": "paper"
+      },
+      {
+        "key": "Er97f",
+        "citation": "Erdős, P., Some old and new problems in various branches of combinatorics, Discrete Mathematics 165/166 (1997), 227–231. Contains Problem 667.",
+        "type": "paper"
+      },
+      {
+        "key": "GRS90",
+        "citation": "Graham, R.L., Rothschild, B.L., and Spencer, J.H., Ramsey Theory, 2nd ed., Wiley (1990). Standard reference for Ramsey bounds.",
+        "type": "book"
+      }
+    ],
+    "prerequisites": [
+      "Graph theory: simple graphs, cliques, induced subgraphs",
+      "Ramsey theory: classical Ramsey numbers R(p,m) and their bounds",
+      "Extremal graph theory: Turán-type density conditions",
+      "Combinatorics: binomial coefficients C(n,k)"
+    ],
+    "relatedProofs": [
+      "ramseys-theorem",
+      "erdos-szekeres",
+      "friendship-theorem"
+    ]
   },
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "When q=1, the (p,q)-density condition reduces to 'no independent set of size p,' recovering classical Ramsey theory. The bounds 1/(p-1) ≤ c(p,1) ≤ 2/(p+1) come directly from Ramsey number estimates"
+    },
+    {
+      "targetId": "erdos-szekeres",
+      "relationship": "related",
+      "description": "The Erdős-Szekeres theorem on monotone subsequences is another Ramsey-type result where local structure (pairwise comparisons) forces global structure (long sequences). Both problems ask how local constraints propagate to global guarantees"
+    },
+    {
+      "targetId": "friendship-theorem",
+      "relationship": "thematic",
+      "description": "Both are results about how local constraints in graphs force global structure: the friendship theorem shows that 'every pair has exactly one common friend' forces a windmill graph, while Problem 667 asks how 'every p-set spans q edges' forces large cliques"
+    }
+  ],
   "overview": {
-    "historicalContext": "**Erdős, Faudree, Rousseau, and Schelp** (EFRS) studied $H(n;p,q)$, the largest clique guaranteed in $n$-vertex graphs where every $p$-vertex subset spans $\\geq q$ edges. They defined $c(p,q) = \\liminf_{n\\to\\infty} \\log H(n;p,q)/\\log n$ and asked whether it is strictly increasing in $q$. The problem interpolates between classical Ramsey theory ($q=1$, reduces to independence-number bounds) and complete graphs ($q = \\binom{p-1}{2}+1$, forces $G = K_n$). The EFRS bound $c(p, \\lfloor(p-1)/2\\rfloor) \\leq 1/2$ shows a dramatic jump at the top of the range. Classical Ramsey bounds give $1/(p-1) \\leq c(p,1) \\leq 2/(p+1)$; the intermediate values remain largely open.",
-    "problemStatement": "Is c(p,q) strictly increasing in q for 1 ≤ q ≤ C(p-1,2) + 1?",
-    "proofStrategy": "The formalization axiomatises H(n;p,q) with monotonicity and boundary values, then defines c(p,q) with known Ramsey bounds and the EFRS bound. The strict monotonicity conjecture is the main statement.",
+    "historicalContext": "**Erdős, Faudree, Rousseau, and Schelp** (EFRS) introduced the function $H(n;p,q)$ in the early 1990s as part of a systematic study of Ramsey-type problems with density constraints. For fixed $p$ and $q$, $H(n;p,q)$ is the largest clique size $m$ such that every $n$-vertex graph where every $p$-vertex subset spans at least $q$ edges must contain $K_m$. They defined the polynomial exponent $c(p,q) = \\liminf_{n\\to\\infty} \\log H(n;p,q)/\\log n$ and asked whether it is strictly increasing in $q$.\n\nThe problem interpolates between two classical extremes. At $q=1$, the condition 'every $p$-set spans at least 1 edge' is equivalent to having no independent set of size $p$, reducing to classical Ramsey theory. The best known bounds give $1/(p-1) \\leq c(p,1) \\leq 2/(p+1)$: the lower bound from Erdős's probabilistic argument (1947) and the upper bound from Shearer's entropy method (1983). At the opposite extreme $q = \\binom{p-1}{2}+1$, every $p$-set is a complete graph, forcing $G = K_n$ and giving $c(p, q_{\\max}) = 1$.\n\nThe EFRS bound $c(p, \\binom{p-1}{2}) \\leq 1/2$ shows that even at the second-to-last density level, the exponent is at most $1/2$. Since $c(p, \\binom{p-1}{2}+1) = 1$, this establishes a dramatic jump at the top of the $q$-range: the last edge requirement per $p$-set at least doubles the polynomial growth rate of the clique guarantee. The conjecture asks whether every intermediate step also produces a strict increase — ruling out 'plateaus' in the function $q \\mapsto c(p,q)$.\n\nAs of 2026, the problem remains open for general $p$. The $p=3$ case is fully resolved (there is only one step to check), but even $p=4$ is only partially resolved at the top step.",
+    "problemStatement": "Is $c(p,q) = \\liminf_{n\\to\\infty} \\log H(n;p,q)/\\log n$ strictly increasing in $q$ for $1 \\leq q \\leq \\binom{p-1}{2}+1$, where $H(n;p,q)$ is the largest clique guaranteed in any $n$-vertex graph whose every $p$-vertex subset spans at least $q$ edges?",
+    "proofStrategy": "The formalization builds up in eight parts. Parts I-II define the graph-theoretic foundations (`edgeCount`, `HasDensity`) and axiomatize $H(n;p,q)$ with monotonicity in $n$ and $q$, positivity, and the upper bound $H \\leq n$. Part III establishes boundary values: $H = n$ at maximum density and $H = 1$ at zero density. Part IV axiomatizes the exponent $c(p,q)$ with non-negativity, boundedness ($\\leq 1$), and weak monotonicity. Part V axiomatizes the known bounds: Ramsey interval for $c(p,1)$, $c = 1$ at maximum $q$, and the EFRS bound. Part VI derives five consequences from the axioms: the range of $c$, strict increase at the top (via EFRS + boundary), positivity of $c(p,1)$, extended weak monotonicity (by induction on $\\leq$), and the Ramsey interval. Part VII resolves small cases ($p=3$ fully, $p=4$ at top). Part VIII states the main conjecture and proves weak evidence ($c(p,1) < 1$).",
     "keyInsights": [
-      "H(n;p,q) generalises Ramsey numbers by requiring q edges per p-set",
-      "c(p,1) corresponds to classical Ramsey: 1/(p-1) ≤ c ≤ 2/(p+1)",
-      "c(p, C(p-1,2)+1) = 1 trivially (every graph is complete)",
-      "EFRS proved c(p, ⌊(p-1)/2⌋) ≤ 1/2",
-      "For p=3, the conjecture reduces to c(3,1) < c(3,2)=1, which is fully proved"
+      "H(n;p,q) generalizes Ramsey numbers by requiring q edges per p-set, creating a continuous interpolation between Ramsey theory (q=1) and complete graph forcing (q=q_max)",
+      "c(p,1) corresponds to classical Ramsey: 1/(p-1) ≤ c ≤ 2/(p+1), with the lower bound from Erdős's 1947 probabilistic argument and the upper bound from Shearer's 1983 entropy method",
+      "c(p, C(p-1,2)+1) = 1 trivially: requiring every p-set to span more than C(p-1,2) edges forces every p-set to be a clique, hence the graph is complete",
+      "The EFRS bound c(p, C(p-1,2)) ≤ 1/2 combined with c(p, C(p-1,2)+1) = 1 shows the last edge requirement at least doubles the exponent — a dramatic phase transition",
+      "For p=3, q ranges over {1,2} and the conjecture reduces to c(3,1) < c(3,2)=1, which follows immediately from the Ramsey upper bound 2/(3+1) = 1/2 < 1",
+      "The difficulty concentrates in the middle of the q-range: at the endpoints c is determined, and at the top it jumps; the question is whether intermediate steps also produce strict increases"
+    ],
+    "prerequisites": [
+      "Graph theory: simple graphs, cliques, independent sets, and the Ramsey property",
+      "Ramsey theory: classical Ramsey numbers $R(p,m)$ and their known bounds (probabilistic lower bound, Shearer upper bound)",
+      "Extremal graph theory: Turán-type problems and density conditions on graphs",
+      "Asymptotic analysis: the lim inf of $\\log H(n;p,q)/\\log n$ capturing polynomial growth rates"
     ]
   },
   "sections": [
     {
+      "id": "foundations",
+      "title": "Graph-Theoretic Foundations",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Problem statement, imports, and definitions of edgeCount (induced edge count via filtered ordered pairs) and HasDensity (the (p,q)-density condition requiring every p-element subset to span at least q edges).",
+      "mathContext": "$\\text{edgeCount}(G, S) = |\\{(u,v) \\in S \\times S : u \\neq v, G.\\text{Adj}(u,v)\\}|/2$. $\\text{HasDensity}(G, p, q) :\\Leftrightarrow \\forall S \\subseteq V,\\ |S|=p \\Rightarrow \\text{edgeCount}(G,S) \\geq q$."
+    },
+    {
       "id": "clique-guarantee",
       "title": "The Function H(n; p, q)",
-      "startLine": 24,
-      "endLine": 38,
-      "summary": "Axiomatisation of H(n;p,q) with monotonicity in n and q."
+      "startLine": 54,
+      "endLine": 83,
+      "summary": "Axiomatization of H(n;p,q) = cliqueGuarantee with five properties: positivity (H ≥ 1), monotonicity in n and q, upper bound (H ≤ n), and the definition as largest guaranteed clique size.",
+      "mathContext": "$H(n;p,q) = \\max\\{m : \\text{every } n\\text{-vertex graph with (p,q)-density contains } K_m\\}$. Axioms: $H \\geq 1$, $H(n) \\leq H(n+1)$, $H(q) \\leq H(q+1)$, $H \\leq n$."
     },
     {
       "id": "boundary-values",
       "title": "Boundary Values",
-      "startLine": 40,
-      "endLine": 49,
-      "summary": "H at maximum q equals n (complete graph); H at q = 0 equals 1."
+      "startLine": 84,
+      "endLine": 99,
+      "summary": "H at maximum density q = C(p-1,2)+1 equals n (forces complete graph); H at q=0 equals 1 (no constraint, trivial clique).",
+      "mathContext": "$H(n; p, \\binom{p-1}{2}+1) = n$ (complete graph forced). $H(n; p, 0) = 1$ (no constraint). These anchor the interpolation: $c(p,0) = 0$ and $c(p, q_{\\max}) = 1$."
     },
     {
       "id": "exponent",
-      "title": "The Exponent c(p, q)",
-      "startLine": 51,
-      "endLine": 72,
-      "summary": "c(p,q) with Ramsey bounds for q = 1, c = 1 at max q, and EFRS bound."
+      "title": "The Exponent c(p, q) and Known Bounds",
+      "startLine": 100,
+      "endLine": 141,
+      "summary": "Axiomatization of c(p,q) with non-negativity, boundedness, weak monotonicity, Ramsey bounds for q=1, c=1 at max q, and the EFRS bound c(p, C(p-1,2)) ≤ 1/2.",
+      "mathContext": "$c(p,q) = \\liminf_{n\\to\\infty} \\frac{\\log H(n;p,q)}{\\log n} \\in [0,1]$. Ramsey: $\\frac{1}{p-1} \\leq c(p,1) \\leq \\frac{2}{p+1}$. EFRS: $c(p, \\binom{p-1}{2}) \\leq \\frac{1}{2}$."
     },
     {
-      "id": "main-conjecture",
-      "title": "Main Conjecture",
-      "startLine": 74,
-      "endLine": 82,
-      "summary": "c(p,q) is strictly increasing in q."
+      "id": "proved-consequences",
+      "title": "Proved Structural Consequences",
+      "startLine": 142,
+      "endLine": 184,
+      "summary": "Five theorems from axioms: cpq_range, cpq_strict_at_top (via EFRS + boundary), cpq_pos_at_one (c(p,1) > 0), cpq_mono_q_general (extended monotonicity by induction), cpq_ramsey_interval.",
+      "mathContext": "Key result: $c(p, \\binom{p-1}{2}) \\leq 1/2 < 1 = c(p, \\binom{p-1}{2}+1)$, proving strict increase at the last step. Also $c(p,1) > 0$ for $p \\geq 3$ via $1/(p-1) > 0$."
     },
     {
       "id": "small-cases",
-      "title": "Small Cases and Evidence",
-      "startLine": 84,
-      "endLine": 115,
-      "summary": "p=3 fully resolved; p=4 proved at top step via EFRS; intermediate q values remain open."
+      "title": "Small Cases: p=3 and p=4",
+      "startLine": 185,
+      "endLine": 216,
+      "summary": "p=3: q ranges over {1,2}, conjecture fully resolved via Ramsey upper bound. p=4: q ranges over {1,2,3,4}, EFRS gives strict increase at top (c(4,3) < c(4,4)=1) but intermediate steps open.",
+      "mathContext": "$p=3$: $c(3,1) \\leq 2/4 = 1/2 < 1 = c(3,2)$. $p=4$: $c(4,3) \\leq 1/2 < 1 = c(4,4)$ (EFRS), but $c(4,1) < c(4,2)$ and $c(4,2) < c(4,3)$ remain open."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture and Weak Evidence",
+      "startLine": 217,
+      "endLine": 255,
+      "summary": "ErdosProblem667: c(p,q) < c(p,q+1) for all valid q. Weak evidence: c(p,1) < 1 = c(p,q_max). Summary theorem packaging all known results.",
+      "mathContext": "$\\forall p \\geq 3,\\ \\forall 1 \\leq q < \\binom{p-1}{2}+1: c(p,q) < c(p,q+1)$. Weak evidence: $c(p,1) \\leq 2/(p+1) < 1 = c(p, q_{\\max})$."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 667, asking whether the clique density exponent c(p,q) is strictly increasing in the edge-density parameter q.",
-    "implications": "Strict monotonicity would show that every additional edge per p-set gives a strictly larger polynomial clique guarantee, refining the landscape between Ramsey theory and Turán-type extremal results.",
+    "summary": "This formalization captures Erdős Problem 667 in 255 lines with 15 axioms encoding the extremal function H(n;p,q) and its exponent c(p,q), and 12 proved theorems deriving structural consequences. The key proved result is strict increase at the top step (via EFRS + boundary value), and the p=3 case is fully resolved. The main conjecture — strict monotonicity of c(p,q) in q — remains open.",
+    "implications": "Strict monotonicity would establish that every additional edge per p-set produces a measurably larger polynomial clique guarantee, ruling out 'plateaus' in the density-to-structure transfer function. This would provide a fine-grained understanding of how local graph density translates to global clique structure, connecting Ramsey theory (q=1) to Turán-type extremal problems (q near maximum) through a monotone interpolation.",
     "openQuestions": [
-      "Is c(p,q) strictly increasing in q?",
-      "What is the exact value of c(p,q) for small p and general q?",
-      "Can the EFRS bound c(p, ⌊(p-1)/2⌋) ≤ 1/2 be improved?"
+      "Is c(p,q) strictly increasing in q for all 1 ≤ q < C(p-1,2)+1? The formalization proves this at the top step and for p=3, but the general case remains open",
+      "What is the exact value of c(p,q) for small p and general q? Even c(3,1) is only known to lie in [1/2, 1/2] (i.e., exactly 1/2), while c(4,1) lies in [1/3, 2/5]",
+      "Can the EFRS bound c(p, C(p-1,2)) ≤ 1/2 be improved? Is it tight for all p?",
+      "What is the relationship between c(p,q) and Szemerédi's regularity lemma? The regularity lemma controls the distribution of edges among vertex subsets, suggesting a connection to the (p,q)-density condition"
     ]
   },
   "leanFile": {
