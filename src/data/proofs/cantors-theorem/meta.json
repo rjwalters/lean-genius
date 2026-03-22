@@ -59,42 +59,48 @@
       "title": "Introduction",
       "startLine": 1,
       "endLine": 46,
-      "summary": "Overview of Cantor's theorem, its connection to Wiedijk #63, and relationship to the diagonalization result."
+      "summary": "Overview of Cantor's theorem, its connection to Wiedijk #63, and relationship to the diagonalization result.",
+      "mathContext": "Cantor's theorem: for any set $A$, there is no surjection $f: A \\to \\mathcal{P}(A)$. Equivalently, $|A| < |\\mathcal{P}(A)| = 2^{|A|}$. In Lean: `A → Prop` represents $\\mathcal{P}(A)$ (the type of predicates on $A$)."
     },
     {
       "id": "main-mathlib",
       "title": "Main Theorem (Mathlib)",
       "startLine": 48,
       "endLine": 60,
-      "summary": "The core theorem using Mathlib's Function.cantor_surjective for the (A -> Prop) formulation."
+      "summary": "The core theorem using Mathlib's Function.cantor_surjective for the (A -> Prop) formulation.",
+      "mathContext": "$\\neg \\exists f: A \\to (A \\to \\text{Prop}),\\; \\text{Surjective}(f)$. Uses `Function.cantor_surjective` from Mathlib, which proves no function from a type to its power type can be surjective."
     },
     {
       "id": "set-formulation",
       "title": "Set Formulation",
       "startLine": 62,
       "endLine": 94,
-      "summary": "Alternative proof using Set A instead of (A -> Prop), with explicit diagonal set construction."
+      "summary": "Alternative proof using Set A instead of (A -> Prop), with explicit diagonal set construction.",
+      "mathContext": "Constructs the diagonal set $D = \\{a \\in A \\mid a \\notin f(a)\\}$ for a hypothetical surjection $f: A \\to \\text{Set}\\, A$. Since $f$ is surjective, $\\exists d: f(d) = D$. Then $d \\in D \\iff d \\notin f(d) = D$ — a contradiction."
     },
     {
       "id": "diagonal-paradox",
       "title": "The Diagonal Paradox",
       "startLine": 96,
       "endLine": 106,
-      "summary": "The core lemma showing that the diagonal set leads to a self-referential contradiction."
+      "summary": "The core lemma showing that the diagonal set leads to a self-referential contradiction.",
+      "mathContext": "The Barber paradox formalized: if $S = \\{x \\mid x \\notin f(x)\\}$ and $f(a) = S$, then $a \\in S \\iff a \\notin S$, which is a contradiction ($P \\iff \\neg P$ is false in classical logic)."
     },
     {
       "id": "corollaries",
       "title": "Corollaries",
       "startLine": 108,
       "endLine": 131,
-      "summary": "Derived results including strict cardinality inequality and impossibility of bijection."
+      "summary": "Derived results including strict cardinality inequality and impossibility of bijection.",
+      "mathContext": "Strict cardinality: $|A| < |\\mathcal{P}(A)|$ (injection $a \\mapsto \\{a\\}$ exists, but no surjection). No bijection: $\\neg \\exists f: A \\xrightarrow{\\sim} \\mathcal{P}(A)$ (since a bijection would be surjective). This implies the hierarchy $|\\mathbb{N}| < |\\mathcal{P}(\\mathbb{N})| < |\\mathcal{P}(\\mathcal{P}(\\mathbb{N}))| < \\cdots$."
     },
     {
       "id": "constructive-witness",
       "title": "Constructive Witness",
       "startLine": 133,
       "endLine": 156,
-      "summary": "Shows the proof is constructive: given any f, we can explicitly construct a set not in its range."
+      "summary": "Shows the proof is constructive: given any f, we can explicitly construct a set not in its range.",
+      "mathContext": "Given $f: A \\to \\text{Set}\\, A$, the set $D_f = \\{a \\mid a \\notin f(a)\\}$ is constructively computable and satisfies $D_f \\notin \\text{range}(f)$. This is stronger than the classical non-existence result: we provide an explicit missing set."
     }
   ],
   "conclusion": {
@@ -105,5 +111,27 @@
       "How does this relate to type-theoretic universes and Girard's paradox?",
       "Can we generalize the diagonal argument to other structures beyond sets?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "extends",
+      "description": "Cantor's diagonalization proves the reals are uncountable (no bijection N→R); Cantor's theorem generalizes this to all sets (no surjection A→P(A))"
+    },
+    {
+      "targetId": "halting-problem",
+      "relationship": "technique",
+      "description": "Turing's undecidability of the halting problem uses the same self-referential diagonal argument: a hypothetical halt-decider applied to itself yields a contradiction"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "related",
+      "description": "Both are foundational existence/impossibility results: infinitude of primes shows N has no largest prime, Cantor's theorem shows there is no largest cardinal"
+    }
+  ],
+  "relatedProofs": [
+    "cantor-diagonalization",
+    "halting-problem",
+    "infinitude-primes"
+  ]
 }
