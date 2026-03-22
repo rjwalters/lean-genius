@@ -51,7 +51,8 @@
       "The reflection principle $P(\\max_{s \\leq T} W_s \\geq a) = 2P(W_T \\geq a)$ is the continuous analog of André's lattice path reflection",
       "First passage time $\\tau_a = \\inf\\{t \\geq 0 : W_t \\geq a\\}$ is defined via `sInf`, with measurability from path continuity",
       "Lévy's arcsine distribution $P(L_T/T \\leq r) = (2/\\pi)\\arcsin(\\sqrt{r})$ shows BM spends most time entirely positive or entirely negative",
-      "Donsker's invariance principle $S_{\\lfloor nt \\rfloor}/\\sqrt{n} \\Rightarrow W_t$ connects the discrete formula $(p-q)/(p+q)$ to the continuous reflection principle"
+      "Donsker's invariance principle $S_{\\lfloor nt \\rfloor}/\\sqrt{n} \\Rightarrow W_t$ connects the discrete formula $(p-q)/(p+q)$ to the continuous reflection principle",
+      "The axiomatic formalization isolates precisely which properties of Brownian motion are needed: symmetry (Gaussian marginals) for the reflection principle, the strong Markov property for first passage times, and path regularity for the arcsine law — providing a roadmap for future Mathlib development"
     ]
   },
   "sections": [
