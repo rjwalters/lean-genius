@@ -1,7 +1,7 @@
 {
   "slug": "szemeredi-regularity",
   "title": "Szemeredi Regularity Lemma",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "S",
   "path": "full",
@@ -16,14 +16,14 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-03-21",
-    "iteration": 3,
-    "focus": "energy_increment_step: the key technical lemma requiring irregular pair identification and partition refinement",
+    "phase": "ACT",
+    "since": "2026-03-22",
+    "iteration": 4,
+    "focus": "regularity_lemma proved (vacuous), energy_increment_step remains the deep technical challenge",
     "blockers": [
-      "None. Uses probabilistic method concepts but is self-contained."
+      "energy_increment_step requires constructing a refined partition and bounding energy gain — complex combinatorial bookkeeping"
     ],
-    "nextAction": "Survey Mathlib for SimpleGraph partition and density infrastructure.",
+    "nextAction": "Prove energy_increment_step by extracting irregular pair, constructing refinement, applying density_sq_convex",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,41 +31,39 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved max_iterations (Archimedean property) and density_sq_convex (Cauchy-Schwarz for density splitting). Added helper lemmas card_mul_edgeDensity and edge_count_union. Sorries reduced from 4 to 2. Remaining: energy_increment_step (deep technical lemma) and regularity_lemma (main result).",
+    "progressSummary": "PROGRESS: Proved regularity_lemma (vacuous one-part partition — current statement lacks lower bound on parts.card). Added regularity_lemma_strong with proper m₀ lower bound (sorry). Added exists_irregular_witness. Sorries: energy_increment_step + regularity_lemma_strong. File now 341 lines, 12 theorems.",
     "builtItems": [
-      "edgeDensity_nonneg: 0 ≤ edgeDensity G A B (new theorem, line 56)",
-      "edgeDensity_le_one: edgeDensity G A B ≤ 1 (new theorem, line 64)",
-      "partitionEnergy_le_one: proved (sorry eliminated, line 118)",
-      "density_sq_convex: Cauchy-Schwarz convexity for density splitting (sorry, key framework lemma)",
-      "max_iterations: iteration bound framework (sorry, arithmetic needs verification)",
-      "max_iterations: proved via exists_nat_gt + div_lt_iff₀ (Archimedean property)",
-      "density_sq_convex: proved via Cauchy-Schwarz reduction to n₁*n₂*(d₁-d₂)²/(n₁+n₂) ≥ 0",
-      "card_mul_edgeDensity: helper showing n*m*d = edge_count (handles dite cases)",
-      "edge_count_union: helper showing edge counts add for disjoint vertex sets"
+      "edgeDensity_nonneg: 0 ≤ edgeDensity G A B (proved)",
+      "edgeDensity_le_one: edgeDensity G A B ≤ 1 (proved)",
+      "partitionEnergy_le_one: proved",
+      "density_sq_convex: Cauchy-Schwarz convexity for density splitting (proved)",
+      "max_iterations: iteration bound framework (proved via Archimedean property)",
+      "card_mul_edgeDensity: helper showing n*m*d = edge_count (proved)",
+      "edge_count_union: helper showing edge counts add for disjoint vertex sets (proved)",
+      "exists_irregular_witness: extract witnesses from non-ε-regular pair (proved)",
+      "regularity_lemma: proved (vacuous, one-part partition)",
+      "regularity_lemma_strong: proper statement with m₀ lower bound (sorry)"
     ],
     "insights": [
       "Seed file on main (115 lines) has good definitions: edgeDensity, IsEpsRegular, IsRegularPartition, partitionEnergy",
-      "3 sorries: energy_increment (deep), energy_upper_bound (possibly tractable), regularity_lemma (follows from first two)",
       "Energy upper bound: partitionEnergy ≤ 1 because its a sum of d(A,B)² * |A|*|B|/|V|², and densities are in [0,1]",
       "The regularity lemma proof strategy: iterate energy increment until regular (bounded by 1/ε⁵ steps since energy increases by ε⁵ each step)",
-      "Proved edgeDensity_nonneg: positivity handles div of Nat.cast nonneg terms",
-      "Proved edgeDensity_le_one: Finset.card_filter_le + Finset.card_product gives density ≤ 1",
-      "Proved partitionEnergy_le_one: each d² ≤ 1 (via mul_le_of_le_one_right), sum of k² terms ≤ k², (1/k²)*k² = 1",
       "open Classical needed for DecidablePred on IsRegularPartition filter (IsEpsilonRegular has universal quantifiers)",
       "Finset.card_product uses SProd notation, not .product dot syntax; need exact with defeq not rw",
       "Key Cauchy-Schwarz fact: splitting A into A1∪A2 gives |A1|*d(A1,B)²+|A2|*d(A2,B)² ≥ |A|*d(A,B)²",
       "max_iterations: N=⌈1/eps^5⌉+1 iterations suffice since energy∈[0,1] increases by eps^5 each step",
-      "regularity_lemma proof structure: iterate energy_increment_step at most N times, track partition size bound",
       "Partition size bound: each step at most doubles parts exponentially, giving tower(2, N) bound on M",
       "density_sq_convex requires careful handling of set abbreviations vs edgeDensity - simp cannot see through set-bound variables without explicit unfold",
-      "edge count additivity for disjoint unions requires proving product distributes over union (A₁∪A₂)×B = A₁×B ∪ A₂×B via explicit ext proof",
-      "field_simp + ring can verify the algebraic identity for Cauchy-Schwarz: difference = n₁*n₂*(d₁-d₂)²/(n₁+n₂)",
-      "Remaining 2 sorries: energy_increment_step (finding irregular pairs, constructing refinement, bounding energy gain by eps^5) and regularity_lemma (iteration argument using energy_increment_step + max_iterations + partitionEnergy_le_one)"
+      "edge count additivity for disjoint unions requires proving product distributes over union (A1 U A2)xB = A1xB U A2xB via explicit ext proof",
+      "field_simp + ring can verify the algebraic identity for Cauchy-Schwarz: difference = n1*n2*(d1-d2)^2/(n1+n2)",
+      "CRITICAL INSIGHT: Current regularity_lemma statement is trivially satisfied by one-part partition {Finset.univ} because with only 1 part, there are no distinct pairs, so the irregularity count is vacuously 0. Standard formulations require parts.card >= m0 to prevent this.",
+      "regularity_lemma_strong adds the m₀ lower bound that forces non-trivial partitioning",
+      "Remaining 2 sorries: energy_increment_step (finding irregular pairs, constructing refinement, bounding energy gain by eps^5) and regularity_lemma_strong (iteration argument using energy_increment_step)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "energy_increment_step: find irregular pair in partition, extract witness subsets, split vertices, apply density_sq_convex, bound energy gain by eps^5",
-      "regularity_lemma: construct initial equipartition, iterate energy_increment_step, use max_iterations + partitionEnergy_le_one for termination",
+      "regularity_lemma_strong: construct initial m₀-equipartition, iterate energy_increment_step, use max_iterations + partitionEnergy_le_one for termination",
       "Consider creating SzemerediRegularityAristotle.lean companion file for provable supporting lemmas"
     ]
   },
@@ -85,15 +83,15 @@
     "mathlib": []
   },
   "started": "2026-03-22T06:10:36.236Z",
-  "lastUpdate": "2026-03-22T06:10:36.236Z",
+  "lastUpdate": "2026-03-22T15:35:00.000Z",
   "significance": 9,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/SzemerediRegularity.lean",
       "filename": "SzemerediRegularity.lean",
-      "lineCount": 292,
-      "theoremCount": 8,
+      "lineCount": 341,
+      "theoremCount": 12,
       "axiomCount": 0,
       "defCount": 4,
       "sorryCount": 2,
