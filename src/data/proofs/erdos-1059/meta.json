@@ -55,33 +55,6 @@
       "erdos_alternative_approach: axiom for Erdős's smooth-number variant",
       "two_witnesses: summary theorem packaging both verified examples"
     ],
-    "crossReferences": [
-      {
-        "targetId": "infinitude-primes",
-        "relationship": "related",
-        "description": "Both prove or conjecture infinitude of a special set of primes; the main conjecture asserts Set.Infinite for factorial-avoiding primes"
-      },
-      {
-        "targetId": "wilsons-theorem",
-        "relationship": "related",
-        "description": "Wilson's theorem connects primes to factorials via $(p-1)! \\equiv -1 \\pmod{p}$. This problem subtracts smaller factorials $k!$ for $k! < p$"
-      },
-      {
-        "targetId": "bertrands-postulate",
-        "relationship": "related",
-        "description": "Both concern prime distribution; Bertrand guarantees primes in intervals while this asks about factorial-prime interactions"
-      },
-      {
-        "targetId": "erdos-1057",
-        "relationship": "related",
-        "description": "Sister Erdős problem about prime-related counting; both use Set.Infinite for open conjectures about special prime sets"
-      },
-      {
-        "targetId": "erdos-728-factorial-divisibility",
-        "relationship": "related",
-        "description": "Both concern factorial-prime interactions: #728 studies factorial divisibility patterns while #1059 studies factorial subtractions from primes"
-      }
-    ],
     "references": [
       {
         "authors": "Guy, Richard K.",
@@ -123,6 +96,12 @@
       "**Factorial growth bounds verification:** The proofs use auxiliary lemmas (`factorial_lt_bound`, `factorial_lt_bound_211`) to bound $k$ from the assumption $k! < n$, enabling exhaustive case analysis via `interval_cases`.",
       "**Erdős's smooth-number variant:** By dropping the primality requirement on $n$ and instead requiring all prime factors $> l$, the problem may be approachable via sieve theory and smooth number estimates.",
       "**Computational decidability:** The property is decidable for any fixed $n$, and both examples and the counterexample are fully verified by Lean's `decide` tactic, demonstrating the power of computational verification in number theory."
+    ],
+    "prerequisites": [
+      "Elementary number theory: primes, factorials, compositeness",
+      "`Set.Infinite` for stating infinitary conjectures in Lean",
+      "Decidable arithmetic: `interval_cases` and `decide` tactics",
+      "Factorial growth bounds and Stirling's approximation (informal)"
     ]
   },
   "sections": [
@@ -181,6 +160,33 @@
       "startLine": 121,
       "endLine": 144,
       "mathContext": "Summary: $101, 211 \\in $ OEIS A064152, both verified prime and factorial-avoiding."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "related",
+      "description": "Both prove or conjecture infinitude of a special set of primes; the main conjecture asserts Set.Infinite for factorial-avoiding primes"
+    },
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem connects primes to factorials via $(p-1)! \\equiv -1 \\pmod{p}$. This problem subtracts smaller factorials $k!$ for $k! < p$"
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Both concern prime distribution; Bertrand guarantees primes in intervals while this asks about factorial-prime interactions"
+    },
+    {
+      "targetId": "erdos-1057",
+      "relationship": "related",
+      "description": "Sister Erdős problem about prime-related counting; both use Set.Infinite for open conjectures about special prime sets"
+    },
+    {
+      "targetId": "erdos-728-factorial-divisibility",
+      "relationship": "related",
+      "description": "Both concern factorial-prime interactions: #728 studies factorial divisibility patterns while #1059 studies factorial subtractions from primes"
     }
   ],
   "relatedProofs": [
