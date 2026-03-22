@@ -2,12 +2,12 @@
   "id": "area-of-circle-oq-03-oq-02",
   "title": "Archimedes Pi Bounds: 223/71 < π < 22/7",
   "slug": "area-of-circle-oq-03-oq-02",
-  "description": "Archimedes' classical bounds on π from inscribed and circumscribed 96-gons: 223/71 < π < 22/7. The two bounds are axiomatized (Mathlib lacks sufficient precision); all derived results are sorry-free.",
+  "description": "Archimedes' classical bounds on π from inscribed and circumscribed 96-gons: 223/71 < π < 22/7. Fully verified — both bounds proved from Mathlib's pi_gt_d4/pi_lt_d4, 0 axioms, 0 sorries.",
   "meta": {
     "author": "Archimedes (c. 250 BCE), formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Approximations_of_%CF%80#Archimedes",
     "date": "-250",
-    "status": "axiomatized",
+    "status": "verified",
     "tags": [
       "geometry",
       "analysis",
@@ -18,7 +18,7 @@
       "research"
     ],
     "proofRepoPath": "Proofs/AreaOfCircleOQ03OQ02.lean",
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -32,18 +32,23 @@
         "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
       },
       {
-        "theorem": "Real.pi_gt_d2",
-        "description": "π > 3.14 (insufficient for Archimedes' bounds)",
+        "theorem": "Real.pi_gt_d4",
+        "description": "π > 3.1415 (proves Archimedes' lower bound)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds"
+      },
+      {
+        "theorem": "Real.pi_lt_d4",
+        "description": "π < 3.1416 (proves Archimedes' upper bound)",
         "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds"
       }
     ],
     "originalContributions": [
-      "Archimedes' lower bound: 223/71 < π (axiomatized — needs tighter π bound than Mathlib provides)",
-      "Archimedes' upper bound: π < 22/7 (axiomatized — needs tighter π bound than Mathlib provides)",
-      "Traditional formulations: 3 + 10/71 < π < 3 + 1/7 (sorry-free from axioms)",
-      "Gap computation: 22/7 − 223/71 = 1/497 (exact, norm_num, sorry-free)",
-      "Error estimates: π within 1/497 of both bounds (sorry-free)",
-      "General inscribed polygon bound: n·sin(π/n) < π for all n ≥ 1 (fully proved, no axioms)"
+      "Archimedes' lower bound: 223/71 < π (proved via Mathlib's pi_gt_d4)",
+      "Archimedes' upper bound: π < 22/7 (proved via Mathlib's pi_lt_d4)",
+      "Traditional formulations: 3 + 10/71 < π < 3 + 1/7 (fully proved)",
+      "Gap computation: 22/7 − 223/71 = 1/497 (exact, norm_num)",
+      "Error estimates: π within 1/497 of both bounds (fully proved)",
+      "General inscribed polygon bound: n·sin(π/n) < π for all n ≥ 1 (fully proved)"
     ],
     "references": [
       {
@@ -69,11 +74,8 @@
       }
     ],
     "dateAdded": "2026-03-21",
-    "axiomCount": 2,
-    "assumptions": [
-      "archimedes_lower_bound: (223 : ℝ) / 71 < Real.pi",
-      "archimedes_upper_bound: Real.pi < (22 : ℝ) / 7"
-    ],
+    "axiomCount": 0,
+    "assumptions": [],
     "crossReferences": [
       {
         "proofId": "area-of-circle-oq-03",
@@ -106,16 +108,16 @@
         "note": "Euler's π²/6 = Σ 1/n² connects π to number theory via the Riemann zeta function"
       }
     ],
-    "lineCount": 123
+    "lineCount": 102
   },
   "overview": {
     "historicalContext": "Archimedes of Syracuse (c. 287–212 BCE) computed the first rigorous bounds on π in his treatise 'Measurement of a Circle' (Κύκλου μέτρησις), Proposition 3. His method was to inscribe and circumscribe regular polygons around a unit circle, starting from a hexagon (whose perimeter gives the trivial bound π > 3) and doubling the number of sides four times: 6 → 12 → 24 → 48 → 96. For each doubling, he used the half-angle identity to compute the new polygon's side length from the previous one, requiring only square root extraction — which he approximated with remarkable ingenuity using rational bounds. The final result, 223/71 < π < 22/7, stood as the best known approximation for over 400 years until Ptolemy used a 360-gon to obtain π ≈ 3.14166. The upper bound 22/7 became so widely known that it remains the most common rational approximation of π today. In the 20th century, Dalzell (1944) and Niven (1947) independently discovered the elegant integral identity ∫₀¹ t⁴(1-t)⁴/(1+t²) dt = 22/7 − π, providing a one-line proof of the upper bound.",
     "problemStatement": "Prove Archimedes' bounds: $\\frac{223}{71} < \\pi < \\frac{22}{7}$, equivalently $3 + \\frac{10}{71} < \\pi < 3 + \\frac{1}{7}$.",
-    "proofStrategy": "The two tight π bounds are axiomatized because Mathlib v4.26.0's tightest bound is `pi_gt_d2` ($\\pi > 3.14$), which is insufficient since $223/71 \\approx 3.14084 > 3.14$. All derived results — traditional formulations, the exact gap $1/497$, error estimates, and the general inscribed polygon bound — are fully proved using `norm_num`, `linarith`, and `Real.sin_lt`. The inscribed polygon theorem $n\\sin(\\pi/n) < \\pi$ is completely axiom-free and formalizes the geometric core of Archimedes' method.",
+    "proofStrategy": "Both tight π bounds are proved from Mathlib's `pi_gt_d4` ($3.1415 < \\pi$) and `pi_lt_d4` ($\\pi < 3.1416$): since $223/71 \\approx 3.14085 < 3.1415$ and $3.1416 < 22/7 \\approx 3.14286$, simple `linarith` closes both goals. All derived results — traditional formulations, the exact gap $1/497$, error estimates, and the general inscribed polygon bound — are fully proved using `norm_num`, `linarith`, and `Real.sin_lt`. The entire file is axiom-free and sorry-free.",
     "keyInsights": [
       "The gap 22/7 − 223/71 = 1/497 ≈ 0.002 means Archimedes achieved better than 0.1% relative accuracy using only geometry and rational arithmetic — no infinite series or calculus.",
       "The general inscribed polygon bound n·sin(π/n) < π follows from a single Mathlib fact: sin(x) < x for x > 0. This is the formal essence of why inscribed polygons underestimate the circumference.",
-      "Mathlib's pi bounds (3.14 < π < 3.15) are two-decimal approximations, insufficient for Archimedes' three-decimal bounds. Closing this gap requires either interval arithmetic extensions or the Dalzell–Niven integral approach.",
+      "Mathlib's pi_gt_d4 (3.1415 < π) and pi_lt_d4 (π < 3.1416) provide sufficient precision for Archimedes' bounds, enabling a fully verified proof with just linarith.",
       "The Dalzell–Niven integral ∫₀¹ t⁴(1-t)⁴/(1+t²) dt = 22/7 − π elegantly proves the upper bound: the integrand is strictly positive on (0,1), so 22/7 > π. This is perhaps the most beautiful proof that 22/7 exceeds π.",
       "Archimedes' method is the historical origin of the method of exhaustion — the ancient precursor to limits and integration — making this one of the oldest formal mathematical arguments in the gallery."
     ]
@@ -130,41 +132,39 @@
     },
     {
       "id": "bounds",
-      "title": "Archimedes' Bounds (Axiomatized)",
-      "summary": "The two axiom declarations for 223/71 < π (lower bound) and π < 22/7 (upper bound), with detailed docstrings explaining why they are axiomatized and how they could be proved.",
-      "startLine": 31,
-      "endLine": 61
+      "title": "Archimedes' Bounds (Fully Verified)",
+      "summary": "Both bounds proved as theorems from Mathlib's pi_gt_d4 and pi_lt_d4: 223/71 < 3.1415 < π and π < 3.1416 < 22/7.",
+      "startLine": 27,
+      "endLine": 45
     },
     {
       "id": "derived",
-      "title": "Derived Results (Sorry-Free)",
-      "summary": "Six theorems proved from the axioms: combined bounds, traditional formulations (3+10/71 and 3+1/7), exact gap computation (1/497), error bounds, and the 22/7 overestimate quantification (<3/1000).",
-      "startLine": 63,
-      "endLine": 93
+      "title": "Derived Results",
+      "summary": "Six theorems: combined bounds, traditional formulations (3+10/71 and 3+1/7), exact gap computation (1/497), error bounds, and the 22/7 overestimate quantification (<3/1000).",
+      "startLine": 47,
+      "endLine": 72
     },
     {
       "id": "polygon",
-      "title": "General Inscribed Polygon Bound (Axiom-Free)",
-      "summary": "The fully formal theorem that n·sin(π/n) < π for all n ≥ 1, proved without any axioms using Real.sin_lt and field_simp. This formalizes the geometric core of Archimedes' method.",
-      "startLine": 95,
-      "endLine": 110
+      "title": "General Inscribed Polygon Bound",
+      "summary": "The fully formal theorem that n·sin(π/n) < π for all n ≥ 1, proved using Real.sin_lt and field_simp. Formalizes the geometric core of Archimedes' method.",
+      "startLine": 74,
+      "endLine": 89
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "summary": "Packaging theorem bundling all three main results (bounds, gap, polygon bound) into a single statement for downstream use.",
-      "startLine": 112,
-      "endLine": 123
+      "startLine": 91,
+      "endLine": 102
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Archimedes' 2,300-year-old bounds on π in Lean 4. The two core bounds are axiomatized due to Mathlib's current precision limitations, but all derived results (6 theorems) and the general polygon bound are fully proved. The inscribed polygon theorem n·sin(π/n) < π is the axiom-free highlight, formalizing the geometric principle underlying the method of exhaustion.",
-    "implications": "Demonstrates both the power and current limitations of Lean 4 + Mathlib for computational number theory. The gap between Mathlib's 2-decimal π bounds and Archimedes' 3-decimal bounds highlights an opportunity for community contributions to Mathlib's special functions library. The Dalzell–Niven integral approach could provide a path to removing the axioms entirely, connecting this formalization to integration theory.",
+    "summary": "This formalization captures Archimedes' 2,300-year-old bounds on π in Lean 4, fully verified with 0 axioms and 0 sorries. Both core bounds are proved from Mathlib's pi_gt_d4/pi_lt_d4, and all derived results (6 theorems) and the general polygon bound are also fully proved. The inscribed polygon theorem n·sin(π/n) < π formalizes the geometric principle underlying the method of exhaustion.",
+    "implications": "Demonstrates the power of Lean 4 + Mathlib for classical computational number theory. Mathlib's 4-decimal pi bounds (pi_gt_d4/pi_lt_d4) are sufficient for Archimedes' classical 3-decimal bounds, making the proof surprisingly simple once the right Mathlib lemmas are identified.",
     "openQuestions": [
-      "Can Mathlib's `norm_num` extensions or interval arithmetic plugins provide 4+ decimal π bounds, enabling a fully verified proof?",
-      "Can the Dalzell–Niven integral ∫₀¹ t⁴(1-t)⁴/(1+t²) dt = 22/7 − π be formalized in Lean 4 to remove the upper bound axiom?",
       "Can Archimedes' original half-angle doubling method (computing polygon side lengths via √((1-cos)/2)) be formalized as a constructive proof?",
-      "What is the computational complexity of verifying n-decimal π bounds in Lean 4 via repeated half-angle refinement?"
+      "Can the Dalzell–Niven integral ∫₀¹ t⁴(1-t)⁴/(1+t²) dt = 22/7 − π be formalized in Lean 4 as an alternative proof of the upper bound?"
     ]
   }
 }
