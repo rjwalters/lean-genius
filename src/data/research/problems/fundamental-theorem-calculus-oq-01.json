@@ -9,9 +9,14 @@
       "Parent proves FTC Parts 1 and 2 using Mathlib interval integral",
       "Lebesgue FTC: if f is absolutely continuous, f' exists a.e. and ∫[a,b] f' = f(b)-f(a)",
       "Mathlib has MeasureTheory.Integral.Bochner.FundThmCalculus with Lebesgue integral support",
-      "Key Mathlib theorems: integral_hasDerivAt_right, integral_eq_sub_of_hasDerivAt already use measure theory"
+      "Key Mathlib theorems: integral_hasDerivAt_right, integral_eq_sub_of_hasDerivAt already use measure theory",
+      "Lipschitz→AC arithmetic: K*Σ(bk-ak) ≤ K*(ε/(K+1)) < ε by div_lt_self when K+1>1",
+      "AC→uniform continuity: instantiate with n=1, disjointness vacuous via Subsingleton.elim, use abs_sub_comm for direction"
     ],
-    "builtItems": [],
+    "builtItems": [
+      "lipschitz_implies_ac: proved via Finset.sum_le_sum + mul_le_mul_of_nonneg_left + div_lt_self chain",
+      "ac_implies_uniformly_continuous: instantiate AC with n=1, Fin 1 functions, Subsingleton.elim for vacuous disjointness"
+    ],
     "openQuestions": [
       "What specific Lebesgue generalization is needed beyond what Mathlib already provides?",
       "Does Mathlib have the Lebesgue differentiation theorem for absolutely continuous functions?"
@@ -21,6 +26,6 @@
       "Formalize: AC function → derivative exists a.e. → integral of derivative equals function",
       "Connect to Vitali covering lemma and Lebesgue density theorem if available"
     ],
-    "progressSummary": "SURVEY: Parent complete. Mathlib has Lebesgue integral FTC infrastructure. Need specific Lebesgue generalization scope."
+    "progressSummary": "PROGRESS: Eliminated 2 sorries (lipschitz_implies_ac arithmetic, ac_implies_uniformly_continuous Fin 1 instantiation). 1 sorry remains (Cantor function), 2 axioms (Lebesgue FTC)."
   }
 }
