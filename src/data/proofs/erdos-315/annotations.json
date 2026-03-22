@@ -9,7 +9,7 @@
     "mathContext": "Proved independently by Kamio (arXiv:2503.02317) and Li-Tang (arXiv:2503.12277) in 2025, solving a 45-year-old conjecture.",
     "significance": "key",
     "relatedConcepts": ["Egyptian fractions", "Vardi constant", "Greedy algorithms"],
-    "prerequisites": ["egyptian-fractions", "asymptotic-analysis", "extremal-problems", "solved-conjecture"]
+    "prerequisites": ["Egyptian fractions", "asymptotic analysis", "extremal combinatorics"]
   },
   {
     "id": "ann-e315-sylvester-def",
@@ -21,7 +21,7 @@
     "mathContext": "Also called Euclid numbers minus 1 due to connection with Euclid's proof of infinitely many primes.",
     "significance": "key",
     "relatedConcepts": ["OEIS A000058", "Recurrence relations"],
-    "prerequisites": ["recurrence-relations", "integer-sequences", "double-exponential-growth"]
+    "prerequisites": ["recurrence relations", "integer sequences"]
   },
   {
     "id": "ann-e315-values",
@@ -32,7 +32,7 @@
     "content": "**Concrete values:**\n\n- sylvester 0 = 2\n- sylvester 1 = 3 = 2² - 2 + 1\n- sylvester 2 = 7 = 3² - 3 + 1\n- sylvester 3 = 43 = 7² - 7 + 1\n- sylvester 4 = 1807 = 43² - 43 + 1\n\nAll proved by rfl (computation).",
     "significance": "supporting",
     "relatedConcepts": ["Reflexivity", "Computation"],
-    "prerequisites": ["computation", "concrete-values", "reflexivity"]
+    "prerequisites": ["Nat arithmetic", "rfl tactic"]
   },
   {
     "id": "ann-e315-strict-mono",
@@ -43,7 +43,7 @@
     "content": "**sylvester_strictMono:**\n\nSylvester's sequence is strictly increasing: m < n → sylvester m < sylvester n.\n\n**Proof idea:** By strong induction. Since u_{n+1} = u_n² - u_n + 1 and u_n ≥ 2, we have u_{n+1} > u_n.\n\nThis is needed to ensure the EgyptianSequence structure is valid.",
     "significance": "key",
     "relatedConcepts": ["Strong induction", "Monotonicity"],
-    "prerequisites": ["monotonicity", "strong-induction", "sequence-properties"]
+    "prerequisites": ["strong induction", "StrictMono"]
   },
   {
     "id": "ann-e315-identity",
@@ -54,7 +54,7 @@
     "content": "**sylvester_identity:**\n\nu_{n+1} - 1 = u_n(u_n - 1)\n\nThis identity is central to proving Σ 1/u_n = 1 via telescoping.\n\n**Proof:** Direct computation: (u² - u + 1) - 1 = u² - u = u(u-1).",
     "significance": "key",
     "relatedConcepts": ["Algebraic identities", "Telescoping"],
-    "prerequisites": ["algebraic-identity", "telescoping", "recurrence-relations"]
+    "prerequisites": ["algebraic identities", "Nat.sub_add_cancel"]
   },
   {
     "id": "ann-e315-sum-one",
@@ -66,7 +66,7 @@
     "mathContext": "1 = 1/2 + 1/3 + 1/7 + 1/43 + 1/1807 + ... This is the greedy algorithm's output for representing 1.",
     "significance": "key",
     "relatedConcepts": ["Egyptian fractions", "Infinite series"],
-    "prerequisites": ["infinite-series", "egyptian-fractions", "telescoping", "unit-fractions"]
+    "prerequisites": ["infinite series", "telescoping products", "sylvester_identity"]
   },
   {
     "id": "ann-e315-vardi",
@@ -78,7 +78,7 @@
     "mathContext": "Named after Ilan Vardi who studied it. Also appears in dynamics of iteration maps.",
     "significance": "key",
     "relatedConcepts": ["OEIS A076393", "Growth rates", "Transcendental numbers"],
-    "prerequisites": ["mathematical-constants", "growth-rates", "transcendental-numbers", "limits"]
+    "prerequisites": ["Real.rpow", "Filter.Tendsto", "sequence limits"]
   },
   {
     "id": "ann-e315-egyptian-seq",
@@ -89,7 +89,7 @@
     "content": "**EgyptianSequence:**\n\nA structure capturing sequences (a_n) satisfying:\n- strictly increasing\n- all terms positive\n- Σ 1/a_n = 1 (in the limit)\n\nThis formalizes 'any other sequence' in the conjecture statement.",
     "significance": "key",
     "relatedConcepts": ["Lean structures", "Type-theoretic encoding"],
-    "prerequisites": ["lean-structures", "formalization", "egyptian-fractions"]
+    "prerequisites": ["Lean structures", "StrictMono", "infinite series"]
   },
   {
     "id": "ann-e315-growth-rate",
@@ -100,7 +100,7 @@
     "content": "**growthRate:**\n\nFor an EgyptianSequence seq: growthRate(seq) = liminf a_n^{1/2^n}\n\nUsing liminf (not lim) allows for sequences where the limit may not exist.\n\nThe conjecture compares growthRate(seq) to vardiConstant.",
     "significance": "key",
     "relatedConcepts": ["Liminf", "Asymptotic analysis"],
-    "prerequisites": ["liminf", "asymptotic-analysis", "growth-rates"]
+    "prerequisites": ["Filter.liminf", "Real.rpow", "EgyptianSequence"]
   },
   {
     "id": "ann-e315-conjecture",
@@ -111,7 +111,7 @@
     "content": "**erdosGrahamConjecture:**\n\nFor any EgyptianSequence seq with seq.a ≠ sylvester:\n\n  growthRate(seq) < vardiConstant\n\nSylvester's sequence has the **strictly** largest growth rate among all Egyptian sequences for 1.\n\nThis formalizes Erdős Problem #315.",
     "significance": "key",
     "relatedConcepts": ["Optimality", "Extremal sequences"],
-    "prerequisites": ["extremal-problems", "optimality", "conjecture-formalization", "erdos-problems"]
+    "prerequisites": ["EgyptianSequence", "growthRate", "vardiConstant"]
   },
   {
     "id": "ann-e315-solution",
@@ -123,7 +123,7 @@
     "mathContext": "A 45-year-old conjecture resolved! The proofs use deep analysis of Egyptian fraction representations.",
     "significance": "key",
     "relatedConcepts": ["Recent results", "Independent discovery"],
-    "prerequisites": ["solved-conjecture", "independent-discovery", "recent-results", "axiomatized-result"]
+    "prerequisites": ["erdosGrahamConjecture definition"]
   },
   {
     "id": "ann-e315-double-exp",
@@ -134,7 +134,7 @@
     "content": "**sylvester_double_exponential:**\n\nFor any ε > 0, eventually |u_n^{1/2^n} - c₀| < ε.\n\nThis means u_n ~ c₀^{2^n} - doubly exponential growth.\n\n**Proof:** Direct application of vardiConstant_is_limit via Metric.tendsto_atTop.",
     "significance": "key",
     "relatedConcepts": ["Tower of exponents", "Convergence"],
-    "prerequisites": ["double-exponential-growth", "convergence", "epsilon-delta"]
+    "prerequisites": ["vardiConstant_is_limit", "Metric.tendsto_atTop"]
   },
   {
     "id": "ann-e315-summary",
@@ -145,6 +145,6 @@
     "content": "**erdos_315_summary:**\n\nCombines the main result with the Vardi constant bounds:\n\n1. erdosGrahamConjecture holds (Kamio, Li-Tang 2025)\n2. 1.264 < vardiConstant < 1.265\n\nSylvester's sequence is the unique maximizer of growth rate among Egyptian sequences for 1.",
     "significance": "key",
     "relatedConcepts": ["Main theorem", "Summary"],
-    "prerequisites": ["summary-theorem", "optimality", "vardi-constant"]
+    "prerequisites": ["kamio_li_tang_2025", "vardiConstant_bounds"]
   }
 ]
