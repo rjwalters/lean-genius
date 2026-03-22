@@ -226,79 +226,84 @@ theorem crossingFactor_strict_dec (n : ℕ) (hn : 2 ≤ n) :
 -- Part VII: Asymptotic Behavior
 -- ============================================================
 
-/-- Key bound: crossingFactor(n+2)² ≤ 2/(n+2) for all n.
-    Base cases: (2/π)² = 4/π² ≤ 1 (since π² > 4) and (1/2)² = 1/4 ≤ 2/3.
-    Inductive step: uses the algebraic identity (n+2)(n+4) ≤ (n+3)². -/
-private lemma crossingFactor_sq_bound : ∀ n : ℕ,
-    crossingFactor (n + 2) ^ 2 ≤ 2 / ((n : ℝ) + 2)
-  | 0 => by
-    simp only [Nat.cast_zero, zero_add, crossingFactor_two]
-    rw [show (2 : ℝ) / 2 = 1 from by norm_num, div_pow, div_le_one (pow_pos pi_pos 2)]
-    -- Goal: 2 ^ 2 ≤ π ^ 2. Since π > 3 > 2, (π-2)² ≥ 0 gives π²-4π+4 ≥ 0.
-    nlinarith [pi_gt_three, sq_nonneg (π - 2)]
-  | 1 => by
-    simp only [Nat.cast_one]
-    norm_num
-  | (n + 2) => by
-    have ih := crossingFactor_sq_bound n
-    -- crossingFactor(n+4) = ((n+2)/(n+3)) * crossingFactor(n+2)
-    have hrw : n + 2 + 2 = n + 4 := by omega
-    rw [hrw, crossingFactor_succ_succ, mul_pow]
-    -- Cast simplification
-    have hcast : ((n + 2 : ℕ) : ℝ) + 2 = (n : ℝ) + 4 := by push_cast; ring
-    rw [hcast]
-    -- Bound: ((n+2)/(n+3))² * cf²  ≤  ((n+2)/(n+3))² * 2/(n+2)  ≤  2/(n+4)
-    have hn2 : (0 : ℝ) < (n : ℝ) + 2 := by positivity
-    have hn3 : (0 : ℝ) < (n : ℝ) + 3 := by positivity
-    have hn4 : (0 : ℝ) < (n : ℝ) + 4 := by positivity
-    calc ((↑n + 2) / (↑n + 3)) ^ 2 * crossingFactor (n + 2) ^ 2
-        ≤ ((↑n + 2) / (↑n + 3)) ^ 2 * (2 / (↑n + 2)) :=
-          mul_le_mul_of_nonneg_left ih (sq_nonneg _)
-      _ ≤ 2 / (↑n + 4) := by
-          rw [div_pow, div_mul_div_comm]
-          -- Goal: (↑n + 2) ^ 2 * 2 / ((↑n + 3) ^ 2 * (↑n + 2)) ≤ 2 / (↑n + 4)
-          -- Cancel (↑n+2) from LHS
-          rw [show (↑n + 2 : ℝ) ^ 2 * 2 = (↑n + 2) * (2 * (↑n + 2)) from by ring,
-              show (↑n + 3 : ℝ) ^ 2 * (↑n + 2) = (↑n + 2) * (↑n + 3) ^ 2 from by ring,
-              mul_div_mul_left _ _ (ne_of_gt hn2)]
-          -- Goal: 2 * (↑n + 2) / (↑n + 3) ^ 2 ≤ 2 / (↑n + 4)
-          rw [div_le_div_iff₀ (sq_pos_of_pos hn3) hn4]
-          -- Goal: 2 * (↑n + 2) * (↑n + 4) ≤ 2 * (↑n + 3) ^ 2
-          -- Follows from (n+2)(n+4) ≤ (n+3)², i.e., n²+6n+8 ≤ n²+6n+9
-          nlinarith [sq_nonneg ((n : ℝ) + 3)]
+/-- Helper: √2 < 3/2 (since 2 < 9/4). -/
+private lemma sqrt_two_lt : Real.sqrt 2 < 3 / 2 := by
+  rw [show (3 : ℝ) / 2 = Real.sqrt (9 / 4) from by
+    rw [Real.sqrt_eq_iff_sq_eq (by norm_num) (by norm_num)]; norm_num]
+  exact Real.sqrt_lt_sqrt (by norm_num) (by norm_num)
+
+/-- Helper: √3 < 2 (since 3 < 4). -/
+private lemma sqrt_three_lt : Real.sqrt 3 < 2 := by
+  rw [show (2 : ℝ) = Real.sqrt 4 from by
+    rw [Real.sqrt_eq_iff_sq_eq (by norm_num) (by norm_num)]; norm_num]
+  exact Real.sqrt_lt_sqrt (by norm_num) (by norm_num)
+
+/-- αₙ ≤ 1/√n for all n ≥ 2. Proved by strong induction using the recurrence.
+    Base cases: 2/π ≤ 1/√2 (from 2√2 < 3 < π) and 1/2 ≤ 1/√3 (from √3 < 2).
+    Inductive step: n(n+2) ≤ (n+1)² guarantees the bound propagates. -/
+theorem crossingFactor_le_inv_sqrt : ∀ n : ℕ, 2 ≤ n →
+    crossingFactor n ≤ 1 / Real.sqrt n
+  | 0, h => absurd h (by omega)
+  | 1, h => absurd h (by omega)
+  | 2, _ => by
+    simp only [crossingFactor_two]
+    rw [div_le_div_iff (by positivity) (Real.sqrt_pos.mpr (by positivity))]
+    -- Need: 2 · √2 ≤ π · 1 = π
+    rw [mul_one]
+    calc 2 * Real.sqrt 2 < 2 * (3 / 2) := by nlinarith [sqrt_two_lt]
+      _ = 3 := by ring
+      _ < π := pi_gt_three
+  | 3, _ => by
+    simp only [crossingFactor_three]
+    rw [div_le_div_iff (by norm_num : (0 : ℝ) < 2) (Real.sqrt_pos.mpr (by positivity))]
+    -- Need: 1 · √3 ≤ 2 · 1 = 2, i.e., √3 ≤ 2
+    simp only [one_mul, mul_one]
+    exact le_of_lt sqrt_three_lt
+  | (n + 4), _ => by
+    -- α(n+4) = ((n+2)/(n+3)) · α(n+2) by recurrence
+    simp only [crossingFactor_succ_succ]
+    -- By induction: α(n+2) ≤ 1/√(n+2)
+    have ih := crossingFactor_le_inv_sqrt (n + 2) (by omega)
+    have hn2_pos : (0 : ℝ) < n + 2 := by exact_mod_cast (show 0 < n + 2 by omega)
+    have hn3_pos : (0 : ℝ) < n + 3 := by exact_mod_cast (show 0 < n + 3 by omega)
+    have hn4_pos : (0 : ℝ) < n + 4 := by exact_mod_cast (show 0 < n + 4 by omega)
+    have hsqrt_n2_pos : 0 < Real.sqrt (↑(n + 2)) := Real.sqrt_pos.mpr hn2_pos
+    have hsqrt_n4_pos : 0 < Real.sqrt (↑(n + 4)) := Real.sqrt_pos.mpr hn4_pos
+    -- Bound: ((n+2)/(n+3)) · (1/√(n+2)) ≤ 1/√(n+4)
+    -- Equivalent to: (n+2) · √(n+4) ≤ (n+3) · √(n+2)
+    -- Squaring: (n+2)² · (n+4) ≤ (n+3)² · (n+2) ↔ (n+2)(n+4) ≤ (n+3)²
+    -- And (n+2)(n+4) = n²+6n+8 ≤ n²+6n+9 = (n+3)² ✓
+    calc ((n + 2 : ℝ) / (n + 3)) * crossingFactor (n + 2)
+        ≤ ((n + 2) / (n + 3)) * (1 / Real.sqrt (↑(n + 2))) := by
+          apply mul_le_mul_of_nonneg_left ih
+          exact div_nonneg (le_of_lt hn2_pos) (le_of_lt hn3_pos)
+      _ = (n + 2) / ((n + 3) * Real.sqrt (↑(n + 2))) := by ring
+      _ ≤ 1 / Real.sqrt (↑(n + 4)) := by
+          rw [div_le_div_iff (mul_pos hn3_pos hsqrt_n2_pos) hsqrt_n4_pos]
+          -- Need: (n+2) · √(n+4) ≤ 1 · (n+3) · √(n+2)
+          rw [one_mul]
+          -- Square both sides (both positive)
+          rw [← Real.sqrt_sq (le_of_lt hn2_pos), ← Real.sqrt_sq (le_of_lt hn3_pos)]
+          rw [← Real.sqrt_mul (sq_nonneg _), ← Real.sqrt_mul (sq_nonneg _)]
+          apply Real.sqrt_le_sqrt
+          -- (n+2)² · (n+4) ≤ (n+3)² · (n+2)
+          push_cast
+          nlinarith [sq_nonneg (n : ℝ)]
 
 /-- αₙ → 0 as n → ∞: in very high dimensions, a random unit vector's
     projection onto any fixed axis approaches zero on average.
-
-    Proof: We show αₙ² ≤ 2/n by induction (using (n+2)(n+4) ≤ (n+3)²),
-    then squeeze αₙ between 0 and √(2/n) → 0. -/
+    Proof: squeeze between 0 and 1/√n, which tends to 0. -/
 theorem crossingFactor_tendsto_zero :
     Filter.Tendsto (fun n => crossingFactor (n + 2)) Filter.atTop (nhds 0) := by
-  -- Upper bound: crossingFactor(n+2) ≤ √(2/(n+2))
-  have h_bound : ∀ n : ℕ, crossingFactor (n + 2) ≤ Real.sqrt (2 / ((n : ℝ) + 2)) := by
-    intro n
-    have hpos := le_of_lt (crossingFactor_pos (n + 2) (by omega))
-    calc crossingFactor (n + 2)
-        = Real.sqrt (crossingFactor (n + 2) ^ 2) := (Real.sqrt_sq hpos).symm
-      _ ≤ Real.sqrt (2 / ((n : ℝ) + 2)) := Real.sqrt_le_sqrt (crossingFactor_sq_bound n)
-  -- Upper bound → 0: √(2/(n+2)) → 0
-  have h_upper_zero : Filter.Tendsto (fun n : ℕ => Real.sqrt (2 / ((n : ℝ) + 2)))
-      Filter.atTop (nhds 0) := by
-    rw [show (0 : ℝ) = Real.sqrt 0 from (Real.sqrt_zero).symm]
-    apply Filter.Tendsto.comp (Real.continuous_sqrt.tendsto 0)
-    -- Show 2/(n+2) → 0: inverse of divergent denominator
-    have h_inv : Filter.Tendsto (fun n : ℕ => ((n : ℝ) + 2)⁻¹) Filter.atTop (nhds 0) :=
-      tendsto_inv_atTop_zero.comp
-        (Filter.tendsto_atTop_mono
-          (fun n => le_add_of_nonneg_right (by norm_num : (0 : ℝ) ≤ 2))
-          tendsto_natCast_atTop_atTop)
-    have h_frac := h_inv.const_mul (2 : ℝ)
-    simp only [mul_zero] at h_frac
-    exact h_frac.congr' (by filter_upwards with n; rw [div_eq_mul_inv])
-  -- Squeeze: 0 ≤ crossingFactor(n+2) ≤ √(2/(n+2)) → 0
-  exact squeeze_zero
-    (fun n => le_of_lt (crossingFactor_pos (n + 2) (by omega)))
-    h_bound
-    h_upper_zero
+  apply squeeze_zero
+  · intro n; exact le_of_lt (crossingFactor_pos (n + 2) (by omega))
+  · intro n; exact crossingFactor_le_inv_sqrt (n + 2) (by omega)
+  · -- 1/√(n+2) → 0 as n → ∞
+    have : Filter.Tendsto (fun n : ℕ => (1 : ℝ) / Real.sqrt (↑(n + 2))) Filter.atTop (nhds 0) := by
+      apply Filter.Tendsto.div tendsto_const_nhds _ (Or.inl rfl)
+      apply Filter.Tendsto.comp Real.tendsto_sqrt_atTop
+      apply Filter.Tendsto.atTop_add (Filter.tendsto_natCast_atTop_atTop)
+      exact tendsto_const_nhds
+    exact this
 
 end BuffonsNeedleOQ02OQ01
