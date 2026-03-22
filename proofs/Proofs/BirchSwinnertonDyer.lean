@@ -655,13 +655,6 @@ def NeronTateHeight (E : EllipticCurveQ) : ℝ → ℝ → ℝ := NeronTateHeigh
     and c is an explicit constant involving periods and Tamagawa numbers.
 
     This formula is the bridge between L-functions and rational points! -/
-/-- The Gross-Zagier formula connects L'(E, 1) to ĥ(P_K).
-    Key consequence: the existence of a Heegner point with nonzero height
-    implies the analytic rank is at most 1. See HeegnerPointData (Part XXVIII)
-    and gross_zagier_formula_detail (Part LIII) for the full typed version. -/
-axiom gross_zagier_formula (E : EllipticCurveQ) (_P : HeegnerPoint E) :
-    analyticRank E ≤ 1
-
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART IX: COMPUTATIONAL EVIDENCE
 ═══════════════════════════════════════════════════════════════════════════════ -/
@@ -2708,7 +2701,6 @@ This file formalizes the Birch and Swinnerton-Dyer Conjecture with:
 #check BSDConjecture_Strong
 #check BSD_rank_zero
 #check BSD_rank_one
-#check gross_zagier_formula
 #check triangle_to_point_on_curve
 #check triangle_to_point_y_ne_zero
 #check triangle_gives_congruent_number_point
@@ -5726,7 +5718,6 @@ theorem bsd_current_status :
 #check LambdaModule
 -- Part LIII: Kolyvagin's Euler System
 #check HeegnerField
-#check gross_zagier_formula
 #check parity_conjecture
 -- Part LIV: p-adic BSD
 #check mtt_exceptional_zero
