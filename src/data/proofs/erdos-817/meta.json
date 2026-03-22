@@ -65,10 +65,11 @@
     "problemStatement": "**Problem (Erdős)**: Let $k \\geq 3$ and define $g_k(n)$ to be the minimal $N$ such that $\\{1,\\ldots,N\\}$ contains some $A$ of size $|A|=n$ such that\n$$\\langle A \\rangle = \\left\\{\\sum_{a\\in A}\\epsilon_a a: \\epsilon_a \\in \\{0,1\\}\\right\\}$$\ncontains no non-trivial $k$-term arithmetic progression.\n\n**Question**: Is it true that $g_3(n) \\gg 3^n$?\n\n**Status**: OPEN\n\n**Partial Result** (Erdős-Sárközy): $g_3(n) \\gg 3^n / n^{O(1)}$",
     "proofStrategy": "We formalize the problem and related concepts:\n\n1. **AP-Free Sets**: Define IsAPFreeOfLength k S to mean S contains no k-term arithmetic progression with positive common difference.\n\n2. **Subset Sums**: Define subsetSums A as the image of A.powerset under the sum function. Prove basic properties: 0 ∈ subsetSums A, and |subsetSums A| ≤ 2^|A|.\n\n3. **The Function g**: Define g(k,n) = inf{N : ∃ A ⊆ Icc 1 N with |A|=n and subsetSums A is k-AP-free}.\n\n4. **Main Conjecture**: State erdos817Conjecture as 3^n = O(g(3,n)).\n\n5. **Partial Result**: State Erdős-Sárközy's theorem as an axiom: 3^n/n^O = O(g(3,n)) for some O > 0.\n\n6. **Connection to Szemerédi**: Relate to the fact that dense sets must contain APs.",
     "keyInsights": [
-      "**Subset sum structure**: The set ⟨A⟩ has at most 2^n elements (one per subset). Its structure depends heavily on the choice of A.",
-      "**Exponential barrier**: The set {1, 3, 9, ..., 3^(n-1)} has ⟨A⟩ = {numbers in base 3 with digits 0,1}, which is 3-AP-free. This gives g₃(n) ≤ 3^n.",
-      "**Density argument**: By Szemerédi/Roth, dense subsets of {1,...,M} contain 3-APs. If ⟨A⟩ ⊆ {0,...,nN}, avoiding 3-APs requires 2^n/(nN) to be small.",
-      "**Polynomial gap**: The Erdős-Sárközy bound loses a polynomial factor. Closing this gap is the main challenge."
+      "**Subset sum structure**: The set $\\langle A \\rangle$ has at most $2^n$ elements (one per subset). Its additive structure depends heavily on the choice of $A$ — geometric progressions give distinct sums while arithmetic progressions cause collisions.",
+      "**Exponential barrier**: The set $\\{1, 3, 9, \\ldots, 3^{n-1}\\}$ has $\\langle A \\rangle$ = {numbers in base 3 with digits 0 or 1}, which is 3-AP-free. This gives $g_3(n) \\leq 3^n$ and shows the conjecture is tight if true.",
+      "**Density argument**: By Roth's theorem, any subset of $\\{1,\\ldots,M\\}$ of density $> c/\\log\\log M$ contains a 3-AP. Since $\\langle A \\rangle \\subseteq \\{0,\\ldots,nN\\}$ has $\\leq 2^n$ elements, AP-avoidance requires $2^n/(nN)$ to be small, forcing $N$ exponential in $n$.",
+      "**Polynomial gap**: The Erdős-Sárközy bound $g_3(n) \\gg 3^n/n^{O(1)}$ loses a polynomial factor. Closing this gap is the main open question — it requires understanding whether the polynomial correction reflects a genuine phenomenon or a limitation of current techniques.",
+      "**Proved upper bound on max**: The theorem `max_subsetSums_le` rigorously bounds $\\max(\\langle A \\rangle) \\leq |A| \\cdot N$ for $A \\subseteq \\{1,\\ldots,N\\}$, using `Finset.sum_le_card_nsmul`. This is a key ingredient in the density heuristic."
     ]
   },
   "sections": [
@@ -141,6 +142,28 @@
       "startLine": 226,
       "endLine": 239,
       "summary": "Relation to density-based AP results"
+    }
+  ],
+  "crossRefs": [
+    {
+      "proofId": "szemeredi-theorem",
+      "relationship": "prerequisite",
+      "description": "Szemerédi's theorem (axiomatized here) provides the density bound that forces g_k(n) to grow exponentially"
+    },
+    {
+      "proofId": "roth-theorem-k3",
+      "relationship": "related",
+      "description": "Roth's theorem for k=3 gives quantitative density bounds for 3-AP avoidance, directly relevant to the heuristic argument"
+    },
+    {
+      "proofId": "prob-method-second-moment",
+      "relationship": "related",
+      "description": "Second moment methods are among the techniques used to prove lower bounds on g_k(n)"
+    },
+    {
+      "proofId": "arithmetic-series",
+      "relationship": "related",
+      "description": "Arithmetic progressions are the central structure being avoided in subset sum sets"
     }
   ],
   "conclusion": {
