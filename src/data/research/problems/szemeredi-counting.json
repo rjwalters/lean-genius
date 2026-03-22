@@ -49,7 +49,9 @@
       "Fiber decomposition: |(A×B).filter G.Adj| = Σ_{a∈A} |neighborhoodIn G a B|. Need Finset.card_biUnion or Finset.card_eq_sum_card_fiberwise with Prod.fst as fiber map.",
       "File builds clean (3 sorries). Imports SzemerediRegularity successfully.",
       "bad_vertices_small sorry at line 120: after div_lt_iff₀, goal is cast edge_count < (d-ε)*|A|*|B|. Need fiber decomposition + sum bound.",
-      "Fiber decomposition identity: ((A×B).filter Adj).card = Σ_{a∈A} (B.filter (Adj a)).card. Try Finset.card_sigma or direct induction."
+      "Fiber decomposition identity: ((A×B).filter Adj).card = Σ_{a∈A} (B.filter (Adj a)).card. Try Finset.card_sigma or direct induction.",
+      "counting_lemma proof challenge: for vertices a with |N_B(a)| < ε|B|, cannot apply (B,C)-regularity to (N_B(a), N_C(a)). Need |N_B(a)| ≥ ε|B| which requires d_AB ≥ 2ε (not just d_AB ≥ ε).",
+      "Resolution approaches: (1) Split into cases d ≥ 2ε vs ε ≤ d < 2ε, using trivial bound for the latter; (2) Use Cauchy-Schwarz / convexity to handle the sum more carefully; (3) Follow Diestel Lemma 7.3.2 which gets bound (1-2ε)(d-ε)²(d-2ε)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
