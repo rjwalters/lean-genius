@@ -12,6 +12,18 @@
     "prerequisites": ["Finset.powersetCard", "Real.rpow", "Real.geom_mean_le_arith_mean_weighted"]
   },
   {
+    "id": "ann-amgm-oq02-part-i-setup",
+    "proofId": "amgm-inequality-oq-02",
+    "range": { "startLine": 36, "endLine": 43 },
+    "type": "context",
+    "title": "Import and Part I: Foundation Setup",
+    "content": "The single `import Mathlib` loads the entire Mathlib library, giving access to `Finset.powersetCard` (for symmetric polynomial definition), `Real.rpow` (for fractional powers in Maclaurin means), `Real.geom_mean_le_arith_mean_weighted` (for AM-GM), and `sq_nonneg` (for sum-of-squares arguments). The `open Finset Real` declaration brings Finset operations (sum, prod, powersetCard, univ) and real analysis functions (sqrt, rpow) into scope without qualification. Part I begins the formal development with elementary symmetric polynomial definitions.",
+    "mathContext": "Mathlib provides the complete real analysis and combinatorics foundation. Key dependencies: `Finset.powersetCard k` (the set of $k$-element subsets), `Real.rpow` ($x^r$ for real $r$), `Real.geom_mean_le_arith_mean_weighted` (weighted AM-GM), and `sq_nonneg` ($x^2 \\geq 0$).",
+    "significance": "context",
+    "relatedConcepts": ["Mathlib import", "Finset API", "Real analysis API"],
+    "prerequisites": ["Lean 4 module system"]
+  },
+  {
     "id": "ann-amgm-oq02-elemsymm",
     "proofId": "amgm-inequality-oq-02",
     "range": { "startLine": 44, "endLine": 60 },

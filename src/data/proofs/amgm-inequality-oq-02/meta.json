@@ -105,6 +105,21 @@
       "targetId": "binomial-theorem",
       "relationship": "related",
       "description": "Binomial coefficients C(n,k) normalize the elementary symmetric polynomials to form Maclaurin means"
+    },
+    {
+      "targetId": "triangle-inequality",
+      "relationship": "related",
+      "description": "Both are fundamental inequalities formalized from first principles — the triangle inequality controls absolute sums while Maclaurin's chain controls symmetric polynomial means"
+    },
+    {
+      "targetId": "sum-of-kth-powers",
+      "relationship": "related",
+      "description": "Power sums p_k = ∑ xᵢᵏ are related to elementary symmetric polynomials via Newton's identities (Newton-Girard formulas): p_k - e₁p_{k-1} + e₂p_{k-2} - ⋯ = (-1)^{k+1}ke_k. The Cauchy-Schwarz sum n·p₂ ≥ p₁² used here is a special case"
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "FTA guarantees that elementary symmetric polynomials e_k(x₁,...,xₙ) equal the coefficients (up to sign) of ∏(t - xᵢ) — the Vieta connection that makes Maclaurin's chain a statement about polynomial coefficients"
     }
   ],
   "overview": {
@@ -238,6 +253,9 @@
     "amgm-inequality",
     "amgm-inequality-oq-03",
     "cauchy-schwarz",
-    "binomial-theorem"
+    "binomial-theorem",
+    "triangle-inequality",
+    "sum-of-kth-powers",
+    "fundamental-theorem-algebra"
   ]
 }
