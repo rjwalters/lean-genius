@@ -14,7 +14,8 @@
       "characteristic functions",
       "fixed point theory",
       "renormalization group"
-    ]
+    ],
+    "mathContext": "CLT: If $X_1, X_2, \\ldots$ are i.i.d. with mean $\\mu$ and variance $\\sigma^2$, then $\\frac{\\bar{X}_n - \\mu}{\\sigma/\\sqrt{n}} \\xrightarrow{d} \\mathcal{N}(0,1)$. Equivalently, $\\hat{\\varphi}_n(t) \\to e^{-t^2/2}$ (convergence of characteristic functions)."
   },
   {
     "id": "ann-clt-imports",
@@ -31,7 +32,8 @@
       "Mathlib",
       "measure theory",
       "Fourier analysis"
-    ]
+    ],
+    "mathContext": "Key Mathlib imports: `MeasureTheory.Measure.MeasureSpace` (probability measures), `Analysis.SpecialFunctions.ExpDeriv` (exponential derivatives for characteristic functions), `Topology.Order.Basic` (convergence and limits)."
   },
   {
     "id": "ann-clt-charfun-def",
@@ -83,7 +85,8 @@
       "Taylor series",
       "moments",
       "cumulants"
-    ]
+    ],
+    "mathContext": "Characteristic function Taylor expansion: $\\varphi_X(t) = \\mathbb{E}[e^{itX}] = 1 + it\\mu - \\frac{t^2}{2}(\\sigma^2 + \\mu^2) + O(t^3)$. For standardized $X$ ($\\mu=0$, $\\sigma=1$): $\\varphi(t) = 1 - t^2/2 + O(t^3)$."
   },
   {
     "id": "ann-clt-taylor-theorem",
@@ -121,7 +124,8 @@
       "exponential limit",
       "compound interest",
       "Euler's definition of e"
-    ]
+    ],
+    "mathContext": "The key limit: $(1 - t^2/(2n) + o(1/n))^n \\to e^{-t^2/2}$ as $n \\to \\infty$. This is a generalization of $(1 + x/n)^n \\to e^x$, applied to the $n$-th power of the rescaled characteristic function."
   },
   {
     "id": "ann-clt-key-convergence",
@@ -200,7 +204,8 @@
       "dynamical systems",
       "fixed point theory",
       "renormalization group"
-    ]
+    ],
+    "mathContext": "Lévy's continuity theorem: $\\varphi_n \\to \\varphi$ pointwise and $\\varphi$ continuous at 0 $\\Rightarrow$ $X_n \\xrightarrow{d} X$. This converts the algebraic convergence $\\hat{\\varphi}_n(t) \\to e^{-t^2/2}$ into distributional convergence to $\\mathcal{N}(0,1)$."
   },
   {
     "id": "ann-clt-wasserstein",
@@ -329,6 +334,7 @@
       "universality",
       "emergence",
       "mathematical inevitability"
-    ]
+    ],
+    "mathContext": "The Gaussian $\\mathcal{N}(0,1)$ is universal because $e^{-t^2/2}$ is the unique fixed point of the CLT renormalization: if $\\varphi(t) = 1 - t^2/2 + o(t^2)$, then $\\varphi(t/\\sqrt{n})^n \\to e^{-t^2/2}$. Any distribution with finite variance flows to the Gaussian under averaging."
   }
 ]
