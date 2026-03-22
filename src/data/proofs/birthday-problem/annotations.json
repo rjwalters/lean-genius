@@ -9,81 +9,10 @@
     "type": "concept",
     "title": "The Birthday Paradox",
     "content": "The **Birthday Problem** asks: How many people must be in a room for there to be a >50% chance that two share a birthday?\n\nThe surprising answer: **just 23 people**.\n\nMost people guess much higher (like 183, half of 365), because they confuse two different questions:\n- 'What's the chance someone shares MY birthday?' (needs ~253 people for 50%)\n- 'What's the chance ANY two people share A birthday?' (needs only 23)\n\nThe second question has many more pairs to check!",
-    "significance": "critical",
-    "relatedConcepts": [
-      "probability",
-      "combinatorics",
-      "complement counting"
-    ]
-  },
-  {
-    "id": "ann-formula",
-    "proofId": "birthday-problem",
-    "range": {
-      "startLine": 140,
-      "endLine": 149
-    },
-    "type": "theorem",
-    "title": "The Birthday Formula",
-    "content": "**Birthday Problem Formula**:\n\n$$P(\\text{shared birthday among } n \\text{ people}) = 1 - \\frac{365 \\cdot 364 \\cdots (365-n+1)}{365^n}$$\n\nEquivalently:\n$$P(n) = 1 - \\prod_{k=0}^{n-1} \\frac{365-k}{365} = 1 - \\prod_{k=0}^{n-1} \\left(1 - \\frac{k}{365}\\right)$$\n\nThe product represents the probability that each successive person has a unique birthday.",
-    "mathContext": "$P(n) = 1 - \\frac{365!}{365^n (365-n)!}$",
-    "significance": "critical",
-    "relatedConcepts": [
-      "falling factorial",
-      "product formula"
-    ]
-  },
-  {
-    "id": "ann-counting",
-    "proofId": "birthday-problem",
-    "range": {
-      "startLine": 112,
-      "endLine": 117
-    },
-    "type": "concept",
-    "title": "Counting Injective Functions",
-    "content": "The number of ways for $n$ people to have **all distinct** birthdays equals the number of **injective functions** from an $n$-element set to a 365-element set.\n\nThis is the **falling factorial**:\n$$365^{\\underline{n}} = 365 \\times 364 \\times \\cdots \\times (365-n+1)$$\n\nIn Lean, this is `Nat.descFactorial 365 n`.\n\n**Why it works**: Person 1 has 365 choices, person 2 has 364 remaining choices, etc.",
-    "mathContext": "$|\\text{injections}| = 365^{\\underline{n}}$",
+    "mathContext": "With $n$ people there are $\\binom{n}{2} = n(n-1)/2$ pairs. For $n = 23$: $\\binom{23}{2} = 253$ pairs. Each pair has probability $1/365$ of matching, and the quadratic growth of pairs is what makes the threshold so low.",
     "significance": "key",
-    "relatedConcepts": [
-      "injective functions",
-      "falling factorial",
-      "permutations"
-    ]
-  },
-  {
-    "id": "ann-pigeonhole",
-    "proofId": "birthday-problem",
-    "range": {
-      "startLine": 179,
-      "endLine": 182
-    },
-    "type": "theorem",
-    "title": "The Pigeonhole Case",
-    "content": "**When $n > 365$**: By the pigeonhole principle, at least two people MUST share a birthday.\n\nWith 366+ people and only 365 possible birthdays, there's no way to assign distinct birthdays to everyone.\n\nMathematically: `descFactorial 365 n = 0` when $n > 365$, so:\n$$P(n) = 1 - \\frac{0}{365^n} = 1$$\n\nThe probability is exactly 1 (certain).",
-    "mathContext": "If $n > 365$, then $P(n) = 1$",
-    "significance": "key",
-    "relatedConcepts": [
-      "pigeonhole principle",
-      "certainty"
-    ]
-  },
-  {
-    "id": "ann-23-threshold",
-    "proofId": "birthday-problem",
-    "range": {
-      "startLine": 192,
-      "endLine": 223
-    },
-    "type": "theorem",
-    "title": "The 23-Person Threshold",
-    "content": "**The Famous Result**: With 23 people, P(shared birthday) > 50%.\n\nNumerically:\n- $P(22) \\approx 0.4757 < 0.5$\n- $P(23) \\approx 0.5073 > 0.5$\n\nSo 23 is the exact threshold where shared birthdays become more likely than not.\n\n**Note**: This is stated as an axiom in Lean because computing the exact rational requires arithmetic on ~50-digit numbers, which native_decide cannot handle efficiently.",
-    "mathContext": "$P(23) \\approx 50.73\\% > 50\\%$",
-    "significance": "critical",
-    "relatedConcepts": [
-      "threshold",
-      "probability"
-    ]
+    "relatedConcepts": ["probability", "combinatorics", "complement counting", "quadratic growth of pairs"],
+    "prerequisites": ["basic probability", "binomial coefficients"]
   },
   {
     "id": "ann-crypto",
@@ -93,30 +22,116 @@
       "endLine": 63
     },
     "type": "insight",
-    "title": "The Birthday Attack",
-    "content": "The Birthday Problem has serious implications for **cryptography**:\n\nA **birthday attack** exploits this mathematics to find hash collisions. For a hash function with $n$-bit output:\n- Naive collision search: $O(2^n)$ attempts\n- Birthday attack: $O(2^{n/2})$ attempts\n\nThis is why hash functions need outputs twice as long as the desired security level. A 256-bit hash provides only 128 bits of collision resistance.",
+    "title": "Module Docstring and the Birthday Attack",
+    "content": "The module docstring establishes the problem setup (365 equally likely birthdays, Wiedijk #93) and documents the Birthday Problem's cryptographic significance.\n\nA **birthday attack** exploits this mathematics to find hash collisions. For a hash function with $n$-bit output:\n- Naive collision search: $O(2^n)$ attempts\n- Birthday attack: $O(2^{n/2})$ attempts\n\nThis is why hash functions need outputs twice as long as the desired security level. A 256-bit hash provides only 128 bits of collision resistance. The birthday bound drove the transition from MD5 (128-bit, broken) and SHA-1 (160-bit, broken) to SHA-256.",
+    "mathContext": "A hash function $h: \\{0,1\\}^* \\to \\{0,1\\}^n$ has birthday collision bound: after $\\approx 2^{n/2}$ random evaluations, a collision $h(x) = h(y)$ with $x \\neq y$ is expected. This follows from the birthday formula with 'days' $= 2^n$.",
     "significance": "key",
-    "relatedConcepts": [
-      "cryptography",
-      "hash functions",
-      "collision resistance"
-    ]
+    "relatedConcepts": ["cryptography", "hash functions", "collision resistance", "SHA-256"],
+    "prerequisites": ["hash function definition", "big-O notation"]
+  },
+  {
+    "id": "ann-counting",
+    "proofId": "birthday-problem",
+    "range": {
+      "startLine": 88,
+      "endLine": 118
+    },
+    "type": "technique",
+    "title": "Counting Distinct Assignments via Falling Factorials",
+    "content": "The number of ways for $n$ people to have **all distinct** birthdays equals the number of **injective functions** from an $n$-element set to a 365-element set.\n\nThis is the **falling factorial**:\n$$365^{\\underline{n}} = 365 \\times 364 \\times \\cdots \\times (365-n+1)$$\n\nIn Lean, this is `Nat.descFactorial 365 n`, and `Fintype.card_embedding_eq` establishes that the number of injective functions equals the falling factorial.\n\n**Why it works**: Person 1 has 365 choices, person 2 has 364 remaining choices, etc. Each successive person has one fewer option if all birthdays must be distinct.",
+    "mathContext": "$|\\{f: \\text{Fin}(n) \\hookrightarrow \\text{Fin}(365)\\}| = 365^{\\underline{n}} = \\text{descFactorial}(365, n)$",
+    "significance": "key",
+    "relatedConcepts": ["injective functions", "falling factorial", "permutations", "Fintype.card_embedding_eq"],
+    "prerequisites": ["Nat.descFactorial", "injective functions", "Fintype.card_embedding_eq"]
+  },
+  {
+    "id": "ann-formula",
+    "proofId": "birthday-problem",
+    "range": {
+      "startLine": 119,
+      "endLine": 150
+    },
+    "type": "theorem",
+    "title": "The Birthday Probability Formula",
+    "content": "**Birthday Problem Formula**:\n\n$$P(\\text{shared birthday among } n \\text{ people}) = 1 - \\frac{365 \\cdot 364 \\cdots (365-n+1)}{365^n}$$\n\nEquivalently:\n$$P(n) = 1 - \\prod_{k=0}^{n-1} \\frac{365-k}{365} = 1 - \\prod_{k=0}^{n-1} \\left(1 - \\frac{k}{365}\\right)$$\n\nThe numerator counts collision-free assignments (falling factorial), the denominator counts all assignments ($365^n$). The complement $1 - P(\\text{all distinct})$ gives the collision probability.",
+    "mathContext": "$P(n) = 1 - \\frac{\\text{descFactorial}(365, n)}{365^n}$",
+    "significance": "key",
+    "relatedConcepts": ["complement counting", "falling factorial", "Real division"],
+    "prerequisites": ["Nat.descFactorial", "complement probability", "Real number division"]
   },
   {
     "id": "ann-two-people",
     "proofId": "birthday-problem",
     "range": {
-      "startLine": 165,
+      "startLine": 151,
       "endLine": 171
     },
-    "type": "example",
-    "title": "Two People: P = 1/365",
-    "content": "With 2 people, the probability they share a birthday is:\n\n$$P(2) = 1 - \\frac{365 \\times 364}{365^2} = 1 - \\frac{364}{365} = \\frac{1}{365}$$\n\nThis makes intuitive sense: once person 1's birthday is fixed, person 2 has a 1/365 chance of matching.\n\nIn Lean: `prob_shared_birthday 2 = 1 / 365`",
-    "mathContext": "$P(2) = 1/365 \\approx 0.27\\%$",
+    "type": "technique",
+    "title": "Boundary Cases: n=0, 1, 2",
+    "content": "Specific values anchor the formula:\n- $P(0) = 0$: No people, no collision (vacuously)\n- $P(1) = 0$: One person cannot collide with themselves\n- $P(2) = 1/365$: First non-trivial case — once person 1's birthday is fixed, person 2 has a $1/365$ chance of matching\n\nIn Lean, these are proved by reducing to `descFactorial` computations and simplifying with `norm_num` or `simp`.",
+    "mathContext": "$P(0) = 0$, $P(1) = 0$, $P(2) = 1 - 364/365 = 1/365 \\approx 0.27\\%$",
     "significance": "supporting",
-    "relatedConcepts": [
-      "base case",
-      "complement probability"
-    ]
+    "relatedConcepts": ["base case", "complement probability", "norm_num tactic"],
+    "prerequisites": ["birthday formula", "natural number arithmetic"]
+  },
+  {
+    "id": "ann-pigeonhole",
+    "proofId": "birthday-problem",
+    "range": {
+      "startLine": 179,
+      "endLine": 183
+    },
+    "type": "theorem",
+    "title": "The Pigeonhole Case: n > 365",
+    "content": "**When $n > 365$**: By the pigeonhole principle, at least two people MUST share a birthday.\n\nWith 366+ people and only 365 possible birthdays, there's no way to assign distinct birthdays to everyone.\n\nMathematically: `descFactorial 365 n = 0` when $n > 365$ (the falling factorial includes a factor of 0), so:\n$$P(n) = 1 - \\frac{0}{365^n} = 1$$\n\nThe probability is exactly 1 (certain).",
+    "mathContext": "For $n > 365$: $365^{\\underline{n}} = 0$ (a factor $(365 - k)$ with $k \\geq 365$ equals 0), so $P(n) = 1 - 0 = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["pigeonhole principle", "certainty", "descFactorial zero"],
+    "prerequisites": ["pigeonhole principle", "Nat.descFactorial"]
+  },
+  {
+    "id": "ann-23-threshold",
+    "proofId": "birthday-problem",
+    "range": {
+      "startLine": 184,
+      "endLine": 247
+    },
+    "type": "theorem",
+    "title": "The 23-Person Threshold: P(23) > 1/2",
+    "content": "**The Famous Result**: With 23 people, $P(\\text{shared birthday}) > 50\\%$.\n\nNumerically:\n- $P(22) \\approx 0.4757 < 0.5$ (22 people: no majority)\n- $P(23) \\approx 0.5073 > 0.5$ (23 people: majority!)\n\nSo 23 is the exact threshold where shared birthdays become more likely than not. The proof reduces to integer arithmetic: showing $2 \\cdot \\text{descFactorial}(365, 23) < 365^{23}$, which `native_decide` verifies by computing these ~146-digit integers exactly.\n\nThe psychological surprise comes from the quadratic growth of pairs: $\\binom{23}{2} = 253$ pairs, exceeding the 365-day year in pair-count.",
+    "mathContext": "$P(23) = 1 - \\frac{365!/(365-23)!}{365^{23}} \\approx 0.5073 > 0.5$. The exact comparison is $2 \\cdot 365^{\\underline{23}} < 365^{23}$.",
+    "significance": "key",
+    "relatedConcepts": ["threshold", "native_decide", "exact integer arithmetic"],
+    "prerequisites": ["birthday formula", "native_decide tactic", "integer comparison"]
+  },
+  {
+    "id": "ann-expected-pairs",
+    "proofId": "birthday-problem",
+    "range": {
+      "startLine": 304,
+      "endLine": 356
+    },
+    "type": "theorem",
+    "title": "Expected Number of Shared Birthday Pairs",
+    "content": "By **linearity of expectation**, the expected number of shared-birthday pairs in a group of $n$ people is:\n$$\\mathbb{E}[\\text{matching pairs}] = \\binom{n}{2} \\cdot \\frac{1}{365} = \\frac{n(n-1)}{730}$$\n\nEach of the $\\binom{n}{2}$ pairs independently has probability $1/365$ of matching. Linearity of expectation means we just sum these, even though the events aren't independent.\n\nThe **28-person threshold**: $\\binom{28}{2}/365 = 378/365 > 1$, so with 28 people we expect more than one matching pair on average. This is a different (and weaker) statement than $P(23) > 1/2$.",
+    "mathContext": "$\\mathbb{E}[\\text{pairs}] = \\frac{n(n-1)}{2 \\cdot 365}$. For $n = 28$: $\\frac{28 \\cdot 27}{730} = \\frac{756}{730} > 1$.",
+    "significance": "key",
+    "relatedConcepts": ["linearity of expectation", "indicator variables", "expected value"],
+    "prerequisites": ["linearity of expectation", "indicator random variables", "binomial coefficients"]
+  },
+  {
+    "id": "ann-99-threshold",
+    "proofId": "birthday-problem",
+    "range": {
+      "startLine": 357,
+      "endLine": 402
+    },
+    "type": "theorem",
+    "title": "The 99% Threshold: 57 People",
+    "content": "With **57 people**, the probability of a shared birthday exceeds 99%.\n\nThe proof establishes tight bounds:\n- $P(56) < 0.99$ — 56 people are not quite enough\n- $P(57) > 0.99$ — 57 people push past the threshold\n\nBoth inequalities are verified by `native_decide` on integers with over 140 digits. This tight lower bound at 56 proves that 57 is the *minimum* for 99% probability, not just a sufficient condition.\n\nThe rapid growth from 50% (23 people) to 99% (57 people) illustrates the steep S-curve shape of the birthday probability function.",
+    "mathContext": "$P(57) = 1 - \\frac{365^{\\underline{57}}}{365^{57}} > 0.99$ while $P(56) < 0.99$. The complement probability $365^{\\underline{57}}/365^{57} < 0.01$.",
+    "significance": "key",
+    "relatedConcepts": ["tight bound", "native_decide", "S-curve probability"],
+    "prerequisites": ["birthday formula", "native_decide tactic"]
   }
 ]
