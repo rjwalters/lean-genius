@@ -48,6 +48,12 @@
     "axiomCount": 5,
     "lineCount": 158,
     "dateAdded": "2025-12-22",
+    "prerequisites": [
+      "Divisor sum function σ(n) from Mathlib",
+      "Amicable and perfect numbers",
+      "Multiplicative functions",
+      "Asymptotic density of number-theoretic sets"
+    ],
     "assumptions": [
       "infinitely_many_amicable_pairs: There exist infinitely many amicable pairs (OPEN)",
       "amicable_lower_bound: A(x) > x^{1-o(1)} (OPEN)",

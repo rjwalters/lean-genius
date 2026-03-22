@@ -23,6 +23,12 @@
     "erdosUrl": "https://erdosproblems.com/549",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-24",
+    "prerequisites": [
+      "Ramsey numbers and their bounds",
+      "Bipartite graphs and trees",
+      "SimpleGraph from Mathlib",
+      "Graph coloring and chromatic number"
+    ],
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",

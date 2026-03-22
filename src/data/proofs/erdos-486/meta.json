@@ -47,6 +47,13 @@
     ],
     "dateAdded": "2025-12-22",
     "lineCount": 120,
+    "prerequisites": [
+      "Modular arithmetic and ZMod type from Mathlib",
+      "Limits and Filter.Tendsto from Mathlib",
+      "Finset operations (filter, sum, range)",
+      "Logarithmic and natural density concepts",
+      "Classical logic for decidability instances"
+    ],
     "axiomCount": 3,
     "assumptions": [
       "erdos486_conjecture: The main open conjecture — every modular avoidance set has a logarithmic density",
