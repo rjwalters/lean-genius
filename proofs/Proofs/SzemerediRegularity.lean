@@ -420,7 +420,7 @@ theorem regularity_lemma (eps : ℚ) (heps : 0 < eps) :
 -- ═══════════════════════════════════════════════════════════════════
 
 /-- Our edge density agrees with Mathlib's SimpleGraph.edgeDensity. -/
-private theorem edgeDensity_eq_mathlib (G : SimpleGraph V) [DecidableRel G.Adj]
+theorem edgeDensity_eq_mathlib (G : SimpleGraph V) [DecidableRel G.Adj]
     (A B : Finset V) :
     edgeDensity G A B = G.edgeDensity A B := by
   unfold edgeDensity
@@ -436,7 +436,7 @@ private theorem edgeDensity_eq_mathlib (G : SimpleGraph V) [DecidableRel G.Adj]
     rfl
 
 /-- Mathlib's pairwise uniformity (strict <) implies our ε-regularity (≤). -/
-private theorem mathlib_uniform_imp_regular (G : SimpleGraph V) [DecidableRel G.Adj]
+theorem mathlib_uniform_imp_regular (G : SimpleGraph V) [DecidableRel G.Adj]
     (eps : ℚ) (A B : Finset V)
     (h : G.IsUniform (↑eps : ℝ) A B) :
     IsEpsilonRegular G eps A B := by
@@ -458,7 +458,7 @@ private theorem mathlib_uniform_imp_regular (G : SimpleGraph V) [DecidableRel G.
 
 /-- Equipartition in Mathlib's sense implies our equitability condition:
     all parts differ in size by at most 1. -/
-private theorem equipartition_imp_equitable
+theorem equipartition_imp_equitable
     (P : Finpartition (Finset.univ : Finset V))
     (hequi : P.IsEquipartition) :
     ∀ A B : Finset V, A ∈ P.parts → B ∈ P.parts →
@@ -472,7 +472,7 @@ private theorem equipartition_imp_equitable
 
 /-- The set of our irregular pairs is a subset of Mathlib's non-uniform pairs.
     This is because Mathlib uses strict < while we use ≤. -/
-private theorem irregular_subset_nonuniform (G : SimpleGraph V) [DecidableRel G.Adj]
+theorem irregular_subset_nonuniform (G : SimpleGraph V) [DecidableRel G.Adj]
     (eps : ℚ) (P : Finpartition (Finset.univ : Finset V)) :
     ((P.parts.product P.parts).filter (fun pq =>
       pq.1 ≠ pq.2 ∧ ¬IsEpsilonRegular G eps pq.1 pq.2)).card ≤
