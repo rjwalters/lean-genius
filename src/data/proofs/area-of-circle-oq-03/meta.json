@@ -77,7 +77,8 @@
       "**HasDerivAt is the key**: The limits sin(h)/h → 1 and tan(h)/h → 1 are exactly the derivative definition. `hasDerivAt_iff_tendsto_slope` converts `HasDerivAt f f' a` to `(f x - f a)/(x - a) → f'` in `nhdsWithin a {a}ᶜ`.",
       "**Composition pattern**: The chain `tendsto_sin_div_nhds_zero.comp tendsto_two_pi_div_atTop` directly gives the composed limit, without any algebraic manipulation.",
       "**sin x < x for x > 0**: `Real.sin_lt` gives the crucial inequality `sin x < x` for positive x, which proves both `n·sin(2π/n) ≤ 2π` and `inscribedArea ≤ πr²`.",
-      "**Uniqueness from Tendsto**: `tendsto_nhds_unique` closes the uniqueness theorem in one line: any other limit of the same sequence must equal πr²."
+      "**Uniqueness from Tendsto**: `tendsto_nhds_unique` closes the uniqueness theorem in one line: any other limit of the same sequence must equal πr².",
+      "**Riemann sum connection**: The inscribed area formula $n \\cdot r^2/2 \\cdot \\sin(2\\pi/n)$ is exactly the Riemann sum for $\\int_0^{2\\pi} r^2/2 \\, d\\theta$ in polar coordinates, making Archimedes' geometric construction a concrete instance of integration 1900 years before its invention."
     ]
   },
   "sections": [
@@ -132,5 +133,21 @@
       "Can Archimedes' specific bounds 3+10/71 < π < 3+1/7 (using 96-gons) be verified computably in Lean 4?",
       "Can the method of exhaustion be generalized to other curves (ellipses, parabolas) as Archimedes also studied?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle",
+      "relationship": "extends",
+      "description": "The base area-of-circle proof establishes πr² directly. This OQ-03 file shows how Archimedes arrived at the formula through the method of exhaustion, giving the constructive limiting argument behind the result."
+    },
+    {
+      "targetId": "area-of-circle-oq-01",
+      "relationship": "technique",
+      "description": "Both proofs rely on the key limit n·sin(2π/n) → 2π. The isoperimetric approach in OQ-01 and the exhaustion approach here share this fundamental trigonometric limit, revealing deep structural connections."
+    }
+  ],
+  "relatedProofs": [
+    "area-of-circle",
+    "area-of-circle-oq-01"
+  ]
 }
