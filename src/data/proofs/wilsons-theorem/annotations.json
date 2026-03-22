@@ -14,6 +14,10 @@
       "primality testing",
       "factorial",
       "modular arithmetic"
+    ],
+    "prerequisites": [
+      "number theory",
+      "modular arithmetic"
     ]
   },
   {
@@ -31,6 +35,9 @@
     "relatedConcepts": [
       "history of mathematics",
       "number theory"
+    ],
+    "prerequisites": [
+      "history of mathematics"
     ]
   },
   {
@@ -42,13 +49,17 @@
     },
     "type": "theorem",
     "title": "Wilson's Lemma (Forward Direction)",
-    "content": "**Wilson's Lemma**: For a prime $p$, $(p-1)! \\equiv -1 \\pmod{p}$.\n\nIn Lean:\n```\ntheorem wilsons_lemma (p : N) [Fact (Nat.Prime p)] :\n    ((p - 1).factorial : ZMod p) = -1\n```\n\nThis is the 'easy' direction—the core insight is the pairing of elements with their inverses in $(\\mathbb{Z}/p\\mathbb{Z})^*$.",
+    "content": "**Wilson's Lemma**: For a prime $p$, $(p-1)! \\equiv -1 \\pmod{p}$.\n\nIn Lean:\n```\ntheorem wilsons_lemma (p : N) [Fact (Nat.Prime p)] :\n    ((p - 1).factorial : ZMod p) = -1\n```\n\nThis is the 'easy' direction\u2014the core insight is the pairing of elements with their inverses in $(\\mathbb{Z}/p\\mathbb{Z})^*$.",
     "mathContext": "$(p-1)! \\equiv -1 \\pmod{p}$",
     "significance": "critical",
     "relatedConcepts": [
       "factorial",
       "modular congruence",
       "ZMod"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "prime numbers"
     ]
   },
   {
@@ -65,6 +76,11 @@
     "significance": "critical",
     "relatedConcepts": [
       "primality",
+      "divisibility",
+      "proof by contradiction"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
       "divisibility",
       "proof by contradiction"
     ]
@@ -85,6 +101,10 @@
       "multiplicative group",
       "inverse",
       "group theory"
+    ],
+    "prerequisites": [
+      "group theory",
+      "multiplicative inverses"
     ]
   },
   {
@@ -96,13 +116,17 @@
     },
     "type": "lemma",
     "title": "Only 1 and -1 Are Self-Inverse",
-    "content": "In $(\\mathbb{Z}/p\\mathbb{Z})^*$, the only elements equal to their own inverse are 1 and -1.\n\n**Proof**:\n- $a = a^{-1}$ iff $a^2 = 1$\n- So $(a-1)(a+1) \\equiv 0 \\pmod{p}$\n- Since $p$ is prime, either $a \\equiv 1$ or $a \\equiv -1$\n\nThis is why primes are special—composite moduli can have more than 2 self-inverse elements!",
+    "content": "In $(\\mathbb{Z}/p\\mathbb{Z})^*$, the only elements equal to their own inverse are 1 and -1.\n\n**Proof**:\n- $a = a^{-1}$ iff $a^2 = 1$\n- So $(a-1)(a+1) \\equiv 0 \\pmod{p}$\n- Since $p$ is prime, either $a \\equiv 1$ or $a \\equiv -1$\n\nThis is why primes are special\u2014composite moduli can have more than 2 self-inverse elements!",
     "mathContext": "$x^2 \\equiv 1 \\pmod{p} \\implies x \\equiv \\pm 1$",
     "significance": "key",
     "relatedConcepts": [
       "square roots",
       "prime modulus",
       "quadratic residues"
+    ],
+    "prerequisites": [
+      "quadratic equations mod p",
+      "prime factorization"
     ]
   },
   {
@@ -114,12 +138,15 @@
     },
     "type": "example",
     "title": "Example: p = 2",
-    "content": "For $p = 2$:\n- $(2-1)! = 1! = 1$\n- $-1 \\equiv 1 \\pmod{2}$\n\nSo $1 \\equiv -1 \\pmod{2}$ ✓\n\nThis works because in $\\mathbb{Z}/2\\mathbb{Z}$, we have $-1 = 1$.",
+    "content": "For $p = 2$:\n- $(2-1)! = 1! = 1$\n- $-1 \\equiv 1 \\pmod{2}$\n\nSo $1 \\equiv -1 \\pmod{2}$ \u2713\n\nThis works because in $\\mathbb{Z}/2\\mathbb{Z}$, we have $-1 = 1$.",
     "mathContext": "$1! = 1 \\equiv -1 \\pmod{2}$",
     "significance": "supporting",
     "relatedConcepts": [
       "modular arithmetic",
       "verification"
+    ],
+    "prerequisites": [
+      "modular arithmetic basics"
     ]
   },
   {
@@ -131,12 +158,16 @@
     },
     "type": "example",
     "title": "Counterexample: n = 4 (Non-Prime)",
-    "content": "For $n = 4$ (composite):\n- $(4-1)! = 3! = 6$\n- $6 = 1 \\cdot 4 + 2 \\equiv 2 \\pmod{4}$\n- $-1 \\equiv 3 \\pmod{4}$\n\nSo $6 \\not\\equiv -1 \\pmod{4}$ ✗\n\nThis confirms 4 is not prime (which we knew). The backward direction tells us: since $(n-1)! \\not\\equiv -1$, the number cannot be prime.",
+    "content": "For $n = 4$ (composite):\n- $(4-1)! = 3! = 6$\n- $6 = 1 \\cdot 4 + 2 \\equiv 2 \\pmod{4}$\n- $-1 \\equiv 3 \\pmod{4}$\n\nSo $6 \\not\\equiv -1 \\pmod{4}$ \u2717\n\nThis confirms 4 is not prime (which we knew). The backward direction tells us: since $(n-1)! \\not\\equiv -1$, the number cannot be prime.",
     "mathContext": "$3! = 6 \\equiv 2 \\not\\equiv -1 \\pmod{4}$",
     "significance": "key",
     "relatedConcepts": [
       "composite numbers",
       "counterexample"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "composite numbers"
     ]
   },
   {
@@ -155,6 +186,11 @@
       "group theory",
       "cyclic groups",
       "primitive roots"
+    ],
+    "prerequisites": [
+      "abstract algebra",
+      "cyclic groups",
+      "Euler's totient"
     ]
   },
   {
@@ -172,6 +208,10 @@
       "ZMod",
       "Fin",
       "typeclasses"
+    ],
+    "prerequisites": [
+      "Lean 4 type system",
+      "Mathlib ZMod"
     ]
   }
 ]

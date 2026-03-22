@@ -64,42 +64,48 @@
       "title": "Introduction",
       "startLine": 1,
       "endLine": 44,
-      "summary": "Overview of Wilson's theorem, its historical context, and connection to group theory."
+      "summary": "Overview of Wilson's theorem, its historical context, and connection to group theory.",
+      "mathContext": "$n > 1$ is prime $\\iff (n-1)! \\equiv -1 \\pmod{n}$. First stated by Ibn al-Haytham (~1000 CE), proved by Lagrange (1771)."
     },
     {
       "id": "main-theorems",
       "title": "Main Theorems",
       "startLine": 46,
       "endLine": 82,
-      "summary": "Wilson's lemma and the full biconditional characterization of primes."
+      "summary": "Wilson's lemma and the full biconditional characterization of primes.",
+      "mathContext": "Forward: $p$ prime $\\Rightarrow (p-1)! \\equiv -1 \\pmod{p}$ via `ZMod.wilsons_lemma`. Biconditional: `Nat.prime_iff_fac_equiv_neg_one`."
     },
     {
       "id": "product-form",
       "title": "Product Formulation",
       "startLine": 84,
       "endLine": 89,
-      "summary": "Alternative formulation using products over the interval [1, p-1]."
+      "summary": "Alternative formulation using products over the interval [1, p-1].",
+      "mathContext": "$\\prod_{k=1}^{p-1} k \\equiv -1 \\pmod{p}$. Equivalent to the factorial form since $\\prod_{k=1}^{p-1} k = (p-1)!$."
     },
     {
       "id": "examples",
       "title": "Examples",
       "startLine": 91,
       "endLine": 104,
-      "summary": "Concrete examples for p = 2, p = 5, and the non-prime n = 4."
+      "summary": "Concrete examples for p = 2, p = 5, and the non-prime n = 4.",
+      "mathContext": "$p=2$: $1! = 1 \\equiv -1 \\pmod{2}$ ✓. $p=5$: $4! = 24 \\equiv 4 \\equiv -1 \\pmod{5}$ ✓. $n=4$: $3! = 6 \\equiv 2 \\not\\equiv -1 \\pmod{4}$ ✗."
     },
     {
       "id": "computational",
       "title": "Computational Considerations",
       "startLine": 106,
       "endLine": 127,
-      "summary": "Why Wilson's theorem is computationally impractical for primality testing."
+      "summary": "Why Wilson's theorem is computationally impractical for primality testing.",
+      "mathContext": "Computing $(n-1)! \\bmod n$ requires $O(n)$ multiplications. In contrast, Miller-Rabin runs in $O(k \\log^2 n \\log \\log n)$ time for $k$ witnesses."
     },
     {
       "id": "group-theory",
       "title": "Group Theory Connection",
       "startLine": 129,
       "endLine": 149,
-      "summary": "The proof's connection to the multiplicative group structure."
+      "summary": "The proof's connection to the multiplicative group structure.",
+      "mathContext": "$(\\mathbb{Z}/p\\mathbb{Z})^*$ is cyclic of order $p-1$. The product of all elements equals the unique order-2 element $-1$ (by pairing each $a$ with $a^{-1}$)."
     }
   ],
   "conclusion": {
@@ -111,5 +117,39 @@
       "How does Wilson's theorem relate to the theory of primitive roots?",
       "Can Wilson's theorem be used to generate prime numbers efficiently?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "related",
+      "description": "Both are foundational results about prime numbers — Euclid proves infinitely many primes exist, Wilson characterizes exactly which numbers are prime via factorial congruence"
+    },
+    {
+      "targetId": "fermats-last-theorem",
+      "relationship": "related",
+      "description": "Both involve deep properties of modular arithmetic. Fermat's Little Theorem (a^p ≡ a mod p) is often paired with Wilson's in introductory number theory courses"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "extends",
+      "description": "Wilson's theorem concerns the multiplicative group (Z/pZ)* whose order is φ(p) = p-1. Euler's totient generalizes to composite moduli where the group structure is more complex"
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Both concern the multiplicative structure of Z/pZ — Wilson's theorem about the product of all residues, quadratic reciprocity about which residues are squares"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem on group orders underpins the pairing argument: in (Z/pZ)*, each element's order divides p-1, and the self-inverse elements are exactly those of order dividing 2"
+    }
+  ],
+  "relatedProofs": [
+    "infinitude-primes",
+    "fermats-last-theorem",
+    "euler-totient",
+    "quadratic-reciprocity",
+    "lagrange-theorem"
+  ]
 }
