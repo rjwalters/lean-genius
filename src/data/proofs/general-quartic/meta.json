@@ -39,7 +39,13 @@
     "dateAdded": "2025-12-28",
     "wiedijkNumber": 46,
     "axiomCount": 9,
-    "lineCount": 344
+    "lineCount": 344,
+    "prerequisites": [
+      "Complex numbers and polynomial evaluation",
+      "Cubic equation solution (Cardano's formula)",
+      "Quadratic formula for complex coefficients",
+      "Completing the square and factorization techniques"
+    ]
   },
   "overview": {
     "historicalContext": "The quartic formula represents the culmination of Renaissance algebra. While Cardano's Ars Magna (1545) is famous for the cubic formula, it was his student Lodovico Ferrari who, at age 18, discovered how to solve the quartic by reducing it to a cubic.\n\nThe key insight is brilliant: by adding a parameter m and completing the square, the quartic can be written as a difference of squares, which factors. Finding the right m requires solving a cubic equation (the 'resolvent cubic'). This creates a tower of solutions:\n- Quadratic: Direct formula\n- Cubic: Cardano's formula\n- Quartic: Ferrari's method (uses cubic)\n- Quintic and beyond: Abel-Ruffini (1824) proves no general formula exists!\n\nThis historical sequence explains why we can solve up to degree 4 but not degree 5+: the Galois groups S2, S3, S4 are solvable, but S5 is not.",
@@ -107,6 +113,69 @@
       "Connection to the geometry of the quartic curve and its inflection points?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "solution-of-cubic",
+      "relationship": "uses",
+      "description": "Ferrari's method reduces the quartic to a cubic resolvent, solved by Cardano's formula (Wiedijk #37). The quartic is literally unsolvable without first solving a cubic."
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "complementary",
+      "description": "The quartic is the last degree solvable by radicals. Abel-Ruffini (Wiedijk #16) proves no general formula exists for degree 5+, because S₅ is not solvable while S₄ is."
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "foundational",
+      "description": "FTA guarantees the quartic has exactly 4 roots in C. Ferrari's formula constructs them explicitly via the resolvent cubic and quadratic formula."
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "related",
+      "description": "Both connect to constructibility: quartic roots with degree 4 = 2² ARE constructible (4 divides 2²), while the cubic case (degree 3) is the obstruction for trisection"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem underpins the Galois-theoretic explanation: S₄ has order 24 and its solvable derived series S₄ ▷ A₄ ▷ V₄ ▷ {e} enables radical solutions"
+    },
+    {
+      "targetId": "sylow-theorems",
+      "relationship": "related",
+      "description": "Sylow theory reveals the subgroup structure of S₄ (Sylow 2-subgroups of order 8, Sylow 3-subgroups of order 3) that enables the composition series making S₄ solvable"
+    }
+  ],
+  "relatedProofs": [
+    "solution-of-cubic",
+    "abel-ruffini",
+    "fundamental-theorem-algebra",
+    "angle-trisection",
+    "lagrange-theorem",
+    "sylow-theorems"
+  ],
+  "references": [
+    {
+      "authors": "Cardano, Girolamo",
+      "title": "Artis Magnae, Sive de Regulis Algebraicis Liber Unus (Ars Magna)",
+      "year": "1545",
+      "venue": "Johann Petreius, Nuremberg",
+      "note": "Chapter XXXIX presents Ferrari's quartic solution. The work also contains Cardano's cubic formula (Chapter XI), creating the tower: quadratic → cubic → quartic."
+    },
+    {
+      "authors": "van der Waerden, Bartel Leendert",
+      "title": "A History of Algebra: From al-Khwārizmī to Emmy Noether",
+      "year": "1985",
+      "venue": "Springer",
+      "note": "Comprehensive history of the cubic and quartic solutions, placing Ferrari's work in the context of Renaissance mathematics and the path to Galois theory"
+    },
+    {
+      "authors": "Euler, Leonhard",
+      "title": "De formis radicum aequationum cuiusque ordinis coniectatio",
+      "year": "1733",
+      "venue": "Commentarii academiae scientiarum Petropolitanae",
+      "note": "Euler's alternative approach to the quartic via symmetric functions, simplifying Ferrari's method and foreshadowing Lagrange's systematic treatment"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Algebra.Polynomial.Basic",
