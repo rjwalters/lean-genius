@@ -58,42 +58,48 @@
       "title": "Setup and Imports",
       "startLine": 1,
       "endLine": 29,
-      "summary": "Introduces the historical context, imports Mathlib's calculus and integration libraries, and opens the namespace."
+      "summary": "Introduces the historical context, imports Mathlib's calculus and integration libraries, and opens the namespace.",
+      "mathContext": "The FTC connects differentiation and integration: $\\frac{d}{dx}\\int_a^x f(t)\\,dt = f(x)$ and $\\int_a^b F'(x)\\,dx = F(b) - F(a)$."
     },
     {
       "id": "integral-function",
       "title": "The Integral Function",
       "startLine": 31,
       "endLine": 42,
-      "summary": "Defines F(x) = ∫ₐˣ f(t)dt, the cumulative integral that measures accumulated area."
+      "summary": "Defines F(x) = ∫ₐˣ f(t)dt, the cumulative integral that measures accumulated area.",
+      "mathContext": "$F(x) = \\int_a^x f(t)\\,dt$. This is the antiderivative of $f$ with $F(a) = 0$."
     },
     {
       "id": "ftc-part1",
       "title": "FTC Part 1: Differentiation of Integrals",
       "startLine": 44,
       "endLine": 59,
-      "summary": "Proves that the derivative of an integral recovers the original function: F'(x) = f(x)."
+      "summary": "Proves that the derivative of an integral recovers the original function: F'(x) = f(x).",
+      "mathContext": "FTC Part 1: If $f$ is continuous on $[a,b]$, then $F(x) = \\int_a^x f(t)\\,dt$ is differentiable and $F'(x) = f(x)$."
     },
     {
       "id": "ftc-part2",
       "title": "FTC Part 2: Evaluation of Integrals",
       "startLine": 61,
       "endLine": 86,
-      "summary": "Proves that the integral of a derivative equals the net change: ∫ₐᵇ F' = F(b) - F(a)."
+      "summary": "Proves that the integral of a derivative equals the net change: ∫ₐᵇ F' = F(b) - F(a).",
+      "mathContext": "FTC Part 2: If $F'$ is integrable on $[a,b]$, then $\\int_a^b F'(x)\\,dx = F(b) - F(a)$."
     },
     {
       "id": "antiderivatives",
       "title": "Antiderivatives and Uniqueness",
       "startLine": 88,
       "endLine": 139,
-      "summary": "Shows that the integral function is an antiderivative, and that antiderivatives differ only by constants."
+      "summary": "Shows that the integral function is an antiderivative, and that antiderivatives differ only by constants.",
+      "mathContext": "If $F' = G'$ on an interval, then $F - G = C$ for some constant $C$. Antiderivatives are unique up to additive constants."
     },
     {
       "id": "checks",
       "title": "Type Checking",
       "startLine": 141,
       "endLine": 146,
-      "summary": "Verifies the types of the main theorems using #check commands."
+      "summary": "Verifies the types of the main theorems using #check commands.",
+      "mathContext": "Type-checks `ftc_part1`, `ftc_part2`, `antiderivative_uniqueness` to confirm they have the expected types."
     }
   ],
   "conclusion": {
@@ -104,5 +110,33 @@
       "What is the relationship between FTC and Stokes' theorem in differential geometry?",
       "Can FTC be formulated for functions of multiple variables without differential forms?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle",
+      "relationship": "related",
+      "description": "The area formula A = πr² can be derived via FTC: A(r) = ∫₀ʳ 2πρ dρ = πr². The FTC connects the circumference (derivative) to the area (integral)"
+    },
+    {
+      "targetId": "lhopital",
+      "relationship": "related",
+      "description": "Both are foundational results in calculus — L'Hôpital's rule concerns limits of ratios of derivatives, which are the same derivatives that FTC connects to integrals"
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "related",
+      "description": "The integral test for series convergence (a consequence of FTC) explains why ∑ 1/n diverges: ∫₁^∞ dx/x = ln(x) → ∞"
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "related",
+      "description": "The geometric series ∑ xⁿ = 1/(1-x) can be derived by integrating the telescoping identity, connecting discrete sums to continuous integration via FTC"
+    }
+  ],
+  "relatedProofs": [
+    "area-of-circle",
+    "lhopital",
+    "harmonic-divergence",
+    "geometric-series"
+  ]
 }

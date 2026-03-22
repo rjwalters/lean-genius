@@ -8,13 +8,17 @@
     },
     "type": "definition",
     "title": "The Integral Function F(x)",
-    "content": "We define **F(x) = ∫ₐˣ f(t) dt**, the cumulative integral from a fixed starting point $a$ to a variable endpoint $x$.\n\nThis function measures the 'accumulated area' under $f$ from $a$ to $x$. As $x$ increases, more area is accumulated (if $f$ is positive).\n\nThe key insight: F is constructed from f via integration, and we'll prove F' = f.",
+    "content": "We define **F(x) = \u222b\u2090\u02e3 f(t) dt**, the cumulative integral from a fixed starting point $a$ to a variable endpoint $x$.\n\nThis function measures the 'accumulated area' under $f$ from $a$ to $x$. As $x$ increases, more area is accumulated (if $f$ is positive).\n\nThe key insight: F is constructed from f via integration, and we'll prove F' = f.",
     "mathContext": "$F : \\mathbb{R} \\to \\mathbb{R}$\n\n$F(x) = \\int_a^x f(t)\\,dt$\n\nF(a) = 0 (integral over an empty interval)",
     "significance": "critical",
     "relatedConcepts": [
       "definite integral",
       "area under curve",
       "accumulation function"
+    ],
+    "prerequisites": [
+      "Riemann/Lebesgue integration",
+      "continuous functions"
     ]
   },
   {
@@ -26,13 +30,18 @@
     },
     "type": "theorem",
     "title": "FTC Part 1: Derivative of an Integral",
-    "content": "**The derivative of the integral function equals the integrand.**\n\nIf $F(x) = \\int_a^x f(t)\\,dt$, then $F'(x) = f(x)$.\n\nThis is profound: integration 'builds' an antiderivative of any continuous function. Even if we can't write ∫f in closed form, the integral function exists and has f as its derivative.",
+    "content": "**The derivative of the integral function equals the integrand.**\n\nIf $F(x) = \\int_a^x f(t)\\,dt$, then $F'(x) = f(x)$.\n\nThis is profound: integration 'builds' an antiderivative of any continuous function. Even if we can't write \u222bf in closed form, the integral function exists and has f as its derivative.",
     "mathContext": "$\\frac{d}{dx}\\int_a^x f(t)\\,dt = f(x)$\n\nIn Leibniz notation: $\\frac{d}{dx}F(x) = f(x)$",
     "significance": "critical",
     "relatedConcepts": [
       "antiderivative",
       "HasDerivAt",
       "differentiability"
+    ],
+    "prerequisites": [
+      "differentiation",
+      "continuity",
+      "integration"
     ]
   },
   {
@@ -51,6 +60,10 @@
       "continuity",
       "ContinuousAt",
       "limit definition"
+    ],
+    "prerequisites": [
+      "continuity",
+      "limits"
     ]
   },
   {
@@ -69,6 +82,10 @@
       "antiderivative",
       "evaluation",
       "net change"
+    ],
+    "prerequisites": [
+      "antiderivatives",
+      "integration"
     ]
   },
   {
@@ -80,13 +97,17 @@
     },
     "type": "concept",
     "title": "Conditions for FTC Part 2",
-    "content": "The theorem requires:\n\n1. **F is differentiable** on [a, b]\n2. **F' is continuous** on [a, b] (or at least integrable)\n3. **a ≤ b** (the integration bounds are in order)\n\nThe continuity of F' is crucial: if F' has 'bad' discontinuities, the integral may not equal F(b) - F(a).\n\nCounterexamples exist for merely differentiable F with discontinuous derivative.",
+    "content": "The theorem requires:\n\n1. **F is differentiable** on [a, b]\n2. **F' is continuous** on [a, b] (or at least integrable)\n3. **a \u2264 b** (the integration bounds are in order)\n\nThe continuity of F' is crucial: if F' has 'bad' discontinuities, the integral may not equal F(b) - F(a).\n\nCounterexamples exist for merely differentiable F with discontinuous derivative.",
     "mathContext": "We need:\n- $\\forall x \\in [a,b], \\text{HasDerivAt } F (F'(x)) x$\n- $F' \\in C([a,b])$ (continuous on closed interval)",
     "significance": "key",
     "relatedConcepts": [
       "differentiability",
       "ContinuousOn",
       "interval conditions"
+    ],
+    "prerequisites": [
+      "integrability conditions",
+      "Lebesgue theory"
     ]
   },
   {
@@ -105,6 +126,10 @@
       "derivative",
       "indefinite integral",
       "primitive function"
+    ],
+    "prerequisites": [
+      "differentiation",
+      "function spaces"
     ]
   },
   {
@@ -123,6 +148,10 @@
       "mean value theorem",
       "constant function",
       "uniqueness"
+    ],
+    "prerequisites": [
+      "mean value theorem",
+      "constant functions"
     ]
   },
   {
@@ -141,6 +170,10 @@
       "mean value theorem",
       "constant function",
       "convexity"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "connected domains"
     ]
   },
   {
@@ -160,6 +193,11 @@
       "Newton",
       "Leibniz",
       "calculus unification"
+    ],
+    "prerequisites": [
+      "differentiation",
+      "integration",
+      "inverse operations"
     ]
   }
 ]
