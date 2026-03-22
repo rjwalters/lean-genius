@@ -21,7 +21,8 @@
       "Units.smul_def handles sign coercion (ℤˣ • ℤ = ↑ℤˣ * ℤ) in det formula connection",
       "File builds clean against Mathlib v4.26 (verified). 1 axiom (gv_involution_cancellation), 1 sorry (pathMN_card).",
       "pathMN_card proof strategy: PathMN m n ≃ Finset.univ.powersetCard m via indicator bijection, then use Finset.card_powersetCard. Requires building explicit Equiv between List Bool positions and Finset (Fin (m+n)).",
-      "pathMN_card is a good Aristotle candidate - standard combinatorial identity C(m+n,m) = |{binary strings of length m+n with m zeros}|"
+      "pathMN_card is a good Aristotle candidate - standard combinatorial identity C(m+n,m) = |{binary strings of length m+n with m zeros}|",
+      "pathMN_card proof approaches analyzed: (1) Bijection PathMN ≃ Finset.powersetCard via indicator positions - cleanest but requires ~50 lines building equiv and connecting List.countP to Finset.card of filter on Fin indices, (2) Induction on m,n with Pascal identity - requires decomposition equiv PathMN (m+1) (n+1) ≃ PathMN m (n+1) ⊕ PathMN (m+1) n via first-element case split, (3) Missing Mathlib bridge: List.countP p l = (Finset.univ.filter (fun i : Fin l.length => p (l.get i))).card - needed for both approaches"
     ],
     "builtItems": [
       "BallotProblemOQ03OQ02.lean: r×r LGV infrastructure (204 lines)",
@@ -49,7 +50,7 @@
       "Build involution: swap tails at first intersection, prove involutivity and sign reversal",
       "Prove gv_involution_cancellation from the constructed involution"
     ],
-    "progressSummary": "PROGRESS: File builds clean. 1 axiom (GV involution cancellation - deep combinatorial result), 1 sorry (pathMN_card - routine identity). pathMN_card proof requires building Equiv between PathMN and Finset.powersetCard; good Aristotle candidate."
+    "progressSummary": "PROGRESS: File builds clean. 1 axiom (GV involution cancellation - deep combinatorial). 1 sorry (pathMN_card - standard identity, proof approaches analyzed in detail). Good Aristotle candidate."
   },
   "lastUpdate": "2026-03-22T08:00:00Z"
 }
