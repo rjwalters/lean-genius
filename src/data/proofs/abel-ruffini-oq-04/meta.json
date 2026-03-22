@@ -70,36 +70,17 @@
       }
     ],
     "relatedProofs": [
-      {
-        "id": "abel-ruffini",
-        "relationship": "extends",
-        "description": "Base Abel-Ruffini theorem using Mathlib's solvableByRad — this file exposes the internal proof chain"
-      },
-      {
-        "id": "inverse-galois",
-        "relationship": "related",
-        "description": "The inverse Galois problem asks which groups occur as Galois groups — Sₙ occurs as Gal(generic degree-n polynomial), connecting directly to the solvability question"
-      },
-      {
-        "id": "lagrange-theorem",
-        "relationship": "foundational",
-        "description": "Lagrange's theorem on subgroup orders is used throughout: |Aₙ| = n!/2, and the derived series quotients have predictable orders"
-      },
-      {
-        "id": "sylow-theorems",
-        "relationship": "related",
-        "description": "Sylow theorems provide structural information about A₅: its Sylow subgroups witness the 60 = 4·3·5 factorization and help prove simplicity"
-      },
-      {
-        "id": "solution-of-cubic",
-        "relationship": "complementary",
-        "description": "Cardano's formula (1545) gives radical solutions for cubics — the last degree where a general radical formula exists, before the solvability barrier at degree 5"
-      },
-      {
-        "id": "general-quartic",
-        "relationship": "complementary",
-        "description": "Ferrari's method (1540) gives radical solutions for quartics — degree 4 is the last where a general radical formula exists, since S₄ is solvable but S₅ is not"
-      }
+      "abel-ruffini",
+      "inverse-galois",
+      "lagrange-theorem",
+      "sylow-theorems",
+      "solution-of-cubic",
+      "general-quartic",
+      "angle-trisection",
+      "fundamental-theorem-algebra",
+      "fundamental-arithmetic",
+      "hermite-lindemann",
+      "sqrt2-irrational"
     ],
     "prerequisites": [
       "Group theory (normal subgroups, derived series, solvability)",
@@ -154,6 +135,16 @@
       "targetId": "general-quartic",
       "relationship": "complementary",
       "description": "Ferrari's quartic formula (1540) is the highest-degree general radical solution. S₄ is solvable (derived series {e} ◁ V₄ ◁ A₄ ◁ S₄) but S₅ is not — this file proves the exact threshold"
+    },
+    {
+      "targetId": "hermite-lindemann",
+      "relationship": "related",
+      "description": "Hermite-Lindemann (e^α transcendental for algebraic α ≠ 0) strengthens the impossibility hierarchy: Abel-Ruffini shows certain roots aren't radical, while Hermite-Lindemann shows e and π aren't even algebraic — a strictly stronger expressibility barrier"
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "foundational",
+      "description": "The irrationality of √2 (c. 500 BCE) is the earliest impossibility result in mathematics. Abel-Ruffini extends the paradigm: √2 ∉ ℚ → certain quintic roots ∉ radical extensions → e,π ∉ algebraic numbers forms a hierarchy of inexpressibility"
     }
   ],
   "overview": {
