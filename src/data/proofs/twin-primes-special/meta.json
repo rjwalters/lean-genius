@@ -46,8 +46,9 @@
     "keyInsights": [
       "Twin primes 'straddle' multiples of 6",
       "The structure theorem eliminates half of potential starting points",
-      "Similar to Sophie Germain prime structure (also p ≡ 5 mod 6)",
-      "Both p and p+2 avoid being divisible by 2 or 3"
+      "Similar to Sophie Germain prime structure (also $p \\equiv 5 \\pmod{6}$) — not coincidental, as both require the companion number to avoid divisibility by 3",
+      "Both $p$ and $p+2$ must avoid being divisible by 2 or 3; since all primes $> 3$ are $\\equiv \\pm 1 \\pmod{6}$, twin primes must straddle a multiple of 6",
+      "**Hardy-Littlewood conjecture**: The number of twin primes up to $N$ is asymptotically $2C_2 N/(\\ln N)^2$ where $C_2 = \\prod_{p \\geq 3}(1 - 1/(p-1)^2) \\approx 0.6602$ is the twin prime constant — this uses the same sieving ideas as the $6k \\pm 1$ structure"
     ]
   },
   "sections": [
@@ -85,6 +86,28 @@
       "startLine": 169,
       "endLine": 188,
       "summary": "Why 0, 1, and 2 cannot start twin prime pairs."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Zhang/Maynard-Tao proved lim inf of prime gaps is finite; the twin prime conjecture asks if this limit is 2"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "prerequisite",
+      "description": "The infinitude of primes is necessary context — the twin prime conjecture asks if infinitely many primes come in pairs"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The PNT gives the density of primes; the Hardy-Littlewood conjecture predicts twin prime density using a similar asymptotic framework"
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Dirichlet's theorem guarantees primes in arithmetic progressions; the 6k±1 structure of twin primes reflects primes in residue classes mod 6"
     }
   ],
   "conclusion": {
