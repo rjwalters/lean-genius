@@ -32,16 +32,16 @@
     ]
   },
   "overview": {
-    "historicalContext": "Roth (1953) proved r₃(N) = o(N), showing 3-AP-free sets have density 0. Decades of improvements followed: Bourgain (2008), Sanders (2011), Bloom-Sisask (2020). Kelley-Meka (2023) finally proved Erdős's conjecture that r₃(N) = O(N/(log N)^C) for all C > 0, resolving the $500 prize.",
+    "historicalContext": "Roth (1953) proved $r_3(N) = o(N)$ using Fourier analysis on $\\mathbb{Z}/N\\mathbb{Z}$ — the density increment argument. His method showed that any dense set either has a large Fourier coefficient (yielding a density increment on a subprogression) or contains a 3-AP. This earned him the Fields Medal (1958). Bourgain (1999, 2008) refined the Fourier approach to $O(N/\\sqrt{\\log\\log N})$. Sanders (2011) introduced Bogolyubov's method and iterated Plünnecke-Ruzsa estimates to achieve $O(N(\\log\\log N)^5/\\log N)$ — the first bound with $\\log N$ in the denominator. Bloom-Sisask (2020) used entropy increment methods to reach $O(N/(\\log N)^{1+c})$. Finally, Kelley and Meka (2023) proved the full conjecture $r_3(N) = O(N/(\\log N)^C)$ for all $C > 0$, using a novel spectral approach: they showed that 3-AP-free sets must have spectral structure that forces their density to concentrate, contradicting the assumed density bound. This resolved Erdős's $500 prize after 70 years.",
     "problemStatement": "Define r₃(N) = max{ |A| : A ⊆ {1,...,N}, A contains no non-trivial 3-term arithmetic progression }. Erdős conjectured that r₃(N) ≪ N/(log N)^C for every C > 0. Kelley and Meka (2023) proved this is true.",
-    "proofStrategy": "The formalization defines 3-APs, the Roth number r₃(N), and proves it's achieved by some set. Historical bounds by Roth, Bourgain, Sanders, and Bloom-Sisask are recorded as axioms. The Kelley-Meka theorem is the main axiom resolving the problem. Corollaries about density decay and the k-term generalization are included.",
+    "proofStrategy": "The formalization proceeds in layers. First, 3-APs are defined via the condition $2b = a + c$ with $a < b < c$, and $r_3(N)$ is defined as the supremum over cardinalities of 3-AP-free subsets of $\\{0,\\ldots,N\\}$. The key verified result is `r3_achieved`: this supremum is attained, proved by showing the set of cardinalities is nonempty (contains 0 from $\\emptyset$) and bounded by $N+1$. Historical bounds are axiomatized as a progression of upper bounds. The Kelley-Meka theorem is stated as $\\forall C > 0,\\, \\exists K > 0,\\, \\forall N \\geq 3:\\; r_3(N) \\leq KN/(\\log N)^C$, and used to derive corollaries about density decay. The $k$-term generalization connects to Szemerédi's theorem via the definitions of $r_k(N)$ and `ErdosAPConjecture`.",
     "keyInsights": [
-      "r₃(N) is well-defined and achieved (verified theorem)",
-      "Historical progression: o(N) → O(N/√log log N) → O(N log log N⁵/log N) → O(N/(log N)^{1+c})",
-      "Kelley-Meka (2023): r₃(N) = O(N/(log N)^C) for ALL C > 0",
-      "Behrend lower bound: r₃(N) ≥ N/exp(c√log N) - gap remains open",
-      "{1,2,4,5,10,11,13,14} is verified 3-AP-free (first 8 of greedy sequence)",
-      "k ≥ 4 case remains OPEN"
+      "The supremum defining $r_3(N)$ is achieved — a clean application of finiteness of $\\{0,\\ldots,N\\}$ (verified theorem `r3_achieved`)",
+      "Each historical bound required fundamentally new techniques: Fourier analysis (Roth), nilsequences (Sanders), entropy methods (Bloom-Sisask), spectral density (Kelley-Meka)",
+      "Kelley-Meka's bound $r_3(N) = O(N/(\\log N)^C)$ for ALL $C > 0$ is qualitatively the strongest possible bound of this form — it means $r_3(N)$ decays faster than any fixed power of $\\log N$",
+      "The Behrend construction gives $r_3(N) \\geq N \\cdot \\exp(-c\\sqrt{\\log N})$ using 3-AP-free sets on high-dimensional spheres — the gap between this and Kelley-Meka remains a central open problem in additive combinatorics",
+      "The formalization verifies $\\{1,2,4,5,10,11,13,14\\}$ is 3-AP-free by exhaustive case analysis — these are the first 8 elements of the greedy sequence A003278, whose growth rate is approximately $n^{\\log 2/\\log 3}$",
+      "The equivalence `r3 N = rk 3 N` bridges the specific and general definitions, enabling the Kelley-Meka theorem to resolve the $k=3$ case of Erdős's generalized conjecture while $k \\geq 4$ remains wide open"
     ]
   },
   "sections": [
@@ -125,14 +125,29 @@
   ],
   "crossReferences": [
     {
-      "targetId": "erdos-16",
+      "targetId": "szemeredi-theorem",
+      "relationship": "generalization",
+      "description": "Szemerédi's theorem generalizes Roth's theorem to k-term APs: every dense set contains arbitrarily long APs. Erdős #140 is the quantitative refinement for k=3"
+    },
+    {
+      "targetId": "erdos-1097",
       "relationship": "related",
-      "description": "Erdős #16 concerns Szemerédi regularity and density of arithmetic progressions — the same circle of problems that includes 3-AP density bounds"
+      "description": "Erdős #1097 studies common differences in three-term APs within finite sets — a complementary structural question about the same 3-AP objects"
+    },
+    {
+      "targetId": "erdos-1134",
+      "relationship": "related",
+      "description": "Erdős #1134 concerns density of sets closed under affine maps — related density-theoretic techniques in additive combinatorics"
+    },
+    {
+      "targetId": "erdos-125",
+      "relationship": "related",
+      "description": "Erdős #125 asks about positive density of digit-restricted sumsets — another problem at the intersection of density and additive structure"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #140 is SOLVED (Kelley-Meka 2023). The maximum size of a 3-AP-free subset of {1,...,N} satisfies r₃(N) = O(N/(log N)^C) for all C > 0. This 70-year problem from Roth's 1953 breakthrough was resolved with a novel spectral approach.",
-    "implications": "The Kelley-Meka theorem is a major breakthrough in additive combinatorics. It essentially determines the order of r₃(N) up to the gap with Behrend's lower bound. The techniques may apply to other Ramsey-type problems.",
+    "summary": "Erdős Problem #140 is SOLVED (Kelley-Meka 2023). The maximum size of a 3-AP-free subset of $\\{1,\\ldots,N\\}$ satisfies $r_3(N) = O(N/(\\log N)^C)$ for all $C > 0$. This 70-year journey from Roth's 1953 Fourier-analytic breakthrough was completed with a novel spectral density approach.",
+    "implications": "The Kelley-Meka theorem is a landmark in additive combinatorics. It pins $r_3(N)$ between $N \\cdot \\exp(-c\\sqrt{\\log N})$ (Behrend) and $N/(\\log N)^C$ for any $C$ — a narrow but stubborn gap. Their spectral techniques have influenced subsequent work on cap sets in $\\mathbb{F}_3^n$ and other Ramsey-type density problems. The formalization's bridge between $r_3$ and $r_k$ via `r3_eq_rk_3` makes precise the relationship between the solved $k=3$ case and the open generalized Erdős conjecture for $k \\geq 4$.",
     "openQuestions": [
       "What is the true order of r₃(N)? (Behrend gap)",
       "Does r_k(N) = O(N/(log N)^C) hold for k ≥ 4?",

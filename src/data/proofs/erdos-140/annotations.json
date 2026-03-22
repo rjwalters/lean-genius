@@ -66,7 +66,7 @@
     "type": "definition",
     "title": "The Roth Number r\u2083(N)",
     "content": "**r3 N** = max{ |A| : A \u2286 {0,...,N}, A is 3-AP-free }\n\nDefined as the supremum over all valid subsets.\n\n**theorem r3_achieved** \u2713: The supremum is achieved by some finite set.\n\n**Proof**: The set of achievable cardinalities is nonempty (\u2205 works) and bounded by N+1, so the supremum exists and is achieved.",
-    "mathContext": "This is Roth's original quantity. Understanding r\u2083(N) is central to additive combinatorics and Ramsey theory.",
+    "mathContext": "$r_3(N) = \\max\\{|A| : A \\subseteq \\{0,\\ldots,N\\},\\, A \\text{ is 3-AP-free}\\}$. The proof of `r3_achieved` uses finiteness: the set of achievable cardinalities is a nonempty subset of $\\{0,\\ldots,N+1\\}$, so $\\text{sSup}$ is a maximum. This is Roth's original quantity, and understanding its growth rate is one of the central problems in additive combinatorics.",
     "significance": "key",
     "relatedConcepts": [
       "roth-number",
@@ -94,7 +94,7 @@
     "type": "axiom",
     "title": "Roth's Theorem (1953)",
     "content": "**axiom roth_theorem**: r\u2083(N) = o(N)\n\nThe first non-trivial upper bound showing 3-AP-free sets have density 0.\n\n**Explicit bound**: r\u2083(N) \u2264 C\u00b7N / log log N\n\nRoth won the Fields Medal in part for this work.",
-    "mathContext": "Roth used Fourier-analytic methods (circle method) to prove this. It showed that large 3-AP-free sets cannot exist.",
+    "mathContext": "Roth's proof uses the density increment strategy on $\\mathbb{Z}/N\\mathbb{Z}$: if $A \\subseteq \\{1,\\ldots,N\\}$ has density $\\alpha$ and no 3-AP, then either $A$ has a large Fourier coefficient $|\\hat{1}_A(r)| \\geq \\delta(\\alpha)$, or the count of 3-APs $\\sum_{a,d} 1_A(a)1_A(a+d)1_A(a+2d)$ is positive. The large Fourier coefficient forces $A$ to have density $\\geq \\alpha + c(\\alpha)$ on some subprogression, and iterating gives the bound $r_3(N) \\leq CN/\\log\\log N$.",
     "significance": "key",
     "relatedConcepts": [
       "roth-1953",
@@ -123,7 +123,7 @@
     "type": "axiom",
     "title": "Historical Progress",
     "content": "**Bourgain (2008)**: r\u2083(N) = O(N / \u221a(log log N))\nImproved Roth using deeper Fourier analysis.\n\n**Sanders (2011)**: r\u2083(N) = O(N (log log N)\u2075 / log N)\nFirst bound with log N in denominator!\n\n**Bloom-Sisask (2020)**: r\u2083(N) = O(N / (log N)^{1+c}) for some c > 0\nBreakthrough: power > 1 in log exponent.",
-    "mathContext": "Each improvement required new techniques. Sanders introduced nilsequences; Bloom-Sisask used entropy-based methods.",
+    "mathContext": "Bourgain refined the $L^p$ estimates on exponential sums over 3-AP-free sets. Sanders used Bogolyubov's lemma and Plünnecke-Ruzsa sumset estimates: if $A$ is 3-AP-free, then $2A - 2A$ is large, and by iterating, the density increment is $\\Omega(1/(\\log N)^{O(1)})$ rather than $\\Omega(1/\\log\\log N)$. Bloom-Sisask introduced an entropy increment replacing the density increment: they tracked Shannon entropy of $A$'s distribution on subprogressions, yielding $r_3(N) \\leq CN/(\\log N)^{1+c}$ for an absolute $c > 0$.",
     "significance": "key",
     "relatedConcepts": [
       "bourgain",
@@ -151,7 +151,7 @@
     "type": "axiom",
     "title": "Kelley-Meka Theorem (2023)",
     "content": "**KelleyMekaTheorem**: \u2200 C > 0, \u2203 K > 0, \u2200 N \u2265 3:\n  r\u2083(N) \u2264 K\u00b7N / (log N)^C\n\n**axiom kelley_meka**: KelleyMekaTheorem\n\n**theorem erdos_140_solved** = kelley_meka\n\nThis resolves Erd\u0151s Problem #140 and the $500 prize!",
-    "mathContext": "Kelley-Meka's proof uses a novel approach combining spectral methods with graph theory. The paper appeared in 2023.",
+    "mathContext": "Kelley and Meka's key innovation is a spectral density increment: they show that if $A \\subseteq \\{1,\\ldots,N\\}$ is 3-AP-free with $|A| \\geq \\delta N$, then $A$ must have large $\\ell^2$-mass on a structured set of Fourier coefficients. This spectral structure forces a density increment of $\\delta \\mapsto \\delta + \\Omega(\\delta/(\\log(1/\\delta))^C)$ on a subprogression, which iterates to give $r_3(N) \\leq KN/(\\log N)^C$ for any $C > 0$. The formal statement $\\forall C > 0,\\, \\exists K > 0,\\, \\forall N \\geq 3:\\; r_3(N) \\leq KN/(\\log N)^C$ captures the full strength.",
     "significance": "key",
     "relatedConcepts": [
       "kelley-meka-2023",
@@ -208,7 +208,7 @@
     "type": "axiom",
     "title": "Behrend Lower Bound",
     "content": "**axiom behrend_lower_bound**:\n  r\u2083(N) \u2265 N \u00b7 exp(-c \u00b7 \u221a(log N))\n\nThis is the best known LOWER bound (1946).\n\n**The Gap**:\n- Upper: O(N / (log N)^C) for all C\n- Lower: \u03a9(N / exp(c \u221alog N))\n\nThe true order of r\u2083(N) remains unknown!",
-    "mathContext": "Behrend constructed 3-AP-free sets in a d-dimensional sphere. The gap between bounds is a major open problem.",
+    "mathContext": "Behrend's construction embeds $\\{1,\\ldots,N\\}$ into $\\mathbb{Z}^d$ (choosing $d \\approx \\sqrt{\\log N}$) and selects elements lying on a sphere $\\{x : |x|^2 = r\\}$. Points on a sphere cannot form a 3-AP (by the parallelogram law), giving a 3-AP-free set of size $\\Omega(N \\cdot \\exp(-c\\sqrt{\\log N}))$. This has been the best lower bound for over 75 years. The gap between Kelley-Meka's $O(N/(\\log N)^C)$ and Behrend's $\\Omega(N/\\exp(c\\sqrt{\\log N}))$ remains one of the most important open problems in additive combinatorics.",
     "significance": "key",
     "relatedConcepts": [
       "behrend-1946",
@@ -292,7 +292,7 @@
     "type": "definition",
     "title": "k-term AP Generalization",
     "content": "**IsAPk k vals**: k values form an arithmetic progression\n  vals(i) = a + i\u00b7d for some a, d with d \u2260 0\n\n**FinsetkAPFree k A**: No k elements of A form a k-AP\n\n**rk k N**: Maximum size of k-AP-free subset of {0,...,N}\n\n**ErdosAPConjecture**: For all k \u2265 3, C > 0:\n  r_k(N) = O(N / (log N)^C)\n\nThis is OPEN for k \u2265 4!",
-    "mathContext": "Szemer\u00e9di's theorem (1975) shows r_k(N) = o(N), but the quantitative bounds are much weaker for k \u2265 4.",
+    "mathContext": "Szemer\u00e9di's theorem (1975) gives $r_k(N) = o(N)$ for all $k$, but the best quantitative bound for $k \\geq 4$ is far weaker: Gowers (2001) proved $r_k(N) \\leq N/(\\log\\log N)^{c_k}$ using higher-order Fourier analysis and the Gowers $U^{k-1}$-norm. For $k = 4$, Green-Tao (2017) improved this to $r_4(N) \\leq N/(\\log N)^{c}$. Erd\u0151s's generalized conjecture $r_k(N) = O(N/(\\log N)^C)$ for all $C > 0$ and $k \\geq 4$ remains completely open.",
     "significance": "key",
     "relatedConcepts": [
       "k-AP",
