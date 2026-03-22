@@ -59,6 +59,14 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Imports and Module Setup",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Mathlib imports for p-series analysis and infinite sums. Module docstring explaining the harmonic series, Oresme's proof (c. 1350), and the contrast with convergent p-series.",
+      "mathContext": "Imports `Mathlib.Analysis.PSeries` (contains `not_summable_one_div_natCast`, `summable_nat_rpow_inv`) and `Mathlib.Topology.Algebra.InfiniteSum.Basic` (the `Summable` predicate and `HasSum` API)."
+    },
+    {
       "id": "main-theorem",
       "title": "The Main Theorem",
       "startLine": 40,
