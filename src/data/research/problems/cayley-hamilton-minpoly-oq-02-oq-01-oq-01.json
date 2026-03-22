@@ -57,6 +57,6 @@
       "hP_intertwine: Entry-wise via Matrix.mul_apply + Pi.single_apply + mulVec/dotProduct",
       "hP_comm: Extend from generators using matrix_eq_sum_single + congr lemmas"
     ],
-    "progressSummary": "ACT: Replaced axiom with elementary theorem proof. 7 sorry lemmas (all routine). Key proof architecture complete: matrix units, column intertwining, linear independence, conjugation conclusion."
+    "progressSummary": "ACT: Axiom eliminated, 4 helper lemmas proved. 3 sorries remain: linearIndependent_matrix_isUnit, hintertwine, hPcomm."
   }
 }
