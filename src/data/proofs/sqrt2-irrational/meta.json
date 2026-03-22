@@ -111,6 +111,50 @@
       "Can this generalize to $\\sqrt[n]{m}$? Yes! $\\sqrt[n]{m}$ is irrational iff $m$ is not a perfect $n$-th power."
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "nth-root-irrational",
+      "relationship": "generalizes",
+      "description": "Generalizes to nth roots: √[n]{m} is irrational iff m is not a perfect nth power"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "uses",
+      "description": "Unique prime factorization underlies the argument: if p² | a² then p | a, which requires that prime multiplicities in a² are always even"
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "The irrationality of √2 was historically discovered through the Pythagorean theorem: the diagonal of a unit square has length √2, which is incommensurable with the sides"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "related",
+      "description": "Both are foundational number theory results proved by contradiction with deep consequences for the structure of numbers"
+    }
+  ],
+  "relatedProofs": [
+    "nth-root-irrational",
+    "fundamental-arithmetic",
+    "pythagorean-theorem",
+    "infinitude-primes"
+  ],
+  "references": [
+    {
+      "authors": "Euclid",
+      "title": "Elements, Book X, Proposition 117 (appendix)",
+      "year": "c. 300 BCE",
+      "venue": "Classical geometry",
+      "note": "Classical proof of the irrationality of √2 via infinite descent / proof by contradiction"
+    },
+    {
+      "authors": "Hardy, G.H.",
+      "title": "A Mathematician's Apology",
+      "year": "1940",
+      "venue": "Cambridge University Press",
+      "note": "Famously cites the irrationality of √2 as an example of a beautiful mathematical proof"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Real.Irrational",
