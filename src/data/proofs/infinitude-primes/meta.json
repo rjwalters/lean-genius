@@ -97,4 +97,37 @@
       "Are there infinitely many Mersenne primes ($2^p - 1$)? Sophie Germain primes? Twin primes?"
     ]
   }
+,
+  "references": [
+    {
+      "authors": "Euclid",
+      "title": "Elements, Book IX, Proposition 20",
+      "year": "c. 300 BCE",
+      "venue": "Classical geometry",
+      "note": "Original proof that there are infinitely many primes, using the construction p₁p₂...pₙ + 1"
+    },
+    {
+      "authors": "Euler, Leonhard",
+      "title": "Variae observationes circa series infinitas",
+      "year": "1737",
+      "venue": "Commentarii academiae scientiarum Petropolitanae",
+      "note": "Proved the divergence of Σ 1/p (sum over primes), giving an analytic proof of infinitely many primes"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "The infinitude of primes ensures the prime factorization guaranteed by FTA never runs out of prime factors"
+    },
+    {
+      "targetId": "riemann-hypothesis",
+      "relationship": "related",
+      "description": "The distribution of primes (how many up to N) is governed by the prime number theorem, and the precise error term depends on the Riemann Hypothesis"
+    }
+  ],
+  "relatedProofs": [
+    "fundamental-arithmetic",
+    "riemann-hypothesis"
+  ]
 }
