@@ -62,6 +62,29 @@
     ],
     "dateAdded": "2026-02-24",
     "axiomCount": 0,
+    "leanFile": "proofs/Proofs/PowerMeanLimitOQ.lean",
+    "relatedProofs": [
+      {
+        "id": "amgm-inequality-oq-03",
+        "relationship": "extends",
+        "description": "Parent file with power mean definitions and same-sign monotonicity"
+      },
+      {
+        "id": "amgm-inequality-oq-03-oq-01",
+        "relationship": "related",
+        "description": "Negative exponent monotonicity — together with this limit, covers all same-sign cases"
+      },
+      {
+        "id": "amgm-inequality",
+        "relationship": "related",
+        "description": "Base AM-GM inequality, the M₁ ≥ M₀ case"
+      },
+      {
+        "id": "lhopital",
+        "relationship": "related",
+        "description": "Uses the same derivative-based limit approach as L'Hôpital's rule"
+      }
+    ],
     "prerequisites": [
       "Derivatives in Mathlib (HasDerivAt, hasDerivAt_iff_tendsto_slope)",
       "Real exp/log/rpow identities and derivatives",
@@ -154,5 +177,24 @@
       "Add this to Mathlib as a proper contribution filling the existing TODO in MeanInequalitiesPow",
       "Extend to p-power means on measure spaces (continuous index case)"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Deriv",
+      "Mathlib.Analysis.SpecialFunctions.Log.Deriv",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
+      "Mathlib.Analysis.Calculus.Deriv.Basic",
+      "Mathlib.Analysis.Calculus.Deriv.Comp",
+      "Mathlib.Analysis.Calculus.Deriv.Slope",
+      "Mathlib.Analysis.MeanInequalities",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["Finset", "Real", "Filter"],
+    "namespace": null,
+    "lineCount": 316,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0
   }
 }
