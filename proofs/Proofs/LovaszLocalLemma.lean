@@ -199,9 +199,7 @@ theorem lllThreshold_pos (d : ℕ) (hd : 0 < d) : 0 < lllThreshold d := by
   · exact pow_pos (Nat.cast_pos.mpr hd) d
   · exact pow_pos (by positivity : (0 : ℚ) < ↑d + 1) (d + 1)
 
-/-- T(1) = 1/4 is the largest threshold value for d ≥ 1.
-    For d=1: T(1) = 1/4. For d=2: T(2) = 4/27 < 1/4. In general T(d) ≤ 1/4.
-    Here we verify for d=1,2,3. -/
+/-- T(d) ≤ 1/4 for d=1,2,3. Subsumed by lllThreshold_le_quarter for all d ≥ 1. -/
 theorem lllThreshold_le_quarter_small (d : ℕ) (hd : 0 < d) (hd3 : d ≤ 3) :
     lllThreshold d ≤ 1 / 4 := by
   interval_cases d <;> simp [lllThreshold] <;> norm_num
@@ -225,5 +223,142 @@ theorem symmetric_lll_avoidance (n d : ℕ) (hd : 0 < d) :
       (fun _ => 1 - (1 : ℚ) / (↑d + 1)) := by
   rw [symmetric_product_eq]
   exact symmetric_avoidance_pos n d hd
+
+-- ═══════════════════════════════════════════════════════════════════
+-- PART VIII: BERNOULLI'S INEQUALITY AND UNIVERSAL THRESHOLD BOUND
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Bernoulli's inequality: (1 + x)^n ≥ 1 + n·x for x ≥ -1.
+    The proof is by induction: (1+nx)(1+x) = 1+(n+1)x+nx² ≥ 1+(n+1)x. -/
+theorem bernoulli_ineq (n : ℕ) {x : ℚ} (hx : -1 ≤ x) :
+    1 + ↑n * x ≤ (1 + x) ^ n := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    have h1x : 0 ≤ 1 + x := by linarith
+    have key : 1 + (↑n + 1) * x ≤ (1 + ↑n * x) * (1 + x) := by
+      nlinarith [mul_nonneg (Nat.cast_nonneg (α := ℚ) n) (sq_nonneg x)]
+    calc (1 + ↑(n + 1) * x : ℚ)
+        = 1 + (↑n + 1) * x := by push_cast; ring
+      _ ≤ (1 + ↑n * x) * (1 + x) := key
+      _ ≤ (1 + x) ^ n * (1 + x) := mul_le_mul_of_nonneg_right ih h1x
+      _ = (1 + x) ^ (n + 1) := (pow_succ (1 + x) n).symm
+
+/-- (1 + 1/d)^d ≥ 2 for d ≥ 1. Immediate from Bernoulli with x = 1/d:
+    1 + d·(1/d) = 2 ≤ (1 + 1/d)^d. -/
+theorem one_plus_inv_pow_ge_two (d : ℕ) (hd : 1 ≤ d) :
+    2 ≤ (1 + 1 / (↑d : ℚ)) ^ d := by
+  have hd_pos : (0 : ℚ) < ↑d := Nat.cast_pos.mpr (by omega)
+  have hd_ne : (↑d : ℚ) ≠ 0 := ne_of_gt hd_pos
+  have h1d : (-1 : ℚ) ≤ 1 / ↑d := by linarith [div_pos one_pos hd_pos]
+  have hb := bernoulli_ineq d h1d
+  have hsimp : (↑d : ℚ) * (1 / ↑d) = 1 := by field_simp
+  linarith
+
+/-- (d+1)^d ≥ 2·d^d for d ≥ 1, the multiplicative form of Bernoulli's bound. -/
+theorem succ_pow_ge_two_mul (d : ℕ) (hd : 1 ≤ d) :
+    2 * (↑d : ℚ) ^ d ≤ (↑d + 1) ^ d := by
+  have hd_pos : (0 : ℚ) < ↑d := Nat.cast_pos.mpr (by omega)
+  have hdd_pos : (0 : ℚ) < ↑d ^ d := pow_pos hd_pos d
+  have h := one_plus_inv_pow_ge_two d hd
+  have hrw : (1 + 1 / (↑d : ℚ)) = (↑d + 1) / ↑d := by field_simp
+  rw [hrw, div_pow] at h
+  -- h : 2 ≤ (↑d + 1) ^ d / ↑d ^ d — multiply both sides by ↑d ^ d
+  have step := mul_le_mul_of_nonneg_right h (le_of_lt hdd_pos)
+  have cancel : (↑d + 1 : ℚ) ^ d / (↑d : ℚ) ^ d * (↑d : ℚ) ^ d = (↑d + 1 : ℚ) ^ d := by
+    field_simp [ne_of_gt hdd_pos]
+  linarith
+
+/-- T(d) ≤ 1/4 for all d ≥ 1: the LLL threshold is universally bounded.
+    Proof: Bernoulli gives (d+1)^d ≥ 2·d^d, and d+1 ≥ 2,
+    so (d+1)^{d+1} ≥ 4·d^d, hence T(d) = d^d/(d+1)^{d+1} ≤ 1/4.
+    This subsumes lllThreshold_le_quarter_small. -/
+theorem lllThreshold_le_quarter (d : ℕ) (hd : 1 ≤ d) :
+    lllThreshold d ≤ 1 / 4 := by
+  have hd1_pos : (0 : ℚ) < ↑d + 1 := by positivity
+  simp only [lllThreshold, if_neg (by omega : d ≠ 0)]
+  have h1 : (0 : ℚ) < (↑d + 1) ^ (d + 1) := pow_pos hd1_pos (d + 1)
+  -- Cross-multiplication: 4 * d^d ≤ (d+1)^(d+1)
+  have h_cross : 4 * (↑d : ℚ) ^ d ≤ (↑d + 1) ^ (d + 1) := by
+    rw [pow_succ]
+    have h1' := succ_pow_ge_two_mul d hd
+    have h2 : (2 : ℚ) ≤ ↑d + 1 := by
+      have : (1 : ℚ) ≤ ↑d := Nat.one_le_cast.mpr hd; linarith
+    calc (4 : ℚ) * ↑d ^ d = (2 * ↑d ^ d) * 2 := by ring
+      _ ≤ (↑d + 1) ^ d * (↑d + 1) :=
+          mul_le_mul h1' h2 (by norm_num) (le_of_lt (pow_pos hd1_pos d))
+  -- Convert: 4*d^d ≤ (d+1)^(d+1) → d^d/(d+1)^(d+1) ≤ 1/4
+  have key : 4 * (↑d : ℚ) ^ d / (↑d + 1) ^ (d + 1) ≤ 1 :=
+    (div_le_one h1).mpr h_cross
+  rw [mul_div_assoc] at key
+  linarith
+
+-- ═══════════════════════════════════════════════════════════════════
+-- PART IX: FORMAL CONNECTIONS
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Symmetric LLL as a corollary of the general LLL: setting x_i = 1/(d+1)
+    for all i recovers the symmetric avoidance bound.
+    This formally connects Parts II and VI. -/
+theorem symmetric_from_general (n d : ℕ) (hd : 0 < d) :
+    0 < (Finset.univ : Finset (Fin n)).prod
+      (fun _ => 1 - (1 : ℚ) / (↑d + 1)) :=
+  general_lll (fun _ => symmetric_x_in_range d hd)
+
+-- ═══════════════════════════════════════════════════════════════════
+-- PART X: THRESHOLD-TO-LLL BRIDGE
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- The LLL threshold factors as T(d) = (1/(d+1)) · (d/(d+1))^d,
+    corresponding to the symmetric x_i = 1/(d+1) assignment.
+    This connects the threshold to the avoidance product structure. -/
+theorem lllThreshold_eq_product (d : ℕ) (hd : 0 < d) :
+    lllThreshold d = (1 : ℚ) / (↑d + 1) * (↑d / (↑d + 1)) ^ d := by
+  simp only [lllThreshold, if_neg (by omega : d ≠ 0)]
+  rw [div_pow, div_mul_div_comm, one_mul]
+  congr 1
+  rw [pow_succ, mul_comm]
+
+/-- If event probabilities are bounded by T(d) and the dependency graph has max
+    degree d, the symmetric assignment x_i = 1/(d+1) satisfies the general LLL
+    condition: prob_i ≤ x_i · ∏_{j ∈ Γ(i)} (1 - x_j).
+    This bridges the symmetric threshold to the general LLL framework. -/
+theorem threshold_satisfies_lll (n d : ℕ) (hd : 0 < d)
+    (prob : Fin n → ℚ)
+    (adj : Fin n → Finset (Fin n))
+    (hdeg : HasMaxDegree n adj d)
+    (hprob : ∀ i, prob i ≤ lllThreshold d) :
+    ∀ i, prob i ≤ (1 : ℚ) / (↑d + 1) *
+      (adj i).prod (fun _ => 1 - (1 : ℚ) / (↑d + 1)) := by
+  intro i
+  have hd1_pos : (0 : ℚ) < ↑d + 1 := by positivity
+  have hconv : (↑d : ℚ) / (↑d + 1) = 1 - 1 / (↑d + 1) := by field_simp; ring
+  rw [Finset.prod_const]
+  calc prob i
+      ≤ lllThreshold d := hprob i
+    _ = (1 : ℚ) / (↑d + 1) * (↑d / (↑d + 1)) ^ d :=
+        lllThreshold_eq_product d hd
+    _ ≤ (1 : ℚ) / (↑d + 1) * (↑d / (↑d + 1)) ^ (adj i).card := by
+        apply mul_le_mul_of_nonneg_left
+        · exact pow_le_pow_of_le_one (by positivity)
+            (by rw [div_le_one hd1_pos]; linarith) (hdeg i)
+        · positivity
+    _ = (1 : ℚ) / (↑d + 1) * (1 - 1 / (↑d + 1)) ^ (adj i).card := by
+        rw [hconv]
+
+/-- Complete Symmetric LLL: given event probabilities ≤ T(d) and dependency
+    degree ≤ d, both the LLL condition and avoidance positivity hold.
+    In the full probabilistic setting, this gives P[∩ Āᵢ] ≥ (d/(d+1))^n > 0. -/
+theorem symmetric_lll_complete (n d : ℕ) (hd : 0 < d)
+    (prob : Fin n → ℚ)
+    (adj : Fin n → Finset (Fin n))
+    (hdeg : HasMaxDegree n adj d)
+    (hprob : ∀ i, prob i ≤ lllThreshold d) :
+    (∀ i, prob i ≤ (1 : ℚ) / (↑d + 1) *
+      (adj i).prod (fun _ => 1 - (1 : ℚ) / (↑d + 1))) ∧
+    0 < (Finset.univ : Finset (Fin n)).prod
+      (fun _ => 1 - (1 : ℚ) / (↑d + 1)) :=
+  ⟨threshold_satisfies_lll n d hd prob adj hdeg hprob,
+   symmetric_lll_avoidance n d hd⟩
 
 end ProbMethod.LovaszLocal
