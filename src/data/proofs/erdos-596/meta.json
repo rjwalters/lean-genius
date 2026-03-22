@@ -120,5 +120,21 @@
       "Is there a finite characterization of all dichotomy pairs?",
       "What structural properties of G₁-free graphs determine the dichotomy?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Hajnal, András; Pach, János",
+      "title": "On chromatic numbers of graph families",
+      "year": "1985",
+      "venue": "Discrete Mathematics",
+      "note": "Related work on chromatic number bounds for forbidden subgraph classes"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both concern Ramsey-type structure: Ramsey's theorem guarantees monochromatic complete subgraphs, #596 asks about Ramsey dichotomy for forbidden subgraph pairs"
+    }
+  ]
 }
