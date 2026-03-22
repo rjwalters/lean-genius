@@ -29,6 +29,29 @@
     ]
   },
   {
+    "id": "ann-e140-preamble",
+    "proofId": "erdos-140",
+    "range": {
+      "startLine": 27,
+      "endLine": 31
+    },
+    "type": "context",
+    "title": "Lean Setup and Namespace",
+    "content": "Imports full Mathlib and opens `Set`, `Finset`, `Nat`, and `Real` namespaces. The formalization uses `Finset.range`, `sSup`, `Real.log`, `Real.exp`, and `Real.sqrt` from Mathlib. The `Erdos140` namespace scopes all definitions and theorems to this problem.",
+    "mathContext": "The `Real` namespace provides $\\log$, $\\exp$, and $\\sqrt{}$ for stating the asymptotic bounds. The `Finset` namespace provides finite set operations for defining $r_3(N)$ as a supremum over finite subsets.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Mathlib",
+      "namespace",
+      "Finset",
+      "Real"
+    ],
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib library"
+    ]
+  },
+  {
     "id": "ann-e140-isap3",
     "proofId": "erdos-140",
     "range": {
@@ -94,7 +117,7 @@
     "type": "axiom",
     "title": "Roth's Theorem (1953)",
     "content": "**axiom roth_theorem**: r\u2083(N) = o(N)\n\nThe first non-trivial upper bound showing 3-AP-free sets have density 0.\n\n**Explicit bound**: r\u2083(N) \u2264 C\u00b7N / log log N\n\nRoth won the Fields Medal in part for this work.",
-    "mathContext": "Roth used Fourier-analytic methods (circle method) to prove this. It showed that large 3-AP-free sets cannot exist.",
+    "mathContext": "Roth adapted the Hardy–Littlewood circle method to finite groups: if $A \\subseteq \\{1,\\ldots,N\\}$ has density $\\delta$, the 3-AP count is $\\sum_r \\widehat{1_A}(r)^2 \\widehat{1_A}(-2r)$. If this vanishes, some Fourier coefficient is large, yielding a density increment on a subprogression. Iterating gives $\\delta = o(1)$, hence $r_3(N) = o(N)$.",
     "significance": "key",
     "relatedConcepts": [
       "roth-1953",
@@ -123,7 +146,7 @@
     "type": "axiom",
     "title": "Historical Progress",
     "content": "**Bourgain (2008)**: r\u2083(N) = O(N / \u221a(log log N))\nImproved Roth using deeper Fourier analysis.\n\n**Sanders (2011)**: r\u2083(N) = O(N (log log N)\u2075 / log N)\nFirst bound with log N in denominator!\n\n**Bloom-Sisask (2020)**: r\u2083(N) = O(N / (log N)^{1+c}) for some c > 0\nBreakthrough: power > 1 in log exponent.",
-    "mathContext": "Each improvement required new techniques. Sanders introduced nilsequences; Bloom-Sisask used entropy-based methods.",
+    "mathContext": "Bourgain refined the density-increment argument using Bogolyubov-type lemmas. Sanders replaced traditional Bohr sets with quasi-polynomial Bohr sets, achieving an almost-logarithmic bound. Bloom and Sisask introduced an entropy-increment method: instead of boosting density on a subprogression, they showed that the entropy of the set's distribution increases, giving a stronger quantitative handle.",
     "significance": "key",
     "relatedConcepts": [
       "bourgain",
@@ -151,7 +174,7 @@
     "type": "axiom",
     "title": "Kelley-Meka Theorem (2023)",
     "content": "**KelleyMekaTheorem**: \u2200 C > 0, \u2203 K > 0, \u2200 N \u2265 3:\n  r\u2083(N) \u2264 K\u00b7N / (log N)^C\n\n**axiom kelley_meka**: KelleyMekaTheorem\n\n**theorem erdos_140_solved** = kelley_meka\n\nThis resolves Erd\u0151s Problem #140 and the $500 prize!",
-    "mathContext": "Kelley-Meka's proof uses a novel approach combining spectral methods with graph theory. The paper appeared in 2023.",
+    "mathContext": "Kelley and Meka's proof works in the model setting $\\mathbb{F}_3^n$ (the cap set problem) and transfers to $\\mathbb{Z}/N\\mathbb{Z}$. The key innovation is a large-deviation bound for convolutions of dense subsets: rather than iterating density increments, they show that a set of density $\\delta$ in $\\mathbb{F}_3^n$ either contains a 3-AP or has Fourier spectrum concentrated on a low-codimension subspace, yielding a density boost of $\\exp(\\Omega(\\delta^2))$ rather than the traditional polynomial gain. This exponential improvement is what allows the bound to beat every fixed power of $\\log N$.",
     "significance": "key",
     "relatedConcepts": [
       "kelley-meka-2023",
@@ -208,7 +231,7 @@
     "type": "axiom",
     "title": "Behrend Lower Bound",
     "content": "**axiom behrend_lower_bound**:\n  r\u2083(N) \u2265 N \u00b7 exp(-c \u00b7 \u221a(log N))\n\nThis is the best known LOWER bound (1946).\n\n**The Gap**:\n- Upper: O(N / (log N)^C) for all C\n- Lower: \u03a9(N / exp(c \u221alog N))\n\nThe true order of r\u2083(N) remains unknown!",
-    "mathContext": "Behrend constructed 3-AP-free sets in a d-dimensional sphere. The gap between bounds is a major open problem.",
+    "mathContext": "Behrend's construction embeds $\\{1,\\ldots,N\\}$ into $\\mathbb{Z}_m^d$ and takes a thin spherical shell $\\{x : |x|^2 = t\\}$, which is 3-AP-free since $|a|^2 + |c|^2 > 2|b|^2$ for non-degenerate APs on a sphere. Optimizing $d \\approx \\sqrt{\\log N}$ yields sets of size $\\Omega(N/\\exp(c\\sqrt{\\log N}))$. Elkin (2011) improved the constant $c$ slightly, but the $\\exp(\\sqrt{\\log N})$ shape has not been surpassed in nearly 80 years.",
     "significance": "key",
     "relatedConcepts": [
       "behrend-1946",
@@ -292,7 +315,7 @@
     "type": "definition",
     "title": "k-term AP Generalization",
     "content": "**IsAPk k vals**: k values form an arithmetic progression\n  vals(i) = a + i\u00b7d for some a, d with d \u2260 0\n\n**FinsetkAPFree k A**: No k elements of A form a k-AP\n\n**rk k N**: Maximum size of k-AP-free subset of {0,...,N}\n\n**ErdosAPConjecture**: For all k \u2265 3, C > 0:\n  r_k(N) = O(N / (log N)^C)\n\nThis is OPEN for k \u2265 4!",
-    "mathContext": "Szemer\u00e9di's theorem (1975) shows r_k(N) = o(N), but the quantitative bounds are much weaker for k \u2265 4.",
+    "mathContext": "Szemer\u00e9di's theorem (1975) proves $r_k(N) = o(N)$ for all $k$, but the quantitative bounds deteriorate rapidly: for $k = 4$, the best bound is $O(N/(\\log N)^{c_4})$ for a small constant $c_4$ (Green\u2013Tao, 2017), far from the conjectured $O(N/(\\log N)^C)$ for all $C$. For general $k$, only Ackermann-type bounds are known from Gowers\u2019 proof (2001) via higher-order Fourier analysis.",
     "significance": "key",
     "relatedConcepts": [
       "k-AP",
