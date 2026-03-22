@@ -309,12 +309,26 @@ theorem mutual_info_nonneg {α β : Type*} [Fintype α] [Fintype β]
               (fun x' _ => hp (x', y)) (Finset.mem_univ x))
     linarith [kl_term_bound hpxy_pos hq_pos]
 
+-- Chain rule: I(X;Y) = H(X) - H(X|Y)
+-- This connects mutual information (as KL divergence from product) to entropy difference.
+theorem chain_rule {α β : Type*} [Fintype α] [Fintype β]
+    [DecidableEq α] [DecidableEq β]
+    {pXY : α × β → ℝ} (hp : ∀ xy, 0 ≤ pXY xy)
+    (hsum : ∑ xy : α × β, pXY xy = 1) :
+    mutualInformation pXY =
+    shannonEntropy (fun x => ∑ y : β, pXY (x, y)) - conditionalEntropy pXY := by
+  sorry
+
 -- Conditioning reduces entropy: H(X|Y) ≤ H(X)
+-- Proof: by the chain rule, H(X) - H(X|Y) = I(X;Y) ≥ 0.
 theorem conditioning_reduces_entropy {α β : Type*} [Fintype α] [Fintype β]
     [DecidableEq α] [DecidableEq β]
     {pXY : α × β → ℝ} (hp : ∀ xy, 0 ≤ pXY xy)
     (hsum : ∑ xy : α × β, pXY xy = 1) :
     conditionalEntropy pXY ≤
-    shannonEntropy (fun x => ∑ y : β, pXY (x, y)) := by sorry
+    shannonEntropy (fun x => ∑ y : β, pXY (x, y)) := by
+  have hmi := mutual_info_nonneg hp hsum
+  have hchain := chain_rule hp hsum
+  linarith
 
 end InformationTheory
