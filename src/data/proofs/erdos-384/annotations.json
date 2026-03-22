@@ -9,6 +9,7 @@
     "mathContext": "C(n,k) = n!/(k!(n−k)!). Question: ∃ p prime, p ∣ C(n,k) ∧ p < n/2. Exception: C(7,3) = 35 = 5 × 7.",
     "significance": "essential",
     "relatedConcepts": ["binomial coefficients", "prime divisibility", "Kummer's theorem", "Pascal's triangle"],
+    "prerequisites": ["binomial coefficients", "prime factorization", "divisibility"],
     "tags": ["binomial-coefficients", "prime-divisors", "number-theory", "erdos-problems"]
   },
   {
@@ -21,6 +22,7 @@
     "mathContext": "minPrimeDivisor_prime: proved (minFac_prime). minPrimeDivisor_dvd: proved (minFac_dvd). hasSmallPrimeDivisor n bound ≡ ∃ p, p.Prime ∧ p ∣ n ∧ p < bound.",
     "significance": "essential",
     "relatedConcepts": ["Nat.minFac", "prime divisor", "existential quantifier"],
+    "prerequisites": ["Nat.minFac", "Nat.Prime", "divisibility"],
     "tags": ["definitions", "prime-factorization", "lean4-tactics"]
   },
   {
@@ -33,6 +35,7 @@
     "mathContext": "choose_7_3: proved. thirty_five_factorization: proved. minPrimeDivisor_35: proved. choose_7_3_no_small_prime: proved (interval_cases + simp_all). isException n k ≡ (n=7 ∧ k=3) ∨ (n=7 ∧ k=4).",
     "significance": "essential",
     "relatedConcepts": ["native_decide", "interval_cases", "norm_num"],
+    "prerequisites": ["Nat.choose", "native_decide", "interval_cases"],
     "tags": ["counterexample", "binomial-coefficients", "decidability", "case-analysis"]
   },
   {
@@ -45,6 +48,7 @@
     "mathContext": "ecklund_1969: axiom. ecklund_no_exception: proved (cases h). erdos_384_main: proved (= ecklund_1969).",
     "significance": "essential",
     "relatedConcepts": ["Ecklund", "binomial coefficients", "small prime divisor"],
+    "prerequisites": ["hasSmallPrimeDivisor", "isException", "Nat.choose"],
     "tags": ["main-theorem", "prime-divisors", "axiomatized", "binomial-coefficients"]
   },
   {
@@ -57,6 +61,7 @@
     "mathContext": "ecklundStrongConjecture: ∀ n k, 1<k → k<n−1 → n>k² → hasSmallPrimeDivisor(C(n,k), n/k+1). selfridgeConjecture: threshold 17.125k. partial_bound_known: axiom.",
     "significance": "supporting",
     "relatedConcepts": ["Ecklund", "Selfridge", "n/k bound"],
+    "prerequisites": ["hasSmallPrimeDivisor", "Nat.choose", "ecklund_1969"],
     "tags": ["open-problems", "conjectures", "prime-divisors"]
   },
   {
@@ -69,6 +74,7 @@
     "mathContext": "kummer_theorem: axiom (placeholder). large_prime_not_divisor: ∀ p > n, ¬(p ∣ C(n,k)) (axiom).",
     "significance": "supporting",
     "relatedConcepts": ["Kummer's theorem", "base-p digits", "carries"],
+    "prerequisites": ["p-adic valuation", "base-p representation", "Nat.choose"],
     "tags": ["kummer-theorem", "p-adic-valuation", "number-theory"]
   },
   {
@@ -81,6 +87,7 @@
     "mathContext": "choose_n_1: proved (Nat.choose_one_right). choose_n_1_prime_divisor: proved (minFac_prime + minFac_dvd). choose_n_nminus1: proved (choose_symm_diff).",
     "significance": "supporting",
     "relatedConcepts": ["boundary cases", "Nat.choose_one_right", "choose_symm_diff"],
+    "prerequisites": ["Nat.choose_one_right", "Nat.choose_symm_diff", "Nat.minFac"],
     "tags": ["edge-cases", "binomial-coefficients", "simplification"]
   },
   {
@@ -93,6 +100,7 @@
     "mathContext": "Three examples: hasSmallPrimeDivisor(C(5,2), 3), hasSmallPrimeDivisor(C(6,2), 4), hasSmallPrimeDivisor(C(6,3), 4). All proved.",
     "significance": "supporting",
     "relatedConcepts": ["native_decide", "norm_num", "concrete verification"],
+    "prerequisites": ["Nat.choose", "native_decide", "norm_num", "hasSmallPrimeDivisor"],
     "tags": ["verification", "decidability", "small-cases"]
   },
   {
@@ -105,6 +113,7 @@
     "mathContext": "primorial' n = primorial n. central_binomial_primes: ∃ p prime, p ∣ C(2n,n) ∧ n < p ∧ p ≤ 2n (axiom).",
     "significance": "supporting",
     "relatedConcepts": ["primorial", "central binomial", "Bertrand's postulate"],
+    "prerequisites": ["Nat.primorial", "Bertrand's postulate", "Nat.choose"],
     "tags": ["primorial", "bertrand-postulate", "central-binomial"]
   },
   {
@@ -117,6 +126,7 @@
     "mathContext": "erdos_384_main n k hk_lower hk_upper = ecklund_1969 n k hk_lower hk_upper. Proved.",
     "significance": "essential",
     "relatedConcepts": ["known results", "solved problem", "summary theorem"],
+    "prerequisites": ["ecklund_1969", "erdos_384_main"],
     "tags": ["summary", "main-theorem", "solved-problem"]
   }
 ]
