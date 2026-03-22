@@ -7,7 +7,7 @@
     "title": "Problem Overview and Background",
     "content": "**Erdős Problem #1069: k-Rich Lines Bound**\n\nGiven n points in the plane, a line is **k-rich** if it passes through at least k of the points. The question asks: how many k-rich lines can there be?\n\n**Answer:** O(n²/k³) when k ≤ √n (Szemerédi-Trotter, 1983).\n\nThis was conjectured by Erdős, Croft, and Purdy. The proof relies on the landmark Szemerédi-Trotter incidence theorem, which bounds the total number of point-line incidences.\n\n**Reference:** Szemerédi and Trotter, 'Extremal problems in discrete geometry', Combinatorica 3 (1983), 381-392.",
     "mathContext": "#{k-rich lines} = O(n²/k³) for k ≤ √n",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["incidence geometry", "Szemerédi-Trotter theorem", "k-rich lines"]
   },
   {
@@ -29,18 +29,18 @@
     "title": "k-Rich Lines and Total Incidences",
     "content": "**The Central Quantities**\n\n- **isKRich P l k:** Line l has ≥ k points of P on it\n- **kRichLines P L k:** The subset of L consisting of k-rich lines\n- **numKRichLines P L k:** How many lines in L are k-rich — the quantity we want to bound\n- **totalIncidences P L:** The sum Σ_{l ∈ L} incidenceCount(P, l), counting all point-line pairs\n\nThe key relationship: if there are m k-rich lines, the total incidences are ≥ mk (each k-rich line contributes at least k). Combined with the Szemerédi-Trotter upper bound on total incidences, this gives the O(n²/k³) bound on m.",
     "mathContext": "m lines with ≥ k incidences each ⟹ total incidences ≥ mk",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["k-rich", "incidence count", "double counting"]
   },
   {
     "id": "ann-e1069-sztr",
     "proofId": "erdos-1069",
     "range": { "startLine": 99, "endLine": 144 },
-    "type": "axiom",
+    "type": "context",
     "title": "Szemerédi-Trotter Theorem and k-Rich Bound",
     "content": "**The Main Theorems**\n\n**Szemerédi-Trotter (1983):** For n points and m lines in ℝ², the number of incidences satisfies:\n  I(P,L) ≤ C · (n^{2/3} · m^{2/3} + n + m)\nfor some absolute constant C. The exponent 2/3 is optimal.\n\n**k-Rich Lines Bound (Erdős #1069):** The number of k-rich lines is O(n²/k³) when k ≤ √n.\n\n**Derivation:** If m lines each have ≥ k incidences, then mk ≤ I(P, {k-rich lines}) ≤ C(n^{2/3}m^{2/3} + n + m). Rearranging and using k² ≤ n gives m ≤ O(n²/k³).\n\nThe theorem erdos_1069 is proved directly from the kRich_bound axiom.",
     "mathContext": "I(P,L) ≤ C(n^{2/3}m^{2/3} + n + m) ⟹ #{k-rich lines} ≤ O(n²/k³)",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Szemerédi-Trotter theorem", "incidence bound", "counting argument"]
   },
   {
@@ -69,11 +69,11 @@
     "id": "ann-e1069-summary",
     "proofId": "erdos-1069",
     "range": { "startLine": 204, "endLine": 229 },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary: Problem #1069 is SOLVED",
     "content": "**Complete Resolution**\n\nThe summary theorem erdos_1069_summary bundles the two main results:\n1. Szemerédi-Trotter incidence bound: I(P,L) = O(n^{2/3}m^{2/3} + n + m)\n2. k-rich lines bound: #{k-rich lines} = O(n²/k³) for k ≤ √n\n\nThis completely answers Erdős Problem #1069. The Szemerédi-Trotter theorem has become one of the most important tools in combinatorial geometry, with applications to the Erdős distinct distances problem, sum-product estimates, and Kakeya-type problems.",
     "mathContext": "∀ P L, I(P,L) ≤ O(n^{2/3}m^{2/3} + n + m) ∧ #{k-rich} ≤ O(n²/k³)",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["solved problem", "incidence geometry", "applications"]
   }
 ]

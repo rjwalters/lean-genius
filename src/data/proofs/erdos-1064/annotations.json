@@ -24,7 +24,7 @@
     "title": "The Three Sets A₊, A₋, A₌",
     "content": "We partition ℕ into three sets based on how φ(n) compares to φ(n - φ(n)): **A₊** where φ(n) > φ(n-φ(n)), **A₋** where φ(n) < φ(n-φ(n)), and **A₌** where they're equal.",
     "mathContext": "Note n - φ(n) counts integers ≤ n sharing a factor with n. For n = 12: φ(12) = 4, so n - φ(n) = 8, and φ(8) = 4 = φ(12).",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["totient", "comparison", "partition"]
   },
   {
@@ -62,11 +62,11 @@
       "startLine": 101,
       "endLine": 109
     },
-    "type": "axiom",
+    "type": "context",
     "title": "Part 1: A₊ Has Density 1",
     "content": "**Luca-Pomerance (2002):** The set of n with φ(n) > φ(n - φ(n)) has natural density 1. \"Almost all\" integers satisfy this inequality.",
     "mathContext": "The proof uses analytic methods to show n - φ(n) typically has a smaller totient. The stronger result: φ(n) > φ(n-φ(n)) + f(n) for any f = o(n).",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["density", "almost all", "analytic methods"]
   },
   {
@@ -76,11 +76,11 @@
       "startLine": 111,
       "endLine": 115
     },
-    "type": "axiom",
+    "type": "context",
     "title": "Part 2: A₋ Is Infinite",
     "content": "**Grytczuk-Luca-Wójtowicz (2001):** The set of n with φ(n) < φ(n - φ(n)) is infinite. The pattern 15·2^k provides explicit witnesses.",
     "mathContext": "This was the first breakthrough. They also showed A₊ has lower density ≥ 0.54, later improved to density 1.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["infinitude", "explicit construction"]
   },
   {
@@ -90,11 +90,11 @@
       "startLine": 117,
       "endLine": 123
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Problem Resolution",
     "content": "**Erdős Problem 1064 (Solved):** Part 1 shows φ(n) > φ(n - φ(n)) for almost all n (density 1). Part 2 shows φ(n) < φ(n - φ(n)) for infinitely many n.",
     "mathContext": "The theorem statement confirms A₋ is infinite, referencing the Grytczuk-Luca-Wójtowicz axiom.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["resolution", "both parts"]
   },
   {
