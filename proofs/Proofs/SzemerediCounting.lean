@@ -111,13 +111,50 @@ theorem bad_vertices_small (G : SimpleGraph V) [DecidableRel G.Adj]
     have hA'B_pos : (0 : ℚ) < (A'.card : ℚ) * B.card := by positivity
     rw [dif_neg (ne_of_gt hA'B_pos)]
     rw [div_lt_iff₀ hA'B_pos]
-    -- Step 1: Fiber decomposition: |(A' × B).filter G.Adj| = Σ_{a∈A'} |N_B(a)|
-    -- Step 2: Each a ∈ A' has |N_B(a)| < (d-ε)|B| (def of badVertices)
-    -- Step 3: Sum < |A'|(d-ε)|B|
-    -- The full formal proof of this fiber decomposition + summation bound
-    -- requires Finset.sum_card_fiberwise + Finset.sum_lt_sum + cast lemmas.
-    -- This is standard combinatorics but technically involved in Lean.
-    sorry
+    -- Goal: ↑|(A'×B).filter Adj| < (d-ε) * (↑|A'| * ↑|B|)
+    set E := (A' ×ˢ B).filter (fun p : V × V => G.Adj p.1 p.2)
+    -- Each a ∈ A' has |N_B(a)| < (d-ε)|B| (badVertices definition)
+    have hbad : ∀ a ∈ A', ((neighborhoodIn G a B).card : ℚ) < (d - eps) * B.card :=
+      fun a ha => (Finset.mem_filter.mp ha).2
+    -- A' is nonempty
+    have hA'ne : A'.Nonempty := Finset.card_pos.mp (by exact_mod_cast hA'pos)
+    -- Fiber decomposition + count bound
+    -- Each pair (a,b) in E has a ∈ A', so fibers partition E by first component
+    have hfst_mem : ∀ p ∈ E, Prod.fst p ∈ A' := by
+      intro p hp; exact (Finset.mem_filter.mp hp).1 |> Finset.mem_product.mp |>.1
+    -- Fiber decomposition: E.card = Σ_{a∈A'} |fiber_a|
+    have hfib := Finset.card_eq_sum_card_fiberwise hfst_mem
+    -- Each fiber has ≤ |N_B(a)| elements (injection via Prod.snd)
+    have hfiber_le : ∀ a ∈ A',
+        (E.filter (fun p => p.1 = a)).card ≤ (neighborhoodIn G a B).card := by
+      intro a _
+      apply Finset.card_le_card_of_injOn Prod.snd
+      · intro p hp
+        have hpE := (Finset.mem_filter.mp hp).1
+        have hpeq : p.1 = a := (Finset.mem_filter.mp hp).2
+        have hprod := Finset.mem_product.mp (Finset.mem_filter.mp hpE).1
+        have hadj := (Finset.mem_filter.mp hpE).2
+        exact Finset.mem_filter.mpr ⟨hprod.2, hpeq ▸ hadj⟩
+      · intro p₁ h₁ p₂ h₂ heq
+        have h1eq : p₁.1 = a := (Finset.mem_filter.mp h₁).2
+        have h2eq : p₂.1 = a := (Finset.mem_filter.mp h₂).2
+        exact Prod.ext (h1eq.trans h2eq.symm) heq
+    -- Combine: E.card = Σ|fiber| ≤ Σ|N_B(a)| < (d-ε)|A'||B|
+    -- Work in ℚ for the strict inequality chain
+    suffices h : (E.card : ℚ) < (d - eps) * (↑A'.card * ↑B.card) by
+      exact_mod_cast h
+    calc (E.card : ℚ)
+        = ↑(A'.sum (fun a => (E.filter (fun p => p.1 = a)).card)) := by
+          rw [hfib]
+      _ ≤ A'.sum (fun a => ((neighborhoodIn G a B).card : ℚ)) := by
+          push_cast
+          exact Finset.sum_le_sum (fun a ha => Nat.cast_le.mpr (hfiber_le a ha))
+      _ < A'.sum (fun _ => (d - eps) * ↑B.card) :=
+          Finset.sum_lt_sum
+            (fun a ha => le_of_lt (hbad a ha))
+            (let ⟨a, ha⟩ := hA'ne; ⟨a, ha, hbad a ha⟩)
+      _ = (d - eps) * (↑A'.card * ↑B.card) := by
+          simp only [Finset.sum_const, nsmul_eq_mul]; ring
   linarith
 
 -- ═══════════════════════════════════════════════════════════════════
