@@ -1,0 +1,101 @@
+{
+  "id": "cauchy-schwarz-integral-oq-02-oq-01",
+  "title": "Strict Minkowski Inequality: Equality iff Proportional",
+  "slug": "cauchy-schwarz-integral-oq-02-oq-01",
+  "description": "Equality in the triangle inequality ‖f+g‖ = ‖f‖+‖g‖ holds in a real inner product space if and only if the vectors are non-negatively proportional: ‖f‖•g = ‖g‖•f. The proof reduces to Cauchy-Schwarz equality via squaring, then characterizes proportionality through ‖‖f‖•g - ‖g‖•f‖² = 0.",
+  "meta": {
+    "author": "Minkowski",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Minkowski_inequality",
+    "date": "1896",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ02OQ01.lean",
+    "tags": [
+      "analysis",
+      "inequalities",
+      "cauchy-schwarz",
+      "minkowski",
+      "inner-product",
+      "open-problem",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 80,
+    "theoremCount": 3,
+    "mathlibDependencies": [
+      {
+        "theorem": "norm_add_sq_real",
+        "description": "‖u+v‖² = ‖u‖² + 2⟪u,v⟫ + ‖v‖² for real inner product spaces",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "real_inner_self_eq_norm_sq",
+        "description": "⟪f,f⟫ = ‖f‖² for real inner product spaces",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "norm_sub_sq_real",
+        "description": "‖u-v‖² = ‖u‖² - 2⟪u,v⟫ + ‖v‖² for real inner product spaces",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "inner_smul_left",
+        "description": "⟪c•f,g⟫ = c * ⟪f,g⟫ for real scalars",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "inner_smul_right",
+        "description": "⟪f,c•g⟫ = conj(c) * ⟪f,g⟫",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "real_inner_comm",
+        "description": "⟪f,g⟫_ℝ = ⟪g,f⟫_ℝ (symmetry for real inner product)",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Theorem inner_eq_of_proportional: ‖f‖•g = ‖g‖•f → ⟪f,g⟫ = ‖f‖·‖g‖ (proportionality implies CS equality)",
+      "Theorem proportional_of_inner_eq: ⟪f,g⟫ = ‖f‖·‖g‖ → ‖f‖•g = ‖g‖•f (CS equality implies proportionality via norm expansion)",
+      "Theorem norm_add_eq_iff_proportional: ‖f+g‖ = ‖f‖+‖g‖ ↔ ‖f‖•g = ‖g‖•f (strict Minkowski, main result)"
+    ],
+    "dateAdded": "03/22/26"
+  },
+  "overview": {
+    "historicalContext": "The strict form of the Minkowski inequality characterizes when equality holds in the triangle inequality. For normed spaces, ‖f+g‖ = ‖f‖+‖g‖ if and only if the vectors are non-negatively proportional. This is closely related to the equality case of Cauchy-Schwarz: ⟪f,g⟫ = ‖f‖·‖g‖ iff f and g are non-negatively proportional.",
+    "problemStatement": "**Open Question (cauchy-schwarz-integral-oq-02-oq-01)**: Can the strict form of Minkowski (equality iff f and g are proportional) be derived as a corollary of the equality case of CS?\n\n**Answer: YES** — The proof has two directions:\n\n**Forward (‖f+g‖ = ‖f‖+‖g‖ → proportional)**:\nSquaring both sides and using ‖f+g‖² = ‖f‖² + 2⟪f,g⟫ + ‖g‖² gives ⟪f,g⟫ = ‖f‖·‖g‖.\nThen ‖‖f‖•g - ‖g‖•f‖² = 2‖f‖²‖g‖² - 2‖f‖·‖g‖·⟪f,g⟫ = 0.\n\n**Backward (proportional → ‖f+g‖ = ‖f‖+‖g‖)**:\n‖f‖•g = ‖g‖•f implies ⟪f,g⟫ = ‖f‖·‖g‖ (by taking ⟪f,·⟫ of both sides).\nThen ‖f+g‖² = (‖f‖+‖g‖)² and both sides are non-negative.",
+    "proofStrategy": "The key reduction is: Minkowski equality ↔ CS equality ↔ proportionality.\n\n1. **Minkowski → CS**: Squaring ‖f+g‖ = ‖f‖+‖g‖ and expanding via norm_add_sq_real yields ⟪f,g⟫ = ‖f‖·‖g‖.\n2. **CS → Proportional**: Compute ‖‖f‖•g - ‖g‖•f‖² = 0 using inner product bilinearity.\n3. **Proportional → CS**: Take ⟪f,·⟫ of ‖f‖•g = ‖g‖•f, use ⟪f,f⟫ = ‖f‖² and field_simp.\n4. **CS → Minkowski**: Substitute CS equality into norm_add_sq_real, factor (a-b)(a+b)=0.",
+    "keyInsights": [
+      "The forward direction reduces to squaring: ‖f+g‖² = (‖f‖+‖g‖)² iff ⟪f,g⟫ = ‖f‖·‖g‖ (CS equality)",
+      "The backward direction uses the norm expansion ‖‖f‖•g - ‖g‖•f‖² = 2‖f‖²‖g‖² - 2‖f‖·‖g‖·⟪g,f⟫ = 0",
+      "In Lean 4, inner_smul_right for ℝ does not introduce star/conj complications since star is trivial on ℝ",
+      "The factoring step (a-b)(a+b)=0 with a,b ≥ 0 forces a=b; nlinarith handles this"
+    ]
+  },
+  "sections": [
+    {
+      "id": "algebraic-facts",
+      "title": "Section I: Key Algebraic Facts",
+      "startLine": 19,
+      "endLine": 45,
+      "summary": "Two lemmas establishing the CS equality ↔ proportionality equivalence. inner_eq_of_proportional: takes ⟪f,·⟫ of the proportionality equation and uses field_simp. proportional_of_inner_eq: expands ‖‖f‖•g - ‖g‖•f‖² via norm_sub_sq_real and shows it equals 0."
+    },
+    {
+      "id": "main-result",
+      "title": "Section II: Strict Minkowski Inequality (Main Result)",
+      "startLine": 47,
+      "endLine": 80,
+      "summary": "norm_add_eq_iff_proportional: the main iff theorem. Forward: squaring + linarith gives CS equality, then proportional_of_inner_eq. Backward: inner_eq_of_proportional gives CS equality, then nlinarith + factoring."
+    }
+  ],
+  "conclusion": {
+    "summary": "The strict Minkowski inequality ‖f+g‖ = ‖f‖+‖g‖ ↔ ‖f‖•g = ‖g‖•f is proved in 80 lines with 0 sorries and 0 axioms, answering the open question from the parent proof (cauchy-schwarz-integral-oq-02). The proof uses standard inner product space machinery from Mathlib.",
+    "implications": "This completes the characterization of equality in the triangle inequality for real inner product spaces. Combined with the parent proof, we have: CS inequality → Minkowski inequality → strict Minkowski equality case.",
+    "openQuestions": [
+      "Can the strict Minkowski inequality be generalized to Lp spaces for p > 1 using uniform convexity (StrictConvexSpace)?",
+      "Does the same characterization hold for complex inner product spaces with the appropriate proportionality condition?",
+      "Can the reverse Minkowski inequality ‖f+g‖ ≥ |‖f‖ - ‖g‖| equality case also be characterized via CS?"
+    ]
+  }
+}
