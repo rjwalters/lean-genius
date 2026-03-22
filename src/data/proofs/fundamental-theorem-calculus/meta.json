@@ -105,6 +105,51 @@
       "Can FTC be formulated for functions of multiple variables without differential forms?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle",
+      "relationship": "foundational",
+      "description": "The area of a circle A = πr² can be derived via FTC by integrating the circumference function 2πr from 0 to R. FTC provides the rigorous foundation for computing areas via integration"
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "The Basel identity ∑1/n² = π²/6 is proved via Fourier analysis which relies on integration theory built on FTC. Parseval's identity uses integrals that FTC makes computable"
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "related",
+      "description": "Euler's formula e^(ix) = cos(x) + i·sin(x) is proved via Taylor series of exp, which are defined using the derivatives that FTC relates to integrals"
+    }
+  ],
+  "relatedProofs": [
+    "area-of-circle",
+    "basel-problem",
+    "euler-identity"
+  ],
+  "references": [
+    {
+      "authors": "Newton, Isaac",
+      "title": "Method of Fluxions",
+      "year": "1671",
+      "venue": "Published posthumously in 1736",
+      "note": "Newton's formulation of calculus using 'fluxions' (derivatives) and 'fluents' (integrals), developed during the plague years 1665-1666"
+    },
+    {
+      "authors": "Leibniz, Gottfried Wilhelm",
+      "title": "Nova methodus pro maximis et minimis",
+      "year": "1684",
+      "venue": "Acta Eruditorum",
+      "note": "Leibniz's first publication of differential calculus, introducing the dx/dy notation still used today"
+    },
+    {
+      "authors": "Cauchy, Augustin-Louis",
+      "title": "Résumé des leçons données à l'École royale polytechnique sur le calcul infinitésimal",
+      "year": "1823",
+      "venue": "Paris",
+      "note": "First rigorous proof of FTC using the epsilon-delta definition of limits and continuity"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.Calculus.FDeriv.Basic",
@@ -122,7 +167,7 @@
       "intervalIntegral"
     ],
     "namespace": "FundamentalTheoremCalculus",
-    "lineCount": 166,
+    "lineCount": 165,
     "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 2
