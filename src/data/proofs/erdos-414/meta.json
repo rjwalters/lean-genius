@@ -110,6 +110,11 @@
       "**Collision mechanism**: h(a) = h(b) when a + τ(a) = b + τ(b), i.e., b − a = τ(a) − τ(b). The divisor function's irregularity makes these collisions common but unpredictable",
       "**Heuristic for merging**: orbit spacing ∼ log V at value V, so collision probability ∼ 1/(log V)² per step. Since Σ 1/(log V)² diverges, infinitely many collisions are expected — but this heuristic is not rigorous",
       "**Even the weak form is open**: proving that orbits merely get arbitrarily close (without exact collision) is already unproven"
+    ],
+    "prerequisites": [
+      "Number theory: divisor functions and multiplicative functions",
+      "Asymptotic analysis of arithmetic functions",
+      "Elementary inequalities and counting arguments"
     ]
   },
   "crossReferences": [

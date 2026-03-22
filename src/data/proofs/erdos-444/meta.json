@@ -136,6 +136,11 @@
       "**Exponential growth**: M_A(x) ≥ exp(c · H_A(x)) frequently — super-polynomial in the density measure, not merely 'faster than polynomial'",
       "**Two classical specializations**: A = ℕ recovers Wigert/Ramanujan (maximal order of d(n)); A = primes recovers Hardy-Ramanujan (maximal ω(n))",
       "**No universal bound**: for any function f, some A satisfies M_A(x) > f(H_A(x)) — the extremal behavior cannot be captured by any single function of the density"
+    ],
+    "prerequisites": [
+      "Graph theory: matchings and edge colorings",
+      "Extremal graph theory: density conditions",
+      "Probabilistic combinatorics"
     ]
   },
   "conclusion": {
