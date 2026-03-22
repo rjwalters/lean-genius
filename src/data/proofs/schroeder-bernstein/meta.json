@@ -141,6 +141,28 @@
       "note": "First published proof of the Cantor-Bernstein-Schröder theorem: if |A| ≤ |B| and |B| ≤ |A| then |A| = |B|"
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "complementary",
+      "description": "Cantor's diagonal argument shows $|\\mathbb{N}| < |\\mathbb{R}|$ (strict inequality exists). Schröder-Bernstein shows when injections in both directions exist, equality holds. Together they establish the theory of cardinal comparisons."
+    },
+    {
+      "targetId": "continuum-hypothesis",
+      "relationship": "related",
+      "description": "Schröder-Bernstein establishes $|A| = |B|$ from mutual injections. The Continuum Hypothesis asks whether $|\\mathbb{N}| < |X| < |\\mathbb{R}|$ is possible — a question about strict cardinal inequality that Schröder-Bernstein cannot resolve."
+    },
+    {
+      "targetId": "denumerability-rationals",
+      "relationship": "related",
+      "description": "The denumerability of $\\mathbb{Q}$ can be proved via Schröder-Bernstein: $\\mathbb{N} \\hookrightarrow \\mathbb{Q}$ (obvious) and $\\mathbb{Q} \\hookrightarrow \\mathbb{N}$ (via Cantor pairing), so $|\\mathbb{Q}| = |\\mathbb{N}|$."
+    }
+  ],
+  "relatedProofs": [
+    "cantor-diagonalization",
+    "continuum-hypothesis",
+    "denumerability-rationals"
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.SetTheory.Cardinal.SchroederBernstein",
