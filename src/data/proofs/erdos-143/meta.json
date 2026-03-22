@@ -66,35 +66,40 @@
       "title": "Core Definitions",
       "startLine": 31,
       "endLine": 43,
-      "summary": "Definition of well-separated sets and counting functions"
+      "summary": "Definition of well-separated sets and counting functions",
+      "mathContext": "Well-separated: $\\forall x \\neq y \\in A, k \\geq 1: kx \\neq y$ (no integer dilation maps one element to another). Counting: $A(x) = |A \\cap [1,x]|$."
     },
     {
       "id": "conjectures",
       "title": "The Three Conjectures",
       "startLine": 45,
       "endLine": 59,
-      "summary": "Formalizations of the density and series convergence questions"
+      "summary": "Formalizations of the density and series convergence questions",
+      "mathContext": "Question 1: $A(x) = o(x)$? (zero density). Question 2: $\\sum_{a \\in A} 1/a < \\infty$? (convergent reciprocal sum). Both OPEN."
     },
     {
       "id": "main-results",
       "title": "Main Results",
       "startLine": 61,
       "endLine": 84,
-      "summary": "The KLL theorem and its application"
+      "summary": "The KLL theorem and its application",
+      "mathContext": "KLL theorem (Klurman-Lunnon-Lewko): if $A$ is well-separated, then $A(x) = o(x/\\sqrt{\\log x})$ — a density bound slightly better than trivial."
     },
     {
       "id": "primitive-sets",
       "title": "Connection to Primitive Sets",
       "startLine": 86,
       "endLine": 96,
-      "summary": "How integer dilation-avoidance implies primitivity"
+      "summary": "How integer dilation-avoidance implies primitivity",
+      "mathContext": "Integer dilation-avoidance ($kx \\neq y$) implies primitivity ($x \\nmid y$). So dilation-avoiding sets are a subclass of primitive sets."
     },
     {
       "id": "historical",
       "title": "Historical Results",
       "startLine": 98,
       "endLine": 102,
-      "summary": "Erdős 1935 theorem on primitive sets"
+      "summary": "Erdős 1935 theorem on primitive sets",
+      "mathContext": "Erdős (1935): primitive sets satisfy $\\sum_{a \\in A} 1/(a \\log a) < \\infty$. But this doesn't resolve $\\sum 1/a$ convergence for dilation-avoiding sets."
     }
   ],
   "conclusion": {
@@ -105,5 +110,15 @@
       "Does ∑ 1/(x log x) converge for all well-separated A?",
       "Can the o(log n) bound be strengthened to O(log n / √(log log n))?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-369",
+      "relationship": "related",
+      "description": "Both concern structural constraints on number-theoretic sets; #369 requires smoothness of consecutive integers, #143 forbids integer dilations"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-369"
+  ]
 }
