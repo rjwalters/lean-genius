@@ -17,7 +17,7 @@
       "marquee-phase-3"
     ],
     "badge": "formalized",
-    "sorries": 3,
+    "sorries": 2,
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -39,6 +39,8 @@
       "Epsilon-regular pair definition for SimpleGraph bipartite subgraphs",
       "Regular partition definition with equitable partition and bounded irregularity",
       "Partition energy function and energy increment step",
+      "Edge density bounds: edgeDensity_nonneg and edgeDensity_le_one (proved)",
+      "Partition energy upper bound: partitionEnergy_le_one (proved)",
       "Regularity lemma via iterated energy refinement"
     ],
     "dateAdded": "03/21/26",
