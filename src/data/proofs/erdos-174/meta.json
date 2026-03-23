@@ -52,7 +52,33 @@
     ],
     "dateAdded": "2026-01-22",
     "axiomCount": 10,
-    "lineCount": 256
+    "lineCount": 256,
+    "references": [
+      {
+        "title": "Euclidean Ramsey theorems, I",
+        "authors": "P. Erdős, R. L. Graham, P. Montgomery, B. L. Rothschild, J. Spencer, E. G. Straus",
+        "year": 1973,
+        "venue": "Journal of Combinatorial Theory, Series A",
+        "url": "https://doi.org/10.1016/0097-3165(73)90011-3",
+        "description": "Foundational paper establishing Euclidean Ramsey theory; proves Ramsey implies spherical"
+      },
+      {
+        "title": "A partition property of simplices in Euclidean space",
+        "authors": "P. Frankl, V. Rödl",
+        "year": 1990,
+        "venue": "Journal of the American Mathematical Society",
+        "url": "https://doi.org/10.2307/1990928",
+        "description": "Proves all non-degenerate simplices are Euclidean Ramsey sets"
+      },
+      {
+        "title": "Transitive sets in Euclidean Ramsey theory",
+        "authors": "I. Leader, P. A. Russell, M. Walters",
+        "year": 2012,
+        "venue": "Journal of Combinatorial Theory, Series A",
+        "url": "https://doi.org/10.1016/j.jcta.2011.12.007",
+        "description": "Proposes subtransitivity as the characterizing property for Euclidean Ramsey sets"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "**Erdős Problem #174: Euclidean Ramsey Sets**\n\nEuclidean Ramsey theory was founded by Erdős, Graham, Montgomery, Rothschild, Spencer, and Straus in their landmark 1973 paper. The theory extends classical combinatorial Ramsey theory into the geometric realm: which finite point configurations are guaranteed to appear monochromatically in any coloring of high-dimensional Euclidean space?\n\n**Key Developments:**\n- EGMRSS (1973): Proved the necessary condition — every Ramsey set must be spherical\n- Frankl-Rödl (1990): All non-degenerate simplices are Ramsey\n- Kříž (1991-92): Regular polygons, polyhedra, and trapezoids are Ramsey\n- Leader-Russell-Walters (2012): Proposed subtransitivity as the characterizing property\n\n**The Open Problem:**\nThe characterization question remains unsolved. Graham conjectures that every spherical set is Ramsey. The LRW conjecture offers an algebraic alternative: Ramsey iff subtransitive. Neither has been proved or disproved.",
@@ -157,5 +183,22 @@
     "axiomCount": 10,
     "theoremCount": 5,
     "definitionCount": 18
-  }
+  },
+  "crossReferences": [
+    {
+      "id": "erdos-171",
+      "title": "Erdős Problem #171: Unit Distance Chromatic Number",
+      "relationship": "Both study chromatic/Ramsey properties of Euclidean space — #171 colors points to avoid unit distances, #174 colors points to avoid congruent copies of configurations"
+    },
+    {
+      "id": "ramseys-theorem",
+      "title": "Ramsey's Theorem",
+      "relationship": "Euclidean Ramsey theory extends classical Ramsey theory to geometric settings; the EGMRSS framework generalizes Ramsey's graph-theoretic result to point configurations"
+    },
+    {
+      "id": "erdos-173",
+      "title": "Erdős Problem #173: Monochromatic Triangles in Plane Colorings",
+      "relationship": "Both ask about unavoidable monochromatic geometric configurations in colored Euclidean space"
+    }
+  ]
 }

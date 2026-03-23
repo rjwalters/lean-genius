@@ -46,7 +46,33 @@
       "Explicit connection between finite and infinite versions"
     ],
     "axiomCount": 3,
-    "lineCount": 145
+    "lineCount": 145,
+    "references": [
+      {
+        "title": "Monochromatic sums and products in ℕ",
+        "authors": "J. Moreira",
+        "year": 2017,
+        "venue": "Annals of Mathematics",
+        "url": "https://doi.org/10.4007/annals.2017.185.3.10",
+        "description": "Proves monochromatic {x, x+y, xy} exists in any finite coloring of ℕ"
+      },
+      {
+        "title": "Monochromatic sums and products in ℚ",
+        "authors": "R. Alweiss",
+        "year": 2023,
+        "venue": "Preprint",
+        "url": "https://arxiv.org/abs/2305.02065",
+        "description": "Proves the full sum-product monochromatic conjecture over the rationals ℚ\\{0}"
+      },
+      {
+        "title": "Finite sums from sequences within cells of a partition of N",
+        "authors": "N. Hindman",
+        "year": 1974,
+        "venue": "Journal of Combinatorial Theory, Series A",
+        "url": "https://doi.org/10.1016/0097-3165(74)90023-5",
+        "description": "Hindman's theorem on monochromatic finite sums — the additive-only precursor to Erdős #172"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "This problem was first asked by Neil Hindman and concerns the interplay between additive and multiplicative structure in Ramsey theory. The question asks whether the additive and multiplicative structures of ℕ can be simultaneously exploited to find arbitrarily large monochromatic configurations.\n\nHindman himself proved in 1980 that the infinite version is false - with 7 colors, no infinite set can have all sums and products monochromatic. This left open the finite version.\n\nJoel Moreira made breakthrough progress in 2017, proving that for any finite coloring, there exist x, y such that {x, x+y, xy} are all the same color. This was the first non-trivial case (|A| = 2). Ryan Alweiss (2023) proved the full conjecture over ℚ\\{0}, suggesting the answer over ℕ might also be positive.",
@@ -126,5 +152,22 @@
     "axiomCount": 3,
     "theoremCount": 4,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "id": "erdos-160",
+      "title": "Erdős Problem #160: Rainbow-Free Colorings of Arithmetic Progressions",
+      "relationship": "Both concern partition regularity and monochromatic structures under finite colorings of ℕ — #172 seeks monochromatic sum-product sets, #160 avoids rainbow APs"
+    },
+    {
+      "id": "ramseys-theorem",
+      "title": "Ramsey's Theorem",
+      "relationship": "Ramsey's theorem is the foundational result in partition regularity; Erdős #172 extends the Ramsey paradigm to combined additive and multiplicative structure"
+    },
+    {
+      "id": "erdos-174",
+      "title": "Erdős Problem #174: Euclidean Ramsey Sets",
+      "relationship": "Both are Ramsey-type problems asking for unavoidable monochromatic configurations — #172 in arithmetic, #174 in geometry"
+    }
+  ]
 }

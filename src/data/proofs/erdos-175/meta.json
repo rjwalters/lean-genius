@@ -45,7 +45,33 @@
       "Included explicit computations for small cases"
     ],
     "axiomCount": 15,
-    "lineCount": 233
+    "lineCount": 233,
+    "references": [
+      {
+        "title": "The largest prime factor of (2n choose n)",
+        "authors": "A. Granville, O. Ramaré",
+        "year": 1996,
+        "venue": "Acta Arithmetica",
+        "url": "https://doi.org/10.4064/aa-73-2-131-150",
+        "description": "Proves C(2n,n) is not squarefree for all n ≥ 5, completing the solution to Erdős's problem"
+      },
+      {
+        "title": "On the maximal exponent of the prime power divisor of C(2n,n)",
+        "authors": "J. W. Sander",
+        "year": 1992,
+        "venue": "Mathematische Nachrichten",
+        "url": "https://doi.org/10.1002/mana.19921570122",
+        "description": "Proves f(n) → ∞ and establishes the initial lower bound (log n)^{1/10}"
+      },
+      {
+        "title": "Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen",
+        "authors": "E. E. Kummer",
+        "year": 1852,
+        "venue": "Journal für die reine und angewandte Mathematik",
+        "url": "https://doi.org/10.1515/crll.1852.44.93",
+        "description": "Kummer's classical theorem relating p-adic valuations of binomial coefficients to carries in base-p arithmetic"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "Erdős first asked whether $\\binom{2n}{n}$ is squarefree for infinitely many $n$ in the 1970s, noting the connection to prime power divisibility of factorials via Legendre's formula. The question traces back to Kummer's 1852 theorem relating $v_p\\binom{m+n}{m}$ to carries in base-$p$ addition — one of the earliest results in $p$-adic number theory. Sárközy (1985) proved $\\binom{2n}{n}$ is not squarefree for all sufficiently large $n$ using analytic estimates on smooth numbers and the distribution of prime powers. Granville and Ramaré (1996) completed the proof for all $n \\ge 5$ by combining Sárközy's asymptotic result with direct verification of small cases and a delicate analysis of the power-of-2 case. The associated function $f(n) = \\max_p v_p\\binom{2n}{n}$ was studied by Sander (1992, 1995), who proved $f(n) \\to \\infty$ with lower bound $(\\log n)^{1/10}$, later improved to $(\\log n)^{1/4}$ by Erdős and Kolesnik (1999). The upper bound $f(n) = O(\\log n)$ is immediate from Kummer's theorem, and the gap between $(\\log n)^{1/4}$ and $\\log n$ remains open.",
@@ -153,5 +179,22 @@
     "axiomCount": 15,
     "theoremCount": 5,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "id": "kummer-theorem",
+      "title": "Kummer's Theorem on Binomial Coefficients",
+      "relationship": "Kummer's theorem is the central tool: v_p(C(2n,n)) equals the number of carries in base-p addition of n+n, governing the prime power structure of central binomial coefficients"
+    },
+    {
+      "id": "erdos-728-factorial-divisibility",
+      "title": "Erdős Problem #728: Factorial Divisibility",
+      "relationship": "Both study p-adic valuations of combinatorial quantities — #175 examines v_p(C(2n,n)), #728 examines divisibility properties of factorials"
+    },
+    {
+      "id": "binomial-theorem",
+      "title": "The Binomial Theorem",
+      "relationship": "The binomial theorem provides the algebraic foundation for binomial coefficients whose squarefreeness is studied in this problem"
+    }
+  ]
 }

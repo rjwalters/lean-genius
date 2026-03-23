@@ -56,7 +56,33 @@
       "Example sparse rulers for N=3 and N=30"
     ],
     "axiomCount": 9,
-    "lineCount": 161
+    "lineCount": 161,
+    "references": [
+      {
+        "title": "On a Problem of B. Rédei",
+        "authors": "P. Erdős, I. S. Gál",
+        "year": 1948,
+        "venue": "Indagationes Mathematicae",
+        "url": "https://doi.org/10.1016/S1385-7258(48)80010-1",
+        "description": "Proves the existence of the limit lim F(N)/√N for perfect difference bases"
+      },
+      {
+        "title": "On the construction of difference triangles",
+        "authors": "B. Wichmann",
+        "year": 1963,
+        "venue": "Journal of the London Mathematical Society",
+        "url": "https://doi.org/10.1112/jlms/s1-38.1.465",
+        "description": "Constructs sparse rulers achieving density √3, establishing the best known upper bound"
+      },
+      {
+        "title": "On difference bases",
+        "authors": "J. Leech",
+        "year": 1956,
+        "venue": "Journal of the London Mathematical Society",
+        "url": "https://doi.org/10.1112/jlms/s1-31.2.160",
+        "description": "Refines Rédei-Rényi arguments to establish the lower bound ≈1.56 for lim F(N)/√N"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "The Sparse Ruler problem asks: how few marks are needed on a ruler of length N to measure every integer distance from 1 to N?\n\nRédei first asked whether the limit lim F(N)/√N exists. Erdős and Gál (1948) proved it does exist. The challenge is determining the exact value.\n\nLeech (1956) refined Rédei-Rényi arguments to get the lower bound ≈ 1.56. Wichmann (1963) constructed sparse rulers achieving density √3 ≈ 1.732.\n\nThe exact value remains unknown, though computational evidence suggests √3 may be optimal.",
@@ -132,5 +158,22 @@
     "axiomCount": 9,
     "theoremCount": 4,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "id": "erdos-340-greedy-sidon",
+      "title": "Greedy Sidon Sequence Infrastructure (Erdős Problem #340)",
+      "relationship": "Both study difference-based combinatorial structures: Sidon sets require all pairwise differences to be distinct, while perfect rulers require all differences 1..N to be realized"
+    },
+    {
+      "id": "erdos-169",
+      "title": "Erdős Problem #169: Harmonic Sum of AP-Free Sets",
+      "relationship": "Both concern extremal problems on sets of integers with constraints on their additive structure — AP-free sets vs. difference bases"
+    },
+    {
+      "id": "erdos-176",
+      "title": "Erdős Problem #176: Discrepancy of Arithmetic Progressions",
+      "relationship": "Both involve arithmetic structure and optimal covering/balancing of integer ranges; difference bases cover all residues while discrepancy bounds measure uniformity"
+    }
+  ]
 }
