@@ -241,5 +241,50 @@
     "axiomCount": 7,
     "theoremCount": 117,
     "definitionCount": 39
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "extends",
+      "description": "The Pythagorean theorem establishes a^2 + b^2 = c^2; this entry counts how many primitive solutions exist with c <= N, giving the asymptotic density N/(2pi)"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The coprime fraction 6/pi^2 = 1/zeta(2) arises from the probability that two random integers are coprime, which depends on the distribution of primes"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient function underlies the coprimality analysis: the density of coprime pairs in the lattice point count uses Euler products over primes"
+    }
+  ],
+  "relatedProofs": [
+    "pythagorean-theorem",
+    "infinitude-primes",
+    "euler-totient"
+  ],
+  "references": [
+    {
+      "authors": "Hardy, G. H.; Wright, E. M.",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "2008",
+      "venue": "Oxford University Press, 6th edition",
+      "note": "Classic reference for the parametrization of Pythagorean triples and asymptotic density results (Chapter 12)"
+    },
+    {
+      "authors": "Lehmer, D. N.",
+      "title": "Asymptotic Evaluation of Certain Totient Sums",
+      "year": "1900",
+      "venue": "American Journal of Mathematics 22(4), 293-335",
+      "note": "Early work on counting lattice points in sectors with coprimality constraints, relevant to the asymptotic density N/(2pi)"
+    },
+    {
+      "authors": "Niven, Ivan; Zuckerman, Herbert S.; Montgomery, Hugh L.",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "1991",
+      "venue": "Wiley, 5th edition",
+      "note": "Standard textbook covering Pythagorean triples, their parametrization, and density results"
+    }
+  ]
 }

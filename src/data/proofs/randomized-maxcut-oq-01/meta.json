@@ -198,5 +198,64 @@
     "axiomCount": 8,
     "theoremCount": 34,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "randomized-maxcut",
+      "relationship": "extends",
+      "description": "The simple 1/2-approximation via independent random assignment. The GW algorithm improves this from 0.5 to 0.878 by using SDP-guided correlations between vertex assignments"
+    },
+    {
+      "targetId": "p-vs-np",
+      "relationship": "related",
+      "description": "MaxCut is NP-hard, so exact polynomial-time solutions are unlikely. The GW algorithm achieves the best possible polynomial-time approximation (under UGC), illustrating how approximation algorithms circumvent NP-hardness"
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "foundational",
+      "description": "The Cauchy-Schwarz inequality underpins the SDP relaxation: inner products v_i . v_j of unit vectors satisfy |v_i . v_j| <= 1, and the SDP optimizes over these inner products"
+    }
+  ],
+  "relatedProofs": [
+    "randomized-maxcut",
+    "p-vs-np",
+    "cauchy-schwarz"
+  ],
+  "references": [
+    {
+      "authors": "Goemans, Michel X.; Williamson, David P.",
+      "title": "Improved Approximation Algorithms for Maximum Cut and Satisfiability Problems Using Semidefinite Programming",
+      "year": "1995",
+      "venue": "Journal of the ACM 42(6), 1115-1145",
+      "note": "The seminal paper introducing SDP relaxation with hyperplane rounding for MaxCut, achieving the 0.878-approximation ratio"
+    },
+    {
+      "authors": "Khot, Subhash; Kindler, Guy; Mossel, Elchanan; O'Donnell, Ryan",
+      "title": "Optimal Inapproximability Results for MAX-CUT and Other 2-Variable CSPs?",
+      "year": "2007",
+      "venue": "SIAM Journal on Computing 37(1), 319-357",
+      "note": "Proved that under the Unique Games Conjecture, the GW approximation ratio is optimal for MaxCut"
+    },
+    {
+      "authors": "Khot, Subhash",
+      "title": "On the Power of Unique 2-prover 1-round Games",
+      "year": "2002",
+      "venue": "Proceedings of the 34th Annual ACM Symposium on Theory of Computing (STOC), 767-775",
+      "note": "Introduced the Unique Games Conjecture, which implies the conditional optimality of the GW algorithm"
+    },
+    {
+      "authors": "Vazirani, Vijay V.",
+      "title": "Approximation Algorithms",
+      "year": "2001",
+      "venue": "Springer",
+      "note": "Standard textbook covering LP/SDP-based approximation algorithms including the GW MaxCut result (Chapter 26)"
+    },
+    {
+      "authors": "Williamson, David P.; Shmoys, David B.",
+      "title": "The Design of Approximation Algorithms",
+      "year": "2011",
+      "venue": "Cambridge University Press",
+      "note": "Comprehensive reference on approximation algorithm design, with detailed treatment of the GW SDP rounding technique (Chapter 6)"
+    }
+  ]
 }
