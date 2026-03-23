@@ -60,6 +60,12 @@
       "**Information geometry**: The Gaussian minimizes Fisher information among distributions with fixed variance—it is the 'center' of the statistical manifold.",
       "**Stable distributions**: The Gaussian is one of a family of stable distributions (Lévy distributions), each attracting different scaling behaviors. The Gaussian corresponds to finite variance.",
       "**Edgeworth expansions**: The rate of convergence to the Gaussian, with topological corrections, connects to asymptotic analysis and perturbation theory."
+    ],
+    "prerequisites": [
+      "Probability theory: random variables, expectation $E[X]$, variance $\\text{Var}(X) = E[(X-\\mu)^2]$, and independence of random variables",
+      "The normal distribution $N(\\mu, \\sigma^2)$: the Gaussian density $\\frac{1}{\\sigma\\sqrt{2\\pi}}e^{-(x-\\mu)^2/(2\\sigma^2)}$ and its role as the universal limit distribution",
+      "Convergence in distribution: $X_n \\xrightarrow{d} X$ iff $F_{X_n}(x) \\to F_X(x)$ at continuity points, and the equivalent characterization via characteristic functions $\\phi_{X_n}(t) \\to \\phi_X(t)$",
+      "Characteristic functions: $\\phi_X(t) = E[e^{itX}]$ as the Fourier transform of the distribution, with the CLT proof typically proceeding through $\\log\\phi_{\\bar{X}_n}(t) \\to -t^2/2$"
     ]
   },
   "sections": [
