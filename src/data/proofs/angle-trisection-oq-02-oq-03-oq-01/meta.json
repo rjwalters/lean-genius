@@ -96,60 +96,60 @@
   "sections": [
     {
       "id": "roots-of-unity",
-      "title": "Primitive Roots of Unity and Euler's Formula",
-      "summary": "Defines ζₙ = exp(2πi/n), proves it equals cos + i·sin, extracts real/imaginary parts, proves conj(ζₙ) = ζₙ⁻¹, and establishes the key bridge ζₙ + ζₙ⁻¹ = 2cos(2π/n).",
-      "startLine": 30,
-      "endLine": 78,
-      "mathContext": "$\\zeta_n = e^{2\\pi i/n}$. The $n$-th roots of unity form the cyclic group $\\mu_n \\cong \\mathbb{Z}/n\\mathbb{Z}$."
-    },
-    {
-      "id": "unit-circle",
-      "title": "Powers and Unit Circle",
-      "summary": "Proves |ζₙ| = 1, ζₙ ≠ 0, and ζₙⁿ = 1 (the defining property). Shows ζₙ belongs to rootsOfUnity.",
-      "startLine": 79,
-      "endLine": 111,
-      "mathContext": "Regular $n$-gon has vertices at $e^{2\\pi ik/n}$ for $k = 0, \\ldots, n-1$. Constructibility of the $n$-gon $\\iff$ constructibility of $\\cos(2\\pi/n)$."
-    },
-    {
-      "id": "chebyshev",
-      "title": "Chebyshev Polynomials",
-      "summary": "Proves existence and degree of Chebyshev polynomials satisfying Tₙ(cos θ) = cos(nθ), connecting polynomial algebra to trigonometry.",
-      "startLine": 154,
-      "endLine": 186,
-      "mathContext": "Chebyshev polynomials: $T_n(\\cos\\theta) = \\cos(n\\theta)$. Connect $\\cos(2\\pi/n)$ to polynomial roots and algebraic degree computations."
-    },
-    {
-      "id": "cyclotomic-degree",
-      "title": "Cyclotomic Extension Degree",
-      "summary": "Wraps Mathlib results: deg(Φₙ) = φ(n) and Φₙ is irreducible over ℚ.",
-      "startLine": 187,
-      "endLine": 204,
-      "mathContext": "$[\\mathbb{Q}(\\zeta_n) : \\mathbb{Q}] = \\varphi(n)$. The cyclotomic polynomial $\\Phi_n$ is irreducible over $\\mathbb{Q}$ with degree $\\varphi(n)$."
+      "title": "Cyclotomic Field Setup and Primitive Roots",
+      "summary": "Establishes CyclotomicField n ℚ as a Galois extension with [K:ℚ] = φ(n), defines abstractZeta as the canonical primitive n-th root of unity via IsCyclotomicExtension.zeta, and proves its primitive root property.",
+      "startLine": 31,
+      "endLine": 55,
+      "mathContext": "$[\\mathbb{Q}(\\zeta_n) : \\mathbb{Q}] = \\varphi(n)$. The $n$-th roots of unity form the cyclic group $\\mu_n \\cong \\mathbb{Z}/n\\mathbb{Z}$."
     },
     {
       "id": "galois-conjugation",
       "title": "Complex Conjugation as Order-2 Automorphism",
-      "summary": "The main proved result: via galCyclotomicEquivUnitsZMod, -1 ∈ (ℤ/nℤ)* gives σ ≠ id with σ² = id. Uses n ≥ 3 to show -1 ≠ 1 (since n ∤ 2).",
-      "startLine": 206,
-      "endLine": 261,
+      "summary": "Defines conjAut (σ: ζ ↦ ζ⁻¹) via fromZetaAut, proves σ ≠ id for n ≥ 3 (since ζ = ζ⁻¹ would force n | 2), proves σ² = id via autEquivPow (σ corresponds to -1 ∈ (ℤ/nℤ)*), and concludes ord(σ) = 2.",
+      "startLine": 57,
+      "endLine": 127,
       "mathContext": "$\\text{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^*$, acting by $\\sigma_k(\\zeta_n) = \\zeta_n^k$ for $\\gcd(k,n) = 1$."
     },
     {
+      "id": "fixed-field-degree",
+      "title": "Fixed Field of Conjugation and Degree Computation",
+      "summary": "Defines H = ⟨σ⟩ ≤ Aut(K/ℚ), proves |H| = 2, defines the maximal real subfield F = K^H, and derives [F:ℚ] = φ(n)/2 via the tower law [K:ℚ] = [K:F]·[F:ℚ].",
+      "startLine": 129,
+      "endLine": 166,
+      "mathContext": "$H = \\langle \\sigma \\rangle$, $|H| = 2$; $[K^H : \\mathbb{Q}] = \\varphi(n)/2$ by the fundamental theorem of Galois theory."
+    },
+    {
+      "id": "alpha-field",
+      "title": "Alpha Field and IntermediateField Degree",
+      "summary": "Defines α = ζ + ζ⁻¹, proves ζ satisfies X² - αX + 1 = 0 over ℚ(α), shows ℚ(α) ⊆ K^H, bounds [K:ℚ(α)] ≤ 2 via the quadratic, and proves [ℚ(α):ℚ] = φ(n)/2 by sandwiching between ≥ and ≤ bounds.",
+      "startLine": 168,
+      "endLine": 377,
+      "mathContext": "$\\alpha = \\zeta_n + \\zeta_n^{-1}$; $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = \\varphi(n)/2$ since $\\mathbb{Q}(\\alpha) = K^H$."
+    },
+    {
       "id": "axiom-bridge",
-      "title": "Bridge to Gauss-Wantzel Axioms",
-      "summary": "Bridge between cyclotomic theory and constructibility: maximal real subfield degree, minimal polynomial degree, and Galois extension property — all now fully proved (formerly axiomatized). Derives cos(2π/n) algebraicity.",
-      "startLine": 262,
-      "endLine": 371,
+      "title": "Bridge to cos(2π/n) and Constructibility",
+      "summary": "Proves minpoly(ℚ, α) has degree φ(n)/2, transfers to cos(2π/n) via embedding, proves cos(2π/n) is algebraic over ℚ, and establishes ℚ(cos(2π/n)) has finrank φ(n)/2 — all formerly axiomatized, now fully proved.",
+      "startLine": 379,
+      "endLine": 511,
       "mathContext": "Bridge: $(\\mathbb{Z}/n\\mathbb{Z})^*$ is a 2-group $\\iff \\varphi(n) = 2^k \\iff$ regular $n$-gon is constructible (Gauss-Wantzel)."
+    },
+    {
+      "id": "chebyshev",
+      "title": "Chebyshev Polynomials and Galois Conjugates",
+      "summary": "Proves the algebraic Chebyshev identity T_k((x + x⁻¹)/2) = (x^k + x^{-k})/2 by strong induction, defines Galois automorphisms ζ ↦ ζ^k for coprime k, and proves cos(2kπ/n) are roots of minpoly(ℚ, cos(2π/n)).",
+      "startLine": 542,
+      "endLine": 739,
+      "mathContext": "Chebyshev polynomials: $T_k(\\cos\\theta) = \\cos(k\\theta)$. For $(k,n) = 1$, $\\cos(2k\\pi/n)$ is a Galois conjugate of $\\cos(2\\pi/n)$."
     }
   ],
   "conclusion": {
     "summary": "This file bridges the Gauss-Wantzel constructibility theorem to Mathlib's cyclotomic infrastructure. All former axioms have been fully eliminated — 0 axioms, 0 sorries in 740 lines. Key results include cos(2π/n) algebraicity via Chebyshev polynomials and complex conjugation as order-2 automorphism via galCyclotomicEquivUnitsZMod.",
-    "implications": "**Theoretical Significance**: **Mathematical Significance**\n\n1. **Infrastructure bridge**: Connects two independently developed parts of the formalization (constructibility theory and cyclotomic fields).\n2.\n\n**Broader Connections**: **Galois theory application**: The complex_conj_order_two proof demonstrates practical use of galCyclotomicEquivUnitsZMod.\n3. **Clear axiom roadmap**: The 3 remaining axioms have well-defined proof strategies and effort estimates.\n4. **Chebyshev connection**: Shows how Chebyshev polynomials provide the algebraic framework for trigonometric constructibility.",
+    "implications": "**Mathematical Significance**\n\n1. **Infrastructure bridge**: Connects two independently developed parts of the formalization (constructibility theory and cyclotomic fields).\n2. **Galois theory application**: The conjAut_orderOf proof demonstrates practical use of autEquivPow to identify conjugation with -1 in (Z/nZ)*.\n3. **Chebyshev connection**: Shows how Chebyshev polynomials provide the algebraic framework for trigonometric constructibility.\n4. **Complete formalization**: All former axioms eliminated — 0 axioms, 0 sorries in 740 lines.",
     "openQuestions": [
-      "Can maximal_real_subfield_degree be proved from the tower law and complex conjugation order?",
       "Can the explicit minimal polynomial of cos(2π/n) be computed via the Chebyshev substitution in Φₙ?",
-      "Can the full Gauss-Wantzel theorem be connected directly to Mathlib's cyclotomic infrastructure without intermediate axioms?"
+      "Can the cos(2kπ/n) conjugate result be extended to show the full splitting field structure?",
+      "Can the Gauss-Wantzel constructibility criterion (φ(n) = 2^k) be connected to the Fermat prime characterization within this framework?"
     ]
   },
   "crossReferences": [

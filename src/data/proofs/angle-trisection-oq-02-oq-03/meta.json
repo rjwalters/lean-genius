@@ -90,110 +90,110 @@
       "id": "header",
       "title": "Problem Statement and Overview",
       "startLine": 1,
-      "endLine": 35,
-      "summary": "Module documentation: Gauss-Wantzel theorem statement, the OQ chain (OQ01 → OQ02 → OQ02-OQ03), historical context (Gauss 1796, Wantzel 1837), and file summary (38 theorems, 0 sorries, 1 axiom).",
+      "endLine": 37,
+      "summary": "Module documentation: Gauss-Wantzel theorem statement, the OQ chain (OQ01 → OQ02 → OQ02-OQ03), historical context (Gauss 1796, Wantzel 1837), and file summary (67+ theorems, 0 sorries, 0 axioms).",
       "mathContext": "Gauss-Wantzel: regular $n$-gon constructible $\\iff \\varphi(n) = 2^k$, i.e., $n = 2^a p_1 \\cdots p_r$ with $p_i$ distinct Fermat primes."
     },
     {
       "id": "totient-values",
       "title": "Section I: Euler's Totient Values",
-      "startLine": 37,
-      "endLine": 56,
+      "startLine": 46,
+      "endLine": 65,
       "summary": "14 totient computations by decide/native_decide: φ(3)=2, φ(4)=2, φ(5)=4, ..., φ(17)=16, φ(257)=256, φ(65537)=65536.",
       "mathContext": "Computed: $\\varphi(3)=2, \\varphi(5)=4, \\varphi(7)=6, \\varphi(17)=16, \\varphi(257)=256, \\varphi(65537)=65536$. All verified by `decide`/`native_decide`."
     },
     {
       "id": "pow2-criterion",
       "title": "Section II: Powers of 2 and the Totient Criterion",
-      "startLine": 58,
-      "endLine": 109,
+      "startLine": 67,
+      "endLine": 118,
       "summary": "TotientIsPow2 definition, not_pow_two_of_odd_prime_dvd helper, 10 positive totient witnesses (n=3,4,5,6,8,10,12,17,257,65537), and 4 negative witnesses (n=7,9,11,13).",
       "mathContext": "`TotientIsPow2 n`: $\\exists k, \\varphi(n) = 2^k$. Key tool: `not_pow_two_of_odd_prime_dvd` — if odd prime $p \\mid \\varphi(n)$ then $\\varphi(n) \\neq 2^k$."
     },
     {
       "id": "constructible-def",
       "title": "Section III: Constructible n-Gon Definition",
-      "startLine": 111,
-      "endLine": 121,
+      "startLine": 120,
+      "endLine": 130,
       "summary": "IsConstructibleNgon n: ∃ K intermediate field of ℝ/ℚ with [K:ℚ] = 2^k and cos(2π/n) ∈ K.",
       "mathContext": "`IsConstructibleNgon n`: $\\exists K$ intermediate field of $\\mathbb{R}/\\mathbb{Q}$ with $[K:\\mathbb{Q}] = 2^k$ and $\\cos(2\\pi/n) \\in K$."
     },
     {
       "id": "gauss-wantzel-axiom",
-      "title": "Section IV: Gauss-Wantzel Theorem (Axiomatized)",
-      "startLine": 123,
-      "endLine": 145,
-      "summary": "The axiom gauss_wantzel_theorem: IsConstructibleNgon n ↔ TotientIsPow2 n for n ≥ 3. Requires cyclotomic field theory not yet assembled in Mathlib.",
-      "mathContext": "Axiom: `IsConstructibleNgon n \\iff TotientIsPow2 n` for $n \\geq 3$. Requires cyclotomic field theory infrastructure."
+      "title": "Section IV: Gauss-Wantzel Theorem (Proved)",
+      "startLine": 132,
+      "endLine": 210,
+      "summary": "The proved gauss_wantzel_theorem: IsConstructibleNgon n ↔ TotientIsPow2 n for n ≥ 3. Proved via cyclotomic degree theory from OQ02OQ03OQ01, including dvd_pow_two_is_pow_two helper and totient_div2_pow2_iff bridge.",
+      "mathContext": "Proved: `IsConstructibleNgon n \\iff TotientIsPow2 n` for $n \\geq 3$. Uses cyclotomic tower law and degree theory from OQ02OQ03OQ01."
     },
     {
       "id": "constructible-polygons",
       "title": "Section V: Constructible Regular Polygons",
-      "startLine": 147,
-      "endLine": 198,
+      "startLine": 212,
+      "endLine": 263,
       "summary": "10 constructible polygons: n = 3,4,5,6,8,10,12,17,257,65537. Highlights: Gauss's 17-gon (1796), Richelot's 257-gon (1832, 80 pages), Hermes's 65537-gon (1879-1889, 10 years).",
       "mathContext": "Constructible: $n = 3,4,5,6,8,10,12,17,257,65537$. Gauss's 17-gon (1796) was the first new constructible polygon since antiquity."
     },
     {
       "id": "non-constructible",
       "title": "Section VI: Non-Constructible Regular Polygons",
-      "startLine": 200,
-      "endLine": 226,
+      "startLine": 265,
+      "endLine": 291,
       "summary": "4 non-constructible polygons: n = 7,9,11,13. Each proved by finding an odd prime factor of φ(n) via not_pow_two_of_odd_prime_dvd.",
       "mathContext": "Non-constructible: $n = 7,9,11,13$. Each has an odd prime factor of $\\varphi(n)$: $3 \\mid 6, 3 \\mid 6, 5 \\mid 10, 3 \\mid 12$."
     },
     {
       "id": "fermat-primes",
       "title": "Section VII: Fermat Primes",
-      "startLine": 228,
-      "endLine": 265,
+      "startLine": 293,
+      "endLine": 330,
       "summary": "IsFermatPrime definition, 5 known Fermat primes verified, fermat_prime_totient_pow2 (general), fermat_prime_ngon_constructible (general), known_fermat_prime_ngons_constructible (conjunction of all 5).",
       "mathContext": "Fermat primes: $F_k = 2^{2^k} + 1$. Known: $F_0=3, F_1=5, F_2=17, F_3=257, F_4=65537$. $\\varphi(F_k) = F_k - 1 = 2^{2^k}$."
     },
     {
       "id": "composite-examples",
       "title": "Section VIII: Composite Polygon Examples",
-      "startLine": 267,
-      "endLine": 319,
+      "startLine": 332,
+      "endLine": 384,
       "summary": "Composite constructible polygons (n=15,20: φ = 8) and non-constructible (n=14,18: φ = 6). Demonstrates the criterion for composite n.",
       "mathContext": "Constructible composites: $\\varphi(15) = \\varphi(3)\\varphi(5) = 2 \\cdot 4 = 8 = 2^3$. Non-constructible: $\\varphi(14) = \\varphi(2)\\varphi(7) = 1 \\cdot 6 = 6 \\neq 2^k$."
     },
     {
       "id": "arithmetic-lemmas",
       "title": "Section IX: Arithmetic Lemmas for TotientIsPow2",
-      "startLine": 321,
-      "endLine": 362,
+      "startLine": 386,
+      "endLine": 427,
       "summary": "Structural lemmas: totient_pow2_of_two_power (φ(2^k) = 2^(k-1)), totient_prod_is_pow2 (coprime product), odd_prime_pow_gt_one_not_pow2 (p^k with k≥2 fails). Alternative proof of totient_9_not_pow2 via structural lemma.",
       "mathContext": "$\\varphi(2^k) = 2^{k-1}$. For coprime $m,n$: $\\varphi(mn) = \\varphi(m)\\varphi(n)$. Key: $p$ odd prime, $k \\geq 2 \\Rightarrow p \\mid \\varphi(p^k)$."
     },
     {
       "id": "zmod-bridge",
       "title": "Section X: (ℤ/nℤ)* and the Galois Theory Connection",
-      "startLine": 364,
-      "endLine": 390,
+      "startLine": 429,
+      "endLine": 454,
       "summary": "units_zmod_card_eq_totient: |(ℤ/nℤ)*| = φ(n) from Mathlib. units_zmod_is_2group_iff: (ℤ/nℤ)* is 2-group ↔ TotientIsPow2 n — the key bridge connecting OQ02's Galois criterion to the totient criterion.",
       "mathContext": "$(\\mathbb{Z}/n\\mathbb{Z})^*$ is a 2-group $\\iff |(\\mathbb{Z}/n\\mathbb{Z})^*| = \\varphi(n) = 2^k$. Connects OQ-02's Galois criterion to the totient criterion."
     },
     {
       "id": "more-constructible",
       "title": "Section XI: More Constructible Polygons via Products",
-      "startLine": 392,
-      "endLine": 442,
+      "startLine": 456,
+      "endLine": 506,
       "summary": "Constructible composites: n = 34,51,85,255 (products of distinct Fermat primes × powers of 2). Alternative proof of 15-gon via totient_prod_is_pow2.",
       "mathContext": "Products of distinct Fermat primes $\\times$ powers of 2: $n=34=2\\cdot17, n=51=3\\cdot17, n=85=5\\cdot17, n=255=3\\cdot5\\cdot17$."
     },
     {
       "id": "more-non-constructible",
       "title": "Section XII: More Non-Constructible Polygons",
-      "startLine": 443,
-      "endLine": 493,
+      "startLine": 508,
+      "endLine": 558,
       "summary": "Non-constructible composites: n = 21 (3×7, 7 not Fermat), n = 25 (5², squared Fermat prime via odd_prime_pow_gt_one_not_pow2), n = 35 (5×7).",
       "mathContext": "Non-constructible composites: $n=21=3\\cdot7$ (7 not Fermat), $n=25=5^2$ (squared Fermat prime), $n=35=5\\cdot7$."
     },
     {
       "id": "f5-composite",
       "title": "Section XIII: F₅ is Composite (Euler 1732)",
-      "startLine": 495,
+      "startLine": 560,
       "endLine": 579,
       "summary": "Euler's factorization F₅ = 2^32+1 = 641 × 6700417 (f5_factorization, f5_value, f5_not_prime by native_decide, f5_not_fermat_prime).",
       "mathContext": "Euler (1732): $F_5 = 2^{32}+1 = 641 \\times 6700417$. Verified by `native_decide`. $F_5$ is not prime, hence not a Fermat prime."
@@ -202,7 +202,7 @@
       "id": "axiom-decomposition",
       "title": "Section XIV: Axiom Elimination — Full Proof Construction",
       "startLine": 581,
-      "endLine": 709,
+      "endLine": 708,
       "summary": "Roadmap for eliminating the gauss_wantzel_theorem axiom. Proves cos(2π/n) is algebraic via Chebyshev polynomials (cos_2pi_div_n_isIntegral). Develops Chebyshev conjugate infrastructure for the splitting field analysis.",
       "mathContext": "$T_n(\\cos\\theta) = \\cos(n\\theta)$, so $\\cos(2\\pi/n)$ is a root of $T_n - 1$. Since $T_n - 1 \\neq 0$, $\\cos(2\\pi/n)$ is algebraic. This eliminates one of three axiom components."
     },
@@ -210,14 +210,14 @@
       "id": "cyclotomic-bridge",
       "title": "Sections XV-XXI: Cyclotomic-Cosine Bridge and Primitive Roots",
       "startLine": 710,
-      "endLine": 1134,
+      "endLine": 1133,
       "summary": "Comprehensive infrastructure connecting cyclotomic polynomials to cosine values. Includes: cyclotomic-cosine bridge, primitive root properties, separability, IsPrimitiveRoot connection, and ζ_n as root of cyclotomic polynomial. Proves all lemmas needed for the tower law.",
       "mathContext": "Key results: $\\zeta_n$ is a root of $\\Phi_n$; $\\cos(2\\pi/n) = (\\zeta_n + \\zeta_n^{-1})/2$ generates the maximal real subfield; $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}(\\cos(2\\pi/n))] = 2$ (for $n \\geq 3$)."
     },
     {
       "id": "summary-and-tower",
       "title": "Summary + Section XXIII: Cyclotomic Tower Law",
-      "startLine": 1135,
+      "startLine": 1134,
       "endLine": 1799,
       "summary": "Complete proof summary (67+ theorems, 0 sorries, 0 axioms). The culminating Section XXIII proves the cyclotomic tower law: [ℚ(cos(2π/n)):ℚ] = φ(n)/2, the key fact enabling the full Gauss-Wantzel theorem without axioms. Uses the tower law [ℚ(ζ_n):ℚ] = [ℚ(ζ_n):ℚ(cos)] · [ℚ(cos):ℚ] with the first factor being 2.",
       "mathContext": "Tower law: $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}] = [\\mathbb{Q}(\\zeta_n):\\mathbb{Q}(\\cos(2\\pi/n))] \\cdot [\\mathbb{Q}(\\cos(2\\pi/n)):\\mathbb{Q}]$. Since $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}] = \\varphi(n)$ and $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}(\\cos)] = 2$, we get $[\\mathbb{Q}(\\cos(2\\pi/n)):\\mathbb{Q}] = \\varphi(n)/2$."
