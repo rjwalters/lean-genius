@@ -125,6 +125,43 @@
       "Extend to the Grötzsch graph (triangle-free, χ = 4): does it admit a robust orientation?"
     ]
   },
+  "crossReferences": [
+    {
+      "proofId": "erdos-1006-oq-02",
+      "relationship": "Sibling formalization studying the minimum chromatic number for non-robustly-orientable graphs; this OQ-03 provides the direct FFLLW proof that OQ-02 references"
+    },
+    {
+      "proofId": "erdos-1006",
+      "relationship": "Parent Erdos Problem #1006 on graphs with chromatic number less than girth; this file proves the FFLLW theorem as a direct corollary"
+    },
+    {
+      "proofId": "prob-method-expectation",
+      "relationship": "The probabilistic method is used classically for high-girth high-chromatic-number graph constructions (Erdos 1959), which motivate Problem #1006"
+    }
+  ],
+  "references": [
+    {
+      "authors": "D. C. Fisher, K. Fraughnaugh, L. Langley, D. B. West",
+      "title": "The number of dependent edges in an acyclic orientation",
+      "year": "1997",
+      "venue": "Journal of Combinatorial Theory, Series B, 71(1), 73-78",
+      "note": "Proves: if chi(G) < girth(G) then G admits a robustly acyclic orientation"
+    },
+    {
+      "authors": "J. Nesetril, V. Rodl",
+      "title": "A short proof of the existence of highly chromatic hypergraphs without short cycles",
+      "year": "1979",
+      "venue": "Journal of Combinatorial Theory, Series B, 27(2), 225-227",
+      "note": "Constructs high-girth high-chromatic-number graphs, disproving the converse of FFLLW"
+    },
+    {
+      "authors": "P. Erdos",
+      "title": "Graph theory and probability",
+      "year": "1959",
+      "venue": "Canadian Journal of Mathematics, 11, 34-38",
+      "note": "Probabilistic proof that high-girth high-chromatic-number graphs exist"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"

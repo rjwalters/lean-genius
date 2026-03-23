@@ -163,6 +163,43 @@
       }
     ]
   },
+  "crossReferences": [
+    {
+      "proofId": "erdos-37",
+      "relationship": "Parent problem -- Erdos #37 resolves the lacunary case and provides all infrastructure (Schnirelmann density, essential components, sumsets)"
+    },
+    {
+      "proofId": "erdos-30",
+      "relationship": "Sidon sets (B2 sets) concern additive structure of sparse sets; both ask how sparse a set can be while maintaining a strong additive property"
+    },
+    {
+      "proofId": "erdos-35",
+      "relationship": "Schnirelmann density improvements for additive bases; closely related density concepts and techniques"
+    }
+  ],
+  "references": [
+    {
+      "authors": "I. Z. Ruzsa",
+      "title": "Essential components",
+      "year": "1987",
+      "venue": "Proceedings of the London Mathematical Society, 54(1), 38-56",
+      "note": "Proved essential components must have counting function growth >= (log N)^{1+c}; posed the 3-smooth numbers question"
+    },
+    {
+      "authors": "E. Wirsing",
+      "title": "Ein metrischer Satz uber Mengen ganzer Zahlen",
+      "year": "1956",
+      "venue": "Archiv der Mathematik, 7, 441-443",
+      "note": "Early results on essential components in additive number theory"
+    },
+    {
+      "authors": "A. Y. Khintchine",
+      "title": "Uber ein metrisches Problem der additiven Zahlentheorie",
+      "year": "1932",
+      "venue": "Matematicheskii Sbornik, 40(2), 180-189",
+      "note": "Introduced Schnirelmann density methods that underpin the essential component concept"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Proofs.Erdos37Problem"

@@ -231,6 +231,20 @@
     "theoremCount": 89,
     "definitionCount": 13
   },
+  "crossReferences": [
+    {
+      "proofId": "erdos-1007",
+      "relationship": "Parent formalization of Erdos Problem #1007; this OQ-01 extends the investigation to the general minEdges(d) function"
+    },
+    {
+      "proofId": "erdos-924",
+      "relationship": "Both study extremal functions known for small parameters (R(s,t) vs minEdges(d)) with open general asymptotics"
+    },
+    {
+      "proofId": "ramseys-theorem",
+      "relationship": "Ramsey theory provides an analogous extremal function where exact values are known for small cases, paralleling the structure of minEdges(d)"
+    }
+  ],
   "references": [
     {
       "authors": "P. Erdős, F. Harary, W. T. Tutte",

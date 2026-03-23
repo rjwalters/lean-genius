@@ -148,6 +148,43 @@
       "Construct the full product probability space over prime choices to state the probabilistic version precisely"
     ]
   },
+  "crossReferences": [
+    {
+      "proofId": "erdos-520",
+      "relationship": "Erdos Problem #520 studies partial sums restricted to squarefree integers; both concern growth rates of partial sums of multiplicative functions"
+    },
+    {
+      "proofId": "prime-number-theorem",
+      "relationship": "The prime number theorem provides the asymptotic framework for understanding the distribution of primes that define the random multiplicative function"
+    },
+    {
+      "proofId": "riemann-hypothesis",
+      "relationship": "The Riemann hypothesis implies stronger bounds on partial sums of the Liouville function; random multiplicative functions model the 'generic' behavior"
+    }
+  ],
+  "references": [
+    {
+      "authors": "A. J. Harper",
+      "title": "Moments of random multiplicative functions and truncated characteristic polynomials",
+      "year": "2013",
+      "venue": "arXiv:1302.7208",
+      "note": "Proved typical size of partial sums is sqrt(N)/(log log N)^{3/4+o(1)}, resolving a question of Helson"
+    },
+    {
+      "authors": "T. Atherfold",
+      "title": "Almost sure upper bounds for random multiplicative functions",
+      "year": "2025",
+      "venue": "Preprint",
+      "note": "Proved the upper bound sum f(m) << sqrt(N)(log N)^{1+o(1)} almost surely"
+    },
+    {
+      "authors": "A. Wintner",
+      "title": "Random factorizations and Riemann's hypothesis",
+      "year": "1944",
+      "venue": "Duke Mathematical Journal, 11(2), 267-275",
+      "note": "Pioneered the study of random multiplicative functions and their partial sums"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Tactic",

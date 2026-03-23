@@ -132,6 +132,20 @@
       }
     ]
   },
+  "crossReferences": [
+    {
+      "proofId": "erdos-970",
+      "relationship": "Jacobsthal's function -- the dual question about coprime elements in intervals; uncovered = k - covered connects the two problems"
+    },
+    {
+      "proofId": "infinitude-primes",
+      "relationship": "The infinitude of primes ensures the covering problem is well-defined for arbitrarily large prime sets"
+    },
+    {
+      "proofId": "chinese-remainder-non-coprime",
+      "relationship": "The Chinese Remainder Theorem underpins the asymptotic density formula 1 - prod(1 - 1/p_i) for covered integers"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
