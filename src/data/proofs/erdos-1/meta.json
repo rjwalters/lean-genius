@@ -87,28 +87,32 @@
       "title": "Distinct Subset Sums Definition",
       "startLine": 48,
       "endLine": 50,
-      "summary": "Defines `hasDistinctSubsetSums A` as `Function.Injective (\\lambda S \\Rightarrow (S.\\text{filter}\\,(\\cdot \\in A)).\\text{sum}\\,\\text{id})`. This captures: distinct subsets of $A$ have distinct sums."
+      "summary": "Defines `hasDistinctSubsetSums A` as `Function.Injective (\\lambda S \\Rightarrow (S.\\text{filter}\\,(\\cdot \\in A)).\\text{sum}\\,\\text{id})`. This captures: distinct subsets of $A$ have distinct sums.",
+      "mathContext": "Distinct subset sums: $S \\neq T \\Rightarrow \\sum_{a \\in S \\cap A} a \\neq \\sum_{a \\in T \\cap A} a$ for all $S, T \\in \\text{Finset}\\,\\mathbb{N}$."
     },
     {
       "id": "main-theorem",
       "title": "Main Lower Bound (Aristotle-proved)",
       "startLine": 52,
       "endLine": 65,
-      "summary": "Proves `erdos_1_lower_bound`: $2^{|A|-1} \\leq N$ for $A \\subseteq \\{1, \\ldots, N\\}$ with distinct subset sums. Uses powerset cardinality bound $|\\mathcal{P}(A)| \\leq 2N$, then case-splits on $|A|$ with `pow_succ`, `mul_assoc`, `linarith`, and `grind`."
+      "summary": "Proves `erdos_1_lower_bound`: $2^{|A|-1} \\leq N$ for $A \\subseteq \\{1, \\ldots, N\\}$ with distinct subset sums. Uses powerset cardinality bound $|\\mathcal{P}(A)| \\leq 2N$, then case-splits on $|A|$ with `pow_succ`, `mul_assoc`, `linarith`, and `grind`.",
+      "mathContext": "$A \\subseteq \\{1, \\ldots, N\\}$ with $|A| = n$ and all $2^n$ subset sums distinct $\\Rightarrow 2^{n-1} \\leq N$."
     },
     {
       "id": "max-element",
       "title": "Maximum Element Bound (Aristotle-proved)",
       "startLine": 67,
       "endLine": 75,
-      "summary": "Proves `max_element_bound`: $2^{|A|-1} \\leq \\max(A)$ for nonempty $A$ with distinct subset sums. Reduces to `erdos_1_lower_bound` via `convert` with $N = A.\\text{max'}$, using `Finset.le_max'` for the containment hypothesis."
+      "summary": "Proves `max_element_bound`: $2^{|A|-1} \\leq \\max(A)$ for nonempty $A$ with distinct subset sums. Reduces to `erdos_1_lower_bound` via `convert` with $N = A.\\text{max'}$, using `Finset.le_max'` for the containment hypothesis.",
+      "mathContext": "$2^{|A|-1} \\leq \\max(A)$ — the maximum element alone must be at least $2^{n-1}$."
     },
     {
       "id": "spacing",
       "title": "Subset Sum Spacing (Aristotle-proved)",
       "startLine": 77,
       "endLine": 83,
-      "summary": "Proves `subset_sums_spacing`: for $S, T \\subseteq A$ with $S \\neq T$, $\\sum S \\neq \\sum T$. Unfolds `hasDistinctSubsetSums`, applies `simp_all` and `Finset.sum_filter_of_ne` to reduce to the injectivity hypothesis."
+      "summary": "Proves `subset_sums_spacing`: for $S, T \\subseteq A$ with $S \\neq T$, $\\sum S \\neq \\sum T$. Unfolds `hasDistinctSubsetSums`, applies `simp_all` and `Finset.sum_filter_of_ne` to reduce to the injectivity hypothesis.",
+      "mathContext": "For $S, T \\subseteq A$ with $S \\neq T$: $\\sum_{a \\in S} a \\neq \\sum_{a \\in T} a$ — the Sidon-like spacing property."
     }
   ],
   "conclusion": {
