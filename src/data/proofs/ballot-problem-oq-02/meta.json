@@ -2,9 +2,9 @@
   "id": "ballot-problem-oq-02",
   "title": "Continuous-Time Ballot Problem via Brownian Motion",
   "slug": "ballot-problem-oq-02",
-  "description": "Continuous-time versions of the ballot problem, connecting to Brownian motion and the reflection principle. Formalizes the reflection principle, first passage time distributions, and Lévy's Arcsine Law.",
+  "description": "Continuous-time versions of the ballot problem, connecting to Brownian motion and the reflection principle. Formalizes the reflection principle, first passage time distributions, and L\u00e9vy's Arcsine Law.",
   "meta": {
-    "author": "Lévy (1939), Donsker (1951)",
+    "author": "L\u00e9vy (1939), Donsker (1951)",
     "sourceUrl": "",
     "date": "1939",
     "status": "axiomatized",
@@ -27,17 +27,17 @@
       },
       {
         "theorem": "csInf_le",
-        "description": "infimum is ≤ each element of a bounded-below set",
+        "description": "infimum is \u2264 each element of a bounded-below set",
         "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
       }
     ],
     "originalContributions": [
       "BrownianMotion structure with Gaussian marginals, symmetry, and continuous path field",
       "Symmetry theorem: P(W_t > 0) = P(W_t < 0) for all t",
-      "firstPassageTime_eq_maxEvent axiom: {τ_a ≤ T} = maxEvent (from path continuity)",
-      "First passage CDF: P(τ_a ≤ T) = 2·P(W_T ≥ a) proved without sorry",
+      "firstPassageTime_eq_maxEvent axiom: {\u03c4_a \u2264 T} = maxEvent (from path continuity)",
+      "First passage CDF: P(\u03c4_a \u2264 T) = 2\u00b7P(W_T \u2265 a) proved without sorry",
       "First passage time monotonicity: higher levels take longer to reach",
-      "Lévy Arcsine Law axiom: fraction of positive time has arcsine distribution",
+      "L\u00e9vy Arcsine Law axiom: fraction of positive time has arcsine distribution",
       "Main continuous ballot theorem combining all components (0 sorries)"
     ],
     "dateAdded": "2026-02-24",
@@ -47,20 +47,20 @@
       "Reflection principle for random walks",
       "First passage times and stopping times",
       "Gaussian distributions and the normal CDF",
-      "Lévy's arcsine law and occupation times"
+      "L\u00e9vy's arcsine law and occupation times"
     ],
     "lineCount": 339
   },
   "overview": {
-    "historicalContext": "The classical ballot problem was posed by Joseph Bertrand in 1887 in the *Comptes Rendus*: if candidate A receives $p$ votes and B receives $q$ votes with $p > q$, the probability A leads throughout counting is $(p-q)/(p+q)$. Désiré André gave the first proof using the reflection principle for lattice paths. The continuous-time version emerged from Louis Bachelier's 1900 thesis on stock price fluctuations — the first mathematical treatment of Brownian motion, predating Einstein's 1905 paper. Paul Lévy (1939) rigorously developed the reflection principle for Brownian motion, proving $P(\\max_{s \\leq T} W_s \\geq a) = 2P(W_T \\geq a)$, and discovered the arcsine law for the fraction of time BM spends positive. Monroe Donsker's 1951 invariance principle (functional CLT) formally connected discrete and continuous ballot theorems: the rescaled random walk converges in distribution to Brownian motion, making the discrete formula $(p-q)/(p+q)$ a finite approximation of the continuous reflection principle.",
-    "problemStatement": "**Continuous Ballot Problem**: For standard Brownian motion W on [0,T]:\n\n1. **Reflection Principle** (Lévy 1939): P(max_{s≤T} W_s ≥ a) = 2·P(W_T ≥ a)\n2. **First Passage CDF**: P(τ_a ≤ T) = 2·P(W_T ≥ a) = 2(1 - Φ(a/√T))\n3. **Arcsine Law**: The fraction of [0,T] where W > 0 has the arcsine distribution\n\nThese give the complete probabilistic description of Brownian motion relative to a level.",
+    "historicalContext": "The classical ballot problem was posed by Joseph Bertrand in 1887 in the *Comptes Rendus*: if candidate A receives $p$ votes and B receives $q$ votes with $p > q$, the probability A leads throughout counting is $(p-q)/(p+q)$. D\u00e9sir\u00e9 Andr\u00e9 gave the first proof using the reflection principle for lattice paths. The continuous-time version emerged from Louis Bachelier's 1900 thesis on stock price fluctuations \u2014 the first mathematical treatment of Brownian motion, predating Einstein's 1905 paper. Paul L\u00e9vy (1939) rigorously developed the reflection principle for Brownian motion, proving $P(\\max_{s \\leq T} W_s \\geq a) = 2P(W_T \\geq a)$, and discovered the arcsine law for the fraction of time BM spends positive. Monroe Donsker's 1951 invariance principle (functional CLT) formally connected discrete and continuous ballot theorems: the rescaled random walk converges in distribution to Brownian motion, making the discrete formula $(p-q)/(p+q)$ a finite approximation of the continuous reflection principle.",
+    "problemStatement": "**Continuous Ballot Problem**: For standard Brownian motion W on [0,T]:\n\n1. **Reflection Principle** (L\u00e9vy 1939): P(max_{s\u2264T} W_s \u2265 a) = 2\u00b7P(W_T \u2265 a)\n2. **First Passage CDF**: P(\u03c4_a \u2264 T) = 2\u00b7P(W_T \u2265 a) = 2(1 - \u03a6(a/\u221aT))\n3. **Arcsine Law**: The fraction of [0,T] where W > 0 has the arcsine distribution\n\nThese give the complete probabilistic description of Brownian motion relative to a level.",
     "proofStrategy": "**Axiomatic Approach**: Since Mathlib 4.26.0 lacks full Brownian motion formalization, we axiomatize the key properties:\n\n1. Define BrownianMotion structure with measurability, Gaussian marginals, and symmetry\n2. Prove symmetry theorems from the structure axioms\n3. Take the reflection principle as an axiom (requires strong Markov property)\n4. Derive the first passage CDF from the reflection principle\n5. Axiomatize the Arcsine Law (requires deep analysis)\n6. Connect to the classical discrete ballot theorem via explicit arithmetic",
     "keyInsights": [
-      "The reflection principle $P(\\max_{s \\leq T} W_s \\geq a) = 2P(W_T \\geq a)$ is the continuous analog of André's lattice path reflection",
+      "The reflection principle $P(\\max_{s \\leq T} W_s \\geq a) = 2P(W_T \\geq a)$ is the continuous analog of Andr\u00e9's lattice path reflection",
       "First passage time $\\tau_a = \\inf\\{t \\geq 0 : W_t \\geq a\\}$ is defined via `sInf`, with measurability from path continuity",
-      "Lévy's arcsine distribution $P(L_T/T \\leq r) = (2/\\pi)\\arcsin(\\sqrt{r})$ shows BM spends most time entirely positive or entirely negative",
+      "L\u00e9vy's arcsine distribution $P(L_T/T \\leq r) = (2/\\pi)\\arcsin(\\sqrt{r})$ shows BM spends most time entirely positive or entirely negative",
       "Donsker's invariance principle $S_{\\lfloor nt \\rfloor}/\\sqrt{n} \\Rightarrow W_t$ connects the discrete formula $(p-q)/(p+q)$ to the continuous reflection principle",
-      "The axiomatic formalization isolates precisely which properties of Brownian motion are needed: symmetry (Gaussian marginals) for the reflection principle, the strong Markov property for first passage times, and path regularity for the arcsine law — providing a roadmap for future Mathlib development"
+      "The axiomatic formalization isolates precisely which properties of Brownian motion are needed: symmetry (Gaussian marginals) for the reflection principle, the strong Markov property for first passage times, and path regularity for the arcsine law \u2014 providing a roadmap for future Mathlib development"
     ]
   },
   "sections": [
@@ -69,7 +69,7 @@
       "title": "Brownian Motion Structure",
       "startLine": 75,
       "endLine": 91,
-      "summary": "BrownianMotion structure with process W : ℝ → Ω → ℝ, measurability, zero start, Gaussian marginals, symmetry, and positive probability field.",
+      "summary": "BrownianMotion structure with process W : \u211d \u2192 \u03a9 \u2192 \u211d, measurability, zero start, Gaussian marginals, symmetry, and positive probability field.",
       "mathContext": "$W : \\mathbb{R} \\to \\Omega \\to \\mathbb{R}$ with $W_t \\sim N(0,t)$, $W_0 = 0$, and continuous paths"
     },
     {
@@ -85,7 +85,7 @@
       "title": "The Reflection Principle",
       "startLine": 130,
       "endLine": 165,
-      "summary": "maxEvent definition and reflection_principle axiom: P(max W ≥ a in [0,T]) = 2·P(W_T ≥ a). Deep result requiring strong Markov property.",
+      "summary": "maxEvent definition and reflection_principle axiom: P(max W \u2265 a in [0,T]) = 2\u00b7P(W_T \u2265 a). Deep result requiring strong Markov property.",
       "mathContext": "$P(\\max_{s \\leq T} W_s \\geq a) = 2 \\cdot P(W_T \\geq a)$ (axiom, requires strong Markov property)"
     },
     {
@@ -93,15 +93,15 @@
       "title": "First Passage Time Distribution",
       "startLine": 167,
       "endLine": 250,
-      "summary": "firstPassageTime as sInf, first_passage_cdf (P(τ_a ≤ T) = 2P(W_T ≥ a)), monotonicity, and positivity of passage probability.",
+      "summary": "firstPassageTime as sInf, first_passage_cdf (P(\u03c4_a \u2264 T) = 2P(W_T \u2265 a)), monotonicity, and positivity of passage probability.",
       "mathContext": "$\\tau_a = \\inf\\{t : W_t \\geq a\\}$; $P(\\tau_a \\leq T) = 2P(W_T \\geq a) = 2(1 - \\Phi(a/\\sqrt{T}))$"
     },
     {
       "id": "arcsine-law",
-      "title": "Lévy's Arcsine Law",
+      "title": "L\u00e9vy's Arcsine Law",
       "startLine": 252,
       "endLine": 260,
-      "summary": "positiveTime definition and levy_arcsine_law axiom: fraction of positive time has distribution (2/π)·arcsin(√r).",
+      "summary": "positiveTime definition and levy_arcsine_law axiom: fraction of positive time has distribution (2/\u03c0)\u00b7arcsin(\u221ar).",
       "mathContext": "$P(L_T / T \\leq r) = (2/\\pi) \\arcsin(\\sqrt{r})$ where $L_T = \\text{Leb}\\{s \\leq T : W_s > 0\\}$"
     },
     {
@@ -124,14 +124,14 @@
   "references": [
     {
       "authors": "Bertrand, Joseph",
-      "title": "Solution d'un problème",
+      "title": "Solution d'un probl\u00e8me",
       "year": "1887",
-      "venue": "Comptes Rendus de l'Académie des Sciences, 105, p. 369",
+      "venue": "Comptes Rendus de l'Acad\u00e9mie des Sciences, 105, p. 369",
       "note": "Original statement of the ballot problem: probability A leads throughout is (p-q)/(p+q)"
     },
     {
-      "authors": "Lévy, Paul",
-      "title": "Sur certains processus stochastiques homogènes",
+      "authors": "L\u00e9vy, Paul",
+      "title": "Sur certains processus stochastiques homog\u00e8nes",
       "year": "1939",
       "venue": "Compositio Mathematica, 7, pp. 283-339",
       "note": "Proved the reflection principle for Brownian motion and discovered the arcsine law for positive occupation time"
@@ -141,12 +141,12 @@
       "title": "Brownian Motion and Stochastic Calculus",
       "year": "1991",
       "venue": "Springer Graduate Texts in Mathematics 113",
-      "note": "Standard reference for the reflection principle (§2.8) and first passage time distributions"
+      "note": "Standard reference for the reflection principle (\u00a72.8) and first passage time distributions"
     }
   ],
   "conclusion": {
-    "summary": "This formalization provides a complete axiomatic framework for the continuous-time ballot problem via Brownian motion. The key results — reflection principle, first passage distributions, and arcsine law — are stated as axioms since Mathlib 4.26.0 lacks full BM formalization. All theorems now build without sorry: the firstPassageTime_eq_maxEvent axiom captures the path-continuity argument cleanly, and path_continuous was added as a BrownianMotion structure field.",
-    "implications": "**Applications:**\n\n1. **Mathematical finance**: Barrier option pricing via first passage distributions\n2. **Physics**: 1D diffusion hitting times\n3. **Statistics**: Sequential analysis and stopping times\n4. **Probability**: Foundation for stochastic calculus and Itô's formula",
+    "summary": "This formalization provides a complete axiomatic framework for the continuous-time ballot problem via Brownian motion. The key results \u2014 reflection principle, first passage distributions, and arcsine law \u2014 are stated as axioms since Mathlib 4.26.0 lacks full BM formalization. All theorems now build without sorry: the firstPassageTime_eq_maxEvent axiom captures the path-continuity argument cleanly, and path_continuous was added as a BrownianMotion structure field.",
+    "implications": "**Applications:**\n\n1. **Mathematical finance**: Barrier option pricing via first passage distributions\n2. **Physics**: 1D diffusion hitting times\n3. **Statistics**: Sequential analysis and stopping times\n4. **Probability**: Foundation for stochastic calculus and It\u00f4's formula",
     "openQuestions": [
       "Prove the reflection principle from the strong Markov property (requires full BM Markov theory)",
       "Prove firstPassageTime_eq_maxEvent from path_continuous (requires csInf theory for closed sets)",
@@ -158,29 +158,35 @@
     {
       "targetId": "ballot-problem-oq-01-oq-01",
       "relationship": "sibling",
-      "description": "Sibling open question addressing the ballot problem from a different angle — both extend the base ballot problem formalization in complementary directions"
+      "description": "Sibling open question addressing the ballot problem from a different angle \u2014 both extend the base ballot problem formalization in complementary directions"
     },
     {
       "targetId": "birthday-problem",
       "relationship": "related",
-      "description": "Both are classic probability results with elegant formulas. The ballot problem's (p-q)/(p+q) and the birthday paradox's threshold at √(365) both demonstrate how probability defies naive intuition."
+      "description": "Both are classic probability results with elegant formulas. The ballot problem's (p-q)/(p+q) and the birthday paradox's threshold at \u221a(365) both demonstrate how probability defies naive intuition."
     },
     {
       "targetId": "ballot-problem",
       "relationship": "extends",
-      "description": "The classical discrete ballot problem (Bertrand 1887) — this file extends it to continuous time via Brownian motion, replacing discrete vote counts with a continuous diffusion process"
+      "description": "The classical discrete ballot problem (Bertrand 1887) \u2014 this file extends it to continuous time via Brownian motion, replacing discrete vote counts with a continuous diffusion process"
     },
     {
       "targetId": "ballot-problem-oq-01",
       "relationship": "extends",
-      "description": "The generalized k-fold ballot problem — this file provides the continuous analog via the reflection principle for Brownian motion, recovering the same probabilities in the scaling limit"
+      "description": "The generalized k-fold ballot problem \u2014 this file provides the continuous analog via the reflection principle for Brownian motion, recovering the same probabilities in the scaling limit"
+    },
+    {
+      "targetId": "ballot-problem-oq-03",
+      "relationship": "sibling",
+      "description": "The LGV lemma via 2D reflection provides a discrete determinantal approach to ballot counting, complementing this file's continuous-time Brownian motion formulation. Both generalize the original ballot problem: this file to continuous time via stochastic processes, LGV to multiple non-crossing paths via linear algebra"
     }
   ],
   "relatedProofs": [
     "ballot-problem",
     "ballot-problem-oq-01",
     "ballot-problem-oq-01-oq-01",
-    "birthday-problem"
+    "birthday-problem",
+    "ballot-problem-oq-03"
   ],
   "leanFile": {
     "imports": [
