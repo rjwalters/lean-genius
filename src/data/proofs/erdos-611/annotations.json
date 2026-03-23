@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-611-header",
+    "proofId": "erdos-611",
+    "range": {
+      "startLine": 1,
+      "endLine": 31
+    },
+    "type": "context",
+    "title": "Problem Statement and Setup",
+    "content": "The module docstring introduces Erdős Problem #611: two questions about clique transversals in graphs where all maximal cliques are large.\n\nA **clique transversal** $\\tau(G)$ is the minimum number of vertices needed to intersect every maximal clique. The two questions ask: (1) if all maximal cliques have size $\\geq cn$, is $\\tau(G) = o_c(n)$? (2) What threshold $k_c(n)$ on clique size forces $\\tau(G) < (1-c)n$?\n\nKnown results are documented: the Erdős-Gallai-Tuza lower bound $k_c(n) \\geq n^{c'/\\log\\log n}$, the square-root bound $\\tau(G) \\leq n - \\sqrt{kn}$ when all cliques have size $\\geq k$, and the Bollobás-Erdős threshold for $\\tau(G) = 1$.\n\nImports all of Mathlib and opens `Finset`, `Function`, and `SimpleGraph`.",
+    "mathContext": "Clique transversal: $\\tau(G) = \\min\\{|T| : T \\cap C \\neq \\emptyset \\text{ for all maximal cliques } C\\}$.\n\nTwo questions: (1) $\\omega(G) \\geq cn \\implies \\tau(G) = o(n)$? (2) What is $k_c(n)$ with $\\omega(G) \\geq k_c(n) \\implies \\tau(G) < (1-c)n$?",
+    "significance": "supporting",
+    "prerequisites": [
+      "SimpleGraph",
+      "Fintype",
+      "clique transversal"
+    ],
+    "relatedConcepts": [
+      "clique transversal number",
+      "maximal clique",
+      "Erdős-Gallai-Tuza bound",
+      "Bollobás-Erdős threshold"
+    ]
+  },
+  {
     "id": "ann-611-defs",
     "proofId": "erdos-611",
     "range": {

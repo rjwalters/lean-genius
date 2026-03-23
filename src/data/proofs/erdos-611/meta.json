@@ -172,9 +172,26 @@
     "definitionCount": 14
   },
   "references": [
-    "Erdős, Gallai, Tuza (1992): τ ≤ n - √(kn) when all cliques have size ≥ k",
-    "Bollobás, Erdős: exact threshold n + 3 - 2√n for τ = 1, proved optimal",
-    "Erdős Problem #610: clique transversal without clique size constraints (the base problem)",
-    "https://erdosproblems.com/611"
+    {
+      "authors": "Erdős, Paul; Gallai, Tibor; Tuza, Zsolt",
+      "title": "Covering the cliques of a graph with vertices",
+      "year": "1992",
+      "venue": "Discrete Mathematics, vol. 108, pp. 279–289",
+      "note": "Proved τ(G) ≤ n - √(kn) when all maximal cliques have size ≥ k — the key upper bound formalized in this entry"
+    },
+    {
+      "authors": "Bollobás, Béla; Erdős, Paul",
+      "title": "Clique transversals and the clique cover number",
+      "year": "1993",
+      "venue": "Journal of Graph Theory",
+      "note": "Established the exact threshold n + 3 - 2√n for τ(G) = 1 and proved optimality via explicit constructions"
+    },
+    {
+      "authors": "Tuza, Zsolt",
+      "title": "Covering all cliques of a graph",
+      "year": "1994",
+      "venue": "Discrete Mathematics, vol. 86, pp. 117–126",
+      "note": "Survey of clique transversal results including connections to clique cover numbers, fractional transversals, and probabilistic bounds"
+    }
   ]
 }

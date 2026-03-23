@@ -18,6 +18,53 @@
     ]
   },
   {
+    "id": "ann-e1147-imports",
+    "proofId": "erdos-1147",
+    "range": {
+      "startLine": 37,
+      "endLine": 48
+    },
+    "type": "context",
+    "title": "Imports and Namespace Setup",
+    "content": "Imports the full Mathlib library and opens `Real`, `Set`, `Filter`, and `MeasureTheory` namespaces. The `noncomputable section` is needed because real-valued functions (distance to nearest integer, logarithms) are inherently noncomputable in Lean 4.\n\nThe combination of `Filter` (for asymptotic limits via `atTop`) and `MeasureTheory` (for 'almost every' statements via `∀ᵐ`) reflects the dual nature of the problem: it involves both asymptotic behavior ($1/\\log n \\to 0$) and measure-theoretic statements (Konieczny's disproof holds for almost every $\\alpha$).",
+    "mathContext": "The `noncomputable` modifier is required for `distToNearestInt`, `diophantineSet`, and related definitions that use `Real.log` and `Int.fract`, which are not algorithmically computable in Lean's type theory.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Mathlib",
+      "Real namespace",
+      "Filter namespace"
+    ],
+    "relatedConcepts": [
+      "noncomputable definitions",
+      "measure theory",
+      "filter-based asymptotics"
+    ]
+  },
+  {
+    "id": "ann-e1147-dioph-set",
+    "proofId": "erdos-1147",
+    "range": {
+      "startLine": 90,
+      "endLine": 97
+    },
+    "type": "definition",
+    "title": "The Diophantine Approximation Set A_α",
+    "content": "`diophantineSet α` defines $A_\\alpha = \\{n \\geq 1 : \\|\\alpha n^2\\| < 1/\\log n\\}$ — the integers where $\\alpha n^2$ is 'close' to an integer, as measured by the fractional distance.\n\n`generalizedDiophantineSet α ε` replaces the threshold $1/\\log n$ with an arbitrary function $\\varepsilon(n)$, enabling Konieczny's generalization: even with a more permissive threshold $\\varepsilon(n) \\to 0$, the resulting set fails to be an additive basis.\n\nBy Weyl's equidistribution theorem, $\\alpha n^2 \\bmod 1$ is equidistributed for irrational $\\alpha$, so roughly a $2/\\log n$ fraction of integers near $n$ belong to $A_\\alpha$. This heuristic density $\\sim 2/\\log n$ sums to infinity (like the harmonic series), suggesting the set is infinite but sparse.",
+    "mathContext": "$A_\\alpha = \\{n \\geq 1 : \\|\\alpha n^2\\| < 1/\\log n\\}$. Heuristic density: $\\Pr[n \\in A_\\alpha] \\approx 2/\\log n$, so $|A_\\alpha \\cap [1,N]| \\approx 2N/\\log N$ (like the prime counting function).",
+    "significance": "key",
+    "prerequisites": [
+      "distToNearestInt",
+      "Real.log",
+      "Weyl equidistribution"
+    ],
+    "relatedConcepts": [
+      "Diophantine approximation",
+      "equidistribution",
+      "threshold function",
+      "quadratic sequences"
+    ]
+  },
+  {
     "id": "ann-e1147-dist",
     "proofId": "erdos-1147",
     "range": {
@@ -54,6 +101,31 @@
     ]
   },
   {
+    "id": "ann-e1147-threshold",
+    "proofId": "erdos-1147",
+    "range": {
+      "startLine": 128,
+      "endLine": 148
+    },
+    "type": "technique",
+    "title": "Threshold Properties: Boundedness and Convergence",
+    "content": "`threshold_lt_one`: For $n \\geq 3$, $1/\\log n < 1$, proved by showing $\\log n > \\log 3 > 1$ (using $\\log 3 > \\log e = 1$, since $3 > e \\approx 2.718$). This ensures the threshold condition $\\|\\alpha n^2\\| < 1/\\log n$ is non-trivial.\n\n`threshold_tendsto_zero`: $1/\\log n \\to 0$ as $n \\to \\infty$, proved by composing three Mathlib lemmas: `tendsto_natCast_atTop_atTop` ($\\mathbb{N} \\to \\mathbb{R}$ goes to $\\infty$), `Real.tendsto_log_atTop` ($\\log \\to \\infty$), and `tendsto_inv_atTop_zero` ($1/x \\to 0$).\n\nTogether these establish that the Diophantine set captures increasingly rare events as $n$ grows — the threshold narrows, making membership harder to achieve.",
+    "mathContext": "$1/\\log n < 1$ for $n \\geq 3$ (since $\\log 3 > 1$). $1/\\log n \\to 0$ as $n \\to \\infty$ (composition of three limits).\n\nThe narrowing threshold is why the set $A_\\alpha$ is sparse: $\\Pr[n \\in A_\\alpha] \\approx 2/\\log n \\to 0$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Real.log_pos",
+      "Real.log_le_log",
+      "tendsto_inv_atTop_zero",
+      "Real.tendsto_log_atTop"
+    ],
+    "relatedConcepts": [
+      "threshold convergence",
+      "logarithmic decay",
+      "sparsity",
+      "filter composition"
+    ]
+  },
+  {
     "id": "ann-e1147-konieczny",
     "proofId": "erdos-1147",
     "range": {
@@ -87,6 +159,29 @@
       "disproof",
       "counterexample",
       "sqrt-2"
+    ]
+  },
+  {
+    "id": "ann-e1147-infinite-summary",
+    "proofId": "erdos-1147",
+    "range": {
+      "startLine": 197,
+      "endLine": 234
+    },
+    "type": "context",
+    "title": "Infinity of A_α and Summary",
+    "content": "`diophantine_set_infinite` (axiom): For any irrational $\\alpha > 0$, the Diophantine set $A_\\alpha$ is infinite. This follows from Dirichlet's approximation theorem, which provides infinitely many $n$ with $\\|\\alpha n^2\\| < 1/n$, and $1/n < 1/\\log n$ eventually.\n\nThe summary section documents the key paradox: $A_\\alpha$ is infinite (by Dirichlet) but NOT an additive basis of order 2 (by Konieczny) for almost every $\\alpha$. The set is too sparse and too irregularly distributed to generate all large integers as pairwise sums.\n\nAxiom inventory: 4 axioms (konieczny_disproof, konieczny_generalized, sqrt2_not_basis, diophantine_set_infinite). 8 proved theorems. 0 sorries.\n\nThe `#check` lines at the end verify that the key results exist and are well-typed.",
+    "mathContext": "Dirichlet's theorem: $\\forall \\alpha$ irrational, $\\exists^\\infty n,\\; \\|\\alpha n\\| < 1/n$. Applied to $\\alpha n^2$: the set $A_\\alpha$ is infinite.\n\nBut infinite $\\neq$ basis: $A_\\alpha + A_\\alpha$ misses cofinitely many integers for a.e. $\\alpha$. The gap between 'infinite' and 'basis' is the mathematical content of Konieczny's disproof.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Dirichlet's approximation theorem",
+      "Set.Infinite"
+    ],
+    "relatedConcepts": [
+      "Dirichlet approximation",
+      "sparsity vs. density",
+      "additive basis failure",
+      "axiom inventory"
     ]
   }
 ]
