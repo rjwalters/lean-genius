@@ -255,3 +255,67 @@ g<√N box partition (sorry) ────→    └→ density_increment_step (P
 N even (sorry) ────────────────→        └→ density_iteration (PROVED)
 N=1 (sorry, FALSE) ───────────→            └→ roth_density_bound (PROVED)
 ```
+
+## Session 11 (2026-03-23, researcher-6)
+
+### What Was Done
+1. **Proved `coset_partition_sum`**: ∑_j cosetCardFin_j = |A|
+   - Used `Finset.card_eq_sum_card_fiberwise` with f(a) = val(a) % g to partition A
+   - Bijection via `Finset.card_bij`: k ↦ ↑j + ↑(val k)*↑g maps coset to fiber
+   - Forward: ZMod.val_natCast_of_lt + Nat.add_mul_mod_self_right
+   - Inverse: a ↦ ↑(val(a)/g) with `cast_add_mul_eq` + `ZMod.natCast_val`
+
+2. **Proved `r_mul_g_eq_zero`**: r * ↑g = 0 in ZMod N when (N/g) | val(r)
+   - val(r)*g = (N/g)*q*g = N*q ≡ 0 (mod N)
+   - Used `ZMod.natCast_self_eq_zero` for ↑N = 0
+
+3. **Proved `psi_const_on_coset`**: ψ(r·(↑j + ↑k·↑g)) = ψ(r·↑j)
+   - Uses psi_add + r_mul_g_eq_zero + psi_zero
+
+4. **Proved `fourier_coset_decomp`**: Â(r) = ∑_j |coset_j|·ψ(r·↑j)
+   - Fourier sum = ∑ f_j·ψ(rj) = ∑ (f_j - c)·ψ(rj) + c·∑ψ(rj) = ∑ (f_j - c)·ψ(rj)
+   - Used char_sum_cosets_zero for ∑ψ(rj) = 0
+   - Constancy from psi_const_on_coset: ψ(r·a) = ψ(r·↑j) for a in coset j
+   - Same card_bij bijection as partition sum for cardinality equality
+
+5. **Proved `coset_density_increment` pigeonhole** (the triangle+pigeonhole sorry):
+   - **Max trick**: Take j₀ maximizing f. Then:
+     - Â(r) = ∑(f_j - f(j₀))·ψ(rj) (since f(j₀)·∑ψ = 0)
+     - ‖Â(r)‖ ≤ ∑(f(j₀) - f_j) (triangle + |ψ|=1 + f_j ≤ f(j₀))
+     - ∑(f(j₀) - f_j) = g·f(j₀) - |A| = g·(f(j₀) - m)
+     - δ²N/2 ≤ g·(f(j₀) - m), so f(j₀) - m ≥ δ²N/(2g) ≥ δ²N/(4g) ✓
+   - Avoids abs decomposition entirely — much cleaner than standard approach
+
+6. **Fixed pre-existing omega error** in apFree_coset_restrict (nlinarith)
+7. **Fixed deprecated `ZMod.natCast_zmod_eq_zero_iff_dvd`** → `natCast_eq_zero_iff`
+
+### Status: 4 → 1 sorry (plus pre-existing Mathlib API breaks)
+
+**Remaining sorry**: N=1 edge case in density_increment_lemma (genuinely false for δ≈1)
+
+**Pre-existing Mathlib API breaks** (unrelated to this session):
+- `ZMod.val_one_lt_of_lt` removed (breaks apFree_card_lt)
+- `Int.emod_emod_of_dvd` argument name changed (breaks apFree_coset_restrict)
+- `div_le_iff` → `div_le_iff₀`
+- `Complex.norm_real` → `Complex.norm_ofReal`
+- Various downstream breakages (parseval_nonzero, fourier_large_coefficient)
+
+### Sorry Chain (Session 11)
+```
+N=1 (sorry, FALSE for δ≈1) ───→ density_increment_lemma
+                                    └→ density_increment_step (PROVED)
+                                        └→ density_iteration (PROVED)
+                                            └→ roth_density_bound (PROVED)
+```
+
+### Key Insight: Max Trick for Pigeonhole
+The standard pigeonhole proof decomposes ∑|f_j - m| = 2·∑(f_j - m)⁺ using ∑(f_j - m) = 0.
+The **max trick** avoids absolute values entirely: with c = max f_j:
+- ‖Â(r)‖ = ‖∑(f_j - c)·ψ‖ ≤ ∑(c - f_j) = g·(c - m) [since all f_j ≤ c]
+- This gives c - m ≥ δ²N/(2g), which is STRONGER than the needed δ²N/(4g)
+
+### N=1 Architecture Issue
+The density_increment_lemma is false for N=1, δ close to 1. Fix requires either:
+1. Require 1 < N (and ensure M ≥ 2 in output) — but M = gcd(val(r), N) can be 1
+2. Use strong induction on N instead of the iteration approach
+3. Add an APFree density bound (2/3 for N≥3) to short-circuit before δ>0.99

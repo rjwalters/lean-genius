@@ -844,7 +844,7 @@ private theorem apFree_card_le_two_thirds {N : ℕ} [NeZero N] (hN3 : 2 < N)
   have hd_ne : (1 : ZMod N) ≠ 0 := by
     intro h
     have h1 : ((1 : ℕ) : ZMod N) = 0 := by exact_mod_cast h
-    rw [ZMod.natCast_zmod_eq_zero_iff_dvd] at h1
+    rw [ZMod.natCast_eq_zero_iff] at h1
     exact absurd (Nat.le_of_dvd (by omega) h1) (by omega)
   exact hAP a 1 hd_ne ha'.1 ha'.2.1 ha'.2.2
 
@@ -916,13 +916,12 @@ private theorem apFree_coset_restrict {N : ℕ} [NeZero N] (A : Finset (ZMod N))
     -- val(d)*g ∈ {g, ..., (M-1)*g} = {g, ..., N-g}, all < N and > 0
     have hprod_pos : 0 < ZMod.val d * g := Nat.mul_pos hval_pos hg
     have hprod_lt : ZMod.val d * g < N := by
-      calc ZMod.val d * g ≤ (M - 1) * g := by nlinarith
-        _ = M * g - g := by omega
-        _ = N - g := by rw [hMg]
-        _ < N := by omega
+      have hN_pos : 0 < N := NeZero.pos N
+      have hM_ge : 1 ≤ M := Nat.one_le_iff_ne_zero.mpr (by intro h; rw [h, zero_mul] at hMg; omega)
+      nlinarith [hval_lt, hMg]
     -- So val(d)*g mod N = val(d)*g ≠ 0
     have h_cast : ((ZMod.val d * g : ℕ) : ZMod N) = 0 := by push_cast at h ⊢; exact h
-    rw [ZMod.natCast_zmod_eq_zero_iff_dvd] at h_cast
+    rw [ZMod.natCast_eq_zero_iff] at h_cast
     exact absurd (Nat.le_of_dvd hprod_pos h_cast) (by omega)
   -- Apply APFree to get contradiction
   exact hAP (↑j + ↑(ZMod.val c) * ↑g) (↑(ZMod.val d) * ↑g) hd_ne_N
@@ -933,11 +932,77 @@ private noncomputable def cosetCardFin {N : ℕ} [NeZero N] (A : Finset (ZMod N)
     (g : ℕ) (hg : 0 < g) (hgN : g ∣ N) (j : Fin g) : ℕ :=
   (cosetRestrict A g hg hgN j.val j.isLt).card
 
+/-- Cast helper: j + q*g as ZMod N equals ↑n when j + q*g = n in ℕ. -/
+private lemma cast_add_mul_eq {N : ℕ} [NeZero N] (j q g : ℕ) (n : ℕ)
+    (h : j + q * g = n) :
+    ((↑j : ZMod N) + (↑q : ZMod N) * (↑g : ZMod N)) = (↑n : ZMod N) := by
+  rw [← Nat.cast_mul, ← Nat.cast_add, h]
+
 /-- Partition: sum of coset cardinalities = |A|. -/
 private lemma coset_partition_sum {N : ℕ} [NeZero N] (A : Finset (ZMod N))
     (g : ℕ) (hg : 0 < g) (hgN : g ∣ N) :
     ∑ j : Fin g, (cosetCardFin A g hg hgN j : ℝ) = ↑A.card := by
-  sorry -- Each x ∈ ZMod N lies in exactly one coset
+  suffices h : ∑ j : Fin g, cosetCardFin A g hg hgN j = A.card by exact_mod_cast h
+  set M := N / g with hM_def
+  have hMg : M * g = N := Nat.div_mul_cancel hgN
+  have hM_pos : 0 < M := Nat.div_pos (Nat.le_of_dvd (NeZero.pos N) hgN) hg
+  haveI : NeZero M := ⟨by omega⟩
+  -- A.card = ∑_j (A.filter (val · % g = j.val)).card via fiberwise counting
+  rw [Finset.card_eq_sum_card_fiberwise (fun a (_ : a ∈ A) => Finset.mem_univ
+    (⟨ZMod.val a % g, Nat.mod_lt _ hg⟩ : Fin g))]
+  apply Finset.sum_congr rfl; intro j _
+  -- cosetCardFin j = (A.filter (val · % g = j)).card via bijection k ↦ ↑j+↑(val k)*↑g
+  simp only [cosetCardFin, cosetRestrict]
+  apply Finset.card_bij (fun (k : ZMod M) _ => (↑j.val + ↑(ZMod.val k) * ↑g : ZMod N))
+  -- Maps into the fiber
+  · intro k hk
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hk ⊢
+    refine ⟨hk, ?_⟩
+    have hlt : j.val + ZMod.val k * g < N := by nlinarith [j.isLt, ZMod.val_lt k, hMg]
+    rw [ZMod.val_natCast_of_lt hlt, Nat.add_mul_mod_self_right, Nat.mod_eq_of_lt j.isLt]
+  -- Injective
+  · intro k₁ k₂ _ _ heq
+    have hlt₁ : j.val + ZMod.val k₁ * g < N := by nlinarith [j.isLt, ZMod.val_lt k₁, hMg]
+    have hlt₂ : j.val + ZMod.val k₂ * g < N := by nlinarith [j.isLt, ZMod.val_lt k₂, hMg]
+    have hv₁ := ZMod.val_natCast_of_lt hlt₁
+    have hv₂ := ZMod.val_natCast_of_lt hlt₂
+    have := congr_arg ZMod.val heq
+    rw [hv₁, hv₂] at this
+    have hveq : ZMod.val k₁ = ZMod.val k₂ := by omega
+    exact ZMod.val_injective hveq
+  -- Surjective: a ∈ A with val(a) % g = j → k = ↑(val(a)/g) maps back to a
+  · intro a ha
+    simp only [Finset.mem_filter] at ha
+    have ⟨ha_mem, hmod⟩ := ha
+    have hq_lt : ZMod.val a / g < M := Nat.div_lt_div_right hg (ZMod.val_lt a)
+    have hback : (↑j.val + ↑(ZMod.val (↑(ZMod.val a / g) : ZMod M)) * ↑g : ZMod N) = a := by
+      rw [ZMod.val_natCast_of_lt hq_lt]
+      have hd : j.val + ZMod.val a / g * g = ZMod.val a := by
+        have := Nat.mod_add_div (ZMod.val a) g; omega
+      rw [cast_add_mul_eq _ _ _ _ hd]; exact ZMod.natCast_val a
+    exact ⟨↑(ZMod.val a / g), Finset.mem_filter.mpr ⟨Finset.mem_univ _, hback ▸ ha_mem⟩, hback⟩
+
+/-- Key compatibility: r * (↑g : ZMod N) = 0 when (N/g) | val(r). -/
+private lemma r_mul_g_eq_zero {N : ℕ} [NeZero N] (g : ℕ) (hgN : g ∣ N)
+    (r : ZMod N) (hcompat : (N / g) ∣ ZMod.val r) :
+    r * (↑g : ZMod N) = 0 := by
+  obtain ⟨q, hq⟩ := hcompat
+  have hMg : N / g * g = N := Nat.div_mul_cancel hgN
+  have hkey : ZMod.val r * g = N * q := by
+    rw [hq]; nlinarith [hMg]
+  have : (↑(ZMod.val r * g) : ZMod N) = 0 := by
+    rw [hkey, Nat.cast_mul, ZMod.natCast_self_eq_zero, zero_mul]
+  rwa [show (↑(ZMod.val r * g) : ZMod N) = r * (↑g : ZMod N) from by
+    rw [Nat.cast_mul, ZMod.natCast_val]] at this
+
+/-- ψ(r·) is constant on cosets: ψ(r·(↑j + ↑k * ↑g)) = ψ(r·↑j) in ZMod N. -/
+private lemma psi_const_on_coset {N : ℕ} [NeZero N] (g : ℕ) (hgN : g ∣ N)
+    (r : ZMod N) (hcompat : (N / g) ∣ ZMod.val r) (j : ℕ) (k : ℕ) :
+    ψ (r * ((↑j : ZMod N) + (↑k : ZMod N) * (↑g : ZMod N))) = ψ (r * (↑j : ZMod N)) := by
+  rw [mul_add, psi_add]
+  have : r * ((↑k : ZMod N) * (↑g : ZMod N)) = 0 := by
+    rw [← mul_assoc, mul_comm r, mul_assoc, r_mul_g_eq_zero g hgN r hcompat, mul_zero]
+  rw [this, psi_zero, mul_one]
 
 /-- Fourier decomposition via compatible cosets. -/
 private lemma fourier_coset_decomp {N : ℕ} [NeZero N] (A : Finset (ZMod N))
@@ -945,7 +1010,60 @@ private lemma fourier_coset_decomp {N : ℕ} [NeZero N] (A : Finset (ZMod N))
     (r : ZMod N) (hcompat : (N / g) ∣ ZMod.val r) :
     fourierCoeff A r =
     ∑ j : Fin g, ↑(cosetCardFin A g hg hgN j) * ψ (r * (↑j.val : ZMod N)) := by
-  sorry -- Regroup sum by cosets; ψ(r·) constant on cosets via hcompat
+  set M := N / g with hM_def
+  have hMg : M * g = N := Nat.div_mul_cancel hgN
+  have hM_pos : 0 < M := Nat.div_pos (Nat.le_of_dvd (NeZero.pos N) hgN) hg
+  haveI : NeZero M := ⟨by omega⟩
+  -- Â(r) = ∑_{a∈A} ψ(r*a), partition A into cosets
+  rw [fourierCoeff_eq_sum_psi]
+  -- Rewrite the sum over A as ∑_j ∑_{k∈coset_j} ψ(r*(↑j+↑(val k)*↑g))
+  rw [show A.sum (fun x => ψ (r * x)) = ∑ j : Fin g,
+      (A.filter fun a => ZMod.val a % g = j.val).sum (fun a => ψ (r * a)) from
+    (Finset.sum_fiberwise_of_maps_to (fun a _ => Finset.mem_univ
+      (⟨ZMod.val a % g, Nat.mod_lt _ hg⟩ : Fin g)) _).symm]
+  apply Finset.sum_congr rfl; intro j _
+  -- For each fiber: all elements a have ψ(r*a) = ψ(r*↑j)
+  -- So the sum = |fiber| * ψ(r*↑j) = cosetCardFin j * ψ(r*↑j)
+  -- First show the constant value property
+  have hconst : ∀ a ∈ A.filter (fun a => ZMod.val a % g = j.val),
+      ψ (r * a) = ψ (r * ↑j.val) := by
+    intro a ha
+    simp only [Finset.mem_filter] at ha
+    have hmod := ha.2
+    -- a = ↑(val(a)) = ↑(j + (val a / g)*g) in ZMod N
+    have hd : j.val + ZMod.val a / g * g = ZMod.val a := by
+      have := Nat.mod_add_div (ZMod.val a) g; omega
+    have ha_eq : (a : ZMod N) = (↑j.val + ↑(ZMod.val a / g) * ↑g : ZMod N) := by
+      rw [cast_add_mul_eq _ _ _ _ hd]; exact (ZMod.natCast_val a).symm
+    rw [ha_eq]
+    exact psi_const_on_coset g hgN r hcompat j.val (ZMod.val a / g)
+  rw [Finset.sum_congr rfl hconst, Finset.sum_const, nsmul_eq_mul]
+  -- Now |fiber| = cosetCardFin j
+  congr 1; push_cast
+  -- Show filter card equality using the same bijection as coset_partition_sum
+  simp only [cosetCardFin, cosetRestrict]
+  apply Finset.card_bij (fun (k : ZMod M) _ => (↑j.val + ↑(ZMod.val k) * ↑g : ZMod N))
+  · intro k hk
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hk ⊢
+    refine ⟨hk, ?_⟩
+    have hlt : j.val + ZMod.val k * g < N := by nlinarith [j.isLt, ZMod.val_lt k, hMg]
+    rw [ZMod.val_natCast_of_lt hlt, Nat.add_mul_mod_self_right, Nat.mod_eq_of_lt j.isLt]
+  · intro k₁ k₂ _ _ heq
+    have hlt₁ : j.val + ZMod.val k₁ * g < N := by nlinarith [j.isLt, ZMod.val_lt k₁, hMg]
+    have hlt₂ : j.val + ZMod.val k₂ * g < N := by nlinarith [j.isLt, ZMod.val_lt k₂, hMg]
+    have := congr_arg ZMod.val heq
+    rw [ZMod.val_natCast_of_lt hlt₁, ZMod.val_natCast_of_lt hlt₂] at this
+    exact ZMod.val_injective (show ZMod.val k₁ = ZMod.val k₂ by omega)
+  · intro a ha
+    simp only [Finset.mem_filter] at ha
+    have ⟨ha_mem, hmod⟩ := ha
+    have hq_lt : ZMod.val a / g < M := Nat.div_lt_div_right hg (ZMod.val_lt a)
+    have hback : (↑j.val + ↑(ZMod.val (↑(ZMod.val a / g) : ZMod M)) * ↑g : ZMod N) = a := by
+      rw [ZMod.val_natCast_of_lt hq_lt]
+      have hd : j.val + ZMod.val a / g * g = ZMod.val a := by
+        have := Nat.mod_add_div (ZMod.val a) g; omega
+      rw [cast_add_mul_eq _ _ _ _ hd]; exact ZMod.natCast_val a
+    exact ⟨↑(ZMod.val a / g), Finset.mem_filter.mpr ⟨Finset.mem_univ _, hback ▸ ha_mem⟩, hback⟩
 
 /-- Character sum over compatible cosets vanishes. -/
 private lemma char_sum_cosets_zero {N : ℕ} [NeZero N] (g : ℕ) (hg : 0 < g) (hgN : g ∣ N)
@@ -1010,7 +1128,49 @@ private theorem coset_density_increment {N : ℕ} [NeZero N] (hN : 1 < N)
   have hpart := coset_partition_sum A g hg hgN
   obtain ⟨j_star, _, hj_max⟩ : ∃ j : Fin g, j ∈ Finset.univ ∧
       ↑(f j) - m ≥ delta ^ 2 * ↑N / (4 * ↑g) := by
-    sorry -- Triangle inequality + pigeonhole (see docstring)
+    -- Find j₀ maximizing f
+    obtain ⟨j₀, hj₀_mem, hmax⟩ := Finset.exists_max_image Finset.univ
+      (fun j => (f j : ℝ)) ⟨⟨0, hg⟩, Finset.mem_univ _⟩
+    refine ⟨j₀, Finset.mem_univ _, ?_⟩
+    -- Key: ‖Â(r)‖ ≤ g·(f(j₀) - m) via Fourier decomp + triangle inequality
+    have hcharsum := char_sum_cosets_zero g hg hgN r hr hcompat
+    have hfour := fourier_coset_decomp A g hg hgN r hcompat
+    -- Step 1: Â(r) = ∑ (f_j - c)·ψ(rj) where c = f(j₀), since c·∑ψ = 0
+    set c : ℂ := ↑(f j₀) with hc_def
+    -- Step 1: Â(r) = ∑ (f_j - c)·ψ(rj) where c = f(j₀), since c·∑ψ = 0
+    have hdecomp : fourierCoeff A r =
+        ∑ j : Fin g, (↑(f j) - c) * ψ (r * (↑j.val : ZMod N)) := by
+      rw [hfour]
+      have hsub : ∀ j : Fin g, (↑(f j) : ℂ) * ψ (r * (↑j.val : ZMod N)) =
+          (↑(f j) - c) * ψ (r * (↑j.val : ZMod N)) +
+          c * ψ (r * (↑j.val : ZMod N)) := fun j => by ring
+      simp_rw [hsub, Finset.sum_add_distrib, ← Finset.mul_sum, hcharsum, mul_zero, add_zero]
+    -- Step 2: Triangle inequality: ‖Â(r)‖ ≤ ∑(f(j₀) - f_j) = g·(f(j₀) - m)
+    have htri_sum : (delta ^ 2 * ↑N / 2 : ℝ) ≤
+        ∑ j : Fin g, ((↑(f j₀) : ℝ) - ↑(f j)) := by
+      calc (delta ^ 2 * ↑N / 2 : ℝ)
+          ≤ ‖fourierCoeff A r‖ := hlarge
+        _ = ‖∑ j : Fin g, (↑(f j) - c) * ψ (r * (↑j.val : ZMod N))‖ := by rw [hdecomp]
+        _ ≤ ∑ j : Fin g, ‖(↑(f j) - c) * ψ (r * (↑j.val : ZMod N))‖ := norm_sum_le _ _
+        _ = ∑ j : Fin g, ((↑(f j₀) : ℝ) - ↑(f j)) := by
+            congr 1; ext j
+            rw [norm_mul, psi_norm (r * (↑j.val : ZMod N)), mul_one]
+            have hle : (↑(f j) : ℝ) ≤ ↑(f j₀) := by exact_mod_cast hmax j (Finset.mem_univ j)
+            -- ‖↑(f j) - c‖ₒ = |f(j) - f(j₀)| = f(j₀) - f(j) since f(j) ≤ f(j₀)
+            simp only [hc_def]
+            rw [show ((↑(f j) : ℂ) - (↑(f j₀) : ℂ)) =
+              ((↑((↑(f j) : ℝ) - (↑(f j₀) : ℝ)) : ℂ) from by push_cast; ring,
+              Complex.norm_ofReal, abs_of_nonpos (by linarith)]
+    -- Step 3: ∑(f(j₀) - f_j) = g·(f(j₀) - m)
+    have hsum_eq : (∑ j : Fin g, ((↑(f j₀) : ℝ) - ↑(f j))) = ↑g * (↑(f j₀) - m) := by
+      rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
+        nsmul_eq_mul, hpart, hm_def]; field_simp
+    -- Combine: δ²N/2 ≤ g·(f(j₀) - m), so f(j₀) - m ≥ δ²N/(2g) ≥ δ²N/(4g)
+    have h_ineq : delta ^ 2 * ↑N / 2 ≤ ↑g * (↑(f j₀) - m) := by linarith [htri_sum, hsum_eq]
+    have h2g : (↑(f j₀) : ℝ) - m ≥ delta ^ 2 * ↑N / (2 * ↑g) := by
+      rwa [ge_iff_le, div_le_iff₀ (by positivity : (0 : ℝ) < 2 * ↑g), mul_comm]
+    linarith [show delta ^ 2 * ↑N / (4 * ↑g) ≤ delta ^ 2 * ↑N / (2 * ↑g) from
+      div_le_div_of_nonneg_left (by positivity) (by positivity) (by linarith)]
   refine ⟨j_star.val, j_star.isLt, ?_⟩
   have hj_bound : ↑(f j_star) ≥ m + delta ^ 2 * ↑N / (4 * ↑g) := by linarith
   show (↑(cosetRestrict A g hg hgN j_star.val j_star.isLt).card : ℝ) ≥
@@ -1072,8 +1232,12 @@ theorem density_increment_lemma {N : ℕ} (hN : 0 < N) (A : Finset (ZMod N))
       _ ≥ (delta + delta ^ 2 / 100) * (↑N / ↑g) := by
           apply mul_le_mul_of_nonneg_right _ (by positivity)
           nlinarith [sq_nonneg delta]
-  · -- N ≤ 1: with 0 < N, N = 1
-    sorry -- Edge case: N = 1
+  · -- N ≤ 1: with 0 < N, N = 1. ZMod 1 has one element.
+    -- NOTE: This case is FALSE for delta close to 1 (delta + delta²/100 > 1
+    -- means we need |B| > M, impossible). The fix requires restructuring:
+    -- either require 1 < N (and ensure M ≥ 2 in conclusion), or use strong
+    -- induction on N in roth_density_bound. See knowledge.md for details.
+    sorry
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART VI: ROTH'S THEOREM (MAIN RESULT)
