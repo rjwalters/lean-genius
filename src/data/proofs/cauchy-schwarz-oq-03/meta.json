@@ -78,49 +78,56 @@
       "title": "Imports and Setup",
       "summary": "Imports Mathlib (for NNReal, ENNReal, Finset, MeasureTheory) and opens Finset, NNReal, Real, MeasureTheory, ENNReal namespaces.",
       "startLine": 1,
-      "endLine": 24
+      "endLine": 24,
+      "mathContext": "Imports: `NNReal` ($\\mathbb{R}_{\\geq 0}$), `ENNReal` ($[0, \\infty]$), `Finset`, `MeasureTheory`. Hölder's inequality: $\\sum f_i g_i \\leq (\\sum f_i^p)^{1/p} (\\sum g_i^q)^{1/q}$ for $1/p + 1/q = 1$."
     },
     {
       "id": "holder-nnreal",
       "title": "Hölder's Inequality for NNReal",
       "summary": "General Hölder (holder_nnreal) via Mathlib's NNReal.inner_le_Lp_mul_Lq. Normalized Hölder (holder_normalized) for unit-norm inputs. Educational Young-normalization derivation in comments.",
       "startLine": 26,
-      "endLine": 81
+      "endLine": 81,
+      "mathContext": "Hölder for $\\mathbb{R}_{\\geq 0}$: $\\sum_i a_i b_i \\leq (\\sum_i a_i^p)^{1/p} \\cdot (\\sum_i b_i^q)^{1/q}$ where $1/p + 1/q = 1$. At $p = q = 2$: recovers Cauchy-Schwarz."
     },
     {
       "id": "cauchy-schwarz-lagrange",
       "title": "Cauchy-Schwarz via Lagrange's Identity",
       "summary": "Elementary proof of Cauchy-Schwarz (cauchy_schwarz_finite) via Lagrange's identity: 2[(∑f²)(∑g²)-(∑fg)²] = ∑_i∑_j(f_i·g_j-f_j·g_i)² ≥ 0. The Hölder bridge (cauchy_schwarz_from_holder) shows CS = Hölder at p=q=2.",
       "startLine": 83,
-      "endLine": 132
+      "endLine": 132,
+      "mathContext": "Lagrange's identity: $\\left(\\sum a_i^2\\right)\\left(\\sum b_i^2\\right) - \\left(\\sum a_i b_i\\right)^2 = \\sum_{i<j} (a_i b_j - a_j b_i)^2 \\geq 0$. This gives an elementary proof of CS without calculus."
     },
     {
       "id": "holder-real",
       "title": "Hölder for Real-Valued Functions",
       "summary": "Holder_real: |∑f_i·g_i| ≤ (∑|f_i|^p)^(1/p)·(∑|g_i|^q)^(1/q) for signed reals. Proved by lifting |f_i|, |g_i| to NNReal and applying the NNReal Hölder inequality.",
       "startLine": 134,
-      "endLine": 163
+      "endLine": 163,
+      "mathContext": "$\\left|\\sum_i f_i g_i\\right| \\leq \\left(\\sum_i |f_i|^p\\right)^{1/p} \\cdot \\left(\\sum_i |g_i|^q\\right)^{1/q}$ for signed reals with $1/p + 1/q = 1$."
     },
     {
       "id": "holder-lintegral",
       "title": "Hölder for Lebesgue Integral",
       "summary": "Holder_lintegral: ∫f·g dμ ≤ (∫f^p dμ)^(1/p)·(∫g^q dμ)^(1/q) for ENNReal-valued measurable functions. Mathlib's ENNReal.lintegral_mul_le_Lp_mul_Lq provides this directly.",
       "startLine": 165,
-      "endLine": 183
+      "endLine": 183,
+      "mathContext": "$\\int f \\cdot g\\, d\\mu \\leq \\left(\\int f^p\\, d\\mu\\right)^{1/p} \\cdot \\left(\\int g^q\\, d\\mu\\right)^{1/q}$ for $f, g: X \\to [0, \\infty]$ measurable, $1/p + 1/q = 1$."
     },
     {
       "id": "cauchy-schwarz-abstract",
       "title": "Cauchy-Schwarz for Inner Product Spaces",
       "summary": "Abstract CS (cauchy_schwarz_inner): |⟪u,v⟫_ℝ| ≤ ‖u‖·‖v‖ via abs_real_inner_le_norm. The Hölder bridge (cauchy_schwarz_holder_bridge): CS = Hölder at p=q=2 for NNReal, proved by HolderConjugate 2 2.",
       "startLine": 185,
-      "endLine": 213
+      "endLine": 213,
+      "mathContext": "$|\\langle u, v \\rangle_{\\mathbb{R}}| \\leq \\|u\\| \\cdot \\|v\\|$ via `abs_real_inner_le_norm` from Mathlib. The abstract inner product space version subsumes all concrete cases."
     },
     {
       "id": "summary",
       "title": "Summary: The Full Proof Chain",
       "summary": "Documents the complete hierarchy: Young → Normalized Hölder → General Hölder → Hölder for reals → CS via Lagrange → Abstract inner product CS → Integral Hölder. All 8 theorems proved with 0 sorries.",
       "startLine": 215,
-      "endLine": 242
+      "endLine": 242,
+      "mathContext": "Hierarchy: Young's inequality $\\to$ normalized Hölder $\\to$ general Hölder ($\\mathbb{R}_{\\geq 0}$, $\\mathbb{R}$, $L^p$) $\\to$ Cauchy-Schwarz ($p = q = 2$) $\\to$ triangle inequality. Lagrange identity provides an alternative elementary proof."
     }
   ],
   "conclusion": {
@@ -171,5 +178,33 @@
       "venue": "Cambridge University Press",
       "note": "Comprehensive treatment of Young, Hölder, and Minkowski inequalities"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "extends",
+      "description": "Base Cauchy-Schwarz; this entry shows CS as the p=q=2 case of Hölder's inequality"
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-01",
+      "relationship": "related",
+      "description": "Complex inner product space CS — complementary perspective on the same inequality"
+    },
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "foundational",
+      "description": "Young's inequality (a·b ≤ aᵖ/p + bᵍ/q) underlying Hölder is an AM-GM variant"
+    },
+    {
+      "targetId": "triangle-inequality",
+      "relationship": "related",
+      "description": "Minkowski's inequality (Lᵖ triangle inequality) follows from Hölder as a consequence"
+    }
+  ],
+  "relatedProofs": [
+    "cauchy-schwarz",
+    "cauchy-schwarz-oq-01",
+    "amgm-inequality",
+    "triangle-inequality"
   ]
 }
