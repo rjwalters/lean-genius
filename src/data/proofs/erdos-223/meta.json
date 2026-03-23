@@ -155,6 +155,43 @@
       "Algorithmic complexity of computing f_d(n)?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-340",
+      "relationship": "related",
+      "description": "Both are extremal problems in discrete/combinatorial geometry about distance configurations in point sets"
+    },
+    {
+      "targetId": "borsuk-ulam",
+      "relationship": "related",
+      "description": "Both involve combinatorial-geometric phenomena with striking dimensional transitions; Borsuk's conjecture also concerns diameter-related properties of point sets"
+    },
+    {
+      "targetId": "erdos-340-greedy-sidon",
+      "relationship": "related",
+      "description": "Both study extremal properties of finite point configurations; Sidon sets relate to distance-uniqueness while #223 counts distance-realizing pairs"
+    }
+  ],
+  "references": [
+    {
+      "title": "Über eine Übertragung der Grubenmannschen Vermutung",
+      "author": "Hopf, H. and Pannwitz, E.",
+      "year": 1934,
+      "description": "Original proof of the 2D case f₂(n) = n for maximum diameter pairs"
+    },
+    {
+      "title": "The maximum number of unit distances among n points in dimension four",
+      "author": "Swanepoel, K. J.",
+      "year": 2009,
+      "description": "Complete characterization of f_d(n) with explicit extremal configurations for all d >= 4"
+    },
+    {
+      "title": "On sets of distances of n points",
+      "author": "Erdős, P.",
+      "year": 1960,
+      "description": "Proved quadratic growth of f_d(n) for dimensions d >= 4"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.InnerProductSpace.PiL2",

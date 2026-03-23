@@ -157,6 +157,18 @@
       "year": "1980",
       "venue": "Monographies de L'Enseignement Mathématique 28",
       "note": "[ErGr80]"
+    },
+    {
+      "title": "On certain sets of integers",
+      "author": "Roth, K. F.",
+      "year": 1953,
+      "description": "First density result for 3-term AP-free sets; foundational for the ENR condition analysis"
+    },
+    {
+      "title": "Strong bounds for 3-progressions",
+      "author": "Kelley, Z. and Meka, R.",
+      "year": 2023,
+      "description": "Best known bounds for AP-free sets: |A| <= N exp(-c(log N)^{1/12}), sharpening the quantitative landscape for Problem #847"
     }
   ],
   "crossReferences": [
@@ -164,6 +176,16 @@
       "targetId": "erdos-818",
       "relationship": "related",
       "description": "Both are Erdős problems from the combinatorial number theory collection"
+    },
+    {
+      "targetId": "erdos-774",
+      "relationship": "related",
+      "description": "Both ask whether a proportionality condition on subsets forces finite union decomposition; #774 for dissociated sets (open), #847 for AP-free sets (disproved)"
+    },
+    {
+      "targetId": "szemeredi-theorem",
+      "relationship": "foundational",
+      "description": "Szemeredi's theorem (dense sets contain APs) is the fundamental result underlying the ENR condition and AP-free set analysis"
     }
   ],
   "relatedProofs": [

@@ -229,6 +229,43 @@
       "Can sieve-theoretic methods (as used for #248) be adapted to this backward-shift setting?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-248",
+      "relationship": "related",
+      "description": "Both study ω bounds on shifted integers; #248 asks about forward shifts ω(n+k) (solved by Tao-Teräväinen), #679 about backward shifts ω(n-k) (open)"
+    },
+    {
+      "targetId": "erdos-413",
+      "relationship": "related",
+      "description": "Both study structural constraints on ω; #413 formalizes ω-barriers (m + ω(m) <= n), #679 asks about simultaneous smallness of ω(n-k)"
+    },
+    {
+      "targetId": "erdos-878",
+      "relationship": "related",
+      "description": "Both study prime factorization functions with unusual asymptotic behavior; #878 defines unconventional additive functions f(n), F(n) while #679 studies ω(n-k) distribution"
+    }
+  ],
+  "references": [
+    {
+      "title": "The normal number of prime factors of a number n",
+      "author": "Hardy, G. H. and Ramanujan, S.",
+      "year": 1917,
+      "description": "Foundational result: ω(n) ~ log log n for almost all n, providing the baseline for the threshold in Problem #679"
+    },
+    {
+      "title": "The Gaussian law of errors in the theory of additive number theoretic functions",
+      "author": "Erdős, P. and Kac, M.",
+      "year": 1940,
+      "description": "Erdős-Kac theorem: (ω(n) - log log n)/sqrt(log log n) converges to a Gaussian, quantifying the fluctuations relevant to #679"
+    },
+    {
+      "title": "Divisors",
+      "author": "Hall, R. R. and Tenenbaum, G.",
+      "year": 1988,
+      "description": "Comprehensive reference on divisor functions and additive number theory, including large deviation estimates for ω"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.NumberTheory.ArithmeticFunction",

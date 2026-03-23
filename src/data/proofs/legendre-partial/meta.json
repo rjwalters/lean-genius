@@ -102,13 +102,42 @@
     "theoremCount": 21,
     "definitionCount": 3
   },
+  "crossReferences": [
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate (prime between n and 2n) is a weaker, proven analog of Legendre's conjecture; both concern prime gaps"
+    },
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Both concern the distribution of prime gaps; bounded prime gaps (Zhang/Maynard) show gaps stay bounded infinitely often, while Legendre asks about gaps near squares"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "The prime number theorem provides the density estimates (primes near n have density ~1/ln n) that make Legendre's conjecture plausible"
+    }
+  ],
   "references": [
     {
       "authors": "Legendre, Adrien-Marie",
-      "title": "Recherches sur l'attraction des sphéroïdes homogènes",
-      "year": "1785",
-      "venue": "Mémoires de l'Académie Royale des Sciences de Paris, 411–434",
-      "note": "Introduction of Legendre polynomials in the context of gravitational attraction of ellipsoids"
+      "title": "Essai sur la Théorie des Nombres",
+      "year": "1798",
+      "venue": "Paris: Duprat",
+      "note": "First statement of the conjecture that there is always a prime between consecutive perfect squares"
+    },
+    {
+      "title": "The difference between consecutive primes, II",
+      "author": "Baker, R. C., Harman, G., and Pintz, J.",
+      "year": 2001,
+      "description": "Proved a prime exists in (x, x + x^{0.525}) for large x — the best unconditional progress toward Legendre's conjecture"
+    },
+    {
+      "title": "Mémoire sur la théorie des nombres",
+      "author": "Chebyshev, P. L.",
+      "year": 1852,
+      "description": "Proof of Bertrand's postulate (prime between n and 2n), the weaker analog of Legendre's conjecture"
     }
   ]
 }

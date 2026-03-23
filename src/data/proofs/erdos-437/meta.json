@@ -169,6 +169,43 @@
       "Connection to the abc conjecture?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-841",
+      "relationship": "related",
+      "description": "Companion problem on related multiplicative structures; both concern counting structured products in integer sequences"
+    },
+    {
+      "targetId": "erdos-786",
+      "relationship": "related",
+      "description": "Both study multiplicative properties of integer sets; #786 concerns factor count uniqueness while #437 concerns squareness of partial products"
+    },
+    {
+      "targetId": "birch-swinnerton-dyer",
+      "relationship": "related",
+      "description": "Both connect to the theory of algebraic curves; #437's precise bounds come from counting integral points on hyperelliptic curves, related to the arithmetic of algebraic varieties"
+    }
+  ],
+  "references": [
+    {
+      "title": "On the number of square partial products from an arithmetic sequence",
+      "author": "Bui, H. M., Pratt, K., and Zaharescu, A.",
+      "year": 2024,
+      "description": "Proved the affirmative answer to Problem #437 using hyperelliptic curve methods"
+    },
+    {
+      "title": "Partial products of integers",
+      "author": "Tao, T.",
+      "year": 2024,
+      "description": "Blog post establishing precise asymptotic bounds on L(x) with the scaling u(x) = sqrt(log x * log log x)"
+    },
+    {
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "author": "Erdős, P. and Graham, R. L.",
+      "year": 1980,
+      "description": "Original source of Problem #437; noted L(x) = o(x) is 'trivial' via Siegel's theorem on elliptic curves"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Squarefree",
