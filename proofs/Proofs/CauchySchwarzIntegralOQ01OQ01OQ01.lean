@@ -57,7 +57,16 @@ theorem young_two (a b : ℝ) : a * b ≤ a ^ 2 / 2 + b ^ 2 / 2 := by
     Useful in PDE estimates. -/
 theorem young_epsilon (a b ε : ℝ) (hε : 0 < ε) :
     a * b ≤ ε * a ^ 2 / 2 + b ^ 2 / (2 * ε) := by
-  sorry
+  -- Reduce to (εa - b)² ≥ 0 via sub_nonneg
+  rw [← sub_nonneg]
+  -- Clear fractions: ε * a^2 / 2 + b^2 / (2*ε) - a*b = (ε²a² + b² - 2εab) / (2ε)
+  have hε' : (0 : ℝ) < 2 * ε := by positivity
+  have h1 : ε * a ^ 2 / 2 + b ^ 2 / (2 * ε) - a * b =
+    (ε ^ 2 * a ^ 2 + b ^ 2 - 2 * ε * (a * b)) / (2 * ε) := by
+    field_simp
+  rw [h1]
+  apply div_nonneg _ (le_of_lt hε')
+  nlinarith [sq_nonneg (ε * a - b)]
 
 -- ============================================================
 -- Part III: AM-GM Inequalities
@@ -126,14 +135,49 @@ theorem nesbitt (a b c : ℝ) (ha : 0 < a) (hb : 0 < b) (hc : 0 < c) :
 -- Part VI: Schur's Inequality
 -- ============================================================
 
+/-- Schur helper: for x ≥ y ≥ z ≥ 0, factor as (x-y)²(x+y-z) + z(x-z)(y-z) ≥ 0. -/
+private theorem schur_sorted {x y z : ℝ} (hz : 0 ≤ z) (hxy : y ≤ x) (hyz : z ≤ y) :
+    x * (x - y) * (x - z) + y * (y - x) * (y - z) +
+    z * (z - x) * (z - y) ≥ 0 := by
+  have : x * (x - y) * (x - z) + y * (y - x) * (y - z) + z * (z - x) * (z - y) =
+    (x - y) ^ 2 * (x + y - z) + z * (x - z) * (y - z) := by ring
+  rw [this]
+  apply add_nonneg
+  · exact mul_nonneg (sq_nonneg _) (by linarith)
+  · exact mul_nonneg (mul_nonneg hz (by linarith)) (by linarith)
+
 /-- Schur's inequality (degree 1): For a,b,c ≥ 0,
     a(a-b)(a-c) + b(b-a)(b-c) + c(c-a)(c-b) ≥ 0. -/
 theorem schur_one (a b c : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) (hc : 0 ≤ c) :
     a * (a - b) * (a - c) + b * (b - a) * (b - c) +
     c * (c - a) * (c - b) ≥ 0 := by
-  -- Schur's inequality at t=1. SOS decomposition:
-  -- LHS = a(a-b)² + c(b-c)² + (a-c)·b·(a-b+b-c) ... complex.
-  -- Use sorry for now; deep SOS decomposition needed.
-  sorry
+  -- The expression is symmetric; sort (a,b,c) and apply schur_sorted
+  rcases le_total b a with h_ba | h_ab <;> rcases le_total c b with h_cb | h_bc
+  · -- a ≥ b ≥ c: direct
+    exact schur_sorted hc h_ba h_cb
+  · -- a ≥ b, c ≥ b: compare a and c
+    rcases le_total c a with h_ca | h_ac
+    · -- a ≥ c ≥ b
+      have h := schur_sorted hb h_ca h_bc
+      linarith [show a * (a - c) * (a - b) + c * (c - a) * (c - b) + b * (b - a) * (b - c) =
+        a * (a - b) * (a - c) + b * (b - a) * (b - c) + c * (c - a) * (c - b) from by ring]
+    · -- c ≥ a ≥ b
+      have h := schur_sorted hb h_ac h_ba
+      linarith [show c * (c - a) * (c - b) + a * (a - c) * (a - b) + b * (b - c) * (b - a) =
+        a * (a - b) * (a - c) + b * (b - a) * (b - c) + c * (c - a) * (c - b) from by ring]
+  · -- b ≥ a, b ≥ c: compare a and c
+    rcases le_total c a with h_ca | h_ac
+    · -- b ≥ a ≥ c
+      have h := schur_sorted hc h_ab h_ca
+      linarith [show b * (b - a) * (b - c) + a * (a - b) * (a - c) + c * (c - b) * (c - a) =
+        a * (a - b) * (a - c) + b * (b - a) * (b - c) + c * (c - a) * (c - b) from by ring]
+    · -- b ≥ c ≥ a
+      have h := schur_sorted ha h_cb h_ac
+      linarith [show b * (b - c) * (b - a) + c * (c - b) * (c - a) + a * (a - b) * (a - c) =
+        a * (a - b) * (a - c) + b * (b - a) * (b - c) + c * (c - a) * (c - b) from by ring]
+  · -- c ≥ b ≥ a
+    have h := schur_sorted ha h_bc h_ab
+    linarith [show c * (c - b) * (c - a) + b * (b - c) * (b - a) + a * (a - c) * (a - b) =
+      a * (a - b) * (a - c) + b * (b - a) * (b - c) + c * (c - a) * (c - b) from by ring]
 
 end FiniteDimCS
