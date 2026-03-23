@@ -1,8 +1,8 @@
 {
   "id": "szemeredi-regularity",
-  "title": "Szemeredi Regularity Lemma",
+  "title": "Szemeredi Regularity Lemma (Energy Machinery & Mathlib Bridge)",
   "slug": "szemeredi-regularity",
-  "description": "Every large enough graph can be partitioned into a bounded number of parts such that edges between most pairs behave pseudo-randomly. The fundamental structural result in graph theory.",
+  "description": "Energy machinery (density convexity, split identities) and compatibility bridge exposing Mathlib's Szemerédi regularity lemma through a combinatorics-oriented API.",
   "meta": {
     "author": "Szemeredi (1975), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Szemer%C3%A9di_regularity_lemma",
@@ -17,7 +17,7 @@
       "regularity",
       "marquee-phase-3"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -42,8 +42,10 @@
       "Split energy identity and quantitative excess bound",
       "Partition energy upper bound: partitionEnergy_le_one (proved)",
       "Termination bound: max_iterations via Archimedean property",
-      "Bridge theorems connecting our definitions to Mathlib's szemeredi_regularity",
-      "Regularity lemma (strong + full form) via Mathlib bridge"
+      "Four compatibility bridge theorems connecting our ℚ-valued definitions to Mathlib's ℝ-valued szemeredi_regularity"
+    ],
+    "assumptions": [
+      "The core regularity lemma (energy increment iteration, tower bound) is obtained from Mathlib's szemeredi_regularity theorem, not independently proved here"
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
@@ -93,7 +95,7 @@
     "lineCount": 501
   },
   "overview": {
-    "historicalContext": "The Szemerédi Regularity Lemma, proved by Endre Szemerédi in 1975 as a key tool in his proof of Szemerédi's theorem, has become one of the most important and widely-used results in combinatorics. It provides a universal structural decomposition for graphs: any sufficiently large graph can be partitioned into a bounded number of parts such that the edges between almost all pairs of parts behave pseudo-randomly.\n\nThe lemma's power lies in reducing arbitrary graph problems to problems about dense random-like bipartite graphs. This 'structure vs randomness' paradigm has transformed graph theory, additive combinatorics, and theoretical computer science.\n\nGowers (1997) showed that the tower-type bound on the number of parts is unavoidable: the partition size must grow as a tower of exponentials in 1/epsilon. Despite this, the lemma's qualitative power is undiminished, and it remains the primary tool for transferring results from random graphs to arbitrary graphs.\n\nThe regularity lemma has inspired numerous variants: the strong regularity lemma (Alon-Fischer-Krivelevich-Szegedy), weak regularity (Frieze-Kannan), arithmetic regularity (Green), and hypergraph regularity (Gowers, Rödl-Skokan). This formalization proves the lemma in three forms: a vacuous basic form, a strong form with minimum part count, and a full form with partition structure, all bridged to Mathlib's complete regularity implementation.",
+    "historicalContext": "The Szemerédi Regularity Lemma, proved by Endre Szemerédi in 1975 as a key tool in his proof of Szemerédi's theorem, has become one of the most important and widely-used results in combinatorics. It provides a universal structural decomposition for graphs: any sufficiently large graph can be partitioned into a bounded number of parts such that the edges between almost all pairs of parts behave pseudo-randomly.\n\nThe lemma's power lies in reducing arbitrary graph problems to problems about dense random-like bipartite graphs. This 'structure vs randomness' paradigm has transformed graph theory, additive combinatorics, and theoretical computer science.\n\nGowers (1997) showed that the tower-type bound on the number of parts is unavoidable: the partition size must grow as a tower of exponentials in 1/epsilon. Despite this, the lemma's qualitative power is undiminished, and it remains the primary tool for transferring results from random graphs to arbitrary graphs.\n\nThe regularity lemma has inspired numerous variants: the strong regularity lemma (Alon-Fischer-Krivelevich-Szegedy), weak regularity (Frieze-Kannan), arithmetic regularity (Green), and hypergraph regularity (Gowers, Rödl-Skokan). This formalization develops reusable energy machinery (density convexity, split identities, energy bounds) from scratch and provides a compatibility bridge that exposes Mathlib's complete regularity lemma through our combinatorics-oriented definitions. The core energy increment iteration and tower bound are not re-proved here — they come from Mathlib's comprehensive implementation.",
     "problemStatement": "For every $\\varepsilon > 0$ and integer $m \\geq 1$, there exists $M = M(\\varepsilon, m)$ such that every graph $G$ on $n \\geq M$ vertices admits an $\\varepsilon$-regular partition into at most $M$ parts.\n\nA pair $(V_i, V_j)$ is $\\varepsilon$-regular if for all $A \\subseteq V_i$, $B \\subseteq V_j$ with $|A| \\geq \\varepsilon|V_i|$, $|B| \\geq \\varepsilon|V_j|$: $|d(A,B) - d(V_i,V_j)| \\leq \\varepsilon$, where $d(X,Y) = e(X,Y)/(|X||Y|)$ is the edge density.",
     "proofStrategy": "The formalization has three parts:\n\n**Part II (Energy Machinery)**: Proves the Cauchy-Schwarz ingredient (`density_sq_convex`): splitting a vertex set A into disjoint A₁ ∪ A₂ increases the sum of squared densities. The proof reduces to the algebraic identity $n_1 d_1^2 + n_2 d_2^2 - (n_1+n_2)((n_1 d_1 + n_2 d_2)/(n_1+n_2))^2 = n_1 n_2 (d_1-d_2)^2/(n_1+n_2) \\geq 0$. Also proves `partitionEnergy_le_one` via the bound $d(V_i,V_j)^2 \\leq 1$.\n\n**Part III (Main Result)**: First proves a vacuous form (`regularity_lemma`) using the trivial one-part partition {V}. Then bridges to Mathlib via compatibility theorems: `edgeDensity_eq_mathlib` (our density matches Mathlib's), `mathlib_uniform_imp_regular` (Mathlib's strict uniformity implies our regularity), and `irregular_subset_nonuniform` (our irregular pairs are a subset of Mathlib's). These bridges yield the strong form (`regularity_lemma_strong`, with m₀ ≤ k ≤ M) and full form (`regularity_lemma_full`, with partition coverage and disjointness).",
     "keyInsights": [
@@ -149,8 +151,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Complete formalization of the Szemerédi Regularity Lemma in three forms (basic, strong, full) in 501 lines with 17 theorems, 0 sorries, 0 axioms. The energy machinery (density convexity, split identities, energy bounds) is proved from scratch, while the main regularity result is obtained by bridging to Mathlib's comprehensive implementation via four compatibility theorems.",
-    "implications": "This formalization provides:\n\n**1. Fundamental Graph Structure Theorem**: The most important structural result in graph theory, machine-verified in all three standard forms.\n\n**2. Foundation for Counting and Removal**: The regularity lemma is the prerequisite for the counting lemma and triangle removal lemma (in `szemeredi-counting`), which in turn yield Szemerédi's theorem on arithmetic progressions.\n\n**3. Structure vs Randomness Paradigm**: The regularity decomposition exemplifies the modern 'structure vs randomness' paradigm that has transformed combinatorics, with applications ranging from property testing to the Green-Tao theorem.\n\n**4. Reusable Energy Machinery**: The density convexity lemma, split energy identities, and energy bounds are independently useful for regularity-based arguments beyond this specific lemma.\n\n**5. Mathlib Bridge Pattern**: The four compatibility theorems demonstrate a clean pattern for bridging custom definitions to Mathlib's established theorems, avoiding redundant re-proofs while maintaining a custom API.",
+    "summary": "Energy machinery and Mathlib compatibility bridge for the Szemerédi Regularity Lemma: 501 lines, 17 theorems, 0 sorries, 0 axioms. The energy machinery (density convexity, split identities, energy bounds) is proved from scratch. The main regularity result (strong and full forms) is obtained by bridging to Mathlib's szemeredi_regularity theorem via four compatibility theorems — the core energy increment iteration is not independently proved here.",
+    "implications": "This formalization provides:\n\n**1. Reusable Energy Machinery**: The density convexity lemma, split energy identities, and energy bounds are independently useful for regularity-based arguments. These are original proofs, not wrappers.\n\n**2. Mathlib Bridge Pattern**: The four compatibility theorems demonstrate a clean pattern for bridging custom ℚ-valued definitions to Mathlib's ℝ-valued theorems, avoiding redundant re-proofs while maintaining a combinatorics-oriented API.\n\n**3. Foundation for Counting and Removal**: The regularity lemma (via Mathlib bridge) is the prerequisite for the counting lemma and triangle removal lemma (in `szemeredi-counting`).\n\n**4. Not an Independent Proof**: The core energy increment argument and tower bound machinery come from Mathlib's comprehensive implementation. This file provides infrastructure and a compatibility layer, not an independent proof of the regularity lemma.",
     "openQuestions": [
       "Can we formalize the Gowers lower bound showing the tower-type partition size is necessary?",
       "How does Frieze-Kannan weak regularity compare, and can it serve as a simpler stepping stone?",
