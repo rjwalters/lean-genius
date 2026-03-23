@@ -91,7 +91,17 @@
       "Asymptotic density of primes"
     ],
     "axiomCount": 2,
-    "lineCount": 162
+    "lineCount": 162,
+    "relatedProblems": [
+      {
+        "id": "erdos-1057",
+        "relationship": "Nearby Erdős problem about prime counting; both concern infinitude of special prime sets"
+      },
+      {
+        "id": "erdos-1059",
+        "relationship": "Sister problem about prime-factorial interactions; both use decidable arithmetic for computational verification of small cases"
+      }
+    ]
   },
   "sections": [
     {
@@ -212,6 +222,21 @@
       "targetId": "bertrands-postulate",
       "relationship": "related",
       "description": "Bertrand's postulate guarantees primes in every interval $(n, 2n)$; similar density arguments underlie the heuristic prediction that Form A primes have positive density among all primes"
+    },
+    {
+      "targetId": "erdos-1059",
+      "relationship": "related",
+      "description": "Both concern infinitude of primes with special arithmetic properties: #1059 requires $p - k!$ composite for all $k! < p$, while #1065 requires $p - 1$ to have restricted prime factorization. Both use decidable arithmetic for computational verification and probabilistic heuristics for the infinitude prediction"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "The prime number theorem $\\pi(x) \\sim x/\\ln x$ underlies the density heuristic: the probability that $2^k q + 1$ is prime is $\\sim 1/\\ln(2^k q)$, and summing over valid $(k, q)$ pairs predicts the count of Form A primes up to $x$"
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Quadratic reciprocity governs when $a$ is a square modulo $p$, closely tied to primitive roots: Artin's conjecture (referenced in the formalization) predicts infinitely many primes have a given primitive root, and the factorization structure of $p-1$ determines the primitive root structure via quadratic residues"
     }
   ],
   "relatedProofs": [
@@ -219,10 +244,13 @@
     "primitive-roots",
     "dirichlets-theorem",
     "erdos-1057",
+    "erdos-1059",
     "wilsons-theorem",
     "euler-totient",
     "infinitude-primes",
-    "bertrands-postulate"
+    "bertrands-postulate",
+    "prime-number-theorem",
+    "quadratic-reciprocity"
   ],
   "leanFile": {
     "imports": [

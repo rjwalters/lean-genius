@@ -110,6 +110,20 @@
         "year": "2016",
         "venue": "Wiley, 4th edition",
         "note": "Standard reference for probabilistic combinatorics; Chapter 14 covers random graph processes"
+      },
+      {
+        "authors": "A. Razborov",
+        "title": "On the minimal density of triangles in graphs",
+        "year": "2010",
+        "venue": "Combinatorics, Probability and Computing, vol. 19, pp. 201–214",
+        "note": "Flag algebra proof of the exact triangle density threshold in dense graphs; the supersaturation phenomenon governs the early stages of the triangle removal process when the graph is dense"
+      },
+      {
+        "authors": "P. Turán",
+        "title": "Eine Extremalaufgabe aus der Graphentheorie",
+        "year": "1941",
+        "venue": "Matematikai és Fizikai Lapok, vol. 48, pp. 436–452",
+        "note": "Foundation of extremal graph theory: the maximum number of edges in a K_{r+1}-free graph on n vertices is achieved by the complete r-partite graph. Mantel's 1907 result is the r=2 case. The terminal graph of the triangle removal process is K_3-free, connecting to the Turán bound"
       }
     ],
     "axiomCount": 5,
@@ -128,7 +142,11 @@
       "erdos-1155",
       "ramseys-theorem",
       "szemeredi-regularity",
+      "szemeredi-theorem",
+      "szemeredi-counting",
+      "szemeredi-full",
       "randomized-maxcut",
+      "randomized-maxcut-oq-01",
       "erdos-1009",
       "erdos-1010",
       "erdos-1104"
@@ -280,6 +298,26 @@
       "targetId": "erdos-1104",
       "relationship": "related",
       "description": "Maximum chromatic number of triangle-free graphs: the terminal graph of the triangle removal process is triangle-free, so its chromatic number is bounded by the Ramsey-type results formalized in #1104. The chromatic structure of the terminal graph may constrain the edge count f(n)"
+    },
+    {
+      "targetId": "szemeredi-theorem",
+      "relationship": "related",
+      "description": "Szemerédi's theorem on arithmetic progressions in dense sets is a cornerstone of additive combinatorics. The triangle removal lemma (a key consequence of Szemerédi regularity) states that graphs with few triangles can be made triangle-free by removing few edges — the deterministic counterpart to the random triangle removal process studied here"
+    },
+    {
+      "targetId": "szemeredi-counting",
+      "relationship": "related",
+      "description": "The counting lemma complements the regularity lemma: it counts subgraph copies (including triangles) in regular partitions. Triangle counting governs the rate at which the random removal process depletes triangles, connecting the regularity-based counting to the process dynamics"
+    },
+    {
+      "targetId": "szemeredi-full",
+      "relationship": "related",
+      "description": "The full Szemerédi regularity lemma decomposes dense graphs into pseudorandom bipartite pairs. This decomposition is the foundation of the triangle removal lemma, which guarantees that graphs with o(n³) triangles can be made triangle-free by removing o(n²) edges — a deterministic structural result complementing the random process analysis"
+    },
+    {
+      "targetId": "randomized-maxcut-oq-01",
+      "relationship": "thematic",
+      "description": "Both formalize extensions of randomized graph algorithms: this entry extends the triangle removal process analysis with exact asymptotic gap characterization, while MaxCut OQ-01 extends the randomized cut analysis with derandomization and approximation guarantees"
     }
   ],
   "leanFile": {

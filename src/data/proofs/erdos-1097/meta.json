@@ -52,7 +52,30 @@
         "note": "Improved lower bound to Ω(n^{1.778}), surpassing the probabilistic barrier"
       }
     ],
-    "lineCount": 374
+    "lineCount": 374,
+    "leanFile": {
+      "lineCount": 374,
+      "structureCount": 0,
+      "axiomCount": 6,
+      "theoremCount": 20,
+      "lemmaCount": 0,
+      "defCount": 8,
+      "imports": [
+        "Mathlib.Tactic",
+        "Mathlib.Data.Finset.Basic",
+        "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      ]
+    },
+    "relatedProblems": [
+      {
+        "id": "erdos-3",
+        "relationship": "Erdős's density conjecture for arithmetic progressions; both concern the structure of APs in dense integer sets"
+      },
+      {
+        "id": "roth-theorem-k3",
+        "relationship": "Roth's theorem guarantees 3-term APs in dense sets; this problem counts distinct common differences of such APs"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "Erdős posed this problem at the 1989 Great Western Number Theory problem session in Asilomar, California. He asked: given an n-element set of integers, how many distinct common differences can three-term arithmetic progressions have? The Erdős-Spencer probabilistic argument (using random subsets of {1,...,N}) showed that Ω(n^{3/2}) is achievable, and Erdős conjectured this is the correct order. Jean Bourgain later connected the problem to his work on the Kakeya conjecture in geometric measure theory, reformulating it as a question about restricted sums and differences. In 1999, Nets Katz and Terence Tao established the best known upper bound of O(n^{11/6}) using incidence geometry techniques. Matan Lemm improved the lower bound in 2015 past n^{1.778}, and in 2025 Google DeepMind's AlphaEvolve achieved a marginal further improvement via automated search. The problem remains open, with its resolution expected to have implications for the Kakeya conjecture.",
@@ -175,14 +198,32 @@
       "targetId": "szemeredi-regularity",
       "relationship": "related",
       "description": "The regularity lemma provides pseudorandom decompositions used in counting arithmetic progressions. The 3-AP counting approach underlying Roth's theorem and its extensions connects to the common-differences question through energy increment arguments"
+    },
+    {
+      "targetId": "szemeredi-counting",
+      "relationship": "related",
+      "description": "The counting lemma quantifies substructure (including APs) in regular pairs. Counting 3-APs by common difference is the key to bounding $|D(A)|$ — the counting lemma provides the tool for extracting structured counts from pseudorandom decompositions"
+    },
+    {
+      "targetId": "szemeredi-full",
+      "relationship": "related",
+      "description": "The full Szemerédi theorem guarantees $k$-term APs in dense sets for all $k$. This problem specializes to $k = 3$ but strengthens the conclusion: not just existence of 3-APs, but a lower bound on the number of distinct common differences they exhibit"
+    },
+    {
+      "targetId": "erdos-1096",
+      "relationship": "related",
+      "description": "Sister problem in additive combinatorics on arithmetic progressions in integer sets. Both arise from the Asilomar sessions and concern quantitative bounds on AP structure"
     }
   ],
   "relatedProofs": [
     "szemeredi-theorem",
+    "szemeredi-counting",
+    "szemeredi-full",
+    "szemeredi-regularity",
     "erdos-3",
+    "erdos-1096",
     "arithmetic-series",
-    "roth-theorem-k3",
-    "szemeredi-regularity"
+    "roth-theorem-k3"
   ],
   "leanFile": {
     "imports": [

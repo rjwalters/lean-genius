@@ -92,7 +92,32 @@
       "Threshold functions and extremal combinatorics",
       "Filter-based limits in Lean (Filter.Tendsto)"
     ],
-    "lineCount": 201
+    "lineCount": 201,
+    "leanFile": {
+      "lineCount": 201,
+      "structureCount": 0,
+      "axiomCount": 13,
+      "theoremCount": 3,
+      "lemmaCount": 0,
+      "defCount": 10,
+      "imports": [
+        "Mathlib"
+      ]
+    },
+    "relatedProblems": [
+      {
+        "id": "erdos-1083",
+        "relationship": "Related distinct distances problem in 2D; this entry generalizes to higher dimensions"
+      },
+      {
+        "id": "erdos-1082",
+        "relationship": "Unit distance problem in combinatorial geometry; both concern distance structure of point configurations"
+      },
+      {
+        "id": "erdos-1088",
+        "relationship": "Sister problem on distance sets in higher dimensions with related threshold functions"
+      }
+    ]
   },
   "sections": [
     {
@@ -208,6 +233,11 @@
       "targetId": "ramseys-theorem",
       "relationship": "related",
       "description": "The distinct distances threshold $g_d(n)$ is a Ramsey-type quantity: it asks for the minimum set size guaranteeing a structured subset (many distinct distances). The polynomial lower bound $g_d(n) \\gg d^{n-1}$ parallels Ramsey-type tower growth phenomena in combinatorics"
+    },
+    {
+      "targetId": "borsuk-ulam",
+      "relationship": "related",
+      "description": "The Borsuk-Ulam theorem is a key topological tool in combinatorial geometry: it implies that any continuous map $S^n \\to \\mathbb{R}^n$ identifies antipodal points. In distance problems, topological methods complement algebraic and combinatorial approaches — the Borsuk conjecture on partitions of sets with diameter constraints is closely tied to distance set questions in high dimensions"
     }
   ],
   "conclusion": {
@@ -227,7 +257,8 @@
     "combinations-formula",
     "erdos-1082",
     "erdos-1088",
-    "ramseys-theorem"
+    "ramseys-theorem",
+    "borsuk-ulam"
   ],
   "leanFile": {
     "imports": [
