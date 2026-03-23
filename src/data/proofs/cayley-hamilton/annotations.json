@@ -9,11 +9,17 @@
     "type": "concept",
     "title": "The Cayley-Hamilton Theorem",
     "content": "The Cayley-Hamilton theorem is one of the most important results in linear algebra. It states that every square matrix satisfies its own characteristic polynomial.\n\nGiven an n×n matrix A, its characteristic polynomial is:\n$$p(\\lambda) = \\det(\\lambda I - A)$$\n\nThe theorem says that if we substitute the matrix A for λ and interpret powers of λ as matrix powers, we get the zero matrix:\n$$p(A) = 0$$\n\nThis is remarkable because p(λ) is a polynomial equation satisfied by the eigenvalues, yet the entire matrix A satisfies the same equation!",
+    "mathContext": "$p_A(\\lambda) = \\det(\\lambda I - A) = \\lambda^n - c_{n-1}\\lambda^{n-1} - \\cdots - c_0$. Then $p_A(A) = A^n - c_{n-1}A^{n-1} - \\cdots - c_0 I = 0$. The key subtlety: $\\lambda$ is a scalar but $A$ is a matrix, so substitution must be interpreted in the matrix polynomial ring $M_n(R)[X]$.",
     "significance": "key",
     "relatedConcepts": [
       "characteristic polynomial",
       "eigenvalues",
       "matrix algebra"
+    ],
+    "prerequisites": [
+      "linear algebra",
+      "determinant",
+      "polynomial evaluation"
     ]
   },
   {
@@ -60,12 +66,17 @@
     "type": "technique",
     "title": "The Main Theorem (Wiedijk #49)",
     "content": "**The Cayley-Hamilton Theorem**: Every square matrix satisfies its own characteristic polynomial.\n\nFormally, if A is an n×n matrix with characteristic polynomial p(λ) = det(λI - A), then:\n$$p(A) = 0$$\n\nThe proof in Mathlib uses the adjugate matrix identity:\n$$A \\cdot \\text{adj}(A) = \\det(A) \\cdot I$$\n\nBy working with matrices over the polynomial ring R[X] and carefully analyzing (XI - A) and its adjugate, the result follows from pure algebra.",
-    "mathContext": "$p_A(A) = 0$",
+    "mathContext": "Lean: `Matrix.aeval_self_charpoly : (Matrix.charpoly M).aeval M = 0`. Mathlib's proof works over any commutative ring $R$, not just fields: the adjugate identity $(XI - A) \\cdot \\text{adj}(XI - A) = \\det(XI - A) \\cdot I$ in $M_n(R[X])$ is evaluated at $X = A$ via the ring homomorphism $R[X] \\to M_n(R)$ that sends $X \\mapsto A$. Since $(AI - A) = 0$, the left side vanishes, giving $p_A(A) = 0$.",
     "significance": "key",
     "relatedConcepts": [
       "adjugate matrix",
       "polynomial evaluation",
       "matrix algebra"
+    ],
+    "prerequisites": [
+      "Matrix.aeval_self_charpoly",
+      "adjugate matrix identity",
+      "polynomial ring homomorphism"
     ]
   },
   {
