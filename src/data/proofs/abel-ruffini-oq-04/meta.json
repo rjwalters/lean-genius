@@ -2,7 +2,7 @@
   "id": "abel-ruffini-oq-04",
   "title": "The A₅ Simplicity Proof Chain",
   "slug": "abel-ruffini-oq-04",
-  "description": "Exposes the complete proof chain from A₅ simplicity to the Abel-Ruffini theorem: A₅ is simple → Sₙ (n≥5) not solvable → general quintic unsolvable by radicals. Fully verified with 0 sorries and 0 axioms.",
+  "description": "Exposes the complete proof chain from A₅ simplicity to the Abel-Ruffini theorem with each step as a named, independently verifiable theorem: A₅ is simple → Sₙ (n≥5) not solvable → general quintic unsolvable by radicals. Part of Wiedijk's 100 Theorems (#83). Fully verified with 0 sorries and 0 axioms.",
   "meta": {
     "author": "Abel (1824), Galois (1832)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Abel%E2%80%93Ruffini_theorem",
@@ -107,6 +107,11 @@
         "key": "FT63",
         "citation": "Feit, W. and Thompson, J.G., Solvability of groups of odd order, Pacific Journal of Mathematics 13(3) (1963), 775–1029.",
         "type": "paper"
+      },
+      {
+        "key": "Kl84",
+        "citation": "Klein, F., Vorlesungen über das Ikosaeder und die Auflösung der Gleichungen vom fünften Grade, Teubner (1884). English translation: Lectures on the Icosahedron and the Solution of Equations of the Fifth Degree, Trübner (1888).",
+        "type": "book"
       }
     ],
     "relatedProofs": [
@@ -306,7 +311,8 @@
       "The distinction between 'no general formula' and 'no specific quintic is solvable' is crucial: x⁵ - 1 has a solvable Galois group (cyclic), but the generic quintic has Galois group S₅",
       "Mathlib's typeclass system enables automatic solvability proofs for small groups via inferInstance, while the general non-solvability requires an explicit argument through cardinal arithmetic",
       "The proof chain reveals a hierarchy of mathematical eras: Cardano/Ferrari solved cubics/quartics (1540s) by clever substitutions, but Ruffini/Abel (1799-1824) needed permutation group theory, and Galois (1832) needed a wholly new framework — the difficulty of the problem drove fundamental advances in algebra",
-      "The formalization exposes a subtle gap between non-existence and non-computability: Abel-Ruffini proves no uniform radical formula exists for generic quintics, but Galois theory provides an effective decision procedure for any specific polynomial — compute its Galois group, check solvability, and if solvable, construct the radical tower. The theorem is an impossibility result about uniform formulas, not about individual decidability, which is always algorithmically tractable via Galois group computation"
+      "The formalization exposes a subtle gap between non-existence and non-computability: Abel-Ruffini proves no uniform radical formula exists for generic quintics, but Galois theory provides an effective decision procedure for any specific polynomial — compute its Galois group, check solvability, and if solvable, construct the radical tower. The theorem is an impossibility result about uniform formulas, not about individual decidability, which is always algorithmically tractable via Galois group computation",
+      "Klein's 1884 Icosahedron monograph reveals a geometric counterpart: A₅ is isomorphic to the rotation group of the regular icosahedron (60 rotational symmetries matching |A₅| = 60), and the general quintic can be solved by reducing it to the 'icosahedral equation' via Tschirnhaus transformations — a connection between the algebraic impossibility (no radical formula) and the geometry of Platonic solids. This gives a concrete geometric visualization of why degree 5 is special: the icosahedron is the most symmetric Platonic solid with a non-abelian symmetry group, and its 60-element rotation group is exactly A₅"
     ],
     "prerequisites": [
       "Group theory: normal subgroups, derived series, solvability, and the relationship between subgroups and quotient solvability",
