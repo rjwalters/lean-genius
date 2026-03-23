@@ -124,9 +124,7 @@
   ],
   "conclusion": {
     "summary": "We answer OQ-04 affirmatively: for finite types with decidable equality, the Cantor-Bernstein-Schroeder theorem has a constructive version where orbit classification is decidable. The proof introduces a pigeonhole-based stabilization argument for monotone Finset sequences, which may be of independent interest.",
-    "relatedProofs": [
-      "schroeder-bernstein"
-    ],
+    "implications": "This demonstrates that constructive CBS is achievable for finite types, with the pigeonhole-based stabilization technique potentially applicable to other constructive existence proofs. Extensions to countable types and eliminating Lean 4 noncomputability remain open.",
     "openQuestions": [
       "Can the approach be extended to countably infinite types with decidable equality?",
       "What is the minimal type-theoretic strength needed for CBS (connection to excluded middle)?",
