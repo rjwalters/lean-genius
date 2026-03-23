@@ -162,5 +162,55 @@
     "axiomCount": 0,
     "theoremCount": 60,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "euler-polyhedral-formula",
+      "relationship": "extends",
+      "description": "Extends the base Euler polyhedral formula V-E+F=2 to planar graph theory: spanning tree proof, 5-degeneracy, Six Color Theorem, Heawood bounds, and K₅ non-planarity"
+    },
+    {
+      "targetId": "euler-polyhedral-formula-oq-01-oq-01",
+      "relationship": "foundational",
+      "description": "This OQ-01 (Six Color Theorem) is the parent for OQ-01-OQ-01 (Five Color Theorem); the 5-degeneracy and K₅ non-planarity results here are prerequisites for the Kempe chain argument"
+    },
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "related",
+      "description": "The Four Color Theorem is the optimal coloring result; this entry provides the elementary Six Color proof and the Heawood formula for higher-genus surfaces"
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "euler-polyhedral-formula",
+      "relationship": "Base formalization of V-E+F=2; this OQ-01 develops the full planar graph theory including degeneracy, coloring, and genus bounds"
+    },
+    {
+      "id": "euler-polyhedral-formula-oq-02",
+      "relationship": "Companion discrete Gauss-Bonnet formalization; together they cover the combinatorial and geometric aspects of the Euler characteristic"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Leonhard Euler",
+      "title": "Elementa doctrinae solidorum",
+      "year": "1758",
+      "venue": "Novi Commentarii Academiae Scientiarum Petropolitanae",
+      "note": "Original proof of V-E+F=2; the spanning tree proof formalized here is a modern reconstruction"
+    },
+    {
+      "authors": "Percy Heawood",
+      "title": "Map-Colour Theorem",
+      "year": "1890",
+      "venue": "Quarterly Journal of Pure and Applied Mathematics",
+      "note": "Proved the Heawood formula H(g) for chromatic number of genus-g surfaces; the g=0 case gives the Six/Five/Four Color Theorems"
+    },
+    {
+      "authors": "Reinhard Diestel",
+      "title": "Graph Theory",
+      "year": "2017",
+      "venue": "Springer, 5th edition",
+      "note": "Standard reference for planar graph theory, degeneracy, and graph coloring"
+    }
+  ]
 }

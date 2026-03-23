@@ -133,5 +133,55 @@
     "axiomCount": 4,
     "theoremCount": 25,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "euler-polyhedral-formula-oq-01",
+      "relationship": "extends",
+      "description": "Extends OQ-01 (Six Color Theorem via 5-degeneracy) to the Five Color Theorem, using the stronger Kempe chain recoloring argument that requires K₅ non-planarity"
+    },
+    {
+      "targetId": "euler-polyhedral-formula",
+      "relationship": "foundational",
+      "description": "Euler's formula V-E+F=2 gives the edge bound E ≤ 3V-6 that forces low-degree vertices (deg ≤ 5), which is the starting point of the Five Color Theorem proof"
+    },
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "related",
+      "description": "The Four Color Theorem is the sharp version of this result; the Kempe chain technique here is the same method Kempe incorrectly applied to four colors in 1879"
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "euler-polyhedral-formula-oq-01",
+      "relationship": "Parent: proves the Six Color Theorem via 5-degeneracy; this entry refines to Five Colors using Kempe chains and K₅ non-planarity"
+    },
+    {
+      "id": "four-color-theorem",
+      "relationship": "The definitive coloring result for planar graphs; the Kempe chain method formalized here is the key technique also underlying the Four Color Theorem proof"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Alfred Kempe",
+      "title": "On the geographical problem of the four colours",
+      "year": "1879",
+      "venue": "American Journal of Mathematics",
+      "note": "Introduced Kempe chains and claimed to prove the Four Color Theorem; Heawood found the flaw but the five-color version is correct"
+    },
+    {
+      "authors": "Percy Heawood",
+      "title": "Map-Colour Theorem",
+      "year": "1890",
+      "venue": "Quarterly Journal of Pure and Applied Mathematics",
+      "note": "Identified the flaw in Kempe's four-color proof and correctly proved the Five Color Theorem"
+    },
+    {
+      "authors": "Frank Bernhart",
+      "title": "A digest of the four color theorem",
+      "year": "1977",
+      "venue": "Journal of Graph Theory",
+      "note": "Comprehensive survey of Kempe chain methods and their role in four/five color proofs"
+    }
+  ]
 }

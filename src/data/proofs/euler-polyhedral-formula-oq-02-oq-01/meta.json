@@ -257,5 +257,32 @@
     "axiomCount": 0,
     "theoremCount": 60,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "euler-polyhedral-formula-oq-02",
+      "relationship": "extends",
+      "description": "Extends the discrete Gauss-Bonnet theorem (Σδ(v) = 2πχ for polyhedra) to the smooth case (∫K dA = 2πχ for Riemannian surfaces), plus Girard's formula, Poincaré-Hopf, and Morse theory"
+    },
+    {
+      "targetId": "euler-polyhedral-formula",
+      "relationship": "foundational",
+      "description": "The Euler characteristic χ = V-E+F=2 is the topological invariant that both the discrete and smooth Gauss-Bonnet theorems connect to curvature; the base formalization establishes this foundation"
+    },
+    {
+      "targetId": "euler-polyhedral-formula-oq-01",
+      "relationship": "related",
+      "description": "OQ-01 develops graph-theoretic consequences of Euler's formula (coloring, planarity); this OQ-02-OQ-01 develops the differential-geometric consequences (curvature, genus, Poincaré-Hopf)"
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "euler-polyhedral-formula-oq-02",
+      "relationship": "Parent: discrete Gauss-Bonnet for polyhedra; this entry extends to smooth surfaces and proves 35+ consequences including Girard's formula and hairy ball theorem"
+    },
+    {
+      "id": "euler-polyhedral-formula",
+      "relationship": "The base Euler formula V-E+F=2 whose topological content (χ=2-2g) is the central quantity in both discrete and smooth Gauss-Bonnet"
+    }
+  ]
 }

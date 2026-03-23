@@ -204,5 +204,55 @@
     "axiomCount": 0,
     "theoremCount": 103,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "feuerbachs-theorem",
+      "relationship": "extends",
+      "description": "Eliminates all 8 axioms from the base Feuerbach formalization by proving the altitude-foot and Feuerbach distance relations via direct coordinate computation and the algebraic chain R²s² - σ = (Rs - 2A)²"
+    },
+    {
+      "targetId": "feuerbachs-theorem-defs",
+      "relationship": "foundational",
+      "description": "The shared definition file containing the nine-point center, incircle, excircles, and geometric infrastructure that this OQ-01 builds upon"
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "foundational",
+      "description": "The Pythagorean theorem underlies the distance computations (d² = Δx² + Δy²) throughout the coordinate geometry proofs of the Feuerbach distance relations"
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "feuerbachs-theorem",
+      "relationship": "Parent formalization (Wiedijk #29) with 8 axiomatized distance relations; this OQ-01 proves all 8 axioms by coordinate computation, making the parent axiom-free"
+    },
+    {
+      "id": "feuerbachs-theorem-defs",
+      "relationship": "The shared definitions file for the Feuerbach formalization family: nine-point center, circumcircle, incircle, and excircle definitions"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Karl Wilhelm Feuerbach",
+      "title": "Eigenschaften einiger merkwürdigen Punkte des geradlinigen Dreiecks",
+      "year": "1822",
+      "venue": "Riegel und Wießner, Nürnberg",
+      "note": "Original proof of tangency of the nine-point circle with the incircle and three excircles (Wiedijk Theorem #29)"
+    },
+    {
+      "authors": "Charles Julien Brianchon, Jean-Victor Poncelet",
+      "title": "Géométrie des courbes — Recherches sur la détermination d'une hyperbole équilatère",
+      "year": "1821",
+      "venue": "Annales de Gergonne",
+      "note": "Independent discovery of the nine-point circle; the nine-point center N used throughout this formalization"
+    },
+    {
+      "authors": "Nathan Altshiller-Court",
+      "title": "College Geometry: An Introduction to the Modern Geometry of the Triangle and the Circle",
+      "year": "1952",
+      "venue": "Barnes & Noble",
+      "note": "Classical reference for Feuerbach's theorem, excircle distances, and triangle center relations; includes the NI formula approach"
+    }
+  ]
 }

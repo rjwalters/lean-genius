@@ -116,5 +116,55 @@
     "axiomCount": 0,
     "theoremCount": 52,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "euler-polyhedral-formula",
+      "relationship": "extends",
+      "description": "Extends Euler's formula V-E+F=2 (Wiedijk #25) by interpreting it as a special case of the discrete Gauss-Bonnet theorem: total angular deficiency Σδ(v) = 2πχ"
+    },
+    {
+      "targetId": "euler-polyhedral-formula-oq-02-oq-01",
+      "relationship": "foundational",
+      "description": "The discrete Gauss-Bonnet theorem proved here is the combinatorial foundation for the smooth Gauss-Bonnet formalization (OQ-02-OQ-01), which extends it to Riemannian surfaces"
+    },
+    {
+      "targetId": "euler-polyhedral-formula-oq-01",
+      "relationship": "complementary",
+      "description": "OQ-01 develops graph-theoretic consequences of Euler's formula (coloring, planarity); this OQ-02 develops the geometric consequences (curvature, angular deficiency, Platonic solids)"
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "euler-polyhedral-formula",
+      "relationship": "Base formalization of V-E+F=2; this OQ-02 interprets it as discrete Gauss-Bonnet and proves consequences for Platonic solid classification"
+    },
+    {
+      "id": "euler-polyhedral-formula-oq-02-oq-01",
+      "relationship": "Extension to smooth surfaces: the smooth Gauss-Bonnet ∫K dA = 2πχ, which this discrete version approximates as triangulations refine"
+    }
+  ],
+  "references": [
+    {
+      "authors": "René Descartes",
+      "title": "De Solidorum Elementis",
+      "year": "ca. 1630",
+      "venue": "Unpublished manuscript (rediscovered 1860)",
+      "note": "First statement that total angular deficiency of a convex polyhedron equals 4π (later recognized as a special case of Gauss-Bonnet)"
+    },
+    {
+      "authors": "Pierre Ossian Bonnet",
+      "title": "Mémoire sur la théorie générale des surfaces",
+      "year": "1848",
+      "venue": "Journal de l'École Polytechnique",
+      "note": "Proved the integral formula ∫K dA = 2πχ for closed surfaces, extending Descartes' polyhedron result"
+    },
+    {
+      "authors": "Branko Grünbaum",
+      "title": "Convex Polytopes",
+      "year": "2003",
+      "venue": "Springer, 2nd edition",
+      "note": "Standard reference for angular deficiency, Platonic solid classification, and combinatorial geometry"
+    }
+  ]
 }

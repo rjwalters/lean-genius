@@ -171,5 +171,55 @@
     "axiomCount": 5,
     "theoremCount": 31,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "extends",
+      "description": "Extends the base Dirichlet theorem (primes in arithmetic progressions) to the quantitative Siegel zero question: not just that L(1,χ) ≠ 0, but how small it can be"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "related",
+      "description": "Infinitude of primes is the qualitative predecessor; Dirichlet's theorem is the arithmetic progression extension; this entry addresses quantitative lower bounds on L(1,χ)"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "Both entries formalize deep open problems in analytic number theory where the current state of knowledge is axiomatized pending future Mathlib infrastructure"
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "dirichlets-theorem",
+      "relationship": "Base formalization proving L(1,χ) ≠ 0; this OQ-01 studies the quantitative question of how small L(1,χ) can be"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "Fundamental predecessor: infinitely many primes in ℕ, extended by Dirichlet to arithmetic progressions"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Carl Ludwig Siegel",
+      "title": "Über die Classenzahl quadratischer Zahlkörper",
+      "year": "1935",
+      "venue": "Acta Arithmetica",
+      "note": "Proved the ineffective lower bound L(1,χ) > C(ε)/q^ε, introducing the Siegel zero concept"
+    },
+    {
+      "authors": "Edmund Landau",
+      "title": "Über die Wurzeln der Zetafunktion",
+      "year": "1918",
+      "venue": "Mathematische Zeitschrift",
+      "note": "Proved the Landau-Page theorem: at most one exceptional real character per conductor range"
+    },
+    {
+      "authors": "Dorian Goldfeld",
+      "title": "The class number of quadratic fields and the conjectures of Birch and Swinnerton-Dyer",
+      "year": "1976",
+      "venue": "Annali della Scuola Normale Superiore di Pisa",
+      "note": "Showed that GRH implies an effective lower bound L(1,χ) ≫ 1/(log q)², eliminating Siegel zeros conditionally"
+    }
+  ]
 }

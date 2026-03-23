@@ -166,5 +166,55 @@
     "axiomCount": 0,
     "theoremCount": 56,
     "definitionCount": 1
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "divisibility-by-3",
+      "relationship": "extends",
+      "description": "Extends the base divisibility-by-3 formalization to a comprehensive collection covering truncation methods, digital root theory, and coprime factorization for all primes up to 19"
+    },
+    {
+      "targetId": "divisibility-truncation-general",
+      "relationship": "related",
+      "description": "The truncation methods for 7, 11, 13, 17, 19 proved individually here are unified into a single parametric theorem in divisibility-truncation-general"
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "related",
+      "description": "Both entries use modular arithmetic and coprimality; the coprime factorization rules here parallel the Chinese Remainder Theorem's decomposition of modular arithmetic"
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "divisibility-by-3",
+      "relationship": "Base formalization of the divisibility-by-3 rule; this OQ-01 generalizes to a comprehensive collection of rules for multiple divisors"
+    },
+    {
+      "id": "divisibility-truncation-general",
+      "relationship": "The general parametric truncation theorem that unifies the specific rules for 7, 11, 13, 17, 19 proved individually in this entry"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Hardy, G.H.; Wright, E.M.",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "2008",
+      "venue": "Oxford University Press, 6th edition",
+      "note": "Standard reference for divisibility properties and modular arithmetic"
+    },
+    {
+      "authors": "Martin Gardner",
+      "title": "Mathematical Magic Show",
+      "year": "1977",
+      "venue": "Alfred A. Knopf",
+      "note": "Accessible treatment of divisibility rules and their mathematical basis"
+    },
+    {
+      "authors": "Freek Wiedijk",
+      "title": "Formalizing 100 Theorems",
+      "year": "2008",
+      "venue": "http://www.cs.ru.nl/~freek/100/",
+      "note": "Theorem #85: divisibility by 3 rule, the base theorem this OQ-01 extends"
+    }
+  ]
 }

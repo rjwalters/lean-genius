@@ -132,5 +132,55 @@
     "axiomCount": 0,
     "theoremCount": 37,
     "definitionCount": 21
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "desargues-theorem",
+      "relationship": "complementary",
+      "description": "The base Desargues formalization proves the theorem holds in standard projective space; this entry exhibits a concrete incidence structure (Moulton plane) where it fails"
+    },
+    {
+      "targetId": "desargues-theorem-oq-01",
+      "relationship": "complementary",
+      "description": "OQ-01 proves Desargues over any commutative ring (algebraic success); this OQ-02 provides the non-Desarguesian counterexample showing algebraic structure is essential"
+    },
+    {
+      "targetId": "desargues-theorem-oq-04",
+      "relationship": "related",
+      "description": "OQ-04 formalizes self-duality of Desargues's theorem; together these entries complete the classical picture (holds ↔ coordinatizable by division ring)"
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "four-color-theorem",
+      "relationship": "Another graph/geometry result requiring a concrete counterexample or computational verification to understand the limits of a theorem"
+    },
+    {
+      "id": "fundamental-theorem-algebra",
+      "relationship": "Both theorems depend critically on the algebraic structure of the underlying field or ring"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Forest Ray Moulton",
+      "title": "A Simple Non-Desarguesian Plane Geometry",
+      "year": "1902",
+      "venue": "Transactions of the American Mathematical Society",
+      "note": "Original construction of the Moulton plane as the first concrete non-Desarguesian affine plane"
+    },
+    {
+      "authors": "Robin Hartshorne",
+      "title": "Foundations of Projective Geometry",
+      "year": "1967",
+      "venue": "W.A. Benjamin",
+      "note": "Standard textbook treatment of Desarguesian vs non-Desarguesian planes and the Moulton plane"
+    },
+    {
+      "authors": "Karl Hessenberg",
+      "title": "Beweis des Desarguesschen Satzes aus dem Pascalschen",
+      "year": "1905",
+      "venue": "Mathematische Annalen",
+      "note": "Proved that Pappus's theorem implies Desargues's theorem, establishing the connection to commutativity of the coordinate division ring"
+    }
+  ]
 }
