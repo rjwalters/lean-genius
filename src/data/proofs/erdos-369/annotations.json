@@ -76,7 +76,7 @@
     },
     "type": "definition",
     "title": "Largest Prime Factor",
-    "content": "**largestPrimeFactor n** = $P^+(n)$, the largest prime dividing $n$ (0 if $n \\leq 1$). Axiomatized as a noncomputable function.",
+    "content": "**largestPrimeFactor n** = $P^+(n)$, the largest prime dividing $n$ (0 if $n \\leq 1$). Axiomatized as a noncomputable function with two properties: `lpf_prime` ($P^+(n)$ is prime for $n \\geq 2$) and `lpf_dvd` ($P^+(n) \\mid n$). The function is noncomputable because Lean requires an explicit algorithm for `Decidable` instances, and factoring integers is not known to be efficiently decidable.\n\nSmooth numbers (those with small $P^+$) are central to: (1) integer factoring algorithms (the quadratic sieve and number field sieve rely on finding smooth values), (2) Adleman's theorem that BPP $\\subseteq$ P/poly, and (3) the analysis of Pollard's $p-1$ algorithm (which finds primes $p$ when $p-1$ is smooth).",
     "significance": "key",
     "mathContext": "The function $P^+(n)$ is a central object in multiplicative number theory. Its distribution is intimately connected to the Dickman function: the probability that a random integer near $x$ has $P^+(n) \\leq x^\\alpha$ is $\\rho(1/\\alpha)$. The Erdős-Kac theorem implies that $\\log P^+(n) / \\log n$ is approximately uniformly distributed on $[0,1]$ — most integers have a 'large' prime factor. This makes consecutive smooth numbers rare: two independent draws from this distribution both landing below $\\varepsilon$ has probability $\\rho(1/\\varepsilon)^2$, but consecutive integers are not independent.",
     "relatedConcepts": [
@@ -97,7 +97,7 @@
     },
     "type": "definition",
     "title": "Consecutive Smooth Run",
-    "content": "**ConsecutiveSmoothRun m k B**: the $k$ consecutive integers $m, m+1, \\ldots, m+k-1$ are each $B$-smooth, with $k \\geq 2$.",
+    "content": "**ConsecutiveSmoothRun m k B**: the $k$ consecutive integers $m, m+1, \\ldots, m+k-1$ are each $B$-smooth, with $k \\geq 2$. The predicate requires all $k$ integers to independently satisfy the smoothness condition $P^+(m+i) \\leq B$ for $i = 0, \\ldots, k-1$.\n\nFinding such runs is difficult because consecutive integers are coprime ($\\gcd(m, m+1) = 1$), so their prime factorizations share no structure — the smoothness of $m$ provides no information about the smoothness of $m+1$. Small examples: $\\{8, 9\\} = \\{2^3, 3^2\\}$ is a 3-smooth run of length 2; $\\{2, 3, 4\\} = \\{2, 3, 2^2\\}$ is a 3-smooth run of length 3.",
     "significance": "key",
     "mathContext": "The key difficulty is that consecutive integers share no prime factors ($\\gcd(m, m+1) = 1$), so their smoothness conditions are essentially independent. For $k$ consecutive integers to all be $B$-smooth, each must independently have all prime factors $\\leq B$. By the Dickman function, the 'expected' number of $k$-tuples of consecutive $n^\\varepsilon$-smooth numbers in $[1, n]$ is roughly $n \\cdot \\rho(1/\\varepsilon)^k$. For fixed $\\varepsilon$ and $k$, this grows with $n$, suggesting the conjecture is true — but proving it requires showing no gaps of length $> n$ between such $k$-tuples, which is far harder than showing infinitely many exist.",
     "relatedConcepts": [
