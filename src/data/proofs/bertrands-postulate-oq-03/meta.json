@@ -161,6 +161,26 @@
       "targetId": "infinitude-primes",
       "relationship": "ancestor",
       "description": "The foundational result that primes are infinite — this entry quantifies their distribution in short intervals"
+    },
+    {
+      "targetId": "twin-primes-special",
+      "relationship": "related",
+      "description": "Both address fine-grained prime distribution: twin primes concern gaps of exactly 2 between consecutive primes, while this entry studies the density of primes in intervals of the form $[x, x + x^\\theta]$. The twin prime conjecture and Bertrand-type results are complementary facets of understanding how primes cluster"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "foundational",
+      "description": "Euler's totient $\\varphi(n) = n \\prod_{p|n}(1-1/p)$ encodes the local prime structure that determines prime density. The product over primes in the totient formula is intimately connected to the Euler product $\\zeta(s) = \\prod_p (1-p^{-s})^{-1}$ whose properties (especially the zero-free region) control prime distribution in short intervals"
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's approximation $n! \\approx \\sqrt{2\\pi n}(n/e)^n$ is needed for asymptotic estimates in prime counting: Chebyshev's proof of Bertrand's postulate uses binomial coefficient bounds that depend on Stirling-type estimates, and the prime number theorem's proof via the Selberg-Erdős elementary method uses factorial asymptotics"
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Quadratic reciprocity governs the splitting behavior of primes in quadratic fields, connecting to the Chebotarev density theorem — a generalization of the prime number theorem to arithmetic progressions and number fields. The density of primes in short intervals (this entry) and the density of primes in arithmetic progressions (Dirichlet's theorem, generalized by Chebotarev) are two perspectives on the same underlying regularity of prime distribution"
     }
   ],
   "relatedProofs": [
@@ -168,7 +188,13 @@
     "prime-number-theorem",
     "bounded-prime-gaps",
     "infinitude-primes",
-    "riemann-hypothesis"
+    "riemann-hypothesis",
+    "twin-primes-special",
+    "wilsons-theorem",
+    "euler-totient",
+    "stirling-formula",
+    "fundamental-arithmetic",
+    "quadratic-reciprocity"
   ],
   "leanFile": {
     "imports": [
