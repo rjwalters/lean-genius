@@ -158,7 +158,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #1001 on Diophantine approximation density. The limit lim S(N,A,c) exists (Kesten-Sós) with explicit formula f(A,c) = 12A log(c)/π² in the EST regime.",
-    "implications": "The result connects metric number theory to measure theory. The appearance of π² relates to the distribution of Farey fractions and the density of coprime pairs.",
+    "implications": "**Metric Number Theory**: The Erdős-Szüsz-Turán theorem connects the distribution of $\\{n\\alpha\\}$ sequences (where $\\alpha$ is irrational) to the continued fraction expansion of $\\alpha$, placing the problem at the intersection of metric number theory and ergodic theory. The three-distance theorem (Steinhaus 1957) shows that $N$ points $\\{n\\alpha\\}$ partition $[0,1)$ into at most 3 distinct gap lengths — the formalization explores quantitative refinements of this structure.\n\n**Connection to $\\pi^2$ and Coprime Density**: The appearance of $\\pi^2$ in asymptotic formulas reflects the probability that two random integers are coprime: $6/\\pi^2 = 1/\\zeta(2)$. This density governs the distribution of Farey fractions $p/q$ approximating $\\alpha$ and controls the gap statistics formalized here.\n\n**Applications**: Understanding the fine distribution of $\\{n\\alpha\\}$ has applications to numerical integration (quasi-Monte Carlo methods), crystallography (quasicrystals and Penrose tilings), and the theory of uniform distribution modulo 1 (Weyl's equidistribution theorem).",
     "openQuestions": [
       "What is the explicit formula for f(A,c) outside the EST regime?",
       "What is the rate of convergence of S(N,A,c) to f(A,c)?",
