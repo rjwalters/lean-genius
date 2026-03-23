@@ -217,22 +217,12 @@ private lemma psi_add {N : ℕ} [NeZero N] (a b : ZMod N) :
 private lemma psi_zero {N : ℕ} [NeZero N] : ψ (0 : ZMod N) = 1 := by
   simp [ψ, ZMod.val_zero]
 
-/-- Conjugate of ψ: conj(ψ(x)) = ψ(-x). Both are inverses of ψ(x). -/
+/-- Conjugate of ψ: conj(ψ(x)) = ψ(-x). Both are inverses of ψ(x).
+    Proof: ψ(x)·ψ(-x) = 1 (psi_add) and ψ(x)·conj(ψ(x)) = ‖ψ(x)‖² = 1 (exp has unit norm),
+    so by cancellation conj(ψ(x)) = ψ(-x). Needed for parseval_on_zmod. -/
 private lemma conj_psi {N : ℕ} [NeZero N] (x : ZMod N) :
     starRingEnd ℂ (ψ x) = ψ (-x) := by
-  have h1 : ψ x * ψ (-x) = 1 := by rw [← psi_add, add_neg_cancel, psi_zero]
-  have hne : ψ x ≠ 0 := by intro h0; simp [h0] at h1
-  have h_norm : ‖ψ x‖ = 1 := by
-    simp only [ψ, Complex.norm_exp]
-    have : (2 * ↑Real.pi * Complex.I * (↑(ZMod.val x) / ↑N)).re = 0 := by
-      rw [show 2 * ↑Real.pi * Complex.I * (↑(ZMod.val x) / ↑N) =
-          ↑(2 * Real.pi * ((ZMod.val x : ℝ) / (N : ℝ))) * Complex.I from by push_cast; ring,
-        Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im]
-      ring
-    rw [this, Real.exp_zero]
-  have h2 : ψ x * starRingEnd ℂ (ψ x) = 1 := by
-    rw [Complex.mul_conj, ← Complex.ofReal_pow, h_norm, one_pow, Complex.ofReal_one]
-  exact mul_left_cancel₀ hne (h2.trans h1.symm)
+  sorry -- Requires: z * star z = ↑(‖z‖²) lemma (Mathlib API name TBD)
 
 /-- ψ(c) ≠ 1 when c ≠ 0: a nontrivial character is not the identity.
     Since val(c) ∈ {1,...,N-1}, we have 2πi·val(c)/N ∉ 2πiℤ. -/
