@@ -67,8 +67,11 @@
       "**Infinite radius of convergence**: The summability of xⁿ/n! for every x ∈ ℝ means the exponential series has infinite radius of convergence — the series converges everywhere, unlike most power series"
     ],
     "prerequisites": [
-      "Real analysis (convergence, series)",
-      "Taylor's theorem (Lagrange remainder)"
+      "Real analysis (limits, convergence of sequences and series, absolute convergence)",
+      "Taylor's theorem with Lagrange remainder form",
+      "Differentiation (iterated derivatives, chain rule, derivative of exp)",
+      "Measure theory basics (Haar measure, topology of uniform convergence)",
+      "Factorial arithmetic and growth rate comparisons (n! vs |x|^n)"
     ]
   },
   "sections": [
@@ -146,12 +149,18 @@
       "targetId": "derangements-convergence",
       "relationship": "related",
       "description": "The derangements proof uses the same NormedSpace.exp_eq_tsum technique for e⁻¹ = Σ (-1)ᵏ/k!."
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "related",
+      "description": "Euler's identity $e^{i\\pi} + 1 = 0$ connects the real exponential series (proved here) to the complex exponential. Extending $e^x = \\sum x^n/n!$ to complex $x = i\\theta$ yields Euler's formula $e^{i\\theta} = \\cos\\theta + i\\sin\\theta$."
     }
   ],
   "relatedProofs": [
     "taylor-theorem",
     "e-transcendental",
-    "derangements-convergence"
+    "derangements-convergence",
+    "euler-identity"
   ],
   "leanFile": {
     "imports": [
