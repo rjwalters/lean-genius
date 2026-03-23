@@ -123,7 +123,7 @@
     "title": "Tao's Identity: The Double-Sum Interchange",
     "content": "`tao_identity : omegaSum = primeSum` is the central combinatorial result, proved by Aristotle in 60+ lines of tactic-mode Lean. The proof proceeds in three stages:\n\n1. **Expand $\\omega$**: Rewrite $\\omega(n)$ as $|\\text{primeFactors}(n)|$ and distribute the sum: $\\sum_n (\\sum_{p|n} 1)/2^n$\n\n2. **Fubini interchange**: Swap the order of summation using `Summable.tsum_comm`, justified by absolute convergence. The convergence proof bounds $\\omega(n)/2^n \\leq n/2^n$ and shows $\\sum n/2^n$ converges via the ratio test with eventual ratio $\\leq 3/4$.\n\n3. **Evaluate inner sums**: For each prime $p$, the inner sum $\\sum_{n: p|n} 1/2^n = \\sum_{k \\geq 1} 1/2^{pk} = 1/(2^p - 1)$ via `geometric_sum_over_multiples`.\n\nThe proof uses `summable_prod_of_nonneg` for the product summability, `tsum_eq_tsum_of_ne_zero_bij` for reindexing from 'multiples of $p$ minus 2' to natural numbers, and `Finset.sum_bij` for the bijection between prime factor membership and the filtered finset.",
     "mathContext": "$\\sum_{n=2}^{\\infty} \\frac{\\omega(n)}{2^n} = \\sum_{n=2}^{\\infty} \\frac{\\sum_{p|n} 1}{2^n} = \\sum_{n=2}^{\\infty} \\sum_{p|n} \\frac{1}{2^n} \\stackrel{\\text{Fubini}}{=} \\sum_p \\sum_{\\substack{n \\geq 2 \\\\ p|n}} \\frac{1}{2^n} = \\sum_p \\sum_{k=1}^{\\infty} \\frac{1}{2^{pk}} = \\sum_p \\frac{1}{2^p - 1}$\n\nThe Fubini interchange is valid because the double sum is absolutely convergent: $\\sum_{n,p} |a_{n,p}| \\leq \\sum_n n/2^n < \\infty$.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "Summable.tsum_comm",
       "summable_prod_of_nonneg",
