@@ -77,7 +77,7 @@
       "startLine": 84,
       "endLine": 116
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Lagrange Cross Product Identity Over K",
     "content": "The key algebraic bridge is the Lagrange vector quadruple product identity:\n\n```\n(a×b)×(c×d) = det(a,b,d)·c − det(a,b,c)·d\n```\n\nThis is `lagrange_cross_K`, proved by `ring` over any CommRing K. Geometrically:\n- `(a×b)` is the line through points `a` and `b`\n- `(c×d)` is the line through points `c` and `d`\n- The cross product `(a×b)×(c×d)` is their intersection point\n- The right side expresses this intersection as a linear combination of `c` and `d`\n\nThis identity drives the proof: intersection points P, Q, R are expressed as:\n- `P = det(A,B,B')·A' − det(A,B,A')·B'`\n- `Q = det(B,C,C')·B' − det(B,C,B')·C'`\n- `R = det(C,A,A')·C' − det(C,A,C')·A'`",
     "mathContext": "The identity $(a \\times b) \\times (c \\times d) = \\det(a,b,d)\\cdot c - \\det(a,b,c)\\cdot d$ is a degree-4 polynomial identity in 12 variables over any CommRing.",
@@ -124,7 +124,7 @@
       "startLine": 127,
       "endLine": 200
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Desargues Master Identity",
     "content": "The heart of the proof is the **Desargues master identity**:\n\n```\ndet(P,Q,R) = det(AA',BB',CC') · det(A,B,C) · det(A',B',C')\n```\n\nwhere P, Q, R are the intersection points. This is `desargues_identity_K`, proved in three algebraic steps:\n\n**Step 1 (Lagrange):** Express P, Q, R as linear combinations via the Lagrange identity. Let d₁=det(A,B,B'), d₂=det(A,B,A'), giving P = d₁A' − d₂B', and similarly for Q, R.\n\n**Step 2 (Multilinearity):** By multilinearity of det:\n```\ndet(d₁A'−d₂B', d₃B'−d₄C', d₅C'−d₆A') = (d₁d₃d₅ − d₂d₄d₆)·det(A',B',C')\n```\n\n**Step 3 (Core Identity):** The scalar factor satisfies a degree-9 polynomial identity in 18 variables, proved by `ring`:\n```\nd₁d₃d₅ − d₂d₄d₆ = det(A×A', B×B', C×C') · det(A,B,C)\n```",
     "mathContext": "The master identity shows $\\det(P,Q,R)$ factors through the perspectivity determinant. If the triangles are perspective from a point, $\\det(AA',BB',CC')=0$, so $\\det(P,Q,R)=0$.",
@@ -149,7 +149,7 @@
       "startLine": 170,
       "endLine": 200
     },
-    "type": "tactic",
+    "type": "technique",
     "title": "Degree-9 Ring Identity: ~400s Verification",
     "content": "The core step of the proof is a polynomial identity of degree 9 in 18 variables (coordinates of A, A', B, B', C, C'). Lean's `ring` tactic verifies it by symbolic normalization:\n\n```lean\nset_option maxHeartbeats 400000000 in\nlemma desargues_core_identity_K (...) :\n    d1*d3*d5 - d2*d4*d6 = detCross * det(A,B,C) := by ring\n```\n\nThis takes approximately 400 seconds in Docker due to polynomial size. The `maxHeartbeats` option is set to 400,000,000 (default is 400,000) to allow sufficient computation time.\n\n**Why ring works:** Over a CommRing, `ring` performs polynomial normalization. Since both sides are polynomials in the coordinates with integer coefficients, this is a purely algebraic verification.",
     "mathContext": "The identity $d_1d_3d_5 - d_2d_4d_6 = \\det(A\\times A', B\\times B', C\\times C') \\cdot \\det(A,B,C)$ expands to a degree-9 polynomial equation in 18 variables.",
@@ -172,7 +172,7 @@
       "startLine": 201,
       "endLine": 260
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Forward Direction (CommRing) and Converse (IntegralDomain)",
     "content": "**Forward**: Over any CommRing K, if two triangles are perspective from a point then they are perspective from a line. The proof is immediate: the master identity gives `det(P,Q,R) = det(AA',BB',CC') · det(A,B,C) · det(A',B',C')`, so `det(AA',BB',CC') = 0` implies `det(P,Q,R) = 0`.\n\n**Converse**: Over any IntegralDomain K, under the non-degeneracy condition `det(A,B,C) · det(A',B',C') ≠ 0`, if P,Q,R are collinear then AA', BB', CC' are concurrent. The IntegralDomain condition allows cancelling the non-degenerate factor.\n\n**Biconditional** (`desargues_iff_K`): Over an IntegralDomain, the two conditions are equivalent under non-degeneracy.",
     "mathContext": "The non-degeneracy condition is necessary: over ℤ/6ℤ (a ring with zero divisors), Desargues's converse can fail because $2 \\cdot 3 = 0$ allows the factored identity to hold without the perspectivity determinant vanishing.",
@@ -197,7 +197,7 @@
       "startLine": 261,
       "endLine": 286
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Corollaries: ℚ, ℤ, 𝔽_p, and Polynomial Rings",
     "content": "Specializations follow immediately by type instantiation:\n\n- **Over ℚ** (a field): both forward and converse hold\n- **Over ℤ** (an integral domain but not a field): both directions hold under non-degeneracy\n- **Over 𝔽_p = ZMod p** (prime p, a finite field): full Desargues biconditional\n- **Over K[x]** (polynomial ring): forward direction holds for any CommRing K\n\nAll corollaries have zero-line proofs — they follow by type instantiation from the general theorem. This demonstrates the power of working over an abstract CommRing rather than a specific field.",
     "mathContext": "The classical theorem that projective planes are Desarguesian iff they are coordinatizable by a division ring shows this is the 'right' level of generality. Our formalization works even over non-division rings, showing the forward direction is purely polynomial.",

@@ -33,7 +33,7 @@
       "startLine": 87,
       "endLine": 91
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Collinear = Concurrent (by rfl)",
     "content": "The fundamental observation underlying projective duality: collinearity (det(p,q,r) = 0) and concurrence (det(l,m,n) = 0) are the SAME predicate in homogeneous coordinates. This is proved by `rfl` — they are definitionally identical.",
     "mathContext": "In homogeneous coordinates, both points and lines are elements of $K^3$. A point $p$ lies on a line $l$ iff $p \\cdot l = 0$. The collinearity of three points and concurrence of three lines are both expressed as $\\det(u,v,w) = 0$.",
@@ -115,7 +115,7 @@
       "startLine": 141,
       "endLine": 146
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Self-Duality: dual(perspFromPoint) = perspFromLine (by rfl)",
     "content": "The key self-duality result: 'perspective from a point' of the dual configuration equals 'perspective from a line' of the original, proved by `rfl`. The joining lines of the dual's vertex pairs are exactly the intersection points of the original's corresponding sides.",
     "mathContext": "If the dual's vertices are the sides of the original, then: $\\text{cross3}(\\text{dual}.A, \\text{dual}.A') = \\text{cross3}(A \\times B, A' \\times B')$ which is the intersection point $P = AB \\cap A'B'$. So the concurrent condition on the dual's joining lines IS the collinear condition on the original's intersection points.",
@@ -143,7 +143,7 @@
       "startLine": 154,
       "endLine": 169
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Lagrange Cross Product Identity",
     "content": "The Lagrange identity expresses the cross product of two cross products as a linear combination of the original vectors: $\\text{cross3}(a \\times b, c \\times d) = \\det(a,b,d) \\cdot c - \\det(a,b,c) \\cdot d$. This is the algebraic engine behind the Desargues identity, reducing the degree-9 polynomial to manageable factors.",
     "mathContext": "$(a \\times b) \\times (c \\times d) = \\det(a,b,d) \\cdot c - \\det(a,b,c) \\cdot d$. Proved component-wise using `ring` after expanding via `cross3_zero/one/two` and `threeVecMat_det_explicit`.",
@@ -170,7 +170,7 @@
       "startLine": 174,
       "endLine": 204
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Desargues Identity",
     "content": "The Desargues identity: det(P,Q,R) = det(AA',BB',CC') · det(ABC) · det(A'B'C'). This algebraic identity over any CommRing K is the engine behind both the forward direction and the self-duality. The RHS is manifestly symmetric in the two triangles.",
     "mathContext": "$$\\det(P,Q,R) = \\det(AA', BB', CC') \\cdot \\det(A,B,C) \\cdot \\det(A',B',C')$$\nwhere $P = AB \\cap A'B'$, $Q = BC \\cap B'C'$, $R = CA \\cap C'A'$. The proof substitutes Lagrange identity results, reduces to a polynomial identity in 6 auxiliary determinants $d_1, \\ldots, d_6$.",
@@ -197,7 +197,7 @@
       "startLine": 210,
       "endLine": 217
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Forward Direction: perspFromPoint → perspFromLine",
     "content": "Desargues's theorem (forward): perspective from a point implies perspective from a line, over any CommRing K. A one-line proof: substitute $\\det(AA',BB',CC') = 0$ into the Desargues identity to get $\\det(P,Q,R) = 0 \\cdot (\\det(ABC) \\cdot \\det(A'B'C')) = 0$.",
     "mathContext": "$\\det(AA',BB',CC') = 0 \\implies \\det(P,Q,R) = 0 \\cdot \\det(ABC) \\cdot \\det(A'B'C') = 0$",
@@ -225,7 +225,7 @@
       "startLine": 267,
       "endLine": 275
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Perspectivity Symmetric Under Triangle Swap",
     "content": "Self-duality of perspectivity: if lines AA', BB', CC' are concurrent, so are the lines A'A, B'B, C'C (they are the same lines). Proved by showing the perspectivity determinant negates under swap (each row flips sign via cross product anticommutativity), so det = 0 is preserved.",
     "mathContext": "The perspectivity determinant satisfies $\\det(A'A, B'B, C'C) = -\\det(AA', BB', CC')$ because $A' \\times A = -(A \\times A')$ for each row. Since $\\det = 0 \\iff -\\det = 0$, concurrence is preserved under swap.",
@@ -252,7 +252,7 @@
       "startLine": 296,
       "endLine": 303
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Line Perspective Symmetric Under Swap",
     "content": "If intersection points P, Q, R are collinear, then the 'swapped' intersection points (computed as A'B'∩AB instead of AB∩A'B') are also collinear. Uses the same anticommutativity argument: each row of the collinearity matrix negates, giving $\\det' = -\\det$, preserving the zero condition.",
     "mathContext": "$\\det((A'B' \\cap AB), (B'C' \\cap BC), (C'A' \\cap CA)) = -\\det((AB \\cap A'B'), (BC \\cap B'C'), (CA \\cap C'A'))$",
@@ -279,7 +279,7 @@
       "startLine": 333,
       "endLine": 343
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Algebraic Converse Over Integral Domains",
     "content": "The algebraic converse over integral domains: if both triangles are non-degenerate and in perspective from a line, then in perspective from a point. Uses the Desargues identity and zero-product property of integral domains.",
     "mathContext": "From $\\det(P,Q,R) = \\det(AA',BB',CC') \\cdot \\det(ABC) \\cdot \\det(A'B'C')$, if $\\det(P,Q,R) = 0$ and $\\det(ABC) \\cdot \\det(A'B'C') \\neq 0$, then $\\det(AA',BB',CC') = 0$ in an integral domain.",
@@ -306,7 +306,7 @@
       "startLine": 345,
       "endLine": 349
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Biconditional: perspFromPoint ↔ perspFromLine",
     "content": "The full biconditional form of Desargues's theorem over integral domains: for non-degenerate triangles, perspective from a point if and only if perspective from a line. Combines the forward direction (which works over any CommRing) with the converse (which requires IsDomain and non-degeneracy).",
     "mathContext": "For $\\det(ABC) \\cdot \\det(A'B'C') \\neq 0$: $\\text{perspFromPoint} \\iff \\text{perspFromLine}$",

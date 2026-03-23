@@ -45,7 +45,7 @@
       "startLine": 101,
       "endLine": 125
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Conjugate Exponents Preserved Under Interpolation",
     "content": "This is a subtle but essential algebraic fact: if (p0, q0) and (p1, q1) are both Holder conjugate pairs (1/p + 1/q = 1), then the interpolated pair (p_theta, q_theta) is also conjugate. The proof is purely algebraic, factoring the sum as a convex combination of the conjugacy conditions at each endpoint. This guarantees that duality is maintained throughout the interpolation.",
     "mathContext": "If $\\frac{1}{p_0} + \\frac{1}{q_0} = 1$ and $\\frac{1}{p_1} + \\frac{1}{q_1} = 1$, then $\\frac{1}{p_\\theta} + \\frac{1}{q_\\theta} = (1-\\theta)\\left(\\frac{1}{p_0} + \\frac{1}{q_0}\\right) + \\theta\\left(\\frac{1}{p_1} + \\frac{1}{q_1}\\right) = 1$.",
@@ -129,7 +129,7 @@
       "startLine": 317,
       "endLine": 357
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Riesz-Thorin Theorem (Axiomatized)",
     "content": "The full Riesz-Thorin theorem is axiomatized because its proof requires the three-lines lemma, which is itself axiomatized. The statement is carefully formulated using LpLqBounded at the endpoint pairs and produces a LpLqBounded at the interpolated pair. The linearity hypothesis on T is included explicitly, reflecting the fact that the proof constructs an analytic family of operators from the linearity of T.",
     "mathContext": "If $T$ is linear and $\\|T\\|_{L^{p_i} \\to L^{q_i}} \\leq M_i$ for $i=0,1$, then $\\|T\\|_{L^{p_\\theta} \\to L^{q_\\theta}} \\leq M_0^{1-\\theta} \\cdot M_1^\\theta$. The proof maps $z \\mapsto T_z$ to an analytic family on the strip and applies the three-lines lemma.",
