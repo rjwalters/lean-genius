@@ -2,75 +2,154 @@
   {
     "id": "ann-e1047-lemniscate",
     "proofId": "erdos-1047",
-    "range": { "startLine": 56, "endLine": 58 },
+    "range": {
+      "startLine": 56,
+      "endLine": 58
+    },
     "type": "definition",
     "title": "Polynomial Lemniscate",
     "content": "A **polynomial lemniscate** is the sublevel set:\n\n{z ∈ ℂ : |f(z)| ≤ c}\n\nThe name comes from the lemniscate of Bernoulli (the figure-8 curve), which is the lemniscate of f(z) = z² - 1.\n\nFor small c, the lemniscate breaks into separate 'islands' around each root of f.",
     "mathContext": "Uses the norm `‖·‖` (which equals Complex.abs for ℂ) and `Polynomial.eval` to evaluate f at complex points.",
     "significance": "key",
-    "relatedConcepts": ["Level sets", "Sublevel sets", "Complex analysis"]
+    "relatedConcepts": [
+      "Level sets",
+      "Sublevel sets",
+      "Complex analysis"
+    ]
   },
   {
     "id": "ann-e1047-strict",
     "proofId": "erdos-1047",
-    "range": { "startLine": 60, "endLine": 62 },
+    "range": {
+      "startLine": 60,
+      "endLine": 62
+    },
     "type": "definition",
     "title": "Strict Lemniscate",
     "content": "The **strict lemniscate** uses < instead of ≤:\n\n{z : |f(z)| < c}\n\nThis is the interior of the lemniscate. The distinction matters for topological properties like connectedness.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "$\\{z \\in \\mathbb{C} : |f(z)| < c\\}$ — the open sublevel set, topologically the interior of the lemniscate",
+    "relatedConcepts": [
+      "Open sets",
+      "Interior",
+      "Strict inequality"
+    ],
+    "prerequisites": [
+      "Polynomial evaluation",
+      "Complex norm"
+    ]
   },
   {
     "id": "ann-e1047-boundary",
     "proofId": "erdos-1047",
-    "range": { "startLine": 64, "endLine": 66 },
+    "range": {
+      "startLine": 64,
+      "endLine": 66
+    },
     "type": "definition",
     "title": "Lemniscate Boundary",
     "content": "The **lemniscate boundary** is the level curve:\n\n{z : |f(z)| = c}\n\nThis is an algebraic curve of degree 2n where n = deg(f). The topology of this curve changes as c passes through critical values of |f|.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "$\\{z \\in \\mathbb{C} : |f(z)| = c\\}$ — an algebraic curve of degree $2n$ when $\\deg(f) = n$",
+    "relatedConcepts": [
+      "Level curves",
+      "Algebraic curves",
+      "Critical values"
+    ],
+    "prerequisites": [
+      "Complex polynomial evaluation"
+    ]
   },
   {
     "id": "ann-e1047-closed",
     "proofId": "erdos-1047",
-    "range": { "startLine": 74, "endLine": 75 },
+    "range": {
+      "startLine": 74,
+      "endLine": 75
+    },
     "type": "technique",
     "title": "Lemniscates are Closed",
     "content": "The lemniscate {z : |f(z)| ≤ c} is a closed set.\n\nThis follows from continuity: the preimage of a closed set [0,c] under the continuous function |f| is closed.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "$f^{-1}([0,c])$ is closed since $|f| : \\mathbb{C} \\to \\mathbb{R}$ is continuous and $[0,c]$ is closed",
+    "relatedConcepts": [
+      "Preimage of closed set",
+      "Continuity",
+      "IsClosed"
+    ],
+    "prerequisites": [
+      "Continuous.isClosedPreimage",
+      "Polynomial.continuous_eval"
+    ]
   },
   {
     "id": "ann-e1047-compact",
     "proofId": "erdos-1047",
-    "range": { "startLine": 82, "endLine": 83 },
+    "range": {
+      "startLine": 82,
+      "endLine": 83
+    },
     "type": "context",
     "title": "Lemniscates are Compact",
     "content": "For polynomials of positive degree, lemniscates are **compact** (closed and bounded).\n\nBoundedness: As |z| → ∞, |f(z)| → ∞ for non-constant f, so the lemniscate is contained in some large disk.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "For $\\deg(f) \\geq 1$: $|f(z)| \\to \\infty$ as $|z| \\to \\infty$, so $\\{|f| \\leq c\\}$ is bounded; combined with closedness gives compactness",
+    "relatedConcepts": [
+      "Heine-Borel theorem",
+      "Polynomial growth",
+      "IsCompact"
+    ],
+    "prerequisites": [
+      "Polynomial degree growth",
+      "IsClosed + IsBounded = IsCompact"
+    ]
   },
   {
     "id": "ann-e1047-components",
     "proofId": "erdos-1047",
-    "range": { "startLine": 91, "endLine": 101 },
+    "range": {
+      "startLine": 91,
+      "endLine": 101
+    },
     "type": "technique",
     "title": "Component Counting",
     "content": "For sufficiently small c, the lemniscate has exactly m connected components, where m is the number of distinct roots.\n\nEach root gets its own 'island'. As c increases, these islands may merge when c passes a critical value (a saddle point of |f|).",
     "significance": "key",
-    "relatedConcepts": ["Connected components", "Morse theory"]
+    "relatedConcepts": [
+      "Connected components",
+      "Morse theory"
+    ],
+    "mathContext": "For $c < \\min_{|f'(z_j)|} |f(z_j)|$ (below all critical values), each root $z_j$ has a separate connected component",
+    "prerequisites": [
+      "Connected components",
+      "Morse theory for |f|"
+    ]
   },
   {
     "id": "ann-e1047-convex-def",
     "proofId": "erdos-1047",
-    "range": { "startLine": 110, "endLine": 114 },
+    "range": {
+      "startLine": 110,
+      "endLine": 114
+    },
     "type": "definition",
     "title": "Convexity in ℂ",
     "content": "A set S ⊆ ℂ is **convex** if for any two points z, w ∈ S, the entire line segment from z to w lies in S:\n\n∀ t ∈ [0,1], (1-t)z + tw ∈ S\n\nThis is the standard definition, viewing ℂ as ℝ².",
     "mathContext": "Viewing ℂ ≅ ℝ², convexity of S means S contains all convex combinations (1−t)z + tw for t ∈ [0,1]. Equivalently, S is the intersection of (possibly infinitely many) closed half-planes, a characterisation used in the Hahn-Banach separation theorem.",
     "significance": "key",
-    "relatedConcepts": ["Convex sets", "Convex hull", "Hahn-Banach theorem"]
+    "relatedConcepts": [
+      "Convex sets",
+      "Convex hull",
+      "Hahn-Banach theorem"
+    ]
   },
   {
     "id": "ann-e1047-grunsky",
     "proofId": "erdos-1047",
-    "range": { "startLine": 126, "endLine": 131 },
+    "range": {
+      "startLine": 126,
+      "endLine": 131
+    },
     "type": "definition",
     "title": "The Grunsky Conjecture",
     "content": "**Grunsky's Question (1958):**\n\nFor any monic polynomial f with distinct roots, do small lemniscates have all convex components?\n\nThe intuition: near a simple root z₀, we have |f(z)| ≈ |f'(z₀)| · |z - z₀|, so the component is approximately a disk (definitely convex).",
@@ -80,17 +159,32 @@
   {
     "id": "ann-e1047-grunsky-false",
     "proofId": "erdos-1047",
-    "range": { "startLine": 132, "endLine": 133 },
+    "range": {
+      "startLine": 132,
+      "endLine": 133
+    },
     "type": "technique",
     "title": "Grunsky Conjecture is FALSE",
     "content": "The Grunsky conjecture is **disproved**.\n\nCounterexamples show that lemniscate components can be non-convex, even for small c. The interaction between multiple roots can create 'pinching' effects.",
     "significance": "key",
-    "relatedConcepts": ["Disproved conjecture", "Counterexample", "Potential theory"]
+    "relatedConcepts": [
+      "Disproved conjecture",
+      "Counterexample",
+      "Potential theory"
+    ],
+    "mathContext": "$\\exists$ monic $f$, $\\exists c > 0$ small: some connected component of $\\{|f| \\leq c\\}$ is not convex",
+    "prerequisites": [
+      "Grunsky conjecture statement",
+      "Counterexample construction"
+    ]
   },
   {
     "id": "ann-e1047-pommerenke-poly",
     "proofId": "erdos-1047",
-    "range": { "startLine": 141, "endLine": 143 },
+    "range": {
+      "startLine": 141,
+      "endLine": 143
+    },
     "type": "definition",
     "title": "Pommerenke's Polynomial",
     "content": "**Pommerenke's family (1961):**\n\nf(z) = z^k(z - a)\n\nThis has a root of multiplicity k at 0 and a simple root at a. For large k and carefully chosen a, the component around 0 becomes non-convex.",
@@ -100,73 +194,168 @@
   {
     "id": "ann-e1047-pommerenke-param",
     "proofId": "erdos-1047",
-    "range": { "startLine": 163, "endLine": 168 },
+    "range": {
+      "startLine": 163,
+      "endLine": 168
+    },
     "type": "technique",
     "title": "Pommerenke's Parameter Choice",
     "content": "For k ≥ 10, choosing:\n\na = (1 + 1/k) · k^(1/(k+1))\n\ngives a non-convex lemniscate component around 0 at level c = 1.\n\nThe value of a is approximately 1 + 1/k for large k, placing the simple root just outside the unit circle.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "For $f(z) = z^k(z - a)$ with $k \\geq 10$ and $a = (1 + 1/k) \\cdot k^{1/(k+1)}$, the component around $0$ at $c = 1$ is non-convex",
+    "relatedConcepts": [
+      "Multiplicity effects",
+      "Parameter optimization",
+      "Non-convexity"
+    ],
+    "prerequisites": [
+      "Pommerenke's polynomial family"
+    ]
   },
   {
     "id": "ann-e1047-goodman-poly",
     "proofId": "erdos-1047",
-    "range": { "startLine": 174, "endLine": 178 },
+    "range": {
+      "startLine": 174,
+      "endLine": 178
+    },
     "type": "definition",
     "title": "Goodman's Polynomial",
     "content": "**Goodman's example (1966):**\n\nf(z) = (z² + 1)(z - 2)²\n\nThis has roots at ±i and a double root at 2. Degree 4, with one non-simple root.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "$f(z) = (z^2 + 1)(z - 2)^2$, roots at $z = \\pm i$ (simple) and $z = 2$ (double), degree 4",
+    "relatedConcepts": [
+      "Quartic polynomials",
+      "Repeated roots",
+      "Root configuration"
+    ],
+    "prerequisites": [
+      "Complex polynomial factorization"
+    ]
   },
   {
     "id": "ann-e1047-goodman-critical",
     "proofId": "erdos-1047",
-    "range": { "startLine": 181, "endLine": 184 },
+    "range": {
+      "startLine": 181,
+      "endLine": 184
+    },
     "type": "definition",
     "title": "Goodman's Critical Value",
     "content": "The critical level:\n\nc = 5^(3/2) / 4 ≈ 2.795\n\nAt this level, the lemniscate has three components (around i, -i, and 2), and one of them is non-convex.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "$c = 5^{3/2}/4 \\approx 2.795$ — the critical level where non-convexity occurs for Goodman's polynomial",
+    "relatedConcepts": [
+      "Critical values",
+      "Level set topology change"
+    ],
+    "prerequisites": [
+      "Goodman's polynomial"
+    ]
   },
   {
     "id": "ann-e1047-goodman-thm",
     "proofId": "erdos-1047",
-    "range": { "startLine": 185, "endLine": 194 },
+    "range": {
+      "startLine": 185,
+      "endLine": 194
+    },
     "type": "technique",
     "title": "Goodman's Counterexample",
     "content": "**Goodman (1966):**\n\nThe polynomial (z²+1)(z-2)² at level c = 5^(3/2)/4 has a non-convex component.\n\nGoodman also constructed an example with only simple roots of degree 4.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "$\\{z : |(z^2+1)(z-2)^2| \\leq 5^{3/2}/4\\}$ has a non-convex component — explicit degree-4 counterexample",
+    "relatedConcepts": [
+      "Explicit counterexample",
+      "Degree-4 lemniscate",
+      "Non-convexity"
+    ],
+    "prerequisites": [
+      "Goodman's polynomial and critical value"
+    ]
   },
   {
     "id": "ann-e1047-referee",
     "proofId": "erdos-1047",
-    "range": { "startLine": 204, "endLine": 219 },
+    "range": {
+      "startLine": 204,
+      "endLine": 219
+    },
     "type": "technique",
     "title": "Referee's Example",
     "content": "**Anonymous referee of Goodman's paper:**\n\nf(z) = z(z⁵ - 1) with c = 5.6^(-6/5)\n\nThis polynomial has roots at 0 and the 5th roots of unity. The symmetric arrangement creates an interesting non-convex component.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "$f(z) = z(z^5 - 1)$ with $c = 5.6^{-6/5}$ — roots at $0$ and $5$th roots of unity, symmetric non-convex component",
+    "relatedConcepts": [
+      "Roots of unity",
+      "Cyclic symmetry",
+      "Degree-6 counterexample"
+    ],
+    "prerequisites": [
+      "Roots of unity configuration"
+    ]
   },
   {
     "id": "ann-e1047-goodman-question",
     "proofId": "erdos-1047",
-    "range": { "startLine": 238, "endLine": 249 },
+    "range": {
+      "startLine": 238,
+      "endLine": 249
+    },
     "type": "definition",
     "title": "Goodman's Open Question",
     "content": "**Open Problem:**\n\nWhat is the maximum number of non-convex components for a degree d polynomial?\n\nDefine maxNonConvexComponents(d) as this supremum. We know:\n- maxNonConvexComponents(d) ≥ 1 for d ≥ 4\n- The exact function is unknown",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "$\\text{maxNonConvex}(d) = \\max_{f, c} |\\{\\text{non-convex components of } \\{|f| \\leq c\\}\\}|$ where $\\deg(f) = d$",
+    "relatedConcepts": [
+      "Extremal problems",
+      "Counting non-convex components"
+    ],
+    "prerequisites": [
+      "Lemniscate component theory"
+    ]
   },
   {
     "id": "ann-e1047-single-root",
     "proofId": "erdos-1047",
-    "range": { "startLine": 227, "endLine": 230 },
+    "range": {
+      "startLine": 227,
+      "endLine": 230
+    },
     "type": "technique",
     "title": "Single Root is Convex",
     "content": "**Positive result:**\n\nFor f(z) = (z - a)^k, the lemniscate is:\n\n{z : |z - a|^k ≤ c} = {z : |z - a| ≤ c^(1/k)}\n\nThis is a disk centered at a, which is convex.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "$\\{z : |(z-a)^k| \\leq c\\} = \\{z : |z-a| \\leq c^{1/k}\\}$ — a disk, hence convex",
+    "relatedConcepts": [
+      "Disk convexity",
+      "Single root case",
+      "Power function monotonicity"
+    ],
+    "prerequisites": [
+      "Real.rpow_le_rpow"
+    ]
   },
   {
     "id": "ann-e1047-main",
     "proofId": "erdos-1047",
-    "range": { "startLine": 258, "endLine": 275 },
+    "range": {
+      "startLine": 258,
+      "endLine": 275
+    },
     "type": "technique",
     "title": "Main Result",
     "content": "**Erdős Problem #1047: SOLVED**\n\nAnswer: NO, lemniscate components need not be convex.\n\nThe Grunsky conjecture is false, with explicit counterexamples from Pommerenke (1961) and Goodman (1966).",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "Grunsky's conjecture is false: $\\exists$ polynomial $f$, $\\exists c > 0$: lemniscate $\\{|f| \\leq c\\}$ has a non-convex component",
+    "relatedConcepts": [
+      "Disproved conjecture",
+      "Pommerenke counterexample",
+      "Goodman counterexample"
+    ],
+    "prerequisites": [
+      "Pommerenke (1961)",
+      "Goodman (1966)"
+    ]
   }
 ]
