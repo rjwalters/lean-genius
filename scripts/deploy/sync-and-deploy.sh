@@ -143,9 +143,15 @@ merge_prs() {
 
     local merged=0
     local failed=0
-    local total=$(gh pr list --json number | jq 'length')
 
-    print_info "Found $total open PRs"
+    # Skip PRs with loom:review-requested — those are opted into Loom Judge review
+    local jq_filter='[.[] | select(.labels | map(.name) | any(. == "loom:review-requested") | not)]'
+    local all_prs=$(gh pr list --limit 100 --json number,mergeable,labels)
+    local eligible_prs=$(echo "$all_prs" | jq "$jq_filter")
+    local total=$(echo "$eligible_prs" | jq 'length')
+    local skipped=$(echo "$all_prs" | jq "length - ($total)")
+
+    print_info "Found $total eligible PRs ($skipped skipped — loom:review-requested)"
 
     if [[ $total -eq 0 ]]; then
         print_success "No PRs to merge"
@@ -153,7 +159,7 @@ merge_prs() {
     fi
 
     # Try to merge each PR
-    for pr in $(gh pr list --limit 100 --json number,mergeable --jq '.[] | select(.mergeable == "MERGEABLE") | .number'); do
+    for pr in $(echo "$eligible_prs" | jq -r '.[] | select(.mergeable == "MERGEABLE") | .number'); do
         if $DRY_RUN; then
             echo "  Would merge PR #$pr"
             ((merged++))
@@ -171,7 +177,7 @@ merge_prs() {
 
     # Handle UNKNOWN status PRs (wait and retry)
     sleep 3
-    for pr in $(gh pr list --limit 100 --json number,mergeable --jq '.[] | select(.mergeable == "UNKNOWN") | .number'); do
+    for pr in $(echo "$eligible_prs" | jq -r '.[] | select(.mergeable == "UNKNOWN") | .number'); do
         local status=$(gh pr view "$pr" --json mergeable --jq '.mergeable' 2>/dev/null || echo "UNKNOWN")
         if [[ "$status" == "MERGEABLE" ]]; then
             if $DRY_RUN; then
@@ -190,7 +196,7 @@ merge_prs() {
     done
 
     # Try to rebase conflicting PRs
-    for pr in $(gh pr list --limit 50 --json number,mergeable --jq '.[] | select(.mergeable == "CONFLICTING") | .number'); do
+    for pr in $(echo "$eligible_prs" | jq -r '.[] | select(.mergeable == "CONFLICTING") | .number'); do
         local branch=$(gh pr view "$pr" --json headRefName --jq '.headRefName')
         print_info "Attempting rebase for PR #$pr ($branch)..."
 
@@ -719,7 +725,6 @@ main() {
     echo "  Deploy:    $run_deploy"
     echo "  Dry Run:   $DRY_RUN"
 
-    $run_merge && label_unlabeled_prs
     $run_merge && merge_prs
     $run_sync && sync_data
     $run_build && build_website
