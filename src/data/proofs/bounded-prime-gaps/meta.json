@@ -207,11 +207,17 @@
       "targetId": "bounded-prime-gaps-oq-03-oq-01",
       "relationship": "extended-by",
       "description": "Analyzes how the $k$-tuple size parameter affects the gap bound: the Polymath 8b bound 246 comes from optimizing over 50-tuples, and this sub-entry explores whether larger tuples or different optimization strategies could improve the bound"
+    },
+    {
+      "targetId": "prime-gap-bounds",
+      "relationship": "depends-on",
+      "description": "Imports prime gap infrastructure: nth prime bounds (p_n <= 2^(n+1)), prime counting bounds (pi(2n) > pi(n)), and the order-preserving enumeration property of primes used in the prime gap analysis"
     }
   ],
   "relatedProofs": [
     "bertrands-postulate",
     "infinitude-primes",
+    "prime-gap-bounds",
     "prime-number-theorem",
     "prime-reciprocal-divergence",
     "riemann-hypothesis",
