@@ -38,8 +38,10 @@
       "**Non-computability barrier**: The irrationality sequence property cannot be decided by any algorithm, as it requires checking uncountably many perturbation sequences. This places the problem in a fundamentally different complexity class from finitely verifiable properties"
     ],
     "prerequisites": [
-      "Number theory fundamentals",
-      "Combinatorial analysis"
+      "Real analysis: convergence, irrationality, power functions",
+      "Number theory: Egyptian fractions, Diophantine approximation",
+      "Series theory: convergent sums, partial sums, $\\texttt{tsum}$ API",
+      "Familiarity with Lean 4, Mathlib's filter-based convergence and topology"
     ]
   },
   "sections": [
@@ -48,77 +50,88 @@
       "title": "Imports and Setup",
       "summary": "Imports Mathlib's real analysis, irrationality definitions, power functions, and topology framework. Opens the $\\texttt{Filter}$, $\\texttt{Topology}$, and $\\texttt{Real}$ namespaces.",
       "startLine": 23,
-      "endLine": 31
+      "endLine": 31,
+      "mathContext": "Imports: `Real.Irrational` for $\\notin \\mathbb{Q}$, `SpecialFunctions.Pow` for $a_n^{1/n}$, `tsum` for $\\sum 1/b_n$."
     },
     {
       "id": "definitions",
       "title": "Basic Definitions",
       "summary": "Defines $\\texttt{PosIntSeq} := \\mathbb{N} \\to \\mathbb{N}^+$, the reciprocal sum $\\sum 1/b_n$ via $\\texttt{tsum}$, partial sums, and the perturbation relation $b_n/a_n \\to 1$ using filter-based convergence.",
       "startLine": 33,
-      "endLine": 48
+      "endLine": 48,
+      "mathContext": "Perturbation: $b_n/a_n \\to 1$ via `Filter.Tendsto`. Reciprocal sum: $\\sum_{n=0}^{\\infty} 1/b_n$ via `tsum`."
     },
     {
       "id": "irrationality",
       "title": "Irrationality Sequences",
       "summary": "The central definition: $(a_n)$ is an irrationality sequence if $\\forall (b_n),\\; b_n/a_n \\to 1 \\Rightarrow \\sum 1/b_n \\notin \\mathbb{Q}$. Defines the double exponential $2^{2^n}$ and formalizes Erdős's first question.",
       "startLine": 50,
-      "endLine": 61
+      "endLine": 61,
+      "mathContext": "$(a_n)$ irrationality seq $\\iff$ $\\forall (b_n),\\, b_n/a_n \\to 1 \\Rightarrow \\sum 1/b_n \\notin \\mathbb{Q}$. Q1: Is $2^{2^n}$ such?"
     },
     {
       "id": "growth",
       "title": "Growth Conditions",
       "summary": "Defines superexponential growth ($a_n^{1/n} \\to \\infty$) and formalizes Erdős's second question: must irrationality sequences have superexponential growth?",
       "startLine": 63,
-      "endLine": 71
+      "endLine": 71,
+      "mathContext": "Superexponential: $a_n^{1/n} \\to \\infty$. Q2: irrationality seq $\\Rightarrow$ superexponential?"
     },
     {
       "id": "folklore",
       "title": "Folklore Condition",
       "summary": "The classical sufficient condition: $a_n^{1/2^n} \\to \\infty$ implies $\\sum 1/a_n \\notin \\mathbb{Q}$. Tests whether $2^{2^n}$ satisfies this — it sits exactly on the boundary since $(2^{2^n})^{1/2^n} = 2$.",
       "startLine": 73,
-      "endLine": 87
+      "endLine": 87,
+      "mathContext": "Folklore: $a_n^{1/2^n} \\to \\infty \\Rightarrow$ irrationality seq. Boundary: $(2^{2^n})^{1/2^n} = 2$ (constant)."
     },
     {
       "id": "kovac-tao",
       "title": "Kovač-Tao Result (2024)",
       "summary": "Formalizes the Kovač-Tao theorem: strictly increasing sequences with convergent sum and $a_{n+1}/a_n^2 \\to 0$ are NOT irrationality sequences. Their proof constructs rational perturbations via greedy Egyptian fraction decomposition.",
       "startLine": 89,
-      "endLine": 109
+      "endLine": 109,
+      "mathContext": "Kovač-Tao: $a_{n+1}/a_n^2 \\to 0 \\Rightarrow$ NOT irrationality seq. Threshold: quadratic recurrence $a_{n+1} \\approx a_n^2$."
     },
     {
       "id": "positive",
       "title": "Positive Condition",
       "summary": "The sufficient condition $\\liminf a_{n+1}/a_n^{2+\\epsilon} > 0$ for some $\\epsilon > 0$ implies the sequence IS an irrationality sequence, establishing the upper boundary of the characterization gap.",
       "startLine": 111,
-      "endLine": 122
+      "endLine": 122,
+      "mathContext": "$\\liminf a_{n+1}/a_n^{2+\\varepsilon} > 0 \\Rightarrow$ irrationality seq. Gap: between $a_n^2$ and $a_n^{2+\\varepsilon}$."
     },
     {
       "id": "examples",
       "title": "Specific Examples",
       "summary": "Tests the growth hierarchy: factorial $(n+1)!$ fails folklore growth but has superexponential growth ($(n!)^{1/n} \\sim n/e$). Tower function (tetration ${}^n 2$) grows faster than $2^{2^n}$. Double exponential properties: strictly increasing and convergent sum.",
       "startLine": 124,
-      "endLine": 144
+      "endLine": 144,
+      "mathContext": "$(n!)^{1/n} \\sim n/e$ (superexponential). $2^{2^n}$: increasing, $\\sum 1/2^{2^n}$ converges."
     },
     {
       "id": "characterization",
       "title": "Characterization Attempts",
       "summary": "Proves a gap exists: $\\exists$ sequences with superexponential growth lacking folklore growth. Bundles Erdős's two questions into $\\texttt{MainQuestion}$.",
       "startLine": 146,
-      "endLine": 155
+      "endLine": 155,
+      "mathContext": "Gap: superexponential $\\not\\Rightarrow$ folklore growth. MainQuestion bundles Q1 $\\wedge$ Q2."
     },
     {
       "id": "connections",
       "title": "Connections to Problems #262 and #264",
       "summary": "Links to Problem #262 (growth lower bounds for irrationality sequences, Hančl 1991) and Problem #264 (bounded additive perturbations, where Kovač-Tao showed $2^n$ fails).",
       "startLine": 157,
-      "endLine": 167
+      "endLine": 167,
+      "mathContext": "#262: growth bounds. #264: bounded perturbations $b_n = a_n + O(1)$."
     },
     {
       "id": "noncomputable",
       "title": "Non-Computability",
       "summary": "Shows no algorithm can decide if a sequence is an irrationality sequence (requires checking all perturbations). Any finite prefix is insufficient: $\\forall N,\\; \\exists$ two sequences agreeing on $N$ terms with opposite irrationality status.",
       "startLine": 169,
-      "endLine": 181
+      "endLine": 181,
+      "mathContext": "Undecidable: $\\forall N,\\, \\exists (a_n), (a_n')$ agreeing on $N$ terms with opposite irrationality status."
     }
   ],
   "conclusion": {
@@ -149,5 +162,44 @@
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 19
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-262",
+      "relationship": "related",
+      "description": "Problem #262 asks for growth lower bounds on irrationality sequences (Hančl 1991). This file formalizes the connection: growth conditions from #262 are necessary conditions for the irrationality sequence property studied in #263"
+    },
+    {
+      "targetId": "erdos-264",
+      "relationship": "related",
+      "description": "Problem #264 concerns bounded additive perturbations (b_n = a_n + O(1)). Kovač-Tao (2024) showed 2^n fails for bounded perturbations, connecting to the threshold behavior at the quadratic recurrence"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-262",
+    "erdos-264"
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "L'Enseignement Mathématique, Monograph no. 28, Geneva",
+      "note": "Original source for Problem #263 on irrationality sequences"
+    },
+    {
+      "authors": "Kovač, Vjekoslav; Tao, Terence",
+      "title": "On irrationality sequences",
+      "year": "2024",
+      "venue": "Preprint",
+      "note": "Proved that sequences with a_{n+1}/a_n^2 → 0 are not irrationality sequences, establishing the quadratic recurrence as the critical threshold"
+    },
+    {
+      "authors": "Hančl, Jaroslav",
+      "title": "Expression of real numbers with the help of infinite series",
+      "year": "1991",
+      "venue": "Acta Arithmetica, vol. 59(2), pp. 97–104",
+      "note": "Growth lower bounds for irrationality sequences, connected to Problem #262"
+    }
+  ]
 }
