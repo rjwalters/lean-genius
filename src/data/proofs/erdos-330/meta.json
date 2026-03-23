@@ -34,35 +34,40 @@
       "title": "Imports and Setup",
       "startLine": 1,
       "endLine": 22,
-      "summary": "Module imports and problem overview for Erdős Problem #330 on minimal bases with positive density."
+      "summary": "Module imports and problem overview for Erdős Problem #330 on minimal bases with positive density.",
+      "mathContext": "Module imports and problem overview for Erdős Problem #330 on minimal bases with positive density."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 23,
       "endLine": 55,
-      "summary": "IsRepresentable, IsAsympBasis, upperDensity, HasPosDensity, IsMinimalBasis, unrepresentableWithout."
+      "summary": "IsRepresentable, IsAsympBasis, upperDensity, HasPosDensity, IsMinimalBasis, unrepresentableWithout.",
+      "mathContext": "IsRepresentable, IsAsympBasis, upperDensity, HasPosDensity, IsMinimalBasis, unrepresentableWithout."
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "startLine": 57,
       "endLine": 72,
-      "summary": "Minimal bases have infinitely many unrep. integers upon removal; minimal bases with positive density exist (Härtter-Stöhr)."
+      "summary": "Minimal bases have infinitely many unrep. integers upon removal; minimal bases with positive density exist (Härtter-Stöhr).",
+      "mathContext": "Minimal bases have infinitely many unrep. integers upon removal; minimal bases with positive density exist (Härtter-Stöhr)."
     },
     {
       "id": "open-question",
       "title": "The Open Question",
       "startLine": 74,
       "endLine": 85,
-      "summary": "Does a minimal basis with positive density exist where each element's removal leaves a positive-density set unrepresentable?"
+      "summary": "Does a minimal basis with positive density exist where each element's removal leaves a positive-density set unrepresentable?",
+      "mathContext": "Does a minimal basis with positive density exist where each element's removal leaves a positive-density set unrepresentable?"
     },
     {
       "id": "implications",
       "title": "Implications and Context",
       "startLine": 86,
       "endLine": 100,
-      "summary": "Connection to Erdős-Nathanson theory, quantitative minimality, and broader additive combinatorics."
+      "summary": "Connection to Erdős-Nathanson theory, quantitative minimality, and broader additive combinatorics.",
+      "mathContext": "Connection to Erdős-Nathanson theory, quantitative minimality, and broader additive combinatorics."
     }
   ],
   "overview": {
@@ -85,5 +90,30 @@
       "If it exists, what is the smallest possible order h?",
       "Can the unrepresentable sets have density bounded below by a function of the basis density?"
     ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-38",
+      "relationship": "related",
+      "description": "Both concern additive bases and density: #38 on essential components and density boosting, #330 on minimal bases where each element's removal creates positive-density gaps"
+    },
+    {
+      "targetId": "erdos-469",
+      "relationship": "related",
+      "description": "Both ask about density/convergence properties of number-theoretic sets defined by divisor/representability conditions"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-38",
+    "erdos-469"
+  ],
+  "leanFile": {
+    "imports": [],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 0,
+    "axiomCount": 7,
+    "theoremCount": 0,
+    "definitionCount": 0
   }
 }

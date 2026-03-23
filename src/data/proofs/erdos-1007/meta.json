@@ -39,39 +39,52 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Problem Context and Imports",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "Module docstring and imports for Erdős Problem #1007 on graph dimension.",
+      "mathContext": "The dimension of a graph $G$ is $\\min\\{d : G \\hookrightarrow \\mathbb{R}^d$ with all edges as unit segments$\\}$. Question: what is $\\min\\{|E(G)| : \\dim(G) = 4\\}$?"
+    },
+    {
       "id": "dimension",
       "title": "Graph Dimension",
       "summary": "Unit distance embedding structure and graph dimension definition",
       "startLine": 49,
-      "endLine": 73
+      "endLine": 73,
+      "mathContext": "Unit distance embedding structure and graph dimension definition"
     },
     {
       "id": "bipartite",
       "title": "Complete Bipartite Graphs",
       "summary": "Definition of K_{m,n} and the K_{3,3} structure",
       "startLine": 75,
-      "endLine": 87
+      "endLine": 87,
+      "mathContext": "Definition of K_{m,n} and the K_{3,3} structure"
     },
     {
       "id": "known",
       "title": "Known Dimensions",
       "summary": "Dimension results for K₃, K₄, and K_{3,3}",
       "startLine": 89,
-      "endLine": 100
+      "endLine": 100,
+      "mathContext": "Dimension results for K₃, K₄, and K_{3,3}"
     },
     {
       "id": "main",
       "title": "Main Result: 9 Edges Minimum",
       "summary": "House's theorem that K_{3,3} is the unique minimum for dimension 4",
       "startLine": 102,
-      "endLine": 121
+      "endLine": 121,
+      "mathContext": "House's theorem that K_{3,3} is the unique minimum for dimension 4"
     },
     {
       "id": "extension",
       "title": "Dimension 5 Extension",
       "summary": "Chaffee-Noble result on dimension 5 minimum (15 edges)",
       "startLine": 123,
-      "endLine": 142
+      "endLine": 142,
+      "mathContext": "Chaffee-Noble result on dimension 5 minimum (15 edges)"
     }
   ],
   "conclusion": {
@@ -95,5 +108,15 @@
     "axiomCount": 4,
     "theoremCount": 3,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-135",
+      "relationship": "related",
+      "description": "Both are Erdős problems about geometric configurations: #135 concerns four points and five distances, while #1007 concerns minimum edges for unit-distance graph dimension"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-135"
+  ]
 }
