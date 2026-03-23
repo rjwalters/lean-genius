@@ -1,1 +1,122 @@
-[]
+[
+  {
+    "id": "ann-header-imports",
+    "proofId": "triangle-inequality-oq-03",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "context",
+    "title": "Module Header and Imports",
+    "content": "The file imports three Mathlib modules: `Topology.MetricSpace.Ultra.Basic` (the `IsUltrametricDist` typeclass and its consequences for balls), `NumberTheory.Padics.PadicNorm` (the p-adic norm and its non-Archimedean property), and `Tactic` (general-purpose proof tactics). The header documents the key consequences of the ultrametric inequality: isosceles triangles, clopen balls, and the connection to p-adic number theory. The file is organized into seven parts progressing from abstract ultrametric properties to concrete p-adic instances.",
+    "mathContext": "Imports provide: `IsUltrametricDist` (typeclass for $d(x,z) \\leq \\max(d(x,y), d(y,z))$), `padicNorm` ($|q|_p = p^{-v_p(q)}$), and general tactics.",
+    "significance": "context",
+    "relatedConcepts": ["Mathlib imports", "ultrametric spaces", "p-adic norm"],
+    "prerequisites": ["Lean 4 module system", "Mathlib library structure"]
+  },
+  {
+    "id": "ann-ultrametric-implies-triangle",
+    "proofId": "triangle-inequality-oq-03",
+    "range": { "startLine": 31, "endLine": 45 },
+    "type": "technique",
+    "title": "Ultrametric Implies Standard Triangle Inequality",
+    "content": "The first theorem establishes that the ultrametric inequality is strictly stronger than the standard triangle inequality. The proof is a two-step calculation: first apply `IsUltrametricDist.dist_triangle_max` to get $d(x,z) \\leq \\max(d(x,y), d(y,z))$, then use `max_le_add_of_nonneg` to bound the max by the sum. This works because $\\max(a,b) \\leq a + b$ for nonnegative $a, b$ — a simple consequence of $\\max(a,b) \\leq a + b$ since the smaller of $a, b$ is nonneg.\n\nThis containment is strict: in $\\mathbb{R}$ with the usual metric, $d(0, 2) = 2 > \\max(d(0,1), d(1,2)) = 1$, so the ultrametric inequality fails. Every ultrametric space is a metric space, but not conversely.",
+    "mathContext": "$d(x,z) \\leq \\max(d(x,y), d(y,z)) \\leq d(x,y) + d(y,z)$. The first inequality is the ultrametric property; the second follows from $\\max(a,b) \\leq a + b$ for $a, b \\geq 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["triangle inequality", "ultrametric inequality", "metric space", "max function"],
+    "prerequisites": ["metric spaces", "basic inequalities"]
+  },
+  {
+    "id": "ann-isosceles-of-lt",
+    "proofId": "triangle-inequality-oq-03",
+    "range": { "startLine": 47, "endLine": 80 },
+    "type": "insight",
+    "title": "Isosceles Triangle Theorem — The Core Result",
+    "content": "The central original contribution: in an ultrametric space, if $d(x,y) < d(y,z)$, then $d(x,z) = d(y,z)$. When two sides of a triangle have unequal lengths, the third side must equal the longer one — there are no scalene triangles.\n\nThe proof establishes equality by antisymmetry ($\\leq$ in both directions):\n- **Upper bound**: $d(x,z) \\leq \\max(d(x,y), d(y,z)) = d(y,z)$, since $d(x,y) < d(y,z)$ means the max equals $d(y,z)$.\n- **Lower bound by contradiction**: Suppose $d(x,z) < d(y,z)$. Then $d(y,z) \\leq \\max(d(y,x), d(x,z)) = \\max(d(x,y), d(x,z))$. But both $d(x,y) < d(y,z)$ and $d(x,z) < d(y,z)$, so $\\max(d(x,y), d(x,z)) < d(y,z)$, giving $d(y,z) < d(y,z)$ — a contradiction.\n\nThe elegance is in using the ultrametric inequality twice: once for the upper bound and once (with permuted arguments) for the lower bound. This double application is the characteristic proof technique in ultrametric geometry.",
+    "mathContext": "If $d(x,y) < d(y,z)$ then $d(x,z) = d(y,z)$. Proof: $d(x,z) \\leq \\max(d(x,y), d(y,z)) = d(y,z)$ for $\\leq$; for $\\geq$, assume $d(x,z) < d(y,z)$, then $d(y,z) \\leq \\max(d(x,y), d(x,z)) < d(y,z)$, contradiction.",
+    "significance": "key",
+    "relatedConcepts": ["isosceles triangle", "antisymmetry", "proof by contradiction", "ultrametric inequality", "non-Archimedean geometry"],
+    "prerequisites": ["metric spaces", "ultrametric inequality", "order theory"]
+  },
+  {
+    "id": "ann-isosceles-triangle-corollary",
+    "proofId": "triangle-inequality-oq-03",
+    "range": { "startLine": 82, "endLine": 109 },
+    "type": "concept",
+    "title": "Every Ultrametric Triangle Is Isosceles",
+    "content": "The corollary packages the isosceles theorem into its most quotable form: for any three points $x, y, z$ in an ultrametric space, at least two of the three pairwise distances $d(x,y), d(x,z), d(y,z)$ are equal.\n\nThe proof proceeds by case analysis on whether $d(x,y) = d(x,z)$ and $d(x,y) = d(y,z)$. If either holds, we're done. If neither holds (both distances differ from $d(x,y)$), we apply the isosceles theorem: when $d(x,y) < d(y,z)$, we get $d(x,z) = d(y,z)$; when $d(x,y) > d(y,z)$, a symmetric argument (with a more involved contradiction) gives $d(x,y) = d(x,z)$, contradicting our assumption. The case $d(x,y) > d(y,z)$ is more delicate because the isosceles theorem is applied with permuted arguments and requires showing that $d(x,z) < d(x,y)$ would lead to both terms of the max being strictly less.\n\nThis is the most geometrically striking consequence of the ultrametric inequality. In Euclidean space, generic triangles are scalene; in ultrametric space, scalene triangles are impossible.",
+    "mathContext": "For all $x, y, z$ in an ultrametric space: $d(x,y) = d(x,z) \\vee d(x,y) = d(y,z) \\vee d(x,z) = d(y,z)$. Every triangle has at least two equal sides.",
+    "significance": "key",
+    "relatedConcepts": ["isosceles triangle", "case analysis", "ultrametric geometry", "p-adic geometry"],
+    "prerequisites": ["metric spaces", "ultrametric inequality"]
+  },
+  {
+    "id": "ann-sharp-form",
+    "proofId": "triangle-inequality-oq-03",
+    "range": { "startLine": 111, "endLine": 129 },
+    "type": "technique",
+    "title": "Sharp Form: Distance Equals Max When Sides Differ",
+    "content": "The sharp form of the isosceles theorem: when $d(x,y) \\neq d(y,z)$, we get the equality $d(x,z) = \\max(d(x,y), d(y,z))$ — not just $\\leq$, but $=$. This upgrades the ultrametric inequality from an upper bound to an exact computation whenever the two comparison distances are unequal.\n\nThe proof cases on whether $d(x,y) < d(y,z)$ or $d(x,y) > d(y,z)$. In the first case, `isosceles_of_lt` gives $d(x,z) = d(y,z) = \\max(d(x,y), d(y,z))$. In the second case, the same lemma is applied with permuted arguments (using `dist_comm` twice) to get $d(x,z) = d(x,y) = \\max(d(x,y), d(y,z))$.\n\nThis sharp form is extremely useful in p-adic analysis: to compute $|x + y|_p$ when $|x|_p \\neq |y|_p$, the answer is simply $\\max(|x|_p, |y|_p)$. The ultrametric inequality only has \"slack\" when the two distances are exactly equal.",
+    "mathContext": "If $d(x,y) \\neq d(y,z)$, then $d(x,z) = \\max(d(x,y), d(y,z))$. The ultrametric inequality is tight except when the comparison distances coincide.",
+    "significance": "key",
+    "relatedConcepts": ["sharp inequality", "max function", "p-adic arithmetic", "ultrametric equality"],
+    "prerequisites": ["isosceles theorem", "order theory"]
+  },
+  {
+    "id": "ann-ball-structure",
+    "proofId": "triangle-inequality-oq-03",
+    "range": { "startLine": 131, "endLine": 151 },
+    "type": "concept",
+    "title": "Ball Structure: Every Point Is a Center",
+    "content": "Two remarkable properties of ultrametric balls, both imported from Mathlib:\n\n1. **Every interior point is a center**: If $z \\in B(x, r)$, then $B(x, r) = B(z, r)$. In Euclidean space, moving the center of a ball shifts it; in an ultrametric space, every point inside a ball generates the same ball. This follows from the isosceles property: if $z \\in B(x, r)$ and $w \\in B(x, r)$, then $d(z, w) \\leq \\max(d(z, x), d(x, w)) < r$, so $w \\in B(z, r)$.\n\n2. **Equal-radius balls are equal or disjoint**: Two balls $B(x, r)$ and $B(y, r)$ either coincide or have empty intersection. There is no partial overlap. If some $w \\in B(x,r) \\cap B(y,r)$, then $B(x,r) = B(w,r) = B(y,r)$ by property 1.\n\nThese properties mean ultrametric topology is fundamentally simpler than Euclidean topology: the collection of open balls of a fixed radius forms a partition of the space.",
+    "mathContext": "$z \\in B(x, r) \\Rightarrow B(x, r) = B(z, r)$. Two balls $B(x,r)$ and $B(y,r)$ satisfy $B(x,r) = B(y,r) \\vee B(x,r) \\cap B(y,r) = \\emptyset$.",
+    "significance": "key",
+    "relatedConcepts": ["metric ball", "partition", "equivalence relation", "ultrametric topology"],
+    "prerequisites": ["metric spaces", "open balls", "set theory"]
+  },
+  {
+    "id": "ann-clopen-balls",
+    "proofId": "triangle-inequality-oq-03",
+    "range": { "startLine": 153, "endLine": 173 },
+    "type": "concept",
+    "title": "Clopen Balls and Empty Frontiers",
+    "content": "In ultrametric spaces, open balls are also closed (clopen), and their boundaries (frontiers) are empty. This is the most topologically exotic consequence of the ultrametric inequality.\n\nIn Euclidean space $\\mathbb{R}^n$, an open ball $B(x, r)$ has closure $\\overline{B}(x, r) = \\{y : d(x,y) \\leq r\\}$ and boundary $\\partial B(x, r) = \\{y : d(x,y) = r\\}$ (a sphere). In ultrametric space, the boundary is empty: there are no points at distance exactly $r$ from $x$ that are not already inside $B(x, r)$. More precisely, since balls are clopen, $\\partial B = \\overline{B} \\setminus \\text{int}(B) = B \\setminus B = \\emptyset$.\n\nThis implies ultrametric spaces are **totally disconnected**: the only connected subsets are singletons. The p-adic integers $\\mathbb{Z}_p$ form a Cantor-set-like totally disconnected compact space — homeomorphic to the Cantor set for every prime $p$.",
+    "mathContext": "`IsClopen (Metric.ball x r)` and `frontier (Metric.ball x r) = \\emptyset$. Open balls are closed, with no boundary points.",
+    "significance": "key",
+    "relatedConcepts": ["clopen set", "frontier", "boundary", "totally disconnected space", "Cantor set", "p-adic integers"],
+    "prerequisites": ["topology", "open and closed sets", "metric spaces"]
+  },
+  {
+    "id": "ann-padic-ultrametric",
+    "proofId": "triangle-inequality-oq-03",
+    "range": { "startLine": 175, "endLine": 205 },
+    "type": "concept",
+    "title": "The p-adic Norm: A Concrete Ultrametric",
+    "content": "The p-adic norm $|q|_p = p^{-v_p(q)}$ on $\\mathbb{Q}$ is the prototypical ultrametric. Three theorems establish its properties:\n\n1. **Non-Archimedean property** (`padic_ultrametric`): $|x+y|_p \\leq \\max(|x|_p, |y|_p)$, imported from `padicNorm.nonarchimedean`. This is the ultrametric inequality for the p-adic norm.\n\n2. **Standard triangle inequality** (`padic_triangle`): $|x+y|_p \\leq |x|_p + |y|_p$, derived from the ultrametric property via $\\max(a,b) \\leq a+b$.\n\n3. **Integer boundedness** (`padic_int_norm_le_one`): $|n|_p \\leq 1$ for all $n \\in \\mathbb{Z}$. This is the hallmark of the non-Archimedean world — integers are p-adically \"small\". In $\\mathbb{R}$, $|n| \\to \\infty$; in $\\mathbb{Q}_p$, $|n|_p$ stays bounded.\n\nThe p-adic valuation $v_p(q)$ counts the power of $p$ dividing $q$: $v_p(p^a \\cdot m/n) = a$ when $\\gcd(mn, p) = 1$. Large powers of $p$ are p-adically small: $|p^{100}|_p = p^{-100} \\approx 0$. This reversal of \"size\" is the essence of non-Archimedean arithmetic.",
+    "mathContext": "$|x+y|_p \\leq \\max(|x|_p, |y|_p)$ (ultrametric), $|x+y|_p \\leq |x|_p + |y|_p$ (triangle), $|n|_p \\leq 1$ for $n \\in \\mathbb{Z}$ (integer boundedness). The p-adic norm is $|q|_p = p^{-v_p(q)}$.",
+    "significance": "key",
+    "relatedConcepts": ["p-adic norm", "p-adic valuation", "non-Archimedean field", "p-adic integers", "Hensel's lemma"],
+    "prerequisites": ["number theory", "prime factorization", "valuations"]
+  },
+  {
+    "id": "ann-padic-examples",
+    "proofId": "triangle-inequality-oq-03",
+    "range": { "startLine": 207, "endLine": 223 },
+    "type": "context",
+    "title": "Concrete p-adic Norm Values",
+    "content": "Two concrete computations illustrating p-adic norm behavior:\n\n1. **Norm of p** (`padic_norm_prime_self`): $|p|_p = p^{-1}$. The prime $p$ itself is p-adically small — $|2|_2 = 1/2$, $|3|_3 = 1/3$. This is because $v_p(p) = 1$, so $|p|_p = p^{-1}$. Higher powers are even smaller: $|p^k|_p = p^{-k} \\to 0$.\n\n2. **Norm of 1** (`padic_norm_one`): $|1|_p = 1$ for any prime $p$. Units in $\\mathbb{Z}_p^\\times$ (integers with $v_p = 0$) have p-adic norm exactly 1.\n\nThese examples illustrate the reversal of intuition: in $\\mathbb{R}$, large numbers have large absolute value; p-adically, numbers divisible by high powers of $p$ are \"close to zero.\" The sequence $p, p^2, p^3, \\ldots$ converges to $0$ in $\\mathbb{Q}_p$.",
+    "mathContext": "$|p|_p = p^{-1}$ (the prime is p-adically small), $|1|_p = 1$ (units have norm 1). The p-adic series $\\sum_{k=0}^\\infty a_k p^k$ converges iff $|a_k p^k|_p \\to 0$, which is automatic since $|p^k|_p = p^{-k} \\to 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["p-adic valuation", "p-adic convergence", "p-adic units", "p-adic integers"],
+    "prerequisites": ["prime numbers", "p-adic norm"]
+  },
+  {
+    "id": "ann-comparison",
+    "proofId": "triangle-inequality-oq-03",
+    "range": { "startLine": 225, "endLine": 255 },
+    "type": "insight",
+    "title": "Archimedean vs Non-Archimedean: A Complete Comparison",
+    "content": "The concluding section formalizes both sides of the Archimedean/non-Archimedean dichotomy:\n\n1. **Archimedean property** (`archimedean_property`): For any positive real $x$, there exists $n \\in \\mathbb{N}$ with $x < n$. This is the property that integers grow without bound in $\\mathbb{R}$ — there is no finite upper bound on $|n|$.\n\n2. **Non-Archimedean contrast** (`padic_integers_bounded`): In $\\mathbb{Q}_p$, $|n|_p \\leq 1$ for all $n \\in \\mathbb{Z}$. The integers are bounded — a complete reversal of the Archimedean world.\n\nThe comment block provides a comparison table capturing six qualitative differences: triangle inequality (sum vs max), triangle shapes (scalene possible vs always isosceles), ball overlap (partial vs none), ball topology (open only vs clopen), ball boundaries (sphere vs empty), and integer behavior (unbounded vs bounded).\n\nOstrowski's classification theorem (1916) shows this dichotomy is exhaustive for $\\mathbb{Q}$: every nontrivial absolute value is either the usual one (Archimedean) or a $p$-adic one (non-Archimedean). There is no middle ground.",
+    "mathContext": "Archimedean: $\\forall x > 0,\\ \\exists n \\in \\mathbb{N},\\ x < n$. Non-Archimedean: $\\forall n \\in \\mathbb{Z},\\ |n|_p \\leq 1$. By Ostrowski's theorem, every nontrivial absolute value on $\\mathbb{Q}$ is one or the other.",
+    "significance": "key",
+    "relatedConcepts": ["Archimedean property", "Ostrowski's theorem", "absolute values on Q", "classification theorem", "local-global principle"],
+    "prerequisites": ["real analysis", "p-adic numbers", "absolute values"]
+  }
+]
