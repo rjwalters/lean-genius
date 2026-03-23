@@ -126,11 +126,17 @@
       "**Non-example $p = 37$:** $36 = 2^2 \\cdot 3^2$ is $\\{2,3\\}$-smooth with no additional prime factor, showing that not all primes satisfy even the relaxed Form B condition",
       "**Artin connection:** Both problems concern the multiplicative structure of $p - 1$; Artin's primitive root conjecture requires large prime factors of $p - 1$, while Erdős asks about the opposite extreme",
       "**Cryptographic significance:** Safe primes ($k=1$) are essential for Diffie-Hellman key exchange: when $p = 2q + 1$, the group $(\\mathbb{Z}/p\\mathbb{Z})^*$ has a subgroup of prime order $q$ where the discrete logarithm problem is believed hard. The infinitude of safe primes is an implicit assumption in modern cryptographic protocols, yet remains unproven"
+    ],
+    "prerequisites": [
+      "Prime numbers and Nat.Prime from Mathlib",
+      "Smooth numbers and prime factorization",
+      "Modular arithmetic and ZMod",
+      "Asymptotic density of primes"
     ]
   },
   "conclusion": {
     "summary": "This formalization captures both variants of Erdős Problem #1065, establishes their logical hierarchy, and provides extensive computational evidence. The $k = 1$ case connects to the safe primes conjecture, a cornerstone of modern cryptography. All structural theorems (Form A ⊆ Form B, smooth factorization, implication chain) are fully proved in Lean 4.",
-    "implications": "A resolution would illuminate the factorization structure of $p - 1$ for primes $p$, connecting to Artin's primitive root conjecture, the distribution of smooth numbers, and the security assumptions underlying Diffie–Hellman cryptography. Understanding when $p - 1$ can be nearly a prime power is fundamental to both analytic and computational number theory.",
+    "implications": "**Theoretical Significance**: A resolution would illuminate the factorization structure of $p - 1$ for primes $p$, connecting to Artin's primitive root conjecture, the distribution of smooth numbers, and the security assumptions underlying Diffie–Hellman cryptography.\n\n**Broader Connections**: Understanding when $p - 1$ can be nearly a prime power is fundamental to both analytic and computational number theory.",
     "openQuestions": [
       "Are there infinitely many primes $p = 2^k \\cdot q + 1$ (Conjecture A)?",
       "Are there infinitely many safe primes $p = 2q + 1$? (Open, implies Conjecture A)",
