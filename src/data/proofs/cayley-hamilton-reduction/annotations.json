@@ -15,6 +15,11 @@
       "Cayley-Hamilton",
       "polynomial reduction",
       "matrix functions"
+    ],
+    "prerequisites": [
+      "Cayley-Hamilton theorem",
+      "matrix algebra",
+      "polynomial evaluation"
     ]
   },
   {
@@ -33,6 +38,11 @@
       "polynomial division",
       "Cayley-Hamilton",
       "modular arithmetic"
+    ],
+    "prerequisites": [
+      "polynomial division",
+      "Cayley-Hamilton theorem",
+      "Matrix.aeval_self_charpoly"
     ]
   },
   {
@@ -51,6 +61,11 @@
       "degree bound",
       "finite dimension",
       "matrix algebra"
+    ],
+    "prerequisites": [
+      "polynomial degree",
+      "Polynomial.natDegree",
+      "charpoly_natDegree_eq_dim"
     ]
   },
   {
@@ -69,6 +84,11 @@
       "matrix powers",
       "efficient computation",
       "monomial reduction"
+    ],
+    "prerequisites": [
+      "matrix powers",
+      "polynomial reduction",
+      "monomial division"
     ]
   },
   {
@@ -87,6 +107,11 @@
       "quotient ring",
       "congruence",
       "algebraic structure"
+    ],
+    "prerequisites": [
+      "polynomial congruence",
+      "quotient ring R[X]/(p)",
+      "ideal theory"
     ]
   },
   {
@@ -105,6 +130,11 @@
       "annihilator",
       "ideal",
       "minimal polynomial"
+    ],
+    "prerequisites": [
+      "annihilator ideal",
+      "minimal polynomial",
+      "ideal generation"
     ]
   },
   {
@@ -123,6 +153,11 @@
       "matrix exponential",
       "power series",
       "partial sums"
+    ],
+    "prerequisites": [
+      "matrix exponential",
+      "power series truncation",
+      "polynomial reduction"
     ]
   },
   {
@@ -141,6 +176,11 @@
       "nilpotent",
       "truncated exponential",
       "vanishing powers"
+    ],
+    "prerequisites": [
+      "nilpotent matrices",
+      "Cayley-Hamilton for nilpotent",
+      "truncated series"
     ]
   },
   {
@@ -158,6 +198,11 @@
     "relatedConcepts": [
       "idempotent",
       "projection",
+      "matrix exponential"
+    ],
+    "prerequisites": [
+      "idempotent matrices",
+      "projection operators",
       "matrix exponential"
     ]
   }
