@@ -29,12 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: sumDvdProd_iff_reduced_divides_gcd has complete proof strategy documented. Needs: (1) Nat.div_mul_cancel for a=d*a'  setup, (2) Nat.Coprime.mul_right + gcd(a'+b', a') = gcd(b', a') for coprimality, (3) Nat.mul_dvd_mul_iff_left for d cancellation.",
-    "builtItems": [],
+    "progressSummary": "COMPLETED: sumDvdProd_iff_reduced_divides_gcd fully proved. File has 0 sorries, 7 complete theorems, 2 axioms (vanDoorn_bound + unitFraction equiv). GCD characterization proved via coprimality of reduced fractions and mul_dvd_mul_iff_left.",
+    "builtItems": [
+      "Proved sumDvdProd_iff_reduced_divides_gcd in Erdos327Problem.lean:144-168 - complete proof replacing sorry"
+    ],
     "insights": [
       "Proof strategy: write a=d*a', b=d*b' with d=gcd. Then (a+b)|a*b ↔ (a'+b')|d via coprimality of a'+b' and a'*b'",
       "gcd(a'+b', a'*b') = 1 follows from gcd(a',b')=1 using Euclidean algorithm property: gcd(a+b,a) = gcd(b,a)",
-      "Main Mathlib API challenge: finding exact lemma names for Nat.Coprime.add_left style results"
+      "Main Mathlib API challenge: finding exact lemma names for Nat.Coprime.add_left style results",
+      "Proof uses coprime_div_gcd_div_gcd to get gcd(a/d, b/d)=1, then derives gcd(a/d+b/d, a/d*b/d)=1 via Coprime.mul_right",
+      "Key Mathlib API: mul_dvd_mul_iff_left cancels common factor d from divisibility, Coprime.dvd_of_dvd_mul_right extracts the coprime factor",
+      "coprime_self_add_right is the bridge: gcd(a, a+b) = gcd(a, b) allows lifting coprimality to the sum"
     ],
     "mathlibGaps": [],
     "nextSteps": [
