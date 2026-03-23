@@ -43,23 +43,44 @@
   {
     "id": "ann-irrationality-lift",
     "proofId": "nth-root-irrational-oq-01",
-    "range": { "startLine": 65, "endLine": 89 },
+    "range": { "startLine": 65, "endLine": 77 },
     "type": "technique",
-    "title": "Irrationality of Real Roots via algebraMap",
-    "content": "Two theorems lifting the rational non-root result to irrationality:\n\n1. **`irrational_root_of_irreducible`**: If $\\alpha \\in \\mathbb{R}$ satisfies $p(\\alpha) = 0$ for irreducible $p \\in \\mathbb{Q}[X]$ with $\\deg(p) \\geq 2$, then $\\alpha$ is irrational. Proof: assume $\\alpha = r \\in \\mathbb{Q}$. Then $p(r) = 0$ in $\\mathbb{R}$, and by injectivity of `algebraMap Q R`, $p(r) = 0$ in $\\mathbb{Q}$. But this contradicts `irreducible_no_rational_root`.\n\n2. **`irrational_of_minpoly_degree_ge_two`**: If $\\alpha$ is integral over $\\mathbb{Q}$ with $\\deg(\\text{minpoly}_{\\mathbb{Q}}(\\alpha)) \\geq 2$, then $\\alpha$ is irrational. This is an immediate application of the first theorem, since the minimal polynomial is irreducible (`minpoly.irreducible`) and $\\alpha$ is a root (`minpoly.aeval`).\n\nThe injectivity of `algebraMap Q R` (the embedding $\\mathbb{Q} \\hookrightarrow \\mathbb{R}$) is crucial: it ensures that if $p(r) = 0$ as reals, then $p(r) = 0$ as rationals. This is `(algebraMap Q R).injective`.",
-    "mathContext": "$p(\\alpha) = 0$ for irreducible $p$ with $\\deg(p) \\geq 2$ $\\Rightarrow$ $\\alpha \\notin \\mathbb{Q}$. Uses injectivity of $\\mathbb{Q} \\hookrightarrow \\mathbb{R}$. Corollary: $\\deg(\\text{minpoly}_{\\mathbb{Q}}(\\alpha)) \\geq 2 \\Rightarrow \\alpha \\notin \\mathbb{Q}$.",
+    "title": "Irrationality Lift via algebraMap Injectivity",
+    "content": "Proves `irrational_root_of_irreducible`: if $\\alpha \\in \\mathbb{R}$ satisfies $p(\\alpha) = 0$ for irreducible $p \\in \\mathbb{Q}[X]$ with $\\deg(p) \\geq 2$, then $\\alpha$ is irrational.\n\n**Proof by contradiction:** Assume $\\alpha = r$ for some $r \\in \\mathbb{Q}$. The key step uses the injectivity of the canonical embedding $\\iota : \\mathbb{Q} \\hookrightarrow \\mathbb{R}$ (Lean's `algebraMap Q R`): since $\\iota(r) = \\alpha$ and $p(\\alpha) = 0$ in $\\mathbb{R}$, we get $\\iota(p(r)) = p(\\iota(r)) = p(\\alpha) = 0$. By injectivity of $\\iota$, this forces $p(r) = 0$ in $\\mathbb{Q}$, contradicting `irreducible_no_rational_root`.\n\nThe tactic `apply_fun (algebraMap Q R) using (algebraMap Q R).injective` performs the key injectivity argument. The `show` tactic provides the equation `algebraMap Q R r = α`.",
+    "mathContext": "If $\\alpha \\in \\mathbb{R}$, $p(\\alpha) = 0$ for irreducible $p$ with $\\deg p \\geq 2$, then $\\alpha \\notin \\mathbb{Q}$. Key: $\\iota : \\mathbb{Q} \\hookrightarrow \\mathbb{R}$ injective, so $p(\\iota(r)) = 0 \\Rightarrow p(r) = 0$.",
     "significance": "key",
     "relatedConcepts": [
       "algebraMap",
-      "injectivity",
-      "Irrational",
-      "minimal polynomial",
-      "aeval"
+      "ring homomorphism injectivity",
+      "Irrational predicate",
+      "aeval_algebraMap_apply",
+      "apply_fun tactic"
     ],
     "prerequisites": [
       "irreducible_no_rational_root",
-      "algebraMap Q R",
-      "minimal polynomials"
+      "algebraMap Q R injective"
+    ]
+  },
+  {
+    "id": "ann-minpoly-characterization",
+    "proofId": "nth-root-irrational-oq-01",
+    "range": { "startLine": 83, "endLine": 89 },
+    "type": "insight",
+    "title": "Minimal Polynomial Characterization of Irrationality",
+    "content": "Proves `irrational_of_minpoly_degree_ge_two`: if $\\alpha$ is integral over $\\mathbb{Q}$ and its minimal polynomial has degree $\\geq 2$, then $\\alpha$ is irrational. This is a one-line proof composing three Mathlib facts: `minpoly.irreducible` (minimal polynomial of an integral element is irreducible), `minpoly.aeval` (the minimal polynomial vanishes at $\\alpha$), and the irrationality lift.\n\nThis characterization is conceptually important: it connects irrationality to the **algebraic degree** of field extensions. Since $\\deg(\\min_{\\mathbb{Q}}(\\alpha)) = [\\mathbb{Q}(\\alpha):\\mathbb{Q}]$, the theorem says $\\alpha$ is irrational iff $\\mathbb{Q}(\\alpha)$ is a proper extension of $\\mathbb{Q}$. This is the viewpoint of Galois theory: irrationality is equivalent to having a nontrivial field extension.",
+    "mathContext": "For integral $\\alpha \\in \\mathbb{R}$: $\\deg(\\min_{\\mathbb{Q}}(\\alpha)) \\geq 2 \\Rightarrow \\alpha \\notin \\mathbb{Q}$. Equivalently, $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] \\geq 2 \\iff \\alpha$ is irrational.",
+    "significance": "key",
+    "relatedConcepts": [
+      "minimal polynomial",
+      "IsIntegral",
+      "field extension degree",
+      "minpoly.irreducible",
+      "simple field extension"
+    ],
+    "prerequisites": [
+      "irrational_root_of_irreducible",
+      "minpoly.irreducible",
+      "minpoly.aeval"
     ]
   },
   {
@@ -82,6 +103,28 @@
       "Eisenstein's criterion",
       "prime ideals in Z",
       "polynomial coefficient access"
+    ]
+  },
+  {
+    "id": "ann-eisenstein-p-squared",
+    "proofId": "nth-root-irrational-oq-01",
+    "range": { "startLine": 122, "endLine": 130 },
+    "type": "technique",
+    "title": "The p-squared Condition: Most Delicate Eisenstein Step",
+    "content": "The fifth Eisenstein condition -- that the constant term $-p$ is not in $(p)^2$, i.e., $p^2 \\nmid p$ -- is the most subtle verification step. The proof uses `nlinarith` with the hint `sq_nonneg ((p : Z) - 1)`, which provides the inequality $(p-1)^2 \\geq 0$. Expanding: $p^2 - 2p + 1 \\geq 0$, so $p^2 \\geq 2p - 1 \\geq p + 1 > p$ for $p \\geq 2$. This means $p^2 > p$, so $p^2 \\nmid p$ (since $|p^2| > |p| > 0$).\n\nThis is the condition that distinguishes Eisenstein's criterion from weaker irreducibility tests. It prevents the polynomial from being a perfect square modulo $p$, which would allow a nontrivial factorization. Geometrically, it ensures the Newton polygon of $X^n - p$ at $p$ has a single segment of slope $-1/n$, forcing irreducibility.",
+    "mathContext": "Verify $p^2 \\nmid p$: from $(p-1)^2 \\geq 0$ we get $p^2 \\geq 2p - 1 > p$ for $p \\geq 2$, so $|p^2| > |p|$ and $p^2 \\nmid p$. Newton polygon interpretation: $X^n - p$ has a single segment of slope $-1/n$ at $p$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "nlinarith tactic",
+      "sq_nonneg",
+      "Newton polygon",
+      "Eisenstein fifth condition",
+      "prime ideal powers"
+    ],
+    "prerequisites": [
+      "Ideal.span_singleton_pow",
+      "integer divisibility",
+      "nlinarith"
     ]
   },
   {
