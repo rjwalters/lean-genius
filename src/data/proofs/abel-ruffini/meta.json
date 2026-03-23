@@ -338,6 +338,16 @@
       "targetId": "angle-trisection-oq-02-oq-01",
       "relationship": "related",
       "description": "The Wantzel-Galois characterization connects Polynomial.Gal to constructibility: natDegree divides |Gal| for irreducible polynomials. This parallels Abel-Ruffini's use of Polynomial.Gal to connect radical solvability to group solvability — both derive impossibility results by analyzing the Galois group structure of the polynomial whose roots would need to be expressible in the restricted framework (radicals or compass-and-straightedge)"
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "foundational",
+      "description": "The Chinese Remainder Theorem ($\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$ for coprime $m,n$) is the structural engine behind the derived series analysis in Abel-Ruffini: the solvability of $S_4$ depends on decomposing $A_4$ via its normal subgroup $V_4 \\cong \\mathbb{Z}/2 \\times \\mathbb{Z}/2$ (a CRT-type direct product), while the failure of $A_5$ to admit such a decomposition (simplicity) is what blocks solvability at degree 5"
+    },
+    {
+      "targetId": "chinese-remainder-non-coprime",
+      "relationship": "foundational",
+      "description": "The non-coprime Chinese Remainder Theorem generalizes the decomposition of cyclic groups that underpins radical extensions: each radical step in the Galois bridge produces a cyclic Galois quotient $\\mathbb{Z}/n\\mathbb{Z}$, and understanding when such cyclic groups decompose as direct products (CRT) versus remaining indecomposable is essential to the composition series analysis that distinguishes solvable groups ($S_4$) from non-solvable ones ($S_5$)"
     }
   ],
   "relatedProofs": [
@@ -378,7 +388,9 @@
     "wilsons-theorem",
     "fermat-two-squares",
     "angle-trisection-oq-02",
-    "angle-trisection-oq-02-oq-01"
+    "angle-trisection-oq-02-oq-01",
+    "chinese-remainder-constructive",
+    "chinese-remainder-non-coprime"
   ],
   "references": [
     {
