@@ -111,7 +111,7 @@
     },
     "type": "technique",
     "title": "Erdős's Central Binomial Approach",
-    "content": "For large $n$ (≥ 512), the proof analyzes the **central binomial coefficient** $\\binom{2n}{n}$:\n\n1. **Lower bound**: $\\binom{2n}{n} > \\frac{4^n}{2n}$\n\n2. **Upper bound (if no prime in $(n, 2n]$)**: The prime factorization is constrained by primes ≤ $n$\n\n3. **Contradiction**: These bounds conflict for $n \\geq 512$\n\nThe key insight: primes in $(n, 2n]$ divide $\\binom{2n}{n}$ exactly once, so their absence shrinks the factorization.",
+    "content": "For large $n$ (≥ 512), the proof analyzes the **central binomial coefficient** $\\binom{2n}{n}$:\n\n1. **Lower bound**: $\\binom{2n}{n} > \\frac{4^n}{2n}$\n\n2. **Upper bound (if no prime in $(n, 2n]$)**: The prime factorization is constrained by primes ≤ $n$\n\n3. **Contradiction**: These bounds conflict for $n \\geq 512$\n\nThe key insight: primes in $(n, 2n]$ divide $\\binom{2n}{n}$ exactly once, so their absence shrinks the factorization.\n\n**Why primes in $(n, 2n]$ divide $\\binom{2n}{n}$ exactly once:** A prime $p$ with $n < p \\leq 2n$ appears in $(2n)!$ exactly once (as a factor in the product $1 \\cdot 2 \\cdots 2n$) but does not appear in $n!$ (since $p > n$). Therefore $v_p(\\binom{2n}{n}) = v_p((2n)!) - 2v_p(n!) = 1 - 0 = 1$, where $v_p$ is the $p$-adic valuation. Without any such prime, $\\binom{2n}{n}$ is built entirely from primes $\\leq n$, each with bounded multiplicity — too few to produce the exponential growth $4^n/(2n)$.",
     "mathContext": "Analyze $\\binom{2n}{n} = \\frac{(2n)!}{(n!)^2}$",
     "significance": "key",
     "relatedConcepts": [
