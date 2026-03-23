@@ -169,5 +169,57 @@
     "axiomCount": 0,
     "theoremCount": 1009,
     "definitionCount": 104
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "navier-stokes",
+      "relationship": "extends",
+      "description": "Extends the base Navier-Stokes formalization with quantitative enstrophy decay estimates and the energy identity for 2D flows"
+    },
+    {
+      "targetId": "navier-stokes-oq-02",
+      "relationship": "related",
+      "description": "Companion formalization covering additional aspects of the 2D Navier-Stokes regularity theory"
+    },
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "The energy identity and enstrophy estimates rely on integration by parts, which is the multidimensional generalization of the fundamental theorem of calculus"
+    }
+  ],
+  "relatedProofs": [
+    "navier-stokes",
+    "navier-stokes-oq-02",
+    "fundamental-theorem-calculus"
+  ],
+  "references": [
+    {
+      "authors": "Leray, Jean",
+      "title": "Sur le mouvement d'un liquide visqueux emplissant l'espace",
+      "year": "1934",
+      "venue": "Acta Mathematica 63, 193-248",
+      "note": "Foundational paper establishing existence of weak solutions to the Navier-Stokes equations and introducing the energy inequality"
+    },
+    {
+      "authors": "Ladyzhenskaya, Olga A.",
+      "title": "The Mathematical Theory of Viscous Incompressible Flow",
+      "year": "1969",
+      "venue": "Gordon and Breach, 2nd edition",
+      "note": "Classical reference for 2D Navier-Stokes regularity, including global existence and uniqueness results that underpin the enstrophy decay analysis"
+    },
+    {
+      "authors": "Temam, Roger",
+      "title": "Navier-Stokes Equations: Theory and Numerical Analysis",
+      "year": "2001",
+      "venue": "AMS Chelsea Publishing",
+      "note": "Standard reference for the mathematical theory of Navier-Stokes equations, including energy methods and enstrophy estimates"
+    },
+    {
+      "authors": "Constantin, Peter; Foias, Ciprian",
+      "title": "Navier-Stokes Equations",
+      "year": "1988",
+      "venue": "University of Chicago Press",
+      "note": "Comprehensive treatment of the functional analytic framework for Navier-Stokes, including energy and enstrophy evolution equations"
+    }
+  ]
 }

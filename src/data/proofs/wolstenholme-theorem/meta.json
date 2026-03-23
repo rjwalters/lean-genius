@@ -120,6 +120,28 @@
     "theoremCount": 16,
     "definitionCount": 6
   },
+  "crossReferences": [
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem ((p-1)! ≡ -1 mod p) is a classical primality criterion; Wolstenholme's theorem strengthens the divisibility to p^3 for specific binomial coefficients"
+    },
+    {
+      "targetId": "fermats-last-theorem",
+      "relationship": "related",
+      "description": "Wolstenholme primes (primes where C(2p,p) ≡ 2 mod p^4) are connected to Fermat's Last Theorem: if p is a Wolstenholme prime, the first case of FLT holds for p"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The infinitude of primes provides the setting for Wolstenholme's theorem, which characterizes a divisibility property of all primes p >= 5"
+    }
+  ],
+  "relatedProofs": [
+    "wilsons-theorem",
+    "fermats-last-theorem",
+    "infinitude-primes"
+  ],
   "references": [
     {
       "authors": "Wolstenholme, Joseph",
