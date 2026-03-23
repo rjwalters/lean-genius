@@ -229,6 +229,21 @@
       "targetId": "binomial-theorem-oq-04-oq-02",
       "relationship": "extended-by",
       "description": "Proves the Vandermonde identity $\\binom{m+n}{r} = \\sum_{k=0}^r \\binom{m}{k}\\binom{n}{r-k}$ via algebraic coefficient comparison in the product $(1+x)^m(1+x)^n = (1+x)^{m+n}$"
+    },
+    {
+      "targetId": "mathematical-induction",
+      "relationship": "foundational",
+      "description": "Mathematical induction is the standard proof technique for the binomial theorem: the inductive step uses Pascal's identity $\\binom{n+1}{k+1} = \\binom{n}{k} + \\binom{n}{k+1}$ to derive row $n+1$ of Pascal's triangle from row $n$. Mathlib's `add_pow` is proved by induction internally, making induction the logical backbone of this formalization"
+    },
+    {
+      "targetId": "ballot-problem",
+      "relationship": "related",
+      "description": "The ballot problem counts lattice paths by binomial coefficients: the number of paths from $(0,0)$ to $(a,b)$ on a grid is $\\binom{a+b}{a}$. The ballot problem's Bertrand condition (candidate A always leads) restricts these paths, using the reflection principle — a technique that relies on the same combinatorial structure as the binomial theorem"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "The prime factorization of $n!$ determines the prime factorization of $\\binom{n}{k} = n!/(k!(n-k)!)$. Kummer's theorem states that the highest power of prime $p$ dividing $\\binom{m+n}{m}$ equals the number of carries when adding $m$ and $n$ in base $p$ — connecting the binomial coefficients to number-theoretic structure via unique factorization"
     }
   ],
   "relatedProofs": [
@@ -243,7 +258,10 @@
     "binomial-theorem-oq-02",
     "binomial-theorem-oq-03",
     "binomial-theorem-oq-01-oq-01",
-    "binomial-theorem-oq-04-oq-02"
+    "binomial-theorem-oq-04-oq-02",
+    "mathematical-induction",
+    "ballot-problem",
+    "fundamental-arithmetic"
   ],
   "references": [
     {
