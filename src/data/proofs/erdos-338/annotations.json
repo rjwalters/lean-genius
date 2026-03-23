@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-338-header",
+    "proofId": "erdos-338",
+    "range": { "startLine": 1, "endLine": 46 },
+    "type": "context",
+    "title": "Erdős Problem #338: Restricted Order of Additive Bases",
+    "content": "The header states an open problem in additive number theory: given a set $A \\subseteq \\mathbb{N}$ that is an additive basis of order $h$ (every large integer is a sum of $\\leq h$ elements from $A$ with repetition), what are the conditions for $A$ to have a *restricted order* — the least $t$ such that every large integer is a sum of $\\leq t$ *distinct* elements?\n\nThe key known results form a rich landscape: Bateman showed restricted order can fail to exist for $h \\geq 3$; Kelly (1957) proved order 2 implies restricted order $\\leq 4$; Hennecart (2005) showed this bound is tight by constructing an order-2 basis with restricted order exactly 4, disproving Kelly's conjecture. The Hegyvári-Hennecart-Plagne lower bound $2^{k-2} + k - 1$ shows restricted order can grow exponentially with the basis order.",
+    "mathContext": "An additive basis $A$ of order $h$: $\\forall n \\gg 0$, $\\exists a_1, \\ldots, a_j \\in A$ with $j \\leq h$ and $\\sum a_i = n$. Restricted order $t$: same but with $a_i$ all distinct. The gap between $h$ and $t$ measures how much repetitions help. For squares: $h = 4$ (Lagrange), $t = 5$ (Pall 1933).",
+    "significance": "key",
+    "relatedConcepts": ["additive bases", "restricted order", "Waring's problem", "sumsets"],
+    "prerequisites": ["additive number theory", "Waring's problem"]
+  },
+  {
+    "id": "ann-338-part9-comment",
+    "proofId": "erdos-338",
+    "range": { "startLine": 320, "endLine": 347 },
+    "type": "context",
+    "title": "Part IX: Summary of Known Results and Open Questions",
+    "content": "The summary comment catalogs the formalization's scope: Kelly's theorem (order 2 $\\Rightarrow$ restricted order $\\leq 4$), the disproof of Kelly's conjecture (restricted order 3 is not always sufficient), Hennecart's tight example, and the HHP exponential lower bound.\n\nThe open questions highlight what remains unknown: characterizing when restricted order exists, bounding it in terms of basis order, and the 'robustness' question — if $A \\setminus F$ remains a basis for every finite $F$, must $A$ have finite restricted order? This robustness condition is strictly weaker than having restricted order.",
+    "mathContext": "Open: If $A$ is a basis of order $h$ and $A \\setminus F$ is a basis for all finite $F \\subset A$, does $A$ have restricted order? Known: $h = 2 \\Rightarrow t \\leq 4$ (Kelly). For $h \\geq 3$: restricted order may not exist (Bateman), but when it does, $t \\geq 2^{h-2} + h - 1$ is possible (HHP).",
+    "significance": "supporting",
+    "relatedConcepts": ["open problems", "robustness of bases", "Kelly's theorem"],
+    "prerequisites": ["previous parts"]
+  },
+  {
     "id": "ann-338-basis-defs",
     "proofId": "erdos-338",
     "range": {
