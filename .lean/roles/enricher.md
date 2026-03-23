@@ -82,6 +82,7 @@ This returns the highest-priority unclaimed entry (lowest passes, lowest quality
 For a target with id `<id>`, read:
 - `src/data/proofs/<id>/meta.json` - The metadata and overview
 - `src/data/proofs/<id>/annotations.json` - The inline annotations
+- `src/data/proofs/<id>/review.json` - Peer review findings (if exists)
 - `proofs/Proofs/*.lean` - The Lean proof file (path from `meta.proofRepoPath`)
 
 #### 3. Assess Quality Gaps
@@ -94,6 +95,12 @@ Look for these common gaps:
 - Missing `relatedConcepts` array
 - Missing `prerequisites` array
 - Code sections with no annotation coverage (gaps in line ranges)
+
+**In review.json (if exists):**
+- Open action items targeted at "enricher" — address these first
+- Findings with severity "major" or "critical" — prioritize fixing these
+- `suggestedBestFraming` — use this to guide description/title improvements
+- After addressing review items, update their status to "resolved" in review.json
 
 **In meta.json:**
 - `overview.historicalContext` too short or missing

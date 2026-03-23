@@ -2241,9 +2241,21 @@ cmd_spawn() {
                 echo -e "${GREEN}✓ Herald agent spawned${NC}"
             fi
             ;;
+        peer-reviewer)
+            echo -e "${BLUE}Spawning Peer Reviewer...${NC}"
+            for i in 1 2; do
+                if ! tmux has-session -t "peer-reviewer-$i" 2>/dev/null; then
+                    ./scripts/peer-reviewer/launch-agent.sh --slot "$i" &
+                    sleep 2
+                    echo -e "${GREEN}✓ Peer Reviewer spawned (slot $i)${NC}"
+                    exit 0
+                fi
+            done
+            echo -e "${YELLOW}All Peer Reviewer slots are full (max: 2)${NC}"
+            ;;
         *)
             echo -e "${RED}Unknown agent type: $agent_type${NC}" >&2
-            echo "Valid types: enricher, aristotle, researcher, seeker, deployer, tester, herald"
+            echo "Valid types: enricher, aristotle, researcher, seeker, deployer, tester, herald, peer-reviewer"
             exit 1
             ;;
     esac
