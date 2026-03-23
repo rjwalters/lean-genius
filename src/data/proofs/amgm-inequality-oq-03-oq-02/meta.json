@@ -105,6 +105,13 @@
         "year": "1961",
         "venue": "Springer, Ergebnisse der Mathematik und ihrer Grenzgebiete, Band 30",
         "note": "Chapter 2: comprehensive treatment of means and their inequalities, including the power mean family and its continuity properties at r = 0"
+      },
+      {
+        "authors": "Kolmogorov, A.N.",
+        "title": "Sur la notion de la moyenne",
+        "year": "1930",
+        "venue": "Atti della Reale Accademia Nazionale dei Lincei, Rendiconti, Classe di Scienze Fisiche, Matematiche e Naturali, ser. 6, vol. 12, pp. 388–391",
+        "note": "Independently of Nagumo, characterized the power mean family as the unique class of quasi-arithmetic means satisfying continuity, strict monotonicity, and homogeneity. The r→0 limit proved in this formalization is the continuity condition at the singular point that makes the power mean family a smooth one-parameter family from min to max"
       }
     ]
   },
@@ -163,10 +170,15 @@
       "targetId": "fundamental-theorem-calculus",
       "relationship": "foundational",
       "description": "The fundamental theorem of calculus underpins the derivative machinery used throughout this proof. The key bridge hasDerivAt_iff_tendsto_slope — connecting HasDerivAt to the slope limit f(r)/r → f'(0) — is a consequence of the differential calculus framework that FTC establishes"
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "related",
+      "description": "The harmonic mean HM = (∑ wᵢ/zᵢ)⁻¹ = M_{-1} is the r = -1 case of the power mean family. This limit result establishes M_0 = GM, bridging the gap between HM and AM in the chain HM ≤ GM ≤ AM. The harmonic series divergence proof formalizes the arithmetic of reciprocals that underpins the HM ≤ GM step via the inversion trick"
     }
   ],
   "overview": {
-    "historicalContext": "The power mean $M_r(z,w) = (\\sum w_i z_i^r)^{1/r}$ is undefined at $r = 0$, but the limit exists and equals the geometric mean $\\text{GM} = \\prod z_i^{w_i}$. This was established by Hardy, Littlewood, and Pólya (*Inequalities*, 1934, §2.9) and makes the power mean a continuous interpolation between min ($r \\to -\\infty$), HM ($r=-1$), GM ($r=0$), AM ($r=1$), and max ($r \\to +\\infty$).\n\nThe result has deep connections to information theory. The expression $\\sum w_i \\log z_i$ appearing in the limit is exactly the negative of the Kullback-Leibler divergence $D_{KL}(w \\| \\text{uniform})$ applied to $\\log z$, and more broadly, the Rényi entropy $H_\\alpha = \\frac{1}{1-\\alpha}\\log\\sum p_i^\\alpha$ (Rényi, 1961) satisfies $\\lim_{\\alpha \\to 1} H_\\alpha = H_1 = -\\sum p_i \\log p_i$ (Shannon entropy) by the same derivative-at-zero technique used here. The power mean limit is thus a special case of the Rényi-to-Shannon entropy limit.\n\nThe proof uses the definition of derivative: $f(r) = \\log(\\sum w_i z_i^r)$ satisfies $f(0) = 0$ and $f'(0) = \\sum w_i \\log z_i$. Therefore $f(r)/r \\to f'(0)$ by the definition of derivative, and $M_r = \\exp(f(r)/r) \\to \\exp(\\sum w_i \\log z_i) = \\text{GM}$ by continuity of exp. The Lean 4 formalization uses `hasDerivAt_iff_tendsto_slope` as the key bridge, avoiding explicit L'Hôpital machinery.",
+    "historicalContext": "The power mean $M_r(z,w) = (\\sum w_i z_i^r)^{1/r}$ is undefined at $r = 0$, but the limit exists and equals the geometric mean $\\text{GM} = \\prod z_i^{w_i}$. This was established by Hardy, Littlewood, and Pólya (*Inequalities*, 1934, §2.9) and makes the power mean a continuous interpolation between min ($r \\to -\\infty$), HM ($r=-1$), GM ($r=0$), AM ($r=1$), and max ($r \\to +\\infty$).\n\nThe result has deep connections to information theory. The expression $\\sum w_i \\log z_i$ appearing in the limit is exactly the negative of the Kullback-Leibler divergence $D_{KL}(w \\| \\text{uniform})$ applied to $\\log z$, and more broadly, the Rényi entropy $H_\\alpha = \\frac{1}{1-\\alpha}\\log\\sum p_i^\\alpha$ (Rényi, 1961) satisfies $\\lim_{\\alpha \\to 1} H_\\alpha = H_1 = -\\sum p_i \\log p_i$ (Shannon entropy) by the same derivative-at-zero technique used here. The power mean limit is thus a special case of the Rényi-to-Shannon entropy limit.\n\nIn 1930, Kolmogorov and Nagumo independently proved that the power mean family is (essentially) the unique class of quasi-arithmetic means satisfying continuity, strict monotonicity, and homogeneity. The r→0 limit is the continuity condition at the singular point that makes the power mean a smooth one-parameter interpolation. Without it, the family would have a gap at r=0, and the Kolmogorov-Nagumo characterization would not hold.\n\nThe proof uses the definition of derivative: $f(r) = \\log(\\sum w_i z_i^r)$ satisfies $f(0) = 0$ and $f'(0) = \\sum w_i \\log z_i$. Therefore $f(r)/r \\to f'(0)$ by the definition of derivative, and $M_r = \\exp(f(r)/r) \\to \\exp(\\sum w_i \\log z_i) = \\text{GM}$ by continuity of exp. The Lean 4 formalization uses `hasDerivAt_iff_tendsto_slope` as the key bridge, avoiding explicit L'Hôpital machinery.",
     "problemStatement": "**Open Question (amgm-inequality-oq-03-oq-02)**: Formalize the limit lim_{r→0} M_r(z,w) = GM(z,w) in Lean 4.\n\n**Definitions**:\n- M_r(z,w) = (∑ wᵢzᵢ^r)^(1/r)  for r ≠ 0, wᵢ ≥ 0, ∑ wᵢ = 1, zᵢ > 0\n- GM(z,w) = ∏ zᵢ^wᵢ (weighted geometric mean)\n\n**The Limit**: Filter.Tendsto (fun r => (∑ wᵢzᵢ^r)^(1/r)) (nhdsWithin 0 {0}ᶜ) (nhds (∏ zᵢ^wᵢ))\n\n**Proof sketch**: f(r) = log(∑ wᵢzᵢ^r), f(0) = 0, f'(0) = ∑ wᵢ log zᵢ, so M_r = exp(f(r)/r) → exp(∑ wᵢ log zᵢ) = GM.",
     "proofStrategy": "**Step 1**: Establish M_r = exp((1/r)·log(∑ wᵢzᵢ^r)) for zᵢ > 0 via Real.rpow_def_of_pos.\n\n**Step 2**: Prove d/dr[∑ wᵢzᵢ^r]|_{r=0} = ∑ wᵢ log zᵢ:\n- Each term: HasDerivAt (fun r => zᵢ^r) (log zᵢ) 0 via Real.hasStrictDerivAt_const_rpow + rpow_zero\n- Apply HasDerivAt.const_mul and HasDerivAt.sum\n\n**Step 3**: Establish g(r) = log(∑ wᵢzᵢ^r) has g(0) = 0 and g'(0) = ∑ wᵢ log zᵢ:\n- Chain rule: Real.hasDerivAt_log composed with step 2\n- g(0) = log(1) = 0 since ∑ wᵢzᵢ^0 = ∑ wᵢ = 1\n\n**Step 4**: Conclude g(r)/r → g'(0) via hasDerivAt_iff_tendsto_slope (congr on slope formula).\n\n**Step 5**: Apply Real.continuous_exp.continuousAt to get M_r = exp(g(r)/r) → exp(∑ wᵢ log zᵢ) = GM.",
     "keyInsights": [
@@ -286,6 +298,7 @@
     "triangle-inequality",
     "cauchy-schwarz",
     "sum-of-kth-powers",
-    "fundamental-theorem-calculus"
+    "fundamental-theorem-calculus",
+    "harmonic-divergence"
   ]
 }
