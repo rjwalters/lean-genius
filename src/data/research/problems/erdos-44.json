@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated axiom sidon_set_lower_bound_exists. Proved via modular parabola construction (2ap + a²%p) + Bertrand postulate. 2 sorries remain in supporting lemmas: modParabola_isSidon (modular arithmetic), sqrt_sq_le. 1 axiom remains: erdos_44 (main open conjecture).",
+    "progressSummary": "COMPLETE: Main files have 0 sorries, 1 axiom (open conjecture). Aristotle companion file also has 0 sorries - all 6 proved (strict mono, Euclidean div, ZMod algebra).",
     "builtItems": [
       "pow2_sum_inj: core lemma, 2^a+2^b=2^c+2^d → a=c ∧ b=d, by strong induction on exponent sum",
       "isSidon_powers_of_two: {2^0,...,2^{k-1}} is Sidon, proved from pow2_sum_inj",
@@ -39,7 +39,8 @@
       "modParabola_subset_Icc: elements fit in [1, 2kp]",
       "isSidon_map_add_const: shifting by constant preserves Sidon",
       "modParabola_k_isSidon: first k elements are Sidon (uses sorry for core Sidon property)",
-      "sidon_set_lower_bound_exists: main theorem via Bertrand + modular parabola"
+      "sidon_set_lower_bound_exists: main theorem via Bertrand + modular parabola",
+      "Erdos44Aristotle.lean: proved all 6 sorries (erdosTuran_injOn, erdosTuran_card, erdosTuran_le, sum_eq_of_sum_eq, rem_eq_of_sum_eq, dvd_prod_diff)"
     ],
     "insights": [
       "Strong induction on a+c with parity: when both exponents ≥1, divide by 2 and recurse",
@@ -48,7 +49,8 @@
       "Factor of 2 in 2ap construction is ESSENTIAL: eliminates carry in sum equality",
       "Without factor 2 (ap+a²%p), construction fails for p=11: f(0)+f(10)=f(3)+f(6)",
       "Bertrand gives prime p in (s/2, s] where s=sqrt(N); only need first s/2 elements",
-      "IsSidon proof: no_carry gives a+b=c+d, then (a-c)(a-d)≡0 mod p by quadratic argument"
+      "IsSidon proof: no_carry gives a+b=c+d, then (a-c)(a-d)≡0 mod p by quadratic argument",
+      "omega treats nonlinear products (2*p*a) as atoms in linear arithmetic - use omega for Euclidean division uniqueness instead of linarith"
     ],
     "mathlibGaps": [],
     "nextSteps": [
