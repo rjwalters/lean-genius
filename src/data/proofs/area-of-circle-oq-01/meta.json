@@ -14,10 +14,9 @@
       "geometry",
       "calculus",
       "differentiation",
-      "extension",
-      "research"
+      "extension"
     ],
-    "badge": "mathlib",
+    "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -169,11 +168,11 @@
       "Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls",
       "Mathlib.Tactic"
     ],
-    "opens": [],
+    "opens": ["Real", "MeasureTheory"],
     "namespace": "CircumferenceFromArea",
     "lineCount": 163,
     "axiomCount": 0,
-    "theoremCount": 20,
-    "definitionCount": 0
+    "theoremCount": 18,
+    "definitionCount": 2
   }
 }
