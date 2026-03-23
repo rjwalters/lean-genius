@@ -1,101 +1,105 @@
 {
   "slug": "birthday-problem-oq-03",
-  "title": "[Problem Title]",
-  "phase": "OBSERVE",
-  "status": "active",
+  "title": "k-Way Birthday Coincidences",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\text{Given } n \\text{ people and } d \\text{ days, prove: } n > (k-1) \\cdot d \\implies \\exists j, |\\{i : f(i)=j\\}| \\geq k",
+    "plain": "Generalize the birthday problem to k-way coincidences: when do at least k people share a birthday? Prove the generalized pigeonhole bound and connect k=2 to the classical problem.",
+    "whyMatters": [
+      "Natural generalization of the birthday problem",
+      "Connects to hash function security (k-way collisions)",
+      "Demonstrates generalized pigeonhole principle in Lean"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Generalized pigeonhole: n > (k-1)*d implies k-way coincidence certain",
+      "Classical recovery: k=2 is equivalent to non-injectivity",
+      "Monotonicity: k-way implies k'-way for k' <= k",
+      "Probability = 1 when pigeonhole bound exceeded",
+      "Probability monotonicity in k",
+      "No k-way when n < k (not enough people)"
+    ],
+    "open": [
+      "Exact k=3 threshold computation (n≈88 for d=365)",
+      "Poisson approximation for k-way coincidences"
+    ],
+    "goal": "Complete formalization of k-way birthday coincidences"
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-03-22T15:12:20-07:00",
+    "phase": "COMPLETED",
+    "since": "2026-03-23T10:00:00-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Proof complete",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "None - proof complete",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: 368 lines, 25 theorems, 0 sorries, 0 axioms. Docker verified.",
+    "builtItems": [
+      "fiberAt: fiber decomposition definition",
+      "HasKWay: k-way coincidence predicate",
+      "sum_fiberAt_card: fiber partition of unity",
+      "pigeonhole_kway: generalized pigeonhole bound",
+      "hasKWay_two_iff_not_injective: classical recovery",
+      "no_kway_two_iff_injective: complement characterization",
+      "hasKWay_mono: monotonicity in k",
+      "probKWay: probability formula",
+      "probKWay_one_of_pigeonhole: probability = 1 under pigeonhole",
+      "probKWay_mono_k: probability monotonicity",
+      "no_kway_of_lt: population bound",
+      "probKWay_zero_of_lt: zero probability when n < k"
+    ],
+    "insights": [
+      "Finset.card_eq_sum_card_fiberwise is the key Mathlib lemma for fiber partition",
+      "Finset.one_lt_card connects fiber size >= 2 to distinct element extraction",
+      "The proof is entirely constructive except for the probability definitions (noncomputable)",
+      "k=2 case naturally connects to Function.Injective, bridging combinatorics and logic"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: birthday-problem-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "nextSteps": []
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "combinatorics",
+    "probability",
+    "pigeonhole"
   ],
   "relatedProofs": [
-    "birthday-problem"
+    "birthday-problem",
+    "birthday-problem-oq-02"
   ],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Finset.card_eq_sum_card_fiberwise",
+      "Finset.sum_le_sum",
+      "Finset.one_lt_card"
+    ]
   },
   "started": "2026-03-22T15:12:20-07:00",
+  "completed": "2026-03-23T10:00:00-07:00",
   "significance": 5,
   "tractability": 7,
   "leanFiles": [
     {
-      "path": "Proofs/BirthdayProblem.lean",
-      "filename": "BirthdayProblem.lean",
-      "lineCount": 403,
-      "theoremCount": 24,
+      "path": "Proofs/BirthdayProblemOQ03.lean",
+      "filename": "BirthdayProblemOQ03.lean",
+      "lineCount": 368,
+      "theoremCount": 25,
       "axiomCount": 0,
-      "defCount": 3,
+      "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblem.lean"
-    },
-    {
-      "path": "Proofs/BirthdayProblemAsymptotics.lean",
-      "filename": "BirthdayProblemAsymptotics.lean",
-      "lineCount": 85,
-      "theoremCount": 5,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemAsymptotics.lean"
-    },
-    {
-      "path": "Proofs/BirthdayProblemOQ01.lean",
-      "filename": "BirthdayProblemOQ01.lean",
-      "lineCount": 514,
-      "theoremCount": 53,
-      "axiomCount": 0,
-      "defCount": 7,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01.lean"
-    },
-    {
-      "path": "Proofs/BirthdayProblemOQ02.lean",
-      "filename": "BirthdayProblemOQ02.lean",
-      "lineCount": 301,
-      "theoremCount": 18,
-      "axiomCount": 0,
-      "defCount": 2,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ02.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03.lean"
     }
   ]
 }
