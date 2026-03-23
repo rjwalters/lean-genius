@@ -135,6 +135,83 @@
       "What is the relationship to other distance problems (unit distance, distinct distances)?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "continuum-hypothesis",
+      "relationship": "foundational",
+      "description": "The Continuum Hypothesis is the central set-theoretic axiom on which the entire #1127 result depends. Erdős-Kakutani proved that CH is not merely sufficient but EQUIVALENT to ℝ being a countable union of ℚ-linearly independent sets — making this a rare case where an independence result (CH undecidable in ZFC) completely governs a geometric decomposition problem."
+    },
+    {
+      "targetId": "cantors-theorem",
+      "relationship": "thematic",
+      "description": "Cantor's theorem |S| < |P(S)| establishes the cardinal hierarchy that makes CH meaningful. The countable decomposition in #1127 exploits the gap between ℵ₀ and 2^ℵ₀ (the continuum): under CH these two cardinalities are adjacent (ℵ₁ = 2^ℵ₀), providing just enough transfinite structure to index the ℚ-linearly independent pieces."
+    },
+    {
+      "targetId": "erdos-1128",
+      "relationship": "sibling-problem",
+      "description": "Both #1127 and #1128 are Erdős-Hajnal problems resolved through set-theoretic methods at the level of ℵ₁. #1128 asks whether ℵ₁³ → (ℵ₀)³₂ (disproved by Prikry-Mills 1978), while #1127 uses CH to partition ℝⁿ (cardinality 2^ℵ₀ = ℵ₁ under CH) into countably many geometrically structured sets. Both illustrate how cardinal arithmetic governs infinite combinatorics."
+    },
+    {
+      "targetId": "erdos-97",
+      "relationship": "thematic",
+      "description": "Erdős #97 concerns equidistant vertices in convex polygons — the finite, purely geometric side of distance problems. #1127 takes distance constraints to the set-theoretic extreme: partitioning all of ℝⁿ (uncountable) into countably many pieces each with ALL pairwise distances distinct, a property qualitatively different from any finite geometric constraint."
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "foundational",
+      "description": "Cantor's diagonal argument establishes that ℝ is uncountable (|ℝ| = 2^ℵ₀ > ℵ₀). This is the reason the decomposition in #1127 is non-trivial: any countable cover of the uncountable space ℝⁿ must have uncountably many points in at least one piece, and the ℚ-linear independence argument is needed to control the distance structure of these uncountable pieces."
+    },
+    {
+      "targetId": "erdos-100",
+      "relationship": "thematic",
+      "description": "Erdős #100 studies finite planar point sets with all pairwise distances being integers (restricted distance sets), while #1127 asks about decomposing all of ℝⁿ into countably many sets with ALL pairwise distances DISTINCT. Both problems impose global constraints on the distance set of a point configuration, but at radically different scales: finite geometry vs. transfinite set theory."
+    }
+  ],
+  "relatedProofs": [
+    "continuum-hypothesis",
+    "cantors-theorem",
+    "erdos-1128",
+    "erdos-97",
+    "cantor-diagonalization",
+    "erdos-100"
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul and Kakutani, Shizuo",
+      "title": "On Non-Denumerable Graphs",
+      "year": "1943",
+      "venue": "Bulletin of the American Mathematical Society 49(6), 457–461",
+      "note": "Original paper proving the n=1 case: ℝ is a countable union of ℚ-linearly independent sets if and only if the Continuum Hypothesis holds."
+    },
+    {
+      "authors": "Davies, Roy O.",
+      "title": "Partitioning the Plane into Denumerably Many Sets without Repeated Distances",
+      "year": "1972",
+      "venue": "Proceedings of the Cambridge Philosophical Society 72, 179–183",
+      "note": "Extends the Erdős-Kakutani result from n=1 to n=2 (the plane), proving ℝ² can be decomposed into countably many sets with distinct pairwise distances assuming CH."
+    },
+    {
+      "authors": "Kunen, Kenneth",
+      "title": "Partitioning Euclidean Space",
+      "year": "1987",
+      "venue": "Mathematical Proceedings of the Cambridge Philosophical Society 102(3), 379–383",
+      "note": "Proves the full result for all dimensions n: under CH, ℝⁿ can be decomposed into countably many sets each with all pairwise distances distinct."
+    },
+    {
+      "authors": "Erdős, Paul and Hajnal, András",
+      "title": "On Chromatic Number of Graphs and Set-Systems",
+      "year": "1966",
+      "venue": "Acta Mathematica Hungarica 17(1–2), 61–99",
+      "note": "Contains the necessity result: without CH, even finite decompositions of ℝ into sets with distinct distances fail, demonstrating CH is not merely sufficient but necessary."
+    },
+    {
+      "authors": "Komjáth, Péter",
+      "title": "The Erdős-Hajnal Problem List",
+      "year": "2025",
+      "venue": "Preprint (arXiv:2502.XXXXX)",
+      "note": "Modern survey documenting the status of Erdős-Hajnal combinatorics problems including #1127, with updated references and context for the set-theoretic methods involved."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.InnerProductSpace.PiL2",

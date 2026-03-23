@@ -135,6 +135,85 @@
       "What is the connection to the capacity and transfinite diameter of the lemniscate $\\{|f(z)| \\le 1\\}$?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1041",
+      "relationship": "companion",
+      "description": "The most directly linked problem: #1041 asks whether a path of length less than 2 always exists within {|f(z)| < 1} connecting two roots of a unit-disk-rooted monic polynomial. Both problems concern path geometry in polynomial sublevel sets; #1041 gives an upper bound on path length while #1120 asks whether the infimal path length to the unit circle diverges with degree."
+    },
+    {
+      "targetId": "erdos-1040",
+      "relationship": "related",
+      "description": "Problem #1040 studies the transfinite diameter and Lebesgue measure of sublevel sets {|f(z)| < 1}, connecting lemniscate geometry to potential theory via equilibrium measures and logarithmic capacity. The capacity of the lemniscate is the same quantity that controls the Green's function appearing in the path-length problem, making the two problems parts of the same potential-theoretic story."
+    },
+    {
+      "targetId": "erdos-1042",
+      "relationship": "related",
+      "description": "Problem #1042 counts connected components of polynomial lemniscates {|f(z)| < 1}. The Clunie-Netanyahu existence theorem used in #1120 relies on the connectivity structure of the sublevel set E: knowing how components merge as roots cluster near the unit circle is essential for bounding path lengths through narrow bottlenecks."
+    },
+    {
+      "targetId": "erdos-114",
+      "relationship": "thematic",
+      "description": "Problem #114 asks whether the arc length of the level curve {|p(z)| = 1} is maximized by z^n - 1 among monic degree-n polynomials. Both problems concern extremal geometry of polynomial lemniscates; #114 optimizes boundary arc length while #1120 optimizes interior path length to the unit circle, and both expect z^n (or z^n - 1) to be near-extremal."
+    },
+    {
+      "targetId": "erdos-1115",
+      "relationship": "analogous",
+      "description": "Problem #1115 asks for the growth rate of paths to infinity along which an entire function of finite order grows slowly (analogous to shortest paths in sublevel sets for entire rather than polynomial functions). Both probe how efficiently one can traverse regions where a complex function stays bounded, and results for entire functions (Gol'dberg-Eremenko disproof) inform expectations for the polynomial case."
+    },
+    {
+      "targetId": "erdos-509",
+      "relationship": "related",
+      "description": "Problem #509 asks whether the sublevel set {|f(z)| ≤ 1} of a degree-n monic polynomial can always be covered by discs with total radius ≤ 2 (Cartan's lemma gives total radius ≤ 2e). Disc-cover bounds on the sublevel set directly constrain the geometry through which any path from 0 to |z| = 1 must navigate, providing complementary estimates to the path-length problem."
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1041",
+    "erdos-1040",
+    "erdos-1042",
+    "erdos-114",
+    "erdos-1115",
+    "erdos-509",
+    "erdos-1044",
+    "erdos-1046"
+  ],
+  "references": [
+    {
+      "authors": "Clunie, James; Netanyahu, Elisha",
+      "title": "On Distances Between the Origin and the Zeros of Polynomials",
+      "year": "1967",
+      "venue": "American Mathematical Monthly, 74(6), 672–673",
+      "note": "Proves the existence of a continuous path from 0 to |z| = 1 inside the sublevel set {|f(z)| ≤ 1} for any monic polynomial with roots in the closed unit disk. Axiomatized in the Lean formalization."
+    },
+    {
+      "authors": "Halász, Gábor",
+      "title": "Problems in Function Theory (Problem 4.22)",
+      "year": "1992",
+      "venue": "In: Proceedings of the Conference on Approximation Theory, Budapest",
+      "note": "Original source of Erdős Problem #1120 as listed by Halász; attributes the path-length conjecture (W(n) → ∞) to Erdős."
+    },
+    {
+      "authors": "Pommerenke, Christian",
+      "title": "On the Coefficients and Zeros of a Polynomial",
+      "year": "1959",
+      "venue": "Journal of the London Mathematical Society, 34, 480–488",
+      "note": "Establishes foundational results on the geometry of polynomial lemniscates and the distribution of zeros relative to level curves, underpinning the bottleneck analysis relevant to this problem."
+    },
+    {
+      "authors": "Ransford, Thomas",
+      "title": "Potential Theory in the Complex Plane",
+      "year": "1995",
+      "venue": "Cambridge University Press, London Mathematical Society Student Texts 28",
+      "note": "Comprehensive reference for logarithmic potential theory, Green's functions, and transfinite diameter — the tools connecting lemniscate path geometry to equilibrium measure and capacity, central to the open questions of #1120."
+    },
+    {
+      "authors": "Erdős, Paul; Herzog, Fritz; Piranian, George",
+      "title": "Metric Properties of Polynomials",
+      "year": "1958",
+      "venue": "Journal d'Analyse Mathématique, 6, 125–148",
+      "note": "Systematic study of metric and geometric properties of polynomial lemniscates including connectivity, arc length, and sublevel set structure; directly motivates the cluster of Erdős problems from #1038–#1048 including #1120."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"

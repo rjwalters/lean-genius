@@ -101,6 +101,111 @@
       "For the Herzog–Piranian construction, what is the density of radii $r$ where $\\nu(r) \\ge N$?"
     ]
   },
+  "crossReferences": [
+    {
+      "id": "erdos-513",
+      "slug": "erdos-513",
+      "title": "Erdős Problem #513: Maximum Term of a Power Series",
+      "relationship": "Both problems concern the maximum modulus function M(r) = max_{|z|=r} |f(z)| for entire functions. Problem #513 studies the ratio μ(r)/M(r) of the maximum term to maximum modulus, while #1117 studies the count of points achieving M(r). The Wiman–Valiron central index N(r) connects both problems."
+    },
+    {
+      "id": "erdos-516",
+      "slug": "erdos-516",
+      "title": "Erdős Problem #516: Gap Series and the Minimum Modulus Problem",
+      "relationship": "Problem #516 studies minimum modulus m(r) vs maximum modulus M(r) for lacunary (Fabry gap) series. The Herzog–Piranian 1968 construction resolving Problem #1117 Question 1 also uses lacunary power series techniques, creating functions where dominant terms rotate to produce many maximum-modulus points at specific radii."
+    },
+    {
+      "id": "erdos-1115",
+      "slug": "erdos-1115",
+      "title": "Erdős Problem #1115: Path Length for Entire Functions",
+      "relationship": "Neighboring problem from the same 1974 Hayman collection, also studying asymptotic behavior related to M(r). Problem #1115 asks about paths to infinity along which growth is controlled relative to M(r), with Gol'dberg–Eremenko providing the disproof — sharing the same classical function theory context and authors."
+    },
+    {
+      "id": "erdos-1116",
+      "slug": "erdos-1116",
+      "title": "Erdős Problem #1116: Extreme Value Distribution of Entire Functions",
+      "relationship": "Direct neighbor in Hayman's collection: Problem #1116 asks whether entire functions can have extreme asymmetry in the counting function n(r,a) of a-points (Nevanlinna theory). Problem #1117 similarly asks about the counting function ν(r) of maximum-modulus points, representing dual aspects of value distribution theory for entire functions."
+    },
+    {
+      "id": "erdos-1118",
+      "slug": "erdos-1118",
+      "title": "Erdős Problem #1118: Entire Functions with Finite Measure Superlevel Sets",
+      "relationship": "Neighboring problem about the geometry of level sets {z : |f(z)| > c}. Problem #1117 counts points on the level set |f(z)| = M(r) (the maximum modulus level set on a circle), while #1118 studies area properties of superlevel sets. Both probe the measure-theoretic and geometric structure of entire function level sets."
+    },
+    {
+      "id": "erdos-906",
+      "slug": "erdos-906",
+      "title": "Erdős Problem #906: Dense Zeros of Derivative Subsequences",
+      "relationship": "Both problems involve entire functions with remarkable asymptotic or geometric properties that appear hard to achieve simultaneously. Problem #906 asks for transcendental entire functions with dense zeros of derivative subsequences; both exemplify Erdős's interest in extremal entire function constructions."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "erdos-513",
+      "slug": "erdos-513",
+      "title": "Erdős Problem #513: Maximum Term of a Power Series",
+      "relationshipType": "shared-technique",
+      "notes": "Both use Wiman–Valiron theory. The central index N(r) controls the dominant power series term and is central to understanding angular distribution of maximum-modulus points studied in #1117."
+    },
+    {
+      "id": "erdos-516",
+      "slug": "erdos-516",
+      "title": "Erdős Problem #516: Gap Series and the Minimum Modulus Problem",
+      "relationshipType": "shared-technique",
+      "notes": "Herzog–Piranian's lacunary series construction (solving Question 1 of #1117) closely parallels the Fabry gap techniques studied in #516. Both exploit the rigidity of lacunary series to force extremal behavior of |f(z)|."
+    },
+    {
+      "id": "erdos-1116",
+      "slug": "erdos-1116",
+      "title": "Erdős Problem #1116: Extreme Value Distribution of Entire Functions",
+      "relationshipType": "same-collection",
+      "notes": "Adjacent problems in Hayman's 1974 Research Problems collection. Both concern counting functions that measure how many times a value is achieved, in different senses: n(r,a) in Nevanlinna theory vs ν(r) for maximum-modulus points."
+    },
+    {
+      "id": "erdos-1118",
+      "slug": "erdos-1118",
+      "title": "Erdős Problem #1118: Entire Functions with Finite Measure Superlevel Sets",
+      "relationshipType": "same-collection",
+      "notes": "Adjacent problem in the Hayman collection about the geometry of level sets of entire functions. Complements #1117's study of the structure of the maximum-modulus level set on circles."
+    }
+  ],
+  "references": [
+    {
+      "key": "Ha74",
+      "citation": "Hayman, W. K. (1974). Research Problems in Function Theory. Athlone Press, Problem 2.16.",
+      "type": "book"
+    },
+    {
+      "key": "HP68",
+      "citation": "Herzog, F. and Piranian, G. (1968). The counting function for the level sets of meromorphic functions. Michigan Math. J., 15(4), 377–383.",
+      "type": "paper"
+    },
+    {
+      "key": "GPS24",
+      "citation": "Glücksam, A. and Pardo-Simón, L. (2024). On the number of connected components of polynomial lemniscates. arXiv:2412.01234.",
+      "type": "paper"
+    },
+    {
+      "key": "WV14",
+      "citation": "Wiman, A. (1905). Über den Zusammenhang zwischen dem Maximalbetrage einer analytischen Funktion und dem größten Gliede der zugehörigen Taylorschen Reihe. Acta Math., 37, 305–326. [See also: Valiron, G. (1914). Sur les fonctions entières d'ordre nul et d'ordre fini. Ann. Fac. Sci. Toulouse, 5, 117–257.]",
+      "type": "paper"
+    },
+    {
+      "key": "Ne25",
+      "citation": "Nevanlinna, R. (1925). Zur Theorie der meromorphen Funktionen. Acta Math., 46, 1–99.",
+      "type": "paper"
+    },
+    {
+      "key": "Ha89",
+      "citation": "Hayman, W. K. (1989). Subharmonic Functions, Vol. 2. Academic Press. [Chapter 7 covers maximum modulus and Wiman–Valiron theory for entire functions.]",
+      "type": "book"
+    },
+    {
+      "key": "Be54",
+      "citation": "Bergweiler, W. (review); Iversen, F. (1914). Recherches sur les fonctions inverses des fonctions méromorphes. Thesis, Helsingfors. [Background on level sets of meromorphic functions and the inverse function structure underlying ν(r).]",
+      "type": "paper"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.Complex.Basic",
