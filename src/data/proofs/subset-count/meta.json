@@ -126,6 +126,40 @@
     "theoremCount": 10,
     "definitionCount": 0
   },
+  "crossReferences": [
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "The binomial theorem $(1+1)^n = \\sum_{k=0}^n \\binom{n}{k}$ is the algebraic identity underlying $|\\mathcal{P}(S)| = 2^n$ — the number of subsets equals the sum of binomial coefficients"
+    },
+    {
+      "targetId": "cantors-theorem",
+      "relationship": "related",
+      "description": "Cantor's theorem ($|S| < |\\mathcal{P}(S)|$) is the infinite generalization: for infinite sets, the power set is strictly larger, proved by the diagonal argument"
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "related",
+      "description": "Cantor's diagonalization establishes the uncountability of $\\mathcal{P}(\\mathbb{N})$ — while this entry counts finite subsets ($2^n$), the diagonal argument shows the infinite case is qualitatively different"
+    },
+    {
+      "targetId": "mathematical-induction",
+      "relationship": "foundational",
+      "description": "The proof that $|\\mathcal{P}(S)| = 2^n$ typically proceeds by induction: adding one element doubles the number of subsets"
+    },
+    {
+      "targetId": "birthday-problem",
+      "relationship": "thematic",
+      "description": "The birthday problem uses combinatorial counting over subsets — the same power-set enumeration framework, applied to probability"
+    }
+  ],
+  "relatedProofs": [
+    "binomial-theorem",
+    "cantors-theorem",
+    "cantor-diagonalization",
+    "mathematical-induction",
+    "birthday-problem"
+  ],
   "references": [
     {
       "authors": "Graham, Ronald L.; Knuth, Donald E.; Patashnik, Oren",
