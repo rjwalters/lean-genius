@@ -39,8 +39,10 @@
       "**LCM connection**: $L_k = \\operatorname{lcm}(1,\\ldots,k) = e^{\\psi(k)} \\sim e^k$ by PNT, providing the natural scale for the upper bound"
     ],
     "prerequisites": [
-      "Number theory fundamentals",
-      "Combinatorial analysis"
+      "Prime number theory: smallest prime factor, smooth numbers, Chebyshev's $\\psi$",
+      "Binomial coefficients: Kummer's theorem, $p$-adic valuations",
+      "Analytic number theory: Prime Number Theorem, Mertens' estimates",
+      "Familiarity with Lean 4, Mathlib's Nat.minFac and Nat.choose APIs"
     ]
   },
   "sections": [
@@ -49,63 +51,72 @@
       "title": "Imports and Setup",
       "startLine": 45,
       "endLine": 47,
-      "summary": "Imports full Mathlib; opens `Nat`, `Finset`, `BigOperators` for `Nat.minFac`, `Nat.choose`, `Finset.lcm`, and big operator notation."
+      "summary": "Imports full Mathlib; opens `Nat`, `Finset`, `BigOperators` for `Nat.minFac`, `Nat.choose`, `Finset.lcm`, and big operator notation.",
+      "mathContext": "Opens `Nat.minFac` for $P^-(n)$, `Nat.choose` for $\\binom{n}{k}$, `Finset.lcm` for $L_k$."
     },
     {
       "id": "prime-factors",
       "title": "Prime Factors and Roughness",
       "startLine": 55,
       "endLine": 69,
-      "summary": "Defines `smallestPrimeFactor` via `Nat.minFac`, $k$-roughness ($P^-(n) > k$), `binom n k = Nat.choose n k`, and `binomIsKRough` — the condition that $\\binom{n}{k}$ has no prime factor $\\le k$."
+      "summary": "Defines `smallestPrimeFactor` via `Nat.minFac`, $k$-roughness ($P^-(n) > k$), `binom n k = Nat.choose n k`, and `binomIsKRough` — the condition that $\\binom{n}{k}$ has no prime factor $\\le k$.",
+      "mathContext": "$k$-rough: $P^-(n) > k$ (smallest prime factor exceeds $k$). Target: $P^-(\\binom{n}{k}) > k$."
     },
     {
       "id": "g-definition",
       "title": "The Erdős-Selfridge Function $g(k)$",
       "startLine": 77,
       "endLine": 92,
-      "summary": "Defines $g(k) = \\min\\{n > k+1 : \\binom{n}{k} \\text{ is } k\\text{-rough}\\}$ via `Nat.find` with witness $k! + k + 1$. Proves $g(k) > k+1$ and $\\binom{g(k)}{k}$ is $k$-rough."
+      "summary": "Defines $g(k) = \\min\\{n > k+1 : \\binom{n}{k} \\text{ is } k\\text{-rough}\\}$ via `Nat.find` with witness $k! + k + 1$. Proves $g(k) > k+1$ and $\\binom{g(k)}{k}$ is $k$-rough.",
+      "mathContext": "$g(k) = \\min\\{n > k+1 : P^-(\\binom{n}{k}) > k\\}$. Witness: $\\binom{k!+k+1}{k}$ is $k$-rough."
     },
     {
       "id": "bounds",
       "title": "Known Bounds",
       "startLine": 100,
       "endLine": 111,
-      "summary": "EES (1974): $k^{1+c} < g(k) \\le e^{(1+o(1))k}$ using Legendre's formula. Konyagin (1999): $g(k) \\gg \\exp(c(\\log k)^2)$ via Rankin's method and smooth number estimates."
+      "summary": "EES (1974): $k^{1+c} < g(k) \\le e^{(1+o(1))k}$ using Legendre's formula. Konyagin (1999): $g(k) \\gg \\exp(c(\\log k)^2)$ via Rankin's method and smooth number estimates.",
+      "mathContext": "Known: $\\exp(c(\\log k)^2) \\ll g(k) \\leq \\exp((1+o(1))k)$. Gap: $(\\log k)^2$ vs $k$."
     },
     {
       "id": "lcm-conjecture",
       "title": "The LCM Conjecture",
       "startLine": 119,
       "endLine": 129,
-      "summary": "Defines $L_k = \\operatorname{lcm}(1,\\ldots,k)$ with asymptotic $\\log L_k / k \\to 1$ (equivalent to PNT via Chebyshev's $\\psi$-function). Conjectures $g(k) < L_k$ for large $k$."
+      "summary": "Defines $L_k = \\operatorname{lcm}(1,\\ldots,k)$ with asymptotic $\\log L_k / k \\to 1$ (equivalent to PNT via Chebyshev's $\\psi$-function). Conjectures $g(k) < L_k$ for large $k$.",
+      "mathContext": "$L_k = \\text{lcm}(1,\\ldots,k) = e^{\\psi(k)} \\sim e^k$ by PNT. Conjecture: $g(k) < L_k$ for large $k$."
     },
     {
       "id": "ratio-conjectures",
       "title": "Ratio Conjectures",
       "startLine": 137,
       "endLine": 143,
-      "summary": "Conjectures $\\limsup g(k+1)/g(k) = \\infty$ and $\\liminf g(k+1)/g(k) = 0$, capturing the wildly irregular behavior observed in computations by SSW (2020)."
+      "summary": "Conjectures $\\limsup g(k+1)/g(k) = \\infty$ and $\\liminf g(k+1)/g(k) = 0$, capturing the wildly irregular behavior observed in computations by SSW (2020).",
+      "mathContext": "Conjectured: $\\limsup g(k+1)/g(k) = \\infty$ and $\\liminf g(k+1)/g(k) = 0$."
     },
     {
       "id": "heuristic",
       "title": "Heuristic Asymptotic",
       "startLine": 151,
       "endLine": 160,
-      "summary": "Central conjecture: $\\log g(k) \\sim c \\cdot k / \\log k$. The ELS 'right-thinking person' bound $g(k) \\ge \\exp(ck/\\log k)$ remains unproven — would close the gap from Konyagin's $\\exp(c(\\log k)^2)$."
+      "summary": "Central conjecture: $\\log g(k) \\sim c \\cdot k / \\log k$. The ELS 'right-thinking person' bound $g(k) \\ge \\exp(ck/\\log k)$ remains unproven — would close the gap from Konyagin's $\\exp(c(\\log k)^2)$.",
+      "mathContext": "Conjecture: $\\log g(k) \\sim c \\cdot k/\\log k$. Heuristic: $\\prod_{p \\leq k}(1-1/p) \\approx e^{-k/\\log k}$."
     },
     {
       "id": "values",
       "title": "Known Computed Values",
       "startLine": 168,
       "endLine": 181,
-      "summary": "Axioms for $g(2) = 3$, $g(3) = 7$, $g(4) = 23$, $g(5) = 62$, $g(6) = 143$ (OEIS A003458). Verified by checking that $\\binom{n}{k}$ is $k$-rough at these values and not before."
+      "summary": "Axioms for $g(2) = 3$, $g(3) = 7$, $g(4) = 23$, $g(5) = 62$, $g(6) = 143$ (OEIS A003458). Verified by checking that $\\binom{n}{k}$ is $k$-rough at these values and not before.",
+      "mathContext": "$g(2)=3, g(3)=7, g(4)=23, g(5)=62, g(6)=143$ (OEIS A003458)."
     },
     {
       "id": "open-problem",
       "title": "The Main Open Problem",
       "startLine": 189,
       "endLine": 192,
-      "summary": "Formalized as: find $f(k)$ with $\\log g(k) / f(k) \\to 1$. Conjecture: $f(k) = ck/\\log k$. The enormous gap between known bounds ($c(\\log k)^2$ vs $(1+o(1))k$) makes this wide open."
+      "summary": "Formalized as: find $f(k)$ with $\\log g(k) / f(k) \\to 1$. Conjecture: $f(k) = ck/\\log k$. The enormous gap between known bounds ($c(\\log k)^2$ vs $(1+o(1))k$) makes this wide open.",
+      "mathContext": "Find $f(k)$: $\\log g(k)/f(k) \\to 1$. Conjecture: $f(k) = ck/\\log k$. Gap: $(\\log k)^2$ to $k$."
     }
   ],
   "conclusion": {
