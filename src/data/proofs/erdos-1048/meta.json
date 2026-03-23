@@ -82,7 +82,10 @@
       "**Three-Regime Structure Reflects Polynomial Competition:** The partition [0,1/2] ∪ (1/2, φ−1] ∪ [φ−1, 1] corresponds to three qualitatively different regimes: (i) roots are close enough that the origin component dominates the entire lemniscate, (ii) roots begin to attract the boundary but the origin component remains large, (iii) root neighborhoods compete with the origin component, reducing its diameter to 2 − r²."
     ],
     "prerequisites": [
-      "Mathematical prerequisites vary by topic"
+      "Complex analysis (polynomial evaluation, sublevel sets)",
+      "Point-set topology (connected components, open/bounded sets)",
+      "Potential theory (logarithmic capacity, transfinite diameter)",
+      "Polynomial algebra (monic polynomials, roots of unity)"
     ]
   },
   "sections": [
@@ -203,6 +206,11 @@
       "id": "erdos-1040",
       "relationship": "related",
       "description": "Erdős #1040 asks whether the measure of L(f,1) is determined by the transfinite diameter of the root set — connecting to the same potential-theoretic framework (logarithmic capacity, transfinite diameter) that underlies #1048's diameter bounds."
+    }
+    ,{
+      "id": "fundamental-theorem-algebra",
+      "relationship": "foundational",
+      "description": "The Fundamental Theorem of Algebra guarantees that a degree-n monic polynomial has exactly n roots in ℂ (with multiplicity). This underpins the entire lemniscate theory: the root count determines the maximum number of connected components, and the root distribution controls the lemniscate geometry."
     }
   ],
   "relatedProofs": [
