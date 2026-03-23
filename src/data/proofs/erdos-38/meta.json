@@ -22,7 +22,13 @@
     "erdosUrl": "https://erdosproblems.com/38",
     "erdosProblemStatus": "open",
     "axiomCount": 5,
-    "lineCount": 139
+    "lineCount": 139,
+    "prerequisites": [
+      "Essential components in additive number theory",
+      "Density boosting in sumsets",
+      "Schnirelmann density",
+      "Freiman's theorem"
+    ]
   },
   "overview": {
     "historicalContext": "This problem connects two fundamental concepts in additive combinatorics: Schnirelmann density and additive bases. Schnirelmann density σ(A) = inf_{N≥1} |A ∩ {1,...,N}|/N is a worst-case density measure, crucial in the study of additive number theory.\n\nErdős proved in 1936 that additive bases of order k have a specific density-boosting property with factor α(1-α)/(2k). Linnik in 1942 constructed an 'essential component' - a set that increases Schnirelmann density when added - that is NOT an additive basis.\n\nThis problem asks whether the stronger density-boosting property (improving counts for specific translates) can exist without being a basis. It probes the gap between 'essential components' and 'additive bases'.",
@@ -96,5 +102,43 @@
     "axiomCount": 5,
     "theoremCount": 0,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-37",
+      "relationship": "related",
+      "description": "Problem #37 on essential components and lacunary sets is the companion problem. Both concern the density-boosting properties of specific sets in additive combinatorics"
+    },
+    {
+      "targetId": "erdos-35",
+      "relationship": "related",
+      "description": "Problem #35 on Schnirelmann density is the foundation. Essential components (Problems #37-38) study which sets can boost the Schnirelmann density of any set with positive density"
+    },
+    {
+      "targetId": "erdos-28",
+      "relationship": "related",
+      "description": "Additive bases (Problem #28) and essential components (Problem #38) are related: an essential component can convert any set with positive density into a basis"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Plünnecke, Helmut",
+      "title": "Eigenschaften und Abschätzungen von Wirkungsfunktionen",
+      "year": "1970",
+      "venue": "BMwF-GMD-22, Gesellschaft für Mathematik und Datenverarbeitung, Bonn",
+      "note": "Plünnecke's inequality on sumset growth, fundamental to density boosting theory"
+    },
+    {
+      "authors": "Ruzsa, Imre Z.",
+      "title": "An application of graph theory to additive number theory",
+      "year": "1989",
+      "venue": "Scientia, Series A: Mathematics, vol. 3, pp. 97–109",
+      "note": "Simplified Plünnecke's approach, providing the modern framework for density boosting"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-28",
+    "erdos-35",
+    "erdos-37"
+  ]
 }
