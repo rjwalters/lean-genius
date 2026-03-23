@@ -607,18 +607,225 @@ theorem fourier_parseval_pigeonhole {N : ℕ} (hN : 1 < N) (A : Finset (ZMod N))
     nlinarith [hsum_bound]
   linarith [hpnz]
 
-/-- If A has no 3-AP and has density delta, then some Fourier coefficient
-    is large. This is the key analytic step in Roth's proof.
+/-- For odd N, multiplication by 2 is injective on ZMod N: if 2r = 0 then r = 0.
+    Equivalently, r ≠ 0 → 2r ≠ 0. This holds because gcd(2,N) = 1 when N is odd,
+    so 2 is a unit in ZMod N. -/
+private lemma two_mul_eq_zero_of_odd {N : ℕ} [NeZero N] (hNodd : Odd N)
+    (r : ZMod N) (h : 2 * r = 0) : r = 0 := by
+  have h2 : IsUnit (2 : ZMod N) := by
+    rw [ZMod.isUnit_natCast_iff]
+    exact Nat.Coprime.symm (Odd.nat_coprime_two hNodd)
+  exact h2.mul_left_cancel (h.trans (mul_zero 2).symm)
 
-    The bound δ²N/2 follows from the AP-free Fourier identity combined with
-    Parseval. When δ²N ≤ 1 (sparse regime), Parseval pigeonhole suffices.
-    When δ²N > 1 (dense regime), the Cauchy-Schwarz argument on the
-    Fourier identity ∑_{r≠0} Â(r)²conj(Â(2r)) = N|A| - |A|³ gives the bound. -/
-theorem fourier_large_coefficient {N : ℕ} (hN : 0 < N) (A : Finset (ZMod N))
-    (hAP : APFree A) (delta : ℝ) (hdelta : 0 < delta)
+/-- AP-free subsets of ZMod N have strictly fewer than N elements when N > 1.
+    This is because the full set ZMod N always contains the 3-AP (0, 1, 2) with d = 1. -/
+private lemma apFree_card_lt {N : ℕ} [NeZero N] (hN : 1 < N) (A : Finset (ZMod N))
+    (hAP : APFree A) : A.card < N := by
+  by_contra h; push_neg at h
+  have hAfull : A = Finset.univ :=
+    Finset.eq_univ_of_card A (le_antisymm (card_le_nat A) h)
+  -- 1 ≠ 0 in ZMod N when N > 1 (since N ∤ 1)
+  have h1ne : (1 : ZMod N) ≠ 0 := by
+    rw [Ne, ← Nat.cast_one, ZMod.natCast_zmod_eq_zero_iff_dvd]; omega
+  -- The 3-AP (0, 1, 2) with d = 1 contradicts AP-freeness of univ
+  exact hAP 0 1 h1ne (hAfull ▸ Finset.mem_univ _) (hAfull ▸ Finset.mem_univ _)
+    (hAfull ▸ Finset.mem_univ _)
+
+set_option maxHeartbeats 400000 in
+/-- If A has no 3-AP and has density delta in Z/NZ (with N > 1 and odd),
+    then some nonzero Fourier coefficient has norm ≥ δ²N/2.
+
+    Sparse case (δ²N < 2): Parseval pigeonhole gives ‖Â(r)‖ ≥ 1 > δ²N/2.
+    Dense case (δ²N ≥ 2): The AP-free Fourier identity gives
+    ∑_{r≠0} Â(r)²conj(Â(2r)) = N|A| - |A|³, and the triangle inequality
+    combined with oddness of N (ensuring 2r ≠ 0 for r ≠ 0) yields the bound. -/
+theorem fourier_large_coefficient {N : ℕ} (hN : 1 < N) (hNodd : Odd N)
+    (A : Finset (ZMod N)) (hAP : APFree A) (delta : ℝ) (hdelta : 0 < delta)
     (hdensity : (A.card : ℝ) ≥ delta * N) :
     ∃ r : ZMod N, r ≠ 0 ∧ ‖fourierCoeff A r‖ ≥ delta ^ 2 * N / 2 := by
-  sorry
+  haveI : NeZero N := ⟨by omega⟩
+  have hNpos : (0 : ℝ) < ↑N := Nat.cast_pos.mpr (by omega)
+  have hN_ne : (↑N : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (NeZero.ne N)
+  -- A is nonempty and has size < N
+  have hAcard_pos : 0 < A.card := by
+    by_contra h; push_neg at h
+    rw [Nat.le_zero] at h; simp [h] at hdensity; linarith [mul_pos hdelta hNpos]
+  have hAne : A.Nonempty := Finset.card_pos.mp hAcard_pos
+  have hAcard_lt : A.card < N := apFree_card_lt hN A hAP
+  have hA_pos : (0 : ℝ) < ↑A.card := Nat.cast_pos.mpr hAcard_pos
+  have hA_lt : (A.card : ℝ) < ↑N := Nat.cast_lt.mpr hAcard_lt
+  -- Case split: sparse vs dense
+  by_cases hsparse : delta ^ 2 * ↑N < 2
+  · -- ══ SPARSE CASE: δ²N < 2, so δ²N/2 < 1 ══
+    -- Parseval pigeonhole gives ∃ r ≠ 0, ‖Â(r)‖²·(N-1) ≥ |A|·(N-|A|)
+    obtain ⟨r, hr, hbound⟩ := fourier_parseval_pigeonhole hN A hAne
+    refine ⟨r, hr, ?_⟩
+    -- |A|·(N-|A|) ≥ N-1 for 1 ≤ |A| ≤ N-1 (minimum of a(N-a) on this interval)
+    have hAcard_le : (A.card : ℝ) ≤ ↑N - 1 := by
+      have : A.card ≤ N - 1 := Nat.lt_iff_le_pred (by omega) |>.mp hAcard_lt
+      exact_mod_cast this
+    have h_prod_ge : (A.card : ℝ) * (↑N - ↑A.card) ≥ ↑N - 1 := by
+      -- a(N-a) - (N-1) = (a-1)(N-1-a) ≥ 0 for 1 ≤ a ≤ N-1
+      have ha1 : (1 : ℝ) ≤ ↑A.card := Nat.one_le_cast.mpr hAcard_pos
+      nlinarith [mul_nonneg (show (0 : ℝ) ≤ ↑A.card - 1 from by linarith)
+        (show (0 : ℝ) ≤ ↑N - 1 - ↑A.card from by linarith)]
+    -- ‖Â(r)‖² ≥ 1
+    have hN1_pos : (0 : ℝ) < ↑N - 1 := by linarith
+    have h_norm_sq : ‖fourierCoeff A r‖ ^ 2 ≥ 1 := by nlinarith [hbound]
+    -- ‖Â(r)‖ ≥ 1 > δ²N/2
+    have h_norm : ‖fourierCoeff A r‖ ≥ 1 := by
+      by_contra hlt; push_neg at hlt
+      have hnn := norm_nonneg (fourierCoeff A r)
+      have hmul := mul_le_mul_of_nonneg_left (le_of_lt hlt) hnn
+      simp only [mul_one] at hmul -- ‖Â(r)‖ * ‖Â(r)‖ ≤ ‖Â(r)‖
+      linarith [sq (‖fourierCoeff A r‖)]
+    linarith
+  · -- ══ DENSE CASE: δ²N ≥ 2 ══
+    push_neg at hsparse -- hsparse : 2 ≤ delta ^ 2 * ↑N
+    -- Assume by contradiction: all nonzero Fourier coefficients are small
+    by_contra hall; push_neg at hall
+    -- hall : ∀ r, r ≠ 0 → ‖fourierCoeff A r‖ < delta ^ 2 * ↑N / 2
+    -- Step 1: AP-free identity
+    have hcount : tripleCount A = 0 := (apFree_iff_tripleCount_zero A).mp hAP
+    have hfourier_id : (↑A.card : ℂ) = (↑N)⁻¹ *
+        Finset.univ.sum (fun r : ZMod N =>
+          fourierCoeff A r ^ 2 * starRingEnd ℂ (fourierCoeff A (2 * r))) := by
+      have h := triple_count_fourier A
+      rw [hcount, Nat.cast_zero, zero_add] at h; exact h
+    -- Step 2: Multiply by N to clear the inverse
+    have hsum_eq : Finset.univ.sum (fun r : ZMod N =>
+        fourierCoeff A r ^ 2 * starRingEnd ℂ (fourierCoeff A (2 * r))) =
+        (↑N : ℂ) * ↑A.card := by
+      rw [hfourier_id, ← mul_assoc, mul_inv_cancel₀ hN_ne, one_mul]
+    -- Step 3: Split sum at r = 0
+    set f := fun r : ZMod N =>
+      fourierCoeff A r ^ 2 * starRingEnd ℂ (fourierCoeff A (2 * r)) with hf_def
+    have hsplit : Finset.univ.sum f =
+        f 0 + (Finset.univ.erase (0 : ZMod N)).sum f :=
+      (Finset.add_sum_erase _ _ (Finset.mem_univ 0)).symm
+    -- Step 4: Compute f(0) = |A|³
+    have hf0 : f 0 = (↑A.card : ℂ) ^ 3 := by
+      simp only [hf_def, mul_zero, fourierCoeff_zero]
+      rw [map_natCast (starRingEnd ℂ)]; ring
+    -- Step 5: Nonzero sum = N|A| - |A|³
+    have hnonzero : (Finset.univ.erase (0 : ZMod N)).sum f =
+        (↑N : ℂ) * ↑A.card - (↑A.card : ℂ) ^ 3 := by
+      have h := hsum_eq; rw [hsplit, hf0] at h; linear_combination h
+    -- Step 6: Bound the nonzero sum using triangle inequality + assumption
+    -- Each ‖f(r)‖ = ‖Â(r)‖² · ‖Â(2r)‖
+    have hnorm_term : ∀ r : ZMod N, r ≠ 0 →
+        ‖f r‖ ≤ ‖fourierCoeff A r‖ ^ 2 * (delta ^ 2 * ↑N / 2) := by
+      intro r hr
+      simp only [hf_def]
+      calc ‖fourierCoeff A r ^ 2 * starRingEnd ℂ (fourierCoeff A (2 * r))‖
+          = ‖fourierCoeff A r‖ ^ 2 * ‖fourierCoeff A (2 * r)‖ := by
+            rw [norm_mul, norm_pow]; congr 1; exact norm_star _
+        _ ≤ ‖fourierCoeff A r‖ ^ 2 * (delta ^ 2 * ↑N / 2) := by
+            apply mul_le_mul_of_nonneg_left _ (sq_nonneg _)
+            exact le_of_lt (hall (2 * r) (fun h => hr (two_mul_eq_zero_of_odd hNodd r h)))
+    -- Sum the bound: ∑_{r≠0} ‖f(r)‖ ≤ (δ²N/2) · ∑_{r≠0} ‖Â(r)‖²
+    have hsum_norms : (Finset.univ.erase (0 : ZMod N)).sum (fun r => ‖f r‖) ≤
+        (delta ^ 2 * ↑N / 2) *
+          ((Finset.univ.filter (· ≠ (0 : ZMod N))).sum
+            (fun r => ‖fourierCoeff A r‖ ^ 2)) := by
+      rw [← Finset.filter_ne']
+      rw [Finset.mul_sum]
+      apply Finset.sum_le_sum
+      intro r hr
+      rw [mul_comm]
+      exact hnorm_term r (Finset.mem_filter.mp hr).2
+    -- Use Parseval: ∑_{r≠0} ‖Â(r)‖² = |A|·(N-|A|)
+    have hparseval := parseval_nonzero A
+    -- Triangle inequality: ‖∑‖ ≤ ∑ ‖·‖
+    have htri : ‖(Finset.univ.erase (0 : ZMod N)).sum f‖ ≤
+        (Finset.univ.erase (0 : ZMod N)).sum (fun r => ‖f r‖) :=
+      norm_sum_le _ _
+    -- Step 7: Set up real-valued analysis
+    set a := (A.card : ℝ) with ha_def
+    have ha_ge_one : (1 : ℝ) ≤ a := Nat.one_le_cast.mpr hAcard_pos
+    -- In the dense case: a² > N (since a ≥ δN and δ²N ≥ 2)
+    have ha_sq_gt : a ^ 2 > ↑N := by
+      have h1 : a ^ 2 ≥ (delta * ↑N) ^ 2 :=
+        sq_le_sq' (by nlinarith) hdensity
+      have h2 : (delta * ↑N) ^ 2 = delta ^ 2 * ↑N ^ 2 := by ring
+      nlinarith
+    -- The sum = ↑(N·a - a³) as a real cast to ℂ
+    have hsum_real : (Finset.univ.erase (0 : ZMod N)).sum f =
+        ((↑N * a - a ^ 3 : ℝ) : ℂ) := by
+      rw [hnonzero]; simp only [ha_def]; push_cast; ring
+    -- Re(sum) = N·a - a³, which is negative in the dense case
+    have hreal_neg : ↑N * a - a ^ 3 < 0 := by nlinarith
+    -- Key chain: a(a²-N) ≤ ‖sum‖ ≤ ∑‖terms‖ ≤ (δ²N/2)·a(N-a)
+    -- Step 8: Prove a(a²-N) ≤ ∑‖terms‖ via Re approach
+    -- Since sum = ↑(real value), Re(sum) = N·a - a³ < 0, so -(Re) = a(a²-N)
+    -- And -Re(z) ≤ |Re(z)| ≤ ‖z‖ ≤ ∑‖terms‖
+    have hre_bound : a * (a ^ 2 - ↑N) ≤
+        (Finset.univ.erase (0 : ZMod N)).sum (fun r => ‖f r‖) := by
+      set z := (Finset.univ.erase (0 : ZMod N)).sum f with hz_def
+      -- Re(z) = N·a - a³
+      have hre : z.re = ↑N * a - a ^ 3 := by
+        have : z = ((↑N * a - a ^ 3 : ℝ) : ℂ) := hsum_real
+        rw [this, Complex.ofReal_re]
+      -- |Re(z)| ≤ ‖z‖: from re² ≤ re² + im² = ‖z‖²
+      have habs_re_le : |z.re| ≤ ‖z‖ := by
+        have h_sq : z.re ^ 2 ≤ ‖z‖ ^ 2 := by
+          rw [← Complex.normSq_eq_norm_sq, Complex.normSq_apply]
+          nlinarith [mul_self_nonneg z.im]
+        nlinarith [norm_nonneg z, abs_nonneg z.re, sq_abs z.re,
+          sq_nonneg (‖z‖ - |z.re|)]
+      -- a(a²-N) = -(Re(z)) ≤ |Re(z)| ≤ ‖z‖ ≤ ∑‖terms‖
+      calc a * (a ^ 2 - ↑N) = -(↑N * a - a ^ 3) := by ring
+        _ = -z.re := by rw [hre]
+        _ ≤ |z.re| := (le_abs_self (-z.re)).trans_eq (abs_neg z.re)
+        _ ≤ ‖z‖ := habs_re_le
+        _ ≤ (Finset.univ.erase (0 : ZMod N)).sum (fun r => ‖f r‖) := htri
+    -- Step 9: Upper bound from assumption + Parseval
+    have hupper : (Finset.univ.erase (0 : ZMod N)).sum (fun r => ‖f r‖) ≤
+        (delta ^ 2 * ↑N / 2) * (a * (↑N - a)) := by
+      calc (Finset.univ.erase (0 : ZMod N)).sum (fun r => ‖f r‖)
+          ≤ (delta ^ 2 * ↑N / 2) *
+            ((Finset.univ.filter (· ≠ (0 : ZMod N))).sum
+              (fun r => ‖fourierCoeff A r‖ ^ 2)) := hsum_norms
+        _ = (delta ^ 2 * ↑N / 2) * (a * (↑N - a)) := by rw [hparseval]
+    -- Step 10: Combine and derive contradiction
+    -- a(a²-N) ≤ (δ²N/2)·a·(N-a) ≤ (δ²N/2)·a·(N-1)
+    have hchain : a * (a ^ 2 - ↑N) ≤ (delta ^ 2 * ↑N / 2) * (a * (↑N - a)) :=
+      hre_bound.trans hupper
+    -- Cancel a > 0
+    have hineq : a ^ 2 - ↑N ≤ (delta ^ 2 * ↑N / 2) * (↑N - a) := by
+      nlinarith [hchain]
+    -- Strengthen: N-a ≤ N-1 since a ≥ 1
+    have hcoeff_pos : (0 : ℝ) ≤ delta ^ 2 * ↑N / 2 := by positivity
+    have hineq2 : a ^ 2 - ↑N ≤ (delta ^ 2 * ↑N / 2) * (↑N - 1) := by
+      calc a ^ 2 - ↑N ≤ (delta ^ 2 * ↑N / 2) * (↑N - a) := hineq
+        _ ≤ (delta ^ 2 * ↑N / 2) * (↑N - 1) :=
+            mul_le_mul_of_nonneg_left (by linarith) hcoeff_pos
+    -- From a ≥ δN: a² ≥ δ²N², so δ²N²-N ≤ (δ²N/2)(N-1)
+    -- Expand: 2δ²N²-2N ≤ δ²N²-δ²N, so δ²N²+δ²N ≤ 2N, so δ²N(N+1) ≤ 2N
+    have ha_sq_ge : a ^ 2 ≥ delta ^ 2 * ↑N ^ 2 := by
+      have h := sq_le_sq' (by nlinarith : -(a) ≤ delta * ↑N) hdensity
+      linarith [show (delta * ↑N) ^ 2 = delta ^ 2 * ↑N ^ 2 from by ring]
+    -- Derive δ²(N+1) ≤ 2 via explicit algebra
+    have hstep1 : delta ^ 2 * ↑N ^ 2 - ↑N ≤
+        (delta ^ 2 * ↑N / 2) * (↑N - 1) := by linarith
+    -- Expand: δ²N² - N ≤ δ²N²/2 - δ²N/2
+    -- Rearrange: δ²N²/2 + δ²N/2 ≤ N
+    have hstep2 : delta ^ 2 * ↑N ^ 2 / 2 + delta ^ 2 * ↑N / 2 ≤ ↑N := by linarith
+    -- Factor: δ²N(N+1) ≤ 2N. Since N > 0, δ²(N+1) ≤ 2.
+    have hd2 : delta ^ 2 > 0 := by positivity
+    have hcontra : delta ^ 2 * (↑N + 1) ≤ 2 := by
+      -- From hstep2: δ²(N²+N)/2 ≤ N, so δ²(N²+N) ≤ 2N
+      -- δ²N(N+1) ≤ 2N, divide by N > 0
+      by_contra hgt; push_neg at hgt
+      -- hgt : 2 < δ²(N+1). Then 2N < δ²N(N+1) = δ²N²+δ²N
+      have : 2 * ↑N < delta ^ 2 * ↑N * (↑N + 1) := by
+        calc 2 * ↑N < delta ^ 2 * (↑N + 1) * ↑N :=
+              mul_lt_mul_of_pos_right hgt hNpos
+          _ = delta ^ 2 * ↑N * (↑N + 1) := by ring
+      -- But from hstep2: δ²N² + δ²N ≤ 2N, i.e., δ²N(N+1) ≤ 2N
+      linarith
+    -- But δ²N ≥ 2 gives δ²(N+1) = δ²N + δ² > 2
+    linarith
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART V: DENSITY INCREMENT LEMMA
