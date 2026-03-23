@@ -151,6 +151,102 @@
       "What happens for non-monic polynomials?"
     ]
   },
+  "crossReferences": [
+    {
+      "target": "erdos-1043",
+      "relationship": "companion",
+      "description": "Erdős #1043 concerns projections of polynomial level sets {z : |f(z)| ≤ 1} — the same sublevel set studied here. Pommerenke's 1961 counterexample there parallels his 1959 disc-containment theorem here."
+    },
+    {
+      "target": "erdos-1044",
+      "relationship": "companion",
+      "description": "Erdős #1044 studies the boundary length of polynomial level sets for polynomials with roots in the unit disk — a closely related geometric question about lemniscates of monic polynomials."
+    },
+    {
+      "target": "erdos-1047",
+      "relationship": "companion",
+      "description": "Erdős #1047 asks whether connected components of {z : |f(z)| ≤ c} must be convex for small c. It shares the lemniscate connectivity theme and the role of Pommerenke as key contributor."
+    },
+    {
+      "target": "erdos-1048",
+      "relationship": "companion",
+      "description": "Erdős #1048 asks about the diameter of L(f,1) = {z : |f(z)| < 1} for monic f with roots near the origin — a direct diameter question complementing the disc-containment (radius 2) result here."
+    },
+    {
+      "target": "erdos-1045",
+      "relationship": "related",
+      "description": "Erdős #1045 maximizes the product of pairwise distances among n complex points, intersecting themes of complex geometry and the transfinite diameter that underlies the capacity-1 lemniscate setting."
+    },
+    {
+      "target": "fundamental-theorem-algebra",
+      "relationship": "prerequisite",
+      "description": "The Fundamental Theorem of Algebra guarantees that monic degree-n polynomials over ℂ split completely; the root multiset and centroid used in Pommerenke's theorem rely on this existence of roots."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "target": "erdos-1047",
+      "relationship": "sibling",
+      "description": "Both problems study the geometry of connected sublevel sets of monic polynomials. #1047 asks about convexity of those sets; #1046 asks about their containment in a disc."
+    },
+    {
+      "target": "erdos-1048",
+      "relationship": "sibling",
+      "description": "Erdős #1048 is a direct companion: it asks for an upper bound on the diameter of the same lemniscate L(f,1), assuming roots lie close to the origin, sharpening the containment bound of #1046."
+    },
+    {
+      "target": "erdos-1043",
+      "relationship": "sibling",
+      "description": "Erdős #1043 studies measure-theoretic properties (projection lengths) of the same polynomial sublevel sets, and its resolution by Pommerenke in 1961 is the natural sequel to his 1959 result in #1046."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["P. Erdős", "F. Herzog", "G. Piranian"],
+      "title": "On the geometric properties of level curves of polynomials",
+      "journal": "Illinois Journal of Mathematics",
+      "volume": "2",
+      "year": "1958",
+      "pages": "553–563",
+      "description": "Original paper posing the disc containment and width conjectures for connected lemniscates of monic polynomials."
+    },
+    {
+      "authors": ["Ch. Pommerenke"],
+      "title": "On the derivative of a polynomial",
+      "journal": "Michigan Mathematical Journal",
+      "volume": "6",
+      "year": "1959",
+      "pages": "373–396",
+      "description": "Proves the disc containment theorem (E ⊆ D(centroid, 2)) and provides a counterexample disproving the width conjecture."
+    },
+    {
+      "authors": ["Ch. Pommerenke"],
+      "title": "On the coefficients and Hankel determinants of univalent functions",
+      "journal": "Journal of the London Mathematical Society",
+      "volume": "41",
+      "year": "1966",
+      "pages": "111–122",
+      "description": "Subsequent work by Pommerenke on polynomial geometry and function theory in the complex plane, building on the lemniscate results."
+    },
+    {
+      "authors": ["M. Marden"],
+      "title": "Geometry of Polynomials",
+      "journal": "Mathematical Surveys and Monographs, American Mathematical Society",
+      "volume": "3",
+      "year": "1966",
+      "pages": "–",
+      "description": "Comprehensive reference on the geometry of polynomial zero sets, including lemniscate containment, critical points, and the Gauss–Lucas theorem used in characterizing connectivity."
+    },
+    {
+      "authors": ["T. Ransford"],
+      "title": "Potential Theory in the Complex Plane",
+      "journal": "London Mathematical Society Student Texts, Cambridge University Press",
+      "volume": "28",
+      "year": "1995",
+      "pages": "–",
+      "description": "Standard reference for transfinite diameter, logarithmic capacity, and the potential-theoretic framework underlying the capacity-1 lemniscate setting of this problem."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.Complex.Polynomial.Basic",

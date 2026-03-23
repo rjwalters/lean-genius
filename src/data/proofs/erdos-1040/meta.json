@@ -166,6 +166,83 @@
       "Does the Erdős-Netanyahu quantitative bound $r(\\rho)$ for bounded connected sets extend to unbounded or disconnected sets?"
     ]
   },
+  "crossReferences": [
+    {
+      "id": "erdos-1039",
+      "relationship": "sibling",
+      "description": "Erdős #1039 (polynomial lemniscate disc radius) asks for the largest inscribed disc in sublevel sets {z: |f(z)| < 1}, the complementary geometric quantity to the total sublevel set area studied in Problem 1040."
+    },
+    {
+      "id": "erdos-1038",
+      "relationship": "related",
+      "description": "Erdős #1038 (sublevel sets of monic polynomials) studies measure properties of the same polynomial sublevel sets, providing the direct precursor to Problem 1040's investigation of how the infimum μ(F) depends on the root set."
+    },
+    {
+      "id": "erdos-1041",
+      "relationship": "related",
+      "description": "Erdős #1041 (paths in polynomial level sets) investigates connectivity and path structure within level curves of polynomials, sharing the lemniscate geometry framework central to Problems 1039–1042."
+    },
+    {
+      "id": "erdos-1042",
+      "relationship": "related",
+      "description": "Erdős #1042 (connected components of polynomial lemniscates) studies the topology of polynomial level sets from the same EHP 1958 research program, complementing the measure-theoretic angle of Problem 1040."
+    },
+    {
+      "id": "lebesgue-measure",
+      "relationship": "foundational",
+      "description": "The definition of μ(F) as the Lebesgue measure of sublevel sets in the complex plane relies directly on MeasureTheory.volume, the Lebesgue measure formalized in Mathlib."
+    },
+    {
+      "id": "fundamental-theorem-algebra",
+      "relationship": "foundational",
+      "description": "The Fundamental Theorem of Algebra underpins the polynomial infrastructure, ensuring that monic polynomials with roots in F are well-defined and that their root factorization is complete over ℂ."
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1039",
+    "erdos-1038",
+    "erdos-1041",
+    "erdos-1042",
+    "lebesgue-measure",
+    "fundamental-theorem-algebra"
+  ],
+  "references": [
+    {
+      "authors": "Erdős, P., Herzog, F., and Piranian, G.",
+      "title": "Metric properties of polynomials",
+      "year": "1958",
+      "venue": "Journal d'Analyse Mathématique, 6(1), 125–148",
+      "note": "The founding paper for Problem 1040: introduces μ(F) as the infimum of sublevel set measures, proves the conjecture for line segments (using Chebyshev polynomials) and closed discs (using roots of unity), and poses the general question."
+    },
+    {
+      "authors": "Erdős, P. and Netanyahu, E.",
+      "title": "On an extremal problem concerning polynomials",
+      "year": "1973",
+      "venue": "Journal d'Analyse Mathématique, 26(1), 129–136",
+      "note": "Strengthens the EHP disc containment result with explicit quantitative bounds on the inscribed disc radius r(ρ) for bounded connected sets with 0 < ρ(F) < 1, providing the quantitative small-diameter theorem axiomatized in the Lean file."
+    },
+    {
+      "authors": "Fekete, M.",
+      "title": "Über die Verteilung der Wurzeln bei gewissen algebraischen Gleichungen mit ganzzahligen Koeffizienten",
+      "year": "1923",
+      "venue": "Mathematische Zeitschrift, 17(1), 228–249",
+      "note": "Introduces the transfinite diameter ρ(F) via the limit of n-th diameter suprema d_n(F), proves Fekete's lemma (the sequence is subadditive and hence convergent), and establishes the fundamental triple equivalence ρ(F) = cap(F) = τ(F)."
+    },
+    {
+      "authors": "Ransford, T.",
+      "title": "Potential Theory in the Complex Plane",
+      "year": "1995",
+      "venue": "London Mathematical Society Student Texts 28, Cambridge University Press",
+      "note": "Comprehensive modern reference for logarithmic capacity, transfinite diameter, Green's functions, and their relationships. Chapter 5 covers the Chebyshev constant and the classical equivalences used throughout the Lean formalization."
+    },
+    {
+      "authors": "Walsh, J. L.",
+      "title": "Interpolation and Approximation by Rational Functions in the Complex Domain",
+      "year": "1935",
+      "venue": "American Mathematical Society Colloquium Publications, Vol. 20, AMS, Providence",
+      "note": "Classic treatise on polynomial approximation on compact sets in the complex plane; develops the theory of Chebyshev polynomials for general sets and their extremal properties, providing the approximation-theoretic background for the capacity-lemniscate connection exploited in Problem 1040."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"

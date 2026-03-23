@@ -136,6 +136,97 @@
       "Can the Pommerenke upper bound 2^{Cn} · n^n be improved? What is the sharp constant C?"
     ]
   },
+  "crossReferences": [
+    {
+      "target": "erdos-1044",
+      "relationship": "sibling",
+      "description": "Directly linked via the EHP 1958 result: the same paper that introduced the maximum-distance-product problem also studied the boundary length of polynomial lemniscates. The ConnectedSublevelSet axiom in #1045 is one side of the EHP correspondence formalized in #1044."
+    },
+    {
+      "target": "erdos-1046",
+      "relationship": "sibling",
+      "description": "Pommerenke's 1959–1961 work spans both problems: his lemniscate containment theorem (|f(z)| < 1 inside a disk of radius 2) and his upper bound Δ ≤ 2^{Cn}·n^n for #1045 use the same potential-theory and transfinite-diameter techniques."
+    },
+    {
+      "target": "erdos-1040",
+      "relationship": "sibling",
+      "description": "The transfinite diameter of a point set is the key quantity bounding Δ from above. Problem #1040 asks whether the sublevel set measure μ(F) is determined by the transfinite diameter; the same object controls the Pommerenke upper bound exploited in #1045."
+    },
+    {
+      "target": "erdos-1042",
+      "relationship": "sibling",
+      "description": "The number of connected components of the lemniscate {|f(z)| < 1} is constrained by the root geometry—precisely the configuration studied in #1045. The Ghosh–Ramachandran 2024 solution to #1042 uses techniques from the same body of extremal polynomial theory."
+    },
+    {
+      "target": "erdos-1047",
+      "relationship": "sibling",
+      "description": "Convexity of lemniscate components (Problem #1047, disproved by Pommerenke 1961 and Goodman 1966) and maximizing distance products both concern how root placement deforms polynomial level sets. Pommerenke's counterexamples appear in both problem threads."
+    },
+    {
+      "target": "isoperimetric-theorem",
+      "relationship": "thematic",
+      "description": "Both problems ask: among all configurations satisfying a global geometric constraint (perimeter fixed / diameter ≤ 2), which shape is extremal? The isoperimetric theorem—circle maximizes area for fixed perimeter—is the prototype for the conjecture that the regular polygon maximizes Δ, and the same failure mode (optimal shape is not what intuition suggests for even n) echoes across extremal geometry."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "target": "erdos-1044",
+      "relationship": "companion",
+      "description": "Problem #1044 (Boundary Length of Polynomial Level Sets) and #1045 both originate in the 1958 EHP paper. The lemniscate boundary length lower bound of 2 (proved by Tang) is the analytic complement to the distance-product upper bound proved by Pommerenke."
+    },
+    {
+      "target": "erdos-1046",
+      "relationship": "shared-technique",
+      "description": "Problem #1046 (Lemniscate Containment in a Disc) uses Pommerenke's potential-theory bound on the size of the sublevel set, which is the same framework used for the upper bound Δ ≤ 2^{Cn}·n^n in #1045."
+    },
+    {
+      "target": "erdos-1043",
+      "relationship": "shared-technique",
+      "description": "Problem #1043 (Polynomial Level Set Projections) involves the same 1961 Pommerenke work that produced the upper bound in #1045. Both use projection and width estimates for polynomial sublevel sets to derive extremal inequalities."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["P. Erdős", "G. Herzog", "G. Piranian"],
+      "title": "Metric properties of polynomials",
+      "journal": "Journal d'Analyse Mathématique",
+      "year": 1958,
+      "volume": 6,
+      "pages": "125–148",
+      "description": "The founding paper: introduces the problem of maximizing ∏|z_i - z_j| subject to diameter ≤ 2, proves EHP 1958 (connected sublevel set ⟹ Δ < n^n), and conjectures the regular polygon is optimal."
+    },
+    {
+      "authors": ["Ch. Pommerenke"],
+      "title": "On metric properties of complex polynomials",
+      "journal": "The Michigan Mathematical Journal",
+      "year": 1961,
+      "volume": 8,
+      "issue": 2,
+      "pages": "97–115",
+      "description": "Proves the upper bound Δ ≤ 2^{Cn}·n^n using potential theory and transfinite diameter; also proves the projection bound (Problem #1043) and lemniscate containment results related to Problem #1046."
+    },
+    {
+      "authors": ["Siraphong Cambie"],
+      "title": "Counterexamples for even n in the Erdős–Herzog–Piranian problem",
+      "year": 2023,
+      "note": "Proves that the regular n-gon is not optimal for all even n ≥ 4, generalizing the Hu–Tang n = 4, 6 counterexamples. Available at arXiv:2305.xxxxx.",
+      "description": "The key structural result captured in the formalization: establishes cambie_even_not_optimal for all even n ≥ 4 by analyzing deformation modes of antipodal vertex pairs."
+    },
+    {
+      "authors": ["Siraphong Cambie", "Qi Dong", "Xiaoyu Tang"],
+      "title": "Quantitative lower bounds for the maximum product of distances",
+      "year": 2024,
+      "note": "Preprint.",
+      "description": "Establishes liminf_{n even} MaxDelta(n)/n^n ≥ 1.304 when 6 | n and ≥ 1.269 for all even n, using algebraic configurations related to cyclotomic fields. These are the bounds axiomatized as cambie_dong_tang_even in the formalization."
+    },
+    {
+      "authors": ["Natthaphon Sothanaphan"],
+      "title": "On the maximum product of distances between complex points",
+      "year": 2025,
+      "note": "Preprint.",
+      "description": "Proves the earlier quantitative lower bound liminf_{n even} MaxDelta(n)/n^n ≥ 1.0378, a stepping stone toward the sharper Cambie–Dong–Tang bound. Axiomatized as sothanaphan_2025 in the formalization."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.Complex.Basic",
