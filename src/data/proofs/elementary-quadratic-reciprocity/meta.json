@@ -51,7 +51,13 @@
     ],
     "dateAdded": "2026-02-09",
     "axiomCount": 0,
-    "lineCount": 357
+    "lineCount": 357,
+    "prerequisites": [
+      "Legendre symbol (a/p) and basic properties",
+      "Modular arithmetic and the group (Z/pZ)×",
+      "Floor function and integer division",
+      "Lattice points and geometric counting"
+    ]
   },
   "overview": {
     "historicalContext": "Eisenstein discovered this proof in 1844, simplifying Gauss's third proof (1808). It is considered one of the most elegant proofs of quadratic reciprocity because it reduces the theorem to a **lattice point counting argument** requiring only elementary arithmetic.\n\nThere are now over 240 known proofs of QR. This Eisenstein proof stands out because:\n- It uses no algebraic number theory or Gauss sums\n- The key insight is purely geometric (counting points in triangles)\n- Each step is independently verifiable with basic modular arithmetic\n\nGauss himself published 8 proofs; Eisenstein's approach builds on Gauss's third proof but achieves greater clarity through the floor function reformulation.",
@@ -148,6 +154,46 @@
     "theoremCount": 11,
     "definitionCount": 0
   },
+  "crossReferences": [
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "The main quadratic reciprocity entry — this file provides an alternative elementary proof via Eisenstein's method, complementing the standard Gauss-sum approach"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "related",
+      "description": "Euler's proof of infinitely many primes uses the divergence of ∑1/p; Dirichlet extended this using quadratic characters (from QR) to prove infinitely many primes in arithmetic progressions"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem (subgroup order divides group order) underpins the structure of (ℤ/pℤ)× — the multiplicative group whose quadratic residue structure QR describes"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "thematic",
+      "description": "Both concern the algebraic structure of number-theoretic objects: QR describes the splitting behavior of primes in quadratic extensions, while Abel-Ruffini concerns solvability of polynomial equations. The Artin reciprocity law unifies both"
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "foundational",
+      "description": "Primitive roots establish that $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ is cyclic of order $p-1$. The quadratic residues are precisely the even powers of a primitive root, forming the unique subgroup of index 2. This group structure is what makes the Legendre symbol a group homomorphism"
+    },
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem ($(p-1)! \\equiv -1 \\pmod{p}$) is closely related to quadratic residues: pairing each residue with its inverse in $(p-1)!$ leaves the self-inverse elements ($\\pm 1$), and the quadratic residue structure governs which elements are self-inverse in $(\\mathbb{Z}/p\\mathbb{Z})^\\times$"
+    }
+  ],
+  "relatedProofs": [
+    "quadratic-reciprocity",
+    "infinitude-primes",
+    "lagrange-theorem",
+    "abel-ruffini",
+    "primitive-roots",
+    "wilsons-theorem"
+  ],
   "references": [
     {
       "authors": "Gauss, Carl Friedrich",

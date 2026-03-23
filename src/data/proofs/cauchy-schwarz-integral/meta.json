@@ -141,12 +141,24 @@
       "targetId": "basel-problem",
       "relationship": "related",
       "description": "The Basel identity ζ(2) = π²/6 can be derived using Parseval's theorem applied to f(x) = x on [-π,π], which is a direct application of the L² inner product structure that the Cauchy-Schwarz integral inequality governs."
+    },
+    {
+      "targetId": "triangle-inequality",
+      "relationship": "implication",
+      "description": "The Minkowski inequality (L^p triangle inequality) ‖f+g‖_p ≤ ‖f‖_p + ‖g‖_p for p=2 follows directly from the integral Cauchy-Schwarz, exactly as the discrete triangle inequality follows from the discrete Cauchy-Schwarz"
+    },
+    {
+      "targetId": "amgm-inequality-oq-03",
+      "relationship": "related",
+      "description": "Power mean monotonicity M₁ ≤ M₂ is the discrete Cauchy-Schwarz for equal weights; the integral analog extends this to continuous power means on measure spaces, connecting power mean theory to L^p analysis"
     }
   ],
   "relatedProofs": [
     "cauchy-schwarz",
     "fourier-series",
-    "basel-problem"
+    "basel-problem",
+    "triangle-inequality",
+    "amgm-inequality-oq-03"
   ],
   "leanFile": {
     "imports": [
@@ -163,21 +175,5 @@
     "axiomCount": 0,
     "theoremCount": 6,
     "definitionCount": 0
-  },
-  "references": [
-    {
-      "authors": "Schwarz, Hermann Amandus",
-      "title": "Über ein die Flächen kleinsten Flächeninhalts betreffendes Problem der Variationsrechnung",
-      "year": "1885",
-      "venue": "Acta Societatis Scientiarum Fennicae 15, 315–362",
-      "note": "Extension of Cauchy's discrete inequality to integral form for L² functions"
-    },
-    {
-      "authors": "Rudin, Walter",
-      "title": "Real and Complex Analysis",
-      "year": "1987",
-      "venue": "McGraw-Hill, 3rd edition",
-      "note": "Standard treatment of the Cauchy-Schwarz inequality in the context of L^p spaces and measure theory"
-    }
-  ]
+  }
 }

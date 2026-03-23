@@ -126,6 +126,40 @@
       "Connection to Buffon's coin (2D object) and generalizations"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "buffons-needle",
+      "relationship": "extends",
+      "description": "Base Buffon's Needle formalization (Wiedijk #99) — this file extends it to arbitrary C¹ smooth curves via the Buffon-Barbier theorem, proving shape independence"
+    },
+    {
+      "targetId": "buffons-needle-oq-01-oq-01",
+      "relationship": "extended-by",
+      "description": "Provides the foundational angular average and integrability infrastructure that this file imports and builds upon"
+    },
+    {
+      "targetId": "buffons-needle-oq-02",
+      "relationship": "related",
+      "description": "Another extension of Buffon's needle exploring different generalizations — both derive from the same base formalization"
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "related",
+      "description": "The π in the Buffon-Barbier formula 2L/(πd) connects to the area of a circle: both are consequences of the rotational symmetry of the plane, and historically Buffon's needle was used to experimentally estimate π"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "related",
+      "description": "Integral inequalities underlie the arc-length estimates: the Cauchy-Schwarz integral inequality bounds the angular average, connecting this geometric probability result to functional analysis"
+    }
+  ],
+  "relatedProofs": [
+    "buffons-needle",
+    "buffons-needle-oq-01-oq-01",
+    "buffons-needle-oq-02",
+    "area-of-circle",
+    "cauchy-schwarz-integral"
+  ],
   "leanFile": {
     "imports": [
       "Mathlib",

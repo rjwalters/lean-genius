@@ -55,33 +55,6 @@
       "erdos_alternative_approach: axiom for Erdős's smooth-number variant",
       "two_witnesses: summary theorem packaging both verified examples"
     ],
-    "crossReferences": [
-      {
-        "targetId": "infinitude-primes",
-        "relationship": "related",
-        "description": "Both prove or conjecture infinitude of a special set of primes; the main conjecture asserts Set.Infinite for factorial-avoiding primes"
-      },
-      {
-        "targetId": "wilsons-theorem",
-        "relationship": "related",
-        "description": "Wilson's theorem connects primes to factorials via $(p-1)! \\equiv -1 \\pmod{p}$. This problem subtracts smaller factorials $k!$ for $k! < p$"
-      },
-      {
-        "targetId": "bertrands-postulate",
-        "relationship": "related",
-        "description": "Both concern prime distribution; Bertrand guarantees primes in intervals while this asks about factorial-prime interactions"
-      },
-      {
-        "targetId": "erdos-1057",
-        "relationship": "related",
-        "description": "Sister Erdős problem about prime-related counting; both use Set.Infinite for open conjectures about special prime sets"
-      },
-      {
-        "targetId": "erdos-728-factorial-divisibility",
-        "relationship": "related",
-        "description": "Both concern factorial-prime interactions: #728 studies factorial divisibility patterns while #1059 studies factorial subtractions from primes"
-      }
-    ],
     "references": [
       {
         "authors": "Guy, Richard K.",
@@ -114,7 +87,7 @@
     "lineCount": 143
   },
   "overview": {
-    "historicalContext": "This problem appears as Problem A2 in Guy's *Unsolved Problems in Number Theory* [Gu04], attributed to Erdős. It asks about the interaction between primes and factorials through subtraction. The factorials $1, 2, 6, 24, 120, 720, \\ldots$ grow super-exponentially, so only $O(\\log n / \\log \\log n)$ factorials lie below $n$. This means the factorial-subtraction condition is mild: it requires checking only a few values.\n\nThe known examples are $p = 101$ (factorials to check: $1, 2, 6, 24$) and $p = 211$ (factorials: $1, 2, 6, 24, 120$). The prime $89$ fails because $89 - 6 = 83$ is prime. These are listed in OEIS A064152.\n\nErdős suggested a potentially easier variant: find infinitely many $n$ in $(l!, (l+1)!]$ whose prime factors all exceed $l$ and whose factorial subtractions are all composite. This removes the requirement that $n$ itself be prime, possibly making the problem more tractable via sieve methods.",
+    "historicalContext": "This problem appears as Problem A2 in Guy's *Unsolved Problems in Number Theory* [Gu04], attributed to Erdős circa 1980. It probes the interaction between two fundamental sequences in number theory — primes and factorials — through subtraction.\n\nThe factorials $1, 2, 6, 24, 120, 720, \\ldots$ grow super-exponentially (Stirling: $k! \\sim \\sqrt{2\\pi k}(k/e)^k$), so only $O(\\log n / \\log \\log n)$ factorials lie below $n$. This means the factorial-subtraction condition is mild: for $n \\sim 10^6$, only 9 factorials need checking. The known examples are $p = 101$ (factorials to check: $1, 2, 6, 24$) and $p = 211$ (factorials: $1, 2, 6, 24, 120$). The prime $89$ fails because $89 - 6 = 83$ is prime. These are listed in OEIS A064152.\n\nThe probabilistic heuristic is compelling: each $p - k!$ is prime independently with probability $\\sim 1/\\ln p$ (by the prime number theorem). With only $\\sim \\log p / \\log \\log p$ values to check, the probability that *all* subtractions are composite is $(1 - 1/\\ln p)^{O(\\log p / \\log \\log p)} \\to 1$ as $p \\to \\infty$. This suggests that not only are there infinitely many such primes, but *almost all* large primes satisfy the property — yet no rigorous proof exists.\n\nErdős suggested a potentially easier variant: find infinitely many $n$ in $(l!, (l+1)!]$ whose prime factors all exceed $l$ and whose factorial subtractions are all composite. This removes the requirement that $n$ itself be prime, possibly making the problem more tractable via sieve methods. The connection to smooth numbers (integers with only small prime factors) links this variant to the Dickman function $\\rho(u)$ and the theory of friable integers.",
     "problemStatement": "Are there infinitely many primes $p$ such that $p - k!$ is composite for every $k$ with $1 \\leq k! < p$?",
     "proofStrategy": "The formalization defines `AllFactorialSubtractionsComposite` requiring both non-primality and $\\geq 2$ for each $n - k!$, then:\n\n1. **Verified examples:** $p = 101$ and $p = 211$ are proved using `interval_cases` over all relevant $k$ values (bounded by factorial growth), with `decide` for compositeness checks\n2. **Verified counterexample:** $p = 89$ fails because $89 - 3! = 83$ is prime, proved by `decide`\n3. **Axiomatized conjectures:** The main conjecture (Set.Infinite) and Erdős's alternative approach (smooth-number variant) are axiomatized\n4. **Summary:** `two_witnesses` packages both verified examples with their primality proofs",
     "keyInsights": [
@@ -123,6 +96,12 @@
       "**Factorial growth bounds verification:** The proofs use auxiliary lemmas (`factorial_lt_bound`, `factorial_lt_bound_211`) to bound $k$ from the assumption $k! < n$, enabling exhaustive case analysis via `interval_cases`.",
       "**Erdős's smooth-number variant:** By dropping the primality requirement on $n$ and instead requiring all prime factors $> l$, the problem may be approachable via sieve theory and smooth number estimates.",
       "**Computational decidability:** The property is decidable for any fixed $n$, and both examples and the counterexample are fully verified by Lean's `decide` tactic, demonstrating the power of computational verification in number theory."
+    ],
+    "prerequisites": [
+      "Elementary number theory: primes, factorials, compositeness",
+      "`Set.Infinite` for stating infinitary conjectures in Lean",
+      "Decidable arithmetic: `interval_cases` and `decide` tactics",
+      "Factorial growth bounds and Stirling's approximation (informal)"
     ]
   },
   "sections": [
@@ -183,13 +162,57 @@
       "mathContext": "Summary: $101, 211 \\in $ OEIS A064152, both verified prime and factorial-avoiding."
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "related",
+      "description": "Both prove or conjecture infinitude of a special set of primes; the main conjecture asserts Set.Infinite for factorial-avoiding primes"
+    },
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem connects primes to factorials via $(p-1)! \\equiv -1 \\pmod{p}$. This problem subtracts smaller factorials $k!$ for $k! < p$"
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Both concern prime distribution; Bertrand guarantees primes in intervals while this asks about factorial-prime interactions"
+    },
+    {
+      "targetId": "erdos-1057",
+      "relationship": "related",
+      "description": "Sister Erdős problem about prime-related counting; both use Set.Infinite for open conjectures about special prime sets"
+    },
+    {
+      "targetId": "erdos-728-factorial-divisibility",
+      "relationship": "related",
+      "description": "Both concern factorial-prime interactions: #728 studies factorial divisibility patterns while #1059 studies factorial subtractions from primes"
+    },
+    {
+      "targetId": "erdos-68",
+      "relationship": "related",
+      "description": "Both involve interactions between primes and factorials: #68 asks about irrationality of $\\sum 1/(n!-1)$ while #1059 asks about primality of $p - k!$. The super-exponential growth of factorials is the structural feature exploited in both problems"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "supports",
+      "description": "Unique prime factorization underlies the compositeness checks: verifying $n - k!$ is composite requires exhibiting a non-trivial factorization, which the `decide` tactic performs by trial division"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "The probabilistic heuristic for this problem relies on the PNT: the probability that a random integer near $p$ is prime is $\\sim 1/\\ln p$. With $O(\\log p / \\log \\log p)$ factorial subtractions to check, the expected number of prime subtractions is $O(\\log p / (\\log p \\cdot \\log \\log p)) \\to 0$, suggesting almost all large primes satisfy the property"
+    }
+  ],
   "relatedProofs": [
     "infinitude-primes",
     "wilsons-theorem",
     "bertrands-postulate",
     "erdos-1057",
     "erdos-68",
-    "erdos-728-factorial-divisibility"
+    "erdos-728-factorial-divisibility",
+    "fundamental-arithmetic",
+    "prime-number-theorem"
   ],
   "leanFile": {
     "imports": [
@@ -208,7 +231,7 @@
   },
   "conclusion": {
     "summary": "Erdős Problem #1059 remains open. The formalization verifies two concrete witnesses ($p = 101, 211$) and one counterexample ($p = 89$) using Lean's `decide` tactic, demonstrates the sparsity of factorials below $n$, and axiomatizes both the main conjecture and Erdős's potentially more tractable smooth-number variant.",
-    "implications": "A resolution would illuminate the relationship between prime distribution and factorial arithmetic. The probabilistic heuristic strongly suggests the answer is yes, but converting such arguments into proofs remains a central challenge in analytic number theory. Erdős's smooth-number alternative connects to sieve theory and the distribution of numbers with restricted prime factors.",
+    "implications": "A resolution would illuminate the relationship between prime distribution and factorial arithmetic. The probabilistic heuristic strongly suggests the answer is yes — in fact, it predicts that the density of qualifying primes among all primes approaches 1 — but converting such arguments into rigorous proofs remains a central challenge in analytic number theory.\n\nThe problem connects to several themes: (1) the general question of whether primes 'avoid' structured sequences (cf. Bunyakovsky conjecture, Bateman-Horn conjecture); (2) Erdős's smooth-number variant links to sieve theory and the Dickman function $\\rho(u)$, which governs the distribution of integers with no prime factors exceeding $n^{1/u}$; (3) the computational verification strategy — reducing an infinite problem to finite case analysis via factorial growth bounds — demonstrates a pattern common to many number-theoretic formalizations.",
     "openQuestions": [
       "What is the density of primes satisfying the factorial-subtraction property among all primes?",
       "Can Erdős's alternative approach via smooth numbers in $(l!, (l+1)!]$ be established by sieve methods?",

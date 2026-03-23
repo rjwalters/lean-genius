@@ -139,6 +139,12 @@
       "**Generalization hierarchy**: Paths $\\subset$ trees $\\subset$ bounded-degree graphs all have linear size Ramsey numbers, proved by Beck (1983), Friedman-Pippenger (1987), and Kohayakawa-Rödl-Schacht-Szemerédi (2011) respectively",
       "**Nat.find for minimum**: The size Ramsey number is defined as the minimum $m$ with the Ramsey property, using `Nat.find` with the complete graph $K_n$ providing an existence witness",
       "**Filter.Tendsto formalization**: Erdős's asymptotic questions are precisely captured by `Tendsto f atTop atTop` (divergence) and `Tendsto f atTop (nhds 0)` (convergence to zero)"
+    ],
+    "prerequisites": [
+      "**Graph theory fundamentals**: Simple graphs, edges, vertices, subgraphs, and graph homomorphisms. The definitions of paths $P_n$ (vertices $\\{0, \\ldots, n-1\\}$ with edges $\\{i, i+1\\}$) and cycles $C_n$ (path plus wrap-around edge $\\{0, n-1\\}$).",
+      "**Classical Ramsey theory**: The Ramsey number $R(G)$ as the minimum $N$ such that any 2-coloring of $E(K_N)$ contains a monochromatic copy of $G$. The result $R(P_n) = 2n - 1$ of Gerencser and Gyarfas (1967) and basic Ramsey bounds for complete graphs.",
+      "**The probabilistic method in combinatorics**: Random graph constructions and expectation arguments, since Beck's proof of $\\hat{R}(P_n) = O(n)$ relies on showing that a random graph with $O(n)$ edges has the Ramsey property via expansion properties.",
+      "**Expander graphs and expansion properties**: A graph $H$ is an expander if every small vertex subset $S$ has $|N(S)| \\ge c|S|$ for some constant $c > 1$. Beck's argument uses expansion to force long monochromatic paths in any 2-coloring of $H$."
     ]
   },
   "sections": [

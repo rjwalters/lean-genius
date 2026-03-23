@@ -34,6 +34,12 @@
       "f(n) is large when n has many nearby primes, small in 'prime deserts'",
       "The integral approximation ∫ dt/((n−t) log t) ~ 1 explains the average",
       "A weaker prime distribution conjecture would give f(n) ≪ log log log n"
+    ],
+    "prerequisites": [
+      "Prime number theorem and prime counting function: the asymptotic pi(x) ~ x/log(x) and its consequences for the average gap between consecutive primes near n",
+      "Analytic number theory fundamentals: Mertens' theorems on sums over primes (especially sum of 1/p ~ log log x), and the connection between harmonic sums and prime distribution",
+      "Liminf and limsup of arithmetic functions: the formal definitions via Filter.liminf/limsup, and techniques for establishing extremal behavior of number-theoretic functions",
+      "Cesaro averaging and summability: the relationship between pointwise behavior and averaged behavior of sequences, and how Cesaro means can smooth oscillatory arithmetic functions"
     ]
   },
   "sections": [

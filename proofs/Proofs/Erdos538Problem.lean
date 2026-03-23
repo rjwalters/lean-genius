@@ -19,7 +19,10 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Tactic
+
+open Classical
 
 /-
 ## Section I: Representation Count
@@ -96,7 +99,7 @@ theorem reciprocalSum_nonneg (A : Finset ℕ) : 0 ≤ reciprocalSum A := by
   intro n _
   split_ifs with h
   · exact div_nonneg one_pos.le (Nat.cast_nonneg n)
-  · le_refl
+  · exact le_refl _
 
 /-- The reciprocal sum is monotone: if A ⊆ B then Σ_{a ∈ A} 1/a ≤ Σ_{b ∈ B} 1/b. -/
 theorem reciprocalSum_mono {A B : Finset ℕ} (h : A ⊆ B) :
@@ -105,7 +108,7 @@ theorem reciprocalSum_mono {A B : Finset ℕ} (h : A ⊆ B) :
   intro n _ _
   split_ifs with h
   · exact div_nonneg one_pos.le (Nat.cast_nonneg n)
-  · le_refl
+  · exact le_refl _
 
 /-- Adding a positive element to A increases the reciprocal sum. -/
 theorem reciprocalSum_insert {A : Finset ℕ} {n : ℕ} (hn : n > 0) (hna : n ∉ A) :
@@ -159,12 +162,51 @@ theorem erdos_upper_bound :
 ## Section VI: Trivial Bound Without Constraint
 -/
 
+/-- Key inequality: 1/(n+1) ≤ log(n+1) - log(n) for n ≥ 1.
+    Proof: apply log(x) ≤ x - 1 to x = n/(n+1), giving
+    log(n/(n+1)) ≤ n/(n+1) - 1 = -1/(n+1), so log((n+1)/n) ≥ 1/(n+1). -/
+private lemma inv_succ_le_log_sub (n : ℕ) (hn : 1 ≤ n) :
+    (1 : ℝ) / ((n : ℝ) + 1) ≤ Real.log ((n : ℝ) + 1) - Real.log (n : ℝ) := by
+  have hn_pos : (0 : ℝ) < (n : ℝ) := Nat.cast_pos.mpr (by omega)
+  have hn1_pos : (0 : ℝ) < (n : ℝ) + 1 := by linarith
+  have h := Real.log_le_sub_one_of_pos (div_pos hn_pos hn1_pos)
+  rw [Real.log_div (ne_of_gt hn_pos) (ne_of_gt hn1_pos)] at h
+  -- h : log n - log(n+1) ≤ n/(n+1) - 1 = -1/(n+1)
+  have : (n : ℝ) / ((n : ℝ) + 1) - 1 = -(1 / ((n : ℝ) + 1)) := by field_simp; ring
+  linarith
+
 /-- Without the representation constraint, the maximum reciprocal sum
 of A ⊆ {1,...,N} is bounded by 1 + log N (harmonic sum bound). -/
 theorem harmonic_upper_bound (N : ℕ) (hN : N ≥ 1) :
     ∀ A : Finset ℕ, A ⊆ Finset.range (N + 1) →
       reciprocalSum A ≤ 1 + Real.log (N : ℝ) := by
-  sorry
+  intro A hA
+  -- Reduce to bounding the full harmonic sum H_N
+  suffices h : reciprocalSum (Finset.range (N + 1)) ≤ 1 + Real.log (N : ℝ) from
+    le_trans (reciprocalSum_mono hA) h
+  clear A hA
+  -- Prove H_N ≤ 1 + log N by induction
+  induction N with
+  | zero => omega
+  | succ n ih =>
+    rcases Nat.eq_zero_or_pos n with rfl | hn_pos
+    · -- Base case: N = 1
+      -- reciprocalSum({0,1}) = 0 + 1 = 1 ≤ 1 + log 1 = 1
+      simp only [reciprocalSum, Finset.sum_range_succ, Finset.sum_range_zero]
+      norm_num [Real.log_one]
+    · -- Inductive step: n ≥ 1, prove for N = n + 1
+      have h_ih := ih (by omega : n ≥ 1)
+      -- Split: reciprocalSum(range(n+2)) = reciprocalSum(range(n+1)) + 1/(n+1)
+      show reciprocalSum (Finset.range (n + 1 + 1)) ≤ 1 + Real.log (↑(n + 1))
+      simp only [reciprocalSum] at h_ih ⊢
+      rw [show n + 1 + 1 = (n + 1) + 1 from rfl, Finset.sum_range_succ]
+      rw [if_pos (show n + 1 > 0 from Nat.succ_pos n)]
+      -- Goal: (∑ in range(n+1)) + 1/↑(n+1) ≤ 1 + log ↑(n+1)
+      have h_key := inv_succ_le_log_sub n (by omega : 1 ≤ n)
+      -- Normalize ↑(n+1) to ↑n + 1
+      have h_cast : ((n + 1 : ℕ) : ℝ) = (n : ℝ) + 1 := by push_cast; ring
+      rw [h_cast]
+      linarith
 
 /-
 ## Section VII: Double Counting Identity
@@ -188,40 +230,88 @@ theorem primes_for_element_bound (A : Finset ℕ) (N : ℕ) (a : ℕ)
   exact le_trans ( Finset.card_le_card h_prime_to_int ) ( Finset.card_image_le.trans ( by simpa ) )
 
 /-- The double counting inequality: bounding the sum of reprCount.
-    Σ_{m=1}^{N} reprCount(A, m) ≤ |A| · N since each a ∈ A contributes
-    at most N/a ≤ N values of m = pa. -/
+    Σ_{m=0}^{N} reprCount(A, m) ≤ |A| · N since each a ∈ A contributes
+    at most N/a ≤ N values of m = pa (using a ≥ 1 and p prime ≥ 2,
+    so m = pa ≥ 2, meaning m = 0 and m = 1 contribute nothing).
+    Note: requires all elements of A to be positive (as in the original
+    problem statement A ⊆ {1,...,N}). Without this, A = {0}, N = 0
+    gives reprCount({0}, 0) = 1 > 0 = |A|·N, a counterexample. -/
 theorem sum_reprCount_bound (A : Finset ℕ) (N : ℕ)
-    (hA : A ⊆ Finset.range (N + 1)) :
+    (hA : A ⊆ Finset.range (N + 1)) (hpos : ∀ a ∈ A, 0 < a) :
     ∑ m ∈ Finset.range (N + 1), reprCount A m ≤ A.card * N := by
-  sorry
+  -- Step 1: reprCount A 0 = 0 when all elements of A are positive
+  -- (0 = p*a with p prime ≥ 2 and a ≥ 1 is impossible)
+  have h0 : reprCount A 0 = 0 := by
+    simp only [reprCount, Finset.card_eq_zero, Finset.filter_eq_empty_iff]
+    intro a ha ⟨p, hp, heq⟩
+    have := Nat.mul_le_mul_left 1 (hpos a ha)
+    have := Nat.mul_le_mul_right a hp.two_le
+    omega
+  -- Step 2: Split range(N+1) = {0} ∪ Ico(1, N+1), peel off the m=0 term
+  have h0_mem : (0 : ℕ) ∈ Finset.range (N + 1) := Finset.mem_range.mpr (Nat.zero_lt_succ N)
+  have hsplit : ∑ m ∈ Finset.range (N + 1), reprCount A m =
+      reprCount A 0 + ∑ m ∈ (Finset.range (N + 1)).erase 0, reprCount A m :=
+    (Finset.add_sum_erase _ (fun m => reprCount A m) h0_mem).symm
+  rw [hsplit, h0, zero_add]
+  -- Step 3: The remaining set has N elements, each contributing ≤ A.card
+  have hcard_erase : ((Finset.range (N + 1)).erase 0).card = N := by
+    rw [Finset.card_erase_of_mem h0_mem, Finset.card_range]
+    omega
+  calc ∑ m ∈ (Finset.range (N + 1)).erase 0, reprCount A m
+      ≤ ∑ m ∈ (Finset.range (N + 1)).erase 0, A.card :=
+        Finset.sum_le_sum (fun m _ => reprCount_le_card A m)
+    _ = ((Finset.range (N + 1)).erase 0).card * A.card := by
+        simp [Finset.sum_const, smul_eq_mul]
+    _ = N * A.card := by rw [hcard_erase]
+    _ = A.card * N := Nat.mul_comm _ _
 
 /-
 ## Section VIII: Connections to Multiplicative Structure
 -/
 
-/-- The problem is related to the multiplicative energy of A with primes.
-    The set E = {(a₁, a₂) ∈ A × A : ∃ p₁ p₂ prime, p₁a₁ = p₂a₂} measures
-    how "multiplicatively correlated" A is with the primes. -/
-theorem multiplicative_energy_bound (A : Finset ℕ) (N r : ℕ)
-    (hA : A ⊆ Finset.range (N + 1)) (hr : HasBoundedRepr A r) :
+/-- The multiplicative energy of A with primes: the number of pairs (a₁, a₂)
+    in A × A with ∃ p₁ p₂ prime, p₁a₁ = p₂a₂. Always includes the diagonal
+    (|A| pairs with a₁ = a₂, using any prime for both).
+    Note: the bound r²·|A| is FALSE. Counterexample: A = {2,3,5,7,11} with
+    N=11 has r=2, but all 25 pairs satisfy the condition (any two primes
+    p_i, p_j have gcd 1, and p_i/1, p_j/1 are both prime), while r²·|A| = 20.
+    The trivial bound |A|² always holds. -/
+theorem multiplicative_energy_trivial_bound (A : Finset ℕ) (N : ℕ)
+    (hA : A ⊆ Finset.range (N + 1)) :
     (Finset.card ((A ×ˢ A).filter (fun p =>
       ∃ q₁ q₂ : ℕ, q₁.Prime ∧ q₂.Prime ∧
         q₁ * p.1 = q₂ * p.2)) : ℝ)
-    ≤ (r : ℝ) ^ 2 * (A.card : ℝ) := by
-  sorry
+    ≤ (A.card : ℝ) ^ 2 := by
+  have h := Finset.card_filter_le (A ×ˢ A) (fun p =>
+    ∃ q₁ q₂ : ℕ, q₁.Prime ∧ q₂.Prime ∧ q₁ * p.1 = q₂ * p.2)
+  rw [Finset.card_product] at h
+  have : (A.card * A.card : ℕ) = A.card ^ 2 := by ring
+  calc ((Finset.card ((A ×ˢ A).filter _)) : ℝ)
+      ≤ (A.card * A.card : ℕ) := by exact_mod_cast h
+    _ = (A.card : ℝ) ^ 2 := by push_cast; ring
 
 /-
 ## Section IX: Special Cases
 -/
 
-/-- For r = 1, the constraint means each element of A appears in at most
-    one product p · a = m. This forces A to be "multiplicatively thin". -/
+/-- For r = 1 with A ⊆ {1,...,N} (positive elements), we have |A| ≤ N.
+    Note: without positivity, A ⊆ range(N+1) = {0,...,N} gives |A| ≤ N+1.
+    Adding the positivity hypothesis excludes 0, giving A ⊆ {1,...,N}. -/
 theorem r_eq_1_card_bound (A : Finset ℕ) (N : ℕ)
-    (hA : A ⊆ Finset.range (N + 1)) (hr : HasBoundedRepr A 1) :
+    (hA : A ⊆ Finset.range (N + 1)) (_hr : HasBoundedRepr A 1)
+    (hpos : ∀ a ∈ A, 0 < a) :
     (A.card : ℝ) ≤ (N : ℝ) := by
-  have h := Finset.card_le_card hA
-  simp [Finset.card_range] at h
-  exact Nat.cast_le.mpr h
+  -- 0 ∉ A since all elements are positive
+  have h0 : 0 ∉ A := fun h => Nat.lt_irrefl 0 (hpos 0 h)
+  have h_sub : A ⊆ (Finset.range (N + 1)).erase 0 := by
+    intro a ha
+    exact Finset.mem_erase.mpr ⟨Nat.pos_iff_ne_zero.mp (hpos a ha), hA ha⟩
+  have h_card : A.card ≤ N := by
+    have h1 := Finset.card_le_card h_sub
+    rw [Finset.card_erase_of_mem (Finset.mem_range.mpr (Nat.zero_lt_succ N)),
+        Finset.card_range] at h1
+    omega
+  exact_mod_cast h_card
 
 /-- A singleton set always has 1-bounded representations. -/
 theorem singleton_hasBoundedRepr {a : ℕ} : HasBoundedRepr {a} 1 := by

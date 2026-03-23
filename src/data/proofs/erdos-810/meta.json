@@ -85,6 +85,12 @@
       "**$n$-Color Palette:** Using exactly $n$ colors for $n$ vertices is a deliberate choice connecting to Vizing-type edge coloring theory. Fewer colors make the rainbow condition harder to satisfy; more colors make it easier.",
       "**Vacuous Rainbow as Proof Pattern:** The theorem `c4_free_vacuously_rainbow` is proved by `fun C => False.elim (hfree C)` — a clean demonstration that the rainbow condition is only non-trivial for graphs containing $C_4$'s. This is a standard \"vacuous truth\" argument in Lean.",
       "**Filter.atTop for Asymptotics:** The main conjecture uses `∀ᶠ n in Filter.atTop` to express 'for all sufficiently large $n$,' following Mathlib's conventions for asymptotic statements. This is more mathematically precise than ad hoc 'there exists $N_0$' formulations."
+    ],
+    "prerequisites": [
+      "Extremal graph theory: the Turan number ex(n; H) and the Kovari-Sos-Turan theorem bounding the number of edges in graphs avoiding complete bipartite subgraphs, especially ex(n; C_4) = O(n^{3/2})",
+      "Anti-Ramsey theory: the study of rainbow subgraphs in edge-colored graphs, anti-Ramsey numbers ar(n, H) measuring the minimum colors needed to guarantee a rainbow copy of H, and the distinction between forcing and avoiding rainbow copies",
+      "Edge coloring: Vizing's theorem on edge-chromatic number, proper edge colorings with Delta+1 colors, and the relationship between palette size and structural constraints on subgraph colorings",
+      "Graph density and subgraph containment: the supersaturation phenomenon (dense graphs contain many copies of forbidden subgraphs), and constructions from algebraic geometry such as polarity graphs over finite fields achieving extremal density"
     ]
   },
   "sections": [

@@ -60,7 +60,7 @@ export function ResearchPage() {
       filtered = filtered.filter((problem) =>
         problem.title.toLowerCase().includes(query) ||
         problem.description.toLowerCase().includes(query) ||
-        problem.tags.some(tag => tag.toLowerCase().includes(query))
+        (problem.tags ?? []).some(tag => tag.toLowerCase().includes(query))
       )
     }
 

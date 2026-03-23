@@ -483,11 +483,12 @@
     },
     {
       "slug": "erdos-44",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-01-12T06:58:30.839Z",
-      "status": "active",
-      "lastUpdate": "2026-03-13T07:52:17.043Z"
+      "status": "graduated",
+      "lastUpdate": "2026-03-22T22:32:23.135Z",
+      "completed": "2026-03-22T22:32:23.134Z"
     },
     {
       "slug": "erdos-68",
@@ -4873,11 +4874,12 @@
     },
     {
       "slug": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-03-21T17:10:19.196Z",
-      "status": "active",
-      "lastUpdate": "2026-03-22T15:11:31.914Z"
+      "status": "graduated",
+      "lastUpdate": "2026-03-22T22:10:40.327Z",
+      "completed": "2026-03-22T22:10:40.327Z"
     },
     {
       "slug": "central-limit-theorem-oq-01-oq-02",
@@ -5034,11 +5036,11 @@
     },
     {
       "slug": "cayley-hamilton-minpoly-oq-05",
-      "phase": "COMPLETED",
+      "phase": "OBSERVE",
       "path": "full",
       "started": "2026-03-22T03:02:07.201Z",
       "status": "graduated",
-      "lastUpdate": "2026-03-22T12:47:35.471Z",
+      "lastUpdate": "2026-03-22T15:12:17-07:00",
       "completed": "2026-03-22T12:47:35.471Z"
     },
     {
@@ -5276,6 +5278,43 @@
       "started": "2026-03-22T16:23:16.662Z",
       "status": "active",
       "lastUpdate": "2026-03-22T16:23:16.673Z"
+    },
+    {
+      "slug": "chinese-remainder-constructive-oq-04",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-03-22T15:12:20-07:00",
+      "status": "active"
+    },
+    {
+      "slug": "birthday-problem-oq-03",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-03-22T15:12:20-07:00",
+      "status": "active"
+    },
+    {
+      "slug": "fourier-series-oq-02",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-03-22T15:12:20-07:00",
+      "status": "active"
+    },
+    {
+      "slug": "cayley-hamilton-minpoly-oq-05-oq-01",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-03-22T22:32:23.161Z",
+      "status": "active",
+      "lastUpdate": "2026-03-22T22:32:23.161Z"
+    },
+    {
+      "slug": "leibniz-pi-oq-01-oq-01",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-03-22T22:32:23.162Z",
+      "status": "active",
+      "lastUpdate": "2026-03-22T22:32:23.162Z"
     }
   ],
   "config": {

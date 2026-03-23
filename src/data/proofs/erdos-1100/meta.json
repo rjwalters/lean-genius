@@ -33,6 +33,12 @@
       "The Erdős–Simonovits bounds $\\sqrt{2}^k \\lesssim g(k) \\lesssim (2-c)^k$ show that the maximum number of coprime transitions grows exponentially in the number of prime factors, with a base strictly between $\\sqrt{2} \\approx 1.414$ and $2$",
       "Questions 1 and 2 address complementary aspects: Question 1 asks about typical behavior (almost all $n$), while Question 2 asks about worst-case behavior (all $n$), and both remain open after over 45 years",
       "Restricting to squarefree $n$ in the definition of $g(k)$ simplifies the divisor lattice to a Boolean lattice $2^{\\{p_1,\\ldots,p_k\\}}$, making the problem purely combinatorial while preserving the essential difficulty"
+    ],
+    "prerequisites": [
+      "Divisor theory: ordered divisor sequences and the divisor function $\\tau(n)$",
+      "Prime factorization, coprimality, and squarefreeness",
+      "Multiplicative number theory and the Hardy-Ramanujan theorem ($\\omega(n) \\approx \\log\\log n$)",
+      "Extremal combinatorics on Boolean lattices"
     ]
   },
   "sections": [

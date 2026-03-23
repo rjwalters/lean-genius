@@ -72,6 +72,18 @@
     "prerequisites": ["Finset.powersetCard_succ_insert", "Fin.castSucc", "Fin.last", "Finset.sum_union", "elemSymm_two_succ"]
   },
   {
+    "id": "ann-amgm-oq02-part-iii-header",
+    "proofId": "amgm-inequality-oq-02",
+    "range": { "startLine": 273, "endLine": 276 },
+    "type": "context",
+    "title": "Part III: Newton's Log-Concavity — The Deep Engine",
+    "content": "Part III introduces the deep classical machinery that powers the full Maclaurin chain. Newton's log-concavity of the normalized elementary symmetric sequence is a result from the late 17th century, first appearing in Newton's Arithmetica Universalis (published 1707, based on c. 1683-1684 lectures). The standard modern proof uses polarization (replacing one variable at a time by the arithmetic mean) and induction on n, as systematized by Hardy, Littlewood, and Pólya in Inequalities (1934, §2.22). This result is currently axiomatized because the polarization technique, while elementary, requires significant Lean infrastructure for multivariate function manipulation that Mathlib does not yet provide. The Maclaurin step Mₖ ≥ Mₖ₊₁ follows from Newton log-concavity via monotonicity of the function t^(1/k).",
+    "mathContext": "Newton's log-concavity: $(e_k/\\binom{n}{k})^2 \\geq (e_{k-1}/\\binom{n}{k-1})(e_{k+1}/\\binom{n}{k+1})$. Equivalently, the sequence $a_k = e_k/\\binom{n}{k}$ is log-concave: $a_k^2 \\geq a_{k-1} a_{k+1}$. This implies $a_k^{1/k}$ is decreasing, giving the Maclaurin chain.",
+    "significance": "supporting",
+    "relatedConcepts": ["Newton's inequalities", "log-concavity", "polarization", "Hardy-Littlewood-Pólya"],
+    "prerequisites": ["elementary symmetric polynomials", "AM-GM"]
+  },
+  {
     "id": "ann-amgm-oq02-newton-axiom",
     "proofId": "amgm-inequality-oq-02",
     "range": { "startLine": 277, "endLine": 309 },
@@ -106,6 +118,30 @@
     "significance": "key",
     "relatedConcepts": ["maclaurin_step axiom", "induction on Nat.le", "Nat.exists_eq_add_of_le", "calc blocks", "transitivity"],
     "prerequisites": ["maclaurin_step", "Nat.exists_eq_add_of_le", "GE.ge.trans", "omega"]
+  },
+  {
+    "id": "ann-amgm-oq02-part-ii-header",
+    "proofId": "amgm-inequality-oq-02",
+    "range": { "startLine": 62, "endLine": 65 },
+    "type": "context",
+    "title": "Part II: Small-Case M₁ ≥ M₂ via Sum-of-Squares",
+    "content": "Part II transitions from the symmetric polynomial infrastructure of Part I to concrete proofs of M₁² ≥ M₂ for small n. The approach is direct: for each small n, the inequality reduces to a sum-of-squares identity that nlinarith can verify automatically. These concrete cases motivate the general Cauchy-Schwarz proof that follows and illustrate the pattern: the number of squared-difference witnesses equals C(n,2), matching the normalization factor in M₂.",
+    "mathContext": "For $n = 2,3,4$: $M_1^2 \\geq M_2$ reduces to $(\\sum x_i)^2/n^2 \\geq e_2/\\binom{n}{2}$, which is equivalent to $\\binom{n}{2}(\\sum x_i)^2 \\geq n^2 e_2$. Each case has a sum-of-squares certificate with $\\binom{n}{2}$ terms.",
+    "significance": "context",
+    "relatedConcepts": ["sum-of-squares certificates", "nlinarith", "AM-GM classical proofs"],
+    "prerequisites": ["elemSymm from Part I"]
+  },
+  {
+    "id": "ann-amgm-oq02-binomial-header",
+    "proofId": "amgm-inequality-oq-02",
+    "range": { "startLine": 112, "endLine": 118 },
+    "type": "context",
+    "title": "Binomial Identity Infrastructure: Setup for Inductive Proof",
+    "content": "This section introduces the private infrastructure for proving the key binomial identity (∑xᵢ)² = ∑xᵢ² + 2·e₂ by induction on n. The identity is central to the general M₁² ≥ M₂ proof: combined with Cauchy-Schwarz, it yields C(n,2)·(∑xᵢ)² ≥ n²·e₂ without any non-negativity assumptions. The inductive approach requires a custom castSucc embedding (csEmb) to work around API naming issues in Docker Lean 4.26.0, and a decomposition of Fin (n+1) into {0,...,n-1} ∪ {n} for splitting the elementary symmetric polynomial sum.",
+    "mathContext": "The identity $(\\sum_{i=1}^n x_i)^2 = \\sum_{i=1}^n x_i^2 + 2e_2(x_1,\\ldots,x_n)$ is the $k=2$ case of Newton's identity $p_k - e_1 p_{k-1} + \\cdots = (-1)^{k+1} k e_k$. For $k=2$: $p_2 = e_1^2 - 2e_2$, i.e., $\\sum x_i^2 = (\\sum x_i)^2 - 2e_2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Newton-Girard identities", "Fin.castSucc", "induction on n", "power sums vs elementary symmetric polynomials"],
+    "prerequisites": ["Fin.castSucc", "Fin.last", "Finset.powersetCard"]
   },
   {
     "id": "ann-amgm-oq02-inductive-infra",

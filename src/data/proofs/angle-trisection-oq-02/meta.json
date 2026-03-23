@@ -120,12 +120,47 @@
       "targetId": "fundamental-theorem-algebra",
       "relationship": "foundational",
       "description": "FTA guarantees that every polynomial over ℚ splits over ℂ, ensuring that the Galois group of minpoly(ℚ,α) is well-defined as Aut(splitting field/ℚ) — the foundation for the Galois characterization of constructibility"
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-03",
+      "relationship": "extended-by",
+      "description": "Sub-entry extending the Galois characterization of constructibility with additional results or concrete examples"
+    },
+    {
+      "targetId": "general-quartic",
+      "relationship": "complementary",
+      "description": "Ferrari's quartic formula shows all quartics are solvable by radicals (S₄ solvable), while this file shows 2^(1/4) is constructible because Gal(x⁴-2/ℚ) ≅ D₄ has order 8 = 2³ — the quartic sits at the intersection of radical solvability and constructibility"
+    },
+    {
+      "targetId": "abel-ruffini-oq-04",
+      "relationship": "related",
+      "description": "Both expose Galois group obstructions: OQ-04 shows A₅ simplicity → S₅ not solvable → quintics unsolvable by radicals, while this file shows non-2-group Galois groups → non-constructibility. Same framework (Galois groups control algebraic capabilities), different group-theoretic criteria (solvable vs 2-group)"
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Gauss's constructibility theorem for regular n-gons requires φ(n) = 2^k, which forces n = 2^a · p₁···pₘ with distinct Fermat primes pᵢ = 2^(2^eᵢ) + 1. Fermat prime structure connects to quadratic residues: the Gauss periods that build the constructive tower are indexed by quadratic residue classes mod p"
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-01",
+      "relationship": "extended-by",
+      "description": "Sub-entry extending the 2-group characterization with additional constructibility examples or refined analysis"
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "foundational",
+      "description": "Primitive roots establish that $(\\mathbb{Z}/p\\mathbb{Z})^{\\times}$ is cyclic of order $p-1$. For the Gauss-Wantzel theorem: the regular $p$-gon is constructible iff $\\text{Gal}(\\mathbb{Q}(\\zeta_p)/\\mathbb{Q}) \\cong (\\mathbb{Z}/p\\mathbb{Z})^{\\times}$ is a 2-group, i.e., $p-1 = 2^k$, i.e., $p$ is a Fermat prime. Gauss's construction of the 17-gon used the 2-group structure of $(\\mathbb{Z}/17\\mathbb{Z})^{\\times} \\cong \\mathbb{Z}/16\\mathbb{Z}$"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "foundational",
+      "description": "The Gauss-Wantzel theorem states the regular $n$-gon is constructible iff $\\phi(n) = 2^k$, making Euler's totient function the bridge between number theory and constructibility. Since $\\text{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^{\\times}$ has order $\\phi(n)$, the 2-group criterion reduces to $\\phi(n) = 2^k$"
     }
   ],
   "overview": {
     "historicalContext": "The connection between constructibility and algebraic structure was first glimpsed by Carl Friedrich Gauss. In 1796, at age 19, Gauss proved that the regular 17-gon is constructible — a stunning result, since 17 is prime and $\\phi(17) = 16 = 2^4$ is a power of 2. Gauss's proof in *Disquisitiones Arithmeticae* (1801, §365) implicitly used the 2-group structure of the Galois group $\\text{Gal}(\\mathbb{Q}(\\zeta_{17})/\\mathbb{Q}) \\cong (\\mathbb{Z}/17\\mathbb{Z})^\\times \\cong \\mathbb{Z}/16\\mathbb{Z}$, though the language of Galois groups did not yet exist.\n\nIn 1837, Pierre Wantzel proved the converse: compass-and-straightedge constructions can only produce algebraic numbers whose minimal polynomial has degree a power of 2. Wantzel's 7-page paper in the *Journal de Mathématiques Pures et Appliquées* was largely ignored — partly because Wantzel was a young engineer rather than an established mathematician, and partly because the result was widely (but incorrectly) assumed to have been proved by Gauss already. Wantzel died in 1848 at age 33.\n\nWith the development of Galois theory (Galois 1832, published by Liouville 1846, systematized by Jordan 1870), the characterization was refined to its modern form: $\\alpha$ is constructible if and only if the Galois group of its minimal polynomial is a **2-group**. This is both necessary AND sufficient — a genuine biconditional. The key structural insight: 2-groups have composition series with $\\mathbb{Z}/2\\mathbb{Z}$ factors, corresponding exactly to the tower of degree-2 extensions that compass-and-straightedge constructions generate. The Gauss-Wantzel theorem for regular polygons ($n$-gon constructible $\\iff \\phi(n) = 2^k$) is a celebrated special case.",
     "problemStatement": "**Open Question (angle-trisection-oq-02)**: Can we characterize which algebraic numbers are constructible in terms of their Galois groups?\n\n**Answer: YES** — the complete characterization is:\n\nAn algebraic number α ∈ ℝ is constructible from ℚ by compass and straightedge\n**if and only if** the Galois group of its minimal polynomial over ℚ is a 2-group.\n\nEquivalently: α is constructible ↔ Gal(minpoly(ℚ,α)) has order a power of 2.\n\n**Key examples**:\n- √2: Gal(x²-2/ℚ) ≅ ℤ/2ℤ (order 2 = 2¹) → constructible ✓\n- ∛2: Gal(x³-2/ℚ) ≅ S₃ (order 6, not 2-group) → NOT constructible ✗\n- 2^(1/4): Gal(x⁴-2/ℚ) ≅ D₄ (order 8 = 2³) → constructible ✓\n- cos(20°): Gal(8x³-6x-1/ℚ) ≅ ℤ/3ℤ (order 3, not 2-group) → NOT constructible ✗",
-    "proofStrategy": "The biconditional has two directions:\n\n**Forward (constructible → 2-group)**:\nIf α is constructible, it lies in a tower ℚ = K₀ ⊂ K₁ ⊂ ... ⊂ Kₙ with [Kᵢ₊₁:Kᵢ] = 2 each. The Galois closure K of ℚ(α) satisfies [K:ℚ] = 2^m, so Gal(K/ℚ) has order 2^m → 2-group. Since minpoly(ℚ,α) splits over K, Gal(minpoly) embeds into Gal(K/ℚ) → also a 2-group.\n\n**Backward (2-group → constructible)**:\nIf Gal(minpoly(ℚ,α)) is a 2-group, it has a composition series with ℤ/2ℤ quotients. By the Galois correspondence, this corresponds to a tower of degree-2 field extensions, each obtained by adjoining a square root → α is constructible.\n\n**In Lean**: The full proof requires the Galois correspondence (which is available in Mathlib). The theorem `wantzel_galois_characterization` is axiomatized. Supporting theorems showing 6 is not a power of 2 (via coprimality: gcd(3,2)=1 implies 3∤2^n) are proved directly.",
+    "proofStrategy": "The biconditional `IsConstructibleFromQ α ↔ IsPGroup 2 (minpoly ℚ α).Gal` has two directions:\n\n**Forward (constructible $\\Rightarrow$ 2-group)**:\nIf $\\alpha$ is constructible, it lies in a tower $\\mathbb{Q} = K_0 \\subset K_1 \\subset \\cdots \\subset K_n$ with $[K_{i+1}:K_i] = 2$ each. The Galois closure $K$ of $\\mathbb{Q}(\\alpha)$ satisfies $[K:\\mathbb{Q}] = 2^m$, so $|\\text{Gal}(K/\\mathbb{Q})| = 2^m$ — a 2-group. Since $\\text{minpoly}(\\mathbb{Q},\\alpha)$ splits over $K$, we have $\\text{Gal}(\\text{minpoly}) \\hookrightarrow \\text{Gal}(K/\\mathbb{Q})$, and subgroups of 2-groups are 2-groups.\n\n**Backward (2-group $\\Rightarrow$ constructible)**:\nIf $\\text{Gal}(\\text{minpoly}(\\mathbb{Q},\\alpha))$ is a 2-group, it has a composition series $\\{e\\} = G_0 \\trianglelefteq G_1 \\trianglelefteq \\cdots \\trianglelefteq G_m = G$ with $G_{i+1}/G_i \\cong \\mathbb{Z}/2\\mathbb{Z}$. By the Galois correspondence, this gives a tower of degree-2 field extensions, each obtained by adjoining a square root $\\Rightarrow \\alpha$ is constructible.\n\n**In Lean**: The biconditional `wantzel_galois_characterization` is axiomatized (requires the full Galois correspondence). Concrete applications are proved:\n- `not_pow_two_of_eq_six`: $6 \\neq 2^n$ via coprimality ($\\gcd(3,2)=1 \\Rightarrow 3 \\nmid 2^n$, but $3 \\mid 6$)\n- `x_sq_sub_2_gal_order`: $|\\text{Gal}(x^2-2/\\mathbb{Q})| = 2$ via divisibility squeeze\n- `galois_2group_implies_degree_pow2`: $\\text{IsPGroup}\\ 2\\ \\text{Gal}(q) \\Rightarrow \\deg(q) \\mid 2^k$ via the tower law",
     "keyInsights": [
       "The key upgrade from OQ-01 to OQ-02: degree-is-power-of-2 is necessary but not sufficient for constructibility; the Galois group being a 2-group is the exact characterization",
       "2-groups have composition series with ℤ/2ℤ quotients ↔ tower of degree-2 extensions ↔ compass-and-straightedge constructibility",
@@ -247,6 +282,13 @@
     "lagrange-theorem",
     "sqrt2-irrational",
     "pi-transcendental",
-    "fundamental-theorem-algebra"
+    "fundamental-theorem-algebra",
+    "angle-trisection-oq-02-oq-03",
+    "general-quartic",
+    "abel-ruffini-oq-04",
+    "quadratic-reciprocity",
+    "angle-trisection-oq-02-oq-01",
+    "primitive-roots",
+    "euler-totient"
   ]
 }

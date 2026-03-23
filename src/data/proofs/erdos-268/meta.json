@@ -69,6 +69,12 @@
       "**Coordinate Coupling via Shifts:** The shifted sums Σ 1/(n+k) for k = 0, ..., d-1 create a non-trivial coupling between coordinates. Two sets A, B with identical first coordinates can differ in higher coordinates because shifting by k changes the relative weights of small vs large elements. This coupling is what makes the higher-dimensional problem fundamentally harder than the 1D case",
       "**Constructive vs Existential:** Kovač's d=3 proof is constructive — he computes an explicit ball center and radius. The Kovač-Tao general proof is existential, using compactness and density arguments from Ahmes series theory. The contrast highlights that quantitative bounds on the interior become harder as dimension increases",
       "**Geometric Constraints on X:** Despite having interior, X is geometrically constrained: all coordinates are positive, strictly decreasing (x₀ > x₁ > ··· > x_{d-1} > 0), and projecting to fewer coordinates preserves the set. X lives in a narrow cone, yet still contains balls"
+    ],
+    "prerequisites": [
+      "Real analysis: convergence of series, harmonic subseries $\\sum_{n \\in A} 1/n$, summability theory",
+      "Point-set topology: interior of subsets of $\\mathbb{R}^d$, open balls, path-connectedness",
+      "Metric space theory: Euclidean distance in $\\mathbb{R}^d$, metric-ball formulations",
+      "Egyptian fractions / Ahmes series: representing reals as sums of distinct unit fractions"
     ]
   },
   "sections": [
@@ -154,6 +160,16 @@
       "Is there an effective version of the Kovač-Tao result that gives explicit bounds on the ball radius as a function of d?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "The squares example $A = \\{n^2\\}$ connects directly to the Basel problem: $\\sum 1/n^2 = \\pi^2/6$. This specific harmonic subseries point lies in the interior of $X_1$, providing a concrete witness"
+    }
+  ],
+  "relatedProofs": [
+    "basel-problem"
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Topology.Instances.Real",

@@ -147,6 +147,12 @@
       "**Additive-multiplicative barrier**: the problem requires combining sumset theory (additive) with sieve methods (multiplicative) — two largely disjoint toolkits",
       "**Three scenarios**: density could be Θ(π(n)), O(n^α) for α < 1, or O((log n)^k) — even the correct order of magnitude is unknown",
       "**Tao's assessment**: 'looks difficult' — suggesting current techniques are insufficient"
+    ],
+    "prerequisites": [
+      "Additive combinatorics: sumsets ($A + B$), Cauchy-Davenport theorem, Plünnecke-Ruzsa inequality",
+      "Elementary number theory: pairwise coprimality, GCD, prime factorization",
+      "Sieve theory: counting primes and coprime sets in intervals ($\\pi(n)$ bounds)",
+      "The sum-product phenomenon and additive-multiplicative interactions"
     ]
   },
   "conclusion": {
@@ -165,10 +171,22 @@
       "targetId": "erdos-30",
       "relationship": "related",
       "description": "Both study structural constraints on sumsets; #30 concerns Sidon sets (unique representations) while #432 requires pairwise coprimality"
+    },
+    {
+      "targetId": "gcd-algorithm",
+      "relationship": "supports",
+      "description": "The GCD algorithm is the computational tool for checking pairwise coprimality $\\gcd(x,y) = 1$, the central constraint in Problem #432"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "supports",
+      "description": "The prime counting function $\\pi(n)$ bounds the maximum size of a pairwise coprime set in $[1,n]$. The infinitude of primes ensures $\\pi(n) \\to \\infty$, making the density question non-trivial"
     }
   ],
   "relatedProofs": [
-    "erdos-30"
+    "erdos-30",
+    "gcd-algorithm",
+    "infinitude-primes"
   ],
   "leanFile": {
     "imports": [

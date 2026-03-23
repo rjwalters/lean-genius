@@ -156,5 +156,21 @@
       "venue": "Carnegie Institution of Washington",
       "note": "Extensive history of perfect numbers from antiquity through the early 20th century"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Both concern the divisor structure of integers: perfect numbers satisfy σ(n) = 2n, while Euler's totient counts coprime residues. The sigma function σ and Euler's φ are both multiplicative arithmetic functions."
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "Even perfect numbers are 2^(p-1)(2^p - 1) where 2^p - 1 is a Mersenne prime. The infinitude of primes is foundational, and whether infinitely many Mersenne primes exist (hence infinitely many even perfect numbers) remains open."
+    }
+  ],
+  "relatedProofs": [
+    "euler-totient",
+    "infinitude-primes"
   ]
 }

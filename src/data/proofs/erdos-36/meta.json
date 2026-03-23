@@ -98,9 +98,6 @@
     "lineCount": 91
   },
   "leanFile": {
-    "path": "Proofs/Erdos36Problem.lean",
-    "lineCount": 91,
-    "namespace": "root",
     "imports": [
       "Mathlib.Data.Nat.Basic",
       "Mathlib.Data.Int.Basic",
@@ -108,15 +105,12 @@
       "Mathlib.Data.Real.Basic",
       "Mathlib.Tactic"
     ],
-    "mainTheorems": [],
-    "mainDefinitions": [
-      "overlap",
-      "maxOverlap",
-      "minMaxOverlap"
-    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 91,
     "axiomCount": 6,
     "theoremCount": 0,
-    "sorryCount": 0
+    "definitionCount": 3
   },
   "sections": [
     {
@@ -186,6 +180,12 @@
       "**Step-function upper bounds**: Haugland (2016) modeled the partition as a density function $f : [0,1] \\to [0,1]$ and optimized piecewise-constant approximations to minimize the maximum overlap",
       "**Erdős's failed conjecture**: The original $c = 1/2$ conjecture was far off — the true value $c \\approx 0.380$ shows that partition optimization over consecutive integers is subtler than expected",
       "**AI-assisted progress**: TTT-Discover LLM (2026) improved the upper bound to $0.380876$, demonstrating that AI-guided search can push explicit construction bounds in combinatorial optimization"
+    ],
+    "prerequisites": [
+      "Additive combinatorics: partitions of $\\{1,\\ldots,2N\\}$, representation functions",
+      "Fourier analysis on finite groups (discrete Fourier transform on $\\mathbb{Z}$)",
+      "Convex optimization and semidefinite programming",
+      "Asymptotic analysis: Fekete's lemma and limits of subadditive sequences"
     ]
   },
   "conclusion": {
@@ -214,11 +214,17 @@
       "targetId": "erdos-30",
       "relationship": "complement",
       "description": "Erdős #30 on Sidon sets (B₂ sequences with unique pairwise sums) represents the opposite extreme — maximizing distinctness of differences"
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "supports",
+      "description": "Scherk's 1955 lower bound and White's 2022 breakthrough both use Fourier analysis. The overlap function equals the autocorrelation of the partition indicator, and Parseval's identity provides the key constraint in the convex optimization formulation"
     }
   ],
   "relatedProofs": [
     "erdos-335",
     "erdos-66",
-    "erdos-30"
+    "erdos-30",
+    "fourier-series"
   ]
 }

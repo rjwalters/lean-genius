@@ -13,7 +13,9 @@
       "fixed point",
       "continuous map",
       "algebraic topology"
-    ]
+    ],
+    "mathContext": "For $n \\geq 1$: $\\forall f: B^n \\to B^n$ continuous, $\\exists x \\in B^n,\\; f(x) = x$, where $B^n = \\{x \\in \\mathbb{R}^n : \\|x\\| \\leq 1\\}$.",
+    "prerequisites": ["topology", "continuous functions", "closed ball", "algebraic topology"]
   },
   {
     "id": "ann-closed-ball",
@@ -31,7 +33,8 @@
       "compact set",
       "boundary",
       "contractibility"
-    ]
+    ],
+    "prerequisites": ["metric spaces", "normed vector spaces", "homology (for full proof)"]
   },
   {
     "id": "ann-fixed-point-def",
@@ -50,7 +53,8 @@
       "equilibrium",
       "iteration",
       "convergence"
-    ]
+    ],
+    "prerequisites": ["continuous functions", "self-maps", "closed ball"]
   },
   {
     "id": "ann-retraction",
@@ -68,7 +72,9 @@
       "projection",
       "subspace",
       "continuous map"
-    ]
+    ],
+    "mathContext": "A retraction $r: X \\to A$ satisfies $r|_A = \\text{id}_A$. The no-retraction theorem: $\\nexists r: B^n \\to S^{n-1}$ continuous with $r|_{S^{n-1}} = \\text{id}$.",
+    "prerequisites": ["continuous maps", "subspaces", "topological invariants"]
   },
   {
     "id": "ann-no-retraction",
@@ -104,6 +110,7 @@
     "type": "concept",
     "title": "The Brilliant Ray Construction",
     "content": "This is the proof's clever geometric construction. Given a fixed-point-free map $f$, we build a retraction:\n\n**Construction:** For each point $x$ in the ball:\n1. Compute $f(x)$ (which is different from $x$ by assumption)\n2. Draw a ray from $f(x)$ through $x$\n3. The ray must exit the ball at some point on the sphere\n4. Define $r(x)$ to be that exit point\n\n**Why this works:**\n- Since $f(x) \\neq x$, the ray direction is well-defined\n- The map $x \\mapsto r(x)$ is continuous (ray-casting varies smoothly)\n- If $x$ is on the sphere, the ray from $f(x)$ through $x$ exits at $x$ itself\n- Therefore $r$ fixes the boundary: it's a retraction!\n\nBut wait: we just proved no retraction exists! Contradiction. So our assumption was wrong: $f$ must have a fixed point.",
+    "mathContext": "For $x \\in B^n$ with $f(x) \\neq x$: the ray from $f(x)$ through $x$ exits $B^n$ at a unique point $r(x) \\in S^{n-1}$. This defines $r: B^n \\to S^{n-1}$ continuous with $r|_{S^{n-1}} = \\text{id}$.",
     "significance": "critical",
     "prerequisites": [
       "ann-no-retraction"
@@ -151,7 +158,9 @@
       "intermediate value theorem",
       "calculus",
       "1D topology"
-    ]
+    ],
+    "mathContext": "$f: [0,1] \\to [0,1]$ continuous $\\implies \\exists c,\\; f(c) = c$. Proof: $g(x) = f(x) - x$; $g(0) \\geq 0$, $g(1) \\leq 0$; IVT gives $g(c) = 0$.",
+    "prerequisites": ["intermediate value theorem", "continuous functions on intervals"]
   },
   {
     "id": "ann-dimension-2",
@@ -168,6 +177,8 @@
       "rotation",
       "stirring",
       "intuitive mathematics"
-    ]
+    ],
+    "mathContext": "$f: B^2 \\to B^2$ continuous $\\implies \\exists x \\in B^2,\\; f(x) = x$, where $B^2$ is the closed unit disk in $\\mathbb{R}^2$.",
+    "prerequisites": ["brouwer_fixed_point (main theorem)", "closed unit disk"]
   }
 ]

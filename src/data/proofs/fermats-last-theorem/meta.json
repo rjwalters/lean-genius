@@ -106,24 +106,44 @@
   ],
   "crossReferences": [
     {
-      "id": "sophie-germain",
+      "targetId": "sophie-germain",
       "relationship": "related",
       "description": "Sophie Germain primes are named for their connection to FLT: she proved the first case holds for Sophie Germain prime exponents"
     },
     {
-      "id": "infinitude-primes",
+      "targetId": "infinitude-primes",
       "relationship": "related",
       "description": "The reduction to prime exponents relies on the structure of primes; FLT for n=4 and odd primes covers all n ≥ 3"
     },
     {
-      "id": "chinese-remainder-non-coprime",
+      "targetId": "chinese-remainder-non-coprime",
       "relationship": "related",
       "description": "Modular arithmetic techniques used in Kummer's proof for regular primes and in the reduction arguments"
     },
     {
-      "id": "dirichlets-theorem",
+      "targetId": "dirichlets-theorem",
       "relationship": "related",
       "description": "Dirichlet's theorem on primes in arithmetic progressions provides context for the distribution of primes relevant to FLT"
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "foundational",
+      "description": "The Pythagorean theorem establishes $a^2 + b^2 = c^2$ — Fermat's Last Theorem generalizes this from $n=2$ (infinitely many solutions: Pythagorean triples) to $n \\geq 3$ (no solutions). The contrast between richness at $n=2$ and emptiness at $n \\geq 3$ is the core mystery"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Both are landmark results where Galois theory plays a central role: Abel-Ruffini uses non-solvability of $S_5$ to block radical solutions, while Wiles analyzes 2-dimensional Galois representations $\\rho: \\text{Gal}(\\overline{\\mathbb{Q}}/\\mathbb{Q}) \\to GL_2(\\mathbb{Z}_p)$ to prove modularity"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem constrains group structure throughout the proof: the order of Galois groups, the structure of decomposition groups at primes, and the analysis of Selmer groups all rely on subgroup index formulas"
+    },
+    {
+      "targetId": "pythagorean-triples",
+      "relationship": "complementary",
+      "description": "Pythagorean triples $(a,b,c)$ with $a^2+b^2=c^2$ are completely classified: $a = m^2-n^2$, $b=2mn$, $c=m^2+n^2$. FLT shows the analogous equation $a^n+b^n=c^n$ has NO positive integer solutions for $n \\geq 3$ — the transition from rich structure at $n=2$ to emptiness at $n=3$ is the theorem's content"
     }
   ],
   "conclusion": {
@@ -143,7 +163,10 @@
     "dirichlets-theorem",
     "pythagorean-theorem",
     "fundamental-theorem-algebra",
-    "fermat-two-squares"
+    "fermat-two-squares",
+    "abel-ruffini",
+    "lagrange-theorem",
+    "pythagorean-triples"
   ],
   "references": [
     {

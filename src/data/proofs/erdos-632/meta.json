@@ -90,6 +90,10 @@
       "**Fractional vs. integer gap**: fractional choosability $\\chi_f^l(G) \\leq a/b$ trivially implies $\\chi_f^l(G) \\leq am/(bm)$ since $a/b = am/(bm)$, but the integer version fails because selecting $2b$ colors from $2a$ is not equivalent to two independent selections of $b$ from $a$",
       "**Kneser-type construction**: the DHS counterexample uses techniques from topological combinatorics, specifically Kneser-type graph structures where the interplay between list sizes and selection sizes creates combinatorial obstructions",
       "**Structural dichotomy**: the conjecture holds for complete, bipartite, and planar graphs — classes with strong structural constraints — suggesting the counterexample exploits the flexibility of general graphs to create pathological list assignments"
+    ],
+    "prerequisites": [
+      "Graph theory fundamentals",
+      "Mathematical maturity and proof techniques"
     ]
   },
   "sections": [

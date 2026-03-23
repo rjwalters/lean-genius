@@ -102,6 +102,12 @@
       "Each element a ∈ A contributes ~2N/a multiples to any interval of length 2N",
       "The √m threshold arises from the bounded number of divisors per integer",
       "If both bounds hold, f(m) ≍ √m asymptotically"
+    ],
+    "prerequisites": [
+      "Elementary number theory: divisibility, multiples in intervals, divisor counting",
+      "Extremal combinatorics: covering problems, pigeonhole principle for counting arguments",
+      "Analytic number theory: average order of the divisor function $\\tau(n)$, distribution of multiples",
+      "Finite set operations in Lean: `Finset.filter`, `Finset.Icc`, `Finset.card`"
     ]
   },
   "sections": [

@@ -166,6 +166,16 @@
       "targetId": "fundamental-arithmetic",
       "relationship": "related",
       "description": "The factorial n! in the derangement formula connects to prime factorization: D(n)/n! converges to 1/e, linking combinatorics to analysis via the Fundamental Theorem of Arithmetic."
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "The derangement probability D_n/n! = ∑(-1)^k/k! converges to 1/e as n→∞ — the Taylor series of e^{-1} truncated at the n-th term. The transcendence of e means D_n/n! is never exactly 1/e for finite n"
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's approximation n! ≈ √(2πn)(n/e)^n combined with D_n ≈ n!/e gives D_n ≈ √(2πn)(n/e)^n/e — an asymptotic formula for derangement counts involving both π and e"
     }
   ],
   "conclusion": {
@@ -193,25 +203,41 @@
   ],
   "references": [
     {
-      "authors": "de Montmort, Pierre Rémond",
-      "title": "Essay d'analyse sur les jeux de hazard",
+      "authors": "P. R. de Montmort",
+      "title": "Essay d'Analyse sur les Jeux de Hazard",
       "year": "1708",
-      "venue": "Paris: Quillau",
-      "note": "First study of derangements as the 'problème des rencontres' (problem of coincidences), computing the probability of no fixed point in a random permutation"
+      "venue": "Paris",
+      "note": "First systematic study of derangements, arising from the 'jeu de treize' card game"
     },
     {
-      "authors": "Euler, Leonhard",
+      "authors": "L. Euler",
       "title": "Calcul de la probabilité dans le jeu de rencontre",
-      "year": "1753",
-      "venue": "Mémoires de l'Académie des Sciences de Berlin, 7, pp. 255-270",
-      "note": "Derived the derangement formula D(n) = n!·Σ(-1)^k/k! and proved D(n)/n! → 1/e as n → ∞"
+      "year": "1751",
+      "venue": "Mémoires de l'Académie Royale des Sciences de Berlin",
+      "note": "Derived the inclusion-exclusion formula D(n) = n! Σ(-1)^k/k!"
+    },
+    {
+      "authors": "W. A. Whitworth",
+      "title": "Choice and Chance",
+      "year": "1878",
+      "venue": "Cambridge",
+      "note": "Introduced the subfactorial notation !n for D(n)"
+    },
+    {
+      "authors": "R. P. Stanley",
+      "title": "Enumerative Combinatorics, Vol. 1",
+      "year": "1997",
+      "venue": "Cambridge University Press",
+      "note": "Standard reference for derangement theory and the exponential formula"
     }
   ],
   "relatedProofs": [
     "inclusion-exclusion",
     "euler-totient",
     "fundamental-arithmetic",
-    "binomial-theorem"
+    "binomial-theorem",
+    "e-transcendental",
+    "stirling-formula"
   ],
   "leanFile": {
     "imports": [

@@ -47,6 +47,12 @@
       "Turán's theorem gives f_{r,k}(n) ≤ (1-1/(r-1))n²/2 + 1 by viewing ordinary lines as graph edges",
       "Green-Tao (2013): any n points in general position have ≥ n/2 ordinary lines",
       "The conjecture asks for subquadratic or even linear growth of f_{r,k}(n)"
+    ],
+    "prerequisites": [
+      "Discrete geometry: point configurations, collinearity, and the Sylvester-Gallai theorem on ordinary lines",
+      "Extremal graph theory: Turan's theorem and extremal functions for clique-free graphs",
+      "Ramsey theory: Ramsey-type thresholds and the existence of monochromatic or structured subsets",
+      "Asymptotic analysis: little-o notation, subquadratic and linear growth rates"
     ]
   },
   "sections": [

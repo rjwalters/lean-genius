@@ -77,6 +77,12 @@
       "**Ramsey Property Architecture:** The formalization cleanly separates `IsKCollinear` (geometric), `IsMonochromatic` (chromatic), `MonochromaticKCollinear` (combined), and `HasRamseyProperty` (universal over colorings), creating a reusable framework.",
       "**Minimum Size Problem:** The `ramseyNumber` definition and `r3_small` axiom (R(3) ≤ 9) address the optimization question of finding the smallest set with the Ramsey property.",
       "**Generalizations:** The file extends to r colors (`Erdos1090Generalized`) and higher dimensions (`Erdos1090HigherDim`), both following from the general Hales-Jewett theorem."
+    ],
+    "prerequisites": [
+      "Ramsey theory fundamentals: pigeonhole principle and partition regularity",
+      "The Hales-Jewett theorem on combinatorial lines in $[k]^n$",
+      "Collinearity and affine geometry in $\\mathbb{R}^2$",
+      "Generic (algebraically independent) projections and dimension reduction"
     ]
   },
   "leanFile": {

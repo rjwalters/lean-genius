@@ -37,6 +37,12 @@
       "The girth variant (avoiding ALL cycles ≤ r) is strictly stronger than the odd cycle version, since it also forbids even short cycles",
       "Bipartite graphs have χ ≤ 2, so eliminating ALL odd cycles (r = ∞) fails for 𝔪 > 2 — the parameter r must be finite",
       "Erdős's 1959 probabilistic existence proof shows graphs with arbitrarily high girth and chromatic number exist, providing the backdrop for this conjecture"
+    ],
+    "prerequisites": [
+      "Graph theory fundamentals: chromatic number, proper colorings, and graph homomorphisms",
+      "Cycle structure in graphs: odd cycles, girth, and bipartiteness characterization",
+      "Infinite cardinal arithmetic and the cardinals aleph_0, aleph_1, etc.",
+      "Probabilistic method in combinatorics and Ramsey-theoretic arguments"
     ]
   },
   "sections": [

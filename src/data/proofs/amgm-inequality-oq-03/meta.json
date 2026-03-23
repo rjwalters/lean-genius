@@ -121,6 +121,16 @@
       "targetId": "triangle-inequality",
       "relationship": "related",
       "description": "For p ≥ 1, the power mean inequality M₁ ≤ M_p implies (via Minkowski) the L^p triangle inequality — connecting discrete power means to the geometry of normed spaces"
+    },
+    {
+      "targetId": "shannon-entropy",
+      "relationship": "related",
+      "description": "Shannon entropy H(X) = -∑ pᵢ log pᵢ is the α→1 limit of Rényi entropy H_α = (1/(1-α))·log ∑ pᵢ^α, which is essentially log M_{α-1} of the distribution. Power mean monotonicity M_r ≤ M_s (r ≤ s) implies Rényi entropy monotonicity H_β ≤ H_α (α ≤ β) — formalizing this connection would bridge the inequality and information theory libraries"
+    },
+    {
+      "targetId": "sum-of-kth-powers",
+      "relationship": "related",
+      "description": "Power sums p_k = ∑ xᵢ^k are the unnormalized building blocks of power means: M_k = (∑ wᵢzᵢ^k)^(1/k) = (p_k/n)^(1/k) for equal weights. Power sum identities (Newton-Girard) relate p_k to elementary symmetric polynomials, connecting this power mean formalization to the Maclaurin chain in amgm-inequality-oq-02"
     }
   ],
   "overview": {
@@ -233,6 +243,8 @@
     "amgm-inequality-oq-03-oq-02",
     "cauchy-schwarz-integral",
     "mean-value-theorem",
-    "triangle-inequality"
+    "triangle-inequality",
+    "shannon-entropy",
+    "sum-of-kth-powers"
   ]
 }

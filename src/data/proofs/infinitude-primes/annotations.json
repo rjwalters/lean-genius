@@ -2,85 +2,239 @@
   {
     "id": "ann-imports",
     "proofId": "infinitude-primes",
-    "range": { "startLine": 1, "endLine": 3 },
-    "type": "concept",
-    "title": "Mathlib Imports",
-    "content": "Three imports: `Data.Nat.Prime.Basic` provides `Nat.Prime`, `Nat.exists_prime_and_dvd` (every $n \\geq 2$ has a prime divisor), and `Nat.Prime.one_lt`; `Data.Nat.Factorial.Basic` provides `Nat.factorial` and `Nat.dvd_factorial`; `Mathlib.Tactic` provides `omega`, `simp`, `push_neg`.",
-    "mathContext": "The key Mathlib lemma is `Nat.exists_prime_and_dvd : n \\neq 1 → \\exists p, Nat.Prime p \\wedge p \\mid n$. This guarantees that the number $n! + 1$ (which is $\\geq 2$) has at least one prime divisor.",
-    "significance": "supporting",
-    "relatedConcepts": ["Nat.Prime", "factorial", "prime divisors"],
-    "prerequisites": ["Lean 4 imports", "Mathlib number theory"]
-  },
-  {
-    "id": "ann-docstring",
-    "proofId": "infinitude-primes",
-    "range": { "startLine": 5, "endLine": 38 },
+    "range": {
+      "startLine": 5,
+      "endLine": 38
+    },
     "type": "context",
-    "title": "Module Docstring: Euclid's Theorem",
-    "content": "The module docstring describes Euclid's theorem (~300 BCE, Elements Book IX Proposition 20): for any $n$, there exists a prime $p > n$. This is equivalent to saying there are infinitely many primes.\n\nThe proof follows Euclid's classical argument via $n! + 1$, with original lemmas `dvd_factorial`, `factorial_succ_ge_two`, and `dvd_of_dvd_add_one`. Techniques include constructive existence, proof by contradiction, `omega`, and divisibility reasoning.\n\nCredits: Yannis Konstantoulas, adapted from github.com/ykonstant1/InfinitePrimes.",
-    "mathContext": "Euclid's proof is one of the earliest and most elegant: given any finite collection of primes $p_1, \\ldots, p_k$, the number $N = p_1 \\cdots p_k + 1$ is not divisible by any $p_i$ (since dividing gives remainder 1). So $N$ has a prime factor not in the list.",
-    "significance": "key",
-    "relatedConcepts": ["Euclid", "proof by contradiction", "factorial"],
-    "prerequisites": ["number theory basics", "prime numbers"]
+    "title": "Mathlib Imports and Module Documentation",
+    "content": "The module imports three Mathlib packages: `Nat.Prime.Basic` (providing `Nat.Prime`, `Nat.exists_prime_and_dvd`, and prime factorization lemmas), `Nat.Factorial.Basic` (the factorial function and `Nat.dvd_factorial`), and `Tactic` (proof automation including `omega`, `norm_num`, `push_neg`). The docstring outlines the proof structure and attributes the theorem to Euclid's *Elements* Book IX, Proposition 20.",
+    "mathContext": "Mathlib provides `Nat.Prime p` ($p \\geq 2$ and no non-trivial divisors), `n.factorial` ($n! = \\prod_{k=1}^{n} k$), `Nat.dvd_factorial` ($0 < k \\leq n \\Rightarrow k \\mid n!$), and `Nat.exists_prime_and_dvd` ($n \\geq 2 \\Rightarrow \\exists p$ prime, $p \\mid n$).",
+    "significance": "context",
+    "relatedConcepts": [
+      "Mathlib",
+      "prime definition",
+      "factorial"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib library structure"
+    ]
   },
   {
-    "id": "ann-namespace-lemmas",
+    "id": "ann-historical",
     "proofId": "infinitude-primes",
-    "range": { "startLine": 40, "endLine": 61 },
-    "type": "technique",
-    "title": "Namespace and Key Supporting Lemmas",
-    "content": "Three supporting lemmas building toward the main theorem:\n\n1. **`dvd_factorial`** (lines 46–48): $0 < k \\wedge k \\leq n \\Rightarrow k \\mid n!$. Delegates to Mathlib's `Nat.dvd_factorial`. This captures the key property: any number $\\leq n$ divides $n!$.\n\n2. **`factorial_succ_ge_two`** (lines 52–54): $n! + 1 \\geq 2$ for all $n$. Ensures $n! + 1$ is large enough to have a prime factor. Proved from `Nat.factorial_pos` via `omega`.\n\n3. **`dvd_of_dvd_add_one`** (lines 58–61): if $p \\mid a$ and $p \\mid (a+1)$, then $p \\mid 1$. The crux of Euclid's argument: a prime that divides both $n!$ and $n! + 1$ must divide their difference.",
-    "mathContext": "The key chain: $p \\leq n \\Rightarrow p \\mid n!$ (lemma 1). If also $p \\mid n! + 1$, then $p \\mid (n!+1) - n! = 1$ (lemma 3). But $p \\geq 2$ for primes, contradicting $p \\mid 1$.",
+    "range": {
+      "startLine": 5,
+      "endLine": 38
+    },
+    "type": "insight",
+    "title": "2,300 Years of Mathematical Truth",
+    "content": "This theorem appears in Euclid's *Elements* (Book IX, Proposition 20), written around 300 BCE. It is one of the oldest theorems whose proof is still taught essentially unchanged.\n\nEuclid's original used the product of the first $n$ primes plus 1. The factorial version is a modern simplification that avoids needing to enumerate primes explicitly.",
+    "mathContext": "Euclid: $p_1 \\cdot p_2 \\cdots p_n + 1$\nModern: $n! + 1$\n\nBoth work because adding 1 shifts away from all 'small' divisors.",
     "significance": "key",
-    "relatedConcepts": ["factorial divisibility", "omega tactic", "Nat.dvd_sub'"],
-    "prerequisites": ["divisibility", "factorial", "prime numbers"]
+    "relatedConcepts": [
+      "Euclid's Elements",
+      "mathematical history",
+      "proof evolution"
+    ]
+  },
+  {
+    "id": "ann-why-factorial",
+    "proofId": "infinitude-primes",
+    "range": {
+      "startLine": 44,
+      "endLine": 45
+    },
+    "type": "insight",
+    "title": "Why n! + 1 Works",
+    "content": "The factorial $n! = 1 \\times 2 \\times \\cdots \\times n$ is carefully chosen:\n\n1. **Every small prime divides $n!$**: If $p \\leq n$ is prime, then $p$ appears in the product\n2. **Adding 1 shifts the residue**: If $p \\mid n!$, then $n! \\equiv 0 \\pmod{p}$, so $n! + 1 \\equiv 1 \\pmod{p}$\n3. **Therefore $p \\nmid (n! + 1)$**: No prime $\\leq n$ can divide $n! + 1$\n\nAny prime factor of $n! + 1$ must be $> n$. Existence of such a factor is guaranteed since $n! + 1 \\geq 2$.",
+    "mathContext": "$n! \\equiv 0 \\pmod{p}$ for all primes $p \\leq n$\n$\\Rightarrow n! + 1 \\equiv 1 \\pmod{p}$\n$\\Rightarrow p \\nmid (n! + 1)$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "modular arithmetic",
+      "coprimality",
+      "constructive proofs"
+    ]
+  },
+  {
+    "id": "ann-dvd-factorial",
+    "proofId": "infinitude-primes",
+    "range": {
+      "startLine": 44,
+      "endLine": 45
+    },
+    "type": "theorem",
+    "title": "Divisibility in Factorial",
+    "content": "Any positive integer $k \\leq n$ divides $n!$. This is because $k$ appears as one of the factors in the product $1 \\cdot 2 \\cdots n$.\n\nWe simply invoke Mathlib's `Nat.dvd_factorial` which already has this proven.",
+    "mathContext": "$0 < k \\leq n \\Rightarrow k \\mid n!$\n\nThis is why $n! + 1$ cannot share any small prime factors with $n!$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "factorial properties",
+      "product divisibility"
+    ]
+  },
+  {
+    "id": "ann-factorial-ge-two",
+    "proofId": "infinitude-primes",
+    "range": {
+      "startLine": 50,
+      "endLine": 51
+    },
+    "type": "lemma",
+    "title": "n! + 1 is at least 2",
+    "content": "For any $n$, we have $n! + 1 \\geq 2$. Since $n! \\geq 1$ (factorials are always positive), adding 1 gives us at least 2.\n\nThis ensures that $n! + 1$ has at least one prime divisor.",
+    "mathContext": "$n! \\geq 1 \\Rightarrow n! + 1 \\geq 2$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "positivity",
+      "prime divisor existence"
+    ]
+  },
+  {
+    "id": "ann-dvd-add-one",
+    "proofId": "infinitude-primes",
+    "range": {
+      "startLine": 56,
+      "endLine": 57
+    },
+    "type": "lemma",
+    "title": "The Key Divisibility Lemma",
+    "content": "If $p$ divides both $a$ and $a+1$, then $p$ divides 1. This is the heart of Euclid's proof.\n\nThe proof: if $p \\mid a$ and $p \\mid (a+1)$, then $p \\mid ((a+1) - a) = 1$.\n\nSince no prime divides 1, this creates the contradiction we need.",
+    "mathContext": "$p \\mid a \\land p \\mid (a+1) \\Rightarrow p \\mid 1$\n\nEquivalently: consecutive integers are coprime.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "coprimality",
+      "consecutive integers",
+      "proof by contradiction"
+    ]
   },
   {
     "id": "ann-main-theorem",
     "proofId": "infinitude-primes",
-    "range": { "startLine": 63, "endLine": 104 },
+    "range": {
+      "startLine": 65,
+      "endLine": 78
+    },
     "type": "theorem",
-    "title": "Euclid's Theorem: Infinitely Many Primes",
-    "content": "**Theorem** (`unbounded_primes`): $\\forall n : \\mathbb{N}, \\exists p : \\mathbb{N}, \\text{Nat.Prime}\\,p \\wedge p > n$.\n\nThe proof follows Euclid's strategy:\n1. Let $Q = n! + 1$ (line 82)\n2. $Q \\geq 2$, so get a prime divisor $p \\mid Q$ via `Nat.exists_prime_and_dvd` (line 87)\n3. Prove $p > n$ by contradiction: if $p \\leq n$, then $p \\mid n!$ (by `dvd_factorial`), but also $p \\mid n! + 1$, so $p \\mid 1$ (by `dvd_of_dvd_add_one`), hence $p = 1$ — contradicting $p$ prime.\n\nThe proof is entirely constructive except for the `by_contra` step, which is classically valid.",
-    "mathContext": "$Q = n! + 1$. Any prime $p \\mid Q$ satisfies $p > n$: if $p \\leq n$, then $p \\mid n!$ (since $p$ appears in $1 \\times 2 \\times \\cdots \\times n$), so $p \\mid Q - n! = 1$, impossible for $p \\geq 2$.",
+    "title": "Euclid's Theorem: Unbounded Primes",
+    "content": "**For any $n$, there exists a prime $p > n$.**\n\nThe proof constructs $Q = n! + 1$ and reasons:\n1. $Q \\geq 2$, so $Q$ has a prime divisor $p$ (using `Nat.exists_prime_and_dvd`)\n2. Suppose for contradiction that $p \\leq n$\n3. Then $p \\mid n!$ (since $p$ is a factor in $1 \\cdot 2 \\cdots n$)\n4. But $p \\mid Q = n! + 1$\n5. So $p \\mid ((n!+1) - n!) = 1$\n6. Since $p \\mid 1$, we have $p = 1$\n7. **Contradiction**: $p$ is prime, so $p \\neq 1$\n\nTherefore $p > n$. Since $n$ was arbitrary, primes are unbounded.",
+    "mathContext": "$\\forall n, \\exists p$ prime, $p > n$\n\nKey insight: if $p \\mid n!$ and $p \\mid (n!+1)$, then $p \\mid 1$, which is impossible for primes.",
     "significance": "critical",
-    "relatedConcepts": ["proof by contradiction", "constructive existence", "Nat.exists_prime_and_dvd"],
-    "prerequisites": ["ann-namespace-lemmas", "Nat.Prime", "divisibility"]
+    "prerequisites": [
+      "ann-dvd-factorial",
+      "ann-dvd-add-one",
+      "ann-factorial-ge-two"
+    ],
+    "relatedConcepts": [
+      "Euclid's proof",
+      "constructive existence",
+      "proof by contradiction"
+    ]
   },
   {
-    "id": "ann-alternative",
+    "id": "ann-by-contra",
     "proofId": "infinitude-primes",
-    "range": { "startLine": 106, "endLine": 108 },
+    "range": {
+      "startLine": 65,
+      "endLine": 104
+    },
+    "type": "tactic",
+    "title": "Proof by Contradiction Setup",
+    "content": "The `by_contra` tactic sets up a proof by contradiction. We assume $p \\leq n$ (the negation of $p > n$) and derive a contradiction.\n\nThe `push_neg` tactic then simplifies `¬(p > n)` to `p ≤ n`, which is easier to work with.",
+    "mathContext": "Goal: $p > n$\n`by_contra h`: Assume $\\neg(p > n)$\n`push_neg`: Transform to $p \\leq n$",
+    "significance": "key",
+    "relatedConcepts": [
+      "proof by contradiction",
+      "negation",
+      "Lean tactics"
+    ]
+  },
+  {
+    "id": "ann-omega",
+    "proofId": "infinitude-primes",
+    "range": {
+      "startLine": 50,
+      "endLine": 54
+    },
+    "type": "tactic",
+    "title": "The omega Tactic",
+    "content": "The `omega` tactic is Lean's decision procedure for linear integer arithmetic. It automatically solves goals involving:\n- Inequalities ($<$, $\\leq$, $>$, $\\geq$)\n- Addition and subtraction\n- Multiplication by constants\n\nHere it proves $n! \\geq 1 \\Rightarrow n! + 1 \\geq 2$ instantly.",
+    "mathContext": "`omega` handles Presburger arithmetic: the first-order theory of $(\\mathbb{Z}, +, <)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "decision procedures",
+      "linear arithmetic",
+      "automation"
+    ]
+  },
+  {
+    "id": "ann-prime-ne-one",
+    "proofId": "infinitude-primes",
+    "range": {
+      "startLine": 65,
+      "endLine": 104
+    },
+    "type": "insight",
+    "title": "Primes Are Not 1",
+    "content": "The final contradiction: if $p \\mid 1$, then $p = 1$ (since 1's only positive divisor is 1 itself).\n\nBut $p$ is prime, which by definition means $p \\geq 2$. So $p \\neq 1$.\n\nThis is where Euclid's argument closes: the assumption $p \\leq n$ leads to $p = 1$, which contradicts primality.",
+    "mathContext": "$p \\mid 1 \\Rightarrow p = 1$\n$p$ prime $\\Rightarrow p \\geq 2$\n$\\Rightarrow p = 1$ and $p \\geq 2$ — contradiction!",
+    "significance": "critical",
+    "relatedConcepts": [
+      "prime definition",
+      "divisibility",
+      "contradiction"
+    ]
+  },
+  {
+    "id": "ann-primes-infinite",
+    "proofId": "infinitude-primes",
+    "range": {
+      "startLine": 106,
+      "endLine": 107
+    },
     "type": "theorem",
-    "title": "Alternative Statement: Primes Are Infinite",
-    "content": "`primes_infinite` is a definitional alias for `unbounded_primes`, providing the same theorem under a more descriptive name. This illustrates Lean's flexibility in naming theorems for different audiences.",
-    "mathContext": "Unboundedness and infinitude are equivalent for subsets of $\\mathbb{N}$: $S \\subseteq \\mathbb{N}$ is infinite $\\iff$ $\\forall n, \\exists s \\in S, s > n$.",
-    "significance": "supporting",
-    "relatedConcepts": ["definitional equality", "theorem aliasing"],
-    "prerequisites": ["unbounded_primes"]
+    "title": "Infinitude of Primes (Final Statement)",
+    "content": "The theorem `primes_infinite` is simply an alias for `unbounded_primes`, stating the result in a form emphasizing infinitude: for any bound $n$, there exists a prime exceeding it.",
+    "mathContext": "The sequence $2, 3, 5, 7, 11, 13, 17, \\ldots$ never terminates.",
+    "significance": "key",
+    "relatedConcepts": [
+      "unboundedness",
+      "infinity"
+    ]
   },
   {
-    "id": "ann-corollaries",
+    "id": "ann-corollary-gt-prime",
     "proofId": "infinitude-primes",
-    "range": { "startLine": 110, "endLine": 121 },
-    "type": "theorem",
-    "title": "Corollaries: Larger Primes and No Largest Prime",
-    "content": "Two corollaries:\n\n1. **`exists_prime_gt_prime`** (lines 113–114): for any prime $p$, there exists a larger prime $q > p$. A direct application of `unbounded_primes`.\n\n2. **`no_largest_prime`** (lines 117–121): there is no largest prime — i.e., $\\neg\\exists p$ (prime and $\\forall q$ prime $\\Rightarrow q \\leq p$). Proved by contradiction: if $p$ is largest, `unbounded_primes` gives a prime $q > p$, contradicting $q \\leq p$.\n\nThese demonstrate how the unboundedness statement yields natural corollaries.",
-    "mathContext": "`no_largest_prime` formalizes the classical statement 'there are infinitely many primes' as a negation: it's impossible for the primes to have a maximum. The `omega` tactic closes the final arithmetic contradiction $q > p \\wedge q \\leq p$.",
+    "range": {
+      "startLine": 112,
+      "endLine": 112
+    },
+    "type": "corollary",
+    "title": "Every Prime Has a Larger Prime",
+    "content": "Given any prime $p$, there exists another prime $q > p$. This follows immediately from unbounded_primes: we can always find a prime larger than any given number, including primes.",
+    "mathContext": "$\\forall p$ prime, $\\exists q$ prime, $q > p$",
     "significance": "supporting",
-    "relatedConcepts": ["proof by contradiction", "omega tactic", "infinite sets"],
-    "prerequisites": ["unbounded_primes"]
+    "relatedConcepts": [
+      "prime sequences",
+      "successor primes"
+    ]
   },
   {
-    "id": "ann-epilogue",
+    "id": "ann-no-largest",
     "proofId": "infinitude-primes",
-    "range": { "startLine": 123, "endLine": 127 },
-    "type": "context",
-    "title": "API Verification and Namespace Close",
-    "content": "Three `#check` commands verify the main theorem signatures: `unbounded_primes`, `primes_infinite`, and `no_largest_prime`. The `InfinitudePrimes` namespace closes at line 127.",
-    "mathContext": "The three theorems form a progression: existence of arbitrarily large primes (main) → infinitude (alias) → non-existence of maximum (corollary).",
-    "significance": "supporting",
-    "relatedConcepts": ["#check", "namespace"],
-    "prerequisites": ["Lean 4 #check"]
+    "range": {
+      "startLine": 116,
+      "endLine": 116
+    },
+    "type": "corollary",
+    "title": "No Largest Prime",
+    "content": "There is no largest prime. If there were a prime $p$ such that all primes $q \\leq p$, then by unbounded_primes we could find a prime $q > p$, contradicting that $p$ is largest.\n\nThis is the contrapositive way of saying primes are infinite.",
+    "mathContext": "$\\neg \\exists p$ prime such that $\\forall q$ prime, $q \\leq p$",
+    "significance": "key",
+    "relatedConcepts": [
+      "unboundedness",
+      "proof by contradiction"
+    ]
   }
 ]

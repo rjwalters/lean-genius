@@ -64,6 +64,12 @@
       "**Infinite Order Required:** The counterexample functions necessarily have infinite order (grow faster than $\\exp(r^\\rho)$ for any $\\rho$). Functions of finite order, including all common entire functions, are 'normal' with $\\mu/M \\to 0$. This separates the pathological from the well-behaved",
       "**Wiman's Exceptional Set:** Wiman showed $\\mu(r)/M(r) \\to 0$ outside an exceptional set of $r$-values. Erdős's question was whether, when the limit exists, the exceptional set could be avoided entirely. The answer is no: the Clunie-Hayman functions achieve a nonzero limit along all $r$",
       "**Proof by Concrete Counterexample:** The Lean formalization elegantly disproves the conjecture by taking $\\lambda = 1/4 \\in (0, 1/2]$ and deriving $1/4 = 0$, a contradiction. The choice of $1/4$ is arbitrary — any $\\lambda \\in (0, 1/2]$ works"
+    ],
+    "prerequisites": [
+      "Complex analysis: entire functions, power series $f(z) = \\sum a_n z^n$, maximum modulus principle",
+      "Growth theory: order $\\rho$ and type $\\sigma$ of entire functions, Wiman-Valiron theory",
+      "Diophantine approximation and coefficient analysis: relationship between Taylor coefficients and function behavior",
+      "Nevanlinna theory: value distribution and maximum modulus $M(r) = \\max_{|z|=r} |f(z)|$"
     ]
   },
   "sections": [
@@ -159,8 +165,16 @@
       "What happens in several complex variables? For entire functions f : ℂⁿ → ℂ, does the analogous maximum-term-to-maximum-modulus ratio have a similar characterization?"
     ]
   },
-  "crossReferences": [],
-  "relatedProofs": [],
+  "crossReferences": [
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "Both concern the behavior of complex polynomials/entire functions. FTA guarantees roots for polynomials; Problem #227 studies how the dominant term of an entire function relates to its maximum modulus — both exploit the interplay between Taylor coefficients and function values"
+    }
+  ],
+  "relatedProofs": [
+    "fundamental-theorem-algebra"
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.Complex.Basic",

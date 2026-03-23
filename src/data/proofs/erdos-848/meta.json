@@ -4,8 +4,11 @@
   "slug": "erdos-848",
   "description": "Max |A| with A ⊆ {1,...,N} and ab+1 never squarefree for a,b ∈ A. Extremal sets: {n ≡ 7 (mod 25)} or {n ≡ 18 (mod 25)}, giving N/25. Solved by Sawhney for large N.",
   "meta": {
-    "erdosNumber": 848,
-    "status": "verified",
+    "author": "Erdős, Sárközy (1992); solved by Sawhney",
+    "sourceUrl": "https://erdosproblems.com/848",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos848Problem.lean",
+    "leanFile": "proofs/Proofs/Erdos848Problem.lean",
     "tags": [
       "erdos",
       "number-theory",
@@ -13,75 +16,163 @@
       "extremal-combinatorics",
       "solved"
     ],
-    "references": [
-      "Erdős–Sárközy (1992): original problem",
-      "van Doorn: upper bound via quadratic residues",
-      "Weisenberg: refined upper bound",
-      "Sawhney: solution for large N",
-      "https://erdosproblems.com/848"
-    ],
-    "leanFile": "Proofs/Erdos848Problem.lean",
+    "badge": "axiom",
     "sorries": 0,
-    "sourceUrl": "https://erdosproblems.com/848",
+    "erdosNumber": 848,
     "erdosUrl": "https://erdosproblems.com/848",
-    "axiomCount": 0,
-    "badge": "verified"
+    "erdosProblemStatus": "solved",
+    "axiomCount": 7,
+    "lineCount": 71,
+    "dateAdded": "2026-02-10",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate used in the squarefree definition",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsSquarefree: constructive definition via ∀ p, p.Prime → ¬(p * p ∣ n)",
+      "HasNonSqfreeProductProp: formal property requiring ¬IsSquarefree(ab+1) for all pairs",
+      "mod25_achieves: axiom that 5² | ab+1 when a ≡ b ≡ 7 (mod 25)",
+      "sawhney_solution: axiom encoding the exact answer N/25 for large N",
+      "sawhney_structure: axiom encoding uniqueness of extremal sets (mod 25 residue classes)"
+    ],
+    "references": [
+      {
+        "key": "ES92",
+        "citation": "Erdős, P. and Sárközy, A., On sets of integers with property P, Mathematica Pannonica 3 (1992). Original formulation of the problem.",
+        "type": "paper"
+      },
+      {
+        "key": "Sa",
+        "citation": "Sawhney, M., Solution to Erdős Problem 848: the maximum is N/25 for sufficiently large N, with extremal sets {n ≡ 7 (mod 25)} and {n ≡ 18 (mod 25)}.",
+        "type": "paper"
+      }
+    ],
+    "prerequisites": [
+      "Number theory: squarefree numbers, prime factorization, density 6/π²",
+      "Modular arithmetic: quadratic residues, solutions of x² ≡ -1 (mod p²)",
+      "Extremal combinatorics: maximum set sizes under product constraints"
+    ],
+    "relatedProofs": [
+      "infinitude-primes",
+      "fermat-two-squares",
+      "elementary-quadratic-reciprocity",
+      "erdos-844"
+    ]
   },
-  "sections": [
+  "crossReferences": [
     {
-      "id": "definitions",
-      "title": "Definitions",
-      "startLine": 21,
-      "endLine": 37,
-      "summary": "IsSquarefree, HasNonSqfreeProductProp, maxNonSqfreeSet."
+      "targetId": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The squarefree condition p² | ab+1 depends on the structure of primes dividing shifted products. The infinitude of primes ensures the density of squarefree numbers is exactly 6/π² = ∏(1 - 1/p²)"
     },
     {
-      "id": "known-results",
-      "title": "Known Results",
-      "startLine": 39,
-      "endLine": 55,
-      "summary": "mod 25 construction achieves property, lower bound N/25, van Doorn upper bound ≈ 0.108N."
+      "targetId": "fermat-two-squares",
+      "relationship": "related",
+      "description": "The mod-25 construction uses p = 5 with 5 ≡ 1 (mod 4), connecting to Fermat's theorem on primes representable as sums of two squares. Van Doorn's upper bound sums over primes p ≡ 1 (mod 4), exactly those for which x² ≡ -1 (mod p) has solutions"
     },
     {
-      "id": "solution",
-      "title": "The Solution",
-      "startLine": 57,
-      "endLine": 72,
-      "summary": "Sawhney: max = N/25 for large N, extremal sets are {n ≡ 7 or 18 (mod 25)}."
+      "targetId": "elementary-quadratic-reciprocity",
+      "relationship": "related",
+      "description": "The quadratic residue structure — specifically, -1 is a square mod p iff p ≡ 1 (mod 4) — determines which primes p can have p² | ab+1 for elements in the extremal set. This is a direct application of quadratic reciprocity"
     },
     {
-      "id": "squarefree-theory",
-      "title": "Squarefree Number Theory",
-      "startLine": 74,
-      "endLine": 88,
-      "summary": "IsSquarefree definition, quadratic residue structure, and van Doorn's bound via p² | ab+1."
-    },
-    {
-      "id": "extremal-structure",
-      "title": "Extremal Set Characterization",
-      "startLine": 90,
-      "endLine": 105,
-      "summary": "Uniqueness of the mod-25 extremal sets and structural characterization for large N."
+      "targetId": "erdos-844",
+      "relationship": "sibling",
+      "description": "Erdős #844 studies the closely related problem where ab (not ab+1) must be non-squarefree. The shift by 1 changes the extremal structure entirely: #844's answer involves even numbers and non-squarefree odds, while #848's answer is governed by quadratic residues mod 25. Both are solved problems in the same family of extremal multiplicative number theory questions"
     }
   ],
   "overview": {
-    "historicalContext": "**Erdős and Sárközy** (1992) asked for the maximum size of $A \\subseteq \\{1,\\ldots,N\\}$ such that $ab + 1$ is never squarefree for all $a, b \\in A$. The key construction uses residue classes modulo 25: for $a \\equiv b \\equiv 7 \\pmod{25}$, $ab + 1 \\equiv 50 \\equiv 0 \\pmod{25}$, so $5^2 \\mid ab+1$; similarly for $a \\equiv b \\equiv 18 \\pmod{25}$ (since $18^2+1 = 325 = 13 \\cdot 25$). This gives lower bound $\\lfloor N/25 \\rfloor$. **Van Doorn** improved the upper bound to $\\approx 0.108N$ using quadratic residue arguments ($a^2 + 1 \\equiv 0 \\pmod{p^2}$ for primes $p \\equiv 1 \\pmod{4}$). **Weisenberg** refined this further. Finally, **Sawhney** proved the exact answer is $N/25$ for sufficiently large $N$, with the extremal sets being precisely the two mod-25 residue classes.",
-    "problemStatement": "Determine the maximum size of A ⊆ {1,...,N} such that ab + 1 is never squarefree for all a, b ∈ A.",
-    "proofStrategy": "We define IsSquarefree constructively, axiomatize maxNonSqfreeSet, and record the mod 25 lower bound, van Doorn's upper bound, and Sawhney's exact solution with structural characterization.",
+    "historicalContext": "**Erdős and Sárközy** (1992) posed the problem of determining the maximum size of $A \\subseteq \\{1,\\ldots,N\\}$ such that $ab + 1$ is never squarefree for all $a, b \\in A$ (including $a = b$). The condition '$ab + 1$ is not squarefree' means there exists a prime $p$ with $p^2 \\mid ab + 1$.\n\nThe key construction exploits the arithmetic of $\\mathbb{Z}/25\\mathbb{Z}$: for $a \\equiv b \\equiv 7 \\pmod{25}$, we have $ab + 1 \\equiv 49 + 1 = 50 \\equiv 0 \\pmod{25}$, so $5^2 \\mid ab + 1$. Similarly, $18 \\equiv -7 \\pmod{25}$ gives $18^2 + 1 = 325 = 13 \\cdot 25$, so the same holds. The residues $7$ and $18 = 25 - 7$ are the two square roots of $-1$ modulo $25$ (since $7^2 = 49 \\equiv -1 \\pmod{25}$). This construction achieves $|A| = \\lfloor N/25 \\rfloor$.\n\n**Van Doorn** improved the upper bound to approximately $0.108N$ using an inclusion-exclusion argument over primes $p \\equiv 1 \\pmod{4}$: for each such prime, $a^2 + 1 \\equiv 0 \\pmod{p^2}$ has exactly 2 solutions mod $p^2$, contributing $2/p^2$ to the density. The sum $2\\sum_{p \\equiv 1(4)} 1/p^2 \\approx 0.108$ gives the bound. **Weisenberg** refined this further.\n\nFinally, **Sawhney** proved the exact answer: for all sufficiently large $N$, $\\max|A| = \\lfloor N/25 \\rfloor$, and the extremal sets are precisely $\\{n \\equiv 7 \\pmod{25}\\}$ and $\\{n \\equiv 18 \\pmod{25}\\}$. The proof uses modern tools from additive combinatorics to show that any near-extremal set must concentrate in one of these two residue classes.",
+    "problemStatement": "Determine $\\max|A|$ for $A \\subseteq \\{1,\\ldots,N\\}$ satisfying: for all $a, b \\in A$, $ab + 1$ is not squarefree (i.e., $\\exists p$ prime with $p^2 \\mid ab + 1$).",
+    "proofStrategy": "The formalization defines `IsSquarefree` constructively (no prime squared divides $n$) and `HasNonSqfreeProductProp` (the pairwise non-squarefree condition). The extremal function `maxNonSqfreeSet` is axiomatized with an upper bound ($\\leq N$). Three key results are axiomatized: the mod-25 construction (showing $5^2 \\mid ab+1$ for the residue class), the van Doorn upper bound ($\\leq 0.108N + O(1)$), and Sawhney's exact solution with structural characterization.",
     "keyInsights": [
-      "For a ≡ b ≡ 7 (mod 25), ab + 1 ≡ 50 (mod 25), so 5² | ab + 1",
-      "The same holds for a ≡ b ≡ 18 (mod 25) since 18·18 + 1 = 325 = 13·25",
-      "Van Doorn's bound uses quadratic residues: a² + 1 ≡ 0 (mod p²) for p ≡ 1 (mod 4)",
-      "Sawhney proved the extremal sets are exactly the mod 25 residue classes",
-      "The solution holds for sufficiently large N; the finite cases remain unresolved"
+      "For a ≡ b ≡ 7 (mod 25), ab + 1 ≡ 49 + 1 = 50 ≡ 0 (mod 25), so 5² | ab + 1. The residue 7 satisfies 7² ≡ -1 (mod 25)",
+      "The same holds for 18 ≡ -7 (mod 25) since 18² + 1 = 325 = 13 · 25. The pair {7, 18} are the two square roots of -1 in Z/25Z",
+      "Van Doorn's bound uses the density of solutions to a² + 1 ≡ 0 (mod p²): exactly 2 solutions for p ≡ 1 (mod 4) and 0 for p ≡ 3 (mod 4), giving 2∑_{p≡1(4)} 1/p² ≈ 0.108",
+      "Sawhney proved the extremal sets are exactly the mod-25 residue classes — a rigid structural result showing the construction is unique up to the 7 ↔ 18 symmetry",
+      "The 'sufficiently large N' threshold in Sawhney's result means finite exceptions may exist; determining the exact threshold remains open",
+      "The choice of prime 5 is optimal: 25 = 5² is the smallest prime square for which x² ≡ -1 (mod p²) has solutions (since 5 ≡ 1 (mod 4)), giving the densest residue class achieving the property"
+    ],
+    "prerequisites": [
+      "Number theory: squarefree numbers (density $6/\\pi^2$), prime factorization, and divisibility",
+      "Modular arithmetic: quadratic residues, $x^2 \\equiv -1 \\pmod{p}$ solvable iff $p \\equiv 1 \\pmod{4}$",
+      "Extremal combinatorics: maximum set problems under arithmetic constraints"
     ]
   },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 20,
+      "summary": "Problem statement, imports from Mathlib (Tactic, Nat.Basic, Nat.Prime.Basic).",
+      "mathContext": "Determine $\\max|A|$ for $A \\subseteq \\{1,\\ldots,N\\}$ with $\\forall a,b \\in A,\\ \\exists p$ prime: $p^2 \\mid ab+1$. Known answer: $\\lfloor N/25 \\rfloor$ for large $N$."
+    },
+    {
+      "id": "definitions",
+      "title": "Definitions and Extremal Function",
+      "startLine": 21,
+      "endLine": 37,
+      "summary": "IsSquarefree (no prime squared divides n), HasNonSqfreeProductProp (pairwise non-squarefree products), maxNonSqfreeSet (axiomatized extremal function), and the trivial upper bound maxNonSqfreeSet(N) ≤ N.",
+      "mathContext": "$\\text{IsSquarefree}(n) :\\Leftrightarrow \\forall p$ prime, $p^2 \\nmid n$. $\\text{HasNonSqfreeProductProp}(A) :\\Leftrightarrow \\forall a,b \\in A,\\ \\neg\\text{IsSquarefree}(ab+1)$. The extremal function and its bound are axiomatized since formalizing the maximum over all valid subsets would require significant Finset machinery."
+    },
+    {
+      "id": "mod25-construction",
+      "title": "Mod 25 Construction (Lower Bound)",
+      "startLine": 39,
+      "endLine": 49,
+      "summary": "mod25_achieves: for a ≡ b ≡ 7 (mod 25), 5² | ab+1 since ab+1 ≡ 50 ≡ 0 (mod 25). lower_bound: maxNonSqfreeSet(N) ≥ ⌊N/25⌋.",
+      "mathContext": "The residue $7 \\bmod 25$ satisfies $7^2 = 49 \\equiv -1 \\pmod{25}$, so for $a \\equiv b \\equiv 7$, $ab + 1 \\equiv 49 + 1 = 50 \\equiv 0 \\pmod{25}$. The set $\\{n \\leq N : n \\equiv 7 \\pmod{25}\\}$ has $\\lfloor N/25 \\rfloor$ elements, giving the lower bound."
+    },
+    {
+      "id": "vanDoorn-bound",
+      "title": "Van Doorn's Upper Bound",
+      "startLine": 51,
+      "endLine": 55,
+      "summary": "vanDoorn_upper_bound: maxNonSqfreeSet(N) ≤ 0.108N + O(1), encoded as maxNonSqfreeSet(N) · 1000 ≤ 108 · N + C to avoid rationals.",
+      "mathContext": "The bound $|A|/N \\leq 2\\sum_{p \\equiv 1(4)} 1/p^2 \\approx 0.108$ arises from inclusion-exclusion: each prime $p \\equiv 1 \\pmod{4}$ contributes exactly 2 residue classes mod $p^2$ where $a^2 + 1 \\equiv 0$, while primes $p \\equiv 3 \\pmod{4}$ contribute none."
+    },
+    {
+      "id": "exact-solution",
+      "title": "Sawhney's Exact Answer",
+      "startLine": 57,
+      "endLine": 63,
+      "summary": "sawhney_solution: for sufficiently large N, maxNonSqfreeSet(N) = ⌊N/25⌋ exactly, closing the gap between the N/25 lower bound and the 0.108N upper bound.",
+      "mathContext": "$\\exists N_0,\\ \\forall N \\geq N_0: \\max|A| = \\lfloor N/25 \\rfloor$. This shows the simple mod-25 construction is optimal, a dramatic improvement over Van Doorn's $0.108N$ bound."
+    },
+    {
+      "id": "structural-characterization",
+      "title": "Uniqueness of Extremal Sets",
+      "startLine": 65,
+      "endLine": 71,
+      "summary": "sawhney_structure: any extremal set of size ⌊N/25⌋ for large N must consist entirely of elements ≡ 7 (mod 25) or entirely of elements ≡ 18 (mod 25). A rigidity result paralleling Turán-type stability in extremal graph theory.",
+      "mathContext": "Any extremal $A$ satisfies $A \\subseteq \\{n \\equiv 7\\}$ or $A \\subseteq \\{n \\equiv 18\\} \\pmod{25}$. The two classes correspond to the two roots of $x^2 \\equiv -1 \\pmod{25}$, reflecting a $\\mathbb{Z}/2\\mathbb{Z}$ symmetry."
+    }
+  ],
   "conclusion": {
-    "summary": "Erdős Problem #848 is solved for large N by Sawhney: the maximum is N/25, achieved by {n ≡ 7 (mod 25)} or {n ≡ 18 (mod 25)}. The key insight is that these residue classes force 5² to divide ab + 1.",
-    "implications": "The result connects extremal set theory with quadratic residue structure and squarefree numbers, illustrating how modular arithmetic governs extremal configurations.",
+    "summary": "Erdős Problem #848 is formalized in 71 lines with 7 axioms encoding the extremal function, bounds, and Sawhney's exact solution. The key definitions (IsSquarefree, HasNonSqfreeProductProp) are constructive; the results are axiomatized. The answer is N/25 for large N, achieved by the mod-25 residue classes {7} and {18}.",
+    "implications": "The result reveals a surprising connection between squarefree numbers and modular arithmetic: the extremal configuration is determined entirely by the quadratic residue structure of Z/25Z. The rigidity of the extremal sets (uniqueness up to the 7 ↔ 18 symmetry) suggests deep structural constraints beyond simple density arguments.",
     "openQuestions": [
-      "What is the exact value of maxNonSqfreeSet(N) for small N?",
-      "Can the 'sufficiently large N' threshold be made explicit?"
+      "What is the exact value of maxNonSqfreeSet(N) for small N? Sawhney's result only applies for sufficiently large N",
+      "Can the 'sufficiently large N' threshold in Sawhney's result be made explicit?",
+      "What happens if we replace 'squarefree' with 'k-free' (no p^k divides ab+1)? The extremal sets would likely involve residue classes modulo p^k for the smallest relevant prime",
+      "Is there a polynomial-time algorithm to find the maximum set for a given N?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Prime.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos848",
+    "lineCount": 71,
+    "axiomCount": 7,
+    "theoremCount": 0,
+    "definitionCount": 2
   }
 }

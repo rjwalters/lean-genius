@@ -58,5 +58,29 @@
     "significance": "supporting",
     "relatedConcepts": ["odd_continuous_has_zero", "borsuk_ulam_interval"],
     "prerequisites": ["odd_continuous_has_zero"]
+  },
+  {
+    "id": "ann-bu-oq03-06-axiom-reduction",
+    "proofId": "borsuk-ulam-oq-03",
+    "range": { "startLine": 3300, "endLine": 3317 },
+    "type": "insight",
+    "title": "Axiom Reduction: 4 Axioms Collapse to 1 Independent Axiom",
+    "content": "The axiom reduction chain is the architectural centerpiece of the formalization. Starting with 4 declared axioms (borsuk_ulam_general, no_retraction, brouwer_fixed_point, lusternik_schnirelmann), the file proves 3 are redundant: BU → no_retraction via hemisphere folding and radial extension, no_retraction → Brouwer FP via ball projection and ray-sphere retraction, and BU → LS via the infDist technique. The single remaining independent axiom borsuk_ulam_general requires algebraic topology (Brouwer degree or homology) for its proof, which is not yet available in Mathlib. This reduction demonstrates that all major fixed-point and covering theorems in this family are logically equivalent.",
+    "mathContext": "The equivalence chain: $\\text{BU} \\Rightarrow \\text{no-retraction} \\Rightarrow \\text{Brouwer FP}$ and $\\text{BU} \\Rightarrow \\text{LS}$. Conversely, no-retraction $\\Rightarrow$ BU and Brouwer FP $\\Rightarrow$ no-retraction, closing the cycle. The 1D cases are all provable from IVT alone (no axioms needed).",
+    "significance": "key",
+    "relatedConcepts": ["axiom independence", "theorem equivalence", "algebraic topology", "Brouwer degree"],
+    "prerequisites": ["Borsuk-Ulam theorem", "no-retraction theorem", "Brouwer fixed-point theorem", "Lusternik-Schnirelmann covering"]
+  },
+  {
+    "id": "ann-bu-oq03-07-structural-properties",
+    "proofId": "borsuk-ulam-oq-03",
+    "range": { "startLine": 232, "endLine": 260 },
+    "type": "concept",
+    "title": "Structural Properties of Antipodal Pairs",
+    "content": "Section VI establishes algebraic closure properties of antipodal pairs: symmetry (if f(x)=f(-x) then f(-x)=f(x)), the antipodal value equals the average, and preservation under sums and scalar multiples. These formalize the algebraic structure that makes BU useful in applications — the set of functions with antipodal pairs at a given point forms an additive subspace of the function space.",
+    "mathContext": "If $f(x) = f(-x)$ and $h(x) = h(-x)$, then $(f+h)(x) = f(x)+h(x) = f(-x)+h(-x) = (f+h)(-x)$. The antipodal set $\\{f : f(x_0) = f(-x_0)\\}$ is a linear subspace.",
+    "significance": "supporting",
+    "relatedConcepts": ["antipodal pairs", "linear subspace", "algebraic closure"],
+    "prerequisites": ["basic algebra", "function spaces"]
   }
 ]

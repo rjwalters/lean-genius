@@ -83,6 +83,12 @@
       "The upper bound conjecture $f(n) \\ll n/(\\log n)^A$ would imply $f(n)/n \\to 0$ faster than any power of $1/\\log n$, suggesting $f$ is typically much smaller than the trivial bound $n/P(n)$ since $P(n) \\sim \\log n$ for typical $n$",
       "The function $f$ detects the arithmetic structure of $n$ through the lens of Pascal's triangle: rows of Pascal's triangle modulo $n$ encode the base-$p$ digit structure for each prime $p \\mid n$",
       "$n = 30 = 2 \\cdot 3 \\cdot 5$ with $f(30) = 6 = 30/5$ shows the characterization problem for Question 1 is nontrivial, since $30$ is not a semiprime yet still achieves the upper bound"
+    ],
+    "prerequisites": [
+      "**GCD and divisibility in the integers**: Properties of $\\gcd(a,b)$ including $\\gcd(n, \\binom{n}{k})$ for various $k$, and the relationship between common divisors and prime factorizations. Nat.gcd in Mathlib.",
+      "**Binomial coefficients and Pascal's triangle**: The definition $\\binom{n}{k} = n!/(k!(n-k)!)$, the row structure of Pascal's triangle, and divisibility properties such as $p \\mid \\binom{p}{k}$ for prime $p$ and $0 < k < p$.",
+      "**Kummer's theorem on $p$-adic valuations**: Kummer's theorem (1852) that $v_p(\\binom{m+n}{m})$ equals the number of carries when adding $m$ and $n$ in base $p$, which is the key tool for computing $\\gcd(n, \\binom{n}{k})$ prime by prime.",
+      "**Largest and smallest prime factors**: The functions $P(n) = \\max\\{p : p \\mid n\\}$ and $p(n) = \\min\\{p : p \\mid n\\}$ (Nat.minFac), and the sandwich inequality $p(n) \\le f(n) \\le n/P(n)$ that bounds the GCD function."
     ]
   },
   "conclusion": {

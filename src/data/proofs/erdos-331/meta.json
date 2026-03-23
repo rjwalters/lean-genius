@@ -70,6 +70,12 @@
       "**The √N Threshold Is Sharp:** For density > N^α with α > 1/2, common differences are unavoidable because both A − A and B − B have density > 1 in the integers, forcing intersection. At exactly α = 1/2, the difference sets A − A and B − B can each have density only ~√N (Sidon-like), and two sets of density √N in {−N,...,N} can easily be disjoint. The threshold is a phase transition between forced structure and freedom",
       "**B = 2A: Scaling Preserves Orthogonality:** The relationship B = 2A (multiplying by 2 shifts all binary digits left by one position, converting even to odd positions) reveals that A and B are essentially the same set viewed at different scales. This self-similar structure is characteristic of constructions in additive combinatorics that achieve extremal behavior",
       "**Ruzsa's Open Variant Remains Subtle:** Even though Ruzsa's own sets have exact √N density, it is unknown whether ALL sets with exact density ~c√N must share common differences. The exact asymptotic condition (convergence of A(N)/√N) imposes regularity that might prevent the extreme sparseness needed to avoid common differences. This is one of the few cases where strengthening 'big-O' to 'asymptotic' might change the answer"
+    ],
+    "prerequisites": [
+      "Additive combinatorics: difference sets $A - A$, sumsets, and counting common differences",
+      "Density of integer sequences: counting functions $|A \\cap [1,N]|$ and their asymptotics",
+      "Binary representations and digit-based constructions (Ruzsa's counterexample)",
+      "Filter-based limits in Lean 4 (Filter.Tendsto for density convergence)"
     ]
   },
   "sections": [
@@ -162,6 +168,22 @@
       "Do analogues of Ruzsa's construction exist for other algebraic structures (e.g., ℤ_p, ℤ/nℤ, or function fields)?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "szemeredi-theorem",
+      "relationship": "related",
+      "description": "Both concern arithmetic structure in dense sets. Szemerédi's theorem guarantees APs in dense sets; Problem #331 asks about common differences between two sets of density $\\sim \\sqrt{N}$"
+    },
+    {
+      "targetId": "erdos-1097",
+      "relationship": "related",
+      "description": "Both study common differences and additive structure: #1097 asks about the number of common differences in 3-term APs within a single set, while #331 asks about common differences between two distinct sets"
+    }
+  ],
+  "relatedProofs": [
+    "szemeredi-theorem",
+    "erdos-1097"
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",

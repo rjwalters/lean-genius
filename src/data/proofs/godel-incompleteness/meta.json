@@ -128,6 +128,48 @@
       "Could new axioms (like large cardinals) help us prove currently unprovable statements, and how do we know which axioms to trust?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "halting-problem",
+      "relationship": "related",
+      "description": "Turing's halting problem (1936) is the computability-theoretic analog: no algorithm can decide whether an arbitrary program halts. Both are proved by diagonalization — Gödel's self-referential sentence 'I am unprovable' parallels the program that asks 'do I halt?'"
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "foundational",
+      "description": "Cantor's diagonal argument (1891) is the prototype for Gödel's technique: both construct objects that differ from every member of a countable list. Gödel numbers encode formulas as integers, then the diagonal lemma produces a sentence about its own Gödel number"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "thematic",
+      "description": "Both are impossibility results about formal methods: Abel-Ruffini shows no radical formula solves all quintics, Gödel shows no formal system proves all arithmetic truths. Each reveals fundamental limits of a class of mathematical tools"
+    },
+    {
+      "targetId": "continuum-hypothesis",
+      "relationship": "related",
+      "description": "CH is independent of ZFC (Gödel 1940, Cohen 1963) — an example of a natural mathematical statement unprovable in standard axioms, illustrating incompleteness in practice rather than via self-reference"
+    },
+    {
+      "targetId": "hilbert-10",
+      "relationship": "extends",
+      "description": "Matiyasevich's theorem (1970) shows no algorithm decides Diophantine solvability. This extends Gödel's impossibility from provability to decidability: the set of true Diophantine statements is not recursively enumerable"
+    },
+    {
+      "targetId": "mathematical-induction",
+      "relationship": "foundational",
+      "description": "Induction over natural numbers is the core reasoning principle that Gödel's system must be able to express. The incompleteness theorem applies to any consistent system containing enough arithmetic to formalize induction"
+    }
+  ],
+  "relatedProofs": [
+    "halting-problem",
+    "cantor-diagonalization",
+    "abel-ruffini",
+    "continuum-hypothesis",
+    "hilbert-10",
+    "mathematical-induction",
+    "parallel-postulate-independence",
+    "fermats-last-theorem"
+  ],
   "references": [
     {
       "authors": "Gödel, Kurt",

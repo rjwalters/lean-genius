@@ -104,9 +104,11 @@
     "summary": "This Lean formalization captures one of mathematics' most elegant arguments. The proof's power lies in its indirection: rather than constructing large primes (which is hard), we show that their non-existence leads to the absurdity of a prime dividing 1.\n\nThe construction $Q = n! + 1$ is ingenious. The factorial ensures that every 'small' prime divides $n!$, while the +1 shifts us to a number coprime to all of them. Whatever primes divide $Q$ must therefore be 'large'.\n\nThis formalization uses Mathlib's prime and factorial definitions, providing a clean and complete proof with no sorries.",
     "implications": "Euclid's theorem is the foundation for understanding prime distribution:\n\n1. Cryptographic Security — RSA, Diffie-Hellman, and elliptic curve cryptography all rely on the abundance of large primes. If primes were finite, modern encryption would be impossible.\n\n2. The Prime Number Theorem — Proved in 1896 by Hadamard and de la Vallée Poussin: the number of primes below $n$ is approximately $n/\\ln(n)$. Primes thin out, but never vanish.\n\n3. Prime Gaps — How far apart can consecutive primes be? Gaps grow, but there's always another prime ahead.\n\n4. Open Problems — The Twin Prime Conjecture (infinitely many $p$ with $p+2$ prime), Goldbach's Conjecture (every even $n > 2$ is a sum of two primes), and the Riemann Hypothesis all extend Euclid's question.",
     "openQuestions": [
-      "Bertrand's Postulate: Is there always a prime between $n$ and $2n$? (Yes—proved by Chebyshev in 1852)",
-      "How large can gaps between consecutive primes grow?",
-      "Are there infinitely many Mersenne primes ($2^p - 1$)? Sophie Germain primes? Twin primes?"
+      "Can we formalize Furstenberg's topological proof (1955)? Define a topology on $\\mathbb{Z}$ where arithmetic progressions $\\{a + nd\\}$ are open, show each $p\\mathbb{Z}$ is closed, and prove the complement of all $p\\mathbb{Z}$ is $\\{-1, 1\\}$ (non-empty), so finitely many primes cannot cover $\\mathbb{Z} \\setminus \\{-1,1\\}$.",
+      "The construction $n! + 1$ gives primes $> n$ but is hugely wasteful — e.g., $10! + 1 = 3628801 = 11 \\times 329891$, producing primes much larger than needed. Can we formalize tighter constructions, such as $p_1 p_2 \\cdots p_k + 1$ (Euclid's original), or Erdős's proof via the Bonse inequality, that give smaller witnesses?",
+      "Dirichlet's theorem generalizes to arithmetic progressions: if $\\gcd(a,d) = 1$ then $\\{a, a+d, a+2d, \\ldots\\}$ contains infinitely many primes. Can we formalize the elementary proof (Selberg 1949) without L-functions, or must we use analytic methods?",
+      "Green-Tao theorem (2004): the primes contain arbitrarily long arithmetic progressions. This vastly extends Euclid — not only are primes infinite, they contain the same combinatorial structures as dense sets. Can any part of this be formalized?",
+      "Is $n! + 1$ ever prime? Known factorial primes include $1! + 1 = 2$, $2! + 1 = 3$, $3! + 1 = 7$, but $4! + 1 = 25 = 5^2$ is composite. It is unknown whether there are infinitely many $n$ with $n! + 1$ prime — a natural open problem arising directly from Euclid's construction."
     ]
   },
   "references": [
@@ -174,6 +176,16 @@
       "targetId": "euler-totient",
       "relationship": "related",
       "description": "Euler's totient function φ(n) counts integers coprime to n; its relationship to primes via φ(p) = p-1 connects to the infinitude result"
+    },
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem — $(p-1)! \\equiv -1 \\pmod{p}$ iff $p$ is prime — is the factorial-based primality criterion. Both results exploit the divisibility structure of factorials: the infinitude proof uses $k \\mid n!$ for $k \\leq n$ to show $n!+1$ avoids small prime factors, while Wilson's theorem uses the complete factorial $(p-1)!$ to characterize primes"
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "thematic",
+      "description": "Both are foundational proofs by contradiction from ancient Greek mathematics: the irrationality of $\\sqrt{2}$ (attributed to the Pythagoreans, c. 500 BCE) and the infinitude of primes (Euclid, c. 300 BCE) are among the earliest examples of rigorous impossibility/existence proofs, and both demonstrate the power of indirect reasoning"
     }
   ],
   "relatedProofs": [
@@ -185,7 +197,9 @@
     "dirichlets-theorem",
     "euler-totient",
     "bounded-prime-gaps",
-    "twin-primes-special"
+    "twin-primes-special",
+    "wilsons-theorem",
+    "sqrt2-irrational"
   ],
   "leanFile": {
     "imports": [

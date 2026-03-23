@@ -76,7 +76,7 @@ export function ResearchCard({ problem }: ResearchCardProps) {
 
       {/* Tags */}
       <div className="flex flex-wrap gap-2">
-        {problem.tags.slice(0, 3).map((tag) => (
+        {(problem.tags ?? []).slice(0, 3).map((tag) => (
           <span
             key={tag}
             className="px-2 py-0.5 bg-muted rounded text-xs text-muted-foreground"
@@ -84,9 +84,9 @@ export function ResearchCard({ problem }: ResearchCardProps) {
             {tag}
           </span>
         ))}
-        {problem.tags.length > 3 && (
+        {(problem.tags ?? []).length > 3 && (
           <span className="text-xs text-muted-foreground">
-            +{problem.tags.length - 3} more
+            +{(problem.tags ?? []).length - 3} more
           </span>
         )}
       </div>

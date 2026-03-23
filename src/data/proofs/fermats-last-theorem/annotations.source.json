@@ -158,8 +158,9 @@
     "id": "ann-flt-four",
     "proofId": "fermats-last-theorem",
     "anchor": {
-      "type": "doc-comment",
-      "contains": "If FLT holds for n, it holds for all multiples of "
+      "type": "declaration",
+      "name": "fermat_four",
+      "kind": "theorem"
     },
     "type": "theorem",
     "title": "Fermat's Case n = 4",
@@ -177,7 +178,7 @@
     "proofId": "fermats-last-theorem",
     "anchor": {
       "type": "declaration",
-      "name": "flt_multiple",
+      "name": "fermat_three",
       "kind": "theorem"
     },
     "type": "theorem",
@@ -195,8 +196,9 @@
     "id": "ann-flt-reduction",
     "proofId": "fermats-last-theorem",
     "anchor": {
-      "type": "section-doc",
-      "contains": "Part VII: The Full Theorem"
+      "type": "declaration",
+      "name": "flt_multiple",
+      "kind": "theorem"
     },
     "type": "lemma",
     "title": "Reduction to Primes",

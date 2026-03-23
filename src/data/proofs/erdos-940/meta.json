@@ -83,6 +83,12 @@
       "**Schinzel's correction**: Erdős's original counting argument had an error discovered by Schinzel. The overlap between different sum decompositions is more complex than initially thought, making the problem genuinely hard.",
       "**Cubes as special case**: Perfect $r$-th powers are $r$-powerful (proved as `power_isPowerful`), so Waring-type problems are special cases. Even the 3 cubes density question is OPEN.",
       "**Counting function asymptotics**: The number of $r$-powerful integers $\\le N$ is $\\sim c_r N^{1/r}$ where $c_2 = \\zeta(3/2)/\\zeta(3) \\approx 2.173$. This sublinear growth drives the sparsity of sums."
+    ],
+    "prerequisites": [
+      "Powerful numbers: $r$-full (or $r$-powerful) integers where every prime factor appears with multiplicity at least $r$",
+      "Natural density: asymptotic density of subsets of $\\mathbb{N}$, counting functions, and limits of ratios $|A \\cap [1,N]|/N$",
+      "Additive number theory: representation of integers as sums, Waring's problem, and the circle method for counting representations",
+      "Analytic number theory: Dirichlet series, zeta function values, and asymptotic formulas for counting arithmetic functions"
     ]
   },
   "sections": [

@@ -68,6 +68,12 @@
       "The gap between the coefficients 3/16 = 0.1875 and 1/5 = 0.2 is only about 6.25%, making this an extremely tight extremal problem. Such narrow gaps are characteristic of problems where both bounds use nearly optimal techniques.",
       "The problem connects to Helly-type combinatorics: just as Helly's theorem derives global intersection from local intersection of convex sets, Problem #616 asks how local transversal structure bounds global transversal complexity in hypergraphs.",
       "The fractional relaxation τ*(G) provides a natural intermediate: LP duality gives τ*(G) = ν*(G) (fractional matching number), and understanding the integrality gap τ/τ* under the local condition may be a path toward tightening the bounds."
+    ],
+    "prerequisites": [
+      "Hypergraph theory: $r$-uniform hypergraphs, covering numbers (minimum vertex cover), matching numbers",
+      "Extremal combinatorics: Helly-type theorems and local-to-global properties",
+      "The sunflower lemma and Erdős-Ko-Rado theorem (structural tools for hypergraph analysis)",
+      "Linear programming duality (fractional covering and matching provide bounds)"
     ]
   },
   "sections": [

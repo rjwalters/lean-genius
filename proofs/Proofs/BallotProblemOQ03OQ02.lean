@@ -814,20 +814,52 @@ theorem nonid_perm_paths_cross {r : ℕ} (cfg : LGVConfig r)
     Components 1-2 are proved above. Component 3 (the involution
     bookkeeping) requires defining "first crossing point" and proving
     the tail-swap preserves path validity. -/
+/-- **Helper**: A tagged tuple is "non-cancellable" iff it is an NI identity tuple.
+    All other tagged tuples (σ ≠ 1, or σ = 1 with crossings) are paired and cancelled
+    by the GV involution. -/
+private def isNonCancellable {r : ℕ} {cfg : LGVConfig r}
+    (t : TaggedPathTuple cfg) : Prop :=
+  IsGVFixedPoint t
+
+private noncomputable instance {r : ℕ} {cfg : LGVConfig r}
+    (t : TaggedPathTuple cfg) : Decidable (isNonCancellable t) :=
+  Classical.dec _
+
+/-- **Helper**: The weight of a non-cancellable (NI identity) tagged tuple is 1,
+    since sign(id) = 1. -/
+private theorem nonCancellable_weight {r : ℕ} {cfg : LGVConfig r}
+    (t : TaggedPathTuple cfg) (ht : isNonCancellable t) :
+    taggedWeight t = 1 := by
+  obtain ⟨h1, _⟩ := ht
+  simp [taggedWeight, h1, Equiv.Perm.sign_one]
+
+/-- **Helper**: The number of non-cancellable tagged tuples equals niTupleCount. -/
+private theorem card_nonCancellable_eq_niTupleCount {r : ℕ} (cfg : LGVConfig r) :
+    ((Finset.univ.filter (fun t : TaggedPathTuple cfg => isNonCancellable t)).card : ℤ) =
+    ↑(niTupleCount cfg) := by
+  -- Both count NI identity tuples, just with different packaging.
+  -- A non-cancellable tagged tuple is ⟨1, paths⟩ where paths is NI.
+  -- niTupleCount counts {paths : PathTuple // IsNonIntersecting paths}.
+  sorry
+
 theorem gv_involution_cancellation {r : ℕ} (cfg : LGVConfig r)
     (hwf : cfg.wellFormed) :
     ∑ σ : Equiv.Perm (Fin r),
       (↑(Equiv.Perm.sign σ) : ℤ) * ↑(Fintype.card (PermPathTuple cfg σ)) =
     ↑(niTupleCount cfg) := by
-  -- Reformulate as sum over tagged tuples
+  -- Step 1: Reformulate as sum over tagged tuples
   rw [← sum_tagged_eq_sum_perm]
-  -- The proof now requires building the sign-reversing involution
-  -- on TaggedPathTuple and showing its fixed points are exactly
-  -- the NI identity tuples.
-  -- Key ingredients:
-  -- 1. nonid_perm_paths_cross hwf: non-id tuples always have crossings
-  -- 2. Tail-swap involution at first crossing point (to be constructed)
-  -- 3. Fixed points = NI identity tuples
+  -- Step 2: Split sum into non-cancellable (NI identity) and cancellable parts
+  have hsplit := Finset.sum_filter_add_sum_filter_not Finset.univ
+    (fun t : TaggedPathTuple cfg => isNonCancellable t) taggedWeight
+  -- Step 3: The cancellable part sums to 0 via the GV sign-reversing involution.
+  -- This requires constructing the involution (tail-swap at first crossing)
+  -- and verifying involutivity + sign reversal on non-fixed-point tagged tuples.
+  -- The key inputs are:
+  --   • nonid_perm_paths_cross hwf: non-id σ always has crossing paths
+  --   • swapTailsAt: tail swap preserves path length
+  --   • gessel_viennot_transposition_sign: sign changes under swap
+  -- Step 4: The NI part sums to niTupleCount (each NI identity tuple has weight 1).
   sorry
 
 /-- **The r×r LGV Lemma** (Lindström 1973, Gessel-Viennot 1985):

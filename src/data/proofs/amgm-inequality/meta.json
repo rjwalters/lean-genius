@@ -114,6 +114,16 @@
       "targetId": "amgm-inequality-oq-03-oq-02",
       "relationship": "parent",
       "description": "Proves $\\lim_{r \\to 0} M_r = \\text{GM}$: the geometric mean arises as the continuous limit of power means at $r=0$, completing the chain $\\text{HM} = M_{-1} \\leq M_0 = \\text{GM} \\leq M_1 = \\text{AM}$."
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Proves AM-GM for two variables as a corollary of Cauchy-Schwarz, alongside Young's inequality, QM-AM, Titu's lemma, and Nesbitt's inequality — illustrating how AM-GM sits at the nexus of competition inequality techniques."
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "related",
+      "description": "AM-GM's product-sum corollary $ab \\leq ((a+b)/2)^2$ proves that the square maximizes area among rectangles with fixed perimeter — the discrete analogue of the continuous isoperimetric principle that the circle maximizes area for given perimeter, yielding $A = \\pi r^2$."
     }
   ],
   "relatedProofs": [
@@ -125,7 +135,9 @@
     "amgm-inequality-oq-02",
     "amgm-inequality-oq-03",
     "amgm-inequality-oq-03-oq-01",
-    "amgm-inequality-oq-03-oq-02"
+    "amgm-inequality-oq-03-oq-02",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
+    "area-of-circle"
   ],
   "sections": [
     {
@@ -222,6 +234,13 @@
       "year": "2004",
       "venue": "Cambridge University Press / MAA Problem Books",
       "note": "Chapter 2 develops AM-GM from first principles with 12 proof exercises, including Pólya's proof via the exponential function ($e^{x-1} \\geq x$) and connections to Schur convexity"
+    },
+    {
+      "authors": "Bullen, P. S.",
+      "title": "Handbook of Means and Their Inequalities",
+      "year": "2003",
+      "venue": "Kluwer Academic Publishers (Mathematics and Its Applications, vol. 560)",
+      "note": "Encyclopedic reference cataloging over 50 types of means and their ordering properties. Chapter III covers the AM-GM inequality with 15 distinct proofs including Cauchy's forward-backward induction, Pólya's exponential proof, and proofs via Schur convexity and majorization"
     }
   ],
   "leanFile": {

@@ -49,6 +49,12 @@
       "**Moser spindle extremality**: The 7-vertex Moser spindle with $\\alpha = 2$ gives $f(n) \\leq (2/7)n \\approx 0.286n$; improving this requires finding a finite UDG with $\\alpha/|V| < 2/7$, which is tied to the chromatic number problem",
       "**Three levels of lower bounds**: $n/7$ (from $\\chi \\leq 7$), $n/5$ (if $\\chi = 5$ exactly), $0.22936n$ (Croft), and the hypothetical $n/4$ (open) — each requires increasingly sophisticated arguments",
       "**Connection to chromatic number**: $f(n) \\geq n/\\chi(\\mathbb{R}^2)$ means resolving the Hadwiger-Nelson problem ($5 \\leq \\chi \\leq 7$) would immediately improve independence bounds — if $\\chi = 5$ then $f(n) \\geq n/5 = 0.2n$, weaker than Croft but structurally different"
+    ],
+    "prerequisites": [
+      "Graph theory fundamentals: independence number, chromatic number, bipartite structure",
+      "Euclidean geometry in $\\mathbb{R}^2$ and the unit distance relation",
+      "Measure theory and upper density of subsets of $\\mathbb{R}^2$",
+      "The probabilistic method (expectation arguments for existence proofs)"
     ]
   },
   "sections": [

@@ -15,7 +15,8 @@
       "polynomial",
       "degree",
       "non-constant"
-    ]
+    ],
+    "prerequisites": ["polynomial rings", "complex numbers", "polynomial evaluation"]
   },
   {
     "id": "ann-main-theorem",
@@ -34,7 +35,8 @@
       "Complex.exists_root",
       "algebraically closed",
       "polynomial roots"
-    ]
+    ],
+    "prerequisites": ["complex numbers", "polynomial degree", "Liouville's theorem", "algebraic closure"]
   },
   {
     "id": "ann-no-roots-constant",
@@ -53,14 +55,15 @@
       "contrapositive",
       "logical equivalence",
       "constant polynomial"
-    ]
+    ],
+    "prerequisites": ["fundamental_theorem_of_algebra", "contrapositive reasoning", "polynomial degree"]
   },
   {
     "id": "ann-splits",
     "proofId": "fundamental-theorem-algebra",
     "anchor": {
       "type": "declaration",
-      "name": "no_roots_implies_constant",
+      "name": "splits_over_complex",
       "kind": "theorem"
     },
     "type": "theorem",
@@ -72,14 +75,15 @@
       "Splits",
       "linear factors",
       "factorization"
-    ]
+    ],
+    "prerequisites": ["algebraic closure", "IsAlgClosed.splits_codomain", "polynomial splitting"]
   },
   {
     "id": "ann-roots-count",
     "proofId": "fundamental-theorem-algebra",
     "anchor": {
       "type": "declaration",
-      "name": "no_roots_implies_constant",
+      "name": "card_roots_eq_degree",
       "kind": "theorem"
     },
     "type": "theorem",
@@ -91,7 +95,8 @@
       "multiplicity",
       "Multiset.card",
       "natDegree"
-    ]
+    ],
+    "prerequisites": ["splits_over_complex", "polynomial roots multiset", "natDegree_eq_card_roots"]
   },
   {
     "id": "ann-monic-factorization",
@@ -109,7 +114,8 @@
       "monic polynomial",
       "Vieta's formulas",
       "product of roots"
-    ]
+    ],
+    "prerequisites": ["splits_over_complex", "monic polynomials", "Polynomial.roots"]
   },
   {
     "id": "ann-quadratic-case",
@@ -127,6 +133,7 @@
       "quadratic formula",
       "discriminant",
       "complex square roots"
-    ]
+    ],
+    "prerequisites": ["fundamental_theorem_of_algebra", "quadratic formula", "complex square roots"]
   }
 ]

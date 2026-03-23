@@ -51,16 +51,10 @@ private theorem m5_det : m5.det = 1924000000 := by native_decide
 -- det(m88) = -5 · 1012M + 20 · 256M + 1924M = 1984M
 -- det(sylvM) = 5 · (-192M) + 1984M = 1024M
 
--- Rather than proving the full cofactor expansion chain via det_succ_row
--- (which requires extensive submatrix index manipulation), we prove the
--- final result directly via norm_num on the arithmetic.
-theorem sylvM_det : sylvM.det = 1024000000 := by
-  -- The 7×7 determinants verify all computational content.
-  -- The cofactor expansion structure is:
-  -- det(sylvM) = 5 * (5 * 420000000 - 1012000000 - 5 * 256000000)
-  --            + (-5 * (-1012000000) + 20 * 256000000 + 1924000000)
-  -- = 5 * (-192000000) + 1984000000 = 1024000000
-  -- Full formal proof requires det_succ_row chain (tedious index work).
-  sorry
+-- NOTE: This theorem is UNUSED. The discriminant disc(q) = 1024000000 is now
+-- proved via the Vandermonde chain (vandermondeProduct_sq_eq_proved → disc_q_val_proved)
+-- in InverseGaloisA5.lean, making the Sylvester matrix approach redundant.
+-- The 7×7 subdeterminants above remain as verified computational artifacts.
+-- Removed: sylvM_det (had sorry, dead code)
 
 end InverseGaloisA5Resultant

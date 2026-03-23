@@ -65,6 +65,12 @@
       "**EHS (1982):** Lovász Local Lemma extends to all ε > 0, completing the linear case",
       "**Sublinear frontier:** f(m) = √m and f(m) = log m are the key open instances",
       "**Problem #75 connection:** ℵ₁-chromatic graphs with polynomial independence would imply all sublinear cases"
+    ],
+    "prerequisites": [
+      "Graph coloring theory: chromatic number, independent sets, and bipartite graphs",
+      "Asymptotic analysis: growth rates of functions, o(m) and O(m) notation",
+      "Lovasz Local Lemma and its applications in probabilistic combinatorics",
+      "Shift graphs and Kneser-type graph constructions"
     ]
   },
   "sections": [

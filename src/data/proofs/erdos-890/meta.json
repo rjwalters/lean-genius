@@ -34,6 +34,12 @@
       "**Tight sandwich**: If Conjecture 1 holds, $\\liminf S_k(n) \\in \\{k + \\pi(k) - 1,\\, k + \\pi(k)\\}$ — determined to within 1. The Lean `erdos_890_liminf_sandwich` theorem formalizes this conditional result.",
       "**Limsup generalization**: The classical Hardy-Ramanujan result $\\limsup \\omega(n) \\cdot \\log\\log n / \\log n = 1$ is conjectured to hold for $S_k(n)$ as well, meaning the maximum growth rate is dominated by a single highly composite integer in each block.",
       "**Monotonicity**: $S_{k+1}(n) \\geq S_k(n)$ is proved in Lean via `Finset.sum_le_sum_of_subset`, since $\\text{range}\\,k \\subseteq \\text{range}\\,(k+1)$."
+    ],
+    "prerequisites": [
+      "Arithmetic functions: the distinct prime factor counting function $\\omega(n)$, its properties under multiplication, and its relationship to the prime factorization of $n$",
+      "Probabilistic number theory: the Hardy-Ramanujan theorem ($\\omega(n) \\sim \\log\\log n$ for almost all $n$) and the Erdos-Kac theorem (normal distribution of $\\omega$)",
+      "Analytic number theory: the prime counting function $\\pi(k)$, Polya's theorem on gaps between $k$-smooth numbers, and the role of small prime factors in consecutive integer products",
+      "Asymptotic analysis: liminf and limsup via filters, $\\varepsilon$-$N$ formulations of limit statements, and the ratio $S_k(n) \\cdot \\log\\log n / \\log n$ as a normalized growth measure"
     ]
   },
   "sections": [

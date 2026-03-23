@@ -127,6 +127,16 @@
       "targetId": "triangle-inequality",
       "relationship": "related",
       "description": "Power mean monotonicity (completed by this limit bridge) implies Minkowski's inequality (the L^p triangle inequality) for p ≥ 1 — connecting the power mean family to normed space geometry"
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "related",
+      "description": "Cauchy-Schwarz is the M₁ ≤ M₂ case of power mean monotonicity. The r→0 limit proved here bridges the negative and positive sides of the power mean chain, with Cauchy-Schwarz sitting at M₂ on the positive side"
+    },
+    {
+      "targetId": "sum-of-kth-powers",
+      "relationship": "related",
+      "description": "Power sums p_k = ∑ xᵢ^k are the unnormalized building blocks of power means M_k = (p_k/n)^(1/k). The r→0 limit lim M_r = GM connects the power sum hierarchy to the geometric mean, which is the product rather than a sum"
     }
   ],
   "overview": {
@@ -230,6 +240,8 @@
     "lhopital",
     "shannon-entropy",
     "mean-value-theorem",
-    "triangle-inequality"
+    "triangle-inequality",
+    "cauchy-schwarz",
+    "sum-of-kth-powers"
   ]
 }

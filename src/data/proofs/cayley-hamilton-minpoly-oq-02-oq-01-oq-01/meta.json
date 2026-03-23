@@ -2,12 +2,12 @@
   "id": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
   "title": "Skolem-Noether Theorem: K-Algebra Automorphisms of Mₙ(K)",
   "slug": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
-  "description": "A formal proof of the Skolem-Noether theorem for matrix algebras: every K-algebra automorphism of Mₙ(K) is inner (conjugation by an invertible matrix). Uses an elementary matrix units approach (no Artin-Wedderburn theory). Defines inner automorphisms, proves they form a subgroup, proves the main theorem (with helper lemma sorries for matrix arithmetic), and derives Aut_K(Mₙ(K)) ≅ PGLₙ(K). Proves Center(Mₙ(K)) = K·I and the conjugation kernel theorem, formally establishing the PGL structure. The n=1 case is proved without axioms.",
+  "description": "A fully verified proof of the Skolem-Noether theorem for matrix algebras: every K-algebra automorphism of Mₙ(K) is inner (conjugation by an invertible matrix). Uses an elementary matrix units approach (no Artin-Wedderburn theory needed). Defines inner automorphisms, proves they form a subgroup, and proves the main theorem with all helper lemmas fully verified. Also derives Aut_K(Mₙ(K)) ≅ PGLₙ(K), proves Center(Mₙ(K)) = K·I, and establishes the conjugation kernel theorem. 0 sorries, 0 axioms.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Skolem%E2%80%93Noether_theorem",
     "date": "2026",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/SkolemNoetherMatrixAut.lean",
     "tags": [
       "abstract-algebra",
@@ -20,7 +20,7 @@
       "research"
     ],
     "badge": "verified",
-    "sorries": 7,
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "minpoly.algEquiv_eq",
@@ -46,7 +46,7 @@
     "originalContributions": [
       "IsInnerAut: formal predicate for inner automorphisms of matrix algebras",
       "Inner automorphism group structure: identity, inverse, and composition closure",
-      "skolemNoether: axiomatized Skolem-Noether theorem for Mₙ(K)",
+      "skolemNoether: fully proved Skolem-Noether theorem for Mₙ(K) via elementary matrix units (no Artin-Wedderburn)",
       "surjection_units_to_aut: every automorphism equals conjAlgEquiv P for some unit P",
       "skolemNoether_one: fully proved n=1 case (no axioms needed)",
       "automorphism_preserves_minpoly: minpoly invariance under arbitrary automorphisms",
@@ -73,17 +73,18 @@
       }
     ],
     "axiomCount": 0,
-    "lineCount": 445
+    "lineCount": 570
   },
   "overview": {
     "historicalContext": "**The Skolem-Noether Theorem**\n\nThe Skolem-Noether theorem, proved independently by Thoralf Skolem (1927) and Emmy Noether (1929), is a cornerstone of the theory of central simple algebras. In its most general form, it states that every automorphism of a central simple algebra over a field is inner.\n\nFor the matrix algebra $M_n(K)$, this says: every $K$-algebra automorphism $\\varphi : M_n(K) \\to M_n(K)$ has the form $\\varphi(A) = P^{-1}AP$ for some invertible matrix $P$. In other words, the only way to rearrange $M_n(K)$ while preserving its $K$-algebra structure is by a change of basis.\n\nThe standard proof uses the theory of simple modules: $K^n$ is the unique simple $M_n(K)$-module up to isomorphism. Given an automorphism $\\varphi$, one constructs a 'twisted' module where $M$ acts as $\\varphi(M)$. By uniqueness of simple modules (Artin-Wedderburn theory), the original and twisted modules are isomorphic, and the isomorphism gives the conjugating matrix.\n\nThis result has deep consequences: it shows that $\\text{Aut}_K(M_n(K)) \\cong \\text{PGL}_n(K)$, connecting algebra automorphisms to projective geometry.",
     "problemStatement": "**Theorem (Skolem-Noether for $M_n(K)$)**: For any field $K$ and any $K$-algebra automorphism $\\varphi : M_n(K) \\to M_n(K)$, there exists an invertible matrix $P \\in \\text{GL}_n(K)$ such that:\n$$\\varphi(A) = P^{-1}AP \\quad \\text{for all } A \\in M_n(K)$$\n\nEquivalently, every $K$-algebra automorphism of $M_n(K)$ is an inner automorphism.",
-    "proofStrategy": "The formalization has five parts:\n\n1. **Conjugation automorphism**: Re-derives conjAlgEquiv (the conjugation $A \\mapsto P^{-1}AP$ as an AlgEquiv) for self-containment.\n\n2. **Inner automorphism predicate**: Defines IsInnerAut as the existence of a conjugating unit, and proves that inner automorphisms form a group: identity is inner, inverses of inner are inner, and compositions of inner are inner.\n\n3. **Skolem-Noether axiom**: States the main theorem as an axiom, since the proof requires Artin-Wedderburn theory (uniqueness of simple modules over simple Artinian rings), which is not yet available in Mathlib.\n\n4. **Consequences**: Derives that every automorphism comes from a unit (surjection to Aut), that automorphisms preserve minpoly, and extensionality for automorphisms.\n\n5. **Trivial case**: Proves the n=1 case without axioms: every 1×1 matrix is a scalar, so every automorphism of $M_1(K) \\cong K$ is the identity.",
+    "proofStrategy": "The formalization is fully verified (0 axioms, 0 sorries) with eight parts:\n\n1. **Conjugation automorphism**: Constructs conjAlgEquiv P (the conjugation $A \\mapsto P^{-1}AP$ as an AlgEquiv).\n\n2. **Inner automorphism predicate**: Defines IsInnerAut and proves inner automorphisms form a group (id, symm, trans).\n\n3. **Skolem-Noether proof (elementary)**: Fully proves the main theorem using elementary matrix units — no Artin-Wedderburn theory needed. The images $\\varphi(E_{ij})$ satisfy the same multiplication rules as $E_{ij}$. Constructs linearly independent vectors $p_j = \\varphi(E_{j,i_0}) \\cdot v_0$, forms an invertible matrix $P$, and shows $\\varphi = \\text{conj}(P)$ by decomposing arbitrary matrices as $\\sum A_{ij} E_{ij}$ and extending by $K$-linearity.\n\n4. **Consequences**: Derives exists_conjugating_matrix, surjection_units_to_aut ($\\text{Aut}_K(M_n(K)) = \\text{Inn}(M_n(K))$), automorphism_preserves_minpoly, and aut_ext.\n\n5. **Trivial case**: Proves $n=1$ without axioms: every $M_1(K) \\cong K$ automorphism is the identity.\n\n6. **Matrix unit products**: Helper lemmas mul_eij_entry and eij_mul_entry for computing products with standard basis matrices.\n\n7. **Center of $M_n(K)$**: Proves center_iff_scalar: $\\text{Center}(M_n(K)) = K \\cdot I$.\n\n8. **PGL structure**: Proves conjAlgEquiv_eq_iff_center: two units give the same conjugation iff their ratio is central, establishing the exact sequence $1 \\to K^* \\to GL_n(K) \\to \\text{Aut}_K(M_n(K)) \\to 1$ and hence $\\text{Aut}_K(M_n(K)) \\cong PGL_n(K)$.",
     "keyInsights": [
       "The Skolem-Noether theorem characterizes the automorphism group of Mₙ(K): it equals PGLₙ(K) = GLₙ(K)/K*",
+      "The elementary matrix units proof avoids Artin-Wedderburn theory entirely — the images φ(E_ij) satisfy the same multiplication rules, enabling direct construction of the conjugating matrix",
       "Inner automorphisms form a group under composition, with conjAlgEquiv providing the explicit group homomorphism from (Mₙ(K))ˣ to Aut_K(Mₙ(K))",
       "The n=1 case is trivially provable: M₁(K) ≅ K, and every K-algebra endomorphism of K is the identity",
-      "The proof of the general case requires Artin-Wedderburn theory — specifically that Mₙ(K) has a unique simple module up to isomorphism",
+      "Center(Mₙ(K)) = K·I is proved by testing commutativity against standard basis matrices E_ij",
       "Combined with the parent file's minpoly.algEquiv_eq, Skolem-Noether shows that ALL minpoly-preserving automorphisms of Mₙ(K) are exactly the inner ones — there are no 'exotic' automorphisms"
     ]
   },
@@ -91,46 +92,67 @@
     {
       "id": "conjugation-algequiv",
       "title": "Conjugation Automorphism",
-      "startLine": 40,
-      "endLine": 86,
-      "summary": "Constructs conjAlgEquiv P : Matrix n n K ≃ₐ[K] Matrix n n K, the conjugation automorphism A ↦ P⁻¹AP with inverse A ↦ PAP⁻¹. Self-contained re-derivation from the parent file."
+      "startLine": 19,
+      "endLine": 53,
+      "summary": "Constructs conjAlgEquiv P : Matrix n n K ≃ₐ[K] Matrix n n K, the conjugation automorphism A ↦ P⁻¹AP with inverse A ↦ PAP⁻¹."
     },
     {
       "id": "inner-automorphisms",
       "title": "Inner Automorphisms",
-      "startLine": 88,
-      "endLine": 135,
-      "summary": "Defines IsInnerAut and proves inner automorphisms form a group: conjAlgEquiv_isInner (tautological), isInnerAut_id, isInnerAut_symm, isInnerAut_trans."
+      "startLine": 54,
+      "endLine": 82,
+      "summary": "Defines IsInnerAut and proves inner automorphisms form a group: conjAlgEquiv_isInner, isInnerAut_id, isInnerAut_symm, isInnerAut_trans."
     },
     {
-      "id": "skolem-noether-axiom",
-      "title": "Skolem-Noether Theorem",
-      "startLine": 137,
-      "endLine": 166,
-      "summary": "States the Skolem-Noether theorem as an axiom with full mathematical justification. Documents the proof via simple module uniqueness (Artin-Wedderburn)."
+      "id": "skolem-noether-proof",
+      "title": "Skolem-Noether Proof (Elementary Matrix Units)",
+      "startLine": 84,
+      "endLine": 279,
+      "summary": "Fully proves the Skolem-Noether theorem using elementary matrix units (no Artin-Wedderburn). Helper lemmas: stdBasis_entry, stdBasis_mul, f_mul, intertwine_prop, p_ne_zero, p_linearIndependent. Main theorem constructs an invertible P from linearly independent vectors p_j = φ(E_{j,i₀})·v₀ and proves φ = conj(P) by decomposing matrices as ∑ A_{ij}·E_{ij}."
     },
     {
       "id": "consequences",
       "title": "Consequences",
-      "startLine": 168,
-      "endLine": 210,
-      "summary": "Derives key consequences: exists_conjugating_matrix, surjection_units_to_aut (Aut = Inn), automorphism_preserves_minpoly, and aut_ext."
+      "startLine": 281,
+      "endLine": 297,
+      "summary": "Derives exists_conjugating_matrix, surjection_units_to_aut (Aut = Inn), automorphism_preserves_minpoly, and aut_ext."
     },
     {
       "id": "trivial-case",
       "title": "The Trivial Case n = 1",
-      "startLine": 212,
-      "endLine": 240,
-      "summary": "Proves Skolem-Noether for M₁(K) without axioms: every 1×1 matrix is scalar, so every automorphism is the identity."
+      "startLine": 299,
+      "endLine": 311,
+      "summary": "Proves Skolem-Noether for M₁(K) without the main theorem: every 1×1 matrix is scalar, so every automorphism of M₁(K) ≅ K is the identity."
+    },
+    {
+      "id": "matrix-unit-products",
+      "title": "Matrix Unit Product Lemmas",
+      "startLine": 347,
+      "endLine": 386,
+      "summary": "Helper lemmas mul_eij_entry and eij_mul_entry for computing products A·E_{ij} and E_{ij}·A, extracting/placing columns and rows."
+    },
+    {
+      "id": "center",
+      "title": "Center of Mₙ(K) = Scalar Matrices",
+      "startLine": 388,
+      "endLine": 451,
+      "summary": "Proves center_iff_scalar: a matrix commutes with all matrices iff it is a scalar multiple of I. Uses off_diagonal_vanish_of_center and diagonal_constant_of_center."
+    },
+    {
+      "id": "pgl-structure",
+      "title": "Conjugation Kernel and PGL Structure",
+      "startLine": 453,
+      "endLine": 568,
+      "summary": "Proves conjAlgEquiv_eq_iff_center (two units give same conjugation iff ratio is central) and conjAlgEquiv_eq_refl_iff (kernel = scalar matrices), establishing Aut_K(Mₙ(K)) ≅ PGLₙ(K)."
     }
   ],
   "conclusion": {
-    "summary": "This formalization establishes the formal framework for the Skolem-Noether theorem for matrix algebras Mₙ(K). It defines inner automorphisms, proves they form a group, axiomatizes the deep theorem that all automorphisms are inner, and derives consequences including the isomorphism Aut_K(Mₙ(K)) ≅ PGLₙ(K). The n=1 case is fully proved. The file has 1 axiom (the main theorem), 0 sorries, and 20 theorems/lemmas.",
-    "implications": "**Mathematical Significance**\n\n1. **Completes the automorphism picture**: The parent file showed that inner automorphisms preserve minpoly. Skolem-Noether shows there are no other automorphisms, so minpoly preservation is an exact characterization.\n\n2. **PGL structure**: The theorem implies Aut_K(Mₙ(K)) ≅ PGLₙ(K), connecting abstract algebra automorphisms to projective geometry.\n\n3. **Central simple algebra theory**: Skolem-Noether is the gateway to deeper results about Brauer groups, crossed products, and division algebras.\n\n4. **Formalization gap**: The axiom documents a clear gap: formalizing Artin-Wedderburn theory in Lean 4 would allow proving this theorem. This is a concrete target for future Mathlib development.",
+    "summary": "This formalization fully proves the Skolem-Noether theorem for matrix algebras Mₙ(K) using an elementary matrix units approach — no Artin-Wedderburn theory needed. It defines inner automorphisms, proves they form a group, proves the main theorem that all K-algebra automorphisms are inner, derives consequences including Aut_K(Mₙ(K)) ≅ PGLₙ(K), proves Center(Mₙ(K)) = K·I, and characterizes the conjugation kernel. The file has 0 axioms, 0 sorries, and 26 theorems/lemmas.",
+    "implications": "**Mathematical Significance**\n\n1. **Completes the automorphism picture**: The parent file showed that inner automorphisms preserve minpoly. Skolem-Noether shows there are no other automorphisms, so minpoly preservation is an exact characterization.\n\n2. **PGL structure**: The theorem implies Aut_K(Mₙ(K)) ≅ PGLₙ(K), connecting abstract algebra automorphisms to projective geometry. The conjugation kernel theorem makes this explicit.\n\n3. **Central simple algebra theory**: Skolem-Noether is the gateway to deeper results about Brauer groups, crossed products, and division algebras.\n\n4. **Elementary proof**: The formalization demonstrates that Artin-Wedderburn theory is NOT needed for the matrix algebra case — the elementary matrix units approach gives a self-contained proof using only basic linear algebra.",
     "openQuestions": [
-      "Can Artin-Wedderburn theory be formalized in Lean 4 to remove the skolemNoether axiom?",
-      "Can the center of Mₙ(K) being exactly K · I be proved (Schur's lemma for matrices), characterizing when two units give the same automorphism?",
-      "Can the more general Skolem-Noether theorem for arbitrary central simple algebras be formalized?"
+      "Can the more general Skolem-Noether theorem for arbitrary central simple algebras be formalized?",
+      "Can the Brauer group of a field be formalized, building on the Skolem-Noether theorem?",
+      "Can the connection to projective geometry (PGL action on projective space) be formalized?"
     ]
   },
   "leanFile": {
@@ -139,9 +161,9 @@
     ],
     "opens": [],
     "namespace": "SkolemNoether",
-    "lineCount": 445,
+    "lineCount": 570,
     "axiomCount": 0,
-    "theoremCount": 19,
+    "theoremCount": 26,
     "definitionCount": 2
   }
 }

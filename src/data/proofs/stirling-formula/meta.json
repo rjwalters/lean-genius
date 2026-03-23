@@ -43,8 +43,48 @@
     ],
     "dateAdded": "2025-12-27",
     "axiomCount": 1,
-    "lineCount": 497
+    "lineCount": 497,
+    "prerequisites": [
+      "Real analysis: limits, asymptotic equivalence (~), sequences",
+      "Factorials and the Gamma function: n! = Γ(n+1)",
+      "The Wallis product: π/2 = ∏(4n²)/(4n²-1)",
+      "Logarithmic approximation: log(n!) ≈ n log n - n + (1/2)log(2πn)"
+    ],
+    "relatedProofs": [
+      "e-transcendental",
+      "pi-transcendental",
+      "binomial-theorem",
+      "central-limit-theorem",
+      "euler-identity"
+    ]
   },
+  "crossReferences": [
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "Euler's number e appears fundamentally in Stirling's formula as (n/e)^n — the transcendence of e (Hermite 1873) ensures this factor cannot be simplified algebraically"
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "related",
+      "description": "The factor √(2π) in Stirling's formula connects to the Wallis product and the Gaussian integral ∫e^{-x²}dx = √π. The transcendence of π (Lindemann 1882) means Stirling's constant is transcendental"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "complementary",
+      "description": "Stirling's formula gives the asymptotic form of binomial coefficients: C(n,k) ≈ (n/k)^k · (n/(n-k))^{n-k} · √(n/(2πk(n-k))), essential for the central limit theorem and information theory"
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "related",
+      "description": "De Moivre originally discovered Stirling's formula while proving the CLT for the binomial distribution. Stirling's approximation for C(n,k) gives the Gaussian density as the limit of the binomial"
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "related",
+      "description": "Euler's formula e^{iπ} + 1 = 0 connects the same constants (e, π) that appear in Stirling's formula. Both reveal deep relationships between exponential growth and circular geometry"
+    }
+  ],
   "overview": {
     "historicalContext": "Abraham de Moivre discovered the leading form $(n/e)^n \\sqrt{n}$ around 1721 while studying the normal distribution as an approximation to the binomial. James Stirling refined this in his 1730 book *Methodus Differentialis*, identifying the constant $\\sqrt{2\\pi}$ and the full asymptotic series $n! \\sim \\sqrt{2\\pi n}(n/e)^n(1 + \\frac{1}{12n} + \\frac{1}{288n^2} - \\cdots)$.\n\nThe formula is intimately connected to the Wallis product ($\\pi/2 = \\prod_{n=1}^\\infty \\frac{4n^2}{4n^2-1}$, John Wallis 1656), which provides the $\\pi$ factor through factorial ratios. Euler later extended Stirling's formula to the Gamma function: $\\Gamma(x+1) \\sim \\sqrt{2\\pi x}(x/e)^x$ for large real $x$, revealing it as a fundamental statement about the growth of the Gamma function along the real axis.",
     "problemStatement": "**Theorem (Stirling, 1730)**: As n approaches infinity:\n\n$$n! \\sim \\sqrt{2\\pi n} \\cdot \\left(\\frac{n}{e}\\right)^n$$\n\nMore precisely, the ratio n!/[sqrt(2*pi*n) * (n/e)^n] approaches 1.\n\nThis is Wiedijk's 100 Theorems #90.",
@@ -63,35 +103,40 @@
       "title": "The Stirling Sequence",
       "startLine": 51,
       "endLine": 71,
-      "summary": "Definition of stirlingSeq(n) = n!/[sqrt(2n) * (n/e)^n]."
+      "summary": "Definition of stirlingSeq(n) = n!/[sqrt(2n) * (n/e)^n].",
+      "mathContext": "$S_n = \\frac{n!}{\\sqrt{2n} \\cdot (n/e)^n}$. The Stirling sequence normalizes $n!$ by the leading approximation, and $S_n \\to \\sqrt{\\pi}$ yields the formula."
     },
     {
       "id": "convergence",
       "title": "Convergence to sqrt(pi)",
       "startLine": 73,
       "endLine": 97,
-      "summary": "The Stirling sequence converges to sqrt(pi)."
+      "summary": "The Stirling sequence converges to sqrt(pi).",
+      "mathContext": "$\\lim_{n\\to\\infty} S_n = \\sqrt{\\pi}$, proved via the Wallis product $\\pi/2 = \\prod_{n=1}^\\infty \\frac{4n^2}{4n^2-1}$."
     },
     {
       "id": "asymptotic",
       "title": "Asymptotic Equivalence",
       "startLine": 99,
       "endLine": 121,
-      "summary": "Stirling's formula as asymptotic equivalence."
+      "summary": "Stirling's formula as asymptotic equivalence.",
+      "mathContext": "$n! \\sim \\sqrt{2\\pi n} \\cdot (n/e)^n$, i.e., $\\lim_{n\\to\\infty} \\frac{n!}{\\sqrt{2\\pi n}(n/e)^n} = 1$."
     },
     {
       "id": "bounds",
       "title": "Bounds",
       "startLine": 123,
       "endLine": 149,
-      "summary": "Upper and lower bounds from Stirling's formula."
+      "summary": "Upper and lower bounds from Stirling's formula.",
+      "mathContext": "$\\sqrt{2\\pi n}(n/e)^n \\leq n! \\leq \\sqrt{2\\pi n}(n/e)^n \\cdot e^{1/(12n)}$ for $n \\geq 1$."
     },
     {
       "id": "applications",
       "title": "Applications",
       "startLine": 209,
       "endLine": 271,
-      "summary": "Log-factorial approximation and connections to entropy."
+      "summary": "Log-factorial approximation and connections to entropy.",
+      "mathContext": "$\\log(n!) \\approx n\\log n - n + \\frac{1}{2}\\log(2\\pi n)$. Entropy: $H = \\log\\binom{n}{k} \\approx nH(k/n)$ where $H(p) = -p\\log p - (1-p)\\log(1-p)$."
     }
   ],
   "conclusion": {

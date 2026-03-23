@@ -164,6 +164,11 @@
       "targetId": "central-limit-theorem",
       "relationship": "related",
       "description": "The ballot problem concerns random walks with a bias (p > q votes), which in the limit connects to the central limit theorem: the vote-counting sequence is a biased random walk, and CLT describes its asymptotic distribution"
+    },
+    {
+      "targetId": "erdos-szekeres",
+      "relationship": "related",
+      "description": "Both are combinatorial results solved by elegant counting arguments: the Erdős-Szekeres theorem (every sequence of length mn+1 has a monotone subsequence of length m+1 or n+1) uses the pigeonhole principle on lattice paths, while the ballot problem uses the reflection principle on lattice paths — both involve path-counting in grid diagrams"
     }
   ],
   "relatedProofs": [

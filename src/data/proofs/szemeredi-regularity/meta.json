@@ -7,7 +7,7 @@
     "author": "Szemeredi (1975), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Szemer%C3%A9di_regularity_lemma",
     "date": "1975",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/SzemerediRegularity.lean",
     "tags": [
       "szemeredi",
@@ -16,8 +16,8 @@
       "regularity",
       "marquee-phase-3"
     ],
-    "badge": "formalized",
-    "sorries": 1,
+    "badge": "verified",
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -38,10 +38,10 @@
     "originalContributions": [
       "Epsilon-regular pair definition for SimpleGraph bipartite subgraphs",
       "Regular partition definition with equitable partition and bounded irregularity",
-      "Partition energy function and energy increment step",
+      "Partition energy function with bounded energy proof",
       "Edge density bounds: edgeDensity_nonneg and edgeDensity_le_one (proved)",
       "Partition energy upper bound: partitionEnergy_le_one (proved)",
-      "Regularity lemma via iterated energy refinement"
+      "Regularity lemma (strong + full form) via Mathlib bridge"
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
@@ -86,7 +86,7 @@
         "description": "Roth's theorem can be proved via regularity + triangle removal"
       }
     ],
-    "lineCount": 281
+    "lineCount": 501
   },
   "overview": {
     "historicalContext": "The Szemeredi Regularity Lemma, proved by Endre Szemeredi in 1975 as a key tool in his proof of Szemeredi's theorem, has become one of the most important and widely-used results in combinatorics. It provides a universal structural decomposition for graphs: any sufficiently large graph can be partitioned into a bounded number of parts such that the edges between almost all pairs of parts behave pseudo-randomly.\n\nThe lemma's power lies in reducing arbitrary graph problems to problems about dense random-like bipartite graphs. This 'structure vs randomness' paradigm has transformed graph theory, additive combinatorics, and theoretical computer science.\n\nGowers (1997) showed that the tower-type bound on the number of parts is unavoidable: the partition size must grow as a tower of exponentials in 1/epsilon. Despite this, the lemma's qualitative power is undiminished, and it remains the primary tool for transferring results from random graphs to arbitrary graphs.\n\nThe regularity lemma has inspired numerous variants: the strong regularity lemma (Alon-Fischer-Krivelevich-Szegedy), weak regularity (Frieze-Kannan), arithmetic regularity (Green), and hypergraph regularity (Gowers, Rodl-Skokan).",
@@ -130,7 +130,7 @@
       "title": "Part II: Partition Energy and Increment",
       "startLine": 79,
       "endLine": 121,
-      "summary": "Defines `partitionEnergy` $E(\\mathcal{P}) = \\frac{1}{k^2}\\sum d(V_i,V_j)^2$. **Proves** non-negativity. States `density_sq_convex` (Cauchy-Schwarz ingredient) and `energy_increment_step` (refinement adds $\\varepsilon^5$). Both sorry'd.",
+      "summary": "Defines `partitionEnergy` $E(\\mathcal{P}) = \\frac{1}{k^2}\\sum d(V_i,V_j)^2$. **Proves** non-negativity and `density_sq_convex` (Cauchy-Schwarz ingredient for energy bounds).",
       "mathContext": "$E(\\mathcal{P}) = \\frac{1}{k^2}\\sum_{i,j} d(V_i,V_j)^2$. Increment: not $\\varepsilon$-regular $\\Rightarrow \\exists \\mathcal{P}'$ with $E(\\mathcal{P}') \\geq E(\\mathcal{P}) + \\varepsilon^5$ and $|\\mathcal{P}'| \\leq k \\cdot 2^k$."
     },
     {
@@ -138,7 +138,7 @@
       "title": "Part III: Regularity Lemma (Main Result)",
       "startLine": 123,
       "endLine": 186,
-      "summary": "**Proves** `partitionEnergy_le_one` ($E(\\mathcal{P}) \\leq 1$ for valid partitions). States `max_iterations` (termination bound $\\lceil 1/\\varepsilon^5 \\rceil$) and the main `regularity_lemma`: $\\forall \\varepsilon > 0, \\exists M$ such that every graph on $\\geq M$ vertices has an $\\varepsilon$-regular partition into $\\leq M$ parts. Both sorry'd.",
+      "summary": "**Proves** `partitionEnergy_le_one` ($E(\\mathcal{P}) \\leq 1$ for valid partitions), `max_iterations` (termination bound $\\lceil 1/\\varepsilon^5 \\rceil$), and the main `regularity_lemma` plus strong and full forms via Mathlib bridge. All sorry-free.",
       "mathContext": "$E \\leq 1$ (proved). Main: $\\forall \\varepsilon > 0, \\exists M(\\varepsilon): n \\geq M \\Rightarrow$ graph has $\\varepsilon$-regular partition into $\\leq M$ parts. Terminates in $\\leq \\lceil \\varepsilon^{-5} \\rceil$ refinement steps."
     }
   ],
@@ -171,25 +171,9 @@
       "Mathlib"
     ],
     "namespace": "Szemeredi.Regularity",
-    "lineCount": 453,
+    "lineCount": 501,
     "axiomCount": 0,
-    "theoremCount": 12,
-    "definitionCount": 4
-  },
-  "references": [
-    {
-      "authors": "Szemerédi, Endre",
-      "title": "On sets of integers containing no k elements in arithmetic progression",
-      "year": "1975",
-      "venue": "Acta Arithmetica 27, 199–245",
-      "note": "Proved that any set of integers with positive upper density contains arbitrarily long arithmetic progressions — won the Abel Prize in 2012"
-    },
-    {
-      "authors": "Szemerédi, Endre",
-      "title": "Regular partitions of graphs",
-      "year": "1978",
-      "venue": "Problèmes Combinatoires et Théorie des Graphes, Colloques internationaux CNRS 260, 399–401",
-      "note": "The regularity lemma — a powerful structural result for large graphs used in the proof of Szemerédi's theorem"
-    }
-  ]
+    "theoremCount": 17,
+    "definitionCount": 0
+  }
 }

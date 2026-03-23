@@ -41,10 +41,10 @@
     "range": {"startLine": 81, "endLine": 87},
     "type": "technique",
     "title": "Alternative Formulation: a + b ≥ 2√(ab)",
-    "content": "**Equivalent statement** of AM-GM without division:\n$$a + b \\geq 2\\sqrt{ab}$$\n\nThis form is often more convenient in algebraic manipulations—it avoids division by 2, making it directly applicable to sum-product estimates. The Lean proof simply delegates to `am_gm_two` via `linarith`, demonstrating how to derive equivalent forms by scaling.\n\n**Usage**: This form appears in proofs of Cauchy-Schwarz via SOS (sum of squares) decompositions and in bounding products in number theory.",
+    "content": "**Equivalent statement** of AM-GM without division:\n$$a + b \\geq 2\\sqrt{ab}$$\n\nThis form is often more convenient in algebraic manipulations—it avoids division by 2, making it directly applicable to sum-product estimates. The Lean proof simply delegates to `am_gm_two` via `linarith`, demonstrating how to derive equivalent forms by scaling.\n\n**Usage**: This form appears in proofs of Cauchy-Schwarz via SOS (sum of squares) decompositions and in bounding products in number theory.\n\n**Connection to Young's inequality**: Substituting $a \\to a^p/p$ and $b \\to b^q/q$ with $1/p + 1/q = 1$ yields Young's inequality $ab \\leq a^p/p + b^q/q$, which is the workhorse behind Hölder's inequality and $L^p$ space theory. The two-variable AM-GM is exactly the case $p = q = 2$.",
     "mathContext": "$a + b \\geq 2\\sqrt{ab}$, equivalently $\\frac{a+b}{2} \\geq \\sqrt{ab}$",
     "significance": "supporting",
-    "relatedConcepts": ["sum-product bounds", "Cauchy-Schwarz", "scaling equivalence"],
+    "relatedConcepts": ["sum-product bounds", "Cauchy-Schwarz", "scaling equivalence", "Young's inequality", "Hölder's inequality"],
     "prerequisites": ["am_gm_two", "linarith"]
   },
   {

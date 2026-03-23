@@ -121,6 +121,12 @@
       "**The exponent $1/2$ from prime counting**: The square root arises because the number of primes $\\le y$ is $\\sim y/\\log y$, and setting $y \\approx \\sqrt{n \\log n}$ optimally balances sequence length ($\\sim \\pi(y) \\sim \\sqrt{n/\\log n}$) against the constraint that representatives must fit below $n$.",
       "**Gap in the constant**: The lower bound $c \\ge 2$ comes from a specific construction, while the upper bound $c \\le 2\\sqrt{2}$ comes from counting arguments. The gap factor of $\\sqrt{2}$ reflects the difference between the best known construction and the information-theoretic limit.",
       "**Duality with smallest prime factor**: The dual problem (increasing SPF sequences) has different asymptotics because $p(n) \\le \\sqrt{n}$ for composites, giving a much tighter constraint than $P(n) \\le n$. This asymmetry reflects the fundamental difference between the smallest and largest prime factors."
+    ],
+    "prerequisites": [
+      "Multiplicative number theory: greatest prime factor $P^+(n)$, smooth numbers, Dickman function $\\rho(u)$",
+      "Prime counting: $\\pi(x) \\sim x/\\log x$ and its role in bounding sequence lengths",
+      "de Bruijn's smooth number estimates: $\\Psi(x,y)$ for counting $y$-smooth integers $\\leq x$",
+      "Extremal combinatorics: constructing optimal sequences under monotonicity constraints"
     ]
   },
   "sections": [

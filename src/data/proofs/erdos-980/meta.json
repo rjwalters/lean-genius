@@ -35,6 +35,12 @@
       "The average value of n_k(p) over primes p < x is roughly c_k · log x",
       "Vinogradov's bound shows n(p) = O(p^{1/(4√e)+ε}) unconditionally",
       "Under GRH, the least quadratic nonresidue satisfies n(p) = O((log p)²)"
+    ],
+    "prerequisites": [
+      "Analytic number theory: the prime number theorem, prime counting function, and summation over primes",
+      "Power residues and the Legendre symbol: k-th power residues modulo primes and character sums",
+      "Asymptotic analysis: asymptotic equivalence, big-O notation, and convergent series over primes",
+      "Character sum estimates: the Polya-Vinogradov inequality and bounds on least nonresidues"
     ]
   },
   "sections": [

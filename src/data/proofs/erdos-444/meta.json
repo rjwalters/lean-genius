@@ -136,6 +136,12 @@
       "**Exponential growth**: M_A(x) ≥ exp(c · H_A(x)) frequently — super-polynomial in the density measure, not merely 'faster than polynomial'",
       "**Two classical specializations**: A = ℕ recovers Wigert/Ramanujan (maximal order of d(n)); A = primes recovers Hardy-Ramanujan (maximal ω(n))",
       "**No universal bound**: for any function f, some A satisfies M_A(x) > f(H_A(x)) — the extremal behavior cannot be captured by any single function of the density"
+    ],
+    "prerequisites": [
+      "Multiplicative number theory: divisor functions $\\tau(n)$, $\\omega(n)$, and their maximal orders",
+      "Harmonic sums and Mertens' theorem ($\\sum_{p \\leq x} 1/p \\sim \\log\\log x$)",
+      "Highly composite numbers (Ramanujan 1915) and extremal product constructions",
+      "Real analysis: limsup, Filter.atTop in Lean 4"
     ]
   },
   "conclusion": {
@@ -154,10 +160,22 @@
       "targetId": "erdos-414",
       "relationship": "related",
       "description": "Both study the divisor function in dynamical/iterative contexts; #414 iterates n + τ(n) while #444 generalizes τ to restricted divisor functions d_A"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Both involve fundamental multiplicative arithmetic functions: $\\tau(n)$ and its generalizations $d_A(n)$ count divisors, while $\\phi(n)$ counts coprime residues. The multiplicativity property $f(mn) = f(m)f(n)$ for $\\gcd(m,n)=1$ is key to both"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "supports",
+      "description": "The unique prime factorization $n = p_1^{e_1} \\cdots p_k^{e_k}$ underlies the extremal product construction: $d_A(n) = \\prod (e_i + 1)$ where the product runs over primes in $A$, so maximizing $d_A$ reduces to optimizing exponents"
     }
   ],
   "relatedProofs": [
-    "erdos-414"
+    "erdos-414",
+    "euler-totient",
+    "fundamental-arithmetic"
   ],
   "leanFile": {
     "imports": [

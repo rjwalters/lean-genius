@@ -155,6 +155,11 @@
       "targetId": "e-transcendental",
       "relationship": "related",
       "description": "The transcendence of e connects to the area formula via the Gaussian integral: ∫∫ e^{-(x²+y²)} dA = π, where converting to polar coordinates uses the area element from A = πr²"
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "Euler's Basel problem (∑1/n² = π²/6) provides another unexpected appearance of π — the same constant whose geometric meaning as the area-to-radius² ratio is formalized here. Euler's proof connecting ∑1/n² to sin(x)/x reveals π's dual role in geometry and analysis"
     }
   ],
   "relatedProofs": [
@@ -164,7 +169,8 @@
     "fundamental-theorem-calculus",
     "pythagorean-theorem",
     "hermite-lindemann",
-    "e-transcendental"
+    "e-transcendental",
+    "basel-problem"
   ],
   "leanFile": {
     "imports": [
@@ -202,41 +208,6 @@
       "year": "1897",
       "venue": "Cambridge University Press",
       "note": "Definitive English translation of Archimedes' works including 'Measurement of a Circle' — the primary source for his proof that the area of a circle equals that of a right triangle with legs equal to the circumference and radius"
-    }
-  ],
-  "relatedProofs": [
-    "angle-trisection",
-    "buffons-needle"
-  ],
-  "leanFile": {
-    "imports": [
-      "Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls",
-      "Mathlib.Tactic"
-    ],
-    "opens": [
-      "MeasureTheory",
-      "Metric"
-    ],
-    "namespace": "AreaOfCircle",
-    "lineCount": 155,
-    "axiomCount": 0,
-    "theoremCount": 7,
-    "definitionCount": 0
-  },
-  "references": [
-    {
-      "authors": "Archimedes",
-      "title": "Measurement of a Circle",
-      "year": "~250 BCE",
-      "venue": "Syracuse",
-      "note": "First rigorous calculation of the area of a circle using the method of exhaustion — bounded π between 3 10/71 and 3 1/7"
-    },
-    {
-      "authors": "Stillwell, John",
-      "title": "Mathematics and Its History",
-      "year": "2010",
-      "venue": "Springer, 3rd edition",
-      "note": "Historical account of Archimedes's method and its connection to integral calculus"
     }
   ]
 }

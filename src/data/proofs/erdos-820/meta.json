@@ -74,6 +74,12 @@
       "**Iterated Logarithm Growth:** The conjectured bounds involve exp(n^{c/log log n}), a very slow growth rate.",
       "**OEIS Connection:** Sequence A263647 tracks when gcd(2^n-1, 3^n-1)=1.",
       "**Related to Problem #770:** The function h(n) requires ALL pairs up to l to be coprime, while H(n) only needs one pair."
+    ],
+    "prerequisites": [
+      "Greatest common divisor and coprimality: the Euclidean algorithm, gcd(a,b) = 1, and the factorization identity gcd(a^n - 1, b^n - 1) = a^{gcd(m,n)} - 1 for understanding when exponential expressions share common factors",
+      "Multiplicative order and Fermat's Little Theorem: the order of a modulo p, the fact that p | a^n - 1 iff ord_p(a) | n, and the role of (p-1) | n in forcing common divisors among multiple exponential expressions",
+      "Analytic number theory: estimates on the distribution of primes in arithmetic progressions, the prime number theorem, and techniques for bounding extremal functions involving iterated logarithms like exp(n^{c/log log n})",
+      "Computational number theory: algorithms for computing gcd of large numbers, OEIS sequence analysis, and systematic evaluation of number-theoretic functions for small inputs to guide conjecture formation"
     ]
   },
   "sections": [

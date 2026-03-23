@@ -96,6 +96,20 @@
         "year": "1907",
         "venue": "Wiskundige Opgaven",
         "note": "Triangle-free graphs on n vertices have at most ⌊n²/4⌋ edges; provides the naive upper bound on f(n)"
+      },
+      {
+        "authors": "N. Wormald",
+        "title": "Differential equations for random processes and random graphs",
+        "year": "1995",
+        "venue": "Annals of Applied Probability",
+        "note": "Foundational method for analyzing random graph processes via ODEs; the technique underlying BFL's proof"
+      },
+      {
+        "authors": "N. Alon, J. Spencer",
+        "title": "The Probabilistic Method",
+        "year": "2016",
+        "venue": "Wiley, 4th edition",
+        "note": "Standard reference for probabilistic combinatorics; Chapter 14 covers random graph processes"
       }
     ],
     "axiomCount": 5,
@@ -114,7 +128,10 @@
       "erdos-1155",
       "ramseys-theorem",
       "szemeredi-regularity",
-      "randomized-maxcut"
+      "randomized-maxcut",
+      "erdos-1009",
+      "erdos-1010",
+      "erdos-1104"
     ],
     "prerequisites": [
       "Filter-based asymptotics (Filter.Eventually, atTop)",
@@ -208,7 +225,7 @@
     }
   ],
   "overview": {
-    "historicalContext": "The triangle removal process — repeatedly select a triangle uniformly at random from $K_n$ and delete its edges until no triangles remain — was introduced by Erdős, Faudree, Phelps, and Schelp in the early 1980s as a model for random greedy algorithms. Paul Erdős conjectured (c. 1981) that the number of surviving edges satisfies $f(n) = \\Theta(n^{3/2})$. The first rigorous progress came from Daniel Grable (1997), who proved an upper bound of $n^{7/4+o(1)}$ using differential equation methods for random graph processes. The breakthrough by Tom Bohman, Alan Frieze, and Eyal Lubetzky (2015) established $f(n) = n^{3/2+o(1)}$ almost surely, confirming the exponent $3/2$ but with sub-polynomial rather than constant multiplicative bounds. The precise gap — whether $f(n)/n^{3/2}$ is bounded between constants or merely between $n^{\\pm\\varepsilon}$ — remains open and is one of the central problems in the theory of random graph processes. The triangle removal process is closely connected to Mantel's theorem (1907) on triangle-free graphs and to Turán-type extremal problems.",
+    "historicalContext": "The triangle removal process — repeatedly select a triangle uniformly at random from $K_n$ and delete its edges until no triangles remain — was introduced by Erdős, Faudree, Phelps, and Schelp in the early 1980s as a model for random greedy algorithms in combinatorics. Paul Erdős conjectured (c. 1981) that the number of surviving edges satisfies $f(n) = \\Theta(n^{3/2})$, a prediction rooted in the observation that the process slows down as triangles become sparse, with the critical density regime occurring near $n^{3/2}$ edges. The first rigorous progress came from Daniel Grable (1997), who proved an upper bound of $n^{7/4+o(1)}$ using the differential equation method for random graph processes pioneered by Nicholas Wormald (1995). This method tracks edge and triangle densities via a system of ODEs that approximate the discrete random process in the large-$n$ limit. The breakthrough by Tom Bohman, Alan Frieze, and Eyal Lubetzky (2015) established $f(n) = n^{3/2+o(1)}$ almost surely, confirming the exponent $3/2$ but with sub-polynomial rather than constant multiplicative bounds. Their proof refined Wormald's ODE method with delicate martingale concentration arguments to control the process through the critical regime where triangle density drops from polynomial to near-zero. The precise gap — whether $f(n)/n^{3/2}$ is bounded between constants or merely between $n^{\\pm\\varepsilon}$ — remains open and is one of the central problems in the theory of random graph processes. The process connects to classical extremal graph theory: Mantel's theorem (1907) gives the naive upper bound $f(n) \\leq n^2/4$ since the terminal graph is triangle-free, and the triangle supersaturation phenomenon (Razborov 2010, flag algebras) governs the early stages when the graph is dense.",
     "problemStatement": "OQ-01: What is the exact asymptotic behavior of the triangle removal process?\n\n**Erdős Conjecture** (#1155): $\\exists c_1, c_2 > 0$ such that $c_1 n^{3/2} \\leq f(n) \\leq c_2 n^{3/2}$ eventually, i.e., $f(n) = \\Theta(n^{3/2})$.\n\n**Known** (BFL 2015): $f(n) = n^{3/2+o(1)}$, i.e., for any $\\varepsilon > 0$: $n^{3/2-\\varepsilon} \\leq f(n) \\leq n^{3/2+\\varepsilon}$ eventually.\n\n**Gap**: The conjecture needs constant bounds $c_1 \\leq f(n)/n^{3/2} \\leq c_2$, while BFL only gives sub-polynomial bounds $n^{-\\varepsilon} \\leq f(n)/n^{3/2} \\leq n^{\\varepsilon}$.",
     "proofStrategy": "Layered analysis proceeding from foundations to structural results:\n\n1. **Triangle predicates**: Define pointwise triangle predicates and prove equivalence with Mathlib's `CliqueFree 3`\n2. **Axiomatization**: Declare $f(n)$ with basic properties and BFL bounds as axioms\n3. **BFL sandwich**: Combine bounds and prove Conjecture $\\Longrightarrow$ BFL via constant-to-sub-polynomial reduction\n4. **Decomposition**: Show $\\Theta(n^{3/2})$ is equivalent to independent $O$ and $\\Omega$ bounds\n5. **Critical exponent**: Prove $3/2$ is the exact threshold: $f(n) = O(n^\\alpha)$ for $\\alpha > 3/2$, but not for $\\alpha < 3/2$\n6. **Sufficient conditions**: Ratio convergence $f(n)/n^{3/2} \\to L > 0$ implies the conjecture with explicit constants\n7. **Hierarchy**: Establish strict weakening chain Conjecture $\\Longrightarrow$ BFL $\\Longrightarrow$ Grable\n8. **Tightness**: Characterize the conjecture as compactness of the ratio sequence",
     "keyInsights": [
@@ -217,7 +234,15 @@
       "**Ratio convergence** $f(n)/n^{3/2} \\to L > 0$ is strictly stronger than the conjecture (which only needs boundedness) but provides explicit constants $c_1 = L/2$, $c_2 = 3L/2$",
       "**Strict hierarchy** Conjecture $\\Longrightarrow$ BFL $\\Longrightarrow$ Grable: each weakening loses information about whether the multiplicative constant is fixed or grows with $n$",
       "**Mantel connection**: the naive bound $f(n) \\leq n^2/4$ from extremal graph theory is vastly improved by BFL's $n^{7/4}$, and the conjecture's $n^{3/2}$ is tighter still",
-      "**Axiomatization strategy**: The 5 axioms encode externally established results ($f(n)$ definition, BFL bounds, Mantel's theorem) while all *structural* theorems (decomposition, hierarchy, tightness) are fully proved from these axioms with 0 sorries — cleanly separating the hard analysis from the combinatorial-logical structure"
+      "**Axiomatization strategy**: The 5 axioms encode externally established results ($f(n)$ definition, BFL bounds, Mantel's theorem) while all *structural* theorems (decomposition, hierarchy, tightness) are fully proved from these axioms with 0 sorries — cleanly separating the hard analysis from the combinatorial-logical structure",
+      "**ODE-to-asymptotics pipeline**: BFL's proof tracks edge density $e(t)$ and triangle density $t(t)$ as coupled ODEs $e' = -3t/\\binom{e}{3}$, valid while $e \\gg n^{3/2}$. The ODE breaks down precisely at $e \\approx n^{3/2}$, producing the $n^{3/2+o(1)}$ bound. Extracting constants from this breakdown region is the key to resolving Erdős's conjecture"
+    ],
+    "prerequisites": [
+      "Filter-based asymptotics (`Filter.Eventually`, `atTop`)",
+      "Real powers (`Real.rpow`) and their monotonicity properties",
+      "Simple graph theory (`SimpleGraph`, `CliqueFree`)",
+      "Topological convergence (`Filter.Tendsto`, `nhds`)",
+      "Asymptotic notation ($\\Theta$, $O$, $\\Omega$)"
     ]
   },
   "crossReferences": [
@@ -240,6 +265,21 @@
       "targetId": "randomized-maxcut",
       "relationship": "thematic",
       "description": "Both formalize random graph algorithms with asymptotic performance guarantees. The MaxCut randomization achieves a 1/2-approximation; the triangle removal process removes edges until triangle-freeness"
+    },
+    {
+      "targetId": "erdos-1009",
+      "relationship": "related",
+      "description": "Edge-disjoint triangles beyond Turán: both problems concern triangle structure in dense graphs. Erdős #1009 asks how many edge-disjoint triangles exist beyond the Turán threshold, while #1155 asks how many edges survive random triangle removal — dual perspectives on triangle packing and covering"
+    },
+    {
+      "targetId": "erdos-1010",
+      "relationship": "related",
+      "description": "Triangle supersaturation counts triangles in graphs with more than Turán-many edges. The triangle removal process starts from the complete graph (maximum supersaturation) and greedily reduces triangles to zero — the edge count at termination is governed by the rate of triangle depletion, connecting supersaturation bounds to the removal process dynamics"
+    },
+    {
+      "targetId": "erdos-1104",
+      "relationship": "related",
+      "description": "Maximum chromatic number of triangle-free graphs: the terminal graph of the triangle removal process is triangle-free, so its chromatic number is bounded by the Ramsey-type results formalized in #1104. The chromatic structure of the terminal graph may constrain the edge count f(n)"
     }
   ],
   "leanFile": {

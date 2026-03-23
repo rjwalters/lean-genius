@@ -12,6 +12,18 @@
     "prerequisites": ["basic Lean 4 syntax", "Mathlib library structure"]
   },
   {
+    "id": "docstring",
+    "proofId": "erdos-1065",
+    "range": { "startLine": 6, "endLine": 23 },
+    "type": "context",
+    "title": "Problem Statement and Historical Context",
+    "content": "Module docstring describing Erdős Problem #1065 (Guy's B46): are there infinitely many primes $p$ with $p - 1 = 2^k q$ ($q$ prime)? Lists known examples, connections to safe primes and Artin's conjecture, and the more general $2^k 3^l q + 1$ variant. References OEIS A074781 (safe primes) and A339465.",
+    "mathContext": "The problem asks about the density of primes whose predecessor $p-1$ has restricted factorization. Connected to Hardy-Littlewood Conjecture F (1923) on the density of safe primes: $\\pi_{\\text{safe}}(x) \\sim 2C_2 x/(\\log x)^2$.",
+    "significance": "context",
+    "relatedConcepts": ["guy-b46", "safe-primes", "OEIS-sequences"],
+    "prerequisites": ["prime-factorization", "smooth-numbers"]
+  },
+  {
     "id": "two-time-prime",
     "proofId": "erdos-1065",
     "range": { "startLine": 27, "endLine": 28 },

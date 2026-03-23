@@ -71,6 +71,12 @@
       "**Sieve Methods vs PNT:** Erdős's 1950 proof for powers of two used sieve methods (exploiting the multiplicative structure of $2^k$). Chen-Ding's proof works without any arithmetic structure in $A$, relying purely on the abundance of primes",
       "**Limsup vs Limit:** The result only gives $\\limsup f(n) = \\infty$, not $f(n) \\to \\infty$. Indeed, $f(n)$ can be 0 for many values of $n$ (e.g., when $n$ is small relative to elements of $A$). The unboundedness manifests along a subsequence",
       "**Goldbach Generalization:** The framework $n = p + a$ with $a \\in A$ unifies many classical problems: Goldbach ($A = $ primes), Waring-Goldbach ($A = k$th powers), and Romanov's theorem ($A = \\{2^k\\}$)"
+    ],
+    "prerequisites": [
+      "Additive number theory: representing integers as $p + a$ (prime plus set element)",
+      "Prime Number Theorem and prime distribution: density of primes near $n$ is $\\sim 1/\\log n$",
+      "Sieve methods (Erdős 1950) and the circle method for binary additive problems",
+      "Filter-based asymptotics in Lean 4 (for the limsup formulation)"
     ]
   },
   "sections": [
@@ -155,10 +161,22 @@
       "targetId": "infinitude-primes",
       "relationship": "foundational",
       "description": "PNT and prime distribution underpin the representation counting; the infinitude of primes ensures f_A(n) is well-defined"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "uses",
+      "description": "The PNT ($\\pi(n) \\sim n/\\log n$) is the core tool: it ensures enough primes below $n$ to provide many representations $n = p + a$. Chen-Ding's proof uses PNT directly rather than sieve methods"
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Both concern prime distribution guarantees. Bertrand provides at least one prime in $(n, 2n)$; Problem #237 uses the full density of primes to guarantee unbounded representation counts"
     }
   ],
   "relatedProofs": [
-    "infinitude-primes"
+    "infinitude-primes",
+    "prime-number-theorem",
+    "bertrands-postulate"
   ],
   "leanFile": {
     "imports": [
