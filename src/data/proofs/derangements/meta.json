@@ -86,14 +86,16 @@
       "title": "Core Definition",
       "startLine": 55,
       "endLine": 75,
-      "summary": "Formal characterization: $f \\in \\text{derangements}(\\alpha) \\iff \\forall x, f(x) \\neq x$, equivalently `fixedPoints f = ∅`. Connects to `Equiv.Perm` and `Function.fixedPoints`."
+      "summary": "Formal characterization: $f \\in \\text{derangements}(\\alpha) \\iff \\forall x, f(x) \\neq x$, equivalently `fixedPoints f = ∅`. Connects to `Equiv.Perm` and `Function.fixedPoints`.",
+      "mathContext": "A derangement is a permutation $\\sigma \\in S_n$ with no fixed points: $\\sigma(i) \\neq i$ for all $i$. In Lean: `f ∈ derangements α ↔ ∀ x, f x ≠ x`."
     },
     {
       "id": "recurrence",
       "title": "Base Cases and Recurrence",
       "startLine": 77,
       "endLine": 99,
-      "summary": "$D_0 = 1$, $D_1 = 0$, and the recurrence $D_{n+2} = (n+1)(D_n + D_{n+1})$ via `numDerangements_add_two`. Combinatorial proof by case analysis on element 1's image."
+      "summary": "$D_0 = 1$, $D_1 = 0$, and the recurrence $D_{n+2} = (n+1)(D_n + D_{n+1})$ via `numDerangements_add_two`. Combinatorial proof by case analysis on element 1's image.",
+      "mathContext": "$D_0 = 1$ (empty permutation), $D_1 = 0$ (identity is the only permutation of 1 element). Recurrence: $D_{n+2} = (n+1)(D_{n+1} + D_n)$. Proof: element 1 maps to some $j \\neq 1$ ($n+1$ choices); if $j$ maps back to 1, the rest is a derangement of $n$ elements ($D_n$); otherwise, it's a derangement of $n+1$ elements with 1 replaced by $j$ ($D_{n+1}$)."
     },
     {
       "id": "closed-form",
@@ -121,7 +123,8 @@
       "title": "Inclusion-Exclusion Derivation",
       "startLine": 203,
       "endLine": 220,
-      "summary": "Derivation of $D_n = n! \\sum (-1)^k/k!$ via inclusion-exclusion on fixed-point sets $A_i$, using $|A_{i_1} \\cap \\cdots \\cap A_{i_k}| = (n-k)!$."
+      "summary": "Derivation of $D_n = n! \\sum (-1)^k/k!$ via inclusion-exclusion on fixed-point sets $A_i$, using $|A_{i_1} \\cap \\cdots \\cap A_{i_k}| = (n-k)!$.",
+      "mathContext": "Let $A_i = \\{\\sigma \\in S_n : \\sigma(i) = i\\}$. Then $D_n = |S_n \\setminus \\bigcup A_i| = \\sum_{k=0}^n (-1)^k \\binom{n}{k}(n-k)! = n! \\sum_{k=0}^n \\frac{(-1)^k}{k!}$, using $|A_{i_1} \\cap \\cdots \\cap A_{i_k}| = (n-k)!$ (permutations fixing $k$ specified points)."
     },
     {
       "id": "verification",
