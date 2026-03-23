@@ -52,7 +52,7 @@
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 93,
     "axiomCount": 0,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and no structure-encoded assumptions. All 27 theorems are proved using Mathlib (Fintype.card_embedding_eq, Nat.descFactorial, Fintype.card_fun) and native_decide for large integer comparisons (up to 146-digit numbers). No custom axioms or definition sorries.",
     "relatedProblems": [
       {
         "id": "ballot-problem",
@@ -260,8 +260,11 @@
     "opens": [],
     "namespace": "BirthdayProblem",
     "lineCount": 402,
+    "structureCount": 0,
     "axiomCount": 0,
     "theoremCount": 27,
+    "lemmaCount": 0,
+    "defCount": 0,
     "definitionCount": 0
   },
   "references": [

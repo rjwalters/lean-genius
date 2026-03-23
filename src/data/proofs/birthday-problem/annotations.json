@@ -15,7 +15,11 @@
       "combinatorics",
       "complement counting"
     ],
-    "mathContext": "See annotation content for formal details of the birthday paradox"
+    "mathContext": "$P(n) = 1 - \\prod_{k=0}^{n-1}\\left(1 - \\frac{k}{365}\\right)$. For $n = 23$: $P(23) \\approx 0.5073 > 1/2$. The key insight: $\\binom{23}{2} = 253$ pairs, each with probability $1/365$ of matching.",
+    "prerequisites": [
+      "complement counting",
+      "falling factorial"
+    ]
   },
   {
     "id": "ann-formula",
@@ -102,7 +106,12 @@
       "hash functions",
       "collision resistance"
     ],
-    "mathContext": "See annotation content for formal details of the birthday attack"
+    "mathContext": "For an $n$-bit hash, a birthday attack finds collisions in $O(2^{n/2})$ trials. This is why a 256-bit hash (SHA-256) provides only 128-bit collision resistance: $\\sqrt{2^{256}} = 2^{128}$ trials suffice for a collision.",
+    "prerequisites": [
+      "hash functions",
+      "collision resistance",
+      "birthday bound"
+    ]
   },
   {
     "id": "ann-two-people",
@@ -119,6 +128,54 @@
     "relatedConcepts": [
       "base case",
       "complement probability"
+    ]
+  },
+  {
+    "id": "ann-expected-pairs",
+    "proofId": "birthday-problem",
+    "range": {
+      "startLine": 304,
+      "endLine": 356
+    },
+    "type": "insight",
+    "title": "Expected Number of Shared Birthday Pairs",
+    "content": "By **linearity of expectation**, the expected number of birthday-sharing pairs among $n$ people is $\\mathbb{E}[\\text{# matching pairs}] = \\binom{n}{2} \\cdot \\frac{1}{365}$.\n\nThe proof defines an indicator variable $I_{ij}$ for each pair $(i,j)$ with $\\mathbb{E}[I_{ij}] = 1/365$, then sums over all $\\binom{n}{2}$ pairs. Linearity of expectation requires no independence assumption — it works even though the events 'person $i$ and $j$ share a birthday' are not independent.\n\nThe 28-person threshold: $\\binom{28}{2}/365 = 378/365 > 1$, so with 28 people we expect more than one matching pair on average. This is a weaker result than the 23-person collision probability but follows from a simpler argument.",
+    "mathContext": "$\\mathbb{E}[\\text{# pairs}] = \\binom{n}{2}/365 = n(n-1)/730$. For $n = 23$: $\\binom{23}{2}/365 = 253/365 \\approx 0.693$ (less than 1 expected pair). For $n = 28$: $378/365 > 1$. Linearity of expectation: $\\mathbb{E}[\\sum I_{ij}] = \\sum \\mathbb{E}[I_{ij}]$, no independence needed.",
+    "significance": "key",
+    "prerequisites": [
+      "linearity of expectation",
+      "indicator random variables",
+      "Nat.choose"
+    ],
+    "relatedConcepts": [
+      "linearity of expectation",
+      "indicator variables",
+      "probabilistic method",
+      "expected value vs probability"
+    ]
+  },
+  {
+    "id": "ann-99-threshold",
+    "proofId": "birthday-problem",
+    "range": {
+      "startLine": 357,
+      "endLine": 402
+    },
+    "type": "theorem",
+    "title": "The 99% Threshold at 57 People",
+    "content": "With 57 people, the probability of a shared birthday exceeds 99%. The proof provides a **tight bound**: $P(56) < 0.99 < P(57)$, so 57 is the minimum number of people needed for 99% confidence.\n\nBoth inequalities are verified by `native_decide` on integers exceeding 140 digits — Lean's kernel evaluates the exact rational arithmetic at compile time, providing full machine-checked certainty without floating-point approximation.\n\nThe rapid transition from 50% (23 people) to 99% (57 people) illustrates the exponential decay of the complement probability: adding each person reduces $P(\\text{all distinct})$ by a factor of approximately $(1 - n/365)$.",
+    "mathContext": "$P(57) = 1 - \\frac{365!}{365^{57} \\cdot 308!} > 0.99$, verified exactly via $\\text{descFactorial}(365,57) \\cdot 100 < 365^{57}$. The Poisson approximation gives $P(n) \\approx 1 - e^{-n^2/730}$, predicting the 99% threshold at $n \\approx \\sqrt{730 \\ln 100} \\approx 57.0$.",
+    "significance": "key",
+    "prerequisites": [
+      "native_decide tactic",
+      "descFactorial",
+      "exact integer arithmetic"
+    ],
+    "relatedConcepts": [
+      "confidence levels",
+      "Poisson approximation",
+      "exponential decay",
+      "native_decide"
     ]
   }
 ]
