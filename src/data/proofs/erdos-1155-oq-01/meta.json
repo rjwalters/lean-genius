@@ -9,7 +9,6 @@
     "date": "2026",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1155OQ01.lean",
-    "leanFile": "proofs/Proofs/Erdos1155OQ01.lean",
     "dateAdded": "2026-03-22",
     "tags": [
       "erdos",
@@ -67,64 +66,6 @@
       "BFL-to-Grable implication hierarchy",
       "Conjecture-to-BFL hierarchy (strict weakening chain)",
       "Ratio tightness and bounded ratio characterization"
-    ],
-    "references": [
-      {
-        "authors": "T. Bohman, A. Frieze, E. Lubetzky",
-        "title": "Random triangle removal",
-        "year": "2015",
-        "venue": "Advances in Mathematics",
-        "note": "Proved f(n) = n^{3/2+o(1)} a.s."
-      },
-      {
-        "authors": "D. Grable",
-        "title": "On random greedy triangle packing",
-        "year": "1997",
-        "venue": "Electronic Journal of Combinatorics",
-        "note": "Earlier upper bound of n^{7/4+ε}"
-      },
-      {
-        "authors": "P. Erdős",
-        "title": "Problems and results in combinatorial analysis and graph theory",
-        "year": "1981",
-        "venue": "Discrete Mathematics",
-        "note": "Original conjecture that f(n) = Θ(n^{3/2}) for the triangle removal process"
-      },
-      {
-        "authors": "W. Mantel",
-        "title": "Problem 28",
-        "year": "1907",
-        "venue": "Wiskundige Opgaven",
-        "note": "Triangle-free graphs on n vertices have at most ⌊n²/4⌋ edges; provides the naive upper bound on f(n)"
-      },
-      {
-        "authors": "N. Wormald",
-        "title": "Differential equations for random processes and random graphs",
-        "year": "1995",
-        "venue": "Annals of Applied Probability",
-        "note": "Foundational method for analyzing random graph processes via ODEs; the technique underlying BFL's proof"
-      },
-      {
-        "authors": "N. Alon, J. Spencer",
-        "title": "The Probabilistic Method",
-        "year": "2016",
-        "venue": "Wiley, 4th edition",
-        "note": "Standard reference for probabilistic combinatorics; Chapter 14 covers random graph processes"
-      },
-      {
-        "authors": "A. Razborov",
-        "title": "On the minimal density of triangles in graphs",
-        "year": "2010",
-        "venue": "Combinatorics, Probability and Computing, vol. 19, pp. 201–214",
-        "note": "Flag algebra proof of the exact triangle density threshold in dense graphs; the supersaturation phenomenon governs the early stages of the triangle removal process when the graph is dense"
-      },
-      {
-        "authors": "P. Turán",
-        "title": "Eine Extremalaufgabe aus der Graphentheorie",
-        "year": "1941",
-        "venue": "Matematikai és Fizikai Lapok, vol. 48, pp. 436–452",
-        "note": "Foundation of extremal graph theory: the maximum number of edges in a K_{r+1}-free graph on n vertices is achieved by the complete r-partite graph. Mantel's 1907 result is the r=2 case. The terminal graph of the triangle removal process is K_3-free, connecting to the Turán bound"
-      }
     ],
     "axiomCount": 5,
     "assumptions": "5 axiom declarations: triangleRemovalEdges (the triangle removal function itself), triangleRemovalEdges_le_complete (f(n) ≤ n(n-1)/2), bfl_upper_bound (BFL 2015 upper bound), bfl_lower_bound (BFL 2015 lower bound), triangleRemoval_mantel_bound (Mantel's theorem applied to terminal graph). All encode established results or definitions from combinatorics.",
@@ -254,13 +195,6 @@
       "**Mantel connection**: the naive bound $f(n) \\leq n^2/4$ from extremal graph theory is vastly improved by BFL's $n^{7/4}$, and the conjecture's $n^{3/2}$ is tighter still",
       "**Axiomatization strategy**: The 5 axioms encode externally established results ($f(n)$ definition, BFL bounds, Mantel's theorem) while all *structural* theorems (decomposition, hierarchy, tightness) are fully proved from these axioms with 0 sorries — cleanly separating the hard analysis from the combinatorial-logical structure",
       "**ODE-to-asymptotics pipeline**: BFL's proof tracks edge density $e(t)$ and triangle density $t(t)$ as coupled ODEs $e' = -3t/\\binom{e}{3}$, valid while $e \\gg n^{3/2}$. The ODE breaks down precisely at $e \\approx n^{3/2}$, producing the $n^{3/2+o(1)}$ bound. Extracting constants from this breakdown region is the key to resolving Erdős's conjecture"
-    ],
-    "prerequisites": [
-      "Filter-based asymptotics (`Filter.Eventually`, `atTop`)",
-      "Real powers (`Real.rpow`) and their monotonicity properties",
-      "Simple graph theory (`SimpleGraph`, `CliqueFree`)",
-      "Topological convergence (`Filter.Tendsto`, `nhds`)",
-      "Asymptotic notation ($\\Theta$, $O$, $\\Omega$)"
     ]
   },
   "crossReferences": [
@@ -318,6 +252,64 @@
       "targetId": "randomized-maxcut-oq-01",
       "relationship": "thematic",
       "description": "Both formalize extensions of randomized graph algorithms: this entry extends the triangle removal process analysis with exact asymptotic gap characterization, while MaxCut OQ-01 extends the randomized cut analysis with derandomization and approximation guarantees"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Bohman, Tom; Frieze, Alan; Lubetzky, Eyal",
+      "title": "Random triangle removal",
+      "year": "2015",
+      "venue": "Advances in Mathematics, vol. 280, pp. 379–438",
+      "note": "Proved f(n) = n^{3/2+o(1)} almost surely, confirming the exponent 3/2 conjectured by Erdős but with sub-polynomial rather than constant multiplicative bounds"
+    },
+    {
+      "authors": "Grable, Daniel",
+      "title": "On random greedy triangle packing",
+      "year": "1997",
+      "venue": "Electronic Journal of Combinatorics, vol. 4, R11",
+      "note": "Earlier upper bound of n^{7/4+ε} for the triangle removal process, superseded by the BFL result"
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "Problems and results in combinatorial analysis and graph theory",
+      "year": "1981",
+      "venue": "Discrete Mathematics, vol. 36, pp. 69–73",
+      "note": "Original conjecture that f(n) = Θ(n^{3/2}) for the triangle removal process"
+    },
+    {
+      "authors": "Mantel, Willem",
+      "title": "Problem 28",
+      "year": "1907",
+      "venue": "Wiskundige Opgaven, vol. 10, pp. 60–61",
+      "note": "Triangle-free graphs on n vertices have at most ⌊n²/4⌋ edges; provides the naive upper bound on f(n)"
+    },
+    {
+      "authors": "Wormald, Nicholas",
+      "title": "Differential equations for random processes and random graphs",
+      "year": "1995",
+      "venue": "Annals of Applied Probability, vol. 5, pp. 1217–1235",
+      "note": "Foundational method for analyzing random graph processes via ODEs; the technique underlying BFL's proof"
+    },
+    {
+      "authors": "Alon, Noga; Spencer, Joel H.",
+      "title": "The Probabilistic Method",
+      "year": "2016",
+      "venue": "Wiley, 4th edition",
+      "note": "Standard reference for probabilistic combinatorics; Chapter 14 covers random graph processes"
+    },
+    {
+      "authors": "Razborov, Alexander",
+      "title": "On the minimal density of triangles in graphs",
+      "year": "2010",
+      "venue": "Combinatorics, Probability and Computing, vol. 19, pp. 201–214",
+      "note": "Flag algebra proof of the exact triangle density threshold in dense graphs; the supersaturation phenomenon governs the early stages of the triangle removal process"
+    },
+    {
+      "authors": "Turán, Pál",
+      "title": "Eine Extremalaufgabe aus der Graphentheorie",
+      "year": "1941",
+      "venue": "Matematikai és Fizikai Lapok, vol. 48, pp. 436–452",
+      "note": "Foundation of extremal graph theory; Mantel's 1907 result is the r=2 case. The terminal triangle-free graph connects to the Turán bound"
     }
   ],
   "leanFile": {
