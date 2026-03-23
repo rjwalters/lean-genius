@@ -242,6 +242,11 @@
       "targetId": "halting-problem",
       "relationship": "thematic",
       "description": "Both are non-constructive existence/impossibility results: Brouwer proves a fixed point exists without exhibiting it, while the halting problem proves no general decision procedure exists. Both involve self-referential constructions — the retraction construction uses the hypothetical fixed-point-free map to create a paradox, paralleling Turing's diagonalization"
+    },
+    {
+      "targetId": "konigsberg",
+      "relationship": "thematic",
+      "description": "Both are pioneering results in topology: Euler's solution of the Königsberg bridge problem (1736) launched graph theory and combinatorial topology, while Brouwer's fixed point theorem (1911) launched algebraic topology. The progression from Euler's discrete topological insight to Brouwer's continuous one mirrors the development of topology from combinatorial to algebraic"
     }
   ],
   "relatedProofs": [
@@ -255,6 +260,7 @@
     "brouwer-fixed-point-oq-02",
     "pythagorean-theorem",
     "area-of-circle",
-    "halting-problem"
+    "halting-problem",
+    "konigsberg"
   ]
 }
