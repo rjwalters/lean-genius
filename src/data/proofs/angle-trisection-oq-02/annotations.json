@@ -19,7 +19,9 @@
     ],
     "prerequisites": [
       "Lean 4 module system",
-      "Galois theory fundamentals"
+      "Galois theory fundamentals",
+      "compass-and-straightedge geometry",
+      "field extension degree theory"
     ]
   },
   {
@@ -140,7 +142,7 @@
     },
     "type": "insight",
     "title": "Constructible Examples: √2 (ℤ/2ℤ, order 2) and 2^(1/4) (D₄, order 8)",
-    "content": "`x_sq_sub_2_gal_is_2group` proves Gal(x²-2/ℚ) is a 2-group via `IsPGroup.of_card` with `Nat.card = 2^1`, using `simp [Nat.card_eq_fintype_card, x_sq_sub_2_gal_order]` to convert the `Fintype.card = 2` axiom. Similarly, `x_4th_sub_2_gal_is_2group` proves order 8 = 2³. Both use the same `IsPGroup.of_card` pattern with explicit `show Nat.card ... = 2^_` goals. Combined with `wantzel_galois_characterization`, these confirm √2 and 2^(1/4) are constructible.",
+    "content": "`x_sq_sub_2_gal_is_2group` proves Gal(x²-2/ℚ) is a 2-group via `IsPGroup.of_card` with `Nat.card = 2^1`, using `simp [Nat.card_eq_fintype_card, x_sq_sub_2_gal_order]` to convert the `Fintype.card = 2` axiom. Similarly, `x_4th_sub_2_gal_is_2group` proves order 8 = 2³. Both use the same `IsPGroup.of_card` pattern with explicit `show Nat.card ... = 2^_` goals. Combined with `wantzel_galois_characterization`, these confirm √2 and 2^(1/4) are constructible.\n\nGeometrically: √2 is constructible because it is the diagonal of a unit square (one compass-straightedge step from the unit length). 2^(1/4) = √(√2) requires two successive square root extractions, each corresponding to a degree-2 field extension — exactly matching the D₄ Galois group's composition series with three ℤ/2ℤ quotients.",
     "mathContext": "- $\\text{Gal}(x^2 - 2/\\mathbb{Q}) \\cong \\mathbb{Z}/2\\mathbb{Z}$ (order $2 = 2^1$): only automorphism is $\\sqrt{2} \\mapsto -\\sqrt{2}$. - $\\text{Gal}(x^4 - 2/\\mathbb{Q}) \\cong D_4$ (dihedral group, order $8 = 2^3$): the four roots are $\\zeta^k \\sqrt[4]{2}$ for $\\zeta = i$ and the Galois group acts by permuting them. Both groups are 2-groups ($|G| = 2^1$ and $|G| = 2^3$). The pattern `IsPGroup.of_card (show Nat.card ... = 2^k from by simp ...)` is the idiomatic Lean 4 way to establish 2-group membership from a cardinality axiom.",
     "significance": "supporting",
     "prerequisites": [
@@ -180,7 +182,9 @@
       "Galois 2-group criterion (OQ-02)",
       "natDegree divides |Gal|",
       "necessary vs sufficient",
-      "AngleTrisectionOQ01.lean"
+      "AngleTrisectionOQ01.lean",
+      "tower law",
+      "SplittingField"
     ]
   },
   {
@@ -205,7 +209,9 @@
       "contrapositive proof",
       "angle trisection impossibility",
       "cube doubling impossibility",
-      "non-constructibility toolkit"
+      "non-constructibility toolkit",
+      "circle squaring impossibility",
+      "classical construction problems"
     ]
   },
   {
@@ -223,8 +229,13 @@
     "relatedConcepts": [
       "proof verification",
       "axiom minimization",
-      "Galois correspondence"
+      "Galois correspondence",
+      "Lean 4 #check command",
+      "axiom audit"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 verification commands",
+      "axiom tracking methodology"
+    ]
   }
 ]
