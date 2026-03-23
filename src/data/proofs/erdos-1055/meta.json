@@ -95,6 +95,97 @@
       "Does the analogous $p - 1$ classification behave differently? The $p - 1$ variant connects to Cunningham chains and may have different growth properties."
     ]
   },
+  "crossReferences": [
+    {
+      "target": "erdos-1065",
+      "relationship": "companion",
+      "description": "Erdős #1065 asks whether there are infinitely many primes of the form 2^k · q + 1, directly related to class-1 primes in the #1055 classification (those with p+1 being 2-smooth times a prime). Both problems study primes whose successor has constrained prime factors."
+    },
+    {
+      "target": "erdos-1146",
+      "relationship": "companion",
+      "description": "Erdős #1146 studies whether the 3-smooth numbers {2^m · 3^n} form an essential component, exactly the set adjacent to class-1 primes in #1055. The counting function of 3-smooth numbers up to N (~C·(log N)²) directly governs the density of class-1 primes."
+    },
+    {
+      "target": "erdos-1095",
+      "relationship": "companion",
+      "description": "Erdős #1095 involves the Erdős–Selfridge function and smooth prime factors of binomial coefficients. Both #1055 and #1095 stem from collaborative Erdős–Selfridge work on smooth numbers and prime factorization structure."
+    },
+    {
+      "target": "bertrands-postulate",
+      "relationship": "prerequisite",
+      "description": "Bertrand's Postulate guarantees at least one prime between n and 2n, providing the density lower bound used to argue that each class in the #1055 classification is non-empty. The infinitude question for each class requires understanding prime gaps."
+    },
+    {
+      "target": "infinitude-primes",
+      "relationship": "prerequisite",
+      "description": "The Euclid infinitude-of-primes result is the baseline: #1055 asks whether each subclass (classified by factorization depth of p+1) is itself infinite. The class-1 case follows from Størmer's theorem on smooth numbers."
+    },
+    {
+      "target": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The Prime Number Theorem governs the overall density of primes; the #1055 density result (class-r primes have density n^{o(1)}) is proved by combining PNT with the counting function of smooth numbers."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "target": "erdos-1065",
+      "strength": "strong",
+      "description": "Primes of the form 2^k · q + 1 are a special case of class-1 and class-2 primes in the Erdős–Selfridge classification. Resolving #1065 would directly imply infinitude of class-2 primes for specific factorization patterns."
+    },
+    {
+      "target": "erdos-1146",
+      "strength": "strong",
+      "description": "The 3-smooth numbers {2^m · 3^n} are precisely the numbers whose prime factors are at most 3. Class-1 primes p are those for which p+1 is 3-smooth, so the density and structure of this set is foundational to #1055."
+    },
+    {
+      "target": "bertrands-postulate",
+      "strength": "moderate",
+      "description": "Bertrand's postulate provides prime gap bounds used to establish existence of primes with specific successor factorizations, supporting the known computations of p_1 through p_5 in the classification."
+    },
+    {
+      "target": "prime-number-theorem",
+      "strength": "moderate",
+      "description": "The asymptotic n^{o(1)} density bound for class-r primes uses PNT combined with smooth number estimates; the PNT formalization provides infrastructure for this sparsity argument."
+    },
+    {
+      "target": "dirichlets-theorem",
+      "strength": "moderate",
+      "description": "Dirichlet's theorem on primes in arithmetic progressions is invoked heuristically to argue each class should contain infinitely many primes, since the factorization constraint on p+1 restricts p to certain residue classes."
+    }
+  ],
+  "references": [
+    {
+      "key": "ErSe75",
+      "citation": "Erdős, P. and Selfridge, J.L. (1975). 'The product of consecutive integers is never a power.' Illinois Journal of Mathematics, 19(2), 292–301.",
+      "type": "paper",
+      "note": "Foundational Erdős–Selfridge collaboration; their prime classification work grew from this joint research program on prime factorization."
+    },
+    {
+      "key": "Guy04-A18",
+      "citation": "Guy, R.K. (2004). Unsolved Problems in Number Theory, 3rd ed. Springer. Problem A18: 'Primes and Smooth Numbers'.",
+      "type": "book",
+      "note": "Section A18 discusses the Erdős–Selfridge prime classification and states the open problems about infinitude and growth of p_r."
+    },
+    {
+      "key": "Sto97",
+      "citation": "Størmer, C. (1897). 'Quelques théorèmes sur l'équation de Pell x² − Dy² = ±1 et leurs applications.' Videnskabs-Selskabets Skrifter I, Christiania.",
+      "type": "paper",
+      "note": "Størmer's theorem implies that there are only finitely many consecutive smooth numbers, establishing the distribution of class-1 primes (those with p+1 being 3-smooth)."
+    },
+    {
+      "key": "HiTe88",
+      "citation": "Hildebrand, A. and Tenenbaum, G. (1993). 'Integers without large prime factors.' Journal de Théorie des Nombres de Bordeaux, 5(2), 411–484.",
+      "type": "paper",
+      "note": "Provides the asymptotic count Ψ(x, y) of y-smooth numbers up to x, directly governing the density of class-1 primes (p+1 is 3-smooth) and the n^{o(1)} sparsity of each class."
+    },
+    {
+      "key": "OEIS-A005113",
+      "citation": "OEIS Foundation. Sequence A005113: Least prime p in class r (Erdős–Selfridge classification). https://oeis.org/A005113.",
+      "type": "reference",
+      "note": "Records p_1=2, p_2=13, p_3=37, p_4=73, p_5=1021 and documents the chain structure used in this formalization."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Prime.Basic",

@@ -174,6 +174,86 @@
       "How does the min projection measure depend on the degree?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1042",
+      "relationship": "sibling",
+      "description": "Both problems study the geometry of polynomial lemniscates {z : |f(z)| < 1}; #1042 asks how many connected components such a level set can have, while #1043 asks how wide (in projection) those components are."
+    },
+    {
+      "targetId": "erdos-1044",
+      "relationship": "sibling",
+      "description": "Companion problem on boundary length of polynomial level sets; together #1043 (projection measure) and #1044 (boundary arc length) probe complementary geometric measurements of the same lemniscate family."
+    },
+    {
+      "targetId": "erdos-1040",
+      "relationship": "related",
+      "description": "Asks whether the infimum of sublevel set measures is determined by transfinite diameter alone; shares the potential-theoretic backdrop of capacity-1 lemniscates that underlies the 3.3 upper bound in #1043."
+    },
+    {
+      "targetId": "erdos-1046",
+      "relationship": "related",
+      "description": "Pommerenke's 1959 disc-containment theorem (if {|f(z)| < 1} is connected it fits in a disc of radius 2) is used in the proof of the 3.3 upper bound in #1043 and cites the same Pommerenke 1959 paper."
+    },
+    {
+      "targetId": "erdos-509",
+      "relationship": "related",
+      "description": "Asks whether {z : |f(z)| ≤ 1} can be covered by discs of total radius ≤ 2 (Cartan's lemma direction); the covering and projection perspectives on lemniscate 'spread' are closely dual to the EHP conjecture in #1043."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "targetId": "erdos-1042",
+      "description": "Connected Components of Polynomial Lemniscates — direct sibling in the EHP series on lemniscate geometry"
+    },
+    {
+      "targetId": "erdos-1044",
+      "description": "Boundary Length of Polynomial Level Sets — sibling problem measuring arc length instead of projection measure"
+    },
+    {
+      "targetId": "erdos-1040",
+      "description": "Transfinite Diameter and Sublevel Set Measure — related potential-theoretic framing of the same lemniscate family"
+    },
+    {
+      "targetId": "erdos-1046",
+      "description": "Lemniscate Containment in a Disc — Pommerenke's disc bound, key tool in the 3.3 upper-bound argument"
+    },
+    {
+      "targetId": "erdos-509",
+      "description": "Covering Polynomial Sublevel Sets with Discs — complementary covering approach to measuring lemniscate spread"
+    }
+  ],
+  "references": [
+    {
+      "key": "EHP1958",
+      "citation": "Erdős, P., Herzog, F., and Piranian, G. (1958). Metric properties of polynomials. J. Analyse Math. 6, 125–148.",
+      "type": "paper",
+      "doi": "10.1007/BF02790232"
+    },
+    {
+      "key": "Pommerenke1959",
+      "citation": "Pommerenke, Ch. (1959). On some problems by Erdős, Herzog and Piranian. Michigan Math. J. 6(3), 221–225.",
+      "type": "paper",
+      "doi": "10.1307/mmj/1028998225"
+    },
+    {
+      "key": "Pommerenke1961",
+      "citation": "Pommerenke, Ch. (1961). Über die analytische Kapazität. Arch. Math. 11, 270–277.",
+      "type": "paper",
+      "doi": "10.1007/BF01236942"
+    },
+    {
+      "key": "Pommerenke1965",
+      "citation": "Pommerenke, Ch. (1965). On the derivative of a polynomial. Michigan Math. J. 12, 57–70.",
+      "type": "paper",
+      "doi": "10.1307/mmj/1028999248"
+    },
+    {
+      "key": "Tsuji1959",
+      "citation": "Tsuji, M. (1959). Potential Theory in Modern Function Theory. Maruzen, Tokyo.",
+      "type": "book"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.Complex.Polynomial.Basic",
