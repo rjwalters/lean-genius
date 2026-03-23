@@ -35,12 +35,12 @@
     "builtItems": [
       "Fixed apFree_singleton proof, Complex.abs -> norm, added apFree_subset, removed incorrect apFree_pair",
       "Build now succeeds: 0 axioms, 3 sorries",
-      "Proved fourierCoeff_norm_le: triangle inequality with |exp(iθ)|=1 via push_cast+ring",
-      "Proved roth_density_bound: iterate density_iteration, choose K>100/δ², density>1 contradicts card_le_nat",
-      "Proved psi_add: ψ(a+b) = ψ(a)·ψ(b) via val_add + exp periodicity (same pattern as exp_val_mul_eq)",
-      "Proved psi_zero: ψ(0) = 1",
-      "Proved psi_ne_one: ψ(c) ≠ 1 when c ≠ 0, via Complex.exp_eq_one_iff + integer squeeze on val(c)",
-      "Proved char_orthogonality: Σ ψ(r·c) = N·δ(c=0) via shift argument (r↦r+1 bijection on ZMod N)"
+      "Proved fourierCoeff_norm_le: triangle inequality with |exp(i\u03b8)|=1 via push_cast+ring",
+      "Proved roth_density_bound: iterate density_iteration, choose K>100/\u03b4\u00b2, density>1 contradicts card_le_nat",
+      "Proved psi_add: \u03c8(a+b) = \u03c8(a)\u00b7\u03c8(b) via val_add + exp periodicity (same pattern as exp_val_mul_eq)",
+      "Proved psi_zero: \u03c8(0) = 1",
+      "Proved psi_ne_one: \u03c8(c) \u2260 1 when c \u2260 0, via Complex.exp_eq_one_iff + integer squeeze on val(c)",
+      "Proved char_orthogonality: \u03a3 \u03c8(r\u00b7c) = N\u00b7\u03b4(c=0) via shift argument (r\u21a6r+1 bijection on ZMod N)"
     ],
     "insights": [
       "RothTheorem.lean had 3 build errors: deprecated Finset.not_mem_empty, broken apFree_singleton, non-existent Complex.abs",
@@ -48,19 +48,19 @@
       "Complex.abs renamed in Mathlib v4.26.0 - use norm instead",
       "roth_density_bound could be proved from density_increment_lemma via iterated application",
       "field_simp handles div_mul_cancel cleanly when clearing denominators",
-      "push_cast normalizes ↑(k+1) to ↑k+1 for cast unification",
-      "Key lemma chain: density_iteration (proved) → roth_density_bound (now proved)",
-      "char_orthogonality proved via elegant shift argument: ψ(c)·S = S where S is the sum, and ψ(c) ≠ 1 forces S = 0",
-      "psi_add proof follows same pattern as exp_val_mul_eq: val(a+b) = (val(a)+val(b))%N, exponents differ by integer*2πi",
-      "psi_ne_one key step: Complex.exp_eq_one_iff reduces to val(c)/N ∈ ℤ, then 0 < val(c) < N gives contradiction"
+      "push_cast normalizes \u2191(k+1) to \u2191k+1 for cast unification",
+      "Key lemma chain: density_iteration (proved) \u2192 roth_density_bound (now proved)",
+      "char_orthogonality proved via elegant shift argument: \u03c8(c)\u00b7S = S where S is the sum, and \u03c8(c) \u2260 1 forces S = 0",
+      "psi_add proof follows same pattern as exp_val_mul_eq: val(a+b) = (val(a)+val(b))%N, exponents differ by integer*2\u03c0i",
+      "psi_ne_one key step: Complex.exp_eq_one_iff reduces to val(c)/N \u2208 \u2124, then 0 < val(c) < N gives contradiction",
+      "PRE-EXISTING BREAKAGES: psi_add, psi_ne_one, char_orthogonality all broken by Mathlib API changes",
+      "char_sum_int proof strategy verified: omega=exp(2pi*m/N), sum omega^j, omega^N=1 via exp_eq_one_iff"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove parseval_on_zmod: use char_orthogonality + ‖exp‖=1 to compute Σ|Â(r)|²",
-      "Prove char_sum_int: similar to char_orthogonality but with integer exponents",
-      "Prove triple_count_fourier via expanding triple sum with char_orthogonality",
-      "Prove fourier_large_coefficient from Parseval + AP-freeness + cancellation",
-      "Prove density_increment_lemma from large Fourier coefficient + pigeonhole"
+      "URGENT: Fix Mathlib API breakages in psi_add, psi_ne_one, char_orthogonality",
+      "After fixes: prove char_sum_int using root_unity_sum_zero + exp_eq_one_iff",
+      "Then parseval_on_zmod, triple_count_fourier, fourier_large_coefficient, density_increment_lemma"
     ]
   },
   "tags": [
