@@ -81,11 +81,11 @@
     "assumptions": "None. Fully verified with 0 axioms, 0 sorries. Uses Classical.propDecidable as a local instance for decidability of propositions. All 5 theorems and 2 definitions are proved from Mathlib's UniqueFactorizationMonoid, EuclideanDomain, and linear algebra infrastructure."
   },
   "overview": {
-    "historicalContext": "The theory of nonderogatory matrices (those whose minimal polynomial equals the characteristic polynomial) is central to the rational canonical form theorem. A matrix is nonderogatory if and only if it has a cyclic vector — a vector whose orbit under M spans the entire space. This characterization, due to Hoffman and Kunze, provides the bridge between algebraic (minpoly = charpoly) and geometric (cyclic vector existence) descriptions. The proof over infinite fields uses a beautiful union avoidance argument: the set of non-cyclic vectors is contained in a finite union of proper subspaces (one for each irreducible factor of the minimal polynomial), and over an infinite field, such a union cannot cover the whole space.",
+    "historicalContext": "The concept of nonderogatory matrices dates to Frobenius's 1878 work on the rational canonical form. Frobenius showed that every matrix over a field is similar to a block diagonal of companion matrices — one for each invariant factor — and that the matrix is nonderogatory precisely when there is a single block (i.e., the minimal polynomial equals the characteristic polynomial). The equivalence between the nonderogatory condition and the existence of a cyclic vector was made explicit in Hoffman and Kunze's influential 1961 textbook, where it serves as the bridge between the algebraic description ($\\mu_M = \\chi_M$) and the geometric one (existence of $v$ with $\\{v, Mv, \\ldots, M^{n-1}v\\}$ spanning $K^n$). The union avoidance argument used in this proof has an independent pedigree: it is the linear algebra analogue of the prime avoidance lemma in commutative algebra, first noted by E.D. Davis (1964). Over infinite fields, it says that finitely many proper subspaces cannot cover the full space — a fact with a pleasantly elementary proof via a line-counting argument. This result also connects to the Zariski topology: the set of cyclic vectors forms a Zariski-open (hence dense) subset of $K^n$ when $K$ is infinite.",
     "problemStatement": "Prove that over an infinite field K, if M ∈ M_n(K) has minpoly(M) = charpoly(M) (nonderogatory), then there exists a cyclic vector v such that no nonzero polynomial of degree < n annihilates v under M.",
     "proofStrategy": "Phase 1: For each irreducible factor q of μ = minpoly(M), the kernel of the cofactor (μ/q)(M) is a proper subspace. Phase 2: Union avoidance over an infinite field gives a vector v outside all these kernels. Phase 3: If v were not cyclic, the GCD of its annihilating polynomial with μ would give a proper divisor d of μ. Then d(M)v = 0 by Bezout, d properly divides μ, and the quotient μ/d has an irreducible factor q. The cofactor μ/q is a multiple of d, so (μ/q)(M)v = 0, contradicting the choice of v.",
     "keyInsights": [
-      "The import of UniqueFactorizationDomain.Basic broke DecidableEq instance resolution in the existing backward file; isolating the proof in a separate module resolves this",
+      "The nonderogatory condition $\\mu_M = \\chi_M$ is equivalent to the $K[X]$-module $K^n$ (with $X$ acting as $M$) being cyclic — this proof makes that module-theoretic correspondence constructive by exhibiting the generator",
       "Union avoidance is the key: over an infinite field, finitely many proper subspaces cannot cover the whole space",
       "The GCD/Bezout argument connects polynomial annihilation to the factor structure of the minimal polynomial",
       "Polynomial evaluations at the same matrix commute, enabling the d(M)v = 0 argument via mul_comm",
@@ -93,6 +93,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "preamble",
+      "title": "Module Setup and Variable Context",
+      "startLine": 1,
+      "endLine": 20,
+      "summary": "Module documentation, Mathlib import, noncomputable section, namespace declaration, and universe/type variable setup. Declares Classical.propDecidable as a local instance to enable classical reasoning (excluded middle, choice) throughout the proof.",
+      "mathContext": "The proof works over an arbitrary field $K$ and dimension $n : \\mathbb{N}$, with matrices in $M_n(K)$. Classical logic is needed for the union avoidance argument (which uses excluded middle to case-split on subspace membership) and the final contradiction."
+    },
     {
       "id": "definitions",
       "title": "Definitions",
