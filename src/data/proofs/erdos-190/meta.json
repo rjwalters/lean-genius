@@ -21,7 +21,8 @@
     "erdosUrl": "https://erdosproblems.com/190",
     "erdosProblemStatus": "open",
     "axiomCount": 11,
-    "lineCount": 250
+    "lineCount": 250,
+    "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This is a canonical Ramsey theory problem from Erdős-Graham [ErGr79, p.333; ErGr80, p.17]. Unlike van der Waerden numbers W(k) (which require monochromatic APs only), H(k) allows rainbow APs as an alternative 'win condition'. The existence of H(k) follows from Szemerédi's theorem: for N large enough, either pigeonhole forces a monochromatic AP, or the coloring uses enough colors for a rainbow AP. The known result H(k)^{1/k} → ∞ is relatively straightforward, but the stronger question H(k)^{1/k}/k → ∞ — equivalently, whether H(k) grows faster than k^k — remains open.",

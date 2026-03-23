@@ -59,12 +59,13 @@
       "erdos_448 theorem: the conjecture is false"
     ],
     "axiomCount": 12,
-    "lineCount": 330
+    "lineCount": 330,
+    "assumptions": "12 axiom(s) and 2 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #448: Divisors in Dyadic Intervals**\n\nThis problem asks about the distribution of divisors across dyadic intervals [2^k, 2^(k+1)). The key question is whether divisors of most integers cluster into relatively few such intervals.\n\n**Historical Development:**\n- **Erdős (original problem)**: Asked if τ⁺(n) < ε·τ(n) for almost all n\n- **Erdős-Tenenbaum (1981)**: DISPROVED the conjecture, showing exceptions have positive upper density ≍ ε^(1-o(1))\n- **Hall-Tenenbaum (1988)**: Refined to upper density ≪ ε·log(2/ε) and proved τ⁺(n)/τ(n) has a distribution function\n- **Ford (2008)**: Found the precise asymptotic for Στ⁺(n)\n\n**Key Insight:**\nThe conjecture failed because divisors don't concentrate as much as expected. For many integers, divisors spread fairly evenly across dyadic intervals, keeping τ⁺(n) comparable to τ(n).",
     "problemStatement": "**Problem Statement (Disproved)**\n\nLet $\\tau(n)$ count the divisors of $n$ and $\\tau^+(n)$ count the number of $k$ such that $n$ has a divisor in $[2^k, 2^{k+1})$. Is it true that, for all $\\epsilon > 0$,\n$$\\tau^+(n) < \\epsilon \\cdot \\tau(n)$$\nfor almost all $n$?\n\n**Answer: NO (DISPROVED)**\n\nErdős and Tenenbaum (1981) showed this is FALSE:\n- The upper density of counterexamples is $\\asymp \\epsilon^{1-o(1)}$\n- Hall-Tenenbaum (1988) refined this to $\\ll \\epsilon \\log(2/\\epsilon)$\n\n**Ford's Asymptotic (2008):**\n$$\\sum_{n \\leq x} \\tau^+(n) \\asymp x \\frac{(\\log x)^{1-\\alpha}}{(\\log\\log x)^{3/2}}$$\nwhere $\\alpha = 1 - \\frac{1 + \\log\\log 2}{\\log 2} \\approx 0.08607$.",
-    "text": "Is \u03c4\u207a(n) < \u03b5\u00b7\u03c4(n) for almost all n? NO (DISPROVED) - Erd\u0151s-Tenenbaum showed exceptions have positive density.",
+    "text": "Is τ⁺(n) < ε·τ(n) for almost all n? NO (DISPROVED) - Erdős-Tenenbaum showed exceptions have positive density.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** Define τ(n) as divisor count, dyadic interval membership, and τ⁺(n) as count of occupied intervals\n\n2. **Basic Properties:** Prove τ⁺(n) ≤ τ(n) and τ⁺(n) ≤ log₂(n) + 1\n\n3. **The Conjecture:** State the original (false) conjecture about density-1 concentration\n\n4. **Disproof:** Axiomatize Erdős-Tenenbaum's result that exceptions have positive density\n\n5. **Refinements:** Include Hall-Tenenbaum bounds and distribution function existence\n\n6. **Ford's Result:** State the asymptotic for the sum of τ⁺, including the Ford constant α\n\n7. **Examples:** Concrete calculations for small values showing the spread",
     "keyInsights": [
       "**τ⁺(n)**: Counts dyadic intervals [2^k, 2^(k+1)) containing at least one divisor of n",

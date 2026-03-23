@@ -55,7 +55,8 @@
       "log_convexity_iff_vertex identity (proved by rfl)"
     ],
     "axiomCount": 6,
-    "lineCount": 304
+    "lineCount": 304,
+    "assumptions": "6 axiom(s) and 2 sorry(s). See the Lean source for details."
   },
   "leanFile": {
     "imports": [
@@ -104,7 +105,7 @@
   "overview": {
     "historicalContext": "Erdős and Straus originally conjectured that for all large n, some i < n satisfies p_n² < p_{n+i}·p_{n-i}. Selfridge disagreed, conjecturing the opposite. Pomerance (1979) proved Selfridge correct using an elegant convex hull argument on the prime number graph.\n\nThe proof is remarkably short: consider the graph of points (n, log p_n). By the Prime Number Theorem, p_n ~ n log n, so log p_n / n → 0. This means the non-horizontal part of the upper convex hull boundary is concave with infinitely many vertices. At each vertex n, the strict convexity condition 2·log p_n > log p_{n-i} + log p_{n+i} holds for all i, which exponentiates to p_n² > p_{n+i}·p_{n-i}.\n\nThis is Problem A14 in Guy's 'Unsolved Problems in Number Theory'. Pomerance published the result in 'The prime number graph' (Mathematics of Computation, 1979), a paper that also studied the convexity properties of the prime sequence more broadly.",
     "problemStatement": "Is it true that, for all sufficiently large n, there exists some i < n such that p_n² < p_{n+i}·p_{n-i}, where p_k is the k-th prime?",
-    "text": "Is it true that for all large n, there exists i < n with p_n\u00b2 < p_{n+i}\u00b7p_{n-i}? SOLVED: NO. Pomerance (1979) proved infinitely many n have p_n\u00b2 > p_{n+i}\u00b7p_{n-i} for all i < n, using convex hull geometry on log primes.",
+    "text": "Is it true that for all large n, there exists i < n with p_n² < p_{n+i}·p_{n-i}? SOLVED: NO. Pomerance (1979) proved infinitely many n have p_n² > p_{n+i}·p_{n-i} for all i < n, using convex hull geometry on log primes.",
     "proofStrategy": "The formalization defines the Erdős-Straus conjecture and Selfridge's counter-conjecture, proves they are mutually exclusive (a genuine Lean proof by contradiction using omega), then axiomatizes Pomerance's result. The key geometric machinery — the convex hull vertex characterization, the o(n) lemma guaranteeing infinitely many vertices, and the log-to-product bridge — is formalized to capture the structure of Pomerance's short proof. The infinitude of the counterexample set is proved as a genuine theorem using Set.infinite_iff_nat_lt.",
     "keyInsights": [
       "**Logarithmic Bridge:** The multiplicative inequality $p_n^2 > p_{n+i} p_{n-i}$ is equivalent to the additive $2 \\log p_n > \\log p_{n+i} + \\log p_{n-i}$ via monotonicity of $\\exp$, enabling geometric analysis.",

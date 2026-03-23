@@ -21,12 +21,13 @@
     "erdosUrl": "https://erdosproblems.com/977",
     "erdosProblemStatus": "solved",
     "axiomCount": 0,
-    "lineCount": 1
+    "lineCount": 1,
+    "assumptions": "None. Formalized with 0 axioms and 0 sorries."
   },
   "overview": {
     "historicalContext": "Erdős posed this problem around 1965, asking whether the greatest prime factor of $2^n - 1$ grows faster than linearly. The first major progress came from Andrzej Schinzel in 1962, who proved $P(2^n - 1) > 2n$ for all $n > 12$ using algebraic factorization properties of cyclotomic polynomials. Cameron Stewart made further conditional progress in 1974, and finally settled the problem unconditionally in 2013 with the quantitative bound $P(2^n - 1) \\ge n^{1 + 1/(104 \\log\\log n)}$. Stewart's proof combines deep techniques from transcendental number theory (Baker's theory of linear forms in logarithms) with the arithmetic of cyclotomic fields.\n\nThe problem sits in a rich tradition connecting prime factorization to exponential sequences. Zsygmondy's theorem (1892) guarantees that $2^n - 1$ has a *primitive* prime factor for $n > 6$ — a prime not dividing $2^k - 1$ for any $k < n$. Such primes satisfy $p \\equiv 1 \\pmod{n}$, immediately giving $P(2^n - 1) \\ge n + 1$, but this falls short of the $n^{1+\\varepsilon}$ growth Erdős sought. The connection to Mersenne primes ($2^p - 1$ when prime) adds number-theoretic interest: for the 51 known Mersenne primes, $P(M_p) = M_p = 2^p - 1 \\gg 2^p$, far exceeding any polynomial bound. A related open problem asks whether $P(n! + 1)/n \\to \\infty$, where Lai (2021) proved the partial result $\\limsup P(n!+1)/n \\ge 1 + 9\\log 2 \\approx 7.238$.",
     "problemStatement": "If $P(m)$ denotes the greatest prime divisor of $m$, is it true that $P(2^n - 1)/n \\to \\infty$ as $n \\to \\infty$?",
-    "text": "Does P(2^n - 1)/n \u2192 \u221e? Solved by Stewart (2013): P(2^n - 1) \u2265 n^{1 + 1/(104 log log n)}. Schinzel (1962) proved P(2^n - 1) > 2n for n > 12.",
+    "text": "Does P(2^n - 1)/n → ∞? Solved by Stewart (2013): P(2^n - 1) ≥ n^{1 + 1/(104 log log n)}. Schinzel (1962) proved P(2^n - 1) > 2n for n > 12.",
     "proofStrategy": "The formalization defines the greatest prime factor function $P(n)$, Mersenne numbers $M_n = 2^n - 1$, and states the central question. It axiomatizes Stewart's 2013 theorem (the full answer), Schinzel's 1962 bound, Stewart's quantitative growth rate, specific small cases, the Mersenne prime connection, the related $P(n!+1)$ open problem, Zsygmondy's theorem on primitive prime factors, and the multiplicative order connection $\\text{ord}_p(2) \\mid n$.",
     "keyInsights": [
       "**Stewart's resolution (2013)**: $P(2^n - 1) \\ge n^{1 + 1/(104 \\log\\log n)}$, proving $P(2^n-1)/n \\to \\infty$. The proof uses Baker's theory of linear forms in logarithms applied to the factorization of $2^n - 1$ via cyclotomic polynomials $\\Phi_d(2)$ for $d \\mid n$",

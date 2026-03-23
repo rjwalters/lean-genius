@@ -52,7 +52,8 @@
       "Verified examples: ℕ and even numbers as infinite APs"
     ],
     "axiomCount": 1,
-    "lineCount": 114
+    "lineCount": 114,
+    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in the early 1960s as part of his extensive work on additive combinatorics. The question connects two classical topics: representation of integers as sums and the structure of arithmetic progressions.\n\nThe conjecture was natural: if a sequence is 'well-distributed' enough that its subset sums hit every arithmetic progression infinitely often, and the sequence grows slowly (ratio → 1), then perhaps all large integers should be representable.\n\nJ. W. S. Cassels disproved this in 1960 with an ingenious counterexample, showing that good coverage of arithmetic progressions does not imply universal representation. His construction demonstrated that even sequences satisfying strong distributional properties can have infinitely many 'gaps' in their subset sums.",

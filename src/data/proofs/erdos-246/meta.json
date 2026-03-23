@@ -65,12 +65,13 @@
       "greedyRepresentation definition and greedy_eventually_works axiom"
     ],
     "axiomCount": 19,
-    "lineCount": 266
+    "lineCount": 266,
+    "assumptions": "19 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #246** asks about complete sequences — sets where every sufficiently large integer can be represented as a sum of distinct elements.\n\n**Historical Development:**\n- **Birch (1959):** Original proof that {a^k b^l : gcd(a,b)=1} is complete\n- **Cassels (1960):** General result implying completeness for logarithmically dense sets\n- **Davenport:** Observed that bounded l suffices\n- **Hegyvári (2000):** First explicit bound on l (quadruple exponential)\n- **Fang-Chen (2017):** Improved to triply exponential\n- **Yu (2024):** Can use only large summands (> n/(log n)^{1+o(1)})\n\n**Key Insight:** Two coprime bases generate enough distinct numbers that their logarithmic density suffices for completeness.",
     "problemStatement": "**Problem Statement (SOLVED)**\n\nLet $(a, b) = 1$ with $a, b \\geq 2$. Is the set $\\{a^k b^l : k, l \\geq 0\\}$ complete?\n\nA set S is **complete** if every sufficiently large integer can be written as a sum of distinct elements from S.\n\n**Answer:** YES (Birch 1959)\n\n**Key Examples:**\n- {2^k · 3^l} is complete: elements are 1, 2, 3, 4, 6, 8, 9, 12, 16, 18, 24, ...\n- Every large n = sum of distinct elements from this set\n\n**Extensions:**\n- Works even with l bounded (Davenport)\n- Explicit bounds: O(2^{2^{2^{max(a,b)}}}) by Fang-Chen\n- Large summands suffice: all > n/(log n)^{1+o(1)} (Yu 2024)",
-    "text": "Let (a, b) = 1. The set {a^k b^l : k, l \u2265 0} is complete \u2014 every sufficiently large integer is a sum of distinct elements from this set. YES (Birch 1959).",
+    "text": "Let (a, b) = 1. The set {a^k b^l : k, l ≥ 0} is complete — every sufficiently large integer is a sum of distinct elements from this set. YES (Birch 1959).",
     "proofStrategy": "**Formalization Approach**\n\n1. **Basic Definitions:** Define powerSet(a,b) and completeness property.\n\n2. **Main Theorem:** Axiomatize Birch's result that coprime power sets are complete.\n\n3. **Generalizations:** Include Cassels' general criterion, Davenport's observation, and quantitative bounds.\n\n4. **Contrasts:** Show single-base powers (a ≥ 3) are not complete.\n\n5. **Related Sequences:** Fibonacci (Zeckendorf), powers of 2 (binary).\n\n6. **Algorithms:** Greedy representation eventually works.",
     "keyInsights": [
       "**Logarithmic Density:** powerSet(a,b) has ~(log N)² elements up to N, which is enough for completeness.",

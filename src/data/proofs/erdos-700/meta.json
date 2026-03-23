@@ -20,7 +20,8 @@
     "erdosUrl": "https://erdosproblems.com/700",
     "erdosProblemStatus": "open",
     "axiomCount": 9,
-    "lineCount": 85
+    "lineCount": 85,
+    "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "sections": [
     {
@@ -69,7 +70,7 @@
   "overview": {
     "historicalContext": "Erdős and Szekeres studied the arithmetic of binomial coefficients throughout the mid-20th century, producing many results on divisibility patterns in Pascal's triangle. Problem 700 investigates $f(n) = \\min_{1 < k \\leq n/2} \\gcd(n, \\binom{n}{k})$, which measures the minimum common divisor between $n$ and its non-trivial binomial coefficients. The function is closely tied to Kummer's theorem (1852), which determines $v_p(\\binom{n}{k})$ by counting carries in base-$p$ addition of $k$ and $n-k$. For semiprimes $n = pq$, one can show $f(pq) = p$ using the fact that $\\binom{pq}{p}$ is divisible by $q$ but $\\gcd(pq, \\binom{pq}{p}) = p$. The identity $f(30) = 6$ shows the characterization extends beyond semiprimes. The three open questions probe the boundary between exact characterization, extreme behavior, and typical asymptotics, connecting to the distribution of prime factors and the anatomy of integers.",
     "problemStatement": "For composite $n$, define $f(n) = \\min_{1 < k \\leq n/2} \\gcd(n, \\binom{n}{k})$. Three questions: (1) Which composite $n$ satisfy $f(n) = n/P(n)$? (2) Do infinitely many composite $n$ have $f(n) > \\sqrt{n}$? (3) Is $f(n) \\ll_A n/(\\log n)^A$ for all $A > 0$?",
-    "text": "Study f(n) = min_{1<k\u2264n/2} gcd(n, C(n,k)). When does f(n) = n/P(n)? Are there \u221e many n with f(n) > \u221an? Is f(n) \u226a n/(log n)^A? Known: f(pq) = p, f(p\u00b2) \u2265 p. Open.",
+    "text": "Study f(n) = min_{1<k≤n/2} gcd(n, C(n,k)). When does f(n) = n/P(n)? Are there ∞ many n with f(n) > √n? Is f(n) ≪ n/(log n)^A? Known: f(pq) = p, f(p²) ≥ p. Open.",
     "proofStrategy": "The formalization axiomatizes $f(n)$ (avoiding the subtlety of proving the minimization range is nonempty for $n \\geq 4$), states the sandwich bound $p(n) \\leq f(n) \\leq n/P(n)$, records exact values for semiprimes and $n = 30$, and formalizes all three open questions. The prime square result $f(p^2) \\geq p$ provides evidence for Question 2. Question 3 is stated with an explicit constant $C$ depending on $A$.",
     "keyInsights": [
       "$f(pq) = p = n/P(n)$ for semiprimes provides the simplest exact computation, following from Kummer's theorem since the base-$p$ and base-$q$ carries in $\\binom{pq}{k}$ are controlled by the single-digit structure",

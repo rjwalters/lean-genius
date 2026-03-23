@@ -63,12 +63,13 @@
       "Graph and hypergraph coloring (chromatic number, proper coloring)",
       "Combinatorics of set families (intersection properties)"
     ],
-    "lineCount": 212
+    "lineCount": 212,
+    "assumptions": "2 axiom(s) and 2 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem #603 originates from Péter Komjáth and was recorded in [Er87], Erdős's 1987 problem compilation. Komjáth, a leading Hungarian combinatorialist working in set-theoretic combinatorics, proposed this as a natural extension of his own theorem: for families of countably infinite sets with pairwise intersection size $\\neq 1$, exactly $\\aleph_0$ colors suffice to avoid monochromatic sets. The $\\neq 2$ variant remains open and is surprisingly resistant to the same techniques.\n\nThe problem sits at the intersection of infinite combinatorics and hypergraph coloring theory. In finite combinatorics, the chromatic number of hypergraphs with restricted edge intersections is well-studied — the Erdős–Ko–Rado theorem (1961) and the Sunflower Lemma (Erdős and Rado, 1960) are foundational results in this area. The infinite setting introduces cardinal arithmetic complications: the answer could be any finite number, $\\aleph_0$, or conceivably larger. The contrast between the $\\neq 1$ case (solved, $C = \\aleph_0$) and the $\\neq 2$ case (open) illustrates how sensitive these problems are to the exact intersection constraint.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nLet (A_i) be a family of countably infinite sets such that |A_i ∩ A_j| != 2 for all i != j.\n\nFind the smallest cardinal C such that the union of all A_i can always be colored with at most C colors so that no A_i is monochromatic.\n\n**Related Result:**\nFor |A_i ∩ A_j| != 1, Komjath showed aleph_0 colors suffice.",
-    "text": "Find the smallest cardinal C such that any family of countably infinite sets with |A_i \u2229 A_j| != 2 can be colored with C colors so no set is monochromatic.",
+    "text": "Find the smallest cardinal C such that any family of countably infinite sets with |A_i ∩ A_j| != 2 can be colored with C colors so no set is monochromatic.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Families:** Define IsCountablyInfiniteFamily and intersection constraints\n\n2. **Colorings:** Define IsMonochromatic and IsValidColoring\n\n3. **Chromatic Number:** SufficientColors and chromaticNumber definitions\n\n4. **Komjath's Result:** Axiomatize the != 1 case\n\n5. **Bounds:** Lower bound 2, upper bound aleph_0\n\n6. **Hypergraph View:** Alternative formulation via hypergraphs",
     "keyInsights": [
       "**Intersection sensitivity:** The jump from $|A_i \\cap A_j| \\neq 1$ (solved, $C = \\aleph_0$) to $\\neq 2$ (open) shows that the exact forbidden intersection size profoundly affects the chromatic structure — a phenomenon with no finite analogue",

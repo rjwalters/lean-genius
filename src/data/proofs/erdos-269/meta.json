@@ -66,7 +66,8 @@
       "distinctLcmSeries definition: series without duplicate terms"
     ],
     "axiomCount": 25,
-    "lineCount": 273
+    "lineCount": 273,
+    "assumptions": "25 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdos Problem #269: LCM Series Irrationality**\n\nThis problem was posed by Erdos in a letter to the editor of the Fibonacci Quarterly (January 1, 1973), published in Vol. 12 (1974), p. 335.\n\n**Key History:**\n- Erdos (1973): Original problem statement\n- [ErGr80, p.65]: Referenced in Erdos-Graham collaboration\n- [Er88c, p.106]: Further discussion\n\n**The Setting:**\nP-smooth numbers (or P-friable numbers) are integers whose prime factors all come from a fixed set P. When P = {2,3}, these are the 3-smooth numbers: 1, 2, 3, 4, 6, 8, 9, 12, 16, 18, 24, 27, ...\n\nThe series sums reciprocals of successive LCMs of these numbers.",

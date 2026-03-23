@@ -47,12 +47,13 @@
       "Verified computations of τ for small values"
     ],
     "axiomCount": 2,
-    "lineCount": 119
+    "lineCount": 119,
+    "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem #258 asks about the irrationality of certain infinite series involving the divisor function τ(n). The problem has a rich history spanning several decades of number theory research.\n\nThe general question (arbitrary sequences with aₙ → ∞) remains OPEN. However, two important special cases have been solved:\n\n1. **Monotone sequences** (Erdős-Straus, 1971): If the sequence (aₙ) is monotone increasing, then the sum is always irrational.\n\n2. **Constant/power case** (Erdős, 1948): The series Σ τ(n)/tⁿ is irrational for any integer t ≥ 2. This connects to Lambert series, which have applications throughout analytic number theory.\n\nThe problem was formalized in Lean as part of Google DeepMind's Formal Conjectures project.",
     "problemStatement": "Let $a_1, a_2, \\ldots$ be a sequence of positive integers with $a_n \\to \\infty$. Is the sum\n$$\\sum_{n=1}^{\\infty} \\frac{\\tau(n)}{a_1 \\cdot a_2 \\cdots a_n}$$\nirrational, where $\\tau(n)$ denotes the number of positive divisors of $n$?\n\n**Status**: The general case is OPEN. Solved for monotone sequences (Erdős-Straus 1971) and for $\\sum \\tau(n)/t^n$ with $t \\geq 2$ (Erdős 1948).",
-    "text": "Is the sum of \u03c4(n)/(a\u2081\u00b7...\u00b7a\u2099) irrational for sequences with a\u2099 \u2192 \u221e? Solved for monotone sequences by Erd\u0151s-Straus (1971).",
+    "text": "Is the sum of τ(n)/(a₁·...·aₙ) irrational for sequences with aₙ → ∞? Solved for monotone sequences by Erdős-Straus (1971).",
     "proofStrategy": "We formalize the problem statement and both solved variants:\n\n1. **Define the divisor function** τ(n) = |{d : d divides n}|, using Mathlib's `Nat.divisors.card`.\n\n2. **Define product prefixes** a₁ · a₂ · ... · aₙ using Finset.prod.\n\n3. **State the monotone variant** as an axiom: if (aₙ) is monotone and tends to infinity, the sum is irrational.\n\n4. **State the power variant** as an axiom: Σ τ(n)/tⁿ is irrational for t ≥ 2.\n\n5. **Define the open conjecture** as a Prop for the general case.\n\nWe also verify τ(n) for small values using `native_decide`.",
     "keyInsights": [
       "**Divisor function τ(n)**: Counts divisors of n. For example: τ(1)=1, τ(6)=4, τ(p)=2 for prime p. It's multiplicative: τ(mn) = τ(m)τ(n) when gcd(m,n) = 1.",

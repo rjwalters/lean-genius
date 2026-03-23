@@ -21,7 +21,8 @@
       "erdos-567"
     ],
     "axiomCount": 3,
-    "badge": "axiom"
+    "badge": "axiom",
+    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "sections": [
     {
@@ -84,7 +85,7 @@
   "overview": {
     "historicalContext": "Problem #568 was posed by Erdős, Faudree, Rousseau, and Schelp in their 1993 paper that introduced the concept of Ramsey size linearity. It asks whether two natural conditions on the classical Ramsey number — linear growth against trees and quadratic growth against cliques — suffice to guarantee size linearity. The motivation comes from the observation that $\\hat{r}(G,H) \\le \\binom{R(G,H)}{2}$ trivially, but this gives quadratic rather than linear bounds. The two hypothesis conditions are deeply rooted in classical Ramsey theory: the Chvátal-Harary theorem (1972) established that $R(T_m, T_n) = m + n - 2$ for trees, while the Chvátal-Rödl-Szemerédi-Trotter theorem (1983) showed that bounded-degree graphs have polynomial Ramsey numbers against cliques. The problem connects to the broader size Ramsey program initiated by Beck's 1983 Fulkerson Prize–winning proof that $\\hat{r}(P_n) = O(n)$. This is a companion to Problems #566 (sparsity-based criterion) and #567 (specific graph cases), together forming a triangle of open questions about characterizing Ramsey size linearity.",
     "problemStatement": "If $R(G, T_n) = O(n)$ for all trees $T_n$ on $n$ vertices and $R(G, K_n) = O(n^2)$ for all complete graphs $K_n$, must $G$ be **Ramsey size linear**? That is, must there exist $C > 0$ such that $\\hat{r}(G, H) \\le C \\cdot |E(H)|$ for every graph $H$ with no isolated vertices?",
-    "text": "If R(G, T\u2099) \u226a n for all trees and R(G, K\u2099) \u226a n\u00b2 for all complete graphs, must G be Ramsey size linear? Posed by EFRS (1993). Open.",
+    "text": "If R(G, Tₙ) ≪ n for all trees and R(G, Kₙ) ≪ n² for all complete graphs, must G be Ramsey size linear? Posed by EFRS (1993). Open.",
     "proofStrategy": "The formalization axiomatizes both the classical Ramsey number $R(G,H)$ and the size Ramsey number $\\hat{r}(G,H)$, then defines the two hypothesis conditions (linear tree Ramsey and quadratic clique Ramsey) and the conclusion (Ramsey size linearity). The conjecture is stated as an axiom with the two conditions as hypotheses. This cleanly separates the classical-world assumptions from the size-world conclusion.",
     "keyInsights": [
       "**Two extremes characterization**: Trees (sparsest connected graphs) and cliques (densest graphs) represent opposite ends of the graph density spectrum; controlling $R(G, \\cdot)$ at both extremes should control it everywhere",

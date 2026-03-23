@@ -70,12 +70,13 @@
       "erdos_328_status theorem: complete disproof statement"
     ],
     "axiomCount": 9,
-    "lineCount": 247
+    "lineCount": 247,
+    "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "The representation function $r_A(n) = |\\{(a,b) \\in A^2 : a+b=n\\}|$ is a central object in additive combinatorics, measuring how 'additively rich' a set is. Simon Sidon (1932) initiated the study of sets where all pairwise sums are distinct ($r_A \\leq 2$), now called Sidon or $B_2$ sets. Erdős and Turán (1941) proved the foundational upper bound $|A \\cap [1,N]| \\leq \\sqrt{N} + O(N^{1/4})$ for Sidon sets, launching a rich theory connecting additive number theory to combinatorics.\n\nProblem #328, posed by Erdős and Donald J. Newman (see [ErGr80, p.48]), asks whether bounded convolution ($r_A \\leq C$) can always be 'improved' by partitioning: can we split $A$ into $t(C)$ pieces each with $r_{A_i} < C$? Erdős (1980) [Er80e] first showed the answer is NO for $C=3,4$ and infinitely many other values. The complete resolution came from Jaroslav Nešetřil and Vojtěch Rödl (1985) [NeRo85], who proved the answer is NO for ALL $C \\geq 1$, using Ramsey-theoretic methods. Their result is even stronger: no partition works even when $t$ is allowed to depend on $A$ itself, not just on $C$. This reveals a fundamental rigidity in additive structure: the representation function cannot be reduced by any combinatorial decomposition.",
     "problemStatement": "Suppose $A \\subseteq \\mathbb{N}$ and $C > 0$ such that $\\mathbf{1}_A * \\mathbf{1}_A(n) \\leq C$ for all $n \\in \\mathbb{N}$ (i.e., every integer has at most $C$ representations as a sum of two elements from $A$). Can $A$ be partitioned into $t = t(C)$ subsets $A_1, \\ldots, A_t$ such that $\\mathbf{1}_{A_i} * \\mathbf{1}_{A_i}(n) < C$ for all $1 \\leq i \\leq t$ and $n \\in \\mathbb{N}$?\n\n**Answer: NO** (Nešetřil-Rödl 1985). For every $C \\geq 1$, there exist sets $A$ with $r_A \\leq C$ that cannot be partitioned into ANY number of pieces with $r_{A_i} < C$.",
-    "text": "Can sets A with bounded convolution r_A \u2264 C be partitioned into pieces with strictly smaller convolution? DISPROVED: NO for all C (Ne\u0161et\u0159il-R\u00f6dl 1985).",
+    "text": "Can sets A with bounded convolution r_A ≤ C be partitioned into pieces with strictly smaller convolution? DISPROVED: NO for all C (Nešetřil-Rödl 1985).",
     "proofStrategy": "The formalization defines the representation function $r_A(n)$, bounded convolution, Sidon/$B_h$ sets, and the partition question. Erdős's partial results for $C=3,4$ are axiomatized, followed by the full Nešetřil-Rödl theorem for all $C$. The proof of the disproof follows from the Nešetřil-Rödl theorem applied to the Erdős-Newman question. Special cases (Sidon sets, unique-sum sets) and density bounds ($|A \\cap [1,N]| \\leq C\\sqrt{N}+1$) round out the formalization.",
     "keyInsights": [
       "**Representation function**: $r_A(n) = |\\{(a,b) \\in A^2 : a+b=n\\}|$ measures additive richness; bounded $r_A$ characterizes 'thin' sets",

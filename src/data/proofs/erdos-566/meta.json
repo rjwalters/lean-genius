@@ -22,7 +22,8 @@
       "erdos-565"
     ],
     "axiomCount": 4,
-    "badge": "axiom"
+    "badge": "axiom",
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "sections": [
     {
@@ -92,7 +93,7 @@
   "overview": {
     "historicalContext": "The notion of size Ramsey numbers was introduced by Erdős, Faudree, Rousseau, and Schelp in 1978 as a refinement of classical Ramsey theory: rather than asking for the minimum number of vertices, $\\hat{r}(G,H)$ measures the minimum number of edges in a host graph guaranteeing monochromatic copies. In 1983, József Beck made a breakthrough by proving $\\hat{r}(P_n) = O(n)$ for paths, resolving an Erdős conjecture and earning the Fulkerson Prize. This opened the question of which graphs are 'Ramsey size linear.' In their landmark 1993 paper, Erdős, Faudree, Rousseau, and Schelp proved that graphs with at most $n+1$ edges are Ramsey size linear and conjectured that the $(2k-3)$-sparsity condition characterizes this property. They also showed that graphs with $2n-2$ edges can fail, establishing the threshold's tightness. Recent progress by Bradač, Gishboliner, and Sudakov (2024) proved that $K_4$-subdivisions with at least 6 vertices are Ramsey size linear, advancing specific cases while the general conjecture remains open.",
     "problemStatement": "Let $G$ be a graph such that every subgraph on $k \\ge 2$ vertices has at most $2k - 3$ edges. Is $G$ **Ramsey size linear**? That is, does there exist a constant $c = c(G) > 0$ such that $\\hat{r}(G, H) \\le c \\cdot |E(H)|$ for every graph $H$ with no isolated vertices?",
-    "text": "If every k-vertex subgraph of G has at most 2k\u22123 edges, is G Ramsey size linear? True for \u2264 n+1 edges (EFRS 1993), false for 2n\u22122 edges. Implies Problem #567. Open.",
+    "text": "If every k-vertex subgraph of G has at most 2k−3 edges, is G Ramsey size linear? True for ≤ n+1 edges (EFRS 1993), false for 2n−2 edges. Implies Problem #567. Open.",
     "proofStrategy": "The formalization defines graphs as symmetric irreflexive adjacency predicates on finite types, then introduces the $(2k-3)$-sparsity condition, the no-isolated-vertices condition, and the size Ramsey number $\\hat{r}(G,H)$. The main conjecture is stated as an axiom (reflecting its open status), alongside three key known results: the EFRS theorem for $\\le n+1$ edges, the counterexample at $2n-2$ edges, and trees being Ramsey size linear. Together these delineate the boundary of current knowledge.",
     "keyInsights": [
       "**Size vs. classical Ramsey**: $\\hat{r}(G,H)$ refines $R(G,H)$ by measuring edge complexity rather than vertex count, capturing finer structural properties of Ramsey phenomena",

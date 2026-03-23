@@ -59,7 +59,8 @@
       "erdos_1052_conjecture: finiteness as open conjecture"
     ],
     "axiomCount": 5,
-    "lineCount": 196
+    "lineCount": 196,
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1052: Unitary Perfect Numbers**\n\nA **unitary divisor** d of n satisfies gcd(d, n/d) = 1, meaning d and its complement share no common prime factors. A **unitary perfect number** equals the sum of its proper unitary divisors.\n\nWall (1972) found the fifth unitary perfect number. Only five are known: 6, 60, 90, 87360, and a 24-digit number discovered in 1975. It is conjectured there are only finitely many.\n\nThe evenness result follows from a factorization argument: for n = p₁^{a₁} · ... · pₖ^{aₖ}, the unitary divisor sum factors as σ*(n) = ∏(1 + pᵢ^{aᵢ}). If n were odd, every factor 1 + pᵢ^{aᵢ} would be even, making σ*(n) divisible by 2^k, but σ*(n) = 2n would require 2^{k-1} | n — contradicting oddness for k ≥ 2.",

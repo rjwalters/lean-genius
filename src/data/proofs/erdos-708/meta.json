@@ -56,12 +56,13 @@
       "Related variant: interval length c_n"
     ],
     "axiomCount": 8,
-    "lineCount": 190
+    "lineCount": 190,
+    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem #708 concerns divisibility of products by consecutive integers. The function g(n) measures the minimum number of consecutive integers needed so that their product is divisible by the product of any n given integers ≥ 2. Gallai first considered such problems, establishing g(2) = 2 and g(3) ≥ 4.\n\nErdős and Surányi (1959) made the key contributions: they proved g(3) = 4 and established the lower bound g(n) ≥ (2 - o(1))n using an elegant construction based on products of prime pairs. Specifically, they chose A = {p_i · p_j : i ≠ j} for carefully chosen primes p_1 < ... < p_ℓ with 2p₁² > p_ℓ², forcing the prime factors to be spread across many distinct primes.\n\nErdős offered '$100 or 1000 rupees, whichever is more' in 1992 for a proof or disproof that g(n) ≤ (2 + o(1))n. Combined with the Erdős-Surányi lower bound, this would determine the asymptotic behavior as g(n) = (2 + o(1))n. The problem remains open after over 60 years.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nLet $g(n)$ be minimal such that for any $A \\subseteq [2,\\infty) \\cap \\mathbb{N}$ with $|A| = n$ and any set $I$ of $\\max(A)$ consecutive integers, there exists $B \\subseteq I$ with $|B| = g(n)$ such that:\n$$\\prod_{a \\in A} a \\mid \\prod_{b \\in B} b$$\n\n**Question:** Is $g(n) \\leq (2 + o(1))n$? Or perhaps even $g(n) \\leq 2n$?\n\n**Known:**\n- $g(2) = 2$ (Gallai)\n- $g(3) = 4$ (Erdős-Surányi)\n- $g(n) \\geq (2 - o(1))n$ (lower bound)\n\n**Prize:** $100 (offered by Erdős)",
-    "text": "Let g(n) be minimal such that for any set A of n integers and any interval I of consecutive integers, some B \u2286 I with |B| = g(n) has product divisible by the product of A. Is g(n) \u2264 (2 + o(1))n?",
+    "text": "Let g(n) be minimal such that for any set A of n integers and any interval I of consecutive integers, some B ⊆ I with |B| = g(n) has product divisible by the product of A. Is g(n) ≤ (2 + o(1))n?",
     "proofStrategy": "The formalization defines setProduct, consecutiveSet, and productDivides as computable predicates, then axiomatizes g_exists to guarantee the minimum value exists. The function g(n) is defined via Nat.find for minimality. Known values g(2) = 2 and g(3) = 4 are axiomatized, along with the Erdős-Surányi lower bound and a trivial upper bound. The open conjecture and its stronger variant are stated as Prop definitions. A related variant concerning interval length scaling factors c_n is also formalized.",
     "keyInsights": [
       "**Key Function:** g(n) measures minimum consecutive integers needed for divisibility",

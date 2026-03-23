@@ -58,12 +58,13 @@
     ],
     "dateAdded": "2026-02-22",
     "axiomCount": 5,
-    "lineCount": 308
+    "lineCount": 308,
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Bertrand conjectured in 1845 that every interval (n, 2n] contains at least one prime. Chebyshev verified this in 1852, and Erdős gave an elegant elementary proof in 1932 using central binomial coefficients. But the deeper question is: how precisely are primes distributed in much shorter intervals? The Prime Number Theorem (PNT) gives π(x) ~ x/ln(x), predicting ~h/ln(x) primes in [x, x+h] for 'large' h. The question of how small h can be while guaranteeing a prime is one of the central problems in analytic number theory.",
     "problemStatement": "**Open Question**: What is the smallest θ such that every interval [x, x+x^θ] contains a prime for all sufficiently large x?\n\n**Known**: Baker-Harman-Pintz (2001) proved θ = 0.525 works.\n**Open**: Does θ < 1/2 work? Does θ → 0 work with a poly-log correction (Cramér's conjecture)? Does every [n², (n+1)²] contain a prime (Legendre's conjecture)?",
-    "text": "Bertrand's Postulate guarantees a prime in every (n, 2n], but how dense are primes in much shorter intervals? This formalization establishes a logarithmic lower bound \u03c0(n) \u2265 log\u2082(n) from iterated Bertrand, surveys Baker-Harman-Pintz's x^0.525 record, and formally captures the open Cram\u00e9r and Legendre conjectures.",
+    "text": "Bertrand's Postulate guarantees a prime in every (n, 2n], but how dense are primes in much shorter intervals? This formalization establishes a logarithmic lower bound π(n) ≥ log₂(n) from iterated Bertrand, surveys Baker-Harman-Pintz's x^0.525 record, and formally captures the open Cramér and Legendre conjectures.",
     "proofStrategy": "Start with Bertrand's Postulate (prime in (n, 2n]) and iterate: if π(n) counts primes up to n, then π(2n) ≥ π(n) + 1 by Bertrand. Iterating k times gives π(2^k * n) ≥ π(n) + k. Setting n=1 gives π(2^m) ≥ m. Since 2^(log₂ n) ≤ n, this yields the logarithmic bound π(n) ≥ log₂(n). The short-interval question (the open part) is then captured via axioms for Baker-Harman-Pintz, Cramér, and Legendre.",
     "keyInsights": [
       "Iterating Bertrand k times shows π(2^k * n) ≥ π(n) + k — a multiplicative density statement",

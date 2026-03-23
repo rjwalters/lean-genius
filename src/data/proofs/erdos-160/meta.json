@@ -22,7 +22,8 @@
       "open"
     ],
     "axiomCount": 7,
-    "lineCount": 225
+    "lineCount": 225,
+    "assumptions": "7 axiom(s) and 3 sorry(s). See the Lean source for details."
   },
   "sections": [
     {
@@ -85,7 +86,7 @@
   "overview": {
     "historicalContext": "Erdős and Freud originally studied colorings of $\\{1,\\ldots,N\\}$ where arithmetic progressions are constrained in their color usage, extending the classical van der Waerden theorem from monochromatic to rainbow-type conditions. The specific version for 4-APs with at least 3 colors was formalized on the Erdős Problems website. Progress on this problem has come from unexpected sources: the user 'LeechLattice' on MathOverflow gave the first polynomial upper bound $h(N) = O(N^{2/3})$, and Zachary Hunter subsequently improved this to $O(N^{\\log 3/\\log 22}) \\approx O(N^{0.356})$ using a recursive construction. The lower bound was dramatically improved by the Kelley–Meka breakthrough (2023) on 3-AP-free sets, which showed $r_3(N) \\le N \\exp(-c(\\log N)^{1/12})$. Hunter observed that this implies $h(N) \\ge \\exp(c(\\log N)^{1/9})$, a superpolynomial lower bound. The gap between polynomial upper and superlogarithmic lower bounds remains enormous and is one of the most striking open problems in quantitative Ramsey theory for arithmetic progressions.",
     "problemStatement": "Let $h(N)$ be the minimum $k$ such that $\\{1,\\ldots,N\\}$ can be $k$-colored so that every 4-term arithmetic progression uses at least 3 distinct colors. Estimate $h(N)$. Current bounds: $\\exp(c(\\log N)^{1/9}) \\le h(N) \\le O(N^{\\log 3/\\log 22 + o(1)})$.",
-    "text": "Let h(N) be the minimum colors so that every 4-AP in {1,...,N} uses \u2265 3 colors. Known: exp(c(log N)^{1/9}) \u2264 h(N) \u2264 N^{log3/log22+o(1)}. Close the gap. Open.",
+    "text": "Let h(N) be the minimum colors so that every 4-AP in {1,...,N} uses ≥ 3 colors. Known: exp(c(log N)^{1/9}) ≤ h(N) ≤ N^{log3/log22+o(1)}. Close the gap. Open.",
     "proofStrategy": "The formalization first defines the combinatorial setup: 4-APs, the 3-diversity condition, and achievability. It then axiomatizes $h(N)$ as the minimum achievable color count and proves basic properties (monotonicity, trivial bounds, $h(N) \\le N$). The known upper bounds (LeechLattice's $N^{2/3}$ and Hunter's $N^{0.356}$) and the lower bound ($\\exp(c(\\log N)^{1/9})$ via Kelley–Meka) are axiomatized. Consequences (sublinearity, unboundedness) are derived. The open problem asks for the true growth rate.",
     "keyInsights": [
       "**3-diversity is strictly stronger than anti-monochromatic**: Requiring $\\ge 3$ colors on every 4-AP is much harder to achieve than $\\ge 2$, creating a rich extremal problem between trivial and rainbow colorings",

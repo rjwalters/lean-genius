@@ -41,12 +41,13 @@
       "The open case k = 4"
     ],
     "axiomCount": 11,
-    "lineCount": 150
+    "lineCount": 150,
+    "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "A **k-vertex-critical graph** is one with chromatic number k where every vertex is critical (its deletion reduces χ). A **critical edge** is one whose deletion reduces χ.\n\nDirac (1970) conjectured that for k ≥ 4, there exist k-vertex-critical graphs with NO critical edges. This asks whether vertex-criticality and edge-criticality can be 'decoupled.'\n\n**Timeline of results**:\n- 1970: Dirac's conjecture\n- 1992: Brown constructs a 5-vertex-critical graph with no critical edges (11 vertices)\n- 2002: Lattanzio shows such graphs exist when k-1 is not prime\n- 2002: Jensen gives a general construction for all k ≥ 5\n- 2025: Martinsson-Steiner prove existence for large k and any r ≥ 1\n- 2025: Skottova-Steiner show f_k(n) → ∞ for k ≥ 5\n\nThe case **k = 4 remains OPEN**.",
     "problemStatement": "A **critical vertex** is one whose deletion lowers the chromatic number. A **critical edge** (or critical edge set) is one whose deletion lowers the chromatic number.\n\n**Erdős Problem #944**: Let $k \\geq 4$ and $r \\geq 1$. Does there exist a graph $G$ with chromatic number $k$ such that:\n1. Every vertex is critical (G is k-vertex-critical)\n2. Every critical set of edges has size $> r$?\n\n**Status by k**:\n- $k \\geq 5$: **SOLVED** (Jensen 2002)\n- $k = 4$: **OPEN** (even for $r = 1$)",
-    "text": "For k \u2265 4 and r \u2265 1, does there exist a k-vertex-critical graph where every critical edge set has size > r? The case k = 4 remains OPEN; all k \u2265 5 are solved.",
+    "text": "For k ≥ 4 and r ≥ 1, does there exist a k-vertex-critical graph where every critical edge set has size > r? The case k = 4 remains OPEN; all k ≥ 5 are solved.",
     "proofStrategy": "We formalize this problem by:\n\n1. **k-vertex-critical**: A type class capturing graphs where χ(G) = k and every vertex is critical\n\n2. **Erdős944 property**: Extends k-vertex-critical with the condition that all critical edge sets have size > r\n\n3. **Main conjecture**: Existence for all k ≥ 4, r ≥ 1\n\n4. **Solved cases**: Brown (k=5), Lattanzio (k-1 not prime), Jensen (k≥5), Martinsson-Steiner (large k)\n\n5. **Open case**: k = 4 remains unsolved",
     "keyInsights": [
       "**Why complete graphs fail**: K_k is k-vertex-critical, but EVERY edge is critical. The problem asks if we can avoid edge-criticality.",

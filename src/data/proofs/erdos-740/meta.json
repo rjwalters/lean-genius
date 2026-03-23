@@ -23,12 +23,13 @@
     "erdosUrl": "https://erdosproblems.com/740",
     "erdosProblemStatus": "open",
     "axiomCount": 2,
-    "lineCount": 341
+    "lineCount": 341,
+    "assumptions": "2 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős and Hajnal posed this problem about preserving chromatic number while avoiding short odd cycles. It first appeared in Erdős's 1981 paper 'On the combinatorial problems which I would most like to see solved' ([Er81]), where he listed it among approximately 50 problems he considered most important in combinatorics. Rödl proved the case 𝔪 = ℵ₀ and r = 3 (triangle-free) in 1977, using a sophisticated probabilistic argument involving random vertex selection. The problem also appears in Erdős's 1995 survey [Er95d] on combinatorial set theory. The general case and the threshold function f_r(𝔪) remain open, connecting infinite combinatorics, set theory, and structural graph theory. The problem sits at the intersection of Ramsey theory and chromatic graph theory, building on Erdős's seminal 1959 result that graphs with arbitrarily high girth and chromatic number exist.",
     "problemStatement": "Let 𝔪 be an infinite cardinal and G be a graph with chromatic number 𝔪. Let r ≥ 1. Must G contain a subgraph of chromatic number 𝔪 which does not contain any odd cycle of length ≤ r?",
-    "text": "Must every graph with infinite chromatic number \ud835\udd2a contain a subgraph with \u03c7 = \ud835\udd2a that avoids all odd cycles of length \u2264 r?",
+    "text": "Must every graph with infinite chromatic number 𝔪 contain a subgraph with χ = 𝔪 that avoids all odd cycles of length ≤ r?",
     "proofStrategy": "We formalize chromatic numbers for infinite graphs using Mathlib's Cardinal type, define cycles and odd cycle avoidance as Lean structures, and state the Erdős-Hajnal conjecture in full generality. Rödl's theorem for the countable triangle-free case is declared as an axiom. We prove that the girth variant (avoiding ALL short cycles) implies the odd cycle variant, and show the bipartite limitation: no bipartite subgraph can have χ > 2, so the parameter r must be finite. The formalization also addresses the threshold function question and finite analogs.",
     "keyInsights": [
       "Rödl proved (1977): every ℵ₀-chromatic graph has a triangle-free subgraph with χ = ℵ₀, using probabilistic methods in infinite combinatorics",

@@ -21,12 +21,13 @@
     "erdosUrl": "https://erdosproblems.com/575",
     "erdosProblemStatus": "open",
     "axiomCount": 6,
-    "lineCount": 103
+    "lineCount": 103,
+    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős and Simonovits posed this problem in 1982 as part of their systematic investigation of extremal functions for graph families. The question sits at the crossroads of two regimes in extremal graph theory. For non-bipartite forbidden graphs, the Erdős–Stone–Simonovits theorem (1966) determines ex(n; H) up to the o(n²) error, and the answer depends only on the chromatic number χ(H). But when the forbidden family contains a bipartite graph, the extremal function drops to o(n²) and the precise order of growth depends on the fine structure of the forbidden graph — a much harder problem. Simonovits had earlier (1966) shown that for a single forbidden bipartite graph the extremal function exhibits polynomial growth n^{1+c} for some c < 1, but determining this exponent remains open in most cases. Problem #575 asks whether, for families, the analysis reduces to a single bipartite member: a powerful structural simplification if true. The conjecture has been verified for families of complete bipartite graphs and certain degenerate families, but the general case remains open after four decades.",
     "problemStatement": "For a finite family $\\mathcal{F}$ of graphs with at least one bipartite member, does there exist a bipartite $G \\in \\mathcal{F}$ such that $\\mathrm{ex}(n; G) = O(\\mathrm{ex}(n; \\mathcal{F}))$?",
-    "text": "For a finite family F of graphs containing a bipartite member, does some bipartite G \u2208 F satisfy ex(n;G) \u226a ex(n;F)? That is, does a single bipartite graph control the extremal function? Erd\u0151s\u2013Simonovits (1982).",
+    "text": "For a finite family F of graphs containing a bipartite member, does some bipartite G ∈ F satisfy ex(n;G) ≪ ex(n;F)? That is, does a single bipartite graph control the extremal function? Erdős–Simonovits (1982).",
     "proofStrategy": "The formalization sets up the foundational framework for extremal graph numbers: the Turán number ex(n; H), the family extremal function ex(n; F), and the bipartite graph predicate. It then states the Erdős–Simonovits conjecture and provides supporting context through the Erdős–Stone–Simonovits theorem (for the non-bipartite regime) and the Kővári–Sós–Turán bound (for the bipartite regime), along with key structural properties of family extremal functions.",
     "keyInsights": [
       "The Erdős–Stone–Simonovits theorem $\\mathrm{ex}(n; H) = (1 - 1/(\\chi(H)-1) + o(1))n^2/2$ completely solves the non-bipartite case, making the bipartite regime the central open frontier",

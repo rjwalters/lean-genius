@@ -54,12 +54,13 @@
       "Provides verified computational examples"
     ],
     "axiomCount": 5,
-    "lineCount": 189
+    "lineCount": 189,
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This problem involves 3-smooth numbers—positive integers whose only prime factors are 2 and 3 (i.e., numbers of the form 2^k · 3^l). Erdős asked whether, for any constant C > 0, the set of integers expressible as sums of distinct 3-smooth numbers with bounded ratio (largest ≤ C times smallest) has natural density zero.\n\nIn 1992, Erdős wrote about his 'silly conjecture' that every integer can be written as a sum of distinct 3-smooth numbers where no summand divides another. This was quickly proved by Jansen and others using a simple induction.\n\nThe main problem was resolved in 2025 by van Doorn and Everts, who proved that ALL integers can be represented with C = 6, completely disproving Erdős's conjecture—the set has density 1, not 0.\n\nThe optimal constant C* remains of interest: Erdős and Lewin (1996) showed C* > 2, and van Doorn and Everts showed C* ≥ 3. It is conjectured that C* > 3^10/2^14 ≈ 3.604 may suffice.",
     "problemStatement": "Let $C > 0$. Consider the set of integers $n$ expressible as\n$$n = b_1 + b_2 + \\cdots + b_t$$\nwhere $b_1 < b_2 < \\cdots < b_t$ are distinct 3-smooth numbers (of the form $2^k \\cdot 3^l$) satisfying $b_t \\leq C \\cdot b_1$.\n\n**Question**: Does this set have natural density 0?\n\n**Answer**: NO (DISPROVED). Van Doorn and Everts (2025) proved that with $C = 6$, ALL positive integers have such representations. The set has density 1, not 0.",
-    "text": "For C > 0, does the set of integers expressible as sums of 3-smooth numbers b\u2081 < ... < b\u209c with b\u209c \u2264 Cb\u2081 have density 0? Disproved: all integers have such representations with C = 6.",
+    "text": "For C > 0, does the set of integers expressible as sums of 3-smooth numbers b₁ < ... < bₜ with bₜ ≤ Cb₁ have density 0? Disproved: all integers have such representations with C = 6.",
     "proofStrategy": "We formalize the problem using Mathlib's Finset operations. A 3-smooth number is defined as 2^k · 3^l for natural numbers k, l. The bounded-ratio representation property is captured by requiring the max/min ratio of the summand set to be at most C.\n\nSince the 2025 disproof involves sophisticated combinatorial arguments beyond current Mathlib capabilities, we state the main results as axioms:\n1. Universal representation with C = 6 (van Doorn-Everts)\n2. The conjecture is false (corollary)\n3. Lower bounds C > 2 (Erdős-Lewin) and C ≥ 3 (van Doorn-Everts)\n\nWe also include the 'silly conjecture' result about representations with non-divisibility.",
     "keyInsights": [
       "**3-smooth numbers**: Numbers of the form 2^k · 3^l form a sparse but structured subset of integers, fundamental in number theory and computer science.",

@@ -45,7 +45,8 @@
       "Preimage counting in arithmetic functions",
       "Multiplicative number theory",
       "Distribution of totient values"
-    ]
+    ],
+    "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "sections": [
     {
@@ -87,7 +88,7 @@
   "overview": {
     "historicalContext": "Erdős posed Problem #51 in 1995, asking whether the inverse totient function can be arbitrarily inefficient. The Euler totient φ(n) counts integers ≤ n coprime to n, and the **inverse totient problem** asks: given a, find the smallest n with φ(n) = a. For prime-generated values a = p−1, the answer is n = p (ratio ≈ 1), but for other totient values, the smallest preimage may be much larger. The problem connects to **Carmichael's conjecture** (1907, still open) that no totient value has exactly one preimage, which Erdős addressed in 1935 with the conditional result that a single counterexample implies infinitely many. Ford's 1998 work on the distribution of totients provides the broader framework. The problem is listed as B36/B39 in Guy's 'Unsolved Problems in Number Theory'.",
     "problemStatement": "Is there an infinite set A ⊂ ℕ such that each a ∈ A satisfies φ(n) = a for some n, yet the smallest such n satisfies n_a/a → ∞ as a → ∞ through A?",
-    "text": "Is there an infinite set A \u2282 \u2115 of totient values such that the smallest preimage n_a of each a \u2208 A satisfies n_a/a \u2192 \u221e? That is, can the minimal solution to \u03c6(n) = a grow much faster than a? OPEN.",
+    "text": "Is there an infinite set A ⊂ ℕ of totient values such that the smallest preimage n_a of each a ∈ A satisfies n_a/a → ∞? That is, can the minimal solution to φ(n) = a grow much faster than a? OPEN.",
     "proofStrategy": "The formalization defines the totient preimage set, the IsTotientValue predicate, and the smallest preimage function via Nat.find. The main conjecture is axiomatized as an existential over infinite sets with divergent ratios. Supporting results establish that prime-generated totient values have bounded ratios (the 'easy' case the conjecture must avoid), and that preimage sizes are unbounded (highly totient numbers exist). Erdős's 1935 Carmichael result is included as context. The file has 0 sorries.",
     "keyInsights": [
       "**Prime obstruction**: For a = p−1 with p prime, n_a ≤ p so ratio → 1 — the conjecture must find totient values *not* of this form",

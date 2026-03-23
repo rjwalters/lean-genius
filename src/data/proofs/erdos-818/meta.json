@@ -61,12 +61,13 @@
       "Logarithmic functions and asymptotic notation",
       "Basic number theory (arithmetic and geometric progressions)"
     ],
-    "lineCount": 325
+    "lineCount": 325,
+    "assumptions": "10 axiom(s) and 4 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This problem is part of the sum-product phenomenon, a central topic in additive combinatorics. Erdős-Szemerédi conjectured that finite sets cannot have both small sumsets AND small product sets. This problem explores a conditional version: if the sumset is small, how large must the product set be? Solymosi's 2009 paper resolved this completely. The sum-product conjecture (1983) was proved in quantitative forms by Elekes (1997) using the Szemerédi-Trotter incidence theorem, and by Solymosi and others achieving exponent 4/3. The conditional question asks whether small additive structure forces large multiplicative structure, refining the unconditional sum-product estimates.",
     "problemStatement": "Let A be a finite set of integers such that |A+A| ≤ K·|A| for some constant K. Is it true that |A·A| ≥ |A|²/(log|A|)^C for some constant C > 0?",
-    "text": "If |A+A| \u2264 K|A| (small sumset), is |AA| \u2265 |A|\u00b2/(log|A|)^C for some C? Answer: YES. Solymosi (2009) proved the stronger bound |AA| \u2265 c\u00b7|A|\u00b2/log|A|.",
+    "text": "If |A+A| ≤ K|A| (small sumset), is |AA| ≥ |A|²/(log|A|)^C for some C? Answer: YES. Solymosi (2009) proved the stronger bound |AA| ≥ c·|A|²/log|A|.",
     "proofStrategy": "The formalization defines sumsets, product sets, and the small sumset condition. Solymosi's theorem is stated as the main result, with the proof strategy outlined: bound multiplicative energy from below (Cauchy-Schwarz) and above (Solymosi's lemma), then combine to get the product set bound.",
     "keyInsights": [
       "Sets cannot have both strong additive AND multiplicative structure",

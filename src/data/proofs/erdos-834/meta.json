@@ -53,12 +53,13 @@
       "All theorems proved with 0 sorries (axioms encode deep external results)"
     ],
     "axiomCount": 3,
-    "lineCount": 197
+    "lineCount": 197,
+    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and Lovász in their influential 1973 paper 'Problems and results on 3-chromatic hypergraphs and some related questions', which initiated the systematic study of hypergraph coloring extremal problems. The question asks about the minimum degree achievable in 3-critical 3-uniform hypergraphs. A key subtlety, discovered over decades of study, is that the answer depends entirely on the interpretation of '3-critical': the transversal interpretation ($\\tau(H) = 3$, every edge essential for the cover) gives a fundamentally different answer than the chromatic interpretation ($\\chi(H) = 3$, every edge essential for the coloring). Lovász had already shown that chromatic-critical hypergraphs can have arbitrarily high minimum degree via product constructions. The transversal case remained open until Li (2025) proved the tight bound $\\delta(H) \\le 6$, completing the picture for both interpretations.",
     "problemStatement": "Does there exist a 3-critical 3-uniform hypergraph in which every vertex has degree $\\ge 7$?\n\nTwo interpretations:\n1. **Transversal-critical**: $\\tau(H) = 3$ and $\\forall e \\in E(H),\\; \\tau(H - e) < 3$. Answer: NO — Li (2025) proved $\\delta(H) \\le 6$, and this bound is tight.\n2. **Chromatic-critical**: $\\chi(H) = 3$ and $\\forall e \\in E(H),\\; \\chi(H - e) < 3$. Answer: YES — Lovász's construction gives $\\delta(H) \\ge d$ for any $d$.",
-    "text": "Does there exist a 3-critical 3-uniform hypergraph in which every vertex has degree \u2265 7? The answer depends on the definition of '3-critical': NO for transversal-criticality (Li 2025 proved max is 6), YES for chromatic-criticality (Lov\u00e1sz constructions give arbitrarily high degree).",
+    "text": "Does there exist a 3-critical 3-uniform hypergraph in which every vertex has degree ≥ 7? The answer depends on the definition of '3-critical': NO for transversal-criticality (Li 2025 proved max is 6), YES for chromatic-criticality (Lovász constructions give arbitrarily high degree).",
     "proofStrategy": "The formalization defines both criticality notions separately and proves the contrasting answers. A custom `Hypergraph V` structure uses `Set (Finset V)` for edges. Transversal and chromatic numbers use conditional infima. Li's bound and Lovász's construction are axiomatized as deep external results. The negative answer uses proof by contradiction with `omega`; the positive answer instantiates the construction axiom with $d = 7$. All Lean theorems have 0 sorries.",
     "keyInsights": [
       "The ambiguity in 'critical' leads to genuinely different mathematical questions: transversal-criticality constrains local structure tightly (every edge is essential for the cover), while chromatic-criticality is more flexible (coloring constraints allow more edges)",

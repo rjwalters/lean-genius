@@ -21,12 +21,13 @@
     "erdosUrl": "https://erdosproblems.com/926",
     "erdosProblemStatus": "solved",
     "axiomCount": 14,
-    "lineCount": 274
+    "lineCount": 274,
+    "assumptions": "14 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős posed Problem #926 in his 1971 paper 'Some unsolved problems in graph theory and combinatorial analysis,' asking whether the Turán number of a specific graph $H_k$ satisfies $\\mathrm{ex}(n; H_k) \\ll_k n^{3/2}$. He claimed a proof for $k = 3$ in that paper. The graph $H_k$ has a central vertex $x$ adjacent to $k$ vertices $y_i$, plus $\\binom{k}{2}$ witness vertices $z_{ij}$ each adjacent to exactly $y_i$ and $y_j$. Füredi (1991, Combinatorica) proved the general case: $\\mathrm{ex}(n; H_k) \\ll (kn)^{3/2}$ using probabilistic methods and dependent random choice — a technique pioneered for embedding sparse forbidden subgraphs. Alon, Krivelevich, and Sudakov (2003, Combin. Probab. Comput.) refined this to $\\mathrm{ex}(n; H_k) \\ll k \\cdot n^{3/2}$, saving a factor of $\\sqrt{k}$. The lower bound $\\mathrm{ex}(n; H_k) \\gg n^{3/2}$ is immediate from $C_4 \\subseteq H_k$ (for $k \\geq 3$) and the Kővári-Sós-Turán theorem (1954). The problem connects to the broader 2-degenerate conjecture (Erdős Problem 146), since all $z_{ij}$ vertices have degree 2.",
     "problemStatement": "Let $k \\geq 4$. Is it true that $\\mathrm{ex}(n; H_k) \\ll_k n^{3/2}$, where $H_k$ is the graph on vertices $x, y_1, \\ldots, y_k, z_{ij}$ ($1 \\leq i < j \\leq k$), with $x$ adjacent to all $y_i$ and each $z_{ij}$ adjacent to $y_i$ and $y_j$?",
-    "text": "For k \u2265 4, is it true that ex(n; H_k) \u226a_k n^(3/2), where H_k is the graph with central vertex x adjacent to k vertices y_1,...,y_k, and (k choose 2) vertices z_ij each adjacent to a unique pair y_i, y_j? Answer: YES. Proved by F\u00fcredi (1991) with bound (kn)^(3/2), improved by Alon-Krivelevich-Sudakov (2003) to k\u00b7n^(3/2).",
+    "text": "For k ≥ 4, is it true that ex(n; H_k) ≪_k n^(3/2), where H_k is the graph with central vertex x adjacent to k vertices y_1,...,y_k, and (k choose 2) vertices z_ij each adjacent to a unique pair y_i, y_j? Answer: YES. Proved by Füredi (1991) with bound (kn)^(3/2), improved by Alon-Krivelevich-Sudakov (2003) to k·n^(3/2).",
     "proofStrategy": "The formalization defines the vertex count $|V(H_k)| = 1 + k + \\binom{k}{2}$ and edge count $|E(H_k)| = k^2$, with computed examples ($H_4$ has 11 vertices, 16 edges). Structural properties ($C_4$-containment, 2-degeneracy, bipartiteness) are axiomatized. The Kővári-Sós-Turán theorem, Füredi's bound, and the AKS improvement are axiomatized. Three theorems are proved: `erdos_926` (trivially `True`), `erdos_926_summary` (conjunction of `True`s), and `erdos_926_order`.",
     "keyInsights": [
       "**$C_4$-containment gives the lower bound**: $H_k \\supseteq C_4$ (via cycle $x - y_1 - z_{12} - y_2 - x$), so $\\mathrm{ex}(n; H_k) \\geq \\mathrm{ex}(n; C_4) \\sim \\frac{1}{2}n^{3/2}$ by Kővári-Sós-Turán.",

@@ -60,12 +60,13 @@
       "erdos_712_summary theorem: combining all results"
     ],
     "axiomCount": 20,
-    "lineCount": 273
+    "lineCount": 273,
+    "assumptions": "20 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "The hypergraph Turán problem is one of the most famous and longstanding open questions in extremal combinatorics. For ordinary graphs (r=2), Turán completely solved the problem in 1941: the maximum number of edges in a K_k-free graph on n vertices is achieved by the balanced complete (k-1)-partite graph, giving the density (1-1/(k-1))/2. This elegant result launched the field of extremal graph theory.\n\nFor hypergraphs with uniformity r > 2, the situation becomes dramatically harder. Even the simplest open case — the density π_3(K_4^3) for 3-uniform hypergraphs avoiding a complete 4-clique — has resisted all attacks for over 80 years. Turán conjectured that the extremal construction is the balanced 4-partition hypergraph T(n,4,3), which gives density 5/9. The best known upper bound, due to Razborov's flag algebra method (2010), is approximately 0.5616, leaving a significant gap.\n\nErdős considered this problem so important that he offered a $500 prize for determining the Turán density for any single case with k > r > 2, and $1000 for resolving the entire family. No case has been solved. The problem connects to Ramsey theory, coding theory, and the emerging field of flag algebras, which provides the strongest computational bounds but has not been able to close any gaps to exact values.",
     "problemStatement": "Determine, for any k > r > 2, the value of lim_{n→∞} ex_r(n, K_k^r)/C(n,r), where ex_r(n, K_k^r) is the maximum number of r-edges on n vertices containing no complete k-clique K_k^r.",
-    "text": "Determine the Tur\u00e1n density lim ex_r(n, K_k^r)/C(n,r) for k > r > 2. One of the most famous open problems in extremal combinatorics. Prize: $500/$1000.",
+    "text": "Determine the Turán density lim ex_r(n, K_k^r)/C(n,r) for k > r > 2. One of the most famous open problems in extremal combinatorics. Prize: $500/$1000.",
     "proofStrategy": "The formalization defines r-uniform hypergraphs, the Turán number ex_r(n, K_k^r), and the Turán density π_r(K_k^r). For r=2, Turán's theorem gives the exact answer. For r>2, we state the problem as open and include known bounds (de Caen lower bound, Razborov/flag algebra upper bounds). The famous case K_4^3 is highlighted: Turán conjectured π_3(K_4^3) = 5/9, with current bounds 5/9 ≤ π_3(K_4^3) ≤ 0.5616.",
     "keyInsights": [
       "Graph case (r=2) completely solved by Turán (1941)",

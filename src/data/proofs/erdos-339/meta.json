@@ -59,12 +59,13 @@
       "erdos_339_solved, erdos_339_summary theorems"
     ],
     "axiomCount": 6,
-    "lineCount": 231
+    "lineCount": 231,
+    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #339: Additive Bases and Distinct Sums**\n\nThis problem explores the relationship between additive bases and 'restricted' representations using distinct elements.\n\n**Key History:**\n- Erdős-Graham (1980): Posed both conjectures in their monograph\n- Hegyvári-Hennecart-Plagne (2003): Proved both conjectures in J. Reine Angew. Math.\n\n**Mathematical Setting:**\nA set A ⊆ ℕ is a basis of order r if every large integer is a sum of r elements from A. The question is whether the 'restricted' sums (using r DISTINCT elements) also cover a positive fraction of integers.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet A ⊆ ℕ be a basis of order r.\n\n**Question 1:** Must the set of sums of exactly r DISTINCT elements from A have positive lower density?\n\n**Question 2:** If r-sums (with repetition) have positive upper density, must r distinct sums also have positive upper density?\n\n**Answer: YES to both** - Hegyvári, Hennecart, Plagne (2003)",
-    "text": "If A is a basis of order r, must sums of r DISTINCT elements have positive lower density? YES - proved by Hegyv\u00e1ri-Hennecart-Plagne (2003). Also: upper density is preserved.",
+    "text": "If A is a basis of order r, must sums of r DISTINCT elements have positive lower density? YES - proved by Hegyvári-Hennecart-Plagne (2003). Also: upper density is preserved.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Basis Definition:**\n   - IsBasisOfOrder A r: every large n = sum of r elements\n   - rSums: all r-element sums (repetition allowed)\n   - rDistinctSums: sums of r DISTINCT elements\n\n2. **Density Definitions:**\n   - countingFunction: |A ∩ [0,n]|\n   - lowerDensity, upperDensity via liminf/limsup\n\n3. **Main Results:**\n   - erdosConjecture1: IsBasisOfOrder → positive lower density\n   - erdosGrahamConjecture2: upper density preservation\n   - hegyvari_hennecart_plagne_1/2: both axiomatized as true",
     "keyInsights": [
       "**Subset but Dense:** rDistinctSums ⊆ rSums (fewer elements), yet density is preserved. This is counterintuitive!",

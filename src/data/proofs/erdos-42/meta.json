@@ -27,12 +27,13 @@
       "Difference sets of finite sets",
       "Extremal combinatorics and Ramsey theory",
       "Finite field constructions (Singer difference sets)"
-    ]
+    ],
+    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Sidon sets (also called B₂ sets) were introduced by Simon Sidon in the 1930s through correspondence with Erdős. A Sidon set is a set of integers where all pairwise sums are distinct. Erdős and Turán (1941) proved the fundamental size bound |A| ≤ √(2N) for Sidon subsets of {1,...,N}. Problem 42 asks about the rigidity of maximal Sidon sets: even though adding any new element to a maximal Sidon set creates a repeated sum, the conjecture asserts that the difference set A−A cannot monopolize all available differences. Sedov proved the cases M = 2 (by pigeonhole counting) and M = 3 (by combining analytic estimates with computational verification). The problem connects to broader questions in additive combinatorics about the structure of B₂ sets, including the Erdős–Turán conjecture on the maximum size of Sidon sets and Ruzsa's constructions of near-optimal Sidon sets.",
     "problemStatement": "For every M ≥ 1 and N sufficiently large, is it true that every maximal Sidon set A ⊆ {1,...,N} admits a companion Sidon set B ⊆ {1,...,N} of size M with (A−A) ∩ (B−B) = {0}?",
-    "text": "For every maximal Sidon set A \u2286 {1,...,N}, does there exist a Sidon set B of size M with (A\u2212A) \u2229 (B\u2212B) = {0}? Proved for M \u2264 3 (Sedov). Open in general.",
+    "text": "For every maximal Sidon set A ⊆ {1,...,N}, does there exist a Sidon set B of size M with (A−A) ∩ (B−B) = {0}? Proved for M ≤ 3 (Sedov). Open in general.",
     "proofStrategy": "The formalization defines Sidon sets via sum-distinctness on Finset ℕ, interval containment, and maximality in the inclusion order. Difference sets are computed as Finset ℤ via biUnion. The key axioms record the classical size bound |A|² ≤ 2N+1, Sedov's results for M ≤ 3, and both the existential and constructive forms of the general conjecture. The constructive version asks for an explicit threshold function f(M) bounding the required N.",
     "keyInsights": [
       "**Difference occupation**: A Sidon set A with |A| ≈ √N generates |A−A| ≈ N distinct differences out of 2N possible, leaving substantial room in principle for companion sets",

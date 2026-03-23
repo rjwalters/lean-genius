@@ -45,12 +45,13 @@
       "Axiomatized the size-variety tradeoff and size availability constraints"
     ],
     "axiomCount": 8,
-    "lineCount": 118
+    "lineCount": 118,
+    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős and Trotter studied extremal problems on antichains in the Boolean lattice $2^{[n]}$, extending Sperner's celebrated 1928 theorem that the maximum antichain has size $\\binom{n}{\\lfloor n/2 \\rfloor}$. Problem 776 adds a *multiplicity constraint*: every occurring set size must appear at least $r$ times. For $r = 1$ (no constraint), Griggs showed in 1983 that an antichain can use at most $n - 2$ distinct set sizes for $n > 3$, since sizes $0$ and $n$ correspond to $\\{\\emptyset\\}$ and $\\{[n]\\}$ which are incomparable to nothing else non-trivially. For $r \\geq 2$, the constraint $\\binom{n}{k} \\geq r$ excludes the extreme layers $k \\in \\{0, 1, n-1, n\\}$ for small $r$ and more layers as $r$ grows. Erdős and Trotter showed the maximum drops to $n - 3$ for large $n$, but the precise threshold $N(r)$ remains open. This connects to the 'anatomy' of the Boolean lattice and the LYM inequality.",
     "problemStatement": "For $r \\geq 2$, determine the threshold $N(r)$ such that for all $n \\geq N(r)$, the maximum number of distinct set sizes in a multiplicity-$r$ antichain in $2^{[n]}$ is exactly $n - 3$.",
-    "text": "For r \u2265 2, how large must n be to guarantee an antichain in 2^{[n]} with n\u22123 distinct set sizes, each appearing \u2265 r times? For r=1: max is n\u22122. For r>1: max is n\u22123 for large n.",
+    "text": "For r ≥ 2, how large must n be to guarantee an antichain in 2^{[n]} with n−3 distinct set sizes, each appearing ≥ r times? For r=1: max is n−2. For r>1: max is n−3 for large n.",
     "proofStrategy": "The formalization defines subset families as `Finset (Finset (Fin n))`, antichains via pairwise non-containment, and `maxDistinctSizes` via `Finset.sup` over valid families. The theorem `erdos_trotter_exact` is *proved* from the axiomatized upper bound ($\\leq n-3$) and achievability ($\\geq n-3$) using `omega`. The threshold conjecture includes a minimality clause, and structural observations capture Sperner's theorem, the middle layer construction, and the size-variety tradeoff.",
     "keyInsights": [
       "For $r = 1$: the maximum is $n - 2$ distinct sizes (sizes $0$ and $n$ are mutually exclusive in antichains containing other sets, so at most one extreme size is usable, and Griggs showed exactly $n - 2$ is achievable)",

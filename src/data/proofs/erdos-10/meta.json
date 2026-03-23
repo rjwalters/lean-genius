@@ -33,12 +33,13 @@
       "Sieve methods (for Romanoff's theorem)",
       "Covering congruences (for the exception construction)",
       "Large sieve inequality (for Gallagher's theorem)"
-    ]
+    ],
+    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős asked whether there exists $k$ such that every sufficiently large integer can be written as a prime plus at most $k$ powers of 2. He described the problem as 'probably unattackable' and, with Graham, conjectured no such $k$ exists. The problem has deep roots: Romanoff (1934) showed that already for $k = 1$, a positive proportion of integers are representable as $p + 2^a$, using sieve methods. Erdős (1950) proved via covering congruences that the complement also has positive density. Gallagher (1975) proved the density approaches 1 as $k$ grows, using the large sieve inequality and the Bombieri-Vinogradov theorem on primes in arithmetic progressions. Granville and Soundararajan (1998) made the bold conjecture that $k = 3$ suffices for all odd integers $> 1$. Grechuk computationally verified that $1117175146$ (even) is not in $S_3$, confirming the parity barrier. The problem connects to Goldbach-type questions, covering systems (Erdős 1950), and the deep question of how well lacunary sequences complement the primes as additive bases.",
     "problemStatement": "Does there exist a constant $k$ such that every integer $n > 1$ can be written as $n = p + 2^{a_1} + \\cdots + 2^{a_j}$ where $p$ is prime and $j \\leq k$?",
-    "text": "Is there some k such that every sufficiently large integer is the sum of a prime and at most k powers of 2? Erd\u0151s and Graham conjectured no such k exists. Gallagher showed the representable set has density arbitrarily close to 1.",
+    "text": "Is there some k such that every sufficiently large integer is the sum of a prime and at most k powers of 2? Erdős and Graham conjectured no such k exists. Gallagher showed the representable set has density arbitrarily close to 1.",
     "proofStrategy": "The formalization defines $S_k = \\{n : n = p + \\sum 2^{a_i},\\, p \\text{ prime},\\, j \\leq k\\}$ using `Multiset N` for exponents and `Set.lowerDensity` via `Filter.liminf`. The Erdős-Graham conjecture ($\\neg \\exists k: \\{n > 1\\} \\subseteq S_k$), Gallagher's density theorem ($\\forall \\varepsilon > 0,\\, \\exists k: \\underline{d}(S_k) \\geq 1 - \\varepsilon$), the Granville-Soundararajan conjectures ($k = 3$ for odd, $k = 4$ for even), Grechuk's counterexample ($1117175146 \\notin S_3$), covering congruence exceptions, and Romanoff's theorem ($\\underline{d}(S_1) > 0$) are all axiomatized. No proved theorems (all results are deep).",
     "keyInsights": [
       "**Gallagher's density theorem (1975)**: For any $\\varepsilon > 0$, $\\exists k(\\varepsilon)$ with $\\underline{d}(S_{k(\\varepsilon)}) \\geq 1 - \\varepsilon$, using the large sieve and Bombieri-Vinogradov theorem. This is the strongest unconditional result.",

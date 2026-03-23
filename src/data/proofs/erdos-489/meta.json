@@ -57,12 +57,13 @@
       "IsKFree definition: k-free numbers"
     ],
     "axiomCount": 4,
-    "lineCount": 198
+    "lineCount": 198,
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős posed Problem #489 in 1961, asking whether a natural gap statistic converges for sequences defined by sparse divisibility constraints. The problem generalizes classical questions about squarefree numbers to arbitrary B-free sets.\n\nThe squarefree case (A = {p² : p prime}) was solved by Erdős himself, who proved that the normalized sum of squared gaps between consecutive squarefree numbers converges. The density of squarefree numbers is 6/π² ≈ 0.6079, a classical result connected to the Riemann zeta function.\n\nThe general case remains open: for an arbitrary sparse set A with |A ∩ [1,x]| = o(√x), it is unknown whether the second moment of gaps in the A-free sequence always converges. This connects to sieve theory, gap distributions, and moment methods in analytic number theory.",
     "problemStatement": "**Problem Statement (Open)**\n\nLet A ⊆ ℕ with |A ∩ [1,x]| = o(x^{1/2}). Let B be the A-free numbers (not divisible by any a ∈ A). Does\n\nlim_{x→∞} (1/x) Σ_{b_i<x} (b_{i+1} - b_i)²\n\nexist and is finite?\n\n**Status: OPEN** (in general)\n\nSquarefree case (A = prime squares) is solved by Erdős.",
-    "text": "For sparse A, does lim (1/x)\u03a3(b_{i+1}-b_i)\u00b2 exist for A-free numbers B? OPEN in general; YES for squarefree numbers (Erd\u0151s).",
+    "text": "For sparse A, does lim (1/x)Σ(b_{i+1}-b_i)² exist for A-free numbers B? OPEN in general; YES for squarefree numbers (Erdős).",
     "proofStrategy": "**Formalization Approach**\n\n1. **Sparse Sets:** Define IsSparse via o(√x) counting\n\n2. **B-Free Numbers:** BFreeSet, IsBFree definitions\n\n3. **Gap Statistics:** gap, gapSquaredSum, normalizedGapStatistic\n\n4. **Main Question:** LimitExists, ErdosConjecture\n\n5. **Squarefree Case:** PrimeSquares, erdos_squarefree_limit",
     "keyInsights": [
       "**Sparseness Condition:** |A ∩ [1,x]| = o(√x) ensures B has positive density",

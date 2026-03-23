@@ -54,12 +54,13 @@
       "Multiplicative function case"
     ],
     "axiomCount": 3,
-    "lineCount": 195
+    "lineCount": 195,
+    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "The Erdős Discrepancy Problem, posed in the 1930s, asks whether every ±1 sequence must have unbounded partial sums along some arithmetic progression. For over 80 years, this remained one of the most famous open problems in combinatorics.\n\nIn 2010, the Polymath5 project—a massive collaborative effort—attempted to solve it but fell short. In September 2015, Terence Tao announced a complete solution, earning the $500 prize. His proof uses deep connections to multiplicative number theory, particularly a variant of the Elliott conjecture.\n\nTao's breakthrough came from realizing that the problem reduces to studying completely multiplicative functions, where techniques from analytic number theory become available.",
     "problemStatement": "**The Erdős Discrepancy Problem** (Solved by Tao 2015)\n\nFor any function $f: \\mathbb{N} \\to \\{-1, +1\\}$ and any $C > 0$, do there exist $d, m \\geq 1$ such that\n$$\\left|\\sum_{k=1}^{m} f(kd)\\right| > C?$$\n\n**Answer**: YES. No ±1 sequence has bounded discrepancy.\n\n**Prize**: $500 (collected by Tao)",
-    "text": "For any \u00b11 sequence f: \u2115 \u2192 {-1,+1}, must the partial sums along some arithmetic progression be unbounded? (Solved: YES, by Tao 2015)",
+    "text": "For any ±1 sequence f: ℕ → {-1,+1}, must the partial sums along some arithmetic progression be unbounded? (Solved: YES, by Tao 2015)",
     "proofStrategy": "We formalize the theorem and its variants:\n\n1. **discrepancy**: The absolute value of the sum along {d, 2d, ..., md}\n\n2. **erdosDiscrepancy** (axiom): Tao's main theorem—no bounded discrepancy\n\n3. **noBoundedDiscrepancy**: Derived theorem showing the negation\n\n4. **Complex variant**: Tao also proved this for f: ℕ → S¹\n\n5. **Stronger conjecture** (open): Discrepancy should grow ≥ c·log(x)\n\n6. **Multiplicative case**: The easier special case",
     "keyInsights": [
       "**Discrepancy**: Measures imbalance of ±1s along arithmetic progressions. Can you balance them to keep all sums bounded?",

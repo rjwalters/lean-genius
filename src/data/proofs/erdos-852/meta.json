@@ -21,12 +21,13 @@
     "erdosUrl": "https://erdosproblems.com/852",
     "erdosProblemStatus": "open",
     "axiomCount": 12,
-    "lineCount": 170
+    "lineCount": 170,
+    "assumptions": "12 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős posed this question about the fine structure of prime gaps around 1985, building on decades of work on the distribution of primes. The prime gaps $d_n = p_{n+1} - p_n$ encode the local behavior of the prime counting function $\\pi(x)$. Cramér (1936) conjectured $\\max_{p_n \\leq x} d_n \\sim (\\log x)^2$, while Maier (1985) showed that primes exhibit unexpected irregularities in short intervals — the 'Maier phenomenon.' The function $h(x)$ introduced here measures a different aspect: the variability of consecutive gaps. Hardy and Littlewood's prime $k$-tuples conjecture (1923) predicts which gap patterns occur, and Brun's sieve (1919) — originally developed to bound twin primes — provides the key tool showing $h(x) \\to \\infty$. The problem connects to Gallagher's 1976 result that gaps between consecutive primes follow a Poisson distribution on average, and to the Erdős–Rankin construction (1938/1962) of large gaps. The interplay between the lower bound $(\\log x)^c$ and upper bound $o(\\log x)$ would pin down $h(x)$ as growing faster than any power of $\\log\\log x$ but slower than $\\log x$ — a narrow window reflecting the subtle balance between regularity and irregularity in the prime sequence.",
     "problemStatement": "Let $d_n = p_{n+1} - p_n$ be the $n$-th prime gap. Define $h(x)$ as the maximal $k$ such that for some $n$ with $p_n < x$, the consecutive gaps $d_n, d_{n+1}, \\ldots, d_{n+k-1}$ are all distinct. Is $h(x) > (\\log x)^c$ for some $c > 0$? Is $h(x) = o(\\log x)$?",
-    "text": "Let h(x) be the maximal length of a sequence of consecutive distinct prime gaps among primes below x. Is h(x) > (log x)^c? Is h(x) = o(log x)? Brun's sieve shows h(x) \u2192 \u221e.",
+    "text": "Let h(x) be the maximal length of a sequence of consecutive distinct prime gaps among primes below x. Is h(x) > (log x)^c? Is h(x) = o(log x)? Brun's sieve shows h(x) → ∞.",
     "proofStrategy": "The formalization axiomatizes the prime sequence $p_n$ with primality and strict monotonicity, then defines prime gaps $d_n = p_{n+1} - p_n$ and proves their positivity. Distinct-gap runs are defined combinatorially and shown to be downward-closed (a prefix of a distinct run is distinct). The function $h(x)$ is axiomatized with witness and optimality axioms. Five theorems are proved in Lean: gap positivity, monotonicity of $p_n$, $p_n \\geq 2$, $d_0 = 1$, $h(x) \\geq 1$ for $x \\geq 3$, $h$ is non-decreasing, and Brun's divergence in filter form. The open conjectures use `Real.log`, real exponentiation, and `Asymptotics.IsLittleO` for rigorous formalization.",
     "keyInsights": [
       "**Consecutive gap variability**: Unlike problems about gap size ($\\max d_n$), this asks about gap *diversity* — how many consecutive gaps can all be different. This is a combinatorial constraint on the local prime distribution.",

@@ -58,12 +58,13 @@
       "Proof that the conjecture is false using these results"
     ],
     "axiomCount": 5,
-    "lineCount": 276
+    "lineCount": 276,
+    "assumptions": "5 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This problem connects to the famous Erdős-Selfridge theorem (1975), which states that the product of consecutive integers is never a perfect power. Erdős asked whether this constraint could be circumvented using multiple disjoint blocks of consecutive integers.\n\nPomerance observed that if we allow intervals of size 3, there are infinitely many counterexamples using blocks built from powers of 2. This motivated the condition |Iᵢ| ≥ 4.\n\nThe conjecture was spectacularly disproved in the 2000s. Ulas (2005) found infinitely many solutions for most values of n using size-4 intervals. Bauer-Bennett (2007) filled in the remaining cases n=3 and n=5. Bennett-Van Luijk (2012) extended the result to size-5 intervals, suggesting a general pattern.",
     "problemStatement": "Let $I_1, \\ldots, I_n$ be disjoint intervals of consecutive integers with $|I_i| \\geq 4$ for all $i$.\n\n**Conjecture**: There are only finitely many such collections where\n$$\\prod_{1 \\leq i \\leq n} \\prod_{m \\in I_i} m$$\nis a perfect square.\n\n**Answer**: NO - the conjecture is FALSE.\n\nThere are infinitely many solutions for any $n \\geq 3$ when all intervals have size 4.",
-    "text": "Are there only finitely many collections of disjoint intervals I\u2081,...,I\u2099 with |I\u1d62| \u2265 4 such that the product \u220f\u1d62 \u220f_{m \u2208 I\u1d62} m is a perfect square?",
+    "text": "Are there only finitely many collections of disjoint intervals I₁,...,Iₙ with |Iᵢ| ≥ 4 such that the product ∏ᵢ ∏_{m ∈ Iᵢ} m is a perfect square?",
     "proofStrategy": "We formalize disjoint interval collections and the perfect square condition. The main results are axiomatized:\n\n1. **Ulas (2005)**: Infinitely many solutions exist for n=4 or n≥6 with size-4 intervals.\n\n2. **Bauer-Bennett (2007)**: Infinitely many solutions exist for n=3 or n=5 with size-4 intervals.\n\n3. **Bennett-Van Luijk (2012)**: Infinitely many solutions exist for n≥5 with size-5 intervals.\n\nCombining these, we show the set of square-product collections is infinite, contradicting the conjecture.",
     "keyInsights": [
       "**Erdős-Selfridge Constraint**: A single block of consecutive integers is never a perfect power. But DISJOINT blocks can combine to give squares.",

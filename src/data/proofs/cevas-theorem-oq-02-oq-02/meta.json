@@ -54,12 +54,13 @@
     ],
     "dateAdded": "2026-03-06",
     "axiomCount": 0,
-    "lineCount": 320
+    "lineCount": 320,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
     "historicalContext": "Ceva's theorem (1678) for triangles states that cevians AD, BE, CF are concurrent iff (BD/DC)·(CE/EA)·(AF/FB) = 1. The spherical version (proved in CevasTheoremOQ02OQ01.lean) replaces length ratios with sin-ratios and uses weight parameters: sin(BD)/sin(DC) = β/α for D = normalize(α·B + β·C).\n\nThe natural question (OQ-02-OQ-02) is: does this generalize to polygons? For an n-gon P₁...Pₙ with cevian points Qᵢ on each side PᵢPᵢ₊₁, when are the n cevians from a central point C concurrent?\n\nThis formalization answers YES: the concurrency condition is ∏ᵢ αᵢ = ∏ᵢ βᵢ, where (αᵢ, βᵢ) are the weight parameters defining each cevian point.",
     "problemStatement": "**Theorem (Polygon Ceva Weight Balance)**: For a spherical polygon with n sides, cevian points Qᵢ on arc PᵢPᵢ₊₁ with weight parameters (αᵢ, βᵢ) > 0:\n\n  ∏ᵢ sin(∠PᵢCQᵢ)/sin(∠QᵢCPᵢ₊₁) = 1  ↔  ∏ᵢ αᵢ = ∏ᵢ βᵢ\n\n**Special cases**:\n- n=3: α₁α₂α₃ = β₁β₂β₃ (triangle Ceva)\n- n=4: α₁α₂α₃α₄ = β₁β₂β₃β₄ (quadrilateral Ceva)\n- Equal weights: always concurrent (medial cevians)",
-    "text": "Generalization of the spherical Ceva theorem from triangles to convex n-gons. For a spherical polygon P\u2081...P\u2099 with cevian points Q\u1d62 on arc P\u1d62P\u1d62\u208a\u2081 defined by weight parameters (\u03b1\u1d62, \u03b2\u1d62), the concurrency condition is \u220f \u03b1\u1d62 = \u220f \u03b2\u1d62. Includes triangle/quadrilateral specializations, equal-weight (medial) case, Ceva-Menelaus duality for polygons, and scaling invariance.",
+    "text": "Generalization of the spherical Ceva theorem from triangles to convex n-gons. For a spherical polygon P₁...Pₙ with cevian points Qᵢ on arc PᵢPᵢ₊₁ defined by weight parameters (αᵢ, βᵢ), the concurrency condition is ∏ αᵢ = ∏ βᵢ. Includes triangle/quadrilateral specializations, equal-weight (medial) case, Ceva-Menelaus duality for polygons, and scaling invariance.",
     "proofStrategy": "The proof has a clean algebraic structure:\n\n1. **Product of ratios**: By Finset.prod_div_distrib, ∏(βᵢ/αᵢ) = (∏βᵢ)/(∏αᵢ)\n2. **Balance criterion**: (∏βᵢ)/(∏αᵢ) = 1 ↔ ∏αᵢ = ∏βᵢ (div_eq_one_iff_eq)\n3. **Triangle/quad cases**: Fin.prod_univ_three/four unfold products to explicit multiplications\n4. **Menelaus duality**: Negating one ratio multiplies the product by -1\n5. **Connection to angles**: The sin-ratio formula sin(∠PᵢCQᵢ)/sin(∠QᵢCPᵢ₊₁) = βᵢ/αᵢ (from CevasTheoremOQ02OQ01) reduces the angle-based product to the weight-based product",
     "keyInsights": [
       "The weight balance ∏αᵢ = ∏βᵢ is a clean, dimension-independent criterion that works for any n",

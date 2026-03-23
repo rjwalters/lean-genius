@@ -56,12 +56,13 @@
       "erdos_positive_density_claim: unbounded representations from dense sets"
     ],
     "axiomCount": 5,
-    "lineCount": 191
+    "lineCount": 191,
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This problem connects to the classical theory of Waring's problem and the Hardy-Littlewood circle method. Hardy and Littlewood conjectured Hypothesis K: that r_k(n) = n^{o(1)} for k ≥ 3, meaning representations grow slower than any polynomial.\n\nMahler (1936) sensationally disproved this for cubes, showing r_3(n) ≫ n^{1/12} for infinitely many n. Erdős believed Hypothesis K fails for all k ≥ 4, but this remains open. Independently, Erdős and Chowla proved a weaker bound r_k(n) ≫ n^{c/log log n} for all k ≥ 3.\n\nThe weaker Hypothesis K* (bounding the sum Σ r_k(n)² ≪ N^{1+ε}) is probably true but unproven and very deep. Erdős and Graham noted it 'would suffice for most applications' of the original Hypothesis K.",
     "problemStatement": "**Problem Statement (PARTIALLY SOLVED)**\n\nLet k ≥ 3 and let r_k(n) be the number of representations of n as a sum of k many k-th powers.\n\n**Question:** Does there exist c > 0 with r_k(n) > n^c for infinitely many n?\n\n**Results:**\n- k = 3: YES, c = 1/12 works (Mahler 1936)\n- k ≥ 4: OPEN (Erdős conjectured YES)\n- Weaker: r_k(n) ≫ n^{c/log log n} for all k ≥ 3 (Erdős-Chowla)",
-    "text": "Does r_k(n) > n^c for infinitely many n, where r_k(n) counts representations of n as sum of k k-th powers? k=3: YES (Mahler 1936). k\u22654: OPEN.",
+    "text": "Does r_k(n) > n^c for infinitely many n, where r_k(n) counts representations of n as sum of k k-th powers? k=3: YES (Mahler 1936). k≥4: OPEN.",
     "proofStrategy": "The formalization axiomatizes the representation count r_k(n) and formalizes Hypothesis K and its negation. Mahler's theorem is axiomatized for k = 3. The Erdős-Chowla bound gives a weaker lower bound valid for all k. Hypothesis K* (squared sum bound) is defined but its status is unresolved. The positive density claim axiomatizes Erdős's result on unbounded representations from dense subsets.",
     "keyInsights": [
       "**Hypothesis K:** r_k(n) ≤ n^{o(1)} (Hardy-Littlewood conjecture)",

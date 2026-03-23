@@ -53,12 +53,13 @@
     ],
     "dateAdded": "2026-01-19",
     "axiomCount": 9,
-    "lineCount": 248
+    "lineCount": 248,
+    "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and Selfridge in their 1982 paper in Congressus Numerantium. They proved the asymptotic order h(n) ≍ √(n/log n) using estimates from the prime number theorem and Legendre's formula (1808) for the p-adic valuation of factorials. The function h(n) is recorded as OEIS sequence A071626. The exact limiting constant remains open; Terence Tao developed a heuristic argument using Cramér's random model for primes (1936), which suggests c = √(2π) ≈ 2.506. This value arises from a central limit theorem argument applied to the distribution of exponents.",
     "problemStatement": "Let n! = ∏ᵢ pᵢ^{kᵢ} be the prime factorization. Define h(n) as the count of distinct exponents kᵢ. Prove there exists c > 0 such that h(n) ~ c·√(n/log n) as n → ∞.",
-    "text": "If n! = \u220f p\u1d62^{k\u1d62}, let h(n) count distinct exponents k\u1d62. Prove h(n) ~ c\u00b7\u221a(n/log n) for some c > 0. Known: h(n) \u224d \u221a(n/log n). Conjectured: c = \u221a(2\u03c0).",
+    "text": "If n! = ∏ pᵢ^{kᵢ}, let h(n) count distinct exponents kᵢ. Prove h(n) ~ c·√(n/log n) for some c > 0. Known: h(n) ≍ √(n/log n). Conjectured: c = √(2π).",
     "proofStrategy": "The formalization defines h(n) using p-adic valuations, states the Erdős-Selfridge bounds as axioms, and formally expresses the conjecture about the exact constant.",
     "keyInsights": [
       "h(n) counts distinct exponents in n!'s prime factorization",

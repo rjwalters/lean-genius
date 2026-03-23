@@ -59,12 +59,13 @@
       "erdos_223_summary theorem"
     ],
     "axiomCount": 14,
-    "lineCount": 277
+    "lineCount": 277,
+    "assumptions": "14 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #223: Maximum Diameter Pairs**\n\nThis problem, originally a conjecture of Vázsonyi, asks: in an n-point set with diameter 1, how many pairs can be at distance exactly 1?\n\n**Key History:**\n- Vázsonyi: Original conjecture\n- Hopf-Pannwitz (1934): Solved 2D case, f₂(n) = n\n- Grünbaum, Heppes, Strasziewicz (1956-57): Independently solved 3D, f₃(n) = 2n-2\n- Erdős (1960): Showed quadratic growth for d ≥ 4\n- Swanepoel (2009): Complete characterization with extremal configurations\n\n**Dimensional Transition:**\nThe most striking feature is the phase transition at d = 4: linear growth in 2D/3D becomes quadratic in 4D+.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet d ≥ 2 and n ≥ 2. Define f_d(n) as the maximum number of pairs at distance 1 in any n-point set A ⊆ ℝ^d with diameter 1.\n\n**Estimate f_d(n).**\n\n**Solution:**\n- d = 2: f₂(n) = n (regular polygon is extremal)\n- d = 3: f₃(n) = 2n - 2 (two polygons sharing a vertex)\n- d ≥ 4: f_d(n) = ((p-1)/(2p) + o(1))n² where p = ⌊d/2⌋",
-    "text": "How many pairs of points can realize the diameter in an n-point configuration? f\u2082(n)=n, f\u2083(n)=2n-2, and f_d(n)~cn\u00b2 for d\u22654. Fully solved by Hopf-Pannwitz (1934), Gr\u00fcnbaum/Heppes/Strasziewicz (1956-57), Erd\u0151s (1960), and Swanepoel (2009).",
+    "text": "How many pairs of points can realize the diameter in an n-point configuration? f₂(n)=n, f₃(n)=2n-2, and f_d(n)~cn² for d≥4. Fully solved by Hopf-Pannwitz (1934), Grünbaum/Heppes/Strasziewicz (1956-57), Erdős (1960), and Swanepoel (2009).",
     "proofStrategy": "**Formalization Approach**\n\n1. **Configuration Setup:**\n   - PointConfig: Fin n → EuclideanSpace ℝ (Fin d)\n   - diameter: max pairwise distance\n   - diameterPairs: count of pairs at diameter distance\n\n2. **The Function f:**\n   - f d n: supremum of diameter pairs over valid configurations\n\n3. **Dimensional Cases:**\n   - hopf_pannwitz_1934: f 2 n = n\n   - three_dimensional_case: f 3 n = 2n - 2\n   - erdos_1960: quadratic bounds for d ≥ 4\n\n4. **Geometric Structure:**\n   - diameterGraph: SimpleGraph representing diameter pairs\n   - leadingCoefficient: (p-1)/(2p) for dimension d",
     "keyInsights": [
       "**Phase Transition at d=4:** The jump from linear to quadratic growth is fundamental. In low dimensions, diameter pairs are constrained; in high dimensions, they can be densely packed.",

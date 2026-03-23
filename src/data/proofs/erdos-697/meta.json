@@ -54,12 +54,13 @@
       "erdos_697_answer, erdos_697_threshold: main results"
     ],
     "axiomCount": 7,
-    "lineCount": 239
+    "lineCount": 239,
+    "assumptions": "7 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Origins and History**\n\nErdős posed this problem in his 1979 paper \"Some unconventional problems in number theory\" in Astérisque. The question concerns divisibility by numbers d that are congruent to 1 modulo m, a fundamental topic in multiplicative number theory.\n\n**Trivial Bounds**\n\nFor α < 1, a simple counting argument shows δ(m, α) → 0 as m → ∞. Erdős claimed in 1979 that the same holds for α = 1.\n\n**Hall's Resolution (1992)**\n\nR.R. Hall proved in \"On some conjectures of P. Erdős in Astérisque I\" (J. Number Theory, 1992) that the sharp threshold exists at β = 1/log 2 ≈ 1.443.\n\n**Connection to Problem #696**\n\nThis problem is closely related to Erdős Problem #696, which concerns similar questions about divisibility by d ≡ 1 (mod m).",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet δ(m, α) denote the density of integers divisible by some d ≡ 1 (mod m) with 1 < d < exp(m^α).\n\nDoes there exist β ∈ (1, ∞) such that:\n- lim_{m→∞} δ(m, α) = 0 if α < β\n- lim_{m→∞} δ(m, α) = 1 if α > β\n\n**Answer: YES**\n\nThe threshold is β = 1/log 2 ≈ 1.443 (Hall 1992).",
-    "text": "Let \u03b4(m,\u03b1) be the density of integers divisible by some d \u2261 1 (mod m) with 1 < d < exp(m^\u03b1). Does a sharp threshold \u03b2 exist? SOLVED: YES, \u03b2 = 1/log 2 \u2248 1.443 (Hall 1992).",
+    "text": "Let δ(m,α) be the density of integers divisible by some d ≡ 1 (mod m) with 1 < d < exp(m^α). Does a sharp threshold β exist? SOLVED: YES, β = 1/log 2 ≈ 1.443 (Hall 1992).",
     "proofStrategy": "**Formalization Approach**\n\n1. **Admissible Divisors:** IsAdmissibleDivisor captures d | n, d ≡ 1 (mod m), 1 < d < exp(m^α)\n\n2. **Coverage:** IsCovered defines when n has an admissible divisor\n\n3. **Density:** delta(m, α) is the limiting density\n\n4. **Threshold:** HasSharpThreshold formalizes the existence question\n\n5. **Results:** hallThreshold = 1/log 2, hall_theorem gives the complete answer\n\n6. **Examples:** m = 2 case, large prime case",
     "keyInsights": [
       "**Sharp Threshold:** β = 1/log 2 ≈ 1.443 separates density 0 from density 1",

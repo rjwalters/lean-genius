@@ -56,12 +56,13 @@
     ],
     "dateAdded": "2026-01-19",
     "axiomCount": 6,
-    "lineCount": 134
+    "lineCount": 134,
+    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Covering dimension (Lebesgue dimension) is a fundamental topological invariant: dim(X) ≤ n means every finite open cover of X admits a refinement of order at most n+1. For well-behaved spaces, the product inequality dim(X × Y) ≤ dim(X) + dim(Y) holds with equality — for example, dim([0,1]^n) = n and dim([0,1]^n × [0,1]^m) = n+m. Erdős asked whether this equality can fail, and Anderson and Keisler (1967) gave the definitive answer: for every n ≥ 1, there exist separable metric spaces S_n with dim(S_n) = n and dim(S_n × S_n) = n, the most extreme possible violation. For n = 1, the classical example is ℓ²(ℚ) — rational points in Hilbert space — a countable dense totally disconnected subset of ℓ² with covering dimension 1 whose square also has dimension 1. This was known earlier through work of Erdős and Sierpiński. The general construction uses techniques from descriptive set theory (absolute Borel sets, decomposition theorems) to select subsets of n-dimensional spaces whose open covers interact efficiently in the product.",
     "problemStatement": "**Erdős Problem #909** (SOLVED, Anderson-Keisler 1967):\n\nFor every n ≥ 1, does there exist a topological space S with dim(S) = n such that dim(S × S) = n?\n\n**Answer**: YES. For all n ≥ 1, separable metric spaces with this property exist.\n\n**For n = 1**: ℓ²(ℚ) (rational Hilbert space) is an explicit example.\n**For general n**: Anderson-Keisler construction via descriptive set theory.",
-    "text": "Is there a space S of dimension n such that S\u00b2 also has dimension n? YES (Anderson-Keisler 1967). For all n \u2265 1, such separable metric spaces exist, showing the product dimension inequality dim(X\u00d7Y) \u2264 dim(X)+dim(Y) can fail maximally.",
+    "text": "Is there a space S of dimension n such that S² also has dimension n? YES (Anderson-Keisler 1967). For all n ≥ 1, such separable metric spaces exist, showing the product dimension inequality dim(X×Y) ≤ dim(X)+dim(Y) can fail maximally.",
     "proofStrategy": "The formalization axiomatizes covering dimension (not in Mathlib) and proceeds in layers: (1) Define coveringDimension as an axiom predicate; (2) Define hasDimensionExactly as dim ≤ n AND not dim ≤ n-1; (3) Axiomatize the product dimension inequality; (4) State erdos909Statement as ∀ n ≥ 1, ∃ S with exact dimension n in both S and S×S; (5) Axiomatize the n=1 example (rational Hilbert space) and the Anderson-Keisler theorem for all n; (6) Prove erdos_909 by extracting TopologicalSpace from the MetrizableSpace witness of Anderson-Keisler; (7) Provide background results on Euclidean dimension and subspace monotonicity.",
     "keyInsights": [
       "The product dimension inequality dim(X×Y) ≤ dim(X)+dim(Y) is typically an equality for 'nice' spaces, making dim(S×S) = dim(S) = n (instead of 2n) deeply surprising",

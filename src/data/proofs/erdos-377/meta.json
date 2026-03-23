@@ -52,12 +52,13 @@
       "Definition of the constant γ₀"
     ],
     "axiomCount": 4,
-    "lineCount": 150
+    "lineCount": 150,
+    "assumptions": "4 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This problem arose from studying the prime factorization of central binomial coefficients C(2n, n). The 1975 paper by Erdős, Graham, Ruzsa, and Straus (EGRS75) made significant progress on understanding the 'statistical' behavior of the prime divisibility pattern.\n\nThe central binomial C(2n, n) is highly composite — most primes p ≤ n divide it. By Kummer's theorem, p | C(2n,n) iff there's a carry when adding n + n in base p. The question asks whether the primes that 'miss' have bounded reciprocal sum.\n\nEGRS proved remarkable results about the average behavior but left the main conjecture (uniform boundedness) open. This is mentioned in Guy's 'Unsolved Problems in Number Theory' (Problem B33).",
     "problemStatement": "**Definition**: Let $f(n) = \\sum_{p \\leq n, p \\nmid \\binom{2n}{n}} \\frac{1}{p}$\n\n**Conjecture (Open)**: Is there an absolute constant $C > 0$ such that $f(n) \\leq C$ for all $n$?\n\n**Known Results (EGRS 1975)**:\n1. $\\lim_{x\\to\\infty} \\frac{1}{x}\\sum_{n\\leq x} f(n) = \\gamma_0$ where $\\gamma_0 = \\sum_{k=2}^{\\infty} \\frac{\\log k}{2^k} \\approx 0.794$\n2. $\\lim_{x\\to\\infty} \\frac{1}{x}\\sum_{n\\leq x} f(n)^2 = \\gamma_0^2$\n3. For almost all $n$: $f(n) = \\gamma_0 + o(1)$\n4. For large $n$: $f(n) \\leq c \\log\\log n$ for some $c < 1$",
-    "text": "Is there an absolute constant C such that \u2211_{p\u2264n, p\u2224C(2n,n)} 1/p \u2264 C for all n? The main conjecture is OPEN, but EGRS75 proved f(n) averages to \u03b3\u2080 = \u2211log(k)/2^k and is \u2264 c\u00b7log(log(n)) for c < 1.",
+    "text": "Is there an absolute constant C such that ∑_{p≤n, p∤C(2n,n)} 1/p ≤ C for all n? The main conjecture is OPEN, but EGRS75 proved f(n) averages to γ₀ = ∑log(k)/2^k and is ≤ c·log(log(n)) for c < 1.",
     "proofStrategy": "We formalize:\n\n1. **The function f(n)**: Sum of 1/p over primes p ≤ n not dividing C(2n, n)\n\n2. **The open conjecture**: Whether f(n) is uniformly bounded\n\n3. **EGRS results as axioms**: Four theorems about average behavior:\n   - First moment: Cesàro mean → γ₀\n   - Second moment: Cesàro mean of squares → γ₀²\n   - Almost everywhere: f(n) ≈ γ₀ for almost all n\n   - Upper bound: f(n) ≤ c log(log n) for c < 1\n\n4. **The constant γ₀**: Defined as the infinite series ∑log(k)/2^k",
     "keyInsights": [
       "**Kummer's theorem connection**: p | C(2n,n) iff adding n+n in base p produces a carry. Primes NOT dividing are those where all base-p digits of n are 'small' (< p/2).",

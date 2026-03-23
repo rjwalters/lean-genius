@@ -23,12 +23,13 @@
     "dateAdded": "2025-01-01",
     "mathlib_version": "4.x",
     "axiomCount": 2,
-    "lineCount": 142
+    "lineCount": 142,
+    "assumptions": "2 axiom(s) and 2 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős studied the distribution of pairwise distances in planar point configurations extensively throughout his career. Among the many questions he raised, Problem 959 concerns not the count of distinct distances (as in the celebrated Erdős distinct distances problem, resolved by Guth and Katz in 2015) but rather the gap between the most frequent and second-most frequent distance in an n-point set.\n\nClemen, Dumitrescu, and Liu (2025) made the first substantial progress, proving that the maximum frequency gap can be as large as Ω(n log n) using explicit constructions. They further generalized the result to rank-r gaps: for 1 ≤ r ≤ log n, the gap between the r-th and (r+1)-th most frequent distances is Ω(n log n / r). This shows the frequency distribution is not flat even among the top-ranked distances.\n\nClemen, Dumitrescu, and Liu conjectured that the true order of the maximum frequency gap is n^{1+c/log log n} for some constant c > 0, which would be dramatically larger than n log n. This conjectured growth rate mirrors bounds appearing in other combinatorial geometry problems, such as the Elekes–Rónyai framework. The problem remains open.",
     "problemStatement": "Estimate max(f(d₁) - f(d₂)) over all n-point sets in ℝ², where distances are ordered by frequency.",
-    "text": "Estimate max(f(d\u2081) - f(d\u2082)) for n-point sets in \u211d\u00b2, where f orders distance frequencies. Known: \u03a9(n log n). Conjectured: n^{1+c/log log n}.",
+    "text": "Estimate max(f(d₁) - f(d₂)) for n-point sets in ℝ², where f orders distance frequencies. Known: Ω(n log n). Conjectured: n^{1+c/log log n}.",
     "proofStrategy": "We define distFrequency counting unordered pairs at a given distance, distinctDistances, maxFrequency, secondFrequency, and frequencyGap. The main conjecture and stronger variant are stated existentially. The Clemen–Dumitrescu–Liu lower bound is an axiom. We also formalize the generalized rank-r gap and prove structural properties including nonneg and empty-set bounds.",
     "keyInsights": [
       "**Unordered pair counting**: Distance frequency counts unordered pairs (a,b) with dist(a,b) = d, dividing by 2 to avoid double-counting. This is the natural quantity from the perspective of distance geometry.",

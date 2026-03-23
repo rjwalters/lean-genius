@@ -34,7 +34,8 @@
     ],
     "dateAdded": "2025-12-29",
     "axiomCount": 2,
-    "lineCount": 449
+    "lineCount": 449,
+    "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "The isoperimetric problem is one of the oldest in mathematics. According to Virgil's *Aeneid* (29–19 BCE), Queen Dido of Carthage was promised as much land as a bull's hide could encompass; she cut it into thin strips and formed a semicircle against the coast, maximizing the enclosed area. The ancient Greeks knew the circle was optimal, and Zenodorus (~200 BCE) gave geometric arguments. The first attempt at a rigorous proof was by Jakob Steiner (1838) using his **symmetrization** method, but this assumed the optimal curve exists. Karl Weierstrass (1870s) filled this gap using the direct method of the calculus of variations. Adolf Hurwitz (1902) gave an elegant proof via **Fourier analysis** and the Wirtinger inequality. The Brunn-Minkowski inequality (1887–1896) provides yet another route. The theorem generalizes to Riemannian manifolds, where Lévy and Gromov established isoperimetric comparisons, and to metric measure spaces via Lott-Sturm-Villani theory.",

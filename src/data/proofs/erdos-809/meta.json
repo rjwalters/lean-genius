@@ -53,12 +53,13 @@
     ],
     "dateAdded": "2026-01-19",
     "axiomCount": 4,
-    "lineCount": 186
+    "lineCount": 186,
+    "assumptions": "4 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #809**\n\nThis problem connects Turán-type extremal graph theory with rainbow (anti-Ramsey) coloring theory.\n\n**Key History:**\n- Erdős [Er91]: Original formulation of the problem\n- Burr, Erdős, Graham, Sós: Proved quadratic lower bound F_k(n) ≫ n²\n- Current status: OPEN — the exact asymptotic constant remains unknown\n\n**Mathematical Setting:**\nThe edge threshold ⌊n²/4⌋ + 1 is chosen to be just above the Turán number for bipartite graphs: by Turán's theorem, any graph with more than ⌊n²/4⌋ edges must contain odd cycles. The question asks how many colors are needed to make every such odd cycle rainbow (no repeated colors).\n\nThe conjecture F_k(n) ~ n²/8 predicts the leading constant is 1/8, exactly half the Turán threshold constant 1/4. This suggests a deep structural connection between graph density and chromatic properties. The companion Problem #810 addresses related constraints on rainbow colorings.",
     "problemStatement": "**Problem Statement (Open)**\n\nFor $k \\geq 3$, define $F_k(n)$ as the minimal $r$ such that there exists a graph $G$ on $n$ vertices with $\\lfloor n^2/4 \\rfloor + 1$ edges whose edges can be $r$-colored so that every subgraph isomorphic to $C_{2k+1}$ is rainbow (no repeated colors).\n\n**Conjecture:** $F_k(n) \\sim n^2/8$\n\n**Known:** $F_k(n) \\gg n^2$ (Burr-Erdős-Graham-Sós quadratic lower bound)",
-    "text": "For k\u22653, define F_k(n) = min r s.t. some graph on n vertices with \u230an\u00b2/4\u230b+1 edges can be r-colored with all C_{2k+1} rainbow. Conjecture: F_k(n) ~ n\u00b2/8. Known: F_k(n) \u226b n\u00b2. OPEN.",
+    "text": "For k≥3, define F_k(n) = min r s.t. some graph on n vertices with ⌊n²/4⌋+1 edges can be r-colored with all C_{2k+1} rainbow. Conjecture: F_k(n) ~ n²/8. Known: F_k(n) ≫ n². OPEN.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Graph Infrastructure:** Define SimpleGraph on Fin n with edge counting and Turán threshold\n\n2. **Coloring Framework:** Edge colorings as functions from edge sets to Fin r, rainbow property via image cardinality\n\n3. **Cycle Structure:** Formal definition of cycles with vertex distinctness and adjacency constraints\n\n4. **Axiomatization:** F_k(n) axiomatized as ℕ → ℕ → ℕ (existence proof would require sorry)\n\n5. **Conjecture Formalization:** Two equivalent asymptotic formulations (sandwich bounds and ratio convergence)\n\n6. **Known Bounds:** BEGS lower bound and trivial upper bound as axioms, combined in proved summary theorem",
     "keyInsights": [
       "**Turán Threshold:** ⌊n²/4⌋ + 1 edges is the minimum to guarantee odd cycles in any graph",

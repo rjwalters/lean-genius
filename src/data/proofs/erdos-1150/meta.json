@@ -37,12 +37,13 @@
       "Axiom rudin_shapiro_bound (concrete ≤ √(2n) family)"
     ],
     "axiomCount": 5,
-    "lineCount": 207
+    "lineCount": 207,
+    "assumptions": "5 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős posed Problem #1150 as part of his investigations into extremal properties of polynomials with restricted coefficients. The study of Littlewood polynomials — polynomials with all coefficients ±1 — dates to J.E. Littlewood's 1966 monograph, where he asked about the minimal sup norm on the unit circle. By Parseval's identity, every degree-$n$ Littlewood polynomial satisfies $\\max_{|z|=1}|P(z)| \\ge \\sqrt{n+1}$, since the $L^2$ norm equals $\\sqrt{n+1}$. The question is whether this can be improved by a multiplicative constant. Kahane's 1980 breakthrough showed that for general unimodular coefficients ($|a_k| = 1$, complex phases allowed), ultraflat polynomials exist — the sup norm can be made $(1+o(1))\\sqrt{n}$. This made the ±1 restriction the essential barrier. The problem gained renewed attention after Balister, Bollobás, Morris, Sahasrabudhe, and Tiba (BBMST, 2019) proved flat Littlewood polynomials exist ($c_1\\sqrt{n} \\le |P(z)| \\le c_2\\sqrt{n}$), resolving Erdős Problem #228. But flat is weaker than ultraflat: the gap between 'bounded ratio' and 'ratio converging to 1' is precisely what Problem #1150 asks about. The Rudin-Shapiro polynomials, constructed recursively since the 1950s, provide the best explicit examples with sup norm at most $\\sqrt{2(n+1)}$.",
     "problemStatement": "**Erdős Problem #1150** (OPEN): Does there exist $c > 0$ such that for all large $n$ and all polynomials $P$ of degree $n$ with coefficients $\\pm 1$:\n$$\\max_{|z|=1}|P(z)| > (1+c)\\sqrt{n}$$",
-    "text": "Does there exist c > 0 such that for all large n and all \u00b11 coefficient polynomials of degree n, max_{|z|=1} |P(z)| > (1+c)\u221an? Equivalently, do ultraflat Littlewood polynomials NOT exist?",
+    "text": "Does there exist c > 0 such that for all large n and all ±1 coefficient polynomials of degree n, max_{|z|=1} |P(z)| > (1+c)√n? Equivalently, do ultraflat Littlewood polynomials NOT exist?",
     "proofStrategy": "1. **Definitions**: Formalize Littlewood polynomial ($a_k \\in \\{-1,+1\\}$), sup norm on unit circle, ultraflat sequence, and the main conjecture\n2. **Parseval bound**: State the trivial lower bound $\\|P\\|_\\infty \\ge \\sqrt{n+1}$ as an axiom and prove $\\sqrt{n+1} > 0$\n3. **Equivalence**: Axiomatize that the conjecture is equivalent to non-existence of ultraflat Littlewood sequences\n4. **Known results**: Axiomatize BBMST flat polynomials, Kahane unimodular ultraflat, and Rudin-Shapiro bounds\n5. **Gap analysis**: Prove that flat $\\not\\Rightarrow$ ultraflat and derive the BBMST upper bound consequence\n6. **Summary**: Package Parseval + BBMST as a combined theorem capturing the state of knowledge",
     "prerequisites": [
       "Harmonic analysis on the unit circle: Fourier coefficients, Parseval's identity, and L^2 norms",

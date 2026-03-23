@@ -27,7 +27,8 @@
       "erdos-267"
     ],
     "axiomCount": 5,
-    "badge": "axiom"
+    "badge": "axiom",
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "crossReferences": [
     {
@@ -157,7 +158,7 @@
   "overview": {
     "historicalContext": "Paul Erdős and Ronald Graham posed this problem in their influential 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory.' The question builds on Graham's earlier 1964 paper in Acta Arithmetica, where he proved the striking result that the completeness region for exponential floor sequences has arbitrarily complex structure — for any fixed number of intervals, one can find parameters producing at least that many disjoint completeness intervals. The golden ratio conjecture connects to Edouard Zeckendorf's 1939 discovery (published 1972) that every positive integer has a unique Fibonacci representation, establishing the Fibonacci sequence as the prototypical complete sequence. The parity sub-problems for ⌊(3/2)^n⌋ connect to T. Vijayaraghavan's 1940 work on fractional parts of powers and to the Ideal Waring formula g(k) = 2^k + ⌊(3/2)^k⌋ − 2, verified computationally by Kubina and Wunderlich up to k = 471,600,000. These connections make Problem #349 a nexus linking additive combinatorics, diophantine approximation, and analytic number theory.",
     "problemStatement": "For what values of $t, \\alpha \\in (0,\\infty)$ is the sequence $\\lfloor t\\alpha^n \\rfloor$ additively complete (i.e., all sufficiently large integers are representable as sums of distinct terms)? Conjecture: completeness holds for all $t > 0$ and $1 < \\alpha < (1+\\sqrt{5})/2$.",
-    "text": "For what (t,\u03b1) is \u230at\u03b1^n\u230b a complete sequence? Conjectured for all t > 0 and 1 < \u03b1 < (1+\u221a5)/2. Whether \u230a(3/2)^n\u230b is odd/even infinitely often is unknown. Open.",
+    "text": "For what (t,α) is ⌊tα^n⌋ a complete sequence? Conjectured for all t > 0 and 1 < α < (1+√5)/2. Whether ⌊(3/2)^n⌋ is odd/even infinitely often is unknown. Open.",
     "proofStrategy": "The formalization defines additive completeness via Finset sums, constructs the exponential floor sequence as ⌊tα^n⌋, and introduces the 'good pair' predicate. The main problem, golden ratio conjecture, Graham's disjoint segments theorem, and the fundamental parity questions for ⌊(3/2)^n⌋ are all stated as axioms reflecting their open status. The observations section connects to Waring's problem and explains the Fibonacci threshold.",
     "keyInsights": [
       "**Golden ratio as critical threshold**: The conjecture that $\\alpha < \\varphi = (1+\\sqrt{5})/2$ suffices for completeness is motivated by the Fibonacci sequence, whose growth rate is exactly $\\varphi$ and which is known to be complete by Zeckendorf's theorem",

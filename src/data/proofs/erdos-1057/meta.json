@@ -137,12 +137,13 @@
       }
     ],
     "axiomCount": 6,
-    "lineCount": 1113
+    "lineCount": 1113,
+    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Carmichael numbers are composite integers that perfectly mimic primes under Fermat's test: $a^n \\equiv a \\pmod{n}$ for all $a$. Korselt characterized them in 1899 (squarefree with $(p-1) \\mid (n-1)$ for all prime divisors $p$), but the first example $561 = 3 \\times 11 \\times 17$ was only found by R.D. Carmichael in 1910. Erdős (1956) gave the first non-trivial upper bound on their counting function using sieve methods, showing $C(x) < x \\cdot \\exp(-c \\cdot \\frac{\\log x \\cdot \\log\\log\\log x}{\\log\\log x})$. For decades, it was unknown whether infinitely many exist. The breakthrough came in 1994 when Alford, Granville, and Pomerance proved $C(x) \\to \\infty$, establishing $C(x) > x^{2/7}$. Harman (2008) improved the lower bound exponent to $0.33336704$, and Lichtman (2022) pushed it to $0.3389$. Pomerance's (1989) heuristic predicts $C(x) \\sim x \\cdot \\exp(-\\frac{\\log x \\cdot \\log\\log\\log x}{\\log\\log x})$, matching Erdős's upper bound. The conjecture $C(x) = x^{1-o(1)}$ remains wide open, with a vast gap between the known lower bound exponent $\\approx 0.34$ and the conjectured behavior.",
     "problemStatement": "Let $C(x)$ count Carmichael numbers in $[1,x]$. Is it true that $C(x) = x^{1-o(1)}$? That is, for every $\\varepsilon > 0$, is $C(x) > x^{1-\\varepsilon}$ for sufficiently large $x$?",
-    "text": "Let C(x) count Carmichael numbers in [1,x]. Is C(x) = x^{1-o(1)}? Known: x^{0.3389} < C(x) < x\u00b7exp(-c\u00b7log x\u00b7log log log x / log log x). OPEN.",
+    "text": "Let C(x) count Carmichael numbers in [1,x]. Is C(x) = x^{1-o(1)}? Known: x^{0.3389} < C(x) < x·exp(-c·log x·log log log x / log log x). OPEN.",
     "proofStrategy": "This formalization takes an unusually concrete approach. Rather than just axiomatizing bounds, it **verifies** extensive structural properties of Carmichael numbers in Lean: (1) all seven smallest Carmichael numbers are formally verified via Korselt's criterion using `native_decide` and `norm_num`, (2) oddness is proved from scratch using a parity-squarefreeness contradiction, (3) the semiprime impossibility is proved via a coprimality argument lifted from $\\mathbb{N}$ to $\\mathbb{Z}$, (4) the 3-prime-factor lower bound follows by case analysis on factorization cardinality, and (5) 561's minimality is established by exhaustive decidable checking. The asymptotic bounds (Erdős upper, Lichtman/Harman lower, AGP infinitude) are axiomatized, and $C$ being unbounded is then verified from the AGP axiom by inductive construction of arbitrarily large witness sets.",
     "keyInsights": [
       "**Korselt's criterion (1899):** $n$ is Carmichael iff squarefree and $(p-1) \\mid (n-1)$ for all primes $p \\mid n$. This purely divisibility-theoretic condition predated the discovery of Carmichael numbers by 11 years.",

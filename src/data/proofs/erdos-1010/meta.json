@@ -47,12 +47,13 @@
       "Tightness construction via existential type quantification"
     ],
     "axiomCount": 4,
-    "lineCount": 106
+    "lineCount": 106,
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This problem extends the classical Turán theorem (1941), which established that a triangle-free graph on n vertices has at most ⌊n²/4⌋ edges, achieved uniquely by K_{⌊n/2⌋,⌈n/2⌉}. Rademacher (unpublished, c. 1940s, attributed by Erdős) proved the first supersaturation result: exceeding this threshold by one edge forces at least ⌊n/2⌋ triangles. Erdős [Er62d] extended this to t < cn for a constant c and conjectured the full result for all t < ⌊n/2⌋. The conjecture was proved independently by Lovász-Simonovits (1976), who developed the influential 'stability method' for extremal graph theory, and by Nikiforov-Khadzhiivanov (1981). The stability method shows that graphs close to the Turán bound must structurally resemble the Turán graph, and has since become a fundamental technique in the field.",
     "problemStatement": "Let t < ⌊n/2⌋. Does every graph on n vertices with ⌊n²/4⌋ + t edges contain at least t·⌊n/2⌋ triangles?",
-    "text": "For t < \u230an/2\u230b, every graph on n vertices with \u230an\u00b2/4\u230b + t edges contains at least t\u00b7\u230an/2\u230b triangles. This quantifies the supersaturation phenomenon: how many triangles are forced when exceeding the Tur\u00e1n threshold.",
+    "text": "For t < ⌊n/2⌋, every graph on n vertices with ⌊n²/4⌋ + t edges contains at least t·⌊n/2⌋ triangles. This quantifies the supersaturation phenomenon: how many triangles are forced when exceeding the Turán threshold.",
     "proofStrategy": "The problem was solved independently by Lovász-Simonovits (1976) and Nikiforov-Khadzhiivanov (1981). The Lovász-Simonovits proof introduced the influential 'stability method' in extremal graph theory: graphs close to the extremal bound must structurally resemble the extremal example (the Turán graph).",
     "keyInsights": [
       "The Turán graph K_{⌊n/2⌋,⌈n/2⌉} is the unique triangle-free graph with ⌊n²/4⌋ edges",

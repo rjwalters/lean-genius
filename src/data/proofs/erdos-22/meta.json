@@ -62,12 +62,13 @@
       "Turán-type extremal graph theory",
       "Graph density and independence number",
       "Probabilistic combinatorics"
-    ]
+    ],
+    "assumptions": "23 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem #22 is the Bollobás-Erdős conjecture from 1976, arising from their systematic study of Ramsey-Turán problems. Turán's theorem (1941) tells us the maximum number of edges in a K₄-free graph on n vertices is about n²/3, achieved by the complete tripartite graph T(n,3). However, T(n,3) has independence number n/3, which is linear in n. The natural question is: what happens if we also demand small independence number?\n\nBollobás and Erdős conjectured that for any ε > 0 and sufficiently large n, there exist K₄-free graphs on n vertices with at least n²/8 edges and independence number at most εn. They proved a weaker version with (1/8 + o(1))n² edges. The bound n²/8 corresponds to the Ramsey-Turán density ρ₄ = 1/4, which measures the asymptotic edge density achievable under both clique-free and small-independence constraints.\n\nFox, Loh, and Zhao resolved the conjecture fully in 2015 using pseudorandom Cayley graph constructions over finite fields. Their result is actually much stronger than the conjecture: the independence number achieved is only O((log log n)^{3/2} / (log n)^{1/2} · n), which is far smaller than any εn. This polylogarithmic bound demonstrates the power of algebraic and probabilistic methods in extremal combinatorics.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet $\\epsilon > 0$ and $n$ be sufficiently large. Is there a K₄-free graph on $n$ vertices with $\\geq n^2/8$ edges such that the largest independent set has size at most $\\epsilon n$?\n\nEquivalently: Is $\\mathrm{rt}(n; 4, \\epsilon n) \\geq n^2/8$?\n\n**Answer: YES** (Fox-Loh-Zhao, 2015)\n\nMoreover, the independence number can be made as small as $O((\\log\\log n)^{3/2} / (\\log n)^{1/2} \\cdot n)$.",
-    "text": "Is rt(n; 4, \u03b5n) \u2265 n\u00b2/8? Can K\u2084-free graphs have n\u00b2/8 edges with sublinear independence number? YES, proved by Fox-Loh-Zhao (2015).",
+    "text": "Is rt(n; 4, εn) ≥ n²/8? Can K₄-free graphs have n²/8 edges with sublinear independence number? YES, proved by Fox-Loh-Zhao (2015).",
     "proofStrategy": "The formalization defines a custom Graph structure, independence number, cliques, and the Ramsey-Turán number rt(n; k, ℓ). The Fox-Loh-Zhao theorem is axiomatized with its precise polylogarithmic independence bound. The main theorem conjecture_resolved is FULLY PROVED: it derives BollobasErdosConjecture from the axioms by showing that the Fox-Loh-Zhao construction satisfies all required properties, using linarith for the final inequality chain.",
     "keyInsights": [
       "**Turán vs Ramsey-Turán tradeoff:** T(n,3) has n²/3 edges but linear independence; forcing sublinear independence costs ~62% of edges",

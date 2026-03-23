@@ -57,12 +57,13 @@
       "tucker_disk_approx_zero: Grid Fintype bridge (all analytical content proved, only boilerplate remains)"
     ],
     "axiomCount": 1,
-    "lineCount": 2633
+    "lineCount": 2633,
+    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Tucker's lemma (1946) is the combinatorial analog of the Borsuk-Ulam theorem. While BU states that every continuous map from S^n to R^n has an antipodal pair, Tucker's lemma states that every antipodally-labeled triangulation of the disk has a complementary edge. The connection: discretize a continuous map via Tucker labeling, apply Tucker's lemma to find complementary edges, take limits to get exact antipodal pairs. This provides a constructive/combinatorial proof of BU, avoiding algebraic topology (degree theory, homology).",
     "problemStatement": "Can the 2D Borsuk-Ulam theorem be proved constructively using Tucker's lemma instead of algebraic topology? We formalize the key combinatorial ingredient (Tucker 2D) and the logical reduction to BU.",
-    "text": "The 2D Borsuk-Ulam theorem can be proved combinatorially via Tucker's 2D lemma, avoiding algebraic topology. Tucker's lemma is verified computationally for the 5-vertex triangulated disk (64 labelings) and the 9-vertex grid triangulation (1024 labelings). The logical chain Tucker 2D \u2192 approximate BU \u2192 exact BU is formalized. BU for linear maps is proved algebraically via rank-nullity.",
+    "text": "The 2D Borsuk-Ulam theorem can be proved combinatorially via Tucker's 2D lemma, avoiding algebraic topology. Tucker's lemma is verified computationally for the 5-vertex triangulated disk (64 labelings) and the 9-vertex grid triangulation (1024 labelings). The logical chain Tucker 2D → approximate BU → exact BU is formalized. BU for linear maps is proved algebraically via rank-nullity.",
     "proofStrategy": "1. Define Tucker labels {-2,-1,+1,+2} with negation and complementarity. 2. Verify Tucker's 2D lemma computationally for specific triangulations (5-vertex, 9-vertex). 3. State the general Tucker 2D lemma (axiom). 4. Build the logical chain: Tucker 2D -> approximate BU -> exact BU. 5. Prove BU for linear maps algebraically as an alternative.",
     "keyInsights": [
       "Tucker 2D is purely combinatorial and computationally verifiable for finite triangulations",

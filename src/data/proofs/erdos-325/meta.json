@@ -48,12 +48,13 @@
       "Context: Mahler-Erdős theorem for two-term sums"
     ],
     "axiomCount": 4,
-    "lineCount": 142
+    "lineCount": 142,
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem #325 concerns the density of integers that can be written as sums of three k-th powers. This is a natural extension of the classical Waring problem, which asks how many k-th powers are needed to represent ALL integers.\n\nFor sums of TWO k-th powers, Mahler and Erdős proved in 1938 that the count f_{k,2}(x) of such integers up to x satisfies f_{k,2}(x) ≫ x^{2/k}. The expected density for j terms is x^{j/k} (heuristically, there are about x^{1/k} k-th powers up to x, so about x^{j/k} ways to sum j of them).\n\nFor THREE k-th powers, the conjecture f_{k,3}(x) ≫ x^{3/k} remains open. The best known result for k=3 (cubes) is due to Wooley (2015): f_{3,3}(x) ≫ x^{0.917}, which falls short of the conjectured x^1.",
     "problemStatement": "Let $k \\geq 3$ and let $f_{k,3}(x)$ denote the number of integers $\\leq x$ which can be written as sums of three nonnegative $k$-th powers. Is it true that\n$$f_{k,3}(x) \\gg x^{3/k}?$$\n\n**Status**: OPEN — The main conjecture is unresolved.\n\n**Best Known**: For $k=3$, Wooley proved $f_{3,3}(x) \\gg x^{0.917}$ (2015).",
-    "text": "Let f_{k,3}(x) count integers \u2264 x that are sums of three k-th powers. Is it true that f_{k,3}(x) \u226b x^{3/k} for k \u2265 3?",
+    "text": "Let f_{k,3}(x) count integers ≤ x that are sums of three k-th powers. Is it true that f_{k,3}(x) ≫ x^{3/k} for k ≥ 3?",
     "proofStrategy": "We formalize the problem using Mathlib's asymptotic notation:\n\n1. **Core Definitions**: Define `IsSumThreePower k n` as the predicate for n being a sum of three k-th powers, and `cardIsSumThreePowerBelow k x` as the counting function f_{k,3}(x).\n\n2. **Examples**: Verify concrete cases like 0 = 0^k + 0^k + 0^k and 3 = 1^3 + 1^3 + 1^3.\n\n3. **Main Conjecture**: State as an axiom that x^{3/k} = O(f_{k,3}(x)) in the `atTop` filter.\n\n4. **Partial Results**: Include Wooley's theorem for k=3 and the Mahler-Erdős theorem for two terms as context.",
     "keyInsights": [
       "**Waring's problem connection**: Every sufficiently large integer is a sum of at most g(k) k-th powers. Problem #325 asks about the density of those representable by exactly 3.",

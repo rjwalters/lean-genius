@@ -42,12 +42,13 @@
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 54,
     "axiomCount": 0,
-    "lineCount": 220
+    "lineCount": 220,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
     "historicalContext": "In 1736, Leonhard Euler solved the Königsberg bridge problem, asking whether one could walk through the city crossing each of its seven bridges exactly once. Königsberg (now Kaliningrad, Russia) was built on both sides of the Pregel River with two islands in the middle, connected by seven bridges.\n\nEuler's key insight was to abstract away the geographical details and focus only on the connection structure. He represented each landmass as a point and each bridge as a line connecting two points. This abstraction created what we now call a graph.\n\nEuler observed that in any successful walk, each intermediate landmass must be entered and exited the same number of times, requiring an even number of bridges. Only the start and end points can have odd numbers of bridges. Since all four Königsberg landmasses had odd numbers of bridges, no such walk exists.\n\nThis paper, 'Solutio problematis ad geometriam situs pertinentis' (Solution of a problem relating to the geometry of position), is considered the first paper in graph theory and an early work in topology.",
     "problemStatement": "**The Königsberg Bridge Problem:**\n\nGiven a graph $G = (V, E)$ representing the city of Königsberg:\n- 4 vertices representing landmasses (north bank, south bank, and two islands)\n- 7 edges representing bridges\n\nProve that there is no **Eulerian path** - a path that traverses each edge exactly once.\n\n**Euler's Theorem:** A connected graph has an Eulerian path if and only if it has exactly 0 or 2 vertices of odd degree.",
-    "text": "Euler's 1736 proof that it's impossible to walk through K\u00f6nigsberg crossing each of its seven bridges exactly once. This problem founded graph theory.",
+    "text": "Euler's 1736 proof that it's impossible to walk through Königsberg crossing each of its seven bridges exactly once. This problem founded graph theory.",
     "proofStrategy": "Our proof proceeds in three steps:\n\n1. **Model the graph**: Define the Königsberg graph with 11 vertices (4 landmasses + 7 bridges) to create a simple graph without multi-edges.\n\n2. **Calculate degrees**: Show that the four landmass vertices have degrees 5, 3, 3, and 3 - all odd. Bridge vertices have degree 2 (even).\n\n3. **Apply Euler's theorem**: Use Mathlib's `IsEulerian.card_odd_degree` which states that an Eulerian path implies 0 or 2 odd-degree vertices. Since we have 4, no Eulerian path exists.",
     "keyInsights": [
       "The problem's solution depends only on the graph structure, not the physical layout - this is the birth of graph theory",

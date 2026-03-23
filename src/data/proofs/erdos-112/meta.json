@@ -17,7 +17,8 @@
     "sourceUrl": "https://erdosproblems.com/112",
     "erdosUrl": "https://erdosproblems.com/112",
     "axiomCount": 7,
-    "badge": "axiom"
+    "badge": "axiom",
+    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "sections": [
     {
@@ -94,7 +95,7 @@
   "overview": {
     "historicalContext": "Erdős and Rado posed this problem in their landmark 1967 paper on partition relations, extending classical Ramsey theory into the directed setting. The question arose naturally from studying tournaments — complete directed graphs where every pair of vertices has exactly one directed edge — which had been studied extensively since the 1930s by König, Rédei, and others. Rédei's 1934 theorem that every tournament contains a Hamiltonian path hinted at rich structural properties in directed graphs. The function $k(n,m)$ generalizes the undirected Ramsey number $R(n,m)$ by replacing 'clique' with 'transitive tournament,' introducing the asymmetry of edge directions. Larson and Mitchell's 1997 quadratic bound $k(n,3) \\leq n^2$ for transitive triples was a breakthrough for the special case $m=3$. The problem connects to Dilworth's theorem (1950) on antichains in partial orders, since a transitive tournament on $m$ vertices corresponds to a chain of length $m$ in the partial order induced by the edges. Despite decades of work, the exact growth rate of $k(n,m)$ for general $n$ and $m$ remains open, making this one of the enduring questions in directed Ramsey theory.",
     "problemStatement": "Determine $k(n,m)$, the minimum $k$ such that every directed graph on $k$ vertices contains an independent set of size $n$ or a transitive tournament of size $m$. Known bounds: $R(n,m) \\leq k(n,m) \\leq R(n,m,m)$.",
-    "text": "Determine k(n,m): the minimum vertices guaranteeing an independent set of size n or a transitive tournament of size m in any directed graph. Known: R(n,m) \u2264 k(n,m) \u2264 R(n,m,m). Open.",
+    "text": "Determine k(n,m): the minimum vertices guaranteeing an independent set of size n or a transitive tournament of size m in any directed graph. Known: R(n,m) ≤ k(n,m) ≤ R(n,m,m). Open.",
     "proofStrategy": "The formalization axiomatizes the directed Ramsey function $k(n,m)$ and states its defining property: every sufficiently large directed graph contains either an independent set of size $n$ or a transitive tournament of size $m$. Rather than attempting to compute $k(n,m)$ (which is open), the Lean file captures the known structural results as axioms — the Ramsey lower bound, Hunter's 3-color upper bound via $R(n,m,m)$, the Larson–Mitchell quadratic bound for $m=3$, and the original Erdős–Rado estimate. Each axiom faithfully represents a theorem from the literature, using Lean's type system to enforce the correct quantifier structure and hypothesis conditions.",
     "keyInsights": [
       "**Ramsey number sandwich**: The bounds $R(n,m) \\leq k(n,m) \\leq R(n,m,m)$ place the directed Ramsey number between the 2-color and 3-color undirected Ramsey numbers, reflecting how edge orientation adds exactly one 'color' of complexity",

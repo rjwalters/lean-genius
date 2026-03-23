@@ -53,12 +53,13 @@
     ],
     "dateAdded": "2026-02-23",
     "axiomCount": 0,
-    "lineCount": 228
+    "lineCount": 228,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
     "historicalContext": "**Hölder's 1889 Generalization**\n\nOtto Hölder proved his integral inequality in 1889, generalizing the Cauchy-Schwarz inequality by allowing different exponents $p$ and $q$ satisfying $1/p + 1/q = 1$:\n\n$$\\int |fg| \\, d\\mu \\leq \\left(\\int |f|^p \\, d\\mu\\right)^{1/p} \\cdot \\left(\\int |g|^q \\, d\\mu\\right)^{1/q}$$\n\nThe case $p = q = 2$ recovers the Cauchy-Schwarz inequality (Bunyakovsky, 1859; Schwarz, 1885). This answers the open question: **Cauchy-Schwarz is the symmetric special case of Hölder**, arising when both functions are measured with the same $L^2$ norm.\n\n**Hierarchy of Inequalities**\n\nThe proof builds on Young's inequality $ab \\leq a^p/p + b^q/q$ (pointwise), integrates to get Hölder (global), and the triangle inequality for $L^p$ norms (Minkowski's inequality) follows in turn.",
     "problemStatement": "**Hölder's Inequality (OQ-01)**\n\nFor conjugate exponents $p, q > 1$ with $1/p + 1/q = 1$ and non-negative measurable functions $f, g$:\n$$\\int_{\\alpha} f \\cdot g \\, d\\mu \\leq \\left(\\int_{\\alpha} f^p \\, d\\mu\\right)^{1/p} \\cdot \\left(\\int_{\\alpha} g^q \\, d\\mu\\right)^{1/q}$$\n\n**The Key Connection**: Setting $p = q = 2$ gives Cauchy-Schwarz:\n$$\\int fg \\, d\\mu \\leq \\left(\\int f^2 \\, d\\mu\\right)^{1/2} \\cdot \\left(\\int g^2 \\, d\\mu\\right)^{1/2}$$\n\nwhich is exactly the result proved in `CauchySchwarzIntegral.lean`.",
-    "text": "H\u00f6lder's integral inequality \u222b|fg|d\u03bc \u2264 (\u222b|f|^p d\u03bc)^{1/p}\u00b7(\u222b|g|^q d\u03bc)^{1/q} for conjugate exponents, with Cauchy-Schwarz as the p=q=2 special case.",
+    "text": "Hölder's integral inequality ∫|fg|dμ ≤ (∫|f|^p dμ)^{1/p}·(∫|g|^q dμ)^{1/q} for conjugate exponents, with Cauchy-Schwarz as the p=q=2 special case.",
     "proofStrategy": "**Formalization Strategy**\n\n1. **Young's Inequality**: For NNReal, prove $2ab \\leq a^2 + b^2$ directly via `nlinarith` and the fact that $(a-b)^2 \\geq 0$.\n\n2. **Hölder's Inequality**: Wrap Mathlib's `ENNReal.lintegral_mul_le_Lp_mul_Lq`, which gives the full lintegral version for arbitrary conjugate exponents.\n\n3. **NNReal version**: Apply Hölder with the canonical coercion `ℝ≥0 → ℝ≥0∞`.\n\n4. **The p=q=2 case**: Prove `Real.HolderConjugate 2 2` by showing `conjExponent 2 = 2 / (2-1) = 2`, then specialize Hölder.\n\n5. **Real-valued functions**: Use `nnnorm_mul` (multiplicativity of nnnorm in a NormedField) to handle real-valued $f, g$ via their pointwise nnnorms.\n\n6. **Minkowski's inequality**: Apply `norm_add_le` to `Lp ℝ 2 μ`, which is a `NormedAddCommGroup`.",
     "keyInsights": [
       "**Mathlib's Main Theorem**: `ENNReal.lintegral_mul_le_Lp_mul_Lq` is the canonical Hölder inequality for the extended Lebesgue integral. All other forms follow by coercion.",

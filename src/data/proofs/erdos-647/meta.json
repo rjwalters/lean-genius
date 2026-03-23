@@ -50,12 +50,13 @@
       "Connection to Problem #679 (stronger version with 2^ω(m))"
     ],
     "axiomCount": 1,
-    "lineCount": 300
+    "lineCount": 300,
+    "assumptions": "1 axiom(s) and 2 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "The divisor function τ(n) is one of the most studied functions in number theory. Highly composite numbers—those with more divisors than any smaller number—play a key role in extremal problems.\n\nErdős posed this problem asking about a subtle gap property: when can ALL smaller numbers m have m + τ(m) bounded by n + 2? The constraint involves both the size of m and its divisor count.\n\nn = 24 is the largest known value satisfying this condition. The fact that 24 is highly composite (τ(24) = 8 is maximal for its size) makes it particularly special—it sits at a boundary where its own m + τ(m) = 32 doesn't obstruct itself, but does obstruct all larger n.\n\nErdős offered £25 for finding any n > 24, but expressed doubt that such an n exists.",
     "problemStatement": "Let $\\tau(n)$ count the number of positive divisors of $n$. Is there some $n > 24$ such that\n$$\\max_{m < n}(m + \\tau(m)) \\leq n + 2$$?\n\n**Known Results**:\n- $n = 24$ satisfies the condition (verified computationally)\n- The bound $n + 2$ is tight in general\n- Erdős conjectured $\\lim_{n\\to\\infty} \\max_{m<n}(m + \\tau(m) - n) = \\infty$\n\n**Prize**: £25 (approximately $44 in 1992)\n\n**Erdős's Opinion**: He described finding such $n > 24$ as 'extremely doubtful'",
-    "text": "Let \u03c4(n) count divisors of n. Is there n > 24 such that max_{m<n}(m + \u03c4(m)) \u2264 n + 2? The case n = 24 works, but Erd\u0151s doubted any larger n exists. Prize: \u00a325 (~$44).",
+    "text": "Let τ(n) count divisors of n. Is there n > 24 such that max_{m<n}(m + τ(m)) ≤ n + 2? The case n = 24 works, but Erdős doubted any larger n exists. Prize: £25 (~$44).",
     "proofStrategy": "Our formalization:\n\n1. **Defines the divisor function** τ(n) = Nat.divisors.card\n\n2. **Verifies concrete values** using native_decide:\n   - τ(1)=1, τ(2)=2, τ(6)=4, τ(12)=6, τ(24)=8\n   - mPlusTau(24) = 32\n\n3. **Defines the Erdős condition** as ∀m<n, mPlusTau m ≤ n+2\n\n4. **Proves n=24 works** via exhaustive case analysis (interval_cases)\n\n5. **Proves n=25, 26 fail** because 24+8=32 > 27 and 32 > 28\n\n6. **Explores highly composite numbers** as the key obstruction mechanism\n\n7. **States the open question** as an axiom since no proof or counterexample exists",
     "keyInsights": [
       "**Why n=24 is Special**: 24 is highly composite with τ(24)=8. The value 24+8=32 is just large enough to obstruct all n > 24, but n=24 itself only requires checking m < 24.",

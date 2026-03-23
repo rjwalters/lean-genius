@@ -22,12 +22,13 @@
     "erdosUrl": "https://erdosproblems.com/1073",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
-    "lineCount": 161
+    "lineCount": 161,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
     "historicalContext": "Erdős, Hardy, and Subbarao asked how many composite numbers divide n!+1 for some n. By Wilson's theorem, every prime p divides (p-1)!+1, and this property characterizes primes completely. For composites the situation is radically different: if u | n!+1 then u must be coprime to n!, forcing every prime factor of u to exceed n and hence u > n². This coprimality constraint severely limits which composites can appear. The known sequence 25, 121, 169, 437, ... (OEIS A256519) is extremely sparse — all known examples are prime powers or semiprimes whose prime factors happen to align with a single factorial. Subbarao connected these to Wilson pseudoprimes: composites that mimic primality in factorial arithmetic. The conjecture A(x) ≤ x^{o(1)} would confirm that this phenomenon is exceptionally rare, growing slower than any fixed power of x.",
     "problemStatement": "Is A(x) ≤ x^{o(1)}, where A(x) counts composites u < x with u | n!+1 for some n?",
-    "text": "Let A(x) count composites u < x with u | n!+1 for some n. Is A(x) \u2264 x^{o(1)}? Wilson's theorem covers primes. Known composites: 25, 121, 169, 437, ...",
+    "text": "Let A(x) count composites u < x with u | n!+1 for some n. Is A(x) ≤ x^{o(1)}? Wilson's theorem covers primes. Known composites: 25, 121, 169, 437, ...",
     "proofStrategy": "We define DividesFactorialPlusOne for the divisibility condition, compositeFactorialSet and factorialCompositeCount for the counting function. The main conjecture is stated as subpolynomial growth. Wilson's theorem and known composites are included.",
     "keyInsights": [
       "Wilson's theorem guarantees every prime divides some factorial plus one",

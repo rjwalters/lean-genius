@@ -49,7 +49,8 @@
     "dateAdded": "2026-03-11",
     "mathlib_version": "4.26.0",
     "axiomCount": 1,
-    "lineCount": 228
+    "lineCount": 228,
+    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Prime Gap Bounds**\n\nThe study of prime gaps - the differences between consecutive primes - is central to analytic number theory. Erdos Problem 1138 asks about the growth rate of the maximal prime gap G(x) = max{p_{n+1} - p_n : p_n <= x}.\n\nKey results:\n- Bertrand's postulate (1845/1850): There's always a prime between n and 2n, giving G(x) <= x/2.\n- Cramer's conjecture (1936): G(x) ~ (log x)^2, which implies G(x) = o(x).\n- Baker-Harman-Pintz (2001): G(x) <= x^0.525 unconditionally (best known).\n\nThis formalization proves the Bertrand-based bounds and Cramer sublinearity from scratch, using Mathlib's Nat.bertrand and Real.log_le_rpow_div.",

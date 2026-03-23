@@ -51,7 +51,8 @@
       "Graph coloring and chromatic numbers",
       "Chinese Remainder Theorem",
       "Modular arithmetic"
-    ]
+    ],
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and Graham in their 1980 book on combinatorial number theory. They conjectured that any finite coloring of the integers must admit a covering system whose moduli are all the same color.\n\nThe conjecture remained open until 2015, when Bob Hough's breakthrough on the minimum modulus problem for covering systems provided the key insight. Hough showed that the minimum modulus is bounded by 616,000, which creates a structural bottleneck exploitable to construct counterexamples.",

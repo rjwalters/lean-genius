@@ -55,12 +55,13 @@
       "erdos_804_resolution theorem: full resolution with Alon-Sudakov bounds"
     ],
     "axiomCount": 5,
-    "lineCount": 244
+    "lineCount": 244,
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #804** was posed by Erdős and Hajnal as part of their study of local-to-global structure in graphs. The question asks: if every small induced subgraph has a good independent set, how good must the global independent set be?\n\n**Historical Development:**\n- **1991 (Erdős [Er91]):** Posed the problem with conjectured bounds.\n- **2007 (Alon-Sudakov [AlSu07]):** Completely resolved both questions in the NEGATIVE. The conjectured bounds were far too optimistic.\n\n**Key Insight:** Local independent set structure does NOT propagate as strongly to global structure as Erdős and Hajnal expected. The true bounds involve an extra log log n factor in the denominator.",
     "problemStatement": "**Problem Statement (Disproved)**\n\nLet $f(m, n)$ be maximal such that any graph on $n$ vertices in which every induced subgraph on $m$ vertices has an independent set of size $\\geq \\log n$ must contain an independent set of size $\\geq f(n)$.\n\n**Questions:**\n1. Is $f((\\log n)^2, n) \\geq n^{1/2 - o(1)}$?\n2. Is $f((\\log n)^3, n) \\gg (\\log n)^3$?\n\n**Answers: BOTH NO!** (Alon-Sudakov, 2007)\n\n**True Bounds:**\n$$\\frac{(\\log n)^2}{\\log \\log n} \\ll f((\\log n)^2, n) \\ll (\\log n)^2$$\n$$f((\\log n)^3, n) \\asymp \\frac{(\\log n)^2}{\\log \\log n}$$",
-    "text": "If every induced subgraph on m vertices has independent set \u2265 log n, how large must the global independent set be? The conjectured bounds n^(1/2-o(1)) and (log n)\u00b3 were DISPROVED by Alon-Sudakov (2007).",
+    "text": "If every induced subgraph on m vertices has independent set ≥ log n, how large must the global independent set be? The conjectured bounds n^(1/2-o(1)) and (log n)³ were DISPROVED by Alon-Sudakov (2007).",
     "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** Define independent sets, independence number α(G), and local independence property.\n\n2. **False Conjectures:** Axiomatize that both Erdős-Hajnal conjectures are false.\n\n3. **True Bounds:** Axiomatize Alon-Sudakov's upper and lower bounds showing the correct answer involves (log n)² / log log n.\n\n4. **Main Theorems:** Combine the disproof and resolution into proved summary theorems.",
     "keyInsights": [
       "**Local vs Global:** Having large independent sets in ALL small subgraphs doesn't force a proportionally large global independent set.",

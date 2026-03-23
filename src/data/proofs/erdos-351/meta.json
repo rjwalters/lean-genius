@@ -48,12 +48,13 @@
       "Verified bounds on n + 1/n"
     ],
     "axiomCount": 3,
-    "lineCount": 115
+    "lineCount": 115,
+    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem #351 concerns the additive structure of sequences of the form {p(n) + 1/n : n ∈ ℕ} where p(x) is a polynomial. The notion of 'strong completeness' is a robust form of additive completeness that survives removal of any finite set of elements.\n\nGraham (1963) proved the foundational case p(x) = x, showing that {n + 1/n : n ∈ ℕ} is strongly complete. This was a significant result in additive number theory.\n\nThe case p(x) = x² was resolved much later by combining Graham's work with Alekseyev's 2019 results on partitions into squares. The general question—whether ALL polynomials with positive leading coefficient yield strongly complete sets—remains open.",
     "problemStatement": "**Problem (Erdős-Graham)**: Let $p(x) \\in \\mathbb{Q}[x]$ be a polynomial with positive leading coefficient. Is the set\n$$A = \\{p(n) + 1/n : n \\in \\mathbb{N}\\}$$\nstrongly complete?\n\n**Definition**: A set $A$ is *strongly complete* if for any finite $B$, the finite sums from $A \\setminus B$ contain all sufficiently large integers.\n\n**Status**:\n- General: OPEN\n- p(x) = x: PROVED (Graham 1963)\n- p(x) = x²: PROVED (Graham + Alekseyev)",
-    "text": "Is {p(n) + 1/n : n in N} strongly complete for all polynomials p(x)? General case open; solved for p(x) = x and p(x) = x\u00b2.",
+    "text": "Is {p(n) + 1/n : n in N} strongly complete for all polynomials p(x)? General case open; solved for p(x) = x and p(x) = x².",
     "proofStrategy": "We formalize the problem by:\n\n1. **Define the image set**: For polynomial P, the set {P(n) + 1/n : n ∈ ℕ}\n2. **Define strong completeness**: For any finite forbidden set B, eventually all integers are representable as sums from A \\ B\n3. **State solved cases as axioms**: Graham's theorem (p=x) and Graham-Alekseyev (p=x²)\n4. **Verify basic properties**: Elements n + 1/n lie strictly between n and n+1 (for n ≥ 2)\n\nThe proofs of the solved cases require deep results from partition theory and are stated as axioms.",
     "keyInsights": [
       "**Strong completeness**: Unlike ordinary completeness (all large integers are sums), strong completeness requires this even after removing any finite set. This is a much stronger property.",

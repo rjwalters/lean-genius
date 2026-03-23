@@ -66,12 +66,13 @@
     ],
     "dateAdded": "2026-01-19",
     "axiomCount": 9,
-    "lineCount": 103
+    "lineCount": 103,
+    "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Isaac Schoenberg proved in 1928 that for every $c \\in [0,1]$, the natural density $f(c) = d(\\{n : \\varphi(n)/n < c\\})$ exists, giving a well-defined continuous distribution function on $[0,1]$. Erdős studied this function intensively and proved a remarkable result: $f$ is purely singular—continuous and non-decreasing from 0 to 1, yet $f'(x) = 0$ for Lebesgue-almost every $x$. This makes $f$ analogous to the classical Cantor function (devil's staircase), which climbs from 0 to 1 on the Cantor set while having zero derivative almost everywhere. Erdős offered a $250 prize for the following strengthening: is it true that there is no $x$ at all where $f'(x)$ exists and is positive? This is the subtle distinction between 'zero derivative almost everywhere' (which allows a measure-zero exceptional set) and 'zero derivative everywhere it exists' (no exceptions). The problem connects Euler's totient function—one of the oldest objects in number theory, studied by Euler in the 1760s—to deep questions in real analysis about the differentiability of singular measures. The multiplicative structure $\\varphi(n)/n = \\prod_{p \\mid n}(1-1/p)$ ties the distribution to probabilistic number theory and Mertens' theorem on products over primes.",
     "problemStatement": "**Problem Statement (OPEN, $250 prize)**\n\nLet $f(c) = d(\\{n : \\varphi(n)/n < c\\})$ be Schoenberg's distribution function. Erdős proved $f'(x) = 0$ for Lebesgue-almost every $x$.\n\n**Question:** Is it true that there is no $x$ such that $f'(x)$ exists and is positive?\n\nEquivalently: wherever $f$ is differentiable, is the derivative necessarily zero?",
-    "text": "Schoenberg proved the density f(c) = d({n : \u03c6(n)/n < c}) exists for all c. Erd\u0151s showed f is purely singular. $250 prize: is it true that f'(x) > 0 for no x?",
+    "text": "Schoenberg proved the density f(c) = d({n : φ(n)/n < c}) exists for all c. Erdős showed f is purely singular. $250 prize: is it true that f'(x) > 0 for no x?",
     "proofStrategy": "The formalization defines the totient ratio sublevel set, natural density via $\\texttt{Filter.liminf}$, and Schoenberg's distribution function $f$. It axiomatizes Schoenberg's density existence theorem, the properties of $f$ (monotonicity, boundary values, continuity), Erdős's pure singularity result ($f' = 0$ a.e.), and the $250 prize conjecture ($f'(x) > 0$ for no $x$). Properties of $\\varphi(n)/n$ including the Euler product formula are also axiomatized.",
     "keyInsights": [
       "**Cantor function analogy:** Schoenberg's $f$ is a naturally occurring 'devil's staircase'—continuous and non-decreasing from 0 to 1 but with zero derivative almost everywhere, just like the classical Cantor function",

@@ -55,12 +55,13 @@
       "erdos_144_summary: four-part conjunction of all results"
     ],
     "axiomCount": 5,
-    "lineCount": 188
+    "lineCount": 188,
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1979, asking whether almost all integers have two divisors within a factor of 2 of each other. He initially claimed a proof in 1964 [Er64h], but retracted it in 1979 when an error was found. Together with Hall, Erdős proved the complementary result: for β > log 3 - 1, the density of integers with (β)-close divisors is 0.\n\nMaier and Tenenbaum completed the picture in 1984 [MaTe84], proving that the density of integers with close divisors (d₁ < d₂ < 2d₁) is indeed 1. They also proved the strong version: for any constant c > 1, the density of c-close divisors equals 1. This vindicated Erdős's original conjecture despite the flawed proof.\n\nThe refined version reveals a sharp phase transition at the critical exponent β* = log 3 - 1 ≈ 0.0986. For β < β*, density equals 1; for β > β*, density equals 0. Tenenbaum reportedly received $650 for the solution, exceeding the advertised $250 prize, likely because both the basic and strong versions were resolved.",
     "problemStatement": "**Problem Statement (Solved)**\n\nDoes the density of integers $n$ having two divisors $d_1 < d_2 < 2d_1$ exist and equal 1?\n\n**Answer: YES** (Maier-Tenenbaum 1984)\n\nStronger: For any $c > 1$, the density of integers with $d_1 < d_2 < c \\cdot d_1$ also equals 1.\n\nRefined: The critical threshold is $\\beta^* = \\log 3 - 1$. For $d_2 < d_1(1 + (\\log n)^{-\\beta})$, density is 1 when $\\beta < \\beta^*$ and 0 when $\\beta > \\beta^*$.",
-    "text": "The density of integers with two divisors d\u2081 < d\u2082 < 2d\u2081 equals 1. SOLVED by Maier-Tenenbaum (1984). The threshold \u03b2* = log 3 - 1 separates density 1 from density 0.",
+    "text": "The density of integers with two divisors d₁ < d₂ < 2d₁ equals 1. SOLVED by Maier-Tenenbaum (1984). The threshold β* = log 3 - 1 separates density 1 from density 0.",
     "proofStrategy": "The formalization defines natural density via ε-N limits, close divisor predicates for both the basic (c=2) and general (arbitrary c>1) versions, and the refined version with (log n)^{-β} decay. The four key results are axiomatized: Maier-Tenenbaum's basic and strong theorems, and the Erdős-Hall/Maier-Tenenbaum phase transition. The phase_transition theorem and erdos_144_summary theorem combine these axioms into proved conjunctions. Concrete examples (6 and 12 have close divisors) are verified by norm_num.",
     "keyInsights": [
       "**Phase Transition:** The critical exponent β* = log 3 - 1 ≈ 0.0986 creates a sharp density dichotomy: density 1 below β*, density 0 above β*",

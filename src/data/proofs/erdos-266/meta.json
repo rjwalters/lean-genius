@@ -47,12 +47,13 @@
       "Connection to Erdős #264 on irrationality sequences"
     ],
     "axiomCount": 2,
-    "lineCount": 150
+    "lineCount": 150,
+    "assumptions": "2 axiom(s) and 4 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This conjecture is due to Kenneth Stolarsky, who asked whether shifting a convergent series by an integer could always produce irrationality. The intuition was appealing: surely among infinitely many shifts, at least one should 'break' any rationality pattern.\n\nThe problem is closely related to Erdős #264 about irrationality sequences. Both explore how robust irrationality is under additive perturbations.\n\nKovač and Tao's 2024 paper on Ahmes series resolved this and several related Erdős problems, providing a unified counterexample framework.",
     "problemStatement": "**Stolarsky's Conjecture**: Let $a_n$ be a sequence of positive integers with $\\sum \\frac{1}{a_n}$ convergent. Then there exists some integer $t \\geq 1$ such that\n$$\\sum \\frac{1}{a_n + t}$$\nis irrational.\n\n**Answer**: FALSE — disproved by Kovač and Tao (2024).\n\n**Stronger Result**: There exists a sequence $a_n$ such that $\\sum \\frac{1}{a_n + t}$ is RATIONAL for ALL $t \\in \\mathbb{Q}$ (where $t \\neq -a_n$).",
-    "text": "Stolarsky conjectured that for any convergent \u22111/a\u2099, some shift t makes \u22111/(a\u2099+t) irrational. Kova\u010d-Tao (2024) disproved this: some sequences give rational sums for ALL rational shifts.",
+    "text": "Stolarsky conjectured that for any convergent ∑1/aₙ, some shift t makes ∑1/(aₙ+t) irrational. Kovač-Tao (2024) disproved this: some sequences give rational sums for ALL rational shifts.",
     "proofStrategy": "We formalize:\n\n1. **Stolarsky's Conjecture**: The claim that some integer shift always produces irrationality\n\n2. **Kovač-Tao Disproof**: An axiom stating the conjecture is false — counterexamples exist\n\n3. **Stronger All-Rationals Result**: An axiom stating that some sequence gives rational sums for ALL rational shifts\n\nThe construction of the counterexample uses sophisticated techniques from Ahmes series theory (Egyptian fractions), which is beyond current Mathlib formalization.",
     "keyInsights": [
       "**The intuition fails**: It seems natural that some shift should produce irrationality, but Kovač-Tao constructed explicit counterexamples.",

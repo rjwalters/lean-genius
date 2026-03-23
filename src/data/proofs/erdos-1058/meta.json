@@ -46,7 +46,8 @@
       "erdos_1058_status: combined finiteness and classification"
     ],
     "axiomCount": 5,
-    "lineCount": 177
+    "lineCount": 177,
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "A conjecture of Erdős and Stewart, appearing as Problem A2 in Guy's 'Unsolved Problems in Number Theory'. The problem explores the rare phenomenon where n!+1 has very few prime factors, specifically only the next two consecutive primes after the interval containing n.\n\nFlorian Luca completely solved this in 2001, published in Mathematics of Computation. His proof combines factorial growth rate arguments with diophantine equation techniques to show that for n ≥ 6, n!+1 necessarily has additional prime factors beyond p_k and p_{k+1}.",

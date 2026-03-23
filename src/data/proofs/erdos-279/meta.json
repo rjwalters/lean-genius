@@ -28,12 +28,13 @@
       }
     ],
     "axiomCount": 4,
-    "lineCount": 86
+    "lineCount": 86,
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Paul Erdős and Ronald Graham posed this problem in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory'. The question asks whether arithmetic progressions with prime moduli can cover all large integers when the starting index is shifted by at least k steps. For k = 1 or k = 2, classical results on divergence of the harmonic sum over primes (Σ 1/p = ∞, proved by Euler in 1737) suffice to show covering. The case k ≥ 3 introduces a qualitatively different obstacle: the constraint t ≥ k means each prime p can only cover integers n ≡ aₚ (mod p) that are at least kp above the base residue, creating a 'gap' of size kp near the beginning of each progression. Erdős noted that even k = 3 seems difficult. The generalization to arbitrary dense sets (with prime-like counting function and log-log reciprocal divergence) was proposed to isolate the essential density condition from the specific arithmetic properties of primes.",
     "problemStatement": "For k ≥ 3, can one choose residue classes aₚ (mod p) for every prime p such that all sufficiently large integers n can be written as n = aₚ + tp for some prime p and t ≥ k?",
-    "text": "For k \u2265 3, can residue classes a\u209a (mod p) be chosen for all primes p so that every large integer is a\u209a + tp for some prime p and t \u2265 k? Even k = 3 is open.",
+    "text": "For k ≥ 3, can residue classes aₚ (mod p) be chosen for all primes p so that every large integer is aₚ + tp for some prime p and t ≥ k? Even k = 3 is open.",
     "proofStrategy": "The formalization defines ResidueChoice as a function from primes to residues, IsCoveredBy as the covering predicate for a single integer, and CoversEventually for the 'all sufficiently large' quantifier. The generalization introduces HasPrimeLikeDensity (|A ∩ [1,N]| ≫ N/log N) and HasLogLogDivergence (Σ_{n∈A,n≤N} 1/n − log log N → ∞) as density conditions. The main conjecture and its generalization are axiomatized, along with the k ≤ 2 base case.",
     "keyInsights": [
       "For k ≤ 2, the divergence Σ 1/p = ∞ provides enough 'coverage bandwidth' — each prime p covers a 1/p fraction of integers, and their combined coverage exhausts ℤ. For k ≥ 3, each progression starts k steps late, losing the smallest residues and creating coverage gaps that grow with p",

@@ -60,12 +60,13 @@
     ],
     "dateAdded": "2026-01-19",
     "axiomCount": 4,
-    "lineCount": 213
+    "lineCount": 213,
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in the 1960s, asking whether moderate density ($\\sqrt{N}$) suffices for subcompleteness. The problem has roots in the classical study of complete sequences by Sprague (1937) and Folkman (1966). Folkman first proved that density $N^{1/2+\\varepsilon}$ suffices, using a greedy selection argument. The problem remained open for 40 years until Szemerédi and Vu (2006) proved the sharp result using Fourier-analytic methods and the Freiman-Ruzsa inverse theorem from additive combinatorics. Erdős himself showed in 1962 that the threshold cannot go below $\\sqrt{2N}$ by constructing an explicit counterexample, leaving the gap between $\\sqrt{N}$ and $\\sqrt{2N}$ as an open problem.",
     "problemStatement": "If A ⊆ ℕ is a set of integers such that |A ∩ {1,...,N}| ≫ N^{1/2} for all N, must A be subcomplete? That is, must the set of all finite subset sums P(A) = {∑_{n ∈ B} n : B ⊆ A finite} contain an infinite arithmetic progression?",
-    "text": "If A \u2286 \u2115 has counting function |A \u2229 {1,...,N}| \u226b N^{1/2}, must the subset sums P(A) contain an infinite arithmetic progression? Solved by Szemer\u00e9di-Vu (2006).",
+    "text": "If A ⊆ ℕ has counting function |A ∩ {1,...,N}| ≫ N^{1/2}, must the subset sums P(A) contain an infinite arithmetic progression? Solved by Szemerédi-Vu (2006).",
     "proofStrategy": "The Szemerédi-Vu proof uses sophisticated Fourier analysis and additive combinatorics. The formalization captures the key definitions and states the main theorems as axioms, along with the related results and open conjectures. The only constructive proof is complete_implies_subcomplete, which witnesses the arithmetic progression {N₀, N₀+1, ...} inside P(A) when A is complete.",
     "keyInsights": [
       "A set is 'subcomplete' if its subset sums contain an infinite arithmetic progression — weaker than completeness but still a strong structural property",

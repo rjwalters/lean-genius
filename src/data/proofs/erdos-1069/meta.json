@@ -56,12 +56,13 @@
       "erdos_1069_summary theorem"
     ],
     "axiomCount": 11,
-    "lineCount": 228
+    "lineCount": 228,
+    "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This problem was conjectured by Erdős, Croft, and Purdy, and described by Erdős in his 1987 paper 'Some combinatorial and metric problems in geometry'. The question asks for the maximum number of k-rich lines (lines containing at least k points) through a set of n points in the plane.\n\nThe result follows from the celebrated Szemerédi-Trotter theorem (1983), which bounds the number of incidences between points and lines in ℝ². This theorem is a cornerstone of incidence geometry: I(P,L) ≤ O(|P|^{2/3}|L|^{2/3} + |P| + |L|). The k-rich lines bound O(n²/k³) is a direct consequence via a counting argument.\n\nThe bound is nearly tight. For k = √n, lattice points on an m × m grid show there can be at least (2+o(1))√n many √n-rich lines. The optimal constant in the bound remains unknown and is an active area of research in combinatorial geometry.",
     "problemStatement": "**Problem (Erdős-Croft-Purdy, 1987):** Given $n$ points in $\\mathbb{R}^2$, the number of $k$-rich lines (lines containing $\\geq k$ points) is $O(n^2/k^3)$, provided $k \\leq \\sqrt{n}$.\n\n**Answer:** YES (Szemerédi-Trotter, 1983)\n\nThe bound follows from the Szemerédi-Trotter incidence theorem: $I(P,L) \\leq O(|P|^{2/3}|L|^{2/3} + |P| + |L|)$.",
-    "text": "Given n points in \u211d\u00b2, the number of k-rich lines (containing \u2265k points) is O(n\u00b2/k\u00b3) for k \u2264 \u221an. Proved by Szemer\u00e9di-Trotter (1983).",
+    "text": "Given n points in ℝ², the number of k-rich lines (containing ≥k points) is O(n²/k³) for k ≤ √n. Proved by Szemerédi-Trotter (1983).",
     "proofStrategy": "The formalization defines points (ℝ × ℝ), lines (ax + by = c), and incidence counts. The Szemerédi-Trotter theorem is axiomatized as the main incidence bound. The k-rich lines bound is derived: if m lines each have ≥ k incidences, then mk ≤ I(P,L), giving m ≤ O(n^{2/3}m^{2/3}/k + n/k), which solves to m ≤ O(n²/k³). The dyadic decomposition technique is formalized as an intermediate step.",
     "keyInsights": [
       "**Incidence counting:** A k-rich line contributes at least k to the total incidence count, giving a lower bound mk ≤ I(P,L)",

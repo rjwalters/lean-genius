@@ -68,12 +68,13 @@
       "Asymptotic notation and logarithmic growth",
       "Lean 4 / Mathlib: SimpleGraph, Finset, Filter.atTop"
     ],
-    "lineCount": 123
+    "lineCount": 123,
+    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős posed this problem circa 1979, asking whether graphs with bounded independence number must contain locally dense subsets — a fundamental local-global question in extremal graph theory. The problem is motivated by Ramsey theory: if $\\alpha(G) \\leq \\sqrt{n}$, then by Ramsey-type reasoning, the graph must be 'dense' in some sense, but can this density be localized to a small subset? Noga Alon resolved it affirmatively in 1996 using the probabilistic method — specifically, random sampling of $\\sqrt{n}$-vertex subsets. The expected number of induced edges in a random $\\sqrt{n}$-subset is $\\Omega(\\sqrt{n} \\log n)$ when $\\alpha(G) \\leq \\sqrt{n}$ implies $e(G) = \\Omega(n \\log n)$, so some $\\sqrt{n}$-subset achieves this bound. The $\\log n$ factor is tight: Paley graphs (constructed from quadratic residues modulo primes) show no $\\sqrt{n}$-subset can induce more than $O(\\sqrt{n} \\log n)$ edges. This connects to deep questions about pseudo-random graphs and Ramsey multiplicity.",
     "problemStatement": "If G is a graph on n vertices containing no independent set on more than √n vertices, then there is a set of at most √n vertices containing at least c · √n · log n edges for some constant c > 0.",
-    "text": "If G is a graph on n vertices with no independent set larger than \u221an, then there exists a set of \u2264 \u221an vertices containing \u226b \u221an log n edges. Proved by Alon (1996) using probabilistic methods.",
+    "text": "If G is a graph on n vertices with no independent set larger than √n, then there exists a set of ≤ √n vertices containing ≫ √n log n edges. Proved by Alon (1996) using probabilistic methods.",
     "proofStrategy": "The formalization wraps `SimpleGraph (Fin n)` as `FiniteGraph n`, defines $\\alpha(G)$ via `sSup` over independent sets (`IsIndependent`), and counts induced edges via `Finset.filter` on ordered pairs. `Erdos801Statement` quantifies: $\\exists c > 0,\\; \\forall n \\geq 2,\\; \\forall G$ with $\\alpha(G) \\leq \\sqrt{n}$, $\\exists S$ with $|S| \\leq \\sqrt{n}$ and $e(S) \\geq c\\sqrt{n}\\log n$. Alon's theorem, log-factor necessity, and vertex-size optimality are axiomatized. The summary theorem pairs existence with tightness. 0 sorries.",
     "keyInsights": [
       "**Local-global principle**: $\\alpha(G) \\leq \\sqrt{n}$ (global) forces $\\exists S$ with $|S| \\leq \\sqrt{n}$ and $e(S) \\geq c\\sqrt{n}\\log n$ (local density)",

@@ -30,12 +30,13 @@
       "Green-Tao theorem (arbitrarily long APs in primes)",
       "Cramér probabilistic model for primes"
     ],
-    "lineCount": 340
+    "lineCount": 340,
+    "assumptions": "22 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős posed this problem across several papers from 1955-1985, asking about the local statistical behavior of prime gaps $d_n = p_{n+1} - p_n$. While the Prime Number Theorem (Hadamard, de la Vallée-Poussin 1896) shows $d_n \\sim \\log p_n$ on average, the local behavior — whether consecutive gaps tend to increase, decrease, or stay equal — is far subtler. Cramér's probabilistic model (1936) suggests that gap comparisons should behave like independent coin flips, yielding density $1/2$ for both increasing and decreasing gaps. However, primes exhibit nontrivial correlations (e.g., the Hardy-Littlewood prime $k$-tuples conjecture) that could affect local gap statistics. The equal-gap conjecture ($d_n = d_{n+1}$ infinitely often) is equivalent to asking for infinitely many 3-term arithmetic progressions of consecutive primes. The Green-Tao theorem (2004) gives arbitrarily long APs in primes, but not of consecutive primes. Terence Tao assessed this problem as 'looks difficult' on his blog.",
     "problemStatement": "Let d_n = p_{n+1} - p_n. Conjectures: (1) {n : d_{n+1} ≥ d_n} has density 1/2, (2) {n : d_{n+1} ≤ d_n} has density 1/2, (3) infinitely many n have d_n = d_{n+1}. All three remain OPEN. Conjecture 3 is equivalent to infinitely many 3-term APs of consecutive primes.",
-    "text": "Let d_n = p_{n+1} - p_n be the prime gap. Erd\u0151s conjectured that the sets where d_{n+1} \u2265 d_n and d_{n+1} \u2264 d_n each have density 1/2, and that infinitely many equal gaps d_n = d_{n+1} exist. OPEN.",
+    "text": "Let d_n = p_{n+1} - p_n be the prime gap. Erdős conjectured that the sets where d_{n+1} ≥ d_n and d_{n+1} ≤ d_n each have density 1/2, and that infinitely many equal gaps d_n = d_{n+1} exist. OPEN.",
     "proofStrategy": "The formalization defines nthPrime (via Nat.nth), primeGap, HasDensity (via Tendsto), and the three key sets (gapIncreasingSet, gapDecreasingSet, gapEqualSet). The three conjectures are axioms. Key proved results: primeGap_pos, gapEqualSet_eq_inter, partition of ℕ by gap comparison. The connection gapEqual ↔ threePrimesInAP is axiomatized. Green-Tao theorem is stated for context.",
     "keyInsights": [
       "d_n = p_{n+1} - p_n measures gaps between consecutive primes",

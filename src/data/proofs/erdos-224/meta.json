@@ -32,12 +32,13 @@
       }
     ],
     "axiomCount": 7,
-    "lineCount": 256
+    "lineCount": 256,
+    "assumptions": "7 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in the context of discrete geometry, asking how many points in $\\mathbb{R}^d$ can avoid forming any obtuse angle. The question connects to the geometry of the hypercube: the $2^d$ vertices of $\\{0,1\\}^d$ form an obtuse-free set because all angles between triples of binary vectors are $\\leq 90°$ (specifically $60°$ or $90°$). For $d = 2$, any 5 points in the plane trivially contain an obtuse triple (via convex position arguments). For $d = 3$, Kuiper and Boerdijk proved the 9-point case independently. The general result was established by Ludwig Danzer and Branko Grünbaum in their 1962 paper in *Mathematische Zeitschrift*, resolving the problem for all dimensions. The proof uses induction on dimension with a projection argument, showing that $2^d + 1$ points must contain an obtuse triple. Erdős and Füredi (1983) later studied the related problem of the greatest angle among $n$ points, extending the analysis beyond the threshold case.",
     "problemStatement": "If $A \\subseteq \\mathbb{R}^d$ is any set of $2^d + 1$ points, must some three points in $A$ determine an obtuse angle ($> 90°$)?",
-    "text": "Any 2^d + 1 points in \u211d^d contain three points forming an obtuse angle. SOLVED by Danzer-Gr\u00fcnbaum (1962). Hypercube is extremal.",
+    "text": "Any 2^d + 1 points in ℝ^d contain three points forming an obtuse angle. SOLVED by Danzer-Grünbaum (1962). Hypercube is extremal.",
     "proofStrategy": "The formalization defines $d$-dimensional Euclidean points as `Fin d → ℝ`, angles via $\\arccos$ of normalized inner products, and predicates for obtuse angles, obtuse triples, and obtuse-free sets. The main theorem (Danzer-Grünbaum) is axiomatized for all $d$. Special cases $d = 2$ and $d = 3$ are stated separately. The hypercube vertices $\\{0,1\\}^d$ are defined, and their obtuse-free property and extremality are axiomatized/proved. The pigeonhole argument over orthants is formalized as a key lemma.",
     "keyInsights": [
       "**Hypercube extremality**: The $2^d$ vertices of $\\{0,1\\}^d$ have only $60°$ and $90°$ angles — all inner products $\\langle A-B, C-B\\rangle \\geq 0$ for binary vectors",

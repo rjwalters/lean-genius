@@ -65,12 +65,13 @@
       "Concrete example: prodInterval 2 4 = 24 via native_decide"
     ],
     "axiomCount": 13,
-    "lineCount": 266
+    "lineCount": 266,
+    "assumptions": "13 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem #382 originates from the 1980 monograph by Erdős and Graham [ErGr80], which systematically cataloged open problems in combinatorial number theory. The problem studies the factorization structure of products of consecutive integers u·(u+1)·...·v, specifically asking about the exponent of the largest prime divisor.\n\nThe key constraint is that the largest prime p dividing the product must appear with exponent ≥ 2. Since p² must divide some integer in [u,v], this forces p ≤ √v, meaning the interval [u,v] is 'prime-free' above √v. The problem asks two questions: whether v−u grows subpolynomially in v, and whether v−u can be arbitrarily large.\n\nRamachandra established the best known upper bound v−u ≤ v^{1/2+o(1)}, using techniques from the distribution of primes in short intervals. Cramér's famous conjecture on prime gaps would imply the stronger result that v−u = v^o(1). Cambie's heuristic analysis suggests that v−u can indeed be arbitrarily large, but both questions remain open.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nLet $u \\leq v$ be positive integers such that the largest prime dividing the product $\\prod_{m=u}^{v} m$ appears with exponent at least 2.\n\n**Question 1:** Is $v - u = v^{o(1)}$? That is, for every $\\varepsilon > 0$ and sufficiently large $v$, is $v - u < v^\\varepsilon$?\n\n**Question 2:** Can $v - u$ be arbitrarily large?\n\n**Known:** Ramachandra: $v - u \\leq v^{1/2 + o(1)}$. Under Cramér's conjecture, Question 1 has answer YES.",
-    "text": "For intervals [u,v] where the largest prime dividing u(u+1)...v has exponent \u2265 2, is v\u2212u = v^o(1)? Can v\u2212u be arbitrarily large? Ramachandra showed v\u2212u \u2264 v^{1/2+o(1)}. OPEN.",
+    "text": "For intervals [u,v] where the largest prime dividing u(u+1)...v has exponent ≥ 2, is v−u = v^o(1)? Can v−u be arbitrarily large? Ramachandra showed v−u ≤ v^{1/2+o(1)}. OPEN.",
     "proofStrategy": "The formalization defines the product of an interval via Finset.Icc, the largest prime divisor via primeFactorsList maximum, and the p-adic valuation via Nat.factorization. The Erdős-Graham condition (largest prime has exponent ≥ 2) is captured by satisfiesCondition. Both questions are stated as formal Prop values. Known results (Ramachandra's bound, Cramér's implication) are axiomatized since they require deep analytic number theory beyond Mathlib. The key equivalence — the condition means no prime larger than √v lies in [u,v] — is formalized via noPrimeLargerThanSqrt. A summary theorem combines all known results.",
     "keyInsights": [
       "**Prime-Free Reformulation**: The condition is equivalent to all primes in [u,v] being ≤ √v, since a prime p > √v has p² > v and thus exponent exactly 1",

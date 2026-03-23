@@ -30,12 +30,13 @@
       "Szemerédi regularity lemma (for understanding the proof chain)",
       "Roth's theorem and the corners theorem (k=3 case)"
     ],
-    "lineCount": 261
+    "lineCount": 261,
+    "assumptions": "4 axiom(s) and 1 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs."
   },
   "overview": {
     "historicalContext": "Erdős and Pál Turán conjectured in 1936 that any set of integers with positive upper density contains arbitrarily long arithmetic progressions. Klaus Roth proved the $k=3$ case in 1953 (earning a Fields Medal in 1958 partly for this work), and Endre Szemerédi proved the full conjecture in 1975 using a groundbreaking combinatorial regularity lemma, receiving the $\\$1000$ prize from Erdős.\n\nHillel Furstenberg gave a fundamentally different proof in 1977 using ergodic theory (the Furstenberg correspondence principle), opening a new bridge between combinatorics and dynamics. Timothy Gowers (2001) gave a quantitative proof using higher-order Fourier analysis, introducing the Gowers norms $\\|f\\|_{U^k}$. The quantitative bounds have been dramatically improved: Green and Tao (2017) gave polynomial bounds for $k=4$, and Kelley and Meka (2023) achieved the breakthrough bound $r_3(N) \\leq N \\cdot \\exp(-c(\\log N)^{1/12})$ for 3-term progressions, nearly matching the Behrend (1946) lower bound.",
     "problemStatement": "Let r_k(N) be the size of the largest subset of {1,...,N} which does not contain a non-trivial k-term arithmetic progression. Prove that r_k(N) = o(N). Equivalently: any subset of integers with positive upper density contains arbitrarily long arithmetic progressions.",
-    "text": "Szemer\u00e9di's theorem states that any subset of natural numbers with positive upper density contains arbitrarily long arithmetic progressions. This formalization covers the equivalent density formulation: r_k(N) = o(N), where r_k(N) is the maximum size of a k-AP-free subset of {1,...,N}.",
+    "text": "Szemerédi's theorem states that any subset of natural numbers with positive upper density contains arbitrarily long arithmetic progressions. This formalization covers the equivalent density formulation: r_k(N) = o(N), where r_k(N) is the maximum size of a k-AP-free subset of {1,...,N}.",
     "proofStrategy": "The formalization defines k-AP-free sets and the r_k(N) function, then states Szemerédi's theorem in density formulation. For k=3 (Roth's theorem), we prove it using Mathlib's corners theorem chain: Regularity Lemma → Triangle Removal → Corners Theorem → Roth's Theorem. The general case k≥4 requires hypergraph regularity lemma (not yet in Mathlib) and is axiomatized.",
     "keyInsights": [
       "k=3 case (Roth's theorem) is fully proved in Mathlib via corners theorem",

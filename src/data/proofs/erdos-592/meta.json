@@ -68,7 +68,8 @@
         "relationship": "foundational result (ω → (ω,n)² for all n)"
       }
     ],
-    "axiomCount": 0
+    "axiomCount": 0,
+    "assumptions": "None. Formalized with 0 axioms and 0 sorries."
   },
   "sections": [
     {
@@ -131,7 +132,7 @@
   "overview": {
     "historicalContext": "**Ordinal Partition Calculus (1956-2010)**\n\nErdős and Rado (1956) founded the **partition calculus** for ordinals, establishing the Ramsey arrow notation $\\alpha \\to (\\beta, \\gamma)^n$ that became the standard language for infinite combinatorics. The specific problem of classifying **partition ordinals** — ordinals $\\alpha$ satisfying $\\alpha \\to (\\alpha, 3)^2$ — was posed by Erdős in 1982 (restated 1987), motivated by the surprising early results.\n\n**Specker (1957)** proved both the first positive result ($\\omega^2 \\to (\\omega^2, 3)^2$) and the first negative result ($\\omega^n \\not\\to (\\omega^n, 3)^2$ for finite $n \\geq 3$), revealing the stunning **non-monotonicity** of the partition property. **Chang (1972)** showed the property recovers at $\\omega^\\omega$, deepening the mystery. **Galvin and Larson (1974)** established the necessary condition that partition ordinals $\\beta \\geq 3$ must be additively indecomposable ($\\beta = \\omega^\\gamma$), focusing the problem on ordinal towers.\n\n**Schipperus (2010)** achieved the near-complete classification: the partition property for $\\omega^{\\omega^\\gamma}$ depends on the **Cantor normal form length** of $\\gamma$. Length $\\leq 2$ gives the property; length $\\geq 4$ fails. Only the case CNF-length $= 3$ remains open, carrying Erdős's $1,000 bounty.",
     "problemStatement": "**Open Problem ($1,000 Bounty)**\n\nDetermine which countable ordinals $\\beta$ satisfy $\\omega^\\beta \\to (\\omega^\\beta, 3)^2$: for every 2-coloring of pairs from $\\omega^\\beta$, there exists either a red-homogeneous set of order type $\\omega^\\beta$ or a blue triangle.\n\nThe complete classification reduces to a single open case: does the partition property hold when $\\beta = \\omega^{\\omega^\\gamma}$ and $\\gamma$ has Cantor normal form length exactly 3?",
-    "text": "For which countable ordinals \u03b2 does \u03c9^\u03b2 \u2192 (\u03c9^\u03b2, 3)\u00b2 hold? Specker (1957): \u03b2=2 yes, 3\u2264\u03b2<\u03c9 no. Chang (1972): \u03b2=\u03c9 yes. Schipperus (2010): \u03b2=\u03c9^\u03b3 with CNF-length(\u03b3)\u22642 yes, \u22654 no. The case CNF-length(\u03b3)=3 is OPEN. $1,000 bounty.",
+    "text": "For which countable ordinals β does ω^β → (ω^β, 3)² hold? Specker (1957): β=2 yes, 3≤β<ω no. Chang (1972): β=ω yes. Schipperus (2010): β=ω^γ with CNF-length(γ)≤2 yes, ≥4 no. The case CNF-length(γ)=3 is OPEN. $1,000 bounty.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Core definitions:** Define countable ordinals, the ordinal Ramsey arrow $\\alpha \\to (\\alpha, k)^2$, and the partition property `HasPartitionProperty` for $\\omega^\\beta$.\n2. **Historical results:** Axiomatize Specker's positive ($\\beta = 2$) and negative ($3 \\leq \\beta < \\omega$) results, and Chang's theorem ($\\beta = \\omega$).\n3. **Structural reduction:** Define additive indecomposability and axiomatize the Galvin-Larson necessary condition.\n4. **Schipperus classification:** Define CNF-length and axiomatize the positive (length $\\leq 2$) and negative (length $\\geq 4$) results.\n5. **Open problem:** State the CNF-length 3 case as a disjunction axiom, capturing the $1,000 bounty question.",
     "keyInsights": [
       "**Non-monotonicity:** The partition property holds for $\\beta = 2$ but fails for all finite $\\beta \\geq 3$, then recovers at $\\beta = \\omega$ — a striking structural phenomenon",

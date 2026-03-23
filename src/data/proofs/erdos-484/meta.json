@@ -44,7 +44,8 @@
       }
     ],
     "axiomCount": 14,
-    "lineCount": 322
+    "lineCount": 322,
+    "assumptions": "14 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "sections": [
     {
@@ -107,7 +108,7 @@
   "overview": {
     "historicalContext": "Problem #484 originated as a conjecture of **Klaus Friedrich Roth** about the structure of sumsets under finite partitions. **Erdős** promoted the problem, connecting it to his broader program on partition regularity in additive combinatorics. It was solved by **Erdős, Sárközy, and Sós** in their 1989 paper 'On a conjecture of Roth and some related problems I'. Their solution was far stronger than Roth's conjecture: they showed almost all even numbers in {2,...,2N} are representable as monochromatic sums, with only O(N^{1−1/2^{k+1}}) exceptions. For k = 2, the error drops to O(log N), and this is tight — the **2-adic valuation construction** χ(n) = ν₂(n) mod 2 shows that all ⌊log₂(2N)⌋ powers of 2 can be simultaneously non-representable. A refinement appears as Problem 25 on **Ben Green's** open problems list, asking for the exact second-order term.",
     "problemStatement": "Prove that there exists an absolute constant c > 0 such that, whenever {1,...,N} is k-colored (with N large enough depending on k), there are at least cN integers representable as monochromatic sums — that is, a + b where a, b are in the same color class and a ≠ b.",
-    "text": "Prove \u2203 c > 0 such that any k-coloring of {1,...,N} has at least cN integers representable as monochromatic sums a+b (same color, a\u2260b). SOLVED: Erd\u0151s-S\u00e1rk\u00f6zy-S\u00f3s (1989) proved N/2 \u2212 O(N^{1\u22121/2^{k+1}}) even sums; for k=2, N/2 \u2212 O(log N) is tight (2-adic valuation obstruction).",
+    "text": "Prove ∃ c > 0 such that any k-coloring of {1,...,N} has at least cN integers representable as monochromatic sums a+b (same color, a≠b). SOLVED: Erdős-Sárközy-Sós (1989) proved N/2 − O(N^{1−1/2^{k+1}}) even sums; for k=2, N/2 − O(log N) is tight (2-adic valuation obstruction).",
     "proofStrategy": "The formalization defines k-colorings as Fin N → Fin k, monochromatic sums via existential quantification, and Roth's conjecture as a nested ∃∀ statement. The ESS theorem giving the precise N/2 − O(N^{1−1/2^{k+1}}) bound is axiomatized, along with the k = 2 case (O(log N) tight), the 2-adic valuation construction, sumset structure lemmas, and the Fourier bound on unrepresented sums. Schur's and Hindman's theorems provide context. The final theorem `erdos_484` is proved (not axiomatized) by combining the three main components. 0 sorries throughout.",
     "keyInsights": [
       "**Almost all even numbers are representable**: the ESS bound N/2 − O(N^{1−ε}) shows monochromatic sums cover nearly half of {2,...,2N} — the maximum possible for even sums",

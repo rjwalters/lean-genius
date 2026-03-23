@@ -97,12 +97,13 @@
       "erdos_749_upper_variant: upper density version of the main question"
     ],
     "axiomCount": 9,
-    "lineCount": 106
+    "lineCount": 106,
+    "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős posed this in 1994, exploring the fundamental tension in additive combinatorics between sumset density and representation function growth. Sidon sets (Erdős-Turán 1941) demonstrate that bounded r(n) is compatible with sparse sumsets: they have r(n) ≤ 1 but |A ∩ [1,N]| ∼ √N, giving density-0 sumsets. At the other extreme, the Erdős-Turán conjecture (Problem #28, $500 bounty) asserts that any additive basis of order 2 (density-1 sumset) must have unbounded r(n).\n\nProblem #749 asks about the boundary: can we get sumset density arbitrarily close to 1 while keeping r(n) bounded? A positive answer would show the Erdős-Turán obstruction is specific to density exactly 1 — a sharp phase transition. A negative answer would show the obstruction appears at some critical density 1-ε₀ < 1, strengthening the Erdős-Turán conjecture quantitatively.",
     "problemStatement": "For every ε > 0, does there exist A ⊆ ℕ such that A + A has lower density ≥ 1 - ε, yet the representation function r(n) = |{(a,b) ∈ A² : a+b=n, a≤b}| is bounded?",
-    "text": "For \u03b5 > 0, does A \u2286 \u2115 exist with lower density of A+A \u2265 1-\u03b5 and bounded representation function r(n)? Explores tension between sumset density and convolution growth. Related to Erd\u0151s-Tur\u00e1n conjecture (#28). Status: OPEN.",
+    "text": "For ε > 0, does A ⊆ ℕ exist with lower density of A+A ≥ 1-ε and bounded representation function r(n)? Explores tension between sumset density and convolution growth. Related to Erdős-Turán conjecture (#28). Status: OPEN.",
     "proofStrategy": "The formalization defines the representation function via Finset.filter, the sumset as an existential image, and asymptotic densities as axioms. The bounded representation and dense sumset predicates capture the two competing goals. The main conjecture is stated as a dichotomy. Sidon sets demonstrate one extreme (bounded r(n), sparse sumset), and the Erdős-Turán conjecture captures the other (dense sumset implies unbounded r(n)). The upper density variant is also formalized.",
     "keyInsights": [
       "Sidon sets: r(n) ≤ 1 (bounded) but sumset density = 0 — shows bounded r(n) is possible for sparse sumsets",

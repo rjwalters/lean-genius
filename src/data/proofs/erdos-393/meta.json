@@ -55,12 +55,13 @@
       "erdos_393 main theorem combining results"
     ],
     "axiomCount": 10,
-    "lineCount": 194
+    "lineCount": 194,
+    "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #393** concerns how factorials can be expressed as products of distinct integers.\n\n**Historical Development:**\n- **Erdős-Graham:** Posed the question, noted they didn't even know if f(n) = 1 infinitely often.\n- **1992 (Berend-Osgood):** Proved F_m(N) = o(N) for each fixed m.\n- **2002 (Luca):** Showed f(n) → ∞ conditionally on ABC conjecture.\n- **2023 (Bui-Pratt-Zaharescu):** Proved power saving F_m(N) ≪ N^{33/34}.\n\nThe problem connects to polynomial-factorial equations and the ABC conjecture.",
     "problemStatement": "**Problem Statement (PARTIALLY SOLVED)**\n\nLet $f(n)$ denote the minimal $m \\geq 1$ such that\n$$n! = a_1 \\cdot a_2 \\cdot \\ldots \\cdot a_t$$\nwith $a_1 < a_2 < \\ldots < a_t = a_1 + m$.\n\nWhat is the behaviour of $f(n)$?\n\n**Known Results:**\n- $f(n) = 1$ iff $n! = k(k+1)$ for some $k$ (unknown if infinitely often)\n- $F_m(N) = o(N)$ for each fixed $m$ (Berend-Osgood 1992)\n- $F_m(N) \\ll_m N^{33/34}$ (BPZ 2023)\n- $f(n) \\to \\infty$ as $n \\to \\infty$, conditional on ABC (Luca 2002)\n\n**Open:** Does $f(n) \\to \\infty$ unconditionally? Is $f(n) = 1$ infinitely often?",
-    "text": "Let f(n) = minimal m such that n! = a\u2081\u00b7...\u00b7a\u209c with a\u2081 < ... < a\u209c = a\u2081 + m. Study the behavior of f(n). Known: F_m(N) = o(N), conditional f(n) \u2192 \u221e.",
+    "text": "Let f(n) = minimal m such that n! = a₁·...·aₜ with a₁ < ... < aₜ = a₁ + m. Study the behavior of f(n). Known: F_m(N) = o(N), conditional f(n) → ∞.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Factorization Setup:** Define valid factorizations with span constraint.\n\n2. **f(n) Function:** Define as minimum span over all valid factorizations.\n\n3. **Counting Function:** Define F_m(N) counting n ≤ N with f(n) = m.\n\n4. **Density Results:** Axiomatize Berend-Osgood (o(N)) and BPZ (N^{33/34}).\n\n5. **ABC Connection:** State Luca's conditional result.",
     "keyInsights": [
       "**Span Measures Spread:** f(n) quantifies how spread the factors must be in any factorization of n!.",

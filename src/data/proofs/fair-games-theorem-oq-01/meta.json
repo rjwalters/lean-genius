@@ -49,7 +49,8 @@
       "Stopping times and absorbing barriers",
       "Characteristic functions and spectral analysis of Markov chains",
       "Discrete harmonic functions and potential theory"
-    ]
+    ],
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
     "historicalContext": "The Gambler's Ruin problem is one of the oldest problems in probability theory, dating to correspondence between Pascal and Fermat in 1654. The modern treatment uses martingale theory developed by Doob (1953). The Optional Stopping Theorem provides the key tool: by applying it to the identity martingale X_n and the quadratic martingale X_n² - n, one extracts both ruin probabilities and expected ruin times. The biased case was analyzed by Feller (1968) using the exponential martingale r^X_n where r = q/p.",

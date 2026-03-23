@@ -48,12 +48,13 @@
       "Verified partial sums: first 5 terms = 101/32"
     ],
     "axiomCount": 6,
-    "lineCount": 210
+    "lineCount": 210,
+    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem #251 asks a deceptively simple question: is the sum Σ pₙ/2ⁿ irrational? Here pₙ denotes the nth prime: p₁ = 2, p₂ = 3, p₃ = 5, and so on.\n\nThe sum converges absolutely (since pₙ ~ n ln n by the prime number theorem and Σ n ln n / 2ⁿ converges). Its decimal expansion begins 3.59686... and is catalogued as OEIS A098990.\n\nErdős himself proved the related result that Σ pₙᵏ/n! is irrational for all k ≥ 1 (the factorial denominators make the problem tractable). He conjectured that Σ pₙᵏ/2ⁿ is also irrational for all k ≥ 1, which includes Problem #251 as the case k = 1.\n\nErdős also formulated a more general conjecture: if gₙ ≥ 2 for all n and gₙ = o(pₙ), then Σ pₙ/(g₁·g₂·...·gₙ) is irrational.",
     "problemStatement": "Is the sum $\\sum_{n=1}^{\\infty} \\frac{p_n}{2^n}$ irrational, where $p_n$ is the $n$th prime?\n\n**Status**: OPEN\n\n**The Sum**: $\\frac{2}{2} + \\frac{3}{4} + \\frac{5}{8} + \\frac{7}{16} + \\frac{11}{32} + \\cdots \\approx 3.59686...$\n\n**Related Solved Result**: Erdős proved $\\sum \\frac{p_n^k}{n!}$ is irrational for all $k \\geq 1$.",
-    "text": "Is the sum \u03a3 p\u2099/2\u207f irrational, where p\u2099 is the nth prime? This OPEN problem asks about the arithmetic nature of a beautiful constant involving primes and powers of 2.",
+    "text": "Is the sum Σ pₙ/2ⁿ irrational, where pₙ is the nth prime? This OPEN problem asks about the arithmetic nature of a beautiful constant involving primes and powers of 2.",
     "proofStrategy": "We formalize the problem and related results:\n\n1. **Define the sum**: Using Mathlib's `Nat.nth Nat.Prime` to enumerate primes\n2. **State convergence**: The sum converges by comparison with Σ n ln n / 2ⁿ (axiom)\n3. **State the conjecture**: `erdos_251_conjecture := Irrational erdosSum`\n4. **State related results**: Erdős's factorial irrationality theorem as an axiom\n5. **Verify partial sums**: Prove first 1, 2, 3, 4, 5 terms sum to 1, 7/4, 19/8, 45/16, 101/32\n\nThe actual irrationality proof is unknown and cannot be formalized.",
     "keyInsights": [
       "**Why this is hard**: Proving irrationality of explicit series is notoriously difficult. Even whether e + π is irrational remains open! The irregularity of the prime sequence adds further complexity.",

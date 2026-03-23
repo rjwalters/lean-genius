@@ -53,12 +53,13 @@
       "erdos_317_summary: proved — combining weak inequality and counterexample"
     ],
     "axiomCount": 1,
-    "lineCount": 165
+    "lineCount": 165,
+    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #317: Signed Unit Fraction Approximations**\n\nFrom Erdős-Graham (1980), p.42. This problem asks how small a nonzero signed combination of the first n unit fractions can be.\n\n**Two Questions:**\n1. Can we achieve exponentially small sums < c/2^n for some universal constant c?\n2. For large n, is 1/lcm(1,...,n) a strict lower bound for nonzero sums?\n\n**Known Results:** Kovac and van Doorn achieved 2^{-n·(log log log n)^{1+o(1)}/log n}, far from c/2^n. Van Doorn's heuristic suggests this may be optimal, which would make Question 1 false. Question 2 fails for small n: 1/2 - 1/3 - 1/4 = -1/12 achieves exactly 1/lcm(1,2,3,4).",
     "problemStatement": "**Problem Statement (OPEN)**\n\n**Question 1:** Is there $c > 0$ such that for every $n \\geq 1$, there exist $\\delta_k \\in \\{-1, 0, 1\\}$ with $0 < |\\sum_{k=1}^n \\delta_k/k| < c/2^n$?\n\n**Question 2:** For sufficiently large $n$, must $|\\sum \\delta_k/k| > 1/\\text{lcm}(1,\\ldots,n)$ whenever the sum is nonzero?\n\n**Known:** Weak inequality $\\geq 1/\\text{lcm}$ holds trivially. Strict inequality fails for $n = 4$.",
-    "text": "Is there c > 0 such that for every n, we can find \u03b4_k \u2208 {-1,0,1} with 0 < |\u2211\u03b4_k/k| < c/2^n? Also: for large n, must nonzero such sums exceed 1/lcm(1,...,n)? OPEN.",
+    "text": "Is there c > 0 such that for every n, we can find δ_k ∈ {-1,0,1} with 0 < |∑δ_k/k| < c/2^n? Also: for large n, must nonzero such sums exceed 1/lcm(1,...,n)? OPEN.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Clean Definitions:** IsSignFunction, signedUnitFractionSum, signedSumAbs using Fin n and Finset.sum.\n\n2. **Both Questions as Defs:** Question1 and Question2 as Prop definitions (open problems).\n\n3. **Known Results as Axioms:** weak_inequality (denominator divisibility), counterexample_small_n (n=4 equality), kovac_van_doorn_bound (nonzero sums exist).\n\n4. **Summary Theorem:** erdos_317_summary proved from axioms, combining the weak inequality with the counterexample.",
     "keyInsights": [
       "**Exponential vs Sub-exponential:** c/2^n is exponential in n; the known Kovac-van Doorn bound 2^{-n·polylog/log n} is sub-exponential — a huge gap",

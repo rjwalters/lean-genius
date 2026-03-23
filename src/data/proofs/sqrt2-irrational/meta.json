@@ -51,12 +51,13 @@
     "dateAdded": "2025-12-21",
     "wiedijkNumber": 1,
     "axiomCount": 0,
-    "lineCount": 222
+    "lineCount": 222,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
     "historicalContext": "The discovery that $\\sqrt{2}$ is irrational is attributed to the ancient Greeks, possibly Hippasus of Metapontum around 500 BCE. The Pythagoreans had built their philosophy on the belief that all quantities could be expressed as ratios of whole numbers—\"all is number.\" The discovery that the diagonal of a unit square (which has length $\\sqrt{2}$ by the Pythagorean theorem) cannot be so expressed shattered this worldview.\n\nAccording to legend, Hippasus was drowned at sea for revealing this disturbing truth. Whether or not the legend is true, the mathematical crisis was real: it forced Greek mathematicians to distinguish between number (arithmetic) and magnitude (geometry), a distinction that would persist for two millennia until the rigorous construction of the real numbers in the 19th century.\n\nThis proof represents one of the earliest examples of proof by contradiction (reductio ad absurdum) in mathematics, and remains a cornerstone of mathematical education to this day.",
     "problemStatement": "The diagonal of a unit square has length $\\sqrt{2}$. The question is: can this length be expressed as a ratio of integers?\n\n$$\\text{Does there exist } \\frac{p}{q} = \\sqrt{2} \\text{ with } p, q \\in \\mathbb{Z}, q \\neq 0?$$\n\nEquivalently, squaring both sides: does there exist a solution to $p^2 = 2q^2$ in integers? The answer is no—$\\sqrt{2}$ is irrational.",
-    "text": "The classic proof that \u221a2 is irrational, generalized to show \u221an is irrational for any non-perfect-square n. Covers \u221a2, \u221a3, \u221a5, \u221a6, \u221a7 and the general theorem.",
+    "text": "The classic proof that √2 is irrational, generalized to show √n is irrational for any non-perfect-square n. Covers √2, √3, √5, √6, √7 and the general theorem.",
     "proofStrategy": "The proof proceeds by contradiction:\n\n1. Assume $\\sqrt{2} = p/q$ where $p, q$ are integers in lowest terms (no common factors)\n2. Square both sides: $p^2 = 2q^2$\n3. Parity argument: $p^2$ is even, so $p$ must be even (key lemma!)\n4. Substitute: Write $p = 2k$, then $4k^2 = 2q^2$, so $q^2 = 2k^2$\n5. Repeat: $q^2$ is even, so $q$ is even\n6. Contradiction: Both $p$ and $q$ are even, so they share factor 2—but we assumed lowest terms!",
     "keyInsights": [
       "The geometric origin: $\\sqrt{2}$ is the diagonal of a unit square, arising naturally from the Pythagorean theorem $1^2 + 1^2 = (\\sqrt{2})^2$.",

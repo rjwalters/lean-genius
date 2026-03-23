@@ -47,12 +47,13 @@
     ],
     "dateAdded": "2026-02-21",
     "axiomCount": 0,
-    "lineCount": 255
+    "lineCount": 255,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
     "historicalContext": "Divisibility rules have been studied since antiquity. The rules for 3 and 9 (sum of digits), 11 (alternating sum), 7 and 13 (truncation methods) are classical results. The **truncation method** or **osculator method** is attributed to various 19th-century mathematicians including Kummer (1852) and Zuckerman (1948). The key insight is that for any integer $d$ coprime to 10, there exists a multiplicative inverse of 10 mod $d$, the **osculator**, connecting $d$-divisibility of $n$ to a simpler expression in $\\lfloor n/10 \\rfloor$ and $n \\bmod 10$. This single algebraic principle unifies dozens of seemingly ad-hoc pencil-and-paper tests into one parametric theorem, formalized in Lean 4 with `IsCoprime` and `linear_combination`.",
     "problemStatement": "Can the individual truncation rules for 7, 11, 13, 17, 19 be unified into a single parametric theorem?\n\nSpecifically: given d coprime to 10, is there a general rule of the form $d | n \\iff d | f(n/10, n\\%10)$ where $f$ depends only on $d$?\n\n**Answer: YES**, with two variants:\n- **Positive osculator** ($d | 10c - 1$): $d | n \\iff d | (n/10 + c \\cdot (n\\%10))$\n- **Negative osculator** ($d | 10c + 1$): $d | n \\iff d | (n/10 - c \\cdot (n\\%10))$",
-    "text": "A parametric theorem generalizing the truncation method to all divisors coprime to 10. Given any d coprime to 10 and an osculator c (satisfying d | 10c \u2213 1), we prove d | n \u2194 d | (n/10 \u00b1 c\u00b7(n%10)). This single theorem subsumes the specific rules for 7, 11, 13, 17, 19, 23, 29, 31, 37, and all other primes coprime to 10.",
+    "text": "A parametric theorem generalizing the truncation method to all divisors coprime to 10. Given any d coprime to 10 and an osculator c (satisfying d | 10c ∓ 1), we prove d | n ↔ d | (n/10 ± c·(n%10)). This single theorem subsumes the specific rules for 7, 11, 13, 17, 19, 23, 29, 31, 37, and all other primes coprime to 10.",
     "proofStrategy": "The key algebraic identity is:\n$$10 \\cdot (n/10 + c \\cdot (n\\%10)) = n + (10c - 1) \\cdot (n\\%10)$$\n\nWhen $d | (10c - 1)$, the term $(10c-1) \\cdot (n\\%10)$ is divisible by $d$, so:\n$$d | n \\iff d | n + (10c-1)(n\\%10) = 10 \\cdot (n/10 + c \\cdot (n\\%10))$$\n\nSince $\\gcd(d, 10) = 1$, divisibility by $d$ transfers through the factor 10:\n$$d | 10 \\cdot \\text{expr} \\iff d | \\text{expr}$$\n\nFormally: `IsCoprime.dvd_of_dvd_mul_left` handles this last step.\n\nThe negative osculator case is symmetric, with the identity:\n$$10 \\cdot (n/10 - c \\cdot (n\\%10)) = n - (10c + 1) \\cdot (n\\%10)$$",
     "keyInsights": [
       "The `linear_combination` tactic elegantly handles the algebraic identity: `linear_combination -hdiv` where `hdiv : n = 10*(n/10) + n%10`.",

@@ -54,12 +54,13 @@
       "Connection to the law of the iterated logarithm"
     ],
     "axiomCount": 9,
-    "lineCount": 178
+    "lineCount": 178,
+    "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Rademacher multiplicative functions are random {-1, 0, 1}-valued multiplicative functions where prime values are independent fair coin flips. Wintner (1944) initiated their study, proving the partial sums grow like √N almost surely.\n\nThe conjecture asks whether there's a universal constant c such that the normalized partial sums S_N/√(N log log N) have limsup = c almost surely. This is analogous to the classical law of the iterated logarithm (LIL), which gives c = √2 for i.i.d. random walks.\n\nRecent work by Harper, Caich, and others has narrowed the gap between upper and lower bounds, but the exact behavior remains open. Harper even conjectures the original statement may be FALSE—the sum might grow slower than √(N log log N).",
     "problemStatement": "Let $f$ be a **Rademacher multiplicative function**: for each prime $p$, independently choose $f(p) \\in \\{-1, 1\\}$ uniformly at random, extend multiplicatively to square-free integers, and set $f(n) = 0$ for non-square-free $n$.\n\n**Conjecture (OPEN)**: Does there exist a constant $c > 0$ such that, almost surely,\n$$\\limsup_{N \\to \\infty} \\frac{\\sum_{m \\leq N} f(m)}{\\sqrt{N \\log \\log N}} = c?$$\n\n**Known bounds**:\n- Wintner (1944): $\\sum_{m \\leq N} f(m) \\ll N^{1/2+o(1)}$ a.s.\n- Lau-Tenenbaum-Wu (2013): $\\ll N^{1/2}(\\log \\log N)^{2+o(1)}$ a.s.\n- Caich (2024): $\\ll N^{1/2}(\\log \\log N)^{3/4+o(1)}$ a.s.\n- Harper (2013): NOT $O(N^{1/2}/(\\log \\log N)^{5/2+o(1)})$ a.s.",
-    "text": "For a Rademacher multiplicative function f, does there exist a constant c > 0 such that almost surely limsup (\u2211_{m\u2264N} f(m)) / \u221a(N log log N) = c?",
+    "text": "For a Rademacher multiplicative function f, does there exist a constant c > 0 such that almost surely limsup (∑_{m≤N} f(m)) / √(N log log N) = c?",
     "proofStrategy": "We formalize this problem by:\n\n1. **Defining Rademacher multiplicative functions**: A structure capturing the probabilistic axioms\n\n2. **Partial sums and normalization**: S_N = ∑_{m≤N} f(m) and S_N/√(N log log N)\n\n3. **Main conjecture**: Existence of universal constant c for the limsup\n\n4. **Related results**: Wintner's second moment, square-free counting, Harper's bounds\n\n5. **Properties**: Values in {-1,0,1}, mean zero, uncorrelated at distinct square-frees",
     "keyInsights": [
       "**Rademacher vs i.i.d.**: For i.i.d. ±1 variables, the LIL gives c = √2. Multiplicativity creates subtle correlations that change the behavior.",

@@ -29,12 +29,13 @@
       "Sieve methods and density estimates",
       "Pigeonhole principle"
     ],
-    "lineCount": 317
+    "lineCount": 317,
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem #693, from [Er79e], asks about the distribution of integers with medium-sized divisors. Related to Problem #446 and classical questions about divisor distribution, the Hooley divisor function, and sieve methods. The Hooley Δ-function, introduced by Christopher Hooley in the 1970s, measures how concentrated the divisors of an integer are in short intervals, and is central to quantifying divisor regularity. Erdős had a lifelong interest in the fine distribution of divisors; his work with Kac and with Tenenbaum in the 1980s established probabilistic models for how divisors spread across intervals, laying the groundwork for problems like #693. The conjecture that gaps between elements of A are polylogarithmically bounded would confirm a strong uniformity in how divisibility by medium-sized numbers propagates through {n, …, n^k}.",
     "problemStatement": "Let k ≥ 2, n large. A = {m ∈ [n, n^k] : m has a divisor in (n, 2n)}, ordered as a₁ < a₂ < ···. Is max_i(a_{i+1} - a_i) ≤ C·(log n)^α for some constants C, α > 0? OPEN.",
-    "text": "Let k \u2265 2 and A = {m \u2208 [n, n^k] : m has a divisor in (n, 2n)}. Is the maximum gap between consecutive elements of A bounded by (log n)^O(1)? OPEN.",
+    "text": "Let k ≥ 2 and A = {m ∈ [n, n^k] : m has a divisor in (n, 2n)}. Is the maximum gap between consecutive elements of A bounded by (log n)^O(1)? OPEN.",
     "proofStrategy": "The formalization defines hasDivisorInInterval, setA, and proves setA is finite. Gap infrastructure (orderedA, consecutiveGaps, maxGap, maxGapA) is built. The conjecture polylogBoundedGap is defined. Proved results: setA_finite, mem_setA_has_divisor, divisor_factorization. Gap bounds and density estimates are axiomatized. Summary theorem is proved.",
     "keyInsights": [
       "Elements of A have a divisor d with n < d < 2n",

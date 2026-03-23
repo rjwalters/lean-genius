@@ -60,12 +60,13 @@
       "Examples for primes, powers of 2, and highly composite numbers"
     ],
     "axiomCount": 9,
-    "lineCount": 320
+    "lineCount": 320,
+    "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1099** was posed by Erdős in 1981 as part of his study of divisor structure. The problem asks about the regularity of divisor gaps: can we find integers whose consecutive divisor ratios are all close to 1?\n\n**Historical Development:**\n- **1981 (Erdős [Er81h]):** Posed the problem, noting that n! and lcm{1,...,n} seem like good candidates.\n- **1984 (Vose [Vo84]):** Resolved the problem affirmatively by constructing a specific sequence with bounded h_α.\n\n**Key Insight:** The question is about how \"smooth\" the divisor structure of integers can be. While primes have terrible divisor gaps (ratio = p), and even powers of 2 grow linearly in h_α, Vose showed there exist numbers with much smoother divisor distributions.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet $1 = d_1 < d_2 < \\cdots < d_{\\tau(n)} = n$ be the divisors of $n$ in increasing order. For $\\alpha > 1$, define:\n$$h_\\alpha(n) = \\sum_i \\left(\\frac{d_{i+1}}{d_i} - 1\\right)^\\alpha$$\n\n**Question:** Is $\\liminf_{n \\to \\infty} h_\\alpha(n) \\ll_\\alpha 1$?\n\n**Answer: YES** (Vose, 1984)\n\nVose proved that for any $\\alpha > 1$, there exists a constant $C_\\alpha$ and a sequence of integers $(n_k)$ with $h_\\alpha(n_k) \\leq C_\\alpha$.\n\n**Note:** Whether the specific sequences $n!$ and $\\text{lcm}\\{1,\\ldots,n\\}$ satisfy this property remains **OPEN**.",
-    "text": "For \u03b1 > 1, is liminf h_\u03b1(n) bounded, where h_\u03b1(n) = \u03a3((d_{i+1}/d\u1d62) - 1)^\u03b1 over consecutive divisors? YES, proved by Vose (1984).",
+    "text": "For α > 1, is liminf h_α(n) bounded, where h_α(n) = Σ((d_{i+1}/dᵢ) - 1)^α over consecutive divisors? YES, proved by Vose (1984).",
     "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** Define τ(n) (divisor count), sorted divisors, consecutive ratios, and h_α.\n\n2. **Trivial Lower Bound:** Show h_α(n) ≥ 1 for n ≥ 2 by considering the first term.\n\n3. **Special Sequences:** Define factorial and lcm divisor sets.\n\n4. **Vose's Theorem:** Axiomatize the main result that a bounded sequence exists.\n\n5. **Related Questions:** Include the sum Σ(d_{i+1}/dᵢ) > τ(n) + log(n) and connection to Problem #673.\n\n6. **Examples:** Analyze primes (unbounded), powers of 2 (linear growth), and highly composite numbers.",
     "keyInsights": [
       "**Divisor Smoothness:** h_α measures how evenly spaced consecutive divisors are. Small h_α means ratios are all close to 1.",

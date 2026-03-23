@@ -47,12 +47,13 @@
       "Verified examples of divisor function and Mersenne numbers"
     ],
     "axiomCount": 3,
-    "lineCount": 123
+    "lineCount": 123,
+    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This problem connects to Lambert series, named after Johann Heinrich Lambert (1728-1777), which have the form ∑ aₙ xⁿ/(1-xⁿ). When x = 1/2, the term 1/(2ⁿ - 1) arises naturally.\n\nErdős proved the fundamental case A = ℕ in 1948, showing that ∑ d(n)/2ⁿ is irrational. The key insight is the beautiful identity: ∑ 1/(2ⁿ-1) = ∑ d(n)/2ⁿ, which transforms the problem into one about the divisor function.\n\nRecent progress by Tao and Teräväinen (2025) settled the prime case, showing ∑_{p prime} 1/(2ᵖ-1) is irrational. The general case for arbitrary infinite sets remains open, making this a partially solved problem with active research interest.",
     "problemStatement": "Let $A \\subseteq \\mathbb{N}$ be an infinite set. Is\n$$\\sum_{n \\in A} \\frac{1}{2^n - 1}$$\nalways irrational?\n\n**Partial answers**:\n- $A = \\mathbb{N}$: YES (Erdős 1948)\n- $A = $ primes: YES (Tao-Teräväinen 2025)\n- General $A$: OPEN",
-    "text": "Is \u2211_{n\u2208A} 1/(2^n - 1) irrational for every infinite set A? Solved for A = \u2115 (Erd\u0151s 1948) and primes (Tao-Ter\u00e4v\u00e4inen 2025), open in general.",
+    "text": "Is ∑_{n∈A} 1/(2^n - 1) irrational for every infinite set A? Solved for A = ℕ (Erdős 1948) and primes (Tao-Teräväinen 2025), open in general.",
     "proofStrategy": "We formalize three levels of this problem:\n\n1. **Lambert Series Identity**: The sum ∑ 1/(2ⁿ-1) equals ∑ d(n)/2ⁿ where d(n) counts divisors. This follows from expanding 1/(2ⁿ-1) as a geometric series and rearranging.\n\n2. **Erdős's 1948 Result**: We state as an axiom that ∑ d(n)/2ⁿ is irrational. The original proof uses properties of Lambert series.\n\n3. **The Open Conjecture**: For general infinite A, irrationality is conjectured but unproven. We state this as an axiom representing the open problem.\n\nConcrete examples verify divisor function values and Mersenne numbers.",
     "keyInsights": [
       "**Lambert series**: Series of the form ∑ aₙ xⁿ/(1-xⁿ) arise in number theory and have connections to modular forms and partitions.",

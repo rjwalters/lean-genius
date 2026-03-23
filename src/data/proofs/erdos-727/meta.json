@@ -57,12 +57,13 @@
       "Erdős 1968 bound: a!b! | n! implies a+b ≤ n + O(log n)"
     ],
     "axiomCount": 5,
-    "lineCount": 278
+    "lineCount": 278,
+    "assumptions": "5 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem #727 was posed by Erdős, Graham, Ruzsa, and Straus in their 1975 paper 'On the prime factors of C(2n,n)'. The problem asks about the divisibility of (2n)! by squared factorials.\n\n**Key results**:\n- **Balakran (1929)**: Solved the k=1 case, proving ((n+1)!)² | (2n)! for infinitely many n. This is equivalent to (n+1)² dividing the central binomial coefficient C(2n,n).\n- **Classical**: (n+1) | C(2n,n) for ALL n (this defines the Catalan numbers).\n- **EGRS (1975)**: Proved a weaker variant: (n+k)!(n+1)! | (2n)! for infinitely many n, for any k ≥ 2.\n\nThe main question for k ≥ 2 remains **OPEN** even for k = 2.",
     "problemStatement": "**Erdős Problem #727**: For $k \\geq 2$, does\n$$((n+k)!)^2 \\mid (2n)!$$\nhold for infinitely many $n$?\n\n**Status**: OPEN (for k ≥ 2)\n\n**Partial Results**:\n- **k = 1 (SOLVED)**: Balakran proved $((n+1)!)^2 \\mid (2n)!$ for infinitely many $n$\n- **k = 2**: Still open\n- **EGRS variant (SOLVED)**: $(n+k)!(n+1)! \\mid (2n)!$ for infinitely many $n$ when $k \\geq 2$\n\n**Related Facts**:\n- $(n+1) \\mid \\binom{2n}{n}$ for all $n$ (Catalan numbers)\n- If $a!b! \\mid n!$ then $a + b \\leq n + O(\\log n)$ (Erdős 1968)",
-    "text": "For k \u2265 2, does ((n+k)!)\u00b2 divide (2n)! for infinitely many n? The main problem is OPEN, but Balakran (1929) solved the k=1 case, and EGRS showed a weaker variant holds for all k \u2265 2.",
+    "text": "For k ≥ 2, does ((n+k)!)² divide (2n)! for infinitely many n? The main problem is OPEN, but Balakran (1929) solved the k=1 case, and EGRS showed a weaker variant holds for all k ≥ 2.",
     "proofStrategy": "The formalization captures the problem structure:\n\n1. **Main Conjecture**: We define `erdos_727_conjecture` as the statement that for all k ≥ 2, the set of n with ((n+k)!)² | (2n)! is infinite.\n\n2. **Balakran's Result**: Axiomatized as `balakran_theorem`, giving the k = 1 case.\n\n3. **Catalan Connection**: The divisibility (n+1) | C(2n,n) is classical and relates to Catalan numbers C_n = C(2n,n)/(n+1).\n\n4. **EGRS Variant**: The weaker result (n+k)!(n+1)! | (2n)! is axiomatized as `egrs_theorem`.\n\n5. **Logical Relationship**: We prove that the main conjecture implies the EGRS variant (a stronger statement implies the weaker one).",
     "keyInsights": [
       "**The k = 1 boundary**: Balakran solved k = 1 in 1929, but k ≥ 2 remains open nearly 100 years later. The squared factor makes the problem significantly harder.",

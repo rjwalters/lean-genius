@@ -55,12 +55,13 @@
       "erdos_855_summary theorem"
     ],
     "axiomCount": 7,
-    "lineCount": 186
+    "lineCount": 186,
+    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "The Second Hardy-Littlewood Conjecture asserts that π(x+y) ≤ π(x) + π(y) for all sufficiently large x and y, where π denotes the prime counting function. Erdős described it as 'an old conjecture of mine which was probably already stated by Hardy and Littlewood.' The conjecture suggests that the interval [1, x+y] can never contain more primes than the intervals [1, x] and [1, y] combined.\n\nThe major development came in 1973 when Hensley and Richards proved that this conjecture is incompatible with the prime k-tuples conjecture, which asserts that any admissible pattern of primes occurs infinitely often. Their proof showed that admissible tuples can be denser than the primes themselves: for large k, there exist admissible k-tuples in [0,k) with more than π(k) elements. If k-tuples holds, placing these dense tuples at the right position would violate π(x+y) ≤ π(x) + π(y).\n\nSince most number theorists believe the k-tuples conjecture is true (it is supported by extensive numerical evidence and heuristic arguments), the Second Hardy-Littlewood Conjecture is considered likely false. However, no explicit counterexample has been found despite extensive computation. Montgomery and Vaughan proved the unconditional bound π(x+y) ≤ π(x) + 2y/log(y), which is weaker but does not require any unproved hypothesis.",
     "problemStatement": "**Problem Statement (Open, Likely False)**\n\nIf $\\pi(x)$ counts the number of primes in $[1,x]$, is it true that for all sufficiently large $x$ and $y$:\n$$\\pi(x+y) \\leq \\pi(x) + \\pi(y)$$?\n\n**Status:** OPEN but LIKELY FALSE\n\n**Key Result:** Hensley and Richards (1973) proved this is **incompatible** with the prime k-tuples conjecture. Under k-tuples:\n$$\\pi(x+y) > \\pi(x) + \\pi(y) + (\\log 2 - o(1))\\frac{y}{(\\log y)^2}$$\nfor infinitely many x.\n\nSince the k-tuples conjecture is widely believed, this conjecture is likely false.",
-    "text": "Is \u03c0(x+y) \u2264 \u03c0(x) + \u03c0(y) for large x,y? LIKELY FALSE - incompatible with the prime k-tuples conjecture (Hensley-Richards 1973).",
+    "text": "Is π(x+y) ≤ π(x) + π(y) for large x,y? LIKELY FALSE - incompatible with the prime k-tuples conjecture (Hensley-Richards 1973).",
     "proofStrategy": "**Formalization Approach**\n\n1. **Prime Counting Function:** Define π(n) as the count of primes ≤ n.\n\n2. **Main Conjecture:** Formalize the Second Hardy-Littlewood Conjecture.\n\n3. **k-Tuples Conjecture:** Define admissible tuples and the prime k-tuples conjecture.\n\n4. **Incompatibility:** State Hensley-Richards theorem showing the two conjectures conflict.\n\n5. **Unconditional Bounds:** Include Montgomery-Vaughan's π(x+y) ≤ π(x) + 2y/log(y).\n\n6. **Related Variants:** Straus's modification and Erdős's weaker conjecture.",
     "keyInsights": [
       "**Prime Counting:** π(n) counts primes up to n, satisfies π(n) ~ n/log(n)",

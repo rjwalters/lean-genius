@@ -55,12 +55,13 @@
       "erdos_865 theorem: partial results combining bounds"
     ],
     "axiomCount": 15,
-    "lineCount": 213
+    "lineCount": 213,
+    "assumptions": "15 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem #865 asks about the minimum density required to guarantee three elements whose pairwise sums all belong to the set. Specifically: if A ⊆ {1,...,N} has at least (5/8)N + C elements, must there exist distinct a, b, c ∈ A with a+b, a+c, b+c ∈ A?\n\nThe problem originates from Choi, Erdős, and Szemerédi (1975), who proved the upper bound f_k(N) ≤ (2/3 - ε_k)N for all k ≥ 3. Erdős and Sós later conjectured the exact threshold f_k(N) ~ (1/2)(1 + Σ 1/4^r)N, which for k=3 gives the 5/8 threshold. Famously, Erdős forgot about the 1975 paper when posing the problem again.\n\nThe construction [N/8, N/4] ∪ [N/2, N] shows that 5/8 is optimal: it has size approximately 5N/8 but contains no pairwise sum triple, because cross sums between the two intervals fall in the gap (N/4, N/2) which is excluded. The sharp 5/8 threshold remains unproven as of 2025.",
     "problemStatement": "**Problem Statement (Open)**\n\nThere exists a constant $C > 0$ such that, for all large $N$, if $A \\subseteq \\{1,\\ldots,N\\}$ has size at least $\\frac{5}{8}N + C$ then there are distinct $a, b, c \\in A$ such that $a+b, a+c, b+c \\in A$.\n\n**The threshold 5/8 is conjectured optimal.**\n\n**General Conjecture (Erdős-Sós):**\n$$f_k(N) \\sim \\frac{1}{2}\\left(1 + \\sum_{r=1}^{k-2} \\frac{1}{4^r}\\right) N$$\n\n**Known:**\n- k=2: f_2(N) = N+2 (classical)\n- k≥3: f_k(N) ≤ (2/3 - ε_k)N (CES 1975)",
-    "text": "If A \u2286 {1,...,N} has size \u2265 (5/8)N + C, must there exist distinct a,b,c \u2208 A with a+b, a+c, b+c \u2208 A? The threshold 5/8 is conjectured optimal. Status: OPEN.",
+    "text": "If A ⊆ {1,...,N} has size ≥ (5/8)N + C, must there exist distinct a,b,c ∈ A with a+b, a+c, b+c ∈ A? The threshold 5/8 is conjectured optimal. Status: OPEN.",
     "proofStrategy": "The formalization defines the predicates HasPairwiseSumTriple and HasKPairwiseSums, axiomatizes the threshold function f_k(N), and states the Erdős-Sós conjecture. The lower bound construction [N/8, N/4] ∪ [N/2, N] is defined explicitly, and its properties (no triple, size ≈ 5N/8) are axiomatized. The CES upper bound is axiomatized. The main theorem combines the lower bound (5/8 is necessary) with the CES upper bound (2/3 - ε suffices).",
     "keyInsights": [
       "**5/8 Threshold:** Conjectured optimal for k=3, proved necessary by the lower bound construction.",

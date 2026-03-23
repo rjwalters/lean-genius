@@ -70,12 +70,13 @@
         "target": "erdos-424",
         "context": "Both are Erdős problems involving graph-theoretic Ramsey-type questions"
       }
-    ]
+    ],
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #570** asks for an upper bound on the Ramsey number R(C_k, H), where C_k is a k-cycle and H is an arbitrary graph without isolated vertices. The conjectured bound R(C_k, H) ≤ 2m + ⌈(k-1)/2⌉, where m = |E(H)|, was first proposed in the context of 'Ramsey size linear graphs' by Erdős, Faudree, Rousseau, and Schelp.\n\nThe resolution spanned over three decades. EFRS themselves proved the even k case in 1993. That same year, Sidorenko handled k = 3 (triangles). Jayawardene extended the result to k = 5 in 1999. The remaining cases - all odd k ≥ 7 - were finally resolved by Cambie, Freschi, Morawski, Petrova, and Pokrovskiy in 2024.\n\nThe problem is notable for requiring fundamentally different techniques for even and odd cycles, and for the 25-year gap between the k = 5 result and the final resolution.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet $k \\geq 3$. For any graph $H$ on $m$ edges without isolated vertices,\n$$R(C_k, H) \\leq 2m + \\lceil(k-1)/2\\rceil$$\n\n**Answer:** YES. Proved for all $k \\geq 3$ through combined work of EFRS (even $k$, 1993), Sidorenko ($k=3$, 1993), Jayawardene ($k=5$, 1999), and Cambie et al. (odd $k \\geq 7$, 2024).",
-    "text": "For k \u2265 3 and graph H with m edges (no isolated vertices), is R(C_k, H) \u2264 2m + \u2308(k-1)/2\u2309? YES - fully resolved through work spanning 1993-2024.",
+    "text": "For k ≥ 3 and graph H with m edges (no isolated vertices), is R(C_k, H) ≤ 2m + ⌈(k-1)/2⌉? YES - fully resolved through work spanning 1993-2024.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** Define cycle graphs constructively with proved symmetry and irreflexivity.\n2. **Ramsey Numbers:** Abstract definition via infimum over colorings of complete graphs.\n3. **Conjecture Statement:** Formalize Erdos570Conjecture with the UpperBound function.\n4. **Individual Cases:** Axiomatize each historical result as a separate axiom.\n5. **Resolution:** Axiomatize the full resolution, combining all cases.\n6. **The CycleGraph definition is constructive:** symm and loopless are fully proved.",
     "keyInsights": [
       "**Ramsey Numbers:** R(C_k, H) is the minimum n such that any 2-coloring of K_n contains either a red C_k or a blue H.",

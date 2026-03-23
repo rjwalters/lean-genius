@@ -67,12 +67,13 @@
       "additive-number-theory",
       "mann-theorem"
     ],
-    "lineCount": 238
+    "lineCount": 238,
+    "assumptions": "2 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Imre Ruzsa posed this problem in 1999, building on his resolution of Erdős Problem #37 about essential components in additive number theory. A set $B \\subseteq \\mathbb{N}$ is an *essential component* if $\\sigma(A + B) > \\sigma(A)$ for every set $A$ with $0 < \\sigma(A) < 1$, where $\\sigma$ denotes the Schnirelmann density. Ruzsa proved that essential components must have counting function growth $\\geq (\\log N)^{1+c}$ for some $c > 0$, ruling out lacunary sets (which have counting function $O(\\log N)$).\n\nThe set $\\{2^m \\cdot 3^n : m, n \\geq 0\\}$ of 3-smooth numbers has counting function $\\sim C(\\log N)^2$, placing it exactly at the threshold with $c = 1$. Ruzsa called this 'the simplest set with a chance to be an essential component,' making it a natural test case for the boundary between essential and non-essential sets in additive combinatorics.",
     "problemStatement": "**Erdős Problem #1146**: Is $B = \\{2^m \\cdot 3^n : m, n \\geq 0\\}$ an essential component?\n\nA set $A$ is an **essential component** if $d_s(A + B) > d_s(B)$ for every $B \\subset \\mathbb{N}$ with $0 < d_s(B) < 1$, where $d_s$ is Schnirelmann density.\n\nThe set $\\{2^m \\cdot 3^n\\}$ has counting function $\\sim C \\cdot (\\log N)^2 / (2 \\log 2 \\cdot \\log 3)$, which is exactly at Ruzsa's threshold $(\\log N)^{1+c}$ with $c = 1$.",
-    "text": "Is the set B = {2^m \u00b7 3^n : m, n \u2265 0} an essential component? A set is essential if it strictly increases Schnirelmann density when added to any set with positive density. The 3-smooth numbers have counting function ~ C \u00b7 (log N)\u00b2, exactly at Ruzsa's threshold.",
+    "text": "Is the set B = {2^m · 3^n : m, n ≥ 0} an essential component? A set is essential if it strictly increases Schnirelmann density when added to any set with positive density. The 3-smooth numbers have counting function ~ C · (log N)², exactly at Ruzsa's threshold.",
     "proofStrategy": "The formalization imports and builds on Erdős #37 infrastructure:\n\n1. **Imports from Erdős #37**: Schnirelmann density, sumsets, essential components, smooth numbers definitions\n2. **Closure Properties**: 3-smooth numbers are closed under multiplication by 2, 3, and each other\n3. **Structural Results**: Smooth numbers are positive, unbounded, and not lacunary\n4. **Mann's Lower Bound**: Mann's theorem gives d_s(A+B) ≥ d_s(B) (non-strict), showing the difficulty — we need strictness\n5. **Generalization**: k-smooth numbers framework; powers of a single prime are NOT essential (from #37)\n6. **Main Conjecture**: Stated as equivalent to Ruzsa's open question",
     "keyInsights": [
       "**At Ruzsa's threshold**: {2^m · 3^n} has counting ~ (log N)² = (log N)^{1+1}. Ruzsa's lower bound for essential components is (log N)^{1+c} with c > 0. So smooth-{2,3} numbers barely satisfy the necessary growth condition.",

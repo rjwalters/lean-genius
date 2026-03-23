@@ -57,12 +57,13 @@
       "erdos_819_summary: combined main results"
     ],
     "axiomCount": 9,
-    "lineCount": 289
+    "lineCount": 289,
+    "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem #819 was posed by Erdős and Freud in their 1991 paper on sumset problems. The question asks: for a set A of about √N integers chosen from [1,N], what is the maximum number of distinct pairwise sums a+b that remain within [1,N]? This lies at the heart of additive combinatorics, where the interplay between a set's size and its additive structure determines the sumset's behavior.\n\nErdős and Freud established the bounds (3/8 - o(1))N ≤ f(N) ≤ (1/2 + o(1))N, showing that between 37.5% and 50% of [1,N] can be covered by such sums. The lower bound uses carefully constructed sets that balance additive structure against sum diversity, while the upper bound exploits the geometric constraint that sums of elements in [1,N] range from 2 to 2N, so roughly half exceed N.\n\nThe problem remains open with a gap of N/8 between the bounds. It is closely connected to Problem #840 on quasi-Sidon sets, where the number of representations of each sum is bounded. Better quasi-Sidon constructions could potentially improve the lower bound. The problem was noted by Terence Tao as being of particular interest in the erdosproblems.com database.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nLet $f(N)$ be maximal such that there exists $A \\subseteq \\{1,\\ldots,N\\}$ with $|A| = \\lfloor \\sqrt{N} \\rfloor$ such that $|(A+A) \\cap [1,N]| = f(N)$.\n\n**Estimate $f(N)$.**\n\n**Known (Erdős-Freud 1991):**\n$$\\left(\\frac{3}{8} - o(1)\\right)N \\leq f(N) \\leq \\left(\\frac{1}{2} + o(1)\\right)N$$\n\nThe gap of $N/8$ between bounds is **OPEN**.",
-    "text": "Let f(N) be maximal such that there exists A \u2286 {1,...,N} with |A| = \u230a\u221aN\u230b such that |(A+A) \u2229 [1,N]| = f(N). Estimate f(N).",
+    "text": "Let f(N) be maximal such that there exists A ⊆ {1,...,N} with |A| = ⌊√N⌋ such that |(A+A) ∩ [1,N]| = f(N). Estimate f(N).",
     "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** Sumset A+A, restricted sumset (A+A) ∩ [1,N], admissible sets (A ⊆ [1,N] with |A| = √N), and the extremal function f(N)\n\n2. **Main Axioms:** The Erdős-Freud lower bound (3/8 - o(1))N and upper bound (1/2 + o(1))N are stated as axioms since their proofs require sophisticated additive combinatorics arguments\n\n3. **Proved Results:** The combined bounds theorem is proved from the two axioms using max of the two thresholds. The gap between coefficients (1/8) is verified computationally\n\n4. **Supporting Structure:** Quasi-Sidon sets provide the connection to Problem #840, and the arithmetic progression example shows why naive constructions fail",
     "keyInsights": [
       "**Critical Threshold:** √N is the critical set size - large enough for non-trivial sumset structure, small enough that A+A doesn't automatically fill [1,N]",

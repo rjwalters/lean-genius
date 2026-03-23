@@ -54,12 +54,13 @@
       "combinatorial_nullstellensatz axiom: polynomial method"
     ],
     "axiomCount": 7,
-    "lineCount": 302
+    "lineCount": 302,
+    "assumptions": "7 axiom(s) and 5 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #476: The Erdős-Heilbronn Conjecture**\n\nThis classic conjecture in additive combinatorics concerns restricted sumsets in finite fields.\n\n**Key History:**\n- Erdős-Heilbronn (1964): Conjectured the bound |A +̂ A| ≥ min(2|A| - 3, p)\n- da Silva-Hamidoune (1994): Proved using exterior algebra (Grassmann derivatives)\n- Alon-Nathanson-Ruzsa (1995): Alternative proof via polynomial method\n\n**Mathematical Setting:**\nThe restricted sumset A +̂ A contains only sums a + b where a ≠ b, excluding diagonal elements 2a. This seemingly small change from ordinary sumsets leads to deep mathematics.",
     "problemStatement": "**Problem Statement (Proved)**\n\nLet $A \\subseteq \\mathbb{F}_p$ be a subset of the finite field with $p$ elements. Define the **restricted sumset**:\n$$A \\hat{+} A = \\{a + b : a \\neq b \\in A\\}$$\n\nIs it true that $|A \\hat{+} A| \\geq \\min(2|A| - 3, p)$?\n\n**Answer: YES**\n\nda Silva and Hamidoune (1994) proved this using exterior algebra. The bound is tight - arithmetic progressions achieve exactly $2|A| - 3$ elements.",
-    "text": "For A \u2286 \ud835\udd3d\u209a, is |A +\u0302 A| \u2265 min(2|A| - 3, p) where A +\u0302 A denotes sums of distinct pairs? YES, proved by da Silva-Hamidoune (1994).",
+    "text": "For A ⊆ 𝔽ₚ, is |A +̂ A| ≥ min(2|A| - 3, p) where A +̂ A denotes sums of distinct pairs? YES, proved by da Silva-Hamidoune (1994).",
     "proofStrategy": "**Formalization Approach**\n\n1. **Restricted Sumsets:** Define A +̂ A as sums of distinct pairs\n\n2. **Basic Properties:** Show A +̂ A ⊆ A + A, singleton case gives empty set\n\n3. **Main Axiom:** The Erdős-Heilbronn bound as an axiom (proof is sophisticated)\n\n4. **Tightness:** Arithmetic progressions achieve the exact bound\n\n5. **Comparison:** Relate to Cauchy-Davenport (ordinary sumsets)\n\n6. **Generalization:** r-fold restricted sums with bound r|A| - r² + 1",
     "keyInsights": [
       "**Restricted vs Ordinary:** Excluding diagonal sums costs exactly 2 elements in the bound (2|A| - 3 vs 2|A| - 1)",

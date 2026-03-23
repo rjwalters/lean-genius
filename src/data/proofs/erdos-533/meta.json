@@ -21,12 +21,13 @@
     "erdosUrl": "https://erdosproblems.com/533",
     "erdosProblemStatus": "open",
     "axiomCount": 4,
-    "lineCount": 91
+    "lineCount": 91,
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This problem lies at the intersection of extremal graph theory and Ramsey theory. Erdős and his collaborators investigated how the exclusion of a complete subgraph K_r forces structural properties in dense graphs. By Turán's theorem (1941), a K₅-free graph on n vertices has at most 3n²/8 edges. The deeper question is whether K₅-freeness, combined with sufficient density, forces the existence of large subgraphs with even stronger properties—specifically, triangle-freeness. Erdős, Hajnal, Simonovits, Sós, and Szemerédi (EHSSS) proved this for edge density δ > 1/16 using the Szemerédi regularity lemma. The result was shown to hold for all δ > 0 when K₅ is replaced by K₄. However, the Erdős–Rogers construction (1962) shows the result fails for K₇-free graphs at density 1/4, establishing a phase transition somewhere between K₄ and K₇. Problem 533 asks whether K₅ falls on the 'good' side of this transition.",
     "problemStatement": "For every δ > 0, does every K₅-free graph on n vertices with at least δn² edges contain a triangle-free induced subgraph on Ω_δ(n) vertices?",
-    "text": "Must a K\u2085-free graph on n vertices with \u2265 \u03b4n\u00b2 edges contain a triangle-free subset of \u226b n vertices? True for \u03b4 > 1/16 (EHSSS). Fails for K\u2087 at \u03b4 = 1/4 (Erd\u0151s\u2013Rogers). Open.",
+    "text": "Must a K₅-free graph on n vertices with ≥ δn² edges contain a triangle-free subset of ≫ n vertices? True for δ > 1/16 (EHSSS). Fails for K₇ at δ = 1/4 (Erdős–Rogers). Open.",
     "proofStrategy": "The formalization defines simple graphs via a symmetric irreflexive adjacency structure on Fin n, with cliques, triangle-freeness, and edge counting as derived predicates. The EHSSS partial result (δ > 1/16), the K₄-free analogue (all δ > 0), and the Erdős–Rogers K₇ counterexample are recorded as axioms. The full conjecture for K₅ and all δ > 0 is stated with the quantifier structure ∀ δ > 0, ∃ c > 0 such that every K₅-free graph with ≥ δn² edges has a triangle-free subset of size ≥ cn.",
     "keyInsights": [
       "**Phase transition**: The result is true for K₄-free (all δ) but false for K₇-free (at δ = 1/4), making K₅ and K₆ the critical boundary cases",

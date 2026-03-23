@@ -27,12 +27,13 @@
       "erdos-234"
     ],
     "axiomCount": 11,
-    "lineCount": 109
+    "lineCount": 109,
+    "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "The study of Sidon sets ($B_2$ sets) began when the Hungarian mathematician Simon Sidon asked Erdős in 1932 about sets of integers with all pairwise sums distinct. Erdős and Turán (1941) proved the fundamental upper bound $F(N) = O(\\sqrt{N})$ by counting pairwise sums, and Singer (1938) achieved the matching lower bound $F(N) \\ge (1-o(1))\\sqrt{N}$ using perfect difference sets from finite projective geometry. Lindström (1969) refined the upper bound to $F(N) \\le \\sqrt{N} + N^{1/4} + 1$, and the gap between upper and lower bounds in the second-order term remains open (the '$\\sqrt{N} + 1/2$ vs $\\sqrt{N} + N^{1/4}$' question). Erdős posed Problem #155 around 1992, asking about the fine growth structure: since $F(N)$ increases by 1 only $\\sim \\sqrt{N}$ times in $[1,N]$, the increase points should be very sparse — heuristically spaced $\\sim \\sqrt{N}$ apart. The conjecture that $F(N+k) \\le F(N) + 1$ for fixed $k$ formalizes this, and the stronger form $k \\approx \\varepsilon\\sqrt{N}$ would nearly pin down the increase point distribution.",
     "problemStatement": "Is it true that for every $k \\ge 1$, $F(N+k) \\le F(N) + 1$ for all sufficiently large $N$, where $F(N)$ is the maximum Sidon subset size of $\\{1,\\ldots,N\\}$?",
-    "text": "Let F(N) be the largest Sidon subset of {1,...,N}. Is F(N+k) \u2264 F(N)+1 for all sufficiently large N, for every fixed k? Possibly even for k \u2248 \u03b5\u221aN. F(N) ~ \u221aN. Status: OPEN.",
+    "text": "Let F(N) be the largest Sidon subset of {1,...,N}. Is F(N+k) ≤ F(N)+1 for all sufficiently large N, for every fixed k? Possibly even for k ≈ ε√N. F(N) ~ √N. Status: OPEN.",
     "proofStrategy": "We formalize Sidon sets, define $F(N)$ axiomatically with achievability and optimality axioms, state the Erdős–Turán/Lindström upper bound and Singer lower bound, and present the main conjecture ($F(N+k) \\le F(N)+1$ for fixed $k$) and its stronger form ($k \\approx \\varepsilon\\sqrt{N}$). Consequences about the sparsity of increase points and known small values from OEIS A003022 are also axiomatized.",
     "keyInsights": [
       "**$F(N) \\sim \\sqrt{N}$ with tight bounds**: Erdős–Turán gives $F(N) \\le \\sqrt{N} + N^{1/4} + 1$; Singer's finite-field construction gives $F(N) \\ge \\sqrt{N} - O(N^{1/4})$. The second-order term remains unknown.",

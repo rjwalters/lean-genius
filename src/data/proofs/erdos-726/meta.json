@@ -23,7 +23,8 @@
       "erdos-727"
     ],
     "axiomCount": 6,
-    "badge": "axiom"
+    "badge": "axiom",
+    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "sections": [
     {
@@ -93,7 +94,7 @@
   "overview": {
     "historicalContext": "This conjecture was formulated by Erdős, Graham, Ruzsa, and Straus in their 1975 paper 'On the prime factors of C(2n, n),' where they studied the prime factorization of central binomial coefficients. The question asks for a quantitative equidistribution result: not merely that residues n mod p are roughly uniform over {0, ..., p−1} (which follows from the Chinese Remainder Theorem for coprime moduli), but that the prime reciprocal sum restricted to each half of the residue range is exactly half of Mertens' classical sum ∑ 1/p ~ log log n. The heuristic argument is compelling — for an odd prime p, exactly (p−1)/2 of the p−1 nonzero residues lie in the upper half (p/2, p), giving probability 1/2 for each prime. If these events were independent across primes, the conclusion would follow immediately. The difficulty is that n mod p₁ and n mod p₂ are not truly independent (they are determined by the same n), though CRT ensures joint independence for any finite set of primes. Controlling the error accumulated over all primes ≤ n requires tools from analytic number theory, potentially including the Bombieri-Vinogradov theorem or large sieve inequalities. The conjecture remains open after over 50 years.",
     "problemStatement": "As $n \\to \\infty$, prove that $\\sum_{\\substack{p \\le n,\\, p \\text{ prime} \\\\ n \\bmod p \\in (p/2, p)}} \\frac{1}{p} \\sim \\frac{\\log\\log n}{2}$.",
-    "text": "For n \u2192 \u221e, is \u03a3_{p\u2264n, n mod p \u2208 (p/2,p)} 1/p ~ (log log n)/2? The upper half residues should contribute exactly half of Mertens' sum. Erd\u0151s\u2013Graham\u2013Ruzsa\u2013Straus (1975). Status: OPEN.",
+    "text": "For n → ∞, is Σ_{p≤n, n mod p ∈ (p/2,p)} 1/p ~ (log log n)/2? The upper half residues should contribute exactly half of Mertens' sum. Erdős–Graham–Ruzsa–Straus (1975). Status: OPEN.",
     "proofStrategy": "The formalization defines the upper-half residue predicate (with decidable instance for computation), the three weighted sums U(n), L(n), M(n), and states both Mertens' theorem and the EGRS conjecture as ε-N asymptotic formulas. It proves structural properties: residue bounds, sum nonnegativity, partition bounds, monotonicity, and positivity. The heuristic half-fraction and implications (lower half, ratio) are stated as axioms.",
     "keyInsights": [
       "**Mertens baseline**: $\\sum_{p \\le n} 1/p \\sim \\log\\log n$ provides the total; the conjecture says the upper half gets exactly $1/2$ of this slowly growing sum",

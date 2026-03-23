@@ -33,12 +33,13 @@
       }
     ],
     "axiomCount": 4,
-    "lineCount": 76
+    "lineCount": 76,
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Egyptian Fractions and Avoidance**\n\nEgyptian fractions — representations of rationals as sums of distinct unit fractions — date to the Rhind Papyrus (c. 1650 BCE). Erdős posed Problem 301 as a natural extremal question: how large can a subset of {1,...,N} be while avoiding all Egyptian fraction decompositions among its elements?\n\nThe trivial lower bound f(N) >= N/2 comes from the interval (N/2, N], whose elements have reciprocals too small to decompose within the set. Van Doorn improved the upper bound to (25/28 + o(1))N using divisibility patterns: identities like 1/(2a) = 1/(3a) + 1/(6a) force elements in arithmetic progressions to participate in decompositions.\n\nThe problem connects to **Erdős Problem 302** (Egyptian fraction representations) and **Problem 327** (sum-divides-product), forming a cluster of questions about the additive structure of unit fractions. Graham (2013) surveyed Erdős's extensive work on Egyptian fractions at the Erdős Centennial conference. Croot (2003) studied related coloring problems for unit fractions, establishing connections to the Hales-Jewett theorem.",
     "problemStatement": "Estimate f(N), the max |A| for A ⊆ {1,...,N} with no 1/a = Σ 1/bᵢ using distinct elements of A.",
-    "text": "Maximum subset of {1,...,N} with no 1/a = 1/b\u2081+...+1/b\u2096 using distinct elements. Lower: N/2 (half-interval). Upper: (25/28)N (van Doorn). Conjecture: f(N) = (1/2+o(1))N.",
+    "text": "Maximum subset of {1,...,N} with no 1/a = 1/b₁+...+1/bₖ using distinct elements. Lower: N/2 (half-interval). Upper: (25/28)N (van Doorn). Conjecture: f(N) = (1/2+o(1))N.",
     "proofStrategy": "We define HasEgyptianDecomp for unit fraction decomposition, EgyptFractionFree for avoidance, and maxEgyptFree as the extremal function. The main conjecture asserts f(N) ~ N/2. Lower and upper bounds are axiomatized. The hereditary property and base cases are proved directly in Lean.",
     "keyInsights": [
       "Elements in **(N/2, N]** cannot have Egyptian fraction decompositions from the same interval, giving f(N) >= N/2",

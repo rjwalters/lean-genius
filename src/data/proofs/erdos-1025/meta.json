@@ -23,12 +23,13 @@
     "erdosProblemStatus": "solved",
     "relatedProblems": [],
     "axiomCount": 9,
-    "lineCount": 263
+    "lineCount": 263,
+    "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem #1025 concerns pair functions: functions f that assign to each unordered pair {x,y} from {1,...,n} an element f(x,y) ∈ {1,...,n} \\ {x,y}. A set X is independent if f(x,y) ∉ X whenever both x and y are in X. The question asks for g(n), the minimum over all valid pair functions of the maximum independent set size.\n\nErdős and Hajnal (1958) established initial bounds n^{1/3} ≪ g(n) ≪ (n log n)^{1/2}, leaving a significant gap. The lower bound used a greedy argument, while the upper bound came from connections to hypergraph coloring. Spencer (1972) improved the lower bound to n^{1/2} using the probabilistic method: randomly including each vertex with probability p ≈ n^{-1/2} and deleting vertices hit by pair images gives an independent set of expected size Ω(n^{1/2}).\n\nThe matching upper bound g(n) = O(n^{1/2}) was proved by Conlon, Fox, and Sudakov (2016), completing the determination g(n) = Θ(n^{1/2}) after 58 years. Their construction used algebraic methods to build pair functions with provably small independent sets. The problem is closely related to Erdős-Hajnal's theory of set mappings, where each element maps to a subset avoiding itself, and free sets are the analogue of independent sets.",
     "problemStatement": "**Problem Statement**\n\nLet f be a function from all pairs {x,y} ⊆ {1,...,n} to {1,...,n} such that f(x,y) ≠ x and f(x,y) ≠ y. A set X ⊆ {1,...,n} is independent if f(x,y) ∉ X whenever x,y ∈ X.\n\nLet g(n) be such that every such function f has an independent set of size at least g(n). Estimate g(n).\n\n**Status**: SOLVED\n\n**Answer**: g(n) = Θ(n^(1/2))",
-    "text": "Let f map pairs from {1,...,n} to {1,...,n} with f(x,y) \u2260 x,y. Let g(n) be the minimum guaranteed independent set size. Erd\u0151s-Hajnal (1958) proved n^(1/3) \u226a g(n) \u226a (n log n)^(1/2). Spencer (1972) and Conlon-Fox-Sudakov (2016) determined g(n) = \u0398(n^(1/2)).",
+    "text": "Let f map pairs from {1,...,n} to {1,...,n} with f(x,y) ≠ x,y. Let g(n) be the minimum guaranteed independent set size. Erdős-Hajnal (1958) proved n^(1/3) ≪ g(n) ≪ (n log n)^(1/2). Spencer (1972) and Conlon-Fox-Sudakov (2016) determined g(n) = Θ(n^(1/2)).",
     "proofStrategy": "**Proof Approach**\n\n1. **Lower Bound (Probabilistic)**: Include each vertex with probability p. Expected independent set size is pn - C(n,2)p³. Optimize p ≈ n^(-1/2) to get Ω(n^(1/2)).\n\n2. **Upper Bound (Construction)**: Conlon-Fox-Sudakov constructed pair functions achieving small independent sets using algebraic methods.\n\n3. **Key Insight**: The constraint f(x,y) ∉ {x,y} limits how much the function can \"spread out\" pairs, but still allows constructions with O(n^(1/2)) maximum independent sets.",
     "keyInsights": [
       "Pair function: f maps pairs to elements, avoiding the pair itself",

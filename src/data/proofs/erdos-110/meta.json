@@ -52,12 +52,13 @@
     ],
     "relatedProblems": [],
     "axiomCount": 6,
-    "lineCount": 261
+    "lineCount": 261,
+    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Finite Subgraphs of Infinite Chromatic Graphs**\n\nThe de Bruijn-Erdős theorem (1951) states that a graph with infinite chromatic number contains finite subgraphs of every finite chromatic number. But how efficiently? This problem asks whether there's a universal bound F(n) on the size needed to achieve chromatic number n.\n\n**The Conjecture (Erdős-Hajnal-Szemerédi 1982)**: For graphs with chromatic number ℵ₁ (the first uncountable cardinal), there should exist F(n) such that an n-chromatic subgraph exists on at most F(n) vertices. This was already known to fail for ℵ₀-chromatic graphs.\n\n**The Disproof**: Shelah (2005) showed the negative answer is consistent with ZFC. Lambie-Hanson (2020) then constructed an actual ZFC counterexample—no set-theoretic assumptions needed! This completely resolves the problem.",
     "problemStatement": "**Problem Statement**\n\nIs there a function F: ℕ → ℕ such that every graph G with chromatic number ℵ₁ has, for all sufficiently large n, a subgraph with chromatic number n on at most F(n) vertices?\n\n**Answer**: NO (DISPROVED in ZFC)\n\n**Lambie-Hanson (2020)**: Constructed a graph with chromatic number ℵ₁ such that no such function F exists.\n\n**Note**: The conjecture specifically requires χ(G) = ℵ₁. For χ(G) = ℵ₀, counterexamples were already known.",
-    "text": "Is there F(n) such that every \u2135\u2081-chromatic graph has an n-chromatic subgraph on \u2264F(n) vertices? DISPROVED by Lambie-Hanson (2020) in ZFC. Earlier, Shelah showed consistency of a negative answer.",
+    "text": "Is there F(n) such that every ℵ₁-chromatic graph has an n-chromatic subgraph on ≤F(n) vertices? DISPROVED by Lambie-Hanson (2020) in ZFC. Earlier, Shelah showed consistency of a negative answer.",
     "proofStrategy": "**The Formalization**\n\n1. Defines chromatic number and k-colorability\n2. Defines induced subgraphs and chromatic subgraph bounds\n3. Introduces cardinals ℵ₀ and ℵ₁ from Mathlib\n4. States the de Bruijn-Erdős theorem (existence without bounds)\n5. States the Erdős-Hajnal-Szemerédi conjecture\n6. Axiomatizes Shelah's consistency result and Lambie-Hanson's ZFC counterexample\n7. Proves the conjecture is FALSE via direct contradiction\n8. Characterizes the counterexample graph structure",
     "keyInsights": [
       "DISPROVED in ZFC by Lambie-Hanson (2020) - no set-theoretic assumptions needed",

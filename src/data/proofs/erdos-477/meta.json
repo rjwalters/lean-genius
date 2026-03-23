@@ -21,12 +21,13 @@
     "erdosUrl": "https://erdosproblems.com/477",
     "erdosProblemStatus": "open",
     "axiomCount": 3,
-    "lineCount": 273
+    "lineCount": 273,
+    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed this problem in their 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory*, asking whether any polynomial of degree $\\geq 2$ can 'perfectly tile' the integers by translation. The question asks: given $f : \\mathbb{Z} \\to \\mathbb{Z}$ of degree $\\geq 2$, does there exist $A \\subseteq \\mathbb{Z}$ such that $\\mathbb{Z} = A \\oplus f(\\mathbb{Z})$? Sekanina (1959) had already shown this is impossible for $f(x) = x^2$ by analyzing the gap structure between consecutive squares. The problem connects to several deep areas: factorization of abelian groups (Hajós's theorem), the Coven-Meyerowitz conjecture on tiling $\\mathbb{Z}$ by finite sets, and additive combinatorics more broadly. The key difficulty is that polynomial images are sparse ($|f(\\mathbb{Z}) \\cap [-N,N]| = O(N^{1/d})$ for degree $d$), so any complement $A$ must have density approaching 1, yet must avoid double-covering any integer. The formalization is notable for containing many proved theorems (not just axioms), establishing structural properties of perfect complements.",
     "problemStatement": "Is there a polynomial $f : \\mathbb{Z} \\to \\mathbb{Z}$ of degree $\\geq 2$ and a set $A \\subseteq \\mathbb{Z}$ such that $\\mathbb{Z} = A \\oplus f(\\mathbb{Z})$, i.e., every integer has a unique representation $z = a + f(n)$ with $a \\in A$, $n \\in \\mathbb{Z}$?",
-    "text": "Is there a polynomial f: \u2124 \u2192 \u2124 of degree \u2265 2 and a set A \u2286 \u2124 such that every integer has a unique representation a + f(n)? Sekanina (1959) showed no for f(x) = x\u00b2. Erd\u0151s\u2013Graham conjecture: no for all such f. Open.",
+    "text": "Is there a polynomial f: ℤ → ℤ of degree ≥ 2 and a set A ⊆ ℤ such that every integer has a unique representation a + f(n)? Sekanina (1959) showed no for f(x) = x². Erdős–Graham conjecture: no for all such f. Open.",
     "proofStrategy": "The formalization builds a theory of perfect complements from scratch, proving structural properties (non-emptiness, commutativity, shift invariance, difference set constraints, finiteness obstructions), then specializing to the squares case with gap analysis. The main conjectures are axiomatized: no degree $\\geq 2$ polynomial, no monomial $x^k$ ($k \\geq 2$), and the combined Erdős-Graham conjecture. The linear case $f(x) = x$ is proved trivial, motivating the degree $\\geq 2$ restriction.",
     "keyInsights": [
       "The difference set constraint $(A - A) \\cap (B - B) = \\{0\\}$ is the key algebraic obstruction: it forces $A$ and $f(\\mathbb{Z})$ to have 'incompatible' additive structure",

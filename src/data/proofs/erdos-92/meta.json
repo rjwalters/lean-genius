@@ -57,12 +57,13 @@
       "Fishburn's small value computations"
     ],
     "axiomCount": 9,
-    "lineCount": 247
+    "lineCount": 247,
+    "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This problem concerns the equidistance structure of point sets in the plane. For each point x in a set A, we count how many other points lie on a single circle centered at x (i.e., are equidistant from x).\n\nThe function f(n) is the maximum k such that some n-point set has at least k equidistant points from EVERY point in the set. This is a 'stronger form' of the unit distance problem (#90).\n\nThe √n × √n integer lattice achieves f(n) > n^{c/log log n}, while the best upper bound is f(n) ≪ n^{4/11} from recent work by Janzer, Janzer, Methuku, and Tardos (2024).",
     "problemStatement": "**Erdős Problem #92 (OPEN)**\n\nLet $f(n)$ be maximal such that there exists a set $A$ of $n$ points in $\\mathbb{R}^2$ where every $x \\in A$ has at least $f(n)$ points in $A$ equidistant from $x$.\n\n**Questions**:\n1. Is $f(n) \\leq n^{o(1)}$? (weak form)\n2. Is $f(n) < n^{c/\\log\\log n}$? (strong form)\n\n**Known Bounds**:\n- Lower: $f(n) > n^{c/\\log\\log n}$ (lattice)\n- Upper: $f(n) \\ll n^{4/11}$ (JJMT 2024)\n\n**Prize**: $500",
-    "text": "Is f(n) \u2264 n^{o(1)}, where f(n) is the maximum k such that some n-point set has k equidistant points from every point?",
+    "text": "Is f(n) ≤ n^{o(1)}, where f(n) is the maximum k such that some n-point set has k equidistant points from every point?",
     "proofStrategy": "We formalize the key concepts and known bounds:\n\n1. **maxEquidistantPoints**: Maximum points at same distance from x\n\n2. **hasEquidistantProperty**: k-equidistant property for a set\n\n3. **f**: The extremal function as supremum\n\n4. **WeakConjecture**: f(n) ≤ n^ε for all ε > 0\n\n5. **StrongConjecture**: f(n) < n^{c/log log n}\n\n6. **Known bounds** (axioms): Pach-Sharir, JJMT, lattice lower bound",
     "keyInsights": [
       "**Circle counting**: For each point, we count how many others lie on the same circle centered at that point.",

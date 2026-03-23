@@ -51,12 +51,13 @@
       }
     ],
     "axiomCount": 2,
-    "lineCount": 199
+    "lineCount": 199,
+    "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1976 [Er76d], asking about the finiteness of pairs of consecutive-integer blocks whose products share the same set of prime factors. The problem appears in Guy's _Unsolved Problems in Number Theory_ as Problem B35. The question connects to deep themes in multiplicative number theory: the radical $\\text{rad}(n)$ (product of distinct prime factors) of a product $(n+1)\\cdots(n+k) = (n+k)!/n!$ depends on which primes $\\leq n+k$ divide at least one element of the block. Erdős himself doubted the full conjecture and proposed the weaker claim that same-prime-factor pairs must satisfy $n_2 > 2(n_1 + k_1)$ with finitely many exceptions. This stronger conjecture was disproved by a counterexample: $10! = 2^8 \\cdot 3^4 \\cdot 5^2 \\cdot 7$ and $14 \\cdot 15 \\cdot 16 = 2^5 \\cdot 3 \\cdot 5 \\cdot 7$ share prime factors $\\{2,3,5,7\\}$ with $n_2 = 13 \\leq 20 = 2(n_1 + k_1)$. Tijdeman found another example: $19 \\cdot 20 \\cdot 21 \\cdot 22$ and $54 \\cdot 55 \\cdot 56 \\cdot 57$ share the same primes (this one beyond the double gap). The connection to Bertrand's postulate is central: for $n_2 > 2(n_1 + k_1)$, a prime in $(n_1 + k_1, 2(n_1 + k_1)]$ would divide the second block but not the first, reducing the problem to the bounded-gap case. The constraint $k_1, k_2 \\geq 3$ excludes trivial infinite families for small block sizes.",
     "problemStatement": "Let $k_1 \\geq k_2 \\geq 3$. Are there only finitely many $n_2 \\geq n_1 + k_1$ such that $\\prod_{i=1}^{k_1}(n_1+i)$ and $\\prod_{j=1}^{k_2}(n_2+j)$ have the same set of prime factors?",
-    "text": "Let k\u2081 \u2265 k\u2082 \u2265 3. Are there only finitely many n\u2082 \u2265 n\u2081+k\u2081 such that \u220f(n\u2081+i) and \u220f(n\u2082+j) share the same prime factors? Counterexamples to the stronger claim exist (AlphaProof: 10! and 14\u00b715\u00b716). OPEN.",
+    "text": "Let k₁ ≥ k₂ ≥ 3. Are there only finitely many n₂ ≥ n₁+k₁ such that ∏(n₁+i) and ∏(n₂+j) share the same prime factors? Counterexamples to the stronger claim exist (AlphaProof: 10! and 14·15·16). OPEN.",
     "proofStrategy": "The formalization defines `consecutiveProduct` via `Finset.Icc` and `Finset.prod`, extracts prime factor sets via `Nat.primeFactors`, and defines `SamePrimeFactors` as equality of these Finsets. The main conjecture uses `Set.Finite` on the solution set. Both the stronger conjecture ($n_2 \\leq 2(n_1+k_1)$) and the prime-between-blocks question are stated as axioms. Two counterexamples (AlphaProof and Tijdeman) are fully verified by `native_decide` and `omega`. Structural properties (positivity, prime factor membership, equivalence relation) are proved. The file uses 0 sorry statements; all deep results are axioms.",
     "keyInsights": [
       "AlphaProof counterexample: $10!$ and $14 \\cdot 15 \\cdot 16$ share prime factors $\\{2,3,5,7\\}$ with $n_2 \\leq 2(n_1+k_1)$, disproving the stronger conjecture",

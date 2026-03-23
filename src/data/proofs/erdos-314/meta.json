@@ -56,12 +56,13 @@
       "Connection to Euler-Mascheroni constant"
     ],
     "axiomCount": 10,
-    "lineCount": 184
+    "lineCount": 184,
+    "assumptions": "10 axiom(s) and 3 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #314: Harmonic Sum Error Term**\n\nThis problem from Erdős-Graham (1980) studies partial harmonic sums. Given n, let m(n) be the minimal integer such that the harmonic sum from n to m reaches at least 1. The error ε(n) is how much the sum overshoots 1.\n\n**Historical Development:**\n- **Erdős-Graham (1980):** Posed the question: is lim inf n²ε(n) = 0?\n- **Lim-Steinerberger (2024):** Proved YES with explicit bounds.\n\n**Key Insight:** Since harmonic sums grow like log(m/n), we have m(n) ≈ e·n. The question asks how precisely the sum can hit 1.",
     "problemStatement": "**Problem Statement (SOLVED)**\n\nLet n ≥ 1 and m(n) be minimal such that ∑_{k=n}^{m} 1/k ≥ 1.\nDefine ε(n) = ∑_{k=n}^{m(n)} 1/k - 1 (the overshoot).\n\n**Question:** Is lim inf n²ε(n) = 0?\n\n**Solution (Lim-Steinerberger 2024):**\nYES! There exist infinitely many n such that:\nε(n)n² ≪ (log log n / log n)^{1/2}\n\n**Optimal Exponent Conjecture (OPEN):**\nlim inf ε(n)n^{2+δ} = ∞ for all δ > 0",
-    "text": "Let m(n) be minimal with partial harmonic sum \u2265 1, and \u03b5(n) the overshoot. Is lim inf n\u00b2\u03b5(n) = 0? SOLVED by Lim-Steinerberger (2024): YES, with infinitely many n achieving \u03b5(n)n\u00b2 \u226a (log log n / log n)^{1/2}.",
+    "text": "Let m(n) be minimal with partial harmonic sum ≥ 1, and ε(n) the overshoot. Is lim inf n²ε(n) = 0? SOLVED by Lim-Steinerberger (2024): YES, with infinitely many n achieving ε(n)n² ≪ (log log n / log n)^{1/2}.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Harmonic Sums:** Define H_n and partial sums via Finset.sum.\n\n2. **m(n):** Axiomatize as the minimal m with partial sum ≥ 1.\n\n3. **ε(n):** Define as the overshoot: partial sum minus 1.\n\n4. **Bounds:** Prove 0 ≤ ε(n) ≤ 1/n.\n\n5. **Approximation:** m(n)/n → e as n → ∞.\n\n6. **Main Theorem:** Axiomatize Lim-Steinerberger bound.\n\n7. **Optimal Exponent:** State the remaining open conjecture.",
     "keyInsights": [
       "**Harmonic Growth:** H_n ≈ ln(n) + γ where γ is Euler-Mascheroni constant",

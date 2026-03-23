@@ -21,12 +21,13 @@
     "erdosUrl": "https://erdosproblems.com/663",
     "erdosProblemStatus": "open",
     "axiomCount": 7,
-    "lineCount": 127
+    "lineCount": 127,
+    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in connection with his broader program studying prime factors of products of consecutive integers, a theme running through dozens of his papers from the 1930s onward. The function $q(n,k)$, defined as the least prime not dividing $\\prod_{i=1}^{k}(n+i)$, captures the interplay between the prime number theorem and the arithmetic structure of consecutive integers. The weak bound $q(n,k) < (1+o(1))\\,k\\log n$ follows directly from the prime number theorem: among $k$ consecutive integers, every prime $p \\leq k$ must divide at least one term, and primes up to roughly $k\\log n$ are \"used up\" by the product. Erdős conjectured the much stronger bound $q(n,k) < (1+o(1))\\log n$, removing the factor of $k$ entirely. Terence Tao provided heuristic arguments supporting this conjecture based on probabilistic models of prime divisibility. The problem is closely related to Erdős Problem #457 on small prime divisors of consecutive products, and connects to classical work by Sylvester (1892) and Schur on prime factors in consecutive integer ranges, as well as Ingham's results on prime gaps.",
     "problemStatement": "For positive integers $n$ and $k$, define $q(n,k)$ as the least prime not dividing $(n+1)(n+2)\\cdots(n+k)$. Is it true that $q(n,k) < (1 + o(1)) \\log n$ as $n \\to \\infty$ for each fixed $k$?",
-    "text": "For positive integers n and k, let q(n,k) be the least prime not dividing (n+1)(n+2)\u00b7\u00b7\u00b7(n+k). Erd\u0151s conjectured q(n,k) < (1+o(1)) log n.",
+    "text": "For positive integers n and k, let q(n,k) be the least prime not dividing (n+1)(n+2)···(n+k). Erdős conjectured q(n,k) < (1+o(1)) log n.",
     "proofStrategy": "The formalization axiomatizes $q(n,k)$ via three properties: primality, non-divisibility of the consecutive product, and minimality among primes with this property. The main conjecture is stated in $\\varepsilon$-$N$ form: for all $\\varepsilon > 0$ there exists $N_0$ such that $q(n,k) < (1+\\varepsilon)\\log n$ for $n \\geq N_0$. The weak bound is similarly stated with the extra factor of $k$. The formalization proves that the conjecture and weak bound coincide for $k=1$ (by a simple algebraic identity), and that the main conjecture implies the weak bound (since $\\log n \\leq k\\log n$ for $k \\geq 1$). Structural properties of consecutive products — positivity, small prime divisibility, and monotonicity of $q$ in $k$ — are established via a mix of direct proofs and axioms for deeper results.",
     "keyInsights": [
       "**Pigeonhole for small primes**: Every prime $p \\leq k$ must divide at least one of $k$ consecutive integers, so $q(n,k) > k$ — the \"missing\" prime must be larger than $k$",

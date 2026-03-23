@@ -67,12 +67,13 @@
         "relationship": "Fellow Erdős problem"
       }
     ],
-    "lineCount": 342
+    "lineCount": 342,
+    "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #368: Prime Factors of Consecutive Products**\n\nThis problem investigates the growth rate of the largest prime factor of products of consecutive integers n(n+1).\n\n**Key History:**\n- Pólya (1918): First proved F(n) → ∞ as n → ∞\n- Mahler (1935): Established F(n) ≫ log log n, the first quantitative bound\n- Schinzel (1967): Showed the upper bound F(n) ≤ n^(O(1/log log log n)) infinitely often\n- Erdős (1976): Conjectured F(n) ≈ (log n)² captures the true behavior\n- Pasten (2024): Proved F(n) ≫ (log log n)²/(log log log n), the strongest known lower bound\n\n**Mathematical Setting:**\nThe function F(n) = gpf(n(n+1)) captures how large prime factors must appear in products of consecutive integers. Since gcd(n, n+1) = 1, the prime factors of n(n+1) are the union of prime factors of n and n+1.",
     "problemStatement": "**Problem Statement (PARTIALLY RESOLVED)**\n\nLet $F(n)$ be the largest prime factor of $n(n+1)$. How large must $F(n)$ be?\n\n**Known Lower Bounds:**\n- $F(n) \\to \\infty$ as $n \\to \\infty$ (Pólya 1918)\n- $F(n) \\gg \\log\\log n$ (Mahler 1935)\n- $F(n) \\gg \\frac{(\\log\\log n)^2}{\\log\\log\\log n}$ (Pasten 2024)\n\n**Known Upper Bounds:**\n- For infinitely many $n$: $F(n) \\leq n^{O(1/\\log\\log\\log n)}$ (Schinzel 1967)\n\n**Erdős's Conjectures:**\n- Lower: $F(n) \\gg (\\log n)^2$ for all $n$\n- Upper: For every $\\varepsilon > 0$, infinitely many $n$ satisfy $F(n) < (\\log n)^{2+\\varepsilon}$",
-    "text": "Study of F(n), the largest prime factor of n(n+1). P\u00f3lya proved F(n) \u2192 \u221e; Mahler showed F(n) \u226b log log n; Pasten (2024) improved to F(n) \u226b (log log n)\u00b2/(log log log n). Erd\u0151s conjectured F(n) \u2248 (log n)\u00b2.",
+    "text": "Study of F(n), the largest prime factor of n(n+1). Pólya proved F(n) → ∞; Mahler showed F(n) ≫ log log n; Pasten (2024) improved to F(n) ≫ (log log n)²/(log log log n). Erdős conjectured F(n) ≈ (log n)².",
     "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:**\n   - largestPrimeFactor: gpf(n) using Nat.primeFactors.max'\n   - F(n) = gpf(n(n+1))\n   - isSmooth for B-smooth numbers\n\n2. **Key Properties:**\n   - consecutive_coprime: gcd(n, n+1) = 1\n   - F(n) = max(gpf(n), gpf(n+1))\n\n3. **Historical Results as Axioms:**\n   - polya_theorem, mahler_bound, schinzel_upper, pasten_bound\n\n4. **Conjectures:**\n   - erdos_lower_conjecture, erdos_upper_conjecture\n\n5. **Connections:**\n   - ABC conjecture implications\n   - P(n² + 1) variant from Pasten's work",
     "keyInsights": [
       "**Coprimality:** Since gcd(n, n+1) = 1, the prime factors of n(n+1) are simply the union of factors of n and n+1",

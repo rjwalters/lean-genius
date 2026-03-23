@@ -66,12 +66,13 @@
       "erdos_max_theorem: maximum exceeds threshold"
     ],
     "axiomCount": 9,
-    "lineCount": 245
+    "lineCount": 245,
+    "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1132: Lebesgue Functions in Polynomial Interpolation**\n\nThis problem concerns the Lebesgue function Lₙ(x), a fundamental quantity in polynomial interpolation theory. For any set of nodes x₁,...,xₙ, the Lebesgue function measures how much the Lagrange interpolation can magnify errors.\n\n**Key History:**\n- Bernstein (1931): Proved that 'good' points are dense in (-1,1)\n- Erdős (1961): Proved the maximum of Lₙ always exceeds (2/π)log(n) - O(1)\n- Erdős (1967): Posed the two questions in this problem\n\n**Mathematical Context:**\nThe Lebesgue function Lₙ(x) = Σₖ |lₖ(x)| where lₖ are Lagrange basis polynomials controls interpolation error. For Chebyshev nodes, Λₙ ~ (2/π)log(n), which is optimal. The questions ask whether this growth rate is achieved at fixed points (not just at the maximum) for infinite node sequences.",
     "problemStatement": "**Problem Statement (Open)**\n\nFor an infinite sequence $x_1, x_2, \\ldots \\in [-1,1]$, define the Lebesgue function:\n$$L_n(x) = \\sum_{k=1}^n |l_k(x)|$$\nwhere $l_k$ are the Lagrange basis polynomials for $x_1, \\ldots, x_n$.\n\n**Question 1:** Must there exist $x \\in (-1,1)$ such that $L_n(x) > \\frac{2}{\\pi}\\log n - O(1)$ for infinitely many $n$?\n\n**Question 2:** Is $\\limsup_{n\\to\\infty} \\frac{L_n(x)}{\\log n} \\geq \\frac{2}{\\pi}$ for almost all $x \\in (-1,1)$?\n\n**Status: OPEN**\n\nWe know:\n- The 'good' points are **dense** (Bernstein 1931)\n- The **maximum** always exceeds the threshold (Erdős 1961)\n\nThe gap between 'dense' and 'almost everywhere' remains unresolved.",
-    "text": "Two open questions about Lebesgue functions L\u2099(x) for infinite node sequences: must there exist x with large L\u2099(x) infinitely often, and is the growth property satisfied almost everywhere?",
+    "text": "Two open questions about Lebesgue functions Lₙ(x) for infinite node sequences: must there exist x with large Lₙ(x) infinitely often, and is the growth property satisfied almost everywhere?",
     "proofStrategy": "**Formalization Approach**\n\n1. **Lagrange Basis:** Define the basis polynomials lₖ(x) satisfying lₖ(xₖ)=1 and lₖ(xᵢ)=0 for i≠k\n\n2. **Lebesgue Function:** Define Lₙ(x) = Σₖ |lₖ(x)| measuring interpolation error amplification\n\n3. **Lebesgue Constant:** Define Λₙ = max Lₙ(x) and state the (2/π)log(n) growth bounds\n\n4. **Infinite Sequences:** Define InfiniteNodeSequence type for sequences in [-1,1]\n\n5. **Open Questions:** Formally state the existence and almost-everywhere questions\n\n6. **Partial Results:** Formalize Bernstein's density theorem and Erdős's maximum bound\n\n7. **Status:** Record that both questions remain open",
     "keyInsights": [
       "**Lebesgue Function:** Lₙ(x) = Σₖ |lₖ(x)| controls how interpolation error compares to best approximation error",

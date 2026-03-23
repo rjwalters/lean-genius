@@ -22,12 +22,13 @@
     "erdosUrl": "https://erdosproblems.com/472",
     "erdosProblemStatus": "open",
     "axiomCount": 1,
-    "lineCount": 226
+    "lineCount": 226,
+    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This problem originated with Stanisław Ulam and appears in the Erdős–Graham collection (1980). Ulam studied iterative constructions on number sequences extensively, including his famous Ulam numbers (integers uniquely representable as sums of two earlier terms). Problem 472 applies a related greedy principle specifically to primes: given a finite seed of primes, extend by always choosing the smallest prime of the form q_n + q_i − 1. The shift by −1 (rather than plain addition) creates a subtle parity structure: when both operands are odd, the candidate is odd and hence potentially prime. The seed [3, 5] produces the sequence 3, 5, 7, 11, 13, 17, 19, 23, ... which computationally matches all odd primes through 23. Whether any seed produces an infinite sequence remains open. The problem connects to questions about additive bases among primes, Goldbach-type phenomena, and the distribution of primes in arithmetic progressions.",
     "problemStatement": "Given primes q₁ < … < qₘ, define q_{n+1} as the smallest prime of the form qₙ + qᵢ − 1 for i ≤ n. Does there exist a seed such that the sequence never terminates?",
-    "text": "Given an initial finite sequence of primes, extend by taking q_{n+1} as the smallest prime of the form q_n + q_i \u2212 1. Does there exist a seed making the sequence infinite? Starting with 3, 5 gives 3, 5, 7, 11, 13, 17, \u2026",
+    "text": "Given an initial finite sequence of primes, extend by taking q_{n+1} as the smallest prime of the form q_n + q_i − 1. Does there exist a seed making the sequence infinite? Starting with 3, 5 gives 3, 5, 7, 11, 13, 17, …",
     "proofStrategy": "The formalization provides both an abstract specification (IsUlamPrimeSeq with four conjuncts: seed matching, primality, monotonicity, minimality) and a computable implementation (ulamNextCandidate, ulamStep, ulamExtend). The computable version is validated against the abstract specification via native_decide proofs that verify the first 8 terms. Structural theorems establish parity properties explaining why odd seeds are superior, and a gap bound showing consecutive terms differ by at least 2. The strongest conjecture—that [3,5] contains all odd primes—is axiomatized separately.",
     "keyInsights": [
       "**Parity structure**: The −1 shift ensures odd + odd − 1 = odd, so all-odd seeds produce exclusively odd candidates, maximizing the chance of primality",

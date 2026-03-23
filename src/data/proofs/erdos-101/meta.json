@@ -19,7 +19,8 @@
     "erdosUrl": "https://erdosproblems.com/101",
     "axiomCount": 5,
     "lineCount": 790,
-    "badge": "axiom"
+    "badge": "axiom",
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "sections": [
     {
@@ -68,7 +69,7 @@
   "overview": {
     "historicalContext": "Erdős posed this problem across several papers from 1984 to 1997, asking whether the maximum number of lines through exactly four points of an $n$-point planar set (with no five collinear) is $o(n^2)$. He initially conjectured the answer was $\\Theta(n^{3/2})$, based on a construction by Grünbaum that achieves $\\Omega(n^{3/2})$ four-point lines using carefully arranged points on families of lines. This conjecture stood for decades until Solymosi and Stojaković (2013) disproved it with a stunning construction achieving $n^{2 - O(1/\\sqrt{\\log n})}$ four-point lines—nearly quadratic growth. Their approach uses number-theoretic ideas related to sum-product estimates. The gap between this lower bound and the conjectured $o(n^2)$ upper bound remains one of the central open problems in combinatorial geometry, carrying a $\\$100$ Erdős prize. The problem connects deeply to the Szemerédi–Trotter incidence theorem and the broader program of understanding collinearity patterns in finite point sets.",
     "problemStatement": "Given $n$ points in $\\mathbb{R}^2$ with no five collinear, prove that the number of lines containing exactly four of the points is $o(n^2)$.",
-    "text": "Given n points in \u211d\u00b2 with no five collinear, is the number of lines containing exactly four points o(n\u00b2)? Gr\u00fcnbaum: \u226b n^{3/2}. Solymosi\u2013Stojakovi\u0107: n^{2\u2212O(1/\u221alog n)}. Open.",
+    "text": "Given n points in ℝ² with no five collinear, is the number of lines containing exactly four points o(n²)? Grünbaum: ≫ n^{3/2}. Solymosi–Stojaković: n^{2−O(1/√log n)}. Open.",
     "proofStrategy": "The formalization defines a `PlanarPointSet` as a positive-cardinality finite subset of $\\mathbb{R}^2$, introduces collinearity via the signed area determinant, and defines `NoFiveCollinear` (at most four points per line). The four-point line count is computed by filtering the powerset for collinear 4-subsets. Since the problem is open, the main conjecture and all known partial results (Grünbaum's lower bound, Solymosi–Stojaković's near-quadratic construction, trivial upper bound, Szemerédi–Trotter) are stated as axioms.",
     "keyInsights": [
       "The no-five-collinear condition is the precise threshold: with five points on a line, one can trivially arrange $\\Theta(n)$ points on each of $\\Theta(n)$ lines to get $\\Omega(n^2)$ four-point lines",

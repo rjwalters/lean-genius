@@ -52,12 +52,13 @@
       "constant_satisfies, linear_satisfies, square_satisfies: examples (proved)"
     ],
     "axiomCount": 3,
-    "lineCount": 174
+    "lineCount": 174,
+    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1125**\n\nThis problem originates from functional analysis and the study of generalized convexity. The inequality 2f(x) ≤ f(x+h) + f(x+2h) is a one-sided discrete convexity condition posed by Kemperman in 1969.\n\n**History:**\n- Kemperman (1969) posed the problem in Trans. Amer. Math. Soc. and proved YES if f is Lebesgue measurable\n- Erdős included it in his Scottish Book problems, writing \"if it were my problem I would offer $500 for it\"\n- Laczkovich (1984) proved YES unconditionally in Colloq. Math., pp. 109-115\n\n**Context:** Non-measurable functions can have exotic properties — for example, using the Axiom of Choice one can construct additive non-linear functions f(x+y) = f(x) + f(y). The surprise is that Kemperman's inequality is strong enough to force monotonicity even for such pathological functions, without any regularity assumption.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet f : ℝ → ℝ satisfy\n  2f(x) ≤ f(x+h) + f(x+2h)\nfor every x ∈ ℝ and h > 0.\n\n**Question:** Must f be monotonic?\n\n**Kemperman (1969):** YES if f is measurable.\n\n**Laczkovich (1984):** YES unconditionally.",
-    "text": "If f : \u211d \u2192 \u211d satisfies 2f(x) \u2264 f(x+h) + f(x+2h) for all x and h > 0, must f be monotonic? Laczkovich (1984) proved YES unconditionally.",
+    "text": "If f : ℝ → ℝ satisfies 2f(x) ≤ f(x+h) + f(x+2h) for all x and h > 0, must f be monotonic? Laczkovich (1984) proved YES unconditionally.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Kemperman Inequality:** Define satisfiesKemperman f as the functional inequality\n\n2. **Equivalent Form:** Prove the equivalence with the difference formulation via linarith\n\n3. **Monotonicity:** Define isMonotonic as non-decreasing OR non-increasing\n\n4. **Main Results:**\n   - Kemperman 1969: measurable case (axiom using Mathlib's Measurable)\n   - Laczkovich 1984: general case (axiom)\n\n5. **Examples:** Prove constants, linear functions, x² all satisfy the inequality\n\n**Why Axioms:** Laczkovich's proof uses subtle order-theoretic and combinatorial arguments beyond current Mathlib.",
     "keyInsights": [
       "**One-Sided Convexity:** The inequality 2f(x) ≤ f(x+h) + f(x+2h) is like midpoint convexity but one-sided",

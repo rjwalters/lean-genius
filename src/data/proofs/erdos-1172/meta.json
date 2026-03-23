@@ -66,12 +66,13 @@
       "omega2_lt_omega3"
     ],
     "axiomCount": 10,
-    "lineCount": 204
+    "lineCount": 204,
+    "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem #1172 originates from the Erdős-Hajnal partition calculus program, a systematic study of ordinal partition relations launched by Paul Erdős and András Hajnal in the 1960s. The specific questions appear as problem 7.87 in Väänänen's 1999 survey (Va99), attributed to Erdős and Hajnal.\n\nThe partition calculus grew out of Ramsey's theorem (1930) and its infinitary extensions by Erdős and Rado (1956). The Erdős-Dushnik-Miller theorem (1941) established the foundational result λ → (λ, ω)² for all infinite λ. By the 1960s, Erdős and Hajnal had developed a comprehensive program to determine which ordinal partition relations hold under various set-theoretic hypotheses.\n\nA key turning point came with Todorcevic's work in 1989, which revealed that many partition relations at ω₁ are independent of ZFC. Under the Proper Forcing Axiom (PFA), ω₁ → (ω₁, α)² holds for all countable α, while under b = ω₁, the relation ω₁ → (ω₁, ω + 2)² fails. This independence phenomenon makes the questions at ω₂ and ω₃ particularly subtle, as GCH or CH may be needed to resolve them.\n\nThe four questions in Problem 1172 probe the boundary between what is provable under GCH/CH and what remains open, involving delicate interactions between ordinal arithmetic, cofinality, and coloring arguments.",
     "problemStatement": "Under GCH, do the following ordinal partition relations hold? (1) $\\omega_3 \\to (\\omega_2, \\omega_1 + 2)^2$, (2) $\\omega_3 \\to (\\omega_2 + \\omega_1, \\omega_2 + \\omega)^2$, (3) $\\omega_2 \\to (\\omega_1^{\\omega+2} + 2, \\omega_1 + 2)^2$. Under CH: (4) $\\omega_2 \\to (\\omega_1 + \\omega)_2^2$.",
-    "text": "Do the partition relations \u03c9\u2083 \u2192 (\u03c9\u2082, \u03c9\u2081 + 2)\u00b2 and related ordinal relations hold under GCH?",
+    "text": "Do the partition relations ω₃ → (ω₂, ω₁ + 2)² and related ordinal relations hold under GCH?",
     "proofStrategy": "The formalization introduces ordinal partition relations as an axiomatic framework, since their full combinatorial definition requires substantial infrastructure beyond current Mathlib. It then proves several consequences using monotonicity: the Erdős-Dushnik-Miller theorem immediately gives ω₃ → (ω₃, ω)² and ω₂ → (ω₂, ω)², and target monotonicity yields weak forms of the open questions. The file also axiomatizes Todorcevic's negative result and PFA's positive result to exhibit the independence of ω₁ → (ω₁, ω + 2)² from ZFC, contextualizing why the questions at higher cardinals remain difficult.",
     "keyInsights": [
       "The partition relation $\\alpha \\to (\\beta, \\gamma)^2$ is asymmetric ('unbalanced'): the two colors can require monochromatic sets of different order types, which is crucial for the nuanced questions in this problem.",

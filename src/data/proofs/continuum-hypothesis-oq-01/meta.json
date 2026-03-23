@@ -55,13 +55,13 @@
     ],
     "dateAdded": "2026-02-22",
     "axiomCount": 10,
-    "assumptions": "10 axiom declarations encoding set-theoretic axioms and their consequences for the continuum hypothesis: VeqL (the axiom V=L) and VeqL_implies_GCH, UltimateL (Woodin's Ultimate-L conjecture) and UltimateL_implies_GCH, PFA (Proper Forcing Axiom) and PFA_implies_continuum_eq_aleph_two, MM (Martin's Maximum) and MM_implies_PFA, plus supporting axioms. These encode the major set-theoretic proposals for resolving CH, all of which are independent of ZFC.",
-    "lineCount": 317
+    "lineCount": 317,
+    "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Gödel (1940) showed CH is consistent with ZFC using the constructible universe L; Cohen (1963) showed ¬CH is also consistent using forcing. The independence of CH left open a deeper philosophical question: which axioms, if any, should we add to ZFC to settle it? Gödel initially hoped V=L was the right answer, but Scott (1961) showed V=L is incompatible with measurable cardinals — large cardinals that most set theorists consider mathematically natural. Since the 1970s, forcing axioms like Martin's Maximum (MM) and the Proper Forcing Axiom (PFA) have emerged as popular alternatives, and these axioms imply ¬CH. Woodin's ongoing Ultimate-L program (1999–) seeks a canonical inner model that satisfies GCH while accommodating all large cardinals.",
     "problemStatement": "**Open Question (continuum-hypothesis-oq-01)**: Should we extend ZFC with a new axiom that decides CH?\n\nFormally: which propositions Φ satisfy `Decides Φ` (meaning Φ → CH or Φ → ¬CH), and what are their mathematical consequences?\n\n**Key tension**: V=L → CH but V=L excludes measurable cardinals; PFA → ¬CH but PFA is consistent with large cardinals. This asymmetry has led most set theorists to favor the ¬CH side.",
-    "text": "The Continuum Hypothesis is independent of ZFC, raising a natural question: should we extend our axiom system to settle it? This exploration formalizes the CH axiom landscape \u2014 V=L (implies CH) vs forcing axioms like PFA (implies \u00acCH) \u2014 and reveals a key asymmetry: CH-deciding axioms are incompatible with large cardinals, while \u00acCH-deciding axioms are not.",
+    "text": "The Continuum Hypothesis is independent of ZFC, raising a natural question: should we extend our axiom system to settle it? This exploration formalizes the CH axiom landscape — V=L (implies CH) vs forcing axioms like PFA (implies ¬CH) — and reveals a key asymmetry: CH-deciding axioms are incompatible with large cardinals, while ¬CH-deciding axioms are not.",
     "proofStrategy": "Rather than resolving whether CH is 'true', we formalize the axiom landscape. We define `Decides Φ` as `(Φ → CH) ∨ (Φ → ¬CH)`, then exhibit natural axioms for each direction: V=L (constructibility) for CH, and PFA (proper forcing axiom) for ¬CH. We then formalize Scott's incompatibility result (V=L and measurable cardinals cannot coexist) and the large-cardinal compatibility of PFA, establishing the key asymmetry.",
     "keyInsights": [
       "CH is formally 'decidable by axiom' — both V=L → CH and PFA → ¬CH are natural extensions of ZFC",

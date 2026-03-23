@@ -81,12 +81,13 @@
         "url": "https://doi.org/10.19086/da.609",
         "description": "Proves the Erdős Discrepancy Conjecture: every infinite ±1 sequence has unbounded discrepancy on homogeneous APs"
       }
-    ]
+    ],
+    "assumptions": "8 axiom(s) and 2 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #176** concerns the discrepancy of ±1 colorings with respect to arithmetic progressions. This is a fundamental problem in Ramsey theory and combinatorial number theory.\n\n**Historical Development:**\n- **1963 (Erdős):** Proved exponential lower bounds N(k,ck) > (1+α_c)^k.\n- **1973 (Spencer):** Gave exact formula for N(k,1): if k = 2^t·m with m odd, then N(k,1) = 2^t(k-1) + 1.\n- **1980 (Erdős-Graham):** Stated that 'no decent bound' is known even for N(k,2).\n\nThe problem connects to van der Waerden numbers: when ℓ = k, N(k,k) equals the van der Waerden number W(k).",
     "problemStatement": "**Problem Statement (Open)**\n\nLet $N(k, \\ell)$ be the minimal $N$ such that for any $f:\\{1,\\ldots,N\\}\\to\\{-1,1\\}$, there exists a $k$-term arithmetic progression $P$ with $|\\sum_{n\\in P} f(n)| \\geq \\ell$.\n\n**Questions:**\n1. For any $c > 0$, is there $C > 1$ with $N(k, ck) \\leq C^k$?\n2. Is $N(k, 2) \\leq C^k$ for some $C$?\n3. Is $N(k, \\sqrt{k}) \\leq C^k$ for some $C$?\n\n**Known:**\n- $N(k,k) = W(k)$ (van der Waerden number)\n- $N(k,1)$ has exact formula (Spencer 1973)\n- $N(k,ck) > (1+\\alpha_c)^k$ (Erdős 1963)",
-    "text": "Find bounds for N(k,\u2113), the minimal N such that any \u00b11 coloring of {1,...,N} has a k-AP with discrepancy \u2265 \u2113. Known: N(k,1) exactly; Open: N(k,2) \u2264 C^k?",
+    "text": "Find bounds for N(k,ℓ), the minimal N such that any ±1 coloring of {1,...,N} has a k-AP with discrepancy ≥ ℓ. Known: N(k,1) exactly; Open: N(k,2) ≤ C^k?",
     "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** Define arithmetic progressions, ±1 colorings, and discrepancy.\n\n2. **N(k,ℓ) Function:** Define the property SatisfiesNkl and the minimal Nkl.\n\n3. **Van der Waerden:** Connect N(k,k) to van der Waerden numbers.\n\n4. **Known Results:** Axiomatize Spencer's exact formula and Erdős's lower bounds.\n\n5. **Open Questions:** State the three main conjectures precisely.",
     "keyInsights": [
       "**Arithmetic Progressions:** Sets of the form {a, a+d, a+2d, ..., a+(k-1)d}.",
