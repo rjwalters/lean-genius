@@ -76,56 +76,64 @@
       "title": "Sign Change Definitions",
       "startLine": 61,
       "endLine": 86,
-      "summary": "Formal definitions of sign, opposite sign, and sign changes between sequence elements."
+      "summary": "Formal definitions of sign, opposite sign, and sign changes between sequence elements.",
+      "mathContext": "A sign change between consecutive nonzero coefficients $a_i, a_j$ occurs when $a_i \\cdot a_j < 0$. Zero coefficients are skipped: in $(1, 0, -1)$, there is one sign change between $1$ and $-1$."
     },
     {
       "id": "coefficient-sign-changes",
       "title": "Coefficient Sign Changes",
       "startLine": 88,
       "endLine": 102,
-      "summary": "Definitions for extracting coefficient sequences from polynomials and counting their sign changes."
+      "summary": "Definitions for extracting coefficient sequences from polynomials and counting their sign changes.",
+      "mathContext": "The coefficient sequence $\\text{coeffSeq}(p)$ extracts $(a_n, a_{n-1}, \\ldots, a_0)$ from $p(x) = \\sum a_k x^k$. Sign changes in this sequence bound the number of positive roots."
     },
     {
       "id": "positive-roots",
       "title": "Positive Roots",
       "startLine": 104,
       "endLine": 124,
-      "summary": "Definitions for positive roots and root multiplicity counting."
+      "summary": "Definitions for positive roots and root multiplicity counting.",
+      "mathContext": "`countPositiveRoots p` counts positive real roots of $p$ with multiplicity. By Descartes' rule, this is bounded by `signChanges (coeffSeq p)` with even difference."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
       "startLine": 126,
       "endLine": 165,
-      "summary": "The main Descartes' Rule of Signs theorems: upper bound, parity, and combined form."
+      "summary": "The main Descartes' Rule of Signs theorems: upper bound, parity, and combined form.",
+      "mathContext": "Main results: `descartes_upper_bound` ($\\text{posRoots}(p) \\leq \\text{signChanges}(p)$) and `descartes_parity` ($\\text{signChanges}(p) - \\text{posRoots}(p) \\equiv 0 \\pmod{2}$). The combined form `descartes_rule` states both simultaneously."
     },
     {
       "id": "negative-roots",
       "title": "Negative Roots",
       "startLine": 167,
       "endLine": 198,
-      "summary": "Extension to negative roots via p(-x) substitution."
+      "summary": "Extension to negative roots via p(-x) substitution.",
+      "mathContext": "Negative roots of $p(x)$ are positive roots of $p(-x)$. The substitution $x \\mapsto -x$ transforms $a_k x^k \\mapsto a_k (-1)^k x^k$, so sign changes in the modified sequence count negative roots."
     },
     {
       "id": "examples",
       "title": "Sign Change Examples",
       "startLine": 200,
       "endLine": 220,
-      "summary": "Concrete examples demonstrating sign change counting on specific polynomials."
+      "summary": "Concrete examples demonstrating sign change counting on specific polynomials.",
+      "mathContext": "Concrete verifications: e.g., $x^3 - 6x^2 + 11x - 6 = (x-1)(x-2)(x-3)$ has 3 sign changes and 3 positive roots (the bound is tight)."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "startLine": 222,
       "endLine": 245,
-      "summary": "Special cases: all positive coefficients (no positive roots) and alternating signs (maximum roots)."
+      "summary": "Special cases: all positive coefficients (no positive roots) and alternating signs (maximum roots).",
+      "mathContext": "If all coefficients are positive ($a_k > 0$ for all $k$), there are 0 sign changes and hence 0 positive roots. If signs alternate ($a_k > 0$ for even $k$, $a_k < 0$ for odd $k$), sign changes equal the degree and all roots are positive."
     },
     {
       "id": "rolle-connection",
       "title": "Connection to Rolle's Theorem",
       "startLine": 247,
       "endLine": 265,
-      "summary": "The key lemma from Rolle's theorem used in the proof, and its effect on sign changes."
+      "summary": "The key lemma from Rolle's theorem used in the proof, and its effect on sign changes.",
+      "mathContext": "Rolle's theorem: if $p(a) = p(b) = 0$ with $a < b$, then $p'(c) = 0$ for some $c \\in (a,b)$. Each pair of consecutive positive roots produces a root of $p'$, and differentiating reduces sign changes by at most 1, giving the inductive step."
     }
   ],
   "conclusion": {
