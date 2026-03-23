@@ -31,7 +31,8 @@
     "relatedConcepts": [
       "Euclidean space",
       "Manifolds"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of unit sphere"
   },
   {
     "id": "ann-e991-sphere-dist",
@@ -47,7 +48,8 @@
     "relatedConcepts": [
       "Euclidean distance",
       "Geodesic distance"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of chordal distance"
   },
   {
     "id": "ann-e991-log-energy",
@@ -81,7 +83,8 @@
     "relatedConcepts": [
       "Fekete points",
       "Approximation theory"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of optimal configurations"
   },
   {
     "id": "ann-e991-spherical-cap",
@@ -97,7 +100,8 @@
     "relatedConcepts": [
       "Spherical geometry",
       "Geodesic balls"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of spherical caps"
   },
   {
     "id": "ann-e991-cap-area",
@@ -113,7 +117,8 @@
     "relatedConcepts": [
       "Spherical area",
       "Solid angle"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of normalized cap area"
   },
   {
     "id": "ann-e991-cap-count",
@@ -125,7 +130,8 @@
     "type": "definition",
     "title": "Cap Count",
     "content": "**capCount:**\n\nThe number of points from a configuration that fall within a cap:\n```lean\ndef capCount (points : Finset (Fin 3 → ℝ)) (cap : Set (Fin 3 → ℝ)) : ℕ :=\n  (points.filter (· ∈ cap)).card\n```\n\nFor uniform distribution, we expect capCount ≈ αC · n where αC is the cap's normalized area and n is the total number of points.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of cap count"
   },
   {
     "id": "ann-e991-small-discrepancy",
@@ -141,7 +147,8 @@
     "relatedConcepts": [
       "Discrepancy theory",
       "Uniform distribution"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of small discrepancy property"
   },
   {
     "id": "ann-e991-brauchart",
@@ -179,7 +186,8 @@
     "type": "technique",
     "title": "Main Theorem: Erdős #991",
     "content": "**erdos_991:**\n\nOptimal logarithmic energy points have o(n) discrepancy:\n```lean\ntheorem erdos_991 :\n    ∀ points, IsOptimalConfig points →\n    HasSmallDiscrepancy points\n```\n\n**Answer to Erdős:** YES, optimal configurations distribute uniformly.\n\n**Proof sketch:** Uses marzo_mas_bound to get O(n^{2/3}), which is o(n) since 2/3 < 1.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of main theorem: erdős #991"
   },
   {
     "id": "ann-e991-fekete",
@@ -195,7 +203,8 @@
     "relatedConcepts": [
       "Polynomial interpolation",
       "Quadrature"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of fekete points"
   },
   {
     "id": "ann-e991-riesz",
@@ -237,7 +246,8 @@
     "type": "technique",
     "title": "Hemisphere Approximation",
     "content": "**hemisphere_approx:**\n\nFor the hemisphere (cosAngle = 0), approximately half the points fall in each half:\n```lean\ntheorem hemisphere_approx : ... →\n  ||A ∩ hemisphere| - n/2| ≤ C · n^(2/3)\n```\n\n**Proof:** Follows from marzo_mas_bound with cosAngle = 0, since normalizedCapArea(0) = 1/2.\n\n**Intuition:** Optimal points are roughly symmetric - you can't bunch too many on one side without increasing energy.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "See annotation content for formal details of hemisphere approximation"
   },
   {
     "id": "ann-e991-improvement",
@@ -249,7 +259,8 @@
     "type": "technique",
     "title": "Improvement Factor",
     "content": "**improvement_factor:**\n\nMerge-Mas improves on Brauchart by n^{1/12}:\n```lean\ntheorem improvement_factor :\n  n^(3/4) / n^(2/3) = n^(1/12)\n```\n\n**Verification:** 3/4 - 2/3 = 9/12 - 8/12 = 1/12.\n\n**Significance:** For n = 10^12 points, this is a factor of 10 improvement. For practical n, the improvement is modest but theoretically significant.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "See annotation content for formal details of improvement factor"
   },
   {
     "id": "ann-e991-summary",
@@ -261,6 +272,7 @@
     "type": "technique",
     "title": "Summary: Erdős #991 SOLVED",
     "content": "**erdos_991_summary:**\n\nCombines the main results into one theorem:\n1. Qualitative: optimal points have o(n) discrepancy (erdos_991)\n2. Quantitative: the bound is O(n^{2/3}) (marzo_mas_bound)\n\nThe answer to Erdős Problem #991 is **YES**: optimal logarithmic energy point configurations on S² distribute uniformly in the limit, with quantitative bounds of O(n^{2/3}).",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of summary: erdős #991 solved"
   }
 ]

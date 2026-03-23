@@ -27,7 +27,8 @@
     "type": "technique",
     "title": "Squarefree Examples",
     "content": "**Verified examples:**\n\n- Squarefree 1, 2, 3, 6, 10, 30 (verified by decide)\n- ¬Squarefree 4, 12 (contain 2²)\n\nPrimes are always squarefree. Products of distinct primes are squarefree.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "See annotation content for formal details of squarefree examples"
   },
   {
     "id": "ann-e969-counting-function",
@@ -57,7 +58,8 @@
     "type": "technique",
     "title": "Computed Values of Q(x)",
     "content": "**Q_one, Q_ten, Q_twenty:**\n\n- Q(1) = 1\n- Q(10) = 7 (squarefree: 1,2,3,5,6,7,10)\n- Q(20) = 13\n\nVerified using native_decide for exact computation.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of computed values of q(x)"
   },
   {
     "id": "ann-e969-density",
@@ -87,7 +89,8 @@
     "type": "technique",
     "title": "Density Approximation",
     "content": "**density_approx:**\n\n0.607 < 6/π² < 0.609\n\nProved using bounds 3.14 < π < 3.15 from Mathlib.\n\nAbout 60.8% of all positive integers are squarefree!",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of density approximation"
   },
   {
     "id": "ann-e969-error-term",
@@ -117,7 +120,8 @@
     "type": "concept",
     "title": "Elementary Upper Bound",
     "content": "**elementary_upper_bound:**\n\n|E(x)| ≪ x^(1/2)\n\nProved by elementary counting methods.\n\n**Idea:** Each prime p contributes ≤ x/p² terms to exclude. Sum over primes gives O(√x).",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of elementary upper bound"
   },
   {
     "id": "ann-e969-pnt-improvement",
@@ -129,7 +133,8 @@
     "type": "concept",
     "title": "Prime Number Theorem Improvement",
     "content": "**pnt_improvement:**\n\nE(x) = o(x^(1/2))\n\nThe PNT provides cancellation in the Möbius sum, improving the bound to little-o.\n\nThis is stronger than O(x^(1/2)) but still far from the truth.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of prime number theorem improvement"
   },
   {
     "id": "ann-e969-walfisz",
@@ -167,7 +172,8 @@
     "type": "definition",
     "title": "The Main Conjecture",
     "content": "**errorTermConjecture:**\n\nE(x) ≍ x^(1/4)\n\nThis states that both the upper and lower bounds have exponent 1/4.\n\n**Status:** OPEN - not proved even under the Riemann Hypothesis!",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of the main conjecture"
   },
   {
     "id": "ann-e969-rh-connection",
@@ -210,7 +216,8 @@
     "type": "technique",
     "title": "Exponent Comparisons",
     "content": "**liu_exponent, exponent_gap:**\n\n- 11/35 > 1/4 (Liu's bound exceeds conjecture)\n- Gap: 11/35 - 1/4 = 9/140 ≈ 0.064\n\nEven with RH, we cannot reach the conjectured bound.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "See annotation content for formal details of exponent comparisons"
   },
   {
     "id": "ann-e969-mobius",
@@ -240,7 +247,8 @@
     "type": "concept",
     "title": "Squarefree Counting via Möbius",
     "content": "**squarefree_mobius_formula:**\n\nQ(x) = Σ_{d² ≤ x} μ(d) · ⌊x/d²⌋\n\n**Derivation:**\n- n is squarefree iff Σ_{d²|n} μ(d) = 1\n- Sum over n ≤ x and swap order\n- Result follows from inclusion-exclusion",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of squarefree counting via möbius"
   },
   {
     "id": "ann-e969-zero-free",
@@ -270,7 +278,8 @@
     "type": "technique",
     "title": "Summary of Known Bounds",
     "content": "**erdos_969_summary:**\n\nWhat we know:\n1. Upper bound: |E(x)| ≤ C·x^(1/2) (elementary)\n2. Lower bound: |E(x)| ≥ c·x^(1/4) (Evelyn-Linfoot)\n3. Gap: 1/2 - 1/4 = 1/4 in the exponent\n\n**Status:** OPEN for nearly 100 years!",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of summary of known bounds"
   },
   {
     "id": "ann-e969-open-problem",
@@ -282,6 +291,7 @@
     "type": "definition",
     "title": "The Open Problem",
     "content": "**erdos_969_open_problem:**\n\nIs E(x) ≍ x^(1/4)?\n\nThis remains one of the major open problems in analytic number theory, with profound connections to the Riemann Hypothesis.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of the open problem"
   }
 ]

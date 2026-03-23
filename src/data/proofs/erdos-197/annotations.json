@@ -31,7 +31,8 @@
     "relatedConcepts": [
       "Common difference",
       "Arithmetic sequences"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of arithmetic progression predicate"
   },
   {
     "id": "ann-e197-has-3ap",
@@ -56,7 +57,8 @@
     "type": "definition",
     "title": "3-AP Free Sequence",
     "content": "**avoids3AP:**\n\nA sequence avoids monotone 3-APs if it has no such triple.\n\n```lean\ndef avoids3AP (f : N -> N) : Prop := not hasMonotone3AP f\n```\n\nThis is the property we want for each partition part.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of 3-ap free sequence"
   },
   {
     "id": "ann-e197-enumeration",
@@ -68,7 +70,8 @@
     "type": "definition",
     "title": "Enumeration of a Set",
     "content": "**isEnumeration:**\n\nAn enumeration of a set S is a bijection from N to S.\n\n```lean\ndef isEnumeration (S : Set N) (f : N -> N) : Prop :=\n  Function.Bijective f and forall n, f n in S\n```\n\nThis allows us to 'order' the elements of S.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of enumeration of a set"
   },
   {
     "id": "ann-e197-permute-3ap-free",
@@ -80,7 +83,8 @@
     "type": "definition",
     "title": "Set Permutable to 3-AP-Free",
     "content": "**canPermuteTo3APFree:**\n\nA set S can be permuted to avoid 3-APs if there exists an enumeration of S that has no monotone 3-AP.\n\n```lean\ndef canPermuteTo3APFree (S : Set N) : Prop :=\n  exists f, isEnumeration S f and avoids3AP f\n```\n\nThis is the key property each partition part must have.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of set permutable to 3-ap-free"
   },
   {
     "id": "ann-e197-two-partition",
@@ -92,7 +96,8 @@
     "type": "definition",
     "title": "Two-Set Partition of N",
     "content": "**isTwoPartition:**\n\nA and B form a partition of N if they are disjoint and their union is N.\n\n```lean\ndef isTwoPartition (A B : Set N) : Prop :=\n  Disjoint A B and A union B = Set.univ\n```\n\nThis captures the classical notion of a partition into two parts.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of two-set partition of n"
   },
   {
     "id": "ann-e197-partition-mem",
@@ -104,7 +109,8 @@
     "type": "technique",
     "title": "Partition Membership",
     "content": "**partition_mem_iff:**\n\nIn a two-partition, each element belongs to exactly one part.\n\n```lean\ntheorem partition_mem_iff (A B : Set N) (h : isTwoPartition A B) (n : N) :\n    (n in A and n not in B) or (n not in A and n in B)\n```\n\nThis is a basic but important property of partitions.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "See annotation content for formal details of partition membership"
   },
   {
     "id": "ann-e197-conjecture",
@@ -129,7 +135,8 @@
     "type": "definition",
     "title": "Three-Set Partition of N",
     "content": "**isThreePartition:**\n\nA, B, C form a partition of N if they are pairwise disjoint and cover N.\n\n```lean\ndef isThreePartition (A B C : Set N) : Prop :=\n  Disjoint A B and Disjoint B C and Disjoint A C and A union B union C = Set.univ\n```",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of three-set partition of n"
   },
   {
     "id": "ann-e197-erdos-graham",
@@ -154,7 +161,8 @@
     "type": "technique",
     "title": "Identity Has 3-APs",
     "content": "**identity_has_3AP:**\n\nThe sequence 0, 1, 2, 3, ... has a 3-AP at any three consecutive terms.\n\n```lean\ntheorem identity_has_3AP : hasMonotone3AP id := by\n  use 0, 1, 2\n  ...\n```\n\n**Verification:** 0 + 2 = 2 = 2 * 1.\n\nThe natural ordering fails spectacularly!",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of identity has 3-aps"
   },
   {
     "id": "ann-e197-powers-2",
@@ -213,7 +221,8 @@
     "type": "technique",
     "title": "Problem Status",
     "content": "**erdos_197_status:**\n\nSummary of what we know:\n1. The three-set version is solvable (erdos_graham_three_sets)\n2. Individual 3-AP-free sequences exist (powers_of_2_avoid_3AP)\n\n```lean\ntheorem erdos_197_status :\n    (exists A B C, isThreePartition A B C and ...) and\n    (exists f, avoids3AP f)\n```\n\nThe open question is whether two sets suffice.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of problem status"
   },
   {
     "id": "ann-e197-open-question",
@@ -225,6 +234,7 @@
     "type": "technique",
     "title": "The Main Open Question",
     "content": "**erdos_197_open_question:**\n\nWhether two sets suffice remains unknown.\n\n```lean\ntheorem erdos_197_open_question :\n    (exists A B, isTwoPartition A B and\n      canPermuteTo3APFree A and canPermuteTo3APFree B) or\n    (forall A B, isTwoPartition A B ->\n      not canPermuteTo3APFree A or not canPermuteTo3APFree B) :=\n  erdos_197_conjecture\n```\n\nThis directly exposes the open nature of the problem.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of the main open question"
   }
 ]
