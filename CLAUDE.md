@@ -55,6 +55,7 @@ This project uses **two distinct AI agent orchestration systems** for different 
 | **Scout** | Surveys gallery proofs, techniques, and literature for research problems | On-demand |
 | **Seeker** | Selects research problems when candidate pool runs low | Autonomous (15min) |
 | **Deployer** | Merges PRs, syncs data, deploys website to Cloudflare | Autonomous (30min) |
+| **Peer Reviewer** | Deep qualitative review of gallery proofs: evaluates substance, originality, framing | On-demand |
 | **Auditor** | Validates gallery integrity: checks proof claims match Lean source files | Autonomous (10min) |
 | **Tester** | Tests random proof pages on the live site, files issues on failure | Autonomous (30min) |
 | **Herald** | Posts noteworthy research results to Mathstodon | Autonomous (6h) |
@@ -62,7 +63,7 @@ This project uses **two distinct AI agent orchestration systems** for different 
 **Managed by `/lean`**: Enricher, Aristotle, Researcher, Auditor, Seeker, Deployer, Tester, Herald
 **Managed separately**: Erdos Enhancer (`make enhance`, `scripts/erdos/`)
 
-**Invoke via**: `/enricher`, `/aristotle`, `/research`, `/scout`, `/seeker`, `/deploy`
+**Invoke via**: `/enricher`, `/aristotle`, `/research`, `/scout`, `/seeker`, `/deploy`, `/peer-review`
 
 **Team orchestration**: `/lean` - Start/stop/scale the full mathematical agent team
 
@@ -87,6 +88,7 @@ The project has two distinct enrichment systems:
 - **Automated proof search** → Use Aristotle (via `/lean`)
 - **Surveying literature and techniques** → Use Scout (`/scout`)
 - **Selecting research problems** → Use Seeker (`/seeker`)
+- **Deep qualitative review of a proof** → Use Peer Reviewer (`/peer-review`)
 - **Deploying the website** → Use Deployer (via `/lean`)
 - **Starting the full mathematical team** → Use `/lean`
 - **Creating new Erdos stubs** → `make enhance` (legacy, nearly complete)
@@ -120,7 +122,7 @@ The `/lean` skill provides a unified interface to start, stop, and scale the mat
 | `/lean` | Start daemon with default pool |
 | `/lean status` | Show work queue and agent status |
 | `/lean start [options]` | Start with custom pool sizes |
-| `/lean spawn <type>` | Add one agent (enricher, aristotle, researcher, seeker, deployer, tester) |
+| `/lean spawn <type>` | Add one agent (enricher, aristotle, researcher, seeker, deployer, tester, peer-reviewer) |
 | `/lean scale <type> <N>` | Scale pool to N agents |
 | `/lean stop` | Graceful shutdown of all agents (creates signal files) |
 | `/lean stop --force` | Force stop all agents (kills tmux sessions immediately) |
@@ -140,6 +142,7 @@ The `/lean` skill provides a unified interface to start, stop, and scale the mat
 | Deployer | 1 | 1 |
 | Tester | 1 | 1 |
 | Herald | 1 | 1 |
+| Peer Reviewer | 0 | 2 |
 
 ## Helper Scripts
 
@@ -155,6 +158,7 @@ The `/lean` skill provides a unified interface to start, stop, and scale the mat
 ./scripts/lean/launch.sh health              # Check agent health
 ./scripts/lean/launch.sh spawn researcher
 ./scripts/lean/launch.sh spawn seeker
+./scripts/lean/launch.sh spawn peer-reviewer  # On-demand deep review (Opus)
 ./scripts/lean/launch.sh scale researcher 4
 ./scripts/lean/launch.sh wake aristotle       # Wake aristotle early
 ./scripts/lean/launch.sh wake researcher      # Wake all researchers early
