@@ -138,7 +138,55 @@ def ErdosProblem538 : Prop :=
       ∀ r N : ℕ, r ≥ 2 → N ≥ 2 → f r N ≤ g r N)
 
 /-
-## Section V: Erdős Upper Bound
+## Section V: Prime Reciprocal Sum and Mertens' Theorem
+-/
+
+/-- The sum of reciprocals of primes up to N. -/
+noncomputable def primeReciprocalSum (N : ℕ) : ℝ :=
+  ∑ p ∈ (Finset.range (N + 1)).filter Nat.Prime, (1 : ℝ) / (p : ℝ)
+
+/-- Mertens' second theorem (lower bound): the sum of reciprocals of primes
+    up to N is at least c · log(log N) for N ≥ 3, where c > 0 is a constant.
+    This is a deep result in analytic number theory (Mertens, 1874) not
+    available in Mathlib. The precise asymptotic is
+    Σ_{p ≤ x} 1/p = log(log x) + M + O(1/log x), where M ≈ 0.2615
+    is the Meissel-Mertens constant. -/
+axiom mertens_prime_reciprocal_lower :
+    ∃ c : ℝ, c > 0 ∧ ∀ N : ℕ, N ≥ 3 →
+      c * Real.log (Real.log (N : ℝ)) ≤ primeReciprocalSum N
+
+/-- Double counting inequality: (Σ_{a ∈ A} 1/a)·(Σ_{p prime ≤ N} 1/p) ≤ r·H(N²).
+    Expanding the product of sums gives Σ_{a ∈ A, p prime ≤ N} 1/(ap).
+    Grouping by m = ap: each m ≤ N² has at most r representations (by
+    HasBoundedRepr), each contributing 1/m. So the sum is at most
+    r·Σ_{m=1}^{N²} 1/m ≤ r·(1 + log N²) = r·(1 + 2·log N). -/
+lemma double_counting_bound (A : Finset ℕ) (N r : ℕ)
+    (hA : A ⊆ Finset.range (N + 1)) (hr : HasBoundedRepr A r) :
+    reciprocalSum A * primeReciprocalSum N ≤
+      (r : ℝ) * (1 + 2 * Real.log (N : ℝ)) := by
+  sorry
+
+/-- exp(1) < 3, a well-known numerical fact (e ≈ 2.71828). -/
+private lemma exp_one_lt_three : Real.exp 1 < 3 := by
+  have h := Real.exp_bound (x := 1) (n := 5)
+      (show |1| ≤ 1 from by norm_num) (show 0 < 5 from by norm_num)
+  simp [Finset.sum_range_succ] at h
+  norm_num at h ⊢
+  linarith [abs_le.mp h]
+
+private lemma log_gt_one_of_ge_three {N : ℕ} (hN : N ≥ 3) :
+    1 < Real.log (N : ℝ) := by
+  rw [show (1 : ℝ) = Real.log (Real.exp 1) from (Real.log_exp 1).symm]
+  apply Real.log_lt_log (Real.exp_pos 1)
+  calc Real.exp 1 < 3 := exp_one_lt_three
+    _ ≤ (N : ℝ) := by exact_mod_cast hN
+
+private lemma log_log_pos_of_ge_three {N : ℕ} (hN : N ≥ 3) :
+    0 < Real.log (Real.log (N : ℝ)) :=
+  Real.log_pos (log_gt_one_of_ge_three hN)
+
+/-
+## Section VI: Erdős Upper Bound
 
 Erdős's key observation uses double counting:
   (Σ_{a ∈ A} 1/a) · (Σ_{p ≤ N} 1/p) ≤ r · (Σ_{m ≤ N²} 1/m)
@@ -149,14 +197,42 @@ Since Σ_{p ≤ N} 1/p ~ log log N (Mertens' theorem) and
 -/
 
 /-- Erdős proved: Σ_{n ∈ A} 1/n ≪ r · log N / log log N.
-    This requires Mertens' theorem and harmonic sum asymptotics. -/
+    Proof from Mertens' second theorem and the double counting inequality. -/
 theorem erdos_upper_bound :
     ∃ C : ℝ, C > 0 ∧
       ∀ r N : ℕ, r ≥ 2 → N ≥ 3 →
         ∀ A : Finset ℕ, A ⊆ Finset.range (N + 1) → HasBoundedRepr A r →
           reciprocalSum A ≤ C * (r : ℝ) * Real.log (N : ℝ) /
             Real.log (Real.log (N : ℝ)) := by
-  sorry
+  obtain ⟨c, hc_pos, hmert⟩ := mertens_prime_reciprocal_lower
+  refine ⟨3 / c, div_pos (by norm_num : (3 : ℝ) > 0) hc_pos, ?_⟩
+  intro r N hr hN A hA hbr
+  have hlogN_gt1 := log_gt_one_of_ge_three hN
+  have hloglogN_pos := log_log_pos_of_ge_three hN
+  have hrecip_nn := reciprocalSum_nonneg A
+  have hmert_N := hmert N hN
+  have hdc := double_counting_bound A N r hA hbr
+  have hcll_pos : 0 < c * Real.log (Real.log (N : ℝ)) := mul_pos hc_pos hloglogN_pos
+  have hcll_ne : c * Real.log (Real.log (N : ℝ)) ≠ 0 := ne_of_gt hcll_pos
+  -- Key chain: reciprocalSum A · (c · log(log N)) ≤ 3 · r · log N
+  have key : reciprocalSum A * (c * Real.log (Real.log (N : ℝ))) ≤
+      3 * (r : ℝ) * Real.log (N : ℝ) :=
+    calc reciprocalSum A * (c * Real.log (Real.log ↑N))
+        ≤ reciprocalSum A * primeReciprocalSum N :=
+          mul_le_mul_of_nonneg_left hmert_N hrecip_nn
+      _ ≤ (r : ℝ) * (1 + 2 * Real.log ↑N) := hdc
+      _ ≤ (r : ℝ) * (3 * Real.log ↑N) := by
+          apply mul_le_mul_of_nonneg_left _ (Nat.cast_nonneg r)
+          linarith
+      _ = 3 * (r : ℝ) * Real.log ↑N := by ring
+  -- Derive: reciprocalSum A ≤ (3/c) · r · log N / log(log N)
+  calc reciprocalSum A
+      = reciprocalSum A * (c * Real.log (Real.log ↑N)) /
+          (c * Real.log (Real.log ↑N)) := by
+        rw [mul_div_cancel_right₀ _ hcll_ne]
+      _ ≤ (3 * ↑r * Real.log ↑N) / (c * Real.log (Real.log ↑N)) :=
+        (div_le_div_right hcll_pos).mpr key
+      _ = 3 / c * ↑r * Real.log ↑N / Real.log (Real.log ↑N) := by ring
 
 /-
 ## Section VI: Trivial Bound Without Constraint

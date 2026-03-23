@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/538",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos538Problem.lean",
     "tags": [
       "erdos",
@@ -15,13 +15,14 @@
       "reciprocal sums",
       "multiplicative number theory"
     ],
-    "badge": "formalized",
+    "badge": "axiom",
     "sorries": 1,
     "erdosNumber": 538,
     "erdosUrl": "https://erdosproblems.com/538",
     "erdosProblemStatus": "open",
-    "axiomCount": 0,
-    "lineCount": 322
+    "axiomCount": 1,
+    "lineCount": 398,
+    "assumptions": "Mertens' second theorem: Σ_{p≤N} 1/p ≥ c·log(log N) for some c > 0 and N ≥ 3"
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1973, studying the interplay between multiplicative constraints and additive density. Given a set $A \\subseteq \\{1, \\ldots, N\\}$ where each integer $m$ has at most $r$ representations as $m = p \\cdot a$ with $p$ prime and $a \\in A$, how large can the reciprocal sum $\\sum_{n \\in A} 1/n$ be? Erdős proved the bound $O(r \\cdot \\log N / \\log\\log N)$ using a double counting argument combined with Mertens' theorem ($\\sum_{p \\leq N} 1/p \\sim \\log\\log N$). The idea is elegant: multiplying the reciprocal sum by the prime reciprocal sum produces terms $1/(pa)$ that are controlled by the representation constraint. The harmonic sum $\\sum_{m \\leq N} 1/m \\sim \\log N$ then closes the argument. Whether this bound is optimal remains open. The problem is related to Problems 536 and 537 on multiplicative representations, and connects to the broader study of multiplicative energy in additive combinatorics. The case $r = 1$ (each integer has at most one prime factorization involving an element of $A$) forces $A$ to be 'multiplicatively thin', strengthening the bound to $O(\\log N / \\log\\log N)$.",
@@ -32,7 +33,7 @@
       "The representation constraint $\\text{reprCount}(A, m) \\leq r$ bounds the 'multiplicative overlap' between $A$ and the primes",
       "For $r = 1$, the bound strengthens to $O(\\log N / \\log\\log N)$ as $A$ must be multiplicatively thin",
       "The multiplicative energy bound $r^2|A|$ is FALSE (counterexample: $A$ = first 5 primes, $r=2$, gives 25 pairs > 20); the trivial bound $|A|^2$ is proved instead",
-      "The file contains 16 proved theorems (basic properties, monotonicity, double counting, special cases) with 1 sorry (Erdős bound requiring Mertens' theorem)"
+      "Erdős's upper bound is now proved from Mertens' second theorem (axiom) and a double counting inequality (sorry). The proof chains: reciprocalSum·(c·log log N) ≤ reciprocalSum·primeReciprocalSum ≤ r·(1+2·log N) ≤ 3r·log N, then divides by c·log log N"
     ]
   },
   "sections": [
@@ -108,7 +109,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 538 with the representation constraint (at most r ways to write m = pa with p prime, a ∈ A), Erdős's double counting bound O(r·log N / log log N), and the multiplicative energy connection. Sixteen theorems are fully proved including double counting framework, harmonic bounds, and special cases. Only 1 sorry remains (Erdős's bound, blocked by Mertens' theorem not in Mathlib).",
+    "summary": "The formalization captures Erdős Problem 538 with Erdős's upper bound O(r·log N / log log N) proved from Mertens' second theorem (axiom) and a double counting inequality. 21 theorems/lemmas including exp(1)<3 bound, log bounds, and the main calc chain. 1 axiom (Mertens), 1 sorry (double counting combinatorial regrouping).",
     "implications": "The optimal bound would reveal the precise trade-off between multiplicative structure constraints and additive density. The double counting technique via Mertens' theorem exemplifies how prime distribution results (analytic number theory) yield combinatorial bounds (additive combinatorics). The multiplicative energy perspective connects to modern tools like the Balog-Szemerédi-Gowers theorem.",
     "openQuestions": [
       "Is $r \\cdot \\log N / \\log\\log N$ the optimal bound, or can it be improved?",
@@ -128,9 +129,9 @@
     ],
     "opens": ["Classical"],
     "namespace": null,
-    "lineCount": 322,
-    "axiomCount": 0,
-    "theoremCount": 17,
-    "definitionCount": 5
+    "lineCount": 398,
+    "axiomCount": 1,
+    "theoremCount": 21,
+    "definitionCount": 6
   }
 }
