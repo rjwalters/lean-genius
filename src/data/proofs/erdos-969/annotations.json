@@ -28,6 +28,11 @@
     "title": "Squarefree Examples",
     "content": "**Verified examples:**\n\n- Squarefree 1, 2, 3, 6, 10, 30 (verified by decide)\n- ¬Squarefree 4, 12 (contain 2²)\n\nPrimes are always squarefree. Products of distinct primes are squarefree.",
     "mathContext": "Formalizes the concept of squarefree examples",
+    "relatedConcepts": [
+      "divisibility",
+      "factorization",
+      "prime numbers"
+    ],
     "significance": "supporting"
   },
   {
@@ -59,6 +64,9 @@
     "title": "Computed Values of Q(x)",
     "content": "**Q_one, Q_ten, Q_twenty:**\n\n- Q(1) = 1\n- Q(10) = 7 (squarefree: 1,2,3,5,6,7,10)\n- Q(20) = 13\n\nVerified using native_decide for exact computation.",
     "mathContext": "Lean: `theorem Q_one : Q(1) = 1`",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -90,6 +98,12 @@
     "title": "Density Approximation",
     "content": "**density_approx:**\n\n0.607 < 6/π² < 0.609\n\nProved using bounds 3.14 < π < 3.15 from Mathlib.\n\nAbout 60.8% of all positive integers are squarefree!",
     "mathContext": "Lean: `theorem density_approx : 0.607 < squarefreeDensity ∧ squarefreeDensity < 0.609`",
+    "relatedConcepts": [
+      "asymptotic analysis",
+      "bounds",
+      "density",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -121,6 +135,13 @@
     "title": "Elementary Upper Bound",
     "content": "**elementary_upper_bound:**\n\n|E(x)| ≪ x^(1/2)\n\nProved by elementary counting methods.\n\n**Idea:** Each prime p contributes ≤ x/p² terms to exclude. Sum over primes gives O(√x).",
     "mathContext": "Lean: `axiom elementary_upper_bound :`",
+    "relatedConcepts": [
+      "bounds",
+      "divisibility",
+      "factorization",
+      "inequalities",
+      "prime numbers"
+    ],
     "significance": "key"
   },
   {
@@ -134,6 +155,13 @@
     "title": "Prime Number Theorem Improvement",
     "content": "**pnt_improvement:**\n\nE(x) = o(x^(1/2))\n\nThe PNT provides cancellation in the Möbius sum, improving the bound to little-o.\n\nThis is stronger than O(x^(1/2)) but still far from the truth.",
     "mathContext": "$E(x) = o(x^(1/2))$",
+    "relatedConcepts": [
+      "bounds",
+      "divisibility",
+      "factorization",
+      "inequalities",
+      "prime numbers"
+    ],
     "significance": "key"
   },
   {
@@ -147,6 +175,10 @@
     "title": "Walfisz Bound (1963)",
     "content": "**walfisz_bound:**\n\n|E(x)| ≪ x^(1/2 - o(1))\n\nThe best known unconditional upper bound.\n\nThe exponent 1/2 - o(1) means the bound beats x^(1/2-ε) for any fixed ε > 0, but the improvement vanishes as x → ∞.",
     "mathContext": "Walfisz's book on exponential sums (1963) contains this and many related results.",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -160,6 +192,10 @@
     "title": "Evelyn-Linfoot Lower Bound (1931)",
     "content": "**evelyn_linfoot_lower_bound:**\n\n|E(x)| ≫ x^(1/4)\n\nThis lower bound is believed to be tight: the true order is conjectured to be x^(1/4).\n\n**Key insight:** The oscillations in E(x) are controlled by zeros of ζ(s), and the critical line contributes x^(1/4).",
     "mathContext": "Evelyn and Linfoot's 1931 paper was a breakthrough in understanding the true size of E(x).",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -173,6 +209,10 @@
     "title": "The Main Conjecture",
     "content": "**errorTermConjecture:**\n\nE(x) ≍ x^(1/4)\n\nThis states that both the upper and lower bounds have exponent 1/4.\n\n**Status:** OPEN - not proved even under the Riemann Hypothesis!",
     "mathContext": "Lean: `def errorTermConjecture : Prop`",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -204,6 +244,10 @@
     "title": "Liu's Conditional Bound (2016)",
     "content": "**liu_conditional_bound:**\n\nUnder RH: |E(x)| ≪ x^(11/35 + o(1))\n\n**Exponent:** 11/35 ≈ 0.314\n\nEven assuming RH, this is still far from the conjectured 1/4 = 0.25.\n\nThe gap 11/35 - 1/4 = 9/140 ≈ 0.064 remains open.",
     "mathContext": "Liu's 2016 paper in J. Number Theory achieved the best known conditional bound.",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -217,6 +261,10 @@
     "title": "Exponent Comparisons",
     "content": "**liu_exponent, exponent_gap:**\n\n- 11/35 > 1/4 (Liu's bound exceeds conjecture)\n- Gap: 11/35 - 1/4 = 9/140 ≈ 0.064\n\nEven with RH, we cannot reach the conjectured bound.",
     "mathContext": "Lean: `theorem liu_exponent : (11 : ℝ) / 35 > 1 / 4`",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "supporting"
   },
   {
@@ -248,6 +296,9 @@
     "title": "Squarefree Counting via Möbius",
     "content": "**squarefree_mobius_formula:**\n\nQ(x) = Σ_{d² ≤ x} μ(d) · ⌊x/d²⌋\n\n**Derivation:**\n- n is squarefree iff Σ_{d²|n} μ(d) = 1\n- Sum over n ≤ x and swap order\n- Result follows from inclusion-exclusion",
     "mathContext": "$Q(x) = Σ_{d² ≤ x} μ(d) · ⌊x/d²⌋$",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -279,6 +330,10 @@
     "title": "Summary of Known Bounds",
     "content": "**erdos_969_summary:**\n\nWhat we know:\n1. Upper bound: |E(x)| ≤ C·x^(1/2) (elementary)\n2. Lower bound: |E(x)| ≥ c·x^(1/4) (Evelyn-Linfoot)\n3. Gap: 1/2 - 1/4 = 1/4 in the exponent\n\n**Status:** OPEN for nearly 100 years!",
     "mathContext": "$1. Upper bound: |E(x)| ≤ C·x^(1/2) (elementary)$",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -292,6 +347,10 @@
     "title": "The Open Problem",
     "content": "**erdos_969_open_problem:**\n\nIs E(x) ≍ x^(1/4)?\n\nThis remains one of the major open problems in analytic number theory, with profound connections to the Riemann Hypothesis.",
     "mathContext": "Lean: `def erdos_969_open_problem : Prop`",
+    "relatedConcepts": [
+      "analysis",
+      "analytic methods"
+    ],
     "significance": "key"
   }
 ]

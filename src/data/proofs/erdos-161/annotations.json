@@ -46,6 +46,13 @@
     "title": "The Function F^(t)(n,α)",
     "content": "**F (axiom):** F(t,n,α) is the largest m such that some 2-coloring is (α,m)-balanced. Axiomatized because defining it requires nontrivial Ramsey-theoretic existence proofs.\n\n**F_spec:** The specification axiom: some coloring is balanced at threshold F, and no coloring is balanced at F+1.",
     "mathContext": "F is the central object of study. Its behavior as α varies reveals the structure of optimal colorings.",
+    "relatedConcepts": [
+      "Ramsey theory",
+      "algebra",
+      "chromatic number",
+      "combinatorics",
+      "graph coloring"
+    ],
     "significance": "key"
   },
   {
@@ -77,6 +84,12 @@
     "title": "Positive α: Lower and Upper Bounds",
     "content": "**erdos_spencer_lower_bound:** For α > 0, F^(t)(n,α) ≫ (log n)^{1/(t-1)}. This is a POWER of logarithm, much larger than the iterated logarithm at α=0.\n\n**upper_bound_near_half:** Matching upper bound near α = 1/2.\n\nTogether these show F^(t)(n,α) = Θ((log n)^{1/(t-1)}) for positive α, at least when matching upper bounds exist.",
     "mathContext": "The Erdős-Spencer bound uses probabilistic arguments. The matching upper bound uses greedy coloring constructions.",
+    "relatedConcepts": [
+      "bounds",
+      "graph theory",
+      "inequalities",
+      "matching theory"
+    ],
     "significance": "key"
   },
   {
@@ -90,6 +103,9 @@
     "title": "Jump Formalization",
     "content": "**HasJumpAt:** F has a jump at α₀ if small changes in α cause changes in F proportional to n.\n\n**erdos_one_jump_belief:** Erdős believed there is exactly ONE jump, at α=0. Moving from α=0 to any α>0 causes F to jump from iterated log to power of log, but further increases don't cause more jumps.",
     "mathContext": "The jump captures a qualitative change in the combinatorial structure of optimal colorings.",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -121,6 +137,9 @@
     "title": "Summary",
     "content": "**erdos_161_summary:** Combines F3_characterization (Θ(√(log n)) for α > 0) with one_jump_for_t3 (exactly one jump at α = 0) into a single theorem.\n\nThe proof uses exact ⟨F3_characterization, one_jump_for_t3⟩.\n\n**Open:** For t > 3, the one-jump structure is expected but unproven.",
     "mathContext": "A complete resolution for t=3, with the general case remaining one of the major open problems in hypergraph Ramsey theory.",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "key"
   }
 ]

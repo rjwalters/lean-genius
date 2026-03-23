@@ -28,6 +28,10 @@
     "title": "Points and Distances",
     "content": "**Point := ℝ × ℝ**: Points as coordinate pairs.\n\n**dist(p, q)** = √((p₁-q₁)² + (p₂-q₂)²): Euclidean distance.\n\n**distinctDistances(S)**: Set of positive distances between pairs in S.\n\n**numDistinctDistances(S)**: Cardinality of distinctDistances(S) — the quantity we bound.",
     "mathContext": "For n points, there are at most C(n,2) pairs, so at most that many distinct distances. The question is: what's the minimum?",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -113,6 +117,10 @@
     "title": "Summary Theorem",
     "content": "**erdos_93_summary (proved from axioms):**\n\nCombines:\n1. Altman's theorem: convex n-gon has ≥ ⌊n/2⌋ distinct distances\n2. Fishburn's conjecture implies the stronger single-vertex variant\n\nProved by: `⟨altman_theorem, fishburn_implies_stronger⟩`",
     "mathContext": "$1. Altman's theorem: convex n-gon has ≥ ⌊n/2⌋ distinct distances$",
+    "relatedConcepts": [
+      "convexity",
+      "optimization"
+    ],
     "significance": "key"
   }
 ]

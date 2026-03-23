@@ -10,6 +10,10 @@
     "title": "Euclidean Distance",
     "content": "The standard Euclidean distance between two points p and q in ℝ²:\n\nd(p,q) = √((p₁-q₁)² + (p₂-q₂)²)\n\nThis is the L² metric that gives the plane its familiar geometry.",
     "mathContext": "$d(p,q) = √((p₁-q₁)² + (p₂-q₂)²)$",
+    "relatedConcepts": [
+      "distance",
+      "metric spaces"
+    ],
     "significance": "supporting",
     "tags": [
       "euclidean-geometry",
@@ -52,6 +56,9 @@
     "title": "Pinned Distance Count",
     "content": "The cardinality of the pinned distance set. This is the number of distinct distances that point x 'sees' to other points in A.\n\nFor a point in general position, this could be as high as n-1 (all distances distinct). The conjecture asks: must some point achieve close to this maximum?",
     "mathContext": "Formalizes the concept of pinned distance count",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "key",
     "tags": [
       "cardinality",
@@ -93,6 +100,10 @@
     "title": "Strong Pinned Distance Conjecture",
     "content": "**Strong Form:**\n\nThere exists c > 0 such that every n-point set has a point seeing at least c·n/√(log n) distinct distances.\n\nThis matches the integer lattice construction, suggesting it's the truth. If true, the weak form follows immediately.",
     "mathContext": "Formalizes the concept of strong pinned distance conjecture",
+    "relatedConcepts": [
+      "lattice theory",
+      "order theory"
+    ],
     "significance": "key",
     "tags": [
       "open-problem",
@@ -134,6 +145,13 @@
     "title": "Katz-Tardos Theorem (2004)",
     "content": "**Best Known Result:**\n\nEvery n-point set in the plane has a point x with at least c·n^0.864 distinct distances, where c > 0 is an absolute constant.\n\nThis is marked `sorry` because the full proof requires:\n- The crossing number inequality\n- Incidence geometry bounds\n- Careful combinatorial counting",
     "mathContext": "The proof uses the fact that if all points had few pinned distances, there would be too many repeated distances, creating graph structures that violate crossing number bounds.",
+    "relatedConcepts": [
+      "analysis",
+      "bounds",
+      "combinatorics",
+      "counting",
+      "inequalities"
+    ],
     "significance": "key",
     "tags": [
       "incidence-geometry",
@@ -153,6 +171,10 @@
     "title": "Trivial Lower Bound",
     "content": "Every point in a set of 2+ points sees at least 1 distinct distance.\n\nThis is trivial: if |A| ≥ 2 and x ∈ A, there exists y ∈ A with y ≠ x, giving d(x,y) > 0.",
     "mathContext": "$This is trivial: if |A| ≥ 2 and x ∈ A, there \\exists y ∈ A with y ≠ x, giving d(x,y) > 0.$",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "supporting",
     "tags": [
       "elementary-bound",
@@ -171,6 +193,12 @@
     "title": "Upper Bound on Pinned Distances",
     "content": "No point can see more than n-1 distinct distances.\n\nProof: From x, we measure distances to at most n-1 other points. Even if all distances are distinct, we get at most n-1 values.\n\nThe `card_image_le` lemma shows |image f S| ≤ |S|.",
     "mathContext": "Uses the chain: |image| ≤ |filter| ≤ |A| ≤ |A| - 1, where the last step needs |A| ≥ 1.",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities",
+      "integration",
+      "measure theory"
+    ],
     "significance": "supporting",
     "tags": [
       "cardinality",
@@ -213,6 +241,9 @@
     "title": "Pinned Distance Sum Conjecture",
     "content": "**Erdős's Sum Conjecture:**\n\nΣ_x |{d(x,y) : y ∈ A}| ≫ n²/√log n\n\nThe total count of pinned distances, summed over all points, should be at least n²/√log n.\n\nErdős initially thought this equaled the distinct distance count, but Harborth showed they differ.",
     "mathContext": "$Σ_x |{d(x,y) : y ∈ A}| ≫ n²/√log n$",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "key",
     "tags": [
       "open-problem",
@@ -253,6 +284,9 @@
     "title": "Pinned Distances Subset of All",
     "content": "**Structural Result:**\n\nFor any x ∈ A, the pinned distances from x form a subset of all pairwise distances.\n\nThis is immediate: if d = d(x,y) is a pinned distance, then (x,y) is a pair in A with distance d.",
     "mathContext": "The proof constructs the pair (x,y) witnessing that d appears in the full distance set. Uses membership in products and filters.",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "supporting",
     "tags": [
       "subset-relation",
@@ -271,6 +305,9 @@
     "title": "Open Problem Marker",
     "content": "**Status: OPEN**\n\nThis reflexive statement `pinnedDistanceConjecture ↔ pinnedDistanceConjecture` serves as a marker that the conjecture remains unproven.\n\nThe $500 prize awaits whoever proves the exponent approaches 1.",
     "mathContext": "Formalizes the concept of open problem marker",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "key",
     "tags": [
       "open-problem",

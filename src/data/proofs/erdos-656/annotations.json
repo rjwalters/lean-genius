@@ -28,6 +28,10 @@
     "title": "Lower Density",
     "content": "The **lower density** is:\n\nd̲(A) = liminf_{n→∞} |A ∩ [1,n]| / n\n\nWhen d̄(A) = d̲(A), the set has a well-defined **natural density**.",
     "mathContext": "$\\underline{d}(A) = \\liminf_{n \\to \\infty} \\frac{|A \\cap [1,n]|}{n}$",
+    "relatedConcepts": [
+      "asymptotic analysis",
+      "density"
+    ],
     "significance": "supporting"
   },
   {
@@ -41,6 +45,13 @@
     "title": "Positive Upper Density",
     "content": "A set has **positive upper density** if d̄(A) > 0.\n\nThis is the key hypothesis in Erdős's conjecture. Examples:\n- Even numbers: d̄ = 1/2\n- Primes: d̄ = 0 (too sparse!)\n- {1, 2, ..., n, 2n, 2n+1, ..., 3n, ...}: d̄ = 1/2 but d̲ = 0",
     "mathContext": "$\\text{HasPositiveUpperDensity}(A) \\iff \\bar{d}(A) > 0$",
+    "relatedConcepts": [
+      "asymptotic analysis",
+      "density",
+      "divisibility",
+      "factorization",
+      "prime numbers"
+    ],
     "significance": "key"
   },
   {
@@ -54,6 +65,12 @@
     "title": "Density Bounds",
     "content": "For any A ⊆ ℕ:\n\n0 ≤ d̲(A) ≤ d̄(A) ≤ 1\n\nThe bounds follow from the definition: |A ∩ [1,n]| / n is always in [0,1].",
     "mathContext": "$0 \\le \\underline{d}(A) \\le \\bar{d}(A) \\le 1$",
+    "relatedConcepts": [
+      "asymptotic analysis",
+      "bounds",
+      "density",
+      "inequalities"
+    ],
     "significance": "supporting"
   },
   {
@@ -84,6 +101,12 @@
     "title": "Shifted Sumset",
     "content": "The **shifted sumset** B + B + t adds a constant:\n\nB + B + t = {b₁ + b₂ + t : b₁, b₂ ∈ B}\n\nThe shift t ∈ ℤ can be negative! This is crucial: some sets with positive density require t ≠ 0.",
     "mathContext": "$B + B + t = \\{(b_1 : \\mathbb{Z}) + b_2 + t \\mid b_1, b_2 \\in B\\}$, with $t \\in \\mathbb{Z}$",
+    "relatedConcepts": [
+      "additive combinatorics",
+      "asymptotic analysis",
+      "density",
+      "sumsets"
+    ],
     "significance": "key"
   },
   {
@@ -114,6 +137,13 @@
     "title": "Coloring",
     "content": "A **k-coloring** of ℕ is a function c : ℕ → Fin k.\n\nIn Ramsey theory, we ask: given any coloring, must some structure be monochromatic?",
     "mathContext": "$c : \\mathbb{N} \\to \\text{Fin}\\,k$",
+    "relatedConcepts": [
+      "Ramsey theory",
+      "algebra",
+      "chromatic number",
+      "combinatorics",
+      "graph coloring"
+    ],
     "significance": "supporting"
   },
   {
@@ -127,6 +157,12 @@
     "title": "Monochromatic Set",
     "content": "A set S is **monochromatic** under coloring c if all elements have the same color:\n\n∃ color, ∀ n ∈ S, c(n) = color\n\nHindman's theorem guarantees monochromatic FS(B).",
     "mathContext": "$\\exists \\text{color} \\in \\text{Fin}\\,k,\\; \\forall n \\in S,\\; c(n) = \\text{color}$",
+    "relatedConcepts": [
+      "algebra",
+      "chromatic number",
+      "graph coloring",
+      "ring theory"
+    ],
     "significance": "supporting"
   },
   {
@@ -157,6 +193,13 @@
     "title": "The Erdős Conjecture",
     "content": "**Erdős's Conjecture (1975):**\n\nIf A ⊆ ℕ has positive upper density, then there exists an infinite B ⊆ ℕ and integer t such that B + B + t ⊆ A.\n\nThis is a 'density version' of Hindman: instead of coloring, use density > 0.\n\nNote: We only get B + B + t, not all of FS(B). The density condition is weaker than 'one color class', so we get a weaker conclusion.",
     "mathContext": "$\\bar{d}(A) > 0 \\Rightarrow \\exists B \\subseteq \\mathbb{N}$ infinite, $\\exists t \\in \\mathbb{Z}: B + B + t \\subseteq A$, where $B + B = \\{b_1 + b_2 : b_1, b_2 \\in B\\}$.",
+    "relatedConcepts": [
+      "algebra",
+      "asymptotic analysis",
+      "chromatic number",
+      "density",
+      "graph coloring"
+    ],
     "significance": "key"
   },
   {
@@ -170,6 +213,13 @@
     "title": "Kra-Moreira-Richter-Robertson Theorem",
     "content": "**The Erdős Conjecture is TRUE!**\n\nProved by Kra, Moreira, Richter, and Robertson in 2024.\n\nThe proof uses:\n1. Furstenberg correspondence (density → measure)\n2. Ergodic theory on nilmanifolds\n3. Structure theory for dynamical systems\n\nReference: 'A proof of Erdős's B+B+t conjecture', Commun. Am. Math. Soc. (2024)",
     "mathContext": "Axiomatized as `kra_moreira_richter_robertson : ErdosConjecture656`. The proof relies on Host-Kra structure theory for $\\mathbb{Z}$-actions.",
+    "relatedConcepts": [
+      "asymptotic analysis",
+      "density",
+      "dynamical systems",
+      "ergodic theory",
+      "integration"
+    ],
     "significance": "key"
   },
   {
@@ -183,6 +233,12 @@
     "title": "High Density Case",
     "content": "**High Density Simplification:**\n\nIf d̄(A) > 1/2, then we can take t = 0:\n\n∃ infinite B, B + B ⊆ A\n\nIntuitively: if A is 'more than half' of ℕ, the sumset will hit A without needing a shift.",
     "mathContext": "$\\bar{d}(A) > \\frac{1}{2} \\implies \\exists B \\text{ infinite},\\; B + B \\subseteq A$",
+    "relatedConcepts": [
+      "additive combinatorics",
+      "asymptotic analysis",
+      "density",
+      "sumsets"
+    ],
     "significance": "key"
   },
   {
@@ -246,6 +302,10 @@
     "title": "Main Result",
     "content": "**Erdős Problem #656: SOLVED**\n\nAnswer: YES, every set with positive upper density contains B + B + t for some infinite B and integer t.\n\nThe theorem follows from the Kra-Moreira-Richter-Robertson result (2024).",
     "mathContext": "`erdos_656 : ErdosConjecture656 := kra_moreira_richter_robertson`",
+    "relatedConcepts": [
+      "asymptotic analysis",
+      "density"
+    ],
     "significance": "key"
   },
   {
@@ -259,6 +319,12 @@
     "title": "Shift is Necessary",
     "content": "**The shift t is sometimes necessary.**\n\nThere exist sets A with positive density such that B + B ⊈ A for any infinite B.\n\nExample intuition: Take A to be 'spread out' so that sums always miss certain residue classes.",
     "mathContext": "$\\exists A$ with $\\bar{d}(A) > 0$ such that $\\forall B$ infinite, $B + B \\not\\subseteq A$",
+    "relatedConcepts": [
+      "asymptotic analysis",
+      "density",
+      "modular arithmetic",
+      "residue classes"
+    ],
     "significance": "key"
   },
   {
@@ -272,6 +338,10 @@
     "title": "Quantitative Version",
     "content": "**Quantitative strengthening:**\n\nThe infinite set B can be chosen to also have positive density.\n\nThis gives a 'density-preserving' version of the theorem.",
     "mathContext": "$\\bar{d}(A) > 0 \\implies \\exists B$ infinite with $\\bar{d}(B) > 0$ and $\\exists t,\\; B + B + t \\subseteq A$",
+    "relatedConcepts": [
+      "asymptotic analysis",
+      "density"
+    ],
     "significance": "supporting"
   }
 ]

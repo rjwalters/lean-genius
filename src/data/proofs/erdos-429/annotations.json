@@ -134,6 +134,13 @@
     "title": "The Erdős Conjecture",
     "content": "**ErdosConjecture429**:\n\nFormalizes the conjecture as: ∀ A, HasZeroDensity A → IsAdmissible A → HasPrimeShift A.\n\nThis states that any set which is both sparse and admissible must have a prime shift. The conjecture seemed plausible because both conditions are favorable: admissibility removes the obvious mod-p obstruction, and sparsity means fewer primality constraints to satisfy simultaneously.",
     "mathContext": "$Formalizes the conjecture as: ∀ A, HasZeroDensity A → IsAdmissible A → HasPrimeShift A.$",
+    "relatedConcepts": [
+      "asymptotic analysis",
+      "density",
+      "divisibility",
+      "factorization",
+      "prime numbers"
+    ],
     "significance": "key"
   },
   {

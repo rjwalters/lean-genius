@@ -169,6 +169,10 @@
     "title": "Full Density Trivial Case",
     "content": "**full_density_trivial:**\n\nIf A = {1, 2, ..., N} (the full set with density 1), then S = {1} gives unit fraction sum 1/1 = 1.\n\nThis shows the problem is trivial for density 1. The interesting case is when alpha < 1.",
     "mathContext": "$If A = {1, 2, ..., N} (the full set with density 1), then S = {1} gives unit fraction sum 1/1 = 1.$",
+    "relatedConcepts": [
+      "asymptotic analysis",
+      "density"
+    ],
     "significance": "supporting"
   },
   {
@@ -234,6 +238,10 @@
     "title": "Erdos-Straus Examples",
     "content": "**Verified cases of Erdos-Straus:**\n\n- n = 3: 4/3 = 1/1 + 1/3\n- n = 5: 4/5 = 1/2 + 1/4 + 1/20\n\nThese demonstrate the conjecture for small values. The proofs use norm_num for computational verification.",
     "mathContext": "Lean: `theorem erdos_straus_3 : (4 : ℚ) / 3 = 1 / 1 + 1 / 3`",
+    "relatedConcepts": [
+      "functional analysis",
+      "normed spaces"
+    ],
     "significance": "supporting"
   },
   {
@@ -264,6 +272,9 @@
     "title": "The Answer is YES",
     "content": "**erdos_310_answer:**\n\nExistential witness that erdosGrahamConjecture holds.\n\n```lean\ntheorem erdos_310_answer :\n  exists _ : erdosGrahamConjecture, True :=\n  (erdos_310, trivial)\n```\n\nThis packages the result as an existence statement.",
     "mathContext": "Lean: `theorem erdos_310_answer :`",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -295,6 +306,10 @@
     "title": "Summary Theorem",
     "content": "**erdos_310_summary:**\n\nCombines the main results:\n\n1. erdosGrahamConjecture holds (the main theorem)\n2. For any alpha in (0, 1/2], there exists C such that alpha-dense sets have subsets with bounded denominator unit fraction sums\n\nThis provides a complete summary of what was proved about Erdos #310.",
     "mathContext": "Lean: `theorem erdos_310_summary :`",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   }
 ]

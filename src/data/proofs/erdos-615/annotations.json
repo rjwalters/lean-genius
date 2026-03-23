@@ -46,6 +46,11 @@
     "title": "Ramsey-Turan Condition",
     "content": "**isRTGraph** G k l:\n\nA graph satisfies the RT(k, l) condition if:\n1. G is K_k-free (no clique of size k)\n2. alpha(G) < l (no independent set of size l)\n\n**Definition:**\n```lean\ndef isRTGraph (G : SimpleGraph V) (k l : N) : Prop :=\n  G.CliqueFree k and not (hasIndependentSet G l)\n```",
     "mathContext": "Lean: `def isRTGraph (G : SimpleGraph V) (k l : N) : Prop :=`",
+    "relatedConcepts": [
+      "Ramsey theory",
+      "combinatorics",
+      "graph theory"
+    ],
     "significance": "key"
   },
   {
@@ -76,6 +81,10 @@
     "title": "The 1/8 Threshold",
     "content": "**threshold_one_eighth = 1/8:**\n\nFor rt(n; 4, l), the value 1/8 is the critical threshold.\n\n**Why 1/8?**\n- Turan: ex(n, K4) ~ (1/6)n^2\n- With independence constraint alpha < en: rt ~ (1/8)n^2\n- The factor drops from 1/6 to 1/8 due to independence constraints\n\nThe conjecture asked if this could be improved for l = n/log n.",
     "mathContext": "$The conjecture asked if this could be improved for l = n/log n.$",
+    "relatedConcepts": [
+      "phase transitions",
+      "threshold phenomena"
+    ],
     "significance": "key"
   },
   {
@@ -89,6 +98,10 @@
     "title": "The Conjecture",
     "content": "**erdos_615_conjecture:**\n\nDoes there exist c > 0 such that rt(n; 4, n/log n) < (1/8 - c)n^2?\n\n**In plain terms:** If a graph has >= (1/8 - c)n^2 edges, must it contain either K4 or a large (n/log n) independent set?\n\nThis was posed by Erdos, Hajnal, Simonovits, Sos, and Szemeredi in 1993.",
     "mathContext": "The question asks if the 1/8 threshold can be improved when the independence number bound grows slowly (n/log n instead of linear en).",
+    "relatedConcepts": [
+      "combinatorics",
+      "graph theory"
+    ],
     "significance": "key"
   },
   {
@@ -119,6 +132,12 @@
     "title": "Sudakov's Result (2003)",
     "content": "**sudakov_upper_bound:**\n\nrt(n; 4, ne^(-f(n))) = o(n^2) whenever f(n)/sqrt(log n) -> infinity.\n\n**Interpretation:**\nWhen the independence number bound grows VERY slowly (slower than ne^(-sqrt(log n))), the Ramsey-Turan number becomes subquadratic.\n\nThis identified a regime where the behavior changes qualitatively.",
     "mathContext": "Sudakov's result showed there's a transition from O(n^2) to o(n^2) behavior somewhere.",
+    "relatedConcepts": [
+      "Ramsey theory",
+      "bounds",
+      "combinatorics",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -149,6 +168,9 @@
     "title": "The Conjecture is FALSE",
     "content": "**erdos_615:**\n\nThe answer to the conjecture is NO.\n\n```lean\ntheorem erdos_615 : not erdos_615_conjecture := erdos_615_false\n```\n\n**Why?**\nFor l = n/log n, we have l = ne^(-log n).\nSince log n = o(sqrt(log n / log log n)), Fox-Loh-Zhao gives:\nrt(n; 4, n/log n) >= (1/8 - o(1))n^2\n\nSo no constant c > 0 can make rt < (1/8 - c)n^2.",
     "mathContext": "Lean: `theorem erdos_615 : not erdos_615_conjecture := erdos_615_false`",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -179,6 +201,10 @@
     "title": "Phase Transition",
     "content": "**isInCriticalWindow:**\n\nThe behavior of rt(n; 4, ne^(-f(n))) depends on f(n):\n\n- **Below critical window** (f << sqrt(log n / log log n)):\n  rt = (1/8 - o(1))n^2 (quadratic, threshold 1/8)\n\n- **Above critical window** (f >> sqrt(log n / log log n)):\n  rt = o(n^2) (subquadratic)\n\n- **At critical window** (f ~ sqrt(log n / log log n)):\n  Transition behavior",
     "mathContext": "$rt = (1/8 - o(1))n^2 (quadratic, threshold 1/8)$",
+    "relatedConcepts": [
+      "phase transitions",
+      "threshold phenomena"
+    ],
     "significance": "key"
   },
   {
@@ -226,6 +252,12 @@
     "title": "Summary Theorem",
     "content": "**erdos_615_summary:**\n\nCombines the main results:\n1. The conjecture is false\n2. For linear alpha < en, rt ~ (1/8)n^2 (EHSS bound is tight)\n\nThe 1/8 threshold is optimal for a wide range of independence number bounds, all the way down to n/log n.",
     "mathContext": "Lean: `theorem erdos_615_summary :`",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities",
+      "phase transitions",
+      "threshold phenomena"
+    ],
     "significance": "key"
   },
   {
@@ -239,6 +271,12 @@
     "title": "The Answer is NO",
     "content": "**erdos_615_answer:**\n\nThe answer to Erdos Problem #615 is NO.\n\nThe threshold 1/8 cannot be improved even for independence number n/log n.\n\nGraphs with ~(1/8)n^2 edges can avoid both K4 and large independent sets.",
     "mathContext": "Lean: `theorem erdos_615_answer : ¬erdos_615_conjecture`",
+    "relatedConcepts": [
+      "combinatorics",
+      "graph theory",
+      "phase transitions",
+      "threshold phenomena"
+    ],
     "significance": "key"
   }
 ]

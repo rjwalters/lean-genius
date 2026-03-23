@@ -64,6 +64,9 @@
     "title": "Maximum Non-Averaging Set Size",
     "content": "**F(N):**\n\nThe maximum size of a non-averaging subset of {1,...,N}.\n\nDefined as the supremum of cardinalities over all non-averaging subsets of the range {0,...,N}. This is the central quantity in the problem.",
     "mathContext": "F(N) is a monotone non-decreasing function of N. Understanding its growth rate is the core question.",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -77,6 +80,10 @@
     "title": "Empty Set is Non-Averaging",
     "content": "**empty_is_nonAveraging:**\n\nThe empty set is trivially non-averaging — there are no elements to average.\n\nProved by contradiction: assuming a is in the empty set leads immediately to a contradiction via Finset.not_mem_empty.",
     "mathContext": "Lean: `theorem empty_is_nonAveraging : IsNonAveraging ∅`",
+    "relatedConcepts": [
+      "indirect proof",
+      "proof by contradiction"
+    ],
     "significance": "supporting"
   },
   {
@@ -90,6 +97,9 @@
     "title": "Singletons are Non-Averaging",
     "content": "**singleton_is_nonAveraging:**\n\nAny set with one element is non-averaging.\n\nWith only one element, the conditions b != a and c != a cannot both be satisfied since b and c must also be in the singleton {n}.",
     "mathContext": "Lean: `theorem singleton_is_nonAveraging (n : ℕ) : IsNonAveraging {n}`",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "supporting"
   },
   {
@@ -103,6 +113,10 @@
     "title": "Pairs are Non-Averaging",
     "content": "**pair_is_nonAveraging:**\n\nAny set with two distinct elements is non-averaging.\n\n**Proof:** With only two elements a and b, we need three distinct elements x, y, z in the set, but can only pick from {a, b}. By pigeonhole, at least two must be equal, contradicting the distinctness requirements.",
     "mathContext": "Lean: `theorem pair_is_nonAveraging (a b : ℕ) (hab : a ≠ b) : IsNonAveraging {a, b}`",
+    "relatedConcepts": [
+      "counting argument",
+      "pigeonhole principle"
+    ],
     "significance": "supporting"
   },
   {
@@ -116,6 +130,12 @@
     "title": "Bosznay's Lower Bound (1989)",
     "content": "**bosznay_lower_bound:**\n\nThere exist non-averaging sets of size >= N^(1/4) / 2.\n\nBosznay's construction uses number-theoretic techniques — selecting elements based on representations as sums of two squares or similar combinatorial structures — to build large non-averaging subsets of {1,...,N}.\n\n**Reference:** Bosznay, \"On the lower estimation of non-averaging sets\", Acta Math. Hungar. (1989).",
     "mathContext": "This achieves the correct exponent 1/4. The construction is explicit but the proof that it works requires careful analysis.",
+    "relatedConcepts": [
+      "bounds",
+      "combinatorics",
+      "counting",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -129,6 +149,10 @@
     "title": "Lower Bound Corollary",
     "content": "**lower_bound_quarter:**\n\nF(N) >= (1/2) * N^(1/4) for all N >= 1.\n\nThis follows from Bosznay's construction: the witness set has cardinality at least N^(1/4)/2, and F(N) is the supremum over all non-averaging sets.\n\nAxiomatized because extracting F(N) >= |A| from the supremum definition requires showing the Finset.sup dominates any member.",
     "mathContext": "$F(N) >= (1/2) * N^(1/4) for all N >= 1.$",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -142,6 +166,10 @@
     "title": "Erdős-Sárközy Upper Bound (1990)",
     "content": "**erdos_sarkozy_upper_bound_1990:**\n\nOriginal upper bound: F(N) <= C * (N log N)^(1/2).\n\nThis was the first non-trivial upper bound, proved by Erdős and Sárközy in their 1990 paper \"On a problem of Straus.\" The bound has exponent 1/2, far from the lower bound exponent of 1/4.",
     "mathContext": "The gap between exponents 1/4 and 1/2 persisted for over 30 years.",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -155,6 +183,12 @@
     "title": "Conlon-Fox-Pham (2023)",
     "content": "**conlon_fox_pham_upper_bound_2023:**\n\nImproved upper bound: F(N) <= C * N^(1/4) * (log N)^c for some constants C, c > 0.\n\nThis major improvement brought the exponent down to 1/4 (matching the lower bound), with only a polylogarithmic factor remaining.\n\n**Reference:** Conlon-Fox-Pham, \"Homogeneous structures in subset sums and non-averaging sets\" (2023).",
     "mathContext": "$Improved upper bound: F(N) <= C * N^(1/4) * (log N)^c for some constants C, c > 0.$",
+    "relatedConcepts": [
+      "bounds",
+      "graph theory",
+      "inequalities",
+      "matching theory"
+    ],
     "significance": "key"
   },
   {
@@ -168,6 +202,13 @@
     "title": "Pham-Zakharov Sharp Bound (2024)",
     "content": "**pham_zakharov_upper_bound_2024:**\n\nSharp upper bound: for any epsilon > 0, F(N) <= C * N^(1/4+epsilon) for all sufficiently large N.\n\nThis essentially resolves the problem by matching the lower bound up to sub-polynomial factors. The o(1) term in the exponent is necessary — the bound cannot be improved to exactly N^(1/4).\n\n**Reference:** Pham-Zakharov, \"A sharp upper bound for the Erdős-Straus non-averaging sets problem\" (2024).",
     "mathContext": "The formulation with forall epsilon captures the N^(1/4+o(1)) asymptotic precisely.",
+    "relatedConcepts": [
+      "algebra",
+      "bounds",
+      "graph theory",
+      "inequalities",
+      "matching theory"
+    ],
     "significance": "key"
   },
   {
@@ -181,6 +222,10 @@
     "title": "Main Bounds Theorem",
     "content": "**erdos_186_bounds:**\n\nCombines the lower and upper bounds into a single statement:\n\n(1/2) * N^(1/4) <= F(N) <= C * N^(1/4+epsilon)\n\nfor any epsilon > 0, with C depending on epsilon.\n\n**Proof:** Uses the Bosznay lower bound axiom and Pham-Zakharov upper bound axiom directly. The constant c = 1/2 comes from the lower bound construction.",
     "mathContext": "This is the key result that establishes F(N) = N^(1/4+o(1)).",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -194,6 +239,12 @@
     "title": "Erdős Problem #186: Asymptotic Form",
     "content": "**erdos_186:**\n\nThe o(1) exponent form: for any epsilon > 0, eventually\nN^(1/4-epsilon) <= F(N) <= N^(1/4+epsilon).\n\nThis is the standard asymptotic notation meaning the exponent converges to 1/4. Axiomatized because deriving the lower bound in the form N^(1/4-epsilon) from Bosznay's construction requires careful asymptotic analysis beyond the direct N^(1/4)/2 bound.",
     "mathContext": "$N^(1/4-epsilon) <= F(N) <= N^(1/4+epsilon).$",
+    "relatedConcepts": [
+      "asymptotics",
+      "bounds",
+      "growth rates",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -207,6 +258,9 @@
     "title": "Hereditary Property",
     "content": "**nonAveraging_subset:**\n\nSubsets of non-averaging sets are non-averaging.\n\n**Proof:** If A is non-averaging and B is a subset of A, any three distinct elements in B are also in A. Since A satisfies the non-averaging condition for all triples, so does B.\n\nThis makes the family of non-averaging sets a downward-closed (hereditary) family.",
     "mathContext": "Hereditary properties are fundamental in extremal set theory. They ensure that the extremal function F(N) is well-behaved.",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -220,6 +274,9 @@
     "title": "No Centered Arithmetic Progressions",
     "content": "**nonAveraging_no_centered_AP:**\n\nIn a non-averaging set, for any three distinct elements a, b, c, b cannot be the midpoint: 2b != a + c.\n\n**Proof:** Direct application of IsNonAveraging with reordered arguments, using symmetry of the \"not equal\" conditions.",
     "mathContext": "Lean: `theorem nonAveraging_no_centered_AP {A : Finset ℕ} (hA : IsNonAveraging A)`",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "supporting"
   },
   {
@@ -251,6 +308,12 @@
     "title": "Growth Rate Optimality",
     "content": "**exponent_is_quarter** and **upper_exponent_not_exact:**\n\nTwo complementary axioms establishing 1/4 as the correct exponent:\n\n1. F(N) cannot grow slower than N^(1/4-epsilon) for any epsilon > 0 (exponent_is_quarter)\n2. F(N) cannot be bounded by C * N^(1/4) for any constant C (upper_exponent_not_exact)\n\nTogether these show the exponent is exactly 1/4, but with a necessary sub-polynomial correction factor.",
     "mathContext": "The o(1) correction in N^(1/4+o(1)) is genuine — the exact asymptotic remains open.",
+    "relatedConcepts": [
+      "algebra",
+      "bounds",
+      "inequalities",
+      "polynomials"
+    ],
     "significance": "key"
   }
 ]

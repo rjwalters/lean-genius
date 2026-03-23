@@ -46,6 +46,9 @@
     "title": "Alternative Representation Count",
     "content": "**representationCount':**\n\nAn alternative definition using the Cartesian product directly:\n\n```lean\ndef representationCount' (A : Finset N) (n : N) : N :=\n  ((A x A).filter (fun p => p.1 + p.2 = n)).card\n```\n\nThis counts pairs (a, b) in A x A with a + b = n.",
     "mathContext": "Lean: `def representationCount' (A : Finset N) (n : N) : N :=`",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "supporting"
   },
   {
@@ -95,6 +98,9 @@
     "title": "Truncation of Infinite Sets",
     "content": "**truncate:**\n\nTo work with infinite sets in Lean, we truncate to finite initial segments:\n\n```lean\ndef truncate (A : Set N) (n : N) : Finset N :=\n  (Finset.range (n + 1)).filter (. in A)\n```\n\ntruncate(A, n) = A intersect {0, 1, ..., n} as a finite set.",
     "mathContext": "Lean: `def truncate (A : Set N) (n : N) : Finset N :=`",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -126,6 +132,10 @@
     "title": "Erdos Problem #763: DISPROVED",
     "content": "**erdos_763:**\n\nThe answer to the Erdos-Turan question is NO.\n\n```lean\ntheorem erdos_763 :\n    not exists (A : Set N) (c : R), A.Infinite and c > 0 and\n      HasLinearGrowthBounded (truncate A) c := by\n  push_neg\n  intro A c hInf hc\n  exact erdos_fuchs_theorem A hInf c hc\n```\n\nThe proof uses push_neg to negate the existential, then applies the axiom.",
     "mathContext": "Lean: `theorem erdos_763 :`",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -139,6 +149,9 @@
     "title": "Error Term",
     "content": "**errorTerm:**\n\nThe difference between cumulative count and linear approximation:\n\n```lean\ndef errorTerm (A : N -> Finset N) (c : R) (N : N) : R :=\n  cumulativeRepCount (A N) N - c * N\n```\n\nThis is R_A(N) - cN, the fluctuation around linear growth.",
     "mathContext": "Lean: `def errorTerm (A : N -> Finset N) (c : R) (N : N) : R :=`",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -170,6 +183,10 @@
     "title": "Montgomery-Vaughan Improvement",
     "content": "**montgomery_vaughan:**\n\nThe error must exceed N^{1/4} infinitely often (1990).\n\n```lean\naxiom montgomery_vaughan :\n  forall (A : Set N), A.Infinite ->\n  forall (c : R), c > 0 ->\n  forall (eps : R), eps > 0 ->\n  frequently N in atTop, |errorTerm (truncate A) c N| > (1 - eps) * N^{1/4}\n```\n\nThis removes the logarithmic factor from the original bound.",
     "mathContext": "Published in 'A Tribute to Paul Erdos' (1990). This is essentially optimal.",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -183,6 +200,10 @@
     "title": "Variance Accumulation",
     "content": "**Key Insight:**\n\nThe representation function r(n) has inherent variability that cannot average out.\n\nHeuristically:\n- If A has density alpha, then r(n) is approximately alpha^2 * n locally\n- But fluctuations are of order sqrt(n)\n- The Fourier analysis shows cumulative error is Theta(N^{1/4})",
     "mathContext": "Formalizes the concept of variance accumulation",
+    "relatedConcepts": [
+      "asymptotic analysis",
+      "density"
+    ],
     "significance": "key"
   },
   {
@@ -231,6 +252,9 @@
     "title": "Arithmetic Progressions",
     "content": "**arithmeticProgression:**\n\nA = {an + b : n in N} for fixed a, b.\n\n```lean\ndef arithmeticProgression (a b : N) : Set N := \n  {n : N | exists k : N, n = a * k + b}\n```\n\nFor AP's: r(n) is approximately n/a for large n, so R(N) is approximately N^2/(2a^2) - quadratic, not linear.",
     "mathContext": "Lean: `def arithmeticProgression (a b : N) : Set N := `",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "supporting"
   },
   {
@@ -261,6 +285,10 @@
     "title": "Sidon Sets Cannot Achieve Bounded Error",
     "content": "**sidon_not_bounded:**\n\nEven Sidon sets cannot achieve linear growth with bounded error.\n\n```lean\ntheorem sidon_not_bounded :\n    forall (A : Set N), IsSidonSet A -> A.Infinite ->\n    forall (c : R), c > 0 -> not HasLinearGrowthBounded (truncate A) c :=\n  fun A _ hInf c hc => erdos_fuchs_theorem A hInf c hc\n```\n\nDespite having r(n) <= 2, Sidon sets still exhibit the N^{1/4} error.",
     "mathContext": "Lean: `theorem sidon_not_bounded :`",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -291,6 +319,10 @@
     "title": "Summary Theorem",
     "content": "**erdos_763_summary:**\n\nCombines the main results:\n\n```lean\ntheorem erdos_763_summary :\n    (not exists (A : Set N) (c : R), A.Infinite and c > 0 and\n      HasLinearGrowthBounded (truncate A) c) and\n    (forall N : N, cumulativeRepCount (truncate perfectSquares N) N <= N)\n```\n\n1. The main impossibility theorem\n2. Squares have sublinear representation count",
     "mathContext": "Lean: `theorem erdos_763_summary :`",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -304,6 +336,10 @@
     "title": "The Final Answer",
     "content": "**erdos_763_answer:**\n\nThe answer to the Erdos-Turan question is definitively NO.\n\n```lean\ntheorem erdos_763_answer : exists (proof : not exists (A : Set N) (c : R),\n    A.Infinite and c > 0 and HasLinearGrowthBounded (truncate A) c),\n    True := by\n  exact (erdos_763, trivial)\n```\n\nNo infinite set A can have R_A(N) = cN + O(1) for any c > 0.",
     "mathContext": "Lean: `theorem erdos_763_answer : exists (proof : not exists (A : Set N) (c : R),`",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   }
 ]

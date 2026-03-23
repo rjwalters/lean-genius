@@ -32,6 +32,9 @@
     "title": "Spanned Vertices",
     "content": "**spannedVertices H S** computes the union of all vertices in a set of hyperedges. The (6,3)-problem forbids 3 edges that together span only 6 vertices.",
     "mathContext": "Formalizes the concept of spanned vertices",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "supporting"
   },
   {
@@ -45,6 +48,9 @@
     "title": "(v,e)-Configuration",
     "content": "**hasConfiguration H v e** means H contains e edges spanning at most v vertices. This generalizes the (6,3) condition to arbitrary parameters, leading to the Brown-Erdős-Sós conjecture.",
     "mathContext": "Formalizes the concept of (v,e)-configuration",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -58,6 +64,9 @@
     "title": "(6,3)-Configuration",
     "content": "**has63Configuration** is the specific forbidden structure: 3 hyperedges spanning at most 6 vertices. This is the central object in Erdős Problem #716.",
     "mathContext": "Formalizes the concept of (6,3)-configuration",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -71,6 +80,13 @@
     "title": "(6,3)-Free",
     "content": "**is63Free H** means H avoids the (6,3) configuration. The extremal question: what is the maximum edges in a (6,3)-free hypergraph?",
     "mathContext": "Lean: `def ex63 (n : ℕ) : ℕ`",
+    "relatedConcepts": [
+      "combinatorics",
+      "extremal problems",
+      "graph theory",
+      "hypergraph theory",
+      "optimization"
+    ],
     "significance": "key"
   },
   {
@@ -102,6 +118,10 @@
     "title": "ex63 Function",
     "content": "**ex63 n** = f^(3)(n; 6, 3) is the specific extremal function for the (6,3) problem. Ruzsa-Szemerédi proved this is o(n²), settling Erdős #716.",
     "mathContext": "$\\text{ex}_{63}(n) = f^{(3)}(n; 6, 3) = \\max\\{|E| : H \\text{ is } n\\text{-vertex, (6,3)-free}\\}$; RS theorem: $\\text{ex}_{63}(n) = o(n^2)$.",
+    "relatedConcepts": [
+      "extremal problems",
+      "optimization"
+    ],
     "significance": "key"
   },
   {
@@ -115,6 +135,10 @@
     "title": "Unique Triangle Property",
     "content": "**edgeInUniqueTriangle** means an edge uv has exactly one common neighbor w forming triangle uvw. This is the graph-theoretic reformulation of the (6,3) problem.",
     "mathContext": "Formalizes the concept of unique triangle property",
+    "relatedConcepts": [
+      "combinatorics",
+      "graph theory"
+    ],
     "significance": "key"
   },
   {
@@ -146,6 +170,9 @@
     "title": "Little-o Notation",
     "content": "**isLittleO f g** means f(n) = o(g(n)): the ratio f(n)/g(n) → 0 as n → ∞. The main theorem is ex63(n) = o(n²), meaning subquadratic growth.",
     "mathContext": "Formalizes the concept of little-o notation",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "supporting"
   },
   {
@@ -177,6 +204,10 @@
     "title": "Upper Bound",
     "content": "**ex63_upper_bound** gives the quantitative bound: ex₃(n; 6, 3) ≤ n² · e^{-c√(log n)}. This sublogarithmic factor is essentially optimal.",
     "mathContext": "$\\text{ex}_{63}(n) \\leq n^2 \\cdot e^{-c\\sqrt{\\log n}}$ for some $c > 0$; the sublogarithmic decay makes this much smaller than $n^2$ but larger than any fixed power $n^{2-\\epsilon}$.",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -190,6 +221,10 @@
     "title": "Lower Bound",
     "content": "**ex63_lower_bound** from Behrend's construction: ex₃(n; 6, 3) ≥ n² · e^{-c'√(log n)}. The bounds match up to the constant in the exponent!",
     "mathContext": "$\\text{ex}_{63}(n) \\geq n^2 \\cdot e^{-c'\\sqrt{\\log n}}$; the matching upper/lower bounds show $\\text{ex}_{63}(n) = n^2 \\cdot e^{\\Theta(\\sqrt{\\log n})}$.",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -221,6 +256,9 @@
     "title": "3-AP Free Set",
     "content": "**is3APFree S** means S contains no 3-term arithmetic progression (a, a+d, a+2d). This connects to the RS problem via Behrend's construction of large 3-AP-free sets.",
     "mathContext": "Formalizes the concept of 3-ap free set",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -252,6 +290,10 @@
     "title": "Behrend Construction",
     "content": "**behrend_construction** (1946): r₃(n) ≥ n · e^{-c√(log n)}. This construction of large 3-AP-free sets provides the lower bound for the RS problem.",
     "mathContext": "$r_3(n) \\geq n \\cdot e^{-c\\sqrt{\\log n}}$; Behrend's construction uses spherical caps in $\\mathbb{Z}_m^d$ to avoid 3-APs, giving near-linear density.",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -265,6 +307,9 @@
     "title": "Brown-Erdős-Sós Conjecture",
     "content": "**brownErdosSosConjecture k** generalizes (6,3) to (k+3, k): f^(3)(n; k+3, k) = o(n²). Erdős #716 is the k=3 case. The full conjecture was proved by Delcourt-Postle (2024).",
     "mathContext": "Formalizes the concept of brown-erdős-sós conjecture",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -278,6 +323,9 @@
     "title": "k=3 Case",
     "content": "**erdos716_is_bes_k3** shows Erdős #716 is the k=3 case of Brown-Erdős-Sós. With k+3=6 and k=3, this is exactly the (6,3) problem solved by Ruzsa-Szemerédi.",
     "mathContext": "Formalizes the concept of k=3 case",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "supporting"
   },
   {
@@ -291,6 +339,11 @@
     "title": "Solution",
     "content": "**erdos_716** proves the problem using Ruzsa-Szemerédi's theorem. The maximum edges in a (6,3)-free 3-uniform hypergraph is subquadratic in n.",
     "mathContext": "Formalizes the concept of solution",
+    "relatedConcepts": [
+      "combinatorics",
+      "graph theory",
+      "hypergraph theory"
+    ],
     "significance": "key"
   }
 ]

@@ -10,6 +10,7 @@
     "title": "Problem Overview: Composites Dividing n! + 1",
     "content": "By **Wilson's theorem**, every prime p divides (p-1)! + 1. Erdos asked: how many **composite** numbers share this property? Let A(x) count composites u < x such that u | n! + 1 for some n. The conjecture is that A(x) <= x^{o(1)}, meaning composites dividing some factorial-plus-one are extremely rare.",
     "mathContext": "This problem connects **factorial arithmetic** with **primality testing** and the distribution of composites. Wilson's theorem provides a complete characterization for primes: p | (p-1)! + 1 iff p is prime. The question of which composites also divide some n! + 1 probes the boundary between primes and composites in modular arithmetic. Known examples (25, 121, 169, 437) are all **prime powers** or products of nearby primes, suggesting a deep structural constraint.",
+    "significance": "context",
     "relatedConcepts": [
       "Wilson's theorem",
       "factorial",

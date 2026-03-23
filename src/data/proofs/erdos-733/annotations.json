@@ -64,6 +64,9 @@
     "title": "Line-Compatible Sequences",
     "content": "**isLineCompatible:**\n\nA sorted sequence [X_1, ..., X_m] with 2 <= X_i <= n is line-compatible if some n-point configuration has m lines with exactly these point counts.\n\n**Example:** [2, 2, 3] means 2 lines with 2 points each and 1 line with 3 points.",
     "mathContext": "The central definition of the problem.",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -77,6 +80,10 @@
     "title": "Counting Function f(n)",
     "content": "**countLineCompatible f(n):**\n\nThe number of distinct line-compatible sequences for n points.\n\nThe problem asks for bounds on f(n).",
     "mathContext": "Formalizes the concept of counting function f(n)",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -107,6 +114,10 @@
     "title": "Rich Lines Bound",
     "content": "**rich_lines_bound:**\n\nThe number of k-rich lines (lines with >= k points) is O(n^2/k^3 + n/k).\n\nThis is a corollary of Szemeredi-Trotter and controls the possible sequence patterns.",
     "mathContext": "$The number of k-rich lines (lines with >= k points) is O(n^2/k^3 + n/k).$",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -120,6 +131,10 @@
     "title": "Lower Bound (Erdos)",
     "content": "**lower_bound:**\n\nf(n) >= exp(c * sqrt(n))\n\nErdos considered this 'easy'.\n\n**Construction:** A sqrt(n) x sqrt(n) grid has Theta(n) lines through it. Selecting different subsets of lines gives exponentially many sequences.",
     "mathContext": "$f(n) >= exp(c * sqrt(n))$",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -133,6 +148,9 @@
     "title": "Grid Construction",
     "content": "**grid_gives_lower:**\n\nA sqrt(n) x sqrt(n) integer grid has:\n- n points total\n- Theta(sqrt(n)) horizontal lines\n- Theta(sqrt(n)) vertical lines\n- Many diagonal lines\n\nTotal: Theta(n) lines, giving 2^{Theta(sqrt(n))} subsequences.",
     "mathContext": "Lean: `theorem grid_gives_lower (n : ℕ) (hn : n ≥ 4) :`",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -146,6 +164,10 @@
     "title": "Upper Bound (Szemeredi-Trotter)",
     "content": "**upper_bound:**\n\nf(n) <= exp(C * sqrt(n))\n\nProved by Szemeredi and Trotter (1983) using their incidence theorem.\n\nThe proof controls the number of possible sequence patterns by bounding incidences.",
     "mathContext": "This was the 'difficult' direction that Erdos anticipated.",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -159,6 +181,10 @@
     "title": "Tight Bounds",
     "content": "**tight_bounds:**\n\nexp(c*sqrt(n)) <= f(n) <= exp(C*sqrt(n))\n\nCombines lower and upper bounds to show f(n) = exp(Theta(sqrt(n))).",
     "mathContext": "$exp(c*sqrt(n)) <= f(n) <= exp(C*sqrt(n))$",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -172,6 +198,9 @@
     "title": "Erdos Problem #733: SOLVED",
     "content": "**erdos_733:**\n\nComplete solution: f(n) = exp(Theta(sqrt(n)))\n\nFor n >= 4, there exist c, C > 0 such that:\nexp(c*sqrt(n)) <= f(n) <= exp(C*sqrt(n))\n\nThe Szemeredi-Trotter theorem is the key tool.",
     "mathContext": "$Complete solution: f(n) = exp(Theta(sqrt(n)))$",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -185,6 +214,10 @@
     "title": "The Limit Question",
     "content": "**limitConstant:**\n\nErdos asked: Does lim log(f(n)) / sqrt(n) exist?\n\nIf so, what is its value?\n\nBy the tight bounds, any limit must lie between c and C. The exact value remains of interest.",
     "mathContext": "An open follow-up question posed by Erdos.",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -198,6 +231,10 @@
     "title": "Complete Summary",
     "content": "**erdos_733_summary:**\n\n1. Line-compatible sequences counted by f(n)\n2. Lower: f(n) >= exp(c*sqrt(n)) (grid construction)\n3. Upper: f(n) <= exp(C*sqrt(n)) (Szemeredi-Trotter)\n4. Together: f(n) = exp(Theta(sqrt(n)))\n\n**erdos_733_answer:** Confirms the complete bounds.",
     "mathContext": "$2. Lower: f(n) >= exp(c*sqrt(n)) (grid construction)$",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   }
 ]

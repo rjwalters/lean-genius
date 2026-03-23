@@ -46,6 +46,10 @@
     "title": "The Uniform Matrix",
     "content": "**uniformMatrix(n):** The n×n matrix where every entry equals 1/n.\n\nThis is the \"worst case\" for Erdős #499:\n- Every diagonal product = (1/n)^n = n^{-n}\n- This is the minimum possible\n\nThe uniform matrix also minimizes the permanent (van der Waerden conjecture).",
     "mathContext": "Lean: `axiom uniformMatrix_doublyStochastic (n : ℕ) (hn : n ≠ 0) :`",
+    "relatedConcepts": [
+      "linear algebra",
+      "matrices"
+    ],
     "significance": "key"
   },
   {
@@ -59,6 +63,10 @@
     "title": "Diagonal Product",
     "content": "**diagonalProduct(M, σ):** For a permutation σ, the diagonal product is:\n\n$$\\prod_{i=1}^{n} M_{i,\\sigma(i)}$$\n\nThis is the product of one entry from each row, taking column σ(i) from row i.\n\nThere are n! different diagonals (one per permutation).",
     "mathContext": "$\\prod_{i=1}^{n} M_{i,\\sigma(i)}$",
+    "relatedConcepts": [
+      "permutations",
+      "symmetric group"
+    ],
     "significance": "key"
   },
   {
@@ -90,6 +98,13 @@
     "title": "Marcus-Ree Theorem (1959)",
     "content": "**marcus_ree_theorem:** For every doubly stochastic matrix M, there exists a permutation σ with:\n\n1. All diagonal entries non-zero: M_{i,σ(i)} ≠ 0 for all i\n2. Sum at least 1: ∑_i M_{i,σ(i)} ≥ 1\n\nThis is a **weaker** result than Erdős #499, requiring only a sum bound instead of a product bound.",
     "mathContext": "$2. Sum at least 1: ∑_i M_{i,σ(i)} ≥ 1$",
+    "relatedConcepts": [
+      "algebra",
+      "bounds",
+      "inequalities",
+      "linear algebra",
+      "matrices"
+    ],
     "significance": "key"
   },
   {
@@ -103,6 +118,12 @@
     "title": "Marcus-Minc Theorem (1962)",
     "content": "**marcus_minc_theorem:** For every n×n doubly stochastic matrix M, there exists a permutation σ with:\n\n$$\\prod_{i=1}^{n} M_{i,\\sigma(i)} \\geq n^{-n}$$\n\nThis IS Erdős Problem #499.\n\n**erdos_499 theorem:** Simply restates Marcus-Minc as the answer to the problem.",
     "mathContext": "$\\prod_{i=1}^{n} M_{i,\\sigma(i)} \\geq n^{-n}$",
+    "relatedConcepts": [
+      "linear algebra",
+      "matrices",
+      "permutations",
+      "symmetric group"
+    ],
     "significance": "key"
   },
   {
@@ -133,6 +154,12 @@
     "title": "Van der Waerden Implies Erdős #499",
     "content": "**vanDerWaerden_implies_erdos499:** The permanent bound implies the diagonal bound.\n\n**Proof idea (pigeonhole):**\n- Permanent = sum of n! diagonal products\n- If sum ≥ n^{-n} · n!, then average ≥ n^{-n}\n- So at least one diagonal product ≥ n^{-n}\n\nThis shows Erdős #499 is a weaker statement than van der Waerden.",
     "mathContext": "Lean: `theorem vanDerWaerden_implies_erdos499 {n : ℕ} (hn : n ≠ 0)`",
+    "relatedConcepts": [
+      "bounds",
+      "counting argument",
+      "inequalities",
+      "pigeonhole principle"
+    ],
     "significance": "key"
   },
   {
@@ -146,6 +173,10 @@
     "title": "The 2×2 Case",
     "content": "**two_by_two_erdos499:** For n = 2, verification is elementary.\n\nA 2×2 doubly stochastic matrix has form:\n$$\\begin{pmatrix} a & 1-a \\\\ 1-a & a \\end{pmatrix}$$\n\nThe two diagonal products are a² and (1-a)².\n\n**Claim:** max(a², (1-a)²) ≥ 1/4 always.\n\n**Proof:** If a ≤ 1/2, then 1-a ≥ 1/2, so (1-a)² ≥ 1/4. Similar if a ≥ 1/2.",
     "mathContext": "$\\begin{pmatrix} a & 1-a \\\\ 1-a & a \\end{pmatrix}$",
+    "relatedConcepts": [
+      "linear algebra",
+      "matrices"
+    ],
     "significance": "key"
   },
   {
@@ -177,6 +208,12 @@
     "title": "Problem Summary",
     "content": "**erdos_499_summary:** Complete status of Erdős Problem #499.\n\n**Solved Results:**\n1. marcus_minc_theorem: Product bound (1962) = Erdős #499\n2. van_der_waerden: Stronger permanent bound (1981)\n\n**Supporting Results:**\n- marcus_ree_theorem: Weaker sum bound (1959)\n- birkhoff_von_neumann: Structural characterization\n- 2×2 case: Elementary verification\n\n**Answer:** YES, every doubly stochastic matrix has a diagonal with product ≥ n^{-n}.",
     "mathContext": "$1. marcus_minc_theorem: Product bound (1962) = Erdős #499$",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities",
+      "linear algebra",
+      "matrices"
+    ],
     "significance": "key"
   }
 ]

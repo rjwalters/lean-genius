@@ -48,6 +48,10 @@
     "title": "Zero is Always Representable",
     "content": "**zero_representable**: 0 is representable by any set A, using the empty multiset ∅ with sum 0. Proved by `use ∅; simp`.\n\nThis is the identity element of the numerical semigroup: the empty sum convention.",
     "significance": "supporting",
+    "relatedConcepts": [
+      "algebra",
+      "group theory"
+    ],
     "mathContext": "\\forall A,\\; \\text{IsRepresentableAs}(0, A): Existential witness ∅ (empty multiset); simp handles both membership vacuity and Multiset.sum_zero. The empty sum being 0 is the standard convention in algebra."
   },
   {
@@ -61,6 +65,12 @@
     "title": "Elements are Self-Representable",
     "content": "**mem_representable**: Any element a ∈ A is representable by A, using the singleton multiset {a}. Proved by `use {a}; simp [ha]`.\n\nThis shows A ⊆ RepresentableSet(A), the generating set embeds into its semigroup.",
     "significance": "supporting",
+    "relatedConcepts": [
+      "algebra",
+      "combinatorics",
+      "generating functions",
+      "group theory"
+    ],
     "mathContext": "a \\in A \\implies \\text{IsRepresentableAs}(a, A): Existential witness {a} (singleton multiset); simp with membership hypothesis. The generating set always embeds into the numerical semigroup it generates."
   },
   {
@@ -74,6 +84,10 @@
     "title": "Sum Closure of Representability",
     "content": "**add_representable**: If m and n are both representable by A, then m + n is too. Combine multisets Sm + Sn: membership follows from cases on Multiset.mem_add, and sum follows from Multiset.sum_add.\n\nThis proves the representable set forms a subsemigroup of (ℕ, +). Together with zero_representable, it's a submonoid.",
     "significance": "key",
+    "relatedConcepts": [
+      "algebra",
+      "group theory"
+    ],
     "mathContext": "\\text{IsRep}(m, A) \\wedge \\text{IsRep}(n, A) \\implies \\text{IsRep}(m+n, A): Destructs both existentials to get Sm, Sn; witnesses Sm + Sn; membership by cases on Multiset.mem_add; sum by simp. This closure under addition is what makes the Frobenius problem interesting: eventually all large enough integers become representable when gcd(A) = 1."
   },
   {
@@ -106,6 +120,9 @@
     "title": "Counting Non-Representables",
     "content": "Two counting functions: **countNonRepresentable** (ℕ∞-valued via Set.encard, handles infinite case) and **nCardNonRepresentable** (ℕ-valued via Set.ncard, returns 0 for infinite sets).\n\nBoth are noncomputable. The ncard version is used in Kiss's theorem since the interesting case has gcd = 1 (finite non-representables).",
     "significance": "key",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "mathContext": "g(A) = |\\text{NonRep}(A)| = |\\{n \\in \\mathbb{N} : n \\notin \\langle A \\rangle\\}|: Set.encard for extended natural cardinality (handles infinite case when gcd(A) > 1); Set.ncard for natural cardinality (returns 0 when infinite). Using both cardinalities is a design choice: encard is semantically correct for all cases, while ncard is more convenient for the finite comparisons in Kiss's theorem."
   },
   {
@@ -119,6 +136,13 @@
     "title": "Frobenius Number",
     "content": "**frobeniusNumber A** = sSup(NonRepresentable A), the largest non-representable integer. Well-defined when gcd(A) = 1 (the set is finite and bounded). For coprime a, b: frobeniusNumber {a,b} = ab - a - b (Sylvester 1884).\n\nNote: Problem #434 maximizes the COUNT, not the Frobenius number itself. Problem #433 focuses on maximizing the Frobenius number.",
     "significance": "key",
+    "relatedConcepts": [
+      "bounds",
+      "divisibility",
+      "factorization",
+      "inequalities",
+      "prime numbers"
+    ],
     "mathContext": "F(A) = \\max(\\text{NonRep}(A)) = \\text{sSup}(\\{n : n \\notin \\langle A \\rangle\\}): sSup (supremum) of NonRepresentable A; relies on the set being bounded above when gcd(A) = 1. The Frobenius number and genus are related but distinct invariants of a numerical semigroup."
   },
   {
@@ -132,6 +156,9 @@
     "title": "Complete Sets (gcd = 1)",
     "content": "**IsComplete A** holds when A is nonempty and gcd(sSup A, sInf(A \\ {sSup A})) = 1. Complete sets have finitely many non-representable integers.\n\nThe Chicken McNugget theorem is a famous example: {6, 9, 20} has Frobenius number 43.",
     "significance": "supporting",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "mathContext": "\\text{IsComplete}(A) \\iff A \\neq \\emptyset \\wedge \\gcd(\\sup A, \\inf(A \\setminus \\{\\sup A\\})) = 1: Nat.gcd applied to sSup and sInf of the remainder set; a simplified coprimality check. The Chicken McNugget theorem (for {6, 9, 20}) became a popular math puzzle. For 3+ elements, computing the Frobenius number is NP-hard (Ramírez-Alfonsín 2005)."
   },
   {
@@ -164,6 +191,10 @@
     "title": "The Extremal Frobenius Question",
     "content": "**ExtremalFrobeniusQuestion n k**: For all A ⊆ {1,...,n} with |A| = k, nCardNonRepresentable(A) ≤ nCardNonRepresentable(topK n k). This is the formal statement that topK is optimal.\n\nKiss (2002) proved this is true for all valid n, k.",
     "significance": "key",
+    "relatedConcepts": [
+      "extremal problems",
+      "optimization"
+    ],
     "mathContext": "\\forall A \\subseteq [1,n],\\; |A| = k \\implies g(A) \\leq g(\\text{topK}(n,k)): Universal quantification over sets A with subset and cardinality constraints; comparison via ≤ on nCardNonRepresentable. This is the extremal formulation: topK achieves the maximum genus among all valid generating sets."
   },
   {
@@ -177,6 +208,9 @@
     "title": "Small Examples: {2,3}, {3,5}, topK(5,2)",
     "content": "Three concrete examples illustrate the pattern:\n- **{2, 3}**: NonRepresentable = {1}, Frobenius number 1. Small numbers → few gaps.\n- **{3, 5}**: NonRepresentable = {1, 2, 4, 7}, Frobenius number 7. By Sylvester: 3·5 - 3 - 5 = 7, count = (2)(4)/2 = 4.\n- **topK(5, 2) = {4, 5}**: Proved by ext + simp + omega. Many more non-representables.\n\nThe topK example has far more non-representables, illustrating why larger numbers are optimal.",
     "significance": "key",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "mathContext": "g(\\{2,3\\}) = 1, \\quad g(\\{3,5\\}) = 4, \\quad g(\\{4,5\\}) = 6: example_2_3 and example_3_5_frobenius are sorry'd; topK_5_2 proved via ext, simp [topK, Set.Icc], omega. The progression from g({2,3})=1 to g({4,5})=6 illustrates how larger generators create more gaps. By Sylvester's formula, g({n-1,n}) = (n-2)(n-1)/2, growing quadratically."
   },
   {
@@ -208,6 +242,9 @@
     "title": "Problem #434 Answer: YES",
     "content": "**erdos_434_answer**: Direct corollary of kiss_2002. For all valid n, k and any A ⊆ {1,...,n} with |A| = k, nCardNonRepresentable(A) ≤ nCardNonRepresentable(topK n k).\n\nProved by exact application of kiss_2002.",
     "significance": "key",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "mathContext": "\\text{erdos\\_434\\_answer} := \\text{kiss\\_2002}(n, k, h_n, h_k, h_{kn}): Direct application: kiss_2002 n k hn hk hkn. The answer to Erdős Problem #434 is YES: the topK set is optimal."
   },
   {
@@ -221,6 +258,9 @@
     "title": "Larger Numbers Create More Gaps",
     "content": "**larger_numbers_fewer_reps**: For n ≥ 2, nCardNonRepresentable({n-1, n}) > nCardNonRepresentable({1, 2}). Since {1, 2} represents everything (all positive integers), while {n-1, n} leaves many gaps.\n\nWith {1, 2}: all positive integers are representable. With {9, 10}: 1-8 are all non-representable, plus 11-17, etc.",
     "significance": "key",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "mathContext": "g(\\{n-1, n\\}) = \\frac{(n-2)(n-1)}{2} > 0 = g(\\{1, 2\\}) \\quad \\text{for } n \\geq 2: Sorry'd; would follow from sylvester_count since {1,2} has genus 0 (every positive integer is a sum of 1s and 2s) and {n-1,n} has genus (n-2)(n-1)/2 > 0 for n ≥ 2. This is the intuitive core of why topK is optimal: larger generators space out representable integers more widely."
   },
   {
@@ -253,6 +293,9 @@
     "title": "Greedy Construction Equals topK",
     "content": "**greedyConstruct n k** = Set.Icc (n - k + 1) n, identical to topK by definition. **greedy_eq_topK**: proved by rfl.\n\nThe greedy algorithm (always pick the largest available number) naturally produces the topK set, and Kiss's theorem shows this greedy approach is optimal.",
     "significance": "key",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "mathContext": "\\text{greedyConstruct}(n, k) = \\text{topK}(n, k) \\quad (\\text{by } \\texttt{rfl}): Definition is identical to topK; equality proved by rfl (definitional equality). The greedy algorithm is optimal — a rare case where the simple greedy approach gives the provably best answer. This contrasts with most combinatorial optimization problems where greedy is suboptimal."
   },
   {
@@ -266,6 +309,13 @@
     "title": "Finiteness of Non-Representables",
     "content": "**nonrep_finite**: When A has two coprime elements, NonRepresentable A is finite. **topK_finite**: For k ≥ 2 and n ≥ k, NonRepresentable(topK n k) is finite.\n\nBoth are sorry'd. The classical result: if gcd(A) = 1, then all sufficiently large integers are representable (the Frobenius number bounds the non-representable set).",
     "significance": "supporting",
+    "relatedConcepts": [
+      "bounds",
+      "divisibility",
+      "factorization",
+      "inequalities",
+      "prime numbers"
+    ],
     "mathContext": "\\gcd(A) = 1 \\implies |\\text{NonRep}(A)| < \\infty: Sorry'd; would need the Schur/Frobenius theorem that gcd=1 implies finitely many non-representables. The proof idea: if gcd(a,b) = 1, then by Bézout's identity, some linear combination ax + by = 1, and from this all sufficiently large integers are representable."
   },
   {
@@ -279,6 +329,9 @@
     "title": "Connection to Problem #433",
     "content": "**problem433Set n k** = Set.Icc n (n + k - 1), the consecutive integers {n, n+1, ..., n+k-1}. Problem #433 maximizes the Frobenius number for this specific form; #434 maximizes the non-representable count over all k-subsets.\n\n**frobenius_consecutive** (axiom): The Frobenius number for consecutive integers is (n-1)(n+k-1)/k - 1.",
     "significance": "supporting",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "mathContext": "F(\\{n, n+1, \\ldots, n+k-1\\}) = \\frac{(n-1)(n+k-1)}{k} - 1: Set.Icc for consecutive integer range; frobenius_consecutive axiomatizes the Frobenius number formula. Problems #433 and #434 are companion extremal problems from the same Erdős-Graham 1980 monograph: #433 optimizes the Frobenius number, #434 optimizes the genus."
   },
   {
@@ -292,6 +345,9 @@
     "title": "Complete Answer: topK is Optimal",
     "content": "**erdos_434_complete**: For all n ≥ 1, k ≥ 1, k ≤ n, and any A ⊆ {1,...,n} with |A| = k: nCardNonRepresentable(A) ≤ nCardNonRepresentable(topK n k).\n\nProved by exact application of kiss_2002. This is the definitive answer to Erdős Problem #434.",
     "significance": "key",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "mathContext": "\\forall n, k, A,\\; 1 \\leq k \\leq n,\\; A \\subseteq [1,n],\\; |A|=k \\implies g(A) \\leq g(\\text{topK}(n,k)): Direct application of kiss_2002 axiom with all parameters. This is the definitive formalization of the solution to Erdős Problem #434."
   },
   {
@@ -305,6 +361,9 @@
     "title": "topK Achieves Maximum (IsGreatest)",
     "content": "**topK_is_maximum**: Formulates the result using Mathlib's `IsGreatest`: topK achieves the maximum of {nCardNonRepresentable A | A valid}. Sorry'd — requires showing topK is itself valid (⊆ {1,...,n} with |topK| = k) and applying kiss_2002.\n\nThis is the strongest formulation: not just 'all others are ≤' but 'topK is in the set AND is the greatest'.",
     "significance": "key",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "mathContext": "\\text{IsGreatest}(\\{g(A) : A \\subseteq [1,n], |A|=k\\},\\; g(\\text{topK}(n,k))): IsGreatest over the image set requires two components: membership (topK is a valid k-subset of {1,...,n}, which needs topK_card) and maximality (from kiss_2002). Sorry'd because topK_card itself is sorry'd."
   }
 ]

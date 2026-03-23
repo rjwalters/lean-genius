@@ -154,6 +154,9 @@
     "title": "Summary Theorem",
     "content": "**erdos_479_summary (proved from axioms):**\n\nCombines three key results:\n1. SolutionSet(1) is finite (k = 1 impossible)\n2. SolutionSet(2^i) is infinite for all i ≥ 1 (powers of 2)\n3. SolutionSet(2) is infinite (via Fermat's Little Theorem)\n\nProved by: `⟨solution_set_one_finite, powers_of_two_infinite, solution_set_two_infinite⟩`",
     "mathContext": "$1. SolutionSet(1) is finite (k = 1 impossible)$",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "key"
   }
 ]

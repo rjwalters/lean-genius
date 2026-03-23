@@ -47,6 +47,9 @@
     "title": "Countable Decomposition",
     "content": "**CountableDecomposition X P:**\n\nA set X admits a countable decomposition with property P if X can be written as a disjoint union ⋃ᵢ Sᵢ where each Sᵢ satisfies P.\n\nThe key question: can this be done with P = HasDistinctDistances?",
     "mathContext": "$The key question: can this be done with P = HasDistinctDistances?$",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -78,6 +81,10 @@
     "title": "ℚ-Linear Independence",
     "content": "**IsQLinearlyIndependent S:**\n\nA set S ⊆ ℝ is ℚ-linearly independent if no finite nontrivial linear combination over ℚ equals zero.\n\nEquivalently: the elements of S are 'algebraically unrelated' over the rationals.",
     "mathContext": "For any distinct x₁,...,xₙ ∈ S and rationals a₁,...,aₙ, if Σaᵢxᵢ = 0 then all aᵢ = 0.",
+    "relatedConcepts": [
+      "abstract algebra",
+      "algebraic structures"
+    ],
     "significance": "key"
   },
   {
@@ -109,6 +116,9 @@
     "title": "Davies' Theorem (1972)",
     "content": "**davies_theorem:**\n\nAssuming CH, ℝ² can be decomposed into countably many sets with distinct pairwise distances.\n\nThis extended Erdős-Kakutani from dimension 1 to dimension 2.",
     "mathContext": "Formalizes the concept of davies' theorem (1972)",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -122,6 +132,9 @@
     "title": "Kunen's Theorem (1987)",
     "content": "**kunen_theorem:**\n\nAssuming CH, ℝⁿ can be decomposed into countably many sets with distinct pairwise distances, for ALL dimensions n.\n\nThis completely solves the problem under CH.",
     "mathContext": "Lean: `axiom davies_theorem : ContinuumHypothesis → Erdos1127Question' 2`",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -135,6 +148,10 @@
     "title": "Erdős-Hajnal Necessity",
     "content": "**erdos_hajnal_necessity:**\n\nIf CH is FALSE, then for any finite partition of ℝ, there exist 4 points in one piece determining at most 4 distinct distances (instead of the required 6).\n\nThis shows CH is NECESSARY for the decomposition to work.",
     "mathContext": "¬CH → finite partitions fail the distinct distances property",
+    "relatedConcepts": [
+      "combinatorics",
+      "partition"
+    ],
     "significance": "key"
   },
   {
@@ -148,6 +165,9 @@
     "title": "Main Result",
     "content": "**erdos_1127:**\n\nCH → ∀n, Erdos1127Question' n\n\nAssuming the Continuum Hypothesis, ℝⁿ can be decomposed into countably many sets with distinct pairwise distances, for every dimension n.\n\nThis follows immediately from Kunen's theorem.",
     "mathContext": "$CH → ∀n, Erdos1127Question' n$",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "key"
   }
 ]

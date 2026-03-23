@@ -28,6 +28,10 @@
     "title": "Point Type",
     "content": "**Point:**\n\nType alias for points in the Euclidean plane R^2.\n\n```lean\nabbrev Point := EuclideanSpace R (Fin 2)\n```\n\nThis provides the standard Euclidean metric and inner product structure.",
     "mathContext": "Lean: `abbrev Point := EuclideanSpace R (Fin 2)`",
+    "relatedConcepts": [
+      "distance",
+      "metric spaces"
+    ],
     "significance": "key"
   },
   {
@@ -41,6 +45,9 @@
     "title": "Point Triple Structure",
     "content": "**PointTriple:**\n\nA structure representing three distinct points.\n\n```lean\nstructure PointTriple where\n  p1 : Point\n  p2 : Point\n  p3 : Point\n  distinct12 : p1 != p2\n  distinct13 : p1 != p3\n  distinct23 : p2 != p3\n```\n\nThe distinctness proofs ensure we can form a non-degenerate triangle.",
     "mathContext": "Lean: `structure PointTriple where`",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -54,6 +61,9 @@
     "title": "Collinearity",
     "content": "**areCollinear:**\n\nThree points are collinear if they lie on a common line.\n\n```lean\ndef areCollinear (p1 p2 p3 : Point) : Prop :=\n  exists a b c, (a != 0 or b != 0) and\n    all three points satisfy ax + by + c = 0\n```\n\nCollinear points don't determine a unique circumcircle.",
     "mathContext": "The general position constraint 'no 3 collinear' ensures every triple has a well-defined circumcircle.",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -67,6 +77,9 @@
     "title": "Concyclicity",
     "content": "**areConcyclic:**\n\nFour points are concyclic if they lie on a common circle.\n\n```lean\ndef areConcyclic (p1 p2 p3 p4 : Point) : Prop :=\n  exists center r, r > 0 and\n    all four points are at distance r from center\n```\n\nFour concyclic points would have equal circumradii for all 4 triples.",
     "mathContext": "The constraint 'no 4 concyclic' prevents radius collisions from geometric degeneracies.",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -80,6 +93,10 @@
     "title": "General Position",
     "content": "**isInGeneralPosition:**\n\nA point configuration is in general position if:\n1. No three points are collinear\n2. No four points are concyclic\n\nThis is the standard assumption for the problem. It ensures:\n- Every triple has a unique circumcircle\n- No 'accidental' radius equalities from geometric structure",
     "mathContext": "Lean: `def isInGeneralPosition (S : Set Point) : Prop`",
+    "relatedConcepts": [
+      "distance",
+      "metric spaces"
+    ],
     "significance": "key"
   },
   {
@@ -111,6 +128,9 @@
     "title": "Set of All Circumradii",
     "content": "**allCircumradii:**\n\nFor a finite point set S, the set of all circumradii from triples in S.\n\n```lean\nnoncomputable def allCircumradii (S : Finset Point) : Set R :=\n  {r | exists p1 p2 p3 in S, distinct, with circumradius = r}\n```\n\nThis is the set whose cardinality we want to minimize.",
     "mathContext": "Lean: `noncomputable def allCircumradii (S : Finset Point) : Set R :=`",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -124,6 +144,9 @@
     "title": "The h Function",
     "content": "**h(n):**\n\nThe minimum over all n-point configurations in general position of the number of distinct circumradii.\n\n```lean\nnoncomputable def h (n : N) : N :=\n  sInf {k | exists S, |S| = n and isInGeneralPosition S and\n    countDistinctRadii S = k}\n```\n\nThis is the central object of the problem.",
     "mathContext": "Lean: `noncomputable def h (n : N) : N :=`",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -137,6 +160,10 @@
     "title": "Upper Bound",
     "content": "**h_upper_bound:**\n\nWith n points, there are C(n,3) triples, hence at most C(n,3) distinct radii.\n\n```lean\ntheorem h_upper_bound (n : N) : h n <= Nat.choose n 3\n```\n\nThis is the obvious upper bound - each triple contributes at most one radius.",
     "mathContext": "Lean: `theorem h_upper_bound (n : N) : h n <= Nat.choose n 3`",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -150,6 +177,10 @@
     "title": "h(4) Lower Bound",
     "content": "**h_four_lower:**\n\nFour points in general position give at least 2 distinct radii.\n\n```lean\naxiom h_four_lower : h 4 >= 2\n```\n\n**Why:** If all 4 circumradii (from the 4 triples) were equal, the 4 points would lie on a common circle, violating general position.",
     "mathContext": "This is the key observation: the 'no 4 concyclic' constraint forces radius diversity.",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -163,6 +194,12 @@
     "title": "Main Conjecture",
     "content": "**erdos_831_conjecture:**\n\nWhat are the asymptotics of h(n)?\n\n**Possible behaviors:**\n1. h(n) = Theta(n) - linear growth\n2. h(n) = Theta(n^alpha) - polynomial growth for some alpha in (0, 2)\n3. h(n) = Theta(n^2) - quadratic growth\n\nThe problem asks to determine which case holds.\n\nAxiomatized as the disjunction of these possibilities.",
     "mathContext": "The constraint 'no 4 concyclic' suggests radii must spread out, but the rate is unknown.",
+    "relatedConcepts": [
+      "algebra",
+      "asymptotics",
+      "growth rates",
+      "polynomials"
+    ],
     "significance": "key"
   },
   {
@@ -176,6 +213,9 @@
     "title": "Regular Polygons Fail",
     "content": "**regular_polygon_not_general:**\n\nPoints of a regular n-gon are concyclic, so they don't satisfy general position.\n\n```lean\ntheorem regular_polygon_not_general (S : Finset Point)\n    (h : isRegularPolygon S) (hcard : S.card >= 4) :\n    not isInGeneralPosition S\n```\n\nRegular polygons cannot be used to construct minimizing configurations.",
     "mathContext": "Lean: `theorem regular_polygon_not_general (S : Finset Point)`",
+    "relatedConcepts": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -189,6 +229,10 @@
     "title": "Random Points",
     "content": "**random_points_many_radii:**\n\nRandom points in general position are expected to have many distinct radii.\n\nSpecifically: for random n points, the number of distinct radii is at least c*n for some constant c > 0.\n\nThis suggests the minimum h(n) might be linear or superlinear.",
     "mathContext": "Lean: `axiom random_points_many_radii (n : ℕ) :`",
+    "relatedConcepts": [
+      "probabilistic method",
+      "random structures"
+    ],
     "significance": "supporting"
   },
   {
@@ -236,6 +280,10 @@
     "title": "Small Cases",
     "content": "**h_five_bounds and h_six_bounds:**\n\n**h(5):** With 5 points, C(5,3) = 10 triples.\nBounds: 2 <= h(5) <= 10\n\n**h(6):** With 6 points, C(6,3) = 20 triples.\nBounds: 3 <= h(6) <= 20\n\nThe exact values for small n are not known.",
     "mathContext": "$Bounds: 2 <= h(5) <= 10$",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -249,6 +297,10 @@
     "title": "Summary Theorem",
     "content": "**erdos_831_summary:**\n\nCombines known results:\n1. h(3) = 1 (trivial - one triple, one radius)\n2. h(4) >= 2 (non-concyclicity forces diversity)\n3. h(n) <= C(n,3) (obvious upper bound)\n\n```lean\ntheorem erdos_831_summary :\n    h 3 = 1 and h 4 >= 2 and forall n, h n <= Nat.choose n 3\n```",
     "mathContext": "Lean: `theorem erdos_831_summary :`",
+    "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -262,6 +314,12 @@
     "title": "Open Question",
     "content": "**erdos_831_open_question:**\n\nThe main open question: what is the asymptotic behavior of h(n)?\n\nWe can prove existence of a positive lower bound function:\n```lean\ntheorem erdos_831_open_question :\n    exists f, (forall n >= 3, h n >= f n) and (forall n >= 3, f n > 0)\n```\n\nBut the exact growth rate remains unknown.",
     "mathContext": "Lean: `theorem erdos_831_open_question :`",
+    "relatedConcepts": [
+      "asymptotics",
+      "bounds",
+      "growth rates",
+      "inequalities"
+    ],
     "significance": "key"
   }
 ]

@@ -10,6 +10,7 @@
     "title": "Problem Overview: Distance Frequency Gaps",
     "content": "Given **n points** in the plane with distinct distances d_1, ..., d_k ordered by frequency f(d_1) >= f(d_2) >= ..., Erdos asked: how large can the **frequency gap** f(d_1) - f(d_2) be? Clemen, Dumitrescu, and Liu (2025) proved the gap can be at least **Omega(n log n)** and conjectured a stronger bound of n^{1 + c / log log n}.",
     "mathContext": "This problem sits at the intersection of **combinatorial geometry** and **extremal combinatorics**. The frequency of a distance d is the number of unordered pairs of points at distance d. The Erdos distinct distances problem (resolved by Guth-Katz) controls how many distinct distances exist; this problem instead asks about the **distribution** of those distances -- specifically, how unevenly frequencies can be distributed among the top two distances.",
+    "significance": "context",
     "relatedConcepts": [
       "distinct distances",
       "combinatorial geometry",
