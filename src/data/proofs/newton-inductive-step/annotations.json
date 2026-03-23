@@ -1,5 +1,27 @@
 [
   {
+    "id": "ann-module-header",
+    "proofId": "newton-inductive-step",
+    "range": {
+      "startLine": 1,
+      "endLine": 9
+    },
+    "type": "context",
+    "title": "Module Overview and Imports",
+    "content": "The module header summarizes the proof's goal: the key binomial inequality $bc^3 + adc^2 + ac^3 \\geq 2b^2cd + b^3d$ for Newton's log-concavity, proved via absorption identities. The identity $k^3(k+1)(m-k+2) \\cdot (\\text{LHS} - \\text{RHS}) = (m-k+1)(m+1)^2 b^4$ is stated in the docstring.\n\nThe single `import Mathlib` pulls in the full Mathlib library, providing `Nat.choose`, `Nat.choose_succ_right_eq` (the absorption identity), and the `linear_combination`, `positivity`, and `nlinarith` tactics used throughout. No `open` declarations are needed since the proof references Mathlib names with their full namespace prefixes.",
+    "mathContext": "The absorption identity $k \\cdot \\binom{m}{k} = (m - k + 1) \\cdot \\binom{m}{k-1}$ from `Nat.choose_succ_right_eq` is the only external mathematical fact used. Everything else is derived algebraically within this module.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Mathlib import",
+      "Nat.choose_succ_right_eq",
+      "linear_combination tactic"
+    ],
+    "prerequisites": [
+      "Lean 4 module system",
+      "Mathlib library"
+    ]
+  },
+  {
     "id": "ann-quadratic-nonneg",
     "proofId": "newton-inductive-step",
     "range": {
@@ -70,6 +92,29 @@
     ]
   },
   {
+    "id": "ann-positivity-setup",
+    "proofId": "newton-inductive-step",
+    "range": {
+      "startLine": 47,
+      "endLine": 53
+    },
+    "type": "context",
+    "title": "Parameter Setup: r and Positivity Bounds",
+    "content": "The proof introduces the key parameter $r = m - k + 1$ (the 'complement' of $k$ relative to $m$), which together with $k$ controls the ratios of consecutive binomial coefficients. Four positivity facts are established:\n\n- $k > 0$ (from $k \\geq 2$, via `positivity`)\n- $r > 0$ (from $k \\leq m$, since $r = m - k + 1 \\geq 1$)\n- $b \\geq 0$ (binomial coefficients are natural numbers, so their cast to $\\mathbb{R}$ is non-negative)\n- The absorption identity is rewritten as $kc = rb$ (replacing $m - k + 1$ with $r$)\n\nThis reparametrization is the key conceptual move: after this point, the proof works entirely in terms of $k$, $r$, and $b$, with no further reference to $m$ or the binomial coefficient function.",
+    "mathContext": "Setting $r = m - k + 1$ gives a symmetric pair of parameters: $k$ counts from the left, $r$ counts from the right, and $k + r = m + 1$. The absorption identities become $kc = rb$, $(k+1)d = (r-1)c$, $(k-1)b = (r+1)a$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "reparametrization",
+      "positivity tactic",
+      "Nat.cast_nonneg",
+      "absorption identity"
+    ],
+    "prerequisites": [
+      "positivity tactic",
+      "Nat.cast_nonneg"
+    ]
+  },
+  {
     "id": "ann-power-identities",
     "proofId": "newton-inductive-step",
     "range": {
@@ -89,6 +134,28 @@
     "prerequisites": [
       "h1' absorption identity",
       "linear_combination"
+    ]
+  },
+  {
+    "id": "ann-algebraic-roadmap",
+    "proofId": "newton-inductive-step",
+    "range": {
+      "startLine": 67,
+      "endLine": 86
+    },
+    "type": "insight",
+    "title": "Algebraic Roadmap: Term-by-Term Reduction",
+    "content": "This comment block lays out the complete algebraic plan before executing it. Each of the five terms in $D \\cdot (\\text{LHS} - \\text{RHS})$ is expressed as $f(k,r) \\cdot b^4$:\n\n- $D \\cdot bc^3 = (k+1)(r+1) r^3 b^4$\n- $D \\cdot adc^2 = (k-1)(r-1) r^3 b^4$\n- $D \\cdot ac^3 = (k^2-1) r^3 b^4$\n- $D \\cdot 2b^2cd = 2(r^2-1) k r^2 b^4$\n- $D \\cdot b^3d = (r+1)r(r-1) k^2 b^4$\n\nThe sum simplifies to $r(k+r)^2 b^4$ — a fact that can be verified by expanding $(k+r)^2 = k^2 + 2kr + r^2$ and collecting terms. This roadmap is a characteristic pattern in formal proofs: stating the complete algebraic strategy in comments before executing it step by step with verified `linear_combination` calls.",
+    "mathContext": "The five-term decomposition uses: $k^3c^3 = r^3b^3$ (cubing the absorption identity), $k(k+1)d = r(r-1)b$ (chaining two absorption identities), $(r+1)a = (k-1)b$ (the third absorption identity), and $k^2c^2 = r^2b^2$ (squaring). Each product identity eliminates one more variable until only $b^4$ remains.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "proof planning",
+      "polynomial reduction",
+      "term-by-term elimination"
+    ],
+    "prerequisites": [
+      "absorption identities",
+      "power identities"
     ]
   },
   {
