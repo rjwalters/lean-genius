@@ -41,7 +41,13 @@
       }
     ],
     "axiomCount": 4,
-    "lineCount": 264
+    "lineCount": 264,
+    "prerequisites": [
+      "Modular arithmetic and congruence classes",
+      "Chinese Remainder Theorem",
+      "Basic combinatorics and the pigeonhole principle",
+      "Lovász Local Lemma (for understanding Hough's proof)"
+    ]
   },
   "overview": {
     "historicalContext": "Covering systems were introduced by Erdős around 1950. He asked whether the minimum modulus of a covering system with distinct moduli can be made arbitrarily large, calling it 'perhaps my favourite problem' and offering a $1000 prize. Constructions pushed the minimum modulus steadily upward: 2 (Erdős 1950), 3 (Choi 1971), 20 (Krukenberg 1971), 36 (Gibson 2009), 40 (Nielsen 2009), and 42 (Owens 2014). Most experts expected the answer to be YES. In a stunning surprise, Hough (2015) proved the answer is NO — every covering system must contain a modulus $\\leq 10^{16}$ — using the Lovász Local Lemma and building on work of Filaseta, Ford, Konyagin, Pomerance, and Yu (2007). The bound was dramatically improved to $616{,}000$ by Balister, Bollobás, Morris, Sahasrabudhe, and Tiba (2022) using their novel 'distortion method', published in the Annals of Mathematics. The exact maximum possible minimum modulus remains unknown, lying between 42 and 616,000.",
@@ -153,6 +159,77 @@
       "What is the structure of covering systems with minimum modulus close to 42?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-3",
+      "relationship": "related",
+      "description": "Problem #3 (arithmetic progressions in sets with divergent reciprocal sum) shares the theme of density constraints in number theory. Both problems involve the reciprocal sum $\\sum 1/n_i$ as a key measure: covering systems require reciprocal sum $\\geq 1$, while Problem #3 asks about sets with divergent reciprocal sum"
+    },
+    {
+      "targetId": "erdos-7",
+      "relationship": "extends",
+      "description": "Problem #7 asks whether odd covering systems exist — the Erdős-Selfridge conjecture that every covering system must contain an even modulus. This is the most important open problem directly spawned by the covering systems framework of Problem #2"
+    },
+    {
+      "targetId": "erdos-8",
+      "relationship": "extends",
+      "description": "Problem #8 asks about monochromatic covering systems, extending the covering systems framework by adding coloring constraints. Both problems concern the fundamental structural limitations of covering systems"
+    },
+    {
+      "targetId": "erdos-27",
+      "relationship": "extends",
+      "description": "Almost covering systems relax the covering condition to allow a density-zero set of uncovered integers. This generalization of Problem #2 explores the boundary between covering and non-covering"
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "foundational",
+      "description": "The Chinese Remainder Theorem underpins covering systems: congruence classes $a \\bmod n$ partition integers, and the CRT governs how they interact when moduli are coprime. Covering systems are precisely collections of congruence classes whose union is all of $\\mathbb{Z}$"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "On integers of the form $2^k + p$ and some related problems",
+      "year": "1950",
+      "venue": "Summa Brasiliensis Mathematicae, vol. 2, pp. 113–123",
+      "note": "Introduced covering systems and posed the minimum modulus problem"
+    },
+    {
+      "authors": "Hough, Bob",
+      "title": "Solution of the minimum modulus problem for covering systems",
+      "year": "2015",
+      "venue": "Annals of Mathematics, vol. 181, no. 1, pp. 361–382",
+      "note": "Disproved Erdős's conjecture by showing every covering system has a modulus ≤ 10^16, using the Lovász Local Lemma"
+    },
+    {
+      "authors": "Balister, Paul; Bollobás, Béla; Morris, Robert; Sahasrabudhe, Julian; Tiba, Marius",
+      "title": "Covering systems with restricted divisibility",
+      "year": "2022",
+      "venue": "Annals of Mathematics, vol. 196, no. 2, pp. 513–560",
+      "note": "Improved the upper bound to 616,000 using the novel 'distortion method'"
+    },
+    {
+      "authors": "Filaseta, Michael; Ford, Kevin; Konyagin, Sergei; Pomerance, Carl; Yu, Gang",
+      "title": "Sieving by large integers and covering systems of congruences",
+      "year": "2007",
+      "venue": "Journal of the American Mathematical Society, vol. 20, no. 2, pp. 495–517",
+      "note": "Key structural results on covering systems that were precursors to Hough's solution"
+    },
+    {
+      "authors": "Choi, Siu Lun A.",
+      "title": "Covering the set of integers by congruence classes of distinct moduli",
+      "year": "1971",
+      "venue": "Mathematics of Computation, vol. 25, no. 116, pp. 885–895",
+      "note": "Constructed covering systems with minimum modulus 3"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-3",
+    "erdos-7",
+    "erdos-8",
+    "erdos-27",
+    "chinese-remainder-constructive"
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"

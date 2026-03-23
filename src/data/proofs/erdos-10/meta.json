@@ -26,7 +26,14 @@
       "erdos-949"
     ],
     "axiomCount": 8,
-    "lineCount": 109
+    "lineCount": 109,
+    "prerequisites": [
+      "Prime numbers and their distribution",
+      "Density of sets of integers (lower density, natural density)",
+      "Sieve methods (for Romanoff's theorem)",
+      "Covering congruences (for the exception construction)",
+      "Large sieve inequality (for Gallagher's theorem)"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős asked whether there exists $k$ such that every sufficiently large integer can be written as a prime plus at most $k$ powers of 2. He described the problem as 'probably unattackable' and, with Graham, conjectured no such $k$ exists. The problem has deep roots: Romanoff (1934) showed that already for $k = 1$, a positive proportion of integers are representable as $p + 2^a$, using sieve methods. Erdős (1950) proved via covering congruences that the complement also has positive density. Gallagher (1975) proved the density approaches 1 as $k$ grows, using the large sieve inequality and the Bombieri-Vinogradov theorem on primes in arithmetic progressions. Granville and Soundararajan (1998) made the bold conjecture that $k = 3$ suffices for all odd integers $> 1$. Grechuk computationally verified that $1117175146$ (even) is not in $S_3$, confirming the parity barrier. The problem connects to Goldbach-type questions, covering systems (Erdős 1950), and the deep question of how well lacunary sequences complement the primes as additive bases.",
@@ -109,12 +116,71 @@
       "What is the exact lower density $\\underline{d}(S_1)$? Best bounds?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-949",
+      "relationship": "related",
+      "description": "Problem #949 also concerns representations of integers as sums involving primes and structured sets. Both problems ask about the additive basis properties of primes combined with specific sequences"
+    },
+    {
+      "targetId": "erdos-2",
+      "relationship": "related",
+      "description": "Erdős's covering congruence argument (1950) proving infinitely many integers are not $p + 2^a$ uses the same covering system technique central to Problem #2. The connection between covering systems and prime representations is a hallmark of Erdős's work"
+    },
+    {
+      "targetId": "erdos-9",
+      "relationship": "related",
+      "description": "Problem #9 asks about odd integers not of the form $p + 2^k + 2^l$, a closely related question to Problem #10 with $k = 2$ restricted to odd integers. Both problems concern how well powers of 2 complement the primes"
+    },
+    {
+      "targetId": "erdos-11",
+      "relationship": "related",
+      "description": "Problem #11 asks about integers of the form squarefree + power of 2. Like Problem #10, it studies how powers of 2 combine with a structured number-theoretic set (primes vs. squarefree numbers) as additive bases"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The infinitude of primes is a basic prerequisite. Romanoff's theorem ($\\underline{d}(S_1) > 0$) relies on the prime number theorem giving the density of primes as $\\sim 1/\\log N$, combined with the exponential growth of $\\{2^a\\}$"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Romanoff, N. P.",
+      "title": "Über einige Sätze der additiven Zahlentheorie",
+      "year": "1934",
+      "venue": "Mathematische Annalen, vol. 109, no. 1, pp. 668–678",
+      "note": "Proved a positive proportion of integers are representable as p + 2^a using sieve methods"
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "On integers of the form $2^k + p$ and some related problems",
+      "year": "1950",
+      "venue": "Summa Brasiliensis Mathematicae, vol. 2, pp. 113–123",
+      "note": "Used covering congruences to show infinitely many integers are NOT p + 2^a, establishing the complement also has positive density"
+    },
+    {
+      "authors": "Gallagher, Patrick X.",
+      "title": "Primes and powers of 2",
+      "year": "1975",
+      "venue": "Inventiones Mathematicae, vol. 29, no. 2, pp. 125–142",
+      "note": "Proved the density of S_k approaches 1 as k grows, using the large sieve and Bombieri-Vinogradov theorem"
+    },
+    {
+      "authors": "Granville, Andrew; Soundararajan, Kannan",
+      "title": "A binary additive problem of Erdős and the order of 2 mod p²",
+      "year": "1998",
+      "venue": "Ramanujan Journal, vol. 2, no. 1–2, pp. 283–298",
+      "note": "Conjectured k = 3 suffices for all odd integers > 1, with computational verification"
+    }
+  ],
   "relatedProofs": [
+    "erdos-2",
+    "erdos-9",
+    "erdos-11",
     "erdos-949",
     "erdos-1",
     "erdos-28",
-    "erdos-347",
-    "erdos-533"
+    "infinitude-primes"
   ],
   "leanFile": {
     "imports": [
