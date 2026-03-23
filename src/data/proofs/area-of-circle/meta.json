@@ -245,6 +245,16 @@
       "targetId": "area-of-circle-oq-03-oq-02",
       "relationship": "extended-by",
       "description": "Archimedes' bounds $223/71 < \\pi < 22/7$ via inscribed and circumscribed regular 96-gons — the computational complement to the area formula, providing the first rigorous numerical approximation of the constant $\\pi$ that appears in $A = \\pi r^2$"
+    },
+    {
+      "targetId": "de-moivre",
+      "relationship": "foundational",
+      "description": "De Moivre's formula $(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta)$ provides the polar representation of $\\mathbb{C}$ that makes this formalization's use of the complex plane natural: a disk in $\\mathbb{C}$ is $\\{re^{i\\theta} : 0 \\leq r \\leq R,\\, 0 \\leq \\theta < 2\\pi\\}$, and the area element $r\\,dr\\,d\\theta$ in polar coordinates gives $A = \\int_0^{2\\pi}\\int_0^R r\\,dr\\,d\\theta = \\pi R^2$"
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "foundational",
+      "description": "Archimedes' method of exhaustion is a geometric convergence argument: inscribed $n$-gons have area $A_n = \\frac{n}{2}r^2\\sin(2\\pi/n)$ and the difference $\\pi r^2 - A_n$ decreases geometrically. The doubling strategy ($n \\to 2n$ sides) means each step halves the error, converging as a geometric series — anticipating both the convergence of geometric series and the definition of Riemann integrals by 2000 years"
     }
   ],
   "relatedProofs": [
@@ -268,7 +278,9 @@
     "sqrt2-irrational",
     "area-of-circle-oq-01-oq-02",
     "area-of-circle-oq-01-oq-03",
-    "area-of-circle-oq-03-oq-02"
+    "area-of-circle-oq-03-oq-02",
+    "de-moivre",
+    "geometric-series"
   ],
   "leanFile": {
     "imports": [
