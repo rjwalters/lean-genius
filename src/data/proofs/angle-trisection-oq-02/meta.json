@@ -67,7 +67,7 @@
       "Compass-and-straightedge constructibility (from OQ-01)"
     ],
     "lineCount": 298,
-    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "1 axiom: wantzel_galois_characterization — the Wantzel-Galois biconditional: an algebraic number α is constructible by compass and straightedge iff the Galois group of its minimal polynomial over ℚ is a 2-group (IsPGroup 2 (minpoly ℚ α).Gal). Axiomatized because the full proof requires the Galois correspondence for intermediate fields. All other results (non-constructibility of ∛2 and cos(20°), constructibility of √2 and 2^{1/4}, hierarchy of criteria) are fully proved from this axiom with 0 sorries."
   },
   "crossReferences": [
     {
