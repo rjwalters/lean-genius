@@ -14,8 +14,7 @@
       "lp-spaces",
       "inequalities",
       "holder",
-      "cauchy-schwarz",
-      "research"
+      "cauchy-schwarz"
     ],
     "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ01.lean",
     "badge": "original",
@@ -144,6 +143,47 @@
       "Can the complex-valued Hölder inequality be stated and proved using the nnnorm approach?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "extends",
+      "description": "Parent proof: the integral Cauchy-Schwarz inequality ∫|fg| ≤ (∫f²)^{1/2}·(∫g²)^{1/2} is the p=q=2 special case of the Hölder inequality proved here"
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "foundational",
+      "description": "The discrete Cauchy-Schwarz inequality (Σ|aᵢbᵢ| ≤ √(Σaᵢ²)·√(Σbᵢ²)) is the counting measure special case of both Cauchy-Schwarz integral and this Hölder generalization"
+    },
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "foundational",
+      "description": "Young's inequality (ab ≤ a^p/p + b^q/q for conjugate exponents) — the pointwise step in the Hölder proof — is a consequence of AM-GM via the convexity of the exponential function"
+    },
+    {
+      "targetId": "triangle-inequality",
+      "relationship": "related",
+      "description": "Minkowski's inequality (the Lp triangle inequality ‖f+g‖_p ≤ ‖f‖_p + ‖g‖_p) is proved using Hölder's inequality; together they make Lp a normed space"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-02",
+      "relationship": "related",
+      "description": "The Cauchy-Schwarz equality case (⟪f,g⟫ = ‖f‖·‖g‖ iff proportional) — Hölder's equality case similarly requires f^p and g^q to be proportional"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Strict Minkowski inequality characterization — extends the equality case analysis that this file's Hölder result enables"
+    }
+  ],
+  "relatedProofs": [
+    "cauchy-schwarz-integral",
+    "cauchy-schwarz",
+    "amgm-inequality",
+    "triangle-inequality",
+    "cauchy-schwarz-integral-oq-02",
+    "cauchy-schwarz-integral-oq-02-oq-01",
+    "cauchy-schwarz-integral-oq-03"
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.MeasureTheory.Function.L2Space",
