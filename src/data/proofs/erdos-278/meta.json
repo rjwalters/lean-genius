@@ -24,9 +24,9 @@
     "relatedProofs": [
       "erdos-273"
     ],
-    "axiomCount": 5,
-    "assumptions": "5 axiom declarations: simpson_theorem (minimum with equal residues), equal_residues_minimize (constant residues equivalent), max_density_coprime_case (CRT coprime maximum), single_modulus_density (single modulus density 1/n), maxCoverageDensity (sup over residue choices)",
-    "lineCount": 148
+    "axiomCount": 2,
+    "assumptions": "2 axiom declarations: simpson_theorem (minimum with equal residues — deep 1986 result), max_density_coprime_case (CRT coprime maximum). Previously axiomatized equal_residues_minimize, single_modulus_density, and erdos_278_density_le_one are now fully proved.",
+    "lineCount": 291
   },
   "overview": {
     "historicalContext": "Paul Erdős and Ronald Graham posed this problem in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p.28), as part of their systematic study of covering systems — a topic Erdős championed from his groundbreaking 1950 paper showing that covering systems with distinct moduli greater than 1 exist. The problem asks: given fixed moduli, how should one choose residues to optimize coverage? R.J. Simpson resolved the minimum question in 1986 (Discrete Mathematics 59), proving by an elegant averaging argument that equal residues minimize coverage density. The maximum question remains open and connects to the broader structure theory of covering systems, which saw a major breakthrough when Bob Hough (2015, Annals of Mathematics) proved the minimum modulus conjecture — showing that any covering system with distinct moduli must include a modulus at most $10^{16}$. The interplay between coprime and non-coprime moduli connects to the Chinese Remainder Theorem and to sieve-theoretic methods in analytic number theory.",
@@ -93,7 +93,7 @@
       "title": "Simpson's Theorem (1986)",
       "startLine": 119,
       "endLine": 131,
-      "summary": "Axiomatizes Simpson's theorem: $\\delta(\\{0 \\pmod{n_i}\\}) \\leq \\delta(\\{r(n_i) \\pmod{n_i}\\})$ for all residue functions $r$. Corollary: all constant-residue systems achieve the same density."
+      "summary": "Axiomatizes Simpson's theorem: $\\delta(\\{0 \\pmod{n_i}\\}) \\leq \\delta(\\{r(n_i) \\pmod{n_i}\\})$ for all residue functions $r$. Proves equal_residues_minimize: coverage density with constant residue $a$ equals that with residue 0, via cyclic shift bijection $m \\mapsto (m+a) \\bmod L$ on $\\{0, \\ldots, L-1\\}$."
     },
     {
       "id": "open-question",
@@ -124,8 +124,8 @@
     "opens": [],
     "namespace": null,
     "lineCount": 148,
-    "axiomCount": 5,
-    "theoremCount": 6,
+    "axiomCount": 2,
+    "theoremCount": 8,
     "definitionCount": 6
   },
   "references": [
