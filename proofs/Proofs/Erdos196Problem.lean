@@ -115,23 +115,48 @@ theorem ap4_parity (a b c d : ℕ) (h : IsAP4 a b c d) :
 
 /-- Key structural reduction: the conjecture is equivalent to saying that
     permutations avoiding odd-CD 4-APs must contain even-CD 4-APs. -/
-axiom conjecture_equiv_even_forced :
-  (∀ x : Perm, HasMonotone4AP x) ↔
-    ∀ x : Perm,
-      (¬∃ i j k l : ℕ, (i < j ∧ j < k ∧ k < l ∨ i > j ∧ j > k ∧ k > l) ∧
-        IsAP4OddCD (x i) (x j) (x k) (x l)) →
-      ∃ i j k l : ℕ, (i < j ∧ j < k ∧ k < l ∨ i > j ∧ j > k ∧ k > l) ∧
-        IsAP4EvenCD (x i) (x j) (x k) (x l)
+theorem conjecture_equiv_even_forced :
+    (∀ x : Perm, HasMonotone4AP x) ↔
+      ∀ x : Perm,
+        (¬∃ i j k l : ℕ, (i < j ∧ j < k ∧ k < l ∨ i > j ∧ j > k ∧ k > l) ∧
+          IsAP4OddCD (x i) (x j) (x k) (x l)) →
+        ∃ i j k l : ℕ, (i < j ∧ j < k ∧ k < l ∨ i > j ∧ j > k ∧ k > l) ∧
+          IsAP4EvenCD (x i) (x j) (x k) (x l) := by
+  constructor
+  · -- Forward: every perm has 4-AP → if no odd-CD, then even-CD
+    intro h x hno_odd
+    obtain ⟨i, j, k, l, hmon, hap⟩ := h x
+    rcases ap4_parity _ _ _ _ hap with hodd | heven
+    · exfalso; exact hno_odd ⟨i, j, k, l, hmon, hodd⟩
+    · exact ⟨i, j, k, l, hmon, heven⟩
+  · -- Backward: if no-odd-CD → even-CD, then every perm has 4-AP
+    intro h x
+    by_cases hc : ∃ i j k l : ℕ, (i < j ∧ j < k ∧ k < l ∨ i > j ∧ j > k ∧ k > l) ∧
+        IsAP4OddCD (x i) (x j) (x k) (x l)
+    · obtain ⟨i, j, k, l, hmon, hodd⟩ := hc
+      exact ⟨i, j, k, l, hmon, hodd.1⟩
+    · obtain ⟨i, j, k, l, hmon, heven⟩ := h x hc
+      exact ⟨i, j, k, l, hmon, heven.1⟩
 
 /- ## Non-Extendability -/
 
 /-- If a permutation avoids monotone 4-APs, every 3-AP is non-extendable:
     the value a + 3d is forbidden at all later monotone indices. -/
-axiom non_extendable_constraint :
-  ∀ (x : Perm), ¬HasMonotone4AP x →
-    ∀ (i j k : ℕ), i < j → j < k →
-      IsAP3 (x i) (x j) (x k) →
-      ∀ l : ℕ, l > k → x l ≠ x k + (x j - x i)
+theorem non_extendable_constraint :
+    ∀ (x : Perm), ¬HasMonotone4AP x →
+      ∀ (i j k : ℕ), i < j → j < k →
+        IsAP3 (x i) (x j) (x k) →
+        ∀ l : ℕ, l > k → x l ≠ x k + (x j - x i) := by
+  intro x hno i j k hij hjk hap3 l hkl hcontra
+  apply hno
+  refine ⟨i, j, k, l, Or.inl ⟨hij, hjk, hkl⟩, ?_⟩
+  unfold IsAP4 IsAP3 at *
+  obtain ⟨hcd, hai, hbi⟩ := hap3
+  refine ⟨hcd, ?_, ?_, ?_, ?_⟩
+  · omega
+  · exact hai
+  · exact hbi
+  · omega
 
 /- ## Erdős–Szekeres Connection -/
 
