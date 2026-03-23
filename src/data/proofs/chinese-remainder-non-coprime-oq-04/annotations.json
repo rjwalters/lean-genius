@@ -51,6 +51,30 @@
     ]
   },
   {
+    "id": "ann-nearest-integer",
+    "proofId": "chinese-remainder-non-coprime-oq-04",
+    "range": {
+      "startLine": 114,
+      "endLine": 122
+    },
+    "type": "insight",
+    "title": "Nearest Integer Approximation Bound",
+    "content": "A simple but foundational corollary: every real number has an integer within distance 1/2. The proof uses p = ⌊α + 1/2⌋, centering the floor function at the midpoint between consecutive integers. While elementary, this result is the N=1 case of Dirichlet's theorem (with the stronger bound 1/2 instead of 1/1), and it illustrates how floor/ceiling arguments yield approximation guarantees. In higher dimensions, this generalizes to Babai's nearest plane algorithm for lattice closest vector approximation.",
+    "mathContext": "For any $\\alpha \\in \\mathbb{R}$, $\\exists p \\in \\mathbb{Z}$ with $|\\alpha - p| \\leq 1/2$. Take $p = \\lfloor \\alpha + 1/2 \\rfloor$. This is optimal: equality holds when $\\alpha$ is a half-integer.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "rounding",
+      "floor function",
+      "nearest integer function",
+      "Babai's algorithm",
+      "lattice closest vector"
+    ],
+    "prerequisites": [
+      "Int.floor_le",
+      "Int.lt_floor_add_one"
+    ]
+  },
+  {
     "id": "ann-lattice-points",
     "proofId": "chinese-remainder-non-coprime-oq-04",
     "range": {

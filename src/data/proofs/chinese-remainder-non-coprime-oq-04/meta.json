@@ -85,44 +85,51 @@
     {
       "id": "pigeonhole-setup",
       "title": "Pigeonhole Setup for Fractional Part Binning",
-      "startLine": 29,
-      "endLine": 69
+      "startLine": 27,
+      "endLine": 65,
+      "summary": "Defines the bin function binFn : Fin(N+1) → Fin(N) mapping index i to ⌊N · fract(iα)⌋, with supporting lemmas for well-typedness (floor non-negative, floor < N) and the key same_bin_fract_close lemma showing colliding bins imply fractional parts within 1/N."
     },
     {
       "id": "dirichlet-theorem",
       "title": "Dirichlet's Approximation Theorem",
-      "startLine": 71,
-      "endLine": 118
+      "startLine": 66,
+      "endLine": 112,
+      "summary": "Proves Dirichlet's approximation theorem: for any real α and N ≥ 1, there exist p, q with 1 ≤ q ≤ N and |qα - p| < 1/N. Applies pigeonhole via Fintype.exists_ne_map_eq_of_card_lt to binFn, then converts the bin collision to an approximation bound through fract_sub_eq and careful cast gymnastics."
     },
     {
       "id": "consequences",
       "title": "Consequences: Nearest Integer Bound",
-      "startLine": 120,
-      "endLine": 129
+      "startLine": 114,
+      "endLine": 122,
+      "summary": "Derives the nearest integer bound: every real number has an integer within distance 1/2. A direct corollary using the floor of α + 1/2."
     },
     {
       "id": "lattice-points",
       "title": "Lattice Point Theorem",
-      "startLine": 131,
-      "endLine": 162
+      "startLine": 124,
+      "endLine": 146,
+      "summary": "Proves integer_in_interval (any interval [a, a+1) contains an integer via ceiling) and lattice_point_exists (any interval (a, a+m] contains a multiple of m), providing the geometric foundation for CRT solvability through lattice coset arguments."
     },
     {
       "id": "stern-brocot",
       "title": "Mediant and Stern-Brocot Property",
-      "startLine": 164,
-      "endLine": 198
+      "startLine": 148,
+      "endLine": 174,
+      "summary": "Proves the mediant (a+c)/(b+d) lies strictly between a/b and c/d via cross-multiplication, and that Farey neighbors (determinant cb - ad = 1) are automatically ordered. These results underlie the Stern-Brocot tree construction of best rational approximations."
     },
     {
       "id": "golden-ratio",
       "title": "Golden Ratio Properties",
-      "startLine": 200,
-      "endLine": 223
+      "startLine": 176,
+      "endLine": 207,
+      "summary": "Defines φ = (1+√5)/2 and proves its key algebraic identities: positivity, φ > 1, φ² = φ + 1, 1/φ = φ - 1, and the minimal polynomial root property. Includes Fibonacci verification examples showing the denominators of φ's best rational approximations."
     },
     {
       "id": "crt-examples",
       "title": "CRT Non-Coprime Lattice Examples",
-      "startLine": 225,
-      "endLine": 239
+      "startLine": 209,
+      "endLine": 239,
+      "summary": "Concrete computational examples: a solvable non-coprime system (x ≡ 3 mod 6, x ≡ 1 mod 4 → x = 9 mod 12), an unsolvable system (gcd doesn't divide residue difference), Bézout witness verification, and the classical Sunzi problem for coprime moduli."
     }
   ],
   "crossReferences": [
@@ -164,6 +171,11 @@
       "The golden ratio is the hardest-to-approximate irrational (Hurwitz constant \u221a5)",
       "CRT solvability for non-coprime moduli reduces to lattice point counting",
       "Dirichlet's method extends to simultaneous approximation in higher dimensions (Minkowski's theorem)"
+    ],
+    "openQuestions": [
+      "Can the pigeonhole-based proof be extended to simultaneous Diophantine approximation in Lean, formalizing Minkowski's lattice point theorem for convex bodies?",
+      "What is the formal relationship between the Stern-Brocot mediant operation and the convergents of continued fraction expansions — can this be unified in Lean's Mathlib?",
+      "The Littlewood conjecture (1930, still open): for all real α, β, is it true that lim inf n·‖nα‖·‖nβ‖ = 0? This is the natural two-dimensional extension of Dirichlet's theorem."
     ]
   }
 }
