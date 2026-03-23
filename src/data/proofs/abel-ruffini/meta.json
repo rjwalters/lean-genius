@@ -348,6 +348,11 @@
       "targetId": "chinese-remainder-non-coprime",
       "relationship": "foundational",
       "description": "The non-coprime Chinese Remainder Theorem generalizes the decomposition of cyclic groups that underpins radical extensions: each radical step in the Galois bridge produces a cyclic Galois quotient $\\mathbb{Z}/n\\mathbb{Z}$, and understanding when such cyclic groups decompose as direct products (CRT) versus remaining indecomposable is essential to the composition series analysis that distinguishes solvable groups ($S_4$) from non-solvable ones ($S_5$)"
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity-oq-01",
+      "relationship": "related",
+      "description": "Zolotarev's 1872 proof of quadratic reciprocity uses the sign homomorphism $\\text{sign}: S_n \\to \\{\\pm 1\\}$ — the same homomorphism whose kernel $A_n = \\ker(\\text{sign})$ is central to Abel-Ruffini's proof chain. In Zolotarev's proof, the Legendre symbol $(a/p)$ equals the signature of the multiplication-by-$a$ permutation on $(\\mathbb{Z}/p\\mathbb{Z})^{\\times}$, directly linking the symmetric group structure that drives Abel-Ruffini's impossibility to quadratic reciprocity"
     }
   ],
   "relatedProofs": [
@@ -390,7 +395,8 @@
     "angle-trisection-oq-02",
     "angle-trisection-oq-02-oq-01",
     "chinese-remainder-constructive",
-    "chinese-remainder-non-coprime"
+    "chinese-remainder-non-coprime",
+    "elementary-quadratic-reciprocity-oq-01"
   ],
   "references": [
     {
